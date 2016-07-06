@@ -357,167 +357,167 @@ INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Desc
 
 /*Info node for every nodetype*/
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9600, 5001, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9600, 5001, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9601, 5002, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9601, 5002, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9602, 5003, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9602, 5003, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9603, 5004, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9603, 5004, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9604, 5005, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9604, 5005, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9605, 5006, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9605, 5006, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9606, 5007, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9606, 5007, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9607, 5008, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9607, 5008, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9608, 5009, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9608, 5009, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9609, 5010, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9609, 5010, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9610, 5011, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9610, 5011, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9611, 5012, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9611, 5012, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9612, 5013, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9612, 5013, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9613, 5014, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9613, 5014, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9614, 5015, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9614, 5015, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9615, 5016, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9615, 5016, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9616, 5017, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9616, 5017, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9617, 5018, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9617, 5018, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9618, 5020, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9618, 5020, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9619, 5021, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9619, 5021, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9620, 5022, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9620, 5022, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9621, 5023, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9621, 5023, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9622, 5024, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9622, 5024, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9623, 5025, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9623, 5025, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9624, 5026, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9624, 5026, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9625, 5028, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9625, 5028, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9626, 5029, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9626, 5029, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9627, 5030, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9627, 5030, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9628, 5031, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9628, 5031, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9629, 5032, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9629, 5032, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9630, 5033, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9630, 5033, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9631, 5034, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9631, 5034, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9632, 5035, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9632, 5035, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9633, 5036, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9633, 5036, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9634, 5037, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9634, 5037, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9635, 5038, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9635, 5038, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9636, 5039, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9636, 5039, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9637, 5040, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9637, 5040, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9638, 5041, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9638, 5041, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9639, 5043, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9639, 5043, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9640, 5044, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9640, 5044, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9641, 5048, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9641, 5048, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9642, 5049, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9642, 5049, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9643, 5050, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9643, 5050, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9644, 5053, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9644, 5053, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9645, 5054, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9645, 5054, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9646, 5055, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9646, 5055, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9647, 5056, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9647, 5056, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9648, 5057, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9648, 5057, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9649, 5058, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9649, 5058, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9650, 5059, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9650, 5059, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9651, 5060, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9651, 5060, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9652, 5061, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9652, 5061, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9653, 5063, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9653, 5063, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9654, 5066, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9654, 5066, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9655, 5068, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9655, 5068, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9656, 5076, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9656, 5076, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9657, 5077, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9657, 5077, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9658, 5078, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9658, 5078, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9659, 5079, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9659, 5079, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9660, 5080, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9660, 5080, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9661, 5081, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9661, 5081, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9662, 5082, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9662, 5082, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9663, 5083, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9663, 5083, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9664, 5084, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9664, 5084, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9665, 5085, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9665, 5085, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9666, 5300, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9666, 5300, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9667, 5301, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9667, 5301, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9668, 5302, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9668, 5302, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9669, 5303, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9669, 5303, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9670, 5304, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9670, 5304, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9671, 5305, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9671, 5305, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9672, 5306, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9672, 5306, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9673, 5307, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9673, 5307, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9674, 5308, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9674, 5308, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9675, 5309, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9675, 5309, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9676, 5310, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9676, 5310, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9677, 5311, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9677, 5311, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9678, 5312, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9678, 5312, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9679, 5313, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9679, 5313, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`,`Module`, `Multiple`,`Params`,`IsBulk`)
- VALUES(9680, 5320, 'Info node', 'infonode','infonode.png','Info node',70,NULL,0,NULL,0);
+ VALUES(9680, 5320, 'Node information', 'infonode','infonode.png','Node information',70,NULL,0,NULL,0);
 UNLOCK TABLES;
 
 
@@ -2930,7 +2930,7 @@ CREATE TABLE `NodeTypes` (
   UNIQUE KEY `IdType` (`Name`),
   KEY `IdType_2` (`IdNodeType`)
 ) ENGINE=MyISAM COMMENT='Nodetypes used on Ximdex CMS';
- 
+
 INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublishable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5001,'Root','root','root','Root node of Ximdex',1,0,0,0,0,1,0,0,0,0,1,NULL);
 INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublishable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5002,'ControlCenter','root','controlcenter','Ximdex control center',0,0,1,0,1,0,0,0,0,0,1,NULL);
 INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublishable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5003,'UserManager','root','user','User manager',0,0,0,0,1,0,0,0,0,0,1,NULL);
@@ -2997,7 +2997,7 @@ INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `
 INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublishable`, `CanDenyDeletion`, `System`, `Module`, `IsHidden`) VALUES (5083,'MetaDataSection','foldernode','folder_xml_meta','Metadata Section',1,1,0,0,1,0,0,0,1,NULL,1,NULL,0);
 INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublishable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5084,'MetaDataContainer','Xmlcontainernode','metacontainer','Metadata Document',1,0,0,0,1,1,0,0,0,NULL,0,NULL);
 INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublishable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5085,'MetaDataDoc','xmldocumentnode','doc','Metadata Language Document',1,0,0,0,0,0,0,1,1,NULL,0,NULL);
- 
+
 CREATE TABLE `Nodes` (
   `IdNode` int(12) unsigned NOT NULL auto_increment,
   `IdParent` int(12) unsigned default '0',
@@ -6874,7 +6874,7 @@ CREATE TABLE `Versions` (
   KEY `Version` (`SubVersion`,`IdNode`,`Version`),
   KEY `IdNode` (`IdNode`)
 ) ENGINE=MyISAM COMMENT='Table of contents and version management';
- 
+
 CREATE TABLE `NodeConstructors` (
   `IdNodeConstructor` int(11) NOT NULL auto_increment,
   `IdNodeType` int(11) NOT NULL,
@@ -6882,7 +6882,7 @@ CREATE TABLE `NodeConstructors` (
   PRIMARY KEY  (`IdNodeConstructor`)
 );
 
- 
+
 INSERT INTO `NodeConstructors` (`IdNodeConstructor`, `IdNodeType`, `IdAction`) VALUES
   (1, 5026, 6012),
   (2, 5050, 6011),
