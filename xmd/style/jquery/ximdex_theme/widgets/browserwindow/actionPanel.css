@@ -1349,8 +1349,15 @@ input:focus + .tooltip_info {
     background: #9aabe2; }
 .browser-window .add-btn {
   background: #7bcabf; }
+  .browser-window .add-btn.disabled {
+    background: #CCC;
+  }
+  .browser-window .add-btn.disabled:hover {
+    background: #CCC;
+  }
   .browser-window .add-btn:hover {
-    background: #9fd9d1; }
+    background: #9fd9d1;
+  }
 .browser-window .enabled-version {
   background: #7bcabf;
   cursor: default; }
