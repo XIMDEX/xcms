@@ -1,1 +1,3 @@
-DEPRECATED
+DEPRECATED since 2016-01-25.
+
+Negative Sort in Actions Table.
