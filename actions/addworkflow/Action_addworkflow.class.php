@@ -25,41 +25,41 @@
  */
 
 /*
-DEPRECATED
+	DEPRECATED
 */
 
-// use Ximdex\Models\Node;
-// use Ximdex\Models\NodeType;
-// use Ximdex\MVC\ActionAbstract;
-//
-// class Action_addworkflow extends ActionAbstract {
-//     function index () {
-//     	$values = array(
-//     		'id_node' => $this->request->getParam('nodeid'),
-//     		'go_method' => 'add_workflow'
-//     	);
-//
-//     	$this->render($values, null,'default-3.0.tpl');
-//     }
-//
-//     function add_workflow() {
-//     	$idNode = $this->request->getParam('nodeid');
-//     	$workflowName = $this->request->getParam('workflow');
-//
-//     	$nodeType = new NodeType();
-//     	$nodeType->SetByName('Workflow');
-//
-//     	$node = new Node();
-//     	$result = $node->CreateNode($workflowName, $idNode, $nodeType->get('IdNodeType'));
-//
-//     	$this->reloadNode($idNode);
-//     	if (!$result) {
-//     		$this->messages->add(_('Workflow could not be successfully inserted'), MSG_TYPE_ERROR);
-//     		$this->messages->mergeMessages($node->messages);
-//     	} else {
-// 	    	$this->messages->add(_('Workflow has been successfully inserted'), MSG_TYPE_NOTICE);
-//     	}
-//     	$this->render(array('messages' => $this->messages->messages), NULL, 'messages.tpl');
-//     }
-// }
+use Ximdex\Models\Node;
+use Ximdex\Models\NodeType;
+use Ximdex\MVC\ActionAbstract;
+
+class Action_addworkflow extends ActionAbstract {
+    function index () {
+    	$values = array(
+    		'id_node' => $this->request->getParam('nodeid'),
+    		'go_method' => 'add_workflow'
+    	);
+
+    	$this->render($values, null,'default-3.0.tpl');
+    }
+
+    function add_workflow() {
+    	$idNode = $this->request->getParam('nodeid');
+    	$workflowName = $this->request->getParam('workflow');
+
+    	$nodeType = new NodeType();
+    	$nodeType->SetByName('Workflow');
+
+    	$node = new Node();
+    	$result = $node->CreateNode($workflowName, $idNode, $nodeType->get('IdNodeType'));
+
+    	$this->reloadNode($idNode);
+    	if (!$result) {
+    		$this->messages->add(_('Workflow could not be successfully inserted'), MSG_TYPE_ERROR);
+    		$this->messages->mergeMessages($node->messages);
+    	} else {
+	    	$this->messages->add(_('Workflow has been successfully inserted'), MSG_TYPE_NOTICE);
+    	}
+    	$this->render(array('messages' => $this->messages->messages), NULL, 'messages.tpl');
+    }
+}
 ?>
