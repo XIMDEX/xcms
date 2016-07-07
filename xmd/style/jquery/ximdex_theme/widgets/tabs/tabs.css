@@ -169,6 +169,10 @@ ui-tabs .ui-tabs-nav li:hover {
     margin-top: -1px;
 }
 
+.ui-tabs .ui-tabs-nav .ui-tabs-active button.ui-tab-close:hover {
+    color: #999;    
+}
+
 /*.ui-tabs .ui-tabs-nav li.ui-tabs-active a {
   cursor: default;
 }*/
@@ -189,7 +193,7 @@ button.ui-tab-close {
     line-height: 100%;
 }
 button.ui-tab-close:hover {
-    color: #999;
+    color: #ccc;
     background-color: transparent;
 }
 span.ui-tab-close-icon:before {
