@@ -27,7 +27,7 @@
 
 <form name="copy" id="copy" method="post" action="{$action_url}">
 	<div class="action_header">
-		<h2>{t}Copy element{/t} {$name}</h2>
+		<h2>{t}Copy element{/t}: {$name}</h2>
 		{if {count($targetNodes)}}
 		<fieldset class="buttons-form">
 			{button class="validate btn main_action" label="Copy" tabindex="3"}<!--message="Are you sure you want to copy this node to selected destination?"-->
@@ -35,13 +35,13 @@
         {/if}
 	</div>
 	<div class="warning hidden message-warning message">
-		<p class="ui-icon-notice">{t}This operation is not allowed on the selected destination{/t}. 
+		<p class="ui-icon-notice">{t}This operation is not allowed on the selected destination{/t}.
 			{t}Please, select another destination{/t}.</p>
-	</div>	
+	</div>
 
 			{if {!count($targetNodes)}}
 				<div class="message-warning message">
-					<p>{t}There aren't any available destination{/t}.</p> 
+					<p>{t}There aren't any available destination{/t}.</p>
 				</div>
 			{/if}
 	<div class="action_content">
@@ -55,19 +55,19 @@
 
 			{if {count($targetNodes)}}
 				<label for="id_node" class="label_title">{t}Choose a destination{/t}:</label>
-			
+
 				<div class="copy_options" tabindex="1">
 					{foreach from=$targetNodes key=index item=targetNode}
 						<div>
 							<input id="copy_{$id_node}_{$targetNode.idnode}" type="radio" name="targetid" value="{$targetNode.idnode}" />
 							<label for="copy_{$id_node}_{$targetNode.idnode}" class="icon folder">{$targetNode.path}</label>
-						</div>					
+						</div>
 					{/foreach}
 				</div>
 			<span class="recursive_control">
 					<input type="checkbox" name="recursive" id="recursive" checked="checked" tabindex="2" />
 					<label for="recursive"> {t}Execute this action for all files and subfolders{/t}.</label>
-				</span>				
+				</span>
 			{/if}
 	</div>
 </form>

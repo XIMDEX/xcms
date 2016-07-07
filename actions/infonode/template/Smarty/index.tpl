@@ -24,7 +24,7 @@
  *}
 
 <div class="action_header">
-    <h2>{t}Information about{/t}: <strong>{$info.name}</strong></h2>
+    <h2>{t}Information about{/t}: {$info.name}</h2>
 </div>
 
 <div class="action_content">

@@ -23,14 +23,18 @@
  *  @version $Revision$
  *}
 
-<form method="post" name="addworkflow" id="addworkflow" action="{$action_url}">
+ /*
+ DEPRECATED
+ */
+
+<!-- <form method="post" name="addworkflow" id="addworkflow" action="{$action_url}">
 	<input type="hidden" name="nodeid" value="{$id_node}">
 
 	<div class="action_header">
 		<h2>{t}Add workflow{/t}</h2>
 
 		<fieldset class="buttons-form">
-			<!-- <a href="{$_MESSAGES_PATH}" class="lbOn validate"></a> -->
+			<a href="{$_MESSAGES_PATH}" class="lbOn validate"></a>
 			{button label="Add" class='validate btn main_action'}{*message="Would you like to add a new workflow?"*}
 		</fieldset>
 	</div>
@@ -41,4 +45,4 @@
 			<input type="text" id="workflow" name="workflow" class="full_size cajag validable not_empty" placeholder="{t}Name of the new workflow{/t}"/>
 		</p>
 	</div>
-</form>
+</form> -->
