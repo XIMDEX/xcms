@@ -25,7 +25,7 @@
 
 <form method="post" id="print_form" action="{$action_url}">
 	<div class="action_header">
-		<h2>{t}Add{/t} {$friendlyName|gettext} {$name}</h2>
+		<h2>{t}Add{/t} {$friendlyName|gettext}: {$name}</h2>
 	</div>
 
 	<div class="action_content">

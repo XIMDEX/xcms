@@ -53,7 +53,7 @@
                 <p class="message_warning">{t}There are no channels created in the system{/t}.</p>
                 {/foreach}
         </div>
-  
+
         <div class="col1-1">
             <label for="theme">{t}Avaliable themes{/t}</label>
                 <ul class="themes">
@@ -68,7 +68,7 @@
                       {/if}
                             </div>
                         </div>
-                        <p class="title">{$theme.title}</p>         
+                        <p class="title">{$theme.title}</p>
                         <p class="type">{$theme.description}</p>
                     </li>
                 {/foreach}
@@ -79,4 +79,3 @@
         {button label="Create `$friendlyName`" class='validate btn main_action' }
     </fieldset>
 </form>
-

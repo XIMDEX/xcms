@@ -37,16 +37,23 @@ ModulesManager::file('/inc/io/XlyreBaseIO.class.php', 'xlyre');
 class Action_addsectionnode extends ActionAbstract {
 
     // Main method: shows initial form
-    function index() {
+    public function index() {
+        $nodeID = $this->request->getParam("nodeid");
+        $node   = new Node($nodeID);
+
+        $values = array(
+            'name' => $node->GetNodeName()
+        );
+
         $this->loadResources();
-        $this->render(array(), null, 'default-3.0.tpl');
+        $this->render($values, "index", 'default-3.0.tpl');
     }
 
-    function getSectionInfo() {
+    public function getSectionInfo() {
         $this->sendJSON($this->loadValues());
     }
 
-    function addsectionnode() {
+    public function addsectionnode() {
         $nodeid = $this->request->getParam('nodeid');
         $name = $this->request->getParam('name');
         $langidlst = $this->request->getParam('langidlst');

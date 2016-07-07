@@ -25,7 +25,7 @@
 
 <form ng-controller="addSectionCtrl" method="post" name="add_form" ng-submit="submit()" action="{$action_url}&method=addsectionnode" novalidate>
     <div class="action_header">
-        <h2>{t}Add section{/t}</h2>
+        <h2>{t}Add section{/t}: {$name}</h2>
     </div>
 
     <div class="action_content section-properties">
