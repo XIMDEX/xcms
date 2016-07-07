@@ -472,9 +472,14 @@ button::-moz-focus-inner {
   height: 41px; }
 
 #angular-content > .hbox-panel > .tabs-container > ul.ui-tabs-nav > li {
-  padding: 0;
-  height: 40px;
-  word-wrap: normal; }
+  /*padding: 0;*/
+  height: 35px;
+  margin-bottom: 0px;
+  padding: 9px 15px 9px 35px;
+
+  word-wrap: normal;
+  cursor: pointer;
+}
 
 #angular-content > .hbox-panel > .tabs-container > ul.ui-tabs-nav > li.hide {
   visibility: hidden; }
@@ -558,4 +563,3 @@ button::-moz-focus-inner {
     height: calc(100 - 41px);
     overflow-y: hidden;
 }
-
