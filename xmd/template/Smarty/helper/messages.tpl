@@ -23,7 +23,6 @@
  *  @version $Revision$
  *}
 
-
 {if count($messages) > 0}
 	{foreach from=$messages item=message}
 		{if ($message.type == "0")}
@@ -36,10 +35,13 @@
 			{assign var="class" value="message message-info"}
 			{assign var="icon" value="ui-icon ui-icon-info"}
 		{/if}
-		<div class="{$class}">
+
+		<div class="action_content {$class}">
 			<p>{$message.message}</p>
 		</div>
 	{/foreach}
 {else}
-	<div>{t}No messages found{/t}</div>
+	<div class="action_content">
+		<p>{t}No messages found{/t}.</p>
+	</div>
 {/if}

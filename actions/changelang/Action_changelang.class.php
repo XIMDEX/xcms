@@ -24,26 +24,28 @@
  *  @version $Revision$
  */
 
-
 use Ximdex\Models\User;
 use Ximdex\Models\XimLocale;
 use Ximdex\MVC\ActionAbstract;
 
- class Action_changelang extends ActionAbstract {
+class Action_changelang extends ActionAbstract {
    // Main mathod: it shows the init form
-    function index() {
-		$code = $this->request->getParam('code');
+  function index() {
+		$locale 					= new XimLocale();
+		$code 						= $this->request->getParam('code');
+		$locale_selected 	= $locale->GetLocaleByCode($code);
+		$error 						= true;
 
-
-
-		$locale = new XimLocale();
-		$locale_selected = $locale->GetLocaleByCode($code);
-
-		$error = true;
-		if (!empty($locale_selected) ) {
+		if (!empty($locale_selected)){
 			$user = new User(\Ximdex\Utils\Session::get('userID'));
-			if ( $user->SetLocale($locale_selected["Code"]) ) {
-				$this->messages->add(sprintf(_("Ximdex Language changed to %s. The changes will take effect once you restart Ximdex."), _($locale_selected["Name"]) ), MSG_TYPE_NOTICE);
+
+			if ( $user->SetLocale($locale_selected["Code"]) ){
+				$this->messages->add(
+					sprintf(
+					_("Ximdex Language changed to %s. The changes will take effect once you restart Ximdex."), _($locale_selected["Name"]) ),
+					MSG_TYPE_NOTICE
+				);
+
 				$error = false;
 			}
 		}
@@ -52,9 +54,8 @@ use Ximdex\MVC\ActionAbstract;
 			$user->messages->add(_('User could not be found'), MSG_TYPE_ERROR);
 		}
 
-		$values = array('messages' => $this->messages->messages );
-
+		$values = array('messages' => $this->messages->messages);
 		$this->render($values);
-    }
+  }
 }
 ?>
