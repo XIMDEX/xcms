@@ -463,10 +463,9 @@ msgstr "No se ha podido encontrar ningún idioma"
 msgid "Changes have been successfully done"
 msgstr "Se han realizado correctamente las modificaciones."
 
-
 #: /actions/changelang/Action_changelang.class.php
 msgid "Ximdex Language changed to %s. The changes will take effect once you restart Ximdex."
-msgstr "Idioma de Ximdex cambiado a %s. Este cambio cogerá efecto la próxima vez que entre en su Ximdex."
+msgstr "Idioma cambiado a %s. Este cambio surgirá efecto la próxima vez que inicie sesión en Ximdex CMS."
 
 #: /actions/changelang/Action_changelang.class.php
 msgid "User could not be found."
