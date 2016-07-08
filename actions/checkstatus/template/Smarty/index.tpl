@@ -24,7 +24,7 @@
  *}
 
 <div class="action_header">
-	<h2>{t}Status Report{/t} {$name}</h2>
+	<h2>{t}Status Report{/t}: {$name}</h2>
 </div>
 	<div class="action_content versions" ng-controller="XPublishStatus" ng-cloak xim-nodeid={$id_node}>
 	<h3>{t}Modified documents{/t}:</h3>
@@ -33,14 +33,14 @@
 <!--    <div class="action_content"></div>-->
 {else}
 		<span>{t}Below are listed all the relevant documents in your system, grouped by state. Only are shown the files that are modified in comparation with its last published version.{/t}</span>
-			
+
 		{foreach from=$files key=state item=statenode}
 			<div class="state-info row-item_selectable">
 				<span class="state">{t}Documents in{/t} {$statesFull[{$state}].stateName}</span>
 	            <div class="docs-amount right">{$statesFull[{$state}].count}</div>
-			
+
 			    <div class="documents-info">
-				{foreach from=$statenode item=file}		
+				{foreach from=$statenode item=file}
 					<div class="version-info">
 						<span class="file-path">{$file.Path}/<strong>{$file.Name}</strong></span>
 						<span class="file-date">{$file.Date} hrs.</span>
@@ -58,15 +58,15 @@
 		<br ng-hide="publications.published.length>0||publications.unpublished.length>0" />
 		<br ng-hide="publications.published.length>0||publications.unpublished.length>0" />
 		<span ng-show="publications.published.length>0||publications.unpublished.length>0">{t}Below are listed all the documents that have been sent to publish{/t}.</span>
-	    <div class="state-info row-item_selectable" 
-	    	ng-show="publications.published.length>0" 
+	    <div class="state-info row-item_selectable"
+	    	ng-show="publications.published.length>0"
 	    	ng-class="{literal}{opened: opened}{/literal}"
 	    	ng-click="opened = !opened">
 			<span class="state">#/'actions.checkstatus.publications.published.title' | xI18n/#</span>
             <div class="docs-amount right">#/publications.published.length/#</div>
-		    <div class="documents-info" 
+		    <div class="documents-info"
 		    	ng-class="{literal}{'hide-toggle': !opened}{/literal}"
-		    	ng-click="event.stopPropagation();">	
+		    	ng-click="event.stopPropagation();">
 				<div class="version-info" ng-repeat="pub in publications.published">
 					<span class="file-path">#/pub.path/#/#/pub.name/#</span><span class="file-size">#/pub.filesize | xBytes/#</span>
 					<span class="file-date">#/pub.date+'000' | date:'dd/MM/yyyy HH:MM'/# hrs.</span>
@@ -74,15 +74,15 @@
 				</div>
 		    </div>
         </div>
-        <div class="state-info row-item_selectable" 
-	    	ng-show="publications.unpublished.length>0" 
+        <div class="state-info row-item_selectable"
+	    	ng-show="publications.unpublished.length>0"
 	    	ng-class="{literal}{opened: opened}{/literal}"
 	    	ng-click="opened = !opened">
 			<span class="state">#/'actions.checkstatus.publications.unpublished.title' | xI18n/#</span>
             <div class="docs-amount right">#/publications.unpublished.length/#</div>
-		    <div class="documents-info" 
+		    <div class="documents-info"
 		    	ng-class="{literal}{'hide-toggle': !opened}{/literal}"
-		    	ng-click="event.stopPropagation();">	
+		    	ng-click="event.stopPropagation();">
 				<div class="version-info" ng-repeat="pub in publications.unpublished">
 					<span class="file-path">#/pub.path/#/#/pub.name/#</span><span class="file-size">#/pub.filesize | xBytes/#</span>
 					<span class="file-date">#/pub.date+'000' | date:'dd/MM/yyyy HH:MM'/# hrs.</span>
@@ -93,8 +93,8 @@
 	    <!-- <div class="state-info row-item_selectable" ng-show="publications.published.length">
 			<span class="state">{t}Published documents{/t}</span>
             <div class="docs-amount right">#/publications.published.length/#</div>
-		
-		    <div class="documents-info">	
+
+		    <div class="documents-info">
 				<div class="version-info" ng-repeat="pub in publications.published">
 					<span class="file-path">#/pub.path/#/#/pub.name/#</span><span class="file-size">#/pub.filesize | xBytes/#</span>
 					<span class="file-date">#/pub.date+'000' | date:'dd/MM/yyyy HH:MM'/# hrs.</span>
@@ -105,8 +105,8 @@
         <div class="state-info row-item_selectable" ng-show="publications.unpublished.length">
 			<span class="state">{t}Documents in publication queue{/t}</span>
             <div class="docs-amount right">#/publications.unpublished.length/#</div>
-		
-		    <div class="documents-info">	
+
+		    <div class="documents-info">
 				<div class="version-info" ng-repeat="pub in publications.unpublished">
 					<span class="file-path">#/pub.path/#/#/pub.name/#</span><span class="file-size">#/pub.filesize | xBytes/#</sp
 					<span class="file-date">#/pub.date+'000' | date:'dd/MM/yyyy HH:MM'/# hrs.</span>
@@ -114,6 +114,5 @@
 				</div>
 		    </div>
         </div> -->
-      <span>{t}If you want to have a deeper look into the Ximdex CMS publication process, upgrade this status report with <strong>XPublishTools</strong> module{/t}.</span> 
+      <span>{t}If you want to have a deeper look into the Ximdex CMS publication process, upgrade this status report with <strong>XPublishTools</strong> module{/t}.</span>
 	</div>
-	

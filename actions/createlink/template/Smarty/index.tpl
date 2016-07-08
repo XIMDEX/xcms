@@ -26,7 +26,7 @@
 <form method="post" name="cln_form" id="cln_form" action="{$action_url}">
     <input type="hidden" name="id_node" value="{$id_node}"/>
     <div class="action_header">
-        <h2>{t}Create link{/t} {$name}</h2>
+        <h2>{t}Create link{/t}: {$name}</h2>
     </div>
 
     <div class="action_content">
