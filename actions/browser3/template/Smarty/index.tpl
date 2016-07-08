@@ -84,7 +84,8 @@
             <div ng-controller="XUserMenuCtrl" class="user-menu">
                 <ul>
                     <li class="icon language-icon">
-                        <a>{t}Language{/t}</a>
+                        <a href="#">{t}Language{/t}</a>
+
                         <ul class="selector_language">
                             {section name=i loop=$locales}
                                 <li ng-click="changeLang('{$locales[i].Code}','{$locales[i].Name|gettext} ({$locales[i].Lang})')" {if ($user_locale.ID == $locales[i].ID || ( null == $user_locale && $locales[i].ID == $smarty.const.DEFAULT_LOCALE)  )} class="selected icon" {/if}>{$locales[i].Name|gettext}
@@ -94,7 +95,7 @@
                         </ul>
                     </li>
                     <li class="icon config" ng-click="modifyAccount('{$userID}', '{t}Modify your account{/t}')">
-                        <a >{t}Modify your account{/t}</a>
+                        <a href="#">{t}Modify your account{/t}</a>
                     </li>
                     <li class="icon help">
                         <a target="_blank" href="https://github.com/XIMDEX/ximdex/wiki">{t}Help{/t}</a>
