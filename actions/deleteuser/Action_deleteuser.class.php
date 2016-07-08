@@ -43,7 +43,6 @@ class Action_deleteuser extends ActionAbstract {
 			$this->render(array('messages' => $this->messages->messages));
 		}
 
-
 		$values = array(
 			'id_node' => $idNode,
 			'go_method' => 'deleteuser',
@@ -79,16 +78,16 @@ class Action_deleteuser extends ActionAbstract {
 						if ($idProject){
 				    		error_log("[ximDEMOS] The project with Id {$idProject} is going to be deleted.");
 				    			$nodeToDelete = new Node($idProject);
-				    			$nodeToDelete->DeleteNode();				
+				    			$nodeToDelete->DeleteNode();
 						}
-			    
+
 						error_log("[ximDEMOS] The group with Id $idGroup is going to be deleted.");
 						$group->delete();
 			    		}
-				}	
+				}
 			}
 /************************ ximDEMOS *******************/
-		   	$result = $user->delete();	
+		   	$result = $user->delete();
 /************************ ximDEMOS *******************/
 			if (ModulesManager::isEnabled('ximDEMOS')){
 				$uUser = new UnverifiedUsers_ORM();

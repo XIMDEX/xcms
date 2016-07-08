@@ -1755,7 +1755,7 @@ msgstr "Se ha eliminado el usuario correctamente"
 #: /install/ximdex_data/ximdex.sql table Actions
 #: /install/ximdex_data/ximdex.sql table Nodes
 msgid "Delete user"
-msgstr "Eliminar Usuario"
+msgstr "Eliminar usuario"
 
 #: /actions/deleteuser/template/Smarty/index.tpl
 #: /actions/modifyuser/template/Smarty/index.tpl

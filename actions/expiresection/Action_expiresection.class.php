@@ -33,14 +33,16 @@ use Ximdex\Utils\Sync\Synchronizer;
 class Action_expiresection extends ActionAbstract {
    // Main method: shows initial form
     function index () {
-		$idNode = $this->request->getParam('nodeid');
-		$node = new Node($idNode);
+			$idNode 			= $this->request->getParam('nodeid');
+			$node 				= new Node($idNode);
+			$sectionName 	= $node->get('Name');
 
-		$sectionName = $node->get('Name');
-		$values = array('section_name' => $sectionName,
-						'go_method' => 'result');
+			$values = array(
+				'section_name' 	=> $sectionName,
+				'go_method' 		=> 'result'
+			);
 
-		$this->render($values, '', 'default-3.0.tpl');
+			$this->render($values, '', 'default-3.0.tpl');
     }
 
     function result() {
@@ -67,7 +69,7 @@ class Action_expiresection extends ActionAbstract {
 		if ($childList) {
 			foreach($childList as $child) {
 				$childNode = new Node($child);
-				//It adds nodes of children except they are of section type and they have not been specified like recursives 
+				//It adds nodes of children except they are of section type and they have not been specified like recursives
 				if($recursive || ( $childNode->nodeType->GetName() != "Section") ) {
 					$childList = array_merge($childList, $childNode->TraverseTree());
 				}

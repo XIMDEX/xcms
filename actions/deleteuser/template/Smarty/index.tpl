@@ -25,11 +25,12 @@
 
 <form method="post" name="el_form" action="{$action_url}">
 	<div class="action_header">
-		<h2>{t}Delete user{/t}</h2>
+		<h2>{t}Delete user{/t}: {$realname}</h2>
 		<fieldset class="buttons-form">
 			{button class="validate btn main_action" label="Delete" message="Are you sure you want to delete this user?"}
 		</fieldset>
 	</div>
+
 	<div class="action_content">
 		<fieldset>
 			<input type=hidden name='id_node' value="{$id_node}">
