@@ -51,6 +51,42 @@ class Action_addximlet extends ActionAbstract
     }
 
     /**
+     * Main method. Build the first form in the action.
+     */
+    function index()
+    {
+        $idNode = $this->request->getParam('nodeid');
+        $node = new Node($idNode);
+
+        $this->addCss('/actions/addximlet/resources/css/style.css');
+
+        $depsMngr = new DepsManager();
+        $ximlets = $depsMngr->getBySource(DepsManager::SECTION_XIMLET, $idNode);
+
+        $rsx = new RelSectionXimlet();
+        $all_ximlets = $rsx->getAllXimlets();
+        $linkable_ximlets = count($ximlets) > 0 ? array_diff($all_ximlets, $ximlets) : $all_ximlets;
+        $linkable_ximlets = $this->getXimletInfo($linkable_ximlets);
+
+        $linked_ximlets = $this->getXimletInfo($ximlets);
+
+        $query = App::get('\Ximdex\Utils\QueryManager');
+        $actionDelete = $query->getPage() . $query->buildWith(array('method' => 'deleterel'));
+        $actionCreate = $query->getPage() . $query->buildWith(array('method' => 'createrel'));
+
+        $values = array('linked_ximlets' => $linked_ximlets,
+            'id_node' => $idNode,
+            'linkable_ximlets' => $linkable_ximlets,
+            'action_delete' => $actionDelete,
+            'action_create' => $actionCreate,
+            'name' => $node->get('Name')
+        );
+
+        $this->addCss('/actions/copy/resources/css/style.css');
+        $this->render($values, 'index', 'default-3.0.tpl');
+    }
+
+    /**
      * Action called from index form. Add a new relation between ximlet and section;
      */
     function createrel()
@@ -154,41 +190,6 @@ class Action_addximlet extends ActionAbstract
                 }
             }
         }
-    }
-
-    /**
-     * Main method. Build the first form in the action.
-     */
-    function index()
-    {
-        $idNode = $this->request->getParam('nodeid');
-        $node = new Node($idNode);
-
-        $this->addCss('/actions/addximlet/resources/css/style.css');
-
-        $depsMngr = new DepsManager();
-        $ximlets = $depsMngr->getBySource(DepsManager::SECTION_XIMLET, $idNode);
-
-        $rsx = new RelSectionXimlet();
-        $all_ximlets = $rsx->getAllXimlets();
-        $linkable_ximlets = count($ximlets) > 0 ? array_diff($all_ximlets, $ximlets) : $all_ximlets;
-        $linkable_ximlets = $this->getXimletInfo($linkable_ximlets);
-
-        $linked_ximlets = $this->getXimletInfo($ximlets);
-
-        $query = App::get('\Ximdex\Utils\QueryManager');
-        $actionDelete = $query->getPage() . $query->buildWith(array('method' => 'deleterel'));
-        $actionCreate = $query->getPage() . $query->buildWith(array('method' => 'createrel'));
-
-        $values = array('linked_ximlets' => $linked_ximlets,
-            'id_node' => $idNode,
-            'linkable_ximlets' => $linkable_ximlets,
-            'action_delete' => $actionDelete,
-            'action_create' => $actionCreate,
-            'name' => $node->get('Name')
-        );
-        $this->addCss('/actions/copy/resources/css/style.css');
-        $this->render($values, 'index', 'default-3.0.tpl');
     }
 
     /**

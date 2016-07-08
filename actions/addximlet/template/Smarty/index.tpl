@@ -24,7 +24,7 @@
  *}
 
 <div class="action_header">
-    <h2>{t}Associate a ximlet to the section{/t}</h2>
+    <h2>{t}Associate a ximlet to the section{/t}: {$name}</h2>
 </div>
 <div class="action_content">
 {if count($linked_ximlets) > 0 }
@@ -36,17 +36,17 @@
 
 <fieldset>
 	<h3>{t}Ximlets already associated{/t}</h3>
-	
+
 		<input type="hidden" name="id_node" value="{$id_node}" />
 		<div class="copy_options">
 		{foreach from=$linked_ximlets item=ximlet_info}
 		<div>
 			<input type="checkbox" id="{$id_node}_idximlet_{$ximlet_info.idximlet}" name="idximlet[]" value="{$ximlet_info.idximlet}" />
 			<label class="icon ximlet" for="{$id_node}_idximlet_{$ximlet_info.idximlet}">{$ximlet_info.path}</label>
-		</div>	
+		</div>
 		{/foreach}
 		</div>
-	
+
 </fieldset>
 <fieldset>
 	<input type="checkbox" name="recursive" id="{$id_node}_recursive_delete" /> <label for="{$id_node}_recursive_delete"> {t}Disassociate recursively{/t}.</label>
@@ -69,7 +69,7 @@
 		<input type="hidden" id="id_node" name="id_node" value="{$id_node}" />
 		{foreach from=$linkable_ximlets item=ximlet}
     	<div>
-	
+
             <input type="checkbox" name="idximlet[]" id="{$id_node}_idximletavailable_{$ximlet.idximlet}" value="{$ximlet.idximlet}" />
     		<label class="icon folder" for="{$id_node}_idximletavailable_{$ximlet.idximlet}">{$ximlet.path}</label>
 			</div>
