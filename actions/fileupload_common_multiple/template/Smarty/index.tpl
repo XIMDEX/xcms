@@ -22,7 +22,8 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  *}
-<xim-uploader 
+
+<xim-uploader
 	xim-uploader-options='{$uploaderOptions}'
 	xim-node-id="{$nodeid}">
 </xim-uploader>

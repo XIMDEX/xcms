@@ -58,6 +58,8 @@ class Action_fileupload_common_multiple extends ActionAbstract {
         $actionID = (int) $this->request->getParam("actionid");
         $type = $this->request->getParam('type');
 
+        $node = new Node($idNode);
+
         /** ********* Find out folder nodetype **** */
         $baseIoInferer = new BaseIOInferer();
         $type_folder = $baseIoInferer->infereType('FOLDER', $idNode );
@@ -138,11 +140,11 @@ class Action_fileupload_common_multiple extends ActionAbstract {
             'allowedMimes' => $allowedMimes,
             'allowedExtensions' => $allowedExtensions,
             'type_node'=>$type_node,
-            'is_structured' => $is_structured
+            'is_structured' => $is_structured,
+            'name' => $node->get('Name')
         );
 
         if ($type_node=="XmlContainer"){
-            $node = new Node($idNode);
             // Gets default schema for XML through propInheritance
             $schemas = null;
             $section = $node->getSection();
