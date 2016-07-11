@@ -23,7 +23,7 @@
  *  @version $Revision$
  *}
 
-<form enctype="multipart/form-data" method="post" name="up_form" action="{$action_url}"">
+<form enctype="multipart/form-data" method="post" name="up_form" action="{$action_url}">
 	<div class="action_header">
 		<h2>{t}Edit HTML{/t}</h2>
 		<fieldset class="buttons-form">
@@ -35,6 +35,6 @@
 			<p>
 				<textarea id="htmleditor_{$id_editor}" name="htmleditor" class="htmleditor">{$html|escape:html}</textarea>
 			</p>
-		</fieldset>	
+		</fieldset>
 	</div>
 </form>

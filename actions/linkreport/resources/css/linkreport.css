@@ -22,20 +22,22 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
+
 .result_name, .result_url {
-  display: block; }
-
+    display: block;
+}
 .result_url {
-  color: #7bcabf;
-  margin-top: .5em;
-  font-weight: bold; }
-
+    color: #7bcabf;
+    margin-top: .5em;
+    font-weight: bold;
+}
 .description_btn {
-  display: inline-block; }
-
+    display: inline-block;
+}
 .result_info {
-  padding-right: 6em; }
-  .result_info .row-item-actions {
+    padding-right: 6em;
+}
+.result_info .row-item-actions {
     top: 50%;
     margin-top: -.8em;
     -webkit-transform: none;
@@ -43,65 +45,80 @@
     -ms-transform: none;
     -o-transform: none;
     transform: none;
-    z-index: auto; }
-    .result_info .row-item-actions a .status_tooltip {
-      margin-top: 3em;
-      right: 0;
-      text-align: center;
-      text-transform: none;
-      z-index: 3; }
-      .result_info .row-item-actions a .status_tooltip::before {
-        right: 1.5em; }
-    .result_info .row-item-actions .xtooltip {
-      right: 3.5em;
-      white-space: normal;
-      width: 300%;
-      margin-top: 3em;
-      text-transform: none;
-      padding: 1em;
-      z-index: 3; }
-      .result_info .row-item-actions .xtooltip::before {
-        right: 1.7em; }
-      .result_info .row-item-actions .xtooltip p {
-        font-size: 1.5rem;
-        line-height: 1.4; }
-        .result_info .row-item-actions .xtooltip p:first-child {
-          border-bottom: 1px solid rgba(255, 255, 255, 0.5);
-          padding-bottom: 0.5em;
-          margin-bottom: .8em;
-          font-size: 1.6rem; }
-        .result_info .row-item-actions .xtooltip p:last-child {
-          margin-bottom: 0; }
-
+    z-index: auto;
+}
+.result_info .row-item-actions a .status_tooltip {
+    margin-top: 3em;
+    right: 0;
+    text-align: center;
+    text-transform: none;
+    z-index: 3;
+}
+.result_info .row-item-actions a .status_tooltip::before {
+    right: 1.5em;
+}
+.result_info .row-item-actions .xtooltip {
+    right: 3.5em;
+    white-space: normal;
+    width: 300%;
+    margin-top: 3em;
+    text-transform: none;
+    padding: 1em;
+    z-index: 3;
+}
+.result_info .row-item-actions .xtooltip::before {
+    right: 1.7em;
+}
+.result_info .row-item-actions .xtooltip p {
+    font-size: 1.5rem;
+    line-height: 1.4;
+}
+.result_info .row-item-actions .xtooltip p:first-child {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+    padding-bottom: 0.5em;
+    margin-bottom: .8em;
+    font-size: 1.6rem;
+}
+.result_info .row-item-actions .xtooltip p:last-child {
+    margin-bottom: 0;
+}
 .btn-unlabel-rounded.result_description {
-  background: #42dada; }
-  .btn-unlabel-rounded.result_description:hover {
-    background: #42dada; }
-
+    background: #42dada;
+}
+.btn-unlabel-rounded.result_description:hover {
+    background: #42dada;
+}
 .btn-unlabel-rounded.checked_not_checked {
-  background: #e2bf46; }
-  .btn-unlabel-rounded.checked_not_checked p.status {
-    color: #e2bf46; }
-  .btn-unlabel-rounded.checked_not_checked:hover {
-    background: #e0ba39; }
-
+    background: #e2bf46;
+}
+.btn-unlabel-rounded.checked_not_checked p.status {
+    color: #e2bf46;
+}
+.btn-unlabel-rounded.checked_not_checked:hover {
+    background: #e0ba39;
+}
 .btn-unlabel-rounded.checked_ok {
-  background: #5ad479; }
-  .btn-unlabel-rounded.checked_ok p.status {
-    color: #5ad479; }
-  .btn-unlabel-rounded.checked_ok:hover {
-    background: #4ed16f; }
-
+    background: #5ad479;
+}
+.btn-unlabel-rounded.checked_ok p.status {
+    color: #5ad479;
+}
+.btn-unlabel-rounded.checked_ok:hover {
+    background: #4ed16f;
+}
 .btn-unlabel-rounded.checked_fail {
-  background: #f03c3c; }
-  .btn-unlabel-rounded.checked_fail p.status {
-    color: #f03c3c; }
-  .btn-unlabel-rounded.checked_fail:hover {
-    background: #ef2e2e; }
-
+    background: #f03c3c;
+}
+.btn-unlabel-rounded.checked_fail p.status {
+    color: #f03c3c;
+}
+.btn-unlabel-rounded.checked_fail:hover {
+    background: #ef2e2e;
+}
 .btn-unlabel-rounded.checking_status {
-  background: #fff; }
-  .btn-unlabel-rounded.checking_status::before {
+    background: #fff;
+}
+.btn-unlabel-rounded.checking_status::before {
     content: "";
     width: 0;
     height: 0;
@@ -124,27 +141,62 @@
     border-width: .85em;
     right: .8em;
     margin-top: -.8em;
-    left: auto; }
-
+    left: auto;
+}
 p.status {
-  text-transform: uppercase;
-  margin-top: .5em;
-  margin-bottom: .5em;
-  padding-bottom: .5em;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.3); }
-
+    text-transform: uppercase;
+    margin-top: .5em;
+    margin-bottom: .5em;
+    padding-bottom: .5em;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
 .status_tooltip .date_check {
-  font-size: 1.2em; }
+    font-size: 1.2em;
+}
+
+p.postada-quote {
+    font-size: 14px;
+}
+
+.check-link-inputs {
+    margin-bottom: 20px;
+}
+
+.check-link-inputs .col1-3 {
+    width: 32%;
+    margin-right: 10px;
+}
+
+.check-link-inputs .col1-3:last-child {
+    margin-right: 0;
+}
+
+.check-link-inputs select {
+    width: 100%;
+    cursor: pointer;
+}
+
+.check-link-inputs input {
+    width: 100%;
+}
 
 @-webkit-keyframes spin {
-  100% {
-    -webkit-transform: rotate(359deg); } }
+    100% {
+        -webkit-transform: rotate(359deg);
+    }
+}
 @-moz-keyframes spin {
-  100% {
-    -moz-transform: rotate(359deg); } }
+    100% {
+        -moz-transform: rotate(359deg);
+    }
+}
 @-o-keyframes spin {
-  100% {
-    -moz-transform: rotate(359deg); } }
+    100% {
+        -moz-transform: rotate(359deg);
+    }
+}
 @keyframes spin {
-  100% {
-    transform: rotate(359deg); } }
+    100% {
+        transform: rotate(359deg);
+    }
+}

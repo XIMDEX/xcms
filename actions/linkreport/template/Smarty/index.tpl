@@ -26,42 +26,56 @@
 <form method="post" name="ca_form" id="ca_form" action="{$action_url}">
 	<input type="hidden" name="nodeid" value="{$id_node}">
 	<div class="action_header">
-		<h2>{t}Select search criteria{/t}</h2>
+		<h2>{t}Check links{/t}: {$node_name}</h2>
 	</div>
-		<div class="action_content">
-			<fieldset>
-                <p>{t}Find your links and check if they are currently alive by clicking on the icon on the right{/t}.</p>
-				<ol>
-					<li>
-						<select name='field' class="xim-filter-field validable">
-							<option value="all">{t}All fields{/t}</option>
-							<option value="Name">{t}Name{/t}</option>
-							<option value="Description">{t}Description{/t}</option>
-							<option value="Url">{t}URL{/t}</option>
-						</select>
 
-						<select name='criteria' class="xim-filter-comparation validable">
-							<option value="contains">{t}contains{/t}</option>
-							<option value="nocontains">{t}does not contain{/t}</option>
-							<option value="equal">{t}equal to{/t}</option>
-							<option value="nonequal">{t}not equal to{/t}</option>
-							<option value="startswith">{t}begins with{/t}</option>
-							<option value="endswith">{t}ends with{/t}</option>
-						</select>
+	<div class="action_content">
+		<fieldset>
+			<p>
+				{t}Find your links and check if they are currently alive by clicking on the icon on the right{/t}.
+			</p>
 
-						<input type="text" name="stringsearch" class="xim-filter-content validable not_empty long" />
-					</li>
-					<li>
-						<input type="checkbox" name="rec" class="validable" id="rec"/>
-                        <label for="rec">{t}Search in subfolders{/t}</label>
-					</li>
-					<li>
-						<span>{t}Use the asterisk '*' to obtain all the links of the current folder{/t}.</span>
-					</li>
-				</ol>
-			</fieldset>
-		</div>
-	    <fieldset class="buttons-form positioned_btn">
-			{button label="Search" class="validate btn main_action" }{*message="A search will be performed with selected parameters. Would you like to continue?"*}
+			<p>
+				{t}Select search criteria{/t}:
+			</p>
+
+			<div class="check-link-inputs">
+				<div class="col1-3">
+					<select name='field' class="xim-filter-field validable">
+						<option value="all">{t}All fields{/t}</option>
+						<option value="Name">{t}Name{/t}</option>
+						<option value="Description">{t}Description{/t}</option>
+						<option value="Url">{t}URL{/t}</option>
+					</select>
+				</div>
+
+				<div class="col1-3">
+					<select name='criteria' class="xim-filter-comparation validable">
+						<option value="contains">{t}contains{/t}</option>
+						<option value="nocontains">{t}does not contain{/t}</option>
+						<option value="equal">{t}equal to{/t}</option>
+						<option value="nonequal">{t}not equal to{/t}</option>
+						<option value="startswith">{t}begins with{/t}</option>
+						<option value="endswith">{t}ends with{/t}</option>
+					</select>
+				</div>
+
+				<div class="col1-3">
+					<input type="text" name="stringsearch" class="xim-filter-content validable not_empty long" />
+				</div>
+			</div>
+
+			<label class="input-form" for="rec">
+				<input type="checkbox" name="rec" class="validable" id="rec" />
+				{t}Search in subfolders{/t}
+			</label>
+
+			<p class="postada-quote">
+				{t}Use the asterisk '*' to obtain all the links of the current folder{/t}.
+			</p>
 		</fieldset>
+	</div>
+	<fieldset class="buttons-form positioned_btn">
+		{button label="Search" class="validate btn main_action" }{*message="A search will be performed with selected parameters. Would you like to continue?"*}
+	</fieldset>
 </form>
