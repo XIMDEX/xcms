@@ -26,13 +26,16 @@
 <form enctype="multipart/form-data" method="post" id="up_form" name="up_form" action="{$action_url}">
 	<input type="hidden" name="nodeid" value="{$id_node}">
 	<input type="hidden" name="type" value="{$type}">
+
 	<div class="action_header">
-	    <h2>{t}Upload file{/t}</h2>
+		<h2>{t}Upload file{/t}: {$name}</h2>
+
 		<fieldset class="buttons-form">
-			{button label="Upload file" class="validate  btn main_action" }{*message="Are you sure you want to upload this file?"*}
+			{button label="Upload file" class="validate btn main_action" }{*message="Are you sure you want to upload this file?"*}
 		</fieldset>
 	</div>
-<div class="action_content">
+
+	<div class="action_content">
 		<fieldset>
 			<p>
 				<label for="upload" class="aligned">{t}File{/t}</label>
