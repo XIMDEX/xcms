@@ -90,19 +90,21 @@ class Action_login extends ActionAbstract
 
         //$url =
         $REMOTE_NEWS . "?lang=" . strtolower(DEFAULT_LOCALE) . "&ximid=" . \App::getValue('ximid');
-
         $url = $REMOTE_NEWS . "?lang=" . strtolower(DEFAULT_LOCALE);
 
         //get remote content
         $news_content = @file_get_contents($url, 0, $ctx);
+
         if (empty($news_content)) {
             $file = "index_" . strtolower(DEFAULT_LOCALE) . ".html";
+
             if (file_exists(XIMDEX_ROOT_PATH . "/xmd/news/$file")) {
                 return file_get_contents(XIMDEX_ROOT_PATH . "/xmd/news/$file");
-            } else {
+            }else{
                 return file_get_contents(XIMDEX_ROOT_PATH . "/xmd/news/index.html");
             }
         }
+
         return $news_content;
     }
 
