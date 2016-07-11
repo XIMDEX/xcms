@@ -23,282 +23,307 @@
  *  @version $Revision$
  */
 * {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box; }
-
-.window-toolbar-button {
-  border: none;
-  float: left;
-  height: 22px;
-  width: 25px;
-  margin: 8px 0px;
-  background-repeat: no-repeat;
-  background-position: center center;
-  cursor: pointer; }
-
-.view-action {
-  color: transparent; }
-
-.xim-actions-menu-list {
-  z-index: 100;
-  font-size: 14px;
-  font-size: 1.4rem; }
-
-.list-icon-browser {
-  display: none; }
-
-a.window-toolbar-link {
-  float: left;
-  margin: 11px 10px 0px;
-  color: #006b6c;
-  font-weight: bold;
-  text-decoration: none; }
-
-a.window-toolbar-link:hover {
-  color: #cd4e36;
-  border-bottom: 1px dotted #e8563b; }
-
-div.setbuttons-container {
-  color: #006b6c; }
-
-div.set-button {
-  padding: 3px 0px 3px 22px;
-  background: url("../../../../../images/panel/sets.png") no-repeat left center;
-  margin-bottom: 2px;
-  margin-left: 15px;
-  cursor: pointer; }
-
-div.set-button:hover {
-  text-decoration: underline; }
-
-div.set-button-drophover {
-  background-color: #cacaca; }
-
-div.filterbuttons-container {
-  color: #006b6c; }
-
-div.filter-button {
-  padding: 3px 0px 3px 22px;
-  background: url("../../../../../images/panel/saved-searchs.png") no-repeat left center;
-  margin-bottom: 2px;
-  margin-left: 15px;
-  cursor: pointer; }
-
-div.searchesbuttons-container {
-  color: #006b6c; }
-
-div.search-button {
-  cursor: pointer; }
-
-div.search-button-icon {
-  cursor: pointer;
-  float: left;
-  width: 16px;
-  height: 16px;
-  margin-right: 5px;
-  background-image: url(../../../../../actions/browser3/resources/images/bookmark-new.png); }
-
-div.search-button-label {
-  padding: 3px 0px 3px 22px;
-  background: url("../../../../../images/panel/searchs.png") no-repeat left center;
-  margin-bottom: 2px;
-  margin-left: 15px;
-  cursor: pointer; }
-
-.css_to_include, .js_to_include {
-  display: none; }
-
-.action-group {
-  display: none; }
-
-.action-group button:first-child {
-  margin-left: 15px; }
-
-.destroy-on-click {
-  background: whitesmoke;
-  border: 1px solid #e1e1e1;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  border-radius: 5px;
-  -webkit-box-shadow: 1px 1px 2px rgba(157, 157, 157, 0.2);
-  -moz-box-shadow: 1px 1px 2px rgba(157, 157, 157, 0.2);
-  box-shadow: 1px 1px 2px rgba(157, 157, 157, 0.2);
-  z-index: 1100; }
-
-.xim-actions-menu {
-  /*overflow: hidden !important;*/
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
 }
-
+.window-toolbar-button {
+    border: none;
+    float: left;
+    height: 22px;
+    width: 25px;
+    margin: 8px 0px;
+    background-repeat: no-repeat;
+    background-position: center center;
+    cursor: pointer;
+}
+.view-action {
+    color: transparent;
+}
+.xim-actions-menu-list {
+    z-index: 100;
+    font-size: 14px;
+    font-size: 1.4rem;
+}
+.list-icon-browser {
+    display: none;
+}
+a.window-toolbar-link {
+    float: left;
+    margin: 11px 10px 0px;
+    color: #006b6c;
+    font-weight: bold;
+    text-decoration: none;
+}
+a.window-toolbar-link:hover {
+    color: #cd4e36;
+    border-bottom: 1px dotted #e8563b;
+}
+div.setbuttons-container {
+    color: #006b6c;
+}
+div.set-button {
+    padding: 3px 0px 3px 22px;
+    background: url("../../../../../images/panel/sets.png") no-repeat left center;
+    margin-bottom: 2px;
+    margin-left: 15px;
+    cursor: pointer;
+}
+div.set-button:hover {
+    text-decoration: underline;
+}
+div.set-button-drophover {
+    background-color: #cacaca;
+}
+div.filterbuttons-container {
+    color: #006b6c;
+}
+div.filter-button {
+    padding: 3px 0px 3px 22px;
+    background: url("../../../../../images/panel/saved-searchs.png") no-repeat left center;
+    margin-bottom: 2px;
+    margin-left: 15px;
+    cursor: pointer;
+}
+div.searchesbuttons-container {
+    color: #006b6c;
+}
+div.search-button {
+    cursor: pointer;
+}
+div.search-button-icon {
+    cursor: pointer;
+    float: left;
+    width: 16px;
+    height: 16px;
+    margin-right: 5px;
+    background-image: url(../../../../../actions/browser3/resources/images/bookmark-new.png);
+}
+div.search-button-label {
+    padding: 3px 0px 3px 22px;
+    background: url("../../../../../images/panel/searchs.png") no-repeat left center;
+    margin-bottom: 2px;
+    margin-left: 15px;
+    cursor: pointer;
+}
+.css_to_include, .js_to_include {
+    display: none;
+}
+.action-group {
+    display: none;
+}
+.action-group button:first-child {
+    margin-left: 15px;
+}
+.destroy-on-click {
+    background: whitesmoke;
+    border: 1px solid #e1e1e1;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    -webkit-box-shadow: 1px 1px 2px rgba(157, 157, 157, 0.2);
+    -moz-box-shadow: 1px 1px 2px rgba(157, 157, 157, 0.2);
+    box-shadow: 1px 1px 2px rgba(157, 157, 157, 0.2);
+    z-index: 1100;
+}
+.xim-actions-menu {
+    /*overflow: hidden !important;*/
+}
 .xim-actions-menu button {
-  background: url("../../../../../images/action/sep-btn-actions.png") no-repeat left center;
-  width: 43px;
-  height: 37px;
-  margin: 0px; }
+    background: url("../../../../../images/action/sep-btn-actions.png") no-repeat left center;
+    width: 43px;
+    height: 37px;
+    margin: 0px;
+}
 
 /*.xim-actions-menu button:first-child{
 	background: none;
 }
 */
+
 .xim-actions-menu button:hover {
-  background: url("../../../../../images/action/sep-btn-actions-over.png") no-repeat left center; }
-
+    background: url("../../../../../images/action/sep-btn-actions-over.png") no-repeat left center;
+}
 .xim-actions-menu button.icon-browser {
-  display: none; }
-
+    display: none;
+}
 .xim-actions-menu button span {
-  background: url("../../../../../images/action/icons-actions.png") no-repeat 5px 4px;
-  display: block;
-  text-indent: -9999999px;
-  height: 33px; }
-
+    background: url("../../../../../images/action/icons-actions.png") no-repeat 5px 4px;
+    display: block;
+    text-indent: -9999999px;
+    height: 33px;
+}
 .xim-actions-menu button .tooltip {
-  text-indent: 0px;
-  display: none;
-  position: absolute;
-  z-index: 80px;
-  color: #fff;
-  text-shadow: 1px 1px 0px #464646;
-  white-space: nowrap;
-  padding: 0 15px 1px 15px;
-  -webkit-border-radius: 15px;
-  -moz-border-radius: 15px;
-  border-radius: 15px;
-  height: 22px;
-  line-height: 1.7em;
-  top: 47px;
-  left: -3px;
-  background: #888; }
-
+    text-indent: 0px;
+    display: none;
+    position: absolute;
+    z-index: 80px;
+    color: #fff;
+    text-shadow: 1px 1px 0px #464646;
+    white-space: nowrap;
+    padding: 0 15px 1px 15px;
+    -webkit-border-radius: 15px;
+    -moz-border-radius: 15px;
+    border-radius: 15px;
+    height: 22px;
+    line-height: 1.7em;
+    top: 47px;
+    left: -3px;
+    background: #888;
+}
 .xim-actions-menu button:hover .tooltip {
-  display: block; }
-
+    display: block;
+}
 .xim-actions-menu button .tooltip::before {
-  content: '';
-  display: block;
-  position: absolute;
-  border: 7px solid transparent;
-  border-bottom-color: #888;
-  top: -14px; }
-
+    content: '';
+    display: block;
+    position: absolute;
+    border: 7px solid transparent;
+    border-bottom-color: #888;
+    top: -14px;
+}
 .xim-actions-menu button span.addfoldernode, .xim-actions-menu button.createcolector span, .xim-actions-menu button.createcolector span {
-  background: url("../../../../../images/action/icons-actions.png") no-repeat 7px 4px; }
+    background: url("../../../../../images/action/icons-actions.png") no-repeat 7px 4px;
+}
 
 /*.xim-actions-menu button:after{
 	content: url('../../../../../images/action/sep-btn-actions.png');
 	float:right;
 }*/
+
 .xim-actions-menu button.checkstatus span {
-  background-position: -601px 4px; }
-
+    background-position: -601px 4px;
+}
 .xim-actions-menu button.copy span {
-  background-position: -275px 4px; }
-
+    background-position: -275px 4px;
+}
 .xim-actions-menu button.deletenode span, .xim-actions-menu button.deleteuser span, .xim-actions-menu button.unlinknewscolector span, .xim-actions-menu button.unlinknews span, .xim-actions-menu button.deleterelnewsarea span, .xim-actions-menu button.deletedataset span, .xim-actions-menu button.deletecatalog span {
-  background-position: -313px 4px; }
-
+    background-position: -313px 4px;
+}
 .xim-actions-menu button.modifygroupsnode span, .xim-actions-menu button.renamenode span, .xim-actions-menu button.relsectionschema span, .xim-actions-menu button.modifylink span, .xim-actions-menu button.addximlet span, .xim-actions-menu button.manageareas span, .xim-actions-menu button.manageproperties span, .xim-actions-menu button.modifygroup span, .xim-actions-menu button.modifystatesrole span, .xim-actions-menu button.modifyrole span, .xim-actions-menu button.modifygruposusuario span, .xim-actions-menu button.modifyuser span, .xim-actions-menu button.modifystates span, .xim-actions-menu button.addtoarea span, .xim-actions-menu button.addtocolector span, .xim-actions-menu button.modifyserver span, .xim-actions-menu button.modifychannel span, .xim-actions-menu button.modifyusuariosgrupo span, .xim-actions-menu button.modifylanguage span, .xim-actions-menu button.modifynodetype span, .xim-actions-menu button.icon-edit_cat span, .xim-actions-menu button.showassocnodes span, .xim-actions-menu button.managedataset span {
-  background-position: -24px 4px; }
-
+    background-position: -24px 4px;
+}
 .xim-actions-menu button.browser span, .xim-actions-menu button.linkreport span, .xim-actions-menu button.infonode span {
-  background-position: -236px 4px; }
-
+    background-position: -236px 4px;
+}
 .xim-actions-menu button.edittext span {
-  background-position: -54px 4px; }
-
+    background-position: -54px 4px;
+}
 .xim-actions-menu button.filedownload span, .xim-actions-menu button.filedownload_multiple span {
-  background-position: -89px 4px; }
-
+    background-position: -89px 4px;
+}
 .xim-actions-menu button.workflow_backward span {
-  background-position: -162px 4px; }
-
+    background-position: -162px 4px;
+}
 .xim-actions-menu button.workflow_forward span, .xim-actions-menu button.publicatesection span, .xim-actions-menu button.publicateximlet span, .xim-actions-menu button.generatecolector span {
-  background-position: -126px 6px; }
-
+    background-position: -126px 6px;
+}
 .xim-actions-menu button.fileupload span, .xim-actions-menu button.fileupload_common_multiple span, .xim-actions-menu button.updatefile span {
-  background-position: -347px 4px; }
-
+    background-position: -347px 4px;
+}
 .xim-actions-menu button.movenode span {
-  background-position: -383px 4px; }
-
+    background-position: -383px 4px;
+}
 .xim-actions-menu button.manageversions span {
-  background-position: -418px 4px; }
-
+    background-position: -418px 4px;
+}
 .xim-actions-menu button.filepreview span, .xim-actions-menu button.preview span, .xim-actions-menu button.browserimages span {
-  background-position: -200px 4px; }
-
+    background-position: -200px 4px;
+}
 .xim-actions-menu button.xmleditor span, .xim-actions-menu button.xmleditor2 span, .xim-actions-menu button.htmleditor span {
-  background-position: -451px 4px; }
-
+    background-position: -451px 4px;
+}
 .xim-actions-menu button.xmlsetlink span {
-  background-position: -492px 4px; }
-
+    background-position: -492px 4px;
+}
 .xim-actions-menu button.viewaddednews span {
-  background-position: -533px 4px; }
-
+    background-position: -533px 4px;
+}
 .xim-actions-menu button.setmetadata span {
-  background-position: -567px 4px; }
-
+    background-position: -567px 4px;
+}
 .xim-actions-menu button.managebatchs span {
-  background-position: -601px 4px; }
+    background-position: -601px 4px;
+}
 
 /** ****************************** LIST MENU ***************************************** */
+
 .xim-actions-menu-list {
-  padding: 4px 0;
-  font-size: 14px;
-  font-size: 1.4rem;
-  -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-  -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  border-radius: 4px; }
-  .xim-actions-menu-list .icon {
+    padding: 4px 0;
+    font-size: 14px;
+    font-size: 1.4rem;
+    -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+.xim-actions-menu-list .icon {
     padding: 10px 15px 0px 5px;
-  }
-    .xim-actions-menu-list .icon::before {
-      content: '';
-      display: block;
-      float: left;
-      clear: left;
-      height: 20px;
-      background: url("../../../../../images/action/icons-actions-mini.png") no-repeat 0 0;
-      width: 20px;
-      margin-right: 10px;
-      margin-top: -0.19em; }
-  .xim-actions-menu-list .copy::before {
-    background-position: -227px -1px; }
-  .xim-actions-menu-list .deletenode::before, .xim-actions-menu-list .deletetemplates::before, .xim-actions-menu-list .deleteuser::before, .xim-actions-menu-list .unlinknewscolector::before, .xim-actions-menu-list .unlinknews::before, .xim-actions-menu-list .deleterelnewsarea::before, .xim-actions-menu-list .deletecatalog::before, .xim-actions-menu-list .deletedataset::before {
-    background-position: -253px 0px; }
-  .xim-actions-menu-list .modifygroupsnode::before, .xim-actions-menu-list .renamenode::before, .xim-actions-menu-list .relsectionschema::before, .xim-actions-menu-list .modifylink::before, .xim-actions-menu-list .addximlet::before, .xim-actions-menu-list .manageareas::before, .xim-actions-menu-list .manageproperties::before, .xim-actions-menu-list .modifygroup::before, .xim-actions-menu-list .modifystatesrole::before, .xim-actions-menu-list .modifyrole::before, .xim-actions-menu-list .modifygruposusuario::before, .xim-actions-menu-list .modifyuser::before, .xim-actions-menu-list .modifystates::before, .xim-actions-menu-list .addtoarea::before, .xim-actions-menu-list .addtocolector::before, .xim-actions-menu-list .modifyserver::before, .xim-actions-menu-list .modifychannel::before, .xim-actions-menu-list .modifyusuariosgrupo::before, .xim-actions-menu-list .modifylanguage::before, .xim-actions-menu-list .modifynodetype::before, .xim-actions-menu-list .edit_cat::before, .xim-actions-menu-list .showassocnodes::before, .xim-actions-menu-list .manageproperties::before, .xim-actions-menu-list .relsectionschema::before, .xim-actions-menu-list .renamenode::before {
-    background-position: -26px 1px; }
-  .xim-actions-menu-list .browser::before, .xim-actions-menu-list .linkreport::before, .xim-actions-menu-list .infonode::before {
-    background-position: -196px 0px; }
-  .xim-actions-menu-list .edittext::before, .xim-actions-menu-list .managedataset::before {
-    background-position: -53px 0px; }
-  .xim-actions-menu-list .filedownload::before, .xim-actions-menu-list .filedownload_multiple::before {
-    background-position: -83px -1px; }
-  .xim-actions-menu-list .workflow_backward::before {
-    background-position: -141px 1px; }
-  .xim-actions-menu-list .workflow_forward::before, .xim-actions-menu-list .publicatesection::before, .xim-actions-menu-list .publicateximlet::before, .xim-actions-menu-list .generatecolector::before {
-    background-position: -112px -1px; }
-  .xim-actions-menu-list .fileupload::before, .xim-actions-menu-list .fileupload_common_multiple::before, .xim-actions-menu-list .updatefile::before {
-    background-position: -281px -1px; }
-  .xim-actions-menu-list .movenode::before {
-    background-position: -311px -1px; }
-  .xim-actions-menu-list .manageversions::before {
-    background-position: -342px -1px; }
-  .xim-actions-menu-list .filepreview::before, .xim-actions-menu-list .preview::before, .xim-actions-menu-list .browserimages::before {
-    background-position: -170px -1px; }
-  .xim-actions-menu-list .xmleditor::before, .xim-actions-menu-list .xmleditor2::before, .xim-actions-menu-list .htmleditor::before {
-    background-position: -373px -1px; }
-  .xim-actions-menu-list .xmlsetlink::before {
-    background-position: -402px -1px; }
-  .xim-actions-menu-list .viewaddednews::before {
-    background-position: -425px 7px; }
-  .xim-actions-menu-list .setmetadata::before {
-    background-position: -459px 1px; }
-  .xim-actions-menu-list .managebatchs::before {
-    background-position: -487px 8px; }
-  .xim-actions-menu-list .checkstatus::before {
-    background-position: -490px 0; }
+}
+.xim-actions-menu-list .icon::before {
+    content: '';
+    display: block;
+    float: left;
+    clear: left;
+    height: 20px;
+    background: url("../../../../../images/action/icons-actions-mini.png") no-repeat 0 0;
+    width: 20px;
+    margin-right: 10px;
+    margin-top: -0.19em;
+}
+.xim-actions-menu-list .copy::before {
+    background-position: -227px -1px;
+}
+.xim-actions-menu-list .deletenode::before, .xim-actions-menu-list .deletetemplates::before, .xim-actions-menu-list .deleteuser::before, .xim-actions-menu-list .unlinknewscolector::before, .xim-actions-menu-list .unlinknews::before, .xim-actions-menu-list .deleterelnewsarea::before, .xim-actions-menu-list .deletecatalog::before, .xim-actions-menu-list .deletedataset::before {
+    background-position: -253px 0px;
+}
+.xim-actions-menu-list .modifygroupsnode::before, .xim-actions-menu-list .renamenode::before, .xim-actions-menu-list .relsectionschema::before, .xim-actions-menu-list .modifylink::before, .xim-actions-menu-list .addximlet::before, .xim-actions-menu-list .manageareas::before, .xim-actions-menu-list .manageproperties::before, .xim-actions-menu-list .modifygroup::before, .xim-actions-menu-list .modifystatesrole::before, .xim-actions-menu-list .modifyrole::before, .xim-actions-menu-list .modifygruposusuario::before, .xim-actions-menu-list .modifyuser::before, .xim-actions-menu-list .modifystates::before, .xim-actions-menu-list .addtoarea::before, .xim-actions-menu-list .addtocolector::before, .xim-actions-menu-list .modifyserver::before, .xim-actions-menu-list .modifychannel::before, .xim-actions-menu-list .modifyusuariosgrupo::before, .xim-actions-menu-list .modifylanguage::before, .xim-actions-menu-list .modifynodetype::before, .xim-actions-menu-list .edit_cat::before, .xim-actions-menu-list .showassocnodes::before, .xim-actions-menu-list .manageproperties::before, .xim-actions-menu-list .relsectionschema::before, .xim-actions-menu-list .renamenode::before, .xim-actions-menu-list .managefolders::before {
+    background-position: -26px 1px;
+}
+.xim-actions-menu-list .browser::before, .xim-actions-menu-list .linkreport::before, .xim-actions-menu-list .infonode::before {
+    background-position: -196px 0px;
+}
+.xim-actions-menu-list .edittext::before, .xim-actions-menu-list .managedataset::before {
+    background-position: -53px 0px;
+}
+.xim-actions-menu-list .filedownload::before, .xim-actions-menu-list .filedownload_multiple::before {
+    background-position: -83px -1px;
+}
+.xim-actions-menu-list .workflow_backward::before {
+    background-position: -141px 1px;
+}
+.xim-actions-menu-list .workflow_forward::before, .xim-actions-menu-list .publicatesection::before, .xim-actions-menu-list .publicateximlet::before, .xim-actions-menu-list .generatecolector::before {
+    background-position: -112px -1px;
+}
+.xim-actions-menu-list .fileupload::before, .xim-actions-menu-list .fileupload_common_multiple::before, .xim-actions-menu-list .updatefile::before {
+    background-position: -281px -1px;
+}
+.xim-actions-menu-list .movenode::before {
+    background-position: -311px -1px;
+}
+.xim-actions-menu-list .manageversions::before {
+    background-position: -342px -1px;
+}
+.xim-actions-menu-list .filepreview::before, .xim-actions-menu-list .preview::before, .xim-actions-menu-list .browserimages::before {
+    background-position: -170px -1px;
+}
+.xim-actions-menu-list .xmleditor::before, .xim-actions-menu-list .xmleditor2::before, .xim-actions-menu-list .htmleditor::before {
+    background-position: -373px -1px;
+}
+.xim-actions-menu-list .xmlsetlink::before {
+    background-position: -402px -1px;
+}
+.xim-actions-menu-list .viewaddednews::before {
+    background-position: -425px 7px;
+}
+.xim-actions-menu-list .setmetadata::before {
+    background-position: -459px 1px;
+}
+.xim-actions-menu-list .managebatchs::before {
+    background-position: -487px 8px;
+}
+.xim-actions-menu-list .checkstatus::before {
+    background-position: -490px 0;
+}
