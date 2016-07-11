@@ -22,21 +22,21 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  *}
+
 <div class="action_header">
-	<h2>{t}Download file{/t}</h2>
+	<h2>{t}Download file{/t}: {$node_name}</h2>
+
 	<fieldset class="buttons-form">
-		{button label="Download" class="button-download  btn main_action"}
+		{button label="Download" class="button-download btn main_action"}
 	</fieldset>
-
 </div>
-<div class="action_content">
 
+<div class="action_content">
 	<fieldset>
-	<p>
-	{t}File download will start immediately. If it does not start, click on:{/t}
-	<a href="{$_URL_ROOT}/xmd/loadaction.php?action=filedownload&method=downloadFile&nodeid={$id_node}"
-        class="destacada download_link"
-		title="{t nodename=$node_name}Descargar %1{/t}"> {$node_name}</a>
-	</p>
+		<p>
+			{t}File download will start immediately. If it does not start, click on:{/t}
+			<br>
+			<a href="{$_URL_ROOT}/xmd/loadaction.php?action=filedownload&method=downloadFile&nodeid={$id_node}" class="destacada download_link" title="{t nodename=$node_name}Descargar %1{/t}"> {$node_name}</a>
+		</p>
 	</fieldset>
 </div>

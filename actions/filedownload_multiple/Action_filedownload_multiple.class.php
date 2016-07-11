@@ -33,11 +33,15 @@ use Ximdex\Utils\FsUtils;
 class Action_filedownload_multiple extends ActionAbstract {
 
 	public function index() {
+		$idNod 		= $this->request->getParam("nodeid");	
+    $nod 			= new Node ($idNod);
+    $nodName  = $nod->get('Name');
+
 		$nodes = $this->request->getParam('nodes');
 		$tmpFolder = FsUtils::getUniqueFolder(
 			 App::getValue( 'AppRoot') .  App::getValue( 'TempRoot'), '', 'export_'
 		);
-    		
+
 		if (!FsUtils::mkdir($tmpFolder)) {
     			$this->messages->add(_('A temporal directory to export could not be created'), MSG_TYPE_ERROR);
     			$this->render(array($this->messages), NULL, 'messages.tpl');
@@ -72,7 +76,8 @@ class Action_filedownload_multiple extends ActionAbstract {
 		$values = array(
 			'nodeName' => basename($tarFile),
 			'tarFile' => $tarFile,
-            'numChildren' => $numChildren
+      'numChildren' => $numChildren,
+			'name' => $nodName
 		);
 
 		$this->addJs('/actions/filedownload_multiple/resources/js/index.js');

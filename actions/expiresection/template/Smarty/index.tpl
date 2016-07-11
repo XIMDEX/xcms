@@ -39,17 +39,18 @@
       {t section_name=$section_name}You have selected to expire the contents of section: {/t}{$section_name} {t}Would you like to expire just this folder or all subsections included in it too?{/t}
     </p>
 
-    <div class="col1-2">
-
-      <label for="no_recursive">
-        {t}Expire just this section{/t}
+    <div class="col1-1">
+      <label class="input-form" for="no_recursive">
         <input type="radio" name="is_recursive" value="0" id="no_recursive" checked="checked">
+        {t}Expire just this section{/t}
       </label>
     </div>
 
-    <div class="col1-2">
-      <input type="radio" name="is_recursive" id="recursive" value="1">
-      <label for="recursive">{t}Expire section and all subsections included in it{/t}</label>
+    <div class="col1-1">
+      <label class="input-form" for="recursive">
+        <input type="radio" name="is_recursive" id="recursive" value="1">
+        {t}Expire section and all subsections included in it{/t}
+      </label>
     </div>
   </div>
 </form>

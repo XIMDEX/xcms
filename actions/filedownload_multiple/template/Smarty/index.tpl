@@ -22,12 +22,14 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  *}
+ 
 <div class="action_header">
-	<h2>{t}Download files{/t}</h2>
+	<h2>{t}Download files{/t}: {$name}</h2>
 	<fieldset class="buttons-form">
 		{button label="{t}Download{/t}" class="button-download  btn main_action"}
 	</fieldset>
 </div>
+
 <div class="action_content">
 	<fieldset>
     {if $numChildren>0}
