@@ -23,23 +23,20 @@
  *  @version $Revision$
  *}
 
-<form method="post" name="mg_form" id="mg_form" action="{$action_url}"  class='validate_ajax'>
-<div class="action_header">
-  <h2>{t}Modify group{/t}</h2>
+<form method="post" name="mg_form" id="mg_form" action="{$action_url}" class='validate_ajax'>
+    <div class="action_header">
+        <h2>{t}Modify group{/t}: {$name}</h2>
 
-  <fieldset class="buttons-form">
-    {button label="Modify" class='validate  btn main_action' }
-    {* message="Woul you like to modify this group?"*}
-  </fieldset></div>
+        <fieldset class="buttons-form">
+            {button label="Modify" class='validate btn main_action' } {* message="Woul you like to modify this group?"*}
+        </fieldset>
+    </div>
 
-  <div class="action_content">
-    <input type=hidden name='id_node' value="{$id_node_parent}">
-    <br>
-    
-          <div class="input icon group">
+    <div class="action_content">
+        <input type=hidden name='id_node' value="{$id_node_parent}">
+
+        <div class="input icon group">
             <input type="text" name="name" id="name" value="{$name}" class="cajag validable not_empty">
-          </div>
-  </div>
-
-
+        </div>
+    </div>
 </form>

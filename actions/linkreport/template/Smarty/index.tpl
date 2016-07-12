@@ -40,34 +40,39 @@
 			</p>
 
 			<div class="row">
-  			<div class="small-4 columns">
-					<select name='field' class="xim-filter-field validable">
-						<option value="all">{t}All fields{/t}</option>
-						<option value="Name">{t}Name{/t}</option>
-						<option value="Description">{t}Description{/t}</option>
-						<option value="Url">{t}URL{/t}</option>
-					</select>
-  			</div>
-
-  			<div class="small-4 columns">
-					<select name='criteria' class="xim-filter-comparation validable">
-						<option value="contains">{t}contains{/t}</option>
-						<option value="nocontains">{t}does not contain{/t}</option>
-						<option value="equal">{t}equal to{/t}</option>
-						<option value="nonequal">{t}not equal to{/t}</option>
-						<option value="startswith">{t}begins with{/t}</option>
-						<option value="endswith">{t}ends with{/t}</option>
-					</select>
-  			</div>
+				<div class="small-4 columns">
+					<div class="input">
+						<select name='field' class="xim-filter-field validable">
+							<option value="all">{t}All fields{/t}</option>
+							<option value="Name">{t}Name{/t}</option>
+							<option value="Description">{t}Description{/t}</option>
+							<option value="Url">{t}URL{/t}</option>
+						</select>
+					</div>
+				</div>
 
 				<div class="small-4 columns">
-					<input type="text" name="stringsearch" class="xim-filter-content validable not_empty long" />
+					<div class="input">
+						<select name='criteria' class="xim-filter-comparation validable">
+							<option value="contains">{t}contains{/t}</option>
+							<option value="nocontains">{t}does not contain{/t}</option>
+							<option value="equal">{t}equal to{/t}</option>
+							<option value="nonequal">{t}not equal to{/t}</option>
+							<option value="startswith">{t}begins with{/t}</option>
+							<option value="endswith">{t}ends with{/t}</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="small-4 columns">
+					<div class="input">
+						<input type="text" name="stringsearch" class="xim-filter-content validable not_empty long" />
+					</div>
 				</div>
 			</div>
 
 			<label class="input-form" for="rec">
-				<input type="checkbox" name="rec" class="validable" id="rec" />
-				{t}Search in subfolders{/t}
+				<input type="checkbox" name="rec" class="validable" id="rec" /> {t}Search in subfolders{/t}
 			</label>
 
 			<p class="postada-quote">
