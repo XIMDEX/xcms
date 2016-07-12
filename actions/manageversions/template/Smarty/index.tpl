@@ -32,9 +32,7 @@
 		<input type="hidden" name="nodeid" value="{$id_node}" />
 		<input type="hidden" name="nodetypename" value="{$node_type_name}" />
 		<input type="hidden" name="version" value="" />
-		<input type="hidden" name="subversion" value="" />
-{foreach from=$versionList key=version item=versionInfo}
-	{foreach from=$versionInfo item=subVersionList}
+		<input type="hidden" name="subversion" value="" /> {foreach from=$versionList key=version item=versionInfo} {foreach from=$versionInfo item=subVersionList}
 		<div class="version-info row-item">
 			<span class="version">
 				<strong>{$version}.{$subVersionList.SubVersion}</strong>
@@ -47,32 +45,18 @@
 			<span class="version-date row-item-col">{$subVersionList.Date}</span>
 			<span class="version-comment row-item-col">{$subVersionList.Comment}</span>
 			<div class="row-item-actions">
-		{if !empty($channels)}
+				{if !empty($channels)}
 				<select class="channellist" class="channellist" name="channellist" class="normal">
-		{foreach from=$channels key=id_channel item=channel}
+					{foreach from=$channels key=id_channel item=channel}
 					<option value="{$id_channel}">{$channel}</option>
-		{/foreach}
+					{/foreach}
 				</select>
-				{button label="Preview" class="prevdoc-btn icon btn-unlabel-rounded"}
-		{/if}
-			{if $subVersionList.isLastVersion == 'false'}
-				{button label="Recover" class="validate recover-btn disabled-version icon btn-unlabel-rounded" message="Are you sure you want to recover this version?"}
-			{else}
-				{button label="Recover" class="recover-btn enabled-version icon btn-unlabel-rounded"}
-			{/if}
-
-			{if !($versionList|@count eq 1 && $versionInfo|@count eq 1)}
-				{if $version>0 && $subVersionList.SubVersion==0 && $subVersionList.isLastVersion == 'true'}
-					{button label="Delete" class="validate delete-btn icon btn-unlabel-rounded" message="Are you sure you want to delete this version?. This version is the latest published content."}
-				{else}
-					{button label="Delete" class="validate delete-btn icon btn-unlabel-rounded" message="Are you sure you want to delete this version?"}
-				{/if}
-			{/if}
+				{button label="Preview" class="prevdoc-btn icon btn-unlabel-rounded"} {/if} {if $subVersionList.isLastVersion == 'false'} {button label="Recover" class="validate recover-btn disabled-version icon btn-unlabel-rounded" message="Are you sure you want to
+				recover this version?"} {else} {button label="Recover" class="recover-btn enabled-version icon btn-unlabel-rounded"} {/if} {if !($versionList|@count eq 1 && $versionInfo|@count eq 1)} {if $version>0 && $subVersionList.SubVersion==0 && $subVersionList.isLastVersion
+				== 'true'} {button label="Delete" class="validate delete-btn icon btn-unlabel-rounded" message="Are you sure you want to delete this version?. This version is the latest published content."} {else} {button label="Delete" class="validate delete-btn
+				icon btn-unlabel-rounded" message="Are you sure you want to delete this version?"} {/if} {/if}
 			</div>
 		</div>
-	{/foreach}
-{/foreach}
-
+		{/foreach} {/foreach}
 	</div>
-
 </form>
