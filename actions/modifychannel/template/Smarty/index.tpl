@@ -35,24 +35,20 @@
     </div>
 
     <div class="action_content">
-        <div class="col1-2">
-            <div class="input">
-                <label for="channel-name" class="label_title">
-                    {t}Name{/t}:
-                </label>
+        <div class="input">
+            <label for="channel-name" class="label_title">
+                {t}Name{/t}:
+            </label>
 
-                <input name="channel-name" id="channel-name" value="{$name}" type="text" readonly>
-            </div>
+            <input name="channel-name" id="channel-name" value="{$name}" type="text" readonly>
         </div>
 
-        <div class="col1-2">
-            <div class="input">
-                <label for="channel-extension" class="label_title">
-                    {t}File extension{/t}:
-                </label>
+        <div class="input">
+            <label for="channel-extension" class="label_title">
+                {t}File extension{/t}:
+            </label>
 
-                <input name="channel-extension" id="channel-extension" value="{$extension}" type="text" readonly>
-            </div>
+            <input name="channel-extension" id="channel-extension" value="{$extension}" type="text" readonly>
         </div>
 
         <div class="input">
@@ -64,25 +60,53 @@
         </div>
 
         {** Names must be in the same case that database fields. *}
-        <p>
-            <label for="rendermode" class="label_title">{t}Output{/t}</label>
-            <input type='radio' id="web_{$id_node_parent}" name="OutputType" {$output_check.web} value='web'>
-            <label for="web_{$id_node_parent}">{t}Web{/t}</label>
-            <input type='radio' id="xml_{$id_node_parent}" name="OutputType" {$output_check.xml} value='xml'>
-            <label for="xml_{$id_node_parent}">{t}Xml{/t}</label>
-            <input type='radio' id="other_{$id_node_parent}" name="OutputType" {$output_check.other} value='other'>
-            <label for="other_{$id_node_parent}">{t}Other{/t} (JSON, RDF, SQL, ...)</label>
-        </p>
 
-        <p>
-            <input type="checkbox" name="Default_Channel" id="default_channel" {if $default_channel==1}checked{/if} />
-            <label for="default_channel">{t}Default channel{/t}</label>
-        </p>
+        <h3>{t}Output{/t}:</h3>
 
-        <p class="disabled">
-            <label for="rendermode" class="label_title">{t}Rendering XSLT in{/t}</label>
-            <input disabled type="radio" id="rendermode" name="RenderMode" {$render_check.ximdex} value="ximdex" />{t}Ximdex{/t}
-            <input disabled type="radio" id="rendermode" name="RenderMode" {$render_check.client} value="client" />{t}Client{/t}
-        </p>
+        <div class="row">
+            <div class="small-2 columns">
+                <label class="input-form" for="web_{$id_node_parent}">{t}
+                    <input type='radio' id="web_{$id_node_parent}" name="OutputType" {$output_check.web} value='web'>
+                    Web{/t}
+                </label>
+            </div>
+
+            <div class="small-2 columns">
+                <label class="input-form" for="xml_{$id_node_parent}">
+                    <input type='radio' id="xml_{$id_node_parent}" name="OutputType" {$output_check.xml} value='xml'>
+                    {t}Xml{/t}
+                </label>
+            </div>
+
+            <div class="small-3 columns end">
+                <label class="input-form" for="other_{$id_node_parent}">
+                    <input type='radio' id="other_{$id_node_parent}" name="OutputType" {$output_check.other} value='other'>
+                    {t}Other{/t} (JSON, RDF, SQL, ...)
+                </label>
+            </div>
+
+            <div class="small-12 columns">
+                <label class="input-form" for="default_channel">
+                    <input type="checkbox" name="Default_Channel" id="default_channel" {if $default_channel==1}checked{/if} />
+                    {t}Default channel{/t}
+                </label>
+            </div>
+        </div>
+
+        <h3>{t}Rendering XSLT in{/t}:</h3>
+
+        <div class="row">
+            <div class="small-2 columns">
+                <label for="default_channel" class="input-form disabled">
+                    <input disabled type="radio" id="rendermode" name="RenderMode" {$render_check.ximdex} value="ximdex" /> {t}Ximdex{/t}
+                </label>
+            </div>
+
+            <div class="small-2 columns end">
+                <label for="default_channel" class="input-form disabled">
+                    <input disabled type="radio" id="rendermode" name="RenderMode" {$render_check.client} value="client" /> {t}Client{/t}
+                </label>
+            </div>
+        </div>
     </div>
 </form>

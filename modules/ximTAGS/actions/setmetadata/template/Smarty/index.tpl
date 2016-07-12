@@ -107,7 +107,12 @@
     </div>
 
     <fieldset class="buttons-form positioned_btn">
-        <button class="button_main_action" xim-button xim-state="submitState" xim-label="'ui.dialog.confirmation.save' | xI18n" ng-click="saveTags(documentTags)" xim-disabled="!dirty">
-        </button>
+        <button
+            class="btn main_action ui-state-default ui-corner-all button submit-button ladda-button"
+            xim-button xim-state="submitState"
+            xim-label="'ui.dialog.confirmation.save' | xI18n"
+            ng-click="saveTags(documentTags)"
+            xim-disabled="!dirty">
+        </button>        
     </fieldset>
 </form>
