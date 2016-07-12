@@ -312,8 +312,8 @@ fieldset {
     padding: 0;
 }
 .action_content p {
-    font-size: 1.8rem;
     position: relative;
+    font-size: 1.6rem;
 }
 .full {
     padding: 1em 4%;
@@ -1595,7 +1595,7 @@ input:focus+ .tooltip_info {
 }
 .input {
     position: relative;
-    margin-bottom: 1em;
+    /*margin-bottom: 1em;*/
 }
 .input.icon input {
     padding: .5em 2.5em;
@@ -1699,7 +1699,7 @@ input:focus+ .tooltip_info {
 }
 .icon-positioned {
     position: relative;
-    margin-bottom: 1em;
+    /*margin-bottom: 1em;*/
 }
 .box_short {
     display: inline-block;
