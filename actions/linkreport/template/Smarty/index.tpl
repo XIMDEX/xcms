@@ -39,17 +39,17 @@
 				{t}Select search criteria{/t}:
 			</p>
 
-			<div class="check-link-inputs">
-				<div class="col1-3">
+			<div class="row">
+  			<div class="small-4 columns">
 					<select name='field' class="xim-filter-field validable">
 						<option value="all">{t}All fields{/t}</option>
 						<option value="Name">{t}Name{/t}</option>
 						<option value="Description">{t}Description{/t}</option>
 						<option value="Url">{t}URL{/t}</option>
 					</select>
-				</div>
+  			</div>
 
-				<div class="col1-3">
+  			<div class="small-4 columns">
 					<select name='criteria' class="xim-filter-comparation validable">
 						<option value="contains">{t}contains{/t}</option>
 						<option value="nocontains">{t}does not contain{/t}</option>
@@ -58,9 +58,9 @@
 						<option value="startswith">{t}begins with{/t}</option>
 						<option value="endswith">{t}ends with{/t}</option>
 					</select>
-				</div>
+  			</div>
 
-				<div class="col1-3">
+				<div class="small-4 columns">
 					<input type="text" name="stringsearch" class="xim-filter-content validable not_empty long" />
 				</div>
 			</div>
@@ -75,6 +75,7 @@
 			</p>
 		</fieldset>
 	</div>
+
 	<fieldset class="buttons-form positioned_btn">
 		{button label="Search" class="validate btn main_action" }{*message="A search will be performed with selected parameters. Would you like to continue?"*}
 	</fieldset>

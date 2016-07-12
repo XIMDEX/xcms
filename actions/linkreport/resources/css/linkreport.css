@@ -153,12 +153,11 @@ p.status {
 .status_tooltip .date_check {
     font-size: 1.2em;
 }
-
 p.postada-quote {
     font-size: 14px;
 }
 
-.check-link-inputs {
+/*.check-link-inputs {
     margin-bottom: 20px;
 }
 
@@ -178,7 +177,7 @@ p.postada-quote {
 
 .check-link-inputs input {
     width: 100%;
-}
+}*/
 
 @-webkit-keyframes spin {
     100% {

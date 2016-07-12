@@ -104,8 +104,8 @@
 }
 .input-select.document::before, .icon-positioned::before {
     position: absolute;
-    font-size: 2.44rem;
-    top: 50%;
+    font-size: 2.4rem;
+    top: 33%;
     left: .4em;
     color: #939393;
     -webkit-transform: translateY(-50%);
@@ -165,16 +165,18 @@ a:hover {
     color: #7bcabf;
 }
 p {
-    margin-bottom: 1.2em;
+    margin-bottom: 1em;
 }
-input, select, textarea {
-    border: 1px solid #ccc;
+input[type="text"], select, textarea {
+    width: 100%;
+    margin: 0 0 1.2em 0;
     padding: .5em .7em;
-    color: #606060;
-    margin: 0 5px 0 0;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
+
+    border: 1px solid #ccc;
+    color: #606060;
     background: #fff;
 }
 select {
