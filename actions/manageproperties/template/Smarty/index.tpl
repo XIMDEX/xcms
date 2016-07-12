@@ -26,20 +26,21 @@
 <form method="post" name="modifyproperties" action="{$action_url}">
 	<div class="action_header">
 		<h2>{t}Manage properties{/t}: {$name}</h2>
+
 		<fieldset class="buttons-form">
 			{button label="Modify" class="validate btn main_action" }{*message="Are you sure you want to change default properties?"*}
 		</fieldset>
 	</div>
 
 	<div class="message-warning message">
-		<p>{t}These properties are inheritable. Every single change will be propagated into all the child nodes.{/t}</p>
+		<p>
+			{t}These properties are inheritable. Every single change will be propagated into all the child nodes.{/t}
+		</p>
 	</div>
 
 	<div class="action_content">
-
-	{foreach from=$properties key=prop item=property}
-		{include file="`$_APP_ROOT`/actions/manageproperties/template/Smarty/`$prop`.tpl"}
-	{/foreach}
-</div>
-
+		{foreach from=$properties key=prop item=property}
+			{include file="`$_APP_ROOT`/actions/manageproperties/template/Smarty/`$prop`.tpl"}
+		{/foreach}
+	</div>
 </form>

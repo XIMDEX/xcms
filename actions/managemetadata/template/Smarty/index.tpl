@@ -23,47 +23,29 @@
  *  @version $Revision$
  *}
 
-<form method="post" name="managemetadata" id="managemetadata_form" action="{$action_url}"
-	ng-controller="MetadataCtrl"
-    ng-init="nodeId = '{$nodeid}';"
-    ng-cloak
-    xim-languages='{$json_languages}'
-    xim-defaultlanguage='{$default_language}'
-    xim-method="{$go_method}"
-    xim-action="{$action}"
-    novalidate>
-	<div class="action_header">
-		<h2>{t}Manage metadata{/t} {$name}</h2>
-		<fieldset class="buttons-form">
-            <button class="btn main_action button_main_action button" 
-                ng-click="submitForm(managemetadata)"
-                xim-button
-                xim-label="'ui.dialog.confirmation.save' | xI18n"
-                xim-state="submitStatus"
-                xim-disabled="managemetadata.$invalid || managemetadata.$pristine">
+<form method="post" name="managemetadata" id="managemetadata_form" action="{$action_url}" ng-controller="MetadataCtrl" ng-init="nodeId = '{$nodeid}';" ng-cloak xim-languages='{$json_languages}' xim-defaultlanguage='{$default_language}' xim-method="{$go_method}"
+    xim-action="{$action}" novalidate>
+    <div class="action_header">
+        <h2>{t}Manage metadata{/t}: {$name}</h2>
+        <fieldset class="buttons-form">
+            <button class="btn main_action button_main_action button" ng-click="submitForm(managemetadata)" xim-button xim-label="'ui.dialog.confirmation.save' | xI18n" xim-state="submitStatus" xim-disabled="managemetadata.$invalid || managemetadata.$pristine">
             </button>
-		</fieldset>
-	</div>
+        </fieldset>
+    </div>
     <!--<div class="message" ng-show="submitMessages.length">
         <p class="ui-state-primary ui-corner-all msg-info">
             #/submitMessages/#
         </p>
     </div>-->
-    <div ng-view ng-show="submitMessages.length" {literal}ng-class="{'message-success': submitStatus=='success'}"{/literal} class="slide-item message-success message">
+    <div ng-view ng-show="submitMessages.length" {literal}ng-class="{'message-success': submitStatus=='success'}" {/literal} class="slide-item message-success message">
         <p>#/submitMessages/#</p>
     </div>
-	<div class="action_content metadata_action">
+    <div class="action_content metadata_action">
 
-		<div class="col2-3 left metadata_data">
+        <div class="col2-3 left metadata_data">
 
-            <select name="" id="" class="language_selector js_language_selector"
-            	ng-model="defaultLanguage"
-                ng-change="update(nodeId, defaultLanguage)">
-                <option 
-                    ng-repeat="l in languages" 
-                    ng-disabled="!l.Name"
-                    ng-selected="defaultLanguage == l.IdLanguage" 
-                    value="#/l.IdLanguage/#">
+            <select name="" id="" class="language_selector js_language_selector" ng-model="defaultLanguage" ng-change="update(nodeId, defaultLanguage)">
+                <option ng-repeat="l in languages" ng-disabled="!l.Name" ng-selected="defaultLanguage == l.IdLanguage" value="#/l.IdLanguage/#">
                     #/l.Name/#
                 </option>
             </select>
@@ -72,36 +54,29 @@
                 <span class="title icon language">{t}No language selected{/t}</span>
                 <span>{t}Select at less one above{/t}</span>
             </div>
-           
+
             <div class="js_form_sections">
                 {foreach from=$languages_metadata key=l item=langelements}
-                    <div class="js_form_section" id="language_selector_{$l}"
-                        ng-show="defaultLanguage == {$l}">
-                       
-                        {foreach from=$langelements item=e key=k}
-                         <p>
-                            <label for="languages_metadata[{$l}]['{$k}']" class="label_title">{t}{$k|upper}{/t}</label>
-                            {if $elements[$k] == 'text'}
-                                <input name="languages_metadata[{$l}]['{$k}']" type="text" class="full_size"
-                                    ng-model="languages_metadata[{$l}]['{$k}']"
-                                    ng-init="languages_metadata[{$l}]['{$k}'] = '{t}{$languages_metadata[{$l}][{$k}]}{/t}'">
-                            {elseif $elements[$k] == 'textarea'}
-                                <textarea name="languages_metadata[{$l}]['{$k}']" id="" cols="30" rows="9" class="full_size"
-                                    ng-model="languages_metadata[{$l}]['{$k}']"
-                                    ng-init="languages_metadata[{$l}]['{$k}'] = '{t}{$languages_metadata[{$l}][{$k}]}{/t}'">
-                                </textarea>
-                            {else}
-                                <br/>
-                            {/if}
-                              </p>
-                        {/foreach}
-                      
-                    </div>
+                <div class="js_form_section" id="language_selector_{$l}" ng-show="defaultLanguage == {$l}">
+
+                    {foreach from=$langelements item=e key=k}
+                    <p>
+                        <label for="languages_metadata[{$l}]['{$k}']" class="label_title">{t}{$k|upper}{/t}</label>
+                        {if $elements[$k] == 'text'}
+                        <input name="languages_metadata[{$l}]['{$k}']" type="text" class="full_size" ng-model="languages_metadata[{$l}]['{$k}']" ng-init="languages_metadata[{$l}]['{$k}'] = '{t}{$languages_metadata[{$l}][{$k}]}{/t}'"> {elseif $elements[$k] == 'textarea'}
+                        <textarea name="languages_metadata[{$l}]['{$k}']" id="" cols="30" rows="9" class="full_size" ng-model="languages_metadata[{$l}]['{$k}']" ng-init="languages_metadata[{$l}]['{$k}'] = '{t}{$languages_metadata[{$l}][{$k}]}{/t}'">
+                        </textarea>
+                        {else}
+                        <br/> {/if}
+                    </p>
+                    {/foreach}
+
+                </div>
                 {/foreach}
             </div>
-         </div>
-            
-            
+        </div>
+
+
 
         <div class="col1-3 right metadata_info">
             <h4>{t}System metadata info{/t}</h4>
@@ -115,21 +90,20 @@
             </div>
             <div class="version_info">
                 <h3>{t}Version{/t}</h3>
-                <p
-                    ng-init="nodeversion = '{$nodeversion}'">
+                <p ng-init="nodeversion = '{$nodeversion}'">
                     #/nodeversion/#
                 </p>
             </div>
-            <div class="path_info" data-path="{$nodepath}" >
+            <div class="path_info" data-path="{$nodepath}">
                 <h3>{t}Path{/t}</h3>
                 <div class="path_mask">
-                <p data-path="{$nodepath}" class="path_uri">{$nodepath}</p>
+                    <p data-path="{$nodepath}" class="path_uri">{$nodepath}</p>
                 </div>
             </div>
         </div>
-                
+
     </div>
-		
-	</div>
+
+    </div>
 
 </form>

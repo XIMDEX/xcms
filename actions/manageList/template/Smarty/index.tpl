@@ -31,14 +31,15 @@
 				<th>{t}Description{/t}</th>
 				<th>{t}Operactions{/t}</th>
 			</tr>
+
 			{foreach from=$list key=key item=listInfo}
 			<tr class="list_{$listInfo.id}">
-			{include file="`$_APP_ROOT`/actions/manageList/template/Smarty/_element.tpl"}
+				{include file="`$_APP_ROOT`/actions/manageList/template/Smarty/_element.tpl"}
 			</tr>
 			{/foreach}
 		</table>
-		{button label="Add new element"
-			onclick="getWidget(this).canvas_i('load_add');"}
+		
+		{button label="Add new element" onclick="getWidget(this).canvas_i('load_add');"}
 
 		<div class="list_info_manager" style="display:none">
 			<input type="hidden" name="type" value="{$type}" />
@@ -52,16 +53,9 @@
 				<input type="text" class="description_updater" />
 			</div>
 			<div class="list_actions">
-				{button class="add_button" 
-					label="Confirm and add" 
-					onclick="getWidget(this).canvas_i('add');"} 
-				{button class="update_button" 
-					label="Confirm and update" 
-					onclick="getWidget(this).canvas_i('update', this);"} 
-				{button class="cancel_button" 
-					label="Cancel" 
-					onclick="getWidget(this).canvas_i('cancel', `$listInfo.id`, this);"}
-			</div> 
-		</div>		
+				{button class="add_button" label="Confirm and add" onclick="getWidget(this).canvas_i('add');"} {button class="update_button" label="Confirm and update" onclick="getWidget(this).canvas_i('update', this);"} {button class="cancel_button" label="Cancel" onclick="getWidget(this).canvas_i('cancel',
+				`$listInfo.id`, this);"}
+			</div>
+		</div>
 	</td>
 </tr>

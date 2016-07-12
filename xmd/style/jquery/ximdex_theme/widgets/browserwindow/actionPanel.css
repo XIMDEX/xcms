@@ -177,6 +177,11 @@ input, select, textarea {
     border-radius: 3px;
     background: #fff;
 }
+
+select {
+    cursor: pointer;
+}
+
 input:hover, select:hover {
     -webkit-box-shadow: 0 0 4px rgba(157, 157, 157, 0.2);
     -moz-box-shadow: 0 0 4px rgba(157, 157, 157, 0.2);
