@@ -441,7 +441,7 @@
 
 .xim-tagsinput-type-structured::before, .type-structured::before {
   background: #e32e3f;
-  font-size: 1.3em;
+  font-size: 1.5em;
   line-height: 2.35 !important;
   max-width: 3.2rem;
 }
@@ -508,11 +508,11 @@
   position: relative;
   display: inline-block;
   vertical-align: middle;
-  height: 2.29em;
+  height: 2.45em;
   cursor: pointer;
   margin-right: -6px;
   margin-top: -1px;
-  border: 1px solid #ccc;
+  border: 1px solid transparent;
   vertical-align: top;
 }
 

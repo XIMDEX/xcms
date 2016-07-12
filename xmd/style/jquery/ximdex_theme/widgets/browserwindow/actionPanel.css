@@ -1639,13 +1639,14 @@ input:focus+ .tooltip_info {
     padding: .5em 34% .5em 2.5em;
 }
 .input-select select {
-    margin: 0;
+    /*margin: 0;
+    */
     border: none;
     background: #ACAFBB;
-    webkit-border-radius: 0 2px 2px 0;
+    /*webkit-border-radius: 0 2px 2px 0;
     moz-border-radius: 0 2px 2px 0;
     border-radius: 0 2px 2px 0;
-    cursor: pointer;
+    cursor: pointer;*/
 }
 .input-select select:hover {
     background: #9ea1b0;
@@ -1679,11 +1680,11 @@ input:focus+ .tooltip_info {
     color: #606060;
 }
 .input-select select {
-    position: absolute;
+    /*position: absolute;
     right: 0;
     top: 0;
     min-width: 33%;
-    height: 100%;
+    height: 100%;*/
     color: #fff;
 }
 .input-select select.disabled {
