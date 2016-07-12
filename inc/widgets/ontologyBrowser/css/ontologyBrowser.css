@@ -122,8 +122,8 @@ path.link {
 }
 
 .ontology-browser-container a {
-    display: inline-block;
-    width: 49%;
+    display: block;
+    width: 100%;
     padding: .6em 2em .6em 3em;
 }
 

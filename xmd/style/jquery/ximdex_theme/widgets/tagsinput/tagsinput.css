@@ -49,6 +49,14 @@
   vertical-align: middle;
 }
 
+.xim-tagsinput-container .title-box {
+  margin-bottom: 1em;
+}
+
+.xim-tagsinput-list {
+  padding: 0;
+}
+
 .title-box, .xim-tagsinput-container.col2-3 .title-box {
   color: #fff;
   border-bottom: 1px solid #c7c7c7;
@@ -506,6 +514,10 @@
   margin-top: -1px;
   border: 1px solid #ccc;
   vertical-align: top;
+}
+
+.xim-tagsinput-newtag {
+  margin-bottom: 2em;
 }
 
 .xim-tagsinput-newtag .add-btn {
