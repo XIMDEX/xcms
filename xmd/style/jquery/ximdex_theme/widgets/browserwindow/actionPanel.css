@@ -169,7 +169,6 @@ p {
 }
 input[type="text"], select, textarea {
     width: 100%;
-    margin: 0 0 0.8em 0;
     padding: .5em .7em;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
@@ -1614,6 +1613,7 @@ input:focus+ .tooltip_info {
 }
 .input {
     position: relative;
+    margin: 0 0 20px 0;
     /*margin-bottom: 1em;*/
 }
 .input.icon input {
@@ -1711,7 +1711,7 @@ input:focus+ .tooltip_info {
     cursor: auto;
 }
 .input-form {
-    margin-bottom: 8px;
+    margin-bottom: 15px;
     cursor: pointer;
 }
 .languages-available select {
