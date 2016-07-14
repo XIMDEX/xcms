@@ -27,6 +27,7 @@
 
 namespace Ximdex\Modules;
 
+use Symfony\Component\Console\Application;
 use Ximdex\API\Router;
 use Ximdex\Runtime\Cli\Shell,
     Ximdex\Logger,
@@ -363,11 +364,24 @@ class Module  {
         return array();
     }
 
-
+    /**
+     * @param Worker $worker
+     */
     public function addTasks(Worker &$worker) {
 
     }
+
+    /**
+     * @param Router $router
+     */
     public function addApiRoutes(Router &$router) {
+
+    }
+
+    /**
+     * @param Application $application
+     */
+    public function addCommands( Application &$application ) {
 
     }
 

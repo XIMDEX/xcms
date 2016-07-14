@@ -45,8 +45,8 @@
         "RyanMullins/angular-hammer": "2.1.10",
         "hammerjs/hammer.js": "2.0.4",
         "werkint/jsmin": "dev-master",
-        "codeception/codeception": "*",
-        "pda/pheanstalk": "*"
+        "pda/pheanstalk": "*",
+        "symfony/console": "^3.1"
 
     },
      "require-dev": {

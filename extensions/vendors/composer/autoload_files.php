@@ -6,6 +6,6 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname(dirname($vendorDir));
 
 return array(
-    $vendorDir . '/symfony/polyfill-mbstring/bootstrap.php',
-    $vendorDir . '/mnapoli/php-di/src/DI/functions.php',
+    '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => $vendorDir . '/symfony/polyfill-mbstring/bootstrap.php',
+    '04d01c65c12f8d8ed2a53c6dd09ec5e2' => $vendorDir . '/mnapoli/php-di/src/DI/functions.php',
 );

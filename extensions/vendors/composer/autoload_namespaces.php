@@ -7,7 +7,6 @@ $baseDir = dirname(dirname($vendorDir));
 
 return array(
     'Ximdex' => array($baseDir . '/lib'),
-    'WebDriver' => array($vendorDir . '/instaclick/php-webdriver/lib'),
     'UnitTests\\' => array($vendorDir . '/mnapoli/php-di/tests'),
     'UnitTest' => array($vendorDir . '/mnapoli/phpdocreader/tests'),
     'Solarium\\' => array($vendorDir . '/solarium/solarium/library'),
@@ -17,15 +16,7 @@ return array(
     'Mockery' => array($vendorDir . '/mockery/mockery/library'),
     'JsMin' => array($vendorDir . '/werkint/jsmin'),
     'IntegrationTests\\' => array($vendorDir . '/mnapoli/php-di/tests'),
-    'Guzzle\\Stream' => array($vendorDir . '/guzzle/stream'),
-    'Guzzle\\Parser' => array($vendorDir . '/guzzle/parser'),
-    'Guzzle\\Http' => array($vendorDir . '/guzzle/http'),
-    'Guzzle\\Common' => array($vendorDir . '/guzzle/common'),
-    'Goutte' => array($vendorDir . '/fabpot/goutte'),
     'Doctrine\\Common\\Lexer\\' => array($vendorDir . '/doctrine/lexer/lib'),
     'Doctrine\\Common\\Annotations\\' => array($vendorDir . '/doctrine/annotations/lib'),
     'DI\\' => array($vendorDir . '/mnapoli/php-di/src'),
-    'Codeception' => array($vendorDir . '/codeception/codeception/src'),
-    'Behat\\Mink\\Driver' => array($vendorDir . '/behat/mink-selenium2-driver/src', $vendorDir . '/behat/mink-browserkit-driver/src', $vendorDir . '/behat/mink-goutte-driver/src'),
-    'Behat\\Mink' => array($vendorDir . '/behat/mink/src'),
 );
