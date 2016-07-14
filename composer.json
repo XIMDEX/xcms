@@ -46,7 +46,9 @@
         "hammerjs/hammer.js": "2.0.4",
         "werkint/jsmin": "dev-master",
         "pda/pheanstalk": "*",
-        "symfony/console": "^3.1"
+        "symfony/console": "^3.1",
+        "illuminate/support": "5.2",
+        "symfony/polyfill-php56": "^1.2"
 
     },
      "require-dev": {

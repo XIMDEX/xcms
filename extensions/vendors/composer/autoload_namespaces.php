@@ -17,6 +17,7 @@ return array(
     'JsMin' => array($vendorDir . '/werkint/jsmin'),
     'IntegrationTests\\' => array($vendorDir . '/mnapoli/php-di/tests'),
     'Doctrine\\Common\\Lexer\\' => array($vendorDir . '/doctrine/lexer/lib'),
+    'Doctrine\\Common\\Inflector\\' => array($vendorDir . '/doctrine/inflector/lib'),
     'Doctrine\\Common\\Annotations\\' => array($vendorDir . '/doctrine/annotations/lib'),
     'DI\\' => array($vendorDir . '/mnapoli/php-di/src'),
 );
