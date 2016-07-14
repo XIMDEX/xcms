@@ -3,7 +3,6 @@
 namespace Ximdex\NodeTypes;
 
 use Illuminate\Support\Collection;
-use PDO;
 use Ximdex\Runtime\App;
 
 class Helper
@@ -11,7 +10,7 @@ class Helper
     /**
      * @var Collection
      */
-    private static $nodetypesList  ;
+    private static $nodeTypesList;
 
     /**
      * @return Collection
@@ -19,37 +18,48 @@ class Helper
      */
     public static function getNodeTypes()
     {
-        if (!isset(self::$nodetypesList)) {
-            $stm  = App::Db()->prepare( 'select * from NodeTypes');
+        if (!isset(self::$nodeTypesList)) {
+
+            $stm = App::Db()->prepare('select IdNodeType as id, Name as name  from NodeTypes');
             $stm->execute([]);
-            self::$nodetypesList = new Collection( $stm->fetchAll( PDO::FETCH_ASSOC ));
+            self::$nodeTypesList = (new Collection($stm->fetchAll()))
+                ->map(function ($row) {
+                    // casting
+                    $row['id'] = intval($row['id']);
+                    return $row;
+                }
+                );
+
         }
-        return self::$nodetypesList ;
+        return self::$nodeTypesList;
     }
 
     /**
      * @param $name
-     * @return mixed
+     * @return String/null
      */
-    public static function getIdByName( $name ) {
+    public static function getIdByName($name)
+    {
 
-        return self::getNodeTypes()->whereLoose( 'Name', $name )
+        return self::getNodeTypes()->where('name', $name)
             ->flatMap(function ($values) {
-                return  $values ;
+                return $values;
             })
-            ->get( 'IdNodeType', null ) ;
+            ->get('id', null);
+
     }
 
     /**
      * @param $id
-     * @return mixed
+     * @return Int/Null
      */
-    public static function getNameById( $id  ) {
+    public static function getNameById($id)
+    {
 
-        return self::getNodeTypes()->whereLoose( 'IdNodeType', $id  )
+        return self::getNodeTypes()->where('id', $id)
             ->flatMap(function ($values) {
-                return  $values ;
+                return $values;
             })
-            ->get( 'Name', null ) ;
+            ->get('name', null);
     }
 }
