@@ -25,7 +25,7 @@ class Helper
             self::$nodeTypesList = (new Collection($stm->fetchAll()))
                 ->map(function ($row) {
                     // casting
-                    $row['id'] = intval($row['id']);
+                    $row['id'] = (int) $row['id'] ;
                     return $row;
                 }
                 );
