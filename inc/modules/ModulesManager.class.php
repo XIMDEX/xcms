@@ -20,75 +20,88 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- * @author Ximdex DevTeam <dev@ximdex.com>
- * @version $Revision$
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
  */
 
 
 use Ximdex\Utils\FsUtils;
 
-if (!defined('XIMDEX_ROOT_PATH')) {
+if (!defined('XIMDEX_ROOT_PATH'))
     define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../"));
 
-}
-
-if (!defined('CLI_MODE')) {
+if (!defined('CLI_MODE'))
     define('CLI_MODE', 0);
-}
 
-require_once(XIMDEX_ROOT_PATH . '/extensions/vendors/autoload.php');
+require_once (XIMDEX_ROOT_PATH . '/extensions/vendors/autoload.php');
 
 include_once(XIMDEX_ROOT_PATH . '/inc/modules/modules.const');
 include_once(XIMDEX_ROOT_PATH . '/inc/modules/ModulesConfig.class.php');
-ModulesManager::file('/conf/extensions.conf.php');
+ModulesManager::file( '/conf/extensions.conf.php');
 ModulesManager::file(MODULES_INSTALL_PARAMS);
 
 /**
  *
  */
-class ModulesManager
-{
+class ModulesManager {
 
-    public static $msg = null;
-    private static $core_modules = array("ximIO", "ximSYNC");
-    private static $deprecated_modules = array("ximDAV", "ximTRASH", "ximLOADERDEVEL", "ximTHEMES", "ximOTF", "ximPAS", "ximSIR", "ximDEMOS", "ximPORTA", "ximTEST", "ximTAINT");
     public $modules;
     public $caller;
+    private static $core_modules = array("ximIO", "ximSYNC");
+    private static $deprecated_modules = array("ximDAV", "ximTRASH","ximLOADERDEVEL","ximTHEMES","ximOTF","ximPAS","ximSIR","ximDEMOS","ximPORTA","ximTEST","ximTAINT");
+    public static $msg = null;
 
-    function ModulesManager($caller = NULL)
-    {
+    /**
+    Core modules are specials:
+    They are installed always and they never can be uninstalled or disabled
+     */
+    public function getCoreModules() { return self::$core_modules; }
+
+    /**
+    Deprecated modules.
+    They don't have to be shown on Ximdex CMS interface.
+     */
+    public function getDeprecatedModules() { return self::$deprecated_modules; }
+
+    /**
+    Get install params for GUI
+     */
+    public function getInstallParams($name) {
+
+        $module = ModulesManager::instanceModule($name);
+
+        if ( is_null($module) ) {
+            return array();
+        }
+
+        return $module->getInstallParams();
+    }
+
+    function writeStates() {
+        $config = FsUtils::file_get_contents(XIMDEX_ROOT_PATH.MODULES_INSTALL_PARAMS);
+
+        $modMan=new ModulesManager();
+        $modules=$modMan->getModules();
+        $str="<?php\n\n";
+        foreach($modules as $mod){
+            $str.=PRE_DEFINE_MODULE.strtoupper($mod["name"]).POST_PATH_DEFINE_MODULE.str_replace(XIMDEX_ROOT_PATH,'',$mod["path"])."');"."\n";
+        }
+        $str.="\n?>";
+        FsUtils::file_put_contents(XIMDEX_ROOT_PATH.MODULES_INSTALL_PARAMS,$str);
+
+    }
+
+
+    function ModulesManager($caller = NULL) {
 
         // Init stuff.
         $this->caller = $caller;
         //$this->modules = $this->getModules();
     }
 
-    public static function getEnabledModules()
-    {
-
-        $modules = self::getModules();
-        foreach ($modules as $key => $module) {
-//                print("  - {$module['name']}\n");
-
-            if (!self::isEnabled($module['name'])) {
-                unset($modules[$key]);
-            }
-        }
-        return $modules;
-    }
-
-    function getModules()
-    {
-        $modules = array();
-        self::parseModules(XIMDEX_MODULES_DIR, $modules);
-        self::parseModules(XIMDEX_MODULES_PRO_DIR, $modules);
-        return $modules;
-    }
-
-    function parseModules($constModule, &$modules)
-    {
+    function parseModules($constModule, &$modules){
         $paths = FsUtils::readFolder($constModule, false/*, $excluded = array()*/);
-        if ($paths) {
+        if($paths){
             foreach ($paths as $moduleName) {
                 $modulePath = $constModule . $moduleName;
                 if (!in_array($moduleName, self::getDeprecatedModules())) {
@@ -96,147 +109,68 @@ class ModulesManager
                         $i = count($modules);
                         $modules[$i]["name"] = $moduleName;
                         $modules[$i]["path"] = $modulePath;
-                        $modules[$i]["enable"] = (int)self::isEnabled($moduleName);
+                        $modules[$i]["enable"] = (int) self::isEnabled($moduleName);
                     }
                 }
             }
         }
     }
 
-    /**
-     * Deprecated modules.
-     * They don't have to be shown on Ximdex CMS interface.
-     */
-    public function getDeprecatedModules()
-    {
-        return self::$deprecated_modules;
-    }
-
-    public static function component($_file, $_component = 'XIMDEX')
-    {
-        if ("XIMDEX" == $_component) {
-            $dir = '';
-        } else {
-            $dir = self::path($_component);
-        }
-
-        self::file($dir . $_file);
-    }
-
-    public static function file($_file, $_module = 'XIMDEX')
-    {
-        if ("XIMDEX" == $_module) {
-            $dir = '';
-        } else {
-            $dir = self::path($_module);
-        }
-
-        //$trace = debug_backtrace();
-        if (file_exists(XIMDEX_ROOT_PATH . "{$dir}{$_file}")) {
-            if ((self::isEnabled($_module) || 'XIMDEX' == $_module)) {
-                // $from =  $trace[0]["file"]." in line ".$trace[0]["line"];
-                //XMD_Log::info(" load file: <em>$_file</em> <strong>{$_module}</strong>  in $from <br>");
-                //	 	echo " load file: <em>$_file</em> <strong>{$_module}</strong>  in $from <br>";
-                return require_once(XIMDEX_ROOT_PATH . "{$dir}{$_file}");
-            } else {
-                //	$from =  $trace[1]["file"]." in line ".$trace[1]["line"];
-                //XMD_Log::info("Not load file: <em>$_file</em> necesita <strong> {$_module}</strong>  in $from ");
-                // 	echo "Not load file: <em>$_file</em> necesita <strong>{$_module}</strong>  in $from <br>";
+    function parseMetaParent($constModule, &$metaParent) {
+        $paths = FsUtils::readFolder($constModule, false);
+        if($paths){
+            foreach ($paths as $moduleName) {
+                $modulePath = $constModule . $moduleName;
+                //if (is_dir($modulePath) && preg_match('/^xim+/', $moduleName, $matches)) {
+                if (is_dir($modulePath) && file_exists($modulePath . "/conf.ini")) {
+                    $conf = parse_ini_file($modulePath . "/conf.ini");
+                    foreach($conf['module'] as $id => $childrenModName)
+                        $metaParent[$childrenModName] = $moduleName;
+                }
             }
-
-        } else {
-
-            //$from =  $trace[0]["file"]." in line ".$trace[0]["line"];
-            //echo "File not found: <em>$_file</em> of <strong>{$_module}</strong> module in $from <br>";
         }
     }
 
-    /**
-     * Core modules are specials:
-     * They are installed always and they never can be uninstalled or disabled
-     */
-    public function getCoreModules()
-    {
-        return self::$core_modules;
+    function getModules() {
+        $modules = array();
+        self::parseModules(XIMDEX_MODULES_DIR, $modules);
+        self::parseModules(XIMDEX_MODULES_PRO_DIR, $modules);
+        return $modules;
     }
 
-    /**
-     * Get install params for GUI
-     */
-    public function getInstallParams($name)
-    {
-
-        $module = ModulesManager::instanceModule($name);
-
-        if (is_null($module)) {
-            return array();
-        }
-
-        return $module->getInstallParams();
-    }
-    /**
-     *  Instantiate a module by name.
-     *  @protected
-     *  @param $name Name of the module.
-     *  @return \Ximdex\Modules\Module
-     */
-    function instanceModule($name) {
-        $className = "\\Ximdex\\Modules\\" . $name . "\\Manager" ;
-        // If no name provided exit.
-        if (is_null($name)) {
-            self::$msg = "Module name not provided.";
-            return NULL;
-        }
-        $className = "\\Ximdex\\Modules\\" . $name . "\\Manager" ;
-
-        if ( class_exists( $className  )) {
-            return new $className ;
-        }
-
-        // If module not exists exit.
-
-        $moduleClassName = MODULE_PREFIX . $name;
-        $moduleClassFile = MODULE_PREFIX . $name . ".class.php";
-        $moduleClassPath = XIMDEX_ROOT_PATH.self::path($name)."/".$moduleClassFile;
-        if (file_exists($moduleClassPath)) {
-            include_once($moduleClassPath);
-        } else {
-            self::$msg =  "Module definition file not found [$moduleClassPath].";
-            return NULL;
-        }
-
-        $module = new $moduleClassName;
-
-        if ( is_null($module) ) {
-            self::$msg = " Module not instantiated [$moduleClassName].";
-            return NULL;
-        }
-
-        return $module;
+    function getMetaParent() {
+        $modules = array();
+        self::parseMetaParent(XIMDEX_MODULES_DIR, $metaParent);
+        self::parseMetaParent(XIMDEX_MODULES_PRO_DIR, $metaParent);
+        return $metaParent;
     }
 
-    static function path($name)
-    {
-        $str = "MODULE_" . strtoupper($name) . "_PATH";
-        if (defined($str)) {
-            return constant($str);
-        } else {
-            return "";
-        }
+    function hasMetaParent($name) {
+        $metaParent = self::getMetaParent();
+        if(!empty($metaParent) && in_array($name, array_keys($metaParent)) && $this->caller != $metaParent[$name])
+            return $metaParent;
+        return false;
     }
 
-    function moduleExists($name)
-    {
+    function moduleExists($name) {
         $path = ModulesManager::path($name);
-        if (!empty($path)) {
+        if(!empty($path) ) {
             return true;
         }
         return false;
     }
 
-    function installModule($name)
-    {
-        if ($metaParent = self::hasMetaParent($name)) {
+    static function  path($name) {
+        $str =  "MODULE_".strtoupper($name)."_PATH";
+        if(defined($str) ) {
+            return constant($str);
+        }else {
+            return "";
+        }
+    }
+
+    function installModule($name) {
+        if($metaParent = self::hasMetaParent($name)) {
             self::$msg = sprintf("Can't install module %s directly. Try installing Meta-module %s instead", $name, $metaParent[$name]);
 
             return false;
@@ -249,7 +183,7 @@ class ModulesManager
         }
         $module = ModulesManager::instanceModule($name);
 
-        if (is_null($module)) {
+        if ( is_null($module) ) {
             print(" * ERROR: Can't install module $name\n");
             return false;
         }
@@ -257,55 +191,8 @@ class ModulesManager
         return $module->install();
     }
 
-    function hasMetaParent($name)
-    {
-        $metaParent = self::getMetaParent();
-        if (!empty($metaParent) && in_array($name, array_keys($metaParent)) && $this->caller != $metaParent[$name])
-            return $metaParent;
-        return false;
-    }
-
-//END
-
-    function getMetaParent()
-    {
-        $modules = array();
-        self::parseMetaParent(XIMDEX_MODULES_DIR, $metaParent);
-        self::parseMetaParent(XIMDEX_MODULES_PRO_DIR, $metaParent);
-        return $metaParent;
-    }
-
-    function parseMetaParent($constModule, &$metaParent)
-    {
-        $paths = FsUtils::readFolder($constModule, false);
-        if ($paths) {
-            foreach ($paths as $moduleName) {
-                $modulePath = $constModule . $moduleName;
-                //if (is_dir($modulePath) && preg_match('/^xim+/', $moduleName, $matches)) {
-                if (is_dir($modulePath) && file_exists($modulePath . "/conf.ini")) {
-                    $conf = parse_ini_file($modulePath . "/conf.ini");
-                    foreach ($conf['module'] as $id => $childrenModName)
-                        $metaParent[$childrenModName] = $moduleName;
-                }
-            }
-        }
-    }
-
-    public static function isEnabled($name)
-    {
-        $str = "MODULE_" . strtoupper($name) . "_ENABLED";
-
-        if (defined($str)) {
-            return true;
-        } else {
-            return false;
-        }
-
-    }
-
-    function uninstallModule($name)
-    {
-        if ($metaParent = self::hasMetaParent($name)) {
+    function uninstallModule($name) {
+        if($metaParent = self::hasMetaParent($name)) {
             self::$msg = sprintf("Can't uninstall module %s directly. Try uninstalling Meta-module %s instead", $name, $metaParent[$name]);
 
 
@@ -314,8 +201,8 @@ class ModulesManager
 
         $module = ModulesManager::instanceModule($name);
 
-        if (is_null($module) || $module->isCoreModule()) {
-            self::$msg = "Can't uninstall module $name";
+        if ( is_null($module) || $module->isCoreModule()  ) {
+            self::$msg =  "Can't uninstall module $name";
 
             return false;
         }
@@ -323,13 +210,12 @@ class ModulesManager
         return $module->uninstall();
     }
 
-    function checkModule($name)
-    {
+    function checkModule($name) {
 
 
         $module = ModulesManager::instanceModule($name);
 
-        if (is_null($module)) {
+        if ( is_null($module) ) {
             self::$msg = "Module instance down";
             return MODULE_STATE_ERROR;
         }
@@ -358,19 +244,21 @@ class ModulesManager
             */
     }
 
+//END
+
+
     /**
      *  Enable a Module.
      */
-    function enableModule($name)
-    {
-        if ($metaParent = self::hasMetaParent($name)) {
+    function enableModule($name) {
+        if($metaParent = self::hasMetaParent($name)) {
             self::$msg = sprintf("Can't enable module %s directly. Try enabling Meta-module %s instead", $name, $metaParent[$name]);
             return false;
         }
 
         $module = ModulesManager::instanceModule($name);
 
-        if (is_null($module)) {
+        if ( is_null($module) ) {
             self::$msg = " * ERROR: instance module down";
             return false;
         }
@@ -385,15 +273,14 @@ class ModulesManager
     /**
      *  Disable a Module.
      */
-    function disableModule($name)
-    {
-        if ($metaParent = self::hasMetaParent($name)) {
+    function disableModule($name) {
+        if($metaParent = self::hasMetaParent($name)) {
             self::$msg = sprintf("Can't disable module %s directly. Try disabling Meta-module %s instead", $name, $metaParent[$name]);
             return false;
         }
         $module = ModulesManager::instanceModule($name);
 
-        if (is_null($module) || $module->isCoreModule()) {
+        if ( is_null($module) || $module->isCoreModule()  ) {
             self::$msg = "instance module down";
             return false;
         }
@@ -404,5 +291,119 @@ class ModulesManager
 
         $module->disable();
 
+    }
+
+    /**
+     *  Instantiate a module by name.
+     *  @protected
+     *  @param $name Name of the module.
+     *  @return \Ximdex\Modules\Module
+     */
+    function instanceModule($name) {
+        $className = "\\Ximdex\\Modules\\" . $name . "\\Manager" ;
+        error_log( "Searching " .  $className ) ;
+
+        // If no name provided exit.
+        if (is_null($name)) {
+            self::$msg = "Module name not provided.";
+            return NULL;
+        }
+
+        $className = "\\Ximdex\\Modules\\" . $name . "\\Manager" ;
+        error_log( "Searching " .  $className ) ;
+
+        if ( class_exists( $className  )) {
+
+            error_log( "Found " .  $className ) ;
+
+            return new $className ;
+        }
+
+        // If module not exists exit.
+
+        $moduleClassName = MODULE_PREFIX . $name;
+        $moduleClassFile = MODULE_PREFIX . $name . ".class.php";
+        //$moduleClassPath = XIMDEX_ROOT_PATH . "/modules/$name/" . $moduleClassFile;
+        $moduleClassPath = XIMDEX_ROOT_PATH.self::path($name)."/".$moduleClassFile;
+        if (file_exists($moduleClassPath)) {
+            include_once($moduleClassPath);
+        } else {
+            self::$msg =  "Module definition file not found [$moduleClassPath].";
+            return NULL;
+        }
+
+        $module = new $moduleClassName;
+
+        if ( is_null($module) ) {
+            self::$msg = " Module not instantiated [$moduleClassName].";
+            return NULL;
+        }
+
+        return $module;
+    }
+
+    public static function isEnabled($name) {
+        $str = "MODULE_" . strtoupper($name) . "_ENABLED";
+
+        if (defined($str)) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+
+    public static function getEnabledModules() {
+
+        $modules = self::getModules();
+        foreach ($modules as $key => $module) {
+//                print("  - {$module['name']}\n");
+
+            if (!self::isEnabled($module['name'])) {
+                unset($modules[$key]);
+            }
+        }
+        return $modules;
+    }
+
+
+    public static function component($_file, $_component = 'XIMDEX') {
+        if("XIMDEX" == $_component) {
+            $dir = '';
+        }else {
+            $dir = self::path($_component);
+        }
+
+        self::file($dir.$_file);
+    }
+
+
+    public static function file($_file, $_module = 'XIMDEX') {
+        if("XIMDEX" == $_module) {
+            $dir = '';
+        }else {
+            $dir = self::path($_module);
+        }
+
+        //$trace = debug_backtrace();
+        if(file_exists(XIMDEX_ROOT_PATH."{$dir}{$_file}")){
+            if( ( self::isEnabled($_module) || 'XIMDEX' == $_module) ) {
+                // $from =  $trace[0]["file"]." in line ".$trace[0]["line"];
+                //XMD_Log::info(" load file: <em>$_file</em> <strong>{$_module}</strong>  in $from <br>");
+                //	 	echo " load file: <em>$_file</em> <strong>{$_module}</strong>  in $from <br>";
+                return require_once(XIMDEX_ROOT_PATH."{$dir}{$_file}");
+            }else {
+                //	$from =  $trace[1]["file"]." in line ".$trace[1]["line"];
+                //XMD_Log::info("Not load file: <em>$_file</em> necesita <strong> {$_module}</strong>  in $from ");
+                // 	echo "Not load file: <em>$_file</em> necesita <strong>{$_module}</strong>  in $from <br>";
+            }
+
+        }
+        else{
+
+            //$from =  $trace[0]["file"]." in line ".$trace[0]["line"];
+            //echo "File not found: <em>$_file</em> of <strong>{$_module}</strong> module in $from <br>";
+        }
     }
 }

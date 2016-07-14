@@ -36,54 +36,76 @@ use \Ximdex\Runtime\App;
 class Manager
 {
 
-    /**
-     * @var null
-     */
-    public static $msg = null;
-    /**
-     * @var array
-     */
-    private static $core_modules = array("ximIO", "ximSYNC");
-    /**
-     * @var array
-     */
-    private static $deprecated_modules = array("ximDAV", "ximTRASH", "ximLOADERDEVEL", "ximTHEMES", "ximOTF", "ximPAS", "ximSIR", "ximDEMOS", "ximPORTA", "ximTEST", "ximTAINT");
-    /**
-     * @var
-     */
-    private static $root_path ;
-    /**
-     * @var
-     */
     public $modules;
-    /**
-     * @var
-     */
     public $caller;
+    private static $core_modules = array("ximIO", "ximSYNC");
+    private static $deprecated_modules = array("ximDAV", "ximTRASH", "ximLOADERDEVEL", "ximTHEMES", "ximOTF", "ximPAS", "ximSIR", "ximDEMOS", "ximPORTA", "ximTEST", "ximTAINT");
+    public static $msg = null;
+    private static $root_path;
 
-    /**
-     * @param $root_path
-     */
-    public static function init($root_path ) {
-        self::$root_path = $root_path ;
+    public static function init($root_path)
+    {
+        self::$root_path = $root_path;
     }
 
-    /**
-     * @return int
-     */
+    public static function get_modules_dir()
+    {
+        // replaces XIMDEX_MODULES_DIR
+        return self::$root_path . "/modules/";
+    }
+
+    public static function get_modules_pro_dir()
+    {
+        // replaces XIMDEX_MODULES_PRO_DIR
+        return self::$root_path . '/modules/modules_PRO/';
+    }
+
+    public static function get_module_prefix()
+    {
+        // replaces MODULE_PREFIX
+        return 'Module_';
+    }
+
+    public static function get_module_state_installed()
+    {
+        // replaces MODULE_STATE_INSTALLED
+        return 1;
+    }
+
     public static function get_module_state_uninstalled()
     {
         // replaces MODULE_STATE_UNINSTALLED
         return 0;
     }
 
-    /**
-     * @return string
-     */
+    public static function get_module_state_error()
+    {
+        // replaces MODULE_STATE_ERROR
+        return -1;
+    }
+
+    public static function get_modules_install_params()
+    {
+        // replaces MODULE_INSTALL_PARAMS
+        return '/conf/install-modules.php';
+    }
+
+    public static function get_pre_define_module()
+    {
+        // replaces PRE_DEFINE_MODULE
+        return "define('MODULE_";
+    }
+
     public static function get_post_define_module()
     {
         // replaces POST_DEFINE_MODULE
         return "_ENABLED', 1);";
+    }
+
+    public static function get_post_path_define_module()
+    {
+        // replaces POST_PATH_DEFINE_MODULE
+        return "_PATH','";
     }
 
     /**
@@ -96,69 +118,12 @@ class Manager
     }
 
     /**
-     * @param $name
-     * @return bool
+     * Deprecated modules.
+     * They don't have to be shown on Ximdex CMS interface.
      */
-    public static function moduleExists($name)
+    public static function getDeprecatedModules()
     {
-        $path = Manager::path($name);
-        if (!empty($path)) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * @return array
-     */
-    public static function getEnabledModules()
-    {
-
-        $modules = self::getModules();
-        foreach ($modules as $key => $module) {
-//                print("  - {$module['name']}\n");
-
-            if (!self::isEnabled($module['name'])) {
-                unset($modules[$key]);
-            }
-        }
-        return $modules;
-    }
-
-    /**
-     * @param $_file
-     * @param string $_component
-     */
-    public static function component($_file, $_component = 'XIMDEX')
-    {
-        if ("XIMDEX" == $_component) {
-            $dir = '';
-        } else {
-            $dir = self::path($_component);
-        }
-
-        self::file($dir . $_file);
-    }
-
-    /**
-     * @param $_file
-     * @param string $_module
-     * @return bool|mixed
-     */
-    public static function file($_file, $_module = 'XIMDEX')
-    {
-        if ("XIMDEX" == $_module) {
-            $dir = '';
-        } else {
-            $dir = self::path($_module);
-        }
-        if (file_exists( self::$root_path  . "{$dir}{$_file}")) {
-            if ((self::isEnabled($_module) || 'XIMDEX' == $_module)) {
-                return require_once(self::$root_path  . "{$dir}{$_file}");
-            }
-
-        }
-        return false ;
+        return self::$deprecated_modules;
     }
 
     /**
@@ -179,83 +144,25 @@ class Manager
         return $module->getInstallParams();
     }
 
-    /**
-     *  Instantiate a module by name.
-     * @protected
-     * @param $name String  Name of the module.
-     * @return \Ximdex\Modules\Module
-     */
-    function instanceModule($name)
+    function writeStates()
     {
 
-        // If no name provided exit.
-        if (is_null($name)) {
-            self::$msg = "Module name not provided.";
-            return NULL;
+        $modules = self::getModules();
+        $str = "<?php\n\n";
+        foreach ($modules as $mod) {
+            $str .= Manager::get_pre_define_module() . strtoupper($mod["name"]) . Manager::get_post_path_define_module() . str_replace(self::$root_path, '', $mod["path"]) . "');" . "\n";
         }
-        $className = "\\Ximdex\\Modules\\" . $name . "\\Manager" ;
-        if ( class_exists( $className  )) {
+        $str .= "\n?>";
+        FsUtils::file_put_contents(self::$root_path . Manager::get_modules_install_params(), $str);
 
-            return new $className ;
-        }
-
-        // If module not exists exit.
-
-        $moduleClassName = Manager::get_module_prefix() . $name;
-        $moduleClassFile = Manager::get_module_prefix() . $name . ".class.php";
-        $moduleClassPath = self::$root_path  . self::path($name) . "/" . $moduleClassFile;
-        if (file_exists($moduleClassPath)) {
-            include_once($moduleClassPath);
-        } else {
-            self::$msg = "Module definition file not found [$moduleClassPath].";
-            return NULL;
-        }
-
-        $module = new $moduleClassName;
-
-        if (is_null($module)) {
-            self::$msg = " Module not instantiated [$moduleClassName].";
-            return NULL;
-        }
-
-        return $module;
     }
 
-    /**
-     * @return string
-     */
-    public static function get_module_prefix()
+    public function __construct($caller = NULL)
     {
-        // replaces MODULE_PREFIX
-        return 'Module_';
+        // Init stuff.
+        $this->caller = $caller;
     }
 
-    /**
-     * @param $name
-     * @return mixed|string
-     */
-    static function  path($name)
-    {
-        $str = "MODULE_" . strtoupper($name) . "_PATH";
-        if (defined($str)) {
-            return constant($str);
-        } else {
-            return "";
-        }
-    }
-
-
-
-    /**
-     * @return array
-     */
-    public static function getModules()
-    {
-        $modules = array();
-        self::parseModules(self::get_modules_dir(), $modules);
-        self::parseModules(self::get_modules_pro_dir(), $modules);
-        return $modules;
-    }
 
     /**
      * @param $constModule
@@ -269,7 +176,7 @@ class Manager
             foreach ($paths as $moduleName) {
                 $modulePath = $constModule . $moduleName;
                 if (!in_array($moduleName, self::getDeprecatedModules())) {
-                    if (is_dir($modulePath)) {
+                    if (is_dir($modulePath)  ) {
                         $i = count($modules);
                         $modules[$i]["name"] = $moduleName;
                         $modules[$i]["path"] = $modulePath;
@@ -280,91 +187,65 @@ class Manager
         }
     }
 
-    /**
-     * Deprecated modules.
-     * They don't have to be shown on Ximdex CMS interface.
-     */
-    public static function getDeprecatedModules()
+    function parseMetaParent($constModule, &$metaParent)
     {
-        return self::$deprecated_modules;
-    }
-
-    /**
-     * @param $name
-     * @return bool
-     */
-    public static function isEnabled($name)
-    {
-        $str = "MODULE_" . strtoupper($name) . "_ENABLED";
-
-        if (App::getValue($str)) {
-            return true;
-        } else {
-            return false;
+        $paths = FsUtils::readFolder($constModule, false);
+        if ($paths) {
+            foreach ($paths as $moduleName) {
+                $modulePath = $constModule . $moduleName;
+                //if (is_dir($modulePath) && preg_match('/^xim+/', $moduleName, $matches)) {
+                if (is_dir($modulePath) && file_exists($modulePath . "/conf.ini")) {
+                    $conf = parse_ini_file($modulePath . "/conf.ini");
+                    foreach ($conf['module'] as $id => $childrenModName)
+                        $metaParent[$childrenModName] = $moduleName;
+                }
+            }
         }
-
     }
 
-    /**
-     * @return string
-     */
-    public static function get_modules_dir()
+    public static function getModules()
     {
-        // replaces XIMDEX_MODULES_DIR
-        return self::$root_path . "/modules/";
+        $modules = array();
+        self::parseModules(self::get_modules_dir(), $modules);
+        self::parseModules(self::get_modules_pro_dir(), $modules);
+        return $modules;
     }
 
-    /**
-     * @return string
-     */
-    public static function get_modules_pro_dir()
+    function getMetaParent()
     {
-        // replaces XIMDEX_MODULES_PRO_DIR
-        return self::$root_path . '/modules/modules_PRO/';
+        self::parseMetaParent(self::get_modules_dir(), $metaParent);
+        self::parseMetaParent(self::get_modules_pro_dir(), $metaParent);
+        return $metaParent;
     }
 
-    /**
-     * @return string
-     */
-    public static function get_pre_define_module()
+    function hasMetaParent($name)
     {
-        // replaces PRE_DEFINE_MODULE
-        return "define('MODULE_";
+        $metaParent = self::getMetaParent();
+        if (!empty($metaParent) && in_array($name, array_keys($metaParent)) && $this->caller != $metaParent[$name])
+            return $metaParent;
+        return false;
     }
 
-    /**
-     * @return string
-     */
-    public static function get_post_path_define_module()
+    function moduleExists($name)
     {
-        // replaces POST_PATH_DEFINE_MODULE
-        return "_PATH','";
+        $path = Manager::path($name);
+        if (!empty($path)) {
+            return true;
+        }
+        return false;
     }
 
-    /**
-     * @return string
-     */
-    public static function get_modules_install_params()
+    static function path($name)
     {
-        // replaces MODULE_INSTALL_PARAMS
-        return '/conf/install-modules.php';
+        $str = "MODULE_" . strtoupper($name) . "_PATH";
+        if (defined($str)) {
+            return constant($str);
+        } else {
+            return "";
+        }
     }
 
-    /**
-     * @param null $caller
-     */
-    public function __construct($caller = NULL)
-    {
-
-        // Init stuff.
-        $this->caller = $caller;
-    }
-
-    /**
-     * @param $name
-     * @return bool|int
-     */
-    public static function installModule($name)
+    function installModule($name)
     {
         if ($metaParent = self::hasMetaParent($name)) {
             self::$msg = sprintf("Can't install module %s directly. Try installing Meta-module %s instead", $name, $metaParent[$name]);
@@ -387,62 +268,7 @@ class Manager
         return $module->install();
     }
 
-    /**
-     * @param $name
-     * @return bool
-     */
-    public  function hasMetaParent($name)
-    {
-        $metaParent = self::getMetaParent();
-        if (!empty($metaParent) && in_array($name, array_keys($metaParent)) && $this->caller != $metaParent[$name])
-            return $metaParent;
-        return false;
-    }
-
-    /**
-     * @return mixed
-     */
-    public static function getMetaParent()
-    {
-        self::parseMetaParent(self::get_modules_dir(), $metaParent);
-        self::parseMetaParent(self::get_modules_pro_dir(), $metaParent);
-        return $metaParent;
-    }
-
-    /**
-     * @param $constModule
-     * @param $metaParent
-     */
-    function parseMetaParent($constModule, &$metaParent)
-    {
-        $paths = FsUtils::readFolder($constModule, false);
-        if ($paths) {
-            foreach ($paths as $moduleName) {
-                $modulePath = $constModule . $moduleName;
-                //if (is_dir($modulePath) && preg_match('/^xim+/', $moduleName, $matches)) {
-                if (is_dir($modulePath) && file_exists($modulePath . "/conf.ini")) {
-                    $conf = parse_ini_file($modulePath . "/conf.ini");
-                    foreach ($conf['module'] as $id => $childrenModName)
-                        $metaParent[$childrenModName] = $moduleName;
-                }
-            }
-        }
-    }
-
-    /**
-     * @return int
-     */
-    public static function get_module_state_installed()
-    {
-        // replaces MODULE_STATE_INSTALLED
-        return 1;
-    }
-
-    /**
-     * @param $name
-     * @return bool
-     */
-    public static function uninstallModule($name)
+    function uninstallModule($name)
     {
         if ($metaParent = self::hasMetaParent($name)) {
             self::$msg = sprintf("Can't uninstall module %s directly. Try uninstalling Meta-module %s instead", $name, $metaParent[$name]);
@@ -460,14 +286,9 @@ class Manager
         }
 
         $module->uninstall();
-        return true ;
     }
 
-    /**
-     * @param $name
-     * @return int
-     */
-    public static function checkModule($name)
+    function checkModule($name)
     {
 
 
@@ -482,20 +303,14 @@ class Manager
 
     }
 
-    /**
-     * @return int
-     */
-    public static function get_module_state_error()
-    {
-        // replaces MODULE_STATE_ERROR
-        return -1;
-    }
+//END
+
 
     /**
-     * @param $name
-     * @return bool
+     *  Enable a Module.
+     * @param $name String
      */
-    public static function enableModule($name)
+    function enableModule($name)
     {
         if ($metaParent = self::hasMetaParent($name)) {
             self::$msg = sprintf("Can't enable module %s directly. Try enabling Meta-module %s instead", $name, $metaParent[$name]);
@@ -509,22 +324,17 @@ class Manager
             return false;
         }
 
-        $modConfig = new Config();
+        $modConfig = new \Ximdex\Modules\Config();
         $modConfig->enableModule($module->getModuleName());
 
         $module->enable();
-        return true ;
 
     }
 
     /**
      *  Disable a Module.
      */
-    /**
-     * @param $name
-     * @return bool
-     */
-    public static function disableModule($name)
+    function disableModule($name)
     {
         if ($metaParent = self::hasMetaParent($name)) {
             self::$msg = sprintf("Can't disable module %s directly. Try disabling Meta-module %s instead", $name, $metaParent[$name]);
@@ -538,11 +348,108 @@ class Manager
         }
 
 
-        $modConfig = new Config();
+        $modConfig = new \Ximdex\Modules\Config();
         $modConfig->disableModule($module->getModuleName());
 
         $module->disable();
-        return true ;
 
+    }
+
+    /**
+     *  Instantiate a module by name.
+     * @protected
+     * @param $name String  Name of the module.
+     * @return \Ximdex\Modules\Module
+     */
+    function instanceModule($name)
+    {
+
+
+        // If no name provided exit.
+        if (is_null($name)) {
+            self::$msg = "Module name not provided.";
+            return NULL;
+        }
+        $className = "\\Ximdex\\Modules\\" . $name . "\\Manager";
+        if (class_exists($className)) {
+
+            return new $className;
+        }
+
+        // If module not exists exit.
+
+        $moduleClassName = Manager::get_module_prefix() . $name;
+        $moduleClassFile = Manager::get_module_prefix() . $name . ".class.php";
+        $moduleClassPath = self::$root_path . self::path($name) . "/" . $moduleClassFile;
+        if (file_exists($moduleClassPath)) {
+            include_once($moduleClassPath);
+        } else {
+            self::$msg = "Module definition file not found [$moduleClassPath].";
+            return NULL;
+        }
+
+        $module = new $moduleClassName;
+
+        if (is_null($module)) {
+            self::$msg = " Module not instantiated [$moduleClassName].";
+            return NULL;
+        }
+
+        return $module;
+    }
+
+    public static function isEnabled($name)
+    {
+        $str = "MODULE_" . strtoupper($name) . "_ENABLED";
+
+        if (App::getValue($str)) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+
+    public static function getEnabledModules()
+    {
+
+        $modules = self::getModules();
+        foreach ($modules as $key => $module) {
+//                print("  - {$module['name']}\n");
+
+            if (!self::isEnabled($module['name'])) {
+                unset($modules[$key]);
+            }
+        }
+        return $modules;
+    }
+
+
+    public static function component($_file, $_component = 'XIMDEX')
+    {
+        if ("XIMDEX" == $_component) {
+            $dir = '';
+        } else {
+            $dir = self::path($_component);
+        }
+
+        self::file($dir . $_file);
+    }
+
+
+    public static function file($_file, $_module = 'XIMDEX')
+    {
+        if ("XIMDEX" == $_module) {
+            $dir = '';
+        } else {
+            $dir = self::path($_module);
+        }
+        if (file_exists(self::$root_path . "{$dir}{$_file}")) {
+            if ((self::isEnabled($_module) || 'XIMDEX' == $_module)) {
+                return require_once(self::$root_path . "{$dir}{$_file}");
+            }
+
+        }
     }
 }

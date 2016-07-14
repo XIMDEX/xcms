@@ -65,6 +65,12 @@ class Factory
         if (class_exists($name)) {
             return new $name($node);
         }
+
+        $className = "\\Ximdex\\NodeTypes\\" . $name ;
+        if ( class_exists( $className )) {
+            return new $className($node);
+        }
+        
         Logger::info(sprintf(_('Fatal error: the nodetype associated to %s does not exist'), $fileToInclude));
         die(sprintf(_('Fatal error: the nodetype associated to %s does not exist'), $fileToInclude));
     }
