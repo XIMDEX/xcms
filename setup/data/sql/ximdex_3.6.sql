@@ -2999,24 +2999,24 @@ INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `
 INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublishable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5085,'MetaDataDoc','xmldocumentnode','doc','Metadata Language Document',1,0,0,0,0,0,0,1,1,NULL,0,NULL);
 
 CREATE TABLE `Nodes` (
-  `IdNode` int(12) unsigned NOT NULL auto_increment,
-  `IdParent` int(12) unsigned default '0',
-  `IdNodeType` int(12) unsigned NOT NULL default '0',
-  `Name` varchar(255) NOT NULL default '0',
-  `IdState` int(12) unsigned default '0',
-  `BlockTime` int(12) default '0',
-  `BlockUser` int(12) unsigned default NULL,
-  `CreationDate` int(12) unsigned default '0',
-  `ModificationDate` int(12) unsigned default '0',
-  `Description` varchar(255) default NULL,
-  `SharedWorkflow` int(12) unsigned default NULL,
-  `Path` text   ,
-  `sortorder` int(11) DEFAULT '0',
+  `IdNode` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `IdParent` int(12) unsigned DEFAULT '0',
+  `IdNodeType` int(12) unsigned NOT NULL DEFAULT '0',
+  `Name` varchar(255) NOT NULL DEFAULT '0',
+  `IdState` int(12) unsigned DEFAULT '0',
+  `BlockTime` int(12) DEFAULT '0',
+  `BlockUser` int(12) unsigned DEFAULT NULL,
+  `CreationDate` int(12) unsigned DEFAULT '0',
+  `ModificationDate` int(12) unsigned DEFAULT '0',
+  `Description` varchar(255) DEFAULT NULL,
+  `SharedWorkflow` int(12) unsigned DEFAULT NULL,
+  `Path` text NOT NULL,
+  `sortorder` int(11) NOT NULL DEFAULT '0',
   `deleted` int(11) DEFAULT '0',
-  PRIMARY KEY  (`IdNode`),
+  PRIMARY KEY (`IdNode`),
   UNIQUE KEY `UniqueName` (`Name`,`IdParent`),
   KEY `IdNode_2` (`IdNode`,`IdParent`)
-) ENGINE=MyISAM COMMENT='Table of system nodes';
+) DEFAULT CHARSET=latin1 COMMENT='Table of system nodes';
 
 --
 -- Dumping data for table `Nodes`
