@@ -54,6 +54,14 @@ class Manager
         }
     }
 
+    /**
+     * Returns the NodeId of metadata manager node 
+     * @return string
+     */
+    public function getId() {
+        return $this->id ;
+    }
+
     public function getInfo( ) {
         $result =  json_decode( $this->container->GetContent(), true ) ;
         if ( empty( $result )) {
