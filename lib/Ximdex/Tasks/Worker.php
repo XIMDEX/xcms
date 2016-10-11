@@ -1,21 +1,22 @@
 <?php
 
 namespace Ximdex\Tasks;
+use Ximdex\Runtime\App ;
 
 
-class Worker
+class Worker 
 {
-    private $qm = null;
+    private $queueManager  = null;
     private $currentExec = 0 ;
-
+ 
     private $methods = [] ;
 
 
 
     public function __construct()
     {
-        $this->qm = new Manager();
-        $this->queue = $this->qm->getQueueServer();
+        $this->queueManager = new Manager();
+        $this->queue = $this->queueManager->getQueueServer();
     }
 
 
@@ -27,18 +28,20 @@ class Worker
 
     public function run( $maxExecs = 0 )
     {
-
+ 
 
         while ( $maxExecs == 0 || $this->currentExec <= $maxExecs ) {
 
+            $queueName = App::getInstance()->getRuntimeValue('queueName', 'ximdex');
+
             // grab the next job off the queue and reserve it
-            $job = $this->queue->watch('xbuk')
+            $job = $this->queue->watch( $queueName )
                 ->ignore('default')
                 ->reserve();
 
-            $job_data = json_decode($job->getData(), false);
-            $function = $job_data->function;
-            $data = $job_data->user_data;
+            $jobData = json_decode($job->getData(), false);
+            $function = $jobData->function;
+            $data = $jobData->user_data;
             if ( array_key_exists( $function, $this->methods)) {
                 $this->currentExec += $this->methods[$function]( $job, $data ) ;
                 continue;

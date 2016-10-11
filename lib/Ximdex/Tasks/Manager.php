@@ -5,6 +5,7 @@ namespace Ximdex\Tasks;
  
 use Pheanstalk\Pheanstalk;
 use stdClass;
+use Ximdex\Runtime\App ;
 
 class Manager
 {
@@ -29,13 +30,13 @@ class Manager
     static public function sendTask($name = "xbuk", $data = "")
     {
 
-
-        $qm = new Pheanstalk('127.0.0.1');
-
+        $queueName = App::getValue( 'queueName', 'ximdex');
+        $queueManager = new Pheanstalk('127.0.0.1');
+ 
         $job = new stdClass();
-        $job->function = $name;
+        $job->function = $name; 
         $job->user_data = $data;
-        $qm->useTube('xbuk')->put(json_encode($job));
+        $queueManager->useTube( $queueName )->put(json_encode($job));
 
     }
 }
