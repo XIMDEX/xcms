@@ -74,7 +74,8 @@ class CreateDB extends Base
         if (empty($this->db)) {
             return;
         }
-        $data = file_get_contents($this->manager->getFullPath("/data/sql/ximdex_3.6.sql"));
+        $data = file_get_contents($this->manager->getFullPath("/data/sql/Ximdex_3.6_schema.sql"));
+        $data .= file_get_contents($this->manager->getFullPath("/data/sql/Ximdex_3.6_data.sql"));
 
         try {
             $statement = $this->db->prepare($data);
