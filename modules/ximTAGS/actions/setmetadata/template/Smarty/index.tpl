@@ -41,7 +41,7 @@
                     <xim-select class="tag-type btn-rounded" ng-model="newTag.IdNamespace" xim-options="namespaces" xim-label-prop="type" xim-style-prop="nemo" xim-sel-prop="id" ng-init="newTag.IdNamespace = namespaces['1'].id">
                     </xim-select>
                     <input type="text" class="xim-tagsinput-input" id="tag_input" placeholder="{t}Create new tags here{/t}..." ng-model="newTag.Name" ng-class="{literal}{error: tagExistInArray(newTag, documentTags)}{/literal}" ng-keyup="keyPress($event)" />
-                    <button type="button" class="btn-unlabel-rounded icon add-btn" ng-click="addNewTag()" ng-disabled="tagExistInArray(newTag, documentTags)" ng-class="{literal}{disabled:tagExistInArray(newTag, documentTags)}{/literal}">{t}Add{/t}</button>
+                    <button type="button" class="btn-unlabel-rounded icon add-btn" ng-show="newTag.Name.length" ng-click="addNewTag()" ng-disabled="tagExistInArray(newTag, documentTags)" ng-class="{literal}{disabled:tagExistInArray(newTag, documentTags)}{/literal}">{t}Add{/t}</button>
                 </div>
             </div>
 
@@ -113,6 +113,6 @@
             xim-label="'ui.dialog.confirmation.save' | xI18n"
             ng-click="saveTags(documentTags)"
             xim-disabled="!dirty">
-        </button>        
+        </button>
     </fieldset>
 </form>
