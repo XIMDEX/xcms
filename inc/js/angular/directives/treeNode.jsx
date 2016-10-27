@@ -126,8 +126,8 @@ angular.module('ximdex.common.directive').factory('TreeNode', ['$filter',
                 var dropDownClasses = cx({
                     'ui-icon xim-actions-toggle-node': true,
                     'ui-icon-triangle-1-e': true,
-                    'ui-icon-triangle-1-se': this.props.node.showNodes
-                    // 'icon-hidden': !this.props.node.children && (this.props.node.collection == null || this.props.node.collection.length==0)
+                    'ui-icon-triangle-1-se': this.props.node.showNodes,
+                    'icon-hidden': !this.props.node.children || (this.props.node.collection && this.props.node.collection.length === 0)
                 });
 
                 return (

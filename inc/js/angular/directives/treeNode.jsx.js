@@ -110,7 +110,7 @@ angular.module('ximdex.common.directive').factory('TreeNode', ['$filter', functi
                 'ui-icon xim-actions-toggle-node': true,
                 'ui-icon-triangle-1-e': true,
                 'ui-icon-triangle-1-se': this.props.node.showNodes,
-                'icon-hidden': !this.props.node.children && (this.props.node.collection == null || this.props.node.collection.length == 0)
+                'icon-hidden': !this.props.node.children || (this.props.node.collection && this.props.node.collection.length === 0)
             });
             return React.createElement(
                 'span',
@@ -137,4 +137,3 @@ angular.module('ximdex.common.directive').factory('TreeNode', ['$filter', functi
 angular.module('ximdex.common.directive').directive('treeNode', ['reactDirective', function (reactDirective) {
     return reactDirective('TreeNode');
 }]);
-
