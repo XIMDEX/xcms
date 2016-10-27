@@ -79,7 +79,7 @@ angular.module('ximdex.module.xtags')
 
         if ($attrs.ximCloudTags) {
             $scope.cloudTags = angular.fromJson($attrs.ximCloudTags);
-            $scope.hideSelected($scope.documentTags, $scope.cloudTags);
+            //$scope.hideSelected($scope.documentTags, $scope.cloudTags);
         }
 
         if ($attrs.ximNamespaces) {
