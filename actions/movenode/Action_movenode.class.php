@@ -65,8 +65,13 @@ class Action_movenode extends Action_copy {
 				}
 			}
 		}
-        $targetNodes = $this->getTargetNodes($node->GetID(), $node->GetNodeType());
- 
+
+    $targetNodes = $this->getTargetNodes($node->GetID(), $node->GetNodeType());
+
+    $targetNodes = array_filter($targetNodes, function($nodes) use ($node) {
+        return $nodes['idnode'] != $node->GetID();
+    });
+
 //		$this->addJs('/actions/movenode/resources/js/movenode.js');
 //		$this->addJs('/actions/copy/resources/js/treeSelector.js');
 		$this->addCss('/actions/copy/resources/css/style.css');
@@ -106,12 +111,12 @@ class Action_movenode extends Action_copy {
 			'id_node' => $idNode,
 			'params' => '',
 			'nodeURL' => \App::getValue( 'UrlRoot')."/xmd/loadaction.php?action=movenode&nodeid={$idNode}",
-			'action_with_no_return' => true, 
+			'action_with_no_return' => true,
 			'parentID' => $targetParentID,
 			'oldParentID' => $node->GetParent()
 		  );
 		}
-		
+
 
 		$this->sendJSON($values);
 	}
@@ -182,16 +187,16 @@ class Action_movenode extends Action_copy {
      * @result boolean True if everything is ok.
      */
     protected function checkTargetConditions($idCurrentNode, $idCandidateNode){
-        
+
         $result = false;
         $node = new Node($idCurrentNode);
         $currentNodeName = $node->GetNodeName();
-        $candidateNode = new Node($idCandidateNode);        
-        
+        $candidateNode = new Node($idCandidateNode);
+
         if ($node->getProject() != $candidateNode->getProject())
             return false;
-        
-        return !$candidateNode->GetChildByName($currentNodeName);                
+
+        return !$candidateNode->GetChildByName($currentNodeName);
     }
 }
 ?>

@@ -47,6 +47,11 @@ class Action_copy extends ActionAbstract {
         } else {
 
             $targetNodes = $this->getTargetNodes($node->GetID(), $node->GetNodeType());
+
+            $targetNodes = array_filter($targetNodes, function($nodes) use ($node) {
+              return $nodes['idnode'] != $node->GetID();
+            });
+
             $values = array(
                 'id_node' => $node->get('IdNode'),
                 'nodetypeid' => $node->nodeType->get('IdNodeType'),
