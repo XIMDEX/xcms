@@ -229,9 +229,8 @@
 		      root.y0 = 0;
 
               $(".selectbox-tree select", that.element).change(function() {
-                console.log("Se activa el cambio en el selectbox-tree");
-                console.log(this.element);
-                console.log(that.element);
+                that._hideFooter()
+
                 root = that._getElementByParent(json, $(".selectbox-tree select", that.element).find(":selected").text());
                 if (!_.isUndefined(root.children)) {
                     root.children.forEach(toggleAll);
@@ -417,13 +416,10 @@
     			root.x0 = 0;
     			root.y0 = 0;
 
-    			console.log(that.element);
-
     			$(".selectbox-text select", that.element)
     				.change(function() {
-
         				root = that._getElementByParent(json, $(".selectbox-text select", that.element).find(":selected").text());
-
+                that._hideFooter();
         				if (!_.isUndefined(root.children)) {
         	    			root.children.forEach(toggleAll);
         				}
