@@ -25,7 +25,7 @@
 
 <form method="post" name="cu_form" id="cu_form" action="{$action_url}">
 	<input type="hidden" name="id_node" VALUE="{$id_node}">
-	<div class="action_header">
+	<div class="action_header"> 
 <h2>{t}Add user{/t}</h2>
 			<fieldset class="buttons-form">
 		{button label='Create user' class='validate btn main_action' tabindex="8"}
