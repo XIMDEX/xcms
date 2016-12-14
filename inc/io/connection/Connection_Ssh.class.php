@@ -231,9 +231,15 @@ class Connection_Ssh implements I_Connector
      */
     public function rename($renameFrom, $renameTo)
     {
-        if (!($result = $this->netSFTP->rename($renameFrom, $renameTo))) {
-            $this->netSFTP->delete($renameTo);
-            return $this->netSFTP->rename($renameFrom, $renameTo);
+        if($this->netSFTP->stat($renameFrom)) {
+            if ( !( $result = $this->netSFTP->rename( $renameFrom, $renameTo ) ) ) {
+                if($this->netSFTP->stat( $renameFrom ) && $this->netSFTP->stat( $renameTo )) {
+                    $this->netSFTP->delete( $renameTo );
+                }
+                return $this->netSFTP->rename( $renameFrom, $renameTo );
+            }
+        }else{
+            return true;
         }
         return $result;
     }
