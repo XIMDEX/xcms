@@ -107,7 +107,7 @@ class SmartyRenderer extends AbstractRenderer
 
 		$this->_set_controller_path($this->get('module'), $_method);
 
-		//pasamos los par�metros a smarty
+		//we send the parameters to smarty
 		$_parameters = $this->getParameters();
 
 		//we initialize params used in some actions
@@ -184,5 +184,3 @@ class SmartyRenderer extends AbstractRenderer
 		return $ret['tpl'];
 	}
 }
-
-?>
