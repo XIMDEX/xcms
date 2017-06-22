@@ -58,15 +58,15 @@ function xml_reader()
 }
 function set_file($path)
 {
-	$this->doc = & new DOMIT_Document();
-     	$success = $this->doc ->loadXML($path);
-	$this->root = & $this->doc->documentElement;
+	$this->doc = new DOMIT_Document();
+    $success = $this->doc ->loadXML($path);
+	$this->root = $this->doc->documentElement;
 }
 function set_xmlString($content)
 {
-	$this->doc = & new DOMIT_Document();
+	$this->doc = new DOMIT_Document();
 	$this->doc->parseXML($content,true);
-	$this->root = & $this->doc->documentElement;
+	$this->root = $this->doc->documentElement;
 }
 
 function getDataList($from,$name,$value)
