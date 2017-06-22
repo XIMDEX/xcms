@@ -136,7 +136,7 @@ class ximDEX_webDAV_Server extends HTTP_WebDAV_Server {
 
 			// Connect to authentication system.
 
-	        $authenticator =& new Authenticator();
+	        $authenticator = new Authenticator();
 			$isValid = $authenticator->login($username, $password);
 
 			if ($isValid) {

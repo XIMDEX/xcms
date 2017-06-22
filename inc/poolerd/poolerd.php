@@ -347,7 +347,7 @@ function start($conf) {
 		$conf->server['pid']->create(posix_getpid());
 		$children = prefork($conf);
 		// NOTE: Waith for children, but don't block the main process or we can't catch the signals!
-		while (($pid = pcntl_waitpid(-1, &$status, WNOHANG)) != -1) {
+		while (($pid = pcntl_waitpid(-1, $status, WNOHANG)) != -1) {
 			// Use sleep and so the CPU don't go to 100% ...
 			// ... but maybe some zombies could be appear...
 			sleep(1);

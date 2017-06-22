@@ -65,7 +65,7 @@ class SystemPropertiesManager{
 	function getSystemPropertiesXML(){
 		//array with system properties
 		$properties = $this->systemProperties->getSystemProperties();
-		$documentProperties =& new DOMIT_Document();
+		$documentProperties = new DOMIT_Document();
 		//'&' is used due to domit compatiblity with php4  
 		$root =& $documentProperties->createElement('nodoXimDEX');
 		$root->setAttribute("name",$this->getProperty($this->systemProperties->getSystemProperty("NAME")));

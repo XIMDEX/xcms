@@ -38,14 +38,14 @@ if (!defined('POOLER_ROOT_PATH'))
 /**
  * El socket que crea esta clase se puede abrir en modo bloqueante o no bloqueante.
  * En el primer caso el proceso queda dormido hasta que se recibe una conexion entrante
- * a traves del socket, pero se bloquean todas las señales enviadas al proceso y no
+ * a traves del socket, pero se bloquean todas las seï¿½ales enviadas al proceso y no
  * se pueden gestionar.
  *
- * En el segundo caso las señales son gestionadas sin problemas, pero el bucle en handle()
+ * En el segundo caso las seï¿½ales son gestionadas sin problemas, pero el bucle en handle()
  * hace que la CPU se dispare al 100%.
  *
  * La solucion es abrir el socket en modo bloqueante y usar la funcion socket_select(), esta
- * bloquea el proceso pero da la posibilidad de establecer un timeout. De esta forma las señales
+ * bloquea el proceso pero da la posibilidad de establecer un timeout. De esta forma las seï¿½ales
  * son gestionadas sin problemas y el proceso queda dormido sin disparar la CPU.
  */
 class ServerSocket {
@@ -106,7 +106,7 @@ class ServerSocket {
 	 * Close the server socket and kills all child process
 	 */
 	public function close() {
-		@socket_close(&$this->socket);
+		@socket_close($this->socket);
 		$this->stop = true;
 		$this->socket = null;
 	}
@@ -121,7 +121,7 @@ class ServerSocket {
 
 		// Se crea un socket bloqueante para que la CPU no se dispare al 100%.
 		// Usando socket_select() se consigue un timeout para que el proceso
-		// pueda gestionar señales.
+		// pueda gestionar seï¿½ales.
 		$clientSck = null;
 		while (is_resource($socket) && !$this->stop) {
 
@@ -163,5 +163,3 @@ class ServerSocket {
 	}
 
 }
-
-?>
