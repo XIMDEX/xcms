@@ -24,13 +24,11 @@
  * @version $Revision$
  */
 
-
 use Ximdex\Models\Node;
 use Ximdex\Models\NodeType;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Utils\Logs\Log;
 use Ximdex\Utils\Sync\SynchroFacade;
-
 
 class Action_publicatesection extends ActionAbstract
 {
@@ -42,7 +40,7 @@ class Action_publicatesection extends ActionAbstract
         $idNode = (int)$this->request->getParam("nodeid");
         $node = new Node($idNode);
         $nodeTypeName = $node->nodeType->GetName();
-
+        /*
         $nodeTypes = array('ImageFile', 'XmlDocument');
 
         foreach ($nodeTypes as $type) {
@@ -51,7 +49,8 @@ class Action_publicatesection extends ActionAbstract
             //$nameShowed = preg_match('/image/i', $type) > 0 ? 'Imagen' : 'Documento';
             //$publishabledNodeTypes[] = array('id' => $nodeType->get('IdNodeType'), 'name' => $nameShowed);
         }
-
+		*/
+        
         $values = array(
             'go_method' => 'publicate_section',
             //'publishabledtypes' => $publishabledNodeTypes,
@@ -65,7 +64,6 @@ class Action_publicatesection extends ActionAbstract
         $nodeServer = new Node($serverID);
         $nameServer = $nodeServer->get('Name');
         $physicalServers = $nodeServer->class->GetPhysicalServerList(true);
-
         if (!(sizeof($physicalServers) > 0)) {
             $this->messages->add(sprintf(_("There is not any defined physical server in: '%s'"), $nameServer), MSG_TYPE_ERROR);
             $values['messages'] = $this->messages->messages;
@@ -143,5 +141,3 @@ class Action_publicatesection extends ActionAbstract
         $this->render($values, null, "only_template.tpl");
     }
 }
-
-?>
