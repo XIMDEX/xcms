@@ -601,7 +601,7 @@ class Action_browser3 extends ActionAbstract
         $set = NodeSets::create($name);
         $errors = $set->messages->messages;
 
-        if ($set->getId() > 0 && $nodes !== null) {
+        if ($set->getId() > 0 && $nodes) {
             $ret = $this->addNodeToSet($set->getId(), $nodes);
             $errors = array_merge($errors, $ret);
         }
@@ -613,7 +613,7 @@ class Action_browser3 extends ActionAbstract
         )
         );
 
-        if ($set->getId() > 0 && $users !== null) {
+        if ($set->getId() > 0 && $users) {
             $ret = $this->addUserToSet($set->getId(), $users);
             $errors = array_merge($errors, $ret);
         }
@@ -854,7 +854,7 @@ class Action_browser3 extends ActionAbstract
         $users = new User();
         $users = $users->find(ALL, 'IdUser <> %s', array($sessionUser));
 
-        if ($users !== null) {
+        if ($users) {
             foreach ($users as $user) {
                 $idUser = $user['IdUser'];
                 $ret[] = array(
@@ -872,8 +872,8 @@ class Action_browser3 extends ActionAbstract
 
             $users = new RelNodeSetsUsers();
             $users = $users->find(ALL, 'IdSet = %s', array($idSet));
-
-            if ($users !== null) {
+            
+            if ($users) {
                 foreach ($users as $user) {
                     $idUser = $user['IdUser'];
                     if (isset($aux[$idUser])) {

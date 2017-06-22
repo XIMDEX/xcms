@@ -140,7 +140,7 @@ class Action_addlangxmlcontainer extends ActionAbstract {
 			$language = new Language();
 			$allLanguages = $language->find('IdLanguage', NULL, NULL, MONO);
 
-			if (!is_array($allLanguages)) {
+			if (!$allLanguages) {
 				$msg = _('No language has been found');
 				XMD_Log::error($msg);
 				$this->messages->add($msg, MSG_TYPE_ERROR);

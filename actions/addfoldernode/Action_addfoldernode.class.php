@@ -238,7 +238,7 @@ class Action_addfoldernode extends ActionAbstract
         $chann = new Channel();
         $channs = $chann->find();
 
-        if (!is_null($channs)) {
+        if ($channs) {
             foreach ($channs as $channData) {
                 $channels[] = array('id' => $channData['IdChannel'], 'name' => $channData['Name']);
             }
@@ -249,7 +249,7 @@ class Action_addfoldernode extends ActionAbstract
         $lang = new Language();
         $langs = $lang->find();
 
-        if (!is_null($langs)) {
+        if ($langs) {
             foreach ($langs as $langData) {
                 $languages[] = array('id' => $langData['IdLanguage'], 'name' => $langData['Name']);
             }

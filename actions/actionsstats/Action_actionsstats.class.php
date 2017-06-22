@@ -95,15 +95,12 @@ class Action_actionsstats extends ActionAbstract
         $users = array();
         $user = new User();
         $result = $user->find('IdUser, Name', '1 ORDER BY Name', NULL, MULTI);
-
-        if (!is_null($result)) {
+        if ($result) {
             foreach ($result as $resultData) {
                 $users[] = array('id' => $resultData['IdUser'], 'name' => $resultData['Name']);
             }
-
             return $users;
         }
-
         return NULL;
     }
 
