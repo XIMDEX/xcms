@@ -1,0 +1,40 @@
+version: "2"
+services:
+  # PHP with required extensions to execute Ximdex
+  phpfpm:
+    image: ximdex/php:7
+    volumes:
+      - ./tests/php-fpm/php-fpm.conf:/usr/local/etc/php-fpm.conf:ro
+      - ./tests/php-fpm/php.ini:/usr/local/etc/php/php.ini:ro
+      - ./:/var/www/html
+    links:
+      - db:db
+
+  # NGINX
+  ximdex:
+    image: nginx:alpine
+    links:
+      - phpfpm:phpfpm
+    # Exposing port 80
+    ports:
+      - 80:80
+    volumes:
+      - ./tests/nginx-conf/vhost.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./tests/nginx-conf/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./:/var/www/html
+
+  # MySQL
+  db:
+    image: "mysql:5.6"
+    # Path where MySQL data will be
+    volumes:
+      - .data/db:/var/lib/mysql
+    # The first time, it creates a Database called ximdex with user ximdex, modify it if you are in production
+    environment:
+      MYSQL_ROOT_PASSWORD: ximdex
+      MYSQL_USER: ximdex
+      MYSQL_PASSWORD: ximdex
+      MYSQL_DATABASE: ximdex
+    # Only if you want to expose your MySQL
+    # ports:
+    #   - 3306:3306
