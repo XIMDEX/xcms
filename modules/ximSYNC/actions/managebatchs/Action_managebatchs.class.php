@@ -31,7 +31,7 @@ use Ximdex\MVC\ActionAbstract;
 
 class Action_managebatchs extends ActionAbstract {
 
-	// M�todo principal: presenta el formulario inicial
+	// Metodo principal: presenta el formulario inicial
 
 	function batchlist () {
 
@@ -175,7 +175,7 @@ class Action_managebatchs extends ActionAbstract {
 				$progress = array();
 				$serverFrames = $serverFrameObj->getFramesOnBatch($batch['IdBatch'],
 								(($batch['Type'] == 'Up') ? 'IdBatch' : 'IdBatchDown'),
-								"extended", & $progress, MANAGEBATCHS_FRAMES_PER_PAGE);
+								"extended", $progress, MANAGEBATCHS_FRAMES_PER_PAGE);
 				$hasServerFrames = (is_array($serverFrames) && count($serverFrames) > 0) ? true : false;
 
 				if ($hasServerFrames) {

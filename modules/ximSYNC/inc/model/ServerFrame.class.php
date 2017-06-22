@@ -432,7 +432,7 @@ class ServerFrame extends ServerFrames_ORM {
 	*  @return array
 	 */
 
-	function getFramesOnBatch($batchId, $batchColumn, $mode = "simple", $progress = array(), $limitCriteria = null) {
+	function getFramesOnBatch($batchId, $batchColumn, $mode = "simple", & $progress = array(), $limitCriteria = null) {
 
 		$dbObj = new Db();
 		$sql = "SELECT ServerFrames.IdSync" . (($mode == 'simple') ? '' : ', ServerFrames.DateUp, ServerFrames.DateDown, ' .

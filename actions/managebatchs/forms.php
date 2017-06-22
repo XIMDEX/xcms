@@ -85,7 +85,7 @@
 				$progress = array();
 				$serverFrames = $serverFrameObj->getFramesOnBatch($batch['IdBatch'], 
 								(($batch['Type'] == 'Up') ? 'IdBatch' : 'IdBatchDown'), 
-								"extended", & $progress, MANAGEBATCHS_FRAMES_PER_PAGE);
+								"extended", $progress, MANAGEBATCHS_FRAMES_PER_PAGE);
 				$hasServerFrames = (is_array($serverFrames) && count($serverFrames) > 0) ? true : false;
 				
 				if ($hasServerFrames) {
@@ -601,4 +601,3 @@
 		
 		return $out;
 	}
-?>
