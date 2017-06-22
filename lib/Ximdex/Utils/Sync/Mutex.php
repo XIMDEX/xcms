@@ -51,7 +51,7 @@ class Mutex
 
 		if (flock($this->file_ptr, LOCK_EX + LOCK_NB)) {
 			fwrite($this->file_ptr, posix_getpid() . "\n");
-			flush($this->file_ptr);
+			fflush($this->file_ptr);
 			fclose($this->file_ptr);
 			$this->is_acquired = true;
 			return true;
@@ -118,5 +118,3 @@ class Mutex
 
 
 }
-
-?>
