@@ -96,7 +96,7 @@ define ('OPERATION_ADD', 'add');
 	$identification = $identifications[0];
 	$user = $identification->get_attribute('login');
 	
-    $authenticator =& new Authenticator();
+    $authenticator = new Authenticator();
 	if (!$authenticator->login($user, $passApp)) {
 		$messages->add(_('Inserted User / password are not correct'), MSG_TYPE_ERROR);
 		cleanup($messages, $paquete, $destFolder);
@@ -114,7 +114,7 @@ define ('OPERATION_ADD', 'add');
 	$elements = $domDocument->get_elements_by_tagname($nodeTypeName);
 	
 	if (count($elements) !== 1) {
-		$messages->add(_('El paquete contiene m�s de un nodo'), MSG_TYPE_ERROR);
+		$messages->add(_('The package contains more than a node'), MSG_TYPE_ERROR);
 		cleanup($messages, $paquete, $destFolder);
 	}
 	$element = $elements[0];
@@ -166,7 +166,7 @@ define ('OPERATION_ADD', 'add');
 					"NODETYPENAME" => "BINARYFILE",
 					"NAME" => $name,
 					"PARENTID" => $idParent,
-					"STATE" => "Publicaci�n",
+					"STATE" => "Publication",
 					"CHILDRENS" => 
 					array (
 						array (
@@ -183,7 +183,7 @@ define ('OPERATION_ADD', 'add');
 					'ID' => $idNode,
 					"NODETYPENAME" => "BINARYFILE",
 					"NAME" => $name,
-					"STATE" => "Publicaci�n",
+					"STATE" => "Publication",
 					"CHILDRENS" => 
 					array (
 						array (
@@ -215,5 +215,3 @@ define ('OPERATION_ADD', 'add');
 	
 	cleanup($messages, $paquete, $destFolder, $result);
 	//Return result
-	
-?>
