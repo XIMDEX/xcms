@@ -40,6 +40,7 @@ class Action_publicatesection extends ActionAbstract
         $idNode = (int)$this->request->getParam("nodeid");
         $node = new Node($idNode);
         $nodeTypeName = $node->nodeType->GetName();
+        $publishabledNodeTypes = array();
         /*
         $nodeTypes = array('ImageFile', 'XmlDocument');
 
@@ -53,7 +54,7 @@ class Action_publicatesection extends ActionAbstract
         
         $values = array(
             'go_method' => 'publicate_section',
-            //'publishabledtypes' => $publishabledNodeTypes,
+            'publishabledtypes' => $publishabledNodeTypes,
             'synchronizer_to_use' => ModulesManager::isEnabled('ximSYNC') ? 'ximSYNC' : 'default',
             'ximpublish_tools_enabled' => ModulesManager::isEnabled('ximPUBLISHtools'),
             'folderName' => in_array($nodeTypeName, array('XimNewsSection', 'Section', 'XimNewsImagesFolder', 'XimNewsImagesRootFolder', 'ImagesFolder', 'ImagesRootFolder', 'CssRootFolder', 'CssFolder', 'CommonFolder', 'CommonRootFolder', 'XimNewsImagesFolder')) ? 'section' : 'server',
