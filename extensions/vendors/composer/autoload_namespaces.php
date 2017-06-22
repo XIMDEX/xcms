@@ -14,7 +14,6 @@ return array(
     'ProxyManager\\' => array($vendorDir . '/ocramius/proxy-manager/src'),
     'PhpDocReader' => array($vendorDir . '/mnapoli/phpdocreader/src'),
     'Mockery' => array($vendorDir . '/mockery/mockery/library'),
-    'JsMin' => array($vendorDir . '/werkint/jsmin'),
     'IntegrationTests\\' => array($vendorDir . '/mnapoli/php-di/tests'),
     'Doctrine\\Common\\Lexer\\' => array($vendorDir . '/doctrine/lexer/lib'),
     'Doctrine\\Common\\Inflector\\' => array($vendorDir . '/doctrine/inflector/lib'),

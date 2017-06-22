@@ -155,13 +155,6 @@ class ComposerStaticInit49ce0fed9e6c161c1c57d2afb6833eaa
                 0 => __DIR__ . '/..' . '/mockery/mockery/library',
             ),
         ),
-        'J' => 
-        array (
-            'JsMin' => 
-            array (
-                0 => __DIR__ . '/..' . '/werkint/jsmin',
-            ),
-        ),
         'I' => 
         array (
             'IntegrationTests\\' => 

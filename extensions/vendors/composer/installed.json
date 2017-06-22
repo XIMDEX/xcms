@@ -579,65 +579,6 @@
         "installation-source": "source"
     },
     {
-        "name": "werkint/jsmin",
-        "version": "dev-master",
-        "version_normalized": "9999999-dev",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/Werkint/JsMin.git",
-            "reference": "49186aef5401c27f9a504a785032194f77d6dabd"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/Werkint/JsMin/zipball/49186aef5401c27f9a504a785032194f77d6dabd",
-            "reference": "49186aef5401c27f9a504a785032194f77d6dabd",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.4"
-        },
-        "time": "2013-11-10 11:34:43",
-        "type": "library",
-        "installation-source": "source",
-        "autoload": {
-            "psr-0": {
-                "JsMin": ""
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Douglas Crockford",
-                "homepage": "http://www.crockford.com"
-            },
-            {
-                "name": "Bogdan Yurov",
-                "email": "bogdan@yurov.me"
-            },
-            {
-                "name": "Steve Clay",
-                "email": "steve@mrclay.org",
-                "homepage": "http://www.mrclay.org/",
-                "role": "Developer"
-            },
-            {
-                "name": "Ryan Grove",
-                "email": "ryan@wonko.com",
-                "role": "PHP port"
-            },
-            {
-                "name": "Andrea Giammarchi",
-                "homepage": "http://www.3site.eu",
-                "role": "spaceBeforeRegExp"
-            }
-        ],
-        "description": "Library for minifying JavaScript files",
-        "abandoned": true
-    },
-    {
         "name": "hammerjs/hammer.js",
         "version": "2.0.4",
         "version_normalized": "2.0.4.0",
