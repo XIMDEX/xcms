@@ -23,33 +23,30 @@
  *  @version $Revision$
  *}
 
-
-{assign var="languages" value=$properties.Language}
-
-<fieldset>
-	<div class="manageproperties">
-		<h3 class="icon icon-language">{t}Languages{/t}</h3>
-		<div class="row-item">
-			<div class="hidden">
-				<input type="radio" name="inherited_languages" class="languages_overwritten"
-					value="overwrite" checked />
-				<label>{t}Overwrite inherited languages{/t}</label>
+{if isset($properties.Language) and count($properties.Language) > 0}
+	{assign var="languages" value=$properties.Language}
+	<fieldset>
+		<div class="manageproperties">
+			<div class="small-12 columns">
+			<label class="label_title label_general2">{t}Languages{/t}</label>
+			<div class="row-item row-special">
+				<div class="hidden">
+					<input type="radio" name="inherited_languages" class="languages_overwritten"
+						value="overwrite" checked />
+					<label>{t}Overwrite inherited languages{/t}</label>
+				</div>
+				{foreach from=$languages item=language}
+					<span class="slide-element">
+						<input type="checkbox" class="languages input-slide" name="Language[]" id="{$language.Name}_{$id_node}" 
+							value="{$language.IdLanguage}"
+							{if $language.Checked == 1}
+								checked="checked"
+							{/if} />
+						<label for="{$language.Name}_{$id_node}" class="label-slide "> {$language.Name}</label>
+					</span>
+				{/foreach}
 			</div>
-			{foreach from=$languages item=language}
-				<span class="slide-element">
-					<input
-						type="checkbox"
-						class="languages input-slide"
-						name="Language[]"
-						id="{$language.Name}_{$id_node}"						
-						value="{$language.IdLanguage}"
-						{if $language.Checked == 1}
-							checked="checked"
-						{/if}						
-						/>
-					<label for="{$language.Name}_{$id_node}" class="label-slide">{$language.Name}</label>
-				</span>
-			{/foreach}
+			</div>
 		</div>
-	</div>
-</fieldset>
+	</fieldset>
+{/if}
