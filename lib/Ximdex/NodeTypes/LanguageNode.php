@@ -54,19 +54,14 @@ class LanguageNode extends Root
 	 */
 	function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $isoname = null, $description = null, $enabled = null)
 	{
-
 		$language = new Language();
 		$result = $language->find('IdLanguage', 'IsoName = %s', array($isoname));
-
-		if ($result > 0) {
-			$this->parent->messages->add(_('The ISO code entered is already assigned to another language'), MSG_TYPE_ERROR);
+		if ($result) {
+			$this->messages->add(_('The ISO code entered is already assigned to another language'), MSG_TYPE_ERROR);
 			$this->parent->delete();
 			return NULL;
 		}
-
-		$language = new Language();
 		$ret = $language->CreateLanguage($name, $isoname, $description, $enabled, $this->parent->get('IdNode'));
-
 		$this->UpdatePath();
 		return $ret;
 	}
