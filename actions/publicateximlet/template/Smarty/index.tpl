@@ -58,4 +58,4 @@
 {/if}
 
 {* 
-<div id="publicando" style="display: none;"><img src="/xmd/images/indicator.gif" alt="" border="0" id="publicando"/></div>*}
+<div id="publicando" style="display: none;"><img src="{$_URL_ROOT}/xmd/images/indicator.gif" alt="" border="0" id="publicando"/></div>*}
