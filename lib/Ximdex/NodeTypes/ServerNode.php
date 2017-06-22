@@ -240,13 +240,15 @@ class ServerNode extends FolderNode
 
 	function SetEnabled($physicalID, $enable)
 	{
-		$sql = "UPDATE Servers SET Enabled= '" . $enable . "' WHERE IdNode=" . $this->nodeID . " AND IdServer=" . $physicalID;
+		$enable = ($enable) ? 'true' : 'false';
+		$sql = "UPDATE Servers SET Enabled = " . $enable . " WHERE IdNode = " . $this->nodeID . " AND IdServer = " . $physicalID;
 		$this->dbObj->Execute($sql);
 	}
 
 	function SetPreview($physicalID, $preview)
 	{
-		$sql = "UPDATE Servers SET Previsual= '" . $preview . "' WHERE IdNode=" . $this->nodeID . " AND IdServer=" . $physicalID;
+		$preview = ($preview) ? 'true' : 'false';
+		$sql = "UPDATE Servers SET Previsual = " . $preview . " WHERE IdNode = " . $this->nodeID . " AND IdServer = " . $physicalID;
 		$this->dbObj->Execute($sql);
 	}
 
