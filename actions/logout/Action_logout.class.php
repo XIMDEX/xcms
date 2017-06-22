@@ -42,6 +42,7 @@ class Action_logout extends ActionAbstract
         $authenticator = new Authenticator();
         $authenticator->logout();
         header(sprintf("Location: %s/", \App::getValue( 'UrlRoot')));
+        die();
     }
 
 }
