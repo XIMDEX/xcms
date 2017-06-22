@@ -39,17 +39,13 @@
     ],
     "require": {
         "solarium/solarium": "3.5.1",
-        "mnapoli/php-di": "4.4.2",
         "monolog/monolog": "1.11.0",
-        "codemirror/Codemirror": "4.7.0",
+        "codemirror/Codemirror": "4.7.1",
         "RyanMullins/angular-hammer": "2.1.10",
         "hammerjs/hammer.js": "2.0.4",
-        "werkint/jsmin": "dev-master",
         "pda/pheanstalk": "*",
         "symfony/console": "^3.1",
-        "illuminate/support": "5.2.*",
-        "symfony/polyfill-php56": "^1.2"
-
+        "illuminate/support": "5.2.*"
 
     },
      "require-dev": {
