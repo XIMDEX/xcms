@@ -97,7 +97,7 @@ class Parser
 
     function build()
     {
-        $mydoc =& new DOMIT_Document();
+        $mydoc = new DOMIT_Document();
         $exito = $mydoc->loadXML($this->input_file);
 
         if (!$exito) {
@@ -122,7 +122,7 @@ class Parser
                 // Document construction
                 $document = new document();
 
-                $document->renderer =& new latex_document();
+                $document->renderer = new latex_document();
                 $document->open_document($handler, $doc_element);
                 $this->unit = $document->getUnit();
                 // put_javascript is in latex.class.php and latex_javascript.class.php
@@ -143,7 +143,7 @@ class Parser
                 $nodes = $nodes->arNodeList;
                 $scriptJs = new ScriptJS($nodes);
                 $scriptJs->handler = $handler;
-                $scriptJs->renderer =& new Latex_scriptjs();
+                $scriptJs->renderer = new Latex_scriptjs();
                 $scriptJs->build();
 
                 $this->px2mmX = $canvas->getAttribute("px2mmx");
@@ -154,7 +154,7 @@ class Parser
                  * traverse all the XML tree. Into scanNodes it pays attention to
                  * special nodes. If one is found, it goes to the next brother (nextSibling)
                  */
-                $blockAnalizer =& new block_analyzer;
+                $blockAnalizer = new block_analyzer;
                 $blockAnalizer->handler =& $handler;
                 $blockAnalizer->style_obj =& $style;
                 $this->scanNodes($canvas, $blockAnalizer);

@@ -184,10 +184,9 @@ function filter_pvd($nodeID)
  	$templateContent = $templateNode ->class-> GetContent();
 	$templateContent = split("##########",$templateContent);
 	$content = str_replace("'", "\'", $templateContent[1]);
-    	$templateNew =& new DOMIT_Document();
+    	$templateNew = new DOMIT_Document();
     	$success = $templateNew->parseXML($content,true);
 	$this->root  = & $templateNew->documentElement->firstChild;
 }
 
 }
-?>

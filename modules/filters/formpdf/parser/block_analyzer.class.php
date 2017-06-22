@@ -94,13 +94,13 @@ class Block_analyzer {
 			require_once($parser);
 			require_once($renderer);
 			if (class_exists($element_class)) {
-				$element =& new $element_class($this->root);
+				$element = new $element_class($this->root);
 				$element->handler =& $this->handler;
 
 				// Instanciates renderer of this element
 				$latex_renderer = "Latex_".$element_class;
 				if (class_exists($latex_renderer)) {
-					$element->renderer =& new $latex_renderer;
+					$element->renderer = new $latex_renderer;
 				}
 
 				// and style
@@ -121,4 +121,3 @@ class Block_analyzer {
 		}
 	}
 }
-?>
