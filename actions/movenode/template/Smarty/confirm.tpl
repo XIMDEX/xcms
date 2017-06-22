@@ -41,7 +41,7 @@
 				    <li><strong>{t}Target{/t}:</strong> {$targetPath}</li>
 				</ul>
 		</fieldset>
-	    	{if isset($isPublished)}
+	    	{if isset($isPublished) && $isPublished}
 		<fieldset>
 			<legend><span>{t}Warning about publication{/t} </span> </legend>
 			<p>{t}This node, or one or more of its children, are published{/t}!.{t}If you do not want to keep your nodes published on current location{/t}:</p>
