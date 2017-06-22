@@ -47,7 +47,7 @@ CREATE TABLE `Batchs` (
   PRIMARY KEY  (`IdBatch`),
   KEY `IdBatchDown` (`IdBatchDown`),
   KEY `IdNodeGenerator` (`IdNodeGenerator`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -63,7 +63,7 @@ CREATE TABLE `ChannelFrames` (
   PRIMARY KEY  (`IdChannelFrame`),
   KEY `ChannelId` (`ChannelId`),
   KEY `NodeId` (`NodeId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -86,7 +86,7 @@ CREATE TABLE `NodeFrames` (
   KEY `NodeId` (`NodeId`),
   KEY `VersionId` (`VersionId`),
   UNIQUE KEY `NodeVersion` (`NodeId`,`VersionId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -103,7 +103,7 @@ CREATE TABLE `Pumpers` (
   `ProcessId` varchar(255) NOT NULL,
   PRIMARY KEY  (`PumperId`),
   KEY `IdServer` (`IdServer`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -118,7 +118,7 @@ CREATE TABLE `ServerErrorByPumper` (
   `WithError` int(12) unsigned NOT NULL,
   `UnactivityCycles` int(12) unsigned NOT NULL,
   PRIMARY KEY  (`ErrorId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -151,7 +151,7 @@ CREATE TABLE `ServerFrames` (
   KEY `IdServer` (`IdServer`),
   KEY `PumperId` (`PumperId`),
   KEY `IdChannelFrame` (`IdChannelFrame`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='XimDEX Table Synchronization';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='XimDEX Table Synchronization';
 
 -- --------------------------------------------------------
 
@@ -200,7 +200,7 @@ CREATE TABLE `PublishingReport` (
   `IdBatch` int(11) default NULL, 
   `IdParentServer` int(11) default NULL, 
 PRIMARY KEY  (`IdReport`) 
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Publishing report'; 
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Publishing report'; 
 
 --
 -- Table Structure for `NodesToPublish` table
@@ -219,7 +219,7 @@ CREATE TABLE `NodesToPublish` (
   `ForcePublication` tinyint(3) unsigned NOT NULL default '0',
   `DeepLevel` int(12) unsigned NOT NULL default '0',
   PRIMARY KEY  (`Id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Nodes to push into publishing pool';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Nodes to push into publishing pool';
 
 
 -- Action "Publish a server massively"
@@ -228,6 +228,9 @@ INSERT INTO Actions (IdAction, IdNodeType, Name, Command, Icon, Description, Sor
 
 -- Add field ActiveForPumping on Servers table
 ALTER TABLE `Servers` ADD `ActiveForPumping` tinyint(3) unsigned Default '1';
+
+-- Add tables restrictions
+
 
 -- Add RolesActions
 INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES(NULL, 202, 6376, 0, 1, 3);
