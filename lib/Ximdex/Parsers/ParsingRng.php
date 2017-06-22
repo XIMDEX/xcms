@@ -182,15 +182,19 @@ class ParsingRng
         // Gets the root element and starts parsing
 
         $nodeList0 = $this->xpathObj->query('//*[local-name(.)="element" and @name="docxap"]');
-        $nodeList = $nodeList0->item(0)->childNodes;
-
-        if ($nodeList->length > 0) {
-            foreach ($nodeList as $domNode) {
-                $nodeName = $domNode->nodeName;
-                $this->processNode($domNode);
-            }
+        
+        //check if the RNG template have the docxap item declared
+        if ($nodeList0->item(0))
+        {
+        	$nodeList = $nodeList0->item(0)->childNodes;
+        	if ($nodeList->length > 0) {
+            	foreach ($nodeList as $domNode) {
+                	$nodeName = $domNode->nodeName;
+                	$this->processNode($domNode);
+            	}
+        	}
         }
-
+		
         return $this->minimalXml;
     }
 
