@@ -34,7 +34,6 @@ use Ximdex\Models\NodeType;
 use Ximdex\Models\Node;
 use Ximdex\Models\ORM\StructuredDocumentsOrm;
 use Ximdex\Parsers\ParsingDependencies;
-use Ximdex\Services\NodeType as NodeTypeConstants;
 
 
 class StructuredDocument extends StructuredDocumentsOrm

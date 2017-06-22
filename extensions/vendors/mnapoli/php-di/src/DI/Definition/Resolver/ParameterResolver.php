@@ -10,7 +10,6 @@
 namespace DI\Definition\Resolver;
 
 use DI\Definition\AbstractFunctionCallDefinition;
-use DI\Definition\ClassDefinition;
 use DI\Definition\EntryReference;
 use DI\Definition\Exception\DefinitionException;
 use Interop\Container\ContainerInterface;

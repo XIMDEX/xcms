@@ -25,8 +25,7 @@
  */
 namespace Ximdex\Modules ;
 
-use ModulesManager,
-    Ximdex\Runtime\App;
+use ModulesManager;
 /**
  *
  */

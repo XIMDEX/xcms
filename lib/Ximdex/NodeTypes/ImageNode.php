@@ -29,7 +29,6 @@ use DOMDocument;
 use MetadataManager;
 use ModulesManager;
 use Ximdex\Models\Node;
-use Ximdex\Runtime\App;
 
 ModulesManager::file('/inc/metadata/MetadataManager.class.php');
 

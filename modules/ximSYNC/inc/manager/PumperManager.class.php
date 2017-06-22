@@ -26,7 +26,6 @@
 
 
 use Ximdex\Models\Pumper;
-use Ximdex\Runtime\Db;
 
 
 include_once(XIMDEX_ROOT_PATH . "/modules/ximSYNC/conf/synchro_conf.php");

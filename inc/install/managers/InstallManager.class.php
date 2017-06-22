@@ -25,7 +25,6 @@
  */
 
 use Ximdex\Helpers\ServerConfig;
-use Ximdex\Utils\Crypto;
 use Ximdex\Utils\FsUtils;
 
 require_once(XIMDEX_ROOT_PATH . '/inc/install/managers/messages/ConsoleMessagesStrategy.class.php');

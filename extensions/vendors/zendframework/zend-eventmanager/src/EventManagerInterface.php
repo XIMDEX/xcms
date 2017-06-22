@@ -9,7 +9,6 @@
 
 namespace Zend\EventManager;
 
-use Traversable;
 
 /**
  * Interface for messengers

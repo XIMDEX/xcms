@@ -30,7 +30,6 @@ use Exception;
 use MetadataManager;
 use ModulesManager;
 use PoolerClient;
-use SolrConector;
 use Ximdex\Event\NodeEvent;
 use Ximdex\Models\Node;
 use Ximdex\Models\PipeCache;

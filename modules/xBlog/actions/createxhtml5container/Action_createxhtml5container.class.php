@@ -24,11 +24,6 @@
  *  @version $Revision$
  */
 
-use Ximdex\Models\Channel;
-use Ximdex\Models\Language;
-use Ximdex\Models\Node;
-use Ximdex\Models\NodeType;
-use Ximdex\Models\StructuredDocument;
 use Ximdex\MVC\ActionAbstract;
 
 ModulesManager::file('/inc/metadata/MetadataManager.class.php');
@@ -43,4 +38,3 @@ class Action_createxhtml5container extends ActionAbstract {
 		$this->render(array('action' => $action), NULL, 'iframe.tpl');
     }
 }
-?>

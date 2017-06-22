@@ -1,8 +1,6 @@
 <?php
 
 use Ximdex\Modules\Module;
-use Ximdex\Events;
-use Ximdex\Runtime\App;
 
 /**
  * Class Module_xBlog

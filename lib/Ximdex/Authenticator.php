@@ -29,7 +29,6 @@ namespace Ximdex;
 
 use ModulesManager;
 use Ximdex\Models\User;
-use Ximdex\Logger as XMD_Log;
 use Ximdex\Runtime\App;
 use Ximdex\Utils\Session;
 

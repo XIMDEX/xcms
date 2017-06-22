@@ -28,7 +28,6 @@
 
 use Ximdex\MVC\FrontController;
 use Ximdex\Runtime\App;
-use Ximdex\Utils\FsUtils;
 
 include_once 'bootstrap/start.php';
 

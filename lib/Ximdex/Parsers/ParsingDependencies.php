@@ -31,7 +31,6 @@ use Ximdex\Models\Dependencies;
 use Ximdex\Deps\DepsManager;
 use DOMDocument;
 use DOMXPath;
-use ModulesManager;
 use Ximdex\Models\NodeDependencies;
 use Ximdex\Models\NodeType;
 use Ximdex\Utils\PipelineManager;
