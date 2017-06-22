@@ -63,7 +63,7 @@ class Action_modifyserver extends ActionAbstract {
 			$isServerOTF=false;
 		}
 
-		if($servers) {
+		if ($servers and $serverID) {
 			$server = array(
 				"id" => $serverID,
 				"name" => $servers->GetNodeName(),
@@ -81,6 +81,10 @@ class Action_modifyserver extends ActionAbstract {
 				'isServerOTF' => $isServerOTF
 
 			);
+		}
+		else
+		{
+			$server = array();
 		}
 
 		//Getting encodes
@@ -179,7 +183,8 @@ class Action_modifyserver extends ActionAbstract {
 				$server->class->DeletePhysicalServer($serverID);
 				$action = "erase";
 				$this->messages->add(_("Server successfully removed"), MSG_TYPE_NOTICE);
-			}else {
+				$serverID = null;
+			} else {
 
 				$dbObj = new DB();
 				$sql = "SELECT IdProtocol FROM Protocols WHERE IdProtocol='".$protocol."'";

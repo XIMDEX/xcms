@@ -46,6 +46,7 @@ X.actionLoaded(function (event, fn, params) {
     //On click, reload the action with the selected server id. This will return the action with the input's value
     fn('div#serverid .row_item_selectable').click(function () {
         var urler = fn('#nodeURL').val() + '&serverid=' + fn(this).attr("value");
+        urler += '&action=modifyserver';
         fn('#mdfsv_form').attr('action', urler);
         fm.sendForm();
         return false;
@@ -62,6 +63,7 @@ X.actionLoaded(function (event, fn, params) {
     //On click, reload the action without server id, so the inputs will be empty.
     fn("div.create-server").click(function (e) {
         var urler = fn("#nodeURL").val();
+        urler += '&action=modifyserver';
         fn("#mdfsv_form").attr("action", urler);
         fm.sendForm();
         return false;
