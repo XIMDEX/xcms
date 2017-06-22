@@ -10040,7 +10040,7 @@ msgid "Available users"
 msgstr "Usuarios disponibles"
 
 msgid "The next users belongs to the group"
-msgstr "Los siguientes ususarios pertenecen al grupo"
+msgstr "Los siguientes usuarios pertenecen al grupo"
 
 msgid "available users to be associated with the group"
 msgstr "usuarios disponibles para ser asociados al grupo"

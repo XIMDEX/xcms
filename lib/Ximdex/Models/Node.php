@@ -1187,10 +1187,12 @@ class Node extends NodesOrm
         // All the args from this function call are passed to this nodetype create method.
         if (is_object($this->class)) {
             $argv = func_get_args();
-            call_user_func_array(array(&$this->class, 'CreateNode'), $argv);
+            call_user_func_array(array(& $this->class, 'CreateNode'), $argv);
+            if (is_object($this->class))
+            {
+            	$this->messages->mergeMessages($this->class->messages);
+            }
         }
-
-        $this->messages->mergeMessages($this->class->messages);
 
         if ($this->messages->count(MSG_TYPE_ERROR) > 0) {
             if ($this->get('IdNode') > 0) {
