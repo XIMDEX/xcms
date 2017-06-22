@@ -28,6 +28,7 @@ namespace Ximdex\Notifications;
 
 use Mail;
 use Ximdex\Models\User;
+use ModulesManager;
 
 ModulesManager::file('/inc/mail/Mail.class.php');
 

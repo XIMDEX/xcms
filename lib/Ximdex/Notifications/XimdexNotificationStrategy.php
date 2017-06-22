@@ -25,7 +25,9 @@
  */
 
 namespace Ximdex\Notifications;
+
 use Messages_ORM;
+use ModulesManager;
 
 ModulesManager::file('/inc/model/orm/Messages_ORM.class.php');
 
