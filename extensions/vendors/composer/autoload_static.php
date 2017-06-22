@@ -9,8 +9,7 @@ class ComposerStaticInit49ce0fed9e6c161c1c57d2afb6833eaa
     public static $files = array (
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         '04d01c65c12f8d8ed2a53c6dd09ec5e2' => __DIR__ . '/..' . '/mnapoli/php-di/src/DI/functions.php',
-        '72579e7bd17821bb1321b87411366eae' => __DIR__ . '/..' . '/illuminate/support/helpers.php',
-        'bd9634f2d41831496de0d3dfe4c94881' => __DIR__ . '/..' . '/symfony/polyfill-php56/bootstrap.php',
+        '72579e7bd17821bb1321b87411366eae' => __DIR__ . '/..' . '/illuminate/support/helpers.php'
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -61,10 +60,6 @@ class ComposerStaticInit49ce0fed9e6c161c1c57d2afb6833eaa
         'Symfony\\Polyfill\\Util\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-util',
-        ),
-        'Symfony\\Polyfill\\Php56\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/symfony/polyfill-php56',
         ),
         'Symfony\\Polyfill\\Mbstring\\' => 
         array (
