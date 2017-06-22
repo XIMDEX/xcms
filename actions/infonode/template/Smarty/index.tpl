@@ -80,14 +80,14 @@
                 </div>
             </div>
         </div>
-        {if ($info.date)}
+        {if isset($info.date)}
             <h3>{t} Properties info {/t}</h3>
             <div class="row">
 
                 <div class="small-6 columns">
                     <div class="box-content green"><strong>{t}State{/t}</strong><span
                                 class="state">{if ($info.published)}{t}Published{/t}{else}{t}Not published{/t}{/if}
-                            ({if isset($statusInfo)}{t}{$statusInfo}{/t}{else} Not status {/if})</span></strong>
+                            ({if isset($statusInfo)}{t}{$statusInfo}{/t}{else} Not status {/if})</span>
                     </div>
                 </div>
 
