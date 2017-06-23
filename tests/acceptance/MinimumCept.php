@@ -24,7 +24,8 @@ $I->click("Start Installation");
 
 $I->waitForText("System Requirements", 5);
 
-$I->click("Check System");
+//$I->click("Check System");
+$I->click("Start Installation");
 
 $I->waitForText("Database host:", 5);
 
@@ -33,7 +34,8 @@ $I->fillField("dbuser", "ximdex");
 $I->fillField("dbpass", "ximdex");
 $I->fillField("dbname", "ximdex");
 
-$I->click("Check Connection to DB");
+//$I->click("Check Connection to DB");
+$I->click("Check");
 
 $I->wait(3);
 
