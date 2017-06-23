@@ -40,6 +40,7 @@ class ComposerStaticInit49ce0fed9e6c161c1c57d2afb6833eaa
             'Interop\\Container\\' => 18,
             'Illuminate\\Support\\' => 19,
             'Illuminate\\Contracts\\' => 21,
+        	'Invoker\\' => 8
         ),
         'D' => 
         array (
@@ -104,6 +105,10 @@ class ComposerStaticInit49ce0fed9e6c161c1c57d2afb6833eaa
         array (
             0 => __DIR__ . '/..' . '/doctrine/cache/lib/Doctrine/Common/Cache',
         ),
+    	'Invoker\\' =>
+    	array (
+    		0 => __DIR__ . '/..' . '/php-di/invoker/src',
+    	)
     );
 
     public static $prefixesPsr0 = array (
