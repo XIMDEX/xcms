@@ -2,7 +2,6 @@
 
 use Ximdex\Runtime\App;
 
-
 class RuntimeAppTest extends PHPUnit_Framework_TestCase
 {
 
@@ -101,6 +100,7 @@ class RuntimeAppTest extends PHPUnit_Framework_TestCase
 
 
     }
+    
     public function testSetValuePersistent()
     {
 
@@ -141,7 +141,6 @@ class PDOMock extends \PDO
 {
     public function __construct()
     {
+    	
     }
-
-
 }

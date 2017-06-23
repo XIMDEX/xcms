@@ -50,7 +50,8 @@
     },
      "require-dev": {
         "phpunit/phpunit": "3.7.21",
-        "mockery/mockery": "0.8.0"
+        "mockery/mockery": "0.8.0",
+        "codeception/codeception": "^2.2"
     },
     "autoload": {
         "psr-0": { "Ximdex": "lib"}
