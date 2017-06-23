@@ -3,7 +3,6 @@ dist: trusty
 
 group: edge
 
-#language: generic
 language: php
 php:
   - '7.1'
