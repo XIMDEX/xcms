@@ -24,8 +24,9 @@
  *  @version $Revision$
  */
 
-namespace Ximdex\Utils ;
+namespace Ximdex\Utils;
 
+use Ximdex\Runtime\App;
 
 class QueryManager {
 
