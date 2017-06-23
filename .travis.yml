@@ -1,0 +1,32 @@
+sudo: required
+dist: trusty
+
+group: edge
+
+#language: generic
+language: php
+php:
+  - '7.1'
+
+services:
+  - docker
+
+env:
+  - PHP_VERSION=7.1 MYSQL_VERSION=5.7
+
+before_install:
+  - curl -L https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
+  - cd tests
+  - docker-compose up -d ximdex
+
+script:
+  - docker-compose run test
+  
+notifications:
+  email:
+    recipients:
+      - travis@ximdex.com
+    on_success: change
+    on_failure: always
