@@ -24,7 +24,7 @@ Version 3.6
     * New connector to Solr. Now you can publish directly on Apache Solr.
     * Angular notifications.
     * Modify type for subversion field on Versions table.
-    * Codemirror updated to version 4.7.0.
+    * Codemirror updated to version 4.7.1.
     * Allow to upload SVG files into image folders.
     * Adding solarium library for Solr support.
     * API auto-configured by default.

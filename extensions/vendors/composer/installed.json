@@ -65,78 +65,89 @@
         ]
     },
     {
-        "name": "mnapoli/phpdocreader",
-        "version": "1.3.0",
-        "version_normalized": "1.3.0.0",
+        "name": "php-di/phpdoc-reader",
+        "version": "2.0.1",
+        "version_normalized": "2.0.1.0",
         "source": {
             "type": "git",
-            "url": "https://github.com/mnapoli/PhpDocReader.git",
-            "reference": "8a6e123fd1ce54f7fcbd71747b3bf04e465da229"
+            "url": "https://github.com/PHP-DI/PhpDocReader.git",
+            "reference": "83f5ead159defccfa8e7092e5b6c1c533b326d68"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/mnapoli/PhpDocReader/zipball/8a6e123fd1ce54f7fcbd71747b3bf04e465da229",
-            "reference": "8a6e123fd1ce54f7fcbd71747b3bf04e465da229",
+            "url": "https://api.github.com/repos/PHP-DI/PhpDocReader/zipball/83f5ead159defccfa8e7092e5b6c1c533b326d68",
+            "reference": "83f5ead159defccfa8e7092e5b6c1c533b326d68",
             "shasum": ""
         },
         "require": {
-            "doctrine/annotations": "1.*",
             "php": ">=5.3.0"
         },
-        "time": "2014-08-21 08:20:45",
+        "require-dev": {
+            "phpunit/phpunit": "~4.6"
+        },
+        "time": "2015-11-29 10:34:25",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
-            "psr-0": {
-                "PhpDocReader": "src/",
-                "UnitTest": "tests/"
+            "psr-4": {
+                "PhpDocReader\\": "src/PhpDocReader"
             }
         },
         "notification-url": "https://packagist.org/downloads/",
         "license": [
             "MIT"
         ],
+        "description": "PhpDocReader parses @var and @param values in PHP docblocks (supports namespaced class names with the same resolution rules as PHP)",
         "keywords": [
             "phpdoc",
             "reflection"
-        ],
-        "abandoned": "php-di/phpdoc-reader"
+        ]
     },
     {
-        "name": "mnapoli/php-di",
-        "version": "4.4.2",
-        "version_normalized": "4.4.2.0",
+        "name": "php-di/php-di",
+        "version": "5.4.0",
+        "version_normalized": "5.4.0.0",
         "source": {
             "type": "git",
-            "url": "https://github.com/mnapoli/PHP-DI.git",
-            "reference": "0e267e20226589105ac3c6ae9d893cfbc350a193"
+            "url": "https://github.com/PHP-DI/PHP-DI.git",
+            "reference": "e348393488fa909e4bc0707ba5c9c44cd602a1cb"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/mnapoli/PHP-DI/zipball/0e267e20226589105ac3c6ae9d893cfbc350a193",
-            "reference": "0e267e20226589105ac3c6ae9d893cfbc350a193",
+            "url": "https://api.github.com/repos/PHP-DI/PHP-DI/zipball/e348393488fa909e4bc0707ba5c9c44cd602a1cb",
+            "reference": "e348393488fa909e4bc0707ba5c9c44cd602a1cb",
             "shasum": ""
         },
         "require": {
             "container-interop/container-interop": "~1.0",
-            "doctrine/annotations": "1.*",
-            "doctrine/cache": "1.*",
-            "mnapoli/phpdocreader": "~1.3",
-            "myclabs/php-enum": "1.*",
-            "ocramius/proxy-manager": "~0.3",
-            "php": ">=5.3.3"
+            "php": ">=5.5.0",
+            "php-di/invoker": "^1.3.2",
+            "php-di/phpdoc-reader": "^2.0.1"
+        },
+        "provide": {
+            "container-interop/container-interop-implementation": "^1.0"
+        },
+        "replace": {
+            "mnapoli/php-di": "*"
         },
         "require-dev": {
-            "phpunit/phpunit": "~4.0"
+            "doctrine/annotations": "~1.2",
+            "doctrine/cache": "~1.4",
+            "mnapoli/phpunit-easymock": "~0.2.0",
+            "ocramius/proxy-manager": "~1.0|~2.0",
+            "phpunit/phpunit": "~4.5"
         },
-        "time": "2014-11-10 01:37:46",
+        "suggest": {
+            "doctrine/annotations": "Install it if you want to use annotations (version ~1.2)",
+            "doctrine/cache": "Install it if you want to use the cache (version ~1.4)",
+            "ocramius/proxy-manager": "Install it if you want to use lazy injection (version ~1.0 or ~2.0)"
+        },
+        "time": "2016-08-23 20:18:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
-            "psr-0": {
-                "DI\\": "src/",
-                "IntegrationTests\\": "tests/",
-                "UnitTests\\": "tests/"
+            "psr-4": {
+                "DI\\": "src/DI/"
             },
             "files": [
                 "src/DI/functions.php"
@@ -146,14 +157,13 @@
         "license": [
             "MIT"
         ],
-        "description": "PHP-DI is a Container that makes Dependency Injection as practical as possible in PHP",
-        "homepage": "http://mnapoli.github.com/PHP-DI/",
+        "description": "The dependency injection container for humans",
+        "homepage": "http://php-di.org/",
         "keywords": [
             "container",
             "dependency injection",
             "di"
-        ],
-        "abandoned": "php-di/php-di"
+        ]
     },
     {
         "name": "phpunit/phpunit-mock-objects",
@@ -568,8 +578,8 @@
     },
     {
         "name": "codemirror/Codemirror",
-        "version": "4.7.0",
-        "version_normalized": "4.7.0.0",
+        "version": "4.7.1",
+        "version_normalized": "4.7.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/codemirror/CodeMirror.git",

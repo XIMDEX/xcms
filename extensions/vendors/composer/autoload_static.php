@@ -8,7 +8,7 @@ class ComposerStaticInit49ce0fed9e6c161c1c57d2afb6833eaa
 {
     public static $files = array (
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
-        '04d01c65c12f8d8ed2a53c6dd09ec5e2' => __DIR__ . '/..' . '/mnapoli/php-di/src/DI/functions.php',
+        '04d01c65c12f8d8ed2a53c6dd09ec5e2' => __DIR__ . '/..' . '/php-di/php-di/src/DI/functions.php',
         '72579e7bd17821bb1321b87411366eae' => __DIR__ . '/..' . '/illuminate/support/helpers.php'
     );
 
@@ -21,7 +21,6 @@ class ComposerStaticInit49ce0fed9e6c161c1c57d2afb6833eaa
         'S' => 
         array (
             'Symfony\\Polyfill\\Util\\' => 22,
-            'Symfony\\Polyfill\\Php56\\' => 23,
             'Symfony\\Polyfill\\Mbstring\\' => 26,
             'Symfony\\Component\\Yaml\\' => 23,
             'Symfony\\Component\\EventDispatcher\\' => 34,
@@ -119,11 +118,11 @@ class ComposerStaticInit49ce0fed9e6c161c1c57d2afb6833eaa
         array (
             'UnitTests\\' => 
             array (
-                0 => __DIR__ . '/..' . '/mnapoli/php-di/tests',
+                0 => __DIR__ . '/..' . '/php-di/php-di/tests',
             ),
             'UnitTest' => 
             array (
-                0 => __DIR__ . '/..' . '/mnapoli/phpdocreader/tests',
+                0 => __DIR__ . '/..' . '/php-di/phpdocreader/tests',
             ),
         ),
         'S' => 
@@ -159,7 +158,7 @@ class ComposerStaticInit49ce0fed9e6c161c1c57d2afb6833eaa
         array (
             'IntegrationTests\\' => 
             array (
-                0 => __DIR__ . '/..' . '/mnapoli/php-di/tests',
+                0 => __DIR__ . '/..' . '/php-di/php-di/tests',
             ),
         ),
         'D' => 
@@ -178,7 +177,7 @@ class ComposerStaticInit49ce0fed9e6c161c1c57d2afb6833eaa
             ),
             'DI\\' => 
             array (
-                0 => __DIR__ . '/..' . '/mnapoli/php-di/src',
+                0 => __DIR__ . '/..' . '/php-di/php-di/src',
             ),
         ),
     );

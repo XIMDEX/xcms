@@ -7,16 +7,16 @@ $baseDir = dirname(dirname($vendorDir));
 
 return array(
     'Ximdex' => array($baseDir . '/lib'),
-    'UnitTests\\' => array($vendorDir . '/mnapoli/php-di/tests'),
+    'UnitTests\\' => array($vendorDir . '/php-di/php-di/tests'),
     'UnitTest' => array($vendorDir . '/mnapoli/phpdocreader/tests'),
     'Solarium\\' => array($vendorDir . '/solarium/solarium/library'),
     'Psr\\Log\\' => array($vendorDir . '/psr/log'),
     'ProxyManager\\' => array($vendorDir . '/ocramius/proxy-manager/src'),
     'PhpDocReader' => array($vendorDir . '/mnapoli/phpdocreader/src'),
     'Mockery' => array($vendorDir . '/mockery/mockery/library'),
-    'IntegrationTests\\' => array($vendorDir . '/mnapoli/php-di/tests'),
+    'IntegrationTests\\' => array($vendorDir . '/php-di/php-di/tests'),
     'Doctrine\\Common\\Lexer\\' => array($vendorDir . '/doctrine/lexer/lib'),
     'Doctrine\\Common\\Inflector\\' => array($vendorDir . '/doctrine/inflector/lib'),
     'Doctrine\\Common\\Annotations\\' => array($vendorDir . '/doctrine/annotations/lib'),
-    'DI\\' => array($vendorDir . '/mnapoli/php-di/src'),
+    'DI\\' => array($vendorDir . '/php-di/php-di/src'),
 );
