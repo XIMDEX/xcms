@@ -12,7 +12,7 @@ services:
   - docker
 
 env:
-  - PHP_VERSION=7.1 MYSQL_VERSION=5.7
+  - PHP_VERSION=7 MYSQL_VERSION=5.7
 
 before_install:
   - curl -L https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
