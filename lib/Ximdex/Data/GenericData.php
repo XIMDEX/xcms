@@ -555,7 +555,7 @@ class GenericData extends Overloadable
         $dbObj->query($query);
 
         $result = array();
-        if (!($dbObj->numRows > 0)) {
+        if (!$dbObj->numRows) {
             return $result;
         }
 

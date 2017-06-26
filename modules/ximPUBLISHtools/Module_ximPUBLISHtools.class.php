@@ -100,12 +100,20 @@ class Module_ximPUBLISHtools extends Module {
         // Pub. Report
         $sql['Deleting ximPUBLISH report action'] = "DELETE FROM Actions WHERE IdAction = '" . self::PUB_REPORT_ACTION_ID . "'";
         $result = $relRolesActions->find('IdRel', 'IdAction = %s', array(self::PUB_REPORT_ACTION_ID), MONO);
-        $sql['Disabling ximPUBLISH report action'] = "DELETE FROM RelRolesActions WHERE IdRel = '" . $result[0] . "'";
+        //TODO ajlucena: table Actions needs to be locked
+        if ($result)
+        {
+        	$sql['Disabling ximPUBLISH report action'] = "DELETE FROM RelRolesActions WHERE IdRel = '" . $result[0] . "'";
+        }
 
         $sql['Deleting ximPUBLISH history action'] = "DELETE FROM Actions WHERE IdAction = '" . self::PUB_REPORT_HISTORY_ID . "'";
         $result = $relRolesActions->find('IdRel', 'IdAction = %s', array(self::PUB_REPORT_HISTORY_ID), MONO);
-        $sql['Disabling ximPUBLISH history action'] = "DELETE FROM RelRolesActions WHERE IdRel = '" . $result[0] . "'";
-
+        ////TODO ajlucena: table Actions needs to be locked
+        if ($result)
+        {
+        	$sql['Disabling ximPUBLISH history action'] = "DELETE FROM RelRolesActions WHERE IdRel = '" . $result[0] . "'";
+        }
+        
         foreach ($sql as $query) {
             $db->Execute($query);
         }
@@ -115,5 +123,3 @@ class Module_ximPUBLISHtools extends Module {
     }
 
 }
-
-?>
