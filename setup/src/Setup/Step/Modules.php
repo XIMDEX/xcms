@@ -27,7 +27,7 @@ class Modules extends Base
     public function __construct( Manager $manager )
     {
        parent::__construct( $manager);
-        $this->label = "Modules";
+        $this->label = "Install Modules";
         $this->template = "modules.twig" ;
         $this->title = "Install Modules" ;
         $this->vars['title'] = $this->title ;
