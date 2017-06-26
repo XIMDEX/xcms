@@ -113,7 +113,7 @@ class Action_workflow_backward extends ActionAbstract {
         $sendNotifications = $this->request->getParam('sendNotifications');
         //If must send notifications
         if ((boolean)$sendNotifications) {
-            $sent = $this->sendNotifications($idNode, $prevState, $notificableUsers, $texttosend);
+            $sent = $this->sendNotification($idNode, $prevState, $notificableUsers, $texttosend);
             if (!$sent) {
                 $values = array(
                     'goback' => true,
@@ -142,7 +142,7 @@ class Action_workflow_backward extends ActionAbstract {
      *
      * @return boolean true if the notification is sended.
      */
-    protected function sendNotifications($idNode, $idState, $userList, $texttosend) {
+    private function sendNotification($idNode, $idState, $userList, $texttosend) {
 
         $send = true;
         $idUser = \Ximdex\Utils\Session::get("userID");

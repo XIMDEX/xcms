@@ -251,7 +251,7 @@ class Action_workflow_forward extends ActionAbstract {
 
         //If must send notifications
         if ((boolean) $sendNotifications) {
-            $sent = $this->sendNotifications($idNode, $idState, $notificableUsers, $texttosend);
+            $sent = $this->sendNotification($idNode, $idState, $notificableUsers, $texttosend);
             if (!$sent) {
                 $values = array(
                     'goback' => true,
@@ -454,7 +454,7 @@ class Action_workflow_forward extends ActionAbstract {
      *
      * @return boolean true if the notification is sended.
      */
-    protected function sendNotifications($idNode, $idState, $userList, $texttosend) {
+    private function sendNotification($idNode, $idState, $userList, $texttosend) {
 
         $send = true;
 
@@ -565,7 +565,7 @@ class Action_workflow_forward extends ActionAbstract {
 
         //If send notifications
         if ((boolean) $sendNotifications) {
-            $sent = $this->sendNotifications($idNode, $idState, $notificableUsers, $texttosend);
+            $sent = $this->sendNotification($idNode, $idState, $notificableUsers, $texttosend);
             if (!$sent) {
                 $values = array(
                     'goback' => true,
