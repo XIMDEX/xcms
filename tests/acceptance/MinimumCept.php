@@ -41,7 +41,7 @@ $I->click("Continue: Create tables");
 
 $I->waitForText("Tables and default data have been created", 20);
 
-$I->click("Continue: Modules");
+$I->click("Continue: Install Modules");
 
 $I->waitForText("Install Modules", 10);
 
