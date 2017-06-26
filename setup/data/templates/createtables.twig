@@ -27,7 +27,7 @@
         {% endfor %}
         </div>
         <div class="buttons-bottom">
-            <a href="{{ currentStepLink.href  }}" class="launch_ximdex action_launcher" alt="Check System" title="Check System">
+            <a href="{{ currentStepLink.href  }}" class="launch_ximdex action_launcher" alt="Check Again" title="Check Again">
                 Check Again
                 &nbsp;
                 <span class="glyphicon glyphicon-cog"></span>
@@ -35,12 +35,12 @@
         </div>
     {% else %}
 
-        <p>Tables and default data created </p>
-
+        <p>Tables and default data have been created.</p>
+		<p>Next step will install modules. It needs some minutes to end. Please, be patient...
 
         <div class="buttons-bottom">
             <a class="launch_ximdex action_launcher" href="{{ nextStepLink.href }}" class="btn btn-default"
-               alt="Start Installation" title="Start Installation">
+               alt="Continue: {{  nextStepLink.label }}" title="Continue: {{  nextStepLink.label }}">
                 Continue: {{  nextStepLink.label }}
                 &nbsp;
                 <span class="glyphicon glyphicon-cog"></span>

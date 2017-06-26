@@ -11,18 +11,16 @@
     <h2>
         {{ title }}
     </h2>
-
-
-
-
-
-
-
-
-
+    
+    <p>
+		Ximdex CMS needs a database system to work. Parameters to connect to the database will be asked: host and port of the server, a database already created but empty and the DB user with permissions to write into the provided database with its password.
+	</p>
+	<p>
+		When the connection to the DB is OK, the installation will go to the next step to populate the DB.
+	</p>
 
         <p>
-            Below you should enter your database connection details.
+            Please, provide the database connection parameters:
         </p>
 
         <form action="{{ currentStepLink.href  }}" method="POST" onsubmit="ShowLoading()">
@@ -64,7 +62,6 @@
 
             <p class="error"> {{ error.message  }}</p>
 
-
         {% endfor %}
     </div>
     <div class="buttons-bottom">
@@ -81,22 +78,20 @@
         {# next step #}
             <div class="buttons-bottom">
                 <a class="launch_ximdex action_launcher" href="{{ nextStepLink.href }}" class="btn btn-default"
-                   alt="Start Installation" title="Start Installation">
+                   alt="Continue: {{  nextStepLink.label }}" title="Continue: {{  nextStepLink.label }}">
                     Continue: {{  nextStepLink.label }}
                     &nbsp;
                     <span class="glyphicon glyphicon-cog"></span>
                 </a>
             </div>
         {% else  %}
-            <button id="submitButton" type="submit" class="launch_ximdex action_launcher" alt="Check tables structure" title="Check">
-                Check
+            <button id="submitButton" type="submit" class="launch_ximdex action_launcher" alt="Check tables structure" title="Check Connection to DB">
+                Check Connection to DB
                 &nbsp;
                 <span class="glyphicon glyphicon-cog"></span>
             </button>
 
         {% endif  %}
-
-
 
     {% endif %}
 
@@ -108,10 +103,5 @@
                 }
             </script>
         </form>
-
-
-
-
-
 
 {% endblock %}

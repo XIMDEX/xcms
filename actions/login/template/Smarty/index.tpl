@@ -7,9 +7,9 @@
 
 	<link rel="icon" href="{$_URL_ROOT}/favicon.ico" type="image/x-icon" />
 	<link rel="shortcut icon" href="{$_URL_ROOT}/favicon.ico" type="image/x-icon" />
-	<link href='{$_URL_ROOT}/xmd/style/fonts.css' rel='stylesheet' type='text/css'>
+	<link href='{$_URL_ROOT}xmd/style/fonts.css' rel='stylesheet' type='text/css' />
 
-	<link href="{$_URL_ROOT}/xmd/style/login/login.css" rel="stylesheet" type="text/css">
+	<link href="{$_URL_ROOT}xmd/style/login/login.css" rel="stylesheet" type="text/css" />
 	<script type="text/javascript" src="{EXTENSIONS::Jquery()}"></script>
 	{foreach from=$js_files item=js_file}
 	<script type="text/javascript" src="{$js_file}"></script>
@@ -29,10 +29,9 @@
 	<xim:meta name="X-XIMDEX" content="401 Unauthorized"></xim:meta>
 
 	<div id="contenedor">
-		<h1><a href="http://www.ximdex.com" title="Access"><img src="{$_URL_ROOT}/xmd/images/login/logo_ximdex.png" alt="Ximdex logo" title="Visit our web" /></a></h1>
-
+		<h1><a href="http://www.ximdex.com" title="Access"><img src="{$_URL_ROOT}xmd/images/login/logo_ximdex.png" alt="Ximdex logo" title="Visit our web" /></a></h1>
 		<div id="acceso" class="triangle">
-			<form action="{$_URL_ROOT}/xmd/loadaction.php?action=login&amp;method=check" method="post" name="access">
+			<form action="{$_URL_ROOT}xmd/loadaction.php?action=login&amp;method=check" method="post" name="access">
 				<div class="error">{$message}</div>
 				<p>
 					<label for="user">{t}User{/t}</label>
@@ -45,8 +44,9 @@
 					<span id="capsLockAdvice" class="warning-msg">CapsLock enabled</span>
 				</p>
 
-				<p>
-					<input type="submit" name="login" id="login" value="{t}Sign in{/t}" />
+				<p style="text-align: center;">
+					<!-- <input type="submit" name="login" id="login" value="{t}Sign in{/t}" /> -->
+					<button type="submit" name="login" id="login" value="{t}Sign in{/t}" >{t}Sign in{/t}</button>
 					<span>{t}Recommended browsers{/t}:<br/> Firefox &gt; 4, Chrome, Opera and Safari.</span> {* <a href="http://lab04.ximdex.net/ximdexDEMO/xmd/loadaction.php?action=forgot">Forgot your password?</a> *}
 				</p>
 			</form>
@@ -79,6 +79,6 @@
 		<div id="news" class="news">
 			{$news_content}
 		</div>
+	</div>
 </body>
-
 </html>

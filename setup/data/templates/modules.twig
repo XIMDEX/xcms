@@ -9,13 +9,18 @@
     <h2>
         {{  title  }}
     </h2>
+    
+    <p>
+		Some XCMS modules have been installed: 
+    </p>
     <p>
         Build flexible, scalable and secure Web Portals with the Semantic CMS XIMDEX and its modules: Xowl, to automatically enhance your content; Xlyre for linked open data; Xfind, to index and retrieve information, Xhawk to check content integrity, etc ...
     </p>
 
 
     <div class="buttons-bottom">
-        <a class="launch_ximdex action_launcher" href="{{ nextStepLink.href }}" class="btn btn-default" alt="Start Installation" title="Start Installation">
+        <a class="launch_ximdex action_launcher" href="{{ nextStepLink.href }}" class="btn btn-default" alt="Next: {{  nextStepLink.label }}" 
+        		title="Next: {{  nextStepLink.label }}">
             Next: {{  nextStepLink.label }}
             &nbsp;
             <span class="glyphicon glyphicon-cog"></span>

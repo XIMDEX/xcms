@@ -24,8 +24,7 @@ $I->click("Start Installation");
 
 $I->waitForText("System Requirements", 5);
 
-//$I->click("Check System");
-$I->click("Start Installation");
+$I->click("Check System");
 
 $I->waitForText("Database host:", 5);
 
@@ -34,17 +33,14 @@ $I->fillField("dbuser", "ximdex");
 $I->fillField("dbpass", "ximdex");
 $I->fillField("dbname", "ximdex");
 
-//$I->click("Check Connection to DB");
-$I->click("Check");
+$I->click("Check Connection to DB");
 
 $I->wait(3);
 
 $I->click("Continue: Create tables");
 
-//$I->waitForText("Tables and default data have been created", 20);
-$I->waitForText("Tables and default data created", 20);
+$I->waitForText("Tables and default data have been created", 20);
 
-//$I->click("Continue: Install Modules");
 $I->click("Continue: Modules");
 
 $I->waitForText("Install Modules", 10);
@@ -73,6 +69,7 @@ $I->waitForText("Welcome to Ximdex CMS, ximdex!", 10);
 $I->wantTo('ensure that publish works');
 
 $I->waitForText("Hello ximdex, first time here?", 5, "#tourcontrols");
+
 $I->click("#canceltour");
 
 function reload($I){
@@ -86,14 +83,17 @@ $I->waitForText("Picasso_Server", 5, "#angular-tree");
 
 $I->click("//span[contains(text(),'Picasso_Server')]", "#angular-tree");
 reload($I);
+
 $I->waitForText("documents", 5, "#angular-tree");
 
 $I->click("//span[contains(text(),'documents')]", "#angular-tree");
 reload($I);
+
 $I->waitForText("picasso", 5, "#angular-tree");
 
 $I->click("//span[contains(text(),'picasso')]", "#angular-tree");
 reload($I);
+
 $I->waitForText("picasso-iden", 5, "#angular-tree");
 
 // Open picasso-iden menu
