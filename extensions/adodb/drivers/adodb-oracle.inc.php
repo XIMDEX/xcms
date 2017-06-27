@@ -286,9 +286,9 @@ class ADORecordset_oracle extends ADORecordSet {
    function _fetch($ignore_fields=false) {
 // should remove call by reference, but ora_fetch_into requires it in 4.0.3pl1
 		if ($this->fetchMode & ADODB_FETCH_ASSOC)
-			return @ora_fetch_into($this->_queryID,&$this->fields,ORA_FETCHINTO_NULLS|ORA_FETCHINTO_ASSOC);
+			return @ora_fetch_into($this->_queryID,$this->fields,ORA_FETCHINTO_NULLS|ORA_FETCHINTO_ASSOC);
    		else 
-			return @ora_fetch_into($this->_queryID,&$this->fields,ORA_FETCHINTO_NULLS);
+			return @ora_fetch_into($this->_queryID,$this->fields,ORA_FETCHINTO_NULLS);
    }
 
    /*		close() only needs to be called if you are worried about using too much memory while your script
