@@ -213,7 +213,7 @@ class Module  {
             if ($result === false)
             {
             	$this->messages->add(sprintf(_("Error executing SQL script file: %s"), $sql_file), MSG_TYPE_WARNING);
-            	Logger::warning('"Error executing SQL script file: ' . $sql_file);
+            	Logger::error('"Error executing SQL script file: ' . $sql_file);
             }
         } else {
             $this->messages->add(sprintf(_("%s not exists"), $sql_file), MSG_TYPE_WARNING);
