@@ -102,12 +102,12 @@ class Action_generatecolector extends ActionAbstract {
 			}
 
 			$ximNewsColector = new XimNewsColector($idNode);
-			$ximNewsColector->set('LastGeneration', mktime());
+			$ximNewsColector->set('LastGeneration', time());
 			$ximNewsColector->update();
 
 			if(!is_null($idNewsColectorUsers)) {
 				$cu = new XimNewsColectorusers($idNewsColectorUsers);
-				$cu->set('EndGenerationTime', mktime());
+				$cu->set('EndGenerationTime', time());
 				$cu->set('Progress', 100);
 				$cu->set('State', 'published');
 				$cu->update();

@@ -41,7 +41,7 @@ class RelNewsColector extends RelNewsColector_ORM  {
 
 	function deleteByNew($idNew) {
 		$dbObj = new DB();
-		$query = sprintf("UPDATE RelNewsColector SET FechaOut = ".mktime()." WHERE IdNew = %s", 
+		$query = sprintf("UPDATE RelNewsColector SET FechaOut = ".time()." WHERE IdNew = %s", 
 			$dbObj->sqlEscapeString($idNew));
 		return $dbObj->Execute($query);
 	}

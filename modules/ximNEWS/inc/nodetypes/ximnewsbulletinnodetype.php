@@ -390,8 +390,8 @@ class XimNewsBulletinNodeType extends AbstractStructuredDocument  {
 
 			// Creates a batchDown for bulletin
 
-			$timeUp = mktime();
-			$timeDown = mktime();
+			$timeUp = time();
+			$timeDown = time();
 			$bulletinDocs = array($idBulletin);
 
 			$node = new Node($idBulletin);
@@ -460,7 +460,7 @@ class XimNewsBulletinNodeType extends AbstractStructuredDocument  {
 
 		} else {
 			$sync = new Synchronizer($idBulletin);
-			$now = mktime();
+			$now = time();
 
 			$dbObj = new DB();
 			$updateObj = new DB();

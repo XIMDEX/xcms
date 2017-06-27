@@ -177,7 +177,7 @@ function processBatch($batchProcess)
     $syncStatObj = new SynchronizerStat();
     $batchManager = new BatchManager();
     $nodeFrameManager = new NodeFrameManager();
-    $startStamp = mktime();
+    $startStamp = time();
 
     // ---------------------------------------------------------
     // 1) Solving NodeFrames activity

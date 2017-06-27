@@ -538,7 +538,7 @@
 			
 		}
 		
-		$minStartTime = mktime();
+		$minStartTime = time();
 		$maxEndTime += 7200;
 		$htmlLineWidth = 480;
 		$realLineWidth = $maxEndTime - $minStartTime;

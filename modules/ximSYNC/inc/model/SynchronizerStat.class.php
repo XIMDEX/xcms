@@ -78,7 +78,7 @@ class SynchronizerStat extends SynchronizerStats_ORM
                 $this->set('Line', $line);
                 $this->set('Type', $type);
                 $this->set('Level', $level);
-                $this->set('Time', mktime());
+                $this->set('Time', time());
                 $this->set('Comment', $comment);
 
                 parent::add();

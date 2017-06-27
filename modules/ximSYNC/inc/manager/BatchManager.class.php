@@ -1063,7 +1063,7 @@ class BatchManager
 
             // Creating Batch Type Down if not exist one
             $batchDown = new Batch();
-            $idBatchDown = $batchDown->create(mktime(), 'Down', $nodeId, 1, null, $userId);
+            $idBatchDown = $batchDown->create(time(), 'Down', $nodeId, 1, null, $userId);
 
             // Updating Serverframes info
             $batchDown = new Batch($idBatchDown);

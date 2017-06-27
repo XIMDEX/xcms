@@ -398,7 +398,7 @@ class Action_workflow_forward extends ActionAbstract {
         return array(
             'gap_info' => $gapInfo,
             'has_unlimited_life_time' => SynchroFacade::HasUnlimitedLifeTime($idNode),
-            'timestamp_from' => mktime(),
+            'timestamp_from' => time(),
             'structural_publication' => $user->HasPermission('structural_publication') ? '1' : '0',
             'advanced_publication' => $user->HasPermission('advanced_publication') ? '1' : '0',
             'nodetypename' => $nodeTypeName,
@@ -541,7 +541,7 @@ class Action_workflow_forward extends ActionAbstract {
         $dateUp = $this->request->getParam('dateUp_timestamp');
         $dateDown = $this->request->getParam('dateDown_timestamp');
 
-        $up = (!is_null($dateUp) && $dateUp != "") ? $dateUp / 1000 : mktime();
+        $up = (!is_null($dateUp) && $dateUp != "") ? $dateUp / 1000 : time();
         $down = (!is_null($dateDown) && $dateDown != "") ? $dateDown / 1000 : null;
 
         $markEnd = $this->request->getParam('markend') ? true : false;

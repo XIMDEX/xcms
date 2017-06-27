@@ -170,7 +170,7 @@ class NodeFrame extends NodeFrames_ORM {
 		$dbObj = new Db();
 
 		if (!$testTime) {
-			$now = mktime();
+			$now = time();
 		} else {
 			$now = $testTime;
 		}

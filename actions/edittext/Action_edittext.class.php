@@ -202,7 +202,7 @@ class Action_edittext extends ActionAbstract
         $syncMngr->setFlag('linked', false);
 
         foreach ($docs as $documentID) {
-            $result = $syncMngr->pushDocInPublishingPool($documentID, mktime(), NULL, NULL);
+            $result = $syncMngr->pushDocInPublishingPool($documentID, time(), NULL, NULL);
         }
 
         $arrayOpciones = array('ok' => _(' have been successfully published'),

@@ -45,7 +45,7 @@ class PortalVersions extends PortalVersionsOrm
 
         $this->set('IdPortal', $portalId);
         $this->set('Version', $portalVersion);
-        $this->set('TimeStamp', mktime());
+        $this->set('TimeStamp', time());
 
         $idPortalVersion = parent::add();
 

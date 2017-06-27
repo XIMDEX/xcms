@@ -58,7 +58,7 @@ class RelNewsColectorUsers extends RelNewsColectorUsers_ORM
 		
 		$this->set('IdRelNewsColector', $idRelNewsColector);
 		$this->set('IdUser', $idUser);
-		$this->set('Time', mktime());
+		$this->set('Time', time());
 
 		$id = parent::add();
 		

@@ -1813,7 +1813,7 @@ class Synchronizer
                 // Setting date down if node is published (don't move the frame)
 
                 if ($state == 'IN' && !is_null($unPublish)) {
-                    $timeDown = mktime();
+                    $timeDown = time();
 
                     $syncOrm->set('DateDown', $timeDown);
                     $syncOrm->update();
@@ -1923,7 +1923,7 @@ class Synchronizer
     function getUrlLastPublicatedNews($nodeid, $channelID, $serverID)
     {
 
-        $now = mktime();
+        $now = time();
 
         $sql = "SELECT IdSync, RemotePath, FileName FROM Synchronizer WHERE  ";
         $sql .= " IdChannel = $channelID AND DateUp < $now ";

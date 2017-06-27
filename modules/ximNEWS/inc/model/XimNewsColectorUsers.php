@@ -54,7 +54,7 @@ class XimNewsColectorUsers extends XimNewsColectorUsers_ORM
 		
 		$this->set('IdColector', $idColector);
 		$this->set('IdUser', $idUser);
-		$this->set('StartGenerationTime', mktime());
+		$this->set('StartGenerationTime', time());
 		$this->set('Progress', 0);
 		$this->set('State', $state);
 

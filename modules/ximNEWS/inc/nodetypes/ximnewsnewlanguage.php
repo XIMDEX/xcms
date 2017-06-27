@@ -98,7 +98,7 @@ class XimNewsNewLanguage extends AbstractStructuredDocument  {
 					$newsDate, $regs) == 0) {
 			
 			XMD_Log::error('Incorrect date format');
-			$date = mktime();
+			$date = time();
 		} else {
 
 			$hourNews = isset($regs[5]) ? $regs[5] : 0;
@@ -114,7 +114,7 @@ class XimNewsNewLanguage extends AbstractStructuredDocument  {
 		$ximNewsNews->set('Fecha', $date);
 		$ximNewsNews->set('Name', $name);
 		$ximNewsNews->set('Titular', $title);
-		$ximNewsNews->set('TimeStamp', mktime());
+		$ximNewsNews->set('TimeStamp', time());
 		$ximNewsNews->set('IdSection', $idSection);
 
 		$idNew = $ximNewsNews->add();
@@ -144,7 +144,7 @@ class XimNewsNewLanguage extends AbstractStructuredDocument  {
 					$dataNews['noticia_fecha'], $regs) == 0) {
 			
 			XMD_Log::error('Incorrect date format');
-			$date = mktime();
+			$date = time();
 		} else {
 
 			$hourNews = isset($regs[5]) ? $regs[5] : 0;
@@ -158,7 +158,7 @@ class XimNewsNewLanguage extends AbstractStructuredDocument  {
 		$ximNewsNews->set('Fecha', $date); 
 		$ximNewsNews->set('Name', $name);
 		$ximNewsNews->set('Titular', $dataNews['title']);
-		$ximNewsNews->set('TimeStamp', mktime());
+		$ximNewsNews->set('TimeStamp', time());
 		$ximNewsNews->set('IdSection', $idSection);
 
 		$ximNewsNews->update();
@@ -213,7 +213,7 @@ class XimNewsNewLanguage extends AbstractStructuredDocument  {
 
 			if ((int) preg_match("/([0-9]{1,2})[-/]([0-9]{1,2})[-/]([0-9]{2,4})( ([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2}))*/",$newsDate, $regs) == 0) {
 				XMD_Log::error('Incorrect date format ' . $this->nodeID);
-				$time = mktime();
+				$time = time();
 			} else {
 				$time = mktime($regs[4], $regs[5], $regs[6], $regs[2], $regs[1], $regs[3]);
 			}

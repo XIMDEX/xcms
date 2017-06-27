@@ -527,7 +527,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
             return $response;
 
         $syncFacade = new SynchroFacade();
-        if ($result = $syncFacade->pushDocInPublishingPool($idNode, mktime())) {
+        if ($result = $syncFacade->pushDocInPublishingPool($idNode, time())) {
             $response['publicated'] = true;
             $response['content'] = $saveResponse['content'];
         }

@@ -84,7 +84,7 @@ class XimNewsCache extends XimNewsCache_ORM {
 			return false;
 		}
 
-		$now = mktime();
+		$now = time();
 
 		$this->set('IdNew', $IdNew);
 		$this->set('IdTemplate', $IdTemplate);

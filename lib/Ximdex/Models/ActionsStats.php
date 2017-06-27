@@ -29,7 +29,7 @@ class ActionsStats extends ActionsStatsOrm {
         $this->set('IdNode', $nodeId);
         $this->set('IdUser', $userId);
         $this->set('Method', $method);
-        $this->set('TimeStamp', mktime());
+        $this->set('TimeStamp', time());
         $this->set('Duration', $duration);
 
         if (parent::add()) {

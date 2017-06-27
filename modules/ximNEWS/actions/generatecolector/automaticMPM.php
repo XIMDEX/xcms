@@ -94,7 +94,7 @@ foreach ($colectors as $colectorID => $colectorName) {
     // Total generation and without bellow for these collectors generated without bellow
     if (in_array($colectorID, $colectoresConFuelle)) {
 
-        $now2 = mktime();
+        $now2 = time();
 
         // Checking again time in order to avoid to get over the fixed interval
         if ($now2 > $minHourFuelle && $now2 < $maxHourFuelle) {

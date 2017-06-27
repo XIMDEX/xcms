@@ -160,7 +160,7 @@ class Action_createnews extends ActionAbstract
             'datesystem' => date('d/m/Y/G/i/s'),
             'loteid' => $idLote,
             'go_method' => 'create_news',
-            'time_stamp' => mktime()
+            'time_stamp' => time()
         );
         $this->render($values, 'creation_form', 'default-3.0.tpl');
     }

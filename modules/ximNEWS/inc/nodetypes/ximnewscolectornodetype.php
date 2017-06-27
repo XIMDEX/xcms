@@ -479,7 +479,7 @@ class XimNewsColectorNodeType extends FolderNode  {
 			// Generacion total sin fuelle
 
 			if ($total == 2) {
-				XMD_log::info("Generacion total sin fuelle del colector ".$this->parent->get('IdNode'). " - ".mktime()."");
+				XMD_log::info("Generacion total sin fuelle del colector ".$this->parent->get('IdNode'). " - ".time()."");
 				$sinFuelle = true;
 			}
 
@@ -619,7 +619,7 @@ class XimNewsColectorNodeType extends FolderNode  {
 			$ximNewsColector->set('ForceTotalGeneration', 0);
 		}
 
-		$ximNewsColector->set('LastGeneration', mktime());
+		$ximNewsColector->set('LastGeneration', time());
 		$ximNewsColector->set('State', 'generated');
 		$ximNewsColector->update();
 
@@ -726,7 +726,7 @@ class XimNewsColectorNodeType extends FolderNode  {
 					$lang = new Language($langID);
 					$containerNode = new Node($containers[$page - 1]);
 					$bulletinName = $containerNode->get('Name') . '-id' . $lang->get('IsoName');
-					$date = mktime();
+					$date = time();
 
 
 					ximNEWS_Adapter::createBulletinLanguage($containers[$page -1], $idSection, $templateID, $bulletinName,

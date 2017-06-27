@@ -932,7 +932,7 @@ class  ximNEWS_Adapter {
 		}
 
 		$ximletNode = new Node($idXimlet);
-		$date = mktime();
+		$date = time();
 		$targetLink = NULL;
 
 		foreach ($languages as $langId) {

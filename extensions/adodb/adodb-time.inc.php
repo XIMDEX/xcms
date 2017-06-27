@@ -14,7 +14,7 @@ Dates from 100 A.D. to 3000 A.D. and later
 have been tested. The minimum is 100 A.D. as <100 will invoke the
 2 => 4 digit year conversion. The maximum is billions of years in the 
 future, but this is a theoretical limit as the computation of that year 
-would take too long with the current implementation of adodb_mktime().
+would take too long with the current implementation of adodb_time().
 
 This library replaces native functions as follows:
 
@@ -22,14 +22,14 @@ This library replaces native functions as follows:
 	getdate()  with  adodb_getdate()
 	date()     with  adodb_date() 
 	gmdate()   with  adodb_gmdate()
-	mktime()   with  adodb_mktime()
-	gmmktime() with  adodb_gmmktime()
+	time()   with  adodb_time()
+	gmtime() with  adodb_gmtime()
 	strftime() with  adodb_strftime()
 	strftime() with  adodb_gmstrftime()
 </pre>
 	
 The parameters are identical, except that adodb_date() accepts a subset
-of date()'s field formats. Mktime() will convert from local time to GMT, 
+of date()'s field formats. time() will convert from local time to GMT, 
 and date() will convert from GMT to local time, but daylight savings is 
 not handled currently.
 
@@ -148,14 +148,14 @@ outside the 1901 to 2038 range.
 
 ** FUNCTION adodb_mktime($hr, $min, $sec[, $month, $day, $year])
 
-Converts a local date to a unix timestamp.  Unlike the function mktime(), it supports
+Converts a local date to a unix timestamp.  Unlike the function time(), it supports
 dates outside the 1901 to 2038 range. All parameters are optional.
 
 
 ** FUNCTION adodb_gmmktime($hr, $min, $sec [, $month, $day, $year])
 
-Converts a gmt date to a unix timestamp.  Unlike the function gmmktime(), it supports
-dates outside the 1901 to 2038 range. Differs from gmmktime() in that all parameters
+Converts a gmt date to a unix timestamp.  Unlike the function gmtime(), it supports
+dates outside the 1901 to 2038 range. Differs from gmtime() in that all parameters
 are currently compulsory.
 
 ** FUNCTION adodb_gmstrftime($fmt, $timestamp = false)
@@ -253,7 +253,7 @@ In adodb_date2(), $is_gmt not supported properly. Fixed.
 
 - 18 July  2005 0.21
 In PHP 4.3.11, the 'r' format has changed. Leading 0 in day is added. Changed for compat.
-Added support for negative months in adodb_mktime().
+Added support for negative months in adodb_time().
 
 - 24 Feb 2005 0.20
 Added limited strftime/gmstrftime support. x10 improvement in performance of adodb_date().
@@ -263,7 +263,7 @@ In adodb_getdate(), the timestamp was accidentally converted to gmt when $is_gmt
 Also adodb_mktime(0,0,0) did not work properly. Both fixed thx Mauro.
 
 - 17 Nov 2004 0.16
-Removed intval typecast in adodb_mktime() for secs, allowing:
+Removed intval typecast in adodb_time() for secs, allowing:
 	 adodb_mktime(0,0,0 + 2236672153,1,1,1934);
 Suggested by Ryan.
 
@@ -286,7 +286,7 @@ function adodb_daylight_sv(&$arr, $is_gmt)
 	if ($m == 6 || $m == 7) $arr['hours'] += 1;
 }
 
-This is only called by adodb_date() and not by adodb_mktime(). 
+This is only called by adodb_date() and not by adodb_time(). 
 
 The format of $arr is
 Array ( 

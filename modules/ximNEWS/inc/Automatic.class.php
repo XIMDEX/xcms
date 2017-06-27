@@ -62,7 +62,7 @@ class Automatic
         if (!$this->mutex->acquire()) {
             Automatic_Log::fatal("Automatic previo en ejecucion");
         }
-        $this->now = mktime();
+        $this->now = time();
 
         $this->minHourFuelle = mkTime(\App::getValue('StartCheckNoFuelle'),
             0, 0, date('m', $this->now), date('d', $this->now), date('Y', $this->now));
@@ -167,7 +167,7 @@ class Automatic
 
         if (!is_null($idNewsColectorUsers)) {
             $cu = new XimNewsColectorusers($idNewsColectorUsers);
-            $cu->set('EndGenerationTime', mktime());
+            $cu->set('EndGenerationTime', time());
             $cu->set('Progress', 50);
             $cu->set('State', 'publishing');
             $cu->update();
@@ -199,7 +199,7 @@ class Automatic
 
 
         if (!is_null($idNewsColectorUsers)) {
-            $cu->set('EndPublicationTime', mktime());
+            $cu->set('EndPublicationTime', time());
             $cu->set('Progress', 100);
             $cu->set('State', 'published');
             $cu->update();

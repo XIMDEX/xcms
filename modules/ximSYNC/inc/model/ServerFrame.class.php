@@ -696,7 +696,7 @@ where cf.nodeid=$nodeId ";
 
 	function getUrlLastPublicatedNews($frameId, $channelID, $serverID) {
 
-		$now = mktime();
+		$now = time();
 
 		$sql = "SELECT IdSync, RemotePath, FileName FROM ServerFrames WHERE  ";
 		$sql .= " IdChannelFrame = $channelID AND DateUp < $now ";
@@ -770,7 +770,7 @@ where cf.nodeid=$nodeId ";
 	 */
 
 	function existFrameInAllActiveServer($idNodeFrame, $physicalServers) {
-		$now = mktime();
+		$now = time();
 
 		if (is_null($idNodeFrame)) {
 			XMD_log::error("void nodeframe");

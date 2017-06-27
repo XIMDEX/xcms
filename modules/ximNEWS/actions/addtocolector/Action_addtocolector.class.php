@@ -70,7 +70,7 @@ class Action_addtocolector extends ActionAbstract {
 			'news_name' =>	$news_name,
 			'go_method' => 'add_to_colector',
 			'asoc_disabled' => $disabledInputs,
-			'time_stamp' => mktime(),
+			'time_stamp' => time(),
 			'nodeUrl' => \App::getValue( 'UrlRoot') . "/xmd/loadaction.php?actionid=$actionID&nodeid=$idNode"
 		);
 
