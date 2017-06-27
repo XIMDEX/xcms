@@ -210,6 +210,10 @@ class Module  {
             $db = new Db();
             $sql = file_get_contents($sql_file);
             $result = $db->ExecuteScript($sql);
+            if ($result === false)
+            {
+            	$this->messages->add(sprintf(_("Error executing SQL script file: %s"), $sql_file), MSG_TYPE_WARNING);
+            }
         } else {
             $this->messages->add(sprintf(_("%s not exists"), $sql_file), MSG_TYPE_WARNING);
             $result = false;

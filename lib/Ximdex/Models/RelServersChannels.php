@@ -24,12 +24,10 @@
  * @version $Revision$
  */
 
-
 namespace Ximdex\Models;
 
- use Ximdex\Models\ORM\RelServersChannelsOrm;
-use XMD_Log;
-
+use Ximdex\Models\ORM\RelServersChannelsOrm;
+use Ximdex\Logger as XMD_Log;
 
 class RelServersChannels extends RelServersChannelsOrm
 {

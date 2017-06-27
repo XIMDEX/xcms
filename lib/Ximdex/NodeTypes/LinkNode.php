@@ -43,9 +43,7 @@ use stateID;
 use unknown;
 use url;
 use Ximdex\NodeTypes\Root;
-use XMD_Log;
-
-
+use Ximdex\Logger as XMD_Log;
 
 /**
  * @brief Handles links to external pages or web sites.

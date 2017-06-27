@@ -33,7 +33,7 @@ use DOMXPath;
 use RNG;
 use Ximdex\Models\Node;
 use Ximdex\Parsers\PVD2RNG\PVD2RNG;
-use XMD_Log;
+use Ximdex\Logger as XMD_Log;
 
 
 class ParsingRng

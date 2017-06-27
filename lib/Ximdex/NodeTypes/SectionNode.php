@@ -31,8 +31,7 @@ use Ximdex\Runtime\Db as DB;
 use Ximdex\Deps\DepsManager;
 use Node;
 use Ximdex\Models\NodeType;
-use XMD_Log;
-
+use Ximdex\Logger as XMD_Log;
 
 /**
  * @brief Handles ximDEX sections.

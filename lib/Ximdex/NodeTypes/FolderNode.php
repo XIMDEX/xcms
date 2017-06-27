@@ -38,8 +38,7 @@ use recurrence;
 use target;
 use Ximdex\Models\Node;
 use Ximdex\Utils\FsUtils;
-use XMD_Log;
-
+use Ximdex\Logger as XMD_Log;
 
 /**
  * @brief Handles directories.

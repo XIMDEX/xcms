@@ -28,8 +28,7 @@
 namespace Ximdex\Models;
 
 use Ximdex\Models\ORM\PipeStatusOrm;
-use XMD_Log;
-
+use Ximdex\Logger as XMD_Log;
 
 /**
  *

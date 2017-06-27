@@ -26,12 +26,11 @@
 
 
 namespace Ximdex\Widgets;
+
 use Ximdex\Parsers\ParsingJsGetText;
 use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
-
-use XMD_Log;
-
+use Ximdex\Logger as XMD_Log;
 
 abstract class WidgetAbstract
 {

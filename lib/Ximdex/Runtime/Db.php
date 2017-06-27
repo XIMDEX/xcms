@@ -9,7 +9,7 @@ namespace Ximdex\Runtime;
 
 use Ximdex\Runtime\App;
 use PDO;
-use XMD_Log;
+use Ximdex\Logger as XMD_Log;
 
 class Db
 {
@@ -235,7 +235,6 @@ class Db
                 $stm = $this->db->query($this->sql, PDO::FETCH_ASSOC);
                 if ($stm === false)
                 {
-                	//TODO ajlucena: errors detected with this table (NY000: Table 'Config' was not locked with LOCK TABLES)
                 	throw new \PDOException();
                 }
                 foreach ($stm as $row) {

@@ -30,8 +30,7 @@ namespace Ximdex\NodeTypes;
 use Ximdex\Models\PipeProcess;
 use Ximdex\Models\PipeStatus;
 use Ximdex\Models\PipeTransition;
-use XMD_Log;
-
+use Ximdex\Logger as XMD_Log;
 
 class StateNode extends Root
 {
@@ -40,7 +39,7 @@ class StateNode extends Root
     {
         $currentTransition = new PipeTransition($idTransition);
         if (!$currentTransition->get('id') > 0) {
-            $this->messages->add(_('No se ha podido encontrar la transacci�n, consulte con su administrador'), MSG_TYPE_ERROR);
+            $this->messages->add(_('No se ha podido encontrar la transacción, consulte con su administrador'), MSG_TYPE_ERROR);
             $this->messages->mergeMessages($currentTransition->messages);
             return NULL;
         }
@@ -80,8 +79,8 @@ class StateNode extends Root
         $idStatus = $pipeStatus->get('id');
 
         if ($pipeProcess->isStatusFirst($idStatus) || $pipeProcess->isStatusLast($idStatus)) {
-            $this->messages->add(_('No se pueden eliminar los estados primero y �ltimo del workflow'), MSG_TYPE_ERROR);
-            XMD_Log::warning('Imposible eliminar estado primero y �ltimo de workflow');
+            $this->messages->add(_('No se pueden eliminar los estados primero y último del workflow'), MSG_TYPE_ERROR);
+            XMD_Log::warning('Imposible eliminar estado primero y último de workflow');
             return true;
         }
 

@@ -28,9 +28,7 @@
 namespace Ximdex\NodeTypes;
 
 use Ximdex\Models\User;
-use XMD_Log;
-
-
+use Ximdex\Logger as XMD_Log;
 
 class UserNode extends Root
 {

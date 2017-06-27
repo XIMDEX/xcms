@@ -49,8 +49,7 @@ use Ximdex\NodeTypes\Root;
 use Ximdex\Parsers\ParsingDependencies;
 use Ximdex\Services\NodeType;
 use Ximdex\Utils\FsUtils;
-use XMD_Log;
-
+use Ximdex\Logger as XMD_Log;
 
 include_once(XIMDEX_ROOT_PATH . "/inc/utils.php");
 include_once(XIMDEX_ROOT_PATH . "/actions/fileupload/baseIO.php");

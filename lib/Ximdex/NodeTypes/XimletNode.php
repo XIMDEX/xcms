@@ -27,11 +27,10 @@
 
 namespace Ximdex\NodeTypes;
 
- use Ximdex\Deps\DepsManager;
- use Ximdex\Models\Node;
+use Ximdex\Deps\DepsManager;
+use Ximdex\Models\Node;
 use Ximdex\Models\StructuredDocument;
-use XMD_Log;
-
+use Ximdex\Logger as XMD_Log;
 
 class XimletNode extends AbstractStructuredDocument
 {

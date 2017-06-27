@@ -26,6 +26,7 @@
  */
 
 namespace Ximdex\Runtime;
+
 use Exception;
 use MetadataManager;
 use ModulesManager;
@@ -109,10 +110,9 @@ class DataFactory
         $this->ClearError();
         $this->nodeID = (int)$nodeID;
         /*
-         *
-         if (ModulesManager::isEnabled('ximRAM'))
-             $this->conector = new SolrConector();
-          */
+        if (ModulesManager::isEnabled('ximRAM'))
+        	$this->conector = new SolrConector();
+		*/
     }
 
     /**
@@ -134,7 +134,6 @@ class DataFactory
         $this->SetError(1);
         return false;
     }
-
 
     /**
      *
@@ -319,14 +318,15 @@ class DataFactory
         }
 
         if (!(!(is_null($versionID)) && !(is_null($subVersion)))) {
-            XMD_Log::warning('No se ha podido estimar la versi�n o la subversion');
+            //XMD_Log::warning('No se ha podido estimar la versión o la subversion');
+        	XMD_Log::warning('Unable to estimate version or subversion');
             return false;
         }
 
         $uniqueName = $this->GetTmpFile($versionID, $subVersion);
 
         if (!$uniqueName) {
-            XMD_Log::warning('No se ha podido obtener el file');
+            XMD_Log::warning('Unable to get file');
             $this->SetError(3);
             return false;
         }
@@ -374,7 +374,7 @@ class DataFactory
             $channels = $node->GetChannels();
             $pipelineManager = new PipelineManager();
             foreach ($channels as $idChannel) {
-                XMD_Log::info("Generando cache para la versi�n $idVersion y el canal $idChannel");
+                XMD_Log::info("Generation cache for version $idVersion and the channel $idChannel");
                 $data = array('CHANNEL' => $idChannel);
 
                 if (!$isOTF) {
@@ -435,7 +435,7 @@ class DataFactory
             $uniqueName = $this->GetTmpFile($versionID, $subVersion);
 
             if (!$uniqueName) {
-                XMD_Log::error("Error al hacer un setContent for Node (No se ha podido obtener el file):" . $this->nodeID . ", Version: " . $versionID . "." . $subVersion . ", File: ." . $uniqueName . ", Chars: " . strlen($content));
+                XMD_Log::error("Error making a setContent for Node (Unable to get the file):" . $this->nodeID . ", Version: " . $versionID . "." . $subVersion . ", File: ." . $uniqueName . ", Chars: " . strlen($content));
                 return false;
             }
 
@@ -486,7 +486,7 @@ class DataFactory
             $curVersion = $this->GetLastVersion();
 
             if (is_null($curVersion)) {
-                XMD_Log::warning('No se ha podido obtener la �ltima versi�n del documento');
+                XMD_Log::warning('Unable to get the last version of the document');
                 return false;
             }
             $curSubVersion = $this->GetLastSubVersion($curVersion);
@@ -620,7 +620,7 @@ class DataFactory
         $targetPath = \App::getValue("AppRoot") . \App::getValue("FileRoot") . "/" . $uniqueName;
 
         if (!FsUtils::file_put_contents($targetPath, $newContent)) {
-            XMD_Log::error('Error al establecer el contenido del documento');
+            XMD_Log::error('failed to set document content');
             $this->SetError(5);
         }
 
@@ -645,7 +645,7 @@ class DataFactory
 
         /// Lo guardamos en el sistema de archivos
         if ($nodetype->GetHasFSEntity() && !FsUtils::file_put_contents($fileName, $fileContent)) {
-            XMD_Log::error('Ha ocurrido un error al intentar guardar el documento');
+            XMD_Log::error('An error occurred while trying to save the document');
             $this->SetError(6);
             return false;
         }
@@ -1194,7 +1194,7 @@ class DataFactory
     {
 
         if (!is_numeric($idVersion)) {
-            XMD_Log::warning('Se ha intentado indexar un nodo por un IdVersion no valido.');
+            XMD_Log::warning('Attempted to index a node by an invalid IdVersion.');
             return;
         }
 
@@ -1223,8 +1223,4 @@ class DataFactory
             return $pipeCache->upgradeCaches($oldIdVersion, $idVersion);
         }
     }
-
-
 }
-
-?>

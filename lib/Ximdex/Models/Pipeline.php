@@ -29,13 +29,10 @@ namespace Ximdex\Models;
 
 use DB;
 use I_PipeProcesses;
-
 use Ximdex\Models\ORM\PipelinesOrm;
+use Ximdex\Logger as XMD_Log;
 
-use XMD_Log;
-
-
- require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/iterators/I_PipeProcesses.class.php');
+require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/iterators/I_PipeProcesses.class.php');
 
 /**
  *
