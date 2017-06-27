@@ -24,6 +24,10 @@
  *  @version $Revision$
  */
 
+if (!defined("XIMDEX_ROOT_PATH")) {
+	define("XIMDEX_ROOT_PATH", realpath(dirname(__FILE__)) . "/../../");
+}
+
 require_once XIMDEX_ROOT_PATH . '/inc/model/orm/RelXml2Xml_ORM.class.php';
 
 class RelXml2Xml extends RelXml2Xml_ORM {
