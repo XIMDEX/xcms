@@ -99,7 +99,8 @@ class Action_publicatesection extends ActionAbstract
             'force' => $forcePublication,
             'otfPublication' => $otfPublication);
 
-        $result = SynchroFacade::pushDocInPublishingPool($idNode, $dateUp, NULL, $flagsPublication, $recurrence);
+        $syncFac = new SynchroFacade();
+        $result = $syncFac->pushDocInPublishingPool($idNode, $dateUp, NULL, $flagsPublication, $recurrence);
 
         $this->messages->add(sprintf(_("%s %s has been successfully sent to publish"), $folderName, $nodename), MSG_TYPE_NOTICE);
 

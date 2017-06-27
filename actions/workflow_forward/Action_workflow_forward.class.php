@@ -37,8 +37,8 @@ use Ximdex\Utils\Serializer;
 use Ximdex\Utils\Sync\SynchroFacade;
 use Ximdex\Workflow\WorkFlow;
 
-   ModulesManager::file('/inc/mail/Mail.class.php');
- ModulesManager::file('/actions/browser3/inc/GenericDatasource.class.php');
+ModulesManager::file('/inc/mail/Mail.class.php');
+ModulesManager::file('/actions/browser3/inc/GenericDatasource.class.php');
 
 ModulesManager::file('/inc/model/NodesToPublish.class.php', 'ximSYNC');
 ModulesManager::file('/conf/synchro_conf.php', 'ximSYNC');
@@ -584,7 +584,8 @@ class Action_workflow_forward extends ActionAbstract {
 		$flagsPublication = $this->buildFlagsPublication($markEnd, $structure, $deepLevel, $force, $lastPublished);
 
         //Adding node to NodesToPublish
-        $result = SynchroFacade::pushDocInPublishingPool($idNode, $up, $down, $flagsPublication);
+		$syncFac = new SynchroFacade();
+		$result = $syncFac->pushDocInPublishingPool($idNode, $up, $down, $flagsPublication);
 
         $arrayOpciones = array(
             'ok' => _(' were successfully published'),

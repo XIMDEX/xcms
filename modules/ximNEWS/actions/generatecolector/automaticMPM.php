@@ -193,7 +193,8 @@ foreach ($colectors as $colectorID => $colectorName) {
                 pushAllDocumentsInPublishingPool($dataIn);
 
             } else {
-                SynchroFacade::pushDocInPublishingPool($bulletinID, time(), NULL);
+            	$syncFac = new SynchroFacade();
+            	$result = $syncFac->pushDocInPublishingPool($bulletinID, time(), NULL);
             }
         }
         $ximNewsColector = new XimNewsColector($colectorID);
@@ -218,6 +219,3 @@ function pushAllDocumentsInPublishingPool($dataIn)
     $mpm->run();
     Automatic_Log::info(_("Ended parallelization"));
 }
-
-
-?>

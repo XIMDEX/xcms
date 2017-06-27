@@ -239,9 +239,8 @@ class Automatic
             }
 
         } else {
-            SynchroFacade::pushDocInPublishingPool($bulletinID, time(), NULL);
+        	$syncFac = new SynchroFacade();
+        	$result = $syncFac->pushDocInPublishingPool($bulletinID, time(), NULL);
         }
     }
 }
-
-?>

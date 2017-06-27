@@ -49,7 +49,8 @@ function main($argc, $argv)
     if ($argv != null && isset($argv[1]) && is_numeric($argv[1])) {
         \Ximdex\Logger::logTrace(_("IdNode passed:") . " " . $argv[1]);
         // Add node to publishing pool and exit (SyncManager will call this daemon again when inserting node job is done)
-        SynchroFacade::pushDocInPublishingPool($argv[1], time(), null);
+        $syncFac = new SynchroFacade();
+		$syncFac->pushDocInPublishingPool($argv[1], time(), null);
         exit(1);
     }
 
@@ -188,5 +189,3 @@ function createBatchsForBlock($nodesToPublish)
 }
 
 main($argc, $argv);
-
-?>

@@ -677,7 +677,8 @@ class Action_node extends AbstractAPIAction   {
 
         $node = new Node($idnode);
 
-        $result = SynchroFacade::pushDocInPublishingPool($idnode, $uptime, null, $flagsPublication);
+        $syncFac = new SynchroFacade();
+        $result = $syncFac->pushDocInPublishingPool($idnode, $uptime, null, $flagsPublication);
 
         if (empty($result)) {
             $this->responseBuilder->ok()->content('This node does not need to be published again')->build();
