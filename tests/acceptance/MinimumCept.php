@@ -43,7 +43,7 @@ $I->waitForText("Tables and default data have been created", 20);
 
 $I->click("Continue: Install Modules");
 
-$I->waitForText("Install Modules", 20);
+$I->waitForText("Install Modules", 30);
 
 $I->click("Next: Settings");
 
@@ -56,7 +56,6 @@ $I->click("Check");
 
 $I->click("Enjoy Ximdex !");
 
-/*
 $I->see("User");
 $I->see("Password");
 
@@ -64,7 +63,6 @@ $I->fillField("user", "ximdex");
 $I->fillField("password", "ximdex");
 
 $I->click("Sign in");
-*/
 
 $I->waitForText("Welcome to Ximdex CMS, ximdex!", 10);
 

@@ -182,7 +182,7 @@ class Db
             while ($statement->nextRowset()) {/* https://bugs.php.net/bug.php?id=61613 */};
         } catch (\PDOException $e) {
             $result = false;
-            XMD_Log::error($e->errorInfo);
+            XMD_Log::error($e->errorInfo[2]);
         }
 
         $this->db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_SILENT);

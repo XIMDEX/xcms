@@ -2,36 +2,25 @@
 
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
-use Ximdex\Runtime\App ;
-
-
+use Ximdex\Runtime\App;
 
 // for legacy compatibility
 if (!defined('XIMDEX_ROOT_PATH')) {
     define('XIMDEX_ROOT_PATH', dirname(dirname(__FILE__)));
 }
 
-
-
-
 if (!defined('CLI_MODE'))
     define('CLI_MODE', 0);
 
-
-
 include_once dirname(dirname(__FILE__)) . '/extensions/vendors/autoload.php';
 
-
 class_alias('Ximdex\Modules\Manager', 'ModulesManager');
-
 
 // Initialize App
 class_alias('Ximdex\Runtime\App', 'App');
 App::setValue('XIMDEX_ROOT_PATH', dirname(dirname(__FILE__)));
 
 include_once(XIMDEX_ROOT_PATH . '/inc/db/DB_zero.class.php');
-
-
 
 // get Config from install file
 if ( file_exists( App::getValue('XIMDEX_ROOT_PATH') . '/conf/install-params.conf.php' ) ) {
@@ -45,6 +34,7 @@ if ( file_exists( App::getValue('XIMDEX_ROOT_PATH') . '/conf/install-params.conf
 // set ximdex root path
 Ximdex\Modules\Manager::init( App::getValue('XIMDEX_ROOT_PATH')   );
 Ximdex\Modules\Manager::file( Ximdex\Modules\Manager::get_modules_install_params() );
+
 // setup log
 class_alias('Ximdex\Logger', 'XMD_Log');
 
@@ -91,13 +81,10 @@ if ( !empty( $dbConfig ) ) {
 }
 
 // special objects (pseudo-DI)
-// App::setValue( 'class::definition::Messages',       '/inc/helper/Messages.class.php' );
 class_alias('Ximdex\Utils\Messages', 'Messages');
-App::setValue( 'class::definition::DB',             '/inc/db/DB.class.php' );
-// App::setValue( 'class::definition::XMD_log',        '/inc/log/XMD_log.class.php' );
+App::setValue( 'class::definition::DB', '/inc/db/DB.class.php' );
 
 // Extensions setup
-
 include_once( App::getValue('XIMDEX_ROOT_PATH') . '/conf/extensions.conf.php');
 
 $mManager = new ModulesManager;
@@ -113,12 +100,10 @@ foreach(ModulesManager::getEnabledModules() as $module){
     }
 }
 
- // FROM MVC
-
+// FROM MVC
 if (!defined('RENDERER_ROOT_PATH')) {
     define('RENDERER_ROOT_PATH', XIMDEX_ROOT_PATH . '/inc/mvc/renderers');
 }
 if (!defined('SMARTY_TMP_PATH')) {
     define('SMARTY_TMP_PATH', XIMDEX_ROOT_PATH . App::getValue('TempRoot'));
 }
-
