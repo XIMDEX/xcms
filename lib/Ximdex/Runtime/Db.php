@@ -111,6 +111,7 @@ class Db
             } else {
                 $this->numErr = $this->db->errorCode();
             }
+            XMD_Log::error($this->db->errorInfo());
         }
 
         if (count($this->rows) == 0) {
