@@ -4767,7 +4767,7 @@ msgstr "Warnung des Servers %s (instance %s): Der freie Speicherplatz auf der CD
 msgid "Error writing in file [inc/fsutils/FsUtils.class.php] script: %s file: %s line: %s file: %s"
 msgstr "Fehler beim Schreiben in der Datei [inc/fsutils/FsUtils.class.php] script: %s file: %s line: %s file: %s"
 
-msgid "Trying to obating the content of a nonexistent file [inc/fsutils/FsUtils.class.php] script: %s file: %s line: %s nonexistent_file: %s"
+msgid "Trying to obtaing the content of a nonexistent file [inc/fsutils/FsUtils.class.php] script: %s file: %s line: %s nonexistent_file: %s"
 msgstr "Versucht den Inhalt einer nicht existierenden Datei zu laden [inc/fsutils/FsUtils.class.php] script: %s file: %s line: %s nonexistent_file: %s"
 
 msgid "It has been applied to delete recursively a folder [inc/fsutils/FsUtils.class.php] script: %s file: %s line: %s folder: %s"

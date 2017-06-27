@@ -1264,7 +1264,7 @@
     "MySQL link could not been stablished.": "MySQL-Link konnte nicht geladen werden.",
     "Warning from the server %s (instance %s): The free space in disk is %s MB": "Warnung des Servers %s (instance %s): Der freie Speicherplatz auf der CD betr&auml;gt %s MB",
     "Error writing in file [inc/fsutils/FsUtils.class.php] script: %s file: %s line: %s file: %s": "Fehler beim Schreiben in der Datei [inc/fsutils/FsUtils.class.php] script: %s file: %s line: %s file: %s",
-    "Trying to obating the content of a nonexistent file [inc/fsutils/FsUtils.class.php] script: %s file: %s line: %s nonexistent_file: %s": "Versucht den Inhalt einer nicht existierenden Datei zu laden [inc/fsutils/FsUtils.class.php] script: %s file: %s line: %s nonexistent_file: %s",
+    "Trying to obtaing the content of a nonexistent file [inc/fsutils/FsUtils.class.php] script: %s file: %s line: %s nonexistent_file: %s": "Versucht den Inhalt einer nicht existierenden Datei zu laden [inc/fsutils/FsUtils.class.php] script: %s file: %s line: %s nonexistent_file: %s",
     "It has been applied to delete recursively a folder [inc/fsutils/FsUtils.class.php] script: %s file: %s line: %s folder: %s": "L&ouml;schen eines Ordners wurden angewiesen [inc/fsutils/FsUtils.class.php] script: %s file: %s line: %s folder: %s",
     "Error estimating folder %s": "Fehler beim Einsch&auml;tzen des Verzeichnisses %s",
     "It was not possible to open the folder %s %s, %s": "Der Ordner konnte nicht ge&ouml;ffnet werden %s %s, %s",

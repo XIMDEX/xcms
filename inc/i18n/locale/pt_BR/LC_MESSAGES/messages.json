@@ -1265,7 +1265,7 @@
     "MySQL link could not been stablished.": "N&atilde;o foi poss&iacute;vel estabelecer o link MySQL.",
     "Warning from the server %s (instance %s): The free space in disk is %s MB": "Aviso do servidor %s (caso %s): o espa&ccedil;o livre em disco &eacute; de %s MB",
     "Error writing in file [inc/fsutils/FsUtils.class.php] script: %s file: %s line: %s file: %s": "Erro ao escrever no arquivo [inc/fsutils/FsUtils.class.php] script: %s file: %s line: %s file: %s",
-    "Trying to obating the content of a nonexistent file [inc/fsutils/FsUtils.class.php] script: %s file: %s line: %s nonexistent_file: %s": "Tentando obter o conte&uacute;do de um arquivo n&atilde;o existente [inc/fsutils/FsUtils.class.php] script: %s file: %s line: %s arquivo_inexistente: %s",
+    "Trying to obtaing the content of a nonexistent file [inc/fsutils/FsUtils.class.php] script: %s file: %s line: %s nonexistent_file: %s": "Tentando obter o conte&uacute;do de um arquivo n&atilde;o existente [inc/fsutils/FsUtils.class.php] script: %s file: %s line: %s arquivo_inexistente: %s",
     "It has been applied to delete recursively a folder [inc/fsutils/FsUtils.class.php] script: %s file: %s line: %s folder: %s": "Foi solicitado eliminar recursivamente a pasta [inc/fsutils/FsUtils.class.php] script: %s file: %s line: %s folder: %s",
     "Error estimating folder %s": "Erro ao estimar o diret&oacute;rio %s",
     "It was not possible to open the folder %s %s, %s": "N&atilde;o foi poss&iacute;vel abrir a pasta %s %s, %s",

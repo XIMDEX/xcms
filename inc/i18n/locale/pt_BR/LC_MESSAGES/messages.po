@@ -4767,7 +4767,7 @@ msgstr "Aviso do servidor %s (caso %s): o espa&ccedil;o livre em disco &eacute; 
 msgid "Error writing in file [inc/fsutils/FsUtils.class.php] script: %s file: %s line: %s file: %s"
 msgstr "Erro ao escrever no arquivo [inc/fsutils/FsUtils.class.php] script: %s file: %s line: %s file: %s"
 
-msgid "Trying to obating the content of a nonexistent file [inc/fsutils/FsUtils.class.php] script: %s file: %s line: %s nonexistent_file: %s"
+msgid "Trying to obtaing the content of a nonexistent file [inc/fsutils/FsUtils.class.php] script: %s file: %s line: %s nonexistent_file: %s"
 msgstr "Tentando obter o conte&uacute;do de um arquivo n&atilde;o existente [inc/fsutils/FsUtils.class.php] script: %s file: %s line: %s arquivo_inexistente: %s"
 
 msgid "It has been applied to delete recursively a folder [inc/fsutils/FsUtils.class.php] script: %s file: %s line: %s folder: %s"
