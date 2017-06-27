@@ -181,6 +181,7 @@ class Db
             while ($statement->nextRowset()) {/* https://bugs.php.net/bug.php?id=61613 */};
         } catch (\PDOException $e) {
             $result = false;
+            XMD_Log::error($e->errorInfo);
         }
 
         $this->db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_SILENT);
@@ -297,7 +298,7 @@ class Db
         }
 
         if (!(strlen($value) > 0)) {
-            XMD_Log::info("WARNING: A SQL statement is converting an empty string to NULL");
+            XMD_Log::warning("A SQL statement is converting an empty string to NULL");
             return 'NULL';
         }
         return self::getInstance()->db->quote($value);
