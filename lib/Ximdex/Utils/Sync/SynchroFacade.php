@@ -649,7 +649,7 @@ class SynchroFacade
 	 * @param unknown_type $idNode
 	 * @return unknown
 	 */
-	function HasUnlimitedLifeTime($idNode)
+	public static function HasUnlimitedLifeTime($idNode)
 	{
 		// Both calls are equivalent
 		$synchronizer = new Synchronizer($idNode);
