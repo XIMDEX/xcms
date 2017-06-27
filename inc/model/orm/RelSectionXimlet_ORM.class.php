@@ -24,12 +24,7 @@
  *  @version $Revision$
  */
 
-if (!defined('XIMDEX_ROOT_PATH'))
-	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
-
-include_once (XIMDEX_ROOT_PATH . '/inc/helper/GenericData.class.php');
-
-class RelSectionXimlet_ORM extends GenericData   {
+class RelSectionXimlet_ORM extends \Ximdex\Data\GenericData {
 	var $_idField = 'id';
 	var $_table = 'RelSectionXimlet';
 	var $_metaData = array(
