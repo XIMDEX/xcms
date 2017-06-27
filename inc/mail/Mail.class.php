@@ -45,7 +45,7 @@ class Mail extends PHPMailer
 {
 
 
-    function Mail()
+    function __construct()
     {
 
         $this->From = FROM;
