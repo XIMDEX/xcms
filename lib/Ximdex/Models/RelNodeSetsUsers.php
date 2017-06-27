@@ -24,15 +24,12 @@
  * @version $Revision$
  */
 
-
 use Ximdex\Models\NodeSets;
 use Ximdex\Models\ORM\RelNodeSetsUsersOrm;
 use Ximdex\Models\User;
 
-
 class RelNodeSetsUsers extends RelNodeSetsUsersOrm
 {
-
     const OWNER_YES = 1;
     const OWNER_NO = 0;
 
@@ -145,5 +142,4 @@ class RelNodeSetsUsers extends RelNodeSetsUsersOrm
         // $sql = 'alter table RelNodeSetsUsers auto_increment = 0';
         return $ret;
     }
-
 }
