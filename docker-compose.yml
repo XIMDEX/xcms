@@ -25,7 +25,7 @@ services:
 
   # MySQL
   db:
-    image: "mysql:5.6"
+    image: "mysql:5.7"
     # Path where MySQL data will be
     volumes:
       - .data/db:/var/lib/mysql

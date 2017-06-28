@@ -43,7 +43,7 @@ $I->waitForText("Tables and default data have been created", 20);
 
 $I->click("Continue: Install Modules");
 
-$I->waitForText("Install Modules", 30);
+$I->waitForText("Install Modules", 20);
 
 $I->click("Next: Settings");
 
