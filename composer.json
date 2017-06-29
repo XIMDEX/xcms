@@ -45,19 +45,23 @@
         "hammerjs/hammer.js": "2.0.4",
         "pda/pheanstalk": "*",
         "symfony/console": "^3.1",
+        "php-di/php-di": "^5.4",
+        "doctrine/cache": "^1.6",
+        "doctrine/common": "^2.7",
         "illuminate/support": "5.2.*",
-		"php-di/php-di": "^5.4"
+        "zircote/swagger-php": "^2.0"
 
     },
      "require-dev": {
-        "phpunit/phpunit": "4.8.21",
-        "mockery/mockery": "0.8.0",
-        "codeception/codeception": "^2.2"
+     	"mockery/mockery": "0.8.0",
+        "codeception/codeception": "^2.2",
+        "symfony/var-dumper": "^3.2"
     },
     "autoload": {
         "psr-0": { "Ximdex": "lib"}
     },
     "config": {
-        "vendor-dir": "extensions/vendors/"
+        "vendor-dir": "extensions/vendors/",
+        "secure-http": false
     }
 }

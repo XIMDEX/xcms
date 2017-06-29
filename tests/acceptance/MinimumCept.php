@@ -14,7 +14,7 @@ if( file_exists('data/previos/picasso-iden-idhtml.html') ){
     $I->deleteFile('data/previos/picasso-iden-idhtml.html');
 }
 
-$I->wantTo('ensure that installation works');
+$I->wantTo('Ensure that installation works');
 
 $I->amOnPage('/setup/index.php');
 
@@ -66,7 +66,7 @@ $I->click("Sign in");
 
 $I->waitForText("Welcome to Ximdex CMS, ximdex!", 10);
 
-$I->wantTo('ensure that publish works');
+$I->wantTo('Ensure that publish works');
 
 $I->waitForText("Hello ximdex, first time here?", 5, "#tourcontrols");
 
