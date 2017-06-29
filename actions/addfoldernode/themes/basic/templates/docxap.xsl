@@ -2,8 +2,8 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
                    	<xsl:output method="html"/>
                    	<xsl:param name="xmlcontent"/>
-               	<!-- <xsl:include href="{URL_PATH}data/nodes/{PROJECT_NAME}/templates/templates_include.xsl"/> -->
-               	<xsl:include href="templates_include.xsl"/>
+               	<xsl:include href="{URL_PATH}data/nodes/{PROJECT_NAME}/templates/templates_include.xsl"/>
+               	<!-- <xsl:include href="templates_include.xsl"/> -->
                    	<xsl:template name="docxap" match="docxap"> 
                     <!--<xsl:text disable-output-escaping="yes">
                     <![CDATA[ 
