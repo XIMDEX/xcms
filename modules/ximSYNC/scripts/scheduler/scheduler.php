@@ -25,12 +25,9 @@
  * @version $Revision$
  */
 
-
 include_once dirname(__FILE__) . '/../../../../bootstrap/start.php';
 
-
-
-ModulesManager::file('/scripts/scheduler/scheduler.class.php', 'ximSYNC');
+//ModulesManager::file('/scripts/scheduler/scheduler.class.php', 'ximSYNC');
+ModulesManager::file('/modules/ximSYNC/scripts/scheduler/scheduler.class.php');
 
 Scheduler::start(true);
-
