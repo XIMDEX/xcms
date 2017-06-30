@@ -1,6 +1,7 @@
 # Ximdex 3.* - README
 
 [![Build Status](https://travis-ci.org/XIMDEX/ximdex.svg?branch=develop)](https://travis-ci.org/XIMDEX/ximdex)
+[![PHP 7 ready](https://php7ready.timesplinter.ch/XIMDEX/ximdex/develop/badge.svg)](https://travis-ci.org/XIMDEX/ximdex)
 
 Ximdex CMS is a Semantic Content Management System (CMS) that allows the manipulation and generation of content, data and apps to be published in different target technologies: PHP, J2EE, .NET, XML/XSLT, JS, RDF, JSON, RoR, ...
 
