@@ -111,7 +111,7 @@ class Db
             } else {
                 $this->numErr = $this->db->errorCode();
             }
-            XMD_Log::error($this->db->errorInfo());
+            XMD_Log::error($this->db->errorInfo()[2] . '. (SQL: ' . $this->sql . ')');
         }
 
         if (count($this->rows) == 0) {
@@ -299,7 +299,7 @@ class Db
         }
 
         if (!(strlen($value) > 0)) {
-            XMD_Log::warning("A SQL statement is converting an empty string to NULL");
+            //XMD_Log::warning("A SQL statement is converting an empty string to NULL");
             return 'NULL';
         }
         return self::getInstance()->db->quote($value);

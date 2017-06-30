@@ -83,7 +83,7 @@ Class Logger
     public static function fatal($string)
     {
         try{
-            return self::get()->logger->addWarning($string);
+            return self::get()->logger->addCritical($string);
         }catch (\Exception $e){
             error_log($e->getMessage());
         }

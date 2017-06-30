@@ -651,7 +651,7 @@ class Node extends NodesOrm
         $path = $this->_GetPath();
         // $idNode = $this->get('IdNode');
         if (!$path) {
-            XMD_Log::debug("Model::Node::getPath(): Path cant be deduced from NULL idNode. ERROR");
+            XMD_Log::warning("Model::Node::getPath(): Path can not be deduced from NULL idNode.");
         }
         return $path;
     }

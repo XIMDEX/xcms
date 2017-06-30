@@ -132,7 +132,7 @@ class ParsingJsGetText
             XMD_Log::warning("ERROR, you have not permits, or the language directory is not existing. Review permits in \'data/tmp/js\'. Error opening the file " . XIMDEX_ROOT_PATH . $this->PATH_CACHE . $this->_lang . "/" . $this->_file);
             return null;
         }
-        XMD_Log::warning("Caching: " . XIMDEX_ROOT_PATH . $this->_file_orig . " --> " . XIMDEX_ROOT_PATH . $this->PATH_CACHE . $this->_lang . "/" . $this->_file);
+        XMD_Log::debug("Caching: " . XIMDEX_ROOT_PATH . $this->_file_orig . " --> " . XIMDEX_ROOT_PATH . $this->PATH_CACHE . $this->_lang . "/" . $this->_file);
 
         if ($file_in && $file_out) {
             while (!feof($file_in)) {
