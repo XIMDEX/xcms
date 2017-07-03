@@ -4,7 +4,7 @@
             "type": "package",
             "package": {
                 "name": "codemirror/Codemirror",
-                "version": "4.7.1",
+                "version": "5.27.4",
                 "source": {
                     "url": "https://github.com/codemirror/CodeMirror.git",
                     "type": "git",
@@ -16,7 +16,7 @@
             "type": "package",
             "package": {
                 "name": "RyanMullins/angular-hammer",
-                "version": "2.1.10",
+                "version": "2.2.0",
                 "source": {
                     "url": "https://github.com/RyanMullins/angular-hammer.git",
                     "type": "git",
@@ -28,7 +28,7 @@
             "type": "package",
             "package": {
                 "name": "hammerjs/hammer.js",
-                "version": "2.0.4",
+                "version": "2.0.6",
                 "source": {
                     "url": "https://github.com/hammerjs/hammer.js.git",
                     "type": "git",
@@ -38,30 +38,25 @@
         }
     ],
     "require": {
-        "solarium/solarium": "3.5.1",
+        "solarium/solarium": "3.8.1",
         "monolog/monolog": "1.11.0",
-        "codemirror/Codemirror": "4.7.1",
-        "RyanMullins/angular-hammer": "2.1.10",
-        "hammerjs/hammer.js": "2.0.4",
+        "codemirror/Codemirror": "5.27.4",
+        "RyanMullins/angular-hammer": "2.2.0",
+        "hammerjs/hammer.js": "2.0.6",
         "pda/pheanstalk": "*",
         "symfony/console": "^3.1",
         "php-di/php-di": "^5.4",
-        "doctrine/cache": "^1.6",
         "doctrine/common": "^2.7",
-        "illuminate/support": "5.2.*",
-        "zircote/swagger-php": "^2.0"
-
+        "illuminate/support": "5.2.*"
     },
      "require-dev": {
-     	"mockery/mockery": "0.8.0",
-        "codeception/codeception": "^2.2",
-        "symfony/var-dumper": "^3.2"
+        "mockery/mockery": "0.9.9",
+        "codeception/codeception": "^2.3.3"
     },
     "autoload": {
         "psr-0": { "Ximdex": "lib"}
     },
     "config": {
-        "vendor-dir": "extensions/vendors/",
-        "secure-http": false
+        "vendor-dir": "extensions/vendors/"
     }
 }
