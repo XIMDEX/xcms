@@ -256,7 +256,8 @@ class BaseIO
      */
     function _dumpMessages(& $messages)
     {
-        if (strtolower(get_class($messages)) != 'messages') {
+    	$res = strtolower(get_class($messages));
+        if ($res != 'messages' and $res != 'ximdex\utils\messages') {
             Logger::error(_('Error obtaining object messages'));
             return;
         }
