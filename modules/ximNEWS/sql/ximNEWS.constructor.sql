@@ -116,11 +116,10 @@ INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Desc
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6721,5310,'View images','browserlote','view_images.png','See the images of a batch',-70,'ximNEWS',0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6769,5302,'Generate bulletins','generatecolector','generate_colector.png','Generate the bulletins of a colector',70,'ximNEWS',0);
 
-
-INSERT INTO Nodes VALUES(7017, 5300, 5008, 'Manage categories', '0', '0', NULL, '0', '0', NULL, NULL, DEFAULT);
-INSERT INTO Nodes VALUES(7018, 5305, 5008, 'Associate news to categories', '0', '0', NULL, '0', '0', NULL, NULL, DEFAULT);
-INSERT INTO Nodes VALUES(7019, 5305, 5008, 'Delete news from categories', '0', '0', NULL, '0', '0', NULL, NULL, DEFAULT);
-
+INSERT INTO `Nodes` (`IdNode`, `IdParent`, `IdNodeType`, `Name`, `IdState`, `BlockTime`, `BlockUser`, `CreationDate`, `ModificationDate`, `Description`, `SharedWorkflow`, `Path`) VALUES 
+(7017, 5300, 5008, 'Manage categories', '0', '0', NULL, '0', '0', NULL, NULL, DEFAULT),
+(7018, 5305, 5008, 'Associate news to categories', '0', '0', NULL, '0', '0', NULL, NULL, DEFAULT),
+(7019, 5305, 5008, 'Delete news from categories', '0', '0', NULL, '0', '0', NULL, NULL, DEFAULT);
 
 --
 -- Associating actions to roles by default
@@ -461,46 +460,46 @@ INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdConte
 INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES(NULL, 201, 6768, 8, 1, 3);
 INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES(NULL, 201, 6382, 0, 1, 3);
 
-
-INSERT INTO `Nodes`  VALUES (6700,5300,5008,'Delete ximNEWS section',NULL,NULL,NULL,0,0,NULL,NULL, DEFAULT);
-INSERT INTO `Nodes`  VALUES (6701,5300,5008,'Change name',NULL,NULL,NULL,0,0,NULL,NULL, DEFAULT);
-INSERT INTO `Nodes`  VALUES (6702,5301,5008,'Add news colector',NULL,NULL,NULL,0,0,NULL,NULL, DEFAULT);
-INSERT INTO `Nodes`  VALUES (6703,5302,5008,'Create bulletin',NULL,NULL,NULL,0,0,NULL,NULL, DEFAULT);
-INSERT INTO `Nodes`  VALUES (6704,5302,5008,'Delete colector',NULL,NULL,NULL,0,0,NULL,NULL, DEFAULT);
-INSERT INTO `Nodes`  VALUES (6706,5303,5008,'Add news',NULL,NULL,NULL,0,0,NULL,NULL, DEFAULT);
-INSERT INTO `Nodes`  VALUES (6708,5063,5008,'Add a news',0,0,NULL,0,0,NULL,NULL, DEFAULT);
-INSERT INTO `Nodes`  VALUES (6709,5305,5008,'Add a news',0,0,NULL,0,0,NULL,NULL, DEFAULT);
-INSERT INTO `Nodes`  VALUES (6710,5304,5008,'Create news',0,0,NULL,0,0,NULL,NULL, DEFAULT);
-INSERT INTO `Nodes`  VALUES (6713,5306,5008,'Delete news',0,0,NULL,0,0,NULL,NULL, DEFAULT);
-INSERT INTO `Nodes`  VALUES (6714,5306,5008,'Change news name',0,0,NULL,0,0,NULL,NULL, DEFAULT);
-INSERT INTO `Nodes`  VALUES (6715,5305,5008,'Add language to bulletin',0,0,NULL,0,0,NULL,NULL, DEFAULT);
-INSERT INTO `Nodes`  VALUES (6716,5307,5008,'Unpublish bulletin',0,0,NULL,0,0,NULL,NULL, DEFAULT);
-INSERT INTO `Nodes`  VALUES (6717,5305,5008,'Associate news to bulletins',0,0,NULL,0,0,NULL,NULL, DEFAULT);
-INSERT INTO `Nodes`  VALUES (6720,5306,5008,'Add image batch',NULL,NULL,NULL,NULL,NULL,NULL,NULL, DEFAULT);
-INSERT INTO `Nodes`  VALUES (6721,5310,5008,'See images',NULL,NULL,NULL,NULL,NULL,NULL,NULL, DEFAULT);
-INSERT INTO `Nodes`  VALUES (6723,5306,5008,'Image viewer',NULL,NULL,NULL,NULL,NULL,NULL,NULL, DEFAULT);
-INSERT INTO `Nodes`  VALUES (6724,5310,5008,'Change name',NULL,NULL,NULL,NULL,NULL,NULL,NULL, DEFAULT);
-INSERT INTO `Nodes`  VALUES (6725,5310,5008,'Delete folder',NULL,NULL,NULL,NULL,NULL,NULL,NULL, DEFAULT);
-INSERT INTO `Nodes`  VALUES (6726,5310,5008,'Add image',NULL,NULL,NULL,NULL,NULL,NULL,NULL, DEFAULT);
-INSERT INTO `Nodes`  VALUES (6727,5310,5008,'Add images',NULL,0,NULL,0,0,NULL,NULL, DEFAULT);
-INSERT INTO `Nodes`  VALUES (6728,5307,5008,'Download image',NULL,NULL,NULL,NULL,NULL,NULL,NULL, DEFAULT);
-INSERT INTO `Nodes`  VALUES (6729,5307,5008,'Preview images',NULL,NULL,NULL,NULL,NULL,NULL,NULL, DEFAULT);
-INSERT INTO `Nodes`  VALUES (6730,5307,5008,'Change image name',NULL,NULL,NULL,NULL,NULL,NULL,NULL, DEFAULT);
-INSERT INTO `Nodes`  VALUES (6731,5307,5008,'Delete image',NULL,NULL,NULL,NULL,NULL,NULL,NULL, DEFAULT);
-INSERT INTO `Nodes`  VALUES (6740,5308,5008,'Edit XML',NULL,NULL,NULL,NULL,NULL,NULL,NULL, DEFAULT);
-INSERT INTO `Nodes`  VALUES (6741,5308,5008,'Move to next state',NULL,NULL,NULL,NULL,NULL,NULL,NULL, DEFAULT);
-INSERT INTO `Nodes`  VALUES (6742,5308,5008,'Move to previous state',NULL,NULL,NULL,NULL,NULL,NULL,NULL, DEFAULT);
-INSERT INTO `Nodes`  VALUES (6745,5308,5008,'Delete document',NULL,NULL,NULL,NULL,NULL,NULL,NULL, DEFAULT);
-INSERT INTO `Nodes`  VALUES (6747,5308,5008,'Edit in text mode',NULL,NULL,NULL,NULL,NULL,NULL,NULL, DEFAULT);
-INSERT INTO `Nodes`  VALUES (6750,5309,5008,'Edit XML',NULL,NULL,NULL,NULL,NULL,NULL,NULL, DEFAULT);
-INSERT INTO `Nodes`  VALUES (6751,5309,5008,'Move to next state',NULL,NULL,NULL,NULL,NULL,NULL,NULL, DEFAULT);
-INSERT INTO `Nodes`  VALUES (6752,5309,5008,'Move to previous state',NULL,NULL,NULL,NULL,NULL,NULL,NULL, DEFAULT);
-INSERT INTO `Nodes`  VALUES (6755,5309,5008,'Delete document',NULL,NULL,NULL,NULL,NULL,NULL,NULL, DEFAULT);
-INSERT INTO `Nodes`  VALUES (6757,5309,5008,'Edit in text mode',NULL,NULL,NULL,NULL,NULL,NULL,NULL, DEFAULT);
-INSERT INTO `Nodes`  VALUES (6759,5309,5008,'Copy XML',NULL,0,NULL,0,0,NULL,NULL, DEFAULT);
-INSERT INTO `Nodes`  VALUES (7252,5309,5008,'Symbolic link',NULL,NULL,NULL,NULL,NULL,NULL,NULL, DEFAULT);
-INSERT INTO `Nodes`  VALUES (6630,5300,5008,'Copy ximNEWS',NULL,0,NULL,0,0,NULL,NULL, DEFAULT);
-INSERT INTO `Nodes`  VALUES (7322,5300,5008,'Publish ximNEWS section',NULL,NULL,NULL,NULL,NULL,NULL,NULL, DEFAULT);
+INSERT INTO `Nodes` (`IdNode`, `IdParent`, `IdNodeType`, `Name`, `IdState`, `BlockTime`, `BlockUser`, `CreationDate`, `ModificationDate`, `Description`, `SharedWorkflow`, `Path`) VALUES 
+(6700,5300,5008,'Delete ximNEWS section',NULL,NULL,NULL,0,0,NULL,NULL, DEFAULT),
+(6701,5300,5008,'Change name',NULL,NULL,NULL,0,0,NULL,NULL, DEFAULT),
+(6702,5301,5008,'Add news colector',NULL,NULL,NULL,0,0,NULL,NULL, DEFAULT),
+(6703,5302,5008,'Create bulletin',NULL,NULL,NULL,0,0,NULL,NULL, DEFAULT),
+(6704,5302,5008,'Delete colector',NULL,NULL,NULL,0,0,NULL,NULL, DEFAULT),
+(6706,5303,5008,'Add news',NULL,NULL,NULL,0,0,NULL,NULL, DEFAULT),
+(6708,5063,5008,'Add a news',0,0,NULL,0,0,NULL,NULL, DEFAULT),
+(6709,5305,5008,'Add a news',0,0,NULL,0,0,NULL,NULL, DEFAULT),
+(6710,5304,5008,'Create news',0,0,NULL,0,0,NULL,NULL, DEFAULT),
+(6713,5306,5008,'Delete news',0,0,NULL,0,0,NULL,NULL, DEFAULT),
+(6714,5306,5008,'Change news name',0,0,NULL,0,0,NULL,NULL, DEFAULT),
+(6715,5305,5008,'Add language to bulletin',0,0,NULL,0,0,NULL,NULL, DEFAULT),
+(6716,5307,5008,'Unpublish bulletin',0,0,NULL,0,0,NULL,NULL, DEFAULT),
+(6717,5305,5008,'Associate news to bulletins',0,0,NULL,0,0,NULL,NULL, DEFAULT),
+(6720,5306,5008,'Add image batch',NULL,NULL,NULL,NULL,NULL,NULL,NULL, DEFAULT),
+(6721,5310,5008,'See images',NULL,NULL,NULL,NULL,NULL,NULL,NULL, DEFAULT),
+(6723,5306,5008,'Image viewer',NULL,NULL,NULL,NULL,NULL,NULL,NULL, DEFAULT),
+(6724,5310,5008,'Change name',NULL,NULL,NULL,NULL,NULL,NULL,NULL, DEFAULT),
+(6725,5310,5008,'Delete folder',NULL,NULL,NULL,NULL,NULL,NULL,NULL, DEFAULT),
+(6726,5310,5008,'Add image',NULL,NULL,NULL,NULL,NULL,NULL,NULL, DEFAULT),
+(6727,5310,5008,'Add images',NULL,0,NULL,0,0,NULL,NULL, DEFAULT),
+(6728,5307,5008,'Download image',NULL,NULL,NULL,NULL,NULL,NULL,NULL, DEFAULT),
+(6729,5307,5008,'Preview images',NULL,NULL,NULL,NULL,NULL,NULL,NULL, DEFAULT),
+(6730,5307,5008,'Change image name',NULL,NULL,NULL,NULL,NULL,NULL,NULL, DEFAULT),
+(6731,5307,5008,'Delete image',NULL,NULL,NULL,NULL,NULL,NULL,NULL, DEFAULT),
+(6740,5308,5008,'Edit XML',NULL,NULL,NULL,NULL,NULL,NULL,NULL, DEFAULT),
+-- (6741,5308,5008,'Move to next state',NULL,NULL,NULL,NULL,NULL,NULL,NULL, DEFAULT),
+-- (6742,5308,5008,'Move to previous state',NULL,NULL,NULL,NULL,NULL,NULL,NULL, DEFAULT),
+(6745,5308,5008,'Delete document',NULL,NULL,NULL,NULL,NULL,NULL,NULL, DEFAULT),
+(6747,5308,5008,'Edit in text mode',NULL,NULL,NULL,NULL,NULL,NULL,NULL, DEFAULT),
+(6750,5309,5008,'Edit XML',NULL,NULL,NULL,NULL,NULL,NULL,NULL, DEFAULT),
+(6751,5309,5008,'Move to next state',NULL,NULL,NULL,NULL,NULL,NULL,NULL, DEFAULT),
+(6752,5309,5008,'Move to previous state',NULL,NULL,NULL,NULL,NULL,NULL,NULL, DEFAULT),
+(6755,5309,5008,'Delete document',NULL,NULL,NULL,NULL,NULL,NULL,NULL, DEFAULT),
+(6757,5309,5008,'Edit in text mode',NULL,NULL,NULL,NULL,NULL,NULL,NULL, DEFAULT),
+(6759,5309,5008,'Copy XML',NULL,0,NULL,0,0,NULL,NULL, DEFAULT),
+(7252,5309,5008,'Symbolic link',NULL,NULL,NULL,NULL,NULL,NULL,NULL, DEFAULT),
+(6630,5300,5008,'Copy ximNEWS',NULL,0,NULL,0,0,NULL,NULL, DEFAULT),
+(7322,5300,5008,'Publish ximNEWS section',NULL,NULL,NULL,NULL,NULL,NULL,NULL, DEFAULT);
 
 
 INSERT INTO `NodeDefaultContents` VALUES (NULL,5300,5306,'images',NULL,NULL);
@@ -509,46 +508,46 @@ INSERT INTO `NodeDefaultContents` VALUES (NULL,5300,5304,'news',NULL,NULL);
 INSERT INTO `NodeDefaultContents` VALUES (NULL,5300,5026,'templates',NULL,NULL);
 INSERT INTO `NodeDefaultContents` VALUES (NULL,5300,5022,'common',NULL,NULL);
 
--- It is reserved for XimNEWS the NodeAllowedContents from 200 on --
--- NodeAllowedContents for Servers root folder
-INSERT INTO `NodeAllowedContents` VALUES (NULL,5014,5300,0);
-INSERT INTO `NodeAllowedContents` VALUES (NULL,5015,5300,0);
+-- It is reserved for XimNEWS the NodeAllowedContents from 200 on NodeAllowedContents for Servers root folder
+-- INSERT INTO `NodeAllowedContents` VALUES (NULL,5014,5300,0);
+-- INSERT INTO `NodeAllowedContents` VALUES (NULL,5015,5300,0);
 
 -- NodeAllowedContents for XimNEWS root folder
-INSERT INTO `NodeAllowedContents` VALUES (NULL,5300,5301,1);
-INSERT INTO `NodeAllowedContents` VALUES (NULL,5300,5022,1);
-INSERT INTO `NodeAllowedContents` VALUES (NULL,5300,5306,1);
-INSERT INTO `NodeAllowedContents` VALUES (NULL,5300,5026,1);
-INSERT INTO `NodeAllowedContents` VALUES (NULL,5300,5304,0);
+-- INSERT INTO `NodeAllowedContents` VALUES (NULL,5300,5301,1);
+-- INSERT INTO `NodeAllowedContents` VALUES (NULL,5300,5022,1);
+-- INSERT INTO `NodeAllowedContents` VALUES (NULL,5300,5306,1);
+-- INSERT INTO `NodeAllowedContents` VALUES (NULL,5300,5026,1);
+-- INSERT INTO `NodeAllowedContents` VALUES (NULL,5300,5304,0);
 
 -- NodeAllowedContents for bulletins folder and descendants
-INSERT INTO `NodeAllowedContents` VALUES (NULL,5301,5302,0);
-INSERT INTO `NodeAllowedContents` VALUES (NULL,5302,5313,1);
-INSERT INTO `NodeAllowedContents` VALUES (NULL,5313,5312,0);
-INSERT INTO `NodeAllowedContents` VALUES (NULL,5302,5303,0);
-INSERT INTO `NodeAllowedContents` VALUES (NULL,5303,5308,0);
+-- INSERT INTO `NodeAllowedContents` VALUES (NULL,5301,5302,0);
+-- INSERT INTO `NodeAllowedContents` VALUES (NULL,5302,5313,1);
+-- INSERT INTO `NodeAllowedContents` VALUES (NULL,5313,5312,0);
+-- INSERT INTO `NodeAllowedContents` VALUES (NULL,5302,5303,0);
+-- INSERT INTO `NodeAllowedContents` VALUES (NULL,5303,5308,0);
 
 -- NodeAllowedContents for image folder and descendants
-INSERT INTO `NodeAllowedContents` VALUES (NULL,5306,5310,0);
-INSERT INTO `NodeAllowedContents` VALUES (NULL,5306,5320,0);
-INSERT INTO `NodeAllowedContents` VALUES (NULL,5310,5307,0);
-INSERT INTO `NodeAllowedContents` VALUES (NULL,5320,5320,0);
-INSERT INTO `NodeAllowedContents` VALUES (NULL,5320,5307,0);
-INSERT INTO `NodeAllowedContents` VALUES (NULL,5320,5310,0);
-INSERT INTO `NodeAllowedContents` VALUES (NULL,5310,5320,0);
+-- INSERT INTO `NodeAllowedContents` VALUES (NULL,5306,5310,0);
+-- INSERT INTO `NodeAllowedContents` VALUES (NULL,5306,5320,0);
+-- INSERT INTO `NodeAllowedContents` VALUES (NULL,5310,5307,0);
+-- INSERT INTO `NodeAllowedContents` VALUES (NULL,5320,5320,0);
+-- INSERT INTO `NodeAllowedContents` VALUES (NULL,5320,5307,0);
+-- INSERT INTO `NodeAllowedContents` VALUES (NULL,5320,5310,0);
+-- INSERT INTO `NodeAllowedContents` VALUES (NULL,5310,5320,0);
 
 -- NodeAllowedContents for news folder and descendants
-INSERT INTO `NodeAllowedContents` VALUES (NULL,5304,5305,0);
-INSERT INTO `NodeAllowedContents` VALUES (NULL,5305,5309,0);
+-- INSERT INTO `NodeAllowedContents` VALUES (NULL,5304,5305,0);
+-- INSERT INTO `NodeAllowedContents` VALUES (NULL,5305,5309,0);
 
 update Config set ConfigValue=0 where ConfigKey='PurgeSubversionsOnNewVersion';
 
 --	Params related with news bellows:
 
-INSERT INTO Config Values ('', 'RatioNewsFuelle', 10);
-INSERT INTO Config Values ('', 'ToleranciaFuelle', 25);
-INSERT INTO Config Values ('', 'StartCheckNoFuelle', 2);
-INSERT INTO Config Values ('', 'EndCheckNoFuelle', 5);
+INSERT INTO Config (ConfigKey, ConfigValue) Values 
+('RatioNewsFuelle', 10),
+('ToleranciaFuelle', 25),
+('StartCheckNoFuelle', 2),
+('EndCheckNoFuelle', 5);
 
 #
 # Table structure for table 'XimNewsBulletins'
@@ -649,9 +648,9 @@ CREATE TABLE `RelNewsColector` (
 
 DROP TABLE IF EXISTS `XimNewsFrameBulletin`;
 
-#
-# Table structure for table 'XimNewsFrameBulletin'
-#
+--
+-- Table structure for table 'XimNewsFrameBulletin'
+--
 
 CREATE TABLE `XimNewsFrameBulletin` (
   IdSync int(12) unsigned NOT NULL default '0',
