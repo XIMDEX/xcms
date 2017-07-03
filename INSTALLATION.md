@@ -9,6 +9,7 @@ You can install Ximdex CMS with Docker or using the web installer.
 ## A) Running Ximdex CMS using Docker composer
 
 1. **Download Ximdex** package (https://github.com/XIMDEX/ximdex/archive/develop.zip) and expand it:
+
 	```
   	wget --no-check-certificate https://github.com/XIMDEX/ximdex/archive/develop.zip
 	unzip develop.zip && rm develop.zip
@@ -19,31 +20,34 @@ You can install Ximdex CMS with Docker or using the web installer.
 	unzip develop.zip && rm develop.zip
   	```
   	
-	> You should end with a directory (i.e.: ximdex-develop) containing all the Ximdex files and directories. 
-
-	If you **don´t have installed the docker package**, install it using the next command line in a terminal console:
+	You should end with a directory (i.e.: ximdex-develop) containing all the Ximdex files and directories.
 	
+2. Open a terminal under the directory ximdex-develop, which has been unzipped, and run the command (launch it into the root of this repository, where the file docker-compose.yml is located):
+    ```
+	composer install
+    ```
+    This command will download and install all the extensions needed to run propertly the application
+    
+    After this, run this command:
+    ```
+	sudo docker-compose up
+    ```
+    That will run the containers for Apache2, PHP, MySQL and Ximdex running on localhost:80 (the directory with ximdex has to be in a shared path for docker)
+    
+    If you **don´t have installed the docker-composer package**, install it using the next command line in a terminal console:
+    
 	```
 	sudo apt-get install docker-compose
     ```
     
-2. Open a terminal under the directory ximdex-develop, which has been unzipped, and run the command (launch it into the root of this repository, where the file docker-compose.yml is located):
-
-    ```
-	sudo docker-compose up
-    ```
-    > That will run the containers for Apache2, PHP, MySQL and Ximdex running on localhost:80 (the directory with ximdex has to be in a shared path for docker)
-
 3. From your Chrome, Firefox, Safari or different browser visit http://localhost to end the installation.
-
-    If you get some errors like these ones in the step one:
     
-    > Check permission on directory /conf/, Read and Write are required to install Ximdex
+    > If you get some errors like these ones in the step one:
+    Check permission on directory /conf/, Read and Write are required to install Ximdex
     Check permission on directory /data/, Read and Write are required to install Ximdex
     ...
     
     You need to grant read and write permissions to these directories, which have been placed in our Ximdex installation directory, by this way:
-
     ```
     sudo chmod -R 777 data
     sudo chmod 777 logs
@@ -56,10 +60,9 @@ You can install Ximdex CMS with Docker or using the web installer.
     ```
     sudo rm -rf .data
     ```
-
 4. Play with Ximdex CMS at http://localhost using user Ximdex with the choosen password.
 
-To stop the services, run
+To **stop the services**, run
 ```
 sudo docker-compose down
 ```
@@ -167,7 +170,14 @@ When Apache2 and PHP are running with the requested packages you have to downloa
 
 	> So, in this example, user and group 'www-data' are running the web processes as declared in the apache configuration file.
 
-4. In your database administrator (like _MySQL Workbench_ or _PHPMyAdmin_) you must **create a new database schema** which name will be used when the installation process begin.
+4. Download extensions. Under the document root directory (www/data or any other you use), run this command:
+	```
+	composer install
+    ```
+    It will download and install all the extensions needed to run propertly the application
+	
+
+5. In your database administrator (like _MySQL Workbench_ or _PHPMyAdmin_) you must **create a new database schema** which name will be used when the installation process begin.
 Here we provide the SQL code to make it in SQL command way (use de database and user names as you prefer):
     ```
     CREATE DATABASE `ximdex-db`;
@@ -182,7 +192,7 @@ Here we provide the SQL code to make it in SQL command way (use de database and 
     ```
     > Remember to use this information to generate de database schema in the point 5.
 
-5. **Point your web browser** to your just installed Ximdex CMS instance URL (i.e.: http://YOURHOST/myximdex or http://localhost/myximdex) to run the configuration tool that will load the database, create users and install Ximdex's modules.
+6. **Point your web browser** to your just installed Ximdex CMS instance URL (i.e.: http://YOURHOST/myximdex or http://localhost/myximdex) to run the configuration tool that will load the database, create users and install Ximdex's modules.
 
 ## C) Manual and Automated Installation methods
 If the previous methods did not work, want to control all the steps or to automate the installation process, visit:
