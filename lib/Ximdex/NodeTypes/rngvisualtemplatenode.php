@@ -57,9 +57,14 @@ class rngvisualtemplatenode extends FileNode
 
 	function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $sourcePath = null)
 	{
-
-		$content = FsUtils::file_get_contents($sourcePath);
-
+		if ($sourcePath)
+		{
+			$content = FsUtils::file_get_contents($sourcePath);
+		}
+		else
+		{
+			$content = null;
+		}
 		$data = new DataFactory($this->parent->get('IdNode'));
 		$this->updatePath();
 		return $data->SetContent($content);
