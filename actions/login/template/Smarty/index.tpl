@@ -68,7 +68,6 @@
 				</div>
 				<!--
 				<p style="text-align: center;">
-					<!-- <input type="submit" name="login" id="login" value="{t}Sign in{/t}" /> -->
 					<button type="submit" name="login" id="login" value="{t}Sign in{/t}" >{t}Sign in{/t}</button>
 					<span>{t}Recommended browsers{/t}:<br/> Firefox &gt; 4, Chrome, Opera and Safari.</span> {* <a href="http://lab04.ximdex.net/ximdexDEMO/xmd/loadaction.php?action=forgot">Forgot your password?</a> *}
 				</p>
