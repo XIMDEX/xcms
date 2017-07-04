@@ -4,11 +4,10 @@
             "type": "package",
             "package": {
                 "name": "codemirror/Codemirror",
-                "version": "5.27.4",
-                "source": {
-                    "url": "https://github.com/codemirror/CodeMirror.git",
-                    "type": "git",
-                    "reference": "origin/master"
+                "version": "4.7.0",
+                "dist": {
+                    "url": "https://github.com/codemirror/CodeMirror/archive/4.7.0.zip",
+                    "type": "zip"
                 }
             }
         },
@@ -16,11 +15,10 @@
             "type": "package",
             "package": {
                 "name": "RyanMullins/angular-hammer",
-                "version": "2.2.0",
-                "source": {
-                    "url": "https://github.com/RyanMullins/angular-hammer.git",
-                    "type": "git",
-                    "reference": "origin/master"
+                "version": "2.1.10",
+                "dist": {
+                    "url": "https://github.com/RyanMullins/angular-hammer/archive/v2.1.10.zip",
+                    "type": "zip"
                 }
             }
         },
@@ -28,21 +26,20 @@
             "type": "package",
             "package": {
                 "name": "hammerjs/hammer.js",
-                "version": "2.0.6",
-                "source": {
-                    "url": "https://github.com/hammerjs/hammer.js.git",
-                    "type": "git",
-                    "reference": "origin/master"
+                "version": "2.0.4",
+                "dist": {
+                    "url": "https://github.com/hammerjs/hammer.js/archive/2.0.4.zip",
+                    "type": "zip"
                 }
             }
         }
     ],
     "require": {
-        "solarium/solarium": "3.8.1",
+        "solarium/solarium": "3.5.1",
         "monolog/monolog": "1.11.0",
-        "codemirror/Codemirror": "5.27.4",
-        "RyanMullins/angular-hammer": "2.2.0",
-        "hammerjs/hammer.js": "2.0.6",
+        "codemirror/Codemirror": "4.7.0",
+        "RyanMullins/angular-hammer": "2.1.10",
+        "hammerjs/hammer.js": "2.0.4",
         "pda/pheanstalk": "*",
         "symfony/console": "^3.1",
         "php-di/php-di": "^5.4",
@@ -50,8 +47,8 @@
         "illuminate/support": "5.2.*"
     },
      "require-dev": {
-        "mockery/mockery": "0.9.9",
-        "codeception/codeception": "^2.3.3"
+        "mockery/mockery": "0.8.0",
+        "codeception/codeception": "^2.2"
     },
     "autoload": {
         "psr-0": { "Ximdex": "lib"}
