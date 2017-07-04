@@ -25,15 +25,25 @@
 
 <form method="post" id="print_form" action="{$action_url}">
 	<div class="action_header">
-   		<h2>{t}Create a new file{/t} {$name}</h2>
+        <h5 class="direction_header"> Name Node: {$name}</h5>
+        <h5 class="nodeid_header"> ID Node: {$nodeid}</h5>
+        <hr>
   	</div>
-
     <div class="message-warning message">
         {t}<p>The <strong>file extension</strong> is not needed.</p>{/t}</div>
+
         <div class="action_content">
+            <div class="row tarjeta">
+                <div class="small-12 columns title_tarjeta">
+                    <h2 class="h2_general">{t}Create a new file{/t}</h2>
+                </div>
+                <div class="small-12 columns">
+                    <div class="input">
+                        <label for="name" class="label_title label_general">{t}Name{/t} *</label>
             <input type="hidden" name="nodeid" value="{$nodeID}">
-        	    <div class="icon document input-select icon-positioned">
-                    <input type="text" name="name" id="foldername" class="cajaxg validable not_empty full-size" placeholder="{t}File name{/t}">
+        	    <p class="icon document input-select icon-positioned">
+                    <input type="text" name="name" id="foldername" class="input_general_icon cajaxg validable not_empty full-size" placeholder="{t}File name{/t}">
+                </p></div>
 			    {if $countChilds > 1}
                     <select name="nodetype" class="caja validable not_empty">
                     {foreach from=$childs item=child}
@@ -48,10 +58,11 @@
                 	<input name="nodetype" type="hidden" value="{$childs[0].idnodetype}" />
                 {/if}
 			</div>
-    	</div>
-        
-        <fieldset class="buttons-form positioned_btn">
-            {button label="Create" class='validate btn main_action' }
-        </fieldset>      
-</form>
 
+                <div class="small-12 columns">
+        <fieldset class="buttons-form">
+            {button label="Create" class='validate btn main_action' }
+        </fieldset>
+                </div>
+            </div></div>
+</form>

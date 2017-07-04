@@ -26,11 +26,9 @@
 <form method="post" id="msu_form" ng-controller="XModifyStatesCtrl" ng-init="idNode={$idNode};">
     <!-- header -->
     <div class="action_header">
-        <h2>{t}Manage workflow{/t}</h2>
-
-        <fieldset ng-init="loading=false; label='{t}Save changes{/t}';" class="buttons-form">
-            <button class="button_main_action" xim-button xim-loading="loading" xim-label="label" xim-progress="" xim-disabled="" ng-click="saveChanges();"></button>
-        </fieldset>
+        <h5 class="direction_header"> Name Node: {t}Manage workflow{/t}</h5>
+        <h5 class="nodeid_header"> ID Node: {$nodeid}</h5>
+        <hr>
     </div>
     <!-- / header -->
 
@@ -42,25 +40,27 @@
 
     <!-- content -->
     <div class="action_content">
-        <fieldset>
-            <p><strong>{t}Existing status{/t}</strong></p>
+        <div class="row tarjeta">
+            <div class="small-12 columns title_tarjeta">
+                <h2 class="h2_general">{t}Existing status{/t}</h2>
+            </div>
 
             <!-- old -->
             <ul ui-sortable="sortableOptions" class="sortable" ng-model="all_status_info" ng-init='all_status_info={$all_status_info}; first=all_status_info[0]; last=all_status_info[all_status_info.length-1]'>
 
                 <li ng-repeat="status in all_status_info" ng-class="{literal}{sortable: $middle, first: $first, last: $last}{/literal}">
-                    <label for="id_#/status.id/#" class="status">
+                    <label for="id_#/status.id/#" class="status li_central label_general" style="margin-left: 20px!important;">
                         {t}Status{/t} #/$index+1/#:
                     </label>
 
 
-                    <input ng-disabled="!$middle" placeholder="{t}Status name{/t}" type="text" id="id_#/status.id/#" class="name" ng-model="status.name"/>
+                    <input ng-disabled="!$middle" placeholder="{t}Status name{/t}" type="text" id="id_#/status.id/#" class="name input_general" ng-model="status.name"/>
 
-                    <input ng-disabled="!$middle" placeholder="{t}Description{/t}" type="text" class="description" ng-model="status.description">
+                    <input ng-disabled="!$middle" placeholder="{t}Description{/t}" type="text" class="description input_general" ng-model="status.description">
 
-                    {*<img src="{$_URL_ROOT}/xmd/images/show.png" class="modifyrolesstate"/>*}
+                    {*<img src="{$_URL_ROOT}xmd/images/show.png" class="modifyrolesstate"/>*}
 
-                    <img ng-if="!$first && !$last" alt="<t>Flecha</t>" title="Cambiar orden" src="{$_URL_ROOT}/xmd/images/action/move.png" class="sortable_element"/>
+                    <img ng-if="!$first && !$last" alt="<t>Flecha</t>" title="Cambiar orden" src="{$_URL_ROOT}xmd/images/action/move.png" class="sortable_element"/>
 
                     <button ng-if="$middle" type="button" class="delete-btn icon btn-unlabel-rounded" ng-click="deleteStatus($index)"></button>
 
@@ -72,28 +72,35 @@
             <!-- / old -->
 
             <br>
-            <div class="row {if $is_workflow_master == true}disabled{/if}">
-                <div class="col-xs-3">
-                    <label for="id_nodetype" class="aligned">
-                        {t}Node type (optional){/t}:
-                    </label>
+            <div class=" {if $is_workflow_master == true}disabled{/if}">
+                <div class="small-2 columns">
+                    <label for="id_nodetype" class="aligned label_general">{t}Node type (optional){/t}:</label>
                 </div>
 
-                <div class="col-xs-7 no-padding-right">
+                <div class="small-10 columns">
+                    <div class="input-select2">
                     <select ng-model="nodetype" ng-options="nt.id as nt.name for nt in nodetype_list" class="cajag form-control" {if $is_workflow_master == true}disabled{/if}>
                         <option>{t}Select a node type{/t}</option>
                     </select>
-                </div>
+                    </div></div>
             </div>
 
             <br>
             <br>
             <div class="checkbox {if $is_workflow_master == true}disabled{/if}">
-                <label>
-                    <input type="checkbox" name="is_workflow_master" id="is_workflow_master" {if $is_workflow_master == true}checked="checked" disabled="disabled"{/if}/> {t}This workflow will behave as default item{/t}.
-                </label>
-            </div>
-        </fieldset>
-    </div>
+                <div class="small-12 columns">
+                <div class="input">
+                <input class="hidden-focus" type="checkbox" name="is_workflow_master" id="is_workflow_master" {if $is_workflow_master == true}checked="checked" disabled="disabled"{/if}/>
+                <label class="icon checkbox-label">{t}This workflow will behave as default item{/t}</label>
+                </div>
+                </div></div>
+            <div class="small-12 columns">
+            <fieldset ng-init="loading=false; label='{t}Save changes{/t}';" class="buttons-form">
+                <button class="button_main_action" xim-button xim-loading="loading" xim-label="label" xim-progress="" xim-disabled="" ng-click="saveChanges();"></button>
+            </fieldset>
+            </div></div></div>
     <!-- / content -->
 </form>
+
+
+

@@ -41,18 +41,24 @@
     -moz-transition: all .1s;
     -ms-transition: all .1s;
     -o-transition: all .1s;
-    transition: all .1s; }
+    transition: all .1s;
+    padding-bottom: 1em;
+    border-radius: 0 0 5px 5px;
+    background: #eee;
+  }
     .calendar_item .row-item::before, .calendar_item .row-item::after {
       position: absolute;
       right: 1.2em;
       top: 1.15em;
       font-size: 1.2em;
-      left: auto; }
+      left: auto;
+      color: white;
+    }
     .calendar_item .row-item::before {
       content: "";
       width: 1.5em;
       height: 1.5em;
-      background: #7bcabf;
+      background: #43a1a2;
       -webkit-border-radius: 50%;
       -moz-border-radius: 50%;
       border-radius: 50%;
@@ -61,10 +67,14 @@
 
 .date_interval {
   display: block;
-  color: #7bcabf;
+  color: white;
   text-transform: uppercase;
   padding-left: 1em;
-  font-weight: bold; }
+  padding-top: .5em;
+  font-weight: bold;
+  background: #43a1a2;
+  border-radius: 5px 5px 0 0;
+}
 
 .date_picker {
   opacity: 0;

@@ -26,20 +26,30 @@
 <form method="post" name="cr_form" id="cr_form" action="{$action_url}">
 	<input type="hidden" name="id_node" value="{$id_node}"/>
 	<div class="action_header">
-		<h2>{t}Add role{/t}</h2>
-		<fieldset class="buttons-form">
-			{button label="Create" class='validate btn main_action' tabindex="3"}{*message="do you want to create the role?*}
-       	</fieldset>
+		<h5 class="direction_header"> Name Node: {t}Role Manager{/t}</h5>
+		<h5 class="nodeid_header"> ID Node: {$nodeid}</h5>
+		<hr>
 	</div>
-	
+
 	<div class="action_content">
-        <p>                    
-	        <label for="name" class="label_title">{t}Name{/t}</label>
-			<input type="text" name="name" id="rolename" class="full_size cajaxg validable not_empty js_val_unique_name js_val_alphanumeric" placeholder="{t}New role name{/t}" data-idnode="{$id_node}" tabindex="1"/>
-        </p>
-        <p>
-		    <label for="description" class="label_title">{t}Description{/t}</label>
-			<input type="text" name="description" id="description" class="full_size cajaxg validable not_empty" placeholder="{t}New role description{/t}" tabindex="2" />
-        </p>
-	</div>
+		<div class="row tarjeta">
+			<div class="small-12 columns title_tarjeta">
+				<h2 class="h2_general">{t}Add role{/t}</h2>
+			</div>
+			<div class="small-12 columns">
+				<div class="input">
+	        <label for="name" class="label_title label_general">{t}Name{/t} *</label>
+			<input type="text" name="name" id="rolename" class="input_general full_size cajaxg validable not_empty js_val_unique_name js_val_alphanumeric" placeholder="{t}New role name{/t}" data-idnode="{$id_node}" tabindex="1"/>
+				</div></div>
+			<div class="small-12 columns">
+				<div class="input">
+		    <label for="description" class="label_title label_general">{t}Description{/t} *</label>
+			<input type="text" name="description" id="description" class="input_general full_size cajaxg validable not_empty" placeholder="{t}New role description{/t}" tabindex="2" />
+				</div></div>
+				<div class="small-12 columns">
+				<fieldset class="buttons-form">
+                    {button label="Create" class='validate btn main_action' tabindex="3"}{*message="do you want to create the role?*}
+				</fieldset>
+			</div></div></div>
 </form>
+

@@ -24,18 +24,33 @@
  *}
  
 <div class="action_header">
-	<h2>{t}Download files{/t}: {$name}</h2>
-	<fieldset class="buttons-form">
-		{button label="{t}Download{/t}" class="button-download  btn main_action"}
-	</fieldset>
+	<h5 class="direction_header"> Name Node: {$name}</h5>
+	<h5 class="nodeid_header"> ID Node: {$nodeid}</h5>
+	<hr>
 </div>
 
 <div class="action_content">
-	<fieldset>
+	<div class="row tarjeta">
+		<div class="small-12 columns title_tarjeta">
+			<h2 class="h2_general">{t}Download files{/t}</h2>
+		</div>
+		<div class="small-12 columns">
     {if $numChildren>0}
-	    <p>{t}The download will start immediately. If not, click here{/t}: <a href="{$tarFile}" class="tarfile destacada">{$nodeName}</a></p>
+		<div class="alert alert-info">
+			<strong>Info! </strong>{t} The download will start immediately. If not, click here{/t}: <a href="{$tarFile}" class="tarfile destacada">{$nodeName}</a>
+		</div>
+
     {else}
-        <p>{t}There aren't any files to download{/t}.</p>
+		<div class="alert alert-info">
+			<strong>Info! </strong>{t} There aren't any files to download{/t}.</a>
+		</div>
     {/if}
-	</fieldset>
 </div>
+		<div class="small-12 columns">
+		<fieldset class="buttons-form">
+            {button label="{t}Download{/t}" class="button-download  btn main_action"}
+		</fieldset>
+		</div>
+	</div></div>
+
+

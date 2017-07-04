@@ -25,12 +25,13 @@
 
 <div class="welcome">
     <div class="action_header">
-	    <h2>{t}Welcome to Ximdex CMS{/t}, <em>{$user}</em>!</h2>
+	    <h5 style="text-align: center;">{t}Welcome to Ximdex CMS{/t}, <em>{$user}</em>!</h5>
+		<hr>
     </div>
 	<div class="action_content">
 	    <div class="main_content">
 		    <div class="ximdex_projects">
-			    <h2>{t}Existing projects{/t}</h2>
+				<label style="margin-bottom: 10px;" class="label_general label_title">{t}Existing projects{/t}</label>
 			    {if $projects_info|@count gt 0}	
                     {foreach from=$projects_info key=index item=p }
 				    <div class="project_item">
@@ -58,7 +59,7 @@
 			</div>
 					
 			<div class="ximdex_documents">
-				<h2>{t}Your latest documents{/t}</h2>
+				<label style="margin-bottom: 10px;" class="label_general label_title">{t}Your latest documents{/t}</label>
 			    {if $docs|@count gt 0}	
                     {foreach from=$docs key=index item=d }
 				<div class="document_item">
@@ -92,7 +93,7 @@
 			
 		</div>
 		<div class="sidebar">
-			<h3>{t}Learn how to{/t}...</h3>
+			<h2 class="h2_general">{t}Learn how to{/t}...</h2>
 			<ul>
 				<li>
 					<a href="https://github.com/XIMDEX/ximdex/wiki/Recipes#create-a-new-project-easy" target="_blank">{t}Create a new project{/t}</a>

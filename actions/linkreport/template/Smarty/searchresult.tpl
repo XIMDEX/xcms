@@ -24,21 +24,26 @@
  *}
 
 <div class="action_header">
-    <h2>{t}Search results{/t}</h2>
+	<h5 class="direction_header"> Name Node: {$node_name}</h5>
+	<h5 class="nodeid_header"> ID Node: {$nodeid}</h5>
+	<hr>
 </div>
 
 <div class="action_content">
+	<div class="row tarjeta">
+		<h2 class="h2_general">{t}Search results{/t}</h2>
     <fieldset>
 	    <input type="hidden" name="stringsearch" value="{$stringsearch}" />
-        <p>{t}External links found{/t}: {$totalLinks}</p>
+        <label class="label_title label_general">{t}External links found{/t}: {$totalLinks}</label>
+		<div class="small-12 columns">
     {if $totalLinks>0}
         {foreach from=$links item=link}
-		<div class="result_info row-item">
+		<div class="result_info row-item text-border">
 			<span class="result_name">{$link.name}</span>
 			<span class="result_url" data-idnode="{$link.nodeid}">{$link.url}</span>
 			<div class="row-item-actions">			
 			    <div class="description_btn">
-				    <span class="result_description icon btn-unlabel-rounded">
+				    <span class="result_description icon btn-unlabel-rounded btn-unlabel-rounded-margin">
 					    <span class="xtooltip">
 						    <p>{t}Description{/t}</p>
 						    <p>{$link.desc}</p>
@@ -57,21 +62,27 @@
                    	</span>
                     </a>
                 {else}
-			    <a href="#" class="icon btn-unlabel-rounded"><span>{t}Uncheckable{/t}</span></a>
+			    <a href="#" class="icon btn-unlabel-rounded  "><span>{t}Uncheckable{/t}</span></a>
                 {/if}
 			</div>
 		</div>
         {/foreach}
     {else}
-        <p>{t}There aren't any links matching with the current search. Please, try again with another search string{/t}.</p>
-    {/if}
+		<div class="alert alert-info">
+			<strong>Info!</strong> {t}There aren't any links matching with the current search. Please, try again with another search string{/t}.
+		</div>
+	{/if}</div>
 {*	<paginator class="links-paginator" />*}
 
     </fieldset>
-</div>
+		<div class="small-12 columns">
+		<fieldset class="buttons-form">
 
-<fieldset class="buttons-form positioned_btn">
-        {button label="Check all" class="btn main_action ladda-button js_check_all" }
-	{button label="Go back" type="goback"  class="btn"}
-</fieldset>
+            {button label="Check all" class="btn main_action ladda-button js_check_all" }
+            {button label="Go back" type="goback"  class="btn main_action"}
+			</div>
+		</fieldset>
+	</div></div>
+
+
 

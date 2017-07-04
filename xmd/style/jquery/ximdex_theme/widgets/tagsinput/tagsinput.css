@@ -28,6 +28,9 @@
 /*******
 //	ICONS
 *******/
+
+
+
 .xim-tagsinput-newtag .add-btn::before {
   content: "\e039";
 }
@@ -50,18 +53,19 @@
 }
 
 .xim-tagsinput-container .title-box {
-  margin-bottom: 1em;
+
 }
 
 .xim-tagsinput-list {
-  padding: 0;
+  background: #eee;
+  border-radius: 0 0 5px 5px;
 }
 
 .title-box, .xim-tagsinput-container.col2-3 .title-box {
   color: #fff;
-  border-bottom: 1px solid #c7c7c7;
   padding: 1em 1em .8em;
-  background: #4c4c4c;
+  background: #43a1a2;
+  border-radius: 5px 5px 0 0;
 }
 
 .xim-tagsinput-container.col2-3 .title-box {
@@ -168,7 +172,6 @@
 .selection {
   width: inherit;
   height: inherit;
-  background: #2fb7a4;
   cursor: pointer;
 }
 .selection::before {
@@ -197,7 +200,8 @@
   text-align: center;
 }
 .options .option:hover, .options .option.selected {
-  background: rgba(255, 255, 255, 0.2);
+  background: gray;
+  color:white;
 }
 .options .option:hover::before, .options .option.selected::before {
   opacity: .8;
@@ -312,17 +316,17 @@
   transform: translateY(-50%);
   margin-left: .25em;
   background: #fff;
-  color: #2fb7a4;
+  color: #47a1a2;
   border-radius: 50%;
   line-height: 1.63;
   z-index: 2;
 }
 .type-custom::after, .custom::after, .options .type-custom::after, .xim-tagsinput-type-custom::after {
   z-index: 1;
-  background: #2fb7a4;
+  background: #47a1a2;
   position: absolute;
   width: 2em;
-  height: 100%;
+  height: 101%;
   content: "";
   left: 0;
   top: 0;
@@ -444,6 +448,7 @@
   font-size: 1.5em;
   line-height: 2.35 !important;
   max-width: 3.2rem;
+  color:white;
 }
 
 .type-structured::before, .xim-tagsinput-taglist.xim-tagsinput-type-structured::before {
@@ -463,7 +468,7 @@
 }
 
 .xim-tagsinput-list-related, .nube_tags {
-  background: #fff;
+  background: #eee;
   min-height: 8em;
   position: relative;
   max-height: 12em;

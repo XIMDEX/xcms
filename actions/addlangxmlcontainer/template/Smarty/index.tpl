@@ -28,26 +28,32 @@
 	<input type="hidden" name="templateid" value="{$idTemplate}" class="ecajag">
 
     <div class="action_header">
-	    <h2>{t}Languages{/t}, {t}Channels{/t} </h2>
-  	    <fieldset class="buttons-form">
-		    {button label="Modify" class='validate btn main_action' }{*message="Would you like to save changes?"*}
-	    </fieldset>
+		<h5 class="direction_header"> Name Node: {$node_name}</h5>
+		<h5 class="nodeid_header"> ID Node: {$nodeid}</h5>
+		<hr>
     </div>
 
 	<div class="action_content">
-	    <fieldset>
+		<div class="row tarjeta">
+			<div class="small-12 columns title_tarjeta">
+				<h2 class="h2_general">{t}Add language and channels{/t}</h2>
+			</div>
+			<div class="small-12 columns">
+				<div class="input">
 		    <div class="info-node">
-		  	    <h3 class="info-title icon">{t}Used schema{/t}</h3>
-                <span class="infor_form">{$templateName}</span>
-		    </div>
-		  	<div class="col2-3">		
-				<h3>{t}Available channels{/t}</h3>
+		  	    <label class="label_title label_general">{t}Used schema{/t}</label>
+				<div class="text-border">
+                <span class="infor_form ">{$templateName}</span>
+				</div></div></div></div>
+		  	<div class="small-12 columns">
+				<div class="input">
+				<label class="label_title label_general">{t}Available channels{/t}</label>
 		  	{if $numchannels neq 0}
 		 		{foreach from=$channels item=channel}
 		  		    <div class="channel-section">
 		  			    <input type="checkbox" name="channels[]" id="channel_{$channel.IdChannel}_{$idNode}" value="{$channel.IdChannel}" {if ($channel.selected)} checked="checked" {/if} class="hidden-focus">
 		  				<label class="icon checkbox-label" for="channel_{$channel.IdChannel}_{$idNode}">{$channel.Description}</label>
-		  			</div>
+					</div></div>
 		  		{/foreach}
 		  	{else}
 		  			<p>{t}There aren't any channels associated to this project{/t}.</p>
@@ -55,8 +61,9 @@
 		  	</div>	
 
 		  	{if $numlanguages neq 0}
-			<div class="col1-3">
-				<h3>{t}Languages availables{/t}</h3>
+			<div class="small-12 columns">
+				<div class="input">
+				<label class="label_title label_general">{t}Languages availables{/t}</label>
 						{foreach from=$languages item=language}
 				<div class="languages-section">
 				{if ($language.idChildren > 0)}
@@ -73,12 +80,13 @@
 					<p>{t}There are no languages associated to this project{/t}.</p>
 				{/if}
 			</div>
-		</fieldset>
-
-		
-
-	
+			</div>
+			<div class="small-12 columns">
+				<fieldset class="buttons-form">
+                    {button label="Modify" class='validate btn main_action' }{*message="Would you like to save changes?"*}
+				</fieldset>
+			</div>
 	</div>
-
-
+	</div>
 </form>
+

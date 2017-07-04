@@ -25,16 +25,24 @@
 
 <form method="post" name="el_form" action="{$action_url}">
 	<div class="action_header">
-		<h2>{t}Delete user{/t}: {$realname}</h2>
-		<fieldset class="buttons-form">
-			{button class="validate btn main_action" label="Delete" message="Are you sure you want to delete this user?"}
-		</fieldset>
+		<h5 class="direction_header"> Name Node: {$node_name}</h5>
+		<h5 class="nodeid_header"> ID Node: {$nodeid}</h5>
+		<hr>
+
 	</div>
 
 	<div class="action_content">
-		<fieldset>
+		<div class="row tarjeta">
+			<h2 class="h2_general">{t}Add channel{/t}</h2>
+			<div class="small-12 columns">
 			<input type=hidden name='id_node' value="{$id_node}">
-			<p>{t}The user{/t} <b>{$login}</b> ({$email}) {t}is going to be deleted{/t}.</p>
+			<div class="alert alert-info" >
+			<strong>Info!</strong> {t}The user{/t} <b>{$login}</b> ({$email}) {t}is going to be deleted{/t}.
+			</div>
+				<div class="small-12 columns">
+		<fieldset class="buttons-form">
+            {button class="validate btn main_action" label="Delete" message="Are you sure you want to delete this user?"}
 		</fieldset>
 	</div>
+			</div></div></div>
 </form>

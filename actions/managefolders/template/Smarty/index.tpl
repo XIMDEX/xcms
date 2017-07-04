@@ -28,30 +28,37 @@
 	<input type="hidden" name="name" value="{$sectionName}">
 
 	<div class="action_header">
-		<h2>{t}Configure section{/t}: {$sectionName}</h2>
 
-		<fieldset class="buttons-form">
-			{button label="Save changes" class='validate btn main_action' message="Are you sure you want to proceed?"}
-		</fieldset>
+		<h5 class="direction_header"> Name Node:  {$sectionName}</h5>
+		<h5 class="nodeid_header"> ID Node: {$nodeid}</h5>
+		<hr>
+
 	</div>
 
 	<div class="action_content section-properties">
-		<div class="">
-			<h3 class="folder-name folder-normal icon">
-				<span class="folder-type">{t}{$sectionType}{/t}:</span> {$sectionName}
-			</h3>
-		</div>
+		<div class="row tarjeta">
+			<h2 class="h2_general">{t}Configure section{/t}</h2>
+			<div class="small-12 columns">
+				<div style="margin-bottom: 20px;" class="text-border folder-name folder-normal icon label_icon">
+				<span style="color:gray; font-family: 'Roboto'; text-transform: uppercase; font-size: 1.3rem;" class=" folder-type">{t}{$sectionType}{/t}: {$sectionName}</spanreadonly>
+			</div>
+			</div>
 
 		<div class="subfolders-available">
-			<h3>{t}Subfolders availables{/t}:</h3>
-
+			<div class="small-12 columns">
+			<label class="label_title label_general">{t}Subfolders availables{/t}</label>
 			{foreach from=$subfolders key=nt item=foldername}
 				<div class="subfolder box-col1-1">
 					<input class="hidden-focus" id="{$nt}_{$nodeID}" name="folderlst[]" type="checkbox" value="{$nt}" {if $foldername[2]=='selected' } checked{/if} {if $nt eq 5301 || $nt eq 5304} readonly {/if}/>
-					<label class="icon" for="{$nt}_{$nodeID}"><strong class="icon {$foldername[0]}">{$foldername[0]}</strong></label>
+					<label style="border-radius: 5px; padding-left:0!important;" class="icon" for="{$nt}_{$nodeID}"><strong class="icon {$foldername[0]}">{$foldername[0]}</strong></label>
 					<span class="info">{t}{$foldername[1]}{/t}</span>
 				</div>
 			{/foreach}
+			</div></div>
+		<div class="small-12 columns">
+		<fieldset class="buttons-form">
+            {button label="Save changes" class='validate btn main_action' message="Are you sure you want to proceed?"}
+		</fieldset>
 		</div>
-	</div>
+		</div></div>
 </form>

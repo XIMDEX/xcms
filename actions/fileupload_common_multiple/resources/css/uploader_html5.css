@@ -267,7 +267,7 @@
     display: none;
 }
 .xim-loader-file button {
-    float: right;
+
     margin: -4px 0 0 0;
 }
 .xim-loader-file .xim-loader-progress {
@@ -407,7 +407,7 @@
     -webkit-flex-grow: 2;
 }
 .xim-loader-list-actions .xim-uploader-selected, .xim-loader-list-actions .xim-uploader-delete {
-    background: #47b1a3;
+    background: #7bcabf;
     color: #fff;
     display: inline-block;
     font-family: "Source Sans Pro";
@@ -416,7 +416,9 @@
     padding: .5em 2em .7em 3em;
 }
 .xim-loader-list-actions .xim-uploader-selected.xim-uploader-selected:hover, .xim-loader-list-actions .xim-uploader-delete.xim-uploader-selected:hover {
-    background: #8dd1c8;
+    background: #47a1a2;
+    border: none;
+    transform: scale(1.1);
 }
 .xim-loader-list-actions .xim-uploader-selected.xim-uploader-delete:hover, .xim-loader-list-actions .xim-uploader-delete.xim-uploader-delete:hover {
     background: #CC3333;

@@ -23,11 +23,14 @@
  *  @version $Revision$
  *}
 	<form method="post" id="msr_action" action="{$action_url}">
-<div class="action_header">
-	<h2>{t}Delete templates{/t}</h2>
+<div class="action_header" style="padding-bottom: 90px!important;">
+	<h5 class="direction_header"> Name Node: {t}Delete templates{/t}</h5>
+	<h5 class="nodeid_header"> ID Node: {$nodeid}</h5>
+	<hr>
+
 	<fieldset class="buttons-form">
-		{button label="Select all" class="button-select-all btn"}
-		{button label="Select none" class="button-deselect-all btn "}
+		{button label="Select all" class="button-select-all btn main_action"}
+		{button label="Select none" class="button-deselect-all btn main_action"}
 		{button label="Delete" class="validate button-modify btn main_action"}
 	</fieldset>
 </div>
@@ -54,8 +57,9 @@
 
 {else}
 
-
-		<p>{t}Templates not found{/t}</p>
+	<div class="small-12 columns">
+		<div class="alert alert-info" >
+			<strong>Info!</strong> {t}Templates not found{/t}</div></div>
 
 {/if}</div>
 	</form>

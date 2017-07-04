@@ -52,11 +52,14 @@
   counter-reset: publications; }
   .programed_publication h2 {
     font-family: $t_text;
-    border-bottom: 1px solid #d8d8d8;
+
     text-transform: uppercase;
-    padding: .8em .5em .6em;
+    padding: 1em .5em .9em;
     font-weight: bold;
-    font-size: 1.5rem; }
+    font-size: 1.4rem;
+    background: #43a1a2;
+    border-radius: 5px 5px 0 0;
+  }
 
 .publication {
   text-transform: uppercase;
@@ -104,9 +107,13 @@
   margin-top: 3em; }
 
 .not_programed {
-  padding: .2em 1em .5em 2.1em;
   font-size: 1.2em;
-  line-height: 1.3; }
+  line-height: 1.3;
+  padding-left: .4em;
+  background: #eee;
+  padding-bottom: 1em;
+  padding-top: 1em;
+  border-radius: 0 0 5px 5px; }
 
 .comments {
   width: 100%; }

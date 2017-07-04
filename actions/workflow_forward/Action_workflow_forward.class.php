@@ -454,7 +454,7 @@ class Action_workflow_forward extends ActionAbstract {
      *
      * @return boolean true if the notification is sended.
      */
-    private function sendNotification($idNode, $idState, $userList, $texttosend) {
+    private function sendNotification($idNode, $idState, $userList, $texttosend = "") {
 
         $send = true;
 

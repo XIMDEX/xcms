@@ -25,27 +25,61 @@
 
 <form method="post" action="{$action_url}" id="link_form">
     <div class="action_header">
-		<h2>{t}Modify external link{/t}</h2>
-		<fieldset class="buttons-form">
-		    {button label="Modify" class='validate  btn main_action' }{*message="Would you like to modify this link?"*}
-	    </fieldset>
-	</div>
+        <h5 class="direction_header"> Name Node: {$name}</h5>
+        <h5 class="nodeid_header"> ID Node: {$nodeid}</h5>
+        <hr>
+    </div>
 
-	<div class="action_content">
-        <p class="input-select icon icon-positioned link">
-            <input type="text" value="{$name}" name="Name" id="name" class="cajaxg validable not_empty js_val_unique_name js_val_alphanumeric" data-idnode="{$id_node}" placeholder="{t}Link name{/t}"/>
-            <select name="link_type" id="link_type" class="cajaxg document-type validable not_empty">
-                <option value="url">URL (http://)</option>
+    <div class="action_content">
+        <div class="row tarjeta">
+            <div class="small-12 columns title_tarjeta">
+                <h2 class="h2_general">{t}Modify link{/t}</h2>
+            </div>
+            <div class="small-8 columns">
+                <div class="input">
+                    <label for="name" class="label_title label_general">{t}Name{/t} *</label>
+                    <p class="icon icon-positioned link">
+                        <input type="text" value="{$name}" name="Name" id="name" class=" input_general_icon cajaxg validable not_empty js_val_unique_name js_val_alphanumeric"/>
+                    </p></div>
+            </div>
+
+            <div class="small-4 columns">
+                <div class="input-select icon">
+                    <label for="link_type" class="label_title label_general">{t}Type{/t}</label>
+                    <select name="link_type" id="link_type" class="cajaxg document-type validable not_empty">
+                        <option value="url" selected>URL (http://)</option>
+                        <option value="email">E-mail (mailto:)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="small-12 columns">
+                <div class="input">
+                    <label for="url" class="label_title label_general"> {t}URL{/t}</label>
+                    <input type="text" name="Url" value="{$url}" id="url" class="input_general cajaxg validable not_empty js_val_unique_url">
+                </div>
+            </div>
+
+            <div class="small-12 columns">
+                <div class="input">
+                    <label for="description" class="label_title label_general"><span>{t}Description{/t}</span></label>
+                    <input type="text" name="Description" value="{$description}" id="description" class="input_general cajaxg">
+                </div>
+                <fieldset class="buttons-form ">
+                    {button label="Modify" class='validate  btn main_action' }{*message="Would you like to modify this link?"*}
+                </fieldset>
+            </div>
+
+        </div>
+
+
+
+        <!-- <div class="input-select icon icon-positioned link">
+            <select name="link_type" id="link_type" class="cajaxg document-type">
+                <option value="url" selected>URL (http://)</option>
                 <option value="email">E-mail (mailto:)</option>
             </select>
-        </p>
-        <div class="input">
-            <label for="url" class="label_title">{t}URL{/t}</label>
-            <input type="text" name="Url" value="{$url}" id="url" class="cajaxg validable not_empty js_val_unique_url" data-idnode="{$id_node}" />
-        </div>
-        <div class="input">
-            <label for="description" class="label_title"><span>{t}Description{/t}</span></label>
-            <input type="text" name="Description" value="{$description}" id="description" class="cajaxg" />
-        </div>
-	</div>
+        </div> -->
+    </div>
+
 </form>

@@ -57,7 +57,7 @@
 			<div class="title-box">{t}Document tags{/t}</div>
 	   		<ul class="xim-tagsinput-list">
 	   			<li class="xim-tagsinput-tag icon xim-tagsinput-type-#/namespaces[tag.IdNamespace].nemo/#" {literal}ng-class="{'noxtooltip': (tag.Description==null||tag.Description=='')}"{/literal} ng-repeat="tag in documentTags">
-	   				<a ng-href="#/tag.Link/#" target="_blank" class="xim-tagsinput-text" data-xtooltip="#/tag.Description/#">
+	   				<a ng-href="#/tag.Link/#" target="_blank" class=" xim-tagsinput-text" data-xtooltip="#/tag.Description/#">
 					#/tag.Name/#
 					</a>
  					<a ng-if="(namespaces[tag.IdNamespace].nemo == 'dPerson'

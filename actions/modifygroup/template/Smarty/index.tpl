@@ -25,18 +25,31 @@
 
 <form method="post" name="mg_form" id="mg_form" action="{$action_url}" class='validate_ajax'>
     <div class="action_header">
-        <h2>{t}Modify group{/t}: {$name}</h2>
-
-        <fieldset class="buttons-form">
-            {button label="Modify" class='validate btn main_action' } {* message="Woul you like to modify this group?"*}
-        </fieldset>
+        <h5 class="direction_header"> Name Node: {$name}</h5>
+        <h5 class="nodeid_header"> ID Node: {$nodeid}</h5>
+        <hr>
     </div>
-
     <div class="action_content">
+        <div class="row tarjeta">
+            <div class="small-12 columns title_tarjeta">
+                <h2 class="h2_general">{t}Modify group{/t}</h2>
+            </div>
+            <div class="small-12 columns">
         <input type=hidden name='id_node' value="{$id_node_parent}">
-
         <div class="input icon group">
+            <label for="name" class="label_title label_general">{t}Name{/t}</label>
+            <p class="icon icon-positioned server input">
             <input type="text" name="name" id="name" value="{$name}" class="cajag validable not_empty">
+            </p>
         </div>
-    </div>
+            </div>
+            <div class="small-12 columns">
+                <fieldset class="buttons-form">
+                    {button label="Modify" class='validate btn main_action' } {* message="Woul you like to modify this group?"*}
+                </fieldset>
+            </div></div></div>
 </form>
+
+
+
+

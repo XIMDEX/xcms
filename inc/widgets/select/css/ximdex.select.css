@@ -1,5 +1,5 @@
 .options, .fonts, .range-bg {
-  background: #212121;
+  background: #eee;
   max-height: 0;
   -webkit-transition: all .3s;
   -moz-transition: all .3s;
@@ -23,10 +23,11 @@
   -webkit-box-sizing: content-box;
   -moz-box-sizing: content-box;
   box-sizing: content-box;
-  color: #fff;
+  color: black;
 }
   .option:hover {
     background: #7bcabf;
+    color:white;
 }
 
 

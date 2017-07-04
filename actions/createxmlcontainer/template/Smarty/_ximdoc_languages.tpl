@@ -31,50 +31,47 @@
 	$channels[Description]
 *}
 
-	
+<div class="languages-available small_12 columns">
 
-<div class="col2-3 left">	
+	<label class="label_title label_general">{t}Languages{/t}</label>
 
-<h3>{t}Channels{/t}</h3>
+    {if count($languages) > 0}
 
-	{if count($channels) > 0}
-			{foreach from=$channels item=channel}
-				<div class="channel-section">
-					<input name='channels[]' type='checkbox' value='{$channel.IdChannel}' class="hidden-focus" id="{$channel.IdChannel}_{$idNode}"/>
-					<label  class="icon checkbox-label"  for="{$channel.IdChannel}_{$idNode}">{$channel.Description|gettext}</label>
-				</div>
-			{/foreach}
-		
-	{else}
-		<p>{t}There are no channels associated to this project{/t}</p>
-	{/if}
+        {foreach from=$languages item=language}
 
-</div>
+			<div class="languages-section">
 
-<div class="languages-available col1-3"><h3>{t}Languages{/t}</h3>
-		
-		{if count($languages) > 0}
-			
-				{foreach from=$languages item=language}
-					
-					<div class="languages-section">
-		
-						<input name='languages[]' type='checkbox' value='{$language.IdLanguage}'  id='{$language.IdLanguage}_{$idNode}' class="hidden-focus"/>
-						<label  for="{$language.IdLanguage}_{$idNode}" class="icon checkbox-label">{$language.Name|gettext}</label>
-						<input type='text' name='aliases[{$language.IdLanguage}]' class="alternative-name" placeholder="{t}Alternative name for paths &amp; breadcrumbs{/t}"/>
-					</div>
-					
-				{/foreach}
-				
-				
-					<select class="alternative_select" name='master' id="master">
-						<option value="">{t}Select master language{/t}</option>
-						{foreach from=$languages item=language}
-							<option  value='{$language.IdLanguage}'>{$language.Name|gettext}</option>
-						{/foreach}
-					</select>
-				
-		{else}
-			<p>{t}There are no languages associated to this project{/t}</p>
-		{/if}
+				<input name='languages[]' type='checkbox' value='{$language.IdLanguage}'  id='{$language.IdLanguage}_{$idNode}' class="hidden-focus"/>
+				<label  for="{$language.IdLanguage}_{$idNode}" class="icon checkbox-label">{$language.Name|gettext}</label>
+				<input type='text' name='aliases[{$language.IdLanguage}]' class="alternative-name" placeholder="{t}Alternative name for paths &amp; breadcrumbs{/t}"/>
+			</div>
+
+        {/foreach}
+
+		<div class="input-select icon">
+		<select name='master' class="cajaxg document-type" id="master">
+			<option value="">{t}Select master language{/t}</option>
+            {foreach from=$languages item=language}
+				<option  value='{$language.IdLanguage}'>{$language.Name|gettext}</option>
+            {/foreach}
+		</select></div>
+
+    {else}
+		<p>{t}There are no languages associated to this project{/t}</p>
+    {/if}
 	</div>
+<div class="small_12 columns">
+<label class="label_title label_general">{t}Channels{/t}</label>
+
+{if count($channels) > 0}
+    {foreach from=$channels item=channel}
+		<div class="channel-section">
+			<input name='channels[]' type='checkbox' value='{$channel.IdChannel}' class="hidden-focus" id="{$channel.IdChannel}_{$idNode}"/>
+			<label  class="icon checkbox-label"  for="{$channel.IdChannel}_{$idNode}">{$channel.Description|gettext}</label>
+		</div>
+    {/foreach}
+
+{else}
+	<p>{t}There are no channels associated to this project{/t}</p>
+{/if}
+</div>

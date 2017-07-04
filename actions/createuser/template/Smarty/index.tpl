@@ -25,50 +25,69 @@
 
 <form method="post" name="cu_form" id="cu_form" action="{$action_url}">
 	<input type="hidden" name="id_node" VALUE="{$id_node}">
-	<div class="action_header"> 
-<h2>{t}Add user{/t}</h2>
-			<fieldset class="buttons-form">
-		{button label='Create user' class='validate btn main_action' tabindex="8"}
-	</fieldset>
+	<div class="action_header">
+		<h5 class="direction_header"> Name Node: {t}User Manager{/t}</h5>
+		<h5 class="nodeid_header"> ID Node: {$nodeid}</h5>
+		<hr>
 	</div>
 	<div class="action_content">
-				<p>
-					<label  class="label_title" for="login">{t}Username{/t}</label>
-					<input type="text" name="login" id="login" class="full_size validable not_empty js_val_unique_name js_val_alphanumeric" placeholder="{t}Username in Ximdex CMS{/t}" tabindex="1" data-idnode="{$id_node}">
-				</p>
-				<p class="col1_2 col_left">
-					<label for="pass" class="label_title" for="pass">{t}Password{/t}</label>
-					<input type="password" name="pass" id="pass" class="full_size validable not_empty js_val_min__6" placeholder="{t}Password{/t}"  tabindex="2">
-				</p>
-				<p class="col1_2 col_right">
-					<label for="confirmpass" class="label_title" for="confirmpass" >{t}Repeat password{/t}</label>
-					<input type="password" name="confirmpass" id="confirmpass" class="full_size validable not_empty field_equals__pass" placeholder="{t}Password{/t}"  tabindex="3">
-				</p>
-				<p>
-					<label for="login" class="label_title" for="username">{t}Name and surname{/t}</label>
-					<input type="text" name="name" id="username" class="full_size validable not_empty" placeholder="{t}Name and surname{/t}"  tabindex="4">
-				</p>
-				<p>
-					<label for="email" class="label_title" for="email">{t}E-mail{/t}</label>
-					<input type="text" name="email" id="email" class="full_size validable not_empty is_email" placeholder="{t}E-mail{/t}"  tabindex="5">
-				</p>
-				<p class="col1_2 col_left">
-					<label for="generalrole" class="label_title" for="generalrole">{t}Role in general group{/t}</label>
+		<div class="row tarjeta">
+			<div class="small-12 columns title_tarjeta">
+				<h2 class="h2_general">{t}Add User{/t}</h2>
+			</div>
+			<div class="small-12 columns">
+				<div class="input">
+					<label  class="label_title label_general" for="login">{t}Username{/t} *</label>
+					<input type="text" name="login" id="login" class="input_general full_size validable not_empty js_val_unique_name js_val_alphanumeric" placeholder="{t}Username in Ximdex CMS{/t}" tabindex="1" data-idnode="{$id_node}">
+				</div></div>
+				<div class="small-6 columns">
+					<div class="input">
+					<label for="pass" class="label_title label_general" for="pass">{t}Password{/t} *</label>
+					<input type="password" name="pass" id="pass" class="input_general full_size validable not_empty js_val_min__6" placeholder="{t}Password{/t}"  tabindex="2">
+					</div></div>
+				<div class="small-6 columns">
+					<label for="confirmpass" class="label_title label_general" for="confirmpass" >{t}Repeat password{/t} *</label>
+					<input type="password" name="confirmpass" id="confirmpass" class="input_general full_size validable not_empty field_equals__pass" placeholder="{t}Password{/t}"  tabindex="3">
+				</div>
+			<div class="small-12 columns">
+				<div class="input">
+					<label for="login" class="label_title label_general" for="username">{t}Name and surname{/t} *</label>
+					<input type="text" name="name" id="username" class="input_general full_size validable not_empty" placeholder="{t}Name and surname{/t}"  tabindex="4">
+				</div></div>
+			<div class="small-12 columns">
+				<div class="input">
+					<label for="email" class="label_title label_general" for="email">{t}E-mail{/t} *</label>
+					<input type="text" name="email" id="email" class="input_general full_size validable not_empty is_email" placeholder="{t}E-mail{/t}"  tabindex="5">
+				</div></div>
+				<div class="small-6 columns">
+					<div class="input-select" style="margin-bottom:15px!important;">
+					<label for="generalrole" class="label_title label_general" for="generalrole">{t}Role in general group{/t}</label>
 					<select name="generalrole" id="generalrole" class="full_size"  tabindex="6">
 					{foreach from=$roles item=role}
 						<option value="{$role.IdRole}">{$role.Name}</option>
 					{/foreach}
 					</select>
-				</p>
-				<p class="col1_2 col_right">
-					<label for="locale" class="label_title" for="locale">{t}Interface language{/t}</label>
+					</div></div>
+				<div class="small-6 columns">
+					<div class="input-select" style="margin-bottom:15px!important;">
+					<label for="locale" class="label_title label_general" for="locale">{t}Interface language{/t}</label>
 					<select name="locale" id="locale" class="full_size"  tabindex="7">
 					{section name=i loop=$locales}
 						<option value="{$locales[i].Code}" {if ($locales[i].Code == $smarty.const.DEFAULT_LOCALE)} selected{/if}>{$locales[i].Name|gettext} ({$locales[i].Lang})</option>
 					{/section}
 					</select>
-				</p>
-
-			<p>*{t}Users registered without their consent may violate the rules of your country{/t}</p>
-	</div>
+					</div></div>
+			<div class="small-8 columns">
+				<div class="alert alert-info">
+					<strong>Info!</strong> {t}Users registered without their consent may violate the rules of your country{/t}
+				</div></div>
+			<div class="small-4 columns">
+				<fieldset class="buttons-form">
+                    {button label='Create user' class='validate btn main_action btn_margin2' tabindex="8"}
+				</fieldset>
+			</div>
+				</div></div>
 </form>
+
+
+

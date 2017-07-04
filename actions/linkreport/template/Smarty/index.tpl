@@ -26,22 +26,18 @@
 <form method="post" name="ca_form" id="ca_form" action="{$action_url}">
 	<input type="hidden" name="nodeid" value="{$id_node}">
 	<div class="action_header">
-		<h2>{t}Check links{/t}: {$node_name}</h2>
+		<h5 class="direction_header"> Name Node: {$node_name}</h5>
+		<h5 class="nodeid_header"> ID Node: {$nodeid}</h5>
+		<hr>
 	</div>
 
 	<div class="action_content">
-		<fieldset>
-			<p>
-				{t}Find your links and check if they are currently alive by clicking on the icon on the right{/t}.
-			</p>
-
-			<p>
-				{t}Select search criteria{/t}:
-			</p>
-
+		<div class="row tarjeta">
+			<h2 class="h2_general">{t}Select search criteria{/t}</h2>
+			<div class="small-12 columns">
 			<div class="row">
 				<div class="small-4 columns">
-					<div class="input">
+					<div class="input-select">
 						<select name='field' class="xim-filter-field validable">
 							<option value="all">{t}All fields{/t}</option>
 							<option value="Name">{t}Name{/t}</option>
@@ -52,7 +48,7 @@
 				</div>
 
 				<div class="small-4 columns">
-					<div class="input">
+					<div class="input-select">
 						<select name='criteria' class="xim-filter-comparation validable">
 							<option value="contains">{t}contains{/t}</option>
 							<option value="nocontains">{t}does not contain{/t}</option>
@@ -66,22 +62,24 @@
 
 				<div class="small-4 columns">
 					<div class="input">
-						<input type="text" name="stringsearch" class="xim-filter-content validable not_empty long" />
+						<input type="text" name="stringsearch" class="input_general xim-filter-content validable not_empty long" />
 					</div>
 				</div>
 			</div>
+			</div>
+			<div class="small-12 columns">
 
-			<label class="input-form" for="rec">
-				<input type="checkbox" name="rec" class="validable" id="rec" /> {t}Search in subfolders{/t}
-			</label>
-
-			<p class="postada-quote">
-				{t}Use the asterisk '*' to obtain all the links of the current folder{/t}.
-			</p>
+				<input type="checkbox" name="rec" id="rec" class="validable hidden-focus" />
+				<label class="input-form checkbox-label" for="rec">{t}Search in subfolders{/t}</label></div>
+			<div class="small-8 columns">
+				<div class="alert alert-info">
+					<strong>Info!</strong> {t}Use the asterisk '*' to obtain all the links of the current folder{/t}. <br> {t}Find your links and check if they are currently alive by clicking on the icon on the right{/t}.
+			</div></div>
+			<div class="small-4 columns">
+		<fieldset class="buttons-form">
+            {button label="Search" class="validate btn main_action btn_margin" }{*message="A search will be performed with selected parameters. Would you like to continue?"*}
 		</fieldset>
-	</div>
+			</div></div></div>
 
-	<fieldset class="buttons-form positioned_btn">
-		{button label="Search" class="validate btn main_action" }{*message="A search will be performed with selected parameters. Would you like to continue?"*}
-	</fieldset>
+
 </form>

@@ -23,7 +23,9 @@
  *  @version $Revision$
  *}
 <div class="action_header">
-		<h2>{$serverName} - {$folderName}</h2>
+    <h5 class="direction_header"> Name Node: {$serverName} - {$folderName}</h5>
+    <h5 class="nodeid_header"> ID Node: {$nodeid}</h5>
+    <hr>
 </div>
 {if isset($mesg)}
      <div class=''>{$mesg}</div>

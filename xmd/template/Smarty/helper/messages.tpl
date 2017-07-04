@@ -37,11 +37,16 @@
 		{/if}
 
 		<div class="action_content {$class}">
-			<p>{$message.message}</p>
-		</div>
+			<div class="small-12 columns">
+				<div class="alert alert-info">
+					<strong>Info!</strong>{$message.message}
+		</div></div></div>
 	{/foreach}
 {else}
 	<div class="action_content">
-		<p>{t}No messages found{/t}.</p>
+		<div class="small-12 columns">
+			<div class="alert alert-info">
+				<strong>Info!</strong>{t}No messages found{/t}
+			</div></div>
 	</div>
 {/if}

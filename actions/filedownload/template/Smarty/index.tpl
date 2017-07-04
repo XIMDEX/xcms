@@ -24,19 +24,25 @@
  *}
 
 <div class="action_header">
-	<h2>{t}Download file{/t}: {$node_name}</h2>
+	<h5 class="direction_header"> Name Node: {$node_name}</h5>
+	<h5 class="nodeid_header"> ID Node: {$nodeid}</h5>
+	<hr>
 
-	<fieldset class="buttons-form">
-		{button label="Download" class="button-download btn main_action"}
-	</fieldset>
 </div>
 
 <div class="action_content">
-	<fieldset>
-		<p>
-			{t}File download will start immediately. If it does not start, click on:{/t}
-			<br>
-			<a href="{$_URL_ROOT}/xmd/loadaction.php?action=filedownload&method=downloadFile&nodeid={$id_node}" class="destacada download_link" title="{t nodename=$node_name}Descargar %1{/t}"> {$node_name}</a>
-		</p>
-	</fieldset>
-</div>
+	<div class="row tarjeta">
+		<div class="small-12 columns title_tarjeta">
+			<h2 class="h2_general">{t}Download file{/t}</h2>
+		</div>
+		<div class="small-12 columns">
+			<div class="alert alert-info">
+				<strong>Info! </strong>{t}File download will start immediately. If it does not start, click on:{/t}
+			<a href="{$_URL_ROOT}xmd/loadaction.php?action=filedownload&method=downloadFile&nodeid={$id_node}" class="destacada download_link" title="{t nodename=$node_name}Descargar %1{/t}"> {$node_name}</a>
+			</div>
+		</div>
+		<div class="small-12 columns">
+<fieldset class="buttons-form">
+    {button label="Download" class="button-download btn main_action"}
+</fieldset>
+		</div></div></div>

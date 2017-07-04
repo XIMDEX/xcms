@@ -35,7 +35,7 @@
   <div class="xim-loader-list-container">
     <div class="guide" ng-hide="$flow.files.length">
       <span class="icon document">Documents</span>
-      <span class="icon image">Images</span>
+      <span style="bottom: 35px;" class="icon image">Images</span>
       <span class="icon video">Videos</span>
       <p> {t}Drag your files here or add them using the 'Add' button below{/t}.</p>
     </div>

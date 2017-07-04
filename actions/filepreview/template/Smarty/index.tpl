@@ -23,7 +23,9 @@
  *  @version $Revision$
  *}
 <div class="action_header">
-		<h2>{$Name}</h2>
+	<h5 class="direction_header"> Name Node: {$node_name}</h5>
+	<h5 class="nodeid_header"> ID Node: {$nodeid}</h5>
+	<hr>
 </div>
 <div class="action_content image-preview">
 	{if $type eq 'XSIRVideoFile'}

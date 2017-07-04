@@ -24,8 +24,15 @@
     *  @version $Revision$
  */
 /*******
-//	ICON GENERIC STYLES
+//	NUEVO
 *******/
+
+.cuadrado{
+  padding-left:40px;
+  padding-right: 10px;
+  border-bottom:1px solid lightgray;
+}
+
 /*******
 //	ICONS
 *******/
@@ -65,7 +72,7 @@ textarea {
   display: none;
 }
 .metadata_action .empty_state {
-  padding: 9em 1.5em 7em 3.5em;
+  padding-top: 4em;
 }
 .metadata_action .empty_state span {
   text-align: center;
@@ -101,9 +108,7 @@ textarea {
 }
 .metadata_action .language_selector {
   position: absolute;
-  right: 37%;
   border: none;
-  background: none;
   padding: 0;
   z-index: 2;
 }
@@ -226,7 +231,7 @@ textarea {
 }
 
 .nodeid {
-  color: #7bcabf;
+  color: #43a1a2;
 }
 
 /**************
@@ -281,13 +286,11 @@ textarea {
 .path_info .path_mask::before {
   content: "...";
   position: absolute;
-  background: #464646;
-  left: -1.6em;
+  background: #eee;
+  left: -1.4em;
   padding: .2em .2em .2em 1.9em;
   z-index: 2;
   top: 0;
-  -webkit-box-shadow: 2px 0 2px rgba(70, 70, 70, 0.5);
-  box-shadow: 2px 0 2px rgba(70, 70, 70, 0.5);
 }
 .path_info .path_uri {
   position: absolute;

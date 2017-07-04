@@ -70,7 +70,7 @@ class Filter {
 	 * @param $name
 	 * @return unknown_type
 	 */
-	function Filter($name) {
+	function __construct($name) {
 
 		// If $name is null... trigger error ? default filter (identity filter) ?
 		// TODO: check if filter $name exists.

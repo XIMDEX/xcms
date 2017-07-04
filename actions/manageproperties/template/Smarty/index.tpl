@@ -25,12 +25,13 @@
 
 <form method="post" name="modifyproperties" action="{$action_url}">
 	<div class="action_header">
-		<h2>{t}Manage properties{/t}: {$name}</h2>
-
-		<fieldset class="buttons-form">
-			{button label="Modify" class="validate btn main_action" }{*message="Are you sure you want to change default properties?"*}
-		</fieldset>
+		<h5 class="direction_header"> Name Node: {$name}</h5>
+		<h5 class="nodeid_header"> ID Node: {$nodeid}</h5>
+		<hr>
 	</div>
+
+
+
 
 	<div class="message-warning message">
 		<p>
@@ -39,8 +40,16 @@
 	</div>
 
 	<div class="action_content">
+		<div class="row tarjeta">
+		<h2 class="h2_general">{t}Manage properties{/t}</h2>
 		{foreach from=$properties key=prop item=property}
 			{include file="`$_APP_ROOT`/actions/manageproperties/template/Smarty/`$prop`.tpl"}
 		{/foreach}
+		<div class="small-12 columns">
+		<fieldset class="buttons-form">
+            {button label="Modify" class="validate btn main_action" }{*message="Are you sure you want to change default properties?"*}
+		</fieldset>
+		</div>
+		</div>
 	</div>
 </form>

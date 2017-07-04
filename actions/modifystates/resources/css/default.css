@@ -23,6 +23,11 @@
  *  @version $Revision$
  */
 
+.li_central{
+    list-style-type: none;
+    clear: both;
+    margin-left: 80px!important;
+}
 
 img.sortable_element{
 	cursor: move;
@@ -48,6 +53,7 @@ div.separator{
     height: 0.5em;
     width: 85.5%;
     cursor: pointer;
+    margin-left: 80px!important;
 }
 
 div.separator:hover{
@@ -75,7 +81,7 @@ label.status{
 
 button.delete-btn{
     position: relative;
-    visibility: hidden;
+   /* visibility: hidden;*/
 }
 
 ul.sortable li:hover button.delete-btn{

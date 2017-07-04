@@ -16,8 +16,6 @@
     line-height: 1.5;
     text-align: center;
     width: 100%;
-    background-color: rgba(0,0,0, 0.6);
-    color: rgb(206, 206, 206);
     text-overflow: ellipsis;
     overflow: hidden;
     padding: 0 0.3em;
@@ -31,7 +29,7 @@
 }
 
 .thumbs ul{
-  background: #373737;
+  background:#f9f9f9;
   overflow: auto;
   height: 100%;
   -webkit-box-sizing: border-box;
@@ -45,11 +43,11 @@
 .image_container li:not(.opened) {
     width: 160px;
    	height: 120px;
-   	background: #f2f2f2;
-   	border: 1px solid #fff;
-   	-webkit-box-shadow:  0 0 3px rgba(80,80,80,.6), 0 0 0 6px rgba(0,0,0,.2);
-   	-moz-box-shadow:  0 0 3px rgba(80,80,80,.6), 0 0 0 6px rgba(0,0,0,.2);
-   	box-shadow:  0 0 3px rgba(80,80,80,.6), 0 0 0 6px rgba(0,0,0,.2);
+   	background: #eee;
+   	border: 1px solid #eee;
+   	-webkit-box-shadow: 0 5px #43a1a2;
+   	-moz-box-shadow: 0 5px #43a1a2;
+    box-shadow: 0 5px #43a1a2;
    	-webkit-border-radius: 2px;
    	-moz-border-radius: 2px;
    	border-radius: 2px;
@@ -72,9 +70,9 @@
 }
 
 .thumbs li:not(.opened):hover{
-    -webkit-box-shadow:  0 0 3px rgba(80,80,80,.6), 0 0 0 10px rgba(0,0,0,.2);
-    -moz-box-shadow:  0 0 3px rgba(80,80,80,.6), 0 0 0 10px rgba(0,0,0,.2);
-    box-shadow:  0 0 3px rgba(80,80,80,.6), 0 0 0 10px rgba(0,0,0,.2);
+    -webkit-box-shadow:  0px 0px 0px 5px #43a1a2;
+    -moz-box-shadow:  0px 0px 0px 5px #43a1a2;
+    box-shadow:  0px 0px 0px 5px #43a1a2;
 }
 
 .thumbs li:hover:after {
@@ -117,9 +115,9 @@
   -webkit-animation: open .5s;
   -o-animation: open .5s;
   animation: open .5s;
-  -webkit-box-shadow: inset 0 2px 3px rgba(0,0,0,.5), inset 0 -2px 3px rgba(0,0,0,.5);
-  -moz-box-shadow: inset 0 2px 3px rgba(0,0,0,.5), inset 0 -2px 3px rgba(0,0,0,.5);
-  box-shadow: inset 0 2px 3px rgba(0,0,0,.5), inset 0 -2px 3px rgba(0,0,0,.5);
+  -webkit-box-shadow: 0 0px 0px 3px #43a1a2;
+  -moz-box-shadow: 0 0px 0px 3px #43a1a2;
+  box-shadow: 0 0px 0px 3px #43a1a2;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
@@ -290,14 +288,15 @@ margin-bottom: 6px;
 .close{
   position: absolute;
   right: 1%;
-  background-color: #d4d4d4;
-  width: 15px;
-  height: 15px;
+  background-color: red;
+  width: 20px;
+  height: 20px;
   text-indent: 100%;
   white-space: nowrap;
   overflow: hidden;
   top: 1em;
   cursor: pointer;
+  border-radius: 10px;
 
 }
 
@@ -305,9 +304,10 @@ margin-bottom: 6px;
   content: "\63";
   display: block;
   text-indent: 0;
-  font-size: 1rem;
+  font-size: .7em;
   height: 100%;
   padding-top: .2em;
+  color: white;
 }
 
 

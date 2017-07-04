@@ -41,11 +41,13 @@
   z-index: 5; }
 
 .deletenodes .box_short {
-  padding: 0 1em;
+  padding: 1em 0 1em 1em;
   text-transform: uppercase;
   margin: 1em 0;
-  border-left: 0.3em solid #7bcabf;
+  border-left: 4px solid #43a1a2;
   position: relative;
+  background-color: lightgray;
+  border-radius:5px;
   		/*&::after{
   		@include triangle(bottom, rgba(35,35,35,.8), .4em);
   		top: 50%;
@@ -102,4 +104,4 @@
   display: block;
   font-size: 1.5rem;
   line-height: 1.4;
-  color: #409f92; }
+  color: #43a1a2; }

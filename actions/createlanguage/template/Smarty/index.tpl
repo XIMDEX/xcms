@@ -27,42 +27,53 @@
 
 <input type="hidden" name="nodeid" id='nodeid' value="{$nodeid}">
 <div class="action_header">
-	<h2>{t}Add language{/t}</h2>
-	<fieldset class="buttons-form">
-			{button label="Create" class='validate  btn main_action'}{*message="Do you want to create the language?"*}
-
-	</fieldset>
+    <h5 class="direction_header"> Name Node: {t}Language manager{/t}</h5>
+    <h5 class="nodeid_header"> ID Node: {$nodeid}</h5>
+    <hr>
 </div>
-<div class="action_content">
-    <p class="col1_2 col_left">
-        <label for="langname" class="label_title">{t}Name{/t}</label>
-        <input type="text" name="langname" id="langname" class="full_size cajaxg validable not_empty" placeholder="{t}Name for the new language{/t}"/>
-    </p>
 
-    <div class="col1_2 col_right">
-        <p class="col1_2 col_right">
-               <label for="isoname" class="label_title">{t}ISO name{/t}</label>
+<div class="action_content">
+    <div class="row tarjeta">
+        <div class="small-12 columns title_tarjeta">
+            <h2 class="h2_general">{t}Add language{/t}</h2>
+        </div>
+
+    <div class="small-4 columns">
+        <div class="input">
+        <label for="langname" class="label_title label_general">{t}Name{/t} *</label>
+        <input type="text" name="langname" id="langname" class="input_general full_size cajaxg validable not_empty" placeholder="{t}Name for the new language{/t}"/>
+        </div></div>
+
+    <div class="small-4 columns">
+        <div class="input-select">
+               <label for="isoname" class="label_title label_general">{t}ISO name{/t} *</label>
                <select name="isoname" id="isoname" class="full_size cajag validable not_empty">
                    <option value="">{t}Select an ISO code{/t}</option>
                    {foreach from=$languages item=language}
                        <option value="{$language.code}">{$language.name} ( {$language.code} )</option>
                    {/foreach}
-               </select>
-           </p> 
- <p class="col1_2 col_right ">
-        <label class="label_title">{t}Activated{/t}</label>
-        <span class="slide-element title_block">
+               </select></div></div>
+
+ <div class="small-4 columns">
+        <label class="label_title label_general">{t}Activated{/t}</label>
+     <div class="row-special">
+        <span class="slide-element-special title_block">
             <input class="input-slide" type="checkbox" name="enabled" id="enabled" value="1" checked="checked"/>
                 <label for="enabled" class="label-slide "></label></span>
-    </p>               
-    </div>
+     </div></div>
 
-    <p>
-        <label for="description" class="label_title">{t}Description{/t}</label>
-        <input type="text" name="description" id="description" class="full_size cajaxg validable not_empty" placeholder="{t}Description for the new language{/t}"/>
-    </p>
-   
-   			
-</div>
+        <div class="small-12 columns">
+            <div class="input">
+        <label for="description" class="label_title label_general">{t}Description{/t} *</label>
+        <input type="text" name="description" id="description" class="input_general full_size cajaxg validable not_empty" placeholder="{t}Description for the new language{/t}"/>
+        </div></div>
+        <div class="small-12 columns">
+            <fieldset class="buttons-form">
+                {button label="Create" class='validate  btn main_action'}{*message="Do you want to create the language?"*}
+            </fieldset>
+        </div>
+
+
+</div></div>
 
 </form>

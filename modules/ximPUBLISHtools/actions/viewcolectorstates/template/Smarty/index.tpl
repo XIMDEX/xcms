@@ -30,7 +30,7 @@
 			<div class="nodo_padre">
 				<div class="cabecera_nodo">
 					<div class="titulo_nodo_padre">
-						<h1>Colectores de la secci髇 "{$section_name}"</h1>
+						<h1>Colectores de la secci锟絥 "{$section_name}"</h1>
 					</div>
 				</div>
 				<div class="separador"></div>
@@ -41,7 +41,7 @@
 	<tr>
 		<td align="center" class="filaoscura">
 			<div class="mensaje_respuesta">
-				<span>No hay colectores definidos en esta secci髇. </span>
+				<span>No hay colectores definidos en esta secci贸n.</span>
 			</div>
 		</td>
 	</tr>
@@ -69,10 +69,10 @@
 					<div class="combo1">
 						<select onChange="$(this).closest('.ui-tabs').canvas('get_widget', this).canvas_i('get_colectors_data', 1);" id="filter_colector_state">
 							<option value="1">Todos</option>
-							<option value="2">En generaci髇</option>
-							<option value="3">Pendientes de generaci髇</option>
+							<option value="2">En generaci贸n</option>
+							<option value="3">Pendientes de generaci贸n</option>
 							<option value="4">Generados</option>
-							<option value="5">En publicaci髇</option>
+							<option value="5">En publicaci贸n</option>
 						</select>
 					</div>
 					 <div class="flotacion"></div>
@@ -92,17 +92,17 @@
 				</div>
 				<div class="contenido_nodo">
 					<div class="barra_progreso">
-						<img id="progress_img_{$colector.id_colector}" style='width:{$colector.progress}px;height:6px;' src='{$_URL_ROOT}/xmd/images/pix_green.png' title="Pendiente">							
+						<img id="progress_img_{$colector.id_colector}" style='width:{$colector.progress}px;height:6px;' src='{$_URL_ROOT}xmd/images/pix_green.png' title="Pendiente">							
 						<br />
 						<div class="borde_cien"></div>
 						<span class="mensaje_progreso"><span id="progress_{$colector.id_colector}">{$colector.progress}</span>% Completado </span>
 					</div>
 					<div class="botones_control">
-						<div class="mensaje_estado"><span id="state_content_{$colector.id_colector}">{$colector.state}</span> <img id="state_image_{$colector.id_colector}" style="width: 15px;{if $colector.state ne 'Gener&aacute;ndose' and $colector.state ne 'Generado y Public&aacute;ndose'}display: none;{/if}" src="{$_URL_ROOT}/xmd/icons/ajax-loader.gif" /></div>
+						<div class="mensaje_estado"><span id="state_content_{$colector.id_colector}">{$colector.state}</span> <img id="state_image_{$colector.id_colector}" style="width: 15px;{if $colector.state ne 'Gener&aacute;ndose' and $colector.state ne 'Generado y Public&aacute;ndose'}display: none;{/if}" src="{$_URL_ROOT}xmd/icons/ajax-loader.gif" /></div>
 						<div class="cabecera_mensaje_generacion">
-							<span id="start_generation_title_{$colector.id_colector}">{if $colector.start_generation}Comienzo de la generaci髇:{/if}</span> <br/>
-							{*<span id="end_generation_title_{$colector.id_colector}">{if $colector.end_generation}Comienzo de la publicaci髇:{/if}</span> <br/>*}
-							<span id="end_publication_title_{$colector.id_colector}">{if $colector.end_publication}Fin de la generaci髇:{/if}</span> <br/>
+							<span id="start_generation_title_{$colector.id_colector}">{if $colector.start_generation}Comienzo de la generaci贸n:{/if}</span> <br/>
+							{*<span id="end_generation_title_{$colector.id_colector}">{if $colector.end_generation}Comienzo de la publicaci贸n:{/if}</span> <br/>*}
+							<span id="end_publication_title_{$colector.id_colector}">{if $colector.end_publication}Fin de la generaci贸n:{/if}</span> <br/>
 						</div>
 						<div class="contenido_mensaje_generacion">
 							<span id="start_generation_{$colector.id_colector}">{if $colector.start_generation} {$colector.start_generation|date_format:"%d/%m/%Y %H:%M:%S"} {else} - {/if}</span><br/>
@@ -117,7 +117,7 @@
 						<tr class="titulos">
 							<td class="fichero">Noticia</td>
 							<td class="fichero">Asociada por</td>
-							<td class="fichero">Fecha de Asociaci髇</td>
+							<td class="fichero">Fecha de Asociaci贸n</td>
 							<td class="fichero">Inicio Vigencia</td>
 							<td class="fichero">Fin Vigencia</td>
 							<td>Estado</td>													
@@ -175,7 +175,7 @@
 						<li class="dia"><span id="user_name_{$colector.id_colector}">{$colector.user_name}</span></li>
 						<li class="fecha">Usuario:</li>
 						<li class="dia"><span id="last_generation_{$colector.id_colector}">{$colector.last_generation|date_format:"%d/%m/%Y %H:%M:%S"}</span></li>
-						<li class="fecha">趌tima generaci髇:</li>
+						<li class="fecha">脷ltima generaci贸n:</li>
 					</ul>
 				</div>
 			</div>
@@ -186,8 +186,8 @@
 	<tr>
 		<td colspan="6">
 			<div class="pie_tabla">
-				<img src="{$_URL_ROOT}{$smarty.const.MODULE_XIMPUBLISHTOOLS_PATH}/images/reports/out.gif" width="17" height="15" title="Pendiente"/> Noticia pendiente de ser inclu韉a en un bolet韓.
-				<img src="{$_URL_ROOT}{$smarty.const.MODULE_XIMPUBLISHTOOLS_PATH}/images/reports/in.gif" width="17" height="15" title="Pendiente"/> Noticia inclu韉a en un bolet韓. <br/>
+				<img src="{$_URL_ROOT}{$smarty.const.MODULE_XIMPUBLISHTOOLS_PATH}/images/reports/out.gif" width="17" height="15" title="Pendiente"/> Noticia pendiente de ser inclu铆da en un bolet铆n.
+				<img src="{$_URL_ROOT}{$smarty.const.MODULE_XIMPUBLISHTOOLS_PATH}/images/reports/in.gif" width="17" height="15" title="Pendiente"/> Noticia inclu铆da en un bolet铆n. <br/>
 			</div>
 		</td>
 	</tr>

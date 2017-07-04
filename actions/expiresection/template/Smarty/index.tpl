@@ -24,10 +24,10 @@
  *}
 
 <form method="post" id="formulario" name="formulario" action="{$action_url}">
-  <div class="action_header"><h2>{t}Expire section{/t}: {$section_name}</h2>
-    <fieldset class="buttons-form">
-      {button label="Accept" class='validate btn main_action'}{*message="You will expire this section. Would you like to continue?"*}
-    </fieldset>
+  <div class="action_header">
+    <h5 class="direction_header"> Name Node: {$section_name}</h5>
+    <h5 class="nodeid_header"> ID Node: {$nodeid}</h5>
+    <hr>
   </div>
 
   <div class="message message-warning">
@@ -35,22 +35,30 @@
   </div>
 
   <div class="action_content">
-    <p>
+    <div class="row tarjeta">
+      <div class="small-12 columns title_tarjeta">
+        <h2 class="h2_general">{t}Expire section{/t}</h2>
+      </div>
+      <div class="small-12">
+    <label class="label_title label_general">
       {t section_name=$section_name}You have selected to expire the contents of section: {/t}{$section_name} {t}Would you like to expire just this folder or all subsections included in it too?{/t}
-    </p>
+    </label></div>
 
-    <div class="col1-1">
-      <label class="input-form" for="no_recursive">
-        <input type="radio" name="is_recursive" value="0" id="no_recursive" checked="checked">
-        {t}Expire just this section{/t}
-      </label>
+    <div class="small-12 columns">
+      <input type="radio" name="is_recursive" value="0" id="no_recursive" checked="checked" class="hidden-focus">
+      <label class="icon radio-label" for="no_recursive">{t}Expire just this section{/t}</label>
     </div>
 
-    <div class="col1-1">
-      <label class="input-form" for="recursive">
-        <input type="radio" name="is_recursive" id="recursive" value="1">
-        {t}Expire section and all subsections included in it{/t}
-      </label>
+    <div class="small-12 columns">
+      <input type="radio" name="is_recursive" id="recursive" value="1" checked="checked" class="hidden-focus">
+      <label class="icon radio-label" for="recursive">{t}Expire section and all subsections included in it{/t}</label>
     </div>
-  </div>
+
+    <div class="small-12 columns">
+    <fieldset class="buttons-form">
+        {button label="Accept" class='validate btn main_action'}{*message="You will expire this section. Would you like to continue?"*}
+    </fieldset>
+    </div></div></div>
 </form>
+
+

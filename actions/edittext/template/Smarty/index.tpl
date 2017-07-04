@@ -24,19 +24,22 @@
  *}
 
 <form id="et_form" class="text-editor-form" enctype="multipart/form-data" method="post" action="{$action_url}">
-	<div class="action_header">
-		<h2>{t}Editing file{/t} ({$ext}): {$node_name}</h2>
+	<div class="action_header" style="padding-bottom: 90px!important;">
+		<h5 class="direction_header"> Name Node: {$node_name}</h5>
+		<h5 class="nodeid_header"> ID Node: {$nodeid}</h5>
+		<hr>
 		<fieldset class="buttons-form">
-	{if $isXimNewsLanguage == true}
-		{button label="Save and publish" class="validate"
-			 onclick="$('#publicar').attr('value', '1');"
-			  }{*message="{t}Are you sure you want to save and publish the document?{/t}"*}
-	{/if}
+            {if $isXimNewsLanguage == true}
+                {button label="Save and publish" class="validate"
+                onclick="$('#publicar').attr('value', '1');"
+                }{*message="{t}Are you sure you want to save and publish the document?{/t}"*}
+            {/if}
 
-		{button label="Save" type="submit" class="validate btn main_action"}{*message="{t}Are you sure you want to save the changes?{/t}"*}
-	</fieldset>
+            {button label="Save" type="submit" class="validate btn main_action"}{*message="{t}Are you sure you want to save the changes?{/t}"*}
+		</fieldset>
 	</div>
  <div class="action_content full text-editor">
+
  	<fieldset class="editor" id="fieldset_{$id_editor}">
 
  		<input type="hidden" name="nodeid" value="{$id_node}">

@@ -316,27 +316,29 @@ button::-moz-focus-inner {
 
 .login-name {
   position: relative;
-  margin-right: .8em;
+  margin-right: .4em;
   display: inline-block;
   width: 3.5em;
-  height: 3em; }
+  height: 3em;
+  color:white}
 
 .current-language {
   position: relative;
   top: -.7em;
-  color: #7bcabf;
+  color: #43a1a2;
   font-weight: bold;
-  margin-right: .8em;
+  margin-right: -1em;
   display: inline-block;
   width: 3em;
   height: 3em; }
   .current-language::before {
     position: relative;
     top: .62em;
+    font-size: 1.2em;
     color: #e8e8e8; }
   .current-language::after {
     position: absolute;
-    font-size: 1.5em;
+    font-size: 1.6em;
     z-index: -1 !important;
     margin-left: -0.85em;
     color: #e8e8e8;
@@ -353,20 +355,20 @@ button::-moz-focus-inner {
   -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
   z-index: 4;
-  background: #474850;
+  background: #eee;
   color: #888;
   min-width: 13em; }
   .user-menu > ul > li {
-    border-bottom: 1px solid #5f606a; }
+    border-bottom: 1px solid lightgray; }
     .user-menu > ul > li:first-child {
-      box-shadow: inset 0 -1px 0  #36373e; }
+      box-shadow: inset 0 -1px 0  lightgray; }
       .user-menu > ul > li:first-child a {
-        border-bottom: 1px solid #5f606a; }
+        border-bottom: 1px solid lightgray; }
     .user-menu > ul > li:last-child {
       border-bottom: none; }
     .user-menu > ul > li::before {
       font-family: 'ximdex-icon';
-      color: #fff;
+
       position: absolute;
       font-size: 2rem;
       top: .5em;
@@ -390,6 +392,25 @@ button::-moz-focus-inner {
       font-size: 1.95rem;
       top: .6em;
       left: .6em; }
+    .menu-header > a > span.logout::before{
+      content: '\e61f';
+      font-size: 1.95rem;
+      top: .6em;
+      left: .6em;
+    }
+
+    .a_especial{
+      padding: 5px;
+      color:white;
+      text-decoration: none;
+      margin-right: 10px;
+    }
+
+    .a_especial:hover{
+      background: #43a1a2;
+      padding: 5px;
+      border-radius: 5px;
+    }
   .user-menu li {
     cursor: pointer;
     position: relative; }
@@ -397,24 +418,29 @@ button::-moz-focus-inner {
       position: absolute;
       left: 1em; }
   .user-menu li a {
-    color: #fff;
+    color: black;
     padding: 1em 1.5em 1em 3em;
     display: block;
     position: relative; }
-    .user-menu li a:hover {
-      color: #7bcabf; }
+.user-menu li a:hover {
+      color: white;
+      background: #43a1a2; }
+.user-menu li:hover {
+  color: white;
+  background: #43a1a2; }
+
   .user-menu li ul li {
-    color: #888; }
+    color: black; }
     .user-menu li ul li:hover {
-      color: #7bcabf; }
+      color: white; }
   .user-menu .selected::before {
-    color: #7bcabf; }
+    color: white; }
   .user-menu::before {
     content: '';
     display: block;
     position: absolute;
     border: 6px solid transparent;
-    border-bottom-color: #474850;
+    border-bottom-color: #eee;
     top: -12px;
     left: 1em; }
 
@@ -422,15 +448,18 @@ button::-moz-focus-inner {
   display: block;
   position: absolute;
   top: 2em;
-  left: -1em; }
+  left: -1em;
+  border: 1px solid lightgray;}
 
 .selector_language li {
   display: inline-block;
   padding: .8em 1.4em .8em 1.6em; }
   .selector_language li.selected {
-    padding-left: 2.9em; }
+    padding-left: 2.9em;
+    border-left: 1px solid lightgray;}
 .selector_language .selected {
-  background: #36373e; }
+  background: #43a1a2;
+  color: white; }
 
 .angular-panel {
   box-sizing: border-box;
@@ -473,10 +502,10 @@ button::-moz-focus-inner {
 
 #angular-content > .hbox-panel > .tabs-container > ul.ui-tabs-nav > li {
   /*padding: 0;*/
-  height: 35px;
-  margin-bottom: 0px;
-  padding: 9px 15px 9px 35px;
 
+  margin-bottom: 0px;
+  padding: 9px 15px 10px 35px;
+  border-bottom: 20px solid #43a1a2!important;
   word-wrap: normal;
   cursor: pointer;
 }

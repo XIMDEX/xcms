@@ -27,52 +27,62 @@
     <input name="theme" type="hidden">
 
     <div class="action_header">
-        <h2>{t friendlyName=$friendlyName}Add %1{/t}</h2>
+        <h5 class="direction_header"> Name Node: {t}Projects{/t}</h5>
+        <h5 class="nodeid_header"> ID Node: {$nodeid}</h5>
+        <hr>
     </div>
-
     {if {empty($langs)}}
-    <div class="message-warning message">
-        <p>{t}There aren't any created languages. You should create a new one{/t}.</p>
-    </div>
+        <div class="message-warning message">
+            <p>{t}There aren't any created languages. You should create a new one{/t}.</p>
+        </div>
     {/if}
 
     <div class="action_content">
-        <div class="icon icon-positioned project input">
-            <input type="text" name="name" id="foldername" class="cajaxg validable not_empty js_val_alphanumeric js_val_unique_name full-size" placeholder="{t}Project name{/t}" data-idnode="{$nodeID}" />
-        </div>
+        <div class="row tarjeta">
+            <div class="small-12 columns title_tarjeta">
+                <h2 class="h2_general">{t friendlyName=$friendlyName}Add %1{/t}</h2>
+            </div>
+            <div class="small-12 columns">
+                <div class="input">
+                    <label class="label_title label_general">{t}Name{/t} *</label>
+                    <div class="icon icon-positioned project input">
+                        <input type="text" name="name" id="foldername"  class="input_general_icon cajaxg validable not_empty js_val_alphanumeric js_val_unique_name full-size" placeholder="{t}Project name{/t}" data-idnode="{$nodeID}" />
+                    </div></div></div>
 
-        <h3>{t}Available channels{/t}</h3> {foreach from=$channels key=index item=channelData}
-        <label for="p_{$channelData.id}" class="checkbox-label icon">
-            {$channelData.name}
-            <input type="checkbox" class="validable canales check_group__canales hidden-focus" name="channels_listed[{$channelData.id}]" id="p_{$channelData.id}" value="{$channelData.id}" />
-        </label>
-        {foreachelse}
-        <p class="message_warning">{t}There are no channels created in the system{/t}.</p>
-        {/foreach}
+            <div class="small-12 columns">
+                <label class="label_title label_general">{t}Available channels{/t}</label> {foreach from=$channels key=index item=channelData}
+                <input type="checkbox" class="validable canales check_group__canales hidden-focus" checked="checked" name="channels_listed[{$channelData.id}]" id="p_{$channelData.id}" value="{$channelData.id}" />
+                <label for="p_{$channelData.id}" class="checkbox-label icon">
+                    {$channelData.name}</label>
+            {foreachelse}
+            <p class="message_warning">{t}There are no channels created in the system{/t}.</p>
+            {/foreach}
+            </div>
+            <label class="label_title label_general">{t}Avaliable themes{/t}</label>
 
-        <h3>{t}Avaliable themes{/t}</h3>
+            <div class="row themes">
+                {foreach from=$themes key=index item=theme}
+                    <div class="small-4 columns">
+                        <div class="theme">
+                            <div class="img_container">
+                                <img src="actions/addfoldernode/themes/{$theme.name}/{$theme.name}.png" alt="{$theme.title}" />
+                                <div class="actions">
+                                    <a href="" class="icon select" data-theme="{$theme.name}">Select</a> {if $theme.configurable}
+                                        <a data-theme="{$theme.name}" href="" class="icon custom">Custom</a> {/if}
+                                </div>
+                            </div>
 
-        <div class="row themes">
-            {foreach from=$themes key=index item=theme}
-            <div class="small-4 columns">
-                <div class="theme">
-                    <div class="img_container">
-                        <img src="actions/addfoldernode/themes/{$theme.name}/{$theme.name}.png" alt="{$theme.title}" />
-                        <div class="actions">
-                            <a href="" class="icon select" data-theme="{$theme.name}">Select</a> {if $theme.configurable}
-                            <a data-theme="{$theme.name}" href="" class="icon custom">Custom</a> {/if}
+                            <p class="title">{$theme.title}</p>
+                            <p class="type">{$theme.description}</p>
                         </div>
                     </div>
-
-                    <p class="title">{$theme.title}</p>
-                    <p class="type">{$theme.description}</p>
-                </div>
+                {/foreach}
             </div>
-            {/foreach}
-        </div>
+            <div class="small-12 columns">
+                <fieldset class="buttons-form ">
+                    {button label="Create `$friendlyName`" class='validate btn main_action' }
+                </fieldset>
+            </div></div>
     </div>
 
-    <fieldset class="buttons-form positioned_btn">
-        {button label="Create `$friendlyName`" class='validate btn main_action' }
-    </fieldset>
 </form>

@@ -55,7 +55,7 @@
     padding: 0px;
 }
 .ui-tabs .ui-tabs-panel {
-    background: #e3e7e9;
+    background: #f9f9f9;
     -webkit-border-radius: 0 12px 0 0;
     -moz-border-radius: 0 12px 0 0;
     border-radius: 0 12px 0 0;
@@ -79,25 +79,27 @@
     margin-right: 2px;
     margin-top: 0;
     padding-bottom: 5px;
-    color: #ccc;
+    color: lightgray;
     font-size: 15px;
     font-size: 1.5rem;
     line-height: .8;
-    background: #e3e7e9;
+    background: #eee;
     border: none;
-    border-top: 3px solid transparent;
+   /* border-top: 3px solid transparent;*/
+    border-bottom: 2px solid #43a1a2!important;
     overflow: hidden;
     /*-webkit-box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.15) inset;
   -moz-box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.15) inset;
   box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.15) inset;*/
 }
 #body .ui-tabs-nav li.ui-tabs-active {
-    border-top: 3px solid #7bcabf;
-    margin-top: -1px;
-    background: #e3e7e9;
+    border-top: 3px solid #43a1a2;
+    margin-top: 1px;
+    background: #f9f9f9;
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
     box-shadow: none;
+
 }
 #body .ui-tabs-nav li.ui-tabs-active a {
     outline: 0;
@@ -155,7 +157,7 @@
     }
 }
 #body .hbox-panel-container-1 .ui-tabs-nav .ui-tabs-active {
-    background: #fff;
+    background: #f9f9f9;
 }
 .ui-tabs .ui-tabs-nav .ui-tabs-active {
     -webkit-box-shadow: 0 -6px 5px #555;
@@ -170,7 +172,8 @@ ui-tabs .ui-tabs-nav li:hover {
 }
 
 .ui-tabs .ui-tabs-nav .ui-tabs-active button.ui-tab-close:hover {
-    color: #999;
+    color: #43a1a2;
+    transform: scale(1.1);
 }
 
 /*.ui-tabs .ui-tabs-nav li.ui-tabs-active a {
@@ -184,7 +187,7 @@ ui-tabs .ui-tabs-nav li:hover {
 /* ui-tab-close */
 button.ui-tab-close {
     position: absolute;
-    top: 9px;
+    top: 4px;
     left: 2px;
     background-color: transparent;
     border: 0px;
@@ -193,12 +196,13 @@ button.ui-tab-close {
     line-height: 100%;
 }
 button.ui-tab-close:hover {
-    color: #ccc;
+    color: #43a1a2;
     background-color: transparent;
+    transform:scale(1.1);
 }
 span.ui-tab-close-icon:before {
     content: "\e088";
-    font-size: 14px;
+    font-size: 18px;
     font-family: 'Glyphicons Halflings';
     font-style: normal;
     font-weight: 400;

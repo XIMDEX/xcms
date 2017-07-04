@@ -1,3 +1,18 @@
+/*roboto*/
+
+@font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    src: url('../fonts/Roboto-Regular.ttf'); /* IE9 Compat Modes */
+    src: local('Roboto-Regular'),
+    url('../fonts/Roboto-Regular.ttf') format('embedded-opentype'), /* IE6-IE8 */
+    url('../fonts/Roboto-Regular.ttf') format('woff2'), /* Super Modern Browsers */
+    url('../fonts/Roboto-Regular.ttf') format('woff'), /* Modern Browsers */
+    url('../fonts/Roboto-Regular.ttf') format('truetype'), /* Safari, Android, iOS */
+    url('../fonts/Roboto-Regular.ttf#Coustard') format('svg'); /* Legacy iOS */
+}
+
 /* coustard-regular - latin */
 @font-face {
   font-family: 'Coustard';

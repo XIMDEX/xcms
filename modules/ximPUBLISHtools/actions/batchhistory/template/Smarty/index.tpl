@@ -22,21 +22,36 @@
 *  @author Ximdex DevTeam <dev@ximdex.com>
 *  @version $Revision$
 *}
-
+<div class="action_header">
+    <h5 class="direction_header"> Name Node: {t}Publishing history{/t}</h5>
+    <h5 class="nodeid_header"> ID Node: {$nodeid}</h5>
+    <hr>
+</div>
 
 <div class="ximPUBLISHtools" ng-controller="ximPUBLISHtools">
+    <div class="action_content">
+        <div class="row tarjeta">
+            <h2 class="h2_general">{t}Add channel{/t}</h2>
+            <div class="small-12 columns">
     <form>
-        <fieldset>
-            {t}From{/t}: <input type="text" ng-model="searchObj.dateFrom">
-            {t}To{/t}: <input type="text" ng-model="searchObj.dateTo">
-            <br/>
-            {t}Text to search{/t}: <input type="text" ng-model="searchObj.searchText">
-            <button ng-click="updateSearch(searchObj)">{t}Search{/t}</button>
-        </fieldset>
+        <div class="input">
+            <label class="label_title label_general">{t}From{/t} </label>
+            <input type="text" ng-model="searchObj.dateFrom">
+        </div>
+        <div class="input">
+            <label class="label_title label_general">{t}To{/t} </label>  <input type="text" ng-model="searchObj.dateTo">
+        </div>
+        <div class="input">
+           <label class="label_title label_general"> {t}Text to search{/t} </label>  <input type="text" ng-model="searchObj.searchText">
+        </div>
+        <div class="small-12 columns">
+            <fieldset class="buttons-form">
+            <button class="btn main_action btn_margin" ng-click="updateSearch(searchObj)">{t}Search{/t}</button>
+            </fieldset></div>
     </form>
-
+            </div></div>
     <fieldset>
-        <legend><span>{t}Document list{/t}</span></legend>
+        <label class="label_title label_general">{t}Document list{/t}</label>
 
         <div id="frame_list" ng-if="1">
             <div class="batch_container" ng-repeat="portal in json">
@@ -59,4 +74,4 @@
             </div>
         </div>
     </fieldset>
-</div>
+    </div></div>

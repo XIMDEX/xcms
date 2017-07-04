@@ -25,26 +25,23 @@
 
 <form method="post" id="msr_action" ng-controller="XModifyStatesRoleCtrl">
     <div class="action_header">
-        <h2>{t}Modify asociated status of role{/t}</h2>
-        <fieldset ng-init="label='{t}Save changes{/t}'; loading=false;" class="buttons-form">
-            <button class="button_main_action"
-                    xim-button
-                    xim-loading="loading"
-                    xim-label="label"
-                    xim-progress=""
-                    xim-disabled=""
-                    ng-click="saveChanges();">
-        </fieldset>
+        <h5 class="direction_header"> Name Node: {t}Role Manager{/t}</h5>
+        <h5 class="nodeid_header"> ID Node: {$nodeid}</h5>
+        <hr>
     </div>
-
     <div ng-view ng-show="thereAreMessages" class="slide-item #/messageClass/# message">
         <p>#/message/#</p>
     </div>
 
     <div class="action_content" ng-init='idRole={$idRole}; all_states={$all_states};'>
-        <p>{t}Select the status asociated with the role{/t}:</p>
+        <div class="row tarjeta">
+            <div class="small-12 columns title_tarjeta">
+                <h2 class="h2_general">{t}Modify asociated status of role{/t}</h2>
+            </div>
+            <div class="small-12 columns">
+        <label class="label_title label_general">{t}Select the status asociated with the role{/t}</label>
         <fieldset>
-            <div class="col1-2">
+
                 <p ng-repeat="state in all_states">
                     <span>
                         <input type="checkbox" class="hidden-focus" id="#/state.name/#_#/idRole/#"
@@ -53,7 +50,20 @@
                                class="checkbox-label icon">#/state.name/#</label>
                     </span>
                 </p>
-            </div>
+
         </fieldset>
-    </div>
+            </div>
+            <div class="small-12 columns">
+                <fieldset ng-init="label='{t}Save changes{/t}'; loading=false;" class="buttons-form">
+                    <button class="btn main_action"
+                            xim-button
+                            xim-loading="loading"
+                            xim-label="label"
+                            xim-progress=""
+                            xim-disabled=""
+                            ng-click="saveChanges();">
+                </fieldset></div>
+        </div></div>
 </form>
+
+

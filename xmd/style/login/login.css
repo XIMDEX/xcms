@@ -29,6 +29,23 @@
    License: none (public domain)
 */
 
+.btn-default{
+    background: #7bcabf!important;
+    color:white!important;
+    border:none!important;
+}
+.btn-default:hover{
+    background: #43a1a2!important;
+    transform:scale(1.1);
+    border:none!important;
+}
+.alert-info{
+    background: #f9f9f9!important;
+    color: #43a1a2!important;
+    border-color: #43a1a2!important;
+    margin-top: 15px;
+    font-size:12px;}
+
 html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
     margin: 0;
     padding: 0;
@@ -77,15 +94,17 @@ body {
     padding: 35px 0px 10px 26px;
 }
 #acceso {
-    background: #fff;
+    background: rgba(255, 255, 255, 0.72);
+    border: 6px solid #FFFFFF;
     width: 295px;
-    padding: 30px 15px;
+    padding: 10px 15px;
     float: left;
     margin: 18px 0;
     position: relative;
+    border-radius: 5px;
 }
 #acceso:before {
-    top: -11px;
+    top: -18px;
     left: 33px;
     -moz-transform: rotate(180deg);
     -webkit-transform: rotate(180deg);
@@ -94,7 +113,7 @@ body {
     transform: rotate(180deg);
 }
 #acceso:after {
-    right: -21px;
+    right: -27px;
     top: 313px;
     -moz-transform: rotate(-90deg);
     -webkit-transform: rotate(-90deg);
@@ -104,7 +123,7 @@ body {
 }
 #acceso p {
     text-align: center;
-    padding: 18px 0 13px;
+    padding: 10px 0 10px;
 }
 #acceso p a {
     display: block;
@@ -130,32 +149,28 @@ body {
 }
 #acceso label {
     font-family: Coustard, serif;
-    font-style: italic;
+
     font-size: 18px;
-    font-size: 1.8rem;
-    color: #458788;
-    text-shadow: 1px 1px 0 #9ED7D8;
+    font-size: 2.0rem;
+    color: #43a1a2;
     display: block;
-    text-align: left;
-    padding: 5px 0 12px 26px;
+    text-align: center;
+    padding: 5px 0 12px 0;
 }
 #acceso input {
-    border: 2px solid #458788;
+    border: 1px solid #43a1a2;
     +font-size: 1.2em;
     line-height: 1.7em;
-    -moz-box-shadow: inset 0px 0px 6px #80c0c1;
+   /* -moz-box-shadow: inset 0px 0px 6px #80c0c1;
     -webkit-ox-shadow: inset 0px 0px 6px #80c0c1;
-    box-shadow: inset 0px 0px 6px #80c0c1;
+    box-shadow: inset 0px 0px 6px #80c0c1;*/
     padding: 3px;
-    width: 190px;
+    /*width: 190px;*/
 }
 #acceso input:focus {
     /*background: url(../../images/login/fnd_txt_focus.png) no-repeat left top;*/
-    background: #efffff;
-    -moz-box-shadow: 0px 0px 7px #40A8A5;
-    -webkit-box-shadow: 0px 0px 7px #40A8A5;
-    box-shadow: 0px 0px 7px #40A8A5;
-    border: 2px solid #52A6A7;
+    background: #f9f9f9;
+    box-shadow: none!important;
 }
 #acceso input#login {
     background: #39afb0;
@@ -266,7 +281,7 @@ body {
 #mas_info:after {
     border-top-color: #52a6a7;
     top: 306px;
-    left: -9px;
+    left: -15px;
     -moz-transform: rotate(-90deg);
     -o-transform: rotate(-90deg);
     -webkit-transform: rotate(-90deg);
@@ -275,8 +290,9 @@ body {
     transform: rotate(-90deg);
 }
 #mas_info {
-    background: #fff;
-    width: 235px;
+    background: rgba(255, 255, 255, 0.72);
+    border: 6px solid #FFFFFF;
+    width: 240px;
     float: right;
     margin-top: 25px;
     padding: 8px 15px 30px 25px;
@@ -284,6 +300,7 @@ body {
     min-height: 313px;
     font-size: 12px;
     font-size: 1.2rem;
+    border-radius: 5px;
 }
 #mas_info h2 {
     font-family: Coustard;
@@ -295,60 +312,121 @@ body {
     font-size: 1.5rem;
 }
 #mas_info h2.comunidad {
-    background: url(../../images/login/comunidad.png) no-repeat left top;
-    padding-left: 45px;
+   /* background: url(../../images/login/comunidad.png) no-repeat left top;
+    padding-left: 45px;*/
     height: 35px;
     line-height: 2.8em;
     padding-bottom: 14px;
-    margin-top: 25px;
+    margin-top: 20px;
 }
 #mas_info h2.siguenos {
-    background: url(../../images/login/siguenos.png) no-repeat left top;
-    padding-left: 45px;
+    /*background: url(../../images/login/siguenos.png) no-repeat left top;
+    padding-left: 45px;*/
     height: 35px;
     line-height: 2.8em;
     padding-bottom: 14px;
     margin-top: 15px;
+    margin-bottom: 14px;
 }
 #mas_info p {
-    margin: 5px 25px 15px 25px;
+    margin: 5px 5px 15px 5px;
 }
 #mas_info a {
-    color: #999;
+    color: #7bcabf;
+    text-decoration: none;
 }
 #mas_info a:hover {
-    color: #E05026;
+    color: #43a1a2;
+    text-decoration: none;
 }
+
+.text {
+
+    visibility:hidden;
+}
+
+.text2 {
+
+    visibility:hidden;
+}
+
+#mas_info a.twit:hover .text {
+     visibility:visible;
+     padding-top: 3px;
+     padding-left: 5px;
+     font-size: 15px;
+ }
+
+#mas_info a.twit:hover .text2 {
+    visibility: visible;
+    padding-top: 3px;
+    margin-left: -89px;
+    font-size: 15px;
+    margin-top: -24px;
+}
+
+#mas_info a.face:hover .text {
+    visibility:visible;
+    padding-top: 3px;
+    padding-left: 5px;
+    font-size: 15px;
+}
+#mas_info a.face:hover .text2 {
+    visibility: visible;
+    padding-top: 3px;
+    margin-left: -89px;
+    font-size: 15px;
+    margin-top: -24px;
+}
+
+#mas_info a.link:hover .text {
+    visibility:visible;
+    padding-top: 3px;
+    padding-left: 5px;
+    font-size: 15px;
+}
+
+#mas_info a.link:hover .text2 {
+    visibility: visible;
+    padding-top: 3px;
+    margin-left: -89px;
+    font-size: 15px;
+    margin-top: -24px;
+}
+
 #mas_info a.twit {
-    background: url(../../images/login/icon_twitter.png) no-repeat left bottom;
+    background: url(../../images/login/twit.png) no-repeat left bottom;
     padding-left: 30px;
     display: block;
-    height: 20px;
-    margin-left: 15px;
+    height: 30px;
+    margin-left: 75px;
+    margin-bottom: 10px;
 }
 #mas_info a.twit:hover {
-    background: url(../../images/login/icon_twitter_hover.png) no-repeat left bottom;
+    background: url(../../images/login/twit2.png) no-repeat left bottom;
 }
 #mas_info a.face {
-    background: url(../../images/login/icon_facebook.png) no-repeat left top;
+    background: url(../../images/login/fb.png) no-repeat left top;
     padding-left: 30px;
     display: block;
-    height: 20px;
-    margin-left: 15px;
+    height: 30px;
+    margin-left: 75px;
+    margin-bottom: 10px;
 }
 #mas_info a.face:hover {
-    background: url(../../images/login/icon_facebook_hover.png) no-repeat left top;
+    background: url(../../images/login/fb2.png) no-repeat left top;
 }
 #mas_info a.link {
-    background: url(../../images/login/icon_linkedin.png) no-repeat left top;
+    background: url(../../images/login/li.png) no-repeat left top;
     padding-left: 30px;
     display: block;
-    height: 20px;
-    margin-bottom: 15px;
-    margin-left: 15px;
+    height: 30px;
+    margin-bottom: 10px;
+    margin-left: 75px;
+
 }
 #mas_info a.link:hover {
-    background: url(../../images/login/icon_linkedin_hover.png) no-repeat left top;
+    background: url(../../images/login/li2.png) no-repeat left top;
 }
 .error {
     margin: 5px auto;
@@ -379,10 +457,11 @@ body {
 }
 .news {
     clear: both;
-    background: #fff url(../../images/login/bg-news.png);
+    background: rgba(255, 255, 255, 0.72) url(../../images/login/bg-news.png);
     border: 8px solid #fff;
     padding: 15px;
     min-height: 120px;
+    border-radius: 5px;
 }
 .news h3 {
     background: #fff;

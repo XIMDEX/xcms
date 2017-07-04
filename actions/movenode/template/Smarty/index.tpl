@@ -29,12 +29,9 @@
 <input type="hidden" name="targetid" id="targetid">
 <input type="hidden" id="editor">
 <div class="action_header">
-	<h2>{t}Move node{/t} {$name}</h2>
-	{if {count($targetNodes)}}
-	<fieldset class="buttons-form">
-		{button label="Move node" class="validate btn main_action" }{*message="Are you sure you want to move this node to selected destination?"*}
-	</fieldset>
-	{/if}
+	<h5 class="direction_header"> Name Node: {$name}</h5>
+	<h5 class="nodeid_header"> ID Node: {$nodeid}</h5>
+	<hr>
 </div>
 {if {!count($targetNodes)}}
 				<div class="message-warning message">
@@ -42,9 +39,10 @@
 				</div>
 			{/if}
 <div class="action_content">
+	<div class="row tarjeta">
 {if {count($targetNodes)}}
-<fieldset>
-	<label for="id_node"><span>{t}Select new node destination{/t}</span></label>
+		<h2 class="h2_general">{t}Select new node destination{/t}</h2>
+		<div class="small-12 columns">
 	<div class="copy_options">
 		{foreach from=$targetNodes key=index item=targetNode}
 				<div>
@@ -54,18 +52,28 @@
 							
 				</div>	
 		{/foreach}
-	</div>		
-</fieldset>
+	</div></div>
+
 
     	{if ($isPublished)}
 <fieldset>
 	<legend><span>{t}Warning about publication{/t} </span> </legend>
-	<p>¡{t}This node, or one or more of its children, are published{/t}!.{t}If you do not want to keep your nodes published on current location{/t}:</p>
+	<p>ï¿½{t}This node, or one or more of its children, are published{/t}!.{t}If you do not want to keep your nodes published on current location{/t}:</p>
 	<ul>
 		<li nowrap>- {t}Edit publication life of your nodes previously of node movement.{/t}</li>
 		<li>- {t}Or if you prefer, delete your nodes by hand later in the publication zone{/t}.</li>
 	</ul>
 </fieldset>
-	{/if}</div>
+	{/if}
+
 {/if}
+    {if {count($targetNodes)}}
+		<div class="small-12 columns">
+		<fieldset class="buttons-form">
+            {button label="Move node" class="validate btn main_action" }{*message="Are you sure you want to move this node to selected destination?"*}
+		</fieldset></div>
+    {/if}
+	</div></div>
 </form>
+
+<h2>{t}Move node{/t} {$name}</h2>

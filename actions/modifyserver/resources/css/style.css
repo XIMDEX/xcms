@@ -154,10 +154,9 @@
   height: 4.6em; }
 
 .header-server > span {
-  text-align: right;
   position: absolute;
-  right: .5em;
-  top: 2em; }
+  right: 6em;
+  top: 3em; }
 
 .server-title {
   float: left;
@@ -189,7 +188,14 @@ fieldset.mdfsv_errors {
 .row_item_selectable {
   margin-top: 1em;
   display: block;
-  text-align: center; }
+  text-align: center;
+  margin-left:.7em;
+  border-radius: 5px;}
 
 .remote_url label, .remote_folder label, .port label, .host label, .login label, .password label {
   display: block; }
+  
+.update-server
+{
+	margin: 0 0 0 10pt !important;
+}

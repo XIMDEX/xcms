@@ -196,12 +196,12 @@
 								<tr>
 									<td>
 										{if $batch.progress.total.percentBatchCompleted > 0}
-											<img style='width:{$batch.progress.total.percentBatchCompleted}px;height:6px;' src='{$urlRoot}/xmd/images/pix_green.png'>
+											<img style='width:{$batch.progress.total.percentBatchCompleted}px;height:6px;' src='{$urlRoot}xmd/images/pix_green.png'>
 										{/if}
 									</td>
 									<td>
 										{if $batch.progress.total.percentBatchCompleted < 100}
-											<img style='width:{100 - $batch.progress.total.percentBatchCompleted}px;height:6px;' src='{$urlRoot}/xmd/images/pix_red.png'>
+											<img style='width:{100 - $batch.progress.total.percentBatchCompleted}px;height:6px;' src='{$urlRoot}xmd/images/pix_red.png'>
 										{/if}
 									</td>
 								</tr>
@@ -217,11 +217,11 @@
 							{/if}
 							&nbsp;&nbsp;
 							<a title="Priorizar Lote" href="javascript: doPrioritizeSubmit({$batch.IdBatch});">
-								<img src="{$urlRoot}/xmd/images/botones/subir_p.gif" alt="" border="0">
+								<img src="{$urlRoot}xmd/images/botones/subir_p.gif" alt="" border="0">
 							</a>
 							&nbsp;
 							<a title="Despriorizar Lote" href="javascript: doDeprioritizeSubmit({$batch.IdBatch});">
-								<img src="{$urlRoot}/xmd/images/botones/bajar_p.gif" alt="" border="0">
+								<img src="{$urlRoot}xmd/images/botones/bajar_p.gif" alt="" border="0">
 							</a>
 						</td>
 					</tr>
@@ -271,7 +271,7 @@
 															{else}
 																[<a href="#" onClick="javascript: showOrHideContent('{$id}_{$batch.totalPags}', '{$id}', '');">Siguiente</a>]
 															{/if}
-															[<a href="#" onClick="javascript: showOrHideContent('{$id}_{$batch.totalPags}', '{$id}', '');">Última</a>]
+															[<a href="#" onClick="javascript: showOrHideContent('{$id}_{$batch.totalPags}', '{$id}', '');">ï¿½ltima</a>]
 														</td>
 													</tr>
 												</table>

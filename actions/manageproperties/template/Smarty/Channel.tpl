@@ -25,9 +25,11 @@
 
 {assign var="channels" value=$properties.Channel}
 <fieldset>
+
 	<div class="manageproperties">
-		<h3 class="icon icon-channel">{t}Channels{/t}</h3>
-		<div class="row-item">
+		<div class="small-12 columns">
+		<label class="label_title label_general2">{t}Channels{/t}</label>
+		<div class="row-item row-special">
 
 		<div class="hidden">
 			<input type="radio" name="inherited_channels" class="channels_overwritten" value="overwrite" checked />
@@ -41,11 +43,11 @@
 				checked="checked"
 			{/if}
 			 id="{$channel.Name}_{$id_node}"/>
-			<label for="{$channel.Name}_{$id_node}" class="label-slide">{$channel.Name}</label>
+			<label for="{$channel.Name}_{$id_node}" class="label-slide"> {$channel.Name}</label>
 		</span>
 		{/foreach}
 	{/if}
 	</div>
-</div>
+		</div></div>
 
 </fieldset>

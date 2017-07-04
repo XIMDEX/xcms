@@ -27,29 +27,43 @@
     <input type="hidden" name="id_node" value="{$id_node}">
 
     <div class="action_header">
-        <h2>{t}Manage groups{/t} {$name}</h2>
+        <h5 class="direction_header"> Name Node: {$name}</h5>
+        <h5 class="nodeid_header"> ID Node: {$nodeid}</h5>
+        <hr>
     </div>
 
     <div class="action_content">
-        <fieldset>
-            <h3>{t}Add group to section{/t}:</h3>
+        <div class="row tarjeta">
+            <div class="small-12 columns title_tarjeta">
+                <h2 class="h2_general">{t}Add group to section{/t}</h2>
+            </div>
 
             {if (!$new_groups)}
-            <p>{t}No groups to add have been found{/t}.</p>
+                <div class="small-12 columns">
+                    <div class="alert alert-info">
+                        <strong>Info!</strong> {t}No groups to add have been found{/t}.
+                    </div></div>
+
             {else}
             <ol>
                 <li>
-                    <label for="id_group" class="aligned">{t}Available groups{/t}</label>
+                    <div class="small-12 columns">
+                    <label for="id_group" class="label_title label_general">{t}Available groups{/t}</label>
+                        <div class="input-select">
                     <select name='id_group' id="id_group" class='cajag' onchange='comprobar_vacio();'>
                         <option value="">{t}Select group{/t}</option>
                         {foreach from=$new_groups key=id_group item=group}
                         <option value="{$id_group}">{$group}</option>
                         {/foreach}
                     </select>
+                        </div></div>
                 </li>
                 <li>
-                    <label for="is_recursive" class="aligned">{t}Recursive{/t}</label>
-                    <input name='is_recursive' type='checkbox' checked value='newrec' id="is_recursive">
+                    <div class="small-12 columns">
+                        <input name='is_recursive' type='checkbox' checked value='newrec' id="is_recursive" class="hidden-focus">
+                    <label for="is_recursive" class="input-form checkbox-label">{t}Recursive{/t}</label>
+
+                    </div>
                 </li>
                 {*
                 <li>
@@ -64,19 +78,26 @@
                 *}
             </ol>
             {/if}
-        </fieldset>
 
         {if ($new_groups)}
+            <div class="small-12 columns">
         <fieldset class="buttons-form">
             {button label="Add group" onclick="call_submit('addgroupnode');" class="validate btn main_action" }{*message="Are you sure you want to perform this association?"*}
         </fieldset>
+            </div>
         {/if}
+        </div>
 
-        <fieldset>
-            <h3>{t}Delete group of a section{/t}:</h3>
+        <div class="row tarjeta">
+            <div class="small-12 columns title_tarjeta">
+                <h2 class="h2_general">{t}Delete group of a section{/t}</h2>
+            </div>
 
             {if (!$all_groups)}
-            <p>{t}No associated groups have been found{/t}</p>
+                <div class="small-12 columns">
+                    <div class="alert alert-info">
+                        <strong>Info!</strong> {t}No associated groups have been found{/t}.
+                    </div></div>
             {else}
             <table class="table table-striped">
                 <tr>
@@ -112,13 +133,14 @@
                 {/foreach}
             </table>
             {/if}
-        </fieldset>
+
 
 
         {if ($all_groups)}
+            <div class="small-12 columns">
         <fieldset class="buttons-form">
-            {button label="Delete subscriptions" class="validate btn" onclick="call_submit('deletegroupnode')" message="Are you sure you want to delete selected subscriptions?"} {*{button class="validate btn main_action" label="Save changes" onclick="call_submit('updategroupnode');"
+            {button label="Delete subscriptions" class="validate btn main_action" onclick="call_submit('deletegroupnode')" message="Are you sure you want to delete selected subscriptions?"} {*{button class="validate btn main_action" label="Save changes" onclick="call_submit('updategroupnode');"
             message="Are you sure you want to update selected subscriptions?" }*}
-        </fieldset>
-        {/if}</div>
+        </fieldset></div>
+        {/if}</div></div>
 </form>

@@ -222,10 +222,10 @@
 						{/if}
 						&nbsp;&nbsp;
 							<a title="Priorizar Lote" href="javascript: doPrioritizeSubmit({$batch.IdBatch});">
-								<img src="{$urlRoot}/xmd/images/botones/subir_p.gif" alt="" border="0">
+								<img src="{$urlRoot}xmd/images/botones/subir_p.gif" alt="" border="0">
 							</a>
 							<a title="Despriorizar Lote" href="javascript: doDeprioritizeSubmit({$batch.IdBatch});">
-								<img src="{$urlRoot}/xmd/images/botones/bajar_p.gif" alt="" border="0">
+								<img src="{$urlRoot}xmd/images/botones/bajar_p.gif" alt="" border="0">
 							</a>
 					</td>
 				</tr>

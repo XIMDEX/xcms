@@ -24,7 +24,9 @@
 *}
 
 <div class="action_header">
-    <h2>{t}Publishing report{/t}</h2>
+    <h5 class="direction_header"> Name Node: {t}Publishing report{/t}</h5>
+    <h5 class="nodeid_header"> ID Node: {$nodeid}</h5>
+    <hr>
 </div>
 
 <div class="action_content ximPUBLISHtools" ng-controller="ximPUBLISHtools">
@@ -56,8 +58,8 @@
                                   #/portal.NumErrors/# with errors
                               </div>
                         </div>
-                <a ng-if="!showing[portal.IdPortal]" href="#" role="button" ng-click="showing[portal.IdPortal] = !showing[portal.IdPortal]">Show details</a>
-                <a ng-if="showing[portal.IdPortal]" href="#" role="button" ng-click="showing[portal.IdPortal] = !showing[portal.IdPortal]">Hide details</a>
+                <a class="aespecial" ng-if="!showing[portal.IdPortal]" href="#" role="button" ng-click="showing[portal.IdPortal] = !showing[portal.IdPortal]">Show details</a>
+                <a class="aespecial" ng-if="showing[portal.IdPortal]" href="#" role="button" ng-click="showing[portal.IdPortal] = !showing[portal.IdPortal]">Hide details</a>
                 <ul ng-init="initShowing(portal.IdPortal)" ng-show="showing[portal.IdPortal]" class="media-list">
                     <li class="media" ng-repeat="element in portal.elements track by element.IdReport">
                         <a class="pull-left" href="#">

@@ -28,79 +28,86 @@
       users_associated={$users_associated}; init();' method="post" action="{$action_url}" class="form_group_user">
 
     <div class="action_header">
-        <h2>{t}Change users{/t}</h2>
-        <fieldset class="buttons-form">
-
-        </fieldset>
+        <h5 class="direction_header"> Name Node: {t}Change users{/t}</h5>
+        <h5 class="nodeid_header"> ID Node: {$nodeid}</h5>
+        <hr>
     </div>
 
     <div class="action_content">
-        <h3>{t}Available users{/t}:</h3>
-        <div class="associate-group">
-            <div ng-show="users_not_associated.length>0" class="row-item col2-3">
-			 		<span ng-init="newUser=users_not_associated[0]" class="col1-2 icon icon-group label-select">
-			 			<select  class='select-clean block' ng-model="newUser"
-                                 ng-options="user as user.name for user in users_not_associated">
-                        </select>
-			 		</span>
-
-					<span ng-init="" class="col1-2 icon icon-rol label-select">
-						<select  class='select-clean block' ng-model="newRole"
-                                 ng-options="key as rol for (key, rol) in roles">
-                        </select>
-
-					</span>
-                <div class="buttons-form row-item-actions actions-outside col1-3">
-                    <button type="button" class="add-btn icon btn-unlabel-rounded"
-                            ng-click="addGroup()"
-                            >
-                        <span>{t}Add user{/t}</span>
-                    </button>
-                </div>
+        <div class="row tarjeta">
+            <div class="small-12 columns title_tarjeta">
+                <h2 class="h2_general">{t}Available users{/t}</h2>
             </div>
+            <div ng-show="users_not_associated.length>0" class="">
+                <div class="input-select icon small-12 columns">
+                    <label ng-init="newUser=users_not_associated[0]" class="label_title label_general label-select">{t}Name{/t}</label>
+                    <select  class='cajaxg' ng-model="newUser"
+                             ng-options="user as user.name for user in users_not_associated">
+                    </select>
+                </div>
 
-            <p ng-hide="users_not_associated.length>0">{t}There are not{/t} <span ng-if="users_associated.length>0">{t}more{/t} </span>{t}available users to be associated with the group{/t} #/name/#.</p>
+                <div class="input-select icon small-12 columns">
+                    <label ng-init="" class="label_title label_general label-select">{t}Rol{/t}</label>
+                    <select  class='' ng-model="newRole"
+                             ng-options="key as rol for (key, rol) in roles">
+                    </select>
+
+                </div></div>
+            <div class="small-12 columns">
+                <div class="alert alert-info" ng-hide="users_not_associated.length>0">
+                    <strong>Info!</strong> {t}There are not{/t} <span ng-if="users_associated.length>0">{t}more{/t} </span>{t}available users to be associated with the group{/t} #/name/#.
+                </div></div>
+
+            <div class="small-12 columns">
+                <fieldset class="buttons-form">
+                    <button type="button" id="" ng-click="addGroup()" class="btn ui-state-default ui-corner-all button submit-button ladda-button main_action" data-style="slide-up" data-size="xs" tabindex=""><span class="ladda-label">Add</span></button>
+                </fieldset></div>
         </div>
-        <h3>{t}The next users belongs to the group{/t} #/name/#:</h3>
-        <div  class="change-group">
+        <br>
+        <div class="row tarjeta">
+            <h2 class="h2_general">{t}The next users belongs to the group{/t} #/name/#</h2>
+            <div  class="change-group">
 
-            <div ng-repeat="user in users_associated" class="row-item icon">
+                <div ng-repeat="user in users_associated" class="row-item icon">
 
-                    <span class="col1-3">
-						#/user.UserName/#
-					</span>
-                    <span class="col1-3">
-                        <select name='idRole' class='select-clean block'
+                    <span class="col-1-3">
+                        <label ng-init="" class="label_title label_general label-select">#/user.UserName/#</label></span>
+                        <span class="col1-3">
+                            <div class="input-select icon">
+                        <select name='idRole' class='block'
                                 ng-model="users_associated[$index].IdRole"
                                 ng-change="users_associated[$index].dirty=true"
                                 ng-options="key as role for (key, role) in roles">
 
-                        </select>
-                    </span>
+                        </select></div></span>
 
-                <div class="buttons-form row-item-actions col1-3">
+                    <div style=" bottom: -70px;" class="buttons-form row-item-actions col1-3">
                         <span ng-show="users_associated[$index].dirty">
-                            <button type="button" class="recover-btn icon btn-unlabel-rounded"
+                            <button type="button" class="recover-btn icon btn-unlabel-rounded-recover"
                                     ng-click="update($index)"
-                                    >
+                            >
                                 <span>{t}Update{/t}</span>
                             </button>
                         </span>
                         <span ng-if="nodeid != '101'">
-                            <button type="button" class="delete-btn icon btn-unlabel-rounded"
-                                    ng-click="openDeleteModal($index)"
-                                    >
+                            <button type="button" class="delete-btn icon btn-unlabel-rounded-delete"
+                                    ng-click="openDeleteModal($index)">
                                 <span>{t}Delete{/t}</span>
                             </button>
+                            <button ng-if="$middle" type="button" class="delete-btn icon btn-unlabel-rounded" ng-click="openDeleteModal($index)"></butto
                         </span>
+                    </div>
+                    </div>
+                <div class="small-12 columns">
+                    <div class="alert alert-info" ng-if="users_associated.length<=0">
+                        <strong>Info!</strong> {t}There are no users associated with this group yet{/t}.
+                    </div>
                 </div>
+
             </div>
-            <p ng-if="users_associated.length<=0">{t}There are no users associated with this group yet{/t}.</p>
-        </div>
-    </div>
+        </div></div>
 
-    </div>
+
 </form>
-
 
 

@@ -28,10 +28,9 @@
 	<form method="post" name="formulario" id='formulario' action='{$action_url}'>
 		<input type="hidden" name="nodeid" value="{$id_node}">
 		<div class="action_header">
-			<h2>{t}Would you like to delete{/t} {$nameNode}?</h2>
-			<fieldset class="buttons-form">
-				{button class="delete_button  btn main_action" label="Delete"}
-			</fieldset>
+			<h5 class="direction_header"> Name Node: {$nameNode}</h5>
+			<h5 class="nodeid_header"> ID Node: {$nodeid}</h5>
+			<hr>
 		</div>
 		<div class="message message-warning">
 			<p class="icon">{t}This action cannot be undone{/t}.</p>
@@ -39,11 +38,14 @@
 			<p>{t}This action does not carry on expiration of nodes{/t}. </p>
 			{/if}
 		</div>
+
 		<div class="action_content">
-
-
+			<div class="row tarjeta">
+				<div class="small-12 columns title_tarjeta">
+					<h2 class="h2_general">{t}Delete{/t}</h2>
+				</div>
 			{if ($depList)}
-			<h3 class="delete">{t}The following nodes will be deleted on cascade{/t}. {t}Deleting this node all its children will be deleted too{/t}.</h3>
+			<label class="label_title label_general">{t}The following nodes will be deleted on cascade{/t}. {t}Deleting this node all its children will be deleted too{/t}.</label>
 			<div class="deletenodes">
 				<ul>
 					{foreach from=$depList key=id item=dep}
@@ -53,30 +55,45 @@
 					{/foreach}
 				</ul>
 			</div>
-			
-			<span><input type="checkbox" name="unpublishnode" id="asegurado" />
-				<span>{t}Tick to delete all dependencies{/t}</span></span>
+				<div class="small-12 columns">
+					<input type="checkbox" name="unpublishnode" id="asegurado" checked="checked" class="hidden-focus"/>
+					<label class="input-form checkbox-label" for="asegurado">{t}Tick to delete all dependencies{/t}</label>
+				</div>
+
+
 
 				{else}
 				<div class="deletenodes">
-					<p>{t}This node has not dependecies at the moment{/t}.</p>
+					<label class="label_title label_general">{t}This node has not dependecies at the moment{/t}.</label>
 					<input type="hidden" name="unpublishnode" id="asegurado" value="1"/>
 				</div>
 				{/if}
 				{if ($pendingTasks)}
-				<p>{t}This node or its children have pending task to publish, if you continue these tasks will be interrupted{/t}!</p>
-				{/if}
+				<div class="small-12 columns">
+					<div class="alert alert-info">
+						<strong>Info!</strong> {t}This node or its children have pending task to publish, if you continue these tasks will be interrupted{/t}!</p>
+					</div></div>
+						{/if}
 
 				{* Checking if node is published *}
 				{if ($isPublished)}
-				<p>{t}This node, or one or more of its children, are published{/t}!.{t}If you do not want to keep your nodes published{/t}:
+				<div class="small-12 columns">
+					<div class="alert alert-info">
+						<strong>Info!</strong> {t}This node, or one or more of its children, are published{/t}!.{t}If you do not want to keep your nodes published{/t}:
 					<ul>
 						<li>- {t}Edit publication life of your nodes previously deletion.{/t}</li>
 						<li>- {t}Or if you prefer, delete your nodes by hand later in the publication zone{/t}.</li>
-					</ul>
+					</ul></div></div>
 					{/if}
-				</p>
 
-				<p class="tip">{t}If a long time is elapsed before action is executed, list of dependencies and children of node may change{/t}.</p>
-			</div>
+				<div class="small-12 columns">
+				<div class="alert alert-info">
+					<strong>Info!</strong> {t}If a long time is elapsed before action is executed, list of dependencies and children of node may change{/t}.
+				</div></div>
+				<div class="small-12 columns">
+			<fieldset class="buttons-form">
+                {button class="delete_button  btn main_action" label="Delete"}
+			</fieldset>
+				</div></div></div>
 		</form>
+

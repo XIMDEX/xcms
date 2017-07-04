@@ -28,9 +28,9 @@
 	<head>
 		<title> {$versionname} </title>
 		{* constant css includes *}
-		<link type="text/css" href="{$_URL_ROOT}/xmd/style/main_extended.css" rel="stylesheet" />
+		<link type="text/css" href="{$_URL_ROOT}xmd/style/main_extended.css" rel="stylesheet" />
 
-		<link id="main_css" type="text/css" href="{$_URL_ROOT}/xmd/style/jquery/{$theme}/jquery-ui-1.8.2.custom.css" rel="stylesheet" />
+		<link id="main_css" type="text/css" href="{$_URL_ROOT}xmd/style/jquery/{$theme}/jquery-ui-1.8.2.custom.css" rel="stylesheet" />
 
 		{* css widgets *}
 		%=css_widgets%
@@ -39,11 +39,11 @@
 	<script type="text/javascript" src="{EXTENSIONS::Jquery()}"></script>
 	<script type="text/javascript" src="{EXTENSIONS::Jquery_ui()}"></script>
 	<script type="text/javascript" src="{$_URL_ROOT}/inc/js/helpers.js"></script>
-        <script type="text/javascript" src="{$_URL_ROOT}/extensions/jquery-validate/jquery.validate.js"></script>
-        <script type="text/javascript" src="{$_URL_ROOT}/extensions/jquery-validate/localization/messages_{$user_locale.Lang}.js"></script>
-        <script type="text/javascript" src="{$_URL_ROOT}/actions/composer/resources/js/widgets_controllers/default.js"></script>
-        <script type="text/javascript" src="{$_URL_ROOT}/xmd/js/helper/query_manager.js"></script>
-	<script type="text/javascript" src="{$_URL_ROOT}/inc/js/collection.class.js"></script>
+        <script type="text/javascript" src="{$_URL_ROOT}extensions/jquery-validate/jquery.validate.js"></script>
+        <script type="text/javascript" src="{$_URL_ROOT}extensions/jquery-validate/localization/messages_{$user_locale.Lang}.js"></script>
+        <script type="text/javascript" src="{$_URL_ROOT}actions/composer/resources/js/widgets_controllers/default.js"></script>
+        <script type="text/javascript" src="{$_URL_ROOT}xmd/js/helper/query_manager.js"></script>
+	<script type="text/javascript" src="{$_URL_ROOT}inc/js/collection.class.js"></script>
 		{* js widgets *}
 		%=js_widgets%
 	</head>

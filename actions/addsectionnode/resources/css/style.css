@@ -26,6 +26,7 @@
   width: 100%; }
 
 .subfolder {
+  border-radius:5px;
   background: #fff;
   width: 8em;
   height: 8em;
@@ -52,9 +53,9 @@
       width: 0; }
     .subfolder label::after {
       position: absolute;
-      top: 1.25em;
+      top: 1.45em;
       font-size: 1.6em;
-      left: 1.7em;
+      left: 2em;
       color: #fff; }
     .subfolder label:hover {
       background: #ddd;
@@ -67,7 +68,6 @@
   .subfolder strong {
     display: inline-block;
     text-transform: uppercase;
-    color: #464646;
     font-size: 1.4rem;
     vertical-align: bottom;
     padding-bottom: .8em; }
@@ -102,8 +102,9 @@
     .subfolder strong.bulletins::before {
       background: #D8C9AE; }
   .subfolder :checked + label {
-    background: #9fd9d1;
-    border-color: #7bcabf; }
+    background: #43a1a2;
+    /* border-color: #7bcabf; */
+    color: white!important; }
     .subfolder :checked + label strong::after {
       position: absolute;
       top: 1.87em;

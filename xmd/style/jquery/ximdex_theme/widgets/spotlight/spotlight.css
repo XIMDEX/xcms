@@ -62,13 +62,13 @@
 
 .mini-spotlight-advanced-no {
   right: 2em;
-  background: #e8e8e8; }
+  background: #eee; }
 
 .mini-spotlight-advanced-no:hover {
-  background: #cfcfcf; }
+  background: lightgray; }
 
 .mini-spotlight-advanced:hover {
-  background: #57bbad; }
+  background: #43a1a2; }
 
 .mini-spotlight-advanced-no::before, .mini-spotlight-advanced::before {
   width: 100%;
