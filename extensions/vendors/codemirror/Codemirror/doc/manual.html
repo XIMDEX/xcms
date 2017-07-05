@@ -63,7 +63,7 @@
 <section class=first id=overview>
     <h2 style="position: relative">
       User manual and reference guide
-      <span style="color: #888; font-size: 1rem; position: absolute; right: 0; bottom: 0">version 4.7.1</span>
+      <span style="color: #888; font-size: 1rem; position: absolute; right: 0; bottom: 0">version 4.7.0</span>
     </h2>
 
     <p>CodeMirror is a code-editor component that can be embedded in
@@ -576,13 +576,6 @@
       <dt id="event_scroll"><code><strong>"scroll"</strong> (instance: CodeMirror)</code></dt>
       <dd>Fires when the editor is scrolled.</dd>
 
-      <dt id="event_scrollCursorIntoView"><code><strong>"scrollCursorIntoView"</strong> (instance: CodeMirror, event: Event)</code></dt>
-      <dd>Fires when the editor tries to scroll its cursor into view.
-      Can be hooked into to take care of additional scrollable
-      containers around the editor. When the event object has
-      its <code>preventDefault</code> method called, CodeMirror will
-      not itself try to scroll the window.</dd>
-
       <dt id="event_update"><code><strong>"update"</strong> (instance: CodeMirror)</code></dt>
       <dd>Will be fired whenever CodeMirror updates its DOM display.</dd>
 
@@ -709,35 +702,25 @@
     names defined here are <code>Enter</code>, <code>F5</code>,
     and <code>Q</code>. These can be prefixed
     with <code>Shift-</code>, <code>Cmd-</code>, <code>Ctrl-</code>,
-    and <code>Alt-</code> to specify a modifier. So for
-    example, <code>Shift-Ctrl-Space</code> would be a valid key
+    and <code>Alt-</code> (in that order!) to specify a modifier. So
+    for example, <code>Shift-Ctrl-Space</code> would be a valid key
     identifier.</p>
 
     <p>Common example: map the Tab key to insert spaces instead of a tab
     character.</p>
 
     <pre data-lang="javascript">
-editor.setOption("extraKeys", {
+{
   Tab: function(cm) {
     var spaces = Array(cm.getOption("indentUnit") + 1).join(" ");
     cm.replaceSelection(spaces);
   }
-});</pre>
+}</pre>
 
     <p>Alternatively, a character can be specified directly by
     surrounding it in single quotes, for example <code>'$'</code>
     or <code>'q'</code>. Due to limitations in the way browsers fire
     key events, these may not be prefixed with modifiers.</p>
-
-    <p id="normalizeKeyMap">Multi-stroke key bindings can be specified
-    by separating the key names by spaces in the property name, for
-    example <code>Ctrl-X Ctrl-V</code>. When a map contains
-    multi-stoke bindings or keys with modifiers that are not specified
-    in the default order (<code>Shift-Cmd-Ctrl-Alt</code>), you must
-    call <code>CodeMirror.normalizeKeyMap</code> on it before it can
-    be used. This function takes a keymap and modifies it to normalize
-    modifier order and properly recognize multi-stroke bindings. It
-    will return the keymap itself.</p>
 
     <p>The <code>CodeMirror.keyMap</code> object associates key maps
     with names. User code and key map definitions can assign extra
@@ -757,8 +740,7 @@ editor.setOption("extraKeys", {
     behavior) should be given a turn.</p>
 
     <p>Keys mapped to command names that start with the
-    characters <code>"go"</code> or to functions that have a
-    truthy <code>motion</code> property (which should be used for
+    characters <code>"go"</code> (which should be used for
     cursor-movement actions) will be fired even when an
     extra <code>Shift</code> modifier is present (i.e. <code>"Up":
     "goLineUp"</code> matches both up and shift-up). This is used to
@@ -770,15 +752,14 @@ editor.setOption("extraKeys", {
     be searched. It can hold either a single key map or an array of
     key maps.</p>
 
-    <p>When a key map needs to set something up when it becomes
-    active, or tear something down when deactivated, it can
-    contain <code>attach</code> and/or <code>detach</code> properties,
-    which should hold functions that take the editor instance and the
-    next or previous keymap. Note that this only works for the
-    <a href="#option_keyMap">top-level keymap</a>, not for fallthrough
-    maps or maps added
-    with <a href="#option_extraKeys"><code>extraKeys</code></a>
-    or <a href="#addKeyMap"><code>addKeyMap</code></a>.</p>
+    <p>When a key map contains a <code>nofallthrough</code> property
+    set to <code>true</code>, keys matched against that map will be
+    ignored if they don't match any of the bindings in the map (no
+    further child maps will be tried). When
+    the <code>disableInput</code> property is set
+    to <code>true</code>, the default effect of inserting a character
+    will be suppressed when the key map is active as the top-level
+    map.</p>
 </section>
 
 <section id=commands>
@@ -1639,11 +1620,10 @@ editor.setOption("extraKeys", {
       to which element this class should be applied, can can be one
       of <code>"text"</code> (the text element, which lies in front of
       the selection), <code>"background"</code> (a background element
-      that will be behind the selection), <code>"gutter"</code> (the
-      line's gutter space), or <code>"wrap"</code> (the wrapper node
-      that wraps all of the line's elements, including gutter
-      elements). <code>class</code> should be the name of the class to
-      apply.</dd>
+      that will be behind the selection), or <code>"wrap"</code> (the
+      wrapper node that wraps all of the line's elements, including
+      gutter elements). <code>class</code> should be the name of the
+      class to apply.</dd>
 
       <dt id="removeLineClass"><code><strong>doc.removeLineClass</strong>(line: integer|LineHandle, where: string, class: string) → LineHandle</code></dt>
       <dd>Remove a CSS class from a line. <code>line</code> can be a
@@ -1849,13 +1829,6 @@ editor.setOption("extraKeys", {
       not specified, the token will use cached state information, which will be faster but might not be accurate if
       edits were recently made and highlighting has not yet completed.
       </dd>
-
-      <dt id="getLineTokens"><code><strong>cm.getLineTokens</strong>(line: integer, ?precise: boolean) → array&lt;{start, end, string, type, state}&gt;</code></dt>
-      <dd>This is similar
-      to <a href="#getTokenAt"><code>getTokenAt</code></a>, but
-      collects all tokens for a given line into an array. It is much
-      cheaper than repeatedly calling <code>getTokenAt</code>, which
-      re-parses the part of the line before the token for every call.</dd>
 
       <dt id="getTokenTypeAt"><code><strong>cm.getTokenTypeAt</strong>(pos: {line, ch}) → string</code></dt>
       <dd>This is a (much) cheaper version
@@ -2627,12 +2600,11 @@ editor.setOption("extraKeys", {
       properties <code>mimes</code>, which holds an array of MIME
       types for modes with multiple MIMEs associated,
       and <code>ext</code>, which holds an array of file extensions
-      associated with this mode. Three convenience
-      functions, <code>CodeMirror.findModeByMIME</code>,
-      and <code>CodeMirror.findModeByExtension</code>,
-      and <code>CodeMirror.findModeByName</code> are provided, which
-      return such an object given a MIME or extension string. Note
-      that, for historical reasons, this file resides in the
+      associated with this mode. Two convenience
+      functions, <code>CodeMirror.findModeByMIME</code>
+      and <code>CodeMirror.findModeByExtension</code> are provided,
+      which return such an object given a MIME or extension string.
+      Note that, for historical reasons, this file resides in the
       top-level <code>mode</code> directory, not
       under <code>addon</code>. <a href="../demo/loadmode.html">Demo</a>.</dd>
 

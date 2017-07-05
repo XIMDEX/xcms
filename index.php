@@ -25,7 +25,6 @@
  *
  */
 
-
 use Ximdex\MVC\FrontController;
 use Ximdex\Runtime\App;
 
@@ -49,10 +48,8 @@ function goLoadAction()
 
 //Main thread
 if (!InstallController::isInstalled()) {
-    header( 'Location: ./setup/');
-    die();
-
-
+	$installController = new InstallController();
+	$installController->dispatch();
 } else {
     $locale = \Ximdex\Utils\Session::get('locale');
     I18N::setup($locale); // Check coherence with HTTP_ACCEPT_LANGUAGE
