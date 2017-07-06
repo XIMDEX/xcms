@@ -93,8 +93,13 @@ class InstallDataBaseManager extends InstallManager
 
     public function getConnectionErrors()
     {
-    	$res = $this->dbConnection->errorInfo();
-    	return ($res[2]);
+    	if ($this->dbConnection)
+    	{
+    		$res = $this->dbConnection->errorInfo();
+    		return ($res[2]);
+    	}
+    	else
+    		return 'Can\'t connect to database';
     }
 
     public function getErrors()

@@ -130,8 +130,15 @@ class BuildDataBaseInstallStep extends GenericInstallStep
         }
         if ($idbManager->connect($host, $port, $user, $pass)) {
             $result = $idbManager->createDataBase($name);
+            if (!$result)
+            {
+            	$values["failure"] = true;
+            	if ($idbManager->getErrors())
+            		$values["errors"] = $idbManager->getErrors();
+            	else
+            		$values["errors"] = 'Can\'t create database';
+            }
             $idbManager->connect($host, $port, $user, $pass, $name);
-
             $idbManager->loadData($host, $port, $user, $pass, $name);
             $result = $idbManager->checkDataBase($host, $port, $user, $pass, $name);
             if ($result) {
