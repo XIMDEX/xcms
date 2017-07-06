@@ -48,7 +48,7 @@
 	%=css_widgets%
 
 	<!-- constant js includes -->
-	<script type="text/javascript" src="{$_URL_ROOT}xmd/js/vars_js.php?id={$time_id}"></script>
+	<script type="text/javascript" src="{$_URL_ROOT}/xmd/js/vars_js.php?id={$time_id}"></script>
 	{if ($user_connect != NULL)}
 			<script type="text/javascript" src="{$_URL_ROOT}{$user_connect}"></script>
 	{/if}
