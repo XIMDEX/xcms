@@ -66,14 +66,12 @@ class BuildDataBaseInstallStep extends GenericInstallStep
 
     public function checkUser()
     {
-        error_log("in") ;
         $idbManager = new InstallDataBaseManager();
         $idbManager->reconectDataBase();
         $host = $this->request->getParam("host");
         $port = $this->request->getParam("port");
         $user = $this->request->getParam("user");
         $pass = $this->request->getParam("pass") == "undefined" ? NULL : $this->request->getParam("pass");
-        error_log("out") ;
 
         $values = array();
         if ($idbManager->connect($host, $port, $user, $pass)) {
@@ -140,7 +138,10 @@ class BuildDataBaseInstallStep extends GenericInstallStep
                 $values["success"] = true;
             } else {
                 $values["failure"] = true;
-                $values["errors"] = $idbManager->getErrors();
+                if ($idbManager->getErrors())
+                	$values["errors"] = $idbManager->getErrors();
+               	else
+               		$values["errors"] = 'Can\'t create database schema and content';
             }
 
 

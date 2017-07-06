@@ -80,7 +80,7 @@ class InstallModulesManager extends InstallManager
         $modMngr = new ModulesManager();
         $modMngr->uninstallModule($name);
     }
-
+	
     public function buildModulesFile()
     {
 
@@ -89,7 +89,7 @@ class InstallModulesManager extends InstallManager
         @unlink($fileName);
         /*if(!file_exists($fileName) || !is_writable($fileName))
             return false;*/
-        $config = FsUtils::file_get_contents($fileName);
+        //$config = FsUtils::file_get_contents($fileName);	the file has not been created yet
 
         $modMan = new ModulesManager();
         $modules = $modMan->getModules();
@@ -100,7 +100,6 @@ class InstallModulesManager extends InstallManager
         }
         $str = "<?php\n\n";
         $str .= "/**
-			}
  * Paths and states constants for the Ximdex Modules, e.g.
  * The path is relative to ximdex folder.
  * define('MODULE_XIMSYNC_PATH','/modules/ximSYNC');

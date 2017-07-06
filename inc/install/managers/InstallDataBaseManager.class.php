@@ -33,7 +33,8 @@ class InstallDataBaseManager extends InstallManager
 
     const DB_ARRAY_KEY = "db_installer_connection";
     const DEFAULT_PORT = 3306;
-    const SCRIPT_PATH = "/install/ximdex_data/ximdex.sql";
+    const SCHEMA_SCRIPT_PATH = "/inc/install/ximdex_data/ximdex_schema.sql";
+    const DATA_SCRIPT_PATH = "/inc/install/ximdex_data/ximdex_data.sql";
 
     private $dbConnection = null;
     private $host;
@@ -151,15 +152,24 @@ class InstallDataBaseManager extends InstallManager
     {
         $mysqlCommand = shell_exec("which mysql");
         $mysqlCommand = $mysqlCommand ? trim($mysqlCommand) : "mysql";
+        //create database schema
         $command = $mysqlCommand
             . ' --host=' . $host
             . ' --user=' . $user
             . ' --port=' . $port
             . ' --password=' . $pass
             . ' --database=' . $name
-            . ' --execute="SOURCE ' . XIMDEX_ROOT_PATH . self::SCRIPT_PATH . '"';
-
-        $result = shell_exec($command);
+            . ' --execute="SOURCE ' . XIMDEX_ROOT_PATH . self::SCHEMA_SCRIPT_PATH . '"';
+		$result = shell_exec($command);
+		//create database data content
+		$command = $mysqlCommand
+            . ' --host=' . $host
+            . ' --user=' . $user
+            . ' --port=' . $port
+            . ' --password=' . $pass
+            . ' --database=' . $name
+            . ' --execute="SOURCE ' . XIMDEX_ROOT_PATH . self::DATA_SCRIPT_PATH . '"';
+        $result .= "\n" . shell_exec($command);
         return $result;
     }
 
@@ -230,5 +240,4 @@ class InstallDataBaseManager extends InstallManager
 
         return $result;
     }
-
 }
