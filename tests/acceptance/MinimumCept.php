@@ -16,45 +16,94 @@ if( file_exists('data/previos/picasso-iden-idhtml.html') ){
 
 $I->wantTo('Ensure that installation works');
 
-$I->amOnPage('/setup/index.php');
+$I->amOnPage('/index.php');
 
 $I->see("Welcome to Ximdex CMS");
 
-$I->click("Start Installation");
+$I->click("Check configuration");
 
-$I->waitForText("System Requirements", 5);
+//$I->waitForText("System Requirements", 5);
 
-$I->click("Check System");
+//$I->click("Check System");
 
-$I->waitForText("Database host:", 5);
+$I->wait(5);
 
+$I->click("Start installation");
+
+//$I->waitForText("Database host:", 5);
+
+$I->waitForText("Installing Database", 5);
+
+/*
 $I->fillField("dbhost", "db");
 $I->fillField("dbuser", "ximdex");
 $I->fillField("dbpass", "ximdex");
 $I->fillField("dbname", "ximdex");
+*/
 
-$I->click("Check Connection to DB");
+$I->fillField("host", "db");
+$I->fillField("root_user", "ximdex");
+$I->fillField("root_pass", "ximdex");
+$I->fillField("name", "ximdex");
 
-$I->wait(3);
+//$I->click("Check Connection to DB");
 
-$I->click("Continue: Create tables");
+$I->click("Create Database");
 
-$I->waitForText("Tables and default data have been created", 20);
+$I->click("Overwrite database");
 
-$I->click("Continue: Install Modules");
+//$I->click("Continue: Create tables");
 
-$I->waitForText("Install Modules", 20);
+//$I->waitForText("Tables and default data have been created", 20);
 
-$I->click("Next: Settings");
+$I->waitForText("Once the database is created", 20);
 
-$I->see("Set the password for the user Ximdex (Administrator)");
+/*
+$I->fillField("db_user", "ximdex");
+$I->fillField("db_user_pass", "ximdex");
+*/
 
+$I->fillField("user", "ximdex");
+$I->fillField("pass", "ximdex");
+
+$I->click("Add user");
+
+//$I->click("Continue: Install Modules");
+
+//$I->waitForText("Install Modules", 20);
+
+//$I->click("Next: Settings");
+
+//$I->see("Set the password for the user Ximdex (Administrator)");
+
+$I->see("Set the password for this admin user");
+
+/*
 $I->fillField("password", "ximdex");
 $I->fillField("repeatpassword", "ximdex");
+*/
 
-$I->click("Check");
+$I->fillField("pass", "ximdex");
 
-$I->click("Enjoy Ximdex !");
+//$I->click("Check");
+
+$I->click("Save settings");
+
+$I->wait(5);
+
+$I->see("Installing Ximdex CMS's default modules");
+
+$I->click("Install modules");
+
+$I->waitForText("Xowl configuration (optional)", 20);
+
+$I->click("Continue");
+
+$I->waitForText("Installation finished!", 10);
+
+//$I->click("Enjoy Ximdex !");
+
+$I->click("Get started");
 
 $I->see("User");
 $I->see("Password");
