@@ -166,27 +166,18 @@ class InstallDataBaseManager extends InstallManager
 
     public function loadData($host, $port, $user, $pass, $name)
     {
-        $mysqlCommand = shell_exec("which mysql");
-        $mysqlCommand = $mysqlCommand ? trim($mysqlCommand) : "mysql";
-        //create database schema
-        $command = $mysqlCommand
-            . ' --host=' . $host
-            . ' --user=' . $user
-            . ' --port=' . $port
-            . ' --password=' . $pass
-            . ' --database=' . $name
-            . ' --execute="SOURCE ' . XIMDEX_ROOT_PATH . self::SCHEMA_SCRIPT_PATH . '"';
-		$result = shell_exec($command);
-		//create database data content
-		$command = $mysqlCommand
-            . ' --host=' . $host
-            . ' --user=' . $user
-            . ' --port=' . $port
-            . ' --password=' . $pass
-            . ' --database=' . $name
-            . ' --execute="SOURCE ' . XIMDEX_ROOT_PATH . self::DATA_SCRIPT_PATH . '"';
-        $result .= "\n" . shell_exec($command);
-        return $result;
+    	$data = file_get_contents(XIMDEX_ROOT_PATH . self::SCHEMA_SCRIPT_PATH);
+    	$data .= file_get_contents(XIMDEX_ROOT_PATH . self::DATA_SCRIPT_PATH);
+    	try
+    	{
+    		$statement = $this->dbConnection->prepare($data);
+    		$res = $statement->execute();
+    	}
+    	catch (PDOException $e)
+    	{
+    		return false;
+    	}
+    	return true;
     }
 
     public function existDataBase($name)
