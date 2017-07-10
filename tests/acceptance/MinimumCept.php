@@ -22,70 +22,31 @@ $I->see("Welcome to Ximdex CMS");
 
 $I->click("Check configuration");
 
-//$I->waitForText("System Requirements", 5);
-
-//$I->click("Check System");
-
 $I->wait(5);
 
 $I->click("Start installation");
 
-//$I->waitForText("Database host:", 5);
-
 $I->waitForText("Installing Database", 5);
-
-/*
-$I->fillField("dbhost", "db");
-$I->fillField("dbuser", "ximdex");
-$I->fillField("dbpass", "ximdex");
-$I->fillField("dbname", "ximdex");
-*/
 
 $I->fillField("host", "db");
 $I->fillField("root_user", "ximdex");
 $I->fillField("root_pass", "ximdex");
 $I->fillField("name", "ximdex");
 
-//$I->click("Check Connection to DB");
-
 $I->click("Create Database");
 
 $I->click("Overwrite database");
 
-//$I->click("Continue: Create tables");
-
-//$I->waitForText("Tables and default data have been created", 20);
-
 $I->waitForText("Once the database is created", 20);
-
-/*
-$I->fillField("db_user", "ximdex");
-$I->fillField("db_user_pass", "ximdex");
-*/
 
 $I->fillField("user", "ximdex");
 $I->fillField("pass", "ximdex");
 
 $I->click("Add user");
 
-//$I->click("Continue: Install Modules");
-
-//$I->waitForText("Install Modules", 20);
-
-//$I->click("Next: Settings");
-
-//$I->see("Set the password for the user Ximdex (Administrator)");
-
 $I->see("Set the password for this admin user");
 
-/*
-$I->fillField("password", "ximdex");
-$I->fillField("repeatpassword", "ximdex");
-*/
-
 $I->fillField("pass", "ximdex");
-
-//$I->click("Check");
 
 $I->click("Save settings");
 
@@ -100,8 +61,6 @@ $I->waitForText("Xowl configuration (optional)", 20);
 $I->click("Continue");
 
 $I->waitForText("Installation finished!", 10);
-
-//$I->click("Enjoy Ximdex !");
 
 $I->click("Get started");
 

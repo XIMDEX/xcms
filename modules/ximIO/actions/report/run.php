@@ -44,7 +44,7 @@ $filterByStatus = $parameterCollector->getParameter('--filterByStatus');
 $dbObj = new DB();
 $query = sprintf("SELECT idXimIOExportation FROM XimIOExportations"
 		. " WHERE timeStamp = '%s'",
-		mysql_real_escape_string($file));
+		mysqli_real_escape_string($file));
 $dbObj->Query($query);
 if (!$dbObj->numRows > 0) {
 	die (sprintf(_("The  package %s has not been imported with ximIO")."\n", $file));
