@@ -27,15 +27,12 @@
 
 // TODO: Try to keep the file open while the object is alive.
 // TODO: Profile it.
-namespace Ximdex\Utils\Logs;
+namespace Ximdex\Utils\Logs\Appender;
 
-use params;
 use Ximdex\Utils\Logs\Appender;
 
-/**
- *
- */
-class Appender_file extends Appender
+
+class AppenderFile extends Appender
 {
 
 	var $_fp;
@@ -47,7 +44,7 @@ class Appender_file extends Appender
 	 * @param string params['file']
 	 * @param append params['append']
 	 */
-	function Appender_file($params)
+	function __construct($params)
 	{
 
 		parent::Appender($params);
@@ -80,7 +77,7 @@ class Appender_file extends Appender
 			$ret = is_resource($this->_fp);
 		} else {
 
-			$msg = sprintf("Appender_file::open(), No es posible escribir en el fichero %s. %s, %s\n", $pathInfo['basename'], __FILE__, __LINE__);
+			$msg = sprintf("AppenderFile::open(), No es posible escribir en el fichero %s. %s, %s\n", $pathInfo['basename'], __FILE__, __LINE__);
 			error_log($msg);
 			$ret = false;
 			//die( $msg );
@@ -116,5 +113,3 @@ class Appender_file extends Appender
 		if (is_resource($this->_fp)) fclose($this->_fp);
 	}
 }
-
-?>

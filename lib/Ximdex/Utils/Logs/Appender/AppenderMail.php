@@ -25,19 +25,17 @@
  */
 
 
-namespace Ximdex\Utils\Logs;
+namespace Ximdex\Utils\Logs\Appender;
 
 use Mail;
-use params;
 use Ximdex\Models\User;
 use Ximdex\Utils\Logs\Appender;
+use Ximdex\Runtime\App;
 
 include_once(XIMDEX_ROOT_PATH . '/inc/mail/Mail.class.php');
 
-/**
- *
- */
-class Appender_mail extends Appender
+
+class AppenderMail extends Appender
 {
 
 	var $_mail;
@@ -46,7 +44,7 @@ class Appender_mail extends Appender
 	/**
 	 * @param object params['layout']
 	 */
-	function Appender_mail($params)
+	function __construct($params)
 	{
 
 		$this->setLayout($params['layout']);
@@ -76,7 +74,7 @@ class Appender_mail extends Appender
 			$this->_mail->addAddress($mailbox);
 		}
 
-		$ximid = \App::getValue('ximid');
+		$ximid = App::getValue('ximid');
 
 		$this->_mail->Subject = "[$ximid] Notificaciones de Ximdex";
 		$this->_mail->Body = $this->_msg;
@@ -87,5 +85,3 @@ class Appender_mail extends Appender
 	{
 	}
 }
-
-?>

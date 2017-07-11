@@ -23,30 +23,49 @@
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
-namespace Ximdex\Utils\Logs;
 
-/**
- * Class Appender_stdout
- * @package Ximdex\Utils\Logs
- */
-class Appender_stdout extends Appender
+
+namespace Ximdex\Utils\Logs\Appender;
+
+use Ximdex\Runtime\Db as DB;
+use Ximdex\Utils\Logs\Appender;
+
+
+class AppenderSql extends Appender
 {
+	/**
+	 * @var \Ximdex\Runtime\Db
+	 */
+	var $_db;
+	var $_table;
 
-    //var $_layout;
 
-    function Appender_stdout(&$params)
-    {
+	function __construct(& $params)
+	{
 
-        parent::Appender($params);
-    }
+		parent::Appender($params);
 
-    function write(&$event)
-    {
+		$this->_table = $params['table'];
+		$this->_db = new Db();
+	}
 
-        parent::write($event);
 
-        echo $this->_msg;
-        echo "\r\n";
-    }
+	// TODO: pasar la prioridad de alguna manera humana...
+	function write(&$event)
+	{
+
+		parent::write($event);
+
+		// prepare sql query
+		$consulta = "INSERT INTO " . $this->_table;
+		$consulta .= " (IdLog, Priority, LogText) ";
+		$consulta .= " VALUES (";
+		$consulta .= "NULL, ";
+		$consulta .= "0, ";
+		$consulta .= "'" . $this->_msg . "') ";
+
+		// insert into LogTable table log data.
+		$this->_db->Execute($consulta);
+	}
 
 }

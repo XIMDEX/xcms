@@ -25,14 +25,14 @@
  */
 
 
-namespace Ximdex\Utils\Logs;
+namespace Ximdex\Utils\Logs\Appender;
 
 use Ximdex\Utils\FsUtils;
-
 use Ximdex\Utils\TarArchiver;
+use Ximdex\Runtime\App;
 
 
-class Appender_rollingfile extends Appender_file
+class AppenderRollingfile extends AppenderFile
 {
 
     var $_maxFileSize;
@@ -44,9 +44,9 @@ class Appender_rollingfile extends Appender_file
      * param string params['maxsize'] Tamanno maximo del fichero de registro antes de que sea rotado
      * param boolean params['compress'] Indica si se debe comprimir el fichero de registro rotado
      */
-    function Appender_rollingfile(&$params)
+    function __construct(& $params)
     {
-        parent::Appender_file($params);
+        parent::AppenderFile($params);
         $this->setFile($params['file']);
         if (array_key_exists("maxsize", $params) && !empty($params["maxsize"])) {
             $this->setMaxFileSize($params['maxsize']);
@@ -168,7 +168,7 @@ class Appender_rollingfile extends Appender_file
              */
 
             $fileInfo = pathinfo($newFile);
-            $tmpDir = \App::getValue('AppRoot') . \App::getValue('TempRoot') . DIRECTORY_SEPARATOR . 'xmdlogs';
+            $tmpDir = App::getValue('AppRoot') . App::getValue('TempRoot') . DIRECTORY_SEPARATOR . 'xmdlogs';
             $tmpFile = $tmpDir . DIRECTORY_SEPARATOR . $fileInfo['basename'];
 
             $tar = new TarArchiver($newFile, array(TAR_COMPRESSION => TAR_COMPRESSION_GZIP));
@@ -184,5 +184,3 @@ class Appender_rollingfile extends Appender_file
     }
 
 }
-
-?>
