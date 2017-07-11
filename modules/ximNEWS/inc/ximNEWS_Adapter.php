@@ -724,7 +724,7 @@ class  ximNEWS_Adapter {
 	function addNewToColectors($idNew, $colectors, $fecha_ini = NULL, $fecha_fin = NULL) {
 
 		$node = new Node($idNew);
-		$dataFactory = new datafactory($idNew);
+		$dataFactory = new DataFactory($idNew);
 		$version = $dataFactory->getLastVersion();
 		$subversion = $dataFactory->getLastSubVersion($version);
 
@@ -1018,7 +1018,7 @@ class  ximNEWS_Adapter {
 			"NAME" => $name,
 			"PARENTID" => $idNewscontainer,
 			'IDSECTION' => $idSection,
-			"STATE" => "Edici�n",
+			"STATE" => "Edition",
 			'ALIASNAME' => $aliasLang,
 			'NEWTARGETLINK' => $targetLink,
 			'COLECTOR' => $idColector,
@@ -1440,5 +1440,3 @@ class  ximNEWS_Adapter {
 	}
 
 }
-
-?>

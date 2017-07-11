@@ -25,6 +25,8 @@
  *  @version $Revision$
  */
 
+use Ximdex\Runtime\DataFactory;
+
 ModulesManager::file('/actions/addtocolector/baseIO.php', 'ximNEWS');
 ModulesManager::file('/inc/menu_colector.inc', 'ximNEWS');
 ModulesManager::file('/inc/model/RelNewsColector.php', 'ximNEWS');
@@ -159,7 +161,7 @@ function getVersionNews($arr_colectors,$arr_news)
 	$i=0;
 	foreach ($arr_news as $newsID){
 		foreach ($arr_colectors as $colectorID){
-			$data = new datafactory($newsID);
+			$data = new DataFactory($newsID);
 			$lasVersion = $data->getLastVersion();
 			$lasSubVersion = $data->getLastSubVersion($lasVersion);
 			$version[$i] = $lasVersion . "-" . $lasSubVersion;
@@ -190,7 +192,7 @@ function getVersionColector($arr_colectors,$arr_news)
 
 			// This first case CANNOT BE GET unless the query fails or the relations didn't exist
 			if (!$version) {
-				$data = new datafactory($newsID);
+				$data = new DataFactory($newsID);
 				$lasVersion = $data->getLastVersion();
 				$lasSubVersion = $data->getLastSubVersion($lasVersion);
 				$ultimaVersion = $lasVersion. "-" .$lasSubVersion;
@@ -205,4 +207,3 @@ function getVersionColector($arr_colectors,$arr_news)
 }
 
 }//End of class
-?>
