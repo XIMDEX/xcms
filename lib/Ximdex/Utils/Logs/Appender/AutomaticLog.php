@@ -25,13 +25,16 @@
  */
 
 
-namespace Ximdex\Utils\Logs;
+namespace Ximdex\Utils\Logs\Appender;
+
+use Ximdex\Utils\Logs\Loggeable;
+
 /**
- * Class Automatic_Log
- * @package Ximdex\Utils\Logs
+ * Class AutomaticLog
+ * @package Ximdex\Utils\Logs\Appender
  */
 
-class Automatic_Log
+class AutomaticLog
 {
 
 

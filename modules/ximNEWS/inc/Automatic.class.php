@@ -26,7 +26,7 @@
 
 
 use Ximdex\Models\Node;
-use Ximdex\Utils\Logs\Automatic_Log;
+use Ximdex\Utils\Logs\Appender\AutomaticLog;
 use Ximdex\Utils\Sync\Mutex;
 use Ximdex\Utils\Sync\SynchroFacade;
 use Ximdex\Utils\Sync\SyncManager;
@@ -53,14 +53,14 @@ class Automatic
 
     function __construct()
     {
-        Automatic_Log::info("Starting Automatic");
+        AutomaticLog::info("Starting Automatic");
         GLOBAL $generate_pid;
         $generate_pid = posix_getpid();
         $this->stopperFilePath = \App::getValue("AppRoot") . \App::getValue("TempRoot") . "/automatic.stop";
 
         $this->mutex = new Mutex(\App::getValue("AppRoot") . \App::getValue("TempRoot") . "/generate.lck");
         if (!$this->mutex->acquire()) {
-            Automatic_Log::fatal("Automatic previo en ejecucion");
+            AutomaticLog::fatal("Automatic previo en ejecucion");
         }
         $this->now = time();
 
@@ -74,7 +74,7 @@ class Automatic
     {
         if (file_exists($this->stopperFilePath)) {
             $this->mutex->release();
-            Automatic_Log::info("STOP: Detected file {$this->stopperFilePath}. You need to delete this file for successful restart of automatic");
+            AutomaticLog::info("STOP: Detected file {$this->stopperFilePath}. You need to delete this file for successful restart of automatic");
             die("STOP: Detected file {$this->stopperFilePath}. You need to delete this file for successful restart of automatic.\n");
         }
     }
@@ -100,19 +100,19 @@ class Automatic
         $numColectors = count($colectors);
         $actualColector = 0;
 
-        Automatic_Log::info("$numColectors colectors to be processed");
+        AutomaticLog::info("$numColectors colectors to be processed");
 
         $bulletins = array();
         foreach ($colectors as $colectorID => $colectorName) {
             $this->checkStopper();
             $actualColector++;
             $colectorLogHead = "Colector ($actualColector of $numColectors) '[$colectorID] $colectorName': ";
-            Automatic_Log::info($colectorLogHead . "Start processing");
+            AutomaticLog::info($colectorLogHead . "Start processing");
             $bulletins = array_merge($this->_processColector($colectorID, $colectorName, $colectoresConFuelle, $colectorLogHead),
                 $bulletins);
         }
 
-        Automatic_Log::info("Exiting Automatic");
+        AutomaticLog::info("Exiting Automatic");
         $this->mutex->release();
         return $bulletins;
     }
@@ -135,14 +135,14 @@ class Automatic
                 $generate = true;
                 $totalGeneration = 2;
 
-                Automatic_Log::info($colectorLogHead . "Fuelle-less generation");
+                AutomaticLog::info($colectorLogHead . "Fuelle-less generation");
             }
         }
 
         // Checking if colector is locked
         $lockColector = $ximNewsColector->get('Locked');
         if ($lockColector == 1) {
-            Automatic_Log::info($colectorLogHead . "Locked (Maybe colector's being generated at this moment)");
+            AutomaticLog::info($colectorLogHead . "Locked (Maybe colector's being generated at this moment)");
             $generate = false;
             //isGenerable also update states from relNewsColectors and checks inactive property
         } else if ($nodeColector->class->isGenerable()) {
@@ -152,13 +152,13 @@ class Automatic
         $idNewsColectorUsers = $ximNewsColectorUsers->add($colectorID, 0, 'generating');
 
         if ($generate == true) {
-            Automatic_Log::info($colectorLogHead . "Starting generation");
+            AutomaticLog::info($colectorLogHead . "Starting generation");
             $this->checkStopper();
             $generados = $nodeColector->class->generateColector($totalGeneration);
-            Automatic_Log::info($colectorLogHead . "Ending generation");
+            AutomaticLog::info($colectorLogHead . "Ending generation");
             $this->checkStopper();
         } elseif ($ximNewsColector->get('State') == 'generated') {
-            Automatic_Log::info($colectorLogHead . "Bulletin already generated");
+            AutomaticLog::info($colectorLogHead . "Bulletin already generated");
             $this->checkStopper();
             $ximNewsBulletin = new XimNewsBulletin();
             $generados = $ximNewsBulletin->getPublishableBulletins($colectorID);
@@ -177,12 +177,12 @@ class Automatic
         if (!empty($generados)) {
             $numBulletins = count($generados);
             $actualBulletin = 0;
-            Automatic_Log::info($colectorLogHead . "Successfully generation ($numBulletins bulletins)");
+            AutomaticLog::info($colectorLogHead . "Successfully generation ($numBulletins bulletins)");
 
             //Los boletines generados se publican desde ya hasta el infinito
             foreach ($generados as $bulletinID) {
                 $actualBulletin++;
-                Automatic_Log::info($colectorLogHead . "Publishing bulletin $bulletinID ($actualBulletin of $numBulletins)");
+                AutomaticLog::info($colectorLogHead . "Publishing bulletin $bulletinID ($actualBulletin of $numBulletins)");
                 $this->_processBulletin($colectorID, $bulletinID, $colectorLogHead);
                 if (!is_null($idNewsColectorUsers)) {
                     $cu->set('Progress', 50 + floor(($actualBulletin / $numBulletins) * 50));
@@ -194,7 +194,7 @@ class Automatic
             $ximNewsColector->update();
         } else {
             $generados = array();
-            Automatic_Log::info($colectorLogHead . "No generation needed");
+            AutomaticLog::info($colectorLogHead . "No generation needed");
         }
 
 
@@ -205,7 +205,7 @@ class Automatic
             $cu->update();
         }
 
-        Automatic_Log::info($colectorLogHead . "Ending processing");
+        AutomaticLog::info($colectorLogHead . "Ending processing");
         return $generados;
     }
 
@@ -225,13 +225,13 @@ class Automatic
 
             $numDocs = count($this->docsToPublish);
             $actualDoc = 0;
-            Automatic_Log::info($colectorLogHead . "$numDocs docs to be published");
+            AutomaticLog::info($colectorLogHead . "$numDocs docs to be published");
 
             foreach ($this->docsToPublish as $docID) {
 
                 $this->checkStopper();
                 $actualDoc++;
-                Automatic_Log::info($colectorLogHead . "Starting doc publication [$docID] ($actualDoc of $numDocs)");
+                AutomaticLog::info($colectorLogHead . "Starting doc publication [$docID] ($actualDoc of $numDocs)");
                 $syncMngr = new SyncManager();
 //				$syncMngr->setFlag('type', 'ximNEWS');
                 $syncMngr->setFlag('colector', $colectorID);
