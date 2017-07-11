@@ -87,8 +87,7 @@ class BuildDataBaseInstallStep extends GenericInstallStep
 
     public function checkExistDataBase()
     {
-
-        $idbManager = new InstallDataBaseManager();
+		$idbManager = new InstallDataBaseManager();
         $idbManager->reconectDataBase();
         $host = $this->request->getParam("host");
         $port = $this->request->getParam("port");
@@ -101,18 +100,19 @@ class BuildDataBaseInstallStep extends GenericInstallStep
         $values = array();
         $idbManager->connect($host, $port, $user, $pass);
         if ($idbManager->existDataBase($name)) {
-            $values["failure"] = true;
+        	
+        	//if the host specified is the db for docker, we don't need to show the database overwriting message 
+        	if ($host == 'db')
+        		$values["success"] = true;
+        	else
+            	$values["failure"] = true;
 
         } else {
             $values["success"] = true;
         }
         $this->sendJson($values);
     }
-
-    /**
-     * [createDataBase description]
-     * @return [type] [description]
-     */
+    
     public function createDataBase()
     {
 
