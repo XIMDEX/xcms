@@ -28,11 +28,13 @@
     <hr>
 </div>
 {if isset($mesg)}
-     <div class=''>{$mesg}</div>
+	<div class=''>{$mesg}</div>
 {else}
-    <ul id='image_container' class='image_container'>
-    {foreach from=$imageNodes name=imagenodes item=imagenode}
-        <li><img src='{$imagenode.src}' title='{$imagenode.name}' data-nodeid='{$imagenode.idnode}' data-width='{$imagenode.width}' data-height='{$imagenode.height}' data-dimensions='{$imagenode.dimensions}' data-original_path='{$imagenode.original_path}' data-mime='{$imagenode.mime}' data-size='{$imagenode.size}'/></li>
-    {/foreach}
+	<div>
+    	<ul id='image_container' class='image_container'>
+    	{foreach from=$imageNodes name=imagenodes item=imagenode}
+        	<li><img src='{$imagenode.src}' title='{$imagenode.name}' data-nodeid='{$imagenode.idnode}' data-width='{$imagenode.width}' data-height='{$imagenode.height}' data-dimensions='{$imagenode.dimensions}' data-original_path='{$imagenode.original_path}' data-mime='{$imagenode.mime}' data-size='{$imagenode.size}'/></li>
+    	{/foreach}
+    	</ul>
     </div>
 {/if}

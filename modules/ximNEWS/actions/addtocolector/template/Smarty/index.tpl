@@ -88,7 +88,7 @@
 			{/if}
 		</ol>
 </fieldset>
-<fieldset
+<fieldset>
 		<legend><span>{t}Association period life{/t}</span></legend>
 		<div class="xim-calendar-container">
 			<calendar

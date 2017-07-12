@@ -25,20 +25,18 @@
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<head>
-
-	<link rel="icon" href="{$_URL_ROOT}favicon.ico" type="image/x-icon" />
-	<link rel="shortcut icon" href="{$_URL_ROOT}/favicon.ico" type="image/x-icon" />
-	<link href='{$_URL_ROOT}/xmd/style/fonts.css' rel='stylesheet' type='text/css'>
-
-	{foreach from=$js_files item=js_file}
-	<script type="text/javascript" src="{$js_file}"></script>
-	{/foreach}
-	{foreach from=$css_files item=css_file}
-	<link rel="stylesheet" type="text/css" href="{$css_file}" >
-	{/foreach}
-</head>
-<body>
-  {include file="$_ACTION_CONTROLLER"}
-</body>
+	<head>
+		<link rel="icon" href="{$_URL_ROOT}/favicon.ico" type="image/x-icon" />
+		<link rel="shortcut icon" href="{$_URL_ROOT}/favicon.ico" type="image/x-icon" />
+		<link href='{$_URL_ROOT}/xmd/style/fonts.css' rel='stylesheet' type='text/css'>
+		{foreach from=$js_files item=js_file}
+			<script type="text/javascript" src="{$js_file}"></script>
+		{/foreach}
+		{foreach from=$css_files item=css_file}
+			<link rel="stylesheet" type="text/css" href="{$css_file}" >
+		{/foreach}
+	</head>
+	<body>
+		{include file="$_ACTION_CONTROLLER"}
+	</body>
 </html>

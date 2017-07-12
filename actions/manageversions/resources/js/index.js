@@ -61,13 +61,19 @@ X.actionLoaded(function(event, fn, params) {
 
 		var command = (nodetypename=='ImageFile' || nodetypename=='BinaryFile')	? 'filepreview'	: 'prevdoc';
 
-
+		/*
 		var action = $.extend({}, params.action, {
 			command: command,
-			name: _('Preview'),
+			name: "Preview",
 			params: 'version=%s&sub_version=%s&channel=%s'.printf(v.version, v.subversion, channel)
 
 		});
+		*/
+		var action = {
+			command: command,
+			name: 'Preview v' + v.version + '.' + v.subversion,
+			params: 'version=' + v.version + '&sub_version=' + v.subversion + '&channel=' + channel + '&pepe=1'
+		};
 
 		// Opens an action in a new tab
         angular.element(document).injector().get('xTabs').openAction( action, params.nodes);

@@ -174,7 +174,11 @@ angular.module("ximdex.common.service").factory("xTabs", [
       }
       newid = node.nodeid + "_" + action.command;
       if (typeof params === 'string' || params instanceof String) {
-        params = params.replace("=", "_");
+    	  
+    	//params = params.replace("=", "_");
+        params = params.replace(/=/g, "_");
+        params = params.replace(/&/g, "_");
+        
         newid += "_" + params;
       } else {
         angular.element.each(params[0], function(key, value) {
@@ -197,6 +201,7 @@ angular.module("ximdex.common.service").factory("xTabs", [
         method: action.method,
         options: action.params
       });
+      
       $http.get(url).success(function(data) {
         var newlength, newtab;
         if (data) {

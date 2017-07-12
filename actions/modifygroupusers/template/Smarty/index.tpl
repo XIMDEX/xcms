@@ -94,7 +94,7 @@
                                     ng-click="openDeleteModal($index)">
                                 <span>{t}Delete{/t}</span>
                             </button>
-                            <button ng-if="$middle" type="button" class="delete-btn icon btn-unlabel-rounded" ng-click="openDeleteModal($index)"></butto
+                            <button ng-if="$middle" type="button" class="delete-btn icon btn-unlabel-rounded" ng-click="openDeleteModal($index)"></button>
                         </span>
                     </div>
                     </div>
