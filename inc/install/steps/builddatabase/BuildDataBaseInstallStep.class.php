@@ -66,14 +66,12 @@ class BuildDataBaseInstallStep extends GenericInstallStep
 
     public function checkUser()
     {
-        error_log("in") ;
         $idbManager = new InstallDataBaseManager();
         $idbManager->reconectDataBase();
         $host = $this->request->getParam("host");
         $port = $this->request->getParam("port");
         $user = $this->request->getParam("user");
         $pass = $this->request->getParam("pass") == "undefined" ? NULL : $this->request->getParam("pass");
-        error_log("out") ;
 
         $values = array();
         if ($idbManager->connect($host, $port, $user, $pass)) {
@@ -89,8 +87,7 @@ class BuildDataBaseInstallStep extends GenericInstallStep
 
     public function checkExistDataBase()
     {
-
-        $idbManager = new InstallDataBaseManager();
+		$idbManager = new InstallDataBaseManager();
         $idbManager->reconectDataBase();
         $host = $this->request->getParam("host");
         $port = $this->request->getParam("port");
@@ -103,18 +100,19 @@ class BuildDataBaseInstallStep extends GenericInstallStep
         $values = array();
         $idbManager->connect($host, $port, $user, $pass);
         if ($idbManager->existDataBase($name)) {
-            $values["failure"] = true;
+        	
+        	//if the host specified is the db for docker, we don't need to show the database overwriting message 
+        	if ($host == 'db')
+        		$values["success"] = true;
+        	else
+            	$values["failure"] = true;
 
         } else {
             $values["success"] = true;
         }
         $this->sendJson($values);
     }
-
-    /**
-     * [createDataBase description]
-     * @return [type] [description]
-     */
+    
     public function createDataBase()
     {
 
@@ -132,15 +130,25 @@ class BuildDataBaseInstallStep extends GenericInstallStep
         }
         if ($idbManager->connect($host, $port, $user, $pass)) {
             $result = $idbManager->createDataBase($name);
-            $idbManager->connect($host, $port, $user, $pass, $name);
-
+            if (!$result)
+            {
+            	$values["failure"] = true;
+            	if ($idbManager->getErrors())
+            		$values["errors"] = $idbManager->getErrors();
+            	else
+            		$values["errors"] = 'Can\'t create database';
+            }
+            $idbManager->connect($host, $port, $user, $pass, $name, true);
             $idbManager->loadData($host, $port, $user, $pass, $name);
             $result = $idbManager->checkDataBase($host, $port, $user, $pass, $name);
             if ($result) {
                 $values["success"] = true;
             } else {
                 $values["failure"] = true;
-                $values["errors"] = $idbManager->getErrors();
+                if ($idbManager->getErrors())
+                	$values["errors"] = $idbManager->getErrors();
+               	else
+               		$values["errors"] = 'Can\'t create database schema and content';
             }
 
 

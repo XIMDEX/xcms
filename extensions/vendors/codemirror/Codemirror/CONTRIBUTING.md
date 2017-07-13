@@ -7,7 +7,7 @@
 ## Getting help
 
 Community discussion, questions, and informal bug reporting is done on the
-[discuss.CodeMirror forum](http://discuss.codemirror.net).
+[CodeMirror Google group](http://groups.google.com/group/codemirror).
 
 ## Submitting bug reports
 
@@ -17,7 +17,7 @@ reporting a bug, read these pointers.
 
 **Note:** The issue tracker is for *bugs*, not requests for help. Questions
 should be asked on the
-[discuss.CodeMirror forum](http://discuss.codemirror.net) instead.
+[CodeMirror Google group](http://groups.google.com/group/codemirror) instead.
 
 ### Reporting bugs effectively
 

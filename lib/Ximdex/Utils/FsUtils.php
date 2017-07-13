@@ -202,7 +202,7 @@ class FsUtils
     {
         if (!is_file($filename)) {
             $backtrace = debug_backtrace();
-            XMD_Log::warning(sprintf(_('Trying to obtaing the content of a nonexistent file [lib/Ximdex/Utils/FsUtils.php] script: %s file: %s line: %s nonexistent_file: %s'),
+            XMD_Log::error(sprintf(_('Trying to obtaing the content of a nonexistent file [lib/Ximdex/Utils/FsUtils.php] script: %s file: %s line: %s nonexistent_file: %s'),
                 $_SERVER['SCRIPT_FILENAME'],
                 $backtrace[0]['file'],
                 $backtrace[0]['line'],

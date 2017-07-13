@@ -30,7 +30,7 @@ namespace Ximdex\Utils\Sync;
 use ChannelFrame;
 
 use Ximdex\Runtime\Db as DB;
- use ModulesManager;
+use ModulesManager;
 use NodeFrame;
 use NodeFrameManager;
 use Ximdex\Models\NodeType;
@@ -38,12 +38,13 @@ use RelNewsBulletins;
 use RelNewsColector;
 use Ximdex\Models\Server;
 use ServerFrame;
+use Ximdex\Models\Dependencies;
 use Ximdex\Models\Node;
 use Ximdex\Models\StructuredDocument;
+use Ximdex\Runtime\DataFactory;
 use XimNewsBulletin;
 use XimNewsCache;
 use Ximdex\Logger as XMD_log;
-
 
 
 if (ModulesManager::isEnabled('ximSYNC')) {
@@ -847,7 +848,7 @@ class SynchroFacade
 			$idRel = $relNewsColector->hasNews($colectorID, $idNode);
 
 			if ($idRel > 0) {
-				$dataFactory = new datafactory($idNode);
+				$dataFactory = new DataFactory($idNode);
 				$version = $dataFactory->getLastVersion();
 				$subversion = 0;
 				$idVersion = $dataFactory->getVersionId($version, $subversion);
@@ -877,5 +878,3 @@ class SynchroFacade
 		return $result;
 	}
 }
-
-?>

@@ -31,7 +31,7 @@
     <!-- disable zoom -->
     <meta content='maximum-scale=1.0, user-scalable=0' name='viewport' />
     <!-- constant css includes -->
-    <!--link id="main_css" type="text/css" href="{$_URL_ROOT}xmd/style/jquery/{$theme}/jquery-ui-1.8.2.custom.css" rel="stylesheet" /-->
+    <!--link id="main_css" type="text/css" href="{$_URL_ROOT}/xmd/style/jquery/{$theme}/jquery-ui-1.8.2.custom.css" rel="stylesheet" /-->
     <link rel="icon" href="{$_URL_ROOT}/favicon.ico" type="image/x-icon"/>
     <link rel="shortcut icon" href="{$_URL_ROOT}/favicon.ico" type="image/x-icon"/>
 
@@ -43,13 +43,13 @@
     %=css_widgets%
 
     <!-- constant js includes -->
-    <script type="text/javascript" src="{$_URL_ROOT}extensions//ckeditor/ckeditor.js"></script>
-    <script type="text/javascript" src="{$_URL_ROOT}xmd/js/vars_js.php?id={$time_id}"></script>
+    <script type="text/javascript" src="{$_URL_ROOT}/extensions//ckeditor/ckeditor.js"></script>
+    <script type="text/javascript" src="{$_URL_ROOT}/xmd/js/vars_js.php?id={$time_id}"></script>
 
     {foreach from=$js_files key=id item=src}
         <script type="text/javascript" src="{$src}"></script>
     {/foreach}
-    <script type="text/javascript" src="{$_URL_ROOT}inc/i18n/locale/{$user_locale.Code}/LC_MESSAGES/strings.js"
+    <script type="text/javascript" src="{$_URL_ROOT}/inc/i18n/locale/{$user_locale.Code}/LC_MESSAGES/strings.js"
             charset="UTF-8"></script>
     <!-- js widgets -->
     %=js_widgets%
@@ -71,11 +71,11 @@
 <searchpanel include="yes"/>
 
 <div id="header">
-    <h1><img src="{$_URL_ROOT}xmd/images/header/logo_xim.png" border="0" alt="{t}Ximdex logotype{/t}"
+    <h1><img src="{$_URL_ROOT}/xmd/images/header/logo_xim.png" border="0" alt="{t}Ximdex logotype{/t}"
              title="{t}Semantic content management with Ximdex{/t}" id="logo"/></h1>
 
     <div class="session-info">
-        <!-- <img class="login-img" src="{$_URL_ROOT}xmd/images/user_48.png" border="0" alt="Login" title="Login"/>-->
+        <!-- <img class="login-img" src="{$_URL_ROOT}/xmd/images/user_48.png" border="0" alt="Login" title="Login"/>-->
         <div class="language">
             <div class="menu-header">
                 <span class="current-language icon">{$user_locale.Lang}</span>

@@ -25,6 +25,8 @@
  *  @version $Revision$
  */
 
+use Ximdex\Runtime\DataFactory;
+
 ModulesManager::file('/inc/model/orm/XimNewsNews_ORM.class.php', 'ximNEWS');
 ModulesManager::file('/inc/model/RelNewsColector.php', 'ximNEWS');
 ModulesManager::file('/inc/model/XimNewsCache.class.php', 'ximNEWS');
@@ -80,7 +82,7 @@ class XimNewsNew extends XimNewsNews_ORM {
 		$idRel = $relNewsColector->hasNews($colectorID, $nodeID);
 
 		if ($idRel > 0) {
-			$dataFactory = new datafactory($nodeID);
+			$dataFactory = new DataFactory($nodeID);
 			$newsVersionID = $dataFactory->getVersionId($newsVersion, 0);
 
 			$relNewsColector = new RelNewsColector($idRel);
@@ -105,4 +107,3 @@ class XimNewsNew extends XimNewsNews_ORM {
 	}
 
 }
-?>

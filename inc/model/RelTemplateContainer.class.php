@@ -25,6 +25,7 @@
  */
 
 
+use Ximdex\Models\Dependencies;
 use Ximdex\Models\Node;
 use Ximdex\Models\StructuredDocument;
 
@@ -94,4 +95,3 @@ class RelTemplateContainer extends RelTemplateContainer_ORM {
 	}
 
 }
-?>

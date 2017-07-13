@@ -181,10 +181,4 @@ Here we provide the SQL code to make it in SQL command way (use de database and 
 
 5. **Point your web browser** to your just installed Ximdex CMS instance URL (i.e.: http://YOURHOST/myximdex or http://localhost/myximdex) to run the configuration tool that will load the database, create users and install Ximdex's modules.
 
-## C) Manual and Automated Installation methods
-If the previous methods did not work, want to control all the steps or to automate the installation process, visit:
-
-> install/XIMDEX_manual_installation_guidelines.md file.
-
-
 **Thank you for installing Ximdex CMS**. Please, contact us at help@ximdex.org if you need further assistance.

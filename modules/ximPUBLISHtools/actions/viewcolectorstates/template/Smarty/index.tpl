@@ -92,13 +92,13 @@
 				</div>
 				<div class="contenido_nodo">
 					<div class="barra_progreso">
-						<img id="progress_img_{$colector.id_colector}" style='width:{$colector.progress}px;height:6px;' src='{$_URL_ROOT}xmd/images/pix_green.png' title="Pendiente">							
+						<img id="progress_img_{$colector.id_colector}" style='width:{$colector.progress}px;height:6px;' src='{$_URL_ROOT}/xmd/images/pix_green.png' title="Pendiente">							
 						<br />
 						<div class="borde_cien"></div>
 						<span class="mensaje_progreso"><span id="progress_{$colector.id_colector}">{$colector.progress}</span>% Completado </span>
 					</div>
 					<div class="botones_control">
-						<div class="mensaje_estado"><span id="state_content_{$colector.id_colector}">{$colector.state}</span> <img id="state_image_{$colector.id_colector}" style="width: 15px;{if $colector.state ne 'Gener&aacute;ndose' and $colector.state ne 'Generado y Public&aacute;ndose'}display: none;{/if}" src="{$_URL_ROOT}xmd/icons/ajax-loader.gif" /></div>
+						<div class="mensaje_estado"><span id="state_content_{$colector.id_colector}">{$colector.state}</span> <img id="state_image_{$colector.id_colector}" style="width: 15px;{if $colector.state ne 'Gener&aacute;ndose' and $colector.state ne 'Generado y Public&aacute;ndose'}display: none;{/if}" src="{$_URL_ROOT}/xmd/icons/ajax-loader.gif" /></div>
 						<div class="cabecera_mensaje_generacion">
 							<span id="start_generation_title_{$colector.id_colector}">{if $colector.start_generation}Comienzo de la generación:{/if}</span> <br/>
 							{*<span id="end_generation_title_{$colector.id_colector}">{if $colector.end_generation}Comienzo de la publicación:{/if}</span> <br/>*}

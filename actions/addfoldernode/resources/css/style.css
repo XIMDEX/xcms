@@ -50,12 +50,13 @@
 .theme {
   display: inline-block;
   position: relative;
-  margin: 1em 3% 2.5em 0;
+  /* margin: 1em 3% 2.5em 0; */
   padding: 15px 10px;
   border: 1px solid transparent;
   vertical-align: top;
   max-width: 47%;
-  min-width: 260px; }
+  min-width: 260px;
+  height: 220pt; }
   .theme p {
     padding: .4em 0;
     margin: 0; }
@@ -94,6 +95,11 @@
   cursor: pointer; }
   .img_container img {
     max-width: 100%; }
+
+.themes
+{
+	margin: 0 auto !important;
+}
 
 .themes .actions {
   position: absolute;
@@ -427,6 +433,24 @@ dd {
     display: inline-block;
     vertical-align: middle;
     cursor: pointer; }
+    
+.channel
+{
+	width: 32%;
+	float: left;
+	margin-right: 1%;
+}
+
+.sep
+{
+	clear: both;
+}
+
+.themeContainer
+{
+	width: 220pt;
+	float: left;
+}
 
 /**************
 // CUSTOM BUTTONS 

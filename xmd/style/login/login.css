@@ -292,7 +292,7 @@ body {
 #mas_info {
     background: rgba(255, 255, 255, 0.72);
     border: 6px solid #FFFFFF;
-    width: 240px;
+    width: 250px;
     float: right;
     margin-top: 25px;
     padding: 8px 15px 30px 25px;
@@ -432,8 +432,10 @@ body {
     margin: 5px auto;
     color: #fb4234;
     position: absolute;
-    top: 17px;
+    top: 82px;
     padding: 0 15px;
+    font-weight: bold;
+    text-align: center;
 }
 .browserAdvice {
     position: absolute;

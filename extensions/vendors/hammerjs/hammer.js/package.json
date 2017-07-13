@@ -35,9 +35,9 @@
     "grunt-contrib-qunit": "^0.5.1",
     "grunt-contrib-uglify": "0.4.x",
     "grunt-contrib-watch": "0.6.x",
-    "grunt-jscs": "^0.8.0",
+    "grunt-jscs-checker": "^0.4.1",
     "grunt-string-replace": "^0.2.7",
-    "jquery-hammerjs": "2.0.x",
+    "hammer-jquery": "git://github.com/hammerjs/jquery.hammer.js#master",
     "hammer-simulator": "git://github.com/hammerjs/simulator#master"
   },
   "main": "hammer.js",

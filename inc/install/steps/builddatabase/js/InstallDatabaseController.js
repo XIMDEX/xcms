@@ -27,30 +27,18 @@ ximdexInstallerApp.controller('InstallDatabaseController', ["$timeout", '$scope'
 
         $scope.error = false;
         $scope.submit = false;
-        $scope.root_user = "root";
+        $scope.root_user = "root"; 
         $scope.installed = false;
-        $scope.name = $attrs.ximInstallInstanceName;
+        //$scope.name = $attrs.ximInstallInstanceName;
+        $scope.name = "ximdex";
         $scope.overwrite = false;
         $scope.host = "localhost";
         $scope.port = "3306";
         $scope.root_pass = "";
 
-
-        /* Causes a warning. Check, at the first, if host & port are right.
-         installerService.sendAction("checkHost").then(function(response) {
-         if (response.data.success){
-         $scope.host=response.data.host;
-         $scope.port=response.data.port;
-         $scope.hostCheck = true;
-         }else{
-         $scope.hostCheck = 'host';
-         }
-
-         });*/
-
-        $scope.sendForm = function () {
+        $scope.sendForm = function (skip = false) {
             if ($scope.installed) {
-                $scope.addUser();
+                $scope.addUser(skip);
             } else {
                 if ($scope.overwrite) {
                     $scope.installDataBase();
@@ -164,19 +152,32 @@ ximdexInstallerApp.controller('InstallDatabaseController', ["$timeout", '$scope'
             $scope.hostCheck = true;
         });
 
-        $scope.addUser = function () {
-            $scope.loadingAddUser = true;
-            var params = "user=" + $scope.user;
-            params += "&pass=" + $scope.pass;
-            params += "&host=" + $scope.host;
+        $scope.addUser = function (skip = false) {
+        	var params = "host=" + $scope.host;
             params += "&port=" + $scope.port;
             params += "&name=" + $scope.name;
             params += "&root_user=" + $scope.root_user;
             params += "&root_pass=" + $scope.root_pass;
+        	if (skip)
+        	{
+        		$scope.loadingSkipUser = true;
+        		params += "&user=" + $scope.root_user;
+                params += "&pass=" + $scope.root_pass;
+        	}
+        	else
+        	{
+        		if ($scope.user.length < 6 || !$scope.pass || $scope.pass.length < 6)
+        		{
+        			$scope.genericErrors = "You must set user and password values for the new user if you want to create a new one";
+        			exit();
+        		}
+        		$scope.loadingAddUser = true;
+        		params += "&user=" + $scope.user;
+                params += "&pass=" + $scope.pass;
+        	}
             installerService.sendAction("addUser", params).then(function (response) {
                 location.reload();
             });
-
         }
 
     }]);

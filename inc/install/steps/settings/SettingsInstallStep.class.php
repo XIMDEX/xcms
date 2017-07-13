@@ -71,8 +71,11 @@ class SettingsInstallStep extends GenericInstallStep
         }
         $this->installManager->setSingleParam("##XIMDEX_LOCALE##", $language);
         \App::setValue("AppRoot", XIMDEX_ROOT_PATH, true );
-        $urlRoot = substr(str_replace("index.php", "", $_SERVER['HTTP_REFERER']), 0, -1);
+        //$urlRoot = substr(str_replace("index.php", "", $_SERVER['HTTP_REFERER']), 0, -1);
+        $urlRoot = str_replace("index.php", "", $_SERVER['HTTP_REFERER']);
         $urlRoot = strtok($urlRoot, '?');
+        if (substr($urlRoot, (strlen($urlRoot) - 1), 1) == '/')	//remove the ending / if it exists
+        	$urlRoot = substr($urlRoot, 0, -1);
         \App::setValue("UrlRoot", $urlRoot , true );
         \App::setValue("locale", $language , true );
         $this->installManager->setLocale($language);

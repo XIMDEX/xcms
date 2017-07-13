@@ -11,6 +11,8 @@
 
 namespace Monolog\Handler;
 
+use Monolog\Logger;
+
 /**
  * Used for testing purposes.
  *

@@ -146,7 +146,7 @@ class Action_addtocolector extends ActionAbstract {
 
 	private function get_version($nodeID) {
 
-		$dataFactory = new datafactory($nodeID);
+		$dataFactory = new DataFactory($nodeID);
 
 		$lastVersion = $dataFactory->getLastVersion();
 		$lastSubVersion = $dataFactory->getLastSubVersion($lastVersion);
@@ -253,4 +253,3 @@ class Action_addtocolector extends ActionAbstract {
 		return $list;
 	}
 }
-?>
