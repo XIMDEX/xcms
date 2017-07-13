@@ -27,6 +27,15 @@ services:
       MYSQL_USER: ximdex
       MYSQL_PASSWORD: ximdex
       MYSQL_DATABASE: ximdex
+      
+  #MARIADB
+  db:
+    image: "mariadb:${MARIADB_VERSION}"
+    environment:
+      MARIADB_ROOT_PASSWORD: ximdex
+      MARIADB_USER: ximdex
+      MARIADB_PASSWORD: ximdex
+      MARIADB_DATABASE: ximdex
 
   selenium:
       image: selenium/standalone-chrome:3.0.1

@@ -12,6 +12,7 @@ services:
 
 env:
   - PHP_VERSION=7 MYSQL_VERSION=5.7
+  - PHP_VERSION=7 MARIADB_VERSION=10.2
 
 before_install:
   - curl -L https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
