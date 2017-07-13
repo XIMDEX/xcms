@@ -27,18 +27,18 @@ services:
       MYSQL_USER: ximdex
       MYSQL_PASSWORD: ximdex
       MYSQL_DATABASE: ximdex
-      
-  #MARIADB
-  db:
+  
+  # MARIADB
+  mariadb:
     image: "mariadb:${MARIADB_VERSION}"
     environment:
-      MARIADB_ROOT_PASSWORD: ximdex
-      MARIADB_USER: ximdex
-      MARIADB_PASSWORD: ximdex
-      MARIADB_DATABASE: ximdex
+      MYSQL_ROOT_PASSWORD: ximdex
+      MYSQL_USER: ximdex
+      MYSQL_PASSWORD: ximdex
+      MYSQL_DATABASE: ximdex
 
   selenium:
-      image: selenium/standalone-chrome:3.0.1
+    image: selenium/standalone-chrome:3.0.1
 
   test:
     image: ximdex/php:${PHP_VERSION}
@@ -50,3 +50,15 @@ services:
       - ../:/var/www/html
       - ./php-fpm/php.ini:/usr/local/etc/php/php.ini
     command: sh -c "sleep 10s && chmod -R 777 data logs conf && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer && composer install && extensions/vendors/bin/codecept run --steps"
+    
+  test-mariadb:
+    image: ximdex/php:${PHP_VERSION}
+    links:
+      - ximdex:ximdex
+      - selenium:selenium
+      - mariadb
+    volumes:
+      - ../:/var/www/html
+      - ./php-fpm/php.ini:/usr/local/etc/php/php.ini
+    command: sh -c "sleep 10s && chmod -R 777 data logs conf && rm -R /var/www/html/data/previos && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer && composer install && extensions/vendors/bin/codecept run --steps"
+    
