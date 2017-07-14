@@ -19,18 +19,9 @@ services:
       - ./nginx-conf/nginx.conf:/etc/nginx/nginx.conf
       - ../:/var/www/html
 
-  # MYSQL
+  # MYSQL or MARIADB
   db:
-    image: "mysql:${MYSQL_VERSION}"
-    environment:
-      MYSQL_ROOT_PASSWORD: ximdex
-      MYSQL_USER: ximdex
-      MYSQL_PASSWORD: ximdex
-      MYSQL_DATABASE: ximdex
-  
-  # MARIADB
-  mariadb:
-    image: "mariadb:${MARIADB_VERSION}"
+    image: "${DB_SERVER}"
     environment:
       MYSQL_ROOT_PASSWORD: ximdex
       MYSQL_USER: ximdex
@@ -50,15 +41,3 @@ services:
       - ../:/var/www/html
       - ./php-fpm/php.ini:/usr/local/etc/php/php.ini
     command: sh -c "sleep 10s && chmod -R 777 data logs conf && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer && composer install && extensions/vendors/bin/codecept run --steps"
-    
-  test-mariadb:
-    image: ximdex/php:${PHP_VERSION}
-    links:
-      - ximdex:ximdex
-      - selenium:selenium
-      - mariadb
-    volumes:
-      - ../:/var/www/html
-      - ./php-fpm/php.ini:/usr/local/etc/php/php.ini
-    command: sh -c "sleep 10s && chmod -R 777 data logs conf && rm -R /var/www/html/data/previos && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer && composer install && extensions/vendors/bin/codecept run --steps"
-    
