@@ -3,7 +3,6 @@
  	version="1.0">
 	<xsl:param name="xmlcontent" />
 	<xsl:include href="{URL_PATH}data/nodes/{PROJECT_NAME}/templates/templates_include.xsl" />
-	<!-- <xsl:include href="templates_include.xsl" /> -->
 	<xsl:template name="docxap" match="docxap">
 
 		<html xmlns="http://www.w3.org/1999/xhtml">
