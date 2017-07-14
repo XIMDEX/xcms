@@ -158,7 +158,8 @@ class ActionAbstract extends IController
         $action = new Action();
         $data = $action->find(
             'Command, Name, Description, Module',
-            'IdNodeType = %s and Command = %s and Module is %s',
+            //'IdNodeType = %s and Command = %s and Module is %s',
+        		'IdNodeType = %s and Command = %s and Module ' . (($module === null) ? 'is' : '=') . ' %s',
             array($nodeTypeId, $actionName, $module)
         );
 
