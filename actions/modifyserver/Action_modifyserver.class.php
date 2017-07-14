@@ -33,7 +33,7 @@ use Ximdex\MVC\ActionAbstract;
 
 class Action_modifyserver extends ActionAbstract {
 
-	function index() {
+	function index($request = null) {
 
 		$idNode = (int) $this->request->getParam("nodeid");
 		$actionID = (int) $this->request->getParam("actionid");
@@ -122,6 +122,11 @@ class Action_modifyserver extends ActionAbstract {
 			'id_server' => (int) $serverID,
 			'messages' => $this->messages->messages
 		);
+		if ($request)
+		{
+			//data provided from the form submit
+			$values['server']['description'] = $request->getParam('description');
+		}
 		$this->render($values, "index", 'default-3.0.tpl');
 	}
 
@@ -248,7 +253,7 @@ class Action_modifyserver extends ActionAbstract {
 			'nodeURL' => \App::getValue( 'UrlRoot').'/xmd/loadaction.php?actionid=$actionID&nodeid={$idNode}',
 		);
 		//$this->sendJSON($values);
-		$this->index();
+		$this->index($this->request);
 	}
 
 	/**

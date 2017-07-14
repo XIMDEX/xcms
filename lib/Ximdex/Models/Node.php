@@ -2975,7 +2975,7 @@ class Node extends NodesOrm
             return $nodeProperty->getProperty($this->get('IdNode'), $property);
         }
 
-        XMD_Log::info(sprintf(_("Property %s not found for node %d"), $property, $this->get('IdNode')));
+        XMD_Log::warning(sprintf(_("Property %s not found for node %d"), $property, $this->get('IdNode')));
 
         return NULL;
     }

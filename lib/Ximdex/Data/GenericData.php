@@ -367,7 +367,7 @@ class GenericData extends Overloadable
             $fieldType = !empty($matches[1]) ? $matches[1] : '';
 
             if (empty($fieldType)) {
-                $this->messages->add(sprintf(_("Error de parseo en el campo %s"), $key), MSG_TYPE_ERROR);
+                $this->messages->add(sprintf(_("Error parsing the field %s"), $key), MSG_TYPE_ERROR);
             }
             $value = $this->{$key};
 
@@ -377,14 +377,14 @@ class GenericData extends Overloadable
 
             if (('true' == $descriptor['not_null']) && !isset($descriptor['auto_increment'])) {
                 if (empty($value) && !in_array($fieldType, $dataTypeInt)) {
-                    $this->messages->add(sprintf(_("Debe rellenar el campo %s"), $key), MSG_TYPE_ERROR);
+                    $this->messages->add(sprintf(_("You must set the field %s"), $key), MSG_TYPE_ERROR);
                 }
             }
             switch ($fieldType) {
                 case in_array($fieldType, $dataTypeFloat):
                 case in_array($fieldType, $dataTypeDouble):
                     if (!is_numeric($value)) {
-                        $this->messages->add(sprintf(_("El campo %s tiene un formato inv�lido"), $key), MSG_TYPE_ERROR);
+                        $this->messages->add(sprintf(_("The field %s has an invalid format"), $key), MSG_TYPE_ERROR);
                     }
 
                     break;
@@ -403,66 +403,66 @@ class GenericData extends Overloadable
                 //                case in_array($fieldType, $dataTypeDate):
                 case 'datetime':
                     if (!preg_match(sprintf('/%s/', self::REGEXP_DATETIME), $value)) {
-                        $this->messages->add(sprintf(_('El campo %s no tiene el formato correcto'), $key)
+                        $this->messages->add(sprintf(_('The field %s has not the correct format'), $key)
                             , MSG_TYPE_ERROR);
                     }
                     break;
                 case 'date':
                     if (!preg_match(sprintf('/%s/', self::REGEXP_DATE), $value)) {
-                        $this->messages->add(sprintf(_('El campo %s no tiene el formato correcto'), $key)
+                        $this->messages->add(sprintf(_('The field %s has not the correct format'), $key)
                             , MSG_TYPE_ERROR);
                     }
                     break;
                 case 'timestamp':
                     if (!preg_match(sprintf('/%s/', self::REGEXP_TIMESTAMP), $value)) {
-                        $this->messages->add(sprintf(_('El campo %s no tiene el formato correcto'), $key)
+                        $this->messages->add(sprintf(_('The field %s has not the correct format'), $key)
                             , MSG_TYPE_ERROR);
                     }
                     break;
                 case 'time':
                     if (!preg_match(sprintf('/%s/', self::REGEXP_TIME), $value)) {
-                        $this->messages->add(sprintf(_('El campo %s no tiene el formato correcto'), $key)
+                        $this->messages->add(sprintf(_('The field %s has not the correct format'), $key)
                             , MSG_TYPE_ERROR);
                     }
                     break;
                 case 'year':
                     if (!preg_match(sprintf('/%s/', self::REGEXP_YEAR), $value)) {
-                        $this->messages->add(sprintf(_('El campo %s no tiene el formato correcto'), $key)
+                        $this->messages->add(sprintf(_('The field %s has not the correct format'), $key)
                             , MSG_TYPE_ERROR);
                     }
                     break;
                 case in_array($fieldType, $dataTypeInt):
                     if (!is_int((int) $value)) {
-                        $this->messages->add(sprintf(_("El campo %s tiene un formato inv�lido"), $key), MSG_TYPE_ERROR);
+                        $this->messages->add(sprintf(_("The field %s has an invalid format"), $key), MSG_TYPE_ERROR);
                     }
                     switch ($fieldType) {
                         case 'tinyint':
                             if ((int) $value > self::MAX_TINYINT) {
-                                $this->messages->add(sprintf(_('El campo %s ha excedido el tama�o m�ximo de %d con el valor %s'),
+                                $this->messages->add(sprintf(_('The field %s has exceded the maximum size of %d with the value %s'),
                                     $key, self::MAX_TINYINT, $value), MSG_TYPE_ERROR);
                             }
                             break;
                         case 'smallint':
                             if ((int) $value > self::MAX_SMALLINT) {
-                                $this->messages->add(sprintf(_('El campo %s ha excedido el tama�o m�ximo de %d con el valor %s'),
+                                $this->messages->add(sprintf(_('The field %s has exceded the maximum size of %d with the value %s'),
                                     $key, self::MAX_SMALLINT, $value), MSG_TYPE_ERROR);
                             }
                             break;
                         case 'mediumint':
                             if ((int) $value > self::MAX_MEDIUMINT) {
-                                $this->messages->add(sprintf(_('El campo %s ha excedido el tama�o m�ximo de %d con el valor %s'),
+                                $this->messages->add(sprintf(_('The field %s has exceded the maximum size of %d with the value %s'),
                                     $key, self::MAX_MEDIUMINT, $value), MSG_TYPE_ERROR);
                             }
                             break;
                         case 'int':
                             if ((int) $value > self::MAX_INT) {
-                                $this->messages->add(sprintf(_('El campo %s ha excedido el tama�o m�ximo de %d con el valor %s'),
+                                $this->messages->add(sprintf(_('The field %s has exceded the maximum size of %d with the value %s'),
                                     $key, self::MAX_INT, $value), MSG_TYPE_ERROR);
                             }
                             break;
                         case 'bigint':
                             if ((int) $value > self::MAX_BIGINT) {
-                                $this->messages->add(sprintf(_('El campo %s ha excedido el tama�o m�ximo de %d con el valor %s'),
+                                $this->messages->add(sprintf(_('The field %s has exceded the maximum size of %d with the value %s'),
                                     $key, self::MAX_BIGINT, $value), MSG_TYPE_ERROR);
                             }
                             break;
