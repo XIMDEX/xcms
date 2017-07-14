@@ -24,7 +24,7 @@
  *}
 
 <form method="post" id="print_form" action="{$action_url}">
-    <input name="theme" type="hidden">
+    <input name="theme" type="hidden" />
 
     <div class="action_header">
         <h5 class="direction_header"> Name Node: {t}Projects{/t}</h5>
@@ -64,10 +64,10 @@
             	{foreachelse}
             		<p class="message_warning">{t}There are no channels created in the system{/t}.</p>
             	{/foreach}
-            	<div class="sep" />
+            	<div class="sep"></div>
             </div>
-            <label class="label_title label_general">{t}Avaliable themes{/t}</label>
-
+            
+           	<label class="label_title label_general">{t}Avaliable themes{/t}</label>
             <div class="row themes">
                 {foreach from=$themes key=index item=theme}
                     <div class="themeContainer">
