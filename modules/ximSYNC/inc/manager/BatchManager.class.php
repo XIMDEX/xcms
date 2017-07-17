@@ -504,7 +504,12 @@ class BatchManager
                             if ($nodeType->get('Name') == 'XimNewsBulletinLanguage') {
                                 $db = new Db();
                                 $sql = "INSERT INTO XimNewsFrameBulletin VALUES ($idFrame, $idNode, 'mail_pending')";
-                                $db->Execute($sql);
+                                $res = $db->Execute($sql);
+                                if (!$res)
+                                {
+                                	$dbObj->database_error($dbObj);
+                                	return false;
+                                }
                                 if (!($db->numRows > 0)) {
                                     Logger::info(_("Error inserting ximnewsframebulletin"));
                                 }
@@ -607,7 +612,12 @@ class BatchManager
         // Ensure that batchs have frames or getBatchToProcess will return the same batch over and over
         $sql = "update Batchs set State = 'NoFrames' where idbatch not in (select distinct idbatchup from ServerFrames) and Batchs.State IN ('InTime','Closing')";
         $db = new Db();
-        $db->execute($sql);
+        $res = $db->execute($sql);
+        if (!$res)
+        {
+        	$dbObj->database_error($dbObj);
+        	return false;
+        }
         if ($db->numRows > 0) {
             Logger::warning(sprintf(_('Found %s Batchs without Frames, were marked as NoFrames') . ".", $db->numRows));
         }
@@ -632,7 +642,12 @@ class BatchManager
 			SUM(IF(ServerFrames.State IN ('Pumped'),1,0)) AS Pumpeds,
 			COUNT(ServerFrames.IdSync) AS Total FROM ServerFrames, Batchs WHERE Batchs.State IN ('InTime','Closing') AND
 			Batchs.IdBatch = ServerFrames.IdBatchUp GROUP BY ServerFrames.IdBatchUp HAVING Total = Errors + Success + Pumpeds";
-        $dbObj->Query($sql);
+        $res = $dbObj->Query($sql);
+        if (!$res)
+        {
+        	$dbObj->database_error($dbObj);
+        	return false;
+        }
 
         while (!$dbObj->EOF) {
 
@@ -679,7 +694,12 @@ class BatchManager
 					COUNT(ServerFrames.IdSync) AS Total FROM ServerFrames, Batchs WHERE
 					ServerFrames.IdBatchUp = Batchs.IdBatch AND Batchs.IdBatchDown = $idBatch";
 
-                $dbObj->Query($sql);
+                $res = $dbObj->Query($sql);
+                if (!$res)
+                {
+                	$dbObj->database_error($dbObj);
+                	return false;
+                }
 
                 $errors = $dbObj->GetValue("Errors");
                 $success = $dbObj->GetValue("Success");
@@ -698,7 +718,12 @@ class BatchManager
 						COUNT(ServerFrames.IdSync) AS Total FROM NodeFrames, ServerFrames WHERE
 							ServerFrames.IdNodeFrame = NodeFrames.IdNodeFrame and NodeFrames.NodeId = $generatorId";
 
-                    $dbObj->Query($sql);
+                    $res = $dbObj->Query($sql);
+                    if (!$res)
+                    {
+                    	$dbObj->database_error($dbObj);
+                    	return false;
+                    }
 
                     $errors = $dbObj->GetValue("Errors");
                     $success = $dbObj->GetValue("Success");
@@ -732,7 +757,12 @@ class BatchManager
         }
 
         $query = "SELECT IdBatch FROM Batchs WHERE Playing = 1 AND State = 'Waiting' AND TimeOn < $now";
-        $dbObj->Query($query);
+        $res = $dbObj->Query($query);
+        if (!$res)
+        {
+        	$dbObj->database_error($dbObj);
+        	return false;
+        }
 
         $listBatchs = array();
         while (!$dbObj->EOF) {
@@ -796,8 +826,13 @@ class BatchManager
             $batch->update();
 
             $db = new Db();
-            $db->execute("UPDATE Batchs SET IdPortalVersion = IdPortalVersion + 1 WHERE State != 'Ended'
+            $res = $db->execute("UPDATE Batchs SET IdPortalVersion = IdPortalVersion + 1 WHERE State != 'Ended'
 				AND IdBatch > $idBatch");
+            if (!$res)
+            {
+            	$dbObj->database_error($dbObj);
+            	return false;
+            }
 
         }
 
@@ -830,7 +865,13 @@ class BatchManager
 				WHERE Playing = 1 AND State = 'InTime' AND ServerFramesTotal > 0
 				ORDER BY Priority DESC, MajorCycle DESC, MinorCycle DESC, Type = 'Down' DESC LIMIT 1";
 
-        $dbObj->Query($sql);
+        $res = $dbObj->Query($sql);
+        if (!$res)
+        {
+        	$dbObj->database_error($dbObj);
+        	return false;
+        }
+        
         $num = $dbObj->numRows;
         if ($num == 0) {
             return false;
@@ -971,7 +1012,12 @@ class BatchManager
         $query = "SELECT IdSync FROM ServerFrames, Batchs, Pumpers WHERE ServerFrames.IdBatchUp = Batchs.IdBatch AND " .
             "ServerFrames.PumperId = Pumpers.PumperId AND " .
             "Batchs.$batchColumn = $batchId AND Pumpers.IdServer NOT IN ($inactives)";
-        $dbObj->Query($query);
+        $res = $dbObj->Query($query);
+        if (!$res)
+        {
+        	$dbObj->database_error($dbObj);
+        	return false;
+        }
 
         $numServerFramesFromInactiveServers = $dbObj->numRows;
 
@@ -996,7 +1042,11 @@ class BatchManager
         $sql = "UPDATE Batchs set Playing = '$playingValue'";
 
         $dbObj->Execute($sql);
-
+        if (!$res)
+        {
+        	$dbObj->database_error($dbObj);
+        	return false;
+        }
         if ($dbObj->numRows > 0) {
             $batch->BatchToLog(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__,
                 __LINE__, "INFO", 8, $dbObj->numRows . " " . _("Setting batchs to") . ($playingValue == 1) ? " playing" : " unplaying");
@@ -1119,7 +1169,12 @@ class BatchManager
         $sql = "SELECT IdBatch, Type, IdNodeGenerator, MajorCycle, MinorCycle, ServerFramesTotal FROM Batchs
 				WHERE Playing = 1 AND State = 'InTime' AND ServerFramesTotal > 0
 				ORDER BY Priority DESC, MajorCycle DESC, MinorCycle DESC, Type = 'Down'";
-        $dbObj->Query($sql);
+        $res = $dbObj->Query($sql);
+        if (!$res)
+        {
+        	$dbObj->database_error($dbObj);
+        	return false;
+        }
 
         if ($dbObj->numRows > 0) {
             $batchs = array();
@@ -1141,5 +1196,4 @@ class BatchManager
         }
         return $batchs;
     }
-
 }

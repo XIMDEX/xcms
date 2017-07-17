@@ -67,8 +67,16 @@ date_default_timezone_set(App::getValue('timezone', 'Europe/Madrid'));
 // set DB Connection
 $dbConfig = App::getValue('db');
 if ( !empty( $dbConfig ) ) {
-    $dbConn = new \PDO("{$dbConfig['type']}:host={$dbConfig['host']};port={$dbConfig['port']};dbname={$dbConfig['db']}",
-        $dbConfig['user'], $dbConfig['password']);
+	try
+	{
+    	$dbConn = new \PDO("{$dbConfig['type']}:host={$dbConfig['host']};port={$dbConfig['port']};dbname={$dbConfig['db']}",
+        		$dbConfig['user'], $dbConfig['password']);
+	}
+	catch (PDOException $e)
+	{
+		XMD_Log::error('Can\'t connect to dababase at ' . $dbConfig['host'] . ':' . $dbConfig['port']);
+		die();
+	}
     $dbConn->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_ASSOC);
     App::addDbConnection($dbConn);
 

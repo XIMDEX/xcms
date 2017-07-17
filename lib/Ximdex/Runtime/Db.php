@@ -8,7 +8,6 @@
 namespace Ximdex\Runtime;
 
 use Ximdex\Runtime\App;
-use PDO;
 use Ximdex\Logger as XMD_Log;
 
 class Db
@@ -36,6 +35,9 @@ class Db
      * @var \PDOStatement
      */
     private $stm = null;
+    
+    //TODO ajlucena
+    private $TIME_TO_RECONNECT = 60;	//sleeping time to reconnect to the database in seconds
 
     /**
      * @param string $conf
@@ -55,26 +57,38 @@ class Db
     public function __construct($conf = null)
     {
         if (is_null($conf)) {
-             if(is_null(self::$defaultConf)){
-                 self::$defaultConf = App::getInstance()->getValue('default.db', 'db');
-             }
-             $conf = self::$defaultConf;
-         }
+        	if (is_null(self::$defaultConf)) {
+				self::$defaultConf = App::getInstance()->getValue('default.db', 'db');
+			}
+			$conf = self::$defaultConf;
+        }
         $this->db = App::Db($conf);
     }
 
-    /**
-     * Reconnect the Database
-     */
+   	/**
+   	 * Reconnect the Database
+   	 * @return boolean
+   	 */
     public function reconectDataBase(){
          $dbConfig = App::getInstance()->getValue('db', 'db');
-         if ( !empty( $dbConfig ) ) {
-             $dbConn = new \PDO("{$dbConfig['type']}:host={$dbConfig['host']};port={$dbConfig['port']};dbname={$dbConfig['db']}", $dbConfig['user'], $dbConfig['password']);
-             $dbConn->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_ASSOC);
-             $this->db = $dbConn;
-             $idconfig = uniqid();
-             App::addDbConnection($dbConn, $idconfig);
-             self::$defaultConf = $idconfig;
+         if ( !empty( $dbConfig ) )
+         {
+         	try
+         	{
+            	$dbConn = new \PDO("{$dbConfig['type']}:host={$dbConfig['host']};port={$dbConfig['port']};dbname={$dbConfig['db']}", $dbConfig['user'], $dbConfig['password']);
+         	}
+         	catch (\PDOException $e)
+         	{
+         		XMD_Log::error('Can\'t reconnect to database at ' . $dbConfig['host'] . ':' . $dbConfig['port']);
+         		return false;
+         	}
+            $dbConn->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_ASSOC);
+            $this->db = $dbConn;
+            $idconfig = uniqid();
+            App::addDbConnection($dbConn, $idconfig);
+            self::$defaultConf = $idconfig;
+            XMD_Log::info('Reconnection to database at ' . $dbConfig['host'] . ':' . $dbConfig['port'] . ' has been stablished correctly');
+            return true;
          }
      }
 
@@ -93,10 +107,11 @@ class Db
         $this->rows = array();
 
         try {
-            $this->stm = $this->db->query($this->sql, PDO::FETCH_ASSOC);
+            $this->stm = $this->db->query($this->sql, \PDO::FETCH_ASSOC);
 
             if ($this->stm === false) {
                 throw new \Exception('Bad Query: ' . $this->sql);
+                return false;
             }
 
             foreach ($this->stm as $row) {
@@ -106,12 +121,13 @@ class Db
             }
 
         } catch (\Exception $e) {
-            if ($this->db->errorCode() == PDO::ERR_NONE) {
+            if ($this->db->errorCode() == \PDO::ERR_NONE) {
                 $this->numErr = null;
             } else {
                 $this->numErr = $this->db->errorCode();
             }
             XMD_Log::error($this->db->errorInfo()[2] . '. (SQL: ' . $this->sql . ')');
+            return false;
         }
 
         if (count($this->rows) == 0) {
@@ -126,7 +142,7 @@ class Db
             $this->numFields = count($this->row);
         }
 
-
+		return true;
     }
 
 
@@ -153,7 +169,7 @@ class Db
             return true;
         } else {
             $this->numRows = $statement->rowCount();
-            if ($this->db->errorCode() == PDO::ERR_NONE) {
+            if ($this->db->errorCode() == \PDO::ERR_NONE) {
                 $this->numErr = null;
             } else {
                 $this->numErr = $this->db->errorCode();
@@ -234,7 +250,7 @@ class Db
         if (($this->dbEncoding == '') && ($this->workingEncoding == '')) {
             $this->sql = $sql;
             try {
-                $stm = $this->db->query($this->sql, PDO::FETCH_ASSOC);
+                $stm = $this->db->query($this->sql, \PDO::FETCH_ASSOC);
                 if ($stm === false)
                 {
                 	throw new \PDOException();
@@ -251,7 +267,7 @@ class Db
 
 
             } catch (\PDOException  $e) {
-                if ($this->db->errorCode() == PDO::ERR_NONE) {
+                if ($this->db->errorCode() == \PDO::ERR_NONE) {
                     $this->numErr = null;
                 } else {
                     $this->numErr = $this->db->errorCode();
@@ -305,4 +321,32 @@ class Db
         return self::getInstance()->db->quote($value);
     }
 
+    public function error()
+    {
+    	return $this->db->errorInfo();
+    }
+    
+    /**
+     * Operations with some specified database errors
+     * @param Db $db
+     */
+    public function database_error(Db $db = null)
+    {
+    	if (!$db)
+    	{
+    		$db = $this->db;
+    	}
+    	$error = $db->error();
+    	if ($error[0] == 'HY000' and $error[1] == 2006)
+    	{
+    		//MySQL server has gone away error; we will sleep for a few seconds and try again a new connection later
+    		do
+    		{
+    			//we will do a loop until the connection has been stablished
+    			XMD_Log::error('Connection to database has been lost. Trying to reconnect in ' . $this->TIME_TO_RECONNECT . ' seconds');
+    			sleep($this->TIME_TO_RECONNECT);
+    		}
+    		while (!$this->reconectDataBase());
+    	} 
+    }
 }
