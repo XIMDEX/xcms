@@ -72,15 +72,35 @@ class Action_modifyserver extends ActionAbstract {
 				'url' =>  $servers->class->GetURL($serverID),
 				'host' => $servers->class->GetHost($serverID),
 				'port' => $servers->class->GetPort($serverID),
-				'directory' => $servers->class->GetInitialDirectory($serverID),
+				'initialdirectory' => $servers->class->GetInitialDirectory($serverID),
 				'user' => $servers->class->GetLogin($serverID),
 				'description' => $servers->class->GetDescription($serverID),
 				'enable' => $servers->class->GetEnabled($serverID),
 				'preview' => $servers->class->GetPreview($serverID),
-				'path' => $servers->class->GetOverrideLocalPaths($serverID),
+				'overridelocalpaths' => $servers->class->GetOverrideLocalPaths($serverID),
 				'isServerOTF' => $isServerOTF
 
 			);
+		}
+		elseif ($request)
+		{
+			//data provided from the form submit
+			$server = array();
+			$server['protocol'] = $request->getParam('protocol');
+			$server['host'] = $request->getParam('host');
+			$server['port'] = $request->getParam('port');
+			$server['initialdirectory'] = $request->getParam('initialdirectory');
+			$server['url'] = $request->getParam('url');
+			$server['login'] = $request->getParam('login');
+			$server['password'] = $request->getParam('password');
+			$server['description'] = $request->getParam('description');
+			$server['enabled'] = $request->getParam('enabled');
+			$server['preview'] = $request->getParam('preview');
+			$server['overridelocalpaths'] = $request->getParam('overridelocalpaths');
+			//$server['channels'] = $request->getParam('channels');
+			$server['states'] = $request->getParam('states');
+			$server['encode'] = $request->getParam('encode');
+			$server['serverOTF'] = $request->getParam('serverOTF');
 		}
 		else
 		{
@@ -122,11 +142,6 @@ class Action_modifyserver extends ActionAbstract {
 			'id_server' => (int) $serverID,
 			'messages' => $this->messages->messages
 		);
-		if ($request)
-		{
-			//data provided from the form submit
-			$values['server']['description'] = $request->getParam('description');
-		}
 		$this->render($values, "index", 'default-3.0.tpl');
 	}
 

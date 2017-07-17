@@ -68,9 +68,9 @@
 								placeholder="{t}New server name{/t}" />
 					</div>
 					<span>
-						<input type="checkbox" id='enabled_{$id_node}' name='enabled' {if ($server.enable)}checked{/if} class="input-slide"/>
+						<input type="checkbox" id='enabled_{$id_node}' name='enabled' {if ($server.enabled)}checked="checked"{/if} class="input-slide"/>
 						<label for='enabled_{$id_node}' class="label-slide"> {t}Enabled{/t}</label>
-						<input type="checkbox" id='preview_{$id_node}' name='preview' {if ($server.preview)}checked{/if} class="input-slide">
+						<input type="checkbox" id='preview_{$id_node}' name='preview' {if ($server.preview)}checked="checked"{/if} class="input-slide">
 						<label for='preview_{$id_node}' class="label-slide">{t}Preview server{/t}</label>
 					</span>
 				</div>
@@ -79,7 +79,7 @@
 						<label>{t}Connection{/t}</label>
 							{foreach from=$protocols item=_protocol}
 								<label for="{$_protocol.Id}">
-									<input type="radio" name="protocol" id="{$_protocol.Id}" value='{$_protocol.Id}' {if ($server.protocol eq $_protocol.Id)}checked{/if} />
+									<input type="radio" name="protocol" id="{$_protocol.Id}" value='{$_protocol.Id}' {if ($server.protocol eq $_protocol.Id)}checked="checked"{/if} />
 		                           	{$_protocol.Id|gettext}
 		                        </label>
 		                   {/foreach}
@@ -90,7 +90,7 @@
 					</div>
 					<div class="remote_folder">
 						<label id='labelDirectorio' for='initialdirectory' class="aligned label_general">{t}Remote directory{/t}</label>
-						<input type="text" id='initialdirectory' name='initialdirectory' MAXLENGTH="100" VALUE="{$server.directory}" class='cajag'/>
+						<input type="text" id='initialdirectory' name='initialdirectory' MAXLENGTH="100" VALUE="{$server.initialdirectory}" class='cajag'/>
 					</div>
 					<div class="port not_local">
 						<label for='port' class="aligned label_general">{t}Port{/t}</label>
@@ -101,7 +101,7 @@
 						<input style="margin-bottom:10px;" type="text" id='host' name='host' MAXLENGTH="100" VALUE="{$server.host}" class='cajag'/>
 						<div class="abs_url">
 							<span class="slide-element">
-								<input type="checkbox" id='override_{$id_node}' name='overridelocalpaths' {if ($server.path)}checked{/if} class="input-slide"/>
+								<input type="checkbox" id='override_{$id_node}' name='overridelocalpaths' {if ($server.overridelocalpaths)}checked="checked"{/if} class="input-slide"/>
 								<label for='override_{$id_node}' class="label-slide">{t}Absolute URLs{/t}</label>
 							</span>
 						</div>
@@ -118,7 +118,7 @@
 						<label>{t}Encoding{/t}</label>
 		                {foreach from=$encodes item=_encode}
 							<label for="{$_encode.Id}">
-							<input type="radio" name="encode" value='{$_encode.Id}' {if ($server.encode eq $_encode.Id)}checked{/if} id="{$_encode.Id}"/>
+							<input type="radio" name="encode" value='{$_encode.Id}' {if ($server.encode eq $_encode.Id)}checked="checked"{/if} id="{$_encode.Id}"/>
 							{$_encode.Id}</label>
 		           		{/foreach}
 					</div>
@@ -127,8 +127,10 @@
 						{if $numchannels neq 0}
 							{foreach from=$channels item=_channel}
 								<span class="slide-element">
-									<input id='channels{$_channel.IdChannel}_{$id_node}' name='channels[]' type='checkbox' value='{$_channel.IdChannel}' {if ($_channel.InServer)}checked{/if} class="input-slide"/>
-									<label for='channels{$_channel.IdChannel}_{$id_node}' class="label-slide server_channel"> {$_channel.Description|gettext}</label>
+									<input id='channels{$_channel.IdChannel}_{$id_node}' name='channels[]' type='checkbox' 
+											value='{$_channel.IdChannel}' {if ($_channel.InServer)}checked="checked"{/if} class="input-slide"/>
+									<label for='channels{$_channel.IdChannel}_{$id_node}' 
+											class="label-slide server_channel">{$_channel.Description|gettext}</label>
 								</span>
 							{/foreach}
 						{else}

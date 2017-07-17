@@ -36,7 +36,6 @@ class Db
      */
     private $stm = null;
     
-    //TODO ajlucena
     private $TIME_TO_RECONNECT = 60;	//sleeping time to reconnect to the database in seconds
 
     /**
