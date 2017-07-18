@@ -34,13 +34,6 @@
 		<h5 class="nodeid_header"> ID Node: {$nodeid}</h5>
 		<hr />
 	</div>
-	{if !empty($messages)}
-		<div class="message">
-			{foreach name=messages from=$messages key=message_id item=message}
-				<p>{$message.message}</p>
-			{/foreach}
-		</div>
-	{/if}
 	<div class="action_content">
 		<div class="row tarjeta">
 			<h2 class="h2_general">{t}Manage servers{/t}</h2>
@@ -50,6 +43,13 @@
 					</div>
 				</div>
 			</fieldset>
+			{if !empty($messages)}
+				<div class="message">
+					{foreach name=messages from=$messages key=message_id item=message}
+						<p>{$message.message}</p>
+					{/foreach}
+				</div>
+			{/if}
 			<div id="serverid" class='server-name col1-3'>
 				<div class="create-server btn main_action">{t}Create new server{/t}</div>
 				{foreach from=$servers item=_server}
@@ -76,7 +76,7 @@
 				</div>
 				<div style="margin-top: 100px!important;" class="content_server">
 					<div name='protocol' id='protocol'>
-						<label>{t}Connection{/t}</label>
+						<label>{t}Connection{/t} &nbsp;</label>
 							{foreach from=$protocols item=_protocol}
 								<label for="{$_protocol.Id}">
 									<input type="radio" name="protocol" id="{$_protocol.Id}" value='{$_protocol.Id}' {if ($server.protocol eq $_protocol.Id)}checked="checked"{/if} />
@@ -100,10 +100,8 @@
 						<label id='labeldirRemota' for='host' class="aligned label_general">{t}Web URL{/t}</label>
 						<input style="margin-bottom:10px;" type="text" id='host' name='host' MAXLENGTH="100" VALUE="{$server.host}" class='cajag'/>
 						<div class="abs_url">
-							<span class="slide-element">
 								<input type="checkbox" id='override_{$id_node}' name='overridelocalpaths' {if ($server.overridelocalpaths)}checked="checked"{/if} class="input-slide"/>
 								<label for='override_{$id_node}' class="label-slide">{t}Absolute URLs{/t}</label>
-							</span>
 						</div>
 					</div>
 					<div class="login not_local">
@@ -111,27 +109,32 @@
 						<input type="text" id='login' name='login' MAXLENGTH="100" VALUE="{$server.user}" class='cajag'/>
 					</div>
 					<div class="password not_local">
-						<label for='password' class="aligned label_general">{t}Password{/t}</label>
-						<input type="password" id='password' name='password' class='cajag'>
+						<label for='password' class="aligned label_general">
+							{t}Password{/t}
+							{if {$server.password}}
+								{t}(Only if you want to change the actual one){/t}
+							{/if}
+						</label>
+						<input type="password" id='password' name='password' class='cajag' />
 					</div>
 					<div class="encoding">
-						<label>{t}Encoding{/t}</label>
+						<label>{t}Encoding{/t} &nbsp;</label>
 		                {foreach from=$encodes item=_encode}
 							<label for="{$_encode.Id}">
 							<input type="radio" name="encode" value='{$_encode.Id}' {if ($server.encode eq $_encode.Id)}checked="checked"{/if} id="{$_encode.Id}"/>
 							{$_encode.Id}</label>
 		           		{/foreach}
 					</div>
-					<label>{t}Channels{/t}</label>
+					<label>{t}Channels{/t} &nbsp;</label>
 					<div class="channels-wrapper">
 						{if $numchannels neq 0}
 							{foreach from=$channels item=_channel}
-								<span class="slide-element">
+								<div class="slide-element channelms">
 									<input id='channels{$_channel.IdChannel}_{$id_node}' name='channels[]' type='checkbox' 
 											value='{$_channel.IdChannel}' {if ($_channel.InServer)}checked="checked"{/if} class="input-slide"/>
 									<label for='channels{$_channel.IdChannel}_{$id_node}' 
 											class="label-slide server_channel">{$_channel.Description|gettext}</label>
-								</span>
+								</div>
 							{/foreach}
 						{else}
 							<p>{t}There are no channels associated to this project{/t}.</p>

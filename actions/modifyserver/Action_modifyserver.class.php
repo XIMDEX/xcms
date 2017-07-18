@@ -74,8 +74,9 @@ class Action_modifyserver extends ActionAbstract {
 				'port' => $servers->class->GetPort($serverID),
 				'initialdirectory' => $servers->class->GetInitialDirectory($serverID),
 				'user' => $servers->class->GetLogin($serverID),
+				'password' => $servers->class->GetPassword($serverID),
 				'description' => $servers->class->GetDescription($serverID),
-				'enable' => $servers->class->GetEnabled($serverID),
+				'enabled' => $servers->class->GetEnabled($serverID),
 				'preview' => $servers->class->GetPreview($serverID),
 				'overridelocalpaths' => $servers->class->GetOverrideLocalPaths($serverID),
 				'isServerOTF' => $isServerOTF
@@ -92,12 +93,10 @@ class Action_modifyserver extends ActionAbstract {
 			$server['initialdirectory'] = $request->getParam('initialdirectory');
 			$server['url'] = $request->getParam('url');
 			$server['login'] = $request->getParam('login');
-			$server['password'] = $request->getParam('password');
 			$server['description'] = $request->getParam('description');
 			$server['enabled'] = $request->getParam('enabled');
 			$server['preview'] = $request->getParam('preview');
 			$server['overridelocalpaths'] = $request->getParam('overridelocalpaths');
-			//$server['channels'] = $request->getParam('channels');
 			$server['states'] = $request->getParam('states');
 			$server['encode'] = $request->getParam('encode');
 			$server['serverOTF'] = $request->getParam('serverOTF');
@@ -113,7 +112,7 @@ class Action_modifyserver extends ActionAbstract {
 
 		// Getting channels
 
-		$channels = $this->_getChannels($idNode, $serverID);
+		$channels = $this->_getChannels($idNode, $serverID, $request);
 		$numChannels = count($channels);
 
 		//add a js for validation and hidden or display elements about the protocol selected
@@ -185,7 +184,7 @@ class Action_modifyserver extends ActionAbstract {
 			}
 		}
 
-		if ($this->_validate($protocol,$host,$port,$initialDir,$url,$login,$password,$description)){
+		if ($this->_validate($serverID, $protocol,$host,$port,$initialDir,$url,$login,$password,$description)){
 
 			$node = new Node($nodeID);
 
@@ -228,6 +227,11 @@ class Action_modifyserver extends ActionAbstract {
 						}
 						if($password){
 							$node->class->SetPassword($serverID, $password);
+						}
+						elseif ($serverID and $server)
+						{
+							//if the password was specified before, we use the one stored
+							$password = $server->class->GetPassword($serverID);
 						}
 						$this->messages->add(_("Server successfully modified"), MSG_TYPE_NOTICE);
 					}else{
@@ -275,7 +279,7 @@ class Action_modifyserver extends ActionAbstract {
 	 * Function for validation the fields
 	 *
 	 */
-	private function _validate($protocol,$host,$port,$initialDir,$url,$login,$password,$description){
+	private function _validate($serverID, $protocol,$host,$port,$initialDir,$url,$login,$password,$description){
 		$validation = true;
 
 		if ($protocol == 'LOCAL'){
@@ -288,7 +292,7 @@ class Action_modifyserver extends ActionAbstract {
 				$validation=false;
 			}
 		}else if (($protocol == 'FTP') || ($protocol == 'SSH')){
-			if ((!$password)){
+			if (!$serverID and (!$password)){
 				$this->messages->add(_("A password is required"), MSG_TYPE_ERROR);
 				$validation=false;
 			}
@@ -354,16 +358,28 @@ class Action_modifyserver extends ActionAbstract {
 		return $_protocols;
 	}
 
-	private function _getChannels($nodeID, $serverID) {
-
-		$server = new Node($nodeID);
+	private function _getChannels($nodeID, $serverID, $request = null) {
+		
 		$channel = new Channel();
 		$channels = $channel->getChannelsForNode($nodeID);
 
 		if (is_array($channels)) {
-			foreach ($channels as &$channel) {
-				$ch = new Channel($channel['IdChannel']);
-				$channel['InServer'] = $server->class->HasChannel($serverID, $channel['IdChannel']);
+			
+			if ($request)
+			{
+				//data provided from the form submit
+				foreach ($channels as & $channel)
+				{
+					$channel['InServer'] = in_array($channel['IdChannel'], $request->getParam('channels'));
+				}
+			}
+			elseif ($serverID)
+			{
+				$server = new Node($nodeID);
+				foreach ($channels as & $channel) {
+					//$ch = new Channel($channel['IdChannel']);
+					$channel['InServer'] = $server->class->HasChannel($serverID, $channel['IdChannel']);
+				}
 			}
 		}
 

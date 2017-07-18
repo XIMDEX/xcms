@@ -199,3 +199,10 @@ fieldset.mdfsv_errors {
 {
 	margin: 0 0 0 10pt !important;
 }
+
+.channelms
+{
+	width: 50% !important;
+	float:left;
+	margin-bottom: 5pt;
+}
