@@ -47,7 +47,7 @@
                 <div class="input-select icon">
                     <label for="link_type" class="label_title label_general">{t}Type{/t}</label>
                     <select name="link_type" id="link_type" class="cajaxg document-type validable not_empty">
-                        <option value="url" selected>URL (http://)</option>
+                        <option value="url" selected>URL (http:// or https://)</option>
                         <option value="email">E-mail (mailto:)</option>
                     </select>
                 </div>
@@ -76,7 +76,7 @@
 
         <!-- <div class="input-select icon icon-positioned link">
             <select name="link_type" id="link_type" class="cajaxg document-type">
-                <option value="url" selected>URL (http://)</option>
+                <option value="url" selected>URL (http:// or https://)</option>
                 <option value="email">E-mail (mailto:)</option>
             </select>
         </div> -->

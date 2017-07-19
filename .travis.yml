@@ -12,7 +12,7 @@ services:
 
 env:
   - PHP_VERSION=7 DB_SERVER=mysql:5.7
-  - PHP_VERSION=7 DB_SERVER=mariadb:10.2  not working in Travis, but in local it works
+  - PHP_VERSION=7 DB_SERVER=mariadb:10.2.7
 
 before_install:
   - curl -L https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
