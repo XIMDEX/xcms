@@ -135,7 +135,7 @@ class InstallDataBaseManager extends InstallManager
     {
         $result = false;
         if ($this->dbConnection) {
-            $query = "create database $name";
+            $query = "CREATE DATABASE $name DEFAULT CHARACTER SET utf8";
             $result = $this->dbConnection->exec($query);
             if ($result === 0)
             	$result = false;

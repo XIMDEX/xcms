@@ -175,7 +175,7 @@ CREATE TABLE `SynchronizerStats` (
   `Time` int(11) unsigned NOT NULL,
   `Comment` varchar(255) NOT NULL,
   PRIMARY KEY  (`IdStat`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Statistics module synchronization';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Statistics module synchronization';
 
 
 -- --------------------------------------------------------

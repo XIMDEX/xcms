@@ -24,7 +24,7 @@ CREATE TABLE `ActionsStats` (
   `TimeStamp` int(11) unsigned NOT NULL,
   `Duration` float(11,6) unsigned NOT NULL,
   PRIMARY KEY (`IdStat`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COMMENT='Usage stats for actions';
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Usage stats for actions';
 
 CREATE TABLE `Channels` (
   `IdChannel` int(12) unsigned NOT NULL,
@@ -226,7 +226,7 @@ CREATE TABLE `NodeEdition` (
   `IdUser` int(11) unsigned NOT NULL,
   `StartTime` int(11) unsigned DEFAULT NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COMMENT='XML edition information. For concurrency issues';
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='XML edition information. For concurrency issues';
 
 CREATE TABLE `NodeNameTranslations` (
   `IdRel` int(12) unsigned NOT NULL AUTO_INCREMENT,
@@ -271,7 +271,7 @@ CREATE TABLE `NodeSets` (
   `Name` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`Id`),
   UNIQUE KEY `U_SET` (`Name`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `NodetypeModes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -354,7 +354,7 @@ CREATE TABLE `PipeProcess` (
   `IdPipeline` int(11) DEFAULT NULL,
   `Name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `PipeProperties` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -376,7 +376,7 @@ CREATE TABLE `PipeStatus` (
   `Name` varchar(255) NOT NULL,
   `Description` varchar(250) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `PipeTransitions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -387,7 +387,7 @@ CREATE TABLE `PipeTransitions` (
   `Name` varchar(255) NOT NULL,
   `Callback` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `PortalVersions` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
@@ -395,7 +395,7 @@ CREATE TABLE `PortalVersions` (
   `Version` int(12) unsigned DEFAULT '0',
   `TimeStamp` int(12) unsigned DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `Protocols` (
   `IdProtocol` varchar(255) NOT NULL DEFAULT '',
@@ -421,7 +421,7 @@ CREATE TABLE `RelFramesPortal` (
   `IdFrame` int(12) unsigned DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `PortalFrame` (`IdPortalVersion`,`IdFrame`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `RelGroupsNodes` (
   `IdRel` int(12) unsigned NOT NULL AUTO_INCREMENT,
@@ -465,7 +465,7 @@ CREATE TABLE `RelNodeSetsNode` (
   `IdNode` int(12) unsigned NOT NULL,
   PRIMARY KEY (`Id`),
   UNIQUE KEY `U_SETNODES` (`IdSet`,`IdNode`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `RelNodeSetsUsers` (
   `Id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -474,7 +474,7 @@ CREATE TABLE `RelNodeSetsUsers` (
   `Owner` tinyint(1) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`Id`),
   UNIQUE KEY `U_SETUSERS` (`IdSet`,`IdUser`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `RelNodeTypeMetadata` (
   `idRel` int(11) NOT NULL AUTO_INCREMENT,
@@ -595,7 +595,7 @@ CREATE TABLE `RelVersionsLabel` (
   `idLabel` int(12) unsigned DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `VersionsLabelRest` (`idVersion`,`idLabel`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `RelXml2Xml` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
@@ -623,7 +623,7 @@ CREATE TABLE `SearchFilters` (
   `Filter` text NOT NULL,
   PRIMARY KEY (`Id`),
   UNIQUE KEY `U_FILTER` (`Name`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `SectionTypes` (
   `idSectionType` int(11) NOT NULL AUTO_INCREMENT,
@@ -755,7 +755,7 @@ CREATE TABLE `Updater_DiffsApplied` (
   `module` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `Users` (
   `IdUser` int(12) unsigned NOT NULL,
