@@ -45,7 +45,7 @@ class View_XmlDocument extends Abstract_View implements Interface_View
         $this->retrieveContent($pointer);
         $node = new Node($idNode);
         if (!($node->get('IdNode') > 0)) {
-            XMD_Log::error("El nodo que se est� intentando convertir no existe: $idNode");
+        	XMD_Log::error("The node that is trying to destroy does not exist: $idNode");
             return false;
         }
 

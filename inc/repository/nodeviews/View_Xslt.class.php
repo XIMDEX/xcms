@@ -30,7 +30,7 @@ use Ximdex\Models\Node;
 use Ximdex\Models\Version;
 
 ModulesManager::file('/xslt/functions.php', 'dexT');
- ModulesManager::file('/inc/repository/nodeviews/Abstract_View.class.php');
+ModulesManager::file('/inc/repository/nodeviews/Abstract_View.class.php');
 ModulesManager::file('/inc/repository/nodeviews/Interface_View.class.php');
 
 
@@ -165,17 +165,17 @@ class View_Xslt extends Abstract_View
         if (!is_null($idVersion)) {
             $version = new Version($idVersion);
             if (!($version->get('IdVersion') > 0)) {
-                XMD_Log::error('VIEW XSLT: Se ha cargado una versi�n incorrecta (' . $idVersion . ')');
+                XMD_Log::error('VIEW XSLT: Incorrect version has been loaded (' . $idVersion . ')');
                 return NULL;
             }
 
             $this->_node = new Node($version->get('IdNode'));
             if (!($this->_node->get('IdNode') > 0)) {
-                XMD_Log::error('VIEW XSLT: El nodo que se est� intentando convertir no existe: ' . $version->get('IdNode'));
+                XMD_Log::error('VIEW XSLT: The node that it\'s trying to convert doesn\'t exists: ' . $version->get('IdNode'));
                 return NULL;
             }
         } else {
-            XMD_Log::info("VIEW XSLT: Se instancia vista xslt sin idVersion");
+            XMD_Log::info("VIEW XSLT: xslt view is instantiate without 'idVersion'");
         }
 
         return true;

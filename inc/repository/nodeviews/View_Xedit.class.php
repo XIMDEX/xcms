@@ -148,13 +148,13 @@ class View_Xedit extends Abstract_View implements Interface_View {
 		if(!is_null($idVersion)) {
 			$version = new Version($idVersion);
 			if (!($version->get('IdVersion') > 0)) {
-				XMD_Log::error('VIEW XEDIT: Se ha cargado una versi�n incorrecta (' . $idVersion . ')');
+				XMD_Log::error('VIEW XEDIT: An incorrect version has been loaded (' . $idVersion . ')');
 				return false;
 			}
 			
 			$this->node = new Node($version->get('IdNode'));
 			if (!($this->node->get('IdNode') > 0)) {
-				XMD_Log::error('VIEW XEDIT: El nodo que se est� intentando convertir no existe: ' . $version->get('IdNode'));
+				XMD_Log::error('VIEW XEDIT: The node it\'s trying to convert doesn\'t exists: ' . $version->get('IdNode'));
 				return false;
 			}
 		}
