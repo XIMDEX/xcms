@@ -184,7 +184,7 @@ class Action_modifyserver extends ActionAbstract {
 			}
 		}
 
-		if ($this->_validate($serverID, $protocol,$host,$port,$initialDir,$url,$login,$password,$description)){
+		if ($this->_validate($serverID, $protocol,$host,$port,$initialDir,$url,$login,$password,$description, $encode)){
 
 			$node = new Node($nodeID);
 
@@ -279,7 +279,7 @@ class Action_modifyserver extends ActionAbstract {
 	 * Function for validation the fields
 	 *
 	 */
-	private function _validate($serverID, $protocol,$host,$port,$initialDir,$url,$login,$password,$description){
+	private function _validate($serverID, $protocol,$host,$port,$initialDir,$url,$login,$password,$description, $encode){
 		$validation = true;
 
 		if ($protocol == 'LOCAL'){
@@ -316,11 +316,17 @@ class Action_modifyserver extends ActionAbstract {
 				$this->messages->add(_("A login is required"), MSG_TYPE_ERROR);
 				$validation=false;
 			}
+			
 		}
 		//validate the common fields
 		if ((!$description) || ($description =='')){
 			$this->messages->add(_("Server description is required"), MSG_TYPE_ERROR);
 			$validation=false;
+		}
+		if (!$encode)
+		{
+			$this->messages->add(_("An enconding type is required"), MSG_TYPE_ERROR);
+			$validation = false;
 		}
 
 		return $validation;
