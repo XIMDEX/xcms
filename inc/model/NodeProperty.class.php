@@ -46,7 +46,7 @@ class NodeProperty extends NodeProperties_ORM {
 		$propertyId = $this->get('IdNodeProperty');
 
 		if (!($propertyId > 0)) {
-			XMD_Log::error(_("Adding nodeproperty"));
+			XMD_Log::error(_("Adding nodeproperty (idNode: $idNode, property: $property, value: $value)"));
 			return false;
 		}
 

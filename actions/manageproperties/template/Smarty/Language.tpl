@@ -36,7 +36,7 @@
 					<label>{t}Overwrite inherited languages{/t}</label>
 				</div>
 				{foreach from=$languages item=language}
-					<span class="slide-element">
+					<span class="slide-element languagemp">
 						<input type="checkbox" class="languages input-slide" name="Language[]" id="{$language.Name}_{$id_node}" 
 							value="{$language.IdLanguage}"
 							{if $language.Checked == 1}

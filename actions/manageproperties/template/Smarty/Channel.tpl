@@ -37,7 +37,7 @@
 		</div>
 	{if ($channels)}
 		{foreach from=$channels item=channel}
-		<span class="slide-element">
+		<span class="slide-element channelmp">
 			<input type="checkbox" class="channels input-slide" name="Channel[]" value="{$channel.IdChannel}" 
 			{if $channel.Checked == 1}
 				checked="checked"

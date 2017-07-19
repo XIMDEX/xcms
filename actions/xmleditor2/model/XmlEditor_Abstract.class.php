@@ -115,7 +115,7 @@ abstract class XmlEditor_Abstract
 
         } else {
             $msg = "docxap.xsl was not found for node $idnode";
-            XMD_Log::error(_($msg));
+            XMD_Log::error($msg);
 //			$content = array('error' => array($msg));
         }
 

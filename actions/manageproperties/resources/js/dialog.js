@@ -43,10 +43,10 @@ function manageproperties_showDialog(messages, fn, params, callback) {
 		.html($messagesHTML)
 		.dialog({
 			buttons: {
-				_("Cancel"): function() {
+				"Cancel": function() {
 					dialogCallback(false);
 				},
-				_("Accept"): function() {
+				"Accept": function() {
 	  				dialogCallback(true);
 				}
 			}

@@ -10188,3 +10188,6 @@ msgstr "Has seleccionado caducar el documento:"
 
 msgid "Document <strong>%s</strong> has been successfully expired"
 msgstr "El documento <strong>%s</strong> ha sido caducado"
+
+msgid "(Only if you want to change the actual one)"
+msgstr  "(S&oacute;lo si desea cambiar la actual)"

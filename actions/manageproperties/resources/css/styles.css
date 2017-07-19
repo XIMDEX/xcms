@@ -31,3 +31,13 @@ div.manageproperties div.recursive,
 div.manageproperties div.apply {
 	float: left;
 }
+
+div.manageproperties .channelmp
+{
+	margin-bottom: 5pt;
+}
+
+div.manageproperties .languagemp
+{
+	margin-bottom: 5pt;
+}
