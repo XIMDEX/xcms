@@ -90,6 +90,19 @@ class xsltnode extends FileNode
 
         $ptdProject = new Node($idXimptdProject);
         $idDocxapProject = $ptdProject->GetChildByName('docxap.xsl');
+        
+        if (!$idDocxapProject)
+        {
+            /*
+            There is not a docxap.xsl file in the project/templates folder, and two options:
+                - creating a new one
+                - generate an alert
+            now we use the first one...
+            */
+            $idDocxapProject = $this->createDocxapFile();
+            if (!$idDocxapProject)
+                XMD_Log::fatal('The project docxap XSL template could not been created');
+        }
 
         if ($xsltName != 'docxap.xsl' && $ximPtdNode->get('IdParent') != $node->GetProject()
             && !($ximPtdNode->GetChildByName('docxap.xsl') > 0) && ($idDocxapProject > 0)
@@ -407,5 +420,51 @@ class xsltnode extends FileNode
         $depsMngr = new DepsManager();
         return $depsMngr->getByTarget(DepsManager::STRDOC_TEMPLATE, $this->parent->get('IdNode'));
     }
-
+    
+    /**
+     * Create a new basic docxap XSLT file for the project if it's not exists
+     * @return boolean
+     */
+    public function createDocxapFile()
+    {
+        //obtain the project node
+        $node = new Node($this->nodeID);
+        $ximPtdNode = new Node($parentID);
+        $project = new Node($node->GetProject());
+        
+        //obtain the project templates node
+        $idXimptdProject = $project->GetChildByName('templates');
+        $ptdProject = new Node($idXimptdProject);
+        
+        //obtain the ID for an existant docaxp file yet
+        $idDocxapProject = $ptdProject->GetChildByName('docxap.xsl');
+        if ($idDocxapProject)
+            return $idDocxapProject;
+        
+        //generation of the file docxap.xsl with project name inside
+        $xslSourcePath = \App::getValue('AppRoot') . \App::getValue('TempRoot') . '/docxap.xsl';
+        XMD_Log::info('Creating unexisting docxap XSLT file in ' . $xslSourcePath);
+        $docxapTemplate = \App::getValue('AppRoot') . '/xmd/xslt/docxap.xsl.template';
+        $content = FsUtils::file_get_contents($docxapTemplate);
+        if (!$content)
+            return false;
+        $content = str_replace('##PROJECT_NAME##', $project->GetNodeName(), $content);
+		if (!FsUtils::file_put_contents($xslSourcePath, $content))
+		    return false;
+		
+		//obtain the ID for XSL templates node type
+		$nodeTypeID = Ximdex\Services\NodeType::XSL_TEMPLATE;
+		
+		//create the node for the generated file
+		$node = new Node();
+		$idDocxapProject = $node->CreateNode('docxap.xsl', $idXimptdProject, $nodeTypeID, null, $xslSourcePath);	
+		if (!$idDocxapProject)
+		{
+		    XMD_Log::error('Error creating the node for project docxap template');
+		    return false;
+		}
+		
+		//return the ID for the new project docxap template node
+		return $idDocxapProject;
+    }
 }
