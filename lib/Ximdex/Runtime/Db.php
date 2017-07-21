@@ -7,7 +7,6 @@
  */
 namespace Ximdex\Runtime;
 
-use Ximdex\Runtime\App;
 use Ximdex\Logger as XMD_Log;
 
 class Db
@@ -36,7 +35,7 @@ class Db
      */
     private $stm = null;
     
-    private $TIME_TO_RECONNECT = 60;	//sleeping time to reconnect to the database in seconds
+    private $TIME_TO_RECONNECT = 30;	//sleeping time to reconnect to the database in seconds
 
     /**
      * @param string $conf
@@ -98,7 +97,11 @@ class Db
         unset($cache);
 
 
-        $this->_getEncodings();
+        if (!$this->_getEncodings())
+        {
+            XMD_Log::error($this->desErr);
+            return false;
+        }
         $sql = \Ximdex\XML\Base::recodeSrc($sql, $this->dbEncoding);
 
         $this->sql = $sql;
@@ -152,7 +155,11 @@ class Db
     function Execute($sql)
     {
         //Encode to dbConfig value in table config
-        $this->_getEncodings();
+        if (!$this->_getEncodings())
+        {
+            XMD_Log::error($this->desErr);
+            return false;
+        }
         $sql = \Ximdex\XML\Base::recodeSrc($sql, $this->dbEncoding);
         $this->sql = $sql;
 
@@ -252,7 +259,9 @@ class Db
                 $stm = $this->db->query($this->sql, \PDO::FETCH_ASSOC);
                 if ($stm === false)
                 {
-                	throw new \PDOException();
+                    $error = $stm->errorInfo();
+                	XMD_Log::error('Can\'t get encondings types (' . $error[2] . ')');
+                    return false;
                 }
                 foreach ($stm as $row) {
                     $configKey = $row['ConfigKey'];
@@ -272,10 +281,11 @@ class Db
                     $this->numErr = $this->db->errorCode();
                 }
                 $this->desErr = $e;
+                return false;
             }
 
         }
-
+        return true;
     }
 
 
@@ -292,7 +302,11 @@ class Db
 
         if (isset($col, $this->row[$col])) {
 
-            $this->_getEncodings();
+            if (!$this->_getEncodings())
+            {
+                XMD_Log::error($this->desErr);
+                return false;
+            }
             $value = \Ximdex\XML\Base::recodeSrc($this->row[$col], $this->workingEncoding);
             return $value;
         }
