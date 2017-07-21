@@ -784,3 +784,19 @@ CREATE TABLE `Versions` (
   KEY `Version` (`SubVersion`,`IdNode`,`Version`),
   KEY `IdNode` (`IdNode`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Table of contents and version management';
+
+CREATE TABLE `RelStrdocNode` (
+	`id` int(12) unsigned NOT NULL auto_increment,
+	`source` int(12) unsigned NOT NULL default '0',
+	`target` int(12) unsigned NOT NULL default '0',
+	PRIMARY KEY (id),
+	UNIQUE KEY `rel` (`source`,`target`)
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE `RelStrdocAsset` (
+	`id` int(12) unsigned NOT NULL auto_increment,
+	`source` int(12) unsigned NOT NULL default '0',
+	`target` int(12) unsigned NOT NULL default '0',
+	PRIMARY KEY (id),
+	UNIQUE KEY `rel` (`source`,`target`)
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
