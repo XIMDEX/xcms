@@ -364,6 +364,10 @@ class Action_addfoldernode extends ActionAbstract
 
         $theme = $this->request->getParam("theme");
         if ($theme) {
+            
+            //we use this global variable to know that we are creating a project from a theme
+            $GLOBALS['fromTheme'] = true;
+            
             $projectTemplate = new ProjectTemplate($theme);
 
             $servers = $projectTemplate->getServers();
@@ -381,6 +385,8 @@ class Action_addfoldernode extends ActionAbstract
             foreach ($servers as $server) {
                 $this->insertServer($projectId, $server);
             }
+            
+            $GLOBALS['fromTheme'] = false;
         }
     }
 

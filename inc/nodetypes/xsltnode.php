@@ -90,19 +90,6 @@ class xsltnode extends FileNode
 
         $ptdProject = new Node($idXimptdProject);
         $idDocxapProject = $ptdProject->GetChildByName('docxap.xsl');
-        
-        if (!$idDocxapProject)
-        {
-            /*
-            There is not a docxap.xsl file in the project/templates folder, and two options:
-                - creating a new one
-                - generate an alert
-            now we use the first one...
-            */
-            $idDocxapProject = $this->createDocxapFile();
-            if (!$idDocxapProject)
-                XMD_Log::fatal('The project docxap XSL template could not been created');
-        }
 
         if ($xsltName != 'docxap.xsl' && $ximPtdNode->get('IdParent') != $node->GetProject()
             && !($ximPtdNode->GetChildByName('docxap.xsl') > 0) && ($idDocxapProject > 0)
@@ -222,6 +209,15 @@ class xsltnode extends FileNode
             if ($id > 0) {
                 $incNode = new Node($id);
                 $incNode->SetContent($includeContent);
+            }
+            
+            //it is not necesary to create a docxap file in a project based in a theme
+            if (!isset($GLOBALS['fromTheme']) or !$GLOBALS['fromTheme'])
+            {
+                //If there is not a docxap.xsl file in the project/templates folder, create a new one
+                $res = $this->create_docxap_file();
+                if (!$res)
+                    XMD_Log::fatal('The project docxap XSL template could not been created');
             }
 
         } else {
@@ -425,11 +421,10 @@ class xsltnode extends FileNode
      * Create a new basic docxap XSLT file for the project if it's not exists
      * @return boolean
      */
-    public function createDocxapFile()
+    private function create_docxap_file()
     {
         //obtain the project node
         $node = new Node($this->nodeID);
-        $ximPtdNode = new Node($parentID);
         $project = new Node($node->GetProject());
         
         //obtain the project templates node
