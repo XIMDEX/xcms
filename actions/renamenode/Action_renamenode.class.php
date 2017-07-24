@@ -1,11 +1,4 @@
 <?php
-use Ximdex\Models\Language;
-use Ximdex\Models\Node;
-use Ximdex\Models\Pipeline;
-use Ximdex\Models\PipeNodeTypes;
-use Ximdex\MVC\ActionAbstract;
-use Ximdex\Runtime\Db;
-
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -30,6 +23,15 @@ use Ximdex\Runtime\Db;
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
+
+use Ximdex\Models\Language;
+use Ximdex\Models\Node;
+use Ximdex\Models\Pipeline;
+use Ximdex\Models\PipeNodeTypes;
+use Ximdex\MVC\ActionAbstract;
+use Ximdex\Runtime\App;
+use Ximdex\Runtime\Db;
+
 class Action_renamenode extends ActionAbstract
 {
     // Main method: shows initial form
@@ -61,7 +63,7 @@ class Action_renamenode extends ActionAbstract
         ) {
 
             // master pipeline
-            $IdNodeForWorkflowMaster = \App::getValue('IdDefaultWorkflow');
+            $IdNodeForWorkflowMaster = App::getValue('IdDefaultWorkflow');
             $pipelineMaster = new Pipeline();
             $pipelineMaster->loadByIdNode($IdNodeForWorkflowMaster);
             $diffPipelines = array($pipelineMaster->get('id'));
@@ -102,7 +104,7 @@ class Action_renamenode extends ActionAbstract
         }
 
 
-        $checkUrl = \App::getValue('UrlRoot') . '/xmd/loadaction.php?actionid='
+        $checkUrl = App::getValue('UrlRoot') . '/xmd/loadaction.php?actionid='
             . $this->request->getParam('actionid') . '&nodeid=' . $this->request->getParam('nodeid')
             . '&id_pipeline=IDPIPELINE&method=checkNodeDependencies';
 
@@ -137,17 +139,19 @@ class Action_renamenode extends ActionAbstract
             $this->messages->add(_('Node could not be successfully loaded'), MSG_TYPE_NOTICE);
         } else {
             $result = $node->RenameNode($name);
-            $node->deleteProperty('SchemaType');
-
-            $schemaType = $this->request->getParam('schema_type');
-            if (!empty($schemaType) && $schemaType != 'generic_schema') {
-                $node->setProperty('SchemaType', $schemaType);
-            }
-            $node->update();
-            if ($result) {
-                $this->messages->add(_('Node name has been successfully updated'), MSG_TYPE_NOTICE);
-            } else {
-                $this->messages->add(_('Node name could not be updated'), MSG_TYPE_ERROR);
+            if ($result)
+            {
+                $node->deleteProperty('SchemaType');
+                $schemaType = $this->request->getParam('schema_type');
+                if (!empty($schemaType) && $schemaType != 'generic_schema') {
+                    $node->setProperty('SchemaType', $schemaType);
+                }
+                $result = $node->update();
+                if ($result !== false) {
+                    $this->messages->add(_('Node name has been successfully updated'), MSG_TYPE_NOTICE);
+                } else {
+                    $this->messages->add(_('Node name could not be updated'), MSG_TYPE_ERROR);
+                }
             }
 
             if ($node->nodeType->get('IsSection')) {

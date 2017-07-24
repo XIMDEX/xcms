@@ -302,9 +302,9 @@ class Language extends LanguagesOrm
 			$this->SetError(1);
 			return null;
 		}
-		return $dbObj->row["Enabled"];
-
-
+		if (isset($dbObj->row["Enabled"]))
+		    return $dbObj->row["Enabled"];
+		return null;
 	}
 
 

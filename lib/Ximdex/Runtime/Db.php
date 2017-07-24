@@ -259,21 +259,10 @@ class Db
                 $stm = $this->db->query($this->sql, \PDO::FETCH_ASSOC);
                 if ($stm === false)
                 {
-                    $error = $stm->errorInfo();
+                    $error = $this->error();
                 	XMD_Log::error('Can\'t get encondings types (' . $error[2] . ')');
                     return false;
                 }
-                foreach ($stm as $row) {
-                    $configKey = $row['ConfigKey'];
-                    $configValue = $row['ConfigValue'];
-                    if ($configKey == 'dbEncoding') {
-                        $this->dbEncoding = $configValue;
-                    } else if ($configKey == 'workingEncoding') {
-                        $this->workingEncoding = $configValue;
-                    }
-                }
-
-
             } catch (\PDOException  $e) {
                 if ($this->db->errorCode() == \PDO::ERR_NONE) {
                     $this->numErr = null;
@@ -283,7 +272,15 @@ class Db
                 $this->desErr = $e;
                 return false;
             }
-
+            foreach ($stm as $row) {
+                $configKey = $row['ConfigKey'];
+                $configValue = $row['ConfigValue'];
+                if ($configKey == 'dbEncoding') {
+                    $this->dbEncoding = $configValue;
+                } else if ($configKey == 'workingEncoding') {
+                    $this->workingEncoding = $configValue;
+                }
+            }
         }
         return true;
     }

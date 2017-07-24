@@ -113,7 +113,6 @@ class NodesToPublish extends NodesToPublish_ORM {
 			$sql_nodes .= " and DateDown is NULL";
 		}
 		$sql_nodes .= " order by deepLevel DESC";
-		XMD_Log::error($sql_nodes);
 		$db->Query($sql_nodes);
 
 		$force = true;

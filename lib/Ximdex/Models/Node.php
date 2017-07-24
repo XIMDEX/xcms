@@ -1477,8 +1477,11 @@ class Node extends NodesOrm
             /* $result =*/
             $this->update();
             /// If this node type has nothing else to change, the method rename node of its specific class is called
-            $this->class->RenameNode($name);
-
+            if (!$this->class->RenameNode($name))
+            {
+                $this->messages->mergeMessages($this->class->messages);
+                return false;
+            }
             if ($isFile) {
                 /// The node is renderized, its children are lost in the filesystem
                 $node = new Node($this->get('IdNode'));

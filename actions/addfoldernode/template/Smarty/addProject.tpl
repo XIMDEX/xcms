@@ -69,7 +69,11 @@
             
            	<label class="label_title label_general">{t}Avaliable themes{/t}</label>
             <div class="row themes">
+            	{$i = 0}
                 {foreach from=$themes key=index item=theme}
+                	{if $i > 0 and $i % 4 eq 0}
+                		<div class="sep"></div>
+                	{/if}
                     <div class="themeContainer">
                         <div class="theme">
                             <div class="img_container">
@@ -84,6 +88,7 @@
                             <p class="type">{$theme.description}</p>
                         </div>
                     </div>
+                    {$i = $i + 1}
                 {/foreach}
             </div>
             

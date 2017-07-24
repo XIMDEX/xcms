@@ -26,6 +26,7 @@
  */
 namespace Ximdex\Utils\Sync;
 
+use Ximdex\Runtime\App;
 use Ximdex\Runtime\DataFactory;
 use Ximdex\Runtime\Db as DB;
 use ModulesManager;
@@ -33,7 +34,7 @@ use Ximdex\Utils\PipelineManager;
 use Ximdex\Models\Server;
 use Synchronizer_ORM;
 use SynchronizerHistory_ORM;
- use View_ChannelFilter;
+use View_ChannelFilter;
 use Ximdex\Models\Channel;
 use Ximdex\Models\Language;
 use Ximdex\Models\Node;
@@ -136,7 +137,7 @@ class Synchronizer
             return NULL;
         }
 
-        $targetPath = \App::getValue("AppRoot") . \App::getValue("SyncRoot");
+        $targetPath = App::getValue("AppRoot") . App::getValue("SyncRoot");
 
         if ($markEnd && $this->HasUnlimitedLifeTime()) {
 
@@ -161,7 +162,7 @@ class Synchronizer
 
         $nodeServer = new Node($server);
 
-        if (\App::getValue('PublishOnDisabledServers') == 1) {
+        if (App::getValue('PublishOnDisabledServers') == 1) {
             $physicalServers = $nodeServer->class->GetPhysicalServerList(true);
         } else {
             $physicalServers = $nodeServer->class->GetEnabledPhysicalServerList(true);
@@ -313,7 +314,7 @@ class Synchronizer
         $this->ClearError();
         if (!is_null($this->nodeID)) {
             if ($frameID) {
-                $targetPath = \App::getValue("AppRoot") . \App::getValue("SyncRoot");
+                $targetPath = App::getValue("AppRoot") . App::getValue("SyncRoot");
 
                 $sql = "SELECT IdNode,DateUp,DateDown FROM Synchronizer WHERE IdSync=" . $frameID;
                 $this->dbObj->Query($sql);
@@ -655,7 +656,7 @@ class Synchronizer
     {
         $this->ClearError();
         if (!is_null($this->nodeID)) {
-            $gapTolerance = \App::getValue("MaximunGapSizeTolerance");
+            $gapTolerance = App::getValue("MaximunGapSizeTolerance");
             $gaps = array();
 
 
@@ -853,7 +854,11 @@ class Synchronizer
 
         $this->ClearError();
         if (!is_null($this->nodeID)) {
-            $sql = "SELECT IdSync FROM Synchronizer WHERE IdNode=" . $this->nodeID . " AND IdServer=$IdServer ORDER BY DateUp DESC";
+            
+            $sql = "SELECT IdSync FROM Synchronizer WHERE IdNode=" . $this->nodeID;
+            if ($idServer)
+                $sql .= " AND IdServer = $IdServer";
+            $sql .= " ORDER BY DateUp DESC";
 
             $this->dbObj->Query($sql);
             if ($this->dbObj->numRows == 0) {
@@ -1142,6 +1147,12 @@ class Synchronizer
     {
         $this->ClearError();
 
+        if (!$frameID)
+        {
+            XMD_Log::warning("Value for frameID variable is needed in GetDateDownOnFrame method");
+            return null;
+        }
+        
         $sql = "SELECT DateDown FROM Synchronizer WHERE IdSync=" . $frameID;
         $this->dbObj->Query($sql);
 
@@ -1219,7 +1230,7 @@ class Synchronizer
         $this->dbObj->Query($sql);
 
         if ($this->dbObj->GetValue("IdSync")) {
-            $targetPath = \App::getValue("AppRoot") . \App::getValue("SyncRoot");
+            $targetPath = App::getValue("AppRoot") . App::getValue("SyncRoot");
             $filePath = $targetPath . "/" . $frameID;
             $content = FsUtils::file_get_contents($filePath);
             return $content;
@@ -1549,7 +1560,7 @@ class Synchronizer
         $this->dbObj->Query($sql);
 
         $serverID = $this->dbObj->GetValue("IdServer");
-        $tmpPath = \App::getValue("AppRoot") . \App::getValue("TempRoot") . "/" . $frameID;
+        $tmpPath = App::getValue("AppRoot") . App::getValue("TempRoot") . "/" . $frameID;
         $channel = $this->dbObj->GetValue("IdChannel");
         $nodeID = $this->dbObj->GetValue("IdNode");
 
@@ -1617,7 +1628,7 @@ class Synchronizer
     {
 
 
-        $tmpPath = \App::getValue("AppRoot") . \App::getValue("SyncRoot") . "/" . $frameID;
+        $tmpPath = App::getValue("AppRoot") . App::getValue("SyncRoot") . "/" . $frameID;
 
         echo "ELIMINANDO FICHERO SYNC" . $tmpPath . "\n";
         FsUtils::delete($tmpPath);

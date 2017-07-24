@@ -28,7 +28,10 @@
 use Ximdex\Deps\DepsManager;
 use Ximdex\Models\Node;
 use Ximdex\NodeTypes\FileNode;
+use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
+use Ximdex\Logger as XMD_Log;
+
 
 if (!defined('XIMDEX_ROOT_PATH')) {
     define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
@@ -67,7 +70,7 @@ class xsltnode extends FileNode
             $xslContent = FsUtils::file_get_contents($ptdSourcePath);
             $xslContent = $this->sanitizeContent($xslContent);
 
-            $xslSourcePath = \App::getValue('AppRoot') . \App::getValue('TempRoot') . '/' . $parentID . $xsltName;
+            $xslSourcePath = App::getValue('AppRoot') . App::getValue('TempRoot') . '/' . $parentID . $xsltName;
 
             if (!FsUtils::file_put_contents($xslSourcePath, $xslContent)) {
                 XMD_Log::error("Error saving xslt file");
@@ -100,7 +103,7 @@ class xsltnode extends FileNode
             $docxapProject = new Node($idDocxapProject);
             $docxapContent = $docxapProject->GetContent();
 
-            $docxapProjectPath = XIMDEX_ROOT_PATH . \App::getValue('TempRoot') . '/docxap.xsl';
+            $docxapProjectPath = XIMDEX_ROOT_PATH . App::getValue('TempRoot') . '/docxap.xsl';
 
             $dummyXml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
 				<dext:root xmlns:dext=\"http://www.ximdex.com\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\">
@@ -136,7 +139,7 @@ class xsltnode extends FileNode
             $idProject = $node->GetProject();
             $project = new Node($idProject);
 
-            $ptdFolder = \App::getValue("TemplatesDirName");
+            $ptdFolder = App::getValue("TemplatesDirName");
 
             if ($ximptd->get('IdParent') == $projectId) {
 
@@ -179,7 +182,7 @@ class xsltnode extends FileNode
 
         if (!($includeId > 0)) {
 
-            $xslSourcePath = \App::getValue('AppRoot') . \App::getValue('TempRoot') . '/templates_include.xsl';
+            $xslSourcePath = App::getValue('AppRoot') . App::getValue('TempRoot') . '/templates_include.xsl';
 
             // Creating include file
 
@@ -252,6 +255,11 @@ class xsltnode extends FileNode
         $sectionId = $this->parent->getSection();
         $oldName = explode(".", $this->xsltOldName);
         $newName = explode(".", $newName);
+        if (count($newName) != 2)
+        {
+            $this->messages->add('The file extension is necessary', MSG_TYPE_ERROR);
+            return false;
+        }
         if ($this->xsltOldName) {
             $templateName = $this->xsltOldName;
             $this->removeIncludeFile($templateName, $sectionId, $nodeTypeId);
@@ -267,7 +275,17 @@ class xsltnode extends FileNode
         $new_content = str_replace($rpl1, $rpl2, $new_content);
         $tpl->SetContent($new_content);
 
+        //if the file has not extension, we will avoid the dot and the not given ext
+        /*
+        if (count($newName) == 2)
+            $fileName = $newName[0] . "." . $newName[1];
+        else
+            $fileName = $newName[0];
+        $this->setIncludeContent($fileName, $parentId, $nodeTypeId, null);
+        */
         $this->setIncludeContent($newName[0] . "." . $newName[1], $parentId, $nodeTypeId, null);
+        
+        return true;
     }
 
     function deleteNode()
@@ -437,9 +455,9 @@ class xsltnode extends FileNode
             return $idDocxapProject;
         
         //generation of the file docxap.xsl with project name inside
-        $xslSourcePath = \App::getValue('AppRoot') . \App::getValue('TempRoot') . '/docxap.xsl';
+        $xslSourcePath = App::getValue('AppRoot') . App::getValue('TempRoot') . '/docxap.xsl';
         XMD_Log::info('Creating unexisting docxap XSLT file in ' . $xslSourcePath);
-        $docxapTemplate = \App::getValue('AppRoot') . '/xmd/xslt/docxap.xsl.template';
+        $docxapTemplate = App::getValue('AppRoot') . '/xmd/xslt/docxap.xsl.template';
         $content = FsUtils::file_get_contents($docxapTemplate);
         if (!$content)
             return false;

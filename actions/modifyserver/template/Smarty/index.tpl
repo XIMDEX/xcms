@@ -140,7 +140,7 @@
 							<p>{t}There are no channels associated to this project{/t}.</p>
 						{/if}
 					</div>
-					<div class="small-2 columns">
+					<div class="small-2 columns" style="width: 100%;">
 						<fieldset class="buttons-form">
 							<input type="hidden" name="borrar"/>
 				            {if (0 != $id_server)}

@@ -54,9 +54,12 @@
   padding: 15px 10px;
   border: 1px solid transparent;
   vertical-align: top;
+  /*
   max-width: 47%;
   min-width: 260px;
-  height: 220pt; }
+  height: 220pt;
+  */
+  }
   .theme p {
     padding: .4em 0;
     margin: 0; }
@@ -448,7 +451,7 @@ dd {
 
 .themeContainer
 {
-	width: 210pt;
+	width: 25%;	/* 210pt; */
 	float: left;
 }
 

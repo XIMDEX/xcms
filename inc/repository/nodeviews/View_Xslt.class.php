@@ -103,6 +103,12 @@ class View_Xslt extends Abstract_View
             $nodeProjectPath = $project->class->GetNodePath();
 
             $docxap = $nodeProjectPath . '/' . $ptdFolder . '/docxap.xsl';
+            
+            if (!file_exists($docxap))
+            {
+                XMD_Log::error("File $docxap does not exists in project templates folder");
+                return null;
+            }
         }
 
 

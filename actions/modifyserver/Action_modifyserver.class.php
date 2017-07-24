@@ -323,11 +323,13 @@ class Action_modifyserver extends ActionAbstract {
 			$this->messages->add(_("Server description is required"), MSG_TYPE_ERROR);
 			$validation=false;
 		}
+		/*
 		if (!$encode)
 		{
 			$this->messages->add(_("An enconding type is required"), MSG_TYPE_ERROR);
 			$validation = false;
 		}
+		*/
 
 		return $validation;
 	}
