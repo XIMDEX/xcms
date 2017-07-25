@@ -24,7 +24,7 @@
  *  @version $Revision$
  */
 
-
+use Ximdex\Logger as XMD_Log;
 
 if (!defined('XIMDEX_ROOT_PATH')) define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__)) . '/../../');
 require_once(XIMDEX_ROOT_PATH . '/inc/model/orm/NodeProperties_ORM.class.php');
@@ -46,7 +46,7 @@ class NodeProperty extends NodeProperties_ORM {
 		$propertyId = $this->get('IdNodeProperty');
 
 		if (!($propertyId > 0)) {
-			XMD_Log::error(_("Adding nodeproperty (idNode: $idNode, property: $property, value: $value)"));
+			XMD_Log::error(_("When adding NodeProperty (idNode: $idNode, property: $property, value: $value)"));
 			return false;
 		}
 

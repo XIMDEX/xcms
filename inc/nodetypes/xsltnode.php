@@ -345,6 +345,8 @@ class xsltnode extends FileNode
     function SetContent($content, $commitNode = NULL)
     {
         $content = $this->sanitizeContent($content);
+        if ($content === false)
+            return false;
         parent::SetContent($content, $commitNode);
     }
 
@@ -356,10 +358,11 @@ class xsltnode extends FileNode
         }
 
         $xsldom = new DOMDocument();
-        $result = $xsldom->loadXML($content);
-        if (!$result) {
-            XMD_Log::info('It have been created or edited a document which content is not a valid XML');
-            return $content;
+        $result = @$xsldom->loadXML($content);
+        if ($result === false) {
+            //we don't allow to save an invalid XML
+            $this->messages->add('The XML document is not valid', MSG_TYPE_WARNING);
+            return false;
         }
         $xpath = new DOMXPath($xsldom);
 

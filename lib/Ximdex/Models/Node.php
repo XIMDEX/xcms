@@ -897,11 +897,16 @@ class Node extends NodesOrm
     {
         $this->ClearError();
         if ($this->get('IdNode') > 0) {
-            $this->class->SetContent($content, $commitNode);
+            if ($this->class->SetContent($content, $commitNode) === false)
+            {
+                $this->messages->mergeMessages($this->class->messages);
+                return false;
+            }
             $this->RenderizeNode();
 
             $event = new NodeEvent($this->nodeID);
             App::dispatchEvent(Events::NODE_TOUCHED, $event);
+            return true;
         }
     }
 

@@ -131,7 +131,7 @@
 							{foreach from=$channels item=_channel}
 								<div class="slide-element channelms">
 									<input id='channels{$_channel.IdChannel}_{$id_node}' name='channels[]' type='checkbox' 
-											value='{$_channel.IdChannel}' {if ($_channel.InServer)}checked="checked"{/if} class="input-slide"/>
+											value='{$_channel.IdChannel}' {if isset($_channel.InServer) and ($_channel.InServer)}checked="checked"{/if} class="input-slide"/>
 									<label for='channels{$_channel.IdChannel}_{$id_node}' 
 											class="label-slide server_channel">{$_channel.Description|gettext}</label>
 								</div>

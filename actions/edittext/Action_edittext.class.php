@@ -233,8 +233,15 @@ class Action_edittext extends ActionAbstract
             $this->messages->add(_('The document which is trying to be edited does not exist'), MSG_TYPE_ERROR);
             $this->renderMessages();
         }
-        $node->SetContent(Strings::stripslashes($content), true);
+        if ($node->SetContent(Strings::stripslashes($content), true) === false)
+        {
+            $this->messages->mergeMessages($node->messages);
+            $values = array('messages' => $this->messages->messages, 'type' => MSG_TYPE_ERROR);
+            $this->sendJSON($values);
+            return false;
+        }
         $node->RenderizeNode();
+        
 
         $nodeType = new NodeType($node->get('IdNodeType'));
         $nodeTypeName = $nodeType->get('Name');
@@ -263,5 +270,6 @@ class Action_edittext extends ActionAbstract
                 'messages' => $values
             )
         );
+        return true;
     }
 }
