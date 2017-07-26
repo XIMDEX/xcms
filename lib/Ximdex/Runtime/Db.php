@@ -108,28 +108,24 @@ class Db
 
         $this->rows = array();
 
-        try {
-            $this->stm = $this->db->query($this->sql, \PDO::FETCH_ASSOC);
-
-            if ($this->stm === false) {
-                throw new \Exception('Bad Query: ' . $this->sql);
-                return false;
-            }
-
-            foreach ($this->stm as $row) {
-
-                $this->rows[] = $row;
-
-            }
-
-        } catch (\Exception $e) {
+        $this->stm = $this->db->query($this->sql, \PDO::FETCH_ASSOC);
+        
+        if ($this->stm === false) {
             if ($this->db->errorCode() == \PDO::ERR_NONE) {
                 $this->numErr = null;
             } else {
                 $this->numErr = $this->db->errorCode();
             }
-            XMD_Log::error($this->db->errorInfo()[2] . '. (SQL: ' . $this->sql . ')');
+            $error = $this->db->errorInfo();
+            XMD_Log::error($error[2] . '. (SQL: ' . $this->sql . ')');
+            $this->database_error();
             return false;
+        }
+
+        foreach ($this->stm as $row) {
+
+            $this->rows[] = $row;
+
         }
 
         if (count($this->rows) == 0) {
@@ -173,17 +169,16 @@ class Db
             $this->newID = $this->db->lastInsertId();
             $this->numRows = $statement->rowCount();
             return true;
-        } else {
-            $this->numRows = $statement->rowCount();
-            if ($this->db->errorCode() == \PDO::ERR_NONE) {
-                $this->numErr = null;
-            } else {
-                $this->numErr = $this->db->errorCode();
-            }
-            $this->desErr = $this->db->errorInfo();
         }
-
-
+        if ($this->db->errorCode() == \PDO::ERR_NONE) {
+            $this->numErr = null;
+        } else {
+            $this->numErr = $this->db->errorCode();
+        }
+        $error = $this->db->errorInfo();
+        $this->desErr = $error[2];
+        XMD_Log::error($error[2] . '. (SQL: ' . $this->sql . ')');
+        $this->database_error();
         return false;
     }
 
@@ -245,9 +240,6 @@ class Db
      * is will create an infinite circle
      *
      */
-    /**
-     *
-     */
     private function _getEncodings()
     {
 
@@ -255,21 +247,12 @@ class Db
 
         if (($this->dbEncoding == '') && ($this->workingEncoding == '')) {
             $this->sql = $sql;
-            try {
-                $stm = $this->db->query($this->sql, \PDO::FETCH_ASSOC);
-                if ($stm === false)
-                {
-                    $error = $this->error();
-                	XMD_Log::error('Can\'t get encondings types (' . $error[2] . ')');
-                    return false;
-                }
-            } catch (\PDOException  $e) {
-                if ($this->db->errorCode() == \PDO::ERR_NONE) {
-                    $this->numErr = null;
-                } else {
-                    $this->numErr = $this->db->errorCode();
-                }
-                $this->desErr = $e;
+            $stm = $this->db->query($this->sql, \PDO::FETCH_ASSOC);
+            if ($stm === false)
+            {
+                $error = $this->error();
+            	XMD_Log::error('Can\'t get encondings types (' . $error[2] . ')');
+            	$this->database_error();
                 return false;
             }
             foreach ($stm as $row) {
@@ -346,7 +329,7 @@ class Db
     	{
     		$db = $this->db;
     	}
-    	$error = $db->error();
+    	$error = $db->errorInfo();
     	if ($error[0] == 'HY000' and $error[1] == 2006)
     	{
     		//MySQL server has gone away error; we will sleep for a few seconds and try again a new connection later
@@ -354,9 +337,13 @@ class Db
     		{
     			//we will do a loop until the connection has been stablished
     			XMD_Log::error('Connection to database has been lost. Trying to reconnect in ' . $this->TIME_TO_RECONNECT . ' seconds');
+    			$res = $this->reconectDataBase();
     			sleep($this->TIME_TO_RECONNECT);
     		}
-    		while (!$this->reconectDataBase());
-    	} 
+    		while (!$res);
+    		XMD_Log::info('Reconnecting to database has been executed successfully');
+    		return true;
+    	}
+    	return false;
     }
 }
