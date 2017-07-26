@@ -10191,3 +10191,6 @@ msgstr "El documento <strong>%s</strong> ha sido caducado"
 
 msgid "(Only if you want to change the actual one)"
 msgstr  "(S&oacute;lo si desea cambiar la actual)"
+
+msgid "The XML document is not valid. Changes have not been saved"
+msgstr "El documento XML no es v&aacute;lido. No se han guardado los cambios"

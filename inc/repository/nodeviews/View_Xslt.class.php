@@ -28,6 +28,9 @@
 use Ximdex\Models\Channel;
 use Ximdex\Models\Node;
 use Ximdex\Models\Version;
+use Ximdex\Runtime\App;
+use Ximdex\Utils\Messages;
+use Ximdex\Logger as XMD_Log;
 
 ModulesManager::file('/xslt/functions.php', 'dexT');
 ModulesManager::file('/inc/repository/nodeviews/Abstract_View.class.php');
@@ -36,12 +39,17 @@ ModulesManager::file('/inc/repository/nodeviews/Interface_View.class.php');
 
 class View_Xslt extends Abstract_View
 {
-
+    public $messages;
     private $_node;
     private $_idSection;
     private $_idChannel;
     private $_idProject;
 
+    public function __construct()
+    {
+        $this->messages = new Messages();
+    }
+    
     public function transform($idVersion = NULL, $pointer = NULL, $args = NULL)
     {
 
@@ -60,7 +68,7 @@ class View_Xslt extends Abstract_View
             return NULL;
 
 
-        $ptdFolder = \App::getValue("TemplatesDirName");
+        $ptdFolder = App::getValue("TemplatesDirName");
 
         $section = new Node($this->_idSection);
         $sectionPath = $section->class->GetNodePath();
@@ -75,7 +83,7 @@ class View_Xslt extends Abstract_View
 
             if ($renderMode == 'client') {
                 $inclusionHeader = '<?xml-stylesheet type="text/xsl" href="' . $ptdFolder . '/docxap.xsl"?>';
-                $xmlHeader = \App::getValue('EncodingTag');
+                $xmlHeader = App::getValue('EncodingTag');
                 $content = str_replace($xmlHeader, $xmlHeader . $inclusionHeader, $content);
 
                 XMD_Log::info('Render in client, return XML content + path to template');
@@ -106,14 +114,18 @@ class View_Xslt extends Abstract_View
             
             if (!file_exists($docxap))
             {
+                //TODO ajlucena: implement the error message for the user
                 XMD_Log::error("File $docxap does not exists in project templates folder");
-                return null;
+                return false;
             }
         }
 
-
         $xsltHandler = new \Ximdex\XML\XSLT();
-        $xsltHandler->setXML($pointer);
+        if (!$xsltHandler->setXML($pointer))
+        {
+            $this->messages->add('The XML document has syntax errors. Content have been not saved', MSG_TYPE_ERROR);
+            return false;
+        }
         $xsltHandler->setXSL($docxap);
         $params = array('xmlcontent' => $content);
         foreach ($params as $param => $value) {

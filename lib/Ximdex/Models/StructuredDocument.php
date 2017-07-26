@@ -29,9 +29,6 @@ namespace Ximdex\Models;
 
 use Ximdex\Runtime\DataFactory;
 use DB;
-use Ximdex\Models\dependencies;
-use Ximdex\Models\NodeType;
-use Ximdex\Models\Node;
 use Ximdex\Models\ORM\StructuredDocumentsOrm;
 use Ximdex\Parsers\ParsingDependencies;
 

@@ -856,7 +856,7 @@ class Synchronizer
         if (!is_null($this->nodeID)) {
             
             $sql = "SELECT IdSync FROM Synchronizer WHERE IdNode=" . $this->nodeID;
-            if ($idServer)
+            if ($IdServer)
                 $sql .= " AND IdServer = $IdServer";
             $sql .= " ORDER BY DateUp DESC";
 

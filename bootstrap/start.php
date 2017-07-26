@@ -72,7 +72,7 @@ if ( !empty( $dbConfig ) ) {
     	$dbConn = new \PDO("{$dbConfig['type']}:host={$dbConfig['host']};port={$dbConfig['port']};dbname={$dbConfig['db']}",
         		$dbConfig['user'], $dbConfig['password']);
 	}
-	catch (PDOException $e)
+	catch (\PDOException $e)
 	{
 		XMD_Log::error('Can\'t connect to dababase at ' . $dbConfig['host'] . ':' . $dbConfig['port']);
 		die();

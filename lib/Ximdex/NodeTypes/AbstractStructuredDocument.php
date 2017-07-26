@@ -52,7 +52,7 @@ define('SOLR_VIEW', 2);
 define('XIMIO_VIEW', 3);
 
 require_once(XIMDEX_ROOT_PATH . "/inc/cache/DexCache.class.php");
- ModulesManager::file('/inc/SolrViews.class.php', 'ximRAM');
+ModulesManager::file('/inc/SolrViews.class.php', 'ximRAM');
 ModulesManager::file('/inc/metadata/MetadataManager.class.php');
 ModulesManager::file('/inc/model/Namespaces.class.php');
 
@@ -168,7 +168,17 @@ class AbstractStructuredDocument extends FileNode
      */
     function SetContent($content, $commitNode = NULL)
     {
-
+        //checking the valid XML of the given content
+        if (@\DomDocument::loadXML($content) === false)
+        {
+            //we don't allow to save an invalid XML
+            $this->messages->add('The XML document is not valid. Changes have not been saved', MSG_TYPE_ERROR);
+            $error = error_get_last();
+            if (isset($error['message']))
+                $this->messages->add(str_replace('DOMDocument::loadXML(): ', '', $error['message']), MSG_TYPE_WARNING);
+            return false;
+        }
+        
         $strDoc = new StructuredDocument($this->nodeID);
         $strDoc->SetContent($content, $commitNode);
 

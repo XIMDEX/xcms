@@ -236,7 +236,7 @@ class Action_edittext extends ActionAbstract
         if ($node->SetContent(Strings::stripslashes($content), true) === false)
         {
             $this->messages->mergeMessages($node->messages);
-            $values = array('messages' => $this->messages->messages, 'type' => MSG_TYPE_ERROR);
+            $values = array('messages' => $this->messages->messages, 'type' => MSG_TYPE_WARNING);
             $this->sendJSON($values);
             return false;
         }

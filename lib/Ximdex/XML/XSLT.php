@@ -42,15 +42,24 @@ class XSLT  {
     }
 
     public function setXML($xml_file) {
-        $this->xml->load($xml_file);
+        $res = @$this->xml->load($xml_file);
+        if ($res === false)
+        {
+            return false;
+        }
+        return true;
     }
 
     public function setXSL($xsl_file) {
         //Warnings when $xsl_file doesn't exist
         if(file_exists($xsl_file)){
-            $this->xsl->load($xsl_file);
+            if (!@$this->xsl->load($xsl_file))
+            {
+                return false;
+            }
             $this->xsltprocessor->importStyleSheet($this->xsl);
         }
+        return true;
     }
 
     public function setXSD($xsd) {

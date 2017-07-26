@@ -344,6 +344,16 @@ class xsltnode extends FileNode
 
     function SetContent($content, $commitNode = NULL)
     {
+        //checking the valid XML of the given content
+        if (@DOMDocument::loadXML($content) === false)
+        {
+            //we don't allow to save an invalid XML
+            $this->messages->add('The XML document is not valid. Changes have not been saved', MSG_TYPE_ERROR);
+            $error = error_get_last();
+            if (isset($error['message']))
+                $this->messages->add(str_replace('DOMDocument::loadXML(): ', '', $error['message']), MSG_TYPE_WARNING);
+            return false;
+        }
         $content = $this->sanitizeContent($content);
         if ($content === false)
             return false;
@@ -356,14 +366,9 @@ class xsltnode extends FileNode
             XMD_Log::info('It have been created or edited a document with empty content');
             return $content;
         }
-
+        
         $xsldom = new DOMDocument();
-        $result = @$xsldom->loadXML($content);
-        if ($result === false) {
-            //we don't allow to save an invalid XML
-            $this->messages->add('The XML document is not valid', MSG_TYPE_WARNING);
-            return false;
-        }
+        $xsldom->loadXML($content);
         $xpath = new DOMXPath($xsldom);
 
         $nodelist = $xpath->query('//xsl:text');

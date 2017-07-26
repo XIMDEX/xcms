@@ -9194,3 +9194,6 @@ msgstr ""
 
 msgid "(Only if you want to change the actual one)"
 msgstr ""
+
+msgid "The XML document is not valid. Changes have not been saved"
+msgstr ""

@@ -38,12 +38,17 @@ use Ximdex\Models\StructuredDocument;
 use Ximdex;
 use Ximdex\Models\Node;
 use Ximdex\Logger as XMD_Log;
-
-
+use Ximdex\Utils\Messages;
 
 class ParsingDependencies
 {
-
+    public $messages;
+    
+    public function __construct()
+    {
+        $this->messages = new Messages();
+    }
+    
     /**
      * Function which obtain the structuredDocument indentifier
      * (normal if it is resolved, or exportation one if its not resolved yet)
@@ -129,14 +134,14 @@ class ParsingDependencies
      */
     public static function parseXMLDependencies($node, $content, $idVersion)
     {
-
         $idNode = $node->get("IdNode");
         $structuredDocument = new StructuredDocument($idNode);
 
         if (!self::clearDependencies($node)) {
             return false;
         }
-
+        
+        //TODO ajlucena: check the result of this builds
         self::buildDependenciesFromStructuredDocument($node, $structuredDocument);
         self::buildDependenciesWithXimlets($node, $structuredDocument, $content);
         self::buildDependenciesWithXsl($node, $content);
@@ -343,7 +348,10 @@ class ParsingDependencies
         $domDoc = new DOMDocument();
         $domDoc->validateOnParse = true;
 
-        $domDoc->loadXML(\Ximdex\XML\Base::recodeSrc("<docxap>$content</docxap>", \Ximdex\XML\XML::UTF8));
+        if (!@$domDoc->loadXML(\Ximdex\XML\Base::recodeSrc("<docxap>$content</docxap>", \Ximdex\XML\XML::UTF8)))
+        {
+            return false;
+        }
 
         $xpath = new DOMXPath($domDoc);
         $nodeList = $xpath->query('//*');

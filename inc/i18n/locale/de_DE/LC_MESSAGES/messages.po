@@ -9194,3 +9194,6 @@ msgstr "!!Pol&iacute;tica de privacidad"
 
 msgid "(Only if you want to change the actual one)"
 msgstr "(Nur wenn du das aktuelle ändern willst)"
+
+msgid "The XML document is not valid. Changes have not been saved"
+msgstr "Das XML-Dokument ist nicht gültig. Änderungen wurden nicht gespeichert"

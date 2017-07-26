@@ -2769,5 +2769,6 @@
     "Name of your catalog": "Nombre de tu cat&aacute;logo",
     "A dataset should be for a single data in several formats": "Un dataset deber&iacute;a emplearse para un mismo dato en diferentes formatos",
     "Show": "Mostrar",
-    "(Only if you want to change the actual one)": "(S&oacute;lo si desea cambiar la actual)"
+    "(Only if you want to change the actual one)": "(S&oacute;lo si desea cambiar la actual)",
+    "The XML document is not valid. Changes have not been saved": "El documento XML no es v&aacute;lido. No se han guardado los cambios"
 }
