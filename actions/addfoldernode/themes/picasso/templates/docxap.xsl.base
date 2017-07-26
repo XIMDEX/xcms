@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
 <xsl:param name="xmlcontent"/>
-<xsl:include href="__ABSOLUTE_PATH__/templates_include.xsl"/>
+<!-- <xsl:include href="__ABSOLUTE_PATH__/templates_include.xsl"/> -->
+<xsl:include href="templates_include.xsl" />
 <xsl:template name="docxap" match="docxap"> 
 
 	<html lang="en">
