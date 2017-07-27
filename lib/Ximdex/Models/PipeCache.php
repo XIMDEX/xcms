@@ -375,8 +375,14 @@ class PipeCache extends PipeCachesOrm
             return false;
         }
         $db = new Db();
-        $query = sprintf("DELETE FROM PipePropertiesCache WHERE IdPipeCache = %s", $db->sqlEscapeString($this->get('id')));
-        $db->execute($query);
+        
+        /*
+        The table named bellow doesn't appear in the database schema
+        The only table that have the IdPipeCache field is PipePropertyValues
+        */
+        //$query = sprintf("DELETE FROM PipePropertiesCache WHERE IdPipeCache = %s", $db->sqlEscapeString($this->get('id')));
+        $query = sprintf("DELETE FROM PipePropertyValues WHERE IdPipeCache = %s", $db->sqlEscapeString($this->get('id')));
+        $db->Execute($query);
 
         FsUtils::delete(XIMDEX_ROOT_PATH . '/data/cache/pipelines/' . $this->get('File'));
 

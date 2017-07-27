@@ -28,6 +28,7 @@
 use Ximdex\Models\Pumper;
 use Ximdex\Models\Server;
 use Ximdex\Runtime\Cli\CliParser;
+use Ximdex\Logger as XMD_Log;
 
 include_once dirname(__FILE__) . '/../../../../../bootstrap/start.php';
 
@@ -347,7 +348,7 @@ class DexPumper {
 		$msg_cant_create_folder = _('Could not find or create the destination folder')." {$baseRemoteFolder}{$relativeRemoteFolder}";
 
 		if (!$this->connection->cd($baseRemoteFolder)) {
-			$this->error($msg_not_found_folder);
+			$this->warning($msg_not_found_folder);
 		}
 		if (!$this->connection->mkdir($baseRemoteFolder . $relativeRemoteFolder, 0755, true)) {
 			$this->error($msg_cant_create_folder);
@@ -504,6 +505,7 @@ class DexPumper {
 	public function info($_msg = NULL) { $this->msg_log("INFO PUMPER: $_msg"); XMD_Log::info($_msg); }
 	public function error($_msg = NULL) { $this->msg_log("ERROR PUMPER: $_msg"); XMD_Log::error($_msg); }
 	public function fatal($_msg = NULL) { $this->msg_log("FATAL PUMPER: $_msg"); XMD_Log::fatal($_msg); }
+	public function warning($_msg = NULL) { $this->msg_log("WARNING PUMPER: $_msg"); XMD_Log::warning($_msg); }
 
 	public function msg_log($_msg) {
 		$pumperID = (int) $this->pumper->get('PumperId');

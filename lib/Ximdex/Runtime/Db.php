@@ -108,7 +108,7 @@ class Db
 
         $this->rows = array();
 
-        $this->stm = @$this->db->query($this->sql, \PDO::FETCH_ASSOC);
+        $this->stm = $this->db->query($this->sql, \PDO::FETCH_ASSOC);
         
         if ($this->stm === false) {
             
@@ -119,19 +119,20 @@ class Db
                 //Trying the method call again if the reconnection process works right
                 if ($res)
                 {
-                    $res = $this->Query($sql, $cache);
+                    $res = $this->Query($sql);
                     return $res;
                 }
             }
+            
+            $error = $this->error();
+            $this->desErr = $error[2];
+            XMD_Log::error('Query error: ' . $error[2] . '. (SQL: ' . $this->sql . ')');
             
             if ($this->db->errorCode() == \PDO::ERR_NONE) {
                 $this->numErr = null;
             } else {
                 $this->numErr = $this->db->errorCode();
             }
-            $error = $this->db->errorInfo();
-            $this->desErr = $error[2];
-            XMD_Log::error('Query error: ' . $error[2] . '. (SQL: ' . $this->sql . ')');
             return false;
         }
 
@@ -177,10 +178,10 @@ class Db
         $this->newID = null;
 
         // Change to prepare to obtain num rows
-        $statement = @$this->db->prepare($this->sql);
-        if (@$statement->execute()) {
+        $res = $this->db->exec($this->sql);
+        if ($res !== false) {
             $this->newID = $this->db->lastInsertId();
-            $this->numRows = $statement->rowCount();
+            $this->numRows = $res;
             return true;
         }
         
@@ -201,7 +202,7 @@ class Db
         } else {
             $this->numErr = $this->db->errorCode();
         }
-        $error = $this->db->errorInfo();
+        $error = $this->error();
         $this->desErr = $error[2];
         XMD_Log::error('Execute error: ' . $error[2] . '. (SQL: ' . $this->sql . ')');
         return false;
@@ -272,7 +273,7 @@ class Db
 
         if (($this->dbEncoding == '') && ($this->workingEncoding == '')) {
             $this->sql = $sql;
-            $stm = @$this->db->query($this->sql, \PDO::FETCH_ASSOC);
+            $stm = $this->db->query($this->sql, \PDO::FETCH_ASSOC);
             if ($stm === false)
             {
             	if (isset($GLOBALS['InBatchProcess']) and $GLOBALS['InBatchProcess'])

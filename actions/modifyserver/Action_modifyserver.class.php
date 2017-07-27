@@ -93,7 +93,7 @@ class Action_modifyserver extends ActionAbstract {
 			$server['port'] = $request->getParam('port');
 			$server['initialdirectory'] = $request->getParam('initialdirectory');
 			$server['url'] = $request->getParam('url');
-			$server['login'] = $request->getParam('login');
+			$server['user'] = $request->getParam('login');
 			$server['description'] = $request->getParam('description');
 			$server['enabled'] = $request->getParam('enabled');
 			$server['preview'] = $request->getParam('preview');
