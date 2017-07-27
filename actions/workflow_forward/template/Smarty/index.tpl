@@ -36,7 +36,7 @@
 
     </div>
 
-    {if $hasDisabledFunctions}
+    {if isset($hasDisabledFunctions) and $hasDisabledFunctions}
         <div class="message message-warning">
             <p class="disable-functions-alert">
                 {t}<i>pcntl_fork</i> and <i>pcntl_waitpid</i> required functions are both disabled{/t}.{t}This could cause a slow and unstable publishing. Please, check the <i>php.ini</i> configuration file or contact with your system administrator{/t}.
@@ -44,7 +44,7 @@
         </div>
     {/if}
 
-    {if $globalForcedEnabled}
+    {if isset($globalForcedEnabled) and $globalForcedEnabled}
         <div class="message message-warning">
             <p class="disable-functions-alert">
                 {t}Force publication is enabled in global config. This could cause slow publication. Please check synchro.conf file{/t}.
