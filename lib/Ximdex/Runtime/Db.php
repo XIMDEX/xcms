@@ -108,17 +108,30 @@ class Db
 
         $this->rows = array();
 
-        $this->stm = $this->db->query($this->sql, \PDO::FETCH_ASSOC);
+        $this->stm = @$this->db->query($this->sql, \PDO::FETCH_ASSOC);
         
         if ($this->stm === false) {
+            
+            if (isset($GLOBALS['InBatchProcess']) and $GLOBALS['InBatchProcess'])
+            {
+                //if the database server has gone away, try a new connection
+                $res = $this->database_reconnection();
+                //Trying the method call again if the reconnection process works right
+                if ($res)
+                {
+                    $res = $this->Query($sql, $cache);
+                    return $res;
+                }
+            }
+            
             if ($this->db->errorCode() == \PDO::ERR_NONE) {
                 $this->numErr = null;
             } else {
                 $this->numErr = $this->db->errorCode();
             }
             $error = $this->db->errorInfo();
-            XMD_Log::error($error[2] . '. (SQL: ' . $this->sql . ')');
-            $this->database_error();
+            $this->desErr = $error[2];
+            XMD_Log::error('Query error: ' . $error[2] . '. (SQL: ' . $this->sql . ')');
             return false;
         }
 
@@ -164,12 +177,25 @@ class Db
         $this->newID = null;
 
         // Change to prepare to obtain num rows
-        $statement = $this->db->prepare($this->sql);
-        if ($statement->execute()) {
+        $statement = @$this->db->prepare($this->sql);
+        if (@$statement->execute()) {
             $this->newID = $this->db->lastInsertId();
             $this->numRows = $statement->rowCount();
             return true;
         }
+        
+        if (isset($GLOBALS['InBatchProcess']) and $GLOBALS['InBatchProcess'])
+        {
+            //if the database server has gone away, try a new connection
+            $res = $this->database_reconnection();
+            //Trying the method call again if the reconnection process works right
+            if ($res)
+            {
+                $res = $this->Execute($sql);
+                return $res;
+            }
+        }
+        
         if ($this->db->errorCode() == \PDO::ERR_NONE) {
             $this->numErr = null;
         } else {
@@ -177,8 +203,7 @@ class Db
         }
         $error = $this->db->errorInfo();
         $this->desErr = $error[2];
-        XMD_Log::error($error[2] . '. (SQL: ' . $this->sql . ')');
-        $this->database_error();
+        XMD_Log::error('Execute error: ' . $error[2] . '. (SQL: ' . $this->sql . ')');
         return false;
     }
 
@@ -247,12 +272,23 @@ class Db
 
         if (($this->dbEncoding == '') && ($this->workingEncoding == '')) {
             $this->sql = $sql;
-            $stm = $this->db->query($this->sql, \PDO::FETCH_ASSOC);
+            $stm = @$this->db->query($this->sql, \PDO::FETCH_ASSOC);
             if ($stm === false)
             {
-                $error = $this->error();
+            	if (isset($GLOBALS['InBatchProcess']) and $GLOBALS['InBatchProcess'])
+            	{
+            	   //if the database server has gone away, try a new connection
+            	   $res = $this->database_reconnection();
+            	   //Trying the method call again if the reconnection process works right
+            	   if ($res)
+            	   {
+            	       $res = $this->_getEncodings();
+            	       return $res;
+            	   }
+            	}
+            	
+            	$error = $this->error();
             	XMD_Log::error('Can\'t get encondings types (' . $error[2] . ')');
-            	$this->database_error();
                 return false;
             }
             foreach ($stm as $row) {
@@ -323,7 +359,7 @@ class Db
      * Operations with some specified database errors
      * @param Db $db
      */
-    public function database_error(Db $db = null)
+    private function database_reconnection(Db $db = null)
     {
     	if (!$db)
     	{

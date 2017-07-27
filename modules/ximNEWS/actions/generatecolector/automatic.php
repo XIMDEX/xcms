@@ -25,14 +25,15 @@
  * @version $Revision$
  */
 
-
 include_once dirname(__FILE__) . '/../../../../bootstrap/start.php';
-
-
 
 ModulesManager::file('/inc/Automatic.class.php', 'ximNEWS');
 
+/*
+This global variable will indicate to database connections that we are in a batch process and do the reconnect 
+method when it's necessary
+*/
+$GLOBALS['InBatchProcess'] = true;
+
 $automatic = new Automatic();
 $automatic->process();
-
-

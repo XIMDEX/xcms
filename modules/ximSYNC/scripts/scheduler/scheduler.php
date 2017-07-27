@@ -29,4 +29,10 @@ include_once dirname(__FILE__) . '/../../../../bootstrap/start.php';
 
 ModulesManager::file('/modules/ximSYNC/scripts/scheduler/scheduler.class.php');
 
+/*
+ This global variable will indicate to database connections that we are in a batch process and do the reconnect
+ method when it's necessary
+ */
+$GLOBALS['InBatchProcess'] = true;
+
 Scheduler::start(true);
