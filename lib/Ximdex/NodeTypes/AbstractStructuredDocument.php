@@ -166,24 +166,38 @@ class AbstractStructuredDocument extends FileNode
      * @param $content
      * @param null $commitNode
      */
-    function SetContent($content, $commitNode = NULL)
+    function SetContent($content, $commitNode = NULL, Node $node = null)
     {
-        //checking the valid XML of the given content
-        if (@\DomDocument::loadXML($content) === false)
+        //Checking the valid XML of the given content, if it is necessary
+        if ($node)
         {
-            //we don't allow to save an invalid XML
-            $this->messages->add('The XML document is not valid. Changes have not been saved', MSG_TYPE_ERROR);
-            $error = error_get_last();
-            if (isset($error['message']))
-                $this->messages->add(str_replace('DOMDocument::loadXML(): ', '', $error['message']), MSG_TYPE_WARNING);
-            return false;
+            switch ($node->getNodeType())
+            {
+                case \Ximdex\Services\NodeType::METADATA_DOCUMENT:
+                    $res = @\DomDocument::loadXML('<root>' . $content . '</root>');
+                    break;
+                case \Ximdex\Services\NodeType::XML_DOCUMENT:
+                case \Ximdex\Services\NodeType::XSL_TEMPLATE:
+                    $res = @\DomDocument::loadXML($content);
+                    break;
+                default:
+                    $res = true;
+            }
+            if ($res === false)
+            {
+                //we don't allow to save an invalid XML
+                $this->messages->add('The XML document is not valid. Changes have not been saved', MSG_TYPE_ERROR);
+                $error = error_get_last();
+                if (isset($error['message']))
+                    $this->messages->add(str_replace('DOMDocument::loadXML(): ', '', $error['message']), MSG_TYPE_WARNING);
+                return false;
+            }
         }
         
         $strDoc = new StructuredDocument($this->nodeID);
         $strDoc->SetContent($content, $commitNode);
 
-
-
+        
         $wfSlaves = $this->parent->GetWorkflowSlaves();
 
         if (!is_null($wfSlaves)) {
@@ -192,6 +206,7 @@ class AbstractStructuredDocument extends FileNode
                 $strDoc->SetContent($content, $commitNode);
             }
         }
+        return true;
     }
 
     /**

@@ -34,12 +34,13 @@ use Ximdex\Runtime\App;
 
 class Action_modifyserver extends ActionAbstract {
 
-	function index($request = null) {
+    function index($operation = null, $serverID = null) {
 
 		$idNode = (int) $this->request->getParam("nodeid");
 		$actionID = (int) $this->request->getParam("actionid");
 		$params = $this->request->getParam("params");
-		$serverID = $this->request->getParam('serverid');
+		if (!$serverID)
+		    $serverID = $this->request->getParam('serverid');
 
 		$actionParam = $actionID == 0 ? 'action=' . $this->request->getParam('action') : "actionid=$actionID";
 
@@ -47,10 +48,10 @@ class Action_modifyserver extends ActionAbstract {
 		$list = $servers->class->GetPhysicalServerList();
 		$num_servers = count($list);
 
-		$_server = array();
+		$_servers = array();
 		if ($num_servers > 0) {
 			foreach($list as $id) {
-				$_server[] = array( "Id" => $id, "Description" => $servers->class->GetDescription($id) );
+				$_servers[] = array( "Id" => $id, "Description" => $servers->class->GetDescription($id) );
 			}
 		}
 
@@ -64,7 +65,28 @@ class Action_modifyserver extends ActionAbstract {
 			$isServerOTF=false;
 		}
 
-		if ($servers and $serverID) {
+		if ($operation == 'mod' or $operation == 'new')
+		{
+		    //data provided from the form submit
+		    $server = array();
+		    $server['id'] = $serverID;
+		    $server['name'] = $servers->GetNodeName();
+		    $server['protocol'] = $this->request->getParam('protocol');
+		    $server['host'] = $this->request->getParam('host');
+		    $server['port'] = $this->request->getParam('port');
+		    $server['initialdirectory'] = $this->request->getParam('initialdirectory');
+		    $server['url'] = $this->request->getParam('url');
+		    $server['user'] = $this->request->getParam('login');
+		    $server['description'] = $this->request->getParam('description');
+		    $server['enabled'] = $this->request->getParam('enabled');
+		    $server['preview'] = $this->request->getParam('preview');
+		    $server['overridelocalpaths'] = $this->request->getParam('overridelocalpaths');
+		    $server['states'] = $this->request->getParam('states');
+		    $server['encode'] = $this->request->getParam('encode');
+		    $server['serverOTF'] = $this->request->getParam('serverOTF');
+		    $server['channels'] = $this->request->getParam('channels');
+		}
+		elseif ($operation != 'erase' and $servers and $serverID) {
 			$server = array(
 				"id" => $serverID,
 				"name" => $servers->GetNodeName(),
@@ -81,26 +103,7 @@ class Action_modifyserver extends ActionAbstract {
 				'preview' => $servers->class->GetPreview($serverID),
 				'overridelocalpaths' => $servers->class->GetOverrideLocalPaths($serverID),
 				'isServerOTF' => $isServerOTF
-
 			);
-		}
-		elseif ($request)
-		{
-			//data provided from the form submit
-			$server = array();
-			$server['protocol'] = $request->getParam('protocol');
-			$server['host'] = $request->getParam('host');
-			$server['port'] = $request->getParam('port');
-			$server['initialdirectory'] = $request->getParam('initialdirectory');
-			$server['url'] = $request->getParam('url');
-			$server['user'] = $request->getParam('login');
-			$server['description'] = $request->getParam('description');
-			$server['enabled'] = $request->getParam('enabled');
-			$server['preview'] = $request->getParam('preview');
-			$server['overridelocalpaths'] = $request->getParam('overridelocalpaths');
-			$server['states'] = $request->getParam('states');
-			$server['encode'] = $request->getParam('encode');
-			$server['serverOTF'] = $request->getParam('serverOTF');
 		}
 		else
 		{
@@ -113,7 +116,7 @@ class Action_modifyserver extends ActionAbstract {
 
 		// Getting channels
 
-		$channels = $this->_getChannels($idNode, $serverID, $request);
+		$channels = $this->_getChannels($idNode, $serverID, $server);
 		$numChannels = count($channels);
 
 		//add a js for validation and hidden or display elements about the protocol selected
@@ -131,7 +134,7 @@ class Action_modifyserver extends ActionAbstract {
 			'params' => $params,
 			"nodeURL" => App::getValue( 'UrlRoot')."/xmd/loadaction.php?$actionParam&nodeid={$idNode}",
 			"go_method" => "modify_server",
-			'servers' => $_server,
+			'servers' => $_servers,
 			'num_servers' => $num_servers,
 			'server' => $server,
 			'protocols' => $this->_getProtocols(),
@@ -181,23 +184,23 @@ class Action_modifyserver extends ActionAbstract {
 					);
 
 					$this->sendJSON($values);
-					return ;
+					return true;
 			}
 		}
-
-		if ($this->_validate($serverID, $protocol,$host,$port,$initialDir,$url,$login,$password,$description, $encode)){
+        
+		$server = new Node($nodeID);
+		$list = $server->class->GetPhysicalServerList();
+		
+		if (is_array($list) && in_array($serverID, $list)) {
+		    $action = "mod";
+		} else {
+		    $action = "new";
+		}
+		
+		if ($this->_validate($serverID, $protocol,$host,$port,$initialDir,$url,$login,$password,$description, $encode, $idNode)){
 
 			$node = new Node($nodeID);
-
-			$server = new Node($nodeID);
-			$list = $server->class->GetPhysicalServerList();
-
-			if (is_array($list) && in_array($serverID, $list)) {
-				$action = "mod";
-			} else {
-				$action = "new";
-			}
-
+            
 			if( $this->request->getParam('borrar') == 1) {
 				$server = new Node($nodeID);
 				$server->class->DeletePhysicalServer($serverID);
@@ -273,14 +276,14 @@ class Action_modifyserver extends ActionAbstract {
 			'nodeURL' => App::getValue( 'UrlRoot').'/xmd/loadaction.php?actionid=$actionID&nodeid={$idNode}',
 		);
 		//$this->sendJSON($values);
-		$this->index($this->request);
+		$this->index($action, $serverID);
 	}
 
 	/**
 	 * Function for validation the fields
 	 *
 	 */
-	private function _validate($serverID, $protocol,$host,$port,$initialDir,$url,$login,$password,$description, $encode){
+	private function _validate($serverID, $protocol,$host,$port,$initialDir,$url,$login,$password,$description, $encode, $idNode){
 		$validation = true;
 
 		if ($protocol == 'LOCAL'){
@@ -323,6 +326,23 @@ class Action_modifyserver extends ActionAbstract {
 		if ((!$description) || ($description =='')){
 			$this->messages->add(_("Server description is required"), MSG_TYPE_ERROR);
 			$validation=false;
+		}
+		else
+		{
+		    $servers = new Node($idNode);
+		    $list = $servers->class->GetPhysicalServerList();
+		    if (is_array($list) and count($list))
+		    {
+		        foreach($list as $id)
+		        {
+		            //we check that the server name is not in use for another one
+		            if (strtoupper($servers->class->GetDescription($id)) == strtoupper($description) and $serverID != $id)
+		            {
+		                $this->messages->add(_("Server description " . strtoupper($description) . " is already in use"), MSG_TYPE_ERROR);
+		                $validation = false;
+		            }
+		        }
+		    }
 		}
 		/*
 		if (!$encode)
@@ -367,19 +387,19 @@ class Action_modifyserver extends ActionAbstract {
 		return $_protocols;
 	}
 
-	private function _getChannels($nodeID, $serverID, $request = null) {
+	private function _getChannels($nodeID, $serverID = null, $server = null) {
 		
 		$channel = new Channel();
 		$channels = $channel->getChannelsForNode($nodeID);
 
 		if (is_array($channels)) {
 			
-			if ($request)
+		    if (isset($server['channels']) and $server['channels'])
 			{
 				//data provided from the form submit
 				foreach ($channels as & $channel)
 				{
-					$channel['InServer'] = in_array($channel['IdChannel'], $request->getParam('channels'));
+					$channel['InServer'] = in_array($channel['IdChannel'], $server['channels']);
 				}
 			}
 			elseif ($serverID)

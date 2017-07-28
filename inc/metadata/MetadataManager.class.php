@@ -32,6 +32,8 @@ use Ximdex\Models\RelTagsNodes;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\Runtime\App;
 use Ximdex\Runtime\DataFactory;
+use Ximdex\Utils\Messages;
+use Ximdex\Logger as XMD_Log;
 
 if (!defined('XIMDEX_ROOT_PATH')) {
     define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
@@ -165,7 +167,7 @@ class MetadataManager{
         $info = $node->loadData();
         $idLanguage = $metadata_node->get('IdLanguage');
         $domDoc = new DOMDocument();
-        if ($domDoc->loadXML("<root>".$content."</root>")) {
+        if (@$domDoc->loadXML("<root>".$content."</root>")) {
             if ($domDoc->getElementsByTagName('sys_info')->length > 0) {
                 $nodeid = $domDoc->getElementsByTagName('nodeid')->item(0);
                 $nodeid->nodeValue = $info['nodeid'];
@@ -234,6 +236,11 @@ class MetadataManager{
             $string_xml = str_replace('<root>', '', $string_xml);
             $string_xml = str_replace('</root>', '', $string_xml);
             return $string_xml;
+        }
+        else
+        {
+            //Invalid XML
+            return false;
         }
         return $content;
     }

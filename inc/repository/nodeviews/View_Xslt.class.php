@@ -114,7 +114,6 @@ class View_Xslt extends Abstract_View
             
             if (!file_exists($docxap))
             {
-                //TODO ajlucena: implement the error message for the user
                 XMD_Log::error("File $docxap does not exists in project templates folder");
                 return false;
             }

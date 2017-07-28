@@ -25,29 +25,16 @@
  */
 
 namespace Ximdex\NodeTypes;
-use content;
 use Ximdex\Runtime\DataFactory;
 use DB;
 use Ximdex\Deps\DepsManager;
-use depth;
-use files;
+use DOMDocument;
 use ModulesManager;
-use name;
-use newState;
 use Ximdex\Models\NodeDependencies;
-use nodeTypeID;
-use parentID;
-use recurrence;
-use sourcePath;
 use Ximdex\Models\State;
-use stateID;
-use unknown;
 use Ximdex\Models\Version;
-use Ximdex\Models\Channel;
 use Ximdex\Models\Node;
-use Ximdex\NodeTypes\Root;
 use Ximdex\Parsers\ParsingDependencies;
-use Ximdex\Services\NodeType;
 use Ximdex\Utils\FsUtils;
 use Ximdex\Logger as XMD_Log;
 
@@ -69,7 +56,7 @@ class FileNode extends Root
 
     /**
      *  Creates a file in data/nodes directory.
-     * @return unknown
+     * @return
      */
 
     function RenderizeNode()
@@ -129,7 +116,7 @@ class FileNode extends Root
      * @param int nodeTypeID
      * @param int stateID
      * @param string sourcePath
-     * @return unknown
+     * @return
      */
 
     function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $sourcePath = null)
@@ -150,8 +137,21 @@ class FileNode extends Root
      * @return string
      */
 
-    function SetContent($content, $commitNode = NULL)
+    function SetContent($content, $commitNode = NULL, Node $node = null)
     {
+        if ($node and $node->getNodeType() == \Ximdex\Services\NodeType::RNG_VISUAL_TEMPLATE)
+        {
+            //checking the valid XML of the given RNG template content
+            if (@DOMDocument::loadXML($content) === false)
+            {
+                //we don't allow to save an invalid XML
+                $this->messages->add('The XML document is not valid. Changes have not been saved', MSG_TYPE_ERROR);
+                $error = error_get_last();
+                if (isset($error['message']))
+                    $this->messages->add(str_replace('DOMDocument::loadXML(): ', '', $error['message']), MSG_TYPE_WARNING);
+                return false;
+            }
+        }
 
         $data = new DataFactory($this->nodeID);
 
@@ -176,7 +176,7 @@ class FileNode extends Root
             ParsingDependencies::parseCssDependencies($this->nodeID, $content);
         }
 
-
+        return true;
     }
 
     /**

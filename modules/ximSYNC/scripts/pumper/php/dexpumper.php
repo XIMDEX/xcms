@@ -429,8 +429,8 @@ class DexPumper {
 	//DONE
 	private function updateServerState($status) {
 		if (!empty($status)) {
-			$this->server->query("UPDATE ServerErrorByPumper SET WithError=%s WHERE ServerId=%d",
-					array($status, $this->server->get('IdServer')));
+			$this->server->query('UPDATE ServerErrorByPumper SET WithError=' . $status . ' WHERE ServerId=' 
+                    . $this->server->get('IdServer'));
 
 			$this->server->set('ActiveForPumping', 1);
 			$this->server->update();

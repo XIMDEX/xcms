@@ -128,7 +128,7 @@ class templatenode extends FileNode
         return $xsltHandler->process();
     }
 
-    function SetContent($content, $commitNode = NULL)
+    function SetContent($content, $commitNode = NULL, Node $node = null)
     {
         $matches = array();
         preg_match('/\s*(\<\s*ximptd\s+nodevid\=[\'\"](\d+)[\'\"]\>)/', $content, $matches);
@@ -152,7 +152,7 @@ class templatenode extends FileNode
                 "\n</ximptd>";
         }
 
-        parent::SetContent($content, $commitNode);
+        parent::SetContent($content, $commitNode, $node);
         $content = preg_replace('/\<\?\s*xml[^?]+\?\>/', '', $content);
         $content = preg_replace('/\<\s*[\/]?\s*ximptd[^>]*\>/', '', $content);
         $this->_cleanCache();

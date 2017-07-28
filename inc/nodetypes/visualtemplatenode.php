@@ -30,6 +30,7 @@ use Ximdex\NodeTypes\FileNode;
 use Ximdex\Parsers\PVD2RNG\PVD2RNG;
 use Ximdex\Runtime\DataFactory;
 use Ximdex\Utils\FsUtils;
+use Ximdex\Logger as XMD_Log;
 
 if (!defined('XIMDEX_ROOT_PATH')) {
 	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
@@ -117,9 +118,9 @@ class VisualTemplateNode extends FileNode {
 		return $UUID;
 	}
 
-	function SetContent($content, $commitNode = NULL) {
+	function SetContent($content, $commitNode = NULL, Node $node = null) {
 		$this->_saveUUID($content);
-		parent::SetContent($content, $commitNode);
+		parent::SetContent($content, $commitNode, $node);
 
 		// Adds rng node
 
@@ -138,7 +139,7 @@ class VisualTemplateNode extends FileNode {
 		$idRng = $parentNode->GetChildByName($rngName);
 		if ($idRng > 0) {
 			$rng = new Node($idRng);
-			$rng->SetContent($content);
+			$rng->SetContent($content, null, $node);
 		} else {
 			FsUtils::file_put_contents($rngSourcePath, $content);
 
@@ -169,11 +170,11 @@ class VisualTemplateNode extends FileNode {
 		$content = $this->GetContent();
 		$parts = explode('##########', $content);
 		if (count($parts) > 2) {
-			XMD_Log::error("El esquema PVD {$this->nodeID} tiene m�s de una vez la cadena ########## lo que hace que no se pueda obtener el contenido por defecto correctamente");
+			XMD_Log::error("The PVD schema {$this->nodeID} has the string ########## more than once, which means that the default content can not be correctly retrieved");
 			return false;
 		}
 		if (!(count($parts) == 2)) {
-			XMD_Log::error("El esquema PVD {$this->nodeID} parece que no tiene contenido por defecto");
+			XMD_Log::error("The PVD schema {$this->nodeID} seems to have no default content");
 			return false;
 		}
 		return $parts[1];

@@ -42,6 +42,7 @@ class xsltnode extends FileNode
 {
 
     private $xsltOldName = ""; //String;
+    public $messages;
 
     public function __construct(&$node)
     {
@@ -342,7 +343,7 @@ class xsltnode extends FileNode
 
     }
 
-    function SetContent($content, $commitNode = NULL)
+    function SetContent($content, $commitNode = NULL, Node $node = null)
     {
         //checking the valid XML of the given content
         if (@DOMDocument::loadXML($content) === false)
@@ -357,7 +358,7 @@ class xsltnode extends FileNode
         $content = $this->sanitizeContent($content);
         if ($content === false)
             return false;
-        parent::SetContent($content, $commitNode);
+        parent::SetContent($content, $commitNode, $node);
     }
 
     private function sanitizeContent($content)

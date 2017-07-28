@@ -69,9 +69,9 @@ class ImageNode extends FileNode
     }
 
 
-    function SetContent($content, $commitNode = NULL)
+    function SetContent($content, $commitNode = NULL, Node $node = null)
     {
-        parent::SetContent($content, $commitNode);
+        parent::SetContent($content, $commitNode, $node);
         $mm = new MetadataManager($this->nodeID);
         $mm->updateSystemMetadata();
     }

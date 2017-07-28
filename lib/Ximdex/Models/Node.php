@@ -893,11 +893,11 @@ class Node extends NodesOrm
      * @param $content
      * @param null $commitNode
      */
-    function SetContent($content, $commitNode = NULL)
+    function SetContent($content, $commitNode = NULL, Node $node = null)
     {
         $this->ClearError();
         if ($this->get('IdNode') > 0) {
-            if ($this->class->SetContent($content, $commitNode) === false)
+            if ($this->class->SetContent($content, $commitNode, $node) === false)
             {
                 $this->messages->mergeMessages($this->class->messages);
                 return false;

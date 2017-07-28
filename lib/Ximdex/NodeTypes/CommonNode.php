@@ -25,9 +25,9 @@
  */
 
 namespace Ximdex\NodeTypes;
+use Ximdex\Models\Node;
 use MetadataManager;
 use ModulesManager;
-use Ximdex\NodeTypes\FileNode;
 
 ModulesManager::file('/inc/metadata/MetadataManager.class.php');
 
@@ -68,14 +68,12 @@ class CommonNode extends FileNode
     }
 
 
-    function SetContent($content, $commitNode = NULL)
+    function SetContent($content, $commitNode = NULL, Node $node = null)
     {
-        parent::SetContent($content, $commitNode);
+        parent::SetContent($content, $commitNode, $node);
         $mm = new MetadataManager($this->nodeID);
         $mm->updateSystemMetadata();
     }
 
 
 }
-
-?>

@@ -297,6 +297,12 @@ class StructuredDocument extends StructuredDocumentsOrm
 		$node = new Node($this->get('IdDoc'));
 		if(\Ximdex\Services\NodeType::METADATA_DOCUMENT == $node->GetNodeType()){
 			$content = \MetadataManager::addSystemMetadataToContent($node->nodeID, $content);
+			if ($content === false)
+			{
+			    //invalid XML
+			    $this->msgErr = 'Invalid XML document content';
+			    return false;
+			}
 		}
 
 		// refrescamos la fecha de Actualizacion del nodo
@@ -315,6 +321,7 @@ class StructuredDocument extends StructuredDocumentsOrm
 		// Renderizamos el nodo para reflejar los cambios
 		$node = new Node($this->get('IdDoc'));
 		$node->RenderizeNode();
+		return true;
 	}
 
 
