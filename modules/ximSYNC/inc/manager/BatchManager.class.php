@@ -26,13 +26,14 @@
 
 
 use Ximdex\Deps\DepsManager;
-use Ximdex\Logger as XMD_Log;
+use Ximdex\Logger;
 use Ximdex\Models\NodeType;
 use Ximdex\Models\PortalVersions;
 use Ximdex\Models\Server;
 use Ximdex\NodeTypes\ServerNode;
 use Ximdex\Runtime\DataFactory;
 use Ximdex\Runtime\Db;
+use Ximdex\Utils\Logs\MN_Log;
 use Ximdex\Models\Channel;
 use Ximdex\Models\Node;
 use Ximdex\Utils\PipelineManager;
@@ -106,7 +107,7 @@ class BatchManager
         $node = new Node($idNode);
         $idServer = $node->GetServer();
 
-        XMD_Log::info(_("Publication starts for ") . $node->GetPath() . "($idNode)", 'publication_logger');
+        Publication_Log::write(_("Publication starts for ") . $node->GetPath() . "($idNode)");
 
         $isOTF = $node->getSimpleBooleanProperty('otf');
         $ancestors = array();
@@ -118,7 +119,7 @@ class BatchManager
             $docNode = new Node($idDoc);
 
             if (!($docNode->get('IdNode') > 0)) {
-                XMD_Log::error(_("Unexisting node") . " $idDoc");
+                Logger::error(_("Unexisting node") . " $idDoc");
                 continue;
             }
 
@@ -187,7 +188,7 @@ class BatchManager
 
         foreach ($docsChunked as $chunk) {
 
-            XMD_Log::info(sprintf(_("[Generator %s]: Creating bach %s / %s"), $idNode, $iCount, $iTotal), 'publication_logger');
+            Publication_Log::info(sprintf(_("[Generator %s]: Creating bach %s / %s"), $idNode, $iCount, $iTotal));
 
             $partialDocs = $this->buildBatchs($idNode, $up, $chunk, $docsToUpVersion, $docsToPublishVersion, $docsToPublishSubVersion, $idServer, $physicalServers, 0.8, $down, $iCount,
                 $iTotal, $idPortalVersion, $userId);
@@ -200,7 +201,7 @@ class BatchManager
 
         $timer->stop();
 
-        XMD_Log::info(_("Publication ended; time for publication") . " = " . $timer->display('m') . _(" minutes"), 'publication_logger');
+        Publication_Log::write(_("Publication ended; time for publication") . " = " . $timer->display('m') . _(" minutes"));
 
         return array($docsBatch, $unchangedDocs);
     }
@@ -224,7 +225,7 @@ class BatchManager
         if ($node->nodeType->get('IsPublishable') == 0 &&
             !$depsMngr->getByTarget(DepsManager::BULLETIN_XIMLET, $nodeId)
         ) {
-            XMD_Log::info(sprintf(_("Node %s belongs to an unpublished nodetype"), $nodeId), 'publication_logger');
+            Publication_Log::info(sprintf(_("Node %s belongs to an unpublished nodetype"), $nodeId));
             return false;
         }
 
@@ -240,7 +241,7 @@ class BatchManager
 
         $nodeFrame = new NodeFrame();
         if ($nodeFrame->existsNodeFrame($nodeId, $up, $down)) {
-            XMD_Log::info(sprintf(_("Node %s already exists in a NodeFrame"), $nodeId), 'publication_logger');
+            Publication_Log::info(sprintf(_("Node %s already exists in a NodeFrame"), $nodeId));
             return false;
         }
 
@@ -253,13 +254,13 @@ class BatchManager
         //finding if there are any otf docs
         if (!is_array($generated)) $generated = array();
         $existDocOtf = false;
-        XMD_Log::write(sprintf(_("Incrementing version for %d documents"), count($docs)), 1, 'publication_logger');
+        Publication_Log::write(sprintf(_("Incrementing version for %d documents"), count($docs)), 1);
         $totalDocs = count($docs);
         $mod = (int)($totalDocs / 10);
         $i = 0;
         foreach ($docs as $value) {
             if (($totalDocs > 50) && ($i % $mod == 0)) {
-                XMD_Log::write((int)($i / $totalDocs * 100) . "% " . _("completed"), 1, 'publication_logger');
+                Publication_Log::write((int)($i / $totalDocs * 100) . "% " . _("completed"), 1);
             }
             $n = new Node($value);
             if ($n->nodeType->get('isGenerator')) {
@@ -294,8 +295,8 @@ class BatchManager
 
             if ($timeDown != 0) {
                 $idBatchDown = $batch->create($timeDown, 'Down', $nodeGenerator, 1, null, $idPortalVersion, $userId);
-                XMD_Log::info(_('Creating down batch: ') . $timeDown, "mn_logger");
-                XMD_Log::info(sprintf(_("[Generator %s]: Creating down batch with id %s"), $nodeGenerator, $idBatchDown), 'publication_logger');
+                MN_Log::info(_('Creating down batch: ') . $timeDown);
+                Publication_Log::info(sprintf(_("[Generator %s]: Creating down batch with id %s"), $nodeGenerator, $idBatchDown));
             }
 
             $batch = new Batch();
@@ -303,8 +304,8 @@ class BatchManager
                 $timeUp, 'Up', $nodeGenerator, $priority,
                 $idBatchDown, $idPortalVersion, $userId
             );
-            XMD_Log::info(_('Creating up batch: ') . $timeUp, "mn_logger");
-            XMD_Log::info(sprintf(_("[Generator %s]: Creating up batch with id %s"), $nodeGenerator, $relBatchsServers[$serverId]), 'publication_logger');
+            MN_Log::info(_('Creating up batch: ') . $timeUp);
+            Publication_Log::info(sprintf(_("[Generator %s]: Creating up batch with id %s"), $nodeGenerator, $relBatchsServers[$serverId]));
         }
 
         $frames = $this->buildFrames($timeUp, $timeDown, $docsToPublish, $docsToUpVersion, $version, $subversion, $server, $relBatchsServers, $statStart, $statTotal, $nodeGenerator);
@@ -330,7 +331,7 @@ class BatchManager
         foreach ($docsToPublish as $idNode) {
 
             if (($totalDocs > 20) && ($j % $mod == 0)) {
-                XMD_Log::write((int)($j / $totalDocs * 100) . "% " . _("completed"), 1, 'publication_logger');
+                Publication_Log::write((int)($j / $totalDocs * 100) . "% " . _("completed"), 1);
             }
 
             $j++;
@@ -359,7 +360,7 @@ class BatchManager
                 $batch = new Batch();
                 $batch->batchToLog(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__,
                     __LINE__, "INFO", 8, _("No version for node") . " $idNode");
-                XMD_Log::warning(sprintf(_("Last version could not be obtained for node %s"), $idNode), 'publication_logger');
+                Publication_Log::warning(sprintf(_("Last version could not be obtained for node %s"), $idNode));
                 continue;
             }
 
@@ -392,7 +393,7 @@ class BatchManager
 
             if (is_null($nodeFrameId)) {
                 $node->unBlock();
-                XMD_Log::warning(sprintf(_("A NodeFrame could not be obtained for node %s"), $idNode), 'publication_logger');
+                Publication_Log::warning(sprintf(_("A NodeFrame could not be obtained for node %s"), $idNode));
                 continue;
             }
 
@@ -424,8 +425,8 @@ class BatchManager
                     // Deleting nodeFrame previously created
                     $nodeFrame = new NodeFrame($nodeFrameId);
                     $nodeFrame->delete();
-                    XMD_Log::warning(sprintf(_("A ChannelFrame could not be obtained for node %s and channel %s"), $idNode, $channelId), 'publication_logger');
-                    XMD_Log::warning(sprintf(_("Deleting Nodeframe for node %s"), $idNode), 'publication_logger');
+                    Publication_Log::warning(sprintf(_("A ChannelFrame could not be obtained for node %s and channel %s"), $idNode, $channelId));
+                    Publication_Log::warning(sprintf(_("Deleting Nodeframe for node %s"), $idNode));
                     continue;
                 }
 
@@ -443,13 +444,13 @@ class BatchManager
 
                         if (!$isServerOTF && $this->getFlag('otfPublication')) {
                             //server not otf and publication mode is otf
-                            XMD_Log::warning(sprintf(_("Server %s is NOT OFT, it will be omitted because of publishing mode is OTF"), $physicalServer), 'publication_logger');
+                            Publication_Log::warning(sprintf(_("Server %s is NOT OFT, it will be omitted because of publishing mode is OTF"), $physicalServer));
                             break;
                         }
 
                         if ($isServerOTF && !$this->getFlag('otfPublication')) {
                             //server otf and publication mode no otf
-                            XMD_Log::warning(sprintf(_("Server %s is OFT, it will be omitted because of publishing mode is NOT OTF"), $physicalServer), 'publication_logger');
+                            Publication_Log::warning(sprintf(_("Server %s is OFT, it will be omitted because of publishing mode is NOT OTF"), $physicalServer));
                             break;
                         }
 
@@ -488,7 +489,7 @@ class BatchManager
                     }
 
                     if (is_null($idFrame)) {
-                        XMD_Log::warning(sprintf(_("Creation of ServerFrame could not be done: node %s, channel %s, batch %s"), $idNode, $channelId, $physicalServer, $idBatch), 'publication_logger');
+                        Publication_Log::warning(sprintf(_("Creation of ServerFrame could not be done: node %s, channel %s, batch %s"), $idNode, $channelId, $physicalServer, $idBatch));
                         $docsNotOk[$idNode][$physicalServer][$channelId] = $idFrame;
                     } else {
                         $isServerCreated = true;
@@ -503,9 +504,10 @@ class BatchManager
                             if ($nodeType->get('Name') == 'XimNewsBulletinLanguage') {
                                 $db = new Db();
                                 $sql = "INSERT INTO XimNewsFrameBulletin VALUES ($idFrame, $idNode, 'mail_pending')";
-                                $db->Execute($sql);
+                                if ($db->Execute($sql) === false)
+                                	return false;
                                 if (!($db->numRows > 0)) {
-                                    XMD_Log::info(_("Error inserting ximnewsframebulletin"));
+                                    Logger::info(_("Error inserting ximnewsframebulletin"));
                                 }
                             }
                         }
@@ -514,8 +516,8 @@ class BatchManager
                 }
 
                 if ($numFrames <= 0) {
-                    XMD_Log::warning(sprintf(_("Creation of ServerFrame could not be done: node %s, channel %s"), $idNode, $channelId), 'publication_logger');
-                    XMD_Log::warning(sprintf(_("ChannelFrame %s will be removed"), $channelFrameId), 'publication_logger');
+                    Publication_Log::warning(sprintf(_("Creation of ServerFrame could not be done: node %s, channel %s"), $idNode, $channelId));
+                    Publication_Log::warning(sprintf(_("ChannelFrame %s will be removed"), $channelFrameId));
                     //Deleting the channelFrame previosly created
                     $channelFrame = new ChannelFrame($channelFrameId);
                     $channelFrame->delete();
@@ -523,8 +525,8 @@ class BatchManager
             }
 
             if (!$isServerCreated) {
-                XMD_Log::warning(sprintf(_("Creation of ServerFrame could not be done: node %s"), $idNode), 'publication_logger');
-                XMD_Log::warning(sprintf(_("NodeFrame %s will be eliminated"), $nodeFrameId), 'publication_logger');
+                Publication_Log::warning(sprintf(_("Creation of ServerFrame could not be done: node %s"), $idNode));
+                Publication_Log::warning(sprintf(_("NodeFrame %s will be eliminated"), $nodeFrameId));
                 // Deleting nodeFrame previously created
                 $nodeFrame = new NodeFrame($nodeFrameId);
                 $nodeFrame->delete();
@@ -541,7 +543,7 @@ class BatchManager
         $result = $serverFrame->find('IdBatchUp, count(IdSync)', "IdBatchUp in ($tt) group by IdBatchUp",
             NULL, MULTI, false);
 
-        XMD_Log::info(sprintf(_("The number of frames in %s batchs will be updated"), count($result)), 'publication_logger');
+        Publication_Log::info(sprintf(_("The number of frames in %s batchs will be updated"), count($result)));
 
         if (count($result) > 0) {
             foreach ($result as $dataFrames) {
@@ -549,7 +551,7 @@ class BatchManager
                 $ss[] = $dataFrames[0];
                 $numFrames = $dataFrames[1];
 
-                XMD_Log::info(sprintf(_("Batch %s uploaded") . ", " . _("total frames %s"), $id, $numFrames), 'publication_logger');
+                Publication_Log::info(sprintf(_("Batch %s uploaded") . ", " . _("total frames %s"), $id, $numFrames));
 
                 $batch = new Batch($id);
                 $batch->set('ServerFramesTotal', $numFrames);
@@ -558,7 +560,7 @@ class BatchManager
                 $idBatchDown = $batch->get('IdBatchDown');
 
                 if ($idBatchDown > 0) {
-                    XMD_Log::info(sprintf(_("Batch %s downloaded") . ", " . _("total frames %s"), $idBatchDown, $numFrames), 'publication_logger');
+                    Publication_Log::info(sprintf(_("Batch %s downloaded") . ", " . _("total frames %s"), $idBatchDown, $numFrames));
                     $batchDown = new Batch($idBatchDown);
                     $batchDown->set('ServerFramesTotal', $numFrames);
                     $batchDown->update();
@@ -573,7 +575,7 @@ class BatchManager
         // Batchs without serverFrames will be deleted
         if (sizeof($voidBatchs) > 0) {
             foreach ($voidBatchs as $idBatch) {
-                XMD_Log::info(sprintf(_("Baths %s will be removed for being empty"), $idBatch), 'publication_logger');
+                Publication_Log::info(sprintf(_("Baths %s will be removed for being empty"), $idBatch));
 
                 $batch = new Batch($idBatch);
                 $batch->delete();
@@ -606,9 +608,11 @@ class BatchManager
         // Ensure that batchs have frames or getBatchToProcess will return the same batch over and over
         $sql = "update Batchs set State = 'NoFrames' where idbatch not in (select distinct idbatchup from ServerFrames) and Batchs.State IN ('InTime','Closing')";
         $db = new Db();
-        $db->execute($sql);
+        if ($db->execute($sql) === false)
+        	return false;
+        
         if ($db->numRows > 0) {
-            XMD_Log::warning(sprintf(_('Found %s Batchs without Frames, were marked as NoFrames') . ".", $db->numRows));
+            Logger::warning(sprintf(_('Found %s Batchs without Frames, were marked as NoFrames') . ".", $db->numRows));
         }
     }
 
@@ -631,7 +635,8 @@ class BatchManager
 			SUM(IF(ServerFrames.State IN ('Pumped'),1,0)) AS Pumpeds,
 			COUNT(ServerFrames.IdSync) AS Total FROM ServerFrames, Batchs WHERE Batchs.State IN ('InTime','Closing') AND
 			Batchs.IdBatch = ServerFrames.IdBatchUp GROUP BY ServerFrames.IdBatchUp HAVING Total = Errors + Success + Pumpeds";
-        $dbObj->Query($sql);
+     	if ($dbObj->Query($sql) === false)
+        	return false;
 
         while (!$dbObj->EOF) {
 
@@ -655,7 +660,7 @@ class BatchManager
                 $batch->set('State', 'Ended');
                 $batch->BatchToLog($idBatch, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__,
                     __LINE__, "INFO", 8, sprintf(_("Ending %s  batch %d UP"), $prevState, $idBatch));
-                XMD_Log::info(_("Ending up batch with id ") . $idBatch, "mn_logger");
+                MN_Log::info(_("Ending up batch with id ") . $idBatch);
             }
 
             $batch->update();
@@ -678,7 +683,8 @@ class BatchManager
 					COUNT(ServerFrames.IdSync) AS Total FROM ServerFrames, Batchs WHERE
 					ServerFrames.IdBatchUp = Batchs.IdBatch AND Batchs.IdBatchDown = $idBatch";
 
-                $dbObj->Query($sql);
+                if ($dbObj->Query($sql) === false)
+                	return false;
 
                 $errors = $dbObj->GetValue("Errors");
                 $success = $dbObj->GetValue("Success");
@@ -688,7 +694,7 @@ class BatchManager
                 $prevState = $batchDown->get('State');
 
                 if ($totals == 0) {
-                    XMD_Log::info(sprintf(_("Batch %d type down without associated batch type up"), $idBatch));
+                    Logger::info(sprintf(_("Batch %d type down without associated batch type up"), $idBatch));
 
                     $generatorId = $batchDown->get('IdNodeGenerator');
 
@@ -697,7 +703,8 @@ class BatchManager
 						COUNT(ServerFrames.IdSync) AS Total FROM NodeFrames, ServerFrames WHERE
 							ServerFrames.IdNodeFrame = NodeFrames.IdNodeFrame and NodeFrames.NodeId = $generatorId";
 
-                    $dbObj->Query($sql);
+                    if ($dbObj->Query($sql) === false)
+                    	return false;
 
                     $errors = $dbObj->GetValue("Errors");
                     $success = $dbObj->GetValue("Success");
@@ -712,7 +719,7 @@ class BatchManager
                     $batchDown->set('State', 'Ended');
                     $batchDown->BatchToLog($idBatch, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__,
                         __LINE__, "INFO", 8, _("Ending " . $prevState . "for batch DOWN $idBatch"));
-                    XMD_Log::info(_("Ending down batch with id ") . $idBatch, "mn_logger");
+                    MN_Log::info(_("Ending down batch with id ") . $idBatch);
                 }
 
                 $batchDown->update();
@@ -731,7 +738,8 @@ class BatchManager
         }
 
         $query = "SELECT IdBatch FROM Batchs WHERE Playing = 1 AND State = 'Waiting' AND TimeOn < $now";
-        $dbObj->Query($query);
+        if ($dbObj->Query($query) === false)
+        	return false;
 
         $listBatchs = array();
         while (!$dbObj->EOF) {
@@ -795,8 +803,10 @@ class BatchManager
             $batch->update();
 
             $db = new Db();
-            $db->execute("UPDATE Batchs SET IdPortalVersion = IdPortalVersion + 1 WHERE State != 'Ended'
+            $res = $db->execute("UPDATE Batchs SET IdPortalVersion = IdPortalVersion + 1 WHERE State != 'Ended'
 				AND IdBatch > $idBatch");
+            if (!$res)
+            	return false;
 
         }
 
@@ -812,7 +822,7 @@ class BatchManager
                 $relFramePortal->addVersion($idPortalVersion, $nodeFrameId);
             }
         } else {
-            XMD_Log::error(_("Nodesframes to be added to the portal review do not exist"));
+            Logger::error(_("Nodesframes to be added to the portal review do not exist"));
         }
 
         return true;
@@ -829,7 +839,9 @@ class BatchManager
 				WHERE Playing = 1 AND State = 'InTime' AND ServerFramesTotal > 0
 				ORDER BY Priority DESC, MajorCycle DESC, MinorCycle DESC, Type = 'Down' DESC LIMIT 1";
 
-        $dbObj->Query($sql);
+        if ($dbObj->Query($sql) === false)
+        	return false;
+        
         $num = $dbObj->numRows;
         if ($num == 0) {
             return false;
@@ -961,7 +973,7 @@ class BatchManager
         } else if ($batchType == 'Down') {
             $batchColumn = 'IdBatchDown';
         } else {
-            XMD_Log::info(sprintf(_("ERROR: %s rare type of batch"), $batchType));
+            Logger::info(sprintf(_("ERROR: %s rare type of batch"), $batchType));
             return false;
         }
 
@@ -970,12 +982,13 @@ class BatchManager
         $query = "SELECT IdSync FROM ServerFrames, Batchs, Pumpers WHERE ServerFrames.IdBatchUp = Batchs.IdBatch AND " .
             "ServerFrames.PumperId = Pumpers.PumperId AND " .
             "Batchs.$batchColumn = $batchId AND Pumpers.IdServer NOT IN ($inactives)";
-        $dbObj->Query($query);
+        if ($dbObj->Query($query) === false)
+            return false;
 
         $numServerFramesFromInactiveServers = $dbObj->numRows;
 
         if ($totalServerFrames == $numServerFramesFromInactiveServers + $sucessServerFrames) {
-            XMD_Log::info(sprintf(_("ERROR: %s rare type of batch"), $batchType));
+            Logger::info(sprintf(_("ERROR: %s rare type of batch"), $batchType));
             $this->set('State', 'Ended');
             $this->update();
         }
@@ -1118,7 +1131,8 @@ class BatchManager
         $sql = "SELECT IdBatch, Type, IdNodeGenerator, MajorCycle, MinorCycle, ServerFramesTotal FROM Batchs
 				WHERE Playing = 1 AND State = 'InTime' AND ServerFramesTotal > 0
 				ORDER BY Priority DESC, MajorCycle DESC, MinorCycle DESC, Type = 'Down'";
-        $dbObj->Query($sql);
+        if ($dbObj->Query($sql) === false)
+            return false;
 
         if ($dbObj->numRows > 0) {
             $batchs = array();

@@ -378,7 +378,7 @@ class FsUtils
         }
         if (!@unlink($file)) {
             $backtrace = debug_backtrace();
-            XMD_Log::debug(sprintf(_('It has been applied to delete a file which could not been deleted %s [inc/fsutils/FsUtils.class.php] script: %s file: %s line: %s'),
+            XMD_Log::warning(sprintf(_('It has been applied to delete a file which could not been deleted %s [inc/fsutils/FsUtils.class.php] script: %s file: %s line: %s'),
                 $file,
                 $_SERVER['SCRIPT_FILENAME'],
                 $backtrace[0]['file'],

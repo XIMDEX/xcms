@@ -187,6 +187,7 @@ class AbstractStructuredDocument extends FileNode
             {
                 //we don't allow to save an invalid XML
                 $this->messages->add('The XML document is not valid. Changes have not been saved', MSG_TYPE_ERROR);
+                XMD_Log::error('Invalid XML for node: ' . $node->getDescription());
                 $error = error_get_last();
                 if (isset($error['message']))
                     $this->messages->add(str_replace('DOMDocument::loadXML(): ', '', $error['message']), MSG_TYPE_WARNING);

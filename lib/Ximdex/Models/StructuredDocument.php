@@ -301,6 +301,7 @@ class StructuredDocument extends StructuredDocumentsOrm
 			{
 			    //invalid XML
 			    $this->msgErr = 'Invalid XML document content';
+			    XMD_Log::error('Invalid XML for metadata node: ' . $node->getDescription());
 			    return false;
 			}
 		}

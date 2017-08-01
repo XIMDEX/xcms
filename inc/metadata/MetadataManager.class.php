@@ -32,7 +32,6 @@ use Ximdex\Models\RelTagsNodes;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\Runtime\App;
 use Ximdex\Runtime\DataFactory;
-use Ximdex\Utils\Messages;
 use Ximdex\Logger as XMD_Log;
 
 if (!defined('XIMDEX_ROOT_PATH')) {
@@ -239,8 +238,7 @@ class MetadataManager{
         }
         else
         {
-            //Invalid XML
-            return false;
+            XMD_Log::error('Invalid XML content for metadata node ' . $node->getDescription());
         }
         return $content;
     }

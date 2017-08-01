@@ -348,7 +348,7 @@ class DexPumper {
 		$msg_cant_create_folder = _('Could not find or create the destination folder')." {$baseRemoteFolder}{$relativeRemoteFolder}";
 
 		if (!$this->connection->cd($baseRemoteFolder)) {
-			$this->warning($msg_not_found_folder);
+			$this->error($msg_not_found_folder);
 		}
 		if (!$this->connection->mkdir($baseRemoteFolder . $relativeRemoteFolder, 0755, true)) {
 			$this->error($msg_cant_create_folder);
@@ -429,8 +429,8 @@ class DexPumper {
 	//DONE
 	private function updateServerState($status) {
 		if (!empty($status)) {
-			$this->server->query('UPDATE ServerErrorByPumper SET WithError=' . $status . ' WHERE ServerId=' 
-                    . $this->server->get('IdServer'));
+			$this->server->query("UPDATE ServerErrorByPumper SET WithError='%s' WHERE ServerId=%d",
+					array($status, $this->server->get('IdServer')));
 
 			$this->server->set('ActiveForPumping', 1);
 			$this->server->update();
@@ -505,7 +505,6 @@ class DexPumper {
 	public function info($_msg = NULL) { $this->msg_log("INFO PUMPER: $_msg"); XMD_Log::info($_msg); }
 	public function error($_msg = NULL) { $this->msg_log("ERROR PUMPER: $_msg"); XMD_Log::error($_msg); }
 	public function fatal($_msg = NULL) { $this->msg_log("FATAL PUMPER: $_msg"); XMD_Log::fatal($_msg); }
-	public function warning($_msg = NULL) { $this->msg_log("WARNING PUMPER: $_msg"); XMD_Log::warning($_msg); }
 
 	public function msg_log($_msg) {
 		$pumperID = (int) $this->pumper->get('PumperId');
