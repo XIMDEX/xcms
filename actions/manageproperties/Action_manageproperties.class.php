@@ -147,6 +147,8 @@ class Action_manageproperties extends ActionAbstract
         );
 
         $confirm = false;
+        //this part don't show the confirm step (wait for JSON response)
+        /*
         if (!$confirmed) {
 
             $affected = InheritedPropertiesManager::getAffectedNodes($nodeId, $properties);
@@ -158,6 +160,7 @@ class Action_manageproperties extends ActionAbstract
                 }
             }
         }
+        */
 
         if ($confirm) {
 
