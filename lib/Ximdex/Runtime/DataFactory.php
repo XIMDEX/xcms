@@ -352,6 +352,7 @@ class DataFactory
 
     function _generateCaches($idVersion)
     {
+        $res = true;
         if (ModulesManager::isEnabled('ximSYNC')) {
             $version = new Version($idVersion);
             if (!($version->get('IdVersion') > 0)) {
@@ -380,12 +381,13 @@ class DataFactory
                 if (!$isOTF) {
                     $transformer = $node->getProperty('Transformer');
                     $data['TRANSFORMER'] = $transformer[0];
-                    $pipelineManager->getCacheFromProcess($idVersion, 'StrDocToDexT', $data);
+                    $res = $pipelineManager->getCacheFromProcess($idVersion, 'StrDocToDexT', $data);
                 } else {
-                    $pipelineManager->getCacheFromProcess($idVersion, 'ximOTFSql', $data);
+                    $res = $pipelineManager->getCacheFromProcess($idVersion, 'ximOTFSql', $data);
                 }
             }
         }
+        return $res;
     }
 
     /**
@@ -423,7 +425,8 @@ class DataFactory
         // (1) No se pasa version determinada, se incrementa la version con el contenido nuevo.
         if (is_null($versionID) && is_null($subVersion)) {
             $idVersion = $this->AddVersion(NULL, NULL, $content, $commitNode);
-            $this->_generateCaches($idVersion);
+            if ($this->_generateCaches($idVersion) === false)
+                return false;
 
             $event = new NodeEvent($this->nodeID);
             App::dispatchEvent(\Ximdex\Events::NODE_TOUCHED, $event);

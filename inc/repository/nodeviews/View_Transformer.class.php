@@ -47,7 +47,7 @@ class View_Transformer extends Abstract_View implements Interface_View {
 			$args['TRANSFORMER'] = end($node->getProperty('Transformer'));
 
 			if (empty($args['TRANSFORMER'])) {
-				XMD_Log::fatal('No se ha especificado el transformador en la tabla Config');
+				XMD_Log::fatal('The transformer has not been specified in the table Config');
 			}
 		}
 
@@ -59,8 +59,8 @@ class View_Transformer extends Abstract_View implements Interface_View {
 		$factory = new \Ximdex\Utils\Factory(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews', 'View_');
 		$instanceOfView = $factory->instantiate($transformer);
 
-		return $instanceOfView->transform($idVersion, $pointer, $args);
-
+		$res = $instanceOfView->transform($idVersion, $pointer, $args);
+		return $res;
 	}
 
 }

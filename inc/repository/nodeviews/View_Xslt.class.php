@@ -29,7 +29,6 @@ use Ximdex\Models\Channel;
 use Ximdex\Models\Node;
 use Ximdex\Models\Version;
 use Ximdex\Runtime\App;
-use Ximdex\Utils\Messages;
 use Ximdex\Logger as XMD_Log;
 
 ModulesManager::file('/xslt/functions.php', 'dexT');
@@ -39,16 +38,10 @@ ModulesManager::file('/inc/repository/nodeviews/Interface_View.class.php');
 
 class View_Xslt extends Abstract_View
 {
-    public $messages;
     private $_node;
     private $_idSection;
     private $_idChannel;
     private $_idProject;
-
-    public function __construct()
-    {
-        $this->messages = new Messages();
-    }
     
     public function transform($idVersion = NULL, $pointer = NULL, $args = NULL)
     {
@@ -114,7 +107,11 @@ class View_Xslt extends Abstract_View
             
             if (!file_exists($docxap))
             {
-                XMD_Log::error("File $docxap does not exists in project templates folder");
+                $error = "File $docxap does not exists in project templates folder";
+                if (isset($GLOBALS['InBatchProcess']) and $GLOBALS['InBatchProcess'])
+                    XMD_Log::error($error);
+                else
+                    $GLOBALS['errorInXslTransformation'] = $error;
                 return false;
             }
         }
@@ -122,10 +119,17 @@ class View_Xslt extends Abstract_View
         $xsltHandler = new \Ximdex\XML\XSLT();
         if (!$xsltHandler->setXML($pointer))
         {
-            $this->messages->add('The XML document has syntax errors. Content have been not saved', MSG_TYPE_ERROR);
+            $error = \Ximdex\Error::error_message();
+            if ($error)
+                $error = str_replace('DOMDocument::load(): ', '', $error);
+            if (isset($GLOBALS['InBatchProcess']) and $GLOBALS['InBatchProcess'])
+                XMD_Log::error('The XML document has syntax errors in file: ' . $pointer . '(' . $error . ')');
+            else
+                $GLOBALS['errorInXslTransformation'] = 'The XML document has syntax errors: (' . $error . ')';
             return false;
         }
-        $xsltHandler->setXSL($docxap);
+        if ($xsltHandler->setXSL($docxap) === false)
+            return false;
         $params = array('xmlcontent' => $content);
         foreach ($params as $param => $value) {
             $xsltHandler->setParameter(array($param => $value));
@@ -133,8 +137,18 @@ class View_Xslt extends Abstract_View
 
         $content = $xsltHandler->process();
         if (empty($content)) {
-            XMD_Log::error("Error in XSLT process for $docxap ");
-            return NULL;
+            
+            $error = \Ximdex\Error::error_message();
+            if ($error)
+                $error = str_replace('XSLTProcessor::transformToXml(): ', '', $error);
+            $error = 'Error in XSLT process for ' . $docxap . ' (' . $error . ')';
+            if (isset($GLOBALS['InBatchProcess']) and $GLOBALS['InBatchProcess'])
+            {
+                XMD_Log::error($error);
+                return NULL;
+            }
+            $GLOBALS['errorInXslTransformation'] = $error;
+            return false;
         }
 
         // Tags counter

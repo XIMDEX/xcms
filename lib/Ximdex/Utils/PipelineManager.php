@@ -49,14 +49,14 @@ class PipelineManager
     /**
      * @var Messages
      */
-    var $messages;
+    public $messages;
 
     /**
      * Constructor, initialize the graphs
      *
      * @return void
      */
-    function PipelineManager()
+    function __construct()
     {
         $this->messages = App::get('\Ximdex\Utils\Messages');
     }
@@ -207,7 +207,7 @@ class PipelineManager
 
         $node = new Node($idNode);
         if (!($node->get('IdNode') > 0)) {
-            Logger::error("[PipelineManager:_checkChannelIsEnabled] An unexistent cache version $idVersion has been requested which asso    ciated node couldn't be created.");
+            Logger::error("[PipelineManager:_checkChannelIsEnabled] An unexistent cache version $idVersion has been requested which associated node couldn't be created.");
             return false;
         }
 

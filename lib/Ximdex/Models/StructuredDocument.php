@@ -28,6 +28,7 @@
 namespace Ximdex\Models;
 
 use Ximdex\Runtime\DataFactory;
+use Ximdex\Utils\Logs\Logger;
 use DB;
 use Ximdex\Models\ORM\StructuredDocumentsOrm;
 use Ximdex\Parsers\ParsingDependencies;
@@ -238,7 +239,10 @@ class StructuredDocument extends StructuredDocumentsOrm
 			$target = new StructuredDocument($targetLink);
 			$targetContent = $target->GetContent();
 			$targetLang = $target->GetLanguage();
-			$targetContent = preg_replace('/ a_enlaceid([A-Za-z0-9|\_]+)\s*=\s*\"([^\"]+)\"/ei', "' a_enlaceid\\1=\"'.\$this->UpdateLinkParseLink($targetLang , '\\2').'\"'", $targetContent);
+			
+			//usage of preg_replace_callback instead of preg_replace (generates a warning error when using /e in regular expression)
+			$targetContent = preg_replace_callback('/ a_enlaceid([A-Za-z0-9|\_]+)\s*=\s*\"([^\"]+)\"/ei', "' a_enlaceid\\1=\"'.\$this->UpdateLinkParseLink($targetLang , '\\2').'\"'", $targetContent);
+			
 			$targetContent = preg_replace('/ a_import_enlaceid([A-Za-z0-9|\_]+)\s*=\s*\"([^\"]+)\"/ei', "' a_import_enlaceid\\1=\"'.\$this->UpdateLinkParseLink($targetLang , '\\2').'\"'", $targetContent);
 			$targetContent = preg_replace('/<url>\s*([^\<]+)\s*<\/url>/ei', "'<url>'.\$this->UpdateLinkParseLink($targetLang , '\\1').'</url>'", $targetContent);
 			return $targetContent;
@@ -301,7 +305,7 @@ class StructuredDocument extends StructuredDocumentsOrm
 			{
 			    //invalid XML
 			    $this->msgErr = 'Invalid XML document content';
-			    XMD_Log::error('Invalid XML for metadata node: ' . $node->getDescription());
+			    Logger::error('Invalid XML for metadata node: ' . $node->getDescription());
 			    return false;
 			}
 		}
@@ -312,12 +316,23 @@ class StructuredDocument extends StructuredDocumentsOrm
 		$node = new Node($this->get('IdDoc'));
 		if($commitNode == false){
 			$info = $node->GetLastVersion();
-			$data->SetContent($content, $info['Version'], $info['SubVersion'], $commitNode);
+			$res = $data->SetContent($content, $info['Version'], $info['SubVersion'], $commitNode);
 		}else{
-			$data->SetContent($content, NULL, NULL, $commitNode);
+			$res = $data->SetContent($content, NULL, NULL, $commitNode);
+		}
+		if ($res === false)
+		{
+		    if (isset($GLOBALS['errorInXslTransformation']) and $GLOBALS['errorInXslTransformation'])
+		        $this->messages->add($GLOBALS['errorInXslTransformation'], MSG_TYPE_ERROR);
+		    return false;
 		}
 		// set dependencies
-		ParsingDependencies::parseAllDependencies($this->get('IdDoc'), $content);
+		$dependeciesParser = new ParsingDependencies();
+		if ($dependeciesParser->parseAllDependencies($this->get('IdDoc'), $content) === false)
+		{
+		    $this->messages->mergeMessages($dependeciesParser->messages);
+		    return false;
+		}
 
 		// Renderizamos el nodo para reflejar los cambios
 		$node = new Node($this->get('IdDoc'));

@@ -25,7 +25,9 @@
  */
 
 
+use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
+use Ximdex\Utils\Logs\Logger;
 
 
 abstract class Abstract_View
@@ -47,7 +49,7 @@ abstract class Abstract_View
                 }
             }
         }
-        XMD_Log::error('Ha sucedido un error al intentar almacenar contenido');
+        Logger::error('Ha sucedido un error al intentar almacenar contenido');
         return NULL;
     }
 

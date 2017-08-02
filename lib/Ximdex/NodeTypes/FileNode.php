@@ -116,7 +116,7 @@ class FileNode extends Root
      * @param int nodeTypeID
      * @param int stateID
      * @param string sourcePath
-     * @return unknown
+     * @return
      */
 
     function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $sourcePath = null)
@@ -139,17 +139,23 @@ class FileNode extends Root
 
     function SetContent($content, $commitNode = NULL, Node $node = null)
     {
-        if ($node and $node->getNodeType() == \Ximdex\Services\NodeType::RNG_VISUAL_TEMPLATE)
+        //validate HTML or XML valid contents
+        if ($node and ($node->getNodeType() == \Ximdex\Services\NodeType::NODE_HT or $node->getNodeType() == \Ximdex\Services\NodeType::RNG_VISUAL_TEMPLATE))
         {
-            //checking the valid XML of the given RNG template content
-            if (@DOMDocument::loadXML($content) === false)
+            //checking the valid HTML in Ximclude contents or XML of the given RNG template content
+            $domDoc = new DOMDocument();
+            if ($node->getNodeType() == \Ximdex\Services\NodeType::NODE_HT)
+                $res = @$domDoc->loadXML('<root>' . $content . '</root>');
+            else
+                $res = @$domDoc->loadXML($content);
+            if ($res === false)
             {
                 //we don't allow to save an invalid XML
                 $this->messages->add('The XML document is not valid. Changes have not been saved', MSG_TYPE_ERROR);
                 XMD_Log::error('Invalid XML for node: ' . $node->getDescription());
-                $error = error_get_last();
-                if (isset($error['message']))
-                    $this->messages->add(str_replace('DOMDocument::loadXML(): ', '', $error['message']), MSG_TYPE_WARNING);
+                $error = \Ximdex\Error::error_message();
+                if ($error)
+                    $this->messages->add(str_replace('DOMDocument::loadXML(): ', '', $error), MSG_TYPE_WARNING);
                 return false;
             }
         }

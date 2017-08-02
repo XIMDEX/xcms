@@ -268,12 +268,19 @@ class Db
      */
     private function _getEncodings()
     {
-
         $sql = "select ConfigKey,ConfigValue from Config where ConfigKey='workingEncoding' or ConfigKey='dbEncoding'";
 
         if (($this->dbEncoding == '') && ($this->workingEncoding == '')) {
             $this->sql = $sql;
-            $stm = $this->db->query($this->sql, \PDO::FETCH_ASSOC);
+            try
+            {
+                $stm = $this->db->query($this->sql, \PDO::FETCH_ASSOC);
+            }
+            catch (\PDOException $e)
+            {
+                XMD_Log::error('Can\'t get encondings types (' . $e->getMessage() . ')');
+                return false;
+            }
             if ($stm === false)
             {
             	if (isset($GLOBALS['InBatchProcess']) and $GLOBALS['InBatchProcess'])
@@ -287,7 +294,6 @@ class Db
             	       return $res;
             	   }
             	}
-            	
             	$error = $this->error();
             	XMD_Log::error('Can\'t get encondings types (' . $error[2] . ')');
                 return false;

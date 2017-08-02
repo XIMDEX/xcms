@@ -131,7 +131,11 @@ class xsltnode extends FileNode
      */
     function setIncludeContent($fileName, $parentId, $nodeTypeId, $stateID)
     {
-
+        if ($fileName == 'docxap.xsl')
+        {
+            XMD_Log::info('docxap.xsl can\'t be include in templates_include.xsl file');
+            return true;
+        }
         if ($fileName != "templates_include.xsl") {
             $node = new Node($this->nodeID);
             $projectId = $node->GetProject();
@@ -346,14 +350,15 @@ class xsltnode extends FileNode
     function SetContent($content, $commitNode = NULL, Node $node = null)
     {
         //checking the valid XML of the given content
-        if (@DOMDocument::loadXML($content) === false)
+        $domDoc = new DOMDocument();
+        if (@$domDoc->loadXML($content) === false)
         {
             //we don't allow to save an invalid XML
             $this->messages->add('The XML document is not valid. Changes have not been saved', MSG_TYPE_ERROR);
-            XMD_Log::error('Invalid XML for node: ' . $node->getDescription());
-            $error = error_get_last();
-            if (isset($error['message']))
-                $this->messages->add(str_replace('DOMDocument::loadXML(): ', '', $error['message']), MSG_TYPE_WARNING);
+            //XMD_Log::error('Invalid XML for node: ' . $node->getDescription());
+            $error = \Ximdex\Error::error_message();
+            if ($error)
+                $this->messages->add(str_replace('DOMDocument::loadXML(): ', '', $error), MSG_TYPE_WARNING);
             return false;
         }
         $content = $this->sanitizeContent($content);

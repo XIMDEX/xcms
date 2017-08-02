@@ -174,11 +174,14 @@ class AbstractStructuredDocument extends FileNode
             switch ($node->getNodeType())
             {
                 case \Ximdex\Services\NodeType::METADATA_DOCUMENT:
-                    $res = @\DomDocument::loadXML('<root>' . $content . '</root>');
+                case \Ximdex\Services\NodeType::XIMLET:
+                    $domDoc = new \DOMDocument();
+                    $res = @$domDoc->loadXML('<root>' . $content . '</root>');
                     break;
                 case \Ximdex\Services\NodeType::XML_DOCUMENT:
                 case \Ximdex\Services\NodeType::XSL_TEMPLATE:
-                    $res = @\DomDocument::loadXML($content);
+                    $domDoc = new \DOMDocument();
+                    $res = @$domDoc->loadXML($content);
                     break;
                 default:
                     $res = true;
@@ -187,16 +190,20 @@ class AbstractStructuredDocument extends FileNode
             {
                 //we don't allow to save an invalid XML
                 $this->messages->add('The XML document is not valid. Changes have not been saved', MSG_TYPE_ERROR);
-                XMD_Log::error('Invalid XML for node: ' . $node->getDescription());
-                $error = error_get_last();
-                if (isset($error['message']))
-                    $this->messages->add(str_replace('DOMDocument::loadXML(): ', '', $error['message']), MSG_TYPE_WARNING);
+                //Logger::error('Invalid XML for idNode: ' . $node->getIdNode());
+                $error = \Ximdex\Error::error_message();
+                if ($error)
+                    $this->messages->add(str_replace('DOMDocument::loadXML(): ', '', $error), MSG_TYPE_WARNING);
                 return false;
             }
         }
         
         $strDoc = new StructuredDocument($this->nodeID);
-        $strDoc->SetContent($content, $commitNode);
+        if ($strDoc->SetContent($content, $commitNode) === false)
+        {
+            $this->messages->mergeMessages($strDoc->messages);
+            return false;
+        }
 
         
         $wfSlaves = $this->parent->GetWorkflowSlaves();

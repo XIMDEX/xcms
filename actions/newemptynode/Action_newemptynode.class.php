@@ -107,11 +107,11 @@ class Action_newemptynode extends ActionAbstract {
 			break;
 
 			case 5077: 
-			$content="<?xml version='1.0' encoding='utf-8'?>\n<xsl:stylesheet xmlns:xsl='http://www.w3.org/1999/XSL/Transform' version='1.0'>\n<xsl:template name='".$name."' match='".$name."'>\n<!-- Insert your code here -->\n</xsl:template>\n</xsl:stylesheet>";
+			$content="<?xml version='1.0' encoding='utf-8'?>\n<xsl:stylesheet xmlns:xsl='http://www.w3.org/1999/XSL/Transform' version='1.0'>\n\t<xsl:template name='".$name."' match='".$name."'>\n\t\t<!-- Insert your code here -->\n\t\t<!-- Remember to use the <xsl:apply-templates/> tag to include content of another templates -->\n\t</xsl:template>\n</xsl:stylesheet>";
 			break;
 
 			case 5078: 
-			$content="<?xml version='1.0' encoding='UTF-8' ?>\n<grammar xmlns='http://relaxng.org/ns/structure/1.0' xmlns:xim='http://ximdex.com/schema/1.0'>\n<!-- Create your own grammar here -->\n<!-- Need help? Visit: http://relaxng.org/tutorial-20011203.html -->\n</grammar>";
+			$content="<?xml version='1.0' encoding='UTF-8' ?>\n<grammar xmlns='http://relaxng.org/ns/structure/1.0' xmlns:xim='http://ximdex.com/schema/1.0'>\n\t<!-- Create your own grammar here -->\n\t<!-- Need help? Visit: http://relaxng.org/tutorial-20011203.html -->\n</grammar>";
 			break;
 
 			case 5076: 

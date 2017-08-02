@@ -27,6 +27,8 @@
 namespace Ximdex\XML ;
 
 
+use Ximdex\Utils\Logs\Logger;
+
 class XSLT  {
 
     protected $xsltprocessor;
@@ -53,11 +55,28 @@ class XSLT  {
     public function setXSL($xsl_file) {
         //Warnings when $xsl_file doesn't exist
         if(file_exists($xsl_file)){
-            if (!@$this->xsl->load($xsl_file))
+            if (@$this->xsl->load($xsl_file) === false)
             {
+                $error = \Ximdex\Error::error_message();
+                if ($error)
+                    $error = str_replace('DOMDocument::loadXML(): ', '', $error);
+                    $error = 'Error loading file ' . $xsl_file . ' (' . $error . ')';
+                if (isset($GLOBALS['InBatchProcess']) and $GLOBALS['InBatchProcess'])
+                    logger::error($error);
+                    $GLOBALS['errorInXslTransformation'] = $error;
                 return false;
             }
-            $this->xsltprocessor->importStyleSheet($this->xsl);
+            if (@$this->xsltprocessor->importStyleSheet($this->xsl) === false)
+            {
+                $error = \Ximdex\Error::error_message();
+                if ($error)
+                    $error = str_replace('XSLTProcessor::importStylesheet(): ', '', $error);
+                    $error = 'Error processing file ' . $xsl_file . ' (' . $error . ')';
+                if (isset($GLOBALS['InBatchProcess']) and $GLOBALS['InBatchProcess'])
+                    Logger::error($error);
+                    $GLOBALS['errorInXslTransformation'] = $error;
+                return false;
+            }
         }
         return true;
     }

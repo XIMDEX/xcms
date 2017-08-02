@@ -205,6 +205,11 @@ class PipeTransition extends PipeTransitionsOrm
 		$timer->start();
 		if (method_exists($object, $function)) {
 			$transformedPointer = $object->$function($idVersion, $pointer, $args);
+			if ($transformedPointer === false)
+			{
+			    $timer->stop();
+			    return false;
+			}
 		} else {
 			$idTransition = $this->get('id');
 			Logger::warning("Method $function not found when calling to the view: IdVersion $idVersion, Transition $idTransition");

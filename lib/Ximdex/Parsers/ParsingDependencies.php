@@ -93,12 +93,13 @@ class ParsingDependencies
      * @param string $content
      * @return boolean
      */
-    public static function parseAllDependencies($idNode, $content)
+    public function parseAllDependencies($idNode, $content)
     {
 
         $node = new Node($idNode);
         if (!($node->get('IdNode') > 0)) {
             XMD_Log::error('Error while node loading.');
+            $this->messages->add('There is not a Node with the IdNode: ' . $idNode, MSG_TYPE_ERROR);
             return false;
         }
 
@@ -107,6 +108,7 @@ class ParsingDependencies
 
         if (!($node->nodeType->get('IsStructuredDocument') == 1)) {
             XMD_Log::info('This node is not a structured document');
+            $this->messages->add('This node is not a structured document (IdNode: ' . $idNode . ')', MSG_TYPE_ERROR);
             return false;
         }
 
@@ -136,16 +138,30 @@ class ParsingDependencies
     {
         $idNode = $node->get("IdNode");
         $structuredDocument = new StructuredDocument($idNode);
-
+        
         if (!self::clearDependencies($node)) {
+            
+            $this->messages->add('The dependencies of the given XML cant\'t be cleared', MSG_TYPE_ERROR);
             return false;
         }
         
-        //TODO ajlucena: check the result of this builds
-        self::buildDependenciesFromStructuredDocument($node, $structuredDocument);
-        self::buildDependenciesWithXimlets($node, $structuredDocument, $content);
-        self::buildDependenciesWithXsl($node, $content);
-        self::buildDependenciesWithAssetsAndLinks($node, $content, $idVersion);
+        if (self::buildDependenciesFromStructuredDocument($node, $structuredDocument) === false)
+            return false;
+        if (self::buildDependenciesWithXimlets($node, $structuredDocument, $content) === false)
+        {
+            $this->messages->add('Can\'t build dependencies with related Ximlets documents', MSG_TYPE_ERROR);
+            return false;
+        }
+        if (self::buildDependenciesWithXsl($node, $content) === false)
+        {
+            $this->messages->add('Can\'t build the dependencies with related XSL templates', MSG_TYPE_ERROR);
+            return false;
+        }
+        if (self::buildDependenciesWithAssetsAndLinks($node, $content, $idVersion) === false)
+        {
+            $this->messages->add('Can\'t build the dependencies with related Assets and links nodes', MSG_TYPE_ERROR);
+            return false;
+        }
 
         return true;
     }
@@ -158,7 +174,6 @@ class ParsingDependencies
      */
     public static function parseCssDependencies($node, $content = NULL)
     {
-
         if (is_numeric($node))
             $node = new Node($node);
 
@@ -223,15 +238,25 @@ class ParsingDependencies
         $schemas = (array)$structuredDocument->get('IdTemplate');
         $languages = (array)$structuredDocument->get('IdLanguage');
 
-        $result = self::addDependencies($node, $channels, "channel");
-        $result = self::addDependencies($node, $languages, "language") && $result;
-        $result = self::addDependencies($node, $schemas, "schema") && $result;
+        if (!self::addDependencies($node, $channels, "channel"))
+        {
+            $this->messages->add('Can\'t add the dependencies for channels', MSG_TYPE_ERROR);
+            return false;
+        }
+        if (!self::addDependencies($node, $languages, "language"))
+        {
+            $this->messages->add('Can\'t add the dependencies for language', MSG_TYPE_ERROR);
+            return false;
+        }
+        if (!self::addDependencies($node, $schemas, "schema"))
+        {
+            $this->messages->add('Can\'t add the dependencies for schemas', MSG_TYPE_ERROR);
+            return false;
+        }
 
-        if ($result) {
-            $result = array("channels" => $channels,
+        $result = array("channels" => $channels,
                 "languages" => $languages,
                 "schemas" => $schemas);
-        }
         return $result;
     }
 
@@ -348,7 +373,7 @@ class ParsingDependencies
         $domDoc = new DOMDocument();
         $domDoc->validateOnParse = true;
 
-        if (!@$domDoc->loadXML(\Ximdex\XML\Base::recodeSrc("<docxap>$content</docxap>", \Ximdex\XML\XML::UTF8)))
+        if (@$domDoc->loadXML(\Ximdex\XML\Base::recodeSrc("<docxap>$content</docxap>", \Ximdex\XML\XML::UTF8)) === false)
         {
             return false;
         }

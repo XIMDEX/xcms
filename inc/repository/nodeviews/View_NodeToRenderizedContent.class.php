@@ -92,13 +92,13 @@ class View_NodeToRenderizedContent extends Abstract_View implements Interface_Vi
         if (!is_null($idVersion)) {
             $version = new Version($idVersion);
             if (!($version->get('IdVersion') > 0)) {
-                XMD_Log::error('VIEW NODETORENDERIZEDCONTENT: Se ha cargado una versi�n incorrecta (' . $idVersion . ')');
+                XMD_Log::error('VIEW NODETORENDERIZEDCONTENT: Incorrect version has been loaded (' . $idVersion . ')');
                 return false;
             }
 
             $this->_node = new Node($version->get('IdNode'));
             if (!($this->_node->get('IdNode') > 0)) {
-                XMD_Log::error('VIEW NODETORENDERIZEDCONTENT: El nodo que se est� intentando convertir no existe: ' . $version->get('IdNode'));
+                XMD_Log::error('VIEW NODETORENDERIZEDCONTENT: The node you are trying to convert does not exists: ' . $version->get('IdNode'));
                 return false;
             }
         }
@@ -144,13 +144,13 @@ class View_NodeToRenderizedContent extends Abstract_View implements Interface_Vi
         if (!is_null($idVersion)) {
             $version = new Version($idVersion);
             if (!($version->get('IdVersion') > 0)) {
-                XMD_Log::error('VIEW NODETORENDERIZEDCONTENT: Se ha cargado una versi�n incorrecta (' . $idVersion . ')');
+                XMD_Log::error('VIEW NODETORENDERIZEDCONTENT: Incorrect version has been loaded (' . $idVersion . ')');
                 return false;
             }
 
             $this->_structuredDocument = new StructuredDocument($version->get('IdNode'));
             if (!($this->_structuredDocument->get('IdDoc') > 0)) {
-                XMD_Log::error('VIEW NODETORENDERIZEDCONTENT: El structured document especificado no existe: ' . $this->_structuredDocument->get('IdDoc'));
+                XMD_Log::error('VIEW NODETORENDERIZEDCONTENT: The specified structured document does not exists: ' . $this->_structuredDocument->get('IdDoc'));
                 return false;
             }
         }
@@ -187,7 +187,7 @@ class View_NodeToRenderizedContent extends Abstract_View implements Interface_Vi
 
             // Check Params:
             if (!isset($this->_idSection) || !($this->_idSection > 0)) {
-                XMD_Log::error('VIEW NODETORENDERIZEDCONTENT: No se ha especificado la secci�n del nodo ' . $args['NODENAME'] . ' que quiere renderizar');
+                XMD_Log::error('VIEW NODETORENDERIZEDCONTENT: Node section has not been specified ' . $args['NODENAME'] . ' that you want to renderize');
                 return false;
             }
         }
@@ -208,7 +208,7 @@ class View_NodeToRenderizedContent extends Abstract_View implements Interface_Vi
 
         // Check Params:
         if (!isset($this->_idLanguage) || !($this->_idLanguage > 0)) {
-            XMD_Log::error("VIEW NODETORENDERIZEDCONTENT: Node's language not specified " . $args['NODENAME'] . " que quiere renderizar");
+            XMD_Log::error("VIEW NODETORENDERIZEDCONTENT: Node's language not specified " . $args['NODENAME'] . " that you want to renderize");
             return false;
         }
 
@@ -229,7 +229,7 @@ class View_NodeToRenderizedContent extends Abstract_View implements Interface_Vi
 
         // Check Params:
         if (!isset($this->_docXapHeader) || $this->_docXapHeader == "") {
-            XMD_Log::error('VIEW NODETORENDERIZEDCONTENT: No se ha especificado la cabecera docxap del nodo ' . $args['NODENAME'] . ' que quiere renderizar');
+            XMD_Log::error('VIEW NODETORENDERIZEDCONTENT: docxap header not specified of the node ' . $args['NODENAME'] . ' that you want to renderize');
             return false;
         }
 
