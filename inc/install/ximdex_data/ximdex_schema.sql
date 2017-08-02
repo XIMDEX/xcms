@@ -800,3 +800,11 @@ CREATE TABLE `RelStrdocAsset` (
 	PRIMARY KEY (id),
 	UNIQUE KEY `rel` (`source`,`target`)
 ) ENGINE=MYISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE RelStrdocXimlet (
+	id int(12) unsigned NOT NULL auto_increment,
+	source int(12) unsigned NOT NULL default '0',
+	target int(12) unsigned NOT NULL default '0',
+	PRIMARY KEY (id),
+	UNIQUE KEY `rel` (`source`,`target`)
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
