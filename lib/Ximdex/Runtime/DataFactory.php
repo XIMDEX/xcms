@@ -414,6 +414,10 @@ class DataFactory
             //look for the working encoding from Config
             $dataEncoding = App::getValue('dataEncoding');
             $content = \Ximdex\XML\Base::recodeSrc($content, $dataEncoding);
+            //we can't use the docxap tag in documents because the content of the docxap.xsl will be included again
+            //TODO ajlucena: use here XML DOM edition to delete the docxap tag
+            $content = str_replace('<docxap>', '<xim-root>', $content);
+            $content = str_replace('</docxap>', '</xim-root>', $content);
         }
 
         $this->ClearError();
