@@ -27,8 +27,10 @@
 use Ximdex\Models\Channel;
 use Ximdex\Models\Node;
 use Ximdex\Parsers\PVD2RNG\PVD2RNG;
+use Ximdex\Runtime\App;
 use Ximdex\Runtime\DataFactory;
 use Ximdex\Utils\FsUtils;
+use Ximdex\Utils\Logs\Logger;
 
 ModulesManager::file('/inc/parsers/pvd2rng/PVD2RNG.class.php');
 ModulesManager::file('/inc/model/RelTemplateContainer.class.php');
@@ -65,7 +67,7 @@ abstract class XmlEditor_Abstract
     {
         $node = new Node($idnode);
         if (!($node->get('IdNode') > 0)) {
-            XMD_Log::error(_("A non-existing node cannot be obtained: ") . $node->get('IdNode'));
+            Logger::error(_("A non-existing node cannot be obtained: ") . $node->get('IdNode'));
 
             return null;
         }
@@ -104,7 +106,7 @@ abstract class XmlEditor_Abstract
         $docxap = $this->getXslPath($idnode, false, $view);
 
         if ($docxap !== null) {
-            $pathDocxap=str_replace(\App::getValue( 'UrlRoot'), \App::getValue( 'AppRoot'),$docxap);
+            $pathDocxap=str_replace(App::getValue( 'UrlRoot'), App::getValue( 'AppRoot'),$docxap);
             $pos = strrpos($pathDocxap, '/');
             $pathToFileRel = substr($pathDocxap,0, $pos);
             $this->rel_path_docxap=$pathToFileRel."/";
@@ -115,7 +117,7 @@ abstract class XmlEditor_Abstract
 
         } else {
             $msg = "docxap.xsl was not found for node $idnode";
-            XMD_Log::error($msg);
+            Logger::error($msg);
 //			$content = array('error' => array($msg));
         }
 
@@ -126,7 +128,7 @@ abstract class XmlEditor_Abstract
     {
         $node = new Node($idnode);
         if (!($node->get('IdNode') > 0)) {
-            XMD_Log::error(_("A non-existing node cannot be obtained: " ) . "$idnode");
+            Logger::error(_("A non-existing node cannot be obtained: " ) . "$idnode");
 
             return null;
         }
@@ -134,12 +136,12 @@ abstract class XmlEditor_Abstract
                 if ($view == "form") {
                     return $this->getFormViewXsl($idnode);
                 } elseif ($view == 'tree') {
-                    return \App::getValue( 'UrlRoot') . '/actions/xmleditor2/views/editor/tree/templates/docxap.xsl';
+                    return App::getValue( 'UrlRoot') . '/actions/xmleditor2/views/editor/tree/templates/docxap.xsl';
         }
 
         $nodeTypeName = $node->nodeType->GetName();
         if ($nodeTypeName == 'RngVisualTemplate') {
-            return \App::getValue( 'UrlRoot') . '/actions/xmleditor2/views/rngeditor/templates/docxap.xsl';
+            return App::getValue( 'UrlRoot') . '/actions/xmleditor2/views/rngeditor/templates/docxap.xsl';
         }
 
         $docxap = null;
@@ -160,7 +162,7 @@ abstract class XmlEditor_Abstract
         }
 
         if ($docxap && $asURL) {
-            $docxap = str_replace(\App::getValue( 'AppRoot'), \App::getValue( 'UrlRoot'),  $docxap);
+            $docxap = str_replace(App::getValue( 'AppRoot'), App::getValue( 'UrlRoot'),  $docxap);
         }
 
         return $docxap;
@@ -172,7 +174,7 @@ abstract class XmlEditor_Abstract
 
         $nodeTypeName = $node->nodeType->GetName();
         if ($nodeTypeName == 'RngVisualTemplate') {
-            $rngPath = \App::getValue( 'AppRoot') . '/actions/xmleditor2/views/rngeditor/schema/rng-schema.xml';
+            $rngPath = App::getValue( 'AppRoot') . '/actions/xmleditor2/views/rngeditor/schema/rng-schema.xml';
 
             return trim(FsUtils::file_get_contents($rngPath));
         }
@@ -226,7 +228,7 @@ abstract class XmlEditor_Abstract
 
 //		$content = '<root><node>value</node></root>';
 
-        $schema = FsUtils::file_get_contents(\App::getValue( 'AppRoot') . '/actions/xmleditor2/views/common/schema/relaxng-1.0.rng.xml');
+        $schema = FsUtils::file_get_contents(App::getValue( 'AppRoot') . '/actions/xmleditor2/views/common/schema/relaxng-1.0.rng.xml');
         $rngvalidator = new \Ximdex\XML\Validators\RNG();
         $valid = $rngvalidator->validate($schema, $content);
 
@@ -390,11 +392,11 @@ abstract class XmlEditor_Abstract
             $schemaName = $schemaNode->GetNodeName();
             $dataFactory = new DataFactory($idSchema);
             $maxIdVersion = $dataFactory->GetLastVersionId();
-            $formXslFile = \App::getValue( 'AppRoot').\App::getValue( 'FileRoot')."/xslformview_{$schemaName}_{$maxIdVersion}.xsl";
+            $formXslFile = App::getValue( 'AppRoot').App::getValue( 'FileRoot')."/xslformview_{$schemaName}_{$maxIdVersion}.xsl";
             if (file_exists($formXslFile)) {
                 return $formXslFile;
             } else {
-                 array_map('unlink', glob(\App::getValue( 'AppRoot').\App::getValue( 'FileRoot')."/xslformview_{$schemaName}*"));
+                 array_map('unlink', glob(App::getValue( 'AppRoot').App::getValue( 'FileRoot')."/xslformview_{$schemaName}*"));
                 return $this->buildFormXsl($idSchema, $maxIdVersion);
             }
 
@@ -409,7 +411,7 @@ abstract class XmlEditor_Abstract
     private function buildFormXsl($idSchema, $maxIdVersion)
     {
         $warnings = "";
-        $xslTemplateContent = FsUtils::file_get_contents(\App::getValue( 'AppRoot') . '/actions/xmleditor2/views/editor/form/templates/docxap.xsl');
+        $xslTemplateContent = FsUtils::file_get_contents(App::getValue( 'AppRoot') . '/actions/xmleditor2/views/editor/form/templates/docxap.xsl');
         $rngXpathObj = $this->getXPathFromSchema($idSchema);
 
         $textElements = $this->getTextElements($rngXpathObj);
@@ -509,11 +511,11 @@ abstract class XmlEditor_Abstract
         }
         $xslTemplateContent = str_replace("##WARNING_ELEMENTS##", $warningElements, $xslTemplateContent);
         $xslTemplateContent = str_replace("##WARNINGS##", $warnings, $xslTemplateContent);
-        $xslTemplateContent = str_replace("@@URL_PATH@@", \App::getValue("UrlRoot"), $xslTemplateContent);
+        $xslTemplateContent = str_replace("@@URL_PATH@@", App::getValue("UrlRoot"), $xslTemplateContent);
 
         $schemaNode = new Node ($idSchema);
         $schemaName = $schemaNode->GetNodeName();
-        $formViewFile = \App::getValue( 'AppRoot').\App::getValue('FileRoot')."/xslformview_{$schemaName}_{$maxIdVersion}.xsl";
+        $formViewFile = App::getValue( 'AppRoot').App::getValue('FileRoot')."/xslformview_{$schemaName}_{$maxIdVersion}.xsl";
         FsUtils::file_put_contents($formViewFile, $xslTemplateContent);
 
         return $formViewFile;

@@ -240,6 +240,7 @@ class Action_edittext extends ActionAbstract
             $this->sendJSON($values);
             return false;
         }
+        $this->messages->mergeMessages($node->messages);
         $node->RenderizeNode();
         
 
@@ -263,11 +264,10 @@ class Action_edittext extends ActionAbstract
             }
         }
 
-
-        $values = array(array('message' => _('The document has been saved'), 'type' => MSG_TYPE_NOTICE));
+        $this->messages->add('The document has been saved', MSG_TYPE_NOTICE);
         $this->sendJSON(
             array(
-                'messages' => $values
+                'messages' => $this->messages->messages
             )
         );
         return true;

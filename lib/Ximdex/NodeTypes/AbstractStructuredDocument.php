@@ -199,12 +199,12 @@ class AbstractStructuredDocument extends FileNode
         }
         
         $strDoc = new StructuredDocument($this->nodeID);
-        if ($strDoc->SetContent($content, $commitNode) === false)
+        $res = $strDoc->SetContent($content, $commitNode);
+        $this->messages->mergeMessages($strDoc->messages);
+        if ($res === false)
         {
-            $this->messages->mergeMessages($strDoc->messages);
             return false;
         }
-
         
         $wfSlaves = $this->parent->GetWorkflowSlaves();
 

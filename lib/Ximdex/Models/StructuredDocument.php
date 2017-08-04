@@ -322,16 +322,20 @@ class StructuredDocument extends StructuredDocumentsOrm
 		}
 		if ($res === false)
 		{
+		    if ($data->msgErr)
+		        $this->messages->add($data->msgErr, MSG_TYPE_ERROR);
 		    if (isset($GLOBALS['errorInXslTransformation']) and $GLOBALS['errorInXslTransformation'])
-		        $this->messages->add($GLOBALS['errorInXslTransformation'], MSG_TYPE_ERROR);
-		    return false;
+		    {
+		        $this->messages->add($GLOBALS['errorInXslTransformation'], MSG_TYPE_WARNING);
+		        $GLOBALS['errorInXslTransformation'] = null;
+		    }
+		    return null;
 		}
 		// set dependencies
 		$dependeciesParser = new ParsingDependencies();
 		if ($dependeciesParser->parseAllDependencies($this->get('IdDoc'), $content) === false)
 		{
 		    $this->messages->mergeMessages($dependeciesParser->messages);
-		    return false;
 		}
 
 		// Renderizamos el nodo para reflejar los cambios

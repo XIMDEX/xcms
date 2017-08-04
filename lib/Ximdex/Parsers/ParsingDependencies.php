@@ -124,6 +124,13 @@ class ParsingDependencies
                 return true;
         }
 
+        //If there is any error in the parsing process, the global error provided from the static method will be added to the warning messages
+        if (isset($GLOBALS['parsingDependenciesError']) and $GLOBALS['parsingDependenciesError'])
+        {
+            $this->messages->add('Parsing dependencies problem detected: ' . $GLOBALS['parsingDependenciesError'], MSG_TYPE_WARNING);
+            $GLOBALS['parsingDependenciesError'] = null;
+        }
+        
         return $result;
     }
 
@@ -141,7 +148,7 @@ class ParsingDependencies
         
         if (!self::clearDependencies($node)) {
             
-            $this->messages->add('The dependencies of the given XML cant\'t be cleared', MSG_TYPE_ERROR);
+            $GLOBALS['parsingDependenciesError'] = 'The dependencies of the given XML cant\'t be cleared';
             return false;
         }
         
@@ -149,17 +156,20 @@ class ParsingDependencies
             return false;
         if (self::buildDependenciesWithXimlets($node, $structuredDocument, $content) === false)
         {
-            $this->messages->add('Can\'t build dependencies with related Ximlets documents', MSG_TYPE_ERROR);
+            if (!isset($GLOBALS['parsingDependenciesError']) or !$GLOBALS['parsingDependenciesError'])
+                $GLOBALS['parsingDependenciesError'] = 'Can\'t build dependencies with related Ximlets documents';
             return false;
         }
         if (self::buildDependenciesWithXsl($node, $content) === false)
         {
-            $this->messages->add('Can\'t build the dependencies with related XSL templates', MSG_TYPE_ERROR);
+            if (!isset($GLOBALS['parsingDependenciesError']) or !$GLOBALS['parsingDependenciesError'])
+                $GLOBALS['parsingDependenciesError'] = 'Can\'t build the dependencies with related XSL templates';
             return false;
         }
         if (self::buildDependenciesWithAssetsAndLinks($node, $content, $idVersion) === false)
         {
-            $this->messages->add('Can\'t build the dependencies with related Assets and links nodes', MSG_TYPE_ERROR);
+            if (!isset($GLOBALS['parsingDependenciesError']) or !$GLOBALS['parsingDependenciesError'])
+                $GLOBALS['parsingDependenciesError'] = 'Can\'t build the dependencies with related Assets and links nodes';
             return false;
         }
 
@@ -240,17 +250,17 @@ class ParsingDependencies
 
         if (!self::addDependencies($node, $channels, "channel"))
         {
-            $this->messages->add('Can\'t add the dependencies for channels', MSG_TYPE_ERROR);
+            $GLOBALS['parsingDependenciesError'] = 'Can\'t add the dependencies for channels';
             return false;
         }
         if (!self::addDependencies($node, $languages, "language"))
         {
-            $this->messages->add('Can\'t add the dependencies for language', MSG_TYPE_ERROR);
+            $GLOBALS['parsingDependenciesError'] = 'Can\'t add the dependencies for language';
             return false;
         }
         if (!self::addDependencies($node, $schemas, "schema"))
         {
-            $this->messages->add('Can\'t add the dependencies for schemas', MSG_TYPE_ERROR);
+            $GLOBALS['parsingDependenciesError'] = 'Can\'t add the dependencies for schemas';
             return false;
         }
 
@@ -323,7 +333,10 @@ class ParsingDependencies
             // post-transformation dependencies
             $pathToByChannel[$idChannel] = self::getPathTo($postContent, $idNode);
             $pathTos = array_merge($pathTos, $pathToByChannel[$idChannel]);
-            $dotDots = array_merge($dotDots, self::getDotDot($postContent, $idServer));
+            $res = self::getDotDot($postContent, $idServer);
+            if ($res === false)
+                return false;
+            $dotDots = array_merge($dotDots, $res);
         }
 
         $links = array_unique(array_merge($assets, $links, $pathTos, $dotDots));
@@ -341,7 +354,7 @@ class ParsingDependencies
      */
     private static function addIntoNodeDependencies($idNode, $nodesByChannel)
     {
-
+        //TODO ajlucena
         $nodeDependencies = new NodeDependencies();
         foreach ($nodesByChannel as $idChannel => $nodes) {
             foreach ($nodes as $idDep) {
@@ -602,7 +615,12 @@ class ParsingDependencies
                     case 'css':
                         $id = $cssNode->GetChildByName(substr($matches[2][$n], 1));
                         if (!($id > 0)) {
-                            XMD_Log::error("Css file {$matches[2][$n]} not found");
+                            
+                            if (isset($GLOBALS['InBatchProcess']))
+                                XMD_Log::error("CSS file {$matches[2][$n]} not found");
+                            else
+                                $GLOBALS['parsingDependenciesError'] = "CSS file {$matches[2][$n]} not found";
+                            return false;
                         } else {
                             $css[] = $id;
                         }
@@ -610,7 +628,12 @@ class ParsingDependencies
                     case 'common':
                         $id = $commonNode->GetChildByName(substr($matches[2][$n], 1));
                         if (!($id > 0)) {
-                            XMD_Log::error("Common file {$matches[2][$n]} not found");
+                            
+                            if (isset($GLOBALS['InBatchProcess']))
+                                XMD_Log::error("Common file {$matches[2][$n]} not found");
+                            else
+                                $GLOBALS['parsingDependenciesError'] = "Common file {$matches[2][$n]} not found";
+                            return false;
                         } else {
                             $common[] = $id;
                         }

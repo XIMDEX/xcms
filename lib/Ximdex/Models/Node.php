@@ -902,6 +902,7 @@ class Node extends NodesOrm
                 $this->messages->mergeMessages($this->class->messages);
                 return false;
             }
+            $this->messages->mergeMessages($this->class->messages);
             $this->RenderizeNode();
 
             $event = new NodeEvent($this->nodeID);
