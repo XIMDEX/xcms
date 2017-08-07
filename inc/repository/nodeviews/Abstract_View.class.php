@@ -49,7 +49,7 @@ abstract class Abstract_View
                 }
             }
         }
-        Logger::error('Ha sucedido un error al intentar almacenar contenido');
+        Logger::error('An error has happened trying to store the content');
         return NULL;
     }
 

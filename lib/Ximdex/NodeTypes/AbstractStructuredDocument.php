@@ -175,13 +175,10 @@ class AbstractStructuredDocument extends FileNode
             {
                 case \Ximdex\Services\NodeType::METADATA_DOCUMENT:
                 case \Ximdex\Services\NodeType::XIMLET:
-                    $domDoc = new \DOMDocument();
-                    $res = @$domDoc->loadXML('<root>' . $content . '</root>');
-                    break;
                 case \Ximdex\Services\NodeType::XML_DOCUMENT:
                 case \Ximdex\Services\NodeType::XSL_TEMPLATE:
                     $domDoc = new \DOMDocument();
-                    $res = @$domDoc->loadXML($content);
+                    $res = @$domDoc->loadXML('<root>' . $content . '</root>');
                     break;
                 default:
                     $res = true;

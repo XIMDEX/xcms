@@ -27,6 +27,7 @@
 
 use Ximdex\Models\Node;
 use Ximdex\Models\Version;
+use Ximdex\Utils\Logs\Logger;
 
 if (!defined('XIMDEX_ROOT_PATH')) {
 	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__)) . '/../../../');
@@ -47,7 +48,7 @@ class View_Transformer extends Abstract_View implements Interface_View {
 			$args['TRANSFORMER'] = end($node->getProperty('Transformer'));
 
 			if (empty($args['TRANSFORMER'])) {
-				XMD_Log::fatal('The transformer has not been specified in the table Config');
+				Logger::fatal('The transformer has not been specified in the table Config');
 			}
 		}
 
@@ -64,4 +65,3 @@ class View_Transformer extends Abstract_View implements Interface_View {
 	}
 
 }
-?>

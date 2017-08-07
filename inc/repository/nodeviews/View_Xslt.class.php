@@ -30,7 +30,6 @@ use Ximdex\Models\Node;
 use Ximdex\Models\Version;
 use Ximdex\Runtime\App;
 use Ximdex\Logger as XMD_Log;
-use Ximdex\Utils\FsUtils;
 
 ModulesManager::file('/xslt/functions.php', 'dexT');
 ModulesManager::file('/inc/repository/nodeviews/Abstract_View.class.php');
@@ -270,5 +269,3 @@ class View_Xslt extends Abstract_View
     }
 
 }
-
-?>
