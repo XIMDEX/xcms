@@ -52,9 +52,17 @@ class NodeDependencies
      */
     function set($idSource, $idTarget, $idChannel)
     {
-
-        return $this->dbObj->Execute("INSERT INTO NodeDependencies VALUES ('$idSource', '$idTarget', '$idChannel')");
-
+        //TODO ajlucena: the fields appears to be in wrong position ?
+        //check before if there is already a same dependencie
+        $res = $this->dbObj->Query("SELECT * FROM NodeDependencies WHERE IdNode = '$idSource' and IdResource = '$idTarget' and IdChannel = '$idChannel'");
+        if ($res === false)
+            return false;
+        if (!$this->dbObj->EOF)
+        {
+            //dependencie exists already
+            return true;
+        }
+        return $this->dbObj->Execute("INSERT INTO NodeDependencies (IdNode, IdResource, IdChannel) VALUES ('$idSource', '$idTarget', '$idChannel')");
     }
 
 
