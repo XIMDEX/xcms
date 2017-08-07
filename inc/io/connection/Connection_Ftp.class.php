@@ -24,7 +24,7 @@
  *  @version $Revision$
  */
 
-
+use Ximdex\Logger as XMD_log;
 
 if (!defined('XIMDEX_ROOT_PATH')) {
 	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
@@ -56,7 +56,7 @@ class Connection_Ftp implements I_Connector {
 		if (empty($port)) {
 			$port = $this->defaultPort;
 		}
-		XMD_Log::info("Connecting to {$host}:{$port}");
+		XMD_Log::info("Connecting to FTP server {$host}:{$port}");
 		if (!empty($host)) {
 			$this->host = $host;
 		}
@@ -72,14 +72,14 @@ class Connection_Ftp implements I_Connector {
 		
 		if (!$handler) {
 			$this->handler = false;
-			XMD_Log::error("Couldt connect to {$host}:{$port} using FTP protocol");
+			XMD_Log::error("Could't connect to server {$host}:{$port} using FTP protocol");
 			return false;
 		}
-		// Ftp in passive mode
-		ftp_pasv($handler, true);
+		
 		//setting timeout to 300 seconds
-		ftp_set_option($handle, FTP_TIMEOUT_SEC, 300);
-
+		ftp_set_option($handler, FTP_TIMEOUT_SEC, 300);
+		
+		XMD_Log::info("Connected to FTP server {$host}:{$port} correctly");
 		$this->handler = $handler;
 		return true;
 	}
@@ -92,16 +92,17 @@ class Connection_Ftp implements I_Connector {
 	 */
 	public function disconnect() {
 		try {
-			$result = @ftp_close($this->handler);
+			$result = ftp_close($this->handler);
 		} catch (Exception $e) {
 			XMD_Log::error($e->getMessage());
 			return false;
 		}
 		if (!$result) {
-			XMD_Log::error("Disconnect from {$host}:{$port} failed");
+			XMD_Log::error("Disconnect from FTP server {$host}:{$port} failed");
 			return false;
 		}
 		$this->handler = NULL;
+		XMD_Log::info("Disconnect from FTP server {$host}:{$port} correctly");
 		return true;
 	}
 	
@@ -124,8 +125,8 @@ class Connection_Ftp implements I_Connector {
 	 * @param password string
 	 * @return boolean
 	 */
-	public function login($username = 'anonymous', $password = 'john.doe@example.com') {
-		if ($this->handler === NULL) { // false en el handler es error de conexión
+	public function login($username = null, $password = null) {
+		if ($this->handler === NULL) { // false in handler means connection error
 			if (!$this->connect()) {
 				return false;
 			}
@@ -140,11 +141,27 @@ class Connection_Ftp implements I_Connector {
 		}
 		
 		try {
-			return @ftp_login($this->handler, $username, $password);
+			if (!ftp_login($this->handler, $this->username, $this->password))
+			{
+			    XMD_Log::error("Could't log into FTP server {$this->host}:{$this->port} with the given user and password");
+			    $this->handler = null;
+			    return false;
+			}
 		} catch (Exception $e) {
 			XMD_Log::error($e->getMessage());
+			$this->handler = null;
 			return false;
 		}
+		XMD_Log::info('Login with user ' . $this->username . ' success');
+		
+		// Ftp in passive mode (always after a correct login into the FTP server
+		if (!ftp_pasv($this->handler, true))
+		{
+		    XMD_Log::error("Could't set to passive mode in {$this->host}:{$this->port} using FTP protocol");
+		    $this->handler = null;
+		    return false;
+		}
+		XMD_Log::info('Set to passive mode success');
 		
 		return true;
 	}
@@ -161,7 +178,7 @@ class Connection_Ftp implements I_Connector {
 			$dir = '/';
 		}
 		try {
-			return @ftp_chdir($this->handler, $dir);
+			return ftp_chdir($this->handler, $dir);
 		} catch (Exception $e) {
 			XMD_Log::error($e->getMessage());
 			return false;
@@ -179,7 +196,7 @@ class Connection_Ftp implements I_Connector {
 	 */
 	public function pwd() {
 		try {
-			return @ftp_pwd($this->handler);
+			return ftp_pwd($this->handler);
 		} catch (Exception $e) {
 			XMD_Log::error($e->getMessage());
 			return false;
@@ -284,9 +301,9 @@ class Connection_Ftp implements I_Connector {
                         $renameFrom=str_replace('//','/',$renameFrom);
                         $renameTo=str_replace('//','/',$renameTo);
                         if($this->isFile($renameTo)){
-                                @ftp_delete($this->handler, $renameTo);
+                                ftp_delete($this->handler, $renameTo);
                         }
-                        return @ftp_rename($this->handler, $renameFrom, $renameTo);
+                        return ftp_rename($this->handler, $renameFrom, $renameTo);
                 } catch (Exception $e) {
                         XMD_Log::error($e->getMessage());
                 }
@@ -302,7 +319,7 @@ class Connection_Ftp implements I_Connector {
 	 */
 	public function size($file) {
 		try {
-			return @ftp_size($this->handler, $file);
+			return ftp_size($this->handler, $file);
 		} catch (Exception $e) {
 			XMD_Log::error($e->getMessage());
 		}
@@ -333,9 +350,9 @@ class Connection_Ftp implements I_Connector {
 	public function rm($path) {
 		try {
 			if ($this->isDir($path)) {
-				return @ftp_rmdir($this->handler, $path);
+				return ftp_rmdir($this->handler, $path);
 			} else {
-				return @ftp_delete($this->handler, $path);
+				return ftp_delete($this->handler, $path);
 			}
 		} catch (Exception $e) {
 			XMD_Log::error($e->getMessage());
@@ -392,7 +409,7 @@ class Connection_Ftp implements I_Connector {
 			$folder=str_replace('//','/',$folder);
                         $file=str_replace('//','/',$file);
 			if ($this->pwd() == $folder || $this->pwd() . '/' == $folder) {
-				$fileList = @ftp_nlist($this->handler, $folder);
+				$fileList = ftp_nlist($this->handler, $folder);
 				$isFile = in_array($folder.$file, $fileList);
 			}
 
@@ -432,11 +449,10 @@ class Connection_Ftp implements I_Connector {
 	 */
 	public function put($localFile, $targetFile, $mode = FTP_BINARY) {
 		try {
-			return @ftp_put($this->handler, $targetFile, $localFile, $mode);
+		    return ftp_put($this->handler, $targetFile, $localFile, $mode);
 		} catch (Exception $e) {
 			XMD_Log::error($e->getMessage());
 		}
 		return false;
 	}
 }
-?>

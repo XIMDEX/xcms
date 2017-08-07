@@ -50,9 +50,9 @@ ModulesManager::file('/inc/io/connection/ConnectionManager.class.php');
   ModulesManager::file('/inc/model/ServerFrame.class.php', 'ximSYNC');
 
 
-/*
-     * Definici�n de constantes.
-     * Esto deber�a ir al conf.
+    /*
+     * Constants definition
+     * Must be in conf
     */
 
 // Errores:
@@ -328,11 +328,21 @@ class DexPumper {
 		}
 
 		if (!$this->connection->isConnected()) {
-			if ($this->connection->connect($host, $port)) {	$this->connection->login($login, $passwd); }
+			if ($this->connection->connect($host, $port)) {
+			    if (!$this->connection->login($login, $passwd))
+			    {
+			        $this->error('Can\'t log the user into host');
+			    }
+			}
+			else
+			{
+			    $this->error('Can\'t connect to host');
+			}
 		}
 
 		if (!$this->connection->isConnected()) {
-			$msg_error = sprintf('Wrong credentials in login for: %s %s %s %s',  $host, $port, $login, $passwd);
+			$msg_error = sprintf('Fail to connect o wrong login credentials for server: %s:%s with user: %s and password: %s',  $host, $port
+                    , $login, $passwd);
 			$this->fatal($msg_error);
 			$this->updateServerState('Failed to connect');
 			exit(200);

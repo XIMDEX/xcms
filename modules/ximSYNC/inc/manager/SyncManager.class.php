@@ -60,7 +60,7 @@ class SyncManager
     private $computedDocsToPublish = array();
     private $pendingDocsToPublish = array();
 
-    function SyncManager()
+    function __construct()
     {
 
         // Default values for state flags.

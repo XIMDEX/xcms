@@ -28,7 +28,6 @@ namespace Ximdex\Utils\Sync;
 use Ximdex\Runtime\DataFactory;
 use DexCache;
 use Mail;
-use Ximdex\Utils\Sync\Synchronizer;
 use Ximdex\Models\User;
 use Ximdex\Models\Node;
 
@@ -56,7 +55,7 @@ class SyncManager
 	var $recurrence;
 
 
-	function SyncManager()
+	function __construct()
 	{
 
 		// Default values for state flags.
