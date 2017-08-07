@@ -341,7 +341,8 @@ class ParsingDependencies
 
         $links = array_unique(array_merge($assets, $links, $pathTos, $dotDots));
         //Add dependencies between nodes for every channel in NodeDependencies
-        self::addIntoNodeDependencies($idNode, $pathToByChannel);
+        if (self::addIntoNodeDependencies($idNode, $pathToByChannel) === false)
+            return false;
         unset($pathToByChannel);
         return self::addDependencies($node, $links) ? $links : false;
     }
@@ -354,13 +355,17 @@ class ParsingDependencies
      */
     private static function addIntoNodeDependencies($idNode, $nodesByChannel)
     {
-        //TODO ajlucena
         $nodeDependencies = new NodeDependencies();
         foreach ($nodesByChannel as $idChannel => $nodes) {
             foreach ($nodes as $idDep) {
-                $nodeDependencies->set($idNode, $idDep, $idChannel);
+                if ($nodeDependencies->set($idNode, $idDep, $idChannel) === false)
+                {
+                    $GLOBALS['parsingDependenciesError'] = 'There is a problem to set the dependencies';
+                    return false;
+                }
             }
         }
+        return true;
     }
 
     /**
