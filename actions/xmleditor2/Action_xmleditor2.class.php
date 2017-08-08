@@ -31,9 +31,11 @@ use Ximdex\Models\StructuredDocument;
 use Ximdex\Models\User;
 use Ximdex\Models\XimLocale;
 use Ximdex\MVC\ActionAbstract;
+use Ximdex\Runtime\App;
 use Ximdex\Runtime\Constants;
 use Ximdex\Runtime\Request;
 use Ximdex\Utils\Serializer;
+use Ximdex\Utils\Logs\Logger;
 
 ModulesManager::file('/actions/xmleditor2/XimlinkResolver.class.php');
 ModulesManager::file('/actions/createlink/Action_createlink.class.php');
@@ -95,10 +97,10 @@ class Action_xmleditor2 extends ActionAbstract
         $view = $this->request->getParam('view');
         $this->getEditor($idnode);
 
-        $xslIncludesOnServer = \App::getValue("XslIncludesOnServer");
+        $xslIncludesOnServer = App::getValue("XslIncludesOnServer");
         $values = $this->_editor->openEditor($idnode, $view);
         $values['on_resize_functions'] = '';
-        $values['xinversion'] = \App::getValue("VersionName");
+        $values['xinversion'] = App::getValue("VersionName");
         $template = 'loadEditor_' . $this->_editor->getEditorName();
         //Adding Config params for xsl:includes
         $values["xslIncludesOnServer"] = $xslIncludesOnServer;
@@ -386,6 +388,11 @@ class Action_xmleditor2 extends ActionAbstract
         $res['xmlFile'] = $contentXML;
         // Get Schema File
         $contentRNG = $this->_editor->getSchemaFile($idnode);
+        if (is_array($contentRNG) and $contentRNG['error'])
+        {
+            //TODO ajlucena: in this place we need to show the validation errors in the editor
+            $this->sendJSON($contentRNG);
+        }
         $res['schemaFile'] = $contentRNG;
         // Get XSL File
         $view = $this->request->getParam('view');
@@ -435,7 +442,7 @@ class Action_xmleditor2 extends ActionAbstract
         // Creating the new edition for this user
         $res = $nodeEdition->create($idnode, $userID);
         if (!$res) {
-            XMD_Log::error(_('Error creating a new Node Edition'));
+            Logger::error(_('Error creating a new Node Edition'));
         }
         $return = array('edition' => $edition, 'data' => $extraEdition);
         echo json_encode($return);
@@ -451,7 +458,7 @@ class Action_xmleditor2 extends ActionAbstract
         $nodeEdition = new NodeEdition();
         $res = $nodeEdition->deleteByNodeAndUser($nodeid, $userid);
         if (!$res) {
-            XMD_Log::error("Error deleting Node Edition for node " . $nodeid . " and user " . $userid);
+            Logger::error("Error deleting Node Edition for node " . $nodeid . " and user " . $userid);
         }
     }
 
@@ -493,5 +500,3 @@ class Action_xmleditor2 extends ActionAbstract
     }
 
 }
-
-?>

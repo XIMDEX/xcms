@@ -1726,6 +1726,9 @@ class Node extends NodesOrm
         if (!is_null($groupID)) {
             if ($this->nodeType->get('CanAttachGroups')) {
                 $dbObj = new Db();
+                
+                //TODO ajlucena: raise an error creating a new project from a template
+                
                 $query = sprintf("INSERT INTO RelGroupsNodes (IdGroup, IdNode, IdRole) VALUES (%d, %d, %d)", $groupID, $this->get('IdNode'), $roleID);
                 $dbObj->Execute($query);
                 if ($dbObj->numErr) {

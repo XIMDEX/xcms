@@ -25,6 +25,7 @@
  */
 
 namespace Ximdex\NodeTypes;
+use Ximdex\Runtime\App;
 use Ximdex\Runtime\DataFactory;
 use DB;
 use Ximdex\Deps\DepsManager;
@@ -145,9 +146,15 @@ class FileNode extends Root
             //checking the valid HTML in Ximclude contents or XML of the given RNG template content
             $domDoc = new DOMDocument();
             if ($node->getNodeType() == \Ximdex\Services\NodeType::NODE_HT)
+            {
+                //XML document
                 $res = @$domDoc->loadXML('<root>' . $content . '</root>');
+            }
             else
+            {
+                //RNG template
                 $res = @$domDoc->loadXML($content);
+            }
             if ($res === false)
             {
                 //we don't allow to save an invalid XML
@@ -156,7 +163,27 @@ class FileNode extends Root
                 $error = \Ximdex\Error::error_message();
                 if ($error)
                     $this->messages->add(str_replace('DOMDocument::loadXML(): ', '', $error), MSG_TYPE_WARNING);
-                return false;
+                    return false;
+            }
+            if ($node->getNodeType() == \Ximdex\Services\NodeType::RNG_VISUAL_TEMPLATE)
+            {
+                //validation of the RNG schema for the RNG template
+                $schema = FsUtils::file_get_contents(App::getValue( 'AppRoot') . '/actions/xmleditor2/views/common/schema/relaxng-1.0.rng.xml');
+                $rngValidator = new \Ximdex\XML\Validators\RNG();
+                $res = $rngValidator->validate($schema, $content);
+                if ($res === false)
+                {
+                    $errors = $rngValidator->getErrors();
+                    if (!$errors and \Ximdex\Error::error_message())
+                        $this->messages->add(str_replace('DOMDocument::relaxNGValidateSource(): ', '', \Ximdex\Error::error_message()), MSG_TYPE_WARNING);
+                    else
+                    {
+                        //only will be shown the first error (more easy to read)
+                        $this->messages->add($errors[0], MSG_TYPE_WARNING);
+                    }
+                    $this->messages->add('The RNG template haven\'t been saved', MSG_TYPE_ERROR);
+                    return false;
+                }
             }
         }
 

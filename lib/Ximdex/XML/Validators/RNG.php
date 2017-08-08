@@ -46,16 +46,16 @@ class RNG {
 
         $domdoc = new \DOMDocument();
 
-        $result = $domdoc->loadXML($xmldoc);
+        $result = @$domdoc->loadXML($xmldoc);
 
         if (!$result || strtoupper(get_class($domdoc)) != 'DOMDOCUMENT') {
-            $this->_errors[] = "Se esta intentando validar un XML mal formado.";
+            $this->_errors[] = 'It\'s trying to validate a mal formed XML (' . \Ximdex\Error::error_message() . ')';
             return false;
         }
 
         // We need to set the error handler, DOMDocument don't give us the errors
         set_error_handler(array($this, '_error_handler'));
-        $ret = $domdoc->relaxNGValidateSource($schema);
+        $ret = @$domdoc->relaxNGValidateSource($schema);
         restore_error_handler();
 
         // Correct the result of the validation, see _findDTDError()
@@ -70,9 +70,12 @@ class RNG {
 
     public function _error_handler($errno, $error) {
 
+        /*
         $ret = preg_match('#:\s(.[^:]*)$#ims', $error, $matches);
-
         $this->_errors[] = $matches[1];
+        */
+        $this->_errors[] = str_ireplace('DOMDocument::relaxNGValidateSource(): ', '', $error);
+        
         // Let PHP error handler do his work!
         return false;
     }

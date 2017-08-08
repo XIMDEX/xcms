@@ -235,7 +235,8 @@ abstract class XmlEditor_Abstract
         $errors = $rngvalidator->getErrors();
         if (count($errors) > 0) {
 
-            $content = array('error' => array_merge(array('RNG schema not valid:'), $errors));
+            //$content = array('error' => array_merge(array('RNG schema not valid:'), $errors));
+            $content = array('error' => $errors);
         } else {
 
             $content = preg_replace('/xmlns:xim="([^"]*)"/', sprintf('xmlns:xim="%s"', PVD2RNG::XMLNS_XIM),  $content);
