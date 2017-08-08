@@ -43,34 +43,34 @@ class AutomaticLog
         Loggeable::write($msg, 'automatic_logger', $level);
     }
 
-    public function debug($msg)
+    public static function debug($msg)
     {
         Loggeable::debug($msg, 'automatic_logger');
     }
 
-    public function info($msg)
+    public static function info($msg)
     {
         Loggeable::info($msg, 'automatic_logger');
     }
 
-    public function warning($msg)
+    public static function warning($msg)
     {
         Loggeable::warning($msg, 'automatic_logger');
     }
 
 
-    public function error($msg)
+    public static function error($msg)
     {
         Loggeable::error($msg, 'automatic_logger');
     }
 
-    public function fatal($msg)
+    public static function fatal($msg)
     {
         Loggeable::fatal($msg, 'automatic_logger');
     }
 
 
-    public function display($msg)
+    public static function display($msg)
     {
         // detect environment (cli / web)
         $output = sprintf("[%s]: %s\n", strftime("%d-%m-%y %T"), $msg);
