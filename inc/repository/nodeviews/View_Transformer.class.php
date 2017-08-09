@@ -27,7 +27,7 @@
 
 use Ximdex\Models\Node;
 use Ximdex\Models\Version;
-use Ximdex\Utils\Logs\Logger;
+use Ximdex\Logger;
 
 if (!defined('XIMDEX_ROOT_PATH')) {
 	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__)) . '/../../../');

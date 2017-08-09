@@ -30,7 +30,7 @@ use Ximdex\Parsers\PVD2RNG\PVD2RNG;
 use Ximdex\Runtime\App;
 use Ximdex\Runtime\DataFactory;
 use Ximdex\Utils\FsUtils;
-use Ximdex\Utils\Logs\Logger;
+use Ximdex\Logger;
 
 ModulesManager::file('/inc/parsers/pvd2rng/PVD2RNG.class.php');
 ModulesManager::file('/inc/model/RelTemplateContainer.class.php');

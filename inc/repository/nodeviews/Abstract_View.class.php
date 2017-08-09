@@ -27,7 +27,7 @@
 
 use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
-use Ximdex\Utils\Logs\Logger;
+use Ximdex\Logger;
 
 
 abstract class Abstract_View

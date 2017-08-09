@@ -159,15 +159,17 @@ class View_Xslt extends Abstract_View
         $domDoc->validateOnParse = true;
 
         if ($channel->get("OutputType") == "xml") {
-            if (!$domDoc->loadXML($content, LIBXML_NOERROR)) {
+            if (!@$domDoc->loadXML($content)) {
                 XMD_log::error($content);
                 XMD_log::error('XML invalid');
-                return NULL;
+                $GLOBALS['errorInXslTransformation'] = 'Invalid XML source';
+                return false;
             }
         } else if ($channel->get("OutputType") == "web") {
-            if (!$domDoc->loadHTML($content)) {
+            if (!@$domDoc->loadHTML($content)) {
                 XMD_log::error('HTML invalid');
-                return NULL;
+                $GLOBALS['errorInXslTransformation'] = 'Invalid HTML or XHTML source';
+                return false;
             }
         } else {
             return $this->storeTmpContent($content);

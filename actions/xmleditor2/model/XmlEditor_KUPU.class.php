@@ -35,9 +35,11 @@ use Ximdex\Parsers\ParsingJsGetText;
 use Ximdex\Parsers\ParsingRng;
 use Ximdex\Parsers\ParsingXsl;
 use Ximdex\Parsers\PVD2RNG\PVD2RNG;
+use Ximdex\Runtime\App;
 use Ximdex\Runtime\DataFactory;
 use Ximdex\Utils\FsUtils;
 use Ximdex\Utils\PipelineManager;
+use Ximdex\Logger;
 use Ximdex\Utils\Sync\SynchroFacade;
 
 ModulesManager::file('/actions/xmleditor2/model/XmlEditor_Abstract.class.php');
@@ -89,7 +91,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
 
         $node = new Node($idnode);
         if (!($node->get('IdNode') > 0)) {
-            XMD_Log::error(_("A non-existing node cannot be obtained: ") . $node->get('IdNode'));
+            Logger::error(_("A non-existing node cannot be obtained: ") . $node->get('IdNode'));
             return null;
         }
 
@@ -112,7 +114,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
             $availableViews[] = 'normal';
         }
 
-        if ((boolean)\App::getValue('PreviewInServer') && (boolean)count($channelList)) {
+        if ((boolean)App::getValue('PreviewInServer') && (boolean)count($channelList)) {
             $availableViews[] = 'pro';
         }
 
@@ -298,12 +300,12 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
         $i18n = new ParsingJsGetText();
         $jsFiles = $i18n->getTextArrayOfJs($jsFiles);
 
-        $extensionsURL = \App::getValue('UrlRoot') . '/extensions';
-        $actionURL = \App::getValue('UrlRoot') . $actionURL;
-        $kupuURL = \App::getValue('UrlRoot') . $kupuURL;
+        $extensionsURL = App::getValue('UrlRoot') . '/extensions';
+        $actionURL = App::getValue('UrlRoot') . $actionURL;
+        $kupuURL = App::getValue('UrlRoot') . $kupuURL;
 
         $cssFiles = array(
-            \App::getValue('UrlRoot') . '/xmd/style/jquery/custom_theme/jquery-ui-1.7.custom.css',
+            App::getValue('UrlRoot') . '/xmd/style/jquery/custom_theme/jquery-ui-1.7.custom.css',
             $actionURL . '/views/common/css/kupustyles.css',
             $actionURL . '/views/common/css/toolboxes.css',
             $actionURL . '/views/common/css/treeview.css',
@@ -317,11 +319,11 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
             $extensionsURL . '/bootstrap/dist/css/bootstrap.min.css',
 
 //future		$actionURL . '/views/common/css/colorpicker.css',
-            \App::getValue('UrlRoot') . '/xmd/style/fonts.css',
-            \App::getValue('UrlRoot') . '/xmd/style/jquery/ximdex_theme/widgets/tabs/common_views.css',
-            \App::getValue('UrlRoot') . '/inc/widgets/select/css/ximdex.select.css',
-            \App::getValue('UrlRoot') . '/xmd/style/jquery/ximdex_theme/widgets/treeview/treeview.css',
-            \App::getValue('UrlRoot') . '/xmd/style/jquery/ximdex_theme/widgets/tagsinput/tagsinput_editor.css',
+            App::getValue('UrlRoot') . '/xmd/style/fonts.css',
+            App::getValue('UrlRoot') . '/xmd/style/jquery/ximdex_theme/widgets/tabs/common_views.css',
+            App::getValue('UrlRoot') . '/inc/widgets/select/css/ximdex.select.css',
+            App::getValue('UrlRoot') . '/xmd/style/jquery/ximdex_theme/widgets/treeview/treeview.css',
+            App::getValue('UrlRoot') . '/xmd/style/jquery/ximdex_theme/widgets/tagsinput/tagsinput_editor.css',
         );
 
         $baseTags = array(
@@ -362,7 +364,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
     {
 
         if (!$this->setNode($idNode)) {
-            XMD_Log::error(_("A non-existing node cannot be edited: ") . $idNode);
+            Logger::error(_("A non-existing node cannot be edited: ") . $idNode);
         }
 
         $hasPermission = Auth::hasPermission(\Ximdex\Utils\Session::get('userID'), 'expert_mode_allowed');
@@ -404,7 +406,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
             $response['result'] = false;
             return $response;
         }
-        $tmpFilePath = \App::getValue('AppRoot') . \App::getValue('TempRoot') . "/xedit_" . $idUser . "_" . $idNode;
+        $tmpFilePath = App::getValue('AppRoot') . App::getValue('TempRoot') . "/xedit_" . $idUser . "_" . $idNode;
 
         if (!file_exists($tmpFilePath) || !$response['tmp_mod_date'] = filectime($tmpFilePath)) {
             $response['result'] = false;
@@ -432,7 +434,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
             $response['result'] = false;
             return $response;
         }
-        $tmpFilePath = \App::getValue('AppRoot') . \App::getValue('TempRoot') . "/xedit_" . $idUser . "_" . $idNode;
+        $tmpFilePath = App::getValue('AppRoot') . App::getValue('TempRoot') . "/xedit_" . $idUser . "_" . $idNode;
 
         if (file_exists($tmpFilePath) && !FsUtils::delete($tmpFilePath)) {
             $response['result'] = false;
@@ -450,10 +452,10 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
             $response['result'] = false;
             return $response;
         }
-        $tmpFilePath = \App::getValue('AppRoot') . \App::getValue('TempRoot') . "/xedit_" . $idUser . "_" . $idNode;
+        $tmpFilePath = App::getValue('AppRoot') . App::getValue('TempRoot') . "/xedit_" . $idUser . "_" . $idNode;
 
         if (!$this->setNode($idNode)) {
-            XMD_Log::error(_("A non-existing node cannot be saved: ") . $idNode);
+            Logger::error(_("A non-existing node cannot be saved: ") . $idNode);
             $response['result'] = false;
         } else {
             if (!$content = FsUtils::file_get_contents($tmpFilePath)) {
@@ -479,7 +481,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
         if (!$this->setNode($idNode)) {
             $msg = _("Document cannot be saved.");
 
-            XMD_Log::error(_("A non-existing node cannot be saved: ") . $idNode);
+            Logger::error(_("A non-existing node cannot be saved: ") . $idNode);
 
             $response['saved'] = false;
             $response['headers'][] = 'HTTP/1.1 200 Ok';
@@ -501,8 +503,8 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
                 $this->node->RenderizeNode();
             } else {
                 $idUser = \Ximdex\Utils\Session::get('userID');
-                if (!$idUser || !FsUtils::file_put_contents(\App::getValue('AppRoot') . \App::getValue('TempRoot') . "/xedit_" . $idUser . "_" . $idNode, \Ximdex\Utils\Strings::stripslashes($xmlContent))) {
-                    XMD_Log::error(_("The content of " . $idNode . " could not be saved"));
+                if (!$idUser || !FsUtils::file_put_contents(App::getValue('AppRoot') . App::getValue('TempRoot') . "/xedit_" . $idUser . "_" . $idNode, \Ximdex\Utils\Strings::stripslashes($xmlContent))) {
+                    Logger::error(_("The content of " . $idNode . " could not be saved"));
                     return false;
                 }
             }
@@ -539,14 +541,14 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
     public function getXmlFile($idNode, $view = null, $content = null)
     {
         if (!$this->setNode($idNode)) {
-            XMD_Log::error(_("A non-existing node content cannot be obtained: ") . $idNode);
+            Logger::error(_("A non-existing node content cannot be obtained: ") . $idNode);
             return false;
         }
 
         // TODO: Do correct docxap parametrize & insertion in document
         $nodeTypeName = $this->node->nodeType->get('Name');
         if ($nodeTypeName == 'RngVisualTemplate') {
-            $content = sprintf('%s%s<docxap uid="%s.0" xmlns:xim="%s">%s</docxap>', \App::getValue('EncodingTag'), \App::getValue('DoctypeTag'), $idNode, PVD2RNG::XMLNS_XIM, str_replace('<?xml version="1.0" encoding="UTF-8"?>', '', $this->node->getContent()));
+            $content = sprintf('%s%s<docxap uid="%s.0" xmlns:xim="%s">%s</docxap>', App::getValue('EncodingTag'), App::getValue('DoctypeTag'), $idNode, PVD2RNG::XMLNS_XIM, str_replace('<?xml version="1.0" encoding="UTF-8"?>', '', $this->node->getContent()));
             return $content;
         }
 
@@ -589,7 +591,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
 
         //New abstraction with php5-enchant module.
         if (!function_exists('enchant_broker_init')) {
-            XMD_Log::error(_('The php5-enchant module should be installed to use the spell checker'));
+            Logger::error(_('The php5-enchant module should be installed to use the spell checker'));
         } else {
             $chkr = enchant_broker_init();
             if (!enchant_broker_dict_exists($chkr, $langISOName)) { //english as a default dictionary
@@ -640,8 +642,8 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
     public function getAnnotationFile($idNode, $content)
     {
         if (ModulesManager::isEnabled('Xowl')) {
-            if (\App::getValue('EnricherKey') === NULL || \App::getValue('EnricherKey') == '') {
-                XMD_Log::error(_("Xowl_token configuration value has not been defined"));
+            if (App::getValue('EnricherKey') === NULL || App::getValue('EnricherKey') == '') {
+                Logger::error(_("Xowl_token configuration value has not been defined"));
                 $resp = array("status" => "No  Xowl_token defined", "videourl" => "<center><iframe width='420' height='315' src='http://www.youtube.com/embed/xnhUzYKqJPw' frameborder='0' allowfullscreen></iframe></center>");
             } else {
                 $ontologyService = new OntologyService();
@@ -653,7 +655,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
             $ximRAmsg = _("Xowl module has not been installed.<br/><br/> If you want to realize the noticeable improvements that you will obtain with Xowl, a demonstrative video is shown below (%s)<br/><br/>Also, you can test it at <a target='_blank' href='http://demo.ximdex.com'>demo.ximdex.com</a><br/><br/>");
             $videomsg = sprintf($ximRAmsg, $videolink);
             $urlvideo = "<center><iframe width='420' height='315' src='http://www.youtube.com/embed/xnhUzYKqJPw' frameborder='0' allowfullscreen></iframe></center>";
-            XMD_Log::error(_("Xowl module has not been installed. It is included in the advanced package WIX."));
+            Logger::error(_("Xowl module has not been installed. It is included in the advanced package WIX."));
 
             $resp = array("status" => $videomsg,
                 "videourl" => $urlvideo);
@@ -708,16 +710,15 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
         }
 
         if (is_null($docxapId)) {
-            XMD_Log::error(_('docxap cannot be found.'));
+            Logger::error(_('docxap can not be found'));
+            return false;
         }
         $project=$this->node->getProject();
         $nodeProject = new Node($project);
         $xslParser = new ParsingXsl($docxapId);
         $templatesInclude = $xslParser->getIncludedElements('templates_include');
-        $templatesInclude[0] = $this->rel_path_docxap.$templatesInclude[0];
-
-        $templatesIncludePath =  $templatesInclude[0];
-
+        //$templatesIncludePath = $this->rel_path_docxap . $templatesInclude[0];
+        $templatesIncludePath = str_replace(App::getValue('UrlRoot'), App::getValue('AppRoot'), $templatesInclude[0]);
 
         $xslParser = new ParsingXsl(NULL, $templatesIncludePath);
         $templatesElements = $xslParser->getIncludedElements(NULL, true, true);

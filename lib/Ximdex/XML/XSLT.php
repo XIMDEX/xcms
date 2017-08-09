@@ -27,7 +27,7 @@
 namespace Ximdex\XML ;
 
 
-use Ximdex\Utils\Logs\Logger;
+use Ximdex\Logger;
 
 class XSLT  {
 

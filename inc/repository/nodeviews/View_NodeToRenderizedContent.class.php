@@ -30,7 +30,7 @@ use Ximdex\Models\StructuredDocument;
 use Ximdex\Models\Version;
 use Ximdex\NodeTypes\XmlDocumentNode;
 use Ximdex\Runtime\App;
-use Ximdex\Utils\Logs\Logger;
+use Ximdex\Logger;
 
 
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Abstract_View.class.php');

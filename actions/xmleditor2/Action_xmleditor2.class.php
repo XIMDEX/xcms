@@ -35,7 +35,7 @@ use Ximdex\Runtime\App;
 use Ximdex\Runtime\Constants;
 use Ximdex\Runtime\Request;
 use Ximdex\Utils\Serializer;
-use Ximdex\Utils\Logs\Logger;
+use Ximdex\Logger;
 
 ModulesManager::file('/actions/xmleditor2/XimlinkResolver.class.php');
 ModulesManager::file('/actions/createlink/Action_createlink.class.php');

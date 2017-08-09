@@ -476,6 +476,8 @@ class xsltnode extends FileNode
         $content = FsUtils::file_get_contents($docxapTemplate);
         if (!$content)
             return false;
+        //TODO ajlucena: make sure that the path to templates is in the correct place of the docxap templates folder
+        $content = str_replace('##URL_ROOT##', App::getValue("UrlRoot"), $content);
         $content = str_replace('##PROJECT_NAME##', $project->GetNodeName(), $content);
 		if (!FsUtils::file_put_contents($xslSourcePath, $content))
 		    return false;
