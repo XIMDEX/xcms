@@ -126,16 +126,27 @@ class ParsingXsl
 			$content = $this->node->GetContent();
 		else
 			$content = FsUtils::file_get_contents($this->path);
+		if (!$content)
+		{
+		    $error = 'setXpathObj error: empty XML content or another problem to get it';
+		    if (\Ximdex\Error::error_message())
+		        $error .= ' (' . \Ximdex\Error::error_message() . ')';
+		    XMD_Log::error($error);
+		    return false;
+		}
 		$domDoc = new DOMDocument();
 		$domDoc->preserveWhiteSpace = false;
 		$domDoc->validateOnParse = true;
 		$domDoc->formatOutput = true;
-		$domDoc->loadXML($content);
+		$res = @$domDoc->loadXML($content);
+		if ($res === false)
+		{
+		    XMD_Log::error('setXpathObj error: can\'t load XML content (' . \Ximdex\Error::error_message() . ')');
+		    return false;
+		}
 
 		$this->xpathObj = new DOMXPath($domDoc);
 
 		return true;
 	}
 }
-
-?>
