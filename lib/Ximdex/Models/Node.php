@@ -1725,13 +1725,28 @@ class Node extends NodesOrm
         $this->ClearError();
         if (!is_null($groupID)) {
             if ($this->nodeType->get('CanAttachGroups')) {
+                
                 $dbObj = new Db();
-                
-                //TODO ajlucena: raise an error creating a new project from a template
-                
+                /*
+                Raise an error when creating a new project from a template, node-group can't be repeated
+                To prevent this problem, we are going to make a query of this ocurrence
+                */
+                $sql = 'select * from RelGroupsNodes where IdGroup = ' . $groupID . ' and IdNode = ' . $this->get('IdNode');
+                $res = $dbObj->query($sql);
+                if ($res === false or $dbObj->numErr)
+                {
+                    $this->SetError(5);
+                    return false;
+                }
+                if ($dbObj->numRows)
+                {
+                    //the relation between this node and the given group is defined already
+                    return true;
+                }
                 $query = sprintf("INSERT INTO RelGroupsNodes (IdGroup, IdNode, IdRole) VALUES (%d, %d, %d)", $groupID, $this->get('IdNode'), $roleID);
                 $dbObj->Execute($query);
                 if ($dbObj->numErr) {
+                    
                     $this->SetError(5);
                     return false;
                 }
