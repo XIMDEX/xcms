@@ -29,7 +29,7 @@ namespace Ximdex\NodeTypes;
 
 use Ximdex\Runtime\Db as DB;
 use Ximdex\Deps\DepsManager;
-use Node;
+use Ximdex\Models\Node;
 use Ximdex\Models\NodeType;
 use Ximdex\Logger as XMD_Log;
 

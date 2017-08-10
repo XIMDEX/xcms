@@ -853,14 +853,16 @@ class Node extends NodesOrm
         if ($this->get('IdNode') > 0) {
             if ($this->nodeType->get('IsRenderizable')) {
                 if ($this->nodeType->get('HasFSEntity')) {
-                    $this->class->RenderizeNode();
+                    if ($this->class->RenderizeNode() === false)
+                        return false;
                 }
                 if ($recursive) {
                     $children = $this->GetChildren();
                     if (!empty($children)) {
                         foreach ($children as $childID) {
                             $child = new Node($childID);
-                            $child->RenderizeNode(true);
+                            if ($child->RenderizeNode(true) === false)
+                                return false;
                             //unset($child);
                         }
                     }
@@ -868,7 +870,9 @@ class Node extends NodesOrm
             }
         } else {
             $this->SetError(1);
+            return false;
         }
+        return true;
     }
 
     /**
@@ -903,7 +907,8 @@ class Node extends NodesOrm
                 return false;
             }
             $this->messages->mergeMessages($this->class->messages);
-            $this->RenderizeNode();
+            if ($this->RenderizeNode() === false)
+                return false;
 
             $event = new NodeEvent($this->nodeID);
             App::dispatchEvent(Events::NODE_TOUCHED, $event);
@@ -1483,7 +1488,7 @@ class Node extends NodesOrm
             /* $result =*/
             $this->update();
             /// If this node type has nothing else to change, the method rename node of its specific class is called
-            if (!$this->class->RenameNode($name))
+            if ($this->class->RenameNode($name) === false)
             {
                 $this->messages->mergeMessages($this->class->messages);
                 return false;

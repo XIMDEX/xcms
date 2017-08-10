@@ -136,7 +136,8 @@ class Action_renamenode extends ActionAbstract
 
         $node = new Node($idNode);
         if (!$node->get('IdNode') > 0) {
-            $this->messages->add(_('Node could not be successfully loaded'), MSG_TYPE_NOTICE);
+            $this->messages->add(_('Node could not be successfully loaded'), MSG_TYPE_ERROR);
+            $result = false;
         } else {
             $result = $node->RenameNode($name);
             if ($result)
@@ -152,37 +153,42 @@ class Action_renamenode extends ActionAbstract
                 } else {
                     $this->messages->add(_('Node name could not be updated'), MSG_TYPE_ERROR);
                 }
-            }
-
-            if ($node->nodeType->get('IsSection')) {
-                foreach ($languages as $idLanguage => $alias) {
-                    if ($node->SetAliasForLang($idLanguage, $alias)) {
-                        $language = new Language($idLanguage);
-                        $this->messages->add(sprintf(_('Alias for language %s has been successfully updated'), $language->get('Name')), MSG_TYPE_NOTICE);
+                
+                if ($node->nodeType->get('IsSection')) {
+                    foreach ($languages as $idLanguage => $alias) {
+                        if ($node->SetAliasForLang($idLanguage, $alias)) {
+                            $language = new Language($idLanguage);
+                            $this->messages->add(sprintf(_('Alias for language %s has been successfully updated'), $language->get('Name')), MSG_TYPE_NOTICE);
+                        }
                     }
                 }
             }
-
+            else
+            {
+                $this->messages->mergeMessages($node->messages);
+            }
         }
-
-        $oldIdPipeline = $node->getProperty('Pipeline');
-        $newIdPipeline = $this->request->getParam('id_pipeline');
-        if (!($newIdPipeline > 0)) {
-            $newIdPipeline = NULL;
+        if ($result)
+        {
+            $oldIdPipeline = $node->getProperty('Pipeline');
+            $newIdPipeline = $this->request->getParam('id_pipeline');
+            if (!($newIdPipeline > 0)) {
+                $newIdPipeline = NULL;
+            }
+    
+            if (count($oldIdPipeline > 0)) {
+                $oldIdPipeline = $oldIdPipeline[0];
+            }
+    
+            if ($oldIdPipeline != $newIdPipeline) {
+                $node->updateToNewPipeline($newIdPipeline);
+                $node->setProperty('Pipeline', $newIdPipeline);
+            }
+    
+            $this->messages->mergeMessages($node->messages);
+            // $this->reloadNode($node->get('IdParent') );
         }
-
-        if (count($oldIdPipeline > 0)) {
-            $oldIdPipeline = $oldIdPipeline[0];
-        }
-
-        if ($oldIdPipeline != $newIdPipeline) {
-            $node->updateToNewPipeline($newIdPipeline);
-            $node->setProperty('Pipeline', $newIdPipeline);
-        }
-
-        $this->messages->mergeMessages($node->messages);
-        // $this->reloadNode($node->get('IdParent') );
-
+        
         $values = array('messages' => $this->messages->messages, 'parentID' => $node->get('IdParent'));
         $this->sendJSON($values);
     }

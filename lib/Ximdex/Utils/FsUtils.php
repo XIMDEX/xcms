@@ -130,6 +130,7 @@ class FsUtils
     static public function file_put_contents($filename, $data, $flags = NULL, $context = NULL)
     {
         $result = false;
+        $error = null;
 
         if (!self::notifyDiskspace($filename)) {
             return false;
@@ -147,16 +148,24 @@ class FsUtils
                 $result = file_put_contents($filename, $data, $flags, $context);
             } else {
                 $result = false;
+                if (empty($filename))
+                    $error = 'File name has not been specified';
+                elseif (is_dir($filename))
+                    $error = $filename . ' is a directory';
+                elseif (!is_writable(dirname($filename)))
+                    $error = 'Directory ' . dirname($filename) . ' is not writable';
             }
         }
 
         if ($result === false) {
             $backtrace = debug_backtrace();
-            XMD_Log::debug(sprintf(_("Error writing in file [inc/fsutils/FsUtils.class.php] script: %s file: %s line: %s file: %s"),
+            XMD_Log::error(sprintf(_("Error writing in file [inc/fsutils/FsUtils.class.php] script: %s file: %s line: %s file: %s"),
                 $_SERVER['SCRIPT_FILENAME'],
                 $backtrace[0]['file'],
                 $backtrace[0]['line'],
                 $filename));
+            if ($error)
+                XMD_Log::error($error);
             return false;
         }
         XMD_Log::debug("file_put_contents: input: $filename");

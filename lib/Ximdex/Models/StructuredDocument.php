@@ -342,7 +342,11 @@ class StructuredDocument extends StructuredDocumentsOrm
 
 		// Renderizamos el nodo para reflejar los cambios
 		$node = new Node($this->get('IdDoc'));
-		$node->RenderizeNode();
+		if ($node->RenderizeNode() === false)
+		{
+		    $this->messages->mergeMessages($node->messages);
+            return false;
+		}
 		return true;
 	}
 

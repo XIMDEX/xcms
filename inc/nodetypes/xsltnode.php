@@ -100,6 +100,7 @@ class xsltnode extends FileNode
         ) {
 
             // get and copy project docxap
+            //TODO ajlucena: if this file is copied in other section (from project one), the new templates_include reference must be added 
 
             $docxapProject = new Node($idDocxapProject);
             $docxapContent = $docxapProject->GetContent();
@@ -452,7 +453,8 @@ class xsltnode extends FileNode
     
     /**
      * Create a new basic docxap XSLT file for the project if it's not exists
-     * @return boolean
+     * @param null|int $sectionId
+     * @return boolean|NULL|string|boolean|boolean|string
      */
     private function create_docxap_file()
     {
@@ -476,7 +478,7 @@ class xsltnode extends FileNode
         $content = FsUtils::file_get_contents($docxapTemplate);
         if (!$content)
             return false;
-        //TODO ajlucena: make sure that the path to templates is in the correct place of the docxap templates folder
+        //make sure that the path to templates is in the correct place of the project docxap templates folder
         $content = str_replace('##URL_ROOT##', App::getValue("UrlRoot"), $content);
         $content = str_replace('##PROJECT_NAME##', $project->GetNodeName(), $content);
 		if (!FsUtils::file_put_contents($xslSourcePath, $content))

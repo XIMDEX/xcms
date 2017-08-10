@@ -127,7 +127,7 @@ class ParsingDependencies
         //If there is any error in the parsing process, the global error provided from the static method will be added to the warning messages
         if (isset($GLOBALS['parsingDependenciesError']) and $GLOBALS['parsingDependenciesError'])
         {
-            $this->messages->add('Parsing dependencies problem detected: ' . $GLOBALS['parsingDependenciesError'], MSG_TYPE_WARNING);
+            $this->messages->add('Parsing dependencies issue detected: ' . $GLOBALS['parsingDependenciesError'], MSG_TYPE_WARNING);
             $GLOBALS['parsingDependenciesError'] = null;
         }
         

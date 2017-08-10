@@ -107,7 +107,7 @@ class Action_newemptynode extends ActionAbstract {
 			break;
 
 			case 5077: 
-			$content="<?xml version='1.0' encoding='utf-8'?>\n<xsl:stylesheet xmlns:xsl='http://www.w3.org/1999/XSL/Transform' version='1.0'>\n\t<xsl:template name='".$name."' match='".$name."'>\n\t\t<!-- Insert your code here -->\n\t\t<!-- Remember to use the <xsl:apply-templates/> tag to include content of another templates -->\n\t</xsl:template>\n</xsl:stylesheet>";
+			$content="<?xml version='1.0' encoding='utf-8'?>\n<xsl:stylesheet xmlns:xsl='http://www.w3.org/1999/XSL/Transform' version='1.0'>\n\t<xsl:template name='".$name."' match='".$name."'>\n\t\t<!-- Insert your code here -->\n\t\t<!-- Remember to use the <xsl:apply-templates /> tag to include content of another templates -->\n\t</xsl:template>\n</xsl:stylesheet>";
 			break;
 
 			case 5078: 

@@ -311,7 +311,8 @@ class AbstractStructuredDocument extends FileNode
 
         /// Renderizamos hacia arriba toda la jerarqu\EDa
         if (!$parent->IsRenderized()) {
-            $parent->RenderizeNode();
+            if ($parent->RenderizeNode() === false)
+                return false;
         }
 
         /// Conseguimos el path del archivo de destino

@@ -236,13 +236,16 @@ class Action_edittext extends ActionAbstract
         if ($node->SetContent(Strings::stripslashes($content), true, $node) === false)
         {
             $this->messages->mergeMessages($node->messages);
-            $values = array('messages' => $this->messages->messages, 'type' => MSG_TYPE_WARNING);
-            $this->sendJSON($values);
+            $this->sendJSON(array('messages' => $this->messages->messages, 'type' => MSG_TYPE_WARNING));
             return false;
         }
         $this->messages->mergeMessages($node->messages);
-        $node->RenderizeNode();
-        
+        if ($node->RenderizeNode() === false)
+        {
+            $this->messages->mergeMessages($node->messages);
+            $this->sendJSON(array('messages' => $this->messages->messages, 'type' => MSG_TYPE_WARNING));
+            return false;
+        }
 
         $nodeType = new NodeType($node->get('IdNodeType'));
         $nodeTypeName = $nodeType->get('Name');

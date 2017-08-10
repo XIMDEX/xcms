@@ -167,11 +167,12 @@ class FolderNode extends Root
             $child = new Node($childId);
             $child->class->UpdatePath();
         }
+        return true;
     }
 
     function RenameNode($name = null)
     {
-        $this->updatePath();
+        return $this->updatePath();
     }
 
 
