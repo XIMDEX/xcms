@@ -187,7 +187,7 @@ class AbstractStructuredDocument extends FileNode
             {
                 //we don't allow to save an invalid XML
                 $this->messages->add('The XML document is not valid. Changes have not been saved', MSG_TYPE_ERROR);
-                //Logger::error('Invalid XML for idNode: ' . $node->getIdNode());
+                Logger::error('Invalid XML for idNode: ' . $node->getIdNode());
                 $error = \Ximdex\Error::error_message();
                 if ($error)
                     $this->messages->add(str_replace('DOMDocument::loadXML(): ', '', $error), MSG_TYPE_WARNING);

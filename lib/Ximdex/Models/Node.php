@@ -912,8 +912,8 @@ class Node extends NodesOrm
 
             $event = new NodeEvent($this->nodeID);
             App::dispatchEvent(Events::NODE_TOUCHED, $event);
-            return true;
         }
+        return true;
     }
 
     /**

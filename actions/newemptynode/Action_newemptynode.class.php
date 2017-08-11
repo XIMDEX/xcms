@@ -83,13 +83,22 @@ class Action_newemptynode extends ActionAbstract {
         $idfile = $file->CreateNode($name_ext, $parentId, $nodetype, null);
 
         if ($idfile > 0) {
-			$content=$this->getDefaultContent($nodetype,$name);
-			$file->SetContent($content);
+			$content = $this->getDefaultContent($nodetype,$name);
+			if ($file->SetContent($content) === false)
+			{
+			    if ($file->msgErr)
+			        $this->messages->add(sprintf(_('The operation has failed: %s'), $file->msgErr), MSG_TYPE_ERROR);
+			    else
+			        $this->messages->mergeMessages($file->messages);
+			}
+			else
+			{
                 $this->messages->add(sprintf('%s'._(' has been successfully created'), $name), MSG_TYPE_NOTICE);
-                    $this->reloadNode($parentId);
-                } else {
-                    $this->messages->add(sprintf(_('The operation has failed: %s'), $file->msgErr), MSG_TYPE_ERROR);
-                }
+                $this->reloadNode($parentId);
+			}
+        } else {
+            $this->messages->mergeMessages($file->messages);
+        }
 		$values = array('messages' => $this->messages->messages, 'parentID' => $parentId, 'nodeID' => $idfile);
 		
 		$this->sendJSON($values);
