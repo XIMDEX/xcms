@@ -7,7 +7,7 @@
  */
 namespace Ximdex\Runtime;
 
-use Ximdex\Logger as XMD_Log;
+use Ximdex\Logger;
 
 class Db
 {
@@ -77,7 +77,7 @@ class Db
          	}
          	catch (\PDOException $e)
          	{
-         		XMD_Log::error('Can\'t reconnect to database at ' . $dbConfig['host'] . ':' . $dbConfig['port']);
+         		Logger::error('Can\'t reconnect to database at ' . $dbConfig['host'] . ':' . $dbConfig['port']);
          		return false;
          	}
             $dbConn->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_ASSOC);
@@ -85,9 +85,14 @@ class Db
             $idconfig = uniqid();
             App::addDbConnection($dbConn, $idconfig);
             self::$defaultConf = $idconfig;
-            XMD_Log::info('Reconnection to database at ' . $dbConfig['host'] . ':' . $dbConfig['port'] . ' has been stablished correctly');
-            return true;
+            Logger::info('Reconnection to database at ' . $dbConfig['host'] . ':' . $dbConfig['port'] . ' has been stablished correctly');
          }
+         else
+         {
+             Logger::fatal('Database configuration is empty when reconnecting to database server');
+             return false;
+         }
+         return true;
      }
 
     public function Query($sql, $cache = false)
@@ -99,7 +104,7 @@ class Db
 
         if (!$this->_getEncodings())
         {
-            XMD_Log::error($this->desErr);
+            Logger::error($this->desErr);
             return false;
         }
         $sql = \Ximdex\XML\Base::recodeSrc($sql, $this->dbEncoding);
@@ -126,7 +131,7 @@ class Db
             
             $error = $this->error();
             $this->desErr = $error[2];
-            XMD_Log::error('Query error: ' . $error[2] . '. (SQL: ' . $this->sql . ')');
+            Logger::error('Query error: ' . $error[2] . '. (SQL: ' . $this->sql . ')');
             
             if ($this->db->errorCode() == \PDO::ERR_NONE) {
                 $this->numErr = null;
@@ -167,7 +172,7 @@ class Db
         //Encode to dbConfig value in table config
         if (!$this->_getEncodings())
         {
-            XMD_Log::error($this->desErr);
+            Logger::error($this->desErr);
             return false;
         }
         $sql = \Ximdex\XML\Base::recodeSrc($sql, $this->dbEncoding);
@@ -204,7 +209,7 @@ class Db
         }
         $error = $this->error();
         $this->desErr = $error[2];
-        XMD_Log::error('Execute error: ' . $error[2] . '. (SQL: ' . $this->sql . ')');
+        Logger::error('Execute error: ' . $error[2] . '. (SQL: ' . $this->sql . ')');
         return false;
     }
 
@@ -225,7 +230,7 @@ class Db
             while ($statement->nextRowset()) {/* https://bugs.php.net/bug.php?id=61613 */};
         } catch (\PDOException $e) {
             $result = false;
-            XMD_Log::error($e->errorInfo[2]);
+            Logger::error($e->errorInfo[2]);
         }
 
         $this->db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_SILENT);
@@ -278,7 +283,7 @@ class Db
             }
             catch (\PDOException $e)
             {
-                XMD_Log::error('Can\'t get encondings types (' . $e->getMessage() . ')');
+                Logger::error('Can\'t get encondings types (' . $e->getMessage() . ')');
                 return false;
             }
             if ($stm === false)
@@ -295,7 +300,7 @@ class Db
             	   }
             	}
             	$error = $this->error();
-            	XMD_Log::error('Can\'t get encondings types (' . $error[2] . ')');
+            	Logger::error('Can\'t get encondings types (' . $error[2] . ')');
                 return false;
             }
             foreach ($stm as $row) {
@@ -327,7 +332,7 @@ class Db
 
             if (!$this->_getEncodings())
             {
-                XMD_Log::error($this->desErr);
+                Logger::error($this->desErr);
                 return false;
             }
             $value = \Ximdex\XML\Base::recodeSrc($this->row[$col], $this->workingEncoding);
@@ -351,7 +356,7 @@ class Db
         }
 
         if (!(strlen($value) > 0)) {
-            //XMD_Log::warning("A SQL statement is converting an empty string to NULL");
+            //Logger::warning("A SQL statement is converting an empty string to NULL");
             return 'NULL';
         }
         return self::getInstance()->db->quote($value);
@@ -379,12 +384,12 @@ class Db
     		do
     		{
     			//we will do a loop until the connection has been stablished
-    			XMD_Log::error('Connection to database has been lost. Trying to reconnect in ' . $this->TIME_TO_RECONNECT . ' seconds');
+    			Logger::warning('Connection to database has been lost. Trying to reconnect in ' . $this->TIME_TO_RECONNECT . ' seconds');
     			$res = $this->reconectDataBase();
     			sleep($this->TIME_TO_RECONNECT);
     		}
     		while (!$res);
-    		XMD_Log::info('Reconnecting to database has been executed successfully');
+    		Logger::info('Reconnecting to database has been executed successfully');
     		return true;
     	}
     	return false;

@@ -1,4 +1,6 @@
 <?php
+use Ximdex\Logger;
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -43,6 +45,20 @@ class RelFramesPortal extends RelFramesPortal_ORM {
 		$this->set('IdPortalVersion', $idPortalVersion);
 		$this->set('IdFrame', $nodeFrameId);
 
+		//check for a duplicate of the relation to create
+		$res = parent::exists('id');
+		if ($res === false)
+		{
+		    Logger::error('When checking a duplicate element in database');
+		    return false;
+		}
+		if ($res)
+		{
+		    //the relation already exists, returning the ID found
+		    Logger::info('Element to create in RelFramesPortal already exists with ID: ' . $res);
+		    return $res;
+		}
+		
 		$idRel = parent::add();
 
 		return ($idRel > 0) ? $idRel : NULL;
