@@ -247,10 +247,10 @@ class xsltnode extends FileNode
                     Logger::fatal('The project docxap XSL template could not been created');
                     return false;
                 }
-                //check if the docxap project already exists
+                //check if the docxap project already exists (where are not in a new section)
                 if ($res === null)
                 {
-                    //if this file is created in another section (from project one), the new templates_include reference must be added in docxap file
+                    //the new templates_include reference must be added in docxap file
                     $idDocxap = $parent->GetChildByName('docxap.xsl');
                     if ($idDocxap)
                     {
@@ -264,37 +264,41 @@ class xsltnode extends FileNode
                         $domDocument = new DOMDocument();
                         if (@$domDocument->loadXML($docxapContent) === false)
                         {
-                            $this->messages->add('Can\'t load the project docxap XML content', MSG_TYPE_ERROR);
+                            $this->messages->add('Can\'t load the docxap XML content', MSG_TYPE_ERROR);
                             return false;
                         }
                         /*
                         The new tag will be include before the xsl:template tag, and will looks like this
-                            <xsl:include href="http://server/data/nodes/Project/Server/Section/templates/templates_include.xsl" />
+                            <xsl:include href="http://server/data/nodes/Project/Server/NewSection/templates/templates_include.xsl" />
                         Find in the xsl:stylesheet root, the xsl:template node
                         */
                         $xPath = new DomXPath($domDocument);
                         $docxapRoot = $xPath->query('//xsl:stylesheet');
-                        if (!$docxapRoot.length)
+                        if (!$docxapRoot->length)
                         {
-                            $this->messages->add('Can\'t find the xsl:stylesheet element in the project docxap XML content', MSG_TYPE_ERROR);
+                            $this->messages->add('Can\'t find the xsl:stylesheet element in the docxap XML content', MSG_TYPE_ERROR);
                             return false;
                         }
                         $templateNodes = $xPath->query('//xsl:stylesheet/xsl:template');
-                        if (!$templateNodes.length)
+                        if (!$templateNodes->length)
                         {
-                            $this->messages->add('Can\'t find the xsl:template element in the project docxap XML content', MSG_TYPE_ERROR);
+                            $this->messages->add('Can\'t find the xsl:template element in the docxap XML content', MSG_TYPE_ERROR);
                             return false;
                         }
                         
                         //generate the include tag with its href value
                         $domElement = $domDocument->createElement('xsl:include');
                         $domAttribute = $domDocument->createAttribute('href');
-                        $domAttribute->value = $xslSourcePath;
+                        $project = new Node($section->GetProject());
+                        $templatesIncludeURL = App::getValue('UrlRoot') . App::getValue('NodeRoot') . $section->GetRelativePath($project->nodeID) 
+                                . '/templates/templates_include.xsl';
+                        $domAttribute->value = $templatesIncludeURL;
                         $domElement->appendChild($domAttribute);
                         
                         //add the new element and save the document to docxap content
                         $docxapRoot->item(0)->insertBefore($domElement, $templateNodes->item(0));
-                        if ($docxapContent = $domDocument->saveXML() === false)
+                        $docxapContent = $domDocument->saveXML();
+                        if ($docxapContent === false)
                         {
                             $this->messages->add('Can\'t save the project docxap XML content', MSG_TYPE_ERROR);
                             return false;
@@ -444,7 +448,10 @@ class xsltnode extends FileNode
         {
             //we don't allow to save an invalid XML
             $this->messages->add('The XML document is not valid. Changes have not been saved', MSG_TYPE_ERROR);
-            Logger::error('Invalid XML for node: ' . $node->getDescription());
+            if ($node)
+                Logger::error('Invalid XML for node: ' . $node->getDescription());
+            else
+                Logger::error('Invalid XML to set content operation');
             $error = \Ximdex\Error::error_message();
             if ($error)
                 $this->messages->add(str_replace('DOMDocument::loadXML(): ', '', $error), MSG_TYPE_WARNING);
