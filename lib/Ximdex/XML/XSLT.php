@@ -60,10 +60,10 @@ class XSLT  {
                 $error = \Ximdex\Error::error_message();
                 if ($error)
                     $error = str_replace('DOMDocument::loadXML(): ', '', $error);
-                    $error = 'Error loading file ' . $xsl_file . ' (' . $error . ')';
+                $error = 'Error loading file ' . $xsl_file . ' (' . $error . ')';
                 if (isset($GLOBALS['InBatchProcess']) and $GLOBALS['InBatchProcess'])
                     logger::error($error);
-                    $GLOBALS['errorInXslTransformation'] = $error;
+                $GLOBALS['errorInXslTransformation'] = $error;
                 return false;
             }
             if (@$this->xsltprocessor->importStyleSheet($this->xsl) === false)
@@ -71,10 +71,10 @@ class XSLT  {
                 $error = \Ximdex\Error::error_message();
                 if ($error)
                     $error = str_replace('XSLTProcessor::importStylesheet(): ', '', $error);
-                    $error = 'Error processing file ' . $xsl_file . ' (' . $error . ')';
+                $error = 'Error processing file ' . $xsl_file . ' (' . $error . ')';
                 if (isset($GLOBALS['InBatchProcess']) and $GLOBALS['InBatchProcess'])
                     Logger::error($error);
-                    $GLOBALS['errorInXslTransformation'] = $error;
+                $GLOBALS['errorInXslTransformation'] = $error;
                 return false;
             }
         }

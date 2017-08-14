@@ -290,7 +290,7 @@ class xsltnode extends FileNode
                         $domElement = $domDocument->createElement('xsl:include');
                         $domAttribute = $domDocument->createAttribute('href');
                         $project = new Node($section->GetProject());
-                        $templatesIncludeURL = App::getValue('UrlRoot') . App::getValue('NodeRoot') . $section->GetRelativePath($project->nodeID) 
+                        $templatesIncludeURL = App::getValue('UrlRoot') . App::getValue('NodeRoot') . $section->GetRelativePath($project->GetID()) 
                                 . '/templates/templates_include.xsl';
                         $domAttribute->value = $templatesIncludeURL;
                         $domElement->appendChild($domAttribute);
@@ -448,15 +448,43 @@ class xsltnode extends FileNode
         {
             //we don't allow to save an invalid XML
             $this->messages->add('The XML document is not valid. Changes have not been saved', MSG_TYPE_ERROR);
-            if ($node)
-                Logger::error('Invalid XML for node: ' . $node->getDescription());
-            else
-                Logger::error('Invalid XML to set content operation');
-            $error = \Ximdex\Error::error_message();
+            if (isset($GLOBALS['InBatchProcess']))
+            {
+                if ($node and $node->getDescription())
+                    Logger::error('Invalid XML for node: ' . $node->getDescription());
+                else
+                    Logger::error('Invalid XML to set content operation');
+            }
+            $error = \Ximdex\Error::error_message('DOMDocument::loadXML(): ');
             if ($error)
-                $this->messages->add(str_replace('DOMDocument::loadXML(): ', '', $error), MSG_TYPE_WARNING);
+                $this->messages->add($error, MSG_TYPE_WARNING);
             return false;
         }
+        
+        //validating of the correct XSL document in the correct system path (only if node is coming)
+        if ($node)
+        {
+            $xsltprocessor = new XSLTProcessor();
+            $project = new Node($node->GetProject());
+            $domDoc->documentURI = App::getValue('AppRoot') . App::getValue('NodeRoot') . $node->GetRelativePath($project->GetID());
+            if (@$xsltprocessor->importStyleSheet($domDoc) === false)
+            {
+                //we don't allow to save an invalid XSL
+                $this->messages->add('The XSL document (or its inclusions) has errors. Changes have not been saved', MSG_TYPE_ERROR);
+                if (isset($GLOBALS['InBatchProcess']))
+                {
+                    if ($node and $node->getDescription())
+                        Logger::error('Invalid XSL for node: ' . $node->getDescription());
+                    else
+                        Logger::error('Invalid XSL to set content operation');
+                }
+                $error = \Ximdex\Error::error_message('XSLTProcessor::importStylesheet(): ');
+                if ($error)
+                    $this->messages->add($error, MSG_TYPE_WARNING);
+                return false;
+            }
+        }
+        
         $content = $this->sanitizeContent($content);
         if ($content === false)
             return false;
