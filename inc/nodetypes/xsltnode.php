@@ -303,6 +303,7 @@ class xsltnode extends FileNode
                             $this->messages->add('Can\'t save the project docxap XML content', MSG_TYPE_ERROR);
                             return false;
                         }
+                        $docxapContent = str_replace('/><', "/>\n\t<", $docxapContent);
                         
                         //save the content
                         if ($docxapNode->SetContent($docxapContent) === false)
@@ -325,6 +326,7 @@ class xsltnode extends FileNode
             $includeNode = new Node($includeId);
             $includeContent = $includeNode->getContent();
 
+            //TODO ajlucena: this is not the better way to do it
             if (preg_match("/include\shref=\"$templateName\"/i", $includeContent, $matches) == 0) {
 
                 Logger::info("Adding include at end");
@@ -461,13 +463,19 @@ class xsltnode extends FileNode
             return false;
         }
         
-        //validating of the correct XSL document in the correct system path (only if node is coming)
+        //validating of the correct XSL document in the correct system path (only if node is given)
         if ($node)
         {
             $xsltprocessor = new XSLTProcessor();
+            //replace the includes templates for its implicit reference templates
+            $res = self::include_unique_templates($content, $node);
+            if ($res === false)
+                return false;
+            $dom = new DOMDocument();
+            $dom->loadXML($res);
             $project = new Node($node->GetProject());
-            $domDoc->documentURI = App::getValue('AppRoot') . App::getValue('NodeRoot') . $node->GetRelativePath($project->GetID());
-            if (@$xsltprocessor->importStyleSheet($domDoc) === false)
+            $dom->documentURI = App::getValue('AppRoot') . App::getValue('NodeRoot') . $node->GetRelativePath($project->GetID());
+            if (@$xsltprocessor->importStyleSheet($dom) === false)
             {
                 //we don't allow to save an invalid XSL
                 $this->messages->add('The XSL document (or its inclusions) has errors. Changes have not been saved', MSG_TYPE_ERROR);
@@ -484,6 +492,7 @@ class xsltnode extends FileNode
                 return false;
             }
         }
+        $content = $domDoc->saveXML();
         
         $content = $this->sanitizeContent($content);
         if ($content === false)
@@ -624,5 +633,138 @@ class xsltnode extends FileNode
 		
 		//return the ID for the new project docxap template node
 		return $idDocxapProject;
+    }
+    
+    /**
+     * Includes the content of all documents referenced by xsl:include tags
+     * For each one, it change the relative location of the templates references to the URL of the project corresponding node
+     * The purpose is remove duplicated templates and maintain only the one referenced by the node given
+     * @param string $content
+     * @param Node $node
+     * @return string|boolean|mixed
+     */
+    public static function include_unique_templates($content, Node $node)
+    {
+        if ($node->GetNodeName() != 'docxap.xsl')
+            return $content;
+            
+        //Load de XML document from the XSL content given
+        $dom = new DOMDocument();
+        $dom->loadXML($content);
+        
+        //load the root node
+        $xPath = new \DomXPath($dom);
+        $docxapRoot = $xPath->query('//xsl:stylesheet');
+        if (!$docxapRoot->length)
+        {
+            $error = 'Can\'t find the xsl:stylesheet element in the docxap XML content';
+            if (isset($GLOBALS['InBatchProcess']))
+                Logger::error($error . ' for node: ' . $node->getDescription());
+            else
+                $this->messages->add($error, MSG_TYPE_ERROR);
+            return false;
+        }
+        
+        //load de templates inclusions
+        $includes = $xPath->query('//xsl:stylesheet/xsl:include');
+        if (!$includes->length)
+        {
+            //there isn't templates includes
+            return $content;
+        }
+        
+        //the templates to include will be storage in an array
+        $templates = array();
+        
+        //an array will storage the unique templates of the current node (last level), if there is any other with the same name, it will be avoied
+        $nodeTemplates = array();
+        
+        //obtain the relative path of the node to the project
+        $nodePath = FsUtils::get_url_path(App::getValue('UrlRoot') . App::getValue('NodeRoot') . $node->GetRelativePath($node->GetProject()));
+        
+        $xslDom = new \DOMDocument();
+        for ($i = 0; $i < $includes->length; $i++)
+        {
+            //obtain the URL to the templates includes and check the file name
+            $includeURL = $includes->item($i)->getAttribute('href');
+            $res = FsUtils::get_url_file($includeURL);
+            if (!$res)
+            {
+                $error = 'The templates include file has not file in : ' . $includeURL;
+                if (isset($GLOBALS['InBatchProcess']))
+                    Logger::error($error . ' for node: ' . $node->getDescription());
+                else
+                    $this->messages->add($error, MSG_TYPE_ERROR);
+                return false;
+            }
+            if ($res != 'templates_include.xsl')
+                continue;
+                
+                //load the template related to the URL obtained
+                if (!$xslDom->load($includeURL))
+                {
+                    $error = 'Can\'t load the templates include: ' . $includeURL;
+                    if (isset($GLOBALS['InBatchProcess']))
+                        Logger::error($error . ' for node: ' . $node->getDescription());
+                    else
+                        $this->messages->add($error, MSG_TYPE_ERROR);
+                    return false;
+                }
+                
+                //check if the templates include is the direct referenced by the node processed
+                if ($nodePath == FsUtils::get_url_path($includeURL))
+                    $mainNode = true;
+                else
+                    $mainNode = false;
+                    
+                $templatesIncludes = $xslDom->getElementsByTagName('include');
+                foreach ($templatesIncludes as $templateInclude)
+                {
+                    //if it is the main node, save the template name, otherwise if the template exists it will not been saved
+                    if ($mainNode)
+                    {
+                        $nodeTemplates[$templateInclude->getAttribute('href')] = true;
+                    }
+                    elseif (isset($nodeTemplates[$templateInclude->getAttribute('href')]))
+                    {
+                        continue;
+                    }
+                    
+                    //create a new xsl:include tag for each template inclusion
+                    $domElement = $dom->createElement('xsl:include');
+                    $domAttribute = $dom->createAttribute('href');
+                    $project = new Node($node->GetProject());
+                    $domAttribute->value = FsUtils::get_url_path($includeURL) . $templateInclude->getAttribute('href');
+                    $domElement->appendChild($domAttribute);
+                    
+                    //save the element in the templates array
+                    $templates[$templateInclude->getAttribute('href')] = $domElement;
+                }
+                //remove the current includes tag
+                $docxapRoot->item(0)->removeChild($includes->item($i));
+        }
+        
+        //insert the loaded templates in the xsl document
+        $templatesElement = $xPath->query('//xsl:stylesheet/xsl:template');
+        if (!$templatesElement->length)
+        {
+            //there isn't template tag
+            $error = 'Can\'t find the xsl:template element in the docxap XML content';
+            if (isset($GLOBALS['InBatchProcess']))
+                Logger::error($error . ' for node: ' . $node->getDescription());
+            else
+                $this->messages->add($error, MSG_TYPE_ERROR);
+            return false;
+        }
+        foreach ($templates as $template)
+        {
+            //insert the new include tag before the includes tag that will be replaced
+            $docxapRoot->item(0)->insertBefore($template, $templatesElement->item(0));
+        }
+        
+        //insert a break line between the templates inclusions
+        $content = $dom->saveXML();
+        $content = str_replace('/><', "/>\n\t<", $content);
+        return $content;
     }
 }

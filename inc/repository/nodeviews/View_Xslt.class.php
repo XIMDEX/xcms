@@ -25,16 +25,16 @@
  */
 
 
+use Ximdex\Logger;
 use Ximdex\Models\Channel;
 use Ximdex\Models\Node;
 use Ximdex\Models\Version;
 use Ximdex\Runtime\App;
-use Ximdex\Logger as XMD_Log;
 
 ModulesManager::file('/xslt/functions.php', 'dexT');
 ModulesManager::file('/inc/repository/nodeviews/Abstract_View.class.php');
 ModulesManager::file('/inc/repository/nodeviews/Interface_View.class.php');
-
+ModulesManager::file('/inc/nodetypes/xsltnode.php');
 
 class View_Xslt extends Abstract_View
 {
@@ -79,17 +79,17 @@ class View_Xslt extends Abstract_View
                 $xmlHeader = App::getValue('EncodingTag');
                 $content = str_replace($xmlHeader, $xmlHeader . $inclusionHeader, $content);
 
-                XMD_Log::info('Render in client, return XML content + path to template');
+                Logger::info('Render in client, return XML content + path to template');
                 return $content;
             }
 
             /*			if (is_object($this->_node)) {
 
-                            XMD_Log::info("obteniendo propiedad otf para id ".$this->_node->get('IdNode'));
+                            Logger::info("obteniendo propiedad otf para id ".$this->_node->get('IdNode'));
                             $isOTF = $this->_node->getSimpleBooleanProperty('otf');
 
                             if ($isOTF) {
-                                XMD_Log::info('Render in server, return XML content');
+                                Logger::info('Render in server, return XML content');
                                 return $content;
                             }
                         }
@@ -98,8 +98,9 @@ class View_Xslt extends Abstract_View
 
         // XSLT Transformation
 
-        XMD_Log::info('Starting xslt transformation');
-        if (!file_exists($docxap)) {
+        Logger::info('Starting xslt transformation');
+        if (!file_exists($docxap))
+        {
             $project = new Node($this->_idProject);
             $nodeProjectPath = $project->class->GetNodePath();
 
@@ -109,11 +110,44 @@ class View_Xslt extends Abstract_View
             {
                 $error = "File $docxap does not exists in project templates folder";
                 if (isset($GLOBALS['InBatchProcess']) and $GLOBALS['InBatchProcess'])
-                    XMD_Log::error($error);
+                    Logger::error($error);
                 else
                     $GLOBALS['errorInXslTransformation'] = $error;
                 return false;
             }
+            
+            //load de docxap NodeId corresponding to the project docxap.xsl file
+            $docxapPath = $project->GetPath() . '/' . $ptdFolder;
+            $idDocxapNode = $project->GetByNameAndPath('docxap.xsl', $docxapPath);
+        }
+        else
+        {
+            //load de docxap NodeId corresponding to the content of the section docxap.xsl file
+            $docxapPath = $section->GetPath() . '/' . $ptdFolder;
+            $idDocxapNode = $section->GetByNameAndPath('docxap.xsl', $docxapPath);
+        }
+        //check if the docxap NodeId is ok
+        if (!$idDocxapNode)
+        {
+            $error = "Can't load the NodeID for the docxap file: $docxap";
+            if (isset($GLOBALS['InBatchProcess']) and $GLOBALS['InBatchProcess'])
+                Logger::error($error);
+            else
+                $GLOBALS['errorInXslTransformation'] = $error;
+            return false;
+        }
+        
+        //load the docxap node
+        $idDocxapNode = $idDocxapNode[0]['IdNode'];
+        $docxapNode = new Node($idDocxapNode);
+        if (!$docxapNode)
+        {
+            $error = "Can't load the node for the docxap file: $docxap";
+            if (isset($GLOBALS['InBatchProcess']) and $GLOBALS['InBatchProcess'])
+                Logger::error($error);
+            else
+                $GLOBALS['errorInXslTransformation'] = $error;
+            return false;
         }
 
         $xsltHandler = new \Ximdex\XML\XSLT();
@@ -123,12 +157,31 @@ class View_Xslt extends Abstract_View
             if ($error)
                 $error = str_replace('DOMDocument::load(): ', '', $error);
             if (isset($GLOBALS['InBatchProcess']) and $GLOBALS['InBatchProcess'])
-                XMD_Log::error('The XML document has syntax errors in file: ' . $pointer . '(' . $error . ')');
+                Logger::error('The XML document has syntax errors in file: ' . $pointer . '(' . $error . ')');
             else
                 $GLOBALS['errorInXslTransformation'] = 'The XML document has syntax errors: (' . $error . ')';
             return false;
         }
-        if ($xsltHandler->setXSL($docxap) === false)
+        
+        //include and remove the duplicate templates in the docxap content
+        $domDoc = new DOMDocument();
+        if (@$domDoc->load($docxap) === false)
+        {
+            $error = \Ximdex\Error::error_message();
+            if ($error)
+                $error = str_replace('DOMDocument::load(): ', '', $error);
+            if (isset($GLOBALS['InBatchProcess']) and $GLOBALS['InBatchProcess'])
+                Logger::error('The XSL document has syntax errors in file: ' . $docxap . '(' . $error . ')');
+            else
+                $GLOBALS['errorInXslTransformation'] = 'The XSL document has syntax errors in file: ' . $docxap . ' (' . $error . ')';
+            return false;
+        }
+        $docxapContent = $domDoc->saveXML();
+        $res = xsltnode::include_unique_templates($docxapContent, $docxapNode);
+        if ($res === false)
+            return false;
+        
+        if ($xsltHandler->setXSL(null, $res) === false)
             return false;
         $params = array('xmlcontent' => $content);
         foreach ($params as $param => $value) {
@@ -144,7 +197,7 @@ class View_Xslt extends Abstract_View
             $error = 'Error in XSLT process for ' . $docxap . ' (' . $error . ')';
             if (isset($GLOBALS['InBatchProcess']) and $GLOBALS['InBatchProcess'])
             {
-                XMD_Log::error($error);
+                Logger::error($error);
                 return NULL;
             }
             $GLOBALS['errorInXslTransformation'] = $error;
@@ -154,20 +207,19 @@ class View_Xslt extends Abstract_View
         // Tags counter
 
         $counter = 1;
-
-        $domDoc = new DOMDocument();
+        
         $domDoc->validateOnParse = true;
 
         if ($channel->get("OutputType") == "xml") {
             if (!@$domDoc->loadXML($content)) {
-                XMD_log::error($content);
-                XMD_log::error('XML invalid');
+                Logger::error($content);
+                Logger::error('XML invalid');
                 $GLOBALS['errorInXslTransformation'] = 'Invalid XML source';
                 return false;
             }
         } else if ($channel->get("OutputType") == "web") {
             if (!@$domDoc->loadHTML($content)) {
-                XMD_log::error('HTML invalid');
+                Logger::error('HTML invalid');
                 $GLOBALS['errorInXslTransformation'] = 'Invalid HTML or XHTML source';
                 return false;
             }
@@ -198,17 +250,17 @@ class View_Xslt extends Abstract_View
         if (!is_null($idVersion)) {
             $version = new Version($idVersion);
             if (!($version->get('IdVersion') > 0)) {
-                XMD_Log::error('VIEW XSLT: Incorrect version has been loaded (' . $idVersion . ')');
+                Logger::error('VIEW XSLT: Incorrect version has been loaded (' . $idVersion . ')');
                 return NULL;
             }
 
             $this->_node = new Node($version->get('IdNode'));
             if (!($this->_node->get('IdNode') > 0)) {
-                XMD_Log::error('VIEW XSLT: The node that it\'s trying to convert doesn\'t exists: ' . $version->get('IdNode'));
+                Logger::error('VIEW XSLT: The node that it\'s trying to convert doesn\'t exists: ' . $version->get('IdNode'));
                 return NULL;
             }
         } else {
-            XMD_Log::info("VIEW XSLT: xslt view is instantiate without 'idVersion'");
+            Logger::info("VIEW XSLT: xslt view is instantiate without 'idVersion'");
         }
 
         return true;
@@ -223,7 +275,7 @@ class View_Xslt extends Abstract_View
 
         // Check Params:
         if (!isset($this->_idChannel) || !($this->_idChannel > 0)) {
-            XMD_Log::error('VIEW XSLT: Node ' . $args['NODENAME'] . ' has not an associated channel');
+            Logger::error('VIEW XSLT: Node ' . $args['NODENAME'] . ' has not an associated channel');
             return NULL;
         }
 
@@ -242,7 +294,7 @@ class View_Xslt extends Abstract_View
 
             // Check Params:
             if (!isset($this->_idSection) || !($this->_idSection > 0)) {
-                XMD_Log::error('VIEW XSLT: There is not associated section for the node ' . $args['NODENAME']);
+                Logger::error('VIEW XSLT: There is not associated section for the node ' . $args['NODENAME']);
                 return NULL;
             }
         }
@@ -262,7 +314,7 @@ class View_Xslt extends Abstract_View
 
             // Check Params:
             if (!isset($this->_idProject) || !($this->_idProject > 0)) {
-                XMD_Log::error('VIEW XSLT: There is not associated project for the node ' . $args['NODENAME']);
+                Logger::error('VIEW XSLT: There is not associated project for the node ' . $args['NODENAME']);
                 return NULL;
             }
         }

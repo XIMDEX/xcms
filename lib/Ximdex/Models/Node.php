@@ -597,7 +597,7 @@ class Node extends NodesOrm
         }
 
         if (empty($path)) {
-            $name = $this->get("Path");
+            $path = $this->get("Path");
         }
 
         $result = array();
