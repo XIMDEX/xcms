@@ -468,7 +468,7 @@ class xsltnode extends FileNode
         {
             $xsltprocessor = new XSLTProcessor();
             //replace the includes templates for its implicit reference templates
-            $res = self::include_unique_templates($content, $node);
+            $res = $this->include_unique_templates($content, $node);
             if ($res === false)
                 return false;
             $dom = new DOMDocument();
@@ -643,7 +643,7 @@ class xsltnode extends FileNode
      * @param Node $node
      * @return string|boolean|mixed
      */
-    public static function include_unique_templates($content, Node $node)
+    public function include_unique_templates($content, Node $node)
     {
         if ($node->GetNodeName() != 'docxap.xsl')
             return $content;
@@ -700,48 +700,48 @@ class xsltnode extends FileNode
             if ($res != 'templates_include.xsl')
                 continue;
                 
-                //load the template related to the URL obtained
-                if (!$xslDom->load($includeURL))
+            //load the template related to the URL obtained
+            if (!@$xslDom->load($includeURL))
+            {
+                $error = 'Can\'t load the templates include: ' . $includeURL;
+                if (isset($GLOBALS['InBatchProcess']))
+                    Logger::error($error . ' for node: ' . $node->getDescription());
+                else
+                    $this->messages->add($error, MSG_TYPE_ERROR);
+                return false;
+            }
+            
+            //check if the templates include is the direct referenced by the node processed
+            if ($nodePath == FsUtils::get_url_path($includeURL))
+                $mainNode = true;
+            else
+                $mainNode = false;
+                
+            $templatesIncludes = $xslDom->getElementsByTagName('include');
+            foreach ($templatesIncludes as $templateInclude)
+            {
+                //if it is the main node, save the template name, otherwise if the template exists it will not been saved
+                if ($mainNode)
                 {
-                    $error = 'Can\'t load the templates include: ' . $includeURL;
-                    if (isset($GLOBALS['InBatchProcess']))
-                        Logger::error($error . ' for node: ' . $node->getDescription());
-                    else
-                        $this->messages->add($error, MSG_TYPE_ERROR);
-                    return false;
+                    $nodeTemplates[$templateInclude->getAttribute('href')] = true;
+                }
+                elseif (isset($nodeTemplates[$templateInclude->getAttribute('href')]))
+                {
+                    continue;
                 }
                 
-                //check if the templates include is the direct referenced by the node processed
-                if ($nodePath == FsUtils::get_url_path($includeURL))
-                    $mainNode = true;
-                else
-                    $mainNode = false;
-                    
-                $templatesIncludes = $xslDom->getElementsByTagName('include');
-                foreach ($templatesIncludes as $templateInclude)
-                {
-                    //if it is the main node, save the template name, otherwise if the template exists it will not been saved
-                    if ($mainNode)
-                    {
-                        $nodeTemplates[$templateInclude->getAttribute('href')] = true;
-                    }
-                    elseif (isset($nodeTemplates[$templateInclude->getAttribute('href')]))
-                    {
-                        continue;
-                    }
-                    
-                    //create a new xsl:include tag for each template inclusion
-                    $domElement = $dom->createElement('xsl:include');
-                    $domAttribute = $dom->createAttribute('href');
-                    $project = new Node($node->GetProject());
-                    $domAttribute->value = FsUtils::get_url_path($includeURL) . $templateInclude->getAttribute('href');
-                    $domElement->appendChild($domAttribute);
-                    
-                    //save the element in the templates array
-                    $templates[$templateInclude->getAttribute('href')] = $domElement;
-                }
-                //remove the current includes tag
-                $docxapRoot->item(0)->removeChild($includes->item($i));
+                //create a new xsl:include tag for each template inclusion
+                $domElement = $dom->createElement('xsl:include');
+                $domAttribute = $dom->createAttribute('href');
+                $project = new Node($node->GetProject());
+                $domAttribute->value = FsUtils::get_url_path($includeURL) . $templateInclude->getAttribute('href');
+                $domElement->appendChild($domAttribute);
+                
+                //save the element in the templates array
+                $templates[$templateInclude->getAttribute('href')] = $domElement;
+            }
+            //remove the current includes tag
+            $docxapRoot->item(0)->removeChild($includes->item($i));
         }
         
         //insert the loaded templates in the xsl document

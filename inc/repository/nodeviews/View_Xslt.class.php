@@ -109,7 +109,7 @@ class View_Xslt extends Abstract_View
             if (!file_exists($docxap))
             {
                 $error = "File $docxap does not exists in project templates folder";
-                if (isset($GLOBALS['InBatchProcess']) and $GLOBALS['InBatchProcess'])
+                if (isset($GLOBALS['InBatchProcess']))
                     Logger::error($error);
                 else
                     $GLOBALS['errorInXslTransformation'] = $error;
@@ -130,7 +130,7 @@ class View_Xslt extends Abstract_View
         if (!$idDocxapNode)
         {
             $error = "Can't load the NodeID for the docxap file: $docxap";
-            if (isset($GLOBALS['InBatchProcess']) and $GLOBALS['InBatchProcess'])
+            if (isset($GLOBALS['InBatchProcess']))
                 Logger::error($error);
             else
                 $GLOBALS['errorInXslTransformation'] = $error;
@@ -143,7 +143,7 @@ class View_Xslt extends Abstract_View
         if (!$docxapNode)
         {
             $error = "Can't load the node for the docxap file: $docxap";
-            if (isset($GLOBALS['InBatchProcess']) and $GLOBALS['InBatchProcess'])
+            if (isset($GLOBALS['InBatchProcess']))
                 Logger::error($error);
             else
                 $GLOBALS['errorInXslTransformation'] = $error;
@@ -156,7 +156,7 @@ class View_Xslt extends Abstract_View
             $error = \Ximdex\Error::error_message();
             if ($error)
                 $error = str_replace('DOMDocument::load(): ', '', $error);
-            if (isset($GLOBALS['InBatchProcess']) and $GLOBALS['InBatchProcess'])
+            if (isset($GLOBALS['InBatchProcess']))
                 Logger::error('The XML document has syntax errors in file: ' . $pointer . '(' . $error . ')');
             else
                 $GLOBALS['errorInXslTransformation'] = 'The XML document has syntax errors: (' . $error . ')';
@@ -170,16 +170,21 @@ class View_Xslt extends Abstract_View
             $error = \Ximdex\Error::error_message();
             if ($error)
                 $error = str_replace('DOMDocument::load(): ', '', $error);
-            if (isset($GLOBALS['InBatchProcess']) and $GLOBALS['InBatchProcess'])
+            if (isset($GLOBALS['InBatchProcess']))
                 Logger::error('The XSL document has syntax errors in file: ' . $docxap . '(' . $error . ')');
             else
                 $GLOBALS['errorInXslTransformation'] = 'The XSL document has syntax errors in file: ' . $docxap . ' (' . $error . ')';
             return false;
         }
         $docxapContent = $domDoc->saveXML();
-        $res = xsltnode::include_unique_templates($docxapContent, $docxapNode);
+        $xsltNode = new xsltnode();
+        $res = $xsltNode->include_unique_templates($docxapContent, $docxapNode);
         if ($res === false)
+        {
+            if (!isset($GLOBALS['InBatchProcess']) and isset($xsltNode->messages->messages[0]))
+                $GLOBALS['errorInXslTransformation'] = $xsltNode->messages->messages[0];
             return false;
+        }
         
         if ($xsltHandler->setXSL(null, $res) === false)
             return false;
@@ -195,7 +200,7 @@ class View_Xslt extends Abstract_View
             if ($error)
                 $error = str_replace('XSLTProcessor::transformToXml(): ', '', $error);
             $error = 'Error in XSLT process for ' . $docxap . ' (' . $error . ')';
-            if (isset($GLOBALS['InBatchProcess']) and $GLOBALS['InBatchProcess'])
+            if (isset($GLOBALS['InBatchProcess']))
             {
                 Logger::error($error);
                 return NULL;
