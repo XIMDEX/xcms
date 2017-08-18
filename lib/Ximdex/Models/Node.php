@@ -27,11 +27,13 @@
 namespace Ximdex\Models;
 
 
+use DOMDocument;
 use NodeProperty;
 use Ximdex\Event\NodeEvent;
 use Ximdex\Events;
-use Ximdex\Logger as XMD_Log;
+use Ximdex\Logger;
 use Ximdex\Models\ORM\NodesOrm;
+use Ximdex\Parsers\ParsingDependencies;
 use Ximdex\Runtime\App;
 use Ximdex\Runtime\DataFactory;
 use Ximdex\Runtime\Db as DB;
@@ -165,7 +167,7 @@ class Node extends NodesOrm
                 $this->class = \Ximdex\NodeTypes\Factory::getNodeTypeByName($nodeTypeClass, $this, $nodeTypeModule);
 
 
-                //XMD_Log::info(sprintf(_('Fatal error: the nodetype associated to %s does not exist'), $fileToInclude));
+                //Logger::info(sprintf(_('Fatal error: the nodetype associated to %s does not exist'), $fileToInclude));
                 //die(sprintf(_('Fatal error: the nodetype associated to %s does not exist'), $fileToInclude));
                 if (!$fullLoad) {
                     return;
@@ -651,7 +653,7 @@ class Node extends NodesOrm
         $path = $this->_GetPath();
         // $idNode = $this->get('IdNode');
         if (!$path) {
-            XMD_Log::warning("Model::Node::getPath(): Path can not be deduced from NULL idNode.");
+            Logger::warning("Model::Node::getPath(): Path can not be deduced from NULL idNode.");
         }
         return $path;
     }
@@ -901,6 +903,108 @@ class Node extends NodesOrm
     {
         $this->ClearError();
         if ($this->get('IdNode') > 0) {
+            
+            //validate HTML or XML valid contents (including XSL schemas)
+            if ($node)
+            {
+                $res = true;
+                if ($node->getNodeType() == \Ximdex\Services\NodeType::NODE_HT)
+                {
+                    //check the valid HTML in Ximclude contents
+                    $domDoc = new DOMDocument();
+                    $res = @$domDoc->loadXML('<root>' . $content . '</root>');
+                }
+                elseif ($node->getNodeType() == \Ximdex\Services\NodeType::RNG_VISUAL_TEMPLATE)
+                {
+                    //check the XML of the given RNG template content
+                    $domDoc = new DOMDocument();
+                    $res = @$domDoc->loadXML($content);
+                }
+                if ($node->getNodeType() == \Ximdex\Services\NodeType::XSL_TEMPLATE or $node->getNodeType() == \Ximdex\Services\NodeType::XML_DOCUMENT)
+                {
+                    //check the valid XML template and dependencies
+                    $domDoc = new DOMDocument();
+                    if ($node->getNodeType() == \Ximdex\Services\NodeType::XSL_TEMPLATE)
+                        $res = @$domDoc->loadXML($content);
+                    else
+                        $res = @$domDoc->loadXML('<root>' . $content . '</root>');
+                    if ($res)
+                    {
+                        //dotdot dependencies only can be checked in templates under a server node
+                        $templatesNode = new Node($node->GetParent());
+                        if ($templatesNode->GetNodeType() == \Ximdex\Services\NodeType::TEMPLATES_ROOT_FOLDER)
+                        {
+                            $projectNode = new Node($templatesNode->getParent());
+                            if ($projectNode->GetNodeType() == \Ximdex\Services\NodeType::PROJECT)
+                                $idServer = false;
+                        }
+                        if (!isset($idServer))
+                            $idServer = $node->getServer();
+                        if ($idServer)
+                        {
+                            //check the dotdot dependencies
+                            if (ParsingDependencies::getDotDot($content, $idServer) === false)
+                            {
+                                $this->messages->add($GLOBALS['parsingDependenciesError'], MSG_TYPE_WARNING);
+                                if (isset($GLOBALS['InBatchProcess']))
+                                    Logger::error($GLOBALS['parsingDependenciesError'] . ' for IdNode: ' . $node->GetID() . ' (' . $node->getDescription() . ')');
+                                return false;
+                            }
+                        }
+                        //check the pathto dependencies
+                        if (ParsingDependencies::getPathTo($content, $node->GetID(), true) === false)
+                        {
+                            $this->messages->add('Dependencies error. Changes have not been saved', MSG_TYPE_ERROR);
+                            $this->messages->add($GLOBALS['parsingDependenciesError'], MSG_TYPE_WARNING);
+                            if (isset($GLOBALS['InBatchProcess']))
+                                Logger::error($GLOBALS['parsingDependenciesError'] . ' for IdNode: ' . $node->GetID() . ' (' . $node->getDescription() . ')');
+                            return false;
+                        }
+                    }
+                }
+                if ($res === false)
+                {
+                    //we don't allow to save an invalid XML
+                    $this->messages->add('The XML document is not valid. Changes have not been saved', MSG_TYPE_ERROR);
+                    if (isset($GLOBALS['InBatchProcess']))
+                        Logger::error('Invalid XML for IdNode: ' . $node->GetID() . ' (' . $node->getDescription() . ')');
+                    $error = \Ximdex\Error::error_message('DOMDocument::loadXML(): ');
+                    if ($error)
+                    {
+                        $this->messages->add($error, MSG_TYPE_WARNING);
+                        if (isset($GLOBALS['InBatchProcess']))
+                            Logger::error($error);
+                    }
+                    return false;
+                }
+                if ($node->getNodeType() == \Ximdex\Services\NodeType::RNG_VISUAL_TEMPLATE)
+                {
+                    //validation of the RNG schema for the RNG template
+                    $schema = FsUtils::file_get_contents(App::getValue( 'AppRoot') . '/actions/xmleditor2/views/common/schema/relaxng-1.0.rng.xml');
+                    $rngValidator = new \Ximdex\XML\Validators\RNG();
+                    $res = $rngValidator->validate($schema, $content);
+                    if ($res === false)
+                    {
+                        $errors = $rngValidator->getErrors();
+                        if (!$errors and \Ximdex\Error::error_message())
+                            $error = \Ximdex\Error::error_message('DOMDocument::relaxNGValidateSource(): ');
+                        else
+                        {
+                            //only will be shown the first error (more easy to read)
+                            $error = $errors[0];
+                        }
+                        $this->messages->add($error, MSG_TYPE_WARNING);
+                        $this->messages->add('The RNG template haven\'t been saved', MSG_TYPE_ERROR);
+                        if (isset($GLOBALS['InBatchProcess']))
+                        {
+                            Logger::error('Invalid RNG template for IdNode: ' . $node->GetID() . ' (' . $node->getDescription() . ')');
+                            Logger::error($error);
+                        }
+                        return false;
+                    }
+                }
+            }
+            
             if ($this->class->SetContent($content, $commitNode, $node) === false)
             {
                 $this->messages->mergeMessages($this->class->messages);
@@ -1254,7 +1358,7 @@ class Node extends NodesOrm
         /// Updating the hierarchy index for this node.
         $this->RenderizeNode();
 
-        XMD_Log::debug("Model::Node::CreateNode: Creating node id(" . $this->nodeID . "), name(" . $name . "), parent(" . $parentID . ").");
+        Logger::debug("Model::Node::CreateNode: Creating node id(" . $this->nodeID . "), name(" . $name . "), parent(" . $parentID . ").");
 
         /// Once created, its content by default is added.
         $dbObj = new Db();
@@ -1270,7 +1374,7 @@ class Node extends NodesOrm
 
         while (!$dbObj->EOF) {
             $childNode = new Node();
-            XMD_Log::debug("Model::Node::CreateNode: Creating child name(" . $this->get('Name') . "), type(" . $this->get('IdNodeType') . ").");
+            Logger::debug("Model::Node::CreateNode: Creating child name(" . $this->get('Name') . "), type(" . $this->get('IdNodeType') . ").");
             $childNode->CreateNode($dbObj->GetValue('Name'), $this->get('IdNode'), $dbObj->GetValue('NodeType'), $dbObj->GetVAlue('State'));
             $dbObj->Next();
         }
@@ -1364,7 +1468,7 @@ class Node extends NodesOrm
         $rtn = new RelTagsNodes();
         $rtn->deleteTags($this->nodeID);
 
-        XMD_Log::info("Node " . $this->nodeID . " deleted.");
+        Logger::info("Node " . $this->nodeID . " deleted.");
         $this->nodeID = null;
         $this->class = null;
 
@@ -2043,14 +2147,14 @@ class Node extends NodesOrm
 
             if ($dbObj->numErr) {
                 $this->messages->add(_('Alias could not be updated, incorrect operation'), MSG_TYPE_ERROR);
-                XMD_Log::error(sprintf(_("Error in query %s or %s"), $query, $sql));
+                Logger::error(sprintf(_("Error in query %s or %s"), $query, $sql));
                 return false;
             }
             return true;
         }
 
         $this->messages->add(_('The node you want to operate with does not exist'), MSG_TYPE_WARNING);
-        XMD_Log::warning(_("Error: unexisting node") . "{$this->IdNode}");
+        Logger::warning(_("Error: unexisting node") . "{$this->IdNode}");
         return false;
     }
 
@@ -2072,13 +2176,13 @@ class Node extends NodesOrm
             $dbObj->Execute($sql);
             if ($dbObj->numErr) {
                 $this->messages->add(_('Alias could not be deleted, incorrect operation'), MSG_TYPE_ERROR);
-                XMD_Log::error(sprintf(_("Error in query %s"), $sql));
+                Logger::error(sprintf(_("Error in query %s"), $sql));
                 return false;
             }
             return true;
         }
         $this->messages->add(_('The node you want to operate with does not exist'), MSG_TYPE_WARNING);
-        XMD_Log::warning(_("Error: unexisting node") . "{$this->IdNode}");
+        Logger::warning(_("Error: unexisting node") . "{$this->IdNode}");
         return false;
     }
 
@@ -2158,11 +2262,11 @@ class Node extends NodesOrm
     function getServer()
     {
 
-        $result = $this->_getParentByType(5014);
+        $result = $this->_getParentByType(\Ximdex\Services\NodeType::SERVER);
 
         if (!($result > 0)) {
 
-            $result = $this->_getParentByType(5083);
+            $result = $this->_getParentByType(\Ximdex\Services\NodeType::METADATA_SECTION);
         }
 
         return $result;
@@ -2174,11 +2278,11 @@ class Node extends NodesOrm
     function getProject()
     {
 
-        $result = $this->_getParentByType(5013);
+        $result = $this->_getParentByType(\Ximdex\Services\NodeType::PROJECT);
 
         if (!($result > 0)) {
 
-            $result = $this->_getParentByType(5083);
+            $result = $this->_getParentByType(\Ximdex\Services\NodeType::METADATA_SECTION);
         }
         if (!($result > 0)) {
 
@@ -2195,7 +2299,7 @@ class Node extends NodesOrm
     function _getParentByType($type = NULL)
     {
         if (is_null($type)) {
-            XMD_Log::fatal(_('It is being tried to call a function without param'));
+            Logger::fatal(_('It is being tried to call a function without param'));
             return false;
         }
 
@@ -2212,7 +2316,7 @@ class Node extends NodesOrm
             return $db->getValue('IdNode');
         }
 
-        XMD_Log::error(sprintf(_("The nodetype %s could not be obtained for node "), $type) . $this->get('IdNode'));
+        Logger::error(sprintf(_("The nodetype %s could not be obtained for node "), $type) . $this->get('IdNode'));
         return NULL;
     }
 
@@ -2664,7 +2768,7 @@ class Node extends NodesOrm
         global $STOP_COUNT;
         //TODO check if current user has permits to read this node, and if he does not, returns an empty string.
         if (!($this->get('IdNode') > 0)) {
-            XMD_Log::warning(sprintf(_("It is being tried to load the unexistent node %s"), $this->get('IdNode')));
+            Logger::warning(sprintf(_("It is being tried to load the unexistent node %s"), $this->get('IdNode')));
             return false;
         }
 
@@ -2739,7 +2843,7 @@ class Node extends NodesOrm
                 while (list(, $idChildrenNode) = each($childrens)) {
                     $children = new Node($idChildrenNode);
                     if (!($children->get('IdNode') > 0)) {
-                        XMD_Log::warning(sprintf(_("It is being tried to load the node %s from the unexistent node %s"), $children->get('IdNode'), $this->get('IdNode')));
+                        Logger::warning(sprintf(_("It is being tried to load the node %s from the unexistent node %s"), $children->get('IdNode'), $this->get('IdNode')));
                         continue;
                     }
 
@@ -2748,7 +2852,7 @@ class Node extends NodesOrm
                         $idTemplate = $structuredDocument->GetDocumentType();
                         $node = new Node($idTemplate);
                         if (!($node->get('IdNode') > 0)) {
-                            XMD_Log::warning(sprintf(_("It is being tried to load the node %s from the unexistent node %s"), $node->get('IdNode'), $this->get('IdNode')));
+                            Logger::warning(sprintf(_("It is being tried to load the node %s from the unexistent node %s"), $node->get('IdNode'), $this->get('IdNode')));
                             continue;
                         }
                         if ($STOP_COUNT == COUNT) {
@@ -2821,7 +2925,7 @@ class Node extends NodesOrm
                 while (list(, $idChildren) = each($childrens)) {
                     $childrenNode = new Node($idChildren);
                     if (!($childrenNode->get('IdNode') > 0)) {
-                        XMD_Log::warning(sprintf(_("It is being tried to load the node %s from the unexistent node %s"), $childrenNode->get('IdNode'), $this->get('IdNode')));
+                        Logger::warning(sprintf(_("It is being tried to load the node %s from the unexistent node %s"), $childrenNode->get('IdNode'), $this->get('IdNode')));
                         continue;
                     }
                     $xmlBody .= $childrenNode->toXml($depth, $files, $recurrence);
@@ -2885,34 +2989,34 @@ class Node extends NodesOrm
     {
         if (is_null($parent)) {
             if (is_null($this->get('IdParent'))) {
-                XMD_Log::info(_('Error checking if the node is allowed - parent does not exist [1]'));
+                Logger::info(_('Error checking if the node is allowed - parent does not exist [1]'));
                 return false;
             }
             $parent = $this->get('IdParent');
         }
         $parentNode = new Node($parent);
         if (!($parentNode->GetID() > 0)) {
-            XMD_Log::info(_('Error checking if the node is allowed - parent does not exist [2]'));
+            Logger::info(_('Error checking if the node is allowed - parent does not exist [2]'));
             $this->messages->add(_('The specified parent node does not exist'), MSG_TYPE_ERROR);
             return false;
         }
 
         $nodeAllowedContents = $parentNode->GetCurrentAllowedChildren();
         if (!(count($nodeAllowedContents) > 0)) {
-            XMD_Log::info(sprintf(_("The parent %s does not allow any nested node from him"), $parent));
+            Logger::info(sprintf(_("The parent %s does not allow any nested node from him"), $parent));
             $this->messages->add(_('This node type is not allowed in this position'), MSG_TYPE_ERROR);
             return false;
         }
 
         $nodeType = new NodeType($idNodeType);
         if (!($nodeType->GetID() > 0)) {
-            XMD_Log::info(sprintf(_("The introduced nodetype %s does not exist"), $idNodeType));
+            Logger::info(sprintf(_("The introduced nodetype %s does not exist"), $idNodeType));
             $this->messages->add(_('The specified nodetype does not exist'), MSG_TYPE_ERROR);
             return false;
         }
 
         if (!in_array($idNodeType, $nodeAllowedContents)) {
-            XMD_Log::info("The nodetype $idNodeType is not allowed in the parent (idnode =" . $parent . ") - (idnodetype =" . $parentNode->get('IdNodeType') . ") which allowed nodetypes are" . print_r($nodeAllowedContents, true));
+            Logger::info("The nodetype $idNodeType is not allowed in the parent (idnode =" . $parent . ") - (idnodetype =" . $parentNode->get('IdNodeType') . ") which allowed nodetypes are" . print_r($nodeAllowedContents, true));
             $this->messages->add(_('This node type is not allowed in this position'), MSG_TYPE_ERROR);
             return false;
         }
@@ -3007,7 +3111,7 @@ class Node extends NodesOrm
             return $nodeProperty->getProperty($this->get('IdNode'), $property);
         }
 
-        XMD_Log::warning(sprintf(_("Property %s not found for node %d"), $property, $this->get('IdNode')));
+        Logger::warning(sprintf(_("Property %s not found for node %d"), $property, $this->get('IdNode')));
 
         return NULL;
     }
@@ -3298,19 +3402,19 @@ class Node extends NodesOrm
         $idProject = $this->GetProject();
 
         if (!($idProject > 0)) {
-            XMD_Log::debug(_('It was not possible to obtain the node project folder'));
+            Logger::debug(_('It was not possible to obtain the node project folder'));
             return NULL;
         }
 
         $project = new Node($idProject);
         if (!($project->get('IdNode') > 0)) {
-            XMD_Log::debug('An unexistent project has be obtained');
+            Logger::debug('An unexistent project has be obtained');
             return NULL;
         }
 
         $folder = new Node($project->GetChildByName(App::getValue("SchemasDirName")));
         if (!($folder->get('IdNode') > 0)) {
-            XMD_Log::debug('Pvd folder could not be obtained');
+            Logger::debug('Pvd folder could not be obtained');
             return NULL;
         }
 
@@ -3339,7 +3443,7 @@ class Node extends NodesOrm
         }
 
         if (!is_array($schemas)) {
-            XMD_Log::debug(sprintf('The specified folder (%s) is not containing schemas', $folder->get('IdNode')));
+            Logger::debug(sprintf('The specified folder (%s) is not containing schemas', $folder->get('IdNode')));
             return NULL;
         }
 

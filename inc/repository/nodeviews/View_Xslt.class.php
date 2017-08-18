@@ -177,7 +177,7 @@ class View_Xslt extends Abstract_View
             return false;
         }
         $docxapContent = $domDoc->saveXML();
-        $xsltNode = new xsltnode();
+        $xsltNode = new xsltnode($docxapNode);
         $res = $xsltNode->include_unique_templates($docxapContent, $docxapNode);
         if ($res === false)
         {

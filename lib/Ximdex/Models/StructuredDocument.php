@@ -240,13 +240,13 @@ class StructuredDocument extends StructuredDocumentsOrm
 			$targetContent = $target->GetContent();
 			$targetLang = $target->GetLanguage();
 			
-			//usage of preg_replace_callback instead of preg_replace (generates a warning error when using /e in regular expression)
-			$targetContent = preg_replace_callback('/ a_enlaceid([A-Za-z0-9|\_]+)\s*=\s*\"([^\"]+)\"/ei', "' a_enlaceid\\1=\"'.\$this->UpdateLinkParseLink($targetLang , '\\2').'\"'", $targetContent);
+			//TODO ajlucena: usage of preg_replace_callback instead of preg_replace (generates a warning error when using /e in regular expression)
+			$targetContent = preg_replace('/ a_enlaceid([A-Za-z0-9|\_]+)\s*=\s*\"([^\"]+)\"/ei', "' a_enlaceid\\1=\"'.\$this->UpdateLinkParseLink($targetLang , '\\2').'\"'", $targetContent);
 			
 			$targetContent = preg_replace('/ a_import_enlaceid([A-Za-z0-9|\_]+)\s*=\s*\"([^\"]+)\"/ei', "' a_import_enlaceid\\1=\"'.\$this->UpdateLinkParseLink($targetLang , '\\2').'\"'", $targetContent);
 			
-			//usage of preg_replace_callback instead of preg_replace (generates a warning error when using /e in regular expression)
-			$targetContent = preg_replace_callback('/<url>\s*([^\<]+)\s*<\/url>/ei', "'<url>'.\$this->UpdateLinkParseLink($targetLang , '\\1').'</url>'", $targetContent);
+			//TODO ajlucena: usage of preg_replace_callback instead of preg_replace (generates a warning error when using /e in regular expression)
+			$targetContent = preg_replace('/<url>\s*([^\<]+)\s*<\/url>/ei', "'<url>'.\$this->UpdateLinkParseLink($targetLang , '\\1').'</url>'", $targetContent);
 			return $targetContent;
 		}
 

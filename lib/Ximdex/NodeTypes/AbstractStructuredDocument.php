@@ -175,8 +175,6 @@ class AbstractStructuredDocument extends FileNode
             {
                 case \Ximdex\Services\NodeType::METADATA_DOCUMENT:
                 case \Ximdex\Services\NodeType::XIMLET:
-                case \Ximdex\Services\NodeType::XML_DOCUMENT:
-                case \Ximdex\Services\NodeType::XSL_TEMPLATE:
                     $domDoc = new \DOMDocument();
                     $res = @$domDoc->loadXML('<root>' . $content . '</root>');
                     break;
@@ -954,5 +952,3 @@ class AbstractStructuredDocument extends FileNode
         return $docxapPropAttrs;
     }
 }
-
-?>

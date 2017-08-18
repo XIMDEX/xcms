@@ -25,11 +25,10 @@
  */
 
 namespace Ximdex\NodeTypes;
-use Ximdex\Runtime\App;
+
 use Ximdex\Runtime\DataFactory;
 use DB;
 use Ximdex\Deps\DepsManager;
-use DOMDocument;
 use ModulesManager;
 use Ximdex\Models\NodeDependencies;
 use Ximdex\Models\State;
@@ -37,7 +36,7 @@ use Ximdex\Models\Version;
 use Ximdex\Models\Node;
 use Ximdex\Parsers\ParsingDependencies;
 use Ximdex\Utils\FsUtils;
-use Ximdex\Logger as XMD_Log;
+use Ximdex\Logger;
 
 include_once(XIMDEX_ROOT_PATH . "/inc/utils.php");
 include_once(XIMDEX_ROOT_PATH . "/actions/fileupload/baseIO.php");
@@ -140,53 +139,6 @@ class FileNode extends Root
 
     function SetContent($content, $commitNode = NULL, Node $node = null)
     {
-        //validate HTML or XML valid contents
-        if ($node and ($node->getNodeType() == \Ximdex\Services\NodeType::NODE_HT or $node->getNodeType() == \Ximdex\Services\NodeType::RNG_VISUAL_TEMPLATE))
-        {
-            //checking the valid HTML in Ximclude contents or XML of the given RNG template content
-            $domDoc = new DOMDocument();
-            if ($node->getNodeType() == \Ximdex\Services\NodeType::NODE_HT)
-            {
-                //XML document
-                $res = @$domDoc->loadXML('<root>' . $content . '</root>');
-            }
-            else
-            {
-                //RNG template
-                $res = @$domDoc->loadXML($content);
-            }
-            if ($res === false)
-            {
-                //we don't allow to save an invalid XML
-                $this->messages->add('The XML document is not valid. Changes have not been saved', MSG_TYPE_ERROR);
-                XMD_Log::error('Invalid XML for node: ' . $node->getDescription());
-                $error = \Ximdex\Error::error_message();
-                if ($error)
-                    $this->messages->add(str_replace('DOMDocument::loadXML(): ', '', $error), MSG_TYPE_WARNING);
-                    return false;
-            }
-            if ($node->getNodeType() == \Ximdex\Services\NodeType::RNG_VISUAL_TEMPLATE)
-            {
-                //validation of the RNG schema for the RNG template
-                $schema = FsUtils::file_get_contents(App::getValue( 'AppRoot') . '/actions/xmleditor2/views/common/schema/relaxng-1.0.rng.xml');
-                $rngValidator = new \Ximdex\XML\Validators\RNG();
-                $res = $rngValidator->validate($schema, $content);
-                if ($res === false)
-                {
-                    $errors = $rngValidator->getErrors();
-                    if (!$errors and \Ximdex\Error::error_message())
-                        $this->messages->add(str_replace('DOMDocument::relaxNGValidateSource(): ', '', \Ximdex\Error::error_message()), MSG_TYPE_WARNING);
-                    else
-                    {
-                        //only will be shown the first error (more easy to read)
-                        $this->messages->add($errors[0], MSG_TYPE_WARNING);
-                    }
-                    $this->messages->add('The RNG template haven\'t been saved', MSG_TYPE_ERROR);
-                    return false;
-                }
-            }
-        }
-
         $data = new DataFactory($this->nodeID);
 
         /// @todo: move this piece to Template nodetype
@@ -254,7 +206,7 @@ class FileNode extends Root
         $this->dbObj->Query($query);
 
         if (!$this->dbObj->numRows > 0) {
-            XMD_Log::error("***************** Version de archivo no encontrada -->" . $this->parent->get('IdNode'));
+            Logger::error("***************** File version not found -->" . $this->parent->get('IdNode'));
         } else {
             $nodeFile = $this->dbObj->GetValue('File');
 
@@ -280,7 +232,7 @@ class FileNode extends Root
         $result = $depsMngr->deleteBySource(DepsManager::NODE2ASSET, $this->parent->get('IdNode')) && $result;
 
         if ($result) {
-            XMD_Log::info('Filenode dependencies deleted');
+            Logger::info('Filenode dependencies deleted');
         }
 
         return $result;
@@ -339,7 +291,7 @@ class FileNode extends Root
         $idState = $state->loadByName($newState);
         $idActualState = $this->parent->GetState();
         if ($idState == $idActualState) {
-            XMD_Log::warning('Se ha solicitado pasar a un estado y ya nos encontramos en ese estado');
+            Logger::warning('It have requested to pass to an status, and that status is now the current one');
             return true;
         }
         $actualState = new State($idActualState);
@@ -353,5 +305,3 @@ class FileNode extends Root
         }
     }
 }
-
-?>

@@ -26,14 +26,15 @@
  */
 
 namespace Ximdex\NodeTypes;
-
+/*
 use depth;
 use files;
 use idNode;
 use name;
 use recurrence;
-use Ximdex\Models\Channel;
+*/
 use Ximdex\Models\Node;
+use Ximdex\Runtime\App;
 use Ximdex\Runtime\Constants;
 use Ximdex\Logger as XMD_Log;
 use Ximdex\Runtime\Db as DB;
@@ -323,13 +324,13 @@ class Root
     /**
      *  Changes the name of the Node.
      * @param string name
-     * @return unknown
+     * @return boolean
      */
 
     function RenameNode($name = null)
     {
         $this->UpdatePath();
-        return;
+        return true;
     }
 
     /**
@@ -343,7 +344,7 @@ class Root
         $pathList = $this->GetPathList();
         $relativePath = $pathList;
 
-        return \App::getValue("UrlRoot") . \App::getValue("NodeRoot") . $relativePath;
+        return App::getValue("UrlRoot") . App::getValue("NodeRoot") . $relativePath;
     }
 
     /**
@@ -387,7 +388,7 @@ class Root
         $pathList = $this->GetPathList();
         $relativePath = $pathList;
 
-        return \App::getValue("AppRoot") . \App::getValue("NodeRoot") . $relativePath;
+        return App::getValue("AppRoot") . App::getValue("NodeRoot") . $relativePath;
     }
 
     /**

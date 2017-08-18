@@ -26,6 +26,7 @@
 
 namespace Ximdex\Parsers;
 
+use Ximdex\Logger;
 use Ximdex\Runtime\DataFactory;
 use Ximdex\Models\Dependencies;
 use Ximdex\Deps\DepsManager;
@@ -37,7 +38,6 @@ use Ximdex\Utils\PipelineManager;
 use Ximdex\Models\StructuredDocument;
 use Ximdex;
 use Ximdex\Models\Node;
-use Ximdex\Logger as XMD_Log;
 use Ximdex\Utils\Messages;
 
 class ParsingDependencies
@@ -98,7 +98,7 @@ class ParsingDependencies
 
         $node = new Node($idNode);
         if (!($node->get('IdNode') > 0)) {
-            XMD_Log::error('Error while node loading.');
+            Logger::error('Error while node loading.');
             $this->messages->add('There is not a Node with the IdNode: ' . $idNode, MSG_TYPE_ERROR);
             return false;
         }
@@ -107,7 +107,7 @@ class ParsingDependencies
         $idVersion = $dataFactory->GetLastVersionId();
 
         if (!($node->nodeType->get('IsStructuredDocument') == 1)) {
-            XMD_Log::info('This node is not a structured document');
+            Logger::info('This node is not a structured document');
             $this->messages->add('This node is not a structured document (IdNode: ' . $idNode . ')', MSG_TYPE_ERROR);
             return false;
         }
@@ -127,7 +127,7 @@ class ParsingDependencies
         //If there is any error in the parsing process, the global error provided from the static method will be added to the warning messages
         if (isset($GLOBALS['parsingDependenciesError']) and $GLOBALS['parsingDependenciesError'])
         {
-            $this->messages->add('Parsing dependencies issue detected: ' . $GLOBALS['parsingDependenciesError'], MSG_TYPE_WARNING);
+            $this->messages->add('Parsing dependencies mistake detected: ' . $GLOBALS['parsingDependenciesError'], MSG_TYPE_WARNING);
             $GLOBALS['parsingDependenciesError'] = null;
         }
         
@@ -194,7 +194,7 @@ class ParsingDependencies
 
 
         if (!($node->get('IdNode') > 0)) {
-            XMD_Log::error('Error while node loading.');
+            Logger::error('Error while node loading.');
             return false;
         }
         $version = $node->getVersion();
@@ -599,7 +599,7 @@ class ParsingDependencies
         return $assets;
     }
 
-    private static function getDotDot($content, $idServer)
+    public static function getDotDot($content, $idServer)
     {
 
         preg_match_all("/@@@RMximdex\.dotdot\((css|common)([^\)]*)\)@@@/", $content, $matches);
@@ -622,7 +622,7 @@ class ParsingDependencies
                         if (!($id > 0)) {
                             
                             if (isset($GLOBALS['InBatchProcess']))
-                                XMD_Log::error("CSS file {$matches[2][$n]} not found");
+                                Logger::error("CSS file {$matches[2][$n]} not found");
                             else
                                 $GLOBALS['parsingDependenciesError'] = "CSS file {$matches[2][$n]} not found";
                             return false;
@@ -635,7 +635,7 @@ class ParsingDependencies
                         if (!($id > 0)) {
                             
                             if (isset($GLOBALS['InBatchProcess']))
-                                XMD_Log::error("Common file {$matches[2][$n]} not found");
+                                Logger::error("Common file {$matches[2][$n]} not found");
                             else
                                 $GLOBALS['parsingDependenciesError'] = "Common file {$matches[2][$n]} not found";
                             return false;
@@ -654,19 +654,52 @@ class ParsingDependencies
         return $result;
     }
 
-    private static function getPathTo($content, $nodeId)
+    /**
+     * Get an array with the NodeId values of PathTo links in the content given
+     * If the $test param is passed with true value, return true if the nodes linked exists in nodes database (now is inter-projects)
+     * @param string $content
+     * @param integer $nodeId
+     * @param string $test
+     * @return boolean|array()
+     */
+    public static function getPathTo($content, $nodeId, $test = false)
     {
-
-        $links = array();
-        $parserPathTo = new ParsingPathTo();
         preg_match_all("/@@@RMximdex\.pathto\(([^\)]*)\)@@@/", $content, $matches);
-        if (count($matches[1]))
-            foreach ($matches[1] as $pathTo) {
-                $parserPathTo->parsePathTo($pathTo, $nodeId);
-                $links[] = $parserPathTo->getIdNode();
+        if ($test)
+        {
+            if (count($matches[1]))
+            {
+                $parserPathTo = new ParsingPathTo();
+                foreach ($matches[1] as $pathTo)
+                {
+                    $node = new Node($pathTo);
+                    if (!$node->GetID())
+                    {
+                        $error = 'The document or its dependencies references a non existant node ' . $pathTo . ' in a RMximdex.pathto directive';
+                        if (isset($GLOBALS['InBatchProcess']))
+                            Logger::error($error);
+                        else
+                            $GLOBALS['parsingDependenciesError'] = $error;
+                        return false;
+                    }
+                }
             }
-
-        return $links;
+            return true;
+        }
+        else
+        {
+            $links = array();
+            if (count($matches[1]))
+            {
+                $parserPathTo = new ParsingPathTo();
+                foreach ($matches[1] as $pathTo)
+                {
+                    $parserPathTo->parsePathTo($pathTo, $nodeId);
+                    $links[$parserPathTo->getIdNode()] = $parserPathTo->getIdNode();
+                }
+            }
+            return $links;
+        }
     }
 
     /**

@@ -470,7 +470,10 @@ class xsltnode extends FileNode
             //replace the includes templates for its implicit reference templates
             $res = $this->include_unique_templates($content, $node);
             if ($res === false)
+            {
+                $this->messages->add('The XSL document have errors and it have not been saved', MSG_TYPE_ERROR);
                 return false;
+            }
             $dom = new DOMDocument();
             $dom->loadXML($res);
             $project = new Node($node->GetProject());
@@ -497,7 +500,9 @@ class xsltnode extends FileNode
         $content = $this->sanitizeContent($content);
         if ($content === false)
             return false;
-        parent::SetContent($content, $commitNode, $node);
+        
+        if (parent::SetContent($content, $commitNode, $node) === false)
+            return false;
     }
 
     private function sanitizeContent($content)
@@ -661,7 +666,7 @@ class xsltnode extends FileNode
             if (isset($GLOBALS['InBatchProcess']))
                 Logger::error($error . ' for node: ' . $node->getDescription());
             else
-                $this->messages->add($error, MSG_TYPE_ERROR);
+                $this->messages->add($error, MSG_TYPE_WARNING);
             return false;
         }
         
@@ -694,7 +699,7 @@ class xsltnode extends FileNode
                 if (isset($GLOBALS['InBatchProcess']))
                     Logger::error($error . ' for node: ' . $node->getDescription());
                 else
-                    $this->messages->add($error, MSG_TYPE_ERROR);
+                    $this->messages->add($error, MSG_TYPE_WARNING);
                 return false;
             }
             if ($res != 'templates_include.xsl')
@@ -707,7 +712,7 @@ class xsltnode extends FileNode
                 if (isset($GLOBALS['InBatchProcess']))
                     Logger::error($error . ' for node: ' . $node->getDescription());
                 else
-                    $this->messages->add($error, MSG_TYPE_ERROR);
+                    $this->messages->add($error, MSG_TYPE_WARNING);
                 return false;
             }
             
@@ -753,7 +758,7 @@ class xsltnode extends FileNode
             if (isset($GLOBALS['InBatchProcess']))
                 Logger::error($error . ' for node: ' . $node->getDescription());
             else
-                $this->messages->add($error, MSG_TYPE_ERROR);
+                $this->messages->add($error, MSG_TYPE_WARNING);
             return false;
         }
         foreach ($templates as $template)
