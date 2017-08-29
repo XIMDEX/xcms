@@ -59,7 +59,7 @@ class xsltnode extends FileNode
     }
 
 
-    function CreateNode($xsltName = null, $parentID = null, $nodeTypeID = null, $stateID = null, $ptdSourcePath = NULL)
+    public function CreateNode($xsltName = null, $parentID = null, $nodeTypeID = null, $stateID = null, $ptdSourcePath = NULL)
     {
 
         $xslSourcePath = NULL;
@@ -142,10 +142,14 @@ class xsltnode extends FileNode
 
 
     /**
-     *    Make a xsl:include line and call to inserts on inclusion files
-     *
+     * Make a xsl:include line and call to inserts on inclusion files
+     * @param string $fileName
+     * @param integer $parentId
+     * @param integer $nodeTypeId
+     * @param integer $stateID
+     * @return boolean|true
      */
-    function setIncludeContent($fileName, $parentId, $nodeTypeId, $stateID)
+    private function setIncludeContent($fileName, $parentId, $nodeTypeId, $stateID)
     {
         if ($fileName == 'docxap.xsl')
         {
@@ -165,17 +169,22 @@ class xsltnode extends FileNode
             if ($ximptd->get('IdParent') == $projectId) {
 
                 // Making include in project (modify includes from project and its sections)
-
+                /*
                 $includeString = "<xsl:include href=\"$fileName\"/>\n";
                 $this->writeIncludeFile($fileName, $projectId, $nodeTypeId, $stateID, $includeString);
-
+                */
+                $this->writeIncludeFile($fileName, $projectId, $nodeTypeId, $stateID);
+                
             } else {
 
                 // Making include only in section ximptd
                 $sectionId = $node->GetSection();
                 $section = new Node($sectionId);
+                /*
                 $includeString = "<xsl:include href=\"$fileName\"/>\n";
                 return $this->writeIncludeFile($fileName, $sectionId, $nodeTypeId, $stateID, $includeString);
+                */
+                return $this->writeIncludeFile($fileName, $sectionId, $nodeTypeId, $stateID);
             }
 
         } else {
@@ -185,15 +194,14 @@ class xsltnode extends FileNode
     }
 
     /**
-     *    Insert xsl:include line in inclusion
-     *
-     * @param string $includeFile include file
-     * @param string $includeString line to include
-     * @param string $templateName template
-     * @return true / false
+     * Insert xsl:include line in inclusion
+     * @param string $templateName
+     * @param integer $sectionId
+     * @param integer $nodeTypeID
+     * @param integer $stateID
+     * @return boolean
      */
-
-    function writeIncludeFile($templateName, $sectionId, $nodeTypeID, $stateID, $includeString)
+    private function writeIncludeFile($templateName, $sectionId, $nodeTypeID, $stateID)
     {
 
         $section = new Node($sectionId);
@@ -212,7 +220,7 @@ class xsltnode extends FileNode
 
             $includeContent = '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
             $includeContent .= '<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">' . "\n";
-            $includeContent .= "\t" . $includeString;
+            $includeContent .= "\t<xsl:include href=\"$templateName\"/>\n";
 			$includeContent .= '</xsl:stylesheet>';
             /*
             $arrayContent = explode("\n", $includeContent);
@@ -262,6 +270,8 @@ class xsltnode extends FileNode
                             return false;
                         }
                         $domDocument = new DOMDocument();
+                        $domDocument->formatOutput = true;
+                        $domDocument->preserveWhiteSpace = false;
                         if (@$domDocument->loadXML($docxapContent) === false)
                         {
                             $this->messages->add('Can\'t load the docxap XML content', MSG_TYPE_ERROR);
@@ -316,7 +326,7 @@ class xsltnode extends FileNode
                             $domElement = $domDocument->createElement('xsl:include');
                             $domAttribute = $domDocument->createAttribute('href');
                             
-                            //add  the element
+                            //add the element
                             $domAttribute->value = $templatesIncludeURL;
                             $domElement->appendChild($domAttribute);
                             $docxapRoot->item(0)->insertBefore($domElement, $templateNodes->item(0));
@@ -332,7 +342,6 @@ class xsltnode extends FileNode
                             $this->messages->add('Can\'t save the project docxap XML content', MSG_TYPE_ERROR);
                             return false;
                         }
-                        $docxapContent = str_replace('/><', "/>\n\t<", $docxapContent);
                         
                         //save the content
                         if ($docxapNode->SetContent($docxapContent) === false)
@@ -354,33 +363,53 @@ class xsltnode extends FileNode
 
             $includeNode = new Node($includeId);
             $includeContent = $includeNode->getContent();
-
-            //TODO ajlucena: this is not the better way to do it
-            if (preg_match("/include\shref=\"$templateName\"/i", $includeContent, $matches) == 0) {
-
-                Logger::info("Adding include at end");
-
-                $pattern = "/<\/xsl:stylesheet>/i";
-                $replacement = $includeString . "\n</xsl:stylesheet>";
-                $includeContent = preg_replace($pattern, $replacement, $includeContent);
+            $dom = new DOMDocument();
+            $dom->formatOutput = true;
+            $dom->preserveWhiteSpace = false;
+            if (!@$dom->loadXML($includeContent))
+            {
+                $this->messages->add('File templates_include.xsl for section ' . $sectionId . ' has errors', MSG_TYPE_ERROR);
+                return false;
             }
-
-
-            $arrayContent = explode("\n", $includeContent);
-            $includeContent = implode("\n", array_unique($arrayContent));
-
+            
+            //check if there is a template with that name
+            $xPath = new DOMXPath($dom);
+            $includeTag = $xPath->query("/xsl:stylesheet/xsl:include[@href='$templateName']");
+            if ($templateIncludeTag)
+            {
+                //template already exists
+                return true;
+            }
+            $rootTag = $xPath->query('/xsl:stylesheet');
+            
+            //generate the include tag with its href value
+            $domElement = $dom->createElement('xsl:include');
+            $domAttribute = $dom->createAttribute('href');
+            
+            //add the element
+            $domAttribute->value = $templateName;
+            $domElement->appendChild($domAttribute);
+            $rootTag->item(0)->appendChild($domElement);
+            
+            //save XSL content in the node
+            $includeContent = $dom->saveXML();
             $includeNode->setContent($includeContent);
         }
         return true;
     }
 
-    function RenameNode($newName = NULL)
+    /**
+     * Rename a node
+     * @param string $newName
+     * @return boolean
+     */
+    public function RenameNode($newName = NULL)
     {
         if (null == $newName) return false;
 
-        $nodeTypeId = $this->parent->get("IdNodeType");
+        $nodeTypeId = $this->parent->get('IdNodeType');
         $projectId = $this->parent->GetProject();
-        $parentId = $this->parent->get("IdParent");
+        $parentId = $this->parent->get('IdParent');
         $sectionId = $this->parent->getSection();
         $oldName = explode(".", $this->xsltOldName);
         $newName = explode(".", $newName);
@@ -391,8 +420,10 @@ class xsltnode extends FileNode
         }
         if ($this->xsltOldName) {
             $templateName = $this->xsltOldName;
-            $this->removeIncludeFile($templateName, $sectionId, $nodeTypeId);
-            $this->removeIncludeFile($templateName, $projectId, $nodeTypeId);
+            if ($this->removeIncludeFile($templateName, $sectionId, $nodeTypeId) === false)
+                return false;
+            if ($this->removeIncludeFile($templateName, $projectId, $nodeTypeId) === false)
+                return false;
         }
         //open the file and make the replacement inside
         $tpl = new Node($this->nodeID);
@@ -403,31 +434,25 @@ class xsltnode extends FileNode
         $rpl2 = 'match="' . $newName[0];
         $new_content = str_replace($rpl1, $rpl2, $new_content);
         $tpl->SetContent($new_content);
-
-        //if the file has not extension, we will avoid the dot and the not given ext
-        /*
-        if (count($newName) == 2)
-            $fileName = $newName[0] . "." . $newName[1];
-        else
-            $fileName = $newName[0];
-        $this->setIncludeContent($fileName, $parentId, $nodeTypeId, null);
-        */
-        $this->setIncludeContent($newName[0] . "." . $newName[1], $parentId, $nodeTypeId, null);
+        
+        if ($this->setIncludeContent($newName[0] . "." . $newName[1], $parentId, $nodeTypeId, null) === false)
+            return false;
         
         return true;
     }
 
-    function deleteNode()
+    /**
+     * Delete a node
+     */
+    public function deleteNode()
     {
 
         // Deletes dependencies in rel tables
-
-
         $nodeId = $this->nodeID;
         $node = new Node($nodeId);
         $sectionId = $this->parent->getSection();
-        $nodeTypeId = $this->parent->get("IdNodeType");
-        $templateName = $this->parent->get("Name");
+        $nodeTypeId = $this->parent->get('IdNodeType');
+        $templateName = $this->parent->get('Name');
         $this->removeIncludeFile($templateName, $sectionId, $nodeTypeId);
 
         $projectId = $node->GetProject();
@@ -441,11 +466,12 @@ class xsltnode extends FileNode
 
     /**
      * Remove from template_includes $templateName occurrences
+     * @param string $templateName
+     * @param integer $sectionId
+     * @param integer $nodeTypeId
      */
     private function removeIncludeFile($templateName, $sectionId, $nodeTypeId)
     {
-
-
         $section = new Node($sectionId);
         $ximPtdId = $section->GetChildByName('templates');
 
@@ -457,24 +483,42 @@ class xsltnode extends FileNode
 
             $includeNode = new Node($includeId);
             $includeContent = $includeNode->getContent();
-            $pattern = "/<xsl:include\shref=\"$templateName\"\/>/i";
-            Logger::info("Removing include");
-            $replacement = "";
-            $includeContent = preg_replace($pattern, $replacement, $includeContent);
-
-
-            $arrayContent = explode("\n", $includeContent);
-            $includeContent = implode("\n", array_unique($arrayContent));
-
+            $dom = new DOMDocument();
+            $dom->formatOutput = true;
+            $dom->preserveWhiteSpace = false;
+            if (!@$dom->loadXML($includeContent))
+            {
+                $this->messages->add('File templates_include.xsl for section ' . $sectionId . ' has errors', MSG_TYPE_ERROR);
+                return false;
+            }
+            
+            //check if there is a template with that name
+            $xPath = new DOMXPath($dom);
+            $includeTag = $xPath->query("/xsl:stylesheet/xsl:include[@href='$templateName']");
+            if (!$includeTag->length)
+            {
+                //template does not exists
+                $this->messages->add('The template named ' . $templateName . ' does not exists in templates_include.xsl', MSG_TYPE_ERROR);
+                return false;
+            }
+            
+            //remove the specified include element
+            $includes = $dom->getElementsByTagName('stylesheet');
+            $includes->item(0)->removeChild($includeTag->item(0));
+            
+            //save XSL content in the node
+            $includeContent = $dom->saveXML();
             $includeNode->setContent($includeContent);
         }
 
     }
 
-    function SetContent($content, $commitNode = NULL, Node $node = null)
+    public function SetContent($content, $commitNode = NULL, Node $node = null)
     {
         //checking the valid XML of the given content
         $domDoc = new DOMDocument();
+        $domDoc->formatOutput = true;
+        $domDoc->preserveWhiteSpace = false;
         if (@$domDoc->loadXML($content) === false)
         {
             //we don't allow to save an invalid XML
@@ -542,6 +586,8 @@ class xsltnode extends FileNode
         }
         
         $xsldom = new DOMDocument();
+        $xsldom->formatOutput = true;
+        $xsldom->preserveWhiteSpace = false;
         $xsldom->loadXML($content);
         $xpath = new DOMXPath($xsldom);
 
@@ -685,6 +731,8 @@ class xsltnode extends FileNode
             
         //Load de XML document from the XSL content given
         $dom = new DOMDocument();
+        $dom->formatOutput = true;
+        $dom->preserveWhiteSpace = false;
         $dom->loadXML($content);
         
         //load the root node
