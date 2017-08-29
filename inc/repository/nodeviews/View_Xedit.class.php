@@ -25,15 +25,17 @@
  */
 
 
+use Ximdex\Logger;
 use Ximdex\Models\Node;
 use Ximdex\Models\Version;
 use Ximdex\Parsers\ParsingRng;
+use Ximdex\Runtime\App;
 
 if(!defined('TREE_VIEW_DOCXAP_PATH'))
-	define('TREE_VIEW_DOCXAP_PATH', \App::getValue( 'UrlRoot') . '/actions/xmleditor2/views/editor/tree/templates/docxap.xsl');
+	define('TREE_VIEW_DOCXAP_PATH', App::getValue( 'UrlRoot') . '/actions/xmleditor2/views/editor/tree/templates/docxap.xsl');
 
 if(!defined('RNG_EDITION_DOCXAP_PATH'))
-	define('RNG_EDITION_DOCXAP_PATH', \App::getValue( 'UrlRoot') . '/actions/xmleditor2/views/rngeditor/templates/docxap.xsl');
+	define('RNG_EDITION_DOCXAP_PATH', App::getValue( 'UrlRoot') . '/actions/xmleditor2/views/rngeditor/templates/docxap.xsl');
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Abstract_View.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Interface_View.class.php');
 	
@@ -47,7 +49,7 @@ class View_Xedit extends Abstract_View implements Interface_View {
 		
 		$content = $this->retrieveContent($pointer);
 		if($content == '') {
-			XMD_log::warning('VIEW XEDIT: empty content');
+			Logger::warning('VIEW XEDIT: empty content');
 			return $this->storeTmpContent($content);
 		}
 		
@@ -108,10 +110,14 @@ class View_Xedit extends Abstract_View implements Interface_View {
 	
 	private function setDomDocument() {
 		if(!$this->domDocument)
+		{
 			$this->domDocument = new DOMDocument();
+			$this->domDocument->formatOutput = true;
+			$this->domDocument->preserveWhiteSpace = false;
+		}
 
 		if (!$this->domDocument->loadXML($this->content)) {
-			XMD_log::error('VIEW XEDIT: Invalid XML (' . $this->content . ')');
+			Logger::error('VIEW XEDIT: Invalid XML (' . $this->content . ')');
 			return false;
 		}
 		return true;
@@ -148,13 +154,13 @@ class View_Xedit extends Abstract_View implements Interface_View {
 		if(!is_null($idVersion)) {
 			$version = new Version($idVersion);
 			if (!($version->get('IdVersion') > 0)) {
-				XMD_Log::error('VIEW XEDIT: An incorrect version has been loaded (' . $idVersion . ')');
+				Logger::error('VIEW XEDIT: An incorrect version has been loaded (' . $idVersion . ')');
 				return false;
 			}
 			
 			$this->node = new Node($version->get('IdNode'));
 			if (!($this->node->get('IdNode') > 0)) {
-				XMD_Log::error('VIEW XEDIT: The node it\'s trying to convert doesn\'t exists: ' . $version->get('IdNode'));
+				Logger::error('VIEW XEDIT: The node it\'s trying to convert doesn\'t exists: ' . $version->get('IdNode'));
 				return false;
 			}
 		}
@@ -164,7 +170,7 @@ class View_Xedit extends Abstract_View implements Interface_View {
 	
 	private function setView($args) {
 		if (!array_key_exists('XEDIT_VIEW', $args)) {
-			XMD_Log::error('VIEW XEDIT: No se ha especificado la vista de XEDIT');
+			Logger::error('VIEW XEDIT: No se ha especificado la vista de XEDIT');
 			return false;
 		}
 		$this->view = $args['XEDIT_VIEW'];
@@ -174,7 +180,7 @@ class View_Xedit extends Abstract_View implements Interface_View {
 	private function parametrizeDocxapByNodeType() {
 		$nodeTypeName = $this->node->nodeType->GetName();
 		if ($nodeTypeName == 'RngVisualTemplate') {
-			$content = \App::getValue( 'EncodingTag') . \App::getValue( 'DoctypeTag') . '<docxap xmlns:xim="http://www.ximdex.com/">' . $this->content . '</docxap>';
+			$content = App::getValue( 'EncodingTag') . App::getValue( 'DoctypeTag') . '<docxap xmlns:xim="http://www.ximdex.com/">' . $this->content . '</docxap>';
 		}
 		return isset($content) ? $this->setContent($content) : true;
 	}
@@ -184,7 +190,7 @@ class View_Xedit extends Abstract_View implements Interface_View {
 			return false;
 
 		$xslHeader = '<?xml-stylesheet type="text/xsl" href="' . $xslFile . '"?>';
-		$xmlHeader = \App::getValue( 'EncodingTag');
+		$xmlHeader = App::getValue( 'EncodingTag');
 		$content = str_replace($xmlHeader, $xmlHeader . $xslHeader, $this->content);
 		
 		return $this->setContent($content);
@@ -200,22 +206,21 @@ class View_Xedit extends Abstract_View implements Interface_View {
 			return RNG_EDITION_DOCXAP_PATH;
 		}
 		
-		$tplFolder = \App::getValue( "TemplatesDirName");
+		$tplFolder = App::getValue( "TemplatesDirName");
 		$section = new Node($this->node->GetSection());
 		$sectionPath = $section->class->GetNodePath();
 		$docxap = $sectionPath . '/' . $tplFolder . '/docxap.xsl';
 		if(is_readable($docxap))
-			return str_replace(\App::getValue( 'AppRoot'), \App::getValue( 'UrlRoot'),  $docxap);
+			return str_replace(App::getValue( 'AppRoot'), App::getValue( 'UrlRoot'),  $docxap);
 
 		$project = new Node($this->node->GetProject());
 		$nodeProjectPath = $project->class->GetNodePath();
 		$docxap = $nodeProjectPath . '/' . $tplFolder . '/docxap.xsl';
 		
 		if(is_readable($docxap))
-			return str_replace(\App::getValue( 'AppRoot'), \App::getValue( 'UrlRoot'),  $docxap);
+			return str_replace(App::getValue( 'AppRoot'), App::getValue( 'UrlRoot'),  $docxap);
 			
 		return NULL;
 	}
 	
 }
-?>

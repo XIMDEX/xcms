@@ -25,6 +25,7 @@
  */
 
 
+use Ximdex\Logger;
 use Ximdex\Utils\FsUtils;
 
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Abstract_View.class.php');
@@ -57,7 +58,7 @@ class View_Merge_Tags extends Abstract_View implements Interface_View {
 			
 	 		$mergeLength = $mergeItem->length;
 	 		if ($mergeLength != 1) {
-	 			XMD_Log::error('Wrong count of items detected, returning unmodified document');
+	 			Logger::error('Wrong count of items detected, returning unmodified document');
 	 			return $pointer;
 	 		}
 	 		
@@ -79,4 +80,3 @@ class View_Merge_Tags extends Abstract_View implements Interface_View {
 		return $this->storeTmpContent($content);
 	}
 }
-?>

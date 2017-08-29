@@ -1,4 +1,5 @@
 <?php
+use Ximdex\Runtime\App;
 use Ximdex\Utils\Curl;
 
 /**
@@ -45,7 +46,7 @@ class ContentEnricherSearcherStrategy extends AbstractSearcherStrategy{
 
 
 		//Key is mandatory for the service
-		$key = \App::getValue( 'EnricherKey');
+		$key = App::getValue( 'EnricherKey');
 		if(!$key)
 			return false;
 		$xmlData = $this->query('zemanta.suggest', $key, $text["content"], 'xml');
@@ -229,5 +230,3 @@ class ContentEnricherSearcherStrategy extends AbstractSearcherStrategy{
 		return $result;
 	}
 }
-
-?>

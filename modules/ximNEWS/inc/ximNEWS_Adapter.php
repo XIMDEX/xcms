@@ -25,11 +25,13 @@
  */
 
 
+use Ximdex\Logger;
 use Ximdex\Models\Language;
 use Ximdex\Models\Node;
 use Ximdex\Models\NodeType;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\Parsers\ParsingRng;
+use Ximdex\Runtime\App;
 use Ximdex\Runtime\DataFactory;
 use Ximdex\Utils\FsUtils;
 
@@ -44,11 +46,7 @@ ModulesManager::file('/inc/model/RelNewsArea.php', 'ximNEWS');
 */
 
 class  ximNEWS_Adapter {
-
-	/**
-	 * 
-	 * @return unknown_type
-	 */
+    
 	function __construct() {
 		$this->messages = new \Ximdex\Utils\Messages();
 	}
@@ -69,7 +67,7 @@ class  ximNEWS_Adapter {
 	 * @param array links
 	 * @param array files
 	 * @param array videos
-	 * @return unknown_type
+	 * @return boolean
 	 */
 	function createNews($idNode, $idTemplate, $name, $languages, $channels, $data, $master = NULL, $alias = NULL,
 		$colectors = NULL, $areas = NULL, $images = NULL, $links = NULL, $files = NULL, $videos = NULL, $checkDates = true) {
@@ -83,7 +81,7 @@ class  ximNEWS_Adapter {
 		$idNewsContainer = $results['errno'];
 
 		if (!($idNewsContainer > 0)) {
-			XMD_Log::error("In newscontainer creation");
+			Logger::error("In newscontainer creation");
 			$this->messages->add(sprintf(_('Error creando el contenedor %s'), $name), MSG_TYPE_ERROR);
 			foreach ($results['errors'] as $error) {
 				$this->messages->add(_($error['message']), $error['type']);
@@ -164,7 +162,7 @@ class  ximNEWS_Adapter {
 
 			if (!($idNewsLanguage > 0)) {
 
-				XMD_Log::error("In newslanguage $name creation");
+				Logger::error("In newslanguage $name creation");
 				$this->messages->add(sprintf(_('Error creando la noticia %s'), $name), MSG_TYPE_ERROR);
 			} else {
 
@@ -172,7 +170,7 @@ class  ximNEWS_Adapter {
 
 				if ($langId == $master) $targetLink = $idNewsLanguage;
 
-				XMD_Log::info("Newslanguage $name creation O.K.");
+				Logger::info("Newslanguage $name creation O.K.");
 				$this->messages->add(sprintf(_('La noticia %s se ha creado correctamente'), $name), MSG_TYPE_NOTICE);
 
 
@@ -203,7 +201,7 @@ class  ximNEWS_Adapter {
 	 * @param int idSection
 	 * @param int idTemplate
 	 * @param string name
-	 * @return unknown_type
+	 * @return boolean[]|number[]|NULL[]|string[]|array[]
 	 */
 	function createNewsContainer($idParent, $idSection, $idTemplate, $name) {
 
@@ -241,7 +239,7 @@ class  ximNEWS_Adapter {
 	 * @param array channelLst
 	 * @param array newsData
 	 * @param int targetLink
-	 * @return unknown_type
+	 * @return boolean|number|NULL|string
 	 */
 	function createNewsLanguage($idNewscontainer, $idSection, $idTemplate, $name, $idLang, $aliasLang, $channelLst,
 		$newsData, $targetLink = NULL) {
@@ -251,7 +249,7 @@ class  ximNEWS_Adapter {
 			"NAME" => $name,
 			"PARENTID" => $idNewscontainer,
 			'IDSECTION' => $idSection,
-			"STATE" => "Edici�n",
+			"STATE" => "Edition",
 			'ALIASNAME' => $aliasLang,
 			'NEWTARGETLINK' => $targetLink,
 			'DATANEWS' => $newsData,
@@ -284,7 +282,6 @@ class  ximNEWS_Adapter {
 	 * @param array links
 	 * @param array files
 	 * @param array videos
-	 * @return unknown_type
 	 */
 	function updateNews($idNode, $idParent, $name, $langId, $data, $colectors = NULL, $areas = NULL, $images = NULL,
 		$links = NULL, $files = NULL, $videos = NULL) {
@@ -378,7 +375,7 @@ class  ximNEWS_Adapter {
 			"NAME" => $name,
 			"PARENTID" => $idParent,
 			'IDSECTION' => $idSection,
-			"STATE" => "Edici�n",
+			"STATE" => "Edition",
 			'NEWSDATA' => $data,
 			"CHILDRENS" => array()
 			);
@@ -392,7 +389,7 @@ class  ximNEWS_Adapter {
 	 * @param array images
 	 * @param int idSection
 	 * @param string name
-	 * @return unknown_type
+	 * @return boolean|NULL|string
 	 */
 	private function insertImages($images, $idSection, $name) {
 
@@ -430,8 +427,8 @@ class  ximNEWS_Adapter {
 	 * @param array files
 	 * @param int idSection
 	 * @param string name
-	 * @return unknown_type
-	 */	
+	 * @return boolean|NULL|string|number
+	 */
 	 private function insertFiles($files, $idSection, $name) {
 
 		//if only one file is, convert it into array
@@ -447,7 +444,7 @@ class  ximNEWS_Adapter {
 		$commonFolderNode = new Node($idCommonFolder);
 
 		// insert files
-		$tmpPath = \App::getValue( 'AppRoot') . \App::getValue( 'TempRoot');
+		$tmpPath = App::getValue( 'AppRoot') . App::getValue( 'TempRoot');
 		$tmpFile = $tmpPath ."/".FsUtils::getUniqueFile($tmpPath);
 
 		foreach ($files as $file) {
@@ -479,7 +476,7 @@ class  ximNEWS_Adapter {
 	 * @param array links
 	 * @param int idSection
 	 * @param string name
-	 * @return unknown_type
+	 * @return array
 	 */
 	function insertLinks($links, $idSection, $name) {
 	
@@ -521,13 +518,13 @@ class  ximNEWS_Adapter {
 
 	/**
 	 * 
-	 * @param int idTemplate
-	 * @return unknown_type
+	 * @param int $idTemplate
+	 * @return NULL|string[]
 	 */
 	function getContentElements($idTemplate) {
 
 		if (empty($idTemplate)) {
-			XMD_Log::error("Void templateID");
+			Logger::error("Void templateID");
 			return NULL;
 		}
 
@@ -561,14 +558,14 @@ class  ximNEWS_Adapter {
 
 	/**
 	 * 
-	 * @param array newsData 
-	 * @param int idTemplate
-	 * @return unknown_type
+	 * @param array $newsData
+	 * @param int $idTemplate
+	 * @return NULL|mixed
 	 */
 	function setNewsXmlContent($newsData, $idTemplate) {
 
 		if (is_null($idTemplate)) {
-			XMD_Log::error('Template is mandatory');
+			Logger::error('Template is mandatory');
 			return NULL;
 		}
 
@@ -578,6 +575,7 @@ class  ximNEWS_Adapter {
 		$domDoc = new DOMDocument();
 		$domDoc->validateOnParse = true;
 		$domDoc->preserveWhiteSpace = false;
+		$domDoc->formatOutput = true;
 		$domDoc->loadXML(\Ximdex\XML\Base::recodeSrc($content, \Ximdex\XML\XML::UTF8));
 
 		$xpath = new DOMXPath($domDoc);
@@ -650,9 +648,9 @@ class  ximNEWS_Adapter {
 
 	/**
 	 * 
-	 * @param int idSection
-	 * @param string name
-	 * @return unknown_type
+	 * @param int $idSection
+	 * @param string $name
+	 * @return boolean|NULL|string
 	 */
 	function getCommonFolder($idSection, $name) {
 		$section = new Node($idSection);
@@ -664,9 +662,9 @@ class  ximNEWS_Adapter {
 
 	/**
 	 * 
-	 * @param int idSection
-	 * @param string name
-	 * @return unknown_type
+	 * @param int $idSection
+	 * @param string $name
+	 * @return boolean|number|NULL|string
 	 */
 	function createCommonFolder($idSection, $name) {
 
@@ -683,9 +681,9 @@ class  ximNEWS_Adapter {
 
 	/**
 	 * 
-	 * @param int idSection
-	 * @param string name
-	 * @return unknown_type
+	 * @param int $idSection
+	 * @param string $name
+	 * @return boolean|number|NULL|string
 	 */
 	function getXimLinkFolder($idSection, $name) {
 
@@ -719,7 +717,6 @@ class  ximNEWS_Adapter {
 	 * @param array colectors
 	 * @param string fecha_ini
 	 * @param string fecha_fin
-	 * @return unknown_type
 	 */
 	function addNewToColectors($idNew, $colectors, $fecha_ini = NULL, $fecha_fin = NULL) {
 
@@ -731,7 +728,7 @@ class  ximNEWS_Adapter {
 		foreach($colectors as $idColector) {
 	
 			if (!$node->class->addToColector($idColector, $fecha_ini, $fecha_fin, "$version-$subversion"))
-				XMD_Log::error('Error al insertar en RelNewsColector');
+				Logger::error('Error al insertar en RelNewsColector');
 		}
 	}
 
@@ -739,7 +736,6 @@ class  ximNEWS_Adapter {
 	 * 
 	 * @param int idNew
 	 * @param array colectors
-	 * @return unknown_type
 	 */
 	function removeNewFromColectors($idNew, $colectors) {
 
@@ -766,7 +762,6 @@ class  ximNEWS_Adapter {
 	 * 
 	 * @param int idNews
 	 * @param array areas
-	 * @return unknown_type
 	 */
 
 	function addAreasToNew($idNews, $areas) {
@@ -776,7 +771,7 @@ class  ximNEWS_Adapter {
 		foreach ($areas as $idArea) {
 			if ($node->get('IdNode') > 0) {
 				if (!$node->class->addToArea($idArea)) {
-					XMD_Log::error("In relation news $idNews with area $idArea");
+					Logger::error("In relation news $idNews with area $idArea");
 				}
 			}
 		}
@@ -788,12 +783,12 @@ class  ximNEWS_Adapter {
 	 * @param int idParent
 	 * @param string type
 	 * @param string stringDate
-	 * @return unknown_type
+	 * @return NULL|boolean|number|string
 	 */
 	function createLote($name, $idParent, $type, $stringDate) {
 
 		if ((int) preg_match("/([0-9]{1,2})[-\/]([0-9]{1,2})[-\/]([0-9]{2,4})/", $stringDate, $date) == 0) {
-			XMD_Log::error("Invalid date format $stringDate");
+			Logger::error("Invalid date format $stringDate");
 			return NULL;
 		}
 
@@ -865,7 +860,7 @@ class  ximNEWS_Adapter {
 	 * @param string name
 	 * @param int idParent
 	 * @param string file
-	 * @return unknown_type
+	 * @return boolean|number|NULL|string
 	 */
 	function createImage($name, $idParent, $file) {
 
@@ -889,7 +884,7 @@ class  ximNEWS_Adapter {
 	 * @param int bulletinNumber
 	 * @param int lote
 	 * @param int master
-	 * @return unknown_type
+	 * @return boolean
 	 */
 	function createBulletins($idColector, $languages, $headerData, $set, $bulletinNumber, $lote = NULL, $master = NULL) {
 
@@ -918,7 +913,7 @@ class  ximNEWS_Adapter {
 		$idBulletinContainer = self::createBulletinContainer($idColector, $idSection, $idTemplate, $name);
 
 		if (!($idBulletinContainer > 0)) {
-			XMD_Log::error("In bulletincontainer creation");
+			Logger::error("In bulletincontainer creation");
 			return false;
 		}
 
@@ -947,14 +942,14 @@ class  ximNEWS_Adapter {
 
 			if (!($idBulletinLanguage > 0)) {
 
-				XMD_Log::error("In bulletinlanguage $bulletinName creation");
+				Logger::error("In bulletinlanguage $bulletinName creation");
 			} else {
 
 				// set workflow master for next news
 
 				if ($langId == $master) $targetLink = $idBulletinLanguage;
 
-				XMD_Log::info("Bulletinlanguage $bulletinName creation O.K.");
+				Logger::info("Bulletinlanguage $bulletinName creation O.K.");
 			}
 
 		}
@@ -968,7 +963,7 @@ class  ximNEWS_Adapter {
 	 * @param int idSection
 	 * @param int idTemplate
 	 * @param string name
-	 * @return unknown_type
+	 * @return boolean|number|NULL|string
 	 */
 	function createBulletinContainer($idParent, $idSection, $idTemplate, $name) {
 
@@ -1002,7 +997,7 @@ class  ximNEWS_Adapter {
 	 * @param int lote
 	 * @param int targetLink
 	 * @param array channelLst
-	 * @return unknown_type
+	 * @return boolean|number|NULL|string
 	 */
 	function createBulletinLanguage($idNewscontainer, $idSection, $idTemplate, $name, $idLang, $aliasLang,
 		$headerData, $idColector, $set, $date, $lote = NULL, $targetLink = NULL, $channelLst = NULL) {
@@ -1044,15 +1039,15 @@ class  ximNEWS_Adapter {
 	}
 
 	/**
-	 * Returns the bulletin header enclosed by bulletin root tag
-	 * @param array data 
-	 * @param int  templateID
-	 * @return string / NULL
+	 * 
+	 * @param array $headerData
+	 * @param int $idTemplate
+	 * @return NULL|string
 	 */
 	function getBulletinHeader($headerData, $idTemplate) {
 
 		if (is_null($idTemplate)) {
-			XMD_Log::error('Schema not found');
+			Logger::error('Schema not found');
 			return NULL;
 		}
 
@@ -1072,7 +1067,7 @@ class  ximNEWS_Adapter {
 		$nodeList = $xpath->query('//*[@id = "header"]');
 
 		if (!($nodeList->length > 0)) {
-			XMD_Log::info('Header not found');
+			Logger::info('Header not found');
 			return NULL;
 		}
 
@@ -1113,8 +1108,8 @@ class  ximNEWS_Adapter {
 
 	/**
 	 * 
-	 * @param int idNews
-	 * @return unknown_type
+	 * @param int $idNews
+	 * @return array
 	 */
 	function getDataFromNews($idNews) {
 
@@ -1174,7 +1169,7 @@ class  ximNEWS_Adapter {
 	 * @param int mailList
 	 * @param int idArea
 	 * @param int master
-	 * @return unknown_type
+	 * @return boolean|number|NULL|string
 	 */
 	function createColector($idParent, $name, $idTemplate, $languages, $aliasLanguages = NULL, $channels, $global, $order, 
 		$canalCorreo, $newstogenerate, $timetogenerate, $inactive, $newsPerBulletin, $filter, $mailList = NULL, 
@@ -1320,7 +1315,7 @@ class  ximNEWS_Adapter {
 	 * @param int idTemplate
 	 * @param array channels
 	 * @param int targetLink
-	 * @return unknown_type
+	 * @return NULL|boolean|number|string
 	 */
 	public function createXimletLanguage($colectorName, $idXimletContainer, $idLanguage, $aliasName, $idTemplate, $channels, 
 		$targetLink) {
@@ -1331,7 +1326,7 @@ class  ximNEWS_Adapter {
 			"NODETYPENAME" => "XIMNEWSBULLETINLANGUAGEXIMLET",
 			"NAME" => $colectorName,
 			"PARENTID" => $idXimletContainer,
-			"STATE" => "Edici�n",
+			"STATE" => "Edition",
 			"NEWTARGETLINK" => $targetLink,
 			"CONTENT" => "",
 			"ALIASNAME" => $aliasName,
@@ -1350,7 +1345,7 @@ class  ximNEWS_Adapter {
 		
 
 		if (!($id > 0)) {
-			XMD_Log::error("Creating for colector $colectorName ximlet language $idLanguage");
+			Logger::error("Creating for colector $colectorName ximlet language $idLanguage");
 			return NULL;
 		}
 
@@ -1359,9 +1354,9 @@ class  ximNEWS_Adapter {
 
 	/**
 	 * 
-	 * @param int idColector 
-	 * @param string typeColector
-	 * @return unknown_type
+	 * @param int $idColector
+	 * @param string $typeColector
+	 * @return boolean
 	 */
 	public function setOtfProperty($idColector,$typeColector){
 		$n = new Node($idColector);
@@ -1388,8 +1383,8 @@ class  ximNEWS_Adapter {
 
     /**
      * 
-     * @param int idArea
-     * @return unknown_type
+     * @param int $idArea
+     * @return boolean
      */
 	public function deleteArea($idArea) {
 		
@@ -1407,9 +1402,9 @@ class  ximNEWS_Adapter {
     
     /**
      * 
-     * @param string name
-     * @param string description
-     * @return unknown_type
+     * @param string $name
+     * @param string $description
+     * @return boolean
      */
     public function createArea($name, $description) {
 
@@ -1421,18 +1416,18 @@ class  ximNEWS_Adapter {
 		return true;
 	}
  
- 	/**
- 	 * 
- 	 * @param string date
- 	 * @return unknown_type
- 	 */
+	/**
+	 * 
+	 * @param string $date
+	 * @return NULL|number
+	 */
 	public static function checkDateFormat($date) {
 
 	    if (!$date)  return NULL;
 		
 		if ((int) preg_match("/([0-9]{1,2})[-\/]([0-9]{1,2})[-\/]([0-9]{2,4}) ([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})/", 
 			$date, $regs) == 0) {
-			XMD_Log::info("Invalid date format $date");
+			Logger::info("Invalid date format $date");
 			return NULL;
 		}
 

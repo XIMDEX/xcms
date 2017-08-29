@@ -25,7 +25,9 @@
  *  @version $Revision$
  */
 
+use Ximdex\Logger;
 use Ximdex\NodeTypes\FolderNode;
+use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
 
 
@@ -49,14 +51,13 @@ class XimNewsImagesFolder extends FolderNode {
 		$this->setThumbnailsPath();
 
 		if (!mkdir($this->thumbnailsPath, 0755, true)) {
-			XMD_Log::error("Creating thumbnail folder");
+			Logger::error("Creating thumbnail folder");
 			return NULL;
 		}
 
-		if (!FsUtils::file_put_contents($this->thumbnailsPath . 'thumbnails.xml', \App::getValue( 'EncodingTag') .
-			"\n<thumbnails>\n</thumbnails>")) {
+		if (!FsUtils::file_put_contents($this->thumbnailsPath . 'thumbnails.xml', App::getValue( 'EncodingTag') . "\n<thumbnails>\n</thumbnails>")) {
 
-			XMD_Log::error("Creating thumbnail file");
+			Logger::error("Creating thumbnail file");
 			return NULL;
 		}
 
@@ -73,7 +74,7 @@ class XimNewsImagesFolder extends FolderNode {
 		//this line produced an error. It doesn't return de correct path. It was a PHP Fatal error.
 		//$newLotePath = \App::getValue( 'AppRoot') . \App::getValue( 'NodeRoot') .$this->parent->GetPublishPath()."/$name/";
 
-		$newLotePath = \App::getValue( 'AppRoot') . \App::getValue( 'NodeRoot') .dirname($this->GetPathList())."/$name/";
+		$newLotePath = App::getValue( 'AppRoot') . App::getValue( 'NodeRoot') .dirname($this->GetPathList())."/$name/";
 		$this->setThumbnailsPath();
 		$thumbnails = $this->thumbnailsPath . 'thumbnails.xml';
 
@@ -82,6 +83,7 @@ class XimNewsImagesFolder extends FolderNode {
 		$domDoc = new DOMDocument();
 		$domDoc->validateOnParse = true;
 		$domDoc->preserveWhiteSpace = false;
+		$domDoc->formatOutput = true;
 		$domDoc->loadXML(\Ximdex\XML\Base::recodeSrc($content, \Ximdex\XML\XML::UTF8));
 
 		$nodeList = $domDoc->getElementsByTagName('thumbnail');
@@ -114,7 +116,7 @@ class XimNewsImagesFolder extends FolderNode {
 		$thumbnails = $this->thumbnailsPath . 'thumbnails.xml';
 
 		if (!is_file($thumbnails)) {
-			XMD_log::error("No such file $thumbnails");
+			Logger::error("No such file $thumbnails");
 			return NULL;
 		}
 
@@ -136,17 +138,19 @@ class XimNewsImagesFolder extends FolderNode {
 	}
 
 	/**
-		@deprecated
-	   Devuelve html con los thumbnails del lote de im�genes para el browser
+	 * Return a HTML source with the images thumnails for the browser
+	 * @deprecated
+	 * @param string $flag
+	 * @param string $scale
+	 * @return NULL|string
 	 */
-
 	function getThumbnails($flag, $scale) {
 
 		$this->setThumbnailsPath();
 		$thumbnails = $this->thumbnailsPath . 'thumbnails.xml';
 
 		if (!is_file($thumbnails)) {
-			XMD_log::error("No such file $thumbnails");
+			Logger::error("No such file $thumbnails");
 			return NULL;
 		}
 
@@ -215,8 +219,7 @@ class XimNewsImagesFolder extends FolderNode {
 
 		if (empty($this->thumbnailsPath)) {
 
-			$this->thumbnailsPath = \App::getValue( 'AppRoot') . \App::getValue( 'NodeRoot') . $this->GetPathList() .
-				'/thumbnails/';
+			$this->thumbnailsPath = App::getValue( 'AppRoot') . App::getValue( 'NodeRoot') . $this->GetPathList() . '/thumbnails/';
 		}
 	}
 

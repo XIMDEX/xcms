@@ -25,6 +25,7 @@
  */
 
 use Ximdex\Helpers\ServerConfig;
+use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
 
 require_once(XIMDEX_ROOT_PATH . '/inc/install/managers/messages/ConsoleMessagesStrategy.class.php');
@@ -460,14 +461,14 @@ class InstallManager
         $url = "http://xid.ximdex.net/stats/getximid.php?host=$hostName";
         $response = $restProvider->getHttp_provider()->get($url);
         $result = isset($response["data"]) ? $response["data"] : $hostName . uniqid($hostName);
-        \App::setValue("ximid", $result, true );
+        App::setValue("ximid", $result, true );
     }
 
     public function setLocalXid()
     {
         $hostName = $_SERVER["HTTP_HOST"];
         $uniqid = $hostName . "_" . uniqid();
-        \App::setValue("ximid", $uniqid , true );
+        App::setValue("ximid", $uniqid , true );
     }
 
     public function setApiKey()

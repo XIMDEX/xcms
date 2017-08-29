@@ -24,6 +24,7 @@
  * @version $Revision$
  */
 
+use Ximdex\Logger;
 use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
 
@@ -47,7 +48,7 @@ class BuildParser
     private $doc = null;
     /**
      * XPath object for the config file
-     * @var XPath
+     * @var DomXPath
      */
     private $xpath = null;
 
@@ -70,10 +71,10 @@ class BuildParser
         style, write message*/
         if (!file_exists($buildFilePath)) {
             if ($isDefault) {
-            	XMD_Log::fatal(LOG_PREFIX . "Default Build file doesn't found in this path: $buildFilePath.");
+            	Logger::fatal(LOG_PREFIX . "Default Build file doesn't found in this path: $buildFilePath.");
                 return false;
             }
-            XMD_Log::error(LOG_PREFIX . " Build file doesn't found in this path: $buildFilePath. It will load Default project");
+            Logger::error(LOG_PREFIX . " Build file doesn't found in this path: $buildFilePath. It will load Default project");
         } else {
             $domDocument = new DomDocument();
             $domDocument->load($buildFilePath);

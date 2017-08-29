@@ -25,7 +25,7 @@
  */
 namespace Ximdex\MVC;
 
-use App;
+use Ximdex\Runtime\App;
 use ModulesManager;
 use Ximdex\Models\Action;
 
@@ -89,7 +89,7 @@ class FrontControllerHTTP extends FrontController
 
     /**
      * Comprueba si la URL de acceso coincide con UrlRoot
-     * @return unknown_type
+     * @return boolean
      */
     function _checkURI()
     {
@@ -110,7 +110,7 @@ class FrontControllerHTTP extends FrontController
     function parseFriendlyUrl()
     {
 
-        $urlRoot = \App::getValue('UrlRoot');
+        $urlRoot = App::getValue('UrlRoot');
         //get base url of ximdex
         $base = "/" . preg_replace("/http:\/\/.+?\//", "", $urlRoot) . "/";
 
@@ -203,12 +203,11 @@ class FrontControllerHTTP extends FrontController
     }
 
     /**
-     * Parsea la URI
-     * @return unknown_type
+     * Parses the URI
      */
     function parseURI()
     {
-        //A�adimos los distintos parametros tanto de get, como de post, como de file) al request de la clase
+        //We add the diferents parameters from get, post and file, to the class request
         $this->setToRequest();
         $this->ModuleShortUrl();
 
@@ -348,5 +347,3 @@ class FrontControllerHTTP extends FrontController
 
     }
 }
-
-?>

@@ -29,6 +29,7 @@ use Ximdex\Models\Channel;
 use Ximdex\Models\Node;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\MVC\ActionAbstract;
+use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
 use Ximdex\Utils\PipelineManager;
 
@@ -211,6 +212,8 @@ class Action_prevdoc extends ActionAbstract
 		$xmldoc = \Ximdex\Utils\Strings::stripslashes( $xmldoc);
 
 		$doc = new DOMDocument();
+		$doc->formatOutput = true;
+		$doc->preserveWhiteSpace = false;
 		$doc->loadXML($xmldoc);
 		$doc->encoding = 'UTF-8';
 		$docxap = $doc->getElementsByTagName('docxap');
@@ -231,4 +234,3 @@ class Action_prevdoc extends ActionAbstract
 		return $xmldoc;
 	}
 }
-?>

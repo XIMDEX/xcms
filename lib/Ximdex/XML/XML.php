@@ -25,6 +25,7 @@
  */
 
 namespace Ximdex\XML ;
+use Ximdex\Logger;
 use Ximdex\Utils\FsUtils ;
 
 class XML {
@@ -115,7 +116,7 @@ class XML {
     public function getObject($content) {
         $this->setXmlSrc($content);
 
-        $domDocument = new DOMDocument();
+        $domDocument = new \DOMDocument();
         $domDocument->encoding = 'UTF-8';
         $domDocument->loadXML(utf8_encode($this->xmlSrc));
 
@@ -123,7 +124,7 @@ class XML {
             return $domDocument;
         }
 
-        XMD_Log::error('The loaded document has some errors');
+        Logger::error('The loaded document has some errors');
         return false;
     }
 

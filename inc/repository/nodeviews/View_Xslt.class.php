@@ -165,6 +165,8 @@ class View_Xslt extends Abstract_View
         
         //include and remove the duplicate templates in the docxap content
         $domDoc = new DOMDocument();
+        $domDoc->formatOutput = true;
+        $domDoc->preserveWhiteSpace = false;
         if (@$domDoc->load($docxap) === false)
         {
             $error = \Ximdex\Error::error_message();

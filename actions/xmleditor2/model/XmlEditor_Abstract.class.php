@@ -301,6 +301,8 @@ abstract class XmlEditor_Abstract
     {
         $xmldoc = '<?xml version="1.0" encoding="UTF-8"?>' . \Ximdex\Utils\Strings::stripslashes( $xmldoc);
         $doc = new DOMDocument();
+        $doc->formatOutput = true;
+        $doc->preserveWhiteSpace = false;
         $doc->loadXML($xmldoc);
         $docxap = $doc->firstChild;
 
@@ -368,6 +370,8 @@ abstract class XmlEditor_Abstract
 
             $auxPath = $domElement->getAttribute("href");
             $auxXsl = new DOMDocument();
+            $auxXsl->formatOutput = true;
+            $auxXsl->preserveWhiteSpace = false;
             $auxXsl->load($this->rel_path_docxap .$auxPath);
             $temporalContent = $auxXsl->saveXML();
             $temporalContent = preg_replace("/\<\/*xsl:stylesheet.*\>/", "", $temporalContent);
@@ -406,7 +410,7 @@ abstract class XmlEditor_Abstract
     /**
      * Generate a xsl file from schema and the template
      * @param  int    $idSchema     associated to the current node.
-     * @param  type   $maxIdVersion Schema idversion.
+     * @param  integer   $maxIdVersion Schema idversion.
      * @return string pointer to the new generated xsl file.
      */
     private function buildFormXsl($idSchema, $maxIdVersion)
@@ -546,7 +550,7 @@ abstract class XmlEditor_Abstract
 
     /**
      * Get elements typed like apply and $elementType
-     * @param  XPath  $xpathObj    pointer to the current element in Relax-NG.
+     * @param DomXPath  $xpathObj    pointer to the current element in Relax-NG.
      * @param  string $elementType searched type.
      * @return array  Names for found elements.
      */
@@ -567,7 +571,7 @@ abstract class XmlEditor_Abstract
 
     /**
      * Get applies elements
-     * @param  XPath $xpathObj pointer to the current element in Relax-NG.
+     * @param  DomXPath $xpathObj pointer to the current element in Relax-NG.
      * @return array Names for found elements.
      */
     private function getApplyElements(&$xpathObj)
@@ -587,7 +591,7 @@ abstract class XmlEditor_Abstract
 
     /**
      * Get an array for elements with type $elementType.
-     * @param XPathObject $xpathObj
+     * @param DomXPath $xpathObj
      * @param string $elementType Searching type.
      * @return array with element names.
      */
@@ -610,7 +614,7 @@ abstract class XmlEditor_Abstract
 
     /**
      * Get elements with a text tag inside.
-     * @param XPathObj $xpathObj Relax-NG XPath
+     * @param DomXPath $xpathObj Relax-NG XPath
      * @return array Name of all elements with a text tag.
      */
     private function getTextElements(&$xpathObj)

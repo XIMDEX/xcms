@@ -25,6 +25,7 @@
  */
 
 
+use Ximdex\Logger;
 use Ximdex\Deps\LinksManager;
 use Ximdex\Models\Node;
 use Ximdex\Models\NodeType;
@@ -42,7 +43,7 @@ class View_LinkParams extends Abstract_View implements Interface_View {
 		$version = new Version($idVersion);
 
 		if (!($version->get('IdVersion') > 0)) {
-			XMD_Log::error("Incorrect version $idVersion");
+			Logger::error("Incorrect version $idVersion");
 			return NULL;
 		}
 
@@ -52,11 +53,13 @@ class View_LinkParams extends Abstract_View implements Interface_View {
 		$nodeTypeName = $nodeType->get('Name');
 
 		if (!($nodeId > 0)) {
-			XMD_Log::error("Unexisting node: " . $version->get('IdNode'));
+			Logger::error("Unexisting node: " . $version->get('IdNode'));
 			return NULL;
 		}
 
 		$domDoc = new DOMDocument();
+		$domDoc->formatOutput = true;
+		$domDoc->preserveWhiteSpace = false;
 		$domDoc->loadXML(\Ximdex\XML\Base::recodeSrc($content, \Ximdex\XML\XML::UTF8));
 
 		$xpath = new DOMXPath($domDoc);
@@ -91,4 +94,3 @@ class View_LinkParams extends Abstract_View implements Interface_View {
 	}
 
 }
-?>

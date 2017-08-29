@@ -25,10 +25,12 @@
  *  @version $Revision$
  */
 
+use Ximdex\Logger;
 use Ximdex\Models\Language;
 use Ximdex\Models\Node;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\NodeTypes\AbstractStructuredDocument;
+use Ximdex\Runtime\App;
 
 ModulesManager::file('/inc/model/XimNewsNews.inc', 'ximNEWS');
 ModulesManager::file('/inc/model/RelNewsArea.php', 'ximNEWS');
@@ -66,7 +68,7 @@ class XimNewsNewLanguage extends AbstractStructuredDocument  {
 		$node = new Node($parentID);
 
 		if (!($node->get('IdNode') > 0)) {
-			XMD_Log::error("Error creating strdoc");
+			Logger::error("Error creating strdoc");
 			return NULL;
 		}
 
@@ -82,13 +84,13 @@ class XimNewsNewLanguage extends AbstractStructuredDocument  {
 		// builds xml
 		
 		if (is_null($dataNews)) {
-			XMD_Log::error("Data news don't exist. It will save a document with empty values. ");
+			Logger::error("Data news don't exist. It will save a document with empty values. ");
 		}else{
 			$result = ximNEWS_Adapter::SetNewsXmlContent($dataNews, $templateID);			
 		}
 	
 		if (is_null($result)) {
-			XMD_log::error("Setting news content, id: $nodeId");
+			Logger::error("Setting news content, id: $nodeId");
 		} else {
 			$strDoc = new StructuredDocument($nodeId);
 			$strDoc->SetContent($result, true);
@@ -97,7 +99,7 @@ class XimNewsNewLanguage extends AbstractStructuredDocument  {
 		if ((int) preg_match("/([0-9]{1,2})[-\/]([0-9]{1,2})[-\/]([0-9]{2,4})(\s*([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2}))*/",
 					$newsDate, $regs) == 0) {
 			
-			XMD_Log::error('Incorrect date format');
+			Logger::error('Incorrect date format');
 			$date = time();
 		} else {
 
@@ -120,7 +122,7 @@ class XimNewsNewLanguage extends AbstractStructuredDocument  {
 		$idNew = $ximNewsNews->add();
 
 		if (!($idNew > 0)) {
-			XMD_log::error("Error al persisitir en XimNewsNews");
+			Logger::error("Error al persisitir en XimNewsNews");
 			return NULL;
 		}
 
@@ -133,7 +135,6 @@ class XimNewsNewLanguage extends AbstractStructuredDocument  {
 	*  @param string name
 	*  @param int idSection
 	*  @param array dataNews
-	*  @return unknown
 	*/
 
 	function update($idNode, $name, $idSection, $dataNews) {
@@ -143,7 +144,7 @@ class XimNewsNewLanguage extends AbstractStructuredDocument  {
 		if ((int) preg_match("/([0-9]{1,2})[-\/]([0-9]{1,2})[-\/]([0-9]{2,4})(\s*([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2}))*/",
 					$dataNews['noticia_fecha'], $regs) == 0) {
 			
-			XMD_Log::error('Incorrect date format');
+			Logger::error('Incorrect date format');
 			$date = time();
 		} else {
 
@@ -171,7 +172,7 @@ class XimNewsNewLanguage extends AbstractStructuredDocument  {
 		$result = ximNEWS_Adapter::SetNewsXmlContent($dataNews, $idTemplate);
 
 		if (is_null($result)) {
-			XMD_log::error("Setting news content, id: $idNode");
+			Logger::error("Setting news content, id: $idNode");
 		} else {
 			$strDoc->SetContent($result, true);
 		}
@@ -186,12 +187,12 @@ class XimNewsNewLanguage extends AbstractStructuredDocument  {
 	function updateNew(){
 
 		$nodeNew = new Node($this->nodeID);
-		$content = \App::getValue( 'EncodingTag') . $nodeNew->getContent();
+		$content = App::getValue( 'EncodingTag') . $nodeNew->getContent();
 
 		$domDoc = new DOMDocument();
 		
 		if (!$domDoc->loadXML($content)) {
-			XMD_Log::error('Invalid XML from newsdocument '. $this->nodeID);
+			Logger::error('Invalid XML from newsdocument '. $this->nodeID);
 			return false;
 		}
 
@@ -203,7 +204,7 @@ class XimNewsNewLanguage extends AbstractStructuredDocument  {
 		if ($nodeList->length > 0) {
 			$titular = $nodeList->item(0)->nodeValue;
 		} else {
-			XMD_Log::error('Title not found in newsDocument ' . $this->nodeID);
+			Logger::error('Title not found in newsDocument ' . $this->nodeID);
 		}
 
 		$nodeList = $xpath->query('//@noticia_fecha');
@@ -212,14 +213,14 @@ class XimNewsNewLanguage extends AbstractStructuredDocument  {
 			$newsDate = $nodeList->item(0)->nodeValue;
 
 			if ((int) preg_match("/([0-9]{1,2})[-/]([0-9]{1,2})[-/]([0-9]{2,4})( ([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2}))*/",$newsDate, $regs) == 0) {
-				XMD_Log::error('Incorrect date format ' . $this->nodeID);
+				Logger::error('Incorrect date format ' . $this->nodeID);
 				$time = time();
 			} else {
 				$time = mktime($regs[4], $regs[5], $regs[6], $regs[2], $regs[1], $regs[3]);
 			}
 
 		} else {
-			XMD_Log::error('Date not found in newsDocument ' . $this->nodeID);
+			Logger::error('Date not found in newsDocument ' . $this->nodeID);
 			return false;
 		}
 
@@ -227,7 +228,7 @@ class XimNewsNewLanguage extends AbstractStructuredDocument  {
 		$ximNewsNew = new XimNewsNew($this->nodeID);
 
 		if (!($ximNewsNew->get('IdNew') > 0)) {
-			XMD_Log::error('News document not found');
+			Logger::error('News document not found');
 			return false;
 		}
 
@@ -235,7 +236,7 @@ class XimNewsNewLanguage extends AbstractStructuredDocument  {
 		$ximNewsNew->set('Fecha', $time);
 		
 		if (!$ximNewsNew->update()) {
-			XMD_Log::error('Updating in XimNewsNews table');
+			Logger::error('Updating in XimNewsNews table');
 			return false;
 		}
 		
@@ -258,6 +259,8 @@ class XimNewsNewLanguage extends AbstractStructuredDocument  {
 
 		$domDoc = new DOMDocument();
 		$domDoc->validateOnParse = true;
+		$domDoc->preserveWhiteSpace = false;
+		$domDoc->formatOutput = true;
 		if (!$domDoc->loadXML(\Ximdex\XML\Base::recodeSrc($content, \Ximdex\XML\XML::UTF8))) return false;
 
 		$xpath = new DOMXPath($domDoc);
@@ -271,7 +274,7 @@ class XimNewsNewLanguage extends AbstractStructuredDocument  {
 		$result = \Ximdex\XML\Base::recodeSrc(str_replace('<?xml version="1.0"?>', '', $result), \Ximdex\XML\XML::UTF8);
 		
 		if (empty($result)) {
-			XMD_Log::error('Updating news ' . $this->parent->get('IdNode'). ' name in XML');
+			Logger::error('Updating news ' . $this->parent->get('IdNode'). ' name in XML');
 			return false;
 		}
 
@@ -349,19 +352,19 @@ class XimNewsNewLanguage extends AbstractStructuredDocument  {
 	function updateToSchema() {
 		$structuredDocument = new StructuredDocument($this->nodeID);
 		if (!$structuredDocument->get('IdDoc') > 0) {
-			XMD_Log::error('No se ha podido cargar el structured Document asociado a la noticia ' . $this->nodeID . ' abortando adecuaci�n a schema');
+			Logger::error('No se ha podido cargar el structured Document asociado a la noticia ' . $this->nodeID . ' abortando adecuaci�n a schema');
 			return false;
 		}
 
 		$idTemplate = $structuredDocument->get('IdTemplate');
 		if (!($idTemplate > 0)) {
-			XMD_Log::error("An error has occurred while loading the document {$this->nodeID} schema.");
+			Logger::error("An error has occurred while loading the document {$this->nodeID} schema.");
 			return false;
 		}
 
 		$visualTemplate = new Node($idTemplate);
 		if (!($visualTemplate->get('IdNode') > 0)) {
-			XMD_Log::error("La plantilla $idTemplate a la que est� asociada la noticia {$this->nodeID} ha sido borrada, por lo que la noticia no se puede adecuar al esquema");
+			Logger::error("La plantilla $idTemplate a la que est� asociada la noticia {$this->nodeID} ha sido borrada, por lo que la noticia no se puede adecuar al esquema");
 			return false;
 		}
 
@@ -377,7 +380,7 @@ class XimNewsNewLanguage extends AbstractStructuredDocument  {
 		$contents = $this->GetContent();
 		if (empty($contents)) {
 			$msg = "La noticia {$this->nodeID} no tiene contenido, se va a asociar el contenido por defecto";
-			XMD_Log::notice($msg);
+			Logger::notice($msg);
 			$this->messages->add($msg, MSG_TYPE_NOTICE);
 			$this->SetContent($defaultContents);
 			return true;
@@ -389,14 +392,14 @@ class XimNewsNewLanguage extends AbstractStructuredDocument  {
 
 		$domDefault = domxml_open_mem($xmlDefaultContent);
 		if (!$domDefault) {
-			XMD_Log::error("El contenido por defecto del esquema $idTemplate no se ha podido cargar como xml");
+			Logger::error("El contenido por defecto del esquema $idTemplate no se ha podido cargar como xml");
 			$error = true;
 		}
 
 		$domContent = domxml_open_mem($xmlContents);
 
 		if (!$domContent) {
-			XMD_Log::error("The content of the document {$this->nodeID} could not be loaded as XML.");
+			Logger::error("The content of the document {$this->nodeID} could not be loaded as XML.");
 			$error = true;
 		}
 
@@ -409,7 +412,7 @@ class XimNewsNewLanguage extends AbstractStructuredDocument  {
 
 		if ($rootDefault->tagname() != $rootContent->tagname()) {
 			$msg = "The schema $idTemplate doesn't match with this document.";
-			XMD_Log::error($msg);
+			Logger::error($msg);
 			$this->messages->add($msg, MSG_TYPE_ERROR);
 			return false;
 		}
@@ -556,14 +559,14 @@ class XimNewsNewLanguage extends AbstractStructuredDocument  {
 		$nodeColector = new Node($idColector);
 
 		if (!($nodeColector->get('IdNode') > 0)) {
-			XMD_Log::error("Unexisting colector $idColector");
+			Logger::error("Unexisting colector $idColector");
 			return false;
 		}
 
 		$newsID = $this->parent->get('IdNode');
 
 		if (!$strVersion) {
-			XMD_Log::info("Version not found");
+			Logger::info("Version not found");
 			$this->messages->add("Falta version para la noticia $newsID", MSG_TYPE_ERROR);
 			return false;
 		}
@@ -584,7 +587,7 @@ class XimNewsNewLanguage extends AbstractStructuredDocument  {
 		
 			$this->messages->add("News $newsName language is not compatible with the colector $colectorName",
 				MSG_TYPE_WARNING);
-			XMD_Log::warning("News $newsID has an incompatible language with the colector $idColector");
+			Logger::warning("News $newsID has an incompatible language with the colector $idColector");
 
 			return false;
 		}
@@ -640,7 +643,7 @@ class XimNewsNewLanguage extends AbstractStructuredDocument  {
 		}
 
 		if (!$result) {
-			XMD_Log::error("La noticia $newsName no se ha asociado al colector $idColector. informaci�n adicional " . 
+			Logger::error("La noticia $newsName no se ha asociado al colector $idColector. informaci�n adicional " . 
 				print_r($relNewsColector->messages->messages, true));
 			$this->messages->mergeMessages($relNewsColector->messages);
 			return false;
@@ -721,7 +724,7 @@ class XimNewsNewLanguage extends AbstractStructuredDocument  {
 		$result = $relNewsAreas->add();
 
 		if (!($result > 0)) {
-			XMD_Log::error("Adding relation with area $idArea");
+			Logger::error("Adding relation with area $idArea");
 			return false;
 		}
 
@@ -733,12 +736,13 @@ class XimNewsNewLanguage extends AbstractStructuredDocument  {
 		$domDoc->xmlStandalone = true;
 		$domDoc->validateOnParse = true;
 		$domDoc->preserveWhiteSpace = false;
+		$domDoc->formatOutput = true;
 		$domDoc->loadXML(\Ximdex\XML\Base::recodeSrc($content, \Ximdex\XML\XML::UTF8));
 
 		$areaNode = $domDoc->getElementsByTagName('area_tematica')->item(0);
 
 		if (empty($areaNode)) {
-			XMD_Log::info("The xml of news haven't any tag area");
+			Logger::info("The xml of news haven't any tag area");
 			return true;
 		}
 		
@@ -754,7 +758,7 @@ class XimNewsNewLanguage extends AbstractStructuredDocument  {
 		$rootNode = $items->item(0);
 		
 		if (is_null($rootNode)) {
-			XMD_Log::info("The area $idArea isn't included in XML");
+			Logger::info("The area $idArea isn't included in XML");
 			return false;
 		}
 		
@@ -780,7 +784,7 @@ class XimNewsNewLanguage extends AbstractStructuredDocument  {
 		$ximNewsAreas = new XimNewsAreas($idArea);
 		
 		if (!$ximNewsAreas->DeleteRelNewsArea($idArea, $this->parent->get('IdNode'))) {
-			XMD_Log::error("Deleting the relation with area $idArea");
+			Logger::error("Deleting the relation with area $idArea");
 		}
 
 		// modifying the xml
@@ -790,13 +794,14 @@ class XimNewsNewLanguage extends AbstractStructuredDocument  {
 		$domDoc = new DOMDocument();
 		$domDoc->validateOnParse = true;
 		$domDoc->preserveWhiteSpace = false;
+		$domDoc->formatOutput = true;
 		$domDoc->loadXML(\Ximdex\XML\Base::recodeSrc($content, \Ximdex\XML\XML::UTF8));
 
 		$xpath = new DOMXPath($domDoc);
 		$option = $xpath->query("//area_tematica/opcion[@value='$idArea']")->item(0);
 
 		if (is_null($option)) {
-			XMD_Log::info("The area $idArea isn't included in XML");
+			Logger::info("The area $idArea isn't included in XML");
 			return true;
 		}
 
@@ -805,7 +810,7 @@ class XimNewsNewLanguage extends AbstractStructuredDocument  {
 		$rootNode = $items->item(0);
 				
 		if (is_null($rootNode)) {
-			XMD_Log::info("The area $idArea isn't remove in XML");
+			Logger::info("The area $idArea isn't remove in XML");
 			return false;
 		}
 		

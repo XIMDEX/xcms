@@ -30,6 +30,7 @@ use Ximdex\Models\StructuredDocument;
 use Ximdex\Models\Version;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Parsers\ParsingRng;
+use Ximdex\Runtime\App;
 
 ModulesManager::file('/inc/metadata/MetadataManager.class.php');
 ModulesManager::file('/actions/manageproperties/inc/LanguageProperty.class.php');
@@ -72,7 +73,7 @@ class Action_managemetadata extends ActionAbstract
             // http://lab12.ximdex.net/ximdexxlyre/data/files/ef06540adb2ac1a87f241aa1b59aad57
             $v = new Version();
             $hashfile = $v->find("File", "IdNode = %s ORDER BY IdVersion DESC LIMIT 1", array($nodeId), MONO);
-            $values['imagesrc'] = \App::getValue("UrlRoot") . "/data/files/" . $hashfile[0];
+            $values['imagesrc'] = App::getValue("UrlRoot") . "/data/files/" . $hashfile[0];
         } else {
             $values['imagesrc'] = 'http://placehold.it/200x125/7bcabf/464646/&text=' . $values['typename'];
         }
@@ -168,6 +169,9 @@ class Action_managemetadata extends ActionAbstract
             $idLanguage = $metadata_node->get('IdLanguage');
             $content = $metadata_node->getContent();
             $domDoc = new DOMDocument();
+            $domDoc->formatOutput = true;
+            $domDoc->preserveWhiteSpace = false;
+            $domDoc->formatOutput = true;
             if ($domDoc->loadXML("<?xml version=\"1.0\" encoding=\"UTF-8\"?><root>" . $content . "</root>")) {
 
                 $custom_elements = $this->_getChildsFromDoc($domDoc, 'custom_info');

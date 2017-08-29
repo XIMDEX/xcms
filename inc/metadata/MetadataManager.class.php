@@ -166,6 +166,8 @@ class MetadataManager{
         $info = $node->loadData();
         $idLanguage = $metadata_node->get('IdLanguage');
         $domDoc = new DOMDocument();
+        $domDoc->formatOutput = true;
+        $domDoc->preserveWhiteSpace = false;
         if (@$domDoc->loadXML("<root>".$content."</root>")) {
             if ($domDoc->getElementsByTagName('sys_info')->length > 0) {
                 $nodeid = $domDoc->getElementsByTagName('nodeid')->item(0);
@@ -289,6 +291,8 @@ class MetadataManager{
             $idLanguage = $metadata_node->get('IdLanguage');
             $content = $metadata_node->getContent();
             $domDoc = new DOMDocument();
+            $domDoc->formatOutput = true;
+            $domDoc->preserveWhiteSpace = false;
             if ($domDoc->loadXML("<root>".$content."</root>")) {
                 if($domDoc->getElementsByTagName('sys_info')->length > 0) {
                     $nodeid = $domDoc->getElementsByTagName('nodeid')->item(0);
@@ -381,6 +385,8 @@ class MetadataManager{
             if ($selectedLanguage == $idLanguage) {
                 $content = $metadata_node->getContent();
                 $domDoc = new DOMDocument();
+                $domDoc->formatOutput = true;
+                $domDoc->preserveWhiteSpace = false;
                 if ($domDoc->loadXML("<root>".$content."</root>")) {
 
                     // This method only applies for XmlContainer (and its XML docs)
@@ -710,4 +716,3 @@ class MetadataManager{
     }
 
 }
-?>

@@ -24,6 +24,7 @@
  * @version $Revision$
  */
 
+use Ximdex\Logger;
 use Ximdex\Models\Node;
 
 
@@ -45,7 +46,7 @@ class View_XmlDocument extends Abstract_View implements Interface_View
         $this->retrieveContent($pointer);
         $node = new Node($idNode);
         if (!($node->get('IdNode') > 0)) {
-        	XMD_Log::error("The node that is trying to destroy does not exist: $idNode");
+        	Logger::error("The node that is trying to destroy does not exist: $idNode");
             return false;
         }
 
@@ -91,6 +92,8 @@ class View_XmlDocument extends Abstract_View implements Interface_View
     {
 
         $doc = new DOMDocument();
+        $doc->formatOutput = true;
+        $doc->preserveWhiteSpace = false;
         $result = $doc->loadXML($content);
         if (!$result) return false;
 
@@ -192,5 +195,3 @@ class View_XmlDocument extends Abstract_View implements Interface_View
     }
 
 }
-
-?>

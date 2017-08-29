@@ -25,6 +25,8 @@
  * @version $Revision$
  */
 
+use Ximdex\Logger;
+use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
 
 ModulesManager::file('/conf/xsparrow.conf', 'XSparrow');
@@ -72,7 +74,7 @@ class Theme
 
         if ($theme and !$xml) {
             //Param not valid. Log Message
-            XMD_Log::warning("XSPARROW: Unable to load $theme theme.");
+            Logger::warning("XSPARROW: Unable to load $theme theme.");
         } else if ($xml) {
             $this->getThemeProperties();
         }
@@ -106,7 +108,7 @@ class Theme
             $themesFolderPath = substr($themesFolderPath, $lastSlash + 1);
         }
 
-        $fullPath = \App::getValue("AppRoot") . THEMES_FOLDER . "/$themesFolderPath/$themesFolderPath.xml";
+        $fullPath = App::getValue("AppRoot") . THEMES_FOLDER . "/$themesFolderPath/$themesFolderPath.xml";
 
 
         if (file_exists($fullPath)) {
@@ -145,12 +147,12 @@ class Theme
                     }
 
                 } else {//if not exists theme-properties
-                    XMD_Log::error("XSPARROW: /xsparrow-theme/theme-properties node not found. Please check the xml.");
+                    Logger::error("XSPARROW: /xsparrow-theme/theme-properties node not found. Please check the xml.");
                 }
 
             } else { //if error on load
 
-                XMD_Log::error("XSPARROW: Unable to load xml document to get its properties" . $this->xml);
+                Logger::error("XSPARROW: Unable to load xml document to get its properties" . $this->xml);
             }
 
         }
@@ -188,24 +190,24 @@ class Theme
 
         //If doesnt exist /xsparrow-theme node
         if (!$xsparrowThemeNodes->length) {
-            XMD_Log::warning("XSPARROW: The theme has not version number in xsparrow-theme node");
+            Logger::warning("XSPARROW: The theme has not version number in xsparrow-theme node");
             return false;
         }
 
         $xsparrowThemeNode = $xsparrowThemeNodes->item(0);
         //If doesnt exists version attribute.
         if (!$xsparrowThemeNode->hasAttribute("version")) {
-            XMD_Log::warning("XSPARROW: The theme has not version number in xsparrow-theme node");
+            Logger::warning("XSPARROW: The theme has not version number in xsparrow-theme node");
             return false;
         }
 
 
         $this->version = $xsparrowThemeNode->getAttribute("version");
-        $rngFilePath = \App::getValue("AppRoot") . SCHEMES_FOLDER . "/" . SCHEME_BASENAME . $this->version . ".xml";
+        $rngFilePath = App::getValue("AppRoot") . SCHEMES_FOLDER . "/" . SCHEME_BASENAME . $this->version . ".xml";
 
         //if doesnt exist rng file.
         if (!file_exists($rngFilePath)) {
-            XMD_Log::warning("XSPARROW: scheme $rngFilePath not found");
+            Logger::warning("XSPARROW: scheme $rngFilePath not found");
             return false;
 
         }
@@ -216,7 +218,7 @@ class Theme
         if ($result && !$lazy) {
             $rngValidator = new \Ximdex\XML\Validators\RNG();
             if (!$rngValidator->validate($rngFileContent, $xml)) {
-                XMD_Log::error("XSPARROW: The theme doesn't validate the relaxng $rngFilePath");
+                Logger::error("XSPARROW: The theme doesn't validate the relaxng $rngFilePath");
                 return false;
             }
         }
@@ -245,7 +247,7 @@ class Theme
         }
 
 
-        $templateRootFolder = \App::getValue("AppRoot") . THEMES_FOLDER;//Root theme folder
+        $templateRootFolder = App::getValue("AppRoot") . THEMES_FOLDER;//Root theme folder
 
         $templateFolders = FsUtils::readFolder($templateRootFolder, false); //Getting all theme folders
         $excluded = array();

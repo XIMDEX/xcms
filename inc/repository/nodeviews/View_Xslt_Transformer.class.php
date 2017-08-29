@@ -26,6 +26,9 @@
 
 
 
+use Ximdex\Logger;
+use Ximdex\Runtime\App;
+
 ModulesManager::file('/inc/repository/nodeviews/Abstract_View.class.php');
 ModulesManager::file('/inc/repository/nodeviews/Interface_View.class.php');
 
@@ -40,7 +43,7 @@ class View_Xslt_Transformer extends Abstract_View implements Interface_View {
 		} 
 		
 		if (!is_file(XIMDEX_ROOT_PATH . $xsltFile)) {
-			XMD_Log::error('No se ha encontrado la xslt solicitada ' . $xsltFile);
+			Logger::error('No se ha encontrado la xslt solicitada ' . $xsltFile);
 			return $pointer;
 		}
 		
@@ -56,11 +59,13 @@ class View_Xslt_Transformer extends Abstract_View implements Interface_View {
 	function _fixDocumentEncoding($content) {
 		
 		$doc = new DOMDocument();
+		$doc->formatOutput = true;
+		$doc->preserveWhiteSpace = false;
 		$doc->loadXML($content);
 		
 		// In this case the XSLT template does not provide an encoding
 		if (empty($doc->encoding)) {
-			$encoding = \App::getValue( 'displayEncoding');
+			$encoding = App::getValue( 'displayEncoding');
 			$doc->encoding = $encoding;
 			$content = $doc->saveXML();
 		}
@@ -69,4 +74,3 @@ class View_Xslt_Transformer extends Abstract_View implements Interface_View {
 	}
 
 }
-?>

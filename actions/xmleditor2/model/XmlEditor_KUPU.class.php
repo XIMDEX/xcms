@@ -97,14 +97,15 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
 
         $channels = $node->getChannels();
         $channelList = array();
-        foreach ($channels as $idChannel) {
-            $channel = new Channel($idChannel);
-            $channelObj = array();
-            $channelObj["text"] = _('Preview as') . ' ' . $channel->getName();
-            $channelObj["href"] = "#";
-            $channelObj["data"] = $idChannel;
-            $channelList[] = $channelObj;
-        }
+        if ($channels)
+            foreach ($channels as $idChannel) {
+                $channel = new Channel($idChannel);
+                $channelObj = array();
+                $channelObj["text"] = _('Preview as') . ' ' . $channel->getName();
+                $channelObj["href"] = "#";
+                $channelObj["data"] = $idChannel;
+                $channelList[] = $channelObj;
+            }
 
         $availableViews = array('tree');
 
@@ -807,5 +808,3 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
         return $result;
     }
 }
-
-?>

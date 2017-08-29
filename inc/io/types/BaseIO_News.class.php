@@ -116,5 +116,3 @@ class BaseIO_News {
 		return $areas;
 	}
 }
-
-?>
