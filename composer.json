@@ -44,7 +44,10 @@
         "symfony/console": "^3.1",
         "php-di/php-di": "^5.4",
         "doctrine/common": "^2.7",
-        "illuminate/support": "5.2.*"
+        "illuminate/support": "5.2.*",
+        
+        "doctrine/cache": "1.6.2",
+        "doctrine/annotations": "1.4.0"
     },
      "require-dev": {
         "mockery/mockery": "0.8.0",
