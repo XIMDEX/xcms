@@ -612,6 +612,8 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
         }
 
         $spellCheckingDom = new DOMDocument('1.0', 'UTF-8');
+        $spellCheckingDom->formatOutput = true;
+        $spellCheckingDom->preserveWhiteSpace = false;
         $domRoot = $spellCheckingDom->createElement('spell_check');
 
         foreach ($spellCheck as $key => $value) {
@@ -699,36 +701,40 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
         $rngElements = $parser->getElements();
 
         // Obtaining array with templates referenced from templates_include.xsl
-        $templatesElements = array();
-        $docxapId = NULL;
-        $depsMngr = new DepsManager();
-        if ($templatesIds = $depsMngr->getBySource(DepsManager::STRDOC_TEMPLATE, $idNode)) {
-            foreach ($templatesIds as $templateId) {
-                $templateNode = new Node($templateId);
-                if ($templateNode->get('IdNode') > 0 && $templateNode->get('Name') == 'docxap.xsl')
-                    $docxapId = $templateId;
+        if ($this->node->GetNodeType() != Ximdex\Services\NodeType::METADATA_DOCUMENT)
+        {
+            $docxapId = NULL;
+            $depsMngr = new DepsManager();
+            if ($templatesIds = $depsMngr->getBySource(DepsManager::STRDOC_TEMPLATE, $idNode)) {
+                foreach ($templatesIds as $templateId) {
+                    $templateNode = new Node($templateId);
+                    if ($templateNode->get('IdNode') > 0 && $templateNode->get('Name') == 'docxap.xsl')
+                        $docxapId = $templateId;
+                }
             }
+            if (is_null($docxapId)) {
+                Logger::error(_('docxap can not be found for node: ' . $this->node->GetNodeName()));
+                return false;
+            }
+            $xslParser = new ParsingXsl($docxapId);
+            $templatesInclude = $xslParser->getIncludedElements('templates_include');
+            //$templatesIncludePath = $this->rel_path_docxap . $templatesInclude[0];
+            $templatesIncludePath = str_replace(App::getValue('UrlRoot'), App::getValue('AppRoot'), $templatesInclude[0]);
+            
+            $xslParser = new ParsingXsl(NULL, $templatesIncludePath);
+            $templatesElements = $xslParser->getIncludedElements(NULL, true, true);
+            
+            // Obtaining no renderizable elements
+            $intersectionElements = array_intersect($rngElements, $templatesElements);
         }
-
-        if (is_null($docxapId)) {
-            Logger::error(_('docxap can not be found'));
-            return false;
-        }
-        $project=$this->node->getProject();
-        $nodeProject = new Node($project);
-        $xslParser = new ParsingXsl($docxapId);
-        $templatesInclude = $xslParser->getIncludedElements('templates_include');
-        //$templatesIncludePath = $this->rel_path_docxap . $templatesInclude[0];
-        $templatesIncludePath = str_replace(App::getValue('UrlRoot'), App::getValue('AppRoot'), $templatesInclude[0]);
-
-        $xslParser = new ParsingXsl(NULL, $templatesIncludePath);
-        $templatesElements = $xslParser->getIncludedElements(NULL, true, true);
-
-        // Obtaining no renderizable elements
-        $intersectionElements = array_intersect($rngElements, $templatesElements);
+        else
+            $intersectionElements = array();
+        
         $norenderizableElements = array_diff($rngElements, $intersectionElements);
 
         $domDoc = new DOMDocument('1.0', 'UTF-8');
+        $domDoc->formatOutput = true;
+        $domDoc->preserveWhiteSpace = false;
         $domRoot = $domDoc->createElement('elements');
 
         $i = 0;
@@ -736,6 +742,9 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
             $i++;
             $element = $domDoc->createElement('element');
             $element->setAttribute('index', $i);
+            
+            
+            
 
             $elementTextNode = $domDoc->createTextNode($noRenderizableElement);
             $element->appendChild($elementTextNode);

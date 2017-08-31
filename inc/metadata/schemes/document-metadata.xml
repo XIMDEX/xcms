@@ -4,6 +4,7 @@
 		<element name="docxap">
 			<ref name="def_sys_info" />
 			<ref name="def_custom_info" />
+			<ref name="def_tags" />
 			<xim:description>Document Metadata</xim:description>
 		</element>
 	</start>
@@ -155,6 +156,15 @@
 			<xim:default_content>[Size]</xim:default_content>
 			<text />
 			<xim:description>Size</xim:description>
+		</element>
+	</define>
+
+	<define name="def_tags">
+		<element name="tags">
+			<optional>
+				<attribute name="uid" />
+			</optional>
+			<xim:description>Metadata Tags</xim:description>
 		</element>
 	</define>
 
