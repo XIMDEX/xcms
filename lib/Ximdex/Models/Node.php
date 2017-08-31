@@ -704,21 +704,28 @@ class Node extends NodesOrm
 
     /**
      * If it is contained, returns the relative path from node $nodeID
+     * @param int $nodeID
+     * @param Node $nodeReplace
+     * @return string|NULL
      */
-    /**
-     * @param $nodeID
-     * @return null|string
-     */
-    function GetRelativePath($nodeID)
+    function GetRelativePath($nodeID, Node $nodeReplace = null)
     {
         $this->ClearError();
         if ($this->get('IdNode') > 0) {
-            if ($this->IsOnNode($nodeID)) {
-                if ((!$this->GetParent()) || ($this->get('IdNode') == $nodeID)) {
-                    return '/' . $this->GetNodeName();
-                } else {
+            if ($this->IsOnNode($nodeID))
+            {
+                if ($nodeReplace and $this->GetID() == $nodeReplace->GetID())
+                    $nodeName = $nodeReplace->GetNodeName();
+                else
+                    $nodeName = $this->GetNodeName();
+                if ((!$this->GetParent()) || ($this->get('IdNode') == $nodeID))
+                {
+                    return '/' . $nodeName;
+                }
+                else
+                {
                     $parent = new Node($this->GetParent());
-                    return $parent->GetRelativePath($nodeID) . '/' . $this->GetNodeName();
+                    return $parent->GetRelativePath($nodeID, $nodeReplace) . '/' . $nodeName;
                 }
             } else
                 $this->SetError(1);
@@ -2390,16 +2397,14 @@ class Node extends NodesOrm
      * If flag=5, returns all the nodes which depend on the one in the object which cannot be deleted.
      * If flag=6, returns all the nodes which depend on the one in the object which are publishable.
      * If flag=null, returns all the nodes which depend on the one in the object
-     */
-    /**
-     * @param null $flag
-     * @param bool $firstNode
+     * @param int $flag
+     * @param string $firstNode
      * @param string $filters
-     * @return array
+     * @param string $nodeName
+     * @return array|boolean[]|string[]
      */
     function TraverseTree($flag = null, $firstNode = true, $filters = '')
     {
-
         unset($filters);
 
         /// Making an object with current node and its ID is added

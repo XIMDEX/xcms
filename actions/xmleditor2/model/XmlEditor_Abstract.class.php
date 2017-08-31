@@ -343,6 +343,7 @@ abstract class XmlEditor_Abstract
         }
     }
 
+    //TODO ajlucena
     /**
 	 * Replace xsl:include tags by the content of file included
 	 */

@@ -78,6 +78,8 @@ class ImageNode extends FileNode
 
     function GetCustomMetadata(){
         $domNode = new DOMDocument('1.0', 'utf-8');
+        $domNode->formatOutput = true;
+        $domNode->preserveWhiteSpace = false;
 
         $width = $domNode->createElement("width");
         $height = $domNode->createElement('height');

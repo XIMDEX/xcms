@@ -30,7 +30,6 @@ namespace Ximdex\Parsers;
 use DOMDocument;
 use domNode;
 use DOMXPath;
-use RNG;
 use Ximdex\Models\Node;
 use Ximdex\Parsers\PVD2RNG\PVD2RNG;
 use Ximdex\Logger as XMD_Log;

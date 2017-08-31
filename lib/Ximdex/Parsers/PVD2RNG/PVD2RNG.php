@@ -117,6 +117,8 @@ class PVD2RNG
 
         unset($this->_domrng);
         $this->_domrng = new DOMDocument('1.0', 'UTF-8');
+        $this->_domrng->formatOutput = true;
+        $this->_domrng->preserveWhiteSpace = false;
         $this->_rngxpath = new DOMXPath($this->_domrng);
         $start = $this->_domrng->createElement('start');
         $start->setAttribute('xmlns', 'http://relaxng.org/ns/structure/1.0');
@@ -165,6 +167,8 @@ class PVD2RNG
     {
 
         $domrng = new DOMDocument('1.0', 'UTF-8');
+        $domrng->formatOutput = true;
+        $domrng->preserveWhiteSpace = false;
 
         // --------------------------------------------------------------------------------------
         // Estructura inicial para RelaxNG

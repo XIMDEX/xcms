@@ -171,7 +171,6 @@ class Action_managemetadata extends ActionAbstract
             $domDoc = new DOMDocument();
             $domDoc->formatOutput = true;
             $domDoc->preserveWhiteSpace = false;
-            $domDoc->formatOutput = true;
             if ($domDoc->loadXML("<?xml version=\"1.0\" encoding=\"UTF-8\"?><root>" . $content . "</root>")) {
 
                 $custom_elements = $this->_getChildsFromDoc($domDoc, 'custom_info');

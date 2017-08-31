@@ -24,6 +24,7 @@
  * @version $Revision$
  */
 
+use Ximdex\Logger;
 use Ximdex\Models\Language;
 use Ximdex\Models\Node;
 use Ximdex\Models\Pipeline;
@@ -31,6 +32,8 @@ use Ximdex\Models\PipeNodeTypes;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\App;
 use Ximdex\Runtime\Db;
+
+ModulesManager::file('/inc/nodetypes/xsltnode.php');
 
 class Action_renamenode extends ActionAbstract
 {
@@ -139,6 +142,7 @@ class Action_renamenode extends ActionAbstract
             $this->messages->add(_('Node could not be successfully loaded'), MSG_TYPE_ERROR);
             $result = false;
         } else {
+            $oldNode = clone $node;
             $result = $node->RenameNode($name);
             if ($result)
             {
@@ -161,6 +165,15 @@ class Action_renamenode extends ActionAbstract
                             $this->messages->add(sprintf(_('Alias for language %s has been successfully updated'), $language->get('Name')), MSG_TYPE_NOTICE);
                         }
                     }
+                }
+                
+                //update all the references of the old name of this node to the new one
+                if ($node->GetNodeType() == Ximdex\Services\NodeType::PROJECT or $node->GetNodeType() == Ximdex\Services\NodeType::SERVER 
+                        or $node->GetNodeType() == Ximdex\Services\NodeType::SECTION)
+                {
+                    $res = xsltnode::rename_include_templates($node, $oldNode);
+                    if ($res === false)
+                        Logger::error('Any docxap.xsl file can not been updated with the new name: ' . $node->GetNodeName());
                 }
             }
             else

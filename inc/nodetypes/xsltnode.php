@@ -169,10 +169,6 @@ class xsltnode extends FileNode
             if ($ximptd->get('IdParent') == $projectId) {
 
                 // Making include in project (modify includes from project and its sections)
-                /*
-                $includeString = "<xsl:include href=\"$fileName\"/>\n";
-                $this->writeIncludeFile($fileName, $projectId, $nodeTypeId, $stateID, $includeString);
-                */
                 $this->writeIncludeFile($fileName, $projectId, $nodeTypeId, $stateID);
                 
             } else {
@@ -180,10 +176,6 @@ class xsltnode extends FileNode
                 // Making include only in section ximptd
                 $sectionId = $node->GetSection();
                 $section = new Node($sectionId);
-                /*
-                $includeString = "<xsl:include href=\"$fileName\"/>\n";
-                return $this->writeIncludeFile($fileName, $sectionId, $nodeTypeId, $stateID, $includeString);
-                */
                 return $this->writeIncludeFile($fileName, $sectionId, $nodeTypeId, $stateID);
             }
 
@@ -666,7 +658,7 @@ class xsltnode extends FileNode
     /**
      * Create a new basic docxap XSLT file for the project if it's not exists
      * @param null|int $sectionId
-     * @return boolean|NULL|string|boolean|boolean|string
+     * @return boolean|NULL|int
      */
     private function create_project_docxap_file()
     {
@@ -866,5 +858,124 @@ class xsltnode extends FileNode
         //save the regenerated XML content to a string
         $content = $dom->saveXML();
         return $content;
+    }
+    
+    /**
+     * Change all the templates inclusions in each docxap.xsl template that dependant of the given node with the new name
+     * Used after a name project, server o section has been changed
+     * @param Node $node
+     * @param Node $oldNode
+     * @return boolean
+     */
+    public static function rename_include_templates(Node $node, Node $oldNode)
+    {
+        if ($node->GetNodeName() == $oldNode->GetNodeName())
+            return true;
+        
+        //if the node type is not a project, server or section, it do nothing 
+        if ($node->GetNodeType() != Ximdex\Services\NodeType::PROJECT and $node->GetNodeType() != Ximdex\Services\NodeType::SERVER
+               and $node->GetNodeType() != Ximdex\Services\NodeType::SECTION)
+            return true;
+            
+        //load the project ID of the node given
+        $projectId = $node->GetProject();
+        
+        return self::rename_templates_in_node($node, $oldNode, $projectId);
+    }
+    
+    /**
+     * Change the references to a templates_include.xsl in a docxap file with a templates node given
+     * @param Node $node
+     * @param Node $oldNode
+     * @param int $projectId
+     * @param array $urls
+     * @return boolean
+     */
+    private static function rename_templates_in_node(Node $node, Node $oldNode, $projectId, $urls = array())
+    {
+        //look for template folder
+        $templateFolderId = $node->GetChildren(Ximdex\Services\NodeType::TEMPLATES_ROOT_FOLDER);
+        if ($templateFolderId)
+        {
+            $templateFolder = new Node($templateFolderId[0]);
+            
+            //look for docxap template
+            $docxapTemplateId = $templateFolder->GetChildByName('docxap.xsl');
+            if ($docxapTemplateId)
+            {
+                $docxapTemplate = new Node($docxapTemplateId);
+                $content = $docxapTemplate->GetContent();
+                
+                //change the include references for templates_include.xsl to the new path
+                $dom = new DOMDocument();
+                $dom->formatOutput = true;
+                $dom->preserveWhiteSpace = false;
+                if (!@$dom->loadXML($content))
+                {
+                    $error = 'Can\'t load a dependant docxap template to update the new name in include references';
+                    $this->messages->add($error, MSG_TYPE_WARNING);
+                    return false;
+                }
+                //generate the new and old template URL for this node
+                $oldTemplateURL = App::getValue('UrlRoot') . App::getValue('NodeRoot') . $node->GetRelativePath($projectId, $oldNode)
+                        . '/templates/templates_include.xsl';
+                $newTemplateURL = App::getValue('UrlRoot') . App::getValue('NodeRoot') . $node->GetRelativePath($projectId)
+                        . '/templates/templates_include.xsl';
+                //read the include tags from the docxap
+                $root = $dom->getElementsByTagName('stylesheet');
+                $xPath = new DOMXPath($dom);
+                $templatesIncludes = $xPath->query('//xsl:stylesheet/xsl:include');
+                foreach ($templatesIncludes as $templateInclude)
+                {
+                    //if the template file is not a templates_include.xsl file continue to the next one
+                    if (FsUtils::get_url_file($templateInclude->getAttribute('href')) == 'templates_include.xsl')
+                    {
+                        if ($templateInclude->getAttribute('href') == $oldTemplateURL)
+                        {
+                            //replace the xsl:include tag for each template inclusion with the new URL
+                            $domElement = $dom->createElement('xsl:include');
+                            $domAttribute = $dom->createAttribute('href');
+                            $domAttribute->value = $newTemplateURL;
+                            $domElement->appendChild($domAttribute);
+                            $root->item(0)->replaceChild($domElement, $templateInclude);
+                            
+                            //store the new include URL linked to the old one (for the next templates)
+                            $urls[$oldTemplateURL] = $newTemplateURL;
+                        }
+                        elseif (isset($urls[$templateInclude->getAttribute('href')]))
+                        {
+                            //check if the template inclusion is in the parent nodes list, and replace it
+                            $domElement = $dom->createElement('xsl:include');
+                            $domAttribute = $dom->createAttribute('href');
+                            $domAttribute->value = $urls[$templateInclude->getAttribute('href')];
+                            $domElement->appendChild($domAttribute);
+                            $root->item(0)->replaceChild($domElement, $templateInclude);
+                        }
+                    }
+                }
+                $content = $dom->saveXML();
+                if ($content === false)
+                    return false;
+                if ($docxapTemplate->SetContent($content) === false)
+                    return false;
+            }
+        }
+        
+        //get children of the node
+        $childNodes = $node->GetChildren();
+        foreach ($childNodes as $childNode)
+        {
+            $childNode = new Node($childNode);
+            //only project, servers and section/subsections can storage template folders
+            if ($childNode->GetNodeType() == Ximdex\Services\NodeType::PROJECT or $childNode->GetNodeType() == Ximdex\Services\NodeType::SERVER
+                    or $childNode->GetNodeType() == Ximdex\Services\NodeType::SECTION)
+            {
+                //call in recursive mode with the child node
+                $res = self::rename_templates_in_node($childNode, $oldNode, $projectId, $urls);
+                if ($res === false)
+                    return false;
+            }
+        }
+        return true;
     }
 }
