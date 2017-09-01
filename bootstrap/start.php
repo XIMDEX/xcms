@@ -45,7 +45,7 @@ $log = new Logger('Actions');
 $log->pushHandler(new StreamHandler(App::getValue('XIMDEX_ROOT_PATH') .'/logs/actions.log', Logger::DEBUG));
 Ximdex\Logger::addLog( $log , 'actions' ) ;
 
-XMD_Log::setActiveLog();
+Ximdex\Logger::setActiveLog();
 
 // read install-modules.php
 $modulesConfString = "";
@@ -74,7 +74,7 @@ if ( !empty( $dbConfig ) ) {
 	}
 	catch (\PDOException $e)
 	{
-	    XMD_Log::error('Can\'t connect to dababase at ' . $dbConfig['host'] . ':' . $dbConfig['port'] . ' (' . $e->getMessage() . ')');
+	    Ximdex\Logger::error('Can\'t connect to dababase at ' . $dbConfig['host'] . ':' . $dbConfig['port'] . ' (' . $e->getMessage() . ')');
 		die();
 	}
     $dbConn->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_ASSOC);

@@ -25,6 +25,7 @@
  */
 
 
+use Ximdex\Logger;
 use Ximdex\Models\Node;
 
 ModulesManager::file('/actions/movenode/baseIO.php');
@@ -32,7 +33,7 @@ ModulesManager::file('/actions/movenode/baseIO.php');
 	
 function baseIO_MoveNode($nodeID, $targetParentNodeID) {
 
-	XMD_Log::info("IO-movenode -> nodeID=$nodeID, nodeID_destino=$targetParentNodeID");
+	Logger::info("IO-movenode -> nodeID=$nodeID, nodeID_destino=$targetParentNodeID");
 
 	$node = new Node($nodeID);
 	if (!($node->get('IdNode') > 0)) {
@@ -57,7 +58,7 @@ function baseIO_MoveNode($nodeID, $targetParentNodeID) {
 
 function baseIO_MoverNodos($nodeID, $targetParentNodeID) {
 
-	XMD_Log::info("IO-movenode -> nodeID=$nodeID, nodeID_destino=$targetParentNodeID");
+	Logger::info("IO-movenode -> nodeID=$nodeID, nodeID_destino=$targetParentNodeID");
 	
 	$node = new Node($nodeID);
 	$target = new Node($targetParentNodeID);
@@ -76,6 +77,3 @@ function baseIO_MoverNodos($nodeID, $targetParentNodeID) {
 	
 	return;
 }
-
-  
-?>

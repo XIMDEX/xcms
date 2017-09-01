@@ -27,6 +27,7 @@
 
 use Ximdex\Models\Node;
 use Ximdex\Models\NodeAllowedContent;
+use Ximdex\Runtime\App;
 use Ximdex\Utils\Sync\SynchroFacade;
 
 ModulesManager::file('/actions/movenode/baseIO.php');
@@ -35,7 +36,7 @@ ModulesManager::file('/actions/copy/Action_copy.class.php');
 class Action_movenode extends Action_copy {
 
    // Main method: shows initial form
-    function index () {
+   public function index () {
       	$idNode		= (int) $this->request->getParam("nodeid");
 
 		$node = new Node($idNode);
@@ -66,14 +67,12 @@ class Action_movenode extends Action_copy {
 			}
 		}
 
-    $targetNodes = $this->getTargetNodes($node->GetID(), $node->GetNodeType());
+        $targetNodes = $this->getTargetNodes($node->GetID(), $node->GetNodeType());
+    
+        $targetNodes = array_filter($targetNodes, function($nodes) use ($node) {
+            return $nodes['idnode'] != $node->GetID();
+        });
 
-    $targetNodes = array_filter($targetNodes, function($nodes) use ($node) {
-        return $nodes['idnode'] != $node->GetID();
-    });
-
-//		$this->addJs('/actions/movenode/resources/js/movenode.js');
-//		$this->addJs('/actions/copy/resources/js/treeSelector.js');
 		$this->addCss('/actions/copy/resources/css/style.css');
 
 				$values = array(
@@ -93,7 +92,7 @@ class Action_movenode extends Action_copy {
 		$this->render($values, NULL, 'default-3.0.tpl');
     }
 
-	function move_node() {
+	public function move_node() {
       	$idNode = (int) $this->request->getParam("nodeid");
 
 		$targetParentID =  $this->request->getParam("targetid");
@@ -110,7 +109,7 @@ class Action_movenode extends Action_copy {
 			'messages' => $this->messages->messages,
 			'id_node' => $idNode,
 			'params' => '',
-			'nodeURL' => \App::getValue( 'UrlRoot')."/xmd/loadaction.php?action=movenode&nodeid={$idNode}",
+			'nodeURL' => App::getValue( 'UrlRoot')."/xmd/loadaction.php?action=movenode&nodeid={$idNode}",
 			'action_with_no_return' => true,
 			'parentID' => $targetParentID,
 			'oldParentID' => $node->GetParent()
@@ -121,7 +120,7 @@ class Action_movenode extends Action_copy {
 		$this->sendJSON($values);
 	}
 
-	function confirm_move(){
+	public function confirm_move(){
 		$idNode = (int) $this->request->getParam("nodeid");
 
 		$targetParentID =  $this->request->getParam("targetid");
@@ -148,14 +147,14 @@ class Action_movenode extends Action_copy {
 			"targetPath" => $targetNode->GetPath(),
 			"targetid" => $targetParentID,
 			'params' => '',
-			"nodeURL" => \App::getValue( 'UrlRoot')."/xmd/loadaction.php?action=movenode&nodeid={$idNode}",
+			"nodeURL" => App::getValue( 'UrlRoot')."/xmd/loadaction.php?action=movenode&nodeid={$idNode}",
 			"go_method" => "move_node"
 		);
 
 		$this->render($values,$smarty, $genericTemplate);
 	}
 
-  function _move($idNode, $targetParentID,  $unpublishDoc) {
+    private function _move($idNode, $targetParentID,  $unpublishDoc) {
 
 		$node = new Node($idNode);
 		$oldParentId = $node->GetParent();
@@ -169,16 +168,28 @@ class Action_movenode extends Action_copy {
 			$sync->deleteAllTasksByNode($idNode, $unpublishDoc);
 		}else {
 			$this->messages->add(_($err), MSG_TYPE_ERROR);
+			return false;
 		}
-
+		
+		//update templates_includes files if node type is a XSL template
+		if ($node->GetNodeType() == \Ximdex\Services\NodeType::XSL_TEMPLATE)
+		{
+            $xsltNode = new xsltnode($node);
+            if ($xsltNode->move_node($targetParentID) === false)
+            {
+                $this->messages->mergeMessages($xsltNode->messages);
+                return false;
+            }
+		}
 
 		$this->reloadNode($oldParentId);
 		$this->reloadNode($targetParentID);
 
 		$targetParent = new Node($targetParentID);
-		$targetParent->class->updatePath();
+		return $targetParent->class->updatePath();
 
-  }
+    }
+  
     /**
      * Check if the propousal node can be target for the current one.
      * Must be in the same project

@@ -144,5 +144,3 @@ class Action_copy extends ActionAbstract {
         $this->sendJSON($data);
     }
 }
-
-?>

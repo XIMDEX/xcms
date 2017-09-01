@@ -162,7 +162,6 @@ class xsltnode extends FileNode
 
             $ximptd = new Node($parentId);
             $idProject = $node->GetProject();
-            $project = new Node($idProject);
 
             $ptdFolder = App::getValue("TemplatesDirName");
 
@@ -195,9 +194,13 @@ class xsltnode extends FileNode
      */
     private function writeIncludeFile($templateName, $sectionId, $nodeTypeID, $stateID)
     {
-
         $section = new Node($sectionId);
         $ximPtdId = $section->GetChildByName('templates');
+        if ($ximPtdId === false)
+        {
+            $this->messages->add('Can\'t get the Templates folder to include the template ' . $templateName, MSG_TYPE_ERROR);
+            return false;
+        }
 
         $parent = new Node($ximPtdId);
         $includeId = $parent->GetChildByName('templates_include.xsl');
@@ -358,6 +361,7 @@ class xsltnode extends FileNode
             $dom = new DOMDocument();
             $dom->formatOutput = true;
             $dom->preserveWhiteSpace = false;
+            $dom->validateOnParse = true;
             if (!@$dom->loadXML($includeContent))
             {
                 $this->messages->add('File templates_include.xsl for section ' . $sectionId . ' has errors', MSG_TYPE_ERROR);
@@ -385,6 +389,12 @@ class xsltnode extends FileNode
             
             //save XSL content in the node
             $includeContent = $dom->saveXML();
+            if ($includeContent === false)
+            {
+                $error = \Ximdex\Error::error_message();
+                $this->messages->add($error, MSG_TYPE_ERROR);
+                return false;
+            }
             $includeNode->setContent($includeContent);
         }
         return true;
@@ -461,6 +471,7 @@ class xsltnode extends FileNode
      * @param string $templateName
      * @param integer $sectionId
      * @param integer $nodeTypeId
+     * @return boolean
      */
     private function removeIncludeFile($templateName, $sectionId, $nodeTypeId)
     {
@@ -478,6 +489,7 @@ class xsltnode extends FileNode
             $dom = new DOMDocument();
             $dom->formatOutput = true;
             $dom->preserveWhiteSpace = false;
+            $dom->validateOnParse = true;
             if (!@$dom->loadXML($includeContent))
             {
                 $this->messages->add('File templates_include.xsl for section ' . $sectionId . ' has errors', MSG_TYPE_ERROR);
@@ -490,8 +502,8 @@ class xsltnode extends FileNode
             if (!$includeTag->length)
             {
                 //template does not exists
-                $this->messages->add('The template named ' . $templateName . ' does not exists in templates_include.xsl', MSG_TYPE_ERROR);
-                return false;
+                //$this->messages->add('The template named ' . $templateName . ' does not exists in templates_include.xsl', MSG_TYPE_ERROR);
+                return true;
             }
             
             //remove the specified include element
@@ -500,9 +512,15 @@ class xsltnode extends FileNode
             
             //save XSL content in the node
             $includeContent = $dom->saveXML();
+            if ($includeContent === false)
+            {
+                $error = \Ximdex\Error::error_message();
+                $this->messages->add($error, MSG_TYPE_ERROR);
+                return false;
+            }
             $includeNode->setContent($includeContent);
         }
-
+        return true;
     }
 
     public function SetContent($content, $commitNode = NULL, Node $node = null)
@@ -976,6 +994,33 @@ class xsltnode extends FileNode
                     return false;
             }
         }
+        return true;
+    }
+    
+    /**
+     * Move a template node to another include templates and remove the previous reference
+     * @param int $targetParentID
+     * @return boolean
+     */
+    public function move_node($targetParentID)
+    {
+        //locate the NodeID for the parent templates node
+        $templatesId = $this->parent->GetParent();
+        $templates = new Node ($templatesId);
+        if (!$templates->GetID())
+        {
+            $this->messages->add('The node has not a parent node');
+            return false;
+        }
+        $parentId = $templates->GetParent();
+        
+        //remove the template
+        if ($this->removeIncludeFile($this->parent->GetNodeName(), $parentId, $this->parent->GetNodeType()) === false)
+            return false;
+        
+        //include the template
+        if ($this->setIncludeContent($this->parent->GetNodeName(), $targetParentID, $this->parent->GetNodeType(), null) === false)
+            return false;
         return true;
     }
 }
