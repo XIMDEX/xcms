@@ -26,6 +26,7 @@
 
 
 use Ximdex\MVC\ActionAbstract;
+use Ximdex\Runtime\App;
 
 ModulesManager::file('/inc/nodetypes/ximnewsimagesfolder.inc', 'ximNEWS');
 
@@ -46,7 +47,7 @@ class Action_createLote extends ActionAbstract {
 			'id_node' => $idNode,
 			'cadenafecha' => date('d/m/Y'),
 			'go_method' => 'add_node',
-			'nodeUrl' => \App::getValue( 'UrlRoot') . "/xmd/loadaction.php?actionid=$actionID&nodeid=$idNode"
+			'nodeUrl' => App::getValue( 'UrlRoot') . "/xmd/loadaction.php?actionid=$actionID&nodeid=$idNode"
 		);
 
 		$this->render($values, 'index', 'default-3.0.tpl');
@@ -68,30 +69,7 @@ class Action_createLote extends ActionAbstract {
 			return false;
 		}
 
-		// NOTE: We can't use reloadNode() before a redirection because
-		// the JavaScript will not be loaded after the redirection.
-
-//		$this->reloadNode($nodeId);
-//
-//		$this->request->setParam('nodeid', $idLote);
-//		$this->request->setParam('type' ,'ximnewsimage');
-//
-//		$_GET['nodeid'] = $idLote;
-//		$_GET['nodes'] = array($idLote);
-//		$_POST['nodeid'] = $idLote;
-//		$_POST['nodes'] = array($idLote);
-//		$_REQUEST['nodeid'] = $idLote;
-//		$_REQUEST['nodes'] = array($idLote);
-
-//		$this->redirectTo('index', 'fileupload_common_multiple', array(
-//			'nodeid' => $idLote,
-//			'nodes' => array($idLote),
-//			'lote' => $idLote,
-//			'type' => 'ximnewsimage')
-//		);
-
 		$this->sendJSON(array('idParent' => $nodeId, 'idLote' => $idLote, 'type' => 'ximnewsimage'));
 	}
 
 }
-?>

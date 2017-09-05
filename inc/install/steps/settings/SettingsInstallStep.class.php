@@ -24,6 +24,8 @@
  * @version $Revision$
  */
 
+use Ximdex\Runtime\App;
+
 require_once(XIMDEX_ROOT_PATH . '/inc/install/steps/generic/GenericInstallStep.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/install/managers/InstallModulesManager.class.php');
 
@@ -45,7 +47,7 @@ class SettingsInstallStep extends GenericInstallStep
 
     public function setId()
     {
-        if (strlen(\App::getValue( "ximid")) > 2) {
+        if (strlen(App::getValue( "ximid")) > 2) {
             $result["localhash"] = false;
             $this->sendJSON($result);
             return;
@@ -67,17 +69,17 @@ class SettingsInstallStep extends GenericInstallStep
         $language = $this->request->getParam("language");
         $anonymousInformation = $this->request->getParam("anonymous_information");
         if ($anonymousInformation) {
-            \App::setValue("ActionStats", "1", 1);
+            App::setValue("ActionStats", "1", 1);
         }
         $this->installManager->setSingleParam("##XIMDEX_LOCALE##", $language);
-        \App::setValue("AppRoot", XIMDEX_ROOT_PATH, true );
+        App::setValue("AppRoot", XIMDEX_ROOT_PATH, true );
         //$urlRoot = substr(str_replace("index.php", "", $_SERVER['HTTP_REFERER']), 0, -1);
         $urlRoot = str_replace("index.php", "", $_SERVER['HTTP_REFERER']);
         $urlRoot = strtok($urlRoot, '?');
         if (substr($urlRoot, (strlen($urlRoot) - 1), 1) == '/')	//remove the ending / if it exists
         	$urlRoot = substr($urlRoot, 0, -1);
-        \App::setValue("UrlRoot", $urlRoot , true );
-        \App::setValue("locale", $language , true );
+        App::setValue("UrlRoot", $urlRoot , true );
+        App::setValue("locale", $language , true );
         $this->installManager->setLocale($language);
         $this->installManager->insertXimdexUser($password);
         $this->installManager->setApiKey();

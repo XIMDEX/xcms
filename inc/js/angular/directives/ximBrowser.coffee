@@ -334,7 +334,7 @@ angular.module("ximdex.common.directive").directive "ximBrowser", [
                                 method: "readFiltered"
                                 id: idToSend
                             ) + "&query=" + actualFilter + "&items=#{maxItemsPerGroup}"+fromTo
-                        $http.get(url, {timeout: canceler.promise}).success(
+                        $http.get(url).success(
                             (data) ->
                                 postLoadNodeChildren(data,callback,node)
                         ).error (data) ->
@@ -351,7 +351,7 @@ angular.module("ximdex.common.directive").directive "ximBrowser", [
                             action: "browser3"
                             method: "read"
                             id: idToSend
-                        )+"&items=#{maxItemsPerGroup}"+fromTo, {timeout: canceler.promise}).success(
+                        )+"&items=#{maxItemsPerGroup}"+fromTo).success(
                             (data) ->
                                 postLoadNodeChildren(data,callback,node)
                         ).error (data) ->

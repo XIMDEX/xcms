@@ -544,7 +544,7 @@ class User extends UsersOrm
             $groupList = $this->GetGroupList();
             $dbObj = new Db();
 
-            $query = sprintf("DELETE FROM UnverifiedUsers where email=%s", $this->get('Email'));
+            $query = sprintf("DELETE FROM UnverifiedUsers where email='%s'", $this->get('Email'));
 
             $dbObj->Execute($query);
             parent::delete();

@@ -101,7 +101,7 @@ class Action_modifylink extends ActionAbstract {
     	}
     	
 		
-		$this->reloadNode($node->get('IdParent') );
+		//$this->reloadNode($node->get('IdParent') );
 
 		$values = array('messages' => $this->messages->messages, "parentID" =>$node->get('IdParent') );
     	
@@ -131,5 +131,3 @@ class Action_modifylink extends ActionAbstract {
     }
     
 }
-
-?>

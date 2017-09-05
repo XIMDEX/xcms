@@ -82,14 +82,8 @@ class Action_modifylanguage extends ActionAbstract {
     	foreach ($node->messages->messages as $messageInfo) {
     		$this->messages->messages[] = $messageInfo;
     	}
-
-
-		//$this->reloadNode($node->get('IdParent') );
-
+    	
 		$values = array('goback' => true, 'messages' => $this->messages->messages,"parentID" => $node->get('IdParent'));
-
-		//$this->render($values, NULL, 'messages.tpl');
         $this->sendJSON($values);
     }
 }
-?>

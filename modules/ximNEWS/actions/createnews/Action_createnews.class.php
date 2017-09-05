@@ -25,6 +25,7 @@
  */
 
 
+use Ximdex\Logger;
 use Ximdex\Models\Channel;
 use Ximdex\Models\Language;
 use Ximdex\Models\Link;
@@ -32,6 +33,7 @@ use Ximdex\Models\Node;
 use Ximdex\Models\NodeType;
 use Ximdex\Models\User;
 use Ximdex\MVC\ActionAbstract;
+use Ximdex\Runtime\App;
 
 ModulesManager::file('/inc/ximNEWS_Adapter.php', 'ximNEWS');
 ModulesManager::file('/actions/composer/Action_composer.class.php');
@@ -72,7 +74,7 @@ class Action_createnews extends ActionAbstract
                 $templates_list[] = array('id' => $templateId, 'name' => $template->get('Name'));
             }
         } else {
-            XMD_Log::info(_("There is not defined any template to create news"));
+            Logger::info(_("There is not defined any template to create news"));
         }
 
         $lotes_list = ximNEWS_Adapter::getLotes($idNode);
@@ -214,7 +216,7 @@ class Action_createnews extends ActionAbstract
         $values = array(
             'messages' => $adapter->messages->messages,
             'id_node' => $idNode,
-            "nodeURL" => \App::getValue('UrlRoot') . "/xmd/loadaction.php?actionid=$actionID&nodeid=$idNode"
+            "nodeURL" => App::getValue('UrlRoot') . "/xmd/loadaction.php?actionid=$actionID&nodeid=$idNode"
         );
 
         $this->render($values, NULL, 'messages.tpl');
@@ -281,5 +283,3 @@ class Action_createnews extends ActionAbstract
 
     }
 }
-
-?>

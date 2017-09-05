@@ -115,4 +115,3 @@ class Action_modifyuser extends ActionAbstract {
 		$this->sendJSON($values);
     }
 }
-?>

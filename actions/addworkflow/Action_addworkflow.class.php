@@ -62,4 +62,3 @@ class Action_addworkflow extends ActionAbstract {
     	$this->render(array('messages' => $this->messages->messages), NULL, 'messages.tpl');
     }
 }
-?>

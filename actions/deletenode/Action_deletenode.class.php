@@ -330,8 +330,6 @@ class Action_deletenode extends ActionAbstract {
 			}
 		}
 
-		//$this->reloadNode($parentID);
-
 		$values = array(
 			'messages' => $this->messages->messages,
 			'action_with_no_return' => true,
@@ -343,4 +341,3 @@ class Action_deletenode extends ActionAbstract {
 	}
 
 }
-?>

@@ -720,5 +720,3 @@ class Action_addfoldernode extends ActionAbstract
         $this->render($arrValores);
     }
 }
-
-?>

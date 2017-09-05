@@ -37,6 +37,10 @@ class FormValidation {
     * @return boolean True if not exists this name under the current node.
     */
     public static function isUniqueName($params){
+        
+        if (!isset($params["nodeid"]) or !$params["nodeid"])
+            die('true');
+        
         $idnode = $params["nodeid"];
         $inputName = $params["inputName"];
         $name=$params[$inputName];
@@ -60,6 +64,8 @@ class FormValidation {
     */
     public static function isUniqueUrl($params){
         
+        if (!isset($params["nodeid"]) or !$params["nodeid"])
+            die('true');
         $inputName = $params["inputName"];
         $idNode = $params["nodeid"];
 
@@ -75,8 +81,8 @@ class FormValidation {
     
     /**
      * 
-     * @param type $idNode
-     * @param type $links
+     * @param int $idNode
+     * @param array $links
      * @return boolean True if some link is in the same project than idnode.
      */
     private static function inSameProject($idNode, $links){

@@ -446,13 +446,11 @@ class ActionAbstract extends IController
 
     /**
      * Recargamos el arbol sobre el nodo especificado
-     */
-    /**
-     * @param $idnode
+     * This method doesn't work when returning a JSON response
+     * @param int $idnode
      */
     function reloadNode($idnode)
     {
-
         // TODO search and destroy the %20 generated in the last char of the query string
         $queryManager = new QueryManager(false);
         $file = sprintf('%s%s',

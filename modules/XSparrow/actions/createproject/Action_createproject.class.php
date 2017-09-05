@@ -31,6 +31,7 @@ use Ximdex\Models\Node;
 use Ximdex\Models\NodeType;
 use Ximdex\Modules\Module;
 use Ximdex\MVC\ActionAbstract;
+use Ximdex\Runtime\App;
 
 
 ModulesManager::file('/inc/io/BaseIO.class.php');
@@ -347,13 +348,12 @@ class Action_createproject extends ActionAbstract
         $this->addJs($jsFolder . "nextActions.js");
         $this->addCss($cssFolder . "createproject.css");
 
-        //$this->reloadNode(10000);
         $template = "success";
 
         $projectName = $this->request->getParam("name");
         $values = array(
             "projectName" => $projectName,
-            "projectPath" => \App::getValue("UrlRoot")
+            "projectPath" => App::getValue("UrlRoot")
         );
         $this->render($values, $template, 'default-3.0.tpl');
     }
@@ -406,7 +406,7 @@ class Action_createproject extends ActionAbstract
         }
 
         $server->serverid = $serverId;
-        $server->url = preg_replace('/\{URL_ROOT\}/', \App::getValue('UrlRoot'), $server->url);
+        $server->url = preg_replace('/\{URL_ROOT\}/', App::getValue('UrlRoot'), $server->url);
         $server->initialDirectory = preg_replace('/\{XIMDEX_ROOT_PATH\}/', XIMDEX_ROOT_PATH, $server->initialDirectory);
 
         $nodeServer = new Node($serverId);
@@ -618,7 +618,7 @@ class Action_createproject extends ActionAbstract
 
                 $newNode = new Node($id);
                 $docxapContent = $newNode->GetContent();
-                $urlPath = \App::getValue("UrlRoot");
+                $urlPath = App::getValue("UrlRoot");
                 $docxapContent = str_replace("{URL_PATH}", $urlPath, $docxapContent);
                 $docxapContent = str_replace("{PROJECT_NAME}", $this->name, $docxapContent);
                 $newNode->SetContent($docxapContent);
@@ -662,8 +662,8 @@ class Action_createproject extends ActionAbstract
         $node = new Node($ptdFolderId);
         $io = new BaseIO();
 
-        $ximdexUrl = \App::getValue('UrlRoot');
-        $projectUrl = \App::getValue('UrlRoot') . '/data/nodes/' . $this->projectName;
+        $ximdexUrl = App::getValue('UrlRoot');
+        $projectUrl = App::getValue('UrlRoot') . '/data/nodes/' . $this->projectName;
         $servers = $this->project->getServers();
         $serverUrl = $projectUrl . '/' . $servers[0]->name;
 

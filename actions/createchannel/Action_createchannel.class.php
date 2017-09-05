@@ -61,9 +61,7 @@ class Action_createchannel extends ActionAbstract {
                         $node->messages->add(_('Channel has been succesfully inserted'), MSG_TYPE_NOTICE);
                 }
 
-                // $this->reloadNode($idNode);
                 $values = array('messages' => $node->messages->messages, 'idNode' => $idNode);
                 $this->sendJSON($values);
     	}
 }
-?>

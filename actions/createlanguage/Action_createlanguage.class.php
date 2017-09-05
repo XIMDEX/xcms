@@ -86,7 +86,7 @@ class Action_createlanguage extends ActionAbstract
             $this->messages->add(_("Language ") . \Ximdex\XML\Base::recodeSrc($name, $this->displayEncoding) . _(" could not be ") . \Ximdex\XML\Base::recodeSrc(_('added'), $this->displayEncoding), MSG_TYPE_ERROR);
         }
 
-        $this->reloadNode($idNode);
+        //$this->reloadNode($idNode);
 
         $values = array('messages' => $this->messages->messages, 'idNode' => $idNode);
         $this->sendJSON($values);

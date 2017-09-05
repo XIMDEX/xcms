@@ -74,20 +74,20 @@ class Action_movenode extends Action_copy {
         });
 
 		$this->addCss('/actions/copy/resources/css/style.css');
-
-				$values = array(
-					'id_node' => $node->get('IdNode'),
-					'name' => $node->GetNodeName(),
-					'nodetypeid' => $node->nodeType->get('IdNodeType'),
-					'nameNodeType' => $node->nodeType->get('Name'),
-					'allowed_nodeTypes' => implode(',', $allowedNodeTypes),
-					'filtertype' => $node->nodeType->get('Name'),
-                    'targetNodes' => $targetNodes,
-					'target_file' => null,
-					'node_path' => $node->GetPath(),
-					'isPublished' => $isPublished,
-					"go_method" => "move_node"
-				);
+		
+		$values = array(
+			'id_node' => $node->get('IdNode'),
+			'name' => $node->GetNodeName(),
+			'nodetypeid' => $node->nodeType->get('IdNodeType'),
+			'nameNodeType' => $node->nodeType->get('Name'),
+			'allowed_nodeTypes' => implode(',', $allowedNodeTypes),
+			'filtertype' => $node->nodeType->get('Name'),
+            'targetNodes' => $targetNodes,
+			'target_file' => null,
+			'node_path' => $node->GetPath(),
+			'isPublished' => $isPublished,
+			"go_method" => "move_node"
+		);
 
 		$this->render($values, NULL, 'default-3.0.tpl');
     }
@@ -181,13 +181,12 @@ class Action_movenode extends Action_copy {
                 return false;
             }
 		}
-
+        /*
 		$this->reloadNode($oldParentId);
 		$this->reloadNode($targetParentID);
-
+		*/
 		$targetParent = new Node($targetParentID);
 		return $targetParent->class->updatePath();
-
     }
   
     /**

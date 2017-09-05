@@ -101,4 +101,3 @@ class Action_updatefile extends ActionAbstract {
 		$this->render($values, NULL, 'messages.tpl');
     }
 }
-?>

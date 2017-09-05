@@ -101,11 +101,9 @@ class Action_modifychannel extends ActionAbstract {
                 break;
 		}
 
-		$this->reloadNode($idNode);
+		//$this->reloadNode($idNode);
 
 		$values = array('messages' => $channel->messages->messages );
-		//$this->render($values, NULL, 'messages.tpl');
         $this->sendJSON($values);
     }
 }
-?>

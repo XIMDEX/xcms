@@ -191,9 +191,7 @@ class Action_createxmlcontainer extends ActionAbstract {
 				$slaveNode->update();
 			}
 		}
-
-		//$this->reloadNode($idNode);
-
+		
 		$values = array(
 			'messages' => $this->messages->messages,
 			'parentID' => $idNode,

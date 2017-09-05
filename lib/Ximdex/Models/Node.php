@@ -3461,6 +3461,9 @@ class Node extends NodesOrm
      */
     function checkTarget($destNodeId)
     {
+        if (!$destNodeId)
+            return null;
+        
         $changeName = 0; //assuming by default they're not the same
         $existing = 0;
         $amount = 0;

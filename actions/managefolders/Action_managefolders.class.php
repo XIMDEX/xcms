@@ -138,7 +138,7 @@ class Action_managefolders extends ActionAbstract {
 				}
 			}
 
-			$this->reloadNode($nodeID);
+			//$this->reloadNode($nodeID);
 
 			if ($error) {
 				$this->messages->add(_('This operation could not be successfully completed.'), MSG_TYPE_ERROR);
@@ -233,5 +233,3 @@ class Action_managefolders extends ActionAbstract {
 		return $children_nt;
 	}
 }
-
-?>

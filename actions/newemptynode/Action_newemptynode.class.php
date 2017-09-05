@@ -94,7 +94,7 @@ class Action_newemptynode extends ActionAbstract {
 			else
 			{
                 $this->messages->add(sprintf('%s'._(' has been successfully created'), $name), MSG_TYPE_NOTICE);
-                $this->reloadNode($parentId);
+                //$this->reloadNode($parentId);
 			}
         } else {
             $this->messages->mergeMessages($file->messages);
@@ -130,4 +130,3 @@ class Action_newemptynode extends ActionAbstract {
 		return $content;
 	}
 }
-?>

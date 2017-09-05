@@ -468,10 +468,11 @@ class xsltnode extends FileNode
 
     /**
      * Remove from template_includes $templateName occurrences
+     * Returns true if the reference have been removed, false in error and null if the reference doesn't exists
      * @param string $templateName
      * @param integer $sectionId
      * @param integer $nodeTypeId
-     * @return boolean
+     * @return boolean|null
      */
     private function removeIncludeFile($templateName, $sectionId, $nodeTypeId)
     {
@@ -480,7 +481,6 @@ class xsltnode extends FileNode
 
         $parent = new Node($ximPtdId);
         $includeId = $parent->GetChildByName('templates_include.xsl');
-
 
         if ($includeId > 0) {
 
@@ -503,7 +503,7 @@ class xsltnode extends FileNode
             {
                 //template does not exists
                 //$this->messages->add('The template named ' . $templateName . ' does not exists in templates_include.xsl', MSG_TYPE_ERROR);
-                return true;
+                return null;
             }
             
             //remove the specified include element
@@ -519,8 +519,9 @@ class xsltnode extends FileNode
                 return false;
             }
             $includeNode->setContent($includeContent);
+            return true;
         }
-        return true;
+        return null;
     }
 
     public function SetContent($content, $commitNode = NULL, Node $node = null)
@@ -999,6 +1000,7 @@ class xsltnode extends FileNode
     
     /**
      * Move a template node to another include templates and remove the previous reference
+     * Only do it if there is already a inclusion of this template in the origin templates include
      * @param int $targetParentID
      * @return boolean
      */
@@ -1015,9 +1017,14 @@ class xsltnode extends FileNode
         $parentId = $templates->GetParent();
         
         //remove the template
-        if ($this->removeIncludeFile($this->parent->GetNodeName(), $parentId, $this->parent->GetNodeType()) === false)
+        $res = $this->removeIncludeFile($this->parent->GetNodeName(), $parentId, $this->parent->GetNodeType());
+        if ($res === false)
             return false;
         
+        //if the template doesn't exists in the templates inclusions, it will not included in the destination templates include
+        if ($res === null)
+            return true;
+            
         //include the template
         if ($this->setIncludeContent($this->parent->GetNodeName(), $targetParentID, $this->parent->GetNodeType(), null) === false)
             return false;

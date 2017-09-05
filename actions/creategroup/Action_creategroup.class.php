@@ -61,10 +61,9 @@ class Action_creategroup extends ActionAbstract {
 			$grupo->messages->add(_('Group has been successfully inserted'), MSG_TYPE_NOTICE);
 		}
 		
-		$this->reloadNode($idNode);
+		//$this->reloadNode($idNode);
 
 		$values = array('messages' => $grupo->messages->messages,"parentID" => $grupo->GetParent());
 		$this->sendJSON($values);
     }
 }
-?>

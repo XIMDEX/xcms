@@ -372,9 +372,7 @@
                   method: "readFiltered",
                   id: idToSend
                 }) + "&query=" + actualFilter + ("&items=" + maxItemsPerGroup) + fromTo;
-                $http.get(url, {
-                  timeout: canceler.promise
-                }).success(function(data) {
+                $http.get(url).success(function(data) {
                   return postLoadNodeChildren(data, callback, node);
                 }).error(function(data) {
                   var cancel;
@@ -390,9 +388,7 @@
                   action: "browser3",
                   method: "read",
                   id: idToSend
-                }) + ("&items=" + maxItemsPerGroup) + fromTo, {
-                  timeout: canceler.promise
-                }).success(function(data) {
+                }) + ("&items=" + maxItemsPerGroup) + fromTo).success(function(data) {
                   return postLoadNodeChildren(data, callback, node);
                 }).error(function(data) {
                   var cancel;

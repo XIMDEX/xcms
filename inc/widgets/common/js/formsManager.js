@@ -545,9 +545,11 @@ X.FormsManager = Object.xo_create({
             if (message.type === 0) submitError = true;
         });
         var nodeId = result.parentID || result.nodeID || result.idNode;
-        //Refresh node
-        if (!submitError && nodeId) $(document).trigger('nodemodified', nodeId);
-        if (!submitError && result.oldParentID) $(document).trigger('nodemodified', result.oldParentID);
+        //Refresh nodes
+        if (!submitError && nodeId)
+        	$(document).trigger('nodemodified', nodeId);
+        if (!submitError && result.oldParentID)
+        	$(document).trigger('nodemodified', result.oldParentID);
 
         if (!submitError && X.ActionTypes.create.indexOf(tab.action.command) != -1) form.get(0).reset();
         if (!submitError && X.ActionTypes.remove.indexOf(tab.action.command) != -1) {
