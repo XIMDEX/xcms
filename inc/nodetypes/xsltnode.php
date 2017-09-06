@@ -151,35 +151,28 @@ class xsltnode extends FileNode
      */
     private function setIncludeContent($fileName, $parentId, $nodeTypeId, $stateID)
     {
-        if ($fileName == 'docxap.xsl')
-        {
-            Logger::info('docxap.xsl can\'t be include in templates_include.xsl file');
+        if ($fileName == 'templates_include.xsl' or $fileName == 'docxap.xsl')
             return true;
-        }
-        if ($fileName != "templates_include.xsl") {
-            $node = new Node($this->nodeID);
-            $projectId = $node->GetProject();
+        
+        $node = new Node($this->nodeID);
+        $projectId = $node->GetProject();
 
-            $ximptd = new Node($parentId);
-            $idProject = $node->GetProject();
+        $ximptd = new Node($parentId);
+        $idProject = $node->GetProject();
 
-            $ptdFolder = App::getValue("TemplatesDirName");
+        $ptdFolder = App::getValue("TemplatesDirName");
 
-            if ($ximptd->get('IdParent') == $projectId) {
+        if ($ximptd->get('IdParent') == $projectId) {
 
-                // Making include in project (modify includes from project and its sections)
-                $this->writeIncludeFile($fileName, $projectId, $nodeTypeId, $stateID);
-                
-            } else {
-
-                // Making include only in section ximptd
-                $sectionId = $node->GetSection();
-                $section = new Node($sectionId);
-                return $this->writeIncludeFile($fileName, $sectionId, $nodeTypeId, $stateID);
-            }
-
+            // Making include in project (modify includes from project and its sections)
+            $this->writeIncludeFile($fileName, $projectId, $nodeTypeId, $stateID);
+            
         } else {
-            Logger::info("templates_include.xsl wont be include in itself.");
+
+            // Making include only in section ximptd
+            $sectionId = $node->GetSection();
+            $section = new Node($sectionId);
+            return $this->writeIncludeFile($fileName, $sectionId, $nodeTypeId, $stateID);
         }
         return true;
     }
@@ -371,7 +364,7 @@ class xsltnode extends FileNode
             //check if there is a template with that name
             $xPath = new DOMXPath($dom);
             $includeTag = $xPath->query("/xsl:stylesheet/xsl:include[@href='$templateName']");
-            if ($templateIncludeTag)
+            if ($includeTag->length)
             {
                 //template already exists
                 return true;
@@ -448,34 +441,45 @@ class xsltnode extends FileNode
      */
     public function deleteNode()
     {
-
         // Deletes dependencies in rel tables
         $nodeId = $this->nodeID;
         $node = new Node($nodeId);
-        $sectionId = $this->parent->getSection();
         $nodeTypeId = $this->parent->get('IdNodeType');
         $templateName = $this->parent->get('Name');
-        $this->removeIncludeFile($templateName, $sectionId, $nodeTypeId);
+        
+        $sectionId = $this->parent->getSection();
+        if ($this->removeIncludeFile($templateName, $sectionId, $nodeTypeId) === false)
+            return false;
 
         $projectId = $node->GetProject();
-        $this->removeIncludeFile($templateName, $projectId, $nodeTypeId);
+        if ($this->removeIncludeFile($templateName, $projectId, $nodeTypeId) === false)
+            return false;
 
+        //with templates_include: remove the reference in the docxap files where this node is included
+        if ($templateName == 'templates_include.xsl')
+            if (!$this->remove_includes(new Node($sectionId)))
+                return false;
+            
         $depsMngr = new DepsManager();
         $depsMngr->deleteByTarget(DepsManager::STRDOC_TEMPLATE, $this->parent->get('IdNode'));
 
         Logger::info('Xslt dependencies deleted');
+        return true;
     }
 
     /**
-     * Remove from template_includes $templateName occurrences
+     * Remove from templates_include $templateName occurrences
      * Returns true if the reference have been removed, false in error and null if the reference doesn't exists
      * @param string $templateName
      * @param integer $sectionId
      * @param integer $nodeTypeId
      * @return boolean|null
      */
-    private function removeIncludeFile($templateName, $sectionId, $nodeTypeId)
+    private function removeIncludeFile($templateName, $sectionId, $nodeTypeId = null)
     {
+        if ($templateName == 'templates_include.xsl' or $templateName == 'docxap.xsl')
+            return true;
+        
         $section = new Node($sectionId);
         $ximPtdId = $section->GetChildByName('templates');
 
@@ -587,6 +591,10 @@ class xsltnode extends FileNode
         
         if (parent::SetContent($content, $commitNode, $node) === false)
             return false;
+        
+        //check if the saved template is already included in templates_include sending an advise to the user
+        if (isset($node) and !self::isIncludedFile($node->GetNodeName(), $node))
+            $this->messages->add('Note that this template isn\'t included in the templates_includes.xsl file', MSG_TYPE_WARNING);
     }
 
     private function sanitizeContent($content)
@@ -938,8 +946,7 @@ class xsltnode extends FileNode
                 //generate the new and old template URL for this node
                 $oldTemplateURL = App::getValue('UrlRoot') . App::getValue('NodeRoot') . $node->GetRelativePath($projectId, $oldNode)
                         . '/templates/templates_include.xsl';
-                $newTemplateURL = App::getValue('UrlRoot') . App::getValue('NodeRoot') . $node->GetRelativePath($projectId)
-                        . '/templates/templates_include.xsl';
+                $newTemplateURL = App::getValue('UrlRoot') . App::getValue('NodeRoot') . $node->GetRelativePath($projectId) . '/templates/templates_include.xsl';
                 //read the include tags from the docxap
                 $root = $dom->getElementsByTagName('stylesheet');
                 $xPath = new DOMXPath($dom);
@@ -1028,6 +1035,132 @@ class xsltnode extends FileNode
         //include the template
         if ($this->setIncludeContent($this->parent->GetNodeName(), $targetParentID, $this->parent->GetNodeType(), null) === false)
             return false;
+        return true;
+    }
+    
+    /**
+     * search for a template name in a parent templates folder by the correspondant node given
+     * @param string $templateName
+     * @param Node $node
+     * @return boolean
+     */
+    public static function isIncludedFile($templateName, Node $node)
+    {
+        if ($templateName == 'templates_include.xsl' or $templateName == 'docxap.xsl')
+            return true;
+        //get parent templates folder
+        $templates = new Node($node->getParent());
+        $includeId = $templates->GetChildByName('templates_include.xsl');
+        if (!$includeId)
+        {
+            //There's not a templates_include.xsl file
+            return true;
+        }
+        //get includes template node and its content
+        $includeNode = new Node($includeId);
+        $includeContent = $includeNode->getContent();
+        $dom = new DOMDocument();
+        if (!@$dom->loadXML($includeContent))
+        {
+            Logger::error('Can\'t load XML content from node ID: ' . $includeNode->GetID());
+            return false;
+        }
+        //check if there is a template with that name
+        $xPath = new DOMXPath($dom);
+        $includeTag = $xPath->query("/xsl:stylesheet/xsl:include[@href='$templateName']");
+        if ($includeTag->length)
+        {
+            //template exists
+            return true;
+        }
+        return false;
+    }
+    
+    /**
+     * Remove all references to the section/server/project node given in the docxap files under the nodes tree (recursive method)
+     * @param Node $node
+     * @param string $templateURL
+     * @return boolean
+     */
+    private function remove_includes(Node $node, $templateURL = null)
+    {
+        //look for templates folder
+        $templateFolderId = $node->GetChildren(Ximdex\Services\NodeType::TEMPLATES_ROOT_FOLDER);
+        if ($templateFolderId)
+        {
+            $templateFolder = new Node($templateFolderId[0]);
+            
+            //look for docxap template
+            $docxapTemplateId = $templateFolder->GetChildByName('docxap.xsl');
+            if ($docxapTemplateId)
+            {
+                //get docxap XML content
+                $docxapTemplate = new Node($docxapTemplateId);
+                $content = $docxapTemplate->GetContent();
+                
+                //change the include references for templates_include.xsl to the new path
+                $dom = new DOMDocument();
+                $dom->formatOutput = true;
+                $dom->preserveWhiteSpace = false;
+                if (!@$dom->loadXML($content))
+                {
+                    $error = 'Can\'t load a dependant docxap template to remove the include references';
+                    $this->messages->add($error, MSG_TYPE_WARNING);
+                    return false;
+                }
+                
+                //generate the template URL for the template node to remove one time
+                if (!$templateURL)
+                {
+                    $projectId = $node->GetProject();
+                    $templateURL = App::getValue('UrlRoot') . App::getValue('NodeRoot') . $node->GetRelativePath($projectId) . '/templates/templates_include.xsl';
+                }
+                
+                //search an ocurrence for the related include tag from the docxap
+                $xPath = new DOMXPath($dom);
+                $template = $xPath->query("/xsl:stylesheet/xsl:include[@href='$templateURL']");
+                if ($template->length)
+                {
+                    //remove the template to delete from the content
+                    $root = $dom->getElementsByTagName('stylesheet');
+                    if ($root->item(0)->removeChild($template->item(0)) === false)
+                    {
+                        $this->messages->add('Can\'t remove the template include reference in docxap node: ' . $docxapTemplateId, MSG_TYPE_WARNING);
+                        return false;
+                    }
+                    
+                    //save the modified content to the docxap node
+                    $content = $dom->saveXML();
+                    if ($content === false)
+                    {
+                        $error = \Ximdex\Error::error_message();
+                        $this->messages->add($error, MSG_TYPE_ERROR);
+                        return false;
+                    }
+                    if ($docxapTemplate->SetContent($content) === false)
+                    {
+                        $this->messages->mergeMessages($docxapTemplate->messages);
+                        return false;
+                    }
+                }
+            }
+        }
+        
+        //get children of the node
+        $childNodes = $node->GetChildren();
+        foreach ($childNodes as $childNode)
+        {
+            $childNode = new Node($childNode);
+            //only project, servers and section/subsections can storage template folders
+            if ($childNode->GetNodeType() == Ximdex\Services\NodeType::PROJECT or $childNode->GetNodeType() == Ximdex\Services\NodeType::SERVER
+                or $childNode->GetNodeType() == Ximdex\Services\NodeType::SECTION)
+            {
+                //call in recursive mode with the child node
+                $res = $this->remove_includes($childNode, $templateURL);
+                if ($res === false)
+                    return false;
+            }
+        }
         return true;
     }
 }

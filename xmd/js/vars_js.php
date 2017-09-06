@@ -25,6 +25,8 @@
  */
 
 
+use Ximdex\Runtime\App;
+
 include_once '../../bootstrap/start.php';
 
 
@@ -42,11 +44,11 @@ $userID = \Ximdex\Utils\Session::get('userID');
 header('Content-type: application/javascript');
 
 echo "\nrenderer = '" . \Ximdex\Utils\Session::get("renderer") . "';";
-echo "\nurl_root = '" . \App::getValue( 'UrlRoot') . "';";
-echo "\nximdex_root = '" . \App::getValue('XIMDEX_ROOT_PATH') . "';";
+echo "\nurl_root = '" . App::getValue( 'UrlRoot') . "';";
+echo "\nximdex_root = '" . App::getValue('XIMDEX_ROOT_PATH') . "';";
 echo "\nbase_action = '" . \Ximdex\Utils\Session::get("base_action") . "';";
-echo "\nurl_root = '" . \App::getValue( 'UrlRoot') . "';";
-echo "\napp_root = '" . \App::getValue('AppRoot') . "';";
+echo "\nurl_root = '" . App::getValue( 'UrlRoot') . "';";
+echo "\napp_root = '" . App::getValue('AppRoot') . "';";
 echo "\nuser_id = '" . \Ximdex\Utils\Session::get('userID') . "';";
 echo "\nlocale = '" . \Ximdex\Utils\Session::get('locale') . "';";
 $load_welcome = (int)(ModulesManager::isEnabled("ximDEMOS") && \Ximdex\Utils\Session::get('user_demo'));

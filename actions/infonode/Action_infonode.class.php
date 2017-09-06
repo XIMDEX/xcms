@@ -28,6 +28,7 @@ use Ximdex\Models\Channel;
 use Ximdex\Models\Node;
 use Ximdex\Models\PipeStatus;
 use Ximdex\MVC\ActionAbstract;
+use Ximdex\Runtime\App;
 
 ModulesManager::file('/actions/manageproperties/inc/InheritedPropertiesManager.class.php');
 ModulesManager::file('/inc/model/RelNode2Asset.class.php');
@@ -61,6 +62,8 @@ class Action_infonode extends ActionAbstract
             $condition = "id = %s";
             $pipeStatusInfo=$pipeStatus->find('Name',$condition, $params, MONO);
         }
+        else
+            $pipeStatusInfo = array(null);
 
         //channels
         $channel = new Channel();
