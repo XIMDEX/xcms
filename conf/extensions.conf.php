@@ -1,5 +1,6 @@
 <?php
 
+use Ximdex\Runtime\App;
 
 class Extensions {
     const JQUERY_PATH = "/extensions/jquery";
