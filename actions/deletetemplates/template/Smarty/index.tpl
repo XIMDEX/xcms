@@ -22,44 +22,41 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  *}
-	<form method="post" id="msr_action" action="{$action_url}">
-<div class="action_header" style="padding-bottom: 90px!important;">
-	<h5 class="direction_header"> Name Node: {t}Delete templates{/t}</h5>
-	<h5 class="nodeid_header"> ID Node: {$nodeid}</h5>
-	<hr>
-
-	<fieldset class="buttons-form">
-		{button label="Select all" class="button-select-all btn main_action"}
-		{button label="Select none" class="button-deselect-all btn main_action"}
-		{button label="Delete" class="validate button-modify btn main_action"}
-	</fieldset>
-</div>
-<div class="action_content">
-{if ($templates)}
-
-
-
-
-
+<form method="post" id="msr_action" action="{$action_url}">
+	<div class="action_header">
+		<h5 class="direction_header"> Name Node: {t}Delete templates{/t}</h5>
+		<h5 class="nodeid_header"> ID Node: {$nodeid}</h5>
+		<hr />
+	</div>
+	{if ($templates)}
+		<div class="message message-warning">
+			<p class="icon">{t}This action cannot be undone{/t}.</p>
+		</div>
+	{/if}
+	<div class="action_content">
+		{if ($templates)}
+			<fieldset class="buttons-form" style="margin-bottom: 10pt !important; margin-top: 0 !important;">
+				{button label="Select all" class="button-select-all btn main_action"}
+				{button label="Select none" class="button-deselect-all btn main_action"}
+				{button label="Delete" class="validate button-modify btn main_action"}
+			</fieldset>
 			<ol>
 				{section name=i loop=$templates}
 					<li class="box-item box_item-template">
 						<span>
-							<input type="checkbox" name="templates[]" value="{$templates[i].Id}" class="hidden-focus" id="delete_{$templates[i].Id}"/> 
+							<input type="checkbox" name="templates[]" value="{$templates[i].Id}" class="hidden-focus" 
+									id="delete_{$templates[i].Id}"/> 
 							<label for="delete_{$templates[i].Id}" class="checkbox-label icon">{$templates[i].Name}</label>
 						</span>
 					</li>
 				{/section}
 			</ol>
-
-
-
-
-{else}
-
-	<div class="small-12 columns">
-		<div class="alert alert-info" >
-			<strong>Info!</strong> {t}Templates not found{/t}</div></div>
-
-{/if}</div>
-	</form>
+		{else}
+			<div class="small-12 columns">
+				<div class="alert alert-info" >
+					<strong>Info!</strong> {t}Templates not found{/t}
+				</div>
+			</div>
+		{/if}
+	</div>
+</form>

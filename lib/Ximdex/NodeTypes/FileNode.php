@@ -127,6 +127,8 @@ class FileNode extends Root
     		$content = '';
         $data = new DataFactory($this->parent->get('IdNode'));
         $ret = $data->SetContent($content);
+        if ($ret === false)
+            $this->messages->add($data->msgErr, MSG_TYPE_ERROR);
         $this->updatePath();
         return $ret;
     }

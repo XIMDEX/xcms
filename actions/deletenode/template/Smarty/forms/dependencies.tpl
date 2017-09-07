@@ -71,7 +71,7 @@
 				{if ($pendingTasks)}
 				<div class="small-12 columns">
 					<div class="alert alert-info">
-						<strong>Info!</strong> {t}This node or its children have pending task to publish, if you continue these tasks will be interrupted{/t}!</p>
+						<p><strong>Info!</strong> {t}This node or its children have pending task to publish, if you continue these tasks will be interrupted{/t}!</p>
 					</div></div>
 						{/if}
 
