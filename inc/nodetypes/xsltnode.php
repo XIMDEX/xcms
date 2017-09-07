@@ -614,7 +614,7 @@ class xsltnode extends FileNode
         if (isset($node) and !self::isIncludedInTemplates($node->GetNodeName(), $node))
             $this->messages->add('Note that this template isn\'t included in the templates_includes.xsl file', MSG_TYPE_WARNING);
         
-        if ($node->GetNodeName() == 'templates_include.xsl')
+        if (isset($node) and $node->GetNodeName() == 'templates_include.xsl')
             if (!self::isIncludedInDocxapFile($node))
                 $this->messages->add('Note that this file isn\'t included in the docxap.xsl file', MSG_TYPE_WARNING);
     }

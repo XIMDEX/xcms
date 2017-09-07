@@ -7,8 +7,6 @@
 *.sass-cache
 *.idea
 
-
-
 node_modules/
 /data/
 /logs/
@@ -25,11 +23,11 @@ modules/xlyre
 
 inc/model/orm/*.bck*
 
-install/1-MoveXimdexToDocRoot.sh
-install/_STATUSFILE
-install/install.log
-
 koala-config.json
 nbproject/**
 pi.php
-drzippie_tests
+/.settings/
+/.buildpath
+/.gitignore
+/.project
+/conf/

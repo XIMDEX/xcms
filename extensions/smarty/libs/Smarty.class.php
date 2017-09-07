@@ -298,7 +298,7 @@ class Smarty extends Smarty_Internal_TemplateBase {
      * cache lifetime in seconds
      * @var integer
      */
-    public $cache_lifetime = 3600;
+    public $cache_lifetime = 1; //3600;
     /**
      * force cache file creation
      * @var boolean
@@ -392,7 +392,7 @@ class Smarty extends Smarty_Internal_TemplateBase {
      * Only used when $debugging_ctrl is set to 'URL'.
      * The name of the URL-parameter that activates debugging.
      *
-     * @var type
+     * @var string
      */
     public $smarty_debug_id = 'SMARTY_DEBUG';
     /**
