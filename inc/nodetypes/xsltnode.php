@@ -460,14 +460,19 @@ class xsltnode extends FileNode
         $nodeTypeId = $this->parent->get('IdNodeType');
         $templateName = $this->parent->get('Name');
         
-        $sectionId = $this->parent->getSection();
-        if ($this->removeIncludeFile($templateName, $sectionId, $nodeTypeId) === false)
-            return false;
-
-        $projectId = $node->GetProject();
-        if ($this->removeIncludeFile($templateName, $projectId, $nodeTypeId) === false)
-            return false;
-
+        //remove the template from includes_template node
+        $templatesId = $this->parent->getParent();
+        if ($templatesId)
+        {
+            $templates = new Node($templatesId);
+            if ($templates and $templates->GetNodeType() == \Ximdex\Services\NodeType::TEMPLATES_ROOT_FOLDER)
+            {
+                $sectionId = $templates->GetParent();
+                if ($this->removeIncludeFile($templateName, $sectionId, $nodeTypeId) === false)
+                    return false;
+            }
+        }
+        
         //with templates_include: remove the reference in the docxap files where this node is included
         if ($templateName == 'templates_include.xsl')
             if (!$this->remove_includes(new Node($sectionId)))
@@ -1098,6 +1103,14 @@ class xsltnode extends FileNode
      */
     private function remove_includes(Node $node, $templateURL = null)
     {
+        //generate the template URL for the template node to remove one time
+        if (!$templateURL)
+        {
+            $projectId = $node->GetProject();
+            $templateURL = App::getValue('UrlRoot') . App::getValue('NodeRoot') . $node->GetRelativePath($projectId) 
+                    . '/templates/templates_include.xsl';
+        }
+        
         //look for templates folder
         $templateFolderId = $node->GetChildren(Ximdex\Services\NodeType::TEMPLATES_ROOT_FOLDER);
         if ($templateFolderId)
@@ -1121,13 +1134,6 @@ class xsltnode extends FileNode
                     $error = 'Can\'t load a dependant docxap template to remove the include references';
                     $this->messages->add($error, MSG_TYPE_WARNING);
                     return false;
-                }
-                
-                //generate the template URL for the template node to remove one time
-                if (!$templateURL)
-                {
-                    $projectId = $node->GetProject();
-                    $templateURL = App::getValue('UrlRoot') . App::getValue('NodeRoot') . $node->GetRelativePath($projectId) . '/templates/templates_include.xsl';
                 }
                 
                 //search an ocurrence for the related include tag from the docxap
@@ -1187,6 +1193,14 @@ class xsltnode extends FileNode
      */
     private function add_includes(Node $node, $templateURL = null)
     {
+        //generate the template URL for the template node to add, one time
+        if (!$templateURL)
+        {
+            $projectId = $node->GetProject();
+            $templateURL = App::getValue('UrlRoot') . App::getValue('NodeRoot') . $node->GetRelativePath($projectId)
+                    . '/templates/templates_include.xsl';
+        }
+        
         //look for templates folder
         $templateFolderId = $node->GetChildren(Ximdex\Services\NodeType::TEMPLATES_ROOT_FOLDER);
         if ($templateFolderId)
@@ -1210,14 +1224,6 @@ class xsltnode extends FileNode
                     $error = 'Can\'t load a dependant docxap template to include the new templates include';
                     $this->messages->add($error, MSG_TYPE_WARNING);
                     return false;
-                }
-                
-                //generate the template URL for the template node to add, one time
-                if (!$templateURL)
-                {
-                    $projectId = $node->GetProject();
-                    $templateURL = App::getValue('UrlRoot') . App::getValue('NodeRoot') . $node->GetRelativePath($projectId) 
-                            . '/templates/templates_include.xsl';
                 }
                 
                 //search a possible ocurrence for the related include tag from the docxap to avoid the inclusion
