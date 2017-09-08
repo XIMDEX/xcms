@@ -9,7 +9,7 @@
  *    this list of conditions and the following disclaimer.
  *
  * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this listof conditions and the following disclaimer in the documentation
+ *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDER AND CONTRIBUTORS "AS IS"
@@ -39,6 +39,7 @@ use Solarium\QueryType\Select\Query\Component\Facet\Query as FacetQuery;
 use Solarium\QueryType\Select\Query\Component\Facet\MultiQuery as FacetMultiQuery;
 use Solarium\QueryType\Select\Query\Component\Facet\Range as FacetRange;
 use Solarium\QueryType\Select\Query\Component\Facet\Pivot as FacetPivot;
+use Solarium\QueryType\Select\Query\Component\Facet\Interval as FacetInterval;
 
 class FacetSetTest extends \PHPUnit_Framework_TestCase
 {
@@ -68,7 +69,7 @@ class FacetSetTest extends \PHPUnit_Framework_TestCase
     {
         $request = $this->builder->buildComponent($this->component, $this->request);
 
-        $this->assertEquals(
+        static::assertEquals(
             array(),
             $request->getParams()
         );
@@ -85,12 +86,12 @@ class FacetSetTest extends \PHPUnit_Framework_TestCase
 
         $request = $this->builder->buildComponent($this->component, $this->request);
 
-        $this->assertEquals(
+        static::assertEquals(
             null,
             $request->getRawData()
         );
 
-        $this->assertEquals(
+        static::assertEquals(
             '?facet=true&facet.field={!key=f1}owner&facet.query={!key=f2}category:23&facet.query={!key=f4}category:40',
             urldecode($request->getUri())
         );
@@ -113,12 +114,12 @@ class FacetSetTest extends \PHPUnit_Framework_TestCase
 
         $request = $this->builder->buildComponent($this->component, $this->request);
 
-        $this->assertEquals(
+        static::assertEquals(
             null,
             $request->getRawData()
         );
 
-        $this->assertEquals(
+        static::assertEquals(
             '?facet=true&facet.range={!key=f1}price&f.price.facet.range.start=1&f.price.facet.range.end=100&f.price.facet.range.gap=10&f.price.facet.mincount=123&f.price.facet.range.other=all&f.price.facet.range.include=outer',
             urldecode($request->getUri())
         );
@@ -140,12 +141,12 @@ class FacetSetTest extends \PHPUnit_Framework_TestCase
 
         $request = $this->builder->buildComponent($this->component, $this->request);
 
-        $this->assertEquals(
+        static::assertEquals(
             null,
             $request->getRawData()
         );
 
-        $this->assertEquals(
+        static::assertEquals(
             '?facet=true&facet.range={!key=f1}price&f.price.facet.range.start=1&f.price.facet.range.end=100'.
             '&f.price.facet.range.gap=10',
             urldecode($request->getUri())
@@ -164,12 +165,12 @@ class FacetSetTest extends \PHPUnit_Framework_TestCase
 
         $request = $this->builder->buildComponent($this->component, $this->request);
 
-        $this->assertEquals(
+        static::assertEquals(
             null,
             $request->getRawData()
         );
 
-        $this->assertEquals(
+        static::assertEquals(
             '?facet=true&facet.missing=true&facet.limit=10&facet.field={!key=f1}owner&facet.query={!key=f2}category:23'.
             '&facet.query={!key=f4}category:40',
             urldecode($request->getUri())
@@ -198,12 +199,12 @@ class FacetSetTest extends \PHPUnit_Framework_TestCase
 
         $request = $this->builder->buildComponent($this->component, $this->request);
 
-        $this->assertEquals(
+        static::assertEquals(
             null,
             $request->getRawData()
         );
 
-        $this->assertEquals(
+        static::assertEquals(
             '?facet=true&facet.pivot={!key=f1 ex=owner}cat,inStock&facet.pivot.mincount=123',
             urldecode($request->getUri())
         );
@@ -222,12 +223,12 @@ class FacetSetTest extends \PHPUnit_Framework_TestCase
 
         $request = $this->builder->buildComponent($this->component, $this->request);
 
-        $this->assertEquals(
+        static::assertEquals(
             null,
             $request->getRawData()
         );
 
-        $this->assertEquals(
+        static::assertEquals(
             '?facet=true&facet.pivot={!stats=piv1}cat,inStock',
             urldecode($request->getUri())
         );
@@ -249,13 +250,38 @@ class FacetSetTest extends \PHPUnit_Framework_TestCase
 
         $request = $this->builder->buildComponent($this->component, $this->request);
 
-        $this->assertEquals(
+        static::assertEquals(
             null,
             $request->getRawData()
         );
 
-        $this->assertEquals(
+        static::assertEquals(
             '?facet=true&facet.contains=bar&facet.contains.ignoreCase=false&facet.field={!key=f1}owner&f.owner.facet.contains=foo&f.owner.facet.contains.ignoreCase=true',
+            urldecode($request->getUri())
+        );
+    }
+
+    public function testBuildWithIntervalFacet()
+    {
+        $facet = new FacetInterval(
+            array(
+                'key' => 'f1',
+                'fields' => 'cat,inStock',
+                'set' => array(0 => 'int1', 'one' => 'int2'),
+            )
+        );
+
+        $this->component->addFacet($facet);
+
+        $request = $this->builder->buildComponent($this->component, $this->request);
+
+        static::assertEquals(
+            null,
+            $request->getRawData()
+        );
+
+        static::assertEquals(
+            '?facet=true&facet.interval={!key=f1}&f..facet.interval.set=int1&f..facet.interval.set={!key="one"}int2',
             urldecode($request->getUri())
         );
     }

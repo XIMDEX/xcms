@@ -1,4 +1,10 @@
 {
+	"name": "XIMDEX/ximdex",
+    "description": "Ximdex CMS is a Semantic Content Management System (CMS)",
+    "license": "AGPL-3.0",
+    "type": "project",
+    "keywords": ["cms", "semantic"],
+    "homepage": "https://github.com/XIMDEX/ximdex",
     "repositories": [
         {
             "type": "package",
@@ -35,23 +41,26 @@
         }
     ],
     "require": {
-        "solarium/solarium": "3.5.1",
-        "monolog/monolog": "1.11.0",
+        "solarium/solarium": "3.8.*",
+        "monolog/monolog": "1.23.*",
         "codemirror/Codemirror": "4.7.0",
         "RyanMullins/angular-hammer": "2.1.10",
         "hammerjs/hammer.js": "2.0.4",
-        "pda/pheanstalk": "*",
-        "symfony/console": "^3.1",
-        "php-di/php-di": "^5.4",
-        "doctrine/common": "^2.7",
-        "illuminate/support": "5.2.*",
+        "pda/pheanstalk": "3.1.*",
+        "symfony/console": "3.3.*",
+        "php-di/php-di": "5.4.*",
+        "doctrine/common": "2.7.*",
+        "illuminate/support": "5.4.*",
         
-        "doctrine/cache": "1.6.2",
-        "doctrine/annotations": "1.4.0"
+        "doctrine/cache": "1.6.*",
+        "doctrine/annotations": "1.4.*",
+        "doctrine/collections": "1.4.*",
+        "doctrine/inflector": "1.1.*"
+        
     },
      "require-dev": {
-        "mockery/mockery": "0.8.0",
-        "codeception/codeception": "^2.2"
+        "mockery/mockery": "0.9.*",
+        "codeception/codeception": "2.3.*"
     },
     "autoload": {
         "psr-0": { "Ximdex": "lib"}

@@ -1,5 +1,39 @@
 # CHANGELOG
 
+## 3.8.0 - 2017-01-31
+
+- bugfix: use GET request for extracting remote files
+- added: support for simple group format in response parser
+- added: helper for fetching ValueGroup from a Grouped result
+- bugfix: prevent ParallelExecution Curl spinloop
+- added: Guzzle 3 and Guzzle 6 client adapters
+- improvement: various fixes in documentation
+
+## 3.7.0 - 2016-10-28
+
+- added: support for nested documents in update query
+- added: spatial component for select query
+- added: support for keys and excludes in interval facet
+- added: support for grouping using a function (group.func)
+- bugfix: spellcheck collation parsing for Solr 5+
+- improvement: lots of fixes in documentation markup
+- added: included suggestion in composer file for a query builder library
+
+## 3.6.0 - 2016-05-03
+
+- improvement: no longer allow failures for HHVM in continuous integration
+- improvement: added Symfony 3.x components to CI tests for PHP 5.5+
+- added: support for replicas in distributed search
+- added: support for multiple boost queries in dismax
+- added: support for additional stats values like percentiles
+- improvement: several typo / markup fixes in documentation
+- improvement: several docblock fixes
+- improvement: ClientInterface now also used for standard Client class
+
+## 3.5.1
+
+- fix backwards incompatible change in classnames
+
 ## 3.5.0 - 2015-12-09
 
 - improvement: lots of code style fixes

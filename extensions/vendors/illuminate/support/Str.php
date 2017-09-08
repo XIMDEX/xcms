@@ -30,6 +30,28 @@ class Str
     protected static $studlyCache = [];
 
     /**
+     * Return the remainder of a string after a given value.
+     *
+     * @param  string  $subject
+     * @param  string  $search
+     * @return string
+     */
+    public static function after($subject, $search)
+    {
+        if ($search == '') {
+            return $subject;
+        }
+
+        $pos = strpos($subject, $search);
+
+        if ($pos === false) {
+            return $subject;
+        }
+
+        return substr($subject, $pos + strlen($search));
+    }
+
+    /**
      * Transliterate a UTF-8 value to ASCII.
      *
      * @param  string  $value
@@ -87,7 +109,7 @@ class Str
     public static function endsWith($haystack, $needles)
     {
         foreach ((array) $needles as $needle) {
-            if ((string) $needle === static::substr($haystack, -static::length($needle))) {
+            if (substr($haystack, -strlen($needle)) === (string) $needle) {
                 return true;
             }
         }
@@ -133,13 +155,29 @@ class Str
     }
 
     /**
+     * Convert a string to kebab case.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public static function kebab($value)
+    {
+        return static::snake($value, '-');
+    }
+
+    /**
      * Return the length of the given string.
      *
      * @param  string  $value
+     * @param  string  $encoding
      * @return int
      */
-    public static function length($value)
+    public static function length($value, $encoding = null)
     {
+        if ($encoding) {
+            return mb_strlen($value, $encoding);
+        }
+
         return mb_strlen($value);
     }
 
@@ -194,10 +232,10 @@ class Str
      * Parse a Class@method style callback into class and method.
      *
      * @param  string  $callback
-     * @param  string  $default
+     * @param  string|null  $default
      * @return array
      */
-    public static function parseCallback($callback, $default)
+    public static function parseCallback($callback, $default = null)
     {
         return static::contains($callback, '@') ? explode('@', $callback, 2) : [$callback, $default];
     }
@@ -224,28 +262,15 @@ class Str
     {
         $string = '';
 
-        while (($len = static::length($string)) < $length) {
+        while (($len = strlen($string)) < $length) {
             $size = $length - $len;
 
             $bytes = random_bytes($size);
 
-            $string .= static::substr(str_replace(['/', '+', '='], '', base64_encode($bytes)), 0, $size);
+            $string .= substr(str_replace(['/', '+', '='], '', base64_encode($bytes)), 0, $size);
         }
 
         return $string;
-    }
-
-    /**
-     * Generate a more truly "random" bytes.
-     *
-     * @param  int  $length
-     * @return string
-     *
-     * @deprecated since version 5.2. Use random_bytes instead.
-     */
-    public static function randomBytes($length = 16)
-    {
-        return random_bytes($length);
     }
 
     /**
@@ -253,32 +278,37 @@ class Str
      *
      * Should not be considered sufficient for cryptography, etc.
      *
+     * @deprecated since version 5.3. Use the "random" method directly.
+     *
      * @param  int  $length
      * @return string
      */
     public static function quickRandom($length = 16)
     {
+        if (PHP_MAJOR_VERSION > 5) {
+            return static::random($length);
+        }
+
         $pool = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
-        return static::substr(str_shuffle(str_repeat($pool, $length)), 0, $length);
+        return substr(str_shuffle(str_repeat($pool, $length)), 0, $length);
     }
 
     /**
-     * Compares two strings using a constant-time algorithm.
+     * Replace a given value in the string sequentially with an array.
      *
-     * Note: This method will leak length information.
-     *
-     * Note: Adapted from Symfony\Component\Security\Core\Util\StringUtils.
-     *
-     * @param  string  $knownString
-     * @param  string  $userInput
-     * @return bool
-     *
-     * @deprecated since version 5.2. Use hash_equals instead.
+     * @param  string  $search
+     * @param  array   $replace
+     * @param  string  $subject
+     * @return string
      */
-    public static function equals($knownString, $userInput)
+    public static function replaceArray($search, array $replace, $subject)
     {
-        return hash_equals($knownString, $userInput);
+        foreach ($replace as $value) {
+            $subject = static::replaceFirst($search, $value, $subject);
+        }
+
+        return $subject;
     }
 
     /**
@@ -291,6 +321,10 @@ class Str
      */
     public static function replaceFirst($search, $replace, $subject)
     {
+        if ($search == '') {
+            return $subject;
+        }
+
         $position = strpos($subject, $search);
 
         if ($position !== false) {
@@ -317,6 +351,20 @@ class Str
         }
 
         return $subject;
+    }
+
+    /**
+     * Begin a string with a single instance of a given value.
+     *
+     * @param  string  $value
+     * @param  string  $prefix
+     * @return string
+     */
+    public static function start($value, $prefix)
+    {
+        $quoted = preg_quote($prefix, '/');
+
+        return $prefix.preg_replace('/^(?:'.$quoted.')+/u', '', $value);
     }
 
     /**
@@ -411,7 +459,7 @@ class Str
     public static function startsWith($haystack, $needles)
     {
         foreach ((array) $needles as $needle) {
-            if ($needle != '' && mb_strpos($haystack, $needle) === 0) {
+            if ($needle != '' && substr($haystack, 0, strlen($needle)) === (string) $needle) {
                 return true;
             }
         }

@@ -11,6 +11,7 @@
 
 namespace Monolog\Handler;
 
+use Monolog\Formatter\LineFormatter;
 use Monolog\TestCase;
 use Monolog\Logger;
 
@@ -18,11 +19,13 @@ class NewRelicHandlerTest extends TestCase
 {
     public static $appname;
     public static $customParameters;
+    public static $transactionName;
 
     public function setUp()
     {
         self::$appname = null;
         self::$customParameters = array();
+        self::$transactionName = null;
     }
 
     /**
@@ -47,6 +50,20 @@ class NewRelicHandlerTest extends TestCase
         $this->assertEquals(array('context_a' => 'b'), self::$customParameters);
     }
 
+    public function testThehandlerCanAddExplodedContextParamsToTheNewRelicTrace()
+    {
+        $handler = new StubNewRelicHandler(Logger::ERROR, true, self::$appname, true);
+        $handler->handle($this->getRecord(
+            Logger::ERROR,
+            'log message',
+            array('a' => array('key1' => 'value1', 'key2' => 'value2'))
+        ));
+        $this->assertEquals(
+            array('context_a_key1' => 'value1', 'context_a_key2' => 'value2'),
+            self::$customParameters
+        );
+    }
+
     public function testThehandlerCanAddExtraParamsToTheNewRelicTrace()
     {
         $record = $this->getRecord(Logger::ERROR, 'log message');
@@ -56,6 +73,20 @@ class NewRelicHandlerTest extends TestCase
         $handler->handle($record);
 
         $this->assertEquals(array('extra_c' => 'd'), self::$customParameters);
+    }
+
+    public function testThehandlerCanAddExplodedExtraParamsToTheNewRelicTrace()
+    {
+        $record = $this->getRecord(Logger::ERROR, 'log message');
+        $record['extra'] = array('c' => array('key1' => 'value1', 'key2' => 'value2'));
+
+        $handler = new StubNewRelicHandler(Logger::ERROR, true, self::$appname, true);
+        $handler->handle($record);
+
+        $this->assertEquals(
+            array('extra_c_key1' => 'value1', 'extra_c_key2' => 'value2'),
+            self::$customParameters
+        );
     }
 
     public function testThehandlerCanAddExtraContextAndParamsToTheNewRelicTrace()
@@ -72,6 +103,13 @@ class NewRelicHandlerTest extends TestCase
         );
 
         $this->assertEquals($expected, self::$customParameters);
+    }
+
+    public function testThehandlerCanHandleTheRecordsFormattedUsingTheLineFormatter()
+    {
+        $handler = new StubNewRelicHandler();
+        $handler->setFormatter(new LineFormatter());
+        $handler->handle($this->getRecord(Logger::ERROR));
     }
 
     public function testTheAppNameIsNullByDefault()
@@ -96,6 +134,30 @@ class NewRelicHandlerTest extends TestCase
         $handler->handle($this->getRecord(Logger::ERROR, 'log message', array('appname' => 'logAppName')));
 
         $this->assertEquals('logAppName', self::$appname);
+    }
+
+    public function testTheTransactionNameIsNullByDefault()
+    {
+        $handler = new StubNewRelicHandler();
+        $handler->handle($this->getRecord(Logger::ERROR, 'log message'));
+
+        $this->assertEquals(null, self::$transactionName);
+    }
+
+    public function testTheTransactionNameCanBeInjectedFromTheConstructor()
+    {
+        $handler = new StubNewRelicHandler(Logger::DEBUG, false, null, false, 'myTransaction');
+        $handler->handle($this->getRecord(Logger::ERROR, 'log message'));
+
+        $this->assertEquals('myTransaction', self::$transactionName);
+    }
+
+    public function testTheTransactionNameCanBeOverriddenFromEachLog()
+    {
+        $handler = new StubNewRelicHandler(Logger::DEBUG, false, null, false, 'myTransaction');
+        $handler->handle($this->getRecord(Logger::ERROR, 'log message', array('transaction_name' => 'logTransactName')));
+
+        $this->assertEquals('logTransactName', self::$transactionName);
     }
 }
 
@@ -123,6 +185,11 @@ function newrelic_notice_error()
 function newrelic_set_appname($appname)
 {
     return NewRelicHandlerTest::$appname = $appname;
+}
+
+function newrelic_name_transaction($transactionName)
+{
+    return NewRelicHandlerTest::$transactionName = $transactionName;
 }
 
 function newrelic_add_custom_parameter($key, $value)

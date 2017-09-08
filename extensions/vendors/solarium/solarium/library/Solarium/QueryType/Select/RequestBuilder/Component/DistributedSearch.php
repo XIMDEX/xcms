@@ -64,6 +64,14 @@ class DistributedSearch implements ComponentRequestBuilderInterface
             $request->addParam('shards', implode(',', $shards));
         }
 
+        $replicas = array_values($component->getReplicas());
+
+        if (count($replicas)) {
+            $value = ($request->getParam('shards')) ? $request->getParam('shards').','.implode('|', $replicas) : implode('|', $replicas);
+
+            $request->addParam('shards', $value, true);
+        }
+
         $request->addParam('shards.qt', $component->getShardRequestHandler());
 
         // add collections to request

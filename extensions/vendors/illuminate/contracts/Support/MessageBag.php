@@ -2,7 +2,7 @@
 
 namespace Illuminate\Contracts\Support;
 
-interface MessageBag
+interface MessageBag extends Arrayable
 {
     /**
      * Get the keys present in the message bag.
@@ -31,10 +31,10 @@ interface MessageBag
     /**
      * Determine if messages exist for a given key.
      *
-     * @param  string  $key
+     * @param  string|array  $key
      * @return bool
      */
-    public function has($key = null);
+    public function has($key);
 
     /**
      * Get the first message from the bag for a given key.
@@ -90,11 +90,4 @@ interface MessageBag
      * @return int
      */
     public function count();
-
-    /**
-     * Get the instance as an array.
-     *
-     * @return array
-     */
-    public function toArray();
 }

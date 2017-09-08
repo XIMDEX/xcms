@@ -9,5 +9,6 @@ return array(
     'Ximdex' => array($baseDir . '/lib'),
     'Solarium\\' => array($vendorDir . '/solarium/solarium/library'),
     'Doctrine\\Common\\Lexer\\' => array($vendorDir . '/doctrine/lexer/lib'),
+    'Doctrine\\Common\\Inflector\\' => array($vendorDir . '/doctrine/inflector/lib'),
     'Doctrine\\Common\\Collections\\' => array($vendorDir . '/doctrine/collections/lib'),
 );
