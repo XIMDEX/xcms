@@ -1,7 +1,7 @@
 {
-	"name": "XIMDEX/ximdex",
+	"name": "ximdex",
     "description": "Ximdex CMS is a Semantic Content Management System (CMS)",
-    "license": "AGPL-3.0",
+    "license": "AGPL",
     "type": "project",
     "keywords": ["cms", "semantic"],
     "homepage": "https://github.com/XIMDEX/ximdex",
