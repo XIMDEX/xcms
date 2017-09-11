@@ -25,6 +25,7 @@
  */
 
 
+use Ximdex\Logger;
 use Ximdex\Models\Channel;
 use Ximdex\Models\Node;
 use Ximdex\Models\Version;
@@ -92,12 +93,12 @@ class Action_poolPreview extends ActionAbstract {
     	
     	$idNode = $this->request->getParam('idnode');
     	if (!($idNode > 0)) {
-    		XMD_Log::error(_("Idnode does not arrive"));
+    		Logger::error(_("Idnode does not arrive"));
     		return NULL;
     	} else {
     		$node = new Node($idNode);
     		if (!($node->get('IdNode') > 0)) {
-    			XMD_Log::error(_("Instantiated node has not idNode"));
+    			Logger::error(_("Instantiated node has not idNode"));
     			return NULL;
     		}
     	}
@@ -154,7 +155,7 @@ class Action_poolPreview extends ActionAbstract {
 					$relsInfo[$value['idVersion']] = $this->_getNodeInfo(array($idNode));
 				}
 			}
-    		XMD_Log::info("EN getVersionsForLabel ".print_r($relsInfo,true));
+    		Logger::info("EN getVersionsForLabel ".print_r($relsInfo,true));
     		$this->render(array('relations' => $relsInfo));
     	}
 	}
@@ -162,7 +163,7 @@ class Action_poolPreview extends ActionAbstract {
 	 * Inserts a relation between idLabel and IdVersion in the RelVersionsLabel table
 	 */
 	function asociateNodeToLabel(){
-		XMD_Log::info("asociate");
+		Logger::info("asociate");
 		$idNode = $this->request->getParam('idnode');
 		$idVersion = $this->request->getParam('idversion');
 		$idSubVersion = $this->request->getParam('idsubversion');
@@ -189,13 +190,13 @@ class Action_poolPreview extends ActionAbstract {
 				if (is_null($versionid)){
 					array_push($sms, _("Id version has not been found in the association of labels with versions"));
 				}
-				XMD_Log::info(_("Labels are going to be associated with version") . $versionid);
+				Logger::info(_("Labels are going to be associated with version") . $versionid);
 
 				if (is_array($labels)){
 					//i have a label array, insert a relation for each
 					
 					foreach ($labels as $key => $value) {
-						XMD_Log::info(_("It is associated IdVersion") . $versionid . _("with label") . $value);
+						Logger::info(_("It is associated IdVersion") . $versionid . _("with label") . $value);
 						$rel = new RelVersionsLabel();
 						$rel->set('idVersion',$versionid);
 						$rel->set('idLabel', $value);
@@ -203,7 +204,7 @@ class Action_poolPreview extends ActionAbstract {
 					}
 				}else{
 					//only have a label, insert the relation 
-					XMD_Log::info(_("It is associated IdVersion") . $versionid._("with label") . $labels);
+					Logger::info(_("It is associated IdVersion") . $versionid._("with label") . $labels);
 					$rel = new RelVersionsLabel();
 					$rel->set('idVersion',$versionid);
 					$rel->set('idLabel', $labels);
@@ -212,7 +213,7 @@ class Action_poolPreview extends ActionAbstract {
 				array_push($sms, _("Correct association"));
 			}
 		}
-		XMD_Log::info(print_r($sms,true));
+		Logger::debug(print_r($sms,true));
 		$sms = \Ximdex\XML\Base::encodeArrayElement($sms, \Ximdex\XML\XML::UTF8);
 		$this->render(array('sms' => $sms));
 	}

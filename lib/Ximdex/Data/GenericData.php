@@ -202,7 +202,7 @@ class GenericData extends Overloadable
      */
     public function _logQuery($query)
     {
-        Logger::info($query);
+        Logger::debug($query);
     }
 
     /**

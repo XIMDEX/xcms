@@ -25,6 +25,7 @@
  */
 
 
+use Ximdex\Logger;
 use Ximdex\Models\Link;
 use Ximdex\Models\Node;
 
@@ -98,7 +99,7 @@ class ximlinkResolver {
 		}
 
 		//$query = sprintf($query, $idprj);
-		XMD_Log::info($query);
+		Logger::debug($query);
 		$data = array();
 		$db = new DB();
 		$db->query($query);
@@ -194,9 +195,9 @@ class ximlinkResolver {
 		$result = $bio->build($data);
 
 		if ($result < 1) {
-			XMD_Log::error(_('A new ximlink could not be created: ') . $url);
+			Logger::error(_('A new ximlink could not be created: ') . $url);
 			foreach ($bio->messages->messages as $msg) {
-				XMD_Log::error(_('ximlink: ') . $msg['message']);
+				Logger::error(_('ximlink: ') . $msg['message']);
 			}
 		}
 
@@ -204,5 +205,3 @@ class ximlinkResolver {
 	}
 
 }
-
-?>

@@ -24,8 +24,10 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
+use Ximdex\Logger;
 use Ximdex\Models\User;
 use Ximdex\MVC\ActionAbstract;
+use Ximdex\Runtime\App;
 use Ximdex\Utils\Serializer;
 use Ximdex\Utils\Session;
 
@@ -110,7 +112,7 @@ class Action_managebatchs extends ActionAbstract {
                 }
             }
 
-            XMD_Log::info("PUBLISH results: $errorMsg");
+            Logger::info("PUBLISH results: $errorMsg");
         }
 
         $json = Serializer::encode(SZR_JSON, array('success' => $success));
@@ -139,16 +141,16 @@ class Action_managebatchs extends ActionAbstract {
     function changeBatchPriority() {
         $mode = 'up';
         if (isset($_POST['frm_increase']) && $_POST['frm_increase'] == "yes") {
-            XMD_Log::info('PUBLISH pre doPrioritizeBatch');
+            Logger::info('PUBLISH pre doPrioritizeBatch');
         } else if (isset($_POST['frm_decrease']) && $_POST['frm_decrease'] == "yes") {
-            XMD_Log::info('PUBLISH pre doUnprioritizeBatch');
+            Logger::info('PUBLISH pre doUnprioritizeBatch');
             $mode = 'down';
         }
 
         if (!$result = $this->doPrioritizeBatch($_POST['frm_id_batch'], $mode)) {
-            XMD_Log::error("An error occurred while changing batch priority ($mode).");
+            Logger::error("An error occurred while changing batch priority ($mode).");
         } else {
-            XMD_Log::error("Batch #" . $_POST['frm_id_batch'] . " priority has been changed ($mode).");
+            Logger::info("Batch #" . $_POST['frm_id_batch'] . " priority has been changed ($mode).");
         }
 
         $json = Serializer::encode(SZR_JSON, array('success' => true));

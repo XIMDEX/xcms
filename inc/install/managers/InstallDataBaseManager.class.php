@@ -24,6 +24,8 @@
  * @version $Revision$
  */
 
+use Ximdex\Logger;
+
 require_once(XIMDEX_ROOT_PATH . '/inc/install/managers/InstallManager.class.php');
 
 class InstallDataBaseManager extends InstallManager
@@ -57,7 +59,7 @@ class InstallDataBaseManager extends InstallManager
             $result = true;
         } else {
             if ($port)
-            	$host .= ':' . $port;
+            	$host .= ';port=' . $port;
             if ($name)
             	$url = 'mysql:dbname=' . $name . ';host=' . $host;
             else
@@ -68,7 +70,7 @@ class InstallDataBaseManager extends InstallManager
         	}
         	catch (PDOException $e)
         	{
-        		error_log('ERROR: can\'t connect to database: ' . $e->getMessage());
+        		Logger::error('Can\'t connect to database: ' . $e->getMessage());
         		return false;
         	}
             $GLOBALS[self::DB_ARRAY_KEY][$myPid] = $this->dbConnection;
@@ -140,11 +142,10 @@ class InstallDataBaseManager extends InstallManager
             if ($result === 0)
             	$result = false;
             if ($result === false) {
-                error_log("ERROR:");
-                error_log("a $result" . print_r($result, true) . " $query " . $this->dbConnection->error);
+                Logger::error("a $result" . print_r($result, true) . " $query " . $this->dbConnection->error);
             }
         } else {
-            error_log("ERROR: CREATING DATABASE.");
+            Logger::error("Creating database");
         }
         return $result;
     }
@@ -158,7 +159,7 @@ class InstallDataBaseManager extends InstallManager
             if ($result === 0)
             	$result = false;
         } else {
-            error_log("ERROR: DELETING DATABASE.");
+            Logger::error("Deleting database");
         }
         return $result;
     }

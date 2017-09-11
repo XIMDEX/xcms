@@ -132,7 +132,7 @@ class DexPumper {
 			$this->fatal('Pumper Id NOT found for id: ' . $params['--pumperid']);
 		}
 
-		$this->info("NEW PUMPER:: ".print_r($params,true));
+		$this->debug("NEW PUMPER:: ".print_r($params,true));
 
 		$this->localBasePath = trim($params['--localbasepath']);
 	}
@@ -509,7 +509,7 @@ class DexPumper {
         $sqlReport = "UPDATE PublishingReport SET State = '{$state_pumper}', $progress  WHERE IdBatch = '" . $idBatchUp . "' AND IdSyncServer = '" . $idServer . "' $idSync  ";
 
 			$this->serverFrame->execute($sqlReport);
-			$this->info($sqlReport);
+			$this->debug($sqlReport);
 	}
 
 	public function info($_msg = NULL) { $this->msg_log("INFO PUMPER: $_msg"); XMD_Log::info($_msg); }
