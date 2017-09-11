@@ -210,10 +210,22 @@ class Action_deletenode extends ActionAbstract {
 	function delete_node() {
 
 		$idNode	= $this->request->getParam("nodeid");
-	    	$depList = array();
-
-	    $deleteDep=$this->request->getParam("unpublishnode");
-
+		$node = new Node($idNode);
+		
+		//docxap.xls node from project templates folder cannot be removed
+		if ($node->GetNodeName() == 'docxap.xsl' and $node->GetNodeType() == \Ximdex\Services\NodeType::XSL_TEMPLATE)
+		{
+		    $templates = new Node($node->GetParent());
+		    $section = new Node($templates->GetParent());
+		    if ($section->GetNodeType() == \Ximdex\Services\NodeType::PROJECT)
+		    {
+		        $this->messages->add('Cannot delete the project docxap.xsl node', MSG_TYPE_ERROR);
+		        $values = array('action_with_no_return' => true, 'messages' => $this->messages->messages);
+		        $this->sendJSON($values);
+		        return false;
+		    }
+		}
+		
 		//If ximDEMOS is actived and nodeis is rol "Demo" then  remove is not allowed
 		if(ModulesManager::isEnabled("ximDEMOS") &&  \Ximdex\Utils\Session::get('user_demo')) {
 			$node = new Node($idNode);
@@ -230,6 +242,9 @@ class Action_deletenode extends ActionAbstract {
 				return ;
 			}
 		}
+		
+		$depList = array();
+		$deleteDep = $this->request->getParam("unpublishnode");
 
 		$userID = \Ximdex\Utils\Session::get('userID');
 		$unpublishDoc = ($this->request->getParam("unpublishdoc") == 1) ? true : false;
@@ -238,8 +253,7 @@ class Action_deletenode extends ActionAbstract {
 
 		$sync = new SynchroFacade();
 		$sync->deleteAllTasksByNode($idNode, $unpublishDoc);
-
-		$node = new Node($idNode);
+        
 		$parentID = $node->get('IdParent');
 
 		$user = new User($userID);

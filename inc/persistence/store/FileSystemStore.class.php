@@ -25,6 +25,8 @@
  *  @version $Revision$
  */
 
+use Ximdex\Logger;
+use Ximdex\Runtime\App;
 use Ximdex\Runtime\DataFactory;
 use Ximdex\Utils\FsUtils;
 
@@ -55,15 +57,15 @@ class FileSystemStore implements Store
         $df = new DataFactory($nodeId);
         $uniqueName = $df->GetTmpFile($versionId, $subversion);
 	if(!$uniqueName) {
-            XMD_Log::warning('No se ha podido obtener el file');
+            Logger::warning('No se ha podido obtener el file');
             $this->SetError(3);
             return false;
 	}
 
-	$targetPath = \App::getValue( "AppRoot") . \App::getValue( "FileRoot"). "/". $uniqueName;
+	$targetPath = App::getValue( "AppRoot") . App::getValue( "FileRoot"). "/". $uniqueName;
         $content = FsUtils::file_get_contents($targetPath);
 			
-	XMD_Log::info("GetContent for Node:".$nodeId.", Version: ".$versionId.".".$subversion.", File: .".$uniqueName. ", Chars: ".strlen($content));
+	Logger::debug("GetContent for Node:".$nodeId.", Version: ".$versionId.".".$subversion.", File: .".$uniqueName. ", Chars: ".strlen($content));
         return $content;
     }
 
@@ -81,12 +83,12 @@ class FileSystemStore implements Store
         $df->GetTmpFile($versionId, $subversion);
         $uniqueName = $df->GetTmpFile($versionId, $subversion);
 	if(!$uniqueName) {
-            XMD_Log::warning('No se ha podido obtener el file');
+            Logger::warning('No se ha podido obtener el file');
             $this->SetError(3);
             return false;
 	}
 
-	$targetPath = \App::getValue( "AppRoot") . \App::getValue( "FileRoot"). "/". $uniqueName;
+	$targetPath = App::getValue( "AppRoot") . App::getValue( "FileRoot"). "/". $uniqueName;
 
 	return FsUtils::file_put_contents($targetPath, $content);
     }
@@ -106,7 +108,7 @@ class FileSystemStore implements Store
             return false;
 	}
 
-	$targetPath = \App::getValue( "AppRoot") . \App::getValue( "FileRoot"). "/". $uniqueName;
+	$targetPath = App::getValue( "AppRoot") . App::getValue( "FileRoot"). "/". $uniqueName;
 
 	if (is_file($targetPath)) {
             return FsUtils::delete($targetPath);
@@ -115,5 +117,3 @@ class FileSystemStore implements Store
 	return false;
     }
 }
-
-?>

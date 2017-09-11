@@ -718,12 +718,18 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
             }
             $xslParser = new ParsingXsl($docxapId);
             $templatesInclude = $xslParser->getIncludedElements('templates_include');
-            //$templatesIncludePath = $this->rel_path_docxap . $templatesInclude[0];
+            if (!$templatesInclude)
+            {
+                //invalid docxap content
+                Logger::error('docxap has not valid content for node: ' . $this->node->GetNodeName());
+                return false;
+            }
+            
             $templatesIncludePath = str_replace(App::getValue('UrlRoot'), App::getValue('AppRoot'), $templatesInclude[0]);
             
             $xslParser = new ParsingXsl(NULL, $templatesIncludePath);
             $templatesElements = $xslParser->getIncludedElements(NULL, true, true);
-            
+                
             // Obtaining no renderizable elements
             $intersectionElements = array_intersect($rngElements, $templatesElements);
         }

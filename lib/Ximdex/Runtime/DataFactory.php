@@ -334,7 +334,7 @@ class DataFactory
         $targetPath = App::getValue("AppRoot") . App::getValue("FileRoot") . "/" . $uniqueName;
         $content = FsUtils::file_get_contents($targetPath);
 
-        XMD_Log::info("GetContent for Node:" . $this->nodeID . ", Version: " . $versionID . "." . $subVersion . ", File: ." . $uniqueName . ", Chars: " . strlen($content));
+        XMD_Log::debug("GetContent for Node:" . $this->nodeID . ", Version: " . $versionID . "." . $subVersion . ", File: ." . $uniqueName . ", Chars: " . strlen($content));
 
         $nodo = new Node($this->nodeID);
         $isPlainFile = $nodo->nodeType->get('IsPlainFile');

@@ -14,6 +14,7 @@ Class Logger
     private static $instances = array();
     private static $active = '';
     private $logger = null;
+    private static $debug = false;
 
     public function __construct($logger)
     {
@@ -73,6 +74,8 @@ Class Logger
 
     public static function debug($string)
     {
+        if (!self::$debug)
+            return true;
         try{
             return self::get()->logger->addDebug($string);
         }catch (\Exception $e){

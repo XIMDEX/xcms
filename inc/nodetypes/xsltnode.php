@@ -61,16 +61,35 @@ class xsltnode extends FileNode
 
     public function CreateNode($xsltName = null, $parentID = null, $nodeTypeID = null, $stateID = null, $ptdSourcePath = NULL)
     {
-
+        //explicit creation of the docxap template
+        if ($xsltName == 'docxap.xsl')
+        {
+            $parentNode = new Node($parentID);
+            $project = new Node($parentNode->GetProject());
+            $templates = new Node($project->GetChildByName('templates'));
+            $docxap = new Node($templates->GetChildByName('docxap.xsl'));
+            if ($docxap->GetID())
+            {
+                //get and copy project docxap
+                $xslContent = $docxap->GetContent();
+            }
+        }
+        else
+            $xslContent = '';
+        
         $xslSourcePath = NULL;
-        //	if (is_null($ptdSourcePath))  return;
+        
         if ($ptdSourcePath != null) {
 
             // Saving xslt content
 
             $xslContent = FsUtils::file_get_contents($ptdSourcePath);
-            $xslContent = $this->sanitizeContent($xslContent);
+            if (!isset($xslContent) or !$xslContent)
+                $xslContent = $this->sanitizeContent($xslContent);
+        }
 
+        if ($xslContent)
+        {
             $xslSourcePath = App::getValue('AppRoot') . App::getValue('TempRoot') . '/' . $parentID . $xsltName;
 
             if (!FsUtils::file_put_contents($xslSourcePath, $xslContent)) {
@@ -87,12 +106,21 @@ class xsltnode extends FileNode
             if ($this->setIncludeContent($xsltName, $parentID, $nodeTypeID, $stateID) === false)
                 return false;
         }
+        elseif (isset($parentNode))
+        {
+            //the new templates_include reference must be added in docxap file, and the existing parent ones
+            $docxapNode = new Node($parentNode->GetChildByName('docxap.xsl'));
+            if ($docxapNode->GetID() and $this->add_parents_includes_templates($docxapNode) === false)
+                return false;
+        }
 
         // Checks if exists docxap.xsl node
 
         $node = new Node($this->nodeID);
         $ximPtdNode = new Node($parentID);
-
+        
+        //TODO ajlucena: instead of copy the project docxap file, it's better to maintain the project's or parent's one
+        /*
         $project = new Node($node->GetProject());
         $idXimptdProject = $project->GetChildByName('templates');
 
@@ -142,6 +170,7 @@ class xsltnode extends FileNode
             if ($this->add_parents_includes_templates($docxapNode) === false)
                 return false;
         }
+        */
         
         //if the file created is the templates_include, it will be included in the servers/sections dependant docxap files 
         if ($xsltName == 'templates_include.xsl')
@@ -246,30 +275,6 @@ class xsltnode extends FileNode
                 $incNode = new Node($id);
                 $incNode->SetContent($includeContent);
             }
-            
-            //it is not necesary to create a docxap file in a project based in a theme
-            if (!isset($GLOBALS['fromTheme']) or !$GLOBALS['fromTheme'])
-            {
-                //If there is not a docxap.xsl file in the project/templates folder, create a new one
-                $res = $this->create_project_docxap_file();
-                if ($res === false)
-                {
-                    Logger::fatal('The project docxap XSL template could not been created');
-                    return false;
-                }
-                //check if the docxap project already exists (we are not in a new section)
-                if ($res === null)
-                {
-                    //the new templates_include reference must be added in docxap file, and the existing parent ones
-                    $idDocxap = $parent->GetChildByName('docxap.xsl');
-                    if ($idDocxap)
-                    {
-                        $docxapNode = new Node($idDocxap);
-                        if ($this->add_parents_includes_templates($docxapNode) === false)
-                            return false;
-                    }
-                }
-            }
 
         } else {
 
@@ -314,6 +319,31 @@ class xsltnode extends FileNode
             }
             $includeNode->setContent($includeContent);
         }
+        
+        //it is not necesary to create a docxap file in a project based in a theme
+        if (!isset($GLOBALS['fromTheme']) or !$GLOBALS['fromTheme'])
+        {
+            //If there is not a docxap.xsl file in the project/templates folder, create a new one
+            $res = $this->create_project_docxap_file();
+            if ($res === false)
+            {
+                Logger::fatal('The project docxap XSL template could not been created');
+                return false;
+            }
+            //check if the docxap project already exists (we are not in a new section)
+            if ($res === null)
+            {
+                //the new templates_include reference must be added in docxap file, and the existing parent ones
+                $idDocxap = $parent->GetChildByName('docxap.xsl');
+                if ($idDocxap)
+                {
+                    $docxapNode = new Node($idDocxap);
+                    if ($this->add_parents_includes_templates($docxapNode) === false)
+                        return false;
+                }
+            }
+        }
+        
         return true;
     }
 
@@ -522,6 +552,18 @@ class xsltnode extends FileNode
         
         if (isset($node))
         {
+            if ($node->GetNodeName() != 'docxap.xsl')
+            {
+                //if the templates folder is the project one, and there is not a docxap file, send a alert to the user
+                $templates = new Node($node->getParent());
+                $section = new Node($templates->getParent());
+                if ($section->GetNodeType() == \Ximdex\Services\NodeType::PROJECT)
+                {
+                    $docxapId = $templates->GetChildByName('docxap.xsl');
+                    if (!$docxapId)
+                        $this->messages->add('A docxap.xsl template file must be in the project templates folder', MSG_TYPE_WARNING);
+                }
+            }
             if ($node->GetNodeName() == 'templates_include.xsl')
             {
                 //check if the node is templates_include and is included in docxap file
@@ -1268,6 +1310,13 @@ class xsltnode extends FileNode
      */
     private function add_parents_includes_templates(Node $docxapNode)
     {
+        //if docxap node is located in the project templates folder, this process is not necessary
+        $templates = new Node($docxapNode->GetParent());
+        $section = new Node($templates->getParent());
+        if ($section->GetNodeType() == \Ximdex\Services\NodeType::PROJECT)
+            return true;
+        
+        //get XML content from docxap file 
         $docxapContent = $docxapNode->GetContent();
         if (!$docxapContent)
         {
@@ -1371,7 +1420,7 @@ class xsltnode extends FileNode
             $this->messages->mergeMessages($docxapNode->messages);
             return false;
         }
-        Logger::info('New files templates_include.xls have been included in the section docxap XSL document');
+        Logger::info('New files templates_include.xls have been included in the section docxap XSL document with ID: ' . $docxapNode->GetID());
         return true;
     }
 }
