@@ -45,8 +45,6 @@ class View_Xslt extends Abstract_View
     
     public function transform($idVersion = NULL, $pointer = NULL, $args = NULL)
     {
-
-
         $content = $this->retrieveContent($pointer);
         if (!$this->_setNode($idVersion))
             return NULL;
@@ -99,35 +97,68 @@ class View_Xslt extends Abstract_View
         // XSLT Transformation
 
         Logger::info('Starting xslt transformation');
+        
         if (!file_exists($docxap))
         {
-            $project = new Node($this->_idProject);
-            $nodeProjectPath = $project->class->GetNodePath();
-
-            $docxap = $nodeProjectPath . '/' . $ptdFolder . '/docxap.xsl';
-            
-            if (!file_exists($docxap))
+            //look for a nearest parent's docxap file, before to use the project's one
+            do
             {
-                $error = "File $docxap does not exists in project templates folder";
-                if (isset($GLOBALS['InBatchProcess']))
-                    Logger::error($error);
-                else
-                    $GLOBALS['errorInXslTransformation'] = $error;
-                return false;
+                $parent = new Node($section->GetParent());
+                if (!$parent->GetID())
+                {
+                    $error = 'Can\'t load the parent\'s node for the node ID: ' . $section->GetParent();
+                    if (isset($GLOBALS['InBatchProcess']))
+                        Logger::error($error);
+                    else
+                        $GLOBALS['errorInXslTransformation'] = $error;
+                    return false;
+                }
+                $templatesID = $section->GetChildByName('templates');
+                //if there is no a templates folder and it's not the project node, continue to upper level
+                if (!$templatesID)
+                {
+                    if ($section->getNodeType() == \Ximdex\Services\NodeType::PROJECT)
+                    {
+                        $error = 'There is not a templates folder in the project and no docxap file is located';
+                        if (isset($GLOBALS['InBatchProcess']))
+                            Logger::error($error);
+                        else
+                            $GLOBALS['errorInXslTransformation'] = $error;
+                        return false;
+                    }
+                    continue;
+                }
+                $templates = new Node($templatesID);
+                $idDocxapNode = $templates->GetChildByName('docxap.xsl');
+                if (!$idDocxapNode)
+                {
+                    if ($section->getNodeType() == \Ximdex\Services\NodeType::PROJECT)
+                    {
+                        $error = 'There is not a docxap file in the project\'s templates folder and above';
+                        if (isset($GLOBALS['InBatchProcess']))
+                            Logger::error($error);
+                        else
+                            $GLOBALS['errorInXslTransformation'] = $error;
+                        return false;
+                    }
+                    continue;
+                }
+                break;
             }
-            
-            //load de docxap NodeId corresponding to the project docxap.xsl file
-            $docxapPath = $project->GetPath() . '/' . $ptdFolder;
-            $idDocxapNode = $project->GetByNameAndPath('docxap.xsl', $docxapPath);
+            while ($section = $parent);
+            $docxapNode = new Node($idDocxapNode);
+            $docxap = $docxapNode->class->GetNodePath();
         }
         else
         {
             //load de docxap NodeId corresponding to the content of the section docxap.xsl file
             $docxapPath = $section->GetPath() . '/' . $ptdFolder;
             $idDocxapNode = $section->GetByNameAndPath('docxap.xsl', $docxapPath);
+            $idDocxapNode = $idDocxapNode[0]['IdNode'];
         }
+        
         //check if the docxap NodeId is ok
-        if (!$idDocxapNode)
+        if (!isset($idDocxapNode) or !$idDocxapNode)
         {
             $error = "Can't load the NodeID for the docxap file: $docxap";
             if (isset($GLOBALS['InBatchProcess']))
@@ -138,16 +169,18 @@ class View_Xslt extends Abstract_View
         }
         
         //load the docxap node
-        $idDocxapNode = $idDocxapNode[0]['IdNode'];
-        $docxapNode = new Node($idDocxapNode);
-        if (!$docxapNode)
+        if (!isset($docxapNode))
         {
-            $error = "Can't load the node for the docxap file: $docxap";
-            if (isset($GLOBALS['InBatchProcess']))
-                Logger::error($error);
-            else
-                $GLOBALS['errorInXslTransformation'] = $error;
-            return false;
+            $docxapNode = new Node($idDocxapNode);
+            if (!$docxapNode->GetID())
+            {
+                $error = "Can't load the node for the docxap file: $docxap";
+                if (isset($GLOBALS['InBatchProcess']))
+                    Logger::error($error);
+                else
+                    $GLOBALS['errorInXslTransformation'] = $error;
+                return false;
+            }
         }
 
         $xsltHandler = new \Ximdex\XML\XSLT();
@@ -163,10 +196,10 @@ class View_Xslt extends Abstract_View
             return false;
         }
         
-        //include and remove the duplicate templates in the docxap content
+        Logger::debug('Loading XSL content from ' . $docxap);
+        
+        //load the docxap content
         $domDoc = new DOMDocument();
-        $domDoc->formatOutput = true;
-        $domDoc->preserveWhiteSpace = false;
         if (@$domDoc->load($docxap) === false)
         {
             $error = \Ximdex\Error::error_message();
@@ -179,7 +212,18 @@ class View_Xslt extends Abstract_View
             return false;
         }
         $docxapContent = $domDoc->saveXML();
-        $xsltNode = new xsltnode($docxapNode);
+        
+        //include the existant templates under to the referenced docxap node until reached the document's section
+        $xsltNode = new xsltnode($this->_node);
+        $res = $xsltNode->add_childen_includesTemplates($docxapContent, $docxapNode);
+        if ($res === false)
+        {
+            if (!isset($GLOBALS['InBatchProcess']) and isset($xsltNode->messages->messages[0]))
+                $GLOBALS['errorInXslTransformation'] = $xsltNode->messages->messages[0];
+            return false;
+        }
+        
+        //include and remove the duplicate templates in the docxap content
         $res = $xsltNode->include_unique_templates($docxapContent, $docxapNode);
         if ($res === false)
         {
@@ -188,7 +232,7 @@ class View_Xslt extends Abstract_View
             return false;
         }
         
-        if ($xsltHandler->setXSL(null, $res) === false)
+        if ($xsltHandler->setXSL(null, $docxapContent) === false)
             return false;
         $params = array('xmlcontent' => $content);
         foreach ($params as $param => $value) {

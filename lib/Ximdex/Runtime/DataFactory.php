@@ -38,7 +38,7 @@ use Ximdex\Models\Version;
 use Ximdex\Utils\FsUtils;
 use Ximdex\Utils\PipelineManager;
 use Ximdex\Utils\Sync\SynchroFacade;
-use Ximdex\Logger as XMD_log;
+use Ximdex\Logger;
 
 
 require_once(XIMDEX_ROOT_PATH . "/inc/utils.php");
@@ -318,15 +318,15 @@ class DataFactory
         }
 
         if (!(!(is_null($versionID)) && !(is_null($subVersion)))) {
-            //XMD_Log::warning('No se ha podido estimar la versión o la subversion');
-        	XMD_Log::warning('Unable to estimate version or subversion');
+            //Logger::warning('No se ha podido estimar la versión o la subversion');
+        	Logger::warning('Unable to estimate version or subversion');
             return false;
         }
 
         $uniqueName = $this->GetTmpFile($versionID, $subVersion);
 
         if (!$uniqueName) {
-            XMD_Log::warning('Unable to get file');
+            Logger::warning('Unable to get file');
             $this->SetError(3);
             return false;
         }
@@ -334,7 +334,7 @@ class DataFactory
         $targetPath = App::getValue("AppRoot") . App::getValue("FileRoot") . "/" . $uniqueName;
         $content = FsUtils::file_get_contents($targetPath);
 
-        XMD_Log::debug("GetContent for Node:" . $this->nodeID . ", Version: " . $versionID . "." . $subVersion . ", File: ." . $uniqueName . ", Chars: " . strlen($content));
+        Logger::debug("GetContent for Node:" . $this->nodeID . ", Version: " . $versionID . "." . $subVersion . ", File: ." . $uniqueName . ", Chars: " . strlen($content));
 
         $nodo = new Node($this->nodeID);
         $isPlainFile = $nodo->nodeType->get('IsPlainFile');
@@ -375,7 +375,7 @@ class DataFactory
             $channels = $node->GetChannels();
             $pipelineManager = new PipelineManager();
             foreach ($channels as $idChannel) {
-                XMD_Log::info("Generation cache for version $idVersion and the channel $idChannel");
+                Logger::info("Generation cache for version $idVersion and the channel $idChannel");
                 $data = array('CHANNEL' => $idChannel);
 
                 if (!$isOTF) {
@@ -439,12 +439,12 @@ class DataFactory
             $uniqueName = $this->GetTmpFile($versionID, $subVersion);
 
             if (!$uniqueName) {
-                XMD_Log::error("Error making a setContent for Node (Unable to get the file):" . $this->nodeID . ", Version: " . $versionID . "." . $subVersion . ", File: ." . $uniqueName . ", Chars: " . strlen($content));
+                Logger::error("Error making a setContent for Node (Unable to get the file):" . $this->nodeID . ", Version: " . $versionID . "." . $subVersion . ", File: ." . $uniqueName . ", Chars: " . strlen($content));
                 return false;
             }
 
             $targetPath = App::getValue("AppRoot") . App::getValue("FileRoot") . "/" . $uniqueName;
-            XMD_Log::info("SetContent for Node:" . $this->nodeID . ", Version: " . $versionID . "." . $subVersion . ", File: ." . $uniqueName . ", Chars: " . strlen($content));
+            Logger::info("SetContent for Node:" . $this->nodeID . ", Version: " . $versionID . "." . $subVersion . ", File: ." . $uniqueName . ", Chars: " . strlen($content));
             $result = FsUtils::file_put_contents($targetPath, $content);
 
             $idVersion = $this->getVersionId($versionID, $subVersion);
@@ -490,7 +490,7 @@ class DataFactory
             $curVersion = $this->GetLastVersion();
 
             if (is_null($curVersion)) {
-                XMD_Log::warning('Unable to get the last version of the document');
+                Logger::warning('Unable to get the last version of the document');
                 return false;
             }
             $curSubVersion = $this->GetLastSubVersion($curVersion);
@@ -560,7 +560,7 @@ class DataFactory
             $this->updateCaches($oldIdVersion, $IdVersion);
         }
 
-        XMD_Log::info("AddVersion for Node:" . $this->nodeID . ", Version: " . $newVersion . "." . $newSubVersion . ", File: ." . $uniqueName);
+        Logger::debug('AddVersion for Node:' . $this->nodeID . ', Version: ' . $newVersion . '.' . $newSubVersion . ', File: ' . $uniqueName);
 
 
         if (ModulesManager::isEnabled('ximRAM')) {
@@ -624,7 +624,7 @@ class DataFactory
         $targetPath = App::getValue("AppRoot") . App::getValue("FileRoot") . "/" . $uniqueName;
 
         if (!FsUtils::file_put_contents($targetPath, $newContent)) {
-            XMD_Log::error('failed to set document content');
+            Logger::error('failed to set document content');
             $this->SetError(5);
         }
 
@@ -649,12 +649,12 @@ class DataFactory
 
         /// Lo guardamos en el sistema de archivos
         if ($nodetype->GetHasFSEntity() && !FsUtils::file_put_contents($fileName, $fileContent)) {
-            XMD_Log::error('An error occurred while trying to save the document');
+            Logger::error('An error occurred while trying to save the document');
             $this->SetError(6);
             return false;
         }
 
-        XMD_Log::debug("RecoverVersion for Node" . $this->nodeID . " with result:" .
+        Logger::debug("RecoverVersion for Node" . $this->nodeID . " with result:" .
             $IdVersion . ", Version: " . $newVersion . "." . $newSubVersion .
             ", OldVersion: " . $tmpVersion . "." . $subversion . ", File: ." . $uniqueName, 4, "DataFactory");
 
@@ -775,7 +775,7 @@ class DataFactory
         }
 
         // Deleting cache
-        XMD_log::info("Deleting cache from versionId $versionToDelete");
+        Logger::info("Deleting cache from versionId $versionToDelete");
 
         $pipeline = new PipelineManager();
         $pipeline->deleteCache($versionToDelete);
@@ -788,7 +788,7 @@ class DataFactory
         $dbObj->Execute($query);
 
 
-        XMD_Log::info("DeleteVersion  for Node:" . $this->nodeID . ", Version: " . $versionID . "." . $subVersion . ", File: ." . $uniqueName);
+        Logger::info("DeleteVersion  for Node:" . $this->nodeID . ", Version: " . $versionID . "." . $subVersion . ", File: ." . $uniqueName);
         return true;
     }
 
@@ -1130,7 +1130,7 @@ class DataFactory
     function isEditedForPublishing($versionInColector)
     {
         if (empty($versionInColector)) {
-            XMD_log::error("NOT VERSSION IN COLECTOR");
+            Logger::error("NOT VERSSION IN COLECTOR");
             return false;
         }
 
@@ -1198,7 +1198,7 @@ class DataFactory
     {
 
         if (!is_numeric($idVersion)) {
-            XMD_Log::warning('Attempted to index a node by an invalid IdVersion.');
+            Logger::warning('Attempted to index a node by an invalid IdVersion.');
             return;
         }
 

@@ -35,7 +35,7 @@ class Db
      */
     private $stm = null;
     
-    private $TIME_TO_RECONNECT = 30;	//sleeping time to reconnect to the database in seconds
+    private $TIME_TO_RECONNECT = 10;	//sleeping time to reconnect to the database in seconds
 
     /**
      * @param string $conf

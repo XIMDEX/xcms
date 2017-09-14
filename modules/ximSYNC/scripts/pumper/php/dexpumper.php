@@ -25,10 +25,10 @@
  *  @version $Revision$
  */
 
+use Ximdex\Logger;
 use Ximdex\Models\Pumper;
 use Ximdex\Models\Server;
 use Ximdex\Runtime\Cli\CliParser;
-use Ximdex\Logger as XMD_Log;
 
 include_once dirname(__FILE__) . '/../../../../../bootstrap/start.php';
 
@@ -237,7 +237,6 @@ class DexPumper {
 		$fileName =  $file['FileName'];
 
 		$targetFolder = "{$initialDirectory}{$remotePath}";
-
 		$originFile = "{$targetFolder}/.{$IdSync}_{$fileName}";
 		$targetFile = $fileName;
 
@@ -275,7 +274,8 @@ class DexPumper {
 			$idBatchUp = (int) $this->serverFrame->get('IdBatchUp');
 			$idServer =  (int) $this->serverFrame->get('IdServer');
 
-			$this->info("ServerFrame $IdSync PUMPING ");
+			$idSync =  (int) $this->serverFrame->get('IdSync');
+			$this->info("ServerFrame $idSync PUMPING ");
 
 
 			$batch = new Batch($idBatchUp);
@@ -290,11 +290,10 @@ class DexPumper {
 
 						foreach ($filesToRename as $file) {
 							 $renameResult = $this->RenameFile($file);
-                                                         if ($renameResult)
-                                                             $this->finishTask ($file["IdSync"]);
-                                                         
+                             if ($renameResult)
+                                 $this->finishTask ($file["IdSync"]);
 						}
-					}					
+					}
 			}
 	}
 
@@ -429,7 +428,7 @@ class DexPumper {
 		$this->updateTimeInPumper();
 	}
         
-        private function finishTask($idSync){
+    private function finishTask($idSync){
             $serverFrame = new ServerFrame($idSync);
             $serverFrame->set('State', ServerFrame::IN);
             $serverFrame->update();
@@ -512,9 +511,10 @@ class DexPumper {
 			$this->debug($sqlReport);
 	}
 
-	public function info($_msg = NULL) { $this->msg_log("INFO PUMPER: $_msg"); XMD_Log::info($_msg); }
-	public function error($_msg = NULL) { $this->msg_log("ERROR PUMPER: $_msg"); XMD_Log::error($_msg); }
-	public function fatal($_msg = NULL) { $this->msg_log("FATAL PUMPER: $_msg"); XMD_Log::fatal($_msg); }
+	public function info($_msg = NULL) { $this->msg_log("INFO PUMPER: $_msg"); Logger::info($_msg); }
+	public function error($_msg = NULL) { $this->msg_log("ERROR PUMPER: $_msg"); Logger::error($_msg); }
+	public function fatal($_msg = NULL) { $this->msg_log("FATAL PUMPER: $_msg"); Logger::fatal($_msg); }
+	public function debug($_msg = NULL) { $this->msg_log("DEBUG PUMPER: $_msg"); Logger::debug($_msg); }
 
 	public function msg_log($_msg) {
 		$pumperID = (int) $this->pumper->get('PumperId');
@@ -529,4 +529,3 @@ class DexPumper {
 $parameterCollector = new DexPumperCli($argc, $argv);
 $dexPumper = new DexPumper($parameterCollector->getParametersArray());
 $dexPumper->start();
-?>

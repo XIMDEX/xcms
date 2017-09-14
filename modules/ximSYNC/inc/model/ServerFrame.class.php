@@ -25,9 +25,11 @@
  */
 
 
+use Ximdex\Logger;
 use Ximdex\Models\Channel;
 use Ximdex\Models\Node;
 use Ximdex\Models\Server;
+use Ximdex\Runtime\App;
 use Ximdex\Runtime\Db;
 use Ximdex\Utils\FsUtils;
 use Ximdex\Utils\PipelineManager;
@@ -311,7 +313,7 @@ class ServerFrame extends ServerFrames_ORM {
 		$isHybrid = $node->getSimpleBooleanProperty('hybridColector');
 
 		if (!($idNode > 0)) {
-			XMD_Log::error("Unexisting node for serverframe $frameID");
+			Logger::error("Unexisting node for serverframe $frameID");
 			return NULL;
 		}
 
@@ -319,7 +321,7 @@ class ServerFrame extends ServerFrames_ORM {
 
 		$data['CHANNEL'] = $channelId;
 		$data['SERVER'] = $server;
-		$data['DISABLE_CACHE'] = \App::getValue("DisableCache");
+		$data['DISABLE_CACHE'] = App::getValue("DisableCache");
 
 		$nodo = new Node($idNode);
 
@@ -349,7 +351,7 @@ class ServerFrame extends ServerFrames_ORM {
 					$db->Query($sql);
 					$encodingServer = $db->GetValue("idEncode");
 
-					XMD_Log::info("Codificando contenido a " . $encodingServer . 'con server=' . $server);
+					Logger::info("Encoding content to " . $encodingServer . ' with server: ' . $server);
 					$content = \Ximdex\XML\Base::recodeSrc($content, $encodingServer);
 				}
 
@@ -590,7 +592,6 @@ class ServerFrame extends ServerFrames_ORM {
 	/**
 	*  Sets the State field from ServerFrames table which matching the value of pumperId.
 	*  @param int pumperId
-	*  @return unknown
 	 */
 
 	function rescueErroneous($pumperId) {
@@ -619,20 +620,20 @@ class ServerFrame extends ServerFrames_ORM {
 		$node = new Node($nodeID);
 		$serverID = $node->GetServer();
 		if (!($serverID > 0)) {
-			XMD_log::error(
+			Logger::error(
 					'Trying to publish a node that is not contained on a server ' . $nodeID);
 			return NULL;
 		}
 		$nodeServer = new Node($serverID);
 
-		if (\App::getValue( 'PublishOnDisabledServers') == 1) {
+		if (App::getValue( 'PublishOnDisabledServers') == 1) {
 			$physicalServers = $nodeServer->class->GetPhysicalServerList(true);
 		} else {
 			$physicalServers = $nodeServer->class->GetEnabledPhysicalServerList(true);
 		}
 
 		if (count($physicalServers) == 0) {
-			XMD_log::info("[GETCURRENT]: No physical servers found. IdSync: none");
+			Logger::info("[GETCURRENT]: No physical servers found. IdSync: none");
 			return NULL;
 		}
 
@@ -643,14 +644,14 @@ class ServerFrame extends ServerFrames_ORM {
 						 "AND sf.IdServer IN (%s)", $now, $now,
 						implode(', ', $physicalServers));
 
-		XMD_log::info("[GETCURRENT]: Getting current frame for node " . $nodeID);
+		Logger::info("[GETCURRENT]: Getting current frame for node " . $nodeID);
 
 		$dbObj = new Db();
 		$dbObj->Query($sql);
 
 		$result = ($dbObj->EOF) ? 'IdSync: none' : 'IdSync: ' . $dbObj->GetValue("IdSync");
 
-		XMD_log::info("[GETCURRENT]: Result:  " . $result);
+		Logger::info("[GETCURRENT]: Result:  " . $result);
 
 		return ($dbObj->EOF) ? NULL : $dbObj->GetValue("IdSync");
 	}
@@ -735,7 +736,6 @@ where cf.nodeid=$nodeId ";
 
 	/**
 	*  Deletes a row from ServerFrames and updates the values of ServerFrames related fields in Batchs table.
-	*  @return unknown
 	*/
 
 	function delete() {
@@ -773,7 +773,7 @@ where cf.nodeid=$nodeId ";
 		$now = time();
 
 		if (is_null($idNodeFrame)) {
-			XMD_log::error("void nodeframe");
+			Logger::error("void nodeframe");
 			return false;
 		}
 
@@ -865,4 +865,3 @@ where cf.nodeid=$nodeId ";
 		return NULL;
 	}
 }
-?>

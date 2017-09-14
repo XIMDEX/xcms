@@ -74,7 +74,7 @@ if ( !empty( $dbConfig ) ) {
 	}
 	catch (\PDOException $e)
 	{
-	    Ximdex\Logger::error('Can\'t connect to dababase at ' . $dbConfig['host'] . ':' . $dbConfig['port'] . ' (' . $e->getMessage() . ')');
+	    Ximdex\Logger::error('Can\'t connect to database at ' . $dbConfig['host'] . ':' . $dbConfig['port'] . ' (' . $e->getMessage() . ')');
 		die();
 	}
     $dbConn->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_ASSOC);

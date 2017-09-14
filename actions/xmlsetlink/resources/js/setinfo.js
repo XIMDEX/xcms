@@ -35,13 +35,12 @@ X.actionLoaded(function (event, fn, params) {
 		}
 
 		if (fn('input.delete_method:checked').length == 0) {
-			//alert('Debe seleccionar una de las opciones antes de eliminar el enlace.');
 			var div_dialog = $("<div/>").attr('id', 'dialog').appendTo(btn);
-			div_dialog.html(_("You must select an option before you delete the link"));
+			div_dialog.html("You must select an option before you delete the link");
 			div_dialog.dialog({
 				modal: true,
 				buttons: {
-					_("Accept"): function() {
+					"Accept": function() {
 						div_dialog.dialog('destroy');
 					}
 				}
@@ -73,16 +72,15 @@ X.actionLoaded(function (event, fn, params) {
 		sharewf_flag = fn(this).attr('checked');
 		if (sharewf_flag) {
 			var div_dialog = $("<div/>").attr('id', 'dialog').appendTo(this);
-			div_dialog.html(_("Intervals are erased publication of this node from the moment of the sending, and will be published the same intervals that the master node."));
+			div_dialog.html("Intervals are erased publication of this node from the moment of the sending, and will be published the same intervals that the master node");
 			div_dialog.dialog({
 				modal: true,
 				buttons: {
-					_("Accept"):function() {
+					"Accept" : function() {
 						div_dialog.dialog('destroy');
 					}
 				}
 			});
-			//alert('Se borrarán los intervalos de publicación de este nodo a partir del momento del enví­o, y pasará a tener los mismos intervalos de publicación que el nodo maestro.');
 		}
 	});
 

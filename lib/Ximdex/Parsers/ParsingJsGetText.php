@@ -2,7 +2,7 @@
 namespace Ximdex\Parsers;
 
 use Ximdex\Runtime\App;
-use Ximdex\Logger as XMD_LOG;
+use Ximdex\Logger;
 
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
@@ -78,7 +78,7 @@ class ParsingJsGetText
     {
         if ($_js != null) {
             if (!file_exists(XIMDEX_ROOT_PATH . $_js)) {
-                XMD_Log::error('The file ' . $_js . ' could not be included because of it is not existing in the path: ' . XIMDEX_ROOT_PATH . $_js);
+                Logger::error('The file ' . $_js . ' could not be included because of it is not existing in the path: ' . XIMDEX_ROOT_PATH . $_js);
                 return null;
             }
             $this->_file_orig = $_js;
@@ -113,7 +113,7 @@ class ParsingJsGetText
 
         //If there is not source file we quit
         if ($this->_file_orig == null) {
-            XMD_Log::warning("ERROR, file_orig not stablished");
+            Logger::warning("ERROR, file_orig not stablished");
             return null;
         }
 
@@ -121,7 +121,7 @@ class ParsingJsGetText
         $file_in = @fopen(XIMDEX_ROOT_PATH . $this->_file_orig, "r");
 
         if (!$file_in) {
-            XMD_Log::warning("ERROR, the file " . XIMDEX_ROOT_PATH . $this->_file_orig . " could not be opened");
+            Logger::warning("ERROR, the file " . XIMDEX_ROOT_PATH . $this->_file_orig . " could not be opened");
             return null;
         }
 
@@ -129,10 +129,10 @@ class ParsingJsGetText
         $file_out = @fopen(XIMDEX_ROOT_PATH . $this->PATH_CACHE . $this->_lang . "/" . $this->_file, "w");
 
         if (!$file_out) {
-            XMD_Log::warning("ERROR, you have not permits, or the language directory is not existing. Review permits in \'data/tmp/js\'. Error opening the file " . XIMDEX_ROOT_PATH . $this->PATH_CACHE . $this->_lang . "/" . $this->_file);
+            Logger::warning("ERROR, you have not permits, or the language directory is not existing. Review permits in \'data/tmp/js\'. Error opening the file " . XIMDEX_ROOT_PATH . $this->PATH_CACHE . $this->_lang . "/" . $this->_file);
             return null;
         }
-        XMD_Log::debug("Caching: " . XIMDEX_ROOT_PATH . $this->_file_orig . " --> " . XIMDEX_ROOT_PATH . $this->PATH_CACHE . $this->_lang . "/" . $this->_file);
+        Logger::debug("Caching: " . XIMDEX_ROOT_PATH . $this->_file_orig . " --> " . XIMDEX_ROOT_PATH . $this->PATH_CACHE . $this->_lang . "/" . $this->_file);
 
         if ($file_in && $file_out) {
             while (!feof($file_in)) {
@@ -143,8 +143,8 @@ class ParsingJsGetText
 
             fclose($file_in);
             fclose($file_out);
-            XMD_Log::info('Js Cache generated ' . \App::getValue('UrlRoot') . $this->PATH_CACHE . $this->_lang . "/" . $this->_file);
-            return \App::getValue('UrlRoot') . $this->PATH_CACHE . $this->_lang . "/" . $this->_file;
+            Logger::debug('Js Cache generated ' . App::getValue('UrlRoot') . $this->PATH_CACHE . $this->_lang . "/" . $this->_file);
+            return App::getValue('UrlRoot') . $this->PATH_CACHE . $this->_lang . "/" . $this->_file;
         }
 
     }
@@ -159,20 +159,20 @@ class ParsingJsGetText
 
         foreach ($no_cacheable as $n_c) {
             if (!substr_compare($_js, $n_c, 0, strlen($n_c))) {
-                $no_cached_url = \App::getValue('UrlRoot') . $_js;
+                $no_cached_url = App::getValue('UrlRoot') . $_js;
                 return $no_cached_url;
             }
         }
 
-        if (!is_file(\App::getValue('AppRoot') . $_js)) { // dinamic call
-            $no_cached_url = \App::getValue('UrlRoot') . $_js;
+        if (!is_file(App::getValue('AppRoot') . $_js)) { // dinamic call
+            $no_cached_url = App::getValue('UrlRoot') . $_js;
             return $no_cached_url;
         }
 
         //Checking if the file gettexted for the specificed langauge is existing
         if ($this->fileExists()) {
             //If it exists, returning its url
-            return \App::getValue('UrlRoot') . $this->PATH_CACHE . $this->_lang . "/" . $this->_file;
+            return App::getValue('UrlRoot') . $this->PATH_CACHE . $this->_lang . "/" . $this->_file;
         }
 
 
@@ -227,13 +227,10 @@ class ParsingJsGetText
             create_function('$coincidencias', '$_out = null; eval(\'$_out = \'.$coincidencias[0].";"); return \'"\'.$_out.\'"\';'),
             $content);
 
-        $content = str_replace("##BASE_URL##", \App::getValue('UrlRoot'), $content);
-        $content = str_replace("##APP_URL##", \App::getValue("AppRoot"), $content);
+        $content = str_replace("##BASE_URL##", App::getValue('UrlRoot'), $content);
+        $content = str_replace("##APP_URL##", App::getValue("AppRoot"), $content);
 
         return $content;
     }
 
 }
-
-
-?>
