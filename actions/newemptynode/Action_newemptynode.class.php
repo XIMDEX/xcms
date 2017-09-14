@@ -104,28 +104,49 @@ class Action_newemptynode extends ActionAbstract {
 		$this->sendJSON($values);
 	}
 	
-	//return each content depending on the nodetype passed
-	function getDefaultContent($nt,$name){
-		switch($nt){
-			case 5039: 
-			$content="<<< DELETE \nTHIS\n CONTENT >>>";
-			break;
+	/**
+	 * return each content depending on the nodetype passed
+	 * @param integer $nt
+	 * @param string $name
+	 * @return string
+	 */
+	function getDefaultContent($nt, $name)
+	{
+		switch ($nt)
+		{
+		    case \Ximdex\Services\NodeType::TEXT_FILE:
+		        $content = '<<< DELETE \nTHIS\n CONTENT >>>';
+		        break;
+		    
+		    case \Ximdex\Services\NodeType::CSS_FILE:
+		        $content = '/* CSS File: ' . $name . '. Write your rules here. */\n\n * {}';
+		        break;
 
-			case 5028: 
-			$content="/* CSS File: ".$name.". Write your rules here. */\n\n * {}";
-			break;
+		    case \Ximdex\Services\NodeType::XSL_TEMPLATE:
+		        $content = "<?xml version='1.0' encoding='UTF-8'?>";
+		        $content .= "\n<xsl:stylesheet xmlns:xsl='http://www.w3.org/1999/XSL/Transform' version='1.0'>";
+		        if ($name != 'templates_include')
+		        {
+		            $content .= "\n\t<xsl:template name='" . $name . "' match='" . $name . "'>";
+		            $content .= "\n\t\t<!-- Insert your code here -->";
+		            if ($name != 'docxap')
+                        $content .= "\n\t\t<!-- Remember to use the <xsl:apply-templates /> tag to include content of another templates -->";
+		            $content .= "\n\t</xsl:template>";
+                }
+		        $content .= '</xsl:stylesheet>';
+		        break;
 
-			case 5077: 
-			$content="<?xml version='1.0' encoding='utf-8'?>\n<xsl:stylesheet xmlns:xsl='http://www.w3.org/1999/XSL/Transform' version='1.0'>\n\t<xsl:template name='".$name."' match='".$name."'>\n\t\t<!-- Insert your code here -->\n\t\t<!-- Remember to use the <xsl:apply-templates /> tag to include content of another templates -->\n\t</xsl:template>\n</xsl:stylesheet>";
-			break;
+            case \Ximdex\Services\NodeType::RNG_VISUAL_TEMPLATE:
+                $content = "<?xml version='1.0' encoding='UTF-8' ?>\n";
+                $content .= "<grammar xmlns='http://relaxng.org/ns/structure/1.0' xmlns:xim='http://ximdex.com/schema/1.0'>";
+                $content .= "\n\t<!-- Create your own grammar here -->";
+                $content .= "\n\t<!-- Need help? Visit: http://relaxng.org/tutorial-20011203.html -->";
+                $content .= "\n</grammar>";
+				break;
 
-			case 5078: 
-			$content="<?xml version='1.0' encoding='UTF-8' ?>\n<grammar xmlns='http://relaxng.org/ns/structure/1.0' xmlns:xim='http://ximdex.com/schema/1.0'>\n\t<!-- Create your own grammar here -->\n\t<!-- Need help? Visit: http://relaxng.org/tutorial-20011203.html -->\n</grammar>";
-			break;
-
-			case 5076: 
-			$content="<html>\n<head>\n</head>\n<body>\n</body>\n</html>";
-			break;
+		    case \Ximdex\Services\NodeType::NODE_HT:
+				$content = "<html>\n\t<head>\n\t</head>\n\t<body>\n\t</body>\n</html>";
+				break;
 		}
 		return $content;
 	}
