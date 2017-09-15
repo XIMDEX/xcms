@@ -496,6 +496,25 @@ class xsltnode extends FileNode
                 //check if the node is templates_include and is included in docxap file
                 if (!self::isIncludedInDocxapFile($node))
                     $this->messages->add('Note that this file isn\'t included in the docxap.xsl file', MSG_TYPE_WARNING);
+                
+                // check for a templates witch doesnot include in this docxap
+                $includes = array();
+                foreach ($domDoc->getElementsByTagName('include') as $include)
+                {
+                    $includes[$include->getAttribute('href')] = true;
+                }
+                $templates = new Node($node->getParent());
+                foreach ($templates->GetChildren() as $child)
+                {
+                    $child = new Node($child);
+                    if ($child->GetNodeName() == 'docxap.xsl' or $child->GetNodeName() == 'templates_include.xsl')
+                        continue;
+                    if (!isset($includes[$child->GetNodeName()]))
+                    {
+                        $this->messages->add('Note that there are one or more XSL templates that are not included here', MSG_TYPE_WARNING);
+                        break;
+                    }
+                }
             }
             if ($node->GetNodeName() == 'docxap.xsl')
             {
@@ -1191,7 +1210,7 @@ class xsltnode extends FileNode
             
             //only project, servers and section/subsections can storage template folders
             if ($childNode->GetNodeType() == Ximdex\Services\NodeType::PROJECT or $childNode->GetNodeType() == Ximdex\Services\NodeType::SERVER
-                or $childNode->GetNodeType() == Ximdex\Services\NodeType::SECTION)
+                    or $childNode->GetNodeType() == Ximdex\Services\NodeType::SECTION)
             {
                 //call in recursive mode with the child node
                 $res = $this->add_includesTemplate_in_docxaps($childNode, $templateURL);
