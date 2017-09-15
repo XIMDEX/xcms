@@ -215,7 +215,7 @@ class View_Xslt extends Abstract_View
         
         //include the existant templates under to the referenced docxap node until reached the document's section
         $xsltNode = new xsltnode($this->_node);
-        $res = $xsltNode->add_childen_includesTemplates($docxapContent, $docxapNode);
+        $res = $xsltNode->add_children_includesTemplates($docxapContent, $docxapNode);
         if ($res === false)
         {
             if (!isset($GLOBALS['InBatchProcess']) and isset($xsltNode->messages->messages[0]))

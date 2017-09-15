@@ -85,67 +85,11 @@ class xsltnode extends FileNode
             if ($this->setIncludeContent($xsltName, $parentID, $nodeTypeID, $stateID) === false)
                 return false;
         }
-
-        // Checks if exists docxap.xsl node
-
-        $node = new Node($this->nodeID);
-        $ximPtdNode = new Node($parentID);
-
-        $project = new Node($node->GetProject());
-        $idXimptdProject = $project->GetChildByName('templates');
-
-        $ptdProject = new Node($idXimptdProject);
-        $idDocxapProject = $ptdProject->GetChildByName('docxap.xsl');
-
-        if ($xsltName != 'docxap.xsl' && $ximPtdNode->get('IdParent') != $node->GetProject()
-            && !($ximPtdNode->GetChildByName('docxap.xsl') > 0) && ($idDocxapProject > 0)
-        ) {
-
-            // get and copy project docxap
-            //TODO ajlucena: its better to copy the nearest parent docxap node content (now will be comment)
-            /*
-            $docxapProject = new Node($idDocxapProject);
-            $docxapContent = $docxapProject->GetContent();
-
-            $docxapProjectPath = XIMDEX_ROOT_PATH . App::getValue('TempRoot') . '/docxap.xsl';
-
-            $dummyXml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
-				<dext:root xmlns:dext=\"http://www.ximdex.com\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\">
-				<xsl:dummy />
-				</dext:root>";
-
-            if (FsUtils::file_put_contents($docxapProjectPath, $dummyXml) === false)
-            {
-                $this->messages->add('Error copying project docxap.xls file', MSG_TYPE_ERROR);
-                return false;
-            }
-
-            $docxapNode = new Node();
-            $id = $docxapNode->CreateNode('docxap.xsl', $parentID, $nodeTypeID, $stateID, $docxapProjectPath);
-
-            if ($id > 0) {
-                $docxapNode = new Node($id);
-                if ($docxapNode->SetContent($docxapContent) === false)
-                {
-                    $this->messages->mergeMessages($docxapNode->messages);
-                    return false;
-                }
-            }
-            else
-            {
-                $this->messages->mergeMessages($docxapNode->messages);
-                return false;
-            }
-			
-			//the new templates_include reference must be added in docxap file, and the existing parent ones
-            if ($this->add_parents_includes_templates($docxapNode) === false)
-                return false;
-            */
-        }
         
         //if the file created is the templates_include, it will be included in the servers/sections dependant docxap files 
         if ($xsltName == 'templates_include.xsl')
         {
+            $ximPtdNode = new Node($parentID);
             $sectionNode = new Node($ximPtdNode->GetParent());
             if ($sectionNode->GetID())
                 $this->add_includesTemplate_in_docxaps($sectionNode);
@@ -1216,7 +1160,7 @@ class xsltnode extends FileNode
                     $templatesRoot = $xPath->query('//xsl:stylesheet/xsl:include');
                     if (!$templatesRoot->length)
                     {
-                        $this->messages->add('Can\'t find the xsl:template element in the docxap XML content with ID: ' 
+                        $this->messages->add('Can\'t find the xsl:include element in the docxap XML content with ID: ' 
                                 . $docxapTemplateId, MSG_TYPE_ERROR);
                         return false;
                     }
@@ -1305,15 +1249,18 @@ class xsltnode extends FileNode
      * @param Node $docxapNode
      * @return boolean
      */
-    private function add_parents_includesTemplates(Node $docxapNode)
+    public function add_parents_includesTemplates(Node $docxapNode = null)
     {
-        //if docxap node is located in the project templates folder, this process is not necessary
+        if (!$docxapNode)
+            $docxapNode = $this->parent;
+        
+        // if docxap node is located in the project templates folder, this process is not necessary
         $templates = new Node($docxapNode->GetParent());
         $section = new Node($templates->getParent());
         if ($section->GetNodeType() == \Ximdex\Services\NodeType::PROJECT)
             return true;
         
-        //get XML content from docxap file 
+        // get XML content from docxap file 
         $docxapContent = $docxapNode->GetContent();
         if (!$docxapContent)
         {
@@ -1341,17 +1288,17 @@ class xsltnode extends FileNode
             $this->messages->add('Can\'t find the xsl:stylesheet element in the docxap XML content', MSG_TYPE_ERROR);
             return false;
         }
-        $templateNodes = $xPath->query('//xsl:stylesheet/xsl:include');
+        $templateNodes = $xPath->query('//xsl:stylesheet/xsl:template');
         if (!$templateNodes->length)
         {
             $this->messages->add('Can\'t find the xsl:template element in the docxap XML content', MSG_TYPE_ERROR);
             return false;
         }
         
-        //get the current project node
+        // get the current project node
         $project = new Node($docxapNode->GetProject());
         
-        //get docxap section
+        // get docxap section
         $sectionId = $docxapNode->GetSection();
         if (!$sectionId)
         {
@@ -1360,14 +1307,15 @@ class xsltnode extends FileNode
         }
         $section = new Node($sectionId);
         
-        //for each templates include file existing in the parent nodes (sections and server), insert the reference in the new docxap file
+        // for each templates include file existing in the parent nodes (sections, server and project), insert the reference in the new docxap file
         do
         {
-            if ($section->GetNodeType() != Ximdex\Services\NodeType::SECTION and $section->GetNodeType() != Ximdex\Services\NodeType::SERVER)
+            if ($section->GetNodeType() != Ximdex\Services\NodeType::SECTION and $section->GetNodeType() != Ximdex\Services\NodeType::SERVER 
+                	and $section->GetNodeType() != Ximdex\Services\NodeType::PROJECT)
                 break;
                 
-            //check if the templates folder of this section or server contains a templates_include.xsl node
-                $idTemplatesNode = $section->GetChildByName('templates');
+            // check if the templates folder of this section or server contains a templates_include.xsl node
+            $idTemplatesNode = $section->GetChildByName('templates');
             if (!$idTemplatesNode)
                 continue;
             $templatesNode = new Node($idTemplatesNode);
@@ -1375,29 +1323,29 @@ class xsltnode extends FileNode
             if (!$idTemplatesInclude)
                 continue;
                 
-            //get the path to the current section node
+            // get the path to the current section node
             $tempPath = $section->GetRelativePath($project->GetID());
             
-            //set the URL to the tmplates include in the element
+            // set the URL to the tmplates include in the element
             $templatesIncludeURL = App::getValue('UrlRoot') . App::getValue('NodeRoot') . $tempPath . '/templates/templates_include.xsl';
             
-            //check if the template is already included
+            // check if the template is already included
             $template = $xPath->query("/xsl:stylesheet/xsl:include[@href='$templatesIncludeURL']");
             if ($template->length)
                 continue;
             
-            //generate the include tag with its href value
+            // generate the include tag with its href value
             $domElement = $domDocument->createElement('xsl:include');
             $domAttribute = $domDocument->createAttribute('href');
             $domAttribute->value = $templatesIncludeURL;
             $domElement->appendChild($domAttribute);
             
-            //add the element
+            // add the element
             $docxapRoot->item(0)->insertBefore($domElement, $templateNodes->item(0));
         }
         while ($section = new Node($section->GetParent())); //load the previous section if exists
         
-        //saves the new XML modified
+        // saves the new XML modified
         $docxapContent = $domDocument->saveXML();
         if ($docxapContent === false)
         {
@@ -1405,7 +1353,7 @@ class xsltnode extends FileNode
             return false;
         }
         
-        //save the content
+        // save the content
         if ($docxapNode->SetContent($docxapContent) === false)
         {
             $this->messages->mergeMessages($docxapNode->messages);
@@ -1421,13 +1369,13 @@ class xsltnode extends FileNode
     }
     
     /**
-     * Add all the templates_include references from the endNode until reaches the docxap node given
+     * Add all the templates_include references from the node passed until reaches the docxapNode node given
      * If the docxapNode has not been passed, the docxap file will be the first one found
      * @param string $content
      * @param Node $docxapNode
      * @return boolean
      */
-    public function add_childen_includesTemplates(& $content, Node $docxapNode = null, Node $node = null)
+    public function add_children_includesTemplates(& $content, Node $docxapNode = null, Node $node = null)
     {
         //load XML content passed
         $domDocument = new DOMDocument();
@@ -1447,7 +1395,7 @@ class xsltnode extends FileNode
             $this->messages->add('Can\'t find the xsl:stylesheet element in the docxap XML content', MSG_TYPE_ERROR);
             return false;
         }
-        $templateNodes = $xPath->query('//xsl:stylesheet/xsl:include');
+        $templateNodes = $xPath->query('//xsl:stylesheet/xsl:template');
         if (!$templateNodes->length)
         {
             $this->messages->add('Can\'t find the xsl:template element in the docxap XML content', MSG_TYPE_ERROR);

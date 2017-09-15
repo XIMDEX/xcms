@@ -340,8 +340,7 @@ class DexPumper {
 		}
 
 		if (!$this->connection->isConnected()) {
-			$msg_error = sprintf('Fail to connect o wrong login credentials for server: %s:%s with user: %s and password: %s',  $host, $port
-                    , $login, $passwd);
+			$msg_error = sprintf('Fail to connect o wrong login credentials for server: %s:%s with user: %s',  $host, $port, $login);
 			$this->fatal($msg_error);
 			$this->updateServerState('Failed to connect');
 			exit(200);

@@ -320,13 +320,15 @@ class StructuredDocument extends StructuredDocumentsOrm
 		if ($res === false)
 		{
 		    if ($data->msgErr)
+		    {
 		        $this->messages->add($data->msgErr, MSG_TYPE_ERROR);
+		        return false;
+		    }
 		    if (isset($GLOBALS['errorInXslTransformation']) and $GLOBALS['errorInXslTransformation'])
 		    {
 		        $this->messages->add($GLOBALS['errorInXslTransformation'], MSG_TYPE_WARNING);
 		        $GLOBALS['errorInXslTransformation'] = null;
 		    }
-		    return false; //null;
 		}
 		// set dependencies
 		$dependeciesParser = new ParsingDependencies();

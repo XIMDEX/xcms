@@ -390,7 +390,7 @@ class Action_xmleditor2 extends ActionAbstract
         $contentRNG = $this->_editor->getSchemaFile($idnode);
         if (is_array($contentRNG) and $contentRNG['error'])
         {
-            //TODO ajlucena: in this place we need to show the validation errors in the editor
+            //in this place we need to show the validation errors in the editor
             $this->sendJSON($contentRNG);
         }
         $res['schemaFile'] = $contentRNG;

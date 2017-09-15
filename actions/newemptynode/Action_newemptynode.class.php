@@ -94,7 +94,11 @@ class Action_newemptynode extends ActionAbstract {
 			else
 			{
                 $this->messages->add(sprintf('%s'._(' has been successfully created'), $name), MSG_TYPE_NOTICE);
-                //$this->reloadNode($parentId);
+                if ($name == 'docxap')
+                {
+                    $xsltNode = new xsltnode(new Node($idfile));
+                    $xsltNode->add_parents_includesTemplates();
+                }
 			}
         } else {
             $this->messages->mergeMessages($file->messages);
@@ -128,9 +132,11 @@ class Action_newemptynode extends ActionAbstract {
 		        if ($name != 'templates_include')
 		        {
 		            $content .= "\n\t<xsl:template name='" . $name . "' match='" . $name . "'>";
-		            $content .= "\n\t\t<!-- Insert your code here -->";
 		            if ($name != 'docxap')
+		            {
+		                $content .= "\n\t\t<!-- Insert your code here -->";
                         $content .= "\n\t\t<!-- Remember to use the <xsl:apply-templates /> tag to include content of another templates -->";
+		            }
 		            $content .= "\n\t</xsl:template>";
                 }
 		        $content .= '</xsl:stylesheet>';

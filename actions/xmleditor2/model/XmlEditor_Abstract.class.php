@@ -342,8 +342,7 @@ abstract class XmlEditor_Abstract
             $this->_deleteUIDAttributes($childrens->item($i));
         }
     }
-
-    //TODO ajlucena
+    
     /**
 	 * Replace xsl:include tags by the content of file included
 	 */
