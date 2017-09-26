@@ -69,7 +69,7 @@
 <body ng-app="ximdexInstallerApp" ng-cloak>
 
     <div class="aside">
-        <h1><a href="http://www.ximdex.com">ximdexl</a></h1>
+        <h1><a href="http://www.ximdex.com">ximdex</a></h1>
         <ul class="installer">
         <?php
             foreach ($this->steps as $index => $step) {

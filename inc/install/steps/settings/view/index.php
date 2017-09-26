@@ -26,6 +26,7 @@
 ?>
 
 <form method="post" name="settingForm" ng-controller="SettingController" ng-submit="checkForm()" ng-cloak>
+	<input type="text" name="user" value="ximdex" style="display: none;" />
     <input type="hidden" name="method" value="<?php echo $goMethod ?>">
 	<h2>Settings</h2>
     <p>The user with the administration role in Ximdex CMS is called <em>ximdex</em>. Set the password for this admin user here:</p>
@@ -33,11 +34,17 @@
 	<label for="">User</label>
 	<span class="user">ximdex</span></div>
 	<p ng-show="localhash">There are problems with your internet connection. Local id generated.</p>
-	<p class="errors" ng-show="minLenghtFail">{{minLengthMessage}}</p>	
+	<p class="errors" ng-show="minLenghtFail">{{minLengthMessage}}</p>
+	<p class="errors" ng-show="passDiffFail">{{passDiffMessage}}</p>
 	<div class="form_item">
 		<label for="password">Password</label>
-		<input type="password" name="pass" id="password" placeholder="Insert password here" ng-minlength="6" ng-model="pass" required ng-class="{error_element:minLenghtFail==true}" />
-
+		<input type="password" name="pass" id="password" placeholder="Insert password here" ng-minlength="6" ng-model="pass" 
+				required ng-class="{error_element:minLenghtFail==true}" />
+	</div>
+	<div class="form_item">
+		<label for="password2">Repeat password</label>
+		<input type="password" name="pass2" id="password2" placeholder="Repeat password here" ng-minlength="6" ng-model="pass2" required
+				ng-class="{error_element:passDiffFail == true}" />
 	</div>
 	<div class="form_item">
 		<label for="language">Interface language</label>
@@ -46,7 +53,8 @@
 	</div>
 	<div class="form_item full-width form_item--information">
 		<label for="anonymous_information">
-            <input type="checkbox" id="anonymous_information" value="1" name="anonymous_information" ng-model="anonymous_information" ng-true-value="1"  />Would you like to help us sending anonymous information about your usage?</label>
+            <input type="checkbox" id="anonymous_information" value="1" name="anonymous_information" ng-model="anonymous_information" 
+            		ng-true-value="1"  />Would you like to help us sending anonymous information about your usage?</label>
 	</div>
 	<button class=" action_launcher ladda-button">Save settings</button>
 </form>

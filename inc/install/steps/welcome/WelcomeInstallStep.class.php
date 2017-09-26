@@ -29,7 +29,6 @@ require_once(XIMDEX_ROOT_PATH . '/inc/install/managers/InstallModulesManager.cla
 
 class WelcomeInstallStep extends GenericInstallStep {
 
-
 	public function __construct(){
 		
 		$this->installManager = new installManager();
@@ -42,27 +41,30 @@ class WelcomeInstallStep extends GenericInstallStep {
 	public function index(){
 
 		$this->addJs("WelcomeController.js");
-	
 		$this->render();
-		
 	}
 
 	public function continueInstallation(){
+	    
 		$this->loadNextAction();
-		
 	}
 
 	public function hasErrors(){
+	    
 		$checks = $this->installManager->initialChecking();
 		$errors = array();
 		foreach ($checks as $check) {
 			if ($check["state"] == "error"){
+			    
 				$error = "1";
 			}
 			if 	($check["state"] != "success"){
+			    
                 if(is_array($check["messages"]) && count($check["messages"])>0){
+                    
                     $aux = array();
 				    foreach ($check["messages"] as $i => $message) {
+				        
 					    $aux["message"] = $message;
 					    $aux["help"] = $check["help"][$i];
 					    $aux["state"] = $check["state"] ;
@@ -73,17 +75,14 @@ class WelcomeInstallStep extends GenericInstallStep {
 		}
 
 		if (isset($error) && $error) {
+		    
             $values["failure"] = true;
             $values["errors"] = $errors;
         }else {
+            
             $values["success"] = true;
+            $values["errors"] = $errors;    // possible warning messages
         }
 		$this->sendJSON($values);
 	}
-
-
-
-
 }
-
-?>

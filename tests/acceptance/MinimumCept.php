@@ -49,6 +49,7 @@ $I->wait(5);
 $I->see("Set the password for this admin user");
 
 $I->fillField("pass", "ximdex");
+$I->fillField("pass2", "ximdex");
 
 $I->click("Save settings");
 

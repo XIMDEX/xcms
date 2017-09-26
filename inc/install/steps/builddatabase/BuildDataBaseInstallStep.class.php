@@ -30,40 +30,20 @@ require_once(XIMDEX_ROOT_PATH . '/inc/install/managers/InstallDataBaseManager.cl
 
 class BuildDataBaseInstallStep extends GenericInstallStep
 {
-
+    const RECOMMENDED_MYSQL_VERSION = '5.6';
+    const RECOMMENDED_MARIADB_VERSION = '5.5';
+    
     /**
      * Main function. Show the step
      */
     public function index()
     {
-
         $this->addJs("InstallDatabaseController.js");
         $values = array();
         $values["ximdexName"] = basename(XIMDEX_ROOT_PATH);
         $this->render($values);
-
     }
-
-    public function checkHost()
-    {
-
-        $host = $this->request->getParam("host");
-        $port = $this->request->getParam("port");
-        if (!$host) {
-            if (mysqli_connect()) {
-                $values["host"] = "localhost";
-                $values["port"] = "3306";
-                $values["success"] = "1";
-            } else {
-                $values = array("host" => "",
-                    "port" => "",
-                    "failure" => "1");
-            }
-        }
-
-        $this->sendJson($values);
-    }
-
+    
     public function checkUser()
     {
         $idbManager = new InstallDataBaseManager();
@@ -72,7 +52,6 @@ class BuildDataBaseInstallStep extends GenericInstallStep
         $port = $this->request->getParam("port");
         $user = $this->request->getParam("user");
         $pass = $this->request->getParam("pass") == "undefined" ? NULL : $this->request->getParam("pass");
-
         $values = array();
         if ($idbManager->connect($host, $port, $user, $pass)) {
             $values["success"] = true;
@@ -83,7 +62,6 @@ class BuildDataBaseInstallStep extends GenericInstallStep
 
         $this->sendJson($values);
     }
-
 
     public function checkExistDataBase()
     {
@@ -115,7 +93,6 @@ class BuildDataBaseInstallStep extends GenericInstallStep
     
     public function createDataBase()
     {
-
         $idbManager = new InstallDataBaseManager();
         $host = $this->request->getParam("host");
         $port = $this->request->getParam("port");
@@ -123,40 +100,44 @@ class BuildDataBaseInstallStep extends GenericInstallStep
         $user = $this->request->getParam("user");
         $pass = $this->request->getParam("pass");
         $values = array();
-        $idbManager->connect($host, $port, $user, $pass);
-        if ($idbManager->existDataBase($name)) {
-            $idbManager->deleteDataBase($name);
-
-        }
-        if ($idbManager->connect($host, $port, $user, $pass)) {
-            $result = $idbManager->createDataBase($name);
-            if (!$result)
-            {
-            	$values["failure"] = true;
-            	if ($idbManager->getErrors())
-            		$values["errors"] = $idbManager->getErrors();
-            	else
-            		$values["errors"] = 'Can\'t create database';
-            }
-            $idbManager->connect($host, $port, $user, $pass, $name, true);
-            $idbManager->loadData($host, $port, $user, $pass, $name);
-            $result = $idbManager->checkDataBase($host, $port, $user, $pass, $name);
-            if ($result) {
-                $values["success"] = true;
-            } else {
-                $values["failure"] = true;
-                if ($idbManager->getErrors())
-                	$values["errors"] = $idbManager->getErrors();
-               	else
-               		$values["errors"] = 'Can\'t create database schema and content';
-            }
-
-
-        } else {
+        if ($idbManager->connect($host, $port, $user, $pass) === false)
+        {
             $values["failure"] = true;
             $values["errors"] = $idbManager->getErrors();
         }
-
+        else
+        {
+            if ($idbManager->existDataBase($name)) {
+                $idbManager->deleteDataBase($name);
+    
+            }
+            if ($idbManager->connect($host, $port, $user, $pass)) {
+                $result = $idbManager->createDataBase($name);
+                if (!$result)
+                {
+                	$values["failure"] = true;
+                	if ($idbManager->getErrors())
+                		$values["errors"] = $idbManager->getErrors();
+                	else
+                		$values["errors"] = 'Can\'t create database';
+                }
+                $idbManager->connect($host, $port, $user, $pass, $name, true);
+                $idbManager->loadData($host, $port, $user, $pass, $name);
+                $result = $idbManager->checkDataBase($host, $port, $user, $pass, $name);
+                if ($result) {
+                    $values["success"] = true;
+                } else {
+                    $values["failure"] = true;
+                    if ($idbManager->getErrors())
+                    	$values["errors"] = $idbManager->getErrors();
+                   	else
+                   		$values["errors"] = 'Can\'t create database schema and content';
+                }
+            } else {
+                $values["failure"] = true;
+                $values["errors"] = $idbManager->getErrors();
+            }
+        }
         $this->sendJSON($values);
     }
 
@@ -170,6 +151,7 @@ class BuildDataBaseInstallStep extends GenericInstallStep
         $name = $this->request->getParam("name");
         $root_user = $this->request->getParam("root_user");
         $root_pass = $this->request->getParam("root_pass");
+        
         if ( is_null( $root_pass )) {
             $root_pass = '' ;
         }
@@ -201,9 +183,44 @@ class BuildDataBaseInstallStep extends GenericInstallStep
 
     public function initParams($host, $port, $bdName, $user, $pass)
     {
-
         $this->installManager->setInstallParams($host, $port, $bdName, $user, $pass);
         $this->loadNextAction();
     }
 
+    /**
+     * check the database server version to notice older versions
+     */
+    public function check_database_version()
+    {
+        $idbManager = new InstallDataBaseManager();
+        $host = $this->request->getParam('host');
+        $port = $this->request->getParam('port');
+        $name = $this->request->getParam('name');
+        $user = $this->request->getParam('user');
+        $pass = $this->request->getParam('pass');
+        $values = array();
+        if ($idbManager->connect($host, $port, $user, $pass) === false)
+        {
+            $values['failure'] = true;
+            $values['errors'] = $idbManager->getErrors();
+        }
+        else
+        {
+            $serverInfo = $idbManager->server_version();
+            $version = doubleval($serverInfo[1] . '.' . $serverInfo[2]);
+            if ($serverInfo[0] == 'mariadb')
+                $minVersion = self::RECOMMENDED_MARIADB_VERSION;
+            else
+                $minVersion = self::RECOMMENDED_MYSQL_VERSION;
+            if ($version < $minVersion)
+            {
+                $values['failure'] = true;
+                $values['errors'] = 'The recommended database version is ' . $minVersion . ' or higher and the installed one is ' . $version 
+                        . ' (' . $serverInfo[0] . '). You can continue with the installation process, but stability is not secured';
+            }
+            else
+                $values['success'] = true;
+        }
+        $this->sendJson($values);
+    }
 }

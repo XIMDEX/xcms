@@ -49,6 +49,8 @@ class InstallManager
     const INSTALL_PARAMS_FILE = "/conf/install-params.conf.php";
     const LAST_STATE = "INSTALLED";
     const FIRST_STATE = "INIT";
+    
+    const MIN_PHP_VERSION = '5.6';
 
     protected $mode = ""; //install mode.
     protected $installMessages = null;
@@ -202,15 +204,13 @@ class InstallManager
     public function initialChecking()
     {
         $result = array();
-        //$result[] = $this->checkInstanceGroup();	you don't need to change the group of the whole instance
+        $result[] = $this->checkInstanceGroup();
         $result[] = $this->checkFilePermissions();
-        //$result[] = $this->checkDiskSpace();	for now it don't anything
         $result[] = $this->checkRequiredPackages();
         $result[] = $this->checkPHPVersion();
         $result[] = $this->checkRequiredPHPExtensions();
-        //$result[] = $this->checkRecommendedPHPExtensions();	for now it don't anything
+        $result[] = $this->checkRecommendedPHPExtensions();
         $result[] = $this->checkDisabledFunctions();
-        //$result[] = $this->checkMySQL();	for now it don't anything
         return $result;
     }
 
@@ -229,45 +229,39 @@ class InstallManager
         return $result;
     }
 
-    private function checkDiskSpace()
-    {
-        $result = array();
-		$result["state"] = "success";
-        return $result;
-    }
-
     private function checkPHPVersion()
     {
         $version = phpversion();
-        $minPHPVersion = "5.6";
+        $minPHPVersion = self::MIN_PHP_VERSION;
         $version = explode(".", $version);
         $version = "{$version[0]}.{$version[1]}";
         $result = array();
         $result["name"] = "PHP version";
         if ($version >= $minPHPVersion) {
-            $result['state'] = "success";
+            $result['state'] = 'success';
         } else {
-            $result['state'] = "error";
+            $result['state'] = 'warning';
             $result['messages'][] = "Recommended PHP $minPHPVersion or higher";
-            $result['help'][] = "Sorry, but you can't run this application propertly if you don have at least that version of PHP";
+            $result['help'][] = 'Remember that you can experiment serious problems to run this application propertly if you don have at least that version of PHP';
         }
         return $result;
     }
 
     private function checkRequiredPHPExtensions()
     {
+        //TODO ajlucena: check for an existing function in each module in order to know if the module is activated
     	$result = array();
     	$result["name"] = 'PHP required extensions';
     	$result['state'] = 'success';
     	$current = array_merge(get_loaded_extensions());
-    	$required = ['xsl', 'curl', 'gd', 'mcrypt', 'PDO','pdo_mysql'];
+    	$required = ['PDO','pdo_mysql'];
     	foreach ($required as $item)
     	{	
     		if (!in_array($item, $current))
     		{
     			$result['state'] = 'error';
     			$result['messages'][] = strtoupper($item) . ' extension for PHP is required';
-    			$result['help'][] = "Please, install it following the instructions in the INSTALLATION.md file";
+    			$result['help'][] = 'Please, install it following the instructions in the INSTALLATION.md file';
     		}
     	}
     	return $result;
@@ -275,44 +269,34 @@ class InstallManager
     
     private function checkRecommendedPHPExtensions()
     {
-    	$result["state"] = "success";
-    	$result["name"] = "PHP recommended extensions";
-    	return $result ;
-    	/*
-    	 $modules = array_merge(apache_get_modules(), get_loaded_extensions());
-    	 $recommendedModules = array("enchant");
-    	 $result["state"] = "success";
-    	 $result["name"] = "PHP recommended extensions";
-    	 
-    	 foreach ($recommendedModules as $recommendedModule) {
-    	 if (!in_array($recommendedModule, $modules)) {
-    	 $result["state"] = "warning";
-    	 $result["message"][] = "PHP $recommendedModule extension is recommended.";
-    	 $result["help"][] = "";
-    	 }
-    	 }
-    	 return $result;
-    	 */
+        //TODO ajlucena: check for an existing function in each module in order to know if the module is activated 
+        $modules = array_merge(apache_get_modules(), get_loaded_extensions());
+        $recommendedModules = ['xsl', 'curl', 'gd', 'mcrypt', 'enchant'];
+        $result["state"] = 'success';
+        $result["name"] = 'PHP recommended extensions';
+        foreach ($recommendedModules as $recommendedModule) {
+            if (!in_array($recommendedModule, $modules)) {
+                $result['state'] = 'warning';
+                $result['messages'][] = 'PHP ' . strtoupper($recommendedModule) . ' extension is recommended';
+                $result['help'][] = 'Please, remember to install it as soon its possible following the instructions in the INSTALLATION.md file. Maybe the web server must be restarted';
+            }
+        }
+        return $result;
     }
 
     private function checkDisabledFunctions()
     {
         $ximdexServerConfig = new ServerConfig();
         //Checking pcntl_fork function is not disabled
-        $result["state"] = "success";
-        $result["name"] = "Disabled functions";
+        $result["state"] = 'success';
+        $result["name"] = 'Disabled functions';
         if ($ximdexServerConfig->hasDisabledFunctions()) {
-            $result["state"] = "warning";
-            $result["messages"][] = "Disabled pcntl_fork and pcntl_waitpid functions are recommended. Please, check php.ini file.";
-            $result["help"][] = "";
+            $result['state'] = 'warning';
+            $result['messages'][] = 'Disabled pcntl_fork and pcntl_waitpid functions are recommended';
+            $result['help'][] = 'Please, check php.ini file';
         }
 
         return $result;
-    }
-
-    private function checkMySQL()
-    {
-
     }
 
     /**
@@ -323,10 +307,7 @@ class InstallManager
 		$result = array();
         $result["state"] = "success";
         $result["name"] = "File permission";
-        $filesToCheck = array("/conf/_STATUSFILE",
-            "/data",
-            "/logs",
-            "/conf");
+        $filesToCheck = array("/data", "/logs", "/conf");
         $result['messages'] = array();
         $result['help'] = array();
         foreach ($filesToCheck as $file) {
@@ -335,25 +316,11 @@ class InstallManager
                 $exception['messages'][] = "$file not found.";
             } else if (!$this->isWritable(XIMDEX_ROOT_PATH . $file)) {
             	$result['state'] = "error";
-            	$result['messages'][] = "Write permissions on $file required.";
-            	$result['help'][] = "sudo chmod -R 777 " . XIMDEX_ROOT_PATH . $file;
+            	$result['messages'][] = "Write permissions on $file directory required. Please, execute this command:";
+            	$result['help'][] = "sudo chmod -R g+s " . XIMDEX_ROOT_PATH . $file;
             }
-            /*
-            } else {
-                $checkGroup = $this->checkGroup(XIMDEX_ROOT_PATH . $file);
-                if ($checkGroup['state'] != "success") {
-                	$result['state'] = "error";
-                	$result['messages'][] = $checkGroup['messages'][0];
-                	$result['help'][] = $checkGroup['help'][0];
-                } else if (!$this->isWritable(XIMDEX_ROOT_PATH . $file)) {
-                    $result['state'] = "error";
-                    $result['messages'][] = "Write permissions on $file required.";
-                    $result['help'][] = "sudo chmod -R 777 " . XIMDEX_ROOT_PATH . $file;
-                }
-            }
-            */
         }
-
+        
         return $result;
     }
 
@@ -394,8 +361,8 @@ class InstallManager
 
         if (!in_array($ximdexGroupId, $groupId)) {
             $result["state"] = "error";
-            $result["messages"][] = "You must set the {$groupName["name"]} group for your files instead of {$ximdexGroupName["name"]}.";
-            $result["help"][] = "Please, execute this command: chgrp -R {$groupName["name"]} " . $file;
+            $result["messages"][] = "You must set the {$groupName["name"]} group for your project directory files instead of {$ximdexGroupName["name"]}. Please, execute this command:";
+            $result["help"][] = "sudo chgrp -R {$groupName["name"]} " . $file;
 
         }
 
@@ -476,14 +443,7 @@ class InstallManager
         $random = md5(rand());
         exec('openssl enc -aes-128-cbc -k "' . $random . '" -P -md sha1', $res);
         $key = explode("=", $res[1])[1];
-        
-        /*
-        mcrypt functions have been declared deprecated in PHP 7.1
-        $ivSize = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC);
-        $iv = mcrypt_create_iv($ivSize, MCRYPT_RAND);
-        */
         $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length('AES-128-CBC'));
-
         $db = new DB();
         $db->execute("UPDATE Config SET ConfigValue='" . $key . "' where ConfigKey='ApiKey'");
         $db->execute("UPDATE Config SET ConfigValue='" . $iv . "' where ConfigKey='ApiIV'");

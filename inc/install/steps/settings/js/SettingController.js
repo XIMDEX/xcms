@@ -28,7 +28,7 @@ ximdexInstallerApp.controller('SettingController', ["$timeout", '$scope', 'insta
     $scope.languages = [{"iso": "en_US",
                          "name": "English"},
                         {"iso": "es_ES",
-                         "name": "Spanish"},                         
+                         "name": "Spanish"},
                          {"iso": "de_DE",
                          "name": "German"},
                          {"iso": "pt_BR",
@@ -36,9 +36,9 @@ ximdexInstallerApp.controller('SettingController', ["$timeout", '$scope', 'insta
 
     $scope.language = "en_US";
     $scope.anonymous_information = "1";
-    $scope.minLengthMessage = "Password length minimun: 6";
-    $scope.minLenghtFail = false;
-    $scope.localhash=false;
+    $scope.minLengthMessage = "Password length minimun: 6 characters";
+    $scope.passDiffMessage = 'Both password strings given are different';
+    $scope.localhash = false;
 
     $scope.init = function(){
         installerService.sendAction("setId").then(function(response) {
@@ -49,6 +49,14 @@ ximdexInstallerApp.controller('SettingController', ["$timeout", '$scope', 'insta
     $scope.init();
 
     $scope.checkForm = function(){
+    	$scope.passDiffFail = false;
+    	$scope.minLenghtFail = false;
+    	var res = ($scope.pass != $scope.pass2);
+    	if ($scope.pass != $scope.pass2)
+    	{
+    		$scope.passDiffFail = true;
+    		return false;
+    	}
         var params = "pass="+$scope.pass;
         params += "&language="+$scope.language;
         params += "&anonymous_information="+$scope.anonymous_information;

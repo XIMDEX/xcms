@@ -30,7 +30,6 @@ require_once(XIMDEX_ROOT_PATH . '/inc/install/managers/InstallManager.class.php'
 
 class InstallDataBaseManager extends InstallManager
 {
-
     const DB_ARRAY_KEY = "db_installer_connection";
     const DEFAULT_PORT = 3306;
     const SCHEMA_SCRIPT_PATH = "/inc/install/ximdex_data/ximdex_schema.sql";
@@ -45,7 +44,14 @@ class InstallDataBaseManager extends InstallManager
     private $errors = array();
 	
     /**
-     * Build FastTraverse and full path to every node in Ximdex
+     * Return true if the connection to the database was correct, or false if not
+     * @param string $host
+     * @param integer $port
+     * @param string $user
+     * @param string $pass
+     * @param string $name
+     * @param boolean $newConn
+     * @return boolean
      */
     public function connect($host, $port, $user, $pass = NULL, $name = false, $newConn = false)
     {
@@ -66,7 +72,11 @@ class InstallDataBaseManager extends InstallManager
             	$url = 'mysql:host=' . $host;
         	try
         	{
+        	    // we need to avoid warning messages due to a problem with JSON reported
+        	    $oldErrorReporting = error_reporting();
+        	    error_reporting($oldErrorReporting ^ E_WARNING);
         		$this->dbConnection = new PDO($url, $user, $pass);
+        		error_reporting($oldErrorReporting);
         	}
         	catch (PDOException $e)
         	{
@@ -106,8 +116,15 @@ class InstallDataBaseManager extends InstallManager
 
     public function getErrors()
     {
-    	$res = $this->dbConnection->errorInfo();
-    	return ($res[2]);
+        if ($this->dbConnection)
+        {
+    	   $res = $this->dbConnection->errorInfo();
+    	   return ($res[2]);
+        }
+        else 
+        {
+            return 'Not connected to database server. Check the connection parameters, please.';
+        }
     }
 
     /**
@@ -120,7 +137,6 @@ class InstallDataBaseManager extends InstallManager
         }
         $GLOBALS[self::DB_ARRAY_KEY]["install"] = null;
     }
-
 
     public function createUser($user, $pass)
     {
@@ -163,7 +179,6 @@ class InstallDataBaseManager extends InstallManager
         }
         return $result;
     }
-
 
     public function loadData($host, $port, $user, $pass, $name)
     {
@@ -216,10 +231,22 @@ class InstallDataBaseManager extends InstallManager
     {
         $result = false;
         if ($this->dbConnection) {
-            $query = "GRANT ALL PRIVILEGES  ON $name.* TO '$userName'@'localhost' IDENTIFIED BY '$pass'";
-            $result = $this->dbConnection->exec($query);
-            $query = "GRANT ALL PRIVILEGES  ON $name.* TO '$userName'@'%' IDENTIFIED BY '$pass'";
-            $result = $result && $this->dbConnection->exec($query);
+            
+            // if the database server is installed in localhost, only the local user can access it, otherwise any remote connection be able
+            $host = explode(';', $this->host);
+            if (!$host)
+                return false;
+            $host = $host[0];
+            if ($host == 'localhost')
+            {
+                $query = "GRANT ALL PRIVILEGES  ON $name.* TO '$userName'@'localhost' IDENTIFIED BY '$pass'";
+                $result = $this->dbConnection->exec($query);
+            }
+            else
+            {
+                $query = "GRANT ALL PRIVILEGES  ON $name.* TO '$userName'@'%' IDENTIFIED BY '$pass'";
+                $result = $this->dbConnection->exec($query);
+            }
             $result = $result && $this->dbConnection->exec("FLUSH privileges");
             if ($result === 0)
             	$result = false;
@@ -248,5 +275,36 @@ class InstallDataBaseManager extends InstallManager
         	$result = $this->connect($this->host, null, $user, $pass, $name, true);
         }
         return $result;
+    }
+    
+    /**
+     * Return the database version in an array
+     * @return string|boolean
+     */
+    public function server_version()
+    {
+        if ($this->dbConnection)
+        {
+            //$version = $this->dbConnection->getAttribute(constant('PDO::ATTR_SERVER_VERSION'));
+            $res = $this->dbConnection->query('select version() as dbversion');
+            if (!$res)
+                return false;
+            $version = $res->fetch(PDO::FETCH_ASSOC);
+            if (!$version)
+                return false;
+            $version = $version['dbversion'];
+            $info = explode('.', $version);
+            if (count($info) < 2)
+                return false;
+            $res = array();
+            if (stripos($version, 'mariadb') !== false)
+                $res[0] = 'mariadb';
+            else
+                $res[0] = 'mysql';
+            $res[] = $info[0];
+            $res[] = $info[1];
+            return $res;
+        }
+        return false;
     }
 }

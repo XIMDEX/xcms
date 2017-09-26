@@ -31,6 +31,7 @@
 	<div ng-show="!installed">
 	<p>Now it's time to install a MySQL or MariaDB database. A priviledged user (i.e. root) will be required to create Ximdex's database.</p>
 	<p class="errors" ng-show="genericErrors">{{genericErrors}}</p>
+	<p class="warning" ng-show="genericWarnings" style="text-align: center;">{{genericWarnings}}</p>
 
 	<div class="form_item"  >
 		<label  for="db_server">Host</label>

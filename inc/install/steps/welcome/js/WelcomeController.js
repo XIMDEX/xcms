@@ -22,6 +22,7 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
+
 ximdexInstallerApp.controller('WelcomeController', ["$timeout", '$scope', 'installerService', "$q", "$window", "$attrs",
  function($timeout, $scope, installerService, $q, $window, $attrs) {
 
@@ -36,8 +37,8 @@ ximdexInstallerApp.controller('WelcomeController', ["$timeout", '$scope', 'insta
             }
             else
                 $scope.checked = true;
-            
-                
+            	if (response.data.errors)
+            		$scope.errors = response.data.errors;
         });
     }
 
@@ -46,6 +47,4 @@ ximdexInstallerApp.controller('WelcomeController', ["$timeout", '$scope', 'insta
                     location.reload();
                 });
     }
-    //$scope.checkInstaller();
-
 }]);

@@ -26,12 +26,17 @@
 ?>
 
 <form method="post" ng-controller="WelcomeController" ng-cloak>
-    <h2>Welcome to Ximdex CMS's web installer!</h2>
-    <p>Build flexible, scalable and secure Web Portals with the Semantic CMS XIMDEX and its modules: Xowl, to automatically enhance your content; Xlyre for linked open data; Xfind, to index and retrieve information, Xhawk to check content integrity, etc. </p>
-
+    <h2 ng-hide="checked">Welcome to Ximdex CMS's web installer!</h2>
+    <h2 ng-show="checked">System Requirements</h2>
+    <p ng-hide="checked">Build flexible, scalable and secure Web Portals with the Semantic CMS XIMDEX and its modules: Xowl, to automatically enhance your content; Xlyre for linked open data; Xfind, 
+    	to index and retrieve information, Xhawk to check content integrity, etc. </p>
+   	<p ng-show="checked">
+   		All mandatory requirements are checked. Now your system is able to install CMS XIMDEX propertly.
+   	</p>
     <p ng-repeat-start="(index, error) in errors" ng-class="error.state">{{error.message}}</p>
     <p ng-repeat-end class="desc">{{error.help}}</p>
-    <br/>
+    <p ng-hide="checked">Please push <i>Check Configuration</i> button to perform a system requirements test:</p>
     <button class="launch_ximdex action_launcher" ng-click="checkInstaller()" ng-hide="checked">Check configuration</button>
+    <p ng-show="checked">Please push <i>Start installation</i> button to continue:</p>
     <button class="launch_ximdex action_launcher" ng-click="nextStep()" ng-show="checked">Start installation</button>
 </form>
