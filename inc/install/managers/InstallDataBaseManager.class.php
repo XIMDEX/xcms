@@ -97,7 +97,7 @@ class InstallDataBaseManager extends InstallManager
 
     public function selectDataBase($name)
     {
-        $res = $this->connect($this->host, null, $this->user, $this->pass, $name, true);
+        $res = $this->connect($this->host, $this->port, $this->user, $this->pass, $name, true);
         if ($res === false)
         	return false;
         return $this->dbConnection;
@@ -158,7 +158,7 @@ class InstallDataBaseManager extends InstallManager
             if ($result === 0)
             	$result = false;
             if ($result === false) {
-                Logger::error("a $result" . print_r($result, true) . " $query " . $this->dbConnection->error);
+                Logger::error('Cannot create database: ' . $name);
             }
         } else {
             Logger::error("Creating database");

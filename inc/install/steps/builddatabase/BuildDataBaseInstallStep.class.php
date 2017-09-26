@@ -159,7 +159,7 @@ class BuildDataBaseInstallStep extends GenericInstallStep
         if ($user == $root_user) {
             $values["success"] = true;
             $this->initParams($host, $port, $name, $user, $root_pass);
-            $this->sendJson();
+            $this->sendJson($values);
         }
         $idbManager->connect($host, $port, $root_user, $root_pass, $name );
         $values = array();

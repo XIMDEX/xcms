@@ -2645,36 +2645,44 @@ class Node extends NodesOrm
 
     /**
      * Updating the table FastTraverse
+     * The parameter delete indicates if we want or not delete the node before
+     * @param boolean $delete
+     * @return boolean
      */
-    /**
-     *
-     */
-    function UpdateFastTraverse()
+    function UpdateFastTraverse($delete = true)
     {
         $this->ClearError();
         if ($this->get('IdNode') > 0) {
-            $sqls = sprintf("DELETE FROM FastTraverse WHERE IdChild = %d", $this->get('IdNode'));
             $dbObj = new Db();
-            $dbObj->Execute($sqls);
-            if ($dbObj->numErr) {
-                $this->SetError(5);
-            } else {
-                $parent = $this->get('IdNode');
-                $level = '0';
-                do {
-                    $dbObj = new Db();
-                    $sql = sprintf("INSERT INTO FastTraverse (IdNode, IdChild, Depth) VALUES (%d, %d, %d)", $parent, $this->get('IdNode'), $level);
-                    $dbObj->Execute($sql);
-                    unset($dbObj);
-                    $level++;
-                    $node = new Node($parent);
-                    $parent = $node->get('IdParent');
-                    unset($node);
-                } while ($parent);
+            if ($delete)
+            {
+                $sql = sprintf('DELETE FROM FastTraverse WHERE IdChild = %d', $this->get('IdNode'));
+                $dbObj->Execute($sql);
+                if ($dbObj->numErr) {
+                    $this->SetError(5);
+                    return false;
+                }
             }
-        } else {
-            $this->SetError(1);
+            $parent = $this->get('IdNode');
+            $level = '0';
+            do
+            {
+                $sql = sprintf('INSERT INTO FastTraverse (IdNode, IdChild, Depth) VALUES (%d, %d, %d)', $parent, $this->get('IdNode'), $level);
+				$dbObj->Execute($sql);
+                //unset($dbObj);
+                $level++;
+                $node = new Node($parent);
+                $parent = $node->get('IdParent');
+                //unset($node);
+            }
+            while ($parent);
         }
+        else
+        {
+            $this->SetError(1);
+            return false;
+        }
+        return true;
     }
 
     /**

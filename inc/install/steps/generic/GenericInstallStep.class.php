@@ -76,7 +76,7 @@ class GenericInstallStep {
 	/**
 	 * Sends a JSON string
 	 * @param $_msgs
-	 * @return unknown_type
+	 * @return string
 	 */
 
 	protected function sendJSON($data) {
@@ -116,15 +116,14 @@ class GenericInstallStep {
     }
 
     protected function checkPermissions(){
+        
+        $checkGroup = $this->installManager->checkInstanceGroup();
+        if ($checkGroup["state"] != "success")
+            $this->exceptions[] = $checkGroup;
+        
     	$checkPermissions = $this->installManager->checkFilePermissions();
     	if ($checkPermissions["state"]!= "success")
     		$this->exceptions[] = $checkPermissions;
-    	//we don't check this for now
-    	/*
-    	$checkGroup = $this->installManager->checkInstanceGroup();    	
-    	if ($checkGroup["state"] != "success")
-    		$this->exceptions[] = $checkGroup;
-    	*/
    }
 
 
