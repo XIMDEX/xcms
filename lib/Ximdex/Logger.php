@@ -8,6 +8,8 @@
 
 namespace Ximdex;
 
+use Ximdex\Runtime\App;
+
 
 Class Logger
 {
@@ -73,10 +75,13 @@ Class Logger
 
     public static function debug($string)
     {
-        try{
-            return self::get()->logger->addDebug($string);
-        }catch (\Exception $e){
-            error_log($e->getMessage());
+        if (App::debug())
+        {
+            try{
+                return self::get()->logger->addDebug($string);
+            }catch (\Exception $e){
+                error_log($e->getMessage());
+            }
         }
     }
 

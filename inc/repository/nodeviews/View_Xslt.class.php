@@ -80,18 +80,6 @@ class View_Xslt extends Abstract_View
                 Logger::info('Render in client, return XML content + path to template');
                 return $content;
             }
-
-            /*			if (is_object($this->_node)) {
-
-                            Logger::info("obteniendo propiedad otf para id ".$this->_node->get('IdNode'));
-                            $isOTF = $this->_node->getSimpleBooleanProperty('otf');
-
-                            if ($isOTF) {
-                                Logger::info('Render in server, return XML content');
-                                return $content;
-                            }
-                        }
-            */
         }
 
         // XSLT Transformation
@@ -196,7 +184,7 @@ class View_Xslt extends Abstract_View
             return false;
         }
         
-        Logger::debug('Loading XSL content from ' . $docxap);
+        Logger::info('Loading XSL content from ' . $docxap);
         
         //load the docxap content
         $domDoc = new DOMDocument();
@@ -212,34 +200,33 @@ class View_Xslt extends Abstract_View
             return false;
         }
         $docxapContent = $domDoc->saveXML();
-        
-        //include the existant templates under to the referenced docxap node until reached the document's section
-        $xsltNode = new xsltnode($this->_node);
-        $res = $xsltNode->add_children_includesTemplates($docxapContent, $docxapNode);
-        if ($res === false)
-        {
-            if (!isset($GLOBALS['InBatchProcess']) and isset($xsltNode->messages->messages[0]))
-                $GLOBALS['errorInXslTransformation'] = $xsltNode->messages->messages[0];
-            return false;
-        }
-        
-        //include and remove the duplicate templates in the docxap content
-        $res = $xsltNode->include_unique_templates($docxapContent, $docxapNode);
-        if ($res === false)
-        {
-            if (!isset($GLOBALS['InBatchProcess']) and isset($xsltNode->messages->messages[0]))
-                $GLOBALS['errorInXslTransformation'] = $xsltNode->messages->messages[0];
-            return false;
-        }
-        
         if ($xsltHandler->setXSL(null, $docxapContent) === false)
             return false;
         $params = array('xmlcontent' => $content);
+        
+        if (App::debug())
+        {
+            # DEBUG
+            file_put_contents("/tmp/docxap-pre.xsl", $docxap);
+            file_put_contents("/tmp/docxap-post.xsl", $docxapContent);
+            file_put_contents("/tmp/pointer.xml", $pointer);
+            file_put_contents("/tmp/content-pre.xml", $content);
+            # END DEBUG
+        }
+        
         foreach ($params as $param => $value) {
             $xsltHandler->setParameter(array($param => $value));
         }
 
         $content = $xsltHandler->process();
+        
+        if (App::debug())
+        {
+            # DEBUG
+            file_put_contents("/tmp/content-post.xml", $content);
+            # END DEBUG
+        }
+        
         if (empty($content)) {
             
             $error = \Ximdex\Error::error_message();

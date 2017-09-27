@@ -15,6 +15,7 @@ Class App
     protected $DIBuilder = null;
     protected $config = null;
     private $dispatcher = null;
+    private static $debug = true;
 
     public function __construct()
     {
@@ -177,4 +178,12 @@ Class App
         self::getDispatcher()->dispatch($eventName, $event);
     }
 
+    /**
+     * Get the in application debug value
+     * @return boolean
+     */
+    public static function debug()
+    {
+        return self::$debug;
+    }
 }
