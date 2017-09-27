@@ -30,4 +30,4 @@ pi.php
 /.buildpath
 /.gitignore
 /.project
-/conf/
+/.data

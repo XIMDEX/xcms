@@ -47,7 +47,7 @@ Ximdex CMS is a Semantic Content Management System (CMS) that allows the manipul
 
 * Ximdex Core Requirements
   ------------------------
-  -  A Unix based system with PHP(>= 5.6, and some extra modules), Apache 2 webserver (with modules described in the installation guide) and MySQL(>= 5.1) database.
+  -  A Unix based system with PHP(>= 7.1, and some extra modules), Apache 2 webserver (with modules described in the installation guide) and MySQL (>= 5.7) or MariaDB (>= 10.2) database.
   -  In the client side: Firefox (>= 5.0) with Javascript and cookies enabled.
   -  An internet connection if you want to use automatic recommendations (as semantic annotations) or publishing into the cloud.
  

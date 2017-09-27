@@ -20,22 +20,22 @@
 namespace Doctrine\Common\Cache;
 
 /**
- * Interface for cache drivers that allows to get many items at once.
+ * Interface for cache drivers that allows to put many items at once.
  *
  * @link   www.doctrine-project.org
- * @since  1.4
- * @author Asmir Mustafic <goetas@gmail.com>
+ * @since  1.7
+ * @author Benoit Burnichon <bburnichon@gmail.com>
  *
  * @deprecated
  */
-interface MultiGetCache
+interface MultiDeleteCache
 {
     /**
-     * Returns an associative array of values for keys is found in cache.
+     * Deletes several cache entries.
      *
-     * @param string[] $keys Array of keys to retrieve from cache
-     * @return mixed[] Array of retrieved values, indexed by the specified keys.
-     *                 Values that couldn't be retrieved are not contained in this array.
+     * @param string[] $keys Array of keys to delete from cache
+     *
+     * @return bool TRUE if the operation was successful, FALSE if it wasn't.
      */
-    function fetchMultiple(array $keys);
+    function deleteMultiple(array $keys);
 }

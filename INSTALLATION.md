@@ -69,7 +69,7 @@ When Apache2 and PHP are running with the requested packages you have to downloa
 *  A terminal with Telnet or SSH.
 *  A user with enough permissions to create the directory where Ximdex CMS will be installed (under a document root for your web server)
 *  Enough free space in the filesystem. See 'conf/diskspace.php' file for further information.
-*  A **database server** like *MySQL Server* (>= 5.6) or *MariaDB* (>=5.5) and a database user that can create the Ximdex Database.
+*  A **database server** like *MySQL Server* (>= 5.7) or *MariaDB* (>= 10.2) and a database user that can create the Ximdex Database.
     i.e. you can execute in a terminal console for MySQL server:
     ```
     sudo apt-get install mysql-server
@@ -87,7 +87,7 @@ When Apache2 and PHP are running with the requested packages you have to downloa
     sudo apt-get install libapache2-mpm-itk
     ```
     
-*  **PHP** (>= 5.6.0)
+*  **PHP** (>= 7.1.0)
     * PHP package:
         ```
         sudo apt-get install php

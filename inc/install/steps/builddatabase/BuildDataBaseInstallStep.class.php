@@ -30,8 +30,8 @@ require_once(XIMDEX_ROOT_PATH . '/inc/install/managers/InstallDataBaseManager.cl
 
 class BuildDataBaseInstallStep extends GenericInstallStep
 {
-    const RECOMMENDED_MYSQL_VERSION = '5.6';
-    const RECOMMENDED_MARIADB_VERSION = '5.5';
+    const RECOMMENDED_MYSQL_VERSION = '5.7';
+    const RECOMMENDED_MARIADB_VERSION = '10.2';
     
     /**
      * Main function. Show the step

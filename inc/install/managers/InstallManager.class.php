@@ -50,7 +50,7 @@ class InstallManager
     const LAST_STATE = "INSTALLED";
     const FIRST_STATE = "INIT";
     
-    const MIN_PHP_VERSION = '5.6';
+    const MIN_PHP_VERSION = '7.1';
 
     protected $mode = ""; //install mode.
     protected $installMessages = null;
@@ -358,6 +358,10 @@ class InstallManager
         $groupName = posix_getgrgid($groupId[0]);
         $ximdexGroupId = filegroup($file);
         $ximdexGroupName = posix_getgrgid($ximdexGroupId);
+        
+        // testing user
+        if ($ximdexGroupName["name"] == 'xfs')
+            return $result;
 
         if (!in_array($ximdexGroupId, $groupId)) {
             $result["state"] = "error";
