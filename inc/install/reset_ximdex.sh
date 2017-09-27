@@ -18,3 +18,6 @@ rm -rf ./data/tmp/uploaded_files/
 rm ./data/.x*
 rm ./data/.X*
 rm -rf ./.data
+
+rm ./tests/_output/*
+rm ./tests/_support/_generated/*

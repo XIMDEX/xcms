@@ -1,4 +1,6 @@
 <?php
+$GLOBALS['testing'] = true;
+
 $I = new AcceptanceTester($scenario);
 
 if(file_exists('conf/_STATUSFILE')){

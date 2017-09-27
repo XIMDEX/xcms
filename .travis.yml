@@ -4,6 +4,8 @@ dist: trusty
 group: edge
 
 language: php
+php:
+  - '7.1'
 
 services:
   - docker
