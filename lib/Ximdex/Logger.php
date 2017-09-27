@@ -74,7 +74,7 @@ Class Logger
     public static function debug($string)
     {
         try{
-            //return self::get()->logger->addDebug($string);
+            return self::get()->logger->addDebug($string);
         }catch (\Exception $e){
             error_log($e->getMessage());
         }

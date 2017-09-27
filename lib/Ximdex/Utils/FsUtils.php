@@ -522,4 +522,14 @@ class FsUtils
             return null;
         return $urlFile;
     }
+    
+    /**
+     * Return true is the string given is a complete URL (http...) or false is not
+     * @param string $url
+     * @return boolean
+     */
+    public static function is_url($url)
+    {
+        return filter_var($url, FILTER_VALIDATE_URL);
+    }
 }

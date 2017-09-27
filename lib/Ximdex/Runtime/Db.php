@@ -18,8 +18,8 @@ class Db
     private static $defaultConf = null;
 
     private $sql = '';
-    private $dbEncoding = '';
-    private $workingEncoding;
+    private static $dbEncoding = '';
+    private static $workingEncoding = '';
     private $rows = array();
     public $EOF = true;
     public $row = array();
@@ -107,7 +107,7 @@ class Db
             Logger::error($this->desErr);
             return false;
         }
-        $sql = \Ximdex\XML\Base::recodeSrc($sql, $this->dbEncoding);
+        $sql = \Ximdex\XML\Base::recodeSrc($sql, self::$dbEncoding);
 
         $this->sql = $sql;
 
@@ -175,7 +175,7 @@ class Db
             Logger::error($this->desErr);
             return false;
         }
-        $sql = \Ximdex\XML\Base::recodeSrc($sql, $this->dbEncoding);
+        $sql = \Ximdex\XML\Base::recodeSrc($sql, self::$dbEncoding);
         $this->sql = $sql;
 
         $this->rows = array();
@@ -264,18 +264,17 @@ class Db
             $this->row = $this->rows[$this->index];
         }
     }
+    
     /**
-     *
      * Read dbEncoding and dbEncoding from database, Config
      * Is not possible to do in other place, because if you put in getValue, for example, or in the constructor,
      * is will create an infinite circle
-     *
      */
     private function _getEncodings()
     {
-        $sql = "select ConfigKey,ConfigValue from Config where ConfigKey='workingEncoding' or ConfigKey='dbEncoding'";
-
-        if (($this->dbEncoding == '') && ($this->workingEncoding == '')) {
+        if ((self::$dbEncoding == '') && (self::$workingEncoding == '')) {
+            
+            $sql = "select ConfigKey,ConfigValue from Config where ConfigKey='workingEncoding' or ConfigKey='dbEncoding'";
             $this->sql = $sql;
             try
             {
@@ -307,20 +306,17 @@ class Db
                 $configKey = $row['ConfigKey'];
                 $configValue = $row['ConfigValue'];
                 if ($configKey == 'dbEncoding') {
-                    $this->dbEncoding = $configValue;
+                    self::$dbEncoding = $configValue;
                 } else if ($configKey == 'workingEncoding') {
-                    $this->workingEncoding = $configValue;
+                    self::$workingEncoding = $configValue;
                 }
             }
         }
         return true;
     }
 
-
     /**
      * Functions which obtains the current row value for a determined field
-     */
-    /**
      * @param $col
      * @return null|String
      */
@@ -335,7 +331,7 @@ class Db
                 Logger::error($this->desErr);
                 return false;
             }
-            $value = \Ximdex\XML\Base::recodeSrc($this->row[$col], $this->workingEncoding);
+            $value = \Ximdex\XML\Base::recodeSrc($this->row[$col], self::$workingEncoding);
             return $value;
         }
 
@@ -393,5 +389,19 @@ class Db
     		return true;
     	}
     	return false;
+    }
+    
+    /**
+     * Return the database version
+     * @return string|boolean
+     */
+    public function server_version()
+    {
+        $version = $this->db->getAttribute(constant('PDO::ATTR_SERVER_VERSION'));
+        $info = explode('.', $version);
+        if (count($info) < 2)
+            return false;
+        $version = $info[0] . '.' . $info[1];
+        return $version;
     }
 }

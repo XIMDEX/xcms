@@ -35,8 +35,6 @@ $I->fillField("name", "ximdex");
 
 $I->click("Create Database");
 
-//$I->click("Overwrite database");	not necessary now
-
 $I->waitForText("Once the database is created", 20);
 
 $I->fillField("user", "ximdex");
