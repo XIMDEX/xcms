@@ -269,8 +269,9 @@ class InstallManager
     
     private function checkRecommendedPHPExtensions()
     {
-        //TODO ajlucena: check for an existing function in each module in order to know if the module is activated 
-        $modules = array_merge(apache_get_modules(), get_loaded_extensions());
+        //TODO ajlucena: check for an existing function in each module in order to know if the module is activated (in order to works in Nginx)
+        //$modules = array_merge(apache_get_modules(), get_loaded_extensions());
+        $modules = get_loaded_extensions();
         $recommendedModules = ['xsl', 'curl', 'gd', 'mcrypt', 'enchant'];
         $result["state"] = 'success';
         $result["name"] = 'PHP recommended extensions';
