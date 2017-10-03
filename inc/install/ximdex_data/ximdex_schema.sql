@@ -54,7 +54,7 @@ CREATE TABLE `Contexts` (
   `Context` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `Context` (`Context`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `DependenceTypes` (
   `IdDepType` int(6) unsigned NOT NULL AUTO_INCREMENT,
@@ -200,7 +200,7 @@ CREATE TABLE `NodeConstructors` (
   `IdNodeType` int(11) NOT NULL,
   `IdAction` int(11) NOT NULL,
   PRIMARY KEY (`IdNodeConstructor`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `NodeDefaultContents` (
   `IdNodeDefaultContent` int(12) unsigned NOT NULL AUTO_INCREMENT,
@@ -244,7 +244,7 @@ CREATE TABLE `NodeProperties` (
   `Value` blob NOT NULL,
   PRIMARY KEY (`IdNodeProperty`),
   KEY `IdNode` (`IdNode`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `Nodes` (
   `IdNode` int(12) unsigned NOT NULL AUTO_INCREMENT,
@@ -280,7 +280,7 @@ CREATE TABLE `NodetypeModes` (
   `IdAction` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `IdNodeType` (`IdNodeType`,`IdAction`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `NodeTypes` (
   `IdNodeType` int(12) unsigned NOT NULL AUTO_INCREMENT,
@@ -322,7 +322,7 @@ CREATE TABLE `PipeCaches` (
   `IdPipeTransition` int(11) NOT NULL,
   `File` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `PipeCacheTemplates` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -330,7 +330,7 @@ CREATE TABLE `PipeCacheTemplates` (
   `DocIdVersion` int(11) NOT NULL,
   `TemplateIdVersion` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `Pipelines` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -338,14 +338,14 @@ CREATE TABLE `Pipelines` (
   `IdNode` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `IdNode` (`IdNode`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `PipeNodeTypes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `IdPipeline` int(11) NOT NULL,
   `IdNodeType` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `PipeProcess` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -361,7 +361,7 @@ CREATE TABLE `PipeProperties` (
   `IdPipeTransition` int(11) NOT NULL,
   `Name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `PipePropertyValues` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -369,7 +369,7 @@ CREATE TABLE `PipePropertyValues` (
   `IdPipeCache` int(11) NOT NULL,
   `Value` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `PipeStatus` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -482,7 +482,7 @@ CREATE TABLE `RelNodeTypeMetadata` (
   `force` tinyint(1) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`idRel`),
   UNIQUE KEY `idNodeType` (`idNodeType`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `RelNodeTypeMimeType` (
   `idRelNodeTypeMimeType` int(12) unsigned NOT NULL AUTO_INCREMENT,
@@ -633,7 +633,7 @@ CREATE TABLE `SectionTypes` (
   PRIMARY KEY (`idSectionType`),
   UNIQUE KEY `sectionType` (`sectionType`),
   KEY `idSectionType` (`idSectionType`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `Servers` (
   `IdServer` int(12) unsigned NOT NULL AUTO_INCREMENT,
@@ -746,7 +746,7 @@ CREATE TABLE `UpdateDb_historic` (
   `Priority` int(11) NOT NULL,
   `LogText` varchar(255) NOT NULL,
   PRIMARY KEY (`IdLog`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `Updater_DiffsApplied` (
   `id` int(12) NOT NULL AUTO_INCREMENT,
