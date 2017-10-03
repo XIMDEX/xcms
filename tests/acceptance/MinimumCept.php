@@ -63,7 +63,7 @@ $I->waitForText("Xowl configuration (optional)", 20);
 
 $I->click("Continue");
 
-$I->waitForText("Installation finished!", 10);
+$I->waitForText("Installation finished!", 5);
 
 $I->click("Get started");
 
@@ -75,7 +75,7 @@ $I->fillField("password", "ximdex");
 
 $I->click("Sign in");
 
-$I->waitForText("WELCOME TO XIMDEX CMS, XIMDEX!", 10);
+$I->waitForText("WELCOME TO XIMDEX CMS, XIMDEX!", 5);
 
 $I->wantTo('Ensure that publish works');
 
