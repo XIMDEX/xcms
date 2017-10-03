@@ -50,9 +50,8 @@
         "pda/pheanstalk": "3.1.*",
         "symfony/console": "3.3.*",
         "php-di/php-di": "5.4.*",
-        "doctrine/common": "2.7.*",
-        "illuminate/support": "5.4.*"
-        
+        "doctrine/common": "2.8.*",
+        "illuminate/support": "5.5.*"
     },
      "require-dev": {
         "mockery/mockery": "0.9.*",
