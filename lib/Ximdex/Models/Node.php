@@ -961,18 +961,18 @@ class Node extends NodesOrm
                         //check the pathto dependencies
                         if (ParsingDependencies::getPathTo($content, $node->GetID(), true) === false)
                         {
-                            $this->messages->add('Dependencies error. Changes have not been saved', MSG_TYPE_ERROR);
+                            //$this->messages->add('Dependencies error. Changes have not been saved', MSG_TYPE_ERROR);
                             $this->messages->add($GLOBALS['parsingDependenciesError'], MSG_TYPE_WARNING);
                             if (isset($GLOBALS['InBatchProcess']))
                                 Logger::error($GLOBALS['parsingDependenciesError'] . ' for IdNode: ' . $node->GetID() . ' (' . $node->getDescription() . ')');
-                            return false;
+                            //return false;
                         }
                     }
                 }
                 if ($res === false)
                 {
                     //we don't allow to save an invalid XML
-                    $this->messages->add('The XML document is not valid. Changes have not been saved', MSG_TYPE_ERROR);
+                    //$this->messages->add('The XML document is not valid. Changes have not been saved', MSG_TYPE_ERROR);
                     if (isset($GLOBALS['InBatchProcess']))
                         Logger::error('Invalid XML for IdNode: ' . $node->GetID() . ' (' . $node->getDescription() . ')');
                     $error = \Ximdex\Error::error_message('DOMDocument::loadXML(): ');
@@ -982,7 +982,7 @@ class Node extends NodesOrm
                         if (isset($GLOBALS['InBatchProcess']))
                             Logger::error($error);
                     }
-                    return false;
+                    //return false;
                 }
                 if ($node->getNodeType() == \Ximdex\Services\NodeType::RNG_VISUAL_TEMPLATE)
                 {

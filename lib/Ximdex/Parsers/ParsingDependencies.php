@@ -439,8 +439,8 @@ class ParsingDependencies
         $dependencies = new Dependencies();
         $dependencies->deleteByMasterAndVersion($idNode, $version);
 
+        //TODO ajlucena
         $depsMngr = new DepsManager();
-
         if (!$depsMngr->deleteBySource(DepsManager::STRDOC_TEMPLATE, $idNode)) {
             return false;
         }
@@ -487,9 +487,12 @@ class ParsingDependencies
                         case Dependencies::ASSET:
                             $table = DepsManager::NODE2ASSET;
                             break;
+                            
                         case Dependencies::TEMPLATE:
+                            //TODO ajlucena
                             $table = DepsManager::STRDOC_TEMPLATE;
                             break;
+                        
                         case Dependencies::XIMLET:
                         case Dependencies::XML:
                             $table = DepsManager::XML2XML;
@@ -672,6 +675,9 @@ class ParsingDependencies
                 $parserPathTo = new ParsingPathTo();
                 foreach ($matches[1] as $pathTo)
                 {
+                    // avoid check no nodes (i.e. {@a_enlaceid_url})
+                    if ($pathTo[0] == '{')
+                        continue;
                     $node = new Node($pathTo);
                     if (!$node->GetID())
                     {

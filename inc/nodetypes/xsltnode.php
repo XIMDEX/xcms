@@ -338,7 +338,8 @@ class xsltnode extends FileNode
                     return false;
             }
         }
-            
+        
+        //TODO ajlucena
         $depsMngr = new DepsManager();
         $depsMngr->deleteByTarget(DepsManager::STRDOC_TEMPLATE, $this->parent->get('IdNode'));
 
@@ -430,7 +431,7 @@ class xsltnode extends FileNode
         if (@$domDoc->loadXML($content) === false)
         {
             //we don't allow to save an invalid XML
-            $this->messages->add('The XML document is not valid. Changes have not been saved', MSG_TYPE_ERROR);
+            //$this->messages->add('The XML document is not valid. Changes have not been saved', MSG_TYPE_ERROR);
             if (isset($GLOBALS['InBatchProcess']))
             {
                 if ($node and $node->getDescription())
@@ -441,7 +442,7 @@ class xsltnode extends FileNode
             $error = \Ximdex\Error::error_message('DOMDocument::loadXML(): ');
             if ($error)
                 $this->messages->add($error, MSG_TYPE_WARNING);
-            return false;
+            //return false;
         }
         
         //validating of the correct XSL document in the correct system path (only if node is given)
@@ -460,14 +461,13 @@ class xsltnode extends FileNode
                         Logger::error('Invalid XML (' . $error . ')');
                 }
                 $this->messages->add('Invalid XML (' . $error . ')', MSG_TYPE_WARNING);
-                return false;
+                //return false;
             }
             $project = new Node($node->GetProject());
             $dom->documentURI = App::getValue('AppRoot') . App::getValue('NodeRoot') . $node->GetRelativePath($project->GetID());
             if (@$xsltprocessor->importStyleSheet($dom) === false)
             {
-                //we don't allow to save an invalid XSL
-                $this->messages->add('The XSL document (or its inclusions) has errors. Changes have not been saved', MSG_TYPE_ERROR);
+                //$this->messages->add('The XSL document (or its inclusions) has errors. Changes have not been saved', MSG_TYPE_ERROR);
                 if (isset($GLOBALS['InBatchProcess']))
                 {
                     if ($node and $node->getDescription())
@@ -478,7 +478,7 @@ class xsltnode extends FileNode
                 $error = \Ximdex\Error::error_message('XSLTProcessor::importStylesheet(): ');
                 if ($error)
                     $this->messages->add($error, MSG_TYPE_WARNING);
-                return false;
+                //return false;
             }
         }
         $content = $domDoc->saveXML();
@@ -629,6 +629,7 @@ class xsltnode extends FileNode
      */
     public function getPublishabledDeps($params)
     {
+        //TODO ajlucena
         $depsMngr = new DepsManager();
         return $depsMngr->getByTarget(DepsManager::STRDOC_TEMPLATE, $this->parent->get('IdNode'));
     }
@@ -944,6 +945,7 @@ class xsltnode extends FileNode
         return true;
     }
     
+    //TODO ajlucena
     /**
      * Move a template node to another include templates and remove the previous reference
      * Only do it if there is already a inclusion of this template in the origin templates include
