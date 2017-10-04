@@ -339,7 +339,7 @@ class xsltnode extends FileNode
             }
         }
         
-        //TODO ajlucena
+        //TODO ajlucena: RelStrdocTemplate
         $depsMngr = new DepsManager();
         $depsMngr->deleteByTarget(DepsManager::STRDOC_TEMPLATE, $this->parent->get('IdNode'));
 
@@ -629,7 +629,7 @@ class xsltnode extends FileNode
      */
     public function getPublishabledDeps($params)
     {
-        //TODO ajlucena
+        //TODO ajlucena: RelStrdocTemplate
         $depsMngr = new DepsManager();
         return $depsMngr->getByTarget(DepsManager::STRDOC_TEMPLATE, $this->parent->get('IdNode'));
     }
@@ -945,7 +945,6 @@ class xsltnode extends FileNode
         return true;
     }
     
-    //TODO ajlucena
     /**
      * Move a template node to another include templates and remove the previous reference
      * Only do it if there is already a inclusion of this template in the origin templates include

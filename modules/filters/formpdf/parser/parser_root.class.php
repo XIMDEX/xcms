@@ -58,7 +58,7 @@ class ParserRoot {
 
 	function special_chars($string) {
 		//$string = utf8_decode ($string);
-		//$busqueda = array("@�@", "@�@", "@�@", "@�@", "@�@", "@�@", "@�@", "@�@", "@�@", "@�@", "@�@", "@�@");
+	    //$busqueda = array("@á@", "@é@", "@í@", "@ó@", "@ú@", "@ñ@", "@Á@", "@É@", "@Í@", "@Ó@", "@Ú@", "@Ñ@");
 		//$reemplazar = array("'a", "'e", "'i", "'o", "'u", "~n", "'A", "'E", "'I", "'O", "'U", "~N");
 		//$string = preg_replace($busqueda, $reemplazar, $string);
 		return $string;

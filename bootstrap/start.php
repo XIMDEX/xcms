@@ -69,7 +69,7 @@ $dbConfig = App::getValue('db');
 if ( !empty( $dbConfig ) ) {
 	try
 	{
-    	$dbConn = new \PDO("{$dbConfig['type']}:host={$dbConfig['host']};port={$dbConfig['port']};dbname={$dbConfig['db']}",
+    	$dbConn = new \PDO("{$dbConfig['type']}:host={$dbConfig['host']};port={$dbConfig['port']};dbname={$dbConfig['db']};charset=utf8",
         		$dbConfig['user'], $dbConfig['password']);
 	}
 	catch (\PDOException $e)

@@ -105,25 +105,7 @@ class Node extends NodesOrm
     /**
      * @var array
      */
-    var $errorList = array(// Class error list.
-        1 => 'The node does not exist',
-        2 => 'The nodetype does not exist',
-        3 => 'Arguments missing or invalid',
-        4 => 'Some of the children could not be deleted',
-        5 => 'Database connection error',
-        6 => 'No root in tree',
-        7 => 'Error accessing to file system',
-        8 => 'A node with the given name already exists',
-        9 => 'Invalid name format',
-        10 => 'Parent node does not exist',
-        11 => 'The nodetype does not exist',
-        12 => 'The node cannot be moved to an own internal node',
-        13 => 'The node cannot be deleted',
-        14 => 'It is not located under the given node',
-        15 => 'A master node cannot link other',
-        16 => 'A node cannot link itself',
-        17 => 'This node is not allowed in this position'
-    );
+    var $errorList = array();   // Class error list.
 
     /**
      * Node constructor.
@@ -163,17 +145,11 @@ class Node extends NodesOrm
                 $nodeTypeClass = $this->nodeType->get('Class');
                 $nodeTypeModule = $this->nodeType->get('Module');
 
-
                 $this->class = \Ximdex\NodeTypes\Factory::getNodeTypeByName($nodeTypeClass, $this, $nodeTypeModule);
 
-
-                //Logger::info(sprintf(_('Fatal error: the nodetype associated to %s does not exist'), $fileToInclude));
-                //die(sprintf(_('Fatal error: the nodetype associated to %s does not exist'), $fileToInclude));
                 if (!$fullLoad) {
                     return;
                 }
-
-                //  $this->class = new $nodeTypeClass($this);
             }
         }
     }
@@ -1233,7 +1209,6 @@ class Node extends NodesOrm
      */
     function CreateNode($name, $parentID, $nodeTypeID, $stateID = null, $subfolders = array())
     {
-
         $this->set('IdParent', (int)$parentID);
         $this->set('IdNodeType', (int)$nodeTypeID);
         $this->set('Name', $name);

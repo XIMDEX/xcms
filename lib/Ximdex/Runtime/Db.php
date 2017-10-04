@@ -73,7 +73,7 @@ class Db
          {
          	try
          	{
-            	$dbConn = new \PDO("{$dbConfig['type']}:host={$dbConfig['host']};port={$dbConfig['port']};dbname={$dbConfig['db']}", $dbConfig['user'], $dbConfig['password']);
+         	    $dbConn = new \PDO("{$dbConfig['type']}:host={$dbConfig['host']};port={$dbConfig['port']};dbname={$dbConfig['db']};charset=utf8", $dbConfig['user'], $dbConfig['password']);
          	}
          	catch (\PDOException $e)
          	{

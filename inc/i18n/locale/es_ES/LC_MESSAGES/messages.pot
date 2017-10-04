@@ -9204,3 +9204,6 @@ msgstr  ""
 
 msgid "The XML document is not valid. Changes have not been saved"
 msgstr ""
+
+msgid "This node cannot be created with this name"
+msgstr ""

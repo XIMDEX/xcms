@@ -292,6 +292,7 @@ class DexPumper {
 							 $renameResult = $this->RenameFile($file);
                              if ($renameResult)
                                  $this->finishTask ($file["IdSync"]);
+                             //TODO ajlucena: if this rename task does not work, generates a infinite loop
 						}
 					}
 			}

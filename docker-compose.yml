@@ -19,6 +19,7 @@ services:
     # Path where MySQL data will be
     volumes:
       - .data/db:/var/lib/mysql
+      - ./docker/db.cnf:/etc/mysql/conf.d/db.cnf
     # The first time, it creates a Database called ximdex with user ximdex, modify it if you are in production
     environment:
       MYSQL_ROOT_PASSWORD: ximdex

@@ -532,7 +532,7 @@ XimDocument = function(editorConfig) {
 
 				ximElement.attributes[xmlName] = newAttribute;*/
 
-				//console.warn('TODO: �Se esta usando aun htmlAttributes?');
+				//console.warn('TODO: Se esta usando aun htmlAttributes?');
 			}
 		}
 
@@ -798,7 +798,7 @@ XimDocument = function(editorConfig) {
 	 */
 	this._reverseParseNode = function(element, parent, options) {
 
-		// NOTE: This way of exporting the document is the most correct but causes that the tagNames were in capitals �?�?�?
+		// NOTE: This way of exporting the document is the most correct but causes that the tagNames were in capitals
 		//
 		// Fixed: http://www.w3.org/TR/DOM-Level-2-Core/core.html#Namespaces-Considerations
 		// "... For HTML, the tagName parameter may be provided in any case, but it must be mapped to the canonical uppercase form by the DOM (Level 1) implementation ..."

@@ -70,6 +70,7 @@ class InstallDataBaseManager extends InstallManager
             	$url = 'mysql:dbname=' . $name . ';host=' . $host;
             else
             	$url = 'mysql:host=' . $host;
+            $url .= ';charset=utf8';
         	try
         	{
         	    // we need to avoid warning messages due to a problem with JSON reported

@@ -200,6 +200,10 @@ class View_Xslt extends Abstract_View
             return false;
         }
         $docxapContent = $domDoc->saveXML();
+        
+        //TODO ajlucena: AJUSTAR INCLUDE PATH
+        // replace(MACRO, LOCAL_XLST_TEMPLATE_FILE);
+        
         if ($xsltHandler->setXSL(null, $docxapContent) === false)
             return false;
         $params = array('xmlcontent' => $content);

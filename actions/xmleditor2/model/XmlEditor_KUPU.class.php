@@ -592,7 +592,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
 
         //New abstraction with php5-enchant module.
         if (!function_exists('enchant_broker_init')) {
-            Logger::error(_('The php5-enchant module should be installed to use the spell checker'));
+            Logger::error(_('The php-enchant module should be installed to use the spell checker'));
         } else {
             $chkr = enchant_broker_init();
             if (!enchant_broker_dict_exists($chkr, $langISOName)) { //english as a default dictionary
@@ -704,6 +704,8 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
         if ($this->node->GetNodeType() != Ximdex\Services\NodeType::METADATA_DOCUMENT)
         {
             $docxapId = NULL;
+
+            //TODO ajlucena: RelStrdocTemplate
             $depsMngr = new DepsManager();
             if ($templatesIds = $depsMngr->getBySource(DepsManager::STRDOC_TEMPLATE, $idNode)) {
                 foreach ($templatesIds as $templateId) {

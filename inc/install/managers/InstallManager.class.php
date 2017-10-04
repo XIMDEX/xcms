@@ -354,7 +354,7 @@ class InstallManager
 
         $result["state"] = "success";
         $result["name"] = "File permission";
-
+        
         // if the test is running, avoid this verification 
         if (!isset($GLOBALS['testing']))
             return $result;
@@ -363,6 +363,9 @@ class InstallManager
         $groupName = posix_getgrgid($groupId[0]);
         $ximdexGroupId = filegroup($file);
         $ximdexGroupName = posix_getgrgid($ximdexGroupId);
+        
+        echo '$ximdexGroupName["name"]: ' . $ximdexGroupName["name"];
+        exit();
 
         if (!in_array($ximdexGroupId, $groupId)) {
             $result["state"] = "error";

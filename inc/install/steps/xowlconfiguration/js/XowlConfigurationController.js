@@ -32,11 +32,15 @@ ximdexInstallerApp.controller('XowlConfigurationController', ['$scope', 'install
             $scope.loading = true;
             if ($scope.serviceurl == "" && $scope.apikey == "") {
 
-
                 installerService.sendAction("loadNextAction").then(function (response) {
                     location.reload();
                 });
             } else {
+            	
+            	if ($scope.apikey == "")
+            	{
+            		$scope.apikey = "5965dc5e6bc11";
+            	}
                 installerService
                     .sendAction("configure", "apikey=" + $scope.apikey + "&serviceurl=" + $scope.serviceurl)
                     .then(function (response) {

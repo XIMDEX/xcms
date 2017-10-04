@@ -36,7 +36,7 @@
 		<ol>
 			<li>
 				{t}Nombre{/t}: {$link.name}</li>
-				<li>{t}Descripción{/t}: {$link.description}
+				<li>{t}DescripciÃ³n{/t}: {$link.description}
 			</li>
 		</ol>
 		{/foreach}
@@ -45,7 +45,7 @@
 		<ol>
 			<li>
 				{button label="Cancel" class="close-button btn"}
-				{button label="Continue" class='validate btn main_action' }{*message="¿Desea crear el enlace de todas formas?"*}
+				{button label="Continue" class='validate btn main_action' }{*message="Â¿Desea crear el enlace de todas formas?"*}
 			</li>
 		</ol>
 	</fieldset>

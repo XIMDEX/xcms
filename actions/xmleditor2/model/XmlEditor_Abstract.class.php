@@ -111,10 +111,12 @@ abstract class XmlEditor_Abstract
             $pathToFileRel = substr($pathDocxap,0, $pos);
             $this->rel_path_docxap=$pathToFileRel."/";
             $content = FsUtils::file_get_contents($pathDocxap);
+            //not necessary to do for URL templates
+            /*
             if ($includesInServer) {
                 $this->replaceIncludes($content);
             }
-
+            */
         } else {
             $msg = "docxap.xsl was not found for node $idnode";
             Logger::error($msg);
@@ -330,7 +332,7 @@ abstract class XmlEditor_Abstract
 	 * Recursive!
 	 * Called by _normalizeXmlDocument()
 	 */
-    protected function _deleteUIDAttributes(&$node)
+    protected function _deleteUIDAttributes($node)
     {
         if ($node->nodeType != 1) return;
         if ($node->hasAttribute('uid')) {

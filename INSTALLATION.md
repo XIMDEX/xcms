@@ -41,11 +41,13 @@ You can install Ximdex CMS with Docker or using the web installer.
     Check permission on directory /data/, Read and Write are required to install Ximdex
     ...
     
-    You need to grant read and write permissions to these directories, which have been placed in our Ximdex installation directory, by this way:
+    You need to grant read and write permissions to these directories, which have been placed in our Ximdex installation directory (i.e. myximdex), by this way:
     ```
-    sudo chmod -R 777 data
-    sudo chmod 777 logs
-    sudo chmod 777 conf
+    sudo chgrp -R www-data myximdex
+    cd myximdex
+    sudo chmod -R g+s data
+    sudo chmod g+s logs
+    sudo chmod g+s conf
     ```
     
     > For docker, you will need to use the host **db** instead of the suggested **localhost** and the password **ximdex** in the "*Database password*" field, to make Ximdex installation able to access to the database server, and create the data schema.
@@ -154,7 +156,7 @@ When Apache2 and PHP are running with the requested packages you have to downloa
 	_Remember that this is the location where your **Apache document root** is there. Probably you may have a different one in case you have changed it in Apache configuration. It's possible that this location was placed in */var/www/html* directory by default in some systems._
 	
 	```
-	chown -R www-data:www-data myximdex
+	sudo chgrp -R www-data myximdex
 	cd myximdex
 	chmod -R g+s data
 	chmod g+s logs

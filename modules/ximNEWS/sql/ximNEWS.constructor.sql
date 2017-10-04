@@ -564,7 +564,7 @@ CREATE TABLE `XimNewsBulletins` (
 	`State` varchar(255) NOT NULL default 'generated',
   PRIMARY KEY  (`IdBulletin`),
   KEY `IdBulletin` (`IdContainer`)
-);
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 #
 # Table structure for table 'XimNewsNews'
@@ -580,7 +580,7 @@ CREATE TABLE `XimNewsNews` (
   `IdSection` int(12) unsigned default '0',
   `AssociationAttempts` int(12) unsigned default 0,
    PRIMARY KEY  (`IdNew`)
-);
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 #
 # Table structure for table 'XimNewsAreas'
@@ -592,7 +592,7 @@ CREATE TABLE `XimNewsAreas` (
   `Name` varchar(255) NOT NULL default '',
   `Description` varchar(255) NOT NULL default '',
    PRIMARY KEY  (`IdArea`)
-);
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 #
 # Table structure for table 'XimNewsList'
@@ -603,7 +603,7 @@ CREATE TABLE `XimNewsList` (
   `IdList` int(12) unsigned NOT NULL auto_increment,
   `Name` varchar(255) NOT NULL default '',
    PRIMARY KEY  (`IdList`)
-);
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
 --
@@ -618,7 +618,7 @@ CREATE TABLE `RelNewsArea` (
   `IdArea` int(12) unsigned NOT NULL default '0',
   PRIMARY KEY  (`IdRel`),
   KEY `IdNew` (`IdArea`)
-);
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `RelNewsColector`
@@ -644,7 +644,7 @@ CREATE TABLE `RelNewsColector` (
 	`IdCache` int(12) default NULL,
   PRIMARY KEY  (`IdRel`),
   KEY `IdNew` (`IdColector`)
-);
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `XimNewsFrameBulletin`;
 
@@ -657,7 +657,7 @@ CREATE TABLE `XimNewsFrameBulletin` (
   BulletinID int(12) unsigned NOT NULL default '0',
   State  varchar(255) NOT NULL default '',
   KEY IdSync (IdSync)
-) ENGINE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table 'XimNewsFrameVersion'
@@ -668,7 +668,7 @@ CREATE TABLE `XimNewsFrameVersion` (
   IdSync int(12) unsigned NOT NULL default '0',
   IdVersion int(12) unsigned NOT NULL default '0',
   PRIMARY KEY  (IdSync)
-) ENGINE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `XimNewsColector`
@@ -702,7 +702,7 @@ CREATE TABLE `XimNewsColector` (
     `State` varchar(255) NOT NULL default 'created',
    PRIMARY KEY  (`IdColector`),
    KEY `IdBulletin` (`IdColector`)
-);
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `RelNewsBulletins`
@@ -716,7 +716,7 @@ CREATE TABLE `RelNewsBulletins` (
   `IdBulletin` int(12) unsigned NOT NULL default '0',
   PRIMARY KEY  (`IdRel`),
   KEY `IdNew` (`IdBulletin`)
-);
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `RelColectorList`
@@ -730,7 +730,7 @@ CREATE TABLE `RelColectorList` (
   `IdList`  int(12) unsigned NOT NULL default '0',
   PRIMARY KEY  (`IdRel`),
   KEY `IdNew` (`IdColector`)
-);
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `XimNewsCache`
@@ -746,4 +746,4 @@ CREATE TABLE `XimNewsCache` (
   `Fecha` varchar(255) default NULL,
   `Counter` int(12) unsigned default NULL,
   PRIMARY KEY  (`IdCache`)
-);
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;

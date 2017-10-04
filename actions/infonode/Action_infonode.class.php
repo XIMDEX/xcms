@@ -108,6 +108,7 @@ class Action_infonode extends ActionAbstract
         $idNode = (int)$this->request->getParam("nodeid");
         $depMasterList = array();
 
+        //TODO ajlucena: RelStrdocTemplate
         $classes = array(new RelNode2Asset(), new RelXml2Xml(), new RelStrdocTemplate());
 
         foreach ($classes as $c) {
