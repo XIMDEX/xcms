@@ -139,44 +139,37 @@ class InstallDataBaseManager extends InstallManager
         $GLOBALS[self::DB_ARRAY_KEY]["install"] = null;
     }
 
-    public function createUser($user, $pass)
-    {
-        $sql = "GRANT ALL PRIVILEGES  ON $$this->name.* TO '$user'@'%' IDENTIFIED BY '$pass'";
-        $result = $this->dbConnection->exec($this->dbConnection, $sql);
-        $sql = "FLUSH privileges";
-        $result = $result && $this->dbConnection->exec($this->dbConnection, $sql);
-        if ($result === 0)
-        	$result = false;
-        return $result;
-    }
-
     public function createDataBase($name)
     {
+        if (isset($GLOBALS['docker']))
+            return true;
         $result = false;
         if ($this->dbConnection) {
             $query = "CREATE DATABASE $name DEFAULT CHARACTER SET utf8";
             $result = $this->dbConnection->exec($query);
-            if ($result === 0)
-            	$result = false;
             if ($result === false) {
                 Logger::error('Cannot create database: ' . $name);
             }
         } else {
-            Logger::error("Creating database");
+            Logger::error('There is not an active connection');
         }
         return $result;
     }
 
     public function deleteDataBase($name)
     {
+        if (isset($GLOBALS['docker']))
+            return true;
         $result = false;
         if ($this->dbConnection) {
             $query = sprintf("drop database %s", $name);
             $result = $this->dbConnection->exec($query);
-            if ($result === 0)
-            	$result = false;
+            if ($result === false)
+            {
+            	Logger::error('Fail deleting database ' . $name);
+            }
         } else {
-            Logger::error("Deleting database");
+            Logger::error('There is not an active connection');
         }
         return $result;
     }
@@ -238,19 +231,36 @@ class InstallDataBaseManager extends InstallManager
             if (!$host)
                 return false;
             $host = $host[0];
-            if ($host == 'localhost')
+            if ($host == 'localhost' and !isset($GLOBALS['docker']))
             {
-                $query = "GRANT ALL PRIVILEGES  ON $name.* TO '$userName'@'localhost' IDENTIFIED BY '$pass'";
-                $result = $this->dbConnection->exec($query);
+                $sql = "CREATE USER `$userName`@`localhost` IDENTIFIED WITH mysql_native_password AS `$pass`";
+                $result = $this->dbConnection->exec($sql);
+                if ($result !== false)
+                {
+                    //$query = "GRANT ALL PRIVILEGES  ON $name.* TO '$userName'@'localhost' IDENTIFIED BY '$pass'";
+                    $query = "GRANT ALL PRIVILEGES ON `$name`.* TO `$userName`@`localhost` WITH GRANT OPTION;";
+                    $result = $this->dbConnection->exec($query);
+                }
+                if ($result !== false)
+                    Logger::info("User '$userName'@'localhost' created");
             }
             else
             {
-                $query = "GRANT ALL PRIVILEGES  ON $name.* TO '$userName'@'%' IDENTIFIED BY '$pass'";
-                $result = $this->dbConnection->exec($query);
+                $sql = "CREATE USER `$userName`@`%` IDENTIFIED WITH mysql_native_password AS `$pass`";
+                $result = $this->dbConnection->exec($sql);
+                if ($result !== false)
+                {
+                    //$query = "GRANT ALL PRIVILEGES  ON $name.* TO '$userName'@'%' IDENTIFIED BY '$pass'";
+                    $query = "GRANT ALL PRIVILEGES ON `$name`.* TO `$userName`@`%` WITH GRANT OPTION;";
+                    $result = $this->dbConnection->exec($query);
+                }
+                if ($result !== false)
+                    Logger::info("User '$userName'@'%' created");
             }
-            $result = $result && $this->dbConnection->exec("FLUSH privileges");
-            if ($result === 0)
-            	$result = false;
+            if ($result !== false)
+                $this->dbConnection->exec("FLUSH privileges");
+            $this->user = $userName;
+            $this->pass = $pass;
         }
         return $result;
     }

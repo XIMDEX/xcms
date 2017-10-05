@@ -249,7 +249,6 @@ class InstallManager
 
     private function checkRequiredPHPExtensions()
     {
-        //TODO ajlucena: check for an existing function in each module in order to know if the module is activated
     	$result = array();
     	$result["name"] = 'PHP required extensions';
     	$result['state'] = 'success';
@@ -269,10 +268,14 @@ class InstallManager
     
     private function checkRecommendedPHPExtensions()
     {
-        //TODO ajlucena: check for an existing function in each module in order to know if the module is activated (in order to works in Nginx)
+        // Apache modules cannot be loaded in Nginx and is not necessary in the recommended PHP extension
         //$modules = array_merge(apache_get_modules(), get_loaded_extensions());
         $modules = get_loaded_extensions();
-        $recommendedModules = ['xsl', 'curl', 'gd', 'mcrypt', 'enchant'];
+        $recommendedModules = ['xsl', 'curl', 'gd', 'mcrypt'];
+        if (!isset($GLOBALS['docker']))
+        {
+            $recommendedModules[] = 'enchant';
+        }
         $result["state"] = 'success';
         $result["name"] = 'PHP recommended extensions';
         foreach ($recommendedModules as $recommendedModule) {
