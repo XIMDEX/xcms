@@ -718,7 +718,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
                 Logger::error(_('docxap can not be found for node: ' . $this->node->GetNodeName()));
                 return false;
             }
-            $xslParser = new ParsingXsl($docxapId);
+            $xslParser = new ParsingXsl($docxapId, null);
             $templatesInclude = $xslParser->getIncludedElements('templates_include');
             if (!$templatesInclude)
             {

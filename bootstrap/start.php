@@ -115,3 +115,12 @@ if (!defined('RENDERER_ROOT_PATH')) {
 if (!defined('SMARTY_TMP_PATH')) {
     define('SMARTY_TMP_PATH', XIMDEX_ROOT_PATH . App::getValue('TempRoot'));
 }
+
+// check if the site is running in a Docker environment or not
+if (isset($_SERVER['DOCKER_CONF_HOME']))
+{
+    $GLOBALS['docker'] = true;
+    define('URL_ROOT_XSL_TEMPLATES', 'http://ximdex');
+}
+else 
+    define('URL_ROOT_XSL_TEMPLATES', App::getValue('UrlRoot'));

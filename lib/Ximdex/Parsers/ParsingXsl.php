@@ -29,9 +29,10 @@ namespace Ximdex\Parsers;
 
 use DOMDocument;
 use DOMXPath;
+use Ximdex\Logger;
 use Ximdex\Models\Node;
+use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
-use Ximdex\Logger as XMD_Log;
 
 
 class ParsingXsl
@@ -42,13 +43,15 @@ class ParsingXsl
 	private $node = NULL;
 	private $includedElements = array();
 	private $path = NULL;
+	private $editor = true;
 
-	function __construct($idTemplate = NULL, $path = NULL)
+	function __construct($idTemplate = NULL, $path = NULL, $editor = true)
 	{
 		if (!$this->setNode($idTemplate, $path))
 			return NULL;
 		$this->setXpathObj();
 		$this->setIncludedElements();
+		$this->editor = $editor;
 	}
 
 	public function getIncludedElements($name = NULL, $removeExtension = false, $baseName = false)
@@ -96,7 +99,7 @@ class ParsingXsl
 	private function setNode($idNode, $path)
 	{
 		if (is_null($idNode) && is_null($path)) {
-			XMD_Log::error('Cannot parse template: idNode and path are NULL');
+			Logger::error('Cannot parse template: idNode and path are NULL');
 			return false;
 		}
 
@@ -107,12 +110,12 @@ class ParsingXsl
 
 		$this->node = new Node($idNode);
 		if (!($this->node->get('IdNode')) > 0) {
-			XMD_Log::error('Cannot parse template: Non existant node ' . $idNode);
+			Logger::error('Cannot parse template: Non existant node ' . $idNode);
 			return false;
 		}
 
 		if ($this->node->nodeType->get('Name') != 'XslTemplate') {
-			XMD_Log::error('Cannot parse template: Node ' . $idNode . ' is not a Xsl Template');
+			Logger::error('Cannot parse template: Node ' . $idNode . ' is not a Xsl Template');
 			return false;
 		}
 
@@ -125,13 +128,26 @@ class ParsingXsl
 		if ($this->node)
 			$content = $this->node->GetContent();
 		else
-			$content = FsUtils::file_get_contents($this->path);
+		{
+		    $path = $this->path;
+		    if (isset($GLOBALS['docker']) and $this->editor)
+		    {
+		        $path = str_ireplace(URL_ROOT_XSL_TEMPLATES . '/', App::getValue('UrlRoot') . '/', $path);
+		        Logger::debug('Replaced XSL path ' . URL_ROOT_XSL_TEMPLATES . '/ to ' . App::getValue( 'UrlRoot') . '/');
+		    }
+			$content = FsUtils::file_get_contents($path);
+		}
+		if (isset($GLOBALS['docker']) and $this->editor)
+		{
+		    $content = str_ireplace(URL_ROOT_XSL_TEMPLATES . '/', App::getValue('UrlRoot') . '/', $content);
+		    Logger::debug('Replaced ' . URL_ROOT_XSL_TEMPLATES . '/ to ' . App::getValue( 'UrlRoot') . '/');
+		}
 		if (!$content)
 		{
 		    $error = 'setXpathObj error: empty XML content or another problem to get it';
 		    if (\Ximdex\Error::error_message())
 		        $error .= ' (' . \Ximdex\Error::error_message() . ')';
-		    XMD_Log::error($error);
+		    Logger::error($error);
 		    return false;
 		}
 		$domDoc = new DOMDocument();
@@ -141,7 +157,7 @@ class ParsingXsl
 		$res = @$domDoc->loadXML($content);
 		if ($res === false)
 		{
-		    XMD_Log::error('setXpathObj error: can\'t load XML content (' . \Ximdex\Error::error_message() . ')');
+		    Logger::error('setXpathObj error: can\'t load XML content (' . \Ximdex\Error::error_message() . ')');
 		    return false;
 		}
 

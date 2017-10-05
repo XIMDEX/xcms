@@ -35,14 +35,14 @@ CREATE TABLE `XimIONodeTranslations` (
   `status` int(3) NOT NULL,
   `path` varchar(255) NULL,
   PRIMARY KEY  (`IdNodeTranslation`)
-);
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `XimIOExportations` (
   `idXimIOExportation` int(11) NOT NULL auto_increment,
   `idXimIO` int(11) NOT NULL,
   `timeStamp` varchar(200) NOT NULL,
   PRIMARY KEY  (`idXimIOExportation`)
-);
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- Activation of the roles for ximIO actions
 

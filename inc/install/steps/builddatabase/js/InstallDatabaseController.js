@@ -32,7 +32,10 @@ ximdexInstallerApp.controller('InstallDatabaseController', ["$timeout", '$scope'
         //$scope.name = $attrs.ximInstallInstanceName;
         $scope.name = "ximdex";
         $scope.overwrite = false;
-        $scope.host = "localhost";
+        if ($attrs.ximDataBaseHostName)
+        	$scope.host = $attrs.ximDataBaseHostName;
+        else
+        	$scope.host = "localhost";
         $scope.port = "3306";
         $scope.root_pass = "";
         $scope.versionNotified = false;

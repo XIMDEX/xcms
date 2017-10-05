@@ -663,8 +663,10 @@ class xsltnode extends FileNode
             return false;
         
         //make sure that the path to templates is in the correct place of the project docxap templates folder
-        $content = str_replace('##URL_ROOT##', App::getValue("UrlRoot"), $content);
+        /*
+        $content = str_replace('##URL_ROOT##', URL_ROOT_XSL_TEMPLATES, $content);
         $content = str_replace('##PROJECT_NAME##', $project->GetNodeName(), $content);
+        */
 		if (!FsUtils::file_put_contents($xslSourcePath, $content))
 		    return false;
 		
@@ -809,7 +811,7 @@ class xsltnode extends FileNode
                     $domElement = $dom->createElement('xsl:include');
                     $domAttribute = $dom->createAttribute('href');
                     if ($template == $templateURL)
-                        $domAttribute->value = App::getValue('UrlRoot') . App::getValue('NodeRoot') . $tempPath . '/templates/' . $template;
+                        $domAttribute->value = URL_ROOT_XSL_TEMPLATES . App::getValue('NodeRoot') . $tempPath . '/templates/' . $template;
                     else
                         $domAttribute->value = $templateURL;
                     $domElement->appendChild($domAttribute);
@@ -884,9 +886,9 @@ class xsltnode extends FileNode
                     return false;
                 }
                 //generate the new and old template URL for this node
-                $oldTemplateURL = App::getValue('UrlRoot') . App::getValue('NodeRoot') . $node->GetRelativePath($projectId, $oldNode)
+                $oldTemplateURL = URL_ROOT_XSL_TEMPLATES . App::getValue('NodeRoot') . $node->GetRelativePath($projectId, $oldNode)
                         . '/templates/templates_include.xsl';
-                $newTemplateURL = App::getValue('UrlRoot') . App::getValue('NodeRoot') . $node->GetRelativePath($projectId) . '/templates/templates_include.xsl';
+                $newTemplateURL = URL_ROOT_XSL_TEMPLATES . App::getValue('NodeRoot') . $node->GetRelativePath($projectId) . '/templates/templates_include.xsl';
                 //read the include tags from the docxap
                 $root = $dom->getElementsByTagName('stylesheet');
                 $xPath = new DOMXPath($dom);
@@ -1032,7 +1034,7 @@ class xsltnode extends FileNode
         if (!$templateURL)
         {
             $projectId = $node->GetProject();
-            $templateURL = App::getValue('UrlRoot') . App::getValue('NodeRoot') . $node->GetRelativePath($projectId);
+            $templateURL = URL_ROOT_XSL_TEMPLATES . App::getValue('NodeRoot') . $node->GetRelativePath($projectId);
             
             // we need the node in the parent section or server of the template
             $node = new Node($node->getParent());
@@ -1140,7 +1142,7 @@ class xsltnode extends FileNode
         {
             $templateName = $node->GetNodeName();
             $projectId = $node->GetProject();
-            $templateURL = App::getValue('UrlRoot') . App::getValue('NodeRoot') . $node->GetRelativePath($projectId);
+            $templateURL = URL_ROOT_XSL_TEMPLATES . App::getValue('NodeRoot') . $node->GetRelativePath($projectId);
             
             // we need the node in the parent section or server of the template
             $node = new Node($node->getParent());
@@ -1272,7 +1274,7 @@ class xsltnode extends FileNode
         //check if there is a template with that name
         $xPath = new DOMXPath($dom);
         $projectId = $node->GetProject();
-        $templateURL = App::getValue('UrlRoot') . App::getValue('NodeRoot') . $node->GetRelativePath($projectId);
+        $templateURL = URL_ROOT_XSL_TEMPLATES . App::getValue('NodeRoot') . $node->GetRelativePath($projectId);
         $includeTag = $xPath->query("/xsl:stylesheet/xsl:include[@href='$templateURL']");
         if ($includeTag->length)
         {

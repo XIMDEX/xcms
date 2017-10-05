@@ -163,8 +163,6 @@ class DepsManager
      */
     function getBySource($rel, $source)
     {
-        //TODO ajlucena: RelStrdocTemplate
-        
         $object = $this->getModel($rel);
         if (!is_object($object)) return false;
         $result = $object->find('target', 'source = %s', array($source), MONO);

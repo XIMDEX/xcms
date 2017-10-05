@@ -78,7 +78,7 @@ Class Logger
         if (App::debug())
         {
             try{
-                // return self::get()->logger->addDebug($string);
+                return self::get()->logger->addDebug($string);
             }catch (\Exception $e){
                 error_log($e->getMessage());
             }
@@ -97,7 +97,7 @@ Class Logger
     public static function info($string)
     {
         try{
-            // return self::get()->logger->addInfo($string);
+            return self::get()->logger->addInfo($string);
         }catch (\Exception $e){
             error_log($e->getMessage());
         }

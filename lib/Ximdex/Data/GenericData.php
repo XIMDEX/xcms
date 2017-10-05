@@ -902,10 +902,12 @@ class GenericData extends Overloadable
         $i = 0;
         foreach ($arrayFields as $field)
         {
-            //TODO ajlucena: null values?
             if ($field == $idName)
                 continue;
-            $query .= ' and ' . $field . ' = ' . $arrayValues[$i];
+            if ($arrayValues[$i] === null)
+                $query .= ' and ' . $field . ' is null';
+            else
+                $query .= ' and ' . $field . ' = \'' . $arrayValues[$i] . '\'';
             $i++;
         }
         if (!$this->_checkDataIntegrity())

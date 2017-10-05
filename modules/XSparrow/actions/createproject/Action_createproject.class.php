@@ -618,7 +618,7 @@ class Action_createproject extends ActionAbstract
 
                 $newNode = new Node($id);
                 $docxapContent = $newNode->GetContent();
-                $urlPath = App::getValue("UrlRoot");
+                $urlPath = URL_ROOT_XSL_TEMPLATES;
                 $docxapContent = str_replace("{URL_PATH}", $urlPath, $docxapContent);
                 $docxapContent = str_replace("{PROJECT_NAME}", $this->name, $docxapContent);
                 $newNode->SetContent($docxapContent);

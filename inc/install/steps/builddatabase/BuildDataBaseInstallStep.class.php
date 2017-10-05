@@ -41,6 +41,10 @@ class BuildDataBaseInstallStep extends GenericInstallStep
         $this->addJs("InstallDatabaseController.js");
         $values = array();
         $values["ximdexName"] = basename(XIMDEX_ROOT_PATH);
+        if (isset($GLOBALS['docker']))
+            $values['ximdexDataBaseHostName'] = 'db';
+        else
+            $values['ximdexDataBaseHostName'] = 'localhost';
         $this->render($values);
     }
     
@@ -109,7 +113,6 @@ class BuildDataBaseInstallStep extends GenericInstallStep
         {
             if ($idbManager->existDataBase($name)) {
                 $idbManager->deleteDataBase($name);
-    
             }
             if ($idbManager->connect($host, $port, $user, $pass)) {
                 $result = $idbManager->createDataBase($name);
