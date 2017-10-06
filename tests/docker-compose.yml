@@ -21,6 +21,8 @@ services:
       MYSQL_USER: ximdex
       MYSQL_PASSWORD: ximdex
       MYSQL_DATABASE: ximdex
+    volumes:
+      - ./docker/db.cnf:/etc/mysql/conf.d/db.cnf
 
   selenium:
     image: selenium/standalone-chrome:3.0.1

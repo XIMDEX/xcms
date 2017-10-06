@@ -907,7 +907,7 @@ class GenericData extends Overloadable
             if ($arrayValues[$i] === null)
                 $query .= ' and ' . $field . ' is null';
             else
-                $query .= ' and ' . $field . ' = \'' . $arrayValues[$i] . '\'';
+                $query .= ' and ' . $field . ' = ' . $arrayValues[$i];
             $i++;
         }
         if (!$this->_checkDataIntegrity())
