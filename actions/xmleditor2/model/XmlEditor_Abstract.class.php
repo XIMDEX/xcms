@@ -117,12 +117,6 @@ abstract class XmlEditor_Abstract
                 $this->replaceIncludes($content);
             }
             */
-            if (isset($GLOBALS['docker']))
-            {
-                // in a docker environment its necessary to replace the urlRoot value to the ximdex docker image
-                $content = str_ireplace(URL_ROOT_XSL_TEMPLATES . '/', App::getValue( 'UrlRoot') . '/', $content);
-                Logger::debug('Replaced ' . URL_ROOT_XSL_TEMPLATES . '/ to ' . App::getValue( 'UrlRoot') . '/');
-            }
         } else {
             $msg = "docxap.xsl was not found for node $idnode";
             Logger::error($msg);
@@ -524,7 +518,7 @@ abstract class XmlEditor_Abstract
         }
         $xslTemplateContent = str_replace("##WARNING_ELEMENTS##", $warningElements, $xslTemplateContent);
         $xslTemplateContent = str_replace("##WARNINGS##", $warnings, $xslTemplateContent);
-        $xslTemplateContent = str_replace("@@URL_PATH@@", URL_ROOT_XSL_TEMPLATES, $xslTemplateContent);
+        $xslTemplateContent = str_replace("@@URL_PATH@@", App::getValue('UrlRoot'), $xslTemplateContent);
 
         $schemaNode = new Node ($idSchema);
         $schemaName = $schemaNode->GetNodeName();

@@ -31,7 +31,6 @@ use DOMDocument;
 use DOMXPath;
 use Ximdex\Logger;
 use Ximdex\Models\Node;
-use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
 
 
@@ -43,15 +42,13 @@ class ParsingXsl
 	private $node = NULL;
 	private $includedElements = array();
 	private $path = NULL;
-	private $editor = true;
 
-	function __construct($idTemplate = NULL, $path = NULL, $editor = true)
+	function __construct($idTemplate = NULL, $path = NULL)
 	{
 		if (!$this->setNode($idTemplate, $path))
 			return NULL;
 		$this->setXpathObj();
 		$this->setIncludedElements();
-		$this->editor = $editor;
 	}
 
 	public function getIncludedElements($name = NULL, $removeExtension = false, $baseName = false)
@@ -128,20 +125,7 @@ class ParsingXsl
 		if ($this->node)
 			$content = $this->node->GetContent();
 		else
-		{
-		    $path = $this->path;
-		    if (isset($GLOBALS['docker']) and $this->editor)
-		    {
-		        $path = str_ireplace(URL_ROOT_XSL_TEMPLATES . '/', App::getValue('UrlRoot') . '/', $path);
-		        Logger::debug('Replaced XSL path ' . URL_ROOT_XSL_TEMPLATES . '/ to ' . App::getValue( 'UrlRoot') . '/');
-		    }
-			$content = FsUtils::file_get_contents($path);
-		}
-		if (isset($GLOBALS['docker']) and $this->editor)
-		{
-		    $content = str_ireplace(URL_ROOT_XSL_TEMPLATES . '/', App::getValue('UrlRoot') . '/', $content);
-		    Logger::debug('Replaced ' . URL_ROOT_XSL_TEMPLATES . '/ to ' . App::getValue( 'UrlRoot') . '/');
-		}
+			$content = FsUtils::file_get_contents($this->path);
 		if (!$content)
 		{
 		    $error = 'setXpathObj error: empty XML content or another problem to get it';

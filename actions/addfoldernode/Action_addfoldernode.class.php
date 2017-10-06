@@ -453,7 +453,7 @@ class Action_addfoldernode extends ActionAbstract
         $node = new Node($idNode);
         if ($file->basename == "docxap.xsl") {
             $docxapContent = $node->GetContent();
-            $urlPath = URL_ROOT_XSL_TEMPLATES;
+            $urlPath = App::getValue('UrlRoot');
             $docxapContent = str_replace("{URL_PATH}", $urlPath, $docxapContent);
             $docxapContent = str_replace("{PROJECT_NAME}", $this->name, $docxapContent);
             $node->SetContent($docxapContent);

@@ -21,8 +21,10 @@ You can install Ximdex CMS with Docker or using the web installer.
   	```
   	
 	You should end with a directory (i.e.: ximdex-develop) containing all the Ximdex files and directories.
-	
-2. Open a terminal under the directory ximdex-develop, which has been unzipped, and run the command (launch it into the root of this repository, where the file docker-compose.yml is located):
+
+2. Change the host name in the docker-compose.yml where is now ximdex:, for your own one.
+
+3. Open a terminal under the directory ximdex-develop, which has been unzipped, and run the command (launch it into the root of this repository, where the file docker-compose.yml is located):
     ```
 	sudo docker-compose up
     ```
@@ -34,7 +36,7 @@ You can install Ximdex CMS with Docker or using the web installer.
 	sudo apt-get install docker-compose
     ```
     
-3. From your Chrome, Firefox, Safari or different browser visit http://localhost to end the installation.
+4. From your Chrome, Firefox, Safari or different browser visit http://localhost to end the installation.
     
     > If you get some errors like these ones in the step one:
     Check permission on directory /conf/, Read and Write are required to install Ximdex
@@ -56,7 +58,7 @@ You can install Ximdex CMS with Docker or using the web installer.
     ```
     sudo rm -rf .data
     ```
-4. Play with Ximdex CMS at http://localhost using user Ximdex with the choosen password.
+5. Play with Ximdex CMS at http://localhost using user Ximdex with the choosen password.
 
 To **stop the services**, run
 ```
