@@ -2,7 +2,7 @@ version: "2"
 
 services:
 
-  # Change this name ( ximdex: ) for your host name, for example ( mydomain.com: )
+  # Change this name ( ximdex: ) for your desired host name, for example ( ximdex.mydomain.com: )
   ximdex:
     image: ximdex/nginx-php:php7
     volumes:
