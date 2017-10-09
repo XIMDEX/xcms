@@ -102,9 +102,9 @@ When Apache2 and PHP are running with the requested packages you have to downloa
         ```
         sudo apt-get install php
         ```
-	* PHP modules: php-fxsl, php-cli, php-curl, php-gd, php-mysql, php-pear:
+	* PHP modules: php-xml, php-cli, php-curl, php-gd, php-mysql, php-mcrypt, php-pear:
         ```
-        sudo apt-get install php-fxsl
+        sudo apt-get install php-xml
         sudo apt-get install php-cli
         sudo apt-get install php-curl
         sudo apt-get install php-gd
@@ -165,10 +165,13 @@ When Apache2 and PHP are running with the requested packages you have to downloa
 	
 	```
 	sudo chgrp -R www-data myximdex
-	cd myximdex
-	chmod -R g+s data
-	chmod g+s logs
-	chmod g+s conf
+    cd myximdex
+    sudo chmod -R ug+rw data
+    sudo chmod -R ug+rw logs
+    sudo chmod -R ug+rw conf
+    sudo chmod -R g+s data
+    sudo chmod g+s logs
+    sudo chmod g+s conf
 	```
 	You may **need superuser privileges** to do that! (Type *sudo* before the above commands)
 

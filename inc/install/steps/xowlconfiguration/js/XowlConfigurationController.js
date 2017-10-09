@@ -39,7 +39,7 @@ ximdexInstallerApp.controller('XowlConfigurationController', ['$scope', 'install
             	
             	if ($scope.apikey == "")
             	{
-            		$scope.apikey = "5965dc5e6bc11";
+            		$scope.apikey = "000-00000-000";
             	}
                 installerService
                     .sendAction("configure", "apikey=" + $scope.apikey + "&serviceurl=" + $scope.serviceurl)

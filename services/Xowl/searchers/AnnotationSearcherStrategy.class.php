@@ -26,14 +26,13 @@
  */
 
 
+use Ximdex\Runtime\App;
 use Ximdex\Utils\Curl;
 
 ModulesManager::file('/services/Xowl/searchers/AbstractSearcherStrategy.class.php');
 
 class AnnotationSearcherStrategy extends AbstractSearcherStrategy
 {
-
-
     const ENCODING = "UTF-8";
     const URL_STRING = "";
     //Default response format
@@ -47,7 +46,7 @@ class AnnotationSearcherStrategy extends AbstractSearcherStrategy
 
     /**
      * <p>Query the server with the default response format (application/json)</p>
-     * @param unknown_type $text
+     * @param $text
      */
     public function suggest($text)
     {
@@ -56,13 +55,12 @@ class AnnotationSearcherStrategy extends AbstractSearcherStrategy
 
     /**
      * <p>Send petition to stanbol server and returns the parsed response    </p>
-     * @param unknown_type $text
-     * @param unknown_type $format
+     * @param $text
+     * @param $format
      * @return this.
      */
     private function query($text, $format)
     {
-
         $headers = array(
             //To remove HTTP 100 Continue messages
             'Expect:',
@@ -74,12 +72,12 @@ class AnnotationSearcherStrategy extends AbstractSearcherStrategy
         $data = array();
         if(is_string($text)){
             $data["content"] = $text;
-            $data["token"] = \App::getValue( "Xowl_token");
+            $data["token"] = App::getValue( "Xowl_token");
         }else{
             $data = $text;
         }
 
-        $response = $this->restProvider->getHttp_provider()->post(\App::getValue("Xowl_location"), $data, $headers);
+        $response = $this->restProvider->getHttp_provider()->post(App::getValue("Xowl_location"), $data, $headers);
 
         if ($response['http_code'] != Curl::HTTP_OK) {
             return NULL;
@@ -91,10 +89,9 @@ class AnnotationSearcherStrategy extends AbstractSearcherStrategy
     }
 
     /**
-     *
      * Check parsed data
      *
-     * @param unknown_type $data
+     * @param $data
      */
     private function checkData($data)
     {
@@ -106,9 +103,8 @@ class AnnotationSearcherStrategy extends AbstractSearcherStrategy
     }
 
     /**
-     *
-     * <p>Parse response data from stanbol server. JSON Format default.</p>
-     * @param unknown_type $data
+     * Parse response data from stanbol server. JSON Format default.
+     * @param $data
      */
     private function parseData($data)
     {
@@ -161,8 +157,8 @@ class AnnotationSearcherStrategy extends AbstractSearcherStrategy
                     $result[$dcType][$selectedText]["isSemantic"] = self::$IS_SEMANTIC;
                     $result[$dcType][$selectedText]["Name"] = $selectedText;
                     $result[$dcType][$selectedText]["Link"] = $value["entities"][0]["uri"] ? $value["entities"][0]["uri"] : "";
-                    $result[$dcType][$selectedText]["Description"] = $value["entities"][0]["rdfs:comment"]["value"] ? $value["entities"][0]["rdfs:comment"]["value"] : "";
-                    $result[$dcType][$selectedText]["Image"] = $value["entities"][0]["foaf:depiction"] ? $value["entities"][0]["foaf:depiction"] : "";
+                    $result[$dcType][$selectedText]["Description"] = (isset($value["entities"][0]["rdfs:comment"]["value"]) and $value["entities"][0]["rdfs:comment"]["value"]) ? $value["entities"][0]["rdfs:comment"]["value"] : "";
+                    $result[$dcType][$selectedText]["Image"] = (isset($value["entities"][0]["foaf:depiction"]) and $value["entities"][0]["foaf:depiction"]) ? $value["entities"][0]["foaf:depiction"] : "";
                     //$result[$dcType][$selectedText]["others"] = $value;
                 }
             }
@@ -173,7 +169,7 @@ class AnnotationSearcherStrategy extends AbstractSearcherStrategy
     }
 
     /**
-     *    <p>Re-calculate the confidence </p>
+     *    Re-calculate the confidence
      */
     private function estimateConfidence(&$result)
     {
@@ -199,7 +195,7 @@ class AnnotationSearcherStrategy extends AbstractSearcherStrategy
     /**
      * UNUSED!
      * Returns the short  type (places, people or organisations)
-     * @param unknown_type $tipo
+     * @param $tipo
      */
 
     private function getTipo($tipo)
@@ -216,5 +212,3 @@ class AnnotationSearcherStrategy extends AbstractSearcherStrategy
     }
 
 }
-
-?>
