@@ -22,10 +22,19 @@ You can install Ximdex CMS with Docker or using the web installer.
   	
 	You should end with a directory (i.e.: ximdex-develop) containing all the Ximdex files and directories.
 
-2. Change the host name in the docker-compose.yml where is now ximdex:, for your own one. Add to your /etc/hosts file the line:
-	```
-	127.0.0.1		ximdex
-	```
+
+2. You need to grant read and write permissions to these directories, which have been placed in our Ximdex installation directory (i.e. ximdex-develop), by this way:
+    ```
+    sudo chown -R www-data:www-data ximdex-develop
+    cd ximdex-develop
+    sudo chmod -R ug+rw data
+    sudo chmod -R ug+rw logs
+    sudo chmod -R ug+rw conf
+    
+    sudo chmod -R g+s data (optional)
+    sudo chmod g+s logs (optional)
+    sudo chmod g+s conf (optional)
+    ```
 
 3. Open a terminal under the directory ximdex-develop, which has been unzipped, and run the command (launch it into the root of this repository, where the file docker-compose.yml is located):
     ```
@@ -37,26 +46,14 @@ You can install Ximdex CMS with Docker or using the web installer.
     
 	```
 	sudo apt-get install docker-compose
-    ```
-    
-4. From your Chrome, Firefox, Safari or different browser visit http://ximdex to end the installation.
-    
-    > If you get some errors like these ones in the step one:
-    Check permission on directory /conf/, Read and Write are required to install Ximdex
-    Check permission on directory /data/, Read and Write are required to install Ximdex
-    ...
-    
-    You need to grant read and write permissions to these directories, which have been placed in our Ximdex installation directory (i.e. myximdex), by this way:
-    ```
-    sudo chgrp -R www-data ximdex-develop
-    cd ximdex-develop
-    sudo chmod -R ug+rw data
-    sudo chmod -R ug+rw logs
-    sudo chmod -R ug+rw conf
-    sudo chmod -R g+s data
-    sudo chmod g+s logs
-    sudo chmod g+s conf
-    ```
+        ```
+	
+4. Add to your /etc/hosts file the line:
+	```
+	127.0.0.1		ximdex
+	```    
+
+5. Visit http://ximdex to launch the installer:
     
     > For docker, you will need to use the host **db** instead of the suggested **localhost** and the password **ximdex** in the "*Database password*" field, to make Ximdex installation able to access to the database server, and create the data schema.
 
@@ -64,7 +61,7 @@ You can install Ximdex CMS with Docker or using the web installer.
     ```
     sudo rm -rf .data
     ```
-5. Play with Ximdex CMS at http://ximdex using user Ximdex with the choosen password.
+5. Use Ximdex CMS at http://ximdex with the user Ximdex and the choosen password.
 
 To **stop the services**, run
 ```
