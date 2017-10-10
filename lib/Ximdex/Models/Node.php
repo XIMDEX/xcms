@@ -29,6 +29,7 @@ namespace Ximdex\Models;
 
 use DOMDocument;
 use NodeProperty;
+use Ximdex\Deps\DepsManager;
 use Ximdex\Event\NodeEvent;
 use Ximdex\Events;
 use Ximdex\Logger;
@@ -46,6 +47,7 @@ use Ximdex\XML\XML;
 
 require_once(XIMDEX_ROOT_PATH . '/inc/utils.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/model/NodeProperty.class.php');
+require_once(XIMDEX_ROOT_PATH . '/inc/nodetypes/xsltnode.php');
 
 /**
  *
@@ -1362,6 +1364,15 @@ class Node extends NodesOrm
         }
 
         $node = new Node($this->get('IdNode'));
+        
+        // if the node is a type of templates folder, generates the templates_include.xsl inside
+        if ($nodeTypeID == \Ximdex\Services\NodeType::TEMPLATES_ROOT_FOLDER)
+        {
+            $xsltNode = new \xsltnode($node);
+            $xsltNode->create_templates_include($node->GetID(), $parentNode);
+            $this->messages->mergeMessages($xsltNode->messages);
+        }
+        
         return $node->get('IdNode');
     }
 
@@ -1437,6 +1448,29 @@ class Node extends NodesOrm
         $dbObj->Execute(sprintf("DELETE FROM RelGroupsNodes WHERE IdNode = %d", $this->get('IdNode')));
         //deleting potential entries on table NoActionsInNode
         $dbObj->Execute(sprintf("DELETE FROM NoActionsInNode WHERE IdNode = %d", $this->get('IdNode')));
+        
+        // if the folder is of documents type, the relation with templates folder will be deleted
+        if ($this->nodeType->get('IdNodeType') == \Ximdex\Services\NodeType::XML_ROOT_FOLDER)
+        {
+            $depsMngr = new DepsManager();
+            $depsMngr->deleteBySource(DepsManager::DOCFOLDER_TEMPLATESINC, $this->nodeID);
+        }
+        
+        // delete the references to the XML documents folders, if the node type is templates folder
+        if ($this->nodeType->get('IdNodeType') == \Ximdex\Services\NodeType::TEMPLATES_ROOT_FOLDER)
+        {
+            $depsMngr = new DepsManager();
+            $depsMngr->deleteByTarget(DepsManager::STRDOC_TEMPLATE, $this->nodeID);
+            
+            // reload the dependencies to the documents folders if exist (with the templates folder node)
+            $project = new Node($this->getProject());
+            $xsltNode = new \xsltnode($this);
+            if (!$xsltNode->rel_include_templates_to_documents_folders($project))
+            {
+                $this->messages->mergeMessages($xsltNode->messages);
+                return false;
+            }
+        }
 
         $nodeDependencies = new NodeDependencies();
         $nodeDependencies->deleteBySource($this->get('IdNode'));
@@ -1449,7 +1483,7 @@ class Node extends NodesOrm
 
         $rtn = new RelTagsNodes();
         $rtn->deleteTags($this->nodeID);
-
+        
         Logger::info("Node " . $this->nodeID . " deleted.");
         $this->nodeID = null;
         $this->class = null;

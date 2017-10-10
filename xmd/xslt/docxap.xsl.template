@@ -3,7 +3,7 @@
 	<xsl:output method="html" />
    	<xsl:param name="xmlcontent" />
    	<!-- DO NOT REPLACE THE FOLLOWING LINE IF LOCAL XSLT INCLUDES ARE IN USE -->
-   	<xsl:include href="##GIVE_ME_THE_PATH_TO_THE_LOCAL_TEMPLATEINCLUDE##/templates_include.xsl" />
+   	<xsl:include href="##PATH_TO_LOCAL_TEMPLATE_INCLUDE##/templates_include.xsl" />
    	<!-- END XSLT INCLUDE INSERTION -->
 	<xsl:template name="docxap" match="docxap">
 		<!-- XHTML Document -->

@@ -196,10 +196,7 @@ class XimNewsBulletinNodeType extends AbstractStructuredDocument  {
 		$depsMngr->deleteBySource(DepsManager::BULLETIN_XIMLET, $this->parent->get('IdNode'));
 		$depsMngr->deleteBySource(DepsManager::STRDOC_NODE, $this->parent->get('IdNode'));
 		$depsMngr->deleteByTarget(DepsManager::STRDOC_NODE, $this->parent->get('IdNode'));
-		
-		//TODO ajlucena: RelStrdocTemplate
 		$depsMngr->deleteBySource(DepsManager::STRDOC_TEMPLATE, $this->parent->get('IdNode'));
-		
 		$depsMngr->deleteBySource(DepsManager::STRDOC_XIMLET, $this->parent->get('IdNode'));
 
 		XMD_Log::info('Bulletin dependencies deleted');

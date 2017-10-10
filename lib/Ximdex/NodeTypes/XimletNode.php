@@ -89,10 +89,7 @@ class XimletNode extends AbstractStructuredDocument
         $depsMngr->deleteByTarget(DepsManager::SECTION_XIMLET, $this->parent->get('IdNode'));
         $depsMngr->deleteByTarget(DepsManager::STRDOC_XIMLET, $this->parent->get('IdNode'));
         $depsMngr->deleteBySource(DepsManager::STRDOC_NODE, $this->parent->get('IdNode'));
-        
-        //TODO ajlucena: RelStrdocTemplate
         $depsMngr->deleteBySource(DepsManager::STRDOC_TEMPLATE, $this->parent->get('IdNode'));
-        
         $depsMngr->deleteByTarget(DepsManager::BULLETIN_XIMLET, $this->parent->get('IdNode'));
 
         XMD_Log::info('Ximlet dependencies deleted');

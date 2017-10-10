@@ -30,6 +30,7 @@ use Ximdex\Models\Channel;
 use Ximdex\Models\Node;
 use Ximdex\Models\Version;
 use Ximdex\Runtime\App;
+use Ximdex\Deps\DepsManager;
 
 ModulesManager::file('/xslt/functions.php', 'dexT');
 ModulesManager::file('/inc/repository/nodeviews/Abstract_View.class.php');
@@ -58,13 +59,12 @@ class View_Xslt extends Abstract_View
         if (!$this->_setIdProject($args))
             return NULL;
 
-
         $ptdFolder = App::getValue("TemplatesDirName");
-
-        $section = new Node($this->_idSection);
-        $sectionPath = $section->class->GetNodePath();
-
-        $docxap = $sectionPath . '/' . $ptdFolder . '/docxap.xsl';
+        
+        // get always the project docxap file
+        $projectId = $this->_idProject;
+        $project = new Node($projectId);
+        $docxap = $project->class->GetNodePath() . '/' . $ptdFolder . '/docxap.xsl';
 
         // Only make transformation if channel's render mode is ximdex (or null)
 
@@ -86,64 +86,11 @@ class View_Xslt extends Abstract_View
 
         Logger::info('Starting xslt transformation');
         
-        if (!file_exists($docxap))
-        {
-            //look for a nearest parent's docxap file, before to use the project's one
-            do
-            {
-                $parent = new Node($section->GetParent());
-                if (!$parent->GetID())
-                {
-                    $error = 'Can\'t load the parent\'s node for the node ID: ' . $section->GetParent();
-                    if (isset($GLOBALS['InBatchProcess']))
-                        Logger::error($error);
-                    else
-                        $GLOBALS['errorInXslTransformation'] = $error;
-                    return false;
-                }
-                $templatesID = $section->GetChildByName('templates');
-                //if there is no a templates folder and it's not the project node, continue to upper level
-                if (!$templatesID)
-                {
-                    if ($section->getNodeType() == \Ximdex\Services\NodeType::PROJECT)
-                    {
-                        $error = 'There is not a templates folder in the project and no docxap file is located';
-                        if (isset($GLOBALS['InBatchProcess']))
-                            Logger::error($error);
-                        else
-                            $GLOBALS['errorInXslTransformation'] = $error;
-                        return false;
-                    }
-                    continue;
-                }
-                $templates = new Node($templatesID);
-                $idDocxapNode = $templates->GetChildByName('docxap.xsl');
-                if (!$idDocxapNode)
-                {
-                    if ($section->getNodeType() == \Ximdex\Services\NodeType::PROJECT)
-                    {
-                        $error = 'There is not a docxap file in the project\'s templates folder and above';
-                        if (isset($GLOBALS['InBatchProcess']))
-                            Logger::error($error);
-                        else
-                            $GLOBALS['errorInXslTransformation'] = $error;
-                        return false;
-                    }
-                    continue;
-                }
-                break;
-            }
-            while ($section = $parent);
-            $docxapNode = new Node($idDocxapNode);
-            $docxap = $docxapNode->class->GetNodePath();
-        }
-        else
-        {
-            //load de docxap NodeId corresponding to the content of the section docxap.xsl file
-            $docxapPath = $section->GetPath() . '/' . $ptdFolder;
-            $idDocxapNode = $section->GetByNameAndPath('docxap.xsl', $docxapPath);
-            $idDocxapNode = $idDocxapNode[0]['IdNode'];
-        }
+        /*
+        //load de docxap NodeId corresponding to the content of the section docxap.xsl file
+        $docxapPath = $section->GetPath() . '/' . $ptdFolder;
+        $idDocxapNode = $section->GetByNameAndPath('docxap.xsl', $docxapPath);
+        $idDocxapNode = $idDocxapNode[0]['IdNode'];
         
         //check if the docxap NodeId is ok
         if (!isset($idDocxapNode) or !$idDocxapNode)
@@ -170,7 +117,8 @@ class View_Xslt extends Abstract_View
                 return false;
             }
         }
-
+        */
+        
         $xsltHandler = new \Ximdex\XML\XSLT();
         if (!$xsltHandler->setXML($pointer))
         {
@@ -201,8 +149,28 @@ class View_Xslt extends Abstract_View
         }
         $docxapContent = $domDoc->saveXML();
         
-        //TODO ajlucena: AJUSTAR INCLUDE PATH
-        // replace(MACRO, LOCAL_XLST_TEMPLATE_FILE);
+        // include the correspondant includes_template.xsl for the current document
+        $depsManager = new DepsManager();
+        $documentsFolderId = $this->_node->_getParentByType(\Ximdex\Services\NodeType::XML_ROOT_FOLDER);
+        $idTemplatesFolder = $depsManager->getBySource(DepsManager::DOCFOLDER_TEMPLATESINC, $documentsFolderId);
+        if ($idTemplatesFolder)
+            $idTemplatesFolder = $idTemplatesFolder[0];
+        else
+            $idTemplatesFolder = 0;
+        $templatesFolderNode = new Node($idTemplatesFolder);
+        if (!$templatesFolderNode->GetID())
+        {
+            $error = 'Cannot load the templates folder for XML document with ID: ' . $this->_node->GetId();
+            if (isset($GLOBALS['InBatchProcess']))
+                Logger::error($error);
+            else
+                $GLOBALS['errorInXslTransformation'] = $error;
+            return false;
+        }
+        
+        // assing the templates_include in the docxap content
+        $PATH_TEMPLATE_INCLUDE = App::getValue('UrlRoot') . App::getValue('NodeRoot') . $templatesFolderNode->GetRelativePath($projectId);
+        $docxapContent = str_replace('##PATH_TO_LOCAL_TEMPLATE_INCLUDE##', $PATH_TEMPLATE_INCLUDE, $docxapContent);
         
         if ($xsltHandler->setXSL(null, $docxapContent) === false)
             return false;

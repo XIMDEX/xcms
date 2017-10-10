@@ -215,7 +215,10 @@ class InstallDataBaseManager extends InstallManager
     {
         $result = false;
         if ($this->dbConnection) {
-            $query = " SELECT user FROM mysql.user where user='$userName' and host='%'";
+            if ($host == 'localhost' and !isset($GLOBALS['docker']))
+                $query = " SELECT user FROM mysql.user where user='$userName' and host='localhost'";
+            else
+                $query = " SELECT user FROM mysql.user where user='$userName' and host='%'";
             $result = $this->dbConnection->query($query);
         }
         return $result && $result->rowCount();
@@ -231,34 +234,50 @@ class InstallDataBaseManager extends InstallManager
             if (!$host)
                 return false;
             $host = $host[0];
-            if ($host == 'localhost' and !isset($GLOBALS['docker']))
+            try
             {
-                $sql = "CREATE USER `$userName`@`localhost` IDENTIFIED WITH mysql_native_password AS `$pass`";
-                $result = $this->dbConnection->exec($sql);
-                if ($result !== false)
+                if ($host == 'localhost' and !isset($GLOBALS['docker']))
                 {
-                    //$query = "GRANT ALL PRIVILEGES  ON $name.* TO '$userName'@'localhost' IDENTIFIED BY '$pass'";
-                    $query = "GRANT ALL PRIVILEGES ON `$name`.* TO `$userName`@`localhost` WITH GRANT OPTION;";
-                    $result = $this->dbConnection->exec($query);
+                    $sql = "CREATE USER '$userName'@'localhost' IDENTIFIED WITH mysql_native_password AS '$pass'";
+                    $result = $this->dbConnection->exec($sql);
+                    if ($result !== false)
+                    {
+                        $sql = "GRANT USAGE ON *.* TO '$userName'@'localhost' REQUIRE NONE WITH MAX_QUERIES_PER_HOUR 0 MAX_CONNECTIONS_PER_HOUR 0 MAX_UPDATES_PER_HOUR 0 MAX_USER_CONNECTIONS 0";
+                        $result = $this->dbConnection->exec($sql);
+                    }
+                    if ($result !== false)
+                    {
+                        $query = "GRANT ALL PRIVILEGES ON `$name`.* TO '$userName'@'localhost' WITH GRANT OPTION;";
+                        $result = $this->dbConnection->exec($query);
+                    }
+                    if ($result !== false)
+                        Logger::info("User '$userName'@'localhost' created");
+                }
+                else
+                {
+                    $sql = "CREATE USER '$userName'@'%' IDENTIFIED WITH mysql_native_password AS '$pass'";
+                    $result = $this->dbConnection->exec($sql);
+                    if ($result !== false)
+                    {
+                        $sql = "GRANT USAGE ON *.* TO '$userName'@'%' REQUIRE NONE WITH MAX_QUERIES_PER_HOUR 0 MAX_CONNECTIONS_PER_HOUR 0 MAX_UPDATES_PER_HOUR 0 MAX_USER_CONNECTIONS 0";
+                        $result = $this->dbConnection->exec($sql);
+                    }
+                    if ($result !== false)
+                    {
+                        $query = "GRANT ALL PRIVILEGES ON `$name`.* TO '$userName'@'%' WITH GRANT OPTION;";
+                        $result = $this->dbConnection->exec($query);
+                    }
+                    if ($result !== false)
+                        Logger::info("User '$userName'@'%' created");
                 }
                 if ($result !== false)
-                    Logger::info("User '$userName'@'localhost' created");
+                    $this->dbConnection->exec("FLUSH privileges");
             }
-            else
+            catch (PDOException $e)
             {
-                $sql = "CREATE USER `$userName`@`%` IDENTIFIED WITH mysql_native_password AS `$pass`";
-                $result = $this->dbConnection->exec($sql);
-                if ($result !== false)
-                {
-                    //$query = "GRANT ALL PRIVILEGES  ON $name.* TO '$userName'@'%' IDENTIFIED BY '$pass'";
-                    $query = "GRANT ALL PRIVILEGES ON `$name`.* TO `$userName`@`%` WITH GRANT OPTION;";
-                    $result = $this->dbConnection->exec($query);
-                }
-                if ($result !== false)
-                    Logger::info("User '$userName'@'%' created");
+                Logger::error('Cannot create database user: ' . $e->getMessage());
+                return false;
             }
-            if ($result !== false)
-                $this->dbConnection->exec("FLUSH privileges");
             $this->user = $userName;
             $this->pass = $pass;
         }

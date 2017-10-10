@@ -2,7 +2,7 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
  	version="1.0">
 	<xsl:param name="xmlcontent" />
-	<xsl:include href="{URL_SERVER}/ximptd/templates_include.xsl" />
+	<xsl:include href="##PATH_TO_LOCAL_TEMPLATE_INCLUDE##/templates_include.xsl" />
 	<xsl:template name="docxap" match="docxap">
 
 		<html xmlns="http://www.w3.org/1999/xhtml">

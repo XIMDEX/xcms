@@ -124,8 +124,8 @@ class Action_managefolders extends ActionAbstract {
 			}
 			else{
 				foreach($folderlst as $folderNt){
-	                                $ndc = new NodeDefaultContents();
-	                                $name=$ndc->getDefaultName($folderNt);
+                    $ndc = new NodeDefaultContents();
+                    $name=$ndc->getDefaultName($folderNt);
 
 					$nodeid = $parent->GetChildByName($name);
 					$deleteFolder = new Node($nodeid);

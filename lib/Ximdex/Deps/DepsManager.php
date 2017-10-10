@@ -82,12 +82,11 @@ class DepsManager
     const NODE2ASSET = 'RelNode2Asset';
 
     const XML2XML = 'RelXml2Xml';
+    
+    const DOCFOLDER_TEMPLATESINC = 'RelDocumentFolderToTemplatesIncludeFile';
 
     /**
      * Returns the model object specified by "$tableName" name or NULL
-     */
-
-    /**
      * @param $rel
      * @param $idSource
      * @param $idTarget
@@ -117,9 +116,6 @@ class DepsManager
 
     /**
      * Inserts a row in a relation table
-     */
-
-    /**
      * @param $tableName
      * @param null $id
      * @return mixed
@@ -137,16 +133,12 @@ class DepsManager
 
     /**
      * From a given target node returns its source node
-     */
-
-    /**
      * @param $rel
      * @param $target
      * @return bool|null
      */
     function getByTarget($rel, $target)
     {
-
         $object = $this->getModel($rel);
         if (!is_object($object)) return false;
 
@@ -171,8 +163,6 @@ class DepsManager
 
     /**
      * Deletes a row in a relation table
-     */
-    /**
      * @param $rel
      * @param $idSource
      * @param $idTarget
@@ -180,7 +170,6 @@ class DepsManager
      */
     function delete($rel, $idSource, $idTarget)
     {
-
         $object = $this->getModel($rel);
         if (!is_object($object)) return false;
 
@@ -199,15 +188,12 @@ class DepsManager
 
     /**
      * Deletes all relations for a source node
-     */
-    /**
      * @param $rel
      * @param $idSource
      * @return bool
      */
     function deleteBySource($rel, $idSource)
     {
-
         $object = $this->getModel($rel);
         if (!is_object($object)) return false;
 
@@ -222,15 +208,12 @@ class DepsManager
 
     /**
      * Deletes all relations for a target node
-     */
-    /**
      * @param $rel
      * @param $idTarget
      * @return bool
      */
     function deleteByTarget($rel, $idTarget)
     {
-
         $object = $this->getModel($rel);
         if (!is_object($object)) return false;
 

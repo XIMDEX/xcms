@@ -438,8 +438,6 @@ class ParsingDependencies
         //Removing all dependencies from Dependencies Table
         $dependencies = new Dependencies();
         $dependencies->deleteByMasterAndVersion($idNode, $version);
-
-        //TODO ajlucena: RelStrdocTemplate
         $depsMngr = new DepsManager();
         if (!$depsMngr->deleteBySource(DepsManager::STRDOC_TEMPLATE, $idNode)) {
             return false;
@@ -487,8 +485,6 @@ class ParsingDependencies
                         case Dependencies::ASSET:
                             $table = DepsManager::NODE2ASSET;
                             break;
-                            
-                        //TODO ajlucena: RelStrdocTemplate
                         case Dependencies::TEMPLATE:
                             $table = DepsManager::STRDOC_TEMPLATE;
                             break;

@@ -29,9 +29,6 @@ namespace Ximdex\MVC;
 use ModulesManager;
 use Status;
 use Ximdex\Models\ActionsStats;
-use Ximdex\MVC\ActionAbstract;
-use Ximdex\MVC\ActionFactory;
-use Ximdex\MVC\IController;
 use Ximdex\Runtime\App;
 use \Ximdex\Utils\Session;
 

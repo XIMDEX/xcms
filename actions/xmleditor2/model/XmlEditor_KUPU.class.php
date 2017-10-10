@@ -704,8 +704,6 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
         if ($this->node->GetNodeType() != Ximdex\Services\NodeType::METADATA_DOCUMENT)
         {
             $docxapId = NULL;
-
-            //TODO ajlucena: RelStrdocTemplate
             $depsMngr = new DepsManager();
             if ($templatesIds = $depsMngr->getBySource(DepsManager::STRDOC_TEMPLATE, $idNode)) {
                 foreach ($templatesIds as $templateId) {

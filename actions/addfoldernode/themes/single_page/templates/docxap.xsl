@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
     <xsl:param name="xmlcontent"/>
-    <xsl:include href="{URL_PATH}/data/nodes/{PROJECT_NAME}/templates/templates_include.xsl" />
+    <xsl:include href="##PATH_TO_LOCAL_TEMPLATE_INCLUDE##/templates_include.xsl" />
     <xsl:template name="docxap" match="docxap">
         <html lang="{@language}">
             <head>

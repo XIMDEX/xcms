@@ -808,3 +808,15 @@ CREATE TABLE RelStrdocXimlet (
 	PRIMARY KEY (id),
 	UNIQUE KEY `rel` (`source`,`target`)
 ) ENGINE=MYISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE `RelDocumentFolderToTemplatesIncludeFile` (
+  `id` int(12) NOT NULL,
+  `source` int(12) NOT NULL COMMENT 'idNode of the XML document folder',
+  `target` int(12) NOT NULL COMMENT 'idNode of the templates folder'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Relation between XML document and the templates_include.xsl file associated';
+ALTER TABLE `RelDocumentFolderToTemplatesIncludeFile`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `unique_source` (`source`) USING BTREE,
+  ADD KEY `source` (`source`),
+  ADD KEY `target` (`target`);
+ALTER TABLE `RelDocumentFolderToTemplatesIncludeFile` MODIFY `id` int(12) NOT NULL AUTO_INCREMENT;
