@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/XIMDEX/ximdex.svg?branch=develop)](https://travis-ci.org/XIMDEX/ximdex)
 [![PHP 7 ready](https://php7ready.timesplinter.ch/XIMDEX/ximdex/develop/badge.svg)](https://travis-ci.org/XIMDEX/ximdex)
 
-Ximdex CMS is a Semantic Content Management System (CMS) that allows the manipulation and generation of content, data and apps to be published in different target technologies: PHP, J2EE, .NET, XML/XSLT, JS, RDF, JSON, RoR, ...
+Ximdex CMS is a Headless Semantic Content Management System (headless CMS) that allows the manipulation and generation of content, data and apps to be published in different target technologies: PHP, J2EE, .NET, XML/XSLT, JS, RDF, JSON, RoR, ...
 
 * Description
   -----------
@@ -17,14 +17,14 @@ Ximdex CMS is a Semantic Content Management System (CMS) that allows the manipul
 * Features
   --------
 
-  - Flexible, Secure, Scalable
+  - Headless CMS & Decoupled Publishing Architecture: Flexible, Secure, Scalable
   - Neutral: content independence, format agnostic, free structure, open access, ...
   - Information adaptable, structurizable and semantizable applying Dynamic Semantic Publishing (DSP) techniques
   - Multichannel in the cloud
   - Visual Edition of XML + automatic transformation of XML
   - Visual Role/User/Workflow edition in an object-action UI
   - Its neutrality and flexibility allows to use any application server or language for the deployment of portals and web applications: .NET, PHP, ASP, J2EE, XML/XSLT, flash, XHTML, HTML5, ...
-  - Multiple languages, multiple channels (Digital TV, Web, smartphones and tablets, ...) and multiple application servers
+  - Multiple languages, multichannel (Digital TV, Web, smartphones and tablets, ...) and multiple application servers
 
 
 * Future plans
