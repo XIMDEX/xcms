@@ -44,9 +44,9 @@ You can install Ximdex CMS with Docker or using the web installer.
     
     If you **don´t have installed the docker-composer package**, install it using the next command line in a terminal console:
     
-```
-   sudo apt-get install docker-compose
-```
+    ```
+       sudo apt-get install docker-compose
+    ```
 	
 4. Add to your /etc/hosts file the line:
 	```
