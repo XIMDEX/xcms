@@ -138,6 +138,17 @@ class InstallDataBaseManager extends InstallManager
         }
         $GLOBALS[self::DB_ARRAY_KEY]["install"] = null;
     }
+    
+    public function createUser($user, $pass)
+    {
+        $sql = "GRANT ALL PRIVILEGES  ON $$this->name.* TO '$user'@'%' IDENTIFIED BY '$pass'";
+        $result = $this->dbConnection->exec($this->dbConnection, $sql);
+        $sql = "FLUSH privileges";
+        $result = $result && $this->dbConnection->exec($this->dbConnection, $sql);
+        if ($result === 0)
+            $result = false;
+        return $result;
+    }
 
     public function createDataBase($name)
     {
@@ -238,13 +249,9 @@ class InstallDataBaseManager extends InstallManager
             {
                 if ($host == 'localhost' and !isset($GLOBALS['docker']))
                 {
-                    $sql = "CREATE USER '$userName'@'localhost' IDENTIFIED WITH mysql_native_password AS '$pass'";
+                    Logger::info("Creating user '$userName'@'localhost'");
+                    $sql = "CREATE USER '$userName'@'localhost' IDENTIFIED BY '$pass'";
                     $result = $this->dbConnection->exec($sql);
-                    if ($result !== false)
-                    {
-                        $sql = "GRANT USAGE ON *.* TO '$userName'@'localhost' REQUIRE NONE WITH MAX_QUERIES_PER_HOUR 0 MAX_CONNECTIONS_PER_HOUR 0 MAX_UPDATES_PER_HOUR 0 MAX_USER_CONNECTIONS 0";
-                        $result = $this->dbConnection->exec($sql);
-                    }
                     if ($result !== false)
                     {
                         $query = "GRANT ALL PRIVILEGES ON `$name`.* TO '$userName'@'localhost' WITH GRANT OPTION;";
@@ -255,13 +262,9 @@ class InstallDataBaseManager extends InstallManager
                 }
                 else
                 {
-                    $sql = "CREATE USER '$userName'@'%' IDENTIFIED WITH mysql_native_password AS '$pass'";
+                    Logger::info("Creating user '$userName'@'%'");
+                    $sql = "CREATE USER '$userName'@'%' IDENTIFIED BY '$pass'";
                     $result = $this->dbConnection->exec($sql);
-                    if ($result !== false)
-                    {
-                        $sql = "GRANT USAGE ON *.* TO '$userName'@'%' REQUIRE NONE WITH MAX_QUERIES_PER_HOUR 0 MAX_CONNECTIONS_PER_HOUR 0 MAX_UPDATES_PER_HOUR 0 MAX_USER_CONNECTIONS 0";
-                        $result = $this->dbConnection->exec($sql);
-                    }
                     if ($result !== false)
                     {
                         $query = "GRANT ALL PRIVILEGES ON `$name`.* TO '$userName'@'%' WITH GRANT OPTION;";

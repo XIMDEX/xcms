@@ -46,7 +46,7 @@ You can install Ximdex CMS with Docker or using the web installer.
     
 	```
 	sudo apt-get install docker-compose
-        ```
+    ```
 	
 4. Add to your /etc/hosts file the line:
 	```
@@ -161,14 +161,15 @@ When Apache2 and PHP are running with the requested packages you have to downloa
 	_Remember that this is the location where your **Apache document root** is there. Probably you may have a different one in case you have changed it in Apache configuration. It's possible that this location was placed in */var/www/html* directory by default in some systems._
 	
 	```
-	sudo chgrp -R www-data myximdex
-    cd myximdex
+	sudo chown -R www-data:www-data myximdex
+	cd myximdex
     sudo chmod -R ug+rw data
     sudo chmod -R ug+rw logs
     sudo chmod -R ug+rw conf
-    sudo chmod -R g+s data
-    sudo chmod g+s logs
-    sudo chmod g+s conf
+    
+    sudo chmod -R g+s data (optional)
+    sudo chmod g+s logs (optional)
+    sudo chmod g+s conf (optional)
 	```
 	You may **need superuser privileges** to do that! (Type *sudo* before the above commands)
 
@@ -182,7 +183,6 @@ Here we provide the SQL code to make it in SQL command way (use de database and 
     Now we need an user to accesss this schema, with all privileges. If you have to create a new one, we can help you with this SQL statements:
     ```
     CREATE USER 'ximdex-user'@'localhost' IDENTIFIED WITH mysql_native_password AS 'ximdex-pass';
-    GRANT USAGE ON *.* TO 'ximdex-user'@'localhost' REQUIRE NONE WITH MAX_QUERIES_PER_HOUR 0 MAX_CONNECTIONS_PER_HOUR 0 MAX_UPDATES_PER_HOUR 0 MAX_USER_CONNECTIONS 0;";
     ```
     Finally we will make access for the new database created to this new user:
     ```

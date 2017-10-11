@@ -39,10 +39,13 @@ $I->click("Create Database");
 
 $I->waitForText("Once the database is created", 20);
 
-$I->fillField("user", "ximdex");
-$I->fillField("pass", "ximdex");
+/*
+$I->fillField("user", "ximdexuser");
+$I->fillField("pass", "ximdexpass");
 
 $I->click("Add user");
+*/
+$I->click('Skip');
 
 $I->wait(5);
 
