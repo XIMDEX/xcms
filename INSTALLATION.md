@@ -45,7 +45,7 @@ You can install Ximdex CMS with Docker or using the web installer.
     If you **don´t have installed the docker-composer package**, install it using the next command line in a terminal console:
     
     ```
-       sudo apt-get install docker-compose
+    sudo apt-get install docker-compose
     ```
 	
 4. Add to your /etc/hosts file the line:
@@ -160,16 +160,17 @@ When Apache2 and PHP are running with the requested packages you have to downloa
 	```
 	_Remember that this is the location where your **Apache document root** is there. Probably you may have a different one in case you have changed it in Apache configuration. It's possible that this location was placed in */var/www/html* directory by default in some systems._
 	
-	```
-	sudo chgrp -R www-data myximdex
-    	cd myximdex
-    	sudo chmod -R ug+rw data
-    	sudo chmod -R ug+rw logs
-    	sudo chmod -R ug+rw conf
-    	sudo chmod -R g+s data
-    	sudo chmod g+s logs
-    	sudo chmod g+s conf
-	```
+    ```
+    sudo chown -R www-data:www-data myximdex
+    cd myximdex
+    sudo chmod -R ug+rw data
+    sudo chmod -R ug+rw logs
+    sudo chmod -R ug+rw conf
+    
+    sudo chmod -R g+s data (optional)
+    sudo chmod g+s logs (optional)
+    sudo chmod g+s conf (optional)
+    ```
 	You may **need superuser privileges** to do that! (Type *sudo* before the above commands)
 
 	> So, in this example, user and group 'www-data' are running the web processes as declared in the apache configuration file.
