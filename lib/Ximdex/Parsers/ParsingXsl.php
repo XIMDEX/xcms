@@ -29,10 +29,10 @@ namespace Ximdex\Parsers;
 
 use DOMDocument;
 use DOMXPath;
+use xsltnode;
 use Ximdex\Logger;
 use Ximdex\Models\Node;
 use Ximdex\Utils\FsUtils;
-
 
 class ParsingXsl
 {
@@ -42,11 +42,13 @@ class ParsingXsl
 	private $node = NULL;
 	private $includedElements = array();
 	private $path = NULL;
+	private $idDoc;
 
-	function __construct($idTemplate = NULL, $path = NULL)
+	function __construct($idTemplate = NULL, $path = NULL, $idDoc = null)
 	{
 		if (!$this->setNode($idTemplate, $path))
 			return NULL;
+		$this->idDoc = $idDoc;
 		$this->setXpathObj();
 		$this->setIncludedElements();
 	}
@@ -123,7 +125,18 @@ class ParsingXsl
 	private function setXpathObj()
 	{
 		if ($this->node)
+		{
 			$content = $this->node->GetContent();
+			if ($this->node->GetNodeName() == 'docxap.xsl' and $this->idDoc)
+			{
+			    // include the correspondant includes_template.xsl for the current document
+			    if (!xsltnode::replace_path_to_local_templatesInclude($content, $this->idDoc))
+			    {
+			        Logger::error('setXpathObj error: cannot replace the templates_include in docxap for XML document: ' . $this->idDoc);
+			        return false;
+			    }
+			}
+		}
 		else
 			$content = FsUtils::file_get_contents($this->path);
 		if (!$content)

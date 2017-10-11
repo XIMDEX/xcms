@@ -30,7 +30,6 @@ use Ximdex\Models\Channel;
 use Ximdex\Models\Node;
 use Ximdex\Models\Version;
 use Ximdex\Runtime\App;
-use Ximdex\Deps\DepsManager;
 
 ModulesManager::file('/xslt/functions.php', 'dexT');
 ModulesManager::file('/inc/repository/nodeviews/Abstract_View.class.php');
@@ -150,27 +149,15 @@ class View_Xslt extends Abstract_View
         $docxapContent = $domDoc->saveXML();
         
         // include the correspondant includes_template.xsl for the current document
-        $depsManager = new DepsManager();
-        $documentsFolderId = $this->_node->_getParentByType(\Ximdex\Services\NodeType::XML_ROOT_FOLDER);
-        $idTemplatesFolder = $depsManager->getBySource(DepsManager::DOCFOLDER_TEMPLATESINC, $documentsFolderId);
-        if ($idTemplatesFolder)
-            $idTemplatesFolder = $idTemplatesFolder[0];
-        else
-            $idTemplatesFolder = 0;
-        $templatesFolderNode = new Node($idTemplatesFolder);
-        if (!$templatesFolderNode->GetID())
+        if (!xsltnode::replace_path_to_local_templatesInclude($docxapContent, $this->_node->GetId()))
         {
-            $error = 'Cannot load the templates folder for XML document with ID: ' . $this->_node->GetId();
+            $error = 'Cannot load the templates_include.xsl file for XML document with ID: ' . $this->_node->GetId();
             if (isset($GLOBALS['InBatchProcess']))
                 Logger::error($error);
             else
                 $GLOBALS['errorInXslTransformation'] = $error;
             return false;
         }
-        
-        // assing the templates_include in the docxap content
-        $PATH_TEMPLATE_INCLUDE = App::getValue('UrlRoot') . App::getValue('NodeRoot') . $templatesFolderNode->GetRelativePath($projectId);
-        $docxapContent = str_replace('##PATH_TO_LOCAL_TEMPLATE_INCLUDE##', $PATH_TEMPLATE_INCLUDE, $docxapContent);
         
         if ($xsltHandler->setXSL(null, $docxapContent) === false)
             return false;

@@ -227,7 +227,6 @@ class xsltnode extends FileNode
             
             // generate the URL to the XSL template file
             $projectId = $section->GetProject();
-            $templatesNode = new Node($idTemplatesFolder);
             $templateURL = App::getValue('UrlRoot') . App::getValue('NodeRoot') . $parent->GetRelativePath($projectId) . '/' . $templateName;
             
             //check if there is a template with that name
@@ -1324,5 +1323,36 @@ class xsltnode extends FileNode
             return true;
         }
         return false;
+    }
+    
+    /**
+     * Include the correspondant includes_template.xsl for the current document; based in DOCFOLDER_TEMPLATESINC dependencie
+     * @param string $content
+     * @param integer $idDocLocalNode
+     * @return boolean
+     */
+    public static function replace_path_to_local_templatesInclude(& $content, $idDocLocalNode)
+    {
+        $depsManager = new DepsManager();
+        $node = new Node($idDocLocalNode);
+        if (!$node->GetID())
+            return false;
+        // get the documents folder ID of the document node ID given 
+        $documentsFolderId = $node->_getParentByType(\Ximdex\Services\NodeType::XML_ROOT_FOLDER);
+        if (!$documentsFolderId)
+            return false;
+        //get the templates folder node that references the previous document
+        $idTemplatesFolder = $depsManager->getBySource(DepsManager::DOCFOLDER_TEMPLATESINC, $documentsFolderId);
+        if ($idTemplatesFolder)
+            $idTemplatesFolder = $idTemplatesFolder[0];
+        else
+            $idTemplatesFolder = 0;
+        $templatesFolderNode = new Node($idTemplatesFolder);
+        if (!$templatesFolderNode->GetID())
+            return false;
+        // assing the templates_include in the docxap content
+        $PATH_TEMPLATE_INCLUDE = App::getValue('UrlRoot') . App::getValue('NodeRoot') . $templatesFolderNode->GetRelativePath($node->getProject());
+        $content = str_replace('##PATH_TO_LOCAL_TEMPLATE_INCLUDE##', $PATH_TEMPLATE_INCLUDE, $content);
+        return true;
     }
 }
