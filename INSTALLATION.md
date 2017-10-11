@@ -182,7 +182,7 @@ Here we provide the SQL code to make it in SQL command way (use de database and 
     ```
     Now we need an user to accesss this schema, with all privileges. If you have to create a new one, we can help you with this SQL statements:
     ```
-    CREATE USER 'ximdex-user'@'localhost' IDENTIFIED WITH mysql_native_password AS 'ximdex-pass';
+    CREATE USER 'ximdex-user'@'localhost' IDENTIFIED BY 'ximdex-pass';
     ```
     Finally we will make access for the new database created to this new user:
     ```
