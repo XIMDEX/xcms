@@ -111,8 +111,8 @@ When Apache2 and PHP are running with the requested packages you have to downloa
         ```
 	*  To use the spelling checker in Xedit (our wysiwyg XML editor), install php-enchant module:
         ```
-	    sudo apt-get install php-enchant
-	    ```
+    	sudo apt-get install php-enchant
+    	```
     *  Other packages: wget
         ```
         sudo apt-get install wget
@@ -162,13 +162,13 @@ When Apache2 and PHP are running with the requested packages you have to downloa
 	
 	```
 	sudo chgrp -R www-data myximdex
-    cd myximdex
-    sudo chmod -R ug+rw data
-    sudo chmod -R ug+rw logs
-    sudo chmod -R ug+rw conf
-    sudo chmod -R g+s data
-    sudo chmod g+s logs
-    sudo chmod g+s conf
+    	cd myximdex
+    	sudo chmod -R ug+rw data
+    	sudo chmod -R ug+rw logs
+    	sudo chmod -R ug+rw conf
+    	sudo chmod -R g+s data
+    	sudo chmod g+s logs
+    	sudo chmod g+s conf
 	```
 	You may **need superuser privileges** to do that! (Type *sudo* before the above commands)
 
