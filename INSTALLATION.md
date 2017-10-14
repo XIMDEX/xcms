@@ -175,7 +175,7 @@ When Apache2 and PHP are running with the requested packages, download Ximdex CM
 	sudo chmod g+s conf (optional)
 	```
 
-	In this example, 'www-data' are the user and group that apache runs on.
+	In this example, 'www-data' are the user and group that apache runs with.
 	> You may **need superuser privileges** to do that! (Type *sudo* before the above commands)
 
 
@@ -189,6 +189,7 @@ When Apache2 and PHP are running with the requested packages, download Ximdex CM
 
 5. **Point your web browser** to your just installed Ximdex CMS instance URL (i.e.: http://YOURHOST/myximdex or http://localhost/myximdex) to run the configuration tool that will load the database, create users and install Ximdex's modules.
 
+## C) Manual installation 
 
 **Thank you for installing Ximdex CMS**. Please, contact us at help@ximdex.org if you need further assistance.
 
