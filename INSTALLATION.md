@@ -77,11 +77,11 @@ sudo chmod g+s conf (optional)
 ```
 	
 ## B) Installing from Github with the Web Installer
-When Apache2 and PHP are running with the requested packages you have to download Ximdex CMS, move it to the final destination on your document root (i.e.: /var/www/myximdex, in some cases this may be /var/www/html/), set directory permissions and file owners (user/group) in harmony with your web server configuration and configure it using your web browser pointing to the desired URL (i.e.: http://yourhost/myximdex). You will need root access to a unix console to execute some steps...
+When Apache2 and PHP are running with the requested packages, download Ximdex CMS, move it to the final destination on your document root (i.e.: /var/www/myximdex, in some cases this may be /var/www/html/), set directory permissions and file owners (user/group) and configure it using your web browser pointing to the desired URL (i.e.: http://yourhost/myximdex). You will need root access to a unix console to execute some steps...
 
 ### Requirements
 *  A terminal with Telnet or SSH.
-*  A user with enough permissions to create the directory where Ximdex CMS will be installed (under a document root for your web server)
+*  A user with the power to create the directory where Ximdex CMS will be installed (under a document root for your web server)
 *  Enough free space in the filesystem. See 'conf/diskspace.php' file for further information.
 *  A **database server** like *MySQL Server* (>= 5.7) or *MariaDB* (>= 10.2) and a database user that can create the Ximdex Database.
     i.e. you can execute in a terminal console for MySQL server:
@@ -139,7 +139,7 @@ When Apache2 and PHP are running with the requested packages you have to downloa
     sudo apt-get install sendmail
     ```
 
-### Steps
+### Installation Steps
 1. **Download Ximdex** package (https://github.com/XIMDEX/ximdex/archive/develop.zip) and expand it:
 	```
   	wget --no-check-certificate https://github.com/XIMDEX/ximdex/archive/develop.zip
@@ -156,34 +156,27 @@ When Apache2 and PHP are running with the requested packages you have to downloa
 	```
 	mv ximdex-develop /var/www/myximdex
 	```
-	_Remember that this is the location where your **Apache document root** is there. Probably you may have a different one in case you have changed it in Apache configuration. It's possible that this location was placed in */var/www/html* directory by default in some systems._
-
     You may **need superuser privileges** to do that! In that case type sudo before the command (i.e.: sudo mv ...)
 	> So, in this example, 'myximdex' will be your Ximdex instance after installing it.
 
-3. **Set File Owners and Permissions** (file owners should be those in use in your web server):
+3. **Set File Owners and Permissions** (file owners should be those in use in your web server i.e.: www-data):
 	```
 	cd /var/www/
-	```
-	_Remember that this is the location where your **Apache document root** is there. Probably you may have a different one in case you have changed it in Apache configuration. It's possible that this location was placed in */var/www/html* directory by default in some systems._
-	
-	```
-	sudo chown -R www-data:www-data myximdex
+	chown -R www-data:www-data myximdex
 	cd myximdex
-    sudo chmod -R ug+rw data
-    sudo chmod -R ug+rw logs
-    sudo chmod -R ug+rw conf
+    	sudo chmod -R ug+rw data
+    	sudo chmod -R ug+rw logs
+    	sudo chmod -R ug+rw conf
     
-    sudo chmod -R g+s data (optional)
-    sudo chmod g+s logs (optional)
-    sudo chmod g+s conf (optional)
+    	sudo chmod -R g+s data (optional)
+    	sudo chmod g+s logs (optional)
+    	sudo chmod g+s conf (optional)
 	```
 	You may **need superuser privileges** to do that! (Type *sudo* before the above commands)
 
 	> So, in this example, user and group 'www-data' are running the web processes as declared in the apache configuration file.
 
-4. In your database administrator (like _MySQL Workbench_ or _PHPMyAdmin_) you must **create a new database schema** which name will be used when the installation process begin.
-Here we provide the SQL code to make it in SQL command way (use de database and user names as you prefer):
+4. **Create a new database and a user**:
     ```
     CREATE DATABASE `ximdex-db`;
     ```
@@ -191,12 +184,18 @@ Here we provide the SQL code to make it in SQL command way (use de database and 
     ```
     CREATE USER 'ximdex-user'@'localhost' IDENTIFIED BY 'ximdex-pass';
     ```
-    Finally we will make access for the new database created to this new user:
+    Finally, grant accesses:
     ```
     GRANT ALL PRIVILEGES ON `ximdex-db`.* TO 'ximdex-user'@'localhost' WITH GRANT OPTION;
     ```
-    > Remember to use this information to generate de database schema in the point 5.
+    > This information will be asked in the following step.
 
 5. **Point your web browser** to your just installed Ximdex CMS instance URL (i.e.: http://YOURHOST/myximdex or http://localhost/myximdex) to run the configuration tool that will load the database, create users and install Ximdex's modules.
 
+## C) Manual Installation
+If you want to control all the installation process, visit install/XIMDEX_manualinstallation_guidelines.md.
+
+
 **Thank you for installing Ximdex CMS**. Please, contact us at help@ximdex.org if you need further assistance.
+
+
