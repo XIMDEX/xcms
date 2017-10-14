@@ -51,30 +51,30 @@ Install Ximdex CMS as a docker container or using the web installer on your serv
 
 The ximdex directory has to be a shared path for docker!
 	    
-	If you **don´t have installed the docker-composer package**, install it using the next command line in a terminal console:
+If you **don´t have installed the docker-composer package**, install it using the next command line in a terminal console:
 	    
-	```
-	sudo apt-get install docker-compose
-	```
+```
+sudo apt-get install docker-compose
+```
 	
-	 If the **installation is aborted**, please use the next conmmand to remove the .data directory at ximdex to clean the database data:
-	```
-	sudo rm -rf .data
-	```
+If the **installation is aborted**, please use the next conmmand to remove the .data directory at ximdex to clean the database data:
+```
+sudo rm -rf .data
+```
 	
-	 You may need to grant read and write permissions to web server user and group:
+You may need to grant read and write permissions to web server user and group:
 	
-	```
-	sudo chown -R www-data:www-data ximdex-develop
-	cd ximdex-develop
-	sudo chmod -R ug+rw data
-	sudo chmod -R ug+rw logs
-	sudo chmod -R ug+rw conf
-	
-	sudo chmod -R g+s data (optional)
-	sudo chmod g+s logs (optional)
-	sudo chmod g+s conf (optional)
-	```
+```
+sudo chown -R www-data:www-data ximdex-develop
+cd ximdex-develop
+sudo chmod -R ug+rw data
+sudo chmod -R ug+rw logs
+sudo chmod -R ug+rw conf
+
+sudo chmod -R g+s data (optional)
+sudo chmod g+s logs (optional)
+sudo chmod g+s conf (optional)
+```
 	
 ## B) Installing from Github with the Web Installer
 When Apache2 and PHP are running with the requested packages you have to download Ximdex CMS, move it to the final destination on your document root (i.e.: /var/www/myximdex, in some cases this may be /var/www/html/), set directory permissions and file owners (user/group) in harmony with your web server configuration and configure it using your web browser pointing to the desired URL (i.e.: http://yourhost/myximdex). You will need root access to a unix console to execute some steps...
