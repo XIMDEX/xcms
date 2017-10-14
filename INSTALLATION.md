@@ -160,20 +160,21 @@ When Apache2 and PHP are running with the requested packages, download Ximdex CM
 
     	> You may **need superuser privileges** to do that! In that case type sudo before the command (i.e.: sudo mv ...)
 
-3. **Set File Owners and Permissions** to the required by your web server: 
+3. **Set File Owners and Permissions** to the ones required by your web server:
 
-```
-cd /var/www/
-chown -R www-data:www-data myximdex
-cd myximdex
-sudo chmod -R ug+rw data
-sudo chmod -R ug+rw logs
-sudo chmod -R ug+rw conf
+	```
+	cd /var/www/
+	chown -R www-data:www-data myximdex
+	cd myximdex
+	sudo chmod -R ug+rw data
+	sudo chmod -R ug+rw logs
+	sudo chmod -R ug+rw conf
+	
+	sudo chmod -R g+s data (optional)
+	sudo chmod g+s logs (optional)
+	sudo chmod g+s conf (optional)
+	```
 
-sudo chmod -R g+s data (optional)
-sudo chmod g+s logs (optional)
-sudo chmod g+s conf (optional)
-```
 	In this example, 'www-data' are the user and group that apache runs on.
 	> You may **need superuser privileges** to do that! (Type *sudo* before the above commands)
 
@@ -187,11 +188,6 @@ sudo chmod g+s conf (optional)
     > This information will be requested in the following step.
 
 5. **Point your web browser** to your just installed Ximdex CMS instance URL (i.e.: http://YOURHOST/myximdex or http://localhost/myximdex) to run the configuration tool that will load the database, create users and install Ximdex's modules.
-
-
-## C) Manual Installation
-
-If you want to control all the installation process, visit install/XIMDEX_manualinstallation_guidelines.md.
 
 
 **Thank you for installing Ximdex CMS**. Please, contact us at help@ximdex.org if you need further assistance.
