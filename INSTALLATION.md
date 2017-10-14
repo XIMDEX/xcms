@@ -152,14 +152,14 @@ When Apache2 and PHP are running with the requested packages, download Ximdex CM
   	```
 	> You should end with a directory (i.e.: ximdex-develop) containing all the Ximdex files and directories.
 
-2. **Move it to your Web Server Document Root** with the name you want (i.e.: myximdex)
+2. **Move it to your Web Server Document Root** with the service name to use (i.e.: myximdex)
 	```
 	mv ximdex-develop /var/www/myximdex
 	```
-    You may **need superuser privileges** to do that! In that case type sudo before the command (i.e.: sudo mv ...)
-	> So, in this example, 'myximdex' will be your Ximdex instance after installing it.
+	In this example, 'myximdex' will be your Ximdex instance after installing it.
+    	> You may **need superuser privileges** to do that! In that case type sudo before the command (i.e.: sudo mv ...)
 
-3. **Set File Owners and Permissions** (file owners should be those in use in your web server i.e.: www-data):
+3. **Set File Owners and Permissions** to the required by your web server: 
 	```
 	cd /var/www/
 	chown -R www-data:www-data myximdex
@@ -172,27 +172,23 @@ When Apache2 and PHP are running with the requested packages, download Ximdex CM
     	sudo chmod g+s logs (optional)
     	sudo chmod g+s conf (optional)
 	```
-	You may **need superuser privileges** to do that! (Type *sudo* before the above commands)
+	In this example, 'www-data' are the user and group that apache runs on.
+	> You may **need superuser privileges** to do that! (Type *sudo* before the above commands)
 
-	> So, in this example, user and group 'www-data' are running the web processes as declared in the apache configuration file.
 
-4. **Create a new database and a user**:
+4. **Create a new database and a new user**:
     ```
     CREATE DATABASE `ximdex-db`;
-    ```
-    Now we need an user to accesss this schema, with all privileges. If you have to create a new one, we can help you with this SQL statements:
-    ```
     CREATE USER 'ximdex-user'@'localhost' IDENTIFIED BY 'ximdex-pass';
-    ```
-    Finally, grant accesses:
-    ```
     GRANT ALL PRIVILEGES ON `ximdex-db`.* TO 'ximdex-user'@'localhost' WITH GRANT OPTION;
     ```
-    > This information will be asked in the following step.
+    > This information will be requested in the following step.
 
 5. **Point your web browser** to your just installed Ximdex CMS instance URL (i.e.: http://YOURHOST/myximdex or http://localhost/myximdex) to run the configuration tool that will load the database, create users and install Ximdex's modules.
 
+
 ## C) Manual Installation
+
 If you want to control all the installation process, visit install/XIMDEX_manualinstallation_guidelines.md.
 
 
