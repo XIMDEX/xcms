@@ -38,13 +38,13 @@ Install Ximdex CMS as a docker container or using the web installer on your serv
     
     > For docker, you will need to use the host **db** instead of the suggested **localhost** and the password **ximdex** in the **"Database password"** field.
 
-5. Use Ximdex CMS at http://ximdex with the user Ximdex and the choosen password.
+5. Use Ximdex CMS at http://ximdex with the user Ximdex and your choosen password.
 
 6. To **stop the services**, run
-```
-sudo docker-compose down
-```
-from the root directory where the composer was launched.
+	```
+	sudo docker-compose down
+	```
+	from the root directory where the composer was launched.
 
 
 ### Docker problems and solutions:
