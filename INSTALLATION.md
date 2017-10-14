@@ -47,7 +47,7 @@ Install Ximdex CMS as a docker container or using the web installer on your serv
 	from the root directory where the composer was launched.
 
 
-	### Docker problems and solutions:
+### Docker problems and solutions:
 	The ximdex directory has to be a shared path for docker!
 	    
 	If you **don´t have installed the docker-composer package**, install it using the next command line in a terminal console:
