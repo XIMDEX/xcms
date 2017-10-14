@@ -47,7 +47,7 @@ sudo docker-compose down
 from the root directory where the composer was launched.
 
 
-** Docker problems and solutions:
+### Docker problems and solutions:
 > The ximdex directory has to be a shared path for docker!
     
 > If you **don´t have installed the docker-composer package**, install it using the next command line in a terminal console:
@@ -62,6 +62,7 @@ from the root directory where the composer was launched.
     ```
 
 > You may need to grant read and write permissions to web server user and group:
+
     ```
     sudo chown -R www-data:www-data ximdex-develop
     cd ximdex-develop
