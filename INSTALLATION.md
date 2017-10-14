@@ -1,10 +1,10 @@
-# Installing the Semantic Web CMS Ximdex
+# Installing the Semantic Web headless CMS Ximdex
 
-Ximdex CMS requires a Linux host, a Database server (MySQL or MariaDB) and Apache Web Server with PHP or NGINX with PHP-fpm.
+Ximdex CMS requires a Linux host, a Database server (MySQL or MariaDB) and the Apache Web Server with PHP or NGINX with PHP-fpm.
 
-You can install Ximdex CMS with Docker or using the web installer.
+Install Ximdex CMS as a docker container or using the web installer on your server.
 
-> Additionally, a fully manual or automated installation method can be found at install/XIMDEX_manual_installation_guidelines.md.
+> A fully manual or automated installation method can be found at install/XIMDEX_manual_installation_guidelines.md.
 
 ## A) Running Ximdex CMS using Docker composer
 
@@ -23,7 +23,45 @@ You can install Ximdex CMS with Docker or using the web installer.
 	You should end with a directory (i.e.: ximdex-develop) containing all the Ximdex files and directories.
 
 
-2. You need to grant read and write permissions to these directories, which have been placed in our Ximdex installation directory (i.e. ximdex-develop), by this way:
+2. From the Ximdex directory (i.e.: ximdex-develop, where the docker-compose.yml file is locate) run the command:
+    ```
+	sudo docker-compose up
+    ```
+    That will run the containers for Apache2, PHP, MySQL and Ximdex running on the host ximdex:80 
+	
+3. Add to your /etc/hosts file the line:
+	```
+	127.0.0.1		ximdex
+	```    
+
+4. Visit http://ximdex to start the web installer:
+    
+    > For docker, you will need to use the host **db** instead of the suggested **localhost** and the password **ximdex** in the **"Database password"** field.
+
+5. Use Ximdex CMS at http://ximdex with the user Ximdex and the choosen password.
+
+6. To **stop the services**, run
+```
+sudo docker-compose down
+```
+from the root directory where the composer was launched.
+
+
+** Docker problems and solutions:
+> The ximdex directory has to be a shared path for docker!
+    
+> If you **don´t have installed the docker-composer package**, install it using the next command line in a terminal console:
+    
+	```
+	sudo apt-get install docker-compose
+    ```
+
+> If the **installation is aborted**, please use the next conmmand to remove the .data directory at ximdex to clean the database data:
+    ```
+    sudo rm -rf .data
+    ```
+
+> You may need to grant read and write permissions to web server user and group:
     ```
     sudo chown -R www-data:www-data ximdex-develop
     cd ximdex-develop
@@ -35,39 +73,6 @@ You can install Ximdex CMS with Docker or using the web installer.
     sudo chmod g+s logs (optional)
     sudo chmod g+s conf (optional)
     ```
-
-3. Open a terminal under the directory ximdex-develop, which has been unzipped, and run the command (launch it into the root of this repository, where the file docker-compose.yml is located):
-    ```
-	sudo docker-compose up
-    ```
-    That will run the containers for Apache2, PHP, MySQL and Ximdex running on localhost:80 (the directory with ximdex has to be in a shared path for docker)
-    
-    If you **don´t have installed the docker-composer package**, install it using the next command line in a terminal console:
-    
-	```
-	sudo apt-get install docker-compose
-    ```
-	
-4. Add to your /etc/hosts file the line:
-	```
-	127.0.0.1		ximdex
-	```    
-
-5. Visit http://ximdex to launch the installer:
-    
-    > For docker, you will need to use the host **db** instead of the suggested **localhost** and the password **ximdex** in the "*Database password*" field, to make Ximdex installation able to access to the database server, and create the data schema.
-
-    If the **installation is aborted**, please use the next conmmand to remove the .data directory at ximdex to clean the database data:
-    ```
-    sudo rm -rf .data
-    ```
-5. Use Ximdex CMS at http://ximdex with the user Ximdex and the choosen password.
-
-To **stop the services**, run
-```
-sudo docker-compose down
-```
-from the root directory where the composer was launched.
 
 ## B) Installing from Github with the Web Installer
 When Apache2 and PHP are running with the requested packages you have to download Ximdex CMS, move it to the final destination on your document root (i.e.: /var/www/myximdex, in some cases this may be /var/www/html/), set directory permissions and file owners (user/group) in harmony with your web server configuration and configure it using your web browser pointing to the desired URL (i.e.: http://yourhost/myximdex). You will need root access to a unix console to execute some steps...
