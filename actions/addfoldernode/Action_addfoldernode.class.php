@@ -361,7 +361,6 @@ class Action_addfoldernode extends ActionAbstract
 
     public function createProjectNodes($projectId)
     {
-
         $theme = $this->request->getParam("theme");
         if ($theme) {
             
@@ -386,13 +385,22 @@ class Action_addfoldernode extends ActionAbstract
                 $this->insertServer($projectId, $server);
             }
             
-            $GLOBALS['fromTheme'] = false;
+            $GLOBALS['fromTheme'] = null;
+            
+            // reload the templates include files for this new project
+            $project = new Node($projectId);
+            $xsltNode = new xsltnode($project);
+            if ($xsltNode->reload_templates_include($project) === false)
+            {
+                $this->messages->mergeMessages($xsltNode->messages);
+                return false;
+            }
         }
+        return true;
     }
 
     private function insertFiles($parentId, $xFolderName, $files)
     {
-
         $ret = array();
         if (count($files) == 0)
             return $ret;
