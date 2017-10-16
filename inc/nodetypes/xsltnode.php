@@ -181,7 +181,7 @@ class xsltnode extends FileNode
             $this->messages->mergeMessages($incNode->messages);
             return false;
         }
-        return true;
+        return $id;
     }
     
     /**
@@ -205,15 +205,15 @@ class xsltnode extends FileNode
         $parent = new Node($ximPtdId);
         $includeId = $parent->GetChildByName('templates_include.xsl');
 
-        if (!($includeId > 0)) {
+        if (!$includeId) {
             
             // Creating include file with the template inside
-            if (!$this->create_templates_include($ximPtdId, $section, $stateID, $templateName))
+            $includeId = $this->create_templates_include($ximPtdId, $section, $stateID, $templateName);
+            if (!$includeId)
                 return false;
             
         } else {
-
-            $includeNode = new Node($includeId);
+            /*
             $includeContent = $includeNode->getContent();
             $dom = new DOMDocument();
             $dom->formatOutput = true;
@@ -267,12 +267,11 @@ class xsltnode extends FileNode
                 $this->messages->add($error, MSG_TYPE_ERROR);
                 return false;
             }
-            
             // include the templates for the existing parents
             if ($this->include_templates($includeContent, $includeNode) === false)
                 return false;
-            
             $includeNode->setContent($includeContent);
+            */
         }
         
         //it is not necesary to create a docxap file in a project based in a theme
@@ -287,6 +286,10 @@ class xsltnode extends FileNode
             }
         }
         
+        //TODO ajlucena
+        $includeNode = new Node($includeId);
+        $this->reload_templates_include(new Node($includeNode->GetProject()));
+        /*
         // include the template for the existing children
         $template = New Node($parent->GetChildByName($templateName));
         if (!$template->GetID())
@@ -296,7 +299,7 @@ class xsltnode extends FileNode
         }
         if ($this->include_template($template) === false)
             return false;
-        
+        */
         return true;
     }
     
@@ -462,6 +465,7 @@ class xsltnode extends FileNode
         if ($includeId > 0) {
 
             $includeNode = new Node($includeId);
+            /*
             $includeContent = $includeNode->getContent();
             $dom = new DOMDocument();
             $dom->formatOutput = true;
@@ -509,10 +513,12 @@ class xsltnode extends FileNode
             }
             if (!$this->remove_template($template))
                 return false;
-            
-            return true;
+            */
+            //TODO ajlucena
+            if ($this->reload_templates_include(new Node($includeNode->GetProject())) === false)
+                return false;
         }
-        return null;
+        return true;
     }
 
     public function SetContent($content, $commitNode = NULL, Node $node = null)
@@ -736,7 +742,7 @@ class xsltnode extends FileNode
 		return $idDocxapProject;
     }
     
-    //TODO ajlucena: remove previous includes? remove InBatchProcess questions?
+    //TODO ajlucena: remove ?
     /**
      * Includes all the templates of the parent nodes
      * For each one, it change the relative location of the templates references to the URL of the project corresponding node
@@ -1059,6 +1065,7 @@ class xsltnode extends FileNode
         return false;
     }
     
+    //TODO ajlucena: remove
     /**
      * Remove all references to the template given in the templates_include files under the nodes tree
      * Use it after a template.xsl file has been removed
@@ -1166,6 +1173,7 @@ class xsltnode extends FileNode
         return true;
     }
     
+    //TODO ajlucena: remove
     /**
      * Add reference to the template node given in the templates_include files under the nodes tree (recursive method)
      * @param Node $node
@@ -1353,6 +1361,92 @@ class xsltnode extends FileNode
         // assing the templates_include in the docxap content
         $PATH_TEMPLATE_INCLUDE = App::getValue('UrlRoot') . App::getValue('NodeRoot') . $templatesFolderNode->GetRelativePath($node->getProject());
         $content = str_replace('##PATH_TO_LOCAL_TEMPLATE_INCLUDE##', $PATH_TEMPLATE_INCLUDE, $content);
+        return true;
+    }
+    
+    /**
+     * Regenerate the content of all the templates_include.xsl file under the node given (usually the project node)
+     * The $priorTemplates parameter is loaded with the nearest templates URLs to the current section
+     * @param Node $node
+     * @param array $priorTemplates
+     * @param integer $projectId
+     * @return boolean
+     */
+    private function reload_templates_include(Node $node, $priorTemplates = array(), $projectId = null)
+    {
+        // only project, servers and section/subsections can storage template folders
+        if ($node->GetNodeType() != Ximdex\Services\NodeType::PROJECT and $node->GetNodeType() != Ximdex\Services\NodeType::SERVER
+                and $node->GetNodeType() != Ximdex\Services\NodeType::SECTION)
+        {
+            $this->messages->add('Cannot reload nodes with a node type diferent than project, server or section', MSG_TYPE_ERROR);
+            return false;
+        }
+        
+        // look for templates folder
+        $templateFolderId = $node->GetChildren(Ximdex\Services\NodeType::TEMPLATES_ROOT_FOLDER);
+        if ($templateFolderId)
+        {
+            $templateFolder = new Node($templateFolderId[0]);
+            
+            // look for templates_include
+            $templatesIncludeId = $templateFolder->GetChildByName('templates_include.xsl');
+            if ($templatesIncludeId)
+            {
+                // get the project node ID
+                if (!$projectId)
+                    $projectId = $node->getProject();
+                
+                // generate the basic XML header
+                $content = '<?xml version="1.0" encoding="UTF-8"?>';
+                $content .= "\n" . '<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">';
+                
+                // add the local templates
+                $templates = $templateFolder->GetChildren();
+                foreach ($templates as $idTemplate)
+                {
+                    $template = new Node($idTemplate);
+                    if ($template->GetNodeName() == 'templates_include.xsl' or $template->GetNodeName() == 'docxap.xsl')
+                        continue;
+                    
+                    // generate the template URL
+                    $templateURL = App::getValue('UrlRoot') . App::getValue('NodeRoot') . $template->GetRelativePath($projectId);
+                    
+                    // save the template and remove a possible ocurrence with the same name (local one is always priority)
+                    $priorTemplates[$template->GetNodeName()] = $templateURL;
+                }
+                
+                //include the prior templates
+                foreach ($priorTemplates as $templateURL)
+                    $content .= "\n\t" . '<xsl:include href="' . $templateURL . '"/>';
+                
+                // close the XSL content
+                $content .= "\n" . '</xsl:stylesheet>';
+                
+                // save the XSL content into the templates_include.xsl node
+                $templatesInclude = new Node($templatesIncludeId);
+                if ($templatesInclude->SetContent($content) === false)
+                {
+                    $this->messages->mergeMessages($templatesInclude->messages);
+                    return false;
+                }
+            }
+        }
+        
+        // get children of the node
+        $childNodes = $node->GetChildren();
+        foreach ($childNodes as $childNode)
+        {
+            // call in recursive mode with the child node
+            $childNode = new Node($childNode);
+            // only project, servers and section/subsections can storage template folders
+            if ($childNode->GetNodeType() == Ximdex\Services\NodeType::PROJECT or $childNode->GetNodeType() == Ximdex\Services\NodeType::SERVER
+                    or $childNode->GetNodeType() == Ximdex\Services\NodeType::SECTION)
+            {
+                $res = $this->reload_templates_include($childNode, $priorTemplates, $projectId);
+                if ($res === false)
+                    return false;
+            }
+        }
         return true;
     }
 }

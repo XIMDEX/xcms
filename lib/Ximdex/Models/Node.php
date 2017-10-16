@@ -1437,7 +1437,8 @@ class Node extends NodesOrm
         $nodeProperty->deleteByNode($this->get('IdNode'));
 
         // first invoking the particular Delete...
-        $this->class->DeleteNode();
+        if (!$this->GetNodeType() == \Ximdex\Services\NodeType::XSL_TEMPLATE)
+            $this->class->DeleteNode();
 
         // and the the general one
         $data = new DataFactory($this->nodeID);
@@ -1483,12 +1484,17 @@ class Node extends NodesOrm
 
         $rtn = new RelTagsNodes();
         $rtn->deleteTags($this->nodeID);
+
+        $res = parent::delete();
         
-        Logger::info("Node " . $this->nodeID . " deleted.");
+        if ($this->GetNodeType() == \Ximdex\Services\NodeType::XSL_TEMPLATE)
+            $this->class->DeleteNode();
+        
+        Logger::info("Node " . $this->nodeID . " deleted");
         $this->nodeID = null;
         $this->class = null;
-
-        return parent::delete();
+        
+        return $res;
     }
 
     /**

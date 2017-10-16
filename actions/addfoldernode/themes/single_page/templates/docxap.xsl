@@ -1,20 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
-    <xsl:param name="xmlcontent"/>
-    <xsl:include href="##PATH_TO_LOCAL_TEMPLATE_INCLUDE##/templates_include.xsl" />
-    <xsl:template name="docxap" match="docxap">
-        <html lang="{@language}">
-            <head>
-                <title><xsl:value-of select="/docxap/top_block/header_block/title"/></title>
-
-                <xsl:call-template name="INCLUDE_metas"/>
-                <xsl:call-template name="INCLUDE_styles"/>
-            </head>
-
-            <body data-spy="scroll" data-target="#navbar" data-offset="{@offset}">
-                <xsl:apply-templates />
-                <xsl:call-template name="INCLUDE_js"/>
-            </body>
-        </html>
-    </xsl:template>
+	<xsl:param name="xmlcontent" />
+	<!-- DO NOT REPLACE THE FOLLOWING LINE IF LOCAL XSLT INCLUDES ARE IN USE -->
+	<xsl:include href="##PATH_TO_LOCAL_TEMPLATE_INCLUDE##/templates_include.xsl" />
+	<!-- END XSLT INCLUDE INSERTION -->
+	<xsl:template name="docxap" match="docxap">
+		<html lang="{@language}">
+			<head>
+				<title>
+					<xsl:value-of select="/docxap/top_block/header_block/title" />
+				</title>
+				<xsl:call-template name="INCLUDE_metas" />
+				<xsl:call-template name="INCLUDE_styles" />
+			</head>
+			<body data-spy="scroll" data-target="#navbar" data-offset="{@offset}">
+				<xsl:apply-templates />
+				<xsl:call-template name="INCLUDE_js" />
+			</body>
+		</html>
+	</xsl:template>
 </xsl:stylesheet>
