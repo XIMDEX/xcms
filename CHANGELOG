@@ -1,5 +1,32 @@
-				Ximdex (Free & Semantic CMS for XML) - CHANGELOG	
-				------------------------------------------------
+Ximdex (Free & Semantic CMS for XML) - CHANGELOG	
+------------------------------------------------
+
+Version 3.9
+-----------
+-> 14.10.2017 Ximdex team
+  * Bug Fixing
+  * Action forms redone
+  * Merged API
+  * New Blog module
+  * New multichannel management
+
+Version 3.8
+-----------
+  *Usability: icons as fonts, new folder creation selector to be ever less intrusive, ...
+  *Installer with direct download of modules and maximizing web install
+  *Chain of actions
+  *Form View for Xedit and Xnews
+  *XEDIT lite
+  *Xedit with wysiwyg for XML for tablets
+  *I18N at JS and JS compilation and caché
+  *AngularJS everywhere
+
+Version 3.7
+-----------
+  * Themes: xlyre for opendata, xhawk for secure CMS, xowl for semantic hub)
+  * Decoupled & stackable repositories
+  * Extend Dynamic Semantic publishing for the MUG module (allowing ontology based filtering)
+
 
 Version 3.6
 -----------

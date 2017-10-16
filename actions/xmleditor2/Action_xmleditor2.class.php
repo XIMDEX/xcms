@@ -87,7 +87,7 @@ class Action_xmleditor2 extends ActionAbstract
                 'action' => 'xmleditor2',
                 'nodeid' => $idnode
             ));
-        $this->render(array('action' => $action), NULL, 'iframe.tpl');
+        $this->render(array('action' => $action), null, 'iframe.tpl');
     }
 
     // Main method: shows initial form
@@ -118,7 +118,6 @@ class Action_xmleditor2 extends ActionAbstract
 
 
         $this->render($values, $template, 'xmleditor2.tpl');
-
     }
 
     private function &getEditor($idnode)
@@ -198,6 +197,7 @@ class Action_xmleditor2 extends ActionAbstract
         $info = $node->loadData();
         if (!empty($info)) {
             $info = json_encode($info);
+            header('Content-type: application/json');
         }
         echo $info;
         die();
@@ -388,8 +388,7 @@ class Action_xmleditor2 extends ActionAbstract
         $res['xmlFile'] = $contentXML;
         // Get Schema File
         $contentRNG = $this->_editor->getSchemaFile($idnode);
-        if (is_array($contentRNG) and $contentRNG['error'])
-        {
+        if (is_array($contentRNG) and $contentRNG['error']) {
             //in this place we need to show the validation errors in the editor
             $this->sendJSON($contentRNG);
         }
@@ -445,6 +444,7 @@ class Action_xmleditor2 extends ActionAbstract
             Logger::error(_('Error creating a new Node Edition'));
         }
         $return = array('edition' => $edition, 'data' => $extraEdition);
+        header('Content-type: application/json');
         echo json_encode($return);
     }
 
@@ -498,5 +498,4 @@ class Action_xmleditor2 extends ActionAbstract
         $result["idLinkFolder"] = $children[0];
         $this->sendJSON($result);
     }
-
 }
