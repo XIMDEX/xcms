@@ -25,12 +25,13 @@
  *  @version $Revision$
  */
 
+use Ximdex\Logger;
 use Ximdex\Models\Node;
 use Ximdex\NodeTypes\FileNode;
 use Ximdex\Parsers\PVD2RNG\PVD2RNG;
+use Ximdex\Runtime\App;
 use Ximdex\Runtime\DataFactory;
 use Ximdex\Utils\FsUtils;
-use Ximdex\Logger as XMD_Log;
 
 if (!defined('XIMDEX_ROOT_PATH')) {
 	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
@@ -60,17 +61,17 @@ class VisualTemplateNode extends FileNode {
 
 		$pvdt = new PVD2RNG();
 		if (!$pvdt->loadPVD($this->parent->get('IdNode'))) {
-			XMD_Log::error("(1) Pvd-schema " . $this->parent->get('IdNode') . " not compatible RNG");
+			Logger::error("(1) Pvd-schema " . $this->parent->get('IdNode') . " not compatible RNG");
 		} else {
 			if ($pvdt->transform()) {
 				$content = htmlspecialchars_decode($pvdt->getRNG()->saveXML());
 			} else {
-				XMD_Log::error("(2) Pvd " . $this->parent->get('IdNode') . " not compatible RNG");
+				Logger::error("(2) Pvd " . $this->parent->get('IdNode') . " not compatible RNG");
 			}
 		}
 
 		$rngName = VisualTemplateNode::RNG_SUFFIX . $name;
-		$rngSourcePath = XIMDEX_ROOT_PATH . \App::getValue( 'TempRoot') . '/' . $rngName;
+		$rngSourcePath = XIMDEX_ROOT_PATH . App::getValue( 'TempRoot') . '/' . $rngName;
 		$parentNode = new Node($this->parent->get('IdParent'));
 		$idRng = $parentNode->GetChildByName($rngName);
 		if ($idRng > 0) {
@@ -130,11 +131,11 @@ class VisualTemplateNode extends FileNode {
 		if ($pvdt->transform()) {
 			$content = htmlspecialchars_decode($pvdt->getRNG()->saveXML());
 		} else {
-			XMD_Log::error("Pvd not compatible RNG");
+			Logger::error("Pvd not compatible RNG");
 		}
 
 		$rngName = VisualTemplateNode::RNG_SUFFIX . $this->parent->get('Name');
-		$rngSourcePath = XIMDEX_ROOT_PATH . \App::getValue( 'TempRoot') . '/' . $rngName;
+		$rngSourcePath = XIMDEX_ROOT_PATH . App::getValue( 'TempRoot') . '/' . $rngName;
 		$parentNode = new Node($this->parent->get('IdParent'));
 		$idRng = $parentNode->GetChildByName($rngName);
 		if ($idRng > 0) {
@@ -170,11 +171,11 @@ class VisualTemplateNode extends FileNode {
 		$content = $this->GetContent();
 		$parts = explode('##########', $content);
 		if (count($parts) > 2) {
-			XMD_Log::error("The PVD schema {$this->nodeID} has the string ########## more than once, which means that the default content can not be correctly retrieved");
+			Logger::error("The PVD schema {$this->nodeID} has the string ########## more than once, which means that the default content can not be correctly retrieved");
 			return false;
 		}
 		if (!(count($parts) == 2)) {
-			XMD_Log::error("The PVD schema {$this->nodeID} seems to have no default content");
+			Logger::error("The PVD schema {$this->nodeID} seems to have no default content");
 			return false;
 		}
 		return $parts[1];

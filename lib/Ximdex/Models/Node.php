@@ -29,6 +29,7 @@ namespace Ximdex\Models;
 
 use DOMDocument;
 use NodeProperty;
+use xsltnode;
 use Ximdex\Deps\DepsManager;
 use Ximdex\Event\NodeEvent;
 use Ximdex\Events;
@@ -1368,9 +1369,19 @@ class Node extends NodesOrm
         // if the node is a type of templates folder, generates the templates_include.xsl inside
         if ($nodeTypeID == \Ximdex\Services\NodeType::TEMPLATES_ROOT_FOLDER)
         {
-            $xsltNode = new \xsltnode($node);
-            $xsltNode->create_templates_include($node->GetID(), $parentNode);
-            $this->messages->mergeMessages($xsltNode->messages);
+            $xsltNode = new xsltnode($node);
+            if ($xsltNode->create_templates_include($node->GetID(), $parentNode) === false)
+            {
+                $this->messages->mergeMessages($xsltNode->messages);
+                return false;
+            }
+            
+            // reload the templates include files for the current project
+            if ($xsltNode->reload_templates_include(new Node($node->getProject())) === false)
+            {
+                $this->messages->mergeMessages($xsltNode->messages);
+                return false;
+            }
         }
         
         return $node->get('IdNode');
@@ -1437,7 +1448,7 @@ class Node extends NodesOrm
         $nodeProperty->deleteByNode($this->get('IdNode'));
 
         // first invoking the particular Delete...
-        if (!$this->GetNodeType() == \Ximdex\Services\NodeType::XSL_TEMPLATE)
+        if ($this->GetNodeType() != \Ximdex\Services\NodeType::XSL_TEMPLATE)
             $this->class->DeleteNode();
 
         // and the the general one
@@ -1465,7 +1476,7 @@ class Node extends NodesOrm
             
             // reload the dependencies to the documents folders if exist (with the templates folder node)
             $project = new Node($this->getProject());
-            $xsltNode = new \xsltnode($this);
+            $xsltNode = new xsltnode($this);
             if (!$xsltNode->rel_include_templates_to_documents_folders($project))
             {
                 $this->messages->mergeMessages($xsltNode->messages);
@@ -1488,7 +1499,7 @@ class Node extends NodesOrm
         $res = parent::delete();
         
         if ($this->GetNodeType() == \Ximdex\Services\NodeType::XSL_TEMPLATE)
-            $this->class->DeleteNode();
+            $this->class->DeleteNode(false);
         
         Logger::info("Node " . $this->nodeID . " deleted");
         $this->nodeID = null;

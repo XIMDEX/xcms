@@ -284,38 +284,38 @@ class Action_deletenode extends ActionAbstract {
 				}
 			}
 
-				// Deleting recursively
+			// Deleting recursively
 
-				$node = new Node($idNode);
-				$node->delete();
+			$node = new Node($idNode);
+			$node->delete();
 
-				$err = NULL;
-				if($node->numErr) {
+			$err = NULL;
+			if($node->numErr) {
 
-					$err = _("An error occurred while deleting:");
-					$err .= '<br>' . $node->get('IdNode') . " " . $node->GetPath() . '<br>' . _("Error message: ") . $node->msgErr . "<br><br>";
+				$err = _("An error occurred while deleting:");
+				$err .= '<br>' . $node->get('IdNode') . " " . $node->GetPath() . '<br>' . _("Error message: ") . $node->msgErr . "<br><br>";
 
-				} else {
+			} else {
 
-					if ($node->nodeType->get('Name') == 'Channel') {
-						$sql = sprintf('delete from RelStrDocChannels where IdChannel = %s', $idNode);
-						$db = new DB();
-						$db->execute($sql);
+				if ($node->nodeType->get('Name') == 'Channel') {
+					$sql = sprintf('delete from RelStrDocChannels where IdChannel = %s', $idNode);
+					$db = new DB();
+					$db->execute($sql);
+				}
+			}
+
+			if (is_array($depList)) {
+				foreach($depList as $depID) {
+					$depNode = new Node($depID);
+					$depNode->delete();
+
+					if($depNode->numErr) {
+						if(!strlen($err))
+						$err = _("An error occurred while deleting dependencies: ");
+						$err .= '<br>'.$depNode->get('IdNode'). " ".$depNode->GetPath().'<br>'. _("Error message: ") .
+							$depNode->msgErr . "<br><br>";
 					}
 				}
-
-				if (is_array($depList)) {
-					foreach($depList as $depID) {
-						$depNode = new Node($depID);
-						$depNode->delete();
-
-						if($depNode->numErr) {
-							if(!strlen($err))
-							$err = _("An error occurred while deleting dependencies: ");
-							$err .= '<br>'.$depNode->get('IdNode'). " ".$depNode->GetPath().'<br>'. _("Error message: ") .
-								$depNode->msgErr . "<br><br>";
-						}
-					}
 
 				if (strlen($err)) {
 					$this->messages->add($err, MSG_TYPE_ERROR);
@@ -323,6 +323,16 @@ class Action_deletenode extends ActionAbstract {
 					$this->messages->add(_("All nodes were successfully deleted"), MSG_TYPE_NOTICE);
 				}
 			}
+			
+			//TODO ajlucena: do this when the deleted node make a deletion of templates (node type cases)
+			// reload the templates include files in the current project
+			$xsltNode = new xsltnode($node);
+			if (!$xsltNode->reload_templates_include(new Node($node->getProject())) === false)
+	        {
+	            $this->messages->mergeMessages($xsltNode->messages);
+	            return false;
+	        }
+			
 		} else {
 			/// Error: if it has not permit to cascade deletion and node has children and dependencies
 			if(sizeof($children) && count($depList))

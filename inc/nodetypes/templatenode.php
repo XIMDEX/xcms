@@ -28,6 +28,7 @@
 use Ximdex\Logger;
 use Ximdex\Models\Node;
 use Ximdex\NodeTypes\FileNode;
+use Ximdex\Runtime\App;
 use Ximdex\Runtime\DataFactory;
 use Ximdex\Utils\FsUtils;
 
@@ -43,7 +44,7 @@ class templatenode extends FileNode
         // Checks if ptd is compatible with XSLT
 
         if (!$this->checkXslCompliance($sourcePath, $name)) {
-            Looger::error("Ptd $name not compatible with XSLT");
+            Logger::error("Ptd $name not compatible with XSLT");
             return NULL;
         }
 
@@ -99,7 +100,7 @@ class templatenode extends FileNode
     {
 
         if (!($ptdContent || $fileName)) {
-            Looger::error('Any param void');
+            Logger::error('Any param void');
             return NULL;
         }
 
@@ -109,7 +110,7 @@ class templatenode extends FileNode
         $varsList = $result[1];
         $ptdContent = $this->_addUidAttributes($ptdContent, $fileName);
 
-        $tmpPath = XIMDEX_ROOT_PATH . \App::getValue('TempRoot') . '/tmpTemplateXml.xml';
+        $tmpPath = XIMDEX_ROOT_PATH . App::getValue('TempRoot') . '/tmpTemplateXml.xml';
         FsUtils::file_put_contents($tmpPath, $ptdContent);
 
         // build xslt content
@@ -181,7 +182,7 @@ class templatenode extends FileNode
             $xsltNode = new Node($xsltId);
 
             if (is_null($xslContent)) {
-                Looger::error("Error updating xsl template for ptd $name");
+                Logger::error("Error updating xsl template for ptd $name");
             } else {
                 $xsltNode->setContent($xslContent);
             }
@@ -220,7 +221,7 @@ class templatenode extends FileNode
         foreach ($tablesToTruncate as $table) {
             $query = sprintf('TRUNCATE %s', $table);
             if (!$db->execute($query)) {
-                Looger::error("Error al vaciar la tabla $table no se ha vaciado correctamente la cache");
+                Logger::error("Error al vaciar la tabla $table no se ha vaciado correctamente la cache");
             }
         }
 
@@ -230,7 +231,7 @@ class templatenode extends FileNode
                     continue;
                 }
                 if (!FsUtils::delete($cacheFolder . $file)) {
-                    Looger::error("No se ha podido eliminar el archivo de cache $file");
+                    Logger::error("No se ha podido eliminar el archivo de cache $file");
                 }
             }
             closedir($handler);
@@ -273,7 +274,7 @@ class templatenode extends FileNode
         // Checks if root tag is equal to ptd name
 
         if ($rootNode != $ptdName) {
-            Looger::error("Root tag not equal to name $ptdName");
+            Logger::error("Root tag not equal to name $ptdName");
             $this->parent->messages->add(_('El nombre del archivo no coincide con el de su etiqueta inicial'),
                 MSG_TYPE_ERROR);
             return false;
@@ -394,8 +395,8 @@ class templatenode extends FileNode
             $relativePath = $section->GetRelativePath($projectId);
         }
 
-        $xslDir = \App::getValue('UrlRoot') . \App::getValue('NodeRoot') . '/' . $relativePath . '/' .
-            \App::getValue("TemplatesDirName") . '/';
+        $xslDir = App::getValue('UrlRoot') . App::getValue('NodeRoot') . '/' . $relativePath . '/' .
+            App::getValue("TemplatesDirName") . '/';
 
         return $xslDir;
     }
