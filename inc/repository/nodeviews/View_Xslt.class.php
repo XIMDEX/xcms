@@ -85,39 +85,6 @@ class View_Xslt extends Abstract_View
 
         Logger::info('Starting xslt transformation');
         
-        /*
-        //load de docxap NodeId corresponding to the content of the section docxap.xsl file
-        $docxapPath = $section->GetPath() . '/' . $ptdFolder;
-        $idDocxapNode = $section->GetByNameAndPath('docxap.xsl', $docxapPath);
-        $idDocxapNode = $idDocxapNode[0]['IdNode'];
-        
-        //check if the docxap NodeId is ok
-        if (!isset($idDocxapNode) or !$idDocxapNode)
-        {
-            $error = "Can't load the NodeID for the docxap file: $docxap";
-            if (isset($GLOBALS['InBatchProcess']))
-                Logger::error($error);
-            else
-                $GLOBALS['errorInXslTransformation'] = $error;
-            return false;
-        }
-        
-        //load the docxap node
-        if (!isset($docxapNode))
-        {
-            $docxapNode = new Node($idDocxapNode);
-            if (!$docxapNode->GetID())
-            {
-                $error = "Can't load the node for the docxap file: $docxap";
-                if (isset($GLOBALS['InBatchProcess']))
-                    Logger::error($error);
-                else
-                    $GLOBALS['errorInXslTransformation'] = $error;
-                return false;
-            }
-        }
-        */
-        
         $xsltHandler = new \Ximdex\XML\XSLT();
         if (!$xsltHandler->setXML($pointer))
         {
@@ -149,7 +116,12 @@ class View_Xslt extends Abstract_View
         $docxapContent = $domDoc->saveXML();
         
         // include the correspondant includes_template.xsl for the current document
-        if (!xsltnode::replace_path_to_local_templatesInclude($docxapContent, $this->_node->GetId()))
+        if ($this->_node)
+            $idNode = $this->_node->GetID();
+        else
+            $idNode = null;
+        $urlTemplatesInclude = null;
+        if (!xsltnode::replace_path_to_local_templatesInclude($docxapContent, $idNode, $projectId, $urlTemplatesInclude))
         {
             $error = 'Cannot load the templates_include.xsl file for XML document with ID: ' . $this->_node->GetId();
             if (isset($GLOBALS['InBatchProcess']))
@@ -166,10 +138,10 @@ class View_Xslt extends Abstract_View
         if (App::debug())
         {
             # DEBUG
-            file_put_contents("/tmp/docxap-pre.xsl", $docxap);
-            file_put_contents("/tmp/docxap-post.xsl", $docxapContent);
-            file_put_contents("/tmp/pointer.xml", $pointer);
-            file_put_contents("/tmp/content-pre.xml", $content);
+            @file_put_contents("/tmp/docxap-pre.xsl", $docxap);
+            @file_put_contents("/tmp/docxap-post.xsl", $docxapContent);
+            @file_put_contents("/tmp/pointer.xml", $pointer);
+            @file_put_contents("/tmp/content-pre.xml", $content);
             # END DEBUG
         }
         
@@ -182,8 +154,40 @@ class View_Xslt extends Abstract_View
         if (App::debug())
         {
             # DEBUG
-            file_put_contents("/tmp/content-post.xml", $content);
+            @file_put_contents("/tmp/content-post.xml", $content);
             # END DEBUG
+        }
+        
+        if ($content === false)
+        {
+            // try to reload templates includes in order to try to solve the problem, in case of empty templates_include.xsl
+            $dom = new DOMDocument();
+            if (!$dom->load($urlTemplatesInclude))
+            {
+                Logger::error('Cannot load the XSL file: ' . $urlTemplatesInclude);
+                return false;
+            }
+            $templates = $dom->getElementsByTagName('xsl:include');
+            if (!$templates->length)
+            {
+                Logger::warning('XSL templates file: ' . $urlTemplatesInclude . ' is empty; trying to reload the templates files');
+                $xsltNode = new xsltnode($project);
+                if ($xsltNode->reload_templates_include($project) === false)
+                {
+                    Logger::error(var_dump($xsltNode->messages));
+                    return false;
+                }
+                if ($xsltHandler->setXSL(null, $docxapContent) === false)
+                    return false;
+                $content = $xsltHandler->process();
+                
+                if (App::debug())
+                {
+                    # DEBUG
+                    @file_put_contents("/tmp/content-post.xml", $content);
+                    # END DEBUG
+                }
+            }
         }
         
         if (empty($content)) {
@@ -192,9 +196,9 @@ class View_Xslt extends Abstract_View
             if ($error)
                 $error = str_replace('XSLTProcessor::transformToXml(): ', '', $error);
             $error = 'Error in XSLT process for ' . $docxap . ' (' . $error . ')';
+            Logger::error($error);
             if (isset($GLOBALS['InBatchProcess']))
             {
-                Logger::error($error);
                 return NULL;
             }
             $GLOBALS['errorInXslTransformation'] = $error;

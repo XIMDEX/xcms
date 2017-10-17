@@ -93,6 +93,13 @@ class Action_newemptynode extends ActionAbstract {
 			}
 			else
 			{
+			    // reload the templates include files for this new project when adding a template node
+			    if ($nodetype == \Ximdex\Services\NodeType::XSL_TEMPLATE)
+			    {
+			        $xsltNode = new xsltnode($file);
+			        if ($xsltNode->reload_templates_include(new Node($file->getProject())) === false)
+			            $this->messages->mergeMessages($xsltNode->messages);
+			    }
                 $this->messages->add(sprintf('%s'._(' has been successfully created'), $name), MSG_TYPE_NOTICE);
                 if ($name == 'docxap')
                 {
@@ -103,6 +110,7 @@ class Action_newemptynode extends ActionAbstract {
         } else {
             $this->messages->mergeMessages($file->messages);
         }
+        
 		$values = array('messages' => $this->messages->messages, 'parentID' => $parentId, 'nodeID' => $idfile);
 		
 		$this->sendJSON($values);

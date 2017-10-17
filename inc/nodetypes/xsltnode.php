@@ -80,60 +80,34 @@ class xsltnode extends FileNode
         if (parent::CreateNode($xsltName, $parentID, $nodeTypeID, $stateID, $xslSourcePath) === false)
             return false;
         
-        // Checks if exists template_include.xsl node
-        if ($xsltName != 'docxap.xsl' and (!isset($GLOBALS['fromTheme']) or !$GLOBALS['fromTheme'])) {
-            if ($this->setIncludeContent($xsltName, $parentID, $stateID) === false)
+        // Creating include file with the template inside
+        $parent = new Node($parentID);
+        if ($parent->GetNodeType() != \Ximdex\Services\NodeType::TEMPLATES_ROOT_FOLDER)
+        {
+            $this->messages->add('The node ' . $parentID . ' is not a templates folder', MSG_TYPE_ERROR);
+            return false;
+        }
+        $includeId = $parent->GetChildByName('templates_include.xsl');
+        if (!$includeId)
+        {
+            // there is not a templates_include.xsl file in this templates folder
+            $includeId = $this->create_templates_include($parentID, $stateID);
+            if (!$includeId)
                 return false;
         }
         
         return true;
     }
 
-
-    /**
-     * Make a xsl:include line and call to inserts on inclusion files
-     * @param string $fileName
-     * @param integer $parentId
-     * @param integer $nodeTypeId
-     * @param integer $stateID
-     * @return boolean|true
-     */
-    private function setIncludeContent($fileName, $parentId, $stateID)
-    {
-        if ($fileName == 'templates_include.xsl' or $fileName == 'docxap.xsl')
-            return true;
-        
-        $node = new Node($this->nodeID);
-        $projectId = $node->GetProject();
-        $ximptd = new Node($parentId);
-        
-        $ptdFolder = App::getValue("TemplatesDirName");
-
-        if ($ximptd->get('IdParent') == $projectId) {
-
-            // Making include in project (modify includes from project and its sections)
-            $this->writeIncludeFile($fileName, $projectId, $stateID);
-            
-        } else {
-
-            // Making include only in section ximptd
-            $sectionId = $node->GetSection();
-            $section = new Node($sectionId);
-            return $this->writeIncludeFile($fileName, $sectionId, $stateID);
-        }
-        return true;
-    }
-
     /**
      * Generation of a new templates_include.xsl node in a templates folder
      * @param integer $idTemplatesFolder
-     * @param Node $section
      * @param integer $nodeTypeID
      * @param integer $stateID
      * @param string $templateName
      * @return boolean
      */
-    public function create_templates_include($idTemplatesFolder, Node $section, $stateID = null, $templateName = null)
+    public function create_templates_include($idTemplatesFolder, $stateID = null, $templateName = null)
     {
         Logger::info("Creating unexisting templates include xslt file at folder $idTemplatesFolder");
         $dummyXml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
@@ -156,7 +130,7 @@ class xsltnode extends FileNode
             if ($templateName)
             {
                 // generate the URL to the XSL template file
-                $projectId = $section->GetProject();
+                $projectId = $incNode->GetProject();
                 $templatesNode = new Node($idTemplatesFolder);
                 $templateURL = App::getValue('UrlRoot') . App::getValue('NodeRoot') . $templatesNode->GetRelativePath($projectId) . '/' 
                         . $templateName;
@@ -170,41 +144,10 @@ class xsltnode extends FileNode
             if (!$this->rel_include_templates_to_documents_folders($project))
                 return false;
         }
-        else 
+        else
         {
             $this->messages->mergeMessages($incNode->messages);
             return false;
-        }
-        return $id;
-    }
-    
-    /**
-     * Insert xsl:include line in inclusion
-     * @param string $templateName
-     * @param integer $sectionId
-     * @param integer $nodeTypeID
-     * @param integer $stateID
-     * @return boolean
-     */
-    private function writeIncludeFile($templateName, $sectionId, $stateID)
-    {
-        $section = new Node($sectionId);
-        $ximPtdId = $section->GetChildByName('templates');
-        if ($ximPtdId === false)
-        {
-            $this->messages->add('Can\'t get the Templates folder to include the template ' . $templateName, MSG_TYPE_ERROR);
-            return false;
-        }
-        
-        $parent = new Node($ximPtdId);
-        $includeId = $parent->GetChildByName('templates_include.xsl');
-
-        if (!$includeId) {
-            
-            // Creating include file with the template inside
-            $includeId = $this->create_templates_include($ximPtdId, $section, $stateID, $templateName);
-            if (!$includeId)
-                return false;
         }
         
         //it is not necesary to create a docxap file in a project based in a theme
@@ -219,11 +162,7 @@ class xsltnode extends FileNode
             }
         }
         
-        // reload the templates include files for this project
-        $includeNode = new Node($includeId);
-        $this->reload_templates_include(new Node($includeNode->GetProject()));
-        
-        return true;
+        return $id;
     }
     
     /**
@@ -299,24 +238,12 @@ class xsltnode extends FileNode
     {
         if (null == $newName) return false;
         
-        $projectId = $this->parent->GetProject();
-        $parentId = $this->parent->get('IdParent');
-        $sectionId = $this->parent->getSection();
         $oldName = explode(".", $this->xsltOldName);
         $newName = explode(".", $newName);
         if (count($newName) != 2)
         {
             $this->messages->add('The file extension is necessary', MSG_TYPE_ERROR);
             return false;
-        }
-        if ($this->xsltOldName) {
-            $templateName = $this->xsltOldName;
-            if ($sectionId)
-                if ($this->removeIncludeFile($templateName, $sectionId) === false)
-                    return false;
-            if ($projectId)
-                if ($this->removeIncludeFile($templateName, $projectId) === false)
-                    return false;
         }
         //open the file and make the replacement inside
         $tpl = new Node($this->nodeID);
@@ -328,7 +255,9 @@ class xsltnode extends FileNode
         $new_content = str_replace($rpl1, $rpl2, $new_content);
         $tpl->SetContent($new_content);
         
-        if ($this->setIncludeContent($newName[0] . "." . $newName[1], $parentId, null) === false)
+        // reload the templates include files for this new project
+        $node = new Node($this->nodeID);
+        if ($this->reload_templates_include(new Node($node->getProject())) === false)
             return false;
         
         return true;
@@ -337,53 +266,12 @@ class xsltnode extends FileNode
     /**
      * Delete a node
      */
-    public function DeleteNode($reload = true)
+    public function DeleteNode()
     {
         // Deletes dependencies in rel tables
         $nodeTypeId = $this->parent->get('IdNodeType');
         $templateName = $this->parent->get('Name');
-        
-        //remove the template from includes_template node
-        if ($reload)
-        {
-            $templatesId = $this->parent->getParent();
-            if ($templatesId)
-            {
-                $templates = new Node($templatesId);
-                if ($templates and $templates->GetNodeType() == \Ximdex\Services\NodeType::TEMPLATES_ROOT_FOLDER)
-                {
-                    $sectionId = $templates->GetParent();
-                    if ($this->removeIncludeFile($templateName, $sectionId) === false)
-                        return false;
-                }
-                // if the deleted node is a templates_include, the relation with documents will be deleted too
-                $depsMngr = new DepsManager();
-                if ($templateName == 'templates_include.xsl')
-                    $depsMngr->deleteByTarget(DepsManager::DOCFOLDER_TEMPLATESINC, $templates->GetID());
-            }
-        }
-        
         Logger::info('Xslt dependencies deleted');
-        return true;
-    }
-
-    /**
-     * Remove from templates_include $templateName occurrences
-     * Returns true if the reference have been removed, false in error and null if the reference doesn't exists
-     * @param string $templateName
-     * @param integer $sectionId
-     * @param integer $nodeTypeId
-     * @return boolean|null
-     */
-    private function removeIncludeFile($templateName, $sectionId)
-    {
-        if ($templateName == 'templates_include.xsl' or $templateName == 'docxap.xsl')
-            return true;
-        
-        // reload the templates include files for this project
-        $section = new Node($sectionId);
-        if ($this->reload_templates_include(new Node($section->GetProject())) === false)
-            return false;
         return true;
     }
 
@@ -607,8 +495,7 @@ class xsltnode extends FileNode
     }
     
     /**
-     * Move a template node to another include templates and remove the previous reference
-     * Only do it if there is already a inclusion of this template in the origin templates include
+     * Move a template node to another include templates
      * @param int $targetParentID
      * @return boolean
      */
@@ -622,20 +509,11 @@ class xsltnode extends FileNode
             $this->messages->add('The node has not a parent node');
             return false;
         }
-        $parentId = $templates->GetParent();
         
-        //remove the template
-        $res = $this->removeIncludeFile($this->parent->GetNodeName(), $parentId);
-        if ($res === false)
+        // reload the templates include files for this new project
+        if ($this->reload_templates_include(new Node($templates->getProject())) === false)
             return false;
         
-        //if the template doesn't exists in the templates inclusions, it will not included in the destination templates include
-        if ($res === null)
-            return true;
-            
-        //include the template
-        if ($this->setIncludeContent($this->parent->GetNodeName(), $targetParentID, null) === false)
-            return false;
         return true;
     }
     
@@ -721,22 +599,40 @@ class xsltnode extends FileNode
     
     /**
      * Include the correspondant includes_template.xsl for the current document; based in DOCFOLDER_TEMPLATESINC dependencie
+     * If the $idDocLocalNode parameter is null, the templates to use will be the associated to the project with node given by $idProject parameter
      * @param string $content
-     * @param integer $idDocLocalNode
-     * @return boolean
+     * @param int $idDocLocalNode
+     * @param int|null $idProject
+     * @param string|null $urlTemplatesInclude
+     * @return bool|null
      */
-    public static function replace_path_to_local_templatesInclude(& $content, $idDocLocalNode)
+    public static function replace_path_to_local_templatesInclude(& $content, $idDocLocalNode, $idProject = null, & $urlTemplatesInclude = null)
     {
-        $depsManager = new DepsManager();
-        $node = new Node($idDocLocalNode);
-        if (!$node->GetID())
+        if ($idDocLocalNode)
+        {
+            $node = new Node($idDocLocalNode);
+            if (!$node->GetID())
+                return false;
+            
+            // get the documents folder ID of the document node ID given 
+            $documentsFolderId = $node->_getParentByType(\Ximdex\Services\NodeType::XML_ROOT_FOLDER);
+            if (!$documentsFolderId)
+                return false;
+            
+            // get the templates folder node that references the previous document
+            $depsManager = new DepsManager();
+            $idTemplatesFolder = $depsManager->getBySource(DepsManager::DOCFOLDER_TEMPLATESINC, $documentsFolderId);
+        }
+        elseif ($idProject)
+        {
+            // get the templates folder of the project
+            $node = new Node($idProject);
+            if (!$node->GetID())
+                return false;
+            $idTemplatesFolder = $node->GetChildren(\Ximdex\Services\NodeType::TEMPLATES_ROOT_FOLDER);
+        }
+        else
             return false;
-        // get the documents folder ID of the document node ID given 
-        $documentsFolderId = $node->_getParentByType(\Ximdex\Services\NodeType::XML_ROOT_FOLDER);
-        if (!$documentsFolderId)
-            return false;
-        //get the templates folder node that references the previous document
-        $idTemplatesFolder = $depsManager->getBySource(DepsManager::DOCFOLDER_TEMPLATESINC, $documentsFolderId);
         if ($idTemplatesFolder)
             $idTemplatesFolder = $idTemplatesFolder[0];
         else
@@ -744,9 +640,12 @@ class xsltnode extends FileNode
         $templatesFolderNode = new Node($idTemplatesFolder);
         if (!$templatesFolderNode->GetID())
             return false;
+        
         // assing the templates_include in the docxap content
         $PATH_TEMPLATE_INCLUDE = App::getValue('UrlRoot') . App::getValue('NodeRoot') . $templatesFolderNode->GetRelativePath($node->getProject());
         $content = str_replace('##PATH_TO_LOCAL_TEMPLATE_INCLUDE##', $PATH_TEMPLATE_INCLUDE, $content);
+        $urlTemplatesInclude = $PATH_TEMPLATE_INCLUDE . '/templates_include.xsl';
+        
         return true;
     }
     
@@ -778,9 +677,9 @@ class xsltnode extends FileNode
             $templatesIncludeId = $templateFolder->GetChildByName('templates_include.xsl');
             if ($templatesIncludeId)
             {
-                // get the project node ID
                 if (!$projectId)
                 {
+                    // get the project node ID
                     $projectId = $node->getProject();
                 }
                 

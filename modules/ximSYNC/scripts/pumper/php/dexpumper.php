@@ -271,31 +271,36 @@ class DexPumper {
 	}
 
 	private function pumpFile() {
-			$idBatchUp = (int) $this->serverFrame->get('IdBatchUp');
-			$idServer =  (int) $this->serverFrame->get('IdServer');
+	    
+		$idBatchUp = (int) $this->serverFrame->get('IdBatchUp');
+		$idServer =  (int) $this->serverFrame->get('IdServer');
 
-			$idSync =  (int) $this->serverFrame->get('IdSync');
-			$this->info("ServerFrame $idSync PUMPING ");
+		$idSync =  (int) $this->serverFrame->get('IdSync');
+		$this->info("ServerFrame $idSync PUMPING ");
 
+		$batch = new Batch($idBatchUp);
+		$batchId = (int) $batch->get('IdBatch');
+		$batchState = $batch->get('State');
 
-			$batch = new Batch($idBatchUp);
-			$batchId = (int) $batch->get('IdBatch');
-			$batchState = $batch->get('State');
-
-			if (!empty($batchId) &&  ServerFrame::CLOSING == $batchState) {
-					$filesToRename = $this->getFilesToRename($idBatchUp,$idServer);
-					$totalToRename = count($filesToRename);
-					if (is_array($filesToRename) && $totalToRename > 0) {
-						$this->info("$totalToRename files to rename ");
-
-						foreach ($filesToRename as $file) {
-							 $renameResult = $this->RenameFile($file);
-                             if ($renameResult)
-                                 $this->finishTask ($file["IdSync"]);
-                             //TODO ajlucena: if this rename task does not work, generates a infinite loop
-						}
-					}
+		if (!empty($batchId) &&  ServerFrame::CLOSING == $batchState) {
+		    
+			$filesToRename = $this->getFilesToRename($idBatchUp,$idServer);
+			$totalToRename = count($filesToRename);
+			if (is_array($filesToRename) && $totalToRename > 0) {
+			    
+				$this->info("$totalToRename files to rename ");
+				foreach ($filesToRename as $file) {
+					 $renameResult = $this->RenameFile($file);
+                     if ($renameResult)
+                         $this->finishTask ($file["IdSync"]);
+                     else
+                     {
+                         // if this rename task does not work, generates a infinite loop
+                         $this->updateTask(0, ServerFrame::DUE2OUTWITHERROR);
+                     }
+				}
 			}
+		}
 	}
 
 	// DONE

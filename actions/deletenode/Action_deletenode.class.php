@@ -324,14 +324,15 @@ class Action_deletenode extends ActionAbstract {
 				}
 			}
 			
-			//TODO ajlucena: do this when the deleted node make a deletion of templates (node type cases)
-			// reload the templates include files in the current project
-			$xsltNode = new xsltnode($node);
-			if (!$xsltNode->reload_templates_include(new Node($node->getProject())) === false)
-	        {
-	            $this->messages->mergeMessages($xsltNode->messages);
-	            return false;
-	        }
+            // reload the templates include files in the current project
+			if ($node->GetNodeType() == \Ximdex\Services\NodeType::XSL_TEMPLATE or $node->GetNodeType() == \Ximdex\Services\NodeType::TEMPLATES_ROOT_FOLDER
+			         or $node->GetNodeType() == \Ximdex\Services\NodeType::SERVER or $node->GetNodeType() == \Ximdex\Services\NodeType::SECTION)
+			{
+			    // do this when the deleted node make a deletion of templates (node types like projects, servers sections, templates)
+			    $xsltNode = new xsltnode($node);
+			    if (!$xsltNode->reload_templates_include(new Node($node->getProject())) === false)
+			        $this->messages->mergeMessages($xsltNode->messages);
+			}
 			
 		} else {
 			/// Error: if it has not permit to cascade deletion and node has children and dependencies

@@ -313,6 +313,11 @@ class Action_addfoldernode extends ActionAbstract
         $nodeType = new NodeType();
         $nodeType->SetByName($nodeTypeName);
 
+        if ($this->request->getParam("theme"))
+        {
+            // we use this global variable to know that we are creating a project from a theme
+            $GLOBALS['fromTheme'] = true;
+        }
         $folder = new Node();
         $idFolder = $folder->CreateNode($name, $nodeID, $nodeType->GetID(), null);
 
@@ -329,6 +334,7 @@ class Action_addfoldernode extends ActionAbstract
                 $this->languages = $languages;
             }
             $this->createProjectNodes($idFolder);
+            
         } elseif ($idFolder > 0 && $nodeTypeName == 'XSIRRepository') {
             $node = new Node();
             $node->CreateNode("metadata", $idFolder, ServicesNodeType::METADATA_SECTION);
@@ -349,7 +355,18 @@ class Action_addfoldernode extends ActionAbstract
             $node->CreateNode("other", $idFolder, ServicesNodeType::XSIR_OTHER_FOLDER);
         }
 
-        if ($idFolder > 0) {
+        if ($idFolder)
+        {
+            // reload the templates include files for this new project
+            if (!isset($node))
+                $node = new Node($idFolder);
+            if ($node->GetNodeType() == \Ximdex\Services\NodeType::PROJECT or $node->GetNodeType() == \Ximdex\Services\NodeType::TEMPLATES_ROOT_FOLDER
+                    or $node->GetNodeType() == \Ximdex\Services\NodeType::SERVER or $node->GetNodeType() == \Ximdex\Services\NodeType::SECTION)
+            {
+                $xsltNode = new xsltnode($node);
+                if ($xsltNode->reload_templates_include(new Node($node->getProject())) === false)
+                    $this->messages->mergeMessages($xsltNode->messages);
+            }
             $this->messages->add(sprintf(_('%s has been successfully created'), $name), MSG_TYPE_NOTICE);
         } else {
             $this->messages->add(sprintf(_('The operation has failed: %s'), $folder->msgErr), MSG_TYPE_ERROR);
@@ -364,7 +381,7 @@ class Action_addfoldernode extends ActionAbstract
         $theme = $this->request->getParam("theme");
         if ($theme) {
             
-            //we use this global variable to know that we are creating a project from a theme
+            // we use this global variable to know that we are creating a project from a theme
             $GLOBALS['fromTheme'] = true;
             
             $projectTemplate = new ProjectTemplate($theme);
@@ -380,21 +397,13 @@ class Action_addfoldernode extends ActionAbstract
             foreach ($templates as $template) {
                 $this->insertFiles($projectId, "templates", array($template));
             }
-
+            
             foreach ($servers as $server) {
                 $this->insertServer($projectId, $server);
             }
             
+            // set to off the flag that indicates the project has been generated from a theme
             $GLOBALS['fromTheme'] = null;
-            
-            // reload the templates include files for this new project
-            $project = new Node($projectId);
-            $xsltNode = new xsltnode($project);
-            if ($xsltNode->reload_templates_include($project) === false)
-            {
-                $this->messages->mergeMessages($xsltNode->messages);
-                return false;
-            }
         }
         return true;
     }
@@ -519,7 +528,7 @@ class Action_addfoldernode extends ActionAbstract
         foreach ($arrayTemplates as $template) {
             $this->insertFiles($serverId, "templates", array($template));
         }
-
+        
         //images
         $arrayImages = $server->getImages();
         $this->createResourceByFolder($server, "images", "ImagesFolder", $arrayImages);

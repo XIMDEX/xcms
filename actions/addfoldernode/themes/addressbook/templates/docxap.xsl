@@ -7,14 +7,14 @@
 	<!-- END XSLT INCLUDE INSERTION -->
 	<xsl:template name="docxap" match="docxap">
 		<!--<xsl:text disable-output-escaping="yes"> <![CDATA[ <!DOCTYPE html PUBLIC 
-			"-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> 
-			]]> </xsl:text> -->
+				"-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> 
+		]]> </xsl:text> -->
 		<html xmlns="http://www.w3.org/1999/xhtml">
 			<head>
 				<meta http-equiv="content-type" content="application/xhtml+xml; charset=utf-8" />
 				<link rel="stylesheet" type="text/css" href="@@@RMximdex.dotdot(css/addressbook.css)@@@" />
-				<link
-					href="//fonts.googleapis.com/css?family=Norican|Amatic+SC|Handlee|Devonshire|Cookie|Rochester|Patrick+Hand|Just+Another+Hand" rel="stylesheet" type="text/css" />
+				<link href="//fonts.googleapis.com/css?family=Norican|Amatic+SC|Handlee|Devonshire|Cookie|Rochester|Patrick+Hand|Just+Another+Hand" 
+						rel="stylesheet" type="text/css" />
 				<title>AddressBook</title>
 			</head>
 			<body uid="{@uid}">

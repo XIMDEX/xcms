@@ -51,6 +51,7 @@ class Module_ximTOUR extends Module
         $projects = new Node(10000);
         $projectid = $projects->GetChildByName("Picasso");
         if (!($projectid > 0)) {
+            $GLOBALS['fromTheme'] = true;
             $addFolderNode = new Action_addfoldernode();
             $nodeID = 10000;
             $name = "Picasso";
@@ -82,7 +83,13 @@ class Module_ximTOUR extends Module
                     $addFolderNode->languages = $languages;
                 }
                 $addFolderNode->createProjectNodes($idFolder);
+                
+                // generate the templates includes content
+                $project = new Node($projectid);
+                $xsltNode = new xsltnode($project);
+                $xsltNode->reload_templates_include($project);
             }
+            $GLOBALS['fromTheme'] = null;
         }
         $this->loadConstructorSQL("ximTOUR.constructor.sql");
         return parent::install();

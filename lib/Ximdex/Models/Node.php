@@ -1370,14 +1370,7 @@ class Node extends NodesOrm
         if ($nodeTypeID == \Ximdex\Services\NodeType::TEMPLATES_ROOT_FOLDER)
         {
             $xsltNode = new xsltnode($node);
-            if ($xsltNode->create_templates_include($node->GetID(), $parentNode) === false)
-            {
-                $this->messages->mergeMessages($xsltNode->messages);
-                return false;
-            }
-            
-            // reload the templates include files for the current project
-            if ($xsltNode->reload_templates_include(new Node($node->getProject())) === false)
+            if ($xsltNode->create_templates_include($node->GetID()) === false)
             {
                 $this->messages->mergeMessages($xsltNode->messages);
                 return false;

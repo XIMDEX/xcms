@@ -181,10 +181,7 @@ class Action_movenode extends Action_copy {
                 return false;
             }
 		}
-        /*
-		$this->reloadNode($oldParentId);
-		$this->reloadNode($targetParentID);
-		*/
+		
 		$targetParent = new Node($targetParentID);
 		return $targetParent->class->updatePath();
     }
