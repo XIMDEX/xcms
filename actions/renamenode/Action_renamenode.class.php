@@ -24,7 +24,6 @@
  * @version $Revision$
  */
 
-use Ximdex\Logger;
 use Ximdex\Models\Language;
 use Ximdex\Models\Node;
 use Ximdex\Models\Pipeline;
@@ -167,13 +166,13 @@ class Action_renamenode extends ActionAbstract
                     }
                 }
                 
-                //update all the references of the old name of this node to the new one
+                //update all the references in the templates includes of the old name of this node to the new one
                 if ($node->GetNodeType() == Ximdex\Services\NodeType::PROJECT or $node->GetNodeType() == Ximdex\Services\NodeType::SERVER 
                         or $node->GetNodeType() == Ximdex\Services\NodeType::SECTION)
                 {
-                    $res = xsltnode::rename_include_templates($node, $oldNode);
-                    if ($res === false)
-                        Logger::error('Any docxap.xsl file can not been updated with the new name: ' . $node->GetNodeName());
+                    $xsltNode = new xsltnode($node);
+                    if (!$xsltNode->reload_templates_include(new Node($node->GetProject())))
+                        $this->messages->mergeMessages($xsltNode->messages);
                 }
             }
             else
