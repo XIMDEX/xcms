@@ -1366,11 +1366,21 @@ class Node extends NodesOrm
 
         $node = new Node($this->get('IdNode'));
         
-        // if the node is a type of templates folder, generates the templates_include.xsl inside
         if ($nodeTypeID == \Ximdex\Services\NodeType::TEMPLATES_ROOT_FOLDER)
         {
+            // if the node is a type of templates folder, generates the templates_include.xsl inside
             $xsltNode = new xsltnode($node);
             if ($xsltNode->create_templates_include($node->GetID()) === false)
+            {
+                $this->messages->mergeMessages($xsltNode->messages);
+                return false;
+            }
+        }
+        elseif ($nodeTypeID == \Ximdex\Services\NodeType::METADATA_SECTION)
+        {
+            // if the node is a type of metadata section, generates the relation with the templates folder
+            $xsltNode = new xsltnode($node);
+            if ($xsltNode->rel_include_templates_to_metadata_section($node) === false)
             {
                 $this->messages->mergeMessages($xsltNode->messages);
                 return false;
@@ -1455,7 +1465,8 @@ class Node extends NodesOrm
         $dbObj->Execute(sprintf("DELETE FROM NoActionsInNode WHERE IdNode = %d", $this->get('IdNode')));
         
         // if the folder is of documents type, the relation with templates folder will be deleted
-        if ($this->nodeType->get('IdNodeType') == \Ximdex\Services\NodeType::XML_ROOT_FOLDER)
+        if ($this->nodeType->get('IdNodeType') == \Ximdex\Services\NodeType::XML_ROOT_FOLDER 
+                or $this->nodeType->get('IdNodeType') == \Ximdex\Services\NodeType::METADATA_SECTION)
         {
             $depsMngr = new DepsManager();
             $depsMngr->deleteBySource(DepsManager::DOCFOLDER_TEMPLATESINC, $this->nodeID);

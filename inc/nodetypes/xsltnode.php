@@ -174,6 +174,8 @@ class xsltnode extends FileNode
      */
     public function rel_include_templates_to_documents_folders(Node $section, Node $node = null, DepsManager $depsMngr = null)
     {
+        if (!$depsMngr)
+            Logger::info('Making a relation between documents section and templates with section ' . $section->GetID());
         // check if there is a local templates_includes
         $idTemplatesNode = $section->GetChildren(\Ximdex\Services\NodeType::TEMPLATES_ROOT_FOLDER);
         if ($idTemplatesNode)
@@ -225,6 +227,25 @@ class xsltnode extends FileNode
                 if ($res === false)
                     return false;
             }
+        }
+        return true;
+    }
+    
+    /**
+     * Make the relations between a server templates section and the paralel metadata section, by the metadata document node given
+     * @param Node $node
+     * @return boolean
+     */
+    public function rel_include_templates_to_metadata_section(Node $node)
+    {
+        Logger::info('Making a relation between metadata section and templates with node ' . $node->GetID());
+        $server = new Node($node->getServer());
+        $idTemplatesNode = $server->GetChildren(\Ximdex\Services\NodeType::TEMPLATES_ROOT_FOLDER);
+        $depsMngr = new DepsManager();
+        if ($depsMngr->set(DepsManager::DOCFOLDER_TEMPLATESINC, $node->GetID(), $idTemplatesNode[0]) === false)
+        {
+            $this->messages->add('Cannot link templates node ' . $idTemplatesNode . ' with metadata section ' . $node->GetID(), MSG_TYPE_ERROR);
+            return false;
         }
         return true;
     }
@@ -610,14 +631,29 @@ class xsltnode extends FileNode
     {
         if ($idDocLocalNode)
         {
+            Logger::info('Replacing includes template with document node ' . $idDocLocalNode);
             $node = new Node($idDocLocalNode);
             if (!$node->GetID())
+            {
+                Logger::error('Cannot replace the local templates include: The node ' . $idDocLocalNode . ' does not exists');
                 return false;
+            }
             
-            // get the documents folder ID of the document node ID given 
-            $documentsFolderId = $node->_getParentByType(\Ximdex\Services\NodeType::XML_ROOT_FOLDER);
-            if (!$documentsFolderId)
+            // get the documents folder ID of the document node ID given
+            if ($node->GetNodeType() == \Ximdex\Services\NodeType::XML_DOCUMENT)
+                $documentsFolderId = $node->_getParentByType(\Ximdex\Services\NodeType::XML_ROOT_FOLDER);
+            elseif ($node->GetNodeType() == \Ximdex\Services\NodeType::METADATA_DOCUMENT)
+                $documentsFolderId = $node->_getParentByType(\Ximdex\Services\NodeType::METADATA_SECTION);
+            else
+            {
+                Logger::error('Cannot replace the local templates include: Node is not of XML or METADATA type');
                 return false;
+            }
+            if (!$documentsFolderId)
+            {
+                Logger::error('Cannot replace the local templates include: Container for node ' . $idDocLocalNode . ' not found');
+                return false;
+            }
             
             // get the templates folder node that references the previous document
             $depsManager = new DepsManager();
@@ -626,20 +662,30 @@ class xsltnode extends FileNode
         elseif ($idProject)
         {
             // get the templates folder of the project
+            Logger::info('Replacing includes template with project node ' . $idProject);
             $node = new Node($idProject);
             if (!$node->GetID())
+            {
+                Logger::error('Cannot replace the local templates include: Project node ' . $idProject . ' does not exists');
                 return false;
+            }
             $idTemplatesFolder = $node->GetChildren(\Ximdex\Services\NodeType::TEMPLATES_ROOT_FOLDER);
         }
         else
+        {
+            Logger::error('Cannot replace the local templates include: empty node parameters given');
             return false;
+        }
         if ($idTemplatesFolder)
             $idTemplatesFolder = $idTemplatesFolder[0];
         else
             $idTemplatesFolder = 0;
         $templatesFolderNode = new Node($idTemplatesFolder);
         if (!$templatesFolderNode->GetID())
+        {
+            Logger::error('Cannot replace the local templates include: Templates folder not found for document node ' . $idDocLocalNode);
             return false;
+        }
         
         // assing the templates_include in the docxap content
         $PATH_TEMPLATE_INCLUDE = App::getValue('UrlRoot') . App::getValue('NodeRoot') . $templatesFolderNode->GetRelativePath($node->getProject());

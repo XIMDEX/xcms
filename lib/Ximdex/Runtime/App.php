@@ -15,7 +15,7 @@ Class App
     protected $DIBuilder = null;
     protected $config = null;
     private $dispatcher = null;
-    private static $debug = true;
+    private static $debug = false;
 
     public function __construct()
     {
