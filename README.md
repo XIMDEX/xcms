@@ -1,4 +1,4 @@
-# Ximdex 3.* - README
+# Ximdex 3.9 - README
 
 [![Build Status](https://travis-ci.org/XIMDEX/ximdex.svg?branch=develop)](https://travis-ci.org/XIMDEX/ximdex)
 [![PHP 7 ready](https://php7ready.timesplinter.ch/XIMDEX/ximdex/develop/badge.svg)](https://travis-ci.org/XIMDEX/ximdex)
