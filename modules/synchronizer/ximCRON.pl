@@ -27,7 +27,7 @@
  
 
 
-# codigos de error: 0=OK, 200:problema en acceso a servidor, 10: problema de configuración, 255: die por problema de invocación
+# codigos de error: 0=OK, 200:problema en acceso a servidor, 10: problema de configuraciÃ³n, 255: die por problema de invocaciÃ³n
 
 BEGIN {
         my $script = $0; $script =~ s[/+][/]g;

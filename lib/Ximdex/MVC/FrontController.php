@@ -76,7 +76,7 @@ class FrontController extends IController
     }
 
     /**
-     * Determina el tipo de controlador que debe gestionar la petici�n
+     * Determina el tipo de controlador que debe gestionar la petición
      */
     /**
      * @return FrontControllerCLI|FrontControllerHTTP

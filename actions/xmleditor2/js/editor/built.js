@@ -5278,8 +5278,8 @@ function TableTool() {
         table = doc.createElement("table");
         table.className = tableclass;
 
-        // TODO: La asociaci�n de una plantilla debe obtenerse de un fichero de
-        // configuraci�n.
+        // TODO: La asociación de una plantilla debe obtenerse de un fichero de
+        // configuración.
         table.setAttribute("uid","tabla");
 
         // If the user wants a row of headings, make them
@@ -11526,7 +11526,7 @@ XimDocument = function(editorConfig) {
 
 				ximElement.attributes[xmlName] = newAttribute;*/
 
-				//console.warn('TODO: �Se esta usando aun htmlAttributes?');
+				//console.warn('TODO: Se esta usando aun htmlAttributes?');
 			}
 		}
 
@@ -11787,7 +11787,7 @@ XimDocument = function(editorConfig) {
 	 */
 	this._reverseParseNode = function(element, parent, options) {
 
-		// NOTE: This way of exporting the document is the most correct but causes that the tagNames were in capitals �?�?�?
+		// NOTE: This way of exporting the document is the most correct but causes that the tagNames were in capitals ???
 		//
 		// Fixed: http://www.w3.org/TR/DOM-Level-2-Core/core.html#Namespaces-Considerations
 		// "... For HTML, the tagName parameter may be provided in any case, but it must be mapped to the canonical uppercase form by the DOM (Level 1) implementation ..."
@@ -16162,7 +16162,7 @@ function XimdocContextMenuTool() {
 				}
 			}
 
-			// TODO: Ofrecer info e interacci�n con las anotaciones de la palabra word. See this.createSpellcheckItems
+			// TODO: Ofrecer info e interacción con las anotaciones de la palabra word. See this.createSpellcheckItems
 			if(checker) {
 				menu.push(new ContextMenuElement(_('Annotate word ') + ' \'' + word + '\'', this.editor.tools.ximdocannotationtool.annotateWord(word)));
 			}

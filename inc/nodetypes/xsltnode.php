@@ -302,58 +302,35 @@ class xsltnode extends FileNode
         $domDoc = new DOMDocument();
         $domDoc->formatOutput = true;
         $domDoc->preserveWhiteSpace = false;
-        if (@$domDoc->loadXML($content) === false)
-        {
-            //we don't allow to save an invalid XML
-            if (isset($GLOBALS['InBatchProcess']))
-            {
-                if ($node and $node->getDescription())
-                    Logger::error('Invalid XML for node: ' . $node->getDescription());
-                else
-                    Logger::error('Invalid XML to set content operation');
-            }
-            $error = \Ximdex\Error::error_message('DOMDocument::loadXML(): ');
-            if ($error)
-                $this->messages->add($error, MSG_TYPE_WARNING);
-        }
+        $res = @$domDoc->loadXML($content);
         
         //validating of the correct XSL document in the correct system path (only if node is given)
-        if ($node)
+        if ($node and $res)
         {
             $xsltprocessor = new XSLTProcessor();
             $dom = new DOMDocument();
-            if (@$dom->loadXML($content) === false)
-            {
-                $error = \Ximdex\Error::error_message('DOMDocument::loadXML(): ');
-                if (isset($GLOBALS['InBatchProcess']))
-                {
-                    if ($node and $node->getDescription())
-                        Logger::error('Invalid XML for node: ' . $node->getDescription() . ' (' . $error . ')');
-                    else
-                        Logger::error('Invalid XML (' . $error . ')');
-                }
-                $this->messages->add('Invalid XML (' . $error . ')', MSG_TYPE_WARNING);
-            }
+            @$dom->loadXML($content);
             $project = new Node($node->GetProject());
             $dom->documentURI = App::getValue('AppRoot') . App::getValue('NodeRoot') . $node->GetRelativePath($project->GetID());
             if (@$xsltprocessor->importStyleSheet($dom) === false)
             {
                 $error = \Ximdex\Error::error_message('XSLTProcessor::importStylesheet(): ');
-                if (strpos($error, '##PATH_TO_LOCAL_TEMPLATE_INCLUDE##') === false)
+                
+                // avoid the PATH_TO_LOCAL_TEMPLATE_INCLUDE token error
+                if ($error and strpos($error, '##PATH_TO_LOCAL_TEMPLATE_INCLUDE##') === false)
                 {
-                    if (isset($GLOBALS['InBatchProcess']))
-                    {
-                        if ($node and $node->getDescription())
-                            Logger::error('Invalid XSL for node ' . $node->getDescription() . ': ' . $error);
-                        else
-                            Logger::error('Invalid XSL to set content operation: ' . $error);
-                    }
-                    if ($error)
-                        $this->messages->add($error, MSG_TYPE_WARNING);
+                    if ($node and $node->getDescription())
+                        $error = 'Invalid XSL for node ' . $node->getDescription() . ': ' . $error;
+                    else
+                        $error = 'Invalid XSL to set content operation: ' . $error;
+                    Logger::error($error);
+                    $this->messages->add($error, MSG_TYPE_WARNING);
+                    $res = true;
                 }
             }
         }
-        $content = $domDoc->saveXML();
+        if ($res)
+            $content = $domDoc->saveXML();
         $content = $this->sanitizeContent($content);
         if ($content === false)
             return false;
@@ -393,7 +370,8 @@ class xsltnode extends FileNode
         $xsldom = new DOMDocument();
         $xsldom->formatOutput = true;
         $xsldom->preserveWhiteSpace = false;
-        $xsldom->loadXML($content);
+        if (@$xsldom->loadXML($content) === false)
+            return $content;
         $xpath = new DOMXPath($xsldom);
 
         $nodelist = $xpath->query('//xsl:text');
@@ -559,6 +537,12 @@ class xsltnode extends FileNode
         //get includes template node and its content
         $includeNode = new Node($includeId);
         $includeContent = $includeNode->getContent();
+        if (stripos($includeContent, '/' . $templateName) !== false)
+        {
+            //template exists
+            return true;
+        }
+        /*
         $dom = new DOMDocument();
         if (!@$dom->loadXML($includeContent))
         {
@@ -573,6 +557,7 @@ class xsltnode extends FileNode
             //template exists
             return true;
         }
+        */
         return false;
     }
     

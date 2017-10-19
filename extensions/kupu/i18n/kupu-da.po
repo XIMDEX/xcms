@@ -15,11 +15,11 @@ msgstr ""
 
 #: /common/kupu.pox:None
 msgid "Properties modified"
-msgstr "Egenskaber ændret"
+msgstr "Egenskaber Ã¦ndret"
 
 #: /common/kupu.pox:None
 msgid "Command ${command} executed with parameter ${param}"
-msgstr "Kommandoen ${command} udførst med parameter ${param}"
+msgstr "Kommandoen ${command} udfÃ¸rst med parameter ${param}"
 
 #: /common/kupu.pox:None
 msgid "Not inside a definition list element!"
@@ -27,27 +27,27 @@ msgstr "Ikke inde i et dl element"
 
 #: /common/kupu.pox:None
 msgid "Add table"
-msgstr "Tilføj tabel"
+msgstr "TilfÃ¸j tabel"
 
 #: /common/kupu.pox:None
 msgid "Table added"
-msgstr "Tabel tilføjet"
+msgstr "Tabel tilfÃ¸jet"
 
 #: /common/kupu.pox:None
 msgid "Source edit tool initialized"
-msgstr "Kildekode-værktøj startet"
+msgstr "Kildekode-vÃ¦rktÃ¸j startet"
 
 #: /common/kupu.pox:None
 msgid "Delete row"
-msgstr "Slet række"
+msgstr "Slet rÃ¦kke"
 
 #: /common/kupu.pox:None
 msgid "Recursion detected when counting column position"
-msgstr "Fejl i optælling af kolonne-position"
+msgstr "Fejl i optÃ¦lling af kolonne-position"
 
 #: /common/kupu.pox:None
 msgid "List style changed"
-msgstr "Listeformattering ændret"
+msgstr "Listeformattering Ã¦ndret"
 
 #: /common/kupu.pox:None
 msgid "Create image"
@@ -55,11 +55,11 @@ msgstr "Opret billede"
 
 #: /common/kupu.pox:None
 msgid "You have unsaved changes. Do you want to save before leaving the page?"
-msgstr "Du har ugemte ændringer. Vil du gemme, før du forlader denne side?"
+msgstr "Du har ugemte Ã¦ndringer. Vil du gemme, fÃ¸r du forlader denne side?"
 
 #: /common/kupu.pox:None
 msgid "Table row removed"
-msgstr "Tabel-række fjernet"
+msgstr "Tabel-rÃ¦kke fjernet"
 
 #: /common/kupu.pox:None
 msgid "Document saved"
@@ -71,15 +71,15 @@ msgstr "Valgt farve"
 
 #: /common/kupu.pox:None
 msgid "Table row added"
-msgstr "Tabel-række tilføjet"
+msgstr "Tabel-rÃ¦kke tilfÃ¸jet"
 
 #: /common/kupu.pox:None
 msgid "Error saving document"
-msgstr "Fejl opstod ved forsøg på at gemme dokumentet"
+msgstr "Fejl opstod ved forsÃ¸g pÃ¥ at gemme dokumentet"
 
 #: /common/kupu.pox:None
 msgid "No destination URL available!"
-msgstr "Ingen URL tilgængelig!"
+msgstr "Ingen URL tilgÃ¦ngelig!"
 
 #: /common/kupu.pox:None
 msgid "Link removed"
@@ -87,7 +87,7 @@ msgstr "Linket fjernet"
 
 #: /common/kupu.pox:None
 msgid "No row to delete"
-msgstr "Ingen rækker at slette"
+msgstr "Ingen rÃ¦kker at slette"
 
 #: /common/kupu.pox:None
 msgid "Delete Table"
@@ -99,7 +99,7 @@ msgstr "Dokumentet er renset, nu sendes det til serveren"
 
 #: /common/kupu.pox:None
 msgid "Image tool initialized"
-msgstr "Billede-værktøjet startet"
+msgstr "Billede-vÃ¦rktÃ¸jet startet"
 
 #: /common/kupu.pox:None
 msgid "End offset out of range!"
@@ -119,15 +119,15 @@ msgstr "Starter HTML-rensning"
 
 #: /common/kupu.pox:None
 msgid "Link modified"
-msgstr "Link ændret"
+msgstr "Link Ã¦ndret"
 
 #: /common/kupu.pox:None
 msgid "Request sent to server"
-msgstr "Forespørgsel sendt til server"
+msgstr "ForespÃ¸rgsel sendt til server"
 
 #: /common/kupu.pox:None
 msgid "Table tool initialized"
-msgstr "Tabel-værktøjet startet"
+msgstr "Tabel-vÃ¦rktÃ¸jet startet"
 
 #: /common/kupu.pox:None
 msgid "There were no errors."
@@ -139,7 +139,7 @@ msgstr "exception ${message} while registering an event handler for element ${el
 
 #: /common/kupu.pox:None
 msgid "Error loading translation (status ${status} ), falling back to english"
-msgstr "Fejl ved hentinng af oversættelse (status ${status} ), bruger engelsk i stedet"
+msgstr "Fejl ved hentinng af oversÃ¦ttelse (status ${status} ), bruger engelsk i stedet"
 
 #: /common/kupu.pox:None
 msgid "Start node offset detected in a node without children!"
@@ -151,7 +151,7 @@ msgstr "Deprecation warning: KupuTool._selectSelectItem"
 
 #: /common/kupu.pox:None
 msgid "Couldn\\'t set design mode. Kupu will not work on this browser."
-msgstr "Kunne ikke gå i designmode. Kupu vil ikke virke i denne browser."
+msgstr "Kunne ikke gÃ¥ i designmode. Kupu vil ikke virke i denne browser."
 
 #: /common/kupu.pox:None
 msgid "No element found in the config island!"
@@ -163,23 +163,23 @@ msgstr "Start offset out of range!"
 
 #: /common/kupu.pox:None
 msgid "Pasting from JavaScript is disabled on your Mozilla due to security settings. For more information, read http://www.mozilla.org/editor/midasdemo/securityprefs.html"
-msgstr "Du kan ikke sætte ind fra Javascript i din Mozilla browser på grund af sikkerhedsindstillinger. Se flere informationer her: http://www.mozilla.org/editor/midasdemo/securityprefs.html"
+msgstr "Du kan ikke sÃ¦tte ind fra Javascript i din Mozilla browser pÃ¥ grund af sikkerhedsindstillinger. Se flere informationer her: http://www.mozilla.org/editor/midasdemo/securityprefs.html"
 
 #: /common/kupu.pox:None
 msgid "Property tool initialized"
-msgstr "Egenskabs-værktøjet startet"
+msgstr "Egenskabs-vÃ¦rktÃ¸jet startet"
 
 #: /common/kupu.pox:None
 msgid "Colorchooser tool initialized"
-msgstr "Farvevælger startet"
+msgstr "FarvevÃ¦lger startet"
 
 #: /common/kupu.pox:None
 msgid "No parentcolumn found!"
-msgstr "Ingen kolonne højere oppe fundet!"
+msgstr "Ingen kolonne hÃ¸jere oppe fundet!"
 
 #: /common/kupu.pox:None
 msgid "Row repeated"
-msgstr "Række gentaget"
+msgstr "RÃ¦kke gentaget"
 
 #: /common/kupu.pox:None
 msgid "Table removed"
@@ -191,27 +191,27 @@ msgstr "Klip"
 
 #: /common/kupu.pox:None
 msgid "Unsupported browser!"
-msgstr "Browseren er ikke understøttet!"
+msgstr "Browseren er ikke understÃ¸ttet!"
 
 #: /common/kupu.pox:None
 msgid "Add row"
-msgstr "Tilføj række"
+msgstr "TilfÃ¸j rÃ¦kke"
 
 #: /common/kupu.pox:None
 msgid "Link tool initialized"
-msgstr "Link-værktøj startet"
+msgstr "Link-vÃ¦rktÃ¸j startet"
 
 #: /common/kupu.pox:None
 msgid "Sending request to server"
-msgstr "Sender forespørgsel til server"
+msgstr "Sender forespÃ¸rgsel til server"
 
 #: /common/kupu.pox:None
 msgid "Invalid table size"
-msgstr "Ikke tilladt tabelstørrelse"
+msgstr "Ikke tilladt tabelstÃ¸rrelse"
 
 #: /common/kupu.pox:None
 msgid "Error placing back selection"
-msgstr "Fejl ved at sætte det valgte tilbage"
+msgstr "Fejl ved at sÃ¦tte det valgte tilbage"
 
 #: /common/kupu.pox:None
 msgid "Delete link"
@@ -219,11 +219,11 @@ msgstr "Slet link"
 
 #: /common/kupu.pox:None
 msgid "Add column"
-msgstr "Tilføj kolonne"
+msgstr "TilfÃ¸j kolonne"
 
 #: /common/kupu.pox:None
 msgid "Cutting from JavaScript is disabled on your Mozilla due to security settings. For more information, read http://www.mozilla.org/editor/midasdemo/securityprefs.html"
-msgstr "Klipning fra javascript er slået fra i din Mozilla-browser på grund af sikkerhedsindstillinger. Læs mere her: http://www.mozilla.org/editor/midasdemo/securityprefs.html"
+msgstr "Klipning fra javascript er slÃ¥et fra i din Mozilla-browser pÃ¥ grund af sikkerhedsindstillinger. LÃ¦s mere her: http://www.mozilla.org/editor/midasdemo/securityprefs.html"
 
 #: /common/kupu.pox:None
 msgid "Exception while processing updateState on ${id}: ${msg}"
@@ -239,11 +239,11 @@ msgstr "Listformatterings-redskab startet"
 
 #: /common/kupu.pox:None
 msgid "Row repeat turned off"
-msgstr "Række-gentagelse slået fra"
+msgstr "RÃ¦kke-gentagelse slÃ¥et fra"
 
 #: /common/kupu.pox:None
 msgid "There was a problem initializing the drawers. Most likely the XSLT or XML files aren\\'t available. If this is not the Kupu demo version, check your files or the service that provide them (error: ${error})."
-msgstr "Der er et problem med at få drawers til at virke. Det skyldes sikkert, at XSLT- og XML-filerne ikke til stede. Fejl: ${error}."
+msgstr "Der er et problem med at fÃ¥ drawers til at virke. Det skyldes sikkert, at XSLT- og XML-filerne ikke til stede. Fejl: ${error}."
 
 #: /common/kupu.pox:None
 msgid "Deprecation warning: KupuToolBox._selectSelectItem"
@@ -251,11 +251,11 @@ msgstr "Deprecation warning: KupuToolBox._selectSelectItem"
 
 #: /common/kupu.pox:None
 msgid "Copying from JavaScript is disabled on your Mozilla due to security settings. For more information, read http://www.mozilla.org/editor/midasdemo/securityprefs.html"
-msgstr "Kopiering fra javascript er slået fra i din Mozilla-browser på grund af sikkerhedsindstillinger. Læs mere her: http://www.mozilla.org/editor/midasdemo/securityprefs.html"
+msgstr "Kopiering fra javascript er slÃ¥et fra i din Mozilla-browser pÃ¥ grund af sikkerhedsindstillinger. LÃ¦s mere her: http://www.mozilla.org/editor/midasdemo/securityprefs.html"
 
 #: /common/kupu.pox:None
 msgid "Command ${command} executed"
-msgstr "Kommandoen ${command} udført"
+msgstr "Kommandoen ${command} udfÃ¸rt"
 
 #: /common/kupu.pox:None
 msgid "Delete column"
@@ -263,11 +263,11 @@ msgstr "Slet kolonne"
 
 #: /common/kupu.pox:None
 msgid "Error saving your data.\\nResponse status: ${status}.\\nCheck your server log for more information."
-msgstr "Fejl ved forsøg på at gemme data.\\nResponse status: ${status}.\\nKontroller din server log for at få flere informationer."
+msgstr "Fejl ved forsÃ¸g pÃ¥ at gemme data.\\nResponse status: ${status}.\\nKontroller din server log for at fÃ¥ flere informationer."
 
 #: /common/kupu.pox:None
 msgid "This feature requires pop-ups to be enabled on your browser!"
-msgstr "Denne funktion kræver, at pop-up vinduer er slået til i din browser!"
+msgstr "Denne funktion krÃ¦ver, at pop-up vinduer er slÃ¥et til i din browser!"
 
 #: /common/kupu.pox:None
 msgid "Not inside link"
@@ -283,7 +283,7 @@ msgstr "Billede indsat"
 
 #: /common/kupu.pox:None
 msgid "Browser not supported!"
-msgstr "Browseren er ikke understøttet!"
+msgstr "Browseren er ikke understÃ¸ttet!"
 
 #: /common/kupu.pox:None
 msgid "Please wait while saving document..."
@@ -299,11 +299,11 @@ msgstr "Kopier"
 
 #: /common/kupu.pox:None
 msgid "Paste"
-msgstr "Sæt ind"
+msgstr "SÃ¦t ind"
 
 #: /common/kupu.pox:None
 msgid "Zoom tool initialized"
-msgstr "Zoom-værktøjet er startet"
+msgstr "Zoom-vÃ¦rktÃ¸jet er startet"
 
 #: /common/kupu.pox:None
 msgid "Table column deleted"
@@ -323,7 +323,7 @@ msgstr "Fejl ved hentningen af data, status ${status}"
 
 #: /common/kupu.pox:None
 msgid "Could not set status bar message, check your browser\\'s security settings."
-msgstr "Kunne ikke ændre beskeden i statuslinien, kontroller din browsers sikkerhedsindstillinger."
+msgstr "Kunne ikke Ã¦ndre beskeden i statuslinien, kontroller din browsers sikkerhedsindstillinger."
 
 #: /common/kupu.pox:None
 msgid "End node offset detected in a node without children!"
@@ -331,11 +331,11 @@ msgstr "End node offset detected in a node without children!"
 
 #: /common/kupu.pox:None
 msgid "Your form has not been saved. All changes you have made will be lost"
-msgstr "Din formular er ikke gemt. Alle ændringer, du har lavet, vil gå tabt."
+msgstr "Din formular er ikke gemt. Alle Ã¦ndringer, du har lavet, vil gÃ¥ tabt."
 
 #: /common/kupu.pox:None
 msgid "Link added"
-msgstr "Link tilføjet"
+msgstr "Link tilfÃ¸jet"
 
 #: /common/kupu.pox:None
 msgid "No head in document!"
@@ -343,7 +343,7 @@ msgstr "Intet dokument-hoved!"
 
 #: /common/kupu.pox:None
 msgid "Not inside a row!"
-msgstr "Ikke inden i række!"
+msgstr "Ikke inden i rÃ¦kke!"
 
 #: /common/kupu.pox:None
 msgid "Not inside a table!"
@@ -355,11 +355,11 @@ msgstr "Valget er ikke inden i node!"
 
 #: /common/kupu.pox:None
 msgid "Editor not initialized yet!"
-msgstr "Editoren er ikke færdig med at starte endnu!"
+msgstr "Editoren er ikke fÃ¦rdig med at starte endnu!"
 
 #: /common/kupu.pox:None
 msgid "Table column added"
-msgstr "Tabel-kolonne tilføjet"
+msgstr "Tabel-kolonne tilfÃ¸jet"
 
 #: /common/kupudrawers/drawer.xsl:None
 # Default: "Caption"
@@ -369,7 +369,7 @@ msgstr "Billedtekst"
 #: /common/kupudrawers/drawer.xsl:None
 # Default: "Insert Link"
 msgid "linkdrawer_title"
-msgstr "Indsæt link"
+msgstr "IndsÃ¦t link"
 
 #: /common/kupudrawers/drawer.xsl:None
 # Default: "Left"
@@ -379,12 +379,12 @@ msgstr "Venstre"
 #: /common/kupudrawers/drawer.xsl:None
 # Default: "(${width} by ${height})"
 msgid "imagedrawer_size"
-msgstr "Størrelse"
+msgstr "StÃ¸rrelse"
 
 #: /common/kupudrawers/drawer.xsl:None
 # Default: "Insert Image"
 msgid "imagedrawer_title"
-msgstr "Indsæt billede"
+msgstr "IndsÃ¦t billede"
 
 #: /common/kupudrawers/drawer.xsl:None
 # Default: "Upload to: ${folder}"
@@ -399,7 +399,7 @@ msgstr "Navn"
 #: /common/kupudrawers/drawer.xsl:None
 # Default: "Preview"
 msgid "imagedrawer_upload_preview_label"
-msgstr "Forhåndskig"
+msgstr "ForhÃ¥ndskig"
 
 #: /common/kupudrawers/drawer.xsl:None
 # Default: ""
@@ -407,7 +407,7 @@ msgstr "Forhåndskig"
 # "            automatically uploaded to selected folder and inserted into the\n"
 # "            editor."
 msgid "imagedrawer_upload_instructions"
-msgstr "Vælg et billede fra din computer og klik OK for at få det automatisk uploadet til den valgte mappe og indsat i editoren."
+msgstr "VÃ¦lg et billede fra din computer og klik OK for at fÃ¥ det automatisk uploadet til den valgte mappe og indsat i editoren."
 
 #: /common/kupudrawers/drawer.xsl:None
 # Default: "Upload ..."
@@ -437,7 +437,7 @@ msgstr "ALT-tekst"
 #: /common/kupudrawers/drawer.xsl:None
 # Default: "search"
 msgid "kupudrawer_search"
-msgstr "Søg"
+msgstr "SÃ¸g"
 
 #: /common/kupudrawers/drawer.xsl:None
 # Default: "Inline"
@@ -452,7 +452,7 @@ msgstr "Target"
 #: /common/kupudrawers/drawer.xsl:None
 # Default: "Right"
 msgid "imagedrawer_right"
-msgstr "Højre"
+msgstr "HÃ¸jre"
 
 #: /default/body.kupu:None
 msgid "Kupu Editor Test Page"
@@ -469,17 +469,17 @@ msgstr "Baggrunds-farve: alt-h"
 #: /default/drawers.kupu:None
 # Default: "Row"
 msgid "tabledrawer_row_label"
-msgstr "Række"
+msgstr "RÃ¦kke"
 
 #: /default/drawers.kupu:None
 # Default: "Right"
 msgid "tabledrawer_right_option"
-msgstr "Højre"
+msgstr "HÃ¸jre"
 
 #: /default/drawers.kupu:None
 # Default: "Current column alignment"
 msgid "tabledrawer_alignment_label"
-msgstr "Nuværende kolonne-justering"
+msgstr "NuvÃ¦rende kolonne-justering"
 
 #: /default/drawers.kupu:None
 msgid "external link"
@@ -524,7 +524,7 @@ msgstr "Smugkig"
 #: /default/drawers.kupu:None
 # Default: "Rows"
 msgid "tabledrawer_rows_label"
-msgstr "Antal rækker"
+msgstr "Antal rÃ¦kker"
 
 #: /default/drawers.kupu:None
 msgid "internal link"
@@ -538,7 +538,7 @@ msgstr "Tabel"
 #: /default/drawers.kupu:None
 # Default: "Add Table"
 msgid "tabledrawer_add_table_button"
-msgstr "Tilføj tabel"
+msgstr "TilfÃ¸j tabel"
 
 #: /default/drawers.kupu:None
 # Default: "Close"
@@ -579,7 +579,7 @@ msgstr "Fortryd"
 #: /default/drawers.kupu:None
 # Default: "Add"
 msgid "tabledrawer_add_button"
-msgstr "Tilføj"
+msgstr "TilfÃ¸j"
 
 #: /default/drawers.kupu:None
 #: /default/drawers.kupu:None
@@ -596,7 +596,7 @@ msgstr "Tabel CSS class"
 #: /default/drawers.kupu:None
 #: /default/toolboxes.kupu:None
 msgid "Link the highlighted text to this URL:"
-msgstr "Link fra den fremhævede tekst til denne URL:"
+msgstr "Link fra den fremhÃ¦vede tekst til denne URL:"
 
 #: /default/save.kupu:None
 msgid "save: alt-s"
@@ -626,7 +626,7 @@ msgstr "fed: alt-b"
 
 #: /default/toolbar.kupu:None
 msgid "superscript: alt-+"
-msgstr "hævet tekst: alt-+"
+msgstr "hÃ¦vet tekst: alt-+"
 
 #: /default/toolbar.kupu:None
 # Default: "&#9675;"
@@ -675,7 +675,7 @@ msgstr "definitionsliste: alt-="
 
 #: /default/toolbar.kupu:None
 msgid "indent: alt->"
-msgstr "forøg indrykning: alt->"
+msgstr "forÃ¸g indrykning: alt->"
 
 #: /default/toolbar.kupu:None
 msgid "Remove link"
@@ -699,7 +699,7 @@ msgstr "venstrejusteret: alt-l"
 
 #: /default/toolbar.kupu:None
 msgid "right justify: alt-r"
-msgstr "højrejusteret: alt-r"
+msgstr "hÃ¸jrejusteret: alt-r"
 
 #: /default/toolbar.kupu:None
 msgid "outdent: alt-<"
@@ -720,7 +720,7 @@ msgstr "gentag: alt-y"
 
 #: /default/toolbar.kupu:None
 msgid "subscript: alt--"
-msgstr "sænket tekst: alt--"
+msgstr "sÃ¦nket tekst: alt--"
 
 #: /default/toolbar.kupu:None
 msgid "center justify: alt-c"
@@ -785,7 +785,7 @@ msgstr "Inline"
 
 #: /default/toolboxes.kupu:None
 msgid "Select a cleanup action:"
-msgstr "Vælg rensefunktion:"
+msgstr "VÃ¦lg rensefunktion:"
 
 #: /default/toolboxes.kupu:None
 msgid "Links"
@@ -793,11 +793,11 @@ msgstr "Links"
 
 #: /default/toolboxes.kupu:None
 msgid "Rows:"
-msgstr "Rækker:"
+msgstr "RÃ¦kker:"
 
 #: /default/toolboxes.kupu:None
 msgid "Remove Row"
-msgstr "Fjern række"
+msgstr "Fjern rÃ¦kke"
 
 #: /default/toolboxes.kupu:None
 msgid "Tables"
@@ -809,7 +809,7 @@ msgstr "Opret"
 
 #: /default/toolboxes.kupu:None
 msgid "Insert image at the following URL:"
-msgstr "Indsæt billede på denne URL:"
+msgstr "IndsÃ¦t billede pÃ¥ denne URL:"
 
 #: /default/toolboxes.kupu:None
 msgid "Title:"
@@ -825,7 +825,7 @@ msgstr "Billede CSS class:"
 
 #: /default/toolboxes.kupu:None
 msgid "Add Column"
-msgstr "Tilføj kolonne"
+msgstr "TilfÃ¸j kolonne"
 
 #: /default/toolboxes.kupu:None
 msgid "Fix Table"
@@ -837,15 +837,15 @@ msgstr "Billeder"
 
 #: /default/toolboxes.kupu:None
 msgid "Insert Image"
-msgstr "Indsæt billede"
+msgstr "IndsÃ¦t billede"
 
 #: /default/toolboxes.kupu:None
 msgid "Add Table"
-msgstr "Tilføj tabel"
+msgstr "TilfÃ¸j tabel"
 
 #: /default/toolboxes.kupu:None
 msgid "Add Row"
-msgstr "Tilføj række"
+msgstr "TilfÃ¸j rÃ¦kke"
 
 #: /default/toolboxes.kupu:None
 msgid "Properties"
@@ -882,7 +882,7 @@ msgstr "Tabel CSS class:"
 #: /default/toolboxes.kupu:None
 #: /default/toolboxes.kupu:None
 msgid "Right"
-msgstr "Højre"
+msgstr "HÃ¸jre"
 
 #: /default/toolboxes.kupu:None
 #: /default/toolboxes.kupu:None
@@ -896,5 +896,4 @@ msgstr ""
 #: /plone/body.kupu
 msgid "suppress-kupu"
 msgstr ""
-
 

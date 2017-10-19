@@ -475,6 +475,11 @@ class ParsingDependencies
             foreach ($idDeps as $idDep) {
                 if ($idMaster == $idDeps)
                     continue;
+                if (!$idDep)
+                {
+                    Logger::error('Cannot add dependencie without parameter idDep for master node ID: ' . $idMaster);
+                    continue;
+                }
                 $dependencies = new Dependencies();
                 $depsMngr = new DepsManager();
                 $table = false;
@@ -620,10 +625,9 @@ class ParsingDependencies
                         $id = $cssNode->GetChildByName(substr($matches[2][$n], 1));
                         if (!($id > 0)) {
                             
-                            if (isset($GLOBALS['InBatchProcess']))
-                                Logger::error("CSS file {$matches[2][$n]} not found");
-                            else
-                                $GLOBALS['parsingDependenciesError'] = "CSS file {$matches[2][$n]} not found";
+                            $error = "CSS file {$matches[2][$n]} not found";
+                            Logger::error($error);
+                            $GLOBALS['parsingDependenciesError'] = $error;
                             return false;
                         } else {
                             $css[] = $id;
@@ -633,10 +637,9 @@ class ParsingDependencies
                         $id = $commonNode->GetChildByName(substr($matches[2][$n], 1));
                         if (!($id > 0)) {
                             
-                            if (isset($GLOBALS['InBatchProcess']))
-                                Logger::error("Common file {$matches[2][$n]} not found");
-                            else
-                                $GLOBALS['parsingDependenciesError'] = "Common file {$matches[2][$n]} not found";
+                            $error = "Common file {$matches[2][$n]} not found";
+                            Logger::error($error);
+                            $GLOBALS['parsingDependenciesError'] = $error;
                             return false;
                         } else {
                             $common[] = $id;
@@ -678,10 +681,8 @@ class ParsingDependencies
                     if (!$node->GetID())
                     {
                         $error = 'The document or its dependencies references a non existant node ' . $pathTo . ' in a RMximdex.pathto directive';
-                        if (isset($GLOBALS['InBatchProcess']))
-                            Logger::error($error);
-                        else
-                            $GLOBALS['parsingDependenciesError'] = $error;
+                        Logger::error($error);
+                        $GLOBALS['parsingDependenciesError'] = $error;
                         return false;
                     }
                 }

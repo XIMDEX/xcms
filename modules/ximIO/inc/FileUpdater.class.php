@@ -40,7 +40,7 @@ class FileUpdater
     var $revision = '';
 
     /**
-     * Objeto de interacci�n con la base de datos
+     * Objeto de interacción con la base de datos
      *
      * @var $dbObj DB
      */
@@ -55,7 +55,7 @@ class FileUpdater
     {
         // Estimamos las rutas que vamos a usar dependiendo del uso que le estemos dando a la clase
         // Revisi�n == 0  Estamos haciendo una copia
-        // Revisi�n != 0  Estamos haciendo una importaci�n
+        // Revisi�n != 0  Estamos haciendo una importación
         if (!strcmp($this->revision, Constants::REVISION_COPY)) {
             $routeToFiles = sprintf('%s/data/files/', XIMDEX_ROOT_PATH);
         } else {

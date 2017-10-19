@@ -20,7 +20,7 @@ msgstr ""
 #: c:\zopep21\Products\kupu\plone\resource_types.pt
 #. <input class="context" i18n:attributes="value" name="zmi_add_resource_type:method" type="submit" value="Add"/>
 msgid "Add"
-msgstr "Tilføj"
+msgstr "TilfÃ¸j"
 
 
 #: c:\zopep21\Products\kupu\plone\libraries.pt
@@ -56,7 +56,7 @@ msgstr "Gem"
 #: c:\zopep21\Products\kupu\plone\libraries.pt
 #. <input class="context" i18n:attributes="value" type="submit" value="Set"/>
 msgid "Set"
-msgstr "Sæt"
+msgstr "SÃ¦t"
 
 
 #: c:\zopep21\Products\kupu\plone\kupu_config.pt
@@ -80,7 +80,7 @@ msgstr "Bruger"
 #.  The following variables are available in the TALES expressions:
 #. </p>
 msgid "available_tales"
-msgstr "De følgende variabler er tilgængelige i TALES-udtryk:"
+msgstr "De fÃ¸lgende variabler er tilgÃ¦ngelige i TALES-udtryk:"
 
 
 #: c:\zopep21\Products\kupu\plone\libraries.pt
@@ -96,7 +96,7 @@ msgstr "Mappen, som objektet befinder sig i"
 #.  The URL of the folder the context object is located in
 #. </td>
 msgid "context_folder_uri"
-msgstr "URL på mappen, som objektet befinder sig i"
+msgstr "URL pÃ¥ mappen, som objektet befinder sig i"
 
 
 #: c:\zopep21\Products\kupu\plone\libraries.pt
@@ -112,7 +112,7 @@ msgstr "Det aktuelle objekt"
 #.  The URL of the current context object
 #. </td>
 msgid "current_context_url"
-msgstr "URL på det aktuelle objekt"
+msgstr "URL pÃ¥ det aktuelle objekt"
 
 
 #: c:\zopep21\Products\kupu\plone\libraries.pt
@@ -154,7 +154,7 @@ msgstr "Skriv en liste over CSS classer, som skal fjernes (en pr. linie)"
 #. renamed or moved elsewhere on the site.
 #. </div>
 msgid "help_link_uid"
-msgstr "Hvis du krydser af, vil links til andet indhold på sitet blive ved med at virke, selvom indholdet bliver flyttet rundt."
+msgstr "Hvis du krydser af, vil links til andet indhold pÃ¥ sitet blive ved med at virke, selvom indholdet bliver flyttet rundt."
 
 
 #: c:\zopep21\Products\kupu\plone\kupu_config.pt
@@ -164,7 +164,7 @@ msgstr "Hvis du krydser af, vil links til andet indhold på sitet blive ved med a
 #. Turn this off to prevent Kupu loading its own handler.
 #. </div>
 msgid "help_navigate_away"
-msgstr "Kupu kan installere kode, som advarer, hvis du klikker væk fra en forumular uden at have gemt indholdet."
+msgstr "Kupu kan installere kode, som advarer, hvis du klikker vÃ¦k fra en forumular uden at have gemt indholdet."
 
 
 #: c:\zopep21\Products\kupu\plone\kupu_config.pt
@@ -172,7 +172,7 @@ msgstr "Kupu kan installere kode, som advarer, hvis du klikker væk fra en forumu
 #.  Enter a list of paragraph styles to appear in the style pulldown. Format is title|tag or title|tag|className, one per line.
 #. </div>
 msgid "help_paragraph_styles"
-msgstr "Skriv en list over de formater, som en skribent kan vælge i dropdownboksen med formater. Skriv dem sådan: titel|tag eller titel|tag|class-navn, en pr. linie."
+msgstr "Skriv en list over de formater, som en skribent kan vÃ¦lge i dropdownboksen med formater. Skriv dem sÃ¥dan: titel|tag eller titel|tag|class-navn, en pr. linie."
 
 
 #: c:\zopep21\Products\kupu\plone\kupu_config.pt
@@ -180,7 +180,7 @@ msgstr "Skriv en list over de formater, som en skribent kan vælge i dropdownboks
 #.  Enter HTML tags and attributes to be removed when saving documents. (Uncheck to remove entries)
 #. </div>
 msgid "help_remove_entities"
-msgstr "Skriv HTML tags og attributer, som skal fjernes, når et dokument bliver gemt. (Fjern afkrydsninger for at begrænse filteret)"
+msgstr "Skriv HTML tags og attributer, som skal fjernes, nÃ¥r et dokument bliver gemt. (Fjern afkrydsninger for at begrÃ¦nse filteret)"
 
 
 #: c:\zopep21\Products\kupu\plone\kupu_config.pt
@@ -196,7 +196,7 @@ msgstr "Skriv en liste over de HTML style-elementer, som er tilladt. (en pr. lin
 #.  Enter a list of class names to be made available in the table drawer
 #. </div>
 msgid "help_table_classes"
-msgstr "Skriv en liste over CSS class-navne, som man skal kunne vælge til tabeller"
+msgstr "Skriv en liste over CSS class-navne, som man skal kunne vÃ¦lge til tabeller"
 
 
 #: c:\zopep21\Products\kupu\plone\libraries.pt
@@ -236,7 +236,7 @@ msgstr "URI for ikon"
 #.  Install Kupu code to detect form changes
 #. </label>
 msgid "label_install_kupu"
-msgstr "Installer Kupu kode, som opdager ændringer i formularen"
+msgstr "Installer Kupu kode, som opdager Ã¦ndringer i formularen"
 
 
 #: c:\zopep21\Products\kupu\plone\kupu_config.pt
@@ -244,7 +244,7 @@ msgstr "Installer Kupu kode, som opdager ændringer i formularen"
 #.  Link using UIDs
 #. </label>
 msgid "label_link_uid"
-msgstr "Udødelige links"
+msgstr "UdÃ¸delige links"
 
 
 #: c:\zopep21\Products\kupu\plone\libraries.pt
@@ -252,7 +252,7 @@ msgstr "Udødelige links"
 #.  Manage libraries
 #. </h4>
 msgid "label_manage_libraries"
-msgstr "Håndter link- og billedvælger"
+msgstr "HÃ¥ndter link- og billedvÃ¦lger"
 
 
 #: c:\zopep21\Products\kupu\plone\kupu_config.pt
@@ -308,7 +308,7 @@ msgstr "Titel"
 #.  Add new resource type
 #. </legend>
 msgid "legend_add_resource_type"
-msgstr "Tilføj ny resource-type"
+msgstr "TilfÃ¸j ny resource-type"
 
 
 #: c:\zopep21\Products\kupu\plone\kupu_config.pt
@@ -348,7 +348,7 @@ msgstr "Formater"
 #.  Warn before losing changes
 #. </legend>
 msgid "legend_warning"
-msgstr "Advar før, du mister ændringer"
+msgstr "Advar fÃ¸r, du mister Ã¦ndringer"
 
 
 #: c:\zopep21\Products\kupu\plone\libraries.pt
@@ -415,7 +415,7 @@ msgstr "Kilde URI"
 #. very easily.
 #. </p>
 msgid "text_kupu_drawers"
-msgstr "Her kan du styre, hvordan brugeren kan finde billede og interne links. Ud ad kassen understøtter  wysiwyg editoren Kupu lister som <em>My recent items</em> og <em>Current folder</em>. Du kan tilpasse disse efter sitets behov nedenfor."
+msgstr "Her kan du styre, hvordan brugeren kan finde billede og interne links. Ud ad kassen understÃ¸tter  wysiwyg editoren Kupu lister som <em>My recent items</em> og <em>Current folder</em>. Du kan tilpasse disse efter sitets behov nedenfor."
 
 
 #: c:\zopep21\Products\kupu\plone\resource_types.pt
@@ -428,7 +428,7 @@ msgstr "Her kan du styre, hvordan brugeren kan finde billede og interne links. U
 #. documents, the latter images.
 #. </p>
 msgid "text_resource_types"
-msgstr "Her kan du vælge, hvilke indholdstyper, man skal kunne linke til (linkable) og indsætte som billede (mediaobject). Desuden kan man vælge, hvilke indholdstyper, der kan optræder som mapper (collection)."
+msgstr "Her kan du vÃ¦lge, hvilke indholdstyper, man skal kunne linke til (linkable) og indsÃ¦tte som billede (mediaobject). Desuden kan man vÃ¦lge, hvilke indholdstyper, der kan optrÃ¦der som mapper (collection)."
 
 
 #: c:\zopep21\Products\kupu\plone\resource_types.pt
@@ -464,11 +464,10 @@ msgid "Config"
 msgstr "Grundindstillinger"
 
 msgid "Libraries"
-msgstr "Popup-vælger"
+msgstr "Popup-vÃ¦lger"
 
 msgid "Resource Types"
 msgstr "Resourcetyper"
 
 msgid "Documentation"
 msgstr "Dokumentation"
-

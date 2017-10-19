@@ -194,7 +194,7 @@ function XimdocContextMenuTool() {
 				}
 			}
 
-			// TODO: Ofrecer info e interacción con las anotaciones de la palabra word. See this.createSpellcheckItems
+			// TODO: Ofrecer info e interacciÃ³n con las anotaciones de la palabra word. See this.createSpellcheckItems
 			if(checker) {
 				menu.push(new ContextMenuElement(_('Annotate word ') + ' \'' + word + '\'', this.editor.tools.ximdocannotationtool.annotateWord(word)));
 			}

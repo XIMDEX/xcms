@@ -529,7 +529,7 @@ class XimNewsColectorNodeType extends FolderNode  {
 		}
 
 
-		//Si es una generaci�n forzada se borran todos los boletines que tuviera el colector
+		//Si es una generación forzada se borran todos los boletines que tuviera el colector
 		if ($forceTotalGeneration == 2) {
 			$ximNewsBulletin = new XimNewsBulletin();
 			$bulletinContainers = array();

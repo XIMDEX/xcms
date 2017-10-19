@@ -894,22 +894,21 @@ class Node extends NodesOrm
             if ($node)
             {
                 $res = true;
+                $domDoc = new DOMDocument();
                 if ($node->getNodeType() == \Ximdex\Services\NodeType::NODE_HT)
                 {
                     //check the valid HTML in Ximclude contents
-                    $domDoc = new DOMDocument();
                     $res = @$domDoc->loadXML('<root>' . $content . '</root>');
                 }
                 elseif ($node->getNodeType() == \Ximdex\Services\NodeType::RNG_VISUAL_TEMPLATE)
                 {
                     //check the XML of the given RNG template content
-                    $domDoc = new DOMDocument();
                     $res = @$domDoc->loadXML($content);
                 }
-                if ($node->getNodeType() == \Ximdex\Services\NodeType::XSL_TEMPLATE or $node->getNodeType() == \Ximdex\Services\NodeType::XML_DOCUMENT)
+                if ($node->getNodeType() == \Ximdex\Services\NodeType::XSL_TEMPLATE 
+                        or $node->getNodeType() == \Ximdex\Services\NodeType::XML_DOCUMENT)
                 {
                     //check the valid XML template and dependencies
-                    $domDoc = new DOMDocument();
                     if ($node->getNodeType() == \Ximdex\Services\NodeType::XSL_TEMPLATE)
                         $res = @$domDoc->loadXML($content);
                     else
@@ -932,38 +931,30 @@ class Node extends NodesOrm
                             if (ParsingDependencies::getDotDot($content, $idServer) === false)
                             {
                                 $this->messages->add($GLOBALS['parsingDependenciesError'], MSG_TYPE_WARNING);
-                                if (isset($GLOBALS['InBatchProcess']))
-                                    Logger::error($GLOBALS['parsingDependenciesError'] . ' for IdNode: ' . $node->GetID() . ' (' . $node->getDescription() . ')');
-                                return false;
+                                Logger::error('Saving content: ' . $GLOBALS['parsingDependenciesError'] . ' for IdNode: ' . $node->GetID() . ' (' 
+                                        . $node->getDescription() . ')');
                             }
                         }
                         //check the pathto dependencies
                         if (ParsingDependencies::getPathTo($content, $node->GetID(), true) === false)
                         {
-                            //$this->messages->add('Dependencies error. Changes have not been saved', MSG_TYPE_ERROR);
                             $this->messages->add($GLOBALS['parsingDependenciesError'], MSG_TYPE_WARNING);
-                            if (isset($GLOBALS['InBatchProcess']))
-                                Logger::error($GLOBALS['parsingDependenciesError'] . ' for IdNode: ' . $node->GetID() . ' (' . $node->getDescription() . ')');
-                            //return false;
+                            Logger::error('Saving content: ' . $GLOBALS['parsingDependenciesError'] . ' for IdNode: ' . $node->GetID() . ' (' 
+                                    . $node->getDescription() . ')');
                         }
                     }
                 }
                 if ($res === false)
                 {
-                    //we don't allow to save an invalid XML
-                    //$this->messages->add('The XML document is not valid. Changes have not been saved', MSG_TYPE_ERROR);
-                    if (isset($GLOBALS['InBatchProcess']))
-                        Logger::error('Invalid XML for IdNode: ' . $node->GetID() . ' (' . $node->getDescription() . ')');
+                    Logger::error('Invalid XML for IdNode: ' . $node->GetID() . ' (' . $node->getDescription() . ')');
                     $error = \Ximdex\Error::error_message('DOMDocument::loadXML(): ');
                     if ($error)
                     {
-                        $this->messages->add($error, MSG_TYPE_WARNING);
-                        if (isset($GLOBALS['InBatchProcess']))
-                            Logger::error($error);
+                        $this->messages->add('Invalid XML content: ' . $error, MSG_TYPE_WARNING);
+                        Logger::error('Saving content: ' . $error);
                     }
-                    //return false;
                 }
-                if ($node->getNodeType() == \Ximdex\Services\NodeType::RNG_VISUAL_TEMPLATE)
+                elseif ($node->getNodeType() == \Ximdex\Services\NodeType::RNG_VISUAL_TEMPLATE)
                 {
                     //validation of the RNG schema for the RNG template
                     $schema = FsUtils::file_get_contents(App::getValue( 'AppRoot') . '/actions/xmleditor2/views/common/schema/relaxng-1.0.rng.xml');
@@ -980,13 +971,8 @@ class Node extends NodesOrm
                             $error = $errors[0];
                         }
                         $this->messages->add($error, MSG_TYPE_WARNING);
-                        $this->messages->add('The RNG template haven\'t been saved', MSG_TYPE_ERROR);
-                        if (isset($GLOBALS['InBatchProcess']))
-                        {
-                            Logger::error('Invalid RNG template for IdNode: ' . $node->GetID() . ' (' . $node->getDescription() . ')');
-                            Logger::error($error);
-                        }
-                        return false;
+                        Logger::error('Saving content: Invalid RNG template for IdNode: ' . $node->GetID() . ' (' . $node->getDescription() . ')');
+                        Logger::error($error);
                     }
                 }
             }

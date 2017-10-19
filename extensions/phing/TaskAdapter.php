@@ -26,7 +26,7 @@ require_once 'phing/Task.php';
  *  similar patterns).
  *
  *  @author    Andreas Aderhold <andi@binarycloud.com>
- *  @copyright © 2001,2002 THYRELL. All rights reserved
+ *  @copyright Â© 2001,2002 THYRELL. All rights reserved
  *  @version   $Revision: 1.7 $
  *  @package   phing
  */

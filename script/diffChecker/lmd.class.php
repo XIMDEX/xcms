@@ -38,8 +38,8 @@ require_once(XIMDEX_ROOT_PATH."/script/diffChecker/Ldd.class.php");
 class lmd {
 	function lmd() {
 		if (!defined("LOGGED_SCRIPT_BEGIN")) {
-			UpdateDb_log::info(sprintf("*** Ejecuci�n script %s", $_SERVER["PHP_SELF"]));
-			UpdateDb_historic::info(sprintf("*** Ejecuci�n script %s", $_SERVER["PHP_SELF"]));
+			UpdateDb_log::info(sprintf("*** Ejecución script %s", $_SERVER["PHP_SELF"]));
+			UpdateDb_historic::info(sprintf("*** Ejecución script %s", $_SERVER["PHP_SELF"]));
 			define("LOGGED_SCRIPT_BEGIN", true);
 		}
 	}

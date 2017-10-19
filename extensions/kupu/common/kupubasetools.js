@@ -1233,8 +1233,8 @@ function TableTool() {
         table = doc.createElement("table");
         table.className = tableclass;
 
-        // TODO: La asociaci�n de una plantilla debe obtenerse de un fichero de
-        // configuraci�n.
+        // TODO: La asociación de una plantilla debe obtenerse de un fichero de
+        // configuración.
         table.setAttribute("uid","tabla");
 
         // If the user wants a row of headings, make them

@@ -136,7 +136,7 @@ class XVFS_Backend_connector extends XVFS_Backend implements Backend_XVFS_interf
      * @return boolean
      */
 
-    // TODO esta funci�n debe hacer un ls y parsear el resultado para obtener los permisos
+    // TODO esta función debe hacer un ls y parsear el resultado para obtener los permisos
     public function isReadable($bpath)
     {
         return true;
@@ -148,7 +148,7 @@ class XVFS_Backend_connector extends XVFS_Backend implements Backend_XVFS_interf
      * @param string bpath BackendPath
      * @return boolean
      */
-    // TODO esta funci�n debe hacer un ls y parsear el resultado para obtener los permisos
+    // TODO esta función debe hacer un ls y parsear el resultado para obtener los permisos
     public function isWritable($bpath)
     {
         return true;

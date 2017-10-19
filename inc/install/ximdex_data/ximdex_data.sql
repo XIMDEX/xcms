@@ -386,7 +386,7 @@ VALUES
 	(37,'ActionsStats','0'),
 	(38,'IdDefaultWorkflow','403'),
 	(39,'DefaultInitialStatus','Edici�n'),
-	(40,'DefaultFinalStatus','Publicaci�n'),
+	(40,'DefaultFinalStatus','Publicación'),
 	(41,'PullMode','0'),
 	(42,'EnricherKey',''),
 	(43,'AddVersionUsesPool','0'),

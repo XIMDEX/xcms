@@ -111,7 +111,7 @@ use Ximdex\Models\Action ;
 	$frm_filter_batch = (isset($_POST['frm_filter_batch'])) ? $_POST['frm_filter_batch'] : 'no';
 	
 	////
-	//// Inicio del flujo de la acci�n.
+	//// Inicio del flujo de la acción.
 	//// 
 	
 	gPrintHeader();

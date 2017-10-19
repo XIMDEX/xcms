@@ -26,7 +26,7 @@ require_once 'phing/tasks/system/condition/Condition.php';
  *  binary safe manner. Implements the condition interface specification.
  *
  *  @author    Andreas Aderhold <andi@binarycloud.com>
- *  @copyright © 2001,2002 THYRELL. All rights reserved
+ *  @copyright Â© 2001,2002 THYRELL. All rights reserved
  *  @version   $Revision: 1.7 $ $Date: 2006-03-10 14:31:51 +0000 (Fri, 10 Mar 2006) $
  *  @access    public
  *  @package   phing.tasks.system.condition

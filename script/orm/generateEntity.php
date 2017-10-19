@@ -91,9 +91,9 @@ foreach ($obj->_metaData as $key => $fieldDescriptors) {
 				break;		
 			case 3:
 				$tableDest = CliReader::getString('Introduzca la tabla que describe la otra parte N');
-				$relationTable = CliReader::getString('Introduzca la tabla de relaci�n intermedia');
-				$idSource = CliReader::getString(sprintf('Introduzca el campo que referencia a %s en la tabla de relaci�n %s', $className, $relationTable));
-				$idDest = CliReader::getString(sprintf('Introduzca el campo que referencia a %s en la tabla de relaci�n %s', $tableDest, $relationTable));
+				$relationTable = CliReader::getString('Introduzca la tabla de relación intermedia');
+				$idSource = CliReader::getString(sprintf('Introduzca el campo que referencia a %s en la tabla de relación %s', $className, $relationTable));
+				$idDest = CliReader::getString(sprintf('Introduzca el campo que referencia a %s en la tabla de relación %s', $tableDest, $relationTable));
 				$obj->_metaData[$key]['RELATIONS'][] = 
 					array(	
 						'TYPE' => 'HAS_MANY_AND_BELONGS_TO', 

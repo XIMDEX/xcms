@@ -92,7 +92,7 @@ class PipeProcess extends PipeProcessOrm
      */
     function getPreviousProcess()
     {
-        //Obtenemos la transici�n anterior
+        //Obtenemos la transición anterior
         $result = $this->find('id', 'IdPipeline = %s AND IdTransitionTo = %s',
             array($this->get('IdPipeline'), $this->get('IdTransitionFrom')), MONO);
         $resultsCount = count($result);
@@ -138,8 +138,8 @@ class PipeProcess extends PipeProcessOrm
         }
 
         if (!(is_object($transitionFrom) && is_object($transitionTo))) {
-            $this->messages->add(_('No se han podido determinar las transiciones de un estado para su eliminaci�n, esto es normal si el estado es estado inicial o final'), MSG_TYPE_WARNING);
-            XMD_Log::warning('No se han podido determinar las transiciones de un estado para su eliminaci�n, esto es normal si el estado es estado inicial o final');
+            $this->messages->add(_('No se han podido determinar las transiciones de un estado para su eliminación, esto es normal si el estado es estado inicial o final'), MSG_TYPE_WARNING);
+            XMD_Log::warning('No se han podido determinar las transiciones de un estado para su eliminación, esto es normal si el estado es estado inicial o final');
             return false;
         }
 

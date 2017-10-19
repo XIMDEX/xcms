@@ -101,8 +101,8 @@ class Action_viewcolectorstates extends ActionAbstract
 
         $states = array(
             0 => 'Gener�ndose',
-            1 => 'En espera de generaci�n total',
-            2 => 'En espera de generaci�n parcial',
+            1 => 'En espera de generación total',
+            2 => 'En espera de generación parcial',
             3 => 'Generado',
             4 => 'Generado y publicado',
             5 => 'Generado y public�ndose',

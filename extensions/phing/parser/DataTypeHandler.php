@@ -30,7 +30,7 @@ include_once 'phing/RuntimeConfigurable.php';
  * classes would be nested within this class
  *
  * @author      Andreas Aderhold <andi@binarycloud.com>
- * @copyright © 2001,2002 THYRELL. All rights reserved
+ * @copyright Â© 2001,2002 THYRELL. All rights reserved
  * @version   $Revision: 1.8 $ $Date: 2006-09-14 20:19:08 +0000 (Thu, 14 Sep 2006) $
  * @access    public
  * @package   phing.parser

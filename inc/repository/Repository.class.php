@@ -126,10 +126,10 @@ class Repository extends IRepository {
 	function _getBaseIOError($error) {
 		switch ($error) {
 			case Constants::ERROR_NO_PERMISSIONS:
-				$msg = 'No tiene permisos para realizar la operaci�n.';
+				$msg = 'No tiene permisos para realizar la operación.';
 				break;
 			case Constants::ERROR_INCORRECT_DATA:
-				$msg = 'La informaci�n enviada a BaseIO no es correcta.';
+				$msg = 'La información enviada a BaseIO no es correcta.';
 				break;
 			case Constants::ERROR_NOT_REACHED:
 				$msg = 'ERROR_NOT_REACHED';
@@ -138,7 +138,7 @@ class Repository extends IRepository {
 				$msg = 'El tipo de nodo especificado no est� permitido en este directorio.';
 				break;
 			default:
-				$msg = 'La operaci�n se realiz� correctamente.';
+				$msg = 'La operación se realiz� correctamente.';
 		}
 
 		return $msg;

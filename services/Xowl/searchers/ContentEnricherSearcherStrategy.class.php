@@ -91,7 +91,7 @@ class ContentEnricherSearcherStrategy extends AbstractSearcherStrategy{
 	/**
 	* <p>Transform the xml with the found terms to an array.</p>
 	* @param $xml. XML string with the service response.
-	* @return Array with the response	
+	* @return Array with the response
 	*/
 	private function parseData($xml){
 			$result = array();

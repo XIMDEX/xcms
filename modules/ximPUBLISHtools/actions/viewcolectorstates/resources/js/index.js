@@ -98,7 +98,7 @@ $('document').ready(function() {
 						});
 						
 						// Refresh news data
-						if(colectors_data[i].state == 'Generado' || colectors_data[i].state == 'Generándose') {
+						if(colectors_data[i].state == 'Generado' || colectors_data[i].state == 'Generï¿½ndose') {
 							for(var id_new in colectors_data[i].pending_relations) {
 								var state = colectors_data[i].pending_relations[id_new].State == 'pending' ? 'Pendiente' : 'Asociada';
 								var src = url_root + '/modules/pro/ximPUBLISHtools/images/reports/' + (colectors_data[i].pending_relations[id_new].State == 'pending' ? 'out.gif' : 'in.gif');
@@ -128,7 +128,7 @@ $('document').ready(function() {
 						// Refresh state
 						$('#state_title_' + colectors_data[i].id_colector).text(colectors_data[i].state);
 						$('#state_content_' + colectors_data[i].id_colector).text(colectors_data[i].state);
-						if(colectors_data[i].state == 'Generándose' || colectors_data[i].state == 'Generado y Publicándose')
+						if(colectors_data[i].state == 'Generï¿½ndose' || colectors_data[i].state == 'Generado y Publicï¿½ndose')
 							$('#state_image_' + colectors_data[i].id_colector).show();
 						else
 							$('#state_image_' + colectors_data[i].id_colector).hide();
@@ -145,9 +145,9 @@ $('document').ready(function() {
 						$('#start_generation_' + colectors_data[i].id_colector).text(colectors_data[i].start_generation ? this.stamp_to_date(colectors_data[i].start_generation) : '-');
 						//$('#end_generation_' + colectors_data[i].id_colector).text(colectors_data[i].end_generation ? this.stamp_to_date(colectors_data[i].end_generation) : '-');
 						$('#end_publication_' + colectors_data[i].id_colector).text(colectors_data[i].end_publication ? this.stamp_to_date(colectors_data[i].end_publication) : '-');
-						$('#start_generation_title_' + colectors_data[i].id_colector).text(colectors_data[i].start_generation ? 'Comienzo de la generación:' : '');
-						//$('#end_generation_title_' + colectors_data[i].id_colector).text(colectors_data[i].end_generation ? 'Comienzo de la publicación:' : '');
-						$('#end_publication_title_' + colectors_data[i].id_colector).text(colectors_data[i].end_publication ? 'Fin de la generación:' : '');
+						$('#start_generation_title_' + colectors_data[i].id_colector).text(colectors_data[i].start_generation ? 'Comienzo de la generaciÃ³n:' : '');
+						//$('#end_generation_title_' + colectors_data[i].id_colector).text(colectors_data[i].end_generation ? 'Comienzo de la publicaciÃ³n:' : '');
+						$('#end_publication_title_' + colectors_data[i].id_colector).text(colectors_data[i].end_publication ? 'Fin de la generaciÃ³n:' : '');
 					}
 				},
 				

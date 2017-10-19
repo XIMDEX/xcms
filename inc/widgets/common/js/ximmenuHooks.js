@@ -118,19 +118,19 @@ var XimMenuHooks = {
 	},
 
 	hook_mnuSpanishLang: function(params) {
-        if(confirm("Es necesario reiniciar su ximdex. ¿Está seguro que quiere proceder?")) {
+        if(confirm("Es necesario reiniciar su ximdex. Â¿EstÃ¡ seguro que quiere proceder?")) {
         	window.location = 'menu/change_lang.php?lang=es';
         }
 	},
 
 	hook_mnuEnglishLang: function(params) {
-        if(confirm("Es necesario reiniciar su ximdex. ¿Está seguro que quiere proceder?")) {
+        if(confirm("Es necesario reiniciar su ximdex. Â¿EstÃ¡ seguro que quiere proceder?")) {
         	window.location = 'menu/change_lang.php?lang=en';
         }
 	},
 
 	hook_mnuDeutchLang: function(params) {
-        if(confirm("Es necesario reiniciar su ximdex. ¿Está seguro que quiere proceder?")) {
+        if(confirm("Es necesario reiniciar su ximdex. Â¿EstÃ¡ seguro que quiere proceder?")) {
         	window.location = 'menu/change_lang.php?lang=de';
         }
 	},

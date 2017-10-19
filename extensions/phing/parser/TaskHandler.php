@@ -29,7 +29,7 @@ include_once 'phing/UnknownElement.php';
  * initialized on the fly.
  *
  * @author      Andreas Aderhold <andi@binarycloud.com>
- * @copyright � 2001,2002 THYRELL. All rights reserved
+ * @copyright © 2001,2002 THYRELL. All rights reserved
  * @version   $Revision: 1.10 $
  * @package   phing.parser
  */

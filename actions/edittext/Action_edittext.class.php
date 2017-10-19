@@ -239,7 +239,8 @@ class Action_edittext extends ActionAbstract
             $this->sendJSON(array('messages' => $this->messages->messages, 'type' => MSG_TYPE_WARNING));
             return false;
         }
-        $this->messages->mergeMessages($node->messages);
+        if (!$this->messages->count() and $node->messages->count())
+            $this->messages->messages[0] = $node->messages->messages[0];
         if ($node->RenderizeNode() === false)
         {
             $this->messages->mergeMessages($node->messages);

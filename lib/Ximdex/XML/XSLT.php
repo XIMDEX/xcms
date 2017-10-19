@@ -69,13 +69,9 @@ class XSLT
             {
                 if (@$this->xsl->load($xsl_file) === false)
                 {
-                    $error = \Ximdex\Error::error_message();
-                    if ($error)
-                        $error = str_replace('DOMDocument::loadXML(): ', '', $error);
-                    $error = 'Error loading file ' . $xsl_file . ' (' . $error . ')';
-                    if (isset($GLOBALS['InBatchProcess']) and $GLOBALS['InBatchProcess'])
-                        Logger::error($error);
-                    $GLOBALS['errorInXslTransformation'] = $error;
+                    $error = 'Error loading file ' . $xsl_file . ' (' . \Ximdex\Error::error_message('DOMDocument::loadXML(): ') . ')';
+                    Logger::error($error);
+                    $GLOBALS['errorsInXslTransformation'][] = $error;
                     return false;
                 }
             }
@@ -84,35 +80,25 @@ class XSLT
         {
             if (@$this->xsl->loadXML($content) === false)
             {
-                $error = \Ximdex\Error::error_message();
-                if ($error)
-                    $error = str_replace('DOMDocument::loadXML(): ', '', $error);
-                $error = 'Error loading XSL content: ' . $content . ' (' . $error . ')';
-                if (isset($GLOBALS['InBatchProcess']) and $GLOBALS['InBatchProcess'])
-                    Logger::error($error);
-                $GLOBALS['errorInXslTransformation'] = $error;
+                $error = 'Error loading XSL content: ' . $content . ' (' . \Ximdex\Error::error_message('DOMDocument::loadXML(): ') . ')';
+                Logger::error($error);
+                $GLOBALS['errorsInXslTransformation'][] = $error;
                 return false;
             }
         }
         else
         {
             $error = 'Empty values for XSL file and XSL content in setXSL method';
-            if (isset($GLOBALS['InBatchProcess']) and $GLOBALS['InBatchProcess'])
-                Logger::error($error);
-            $GLOBALS['errorInXslTransformation'] = $error;
+            Logger::error($error);
+            $GLOBALS['errorsInXslTransformation'][] = $error;
             return false;
         }
         if (@$this->xsltprocessor->importStyleSheet($this->xsl) === false) {
-            $error = \Ximdex\Error::error_message();
-            if ($error)
-                $error = str_replace('XSLTProcessor::importStylesheet(): ', '', $error);
-            if ($xsl_file)
-                $error = 'Error processing file ' . $xsl_file . ' (' . $error . ')';
-            else
-                $error = 'Error processing file XSL content: ' . $content . ' (' . $error . ')';
-            if (isset($GLOBALS['InBatchProcess']) and $GLOBALS['InBatchProcess'])
-                Logger::error('In set XSL content: ' . $error);
-            $GLOBALS['errorInXslTransformation'] = $error;
+            
+            $error = \Ximdex\Error::error_message('XSLTProcessor::importStylesheet(): ');
+            $errorLog = 'Error processing XSL file: ' . $error . ($xsl_file) ?  ' (' . $xsl_file . ')' : '';
+            Logger::error('In set XSL content: ' . $errorLog);
+            $GLOBALS['errorsInXslTransformation'][] = 'Error importing XSL stylesheet: ' . $error;
             return false;
         }
         return true;

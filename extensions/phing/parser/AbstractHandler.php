@@ -26,7 +26,7 @@ include_once 'phing/parser/ExpatParseException.php';
  * This is an abstract class all SAX handler classes must extend
  *
  * @author    Andreas Aderhold <andi@binarycloud.com>
- * @copyright © 2001,2002 THYRELL. All rights reserved
+ * @copyright Â© 2001,2002 THYRELL. All rights reserved
  * @version   $Revision: 1.6 $
  * @package   phing.parser
  */

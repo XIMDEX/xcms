@@ -106,7 +106,7 @@ class PipeTransition extends PipeTransitionsOrm
 		$idNewTransition = $pipeTransition->add();
 
 		if (!($idNewTransition > 0)) {
-			$this->messages->add(_('No se ha podido generar la nueva transici�n'), MSG_TYPE_ERROR);
+			$this->messages->add(_('No se ha podido generar la nueva transición'), MSG_TYPE_ERROR);
 			$this->messages->mergeMessages($pipeTransition->messages);
 			return NULL;
 		}
@@ -125,7 +125,7 @@ class PipeTransition extends PipeTransitionsOrm
 	 */
 	function getPreviousTransition()
 	{
-		//Obtenemos la transici�n anterior
+		//Obtenemos la transición anterior
 		$result = $this->find('id', 'IdPipeProcess = %s AND IdStatusTo = %s',
 			array($this->get('IdPipeProcess'), $this->get('IdStatusFrom')), MONO);
 		$resultsCount = count($result);

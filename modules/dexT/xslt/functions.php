@@ -92,7 +92,7 @@ function preTransformation($ptdContent, $fileName, $idSection = NULL) {
 		foreach ($matches[0] as $key => $value) {
 			$dinamic = false;
 			if ($section->get('IdNode') > 0) {
-				// Si el template docxap o include es din�mico, se inserta asociado a la secci�n
+				// Si el template docxap o include es din�mico, se inserta asociado a la sección
 				if (preg_match('/%%%[\w|\-|\_|\d]+%%%/', $value) > 0) {
 					$dinamic = true;
 					$dinamicTemplateList = $section->getProperty('dinamic_template_list');
@@ -136,7 +136,7 @@ function preTransformation($ptdContent, $fileName, $idSection = NULL) {
 		foreach ($matches[0] as $key => $value) {
 			$dinamic = false;
 			if ($section->get('IdNode') > 0) {
-				// Si el template docxap o include es din�mico, se inserta asociado a la secci�n
+				// Si el template docxap o include es din�mico, se inserta asociado a la sección
 				if (preg_match('/%%%[\w|\-|\_|\d]+%%%/', $value) > 0) {
 					$dinamic = true;
 					$dinamicTemplateList = $section->getProperty('dinamic_template_list');
@@ -304,7 +304,7 @@ function preTransformation($ptdContent, $fileName, $idSection = NULL) {
 		}
 	}
 
-	//Sustituci�n de macros por atributos
+	//Sustitución de macros por atributos
 	$ptdContent = preg_replace('/>([^<|%]*)%%%([\w|\_|\-]+)%%%([^<]*)</s', 
 		">\${1}<dext:getvalue expr=\"ancestor-or-self::*[@\${2}][1]/@\${2}\" />\${3}<", $ptdContent);
 	$ptdContent = preg_replace('/[\']?[\{]?%%%([\w|\_|\-]+)%%%[\}]?[\']?/', 

@@ -42,7 +42,7 @@ class ParamsCLI extends CliParser
 	var $_metadata = array(
 		array("name" => "--action",
 			"mandatory" => true,
-			"message" => "Nombre de la acci�n",
+			"message" => "Nombre de la acción",
 			"type" => TYPE_STRING),
 		array("name" => "--method",
 			"mandatory" => true,

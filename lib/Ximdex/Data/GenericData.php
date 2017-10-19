@@ -327,7 +327,7 @@ class GenericData extends Overloadable
     }
 
     /**
-     * Validaci�n/conversi�n por tipo de campo
+     * Validación/conversi�n por tipo de campo
      * @param $fieldValue
      * @param $fieldTypeMatches
      * @return string

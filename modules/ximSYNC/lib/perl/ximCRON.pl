@@ -24,7 +24,7 @@
 # *  @version $Revision$
 # */
 
-# codigos de error: 0=OK, 200:problema en acceso a servidor, 10: problema de configuraci髇, 255: die por problema de invocaci髇
+# codigos de error: 0=OK, 200:problema en acceso a servidor, 10: problema de configuraci贸n, 255: die por problema de invocaci贸n
 
 BEGIN {
         my $script = $0; $script =~ s[/+][/]g;
@@ -141,7 +141,7 @@ if ($directmode) {
     }
     Logger::MyLog(1, "Tareas a procesar: ".@tareas);
     if ($taskNumber) {
-        Logger::MyLog(1, "El n鷐ero de tareas extra韉o (".@tareas.") y el declarado ($taskNumber) no coinciden!") if (@tareas != $taskNumber);
+        Logger::MyLog(1, "El n锟絤ero de tareas extra锟絛o (".@tareas.") y el declarado ($taskNumber) no coinciden!") if (@tareas != $taskNumber);
     }
 }   
 
@@ -189,14 +189,14 @@ Logger::MyLog(1, "Procesando tareas SINCRO (tipo $type, puerto $port) para $user
 my $remote = new Conexion($host, $port, $user, $type, $pass);
 
 unless ($remote) {
-    Logger::MyLog(1, "No ha sido posible establecer un v韓culo de comunicaci髇 con $host: $@");
+    Logger::MyLog(1, "No ha sido posible establecer un v锟絥culo de comunicaci贸n con $host: $@");
     exit(200);
 }
 
 my $error = $remote->myRunCommand("pwd");
 if ($error) {
   my $errorcause = $remote->getErrorCause();
-  Logger::MyLog(1, "No ha sido posible establecer un v韓culo de intercambio con $host -> $errorcause (deptherror=$error)");
+  Logger::MyLog(1, "No ha sido posible establecer un v锟絥culo de intercambio con $host -> $errorcause (deptherror=$error)");
   exit(200);
 }
 
@@ -238,7 +238,7 @@ if ($directmode) {
             # Para ximdex <= 2.5
             my ($idtask, $olderror, $olderrorlevel, $rem_relativepath, $filename, $retries) = @campos[0,7,8,9,10,11];
 
-            # Para ximdex > 2.5 (control de piscinas de publicaci髇)
+            # Para ximdex > 2.5 (control de piscinas de publicaci贸n)
             #my   ($idtask, $olderror, $olderrorlevel, $rem_relativepath, $filename, $retries) = @campos[0,9,10,11,12,13];
 
             my $localfilename = "$localbasepath/$idtask";

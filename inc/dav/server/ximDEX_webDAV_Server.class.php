@@ -461,7 +461,7 @@ class ximDEX_webDAV_Server extends HTTP_WebDAV_Server {
 			$ret = XVFS_NONE;
 			$entity =& XVFS::read($vfspath);
 
-			// NOTE: ���Pedazo de workaround!!!
+			// NOTE: Pedazo de workaround!!!
 			// Procesa StructuredDocuments y la plantilla docxap
 			$view = new View_XmlDocument();
 			$content = $view->transform($entity->get('idnode'), $stream, null);

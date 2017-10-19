@@ -69,7 +69,7 @@ if (!$dbConnection->IsConnected()) {
     echo <<< HEREDOC
 Se han encontrado problemas para conectarse a la base de datos.
 
-Compruebe los archivos de configuraci�n de la aplicaci�n.
+Compruebe los archivos de configuración de la aplicación.
 
 HEREDOC;
     exit();
@@ -202,7 +202,7 @@ HEREDOC;
         echo <<< HEREDOC
 	Se han encontrado problemas para conectarse a la base de datos INFORMATION_SCHEMA.
 
-	Compruebe los archivos de configuraci�n de la aplicaci�n y utilice provisionalmente un usuario con privilegios de acceso a esta tabla.
+	Compruebe los archivos de configuración de la aplicación y utilice provisionalmente un usuario con privilegios de acceso a esta tabla.
 
 HEREDOC;
         exit();
@@ -288,7 +288,7 @@ HEREDOC;
         echo <<< HEREDOC
 Se han encontrado problemas para conectarse a la base de datos.
 
-Compruebe los archivos de configuraci�n de la aplicaci�n.
+Compruebe los archivos de configuración de la aplicación.
 
 HEREDOC;
         exit();

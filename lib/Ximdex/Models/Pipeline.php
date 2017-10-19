@@ -120,13 +120,13 @@ class Pipeline extends PipelinesOrm
 
         $result = $this->find('id', 'IdNode = %s', array($idNode), MONO);
         if (count($result) > 1) {
-            XMD_Log::warning("Se ha intentado cargar el pipeline con el idnode $idNode y se han encontrado multiples resultados, abortando operaci�n");
-            $this->messages->add(_("Se ha intentado cargar el pipeline con el idnode $idNode y se han encontrado multiples resultados, abortando operaci�n"), MSG_TYPE_WARNING);
+            XMD_Log::warning("Se ha intentado cargar el pipeline con el idnode $idNode y se han encontrado multiples resultados, abortando operación");
+            $this->messages->add(_("Se ha intentado cargar el pipeline con el idnode $idNode y se han encontrado multiples resultados, abortando operación"), MSG_TYPE_WARNING);
             return NULL;
         }
         if (count($result) === 0) {
-            XMD_Log::warning("Se ha intentado cargar el pipeline con el idnode $idNode y no se han encontrado resultados, abortando operaci�n");
-            $this->messages->add(_("Se ha intentado cargar el pipeline con el idnode $idNode y no se han encontrado resultados, abortando operaci�n"), MSG_TYPE_WARNING);
+            XMD_Log::warning("Se ha intentado cargar el pipeline con el idnode $idNode y no se han encontrado resultados, abortando operación");
+            $this->messages->add(_("Se ha intentado cargar el pipeline con el idnode $idNode y no se han encontrado resultados, abortando operación"), MSG_TYPE_WARNING);
             return NULL;
         }
         $this->__construct($result[0]);

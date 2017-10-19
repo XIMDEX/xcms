@@ -107,7 +107,7 @@ class View_PreviewInServer extends Abstract_View implements Interface_View
                 //return '4';
                 break;
             default:
-                XMD_Log::error('Error de invocaci�n, comando mal formado, etc. (error desconocido)');
+                XMD_Log::error('Error de invocación, comando mal formado, etc. (error desconocido)');
                 $content = '';
                 break;
             //return '5';

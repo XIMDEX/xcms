@@ -31,7 +31,7 @@ include_once 'phing/tasks/system/condition/Condition.php';
  * 
  *    @author    Hans Lellelid <hans@xmpl.org>
  *  @author    Andreas Aderhold <andi@binarycloud.com>
- *  @copyright © 2001,2002 THYRELL. All rights reserved
+ *  @copyright Â© 2001,2002 THYRELL. All rights reserved
  *  @version   $Revision: 1.16 $
  *  @package   phing.tasks.system.condition
  */

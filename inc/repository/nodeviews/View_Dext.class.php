@@ -101,9 +101,9 @@ class View_Dext extends Abstract_View implements Interface_View
 
         if ($returnValue) {
             if ($returnValue == 127) {
-                XMD_Log::error("Error de llamada al m�dulo dexT");
+                XMD_Log::error("Error de llamada al módulo dexT");
             } elseif ($returnValue == 2) {
-                XMD_Log::error("Error en configuraci�n de librerias del m�dulo dexT");
+                XMD_Log::error("Error en configuración de librerias del módulo dexT");
             } else {
                 $j = 0;
                 $out = explode("\n", $output);
@@ -115,7 +115,7 @@ class View_Dext extends Abstract_View implements Interface_View
                 }
 
 
-                $tmp[0] = preg_replace("/GENERATION ERROR -->/", "Error de Generaci�n", $tmp[0]);
+                $tmp[0] = preg_replace("/GENERATION ERROR -->/", "Error de Generación", $tmp[0]);
                 $tmp[0] = preg_replace("/SYNTAX ERROR -->/", "Error de Sintaxis en la llamada", $tmp[0]);
                 $tmp[0] = preg_replace("/CONFIGURATION ERROR -->/", "Error de Configuracion", $tmp[0]);
 
@@ -188,7 +188,7 @@ class View_Dext extends Abstract_View implements Interface_View
 
         // Check Params:
         if (!isset($this->_idSection) || !($this->_idSection > 0)) {
-            XMD_Log::error('VIEW DEXT: No se ha especificado la secci�n del nodo ' . $args['NODENAME'] . ' que quiere renderizar');
+            XMD_Log::error('VIEW DEXT: No se ha especificado la sección del nodo ' . $args['NODENAME'] . ' que quiere renderizar');
             return NULL;
         }
 

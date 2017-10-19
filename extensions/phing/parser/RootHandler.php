@@ -30,7 +30,7 @@ include_once 'phing/parser/ProjectHandler.php';
  * specific parsing starts. RootHandler decides what to do next.
  *
  * @author    Andreas Aderhold <andi@binarycloud.com>
- * @copyright © 2001,2002 THYRELL. All rights reserved
+ * @copyright Â© 2001,2002 THYRELL. All rights reserved
  * @version   $Revision: 1.7 $
  * @package   phing.parser
  */

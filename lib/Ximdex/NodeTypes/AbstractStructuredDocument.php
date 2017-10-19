@@ -183,18 +183,13 @@ class AbstractStructuredDocument extends FileNode
             }
             if ($res === false)
             {
-                //we don't allow to save an invalid XML
-                //$this->messages->add('The XML document is not valid. Changes have not been saved', MSG_TYPE_ERROR);
-                if (isset($GLOBALS['InBatchProcess']))
-                    Logger::error('Invalid XML for idNode: ' . $node->getIdNode());
+                Logger::error('Invalid XML for idNode: ' . $node->getIdNode());
                 $error = \Ximdex\Error::error_message('DOMDocument::loadXML(): ');
                 if ($error)
                 {
                     $this->messages->add($error, MSG_TYPE_WARNING);
-                    if (isset($GLOBALS['InBatchProcess']))
-                        Logger::error($error . ' (' . $node->GetNodeName() . ')');
+                    Logger::error($error . ' (' . $node->GetNodeName() . ')');
                 }
-                //return false;
             }
         }
         

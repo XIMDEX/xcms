@@ -384,7 +384,7 @@ class View_TARGZ extends Abstract_View implements Interface_View
                         $subversion = $relNewsColector->get('SubVersion');
                         $cacheId = $relNewsColector->get('IdCache');
                     } else {
-                        XMD_Log::info('Sin relaci�n en la base de datos');
+                        XMD_Log::info('Sin relación en la base de datos');
                     }
 
                     if (!($cacheId > 0)) {

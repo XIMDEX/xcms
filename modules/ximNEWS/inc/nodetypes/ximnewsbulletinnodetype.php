@@ -282,7 +282,7 @@ class XimNewsBulletinNodeType extends AbstractStructuredDocument  {
 				$subversion = $relNewsColector->get('SubVersion');
 				$cacheId = $relNewsColector->get('IdCache');
 			} else {
-				XMD_Log::info('Sin relaci�n en la base de datos');
+				XMD_Log::info('Sin relación en la base de datos');
 				continue;
 			}
 

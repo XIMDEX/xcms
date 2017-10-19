@@ -344,7 +344,7 @@ class XimNewsNewLanguage extends AbstractStructuredDocument  {
 
 
     /**
-     * Funci�n que actualiza el esquema de una noticia al del esquema 
+     * Función que actualiza el esquema de una noticia al del esquema 
      *
      * @return bool
      */
@@ -352,7 +352,7 @@ class XimNewsNewLanguage extends AbstractStructuredDocument  {
 	function updateToSchema() {
 		$structuredDocument = new StructuredDocument($this->nodeID);
 		if (!$structuredDocument->get('IdDoc') > 0) {
-			Logger::error('No se ha podido cargar el structured Document asociado a la noticia ' . $this->nodeID . ' abortando adecuaci�n a schema');
+			Logger::error('No se ha podido cargar el structured Document asociado a la noticia ' . $this->nodeID . ' abortando adecuación a schema');
 			return false;
 		}
 
@@ -643,7 +643,7 @@ class XimNewsNewLanguage extends AbstractStructuredDocument  {
 		}
 
 		if (!$result) {
-			Logger::error("La noticia $newsName no se ha asociado al colector $idColector. informaci�n adicional " . 
+			Logger::error("La noticia $newsName no se ha asociado al colector $idColector. información adicional " . 
 				print_r($relNewsColector->messages->messages, true));
 			$this->messages->mergeMessages($relNewsColector->messages);
 			return false;

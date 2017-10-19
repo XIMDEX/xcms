@@ -38,7 +38,7 @@ class XML {
     protected $_xmlParser;
     protected $encoding;
     protected $xmlSrc;
-    // Informaci�n parseada
+    // Información parseada
     protected $data;
     // Resultado del parseo
     public $result;

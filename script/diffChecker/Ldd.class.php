@@ -113,7 +113,7 @@ class ldd
             }
 
             if (empty($matches)) {
-                UpdateDb_log::error(sprintf("Error al parsear el tipo del campo %s de la tabla %s, saltamos la creaci�n de este campo",
+                UpdateDb_log::error(sprintf("Error al parsear el tipo del campo %s de la tabla %s, saltamos la creación de este campo",
                     $fieldName, $this->tableName));
                 return;
             }
@@ -244,13 +244,13 @@ class ldd
             }
         }
 
-        // Paso 3: Inserci�n del resto de los documentos
+        // Paso 3: Inserción del resto de los documentos
         reset($data);
         while (list($fieldName, $fieldInfo) = each($data)) {
             $ret = $ret && $this->_updateField($fieldName, NULL, $fieldInfo);
         }
 
-        // Paso 4: Actualizaci�n de indices
+        // Paso 4: Actualización de indices
         $indexes = $this->_activeRecord->GetPrimaryKeys($this->_dbConnection, $this->tableName);
         if (isset($this->object->_indexes) && is_array($this->object->_indexes)) {
             reset($this->object->_indexes);
@@ -282,7 +282,7 @@ class ldd
         }
 
         if (empty($matches)) {
-            UpdateDb_log::error(sprintf("Error al parsear el tipo del campo %s de la tabla %s, saltamos la actualizaci�n de este campo",
+            UpdateDb_log::error(sprintf("Error al parsear el tipo del campo %s de la tabla %s, saltamos la actualización de este campo",
                 $fieldName, $this->tableName));
             return;
         }

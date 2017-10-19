@@ -284,7 +284,6 @@ class StructuredDocument extends StructuredDocumentsOrm
 	 */
 	function SetContent($content, $commitNode = NULL)
 	{
-
 		$symLinks = $this->find('IdDoc', 'TargetLink = %s', array($this->get('IdDoc')), MONO);
 
 		// Repetimos para todos los nodos que son enlaces simbolicos a este
@@ -324,17 +323,19 @@ class StructuredDocument extends StructuredDocumentsOrm
 		        $this->messages->add($data->msgErr, MSG_TYPE_ERROR);
 		        return false;
 		    }
-		    if (isset($GLOBALS['errorInXslTransformation']) and $GLOBALS['errorInXslTransformation'])
-		    {
-		        $this->messages->add($GLOBALS['errorInXslTransformation'], MSG_TYPE_WARNING);
-		        $GLOBALS['errorInXslTransformation'] = null;
-		    }
+		    if (!$this->messages->count())
+		        if (isset($GLOBALS['errorsInXslTransformation']) and $GLOBALS['errorsInXslTransformation'])
+		        {
+		            $this->messages->add($GLOBALS['errorsInXslTransformation'][0], MSG_TYPE_WARNING);
+		            $GLOBALS['errorsInXslTransformation'] = null;
+		        }
 		}
 		// set dependencies
 		$dependeciesParser = new ParsingDependencies();
 		if ($dependeciesParser->parseAllDependencies($this->get('IdDoc'), $content) === false)
 		{
-		    $this->messages->mergeMessages($dependeciesParser->messages);
+		    if (!$this->messages->count())
+		        $this->messages->mergeMessages($dependeciesParser->messages);
 		}
 
 		// Renderizamos el nodo para reflejar los cambios

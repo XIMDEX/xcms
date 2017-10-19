@@ -528,7 +528,7 @@ sub createPath {
 			Logger::MyLog(4, "Remote directory [$dir] has been created recursively by FTP");
 			return 0;
 		} else {
-			my $ftperrorstring = "Código: ".$ftp->code." Causa: ".$ftp->message; chomp($ftperrorstring);
+			my $ftperrorstring = "Cï¿½digo: ".$ftp->code." Causa: ".$ftp->message; chomp($ftperrorstring);
 			Logger::MyLog(4, "Remote directory [$rem_relativepath] has NOT been recursively created by FTP because of: $ftperrorstring");
 
 			$refer->setErrorCause(40, "It has not been possible to create recursively the directory by FTP remote server: $ftperrorstring");
@@ -611,7 +611,7 @@ sub mkdir {
 	# la alternativa para ftp se implementa en createPath al tener RECURSE
 
   #my $cad = "cd $basepath; mkdir $directory";
-  my $cad = "echo ''; cd $basepath; mkdir $directory"; # el echo '' corrige BUG con activación de salida estandar terminales SUN
+  my $cad = "echo ''; cd $basepath; mkdir $directory"; # el echo '' corrige BUG con activaciÃ³n de salida estandar terminales SUN
   
 	my $error = $refer->execute($cad);
 	if (!$error) {
@@ -640,7 +640,7 @@ sub mkdir {
 # Devuelve 0 si OK
 # Devuelve 10, 20, 30, 99 si NOT OK
 # Propaga 5
-# Atención--> NUNCA poner recursivo. Debe fallar si contiene algun elemento... 
+# Atenciï¿½n--> NUNCA poner recursivo. Debe fallar si contiene algun elemento... 
 sub rmdir {
 	my $refer = shift;
 	my ($basepath, $directory) = @_;

@@ -43,7 +43,7 @@ use Ximdex\Utils\Messages;
 class IController
 {
     /**
-     * Objeto Request para almacenar par�metros de petici�n
+     * Objeto Request para almacenar par�metros de petición
      */
     /**
      * @var Request
