@@ -74,6 +74,12 @@ class Action_deletetemplates extends ActionAbstract {
 			}
 		}
 
+		// update the templates_include.xsl files
+		$node = new Node($idNode);
+		$xsltNode = new xsltnode($node);
+		if ($xsltNode->reload_templates_include(new Node($node->getProject())) === false)
+		    $this->messages->mergeMessages($xsltNode->messages);
+		
 		$this->messages->add(_("All nodes were successfully deleted"), MSG_TYPE_NOTICE);
 
 		$values = array(
