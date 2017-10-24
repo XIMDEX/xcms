@@ -674,7 +674,8 @@ CREATE TABLE `StructuredDocuments` (
   `IdTemplate` int(12) unsigned NOT NULL DEFAULT '0',
   `TargetLink` int(12) unsigned DEFAULT NULL,
   PRIMARY KEY (`IdDoc`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Table of strutured documents of Ximdex';
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Table of structured documents of Ximdex';
+ALTER TABLE `StructuredDocuments` ADD `XsltErrors` TEXT NULL DEFAULT NULL COMMENT 'XSL transformation process errors' AFTER `TargetLink`;
 
 CREATE TABLE `Synchronizer` (
   `IdSync` int(12) unsigned NOT NULL AUTO_INCREMENT,

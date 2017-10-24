@@ -44,6 +44,9 @@ Ximdex\Logger::addLog( $log );
 $log = new Logger('Actions');
 $log->pushHandler(new StreamHandler(App::getValue('XIMDEX_ROOT_PATH') .'/logs/actions.log', Logger::DEBUG));
 Ximdex\Logger::addLog( $log , 'actions' ) ;
+$log = new Logger('XSLT');
+$log->pushHandler(new StreamHandler(App::getValue('XIMDEX_ROOT_PATH') . '/logs/xslt.log', Logger::DEBUG));
+Ximdex\Logger::addLog($log , 'xslt');
 
 Ximdex\Logger::setActiveLog();
 

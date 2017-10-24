@@ -23,23 +23,30 @@
  *  @version $Revision$
  *}
 
-<html>
-	<head>
-		<title>{t}Preview{/t}</title>
-		<link href="{$_URL_ROOT}/actions/prevdoc/resources/css/prevdoc.css" type="text/css" rel="stylesheet">
-		{literal}
-		<script type="text/javascript">
-			$(document).ready(function() {
-				$("iframe").onload("load",function(){
-					$("a",window.frames[0].document).attr("target","_parent");
-				});
-			});
-		</script>
-		{/literal}
-	</head>
-	<body class="prevdoc-body">
-		<fieldset class="prevdoc-container">
-			<iframe class="prevdoc-document" id="prevdoc-document" name="prevdoc-document"  src="{$prevUrl}"></iframe>
-		</fieldset>
-	</body>
-</html>
+{if (isset($errors))}
+	<div style="margin: 1%;">
+		<h2>This document has not been processed propertly, the errors are listed bellow:</h2>
+		{$errors}
+	</div>
+{else}
+	<html>
+		<head>
+			<title>{t}Preview{/t}</title>
+			<link href="{$_URL_ROOT}/actions/prevdoc/resources/css/prevdoc.css" type="text/css" rel="stylesheet">
+			{literal}
+				<script type="text/javascript">
+					$(document).ready(function() {
+						$("iframe").onload("load",function(){
+							$("a",window.frames[0].document).attr("target","_parent");
+						});
+					});
+				</script>
+			{/literal}
+		</head>
+		<body class="prevdoc-body">
+			<fieldset class="prevdoc-container">
+				<iframe class="prevdoc-document" id="prevdoc-document" name="prevdoc-document"  src="{$prevUrl}"></iframe>
+			</fieldset>
+		</body>
+	</html>
+{/if}

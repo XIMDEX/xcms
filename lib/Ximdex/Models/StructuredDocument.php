@@ -301,7 +301,7 @@ class StructuredDocument extends StructuredDocumentsOrm
 			{
 			    //invalid XML
 			    $this->msgErr = 'Invalid XML document content';
-			    Logger::error('Invalid XML for metadata node: ' . $node->getDescription());
+			    Logger::error('Invalid XML for metadata node: ' . $node->GetDescription());
 			    return false;
 			}
 		}
@@ -454,7 +454,6 @@ class StructuredDocument extends StructuredDocumentsOrm
 	// return docID - lo carga como atributo
 	function CreateNewStrDoc($docID, $name, $IdCreator, $IdLanguage, $templateID, $IdChannelList, $content = '')
 	{
-
 		$this->set('Name', $name);
 		$this->set('IdCreator', $IdCreator);
 		$now = date('Y/m/d H:i:s');
@@ -609,4 +608,21 @@ class StructuredDocument extends StructuredDocumentsOrm
 		return $aux;
 	}
 
+	function GetXsltErrors()
+	{
+	    return $this->get('XsltErrors');
+	}
+	
+	function SetXsltErrors($xsltErrors)
+	{
+	    if (!$this->get('IdDoc'))
+	    {
+	        $this->SetError(2);
+	        return false;
+	    }
+	    $result = $this->set('XsltErrors', $xsltErrors);
+	    if ($result)
+	        return $this->update();
+	    return false;
+	}
 }

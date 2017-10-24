@@ -28,6 +28,7 @@
 use Ximdex\Logger;
 use Ximdex\Models\Channel;
 use Ximdex\Models\Node;
+use Ximdex\Models\StructuredDocument;
 use Ximdex\Models\Version;
 use Ximdex\Runtime\App;
 
@@ -82,30 +83,28 @@ class View_Xslt extends Abstract_View
         }
 
         // XSLT Transformation
-
+        
+        //TODO change the global variable to a function parameter
+        if (!isset($GLOBALS['errorsInXslTransformation']))
+            $GLOBALS['errorsInXslTransformation'] = array();
+        
         Logger::info('Starting xslt transformation');
         if ($this->_node and $this->_node->GetID())
             Logger::info('Processing XML document with ID: ' . $this->_node->GetID() . ' and name: ' . $this->_node->GetNodeName());
-        $GLOBALS['errorsInXslTransformation'] = array();
         
         $xsltHandler = new \Ximdex\XML\XSLT();
         if (!$xsltHandler->setXML($pointer))
         {
             $error = 'The XML document has syntax errors (' . \Ximdex\Error::error_message('DOMDocument::load(): ') . ')';
-            Logger::error($error);
             $GLOBALS['errorsInXslTransformation'][] = $error;
         }
         
         Logger::info('Loading XSL content from ' . $docxap);
         
-        //load the docxap content
+        // load the docxap content
         $domDoc = new DOMDocument();
         if (@$domDoc->load($docxap) === false)
-        {
-            $error = 'Invalid XSL Docxap file: ' . $docxap . ' (' . \Ximdex\Error::error_message('DOMDocument::load(): ') . ')';
-            Logger::error($error);
-            $GLOBALS['errorsInXslTransformation'][] = $error;
-        }
+            $GLOBALS['errorsInXslTransformation'][] = 'Invalid docxap.xsl file (' . \Ximdex\Error::error_message('DOMDocument::load(): ') . ')';
         $docxapContent = $domDoc->saveXML();
         
         // include the correspondant includes_template.xsl for the current document
@@ -117,16 +116,15 @@ class View_Xslt extends Abstract_View
         if (!xsltnode::replace_path_to_local_templatesInclude($docxapContent, $idNode, $projectId, $urlTemplatesInclude))
         {
             $error = 'Cannot load the XSL file ' . $urlTemplatesInclude . ' for XML document ';
-            if ($iNode)
+            if ($idNode)
                 $error .= 'with ID: ' . $idNode;
             else
                 $error .= 'with project ID: ' . $projectId;
-            Logger::error($error);
             $GLOBALS['errorsInXslTransformation'][] = $error;
         }
         
-        if ($xsltHandler->setXSL(null, $docxapContent) === false)
-            return false;
+        $xsltHandler->setXSL(null, $docxapContent);
+        
         $params = array('xmlcontent' => $content);
         
         if (App::debug())
@@ -155,37 +153,33 @@ class View_Xslt extends Abstract_View
         if ($content === false)
         {
             // try to reload templates includes in order to try to solve the problem, in case of empty templates_include.xsl
+            Logger::info('Checking if the local templates_include.xsl is empty to reload its content');
             $dom = new DOMDocument();
             if (!$dom->load($urlTemplatesInclude))
+                $GLOBALS['errorsInXslTransformation'][] = 'Cannot load the includes template URL: ' . $urlTemplatesInclude;
+            else
             {
-                $error = 'Cannot load the includes template URL: ' . $urlTemplatesInclude;
-                Logger::error($error);
-                $GLOBALS['errorsInXslTransformation'][] = $error;
-                return false;
-            }
-            $templates = $dom->getElementsByTagName('xsl:include');
-            if (!$templates->length)
-            {
-                Logger::warning('XSL templates file: ' . $urlTemplatesInclude . ' is empty; trying to reload the templates files in the project ID: ' . $projectId);
-                $xsltNode = new xsltnode($project);
-                if ($xsltNode->reload_templates_include($project) === false)
+                $xPath = new DOMXPath($dom);
+                $templates = $xPath->query('/xsl:stylesheet/xsl:include');
+                if (!$templates->length)
                 {
-                    foreach ($xsltNode->messages as $message)
+                    Logger::info('XSL templates file: ' . $urlTemplatesInclude 
+                            . ' is empty; trying to reload the templates files in the project ID: ' . $projectId);
+                    $xsltNode = new xsltnode($project);
+                    if ($xsltNode->reload_templates_include($project) === false)
                     {
-                        Logger::error($message);
-                        $GLOBALS['errorsInXslTransformation'][] = $message;
+                        foreach ($xsltNode->messages as $message)
+                            $GLOBALS['errorsInXslTransformation'][] = $message;
                     }
-                    return false;
-                }
-                if ($xsltHandler->setXSL(null, $docxapContent) === false)
-                    return false;
-                $content = $xsltHandler->process();
-                
-                if (App::debug())
-                {
-                    # DEBUG
-                    @file_put_contents("/tmp/content-post.xml", $content);
-                    # END DEBUG
+                    $xsltHandler->setXSL(null, $docxapContent);
+                    $content = $xsltHandler->process();
+                    
+                    if (App::debug())
+                    {
+                        # DEBUG
+                        @file_put_contents("/tmp/content-post.xml", $content);
+                        # END DEBUG
+                    }
                 }
             }
         }
@@ -193,12 +187,16 @@ class View_Xslt extends Abstract_View
         if (empty($content)) {
             
             $error = 'Error in XSL transformation process (' . \Ximdex\Error::error_message('XSLTProcessor::transformToXml(): ') . ')';
-            Logger::error($error);
             $GLOBALS['errorsInXslTransformation'][] = $error;
+            // activation of the XSLT log and init the XSLT errors array
+            Logger::setActiveLog('xslt');
+            foreach ($GLOBALS['errorsInXslTransformation'] as $error)
+                Logger::error($error);
+            // we save the error trace into the previous file
+            $this->set_xslt_errors($GLOBALS['errorsInXslTransformation']);
+            Logger::setActiveLog();
             if (isset($GLOBALS['InBatchProcess']))
-            {
                 return NULL;
-            }
             return false;
         }
 
@@ -210,15 +208,24 @@ class View_Xslt extends Abstract_View
 
         if ($channel->get("OutputType") == "xml") {
             if (!@$domDoc->loadXML($content)) {
-                Logger::error($content);
-                Logger::error('XML invalid');
+                
+                Logger::setActiveLog('xslt');
+                Logger::error('XML invalid: ' . $content);
+                Logger::setActiveLog();
                 $GLOBALS['errorsInXslTransformation'][] = 'Invalid XML source: ' . $content;
+                // we save the error trace into the previous file
+                $this->set_xslt_errors($GLOBALS['errorsInXslTransformation']);
                 return false;
             }
         } else if ($channel->get("OutputType") == "web") {
             if (!@$domDoc->loadHTML($content)) {
-                Logger::error('HTML invalid');
+                
+                Logger::setActiveLog('xslt');
+                Logger::error('HTML invalid: ' . $content);
+                Logger::setActiveLog();
                 $GLOBALS['errorsInXslTransformation'][] = 'Invalid HTML or XHTML source: ' . $content;
+                // we save the error trace into the previous file
+                $this->set_xslt_errors($GLOBALS['errorsInXslTransformation']);
                 return false;
             }
         } else {
@@ -238,8 +245,48 @@ class View_Xslt extends Abstract_View
             $content = $domDoc->saveXML();
         else if ($channel->get("OutputType") == "web")
             $content = $domDoc->saveHTML();
+        
+        // the document has been processed propertly, so if there is any previous errors they will be deleted
+        $this->reset_xslt_errors();
 
         return $this->storeTmpContent($content);
+    }
+    
+    /**
+     * Generate a string with the XSLT errors, to will save in the post transformation information of the current structured document node
+     * @param array $errors
+     * @return NULL|boolean
+     */
+    private function set_xslt_errors(array $errors)
+    {
+        if (!$this->_node or !$this->_node->GetID())
+            return null;
+        $content = '';
+        foreach ($errors as $error)
+            $content .= $error . "\n\n";
+        $stDoc = new StructuredDocument($this->_node->GetID());
+        if (!$stDoc->GetID())
+            return false;
+        if ($stDoc->SetXsltErrors($content) === false)
+            return false;
+        return true;
+    }
+    
+    /**
+     * Set to null the value XSLT Errors in the current sctructured document
+     * @return NULL|boolean
+     */
+    private function reset_xslt_errors()
+    {
+        if (!$this->_node or !$this->_node->GetID())
+            return null;
+        $stDoc = new StructuredDocument($this->_node->GetID());
+        if (!$stDoc->GetID())
+            return false;
+        if ($stDoc->GetXsltErrors())
+            if ($stDoc->SetXsltErrors(null) === false)
+                return false;
+        return true;
     }
 
     private function _setNode($idVersion = NULL)

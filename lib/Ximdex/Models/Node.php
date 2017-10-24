@@ -894,6 +894,10 @@ class Node extends NodesOrm
             if ($node)
             {
                 $res = true;
+                
+                //TODO change global variable to another entity
+                $GLOBALS['errorsInXslTransformation'] = array();
+                
                 $domDoc = new DOMDocument();
                 if ($node->getNodeType() == \Ximdex\Services\NodeType::NODE_HT)
                 {
@@ -932,7 +936,7 @@ class Node extends NodesOrm
                             {
                                 $this->messages->add($GLOBALS['parsingDependenciesError'], MSG_TYPE_WARNING);
                                 Logger::error('Saving content: ' . $GLOBALS['parsingDependenciesError'] . ' for IdNode: ' . $node->GetID() . ' (' 
-                                        . $node->getDescription() . ')');
+                                        . $node->GetDescription() . ')');
                             }
                         }
                         //check the pathto dependencies
@@ -940,18 +944,20 @@ class Node extends NodesOrm
                         {
                             $this->messages->add($GLOBALS['parsingDependenciesError'], MSG_TYPE_WARNING);
                             Logger::error('Saving content: ' . $GLOBALS['parsingDependenciesError'] . ' for IdNode: ' . $node->GetID() . ' (' 
-                                    . $node->getDescription() . ')');
+                                    . $node->GetDescription() . ')');
                         }
                     }
                 }
                 if ($res === false)
                 {
-                    Logger::error('Invalid XML for IdNode: ' . $node->GetID() . ' (' . $node->getDescription() . ')');
+                    Logger::error('Invalid XML for IdNode: ' . $node->GetID() . ' (' . $node->GetDescription() . ')');
                     $error = \Ximdex\Error::error_message('DOMDocument::loadXML(): ');
                     if ($error)
                     {
-                        $this->messages->add('Invalid XML content: ' . $error, MSG_TYPE_WARNING);
-                        Logger::error('Saving content: ' . $error);
+                        $error = 'Invalid XML content for node: ' . $node->GetID() . ' (' . $error . ')';
+                        $this->messages->add($error, MSG_TYPE_WARNING);
+                        Logger::error($error);
+                        $GLOBALS['errorsInXslTransformation'] = [$error];
                     }
                 }
                 elseif ($node->getNodeType() == \Ximdex\Services\NodeType::RNG_VISUAL_TEMPLATE)
@@ -971,8 +977,9 @@ class Node extends NodesOrm
                             $error = $errors[0];
                         }
                         $this->messages->add($error, MSG_TYPE_WARNING);
-                        Logger::error('Saving content: Invalid RNG template for IdNode: ' . $node->GetID() . ' (' . $node->getDescription() . ')');
-                        Logger::error($error);
+                        Logger::error('Saving content: Invalid RNG template for node: ' . $node->GetID() . ' ' . $node->GetDescription() 
+                                . ' (' . $error . ')');
+                        $GLOBALS['errorsInXslTransformation'] = [$error];
                     }
                 }
             }

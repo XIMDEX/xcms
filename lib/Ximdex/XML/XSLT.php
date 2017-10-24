@@ -80,7 +80,7 @@ class XSLT
         {
             if (@$this->xsl->loadXML($content) === false)
             {
-                $error = 'Error loading XSL content: ' . $content . ' (' . \Ximdex\Error::error_message('DOMDocument::loadXML(): ') . ')';
+                $error = 'Loading XSL content (' . \Ximdex\Error::error_message('DOMDocument::loadXML(): ') . ')';
                 Logger::error($error);
                 $GLOBALS['errorsInXslTransformation'][] = $error;
                 return false;
@@ -96,9 +96,7 @@ class XSLT
         if (@$this->xsltprocessor->importStyleSheet($this->xsl) === false) {
             
             $error = \Ximdex\Error::error_message('XSLTProcessor::importStylesheet(): ');
-            $errorLog = 'Error processing XSL file: ' . $error . ($xsl_file) ?  ' (' . $xsl_file . ')' : '';
-            Logger::error('In set XSL content: ' . $errorLog);
-            $GLOBALS['errorsInXslTransformation'][] = 'Error importing XSL stylesheet: ' . $error;
+            $GLOBALS['errorsInXslTransformation'][] = 'Error importing XSL stylesheet (' . $error . ')';
             return false;
         }
         return true;

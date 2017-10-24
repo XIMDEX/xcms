@@ -32,9 +32,10 @@ use Ximdex\Runtime\DataFactory;
 
 
 class Action_preview extends ActionAbstract {
+	
 	// Main method: shows initial form
-    	function index () {
-      		$idNode	= (int) $this->request->getParam("nodeid");
+    function index () {
+        $idNode	= (int) $this->request->getParam("nodeid");
 		$params = $this->request->getParam("params");
 
 		$node = new Node($idNode);
@@ -87,9 +88,9 @@ class Action_preview extends ActionAbstract {
 			"go_method" => "preview",
 			'name' => $node->GetNodeName()
 		);
-
+		
 		$this->render($values, null, 'default-3.0.tpl');
-    	}
+    }
 
 	function preview() {
       		$idNode	= (int) $this->request->getParam("nodeid");

@@ -35,7 +35,7 @@ use Ximdex\Utils\PipelineManager;
 
 ModulesManager::file('/inc/utils.php');
 ModulesManager::file('/inc/filters/Filter.class.php');
- ModulesManager::file('/inc/repository/nodeviews/View_NodeToRenderizedContent.class.php');
+ModulesManager::file('/inc/repository/nodeviews/View_NodeToRenderizedContent.class.php');
 ModulesManager::file('/inc/repository/nodeviews/View_PrefilterMacros.class.php');
 ModulesManager::file('/inc/repository/nodeviews/View_Dext.class.php');
 ModulesManager::file('/inc/repository/nodeviews/View_Xslt.class.php');
@@ -151,29 +151,41 @@ class Action_prevdoc extends ActionAbstract
 		$pipelineManager = new PipelineManager();
 
 		$content = $pipelineManager->getCacheFromProcess(NULL, 'StrDocToDexT', $args);
-
-		// Specific FilterMacros View for previsuals:
-		$viewFilterMacrosPreview = new View_FilterMacrosPreview();
-		$file = $viewFilterMacrosPreview->transform(NULL, $content, $args);
-		$hash = basename($file);
-
-		if (!empty($showprev)) {
-			$this->request->setParam('hash', $hash);
-			$this->prevdoc();
-			return;
+		
+		if ($content === false)
+		{
+		    // if content is false, show the xslt errors instead the document preview
+		    $stDoc = new StructuredDocument($idNode);
+		    $errors = $stDoc->GetXsltErrors();
+		    if ($errors)
+		        $errors = str_replace("\n", "\n<br />\n", $errors);
+		    else
+		        $errors = 'The preview cannot be processed due to an unknown error';
+		    $this->addCss('/xmd/style/jquery/ximdex_theme/widgets/browserwindow/actionPanel.css');
+		    $this->render(array('errors' => $errors), 'index', 'basic_html.tpl');
 		}
-
-		$queryManager = \Ximdex\Runtime\App::get('\Ximdex\Utils\QueryManager');
-		$prevUrl = $queryManager->getPage() . $queryManager->buildWith(array('method' => 'prevdoc', 'hash' => $hash));
-
-//    	$this->addCss('/actions/prevdoc/resources/css/prevdoc.css');
-
-    	if ($json == 'json') {
-    		$this->sendJSON(array('prevUrl' => $prevUrl));
-    		return;
-    	}
-
-		$this->render(array('prevUrl' => $prevUrl), 'index', 'only_template.tpl');
+		else
+		{
+    		// Specific FilterMacros View for previsuals:
+    		$viewFilterMacrosPreview = new View_FilterMacrosPreview();
+    		$file = $viewFilterMacrosPreview->transform(NULL, $content, $args);
+    		$hash = basename($file);
+    
+    		if (!empty($showprev)) {
+    			$this->request->setParam('hash', $hash);
+    			$this->prevdoc();
+    			return;
+    		}
+    
+    		$queryManager = \Ximdex\Runtime\App::get('\Ximdex\Utils\QueryManager');
+    		$prevUrl = $queryManager->getPage() . $queryManager->buildWith(array('method' => 'prevdoc', 'hash' => $hash));
+    		
+    		if ($json == 'json') {
+    		    $this->sendJSON(array('prevUrl' => $prevUrl));
+    		    return;
+            }
+            $this->render(array('prevUrl' => $prevUrl), 'index', 'only_template.tpl');
+		}
     }
 
     public function prevdoc() {
@@ -186,10 +198,15 @@ class Action_prevdoc extends ActionAbstract
 
     	$hash = $this->request->getParam('hash');
     	$file = sprintf('%s%s/%s', App::getValue('AppRoot'), App::getValue("TempRoot"), $hash);
-    	$content = '';
+    	//$content = '';
 
     	if (file_exists($file)) {
     		$content = FsUtils::file_get_contents($file);
+    	}
+    	else
+    	{
+    	    echo 'File does not exist: ' . $file;
+    	    die();
     	}
         if(isset($_GET["nodeid"])){
             //Remove all used cache

@@ -37,7 +37,8 @@ class StructuredDocumentsOrm extends \Ximdex\Data\GenericData
         'UpdateDate' => array('type' => "timestamp", 'not_null' => 'true'),
         'IdLanguage' => array('type' => "int(12)", 'not_null' => 'false'),
         'IdTemplate' => array('type' => "int(12)", 'not_null' => 'true'),
-        'TargetLink' => array('type' => "int(12)", 'not_null' => 'false')
+        'TargetLink' => array('type' => "int(12)", 'not_null' => 'false'),
+        'XsltErrors' => array('type' => "text", 'not_null' => 'false')
     );
     var $_uniqueConstraints = array();
     var $_indexes = array('IdDoc');
@@ -49,4 +50,5 @@ class StructuredDocumentsOrm extends \Ximdex\Data\GenericData
     var $IdLanguage = 0;
     var $IdTemplate = 0;
     var $TargetLink;
+    var $XsltErrors;
 }

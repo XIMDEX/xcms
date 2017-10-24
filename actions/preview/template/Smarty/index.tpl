@@ -23,25 +23,24 @@
  *  @version $Revision$
  *}
 <div class="action_header">
-<h2>{t}Document preview{/t} {$name}</h2>
+	<h2>{t}Document preview{/t} {$name}</h2>
 	<fieldset class="action-controls">
-						<input type="hidden" name="node_id" class="node_id" value="{$id_node}">
-
-						{*  If it is a document, it shows combo with channels *}
-						{if ($nameNodeType != 'TextFile' && $nameNodeType != 'ImageFile' && $nameNodeType !='BinaryFile'   && $nameNodeType != 'NodeHt')}
-							<select id="channellist{$id_node}" name="channellist" class="prevdoc-channel-selector" >
-							 {foreach from=$channels item=_channel}
-								<option value='{$_channel.Id}'>{$_channel.Name}</option>
-							{/foreach}
-							</select>
-						{/if}
-
-						<a id="prevdoc-button" href="{$_URL_ROOT}/xmd/loadaction.php?action=prevdoc&nodeid={$id_node}" class="btn main_action ui-state-default ui-corner-all button submit-button ladda-button"><span class="ladda-label">{t}View in a new window{/t}</span></a>
-
+		<input type="hidden" name="node_id" class="node_id" value="{$id_node}" />
+		{*  If it is a document, it shows combo with channels *}
+		{if ($nameNodeType != 'TextFile' and $nameNodeType != 'ImageFile' and $nameNodeType !='BinaryFile' and $nameNodeType != 'NodeHt')}
+			<select id="channellist{$id_node}" name="channellist" class="prevdoc-channel-selector">
+				{foreach from=$channels item=_channel}
+					<option value='{$_channel.Id}'>{$_channel.Name}</option>
+				{/foreach}
+			</select>
+		{/if}
+		<a id="prevdoc-button" href="{$_URL_ROOT}/xmd/loadaction.php?action=prevdoc&nodeid={$id_node}" 
+				class="btn main_action ui-state-default ui-corner-all button submit-button ladda-button"><span 
+				class="ladda-label">{t}View in a new window{/t}</span></a>
 	</fieldset>
 </div>
 <div class="content_container prevdoc">
 	<iframe id="preview{$id_node}" src="{$_URL_ROOT}/xmd/loadaction.php?action=prevdoc&nodeid={$id_node}&channel=10001" height="100%" width="100%">
-	  <p>Your browser does not support iframes.</p>
+		<p>Your browser does not support iframes.</p>
 	</iframe>
 </div>

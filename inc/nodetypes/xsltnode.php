@@ -319,12 +319,13 @@ class xsltnode extends FileNode
                 // avoid the PATH_TO_LOCAL_TEMPLATE_INCLUDE token error
                 if ($error and strpos($error, '##PATH_TO_LOCAL_TEMPLATE_INCLUDE##') === false)
                 {
-                    if ($node and $node->getDescription())
-                        $error = 'Invalid XSL for node ' . $node->getDescription() . ': ' . $error;
+                    if ($node and $node->GetDescription())
+                        $error = 'Invalid XSL for node ' . $node->GetDescription() . ': ' . $error;
                     else
                         $error = 'Invalid XSL to set content operation: ' . $error;
                     Logger::error($error);
                     $this->messages->add($error, MSG_TYPE_WARNING);
+                    $GLOBALS['errorsInXslTransformation'] = [$error];
                     $res = true;
                 }
             }
