@@ -141,22 +141,15 @@ abstract class XmlEditor_Abstract
             return App::getValue( 'UrlRoot') . '/actions/xmleditor2/views/rngeditor/templates/docxap.xsl';
         }
 
-        $docxap = null;
-
-        // Searching for a docxap document in all the project sections
-        while (null !== ($idparent = $node->GetParent()) && $docxap === null) {
-
-            unset($node);
-            $node = new Node($idparent);
-            $ptdFolder = $node->GetChildByName('templates');
-
-            if ($ptdFolder !== false) {
-                $ptdFolder = new Node($ptdFolder);
-                $docxap = $ptdFolder->class->getNodePath() . '/docxap.xsl';
-                unset($ptdFolder);
-                if (!is_readable($docxap)) $docxap = null;
-            }
+        // return full project docxap path
+        $project = new Node($node->getProject());
+        if (!$project->GetID())
+        {
+            Logger::error('A non-existing project cannot be obtained from node: ' . $idnode);
+            return false;
         }
+        $docxap = App::getValue('AppRoot') . App::getValue('NodeRoot') . '/' . $project->GetNodeName() . '/' . App::getValue('TemplatesDirName') 
+                . '/docxap.xsl';
 
         if ($docxap && $asURL) {
             $docxap = str_replace(App::getValue( 'AppRoot'), App::getValue( 'UrlRoot'),  $docxap);
