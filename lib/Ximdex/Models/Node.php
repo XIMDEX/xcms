@@ -675,8 +675,7 @@ class Node extends NodesOrm
 
         return $this->class->GetPublishedPath($channelID, $addNodeName);
     }
-
-    //TODO ajlucena: GetParent
+    
     /**
      * If it is contained, returns the relative path from node $nodeID
      * @param int $nodeID
@@ -685,7 +684,6 @@ class Node extends NodesOrm
      */
     function GetRelativePath($nodeID, Node $nodeReplace = null)
     {
-        /*
         $this->ClearError();
         if ($this->get('IdNode'))
         {
@@ -697,7 +695,7 @@ class Node extends NodesOrm
                 {
                     $path = '';
                     $levels = count($nodes);
-                    for ($cont = 0; $cont <= $levels; $cont++)
+                    for ($cont = 0; $cont < $levels; $cont++)
                     {
                         $parentId = $nodes[$cont][0];
                         if ($nodeReplace and $parentId == $nodeReplace->GetID())
@@ -707,7 +705,7 @@ class Node extends NodesOrm
                             $node = new Node($parentId);
                             $nodeName = $node->GetNodeName();
                         }
-                        $path .= '/' . $nodeName;
+                        $path = '/' . $nodeName . $path;
                         if ($parentId == $nodeID)
                             break;
                     }
@@ -718,31 +716,8 @@ class Node extends NodesOrm
                 $this->SetError(1);
         }
         return null;
-        */
-        $this->ClearError();
-        if ($this->get('IdNode') > 0) {
-            if ($this->IsOnNode($nodeID))
-            {
-                if ($nodeReplace and $this->GetID() == $nodeReplace->GetID())
-                    $nodeName = $nodeReplace->GetNodeName();
-                else
-                    $nodeName = $this->GetNodeName();
-                if ((!$this->GetParent()) || ($this->get('IdNode') == $nodeID))
-                {
-                    return '/' . $nodeName;
-                }
-                else
-                {
-                    $parent = new Node($this->GetParent());
-                    return $parent->GetRelativePath($nodeID, $nodeReplace) . '/' . $nodeName;
-                }
-            } else
-                $this->SetError(1);
-        }
-        return NULL;
     }
-
-    //TODO ajlucena: GetParent
+    
     /**
      * Returns if a node is contained in the node with id $nodeID
      * @param $nodeID
@@ -752,22 +727,22 @@ class Node extends NodesOrm
     {
         $this->ClearError();
         if ($this->get('IdNode') > 0) {
-            if ($this->get('IdNode') == $nodeID) {
-                return true;
-            } else {
-                if (!$this->GetParent()) {
-                    return false;
-                } else {
-                    $parent = new Node($this->GetParent());
-                    return $parent->IsOnNode($nodeID);
-                }
+            
+            $ft = new FastTraverse();
+            $nodes = $ft->getParents($this->get('IdNode'));
+            if ($nodes === false)
+                return false;
+            foreach ($nodes as $parentId)
+            {
+                if ($parentId[0] == $nodeID)
+                    return true;
             }
+            return false;
         }
         $this->SetError(1);
         return false;
     }
-
-    //TODO ajlucena: GetParent
+    
     /**
      * Returns if a node is contained in the node with nodetype $nodeTypeID
      * @param $nodeTypeID
@@ -776,43 +751,56 @@ class Node extends NodesOrm
     function IsOnNodeWithNodeType($nodeTypeID)
     {
         $this->ClearError();
-        if ($this->get('IdNode') > 0) {
-            if ($this->get('IdNodeType') == $nodeTypeID) {
-                return true;
-            } else {
-                if (!$this->GetParent()) {
+        if ($this->get('IdNode') > 0)
+        {
+            $ft = new FastTraverse();
+            $nodes = $ft->getParents($this->get('IdNode'));
+            if ($nodes === false)
+                return false;
+            foreach ($nodes as $parentId)
+            {
+                $node = new Node($parentId[0]);
+                if (!$node->GetID())
+                {
+                    $this->SetError(1);
                     return false;
-                } else {
-                    $parent = new Node($this->GetParent());
-                    return $parent->IsOnNodeWithNodeType($nodeTypeID);
                 }
+                if ($node->GetNodeType() == $nodeTypeID)
+                    return true;
             }
+            return false;
         }
         $this->SetError(1);
         return false;
     }
-
-    //TODO ajlucena: GetParent
+    
     /**
-     * Returned the Id of the nearest parent wich can attach groups (nodeType)
+     * Returned the Id of the nearest parent which can attach groups (nodeType)
      */
-    public function GetNearest(Node $parentNode)
+    public function GetNearest(Node $node)
     {
         $this->ClearError();
-
-        if ($this->get('IdNode') > 0) {
-            $parentNodeTypeId   = $parentNode->get('IdNodeType');
-            $parentNodeType     = new NodeType($parentNodeTypeId);
-
-            if (! $parentNodeType->get('CanAttachGroups')) {
-
-                $parentParent = new Node($parentNode->GetParent());
-                return $parentNode->GetNearest($parentParent);
+        if ($this->get('IdNode') > 0)
+        {
+            $ft = new FastTraverse();
+            $nodes = $ft->getParents($node->get('IdNode'));
+            if ($nodes === false)
+                return false;
+            $levels = count($nodes);
+            for ($cont = 0; $cont < $levels; $cont++)
+            {
+                $parentId = $nodes[$cont][0];
+                $node = new Node($parentId);
+                if (!$node->GetID())
+                {
+                    $this->SetError(1);
+                    return false;
+                }
+                $parentNodeType = new NodeType($node->get('IdNodeType'));
+                if ($parentNodeType->get('CanAttachGroups'))
+                    return $node->get('IdNode');
             }
-
-            return $parentNode->get('IdNode');
         }
-
         $this->SetError(1);
         return false;
     }
