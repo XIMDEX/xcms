@@ -215,15 +215,10 @@ class Action_deletenode extends ActionAbstract {
 		//docxap.xls node from project templates folder cannot be removed
 		if ($node->GetNodeName() == 'docxap.xsl' and $node->GetNodeType() == \Ximdex\Services\NodeType::XSL_TEMPLATE)
 		{
-		    $templates = new Node($node->GetParent());
-		    $section = new Node($templates->GetParent());
-		    if ($section->GetNodeType() == \Ximdex\Services\NodeType::PROJECT)
-		    {
-		        $this->messages->add('Cannot delete the project docxap.xsl node', MSG_TYPE_ERROR);
-		        $values = array('action_with_no_return' => true, 'messages' => $this->messages->messages);
-		        $this->sendJSON($values);
-		        return false;
-		    }
+	        $this->messages->add('Cannot delete the project docxap.xsl node', MSG_TYPE_ERROR);
+	        $values = array('action_with_no_return' => true, 'messages' => $this->messages->messages);
+	        $this->sendJSON($values);
+	        return false;
 		}
 		
 		//If ximDEMOS is actived and nodeis is rol "Demo" then  remove is not allowed
