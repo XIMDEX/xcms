@@ -87,7 +87,6 @@ CREATE TABLE `FastTraverse` (
   `IdChild` int(12) unsigned NOT NULL DEFAULT '0',
   `Depth` int(12) unsigned DEFAULT '0',
   PRIMARY KEY (`IdNode`,`IdChild`),
-  UNIQUE KEY `IdNode` (`IdNode`,`IdChild`),
   KEY `IdN` (`IdNode`),
   KEY `IdC` (`IdChild`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Fast scan of node hierarchies';

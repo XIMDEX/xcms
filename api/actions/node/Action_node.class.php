@@ -34,6 +34,8 @@ use Ximdex\Models\StructuredDocument;
 use Ximdex\Models\User;
 use Ximdex\Services\NodeType as NodeTypeID;
 use Ximdex\Services\NodeType as NT;
+use Ximdex\Runtime\App;
+use Ximdex\Runtime\DataFactory;
 use Ximdex\Utils\Sync\SynchroFacade;
 
 require_once(XIMDEX_ROOT_PATH . '/inc/model/RelNodeTypeMimeType.class.php');
@@ -59,8 +61,8 @@ class Action_node extends AbstractAPIAction   {
     /**
      * <p>Default method for this action</p>
      * <p>Get the info of the node passed as parameter</p>
-     * @param $request The current request
-     * @param $response The response object to be sent and where to put the response of this action
+     * @param $request : The current request
+     * @param $response : The response object to be sent and where to put the response of this action
      */
     public function index($request, $response) {
         $nodeid = $request->getParam('nodeid');
@@ -97,9 +99,8 @@ class Action_node extends AbstractAPIAction   {
     /**
      * <p>Creates a new empty node</p>
      * <p>It uses the id of the node where to insert the new one</p>
-     * @param $request The current request
-     * @param $response The response
-     * param Response The Response object to be sent
+     * @param $request : The current request
+     * @param $response : The Response object to be sent
      */
     public function create($request, $response) {
         $parentId = $request->getParam("nodeid");
@@ -143,8 +144,8 @@ class Action_node extends AbstractAPIAction   {
 
     /**
      * <p>Sets the content of a node of any type (css, js, text, xml ...)</p>
-     * @param type $request
-     * @param type $response
+     * @param $request
+     * @param $response
      */
     public function content($request, $response) {
         if (!$this->checkParameters($request, $response)) {
@@ -178,9 +179,8 @@ class Action_node extends AbstractAPIAction   {
     /**
      * <p>Checks whether the required parameters are present in the request
      * and modifies the response accordingly</p>
-     *
-     * @param $request the request
-     * @param $response the response
+     * @param $request : the request
+     * @param $response : the response
      * @return true if all required parameters are present and valid and false otherwise
      */
     private function checkParameters($request, $response) {
@@ -311,8 +311,8 @@ class Action_node extends AbstractAPIAction   {
 
     /**
      * <p>Creates a new XML container</p>
-     * @param $request the current request
-     * @param $response the response
+     * @param $request : the current request
+     * @param $response : the response
      */
     public function createxml($request, $response) {
 
@@ -484,8 +484,8 @@ class Action_node extends AbstractAPIAction   {
 
     /**
      * <p>Gets the possible RNG schemas for a given node which can be used to create a new XML container</p>
-     * @param $request the current request
-     * @param $response the response
+     * @param $request : the current request
+     * @param $response : the response
      */
     public function schemas($request, $response) {
 
@@ -533,13 +533,13 @@ class Action_node extends AbstractAPIAction   {
 
     /**
      * <p>Inserts given language as a child of the container</p>
-     * @param type $isoName the language iso name
-     * @param type $nodeTypeName the name of the node type
-     * @param type $name
-     * @param type $idContainer
-     * @param type $idTemplate
-     * @param type $formChannels
-     * @return type
+     * @param $isoName : the language iso name
+     * @param $nodeTypeName : the name of the node type
+     * @param $name
+     * @param $idContainer
+     * @param $idTemplate
+     * @param $formChannels
+     * @return
      */
     public function _insertLanguage($isoName, $nodeTypeName, $name, $idContainer, $idTemplate, $formChannels) {
         $language = new Language();
@@ -576,9 +576,8 @@ class Action_node extends AbstractAPIAction   {
 
     /**
      * <p>Sets the content of the node</p>
-     * @param type $request
-     * @param type $response
-     * @return type
+     * @param $request
+     * @param $response
      */
     public function contentxml($request, $response) {
         if (!$this->checkParameters($request, $response)) {
@@ -641,9 +640,8 @@ class Action_node extends AbstractAPIAction   {
     }
 
     /**
-     *
-     * @param $request the current request
-     * @param $response the response
+     * @param $request : the current request
+     * @param $response : the response
      */
     public function publish($request, $response) {
         if (!$this->checkParameters($request, $response)) {
@@ -711,9 +709,8 @@ class Action_node extends AbstractAPIAction   {
 
 
     /**
-     *
-     * @param $request the current request
-     * @param $response the response
+     * @param $request : the current request
+     * @param $response : the response
      */
     public function getcontent($request, $response) {
         if (!$this->checkParameters($request, $response)) {
@@ -747,9 +744,8 @@ class Action_node extends AbstractAPIAction   {
     }
 
     /**
-     *
-     * @param $request the current request
-     * @param $response the response
+     * @param $request : the current request
+     * @param $response : the response
      */
     public function delete($request, $response){
         if (!$this->checkParameters($request, $response)) {

@@ -5,6 +5,7 @@ rm ./conf/install-modules.php
 # rm ./logs/automatic.log
 # rm ./logs/scheduler.log
 # rm ./logs/xmd.log
+# rm ./logs/xslt.log
 
 rm -rf ./data/cache/pipelines/*
 rm -rf ./data/files/*

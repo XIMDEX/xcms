@@ -375,8 +375,6 @@ class Node extends NodesOrm
 
     /**
      * Returns the node parent ID
-     */
-    /**
      * @return bool|string
      */
     function GetParent()
@@ -410,11 +408,9 @@ class Node extends NodesOrm
         }
         return true;
     }
-
+    
     /**
      * Returns the list of node children
-     */
-    /**
      * @param null $idtype
      * @param null $order
      * @return array
@@ -532,7 +528,7 @@ class Node extends NodesOrm
         $this->ClearError();
         if (!empty($name)) {
             $dbObj = new Db();
-            $sql = sprintf("SELECT Nodes.IdNode, Nodes.Name, NodeTypes.Icon, Nodes.IdParent FROM Nodes, NodeTypes WHERE Nodes.IdNodeType = NodeTypes.IdNodeType AND  LOWER(Nodes.Name) like %s", $dbObj->sqlEscapeString("%" . strtolower($name) . "%"));
+            $sql = sprintf("SELECT Nodes.IdNode, Nodes.Name, NodeTypes.Icon, Nodes.IdParent FROM Nodes, NodeTypes WHERE Nodes.IdNodeType = NodeTypes.IdNodeType AND Nodes.Name like %s", $dbObj->sqlEscapeString("%" . $name . "%"));
 
             $dbObj->Query($sql);
 
@@ -588,14 +584,13 @@ class Node extends NodesOrm
             $dbObj = new Db();
             $sql = sprintf("SELECT Nodes.IdNode, Nodes.Name, NodeTypes.Icon, Nodes.IdParent FROM Nodes, NodeTypes
 				WHERE Nodes.IdNodeType = NodeTypes.IdNodeType
-				AND  LOWER(Nodes.Name) like %s
-				AND LOWER(Nodes.Path) = %s", $dbObj->sqlEscapeString("%" . strtolower($name) . "%"), $dbObj->sqlEscapeString(strtolower($path)));
+				AND Nodes.Name like %s
+				AND LOWER(Nodes.Path) = %s", $dbObj->sqlEscapeString("%" . $name . "%"), $dbObj->sqlEscapeString(strtolower($path)));
             $dbObj->Query($sql);
 
             while (!$dbObj->EOF) {
                 //  $node_t = new Node($dbObj->GetValue('IdNode'));
-                $result[] = array('IdNode' => $dbObj->GetValue('IdNode')
-                );
+                $result[] = array('IdNode' => $dbObj->GetValue('IdNode'));
                 $dbObj->Next();
             }
 
@@ -681,6 +676,7 @@ class Node extends NodesOrm
         return $this->class->GetPublishedPath($channelID, $addNodeName);
     }
 
+    //TODO ajlucena: GetParent
     /**
      * If it is contained, returns the relative path from node $nodeID
      * @param int $nodeID
@@ -689,6 +685,40 @@ class Node extends NodesOrm
      */
     function GetRelativePath($nodeID, Node $nodeReplace = null)
     {
+        /*
+        $this->ClearError();
+        if ($this->get('IdNode'))
+        {
+            if ($this->IsOnNode($nodeID))
+            {
+                $ft = new FastTraverse();
+                $nodes = $ft->getParents($this->get('IdNode'));
+                if ($nodes)
+                {
+                    $path = '';
+                    $levels = count($nodes);
+                    for ($cont = 0; $cont <= $levels; $cont++)
+                    {
+                        $parentId = $nodes[$cont][0];
+                        if ($nodeReplace and $parentId == $nodeReplace->GetID())
+                            $nodeName = $nodeReplace->GetNodeName();
+                        else
+                        {
+                            $node = new Node($parentId);
+                            $nodeName = $node->GetNodeName();
+                        }
+                        $path .= '/' . $nodeName;
+                        if ($parentId == $nodeID)
+                            break;
+                    }
+                    return $path;
+                }
+            }
+            else
+                $this->SetError(1);
+        }
+        return null;
+        */
         $this->ClearError();
         if ($this->get('IdNode') > 0) {
             if ($this->IsOnNode($nodeID))
@@ -712,10 +742,9 @@ class Node extends NodesOrm
         return NULL;
     }
 
+    //TODO ajlucena: GetParent
     /**
      * Returns if a node is contained in the node with id $nodeID
-     */
-    /**
      * @param $nodeID
      * @return bool
      */
@@ -738,10 +767,9 @@ class Node extends NodesOrm
         return false;
     }
 
+    //TODO ajlucena: GetParent
     /**
      * Returns if a node is contained in the node with nodetype $nodeTypeID
-     */
-    /**
      * @param $nodeTypeID
      * @return bool
      */
@@ -764,10 +792,10 @@ class Node extends NodesOrm
         return false;
     }
 
+    //TODO ajlucena: GetParent
     /**
      * Returned the Id of the nearest parent wich can attach groups (nodeType)
      */
-
     public function GetNearest(Node $parentNode)
     {
         $this->ClearError();
@@ -2533,7 +2561,7 @@ class Node extends NodesOrm
 
         return $list;
     }
-
+    
     /**
      * JAP 20040617, GetSections_ximTREE
      */
@@ -3569,5 +3597,4 @@ class Node extends NodesOrm
         }
         return true;
     }
-
 }

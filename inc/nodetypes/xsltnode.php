@@ -543,22 +543,6 @@ class xsltnode extends FileNode
             //template exists
             return true;
         }
-        /*
-        $dom = new DOMDocument();
-        if (!@$dom->loadXML($includeContent))
-        {
-            Logger::error('Can\'t load XML content from templates_includes.xsl node with ID: ' . $includeNode->GetID());
-            return false;
-        }
-        //check if there is a template with that name
-        $xPath = new DOMXPath($dom);
-        $includeTag = $xPath->query("/xsl:stylesheet/xsl:include[@href='$templateName']");
-        if ($includeTag->length)
-        {
-            //template exists
-            return true;
-        }
-        */
         return false;
     }
     
