@@ -193,7 +193,7 @@ class View_SQL extends Abstract_View implements Interface_View {
 						$insertQuery .= $this->makeInsertQuery('Languages', '', 'NULL');
 
 						//Add the Relation between Sections and colectors,  nodetype = XimNewsSection
-						$sql = "select IdNode, IdParent, Name from Nodes where IdNodeType = 5300";
+						$sql = "select IdNode, IdParent, Name from Nodes where IdNodeType = " . \Ximdex\Services\NodeType::XIMNEWS_SECTION;
 						$dbObj = new DB();
 						$dbObj->Query($sql);
 

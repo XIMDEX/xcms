@@ -163,7 +163,7 @@ class ChannelProperty extends InheritableProperty {
 			from FastTraverse f
 				join Nodes n on f.IdChild = n.IdNode
 			where f.IdNode = %s
-				and n.IdNodeType in (" . \Ximdex\Services\NodeType::XML_DOCUMENT . ", 5309)";
+				and n.IdNodeType in (" . \Ximdex\Services\NodeType::XML_DOCUMENT . ", " . \Ximdex\Services\NodeType::XIMNEWS_NEW_LANGUAGE . ")";
 		$sql = sprintf($sql, $this->nodeId);
 
 		$nodes = 0;

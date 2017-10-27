@@ -203,9 +203,9 @@ class Action_managefolders extends ActionAbstract {
 			case \Ximdex\Services\NodeType::COMMON_ROOT_FOLDER: return "Use this folder if you need to store JavaScript scripts or text files like PDFs, MS Office documents, etc.";
 			case \Ximdex\Services\NodeType::TEMPLATES_ROOT_FOLDER: return "Create here your own XSL Templates to redefine some particular appareance in your XML documents.";
 			case \Ximdex\Services\NodeType::XIMLET_ROOT_FOLDER: return "Create XML snippets that you can import into your XML documents. Typical uses are menus, shared headers, shared footers between all your XML documents.";
-			case "5301": return "ximNEWS module manages and organizes all the existing news into bulletins. This is a required folder.";
-			case "5304": return "Into this folder you could create XML based news in several languages. This is a required folder.";
-			case "5306": return "All the images used in your defined news are stored here.";
+			case \Ximdex\Services\NodeType::XIMNEWS_BULLETINS: return "ximNEWS module manages and organizes all the existing news into bulletins. This is a required folder.";
+			case \Ximdex\Services\NodeType::XIMNEWS_NEWS: return "Into this folder you could create XML based news in several languages. This is a required folder.";
+			case \Ximdex\Services\NodeType::XIMNEWS_IMAGES: return "All the images used in your defined news are stored here.";
 			case \Ximdex\Services\NodeType::METADATA_SECTION: return "Create metadata structured documents to describe other resources stored in Ximdex CMS.";
 			default: "...";
 		}

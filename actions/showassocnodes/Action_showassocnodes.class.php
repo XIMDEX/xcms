@@ -36,7 +36,8 @@ class Action_showassocnodes extends ActionAbstract {
 	const COMPOSER_INDEX = 'loadaction.php';
 
 	// Server, Section
-	const SEARCHED_NODETYPE = \Ximdex\Services\NodeType::SERVER . ',' . \Ximdex\Services\NodeType::SECTION . ',5300';
+	const SEARCHED_NODETYPE = \Ximdex\Services\NodeType::SERVER . ',' . \Ximdex\Services\NodeType::SECTION . ',' 
+	       . \Ximdex\Services\NodeType::XIMNEWS_SECTION;
 
 	// Tree root
 	const TREE_ROOT = 10000;
@@ -46,8 +47,6 @@ class Action_showassocnodes extends ActionAbstract {
 
       	$ximletId = (int) $this->request->getParam("nodeid");
 
-		// $this->addJs('/actions/showassocnodes/resources/js/treeSelector.js');
-		// $this->addJs('/inc/js/angular/controllers/SearchTreeModal.js');
 		$this->addCss('/actions/showassocnodes/resources/css/index.css');
 
 		$sections = $this->getReferencedSections($ximletId);
@@ -259,7 +258,7 @@ class Action_showassocnodes extends ActionAbstract {
 			switch ($idnodetype) {
 			    case \Ximdex\Services\NodeType::SERVER:
 			    case \Ximdex\Services\NodeType::SECTION:
-				case 5300:
+			    case \Ximdex\Services\NodeType::XIMNEWS_SECTION:
 					$rel = DepsManager::SECTION_XIMLET;
 					break;
 			}
@@ -320,11 +319,11 @@ class Action_showassocnodes extends ActionAbstract {
 			switch ($idnodetype) {
 			    case \Ximdex\Services\NodeType::SERVER:
 			    case \Ximdex\Services\NodeType::SECTION:
-				case 5300:
+			    case \Ximdex\Services\NodeType::XIMNEWS_SECTION:
 					$rel = DepsManager::SECTION_XIMLET;
 					break;
-				case 5312:
-				case 5309;
+			    case \Ximdex\Services\NodeType::XIMNEWS_BULLETIN_LANGUAGE_XIMLET:
+			    case \Ximdex\Services\NodeType::XIMNEWS_NEW_LANGUAGE;
 					$rel = DepsManager::STRDOC_XIMLET;
 					break;
 			}
