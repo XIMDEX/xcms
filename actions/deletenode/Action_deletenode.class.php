@@ -323,9 +323,11 @@ class Action_deletenode extends ActionAbstract {
 			if ($node->GetNodeType() == \Ximdex\Services\NodeType::XSL_TEMPLATE or $node->GetNodeType() == \Ximdex\Services\NodeType::TEMPLATES_ROOT_FOLDER
 			         or $node->GetNodeType() == \Ximdex\Services\NodeType::SERVER or $node->GetNodeType() == \Ximdex\Services\NodeType::SECTION)
 			{
+			    // get the project node
+			    $project = new Node($node->getProject());
 			    // do this when the deleted node make a deletion of templates (node types like projects, servers sections, templates)
 			    $xsltNode = new xsltnode($node);
-			    if (!$xsltNode->reload_templates_include(new Node($node->getProject())) === false)
+			    if ($xsltNode->reload_templates_include($project) === false)
 			        $this->messages->mergeMessages($xsltNode->messages);
 			}
 			

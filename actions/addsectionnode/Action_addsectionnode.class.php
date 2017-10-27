@@ -98,6 +98,11 @@ class Action_addsectionnode extends ActionAbstract {
             foreach ($aliasLangArray as $langID => $longName) {
                 $section->SetAliasForLang($langID, $longName);
             }
+            
+            // reload the templates include files for this new project
+            $xsltNode = new xsltnode($section);
+            if ($xsltNode->reload_templates_include(new Node($section->getProject())) === false)
+                $this->messages->mergeMessages($xsltNode->messages);
 
             $this->messages->add(sprintf(_('%s has been successfully created'), $name), MSG_TYPE_NOTICE);
         } else {

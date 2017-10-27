@@ -28,15 +28,8 @@ namespace Ximdex\NodeTypes;
 
 use baseIO;
 use DB;
-use depth;
-use files;
-use name;
-use nodeTypeID;
-use params;
-use parentID;
-use recurrence;
-use target;
 use Ximdex\Models\Node;
+use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
 use Ximdex\Logger as XMD_Log;
 
@@ -64,7 +57,7 @@ class FolderNode extends Root
 
         $folder = $this->GetChildrenPath();
 
-        $folder = \App::getValue("AppRoot") . \App::getValue("NodeRoot") . $folder;
+        $folder = App::getValue("AppRoot") . App::getValue("NodeRoot") . $folder;
 
         if (file_exists($folder))
             FsUtils::deltree($folder);

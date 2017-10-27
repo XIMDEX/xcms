@@ -137,12 +137,16 @@ class Action_managefolders extends ActionAbstract {
 					}
 				}
 			}
-
-			//$this->reloadNode($nodeID);
-
+			
 			if ($error) {
 				$this->messages->add(_('This operation could not be successfully completed.'), MSG_TYPE_ERROR);
 			}else{
+			    
+			    // reload the templates include files for this new project
+			    $xsltNode = new xsltnode($parent);
+			    if ($xsltNode->reload_templates_include(new Node($parent->getProject())) === false)
+			        $this->messages->mergeMessages($xsltNode->messages);
+			    
 				$this->messages->add(_('This section has been successfully configured.'), MSG_TYPE_NOTICE);
 			}
 			
