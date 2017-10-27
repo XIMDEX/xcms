@@ -635,23 +635,25 @@ CREATE TABLE `SectionTypes` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `Servers` (
-  `IdServer` int(12) unsigned NOT NULL AUTO_INCREMENT,
-  `IdNode` int(12) unsigned NOT NULL DEFAULT '0',
+  `IdServer` int(12) UNSIGNED NOT NULL,
+  `IdNode` int(12) UNSIGNED NOT NULL DEFAULT '0',
   `IdProtocol` varchar(255) DEFAULT NULL,
   `Login` varchar(255) DEFAULT NULL,
   `Password` varchar(255) DEFAULT NULL,
   `Host` varchar(255) DEFAULT NULL,
-  `Port` int(12) unsigned DEFAULT NULL,
+  `Port` int(12) UNSIGNED DEFAULT NULL,
   `Url` blob,
   `InitialDirectory` blob,
-  `OverrideLocalPaths` int(1) unsigned DEFAULT '0',
-  `Enabled` int(1) unsigned DEFAULT '1',
+  `OverrideLocalPaths` int(1) UNSIGNED DEFAULT '0',
+  `Enabled` int(1) UNSIGNED DEFAULT '1',
   `Previsual` int(1) DEFAULT '0',
   `Description` varchar(255) DEFAULT NULL,
-  `otf` int(1) unsigned DEFAULT '0',
-  `idEncode` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`IdServer`)
+  `otf` int(1) UNSIGNED DEFAULT '0',
+  `idEncode` varchar(255) NOT NULL DEFAULT 'UTF-8',
+  `ActiveForPumping` tinyint(3) UNSIGNED DEFAULT '1'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Table with info about Ximdex servers';
+ALTER TABLE `Servers` ADD PRIMARY KEY (`IdServer`);
+ALTER TABLE `Servers` MODIFY `IdServer` int(12) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 CREATE TABLE `States` (
   `IdState` int(12) unsigned NOT NULL AUTO_INCREMENT,

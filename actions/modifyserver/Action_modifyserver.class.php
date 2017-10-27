@@ -115,17 +115,11 @@ class Action_modifyserver extends ActionAbstract {
 		$numEncodes = count($encodes);
 
 		// Getting channels
-
 		$channels = $this->_getChannels($idNode, $serverID, $server);
 		$numChannels = count($channels);
 
 		//add a js for validation and hidden or display elements about the protocol selected
 		$this->addJs('/actions/modifyserver/resources/js/validate.js');
-/*		if (ModulesManager::isEnabled('ximDEMOS'))
-			$this->addJs('/actions/modifyserver/resources/js/tour.js');
-		if ($this->tourEnabled(\Ximdex\Utils\Session::get("userID")))
-			$this->addJs('/resources/js/start_tour.js','ximDEMOS');
-*/
 		$this->addCss('/actions/modifyserver/resources/css/style.css');
 
 		$values = array(
@@ -275,7 +269,7 @@ class Action_modifyserver extends ActionAbstract {
 			'params' => $params,
 			'nodeURL' => App::getValue( 'UrlRoot').'/xmd/loadaction.php?actionid=$actionID&nodeid={$idNode}',
 		);
-		//$this->sendJSON($values);
+		
 		$this->index($action, $serverID);
 	}
 
@@ -344,13 +338,11 @@ class Action_modifyserver extends ActionAbstract {
 		        }
 		    }
 		}
-		/*
 		if (!$encode)
 		{
 			$this->messages->add(_("An enconding type is required"), MSG_TYPE_ERROR);
 			$validation = false;
 		}
-		*/
 
 		return $validation;
 	}
@@ -406,7 +398,6 @@ class Action_modifyserver extends ActionAbstract {
 			{
 				$server = new Node($nodeID);
 				foreach ($channels as & $channel) {
-					//$ch = new Channel($channel['IdChannel']);
 					$channel['InServer'] = $server->class->HasChannel($serverID, $channel['IdChannel']);
 				}
 			}

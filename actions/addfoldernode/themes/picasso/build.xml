@@ -6,7 +6,7 @@
 -->
 <project name="Picasso" title="Picasso theme" description="Picasso based theme" nodetypename="PROJECT" Transformer="xslt" channel="{?}" language="{?}">
 	<section
-		name="Picasso_Server" nodetypename="SERVER"
+		name="Picasso_Server" nodetypename="SERVER" encode="UTF-8" 
 		protocol="LOCAL" login="" password="" host="localhost" port="0"
 		url="{URL_ROOT}/data/previos/" initialDirectory="{XIMDEX_ROOT_PATH}/data/previos/"
 		overrideLocalPaths="0" enabled="1" previsual="0" description="Local" isServerOTF="false">
