@@ -52,9 +52,9 @@ class View_XmlDocument extends Abstract_View implements Interface_View
 
         $name = $node->get('Name');
         $nodeType = $node->getNodeType();
-        if ($nodeType != 5032 && $name != 'docxap.xsl') return false;
+        if ($nodeType != \Ximdex\Services\NodeType::XML_DOCUMENT && $name != 'docxap.xsl') return false;
 
-        if ($nodeType == 5032) {
+        if ($nodeType == \Ximdex\Services\NodeType::XML_DOCUMENT) {
             // Si $content == null se insertan las etiquetas docxap, en caso contrario se eliminan
             if (is_null($content)) {
                 $content = $this->addDocxap($node);
@@ -175,8 +175,7 @@ class View_XmlDocument extends Abstract_View implements Interface_View
 
                 if ($cssFolder !== false) {
                     $cssFolder = new Node($cssFolder);
-                    // 5028 => CssFile
-                    $cssList = $cssFolder->GetChildren(5028);
+                    $cssList = $cssFolder->GetChildren(\Ximdex\services\NodeType::CSS_FILE);
                     foreach ($cssList as $css) {
                         $css = new Node($css);
                         $content .= $css->getContent() . "\n";

@@ -213,7 +213,8 @@ class XVFS_VirtualPathAdapter {
     function _loadXmlRootFolders() {
 
     	// TODO: XmlRootFolder, XimletRootFolder, .... ???
-    	$sql = 'select idNode from Nodes where idNodeType in (5018, 5054)';
+        $sql = 'select idNode from Nodes where idNodeType in (' . \Ximdex\Services\NodeType::XML_ROOT_FOLDER . ', ' 
+                . \Ximdex\Services\NodeType::XIMLET_ROOT_FOLDER . ')';
     	$db = new DB();
 		$db->Query($sql);
 

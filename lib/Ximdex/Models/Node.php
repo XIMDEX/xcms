@@ -3473,7 +3473,7 @@ class Node extends NodesOrm
         $schemas = $this->getProperty('DefaultSchema');
 
         if (empty($schemas)) {
-            $schemas = '5045,5078';
+            $schemas = \Ximdex\Services\NodeType::VISUAL_TEMPLATE . ',' . \Ximdex\Services\NodeType::RNG_VISUAL_TEMPLATE;
         } else {
             $schemas = implode(',', $schemas);
         }

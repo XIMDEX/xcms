@@ -62,7 +62,8 @@ class Module_ximPUBLISHtools extends Module {
         // Pub. Report
         $sql['Creating ximPUBLISH report action'] = "INSERT INTO Actions
 		(IdAction,IdNodeType,Name,Command,Icon,Description,Sort,Module,Multiple)
-		VALUES ('" . self::PUB_REPORT_ACTION_ID . "','5014','Publishing report','managebatchs','publicate_section.png',
+		VALUES ('" . self::PUB_REPORT_ACTION_ID . "','" . \Ximdex\Services\NodeType::SERVER 
+		      . "','Publishing report','managebatchs','publicate_section.png',
 		'View documents in publishing queue',100,'ximPUBLISHtools',0)";
 
         $sql['Enabling ximPUBLISH report action'] = "INSERT INTO RelRolesActions
@@ -71,7 +72,8 @@ class Module_ximPUBLISHtools extends Module {
 
         $sql['Creating ximPUBLISH history action'] = "INSERT INTO Actions
 		(IdAction,IdNodeType,Name,Command,Icon,Description,Sort,Module,Multiple)
-		VALUES ('" . self::PUB_REPORT_HISTORY_ID . "','5014','Publishing history','batchhistory','publicate_section.png',
+		VALUES ('" . self::PUB_REPORT_HISTORY_ID . "','" . \Ximdex\Services\NodeType::SERVER 
+		      . "','Publishing history','batchhistory','publicate_section.png',
 		'View document Publishing history',100,'ximPUBLISHtools',0)";
 
         $sql['Enabling ximPUBLISH history action'] = "INSERT INTO RelRolesActions

@@ -31,6 +31,7 @@ use Ximdex\Models\Pipeline;
 use Ximdex\Models\PipeStatus;
 use Ximdex\Models\Role;
 use Ximdex\MVC\ActionAbstract;
+use Ximdex\Runtime\App;
 use Ximdex\Workflow\WorkFlow;
 
 
@@ -58,7 +59,7 @@ class Action_modifyrole extends ActionAbstract
         //Usually it is the Workflow master.
         $selectedPipeline = $this->request->getParam('id_pipeline');
         if (!($selectedPipeline > 0)) {
-            $selectedPipeline = \App::getValue('IdDefaultWorkflow');
+            $selectedPipeline = App::getValue('IdDefaultWorkflow');
             $pipeline = new Pipeline();
             $pipeline->loadByIdNode($selectedPipeline);
             $selectedPipeline = $pipeline->get('id');
@@ -73,37 +74,7 @@ class Action_modifyrole extends ActionAbstract
             $pipeStatus = new PipeStatus($idPipeStatus);
             $allStates[] = array('IdState' => $idPipeStatus, 'Name' => $pipeStatus->get('Name'));
         }
-
-        /*$action = new Node();
-        $allActions = $action->find("IdAction, Command, IdNodeType, Module, Name");
-        $permisionsToEdit = array();
-        foreach ($allActions as $key => $actionInfo){
-
-            $idAction = $actionInfo["IdAction"];
-            $idNodeType = $actionInfo["IdNodeType"];
-            $command = $actionInfo["Command"];
-            $nodeType = new NodeType($idNodeType);
-            if (!empty($actionInfo["Module"]) && !ModulesManager::isEnabled($actionInfo["Module"]))
-                continue;
-            if (!$nodeType->get("Module") && !ModulesManager::isEnabled($nodeType->get("Module"))){
-                unset($allActions[$key]);
-                continue;
-            }
-            $hasAction = array();
-            if ($nodeType->get("IsPublishable")>0){
-                foreach ($allStates as $stateInfo){
-                    $idState = $stateInfo['IdState'];
-                    $hasAction[$idAction] = $role->HasAction($idAction, $stateInfo['IdState'], $selectedPipeline);
-                    $permisionsToEdit[$command][$idState][$idNodeType] = $hasAction;
-                }
-            }else{
-                $hasAction[$idAction] = $role->HasAction($idAction, NULL, $selectedPipeline);
-                $permisionsToEdit[$command]["none"][$idNodeType] = $hasAction;
-            }
-
-
-        }*/
-
+        
         $sql = 'select id, Pipeline from Pipelines where IdNode > 0 order by id asc limit 1';
         $db = new DB();
         $db->query($sql);
@@ -130,7 +101,7 @@ class Action_modifyrole extends ActionAbstract
     protected function getAllNodeTypes($allStates, $role, $selectedPipeline)
     {
 
-        for ($i = 5003; $i < 5012; $i++) {
+        for ($i = \Ximdex\Services\NodeType::USER_MANAGER; $i < \Ximdex\Services\NodeType::PROJECTS; $i++) {
             $groupeds[$i] = _("Control center permissions");
         }
 

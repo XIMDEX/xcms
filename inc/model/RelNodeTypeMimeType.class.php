@@ -37,7 +37,7 @@ class RelNodeTypeMimeType extends RelNodeTypeMimeType_ORM
     {
         $filter = $this->find('filter', 'idnodetype = %s', array($nodetype), MONO);
         if (strcmp($filter[0], 'ptd') == 0) {
-            $ext = ($nodetype == 5044) ? "xml" : "xsl";
+            $ext = ($nodetype == \Ximdex\Services\NodeType::TEMPLATE) ? "xml" : "xsl";
         } elseif (strcmp($filter[0], 'pvd') == 0) {
             $ext = "xml";
         } else {

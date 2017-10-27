@@ -278,31 +278,31 @@ class Action_node extends AbstractAPIAction   {
     private function getDefaultContent($nt, $name) {
         $content = "";
         switch ($nt) {
-            case 5039:
+            case \Ximdex\Services\NodeType::TEXT_FILE:
                 $content = "<<< DELETE \nTHIS\n CONTENT >>>";
                 break;
 
-            case 5028:
+            case \Ximdex\services\NodeType::CSS_FILE:
                 $content = "/* CSS File: " . $name . ". Write your rules here. */\n\n * {}";
                 break;
 
-            case 5077:
+            case \Ximdex\Services\NodeType::XSL_TEMPLATE:
                 $content = "<?xml version='1.0' encoding='utf-8'?>\n<xsl:stylesheet xmlns:xsl='http://www.w3.org/1999/XSL/Transform' version='1.0'>\n<xsl:template name='" . $name . "' match='" . $name . "'>\n<!-- Insert your code here -->\n</xsl:template>\n</xsl:stylesheet>";
                 break;
 
-            case 5078:
+            case \Ximdex\Services\NodeType::RNG_VISUAL_TEMPLATE:
                 $content = "<?xml version='1.0' encoding='UTF-8' ?>\n<grammar xmlns='http://relaxng.org/ns/structure/1.0' xmlns:xim='http://ximdex.com/schema/1.0'>\n<!-- Create your own grammar here -->\n<!-- Need help? Visit: http://relaxng.org/tutorial-20011203.html -->\n</grammar>";
                 break;
 
-            case 5044:
+            case \Ximdex\Services\NodeType::TEMPLATE:
                 $content = "<?xml version='1.0' encoding='UTF-8'?>\n<" . $name . "><!-- Create here your own template -->\n</" . $name . ">";
                 break;
 
-            case 5045:
+            case \Ximdex\Services\NodeType::VISUAL_TEMPLATE:
                 $content = "<?xml version='1.0' encoding='UTF-8'?>\n<editviews xmlns:edx='msnbc-edx-edit-view'>\n<!-- Create here your views -->\n</editviews>\n##########";
                 break;
 
-            case 5076:
+            case \Ximdex\Services\NodeType::NODE_HT:
                 $content = "<html>\n<head>\n</head>\n<body>\n</body>\n</html>";
                 break;
         }
@@ -327,7 +327,7 @@ class Action_node extends AbstractAPIAction   {
         $nodeAllowedContent = new NodeAllowedContent();
         $allowedContents = $nodeAllowedContent->getAllowedChilds($node->GetNodeType());
         $xhtmlContNt = NT::XHTML5_CONTAINER;
-        if (!in_array('5031', $allowedContents) && !in_array("$xhtmlContNt", $allowedContents)) {
+        if (!in_array(\Ximdex\Services\NodeType::XML_CONTAINER, $allowedContents) && !in_array("$xhtmlContNt", $allowedContents)) {
             $this->createErrorResponse("The supplied node does not allow to have structured document container as a child");
             return;
         }
@@ -505,7 +505,7 @@ class Action_node extends AbstractAPIAction   {
             //starting on the main root Ximdex node.
             $idNode=10000;
             $node = new Node($idNode);
-            $projects=$node->GetChildren(5013);
+            $projects=$node->GetChildren(\Ximdex\Services\NodeType::PROJECT);
 
             $schemas = array();
 

@@ -106,7 +106,7 @@ class View_SQL extends Abstract_View implements Interface_View {
 		
 
 				$s = "select n.IdNode,n.Name n.IdParent from FastTraverse as f inner join Nodes as n on f.IdNode = n.IdNode";
-				$s .= " where f.IdChild = $nodeId and n.IdNodeType = 5015;";
+				$s .= " where f.IdChild = $nodeId and n.IdNodeType = " . \Ximdex\Services\NodeType::SECTION;
 				$result = $node->query($s);
 				if (!is_null($result)){
 					$idSection = $result[0]['IdNode'];
@@ -316,4 +316,3 @@ class View_SQL extends Abstract_View implements Interface_View {
 		return $insertQuery;
 	}
 }
-?>

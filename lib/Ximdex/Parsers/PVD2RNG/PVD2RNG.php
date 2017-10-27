@@ -83,14 +83,14 @@ class PVD2RNG
             return false;
         }
 
-        if ($pvd->getNodeType() != 5045 /*'VisualTemplate'*/) {
+        if ($pvd->getNodeType() != \Ximdex\Services\NodeType::VISUAL_TEMPLATE /*'VisualTemplate'*/) {
             XMD_Log::error('El nodo indicado para la transformacion no es un esquema: ' . $idpvd);
             return false;
         }
 
         $content = $pvd->GetContent();
         $content = explode("##########", $content);
-        $content = $content[0]; //str_replace("'", "\'", $content[0]);
+        $content = $content[0];
 
         unset($this->_dompvd);
         unset($this->_pvdxpath);

@@ -142,7 +142,7 @@ class Action_infonode extends ActionAbstract
 
         foreach ($depMasterList as $i => $idDependentNode) {
             $node = new Node((int)$idDependentNode);
-            if ($node->GetId() && $node->GetNodeType() != 5085) {
+            if ($node->GetId() && $node->GetNodeType() != \Ximdex\Services\NodeType::METADATA_DOCUMENT) {
                 $obj["name"] = $node->GetNodeName();
                 $obj["type"] = $node->GetTypeName();
                 $obj["depends"] = array();
@@ -179,7 +179,7 @@ class Action_infonode extends ActionAbstract
         foreach ($depDependentList as $d) {
             $i = (int)$d;
             $node = new Node($i);
-            if ($node->GetId() && $node->GetNodeType() != 5085) {
+            if ($node->GetId() && $node->GetNodeType() != \Ximdex\Services\NodeType::METADATA_DOCUMENT) {
                 $obj = array(
                     "name" => $node->GetNodeName(),
                     "type" => $node->GetTypeName(),

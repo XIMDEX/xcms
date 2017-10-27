@@ -96,7 +96,7 @@ class Action_renamenode extends ActionAbstract
 
         $nt = $node->nodeType->get('IdNodeType');
 
-        $moduleXimNews = ($nt == 5078) && (ModulesManager::isEnabled('ximNEWS'));
+        $moduleXimNews = ($nt == \Ximdex\Services\NodeType::RNG_VISUAL_TEMPLATE) && (ModulesManager::isEnabled('ximNEWS'));
 
         $schemaType = '';
 

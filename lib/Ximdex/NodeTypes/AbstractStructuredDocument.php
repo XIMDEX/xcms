@@ -260,11 +260,11 @@ class AbstractStructuredDocument extends FileNode
         }
         $idNodeType = $node->get('IdNodeType');
         switch ($idNodeType) {
-            case 5032: //xmldocumentnode
-                $folderNodeType = 5018;
+            case \Ximdex\Services\NodeType::XML_DOCUMENT:
+                $folderNodeType = \Ximdex\Services\NodeType::XML_ROOT_FOLDER;
                 break;
-            case 5057: //ximlet
-                $folderNodeType = 5055;
+            case \Ximdex\Services\NodeType::XIMLET:
+                $folderNodeType = \Ximdex\Services\NodeType::XIMLET_FOLDER;
                 break;
             case 5309: //noticia ximnews
                 $folderNodeType = 5304;
@@ -348,7 +348,7 @@ class AbstractStructuredDocument extends FileNode
         $node = new Node($this->nodeID);
         $nt = $node->nodeType->get('IdNodeType');
         $metadata = '';
-        if ($nt == 5032) {
+        if ($nt == \Ximdex\Services\NodeType::XML_DOCUMENT) {
             $metadata = 'metadata_id=""';
         }
 

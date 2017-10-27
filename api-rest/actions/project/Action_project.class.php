@@ -8,7 +8,7 @@ class Action_project implements APIRestAction
     {
         return true;
     }
-    private static $NODE_TYPE_PROJECT = 5013;
+    private static $NODE_TYPE_PROJECT = \Ximdex\Services\NodeType::PROJECT;
 
     /**
      * <p>Read project information</p>

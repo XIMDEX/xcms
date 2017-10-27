@@ -1,6 +1,7 @@
 <?php
 
 use Cocur\Slugify\Slugify;
+use GuzzleHttp\Exception\BadResponseException;
 use Intervention\Image\ImageManagerStatic as Image;
 use Symfony\Component\Yaml\Parser;
 use \Psr\Http\Message\ResponseInterface as Response;
@@ -331,7 +332,7 @@ function createImage($client, $token, $images_id, $imageName) {
 		'form_params' => [
 			'ximtoken' => $token,
 			'nodeid' => $images_id,
-			'nodetype' => 5040,
+		    'nodetype' => Ximdex\Services\NodeType::IMAGE_FILE,
 			'name' => $imageName,
 		],
 	]);

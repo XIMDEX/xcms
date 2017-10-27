@@ -231,9 +231,7 @@ class BaseIO
     }
 
     /**
-     *
      * @param $data
-     * @return unknown_type
      */
     function _checkName($data)
     {
@@ -409,7 +407,8 @@ class BaseIO
                 }
 
                 $link = new Node();
-                $idNode = $link->CreateNode($data['NAME'], $data['PARENTID'], '5049', null, $data['URL'], isset($data['DESCRIPTION']) ? $data['DESCRIPTION'] : null);
+                $idNode = $link->CreateNode($data['NAME'], $data['PARENTID'], \Ximdex\Services\NodeType::LINK, null, $data['URL']
+                        , isset($data['DESCRIPTION']) ? $data['DESCRIPTION'] : null);
 
                 $this->_dumpMessages($link->messages);
 
@@ -617,9 +616,9 @@ class BaseIO
                 unset($data['CHILDRENS']);
 
                 $node = new Node();
-                $idNodeType = 5040;
+                $idNodeType = Ximdex\Services\NodeType::IMAGE_FILE;
                 if ($nodeTypeName == "XSIRIMAGEFILE") {
-                    $idNodeType = 9030;
+                    $idNodeType = \Ximdex\Services\NodeType::XSIR_IMAGE_FILE;
                 }
                 $result = $node->CreateNode($data['NAME'], $data['PARENTID'], $idNodeType, null, $data['PATH']);
                 if (!($result > 0)) {

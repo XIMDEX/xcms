@@ -82,7 +82,7 @@ class ximlinkResolver {
 			from FastTraverse f inner join Nodes n on f.idchild = n.idnode
 				inner join Links l on n.idnode = l.idlink
 			where f.idnode = $idprj and
-				n.idnodetype = 5049 and
+				n.idnodetype = " . \Ximdex\Services\NodeType::LINK . " and
 				(n.Name like '%{$term}%' or
 				n.Description like '%{$term}%' or
 				l.Url like '%{$term}%' or
@@ -94,7 +94,7 @@ class ximlinkResolver {
                         from FastTraverse f inner join Nodes n on f.idchild = n.idnode
                                 inner join Links l on n.idnode = l.idlink
                         where f.idnode = $idprj and
-                                n.idnodetype = 5049  order by n.Name asc limit 0,50 ";
+                                n.idnodetype = " . \Ximdex\Services\NodeType::LINK . "  order by n.Name asc limit 0,50 ";
 
 		}
 
@@ -166,7 +166,7 @@ class ximlinkResolver {
 			where n.name = '%s' and
 				f.idnode = %s and
 				f.depth > 0 and
-				n.idnodetype = 5049", $name, $idprj);
+				n.idnodetype = " . \Ximdex\Services\NodeType::LINK, $name, $idprj);
 
 		$db = new DB();
 		$db->query($query);

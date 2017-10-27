@@ -31,10 +31,11 @@ use Ximdex\Models\Pipeline;
 use Ximdex\Models\PipeStatus;
 use Ximdex\Models\PipeTransition;
 use Ximdex\MVC\ActionAbstract;
+use Ximdex\Runtime\App;
 use Ximdex\Workflow\WorkFlow;
 
 
-define('NODETYPE_WORKFLOW_STATE', 5036);
+define('NODETYPE_WORKFLOW_STATE', \Ximdex\Services\NodeType::WORKFLOW_STATE);
 
 class Action_modifystates extends ActionAbstract
 {
@@ -82,17 +83,17 @@ class Action_modifystates extends ActionAbstract
         $allNodeTypes = $nodeType->find('IdNodeType, Name', 'IsPublishable = 1', array());
 
         foreach ($allNodeTypes as $nodeTypeInfo) {
-            if ($nodeTypeInfo['IdNodeType'] == 5032 ||
-                $nodeTypeInfo['IdNodeType'] == 5039 ||
-                $nodeTypeInfo['IdNodeType'] == 5040 ||
-                $nodeTypeInfo['IdNodeType'] == 5041
+            if ($nodeTypeInfo['IdNodeType'] == \Ximdex\Services\NodeType::XML_DOCUMENT ||
+                $nodeTypeInfo['IdNodeType'] == \Ximdex\Services\NodeType::TEXT_FILE ||
+                $nodeTypeInfo['IdNodeType'] == Ximdex\Services\NodeType::IMAGE_FILE ||
+                $nodeTypeInfo['IdNodeType'] == \Ximdex\Services\NodeType::BINARY_FILE
             ) {
                 $nodeTypeValues[] = array("id" => $nodeTypeInfo['IdNodeType'],
                     "name" => $nodeTypeInfo['Name']);
             }
         }
 
-        $checkUrl = \App::getValue('UrlRoot') . '/xmd/loadaction.php?actionid='
+        $checkUrl = App::getValue('UrlRoot') . '/xmd/loadaction.php?actionid='
             . $this->request->getParam('actionid') . '&nodeid=' . $this->request->getParam('nodeid')
             . '&id_nodetype=IDNODETYPE&is_workflow_master=ISWORKFLOWMASTER&method=checkNodeDependencies';
 
@@ -245,7 +246,7 @@ class Action_modifystates extends ActionAbstract
         }
 
         if ($isWorkFlowMaster) {
-            if ($workflow->pipeline->get('IdNode') != \App::getValue('IdDefaultWorkflow')) {
+            if ($workflow->pipeline->get('IdNode') != App::getValue('IdDefaultWorkflow')) {
                 $allStatus = $workflow->GetAllStates();
                 $node = new Node();
                 $wfresult = $node->find('IdNode', 'IdState IN (%s)', array(implode(', ', $allStatus)), MONO, false);

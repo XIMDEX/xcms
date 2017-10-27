@@ -57,7 +57,9 @@ class Action_checkstatus extends ActionAbstract
         $projectName = $project->GetNodeName();
 
         $dbObj = new DB();
-        $query = "SELECT n.IdState,n.IdNode,n.Path,n.Name,v1.Version, v1.SubVersion,v1.Date FROM Versions v1 INNER JOIN Nodes n USING (IdNode) WHERE n.IdNodetype in (5032,5039,5040,5041,5028) AND n.Path like '%" . $projectName . "%" . $serverName . "%' AND NOT v1.SubVersion=0 AND NOT EXISTS (select Idnode from Versions v2 where v2.IdNOde=v1.IdNOde and (v2.Version>v1.Version OR (v1.Version=v2.Version AND v2.SubVersion>v1.Subversion))) ORDER BY n.IdNode";
+        $query = "SELECT n.IdState,n.IdNode,n.Path,n.Name,v1.Version, v1.SubVersion,v1.Date FROM Versions v1 INNER JOIN Nodes n USING (IdNode) WHERE n.IdNodetype in (" 
+                . \Ximdex\Services\NodeType::XML_DOCUMENT . "," . \Ximdex\Services\NodeType::TEXT_FILE . "," . Ximdex\Services\NodeType::IMAGE_FILE 
+                . "," . \Ximdex\Services\NodeType::BINARY_FILE . "," . \Ximdex\services\NodeType::CSS_FILE . ") AND n.Path like '%" . $projectName . "%" . $serverName . "%' AND NOT v1.SubVersion=0 AND NOT EXISTS (select Idnode from Versions v2 where v2.IdNOde=v1.IdNOde and (v2.Version>v1.Version OR (v1.Version=v2.Version AND v2.SubVersion>v1.Subversion))) ORDER BY n.IdNode";
 
         $dbObj->query($query);
         $data = array();

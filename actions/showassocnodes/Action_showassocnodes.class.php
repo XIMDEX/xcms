@@ -36,7 +36,7 @@ class Action_showassocnodes extends ActionAbstract {
 	const COMPOSER_INDEX = 'loadaction.php';
 
 	// Server, Section
-	const SEARCHED_NODETYPE = '5014,5015,5300';
+	const SEARCHED_NODETYPE = \Ximdex\Services\NodeType::SERVER . ',' . \Ximdex\Services\NodeType::SECTION . ',5300';
 
 	// Tree root
 	const TREE_ROOT = 10000;
@@ -257,8 +257,8 @@ class Action_showassocnodes extends ActionAbstract {
 			$rel = null;
 
 			switch ($idnodetype) {
-				case 5014:
-				case 5015:
+			    case \Ximdex\Services\NodeType::SERVER:
+			    case \Ximdex\Services\NodeType::SECTION:
 				case 5300:
 					$rel = DepsManager::SECTION_XIMLET;
 					break;
@@ -318,8 +318,8 @@ class Action_showassocnodes extends ActionAbstract {
 			$rel = null;
 
 			switch ($idnodetype) {
-				case 5014:
-				case 5015:
+			    case \Ximdex\Services\NodeType::SERVER:
+			    case \Ximdex\Services\NodeType::SECTION:
 				case 5300:
 					$rel = DepsManager::SECTION_XIMLET;
 					break;

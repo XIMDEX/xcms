@@ -25,6 +25,7 @@
  */
 
 
+use Ximdex\Logger;
 use Ximdex\Models\Language;
 use Ximdex\Models\Node;
 use Ximdex\Models\NodeType;
@@ -49,7 +50,7 @@ class LanguageProperty extends InheritableProperty {
 		// The Project node shows all the system languages
 		$availableLanguages = $language->find('IdLanguage, Name', 'Enabled = 1', NULL);
 
-		if ($this->nodeTypeId != 5013) {
+		if ($this->nodeTypeId != \Ximdex\Services\NodeType::PROJECT) {
 
 			// Nodes below the Project shows only inherited languages
 			$parentId = $this->node->getParent();
@@ -117,7 +118,6 @@ class LanguageProperty extends InheritableProperty {
 			$this->nodeId,
 			$strLanguages
 		);
-//		debug::log($sqlAffectedNodes);
 
 		// Language versions to delete
 		$affectedNodes = array();
@@ -155,7 +155,7 @@ class LanguageProperty extends InheritableProperty {
 			if (!($result > 0)) {
 				$messages = $baseIO->messages->messages;
 				foreach ($messages as $message) {
-					XMD_Log::error($message['message']);
+					Logger::error($message['message']);
 				}
 			}
 		}

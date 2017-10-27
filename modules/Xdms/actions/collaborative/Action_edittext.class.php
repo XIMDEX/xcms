@@ -70,7 +70,7 @@ class Action_edittext extends ActionAbstract
         $infoFile = pathinfo($fileName);
         if (array_key_exists("extension", $infoFile)) {
             $ext = $infoFile['extension'];
-        } elseif ($idNodeType == "5032") {
+        } elseif ($idNodeType == \Ximdex\Services\NodeType::XML_DOCUMENT) {
             //for the documents
             $ext = "xml";
         } else {

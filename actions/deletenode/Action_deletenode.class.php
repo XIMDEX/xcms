@@ -52,7 +52,7 @@ class Action_deletenode extends ActionAbstract {
 		$node	= new Node($idNode);
 		$children = $node->GetChildren();
 
-        if($node->GetNodeType()==5032){
+		if($node->GetNodeType()== \Ximdex\Services\NodeType::XML_DOCUMENT){
 
             $dbObj=new DB();
             $query="select IdDoc from StructuredDocuments where TargetLink=".$idNode;

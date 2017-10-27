@@ -44,16 +44,9 @@ class Action_moduleslist extends ActionAbstract
     {
 
         $modules = array();
-        //$userId = \Ximdex\Utils\Session::get('userID');
-
-        //Now, every users
-        /*if ($userId != '301') {
-            // Must be administrator
-            return $modules;
-        }   */
 
         $node = new Node();
-        $mods = $node->find(ALL, "IdNodeType=5081", NULL, MULTI);
+        $mods = $node->find(ALL, "IdNodeType=" . \Ximdex\Services\NodeType::MODULE_INFO_CONTAINER, NULL, MULTI);
         if (!is_array($mods)) {
             $mods = array();
         }

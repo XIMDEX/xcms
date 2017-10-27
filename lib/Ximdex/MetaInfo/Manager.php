@@ -5,7 +5,6 @@ use ModulesManager;
 use RelNodeMetadata;
 use Ximdex\Models\Node;
 use Ximdex\Runtime\App;
-use Ximdex\Runtime\Db;
 
 ModulesManager::file('/inc/model/RelNodeMetadata.class.php');
 
@@ -14,13 +13,13 @@ class Manager
 
     // establecemos como container de los metadatos:
 
-    private $nodetype = 5039;
+    private $nodetype = \Ximdex\Services\NodeType::TEXT_FILE;
     private $node = null;
     private $container = null;
     private $data = [];
     private $id = null ;
 
-    // el nodetype: 5039 TextFile
+    // el nodetype: TEXT_FILE
     public function __construct($nodeid , $create = false )
     {
 

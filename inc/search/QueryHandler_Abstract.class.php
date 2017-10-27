@@ -73,6 +73,8 @@
  *	</results>
  *
  */
+use Ximdex\Runtime\App;
+
 abstract class QueryHandler_Abstract {
 
 	const ITEMS_PER_PAGE = 50;
@@ -146,7 +148,7 @@ abstract class QueryHandler_Abstract {
 
 		if (is_string($query)) {
 			$_query = $query;
-			$query = new DOMDocument('1.0', \App::getValue( 'workingEncoding'));
+			$query = new DOMDocument('1.0', App::getValue( 'workingEncoding'));
 			$query->loadXML($_query);
 		}
 		return $this->parseDOMXML($query);
@@ -158,7 +160,7 @@ abstract class QueryHandler_Abstract {
 
 		if (!($dom instanceof DOMDocument)) {
 
-			$dom = new DOMDocument('1.0', \App::getValue( 'workingEncoding'));
+			$dom = new DOMDocument('1.0', App::getValue( 'workingEncoding'));
 			$dom->loadXML($dom);
 		}
 
@@ -236,8 +238,7 @@ abstract class QueryHandler_Abstract {
 			$rset['records'], $rset['items'], $rset['page'], $rset['pages'], implode('', $data)
 		);
 
-		$xml = \Ximdex\XML\Base::recodeSrc($xml, \App::getValue( 'workingEncoding'));
-//		$xml = str_replace('\\"', '"', $xml);
+		$xml = \Ximdex\XML\Base::recodeSrc($xml, App::getValue( 'workingEncoding'));
 
 		return $xml;
 	}
@@ -245,7 +246,7 @@ abstract class QueryHandler_Abstract {
 	protected function recordsetToXMLDOM($rset) {
 
 		$xml = $this->recordsetToXML($rset);
-		$dom = new DOMDocument('1.0', \App::getValue( 'workingEncoding'));
+		$dom = new DOMDocument('1.0', App::getValue( 'workingEncoding'));
 		$dom->loadXML($xml);
 
 		return $dom;
@@ -256,5 +257,3 @@ abstract class QueryHandler_Abstract {
 	}
 
 }
-
-?>

@@ -74,7 +74,8 @@ class Action_filepreview extends ActionAbstract
         $idNode = $this->request->getParam('nodeid');
 
         $node = new Node($idNode);
-        if (!($node->get('IdNode')) > 0 || ($node->get('IdNodeType') != 5016 && $node->get('IdNodeType') != 5017)) {
+        if (!($node->get('IdNode')) > 0 || ($node->get('IdNodeType') != \Ximdex\Services\NodeType::IMAGES_ROOT_FOLDER 
+                && $node->get('IdNodeType') != \Ximdex\Services\NodeType::IMAGES_FOLDER)) {
             $message = _("Forbidden access");
             $this->render(array('mesg' => $message), null, 'default-3.0.tpl');
             return;
@@ -82,8 +83,8 @@ class Action_filepreview extends ActionAbstract
         $parentID = $node->GetParent();
         $parentNode = new Node($parentID);
 
-        /* Gets all child nodes of type image (nodetype 5040) of this node */
-        $nodes = $node->GetChildren(5040);
+        /* Gets all child nodes of type image (nodetype IMAGE_FILE) of this node */
+        $nodes = $node->GetChildren(Ximdex\Services\NodeType::IMAGE_FILE);
         $imageNodes = array();
         $imagePath = App::getValue('UrlRoot') . App::getValue('FileRoot');
         $nodePath = App::getValue('UrlRoot') . App::getValue('NodeRoot');

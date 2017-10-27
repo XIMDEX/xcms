@@ -510,7 +510,7 @@ and rug.idrole in (select idrole from RelRolesPermissions where IdPermission = 1
                 if ($results == 0) {
                     $children = 0;
                 } else {
-                    if ("5013" == $db->getValue('IdNodeType')) {
+                    if (\Ximdex\Services\NodeType::PROJECT == $db->getValue('IdNodeType')) {
                         $name .= sprintf('&nbsp;<span class="filter-results-span">[Results: %s]</span>', $results);
                     } else {
                         $name .= sprintf('&nbsp;<span class="filter-results-span">(+%s)</span>', $results);

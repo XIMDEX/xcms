@@ -25,6 +25,7 @@
  */
 
 
+use Ximdex\Logger;
 use Ximdex\Models\Channel;
 use Ximdex\Models\Node;
 use Ximdex\Models\StructuredDocument;
@@ -50,7 +51,7 @@ class ChannelProperty extends InheritableProperty {
 		// The Project node shows all the system channels
 		$availableChannels = $channel->find('IdChannel, Name');
 
-		if ($this->nodeTypeId != 5013) {
+		if ($this->nodeTypeId != \Ximdex\Services\NodeType::PROJECT) {
 
 			// Nodes below the Project shows only inherited channels
 			$parentId = $this->node->getParent();
@@ -146,7 +147,7 @@ class ChannelProperty extends InheritableProperty {
 		$db = new DB();
 		$db->execute($sql);
 		if ($db->numErr != 0) {
-	 		XMD_Log::error($this->desErr);
+	 		Logger::error($this->desErr);
 		}
 
 		return array('affectedNodes' => $affectedNodes, 'messages' => array());
@@ -162,9 +163,8 @@ class ChannelProperty extends InheritableProperty {
 			from FastTraverse f
 				join Nodes n on f.IdChild = n.IdNode
 			where f.IdNode = %s
-				and n.IdNodeType in (5032, 5309)";
+				and n.IdNodeType in (" . \Ximdex\Services\NodeType::XML_DOCUMENT . ", 5309)";
 		$sql = sprintf($sql, $this->nodeId);
-//debug::log($sql);
 
 		$nodes = 0;
 
@@ -175,7 +175,7 @@ class ChannelProperty extends InheritableProperty {
 			$nodeId = $db->getValue('IdNode');
 			$node = new StructuredDocument($nodeId);
 			if (!($node->get('IdDoc') > 0)) {
-				XMD_Log::error(_('StructuredDocument cannot be instantiate with ID ') . $nodeID);
+				Logger::error(_('StructuredDocument cannot be instantiate with ID ') . $nodeID);
 				continue;
 			}
 
@@ -184,9 +184,6 @@ class ChannelProperty extends InheritableProperty {
 			foreach ($values as $propId) {
 				if ($node->hasChannel($propId) == 0) {
 					$node->addChannel($propId);
-//					$messages[] = array(
-//
-//					);
 				}
 			}
 

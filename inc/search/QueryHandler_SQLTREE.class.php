@@ -128,7 +128,6 @@ class QueryHandler_SQLTREE extends QueryHandler_SQL {
 		$this->where = array_unique($this->where);
 		$this->filters = array_unique($this->filters);
 		$this->order = array_unique($this->order);
-	//	$this->limit = array_unique($this->limit);
 
 
 		$query = sprintf(
@@ -161,7 +160,8 @@ class QueryHandler_SQLTREE extends QueryHandler_SQL {
 			switch ($field) {
 				case 'nodetype':
 					$allowedNodeTypes = $this->getAllowedNodeTypes($cont);
-					$this->filters[] = sprintf(' (n.IdNodeType  %s  OR %s OR n.IdNodetype = "5013")', $this->createComparation($comp, array($cont)), $allowedNodeTypes);
+					$this->filters[] = sprintf(' (n.IdNodeType  %s  OR %s OR n.IdNodetype = "' . \Ximdex\Services\NodeType::PROJECT 
+					       . '")', $this->createComparation($comp, array($cont)), $allowedNodeTypes);
 					break;
 
 				case 'nodeid':
@@ -201,5 +201,3 @@ class QueryHandler_SQLTREE extends QueryHandler_SQL {
 	}
 
 }
-
-?>

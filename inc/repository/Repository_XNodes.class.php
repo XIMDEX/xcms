@@ -29,6 +29,7 @@ use Ximdex\Auth;
 use Ximdex\Models\Node;
 use Ximdex\Models\User;
 use Ximdex\NodeTypes\Root;
+use Ximdex\Runtime\App;
 
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/Repository.class.php');
  //
@@ -345,7 +346,7 @@ class Repository_XNodes extends Repository {
 		$output = 'JSON';		// JSON / XML
 
 		if (is_string($query)) {
-			$query = \Ximdex\XML\Base::recodeSrc($query, \App::getValue( 'workingEncoding'));
+			$query = \Ximdex\XML\Base::recodeSrc($query, App::getValue( 'workingEncoding'));
 			$query = str_replace('\\"', '"', $query);
 		}
 
@@ -377,12 +378,12 @@ class Repository_XNodes extends Repository {
 	 */
 	function _getDefaultVisualTemplate() {
 
-		$visualtemplate = \App::getValue( 'defaultWebdavPVD');
+		$visualtemplate = App::getValue( 'defaultWebdavPVD');
 
-		if (is_null($visualtemplate)) $visualtemplate = \App::getValue( 'defaultPVD');
+		if (is_null($visualtemplate)) $visualtemplate = App::getValue( 'defaultPVD');
 
 		if (is_null($visualtemplate)) {
-			$sql = 'select IdNode from Nodes where IdNodeType = 5045 order by IdNode limit 1';
+		    $sql = 'select IdNode from Nodes where IdNodeType = ' . \Ximdex\Services\NodeType::VISUAL_TEMPLATE . ' order by IdNode limit 1';
 			$db =& $this->_db;
 			$db->query($sql);
 
