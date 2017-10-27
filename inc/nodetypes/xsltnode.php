@@ -31,6 +31,7 @@ use Ximdex\NodeTypes\FileNode;
 use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
 use Ximdex\Logger;
+use Ximdex\Models\FastTraverse;
 
 
 if (!defined('XIMDEX_ROOT_PATH')) {
@@ -670,17 +671,24 @@ class xsltnode extends FileNode
      * The $priorTemplates parameter is loaded with the nearest templates URLs to the current section
      * @param Node $node
      * @param array $priorTemplates
-     * @param integer $projectId
+     * @param int $projectId
+     * @param FastTraverse $ft
      * @return boolean
      */
-    public function reload_templates_include(Node $node, $priorTemplates = array(), $projectId = null)
+    public function reload_templates_include(Node $node, array $priorTemplates = array(), int $projectId = null, FastTraverse $ft = null)
     {
-        // only project, servers and section/subsections can storage template folders
-        if ($node->GetNodeType() != Ximdex\Services\NodeType::PROJECT and $node->GetNodeType() != Ximdex\Services\NodeType::SERVER
-                and $node->GetNodeType() != Ximdex\Services\NodeType::SECTION)
+        if (!$ft)
         {
-            $this->messages->add('Cannot reload nodes with a node type diferent than project, server or section', MSG_TYPE_ERROR);
-            return false;
+            // only project, servers and section/subsections can storage template folders
+            if ($node->GetNodeType() != Ximdex\Services\NodeType::PROJECT and $node->GetNodeType() != Ximdex\Services\NodeType::SERVER
+                and $node->GetNodeType() != Ximdex\Services\NodeType::SECTION)
+            {
+                $this->messages->add('Cannot reload nodes with a node type diferent than project, server or section', MSG_TYPE_ERROR);
+                return false;
+            }
+            
+            //get full children nodes from the node given (only the first time)
+            $ft = new FastTraverse();
         }
         
         // look for templates folder
@@ -710,7 +718,7 @@ class xsltnode extends FileNode
                     $template = new Node($idTemplate);
                     if ($template->GetNodeName() == 'templates_include.xsl' or $template->GetNodeName() == 'docxap.xsl')
                         continue;
-                    
+                        
                     // generate the template URL
                     $templateURL = App::getValue('UrlRoot') . App::getValue('NodeRoot') . $template->GetRelativePath($projectId);
                     
@@ -721,7 +729,7 @@ class xsltnode extends FileNode
                 //include the prior templates
                 foreach ($priorTemplates as $templateURL)
                     $content .= "\n\t" . '<xsl:include href="' . $templateURL . '"/>';
-                
+                    
                 // close the XSL content
                 $content .= "\n" . '</xsl:stylesheet>';
                 
@@ -735,17 +743,24 @@ class xsltnode extends FileNode
             }
         }
         
-        // get children of the node
-        $childNodes = $node->GetChildren();
-        foreach ($childNodes as $childNode)
+        // get children of the node with its node types
+        $nodes = $ft->getChildren($node->GetID(), true, 1);
+        if ($nodes === false)
         {
-            // call in recursive mode with the child node
-            $childNode = new Node($childNode);
+            $this->messages->add('Cannot get children nodes from node: ' . $node->GetID() . ' in reload templates include files process', MSG_TYPE_ERROR);
+            return false;
+        }
+        if (!$nodes)
+            return true;
+        foreach ($nodes[1] as $idChildNode => $idNodeType)
+        {
             // only project, servers and section/subsections can storage template folders
-            if ($childNode->GetNodeType() == Ximdex\Services\NodeType::PROJECT or $childNode->GetNodeType() == Ximdex\Services\NodeType::SERVER
-                    or $childNode->GetNodeType() == Ximdex\Services\NodeType::SECTION)
+            if ($idNodeType == Ximdex\Services\NodeType::PROJECT or $idNodeType == Ximdex\Services\NodeType::SERVER 
+                    or $idNodeType == Ximdex\Services\NodeType::SECTION)
             {
-                $res = $this->reload_templates_include($childNode, $priorTemplates, $projectId);
+                // call in recursive mode with the child node
+                $childNode = new Node($idChildNode);
+                $res = $this->reload_templates_include($childNode, $priorTemplates, $projectId, $ft);
                 if ($res === false)
                     return false;
             }

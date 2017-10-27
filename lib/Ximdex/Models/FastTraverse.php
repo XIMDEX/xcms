@@ -9,22 +9,44 @@
         /**
          * Getting an array with all the child nodes which depend of a parent node given
          * This array contains the IdNode field with the Depth value in its index
+         * If the parameter nodeTypes is a true value, the index of each node will be its ID and the value the Node Type ID
          * @param int $idNode
+         * @param bool $nodeTypes
+         * @param int $level
          * @return bool|string[]
          */
-        function getChildren(int $idNode)
+        function getChildren(int $idNode, bool $nodeTypes = false, int $level = null)
         {
             if ($idNode < 1)
                 return false;
             $db = new Db();
-            $sql = 'select idChild, Depth from FastTraverse where idNode = ' . $idNode;
+            $sql = 'select ft.IdChild, ft.Depth';
+            if ($nodeTypes)
+                $sql .= ', node.IdNodeType';
+            $sql .= ' from FastTraverse ft';
+            if ($nodeTypes)
+                $sql .= ' inner join Nodes node on (node.IdNode = ft.IdChild)';
+            $sql .= ' where ft.IdNode = ' . $idNode;
+            if ($level)
+                $sql .= ' and ft.Depth = ' . $level;
             if ($db->Query($sql) === false)
                 return false;
             $children = array();
-            while (!$db->EOF)
+            if ($nodeTypes)
             {
-                $children[$db->GetValue('Depth')][] = $db->GetValue('idChild');
-                $db->Next();
+                while (!$db->EOF)
+                {
+                    $children[$db->GetValue('Depth')][$db->GetValue('IdChild')] = $db->GetValue('IdNodeType');
+                    $db->Next();
+                }
+            }
+            else
+            {
+                while (!$db->EOF)
+                {
+                    $children[$db->GetValue('Depth')][] = $db->GetValue('IdChild');
+                    $db->Next();
+                }
             }
             return $children;
         }
@@ -40,7 +62,7 @@
             if ($idNode < 1)
                 return false;
             $db = new Db();
-            $sql = 'select IdNode, Depth from FastTraverse where idChild = ' . $idNode;
+            $sql = 'select IdNode, Depth from FastTraverse where IdChild = ' . $idNode;
             if ($db->Query($sql) === false)
                 return false;
             $parents = array();
