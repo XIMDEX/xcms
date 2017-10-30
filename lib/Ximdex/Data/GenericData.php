@@ -327,7 +327,7 @@ class GenericData extends Overloadable
     }
 
     /**
-     * Validación/conversi�n por tipo de campo
+     * Validación/conversión por tipo de campo
      * @param $fieldValue
      * @param $fieldTypeMatches
      * @return string
@@ -398,7 +398,7 @@ class GenericData extends Overloadable
                     case 'longtext':
                     case 'blob':
                     case 'longblob':*/
-                    //if (!is_string($value)) $this->messages->add("El campo $key tiene un formato inv�lido", MSG_TYPE_ERROR);
+                    //if (!is_string($value)) $this->messages->add("El campo $key tiene un formato inválido", MSG_TYPE_ERROR);
                     break;
                 //                case in_array($fieldType, $dataTypeDate):
                 case 'datetime':

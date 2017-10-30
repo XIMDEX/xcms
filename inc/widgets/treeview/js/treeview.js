@@ -500,8 +500,8 @@ $.get( window.com.ximdex.baseUrl+"/xmd/loadaction.php?action=browser3&method=get
                         }
                         url_base = this.options.url_base;
 
-                        // Se podr�a hacer m�s simple marcando los
-                        // nodos con la secci�n a la que pertenecen
+                        // Se podría hacer más simple marcando los
+                        // nodos con la sección a la que pertenecen
                         lblCheck.click(function(event) {
                             checked = $(this).attr('checked') ? '1' : '0';
                             $.post(

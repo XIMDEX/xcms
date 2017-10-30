@@ -1380,7 +1380,7 @@ sub Uppercase
 	return $string;
 }
 
-# Base de un enlace para cambio de dups previo a extensi髇
+# Base de un enlace para cambio de dups previo a extensi贸n
 # juanpri 20030529
 sub BaseLink
 {
@@ -2121,12 +2121,12 @@ sub SalvaDependencias {
 	open(DT_dext_DFIL, ">$archivo") || MyLog::Log(0, "open input $archivo for writing: $!");
 	foreach my $key (keys(%DEXT::DT_dext_dependances)) {
 
-		# si estamos con --file debemos ver el archivo espec韋ico
-		# si lleva extensi髇 .xml, y el espec韋ico + los -id??? si
-		# no lleva la extens韔n
+		# si estamos con --file debemos ver el archivo espec铆fico
+		# si lleva extensi贸n .xml, y el espec铆fico + los -id??? si
+		# no lleva la extensi贸n
 		my $condMustSeenIt = 1;
 	        if ($fileInNode) {
-			my $fileinnode = $fileInNode; # par醡etro del --file
+			my $fileinnode = $fileInNode; # par谩metro del --file
 			
 			my $archi = $key; # archivo del node.dep
 			@archi = split(/\//, $archi);
@@ -2134,10 +2134,10 @@ sub SalvaDependencias {
 			$archi =~ s/\.html$//;
 
 			if ($fileinnode =~ s/\.xml$//) {
-				# S髄o es el archivo espec韋ico a comparar
+				# S贸lo es el archivo espec铆fico a comparar
 				$condMustSeenIt = ($fileinnode eq $archi); 
 			} else {
-				# no lleva la extensi髇, comparamos sin -id...
+				# no lleva la extensi贸n, comparamos sin -id...
 				$archi =~ s/(-id...)*$//;
 				$condMustSeenIt = ($fileinnode eq $archi); 
 			}	

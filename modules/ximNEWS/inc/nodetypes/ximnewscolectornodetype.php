@@ -335,8 +335,8 @@ class XimNewsColectorNodeType extends FolderNode  {
 	*	@return bool
 	*	Campo inactive:
 	*		- 0: se comprueban numero de noticias y tiempo de generacion para ver si el colector es generable
-	*		- 1: s�lo se comprueba el n�mero de noticias pendientes para la generacion del colector (condicion de tiempo de generacion del colector inactiva)
-	*		- 2: s�lo se comprueba el tiempo de generacion (condicion de numero de noticias inactiva)
+	*		- 1: sólo se comprueba el número de noticias pendientes para la generacion del colector (condicion de tiempo de generacion del colector inactiva)
+	*		- 2: sólo se comprueba el tiempo de generacion (condicion de numero de noticias inactiva)
 	*		- 3: no se compureba ninguna, el colector esta inactivo y no se genera nunca
 	*
 	*/
@@ -609,7 +609,7 @@ class XimNewsColectorNodeType extends FolderNode  {
 
 		$ximNewsColector->UnLock(); //unlocked colector
 		if (!(sizeof($bulletinsGenerated) > 0)) {
-			XMD_Log::info('No se ha generado ning�n bolet�n');
+			XMD_Log::info('No se ha generado ningún boletín');
 			return NULL;
 		}
 
@@ -674,7 +674,7 @@ class XimNewsColectorNodeType extends FolderNode  {
 
 		if(!($nNews > 0)) {
 
-			//Se borran boletines vac�os
+			//Se borran boletines vacíos
 
 			foreach($array_pages as $page){
 				XMD_Log::info("Boletin ".$bulletins[$page-1]);

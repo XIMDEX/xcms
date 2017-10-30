@@ -562,7 +562,7 @@ class ActionAbstract extends IController
             }
         }
 
-        //Si no hay definido ning�n render
+        //Si no hay definido ningún render
         if (!$rendererClass) {
             $rendererClass = "Smarty";
         }

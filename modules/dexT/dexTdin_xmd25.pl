@@ -320,7 +320,7 @@ sub Log {
 
         if ($level > 0) {
                 print STDERR $mensaje;
-        } else { # condición <=0
+        } else { # condiciÃ³n <=0
                 if ($level < 0 && $continue) {
                         print STDERR "\nWARNING: $mensaje\n";
                 } else {

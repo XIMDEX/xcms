@@ -385,7 +385,7 @@ VALUES
 	(36,'workingEncoding','UTF-8'),
 	(37,'ActionsStats','0'),
 	(38,'IdDefaultWorkflow','403'),
-	(39,'DefaultInitialStatus','Edici�n'),
+	(39,'DefaultInitialStatus','Edición'),
 	(40,'DefaultFinalStatus','Publicación'),
 	(41,'PullMode','0'),
 	(42,'EnricherKey',''),

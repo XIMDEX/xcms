@@ -155,7 +155,7 @@ class Action_createcolector extends ActionAbstract {
 			if($currentFilter != $data['filter'] || $currentNewsPerBulletin != $data['newsperbull'] || $currentSorting != $data['sortnews'] || $currentName != $data['colector']){
 			    $forceTotal = 1;
 			    $data['forcetotalgeneration'] = 1;
-			    $oldValues = "Nombre del colector: $currentName;Tipo de colector: $currentType;N�mero de noticias por bolet�n: $currentNewsPerBulletin;Ordenación de noticias: $currentSorting";
+			    $oldValues = "Nombre del colector: $currentName;Tipo de colector: $currentType;Número de noticias por boletín: $currentNewsPerBulletin;Ordenación de noticias: $currentSorting";
 
 			    if($currentFilter != $data['filter']) {
 					$data['forcetotalgeneration'] = 2;

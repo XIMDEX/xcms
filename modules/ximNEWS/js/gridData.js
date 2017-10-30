@@ -201,7 +201,7 @@ function ts_resortTable(event) {
 	sortfn = ts_sort_date
 
     // Currency, like $10.34
-    else if (itm.match(/^[£€$]/))
+    else if (itm.match(/^[â‚¬Â£$]/))
 	sortfn = ts_sort_currency // AG Added Euro
 
     // 234.123

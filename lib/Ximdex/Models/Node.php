@@ -2584,7 +2584,7 @@ class Node extends NodesOrm
 
             array_push($sectionList, $node->get('IdNode'));
 
-            // seguimos subiendo en el �rbol
+            // seguimos subiendo en el árbol
             if ($nodetype == $serverTypeId) {
                 $parentid = null; // we are in the server, exiting
             } else {

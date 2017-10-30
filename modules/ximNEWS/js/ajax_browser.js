@@ -29,7 +29,7 @@ function notify(text,recep)
 	var hijo = document.createElement("<div>");
 	hijo.style.marginTop="100px";
 	hijo.style.textAlign="center";
-	var cad="ATENCIÓN: "+text;
+	var cad="ATENCIÃ“N: "+text;
 	var texto=document.createTextNode(cad);
 	hijo.appendChild(texto);
 	hijo.innerHTML=cad;
@@ -97,7 +97,7 @@ function presentar_boletines(resp)
 	else{
           //The category has not bulletins
           /*
-          notify("La categori­a <b>"+getText(obj)+"</b> no contiene boletines");
+          notify("La categorÃ­a <b>"+getText(obj)+"</b> no contiene boletines");
 	  var cab_noticia= document.getElementById("cab_tabla_noticias");
 		var area_noticia=document.getElementById("area5");
 		cab_noticia.style.setAttribute("visibility","hidden");

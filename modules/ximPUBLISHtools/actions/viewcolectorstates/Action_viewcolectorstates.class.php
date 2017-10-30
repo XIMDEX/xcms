@@ -100,12 +100,12 @@ class Action_viewcolectorstates extends ActionAbstract
     {
 
         $states = array(
-            0 => 'Gener�ndose',
+            0 => 'Generándose',
             1 => 'En espera de generación total',
             2 => 'En espera de generación parcial',
             3 => 'Generado',
             4 => 'Generado y publicado',
-            5 => 'Generado y public�ndose',
+            5 => 'Generado y publicándose',
         );
 
         $idUser = Session::get('userID');

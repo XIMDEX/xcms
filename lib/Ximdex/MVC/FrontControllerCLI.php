@@ -66,7 +66,7 @@ class FrontControllerCLI extends FrontController
                 $sanitized_idx = str_replace('--', '', $idx);
                 $sanitized_array[$sanitized_idx] = $data;
             }
-            // Copia los par�metros a $this->request
+            // Copia los parámetros a $this->request
             $this->copyRequest($sanitized_array);
             return true;
         }

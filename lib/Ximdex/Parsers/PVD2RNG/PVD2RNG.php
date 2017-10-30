@@ -318,7 +318,7 @@ class PVD2RNG
     {
 
         if (!$template || !($template instanceof DOMElement)) {
-            XMD_Log::error('No se puede parsear. Template no v�lido.');
+            XMD_Log::error('No se puede parsear. Template no válido.');
             return null;
         }
 
@@ -393,7 +393,7 @@ class PVD2RNG
         }
 
 
-        // Parseo de los elementos definidos v�a edx:match
+        // Parseo de los elementos definidos vía edx:match
         $nodelist = $this->_pvdxpath->query('edx:match', $node);
         foreach ($nodelist as $match) {
             $elemName = $match->getAttribute('element');

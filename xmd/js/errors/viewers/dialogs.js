@@ -65,7 +65,7 @@ var Dialogs = Class.create({
 			}
 
 		}else {
-			msg += " Atención. "+obj_notify.alerts[obj_notify.level_index][obj_notify.SUCCESSFULL].text+":";
+			msg += " AtenciÃ³n. "+obj_notify.alerts[obj_notify.level_index][obj_notify.SUCCESSFULL].text+":";
 		}
  		this._showDialog("Aviso", msg);
 	},

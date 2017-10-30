@@ -30,7 +30,7 @@
 			<div class="nodo_padre">
 				<div class="cabecera_nodo">
 					<div class="titulo_nodo_padre">
-						<h1>Colectores de la secci�n "{$section_name}"</h1>
+						<h1>Colectores de la sección "{$section_name}"</h1>
 					</div>
 				</div>
 				<div class="separador"></div>

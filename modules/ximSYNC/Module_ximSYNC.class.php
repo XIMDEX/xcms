@@ -49,8 +49,8 @@ class Module_ximSYNC extends Module
 
         // Install logic.
 
-        // �get module from ftp, webdav, subversion, etc...?
-        // �need to be extracted?
+        // get module from ftp, webdav, subversion, etc...?
+        // need to be extracted?
         // extract and copy files to modules location.
 
         // get constructor SQL

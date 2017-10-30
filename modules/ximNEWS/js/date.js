@@ -53,32 +53,32 @@
 	var scrollLeftMessage = {
 		en : 'Click to scroll to previous month. Hold mouse button to scroll automatically.',
 		es : 'Presione para pasar al mes anterior. Deje presionado para pasar varios meses.',
-		de : 'Klicken um zum vorigen Monat zu gelangen. Gedrückt halten, um automatisch weiter zu scrollen.'
+		de : 'Klicken um zum vorigen Monat zu gelangen. Gedrckt halten, um automatisch weiter zu scrollen.'
 		};
 	var scrollRightMessage = {
 		en : 'Click to scroll to next month. Hold mouse button to scroll automatically.',
 		es : 'Presione para pasar al siguiente mes. Deje presionado para pasar varios meses.',
-		de : 'Klicken um zum nächsten Monat zu gelangen. Gedrückt halten, um automatisch weiter zu scrollen.'
+		de : 'Klicken um zum nchsten Monat zu gelangen. Gedrckt halten, um automatisch weiter zu scrollen.'
 		};
 	var selectMonthMessage = {
 		en : 'Click to select a month.',
 		es : 'Presione para seleccionar un mes',
-		de : 'Klicken um Monat auszuwählen'
+		de : 'Klicken um Monat auszuwhlen'
 		};
 	var selectYearMessage = {
 		en : 'Click to select a year.',
-		es : 'Presione para seleccionar un año',
-		de : 'Klicken um Jahr auszuwählen'
+		es : 'Presione para seleccionar un aÃ³o',
+		de : 'Klicken um Jahr auszuwhlen'
 		};
 	var selectDateMessage = {		// do not replace [date], it will be replaced by date.
 		en : 'Select [date] as date.',
 		es : 'Seleccione [date] como fecha',
-		de : 'Wähle [date] als Datum.'
+		de : 'Whle [date] als Datum.'
 		};
 	var	monthName = {
 		en : new Array('January','February','March','April','May','June','July','August','September','October','November','December'),
 		es : new Array('Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'),
-		de : new Array('Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember')
+		de : new Array('Januar','Februar','Mrz','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember')
 		};
 	var	monthName2 = {
 		en : new Array('JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'),
@@ -733,7 +733,7 @@ function isValidDate(dateStr)
 	var matchArray = dateStr.match(datePat); // is the format ok?
 	if (matchArray == null)
 		{
-		alert(dateStr + ", no es un formato de fecha válido.")
+		alert(dateStr + ", no es un formato de fecha vÃ¡lido.")
 		return false;
 		}
 
@@ -763,7 +763,7 @@ function isValidDate(dateStr)
 		var isleap = (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0));
 		if (day>29 || (day==29 && !isleap))
 			{
-			alert("Febrero en el año " + year + " no tiene " + day + " dias. "+dateStr);
+			alert("Febrero en el aÃ±o " + year + " no tiene " + day + " dÃ­as. "+dateStr);
 			return false;
 			}
 		}

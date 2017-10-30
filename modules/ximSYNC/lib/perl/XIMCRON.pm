@@ -297,7 +297,7 @@ sub task_delete {
 sub remove {
 	my $refer = shift;
 	my ($pathcompleto, $remotefile) = @_;
-	# a�adir soporte ftp
+	# añadir soporte ftp
 
 	my $type = $refer->{_type};
 	my $error = undef;
@@ -551,7 +551,7 @@ sub createPath {
 			Logger::MyLog(4, "El directorio remoto [$dir] ha sido creado de forma recursiva via FTP");
 			return 0;
 		} else {
-			my $ftperrorstring = "C�digo: ".$ftp->code." Causa: ".$ftp->message; chomp($ftperrorstring);
+			my $ftperrorstring = "Código: ".$ftp->code." Causa: ".$ftp->message; chomp($ftperrorstring);
 			Logger::MyLog(4, "El directorio remoto [$rem_relativepath] NO ha sido creado de forma recursiva via FTP por: $ftperrorstring");
 
 			$refer->setErrorCause(40, "No se ha podido crear el directorio por el servidor remoto ftp de forma recursiva: $ftperrorstring");
@@ -663,7 +663,7 @@ sub mkdir {
 # Devuelve 0 si OK
 # Devuelve 10, 20, 30, 99 si NOT OK
 # Propaga 5
-# Atenci�n--> NUNCA poner recursivo. Debe fallar si contiene algun elemento... 
+# Atención--> NUNCA poner recursivo. Debe fallar si contiene algun elemento... 
 sub rmdir {
 	my $refer = shift;
 	my ($basepath, $directory) = @_;

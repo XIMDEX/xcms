@@ -364,7 +364,7 @@ class XimNewsNewLanguage extends AbstractStructuredDocument  {
 
 		$visualTemplate = new Node($idTemplate);
 		if (!($visualTemplate->get('IdNode') > 0)) {
-			Logger::error("La plantilla $idTemplate a la que est� asociada la noticia {$this->nodeID} ha sido borrada, por lo que la noticia no se puede adecuar al esquema");
+			Logger::error("La plantilla $idTemplate a la que está asociada la noticia {$this->nodeID} ha sido borrada, por lo que la noticia no se puede adecuar al esquema");
 			return false;
 		}
 
@@ -509,7 +509,7 @@ class XimNewsNewLanguage extends AbstractStructuredDocument  {
 			foreach ($attributes as $attribute) {
 				$attributeName = $attribute->name();
 				if (in_array($attributeName, $nodeInfo['ATTRIBUTES'])) {
-		 			// no se pueden actualizar los atributos de los nodos por que pisar�amos valores antiguos
+		 			// no se pueden actualizar los atributos de los nodos por que pisaríamos valores antiguos
 //					$attribute->set_value($nodeInfo['ATTRIBUTES'][$attributeName]);
 					unset($nodeInfo);
 				}

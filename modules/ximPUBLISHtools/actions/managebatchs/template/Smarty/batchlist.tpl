@@ -271,7 +271,7 @@
 															{else}
 																[<a href="#" onClick="javascript: showOrHideContent('{$id}_{$batch.totalPags}', '{$id}', '');">Siguiente</a>]
 															{/if}
-															[<a href="#" onClick="javascript: showOrHideContent('{$id}_{$batch.totalPags}', '{$id}', '');">�ltima</a>]
+															[<a href="#" onClick="javascript: showOrHideContent('{$id}_{$batch.totalPags}', '{$id}', '');">última</a>]
 														</td>
 													</tr>
 												</table>

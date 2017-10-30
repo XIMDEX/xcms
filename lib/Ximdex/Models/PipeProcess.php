@@ -119,7 +119,7 @@ class PipeProcess extends PipeProcessOrm
     {
         if (!($this->get('id') > 0)) {
             XMD_Log::error('No se ha podido encontrar el proceso de workflow');
-            $this->messages->add(_('Ha ocurrido un error no recuperable durante la gesti�n de estados de workflow, consulte con su administrador'),
+            $this->messages->add(_('Ha ocurrido un error no recuperable durante la gestión de estados de workflow, consulte con su administrador'),
                 MSG_TYPE_ERROR);
             return false;
         }

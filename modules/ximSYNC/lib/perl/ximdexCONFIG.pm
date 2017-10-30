@@ -34,8 +34,8 @@
 package ximdexCONFIG;
 
 # Proporciona el usuario y clave para BBDD ximdex
-# Tratamos de abrirlo de la configuración de m�dulos PHP
-# Para valores no deteminados se aplican por defecto en la secci�n POR_DEFECTO 
+# Tratamos de abrirlo de la configuración de módulos PHP
+# Para valores no deteminados se aplican por defecto en la sección POR_DEFECTO 
 #
 # Bloque CONFIGURACION 
 my $config = "$::SCRIPT_PATH/../../../../../conf/install-params.conf.php";

@@ -80,7 +80,7 @@
 | Created 2001-09-27 | All changes are in the log above. | Updated 2002-10-10 |
 \----------------------------------------------------------------------------*/
 
-/* Variable converted to global (local at método _startLoadXmlTree)
+/* Variable converted to global (local at method _startLoadXmlTree)
  * to fix load problems with nodes.
  * When it was local, sometimes the method finish before the property
  * "readyState = 4" (full document load), and then it never finished to load

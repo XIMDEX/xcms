@@ -25,4 +25,4 @@
 
 {input_hidden name="Node_IdNode" value="`$Node.IdNode`"}
 {input_text name="Node_Name" human_readable_name="Nombre" value="`$Node.Name`"}
-{input_text name="Node_Description" human_readable_name="Descripción" value="`$Node.Description`"}
+{input_text name="Node_Description" human_readable_name="DescripciÃ³n" value="`$Node.Description`"}

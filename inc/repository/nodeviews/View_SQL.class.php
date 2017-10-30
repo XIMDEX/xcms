@@ -44,14 +44,14 @@ class View_SQL extends Abstract_View implements Interface_View {
 		$version = new Version($idVersion);
 
 		if (!($version->get('IdVersion') > 0)) {
-			XMD_Log::error("Se ha cargado una versi�n incorrecta ($idVersion)");
+			XMD_Log::error("Se ha cargado una versión incorrecta ($idVersion)");
 			return NULL;
 		}
 
 		$node = new Node($version->get('IdNode'));
 
 		if (!($node->get('IdNode') > 0)) {
-			XMD_Log::error("El nodo que se est� intentando convertir no existe: " . $version->get('IdNode'));
+			XMD_Log::error("El nodo que se está intentando convertir no existe: " . $version->get('IdNode'));
 			return NULL;
 		}
 

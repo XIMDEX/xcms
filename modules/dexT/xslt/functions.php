@@ -92,7 +92,7 @@ function preTransformation($ptdContent, $fileName, $idSection = NULL) {
 		foreach ($matches[0] as $key => $value) {
 			$dinamic = false;
 			if ($section->get('IdNode') > 0) {
-				// Si el template docxap o include es din�mico, se inserta asociado a la sección
+				// Si el template docxap o include es dinámico, se inserta asociado a la sección
 				if (preg_match('/%%%[\w|\-|\_|\d]+%%%/', $value) > 0) {
 					$dinamic = true;
 					$dinamicTemplateList = $section->getProperty('dinamic_template_list');
@@ -136,7 +136,7 @@ function preTransformation($ptdContent, $fileName, $idSection = NULL) {
 		foreach ($matches[0] as $key => $value) {
 			$dinamic = false;
 			if ($section->get('IdNode') > 0) {
-				// Si el template docxap o include es din�mico, se inserta asociado a la sección
+				// Si el template docxap o include es dinámico, se inserta asociado a la sección
 				if (preg_match('/%%%[\w|\-|\_|\d]+%%%/', $value) > 0) {
 					$dinamic = true;
 					$dinamicTemplateList = $section->getProperty('dinamic_template_list');

@@ -353,7 +353,7 @@ class XimNewsBulletinNodeType extends AbstractStructuredDocument  {
 			$relNewsBulletin->add($this->parent->get('IdNode'), $newID, $colectorID);
 		}
 
-		//rellenamos el bolet�n
+		//rellenamos el boletín
 
 		$header = ximNEWS_Adapter::getBulletinHeader($data, $bulletinPvd);
 

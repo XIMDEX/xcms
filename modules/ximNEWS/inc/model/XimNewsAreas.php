@@ -36,11 +36,11 @@ ModulesManager::file('/inc/model/orm/XimNewsAreas_ORM.class.php', 'ximNEWS');
 class XimNewsAreas extends XimNewsAreas_ORM {
 /*	var $errorList = array(	// Lista de errores de la clase.
 			1 => 'Error de conexion con la base de datos.',
-			2 => 'No existe la categor�a.',
-			3 => 'Error al crear la categor�a.',
-			4 => 'Error al actualizar la categor�a.',
-			5 => 'La noticia no est� asociada a ninguna categor�a.',
-			6 => 'No existen categor�as para asociar la noticia.'
+			2 => 'No existe la categoría.',
+			3 => 'Error al crear la categoría.',
+			4 => 'Error al actualizar la categoría.',
+			5 => 'La noticia no está asociada a ninguna categoría.',
+			6 => 'No existen categorías para asociar la noticia.'
 		);
 */
 	public function __construct($IdArea = NULL) {

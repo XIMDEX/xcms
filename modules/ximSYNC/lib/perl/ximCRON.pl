@@ -141,7 +141,7 @@ if ($directmode) {
     }
     Logger::MyLog(1, "Tareas a procesar: ".@tareas);
     if ($taskNumber) {
-        Logger::MyLog(1, "El n�mero de tareas extra�do (".@tareas.") y el declarado ($taskNumber) no coinciden!") if (@tareas != $taskNumber);
+        Logger::MyLog(1, "El número de tareas extraído (".@tareas.") y el declarado ($taskNumber) no coinciden!") if (@tareas != $taskNumber);
     }
 }   
 
@@ -189,14 +189,14 @@ Logger::MyLog(1, "Procesando tareas SINCRO (tipo $type, puerto $port) para $user
 my $remote = new Conexion($host, $port, $user, $type, $pass);
 
 unless ($remote) {
-    Logger::MyLog(1, "No ha sido posible establecer un v�nculo de comunicación con $host: $@");
+    Logger::MyLog(1, "No ha sido posible establecer un vínculo de comunicación con $host: $@");
     exit(200);
 }
 
 my $error = $remote->myRunCommand("pwd");
 if ($error) {
   my $errorcause = $remote->getErrorCause();
-  Logger::MyLog(1, "No ha sido posible establecer un v�nculo de intercambio con $host -> $errorcause (deptherror=$error)");
+  Logger::MyLog(1, "No ha sido posible establecer un vínculo de intercambio con $host -> $errorcause (deptherror=$error)");
   exit(200);
 }
 

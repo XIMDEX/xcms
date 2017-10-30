@@ -135,10 +135,10 @@ class Repository extends IRepository {
 				$msg = 'ERROR_NOT_REACHED';
 				break;
 			case Constants::ERROR_NOT_ALLOWED:
-				$msg = 'El tipo de nodo especificado no est� permitido en este directorio.';
+				$msg = 'El tipo de nodo especificado no está permitido en este directorio.';
 				break;
 			default:
-				$msg = 'La operación se realiz� correctamente.';
+				$msg = 'La operación se realizó correctamente.';
 		}
 
 		return $msg;

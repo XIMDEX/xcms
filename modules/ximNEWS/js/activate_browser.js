@@ -106,7 +106,7 @@ function activar_boletines(area,indices,cuerpo){
                  span = document.createElement("<span style='font-size:10px;cursor:hand;' >");
 		           span.setAttribute("name",indices[r]);
                  span.onclick = show_news;
-                 texto = document.createTextNode("Ver »");
+                 texto = document.createTextNode("Ver");
               }
               else{ 
 		           span = document.createElement("<span style='font-size:10px; ' >");

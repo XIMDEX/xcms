@@ -8,7 +8,7 @@ class ximNota extends CliParser  {
 	var $_metadata = array(
 		array (	'name' => '--command',
 				'mandatory' => true,
-				'message' => 'Comando a ejecutar (migratepair � publicatepair)',
+				'message' => 'Comando a ejecutar (migratepair & publicatepair)',
 				'type' => TYPE_STRING),
 		array (	'name' => '--ruta_fich_pdf',
 				'mandatory' => false,

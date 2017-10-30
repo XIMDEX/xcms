@@ -1449,7 +1449,7 @@ class Synchronizer
                 $sql = "SELECT DISTINCT FileName, RemotePath FROM Synchronizer WHERE IdSync=" . $previousFrame . " OR IdSync=" . $frameID;
                 $dbObj->Query($sql);
                 if ($dbObj->numRows > 1) {
-                    /// S� ha cambiado
+                    /// Sí ha cambiado
                     $sql = "SELECT DISTINCT IdSync FROM SynchronizerDependencies WHERE IdResource=" . $frameID;
                     $this->dbObj->Query($sql);
 

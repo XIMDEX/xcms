@@ -198,7 +198,7 @@ class Messages {
     }
 
     /**
-     * A�ade a este objeto de mensajes los mensajes provenientes de otro objeto
+     * Añade a este objeto de mensajes los mensajes provenientes de otro objeto
 
      */
     /**

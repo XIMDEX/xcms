@@ -64,7 +64,7 @@ class SynchronizerStat extends SynchronizerStats_ORM
 
         if (strcmp(App::getValue("SyncStats"), "1") == 0) {
 
-            // Seg�n el valor del parametro $doLog se insertara en la tabla o no.
+            // Según el valor del parametro $doLog se insertara en la tabla o no.
             if ($doInsertSql) {
                 $this->set('IdStat', null);
                 $this->set('BatchId', $batchId);

@@ -46,7 +46,7 @@ class ParamsCLI extends CliParser
 			"type" => TYPE_STRING),
 		array("name" => "--method",
 			"mandatory" => true,
-			"message" => "M�todo que se desea ejecutar",
+			"message" => "Método que se desea ejecutar",
 			"type" => TYPE_STRING),
 		array("name" => "--renderer",
 			"mandatory" => true,

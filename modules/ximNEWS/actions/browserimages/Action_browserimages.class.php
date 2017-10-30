@@ -31,7 +31,7 @@ use Ximdex\MVC\ActionAbstract;
 
  
 class Action_browserimages extends ActionAbstract {
-   // M�todo principal: presenta el formulario inicial
+   // Método principal: presenta el formulario inicial
     function index () {
 
 	//Forma antigua de hacerlo. Hay que migrarlo a la nueva plantilla

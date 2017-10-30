@@ -230,7 +230,7 @@ class ldd
             }
         }
 
-        // Paso 2: A�adimos las nuevas PK y actualizamos el campo si procede
+        // Paso 2: Añadimos las nuevas PK y actualizamos el campo si procede
         reset($tableInfo->flds);
         while (list(, $fieldInfo) = each($tableInfo->flds)) {
             if (!array_key_exists($fieldInfo->name, $data)) {

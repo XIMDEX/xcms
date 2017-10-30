@@ -54,8 +54,8 @@ class FileUpdater
     function updateFiles($mode = true)
     {
         // Estimamos las rutas que vamos a usar dependiendo del uso que le estemos dando a la clase
-        // Revisi�n == 0  Estamos haciendo una copia
-        // Revisi�n != 0  Estamos haciendo una importación
+        // Revisión == 0  Estamos haciendo una copia
+        // Revisión != 0  Estamos haciendo una importación
         if (!strcmp($this->revision, Constants::REVISION_COPY)) {
             $routeToFiles = sprintf('%s/data/files/', XIMDEX_ROOT_PATH);
         } else {
@@ -64,7 +64,7 @@ class FileUpdater
             // TODO esto esta un poco cutre, hay que arreglar la extension doble
             $compressedFile = sprintf('%s/files.tar.', $routeToBackupFolder);
             // Descomprimimos los archivos
-            //TODO estas dos l�neas van descomentadas (solo las comento para hacer pruebas r�pidas)
+            //TODO estas dos líneas van descomentadas (solo las comento para hacer pruebas rápidas)
             XMD_Log::info(_("Starting the decompression of files of the package") . " {$this->revision}");
             $tarArchiver = new TarArchiver($compressedFile);
             $tarArchiver->unpack($routeToFiles);

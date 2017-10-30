@@ -43,7 +43,7 @@ use Ximdex\Utils\Messages;
 class IController
 {
     /**
-     * Objeto Request para almacenar par�metros de petición
+     * Objeto Request para almacenar parámetros de petición
      */
     /**
      * @var Request
@@ -86,7 +86,7 @@ class IController
     }
 
     /**
-     * TODO: Cambiar toda la gesti�n de errores en base a variable booleana + array simple por el objeto messages
+     * TODO: Cambiar toda la gestión de errores en base a variable booleana + array simple por el objeto messages
      * Getter
      */
         /**

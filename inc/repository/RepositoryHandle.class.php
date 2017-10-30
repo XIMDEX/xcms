@@ -556,7 +556,7 @@
 					$ret = RepositoryHandle::delete($source, $userName);
 					$moved = RepositoryHandle::read($dest);
 	//				$ret = $ret > 0 ? true : false;
-					// Si no se pudo eliminar el origen... ¿Se elimina la copia?...
+					// Si no se pudo eliminar el origen... Se elimina la copia?...
 					if ($ret < 0) RepositoryHandle::delete($dest, $userName);
 				}
 			}

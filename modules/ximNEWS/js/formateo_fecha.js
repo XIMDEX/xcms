@@ -70,7 +70,7 @@ function isValidDate(dateStr)
 	var matchArray = dateStr.match(datePat); // is the format ok?
 	if (matchArray == null)
 		{
-		alert(dateStr + ", no es un formato de fecha válido.")
+		alert(dateStr + ", no es un formato de fecha vÃ¡lido.")
 		return false;
 		}
 
@@ -101,7 +101,7 @@ function isValidDate(dateStr)
 		var isleap = (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0));
 		if (day>29 || (day==29 && !isleap))
 			{
-			alert("Febrero en el año " + year + " no tiene " + day + " dias. "+dateStr);
+			alert("Febrero en el aÃ±o " + year + " no tiene " + day + " dÃ­as. "+dateStr);
 			return false;
 			}
 		}

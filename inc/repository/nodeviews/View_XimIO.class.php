@@ -41,7 +41,7 @@ class View_XimIO extends Abstract_View implements Interface_View
         $content = $this->retrieveContent($pointer);
         $version = new Version($idVersion);
         if (!($version->get('IdVersion') > 0)) {
-            XMD_Log::error("No se ha encontrado la versi�n ($idVersion) solicitada");
+            XMD_Log::error("No se ha encontrado la versión ($idVersion) solicitada");
             return NULL;
         }
         $idNode = $version->get('IdNode');

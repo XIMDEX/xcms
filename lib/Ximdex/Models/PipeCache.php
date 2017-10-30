@@ -93,7 +93,7 @@ class PipeCache extends PipeCachesOrm
             $this->_transition = new PipeTransition($idTransition);
             $lastVersion = $version->get('Version');
             if ($version->get('SubVersion') == '0' && ($lastVersion >= 1)) {
-                // Estimamos la �ltima versi�n
+                // Estimamos la última versión
                 $subVersions = $version->find('IdVersion', 'Version = %s AND IdNode = %s ORDER BY Version DESC, SubVersion DESC',
                     array(($lastVersion - 1), $version->get('IdNode')), MONO);
 

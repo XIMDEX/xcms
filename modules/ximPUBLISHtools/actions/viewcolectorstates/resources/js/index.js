@@ -98,7 +98,7 @@ $('document').ready(function() {
 						});
 						
 						// Refresh news data
-						if(colectors_data[i].state == 'Generado' || colectors_data[i].state == 'Gener�ndose') {
+						if(colectors_data[i].state == 'Generado' || colectors_data[i].state == 'Generándose') {
 							for(var id_new in colectors_data[i].pending_relations) {
 								var state = colectors_data[i].pending_relations[id_new].State == 'pending' ? 'Pendiente' : 'Asociada';
 								var src = url_root + '/modules/pro/ximPUBLISHtools/images/reports/' + (colectors_data[i].pending_relations[id_new].State == 'pending' ? 'out.gif' : 'in.gif');
@@ -128,7 +128,7 @@ $('document').ready(function() {
 						// Refresh state
 						$('#state_title_' + colectors_data[i].id_colector).text(colectors_data[i].state);
 						$('#state_content_' + colectors_data[i].id_colector).text(colectors_data[i].state);
-						if(colectors_data[i].state == 'Gener�ndose' || colectors_data[i].state == 'Generado y Public�ndose')
+						if(colectors_data[i].state == 'Generándose' || colectors_data[i].state == 'Generado y Publicándose')
 							$('#state_image_' + colectors_data[i].id_colector).show();
 						else
 							$('#state_image_' + colectors_data[i].id_colector).hide();

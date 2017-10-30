@@ -48,7 +48,7 @@ La sintaxis correcta es:
 Para generar una sola clase:
 	$ php script/orm/generate [Nombre de la tabla]
 
-� para generar todas las clases
+o para generar todas las clases
 	$ php script/orm/generate all
 
 o para generar solo las nuevas
@@ -112,7 +112,7 @@ Error al generar la clase {$tableName}_ORM.class.php
 Posibles causas:
 
  - La tabla $tableName no existe en la base de datos $DBNAME.
- - La tabla $tableName no tiene establecida una clave primaria �nica
+ - La tabla $tableName no tiene establecida una clave primaria única
 
 HEREDOC;
         continue;
@@ -127,7 +127,7 @@ HEREDOC;
             continue;
         }
         echo <<< HEREDOC
-Ya existe un modelo para la tabla $tableName, el modelo existente se guardar� con extensi�n bck(n�mero)
+Ya existe un modelo para la tabla $tableName, el modelo existente se guardará con extensión bck(número)
 
 HEREDOC;
         $fileContents = FsUtils::file_get_contents($fileName);
@@ -271,7 +271,7 @@ HEREDOC;
 
     if (FsUtils::file_put_contents($fileName, $template)) {
         echo <<< HEREDOC
-La clase $fileName ha sido creada con �xito
+La clase $fileName ha sido creada con éxito
 
 HEREDOC;
     } else {

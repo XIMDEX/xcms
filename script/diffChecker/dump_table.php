@@ -72,7 +72,7 @@ if (!empty($idField)) {
 $result = $object->find($object->_idField, $where, $value, MONO, false);
 
 if (empty($result)) {
-	die("Resultado vac�o encontrado\n");
+	die("Resultado vacío encontrado\n");
 }
 
 	if ($full) {

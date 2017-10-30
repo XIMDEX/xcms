@@ -158,7 +158,7 @@ $.get( window.com.ximdex.baseUrl+"/xmd/loadaction.php?action=browser3&method=get
             },
             _registerKeyEvents: function() {
 
-                // FIXME: The callback is called twice! �?
+                // FIXME: The callback is called twice! ?
                 $(document)
                     .keypress(function(event) {
                         if (!event.ctrlKey) return;

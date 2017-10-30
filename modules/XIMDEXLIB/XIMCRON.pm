@@ -528,7 +528,7 @@ sub createPath {
 			Logger::MyLog(4, "Remote directory [$dir] has been created recursively by FTP");
 			return 0;
 		} else {
-			my $ftperrorstring = "C�digo: ".$ftp->code." Causa: ".$ftp->message; chomp($ftperrorstring);
+			my $ftperrorstring = "Código: ".$ftp->code." Causa: ".$ftp->message; chomp($ftperrorstring);
 			Logger::MyLog(4, "Remote directory [$rem_relativepath] has NOT been recursively created by FTP because of: $ftperrorstring");
 
 			$refer->setErrorCause(40, "It has not been possible to create recursively the directory by FTP remote server: $ftperrorstring");
@@ -640,7 +640,7 @@ sub mkdir {
 # Devuelve 0 si OK
 # Devuelve 10, 20, 30, 99 si NOT OK
 # Propaga 5
-# Atenci�n--> NUNCA poner recursivo. Debe fallar si contiene algun elemento... 
+# Atención--> NUNCA poner recursivo. Debe fallar si contiene algun elemento... 
 sub rmdir {
 	my $refer = shift;
 	my ($basepath, $directory) = @_;

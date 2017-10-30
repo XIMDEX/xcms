@@ -45,7 +45,7 @@ var Alerts = Class.create({
 		var msg = '';
 
 		if(obj_notify.validateError()) {
-			msg += " Atención. "+obj_notify.alerts[obj_notify.level_index][obj_notify.E_CRITICAL].text+":";
+			msg += " AtenciÃ³n. "+obj_notify.alerts[obj_notify.level_index][obj_notify.E_CRITICAL].text+":";
 			for(var i= 1; i< obj_notify.alerts[obj_notify.level_index][obj_notify.E_WARNING].length; i++) {
 				try {
 					msg += "\n "+ /* ( "+ obj_notify.alerts[obj_notify.level_index][obj_notify.E_WARNING][i].id + " ) */" --> " ;
@@ -61,7 +61,7 @@ var Alerts = Class.create({
 			if( obj_notify.alerts[obj_notify.level_index][obj_notify.E_WARNING].length && obj_notify.alerts[obj_notify.level_index][obj_notify.E_WARNING][1].id != id_form && obj_notify.alerts[obj_notify.level_index][obj_notify.E_WARNING][1].id  ) {				$(obj_notify.alerts[obj_notify.level_index][obj_notify.E_WARNING][1].id).activate();
 			}
 		}else {
-			msg += " Atención. "+obj_notify.alerts[obj_notify.level_index][obj_notify.SUCCESSFULL].text+":";
+			msg += " AtenciÃ³n. "+obj_notify.alerts[obj_notify.level_index][obj_notify.SUCCESSFULL].text+":";
 		}
 		alert(msg);
 	},

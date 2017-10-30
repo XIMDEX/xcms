@@ -470,7 +470,7 @@ class Repository_XNodes extends Repository {
 			$visualtemplate = $this->_getDefaultVisualTemplate();
 		}
 		if (empty($visualtemplate)) {
-			XMD_Log::error('No se ha encontrado pvd/rng para crear el nodo, compruebe que la instancia est� correctamente configurada');
+			XMD_Log::error('No se ha encontrado pvd/rng para crear el nodo, compruebe que la instancia está correctamente configurada');
 		}
 
 		// Ok, let's rock

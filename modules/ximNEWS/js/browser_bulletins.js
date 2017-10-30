@@ -83,7 +83,6 @@ function presentar_bulletins()
 		   var col = document.createElement("<td class='filaclara' onmouseover='cambiar_color_over(this)' onmouseout='cambiar_color_out(this)' >");
 		   name = cat.getAttribute("name"); 
 		   var content = document.createTextNode(name);
-		   //var content = document.createTextNode(name+" »");
 		   var span = document.createElement("<span style='cursor:hand;' onclick='mostrar_boletines_cat(this);'>");
 		   span.setAttribute("name",name);
 		   span.appendChild(content);
@@ -407,7 +406,7 @@ function activate_row_table(indices,cuerpo){
                         span = document.createElement("<span style='font-size:10px;cursor:hand;' >");
 		        span.setAttribute("name",indices[r]);
                         span.onclick = show_news_info;
-                        texto = document.createTextNode("Ver »");
+                        texto = document.createTextNode("Ver");
                      }
                      else{ 
 		        span = document.createElement("<span style='font-size:10px; ' >");

@@ -310,7 +310,7 @@ class XimNewsCache extends XimNewsCache_ORM {
 			return false;
 		}
 
-		//Si el contador se queda a cero elimino la cach�
+		//Si el contador se queda a cero elimino la caché
 		if($this->get('Counter') == 0){
 			$this->DeleteCache();
 		}
