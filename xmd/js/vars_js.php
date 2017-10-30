@@ -43,13 +43,25 @@ $userID = \Ximdex\Utils\Session::get('userID');
 
 header('Content-type: application/javascript');
 
-echo "\nrenderer = '" . \Ximdex\Utils\Session::get("renderer") . "';";
+echo "renderer = '" . \Ximdex\Utils\Session::get("renderer") . "';";
 echo "\nurl_root = '" . App::getValue( 'UrlRoot') . "';";
 echo "\nximdex_root = '" . App::getValue('XIMDEX_ROOT_PATH') . "';";
 echo "\nbase_action = '" . \Ximdex\Utils\Session::get("base_action") . "';";
-echo "\nurl_root = '" . App::getValue( 'UrlRoot') . "';";
-echo "\napp_root = '" . App::getValue('AppRoot') . "';";
+//TODO ajlucena: echo "\napp_root = '" . App::getValue('AppRoot') . "';";
 echo "\nuser_id = '" . \Ximdex\Utils\Session::get('userID') . "';";
 echo "\nlocale = '" . \Ximdex\Utils\Session::get('locale') . "';";
 $load_welcome = (int)(ModulesManager::isEnabled("ximDEMOS") && \Ximdex\Utils\Session::get('user_demo'));
-echo "\nload_welcome =" . $load_welcome . ";";
+echo "\nload_welcome =" . $load_welcome . ";\n";
+?>
+function NodeTypes()
+{
+<?php
+    $nodeType = new \Ximdex\Services\NodeType;
+    $reflect = new ReflectionClass($nodeType);
+    $constants = $reflect->getConstants();
+    foreach ($constants as $constant => $value) {
+?>
+	this.<?php echo $constant; ?> = '<?php echo $value; ?>';
+<?php } ?>
+}
+var nodeTypes = new NodeTypes();

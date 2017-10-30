@@ -330,7 +330,7 @@ var AttributesToolBox = Object.xo_create(FloatingToolBox, {
 
         var searchOptions = [{
                 comparation: 'equal',
-                content: '5032',
+                content: nodeTypes.XML_DOCUMENT,
                 field: 'nodetype',
                 from: '',
                 to: ''
@@ -342,10 +342,11 @@ var AttributesToolBox = Object.xo_create(FloatingToolBox, {
 
         var searchOptions = {
             nodetypesAllowedToShow: function () {
-                return ['5012', '5013', '5014', '5016', '5040', '5017'];
+                return [nodeTypes.PROJECTS, nodeTypes.PROJECT, nodeTypes.SERVER, nodeTypes.IMAGES_ROOT_FOLDER, nodeTypes.IMAGE_FILE
+                		, nodeTypes.IMAGES_FOLDER];
             },
             nodetypesAllowedToSelect: function () {
-                return ['5040'];
+                return [nodeTypes.IMAGE_FILE];
             },
             title: function () {
                 return "Select an image";
@@ -356,10 +357,11 @@ var AttributesToolBox = Object.xo_create(FloatingToolBox, {
     _createInputFor_ximletSelector: function (label, inputUrl) {
         var searchOptions = {
             nodetypesAllowedToShow: function () {
-                return ['5012', '5013', '5014', '5054', '5055', '5056', '5057'];
+                return [nodeTypes.PROJECTS, nodeTypes.PROJECT, nodeTypes.SERVER, nodeTypes.XIMLET_ROOT_FOLDER, nodeTypes.XIMLET_FOLDER
+                		, nodeTypes.XIMLET_CONTAINER, nodeTypes.XIMLET];
             },
             nodetypesAllowedToSelect: function () {
-                return ['5057'];
+                return [nodeTypes.XIMLET];
             },
             title: function () {
                 return "Select a ximlet";
@@ -370,10 +372,10 @@ var AttributesToolBox = Object.xo_create(FloatingToolBox, {
     _createInputFor_ximcludeSelector: function (label, inputUrl) {
         var searchOptions = {
             nodetypesAllowedToShow: function () {
-                return ['5012', '5013', '5014', '5020', '5021', '5076'];
+                return [nodeTypes.PROJECTS, nodeTypes.PROJECT, nodeTypes.SERVER, nodeTypes.IMPORT_ROOT_FOLDER, nodeTypes.IMPORT_FOLDER, nodeTypes.NODE_HT];
             },
             nodetypesAllowedToSelect: function () {
-                return ['5076'];
+                return [nodeTypes.NODE_HT];
             },
             title: function () {
                 return "Select a ximclude";

@@ -37,8 +37,7 @@ $I->fillField("name", "ximdex");
 
 $I->click("Create Database");
 
-$I->waitForText("Once the database is created", 20);
-
+$I->waitForText("Once the database is created", 15);
 /*
 $I->fillField("user", "ximdexuser");
 $I->fillField("pass", "ximdexpass");
@@ -47,7 +46,7 @@ $I->click("Add user");
 */
 $I->click('Skip');
 
-$I->wait(5);
+$I->wait(3);
 
 $I->see("Set the password for this admin user");
 
@@ -62,7 +61,7 @@ $I->see("Installing Ximdex CMS's default modules");
 
 $I->click("Install modules");
 
-$I->waitForText("Xowl configuration (optional)", 20);
+$I->waitForText("Xowl configuration (optional)", 10);
 
 $I->click("Continue");
 
@@ -132,13 +131,12 @@ while(!fileExistAndIsNotEmpty('data/previos/css/default.css') && $count < 45){
     sleep(2);
     $count++;
 }
+$I->seeFileFound('default.css','data/previos/css');
 
 while(!fileExistAndIsNotEmpty('data/previos/picasso-iden-idhtml.html') && $count < 45){
     sleep(2);
     $count++;
 }
-
-$I->seeFileFound('default.css','data/previos/css');
 $I->seeFileFound('picasso-iden-idhtml.html','data/previos');
 
 $I->amOnPage("/data/previos/picasso-iden-idhtml.html");

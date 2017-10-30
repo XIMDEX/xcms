@@ -171,7 +171,7 @@ var XimlinkDrawer = Object.xo_create(new Drawer(), {
 				// NodeType NAME
 				filtertype: "LinkFolder",
 				// NodeType ID
-				nodetype: 5048,
+				nodetype: nodeTypes.LINK_FOLDER,
 				// Elements per page
 				nelementos: options.paginator.defaultValue
 			};
@@ -214,7 +214,7 @@ var XimlinkDrawer = Object.xo_create(new Drawer(), {
 					children: {value: 2, visible: false},
 					path: {value: '/', visible: false},
 					targetid: {value:getClosestInput($ts, 'id_parent').val()},
-					nodetype: {value: 5048},
+					nodetype: {value: nodeTypes.LINK_FOLDER},
 					filtertype: {value: "LinkFolder"},
 					contenttype: {value: ''},
 					nelementos: {value: 50}

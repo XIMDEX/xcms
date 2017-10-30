@@ -269,8 +269,6 @@ class AbstractStructuredDocument extends FileNode
             case \Ximdex\Services\NodeType::XIMNEWS_NEW_LANGUAGE:
                 $folderNodeType = \Ximdex\Services\NodeType::XIMNEWS_NEWS;
                 break;
-            
-            //TODO ajlucena
             case 8002: //pdf
                 $folderNodeType = 8000;
                 break;

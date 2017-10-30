@@ -14,7 +14,7 @@
       actualFilter = "";
       $scope.selectedNodes = [];
       $scope.nodetypesAllowedToSelect = [];
-      $scope.nodetypesAllowedToShow = ["5012", "5013"];
+      $scope.nodetypesAllowedToShow = [nodeTypes.PROJECTS, nodeTypes.PROJECT];
       $scope.title = "Hola mundo";
       $http.get(xUrlHelper.getAction({
         action: "browser3",

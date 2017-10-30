@@ -123,7 +123,7 @@ $.get( window.com.ximdex.baseUrl+"/xmd/loadaction.php?action=browser3&method=get
                         var selected = data["nodeid"].value;
                         var nodetype= data["nodetypeid"].value;
 
-                        if(5032 == nodetype) {
+                        if(nodeTypes.XML_DOCUMENT == nodetype) {
                             window.open (X.restUrl + "?action=xmleditor2&method=load&nodes[]="+selected+"&nodeid="+selected, "Editor");
                             event.originalEvent.stopPropagation();
                             event.originalEvent.preventDefault();
@@ -493,7 +493,7 @@ $.get( window.com.ximdex.baseUrl+"/xmd/loadaction.php?action=browser3&method=get
 
                 /* behavior for breadcrumbs */
                 if (this.options.behavior == 'selectable') {
-                    if (data.nodetypeid && (data.nodetypeid.value == 5032 || data.nodetypeid.value == 5039)) {
+                    if (data.nodetypeid && (data.nodetypeid.value == nodeTypes.XML_DOCUMENT || data.nodetypeid.value == nodeTypes.TEXT_FILE)) {
                         var lblCheck = $('<input />').attr('type', 'checkbox');
                         if (data.is_section_index && data.is_section_index.value == '1') {
                             lblCheck.attr('checked', 'checked');

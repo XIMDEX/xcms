@@ -471,7 +471,7 @@ function my_suggester(options) {
 			//XimNewsBulletinLanguage and XimNewsNewLanguage and XmlDocument
 			qp.addFilter({
 				comparation: 'in',
-				content: '5308,5032,5309',
+				content: nodeTypes.XIMNEWS_NEW_LANGUAGE + ',' . nodeTypes.XML_DOCUMENT + ',' + nodeTypes.XIMNEWS_NEW_LANGUAGE,
 				field: 'nodetype'
 			});
 			qp.addSort({

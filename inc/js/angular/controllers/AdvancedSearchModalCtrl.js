@@ -31,7 +31,7 @@ angular.module('ximdex.main.controller').controller('AdvancedSearchModalCtrl', [
         'nodetype_comparation': 'equal',
         'date_comparation': 'equal',
         'content': '',
-        'nodetype_content': '5022',
+        'nodetype_content': nodeTypes.COMMON_ROOT_FOLDER,
         'date_content': $filter('date')(new Date, 'dd/MM/yyyy'),
         'date_content_to': $filter('date')(new Date, 'dd/MM/yyyy')
       });

@@ -14160,7 +14160,7 @@ function XimdocEditor(options) {
 		}
 
 
-
+		//TODO ajlucena
 		$("#kupu-jdialog").dialog({
 			resizable: false,
 			height:300,
@@ -21051,7 +21051,7 @@ var AttributesToolBox = Object.xo_create(FloatingToolBox, {
                                         queryHandler: "SQLTREE",
                                         masterFilter: [{
                                                 comparation: 'equal',
-                                                content: '5040',
+                                                content: nodeTypes.IMAGE_FILE,
                                                 field: 'nodetype',
                                                 from: '',
                                                 to: ''
@@ -21127,7 +21127,7 @@ var AttributesToolBox = Object.xo_create(FloatingToolBox, {
 
 		var searchOptions = [{
 					comparation: 'equal',
-                                        content: '5032',
+                                        content: nodeTypes.XML_DOCUMENT,
                                         field: 'nodetype',
                                         from: '',
                                         to: ''                          
@@ -21139,7 +21139,7 @@ var AttributesToolBox = Object.xo_create(FloatingToolBox, {
 
 		var searchOptions = [{
 					comparation: 'equal',
-                                        content: '5040',
+                                        content: nodeTypes.IMAGE_FILE,
                                         field: 'nodetype',
                                         from: '',
                                         to: ''                          
@@ -21151,7 +21151,7 @@ var AttributesToolBox = Object.xo_create(FloatingToolBox, {
 	_createInputFor_ximletSelector: function(label, inputUrl){
 		var searchOptions = [{
 					comparation: 'equal',
-                                        content: '5057',
+                                        content: nodeTypes.XIMLET,
                                         field: 'nodetype',
                                         from: '',
                                         to: ''				
@@ -21163,7 +21163,7 @@ var AttributesToolBox = Object.xo_create(FloatingToolBox, {
 
 		var searchOptions = [{
 					comparation: 'equal',
-                                        content: '5076',
+                                        content: nodeTypes.NODE_HT,
                                         field: 'nodetype',
                                         from: '',
                                         to: ''
