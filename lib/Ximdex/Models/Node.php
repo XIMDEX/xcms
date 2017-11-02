@@ -3007,10 +3007,10 @@ class Node extends NodesOrm
         $nodeType = new NodeType($idNodeType);
         $nodeTypeName = $nodeType->get('Name');
         //the pattern and the string must be in the same encode
-        $pattern1 = Base::recodeSrc("/^[A-Za-z0-9�-��-��-���\_\-\.\s]+$/", XML::UTF8);
-        $pattern2 = Base::recodeSrc("/^[A-Za-z0-9�-��-��-���\_\-\.\s\@\:\/\?\+\=\#\%\*\,]+$/", XML::UTF8);
-        $pattern3 = Base::recodeSrc("/^[A-Za-z0-9�-��-��-���\_\-\.]+$/", XML::UTF8);
-        $pattern4 = Base::recodeSrc("/^[A-Za-z0-9�-��-��-���\_\-\.\@]+$/", XML::UTF8);
+        $pattern1 = Base::recodeSrc("/^[A-Za-z0-9\_\-\.\s]+$/", XML::UTF8);
+        $pattern2 = Base::recodeSrc("/^[A-Za-z0-9\_\-\.\s\@\:\/\?\+\=\#\%\*\,]+$/", XML::UTF8);
+        $pattern3 = Base::recodeSrc("/^[A-Za-z0-9\_\-\.]+$/", XML::UTF8);
+        $pattern4 = Base::recodeSrc("/^[A-Za-z0-9\_\-\.\@]+$/", XML::UTF8);
         $name = Base::recodeSrc($name, XML::UTF8);
         unset($nodeType);
         if (!strcasecmp($nodeTypeName, 'Action') ||
