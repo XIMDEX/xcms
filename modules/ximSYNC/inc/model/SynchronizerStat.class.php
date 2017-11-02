@@ -25,11 +25,11 @@
  */
 
 
+use Ximdex\Logger;
 use Ximdex\Runtime\App;
 use Ximdex\Runtime\Db;
 
 ModulesManager::file('/inc/model/orm/SynchronizerStats_ORM.class.php', 'ximSYNC');
-ModulesManager::file('/inc/manager/Sync_Log.class.php', 'ximSYNC');
 ModulesManager::file('/inc/utils.php');
 
 /**
@@ -83,9 +83,8 @@ class SynchronizerStat extends SynchronizerStats_ORM
 
                 parent::add();
             }
-
-            //XMD_Log::info($comment);
-            Sync_Log::write($comment, $level);
+            
+            Logger::info($comment);
         }
         return null;
     }

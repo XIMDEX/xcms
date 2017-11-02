@@ -26,7 +26,6 @@
 
 use Ximdex\MVC\ActionAbstract;
 
-
 class Action_reportslist extends ActionAbstract
 {
     public function index()
@@ -35,9 +34,6 @@ class Action_reportslist extends ActionAbstract
         $values = array('reports' => $reports);
 
         $this->render($values, null, 'only_template.tpl');
-
-        //header('Content-type: application/json');
-        //echo Serializer::encode(SZR_JSON, $data);
     }
 
     protected function getReports()

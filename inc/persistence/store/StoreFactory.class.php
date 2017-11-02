@@ -24,6 +24,8 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
+use Ximdex\Runtime\App;
+
 if (!defined('XIMDEX_ROOT_PATH')) {
     define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../../"));
 }
@@ -78,15 +80,14 @@ class StoreFactory {
             throw new RuntimeException('Module XRAM is not enabled');
         }
 
-        $solrServer = \App::getValue( "SolrServer");
-        $solrPort = \App::getValue( "SolrPort");
-        $solrPath = \App::getValue( "SolrPath");
-        $solrCore = \App::getValue( "SolrCore");
+        $solrServer = App::getValue( "SolrServer");
+        $solrPort = App::getValue( "SolrPort");
+        $solrPath = App::getValue( "SolrPath");
+        $solrCore = App::getValue( "SolrCore");
         $store = new SolrStore();
         $solrService = new SolariumSolrService($solrServer, $solrPort, $solrPath, $solrCore);
         $store->setSolrService($solrService);
         $processorFactory = new ProcessorFactory();
-//        $aesProcessor = $processorFactory->createBase64Processor();
         $aesProcessor = $processorFactory->createAESProcessor();
         $store->addProcessor($aesProcessor);
 
@@ -113,7 +114,7 @@ class StoreFactory {
 
         if (!isset($store)) {
             $storeFactory = new self();
-            $activeRepository = \App::getValue( StoreFactory::$ACTIVE_REPOSITORY);
+            $activeRepository = App::getValue( StoreFactory::$ACTIVE_REPOSITORY);
             if ($activeRepository === NULL) {
                 $store = $storeFactory->createFileSystemStore();
                 return $store;

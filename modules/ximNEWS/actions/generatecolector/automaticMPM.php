@@ -26,8 +26,9 @@
  */
 
 
+use Ximdex\Logger;
 use Ximdex\Models\Node;
-use Ximdex\Utils\Logs\Appender\AutomaticLog;
+use Ximdex\Runtime\App;
 use Ximdex\Utils\Sync\Mutex;
 use Ximdex\Utils\Sync\SynchroFacade;
 
@@ -41,21 +42,21 @@ ModulesManager::file('/inc/MPM/MPMProcess.class.php');
 
 GLOBAL $generate_pid;
 $generate_pid = posix_getpid();
-$stopperFilePath = \App::getValue("AppRoot") . \App::getValue("TempRoot") . "/automatic.stop";
+$stopperFilePath = App::getValue("AppRoot") . App::getValue("TempRoot") . "/automatic.stop";
 $msg_lck = _("STOP: Detected file") . " $stopperFilePath " . _("You need to delete this file in order to get an Automatic succesfull restart");
 
-$mutex = new Mutex(\App::getValue("AppRoot") . \App::getValue("tmpRoot") . "/generate.lck");
+$mutex = new Mutex(App::getValue("AppRoot") . App::getValue("tmpRoot") . "/generate.lck");
 if (!$mutex->acquire()) {
-    AutomaticLog::info("Automatic previo en ejecucion");
+    Logger::info("Automatic previo en ejecucion");
     exit(1);
 }
 
-AutomaticLog::info("Starting Automatic");
+Logger::info("Starting Automatic");
 
 // Si son horas se obtienen los colectores con fuelle
 
-$minHourFuelle = mkTime(\App::getValue('StartCheckNoFuelle'), 0, 0, date('m', $now), date('d', $now), date('Y', $now));
-$maxHourFuelle = mktime(\App::getValue('EndCheckNoFuelle'), 0, 0, date('m', $now), date('d', $now), date('Y', $now));
+$minHourFuelle = mkTime(App::getValue('StartCheckNoFuelle'), 0, 0, date('m', $now), date('d', $now), date('Y', $now));
+$maxHourFuelle = mktime(App::getValue('EndCheckNoFuelle'), 0, 0, date('m', $now), date('d', $now), date('Y', $now));
 
 $colectoresConFuelle = array();
 
@@ -69,7 +70,7 @@ $colectors = $ximNewsColector->getAllColectors();
 $numColectors = count($colectors);
 $actualColector = 0;
 
-AutomaticLog::info("$numColectors colectors to be processed");
+Logger::info("$numColectors colectors to be processed");
 
 foreach ($colectors as $colectorID => $colectorName) {
     $generados = "";
@@ -77,13 +78,13 @@ foreach ($colectors as $colectorID => $colectorName) {
     // STOPPER
     if (file_exists($stopperFilePath)) {
         $mutex->release();
-        AutomaticLog::info($msg_lck);
+        Logger::info($msg_lck);
         die($msg_lck . "\n");
     }
 
     $actualColector++;
     $colectorLogHead = _("Collector") . " ($actualColector " . _("of") . " $numColectors) '[$colectorID] $colectorName': ";
-    AutomaticLog::info($colectorLogHead . _("Start processing"));
+    Logger::info($colectorLogHead . _("Start processing"));
 
     $totalGeneration = NULL;
     $generate = false;
@@ -101,7 +102,7 @@ foreach ($colectors as $colectorID => $colectorName) {
             $generate = true;
             $totalGeneration = 2;
 
-            AutomaticLog::info($colectorLogHead . _("Bellows-less generation"));
+            Logger::info($colectorLogHead . _("Bellows-less generation"));
         }
     }
 
@@ -115,23 +116,23 @@ foreach ($colectors as $colectorID => $colectorName) {
     $lockColector = $ximNewsColector->get('Locked');
 
     if ($lockColector == 1) {
-        AutomaticLog::info($colectorLogHead . _("Locked (Maybe colector's being generated at this moment)"));
+        Logger::info($colectorLogHead . _("Locked (Maybe colector's being generated at this moment)"));
         $generate = false;
     }
 
     if ($generate == true) {
 
-        AutomaticLog::info($colectorLogHead . _("Starting generation"));
+        Logger::info($colectorLogHead . _("Starting generation"));
         $generados = $nodeColector->class->generateColector($totalGeneration);
 
         // STOPPER
         if (file_exists($stopperFilePath)) {
             $mutex->release();
-            AutomaticLog::info($msg_lck);
+            Logger::info($msg_lck);
             die($msg_lck . "\n");
         }
 
-        AutomaticLog::info($colectorLogHead . _("Ending generation"));
+        Logger::info($colectorLogHead . _("Ending generation"));
     } elseif ($ximNewsColector->get('State') == 'generated') {
 
         $generados = $ximNewsBulletin->getPublishableBulletins($colectorID);
@@ -140,14 +141,14 @@ foreach ($colectors as $colectorID => $colectorName) {
     if (!empty($generados)) {
         $numBulletins = count($generados);
         $actualBulletin = 0;
-        AutomaticLog::info($colectorLogHead . _("Generation finished") . " ($numBulletins " . _("bulletins") . ")");
+        Logger::info($colectorLogHead . _("Generation finished") . " ($numBulletins " . _("bulletins") . ")");
 
         // Generated bulletins are published since now until infinite
 
         foreach ($generados as $bulletinID) {
 
             $actualBulletin++;
-            AutomaticLog::info($colectorLogHead . _("Publishing bulletin") . " $bulletinID ($actualBulletin " . _("of") . " $numBulletins)");
+            Logger::info($colectorLogHead . _("Publishing bulletin") . " $bulletinID ($actualBulletin " . _("of") . " $numBulletins)");
 
             if (ModulesManager::isEnabled('ximSYNC')) {
                 include_once(XIMDEX_ROOT_PATH . "/modules/ximSYNC/inc/manager/SyncManager.class.php");
@@ -155,7 +156,7 @@ foreach ($colectors as $colectorID => $colectorName) {
                 // STOPPER
                 if (file_exists($stopperFilePath)) {
                     $mutex->release();
-                    AutomaticLog::info($msg_lck);
+                    Logger::info($msg_lck);
                     die($msg_lck . "\n");
                 }
 
@@ -173,7 +174,7 @@ foreach ($colectors as $colectorID => $colectorName) {
 
                 $numDocs = count($docsToPublish);
                 $actualDoc = 0;
-                AutomaticLog::info($colectorLogHead . "$numDocs " . _("docs to be published"));
+                Logger::info($colectorLogHead . "$numDocs " . _("docs to be published"));
                 $dataIn = array();
                 $i = 0;
 
@@ -182,7 +183,7 @@ foreach ($colectors as $colectorID => $colectorName) {
                     // STOPPER
                     if (file_exists($stopperFilePath)) {
                         $mutex->release();
-                        AutomaticLog::info($msg_lck);
+                        Logger::info($msg_lck);
                         die($msg_lck . "\n");
                     }
 
@@ -202,20 +203,20 @@ foreach ($colectors as $colectorID => $colectorName) {
         $ximNewsColector->update();
     } else {
         $generados = array();
-        AutomaticLog::info($colectorLogHead . _("No generation needed"));
+        Logger::info($colectorLogHead . _("No generation needed"));
     }
 
-    AutomaticLog::info($colectorLogHead . _("Ending processing"));
+    Logger::info($colectorLogHead . _("Ending processing"));
 }
 
-AutomaticLog::info(_("Exiting Automatic"));
+Logger::info(_("Exiting Automatic"));
 $mutex->release();
 
 function pushAllDocumentsInPublishingPool($dataIn)
 {
-    AutomaticLog::info(sprintf(_("parallelization begins with %d documents"), count($dataIn)));
+    Logger::info(sprintf(_("parallelization begins with %d documents"), count($dataIn)));
     $callback = array("/modules/ximSYNC/inc/manager/SyncManager", "pushDocInPublishingPoolForMPM");
     $mpm = new MPMManager($callback, $dataIn, MPMProcess::MPM_PROCESS_OUT_BOOL, 4, 3);
     $mpm->run();
-    AutomaticLog::info(_("Ended parallelization"));
+    Logger::info(_("Ended parallelization"));
 }

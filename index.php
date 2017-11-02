@@ -35,7 +35,6 @@ include_once 'bootstrap/start.php';
  */
 App::dispatchEvent(\Ximdex\Events::XIMDEX_START);
 
-ModulesManager::file('/inc/utils.php');
 ModulesManager::file('/inc/io/BaseIO.class.php');
 ModulesManager::file('/inc/mvc/App.class.php');
 ModulesManager::file('/inc/i18n/I18N.class.php');

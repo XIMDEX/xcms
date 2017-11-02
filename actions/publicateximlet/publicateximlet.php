@@ -27,11 +27,6 @@ use Ximdex\Utils\Sync\Synchronizer;
  *  @version $Revision$
  */
 
-
-
-
- 
-
 function PublicateXimlet($sectionID,$dateUp,$recurrence) {
 
         $node = new Node($sectionID);
@@ -53,4 +48,3 @@ function PublicateXimlet($sectionID,$dateUp,$recurrence) {
             $sync->CreateFrame($dateUp, null, null, 1,1);
         }
 }
-?>

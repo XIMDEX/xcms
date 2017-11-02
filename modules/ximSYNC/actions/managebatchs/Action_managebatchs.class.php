@@ -1,6 +1,7 @@
 <?php
 use Ximdex\Models\User;
 use Ximdex\MVC\ActionAbstract;
+use Ximdex\Runtime\App;
 
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
@@ -193,7 +194,7 @@ class Action_managebatchs extends ActionAbstract {
 			}
 		}
 
-		$urlRoot = \App::getValue( 'UrlRoot');
+		$urlRoot = App::getValue( 'UrlRoot');
 
 		$arrValores = array(
 			'hasBatchs' => $hasBatchs,

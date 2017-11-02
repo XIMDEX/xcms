@@ -61,5 +61,3 @@ class Action_expiredoc extends ActionAbstract
         $this->sendJSON($values);
     }
 }
-
-?>

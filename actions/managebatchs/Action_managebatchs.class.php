@@ -35,4 +35,3 @@ class Action_managebatchs {
 		ModulesManager::file('/actions/managebatchs/init.php');    	
     }
 }
-?>

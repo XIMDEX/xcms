@@ -26,6 +26,8 @@
 
 
 
+use Ximdex\Logger;
+
 ModulesManager::file('/inc/model/orm/XimNewsList_ORM.class.php', 'ximNEWS');
 ModulesManager::file('/inc/model/RelColectorList.php', 'ximNEWS');
 
@@ -114,7 +116,7 @@ class XimNewsList extends XimNewsList_ORM {
 			$relColectorList->set('IdList', $listID);
 
 			if(!$relColectorList->add()){			
-	        	XMD_Log::info("list $listID");
+	        	Logger::info("list $listID");
 				return false;
 			}
 	
@@ -122,4 +124,3 @@ class XimNewsList extends XimNewsList_ORM {
 		return true;
 	}
 }
-?>

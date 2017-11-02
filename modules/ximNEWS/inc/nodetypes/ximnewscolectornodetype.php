@@ -25,15 +25,16 @@
  *  @version $Revision$
  */
 
+use Ximdex\Logger;
 use Ximdex\Deps\DepsManager;
 use Ximdex\Models\Language;
 use Ximdex\Models\Node;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\NodeTypes\FolderNode;
 use Ximdex\Parsers\ParsingRng;
+use Ximdex\Runtime\App;
 use Ximdex\Runtime\DataFactory;
 use Ximdex\Utils\FsUtils;
-use Ximdex\Utils\Logs\Appender\AutomaticLog;
 
  ModulesManager::file('/inc/model/XimNewsColector.php', 'ximNEWS');
 ModulesManager::file('/inc/model/RelNewsColectorUsers.php', 'ximNEWS');
@@ -82,7 +83,7 @@ class XimNewsColectorNodeType extends FolderNode  {
 		if(!$fileXsl){
 		    $fileXsl = $this->buildXslBulletin($idTemplate);
 		    if(is_null($fileXsl)){
-				XMD_Log::info("Creando el xsl de ".$this->nodeID."");
+				Logger::info("Creando el xsl de ".$this->nodeID."");
 				$this->parent->messages->add(_('An error occurred while parsing the document'), MSG_TYPE_ERROR);
 				return false;
 		    }
@@ -110,12 +111,12 @@ class XimNewsColectorNodeType extends FolderNode  {
 		$idXimNewsColector = $ximNewsColector->add();
 
 		if (!($idXimNewsColector > 0)) {
-		    XMD_Log::error("Al persistir en XimNewsColector ".$this->nodeID."");
+		    Logger::error("Al persistir en XimNewsColector ".$this->nodeID."");
 		    $node = new Node($this->nodeID);
 		    $node->delete();
 
 		    if(!$node->numErr){
-				XMD_Log::info("Colectores error al insertar colector se ha eliminado el nodo ".$this->nodeID."");
+				Logger::info("Colectores error al insertar colector se ha eliminado el nodo ".$this->nodeID."");
 		    }
 			return false;
 
@@ -128,7 +129,6 @@ class XimNewsColectorNodeType extends FolderNode  {
 	/**
 	*  Changes the XimNewscolector's name.
 	*  @param string name
-	*  @return unknown
 	*/
 
 	function RenameNode($name) {
@@ -173,16 +173,16 @@ class XimNewsColectorNodeType extends FolderNode  {
 	function DeleteNode() {
 		$relNewsColector = new RelNewsColector();
 		$relNewsColector->setColectorRemoved($this->parent->get('IdNode'));
-		AutomaticLog::info("Colector[{$this->parent->get('IdNode')}] change to 'removed' in relNewsColectors.");
+		Logger::info("Colector[{$this->parent->get('IdNode')}] change to 'removed' in relNewsColectors.");
 
 		$relColectorList = new RelColectorList();
 		$relColectorList->deleteByColector($this->parent->get('IdNode'));
-		AutomaticLog::info("Colector[{$this->parent->get('IdNode')}] deleted in RelColectorList");
+		Logger::info("Colector[{$this->parent->get('IdNode')}] deleted in RelColectorList");
 		$this->purgeColector();
 
 		$ximNewsColector = new XimNewsColector($this->parent->get('IdNode'));
 		$ximNewsColector->delete();
-		AutomaticLog::info("Colector[{$this->parent->get('IdNode')}] deleted in XimNewsColector");
+		Logger::info("Colector[{$this->parent->get('IdNode')}] deleted in XimNewsColector");
 	}
 
 	/**
@@ -313,7 +313,6 @@ class XimNewsColectorNodeType extends FolderNode  {
 
 	/**
 	*  Calls to methods for publicate and expire the XimNewsNewLanguages associated to the XimNewsNewColector.
-	*  @return unknown
 	*/
 	function updateRelNewsColector() {
 		$generationTime = time();
@@ -322,10 +321,10 @@ class XimNewsColectorNodeType extends FolderNode  {
 		$publishNews = $relNewsColector->setPublishNews($generationTime);
 
 		if(!$outdatedNews && !$publishNews) {
-			AutomaticLog::info("Without changes in relNewsColectors");
+			Logger::info("Without changes in relNewsColectors");
 		}else {
-			AutomaticLog::info("Update {$outdatedNews} states to removed from relNewsColectors");
-			AutomaticLog::info("Update {$publishNews} pending to publishable from relNewsColectors");
+			Logger::info("Update {$outdatedNews} states to removed from relNewsColectors");
+			Logger::info("Update {$publishNews} pending to publishable from relNewsColectors");
 		}
 	}
 
@@ -351,7 +350,7 @@ class XimNewsColectorNodeType extends FolderNode  {
 		$inactive = $ximNewsColector->get('Inactive');
 
 		if ($forceTotalGeneration > 0 || isset($total)){
-			AutomaticLog::info("Generacion total del colector ".$this->parent->get('IdNode'));
+			Logger::info("Generacion total del colector ".$this->parent->get('IdNode'));
 			return true;
 		}
 
@@ -359,20 +358,20 @@ class XimNewsColectorNodeType extends FolderNode  {
 		$newsPending = count($relNewsColector->getPublishNews($this->parent->get('IdNode')));
 
 		if ($newsPending == 0) {
-				AutomaticLog::info("Colector ".$this->parent->get('IdNode')." sin nuevas noticias");
+				Logger::info("Colector ".$this->parent->get('IdNode')." sin nuevas noticias");
 			return false;
 		}else {
-				AutomaticLog::info("Colector ".$this->parent->get('IdNode')." con {$newsPending} nuevas noticias");
+				Logger::info("Colector ".$this->parent->get('IdNode')." con {$newsPending} nuevas noticias");
 		}
 
 		if ($inactive == 1 || $inactive == 0) {
 			$newsToGenerate = $ximNewsColector->get('NewsToGenerate');
 
 			if ($newsPending >= $newsToGenerate){
-				AutomaticLog::info("Colector ".$this->parent->get('IdNode')." generable por numero de noticias: $newsPending >= $newsToGenerate");
+				Logger::info("Colector ".$this->parent->get('IdNode')." generable por numero de noticias: $newsPending >= $newsToGenerate");
 				return true;
 			} else {
-				AutomaticLog::info("Colector " . $this->parent->get('IdNode') . "no es generable por numero de noticias: $newsPending < $newsToGenerate");
+				Logger::info("Colector " . $this->parent->get('IdNode') . "no es generable por numero de noticias: $newsPending < $newsToGenerate");
 				if($inactive != 0) return false;
 			}
 		}
@@ -383,15 +382,15 @@ class XimNewsColectorNodeType extends FolderNode  {
 			$leftTime = $lastGeneration + $timeToGenerate - time();
 
 			if($leftTime < 0){
-				AutomaticLog::info("El colector ".$this->parent->get('IdNode')." es generable por tiempo: $leftTime < 0");
+				Logger::info("El colector ".$this->parent->get('IdNode')." es generable por tiempo: $leftTime < 0");
 				return true;
 			}else {
-				AutomaticLog::info("El colector ".$this->parent->get('IdNode')." no es generable por tiempo: $leftTime > 0");
+				Logger::info("El colector ".$this->parent->get('IdNode')." no es generable por tiempo: $leftTime > 0");
 				return false;
 			}
 		}
 
-		XMD_Log::warning('El colector ' . $this->parent->get('IdNode') . ' no es generable, no se ha especificado el motivo');
+		Logger::warning('El colector ' . $this->parent->get('IdNode') . ' no es generable, no se ha especificado el motivo');
 		return false;
 	}
 
@@ -422,14 +421,14 @@ class XimNewsColectorNodeType extends FolderNode  {
 
 		$ximNewsColector = new XimNewsColector($this->parent->get('IdNode'));
 		$ximNewsColector->Lock();
-		AutomaticLog::info("Colector[{$this->parent->get('IdNode')}] locked");
+		Logger::info("Colector[{$this->parent->get('IdNode')}] locked");
 
 		$templateID = $ximNewsColector->get('IdTemplate');
 
 		// todo: move this to method isgenerable
 		$templateNode = new Node($templateID);
 		if (!($templateNode->get('IdNode') > 0)) {
-			XMD_Log::error('Colector schema is deleted');
+			Logger::error('Colector schema is deleted');
 			return false;
 		}
 
@@ -451,7 +450,7 @@ class XimNewsColectorNodeType extends FolderNode  {
 			$newXslFile = $this->buildXslBulletin($templateID);
 
 			if(!$newXslFile) {
-				XMD_Log::info("Actualizando xsl del esquema  $templateID");
+				Logger::info("Actualizando xsl del esquema  $templateID");
 				$this->messages->add('No se ha podido actualizar la plantilla xsl', MSG_TYPE_ERROR);
 				return false;
 			}
@@ -459,14 +458,14 @@ class XimNewsColectorNodeType extends FolderNode  {
 			$ximNewsColector = new XimNewsColector();
 
 			if(!$ximNewsColector->updateByIdTemplate($templateID, $newXslFile, $templateIdVersion)){
-				XMD_Log::info("Persistiendo xsl del esquema  $templateID");
+				Logger::info("Persistiendo xsl del esquema  $templateID");
 				return false;
 			}
 
 			$xslFile = $ximNewsColector->get('XslFile');
 			$cache = new XimNewsCache();
 			if(!$cache->GenerateAllCaches($templateID,$xslFile)){
-				XMD_Log::info("Generado las caches del esquema $templateID");
+				Logger::info("Generado las caches del esquema $templateID");
 			}
 		}
 
@@ -474,12 +473,12 @@ class XimNewsColectorNodeType extends FolderNode  {
 		$relNewsColector = new RelNewsColector();
 
 		if ($forceTotalGeneration > 0 || isset($total)){
-			XMD_Log::info("Starting total generation ".$this->parent->get('IdNode'));
+			Logger::info("Starting total generation ".$this->parent->get('IdNode'));
 
 			// Generacion total sin fuelle
 
 			if ($total == 2) {
-				XMD_log::info("Generacion total sin fuelle del colector ".$this->parent->get('IdNode'). " - ".time()."");
+				Logger::info("Generacion total sin fuelle del colector ".$this->parent->get('IdNode'). " - ".time()."");
 				$sinFuelle = true;
 			}
 
@@ -508,17 +507,17 @@ class XimNewsColectorNodeType extends FolderNode  {
 			}
 
 		} else {
-			XMD_Log::info("Starting partial generation ".$this->parent->get('IdNode'));
+			Logger::info("Starting partial generation ".$this->parent->get('IdNode'));
 
 			$news = $relNewsColector->getPublishNews($this->parent->get('IdNode'));
 		}
 
 		if(!$news){
 			$this->messages->add("No existen noticias pendientes de publicar",MSG_TYPE_ERROR);
-			XMD_Log::info("No existen noticias en colector ".$this->parent->get('IdNode'));
+			Logger::info("No existen noticias en colector ".$this->parent->get('IdNode'));
 
 			$ximNewsColector->UnLock();
-			AutomaticLog::info("Colector[{$this->parent->get('IdNode')}] unlocked");
+			Logger::info("Colector[{$this->parent->get('IdNode')}] unlocked");
 
 			if ($forceTotalGeneration > 0) {
 				$ximNewsColector->set('ForceTotalGeneration', 0);
@@ -609,7 +608,7 @@ class XimNewsColectorNodeType extends FolderNode  {
 
 		$ximNewsColector->UnLock(); //unlocked colector
 		if (!(sizeof($bulletinsGenerated) > 0)) {
-			XMD_Log::info('No se ha generado ningún boletín');
+			Logger::info('No se ha generado ningún boletín');
 			return NULL;
 		}
 
@@ -669,7 +668,7 @@ class XimNewsColectorNodeType extends FolderNode  {
 		$numPages = count($array_pages);
 		$nNews = count($arrayNews);
 
-		XMD_Log::info("colector ".$this->parent->get('IdNode')." maxBulls $maxBulletins maxPage $maxPages numConts
+		Logger::info("colector ".$this->parent->get('IdNode')." maxBulls $maxBulletins maxPage $maxPages numConts
 			$numContainers lang $langID numPages $numPages numNews $nNews");
 
 		if(!($nNews > 0)) {
@@ -677,13 +676,13 @@ class XimNewsColectorNodeType extends FolderNode  {
 			//Se borran boletines vacíos
 
 			foreach($array_pages as $page){
-				XMD_Log::info("Boletin ".$bulletins[$page-1]);
+				Logger::info("Boletin ".$bulletins[$page-1]);
 
 				$node = new Node($bulletins[$page-1]);
 				$node->DeleteNode();
 				if($node->numErr){
 					$this->messages->add("Error borrando boletin ".$bulletins[$page-1],MSG_TYPE_ERROR);
-					XMD_Log::info("Borrando boletin ".$bulletins[$page-1]);
+					Logger::info("Borrando boletin ".$bulletins[$page-1]);
 					return false;
 				}
 			}
@@ -713,7 +712,7 @@ class XimNewsColectorNodeType extends FolderNode  {
 
 				if($page > $numContainers) {
 
-					XMD_Log::info("Creando container lang $langID set $set");
+					Logger::info("Creando container lang $langID set $set");
 
 					ximNEWS_Adapter::createBulletins($this->parent->get('IdNode'), $languages, $headerData, $set, $page,
 						$idLote, $master);
@@ -742,7 +741,7 @@ class XimNewsColectorNodeType extends FolderNode  {
 		if($numBulletinsForDelete > 0){
 			for($i=0;$i<$numBulletinsForDelete;$i++){
 				$j = $maxBulletins - $i - 1;
-					XMD_Log::info("Borrando boletin ".$bulletins[$j]);
+					Logger::info("Borrando boletin ".$bulletins[$j]);
 
 				$node = new Node($bulletins[$j]);
 				$bullName = $node->getNodeName();
@@ -750,7 +749,7 @@ class XimNewsColectorNodeType extends FolderNode  {
 
 				if($node->numErr){
 					$this->messages->add("Borrando boletin $bullName",MSG_TYPE_ERROR);
-					XMD_Log::info("Borrando boletin");
+					Logger::info("Borrando boletin");
 					return false;
 				}
 			}
@@ -772,7 +771,7 @@ class XimNewsColectorNodeType extends FolderNode  {
 			$i = $page - 1;
 
 			if(empty($bulletins[$i])){
-				XMD_Log::info('Nos saltamos el boletin ' . $bulletins[$i]);
+				Logger::info('Nos saltamos el boletin ' . $bulletins[$i]);
 				continue;
 			}
 
@@ -812,7 +811,7 @@ class XimNewsColectorNodeType extends FolderNode  {
 				}
 			}
 
-			XMD_Log::info("Llenando boletines $bulletinId");
+			Logger::info("Llenando boletines $bulletinId");
 
 			$prevBulletin = isset($bulletins[$i - 1]) ? $bulletins[$i - 1] : NULL;
 			$nextBulletin = isset($bulletins[$i + 1]) ? $bulletins[$i + 1] : NULL;
@@ -821,7 +820,7 @@ class XimNewsColectorNodeType extends FolderNode  {
 				$totalNews,	$numNewsInBulletin, $prevBulletin, $nextBulletin)) {
 
 				$this->messages->add("Error procesando XML del boletin $bulletinId",MSG_TYPE_ERROR);
-				XMD_Log::error("Creando XML de boletin $bulletinId");
+				Logger::error("Creando XML de boletin $bulletinId");
 			}
 
 			$ximNewsBulletin = new XimNewsBulletin($bulletinId);
@@ -847,12 +846,12 @@ class XimNewsColectorNodeType extends FolderNode  {
 	private function buildXslBulletin($templateID){
 
 		if (is_null($templateID)) {
-			XMD_Log::error('Schema not found');
+			Logger::error('Schema not found');
 			return NULL;
 		}
 
-		$filePath = \App::getValue( "AppRoot") . \App::getValue( "FileRoot");
-		$xslPath = \App::getValue( "AppRoot") .ModulesManager::path('ximNEWS'). "/inc/xsl/";
+		$filePath = App::getValue( "AppRoot") . App::getValue( "FileRoot");
+		$xslPath = App::getValue( "AppRoot") .ModulesManager::path('ximNEWS'). "/inc/xsl/";
 
 		$rngParser = new ParsingRng();
 		$bulletinXml = $rngParser->buildDefaultContent($templateID);
@@ -872,11 +871,11 @@ class XimNewsColectorNodeType extends FolderNode  {
 			$bulletinXml = $doc->saveXML();
 		}
 
-		$tmpPath = XIMDEX_ROOT_PATH . \App::getValue( 'TempRoot') . '/tmpBulletinXml.xml';
+		$tmpPath = XIMDEX_ROOT_PATH . App::getValue( 'TempRoot') . '/tmpBulletinXml.xml';
 		FsUtils::file_put_contents($tmpPath, $bulletinXml);
 
-    	$fileName = FsUtils::getUniqueFile(\App::getValue( "AppRoot") . \App::getValue( "FileRoot"));
-    	$targetPath = \App::getValue( "AppRoot") . \App::getValue( "FileRoot") . '/' . $fileName;
+    	$fileName = FsUtils::getUniqueFile(App::getValue( "AppRoot") . App::getValue( "FileRoot"));
+    	$targetPath = App::getValue( "AppRoot") . App::getValue( "FileRoot") . '/' . $fileName;
 
 		// Construimos el xsl del boletin
 
@@ -887,7 +886,7 @@ class XimNewsColectorNodeType extends FolderNode  {
 		$bulletinXsl = $xsltHandler->process();
 
 		if (!$bulletinXsl) {
-			XMD_Log::error("Generating bulletin xsl template for schema $templateID");
+			Logger::error("Generating bulletin xsl template for schema $templateID");
 			return NULL;
 		}
 
@@ -902,26 +901,25 @@ class XimNewsColectorNodeType extends FolderNode  {
 
 	/**
 	*  Removes the dependencies between the XimNewsColector and the XimNewsNewLanguages that have expired.
-	*  @return unknown
 	*/
 
 	private function purgeColector() {
 
 	    $newsRemoved = RelNewsColector::getRemoved($this->parent->get('IdNode'));
 
-		 AutomaticLog::info("Colector[{$this->parent->get('IdNode')}] purging despendences");
+		 Logger::info("Colector[{$this->parent->get('IdNode')}] purging despendences");
 
 	    foreach($newsRemoved as $news){
 
 		    if (!($news['cache'] > 0)) {
-		    	AutomaticLog::info("Colector[{$this->parent->get('IdNode')}], News[{$news['new']}] whithout cache,we continue.");
+		    	Logger::info("Colector[{$this->parent->get('IdNode')}], News[{$news['new']}] whithout cache,we continue.");
 		    	continue;
 		    }
 
 			$cache = new XimNewsCache($news['cache']);
 			$counter = $cache->get('Counter') - 1;
 			$cache->RestCounter($counter);
-			AutomaticLog::info("Colector[{$this->parent->get('IdNode')}], News[{$news['new']}] cache -1 = {$counter}");
+			Logger::info("Colector[{$this->parent->get('IdNode')}], News[{$news['new']}] cache -1 = {$counter}");
 
 			// delete news-bulletin relation
 			$idBulletinWithNew = XimNewsBulletin::getBulletinWithNew($this->parent->get('IdNode'), $news['new']);
@@ -929,12 +927,12 @@ class XimNewsColectorNodeType extends FolderNode  {
 			if ($idBulletinWithNew){
 				$relNewsBulletin = new RelNewsBulletins();
 				$relNewsBulletin->deleteRelation($news['new'], $idBulletinWithNew);
-				AutomaticLog::info("Colector[{$this->parent->get('IdNode')}], News[{$news['new']}] removed from bulletin[{$idBulletinWithNew}] ");
+				Logger::info("Colector[{$this->parent->get('IdNode')}], News[{$news['new']}] removed from bulletin[{$idBulletinWithNew}] ");
 			}
 	    }
 
 	    RelNewsColector::purgeColector($this->parent->get('IdNode'));
-	  	 AutomaticLog::info("Colector[{$this->parent->get('IdNode')}] 'removed' news with Colector purged");
+	    Logger::info("Colector[{$this->parent->get('IdNode')}] 'removed' news with Colector purged");
 	}
 
 	/**

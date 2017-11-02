@@ -115,9 +115,6 @@ class Action_managemetadata extends ActionAbstract
                 if ($custom_info->length > 0) {
                     foreach ($custom_info as $value) {
                         $values['languages_metadata'][$idLanguage][$value->nodeName] = $value->nodeValue;
-                        // foreach ($lngs as $language) {
-                        // 	$values['languages_metadata'][$language['IdLanguage']][$value->nodeName] = $value->nodeValue;
-                        // }
                     }
                 }
             }

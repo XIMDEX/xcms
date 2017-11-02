@@ -216,4 +216,3 @@ class Action_workflow_backward extends ActionAbstract {
         return $mesg;
     }
 }
-?>

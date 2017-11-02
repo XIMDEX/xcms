@@ -25,6 +25,7 @@
  *  @version $Revision$
  */
 
+use Ximdex\Logger;
 use Ximdex\Runtime\DataFactory;
 
 ModulesManager::file('/inc/model/orm/XimNewsNews_ORM.class.php', 'ximNEWS');
@@ -91,7 +92,7 @@ class XimNewsNew extends XimNewsNews_ORM {
 			$relNewsColector->set('SubVersion', 0);
 
 			if (!$relNewsColector->update()) {
-				XMD_Log::info(_('Updating version'));
+				Logger::info(_('Updating version'));
 			}
 
 			if($idCache > 0){
@@ -99,7 +100,7 @@ class XimNewsNew extends XimNewsNews_ORM {
 				$ximNewsCache->set('IdVersion',$newsVersionID);
 
 				if (!$ximNewsCache->update()) {
-					XMD_Log::info(_('Updating cache version'));
+					Logger::info(_('Updating cache version'));
 				}
 			}
 		}

@@ -28,7 +28,7 @@
 use Ximdex\Helpers\ServerConfig;
 use Ximdex\Runtime\App;
 use Ximdex\Utils\Sync\Mutex;
-use ximdex\Logger as XMD_Log;
+use Ximdex\Logger;
 
 ModulesManager::file('/inc/utils.php');
 ModulesManager::file('/inc/manager/NodeFrameManager.class.php', 'ximSYNC');
@@ -42,17 +42,17 @@ ModulesManager::file('/conf/synchro_conf.php', 'ximSYNC');
 ModulesManager::file('/inc/model/ServerFrame.class.php', 'ximSYNC');
 
 if (!ModulesManager::isEnabled('XIMSYNC')) {
-    die (_("ximSYNC module is not active, you must run syncronizer module") . "\n");
+    Logger::error(_("ximSYNC module is not active, you must run syncronizer module") . "\n");
+    die();
 }
 
 $synchro_pid = null;
 
 class Scheduler
 {
-
+    
     public static function start($global_execution = true)
     {
-
         global $synchro_pid;
         $synchro_pid = posix_getpid();
 
@@ -76,7 +76,7 @@ class Scheduler
         //Checking pcntl_fork function is not disabled
         if ($ximdexServerConfig->hasDisabledFunctions()) {
 
-            echo(_("Closing scheduler. Disabled pcntl_fork and pcntl_waitpid functions are required. Please, check php.ini file.") . "\r\n");
+            Logger::error(_("Closing scheduler. Disabled pcntl_fork and pcntl_waitpid functions are required. Please, check php.ini file.") . "\r\n");
         }
 
         $syncStatObj->create(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "INFO", 8, _("Starting Scheduler") . " $synchro_pid");
@@ -105,7 +105,7 @@ class Scheduler
                 $mutex->release();
                 $msg = _("STOP: Detected file") . " $stopper_file_path " . _("You need to delete this file in order to restart Scheduler successfully");
                 $syncStatObj->create(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "INFO", 8, $msg);
-                die ($msg);
+                die();
             }
 
 
@@ -245,7 +245,7 @@ class Scheduler
 
             if ($global_execution) {
                 if ($voidCycles > MAX_NUM_CICLOS_VACIOS_SCHEDULER) {
-                    XMD_Log::info(sprintf(_("Exceding max. cycles (%d > %d). Exit scheduler"), $voidCycles, MAX_NUM_CICLOS_VACIOS_SCHEDULER));
+                    Logger::info(sprintf(_("Exceding max. cycles (%d > %d). Exit scheduler"), $voidCycles, MAX_NUM_CICLOS_VACIOS_SCHEDULER));
                     break;
                 }
             } else {

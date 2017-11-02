@@ -27,11 +27,6 @@ use Ximdex\Models\NodeType;
  *  @version $Revision$
  */
 
-
-
-
- 
-
 function baseIO_uploadFile($fileName,$typeName,$nodeID,$filePath){
 	$nodeType = new NodeType();
 	$nodeType->SetByName($typeName);
@@ -40,4 +35,3 @@ function baseIO_uploadFile($fileName,$typeName,$nodeID,$filePath){
 	$node->CreateNode($fileName, $nodeID, $nodeTypeID, null, $filePath);
 	return $node->GetID();
 }
-?>

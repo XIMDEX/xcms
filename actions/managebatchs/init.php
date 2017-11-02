@@ -31,7 +31,6 @@
  	ModulesManager::file('/inc/model/Batch.class.php');
 	ModulesManager::file('/actions/managebatchs/forms.php');
 	ModulesManager::file('/xmd/js/sajax/sajax.php');
-	ModulesManager::file('/inc/utils.php');
 
 	// starting SAJAX stuff
 	$sajax_request_type = "POST";
@@ -74,9 +73,9 @@
 	gPrintBodyBegin(); 
 	
     ?>
-		<script type="text/javascript" language="JavaScript" src="managebatchs.js"></script>
-	    <script>
-		    <?
+		<script type="text/javascript" src="managebatchs.js"></script>
+	    <script type="text/javascript">
+		    <?php
 		    	sajax_show_javascript();
 		    ?>
 		    
@@ -97,7 +96,7 @@
 			get_batchs();
 	    </script>
 	    <div id="form_div"><?php echo _('[ Loading... ]'); ?></div>
-	<?
+	<?php
 	
 	gPrintBodyEnd();
 	
@@ -115,5 +114,3 @@
 		$batchObj = new Batch();
 		return $batchObj->setBatchPlayingOrUnplaying($idBatch, $playingValue = 0);
 	}
-	
-?>

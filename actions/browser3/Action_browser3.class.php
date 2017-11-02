@@ -25,6 +25,7 @@
  * @version $Revision: 8735 $
  */
 
+use Ximdex\Logger;
 use Ximdex\Models\Action;
 use Ximdex\Models\Node;
 use Ximdex\Models\NodeSets;
@@ -37,7 +38,6 @@ use Ximdex\Runtime\Db;
 use Ximdex\Runtime\Request;
 use Ximdex\Utils\Serializer;
 use Ximdex\Utils\Session;
-use Ximdex\Logger as XMD_Log;
 
 ModulesManager::file('/inc/search/QueryProcessor.class.php');
 ModulesManager::file('/inc/xvfs/XVFS.class.php');
@@ -96,11 +96,7 @@ class Action_browser3 extends ActionAbstract
         //Old browserwindow styles
         $this->addCss('/xmd/style/jquery/ximdex_theme/widgets/browserwindow/actionPanel.css');
         $this->addCss('/xmd/style/jquery/ximdex_theme/widgets/browserwindow/browserwindow.css');
-        //$this->addCss('/xmd/style/jquery/ximdex_theme/widgets/browserwindow/dialogs.css');
-        //$this->addCss('/xmd/style/jquery/ximdex_theme/widgets/browserwindow/general.css');
         $this->addCss('/xmd/style/jquery/ximdex_theme/widgets/browserwindow/icons.css');
-        //$this->addCss('/xmd/style/jquery/ximdex_theme/widgets/browserwindow/news.css');
-        //$this->addCss('/xmd/style/jquery/ximdex_theme/widgets/browserwindow/usersList.css');
 
         //Old hbox styles
         $this->addCss('/xmd/style/jquery/ximdex_theme/widgets/hbox/hbox.css');
@@ -133,7 +129,6 @@ class Action_browser3 extends ActionAbstract
         $this->addJs('/extensions/flow/ng-flow-standalone.min.js');
         $this->addJs('/extensions/angular-bootstrap/dist/ui-bootstrap-custom-tpls-0.13.0-SNAPSHOT.min.js');
         $this->addJs(Extensions::JQUERY_PATH . '/ui/jquery-ui-timepicker-addon.js');
-        //$this->addJs(Extensions::JQUERY_PATH . '/ui/jquery.ui.tabs.min.js');
         $this->addJs(Extensions::JQUERY_PATH . '/ui/jquery.ui.dialog.min.js');
         $this->addJs(Extensions::JQUERY_PATH . '/plugins/jquery-validate/jquery.validate.js');
         $this->addJs(Extensions::JQUERY_PATH . '/plugins/jquery-validate/localization/messages_' . $user_locale["Lang"] . '.js');
@@ -148,24 +143,8 @@ class Action_browser3 extends ActionAbstract
 
         //Old browserwindow js
         $this->addJs('/inc/widgets/browserwindow/js/browserwindow.js');
-        //$this->addJs('/inc/widgets/browserwindow/js/abstractView.js');
-        //$this->addJs('/inc/widgets/browserwindow/js/dataView.js');
-        //$this->addJs('/inc/widgets/browserwindow/js/panels.js');
         $this->addJs('/inc/widgets/browserwindow/js/dialogs.js');
-        //$this->addJs('/inc/widgets/browserwindow/js/reports.js');
-        //$this->addJs('/inc/widgets/browserwindow/js/sets.js');
-        //$this->addJs('/inc/widgets/browserwindow/js/history.js');
-        //$this->addJs('/inc/widgets/browserwindow/js/controlcenter.js');
-        //$this->addJs('/inc/widgets/browserwindow/js/projects.js');
-        //$this->addJs('/inc/widgets/browserwindow/js/modules.js');
         $this->addJs('/inc/widgets/browserwindow/js/actions.js');
-        //$this->addJs('/inc/widgets/browserwindow/js/usersList.js');
-
-        //Old hbox js
-        //$this->addJs('/inc/widgets/hbox/js/hbox.js');
-
-        ////Old tabs js
-        //$this->addJs('/inc/widgets/tabs/js/tabs.js');
 
         //Old listview js
         $this->addJs('/inc/widgets/listview/js/fix.jquery.events.js');
@@ -212,7 +191,6 @@ class Action_browser3 extends ActionAbstract
         $this->addJs('/inc/js/angular/directives/treeNode.jsx.js');
 
         $this->addJs('/inc/js/angular/filters/xFilters.js');
-        //$this->addJs('/inc/js/angular/controllers/XTabsCtrl.js');
         $this->addJs('/inc/js/angular/controllers/XTagsCtrl.js');
         $this->addJs('/inc/js/angular/controllers/XModifyUserGroupsCtrl.js');
         $this->addJs('/inc/js/angular/controllers/XModifyGroupUsersCtrl.js');
@@ -220,7 +198,6 @@ class Action_browser3 extends ActionAbstract
         $this->addJs('/inc/js/angular/controllers/XModifyStatesRole.js');
         $this->addJs('/inc/js/angular/controllers/AdvancedSearchModalCtrl.js');
         $this->addJs('/inc/js/angular/controllers/AssocNodesCtrl.js');
-        //$this->addJs('/inc/js/angular/controllers/XTreeCtrl.js');
         $this->addJs('/inc/js/angular/controllers/XSetExtensions.js');
         $this->addJs('/inc/js/angular/controllers/ximPUBLISHtools.js');
         $this->addJs('/inc/js/angular/controllers/XUserMenuCtrl.js');
@@ -289,12 +266,6 @@ class Action_browser3 extends ActionAbstract
         $this->render($values, $template, 'only_template.tpl');
     }
 
-//	protected function sendJSON($data) {
-//		$data = Serializer::encode(SZR_JSON, $data);
-//		header('Content-type: application/json');
-//		echo $data;
-//	}
-
     /**
      * Returns a JSON object with the allowed nodetypes for searches
      */
@@ -361,7 +332,7 @@ class Action_browser3 extends ActionAbstract
 
             return $nodes;
         } else {
-            XMD_Log::info(_('Empty nodes in checkNodeAction [ browser3 ]'));
+            Logger::info(_('Empty nodes in checkNodeAction [ browser3 ]'));
             return null;
         }
     }
@@ -1102,7 +1073,6 @@ class Action_browser3 extends ActionAbstract
                 'id' => $db->getValue('IdSet'),
                 'name' => sprintf('Delete from set "%s"', $db->getValue('Name')),
                 'icon' => 'delete_section.png',
-//				'setName' => $db->getValue('Name'),
                 'callback' => 'deleteFromSet'
             );
             $db->next();

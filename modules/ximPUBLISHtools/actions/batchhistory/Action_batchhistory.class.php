@@ -26,6 +26,7 @@
  */
 use Ximdex\Models\User;
 use Ximdex\MVC\ActionAbstract;
+use Ximdex\Runtime\App;
 use Ximdex\Utils\Serializer;
 use Ximdex\Utils\Session;
 
@@ -64,9 +65,7 @@ class Action_batchhistory extends ActionAbstract {
             App::getValue('UrlRoot') . ModulesManager::path('ximPUBLISHtools') . '/actions/batchhistory/resources/js/index.js'
         );
 
-        $cssFiles = array(
-//            App::getValue('UrlRoot') . ModulesManager::path('ximPUBLISHtools') . '/actions/managebatchs/resources/css/index.css'
-        );
+        $cssFiles = array();
 
         $arrValores = array(
             'acceso' => $acceso,
@@ -87,5 +86,3 @@ class Action_batchhistory extends ActionAbstract {
     }
 
 }
-
-?>

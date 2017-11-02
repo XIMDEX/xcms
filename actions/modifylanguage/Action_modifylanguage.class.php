@@ -1,4 +1,5 @@
 <?php
+use Ximdex\Logger;
 use Ximdex\Models\Language;
 use Ximdex\Models\Node;
 use Ximdex\MVC\ActionAbstract;
@@ -38,7 +39,7 @@ class Action_modifylanguage extends ActionAbstract {
 		$node = new Node($idNode);
 		if (!(($language->get('IdLanguage') > 0) && ($node->get('IdNode') > 0))) {
 			$this->messages->add(_('Language could not be successfully loaded, contact with your administrator'), MSG_TYPE_ERROR);
-			XMD_Log::error(_("Error while loading language" . $idNode));
+			Logger::error(_("Error while loading language" . $idNode));
 			$this->render(array('messages' => $this->messages->messages), NULL, 'messages.tpl');
 			return false;
 		}

@@ -25,6 +25,7 @@
  */
 
 
+use Monolog\Handler\StreamHandler;
 use Ximdex\Logger;
 use Ximdex\Models\Channel;
 use Ximdex\Models\Node;
@@ -184,17 +185,23 @@ class View_Xslt extends Abstract_View
             }
         }
         
+        // creates the XSLT log if there is not one yet
+        $log = new Monolog\Logger('XSLT');
+        $log->pushHandler(new StreamHandler(App::getValue('XIMDEX_ROOT_PATH') . '/logs/xslt.log', Monolog\Logger::DEBUG));
+        Logger::addLog($log, 'xslt');
+        
         if (empty($content)) {
             
             $error = 'Error in XSL transformation process (' . \Ximdex\Error::error_message('XSLTProcessor::transformToXml(): ') . ')';
             $GLOBALS['errorsInXslTransformation'][] = $error;
             // activation of the XSLT log and init the XSLT errors array
+            $defaultLog = Logger::get_active_instance();
             Logger::setActiveLog('xslt');
             foreach ($GLOBALS['errorsInXslTransformation'] as $error)
                 Logger::error($error);
             // we save the error trace into the previous file
             $this->set_xslt_errors($GLOBALS['errorsInXslTransformation']);
-            Logger::setActiveLog();
+            Logger::setActiveLog($defaultLog);
             if (isset($GLOBALS['InBatchProcess']))
                 return NULL;
             return false;
@@ -209,9 +216,10 @@ class View_Xslt extends Abstract_View
         if ($channel->get("OutputType") == "xml") {
             if (!@$domDoc->loadXML($content)) {
                 
+                $defaultLog = Logger::get_active_instance();
                 Logger::setActiveLog('xslt');
                 Logger::error('XML invalid: ' . $content);
-                Logger::setActiveLog();
+                Logger::setActiveLog($defaultLog);
                 $GLOBALS['errorsInXslTransformation'][] = 'Invalid XML source: ' . $content;
                 // we save the error trace into the previous file
                 $this->set_xslt_errors($GLOBALS['errorsInXslTransformation']);
@@ -220,9 +228,10 @@ class View_Xslt extends Abstract_View
         } else if ($channel->get("OutputType") == "web") {
             if (!@$domDoc->loadHTML($content)) {
                 
+                $defaultLog = Logger::get_active_instance();
                 Logger::setActiveLog('xslt');
                 Logger::error('HTML invalid: ' . $content);
-                Logger::setActiveLog();
+                Logger::setActiveLog($defaultLog);
                 $GLOBALS['errorsInXslTransformation'][] = 'Invalid HTML or XHTML source: ' . $content;
                 // we save the error trace into the previous file
                 $this->set_xslt_errors($GLOBALS['errorsInXslTransformation']);

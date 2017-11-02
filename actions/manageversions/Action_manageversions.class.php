@@ -174,5 +174,3 @@ class Action_manageversions extends ActionAbstract
         $this->redirectTo('index');
     }
 }
-
-?>

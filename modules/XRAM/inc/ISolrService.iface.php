@@ -57,5 +57,3 @@ interface ISolrService
      */
     public function deleteNode($idVersion);
 }
-
-?>

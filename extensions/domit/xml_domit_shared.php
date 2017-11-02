@@ -8,8 +8,6 @@
 * DOMIT! is Free Software
 **/
 
-use Ximdex\Utils\Logs\Log;
-
 if (!defined('DOMIT_INCLUDE_PATH')) {
 	/* Path to DOMIT! files */
 	define('DOMIT_INCLUDE_PATH', (dirname(__FILE__) . "/"));
@@ -265,5 +263,3 @@ class DOMIT_DOMImplementation {
 			('Method createDocumentType is not yet implemented.'));
 	} //createDocumentType
 } //DOMIT_DOMImplementation
-
-?>

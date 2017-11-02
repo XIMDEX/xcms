@@ -26,7 +26,7 @@
 
 namespace Ximdex\Behaviours;
 
-use Ximdex\Logger as XMD_Log;
+use Ximdex\Logger;
 use Ximdex\Utils\Messages;
 
 class Base
@@ -47,7 +47,7 @@ class Base
     {
         foreach ($this->required as $field) {
             if (!array_key_exists($field, $options)) {
-                XMD_Log::fatal(sprintf('Field %s required in behaviour %s',
+                Logger::fatal(sprintf('Field %s required in behaviour %s',
                     $field, get_class($this)));
             }
         }
@@ -58,7 +58,7 @@ class Base
 
         if (count($extraFields) > 0) {
             foreach ($extraFields as $field) {
-                XMD_Log::warning(sprintf('Field %s not expected in behaviour %s',
+                Logger::warning(sprintf('Field %s not expected in behaviour %s',
                     $field, get_class($this)));
             }
         }

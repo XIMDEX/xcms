@@ -26,6 +26,7 @@
  */
 
 
+use Ximdex\Runtime\App;
 use Ximdex\Utils\Curl;
 
 ModulesManager::file('/services/Xowl/searchers/AbstractSearcherStrategy.class.php');
@@ -49,9 +50,9 @@ class ExternalVocabularySearcherStrategy extends AbstractSearcherStrategy{
 		
 		//$data = urlencode($text);
 		$query = "q=(".urlencode("nombre:{$text}* OR aka:{$text}* OR titulo:{$text}*").")";
-                if (!\App::getValue( self::LMF_URL_KEY))
+                if (!App::getValue( self::LMF_URL_KEY))
                     return $this;
-		$uri = \App::getValue( self::LMF_URL_KEY).$this->core."/select?wt=json&$query";
+		$uri = App::getValue( self::LMF_URL_KEY).$this->core."/select?wt=json&$query";
 		$response = $this->restProvider->getHttp_provider()->get($uri, $headers);
 
 		if ($response['http_code'] != Curl::HTTP_OK) {

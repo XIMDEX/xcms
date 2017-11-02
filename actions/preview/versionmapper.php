@@ -27,8 +27,6 @@
 
 use Ximdex\Runtime\DataFactory;
 
-ModulesManager::file('/inc/utils.php');
-
 \Ximdex\Utils\Session::check();
 		
 ////
@@ -64,4 +62,3 @@ else
    	gPrintMsg(_("Error with parameters"));
 	gPrintBodyEnd();
 	}
-?>

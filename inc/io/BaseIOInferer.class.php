@@ -25,6 +25,7 @@
  */
 
 
+use Ximdex\Logger;
 use Ximdex\Models\Node;
 use Ximdex\Utils\FsUtils;
 
@@ -113,7 +114,7 @@ class BaseIOInferer {
 			return $nodeType;
 		}
 		
-		XMD_Log::error(sprintf(_("Unsupported mime-type %s extension %s"), $fileMimeType, $extension));
+		Logger::error(sprintf(_("Unsupported mime-type %s extension %s"), $fileMimeType, $extension));
 
 		return '';
 	}
@@ -139,7 +140,7 @@ class BaseIOInferer {
 			$fileMimeType = FsUtils::get_mime_type($path);
 			$extension = strtolower(FsUtils::get_extension($path));
 			if ($fileMimeType == 'application/x-empty') {
-				XMD_Log::warning(_("Empty mimetype detected on _infereFileType"));
+				Logger::warning(_("Empty mimetype detected on _infereFileType"));
 			}
 
 			while (!$db->EOF) {

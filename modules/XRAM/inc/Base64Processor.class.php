@@ -66,5 +66,3 @@ class Base64Processor implements IndexerLifecycle
     {
     }
 }
-
-?>

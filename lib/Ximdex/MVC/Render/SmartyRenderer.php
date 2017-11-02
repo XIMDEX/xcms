@@ -81,7 +81,7 @@ class SmartyRenderer extends AbstractRenderer
 //		$smarty->register_prefilter(array(&$this, 'prefilter_widgets'));
 		$this->_set_params($smarty);
 
-//		XMD_Log::debug("MVC::SmartyRenderer display '".$_ACTION_CONTROLLER."' template " );
+//		Logger::debug("MVC::SmartyRenderer display '".$_ACTION_CONTROLLER."' template " );
 		return $smarty->fetch($this->_template);
 	}
 

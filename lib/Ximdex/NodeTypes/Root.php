@@ -26,18 +26,12 @@
  */
 
 namespace Ximdex\NodeTypes;
-/*
-use depth;
-use files;
-use idNode;
-use name;
-use recurrence;
-*/
+
+use Ximdex\Logger;
 use Ximdex\Models\Node;
 use Ximdex\Runtime\App;
 use Ximdex\Runtime\Constants;
-use Ximdex\Logger as XMD_Log;
-use Ximdex\Runtime\Db as DB;
+use Ximdex\Runtime\Db;
 
 
 
@@ -131,23 +125,18 @@ class Root
         $parentNode = new Node($idParentNode);
 
         if (!($parentNode->get('IdNode') > 0)) {
-//			XMD_Log::error('No se ha podido obtener el nodo padre de ' . $parentNode->get('IdNode'));
             return "";
         }
 
         $parentPath = $parentNode->class->getPathList();
 
         if (!$this->nodeType->GetIsRenderizable()) {
-            XMD_Log::warning('Se ha solicitado el path de un nodo no renderizable con id ' . $this->parent->get('IdNode'));
+            Logger::warning('Se ha solicitado el path de un nodo no renderizable con id ' . $this->parent->get('IdNode'));
             return $parentPath;
         }
 
         /// Obtenemos el path donde el nodo padre guarda a sus hijos
         /// Unimos el path del padre y el nombre del nodo para obtener el path de este nodo si este nodo no es virtual.
-        /*		if ($this->nodeType->GetIsVirtualFolder()) {
-                    return $parentPath;
-                }
-        */
         if ($this->nodeType->GetHasFSEntity()) {
             return $parentPath . "/" . $this->parent->get('Name');            /// CON ENTIDAD EN EL FS O NO VIRTUAL (ROOT, XML, IMAGES)
         }

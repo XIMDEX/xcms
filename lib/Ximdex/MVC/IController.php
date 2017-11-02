@@ -27,9 +27,9 @@
 
 namespace Ximdex\MVC;
 
+use Ximdex\Logger;
 use Ximdex\Runtime\Request;
 use Ximdex\Runtime\Response;
-use Ximdex\Logger as XMD_Log;
 use Ximdex\Utils\Messages;
 
 /**
@@ -117,6 +117,6 @@ class IController
         $this->hasError = true;
         $this->msgError = $msg;
         // Registra un apunte en el log
-        XMD_Log::error($msg);
+        Logger::error($msg);
     }
 }

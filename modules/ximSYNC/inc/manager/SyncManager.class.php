@@ -25,6 +25,7 @@
  */
 
 
+use Ximdex\Logger;
 use Ximdex\Models\Node;
 use Ximdex\Models\User;
 
@@ -93,7 +94,6 @@ class SyncManager
     /**
      *  Gets the value of any variable.
      * @param string key
-     * @return unknown
      */
 
     function getFlag($key)
@@ -153,7 +153,7 @@ class SyncManager
     function pushDocInPublishingPool($idNode, $up, $down = null)
     {
         if (is_null($idNode)) {
-            XMD_Log::error(_("Pushdocinpool - Empty IdNode"));
+            Logger::error(_("Pushdocinpool - Empty IdNode"));
             return NULL;
         }
 
@@ -164,7 +164,7 @@ class SyncManager
         $params['withstructure'] = ($this->getFlag('structure') === false) ? false : true;
         $node = new Node($idNode);
         if (!($node->get('IdNode') > 0)) {
-            XMD_Log::error(sprintf(_("Node %s does not exist"), $idNode));
+            Logger::error(sprintf(_("Node %s does not exist"), $idNode));
             return NULL;
         }
 

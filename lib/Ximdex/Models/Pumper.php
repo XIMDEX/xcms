@@ -27,15 +27,9 @@
 
 namespace Ximdex\Models;
 
-
-use comment;
 use DB;
-
-use line;
-
 use ServerErrorByPumper;
 use ServerErrorManager;
-
 use SynchronizerStat;
 use ModulesManager ;
 use Ximdex\Models\ORM\PumpersOrm;
@@ -70,7 +64,6 @@ class Pumper extends PumpersOrm
     /**
      *  Gets the value of any variable.
      * @param string key
-     * @return unknown
      */
 
     function getFlag($key)
@@ -187,8 +180,6 @@ class Pumper extends PumpersOrm
         } else {
             $this->PumperToLog(null, null, null, null, $pumperId, __CLASS__, __FUNCTION__, __FILE__,
                 __LINE__, "ERROR", 8, "ERROR Code $var starting pumper $pumperId");
-            // set serverframes State from Due2In/Out to Due2In/OutWithError ???
-            // $sql = "UPDATE ServerFrames SET State = CONCAT(State,'WithError') WHERE State IN ('Due2In','Due2Out')";
             return false;
         }
     }
@@ -224,5 +215,3 @@ class Pumper extends PumpersOrm
 
     }
 }
-
-?>

@@ -214,4 +214,3 @@ define ('OPERATION_ADD', 'add');
 	}
 	
 	cleanup($messages, $paquete, $destFolder, $result);
-	//Return result

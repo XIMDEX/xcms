@@ -27,6 +27,7 @@
 
 use Ximdex\Models\Node;
 use Ximdex\Models\Version;
+use Ximdex\Runtime\App;
 use Ximdex\Runtime\DataFactory;
 
 require_once(XIMDEX_ROOT_PATH . '/inc/search/QueryHandler_Abstract.class.php');
@@ -36,7 +37,7 @@ class QueryHandler_SOLR extends QueryHandler_Abstract {
 
 	protected function recordsetToArray($data) {
 
-		$dom = new DOMDocument('1.0', \App::getValue( 'workingEncoding'));
+		$dom = new DOMDocument('1.0', App::getValue( 'workingEncoding'));
 		$dom->resolveExternals = true;
 		$dom->loadXML($data);
 
@@ -108,7 +109,6 @@ class QueryHandler_SOLR extends QueryHandler_Abstract {
 
 		$solrOp = new SolrOp();
 		$rset = $solrOp->read($query);
-//debug::log($query, $rset);
 		$rset = $this->recordsetToArray($rset);
 
 		$pages = ceil($rset['records'] / $options['items']);
@@ -121,7 +121,6 @@ class QueryHandler_SOLR extends QueryHandler_Abstract {
 			'data' => $rset['rset']
 		);
 
-//		debug::log($result);
 		return $result;
 	}
 

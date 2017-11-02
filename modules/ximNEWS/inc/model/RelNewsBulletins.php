@@ -25,6 +25,7 @@
  */
 
 
+use Ximdex\Logger;
 use Ximdex\Models\Node;
 use Ximdex\Models\NodeType;
 
@@ -60,7 +61,7 @@ class RelNewsBulletins extends RelNewsBulletins_ORM
             $this->set('IdNew', $idNew);
 
             if (!parent::add()) {
-                XMD_Log::info(_('Error inserting RelNewsBulletin'));
+                Logger::info(_('Error inserting RelNewsBulletin'));
                 return false;
             }
         }

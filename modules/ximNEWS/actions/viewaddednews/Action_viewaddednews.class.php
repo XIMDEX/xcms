@@ -66,4 +66,3 @@ class Action_viewaddednews extends ActionAbstract {
 		$this->render($values, 'index', 'default-3.0.tpl');
 	}
 }
-?>

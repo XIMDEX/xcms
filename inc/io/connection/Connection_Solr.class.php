@@ -29,7 +29,7 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 }
 
 use Ximdex\Models\ORM\NodesOrm as Nodes_ORM;
-use Ximdex\Logger as XMD_Log ;
+use Ximdex\Logger;
 use Ximdex\Models\RelTagsNodes;
 
 require_once (XIMDEX_ROOT_PATH . '/inc/model/RelNodeMetadata.class.php');
@@ -52,7 +52,7 @@ class Connection_Solr implements I_Connector {
      * @return boolean
      */
     public function connect($host = NULL, $port = NULL) {
-        XMD_Log::debug("CONNECT $host $port");
+        Logger::debug("CONNECT $host $port");
         $this->config = array(
             'endpoint' => array(
                 'localhost' => array(
@@ -157,7 +157,7 @@ class Connection_Solr implements I_Connector {
      * @return boolean
      */
     public function rename($renameFrom, $renameTo) {
-        XMD_Log::debug("RENAME $renameFrom -> $renameTo");
+        Logger::debug("RENAME $renameFrom -> $renameTo");
         return true;
     }
 
@@ -217,7 +217,7 @@ class Connection_Solr implements I_Connector {
      * @return boolean
      */
     public function get($sourceFile, $targetFile, $mode = 0755) {
-        XMD_Log::debug("GET $sourceFile, $targetFile");
+        Logger::debug("GET $sourceFile, $targetFile");
         return false;
     }
 
@@ -231,7 +231,7 @@ class Connection_Solr implements I_Connector {
      * @return boolean
      */
     public function rm($path) {
-        XMD_Log::debug("RM $path");
+        Logger::debug("RM $path");
         $pathInfo = $this->splitPath($path);
         $this->config['endpoint']['localhost']['core'] = $pathInfo["core"];
 
@@ -247,8 +247,8 @@ class Connection_Solr implements I_Connector {
         $node = new Nodes_ORM();
         $result = $node->find('idnode', "Name = %s AND Path REGEXP %s", array($qName, $qPath), MONO);
         if (!isset($result[0])) {
-            XMD_Log::error("unexpected result, document may have not been deleted");
-            XMD_Log::error(print_r(array(
+            Logger::error("unexpected result, document may have not been deleted");
+            Logger::error(print_r(array(
                 "qName" => $qName,
                 "qPath" => $qPath), true));
             return false;
@@ -261,10 +261,10 @@ class Connection_Solr implements I_Connector {
         $update->addCommit();
         $solrResp = $client->update($update);
         if ($solrResp->getStatus() !== 0) {
-            XMD_Log::error("solr error deleting doc id: {$result[0]}");
+            Logger::error("solr error deleting doc id: {$result[0]}");
             return false;
         }
-        XMD_Log::debug("solr doc id: {$result[0]} was deleted");
+        Logger::debug("solr doc id: {$result[0]} was deleted");
         return true;
     }
 
@@ -279,7 +279,7 @@ class Connection_Solr implements I_Connector {
      * @return boolean
      */
     public function put($localFile, $targetFile, $mode = 0755) {
-        XMD_Log::debug("PUT $localFile TO $targetFile");
+        Logger::debug("PUT $localFile TO $targetFile");
 
         $pathInfo = $this->splitPath($targetFile);
         $this->config['endpoint']['localhost']['core'] = $pathInfo["core"];
@@ -300,11 +300,11 @@ class Connection_Solr implements I_Connector {
     }
 
     public function putXmlFile($localFile, $pathInfo) {
-        XMD_Log::debug("putXmlFile");
+        Logger::debug("putXmlFile");
         // Load xml coming from transformation
         $xml = simplexml_load_file($localFile);
         if (!$xml) {
-            XMD_Log::error("invalid xml file: $localFile");
+            Logger::error("invalid xml file: $localFile");
             return false;
         }
 
@@ -312,7 +312,7 @@ class Connection_Solr implements I_Connector {
         try {
             $client = new Solarium\Client($this->config);
         } catch (Exception $e) {
-            XMD_Log::error("fail to create a Solarium_Client instance");
+            Logger::error("fail to create a Solarium_Client instance");
             return false;
         }
 
@@ -333,29 +333,29 @@ class Connection_Solr implements I_Connector {
         try {
             $result = $client->update($update);
         } catch (Exception $e) {
-            XMD_Log::error("Exception: {$e->getMessage()}");
+            Logger::error("Exception: {$e->getMessage()}");
             return false;
         }
 
         if ($result->getStatus() !== 0) {
-            XMD_Log::error("<< Solr update error - status: {$result->getStatus()} >>");
+            Logger::error("<< Solr update error - status: {$result->getStatus()} >>");
             return false;
         }
 
-        XMD_Log::debug("<< Solr put xml ok - id: {$doc->id} >>");
+        Logger::debug("<< Solr put xml ok - id: {$doc->id} >>");
 
         return true;
     }
 
     public function putBinaryFile($localFile, $pathInfo) {
-        XMD_Log::debug("putBinaryFile - $localFile - " . $pathInfo["fullName"]);
+        Logger::debug("putBinaryFile - $localFile - " . $pathInfo["fullName"]);
         $trueName = $this->extractNodeNameBinaryPut($pathInfo["fullName"]);
         
         // get node id
         $node = new Nodes_ORM();
         $result = $node->find('idnode', "Name = %s AND Path REGEXP %s", array($trueName, $pathInfo["subPath"] . '$'), MONO);
         if (!isset($result[0])) {
-            XMD_Log::error(sprintf("NOT found: Name = %s AND Path REGEXP %s", $trueName, $pathInfo["subPath"] . '$'));
+            Logger::error(sprintf("NOT found: Name = %s AND Path REGEXP %s", $trueName, $pathInfo["subPath"] . '$'));
             return false;
         }
         
@@ -412,20 +412,20 @@ class Connection_Solr implements I_Connector {
 //                    }
 //                }
 //            } else {
-//                XMD_Log::error("invalid xml metadata file. node id: " . $idMetadata[0]);
+//                Logger::error("invalid xml metadata file. node id: " . $idMetadata[0]);
 //            }
 //        }
         
         // this executes the query and returns the result
-        XMD_Log::debug(print_r($doc->getFields(), true));
+        Logger::debug(print_r($doc->getFields(), true));
         $query->addParam('lowernames', 'false');
         $query->setDocument($doc);
         $resultExtract = $client->extract($query);
         if ($resultExtract->getStatus() !== 0) {
-            XMD_Log::error("<< Solr update error - status: {$resultExtract->getStatus()} >>");
+            Logger::error("<< Solr update error - status: {$resultExtract->getStatus()} >>");
             return false;
         }
-        XMD_Log::debug("<< Solr put binary ok - id: {$doc->id} >>");
+        Logger::debug("<< Solr put binary ok - id: {$doc->id} >>");
         return true;
     }
 

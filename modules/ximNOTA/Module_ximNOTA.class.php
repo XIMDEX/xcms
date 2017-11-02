@@ -31,5 +31,3 @@ class Module_ximNOTA extends Module {
 	}
 
 }
-
-?>

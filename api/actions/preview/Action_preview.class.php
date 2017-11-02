@@ -35,7 +35,7 @@ use Ximdex\Utils\PipelineManager;
 
 ModulesManager::file('/inc/utils.php');
 ModulesManager::file('/inc/filters/Filter.class.php');
- ModulesManager::file('/inc/repository/nodeviews/View_NodeToRenderizedContent.class.php');
+ModulesManager::file('/inc/repository/nodeviews/View_NodeToRenderizedContent.class.php');
 ModulesManager::file('/inc/repository/nodeviews/View_PrefilterMacros.class.php');
 ModulesManager::file('/inc/repository/nodeviews/View_Dext.class.php');
 ModulesManager::file('/inc/repository/nodeviews/View_Xslt.class.php');
@@ -45,7 +45,6 @@ ModulesManager::file('/inc/repository/nodeviews/View_FilterMacrosPreview.class.p
 /* <p>API language action</p>
 * <p>Handles requests to obtain the languages</p>
 */
-
 class Action_preview extends AbstractAPIAction
 {
     public function isSecure()
@@ -179,8 +178,8 @@ class Action_preview extends AbstractAPIAction
      * <p>Checks whether the required parameters are present in the request
      * and modifies the response accordingly</p>
      *
-     * @param $request the request
-     * @param $response the response
+     * @param $request : the request
+     * @param $response : the response
      * @return true if all required parameters are present and valid and false otherwise
      */
     private function checkParameters($request, $response)

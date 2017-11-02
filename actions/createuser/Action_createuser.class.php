@@ -105,7 +105,6 @@ class Action_createuser extends ActionAbstract
         }
 
         if ($render) {
-            //$this->reloadNode($idNode);
             $values = array('messages' => $user->messages->messages, "parentID" => $idNode);
             $this->sendJSON($values);
         }

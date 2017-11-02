@@ -81,40 +81,6 @@ class FsUtils
 
 
         $ret = true;
-//        $freeSpaceBytes =  Disk::disk_free_space('B', self::getFolderFromFile($file));
-//        $limits = include(XIMDEX_ROOT_PATH . '/conf/diskspace.php');
-//        $aux = array();
-//
-//        foreach ($limits as $key => $limit) {
-//            $matches = null;
-//            $matchesCount = preg_match_all('/(\d+)(KB|MB|GB)?/', $limit, $matches, PREG_SET_ORDER);
-//            if ($matchesCount > 0) {
-//                $aux[$key] = array(
-//                    'limit' => (float)$matches[0][1],
-//                    'unit' => $matches[0][2],
-//                    'space' =>  Disk::transformUnits($freeSpaceBytes, $matches[0][2])
-//                );
-//                $aux[$key]['notify'] = ($aux[$key]['space'] <= $aux[$key]['limit']);
-//            }
-//        }
-//
-//        $limits = $aux;
-//        $msg = sprintf(_('Warning from the server %s: The free space in disk is %s MB'), php_uname("n"),  Disk::transformUnits($freeSpaceBytes, 'MB'));
-//
-//        if (isset($limits['fatal_limit']) && $limits['fatal_limit']['notify']) {
-//
-//            $ret = false;
-//            MN_Log::error($msg);
-//            Logger::fatal($msg);
-//        } else if (isset($limits['error_limit']) && $limits['error_limit']['notify']) {
-//
-//            MN_Log::error($msg);
-//            Logger::error($msg);
-//        } else if (isset($limits['warning_limit']) && $limits['warning_limit']['notify']) {
-//
-//            MN_Log::warning($msg);
-//            Logger::warning($msg);
-//        }
 
         return $ret;
     }

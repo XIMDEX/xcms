@@ -29,6 +29,8 @@
 /**
  * Manager class for Inherited properties
  */
+use Ximdex\Logger;
+
 class InheritedPropertiesManager {
 
 	/**
@@ -58,7 +60,7 @@ class InheritedPropertiesManager {
 			$p = $factory->instantiate($prop . 'Property', $nodeId);
 
 			if (!is_object($p)) {
-				XMD_Log::error(_("Inheritable property cannot be instantiate: ") . $prop);
+				Logger::error(_("Inheritable property cannot be instantiate: ") . $prop);
 				continue;
 			}
 
@@ -93,7 +95,7 @@ class InheritedPropertiesManager {
 
 			$p = $factory->instantiate($prop . 'Property', $nodeId);
 			if (!is_object($p)) {
-				XMD_Log::error("Inheritable property cannot be instantiate: " . $prop);
+				Logger::error("Inheritable property cannot be instantiate: " . $prop);
 				continue;
 			}
 
@@ -126,7 +128,7 @@ class InheritedPropertiesManager {
 
 			$p = $factory->instantiate($prop . 'Property', $nodeId);
 			if (!is_object($p)) {
-				XMD_Log::error(_("Inheritable property cannot be instantiate: ") . $prop);
+				Logger::error(_("Inheritable property cannot be instantiate: ") . $prop);
 				continue;
 			}
 
@@ -149,7 +151,7 @@ class InheritedPropertiesManager {
 
 		$p = $factory->instantiate($property . 'Property', $nodeId);
 		if (!is_object($p)) {
-			XMD_Log::error(_("Inheritable property cannot be instantiate: ") . $property);
+			Logger::error(_("Inheritable property cannot be instantiate: ") . $property);
 			return $ret;
 		}
 

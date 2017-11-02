@@ -25,7 +25,9 @@
  */
 
 
+use Ximdex\Logger;
 use Ximdex\Models\Node;
+use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
 
 
@@ -343,7 +345,7 @@ function preTransformation($ptdContent, $fileName, $idSection = NULL) {
 }
 
 function _getHeader() {
-	$docTypeTag = \App::getValue( 'DoctypeTag');
+	$docTypeTag = App::getValue( 'DoctypeTag');
 	preg_match_all('/<\!ENTITY\s+(\w+)\s+\"(\w+)\"\s*>/', $docTypeTag, $matches);
 	$entities = array();
 	if (!empty($matches[1]) && count($matches[1]) > 0) {
@@ -411,7 +413,7 @@ function call_template_dynamic($templateToCall, $matchNode, $pathToInclude, $xml
 	$xsltHandler->setXsltSrc($xslCode);
 
 	if (!$xsltHandler->process()) {
-		XMD_Log::error("Error in XSLT process: ".$xsltHandler->getError());
+		Logger::error("Error in XSLT process: ".$xsltHandler->getError());
 		return '<empty/>';
 	}
 
@@ -444,4 +446,3 @@ function setNameSpace($content, $fileName) {
 	$content = str_replace("</$rootTag>", "</dext:$rootTag>", $content);
 	return $content;
 }
-?>

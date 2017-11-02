@@ -30,7 +30,7 @@ namespace Ximdex\Widgets;
 use Ximdex\Parsers\ParsingJsGetText;
 use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
-use Ximdex\Logger as XMD_Log;
+use Ximdex\Logger;
 
 abstract class WidgetAbstract
 {
@@ -84,8 +84,8 @@ abstract class WidgetAbstract
 		for ($i = 0; $i < $c; $i++) {
 			$array[$i] = sprintf(
 				'%s/%s/%s',
-				\App::getValue('UrlRoot'),
-				preg_replace('#^' . realpath(\App::getValue('AppRoot')) . '#', '', realpath($this->_widget_style_dir)),
+				App::getValue('UrlRoot'),
+				preg_replace('#^' . realpath(App::getValue('AppRoot')) . '#', '', realpath($this->_widget_style_dir)),
 				$array[$i]
 			);
 		}
@@ -115,7 +115,7 @@ abstract class WidgetAbstract
 
 		$this->_tpl = sprintf('%s%s.tpl', $this->_template_dir, basename($_template));
 		if (!is_file($this->_tpl)) {
-			if ($this->_wname != 'common') XMD_Log::warning(sprintf("There is no template for widget %s", $this->_wname));
+			if ($this->_wname != 'common') Logger::warning(sprintf("There is no template for widget %s", $this->_wname));
 			$this->_tpl = null;
 		}
 	}
@@ -207,7 +207,6 @@ abstract class WidgetAbstract
 			$ret['id'] = sprintf('%s_%s', $this->_wname, rand());
 		}
 
-//		debug::log($ret);
 		return $ret;
 	}
 
@@ -250,9 +249,8 @@ abstract class WidgetAbstract
 		if (count($attributes) > 0 && !$asInclude) {
 			$jsParams = $this->createJsParams($attributes['id'], $attributes);
 			$url = sprintf('%s/xmd/loadaction.php?method=includeDinamicJs&%s&js_file=widgetsVars',
-				\App::getValue('UrlRoot'), implode('&', $jsParams));
+				App::getValue('UrlRoot'), implode('&', $jsParams));
 			$this->_js[] = $url;
-//			debug::log($url);
 		}
 
 		/** ********************** PARAMS ************* */
@@ -268,5 +266,3 @@ abstract class WidgetAbstract
 	}
 
 }
-
-?>

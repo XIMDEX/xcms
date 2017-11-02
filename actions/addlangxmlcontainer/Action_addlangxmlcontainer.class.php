@@ -1,4 +1,5 @@
 <?php
+use Ximdex\Logger;
 use Ximdex\Models\Channel;
 use Ximdex\Models\Language;
 use Ximdex\Models\Node;
@@ -113,7 +114,7 @@ class Action_addlangxmlcontainer extends ActionAbstract {
 			$node = new Node($nodeid);
 			if (!($node->get('IdNode') > 0)) {
 				$msg = _('The selected node was not found:') . $nodeid;
-				XMD_Log::error($msg);
+				Logger::error($msg);
 				$this->messages->add($msg, MSG_TYPE_ERROR);
 				$this->render(array('messages' => $this->messages->messages));
 				return;
@@ -123,13 +124,13 @@ class Action_addlangxmlcontainer extends ActionAbstract {
 			if (count($allowedNodeTypes) == 1) {
 				$idNodeType = $allowedNodeTypes[0]['nodetype'];
 			} else {
-				XMD_Log::error(_('More than one allowed nodetype has been found for this folder, it is recovered returning to the first'));
+				Logger::error(_('More than one allowed nodetype has been found for this folder, it is recovered returning to the first'));
 				$idNodeType = $allowedNodeTypes[0]['nodetype'];
 			}
 
 			if (!isset($idNodeType)) {
 				$msg = sprintf(_('The node with id %d has not any nodeAllowedContent with necessary features to store a language list'), $nodeid);
-				XMD_Log::error($msg);
+				Logger::error($msg);
 				$this->messages->add($msg, MSG_TYPE_ERROR);
 				$this->render(array('messages' => $this->messages->messages));
 				return;
@@ -142,7 +143,7 @@ class Action_addlangxmlcontainer extends ActionAbstract {
 
 			if (!$allLanguages) {
 				$msg = _('No language has been found');
-				XMD_Log::error($msg);
+				Logger::error($msg);
 				$this->messages->add($msg, MSG_TYPE_ERROR);
 				$this->render(array('messages' => $this->messages->messages));
 				return;
@@ -333,4 +334,3 @@ class Action_addlangxmlcontainer extends ActionAbstract {
 	}
 
 }
-?>

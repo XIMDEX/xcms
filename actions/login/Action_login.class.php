@@ -28,6 +28,7 @@
 use Ximdex\Authenticator;
 use Ximdex\Models\User;
 use Ximdex\MVC\ActionAbstract;
+use Ximdex\Runtime\App;
 use Ximdex\Runtime\Request;
 
 require_once(XIMDEX_ROOT_PATH . '/conf/stats.php');
@@ -69,10 +70,10 @@ class Action_login extends ActionAbstract
         $values = array();
 
         I18N::setup();
-        $values["ximid"] = \App::getValue("ximid");
-        $values["versionname"] = \App::getValue("VersionName");
+        $values["ximid"] = App::getValue("ximid");
+        $values["versionname"] = App::getValue("VersionName");
         $values["news_content"] = $this->get_news();
-        $values["title"] = sprintf(_("Access to %s"), \App::getValue("VersionName"));
+        $values["title"] = sprintf(_("Access to %s"), App::getValue("VersionName"));
 
         return $values;
     }
@@ -89,7 +90,7 @@ class Action_login extends ActionAbstract
         );
 
         //$url =
-        $REMOTE_NEWS . "?lang=" . strtolower(DEFAULT_LOCALE) . "&ximid=" . \App::getValue('ximid');
+        $REMOTE_NEWS . "?lang=" . strtolower(DEFAULT_LOCALE) . "&ximid=" . App::getValue('ximid');
         $url = $REMOTE_NEWS . "?lang=" . strtolower(DEFAULT_LOCALE);
 
         //get remote content
@@ -110,7 +111,7 @@ class Action_login extends ActionAbstract
 
     function check()
     {
-        $stopper = file_exists(\App::getValue("AppRoot") . \App::getValue("TempRoot") . "/login.stop");
+        $stopper = file_exists(App::getValue("AppRoot") . App::getValue("TempRoot") . "/login.stop");
         $user_lower = strtolower(Request::post('user'));
         $user = Request::post('user');
         $password = Request::post('password');
@@ -145,7 +146,7 @@ class Action_login extends ActionAbstract
             if (Request::get('backto')) {
                 header(sprintf('Location: %s', base64_decode(Request::get('backto'))));
             } else {
-                header(sprintf("Location: %s", \App::getValue('UrlRoot')));
+                header(sprintf("Location: %s", App::getValue('UrlRoot')));
             }
 
             die();

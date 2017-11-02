@@ -26,6 +26,8 @@
 
 
 
+	use Ximdex\Runtime\App;
+
 	function batchListForm ($errorMsg = "", $printMode = false, $frm_select_filter_state_batch = "Any", $frm_select_filter_active_batch = 'NULL', $frm_select_filter_node_gen = '', $frm_filter_batch = "no") {
 
 		$printMode = ($printMode == 'false') ? false : true;
@@ -368,7 +370,7 @@
  echo $batch['IdBatch']; ?>);">
 										<img src="<?php
 
- echo \App::getValue( 'UrlRoot');?>/xmd/images/botones/subir_p.gif" alt="" border="0">
+ echo App::getValue( 'UrlRoot');?>/xmd/images/botones/subir_p.gif" alt="" border="0">
 									</a>
 							</td>
 						</tr>

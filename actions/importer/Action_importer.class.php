@@ -26,12 +26,9 @@ use Ximdex\MVC\ActionAbstract;
  *  @version $Revision$
  */
 
-
-
 class Action_importer extends ActionAbstract {
    // Main method: shows initial form
     function index () {
 	    ModulesManager::file('/actions/importer/init.php');
     }
 }
-?>

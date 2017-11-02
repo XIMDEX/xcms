@@ -25,11 +25,8 @@
  *  @version $Revision$
  */
 
-//
 use Ximdex\MVC\ActionAbstract;
-
-//
-
+use Ximdex\Runtime\App;
 
 class Action_installer extends ActionAbstract {
 
@@ -41,8 +38,8 @@ class Action_installer extends ActionAbstract {
 		$this->checkConfigFiles($install_params, $install_modules);
 
 		I18N::setup();
-		$values["ximid"] = \App::getValue( "ximid");
-		$values["versionname"] = \App::getValue( "VersionName");
+		$values["ximid"] = App::getValue( "ximid");
+		$values["versionname"] = App::getValue( "VersionName");
 		$values["install_params"] = (int) $install_params;
 		$values["install_modules"] = (int) $install_modules;
 		$values["db_connection"] = (int) DB_CONNECTION;
@@ -53,7 +50,7 @@ class Action_installer extends ActionAbstract {
 	function checkConfigFiles($install_params = 0, $install_modules = 0) {
 
 		if ($install_params && $install_modules && DB_CONNECTION ) {
-			header(sprintf("Location: %s", \App::getValue( 'UrlRoot')));
+			header(sprintf("Location: %s", App::getValue( 'UrlRoot')));
 			die();
 		}
 	}

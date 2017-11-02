@@ -24,11 +24,13 @@
  * @version $Revision$
  */
 
+use Ximdex\Logger;
 use Ximdex\Models\Node;
 use Ximdex\Models\NodeType;
 use Ximdex\Models\PipeCacheTemplates;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\MVC\ActionAbstract;
+use Ximdex\Runtime\App;
 use Ximdex\Runtime\DataFactory;
 use Ximdex\Utils\Sync\SyncManager;
 
@@ -225,7 +227,7 @@ class Action_edittext extends ActionAbstract
                 if (method_exists($node->class, 'updateNew')) {
                     $node->class->updateNew();
                 } else {
-                    XMD_Log::error(_('It was tried to call a non-existing method for this node: $node->class->updateNew for nodeid:') . $node->get('IdNode'));
+                    Logger::error(_('It was tried to call a non-existing method for this node: $node->class->updateNew for nodeid:') . $node->get('IdNode'));
                 }
             }
 
@@ -236,10 +238,6 @@ class Action_edittext extends ActionAbstract
             }
         }
 
-        /*if ($nodeTypeName == 'XslTemplate' ) {
-            $this->redirectTo('publishForm');
-            return;
-        } else {*/
         $values = array(array('message' => _('The document has been saved'), 'type' => MSG_TYPE_NOTICE));
         $this->sendJSON(
             array(
@@ -247,8 +245,5 @@ class Action_edittext extends ActionAbstract
                 'parentID' => $node->get('IdParent')
             )
         );
-        //}
     }
 }
-
-?>

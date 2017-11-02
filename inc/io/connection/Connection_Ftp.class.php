@@ -24,7 +24,7 @@
  *  @version $Revision$
  */
 
-use Ximdex\Logger as XMD_log;
+use Ximdex\Logger;
 
 if (!defined('XIMDEX_ROOT_PATH')) {
 	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
@@ -56,7 +56,7 @@ class Connection_Ftp implements I_Connector {
 		if (empty($port)) {
 			$port = $this->defaultPort;
 		}
-		XMD_Log::info("Connecting to FTP server {$host}:{$port}");
+		Logger::info("Connecting to FTP server {$host}:{$port}");
 		if (!empty($host)) {
 			$this->host = $host;
 		}
@@ -66,20 +66,20 @@ class Connection_Ftp implements I_Connector {
 		try {
 			$handler = ftp_connect($this->host, $this->port, Connection_Ftp::TIMEOUT);
 		} catch (Exception $e) {
-			XMD_Log::error($e->getMessage());
+			Logger::error($e->getMessage());
 			return false;
 		}
 		
 		if (!$handler) {
 			$this->handler = false;
-			XMD_Log::error("Could't connect to server {$host}:{$port} using FTP protocol");
+			Logger::error("Could't connect to server {$host}:{$port} using FTP protocol");
 			return false;
 		}
 		
 		//setting timeout to 300 seconds
 		ftp_set_option($handler, FTP_TIMEOUT_SEC, 300);
 		
-		XMD_Log::info("Connected to FTP server {$host}:{$port} correctly");
+		Logger::info("Connected to FTP server {$host}:{$port} correctly");
 		$this->handler = $handler;
 		return true;
 	}
@@ -94,15 +94,15 @@ class Connection_Ftp implements I_Connector {
 		try {
 			$result = ftp_close($this->handler);
 		} catch (Exception $e) {
-			XMD_Log::error($e->getMessage());
+			Logger::error($e->getMessage());
 			return false;
 		}
 		if (!$result) {
-			XMD_Log::error("Disconnect from FTP server {$host}:{$port} failed");
+			Logger::error("Disconnect from FTP server {$host}:{$port} failed");
 			return false;
 		}
 		$this->handler = NULL;
-		XMD_Log::info("Disconnect from FTP server {$host}:{$port} correctly");
+		Logger::info("Disconnect from FTP server {$host}:{$port} correctly");
 		return true;
 	}
 	
@@ -143,25 +143,25 @@ class Connection_Ftp implements I_Connector {
 		try {
 			if (!ftp_login($this->handler, $this->username, $this->password))
 			{
-			    XMD_Log::error("Could't log into FTP server {$this->host}:{$this->port} with the given user and password");
+			    Logger::error("Could't log into FTP server {$this->host}:{$this->port} with the given user and password");
 			    $this->handler = null;
 			    return false;
 			}
 		} catch (Exception $e) {
-			XMD_Log::error($e->getMessage());
+			Logger::error($e->getMessage());
 			$this->handler = null;
 			return false;
 		}
-		XMD_Log::info('Login with user ' . $this->username . ' success');
+		Logger::info('Login with user ' . $this->username . ' success');
 		
 		// Ftp in passive mode (always after a correct login into the FTP server
 		if (!ftp_pasv($this->handler, true))
 		{
-		    XMD_Log::error("Could't set to passive mode in {$this->host}:{$this->port} using FTP protocol");
+		    Logger::error("Could't set to passive mode in {$this->host}:{$this->port} using FTP protocol");
 		    $this->handler = null;
 		    return false;
 		}
-		XMD_Log::info('Set to passive mode success');
+		Logger::info('Set to passive mode success');
 		
 		return true;
 	}
@@ -180,7 +180,7 @@ class Connection_Ftp implements I_Connector {
 		try {
 			return ftp_chdir($this->handler, $dir);
 		} catch (Exception $e) {
-			XMD_Log::error($e->getMessage());
+			Logger::error($e->getMessage());
 			return false;
 		}
 		
@@ -198,7 +198,7 @@ class Connection_Ftp implements I_Connector {
 		try {
 			return ftp_pwd($this->handler);
 		} catch (Exception $e) {
-			XMD_Log::error($e->getMessage());
+			Logger::error($e->getMessage());
 			return false;
 		}
 		return false;
@@ -221,7 +221,7 @@ class Connection_Ftp implements I_Connector {
 		
 		$dirElements = explode('/', $dir);
 		if (!(count($dirElements) > 0)) {
-			XMD_Log::error('Invalid Path for FTP::mkdir ' . $dir);
+			Logger::error('Invalid Path for FTP::mkdir ' . $dir);
 			return false;
 		}
 		
@@ -257,7 +257,7 @@ class Connection_Ftp implements I_Connector {
 		try {
 			$result = (bool)ftp_mkdir($this->handler, $dir);
 		} catch (Exception $e) {
-			XMD_Log::error($e->getMessage());
+			Logger::error($e->getMessage());
 			return false;
 		}
 		if ($result) {
@@ -280,11 +280,11 @@ class Connection_Ftp implements I_Connector {
 			try {
 				$var =  ftp_site($this->handler, "CHMOD " . $mode . " " . $target);
 			} catch (Exception $e) {
-				XMD_Log::error($e->getMessage());
+				Logger::error($e->getMessage());
 				return false;
 			}
 		}
-		XMD_Log::fatal("Not implemented yet FTPConnection::chmod with recursive = true");
+		Logger::fatal("Not implemented yet FTPConnection::chmod with recursive = true");
 		return false;
 	}
 	
@@ -305,7 +305,7 @@ class Connection_Ftp implements I_Connector {
                         }
                         return ftp_rename($this->handler, $renameFrom, $renameTo);
                 } catch (Exception $e) {
-                        XMD_Log::error($e->getMessage());
+                        Logger::error($e->getMessage());
                 }
                 return false;
 	}
@@ -321,7 +321,7 @@ class Connection_Ftp implements I_Connector {
 		try {
 			return ftp_size($this->handler, $file);
 		} catch (Exception $e) {
-			XMD_Log::error($e->getMessage());
+			Logger::error($e->getMessage());
 		}
 		return false;
 	}
@@ -355,7 +355,7 @@ class Connection_Ftp implements I_Connector {
 				return ftp_delete($this->handler, $path);
 			}
 		} catch (Exception $e) {
-			XMD_Log::error($e->getMessage());
+			Logger::error($e->getMessage());
 		}
 		return false;
 	}
@@ -432,7 +432,7 @@ class Connection_Ftp implements I_Connector {
 		try {
 			return ftp_get($this->handler, $targetFile, $sourceFile, $mode);
 		} catch (Exception $e) {
-			XMD_Log::error($e->getMessage());
+			Logger::error($e->getMessage());
 		}
 		return false;
 	}
@@ -451,7 +451,7 @@ class Connection_Ftp implements I_Connector {
 		try {
 		    return ftp_put($this->handler, $targetFile, $localFile, $mode);
 		} catch (Exception $e) {
-			XMD_Log::error($e->getMessage());
+			Logger::error($e->getMessage());
 		}
 		return false;
 	}

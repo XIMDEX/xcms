@@ -27,9 +27,9 @@
 
 namespace Ximdex\Models;
 
+use Ximdex\Logger;
 use Ximdex\Models\Iterators\IteratorLinkDescriptions;
 use Ximdex\Models\ORM\LinksOrm;
-use Ximdex\Logger as XMD_Log;
 
 /**
  * @method Array search($conditions)
@@ -65,7 +65,7 @@ class Link extends LinksOrm
         $name = null;
         $node = new Node($this->get('IdLink'));
         if (!($node->get('IdNode') > 0)) {
-            XMD_Log::warning('The name of the ximlink with ID ' . $this->get('IdLink') . ' could not be obtained');
+            Logger::warning('The name of the ximlink with ID ' . $this->get('IdLink') . ' could not be obtained');
         } else {
             $name = $node->get('Name');
         }

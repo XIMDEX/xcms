@@ -1,8 +1,8 @@
 <?php
 namespace Ximdex\Deps;
 
+use Ximdex\Logger;
 use Ximdex\Models\Node;
-use Ximdex\Logger as XMD_Log;
 
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
@@ -71,7 +71,7 @@ class LinksManager
         $linkNode = new Node($nodeId);
 
         if (!($linkNode->get('IdNode') > 0)) {
-            XMD_Log::info("Link to unexisting node $nodeId");
+            Logger::info("Link to unexisting node $nodeId");
             return '#';
         }
 
@@ -103,7 +103,7 @@ class LinksManager
         $linkNode = new Node($nodeId);
 
         if (!($linkNode->get('IdNode') > 0)) {
-            XMD_Log::info("Link to unexisting node $nodeId");
+            Logger::info("Link to unexisting node $nodeId");
             return '#';
         }
 

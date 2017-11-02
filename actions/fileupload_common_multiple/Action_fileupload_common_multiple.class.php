@@ -26,11 +26,13 @@
 
 
 use Ximdex\Auth;
+use Ximdex\Logger;
 use Ximdex\Models\Channel;
 use Ximdex\Models\Language;
 use Ximdex\Models\Node;
 use Ximdex\Models\NodeType;
 use Ximdex\MVC\ActionAbstract;
+use Ximdex\Runtime\App;
 
 ModulesManager::file('/inc/io/BaseIOInferer.class.php');
 require_once(XIMDEX_ROOT_PATH . '/extensions/flow/ConfigInterface.php');
@@ -40,15 +42,14 @@ require_once(XIMDEX_ROOT_PATH . '/extensions/flow/File.php');
 require_once(XIMDEX_ROOT_PATH . '/extensions/flow/RequestInterface.php');
 require_once(XIMDEX_ROOT_PATH . '/extensions/flow/Request.php');
 require_once(XIMDEX_ROOT_PATH . '/extensions/flow/Uploader.php');
-// require_once(XIMDEX_ROOT_PATH . '/extensions/flow/Autoloader.php');
 
 
 class Action_fileupload_common_multiple extends ActionAbstract {
 
     function __construct() {
         parent::__construct();
-        $this->uploadsFolder = XIMDEX_ROOT_PATH . \App::getValue( 'TempRoot') .'/'. \App::getValue( 'UploadsFolder');
-        $this->chunksFolder = XIMDEX_ROOT_PATH . \App::getValue( 'TempRoot') .'/'. \App::getValue( 'ChunksFolder');
+        $this->uploadsFolder = XIMDEX_ROOT_PATH . App::getValue( 'TempRoot') .'/'. App::getValue( 'UploadsFolder');
+        $this->chunksFolder = XIMDEX_ROOT_PATH . App::getValue( 'TempRoot') .'/'. App::getValue( 'ChunksFolder');
     }
 
     // Main method: shows initial form
@@ -88,11 +89,6 @@ class Action_fileupload_common_multiple extends ActionAbstract {
                 $allowedMimes = 'text/css';
                 $allowedExtensions = '.css';
                 break;
-            /*case 'ImagesFolder':
-                $lbl_anadir = _(' Add images ');
-                $allowedMimes = 'image/*';
-                $allowedExtensions = '.jpg, .jpeg, .gif, .png, .svg, .bmp';
-                break;*/
             case 'TemplateViewFolder':
                 $lbl_anadir = _(' Add schemas ');
                 $allowedExtensions = '.xml';
@@ -103,11 +99,6 @@ class Action_fileupload_common_multiple extends ActionAbstract {
                 $allowedExtensions = '.xml, .xsl';
                 $allowedMimes = 'text/xml';
                 break;
-            /*case 'ImportFolder':
-                $lbl_anadir = _(' Add HTML files ');
-                $allowedExtensions = 'ht, .htm, .html, .xhtml, .plain, .txt';
-                $allowedMimes = 'text/xml, text/html, text/plain, text/txt';
-                break;*/
             case 'XmlContainer':
                 $lbl_anadir = _(' Add XML files ');
                 $is_structured=true;
@@ -131,7 +122,7 @@ class Action_fileupload_common_multiple extends ActionAbstract {
         $this->addCss('/actions/fileupload_common_multiple/resources/css/uploader_html5.css');
 
         $uploaderOptions = array (
-            "nodeURL" => \App::getValue( 'UrlRoot')."/xmd/loadaction.php?actionid=$actionID&nodeid={$idNode}",
+            "nodeURL" => App::getValue( 'UrlRoot')."/xmd/loadaction.php?actionid=$actionID&nodeid={$idNode}",
             "lbl_anadir" => $lbl_anadir,
             'messages' => $this->messages->messages,
             'nodeid' => $idNode,
@@ -380,7 +371,7 @@ class Action_fileupload_common_multiple extends ActionAbstract {
                     return  $this->_setRest(_('File has been successfully uploaded.'), "ok" );
                 }
             }else {
-                XMD_Log::error(_("BaseIO has returned the error code"). $result);
+                Logger::error(_("BaseIO has returned the error code"). $result);
                 return  $this->_setRest($baseIO->messages->messages[0]["message"]);
             }
         }
@@ -388,4 +379,3 @@ class Action_fileupload_common_multiple extends ActionAbstract {
         return $result;
     }
 }
-?>

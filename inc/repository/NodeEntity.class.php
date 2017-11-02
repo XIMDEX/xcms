@@ -26,8 +26,9 @@
 
 
 use Ximdex\Models\Node;
+use Ximdex\Runtime\App;
 
- require_once(XIMDEX_ROOT_PATH . '/inc/repository/entities/NodeEntity_File.class.php');
+require_once(XIMDEX_ROOT_PATH . '/inc/repository/entities/NodeEntity_File.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/entities/NodeEntity_Dir.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/entities/NodeEntity_Link.class.php');
 
@@ -63,7 +64,6 @@ class NodeEntity {
 
 		// Directorio temporal para los descriptores
 		$this->_tmpdir = XIMDEX_ROOT_PATH . App::getValue("TempRoot")."/xvfs";
-//		$this->_tmpdir = '/tmp/xvfs_' . md5(\App::getValue( 'AppRoot'));
 		if (!is_dir($this->_tmpdir)) mkdir($this->_tmpdir);
 
 		// Inicializa las propiedades del objeto
@@ -139,7 +139,6 @@ class NodeEntity {
     function & getParent() {
     	$_parent = !is_null($this->get('idparent')) ? $this->get('idparent') : dirname($this->get('path'));
     	$parent = new NodeEntity_Dir($_parent);
-//    	if (!$parent->exists()) $parent = null;
     	return $parent;
     }
 
@@ -243,7 +242,7 @@ class NodeEntity {
 				from RelStrDocChannels rc left join Channels c using(idChannel)
 				where idDoc = $idnode";
 
-		$db =& $this->_db;
+		$db = $this->_db;
 		$db->query($sql);
 
 		$channels = array();
@@ -278,7 +277,7 @@ class NodeEntity {
 	 */
 	function _loadData($node) {
 
-		$db =& $this->_db;
+		$db = $this->_db;
 
 		// Las subconsultas se implementaron en la version 4.1 de MySQL
 		if ((boolean) ((float) $db->getServerVersion() >= 4.1)) {
@@ -339,7 +338,7 @@ class NodeEntity {
 	function _pathToId() {
 
 
-		$db =& $this->_db;
+		$db = $this->_db;
 		$path = $this->get('path');
 		// Esta es la raiz de ximDEX...
 		if ($path == '/') {
@@ -353,7 +352,6 @@ class NodeEntity {
 		// explode() inserta un elemento vacio si el path es absoluto.
 		// ... y debe ser absoluto ...
 		if ($path[0] == '/') array_shift($resources);
-//		dump($resources);
 
 		$total = count($resources);
 		$i = 0;
@@ -419,13 +417,11 @@ class NodeEntity {
 				$res[$i]['icon'] = $db->getValue('icon');
 			}
 			$i++;
-//			dump($sql);
 
 		}
 
 		// $res contiene informacion sobre todos los nodos del path...
 		// quizas no es buena idea perderlo...
-//		dump($res);
 		$res = end($res);
 		// Si no coincide el nombre del nodo es que este no existe
 		if ($res['name'] == basename($path) || ($res['name'] == $estimatedName)) $this->set('exists', true);
@@ -440,7 +436,7 @@ class NodeEntity {
 	 */
 	function _idToPath() {
 
-		$db =& $this->_db;
+		$db = $this->_db;
 		$id = $this->get('idnode');
 		$res = array();
 
@@ -462,8 +458,6 @@ class NodeEntity {
 				) t left join NodeTypes nt using(idNodeType)
 					left join StructuredDocuments sd on t.idNode = sd.idDoc
 				order by t.depth desc";
-
-//		dump($sql);
 
 		$db->Query($sql);
 		$path = '';
@@ -512,7 +506,6 @@ class NodeEntity {
 		// explode() inserta un elemento vacio si el path es absoluto.
 		// ... y debe ser absoluto ...
 		if ($path[0] == '/') array_shift($resources);
-//		dump($resources);
 
 		$total = count($resources);
 		$i = 0;
@@ -573,13 +566,10 @@ class NodeEntity {
 			}
 
 			$i++;
-//			dump($sql);
-
 		}
 
 		// $res contiene informacion sobre todos los nodos del path...
 		// quizas no es buena idea perderlo...
-//		dump($res);
 		$res = end($res);
 		// Si no coincide el nombre del nodo es que este no existe
 		if ($res['name'] == basename($path)) $this->set('exists', true);
@@ -588,7 +578,7 @@ class NodeEntity {
 
 	function _idToPath_Alt() {
 
-		$db =& $this->_db;
+		$db = $this->_db;
 		$id = $this->get('idnode');
 		$res = array();
 
@@ -605,9 +595,6 @@ class NodeEntity {
 				from Nodes n
 				where n.idnode = $id
 				order by depth desc";
-
-//		dump($sql);
-
 		$db->Query($sql);
 		$path = '';
 		$i = 0;
@@ -618,10 +605,7 @@ class NodeEntity {
 			$res[$i]['idnode'] = $db->getValue('idNode');
 			$res[$i]['idparent'] = $db->getValue('idParent');
 			$res[$i]['idnodetype'] = $db->getValue('idNodeType');
-//			$res[$i]['nodetype'] = $db->getValue('nodeType');
-//			$res[$i]['nodeclass'] = $db->getValue('nodeClass');
 			$res[$i]['name'] = $db->getValue('Name');
-//			$res[$i]['isdir'] = (boolean)$db->getValue('isDir');
 			$res[$i]['islink'] = (boolean)$db->getValue('isLink');
 			$res[$i]['rlpath'] = $db->getValue('linkTarget');
 
@@ -663,5 +647,3 @@ class NodeEntity {
 	}
 
 }
-
-?>

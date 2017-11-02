@@ -28,6 +28,7 @@
 use Ximdex\Models\Node;
 use Ximdex\Models\User;
 use Ximdex\MVC\ActionAbstract;
+use Ximdex\Runtime\App;
 use Ximdex\Utils\Serializer;
 use Ximdex\Utils\Session;
 
@@ -53,7 +54,6 @@ class Action_viewcolectorstates extends ActionAbstract
         $colectors = $this->getColectorsData($idSection);
 
         $jsFiles = array(
-            //App::getValue('UrlRoot') . '/xmd/js/lib/prototype/prototype.js',
             App::getValue('UrlRoot') . ModulesManager::path('ximPUBLISHtools') . '/actions/viewcolectorstates/resources/js/index.js'
         );
 
@@ -177,7 +177,6 @@ class Action_viewcolectorstates extends ActionAbstract
 
                 $colectors[] = array(
                     'pending_relations' => $pendingRelations,
-                    /*'news_associated' => $newsAssociated,*/
                     'id_colector' => $col->get('IdColector'),
                     'name' => $col->get('Name'),
                     'last_generation' => $col->get('LastGeneration'),
@@ -197,5 +196,3 @@ class Action_viewcolectorstates extends ActionAbstract
         return $colectors;
     }
 }
-
-?>

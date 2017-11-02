@@ -24,6 +24,7 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
+use Ximdex\Logger;
 use Ximdex\Models\RelRolesActions;
 use Ximdex\Modules\Module;
 
@@ -55,7 +56,7 @@ class Module_ximPUBLISHtools extends Module {
     // It's necessary to enable actions on this method, not on 'install' method.
     // Due to recent lmd class removal, unique way to do this is via DB class
     function enable() {
-        XMD_Log::info("Module_ximPUBLISHtools enable");
+        Logger::info("Module_ximPUBLISHtools enable");
         $db = new DB();
         $sql = array();
 
@@ -82,13 +83,13 @@ class Module_ximPUBLISHtools extends Module {
 
         foreach ($sql as $desc => $query) {
             if (!$db->Execute($query)) {
-                XMD_Log::error("Error $desc - $query");
+                Logger::error("Error $desc - $query");
                 self::disable();
                 die();
             }
         }
 
-        XMD_Log::info("Module_ximPUBLISHtools enabled successfully");
+        Logger::info("Module_ximPUBLISHtools enabled successfully");
         return true;
     }
 
@@ -117,7 +118,7 @@ class Module_ximPUBLISHtools extends Module {
         foreach ($sql as $query) {
             $db->Execute($query);
         }
-        XMD_Log::info("Module_ximPUBLISHtools disabled successfully");
+        Logger::info("Module_ximPUBLISHtools disabled successfully");
 
         parent::disable();
     }

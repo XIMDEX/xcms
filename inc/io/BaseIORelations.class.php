@@ -25,6 +25,8 @@
  */
 
 
+use Ximdex\Logger;
+
 ModulesManager::file('/inc/model/RelNewsColector.php', 'ximNEWS');
 
 class BaseIORelations
@@ -62,7 +64,7 @@ class BaseIORelations
 
                 //var_dump($rnc->messages);
                 if (!($result > 0)) {
-                    XMD_Log::warning(_('Error inserting information about relnewscolector relation (BaseIORelations)'));
+                    Logger::warning(_('Error inserting information about relnewscolector relation (BaseIORelations)'));
                 }
                 break;
         }

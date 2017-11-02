@@ -25,7 +25,7 @@
  */
 //
 namespace Ximdex\Utils ;
-use Ximdex\Logger as XMD_Log;
+use Ximdex\Logger;
 use Ximdex\Runtime\App;
 
 class Disk
@@ -96,7 +96,7 @@ class Disk
         $units = array('B', 'KB', 'MB', 'GB', 'TB');
         $count = array_search($unit, $units);
         if ($count === false) {
-            XMD_Log::error('It is being tried to transform a value to a invalid units: ' . $unit);
+            Logger::error('It is being tried to transform a value to a invalid units: ' . $unit);
             return false;
         }
         if ($count === 0) {
@@ -120,7 +120,7 @@ class Disk
         $diff = $ini - $end;
 
         if ($ini === false || $end === false) {
-            XMD_Log::error('It is being tried to transform a value to a invalids units');
+            Logger::error('It is being tried to transform a value to a invalids units');
             return false;
         }
 

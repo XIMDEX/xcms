@@ -1,7 +1,7 @@
 <?php
 namespace Ximdex\Parsers;
 
-use Ximdex\Runtime\Db as DB;
+use Ximdex\Runtime\Db;
 use Ximdex\Models\Channel;
 use Ximdex\Models\Language;
 use Ximdex\Models\Node;

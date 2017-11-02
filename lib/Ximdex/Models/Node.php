@@ -38,7 +38,7 @@ use Ximdex\Models\ORM\NodesOrm;
 use Ximdex\Parsers\ParsingDependencies;
 use Ximdex\Runtime\App;
 use Ximdex\Runtime\DataFactory;
-use Ximdex\Runtime\Db as DB;
+use Ximdex\Runtime\Db;
 use Ximdex\Utils\FsUtils;
 use Ximdex\Utils\Session;
 use Ximdex\Utils\Sync\Synchronizer;

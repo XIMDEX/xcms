@@ -65,4 +65,3 @@ class Action_modifygroup extends ActionAbstract {
         $this->sendJSON($values);
     }
 }
-?>

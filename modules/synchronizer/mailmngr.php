@@ -35,8 +35,10 @@
 // Launched with CRON.
 //
 
+use Ximdex\Logger;
 use Ximdex\Models\Node;
 use Ximdex\Models\Server;
+use Ximdex\Runtime\App;
 use Ximdex\Runtime\DataFactory;
 use Ximdex\Utils\PipelineManager;
 use Ximdex\Utils\Sync\Mutex;
@@ -65,7 +67,7 @@ function GetMessageFromSync($idSync, $nodeID) {
 	}
 
 	// Gets the content
-	$urlRoot = \App::getValue( "UrlRoot");
+	$urlRoot = App::getValue( "UrlRoot");
 
 	$df = new DataFactory($nodeID);
 	$lv = $df->GetLastVersionId();
@@ -73,11 +75,11 @@ function GetMessageFromSync($idSync, $nodeID) {
 	$content = $pipeman->getCacheFromProcessAsContent($lv, 'StrDocToDexT', array('CHANNEL' => $channel));
 	
 	if ($content === null) {
-		XMD_Log::error("Could not get the content of the document: NodeId: $nodeID, ChannelId: $channel, Process: StrDocToDexT");
+		Logger::error("Could not get the content of the document: NodeId: $nodeID, ChannelId: $channel, Process: StrDocToDexT");
 		return null;
 	}
 
-	$nodeRoot =  \App::getValue("NodeRoot");
+	$nodeRoot =  App::getValue("NodeRoot");
 	$nodeRoot = str_replace("/","\/",$nodeRoot);
 
 	$srcServer = new Node($serverID);
@@ -104,7 +106,7 @@ function GetToFromSync($idSync) {
 
 	$node = new Node($bulletinID);
 	$containerID = $node->GetParent();
-	XMD_Log::display("Contenedor " . $containerID);
+	Logger::display("Contenedor " . $containerID);
 
 	$dbObj->Query("SELECT IdColector FROM XimNewsBulletins WHERE IdContainer=" .$containerID);
 	$colectorID = $dbObj->GetValue('IdColector');
@@ -133,20 +135,20 @@ function main($argc, $argv) {
 
 	$mailmngr_pid = posix_getpid();
 
-        XMD_Log::display("---------------------------------------------------------------------");
-        XMD_Log::display("Executing: MailMngr (" . $mailmngr_pid . ")");
-        XMD_Log::display("---------------------------------------------------------------------");
-        XMD_Log::display("");
-        XMD_Log::display("Checking lock...");
+        Logger::display("---------------------------------------------------------------------");
+        Logger::display("Executing: MailMngr (" . $mailmngr_pid . ")");
+        Logger::display("---------------------------------------------------------------------");
+        Logger::display("");
+        Logger::display("Checking lock...");
 
-	$mutex = new Mutex(  \App::getValue("AppRoot") .  \App::getValue( "TempRoot") . "/mailmngr.lck");
+	$mutex = new Mutex(App::getValue("AppRoot") .  App::getValue( "TempRoot") . "/mailmngr.lck");
         if (!$mutex->acquire()) {
-                XMD_Log::display("Closing...");
-                XMD_Log::display("INFO: lock file exists, there is another process running.");
+                Logger::display("Closing...");
+                Logger::display("INFO: lock file exists, there is another process running.");
                 exit(1);
         }
 
-        XMD_Log::display("Lock acquired...");
+        Logger::display("Lock acquired...");
 	
 	$db = new DB();
 
@@ -164,7 +166,7 @@ function main($argc, $argv) {
 		$state_frame = SynchroFacade::getFrameState($bulletinFrame);
 
 		if (is_null($state_frame)) {
-			XMD_Log::error("Incorrect frame: $bulletinFrame");
+			Logger::error("Incorrect frame: $bulletinFrame");
 			continue;
 		}
 
@@ -187,7 +189,7 @@ function main($argc, $argv) {
 					continue;
 				}
 
-				XMD_Log::display("Sending mail " . $list);
+				Logger::display("Sending mail " . $list);
 
 				$mail = new Mail();
 
@@ -217,7 +219,7 @@ function main($argc, $argv) {
 
 	$mutex->release();
 
-	XMD_Log::display("PROCESS FINISHED");
+	Logger::display("PROCESS FINISHED");
 }
 	
 

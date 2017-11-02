@@ -25,6 +25,7 @@
  */
 
 
+use Ximdex\Logger;
 use Ximdex\Models\Action;
 use Ximdex\Models\Group;
 use Ximdex\Models\Node;
@@ -38,11 +39,8 @@ use Ximdex\Utils\Serializer;
 use Ximdex\Utils\Session;
 use Ximdex\Widgets\Widget;
 use Ximdex\XML\Base;
-use Ximdex\Logger as XMD_Log;
  
-ModulesManager::file('/inc/utils.php');
-
- ModulesManager::file('/inc/model/orm/UnverifiedUsers_ORM.class.php');
+ModulesManager::file('/inc/model/orm/UnverifiedUsers_ORM.class.php');
 ModulesManager::file('/actions/browser3/inc/GenericDatasource.class.php');
 
 
@@ -597,7 +595,7 @@ and rug.idrole in (select idrole from RelRolesPermissions where IdPermission = 1
             $isDir = $selectedNode->nodeType->isFolder() ? '1' : '0';
         } else {
             $isDir = '0';
-            XMD_Log::warning(sprintf(_('A Node without NodeType was requested: idNode=%s, nodeType=%s'), $idNode, $selectedNode->nodeType));
+            Logger::warning(sprintf(_('A Node without NodeType was requested: idNode=%s, nodeType=%s'), $idNode, $selectedNode->nodeType));
         }
 
         //Filtering by debufilter
@@ -1110,18 +1108,7 @@ and rug.idrole in (select idrole from RelRolesPermissions where IdPermission = 1
     function getTraverseForPath()
     {
         $path = $this->request->getParam('nodeid');
-        //$cachePath = XIMDEX_ROOT_PATH.ModulesManager::path('tolDOX').'/resources/cache/';
-        //$file = sprintf('%s%s_%s', $cachePath, str_replace('/', '_', $path), 'Traverse');
-        /*$modeTags = false;
-        if (preg_match('/\/Tags/', $path) > 0) {
-            $modeTags = true;
-            if (is_file($file)) {
-                $data = FsUtils::file_get_contents($file);
-                header('Content-type: application/json');
-                echo $data;
-                return;
-            }
-        }*/
+        
         $entities[] = array();
         $this->request->setParam('nodeid', $path);
         while (($entity = GenericDatasource::read($this->request, false)) != NULL) {
@@ -1150,9 +1137,6 @@ and rug.idrole in (select idrole from RelRolesPermissions where IdPermission = 1
         }
 
         $data = Serializer::encode(SZR_JSON, array('nodes' => $reversedEntities));
-        /*if ($modeTags) {
-            FsUtils::file_put_contents($file, $data);
-        }*/
         $this->render(array('nodes' => $reversedEntities));
     }
 

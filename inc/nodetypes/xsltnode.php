@@ -171,9 +171,11 @@ class xsltnode extends FileNode
      * @param Node $section
      * @param Node $node
      * @param DepsManager $depsMngr
+     * @param FastTraverse $ft
      * @return boolean
      */
-    public function rel_include_templates_to_documents_folders(Node $section, Node $node = null, DepsManager $depsMngr = null)
+    public function rel_include_templates_to_documents_folders(Node $section, Node $node = null, DepsManager $depsMngr = null
+            , FastTraverse $ft = null)
     {
         if (!$depsMngr)
             Logger::info('Making a relation between documents section and templates with section ' . $section->GetID());
@@ -216,14 +218,24 @@ class xsltnode extends FileNode
             }
         }
         // get the children nodes of the current section
-        $childNodes = $section->GetChildren();
-        foreach ($childNodes as $idChildNode)
+        if (!$ft)
+            $ft = new FastTraverse();
+        $nodes = $ft->getChildren($section->GetID(), true, 1);
+        if ($nodes === false)
         {
-            $childNode = new Node($idChildNode);
+            $this->messages->add('Cannot get children nodes from node: ' . $section->GetID() . ' in reload templates include files process'
+                    , MSG_TYPE_ERROR);
+            return false;
+        }
+        if (!$nodes)
+            return true;
+        foreach ($nodes[1] as $idChildNode => $idNodeType)
+        {
             // only project, servers and section/subsections can storage template folders
-            if ($childNode->GetNodeType() == Ximdex\Services\NodeType::SERVER or $childNode->GetNodeType() == Ximdex\Services\NodeType::SECTION)
+            if ($idNodeType == Ximdex\Services\NodeType::SERVER or $idNodeType == Ximdex\Services\NodeType::SECTION)
             {
                 // call in recursive mode with the templates folder, for whole project nodes tree
+                $childNode = new Node($idChildNode);
                 $res = $this->rel_include_templates_to_documents_folders($childNode, $node, $depsMngr);
                 if ($res === false)
                     return false;

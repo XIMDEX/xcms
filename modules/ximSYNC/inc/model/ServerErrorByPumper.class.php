@@ -25,6 +25,7 @@
  */
 
 
+use Ximdex\Logger;
 use Ximdex\Runtime\Db;
 
 ModulesManager::file('/inc/model/orm/ServerErrorByPumper_ORM.class.php', 'ximSYNC');
@@ -51,7 +52,7 @@ class ServerErrorByPumper extends ServerErrorByPumper_ORM {
 			$dbObj->Query($sql);
 
 			if($dbObj->numRows == 0){
-				XMD_Log::info(sprintf(_("Pumper %s does not exist"), $pumperId));
+				Logger::info(sprintf(_("Pumper %s does not exist"), $pumperId));
 				die();
 			}
 
@@ -80,7 +81,7 @@ class ServerErrorByPumper extends ServerErrorByPumper_ORM {
 			return $errorId;
 		}
 
-		XMD_Log::info(_("Creating serverError"));
+		Logger::info(_("Creating serverError"));
 		return NULL;
     }
 
@@ -92,11 +93,10 @@ class ServerErrorByPumper extends ServerErrorByPumper_ORM {
 		$counter = $this->get('UnactivityCycles');
 		$idServer = $this->get('ServerId');
 
-		XMD_Log::info(sprintf(_("Server %d has %d cycles inactive"), $idServer, $counter));
+		Logger::info(sprintf(_("Server %d has %d cycles inactive"), $idServer, $counter));
 
 		$this->set('UnactivityCycles',$counter + 1);
 		$this->update();
     }
 
 }
-?>

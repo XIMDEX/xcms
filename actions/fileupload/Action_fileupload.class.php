@@ -267,8 +267,6 @@ class Action_fileupload extends ActionAbstract {
 
 		if (!$result) {
 			$this->messages->add(_('Document could not be parsed'), MSG_TYPE_ERROR);
-//			$this->render(array('messages' => $this->messages->messages), NULL, 'messages.tpl');
-			//return $this->messages;
 		}
 		$grammarElement = $doc->getElementsByTagName('grammar')->item(0);
 

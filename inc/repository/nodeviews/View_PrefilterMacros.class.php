@@ -27,6 +27,7 @@
 
 use Ximdex\Models\Node;
 use Ximdex\Models\StructuredDocument;
+use Ximdex\Runtime\App;
 
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Abstract_View.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Interface_View.class.php');
@@ -89,10 +90,9 @@ class View_PrefilterMacros extends Abstract_View implements Interface_View {
 			$absPath = $matches[2];
 		} else {
 			$pathList = $node->class->GetPathList();			
-			$absPath = \App::getValue( "AppRoot") . \App::getValue( "NodeRoot") . $pathList;
+			$absPath = App::getValue( "AppRoot") . App::getValue( "NodeRoot") . $pathList;
  		}
 			
 		return " a_import_enlaceid{$matches[1]}='$absPath'";
 	}
 }
-?>

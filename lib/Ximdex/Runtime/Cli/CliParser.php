@@ -27,8 +27,6 @@
 
 namespace Ximdex\Runtime\Cli;
 
-use argument;
-
 use Ximdex\Utils\Messages;
 
 if (!defined('XIMDEX_ROOT_PATH')) {

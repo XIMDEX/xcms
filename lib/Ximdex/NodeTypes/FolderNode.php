@@ -31,7 +31,7 @@ use DB;
 use Ximdex\Models\Node;
 use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
-use Ximdex\Logger as XMD_Log;
+use Ximdex\Logger;
 
 /**
  * @brief Handles directories.
@@ -98,7 +98,7 @@ class FolderNode extends Root
         $xmlFolderId = $this->parent->GetChildByName($folderType);
 
         if (!($xmlFolderId > 0)) {
-            XMD_Log::error('xml folder not found');
+            Logger::error('xml folder not found');
             return NULL;
         }
 

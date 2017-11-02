@@ -26,11 +26,13 @@
  */
 
 
+use Ximdex\Logger;
 use Ximdex\Models\Channel;
 use Ximdex\Models\Node;
 use Ximdex\Models\Server;
 use Ximdex\Models\Version;
 use Ximdex\Parsers\ParsingPathTo;
+use Ximdex\Runtime\App;
 use Ximdex\Utils\Sync\SynchroFacade;
 
  ModulesManager::file('/inc/PAS_Conector.class.php', 'ximPAS');
@@ -123,7 +125,7 @@ class View_FilterMacros extends Abstract_View implements Interface_View
         if (!is_null($idVersion)) {
             $version = new Version($idVersion);
             if (!($version->get('IdVersion') > 0)) {
-                XMD_Log::error(
+                Logger::error(
                     'VIEW FILTERMACROS: Se ha cargado una versión incorrecta (' . $idVersion .
                     ')');
                 return NULL;
@@ -131,7 +133,7 @@ class View_FilterMacros extends Abstract_View implements Interface_View
 
             $this->_node = new Node($version->get('IdNode'));
             if (!($this->_node->get('IdNode') > 0)) {
-                XMD_Log::error(
+                Logger::error(
                     'VIEW FILTERMACROS: El nodo que se está intentando convertir no existe: ' .
                     $version->get('IdNode'));
                 return NULL;
@@ -155,7 +157,7 @@ class View_FilterMacros extends Abstract_View implements Interface_View
 
         // Check Params:
         if (!isset($this->_idChannel) || !($this->_idChannel > 0)) {
-            XMD_Log::error(
+            Logger::error(
                 'VIEW FILTERMACROS: Channel not specified for node ' . $args['NODENAME']);
             return NULL;
         }
@@ -174,7 +176,7 @@ class View_FilterMacros extends Abstract_View implements Interface_View
         if (array_key_exists('SERVER', $args)) {
             $this->_server = new Server($args['SERVER']);
             if (!($this->_server->get('IdServer') > 0)) {
-                XMD_Log::error(
+                Logger::error(
                     'VIEW FILTERMACROS: Server where you want to render the node not specified ');
                 return NULL;
             }
@@ -201,7 +203,7 @@ class View_FilterMacros extends Abstract_View implements Interface_View
 
         // Check Params:
         if (!($this->_serverNode) || !is_object($this->_serverNode)) {
-            XMD_Log::error(
+            Logger::error(
                 'VIEW FILTERMACROS: There is no server linked to the node ' . $args['NODENAME'] .
                 ' que quiere renderizar');
             return NULL;
@@ -226,7 +228,7 @@ class View_FilterMacros extends Abstract_View implements Interface_View
 
         // Check Params:
         if (!isset($this->_projectNode) || !($this->_projectNode > 0)) {
-            XMD_Log::error(
+            Logger::error(
                 'VIEW FILTERMACROS: There is not associated project for the node ' . $args['NODENAME']);
             return NULL;
         }
@@ -250,7 +252,7 @@ class View_FilterMacros extends Abstract_View implements Interface_View
 
         // Check Param:
         if (!isset($this->_depth) || !($this->_depth > 0)) {
-            XMD_Log::error(
+            Logger::error(
                 'VIEW FILTERMACROS: No se ha especificado la profundidad del nodo ' . $args['NODENAME'] .
                 ' que quiere renderizar');
             return NULL;
@@ -275,7 +277,7 @@ class View_FilterMacros extends Abstract_View implements Interface_View
 
         // Check Param:
         if (!isset($this->_nodeName) || $this->_nodeName == "") {
-            XMD_Log::error(
+            Logger::error(
                 'VIEW FILTERMACROS: No se ha especificado el nombre del nodo que quiere renderizar');
             return NULL;
         }
@@ -391,10 +393,10 @@ class View_FilterMacros extends Abstract_View implements Interface_View
         $node = new Node($target);
         $section = $this->getSectionNode($target);
         if (!$section) {
-            return \App::getValue('EmptyHrefCode');
+            return App::getValue('EmptyHrefCode');
         }
         if ($this->_isPreviewServer) {
-            return \App::getValue('UrlRoot') . \App::getValue('NodeRoot') . '/' . $section->GetPublishedPath(
+            return App::getValue('UrlRoot') . App::getValue('NodeRoot') . '/' . $section->GetPublishedPath(
                 NULL, true);
         }
 
@@ -419,12 +421,12 @@ class View_FilterMacros extends Abstract_View implements Interface_View
         $targetPath = $matches[1];
 
         if (!($this->_serverNode->get('IdNode') > 0)) {
-            return \App::getValue("EmptyHrefCode");
+            return App::getValue("EmptyHrefCode");
         }
 
         //If preview, we return the path to data/nodes
         if ($this->_isPreviewServer) {
-            return \App::getValue("UrlRoot") . \App::getValue("NodeRoot") . "/" . $targetPath;
+            return App::getValue("UrlRoot") . App::getValue("NodeRoot") . "/" . $targetPath;
         } else {
             //Getting relative or absolute path.
             if ($this->_server->get('OverrideLocalPaths')) {
@@ -432,7 +434,7 @@ class View_FilterMacros extends Abstract_View implements Interface_View
             }
 
             $deep = 2;
-            if (\App::getValue("PublishPathFormat", null) !== null &&
+            if (App::getValue("PublishPathFormat", null) !== null &&
                 $this->_node->class &&
                 method_exists($this->_node->class, "getPathToDeep")
             ) {
@@ -500,16 +502,16 @@ class View_FilterMacros extends Abstract_View implements Interface_View
 
         if ($this->_isPreviewServer) {
             if ($isStructuredDocument) {
-                return \App::getValue('UrlRoot') . \App::getValue('NodeRoot') . $targetNode->GetPublishedPath(
+                return App::getValue('UrlRoot') . App::getValue('NodeRoot') . $targetNode->GetPublishedPath(
                     $idTargetChannel, true);
             } else {
                 return $targetNode->class->GetNodeURL();
             }
         }
 
-        if (\App::getValue('PullMode') == 1) {
+        if (App::getValue('PullMode') == 1) {
 
-            return \App::getValue('UrlRoot') . '/services/pull/index.php?idnode=' . $targetNode->get(
+            return App::getValue('UrlRoot') . '/services/pull/index.php?idnode=' . $targetNode->get(
                 'IdNode') . '&idchannel=' . $idTargetChannel . '&idportal=' . $this->_serverNode->get(
                 'IdNode');
         }
@@ -520,7 +522,7 @@ class View_FilterMacros extends Abstract_View implements Interface_View
         $targetServer = new server($idTargetServer);
         $idTargetServer = $targetServer->get('IdServer');
         if (!($idTargetServer > 0)) {
-            return \App::getValue('EmptyHrefCode');
+            return App::getValue('EmptyHrefCode');
         }
 
         if (!$forceAbsolute && !$absolute && !$relative) {
@@ -547,7 +549,7 @@ class View_FilterMacros extends Abstract_View implements Interface_View
     {
 
         $deep = 2;
-        if (\App::getValue("PublishPathFormat", null) !== null &&
+        if (App::getValue("PublishPathFormat", null) !== null &&
             $this->_node->class &&
             method_exists($this->_node->class, "getPathToDeep")
         ) {

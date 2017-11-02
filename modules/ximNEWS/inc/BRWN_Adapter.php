@@ -26,6 +26,7 @@
 
 
 use Ximdex\Models\Node;
+use Ximdex\Runtime\App;
 
 ModulesManager::file('/inc/model/RelNewsBulletins.php', 'ximNEWS');
 
@@ -33,7 +34,7 @@ $type = $_GET['tipo'];
 $nodeID = $_GET['nodeid'];
 $activaImg = $_GET['activaImg'];
 $resultado = "";
-$pre_path =  \App::getValue("AppRoot") .  \App::getValue("NodeRoot");
+$pre_path =  App::getValue("AppRoot") .  App::getValue("NodeRoot");
 switch($type){
 	case "noticiasB":
 	    	//noticias del boletin dado en nodeID

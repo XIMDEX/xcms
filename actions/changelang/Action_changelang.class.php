@@ -58,4 +58,3 @@ class Action_changelang extends ActionAbstract {
 		$this->render($values);
   }
 }
-?>

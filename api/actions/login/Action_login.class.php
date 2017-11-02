@@ -25,8 +25,8 @@
  *  @version $Revision$
  */
 
-  //
 use Ximdex\API\AbstractAPIAction;
+use Ximdex\Runtime\App;
 use Ximdex\Authenticator;
 
 require_once(XIMDEX_ROOT_PATH . '/conf/stats.php');
@@ -105,7 +105,7 @@ class Action_login extends AbstractAPIAction  {
      */
     private function generateXimToken($user) {
         $tokenService = new \Ximdex\Services\Token();
-        $token = $tokenService->getToken($user, \App::getValue( 'TokenTTL'));
+        $token = $tokenService->getToken($user, App::getValue( 'TokenTTL'));
         return $token;
     }
 

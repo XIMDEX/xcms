@@ -39,4 +39,4 @@ Class DB  Extends \Ximdex\Runtime\Db {
 
 }
 
-// Class for mySql database management
+// Class for database management

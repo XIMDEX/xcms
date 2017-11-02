@@ -80,5 +80,3 @@ interface IndexerLifecycle
     public function afterDelete($id);
     
 }
-
-?>

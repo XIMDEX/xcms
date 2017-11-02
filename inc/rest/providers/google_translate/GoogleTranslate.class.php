@@ -25,6 +25,7 @@
  */
 
 
+use Ximdex\Logger;
 use Ximdex\Utils\Serializer;
 
 require_once(XIMDEX_ROOT_PATH . '/inc/rest/providers/google_translate/Languages.class.php');
@@ -120,12 +121,12 @@ class GoogleTranslate extends REST_Provider
         $result = Serializer::decode(SZR_JSON, $response['data']);
 
         if (is_null($result)) {
-            XMD_Log::error("Lost in translation: error code {$response['http_code']}");
+            Logger::error("Lost in translation: error code {$response['http_code']}");
             return "{$response['data']}\n";
         }
 
         if ($result->responseStatus != 200) {
-            XMD_Log::error("Lost in translation: error {$result->responseDetails}");
+            Logger::error("Lost in translation: error {$result->responseDetails}");
             return "Error: {$result->responseDetails}\n";
         }
 
@@ -133,5 +134,3 @@ class GoogleTranslate extends REST_Provider
     }
 
 }
-
-?>

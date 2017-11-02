@@ -25,9 +25,11 @@
  */
 
 
+use Ximdex\Logger;
 use Ximdex\Models\Node;
 use Ximdex\Models\User;
 use Ximdex\MVC\ActionAbstract;
+use Ximdex\Runtime\App;
 use Ximdex\Utils\Sync\SyncManager;
 
 ModulesManager::file('/inc/model/XimNewsColector.php', 'ximNEWS');
@@ -71,7 +73,7 @@ class Action_addtocolector extends ActionAbstract {
 			'go_method' => 'add_to_colector',
 			'asoc_disabled' => $disabledInputs,
 			'time_stamp' => time(),
-			'nodeUrl' => \App::getValue( 'UrlRoot') . "/xmd/loadaction.php?actionid=$actionID&nodeid=$idNode"
+			'nodeUrl' => App::getValue( 'UrlRoot') . "/xmd/loadaction.php?actionid=$actionID&nodeid=$idNode"
 		);
 
 		$this->render($values, 'index', 'default-3.0.tpl');
@@ -109,7 +111,7 @@ class Action_addtocolector extends ActionAbstract {
 				$alreadyHybrid=true;
 			}
 
-			XMD_Log::info(_('Adding news $nodeId to colector $colectorId'));
+			Logger::info(_('Adding news $nodeId to colector $colectorId'));
 
 			if (!$newsNode->class->addToColector($colectorId, $update, $downdate, $versions)) {
 				$this->messages->add(_("The association has NOT been performed successfully"), MSG_TYPE_ERROR);

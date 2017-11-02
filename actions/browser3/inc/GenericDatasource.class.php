@@ -25,6 +25,7 @@
  */
 
 
+use Ximdex\Logger;
 use Ximdex\Runtime\Request;
 
 ModulesManager::file('/actions/browser3/inc/IDatasource.iface.php');
@@ -43,14 +44,11 @@ class GenericDatasource extends AbstractDatasource {
 	static protected $confFile = null;
 	static protected $datasource = null;
 
-//	public function __construct() {
-//	}
-
 	static public function & getDatasource($datasource, $conf=array()) {
 		$factory = new \Ximdex\Utils\Factory(XIMDEX_ROOT_PATH . '/actions/browser3/inc', 'Datasource_');
 		$ds = $factory->instantiate($datasource, $conf);
 		if (!is_object($ds)) {
-			XMD_Log::fatal(_('A class which does not exist is trying to be requested: Datasource_') . $datasource);
+			Logger::fatal(_('A class which does not exist is trying to be requested: Datasource_') . $datasource);
 		}
 
 		return $ds;
@@ -59,7 +57,6 @@ class GenericDatasource extends AbstractDatasource {
 
 	static public function & getInstance($bpath) {
 
-//		if (self::$datasource === null) {
 			if (self::$confFile === null) {
 				self::$confFile =  ModulesManager::file('/conf/browser.php');
 			}
@@ -183,5 +180,3 @@ class GenericDatasource extends AbstractDatasource {
 	}
 
 }
-
-?>

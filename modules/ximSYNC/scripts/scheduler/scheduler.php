@@ -25,6 +25,10 @@
  * @version $Revision$
  */
 
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
+use Ximdex\Runtime\App;
+
 include_once dirname(__FILE__) . '/../../../../bootstrap/start.php';
 
 ModulesManager::file('/modules/ximSYNC/scripts/scheduler/scheduler.class.php');
@@ -35,4 +39,9 @@ ModulesManager::file('/modules/ximSYNC/scripts/scheduler/scheduler.class.php');
  */
 $GLOBALS['InBatchProcess'] = true;
 
-Scheduler::start(true);
+$log = new Logger('SCHEDULER');
+$log->pushHandler(new StreamHandler(App::getValue('XIMDEX_ROOT_PATH') . '/logs/scheduler.log', Logger::DEBUG));
+\Ximdex\Logger::addLog($log, 'scheduler');
+\Ximdex\Logger::setActiveLog('scheduler');
+
+Scheduler::start();

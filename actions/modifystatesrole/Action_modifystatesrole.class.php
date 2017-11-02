@@ -28,6 +28,7 @@
 use Ximdex\Models\PipeStatus;
 use Ximdex\Models\Role;
 use Ximdex\MVC\ActionAbstract;
+use Ximdex\Runtime\App;
 use Ximdex\Workflow\WorkFlow;
 
 
@@ -40,7 +41,7 @@ class Action_modifystatesrole extends ActionAbstract
         $role = new Role($idNode);
         $idRoleStates = $role->GetAllStates();
 
-        $workflow = new WorkFlow(NULL, NULL, \App::getValue('IdDefaultWorkflow'));
+        $workflow = new WorkFlow(NULL, NULL, App::getValue('IdDefaultWorkflow'));
         $idAllStates = $workflow->GetAllStates();
         foreach ($idAllStates as $idStatus) {
             $pipeStatus = new PipeStatus($idStatus);
@@ -54,7 +55,6 @@ class Action_modifystatesrole extends ActionAbstract
                 $states[$i]["asociated"] = false;
             }
         }
-        //$this->addJs('/actions/modifystatesrole/js/manager.js');
         $values = array('all_states' => json_encode($states),
             'idRole' => $idNode);
 
@@ -79,5 +79,3 @@ class Action_modifystatesrole extends ActionAbstract
             "message" => _("The rol has been successfully updated")));
     }
 }
-
-?>

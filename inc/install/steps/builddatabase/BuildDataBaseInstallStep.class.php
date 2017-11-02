@@ -41,7 +41,7 @@ class BuildDataBaseInstallStep extends GenericInstallStep
         $this->addJs("InstallDatabaseController.js");
         $values = array();
         $values["ximdexName"] = basename(XIMDEX_ROOT_PATH);
-        if (isset($GLOBALS['docker']))
+        if (isset($_SERVER['DOCKER_CONF_HOME']))
             $values['ximdexDataBaseHostName'] = 'db';
         else
             $values['ximdexDataBaseHostName'] = 'localhost';
@@ -84,7 +84,7 @@ class BuildDataBaseInstallStep extends GenericInstallStep
         if ($idbManager->existDataBase($name)) {
         	
         	//if the host specified is the db for docker, we don't need to show the database overwriting message 
-        	if ($host == 'db')
+            if (isset($_SERVER['DOCKER_CONF_HOME']))
         		$values["success"] = true;
         	else
             	$values["failure"] = true;

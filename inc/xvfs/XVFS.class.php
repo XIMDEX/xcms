@@ -25,7 +25,7 @@
  */
 
 
-
+use Ximdex\Logger;
 
 if (!defined('XIMDEX_ROOT_PATH'))
 	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../"));
@@ -37,7 +37,6 @@ if (!defined('XIMDEX_XVFS_PATH'))
 require_once XIMDEX_XVFS_PATH . '/entities/XVFS_Entity_Dir.class.php';
 require_once XIMDEX_XVFS_PATH . '/entities/XVFS_Entity_File.class.php';
 require_once XIMDEX_XVFS_PATH . '/entities/XVFS_Entity_Link.class.php';
-require_once(XIMDEX_XVFS_PATH . '/logger/XVFS_Log.class.php');
 
 // Estas constantes de error coinciden con las de Repository
 define('XVFS_NONE',					 1);		// Sin errores (TRUE)
@@ -73,7 +72,7 @@ class XVFS {
 	 *  Tree var who contains all information about tree path.
 	 *
 	 *  @access private
-	 *  @var _tree
+	 *  @var $_tree
 	 */
 	var $_tree;
 
@@ -101,7 +100,7 @@ class XVFS {
 	 *  @return object An instance of XVFS.
 	 */
 	static function & getInstance() {
-		//XVFS_Log::debug("XVFS::getInstance($name)");
+		//Logger::debug("XVFS::getInstance($name)");
 
 		static $instance = null;
 
@@ -130,7 +129,7 @@ class XVFS {
 	static function mount($vfspath, $uri) {
 		$xvfs =& XVFS::getInstance();
 		if (!is_object($xvfs)) {
-			XVFS_Log::fatal("XVFS::mount($vfspath) - No se puede montar el recurso, no se ha encontrado Backend");
+			Logger::fatal("XVFS::mount($vfspath) - No se puede montar el recurso, no se ha encontrado Backend");
 		}
 		
 		if (!is_array($xvfs->_tree)) {
@@ -140,7 +139,7 @@ class XVFS {
 		// parse URI
 		$uri_array = parse_url($uri);
 		if (!is_array($uri_array)) {
-			XVFS_Log::fatal("XVFS::mount($uri) Malformed uri");
+			Logger::fatal("XVFS::mount($uri) Malformed uri");
 		}
 		
 		// Controla si ya esta montado
@@ -153,10 +152,10 @@ class XVFS {
 			}
 			// Returns TRUE if we are mounting the same resource on the same mount point
 			if ($mp == $vfspath && $ref->_be_base == $uri_array['path']) {
-				XVFS_Log::warning("XVFS::mount($vfspath) - El recurso indicado ya ha sido montado.");
+				Logger::warning("XVFS::mount($vfspath) - El recurso indicado ya ha sido montado.");
 				return true;
 			} else {
-				XVFS_Log::warning("XVFS::mount($vfspath) - No se puede montar el recurso $uri en una ruta ya montada.");
+				Logger::warning("XVFS::mount($vfspath) - No se puede montar el recurso $uri en una ruta ya montada.");
 				return false;
 			}
 		}
@@ -165,14 +164,14 @@ class XVFS {
 		// el nuevo recurso solo seria visible el recurso montado ahora, ocultaria al existente.
 		// La variable _tree no esta inicializada por defecto...
 		if ($xvfs->exists($vfspath)) {
-			XVFS_Log::error("XVFS::mount($vfspath) - No es posible montar el recurso, ya existe un recurso con el mismo nombre.");
+			Logger::error("XVFS::mount($vfspath) - No es posible montar el recurso, ya existe un recurso con el mismo nombre.");
 			return false;
 		}
 
 		// Comprueba que existe el nivel superior al que se quiere montar
 		$parent = dirname($vfspath);
 		if ($vfspath != '/' && !$xvfs->exists($parent)) {
-			XVFS_Log::error("XVFS::mount($vfspath) - Se deben montar o crear uno o mas recursos antes de montar la ruta $uri.");
+			Logger::error("XVFS::mount($vfspath) - Se deben montar o crear uno o mas recursos antes de montar la ruta $uri.");
 			return false;
 		}
 
@@ -200,7 +199,7 @@ class XVFS {
 
 			
 			if (!is_object($be) || ($lastError['errno'] < 0)) {
-				XVFS_Log::error("XVFS::mount($vfspath) - " . $factory->getError());
+				Logger::error("XVFS::mount($vfspath) - " . $factory->getError());
 			} else {
 
 				if (!is_array($xvfs->_tree)) $xvfs->_tree = array();
@@ -208,12 +207,12 @@ class XVFS {
 				$xvfs->_tree[$vfspath]['ref'] =& $be;
 				$xvfs->_tree[$vfspath]['depth'] = XVFS::_getDepth($vfspath);
 				$ret = true;
-				XVFS_Log::debug("XVFS::mount($vfspath) - Se monto la URI correctamente.");
+				Logger::debug("XVFS::mount($vfspath) - Se monto la URI correctamente.");
 			}
 
 		} else {
 			//printf("XVFS::mount($vfspath) error.\n");
-			XVFS_Log::error("XVFS::mount($vfspath) - La URI indicada no es correcta.");
+			Logger::error("XVFS::mount($vfspath) - La URI indicada no es correcta.");
 		}
 		
 		return $ret;
@@ -231,7 +230,7 @@ class XVFS {
 		if (isset($xvfs->_tree[$path])) {
 			unset($xvfs->_tree[$path]);
 			if (count($xvfs->_tree) == 0) $xvfs->_tree = null;
-			XVFS_Log::info("XVFS::umount($path) - Se desmonto la URI correctamente.");
+			Logger::info("XVFS::umount($path) - Se desmonto la URI correctamente.");
 		}
 	}
 
@@ -546,7 +545,7 @@ class XVFS {
 		$bpath = XVFS::normalizePath($bpath);
 		$backend = XVFS::_getBackend($bpath);
 		$ret = !is_null($backend) ? $backend->isDir($backend->realPath($bpath)) : false;
-		XVFS_Log::debug("XVFS::isDir($bpath) - ret: " . ($ret ? 'TRUE' : 'FALSE'));
+		Logger::debug("XVFS::isDir($bpath) - ret: " . ($ret ? 'TRUE' : 'FALSE'));
 		return $ret;
 	}
 
@@ -561,7 +560,7 @@ class XVFS {
 		$bpath = XVFS::normalizePath($bpath);
 		$backend = XVFS::_getBackend($bpath);
 		$ret = !is_null($backend) ? $backend->isFile($backend->realPath($bpath)) : false;
-		XVFS_Log::debug("XVFS::isFile($bpath) - ret: " . ($ret ? 'TRUE' : 'FALSE'));
+		Logger::debug("XVFS::isFile($bpath) - ret: " . ($ret ? 'TRUE' : 'FALSE'));
 		return $ret;
 	}
 
@@ -576,7 +575,7 @@ class XVFS {
 		$bpath = XVFS::normalizePath($bpath);
 		$backend = XVFS::_getBackend($bpath);
 		$ret = !is_null($backend) ? $backend->isReadable($backend->realPath($bpath)) : false;
-		XVFS_Log::debug("XVFS::isReadable($bpath) - ret: " . ($ret ? 'TRUE' : 'FALSE'));
+		Logger::debug("XVFS::isReadable($bpath) - ret: " . ($ret ? 'TRUE' : 'FALSE'));
 		return $ret;
 	}
 
@@ -591,7 +590,7 @@ class XVFS {
 		$bpath = XVFS::normalizePath($bpath);
 		$backend = XVFS::_getBackend($bpath);
 		$ret = !is_null($backend) ? $backend->isWritable($backend->realPath($bpath)) : false;
-		XVFS_Log::debug("XVFS::isWritable($bpath) - ret: " . ($ret ? 'TRUE' : 'FALSE'));
+		Logger::debug("XVFS::isWritable($bpath) - ret: " . ($ret ? 'TRUE' : 'FALSE'));
 		return $ret;
 	}
 
@@ -605,7 +604,7 @@ class XVFS {
 		$bpath = XVFS::normalizePath($bpath);
 		$backend = XVFS::_getBackend($bpath);
 		$ret = !is_null($backend) ? $backend->exists($backend->realPath($bpath)) : false;
-		XVFS_Log::debug("XVFS::exists($bpath) - ret: " . ($ret ? 'TRUE' : 'FALSE'));
+		Logger::debug("XVFS::exists($bpath) - ret: " . ($ret ? 'TRUE' : 'FALSE'));
 		return $ret;
 	}
 
@@ -621,7 +620,7 @@ class XVFS {
 		$backend = XVFS::_getBackend($bpath);
 
 		$content = $backend->getContent($backend->realPath($bpath));
-		if (is_null($content)) XVFS_Log::error("XVFS::getContent($bpath) - No se pudo obtener el contenido o se indico un directorio.");
+		if (is_null($content)) Logger::error("XVFS::getContent($bpath) - No se pudo obtener el contenido o se indico un directorio.");
 		return $content;
 	}
 
@@ -651,7 +650,7 @@ class XVFS {
 		$bpath = XVFS::normalizePath($bpath);
 		$backend = XVFS::_getBackend($bpath);
 		$descriptor = !is_null($backend) ? $backend->getDescriptor($bpath) : false;
-		if (!$descriptor) XVFS_Log::error("XVFS::getDescriptor($bpath) - No se pudo obtener el descriptor del recurso indicado.");
+		if (!$descriptor) Logger::error("XVFS::getDescriptor($bpath) - No se pudo obtener el descriptor del recurso indicado.");
 		return $descriptor;
 	}
 
@@ -672,7 +671,7 @@ class XVFS {
 			$mime = 'application/x-non-readable';
 		}
 
-//		if (!$mime) XVFS_Log::error("XVFS::getDescriptor($bpath) - No se pudo obtener el descriptor del recurso indicado.");
+//		if (!$mime) Logger::error("XVFS::getDescriptor($bpath) - No se pudo obtener el descriptor del recurso indicado.");
 		return $mime;
 	}
 
@@ -710,7 +709,7 @@ class XVFS {
 			}
 		}
 
-		XVFS_Log::info("XVFS::read($bpath) - " . (is_null($entity) ? 'No se encontro el recurso indicado.' : 'ret: TRUE'));
+		Logger::info("XVFS::read($bpath) - " . (is_null($entity) ? 'No se encontro el recurso indicado.' : 'ret: TRUE'));
 		return $entity;
 	}
 
@@ -727,9 +726,9 @@ class XVFS {
 		$backend = XVFS::_getBackend($bpath);
 		$ret = $backend->append($backend->realPath($bpath), $content);
 		if ($ret > 0) {
-			XVFS_Log::info("XVFS::append($bpath) - El nodo se agrego correctamente.");
+			Logger::info("XVFS::append($bpath) - El nodo se agrego correctamente.");
 		} else {
-			XVFS_Log::error("XVFS::append($bpath) - Ocurrio un error al intentar agregar el nodo.");
+			Logger::error("XVFS::append($bpath) - Ocurrio un error al intentar agregar el nodo.");
 		}
 		return $ret;
 	}
@@ -747,9 +746,9 @@ class XVFS {
 		$backend = XVFS::_getBackend($bpath);
 		$ret = $backend->update($backend->realPath($bpath), $content);
 		if ($ret > 0) {
-			XVFS_Log::info("XVFS::update($bpath) - El nodo se actualizo correctamente.");
+			Logger::info("XVFS::update($bpath) - El nodo se actualizo correctamente.");
 		} else {
-			XVFS_Log::error("XVFS::update($bpath) - Ocurrio un error al intentar actualizar el nodo.");
+			Logger::error("XVFS::update($bpath) - Ocurrio un error al intentar actualizar el nodo.");
 		}
 		return $ret;
 	}
@@ -769,9 +768,9 @@ class XVFS {
 		$backend = XVFS::_getBackend($bpath);
 		$ret = $backend->mkdir($backend->realPath($bpath), $mode);
 		if ($ret > 0 || $ret == true) {
-			XVFS_Log::info("XVFS::mkdir($bpath) - El directorio se creo correctamente.");
+			Logger::info("XVFS::mkdir($bpath) - El directorio se creo correctamente.");
 		} else {
-			XVFS_Log::error("XVFS::mkdir($bpath) - Ocurrio un error al intentar crear el directorio.");
+			Logger::error("XVFS::mkdir($bpath) - Ocurrio un error al intentar crear el directorio.");
 		}
 		return $ret;
 	}
@@ -788,9 +787,9 @@ class XVFS {
 		$backend = XVFS::_getBackend($bpath);
 		$ret = $backend->delete($backend->realPath($bpath));
 		if ($ret > 0) {
-			XVFS_Log::info("XVFS::delete($bpath) - El nodo se elimino correctamente.");
+			Logger::info("XVFS::delete($bpath) - El nodo se elimino correctamente.");
 		} else {
-			XVFS_Log::error("XVFS::delete($bpath) - Ocurrio un error al intentar eliminar el nodo.");
+			Logger::error("XVFS::delete($bpath) - Ocurrio un error al intentar eliminar el nodo.");
 		}
 		return $ret > 0 ? true : false;
 	}
@@ -808,9 +807,9 @@ class XVFS {
 		$ret = $backend->rename($backend->realPath($bpath), $backend->realPath($newName));
 //		$ret = $ret > 0 ? true : false;
 		if ($ret > 0) {
-			XVFS_Log::info("XVFS::rename($bpath, $newName) - El nodo se renombro correctamente.");
+			Logger::info("XVFS::rename($bpath, $newName) - El nodo se renombro correctamente.");
 		} else {
-			XVFS_Log::error("XVFS::rename($bpath, $newName) - Ocurrio un error al intentar renombrar el nodo.");
+			Logger::error("XVFS::rename($bpath, $newName) - Ocurrio un error al intentar renombrar el nodo.");
 		}
 		return $ret > 0 ? true : false;
 	}
@@ -853,9 +852,9 @@ class XVFS {
 		}
 
 		if ($ret > 0) {
-			XVFS_Log::info("XVFS::move($source, $target) - El recurso se movio correctamente.");
+			Logger::info("XVFS::move($source, $target) - El recurso se movio correctamente.");
 		} else {
-			XVFS_Log::error("XVFS::move($source, $target) - El recurso no se pudo mover.");
+			Logger::error("XVFS::move($source, $target) - El recurso no se pudo mover.");
 		}
 		return $ret > 0 ? true : false;
 	}
@@ -917,13 +916,11 @@ class XVFS {
 		}
 
 		if ($ret > 0) {
-			XVFS_Log::info("XVFS::copy($source, $target) - El recurso se copio correctamente.");
+			Logger::info("XVFS::copy($source, $target) - El recurso se copio correctamente.");
 		} else {
-			XVFS_Log::error("XVFS::copy($source, $target) - El recurso no se pudo copiar.");
+			Logger::error("XVFS::copy($source, $target) - El recurso no se pudo copiar.");
 		}
 		return $ret;
 	}
 
 }
-
-?>

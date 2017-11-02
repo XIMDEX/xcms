@@ -35,4 +35,3 @@ function baseIO_uploadFile($fileName,$typeName,$nodeID,$filePath){
 	$node->CreateNode($fileName, $nodeID, $nodeTypeID, null, $filePath);
 	return $node->GetID();
 }
-?>

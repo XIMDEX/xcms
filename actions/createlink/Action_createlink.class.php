@@ -83,5 +83,3 @@ class Action_createlink extends ActionAbstract
         return $result;
     }
 }
-
-?>

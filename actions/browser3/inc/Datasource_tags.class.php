@@ -27,6 +27,8 @@
 
 
 
+use Ximdex\Logger;
+
 ModulesManager::file('/actions/composer/Action_composer.class.php');
 
 
@@ -56,7 +58,7 @@ class Datasource_tags extends AbstractDatasource implements IDatasource {
 					$child = XVFS::read($childPath);
 					if (!is_object($child)) {
 				
-						XMD_Log::info(_("The path cannot be read") . $childPath);
+						Logger::info(_("The path cannot be read") . $childPath);
 					} else {
 				
 						$children[] = $this->normalizeNode($child->asArray());

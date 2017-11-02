@@ -25,6 +25,7 @@
  */
 
 
+use Ximdex\Logger;
 use Ximdex\Runtime\Db;
 
 include_once( XIMDEX_ROOT_PATH . '/modules/ximSYNC/inc/model/NodeFrame.class.php');
@@ -230,13 +231,13 @@ class NodeFrameManager {
 		$frames = $nodeFrame->getFrames($nodeFrId);
 
 		foreach($frames as $serverFrId) {
-			XMD_log::info(_("Procesing serverFrame")." $serverFrId");
+			Logger::info(_("Procesing serverFrame")." $serverFrId");
 
 			$channelFrameManager = new ChannelFrameManager();
 			$result = $channelFrameManager->changeState($serverFrId, $operation, $nodeId, $canceled);
 
 			if(!$result){
-				XMD_log::error(_("The Serverframe state change has failed")." $serverFrId");
+				Logger::error(_("The Serverframe state change has failed")." $serverFrId");
 				$sfOK = false;
 			}
 		}
@@ -414,7 +415,7 @@ class NodeFrameManager {
 				// Deleting (or unpublish) serverFrame
 
 				if ($state == 'In' && $unPublish == true) {
-					XMD_log::info("Do not delete ServerFrame $idServerFrame - setting it to Due2Out to be unpublished");
+					Logger::info("Do not delete ServerFrame $idServerFrame - setting it to Due2Out to be unpublished");
 
 					$idBatchUp = $serverFrame->get('IdBatchUp');
 					$arrayAffectedBatchs[$idBatchUp] = (!isset($arrayAffectedBatchs[$idBatchUp])) ? 1 : $arrayAffectedBatchs[$idBatchUp] ++;
@@ -422,13 +423,13 @@ class NodeFrameManager {
 					// Changing ServerFrame State
 					$serverFrameMng->changeState($idServerFrame, 'Down', $nodeId);
 				} elseif(in_array($state, array('Due2Out', 'Due2Out_'))) {
-					XMD_log::info("Do not delete serverFrame $idServerFrame - state $state");
+					Logger::info("Do not delete serverFrame $idServerFrame - state $state");
 				} else {
 					$serverFrame->delete();
 				}
 			}
 
-			XMD_log::info(_("Affected batchs:"). print_r($arrayAffectedBatchs, true));
+			Logger::info(_("Affected batchs:"). print_r($arrayAffectedBatchs, true));
 
 			if (is_array($arrayAffectedBatchs) && count($arrayAffectedBatchs) > 0) {
 
@@ -440,10 +441,6 @@ class NodeFrameManager {
 			}
 
 		}
-
-		// Deleting nodeFrame
-
-		//$nodeFrame->delete();
 	}
 
 }

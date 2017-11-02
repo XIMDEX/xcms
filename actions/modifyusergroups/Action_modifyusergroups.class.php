@@ -107,10 +107,7 @@ class Action_modifyusergroups extends ActionAbstract {
     function updategroupuser() {
         $iduser = $this->request->getParam('nodeid');
         $idGroup = $this->request->getParam("group");
-        //$idRoleOld = $this->request->getParam("roleOld");
         $idRole = $this->request->getParam("role");
-        /*$globalRole = $this->request->getParam("globalRole");
-        $oldglobalRole = $this->request->getParam("oldglobalRole");*/
 
         $group = new Group();
         $group->SetID($idGroup);
@@ -151,5 +148,3 @@ class Action_modifyusergroups extends ActionAbstract {
         $this->sendJSON($values);
     }
 }
-
-?>

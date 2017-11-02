@@ -25,6 +25,10 @@
  * @version $Revision$
  */
 
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
+use Ximdex\Runtime\App;
+
 include_once dirname(__FILE__) . '/../../../../bootstrap/start.php';
 
 ModulesManager::file('/inc/Automatic.class.php', 'ximNEWS');
@@ -34,6 +38,11 @@ This global variable will indicate to database connections that we are in a batc
 method when it's necessary
 */
 $GLOBALS['InBatchProcess'] = true;
+
+$log = new Logger('AUTOMATIC');
+$log->pushHandler(new StreamHandler(App::getValue('XIMDEX_ROOT_PATH') . '/logs/automatic.log', Logger::DEBUG));
+\Ximdex\Logger::addLog($log, 'automatic');
+\Ximdex\Logger::setActiveLog('automatic');
 
 $automatic = new Automatic();
 $automatic->process();

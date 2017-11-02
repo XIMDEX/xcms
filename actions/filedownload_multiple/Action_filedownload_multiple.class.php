@@ -1,4 +1,5 @@
 <?php
+use Ximdex\Logger;
 use Ximdex\Models\Node;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\App;
@@ -68,7 +69,7 @@ class Action_filedownload_multiple extends ActionAbstract {
 		}
 
 		if (!is_file($tarFile)) {
-            XMD_Log::error('All selected documents could not be exported. Do you have zip installed?');
+            Logger::error('All selected documents could not be exported. Do you have zip installed?');
 		}
 
 		$tarFile = preg_replace(sprintf('#^%s#',  App::getValue( 'AppRoot')), App::getValue( 'UrlRoot'), $tarFile);
@@ -119,7 +120,7 @@ class Action_filedownload_multiple extends ActionAbstract {
     private function deleteContents($tmpFolder) {
        	$ret = FsUtils::deltree($tmpFolder);
 	    if (!$ret) {
-    		XMD_Log::info(_("Directory could not be deleted ").$tmpFolder);
+    		Logger::info(_("Directory could not be deleted ").$tmpFolder);
     	}
     }
 
@@ -129,4 +130,3 @@ class Action_filedownload_multiple extends ActionAbstract {
     	return $tarName;
     }
 }
-?>

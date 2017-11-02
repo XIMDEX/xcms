@@ -27,23 +27,11 @@
 
 namespace Ximdex\NodeTypes;
 
-use commit;
-use depth;
-use description;
-use files;
 use Ximdex\Models\Iterators\IteratorLinkDescriptions;
 use Ximdex\Models\Link;
-use name;
 use Ximdex\Models\NodeDependencies;
-use nodeTypeID;
-use parentID;
-use recurrence;
 use Ximdex\Models\RelLinkDescriptions;
-use stateID;
-use unknown;
-use url;
-use Ximdex\NodeTypes\Root;
-use Ximdex\Logger as XMD_Log;
+use Ximdex\Logger;
 
 /**
  * @brief Handles links to external pages or web sites.
@@ -73,7 +61,6 @@ class LinkNode extends Root
 	 * @param int stateID
 	 * @param string url
 	 * @param string description
-	 * @return unknown
 	 */
 
 	function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $url = null, $description = null)
@@ -96,7 +83,7 @@ class LinkNode extends Root
 		$relDescription = !empty($description) ? $description : $this->link->get('Name');
 		$rel = RelLinkDescriptions::create($this->nodeID, $relDescription);
 		if ($rel->getIdRel() < 0) {
-			XMD_Log::warning(sprintf('No se ha podido crear la descripcion para el enlace %s en su tabla relacionada.', $link->get('IdLink')));
+			Logger::warning(sprintf('No se ha podido crear la descripcion para el enlace %s en su tabla relacionada.', $link->get('IdLink')));
 		}
 
 		$ret = $this->link->get('IdLink');
@@ -107,14 +94,13 @@ class LinkNode extends Root
 
 	/**
 	 *  Deletes the information of link in the database.
-	 * @return unknown
 	 */
 
 	function DeleteNode()
 	{
 
 		if (!($this->link->get('IdLink') > 0)) {
-			XMD_Log::error("Se ha solicitado eliminar el nodo {$this->nodeID} que actualmente no existe");
+			Logger::error("Se ha solicitado eliminar el nodo {$this->nodeID} que actualmente no existe");
 		}
 
 		$result = $this->link->delete();
@@ -131,7 +117,7 @@ class LinkNode extends Root
 			$it = new IteratorLinkDescriptions('IdLink = %s', array($this->link->get('IdLink')));
 			while ($rel = $it->next()) {
 				if (!$rel->delete()) {
-					XMD_Log::warning(sprintf('No se ha podido eliminar la descripcion con id %s para el enlace %s.', $rel->getIdRel(), $this->link->get('IdLink')));
+					Logger::warning(sprintf('No se ha podido eliminar la descripcion con id %s para el enlace %s.', $rel->getIdRel(), $this->link->get('IdLink')));
 				}
 			}
 

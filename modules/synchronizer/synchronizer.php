@@ -26,11 +26,11 @@
  */
 
 
+use Ximdex\Logger;
+use Ximdex\Runtime\App;
 use Ximdex\Utils\Sync\Mutex;
 use Ximdex\Utils\Sync\Synchronizer;
 
-
-//
 ModulesManager::file('/inc/utils.php');
 
 Main($argv, $argc);
@@ -39,45 +39,45 @@ function Main($argv, $argc)
 {
 
     $sync = new Synchronizer();
-    $tmpPath = \App::getValue("AppRoot") . \App::getValue("TempRoot");
-    $command = \App::getValue("AppRoot") . \App::getValue("SynchronizerCommand");
-    $stopper_file_path = \App::getValue("AppRoot") . \App::getValue("TempRoot") . "/synchronizer.stop";
+    $tmpPath = App::getValue("AppRoot") . App::getValue("TempRoot");
+    $command = App::getValue("AppRoot") . App::getValue("SynchronizerCommand");
+    $stopper_file_path = App::getValue("AppRoot") . App::getValue("TempRoot") . "/synchronizer.stop";
 
     GLOBAL $synchro_pid;
     $synchro_pid = posix_getpid();
 
-    XMD_Log::display("---------------------------------------------------------------------");
-    XMD_Log::display("Executing: Synchronizer (" . $synchro_pid . ")");
-    XMD_Log::display("---------------------------------------------------------------------");
-    XMD_Log::display("");
-    XMD_Log::display("Checking lock...");
+    Logger::display("---------------------------------------------------------------------");
+    Logger::display("Executing: Synchronizer (" . $synchro_pid . ")");
+    Logger::display("---------------------------------------------------------------------");
+    Logger::display("");
+    Logger::display("Checking lock...");
 
     $mutex = new Mutex($tmpPath . "/synchro.lck");
     if (!$mutex->acquire()) {
-        XMD_Log::display("Cerrando...");
-        XMD_Log::display("INFO: Block file exists, there is another process running.");
+        Logger::display("Cerrando...");
+        Logger::display("INFO: Block file exists, there is another process running.");
         exit(1);
     }
 
     if (file_exists($stopper_file_path)) {
         $mutex->release();
-        XMD_Log::info("STOP: Detected file $stopper_file_path. You need to delete this file for successful restart of synchronizer");
+        Logger::info("STOP: Detected file $stopper_file_path. You need to delete this file for successful restart of synchronizer");
         die("STOP: Detected file $stopper_file_path. You need to delete this file for successful restart of synchronizer.\n");
     }
 
-    XMD_Log::display("Bloqueo adquirido...");
+    Logger::display("Bloqueo adquirido...");
 
     /// At first, marks as outdated task which are outdated. It is not necessary this process, but for clearly
-    XMD_Log::display("Outdating outdated and not published tasks...\n");
+    Logger::display("Outdating outdated and not published tasks...\n");
     $sync->SetOutDatedTasks();
 
-    XMD_Log::display("UNPUBLICATION PROCESS:");
-    XMD_Log::display(" Computing tasks to be executed...");
+    Logger::display("UNPUBLICATION PROCESS:");
+    Logger::display(" Computing tasks to be executed...");
     $downTasks = $sync->GetPendingDownloadTasks();
     $downServers = $downTasks[0];
     $downTasks = $downTasks[1];
 
-    XMD_Log::display("");
+    Logger::display("");
 
     for ($i = 0; $i < count($downServers); $i++) {
         $server = $downServers[$i];
@@ -87,26 +87,26 @@ function Main($argv, $argc)
         foreach ($tasks as $taskID) {
             if (file_exists($stopper_file_path)) {
                 $mutex->release();
-                XMD_Log::info("STOP: Detected file $stopper_file_path. You need to delete this file for successful restart of synchronizer");
+                Logger::info("STOP: Detected file $stopper_file_path. You need to delete this file for successful restart of synchronizer");
                 die("STOP: Detected file $stopper_file_path. You need to delete this file for successful restart of synchronizer.\n");
             }
             $commandLine .= " r:" . $taskID;
             $sync->DeleteSyncFile($taskID);
         }
-        XMD_Log::display("UNPUBLICATION PROCESS");
-        XMD_Log::display(" Executing: " . $commandLine);
+        Logger::display("UNPUBLICATION PROCESS");
+        Logger::display(" Executing: " . $commandLine);
         system($commandLine);
     }
 
 
-    XMD_Log::display("PUBLICATION PROCESS:");
-    XMD_Log::display(" Computing tasks to be executed...");
+    Logger::display("PUBLICATION PROCESS:");
+    Logger::display(" Computing tasks to be executed...");
     $upTasks = $sync->GetPendingUploadTasks();
     $upServers = $upTasks[0];
     $upTasks = $upTasks[1];
 
-    XMD_Log::display("");
-    XMD_Log::display("");
+    Logger::display("");
+    Logger::display("");
 
     for ($i = 0; $i < count($upServers); $i++) {
         $server = $upServers[$i];
@@ -116,15 +116,15 @@ function Main($argv, $argc)
         foreach ($tasks as $taskID) {
             if (file_exists($stopper_file_path)) {
                 $mutex->release();
-                XMD_Log::info("STOP: Detected file $stopper_file_path. You need to delete this file for successful restart of synchronizer");
+                Logger::info("STOP: Detected file $stopper_file_path. You need to delete this file for successful restart of synchronizer");
                 die("STOP: Detected file $stopper_file_path. You need to delete this file for successful restart of synchronizer.\n");
             }
             $commandLine .= " u:" . $taskID;
             $sync->CreateTmpFile($taskID);
         }
 
-        XMD_Log::display("PUBLICATION PROCESS:");
-        XMD_Log::display(" Executing: " . $commandLine);
+        Logger::display("PUBLICATION PROCESS:");
+        Logger::display(" Executing: " . $commandLine);
         system($commandLine);
     }
 
@@ -132,7 +132,5 @@ function Main($argv, $argc)
     $sync->removeOutdated();
 
     $mutex->release();
-    XMD_Log::display("PROCESS FINISHED");
+    Logger::display("PROCESS FINISHED");
 }
-
-?>

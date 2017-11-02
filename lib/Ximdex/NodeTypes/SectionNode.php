@@ -27,11 +27,11 @@
 
 namespace Ximdex\NodeTypes;
 
-use Ximdex\Runtime\Db as DB;
+use Ximdex\Runtime\Db;
 use Ximdex\Deps\DepsManager;
 use Ximdex\Models\Node;
 use Ximdex\Models\NodeType;
-use Ximdex\Logger as XMD_Log;
+use Ximdex\Logger;
 
 /**
  * @brief Handles ximDEX sections.
@@ -96,7 +96,7 @@ class SectionNode extends FolderNode
         $depsMngr = new DepsManager();
         $depsMngr->deleteBySource(DepsManager::SECTION_XIMLET, $this->parent->get('IdNode'));
 
-        XMD_Log::info('Section dependencies deleted');
+        Logger::info('Section dependencies deleted');
     }
 
     /**

@@ -27,7 +27,7 @@
 
 namespace Ximdex\Models;
 
-use Ximdex\Runtime\Db as DB;
+use Ximdex\Runtime\Db;
 use I_NodeSets;
 use I_NodeSetsNodes;
 use I_NodeSetsUsers;

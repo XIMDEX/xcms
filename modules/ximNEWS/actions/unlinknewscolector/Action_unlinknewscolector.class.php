@@ -1,6 +1,8 @@
 <?php
+use Ximdex\Logger;
 use Ximdex\Models\Node;
 use Ximdex\MVC\ActionAbstract;
+use Ximdex\Runtime\App;
 
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
@@ -74,7 +76,7 @@ class Action_unlinknewscolector extends ActionAbstract {
 			'idnode' => $idNode,
 			'nodename' => $node->get('Name'),
 			'go_method' => 'unlink',
-			'nodeUrl' => \App::getValue( 'UrlRoot') . "/xmd/loadaction.php?actionid=$idAction&nodeid=$idNode"
+			'nodeUrl' => App::getValue( 'UrlRoot') . "/xmd/loadaction.php?actionid=$idAction&nodeid=$idNode"
 		);
 		$this->render($values, 'index', 'default-3.0.tpl');
     }
@@ -114,7 +116,7 @@ class Action_unlinknewscolector extends ActionAbstract {
 				if (!$relNewsColector->update()) {
 					$this->messages->add(_('The dissociation '.$node->get('Name').' - '. $elemNode->get('Name').' was NOT successfully performed. Updating error.'), MSG_TYPE_NOTICE);
 
-					XMD_Log::error("Updating relNewsColector $idRel");
+					Logger::error("Updating relNewsColector $idRel");
 				} else {
 					$this->messages->add(_('The dissociation '.$node->get('Name').' - '. $elemNode->get('Name').' was successfully performed.'), MSG_TYPE_NOTICE);
 

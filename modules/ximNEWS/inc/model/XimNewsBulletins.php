@@ -25,6 +25,7 @@
  */
 
 
+use Ximdex\Logger;
 use Ximdex\Models\Node;
 use Ximdex\Models\StructuredDocument;
 
@@ -57,7 +58,7 @@ class XimNewsBulletin extends XimNewsBulletins_ORM {
 			return true;
 		}
 
-		XMD_Log::info("InsertBulletinLanguage");
+		Logger::info("InsertBulletinLanguage");
 		return false;
 	}
 

@@ -210,10 +210,6 @@ function processBatch($batchProcess)
     // ---------------------------------------------------------
     $batchManager->setCyclesAndPriority($batchId);
 
-    //$activeAndEnabledServers = $serverError->getServersForPumping();
-    //	$syncStatObj->create(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__,
-    //	__LINE__, "INFO", 8, print_r($activeAndEnabledServers, true));
-
     $syncStatObj->create(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__,
         __LINE__, "[CACTI]SCHEDULER-INFO", 8, "[Id: $startStamp] " . _("STOPPING BATCH PROCESSING") . " $batchId");
 }

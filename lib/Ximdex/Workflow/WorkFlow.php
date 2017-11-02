@@ -33,7 +33,7 @@ use Ximdex\Models\PipeProcess;
 use Ximdex\Models\PipeStatus;
 use Ximdex\Models\Role;
 use Ximdex\Models\Node;
-use Ximdex\Logger as XMD_Log;
+use Ximdex\Logger;
 use Ximdex\Runtime\App;
 
 define('WORKFLOW_PROCESS_NAME', 'workflow');
@@ -230,7 +230,7 @@ class WorkFlow
         $pipeNodeTypes = new PipeNodeTypes();
         $result = $pipeNodeTypes->find('id, IdPipeline', 'IdNodeType = %s', array($idNodeType));
         if (count($result) > 0) {
-            XMD_Log::warning(_('This nodetype is already associated to other workflow'));
+            Logger::warning(_('This nodetype is already associated to other workflow'));
             return false;
         }
         $this->pipeline->set('IdNodeType', $idNodeType);

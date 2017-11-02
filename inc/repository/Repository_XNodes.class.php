@@ -26,9 +26,8 @@
 
 
 use Ximdex\Auth;
-use Ximdex\Models\Node;
+use Ximdex\Logger;
 use Ximdex\Models\User;
-use Ximdex\NodeTypes\Root;
 use Ximdex\Runtime\App;
 
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/Repository.class.php');
@@ -76,8 +75,7 @@ class Repository_XNodes extends Repository {
 		if (!$this->isDir($root)) {
 			$this->_root = null;
 			$this->addError(REP_INVALID_ROOT);
-			XMD_Log::error('Repository_XNodes - ' . $this->getErrorString(REP_INVALID_ROOT));
-//			die('Se ha intentado crear un objeto Repository_XNodes con una raiz no valida.');
+			Logger::error('Repository_XNodes - ' . $this->getErrorString(REP_INVALID_ROOT));
 		}
 
 		$this->_io = new BaseIO();
@@ -145,39 +143,17 @@ class Repository_XNodes extends Repository {
 			return $ret;
 		}
 
-		// Comprobacion en el cache de nodos
-//		$node = NodeCache::select($idNode);
-//		if (!is_null($node)) {
-//			if (isset($node['fromrepository'])) {
-//				$exists = (boolean) $node['fromrepository'];
-//				if ($exists) return true;
-//			}
-//		}
-
 		$idNode = $entity->get('idnode');
 		$idRoot = $this->_root->get('idnode');
 
 		// Se comprueba si el nodo es hijo de la raiz o la propia raiz
 		$sql = "select count(1) from FastTraverse where IdChild = '$idNode' and IdNode = '$idRoot'";
 
-		$db =& $this->_db;
+		$db = $this->_db;
 		$db->Query($sql);
 
 		if (!$db->EOF) $ret = (boolean) $db->GetValue(0);
 
-//		if (!$ret) $this->addError(REP_NOT_IN_REP);
-
-		// si el nodo existe se inserta en la cache
-//		$nodePath = $this->_transformNode($idNode);
-//		$nodePath = $nodePath['path'];
-//
-//		$node = new Node($idNode);
-//		$node = $node->loadData();
-//		$node['bpath'] = $nodePath;
-//		$node['fromrepository'] = $ret;
-//		NodeCache::insert($node);
-
-//		unset($db);
 		return $ret;
 	}
 
@@ -269,7 +245,6 @@ class Repository_XNodes extends Repository {
 		$ret = $entity->get('isdir');
 		$ret_str = $ret ? 'TRUE' : 'FALSE';
 
-//		XMD_Log::debug("Repository_XNodes::isDir($idNode) => ret: $ret_str");
 		return $ret;
 	}
 
@@ -288,7 +263,6 @@ class Repository_XNodes extends Repository {
 		$ret = $entity->get('isfile');
 		$ret_str = $ret ? 'TRUE' : 'FALSE';
 
-//		XMD_Log::debug("Repository_XNodes::isFile($idNode) => ret: $ret_str");
 		return $ret;
 	}
 
@@ -309,7 +283,7 @@ class Repository_XNodes extends Repository {
 		$ret = Auth::canRead($idUser, array('node_id' => $idNode));
 
 		$ret_str = $ret ? 'TRUE' : 'FALSE';
-		XMD_Log::debug("Repository_XNodes::isReadable($idNode, $userName) => ret: $ret_str");
+		Logger::debug("Repository_XNodes::isReadable($idNode, $userName) => ret: $ret_str");
 
 		return $ret;
 	}
@@ -332,7 +306,7 @@ class Repository_XNodes extends Repository {
 		$ret = Auth::canWrite($idUser, array('node_id' => $idNode, 'node_type' => $nodeType));
 
 		$ret_str = $ret ? 'TRUE' : 'FALSE';
-		XMD_Log::debug("Repository_XNodes::isWritable($idNode, $userName) => ret: $ret_str");
+		Logger::debug("Repository_XNodes::isWritable($idNode, $userName) => ret: $ret_str");
 
 		return $ret;
 	}
@@ -384,7 +358,7 @@ class Repository_XNodes extends Repository {
 
 		if (is_null($visualtemplate)) {
 		    $sql = 'select IdNode from Nodes where IdNodeType = ' . \Ximdex\Services\NodeType::VISUAL_TEMPLATE . ' order by IdNode limit 1';
-			$db =& $this->_db;
+			$db = $this->_db;
 			$db->query($sql);
 
 			while (!$db->EOF && is_null($visualtemplate)) {
@@ -416,7 +390,7 @@ class Repository_XNodes extends Repository {
 
 			$this->addError(REP_EXISTS);
 			$idnode = $entity->get('idnode');
-			XMD_Log::error("Repository_XNodes::append($path) - " . $this->getErrorString(REP_EXISTS));
+			Logger::error("Repository_XNodes::append($path) - " . $this->getErrorString(REP_EXISTS));
 			return REP_EXISTS;
 		}
 
@@ -425,7 +399,7 @@ class Repository_XNodes extends Repository {
 		$parentPath = $parent->get('path');
 		if (!$parent->exists()) {
 			$this->addError(REP_PARENT_NOT_FOUND);
-			XMD_Log::error("Repository_XNodes::append($path) - " . $this->getErrorString(REP_PARENT_NOT_FOUND));
+			Logger::error("Repository_XNodes::append($path) - " . $this->getErrorString(REP_PARENT_NOT_FOUND));
 			return REP_PARENT_NOT_FOUND;
 		}
 
@@ -435,7 +409,7 @@ class Repository_XNodes extends Repository {
 			$name = $entity->get('path');
 			if (is_null($name)) {
 				$this->addError(REP_NO_NODE_NAME);
-				XMD_Log::error("Repository_XNodes::append($path) - " . $this->getErrorString(REP_NO_NODE_NAME));
+				Logger::error("Repository_XNodes::append($path) - " . $this->getErrorString(REP_NO_NODE_NAME));
 				return REP_NO_NODE_NAME;
 			}
 
@@ -446,7 +420,7 @@ class Repository_XNodes extends Repository {
 		// El padre debe existir en el repositorio y ser un directorio
 		if (!$this->isDir($parent)) {
 			$this->addError(REP_NOT_DIR);
-			XMD_Log::error("Repository_XNodes::append($parentPath) - El padre del nodo indicado no es un directorio.");
+			Logger::error("Repository_XNodes::append($parentPath) - El padre del nodo indicado no es un directorio.");
 			return REP_NOT_DIR;
 		}
 
@@ -458,7 +432,7 @@ class Repository_XNodes extends Repository {
 
 		if (is_null($infere_res)) {
 			$this->addError(REP_INFERE_ERROR);
-			XMD_Log::error("Repository_XNodes::append($path) - " . $this->getErrorString(REP_INFERE_ERROR));
+			Logger::error("Repository_XNodes::append($path) - " . $this->getErrorString(REP_INFERE_ERROR));
 			return REP_INFERE_ERROR;
 		}
 
@@ -470,7 +444,7 @@ class Repository_XNodes extends Repository {
 			$visualtemplate = $this->_getDefaultVisualTemplate();
 		}
 		if (empty($visualtemplate)) {
-			XMD_Log::error('No se ha encontrado pvd/rng para crear el nodo, compruebe que la instancia está correctamente configurada');
+			Logger::error('No se ha encontrado pvd/rng para crear el nodo, compruebe que la instancia está correctamente configurada');
 		}
 
 		// Ok, let's rock
@@ -493,7 +467,7 @@ class Repository_XNodes extends Repository {
 					// TODO: Cambiar el tipo de error devuelto
 					// No se puede crear el contenedor
 					$this->addError(REP_UNKNOWN);
-					XMD_Log::error("Repository_XNodes::append($path) - No fue posible asociar el contenedor a una plantilla.");
+					Logger::error("Repository_XNodes::append($path) - No fue posible asociar el contenedor a una plantilla.");
 					return REP_UNKNOWN;
 				}
 
@@ -504,32 +478,27 @@ class Repository_XNodes extends Repository {
 			case 'XIMLET':
 		}
 
-//		logdump($nodetype, print_r($struct_io, true));
-
 		$userId = $this->_getUserID($userName);
 
-		$io =& $this->_io;
+		$io = $this->_io;
 		$ret = $io->build($struct_io, $userId);
-//debug::log($struct_io, $ret, $io->messages->messages);
+        
 		if ($ret > 0) {
 			// Si BaseIO devuelve un entero positivo se trata de un idnode
 			$entity->set('idnode', $ret);
 			$entity->update();
 			$this->addError(REP_NONE);
-			XMD_Log::info("Repository_XNodes::append($path) - Se ha creado un nuevo nodo con idNode = $ret");
+			Logger::info("Repository_XNodes::append($path) - Se ha creado un nuevo nodo con idNode = $ret");
 		} else {
 			// Si BaseIO devuelve un entero negativo se trata de un error
 			$this->_baseio_error = $ret;
 			$this->addError(REP_BASEIO_ERROR);
-			XMD_Log::error("Repository_XNodes::append($path) - " . $this->getErrorString(REP_BASEIO_ERROR));
+			Logger::error("Repository_XNodes::append($path) - " . $this->getErrorString(REP_BASEIO_ERROR));
 			$msg = end($io->messages->messages);
-			XMD_Log::error("Repository_XNodes::append($path) - {$msg['message']}");
+			Logger::error("Repository_XNodes::append($path) - {$msg['message']}");
 			$ret = REP_BASEIO_ERROR;
 		}
 
-
-		// Si se pudo crear el nodo lo inserto en el cache
-//		if ($return) $this->_cacheQuery('insert', $ret);
 		return $ret;
 	}
 
@@ -547,7 +516,7 @@ class Repository_XNodes extends Repository {
 
 		if (!is_a($entity, 'NodeEntity_Dir')) {
 			$this->addError(REP_NOT_DIR);
-			XMD_Log::info("Repository_XNodes::append() - " . $this->getErrorString(REP_NOT_DIR));
+			Logger::info("Repository_XNodes::append() - " . $this->getErrorString(REP_NOT_DIR));
 			return REP_NOT_DIR;
 		}
 		$ret = $this->append($entity, $userName, $mode);
@@ -569,43 +538,37 @@ class Repository_XNodes extends Repository {
 		// Debe existir en el repositorio
 		if (!$this->exists($entity)) {
 			$this->addError(REP_NOT_IN_REP);
-			XMD_Log::error("Repository_XNodes::update() - " . $this->getErrorString(REP_NOT_IN_REP));
+			Logger::error("Repository_XNodes::update() - " . $this->getErrorString(REP_NOT_IN_REP));
 			return REP_NOT_IN_REP;
 		}
 
 		$struct_io = array (
 					'ID' => $entity->get('idnode'),
 					'NODETYPENAME' => $entity->get('nodetype'),
-//					'NAME' => $entity->get('name'),	=> No rula con el nombre
 					'CHILDRENS' => array(
 							array('NODETYPENAME' => 'PATH', 'SRC' => $entity->getDescriptor())
 						)
 					);
 
-
-//		logdump("Repository_XNodes::update() - Pre-baseIO call - " . print_r($struct_io, true));
-
 		$userId = $this->_getUserID($userName);
 
-		$io =& $this->_io;
-		//debug::log($struct_io, $userId);
+		$io = $this->_io;
 		$ret = $io->update($struct_io, $userId);
 
 		if ($ret > 0) {
 			$this->addError(REP_NONE);
-			XMD_Log::info("Repository_XNodes::update() - Se ha actualizado correctamente el nodo con idNode = $ret");
+			Logger::info("Repository_XNodes::update() - Se ha actualizado correctamente el nodo con idNode = $ret");
 			$entity->update();
 		} else {
 			// Si BaseIO devuelve un entero negativo se trata de un error
 			$this->_baseio_error = $ret;
 			$this->addError(REP_BASEIO_ERROR);
-			XMD_Log::error("Repository_XNodes::update() - " . $this->getErrorString(REP_BASEIO_ERROR));
+			Logger::error("Repository_XNodes::update() - " . $this->getErrorString(REP_BASEIO_ERROR));
 			$msg = end($io->messages->messages);
-			XMD_Log::error("Repository_XNodes::update() - {$msg['message']}");
+			Logger::error("Repository_XNodes::update() - {$msg['message']}");
 			$ret = REP_BASEIO_ERROR;
 		}
 
-//		logdump(print_r($struct_io, true), $io->messages->messages);
 		return $ret;
 	}
 
@@ -621,7 +584,7 @@ class Repository_XNodes extends Repository {
 		$entity = NodeEntity::getEntity($entity);
 		if (!$this->exists($entity)) {
 			$this->addError(REP_NOT_IN_REP);
-			XMD_Log::error("Repository_XNodes::delete() - " . $this->getErrorString(REP_NOT_IN_REP));
+			Logger::error("Repository_XNodes::delete() - " . $this->getErrorString(REP_NOT_IN_REP));
 			return REP_NOT_IN_REP;
 		}
 
@@ -635,33 +598,26 @@ class Repository_XNodes extends Repository {
 			$struct_io['CHILDRENS'] = $childrens;
 		}
 
-//		logdump($entity, $struct_io);
-
 		$userId = $this->_getUserID($userName);
 
-		$io =& $this->_io;
+		$io = $this->_io;
 		$ret = $io->delete($struct_io, $userId);
 
 		if ($ret > 0) {
 			$this->addError(REP_NONE);
 			$idNode = $entity->get('idnode');
-			XMD_Log::info("Repository_XNodes::delete() - Se ha aliminado correctamente el nodo con idNode = $idNode");
+			Logger::info("Repository_XNodes::delete() - Se ha aliminado correctamente el nodo con idNode = $idNode");
 			$entity->update();
 		} else {
 			// Si BaseIO devuelve un entero negativo se trata de un error
 			$this->_baseio_error = $ret;
 			$this->addError(REP_BASEIO_ERROR);
-			XMD_Log::error("Repository_XNodes::delete() - " . $this->getErrorString(REP_BASEIO_ERROR));
+			Logger::error("Repository_XNodes::delete() - " . $this->getErrorString(REP_BASEIO_ERROR));
 			$msg = end($io->messages->messages);
-			XMD_Log::error("Repository_XNodes::delete() - {$msg['message']}");
+			Logger::error("Repository_XNodes::delete() - {$msg['message']}");
 			$ret = REP_BASEIO_ERROR;
 		}
-
-//		logdump($ret, $io->messages->messages);
-
-		// Se elimina el nodo de la cache
-//		if ($return) $this->_cacheQuery('delete', $idNode);
-
+        
 		return $ret;
 	}
 
@@ -704,7 +660,7 @@ class Repository_XNodes extends Repository {
 			// No se puede determinar cual es el padre del nodo destino
 			// $dest no puede ser un idnode ya que eso implica que el nodo existe
 			$this->addError(REP_NO_TARGET);
-			XMD_Log::error("Repository_XNodes::copy($source_path, ?) - " . $this->getErrorString(REP_NO_TARGET));
+			Logger::error("Repository_XNodes::copy($source_path, ?) - " . $this->getErrorString(REP_NO_TARGET));
 			return REP_NO_TARGET;
 		}
 
@@ -712,13 +668,13 @@ class Repository_XNodes extends Repository {
 		// El origen y el contenedor de destino deben pertenecer al repositorio.
 		if (!$this->exists($source)) {
 			$this->addError(REP_NO_SOURCE);
-			XMD_Log::error("Repository_XNodes::copy($source_path, $dest) - " . $this->getErrorString(REP_NO_SOURCE));
+			Logger::error("Repository_XNodes::copy($source_path, $dest) - " . $this->getErrorString(REP_NO_SOURCE));
 			return REP_NO_SOURCE;
 		}
 
 		if (!$this->exists($parent)) {
 			$this->addError(REP_NO_TARGET);
-			XMD_Log::error("Repository_XNodes::copy($source_path, $dest) - " . $this->getErrorString(REP_NO_TARGET));
+			Logger::error("Repository_XNodes::copy($source_path, $dest) - " . $this->getErrorString(REP_NO_TARGET));
 			return REP_NO_TARGET;
 		}
 
@@ -729,20 +685,12 @@ class Repository_XNodes extends Repository {
 		// El origen no puede ser la raiz del repositorio.
 		if ($this->_root->get('idnode') == $idSource) {
 			$this->addError(REP_INVALID_SOURCE);
-			XMD_Log::error("Repository_XNodes::copy($source_path, $dest) - " . $this->getErrorString(REP_INVALID_SOURCE));
+			Logger::error("Repository_XNodes::copy($source_path, $dest) - " . $this->getErrorString(REP_INVALID_SOURCE));
 			return REP_INVALID_SOURCE;
 		}
 
 
-		XMD_Log::debug("Repository_XNodes::copy($source_path, $dest) - Se procede a copiar el nodo");
-
-		//
-		// Realiza una copia de nodos con la accion copyNode()
-		//
-//		require_once(XIMDEX_ROOT_PATH . '/actions/copy/baseIO.php');
-//		$lastCopied = $this->_getLastCopiedResource($parent, $source_name);
-//		$messages = copyNode($idSource, $idParent, /*$recurrence*/ null);
-//		$errors = !(boolean) $messages->count(MSG_TYPE_ERROR);
+		Logger::debug("Repository_XNodes::copy($source_path, $dest) - Se procede a copiar el nodo");
 
 		//
 		// Realiza la copia de nodos con un metodo propio de esta clase
@@ -765,22 +713,15 @@ class Repository_XNodes extends Repository {
 			 * Asi que es necesario renombrar el nuevo recurso en el caso de que el contenedor
 			 * de destino y de origen sea el mismo.
 			 */
-//			if ($idParent == $sourceid) {
-//
-//				$torename = "{$source_name}_copia_" . ++$lastCopied;
-//				$torename = $dest->get('path') . '/' . $torename;
-//				$copied = NodeEntity::getEntity($torename);
-//				$ret = $this->rename($torename, $dest_name, $userName);
-//			}
 
 			$copied = NodeEntity::getEntity($dest);
 			$ret = $copied->get('idnode');
 			$this->addError(REP_NONE);
-			XMD_Log::info("Repository_XNodes::copy($source_path, $dest) - Se ha copiado el nodo correctamente.");
+			Logger::info("Repository_XNodes::copy($source_path, $dest) - Se ha copiado el nodo correctamente.");
 
 		} else {
 			$ret = REP_UNKNOWN;
-			XMD_Log::error("Repository_XNodes::copy($source_path, $dest) - No fue posible copiar el nodo.");
+			Logger::error("Repository_XNodes::copy($source_path, $dest) - No fue posible copiar el nodo.");
 		}
 
 		return $ret;
@@ -829,20 +770,14 @@ class Repository_XNodes extends Repository {
 		if ($source->get('isfile')) {
 
 			$dest = new NodeEntity_File($target);
-//			$dest->set('name', basename($target));
 			$dest->setContent($source->getContent());
-
 			$ret = $this->append($dest, $userName, null);
 
 		} else if ($source->get('isdir')) {
 
 			$dest = new NodeEntity_Dir($target);
-//			$dest->set('name', basename($target));
-
 			$ret = $this->mkdir($dest, $userName, null);
 			if ($ret <= 0) return $ret;
-
-//			$dest->update();
 
 			$col = $source->getCollection();
 			foreach ($col as $idnode) {
@@ -910,7 +845,7 @@ class Repository_XNodes extends Repository {
 
 		if (!$this->exists($entity)) {
 			$this->addError(REP_NOT_IN_REP);
-			XMD_Log::error("Repository_XNodes::rename() - " . $this->getErrorString(REP_NOT_IN_REP));
+			Logger::error("Repository_XNodes::rename() - " . $this->getErrorString(REP_NOT_IN_REP));
 			return REP_NOT_IN_REP;
 		}
 
@@ -920,7 +855,7 @@ class Repository_XNodes extends Repository {
 
 		if ($this->exists($_node)) {
 			$this->addError(REP_EXISTS);
-			XMD_Log::error("Repository_XNodes::rename() - " . $this->getErrorString(REP_EXISTS));
+			Logger::error("Repository_XNodes::rename() - " . $this->getErrorString(REP_EXISTS));
 			return REP_EXISTS;
 		}
 
@@ -932,11 +867,11 @@ class Repository_XNodes extends Repository {
 
 			if ($ret) {
 				$this->addError(REP_NONE);
-				XMD_Log::info("Repository_XNodes::rename() - Se ha renombrado el nodo con idNode = $idNode correctamente.");
+				Logger::info("Repository_XNodes::rename() - Se ha renombrado el nodo con idNode = $idNode correctamente.");
 				$entity->update();
 				$ret = $entity->get('idnode');
 			} else {
-				XMD_Log::error("Repository_XNodes::rename() - No se ha podido renombrar el nodo con idNode = $idNode.");
+				Logger::error("Repository_XNodes::rename() - No se ha podido renombrar el nodo con idNode = $idNode.");
 			}
 		}
 
@@ -963,7 +898,7 @@ class Repository_XNodes extends Repository {
 		// Debe existir en el repositorio
 		if (!$this->exists($entity)) {
 			$this->addError(REP_NOT_IN_REP);
-			XMD_Log::error("Repository_XNodes::addChannel() - " . $this->getErrorString(REP_NOT_IN_REP));
+			Logger::error("Repository_XNodes::addChannel() - " . $this->getErrorString(REP_NOT_IN_REP));
 			return REP_NOT_IN_REP;
 		}
 
@@ -980,24 +915,22 @@ class Repository_XNodes extends Repository {
 
 		$userId = $this->_getUserID($username);
 
-		$io =& $this->_io;
+		$io = $this->_io;
 		$ret = $io->update($struct_io, $userId);
 
 		if ($ret > 0) {
 			$this->addError(REP_NONE);
 			$idNode = $entity->get('idnode');
-			XMD_Log::info("Repository_XNodes::addChannel() - A channel has been set correctly to the node $idNode");
+			Logger::info("Repository_XNodes::addChannel() - A channel has been set correctly to the node $idNode");
 			$entity->update();
 		} else {
 			$this->_baseio_error = $ret;
 			$this->addError(REP_BASEIO_ERROR);
-			XMD_Log::error("Repository_XNodes::addChannel() - " . $this->getErrorString(REP_BASEIO_ERROR));
+			Logger::error("Repository_XNodes::addChannel() - " . $this->getErrorString(REP_BASEIO_ERROR));
 			$msg = end($io->messages->messages);
-			XMD_Log::error("Repository_XNodes::addChannel() - {$msg['message']}");
+			Logger::error("Repository_XNodes::addChannel() - {$msg['message']}");
 			$ret = REP_BASEIO_ERROR;
 		}
-
-//		logdump('addChannel', print_r($struct_io, true), $ret, $io->messages->messages);
 
 		return $ret;
 	}
@@ -1016,7 +949,7 @@ class Repository_XNodes extends Repository {
 		// Debe existir en el repositorio
 		if (!$this->exists($entity)) {
 			$this->addError(REP_NOT_IN_REP);
-			XMD_Log::error("Repository_XNodes::deleteChannel() - " . $this->getErrorString(REP_NOT_IN_REP));
+			Logger::error("Repository_XNodes::deleteChannel() - " . $this->getErrorString(REP_NOT_IN_REP));
 			return REP_NOT_IN_REP;
 		}
 
@@ -1028,30 +961,25 @@ class Repository_XNodes extends Repository {
 						)
 					);
 
-//		logdump(print_r($struct_io, true));
-
 		$userId = $this->_getUserID($userName);
 
-		$io =& $this->_io;
+		$io = $this->_io;
 		$ret = $io->update($struct_io, $userId);
 
 		if ($ret > 0) {
 			$this->addError(REP_NONE);
-			XMD_Log::info("Repository_XNodes::deleteChannel() - Removed the channel correctly for node $ret");
+			Logger::info("Repository_XNodes::deleteChannel() - Removed the channel correctly for node $ret");
 			$entity->update();
 		} else {
 			// Si BaseIO devuelve un entero negativo se trata de un error
 			$this->_baseio_error = $ret;
 			$this->addError(REP_BASEIO_ERROR);
-			XMD_Log::error("Repository_XNodes::deleteChannel() - " . $this->getErrorString(REP_BASEIO_ERROR));
+			Logger::error("Repository_XNodes::deleteChannel() - " . $this->getErrorString(REP_BASEIO_ERROR));
 			$msg = end($io->messages->messages);
-			XMD_Log::error("Repository_XNodes::deleteChannel() - {$msg['message']}");
+			Logger::error("Repository_XNodes::deleteChannel() - {$msg['message']}");
 			$ret = REP_BASEIO_ERROR;
 		}
 
-//		logdump($ret, $io->messages->messages);
 		return $ret;
 	}
 }
-
-?>

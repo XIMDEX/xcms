@@ -27,6 +27,7 @@
 
 
 use Ximdex\Models\Action ;
+use Ximdex\Runtime\App;
 
 	
 
@@ -34,7 +35,6 @@ use Ximdex\Models\Action ;
 		define ("XIMDEX_ROOT_PATH", realpath (dirname (__FILE__)."/../../../../"));
 	}
 	
-	 //
 	 ModulesManager::file('/inc/utils.php');
   	 ModulesManager::file('/inc/model/Batch.class.php', 'ximSYNC');
  	 ModulesManager::file('/conf/synchro_conf.php', 'ximSYNC');
@@ -52,7 +52,7 @@ use Ximdex\Models\Action ;
 				$actionObj->Action($actionId);
 				if ($actionObj->getCommand() == "managebatchs") {
 					
-					header("Location:" . \App::getValue( 'UrlRoot') . "/xmd/loadaction.php?actionid=" . $actionId . "&nodeid=NULL&method=batchlist");
+					header("Location:" . App::getValue( 'UrlRoot') . "/xmd/loadaction.php?actionid=" . $actionId . "&nodeid=NULL&method=batchlist");
 					exit();
 				}
 			}
@@ -118,9 +118,9 @@ use Ximdex\Models\Action ;
 	gPrintBodyBegin(); 
 	
     ?>
-		<script type="text/javascript" language="JavaScript" src="../../js/managebatchs.js"></script>
-	    <script>
-		    <?
+		<script type="text/javascript" src="../../js/managebatchs.js"></script>
+	    <script type="text/javascript">
+		    <?php
 		    	sajax_show_javascript();
 		    ?>
 		    
@@ -141,7 +141,7 @@ use Ximdex\Models\Action ;
 			get_batchs();
 	    </script>
 	    <div id="form_div">[ Cargando... ]</div>
-	<?
+	<?php
 	
 	gPrintBodyEnd();
 
@@ -179,5 +179,3 @@ use Ximdex\Models\Action ;
 		$batchObj = new Batch();
 		return $batchObj->prioritizeBatch($idBatch);
 	}
-	
-?>

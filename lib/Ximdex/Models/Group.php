@@ -26,7 +26,7 @@
  */
 
 namespace Ximdex\Models;
-use Ximdex\Runtime\Db as DB;
+use Ximdex\Runtime\Db;
 use Ximdex\Workflow\WorkFlow;
 use Ximdex\Models\ORM\GroupsOrm;
 use Ximdex\Runtime\App;

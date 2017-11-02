@@ -26,7 +26,7 @@
 
 namespace Ximdex\Utils;
 
-use Ximdex\Logger as XMD_log;
+use Ximdex\Logger;
 
 class Factory
 {
@@ -83,7 +83,7 @@ class Factory
                 require_once($class_path);
             } else {
                 $this->_setError("Factory::instantiate(): Unable to read $class_path ");
-                XMD_Log::error("Factory::instantiate(): Unable to read $class_path ");
+                Logger::error("Factory::instantiate(): Unable to read $class_path ");
                 return NULL;
             }
         }
@@ -97,7 +97,7 @@ class Factory
             $obj = new $class($args);
         }
         if (!is_object($obj)) {
-            XMD_Log::fatal("Could'nt instanciate the class $class");
+            Logger::fatal("Could'nt instanciate the class $class");
             return null ;
         }
         return $obj;
@@ -105,7 +105,7 @@ class Factory
 
     private function _setError($msg)
     {
-        XMD_Log::warning($msg);
+        Logger::warning($msg);
         $this->_error = $msg;
     }
 

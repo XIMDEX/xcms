@@ -1,6 +1,4 @@
 <?php
-use Ximdex\MVC\ActionAbstract;
-
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -26,12 +24,7 @@ use Ximdex\MVC\ActionAbstract;
  *  @version $Revision$
  */
 
-
-
-
-
-
-
+use Ximdex\MVC\ActionAbstract;
 
 class Action_dummy extends ActionAbstract {
 
@@ -44,4 +37,3 @@ class Action_dummy extends ActionAbstract {
 		$this->render($values, 'dummy', 'default-3.0.tpl');
 	}
 }
-?>

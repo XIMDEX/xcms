@@ -25,6 +25,7 @@
  */
 
 
+use Ximdex\Logger;
 use Ximdex\Models\Node;
 use Ximdex\Models\User;
 
@@ -42,17 +43,17 @@ class RelNewsColectorUsers extends RelNewsColectorUsers_ORM
 
 	function add($idRelNewsColector = null, $idUser = null) {
 		if (!ModulesManager::isEnabled('ximPUBLISHtools')) {
-			XMD_Log::error(_("News-colector-user relation not added. Module ximPUBLISHtools is disabled."));
+			Logger::error(_("News-colector-user relation not added. Module ximPUBLISHtools is disabled."));
 			return null;
 		}
 		
 		if(is_null($idRelNewsColector)) {
-			XMD_Log::error(_("Cannot add News-colector-user relation. Param idRelNewsColector is null."));
+			Logger::error(_("Cannot add News-colector-user relation. Param idRelNewsColector is null."));
 			return null;
 		}
 		
 		if(is_null($idUser)) {
-			XMD_Log::error(_("Cannot add News-colector-user relation. Param idUser is null."));
+			Logger::error(_("Cannot add News-colector-user relation. Param idUser is null."));
 			return null;
 		}
 		
@@ -62,7 +63,7 @@ class RelNewsColectorUsers extends RelNewsColectorUsers_ORM
 
 		$id = parent::add();
 		
-		XMD_Log::info(sprintf(_("New rel-news-colector-user added (Id: %s - IdRelNew: %s - IdUser: %s )"), $id, $idRelNewsColector, $idUser));
+		Logger::info(sprintf(_("New rel-news-colector-user added (Id: %s - IdRelNew: %s - IdUser: %s )"), $id, $idRelNewsColector, $idUser));
 		
 		return $id ? $id : null;
 	}
@@ -76,14 +77,14 @@ class RelNewsColectorUsers extends RelNewsColectorUsers_ORM
 	function getRelsByUser($idUser = null) {
 		
 		if(is_null($idUser)) {
-			XMD_Log::error(_("Cannot get News-colector-user relations. Param idUser is null."));
+			Logger::error(_("Cannot get News-colector-user relations. Param idUser is null."));
 			return null;
 		}
 		
 		$rels = $this->find('Id', 'IdUser = %s', array($idUser), MULTI);
 
 		if (!(count($rels) > 0)) {
-			XMD_Log::info(sprintf(_("User %s has not News-colector-user relations."), $idUser));
+			Logger::info(sprintf(_("User %s has not News-colector-user relations."), $idUser));
 		}
 
 		return $rels;
@@ -98,14 +99,14 @@ class RelNewsColectorUsers extends RelNewsColectorUsers_ORM
 	function getRelsByNewsColector($idRelNewsColector = null) {
 		
 		if(is_null($idRelNewsColector)) {
-			XMD_Log::error(_("Cannot get news-colector-user relations. Param idRelNewsColector is null."));
+			Logger::error(_("Cannot get news-colector-user relations. Param idRelNewsColector is null."));
 			return NULL;
 		}
 		
 		$rels = $this->find('IdRelNewsColector, IdUser, Time', 'IdRelNewsColector = %s ORDER BY Time DESC limit 1', array($idRelNewsColector), MULTI);
 
 		if (!(count($rels) > 0)) {
-			XMD_Log::info(sprintf(_("RelNewsColector %s has not news-colector-user relations."), $idRelNewsColector));
+			Logger::info(sprintf(_("RelNewsColector %s has not news-colector-user relations."), $idRelNewsColector));
 			return NULL;
 		}
 
@@ -124,7 +125,7 @@ class RelNewsColectorUsers extends RelNewsColectorUsers_ORM
 		//		They're post-automatic states but... It's necessary to notify user about them?
 		
 		if(is_null($idNew) || !($idNew > 0)) {
-			XMD_Log::error(_('Cannot get Pending relations. IdNew is null or not positive integer.'));
+			Logger::error(_('Cannot get Pending relations. IdNew is null or not positive integer.'));
 			return NULL;
 		}
 		
@@ -138,7 +139,7 @@ class RelNewsColectorUsers extends RelNewsColectorUsers_ORM
 		$dbObj->Query($query);
 		$result = array();
 		if (!($dbObj->numRows > 0)) {			
-			XMD_Log::info(_('No pending relations found for news ') . $idNew);
+			Logger::info(_('No pending relations found for news ') . $idNew);
 			return NULL;
 		}
 
@@ -185,7 +186,7 @@ class RelNewsColectorUsers extends RelNewsColectorUsers_ORM
 		$dbObj->Query($query);
 		$result = array();
 		if (!($dbObj->numRows > 0)) {			
-			XMD_Log::info(_('No pending relations found'));
+			Logger::info(_('No pending relations found'));
 			return NULL;
 		}
 

@@ -27,20 +27,8 @@
 
 namespace Ximdex\NodeTypes;
 
-use channelName;
-use description;
-use extension;
-use filter;
-use format;
-use name;
 use NodeProperty;
-use nodeTypeID;
-use parentID;
-use renderMode;
-use stateID;
-use unknown;
 use Ximdex\Models\Channel;
-use Ximdex\NodeTypes\Root;
 
 
 /**

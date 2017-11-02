@@ -39,7 +39,7 @@ use Ximdex\Models\User;
 use Ximdex\Runtime\Constants;
 use Ximdex\Utils\Session;
 use Ximdex\Workflow\WorkFlow;
-use Ximdex\Logger as XMD_Log;
+use Ximdex\Logger;
 
 
 class Auth
@@ -238,7 +238,7 @@ class Auth
         unset($nodeType);
 
         if (!$actionId > 0) {
-            XMD_Log::warning(sprintf(_("The nodetype %d has no create action associated"), $nodeTypeId));
+            Logger::warning(sprintf(_("The nodetype %d has no create action associated"), $nodeTypeId));
             return false;
         }
 

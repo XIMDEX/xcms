@@ -87,14 +87,12 @@ class Action_modifyrole extends ActionAbstract
         $values = array('name' => $role->get('Name'),
             'description' => $role->get('Description'),
             'permissions' => $allPermissionData,
-            //				'actions' => $permisionsToEdit,
             'nodetypes' => $this->getAllNodeTypes($allStates, $role, $selectedPipeline),
             'workflow_states' => $allStates,
             'pipelines' => $pipelines,
             'selected_pipeline' => $selectedPipeline,
             'go_method' => 'modifyrole'
         );
-        //error_log(print_r($allNodeTypes, true));
         $this->render($values, null, 'default-3.0.tpl');
     }
 
@@ -110,7 +108,6 @@ class Action_modifyrole extends ActionAbstract
         reset($allNodeTypes);
         $respAllNodeTypes = [];
         foreach($allNodeTypes as $i => $nodeType){
-        //for ($i = 0; $i < count($allNodeTypes); $i++) {
 
             //Skipping permissions for actions in disabled modules.
             if (!empty($nodeType['Module']) &&
@@ -144,16 +141,6 @@ class Action_modifyrole extends ActionAbstract
 
                 }
             }
-            /*if (isset($groupeds[$nodeType['IdNodeType']])) {
-                $nodeType['Description'] = $groupeds[$nodeType['IdNodeType']];
-                for ($j = $i - 1; $j >= 0; $j--) {
-                    if (isset($allNodeTypes[$j]) && $allNodeTypes[$j]["Description"] == $groupeds[$allNodeTypes[$i]['IdNodeType']]) {
-                        $allNodeTypes[$i]["actions"] = array_merge($allNodeTypes[$j]["actions"], $allNodeTypes[$i]["actions"]);
-                        unset($allNodeTypes[$j]);
-                        continue;
-                    }
-                }
-            }*/
             $respAllNodeTypes[] = $nodeType;
         }
         return $respAllNodeTypes;
@@ -212,7 +199,6 @@ class Action_modifyrole extends ActionAbstract
             'goback' => true,
             'messages' => $this->messages->messages
         );
-        //$this->render($values);
         $this->sendJSON($values);
     }
 }

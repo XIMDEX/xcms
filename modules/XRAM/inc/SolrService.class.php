@@ -24,13 +24,11 @@
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
+use Ximdex\Logger;
 use Ximdex\Models\Node;
 use Ximdex\Models\Version;
 
-
-
 require_once(XIMDEX_ROOT_PATH . "/inc/utils.php");
- //
 require("ISolrService.iface.php");
 
 /**
@@ -83,7 +81,7 @@ class SolrService implements ISolrService
 
         $version = new Version($idVersion);
         if (!($version->get('IdVersion') > 0)) {
-            XMD_Log::debug("Trying to index a version {$idVersion} that does not exist");
+            Logger::debug("Trying to index a version {$idVersion} that does not exist");
         }
 
         $node = new Node($version->get('IdNode'));
@@ -161,7 +159,7 @@ class SolrService implements ISolrService
     {
         $version = new Version($idVersion);
         if (!($version->get('IdVersion') > 0)) {
-            XMD_Log::debug("Trying to index a version {$idVersion} that does not exist");
+            Logger::debug("Trying to index a version {$idVersion} that does not exist");
         }
 
         $getVersionQuery = new SolrQuery();
@@ -175,7 +173,7 @@ class SolrService implements ISolrService
         $resp = $queryResponse->getResponse();
         $docs = $resp["response"]["docs"];
         if (!is_array($docs)) {
-            XMD_Log::warning('Could not retrieve the node version');
+            Logger::warning('Could not retrieve the node version');
             return null;
         }
 
@@ -197,5 +195,3 @@ class SolrService implements ISolrService
     }
 
 }
-
-?>

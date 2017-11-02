@@ -33,7 +33,6 @@ use Ximdex\Runtime\Cli\Shell,
     Ximdex\Logger,
     Ximdex\Runtime\App;
 use Ximdex\Runtime\Db;
-use Ximdex\Setup\Step\Modules;
 use Ximdex\Tasks\Worker;
 
 
@@ -336,10 +335,12 @@ class Module  {
 
     function log($priority, $string) {
 
+        /*
         if ($this instanceof Modules) {
             Logger::warning("Using $this->log in a class that is not an instance of Module.");
             return false;
         }
+        */
 
         $module_name = $this->name;
 

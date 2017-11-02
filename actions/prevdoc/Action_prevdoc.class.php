@@ -33,7 +33,6 @@ use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
 use Ximdex\Utils\PipelineManager;
 
-ModulesManager::file('/inc/utils.php');
 ModulesManager::file('/inc/filters/Filter.class.php');
 ModulesManager::file('/inc/repository/nodeviews/View_NodeToRenderizedContent.class.php');
 ModulesManager::file('/inc/repository/nodeviews/View_PrefilterMacros.class.php');
@@ -198,7 +197,6 @@ class Action_prevdoc extends ActionAbstract
 
     	$hash = $this->request->getParam('hash');
     	$file = sprintf('%s%s/%s', App::getValue('AppRoot'), App::getValue("TempRoot"), $hash);
-    	//$content = '';
 
     	if (file_exists($file)) {
     		$content = FsUtils::file_get_contents($file);
@@ -225,7 +223,6 @@ class Action_prevdoc extends ActionAbstract
 	 */
 	private function _normalizeXmlDocument($xmldoc) {
 
-		/*$xmldoc = '<?xml version="1.0" encoding="UTF-8"?>' . \Ximdex\Utils\String::stripslashes( $xmldoc);*/
 		$xmldoc = \Ximdex\Utils\Strings::stripslashes( $xmldoc);
 
 		$doc = new DOMDocument();

@@ -24,6 +24,7 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
+use Ximdex\Logger;
 use Ximdex\Helpers\ServerConfig;
 use Ximdex\Models\Group;
 use Ximdex\Models\Node;
@@ -301,7 +302,6 @@ class Action_workflow_forward extends ActionAbstract {
         $idGroup = $this->request->getParam('groupid');
         $idState = $this->request->getParam('stateid');
         $idNode = $this->request->getParam('nodeid');
-        //$idNode = $this->path2id($idNode);
 
         $group = new Group($idGroup);
         $workflow = new WorkFlow($idNode, $idState);
@@ -536,7 +536,6 @@ class Action_workflow_forward extends ActionAbstract {
     public function publicateNode() {
 
         $idNode = $this->request->getParam('nodeid');
-        //$idNode = $this->path2id($idNode);
         //The publication times are in milliseconds.
         $dateUp = $this->request->getParam('dateUp_timestamp');
         $dateDown = $this->request->getParam('dateDown_timestamp');
@@ -555,12 +554,12 @@ class Action_workflow_forward extends ActionAbstract {
         $idState = $this->request->getParam('stateid');
         $texttosend = $this->request->getParam('texttosend');
 	$lastPublished = $this->request->getParam('latest') == '1' ? false : true;
-        XMD_Log::info("ADDSECTION publicateNode PRE");
+        Logger::info("ADDSECTION publicateNode PRE");
 	$this->sendToPublish($idNode, $up, $down, $markEnd, $force, $structure, $deepLevel, $sendNotifications, $notificableUsers, $idState, $texttosend, $lastPublished);
 	}
 
     protected function sendToPublish($idNode, $up, $down, $markEnd, $force, $structure, $deepLevel, $sendNotifications, $notificableUsers, $idState, $texttosend, $lastPublished) {
-        XMD_Log::info("ADDSECTION publicateNode sendToPublish parent");
+        Logger::info("ADDSECTION publicateNode sendToPublish parent");
         $this->addJs('/actions/workflow_forward/resources/js/workflow_forward.js');
 
         //If send notifications
@@ -626,16 +625,16 @@ class Action_workflow_forward extends ActionAbstract {
         $firstState = $workflow->GetInitialState();
         $node->setState($firstState);
 
-        XMD_Log::info("ADDSECTION sendToPublish pre render");
+        Logger::info("ADDSECTION sendToPublish pre render");
         
         if (ModulesManager::isEnabled('ximSYNC')) {
-            XMD_Log::info("ADDSECTION sendToPublish pre render if");
+            Logger::info("ADDSECTION sendToPublish pre render if");
             $values = array(
                 'options' => $arrayOpciones,
                 'result' => $valuesToShow,
                 'messages' => $this->messages->messages
             );
-            XMD_Log::info("ADDSECTION sendToPublish pre render else value: " . print_r($values,true));
+            Logger::info("ADDSECTION sendToPublish pre render else value: " . print_r($values,true));
 
             $this->render($values, 'show_results', 'default-3.0.tpl');
             return;

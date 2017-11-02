@@ -3,6 +3,7 @@ use Ximdex\Models\Group;
 use Ximdex\Models\Node;
 use Ximdex\Models\Role;
 use Ximdex\MVC\ActionAbstract;
+use Ximdex\Runtime\App;
 
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
@@ -61,7 +62,7 @@ class Action_modifygroupsnode extends ActionAbstract
         $group = new Group();
         $allGroups = $group->find('IdGroup, Name',
             'IdGroup in (%s) AND IdGroup <> %s',
-            array($strGroupList, \App::getValue('GeneralGroup')),
+            array($strGroupList, App::getValue('GeneralGroup')),
             MULTI, false);
 
         if (is_array($allGroups)) {
@@ -182,5 +183,3 @@ class Action_modifygroupsnode extends ActionAbstract
         $this->redirectTo('index');
     }
 }
-
-?>

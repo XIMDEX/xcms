@@ -30,7 +30,7 @@ namespace Ximdex\Models;
 
 
 use Ximdex\Models\ORM\RolesOrm;
-use Ximdex\Runtime\Db as DB;
+use Ximdex\Runtime\Db;
 
 
 class Role extends RolesOrm

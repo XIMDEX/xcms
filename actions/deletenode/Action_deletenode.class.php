@@ -164,9 +164,7 @@ class Action_deletenode extends ActionAbstract {
 		if (sizeof($depList) > 0) {
 			foreach($depList as $idDep) {
 				$depNode = new Node($idDep);
-			//	$values["depList"][$idDep]["name"] = $depNode->GetNodeName();
 				$depListTmp[$idDep]["name"] = $depNode->GetNodeName();
-			//	$values["depList"][$idDep]["path"] = $depNode->GetPath();
 				$depListTmp[$idDep]["path"] = substr($depNode->GetPath(),16);
 			}
 		}

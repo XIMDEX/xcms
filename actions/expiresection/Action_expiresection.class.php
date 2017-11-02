@@ -82,4 +82,3 @@ class Action_expiresection extends ActionAbstract {
 		}
 	}
 }
-?>

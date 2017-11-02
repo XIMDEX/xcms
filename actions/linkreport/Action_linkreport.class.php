@@ -35,10 +35,6 @@ use Ximdex\MVC\ActionAbstract;
 
 class Action_linkreport extends ActionAbstract
 {
-
-    //TODO: pagination results
-    //const ITEMS_PER_PAGE = '21';
-
     function index()
     {
         $idNode = $this->request->getParam("nodeid");

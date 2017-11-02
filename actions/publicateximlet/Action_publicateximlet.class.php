@@ -24,14 +24,11 @@
  *  @version $Revision$
  */
 
-
 use Ximdex\Models\Node;
 use Ximdex\Models\NodeType;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Utils\Sync\SynchroFacade;
 use Ximdex\Utils\Sync\SyncManager;
-
-
 
 class Action_publicateximlet extends ActionAbstract {
 
@@ -94,9 +91,6 @@ class Action_publicateximlet extends ActionAbstract {
 			$syncResult = $syncFacade->pushDocInPublishingPool($idNode, $upDate, NULL, $flags);
 		}
 
-
-		//$values = array("result" => $syncResult);
-		//$this->render($values, 'publicate_ximlet', 'default-3.0.tpl');
 		$this->messages->add(_("The node has been successfully sent to publish"), MSG_TYPE_NOTICE);
 
 		$values = array(
@@ -144,5 +138,3 @@ class Action_publicateximlet extends ActionAbstract {
 	 }
 
 }
-
-?>

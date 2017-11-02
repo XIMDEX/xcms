@@ -26,8 +26,8 @@
 
 namespace Ximdex\Models;
 
+use Ximdex\Logger;
 use Ximdex\Models\ORM\RelServersChannelsOrm;
-use Ximdex\Logger as XMD_Log;
 
 class RelServersChannels extends RelServersChannelsOrm
 {
@@ -37,7 +37,7 @@ class RelServersChannels extends RelServersChannelsOrm
 		$channels = $this->find('IdChannel', 'IdServer = %s', array('IdServer' => $serverId), MONO);
 
 		if (!(sizeof($channels) > 0)) {
-			XMD_Log::info('Server without associated channels');
+			Logger::info('Server without associated channels');
 			return false;
 		}
 

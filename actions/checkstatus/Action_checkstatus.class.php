@@ -113,5 +113,3 @@ class Action_checkstatus extends ActionAbstract
     }
 
 }
-
-?>

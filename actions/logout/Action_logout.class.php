@@ -27,6 +27,7 @@
 
 use Ximdex\Authenticator;
 use Ximdex\MVC\ActionAbstract;
+use Ximdex\Runtime\App;
 
 
 ModulesManager::file('/inc/model/NodeEdition.class.php');
@@ -41,7 +42,7 @@ class Action_logout extends ActionAbstract
         $nodeEdition->deleteByUser($userID);
         $authenticator = new Authenticator();
         $authenticator->logout();
-        header(sprintf("Location: %s/", \App::getValue( 'UrlRoot')));
+        header(sprintf("Location: %s/", App::getValue( 'UrlRoot')));
         die();
     }
 

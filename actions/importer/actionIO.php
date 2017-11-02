@@ -27,9 +27,6 @@ use Ximdex\Utils\ZipArchiver;
  *  @version $Revision$
  */
 
-
-
-	
 	function unzipFile($source, $dest) {
 		$zipArchiver = new ZipArchiver($source);
 		return $zipArchiver->unpack($dest);
@@ -49,4 +46,3 @@ use Ximdex\Utils\ZipArchiver;
 		die($messages->getXml($status));
 		
 	}
-?>

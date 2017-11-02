@@ -1,7 +1,7 @@
 <?php
 namespace Ximdex\Utils;
 
-use Ximdex\Logger as XMD_Log;
+use Ximdex\Logger;
 
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
@@ -38,7 +38,7 @@ class SerializerXMLRPC
     {
 
         if (!is_array($data) || !isset($data['method']) || !isset($data['params'])) {
-            XMD_Log::error('Los parametros enviados no son validos: Serializer_XMLRPC::encode()');
+            Logger::error('Los parametros enviados no son validos: Serializer_XMLRPC::encode()');
         }
 
         $encoded = null;
@@ -47,7 +47,7 @@ class SerializerXMLRPC
             // En PHP4 la extension esta habilitada por defecto
             $encoded = @xmlrpc_encode_request($data['method'], $data['params']);
         } else {
-            XMD_Log::warning('Se esta intentando serializar usando la funcion inexistente xmlrpc_encode_request()');
+            Logger::warning('Se esta intentando serializar usando la funcion inexistente xmlrpc_encode_request()');
         }
         return $encoded;
     }
@@ -60,7 +60,7 @@ class SerializerXMLRPC
             // En PHP4 la extension esta habilitada por defecto
             $decoded = @xmlrpc_decode_request($xmlrpc, $method);
         } else {
-            XMD_Log::warning('Se esta intentando deserializar usando la funcion inexistente xmlrpc_decode()');
+            Logger::warning('Se esta intentando deserializar usando la funcion inexistente xmlrpc_decode()');
         }
         return $decoded;
     }

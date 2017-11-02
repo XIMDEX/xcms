@@ -25,9 +25,7 @@
  */
 
 use Ximdex\Models\Node;
-use Ximdex\Models\NodeType;
 use Ximdex\MVC\ActionAbstract;
-use Ximdex\Utils\Logs\Log;
 use Ximdex\Utils\Sync\SynchroFacade;
 
 class Action_publicatesection extends ActionAbstract
@@ -41,16 +39,6 @@ class Action_publicatesection extends ActionAbstract
         $node = new Node($idNode);
         $nodeTypeName = $node->nodeType->GetName();
         $publishabledNodeTypes = array();
-        /*
-        $nodeTypes = array('ImageFile', 'XmlDocument');
-
-        foreach ($nodeTypes as $type) {
-            $nodeType = new NodeType();
-            $nodeType->SetByName($type);
-            //$nameShowed = preg_match('/image/i', $type) > 0 ? 'Imagen' : 'Documento';
-            //$publishabledNodeTypes[] = array('id' => $nodeType->get('IdNodeType'), 'name' => $nameShowed);
-        }
-		*/
         
         $values = array(
             'go_method' => 'publicate_section',
@@ -109,37 +97,5 @@ class Action_publicatesection extends ActionAbstract
         );
 
         $this->sendJSON($values);
-    }
-
-    function publication_progress()
-    {
-
-        if (!defined('LOGGER_LEVEL_DEBUG')) define('LOGGER_LEVEL_DEBUG', 0x0001);
-        if (!defined('LOGGER_LEVEL_INFO')) define('LOGGER_LEVEL_INFO', 0x0002);
-        if (!defined('LOGGER_LEVEL_WARNING')) define('LOGGER_LEVEL_WARNING', 0x0003);
-        if (!defined('LOGGER_LEVEL_ERROR')) define('LOGGER_LEVEL_ERROR', 0x0004);
-        if (!defined('LOGGER_LEVEL_FATAL')) define('LOGGER_LEVEL_FATAL', 0x0005);
-
-        ModulesManager::file('/conf/install-modules.php');
-
-        $file = 'publication_logger';
-        $sort = 'DESC';
-        $level = 'LOGGER_LEVEL_ALL';
-        $level = eval("return $level;");
-
-        $logger =& Log::getLogger($file);
-        if (is_null($logger)) exit;
-        $response = $logger->read();
-
-        $parser = $response['parser'];
-
-        ModulesManager::file('/inc/log/parser/' . $parser . '.class.php');
-
-        $text = nl2br(htmlentities($response['text']));
-        $cmd = sprintf('return %s::parse($text, $level, $sort);', $parser);
-
-        $values['text'] = eval($cmd);
-
-        $this->render($values, null, "only_template.tpl");
     }
 }

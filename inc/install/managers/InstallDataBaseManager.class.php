@@ -152,7 +152,7 @@ class InstallDataBaseManager extends InstallManager
 
     public function createDataBase($name)
     {
-        if (isset($GLOBALS['docker']))
+        if (isset($_SERVER['DOCKER_CONF_HOME']))
             return true;
         $result = false;
         if ($this->dbConnection) {
@@ -169,7 +169,7 @@ class InstallDataBaseManager extends InstallManager
 
     public function deleteDataBase($name)
     {
-        if (isset($GLOBALS['docker']))
+        if (isset($_SERVER['DOCKER_CONF_HOME']))
             return true;
         $result = false;
         if ($this->dbConnection) {
@@ -226,7 +226,7 @@ class InstallDataBaseManager extends InstallManager
     {
         $result = false;
         if ($this->dbConnection) {
-            if ($host == 'localhost' and !isset($GLOBALS['docker']))
+            if ($host == 'localhost' and !isset($_SERVER['DOCKER_CONF_HOME']))
                 $query = " SELECT user FROM mysql.user where user='$userName' and host='localhost'";
             else
                 $query = " SELECT user FROM mysql.user where user='$userName' and host='%'";
@@ -247,7 +247,7 @@ class InstallDataBaseManager extends InstallManager
             $host = $host[0];
             try
             {
-                if ($host == 'localhost' and !isset($GLOBALS['docker']))
+                if ($host == 'localhost' and !isset($_SERVER['DOCKER_CONF_HOME']))
                 {
                     Logger::info("Creating user '$userName'@'localhost'");
                     $sql = "CREATE USER '$userName'@'localhost' IDENTIFIED BY '$pass'";

@@ -27,13 +27,6 @@
 
 namespace Ximdex\NodeTypes;
 
-use canAttachGroups;
-use description;
-use hasFSEntity;
-use icon;
-use isContentNode;
-use isRenderizable;
-use name;
 use Ximdex\Models\NodeType;
 
 

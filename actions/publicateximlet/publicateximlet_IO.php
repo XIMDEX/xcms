@@ -24,9 +24,6 @@
  *  @version $Revision$
  */
 
-
-
-
 ModulesManager::file('/actions/publicateximlet/publicateximlet.php');
 
 function main($argc, $argv) {
@@ -43,8 +40,4 @@ function main($argc, $argv) {
 
 }
 
-
 main($argc, $argv);
-
-
-?>

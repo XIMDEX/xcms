@@ -28,6 +28,7 @@
 namespace Ximdex\MVC;
 
 
+use Ximdex\Logger;
 use Ximdex\Notifications\EmailNotificationStrategy;
 use ModulesManager;
 use Ximdex\Parsers\ParsingJsGetText;
@@ -41,9 +42,6 @@ use Ximdex\Utils\Factory;
 use Ximdex\Utils\QueryManager;
 use Ximdex\Utils\Session;
 use Ximdex\Notifications\XimdexNotificationStrategy;
-use Ximdex\Logger as XMD_Log;
-
-Use Ximdex\Utils\Logs\Action_log;
 
 
 /**
@@ -157,8 +155,7 @@ class ActionAbstract extends IController
         $action = new Action();
         $data = $action->find(
             'Command, Name, Description, Module',
-            //'IdNodeType = %s and Command = %s and Module is %s',
-        		'IdNodeType = %s and Command = %s and Module ' . (($module === null) ? 'is' : '=') . ' %s',
+        	'IdNodeType = %s and Command = %s and Module ' . (($module === null) ? 'is' : '=') . ' %s',
             array($nodeTypeId, $actionName, $module)
         );
 
@@ -168,7 +165,6 @@ class ActionAbstract extends IController
 
         }
 
-        //debug::log($data,$actionName, $module, $actionId, $nodeId);
         return $data;
     }
 
@@ -182,13 +178,7 @@ class ActionAbstract extends IController
     {
         // Setting path or subset which current action belongs to
         $nodeid = $request->getParam("nodeid");
-        //$action = $request->getParam("action");
         $actionid = $request->getParam("actionid");
-
-        if ($nodeid && $actionid) {
-            // $action = new Action($actionid);
-            //XMD_Log::debug("MVC::ActionAbstract calling action $actionid (" . $action->get('Command') . ") in node $nodeid ");
-        }
 
         $method = ($var = $request->getParam("method")) ? $var : 'index';
         $this->request = $request;
@@ -215,7 +205,7 @@ class ActionAbstract extends IController
             $this->logInitAction();
             $this->$method();
         } else {
-            XMD_Log::debug("MVC::ActionAbstract Metodo {$method} not found");
+            Logger::debug("MVC::ActionAbstract Method {$method} not found");
         }
 
     }
@@ -237,22 +227,26 @@ class ActionAbstract extends IController
 
     private function logInitAction()
     {
-
         $this->endActionLogged = false;
-        Action_log::info("Init " . $this->getDefaultLogMessage());
-        Action_log::debug("Request: " . print_r($this->request, true));
-
+        $defaultLog = Logger::get_active_instance();
+        Logger::setActiveLog('actions');
+        Logger::info("Init " . $this->getDefaultLogMessage());
+        Logger::debug("Request: " . print_r($this->request, true));
+        Logger::setActiveLog($defaultLog);
     }
 
     protected function logEndAction($success = true, $message = null)
     {
-
         $message = $message ? ". $message" : "";
+        
+        $defaultLog = Logger::get_active_instance();
+        Logger::setActiveLog('actions');
         if ($success)
-            Action_log::info("FINISH OK " . $this->getDefaultLogMessage() . " $message");
+            Logger::info("FINISH OK " . $this->getDefaultLogMessage() . " $message");
         else
-            Action_log::error("FINISH FAIL " . $this->getDefaultLogMessage() . " $message");
-
+            Logger::error("FINISH FAIL " . $this->getDefaultLogMessage() . " $message");
+        Logger::setActiveLog($defaultLog);
+        
         $this->endActionLogged = true;
     }
 
@@ -328,13 +322,13 @@ class ActionAbstract extends IController
             if ($this->request->getParam("ajax") == "json") {
 
                 //If there are some errors and op=json, errors are returned in json format
-                if (isset($arrValores["messages"]) /*&& isset($arrValores["messages"][0])*/) {
+                if (isset($arrValores["messages"])) {
                     $this->sendJSON($arrValores["messages"]);
                 } else {
                     $this->sendJSON($arrValores);
                 }
 
-            } else if (isset($arrValores["messages"]) /*&& isset($arrValores["messages"][0])*/) {
+            } else if (isset($arrValores["messages"])) {
 
                 //If there are some arrores and op is not found, the errors are shown in a message.
                 $layout = 'messages.tpl';
@@ -352,7 +346,6 @@ class ActionAbstract extends IController
         }
 
         $this->renderer->setTemplate(XIMDEX_ROOT_PATH . '/xmd/template/Smarty/layouts/' . $layout);
-//		$this->request->setParam("outHTML", $this->renderer->render($view));
         $output = $this->renderer->render($view);
 
         // Apply widgets renderer after smarty renderer
@@ -465,30 +458,6 @@ class ActionAbstract extends IController
 
         $this->addJs(urldecode($file));
     }
-
-    /**
-     * <p>Genera y añade el código Javascript necesario para
-     * lanzar la siguiente acción tras la actual.</p>
-     * <p>Ximdex será el encargado de obtener la acción siguiente a la actual
-     * y ejecutarla sobre el nodo especificado.</p>
-     *
-     * @param $idnode int  id del nodo sobre el que ejecutar la siguiente acción
-     */
-    /*function nextAction($idnode) {
-        $queryManager = new QueryManager(false);
-        $fileNextAction = sprintf('%s%s',
-            '/xmd/loadaction.php',
-            $queryManager->buildWith(array(
-                    'xparams[id_node]' => $idnode,
-                    'xparams[action_name]' => str_replace("Action_", "", get_class($this)),
-                    'js_file' => 'nextAction',
-                    'method' => 'includeDinamicJs',
-                    'void' => 'SpacesInIE7HerePlease'
-            ))
-        );
-
-        $this->addJs(urldecode($fileNextAction));
-    }*/
 
     /**
      * @param $_js
@@ -688,11 +657,7 @@ class ActionAbstract extends IController
         if (!ModulesManager::isEnabled('ximTOUR')) {
             return false;
         }
-        // $actionsStats = new ActionsStats() ;
         $numReps = App::getValue('ximTourRep');
-        if (!$action) {
-            // $action = $this->actionCommand;
-        }
         $user = new User (Session::get("userID"));
         $result = $user->GetNumAccess();
         return ($result === null || $result < $numReps) ? true : false;

@@ -25,6 +25,7 @@
  */
 namespace Ximdex\Utils\Sync;
 
+use Ximdex\Runtime\App;
 use Ximdex\Runtime\DataFactory;
 use DexCache;
 use Mail;
@@ -34,9 +35,7 @@ use Ximdex\Models\Node;
 
 include_once(XIMDEX_ROOT_PATH . '/inc/mail/Mail.class.php');
 
-/**
- *
- */
+
 class SyncManager
 {
 
@@ -98,8 +97,6 @@ class SyncManager
 		if ($deleteOld) {
 			// DUE -> OUTDATED older frames.
 			$sync->DeleteFlaps($node_id, $up, $down, $markEnd);
-			// Frame adjusting.
-			// $sync->DeleteFramesFromNow($node_id,1,$up);
 		}
 
 		// TODO: Resolve linked question...
@@ -135,12 +132,11 @@ class SyncManager
 
 		$node = new Node($node_id);
 		if ($node->nodeType->get('Module') == 'ximNEWS') {
-//		if (strtolower($type) == 'ximnews') {
 			$sync->AssociateFrameVersion($frameID[0], $versionID);
 		}
 
 		// Add relation to cache.
-		if (\App::getValue('dexCache')) {
+		if (App::getValue('dexCache')) {
 			DexCache::setRelation($node_id, $frameID, $versionID);
 		}
 
@@ -150,7 +146,6 @@ class SyncManager
 			$name = $node->Get('Name');
 
 			if ($node->nodeType->get('Module') == 'ximNEWS') {
-				//	    if(strtolower($type) == 'ximnews'){
 				$bulletinID = $this->getFlag('bulletinID');
 				$node = new node($bulletinID);
 				$bulletinName = $node->Get('Name');
@@ -192,5 +187,3 @@ class SyncManager
 	}
 
 }
-
-?>

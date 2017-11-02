@@ -24,6 +24,7 @@
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
+use Ximdex\Logger;
 use Ximdex\Models\Node;
 use Ximdex\Models\Version;
 
@@ -32,7 +33,6 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 }
 
 require_once(XIMDEX_ROOT_PATH . "/inc/utils.php");
- //
 require_once("ISolrService.iface.php");
 require_once(XIMDEX_ROOT_PATH . '/extensions/vendors/autoload.php');
 
@@ -70,7 +70,7 @@ class SolariumSolrService implements ISolrService
             )
         );
 
-        XMD_Log::info("instantiate solr client with params: $solrServer;$solrPort;$solrPath;$solrCore");
+        Logger::info("instantiate solr client with params: $solrServer;$solrPort;$solrPath;$solrCore");
         $this->solrClient = new Solarium\Client($options);
     }
 
@@ -89,7 +89,7 @@ class SolariumSolrService implements ISolrService
 
         $version = new Version($idVersion);
         if (!($version->get('IdVersion') > 0)) {
-            XMD_Log::debug("Trying to index a version {$idVersion} that does not exist");
+            Logger::debug("Trying to index a version {$idVersion} that does not exist");
         }
 
         $node = new Node($version->get('IdNode'));
@@ -106,7 +106,7 @@ class SolariumSolrService implements ISolrService
             $response = $this->solrClient->update($updateRequest);
             return $response->getStatus() === 0 ? true : false;
         } catch (Exception $e) {
-            XMD_Log::debug($e->getMessage());
+            Logger::debug($e->getMessage());
             return false;
         }
     }
@@ -156,7 +156,7 @@ class SolariumSolrService implements ISolrService
     {
         $version = new Version($idVersion);
         if (!($version->get('IdVersion') > 0)) {
-            XMD_Log::debug("Trying to index a version {$idVersion} that does not exist");
+            Logger::debug("Trying to index a version {$idVersion} that does not exist");
         }
 
         $getVersionQuery = $this->solrClient->createSelect();
@@ -170,7 +170,7 @@ class SolariumSolrService implements ISolrService
             $queryResponse = $this->solrClient->select($getVersionQuery);
 
             if ($queryResponse->getNumFound() === 0) {
-                XMD_Log::warning('Could not retrieve the node version');
+                Logger::warning('Could not retrieve the node version');
                 return null;
             }
 
@@ -179,7 +179,7 @@ class SolariumSolrService implements ISolrService
             $res = array('id' => $doc['id'], 'content' => $doc['content']);
             return $res;
         } catch (Exception $e) {
-            XMD_Log::error($e->getMessage());
+            Logger::error($e->getMessage());
             return null;
         }
     }
@@ -198,12 +198,10 @@ class SolariumSolrService implements ISolrService
         try {
             $this->solrClient->update($solrUpdateRequest);
         } catch (Exception $e) {
-            XMD_Log::debug($e->getMessage());
+            Logger::debug($e->getMessage());
             return false;
         }
         return true;
     }
 
 }
-
-?>

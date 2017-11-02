@@ -26,9 +26,7 @@
 
 
 namespace Ximdex\Utils\Sync;
-/**
- *
- */
+
 class Mutex
 {
 
@@ -74,8 +72,8 @@ class Mutex
 			return false;
 		} else {
 			//old process is dead.
-			if (($handler = fopen($this->file_name, "w+")) == false) {
-				fclose($handler);
+			if (($handler = @fopen($this->file_name, "w+")) === false) {
+				// fclose($handler);
 				$this->is_acquired = false;
 				return false;
 			}

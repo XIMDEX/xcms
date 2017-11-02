@@ -28,6 +28,8 @@
 /**
  * XIMDEX_ROOT_PATH
  */
+use Ximdex\Logger;
+
 if (!defined("XIMDEX_ROOT_PATH"))
     define("XIMDEX_ROOT_PATH", realpath(dirname(__FILE__) . "/../../../"));
 
@@ -101,8 +103,7 @@ class Parser
         $exito = $mydoc->loadXML($this->input_file);
 
         if (!$exito) {
-            //echo "Error while loading XML";
-            XMD_Log::write("Error while loading XML", 8);
+            Logger::write("Error while loading XML", 8);
         } else {
             $doc_element = $mydoc->documentElement;
             if ($mydoc->documentElement->hasChildNodes()) {
@@ -125,9 +126,6 @@ class Parser
                 $document->renderer = new latex_document();
                 $document->open_document($handler, $doc_element);
                 $this->unit = $document->getUnit();
-                // put_javascript is in latex.class.php and latex_javascript.class.php
-                //			$document->put_javascript($mydoc, $handler);
-                //			$document->open_form($handler);
 
                 // Obtaining of canvas...
                 $canvas = $doc_element->getElementsByTagName("canvas");
@@ -158,9 +156,6 @@ class Parser
                 $blockAnalizer->handler =& $handler;
                 $blockAnalizer->style_obj =& $style;
                 $this->scanNodes($canvas, $blockAnalizer);
-
-                // It closes the form
-                //			$document->close_form($handler);
 
                 // It closes the document
                 $document->close_document($handler);

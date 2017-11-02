@@ -24,7 +24,7 @@
  *  @version $Revision$
  */
 
-
+	use Ximdex\Runtime\App;
 
 	function batchListForm ($errorMsg = "", $printMode = false) {
 		
@@ -120,7 +120,7 @@
 					<a href="javascript:parent.deletetabpage(parent.selected);" class="filacerrar"><?php echo
 						_('Close window');?> <img src="<?php
 
- echo \App::getValue( 'UrlRoot'); ?>/xmd/images/botones/cerrar.gif" alt="" border="0">
+ echo App::getValue( 'UrlRoot'); ?>/xmd/images/botones/cerrar.gif" alt="" border="0">
 					</a>
 				</td>
 			</tr>

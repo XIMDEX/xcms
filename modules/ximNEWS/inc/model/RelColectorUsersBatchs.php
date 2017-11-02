@@ -27,6 +27,8 @@
 
 
 
+use Ximdex\Logger;
+
 ModulesManager::file('/inc/model/orm/RelColectorUsersBatchs_ORM.class.php', 'ximNEWS');
 
 
@@ -43,17 +45,17 @@ class RelColectorUsersBatchs extends RelColectorUsersBatchs_ORM
 	function add($idColectorUsers = null, $idBatch = null) {
 		
 		if (!ModulesManager::isEnabled('ximPUBLISHtools')) {
-			XMD_Log::error(_("Colector-user-batch relation not added. XimPUBLISHtools module is disabled."));
+			Logger::error(_("Colector-user-batch relation not added. XimPUBLISHtools module is disabled."));
 			return null;
 		}
 		
 		if(is_null($idColectorUsers)) {
-			XMD_Log::error(_("Colector-user-batch relation could NOT be added. IdColectorUsers param is null."));
+			Logger::error(_("Colector-user-batch relation could NOT be added. IdColectorUsers param is null."));
 			return null;
 		}
 		
 		if(is_null($idBatch)) {
-			XMD_Log::error(_("Colector-user-batch relation could NOT be added. IdBatch param is null."));
+			Logger::error(_("Colector-user-batch relation could NOT be added. IdBatch param is null."));
 			return null;
 		}
 		
@@ -62,7 +64,7 @@ class RelColectorUsersBatchs extends RelColectorUsersBatchs_ORM
 
 		$id = parent::add();
 		
-		XMD_Log::info(sprintf(_("New relation colector-user-batch added (Id: %s - IdColectorUser: %s - IdBatch: %s )"), $id, $idColectorUsers, $idBatch));
+		Logger::info(sprintf(_("New relation colector-user-batch added (Id: %s - IdColectorUser: %s - IdBatch: %s )"), $id, $idColectorUsers, $idBatch));
 		
 		return $id ? $id : null;
 	}
@@ -75,7 +77,7 @@ class RelColectorUsersBatchs extends RelColectorUsersBatchs_ORM
 
 	function getPublicationProgress($idColectorUsers = null) {
 		if(is_null($idColectorUsers)) {
-			XMD_Log::error(_("Cannot get colector-user-batch publication progress. IdColectorUsers param is null."));
+			Logger::error(_("Cannot get colector-user-batch publication progress. IdColectorUsers param is null."));
 			return null;
 		}
 
@@ -92,7 +94,7 @@ class RelColectorUsersBatchs extends RelColectorUsersBatchs_ORM
 
 		$dbObj->Query($query);
 		if (!($dbObj->numRows > 0)) {			
-			XMD_Log::info(_('No colector-user-batchs relations found for colector-user id: ') . $idColectorUsers);
+			Logger::info(_('No colector-user-batchs relations found for colector-user id: ') . $idColectorUsers);
 			return NULL;
 		}
 
@@ -104,7 +106,7 @@ class RelColectorUsersBatchs extends RelColectorUsersBatchs_ORM
 			$dbObj->Next();
 		}
 		
-		XMD_Log::info(sprintf(_('Colector-user-batch progress: TOTAL: %d - ENDED: %d - PENDING: %d'), ($result['ended'] + $result['pending']), $result['ended'], $result['pending']));
+		Logger::info(sprintf(_('Colector-user-batch progress: TOTAL: %d - ENDED: %d - PENDING: %d'), ($result['ended'] + $result['pending']), $result['ended'], $result['pending']));
 		
 		return $result;
 	}

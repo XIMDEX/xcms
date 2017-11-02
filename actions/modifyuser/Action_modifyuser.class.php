@@ -110,7 +110,6 @@ class Action_modifyuser extends ActionAbstract {
     	}
 
     	$this->messages->mergeMessages($user->messages);
-		//$this->reloadNode( $node->get('IdParent') );
 		$values = array('messages' => $this->messages->messages);
 		$this->sendJSON($values);
     }

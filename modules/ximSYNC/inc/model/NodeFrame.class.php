@@ -24,6 +24,7 @@
  *  @version $Revision$
  */
 
+use Ximdex\Logger;
 use Ximdex\Models\Node;
 use Ximdex\Models\Version;
 use Ximdex\Runtime\DataFactory;
@@ -75,7 +76,7 @@ class NodeFrame extends NodeFrames_ORM {
 			return $idNodeFrame;
 		}
 
-		XMD_Log::info("ERROR: Creating nodeframe");
+		Logger::info("ERROR: Creating nodeframe");
 		return NULL;
     	}
 
@@ -232,7 +233,7 @@ class NodeFrame extends NodeFrames_ORM {
 				$sf = new ServerFrame();
 				$sfResult = $sf->find('IdChannelFrame', 'IdNodeFrame = %s', array($idNodeFrame), MONO);
 				if (empty($sfResult)) {
-					XMD_Log::error('ServerFrame not found for NodeFrame ' . $idNodeFrame);
+					Logger::error('ServerFrame not found for NodeFrame ' . $idNodeFrame);
 					return false;
 				}
 				foreach($sfResult as $idChannelFrame) {
@@ -290,7 +291,7 @@ class NodeFrame extends NodeFrames_ORM {
 		$node = new Node($nodeId);
 
 		if ($node->get('Name') != $name) {
-			XMD_Log::info("Document's name changed: rep. ancestors");
+			Logger::info("Document's name changed: rep. ancestors");
 			return true;
 		}
 
@@ -300,7 +301,7 @@ class NodeFrame extends NodeFrames_ORM {
 		$path = $result[0];
 
 		if ($path != $node->GetPublishedPath()) {
-			XMD_Log::info("Document's path changed: rep. ancestors");
+			Logger::info("Document's path changed: rep. ancestors");
 			return true;
 		}
 
@@ -402,5 +403,3 @@ class NodeFrame extends NodeFrames_ORM {
 
     	}
 }
-
-?>

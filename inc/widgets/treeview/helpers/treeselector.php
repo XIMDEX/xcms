@@ -25,6 +25,7 @@
  */
 
 use Ximdex\Models\Node;
+use Ximdex\Runtime\App;
 
 if (!defined('XIMDEX_ROOT_PATH'))
 	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../../../"));
@@ -32,7 +33,7 @@ if (!defined('XIMDEX_ROOT_PATH'))
 ModulesManager::file('/inc/utils.php');
 
 \Ximdex\Utils\Session::check();
-$urlroot = \App::getValue( 'UrlRoot');
+$urlroot = App::getValue( 'UrlRoot');
 
 /* Verifica variables $_GET
  * emartos 04/05/2007
@@ -46,7 +47,7 @@ $nodeType = isset ($_GET['nodetype']) ? $_GET['nodetype'] : null;
 
 if(!isset ($rootID))
 	{
-	$rootID = \App::getValue("ProjectsNode");
+	$rootID = App::getValue("ProjectsNode");
 	}
 $rootNode->SetID($rootID);
 ?>

@@ -28,8 +28,8 @@
 namespace Ximdex\Models;
 
 use I_PipeTransitions;
+use Ximdex\Logger;
 use Ximdex\Models\ORM\PipeProcessOrm;
-use Ximdex\Logger as XMD_Log ;
 
 
 require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/iterators/I_PipeTransitions.class.php');
@@ -58,7 +58,7 @@ class PipeProcess extends PipeProcessOrm
     public function loadByName($name)
     {
         if (empty($name)) {
-            XMD_Log::error('Se ha solicitado la carga de un proceso sin introducir su nombre');
+            Logger::error('Se ha solicitado la carga de un proceso sin introducir su nombre');
             return false;
         }
 
@@ -98,7 +98,7 @@ class PipeProcess extends PipeProcessOrm
         $resultsCount = count($result);
         //Si son muchas error (No previsto, creo que ni siquiera lo soporta el modelo)
         if ($resultsCount > 1) {
-            XMD_Log::fatal('No se ha podido determinar el proceso anterior a uno dado');
+            Logger::fatal('No se ha podido determinar el proceso anterior a uno dado');
             return false;
         }
 
@@ -118,7 +118,7 @@ class PipeProcess extends PipeProcessOrm
     function removeStatus($idStatus)
     {
         if (!($this->get('id') > 0)) {
-            XMD_Log::error('No se ha podido encontrar el proceso de workflow');
+            Logger::error('No se ha podido encontrar el proceso de workflow');
             $this->messages->add(_('Ha ocurrido un error no recuperable durante la gestión de estados de workflow, consulte con su administrador'),
                 MSG_TYPE_ERROR);
             return false;
@@ -139,7 +139,7 @@ class PipeProcess extends PipeProcessOrm
 
         if (!(is_object($transitionFrom) && is_object($transitionTo))) {
             $this->messages->add(_('No se han podido determinar las transiciones de un estado para su eliminación, esto es normal si el estado es estado inicial o final'), MSG_TYPE_WARNING);
-            XMD_Log::warning('No se han podido determinar las transiciones de un estado para su eliminación, esto es normal si el estado es estado inicial o final');
+            Logger::warning('No se han podido determinar las transiciones de un estado para su eliminación, esto es normal si el estado es estado inicial o final');
             return false;
         }
 
@@ -277,32 +277,4 @@ class PipeProcess extends PipeProcessOrm
         }
         return NULL;
     }
-    /*
-        function addTransition($name, $description) {
-            if (!($this->get('id')) > 0) {
-                return false;
-            }
-
-            $pipeStatus = new PipeStatus();
-            $pipeStatus->set('Name', $name);
-            $pipeStatus->set('Description', $description);
-            $idPipeStatus = $pipeStatus->add();
-
-            if (!$idPipeStatus > 0) {
-                $this->messages->add(_('No se ha podido insertar el estado'), MSG_TYPE_ERROR);
-                return false;
-            }
-
-            $pipeTransition = new PipeTransition();
-            $pipeTransition->set('IdStatusTo', $idPipeStatus);
-            $pipeTransition->set('IdPipeProcess', $this->get('id'));
-            $pipeTransition->set('Cacheable', 0);
-            $pipeTransition->set('Name', $this->get('Name') . '_0');
-            $pipeTransition->set('Callback', '-');
-            $idPipeTransition = $pipeTransition->add();
-
-            $this->set('IdTransitionTo', $idPipeTransition);
-            return $this->update();
-        }
-    */
 }

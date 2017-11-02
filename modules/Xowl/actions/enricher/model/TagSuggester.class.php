@@ -25,6 +25,7 @@
  */
 
 
+use Ximdex\Runtime\App;
 use Ximdex\Utils\Curl;
 
 ModulesManager::file('/inc/rest/REST_Provider.class.php');
@@ -66,7 +67,7 @@ class TagSuggester extends REST_Provider {
 	 */
 	private function query($text, $format) {
 
-        $url = \App::getValue( "Xowl_location");
+        $url = App::getValue( "Xowl_location");
 
 		$headers = array(
 			//To remove HTTP 100 Continue messages
@@ -77,7 +78,7 @@ class TagSuggester extends REST_Provider {
         $data = array();
 		if(is_string($text)){
             $data["content"] = $text;
-            $data["token"] = \App::getValue( "Xowl_token");
+            $data["token"] = App::getValue( "Xowl_token");
         }else{
             $data = $text;
         }

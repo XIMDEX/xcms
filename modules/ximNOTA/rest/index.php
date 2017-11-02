@@ -144,5 +144,3 @@ $output = $server->callAction();
 header('Content-type: text/xml');
 echo $output;
 die();
-
-?>

@@ -29,12 +29,6 @@ use Ximdex\MVC\ActionAbstract;
  */
 
 
-
-
-
-
-
-
 class Action_creategroup extends ActionAbstract {
    // Main method: shows initial form
     function index() {
@@ -60,8 +54,6 @@ class Action_creategroup extends ActionAbstract {
 		if ($result) {
 			$grupo->messages->add(_('Group has been successfully inserted'), MSG_TYPE_NOTICE);
 		}
-		
-		//$this->reloadNode($idNode);
 
 		$values = array('messages' => $grupo->messages->messages,"parentID" => $grupo->GetParent());
 		$this->sendJSON($values);

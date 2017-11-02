@@ -29,9 +29,6 @@ use Ximdex\Runtime\App;
 
 include_once '../../bootstrap/start.php';
 
-
-require(App::getValue('XIMDEX_ROOT_PATH') . '/conf/log.php');
-include_once(App::getValue('XIMDEX_ROOT_PATH') . "/inc/utils.php");
 ModulesManager::file('/inc/i18n/I18N.class.php');
 
 \Ximdex\Utils\Session::check();
@@ -47,7 +44,6 @@ echo "renderer = '" . \Ximdex\Utils\Session::get("renderer") . "';";
 echo "\nurl_root = '" . App::getValue( 'UrlRoot') . "';";
 echo "\nximdex_root = '" . App::getValue('XIMDEX_ROOT_PATH') . "';";
 echo "\nbase_action = '" . \Ximdex\Utils\Session::get("base_action") . "';";
-//TODO ajlucena: echo "\napp_root = '" . App::getValue('AppRoot') . "';";
 echo "\nuser_id = '" . \Ximdex\Utils\Session::get('userID') . "';";
 echo "\nlocale = '" . \Ximdex\Utils\Session::get('locale') . "';";
 $load_welcome = (int)(ModulesManager::isEnabled("ximDEMOS") && \Ximdex\Utils\Session::get('user_demo'));

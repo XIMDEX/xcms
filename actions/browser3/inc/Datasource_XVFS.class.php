@@ -25,6 +25,7 @@
  */
 
 
+use Ximdex\Logger;
 use Ximdex\Models\Node;
 
 ModulesManager::file('/inc/xvfs/XVFS.class.php');
@@ -80,7 +81,7 @@ class Datasource_XVFS extends AbstractDatasource implements IDatasource {
 					if (!is_object($child)) {
 				
 						// Probably a socket file or something like that
-						XMD_Log::info(_("The path cannot be read") . $childPath);
+						Logger::info(_("The path cannot be read") . $childPath);
 					
 					} else {
 				
@@ -130,7 +131,7 @@ class Datasource_XVFS extends AbstractDatasource implements IDatasource {
 		
 		if (!is_object($entity)) {
 			// Probably a socket file or something like that
-			XMD_Log::info(_("The path cannot be read") . $bpath);
+			Logger::info(_("The path cannot be read") . $bpath);
 			return $data;
 		}
 

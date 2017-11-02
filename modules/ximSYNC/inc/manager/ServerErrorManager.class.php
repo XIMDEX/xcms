@@ -27,7 +27,7 @@
 
 use Ximdex\Models\Server;
 use Ximdex\NodeTypes\ServerNode;
-use Ximdex\Logger as XMD_Log ;
+use Ximdex\Logger;
 use Ximdex\Runtime\Db;
 
 include_once(XIMDEX_ROOT_PATH."/modules/ximSYNC/inc/model/ServerErrorByPumper.class.php");
@@ -96,7 +96,7 @@ class ServerErrorManager {
 		$serverError->set('WithError',1);
 		$serverError->update();
 
-		XMD_Log::info(_("Disabling server")." $idServer");
+		Logger::info(_("Disabling server")." $idServer");
 
 		$serverNode = new Server($idServer);
 		$serverNode->set('ActiveForPumping',0);
@@ -112,14 +112,14 @@ class ServerErrorManager {
 	 */
 	  static public function   enableServer($idServer, $idPumper) {
 
-		XMD_Log::info(_("Enabling server")." $idServer");
+		Logger::info(_("Enabling server")." $idServer");
 
 		$serverNode = new Server($idServer);
 		$serverNode->set('ActiveForPumping',1);
 		$serverNode->update();
 
 		// Set serverframes to Due2In/Out for retry pumping
-		XMD_log::info(_("Setting ServerFrames to Due2In/Out to retry pumping"));
+		Logger::info(_("Setting ServerFrames to Due2In/Out to retry pumping"));
 
 		$serverFrame = new ServerFrame();
 		$serverFrame->rescueErroneous($idPumper);

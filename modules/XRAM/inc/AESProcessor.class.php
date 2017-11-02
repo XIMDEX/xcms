@@ -24,6 +24,8 @@
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
+use Ximdex\Runtime\App;
+
 if (!defined('XIMDEX_ROOT_PATH')) {
     define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../../"));
 }
@@ -56,13 +58,13 @@ class AESProcessor implements IndexerLifecycle
      */
     private function checkAndInitKey()
     {
-        $cipherKey = \App::getValue(self::CIPHER_KEY_PARAM, null);
+        $cipherKey = App::getValue(self::CIPHER_KEY_PARAM, null);
 
         if (!is_null($cipherKey)) {
             $this->key = $cipherKey;
         } else {
             $key = $this->createRandomString();
-            \App::setValue(self::CIPHER_KEY_PARAM, $key, true );
+            App::setValue(self::CIPHER_KEY_PARAM, $key, true );
             $this->key = $key;
         }
     }

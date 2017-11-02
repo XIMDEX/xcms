@@ -26,11 +26,6 @@
 use Ximdex\Runtime\App;
 use Ximdex\Utils\Session;
 
-
-/**
- * XIMDEX_ROOT_PATH
- */
-
 require_once(XIMDEX_ROOT_PATH . "/inc/utils.php");
 
 if (!defined('DEFAULT_LOCALE'))

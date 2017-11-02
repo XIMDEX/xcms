@@ -30,7 +30,7 @@ namespace Ximdex\NodeTypes;
 use Ximdex\Models\PipeProcess;
 use Ximdex\Models\PipeStatus;
 use Ximdex\Models\PipeTransition;
-use Ximdex\Logger as XMD_Log;
+use Ximdex\Logger;
 
 class StateNode extends Root
 {
@@ -80,7 +80,7 @@ class StateNode extends Root
 
         if ($pipeProcess->isStatusFirst($idStatus) || $pipeProcess->isStatusLast($idStatus)) {
             $this->messages->add(_('No se pueden eliminar los estados primero y último del workflow'), MSG_TYPE_ERROR);
-            XMD_Log::warning('Imposible eliminar estado primero y último de workflow');
+            Logger::warning('Imposible eliminar estado primero y último de workflow');
             return true;
         }
 

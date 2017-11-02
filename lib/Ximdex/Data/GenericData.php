@@ -29,7 +29,7 @@ namespace Ximdex\Data;
 use Ximdex\Logger;
 use Ximdex\Behaviours\Collection;
 use Ximdex\Helpers\Cache;
-use Ximdex\Runtime\Db as DB;
+use Ximdex\Runtime\Db;
 use Ximdex\Utils\Messages;
 use Ximdex\Utils\Overloadable;
 

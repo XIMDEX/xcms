@@ -25,6 +25,7 @@
  */
 
 
+use Ximdex\Logger;
 use Ximdex\Models\Node;
 use Ximdex\Models\Version;
 
@@ -41,13 +42,13 @@ class View_XimIO extends Abstract_View implements Interface_View
         $content = $this->retrieveContent($pointer);
         $version = new Version($idVersion);
         if (!($version->get('IdVersion') > 0)) {
-            XMD_Log::error("No se ha encontrado la versión ($idVersion) solicitada");
+            Logger::error("No se ha encontrado la versión ($idVersion) solicitada");
             return NULL;
         }
         $idNode = $version->get('IdNode');
         $node = new Node($idNode);
         if (!($node->get('IdNode') > 0)) {
-            XMD_Log::error("No se ha podido cargar el nodo ($idNode) solicitado");
+            Logger::error("No se ha podido cargar el nodo ($idNode) solicitado");
             return NULL;
         }
 

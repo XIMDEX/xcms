@@ -132,8 +132,7 @@ class Action_managebatchs extends ActionAbstract {
                 }
             }
         }
-
-//        $values = $this->retrieveFrameList();
+        
         $json = Serializer::encode(SZR_JSON, array('success' => true));
         $this->render(array('result' => $json), NULL, "only_template.tpl");
     }
@@ -186,5 +185,3 @@ class Action_managebatchs extends ActionAbstract {
     }
 
 }
-
-?>

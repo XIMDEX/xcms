@@ -390,12 +390,12 @@ class ModulesManager {
         if(file_exists(XIMDEX_ROOT_PATH."{$dir}{$_file}")){
             if( ( self::isEnabled($_module) || 'XIMDEX' == $_module) ) {
                 // $from =  $trace[0]["file"]." in line ".$trace[0]["line"];
-                //XMD_Log::info(" load file: <em>$_file</em> <strong>{$_module}</strong>  in $from <br>");
+                //Logger::info(" load file: <em>$_file</em> <strong>{$_module}</strong>  in $from <br>");
                 //	 	echo " load file: <em>$_file</em> <strong>{$_module}</strong>  in $from <br>";
                 return require_once(XIMDEX_ROOT_PATH."{$dir}{$_file}");
             }else {
                 //	$from =  $trace[1]["file"]." in line ".$trace[1]["line"];
-                //XMD_Log::info("Not load file: <em>$_file</em> necesita <strong> {$_module}</strong>  in $from ");
+                //Logger::info("Not load file: <em>$_file</em> necesita <strong> {$_module}</strong>  in $from ");
                 // 	echo "Not load file: <em>$_file</em> necesita <strong>{$_module}</strong>  in $from <br>";
             }
 

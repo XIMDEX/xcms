@@ -29,7 +29,6 @@ use Ximdex\MVC\FrontController;
 include_once '../bootstrap/start.php';
 
 //General class
-ModulesManager::file('/inc/utils.php');
 ModulesManager::file('/inc/io/BaseIO.class.php');
 ModulesManager::file('/inc/i18n/I18N.class.php');
 
@@ -40,4 +39,3 @@ I18N::setup($locale);
 // FrontController dipatches HTTP requests
 $frontController = new FrontController();
 $frontController->dispatch();
-

@@ -25,6 +25,7 @@
  */
 
 
+use Ximdex\Runtime\App;
 use Ximdex\Runtime\DataFactory;
 use Ximdex\Utils\FsUtils;
 
@@ -83,8 +84,8 @@ class Style extends ParserRoot
             $nodeId = $node->getAttribute("nodeid");
             if ($nodeId != "default") {
                 $dF = new DataFactory($nodeId);
-                $fileName = \App::getValue("AppRoot") .
-                    \App::getValue("FileRoot") .
+                $fileName = App::getValue("AppRoot") .
+                    App::getValue("FileRoot") .
                     "/" . $dF->GetTmpFile($dF->GetLastVersionId());
             } else {
                 $fileName = $node->getAttribute("filename");

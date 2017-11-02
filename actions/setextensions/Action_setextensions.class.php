@@ -12,7 +12,6 @@ class Action_setextensions extends ActionAbstract
         $commonFolderNodeType = new NodeType(\Ximdex\Services\NodeType::COMMON_ROOT_FOLDER);
         $commonAllowedExtensions = $commonFolderNodeType->getAllowedExtensions();
 
-        //$this->addJs('/actions/setextensions/resources/js/index.js');
         $this->addCss('/actions/setextensions/resources/css/style.css');
 
         $values = array('commonAllowedExtensions' => json_encode($commonAllowedExtensions));

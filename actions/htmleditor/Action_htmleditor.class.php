@@ -27,8 +27,6 @@ use Ximdex\MVC\ActionAbstract;
  *  @version $Revision$
  */
 
-
-
 class Action_htmleditor extends ActionAbstract {
 	// Main method: shows initial form
 	function index() {
@@ -40,7 +38,6 @@ class Action_htmleditor extends ActionAbstract {
 			return;
 		}
 
-		//$this->addJs(Extensions::JQUERY);
 		$this->addJs('/extensions//ckeditor/ckeditor.js');
 		$this->addJs('/actions/htmleditor/resources/js/htmleditor.js');
 
@@ -70,4 +67,3 @@ class Action_htmleditor extends ActionAbstract {
         $this->sendJSON(array('messages' => $values));
 	}
 }
-?>

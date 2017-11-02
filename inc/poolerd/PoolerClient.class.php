@@ -25,6 +25,7 @@
  */
 
 
+use Ximdex\Logger;
 use Ximdex\Utils\Curl;
 use Ximdex\Utils\Serializer;
 
@@ -69,7 +70,7 @@ class PoolerClient
                 )
             );
         } catch (ErrorException $e) {
-            XMD_Log::error(sprintf('curl_error: %s', $e->getMessage()));
+            Logger::error(sprintf('curl_error: %s', $e->getMessage()));
             throw new Exception($e->getMessage());
         }
 
@@ -77,5 +78,3 @@ class PoolerClient
     }
 
 }
-
-?>

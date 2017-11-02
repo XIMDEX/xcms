@@ -26,13 +26,12 @@
  */
 
 
+use Ximdex\Logger;
 use Ximdex\Models\Node;
 use Ximdex\Utils\Sync\Synchronizer;
 
 ini_set("include_path",".:inc:../inc:../../inc");
 $ximDEX_path = realpath(dirname(__FILE__) .  "/../../");
-
-include_once($ximDEX_path . "/inc/utils.php");
 
 /// Array with call parameters 
 $config = array();
@@ -44,7 +43,7 @@ function DoPublicate($sectionID, $recursive = false) {
 	$childList = $node->GetChildren();
 
 	if ($childList) {
-		XMD_Log::display(_("Precalculating list of nodes to expire"));
+		Logger::display(_("Precalculating list of nodes to expire"));
 		foreach($childList as $child) {
 			$childNode = new Node($child);
 			//It adds children nodes except it they are of section type and they have not been specified like recursives
@@ -54,9 +53,9 @@ function DoPublicate($sectionID, $recursive = false) {
 		}
 		
 		foreach($childList as $nodeID) {
-			XMD_Log::display("");
-			XMD_Log::display("---------------------------------------------------------------------");
-			XMD_Log::display(_("Expiring node '").$nodeID."'");
+			Logger::display("");
+			Logger::display("---------------------------------------------------------------------");
+			Logger::display(_("Expiring node '").$nodeID."'");
 			$sync = new Synchronizer($nodeID);
 			$sync->DeleteFramesFromNow($nodeID);
 
@@ -68,9 +67,9 @@ function Main($argv, $argc)
 	{
 	global $config;
 	
-	XMD_Log::display("---------------------------------------------------------------------");
-	XMD_Log::display(_("Executing: Expire section"));
-	XMD_Log::display("---------------------------------------------------------------------");
+	Logger::display("---------------------------------------------------------------------");
+	Logger::display(_("Executing: Expire section"));
+	Logger::display("---------------------------------------------------------------------");
 	
 	
 	$node		= new Node();
@@ -85,7 +84,7 @@ function Main($argv, $argc)
 				$config['sectionid'] = $argv[++$i];
 			else
 				{
-				XMD_Log::display(_("Section does not exist: '").$argv[++$i]."'");
+				Logger::display(_("Section does not exist: '").$argv[++$i]."'");
 				exit(1);
 				}
 			}
@@ -94,24 +93,24 @@ function Main($argv, $argc)
 
 	$rec=$argv[3];
 
-	XMD_Log::display("");
+	Logger::display("");
 	
 	if(!$config['sectionid'])
 		{
-		XMD_Log::display(_("Uso del comando:"));
-		XMD_Log::display(_("./expiresection_IO.php --sectionid {id de la seccion} [-r]"));
+		Logger::display(_("Uso del comando:"));
+		Logger::display(_("./expiresection_IO.php --sectionid {id de la seccion} [-r]"));
 		exit(1);
 		}
-	XMD_Log::display("---------------------------------------------------------------------");
-	XMD_Log::display(_("Read parameters: "));
-	XMD_Log::display(_("\t\tXimdex section: ").$config['sectionid'].", ".$node->GetNodeName());
-	XMD_Log::display("---------------------------------------------------------------------");
+	Logger::display("---------------------------------------------------------------------");
+	Logger::display(_("Read parameters: "));
+	Logger::display(_("\t\tXimdex section: ").$config['sectionid'].", ".$node->GetNodeName());
+	Logger::display("---------------------------------------------------------------------");
 	//var_dump($config);
 
-	XMD_Log::display("");
-	XMD_Log::display(_(" Are read parameters correct?"));
-	XMD_Log::display(_("To confirm press uppercase 'A' and then press 'Intro'."));
-	XMD_Log::display(_(" Press Ctrl+C to exit."));
+	Logger::display("");
+	Logger::display(_(" Are read parameters correct?"));
+	Logger::display(_("To confirm press uppercase 'A' and then press 'Intro'."));
+	Logger::display(_(" Press Ctrl+C to exit."));
 	$stdin = fopen('php://stdin', 'r');
 	do	{
 		;
@@ -122,4 +121,3 @@ function Main($argv, $argc)
 	DoPublicate($config['sectionid'], $recursive);
 	
 }
-?>

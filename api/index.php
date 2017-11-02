@@ -24,27 +24,13 @@
  * @version $Revision$
  */
 
-//phpinfo();
-
 use Ximdex\MVC\FrontControllerAPI;
+use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
 
 include_once '../bootstrap/start.php';
 
-/**
- * XIMDEX_ROOT_PATH
- */
-if (!defined('XIMDEX_ROOT_PATH'))
-    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../"));
-
-//General class
-if (file_exists(XIMDEX_ROOT_PATH . '/conf/install-params.conf.php'))
-    include_once(XIMDEX_ROOT_PATH . '/conf/install-params.conf.php');
-
-
 //Including composer autoloader
-//ModulesManager::file('/vendor/autoload.php');
-ModulesManager::file('/inc/utils.php');
 ModulesManager::file('/inc/io/BaseIO.class.php');
 ModulesManager::file('/inc/i18n/I18N.class.php');
 
@@ -126,7 +112,7 @@ function checkFolders()
 
 function goLoadAction()
 {
-    header(sprintf("Location: %s", \App::getValue('UrlRoot')));
+    header(sprintf("Location: %s", App::getValue('UrlRoot')));
 }
 
 //Main thread

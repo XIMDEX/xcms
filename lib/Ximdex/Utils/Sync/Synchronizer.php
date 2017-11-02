@@ -42,7 +42,7 @@ use Ximdex\Models\StructuredDocument;
 use Ximdex\Utils\FsUtils;
 use XimNewsBulletin;
 use XimNewsColector;
-use Ximdex\Logger as XMD_log;
+use Ximdex\Logger;
 
 
 include_once(XIMDEX_ROOT_PATH . "/inc/utils.php");
@@ -128,12 +128,12 @@ class Synchronizer
     {
         $node_id = $this->nodeID;
 
-        XMD_Log::info(sprintf(_("nodeID %s dateUp %s dateDown %s markEnd %s linked %s"), $node_id, $dateUp, $dateDown, $markEnd, $linked));
+        Logger::info(sprintf(_("nodeID %s dateUp %s dateDown %s markEnd %s linked %s"), $node_id, $dateUp, $dateDown, $markEnd, $linked));
 
         $ret_val = array();
 
         if (!($this->nodeID > 0)) {
-            XMD_Log::error(_('Void node'));
+            Logger::error(_('Void node'));
             return NULL;
         }
 
@@ -150,7 +150,7 @@ class Synchronizer
 
 
         if ($this->HasFrameOnInterval($dateUp, $dateDown)) {
-            XMD_Log::error(_('There is a frame in this interval'));
+            Logger::error(_('There is a frame in this interval'));
             return NULL;
         }
 
@@ -169,7 +169,7 @@ class Synchronizer
         }
 
         if (is_null($physicalServers)) {
-            XMD_Log::error(_('Any physical server available'));
+            Logger::error(_('Any physical server available'));
             return NULL;
         }
 
@@ -192,7 +192,7 @@ class Synchronizer
             $lang_doc = new Language();
 
             if (!$lang_doc->LanguageEnabled($lang_id)) {
-                XMD_Log::error(_('Disabled language'));
+                Logger::error(_('Disabled language'));
                 return NULL;
             }
 
@@ -202,9 +202,9 @@ class Synchronizer
             foreach ($generations as $contents) {
 
                 if (empty($contents['content'])) {
-                    XMD_Log::error(_("Generation error for channel") . " {$contents['channel']}");
+                    Logger::error(_("Generation error for channel") . " {$contents['channel']}");
                     foreach ($node->class->messages as $message) {
-                        XMD_Log::error($message['message']);
+                        Logger::error($message['message']);
                     }
                     continue;
                 }
@@ -285,7 +285,7 @@ class Synchronizer
     function ParseDependencies($frameID, $content)
     {
         /// Looking for content dependencies, directly the ids
-        //XMD_Log::info("Extracting dependencies for FRAME $frameID with content $content");
+        //Logger::info("Extracting dependencies for FRAME $frameID with content $content");
         preg_match_all("/@@@RMximdex\.pathto\(([0-9,]+)\)@@@/i", $content, $contentTags);
         $deps = $contentTags[sizeof($contentTags) - 1];
 
@@ -302,7 +302,7 @@ class Synchronizer
 
             $this->dbObj->Execute("INSERT INTO SynchronizerDependencies (IdSync, IdResource) VALUES (" . $frameID . ", " . $depID . ")");
 
-            XMD_Log::info("channel: $channelID frameID: $frameID depID: $depID");
+            Logger::info("channel: $channelID frameID: $frameID depID: $depID");
         }
     }
 
@@ -338,7 +338,7 @@ class Synchronizer
                         // Don't deletes frame if have to unpublish document
 
                         if ($state == 'In') {
-                            XMD_log::info("Don't delete serverFrame $frameID - settig Due2Out for unpublish");
+                            Logger::info("Don't delete serverFrame $frameID - settig Due2Out for unpublish");
 
                             $dbUp = new Db();
                             $sql = "UPDATE Synchronizer SET State = 'Due2Out' WHERE IdSync = $frameID";
@@ -647,8 +647,8 @@ class Synchronizer
      * They are the gaps in which the new frame could be stablished.
      * It is returned an array of arrays with (gap init, gap end, duration)
      *
-     * @param timestamp $dateUp
-     * @param timestamp $dateDown
+     * @param $dateUp
+     * @param $dateDown
      * @return array
      */
 
@@ -1149,7 +1149,7 @@ class Synchronizer
 
         if (!$frameID)
         {
-            XMD_Log::warning("Value for frameID variable is needed in GetDateDownOnFrame method");
+            Logger::warning("Value for frameID variable is needed in GetDateDownOnFrame method");
             return null;
         }
         
@@ -1168,7 +1168,7 @@ class Synchronizer
     function SetDateDownOnFrame($frameID, $date)
     {
         $this->ClearError();
-        XMD_Log::info("frame: $frameID date: $date");
+        Logger::info("frame: $frameID date: $date");
         $dateUp = $this->GetDateUpOnFrame($frameID);
         $dateDown = $this->GetDateDownOnFrame($frameID);
         $nodeID = $this->GetNodeIdOnFrame($frameID);
@@ -1368,7 +1368,7 @@ class Synchronizer
     /// Class method, it does not requiere previous SetID.
     function GetPendingUploadTasks()
     {
-        XMD_Log::info("----> INIT!!! Looking for up tasks");
+        Logger::info("----> INIT!!! Looking for up tasks");
         /*
         MySQL 4.1
         SELECT IdSync, IdServer FROM Synchronizer WHERE
@@ -1409,7 +1409,7 @@ class Synchronizer
 
 
         $this->dbObj->Query($sql);
-        XMD_Log::info("[SQL: " . $sql . " -> " . $this->dbObj->numRows);
+        Logger::info("[SQL: " . $sql . " -> " . $this->dbObj->numRows);
         $dbObj = new Db();
         $rawList = array();
         $list = array();
@@ -1444,7 +1444,7 @@ class Synchronizer
         foreach ($rawList as $frameID) {
             $previousFrame = $this->GetPreviousFrame($frameID);
             if ($previousFrame) {
-                XMD_Log::info("\t[ " . $frameID . " ] - Checking path/name changes with prior version:");
+                Logger::info("\t[ " . $frameID . " ] - Checking path/name changes with prior version:");
                 /// Con este sql comprobamos que entre la ventana anterior y la actual no hayan cambiado el path o el nombre
                 $sql = "SELECT DISTINCT FileName, RemotePath FROM Synchronizer WHERE IdSync=" . $previousFrame . " OR IdSync=" . $frameID;
                 $dbObj->Query($sql);
@@ -1459,16 +1459,16 @@ class Synchronizer
                         if (!in_array($idSync, $rawList)) {
                             $sql = "UPDATE Synchronizer SET State='DUE', Linked=1 WHERE State='IN' AND IdSync=" . $idSync;
                             $counterline = $dbObj->Execute($sql);
-                            XMD_Log::info("\t\t Ancestors [ Node " . $frameID . " -> Ancestor " . $idSync . " ] - $idSync. [SQL : " . $sql . "] ... coupled nodes: $counterline");
+                            Logger::info("\t\t Ancestors [ Node " . $frameID . " -> Ancestor " . $idSync . " ] - $idSync. [SQL : " . $sql . "] ... coupled nodes: $counterline");
                         }
                         $this->dbObj->Next();
                     }
 
                 } else {
-                    XMD_Log::info("\t[ " . $frameID . " ] - Checking path/name changes with prior version: NO CHANGES");
+                    Logger::info("\t[ " . $frameID . " ] - Checking path/name changes with prior version: NO CHANGES");
                 }
             } else {
-                XMD_Log::info("\t[ $frameID ] - Checking path/name changes with prior version: NO PRIOR VERSION");
+                Logger::info("\t[ $frameID ] - Checking path/name changes with prior version: NO PRIOR VERSION");
             }
         }
         /*
@@ -1476,7 +1476,7 @@ class Synchronizer
         It updates dead reference to documents published while some of its linked was not even waiting for being published.
         */
 
-        XMD_Log::info("\trawList: $rawList");
+        Logger::info("\trawList: $rawList");
         /// For each node to synchronize
 
         foreach ($rawList as $frameID) {
@@ -1509,7 +1509,7 @@ class Synchronizer
             $sql .= " AND Synchronizer.IdNode!=" . $currentNodeID;
             $this->dbObj->Query($sql);
 
-            XMD_Log::info("\t[ " . $frameID . " ] - Checking #'s in production [ " . $sql . " -> " . $this->dbObj->numRows . "]");
+            Logger::info("\t[ " . $frameID . " ] - Checking #'s in production [ " . $sql . " -> " . $this->dbObj->numRows . "]");
             while (!$this->dbObj->EOF) {
 
                 if ($islinked == 0) {
@@ -1518,7 +1518,7 @@ class Synchronizer
                     if (!in_array($idSync, $rawList)) {
                         $sql = "UPDATE Synchronizer SET State='DUE', Linked=1 WHERE State='IN' AND IdSync=" . $idSync;
                         $counterline = $dbObj->Execute($sql);
-                        XMD_Log::info("\t\tSetting dead references which are pointing to this node [ " . $frameID . " -> " . $idSync . " ] - $idSync. [SQL : " . $sql . "]. Nodes coupled: $counterline ");
+                        Logger::info("\t\tSetting dead references which are pointing to this node [ " . $frameID . " -> " . $idSync . " ] - $idSync. [SQL : " . $sql . "]. Nodes coupled: $counterline ");
                     }
 
                 }
@@ -1526,26 +1526,7 @@ class Synchronizer
             }
         }
 
-        // Checking if the node has ximlet dependencies. If it does, links are re-published
-        /*
-        if ($islinked==0) {
-            $st=New StructuredDocument($this->GetNodeIdOnFrame($frameID));
-            $ximlets=$st->isximletlink();
-
-            for ($i=0;$i<count($ximlets);$i++) {
-                $ximlet=new StructuredDocument();
-                $links=$ximlet->ximletLinks($ximlets[$i], $this->GetNodeIdOnFrame($frameID));
-
-                for($j=0;$j<count($links);$j++) {
-                    $sql = "UPDATE Synchronizer SET State='DUE', Linked=1 WHERE State='IN' AND Linked<>1 AND IdNode=".$links[$j];
-                    $counterline = $dbObj->Execute($sql);
-                    XMD_Log::info("\t\tDUANDO apuntadores de ximletS: ".$links[$j]." [SQL : ".$sql."]. Nodos duados: $counterline ");
-                }
-            }
-        }
-        */
-
-        XMD_Log::info("----> END !!! Looking for up tasks");
+        Logger::info("----> END !!! Looking for up tasks");
         /// Two arrays are returned, one with serverids, and other with a task array per server
         return array($servers, $list);
     }
@@ -1705,7 +1686,7 @@ class Synchronizer
 
             $this->dbObj->Query($sql);
 
-            XMD_Log::info("\t[ " . $frameID . " ] - COMPROBANDO #'s en produccion [ " . $sql . " -> " . $this->dbObj->numRows . "]");
+            Logger::info("\t[ " . $frameID . " ] - COMPROBANDO #'s en produccion [ " . $sql . " -> " . $this->dbObj->numRows . "]");
             while (!$this->dbObj->EOF) {
 
                 if ($islinked == 0) {
@@ -1714,7 +1695,7 @@ class Synchronizer
                     if (!in_array($idSync, $rawList)) {
                         $sql = "UPDATE Synchronizer SET State='DUE', Linked=1 WHERE State='IN' AND IdSync=" . $idSync;
                         $counterline = $db2->Execute($sql);
-                        XMD_Log::info("\t\t[GetPendingDownloadTasks] DUANDO REFERENCIAS MUERTAS QUE NOS APUNTAN [ " . $frameID . " -> " . $idSync . " ] - DUANDO $idSync. [SQL : " . $sql . "]... Nodos duados: $counterline");
+                        Logger::info("\t\t[GetPendingDownloadTasks] DUANDO REFERENCIAS MUERTAS QUE NOS APUNTAN [ " . $frameID . " -> " . $idSync . " ] - DUANDO $idSync. [SQL : " . $sql . "]... Nodos duados: $counterline");
                     }
 
                 }
@@ -1749,7 +1730,7 @@ class Synchronizer
             }
 
             foreach ($arrayFrames as $frame) {
-                XMD_Log::info("Deleting task $frame of sending bulletins");
+                Logger::info("Deleting task $frame of sending bulletins");
                 $this->dbObj->Execute("DELETE FROM XimNewsFrameBulletin WHERE IdSync = $frame");
             }
         }
@@ -1767,7 +1748,7 @@ class Synchronizer
         while (!$this->dbObj->EOF) {
             $idFrame = $this->dbObj->GetValue('IdSync');
             $this->DeleteSyncFile($idFrame);
-            XMD_Log::info("Deleting file sync/$idFrame");
+            Logger::info("Deleting file sync/$idFrame");
             $db = new Db();
             $db->Execute("DELETE FROM Synchronizer WHERE IdSync = $idFrame");
 
@@ -1797,7 +1778,7 @@ class Synchronizer
     {
 
         if (is_null($idColumn)) {
-            XMD_log::error('synchronizer->moveToHistory: Param needed');
+            Logger::error('synchronizer->moveToHistory: Param needed');
             return false;
         }
 
@@ -1807,7 +1788,7 @@ class Synchronizer
         $columnsAllowed = array('IdNode', 'IdServer');
 
         if (!in_array($column, $columnsAllowed)) {
-            XMD_log::error('synchronizer->moveToHistory: Unknow column in Synchronizer table');
+            Logger::error('synchronizer->moveToHistory: Unknow column in Synchronizer table');
             return false;
         }
 

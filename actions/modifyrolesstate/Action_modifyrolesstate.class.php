@@ -1,7 +1,4 @@
 <?php
-use Ximdex\Models\Role;
-use Ximdex\MVC\ActionAbstract;
-
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -27,7 +24,9 @@ use Ximdex\MVC\ActionAbstract;
  *  @version $Revision$
  */
 
-
+use Ximdex\Logger;
+use Ximdex\Models\Role;
+use Ximdex\MVC\ActionAbstract;
 
 class Action_modifyrolesstate extends ActionAbstract {
    // Main method: shows initial form
@@ -86,7 +85,7 @@ class Action_modifyrolesstate extends ActionAbstract {
 		$role = new Role($idRole);
 		if (!$role->get('IdRole') > 0) {
 			$this->messages->add(_('Error: Role which you want to associate with workflow status could not be found'), MSG_TYPE_ERROR);
-			XMD_Log::error(_("IdRole has not been found in action modifyrolestate") . $idRole);
+			Logger::error(_("IdRole has not been found in action modifyrolestate") . $idRole);
 			$this->render(array('messages' => $this->messages->messages), '', 'messages.tpl');
 		}
 		$role->AddState($idNode);
@@ -111,4 +110,3 @@ class Action_modifyrolesstate extends ActionAbstract {
     	$this->redirectTo('index');
     }
 }
-?>

@@ -198,7 +198,6 @@ class Action_renamenode extends ActionAbstract
             }
     
             $this->messages->mergeMessages($node->messages);
-            // $this->reloadNode($node->get('IdParent') );
         }
         
         $values = array('messages' => $this->messages->messages, 'parentID' => $node->get('IdParent'));
@@ -238,9 +237,7 @@ class Action_renamenode extends ActionAbstract
             }
         }
 
-        //$this->sendJSON(array('messages' => $this->messages->messages, 'nodeID' => $idNode));
         $this->render(array('messages' => $this->messages->messages), NULL, 'messages.tpl');
     }
 
 }
-

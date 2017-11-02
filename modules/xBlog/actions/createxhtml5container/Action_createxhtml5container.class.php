@@ -25,6 +25,7 @@
  */
 
 use Ximdex\MVC\ActionAbstract;
+use Ximdex\Runtime\App;
 
 ModulesManager::file('/inc/metadata/MetadataManager.class.php');
 ModulesManager::file('/inc/io/BaseIOInferer.class.php');

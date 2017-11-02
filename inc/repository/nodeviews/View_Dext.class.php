@@ -25,9 +25,11 @@
  */
 
 
+use Ximdex\Logger;
 use Ximdex\Models\Node;
 use Ximdex\Models\PipeCacheTemplates;
 use Ximdex\Models\Version;
+use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
 
 
@@ -44,7 +46,7 @@ class View_Dext extends Abstract_View implements Interface_View
 
     public function transform($idVersion = NULL, $pointer = NULL, $args = NULL)
     {
-        XMD_Log::info('Starting dext transformation');
+        Logger::info('Starting dext transformation');
         $content = $this->retrieveContent($pointer);
         if (!$this->_setNode($idVersion))
             return NULL;
@@ -63,8 +65,8 @@ class View_Dext extends Abstract_View implements Interface_View
         $project = new Node($this->_idProject);
         $nodeProjectPath = $project->class->GetNodePath();
 
-        $tplFolder = \App::getValue("TemplatesDirName");
-        $generatorCommand = \App::getValue("AppRoot") . \App::getValue("GeneratorCommand");
+        $tplFolder = App::getValue("TemplatesDirName");
+        $generatorCommand = App::getValue("AppRoot") . App::getValue("GeneratorCommand");
 
         $command = $generatorCommand .
             " --template='" . $sectionPath . "/" . $tplFolder . "'" .
@@ -73,26 +75,26 @@ class View_Dext extends Abstract_View implements Interface_View
             " --errorout";
 
         $prefix = 'dextdin';
-        $tmpPath = \App::getValue("AppRoot") . \App::getValue("TempRoot");
+        $tmpPath = App::getValue("AppRoot") . App::getValue("TempRoot");
         $tmpfile = tempnam($tmpPath, $prefix);
 
         $pipe = popen("$command 2>&1 >$tmpfile", 'w');
         if (!$pipe) {
-            XMD_Log::error("Generator can not be executed #1");
+            Logger::error("Generator can not be executed #1");
             FsUtils::delete($tmpfile);
         } else {
             fwrite($pipe, $content, strlen($content));
             $returnValue = pclose($pipe);
-            XMD_Log::debug("Generator returned code $returnValue");
+            Logger::debug("Generator returned code $returnValue");
 
             $output = FsUtils::file_get_contents($tmpfile);
             FsUtils::delete($tmpfile);
 
-            $ciclosDecode = \App::getValue("UTFLevel");
+            $ciclosDecode = App::getValue("UTFLevel");
 
             if ($ciclosDecode >= 0 && $ciclosDecode < 5) {
                 for ($i = 0; $i < $ciclosDecode; $i++) {
-                    XMD_Log::debug("UTF8 decoding cycle applied");
+                    Logger::debug("UTF8 decoding cycle applied");
                     $output = utf8_decode($output);
                 }
             }
@@ -101,9 +103,9 @@ class View_Dext extends Abstract_View implements Interface_View
 
         if ($returnValue) {
             if ($returnValue == 127) {
-                XMD_Log::error("Error de llamada al módulo dexT");
+                Logger::error("Error de llamada al módulo dexT");
             } elseif ($returnValue == 2) {
-                XMD_Log::error("Error en configuración de librerias del módulo dexT");
+                Logger::error("Error en configuración de librerias del módulo dexT");
             } else {
                 $j = 0;
                 $out = explode("\n", $output);
@@ -127,7 +129,7 @@ class View_Dext extends Abstract_View implements Interface_View
                 $tmp[1] = preg_replace("/line/i", "linea", $tmp[1]);
                 $tmp[1] = preg_replace("/column/i", "columna", $tmp[1]);
                 $output = implode("\n", $tmp);
-                XMD_Log::error("Generator returned output error $output");
+                Logger::error("Generator returned output error $output");
             }
         }
 
@@ -163,13 +165,13 @@ class View_Dext extends Abstract_View implements Interface_View
         if (!is_null($idVersion)) {
             $version = new Version($idVersion);
             if (!($version->get('IdVersion') > 0)) {
-                XMD_Log::error('VIEW DEXT: Se ha cargado una versión incorrecta (' . $idVersion . ')');
+                Logger::error('VIEW DEXT: Se ha cargado una versión incorrecta (' . $idVersion . ')');
                 return NULL;
             }
 
             $this->_node = new Node($version->get('IdNode'));
             if (!($this->_node->get('IdNode') > 0)) {
-                XMD_Log::error('VIEW DEXT: El nodo que se está intentando convertir no existe: ' . $version->get('IdNode'));
+                Logger::error('VIEW DEXT: El nodo que se está intentando convertir no existe: ' . $version->get('IdNode'));
                 return NULL;
             }
         }
@@ -188,7 +190,7 @@ class View_Dext extends Abstract_View implements Interface_View
 
         // Check Params:
         if (!isset($this->_idSection) || !($this->_idSection > 0)) {
-            XMD_Log::error('VIEW DEXT: No se ha especificado la sección del nodo ' . $args['NODENAME'] . ' que quiere renderizar');
+            Logger::error('VIEW DEXT: No se ha especificado la sección del nodo ' . $args['NODENAME'] . ' que quiere renderizar');
             return NULL;
         }
 
@@ -206,7 +208,7 @@ class View_Dext extends Abstract_View implements Interface_View
 
         // Check Params:
         if (!isset($this->_idProject) || !($this->_idProject > 0)) {
-            XMD_Log::error('VIEW DEXT: There is not associated project for the node ' . $args['NODENAME']);
+            Logger::error('VIEW DEXT: There is not associated project for the node ' . $args['NODENAME']);
             return NULL;
         }
 
@@ -224,7 +226,7 @@ class View_Dext extends Abstract_View implements Interface_View
 
         // Check Param:
         if (!isset($this->_depth) || !($this->_depth > 0)) {
-            XMD_Log::error('VIEW DEXT: No se ha especificado la profundidad del nodo ' . $args['NODENAME'] . ' que quiere renderizar');
+            Logger::error('VIEW DEXT: No se ha especificado la profundidad del nodo ' . $args['NODENAME'] . ' que quiere renderizar');
             return NULL;
         }
 

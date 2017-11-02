@@ -24,6 +24,7 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
+use Ximdex\Logger;
 use Ximdex\Models\Node;
 use Ximdex\Runtime\Db;
 
@@ -72,7 +73,7 @@ class Batch extends Batchs_ORM {
             return $idBatch;
         }
 
-        XMD_Log::info(_("ERROR batch type $type for node $idNodeGenerator"));
+        Logger::info(_("ERROR batch type $type for node $idNodeGenerator"));
         return null;
     }
 
@@ -181,7 +182,7 @@ class Batch extends Batchs_ORM {
             }
         } else {
 
-            XMD_Log::info(_("Error in DB: ") . $dbObj->desErr);
+            Logger::info(_("Error in DB: ") . $dbObj->desErr);
         }
         return false;
     }
@@ -265,7 +266,7 @@ class Batch extends Batchs_ORM {
             }
         } else {
 
-            XMD_Log::info("Error en BD: " . $dbObj->desErr);
+            Logger::info("Error en BD: " . $dbObj->desErr);
         }
         return false;
     }
@@ -328,7 +329,7 @@ class Batch extends Batchs_ORM {
             $this->BatchToLog($idBatch, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "INFO", 8, _("Setting playing Value = $playingValue for batch $idBatch"));
             return true;
         } else {
-            XMD_Log::info("Error en BD: " . $dbObj->desErr);
+            Logger::info("Error en BD: " . $dbObj->desErr);
         }
         return false;
     }
@@ -368,5 +369,3 @@ class Batch extends Batchs_ORM {
     }
 
 }
-
-?>

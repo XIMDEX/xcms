@@ -1,7 +1,7 @@
 <?php
 namespace Ximdex\Models;
 
-use Ximdex\Runtime\Db as DB;
+use Ximdex\Runtime\Db;
 
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]

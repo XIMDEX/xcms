@@ -272,7 +272,7 @@ class InstallManager
         //$modules = array_merge(apache_get_modules(), get_loaded_extensions());
         $modules = get_loaded_extensions();
         $recommendedModules = ['xsl', 'curl', 'gd', 'mcrypt'];
-        if (!isset($GLOBALS['docker']))
+        if (!isset($_SERVER['DOCKER_CONF_HOME']))
         {
             $recommendedModules[] = 'enchant';
         }
@@ -354,21 +354,17 @@ class InstallManager
 
     public function checkGroup($file)
     {
-
         $result["state"] = "success";
         $result["name"] = "File permission";
         
-        // if the test is running, avoid this verification 
-        if (!isset($GLOBALS['testing']))
+        // if the project is running under a Docker instance, it avoid this step
+        if (isset($_SERVER['DOCKER_CONF_HOME']))
             return $result;
         
         $groupId = posix_getgroups();
         $groupName = posix_getgrgid($groupId[0]);
         $ximdexGroupId = filegroup($file);
         $ximdexGroupName = posix_getgrgid($ximdexGroupId);
-        
-        echo '$ximdexGroupName["name"]: ' . $ximdexGroupName["name"];
-        exit();
 
         if (!in_array($ximdexGroupId, $groupId)) {
             $result["state"] = "error";

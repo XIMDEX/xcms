@@ -28,7 +28,7 @@
 namespace Ximdex\Models;
 
 use Ximdex\Models\ORM\NodeTypesOrm;
-use Ximdex\Runtime\Db as DB;
+use Ximdex\Runtime\Db;
 
 define('NODETYPE_SECTION', \Ximdex\Services\NodeType::SECTION);
 

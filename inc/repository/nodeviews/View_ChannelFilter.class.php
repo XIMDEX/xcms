@@ -25,6 +25,7 @@
  */
 
 
+use Ximdex\Logger;
 use Ximdex\Models\Channel;
 
 require_once(XIMDEX_ROOT_PATH . '/inc/filters/Filter.class.php');
@@ -43,7 +44,7 @@ class View_ChannelFilter extends Abstract_View implements Interface_View {
 		}
 	
 		if (!($this->_idChannel > 0)) {
-			XMD_Log::error('VIEW CHANNELFILTER: Channel not specified for node');
+			Logger::error('VIEW CHANNELFILTER: Channel not specified for node');
 			return NULL;
 		}
 
@@ -56,4 +57,3 @@ class View_ChannelFilter extends Abstract_View implements Interface_View {
 		return $this->storeTmpContent($content);
 	}
 }
-?>

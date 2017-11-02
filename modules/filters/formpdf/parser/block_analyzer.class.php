@@ -30,11 +30,11 @@
 /**
  * XIMDEX_ROOT_PATH
  */
+use Ximdex\Logger;
+
 if (!defined("XIMDEX_ROOT_PATH"))
 	define("XIMDEX_ROOT_PATH", realpath(dirname(__FILE__)."/../../../../"));
 
-
-//
 ModulesManager::file('/inc/utils.php');
 
 
@@ -108,7 +108,7 @@ class Block_analyzer {
 			}
 		}
 		else {
-			XMD_Log::write("It could not be possible to load the renderer element (".$renderer.")",  9);
+			Logger::write("It could not be possible to load the renderer element (".$renderer.")",  9);
 		}
 		return $element;
 	}

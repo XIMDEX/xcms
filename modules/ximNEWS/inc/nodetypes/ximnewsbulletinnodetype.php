@@ -25,12 +25,14 @@
  *  @version $Revision$
  */
 
+use Ximdex\Logger;
 use Ximdex\Deps\DepsManager;
 use Ximdex\Models\Node;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\Models\User;
 use Ximdex\MVC\Render\MailRenderer;
 use Ximdex\NodeTypes\AbstractStructuredDocument;
+use Ximdex\Runtime\App;
 use Ximdex\Runtime\DataFactory;
 use Ximdex\Utils\Sync\Synchronizer;
 use Ximdex\Utils\Sync\SyncManager;
@@ -117,7 +119,7 @@ class XimNewsBulletinNodeType extends AbstractStructuredDocument  {
 		$docsToPublish[] = $idNode;
 
 //		foreach ($docsToPublish as $docID) {
-//			XMD_log::info("Start doc publication $docID");
+//			Logger::info("Start doc publication $docID");
 
 //			$syncMngr = new SyncManager();
 //			$syncMngr->setFlag('type', 'ximNEWS');
@@ -199,7 +201,7 @@ class XimNewsBulletinNodeType extends AbstractStructuredDocument  {
 		$depsMngr->deleteBySource(DepsManager::STRDOC_TEMPLATE, $this->parent->get('IdNode'));
 		$depsMngr->deleteBySource(DepsManager::STRDOC_XIMLET, $this->parent->get('IdNode'));
 
-		XMD_Log::info('Bulletin dependencies deleted');
+		Logger::info('Bulletin dependencies deleted');
 
 	    return true;
 	}
@@ -231,7 +233,7 @@ class XimNewsBulletinNodeType extends AbstractStructuredDocument  {
 				}
 
 			} else {
-				 XMD_log::error("Inconsistency: news $newsID in bulletin ".$this->parent->get('IdNode')." but not in colector $idCcolector");
+				 Logger::error("Inconsistency: news $newsID in bulletin ".$this->parent->get('IdNode')." but not in colector $idCcolector");
 			}
 		}
 
@@ -261,7 +263,7 @@ class XimNewsBulletinNodeType extends AbstractStructuredDocument  {
 		$colectorName = $ximNewsColector->get('Name');
 
 		if (!$array_newsID) {
-			XMD_Log::info('Array noticias nulo');
+			Logger::info('Array noticias nulo');
 			return false;
 		}
 
@@ -282,7 +284,7 @@ class XimNewsBulletinNodeType extends AbstractStructuredDocument  {
 				$subversion = $relNewsColector->get('SubVersion');
 				$cacheId = $relNewsColector->get('IdCache');
 			} else {
-				XMD_Log::info('Sin relación en la base de datos');
+				Logger::info('Sin relación en la base de datos');
 				continue;
 			}
 
@@ -299,7 +301,7 @@ class XimNewsBulletinNodeType extends AbstractStructuredDocument  {
 					$cacheId = $cache->CreateCache($newID,$versionId,$bulletinPvd,$xslFile);
 
 					if(!$cacheId){
-						XMD_Log::info("ERROR Creando cache de noticia $newID");
+						Logger::info("ERROR Creando cache de noticia $newID");
 
 						//Elimino la asociacion para no dejar inconsistencia entre el boletin y la tabla
 
@@ -337,7 +339,7 @@ class XimNewsBulletinNodeType extends AbstractStructuredDocument  {
 				$numRows = $cache->update();
 
 				if (!$cache->update()) {
-					XMD_Log::info("ERROR Actualizando contador en $cacheId");
+					Logger::info("ERROR Actualizando contador en $cacheId");
 				}
 
 				$relNewsColector->set('IdCache', $cacheId);
@@ -399,7 +401,7 @@ class XimNewsBulletinNodeType extends AbstractStructuredDocument  {
 
 			$nodeServer = new Node($serverID);
 
-			if (\App::getValue( 'PublishOnDisabledServers') == 1) {
+			if (App::getValue( 'PublishOnDisabledServers') == 1) {
 				$physicalServers = $nodeServer->class->GetPhysicalServerList(true);
 			} else {
 				$physicalServers = $nodeServer->class->GetEnabledPhysicalServerList(true);
@@ -427,14 +429,14 @@ class XimNewsBulletinNodeType extends AbstractStructuredDocument  {
 						$batchUp->set('IdBatchDown', $idBatchDown);
 						$batchUp->update();
 					} else {
-						XMD_log::error("Error in batch down creation for bulletin $idBulletin");
+						Logger::error("Error in batch down creation for bulletin $idBulletin");
 					}
 
 					$bul = new XimNewsBulletin($this->nodeID);
                                         $colectorID = $bul->get('IdColector');
 
 					if ($this->isBulletinForXimlet($colectorID)) {
-						XMD_log::info("The bulletin is from a ximlet which re-publish documents");
+						Logger::info("The bulletin is from a ximlet which re-publish documents");
 						$ximNewsBulletin = new XimNewsBulletin($this->nodeID);
 						$ximletID = $ximNewsBulletin->getBulletinXimlet();
 
@@ -466,7 +468,7 @@ class XimNewsBulletinNodeType extends AbstractStructuredDocument  {
 			$updateObj = new DB();
 			$sql = "SELECT IdSync FROM Synchronizer WHERE IdNode = $idBulletin AND State = 'IN'";
 
-			XMD_Log::info("Unpublishing the bulleting $idBulletin");
+			Logger::info("Unpublishing the bulleting $idBulletin");
 			$i = 0;
 			$dbObj->Query($sql);
 
@@ -511,7 +513,7 @@ class XimNewsBulletinNodeType extends AbstractStructuredDocument  {
 			array($idColector), MONO);
 
 		if (!(sizeof($result) > 0)) {
-			XMD_Log::error("Any container");
+			Logger::error("Any container");
 			return false;
 		}
 

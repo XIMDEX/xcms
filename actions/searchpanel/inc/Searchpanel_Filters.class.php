@@ -24,12 +24,7 @@
  *  @version $Revision$
  */
 
-
-
-
 abstract class Searchpanel_filters {
 
 	abstract public function getFilters();
 }
-
-?>

@@ -35,20 +35,15 @@ if ( file_exists( App::getValue('XIMDEX_ROOT_PATH') . '/conf/install-params.conf
 Ximdex\Modules\Manager::init( App::getValue('XIMDEX_ROOT_PATH')   );
 Ximdex\Modules\Manager::file( Ximdex\Modules\Manager::get_modules_install_params() );
 
-// setup log
-class_alias('Ximdex\Logger', 'XMD_Log');
-
 $log = new Logger('XMD');
 $log->pushHandler(new StreamHandler(App::getValue('XIMDEX_ROOT_PATH') .'/logs/xmd.log', Logger::DEBUG, true, 0766));
-Ximdex\Logger::addLog( $log );
-$log = new Logger('Actions');
+\Ximdex\Logger::addLog( $log );
+$log = new Logger('ACTIONS');
 $log->pushHandler(new StreamHandler(App::getValue('XIMDEX_ROOT_PATH') .'/logs/actions.log', Logger::DEBUG));
-Ximdex\Logger::addLog( $log , 'actions' ) ;
-$log = new Logger('XSLT');
-$log->pushHandler(new StreamHandler(App::getValue('XIMDEX_ROOT_PATH') . '/logs/xslt.log', Logger::DEBUG));
-Ximdex\Logger::addLog($log , 'xslt');
+\Ximdex\Logger::addLog( $log , 'actions');
 
-Ximdex\Logger::setActiveLog();
+// set default log (xmd.log)
+\Ximdex\Logger::setActiveLog();
 
 // read install-modules.php
 $modulesConfString = "";
@@ -118,7 +113,3 @@ if (!defined('RENDERER_ROOT_PATH')) {
 if (!defined('SMARTY_TMP_PATH')) {
     define('SMARTY_TMP_PATH', XIMDEX_ROOT_PATH . App::getValue('TempRoot'));
 }
-
-// check if the site is running in a Docker environment or not
-if (isset($_SERVER['DOCKER_CONF_HOME']))
-    $GLOBALS['docker'] = true;

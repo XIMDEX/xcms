@@ -150,5 +150,3 @@ class Action_searchpanel extends ActionAbstract {
 	}
 
 }
-
-?>

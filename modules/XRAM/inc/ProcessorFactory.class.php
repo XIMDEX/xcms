@@ -58,5 +58,3 @@ class ProcessorFactory
         return new Base64Processor();
     }
 }
-
-?>

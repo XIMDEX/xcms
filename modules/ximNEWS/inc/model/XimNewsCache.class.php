@@ -25,6 +25,8 @@
  */
 
 
+use Ximdex\Logger;
+use Ximdex\Runtime\App;
 use Ximdex\Runtime\DataFactory;
 use Ximdex\Utils\FsUtils;
 use Ximdex\Utils\Sync\SynchroFacade;
@@ -52,19 +54,19 @@ class XimNewsCache extends XimNewsCache_ORM {
     function CreateCache($IdNew,$IdVersion,$IdTemplate,$xslBulletinFile){
 		if (empty($IdNew)) {
 		    $this->messages->add(_('News missing'), MSG_TYPE_ERROR);
-		    //XMD_Log::info("Falta la noticia");
+		    //Logger::info("Falta la noticia");
 		    return false;
 		}
 
 		if (empty($IdVersion)) {
 		    $this->messages->add(_('News version missing'), MSG_TYPE_ERROR);
-		    XMD_Log::info(_("Version missing"));
+		    Logger::info(_("Version missing"));
 		    return false;
 		}
 
 		if (empty($IdTemplate)) {
 		    $this->messages->add(_('Bulletin schema missing'), MSG_TYPE_ERROR);
-		    XMD_Log::info(_("Schema missing"));
+		    Logger::info(_("Schema missing"));
 		    return false;
 		}
 
@@ -74,7 +76,7 @@ class XimNewsCache extends XimNewsCache_ORM {
 		if(!$xml){
 		    return false;
 		}
-		$filePath = \App::getValue( "AppRoot") . \App::getValue( "FileRoot"). "/";
+		$filePath = App::getValue( "AppRoot") . App::getValue( "FileRoot"). "/";
 		$fileName = FsUtils::getUniqueFile($filePath);
 		$targetPath = $filePath . $fileName;
 		
@@ -95,7 +97,7 @@ class XimNewsCache extends XimNewsCache_ORM {
 		$cache = parent::add();
 
 		if($cache < 0){
-		    XMD_Log::info("Inserting in database");
+		    Logger::info("Inserting in database");
 		    return false;
 		}
 
@@ -140,7 +142,7 @@ class XimNewsCache extends XimNewsCache_ORM {
         $newsXml = $dataFactory->GetContent($version, $subversion);
 
          if (is_null($newsXml) || ($newsXml == "")) {
-            XMD_Log::error("Void XML news $nodeId");
+            Logger::error("Void XML news $nodeId");
             return NULL;
         }
 
@@ -148,9 +150,9 @@ class XimNewsCache extends XimNewsCache_ORM {
 
 		$doc = new DomDocument;
 		$doc->validateOnParse = true;
-		$newsXml = '<?xml version="1.0" encoding="' . \App::getValue( 'dataEncoding') . '"?>' . $newsXml;
+		$newsXml = '<?xml version="1.0" encoding="' . App::getValue( 'dataEncoding') . '"?>' . $newsXml;
 
-		$doc->LoadXML(\Ximdex\XML\Base::recodeSrc($newsXml, \App::getValue( 'dataEncoding')));
+		$doc->LoadXML(\Ximdex\XML\Base::recodeSrc($newsXml, App::getValue( 'dataEncoding')));
 
 		$xpath = new DOMXPath($doc);
 		$nodeList = $xpath->query('//*[@boletin = "yes"]');
@@ -185,15 +187,15 @@ class XimNewsCache extends XimNewsCache_ORM {
 		}
 
 		if (is_null($newsData)) {
-			XMD_Log::error("Getting data from news $nodeId");
+			Logger::error("Getting data from news $nodeId");
 			return NULL;
 		}
 
 		// Builds the cache
  	
-        $xmlNew = XIMDEX_ROOT_PATH . \App::getValue( 'TempRoot') . '/dummy.xml';
+        $xmlNew = XIMDEX_ROOT_PATH . App::getValue( 'TempRoot') . '/dummy.xml';
 		FsUtils::file_put_contents($xmlNew, '<?xml version="1.0" encoding="UTF-8"?><para>testing</para>');
-		$xslBulletin = XIMDEX_ROOT_PATH . \App::getValue( 'FileRoot') . '/' . $xslBulletinFile;
+		$xslBulletin = XIMDEX_ROOT_PATH . App::getValue( 'FileRoot') . '/' . $xslBulletinFile;
 
 		$xsltHandler = new \Ximdex\XML\XSLT();
 		$xsltHandler->setXML($xmlNew);
@@ -206,7 +208,7 @@ class XimNewsCache extends XimNewsCache_ORM {
 		$cacheXml = $xsltHandler->process();
 
 		if (!$cacheXml) {
-			XMD_Log::error(_("Generating ximNEWSCache for node $nodeId"));
+			Logger::error(_("Generating ximNEWSCache for node $nodeId"));
 			return NULL;
 		}
 
@@ -239,16 +241,16 @@ class XimNewsCache extends XimNewsCache_ORM {
 		// Borra la tabla cache
 		$IdCache = $this->get('IdCache');
 		$fileName = $this->get('File');
-		$targetPath =  \App::getValue("AppRoot") .  \App::getValue("FileRoot"). "/". $fileName;
+		$targetPath =  App::getValue("AppRoot") .  App::getValue("FileRoot"). "/". $fileName;
 
 		if(!FsUtils::delete($targetPath)){
-			XMD_Log::info(_("Deleting file $targetPath"));
+			Logger::info(_("Deleting file $targetPath"));
 			return false;
 		}
 
 		$numRows = parent::delete();
 		if($numRows == 0){
-			XMD_Log::info(_("Deleting cache $IdCache"));
+			Logger::info(_("Deleting cache $IdCache"));
 			return false;
 		}
 
@@ -264,11 +266,11 @@ class XimNewsCache extends XimNewsCache_ORM {
 		$cacheFile = $this->get('File');
 
 		if(!$cacheFile){
-		    XMD_Log::warning(sprintf(_('Empty file')));
+		    Logger::warning(sprintf(_('Empty file')));
 		    return false;
 		}
 
-		$targetPath =  \App::getValue("AppRoot") .  \App::getValue("FileRoot"). "/". $cacheFile;
+		$targetPath =  App::getValue("AppRoot") .  App::getValue("FileRoot"). "/". $cacheFile;
 		$content = file_get_contents($targetPath);
 
 		return $content;
@@ -306,7 +308,7 @@ class XimNewsCache extends XimNewsCache_ORM {
 		$numRows = parent::update();
 
 		if($numRows == 0){
-			XMD_Log::warning(_("ERROR subtracting in counter  ").$this->get('IdCache'));
+			Logger::warning(_("ERROR subtracting in counter  ").$this->get('IdCache'));
 			return false;
 		}
 
@@ -331,7 +333,7 @@ class XimNewsCache extends XimNewsCache_ORM {
 		$dbConn->Query($sql);
 
 		if ($dbConn->numRows == 0){
-		    XMD_Log::info(_("This schema has not caches"));
+		    Logger::info(_("This schema has not caches"));
 		    return false;
 		}
 
@@ -352,17 +354,17 @@ class XimNewsCache extends XimNewsCache_ORM {
 		    //Obtaining XML new file and replacing the previous one
 		    $xml = $this->FilterXml($cache['new'],$cache['version'],$xslFile);
 		    if(!$xml){
-			XMD_Log::info(_("Wrong XML in new {$cache['new']} version {$cache['version']} schema $IdTemplate"));
+			Logger::info(_("Wrong XML in new {$cache['new']} version {$cache['version']} schema $IdTemplate"));
 		    }
 
 		    $fileName = $cache['filename'];
-		    $targetPath =  \App::getValue("AppRoot") . \App::getValue("FileRoot"). "/". $fileName;
+		    $targetPath =  App::getValue("AppRoot") . App::getValue("FileRoot"). "/". $fileName;
 		    if (FsUtils::file_put_contents($targetPath, $xml) === false) {
 				$this->messages->add(_('Disk writing error (2)'), MSG_TYPE_ERROR);
 				return false;
 		    }
 
-		    XMD_Log::info(_("Updating file $targetPath"));
+		    Logger::info(_("Updating file $targetPath"));
 		}
 
 		return true;
@@ -390,7 +392,7 @@ class XimNewsCache extends XimNewsCache_ORM {
         $dbConn->Query("SELECT IdCache FROM XimNewsCache WHERE IdNew = $idNew");
 
         if ($dbConn->numRows == 0){
-            XMD_Log::info(_("This news has not caches"));
+            Logger::info(_("This news has not caches"));
             return false;
         }
 

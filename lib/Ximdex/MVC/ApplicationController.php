@@ -27,7 +27,6 @@
 namespace Ximdex\MVC;
 
 use ModulesManager;
-use Status;
 use Ximdex\Models\ActionsStats;
 use Ximdex\Runtime\App;
 use \Ximdex\Utils\Session;
@@ -35,7 +34,6 @@ use \Ximdex\Utils\Session;
 
 require_once(XIMDEX_ROOT_PATH . '/conf/stats.php');
 ModulesManager::file('/inc/Status.class.php', 'ximADM');
-// Implement \Ximdex\Utils\Session::check() as Filter.
 
 /**
  *
@@ -86,7 +84,6 @@ class ApplicationController extends IController
 
         $actionController = new ActionAbstract();
         $actionController->messages->add(_("Required action not found."), MSG_TYPE_ERROR);
-        //error_log("action: $action | node: $nodeid"):
         $this->request->setParam('messages', $actionController->messages->messages);
         $actionController->render($this->request->getRequests());
 
@@ -108,6 +105,7 @@ class ApplicationController extends IController
             $method = $this->request->getParam("method");
 
             if ($userID && !is_null($action) && "index" == $method) {
+                // this class does not exist
                 $user_status = new Status();
                 $status = $user_status->get($userID);
                 $hash = NULL;

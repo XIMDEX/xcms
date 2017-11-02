@@ -107,7 +107,7 @@ ModulesManager::file('/inc/FileUpdater.class.php', 'ximIO');
 		while(list(, $message) = each($importer->messages)) {
 			$messages->add($message, MSG_TYPE_WARNING);
 		}
-//Add info about what was imported 
+        //Add info about what was imported 
 
 		// 3.- Importing contents (from a files array ?), it is not necessary, i have got it in database
 		
@@ -167,11 +167,9 @@ ModulesManager::file('/inc/FileUpdater.class.php', 'ximIO');
 		$targetNode = new Node($importer->idfinal);
 		$newName = $targetNode->GetNodeName();
 		$nodeType = new NodeType($targetNode->nodeType->get('IdNodeType') );
-		//Debug::log("id:", $importer->id, "newName:", $newName, "lastName", $lastName, "nodetype:", $nodeType->GetName() );
 		if($lastName != $newName && null != $newName && ( "XmlContainer" == $nodeType->GetName() || "XimletContainer" == $nodeType->getGetName() ) ) {
 		  $childrens =  $targetNode->GetChildren();
 		  $total = count($childrens);
-		  //Debug::log($total);
 		  for($i = 0; $i< $total; $i++) {
 				$children = $childrens[$i];
 				$node_child = new Node($children);
@@ -186,4 +184,3 @@ ModulesManager::file('/inc/FileUpdater.class.php', 'ximIO');
 		return $messages;
 
 	}
-?>

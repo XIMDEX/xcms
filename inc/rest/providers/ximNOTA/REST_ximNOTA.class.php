@@ -1,4 +1,5 @@
 <?php
+use Ximdex\Runtime\App;
 use Ximdex\Utils\Curl;
 
 /**
@@ -38,8 +39,7 @@ class REST_ximNOTA extends REST_Provider {
 
 	public function __construct() {
 		parent::__construct();
-		$this->URL_STRING = sprintf('%s'.ModulesManager::path('ximNOTA').'/rest/index.php', \App::getValue( 'UrlRoot'));
-#		$this->URL_STRING = sprintf('%s/xmd/loadaction.php', \App::getValue( 'UrlRoot'));
+		$this->URL_STRING = sprintf('%s'.ModulesManager::path('ximNOTA').'/rest/index.php', App::getValue( 'UrlRoot'));
 	}
 
 	public function migratePair($pathToFile, $pathToXml, $pathToXimdex) {
@@ -74,5 +74,3 @@ class REST_ximNOTA extends REST_Provider {
 	}
 
 }
-
-?>

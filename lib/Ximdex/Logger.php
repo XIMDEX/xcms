@@ -117,4 +117,11 @@ Class Logger
         $result = $string . PHP_EOL . sprintf("on %s:%s [%s]\n", $trace['file'], $trace['line'], $trace['function']);
         return self::get()->logger->addInfo( $result );
     }
+    
+    public static function get_active_instance()
+    {
+        if (self::$active)
+            return self::$active;
+        return 'default';
+    }
 }

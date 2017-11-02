@@ -29,6 +29,8 @@
  * <p>AES encryption class</p>
  * <p>Performs encryption and decryption using AES cipher algorithm</p>
  */
+use Ximdex\Logger;
+
 class AES {
 
     const M_CBC = 'cbc';
@@ -100,7 +102,7 @@ class AES {
                 $this->cipher = MCRYPT_RIJNDAEL_256;
                 break;
             default:
-                XMD_Log::info("default entering cipher");
+                Logger::info("default entering cipher");
                 $this->cipher = MCRYPT_RIJNDAEL_128;
         }
     }
@@ -211,5 +213,3 @@ class AES {
     }
 
 }
-
-?>

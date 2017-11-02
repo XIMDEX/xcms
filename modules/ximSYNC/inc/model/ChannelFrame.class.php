@@ -24,7 +24,7 @@
  *  @version $Revision$
  */
 
-
+use Ximdex\Logger;
 use Ximdex\Models\Channel;
 
 ModulesManager::file('/inc/model/ChannelFrame.class.php', 'ximSYNC');
@@ -63,7 +63,7 @@ class ChannelFrame extends ChannelFrames_ORM {
 			return $idChannelFrame;
 		}
 
-		XMD_Log::info("ERROR Creando el channelFrame");
+		Logger::info("ERROR Creando el channelFrame");
 		return NULL;
     }
 
@@ -94,4 +94,3 @@ class ChannelFrame extends ChannelFrames_ORM {
 	}
 
 }
-?>

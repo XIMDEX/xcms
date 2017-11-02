@@ -27,6 +27,7 @@
 
 //TODO - LIST
 
+use Ximdex\Logger;
 use Ximdex\Models\Node;
 use Ximdex\Models\NodeType;
 use Ximdex\Runtime\App;
@@ -752,10 +753,6 @@ class ImportXml
          * moment in which we will have all the information to insert the node
          *
         */
-        //Commented to solve a bug when recursive copying
-        /*if (!is_null($this->_recurrence)) && $this->depth >= $this->_recurrence) {
-            return null;
-        }*/
 
         $baseIO = new BaseIO();
         $idUser = \Ximdex\Utils\Session::get("userID");
@@ -769,11 +766,11 @@ class ImportXml
         } else {
             $idImportationNode = $baseIO->build($elementToInsert, $idUser);
             if ($idImportationNode < 0) {
-                XMD_Log::error(_('Error inserting the node') . $elementToInsert['ID']);
+                Logger::error(_('Error inserting the node') . $elementToInsert['ID']);
             }
             reset($baseIO->messages->messages);
             while (list(, $message) = each($baseIO->messages->messages)) {
-                XMD_Log::debug($message['message']);
+                Logger::debug($message['message']);
             }
         }
         if ($idImportationNode > 0) {
@@ -1175,7 +1172,7 @@ class ImportXml
             $elementToInsert = array();
             $this->_bindNode($template['ID'], $result, $elementToInsert['NULL'], $status, $path);
         }
-        XMD_Log::warning(_('No pvd could be successfully estimated for the node ') . $parentElement['ID']);
+        Logger::warning(_('No pvd could be successfully estimated for the node ') . $parentElement['ID']);
         return NULL;
     }
 
@@ -1206,7 +1203,7 @@ class ImportXml
         if ($db->numRows == 1) {
             return $db->getValue('IdNode');
         }
-        XMD_Log::error(_('An inconsistency was found in database, there are several UUID in NodeProperties table with same value'));
+        Logger::error(_('An inconsistency was found in database, there are several UUID in NodeProperties table with same value'));
         return NULL;
     }
 

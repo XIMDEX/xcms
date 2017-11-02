@@ -29,13 +29,9 @@ use Ximdex\Models\Group;
 use Ximdex\Models\Node;
 use Ximdex\Models\NodeType;
 use Ximdex\Models\User;
+use Ximdex\Runtime\App;
 
 include_once realpath(dirname(__FILE__) . "/../../../../").'/bootstrap/start.php';
-
-if (!defined('XIMDEX_ROOT_PATH'))
-    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../../../"));
-
-ModulesManager::file('/inc/utils.php');
 
 \Ximdex\Utils\Session::check();
 $userID = \Ximdex\Utils\Session::get('userID');
@@ -63,7 +59,7 @@ if($contentType) {
     }
     $nodeType = new NodeType();
     if(!$selectedNodeID){
-        $selectedNodeID =  \App::getValue("ProjectsNode");
+        $selectedNodeID =  App::getValue("ProjectsNode");
     }
 
     if($contentType == 'dynamic'){

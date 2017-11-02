@@ -26,6 +26,7 @@
  */
 
 namespace Ximdex\Services ;
+use Ximdex\Runtime\App;
 use Ximdex\Utils\Crypto;
 
 /**
@@ -59,7 +60,7 @@ class Token {
 
         $token = array('user' => $user, 'created' => time(), 'validTo' => $validTo);
         $token = json_encode($token);
-        $token = base64_encode(Crypto::encryptAES($token, \App::getValue( 'ApiKey'), \App::getValue( 'ApiIV')));
+        $token = base64_encode(Crypto::encryptAES($token, App::getValue( 'ApiKey'), App::getValue( 'ApiIV')));
         return $token;
     }
 
@@ -69,7 +70,7 @@ class Token {
      * @return boolean indicating whether the token is valid or not
      */
     public function validateToken($token) {
-        $decryptedToken = json_decode(Crypto::decryptAES(base64_decode($token), \App::getValue( 'ApiKey'), \App::getValue( 'ApiIV')), true);
+        $decryptedToken = json_decode(Crypto::decryptAES(base64_decode($token), App::getValue( 'ApiKey'), App::getValue( 'ApiIV')), true);
 
         if ($decryptedToken == null)
             return false;

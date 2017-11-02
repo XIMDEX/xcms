@@ -25,6 +25,7 @@
  */
 
 
+use Ximdex\Runtime\App;
 use Ximdex\Widgets\WidgetAbstract;
 
 
@@ -74,7 +75,6 @@ class Widget_calendar extends WidgetAbstract
 
         //By default, from calendar.
         if (!array_key_exists("type", $params) || is_null($params['type']) || $params['type'] != 'to') {
-            //$params['type'] = 'from';
             $params['widget_label'] = _('Validity start');
         } else {
             $params['widget_label'] = _('Validity end');
@@ -101,18 +101,8 @@ class Widget_calendar extends WidgetAbstract
         $params['timestamp_current'] = date($dateFormat);
         if ($params['timestamp_value']) {
             $params['datevalue'] = date($format, $params['timestamp_value']);
-            /*
-            $params['hourvalue'] = date($hourFormat, $params['timestamp_value']);
-            $params['minvalue'] =  date($minFormat, $params['timestamp_value']);
-            $params['secvalue'] =  date($secFormat, $params['timestamp_value']);
-            */
         } else {
             $params['datevalue'] = '00-00-0000 00:00:00';
-            /*
-            $params['hourvalue'] = '00';
-            $params['minvalue'] =  '00';
-            $params['secvalue'] =  '00';
-            */
         }
 
 

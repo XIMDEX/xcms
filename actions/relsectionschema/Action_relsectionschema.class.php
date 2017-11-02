@@ -2,6 +2,7 @@
 use Ximdex\Models\Node;
 use Ximdex\Models\NodeType;
 use Ximdex\MVC\ActionAbstract;
+use Ximdex\Runtime\App;
 
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
@@ -61,7 +62,7 @@ class Action_relsectionschema extends ActionAbstract {
 			'label' => _('Tipo de plantilla'),
 			'type' => $type,
 			'id_node' => $idNode,
-			'nodeURL' => \App::getValue( 'UrlRoot')."/xmd/loadaction.php?actionid=$actionID&nodeid={$idNode}",
+			'nodeURL' => App::getValue( 'UrlRoot')."/xmd/loadaction.php?actionid=$actionID&nodeid={$idNode}",
 			'go_method' => 'set_property',
 			'list' => $list,
 			'default_schema' => $defaultSchema
@@ -93,7 +94,7 @@ class Action_relsectionschema extends ActionAbstract {
 		$values = array(
 				'messages' => $this->messages->messages,
 				'id_node' => $idNode,
-				"nodeURL" => \App::getValue( 'UrlRoot')."/xmd/loadaction.php?actionid=$idAction&nodeid={$idNode}",
+				"nodeURL" => App::getValue( 'UrlRoot')."/xmd/loadaction.php?actionid=$idAction&nodeid={$idNode}",
 				);
 
 		$this->render($values);

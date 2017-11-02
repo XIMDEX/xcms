@@ -42,7 +42,6 @@ use Ximdex\Logger;
 
 
 require_once(XIMDEX_ROOT_PATH . "/inc/utils.php");
-//
 require_once(XIMDEX_ROOT_PATH . '/inc/poolerd/PoolerClient.class.php');
 
 ModulesManager::file('/inc/persistence/store/StoreFactory.class.php');
@@ -109,10 +108,6 @@ class DataFactory
     {
         $this->ClearError();
         $this->nodeID = (int)$nodeID;
-        /*
-        if (ModulesManager::isEnabled('ximRAM'))
-        	$this->conector = new SolrConector();
-		*/
     }
 
     /**

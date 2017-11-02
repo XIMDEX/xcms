@@ -24,8 +24,6 @@
  *  @version $Revision$
  */
 
-
-
 ModulesManager::file("/actions/searchpanel/inc/Searchpanel_Filters.class.php");
 
 class Filters_Ximdex {
@@ -93,5 +91,3 @@ class Filters_Ximdex {
 		return $filters;
 	}
 }
-
-?>

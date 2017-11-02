@@ -24,18 +24,12 @@
  *  @version $Revision$
  */
 
-
-
-
-
-
-
-
-ModulesManager::file('/inc/utils.php');
+use Ximdex\Runtime\App;
 
 function PrintImagesBrowser($nodeID)
 {
-	$src = preg_replace("/modules/ximNEWS/actions/.*/init.php", "/xmd/images", \App::getValue( 'UrlRoot').ModulesManager::path('ximNEWS').'/actions/browserimages/init.php');
+	$src = preg_replace("/modules/ximNEWS/actions/.*/init.php", "/xmd/images", 
+	    App::getValue( 'UrlRoot').ModulesManager::path('ximNEWS').'/actions/browserimages/init.php');
 	$cierreVentana = "<img src='" . $src . "/botones/cerrar.gif' alt='' border='0'>";
 	$crear = "<img src='" . $src . "/botones/crear.gif' alt='Crear' border='0'>";
 
@@ -90,7 +84,7 @@ function PrintImagesBrowser($nodeID)
 		</tr>
 	</table>
 	</form>
-	<script language="JavaScript" type="text/javascript">
+	<script type="text/javascript">
 	<!--
 	show_LoteImagenes();
 	//-->
@@ -109,18 +103,13 @@ if( $_POST["containerid"] && $_POST["createnews"] ) {
 }
 else {
     // When entering to the page, we receive by get and we paint the form
-    //gPrintHeader();
-    //gPrintBodyBegin();
-
+    
 	$nodes = $_GET["nodes"];
 	$nodeid = $nodes[0];
 
     if ($nodeid) {
-	//$nodeID = $_GET["nodeid"];
 	PrintImagesBrowser($nodeid);
     }
     else
 	gPrintMsg(_("ERROR in parameters"));
-    //gPrintBodyEnd();
 }
-?>

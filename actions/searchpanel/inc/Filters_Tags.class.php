@@ -24,10 +24,7 @@
  *  @version $Revision$
  */
 
-
-
 ModulesManager::file("/actions/searchpanel/inc/Searchpanel_Filters.class.php");
-
 
 class Filters_Tags {
 
@@ -62,5 +59,3 @@ class Filters_Tags {
 		return $filtersTags;
 	}
 }
-
-?>

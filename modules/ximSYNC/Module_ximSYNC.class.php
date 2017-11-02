@@ -58,7 +58,7 @@ class Module_ximSYNC extends Module
 
         // Install !
         $install_ret = parent::install();
-        //Shell::exec('php ' . XIMDEX_ROOT_PATH . '/script/orm/generate.php Servers');
+        
         // Success
         $successInstall = true;
 
@@ -122,11 +122,8 @@ class Module_ximSYNC extends Module
 
         // get destructor SQL
         $this->loadDestructorSQL("ximSYNC.destructor.sql");
-        //Shell::exec('php ' . XIMDEX_ROOT_PATH . '/script/orm/generate.php Servers');
 
         // Uninstall!
         parent::uninstall();
     }
 }
-
-?>
