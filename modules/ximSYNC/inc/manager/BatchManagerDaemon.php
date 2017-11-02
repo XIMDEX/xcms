@@ -48,6 +48,7 @@ function main($argc, $argv)
 {
     $log = new Monolog\Logger('PUBLICATION');
     $log->pushHandler(new StreamHandler(App::getValue('XIMDEX_ROOT_PATH') . '/logs/publication.log', Monolog\Logger::DEBUG));
+    $defaultLog = Logger::get_active_instance();
     Logger::addLog($log, 'publication');
     Logger::setActiveLog('publication');
 
@@ -71,7 +72,8 @@ function main($argc, $argv)
         // Gext next block (if any) of nodes to publish
         $nodesToPublish = NodesToPublish::getNext();
     }
-
+    
+    Logger::setActiveLog($defaultLog);
 }
 
 function createBatchsForBlock($nodesToPublish)

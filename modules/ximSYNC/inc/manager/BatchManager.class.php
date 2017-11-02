@@ -383,7 +383,7 @@ class BatchManager
                 continue;
             }
 
-            if($docsToUpVersion[$idNode]){
+            if(isset($docsToUpVersion[$idNode]) and $docsToUpVersion[$idNode]){
                 $this->_upVersion(array($docsToUpVersion[$idNode]), NULL);
             }
 

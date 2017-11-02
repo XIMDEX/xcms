@@ -25,6 +25,7 @@
  */
 
 
+use Ximdex\Logger;
 use Ximdex\Runtime\DataFactory;
 use Ximdex\Runtime\Db;
 
@@ -87,7 +88,7 @@ class NodesToPublish extends NodesToPublish_ORM {
 
 		if ($db->EOF) {
 			// No nodes to publish
-			Publication_Log::info("No more documents to publish found. Returning null");
+			Logger::info("No more documents to publish found. Returning null");
 			return $result;
 		}
 		$dateUp = $db->getValue("DateUp");

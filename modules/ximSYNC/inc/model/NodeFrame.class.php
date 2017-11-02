@@ -26,7 +26,6 @@
 
 use Ximdex\Logger;
 use Ximdex\Models\Node;
-use Ximdex\Models\Version;
 use Ximdex\Runtime\DataFactory;
 use Ximdex\Runtime\Db;
 
@@ -311,7 +310,6 @@ class NodeFrame extends NodeFrames_ORM {
 	/**
 	*  Calls for cancel the ServerFrames which matching the value of nodeId.
 	*  @param int idNodeFrame
-	*  @return unknown
 	*/
 	function cancelServerFrames($idNodeFrame) {
 		$condition = 'IdNodeFrame = %s';

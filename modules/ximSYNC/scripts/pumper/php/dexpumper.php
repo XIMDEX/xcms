@@ -39,7 +39,6 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 
 function showErrors($errno, $errstr, $errfile = NULL, $errline= NULL) {
                 $_msg = "FATAL ERROR:$errno, $errstr. $errfile : $errline. TRACE:  ".print_r(debug_backtrace(),true);
-          //    file_put_contents(XIMDEX_ROOT_PATH."/logs/pumpers.log", $_msg."\n\r", FILE_APPEND );
 }
 set_error_handler("showErrors");
 
@@ -422,7 +421,6 @@ class DexPumper {
 			}
 		}
 
-		//		$this->serverFrame->set('Error', '');
 		$this->serverFrame->set('ErrorLevel', $result ? 0 : 1);
 		$retries ++;
 		$this->serverFrame->set('Retry', $retries);
@@ -443,7 +441,6 @@ class DexPumper {
 	//DONE
 	private function updateServerState($status) {
 		if (!empty($status)) {
-			//$this->server->query("UPDATE ServerErrorByPumper SET WithError='%s' WHERE ServerId=%d", array($status, $this->server->get('IdServer')));
 		    $this->server->query("UPDATE ServerErrorByPumper SET WithError='$status' WHERE ServerId=" . $this->server->get('IdServer'));
 
 			$this->server->set('ActiveForPumping', 1);
@@ -476,7 +473,6 @@ class DexPumper {
 				$this->pumper->set('ProcessId','xxxx');
             $this->pumper->set('CheckTime', time());
             $this->pumper->update();
-				//system("kill -9 $processId",$var);
 
 			}
 		}
@@ -524,9 +520,8 @@ class DexPumper {
 	public function msg_log($_msg) {
 		$pumperID = (int) $this->pumper->get('PumperId');
 		$_msg = "[PumperId: $pumperID] ".$_msg;
-
-		//file_put_contents(XIMDEX_ROOT_PATH."/logs/pumpers.log", $_msg."\n\r", FILE_APPEND );
-			error_log($_msg);
+        
+		error_log($_msg);
 	}
 
 }

@@ -79,16 +79,23 @@ class Scheduler
             Logger::error(_("Closing scheduler. Disabled pcntl_fork and pcntl_waitpid functions are required. Please, check php.ini file.") . "\r\n");
         }
 
-        $syncStatObj->create(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "INFO", 8, _("Starting Scheduler") . " $synchro_pid");
+        $msg = _("Starting Scheduler") . " $synchro_pid";
+        $syncStatObj->create(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "INFO", 8, $msg);
+        Logger::info($msg);
 
         $mutex = new Mutex (App::getValue("AppRoot") . App::getValue("TempRoot") . "/scheduler.lck");
 
         if (!$mutex->acquire()) {
-            $syncStatObj->create(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "INFO", 8, _("Lock file existing"));
+            
+            $msg = _("Lock file existing");
+            $syncStatObj->create(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "INFO", 8, $msg);
+            Logger::info($msg);
             die ();
         }
 
-        $syncStatObj->create(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "INFO", 8, _("Getting lock..."), true);
+        $msg = _("Getting lock...");
+        $syncStatObj->create(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "INFO", 8, $msg, true);
+        Logger::info($msg);
 
         $voidCycles = 0;
         $cycles = 0;
@@ -105,6 +112,7 @@ class Scheduler
                 $mutex->release();
                 $msg = _("STOP: Detected file") . " $stopper_file_path " . _("You need to delete this file in order to restart Scheduler successfully");
                 $syncStatObj->create(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "INFO", 8, $msg);
+                Logger::warning($msg);
                 die();
             }
 
@@ -113,7 +121,9 @@ class Scheduler
 
             $activeAndEnabledServers = $serverError->getServersForPumping();
 
-            $syncStatObj->create(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "INFO", 8, print_r($activeAndEnabledServers, true));
+            $msg = 'Active and enabled servers: ' . print_r($activeAndEnabledServers, true);
+            $syncStatObj->create(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "INFO", 8, $msg);
+            Logger::info($msg);
 
 
             $batchProcess = $batchManager->getBatchToProcess();
@@ -122,14 +132,17 @@ class Scheduler
 
                 // There aren't Active & Enable servers...
 
-
-                $syncStatObj->create(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "ERROR", 8, _("No active server"));
+                $msg = _("No active server");
+                $syncStatObj->create(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "ERROR", 8, $msg);
+                Logger::error($msg);
 
                 // This is a void cycle...
                 $voidCycles++;
 
                 // Sleeping...
-                $syncStatObj->create(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "INFO", 8, _("Sleeping..."));
+                $msg = _("Sleeping...");
+                $syncStatObj->create(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "INFO", 8, $msg);
+                Logger::info($msg);
                 sleep(SCHEDULER_SLEEPING_TIME_BY_VOID_CYCLE);
 
             } elseif (!$batchProcess) {
@@ -141,13 +154,17 @@ class Scheduler
 
                 $pumperManager->callingPumpers($activeAndEnabledServers);
 
-                $syncStatObj->create(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "INFO", 8, _("No proccessable batchs found"));
+                $msg = _("No proccessable batchs found");
+                $syncStatObj->create(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "INFO", 8, $msg);
+                Logger::info($msg);
 
                 // This is a void cycle...
                 $voidCycles++;
 
                 // Sleeping...
-                $syncStatObj->create(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "INFO", 8, _("Sleeping..."));
+                $msg = _("Sleeping...");
+                $syncStatObj->create(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "INFO", 8, $msg);
+                Logger::info($msg);
                 sleep(SCHEDULER_SLEEPING_TIME_BY_VOID_CYCLE);
 
             } else {
@@ -155,22 +172,28 @@ class Scheduler
                 // Some processable Bacths found...
 
                 $startStamp = time();
-                $syncStatObj->create(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "[CACTI]SCHEDULER-INFO", 8, "[Id: $startStamp]" . _("STARTING BATCH PROCESSING"));
+                $msg = "[Id: $startStamp]" . _("STARTING BATCH PROCESSING");
+                $syncStatObj->create(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "[CACTI]SCHEDULER-INFO", 8, $msg);
+                Logger::info($msg);
 
                 while ($batchProcess) {
 
                     // This a full cycle...
 
-
-                    $syncStatObj->create(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "INFO", 8, _("Cycle num") . " $cycles");
+                    $msg = _("Cycle num") . " $cycles";
+                    $syncStatObj->create(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "INFO", 8, $msg);
+                    Logger::info($msg);
 
                     if ($cycles >= MAX_NUM_CICLOS_SCHEDULER) {
 
                         // Exceding max. cycles...
 
-
-                        $syncStatObj->create(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "INFO", 8, sprintf(_("Exceding max. cycles (%d > %d). Exiting scheduler"), $cycles, MAX_NUM_CICLOS_SCHEDULER));
-                        $syncStatObj->create(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "[CACTI]SCHEDULER-INFO", 8, "[Id: $startStamp] " . _("STOPPING BATCH PROCESSING"));
+                        $msg = sprintf(_("Exceding max. cycles (%d > %d). Exiting scheduler"), $cycles, MAX_NUM_CICLOS_SCHEDULER);
+                        $syncStatObj->create(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "INFO", 8, $msg);
+                        Logger::info($msg);
+                        $msg = "[Id: $startStamp] " . _("STOPPING BATCH PROCESSING");
+                        $syncStatObj->create(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "[CACTI]SCHEDULER-INFO", 8, $msg);
+                        Logger::info($msg);
                         $mutex->release();
                         die ();
                     }
@@ -187,7 +210,9 @@ class Scheduler
                     $majorCycle = $batchProcess ['majorcycle'];
                     $totalServerFrames = $batchProcess ['totalserverframes'];
 
-                    $syncStatObj->create(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "INFO", 8, sprintf(_("Processing batch %s type %s"), $batchId, $batchType) . ", true");
+                    $msg = sprintf(_("Processing batch %s type %s"), $batchId, $batchType) . ", true";
+                    $syncStatObj->create(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "INFO", 8, $msg);
+                    Logger::info($msg);
 
                     $nodeFrames = array();
                     $schedulerChunk = (SCHEDULER_CHUNK > MAX_NUM_NODES_PER_BATCH) ? SCHEDULER_CHUNK : MAX_NUM_NODES_PER_BATCH;
@@ -201,7 +226,9 @@ class Scheduler
                         $timeUp = $nodeFrameData ['up'];
                         $timeDown = $nodeFrameData ['down'];
 
-                        $syncStatObj->create(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "INFO", 8, sprintf(_("Checking activity, nodeframe %s for batch %s"), $nodeFrameId, $batchId));
+                        $msg = sprintf(_("Checking activity, nodeframe %s for batch %s"), $nodeFrameId, $batchId);
+                        $syncStatObj->create(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "INFO", 8, $msg);
+                        Logger::info($msg);
 
                         $result = $nodeFrameManager->checkActivity($nodeFrameId, $nodeId, $timeUp, $timeDown, $batchType, $testTime);
                     }
@@ -229,7 +256,9 @@ class Scheduler
 
                     $activeAndEnabledServers = $serverError->getServersForPumping();
 
-                    $syncStatObj->create(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "INFO", 8, print_r($activeAndEnabledServers, true));
+                    $msg = print_r($activeAndEnabledServers, true);
+                    $syncStatObj->create(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "INFO", 8, $msg);
+                    Logger::info($msg);
 
                     $batchProcess = $batchManager->getBatchToProcess();
 
@@ -238,7 +267,9 @@ class Scheduler
 
                 if ($startStamp > 0) {
 
-                    $syncStatObj->create(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "[CACTI]SCHEDULER-INFO", 8, "[Id: $startStamp] " . _("STOPPING BATCH PROCESSING"));
+                    $msg = "[Id: $startStamp] " . _("STOPPING BATCH PROCESSING");
+                    $syncStatObj->create(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "[CACTI]SCHEDULER-INFO", 8, $msg);
+                    Logger::info($msg);
                 }
 
             }
@@ -260,7 +291,9 @@ class Scheduler
 
         } while (true);
 
-        $syncStatObj->create(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "INFO", 8, sprintf(_("Exceding max. cycles (%d > %d). Exit scheduler"), $cycles, MAX_NUM_CICLOS_VACIOS_SCHEDULER));
+        $msg = sprintf(_("Exceding max. cycles (%d > %d). Exit scheduler"), $cycles, MAX_NUM_CICLOS_VACIOS_SCHEDULER);
+        $syncStatObj->create(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "INFO", 8, $msg);
+        Logger::info($msg);
         $mutex->release();
     }
 }

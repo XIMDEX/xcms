@@ -26,13 +26,12 @@
 
 
 use Ximdex\Logger;
+use phpseclib\Net\SFTP;
 
 if (!defined('XIMDEX_ROOT_PATH')) {
     define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
 }
 
-
-require_once(XIMDEX_ROOT_PATH . Extensions::PHPSECLIB . '/Net/SFTP.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/io/connection/I_Connector.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/io/connection/Connection_Local.class.php');
 
@@ -71,7 +70,7 @@ class Connection_Ssh implements I_Connector
         if (empty($host) && empty($port)) {
             return false;
         }
-        $this->netSFTP = new Net_SFTP($host, $port);
+        $this->netSFTP = new SFTP($host, $port);
 
 
         return true;
@@ -305,7 +304,7 @@ class Connection_Ssh implements I_Connector
      */
     public function put($localFile, $targetFile, $mode = 0755)
     {
-        return $this->netSFTP->put($targetFile, $localFile, NET_SFTP_LOCAL_FILE);
+        return $this->netSFTP->put($targetFile, $localFile, SFTP::SOURCE_LOCAL_FILE);
     }
 
     /**

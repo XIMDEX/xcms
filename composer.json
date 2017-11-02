@@ -51,7 +51,8 @@
         "symfony/console": "3.3.*",
         "php-di/php-di": "5.4.*",
         "doctrine/common": "2.8.*",
-        "illuminate/support": "5.5.*"
+        "illuminate/support": "5.5.*",
+        "phpseclib/phpseclib": "2.0.*"
     },
      "require-dev": {
         "mockery/mockery": "0.9.*",
