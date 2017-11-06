@@ -45,7 +45,8 @@
 
 	<div class="form_item" >
 		<label for="db_admin">Database Admin User</label>
-		<input ng-model="root_user" type="text" name="root_user" id="db_admin" value="ximdex" required ng-class="{success:hostCheck==true, error_element:hostCheck == 'root_user'}"/>
+		<input ng-model="root_user" type="text" name="root_user" id="db_admin" value="ximdex" required 
+				ng-class="{success:hostCheck==true, error_element:hostCheck == 'root_user'}" placeholder="Insert your database user here" />
 	</div>
 
 	<div class="form_item" >
@@ -60,7 +61,8 @@
 		<p class=" warning error--inline overwrite" ng-show="dbErrors">{{dbErrors}}</p>
 	</div>	
 
-	<button ng-hide="dbErrors" class="launch_ximdex action_launcher ladda-button"  ui-ladda="loading" data-style="slide-up" xim-state="loading" ng-click="sendForm()">Create Database</button>
+	<button ng-hide="dbErrors" class="launch_ximdex action_launcher ladda-button"  ui-ladda="loading" data-style="slide-up" xim-state="loading" 
+			ng-click="sendForm()">Create Database</button>
         
 	
 	<button ng-show="dbErrors" class="launch_ximdex action_launcher ladda-button"   ui-ladda="loadingOverwrite" data-style="slide-up" xim-state="loadingOverwrite" ng-click="sendForm()">Overwrite database</button>

@@ -27,7 +27,7 @@ ximdexInstallerApp.controller('InstallDatabaseController', ["$timeout", '$scope'
 
         $scope.error = false;
         $scope.submit = false;
-        $scope.root_user = "root"; 
+        $scope.root_user = ""; 
         $scope.installed = false;
         //$scope.name = $attrs.ximInstallInstanceName;
         $scope.name = "ximdex";
@@ -149,8 +149,14 @@ ximdexInstallerApp.controller('InstallDatabaseController', ["$timeout", '$scope'
                 else
                     $scope.loading = false;
                 if (response.data.success) {
-                    $scope.installed = true;
-                    $scope.user = $scope.name;
+                	
+                	if (response.data.skipNewDBUser)
+                		location.reload();
+                	else
+                	{
+                		$scope.installed = true;
+                		$scope.user = $scope.name;
+                	}
                 } else {
                     $scope.error = response.data.errors;
                 }

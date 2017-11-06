@@ -128,6 +128,15 @@ class BuildDataBaseInstallStep extends GenericInstallStep
                 $idbManager->loadData($host, $port, $user, $pass, $name);
                 $result = $idbManager->checkDataBase($host, $port, $user, $pass, $name);
                 if ($result) {
+                    
+                    // if the app is working under a Docker instance, the new user creation will be omited
+                    if (isset($_SERVER['DOCKER_CONF_HOME']))
+                    {
+                        $this->initParams($host, $port, $name, $user, $pass);
+                        $values['skipNewDBUser'] = true;
+                    }
+                    else
+                        $values['skipNewDBUser'] = false;
                     $values["success"] = true;
                 } else {
                     $values["failure"] = true;
@@ -161,7 +170,7 @@ class BuildDataBaseInstallStep extends GenericInstallStep
         $values = array();
         if ($user == $root_user) {
             $values["success"] = true;
-            $this->initParams($host, $port, $name, $user, $root_pass);
+            $this->initParams($host, $port, $name, $user, $pass);
             $this->sendJson($values);
         }
         $idbManager->connect($host, $port, $root_user, $root_pass, $name );

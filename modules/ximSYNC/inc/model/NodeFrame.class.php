@@ -285,8 +285,16 @@ class NodeFrame extends NodeFrames_ORM {
 			return true;
 		}
 
-		$idNodeFrame = $result[0]['IdNodeFrame'];
-		$name = $result[0]['Name'];
+		if (isset($result[0]))
+		{
+		    $idNodeFrame = $result[0]['IdNodeFrame'];
+		    $name = $result[0]['Name'];
+		}
+		else
+		{
+		    $idNodeFrame = null;
+		    $name = null;
+		}
 		$node = new Node($nodeId);
 
 		if ($node->get('Name') != $name) {

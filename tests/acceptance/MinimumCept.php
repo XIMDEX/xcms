@@ -34,17 +34,16 @@ $I->fillField("root_pass", "ximdex");
 $I->fillField("name", "ximdex");
 
 $I->click("Create Database");
-
-$I->waitForText("Once the database is created", 15);
 /*
+$I->waitForText("Once the database is created", 15);
+
 $I->fillField("user", "ximdexuser");
 $I->fillField("pass", "ximdexpass");
 
 $I->click("Add user");
-*/
-$I->click('Skip');
-
 $I->wait(3);
+*/
+$I->wait(15);
 
 $I->see("Set the password for this admin user");
 

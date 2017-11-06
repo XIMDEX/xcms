@@ -109,6 +109,7 @@ class BatchManager
         $isOTF = $node->getSimpleBooleanProperty('otf');
         $ancestors = array();
         $unchangedDocs = array();
+        $docsToUpVersion = array();
 
         foreach ($docsToPublish as $idDoc) {
             $versionToPublish = $docsToPublishVersion[$idDoc];
