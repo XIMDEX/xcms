@@ -226,6 +226,10 @@ class InstallDataBaseManager extends InstallManager
     {
         $result = false;
         if ($this->dbConnection) {
+            $host = explode(';', $this->host);
+            if (!$host)
+                return false;
+            $host = $host[0];
             if ($host == 'localhost' and !isset($_SERVER['DOCKER_CONF_HOME']))
                 $query = " SELECT user FROM mysql.user where user='$userName' and host='localhost'";
             else
@@ -235,9 +239,8 @@ class InstallDataBaseManager extends InstallManager
         return $result && $result->rowCount();
     }
 
-    public function addUser($userName, $pass, $name)
+    public function addUser($userName, $pass, $name, $userExists = false)
     {
-        $result = false;
         if ($this->dbConnection) {
             
             // if the database server is installed in localhost, only the local user can access it, otherwise any remote connection be able
@@ -249,29 +252,39 @@ class InstallDataBaseManager extends InstallManager
             {
                 if ($host == 'localhost' and !isset($_SERVER['DOCKER_CONF_HOME']))
                 {
-                    Logger::info("Creating user '$userName'@'localhost'");
-                    $sql = "CREATE USER '$userName'@'localhost' IDENTIFIED BY '$pass'";
-                    $result = $this->dbConnection->exec($sql);
+                    if (!$userExists)
+                    {
+                        Logger::info("Creating user '$userName'@'localhost'");
+                        $sql = "CREATE USER '$userName'@'localhost' IDENTIFIED BY '$pass'";
+                        $result = $this->dbConnection->exec($sql);
+                    }
+                    else
+                        $result = true;
                     if ($result !== false)
                     {
-                        $query = "GRANT ALL PRIVILEGES ON `$name`.* TO '$userName'@'localhost' WITH GRANT OPTION;";
+                        $query = "GRANT ALL PRIVILEGES ON `$name`.* TO '$userName'@'localhost' WITH GRANT OPTION";
                         $result = $this->dbConnection->exec($query);
                     }
                     if ($result !== false)
-                        Logger::info("User '$userName'@'localhost' created");
+                        Logger::info("User '$userName'@'localhost' created / associated to database");
                 }
                 else
                 {
-                    Logger::info("Creating user '$userName'@'%'");
-                    $sql = "CREATE USER '$userName'@'%' IDENTIFIED BY '$pass'";
-                    $result = $this->dbConnection->exec($sql);
+                    if (!$userExists)
+                    {
+                        Logger::info("Creating user '$userName'@'%'");
+                        $sql = "CREATE USER '$userName'@'%' IDENTIFIED BY '$pass'";
+                        $result = $this->dbConnection->exec($sql);
+                    }
+                    else
+                        $result = true;
                     if ($result !== false)
                     {
-                        $query = "GRANT ALL PRIVILEGES ON `$name`.* TO '$userName'@'%' WITH GRANT OPTION;";
+                        $query = "GRANT ALL PRIVILEGES ON `$name`.* TO '$userName'@'%' WITH GRANT OPTION";
                         $result = $this->dbConnection->exec($query);
                     }
                     if ($result !== false)
-                        Logger::info("User '$userName'@'%' created");
+                        Logger::info("User '$userName'@'%' created / associated to database");
                 }
                 if ($result !== false)
                     $this->dbConnection->exec("FLUSH privileges");
@@ -281,8 +294,11 @@ class InstallDataBaseManager extends InstallManager
                 Logger::error('Cannot create database user: ' . $e->getMessage());
                 return false;
             }
-            $this->user = $userName;
-            $this->pass = $pass;
+            if ($result !== false)
+            {
+                $this->user = $userName;
+                $this->pass = $pass;
+            }
         }
         return $result;
     }

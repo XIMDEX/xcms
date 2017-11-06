@@ -215,7 +215,13 @@ ximdexInstallerApp.controller('InstallDatabaseController', ["$timeout", '$scope'
                 params += "&pass=" + $scope.pass;
         	}
             installerService.sendAction("addUser", params).then(function (response) {
-                location.reload();
+            	if (response.data.success)
+            		location.reload();
+            	else
+            	{
+            		$scope.loadingAddUser = false;
+            		$scope.genericErrors = response.data.errors;
+            	}
             });
         }
 

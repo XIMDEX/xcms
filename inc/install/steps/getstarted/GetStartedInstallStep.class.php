@@ -47,7 +47,6 @@ class GetStartedInstallStep extends GenericInstallStep {
 
 	/**
 	 * Change Permissions, Load next Action  and redirect to index.php
-	 * @return [type] [description]
 	 */
 	public function startXimdex(){
 
@@ -74,5 +73,3 @@ class GetStartedInstallStep extends GenericInstallStep {
         exec("rm -f ".XIMDEX_ROOT_PATH."/data/tmp/js/en_US/*");
     }
 }
-
-?>

@@ -155,7 +155,6 @@ class BuildDataBaseInstallStep extends GenericInstallStep
 
     public function addUser()
     {
-        $idbManager = new InstallDataBaseManager();
         $host = $this->request->getParam("host");
         $port = $this->request->getParam("port");
         $user = $this->request->getParam("user");
@@ -163,7 +162,6 @@ class BuildDataBaseInstallStep extends GenericInstallStep
         $name = $this->request->getParam("name");
         $root_user = $this->request->getParam("root_user");
         $root_pass = $this->request->getParam("root_pass");
-        
         if ( is_null( $root_pass )) {
             $root_pass = '' ;
         }
@@ -173,23 +171,37 @@ class BuildDataBaseInstallStep extends GenericInstallStep
             $this->initParams($host, $port, $name, $user, $pass);
             $this->sendJson($values);
         }
-        $idbManager->connect($host, $port, $root_user, $root_pass, $name );
-        $values = array();
-        $failure = false;
-        if (!$idbManager->changeUser($user, $pass, $name)) {
-
-            $idbManager->reconectDataBase(  ); //
-            $idbManager->connect($host, $port, $root_user, $root_pass, $name );
-
-            $idbManager->addUser($user, $pass, $name);
+        $idbManager = new InstallDataBaseManager();
+        $idbManager->connect($host, $port, $root_user, $root_pass, $name);
+        
+        // check if the new user exists already
+        if ($userExists = $idbManager->userExist($user))
+        {
+            // the password must be the actual one for the existant user, trying a connection with him
+            $idbManagerAux = new InstallDataBaseManager();
+            if ($idbManagerAux->connect($host, $port, $user, $pass, false, true) === false)
+            {
+                $values["failure"] = true;
+                $values["errors"] = 'This user exists already in the server, but the password is not correct';
+                $this->sendJson($values);
+            }
+            unset($idbManagerAux);
         }
-        if ($failure)
+        // if (!$idbManager->changeUser($user, $pass, $name)) {
+        // add the new user and associate it with the database, or create the link with a old user 
+        if ($idbManager->addUser($user, $pass, $name, $userExists) === false)
+        {
             $values["failure"] = true;
-        else {
+            if ($userExists)
+                $values["errors"] = 'This user exists alredy, but the password must be the specefied user one';
+            else
+                $values["errors"] = 'The user cannot be created';
+        }
+        else
+        {
             $values["success"] = true;
             $this->initParams($host, $port, $name, $user, $pass);
         }
-
         $this->sendJson($values);
     }
 
