@@ -52,7 +52,7 @@ use Ximdex\Notifications\XimdexNotificationStrategy;
  *  css/js inclusion and redirection
  *
  */
-class ActionAbstract extends IController
+abstract class ActionAbstract extends IController
 {
 
     /**
@@ -81,6 +81,8 @@ class ActionAbstract extends IController
      * Action description
      */
     private $actionDescription = '';
+    
+    private $actionId = null;
 
     /**
      * Action renderer
@@ -154,8 +156,8 @@ class ActionAbstract extends IController
 
         $action = new Action();
         $data = $action->find(
-            'Command, Name, Description, Module',
-        	'IdNodeType = %s and Command = %s and Module ' . (($module === null) ? 'is' : '=') . ' %s',
+            'Command, Name, Description, Module, IdAction',
+        	'IdNodeType = %s and Command = %s and Module ' . (($module === null) ? 'is null' : '= %s'),
             array($nodeTypeId, $actionName, $module)
         );
 
@@ -170,8 +172,6 @@ class ActionAbstract extends IController
 
     /**
      * Execute the action
-     */
-    /**
      * @param $request Request
      */
     function execute($request)
@@ -193,7 +193,7 @@ class ActionAbstract extends IController
 
         if (!empty($actionInfo)) {
 
-
+            $this->actionId = $actionInfo['IdAction'];
             $this->actionCommand = $actionInfo['Command'];
             $this->actionName = $actionInfo['Name'];
             $this->actionDescription = $actionInfo['Description'];
@@ -212,7 +212,7 @@ class ActionAbstract extends IController
 
     private function getDefaultLogMessage()
     {
-        $user = Session::get("userID") ? "by " . Session::get("userID") : "";
+        $user = Session::get("userID") ? 'by ' . Session::get('user_name') . ' (' . Session::get('userID') . ')' : '';
 
         $moduleString = '';
 
@@ -220,8 +220,12 @@ class ActionAbstract extends IController
             $moduleString = $this->actionModule ? "in module {$this->actionModule}." : "";
 
         }
+        
+        $actionId = '';
+        if ($this->actionId)
+            $actionId = ' (' . $this->actionId . ')';
 
-        return $moduleString . get_class($this) . "->{$this->actionMethod} {$user}";
+        return $moduleString . get_class($this) . "->{$this->actionMethod}$actionId {$user}";
 
     }
 
@@ -230,7 +234,7 @@ class ActionAbstract extends IController
         $this->endActionLogged = false;
         $defaultLog = Logger::get_active_instance();
         Logger::setActiveLog('actions');
-        Logger::info("Init " . $this->getDefaultLogMessage());
+        Logger::info('INIT ' . $this->getDefaultLogMessage());
         Logger::debug("Request: " . print_r($this->request, true));
         Logger::setActiveLog($defaultLog);
     }
@@ -263,10 +267,6 @@ class ActionAbstract extends IController
 
     /**
      * Renders the action
-     *
-
-     */
-    /**
      * @param null $arrValores
      * @param null $view
      * @param null $layout
@@ -392,8 +392,6 @@ class ActionAbstract extends IController
 
     /**
      * Redirects the action to another
-     */
-    /**
      * @param null $method
      * @param null $actionName
      * @param null $parameters
@@ -597,8 +595,6 @@ class ActionAbstract extends IController
      *  /var/www/ximdex/xmd/images/ximNEWS/pingu_[LANG].gif -> /var/www/ximdex/xmd/images/ximNEWS/pingu_es.gif
      *  or ...
      *  This can be also done in html with the smarty var locale
-     */
-    /**
      * @param $file
      * @param null $_lang
      * @param null $_default
@@ -689,5 +685,4 @@ class ActionAbstract extends IController
 
         return $result;
     }
-
 }

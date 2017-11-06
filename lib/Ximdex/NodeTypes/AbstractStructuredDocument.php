@@ -60,11 +60,11 @@ ModulesManager::file('/inc/model/Namespaces.class.php');
  * Class AbstractStructuredDocument
  * @package Ximdex\NodeTypes
  */
-class AbstractStructuredDocument extends FileNode
+abstract class AbstractStructuredDocument extends FileNode
 {
 
-    // Creates a new structured node
     /**
+	 * Creates a new structured node
      * @param null $name
      * @param null $parentID
      * @param null $nodeTypeID
@@ -114,8 +114,8 @@ class AbstractStructuredDocument extends FileNode
     }
 
 
-    // Name for the file/resource on production servers
     /**
+	 * Name for the file/resource on production servers
      * @param null $channel
      * @return string
      */
@@ -129,7 +129,7 @@ class AbstractStructuredDocument extends FileNode
     }
 
     /**
-     *    Get the documents that must be publicated when the template is published
+     * Get the documents that must be publicated when the template is published
      * @param array $params
      * @return array
      */
@@ -293,8 +293,8 @@ class AbstractStructuredDocument extends FileNode
         return NULL;
     }
 
-    /// Renderiza el nodo en el sistema de archivos
     /**
+	 * Renderiza el nodo en el sistema de archivos
      * @param null $channel
      * @param null $content
      * @return bool
@@ -420,10 +420,7 @@ class AbstractStructuredDocument extends FileNode
             "</docxap>\n");
 
     }
-
-    /**
-     *
-     */
+	
     function DeleteNode()
     {
         $parent = new Node($this->parent->get('IdParent'));
@@ -642,8 +639,8 @@ class AbstractStructuredDocument extends FileNode
             $this->parent->SetError(5);
     }
 
-    // Deletes the association between a channel and the current document
     /**
+	 * Deletes the association between a channel and the current document
      * @param $channelID
      */
     function DeleteChannel($channelID)
@@ -659,9 +656,8 @@ class AbstractStructuredDocument extends FileNode
             $this->parent->SetError(5);
     }
 
-    // Deletes all the associations between a channel and the current document
     /**
-     *
+     * Deletes all the associations between a channel and the current document
      */
     function DeleteChannels()
     {

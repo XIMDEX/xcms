@@ -25,6 +25,7 @@
  */
 
 
+use Ximdex\Runtime\Constants;
 use Ximdex\Runtime\Cli\CliReader;
 
 if (!defined('XIMDEX_ROOT_PATH')) {

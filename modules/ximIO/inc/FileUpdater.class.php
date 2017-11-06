@@ -32,9 +32,7 @@ use Ximdex\Runtime\Constants;
 use Ximdex\Utils\FsUtils;
 use Ximdex\Utils\TarArchiver;
 
-
-  ModulesManager::file('/actions/workflow_forward/baseIO.php');
-
+ModulesManager::file('/actions/workflow_forward/baseIO.php');
 
 class FileUpdater
 {
@@ -46,7 +44,7 @@ class FileUpdater
      * @var $dbObj DB
      */
 
-    function FileUpdater($revision)
+    function __construct($revision)
     {
         $this->revision = $revision;
     }
@@ -240,5 +238,3 @@ class FileUpdater
     }
 
 }
-
-?>

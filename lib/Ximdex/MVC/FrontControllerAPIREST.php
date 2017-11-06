@@ -197,7 +197,6 @@ class FrontControllerAPIREST extends FrontController
 
     /**
      * Comprueba si la URL de acceso coincide con UrlRoot
-     * @return unknown_type
      */
     function _checkURI()
     {

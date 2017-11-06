@@ -390,7 +390,6 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
         $xmldoc = "<?xml version='1.0' encoding='UTF-8'?>" . trim($xmldoc);
         $rngvalidator = new \Ximdex\XML\Validators\RNG();
         $valid = $rngvalidator->validate(\Ximdex\XML\Base::recodeSrc($schema, \Ximdex\XML\XML::UTF8), $xmldoc);
-        //$valid=true;
         $response = array('valid' => $valid, 'errors' => $rngvalidator->getErrors());
         return $response;
     }

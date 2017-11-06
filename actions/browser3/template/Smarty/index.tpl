@@ -43,7 +43,7 @@
     %=css_widgets%
 
     <!-- constant js includes -->
-    <script type="text/javascript" src="{$_URL_ROOT}/extensions//ckeditor/ckeditor.js"></script>
+    <script type="text/javascript" src="{$_URL_ROOT}/extensions/ckeditor/ckeditor.js"></script>
     <script type="text/javascript" src="{$_URL_ROOT}/xmd/js/vars_js.php?id={$time_id}"></script>
 
     {foreach from=$js_files key=id item=src}

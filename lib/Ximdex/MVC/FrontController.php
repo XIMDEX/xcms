@@ -27,10 +27,7 @@
 
 namespace Ximdex\MVC;
 
-use Ximdex\MVC\FrontControllerCLI;
-use Ximdex\MVC\FrontControllerHTTP;
 use Ximdex\Models\User;
-use Ximdex\MVC\IController;
 
 
 /**
@@ -77,8 +74,6 @@ class FrontController extends IController
 
     /**
      * Determina el tipo de controlador que debe gestionar la petición
-     */
-    /**
      * @return FrontControllerCLI|FrontControllerHTTP
      */
     function _selectFrontControllerType()

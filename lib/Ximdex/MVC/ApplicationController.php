@@ -29,7 +29,7 @@ namespace Ximdex\MVC;
 use ModulesManager;
 use Ximdex\Models\ActionsStats;
 use Ximdex\Runtime\App;
-use \Ximdex\Utils\Session;
+use Ximdex\Utils\Session;
 
 
 require_once(XIMDEX_ROOT_PATH . '/conf/stats.php');
@@ -45,10 +45,7 @@ ModulesManager::file('/inc/Status.class.php', 'ximADM');
 class ApplicationController extends IController
 {
     private $timer = null;
-
-    /**
-     *
-     */
+	
     function compose()
     {
         $stats = array();
@@ -92,10 +89,6 @@ class ApplicationController extends IController
 
     /**
      * Error cuando no hay una action asociada
-     */
-
-    /**
-     *
      */
     function setUserState()
     {

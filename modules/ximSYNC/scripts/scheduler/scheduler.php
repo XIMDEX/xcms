@@ -40,7 +40,7 @@ ModulesManager::file('/modules/ximSYNC/scripts/scheduler/scheduler.class.php');
 $GLOBALS['InBatchProcess'] = true;
 
 $log = new Logger('SCHEDULER');
-$log->pushHandler(new StreamHandler(App::getValue('XIMDEX_ROOT_PATH') . '/logs/scheduler.log', Logger::DEBUG));
+$log->pushHandler(new StreamHandler(App::getValue('XIMDEX_ROOT_PATH') . '/logs/scheduler.log'));
 \Ximdex\Logger::addLog($log, 'scheduler');
 \Ximdex\Logger::setActiveLog('scheduler');
 

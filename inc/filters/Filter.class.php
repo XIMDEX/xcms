@@ -105,12 +105,6 @@ class Filter {
 		$filterClassName = "Filter_" . $name;
 		$filterClassFile = "Filter_" . $name . ".class.php";
 		$filterClassPath = XIMDEX_ROOT_PATH .ModulesManager::path('filters'). "/{$name}/" . $filterClassFile;
-
-		/*  
-		print("filterClassName = $filterClassName\n");  
-		print("filterClassFile = $filterClassFile\n");  
-		print("filterClassPath = $filterClassPath\n");  
-		*/       
 		
 		if (is_null($name)) {
 			return null;

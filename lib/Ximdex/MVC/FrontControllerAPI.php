@@ -27,13 +27,11 @@
 //
 namespace Ximdex\MVC;
 
-use Ximdex\API\AbstractAPIAction;
 use Ximdex\Runtime\ResponseBuilder;
 use Ximdex\Runtime\App;
 
 
 /**
- *
  * @brief FrontController for the http api interface
  *
  * FrontController for the http api interface, provide specific methods to read
@@ -180,7 +178,6 @@ class FrontControllerAPI extends FrontController
 
     /**
      * Comprueba si la URL de acceso coincide con UrlRoot
-     * @return unknown_type
      */
     function _checkURI()
     {

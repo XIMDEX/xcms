@@ -187,7 +187,7 @@ class View_Xslt extends Abstract_View
         
         // creates the XSLT log if there is not one yet
         $log = new Monolog\Logger('XSLT');
-        $log->pushHandler(new StreamHandler(App::getValue('XIMDEX_ROOT_PATH') . '/logs/xslt.log', Monolog\Logger::DEBUG));
+        $log->pushHandler(new StreamHandler(App::getValue('XIMDEX_ROOT_PATH') . '/logs/xslt.log'));
         Logger::addLog($log, 'xslt');
         
         if (empty($content)) {

@@ -38,7 +38,7 @@ class Action_htmleditor extends ActionAbstract {
 			return;
 		}
 
-		$this->addJs('/extensions//ckeditor/ckeditor.js');
+		$this->addJs('/extensions/ckeditor/ckeditor.js');
 		$this->addJs('/actions/htmleditor/resources/js/htmleditor.js');
 
 

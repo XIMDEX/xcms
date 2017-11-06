@@ -132,7 +132,7 @@ class ImportXml
      * @param int $firstExportationNode Exportation node from where importation starts
      * @return ImportXml
      */
-    function ImportXml($rootNode, $file, $nodeAssociations, $mode = Constants::RUN_HEURISTIC_MODE, $recurrence = null, $firstExportationNode = null, $insertFirstNode = false)
+    function __construct($rootNode, $file, $nodeAssociations, $mode = Constants::RUN_HEURISTIC_MODE, $recurrence = null, $firstExportationNode = null, $insertFirstNode = false)
     {
 
         $dbObj = new Db();
@@ -1287,5 +1287,3 @@ class ImportXml
         return false;
     }
 }
-
-?>

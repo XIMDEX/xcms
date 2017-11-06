@@ -35,10 +35,6 @@ use Ximdex\Runtime\Cli\Shell,
 use Ximdex\Runtime\Db;
 use Ximdex\Tasks\Worker;
 
-
-/**
- *
- */
 class Module  {
 
     public $name;
@@ -132,7 +128,7 @@ class Module  {
 
     /**
      * @private
-     * @param $sql_file Filename (without path information) which contain SQL.
+     * @param $sql_file : Filename (without path information) which contain SQL.
      * @return NULL or SQL Data Array.
      */
     function loadSQL($sql_file) {

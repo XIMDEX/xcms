@@ -40,7 +40,7 @@ method when it's necessary
 $GLOBALS['InBatchProcess'] = true;
 
 $log = new Logger('AUTOMATIC');
-$log->pushHandler(new StreamHandler(App::getValue('XIMDEX_ROOT_PATH') . '/logs/automatic.log', Logger::DEBUG));
+$log->pushHandler(new StreamHandler(App::getValue('XIMDEX_ROOT_PATH') . '/logs/automatic.log'));
 \Ximdex\Logger::addLog($log, 'automatic');
 \Ximdex\Logger::setActiveLog('automatic');
 

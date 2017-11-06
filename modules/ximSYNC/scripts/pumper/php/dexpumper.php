@@ -25,9 +25,11 @@
  *  @version $Revision$
  */
 
+use Monolog\Handler\StreamHandler;
 use Ximdex\Logger;
 use Ximdex\Models\Pumper;
 use Ximdex\Models\Server;
+use Ximdex\Runtime\App;
 use Ximdex\Runtime\Cli\CliParser;
 
 include_once dirname(__FILE__) . '/../../../../../bootstrap/start.php';
@@ -43,10 +45,8 @@ function showErrors($errno, $errstr, $errfile = NULL, $errline= NULL) {
 set_error_handler("showErrors");
 
 
-//
-
 ModulesManager::file('/inc/io/connection/ConnectionManager.class.php');
-  ModulesManager::file('/inc/model/ServerFrame.class.php', 'ximSYNC');
+ModulesManager::file('/inc/model/ServerFrame.class.php', 'ximSYNC');
 
 
     /*
@@ -528,4 +528,10 @@ class DexPumper {
 
 $parameterCollector = new DexPumperCli($argc, $argv);
 $dexPumper = new DexPumper($parameterCollector->getParametersArray());
+
+$log = new Monolog\Logger('PUBLICATION');
+$log->pushHandler(new StreamHandler(App::getValue('XIMDEX_ROOT_PATH') . '/logs/publication.log'));
+Logger::addLog($log, 'publication');
+Logger::setActiveLog('publication');
+
 $dexPumper->start();

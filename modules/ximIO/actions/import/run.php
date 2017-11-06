@@ -27,6 +27,7 @@
 
 use Ximdex\Authenticator;
 use Ximdex\Models\Node;
+use Ximdex\Runtime\Constants;
 use Ximdex\Runtime\Cli\CliReader;
 
 ModulesManager::file('/inc/ImportXml.class.php', 'ximIO');
@@ -125,6 +126,3 @@ echo sprinft(_("%s node/s because have not been allowed (it is not scheduled in 
 echo sprinft(_("The elapsed time by procedure has been %s seconds"), $timeConsumed) . "\n";
 
 echo $sugestedPackages . "\n";
-
-
-?>

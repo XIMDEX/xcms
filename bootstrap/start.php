@@ -36,14 +36,14 @@ Ximdex\Modules\Manager::init( App::getValue('XIMDEX_ROOT_PATH')   );
 Ximdex\Modules\Manager::file( Ximdex\Modules\Manager::get_modules_install_params() );
 
 $log = new Logger('XMD');
-$log->pushHandler(new StreamHandler(App::getValue('XIMDEX_ROOT_PATH') .'/logs/xmd.log', Logger::DEBUG, true, 0766));
-\Ximdex\Logger::addLog( $log );
+$log->pushHandler(new StreamHandler(App::getValue('XIMDEX_ROOT_PATH') .'/logs/xmd.log'));
+Ximdex\Logger::addLog( $log );
 $log = new Logger('ACTIONS');
-$log->pushHandler(new StreamHandler(App::getValue('XIMDEX_ROOT_PATH') .'/logs/actions.log', Logger::DEBUG));
-\Ximdex\Logger::addLog( $log , 'actions');
+$log->pushHandler(new StreamHandler(App::getValue('XIMDEX_ROOT_PATH') .'/logs/actions.log'));
+Ximdex\Logger::addLog( $log , 'actions');
 
 // set default log (xmd.log)
-\Ximdex\Logger::setActiveLog();
+Ximdex\Logger::setActiveLog();
 
 // read install-modules.php
 $modulesConfString = "";
