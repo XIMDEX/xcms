@@ -210,6 +210,9 @@ class Action_deletenode extends ActionAbstract {
 		$idNode	= $this->request->getParam("nodeid");
 		$node = new Node($idNode);
 		
+		// get the project node
+		$project = new Node($node->getProject());
+		
 		//docxap.xls node from project templates folder cannot be removed
 		if ($node->GetNodeName() == 'docxap.xsl' and $node->GetNodeType() == \Ximdex\Services\NodeType::XSL_TEMPLATE)
 		{
@@ -321,8 +324,6 @@ class Action_deletenode extends ActionAbstract {
 			if ($node->GetNodeType() == \Ximdex\Services\NodeType::XSL_TEMPLATE or $node->GetNodeType() == \Ximdex\Services\NodeType::TEMPLATES_ROOT_FOLDER
 			         or $node->GetNodeType() == \Ximdex\Services\NodeType::SERVER or $node->GetNodeType() == \Ximdex\Services\NodeType::SECTION)
 			{
-			    // get the project node
-			    $project = new Node($node->getProject());
 			    // do this when the deleted node make a deletion of templates (node types like projects, servers sections, templates)
 			    $xsltNode = new xsltnode($node);
 			    if ($xsltNode->reload_templates_include($project) === false)
