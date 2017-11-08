@@ -42,11 +42,9 @@ CREATE TABLE `Channels` (
 CREATE TABLE `Config` (
   `IdConfig` int(12) unsigned NOT NULL AUTO_INCREMENT,
   `ConfigKey` varchar(255) NOT NULL DEFAULT '0',
-  `ConfigValue` blob,
+  `ConfigValue` TEXT,
   PRIMARY KEY (`IdConfig`),
-  UNIQUE KEY `IdConfig` (`IdConfig`,`ConfigKey`),
-  UNIQUE KEY `ConfigKey` (`ConfigKey`),
-  KEY `IdConfig_2` (`IdConfig`)
+  UNIQUE KEY `ConfigKey` (`ConfigKey`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Table with configuration parameters of Ximdex CMS';
 
 CREATE TABLE `Contexts` (
