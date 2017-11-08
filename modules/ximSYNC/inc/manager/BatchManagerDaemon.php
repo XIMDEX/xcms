@@ -26,7 +26,6 @@
  */
 
 
-use Monolog\Handler\StreamHandler;
 use Ximdex\Logger;
 use Ximdex\Models\Node;
 use Ximdex\Models\NodeType;
@@ -46,9 +45,7 @@ $otfMode = null;
 
 function main($argc, $argv)
 {
-    $log = new Monolog\Logger('PUBLICATION');
-    $log->pushHandler(new StreamHandler(App::getValue('XIMDEX_ROOT_PATH') . '/logs/publication.log'));
-    Logger::addLog($log, 'publication');
+    Logger::generate('PUBLICATION', 'publication');
     Logger::setActiveLog('publication');
 
     // Command line mode call
