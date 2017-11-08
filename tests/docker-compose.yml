@@ -35,5 +35,4 @@ services:
       - db
     volumes:
       - ../:/var/www/html
-      - ../docker/php.ini:/usr/local/etc/php/php.ini
-    command: sh -c "sleep 10s && cd /var/www/html && chmod -R 777 data logs conf && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer && composer install && extensions/vendors/bin/codecept run --steps"
+    command: sh -c "sleep 10s && cd /var/www/html && chmod -R 777 data conf logs && chmod a+s data conf logs && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer && composer install && extensions/vendors/bin/codecept run --steps"
