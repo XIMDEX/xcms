@@ -24,7 +24,7 @@ Class Logger
     }
     
     /**
-     * Make a new instance of a file log handler with read and write permission for user and group
+     * Make a new instance of a file log handler with read and write permission for user and group (and for others in porder to test works)
      * @param string $id
      * @param string $file
      * @param bool $default
@@ -32,7 +32,7 @@ Class Logger
     public static function generate(string $id, string $file, bool $default = false)
     {
         $log = new \Monolog\Logger($id);
-        $log->pushHandler(new StreamHandler(App::getValue('XIMDEX_ROOT_PATH') . '/logs/' . $file . '.log', \Monolog\Logger::DEBUG, true, 0664));
+        $log->pushHandler(new StreamHandler(App::getValue('XIMDEX_ROOT_PATH') . '/logs/' . $file . '.log', \Monolog\Logger::DEBUG, true, 0666));
         if ($default)
             self::addLog($log);
         else
