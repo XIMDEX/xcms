@@ -25,9 +25,7 @@
  * @version $Revision$
  */
 
-use Monolog\Logger;
-use Monolog\Handler\StreamHandler;
-use Ximdex\Runtime\App;
+use Ximdex\Logger;
 
 include_once dirname(__FILE__) . '/../../../../bootstrap/start.php';
 
@@ -37,12 +35,11 @@ ModulesManager::file('/inc/Automatic.class.php', 'ximNEWS');
 This global variable will indicate to database connections that we are in a batch process and do the reconnect 
 method when it's necessary
 */
+//TODO ajlucena: will be removed
 $GLOBALS['InBatchProcess'] = true;
 
-$log = new Logger('AUTOMATIC');
-$log->pushHandler(new StreamHandler(App::getValue('XIMDEX_ROOT_PATH') . '/logs/automatic.log'));
-\Ximdex\Logger::addLog($log, 'automatic');
-\Ximdex\Logger::setActiveLog('automatic');
+Logger::generate('AUTOMATIC', 'automatic');
+Logger::setActiveLog('automatic');
 
 $automatic = new Automatic();
 $automatic->process();
