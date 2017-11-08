@@ -25,11 +25,9 @@
  *  @version $Revision$
  */
 
-use Monolog\Handler\StreamHandler;
 use Ximdex\Logger;
 use Ximdex\Models\Pumper;
 use Ximdex\Models\Server;
-use Ximdex\Runtime\App;
 use Ximdex\Runtime\Cli\CliParser;
 
 include_once dirname(__FILE__) . '/../../../../../bootstrap/start.php';
@@ -529,9 +527,7 @@ class DexPumper {
 $parameterCollector = new DexPumperCli($argc, $argv);
 $dexPumper = new DexPumper($parameterCollector->getParametersArray());
 
-$log = new Monolog\Logger('PUBLICATION');
-$log->pushHandler(new StreamHandler(App::getValue('XIMDEX_ROOT_PATH') . '/logs/publication.log'));
-Logger::addLog($log, 'publication');
+Logger::generate('PUBLICATION', 'publication');
 Logger::setActiveLog('publication');
 
 $dexPumper->start();
