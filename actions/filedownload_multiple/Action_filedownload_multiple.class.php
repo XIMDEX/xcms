@@ -72,7 +72,7 @@ class Action_filedownload_multiple extends ActionAbstract {
             Logger::error('All selected documents could not be exported. Do you have zip installed?');
 		}
 
-		$tarFile = preg_replace(sprintf('#^%s#',  App::getValue( 'AppRoot')), App::getValue( 'UrlRoot'), $tarFile);
+		$tarFile = preg_replace(sprintf('#^%s#',  App::getValue( 'AppRoot')), App::getValue('UrlRoot'), $tarFile);
 
 		$values = array(
 			'nodeName' => basename($tarFile),

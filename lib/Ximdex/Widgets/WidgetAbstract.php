@@ -83,8 +83,8 @@ abstract class WidgetAbstract
 		$c = count($array);
 		for ($i = 0; $i < $c; $i++) {
 			$array[$i] = sprintf(
-				'%s/%s/%s',
-				App::getValue('UrlRoot'),
+				'%s%s/%s',
+			    App::getValue('UrlRoot'),
 				preg_replace('#^' . realpath(App::getValue('AppRoot')) . '#', '', realpath($this->_widget_style_dir)),
 				$array[$i]
 			);

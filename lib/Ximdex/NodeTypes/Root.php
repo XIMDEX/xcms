@@ -333,7 +333,7 @@ class Root
         $pathList = $this->GetPathList();
         $relativePath = $pathList;
 
-        return App::getValue("UrlRoot") . App::getValue("NodeRoot") . $relativePath;
+        return App::getValue('UrlRoot') . App::getValue("NodeRoot") . $relativePath;
     }
 
     /**

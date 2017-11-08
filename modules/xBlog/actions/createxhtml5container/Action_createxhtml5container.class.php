@@ -35,7 +35,7 @@ class Action_createxhtml5container extends ActionAbstract {
 	// Main method: shows initial form
 	function index () {
 		$idnode = $this->request->getParam('nodeid');
-		$action = App::getValue("UrlRoot") . "/modules/xBlog/api/public/new";
+		$action = App::getValue('UrlRoot') . "/modules/xBlog/api/public/new";
 		$this->render(array('action' => $action), NULL, 'iframe.tpl');
     }
 }

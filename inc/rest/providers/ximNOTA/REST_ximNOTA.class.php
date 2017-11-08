@@ -39,7 +39,7 @@ class REST_ximNOTA extends REST_Provider {
 
 	public function __construct() {
 		parent::__construct();
-		$this->URL_STRING = sprintf('%s'.ModulesManager::path('ximNOTA').'/rest/index.php', App::getValue( 'UrlRoot'));
+		$this->URL_STRING = sprintf('%s'.ModulesManager::path('ximNOTA').'/rest/index.php', App::getValue('UrlHost') . App::getValue('UrlRoot'));
 	}
 
 	public function migratePair($pathToFile, $pathToXml, $pathToXimdex) {

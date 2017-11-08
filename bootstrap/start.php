@@ -1,7 +1,6 @@
 <?php
 
-use Monolog\Logger;
-use Monolog\Handler\StreamHandler;
+use Ximdex\Logger;
 use Ximdex\Runtime\App;
 
 // for legacy compatibility
@@ -35,15 +34,12 @@ if ( file_exists( App::getValue('XIMDEX_ROOT_PATH') . '/conf/install-params.conf
 Ximdex\Modules\Manager::init( App::getValue('XIMDEX_ROOT_PATH')   );
 Ximdex\Modules\Manager::file( Ximdex\Modules\Manager::get_modules_install_params() );
 
-$log = new Logger('XMD');
-$log->pushHandler(new StreamHandler(App::getValue('XIMDEX_ROOT_PATH') .'/logs/xmd.log'));
-Ximdex\Logger::addLog( $log );
-$log = new Logger('ACTIONS');
-$log->pushHandler(new StreamHandler(App::getValue('XIMDEX_ROOT_PATH') .'/logs/actions.log'));
-Ximdex\Logger::addLog( $log , 'actions');
+// generate general purpose logs files
+Logger::generate('XMD', 'xmd', true);
+Logger::generate('ACTIONS', 'actions');
 
 // set default log (xmd.log)
-Ximdex\Logger::setActiveLog();
+Logger::setActiveLog();
 
 // read install-modules.php
 $modulesConfString = "";
@@ -72,7 +68,7 @@ if ( !empty( $dbConfig ) ) {
 	}
 	catch (\PDOException $e)
 	{
-	    Ximdex\Logger::error('Can\'t connect to database at ' . $dbConfig['host'] . ':' . $dbConfig['port'] . ' (' . $e->getMessage() . ')');
+	    Logger::error('Can\'t connect to database at ' . $dbConfig['host'] . ':' . $dbConfig['port'] . ' (' . $e->getMessage() . ')');
 		die();
 	}
     $dbConn->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_ASSOC);

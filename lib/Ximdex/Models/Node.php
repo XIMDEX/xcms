@@ -2362,7 +2362,7 @@ class Node extends NodesOrm
             return $db->getValue('IdNode');
         }
 
-        Logger::error(sprintf(_("The nodetype %s could not be obtained for node "), $type) . $this->get('IdNode'));
+        Logger::warning(sprintf(_("The nodetype %s could not be obtained for node "), $type) . $this->get('IdNode'));
         return NULL;
     }
 

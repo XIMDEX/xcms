@@ -402,7 +402,8 @@ VALUES
 	(53,'ChunksFolder','uploaded_files'),
 	(54,'UploadsFolder','uploaded_files'),
 	(55,'MaxItemsPerGroup','50'),
-	(56,'DisableCache','0');
+	(56,'DisableCache','0'),
+	(57,'UrlHost','');
  
 INSERT INTO `Contexts` (`id`, `Context`)
 VALUES

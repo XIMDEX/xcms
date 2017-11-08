@@ -162,7 +162,7 @@ When Apache2 and PHP are running with the requested packages, download Ximdex CM
 
 	```
 	cd /var/www/
-	chown -R www-data:www-data myximdex
+	sudo chown -R www-data:www-data myximdex
 	cd myximdex
 	sudo chmod -R ug+rw data
 	sudo chmod -R ug+rw logs

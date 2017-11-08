@@ -353,7 +353,7 @@ class Action_createproject extends ActionAbstract
         $projectName = $this->request->getParam("name");
         $values = array(
             "projectName" => $projectName,
-            "projectPath" => App::getValue("UrlRoot")
+            "projectPath" => App::getValue('UrlRoot')
         );
         $this->render($values, $template, 'default-3.0.tpl');
     }

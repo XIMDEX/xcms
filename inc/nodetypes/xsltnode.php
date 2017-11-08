@@ -133,8 +133,8 @@ class xsltnode extends FileNode
                 // generate the URL to the XSL template file
                 $projectId = $incNode->GetProject();
                 $templatesNode = new Node($idTemplatesFolder);
-                $templateURL = App::getValue('UrlRoot') . App::getValue('NodeRoot') . $templatesNode->GetRelativePath($projectId) . '/' 
-                        . $templateName;
+                $templateURL = App::getValue('UrlHost') . App::getValue('UrlRoot') . App::getValue('NodeRoot') 
+                        . $templatesNode->GetRelativePath($projectId) . '/' . $templateName;
                 $includeContent .= "\t<xsl:include href=\"$templateURL\"/>\n";
             }
             $includeContent .= '</xsl:stylesheet>';
@@ -591,7 +591,7 @@ class xsltnode extends FileNode
         //check if there is a template with that name
         $xPath = new DOMXPath($dom);
         $projectId = $node->GetProject();
-        $templateURL = App::getValue('UrlRoot') . App::getValue('NodeRoot') . $node->GetRelativePath($projectId);
+        $templateURL = App::getValue('UrlHost') . App::getValue('UrlRoot') . App::getValue('NodeRoot') . $node->GetRelativePath($projectId);
         $includeTag = $xPath->query("/xsl:stylesheet/xsl:include[@href='$templateURL']");
         if ($includeTag->length)
         {
@@ -671,7 +671,8 @@ class xsltnode extends FileNode
         }
         
         // assing the templates_include in the docxap content
-        $PATH_TEMPLATE_INCLUDE = App::getValue('UrlRoot') . App::getValue('NodeRoot') . $templatesFolderNode->GetRelativePath($node->getProject());
+        $PATH_TEMPLATE_INCLUDE = App::getValue('UrlHost') . App::getValue('UrlRoot') . App::getValue('NodeRoot') 
+                . $templatesFolderNode->GetRelativePath($node->getProject());
         $content = str_replace('##PATH_TO_LOCAL_TEMPLATE_INCLUDE##', $PATH_TEMPLATE_INCLUDE, $content);
         $urlTemplatesInclude = $PATH_TEMPLATE_INCLUDE . '/templates_include.xsl';
         
@@ -693,7 +694,7 @@ class xsltnode extends FileNode
         {
             // only project, servers and section/subsections can storage template folders
             if ($node->GetNodeType() != Ximdex\Services\NodeType::PROJECT and $node->GetNodeType() != Ximdex\Services\NodeType::SERVER
-                and $node->GetNodeType() != Ximdex\Services\NodeType::SECTION)
+                    and $node->GetNodeType() != Ximdex\Services\NodeType::SECTION)
             {
                 $this->messages->add('Cannot reload nodes with a node type diferent than project, server or section', MSG_TYPE_ERROR);
                 return false;
@@ -732,7 +733,8 @@ class xsltnode extends FileNode
                         continue;
                         
                     // generate the template URL
-                    $templateURL = App::getValue('UrlRoot') . App::getValue('NodeRoot') . $template->GetRelativePath($projectId);
+                    $templateURL = App::getValue('UrlHost') . App::getValue('UrlRoot') . App::getValue('NodeRoot') 
+                            . $template->GetRelativePath($projectId);
                     
                     // save the template and remove a possible ocurrence with the same name (local one is always priority)
                     $priorTemplates[$template->GetNodeName()] = $templateURL;

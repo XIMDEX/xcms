@@ -95,7 +95,7 @@ class FrontControllerHTTP extends FrontController
     {
         $host_request = $_SERVER["HTTP_HOST"];
         $uri_request = explode("?", $_SERVER["REQUEST_URI"], 2);
-        $ximdex = parse_url(App::getValue('UrlRoot'));
+        $ximdex = parse_url(App::getValue('UrlHost') . App::getValue('UrlRoot'));
 
 
         if (  (isset($ximdex["path"]) && strpos($uri_request[0], $ximdex["path"]) === false)) {
@@ -110,7 +110,7 @@ class FrontControllerHTTP extends FrontController
     function parseFriendlyUrl()
     {
 
-        $urlRoot = App::getValue('UrlRoot');
+        $urlRoot = App::getValue('UrlHost') . App::getValue('UrlRoot');
         //get base url of ximdex
         $base = "/" . preg_replace("/http:\/\/.+?\//", "", $urlRoot) . "/";
 

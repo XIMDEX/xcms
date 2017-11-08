@@ -194,7 +194,7 @@ class Action_managebatchs extends ActionAbstract {
 			}
 		}
 
-		$urlRoot = App::getValue( 'UrlRoot');
+		$urlRoot = App::getValue('UrlRoot');
 
 		$arrValores = array(
 			'hasBatchs' => $hasBatchs,

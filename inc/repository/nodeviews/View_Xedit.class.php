@@ -32,10 +32,11 @@ use Ximdex\Parsers\ParsingRng;
 use Ximdex\Runtime\App;
 
 if(!defined('TREE_VIEW_DOCXAP_PATH'))
-	define('TREE_VIEW_DOCXAP_PATH', App::getValue( 'UrlRoot') . '/actions/xmleditor2/views/editor/tree/templates/docxap.xsl');
+    define('TREE_VIEW_DOCXAP_PATH', App::getValue('UrlHost') . App::getValue('UrlRoot') . '/actions/xmleditor2/views/editor/tree/templates/docxap.xsl');
 
 if(!defined('RNG_EDITION_DOCXAP_PATH'))
-	define('RNG_EDITION_DOCXAP_PATH', App::getValue( 'UrlRoot') . '/actions/xmleditor2/views/rngeditor/templates/docxap.xsl');
+    define('RNG_EDITION_DOCXAP_PATH', App::getValue('UrlHost') . App::getValue('UrlRoot') . '/actions/xmleditor2/views/rngeditor/templates/docxap.xsl');
+
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Abstract_View.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Interface_View.class.php');
 	
@@ -211,14 +212,14 @@ class View_Xedit extends Abstract_View implements Interface_View {
 		$sectionPath = $section->class->GetNodePath();
 		$docxap = $sectionPath . '/' . $tplFolder . '/docxap.xsl';
 		if(is_readable($docxap))
-			return str_replace(App::getValue( 'AppRoot'), App::getValue( 'UrlRoot'),  $docxap);
+		    return str_replace(App::getValue('AppRoot'), App::getValue('UrlHost') . App::getValue('UrlRoot'),  $docxap);
 
 		$project = new Node($this->node->GetProject());
 		$nodeProjectPath = $project->class->GetNodePath();
 		$docxap = $nodeProjectPath . '/' . $tplFolder . '/docxap.xsl';
 		
 		if(is_readable($docxap))
-			return str_replace(App::getValue( 'AppRoot'), App::getValue( 'UrlRoot'),  $docxap);
+		    return str_replace(App::getValue('AppRoot'), App::getValue('UrlHost') . App::getValue('UrlRoot'),  $docxap);
 			
 		return NULL;
 	}

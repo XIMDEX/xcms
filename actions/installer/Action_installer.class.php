@@ -50,7 +50,7 @@ class Action_installer extends ActionAbstract {
 	function checkConfigFiles($install_params = 0, $install_modules = 0) {
 
 		if ($install_params && $install_modules && DB_CONNECTION ) {
-			header(sprintf("Location: %s", App::getValue( 'UrlRoot')));
+			header(sprintf("Location: %s/", App::getValue('UrlRoot')));
 			die();
 		}
 	}

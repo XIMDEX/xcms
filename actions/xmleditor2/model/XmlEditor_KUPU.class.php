@@ -724,7 +724,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
                 return false;
             }
             
-            $templatesIncludePath = str_replace(App::getValue('UrlRoot'), App::getValue('AppRoot'), $templatesInclude[0]);
+            $templatesIncludePath = str_replace(App::getValue('UrlHost') . App::getValue('UrlRoot'), App::getValue('AppRoot'), $templatesInclude[0]);
             
             $xslParser = new ParsingXsl(NULL, $templatesIncludePath);
             $templatesElements = $xslParser->getIncludedElements(NULL, true, true);

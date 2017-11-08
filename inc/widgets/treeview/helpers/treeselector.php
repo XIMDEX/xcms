@@ -33,7 +33,7 @@ if (!defined('XIMDEX_ROOT_PATH'))
 ModulesManager::file('/inc/utils.php');
 
 \Ximdex\Utils\Session::check();
-$urlroot = App::getValue( 'UrlRoot');
+$urlroot = App::getValue('UrlRoot');
 
 /* Verifica variables $_GET
  * emartos 04/05/2007

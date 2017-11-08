@@ -29,7 +29,7 @@ use Ximdex\Runtime\App;
 function PrintLoteBrowser($nodeID)
 {
 	$src = preg_replace (ModulesManager::path('ximNEWS')."actions/.*/init.php", "/xmd/images", 
-	       App::getValue( 'UrlRoot') . ModulesManager::path('ximNEWS').'actions/browserlote/init.php');
+	App::getValue('UrlRoot') . ModulesManager::path('ximNEWS').'actions/browserlote/init.php');
 	$cierreVentana = "<img src='" . $src . "/botones/cerrar.gif' alt='' border='0'>";
 	$crear = "<img src='" . $src . "/botones/crear.gif' alt='Crear' border='0'>";
 

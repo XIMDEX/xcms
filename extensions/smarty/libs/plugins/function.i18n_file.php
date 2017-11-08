@@ -11,7 +11,7 @@ function smarty_function_i18n_file($params, &$smarty)
   //Idioma principal en el que queremos traducir el archivo
   $_lang = trim(isset($params['lang'] ) ? $params['lang'] : null);
   //true | false, especifica si se concatenará la url base al fichero, a la hora de devolverlo multiidioma
-  $_url = trim(isset($params['url'] ) ? App::getValue( 'UrlRoot') : null);
+  $_url = trim(isset($params['url'] ) ? App::getValue('UrlRoot') : null);
   //El valor por defecto a devolver en caso de que no se haya encontrado ningun fichero válido
   $_default = trim(isset($params['default'] ) ? $params['default']: null);
 

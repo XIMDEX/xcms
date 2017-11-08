@@ -112,7 +112,7 @@ function checkFolders()
 
 function goLoadAction()
 {
-    header(sprintf("Location: %s", App::getValue('UrlRoot')));
+    header(sprintf("Location: %s", App::getValue('UrlHost') . App::getValue('UrlRoot')));
 }
 
 //Main thread

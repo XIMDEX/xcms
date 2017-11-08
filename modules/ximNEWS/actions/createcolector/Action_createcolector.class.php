@@ -67,7 +67,7 @@ class Action_createcolector extends ActionAbstract {
 			'params' => $params,
 			'id_node' => $idNode,
 			'go_method' => $goMethod,
-			'nodeUrl' => App::getValue( 'UrlRoot') . "/xmd/loadaction.php?actionid=$actionId&nodeid=$idNode"
+		    'nodeUrl' => App::getValue('UrlHost') . App::getValue('UrlRoot') . "/xmd/loadaction.php?actionid=$actionId&nodeid=$idNode"
 		);
 
 		$values = array_merge($colectorRelatedValues, $actionValues, $colectorValues);

@@ -470,7 +470,7 @@ class Action_addfoldernode extends ActionAbstract
         $node = new Node($idNode);
         if ($file->basename == "docxap.xsl") {
             $docxapContent = $node->GetContent();
-            $urlPath = App::getValue('UrlRoot');
+            $urlPath = App::getValue('UrlHost') . App::getValue('UrlRoot');
             $docxapContent = str_replace("{URL_PATH}", $urlPath, $docxapContent);
             $docxapContent = str_replace("{PROJECT_NAME}", $this->name, $docxapContent);
             $node->SetContent($docxapContent);
@@ -505,7 +505,7 @@ class Action_addfoldernode extends ActionAbstract
         }
 
         $server->serverid = $serverId;
-        $server->url = preg_replace('/\{URL_ROOT\}/', App::getValue('UrlRoot'), $server->url);
+        $server->url = preg_replace('/\{URL_ROOT\}/', App::getValue('UrlHost') . App::getValue('UrlRoot'), $server->url);
         $server->initialDirectory = preg_replace('/\{XIMDEX_ROOT_PATH\}/', XIMDEX_ROOT_PATH, $server->initialDirectory);
 
         $nodeServer = new Node($serverId);

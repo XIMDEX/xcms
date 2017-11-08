@@ -158,18 +158,8 @@ class QueryManager {
      */
     function getPage()
     {
-    	//Changed getPage method to use UrlRoot value obtained from database table Config value
+    	//Changed getPage method to use UrlHost + UrlRoot value obtained from database table Config value
     	//NOTE: We add / diretory separator at the end
-    	return App::getValue('UrlRoot') . '/';
-    	/*
-        $sapi_type = php_sapi_name();
-        $https = isset($_SERVER['HTTPS']) ? "s" : "";
-        if (substr($sapi_type, 0, 3) == 'cgi')
-        {
-            return 'httpi'.$https.'://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-        }
-        return 'http'.$https.'://' . $_SERVER['HTTP_HOST'];
-        */
-
+        return App::getValue('UrlHost') . App::getValue('UrlRoot') . '/';
     }
 }

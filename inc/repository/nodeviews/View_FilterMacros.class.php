@@ -426,7 +426,7 @@ class View_FilterMacros extends Abstract_View implements Interface_View
 
         //If preview, we return the path to data/nodes
         if ($this->_isPreviewServer) {
-            return App::getValue("UrlRoot") . App::getValue("NodeRoot") . "/" . $targetPath;
+            return App::getValue('UrlRoot') . App::getValue("NodeRoot") . "/" . $targetPath;
         } else {
             //Getting relative or absolute path.
             if ($this->_server->get('OverrideLocalPaths')) {

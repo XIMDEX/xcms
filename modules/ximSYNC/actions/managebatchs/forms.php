@@ -370,7 +370,7 @@
  echo $batch['IdBatch']; ?>);">
 										<img src="<?php
 
- echo App::getValue( 'UrlRoot');?>/xmd/images/botones/subir_p.gif" alt="" border="0">
+ echo App::getValue('UrlRoot');?>/xmd/images/botones/subir_p.gif" alt="" border="0">
 									</a>
 							</td>
 						</tr>
