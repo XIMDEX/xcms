@@ -25,9 +25,7 @@
  * @version $Revision$
  */
 
-use Monolog\Logger;
-use Monolog\Handler\StreamHandler;
-use Ximdex\Runtime\App;
+use Ximdex\Logger;
 
 include_once dirname(__FILE__) . '/../../../../bootstrap/start.php';
 
@@ -37,11 +35,10 @@ ModulesManager::file('/modules/ximSYNC/scripts/scheduler/scheduler.class.php');
  This global variable will indicate to database connections that we are in a batch process and do the reconnect
  method when it's necessary
  */
+//TODO ajlucena: will be removed
 $GLOBALS['InBatchProcess'] = true;
 
-$log = new Logger('SCHEDULER');
-$log->pushHandler(new StreamHandler(App::getValue('XIMDEX_ROOT_PATH') . '/logs/scheduler.log'));
-\Ximdex\Logger::addLog($log, 'scheduler');
-\Ximdex\Logger::setActiveLog('scheduler');
+Logger::generate('SCHEDULER', 'scheduler');
+Logger::setActiveLog('scheduler');
 
 Scheduler::start();
