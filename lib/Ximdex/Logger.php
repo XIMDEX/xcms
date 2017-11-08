@@ -8,6 +8,7 @@
 
 namespace Ximdex;
 
+use Monolog\Handler\StreamHandler;
 use Ximdex\Runtime\App;
 
 
@@ -20,6 +21,22 @@ Class Logger
     public function __construct($logger)
     {
         $this->logger = $logger;
+    }
+    
+    /**
+     * Make a new instance of a file log handler with read and write permission for user and group
+     * @param string $id
+     * @param string $file
+     * @param bool $default
+     */
+    public static function generate(string $id, string $file, bool $default = false)
+    {
+        $log = new \Monolog\Logger($id);
+        $log->pushHandler(new StreamHandler(App::getValue('XIMDEX_ROOT_PATH') . '/logs/' . $file . '.log', \Monolog\Logger::DEBUG, true, 0664));
+        if ($default)
+            self::addLog($log);
+        else
+            self::addLog($log, $file);
     }
 
     /**
