@@ -33,7 +33,7 @@
 		window.com.ximdex = {};
 		window.X = window.com.ximdex;
 
-		var baseUrl = '##BASE_URL##';
+		var baseUrl = url_root;
 
 		X = Object.extend(X, {
 			XMLNS_XIM: 'http://ximdex.com/schema/1.0',

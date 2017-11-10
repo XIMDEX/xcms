@@ -10,6 +10,7 @@ namespace Ximdex;
 
 use Monolog\Handler\StreamHandler;
 use Ximdex\Runtime\App;
+use Exception;
 
 
 Class Logger
@@ -55,8 +56,7 @@ Class Logger
     {
         $loggerInstance = self::$active;
         if (!isset(self::$instances[$loggerInstance]) || !self::$instances[$loggerInstance] instanceof self) {
-            throw \Exception('Logger need to be initilized');
-            return;
+            throw new Exception('Logger need to be initilized');
         }
         return self::$instances[$loggerInstance];
     }
@@ -69,8 +69,7 @@ Class Logger
     public static function setActiveLog($loggerInstance = 'default')
     {
         if (!isset(self::$instances[$loggerInstance])) {
-            throw \Exception('Logger Instance not found');
-            return;
+            throw new Exception('Logger Instance not found');
         }
         self::$active = $loggerInstance;
         return self::$instances[$loggerInstance];
@@ -96,7 +95,7 @@ Class Logger
         {
             try{
                 return self::get()->logger->addDebug($string);
-            }catch (\Exception $e){
+            }catch (Exception $e){
                 error_log($e->getMessage());
             }
         }
@@ -106,7 +105,7 @@ Class Logger
     {
         try{
             return self::get()->logger->addCritical($string);
-        }catch (\Exception $e){
+        }catch (Exception $e){
             error_log($e->getMessage());
         }
     }
@@ -115,7 +114,7 @@ Class Logger
     {
         try{
             return self::get()->logger->addInfo($string);
-        }catch (\Exception $e){
+        }catch (Exception $e){
             error_log($e->getMessage());
         }
     }

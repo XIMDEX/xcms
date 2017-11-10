@@ -99,7 +99,7 @@ return'"'+string+'"';};var _escapeable=/["\\\x00-\x1f\x7f-\x9f]/g;var _meta={'\b
 		window.com.ximdex = {};
 		window.X = window.com.ximdex;
 
-		var baseUrl = '##BASE_URL##';
+		var baseUrl = url_root;
 
 		X = Object.extend(X, {
 			XMLNS_XIM: 'http://ximdex.com/schema/1.0',
@@ -996,10 +996,10 @@ return'"'+string+'"';};var _escapeable=/["\\\x00-\x1f\x7f-\x9f]/g;var _meta={'\b
 								id: 'messageDialog',
 								title: _('Inactivity period reached'),
 								onclose: function(event,params) {
-									window.location.href='##BASE_URL##/xmd/loadaction.php?action=logout';
+									window.location.href = url_root + '/xmd/loadaction.php?action=logout';
 								}.bind(this),
 								message: [{type: 'STRING', message: _('You have reached the limit of inactivity period. Please, re-authenticate again in order to continue working. ')}],
-								buttons: [{text: 'Login', value: 6, onPress: function() {window.location.href='##BASE_URL##/xmd/loadaction.php?action=logout'; this.close();} }]
+								buttons: [{text: 'Login', value: 6, onPress: function() {window.location.href = url_root + '/xmd/loadaction.php?action=logout'; this.close();} }]
 							});
 							
 		/* Function to execute in the timeout timer */	
@@ -1012,7 +1012,7 @@ return'"'+string+'"';};var _escapeable=/["\\\x00-\x1f\x7f-\x9f]/g;var _meta={'\b
 		// Refreshing the session 2 seconds before the session expires
 		setInterval(function() {
 					console.log("Refreshing session");
-					jQuery.ajax({ url: '##BASE_URL##/xmd/loadaction.php?action=browser3&method=refreshSession',
+					jQuery.ajax({ url: url_root + '/xmd/loadaction.php?action=browser3&method=refreshSession',
   								  success: function(data) {
     							  	console.log("Session refreshed");
       							  },
@@ -14158,9 +14158,7 @@ function XimdocEditor(options) {
 		if(check) {
 			$("#kupu-jdialog").dialog("destroy");
 		}
-
-
-		//TODO ajlucena
+		
 		$("#kupu-jdialog").dialog({
 			resizable: false,
 			height:300,

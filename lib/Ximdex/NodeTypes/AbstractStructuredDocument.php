@@ -25,9 +25,11 @@
  */
 
 namespace Ximdex\NodeTypes;
+
 use Ximdex\Runtime\App;
 use Ximdex\Runtime\DataFactory;
 use Ximdex\Deps\DepsManager;
+use DOMDocument;
 use DexCache;
 use ModulesManager;
 use Namespaces;
@@ -173,10 +175,19 @@ abstract class AbstractStructuredDocument extends FileNode
         {
             switch ($node->getNodeType())
             {
+                case \Ximdex\Services\NodeType::XML_DOCUMENT:
                 case \Ximdex\Services\NodeType::METADATA_DOCUMENT:
                 case \Ximdex\Services\NodeType::XIMLET:
-                    $domDoc = new \DOMDocument();
-                    $res = @$domDoc->loadXML('<root>' . $content . '</root>');
+                    $domDoc = new DOMDocument();
+                    $domDoc->formatOutput = true;
+                    $domDoc->preserveWhiteSpace = false;
+                    $res = @$domDoc->loadXML($content);
+                    if ($res)
+                    {
+                        $content = $domDoc->saveXML();
+                        $content = str_replace('<?xml version="1.0"?>', '', $content);
+                        $content = trim($content);
+                    }
                     break;
                 default:
                     $res = true;

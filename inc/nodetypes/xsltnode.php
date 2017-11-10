@@ -336,7 +336,11 @@ class xsltnode extends FileNode
                         $error = 'Invalid XSL for node ' . $node->GetDescription() . ': ' . $error;
                     else
                         $error = 'Invalid XSL to set content operation: ' . $error;
+                    $defaultLog = Logger::get_active_instance();
+                    Logger::generate('XSLT', 'xslt');
+                    Logger::setActiveLog('xslt');
                     Logger::error($error);
+                    Logger::setActiveLog($defaultLog);
                     $this->messages->add($error, MSG_TYPE_WARNING);
                     $GLOBALS['errorsInXslTransformation'] = [$error];
                     $res = true;
@@ -693,8 +697,8 @@ class xsltnode extends FileNode
         if (!$ft)
         {
             // only project, servers and section/subsections can storage template folders
-            if ($node->GetNodeType() != Ximdex\Services\NodeType::PROJECT and $node->GetNodeType() != Ximdex\Services\NodeType::SERVER
-                    and $node->GetNodeType() != Ximdex\Services\NodeType::SECTION)
+            if ($node->GetNodeType() != Ximdex\Services\NodeType::PROJECTS and $node->GetNodeType() != Ximdex\Services\NodeType::PROJECT 
+                    and $node->GetNodeType() != Ximdex\Services\NodeType::SERVER and $node->GetNodeType() != Ximdex\Services\NodeType::SECTION)
             {
                 $this->messages->add('Cannot reload nodes with a node type diferent than project, server or section', MSG_TYPE_ERROR);
                 return false;

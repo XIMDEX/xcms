@@ -226,10 +226,7 @@ class ParsingJsGetText
         $content = preg_replace_callback($patron,
             create_function('$coincidencias', '$_out = null; eval(\'$_out = \'.$coincidencias[0].";"); return \'"\'.$_out.\'"\';'),
             $content);
-
-        $content = str_replace("##BASE_URL##", App::getValue('UrlRoot'), $content);
-        $content = str_replace("##APP_URL##", App::getValue("AppRoot"), $content);
-
+        
         return $content;
     }
 

@@ -895,11 +895,11 @@ class Node extends NodesOrm
     }
 
     /**
-     *  Set a node content
-     */
-    /**
-     * @param $content
-     * @param null $commitNode
+     * Set a node content
+     * @param string $content
+     * @param string $commitNode
+     * @param Node $node
+     * @return boolean
      */
     function SetContent($content, $commitNode = NULL, Node $node = null)
     {
@@ -915,12 +915,7 @@ class Node extends NodesOrm
                 $GLOBALS['errorsInXslTransformation'] = array();
                 
                 $domDoc = new DOMDocument();
-                if ($node->getNodeType() == \Ximdex\Services\NodeType::NODE_HT)
-                {
-                    //check the valid HTML in Ximclude contents
-                    $res = @$domDoc->loadXML('<root>' . $content . '</root>');
-                }
-                elseif ($node->getNodeType() == \Ximdex\Services\NodeType::RNG_VISUAL_TEMPLATE)
+                if ($node->getNodeType() == \Ximdex\Services\NodeType::NODE_HT or $node->getNodeType() == \Ximdex\Services\NodeType::RNG_VISUAL_TEMPLATE)
                 {
                     //check the XML of the given RNG template content
                     $res = @$domDoc->loadXML($content);
@@ -929,10 +924,7 @@ class Node extends NodesOrm
                         or $node->getNodeType() == \Ximdex\Services\NodeType::XML_DOCUMENT)
                 {
                     //check the valid XML template and dependencies
-                    if ($node->getNodeType() == \Ximdex\Services\NodeType::XSL_TEMPLATE)
-                        $res = @$domDoc->loadXML($content);
-                    else
-                        $res = @$domDoc->loadXML('<root>' . $content . '</root>');
+                    $res = @$domDoc->loadXML($content);
                     if ($res)
                     {
                         //dotdot dependencies only can be checked in templates under a server node

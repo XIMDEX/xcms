@@ -135,10 +135,10 @@
 								id: 'messageDialog',
 								title: _('Inactivity period reached'),
 								onclose: function(event,params) {
-									window.location.href='##BASE_URL##/xmd/loadaction.php?action=logout';
+									window.location.href = url_root + '/xmd/loadaction.php?action=logout';
 								}.bind(this),
 								message: [{type: 'STRING', message: _('You have reached the limit of inactivity period. Please, re-authenticate again in order to continue working. ')}],
-								buttons: [{text: 'Login', value: 6, onPress: function() {window.location.href='##BASE_URL##/xmd/loadaction.php?action=logout'; this.close();} }]
+								buttons: [{text: 'Login', value: 6, onPress: function() {window.location.href= url_root + '/xmd/loadaction.php?action=logout'; this.close();} }]
 							});
 							
 		/* Function to execute in the timeout timer */	
@@ -151,7 +151,7 @@
 		// Refreshing the session 2 seconds before the session expires
 		setInterval(function() {
 					//console.log("Refreshing session");
-					jQuery.ajax({ url: '##BASE_URL##/xmd/loadaction.php?action=browser3&method=refreshSession',
+					jQuery.ajax({ url: url_root + '/xmd/loadaction.php?action=browser3&method=refreshSession',
   								  success: function(data) {
     							  	//console.log("Session refreshed");
       							  },

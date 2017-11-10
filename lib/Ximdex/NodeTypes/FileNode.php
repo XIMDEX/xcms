@@ -28,6 +28,7 @@ namespace Ximdex\NodeTypes;
 
 use Ximdex\Runtime\DataFactory;
 use DB;
+use DOMDocument;
 use Ximdex\Deps\DepsManager;
 use ModulesManager;
 use Ximdex\Models\NodeDependencies;
@@ -146,11 +147,20 @@ class FileNode extends Root
         /// @todo: move this piece to Template nodetype
         // Not neccesary up version here for template nodetypes (makes previously for insert correct idversion in xml wrapper)
 
-        if ($this->parent->nodeType->get('Name') == 'Template') {
+        if ($this->parent->nodeType->GetID() == \Ximdex\Services\NodeType::XSL_TEMPLATE) {
             $lastVersionID = $data->GetLastVersionId();
             list($version, $subversion) = $data->GetVersionAndSubVersion($lastVersionID);
             $data->SetContent($content, $version, $subversion, $commitNode);
         } else {
+            
+            if ($this->parent->nodeType->GetID() == \Ximdex\Services\NodeType::RNG_VISUAL_TEMPLATE)
+            {
+                $dom = new DOMDocument();
+                $dom->formatOutput = true;
+                $dom->preserveWhiteSpace = false;
+                if (@$dom->loadXML($content) !== false)
+                    $content = $dom->saveXML();
+            }
             $data->SetContent($content, NULL, NULL, $commitNode);
         }
 

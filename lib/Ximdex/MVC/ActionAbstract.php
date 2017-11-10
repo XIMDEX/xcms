@@ -203,7 +203,8 @@ abstract class ActionAbstract extends IController
         if (method_exists($this, $method)) {
             $this->actionMethod = $method;
             $this->logInitAction();
-            $this->$method();
+            $res = $this->$method();
+            //TODO ajlucena: $this->logEndAction(true, 'Ended with: ' . $res);
         } else {
             Logger::debug("MVC::ActionAbstract Method {$method} not found");
         }

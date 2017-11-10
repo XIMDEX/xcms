@@ -26,6 +26,8 @@
 
 namespace Ximdex\XML\Validators ;
 
+use DOMDocument;
+
 class RNG {
 
     protected $_errors = null;
@@ -44,7 +46,7 @@ class RNG {
         // Clear errors...
         $this->_errors = array();
 
-        $domdoc = new \DOMDocument();
+        $domdoc = new DOMDocument();
 
         $result = @$domdoc->loadXML($xmldoc);
 

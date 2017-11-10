@@ -41,7 +41,8 @@ $userID = \Ximdex\Utils\Session::get('userID');
 header('Content-type: application/javascript');
 
 echo "renderer = '" . \Ximdex\Utils\Session::get("renderer") . "';";
-echo "\nurl_root = '" . App::getValue('UrlHost') . App::getValue('UrlRoot') . "';";
+echo "\nurl_host = '" . App::getValue('UrlHost') . "';";
+echo "\nurl_root = '" . App::getValue('UrlRoot') . "';";
 echo "\nximdex_root = '" . App::getValue('XIMDEX_ROOT_PATH') . "';";
 echo "\nbase_action = '" . \Ximdex\Utils\Session::get("base_action") . "';";
 echo "\nuser_id = '" . \Ximdex\Utils\Session::get('userID') . "';";
