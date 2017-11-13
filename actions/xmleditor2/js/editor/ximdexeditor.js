@@ -741,23 +741,20 @@ function XimdocEditor(options) {
             $("#kupu-jdialog").dialog("destroy");
         }
 
-
         $("#kupu-jdialog").dialog({
             resizable: false,
             height: 300,
             width: 400,
             modal: true,
             buttons: {
-                _('Yes ')
-        :
+        'Yes':
         function () {
             callback.yes();
             $(this).dialog('close');
         }
 
         ,
-        _('No')
-        :
+        'No':
         function () {
             callback.no();
             $(this).dialog('close');

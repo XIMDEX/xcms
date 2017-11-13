@@ -13,11 +13,12 @@ namespace Symfony\Component\Console\Helper;
 
 use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Exception\RuntimeException;
+use Symfony\Component\Console\Formatter\OutputFormatter;
+use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\StreamableInputInterface;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 
@@ -34,10 +35,6 @@ class QuestionHelper extends Helper
 
     /**
      * Asks a question to the user.
-     *
-     * @param InputInterface  $input    An InputInterface instance
-     * @param OutputInterface $output   An OutputInterface instance
-     * @param Question        $question The question to ask
      *
      * @return mixed The user answer
      *
@@ -127,9 +124,6 @@ class QuestionHelper extends Helper
     /**
      * Asks the question to the user.
      *
-     * @param OutputInterface $output
-     * @param Question        $question
-     *
      * @return bool|mixed|null|string
      *
      * @throws RuntimeException In case the fallback is deactivated and the response cannot be hidden
@@ -175,9 +169,6 @@ class QuestionHelper extends Helper
 
     /**
      * Outputs the question prompt.
-     *
-     * @param OutputInterface $output
-     * @param Question        $question
      */
     protected function writePrompt(OutputInterface $output, Question $question)
     {
@@ -202,9 +193,6 @@ class QuestionHelper extends Helper
 
     /**
      * Outputs an error message.
-     *
-     * @param OutputInterface $output
-     * @param \Exception      $error
      */
     protected function writeError(OutputInterface $output, \Exception $error)
     {
@@ -324,7 +312,7 @@ class QuestionHelper extends Helper
                 // Save cursor position
                 $output->write("\0337");
                 // Write highlighted text
-                $output->write('<hl>'.substr($matches[$ofs], $i).'</hl>');
+                $output->write('<hl>'.OutputFormatter::escapeTrailingBackslash(substr($matches[$ofs], $i)).'</hl>');
                 // Restore cursor position
                 $output->write("\0338");
             }

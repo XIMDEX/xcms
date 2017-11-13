@@ -178,16 +178,23 @@ abstract class AbstractStructuredDocument extends FileNode
                 case \Ximdex\Services\NodeType::XML_DOCUMENT:
                 case \Ximdex\Services\NodeType::METADATA_DOCUMENT:
                 case \Ximdex\Services\NodeType::XIMLET:
+                    // in this case we dont format the XML content 
+                    // $domDoc = new DOMDocument('1.0', 'UTF-8');
                     $domDoc = new DOMDocument();
+                    /*
                     $domDoc->formatOutput = true;
-                    $domDoc->preserveWhiteSpace = false;
+                    $domDoc->preserveWhiteSpace = true;
+                    */
                     $res = @$domDoc->loadXML($content);
+                    /*
+                    $domDoc->encoding = 'UTF-8';
                     if ($res)
                     {
                         $content = $domDoc->saveXML();
-                        $content = str_replace('<?xml version="1.0"?>', '', $content);
+                        $content = str_replace('<?xml version="1.0" encoding="UTF-8"?>', '', $content);
                         $content = trim($content);
                     }
+                    */
                     break;
                 default:
                     $res = true;

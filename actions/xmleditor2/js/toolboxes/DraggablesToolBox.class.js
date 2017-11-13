@@ -231,10 +231,11 @@ function DraggablesToolBox() {
 	this.onStart = function(event, ui) {
 		//console.log(event, ui, this);
 		this._dragging = true;
+		if (ui.helper[0].id == '')
+			ui.helper[0].id = ui.helper['context'].id;
 		var uid = ui.helper[0].id;
-		$('.xedit-rngelement[uid!='+uid+']', this._body).each(function(index, elem) {
+		$(".xedit-rngelement[uid!='" + uid + "']", this._body).each(function(index, elem) {
 			elem._beforeDragBorder = $(elem).css('border') || '';
-
 			if (this.editor.getXimDocument().getElement(uid).schemaNode.isAllowedNearBy(elem.ximElement.schemaNode)) {
 				$(elem).css({
 					border: '1px dashed #006600'

@@ -208,6 +208,7 @@ ximdexInstallerApp.controller('InstallDatabaseController', ["$timeout", '$scope'
         		if ($scope.user.length < 6 || !$scope.pass || $scope.pass.length < 6)
         		{
         			$scope.genericErrors = "You must set user and password values for the new user if you want to create a new one";
+        			$scope.genericErrors += " (Minimum 6 characters for each one)";
         			exit();
         		}
         		$scope.loadingAddUser = true;

@@ -295,9 +295,6 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
 
         );
 
-
-        // $jsFiles=array($actionURL.'/js/editor/built.js');
-
         $i18n = new ParsingJsGetText();
         $jsFiles = $i18n->getTextArrayOfJs($jsFiles);
 

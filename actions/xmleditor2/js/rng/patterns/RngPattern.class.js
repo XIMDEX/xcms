@@ -52,19 +52,19 @@ RngPattern = function(parentElement) {
 	};
 
 	this.isAllowedUnder = function(ximParent) {
-		alert('RngPattern.isAllowedUnder() - ' + _('Implement me!');
+		alert('RngPattern.isAllowedUnder() - ' + _('Implement me!'));
 	};
 
 	this.allowedNodes = function(selNode) {
-		alert('RngPattern.allowedNodes() - ' + _('Implement me!');
+		alert('RngPattern.allowedNodes() - ' + _('Implement me!'));
 	};
 
 	this.allowedSiblings = function(selNode) {
-		alert('RngPattern.allowedSiblings() - ' + _('Implement me!');
+		alert('RngPattern.allowedSiblings() - ' + _('Implement me!'));
 	};
 
 	this.allowedChildrens = function(selNode) {
-		alert('RngPattern.allowedChildrens() - ' + _('Implement me!');
+		alert('RngPattern.allowedChildrens() - ' + _('Implement me!'));
 	};
 
 	this._initialize(parentElement);
