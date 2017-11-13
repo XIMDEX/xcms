@@ -34,15 +34,7 @@ $I->fillField("root_pass", "ximdex");
 $I->fillField("name", "ximdex");
 
 $I->click("Create Database");
-/*
-$I->waitForText("Once the database is created", 10);
 
-$I->fillField("user", "ximdexuser");
-$I->fillField("pass", "ximdexpass");
-
-$I->click("Add user");
-$I->wait(3);
-*/
 $I->wait(10);
 
 $I->see("Set the password for this admin user");
@@ -140,3 +132,8 @@ $I->amOnPage("/data/previos/picasso-iden-idhtml.html");
 
 $I->see("Picasso", ".header");
 $I->see("Cubism", ".header");
+
+$I->amOnPage('/?action=xmleditor2&method=load&user_locale[ID]=2&nodeid=10134');
+$I->wait(5);
+$I->switchToIframe('kupu-editor');
+$I->see('Early periods');
