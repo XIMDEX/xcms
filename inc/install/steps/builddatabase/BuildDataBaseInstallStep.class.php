@@ -38,6 +38,7 @@ class BuildDataBaseInstallStep extends GenericInstallStep
      */
     public function index()
     {
+        $this->initialize_values(false);
         $this->addJs("InstallDatabaseController.js");
         $values = array();
         $values["ximdexName"] = basename(XIMDEX_ROOT_PATH);

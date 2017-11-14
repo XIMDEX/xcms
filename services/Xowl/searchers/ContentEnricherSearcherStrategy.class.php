@@ -40,7 +40,7 @@ class ContentEnricherSearcherStrategy extends AbstractSearcherStrategy{
 
 	/**
 	* Implement the abstract method
-	* @param $text source for search the related terms.
+	* @param $text : source for search the related terms.
 	*/
 	public function suggest($text) {
 
@@ -56,10 +56,10 @@ class ContentEnricherSearcherStrategy extends AbstractSearcherStrategy{
 
 	/**
 	* <p>Search the related terms usign a rest providerName</p>
-	* @param $method. service method_exists	
-	* @param $key. unique id key for enable the services
-	* @param $text. the source content
-	* @param $format. Output format.
+	* @param $method : service method_exists	
+	* @param $key : unique id key for enable the services
+	* @param $text : the source content
+	* @param $format : Output format.
 	* @return. A xml string.
 	*/
 	private function query($method, $key, $text, $format) {
@@ -90,7 +90,7 @@ class ContentEnricherSearcherStrategy extends AbstractSearcherStrategy{
 
 	/**
 	* <p>Transform the xml with the found terms to an array.</p>
-	* @param $xml. XML string with the service response.
+	* @param $xml : XML string with the service response.
 	* @return Array with the response
 	*/
 	private function parseData($xml){
@@ -113,7 +113,7 @@ class ContentEnricherSearcherStrategy extends AbstractSearcherStrategy{
 	/**
 	*<p>Parse tags to an array for this category</p>
 	*@param $xpathObj. DOMXPath object for the current XML.
-	*@return an array.
+	*@return array.
 	*/
 	private function parseArticleData($xpathObj){
 		$result = array();
@@ -146,7 +146,7 @@ class ContentEnricherSearcherStrategy extends AbstractSearcherStrategy{
 	/**
 	*<p>Parse tags to an array for this category</p>
 	*@param $xpathObj. DOMXPath object for the current XML.
-	*@return an array.
+	*@return array.
 	*/
 	private function parseLinkData($xpathObj){		
 		$result = array();
@@ -184,7 +184,7 @@ class ContentEnricherSearcherStrategy extends AbstractSearcherStrategy{
 	/**
 	*<p>Get the different target for a link</p>
 	*@param $target. Object DOMNode target for the link.
-	*@return an array.
+	*@return array.
 	*/
 	private function getLinkDataDetails($target){
 
@@ -199,7 +199,7 @@ class ContentEnricherSearcherStrategy extends AbstractSearcherStrategy{
 	/**
 	*<p>Parse tags to an array for this category</p>
 	*@param $xpathObj. DOMXPath object for the current XML.
-	*@return an array.
+	*@return array.
 	*/
 	private function parseImageData($xpathObj){
 

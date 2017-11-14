@@ -137,7 +137,7 @@ function DraggablesToolBox() {
 	this.onMouseOut = function(options) {
 
 		return;
-
+		/*
 		if (!this._elementIsallowed(options.selNode)) return;
 
 		if (this._dragging) return;
@@ -155,6 +155,7 @@ function DraggablesToolBox() {
 			this._dragHandler[0].draggableElement = null;
 			this._dragHandler.hide();
 		}
+		*/
 	};
 
 	this.beforeUpdateContent = function(options) {
@@ -236,10 +237,14 @@ function DraggablesToolBox() {
 		var uid = ui.helper[0].id;
 		$(".xedit-rngelement[uid!='" + uid + "']", this._body).each(function(index, elem) {
 			elem._beforeDragBorder = $(elem).css('border') || '';
-			if (this.editor.getXimDocument().getElement(uid).schemaNode.isAllowedNearBy(elem.ximElement.schemaNode)) {
-				$(elem).css({
-					border: '1px dashed #006600'
-				});
+			
+			if (elem.ximElement)
+			{
+				if (this.editor.getXimDocument().getElement(uid).schemaNode.isAllowedNearBy(elem.ximElement.schemaNode)) {
+					$(elem).css({
+						border: '1px dashed #006600'
+					});
+				}
 			}
 		}.bind(this));
 	};

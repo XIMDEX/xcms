@@ -6,8 +6,6 @@ services:
   ximdex:
     image: ximdex/nginx-php:php7
     volumes:
-      - ./docker/php-fpm.conf:/usr/local/etc/php-fpm.conf
-      - ./docker/php.ini:/usr/local/etc/php/php.ini
       - ./:/var/www/html
     links:
       - db

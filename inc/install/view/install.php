@@ -23,6 +23,10 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
+
+use Ximdex\Runtime\App;
+
+define('URL_ROOT', App::getValue('UrlRoot'));
 ?>
 <!DOCTYPE html>
 <html>
@@ -33,35 +37,35 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="shortcut icon" href="favicon.ico" >
-    <link rel="stylesheet" href="xmd/style/installer/normalize.css">
-    <link rel="stylesheet" href="xmd/style/installer/main.css">
-    <link rel="stylesheet" href="extensions/ladda/dist/ladda-themeless.min.css">
-    <link rel="stylesheet" href="extensions/humane/flatty.css">
+    <link rel="shortcut icon" href="<?php echo URL_ROOT; ?>/favicon.ico" >
+    <link rel="stylesheet" href="<?php echo URL_ROOT; ?>/xmd/style/installer/normalize.css">
+    <link rel="stylesheet" href="<?php echo URL_ROOT; ?>/xmd/style/installer/main.css">
+    <link rel="stylesheet" href="<?php echo URL_ROOT; ?>/extensions/ladda/dist/ladda-themeless.min.css">
+    <link rel="stylesheet" href="<?php echo URL_ROOT; ?>/extensions/humane/flatty.css">
 
-    <link href='xmd/style/fonts.css' rel='stylesheet' type='text/css' />
+    <link href='<?php echo URL_ROOT; ?>/xmd/style/fonts.css' rel='stylesheet' type='text/css' />
 
     <title>Ximdex Installer</title>
 
     <!--[if lt IE 9]>
     <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <script type="text/javascript" src="extensions/angular/angular.min.js" ></script>
-    <script type="text/javascript" src="extensions/angular/angular-animate.min.js" ></script>
-    <script type="text/javascript" src="extensions/angular/angular-animate.min.js" ></script>
-    <script type="text/javascript" src="extensions/ladda/dist/spin.min.js" ></script>
-    <script type="text/javascript" src="extensions/ladda/dist/ladda.min.js" ></script>
-    <script type="text/javascript" src="extensions/humane/humane.min.js" ></script>
+    <script type="text/javascript" src="<?php echo URL_ROOT; ?>/extensions/angular/angular.min.js" ></script>
+    <script type="text/javascript" src="<?php echo URL_ROOT; ?>/extensions/angular/angular-animate.min.js" ></script>
+    <script type="text/javascript" src="<?php echo URL_ROOT; ?>/extensions/angular/angular-animate.min.js" ></script>
+    <script type="text/javascript" src="<?php echo URL_ROOT; ?>/extensions/ladda/dist/spin.min.js" ></script>
+    <script type="text/javascript" src="<?php echo URL_ROOT; ?>/extensions/ladda/dist/ladda.min.js" ></script>
+    <script type="text/javascript" src="<?php echo URL_ROOT; ?>/extensions/humane/humane.min.js" ></script>
 
     <script type="text/javascript" >
         var ximdexInstallerApp = angular.module('ximdexInstallerApp',[]);
     </script>
-    <script type="text/javascript" src="inc/install/view/js/directives/ladda.js"></script>
-    <script type="text/javascript" src="inc/install/view/js/services/installerService.js"></script>
+    <script type="text/javascript" src="<?php echo URL_ROOT; ?>/inc/install/view/js/directives/ladda.js"></script>
+    <script type="text/javascript" src="<?php echo URL_ROOT; ?>/inc/install/view/js/services/installerService.js"></script>
     <?php
     foreach($js_files as $js_file){
         ?>
-        <script type="text/javascript" src="<?php echo $js_file; ?>"></script>
+        <script type="text/javascript" src="<?php echo URL_ROOT; ?>/<?php echo $js_file; ?>"></script>
         <?php
     }
     ?>

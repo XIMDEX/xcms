@@ -169,6 +169,7 @@
 			
 			_write: function() {
 				return;
+				/*
 				var args = $A(arguments);
 				var level = args.shift();
 				var k = this._getConsole();
@@ -180,7 +181,8 @@
 					message.push(parsedContent);
 				};
 				k.appendChild(this._createLine(level, message));
-				k.scrollTop = k.scrollHeight; 
+				k.scrollTop = k.scrollHeight;
+				*/ 
 			},
 			
 			_parseContent: function(content) {

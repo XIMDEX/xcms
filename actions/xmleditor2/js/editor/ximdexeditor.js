@@ -1071,6 +1071,10 @@ this._setSelectionData = function (target) {
 
     if (!this.selNode) return;
 
+    //TODO ajlucena
+    if (!this.selNode.ximElement)
+    	return false;
+    
     // All the editable elements with the same UID
     var elements = this.selNode.ximElement.getHtmlElements(true);
 
@@ -1270,7 +1274,7 @@ this.setDesignMode = function (designMode) {
 this.setEditableContent = function (node) {
     this.getInnerDocument().designMode = "On";
     return true;
-
+    /*
     // TODO: Restore selected element before setting "no editable content"?
     // NOTE: Firefox3 will suport contentEditable attribute: http://starkravingfinkle.org/blog/2007/07/firefox-3-contenteditable/
 
@@ -1284,6 +1288,7 @@ this.setEditableContent = function (node) {
         mode = mode ? 'Off' : 'On';
         if (this.getInnerDocument().designMode.toUpperCase() != mode.toUpperCase()) this.getInnerDocument().designMode = mode;
     }
+    */
 };
 
 this._setEDitableContent_IE = function (mode) {

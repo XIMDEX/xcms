@@ -5,11 +5,9 @@ services:
   ximdex:
     image: ximdex/nginx-php:php7
     ports:
-      - 8080:80
+      - 80:80
     volumes:
       - ../:/var/www/html
-      - ../docker/php-fpm.conf:/usr/local/etc/php-fpm.conf
-      - ../docker/php-test.ini:/usr/local/etc/php/php.ini
     links:
       - db
 
@@ -32,7 +30,6 @@ services:
     links:
       - ximdex
       - selenium
-      - db
     volumes:
       - ../:/var/www/html
     command: sh -c "sleep 10s && cd /var/www/html && chmod -R 777 data conf logs && chmod a+s data conf logs && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer && composer install && extensions/vendors/bin/codecept run --steps"

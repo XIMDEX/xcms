@@ -23,6 +23,8 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
+use Ximdex\Runtime\App;
+
 require_once(XIMDEX_ROOT_PATH . '/inc/install/steps/welcome/WelcomeInstallStep.class.php');
 
 class GenericInstallStep {
@@ -126,5 +128,16 @@ class GenericInstallStep {
     		$this->exceptions[] = $checkPermissions;
    }
 
-
+   /**
+    * Initialize the default application values
+    * @param bool $persist
+    */
+   protected function initialize_values(bool $persist = true)
+   {
+       //relative URL ( do not save it if its value is only / )
+       $pathInfo = pathinfo($_SERVER['SCRIPT_NAME']);
+       App::setValue('UrlRoot', ($pathInfo['dirname'] != '/') ? $pathInfo['dirname'] : '', $persist);
+       // host and protocol
+       App::setValue('UrlHost', $_SERVER['REQUEST_SCHEME'] . '://'. $_SERVER['HTTP_HOST'], $persist);
+   }
 }

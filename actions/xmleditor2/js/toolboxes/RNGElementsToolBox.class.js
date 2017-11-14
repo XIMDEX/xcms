@@ -140,6 +140,7 @@ var RNGElementsToolBox = Object.xo_create(FloatingToolBox, {
 	updateButtonHandler: function(event) {
 
 		return;
+		/*
 		//if (this.tool.selectedNode == null) return;
 		var selNode = this.editor.getSelectedNode();
 
@@ -164,7 +165,7 @@ var RNGElementsToolBox = Object.xo_create(FloatingToolBox, {
 		this._clean();
 
 		this.editor.updateEditor({caller: this});
-
+		*/
 	}
 });
 
