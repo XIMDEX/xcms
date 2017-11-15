@@ -46,7 +46,9 @@ class GenericInstallStep {
 		$this->checkPermissions();
 	}
 
-	public function index(){		
+	public function index(){
+	    
+	    $this->initialize_values(false);
 		$this->installManager->prevStep();
 		$this->currentStep = 0;
         $this->addJs("WelcomeController.js");
@@ -121,11 +123,18 @@ class GenericInstallStep {
         
         $checkGroup = $this->installManager->checkInstanceGroup();
         if ($checkGroup["state"] != "success")
+        {
             $this->exceptions[] = $checkGroup;
+            return false;
+        }
         
     	$checkPermissions = $this->installManager->checkFilePermissions();
     	if ($checkPermissions["state"]!= "success")
+    	{
     		$this->exceptions[] = $checkPermissions;
+    		return false;
+    	}
+    	return true;
    }
 
    /**

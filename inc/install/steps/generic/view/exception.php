@@ -37,3 +37,7 @@
 		<?php
 		}
 	}
+?>
+<form ng-controller="WelcomeController">
+	<button class="launch_ximdex action_launcher" ng-click="reload_page()" ng-hide="checked">Retry</button>
+</form>

@@ -47,4 +47,9 @@ ximdexInstallerApp.controller('WelcomeController', ["$timeout", '$scope', 'insta
                     location.reload();
                 });
     }
+    
+    $scope.reload_page = function()
+	{
+		window.location.reload();
+	}
 }]);
