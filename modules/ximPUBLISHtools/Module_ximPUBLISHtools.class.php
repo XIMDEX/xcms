@@ -76,11 +76,13 @@ class Module_ximPUBLISHtools extends Module {
 		VALUES ('" . self::PUB_REPORT_HISTORY_ID . "','" . \Ximdex\Services\NodeType::SERVER 
 		      . "','Publishing history','batchhistory','publicate_section.png',
 		'View document Publishing history',100,'ximPUBLISHtools',0)";
-
+        
+		// commented temporally
+		/*
         $sql['Enabling ximPUBLISH history action'] = "INSERT INTO RelRolesActions
 		(IdRel,IdRol,IdAction,IdState,IdContext)
 		VALUES (NULL,201," . self::PUB_REPORT_HISTORY_ID . ",7,1)";
-
+        */
         foreach ($sql as $desc => $query) {
             if (!$db->Execute($query)) {
                 Logger::error("Error $desc - $query");

@@ -187,6 +187,8 @@ abstract class XmlEditor_Abstract
             return array('id' => 0, 'content' => $templateNode);
         }
         $schemaId = $templateNode->getID();
+        
+        //TODO ajlucena: VisualTemplate? actually is RngVisualTemplate
         if (!empty($schemaId) &&  $templateNode->nodeType->get('Name') == 'VisualTemplate') {
             $pvdt = new PVD2RNG();
             $pvdt->loadPVD($templateNode->getID(), $node);
@@ -283,6 +285,7 @@ abstract class XmlEditor_Abstract
         return $node->tagName;
     }
 
+    //TODO ajlucena: KUPU
     /**
 	 * Delete docxap tags
 	 * Delete UID attributes
@@ -297,7 +300,7 @@ abstract class XmlEditor_Abstract
         $docxap = $doc->firstChild;
 
         $this->_deleteUIDAttributes($docxap);
-
+        
         if ($deleteDocxap) {
             $childrens = $docxap->childNodes;
             $l = $childrens->length;
@@ -316,6 +319,7 @@ abstract class XmlEditor_Abstract
         return $xmldoc;
     }
 
+    //TODO ajlucena: KUPU
     /**
 	 * Recursive!
 	 * Called by _normalizeXmlDocument()

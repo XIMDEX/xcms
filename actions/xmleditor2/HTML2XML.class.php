@@ -97,6 +97,7 @@ class HTML2XML {
 		$this->_ximNode = $idNode;
 	}
 
+	//TODO ajlucena: KUPU
 	/**
 	 * Function which performs the HTML transformation
 	 * @return boolean
@@ -127,7 +128,7 @@ class HTML2XML {
 
 		return true;
 	}
-
+    
 	private function assignUidToXml() {
 
 		$this->_xpath = new DOMXPath($this->getXML());
@@ -202,7 +203,7 @@ class HTML2XML {
 
 		return $parentUid;
 	}
-
+    
 	private function applyChanges() {
 
 		$this->_xpath = new DOMXPath($this->_domHtml);

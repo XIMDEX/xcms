@@ -160,7 +160,7 @@ X.actionLoaded(function (event, fn, params) {
             var url = fn("input[name=url]");
 
             if (null == url.val() || "" == url.val()) {
-                url.val(url_root + "/data/previos");
+                url.val(url_host + url_root + "/data/previos");
             }
             
             var directory = fn("input[name=initialdirectory]");

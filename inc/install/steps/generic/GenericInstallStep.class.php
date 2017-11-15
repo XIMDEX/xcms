@@ -123,18 +123,11 @@ class GenericInstallStep {
         
         $checkGroup = $this->installManager->checkInstanceGroup();
         if ($checkGroup["state"] != "success")
-        {
             $this->exceptions[] = $checkGroup;
-            return false;
-        }
         
     	$checkPermissions = $this->installManager->checkFilePermissions();
     	if ($checkPermissions["state"]!= "success")
-    	{
     		$this->exceptions[] = $checkPermissions;
-    		return false;
-    	}
-    	return true;
    }
 
    /**

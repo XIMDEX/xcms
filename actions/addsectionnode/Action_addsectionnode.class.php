@@ -99,12 +99,20 @@ class Action_addsectionnode extends ActionAbstract {
                 $section->SetAliasForLang($langID, $longName);
             }
             
+            // get the project node for the current section
+            $project = new Node($section->getProject());
+            
             // reload the templates include files for this new project
             $xsltNode = new xsltnode($section);
-            if ($xsltNode->reload_templates_include(new Node($section->getProject())) === false)
+            if ($xsltNode->reload_templates_include($project) === false)
+                $this->messages->mergeMessages($xsltNode->messages);
+            
+            // reload the document folders and template folders relations
+            if (!$xsltNode->rel_include_templates_to_documents_folders($project))
                 $this->messages->mergeMessages($xsltNode->messages);
 
             $this->messages->add(sprintf(_('%s has been successfully created'), $name), MSG_TYPE_NOTICE);
+            
         } else {
             $this->messages->mergeMessages($baseio->messages);
             $this->messages->add(_('Operation could not be successfully completed'), MSG_TYPE_ERROR);

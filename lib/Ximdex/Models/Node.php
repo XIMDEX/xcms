@@ -925,7 +925,7 @@ class Node extends NodesOrm
                 {
                     //check the valid XML template and dependencies
                     $res = @$domDoc->loadXML($content);
-                    if ($res)
+                    if ($res and $node->GetNodeName() != 'templates_include.xsl')
                     {
                         //dotdot dependencies only can be checked in templates under a server node
                         $templatesNode = new Node($node->GetParent());

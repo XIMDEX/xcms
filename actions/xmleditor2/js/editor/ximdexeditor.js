@@ -1070,8 +1070,7 @@ this._setSelectionData = function (target) {
     }
 
     if (!this.selNode) return;
-
-    //TODO ajlucena
+    
     if (!this.selNode.ximElement)
     	return false;
     

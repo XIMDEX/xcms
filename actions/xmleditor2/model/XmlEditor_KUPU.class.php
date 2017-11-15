@@ -490,6 +490,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
 
         } else {
 
+            //TODO ajlucena: KUPU
             // NOTE: Delete docxap tags and UID attributes
             $xmlContent = $this->_normalizeXmlDocument($idNode, $content);
             $xmlContent = \Ximdex\Utils\Strings::stripslashes($xmlContent);

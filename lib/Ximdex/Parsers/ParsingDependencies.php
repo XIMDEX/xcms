@@ -603,9 +603,9 @@ class ParsingDependencies
         return $assets;
     }
 
+    //TODO ajlucena: KUPU
     public static function getDotDot($content, $idServer)
     {
-
         preg_match_all("/@@@RMximdex\.dotdot\((css|common)([^\)]*)\)@@@/", $content, $matches);
 
         $result = array();
@@ -656,6 +656,7 @@ class ParsingDependencies
         return $result;
     }
 
+    //TODO ajlucena: KUPU
     /**
      * Get an array with the NodeId values of PathTo links in the content given
      * If the $test param is passed with true value, return true if the nodes linked exists in nodes database (now is inter-projects)
