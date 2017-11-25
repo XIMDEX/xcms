@@ -8,6 +8,12 @@ if (!defined('XIMDEX_ROOT_PATH')) {
     define('XIMDEX_ROOT_PATH', dirname(dirname(__FILE__)));
 }
 
+if (!defined('APP_ROOT_PATH')) {
+    define('APP_ROOT_PATH', XIMDEX_ROOT_PATH.'/public_xmd');
+}
+
+
+
 if (!defined('CLI_MODE'))
     define('CLI_MODE', 0);
 

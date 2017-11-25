@@ -380,30 +380,29 @@ class ModulesManager {
 
 
     public static function file($_file, $_module = 'XIMDEX') {
+
         if("XIMDEX" == $_module) {
-            $dir = '';
+            $path = XIMDEX_ROOT_PATH;
+        }else  if("APP" == $_module) {
+            $path = APP_ROOT_PATH;
         }else {
             $dir = self::path($_module);
+            $path = XIMDEX_ROOT_PATH.$dir;
         }
 
-        //$trace = debug_backtrace();
-        if(file_exists(XIMDEX_ROOT_PATH."{$dir}{$_file}")){
-            if( ( self::isEnabled($_module) || 'XIMDEX' == $_module) ) {
-                // $from =  $trace[0]["file"]." in line ".$trace[0]["line"];
-                //Logger::info(" load file: <em>$_file</em> <strong>{$_module}</strong>  in $from <br>");
-                //	 	echo " load file: <em>$_file</em> <strong>{$_module}</strong>  in $from <br>";
-                return require_once(XIMDEX_ROOT_PATH."{$dir}{$_file}");
-            }else {
-                //	$from =  $trace[1]["file"]." in line ".$trace[1]["line"];
-                //Logger::info("Not load file: <em>$_file</em> necesita <strong> {$_module}</strong>  in $from ");
-                // 	echo "Not load file: <em>$_file</em> necesita <strong>{$_module}</strong>  in $from <br>";
+
+        if(file_exists("{$path}{$_file}")){
+            if( ( self::isEnabled($_module) || 'XIMDEX' == $_module || 'APP' == $_module)   ) {
+                return require_once("{$path}{$_file}");
             }
 
         }
-        else{
+        else {
+       //     $trace = debug_backtrace();
+            //     $from = $trace[0]["file"] . ":" . $trace[0]["line"];
 
-            //$from =  $trace[0]["file"]." in line ".$trace[0]["line"];
-            //echo "File not found: <em>$_file</em> of <strong>{$_module}</strong> module in $from <br>";
+            //     error_log("File not found: $_file of {$_module}  module in $from");
         }
+
     }
 }

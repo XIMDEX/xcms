@@ -440,16 +440,29 @@ class Manager
 
     public static function file($_file, $_module = 'XIMDEX')
     {
-        if ("XIMDEX" == $_module) {
-            $dir = '';
-        } else {
+
+        if("XIMDEX" == $_module) {
+            $path = self::$root_path;
+        }else  if("APP" == $_module) {
+            $path = APP_ROOT_PATH;
+        }else {
             $dir = self::path($_module);
+            $path = self::$root_path.$dir;
         }
-        if (file_exists(self::$root_path . "{$dir}{$_file}")) {
-            if ((self::isEnabled($_module) || 'XIMDEX' == $_module)) {
-                return require_once(self::$root_path . "{$dir}{$_file}");
+
+
+        if(file_exists("{$path}{$_file}")){
+            if( ( 'XIMDEX' == $_module || 'APP' == $_module || self::isEnabled($_module) )   ) {
+                return require_once("{$path}{$_file}");
             }
 
         }
+        else if(!$_module){
+        //    $trace = debug_backtrace();
+        //    $from = $trace[0]["file"] . ":" . $trace[0]["line"];
+
+        //    error_log("File not found: $_file of {$_module}  module in $from");
+        }
+
     }
 }

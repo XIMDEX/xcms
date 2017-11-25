@@ -67,12 +67,14 @@ class Factory
 
         $nsClass = '\\Ximdex\MVC\\Render\\' . $class ;
 
+
         if ( class_exists( $nsClass )) {
             return new $nsClass( $args ) ;
         }
 
 
         $class_path = $this->_path . "/$class.class.php";
+
 
         // Add / to the beginning of class name (to prevent namespace mistake )
         if ( substr( $class, 0, 1) != '\\' ) {

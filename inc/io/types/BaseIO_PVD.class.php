@@ -25,7 +25,7 @@
  */
 
 
-ModulesManager::file('/actions/fileupload/baseIO.php');
+ModulesManager::file('/actions/fileupload/baseIO.php', 'APP');
 
 
 class BaseIO_PVD

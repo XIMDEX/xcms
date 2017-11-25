@@ -65,9 +65,10 @@ class ActionFactory
         if (!file_exists($absolut_actionPath)) {
             $actionController = NULL;
         } else {
+
             if (empty($module)) {
                 $actionPath = XIMDEX_ROOT_PATH .
-                    DIRECTORY_SEPARATOR . 'actions' .
+                    DIRECTORY_SEPARATOR .trim($actionPath, '/').
                     DIRECTORY_SEPARATOR . $action;
             } else {
                 $path_module = ModulesManager::path($module);

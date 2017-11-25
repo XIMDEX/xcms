@@ -467,7 +467,9 @@ abstract class ActionAbstract extends IController
     public function addJs($_js, $_module = 'XIMDEX', $params = null)
     {
 
-        if ('XIMDEX' != $_module) {
+        if ('APP' == $_module) {
+            $_js = '/public_xmd' . $_js;
+        }else if ('XIMDEX' != $_module) {
             $path = ModulesManager::path($_module);
             $_js = $path . $_js;
         }
@@ -492,7 +494,9 @@ abstract class ActionAbstract extends IController
     public function addCss($_css, $_module = 'XIMDEX')
     {
 
-        if ('XIMDEX' != $_module) {
+        if ('APP' == $_module) {
+            $_css = '/public_xmd' . $_css;
+        }else if ('XIMDEX' != $_module) {
             $path = ModulesManager::path($_module);
             $_css = $path . $_css;
         }

@@ -24,7 +24,7 @@
  * @version $Revision$
  */
 
-ModulesManager::file('/actions/generatexmldocument/baseIO.php');
+ModulesManager::file('/actions/generatexmldocument/baseIO.php', 'APP');
 
 class BaseIO_XmlDocument
 {

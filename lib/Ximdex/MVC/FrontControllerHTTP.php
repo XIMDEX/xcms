@@ -55,6 +55,7 @@ class FrontControllerHTTP extends FrontController
                 $_GET["action"] = null;
             }
 
+
             //view /ximdex/trunk/actions/browser3/inc/: 63
             if (!array_key_exists("redirect_other_action", $_GET) && "installer" != $_GET["action"]) {
                 $this->parseFriendlyUrl();
@@ -243,11 +244,11 @@ class FrontControllerHTTP extends FrontController
         } else if (empty($actionName)) {
             $actionId = null;
             $actionName = 'composer';
+
             $module = null;
         }
 
         $method = $this->getMethod();
-
 
         $this->setToParams($actionName, $actionId, $actionPath, $method, $module, $renderer, $params);
 
@@ -294,7 +295,7 @@ class FrontControllerHTTP extends FrontController
             return ModulesManager::path($module) . "/actions/";
         }
 
-        return "/actions/";
+        return "/public_xmd/actions/";
     }
 
     function getMethod()
