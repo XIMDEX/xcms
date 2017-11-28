@@ -34,22 +34,22 @@
  *
  *****************************************************************************/
 /* $Id: kupustyles.css 16467 2005-08-25 11:08:10Z guido $ */
-@import "../../../../../xmd/style/jquery/ximdex_theme/widgets/themes/ximdex_theme";
-@import "../../../../../xmd/style/jquery/ximdex_theme/widgets/themes/extends";
-@import "../../../../../xmd/style/jquery/ximdex_theme/widgets/themes/icons";
+@import "../../../../../../xmd/style/jquery/ximdex_theme/widgets/themes/ximdex_theme";
+@import "../../../../../../xmd/style/jquery/ximdex_theme/widgets/themes/extends";
+@import "../../../../../../xmd/style/jquery/ximdex_theme/widgets/themes/icons";
 
 @font-face {
   font-family: $t_text;
-  src: url('../../../../../xmd/fonts/ubuntucondensed-regular-webfont.eot');
-  src: url('../../../../../xmd/fonts/ubuntucondensed-regular-webfont.eot?#iefix') format('embedded-opentype'), url('../../../../../xmd/fonts/ubuntucondensed-regular-webfont.woff') format('woff'), url('../../../../../xmd/fonts/ubuntucondensed-regular-webfont.ttf') format('truetype'), url('../../../../../xmd/fonts/ubuntucondensed-regular-webfont.svg#ubuntucondensed-regular-webfont') format('svg');
+  src: url('../../../../../../xmd/fonts/ubuntucondensed-regular-webfont.eot');
+  src: url('../../../../../../xmd/fonts/ubuntucondensed-regular-webfont.eot?#iefix') format('embedded-opentype'), url('../../../../../../xmd/fonts/ubuntucondensed-regular-webfont.woff') format('woff'), url('../../../../../../xmd/fonts/ubuntucondensed-regular-webfont.ttf') format('truetype'), url('../../../../../../xmd/fonts/ubuntucondensed-regular-webfont.svg#ubuntucondensed-regular-webfont') format('svg');
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'coustardbold';
-  src: url('../../../../../xmd/fonts/coustard-black-webfont.eot');
-  src: url('../../../../../xmd/fonts/coustard-black-webfont.eot?#iefix') format('embedded-opentype'), url('../../../../../xmd/fonts/coustard-black-webfont.woff') format('woff'), url('../../../../../xmd/fonts/coustard-black-webfont.ttf') format('truetype'), url('../../../../../xmd/fonts/coustard-black-webfont.svg#coustardbold') format('svg');
+  src: url('../../../../../../xmd/fonts/coustard-black-webfont.eot');
+  src: url('../../../../../../xmd/fonts/coustard-black-webfont.eot?#iefix') format('embedded-opentype'), url('../../../../../../xmd/fonts/coustard-black-webfont.woff') format('woff'), url('../../../../../../xmd/fonts/coustard-black-webfont.ttf') format('truetype'), url('../../../../../../xmd/fonts/coustard-black-webfont.svg#coustardbold') format('svg');
   font-weight: normal;
   font-style: normal;
 
@@ -57,8 +57,8 @@
 
 @font-face {
   font-family: 'coustardregular';
-  src: url('../../../../../xmd/fonts/coustard-regular-webfont.eot');
-  src: url('../../../../../xmd/fonts/coustard-regular-webfont.eot?#iefix') format('embedded-opentype'), url('../../../../../xmd/fonts/coustard-regular-webfont.woff') format('woff'), url('../../../../../xmd/fonts/coustard-regular-webfont.ttf') format('truetype'), url('../../../../../xmd/fonts/coustard-regular-webfont.svg#coustardregular') format('svg');
+  src: url('../../../../../../xmd/fonts/coustard-regular-webfont.eot');
+  src: url('../../../../../../xmd/fonts/coustard-regular-webfont.eot?#iefix') format('embedded-opentype'), url('../../../../../../xmd/fonts/coustard-regular-webfont.woff') format('woff'), url('../../../../../../xmd/fonts/coustard-regular-webfont.ttf') format('truetype'), url('../../../../../../xmd/fonts/coustard-regular-webfont.svg#coustardregular') format('svg');
   font-weight: normal;
   font-style: normal;
 
@@ -163,7 +163,7 @@ div.kupu-smalleditor {
   /*top:0;*/
   width: 100%;
   border-bottom: 1px solid #e1e1e1;
-  background: url("../../../../../xmd/images/browser/hbox/fnd-tab.png") repeat-x scroll left top #F5F5F5;
+  background: url("../../../../../../xmd/images/browser/hbox/fnd-tab.png") repeat-x scroll left top #F5F5F5;
   -moz-border-radius-topright: 12px;
   z-index: 5;
 }
@@ -1997,7 +1997,7 @@ span.kupu-tb-buttongroup button.kupu-newwindow:hover span.tooltip {
 }
 
 .kupu-wMessage {
-  background: #ececec url('../../../../../xmd/images/publicando_seccion2.gif') no-repeat center 45px;
+  background: #ececec url('../../../../../../xmd/images/publicando_seccion2.gif') no-repeat center 45px;
   -moz-border-radius: 7px;
   width: 180px;
   height: auto;
@@ -2040,7 +2040,7 @@ span.kupu-tb-buttongroup button.kupu-newwindow:hover span.tooltip {
 }
 
 .imageSelector-search, .xedit-element-attribute .ximlink-search {
-  background: #828282 url('../../../../../xmd/images/search/search-filtertree.png') no-repeat left top;
+  background: #828282 url('../../../../../../xmd/images/search/search-filtertree.png') no-repeat left top;
   border: none;
   text-indent: -99999999px;
   cursor: pointer;
@@ -2058,7 +2058,7 @@ span.kupu-tb-buttongroup button.kupu-newwindow:hover span.tooltip {
 }
 
 .imageSelector-search:hover, .xedit-element-attribute .ximlink-search:hover {
-  background: #035c5d url('../../../../../xmd/images/search/search-filtertree.png') no-repeat left bottom;
+  background: #035c5d url('../../../../../../xmd/images/search/search-filtertree.png') no-repeat left bottom;
 }
 
 .search .long {

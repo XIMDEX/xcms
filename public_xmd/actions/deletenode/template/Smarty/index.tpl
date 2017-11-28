@@ -24,15 +24,15 @@
  *}
 
 {if ($formType == 'simple') }
-	{include file="`$_APP_ROOT`/actions/deletenode/template/Smarty/forms/simple.tpl"}
+	{include file="`$_APP_ROOT`/public_xmd/actions/deletenode/template/Smarty/forms/simple.tpl"}
 {/if}
 
 {if ($formType == 'no_permisos') }
-	{include file="`$_APP_ROOT`/actions/deletenode/template/Smarty/forms/no_permisos.tpl"}
+	{include file="`$_APP_ROOT`/public_xmd/actions/deletenode/template/Smarty/forms/no_permisos.tpl"}
 {/if}
 
 {if ($formType == 'dependencies') }
-	{include file="`$_APP_ROOT`/actions/deletenode/template/Smarty/forms/dependencies.tpl"}
+	{include file="`$_APP_ROOT`/public_xmd/actions/deletenode/template/Smarty/forms/dependencies.tpl"}
 {/if}
 
 

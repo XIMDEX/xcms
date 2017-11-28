@@ -41,7 +41,7 @@
 	<script type="text/javascript" src="{$_URL_ROOT}/inc/js/helpers.js"></script>
         <script type="text/javascript" src="{$_URL_ROOT}/extensions/jquery-validate/jquery.validate.js"></script>
         <script type="text/javascript" src="{$_URL_ROOT}/extensions/jquery-validate/localization/messages_{$user_locale.Lang}.js"></script>
-        <script type="text/javascript" src="{$_URL_ROOT}/actions/composer/resources/js/widgets_controllers/default.js"></script>
+        <script type="text/javascript" src="{$_URL_ROOT}/public_xmd/actions/composer/resources/js/widgets_controllers/default.js"></script>
         <script type="text/javascript" src="{$_URL_ROOT}/xmd/js/helper/query_manager.js"></script>
 	<script type="text/javascript" src="{$_URL_ROOT}/inc/js/collection.class.js"></script>
 		{* js widgets *}

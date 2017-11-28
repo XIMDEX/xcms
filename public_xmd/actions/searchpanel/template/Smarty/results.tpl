@@ -36,7 +36,7 @@
 	
 <div class="action_content fullwidth">
 	<div ng-show="searching" class="loading_background">
-		<img class="loading_image" src="./actions/xmleditor2/gfx/loading.gif" />
+		<img class="loading_image" src="`$_APP_ROOT`/public_xmd/actions/xmleditor2/gfx/loading.gif" />
 	</div>
 	<xim-grid xim-list="viewData" xim-init-fields='{$fields}' xim-filter='filterText' xim-actual-page="page" xim-total-pages="pages" xim-up-page="upPage" xim-down-page="downPage" xim-searching="searching"><xim-grid/>
 </div>

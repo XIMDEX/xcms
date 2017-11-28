@@ -657,7 +657,6 @@ class Action_node extends AbstractAPIAction   {
         $user->setByLogin($userName);
         $userID = $user->getID();
         \Ximdex\Utils\Session::set('userID', $userID);
-        error_log($userID);
 
         $flagsPublication = array(
             'markEnd' => 0,//$markEnd,

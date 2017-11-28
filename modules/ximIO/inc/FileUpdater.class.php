@@ -32,7 +32,7 @@ use Ximdex\Runtime\Constants;
 use Ximdex\Utils\FsUtils;
 use Ximdex\Utils\TarArchiver;
 
-ModulesManager::file('/actions/workflow_forward/baseIO.php');
+ModulesManager::file('/actions/workflow_forward/baseIO.php', 'APP');
 
 class FileUpdater
 {

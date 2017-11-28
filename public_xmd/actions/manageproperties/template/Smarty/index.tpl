@@ -43,7 +43,7 @@
 		<div class="row tarjeta">
 		<h2 class="h2_general">{t}Manage properties{/t}</h2>
 		{foreach from=$properties key=prop item=property}
-			{include file="`$_APP_ROOT`/actions/manageproperties/template/Smarty/`$prop`.tpl"}
+			{include file="`$_APP_ROOT`/public_xmd/actions/manageproperties/template/Smarty/`$prop`.tpl"}
 		{/foreach}
 		<div class="small-12 columns">
 		<fieldset class="buttons-form">

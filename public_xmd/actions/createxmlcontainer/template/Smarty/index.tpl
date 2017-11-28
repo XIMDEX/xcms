@@ -60,7 +60,7 @@
 			</div>
 				{/if}
 
-            {include file="`$_APP_ROOT`/actions/createxmlcontainer/template/Smarty/_ximdoc_languages.tpl"}
+            {include file="`$_APP_ROOT`/public_xmd/actions/createxmlcontainer/template/Smarty/_ximdoc_languages.tpl"}
 
 			<div class="small_12 columns">
 	<fieldset class="buttons-form ">

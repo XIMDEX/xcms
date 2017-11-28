@@ -286,7 +286,7 @@ class AbstractRenderer
             $this->set("base_module", App::getValue('AppRoot') . ModulesManager::path($module) . "/");
             $this->set("module", $module);
         } else {
-            $base_action = "/actions/" . $_ACTION_COMMAND . "/";
+            $base_action = "/public_xmd/actions/" . $_ACTION_COMMAND . "/";
         }
 
         return $base_action;

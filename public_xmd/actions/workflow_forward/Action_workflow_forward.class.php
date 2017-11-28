@@ -78,7 +78,7 @@ class Action_workflow_forward extends ActionAbstract {
         //Loading resources for the action form
         $this->addJs('/actions/workflow_forward/resources/js/workflow_forward.js', 'APP');
         $this->addCss('/actions/workflow_forward/resources/css/style.css', 'APP');
-        $this->addCss('/xmd/style/jquery/ximdex_theme/widgets/calendar/calendar.css', 'APP');
+        $this->addCss('/xmd/style/jquery/ximdex_theme/widgets/calendar/calendar.css');
 
         //Get the current user to check his permissions.
         $idUser = \Ximdex\Utils\Session::get('userID');

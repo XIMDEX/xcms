@@ -221,7 +221,7 @@ function XimdocEditor(options) {
         // ximdex initialize stuff
         //this._baseURL = url_root + '/xmd/loadaction.php?actionid=' + this.actionId + '&nodeid=' + this.nodeId;
         this._baseURL = url_root + '/xmd/loadaction.php?action=xmleditor2&nodeid=' + this.nodeId;
-        this._baseActionURL = url_root + '/actions/xmleditor2/';
+        this._baseActionURL = url_root + '/public_xmd/actions/xmleditor2/';
         this._loadActionURL = url_root + '/xmd/loadaction.php?nodeid=' + this.nodeId;
         var xmlI18N = url_root + '/extensions/kupu/i18n/kupu-' + locale + '.pox';
         var verifyTmpUrl = this._baseURL + '&ajax=json&method=verifyTmpFile';
@@ -795,7 +795,7 @@ this.removeAnnotationTags = function (domItem) {
 this.setDinamicContentImages = function () {
     var bodyText = $(this.getBody()).html();
     var rgx = new RegExp("&lt;php?([^<>]*)?&gt;", "g");
-    bodyText = bodyText.replace(rgx, "<div style='background-color: gray; padding-left: 25px; border: 1px solid black; color: white; font-weight: bold; text-decoration: italic; height: 16px; background-repeat: no-repeat; background-image: url(" + url_root + "/actions/xmleditor2/gfx/page_white_php.png);'>Non XHTML Code</div>");
+    bodyText = bodyText.replace(rgx, "<div style='background-color: gray; padding-left: 25px; border: 1px solid black; color: white; font-weight: bold; text-decoration: italic; height: 16px; background-repeat: no-repeat; background-image: url(" + url_root + "/public_xmd/actions/xmleditor2/gfx/page_white_php.png);'>Non XHTML Code</div>");
     $(this.getBody()).html(bodyText);
 };
 

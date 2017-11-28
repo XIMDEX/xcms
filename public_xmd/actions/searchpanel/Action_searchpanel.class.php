@@ -139,7 +139,7 @@ class Action_searchpanel extends ActionAbstract {
 
 		if ($datastore === null) $datastore = 'ximdex';
 
-		$dsPath = sprintf('%s/actions/searchpanel/resources/js/searchpanel.%s.conf.js', XIMDEX_ROOT_PATH, $datastore);
+		$dsPath = sprintf('%s/actions/searchpanel/resources/js/searchpanel.%s.conf.js', APP_ROOT_PATH, $datastore);
 		$content = FsUtils::file_get_contents($dsPath);
 
 		$content = ParsingJsGetText::parseContent($content);
