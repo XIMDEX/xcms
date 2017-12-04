@@ -210,10 +210,6 @@ class Action_addfoldernode extends ActionAbstract
                 $friendlyName = "Ximlets folder";
                 break;
 
-            case "XimNewsSection":
-                $newNodeTypeName = "XimNewsNews";
-                $friendlyName = "XimNEWS new folder";
-                break;
             case "OpenDataSection":
                 $newNodeTypeName = "OpenDataDataset";
                 $friendlyName = "Dataset";
@@ -510,7 +506,7 @@ class Action_addfoldernode extends ActionAbstract
 
         $nodeServer = new Node($serverId);
         $physicalServerId = $nodeServer->class->AddPhysicalServer(
-            $server->protocol, $server->login, $server->password, $server->host, $server->port, $server->url, $server->initialDirectory, $server->overrideLocalPaths, $server->enabled, $server->previsual, $server->description, $server->isServerOTF
+            $server->protocol, $server->login, $server->password, $server->host, $server->port, $server->url, $server->initialDirectory, $server->overrideLocalPaths, $server->enabled, $server->previsual, $server->description
         );
 
         foreach ($channels as $ch) {

@@ -44,12 +44,6 @@ class Action_reportslist extends ActionAbstract
                 'mod' => 'ximPUBLISHtools',
                 'action' => 'managebatchs',
                 'method' => 'batchlist'
-            ),
-            array(
-                'name' => 'viewcolectorstates',
-                'mod' => 'ximPUBLISHtools',
-                'action' => 'viewcolectorstates',
-                'method' => 'index'
             )
         );
 

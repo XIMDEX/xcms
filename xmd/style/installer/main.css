@@ -479,10 +479,6 @@ li[class*="module"] {
       background-position: center -15em;
       -webkit-background-size: 130%;
       background-size: 130%; }
-    li[class*="module"] .title.ximNEWS::after {
-      background-position: center -10em;
-      -webkit-background-size: 130%;
-      background-size: 130%; }
     li[class*="module"] .title.Xowl::after {
       background-position: center -6.7em;
       -webkit-background-size: 170%;
@@ -571,8 +567,6 @@ li[class*="module"] {
   background-color: #57e3aa !important; }
 .module-installed .ximTAGS::after, .module-already .ximTAGS::after {
   background-color: #ff684f !important; }
-.module-installed .ximNEWS::after, .module-already .ximNEWS::after {
-  background-color: #10e2ea !important; }
 .module-installed .Xowl::after, .module-already .Xowl::after {
   background-color: #e5dc1e !important; }
 

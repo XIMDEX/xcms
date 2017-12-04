@@ -6,8 +6,6 @@ Publication:
 
 scheduler.log -> exit of the commands executed on every time the crontab is called.
 
-automatic.log -> exit of the generation of bulletins and news from the ximNEWS module.
-
 publication.log -> show the result of publishing reports
 
 

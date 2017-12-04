@@ -74,8 +74,6 @@ class Action_edittext extends ActionAbstract
         $nodeType = new NodeType($idNodeType);
         $nodeTypeName = $nodeType->get('Name');
 
-        $isXimNewsLanguage = ($nodeTypeName == "XimNewsNewLanguage");
-
         $fileName = $node->get('Name');
         $infoFile = pathinfo($fileName);
         if (array_key_exists("extension", $infoFile)) {
@@ -130,7 +128,6 @@ class Action_edittext extends ActionAbstract
         }
 
         $values = array('id_node' => $idNode,
-            'isXimNewsLanguage' => $isXimNewsLanguage,
             'codemirror_url' => App::getValue('UrlRoot') . '/extensions/vendors/codemirror/Codemirror',
             'ext' => $ext,
             'content' => $content,
@@ -246,26 +243,6 @@ class Action_edittext extends ActionAbstract
             $this->messages->mergeMessages($node->messages);
             $this->sendJSON(array('messages' => $this->messages->messages, 'type' => MSG_TYPE_WARNING));
             return false;
-        }
-
-        $nodeType = new NodeType($node->get('IdNodeType'));
-        $nodeTypeName = $nodeType->get('Name');
-
-        if (ModulesManager::isEnabled('ximNEWS')) {
-            if ($nodeTypeName == "XimNewsNewLanguage") {
-                // Persistence in database
-                if (method_exists($node->class, 'updateNew')) {
-                    $node->class->updateNew();
-                } else {
-                    Logger::error(_('It was tried to call a non-existing method for this node: $node->class->updateNew for nodeid:') . $node->get('IdNode'));
-                }
-            }
-
-            if ($this->request->getParam('publicar') == 1) {
-                $_GET['publicar'] = 1;
-                $this->redirectTo('index', 'addtocolector');
-                return;
-            }
         }
 
         $this->messages->add('The document has been saved', MSG_TYPE_NOTICE);

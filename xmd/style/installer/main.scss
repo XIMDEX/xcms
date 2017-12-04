@@ -625,11 +625,7 @@ textarea {
                 background-size: 130%;
             }
 
-            &.ximNEWS::after{
-                background-position: center -10em;
-                -webkit-background-size: 130%;
-                background-size: 130%;
-            }
+
             &.xlyre::after{
                 background-position: center -6.7em;
                 -webkit-background-size: 170%;
@@ -736,11 +732,6 @@ textarea {
     .ximTAGS{
         &::after{
             background-color:#ff684f !important;
-        }
-    }
-    .ximNEWS{
-        &::after{
-            background-color:#10e2ea !important;
         }
     }
     .xlyre{

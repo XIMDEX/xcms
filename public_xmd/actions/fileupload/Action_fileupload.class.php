@@ -64,11 +64,9 @@ class Action_fileupload extends ActionAbstract {
 			$this->messages->add(_('A node type allowed in this folder could not be estimated, contact with your administrator.'), MSG_TYPE_ERROR);
 		}
 
-		$moduleXimNews = (bool) ModulesManager::isEnabled('ximNEWS');
 		$values = array(
 			'messages' => $this->messages->messages,
 			'id_node' => $idNode,
-			'module_ximnews' => $moduleXimNews,
 			'go_method' => 'fileupload',
 			'type' => $type,
 			'name' => $node->get('Name')

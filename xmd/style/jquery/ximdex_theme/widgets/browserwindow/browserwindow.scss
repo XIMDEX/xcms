@@ -223,7 +223,7 @@ div.search-button-label {
 	background-position: -275px 4px;
 }
 
-.xim-actions-menu button.deletenode span, .xim-actions-menu button.deleteuser span, .xim-actions-menu button.unlinknewscolector span, .xim-actions-menu button.unlinknews span, .xim-actions-menu button.deleterelnewsarea span, .xim-actions-menu button.deletedataset span, .xim-actions-menu button.deletecatalog span{
+.xim-actions-menu button.deletenode span, .xim-actions-menu button.deleteuser span,  .xim-actions-menu button.deletedataset span, .xim-actions-menu button.deletecatalog span{
 	background-position: -313px 4px;
 }
 
@@ -274,10 +274,6 @@ div.search-button-label {
 	background-position: -492px 4px;
 }
 
-.xim-actions-menu button.viewaddednews span{
-	background-position: -533px 4px;
-}
-
 .xim-actions-menu button.setmetadata span{
 	background-position: -567px 4px;
 }
@@ -311,7 +307,7 @@ div.search-button-label {
 		.copy::before{
 			background-position: -227px -1px;
 		}
-		.deletenode::before, .deletetemplates::before, .deleteuser::before, .unlinknewscolector::before, .unlinknews::before, .deleterelnewsarea::before, .deletecatalog::before, .deletedataset::before{
+		.deletenode::before, .deletetemplates::before, .deleteuser::before,  .deletecatalog::before, .deletedataset::before{
 			background-position: -253px 0px;
 		}
 		.modifygroupsnode::before, .renamenode::before, .relsectionschema::before, .modifylink::before, .addximlet::before, .manageareas::before, .manageproperties::before, .modifygroup::before, .modifystatesrole::before, .modifyrole::before, .modifygruposusuario::before, .modifyuser::before, .modifystates::before, .addtoarea::before, .addtocolector::before, .modifyserver::before, .modifychannel::before, .modifyusuariosgrupo::before, .modifylanguage::before, .modifynodetype::before, .edit_cat::before, .showassocnodes::before, .manageproperties::before, .relsectionschema::before, .renamenode::before{
@@ -350,9 +346,6 @@ div.search-button-label {
 		}
 		.xmlsetlink::before{
 			background-position: -402px -1px;
-		}
-		.viewaddednews::before{
-			background-position: -425px 7px;
 		}
 		.setmetadata::before{
 			background-position: -459px 1px;

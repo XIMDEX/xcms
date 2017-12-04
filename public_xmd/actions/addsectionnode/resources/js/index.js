@@ -58,12 +58,7 @@ X.actionLoaded(function(event, fn, params) {
     if(name!=""){fn("input#name").val(name);}
     else{fn("input#name").val("");}
 
-	if(fn('#type_sec option:selected').text()=="ximNEWS"){
-		$("div.folder-name").removeClass("folder-normal").addClass("folder-news");
-	}
-	else{
-		$("div.folder-name").removeClass("folder-news").addClass("folder-normal");
-	}
+	$("div.folder-name").removeClass("folder-news").addClass("folder-normal");
 
 	fn(".subfolder > label.icon").click(function(){
 		var readonly = $(this).prev().attr("readonly");

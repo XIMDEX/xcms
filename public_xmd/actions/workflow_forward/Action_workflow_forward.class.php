@@ -392,7 +392,6 @@ class Action_workflow_forward extends ActionAbstract {
 
         $node = new Node($idNode);
         $nodeTypeName = $node->nodeType->GetName();
-        $showRepOption = ($nodeTypeName == "XimNewsBulletinLanguage") ? false : true;
 
         $gapInfo = $this->getPublicationIntervals($idNode);
         return array(
@@ -404,7 +403,7 @@ class Action_workflow_forward extends ActionAbstract {
             'nodetypename' => $nodeTypeName,
             'synchronizer_to_use' => ModulesManager::isEnabled('ximSYNC') ? 'ximSYNC' : 'default',
             'ximpublish_tools_enabled' => ModulesManager::isEnabled('ximPUBLISHtools'),
-            'show_rep_option' => $showRepOption
+            'show_rep_option' => true
         );
     }
 

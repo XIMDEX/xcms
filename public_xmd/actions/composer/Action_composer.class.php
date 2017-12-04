@@ -1140,23 +1140,4 @@ and rug.idrole in (select idrole from RelRolesPermissions where IdPermission = 1
         $this->render(array('nodes' => $reversedEntities));
     }
 
-    private function _notExcludedAction($actionID, $nodeID)
-    {
-        $node = new Node($nodeID);
-        $nodeTypeName = $node->nodeType->GetName();
-        $devolver = 1;
-        if ($nodeTypeName == "XimletContainer") {
-            $parent = new Node($node->GetParent());
-            $nodeTypeNameParent = $parent->nodeType->GetName();
-            $action = new Action($actionID);
-            $command = $action->GetCommand();
-
-            if ($nodeTypeNameParent == "XimNewsColector" && $command == "deletenode") {
-                $devolver = 0;
-            }
-        }
-
-        return $devolver;
-    }
-
 }

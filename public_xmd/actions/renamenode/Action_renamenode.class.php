@@ -96,8 +96,6 @@ class Action_renamenode extends ActionAbstract
 
         $nt = $node->nodeType->get('IdNodeType');
 
-        $moduleXimNews = ($nt == \Ximdex\Services\NodeType::RNG_VISUAL_TEMPLATE) && (ModulesManager::isEnabled('ximNEWS'));
-
         $schemaType = '';
 
         $schemaType = $node->getProperty('SchemaType');
@@ -115,7 +113,6 @@ class Action_renamenode extends ActionAbstract
             'is_section' => $isSection,
             'is_project' => $isProject,
             'all_languages' => $allLanguages,
-            'module_ximnews' => $moduleXimNews,
             'schema_type' => $schemaType,
             'go_method' => 'update',
             'valid_pipelines' => $pipelineInfo,

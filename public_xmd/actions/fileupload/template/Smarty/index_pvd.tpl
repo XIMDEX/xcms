@@ -43,20 +43,6 @@
 				<label class="aligned">{t}Default view{/t}</label>
 				<input type="file" name="content"  id="content" size="30" class="cajaxg">
 			</li>
-		{if ($module_ximnews == true)}
-			<li>
-				<input type="radio" name="template_type" value="generic_template" checked="checked">
-				<label>{t}Generic use template{/t}</label>
-			</li>
-			<li>
-				<input type="radio" name="template_type" value="news_template">
-				<label>{t}XimNEWS news template{/t}</label>
-			</li>
-			<li>
-				<input type="radio" name="template_type" value="bulletin_template">
-				<label>{t}XimNEWS newsletter template{/t}</label>
-			</li>
-		{/if}
 		</ol>
 	</fieldset>
 </div>

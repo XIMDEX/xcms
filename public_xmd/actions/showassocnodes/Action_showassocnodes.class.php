@@ -34,8 +34,7 @@ class Action_showassocnodes extends ActionAbstract {
 	const COMPOSER_INDEX = 'loadaction.php';
 
 	// Server, Section
-	const SEARCHED_NODETYPE = \Ximdex\Services\NodeType::SERVER . ',' . \Ximdex\Services\NodeType::SECTION . ',' 
-	       . \Ximdex\Services\NodeType::XIMNEWS_SECTION;
+	const SEARCHED_NODETYPE = \Ximdex\Services\NodeType::SERVER . ',' . \Ximdex\Services\NodeType::SECTION;
 
 	// Tree root
 	const TREE_ROOT = 10000;
@@ -256,7 +255,6 @@ class Action_showassocnodes extends ActionAbstract {
 			switch ($idnodetype) {
 			    case \Ximdex\Services\NodeType::SERVER:
 			    case \Ximdex\Services\NodeType::SECTION:
-			    case \Ximdex\Services\NodeType::XIMNEWS_SECTION:
 					$rel = DepsManager::SECTION_XIMLET;
 					break;
 			}
@@ -317,12 +315,7 @@ class Action_showassocnodes extends ActionAbstract {
 			switch ($idnodetype) {
 			    case \Ximdex\Services\NodeType::SERVER:
 			    case \Ximdex\Services\NodeType::SECTION:
-			    case \Ximdex\Services\NodeType::XIMNEWS_SECTION:
 					$rel = DepsManager::SECTION_XIMLET;
-					break;
-			    case \Ximdex\Services\NodeType::XIMNEWS_BULLETIN_LANGUAGE_XIMLET:
-			    case \Ximdex\Services\NodeType::XIMNEWS_NEW_LANGUAGE;
-					$rel = DepsManager::STRDOC_XIMLET;
 					break;
 			}
 

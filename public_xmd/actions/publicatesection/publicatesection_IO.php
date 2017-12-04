@@ -134,7 +134,7 @@ function PublicateSection($sectionID,$dateUp,$recurrence) {
         $childList = $node->GetChildren();
 
         $nodeList= array();
-	$arrayTypes = array('Section','XimNewsSection');
+	$arrayTypes = array('Section');
 
         foreach ($childList as $child) {
                 $node->SetID($child);

@@ -55,16 +55,6 @@ class Action_modifyserver extends ActionAbstract {
 			}
 		}
 
-		//Get if otf is up
-		if (ModulesManager::isEnabled('ximOTF')){
-			$otfAvailable=true;
-			$s = new Server($serverID);
-			$isServerOTF = $s->get('otf');
-		}else{
-			$otfAvailable=false;
-			$isServerOTF=false;
-		}
-
 		if ($operation == 'mod' or $operation == 'new')
 		{
 		    //data provided from the form submit
@@ -83,7 +73,6 @@ class Action_modifyserver extends ActionAbstract {
 		    $server['overridelocalpaths'] = $this->request->getParam('overridelocalpaths');
 		    $server['states'] = $this->request->getParam('states');
 		    $server['encode'] = $this->request->getParam('encode');
-		    $server['serverOTF'] = $this->request->getParam('serverOTF');
 		    $server['channels'] = $this->request->getParam('channels');
 		}
 		elseif ($operation != 'erase' and $servers and $serverID) {
@@ -101,8 +90,7 @@ class Action_modifyserver extends ActionAbstract {
 				'description' => $servers->class->GetDescription($serverID),
 				'enabled' => $servers->class->GetEnabled($serverID),
 				'preview' => $servers->class->GetPreview($serverID),
-				'overridelocalpaths' => $servers->class->GetOverrideLocalPaths($serverID),
-				'isServerOTF' => $isServerOTF
+				'overridelocalpaths' => $servers->class->GetOverrideLocalPaths($serverID)
 			);
 		}
 		else
@@ -135,7 +123,6 @@ class Action_modifyserver extends ActionAbstract {
 			'encodes' => $this->_getEncodes(),
 			'channels' => $channels,
 			'numchannels' => $numChannels,
-			'otfAvailable' => $otfAvailable,
 			'id_server' => (int) $serverID,
 			'messages' => $this->messages->messages
 		);
@@ -162,7 +149,6 @@ class Action_modifyserver extends ActionAbstract {
 		$channels	= $this->request->getParam('channels');
 		$states		= $this->request->getParam('states');
 		$encode		= $this->request->getParam('encode');
-		$isServerOTF 	= $this->request->getParam('serverOTF');
 
 		//validate the fields about protocol
 		//If ximDEMOS is actived and nodeis is rol "Demo" then  remove is not allowed
@@ -220,9 +206,8 @@ class Action_modifyserver extends ActionAbstract {
 						$node->class->SetPreview($serverID,!!$preview);
 						$node->class->SetOverrideLocalPaths($serverID,!!$override);
 						$node->class->SetEncode($serverID,$encode);
-						if (ModulesManager::isEnabled('ximOTF')){
-							$node->class->setIsOTF($isServerOTF,$serverID);
-						}
+
+
 						if($password){
 							$node->class->SetPassword($serverID, $password);
 						}
@@ -233,7 +218,7 @@ class Action_modifyserver extends ActionAbstract {
 						}
 						$this->messages->add(_("Server successfully modified"), MSG_TYPE_NOTICE);
 					}else{
-						$serverID = $node->class->AddPhysicalServer($protocol, $login, $password, $host, $port, $url, $initialDir, !!$override, !!$enabled, !!$preview, $description, $isServerOTF);
+						$serverID = $node->class->AddPhysicalServer($protocol, $login, $password, $host, $port, $url, $initialDir, !!$override, !!$enabled, !!$preview, $description);
 						if($serverID) {
                             $node->class->SetEncode($serverID,$encode);
 							$this->messages->add(_("Server successfully created"), MSG_TYPE_NOTICE);

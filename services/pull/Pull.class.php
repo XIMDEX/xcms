@@ -82,7 +82,7 @@ class Pull
         $pipelineManager = new PipelineManager();
         $content = $pipelineManager->getCacheFromProcessAsContent($idVersion, 'NotStrDocToFinal', $args);
 
-        if (in_array($args['FILETYPE'], array('ImageFile', 'XimNewsImageFile'))) {
+        if (in_array($args['FILETYPE'], array('ImageFile'))) {
             header("Content-Type: image");
         } else {
             header("Content-Disposition: attachment; filename={$args['NODENAME']}");

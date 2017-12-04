@@ -57,16 +57,6 @@
 				<input type="radio" name="schema_type" value="metadata_schema"{if $schema_type == 'metadata_schema'} checked="checked"{/if} id="metadata-scheme_{$id_node}" class="hidden-focus">
 				<label for="metadata-scheme_{$id_node}" class="icon radio-label">{t}Metadata schema{/t}</label>
 				</div>
-				{if ($module_ximnews == true)}
-				<div class="small-12 columns">
-				<input type="radio" name="schema_type" value="news_schema"{if $schema_type == 'news_schema'} checked="checked"{/if} id="news-scheme_{$id_node}" class="hidden-focus">
-				<label for="news-scheme_{$id_node}" class="icon radio-label">{t}XimNEWS news schema{/t}</label>
-				</div>
-				<div class="small-12 columns">
-				<input type="radio" name="schema_type" value="bulletin_schema"{if $schema_type == 'bulletin_schema'} checked="checked"{/if} id="newsletter-scheme_{$id_node}" class="hidden-focus">
-				<label for="newsletter-scheme_{$id_node}" class="icon radio-label">{t}XimNEWS newsletter schema{/t}</label>
-				</div>
-				{/if}
 			{/if}
 
 					{if !empty($valid_pipelines)}

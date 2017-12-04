@@ -1181,7 +1181,7 @@ class Action_browser3 extends ActionAbstract
             $action = new Action($idAction);
             $command = $action->GetCommand();
 
-            if ($nodeTypeNameParent == 'XimNewsColector' && $command == 'deletenode') {
+            if ( $command == 'deletenode') {
                 $ret = false;
             }
         }

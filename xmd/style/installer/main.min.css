@@ -46,7 +46,6 @@ li[class*=module] .title{display:block;font-family:Coustard,serif;color:#8a8b99}
 li[class*=module] .title::before{content:"";position:absolute;width:3em;height:.2em;left:1em;top:50%;-webkit-transform:translateY(-50%);-moz-transform:translateY(-50%);-ms-transform:translateY(-50%);-o-transform:translateY(-50%);transform:translateY(-50%);background:#4c4d57;opacity:.4}
 li[class*=module] .title::after{content:"";position:absolute;width:4em;height:4em;background:#d1d3e7 url(../../images/installer/modules.svg) no-repeat center .2em;-webkit-background-size:150%;background-size:150%;-webkit-border-radius:50%;-moz-border-radius:50%;border-radius:50%;left:3em;top:50%;-webkit-transform:translateY(-50%);-moz-transform:translateY(-50%);-ms-transform:translateY(-50%);-o-transform:translateY(-50%);transform:translateY(-50%)}
 li[class*=module] .title.ximTOUR::after{background-position:center -15em;-webkit-background-size:130%;background-size:130%}
-li[class*=module] .title.ximNEWS::after{background-position:center -10em;-webkit-background-size:130%;background-size:130%}
 li[class*=module] .title.xlyre::after{background-position:center -6.7em;-webkit-background-size:170%;background-size:170%}
 .module-installed::before,.module-already::before{background:#4c4d57!important;border-color:#4c4d57!important}
 .module-installed .title,.module-already .title{color:#4c4d57!important}
@@ -63,7 +62,6 @@ to{-webkit-transform:rotate(359deg) translateY(-50%);-moz-transform:rotate(359de
 .module-error .title{color:#ec3719!important}
 .module-installed .ximTOUR::after,.module-already .ximTOUR::after{background-color:#57e3aa!important}
 .module-installed .ximTAGS::after,.module-already .ximTAGS::after{background-color:#ff684f!important}
-.module-installed .ximNEWS::after,.module-already .ximNEWS::after{background-color:#10e2ea!important}
 .module-installed .xlyre::after,.module-already .xlyre::after{background-color:#e5dc1e!important}
 .error{padding-bottom:0!important;position:relative}
 .error::before{content:"!";display:inline-block;width:1.2em;text-align:center;font-weight:700;border:3px solid #ccc;border-color:#ff7e68;margin-right:.5em;color:#ff7e68;-webkit-border-radius:50%;-moz-border-radius:50%;border-radius:50%;line-height:1.3}

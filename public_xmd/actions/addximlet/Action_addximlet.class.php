@@ -37,7 +37,6 @@ ModulesManager::file('/actions/browser3/inc/GenericDatasource.class.php', 'APP')
 /**
  * @brief This class implements the action of add a ximlet in a Node
  * Defines three methods: createrel(), deleterel()
- * @ingroup ximNEWS
  */
 class Action_addximlet extends ActionAbstract
 {

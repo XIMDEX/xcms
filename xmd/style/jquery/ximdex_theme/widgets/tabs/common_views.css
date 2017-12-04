@@ -197,16 +197,6 @@
 	background-position: -2px -379px;
 }
 
-.icon-folder_news{
-	background-position: -2px -400px;
-}
-.icon-folder_ximnews{
-	background-position:-22px -400px;
-}
-
-.icon-folder_bulletins{
-	background-position: -22px -378px;
-}
 .icon-catalog_xlyre{
         background-position: -2px -663px;
 }
@@ -215,25 +205,9 @@
 }
 
 
-
-.folder_bulletins+.xim-treeview-branch .folder_bulletins .icon-folder_bulletins{
-	background-position: -2px -420px;
-}
-
-
-
 div.folder_xml + ul.xim-treeview-branch li div img.icon-contenedordoc{
 	background-position: -2px -358px;
 	}
-
-
-.folder_bulletins + .xim-treeview-branch .icon-contenedordoc{
-	background-position: -22px -421px;
-}
-
-.folder_news + .xim-treeview-branch .icon-contenedordoc{
-	background-position: -2px -443px;
-}
 
 .icon-folder_system_properties, .icon-foldergray, .icon-property{
 	background-position: -22px -444px;

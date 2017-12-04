@@ -45,7 +45,7 @@ class Action_publicatesection extends ActionAbstract
             'publishabledtypes' => $publishabledNodeTypes,
             'synchronizer_to_use' => ModulesManager::isEnabled('ximSYNC') ? 'ximSYNC' : 'default',
             'ximpublish_tools_enabled' => ModulesManager::isEnabled('ximPUBLISHtools'),
-            'folderName' => in_array($nodeTypeName, array('XimNewsSection', 'Section', 'XimNewsImagesFolder', 'XimNewsImagesRootFolder', 'ImagesFolder', 'ImagesRootFolder', 'CssRootFolder', 'CssFolder', 'CommonFolder', 'CommonRootFolder', 'XimNewsImagesFolder')) ? 'section' : 'server',
+            'folderName' => in_array($nodeTypeName, array( 'Section',  'ImagesFolder', 'ImagesRootFolder', 'CssRootFolder', 'CssFolder', 'CommonFolder', 'CommonRootFolder')) ? 'section' : 'server',
             'name' => $node->GetNodeName()
         );
 
@@ -76,16 +76,15 @@ class Action_publicatesection extends ActionAbstract
         $node = new Node($idNode);
         $nodename = $node->get('Name');
         $nodeTypeName = $node->nodeType->GetName();
-        $folderName = in_array($nodeTypeName, array('XimNewsSection', 'Section', 'XimNewsImagesRootFolder', 'XimNewsImagesFolder', 'ImagesFolder', 'ImagesRootFolder', 'CssFolder', 'CssRootFolder', 'CommonFolder', 'CommonRootFolder', 'XimNewsImagesFolder')) ? 'Section' : 'Server';
+        $folderName = in_array($nodeTypeName, array( 'ImagesFolder', 'ImagesRootFolder', 'CssFolder', 'CssRootFolder', 'CommonFolder', 'CommonRootFolder')) ? 'Section' : 'Server';
 
-        $otfPublication = $node->getSimpleBooleanProperty('otf');
         $flagsPublication = array('markEnd' => true,
             'linked' => true,
             'recurrence' => $recurrence,
             'childtype' => $type,
             'workflow' => false,
-            'force' => $forcePublication,
-            'otfPublication' => $otfPublication);
+            'force' => $forcePublication
+        );
 
         $syncFac = new SynchroFacade();
         $result = $syncFac->pushDocInPublishingPool($idNode, $dateUp, NULL, $flagsPublication, $recurrence);

@@ -468,10 +468,10 @@ function my_suggester(options) {
 			});
 			//Filters for get structured document
 			//
-			//XimNewsBulletinLanguage and XimNewsNewLanguage and XmlDocument
+			//XmlDocument
 			qp.addFilter({
 				comparation: 'in',
-				content: nodeTypes.XIMNEWS_NEW_LANGUAGE + ',' . nodeTypes.XML_DOCUMENT + ',' + nodeTypes.XIMNEWS_NEW_LANGUAGE,
+				content:  nodeTypes.XML_DOCUMENT,
 				field: 'nodetype'
 			});
 			qp.addSort({
