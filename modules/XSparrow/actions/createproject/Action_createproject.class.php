@@ -411,7 +411,7 @@ class Action_createproject extends ActionAbstract
 
         $nodeServer = new Node($serverId);
         $physicalServerId = $nodeServer->class->AddPhysicalServer(
-            $server->protocol, $server->login, $server->password, $server->host, $server->port, $server->url, $server->initialDirectory, $server->overrideLocalPaths, $server->enabled, $server->previsual, $server->description, $server->isServerOTF
+            $server->protocol, $server->login, $server->password, $server->host, $server->port, $server->url, $server->initialDirectory, $server->overrideLocalPaths, $server->enabled, $server->previsual, $server->description
         );
 
         $nodeServer->class->AddChannel($physicalServerId, $this->project->channel);

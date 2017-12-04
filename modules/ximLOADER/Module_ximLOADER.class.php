@@ -356,7 +356,7 @@ class Module_ximLOADER extends Module
         $physicalServerId = $nodeServer->class->AddPhysicalServer(
             $server->protocol, $server->login, $server->password, $server->host, $server->port,
             $server->url, $server->initialDirectory, $server->overrideLocalPaths, $server->enabled,
-            $server->previsual, $server->description, $server->isServerOTF
+            $server->previsual, $server->description
         );
 
         $nodeServer->class->AddChannel($physicalServerId, $this->project->channel);

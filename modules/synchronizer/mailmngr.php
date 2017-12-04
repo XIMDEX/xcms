@@ -45,7 +45,6 @@ use Ximdex\Utils\Sync\Mutex;
 use Ximdex\Utils\Sync\SynchroFacade;
 
 
-ModulesManager::file('/inc/model/XimNewsList.php', 'ximNEWS');
  ModulesManager::file('/inc/mail/Mail.class.php');
 
 
@@ -96,41 +95,9 @@ function GetMessageFromSync($idSync, $nodeID) {
 	return $content;
 }
 
-function GetToFromSync($idSync) {
 
-	$dbObj = new DB();
-
-	$sql = "SELECT BulletinID FROM XimNewsFrameBulletin WHERE IdSync=".$idSync;
-	$dbObj->Query($sql);
-	$bulletinID = $dbObj->GetValue("BulletinID");
-
-	$node = new Node($bulletinID);
-	$containerID = $node->GetParent();
-	Logger::display("Contenedor " . $containerID);
-
-	$dbObj->Query("SELECT IdColector FROM XimNewsBulletins WHERE IdContainer=" .$containerID);
-	$colectorID = $dbObj->GetValue('IdColector');
-	if ($colectorID) {
-
-		$ximNewsList = new XimNewsList($colectorID); 
-		$list = array();
-		$list = $ximNewsList->getList($colectorID);
-		return $list;
-
-	} else {
-		return NULL;
-	}		
-}
 
 function main($argc, $argv) {
-
-	/*
-	// Check if module is installed.
-	if ( ! ModulesManager::isEnabled('ximNEWS') ) {
-		exit();
-	}
-	*/
-
 	// Begin
 
 	$mailmngr_pid = posix_getpid();
@@ -150,70 +117,7 @@ function main($argc, $argv) {
 
         Logger::display("Lock acquired...");
 	
-	$db = new DB();
 
-	// Obtain an array all bulletin frames in state == mail_pending
-	$sql = "SELECT * FROM XimNewsFrameBulletin WHERE State='mail_pending'";
-	$db->Query($sql);
-
-	$sent = array();
-
-	while (!$db->EOF) {
-
-		$bulletinId = $db->GetValue("BulletinID");
-		$bulletinFrame = $db->GetValue("IdSync");
-
-		$state_frame = SynchroFacade::getFrameState($bulletinFrame);
-
-		if (is_null($state_frame)) {
-			Logger::error("Incorrect frame: $bulletinFrame");
-			continue;
-		}
-
-
-		$bul = new Node($bulletinId);
-		$bulName = $bul->class->getAlias();
-
-		if (strtoupper($state_frame) == 'IN') {
-
-			$mail_lists = array();
-			$mail_lists = GetToFromSync($bulletinFrame);
-			$message = GetMessageFromSync($bulletinFrame, $bulletinId);
-			$subject = $bulName;
-
-			$mail_lists = is_array($mail_lists) ? $mail_lists : array();
-
-			foreach ($mail_lists as $list) {
-
-				if (empty($list)) {
-					continue;
-				}
-
-				Logger::display("Sending mail " . $list);
-
-				$mail = new Mail();
-
-				$mail->addAddress($list, "list name");
-				$mail->Subject = $subject;
-				$mail->Body = $message;
-				$mail->ContentType = "text/html";
-
-				if ($mail->Send()) {
-					$sent[] = $bulletinId;
-				}
-				else{
-					echo "Error while sending mail\n";
-				}
-			}
-		}
-
-		$db->Next();
-	}
-
-	if (count($sent) > 0) {
-		$sql = sprintf("UPDATE XimNewsFrameBulletin SET State = 'mail_sent' WHERE BulletinID in (%s)", implode(',', $sent));
-		$db->Execute($sql);
-	}
 
 	// End.
 

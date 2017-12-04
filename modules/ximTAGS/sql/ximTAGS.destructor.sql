@@ -247,16 +247,6 @@ DELETE FROM `RelRolesActions` WHERE `IdAction` = "5081";
 DELETE FROM `Actions` WHERE `IdAction` = "6965";
 DELETE FROM `Nodes` WHERE `IdNode` = "6965";
 
--- -- Nodetype: 5300 ----
-DELETE FROM `RelRolesActions` WHERE `IdAction` = "5300";
-DELETE FROM `Actions` WHERE `IdAction` = "6967";
-DELETE FROM `Nodes` WHERE `IdNode` = "6967";
-
--- -- Nodetype: 5301 ----
-DELETE FROM `RelRolesActions` WHERE `IdAction` = "5301";
-DELETE FROM `Actions` WHERE `IdAction` = "6968";
-DELETE FROM `Nodes` WHERE `IdNode` = "6968";
-
 -- -- Nodetype: 5302 ----
 DELETE FROM `RelRolesActions` WHERE `IdAction` = "5302";
 DELETE FROM `Actions` WHERE `IdAction` = "6969";
@@ -267,35 +257,15 @@ DELETE FROM `RelRolesActions` WHERE `IdAction` = "5303";
 DELETE FROM `Actions` WHERE `IdAction` = "6970";
 DELETE FROM `Nodes` WHERE `IdNode` = "6970";
 
--- -- Nodetype: 5304 ----
-DELETE FROM `RelRolesActions` WHERE `IdAction` = "5304";
-DELETE FROM `Actions` WHERE `IdAction` = "6971";
-DELETE FROM `Nodes` WHERE `IdNode` = "6971";
-
 -- -- Nodetype: 5305 ----
 DELETE FROM `RelRolesActions` WHERE `IdAction` = "5305";
 DELETE FROM `Actions` WHERE `IdAction` = "6972";
 DELETE FROM `Nodes` WHERE `IdNode` = "6972";
 
--- -- Nodetype: 5306 ----
-DELETE FROM `RelRolesActions` WHERE `IdAction` = "5306";
-DELETE FROM `Actions` WHERE `IdAction` = "6973";
-DELETE FROM `Nodes` WHERE `IdNode` = "6973";
-
 -- -- Nodetype: 5307 ----
 DELETE FROM `RelRolesActions` WHERE `IdAction` = "5307";
 DELETE FROM `Actions` WHERE `IdAction` = "6974";
 DELETE FROM `Nodes` WHERE `IdNode` = "6974";
-
--- -- Nodetype: 5308 ----
-DELETE FROM `RelRolesActions` WHERE `IdAction` = "5308";
-DELETE FROM `Actions` WHERE `IdAction` = "6975";
-DELETE FROM `Nodes` WHERE `IdNode` = "6975";
-
--- -- Nodetype: 5309 ----
-DELETE FROM `RelRolesActions` WHERE `IdAction` = "5309";
-DELETE FROM `Actions` WHERE `IdAction` = "6976";
-DELETE FROM `Nodes` WHERE `IdNode` = "6976";
 
 -- -- Nodetype: 5310 ----
 DELETE FROM `RelRolesActions` WHERE `IdAction` = "5310";
@@ -306,11 +276,6 @@ DELETE FROM `Nodes` WHERE `IdNode` = "6977";
 DELETE FROM `RelRolesActions` WHERE `IdAction` = "5311";
 DELETE FROM `Actions` WHERE `IdAction` = "6978";
 DELETE FROM `Nodes` WHERE `IdNode` = "6978";
-
--- -- Nodetype: 5312 ----
-DELETE FROM `RelRolesActions` WHERE `IdAction` = "5312";
-DELETE FROM `Actions` WHERE `IdAction` = "6979";
-DELETE FROM `Nodes` WHERE `IdNode` = "6979";
 
 -- -- Nodetype: 5313 ----
 DELETE FROM `RelRolesActions` WHERE `IdAction` = "5313";

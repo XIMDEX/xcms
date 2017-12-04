@@ -342,9 +342,6 @@ class Loader_Server extends Loader_Section
     public function __construct($node, $xpath, $basepath)
     {
         parent::__construct($node, $xpath, $basepath);
-        $this->data['isServerOTF'] = $this->data['isServerOTF'] == 'false'
-            ? false
-            : true;
     }
 
     public function getPath()
@@ -358,7 +355,7 @@ class Loader_Server extends Loader_Section
             'serverid', 'name', 'nodetypename', 'protocol',
             'login', 'password', 'host', 'port',
             'url', 'initialDirectory', 'overrideLocalPaths',
-            'enabled', 'previsual', 'description', 'isServerOTF'
+            'enabled', 'previsual', 'description'
         );
     }
 

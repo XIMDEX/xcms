@@ -72,7 +72,7 @@ class ImportXml
      */
     var $tagsForAdvancedWritting = null;
 
-    var $relations = array('RELNEWSCOLECTOR');
+    var $relations = array();
 
     /**
      * The elements of this array can contain a visualtemplate, but they will not cause a insertion

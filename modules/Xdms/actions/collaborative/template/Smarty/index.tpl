@@ -27,11 +27,6 @@
 	<div class="action_header">
 		<h2>{t}Editing file{/t} ({$ext}): {$node_name}</h2>
 		<fieldset class="buttons-form">
-	{if $isXimNewsLanguage == true}
-		{button label="Save and publish" class="validate"
-			 onclick="$('#publicar').attr('value', '1');"
-			  }{*message="{t}Are you sure you want to save and publish the document?{/t}"*}
-	{/if}
 
 		{button label="Save" type="submit" class="validate btn main_action"}{*message="{t}Are you sure you want to save the changes?{/t}"*}
 	</fieldset>
