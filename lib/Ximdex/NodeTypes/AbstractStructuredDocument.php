@@ -180,10 +180,11 @@ abstract class AbstractStructuredDocument extends FileNode
                 case \Ximdex\Services\NodeType::XIMLET:
                     // in this case we will format the XML content with correct indentation
                     $domDoc = new DOMDocument();
-                    $res = @$domDoc->loadXML($content);
-                    $domDoc->encoding = 'UTF-8';
                     $domDoc->formatOutput = true;
                     $domDoc->preserveWhiteSpaces = false;
+                    $res = @$domDoc->loadXML($content);
+                    $domDoc->encoding = 'UTF-8';
+                    $domDoc->version = '1.0';
                     if ($res)
                     {
                         $content = $domDoc->saveXML();

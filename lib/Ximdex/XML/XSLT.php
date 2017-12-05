@@ -37,6 +37,8 @@ class XSLT
     protected $xsl;
 
     protected $xsd;
+    
+    private $errors = [];
 
     public function __construct()
     {
@@ -117,8 +119,18 @@ class XSLT
 
     public function process()
     {
-        error_reporting(E_ALL ^ E_WARNING);
-        return $this->xsltprocessor->transformToXML($this->xml);
-        error_reporting(E_ALL);
+        $res = @$this->xsltprocessor->transformToXML($this->xml);
+        if ($res === false)
+        {
+            $error = 'Cannot transform the XML document: ' . \Ximdex\Error::error_message('XSLTProcessor::transformToXml(): ');
+            Logger::error($error);
+            $this->errors[] = $error;
+        }
+        return $res;
+    }
+    
+    public function errors()
+    {
+        return $this->errors;
     }
 }
