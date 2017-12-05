@@ -305,21 +305,6 @@ class BaseIOInferer {
 				$friendlyName = _('Ximlet folder');
 				break;
 
-			case 'XimNewsSection':
-				$newNodeTypeName ='XimNewsNews';
-				$friendlyName = _('XimNEWS new folder');
-				break;
-
-			case 'XimNewsImages':
-				$newNodeTypeName ='XimNewsImages';
-				$friendlyName = _('XimNEWS image root folder');
-				break;
-
-			case 'XimNewsImagesFolder':
-				$newNodeTypeName ='XimNewsImagesFolder';
-				$friendlyName = _('XimNEWS image batch');
-				break;
-
 			case 'ModuleInfoContainer':
 				$newNodeTypeName = 'ximPortaAllowedContent';
 				$friendlyName = _('Ximporta document definition node');

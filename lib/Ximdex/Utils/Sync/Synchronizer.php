@@ -40,8 +40,6 @@ use Ximdex\Models\Language;
 use Ximdex\Models\Node;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\Utils\FsUtils;
-use XimNewsBulletin;
-use XimNewsColector;
 use Ximdex\Logger;
 
 
@@ -51,8 +49,7 @@ include_once(XIMDEX_ROOT_PATH . "/inc/model/orm/Synchronizer_ORM.class.php");
 include_once(XIMDEX_ROOT_PATH . "/inc/model/orm/SynchronizerHistory_ORM.class.php");
 include_once(XIMDEX_ROOT_PATH . "/inc/repository/nodeviews/View_ChannelFilter.class.php");
 
-ModulesManager::file('/inc/model/XimNewsBulletins.php', 'ximNEWS');
-ModulesManager::file('/inc/model/XimNewsColector.php', 'ximNEWS');
+
 
 class Synchronizer
 {
@@ -230,22 +227,6 @@ class Synchronizer
 
                         FsUtils::file_put_contents($filePath, $contents['content']);
                         $this->ParseDependencies($newID, $contents['content']);
-
-
-                        // Sends bulletin by mail
-
-                        if ($node->nodeType->get('Name') == 'XimNewsBulletinLanguage') {
-                            $ximNewsBulletin = new XimNewsBulletin($this->nodeID);
-                            $ximNewsBulletin->set('State', 'published');
-                            $ximNewsBulletin->update();
-                            $colectorId = $ximNewsBulletin->get('IdColector');
-
-                            $ximNewsColector = new XimNewsColector($colectorId);
-
-                            if ($contents['channel'] == $ximNewsColector->get('MailChannel')) {
-                                $this->AssociateFrameBulletin($newID, $this->nodeID);
-                            }
-                        }
 
                     }
                 }
@@ -462,18 +443,7 @@ class Synchronizer
     }
 
 
-    //Function which associates a a bulletin element frame to its version
 
-    function AssociateFrameVersion($frameID, $versionID)
-    {
-
-        $sql = "INSERT INTO XimNewsFrameVersion (IdSync, IdVersion) VALUES ($frameID,$versionID)";
-
-
-        $this->dbObj->Execute($sql);
-
-
-    }
 
     //Function which returns a node version, from its publication frame
 
@@ -495,52 +465,7 @@ class Synchronizer
 
     }
 
-    //Function which associates a bulletin element frame to its bulletin
 
-    function AssociateFrameBulletin($frameID, $bulletinID)
-    {
-
-        $sql = "INSERT INTO XimNewsFrameBulletin (IdSync, BulletinID) VALUES ($frameID,$bulletinID)";
-
-        $this->dbObj->Execute($sql);
-    }
-
-    // jmcarrasco ximnews, I thik the GetBulletin has an error and should be usesd GetBulletin2. Leaving it like this for the moment
-
-    function GetBulletin2($frameID)
-    {
-
-        $sql = "SELECT BulletinID FROM XimNewsFrameBulletin WHERE IdSync=$frameID";
-        $this->dbObj->Query($sql);
-
-        $list = array();
-        while (!$this->dbObj->EOF) {
-            $list[] = $this->dbObj->GetValue("BulletinID");
-
-            $this->dbObj->Next();
-        }
-        return $list;
-
-    }
-
-    //Function which returns all the frames depending on a bulletin
-
-    function GetAssociatedFrames($bulletinID)
-    {
-
-        $sql = "SELECT IdSync FROM XimNewsFrameBulletin WHERE BulletinID=$bulletinID";
-        $this->dbObj->Query($sql);
-
-        $list = array();
-        $i = 0;
-        while (!$this->dbObj->EOF) {
-            $list[$i++]["idsync"] = $this->dbObj->GetValue("IdSync");
-
-            $this->dbObj->Next();
-        }
-        return $list;
-
-    }
 
 
     /// *************************************************************************
@@ -1571,27 +1496,13 @@ class Synchronizer
 
         // Bulletin sending
 
-        if (ModulesManager::isEnabled('ximNEWS')) {
-
-            $bulletins = $this->GetBulletin2($frameID);
-
-            if (count($bulletins) > 0) {
-                foreach ($bulletins as $bulletinID) {
-                    $sql = "UPDATE XimNewsFrameBulletin SET State = 'mail_pending' WHERE
-						BulletinID = $bulletinID AND IdSync = $frameID";
-                    $this->dbObj->Execute($sql);
-                }
-            }
-        }
 
         $nodo = new Node($nodeID);
         $nodoTypeContent = $nodo->nodeType->get('Name');
 
         // Only encoding the content if the node is not one of this 3.
 
-        if (!(($nodoTypeContent == 'XimNewsImageFile') ||
-            ($nodoTypeContent == 'ImageFile') || ($nodoTypeContent == 'BinaryFile'))
-        ) {
+        if (!(($nodoTypeContent == 'ImageFile') || ($nodoTypeContent == 'BinaryFile'))) {
 
             // Looking for idEncode for this server
 
@@ -1716,24 +1627,6 @@ class Synchronizer
     {
         $sql = "UPDATE Synchronizer SET State='OUTDATED' WHERE State='DUE' AND DateDown<=" . time() . " AND DateDown IS NOT NULL";
         $this->dbObj->Execute($sql);
-
-        //Deleting the associated tasks of sending bulletins
-        if (ModulesManager::isEnabled("ximNEWS")) {
-            $sql = "SELECT XimNewsFrameBulletin.IdSync AS Id FROM XimNewsFrameBulletin, Synchronizer WHERE XimNewsFrameBulletin.IdSync = Synchronizer.IdSync AND (Synchronizer.State = 'OUTDATED' OR Synchronizer.State = 'OUT') AND (XimNewsFrameBulletin.State = 'mail_pending' OR XimNewsFrameBulletin.State = '')";
-
-            $this->dbObj->Query($sql);
-            $arrayFrames = array();
-
-            while (!$this->dbObj->EOF) {
-                $arrayFrames[] = $this->dbObj->GetValue('Id');
-                $this->dbObj->Next();
-            }
-
-            foreach ($arrayFrames as $frame) {
-                Logger::info("Deleting task $frame of sending bulletins");
-                $this->dbObj->Execute("DELETE FROM XimNewsFrameBulletin WHERE IdSync = $frame");
-            }
-        }
     }
     /// *************************************************************************
 

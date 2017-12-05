@@ -23,54 +23,6 @@
 # *  @version $Revision$
 # */
 
--- 
--- Table structure for table `XimNewsColectorUsers`
--- 
-
-DROP TABLE IF EXISTS `XimNewsColectorUsers`;
-CREATE TABLE IF NOT EXISTS `XimNewsColectorUsers` (
-  `Id` int(12) unsigned NOT NULL auto_increment,
-  `IdColector` int(12) unsigned NOT NULL,
-  `IdUser` int(12) unsigned NOT NULL,
-  `StartGenerationTime` int(12) unsigned NOT NULL,
-  `EndGenerationTime` int(12) unsigned default NULL,
-  `EndPublicationTime` int(12) unsigned default NULL,
-  `Progress` int(3) unsigned NOT NULL,
-  `State` varchar(255) NOT NULL default 'Generated',
-  PRIMARY KEY  (`Id`),
-  KEY `IdColector` (`IdColector`),
-  KEY `IdUser` (`IdUser`)
-) ENGINE=MyISAM;
-
--- 
--- Table structure for table `RelNewsColectorUsers`
--- 
-
-DROP TABLE IF EXISTS `RelNewsColectorUsers`;
-CREATE TABLE IF NOT EXISTS `RelNewsColectorUsers` (
-  `Id` int(12) unsigned NOT NULL auto_increment,
-  `IdRelNewsColector` int(12) unsigned NOT NULL,
-  `IdUser` int(12) unsigned NOT NULL,
-  `Time` int(12) unsigned NOT NULL,
-  PRIMARY KEY  (`Id`),
-  KEY `IdRelNewsColector` (`IdRelNewsColector`),
-  KEY `IdUser` (`IdUser`)
-) ENGINE=MyISAM;
-
--- 
--- Table structure for table `RelColectorUsersBatchs`
--- 
-
-DROP TABLE IF EXISTS `RelColectorUsersBatchs`;
-CREATE TABLE IF NOT EXISTS `RelColectorUsersBatchs` (
-  `Id` int(12) unsigned NOT NULL auto_increment,
-  `IdColectorUser` int(12) unsigned NOT NULL,
-  `IdBatch` int(12) unsigned NOT NULL,
-  PRIMARY KEY  (`Id`),
-  KEY `IdColectorUser` (`IdColectorUser`),
-  KEY `IdBatch` (`IdBatch`)
-) ENGINE=MyISAM;
-
 LOCK TABLES `Permissions` WRITE;
 INSERT INTO `Permissions` VALUES (1005,'view_publication_resume','View publication report');
 UNLOCK TABLES;

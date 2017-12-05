@@ -279,14 +279,8 @@ abstract class AbstractStructuredDocument extends FileNode
             case \Ximdex\Services\NodeType::XIMLET:
                 $folderNodeType = \Ximdex\Services\NodeType::XIMLET_FOLDER;
                 break;
-            case \Ximdex\Services\NodeType::XIMNEWS_NEW_LANGUAGE:
-                $folderNodeType = \Ximdex\Services\NodeType::XIMNEWS_NEWS;
-                break;
             case 8002: //pdf
                 $folderNodeType = 8000;
-                break;
-            case \Ximdex\Services\NodeType::XIMNEWS_BULLETIN_LANGUAGE:
-                $folderNodeType = \Ximdex\Services\NodeType::XIMNEWS_BULLETINS;
                 break;
         }
 

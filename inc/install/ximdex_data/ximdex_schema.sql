@@ -646,7 +646,6 @@ CREATE TABLE `Servers` (
   `Enabled` int(1) UNSIGNED DEFAULT '1',
   `Previsual` int(1) DEFAULT '0',
   `Description` varchar(255) DEFAULT NULL,
-  `otf` int(1) UNSIGNED DEFAULT '0',
   `idEncode` varchar(255) NOT NULL DEFAULT 'UTF-8'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Table with info about Ximdex servers';
 ALTER TABLE `Servers` ADD PRIMARY KEY (`IdServer`);

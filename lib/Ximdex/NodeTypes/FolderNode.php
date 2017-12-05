@@ -93,7 +93,7 @@ class FolderNode extends Root
     function getXmlDocuments()
     {
 
-        $folderType = $this->nodeType->get('Name') == 'XimNewsSection' ? 'news' : 'documents';
+        $folderType = 'documents';
 
         $xmlFolderId = $this->parent->GetChildByName($folderType);
 

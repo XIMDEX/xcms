@@ -52,11 +52,10 @@ class VisualTemplateNode extends FileNode {
 		$data->SetContent($content);
 
 		// first we set the template_type property
-
-		$storableTypes = array('news_schema', 'bulletin_schema');
-		if (in_array($templateType, $storableTypes)) {
-			$this->parent->setProperty('SchemaType', $templateType);
-		}
+        $storableTypes = array('news_schema', 'bulletin_schema');
+        if (in_array($templateType, $storableTypes)) {
+            $this->parent->setProperty('SchemaType', $templateType);
+        }
 		// Adds rng node
 
 		$pvdt = new PVD2RNG();

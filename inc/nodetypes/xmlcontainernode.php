@@ -133,12 +133,6 @@ class XmlContainerNode extends FolderNode
         //$childrenNodetype = $this->getLanguageVersionNodeType;
         //It would be better than this switch.
         switch ($this->nodeType->GetName()) {
-            case 'XimNewsBulletin':
-                $childrenNodeType->SetByName('XimNewsBulletinLanguage');
-                break;
-            case 'XimNewsNew':
-                $childrenNodeType->SetByName('XimNewsNewLanguage');
-                break;
             case 'XmlContainer':
                 $childrenNodeType->SetByName('XmlDocument');
                 break;

@@ -49,7 +49,6 @@ class SyncManager
 	var $markEnd;
 	var $linked;
 	var $type;
-	var $bulletinID;
 	var $mail;
 	var $recurrence;
 
@@ -63,7 +62,6 @@ class SyncManager
 		$this->setFlag('markEnd', false);
 		$this->setFlag('linked', false);
 		$this->setFlag('type', 'core');
-		$this->setFlag('bulletinID', NULL);
 		$this->setFlag('mail', false);
 		$this->setFlag('recurrence', false);
 	}
@@ -130,10 +128,6 @@ class SyncManager
 			$this->errors_str = NULL;
 		}
 
-		$node = new Node($node_id);
-		if ($node->nodeType->get('Module') == 'ximNEWS') {
-			$sync->AssociateFrameVersion($frameID[0], $versionID);
-		}
 
 		// Add relation to cache.
 		if (App::getValue('dexCache')) {
@@ -145,14 +139,7 @@ class SyncManager
 			$node = new node($node_id);
 			$name = $node->Get('Name');
 
-			if ($node->nodeType->get('Module') == 'ximNEWS') {
-				$bulletinID = $this->getFlag('bulletinID');
-				$node = new node($bulletinID);
-				$bulletinName = $node->Get('Name');
-				$msg = "La noticia $name se va a publicar en el boletin $bulletinName";
-			} else {
-				$msg = "El nodo $name se va a publicar";
-			}
+			$msg = "El nodo $name se va a publicar";
 
 			if (!$down) {
 				$downString = 'Sin determinar';

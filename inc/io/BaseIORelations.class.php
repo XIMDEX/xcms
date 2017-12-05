@@ -27,7 +27,6 @@
 
 use Ximdex\Logger;
 
-ModulesManager::file('/inc/model/RelNewsColector.php', 'ximNEWS');
 
 class BaseIORelations
 {
@@ -38,36 +37,6 @@ class BaseIORelations
      */
     function build($data)
     {
-        if (!isset($data['NODETYPENAME'])) {
-            return Constants::ERROR_INCORRECT_DATA;
-        }
-        $relationType = $data['NODETYPENAME'];
-        switch ($relationType) {
-            case 'RELNEWSCOLECTOR':
-                //var_dump($data);
-                $rnc = new RelNewsColector();
-                $rnc->set('IdNew', $data['IDNEW']);
-                $rnc->set('IdColector', $data['IDCOLECTOR']);
-                $rnc->set('State', $data['STATE']);
-                $rnc->set('SetAsoc', $data['SETASOC']);
-                $rnc->set('PosInSet', $data['POSINSET']);
-                $rnc->set('Page', $data['PAGE']);
-                $rnc->set('PosInSet2', $data['POSINSET2']);
-                $rnc->set('Page2', $data['PAGE2']);
-                $rnc->set('LangId', $data['LANGID']);
-                $rnc->set('FechaIn', $data['FECHAIN']);
-                $rnc->set('FechaOut', $data['FECHAOUT']);
-                $rnc->set('Version', $data['VERSION']);
-                $rnc->set('SubVersion', $data['SUBVERSION']);
-                $rnc->set('IdCache', $data['IDCACHE']);
-                $result = $rnc->add();
-
-                //var_dump($rnc->messages);
-                if (!($result > 0)) {
-                    Logger::warning(_('Error inserting information about relnewscolector relation (BaseIORelations)'));
-                }
-                break;
-        }
         return Constants::ERROR_INCORRECT_DATA;
     }
 }

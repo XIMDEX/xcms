@@ -61,15 +61,8 @@ class ChannelFrameManager {
 
 		$channel = new Channel($channelFrame->get('ChannelId'));
 		$renderMode = $channel->get('RenderMode');
-		$node = new Node($nodeId);
-		$isOTF = $node->getProperty('otf');
-		if(!((is_array($isOTF)) && ($isOTF[0]=="true"))){
-			$isOTF = false;
-		}else{
-			$isOTF = true;
-		}
-				
-		if (($renderMode == 'client') || ($isOTF)){
+
+		if ($renderMode == 'client'){
 			$operation = 'Up';
 		}
 		

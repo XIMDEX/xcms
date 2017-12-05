@@ -144,7 +144,7 @@ class FrontControllerHTTP extends FrontController
                 if ("_" == $params[$i][0]) { //params starting with "_" is method
                     $_GET["method"] = substr($params[$i], 1);
                 }
-                //Params friendly: /mod~ximNEWS/nodeid~500/
+                //Params friendly: /mod~ximTAGS/nodeid~500/
                 list($name, $value) = explode("~", $params[$i], 2) + array(NULL, NULL);
 
                 if (!empty($name)) {

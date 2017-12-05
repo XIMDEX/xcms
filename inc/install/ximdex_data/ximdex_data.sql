@@ -468,27 +468,13 @@ VALUES
 	(301,6003);
 
 insert into `NodeAllowedContents` ( `NodeType`, `IdNodeType`, `Amount`) values ( '5039', '5083', '0');
-insert into `NodeAllowedContents` ( `NodeType`, `IdNodeType`, `Amount`) values ( '5309', '5305', '0');
-insert into `NodeAllowedContents` ( `NodeType`, `IdNodeType`, `Amount`) values ( '5305', '5304', '0');
 insert into `NodeAllowedContents` ( `NodeType`, `IdNodeType`, `Amount`) values ( '5320', '5310', '0');
 insert into `NodeAllowedContents` ( `NodeType`, `IdNodeType`, `Amount`) values ( '5310', '5320', '0');
 insert into `NodeAllowedContents` ( `NodeType`, `IdNodeType`, `Amount`) values ( '5307', '5320', '0');
 insert into `NodeAllowedContents` ( `NodeType`, `IdNodeType`, `Amount`) values ( '5320', '5320', '0');
 insert into `NodeAllowedContents` ( `NodeType`, `IdNodeType`, `Amount`) values ( '5307', '5310', '0');
-insert into `NodeAllowedContents` ( `NodeType`, `IdNodeType`, `Amount`) values ( '5320', '5306', '0');
-insert into `NodeAllowedContents` ( `NodeType`, `IdNodeType`, `Amount`) values ( '5310', '5306', '0');
-insert into `NodeAllowedContents` ( `NodeType`, `IdNodeType`, `Amount`) values ( '5308', '5303', '0');
 insert into `NodeAllowedContents` ( `NodeType`, `IdNodeType`, `Amount`) values ( '5303', '5302', '0');
-insert into `NodeAllowedContents` ( `NodeType`, `IdNodeType`, `Amount`) values ( '5312', '5313', '0');
 insert into `NodeAllowedContents` ( `NodeType`, `IdNodeType`, `Amount`) values ( '5313', '5302', '1');
-insert into `NodeAllowedContents` ( `NodeType`, `IdNodeType`, `Amount`) values ( '5302', '5301', '0');
-insert into `NodeAllowedContents` ( `NodeType`, `IdNodeType`, `Amount`) values ( '5304', '5300', '0');
-insert into `NodeAllowedContents` ( `NodeType`, `IdNodeType`, `Amount`) values ( '5026', '5300', '1');
-insert into `NodeAllowedContents` ( `NodeType`, `IdNodeType`, `Amount`) values ( '5306', '5300', '1');
-insert into `NodeAllowedContents` ( `NodeType`, `IdNodeType`, `Amount`) values ( '5022', '5300', '1');
-insert into `NodeAllowedContents` ( `NodeType`, `IdNodeType`, `Amount`) values ( '5301', '5300', '1');
-insert into `NodeAllowedContents` ( `NodeType`, `IdNodeType`, `Amount`) values ( '5300', '5015', '0');
-insert into `NodeAllowedContents` ( `NodeType`, `IdNodeType`, `Amount`) values ( '5300', '5014', '0');
 insert into `NodeAllowedContents` ( `NodeType`, `IdNodeType`, `Amount`) values ( '5055', '5055', '0');
 insert into `NodeAllowedContents` ( `NodeType`, `IdNodeType`, `Amount`) values ( '5055', '5054', '0');
 insert into `NodeAllowedContents` ( `NodeType`, `IdNodeType`, `Amount`) values ( '5032', '5018', '0');
@@ -594,17 +580,11 @@ VALUES
 	(18,5057,6151),
 	(19,5013,6011),
 	(20,5017,6015),
-	(21,5300,6013),
-	(22,5306,6013),
-	(23,5301,6013),
-	(24,5304,6013),
 	(25,5305,6710),
-	(26,5309,6045),
 	(27,5302,6702),
 	(28,5307,6726),
 	(29,5310,6720),
 	(30,5303,6769),
-	(31,5308,6702),
 	(32,5311,6769);
 
 INSERT INTO `NodeDefaultContents` (`IdNodeDefaultContent`, `IdNodeType`, `NodeType`, `Name`, `State`, `Params`)
@@ -715,15 +695,6 @@ VALUES
 	(5065,6,5007,'DicValue',NULL,0,NULL,0,0,NULL,NULL,NULL),
 	(5066,6,5007,'DicFolder',NULL,0,NULL,0,0,NULL,NULL,NULL),
 	(5068,6,5007,'PropSet',NULL,0,NULL,0,0,NULL,NULL,NULL),
-	(5300,6,5007,'XimNewsDateSection',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
-	(5301,6,5007,'XimNewsSection',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
-	(5302,6,5007,'XimNewsBulletins',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
-	(5303,6,5007,'XimNewsNews',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
-	(5304,6,5007,'XimNewsImages',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
-	(5305,6,5007,'XimNewsBulletin',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
-	(5306,6,5007,'XimNewsNew',NULL,0,NULL,0,0,NULL,NULL,NULL),
-	(5307,6,5007,'XimNewsBulletinLanguage',NULL,0,NULL,0,0,NULL,NULL,NULL),
-	(5308,6,5007,'XimNewsImageFile',NULL,0,NULL,0,0,NULL,NULL,NULL),
 	(6001,5003,5008,'Add user',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 	(6002,5009,5008,'Modify user data',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 	(6003,5009,5008,'Delete user',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
@@ -994,7 +965,6 @@ VALUES
 	(8122,10000,5080,'Modules',NULL,0,NULL,0,0,NULL,NULL,NULL),
 	(8123,8122,5081,'ximIO',NULL,0,NULL,0,0,NULL,NULL,NULL),
 	(8124,8122,5081,'ximLOADER',NULL,0,NULL,0,0,NULL,NULL,NULL),
-	(8125,8122,5081,'ximNEWS',NULL,0,NULL,0,0,NULL,NULL,NULL),
 	(8126,8122,5081,'ximSYNC',NULL,0,NULL,0,0,NULL,NULL,NULL),
 	(8127,8122,5081,'ximTAGS',NULL,0,NULL,0,0,NULL,NULL,NULL),
 	(8128,8122,5081,'ximTOUR',NULL,0,NULL,0,0,NULL,NULL,NULL),
@@ -1454,16 +1424,10 @@ VALUES
 	(74,5074,'',''),
 	(75,5075,'',''),
 	(76,5076,';ht;html;htm;xhtml;','html'),
-	(77,5300,'',''),
-	(78,5301,'',''),
 	(79,5302,'',''),
 	(80,5303,'',''),
-	(81,5304,'',''),
 	(82,5305,'',''),
-	(83,5306,'',''),
-	(84,5307,';jpeg;jpg;gif;png;','ximnewsimage'),
-	(85,5308,'',''),
-	(86,5309,'',''),
+	(84,5307,';jpeg;jpg;gif;png;','image'),
 	(87,5310,'',''),
 	(88,5320,'',''),
 	(89,5083,'',''),
@@ -2424,8 +2388,7 @@ VALUES
 
 INSERT INTO `SectionTypes` (`idSectionType`, `sectionType`, `idNodeType`, `module`)
 VALUES
-	(1,'Normal',5015,NULL),
-	(2,'ximNEWS',5300,'ximNEWS');
+	(1,'Normal',5015,NULL);
 
 INSERT INTO `States` (`IdState`, `Name`, `Description`, `IsRoot`, `IsEnd`, `NextState`)
 VALUES

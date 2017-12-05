@@ -36,7 +36,6 @@ use Ximdex\Utils\FsUtils;
 use Ximdex\Utils\Messages;
 use Ximdex\Utils\Session;
 
-ModulesManager::file('/inc/ximNEWS_Adapter.php', 'ximNEWS');
 
 // BaseIO API
 if (!defined('XIMDEX_BASEIO_PATH')) {
@@ -278,30 +277,12 @@ class BaseIO
                     $idsVisualTemplate = $this->_getIdFromChildrenType($data['CHILDRENS'], 'VISUALTEMPLATE');
                     $data['IDTEMPLATE'] = isset($idsVisualTemplate[0]) ? $idsVisualTemplate[0] : $this->_getDefaultRNG();
                 }
-                switch ($nodeTypeClass) {
-                    case 'XIMNEWSCOLECTORNODETYPE' :
-                        $nodeType = new NodeType();
-                        $nodeType->SetByName('XimNewsColector');
 
-                        $folder = new Node();
-                        $idNode = $folder->CreateNode($data['NAME'], $data['PARENTID'], $nodeType->get('IdNodeType'), NULL, $data['FILTER'], $data['IDTEMPLATE'], $data['IDSECTION'], NULL, $data['ORDERNEWSINBULLETINS'], $data['NEWSPERBULLETIN'], $data['TIMETOGENERATE'], $data['NEWSTOGENERATE'], NULL, $data['MAILCHANNEL'], $data['PVDVERSION'], $data['INACTIVE'], $data['IDAREA'], $data['GLOBAL']);
-                        break;
-                    case 'XIMNEWSIMAGESFOLDER' :
-                        $nodeType = new NodeType();
-                        $nodeType->SetByName($nodeTypeName);
+                $nodeType = new NodeType();
+                $nodeType->SetByName($nodeTypeName);
 
-                        $folder = new Node();
-                        $idNode = $folder->CreateNode($data['NAME'], $data['PARENTID'], $nodeType->get('IdNodeType'), NULL);
-
-                        break;
-
-                    default :
-                        $nodeType = new NodeType();
-                        $nodeType->SetByName($nodeTypeName);
-
-                        $folder = new Node();
-                        $idNode = $folder->CreateNode($data['NAME'], $data['PARENTID'], $nodeType->GetID(), NULL);
-                }
+                $folder = new Node();
+                $idNode = $folder->CreateNode($data['NAME'], $data['PARENTID'], $nodeType->GetID(), NULL);
 
                 $this->_dumpMessages($folder->messages);
 
@@ -456,9 +437,6 @@ class BaseIO
                         case 'XimletFolder' :
                             $nodeType->SetByName('XimletContainer');
                             break;
-                        case 'XimNewsColector' :
-                            $nodeType->SetByName('XimletContainer');
-                            break;
                         case 'XimPdfSection' :
                             $nodeType->SetByName('XimPdfDocumentFolder');
                             break;
@@ -490,12 +468,6 @@ class BaseIO
                 if (isset($data['FILTER']) && $data['FILTER'] == 'XIMPORTA') {
                     ModulesManager::file('/actions/io/generalBaseIO.php', 'ximPORTA');
                     include_once(XIMDEX_BASEIO_PATH . "/types/BaseIO_ximPORTA.class.php");
-                } else {
-                    switch ($nodeTypeClass) {
-                        case 'XIMNEWSBULLETINNODETYPE' :
-                            ModulesManager::file('/inc/model/XimNewsBulletins.php', 'ximNEWS');
-                            break;
-                    }
                 }
 
                 $data['TEMPLATE'] = $this->_getVisualTemplateFromChildrens($data['CHILDRENS']);
@@ -539,29 +511,16 @@ class BaseIO
                     }
                 } else {
 
-                    switch ($nodeTypeClass) {
-                        case 'XIMNEWSNEWLANGUAGE' :
-                            $xmlDocument = new Node();
-                            $xmlDocument->CreateNode($documentName, $data['PARENTID'], $nodeType->get('IdNodeType'), $data['STATE'], $data['TEMPLATE'], $data['LANG'], $data['ALIASNAME'], $data['CHANNELS'], $data['DATANEWS']);
-                            $idNode = $xmlDocument->get('IdNode');
-                            break;
-                        case 'XIMNEWSBULLETINNODETYPE' :
-                            $xmlDocument = new Node();
-                            $xmlDocument->CreateNode($documentName, $data['PARENTID'], $nodeType->get('IdNodeType'), $data['STATE'], $data['TEMPLATE'], $data['LANG'], $data['ALIASNAME'], $data['CHANNELS'], $data['COLECTOR'], $data['DATE'], $data['SET'], $data['LOTE']);
-                            $idNode = $xmlDocument->get('IdNode');
-                            break;
+                    //XMLDOCUMENT
+                    $nodeType = new NodeType();
+                    $nodeType->SetByName($data['NODETYPENAME']);
 
-                        default : //XMLDOCUMENT
-                            $nodeType = new NodeType();
-                            $nodeType->SetByName($data['NODETYPENAME']);
-
-                            $xmlDocument = new Node();
-                            $xmlDocument->CreateNode($documentName, $data['PARENTID'], $nodeType->get('IdNodeType'), $data['STATE'], $data['TEMPLATE'], $data['LANG'], $data['ALIASNAME'], $data['CHANNELS']);
-                            //Creating a symbolic link with the master and stablishing its workflow.
+                    $xmlDocument = new Node();
+                    $xmlDocument->CreateNode($documentName, $data['PARENTID'], $nodeType->get('IdNodeType'), $data['STATE'], $data['TEMPLATE'], $data['LANG'], $data['ALIASNAME'], $data['CHANNELS']);
+                    //Creating a symbolic link with the master and stablishing its workflow.
 
 
-                            $idNode = $xmlDocument->get('IdNode');
-                    }
+                    $idNode = $xmlDocument->get('IdNode');
                     $strDoc = new StructuredDocument($xmlDocument->get('IdNode'));
 
                     if (array_key_exists('NEWTARGETLINK', $data)) {
@@ -1135,13 +1094,7 @@ class BaseIO
                     }
                 }
 
-                switch ($nodeTypeClass) {
-                    case 'XIMNEWSNEWLANGUAGE' :
-                        $xmlDocument = new Node($data['ID']);
-                        $xmlDocument->class->update($data['ID'], $data['NAME'], $data['IDSECTION'], $data['NEWSDATA']);
-                        break;
-                    default :
-                }
+
 
                 return $result;
                 break;
@@ -1236,17 +1189,9 @@ class BaseIO
             case 'COMMONROOTFOLDER' :
             case 'IMPORTROOTFOLDER' :
             case 'XIMLETROOTFOLDER' :
-            case 'XIMNEWSIMAGES' :
-            case 'XIMNEWSIMAGESFOLDER' :
-            case 'XIMNEWSBULLETINS' :
-            case 'XIMNEWSCOLECTOR' :
-            case 'XIMNEWSNEWS' :
-            case 'XIMNEWSNEW' :
             case 'SERVER' :
             case 'IMAGESFOLDER' :
             case 'COMMONFOLDER' :
-            case 'XIMNEWSCATEGORY' :
-            case 'XIMNEWSDATESECTION' :
 
                 return 1;
                 break;
@@ -1257,7 +1202,6 @@ class BaseIO
             case 'CSSFILE' :
             case 'IMAGEFILE' :
             case 'NODEHT' :
-            case 'XIMNEWSIMAGEFILE' :
             case 'BINARYFILE' :
             case 'TEXTFILE':
 
@@ -1282,8 +1226,6 @@ class BaseIO
             // document nodes
             case 'XMLDOCUMENT' :
             case 'XIMLET' :
-            case 'XIMNEWSBULLETINLANGUAGE' :
-            case 'XIMNEWSNEWLANGUAGE' :
 
                 if (!(/* $this->_searchNodeInChildrens($data['CHILDRENS'], 'PATH', MODE_NODETYPE) || */
                     $this->_searchNodeInChildrens($data['CHILDRENS'], 'CHANNEL', Constants::MODE_NODETYPE) ||
@@ -1297,7 +1239,7 @@ class BaseIO
             // template nodes
             case 'XMLCONTAINER' :
             case 'XIMLETCONTAINER' :
-            case 'XIMNEWSBULLETIN:' :
+
                 // TODO Here, it should be checked if it is containing a visualtemplate, we'll see how when debug could be made
                 if (!($this->_searchNodeInChildrens($data['CHILDRENS'], 'VISUALTEMPLATE', Constants::MODE_NODETYPE))) {
                     return Constants::ERROR_INCORRECT_DATA;
@@ -1305,7 +1247,6 @@ class BaseIO
                 return 1;
 
             //section nodes
-            case 'XIMNEWSSECTION' :
             case 'SECTION' :
                 if (!($this->_searchNodeInChildrens($data['CHILDRENS'], 'RELGROUPSNODES', Constants::MODE_NODETYPE))) {
                     return Constants::ERROR_INCORRECT_DATA;

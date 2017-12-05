@@ -31,7 +31,6 @@
 	<p>You've succesfully installed Ximdex CMS on your server.<br/>Log in and discover a different way to manage your content and data.</p>
 	<?php if (!isset($_SERVER['DOCKER_CONF_HOME'])) { ?>
 	<p>Enable decoupled dynamic semantic publishing by adding these lines to your root crontab (# crontab -e):</p>
-	<pre class="cide">* * * * * (php <?php echo XIMDEX_ROOT_PATH ?>/modules/ximNEWS/actions/generatecolector/automatic.php) 2&gt;&amp;1</pre>
 	<pre>* * * * * (php <?php echo XIMDEX_ROOT_PATH ?>/modules/ximSYNC/scripts/scheduler/scheduler.php) 2>&amp;1</pre>
 	<?php } ?>
 	<button class="launch_ximdex action_launcher" id="submitButton" onclick="document.forms[0].submit(); return false;">

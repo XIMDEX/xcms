@@ -53,7 +53,7 @@ if ((!$filterType)&&($contentType=='dynamic')) {
 }
 
 if($contentType) {
-    $prefabricados = array('all', 'images', 'xmldocs','links', 'common', 'import', 'common_import', 'ximlet', 'ximletContainer', 'dynamic', 'pvds', 'ximnewsnewlanguage');
+    $prefabricados = array('all', 'images', 'xmldocs','links', 'common', 'import', 'common_import', 'ximlet', 'ximletContainer', 'dynamic', 'pvds');
     if(!in_array($contentType, $prefabricados) ) {
         $contentType = 'all';
     }
@@ -107,7 +107,7 @@ if($contentType) {
             $filterTypeAdd='Server';
         }
 
-        $typeList = array('Projects', 'Project', 'Server', 'Section', 'XimNewsSection',$filterType);
+        $typeList = array('Projects', 'Project', 'Server', 'Section',$filterType);
 
         if ($filterTypeAdd!="") {
             $typeList[]=$filterTypeAdd;
@@ -474,50 +474,36 @@ function getTypeAndSelectableList($contentType, &$typeList, &$selectableList) {
 
     switch($contentType) {
         case 'image':
-            if (ModulesManager::isEnabled('ximNEWS')) {
-                $typeList = array('Projects', 'Project', 'Server', 'Section', 'XimNewsSection','XimNewsImages','XimNewsImagesFolder','XimNewsImageFile', 'ImagesFolder', 'ImagesRootFolder', 'ImageFile', 'XimNewsColector', 'TemplateImages','XimNewsDateSection','XimNewsDateSection');
-                $selectableList = array('ImageFile','XimNewsImageFile');
-            } else {
                 $typeList = array('Projects', 'Project', 'Server', 'Section', 'ImagesFolder', 'ImagesRootFolder', 'ImageFile', 'TemplateImages');
                 $selectableList = array('ImageFile');
-            }
             break;
 
-
-        case 'ximnewsnewlanguage':
-            $typeList = array('Projects', 'Project', 'Server', 'XimNewsSection', 'XimNewsNews','XimNewsNewLanguage','XimNewsDateSection','XimNewsNew');
-            $selectableList = array('XimNewsNewLanguage');
-            break;
 
         case  'ximlet':
-            if (ModulesManager::isEnabled('ximNEWS')) {
-                $typeList = array('Projects', 'Project', 'Server', 'Section', 'XimNewsSection','XimNewsBulletins','XimNewsColector','XimletRootFolder', 'XimletFolder', 'XmlDocument', 'XmlContainer', 'XimletContainer', 'Ximlet');
-                $selectableList = array('XmlDocument', 'Ximlet');
-            } else {
+
                 $typeList = array('Projects', 'Project', 'Server', 'Section', 'XimletRootFolder', 'XimletFolder', 'XmlDocument', 'XmlContainer', 'XimletContainer', 'Ximlet');
                 $selectableList = array('XmlDocument', 'Ximlet');
-            }
             break;
 
 
         case  'common':
-            $typeList = array('Projects', 'Project', 'Server', 'Section','XimNewsSection', 'CommonRootFolder', 'CommonFolder', 'TextFile', 'BinaryFile', 'ImageFile');
+            $typeList = array('Projects', 'Project', 'Server', 'Section', 'CommonRootFolder', 'CommonFolder', 'TextFile', 'BinaryFile', 'ImageFile');
             $selectableList = array('XmlDocument', 'Link', 'ImageFile', 'TextFile', 'BinaryFile', 'ImageFile');
             break;
 
         case  'import':
-            $typeList = array('Projects', 'Project', 'Server', 'Section','XimNewsSection','ImportRootFolder', 'ImportFolder', 'TextFile', 'BinaryFile', 'ImageFile', 'NodeHt');
+            $typeList = array('Projects', 'Project', 'Server', 'Section','ImportRootFolder', 'ImportFolder', 'TextFile', 'BinaryFile', 'ImageFile', 'NodeHt');
             $selectableList = array('XmlDocument', 'Link', 'ImageFile', 'TextFile', 'BinaryFile', 'ImageFile', 'Nodeht');
             break;
 
         case  'common_import':
-            $typeList = array('Projects', 'Project', 'Server', 'Section','XimNewsSection', 'ImportRootFolder', 'ImportFolder', 'CommonRootFolder', 'CommonFolder', 'TextFile', 'BinaryFile', 'ImageFile');
+            $typeList = array('Projects', 'Project', 'Server', 'Section','ImportRootFolder', 'ImportFolder', 'CommonRootFolder', 'CommonFolder', 'TextFile', 'BinaryFile', 'ImageFile');
             $selectableList = array('XmlDocument', 'Link', 'ImageFile', 'TextFile', 'BinaryFile', 'ImageFile');
             break;
 
 
         case  'xmldocs':
-            $typeList = array('Projects', 'Project', 'Server', 'Section', 'XimNewsSection', 'XmlRootFolder', 'XmlDocument', 'XmlContainer' );
+            $typeList = array('Projects', 'Project', 'Server', 'Section',  'XmlRootFolder', 'XmlDocument', 'XmlContainer' );
             $selectableList = array('XmlDocument');
             break;
 
@@ -527,30 +513,12 @@ function getTypeAndSelectableList($contentType, &$typeList, &$selectableList) {
             $selectableList = array('TemplateViewFolder','VisualTemplate');
             break;
 
-        case  'ximNEWS_common':
-            $typeList = array('Projects', 'Project','Server','CommonRootFolder', 'BinaryFile');
-            $selectableList = array('BinaryFile');
-            break;
 
-        case  'ximNEWS_images':
-            $typeList = array('Projects', 'Project', 'Server', 'Section', 'XimNewsSection', 'XimNewsImages', 'XimNewsImageFile');
-            $selectableList = array('XimNewsImageFile');
-            break;
-
-        case  'ximNEWS_links':
-            $typeList = array('Projects', 'Project', 'LinkManager', 'LinkFolder','Link');
-            $selectableList = array('Link');
-            break;
 
         case 'links':
-            if (ModulesManager::isEnabled('ximNEWS')) {
-                $typeList = array('Projects', 'Project', 'Server', 'Section', 'XimNewsSection', 'XimNewsBulletins', 'XimNewsNews','XimNewsBulletinLanguage','XimNewsNewLanguage','XimNewsBulletin','XimNewsDateSection','XimNewsNew', 'XimNewsColector', 'LinkManager', 'LinkFolder', 'XmlRootFolder', 'XmlDocument', 'XmlContainer', 'CommonRootFolder', 'CommonFolder', 'Link', 'TextFile', 'BinaryFile', 'ImageFile');
-                $selectableList = array('XmlDocument', 'Link', 'ImageFile', 'TextFile', 'BinaryFile', 'ImageFile','XimNewsBulletinLanguage','XimNewsNewLanguage');
-            }
-            else {
-                $typeList = array('Projects', 'Project', 'Server', 'Section', 'LinkManager', 'LinkFolder', 'XmlRootFolder', 'XmlDocument', 'XmlContainer', 'CommonRootFolder', 'CommonFolder', 'Link', 'TextFile', 'BinaryFile', 'ImageFile');
-                $selectableList = array('XmlDocument', 'Link', 'ImageFile', 'TextFile', 'BinaryFile', 'ImageFile');
-            }
+
+            $typeList = array('Projects', 'Project', 'Server', 'Section', 'LinkManager', 'LinkFolder', 'XmlRootFolder', 'XmlDocument', 'XmlContainer', 'CommonRootFolder', 'CommonFolder', 'Link', 'TextFile', 'BinaryFile', 'ImageFile');
+            $selectableList = array('XmlDocument', 'Link', 'ImageFile', 'TextFile', 'BinaryFile', 'ImageFile');
             $nodeTypeXimPorta=new NodeType();
             if ($nodeTypeXimPorta->IsNodeType('ximPORTA')) {
                 $typeList[]='ximPORTA';
@@ -558,13 +526,8 @@ function getTypeAndSelectableList($contentType, &$typeList, &$selectableList) {
             break;
 
         case 'ximletContainer':
-            if (ModulesManager::isEnabled('ximNEWS')) {
-                $typeList = array('Projects', 'Project', 'Server', 'Section', 'XimNewsSection','XimNewsBulletins','XimNewsColector','XimletRootFolder', 'XimletFolder', 'XimletContainer');
-                $selectableList = array('XimletContainer');
-            }else {
                 $typeList = array('Projects', 'Project', 'Server', 'Section', 'XimletRootFolder', 'XimletFolder', 'XimletContainer'	);
                 $selectableList = array('XimletContainer');
-            }
             break;
 
         case 'all':

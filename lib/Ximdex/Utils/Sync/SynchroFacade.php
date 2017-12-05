@@ -34,17 +34,9 @@ use Ximdex\Runtime\Db as DB;
 use ModulesManager;
 use NodeFrame;
 use NodeFrameManager;
-use Ximdex\Models\NodeType;
-use RelNewsBulletins;
-use RelNewsColector;
 use Ximdex\Models\Server;
 use ServerFrame;
-use Ximdex\Models\Dependencies;
 use Ximdex\Models\Node;
-use Ximdex\Models\StructuredDocument;
-use Ximdex\Runtime\DataFactory;
-use XimNewsBulletin;
-use XimNewsCache;
 use Ximdex\Logger;
 
 
@@ -586,7 +578,6 @@ class SynchroFacade
 			//dafault values
 
 			$syncMngr->setFlag('recurrence', false);
-			$syncMngr->setFlag('otfPublication', false);
 			if (!isset($flagsArray['force'])) {
 				$syncMngr->setFlag('force', false);
 			} else {
@@ -600,7 +591,6 @@ class SynchroFacade
 				}
 			}
 
-			// TODO ximnews bulletins are passing by here now
 			Logger::info("Stablishing PUSH");
 			$syncMngr->setFlag('deleteOld', true);
 			$result = $syncMngr->pushDocInPublishingPool($idNode, $upDate, $downDate);
@@ -658,224 +648,4 @@ class SynchroFacade
 		return $synchronizer->HasUnlimitedLifeTime();
 	}
 
-	/**
-	 * Enter description here...
-	 *
-	 * @param unknown_type $idNode
-	 * @param unknown_type $dateUp
-	 * @param unknown_type $dateDown
-	 * @return unknown
-	 */
-	function publishBulletin($idNode, $dateUp, $dateDown)
-	{
-		// Publishing bulletin ximlet
-		// accessing to bulletin ximlet, for its language.
-		$ximNewsBulletin = new XimNewsBulletin($idNode);
-		// Saving bulletin content in ximlet if the bulletin is the first
-		$colectorID = $ximNewsBulletin->get('IdColector');
-
-		$result = array('ok' => array(), 'notok' => array(), 'unchanged' => array());
-
-		if ($ximNewsBulletin->isBulletinForXimlet()) {
-			$ximletID = $ximNewsBulletin->GetBulletinXimlet();
-			Logger::info(_("Bulletin is of the ximlet ") . $ximletID);
-			$ximlet = new StructuredDocument($ximletID);
-			$bulletinDoc = new StructuredDocument($idNode);
-			$content = $bulletinDoc->GetContent();
-			$ximlet->SetContent($content);
-			self::publishXimletBulletin($ximletID, $dateUp + 240, $dateDown);
-		}
-
-		// publish Bulletin
-		$resultBulletin = self::publishXimNewsDocument($idNode, $dateUp + 240, $dateDown, $idNode);
-
-		// publish News
-		$resultNews = self::publishNews($idNode, $dateUp, $dateDown);
-
-		$result['ok'] = array_merge_recursive($resultBulletin['ok'], $resultNews['ok']);
-		$result['notok'] = array_merge_recursive($resultBulletin['notok'], $resultNews['notok']);
-		$result['unchanged'] = array_merge_recursive($resultBulletin['unchanged'], $resultNews['unchanged']);
-
-		return $result;
-	}
-
-	/**
-	 * Enter description here...
-	 *
-	 * @param unknown_type $idNode
-	 * @param unknown_type $dateUp
-	 * @param unknown_type $dateDown
-	 */
-	function publishXimletBulletin($idNode, $dateUp, $dateDown)
-	{
-
-		$node = new Node($idNode);
-		$nodeType = new NodeType($node->GetNodeType());
-		$nodeTypeName = $nodeType->GetName();
-
-		if ($nodeTypeName == 'Ximlet') {
-			Logger::info(_("Starting ximlet publication"));
-			self::publishXimNewsDocument($idNode, $dateUp, $dateDown);
-
-			$docsToPublish = array();
-			Logger::info(sprintf(_("Looking for documents associated to the ximlet %s"), $nodeID));
-			$docsToPublish = $node->class->getRefererDocs();
-
-			//Publishing all the documents associated to the ximlet
-			foreach ($docsToPublish as $docID) {
-				self::publishXimNewsDocument($docID, $dateUp, $dateDown);
-			}
-		}
-	}
-
-	/**
-	 * Enter description here...
-	 *
-	 * @param unknown_type $idBulletin
-	 * @param unknown_type $dateUp
-	 * @param unknown_type $dateDown
-	 * @return unknown
-	 */
-	function publishNews($idBulletin, $dateUp, $dateDown)
-	{
-		$ximNewsBulletin = new XimNewsBulletin($idBulletin);
-
-		$relNewsBulletins = new RelNewsBulletins();
-		$news = $relNewsBulletins->GetNewsByBulletin($idBulletin);
-
-		$deps = array();
-
-		$colectorID = $ximNewsBulletin->get('IdColector');
-
-		$result = array('ok' => array(), 'notok' => array(), 'unchanged' => array());
-
-		foreach ($news as $newsID) {
-
-			$relNewsColector = new RelNewsColector();
-			$idRel = $relNewsColector->hasNews($colectorID, $newsID);
-			if ($idRel > 0) {
-				$relNewsColector = new RelNewsColector($idRel);
-				$versionInColector = array($relNewsColector->get('Version'), $relNewsColector->get('SubVersion'));
-				unset($relNewsColector);
-
-				$dataFactory = new DataFactory($newsID);
-				if ($dataFactory->isEditedForPublishing($versionInColector)) {
-					$resultNew = self::publishXimNewsDocument($newsID, $dateUp + 120, $dateDown, $idBulletin);
-					$result['ok'] = array_merge_recursive($result['ok'], $resultNew['ok']);
-					$result['notok'] = array_merge_recursive($result['notok'], $resultNew['notok']);
-					$result['unchanged'] = array_merge_recursive($result['unchanged'], $resultNew['unchanged']);
-
-					$dependencies = new Dependencies();
-					$deps_tmp = $dependencies->GetMastersByType($newsID, 'LINK');
-
-					if (($deps_tmp != null) && (is_array($deps_tmp))) {
-						foreach ($deps_tmp as $depID) {
-							if (!in_array($depID, $deps)) {
-								$deps[] = $depID;
-							}
-						}
-					}
-				}
-			}
-		}
-
-		//Publising all the news dependencies
-		if (count($deps) > 0) {
-			foreach ($deps as $depsID) {
-				$resultDep = self::publishXimNewsDocument($depsID, $dateUp, $dateDown, $idBulletin);
-				$result['ok'] = array_merge_recursive($result['ok'], $resultDep['ok']);
-				$result['notok'] = array_merge_recursive($result['notok'], $resultDep['notok']);
-				$result['unchanged'] = array_merge_recursive($result['unchanged'], $resultDep['unchanged']);
-			}
-		}
-
-		return $result ? $result : array();
-	}
-
-	/**
-	 * Enter description here...
-	 *
-	 * @param unknown_type $idNode
-	 * @param unknown_type $up
-	 * @param unknown_type $down
-	 * @param unknown_type $BulletinFrameID
-	 * @param unknown_type $markEnd
-	 * @return unknown
-	 */
-	function publishXimNewsDocument($idNode, $up, $down, $BulletinFrameID = null, $markEnd = null)
-	{
-
-		$node = new Node($idNode);
-		if (!($node->get('IdNode') > 0)) {
-			Logger::error(sprintf(_("Unexisting node %s"), $idNode));
-			return false;
-		}
-
-		$syncMngr = new SyncManager();
-
-		$syncMngr->setFlag('markEnd', $markEnd);
-		$syncMngr->setFlag('deleteOld', true);
-		$syncMngr->setFlag('type', 'ximNEWS');
-
-		//If it is a news, new flags are added to update its versions in RelNewsColector
-		$nodeTypeNode = new NodeType($node->GetNodeType());
-		$nodeTypeName = $nodeTypeNode->GetName();
-
-		if ($nodeTypeName == "XimNewsNewLanguage") {
-			$syncMngr->setFlag('mail', 'true');
-			$syncMngr->setFlag('bulletinID', $BulletinFrameID);
-			$ximNewsBulletin = new XimNewsBulletin($BulletinFrameID);
-			$colectorID = $ximNewsBulletin->get('IdColector');
-			$syncMngr->setFlag('colectorID', $colectorID);
-			$syncMngr->setFlag('updateRels', 1);
-		} else if ($nodeTypeName == "XimNewsBulletinLanguage") {
-			$syncMngr->setFlag('bulletinID', $idNode);
-		}
-
-		// push document in publishing pool
-		$result = array('ok' => array(), 'notok' => array(), 'unchanged' => array());
-		$syncMngr->pushDocInPublishingPool($idNode, $up, $down);
-		if ($syncMngr->error()) {
-			$result['notok']["#" . $idNode][0][0] = true;
-		} else {
-			$result['ok']["#" . $idNode][0][0] = true;
-		}
-
-		if ($nodeTypeName == "XimNewsNewLanguage") {
-			$ximNewsBulletin = new XimNewsBulletin($BulletinFrameID);
-			$colectorID = $ximNewsBulletin->get('IdColector');
-
-			$relNewsColector = new RelNewsColector();
-			$idRel = $relNewsColector->hasNews($colectorID, $idNode);
-
-			if ($idRel > 0) {
-				$dataFactory = new DataFactory($idNode);
-				$version = $dataFactory->getLastVersion();
-				$subversion = 0;
-				$idVersion = $dataFactory->getVersionId($version, $subversion);
-
-				$relNewsColector = new RelNewsColector($idRel);
-				$idCache = $relNewsColector->get('IdCache');
-				$relNewsColector->set('Version', $version);
-				$relNewsColector->set('SubVersion', $subversion);
-
-				if (!$relNewsColector->update()) {
-					Logger::error(_('Updating version'));
-				}
-
-				if ($idCache > 0) {
-					$ximNewsCache = new XimNewsCache($idCache);
-					$ximNewsCache->set('IdVersion', $idVersion);
-
-					if (!$ximNewsCache->update()) {
-						Logger::error(_('Updating cache version'));
-					}
-				}
-			}
-
-			Logger::info(sprintf(_("node %s version %s"), $idNode, $version));
-		}
-
-		return $result;
-	}
 }

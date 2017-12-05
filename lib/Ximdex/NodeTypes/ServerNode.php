@@ -38,33 +38,22 @@ use Ximdex\Models\Node;
 class ServerNode extends FolderNode
 {
 
-	const SERVERS_OTF = '1';
-	const SERVERS_NO_OTF = '2';
+
 	const ALL_SERVERS = '3';
 
 
 	/**
 	 * Get the Physical Server List
 	 * @param $hidePrevisual --> true --> dont get the "previous" servers
-	 * @param $otfServer
 	 * @return array $list
 	 */
-	function GetPhysicalServerList($hidePrevisual = NULL, $otfServer = NULL)
+	function GetPhysicalServerList($hidePrevisual = NULL)
 	{
 
 		if (!is_null($hidePrevisual)) {
 			$sql = "SELECT IdServer FROM Servers WHERE Previsual != 1 AND IdNode=" . $this->nodeID;
 		} else {
 			$sql = "SELECT IdServer FROM Servers WHERE IdNode=" . $this->nodeID;
-		}
-
-		if (!is_null($otfServer)) {
-
-			if ($otfServer == ServerNode::SERVERS_OTF) {
-				$sql .= " AND otf=1";
-			} else if ($otfServer == ServerNode::SERVERS_NO_OTF) {
-				$sql .= " AND otf!=1";
-			}
 		}
 
 		$this->dbObj->Query($sql);
@@ -81,10 +70,9 @@ class ServerNode extends FolderNode
 	/**
 	 * Get the enabled physical servers
 	 * @param $hidePrevisual --> true --> dont get the "previous" servers
-	 * @param $otfServer
 	 * @return array $list
 	 */
-	function GetEnabledPhysicalServerList($hidePrevisual = NULL, $otfServer = NULL)
+	function GetEnabledPhysicalServerList($hidePrevisual = NULL)
 	{
 
 		$server = new Server();
@@ -93,15 +81,6 @@ class ServerNode extends FolderNode
 			$where = "Previsual!=1 AND IdNode=%s AND Enabled=1";
 		} else {
 			$where = "IdNode=%s AND Enabled=1";
-		}
-
-		if (!is_null($otfServer)) {
-
-			if ($otfServer == ServerNode::SERVERS_OTF) {
-				$where .= " AND otf=1";
-			} else if ($otfServer == ServerNode::SERVERS_NO_OTF) {
-				$where .= " AND otf!=1";
-			}
 		}
 
 		return $server->find('IdServer', $where, array($this->nodeID), MONO);
@@ -140,7 +119,7 @@ class ServerNode extends FolderNode
 
 
 	function AddPhysicalServer($protocolID, $login, $password, $host, $port,
-							   $url, $initialDirectory, $overrideLocalPaths, $enabled, $previsual, $description, $isServerOTF = false)
+							   $url, $initialDirectory, $overrideLocalPaths, $enabled, $previsual, $description)
 	{
 
 		if (!($overrideLocalPaths)) {
@@ -152,19 +131,14 @@ class ServerNode extends FolderNode
 		if (!($previsual)) {
 			$previsual = 0;
 		}
-		if ($isServerOTF) {
-			$serverOTF = 1;
-		} else {
-			$serverOTF = 0;
-		}
 
 		$sql = "INSERT INTO Servers ";
 		$sql .= "(IdServer, IdNode, IdProtocol, Login, Password, Host,";
-		$sql .= " Port, Url, InitialDirectory, OverrideLocalPaths, Enabled, Previsual, Description,otf) ";
+		$sql .= " Port, Url, InitialDirectory, OverrideLocalPaths, Enabled, Previsual, Description) ";
 		$sql .= "VALUES ";
 		$sql .= "(NULL, " . DB::sqlEscapeString($this->parent->get('IdNode')) . ", " . DB::sqlEscapeString($protocolID) . ", " . DB::sqlEscapeString($login) . ", " . DB::sqlEscapeString($password) . ", " . DB::sqlEscapeString($host) . ",";
 		$sql .= " " . DB::sqlEscapeString($port) . ", " . DB::sqlEscapeString($url) . ", " . DB::sqlEscapeString($initialDirectory) . ", ";
-		$sql .= DB::sqlEscapeString($overrideLocalPaths) . ", " . DB::sqlEscapeString($enabled) . ", " . DB::sqlEscapeString($previsual) . ", " . DB::sqlEscapeString($description) . ", " . $serverOTF . ")";
+		$sql .= DB::sqlEscapeString($overrideLocalPaths) . ", " . DB::sqlEscapeString($enabled) . ", " . DB::sqlEscapeString($previsual) . ", " . DB::sqlEscapeString($description) . ")";
 		$this->dbObj->Execute($sql);
 
 
@@ -196,11 +170,7 @@ class ServerNode extends FolderNode
 		$this->dbObj->Execute($sql);
 	}
 
-	function setIsOTF($isServerOTF, $physicalID)
-	{
-		$sql = "UPDATE Servers SET otf= '" . $isServerOTF . "' WHERE IdNode=" . $this->nodeID . " AND IdServer=" . $physicalID;
-		$this->dbObj->Execute($sql);
-	}
+
 
 	function SetPassword($physicalID, $pass)
 	{
@@ -511,9 +481,8 @@ class ServerNode extends FolderNode
 			$childNodeTypeID = $childNode->get('IdNodeType');
 			$childNodeType = new NodeType($childNodeTypeID);
 
-			// avoiding the publication of xsl templates in mode otf = null
 
-			if (!isset($params['otf']) && $childNodeType->get('Name') == 'TemplatesRootFolder') continue;
+			if ($childNodeType->get('Name') == 'TemplatesRootFolder') continue;
 			/*
                 recurrence IsSection Resultado
                 0			0			1

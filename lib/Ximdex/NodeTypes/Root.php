@@ -213,7 +213,7 @@ class Root
     }
 
     /**
-     *  Returns a xml fragment with XimNewsBulletin data.
+     *  Returns a xml fragment
      * @return string
      */
 

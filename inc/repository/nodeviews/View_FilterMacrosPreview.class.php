@@ -158,18 +158,6 @@ class View_FilterMacrosPreview extends View_FilterMacros implements Interface_Vi
         $section = new Node($this->_idSection);
         $sectionPath = $section->class->GetNodeURL() . "/";
 
-        if ($this->_node != null) {
-            if ($this->_node->nodeType->geddt('Name') == 'XimNewsNewLanguage') {
-                $sectionPath .= 'news/';
-            }
-        } else if ($this->_nodeTypeName != null) {
-            if ($this->_nodeTypeName == 'XimNewsNewLanguage') {
-                $sectionPath .= 'news/';
-            }
-        } else {
-            Logger::error("VIEW FILTERMACROSPREVIEW:no se ha podido determinar si se trata de un node de tipo XimNewsNewLanguage");
-        }
-
         $targetPath = $matches[1];
         $dotdot = str_repeat('../', $this->_depth - 2);
         return $sectionPath . $dotdot . $targetPath;

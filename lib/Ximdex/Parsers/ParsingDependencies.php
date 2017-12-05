@@ -558,26 +558,6 @@ class ParsingDependencies
         preg_match_all('/ a_import_enlaceid[_|\w|\d]*\s*=\s*[\'|"](\d+)[\'|"]/i', $content, $matches);
         $importLinks = count($matches[1]) > 0 ? $matches[1] : array();
 
-        if ($nodeTypeName == 'XimNewsNewLanguage') {
-
-            preg_match_all('/ a_enlaceid_enlace[_|\w|\d]*\s*=\s*[\'|"]([\d|\,]+)[\'|"]/i', $content, $matches);
-            $links2 = count($matches[1]) > 0 ? $matches[1] : array();
-
-            preg_match_all('/ a_enlaceid_noticia_enlace_asociado[_|\w|\d]*\s*=\s*[\'|"]([\d|\,]+)[\'|"]/i', $content, $matches);
-            $links = array_merge($links, $links2);
-        }
-
-        if ($nodeTypeName == 'XimNewsBulletinLanguage') {
-
-            preg_match_all('/<prev nodeid="([\d]+)"/i', $content, $matches);
-            $prevs = count($matches[1]) > 0 ? self::setFormatArray($matches[1], 'link') : array();
-
-            preg_match_all('/<next nodeid="([\d]+)"/i', $content, $matches);
-            $nexts = count($matches[1]) > 0 ? self::setFormatArray($matches[1], 'link') : array();
-
-            $links = array_merge($links, $prevs, $nexts);
-        }
-
         return array_merge($links, $importLinks);
     }
 
@@ -586,19 +566,6 @@ class ParsingDependencies
 
         preg_match_all('/<url.*>\s*(\d+)\s*<\/url>/i', $content, $matches);
         $assets = count($matches[1]) > 0 ? $matches[1] : array();
-
-        if ($nodeTypeName == 'XimNewsNewLanguage') {
-            preg_match_all('/ a_enlaceid_noticia_imagen_asociada[_|\w|\d]*\s*=\s*[\'|"]([\d|\,]+)[\'|"]/i', $content, $matches);
-            $images = count($matches[1]) > 0 ? $matches[1] : array();
-
-            preg_match_all('/ a_enlaceid_noticia_video_asociado[_|\w|\d]*\s*=\s*[\'|"]([\d|\,]+)[\'|"]/i', $content, $matches);
-            $videos = count($matches[1]) > 0 ? $matches[1] : array();
-
-            preg_match_all('/ a_enlaceid_noticia_archivo_asociado[_|\w|\d]*\s*=\s*[\'|"]([\d|\,]+)[\'|"]/i', $content, $matches);
-            $files = count($matches[1]) > 0 ? $matches[1] : array();
-
-            $assets = array_merge($assets, $images, $videos, $files);
-        }
 
         return $assets;
     }

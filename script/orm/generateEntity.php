@@ -74,7 +74,7 @@ foreach ($obj->_metaData as $key => $fieldDescriptors) {
 	Logger::display("\t Field: " . $key);
 	$fieldType = CliReader::alert(array('V', 'I', 'C', 'M', 'R', 'v', 'i', 'c', 'm', 'r'), 
 		'Seleccione tipo de campo Visible (V), Invisible (I), CreationDate (C), ModificationDate (M), Relation (R):');
-	$obj->_metaData[$key]['TYPE'] = $longFieldTypes(strtoupper($fieldType));
+	$obj->_metaData[$key]['TYPE'] = $longFieldTypes[strtoupper($fieldType)];
 
 	if ($fieldType == 'R') {
 		$fieldRelation = CliReader::alert(array('1', '2', '3', '4'), 

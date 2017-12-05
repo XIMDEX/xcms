@@ -27,7 +27,6 @@ class ServersOrm extends \Ximdex\Data\GenericData
         'Enabled' => array('type' => "int(1)", 'not_null' => 'false'),
         'Previsual' => array('type' => "int(1)", 'not_null' => 'false'),
         'Description' => array('type' => "varchar(255)", 'not_null' => 'false'),
-        'otf' => array('type' => "int(1)", 'not_null' => 'false'),
         'idEncode' => array('type' => "varchar(255)", 'not_null' => 'false'),
         'ActiveForPumping' => array('type' => "tinyint(3)", 'not_null' => 'false')
     );
@@ -46,7 +45,6 @@ class ServersOrm extends \Ximdex\Data\GenericData
     var $Enabled = 1;
     var $Previsual = 0;
     var $Description;
-    var $otf = 0;
     var $idEncode;
     var $ActiveForPumping = 1;
 }

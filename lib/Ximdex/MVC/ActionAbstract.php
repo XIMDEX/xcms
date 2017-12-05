@@ -597,7 +597,7 @@ abstract class ActionAbstract extends IController
      * Example:
      *  /var/www/ximdex/xmd/images/[LANG]/pingu.gif -> /var/www/ximdex/xmd/images/es/pingu.gif
      *  or
-     *  /var/www/ximdex/xmd/images/ximNEWS/pingu_[LANG].gif -> /var/www/ximdex/xmd/images/ximNEWS/pingu_es.gif
+     *  /var/www/ximdex/xmd/images/ximTAGS/pingu_[LANG].gif -> /var/www/ximdex/xmd/images/ximTAGS/pingu_es.gif
      *  or ...
      *  This can be also done in html with the smarty var locale
      * @param $file

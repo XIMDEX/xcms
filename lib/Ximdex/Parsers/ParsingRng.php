@@ -57,7 +57,7 @@ class ParsingRng
     }
 
     /*
-    * Gets the array needed for render a web form (ximNEWS)
+    * Gets the array needed for render a web form
     * @param int $templateID
     * @return array / NULL
     */

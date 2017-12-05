@@ -25,8 +25,4 @@
 
 -- Drop exclusive module tables.
 
-DROP TABLE IF EXISTS XimNewsColectorUsers;
-DROP TABLE IF EXISTS RelNewsColectorUsers;
-DROP TABLE IF EXISTS RelColectorUsersBatchs;
-
 DELETE FROM Permissions WHERE IdPermission='1005';

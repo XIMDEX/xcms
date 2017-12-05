@@ -178,10 +178,6 @@ msgstr "Pasta de links"
 msgid "Ximlets folder"
 msgstr "Pasta de ximlets"
 
-#: /actions/addfoldernode/Action_addfoldernode.class.php
-msgid "XimNEWS new folder"
-msgstr "Nova Pasta ximNEWS"
-
 #: /actions/addfoldernode/template/Smarty/addProject.tpl
 #: /actions/addfoldernode/template/Smarty/index.tpl:3
 msgid "Add %s"
@@ -208,11 +204,6 @@ msgstr "Adicionar %s"
 #: /actions/xmleditor/edit_forms-origen.php
 #: /actions/xmleditor/edit_forms.php
 #: /actions/ximdexclose/template/Smarty/index.tpl
-#: /modules/ximNEWS/actions/createcolector/template/Smarty/index.tpl
-#: /modules/ximNEWS/actions/createnews/template/Smarty/creation_form.tpl
-#: /modules/ximNEWS/actions/createLote/template/Smarty/index.tpl
-#: /modules/ximNEWS/actions/manageareas/template/Smarty/create.tpl
-#: /modules/ximNEWS/actions/manageareas/template/Smarty/edit.tpl
 msgid "Name"
 msgstr "Nome"
 
@@ -265,7 +256,6 @@ msgstr "Data de revis&atilde;o"
 #: /actions/remanenode/template/Smarty/index.tpl
 #: /actions/xmleditor/edit_forms.php
 #: /inc/widgets/jquery/searchpanel/template/searchpanel.tpl
-#: /modules/ximNEWS/actions/createnews/template/Smarty/creation_form.tpl
 msgid "Reset"
 msgstr "Reiniciar"
 
@@ -305,9 +295,6 @@ msgstr "Voltar"
 #: /actions/createlink/template/Smarty/index.tpl
 #: /actions/createrole/template/Smarty/index.tpl
 #: /actions/createxmlcontainer/template/Smarty/index.tpl
-#: /modules/ximNEWS/actions/createcolector/template/Smarty/index.tpl
-#: /modules/ximNEWS/actions/createLote/template/Smarty/index.tpl
-#: /modules/ximNEWS/actions/createnews/template/Smarty/index.tpl
 
 msgid "Create"
 msgstr "Criar"
@@ -320,7 +307,6 @@ msgstr "Criar"
 #: /actions/modifylink/template/Smarty/index.tpl
 #: /actions/modifyrole/template/Smarty/index.tpl
 #: /actions/remanenode/template/Smarty/index.tpl
-#: /modules/ximNEWS/actions/manageareas/template/Smarty/index.tpl
 msgid "Modify"
 msgstr "Modificar"
 
@@ -414,13 +400,8 @@ msgid "Section type"
 msgstr "Tipo de se&ccedil;&atilde;o"
 
 #: /actions/addsectionnode/template/Smarty/index.tpl
-#: /modules/ximNEWS/actions/createLote/template/Smarty/index.tpl
 msgid "Normal"
 msgstr "Normal"
-
-#: /actions/addsectionnode/template/Smarty/index.tpl
-msgid "OTF section"
-msgstr "Se&ccedil;&atilde;o OTF"
 
 msgid "Themes"
 msgstr "Temas"
@@ -510,7 +491,6 @@ msgstr "Associar recursivamente "
 #: /actions/manageproperties/template/Smarty/Channel.tpl
 #: /actions/relselectioschema/template/Smarty/index.tpl
 #: /actions/showassocnodes/template/Smarty/index.tpl
-#: /modules/ximNEWS/actions/addtocolector/template/Smarty/index.tpl
 msgid "Associate"
 msgstr "Associar"
 
@@ -620,8 +600,6 @@ msgid "Template to change was not found"
 msgstr "N&atilde;o foi encontrado nenhum modelo para modificar"
 
 #: /actions/changetemplateview/template/Smarty/index.tpl
-#: /modules/ximNEWS/actions/createcolector/template/Smarty/index.tpl
-#: /modules/ximNEWS/actions/createnews/template/Smarty/index.tpl
 
 msgid "Template"
 msgstr "Modelo"
@@ -849,7 +827,6 @@ msgid "Error \"%1%\" does not contain nodes"
 msgstr "Erro \"%1%\" n&atilde;o possui nodos"
 
 #: /actions/composer/resources/js/xloadtree.js
-#: /modules/ximNEWS/actions/createnews/resources/js/tabs.js
 msgid "Loading..."
 msgstr "Carregando..."
 
@@ -1190,9 +1167,6 @@ msgstr "Registrar usu&aacute;rios sem seu consentimiento pode infringir as norma
 #: /actions/xmleditor/edit_forms-origem.php
 #: /actions/xmleditor/edit_forms.php
 #: /actions/xmd/chkpass.php
-#: /modules/ximNEWS/actions/manageareas/template/Smarty/create.tpl
-#: /modules/ximNEWS/actions/manageareas/template/Smarty/edit.tpl
-#: /modules/ximNEWS/actions/manageareas/template/Smarty/index.tpl
 #: /inc/mvc/drawers/gprint.inc
 #: xmd/template/Smarty/layouts/messages.tpl
 #: xmd/template/Smarty/layouts/default.tpl
@@ -1243,7 +1217,6 @@ msgstr "adicionado"
 
 #: /actions/createlanguage/template/Smarty/index.tpl
 #: /install/ximdex_data/ximdex.sql table Nodes
-#: ximNEWS.Actions (constructor)
 msgid "Add language"
 msgstr "Adicionar idioma"
 
@@ -1388,19 +1361,15 @@ msgid "Document type"
 msgstr "Tipo de documento"
 
 #: /actions/createxmlcontainer/template/Smarty/index.tpl
-#: /modules/ximNEWS/actions/createcolector/template/Smarty/index.tpl
-#: /modules/ximNEWS/actions/createnews/template/Smarty/index.tpl
 msgid "Select template"
 msgstr "Selecione um modelo"
 
 #: /actions/createxmlcontainer/template/Smarty/_ximdoc_languages.tpl
-#: /modules/ximNEWS/actions/createnews/template/Smarty/index.tpl
 msgid "Select master language"
 msgstr "Selecione idioma mestre"
 
 #: /actions/createxmlcontainer/template/Smarty/_ximdoc_languages.tpl
 #: /actions/modifygroupsnode/template/Smarty/index.tpl
-#: /modules/ximNEWS/actions/createnews/template/Smarty/index.tpl
 #: /inc/widgets/jquery/listview/js/listview.js
 msgid "None"
 msgstr "Nenhum"
@@ -1773,12 +1742,6 @@ msgstr "Visualiza&ccedil;&atilde;o por defeito"
 msgid "Generic use template"
 msgstr "M&oacute;dulo de uso gen&eacute;rico"
 
-msgid "Ximnews news template"
-msgstr "Modelo de not&iacute;cias Ximnews"
-
-msgid "Ximnews newsletter template"
-msgstr "Modelo de boletim Ximnews"
-
 #: /actions/fileupload_common_multiple/Action_fileupload_common_multiple.class.php
 msgid "It is necessary to be an active user to upload files"
 msgstr "&Eacute; necess&aacute;rio ser um usu&aacute;rio ativo para transferir arquivos"
@@ -2032,7 +1995,6 @@ msgstr "Ativa&ccedil;&atilde;o"
 #: /actions/managebatchs/forms.php
 #: /modules/ximSYNC/actions/managebatchs/template/Smarty/batchlistamp.tpl
 #: /modules/ximSYNC/actions/managebatchs/forms.php
-#: /modules/ximNEWS/actions/createLote/template/Smarty/index.tpl
 msgid "Type"
 msgstr "Tipo"
 
@@ -2137,7 +2099,6 @@ msgstr "[ Carregando... ]"
 #: /actions/deletenode/template/Smarty/forms/simples.tpl
 #: /actions/modifygroupsnode/template/Smarty/index.tpl
 #: /actions/modifyrolestate/template/Smarty/index.tpl
-#: /modules/ximNEWS/actions/deleterelnewsarea/template/Smarty/index.tpl
 #: /install/ximdex_data/ximdex.sql table Actions
 msgid "Delete"
 msgstr "Eliminar"
@@ -2233,7 +2194,6 @@ msgstr "Associar canal recursivamente a todos os documentos."
 
 #: /actions/manageproperties/template/Smarty/confirm.tpl
 #: /install/ximdex_data/ximdex.sql table Nodes
-#: /modules/ximNEWS/sql/ximNEWS.constructor.sql -table Actions
 msgid "Edit properties"
 msgstr "Modificar propriedades"
 
@@ -2277,8 +2237,6 @@ msgstr "Vers&otilde;es dispon&iacute;veis"
 
 #: /actions/manageversions/template/Smarty/index.tpl
 #: /actions/preview/template/Smarty/index.tpl
-#: /modules/ximNEWS/actions/addtocolector/template/Smarty/index.tpl
-#: /modules/ximNEWS/actions/viewaddednews/template/Smarty/index.tpl
 msgid "Version"
 msgstr "Vers&atilde;o"
 
@@ -2287,8 +2245,6 @@ msgstr "Vers&atilde;o"
 #: /modules/ximSYNC/actions/managebatchs/template/Smarty/batchlist.tpl
 #: /modules/ximSYNC/actions/managebatchs/template/Smarty/batchlistamp.tpl
 #: /modules/ximSYNC/actions/managebatchs/forms.php
-#: /modules/ximNEWS/actions/createnews/template/Smarty/creation_form.tpl
-#: /modules/ximNEWS/actions/createLote/template/Smarty/index.tpl
 msgid "Date"
 msgstr "Data"
 
@@ -2368,7 +2324,6 @@ msgstr "com Rol"
 msgid "There are not"
 msgstr "N&atilde;o h&aacute;"
 
-#: /modules/ximNEWS/actions/createLote/template/Smarty/index.tpl
 #: /actions/modifygrupousuario/template/Smarty/index.tpl
 msgid "more"
 msgstr "mais"
@@ -2634,10 +2589,6 @@ msgstr "Usu&aacute;rio remoto"
 
 msgid "Address"
 msgstr ""
-
-#: /actions/modifyserver/template/Smarty/index.tpl
-msgid "OTF server"
-msgstr "Servidor OTF"
 
 msgid "Enabled"
 msgstr "Habilitado"
@@ -2919,8 +2870,6 @@ msgstr "'%s' '%s' foi enviado para publicar com sucesso"
 msgid "Launching publicate section"
 msgstr "Lan&ccedil;ando publicate section"
 
-
-#: also table ximNEWS.Nodes
 msgid "Executing: Publicate Section"
 msgstr "Executando: Publicate Section"
 
@@ -3042,7 +2991,6 @@ msgstr "Se realizar esta modifica&ccedil;&atilde;o o status de workflow do nodo 
 #: /actions/remanenode/template/Smarty/index.tpl
 #: /install/ximdex_data/ximdex.sql table Actions
 #: /install/ximdex_data/ximdex.sql table Nodes
-#: /modules/ximNEWS/sql/ximNEWS.constructor.sql
 msgid "Change name"
 msgstr "Modificar nome"
 
@@ -3473,8 +3421,6 @@ msgstr "Selecione uma das janelas dispon&iacute;veis atualmente..."
 #: /actions/workflow_forward/template/Smarty/index.tpl
 #: /modules/ximSYNC/inc/manager/SyncManager.class.php
 #: /inc/widgets/Widget_calendar.class.php
-#: /modules/ximNEWS/actions/viewaddednews/Action_viewaddednews.class.php
-#: /modules/modules_PRO/ximNEWSwizard/actions/newswizard/Action_newswizard.class.php
 msgid "Undetermined"
 msgstr "Indeterminado"
 
@@ -3550,7 +3496,6 @@ msgstr "Scripts de Ximdex"
 #: /modules/ximSYNC/actions/managebatchs/template/Smarty/batchlistamp.tpl
 #: /modules/ximSYNC/actions/managebatchs/forms.php
 #: /actions/ximdexclose/template/Smarty/index.tpl
-#: /modules/ximNEWS/actions/viewaddednews/template/Smarty/index.tpl
 msgid "State"
 msgstr "Status"
 
@@ -3694,8 +3639,6 @@ msgstr "Associar o ximlet selecionado ao seguinte identificador de nodo:"
 #: /actions/deletenode/resources/js/deletenode.js
 #: /actions/publicatessection/template/Smarty/index.tpl
 #: /actions/publicateximlet/template/Smarty/index.tpl
-#: modules/ximNEWS/actions/addtocolector/resources/js/validation.js
-#: /modules/ximNEWS/actions/manageareas/resources/js/manageareas.js
 msgid "Accept"
 msgstr "Aceptar"
 
@@ -3704,8 +3647,6 @@ msgstr "Aceptar"
 #: /actions/createlink/template/Smarty/show.tpl
 #: /actions/deletenode/template/Smarty/forms/simples.tpl
 #: /actions/manageList/template/Smarty/index.tpl
-#: modules/ximNEWS/actions/addtocolector/resources/js/validation.js
-#: /modules/ximNEWS/actions/manageareas/resources/js/manageareas.js
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -3856,8 +3797,6 @@ msgid "Spell checker"
 msgstr "Corretor ortogr&aacute;fico"
 
 #: /actions/xmleditor2/template/Smarty/toolbar.tpl
-#: /modules/ximNEWS/actions/generatecolector/resources/js/auxiliary.js
-#: /modules/ximNEWS/actions/generatecolector/template/Smarty/generate_colector.tpl
 msgid "Publish"
 msgstr "Publicar"
 
@@ -3869,12 +3808,6 @@ msgstr "Avançado publisher"
 #: /actions/manageversions/template/Smarty/index.tpl
 #: /actions/prevdoc/Action_prevdoc.class.php
 #install/ximdex_data/ximdex.sql table Nodes
-#: /modules/ximNEWS/actions/browserimages/template/Smarty/index.tpl
-#: /modules/ximNEWS/actions/browserimages/init.php
-#: /modules/ximNEWS/actions/browserlote/template/Smarty/index.tpl
-#: /modules/ximNEWS/actions/browserlote/init.php
-#: /modules/ximNEWS/actions/generatecolector/resources/js/auxiliary.js
-#: /modules/ximNEWS/actions/generatecolector/template/Smarty/generate_colector.tpl
 msgid "Preview"
 msgstr "Pr&eacute;-visualizar"
 
@@ -3925,7 +3858,6 @@ msgstr "Plana"
 #: /actions/xmleditor2/template/Smarty/tabledrawer.tpl
 #: /actions/xmleditor/edit_forms-origem.php
 #: /inc/widgets/jquery/browserwindow/js/projects.js
-#: /modules/ximNEWS/actions/browserimages/template/Smarty/index.tpl
 msgid "List"
 msgstr "Lista"
 
@@ -3951,7 +3883,6 @@ msgstr "Coluna"
 #: /actions/xmleditor2/template/Smarty/tabledrawer.tpl
 #: /actions/modifyrolestate/template/Smarty/index.tpl
 #: /actions/showassocnodes/template/Smarty/index.tpl
-#: /modules/ximNEWS/actions/manageareas/template/Smarty/index.tpl
 msgid "Remove"
 msgstr "Eliminar"
 
@@ -4053,8 +3984,6 @@ msgid "The document already contains a ximlet with ID "
 msgstr "O documento j&aacute; possui um ximlet com identificador "
 
 #: /actions/xmleditor2/js/editor/XimletDrawer.class.js
-#: /modules/ximNEWS/actions/addtocolector/Action_addtocolector.class.php
-#: /modules/ximNEWS/actions/createcolector/Action_createcolector.class.php
 msgid "Do you want to continue?"
 msgstr "Deseja continuar?"
 
@@ -4364,9 +4293,6 @@ msgstr "Arrastar e soltar"
 #: /actions/modifyserver/template/Smarty/index.tpl
 #: /actions/poolPreview/template/Smarty/index.tpl
 #: /install/ximdex_data/ximdex.sql table Nodes
-#: /modules/ximNEWS/actions/createcolector/template/Smarty/index.tpl
-#: /modules/ximNEWS/actions/createnews/template/Smarty/index.tpl
-
 msgid "Channels"
 msgstr "Canais"
 
@@ -5109,10 +5035,6 @@ msgstr "Mimetype vazio detectado em _infereFileType"
 msgid "No nodetype allowed in %s"
 msgstr "N&atilde;o se permite nenhum tipo de nodo em %s"
 
-#: /inc/io/BaseIORelations.class.php
-msgid "Error inserting information about relnewscolector relation (BaseIORelations)"
-msgstr "Erro ao inserir informa&ccedil;&atilde;o sobre a rela&ccedil;&atilde;o relnewscolector (BaseIORelations)"
-
 #: /inc/sync/synchro.php
 #: inc/model/node.php
 msgid "The node does not exist"
@@ -5205,13 +5127,11 @@ msgstr "Buscando documentos associados ao ximlet %s"
 msgid "Unexisting node %s"
 msgstr "Nodo %s inexistente"
 
-#: /modules/ximNEWS/inc/model/XimNewsColectorUsers.php
 #: /inc/sync/SynchroFacade.class.php
 msgid "Updating version"
 msgstr "Atualizando vers&atilde;o"
 
 #: /inc/sync/SynchroFacade.class.php
-#: /modules/ximNEWS/inc/model/XimNewsColectorUsers.php
 msgid "Updating cache version"
 msgstr "Atualizando vers&atilde;o em cache"
 
@@ -5461,7 +5381,6 @@ msgstr "Etiqueta"
 
 #: /inc/widgets/jquery/searchpanel/template/searchpanel.tpl
 #: /modules/ximSYNC/inc/manager/SyncManager.class.php
-#: /modules/ximNEWS/actions/viewaddednews/template/Smarty/index.tpl
 msgid "Publication date"
 msgstr "Data de publica&ccedil;&atilde;o"
 
@@ -5654,7 +5573,6 @@ msgstr "Criar uma nova se&ccedil;&atilde;o"
 msgid "Add new image folder"
 msgstr "Adicionar nova pasta de imagens"
 
-#: also table ximNEWS.Nodes
 msgid "Create a new image folder"
 msgstr "Criar uma nova pasta de imagens"
 
@@ -5734,7 +5652,6 @@ msgstr "Eliminar um servidor"
 msgid "Delete section"
 msgstr "Eliminar se&ccedil;&atilde;o"
 
-#: also table ximNEWS.Nodes
 msgid "Delete folder"
 msgstr "Eliminar pasta"
 
@@ -5778,7 +5695,6 @@ msgstr "Adicionar novo canal"
 msgid "Add a new channel to Ximdex"
 msgstr "Adicionar um novo canal a Ximdex"
 
-#: also table ximNEWS.Nodes
 msgid "Associated groups"
 msgstr "Grupos associados"
 
@@ -5788,7 +5704,6 @@ msgstr "Gerenciar as associa&ccedil;&otilde;es dos grupos a este nodo"
 msgid "Download selected file"
 msgstr "Baixar o arquivo selecionado"
 
-#: also table ximNEWS.Nodes
 msgid "Download image"
 msgstr "Baixar imagem"
 
@@ -5802,7 +5717,6 @@ msgstr "Baixar o arquivo ao disco r&iacute;gido local"
 msgid "Image preview"
 msgstr "Pr&eacute;-visualizar imagem"
 
-#: also table ximNEWS.Nodes
 msgid "Preview an image"
 msgstr "Pr&eacute;-visualizar uma imagem"
 
@@ -5912,7 +5826,6 @@ msgstr "Adicione uma imagem para os modelos ED"
 msgid "Change name of selected file"
 msgstr "Alterar o nome do arquivo selecionado"
 
-#: also table ximNEWS.Nodes
 msgid "Change image name"
 msgstr "Alterar nome da imagem"
 
@@ -5920,7 +5833,6 @@ msgstr "Alterar nome da imagem"
 msgid "Change file name"
 msgstr "Alterar o nome do arquivo"
 
-#: also table ximNEWS.Nodes
 msgid "Delete image"
 msgstr "Eliminar imagem"
 
@@ -6006,7 +5918,6 @@ msgstr "Eliminar um canal se n&atilde;o possui documentos associados"
 msgid "Delete a language from the system"
 msgstr "Eliminar um idioma do sistema"
 
-#: /modules/ximNEWS/actions/createcolector/template/Smarty/index.tpl
 # ++ table Nodes
 msgid "Edit"
 msgstr "Editar"
@@ -6063,8 +5974,6 @@ msgstr "Passar um documento de texto ao pr&oacute;ximo status"
 msgid "Move a text document to the previous state"
 msgstr "Passar um documento de texto ao status anterior"
 
-#: also ximNEWS.Actions
-#: also table ximNEWS.Nodes
 msgid "Delete document"
 msgstr "Eliminar documento"
 
@@ -6077,7 +5986,6 @@ msgstr "Link simb&oacute;lico"
 msgid "Modify document which borrows the content"
 msgstr "Modificar o documento que pede emprestado o conte&uacute;do"
 
-#: also in ximNEWS constructor - Table Actions
 msgid "Edit in text mode"
 msgstr "Editar em modo texto"
 
@@ -6093,7 +6001,6 @@ msgstr "Criar uma nova pasta ximlet"
 msgid "Add new ximlet"
 msgstr "Adicionar novo ximlet"
 
-#: also table ximNEWS.Nodes
 msgid "Version manager"
 msgstr "Gestor de vers&otilde;es"
 
@@ -6128,12 +6035,9 @@ msgstr "Modificar o ximlet que pede emprestado o conte&uacute;do"
 msgid "Edit ximlet in text mode"
 msgstr "Editar o ximlet no modo texto"
 
-#: table ximNEWS.Actions
-#: table ximNEWS.Nodes
 msgid "Replace image"
 msgstr "Substituir imagem"
 
-#: table ximNEWS.Actions
 msgid "Replace an existing image updating version history"
 msgstr "Substituir uma imagem existente atualizando o hist&oacute;rico de vers&otilde;es"
 
@@ -6156,15 +6060,10 @@ msgid "Replace a file"
 msgstr "Substituir um arquivo"
 
 # ++ table Nodes
-#: /modules/ximNEWS/actions/createLote/resources/js/index.js
-
-#: also table ximNEWS.Nodes
 msgid "Add images"
 msgstr "Adicionar imagens"
 
 # ++ table Nodes
-#: /modules/ximNEWS/actions/createLote/resources/js/index.js
-
 msgid "Add an image set to the server"
 msgstr "Adicionar um conjunto de imagens ao servidor"
 
@@ -6941,7 +6840,6 @@ msgstr "Gerenciar status"
 msgid "Add style sheet"
 msgstr "Adicionar folha de estilos"
 
-#: also table ximNEWS.Nodes
 msgid "Add image"
 msgstr "Adicionar imagem"
 
@@ -6953,8 +6851,6 @@ msgid "Change XML name"
 msgstr "Alterar nome XML"
 
 #: table Nodes
-#: also ximNEWS.Actions
-#: also table ximNEWS.Nodes
 msgid "Edit XML"
 msgstr "Editar XML"
 
@@ -7057,1068 +6953,6 @@ msgstr "M&oacute;dulo ximTAGS requerido"
 #: /modules/ximTAGS/actions/setmetadata/Action_setmetadata.class.php
 msgid "The metadata has been properly associated."
 msgstr ""
-
-# ######## ximNEWS ########
-#: /modules/ximNEWS/actions/addtoarea/template/Smarty/index.tpl
-msgid "The news can be associated to the following categories"
-msgstr "As not&iacute;cias podem estar associadas &agrave;s seguintes categorias"
-
-msgid "Category/ies"
-msgstr "Categoria/s"
-
-msgid "Related colectors"
-msgstr "Coletores relacionados"
-
-msgid "Categories"
-msgstr "Categorias"
-
-msgid "The news is associated to the following categories"
-msgstr "As not&iacute;cias est&atilde;o associadas &agrave;s seguintes categorias"
-
-msgid "Available categories"
-msgstr "Categorias dispon&iacute;veis"
-
-msgid "No category exists"
-msgstr "N&atilde;o existe nenhuma categoria"
-
-#: /modules/ximNEWS/actions/addtoarea/Action_addtoarea.class.php
-msgid "The association with the area %s was NOT successfully performed."
-msgstr "A associa&ccedil;&atilde;o com a &aacute;rea %s n&atilde;o foi realizada com sucesso."
-
-msgid "The association with the area %s was successfully performed."
-msgstr "A associa&ccedil;&atilde;o com a &aacute;rea %s foi realizada com sucesso."
-
-#: modules/ximNEWS/actions/addtocolector/resources/js/validations.js
-#: /modules/ximNEWS/actions/unlinknewscolector/resources/js/validations.js
-msgid "The \"End date\" of the validity period is previous to system date. This will mark the end of validity for this document. Do you want to continue?"
-msgstr "A \"data final\" do per&iacute;odo de prazo &eacute; anterior &agrave; data do sistema. Isso indicar&aacute; o prazo final para esse documento. Deseja continuar?"
-
-#: /modules/ximNEWS/actions/addtocolector/template/Smarty/index.tpl
-msgid "Available colectors"
-msgstr "Coletores dispon&iacute;veis"
-
-msgid "The news can be associated to one, or several, of the following colectors"
-msgstr "As not&iacute;cias podem estar associadas a um, ou v&aacute;rios, dos seguintes coletores"
-
-#: /modules/ximNEWS/actions/addtocolector/template/Smarty/index.tpl
-#: /modules/ximNEWS/actions/generatecolector/automaticMPM.php
-msgid "Collector"
-msgstr "Coletor"
-
-msgid "Associated category"
-msgstr "Categoria associada"
-
-msgid "News version"
-msgstr "Vers&atilde;o da not&iacute;cia"
-
-msgid "Last edited version"
-msgstr "&uacute;ltima vers&atilde;o editada"
-
-msgid "Last published version"
-msgstr "&uacute;ltima vers&atilde;o publicada"
-
-msgid "Association period life"
-msgstr "Prazo da associa&ccedil;&atilde;o"
-
-msgid "This colector has a category compatible with the news"
-msgstr "Este coletor possui uma categoria compat&iacute;vel com a not&iacute;cia"
-
-msgid "Suggested association"
-msgstr "Associa&ccedil;&atilde;o sugerida"
-
-msgid "Global colector"
-msgstr "Coletor global"
-
-msgid "Enable"
-msgstr "Habilitar"
-
-#: /modules/ximNEWS/actions/addtocolector/Action_addtocolector.class.php
-msgid "Adding news %s to colector %s"
-msgstr "Adicionando a not&iacute;cia $s ao coletor $s"
-
-msgid "The association has been performed successfully"
-msgstr "A associa&ccedil;&atilde;o foi realizada com sucesso."
-
-msgid "The association has NOT been performed successfully"
-msgstr "A associa&ccedil;&atilde;o n&atilde;o foi realizada com sucesso."
-
-msgid "No association was performed."
-msgstr "Nenhuma associa&ccedil;&atilde;o foi realizada."
-
-msgid "No relationship was found in the database"
-msgstr "N&atilde;o foi encontrada nenhuma rela&ccedil;&atilde;o na base de dados."
-
-
-#: /modules/ximNEWS/actions/browserimages/template/Smarty/index.tpl
-#: /modules/ximNEWS/actions/browserimages/init.php
-#: /modules/ximNEWS/actions/browserlote/template/Smarty/init.tpl
-#: /modules/ximNEWS/actions/browserlote/init.php
-msgid "Image browser"
-msgstr "Visor de imagens"
-
-#: /modules/ximNEWS/actions/browserimages/init.php
-#: /modules/ximNEWS/actions/browserlote/template/Smarty/init.tpl
-#: /modules/ximNEWS/actions/browserlote/init.php
-msgid "Select the way you want to explore the image batch:"
-msgstr "Selecione a forma que deseja explorar o lote de imagens:"
-
-#: /modules/ximNEWS/actions/browserimages/template/Smarty/index.tpl
-#: /modules/ximNEWS/actions/browserlote/template/Smarty/init.tpl
-#: /modules/ximNEWS/actions/browserlote/init.php
-msgid "Miniatures"
-msgstr "Miniaturas"
-
-#: /modules/ximNEWS/actions/browserimages/template/Smarty/index.tpl
-#: /modules/ximNEWS/actions/browserimages/init.php
-#: /modules/ximNEWS/actions/browserlote/template/Smarty/index.tpl
-msgid "Select the image batch to explore:"
-msgstr "Selecione o lote de imagens a explorar:"
-
-#: /modules/ximNEWS/actions/browserimages/template/Smarty/index.tpl
-#: /modules/ximNEWS/actions/browserimages/init.php
-#: /modules/ximNEWS/actions/browserlote/template/Smarty/index.tpl
-#: /modules/ximNEWS/actions/browserlote/init.php
-msgid "Select the zoom factor in which you want to view the images"
-msgstr "Selecione o fator zoom no qual deseja visualizar as imagens: "
-
-#: also table ximNEWS.Nodes
-#: /modules/ximNEWS/actions/browserimages/template/Smarty/index.tpl
-#: /modules/ximNEWS/actions/browserimages/init.php
-#: /modules/ximNEWS/actions/browserlote/template/Smarty/index.tpl
-#: /modules/ximNEWS/actions/browserlote/init.php
-msgid "View images"
-msgstr "Visualizar imagens"
-
-#: /modules/ximNEWS/actions/browserimages/init.php
-#: /modules/ximNEWS/actions/browserlote/init.php
-msgid "close window"
-msgstr "Fechar janela"
-
-#: /modules/ximNEWS/actions/browserimages/init.php
-msgid "Select the image batch:"
-msgstr "Selecione lote de imagens:"
-
-msgid "ERROR in parameters"
-msgstr "ERRO em par&acirc;metros"
-
-
-#: /modules/ximNEWS/actions/browserimages/init.php
-#: /modules/ximNEWS/actions/browserlote/init.php
-msgid "Select the image you want to preview:"
-msgstr "Selecione a imagem que deseja pr&eacute;-visualizar:"
-
-#: /modules/ximNEWS/actions/browserlote/init.php
-msgid "Param ERROR"
-msgstr "ERRO em par&acirc;metros"
-
-#: /modules/ximNEWS/actions/createcolector/resources/js/index.js
-msgid "Blank spaces has been detected. Do you want to replace them by the character \"_\"?"
-msgstr "Foram detectados espa&ccedil;os em branco.\n Deseja substitu&iacute;-los pelo caractere \"_\"?"
-
-#: /modules/ximNEWS/actions/createcolector/template/Smarty/index.tpl
-msgid "news colector"
-msgstr "Coletor de not&iacute;cias"
-
-msgid "Collector type"
-msgstr "Tipo de coletor"
-
-msgid "Without grouping"
-msgstr "Sem agrupar"
-
-msgid "By date (Day)"
-msgstr "Por data (Dia)"
-
-msgid "By date (Month)"
-msgstr "Por data (M&ecirc;s)"
-
-msgid "By date (Week)"
-msgstr "Por data (Semana)"
-
-
-#: /modules/ximNEWS/actions/manageareas/template/Smarty/index.tpl
-#: /modules/ximNEWS/actions/createcolector/template/Smarty/index.tpl
-msgid "Category"
-msgstr "Categoria"
-
-#: /modules/ximNEWS/actions/createcolector/template/Smarty/index.tpl
-msgid "Static"
-msgstr "Est&aacute;tico"
-
-msgid "Hybrid"
-msgstr "H&iacute;brido"
-
-msgid "Page bulletins"
-msgstr "Paginar boletins"
-
-msgid "Number of news per page"
-msgstr "N&uacute;mero de not&iacute;cias por p&aacute;gina"
-
-msgid "Order news"
-msgstr "Ordenar not&iacute;cias"
-
-msgid "New ones at the beginning (desc)"
-msgstr "Not&iacute;cias novas primeiro (descendente)"
-
-msgid "New ones at the end (asc)"
-msgstr "Not&iacute;cias novas por &uacute;ltimo (ascendente)"
-
-msgid "Send bulletins by email"
-msgstr "Enviar boletins por e-mail"
-
-msgid "Select"
-msgstr "Selecionar"
-
-msgid "Enter a new address"
-msgstr "Introduzir um novo "
-
-msgid "Channel to send the mail"
-msgstr "Canal para enviar o e-mail"
-
-msgid "Generate bulletins each"
-msgstr "Gerar boletins a cada"
-
-msgid "Defuse"
-msgstr "Desativar"
-
-msgid "hours"
-msgstr "horas"
-
-msgid "news"
-msgstr "not&iacute;cias"
-
-msgid "In order to defuse language versions of document previously published, defuse the corresponding language and unpublish the implicated documents (bulletins and news)"
-msgstr "A fim de reduzir vers&otilde;es idiom&aacute;ticas dos documentos previamente publicados, desative o idioma correspondente e exclua os documentos implicados (boletins e not&iacute;cias)"
-
-msgid "In order to defuse publication channels of document previously published, defuse the corresponding channel and unpublish the implicated documents (bulletins and news)"
-msgstr "A fim de reduzir canais de publica&ccedil;&atilde;o de documentos previamente publicados, desative o canal correspondente e exclua os documentos implicados (boletins e not&iacute;cias)"
-
-#: /modules/ximNEWS/actions/createcolector/Action_createcolector.class.php
-
-msgid "The email %s is not well-formed, it will not be added to the list"
-msgstr "O e-mail %s n&atilde;o est&aacute; bem formado, n&atilde;o ser&aacute; adicionado &agrave; lista."
-
-msgid "Error editing the colector. The operation was not performed successfully"
-msgstr "Erro ao editar o coletor. A opera&ccedil;&atilde;o n&atilde;o foi conclu&iacute;da com sucesso"
-
-msgid "You have defined your colector as global. In order to get it working properly, you should assign it groups"
-msgstr "Voc&ecirc; definiu seu coletor como global. Para garantizar o seu melhor funcionamento, dever&aacute; atribuir-lhe grupos."
-
-msgid "The colector edition has been performed successfully"
-msgstr "A edi&ccedil;&atilde;o do coletor foi realizada com sucesso"
-
-msgid "Collector edition"
-msgstr "Edi&ccedil;&atilde;o do coletor"
-
-msgid "The previous params were"
-msgstr "Os par&acirc;metros anteriores foram"
-
-msgid "The colector has NOT been edited successfully."
-msgstr "O coletor n&atilde;o foi editado com sucesso."
-
-msgid "Error updating channels."
-msgstr "Erro ao atualizar os canais."
-
-msgid "Error updating mail list."
-msgstr "Erro ao atualizar a lista de e-mail."
-
-msgid "The colector has been edited successfully."
-msgstr "O coletor foi editado com sucesso."
-
-msgid "The colector has NOT been created successfully."
-msgstr "O coletor n&atilde;o foi criado com sucesso."
-
-msgid "Error creating the colector index"
-msgstr "Erro ao criar o &iacute;ndice do coletor"
-
-msgid "The colector has been created successfully."
-msgstr "O coletor foi criado com sucesso."
-
-msgid "Updating channels list for colector"
-msgstr "Atualizando lista de canais para o coletor"
-
-
-#: /modules/ximNEWS/actions/createnews/template/Smarty/creation_form.tpl
-msgid "Define news publication validity"
-msgstr "Definir prazo da not&iacute;cia"
-
-msgid "Properties news"
-msgstr "Propriedades da not&iacute;cia"
-
-msgid "Multimedia"
-msgstr "Multim&iacute;dia"
-
-msgid "Associated link"
-msgstr "Link associado"
-
-msgid "Associated image"
-msgstr "Imagem associada"
-
-msgid "Select the categories"
-msgstr "Selecione as categorias"
-
-msgid "Select the colectors"
-msgstr "Selecione os coletores"
-
-#: /modules/ximNEWS/actions/createnews/template/Smarty/creation_form.tpl
-#: also table Nodes
-msgid "Create news"
-msgstr "Criar not&iacute;cia"
-
-#: /modules/ximNEWS/actions/createLote/template/Smarty/index.tpl
-msgid "Date in folders"
-msgstr "Data nas pastas"
-
-msgid "Date in name"
-msgstr "Data no nome"
-
-#: /modules/ximNEWS/actions/createLote/Action_createLote.class.php
-msgid "Error creating the batch."
-msgstr "Erro ao criar o lote."
-
-#: /modules/ximNEWS/actions/createnews/template/Smarty/index.tpl
-msgid "New news"
-msgstr "Nova not&iacute;cia"
-
-msgid "Batch of images"
-msgstr "Lote de imagens"
-
-#: /modules/ximNEWS/actions/createnews/Action_createnews.class.php
-msgid "There is not defined any template to create news"
-msgstr "N&atilde;o h&aacute; nenhum modelo definido para criar not&iacute;cias"
-
-msgid "Error creating news"
-msgstr "Erro ao criar not&iacute;cia"
-
-msgid "The news was created correctly"
-msgstr "A not&iacute;cia foi criada com sucesso"
-
-#: /modules/ximNEWS/actions/deleterelnewsarea/template/Smarty/index.tpl
-#: also table ximNEWS.Nodes
-#: also in table Nodes
-msgid "Delete news from categories"
-msgstr "Eliminar not&iacute;cias das categorias"
-
-msgid "The news is not associated to any category"
-msgstr "A not&iacute;cia n&atilde;o est&aacute; associada a nenhuma categoria"
-
-msgid "Select the categories where you want to delete the news"
-msgstr "Selecione as categorias onde se deseja eliminar as not&iacute;cias"
-
-#: /modules/ximNEWS/actions/deleterelnewsarea/Action_deleterelnewsarea.class.php
-msgid "Error removing the relationship between category %s and news s%"
-msgstr "Erro ao eliminar a rela&ccedil;&atilde;o entre categoria %s e not&iacute;cia %s"
-
-msgid "Deletion of the relationship between category %s and news s% completed successfully"
-msgstr "Supress&atilde;o da rela&ccedil;&atilde;o entre categoria %s e not&iacute;cia %s finalizada com sucesso"
-
-#: /modules/ximNEWS/actions/generatecolector/template/Smarty/generate_colector.tpl
-msgid "Result of the generation"
-msgstr "Resultado da gera&ccedil;&atilde;o"
-
-#: /modules/ximNEWS/actions/generatecolector/template/Smarty/index.tpl
-msgid "Generate colector"
-msgstr "Gerar coletor"
-
-msgid "The next automatic generation will occur"
-msgstr "A pr&oacute;xima gera&ccedil;&atilde;o autom&aacute;tica ocorrer&aacute;"
-
-msgid "This action will generate the bulletins affected by modifications or new associated news."
-msgstr "Esta a&ccedil;&atilde;o gerar&aacute; os boletins afetados por modifica&ccedil;&otilde;es ou not&iacute;cias novas associadas."
-
-msgid "If you check the box of 'total generation', all the bulletins of the colector will be generated even if they are not affected by new news."
-msgstr "Se voc&ecirc; assinalar a quadr&iacute;cula de 'gera&ccedil;&atilde;o total', todos os boletins do coletor ser&atilde;o gerados embora n&atilde;o estejam afetados por novas not&iacute;cias."
-
-msgid "Total generation"
-msgstr "Gera&ccedil;&atilde;o total"
-
-#: /modules/ximNEWS/actions/generatecolector/Action_generatecolector.class.php
-msgid "%H hours %M minutes %S seconds"
-msgstr "%H horas %M minutos %S segundos"
-
-msgid "At"
-msgstr "&agrave;s"
-
-msgid "Immediately"
-msgstr "Imediatamente"
-
-msgid "When %d news would be associated"
-msgstr "Quando %d not&iacute;cias sejam associadas"
-
-msgid "This colector has no automatic generation"
-msgstr "Este coletor n&atilde;o tem gera&ccedil;&atilde;o autom&aacute;tica"
-
-
-msgid "Bulletins have not been generated"
-msgstr "N&atilde;o foi gerado nenhum boletim"
-
-msgid "The following bulletins have been generated successfully"
-msgstr "Os seguintes boletins foram gerados com sucesso"
-
-#: /modules/ximNEWS/actions/generatecolector/automaticMPM.php
-msgid "You need to delete this file in order to get an Automatic succesfull restart"
-msgstr "Voc&ecirc; necessita eliminar este arquivo para poder reiniciar automaticamente com sucesso"
-
-msgid "Start processing"
-msgstr "Iniciar processo"
-
-msgid "of"
-msgstr "de"
-
-msgid "Bellows-less generation"
-msgstr "Gera&ccedil;&atilde;o Sem-Fole"
-
-msgid "Locked (Maybe colector is being generated at this moment)"
-msgstr "Bloqueado (Talvez o coletor esteja sendo gerado neste momento)"
-
-msgid "Starting generation"
-msgstr "Come&ccedil;ar a gera&ccedil;&atilde;o"
-
-msgid "Ending generation"
-msgstr "Terminar a gera&ccedil;&atilde;o"
-
-msgid "Generation finished"
-msgstr "Gera&ccedil;&atilde;o completa"
-
-msgid "bulletins"
-msgstr "boletins"
-
-msgid "Publishing bulletin"
-msgstr "Publicando boletim"
-
-msgid "docs to be published"
-msgstr "documentos para serem publicados"
-
-msgid "No generation needed"
-msgstr "n&atilde;o necessita gera&ccedil;&atilde;o"
-
-msgid "Ending processing"
-msgstr "Finalizando o processo"
-
-msgid "Exiting Automatic"
-msgstr "Saindo do modo autom&aacute;tico"
-
-msgid "parallelization begins with% d documents"
-msgstr "a paraleliza&ccedil;&atilde;o come&ccedil;a com %d documentos"
-
-msgid "Ended parallelization"
-msgstr "Fim da paraleliza&ccedil;&atilde;o"
-
-#: /modules/ximNEWS/actions/manageareas/resources/js/manageareas.js
-#: /modules/ximNEWS/actions/manageareas/template/Smarty/create.tpl
-msgid "Do you want to delete the category?"
-msgstr "Deseja eliminar a categoria?"
-
-#: /modules/ximNEWS/actions/manageareas/template/Smarty/create.tpl
-msgid "Create category"
-msgstr "Criar categoria"
-
-#: /modules/ximNEWS/actions/manageareas/template/Smarty/edit.tpl
-msgid "Edit category"
-msgstr "Editar categoria"
-
-msgid "Do you want to edit the category?"
-msgstr "Deseja editar a categoria?"
-
-#: /modules/ximNEWS/actions/manageareas/template/Smarty/index.tpl
-#: /modules/ximNEWS/sql/ximNEWS.constructor.sql -- Tables Action and Nodes
-msgid "Manage categories"
-msgstr "Gerenciar categorias"
-
-msgid "No category found"
-msgstr "N&atilde;o foi encontrada nenhuma categoria"
-
-msgid "Add category"
-msgstr "Adicionar categoria"
-
-msgid "Add external link"
-msgstr "Adicionar link externo"
-
-msgid "Add template"
-msgstr "Adicionar modelo"
-
-msgid "Add editor template"
-msgstr "Adicionar modelo de editor"
-
-msgid "Modify associated status of workflow"
-msgstr "Modificar status associados do workflow "
-
-msgid "Delete file"
-msgstr "Eliminar arquivo"
-
-msgid "Generate"
-msgstr "Gerar"
-
-msgid "Add ximlet folder"
-msgstr "Adicionar pasta ximlet"
-
-msgid "Associate section with ximlet"
-msgstr "Associar se&ccedil;&atilde;o ao ximlet"
-
-msgid "Add text files"
-msgstr "Adicionar arquivos de texto"
-
-#: /modules/ximNEWS/actions/manageareas/Action_manageareas.class.php
-msgid "The category has been deleted successfully"
-msgstr "A categoria foi eliminada com sucesso"
-
-msgid "Category deletion failed"
-msgstr "Falho ao eliminar a categoria"
-
-msgid "Category creation failed. The operation was NOT performed successfully"
-msgstr "Erro ao criar a categoria. A opera&ccedil;&atilde;o n&atilde;o foi realizada com sucesso"
-
-msgid "Category successfully created"
-msgstr "A categoria foi criada com sucesso"
-
-msgid "Category update failed. The operation was NOT performed successfully"
-msgstr "Erro ao editar a categoria. A opera&ccedil;&atilde;o n&atilde;o foi realizada com sucesso"
-
-msgid "Category successfully updated"
-msgstr "A categoria foi atualizada com sucesso"
-
-#: /modules/ximNEWS/actions/unlinknewscolector/template/Smarty/index.tpl
-#: also table ximNEWS.Nodes
-msgid "Delete news from colector"
-msgstr "Eliminar not&iacute;cia do coletor"
-
-#: /modules/ximNEWS/actions/unlinknewscolector/template/Smarty/index.tpl
-msgid "News associated to colector"
-msgstr "Not&iacute;cias associadas ao coletor"
-
-msgid "Delete news from"
-msgstr "Eliminar not&iacute;cia de"
-
-#: /modules/ximNEWS/actions/unlinknewscolector/template/Smarty/index.tpl
-#: /modules/ximNEWS/actions/viewaddednews/template/Smarty/index.tpl
-msgid "Associated news"
-msgstr "Not&iacute;cias associadas"
-
-msgid "The colector has not associated news"
-msgstr "O coletor n&atilde;o tem nenhuma not&iacute;cia associada"
-
-#: /modules/ximNEWS/actions/unlinknewscolector/template/Smarty/index.tpl
-msgid "Associated colector"
-msgstr "Coletor associado"
-
-msgid "The news is not associated to any colector"
-msgstr "A not&iacute;cia n&atilde;o est&aacute; associada a nenhum coletor"
-
-#: /modules/ximNEWS/actions/unlinknewscolector/Action_unlinknewscolector.class.php
-msgid "No existing relation between %s and %s. The operation was NOT successfully performed."
-msgstr "N&atilde;o existe rela&ccedil;&atilde;o entre %s e %s. A opera&ccedil;&atilde;o n&atilde;o foi realizada com sucesso."
-
-msgid "The dissociation %s - %s was NOT successfully performed. Updating error."
-msgstr "A dissocia&ccedil;&atilde;o %s - %s n&atilde;o foi realizada com sucesso. Atualizando erro."
-
-msgid "The dissociation %s - %s was successfully performed."
-msgstr "A dissocia&ccedil;&atilde;o %s - %s foi realizada com sucesso."
-
-msgid "Dissociations were not found"
-msgstr "N&atilde;o foram encontradas dissocia&ccedil;&otilde;es"
-
-#: /modules/ximNEWS/actions/viewaddednews/template/Smarty/index.tpl
-msgid "News name"
-msgstr "Nome da not&iacute;cia"
-
-#: /modules/ximNEWS/inc/model/RelColectorUsersBatchs.php
-msgid "Collector-user-batch relation not added. XimPUBLISHtools module is disabled."
-msgstr "A rela&ccedil;&atilde;o coletor-usu&aacute;rio-lote n&atilde;o foi inserida. O m&oacute;dulo ximPUBLISHtools est&aacute; desabilitado"
-
-msgid "Collector-user-batch relation could NOT be added. IdColectorUsers param is null."
-msgstr "A rela&ccedil;&atilde;o coletor-usu&aacute;rio-lote n&atilde;o p&ocirc;de ser inserida. O par&acirc;metro idColectorUsers &eacute; nulo"
-
-msgid "Collector-user-batch relation could NOT be added. IdBatch param is null."
-msgstr "A rela&ccedil;&atilde;o coletor-usu&aacute;rio-lote n&atilde;o p&ocirc;de ser inserida. O par&acirc;metro idBatch &eacute; nulo"
-
-msgid "New relation colector-user-batch added (Id: %s - IdColectorUser: %s  - IdBatch: %s)"
-msgstr "inserida uma nova rela&ccedil;&atilde;o coletor-usu&aacute;rio-lote (Id: %s - IdColectorUser: %s  - IdBatch: %s)"
-
-msgid "Cannot get colector-user-batch publication progress. IdColectorUsers param is null."
-msgstr "N&atilde;o foi poss&iacute;vel obter o progresso de publica&ccedil;&atilde;o do coletor-usu&aacute;rio-lote. O par&acirc;metro idColectorUsers &eacute; nulo"
-
-msgid "No colector-user-batchs relations found for colector-user id: "
-msgstr "N&atilde;o foram encontradas rela&ccedil;&otilde;es coletor-usu&aacute;rio-lote para o coletor-usu&aacute;rio com id:"
-
-msgid "Collector-user-batch progress: TOTAL: %d - ENDED: %d - PENDING: %d"
-msgstr "Progresso coletor-usu&aacute;rio-lote: TOTAL: %d - ENDED: %d - PENDING: %d"
-
-#: /modules/ximNEWS/inc/model/RelColectorUsersBatchs.php
-msgid "Error inserting RelNewsBulletin"
-msgstr "Erro ao inserir RelNewsBulletin"
-
-#: /modules/ximNEWS/inc/model/RelNewsColector.php
-msgid "Collector %s void"
-msgstr "Coletor %s vazio"
-
-msgid "Update %s pending to publishable from relNewsColectors"
-msgstr "Atualizar %s pendentes de publica&ccedil;&atilde;o desde relNewsColectors"
-
-msgid "Update %s states to removed from relNewsColectors"
-msgstr "Atualizar %s status a eliminados desde relNewsColectors"
-
-msgid "Obtaining maxPage for colector"
-msgstr "Obtendo maxPage para o coletor"
-
-msgid "Cannot get Pending relations. IdNew is null or not positive integer."
-msgstr "N&atilde;o foi poss&iacute;vel obter as rela&ccedil;&otilde;es Pending. IdNew &eacute; nulo ou um inteiro n&atilde;o positivo."
-
-msgid "No pending relations found for news "
-msgstr "N&atilde;o foram encontradas rela&ccedil;&otilde;es pendentes para a not&iacute;cia "
-
-msgid "No pending relations found"
-msgstr "Nenhuma rela&ccedil;&atilde;o pendente encontrada"
-
-#: /modules/ximNEWS/inc/model/XimNewsAreas.class.php
-msgid "A name should be introduced to create a category"
-msgstr "Voc&ecirc; deve introduzir um nome para criar uma categoria"
-
-msgid "A category description was not introduced"
-msgstr "N&atilde;o foi introduzida uma descri&ccedil;&atilde;o para a categoria"
-
-msgid "A category with name %s already exists"
-msgstr "J&aacute; existe uma categoria com o nome %s"
-
-msgid "A category with name %s has been inserted"
-msgstr "Foi introduzida uma categoria com o nome %s"
-
-msgid "No categories found"
-msgstr "Nenhuma categoria encontrada"
-
-#: /modules/ximNEWS/inc/model/XimNewsCache.class.php
-msgid "News missing"
-msgstr "Falta a not&iacute;cia"
-
-msgid "News version missing"
-msgstr "Falta a vers&atilde;o da not&iacute;cia"
-
-msgid "Version missing"
-msgstr "Falta a vers&atilde;o"
-
-msgid "Bulletin schema missing"
-msgstr "Falta o esquema de boletins"
-
-msgid "Schema missing"
-msgstr "Falta o esquema"
-
-msgid "Disk writing error"
-msgstr "Erro de grava&ccedil;&atilde;o no disco"
-
-msgid "Inserting in database"
-msgstr "Introduzindo na base de dados"
-
-msgid "Generating ximNEWSCache for node %s"
-msgstr "Gerando ximNEWSCache para o nodo %s"
-
-msgid "Deleting file %s"
-msgstr "Eliminando arquivo %s"
-
-msgid "Deleting cache %s"
-msgstr "Eliminando cache %s"
-
-msgid "Empty file"
-msgstr "Arquivo vazio"
-
-msgid "ERROR subtracting in counter "
-msgstr "ERRO sendo restado no contador "
-
-msgid "Wrong XML in new %s version %s schema %s"
-msgstr "XML incorreto na not&iacute;cia %s vers&atilde;o %s esquema %s"
-
-msgid "This schema has not caches"
-msgstr "Esse esquema n&atilde;o possui caches"
-
-msgid "Disk writing error (2)"
-msgstr "Erro de grava&ccedil;&atilde;o no disco (2)"
-
-msgid "Updating file %s"
-msgstr "Atualizando arquivo %s"
-
-msgid "This news has not caches"
-msgstr "Essa not&iacute;cia n&atilde;o tem caches"
-
-#: /modules/ximNEWS/inc/model/XimNewsColectorUsers.php
-msgid "Collector-user relation not added. XimPUBLISHtools module is disabled."
-msgstr "N&atilde;o foi inserida a rela&ccedil;&atilde;o coletor-usu&aacute;rio. O m&oacute;dulo ximPUBLISHtools est&aacute; desabilitado"
-
-msgid "Cannot add colector-user relation. IdColector param is null."
-msgstr "N&atilde;o foi poss&iacute;vel adicionar a rela&ccedil;&atilde;o coletor-usu&aacute;rio. O par&acirc;metro idColector &eacute; nulo"
-
-msgid "New relation colector-user added (Id: %d - IdColector: %d - IdUser: %d)"
-msgstr "Nova rela&ccedil;&atilde;o coletor-usu&aacute;rio inserida (Id: %d - IdColector: %d - IdUser: %d)"
-
-msgid "Cannot get colector-user relations. IdUser param is null."
-msgstr "N&atilde;o foi poss&iacute;vel obter rela&ccedil;&otilde;es coletor-usu&aacute;rio. O par&acirc;metro idUser &eacute; nulo"
-
-msgid "User %s has not colector-user relations."
-msgstr "O usu&aacute;rio %s n&atilde;o tem rela&ccedil;&otilde;es coletor-usu&aacute;rio"
-
-msgid "Cannot get news-colector-user relations. Param idRelNewsColector is null."
-msgstr "N&atilde;o foi poss&iacute;vel obter rela&ccedil;&otilde;es not&iacute;cia-coletor-usu&aacute;rio. O par&acirc;metro idRelNewsColector &eacute; nulo"
-
-msgid "RelNewsColector %s has not news-colector-user relations."
-msgstr "RelNewsColector %s n&atilde;o tem rela&ccedil;&otilde;es not&iacute;cia-coletor-usu&aacute;rio."
-
-
-msgid "Cannot get colector-user relations. IdColector param is null."
-msgstr "N&atilde;o foi poss&iacute;vel obter rela&ccedil;&otilde;es coletor-usu&aacute;rio. O par&acirc;metro idColector &eacute; nulo"
-
-msgid "Collector %s has not colector-user relations."
-msgstr "O coletor %s n&atilde;o tem rela&ccedil;&otilde;es coletor-usu&aacute;rio"
-
-msgid "Cannot get colector generation data. IdColector param is null."
-msgstr "N&atilde;o foi poss&iacute;vel obter os dados de gera&ccedil;&atilde;o do coletor. O par&acirc;metro idColector &eacute; nulo"
-
-msgid "Collector %s has not generation data."
-msgstr "O coletor %s n&atilde;o tem dados de gera&ccedil;&atilde;o."
-
-#: /modules/ximNEWS/js/ajax_browser.js
-#: /modules/ximNEWS/js/browser_bulletins.js
-msgid "No news colector existing"
-msgstr "N&atilde;o existe nenhum coletor de not&iacute;cias"
-
-#: /modules/ximNEWS/js/ajax_browser.js
-msgid "The bulletin has not associated news"
-msgstr "O boletim n&atilde;o tem not&iacute;cias associadas"
-
-#: /modules/ximNEWS/js/browser_bulletins.js
-msgid "The colector <b>%s</b> does not contain bulletins"
-msgstr "O coletor <b>%s</b> n&atilde;o possui boletins"
-
-msgid "&nbsp;News from bulletin: "
-msgstr "Not&iacute;cias do boletim: "
-
-msgid "The bulletin %s has not associated news"
-msgstr "O boletim %s n&atilde;o tem not&iacute;cias associadas"
-
-#: /modules/ximNEWS/js/formColector.js
-msgid "The colector Name should be specified"
-msgstr "Voc&ecirc; deve especificar o nome do coletor"
-
-msgid "At least one language and one channel should be specified"
-msgstr "Voc&ecirc; deve marcar ao menos um idioma e um canal"
-
-msgid "A news limit should be specified"
-msgstr "Voc&ecirc; deve especificar o limite de not&iacute;cias"
-
-msgid "A bulletin template should be specified"
-msgstr "Voc&ecirc; deve introduzir um modelo de boletim"
-
-msgid "Do you want to create the news colector?"
-msgstr "Deseja criar o coletor de not&iacute;cias?"
-
-msgid "Address previously selected"
-msgstr "Endere&ccedil;o selecionado previamente"
-
-msgid "Handler could not be added"
-msgstr "N&atilde;o foi poss&iacute;vel adicionar o manipulador"
-
-#: /modules/ximNEWS/js/utilsAsistente.js
-msgid "News video"
-msgstr "Video da not&iacute;cia"
-
-msgid "File:"
-msgstr "Arquivo:"
-
-msgid "News file"
-msgstr "Arquivo da not&iacute;cia"
-
-#: /modules/ximNEWS/sql/nodesDestructor.php
-msgid "Deleting section "
-msgstr "Eliminando se&ccedil;&atilde;o "
-
-msgid "All the ximNEWS sections and nodes have been deleted"
-msgstr "Todas as se&ccedil;&otilde;es e nodos de ximNEWS foram eliminados"
-
-
-	# ######## ximNEWS constructor ########
-#: /modules/ximNEWS/sql/ximNEWSconstructor.sql
-
-# table NodeTypes -------------  (`Description`) --------------
-msgid "XimNEWS section"
-msgstr "Se&ccedil;&atilde;o ximNEWS"
-
-msgid "XimNEWS bulletin folder"
-msgstr "Pasta de boletins ximNEWS"
-
-msgid "XimNEWS news folder"
-msgstr "Pasta de not&iacute;cias ximNEWS"
-
-msgid "XimNEWS image root folder"
-msgstr "Raiz da pasta imagens ximNEWS"
-
-msgid "XimNEWS bulletin"
-msgstr "Boletim ximNEWS"
-
-msgid "XimNEWS news"
-msgstr "Not&iacute;cias ximNEWS"
-
-msgid "XimNEWS bulletin in a concrete language"
-msgstr "Boletim ximNEWS em um idioma concreto"
-
-msgid "XimNEWS image file"
-msgstr "Arquivo de imagem ximNEWS"
-
-msgid "Bulletin news"
-msgstr "Not&iacute;cias de um boletim"
-
-msgid "XimNEWS news colector"
-msgstr "Coletor de not&iacute;cias ximNEWS"
-
-msgid "XimNEWS image folder"
-msgstr "Pasta de imagens ximNEWS"
-
-msgid "Bulletin as ximlet container in ximNEWS"
-msgstr "Contedor de boletins como ximlet em ximNEWS"
-
-msgid "Index bulletin container"
-msgstr "Contedor de boletim &iacute;ndice"
-
-msgid "Bulletin as ximlet in ximNEWS"
-msgstr "Boletim como ximlet em ximNEWS"
-
-msgid "XimNEWS resource forlder"
-msgstr "Pasta de recursos ximNEWS"
-
-#  table Actions ---------(`Name`, `Description`) -------------
-
-#  table Actions
-#: also table Nodes
-msgid "Delete ximNEWS section"
-msgstr "Eliminar se&ccedil;&atilde;o ximNEWS"
-
-msgid "Delete a whole ximNEWS section"
-msgstr "Eliminar uma se&ccedil;&atilde;o completa de ximNEWS"
-
-msgid "Change a ximNEWS section name"
-msgstr "Alterar o nome de uma se&ccedil;&atilde;o ximNEWS"
-
-msgid "Copy ximNEWS node"
-msgstr "Copiar nodo ximNEWS"
-
-msgid "Copy a whole ximNEWS section"
-msgstr "Copiar uma se&ccedil;&atilde;o ximNEWS completa"
-
-#: also table Nodes
-msgid "Add news colector"
-msgstr "Adicionar coletor de not&iacute;cias"
-
-msgid "Create a new news colector"
-msgstr "Criar um novo coletor de not&iacute;cias"
-
-#: also table ximNEWS.Nodes
-msgid "Delete colector"
-msgstr "Eliminar coletor"
-
-msgid "Delete the current colector"
-msgstr "Eliminar o coletor atual"
-
-msgid "Edit colector"
-msgstr "Editar coletor"
-
-msgid "Edit the current colector"
-msgstr "Editar o coletor atual"
-
-msgid "Add news"
-msgstr "Adicionar not&iacute;cias"
-
-msgid "Add news to bulletin"
-msgstr "Adicionar not&iacute;cias ao boletim"
-
-msgid "Delete bulletin"
-msgstr "Eliminar boletim"
-
-msgid "Delete a news bulletin"
-msgstr "Eliminar um boletim de not&iacute;cias"
-
-msgid "Create a new news"
-msgstr "Criar uma nova not&iacute;cia"
-
-msgid "Associate news to colectors"
-msgstr "Associar not&iacute;cia aos coletores"
-
-msgid "Associate a news to a colector"
-msgstr "Associar uma not&iacute;cia a um coletor"
-
-msgid "Delete news"
-msgstr "Eliminar not&iacute;cia"
-
-msgid "Delete a news in ximNEWS"
-msgstr "Eliminar uma not&iacute;cia em ximNEWS"
-
-#  also table ximNEWS.Actions
-msgid "Add image batch"
-msgstr "Adicionar lote de imagens"
-
-#  also table ximNEWS.Actions
-msgid "Image viewer"
-msgstr "Visor de imagens"
-
-msgid "Visualize the image batchs"
-msgstr "Visualizar os lotes de imagens"
-
-msgid "Download an image to the local hard disk"
-msgstr "Baixar uma imagem no disco r&iacute;gido local"
-
-msgid "Preview image"
-msgstr "Pr&eacute;-visualizar imagem"
-
-msgid "Change the image name"
-msgstr "Alterar o nome da imagem"
-
-msgid "Delete the current image"
-msgstr "Eliminar a imagem atual"
-
-msgid "Edit the XML document content"
-msgstr "Editar o conte&uacute;do do documento XML"
-
-msgid "Delete the selected XML document"
-msgstr "Eliminar o documento XML selecionado"
-
-msgid "Edit a structured document content at a low level"
-msgstr "Editar o conte&uacute;do de um documento estruturado a baixo n&iacute;vel"
-
-msgid "Delete news from bulletin"
-msgstr "Eliminar not&iacute;cias de um boletim"
-
-msgid "Delete news from a bulletin"
-msgstr "Eliminar not&iacute;cias de um boletim"
-
-msgid "Edit a XML document content"
-msgstr "Editar o conte&uacute;do do documento XML"
-
-msgid "See the images of a batch"
-msgstr "Ver as imagens de um lote"
-
-msgid "Change the name of the selected folder"
-msgstr "Alterar o nome da pasta selecionada"
-
-msgid "Delete the selected folder"
-msgstr "Eliminar a pasta selecionada"
-
-msgid "Add a new image to the folder"
-msgstr "Adicionar uma nova imagem &agrave; pasta"
-
-msgid "Add a set of images to the folder"
-msgstr "Adicione um conjunto de imagens &agrave; pasta"
-
-msgid "Delete a bulletin"
-msgstr "Eliminar um boletim"
-
-msgid "Change the bulletin name"
-msgstr "Alterar o nome do boletim"
-
-msgid "Add a new language to bulletin"
-msgstr "Adicionar um novo idioma ao boletim"
-
-msgid "Generate bulletins"
-msgstr "Gerar boletins"
-
-msgid "Generate the bulletins of a colector"
-msgstr "Gerar os boletins de um coletor"
-
-msgid "Delete news from a colector"
-msgstr "Eliminar not&iacute;cias de um coletor"
-
-msgid "Publish a section en masse"
-msgstr "Publicar uma se&ccedil;&atilde;o em massa"
-
-msgid "Add a new language to the news"
-msgstr "Adicione um novo idioma &agrave; not&iacute;cia"
-
-msgid "Associate ximlet with ximNEWS section"
-msgstr "Associar ximlet &agrave; se&ccedil;&atilde;o ximNEWS"
-
-msgid "Associate a ximlet to the section"
-msgstr "Associar um ximlet &agrave; se&ccedil;&atilde;o"
-
-msgid "Replace an existing image updating the version history"
-msgstr "Substituir uma imagem existente atualizando o hist&oacute;rico de vers&otilde;es"
-
-msgid "Change the name of a ximNEWS news"
-msgstr "Alterar o nome de uma not&iacute;cia ximNEWS"
-
-msgid "Manage the version repository"
-msgstr "Gerenciar o reposit&oacute;rio das vers&otilde;es"
-
-msgid "See associated news"
-msgstr "Ver not&iacute;cias associadas"
-
-msgid "Show the news associated to a colector"
-msgstr "Mostrar as not&iacute;cias associadas ao coletor"
-
-msgid "Manage the association of groups with this node"
-msgstr "Gerenciar as associa&ccedil;&otilde;es dos grupos com este nodo"
-
-msgid "Add news folder"
-msgstr "Adicionar pasta de not&iacute;cias"
-
-msgid "Create a new news folder"
-msgstr "Criar uma nova pasta de not&iacute;cias"
-
-msgid "Modify the document to whom it is borrowing the content"
-msgstr "Modificar o documento que pede emprestado o conte&uacute;do"
-
-msgid "Publish bulletin"
-msgstr "Publicar boletim"
-
-msgid "Publish a bulletin"
-msgstr "Publicar um boletim"
-
-msgid "Modify the ximNEWS folder properties"
-msgstr "Modificar as propriedades de uma pasta ximNEWS"
-
-msgid "Modify heritable properties of a news"
-msgstr "Modificar as propriedades heredit&aacute;rias de uma not&iacute;cia"
-
-msgid "Publish ximNEWS section"
-msgstr "Publicar se&ccedil;&atilde;o ximNEWS"
-
-msgid "Publish a ximNEWS section"
-msgstr "Publica uma se&ccedil;&atilde;o ximNEWS"
-
-msgid "Associate news to category"
-msgstr "Associar not&iacute;cia &agrave; categoria"
-
-#: also in table Nodes
-msgid "Associate news to categories"
-msgstr "Associar not&iacute;cia a categorias"
-
-msgid "Associate categories"
-msgstr "Associar categorias"
-
-msgid "Create bulletin"
-msgstr "Criar boletim"
-
-msgid "Add a news"
-msgstr "Adicionar uma not&iacute;cia"
-
-msgid "Change news name"
-msgstr "Alterar nome da not&iacute;cia"
-
-msgid "Add language to bulletin"
-msgstr "Adicionar idioma a boletim"
-
-msgid "Unpublish bulletin"
-msgstr "Excluir a publica&ccedil;&atilde;o do boletim"
-
-msgid "Associate news to bulletins"
-msgstr "Associar not&iacute;cia aos boletins"
-
-msgid "See images"
-msgstr "Ver imagens"
-
-msgid "Preview images"
-msgstr "Pr&eacute;-visualizar imagens"
-
-msgid "Copy XML"
-msgstr "Copiar XML"
-
-msgid "Copy ximNEWS"
-msgstr "Copiar ximNEWS"
-
-msgid "The news %s could not be inserted into the colector"
-msgstr "N&atilde;o foi poss&iacute;vel inserir a not&iacute;cia %s no coletor"
-
 
 # ######## ximSYNC ########
 
@@ -8282,12 +7116,6 @@ msgstr "N&atilde;o foi poss&iacute;vel obter um ChannelFrame para o nodo %s e ca
 msgid "Deleting Nodeframe for node %s"
 msgstr "Eliminando NodeFrame para o nodo %s"
 
-msgid "Server %s is NOT OFT, it will be omitted because of publishing mode is OTF"
-msgstr "O servidor %s n&atilde;o &eacute; OTF e ser&aacute; omitido, j&aacute; que o modo de publica&ccedil;&atilde;o &eacute; OTF"
-
-msgid "Server %s is OFT, it will be omitted because of publishing mode is NOT OTF"
-msgstr "O servidor %s &eacute; OTF e ser&aacute; omitido, j&aacute; que o modo de publica&ccedil;&atilde;o n&atilde;o &eacute; OTF"
-
 msgid "Creation of ServerFrame could not be done: node %s, channel %s, batch %s"
 msgstr "N&atilde;o foi poss&iacute;vel criar o ServerFrame: nodo %s, canal %s, servidor %s, batch %s"
 
@@ -8296,9 +7124,6 @@ msgstr "N&atilde;o foi poss&iacute;vel criar nenhum ServerFrame, nodo %s, canal 
 
 msgid "Creation of ServerFrame could not be done: node %s"
 msgstr "N&atilde;o foi poss&iacute;vel criar nenhum ServerFrame, nodo %s"
-
-msgid "Error inserting ximnewsframebulletin"
-msgstr "Erro ao inserir ximnewsframebulletin"
 
 msgid "NodeFrame %s will be removed"
 msgstr "O NodeFrame %s ser&aacute; removido"
@@ -8517,14 +7342,10 @@ msgstr "Pushdocinpool - IdNode vazio"
 msgid "Node %d does not exist"
 msgstr "O nodo %d n&atilde;o existe"
 
-msgid "News %s is going to be published in the bulletin %s"
-msgstr "A not&iacute;cia %s ser&aacute; publicada no boletim %s"
-
 msgid "Node %s is going to be published"
 msgstr "O nodo %s ser&aacute; publicado"
 
 #: /modules/ximSYNC/inc/manager/SyncManager.class.php
-#: /modules/ximNEWS/actions/viewaddednews/template/Smarty/index.tpl
 msgid "Expiration date"
 msgstr "Data de vencimento"
 
@@ -8600,7 +7421,6 @@ msgstr "Bloqueando..."
 
 #: /modules/ximSYNC/scripts/scheduler/scheduler.class.php
 #: /modules/ximSYNC/scripts/scheduler/schedulerMPM.php
-#: /modules/ximNEWS/actions/generatecolector/automaticMPM.php
 msgid "STOP: Detected file"
 msgstr "PARE: arquivo detectado"
 
@@ -8731,9 +7551,6 @@ msgstr "Indique se o primeiro nodo deve ser gerado ou n&atilde;o."
 
 msgid "Explanation:"
 msgstr "Explica&ccedil;&atilde;o:"
-
-msgid "If we copy a documents folder, destination node should be a documents folder, and in this case we should not indicate than first node was generated. If we copy a ximnews folder, we should choose as container a server or section, and we will need create the ximnews section, therefore in this case we should tick the checkbox"
-msgstr "Se copiamos uma pasta de documentos, o nodo de destino deve ser uma pasta de documentos, e nesse caso n&atilde;o devemos indicar que o primeiro nodo foi gerado. Se copiamos uma pasta ximnews, devemos escolher como contedor um servidor ou uma se&ccedil;&atilde;o, e necessitaremos criar a se&ccedil;&atilde;o ximnews, portanto neste caso devemos assinalar a quadr&iacute;cula"
 
 msgid "Tick if source and destination ximdex are same"
 msgstr "Marcar se o ximdex de origem e de destino s&atilde;o os mesmos"
@@ -9094,25 +7911,6 @@ msgstr "Foi encontrada uma inconsist&ecirc;ncia na base de dados, h&aacute; v&aa
 
 # ######## modules_PRO ########
 # --------------------------------------------------------------
-
-# ######## ximNEWSwizard ########
-msgid "XimNEWSwizard module is not enabled"
-msgstr "O m&oacute;dulo ximNEWSwizard n&atilde;o est&aacute; habilitado"
-
-msgid "Node on which folder want to be created could not be found"
-msgstr "N&atilde;o foi encontrado o nodo onde se deseja criar a pasta"
-
-msgid "Template %s - %s not found"
-msgstr "N&atilde;o foi encontrado o modelo %s - %s"
-
-msgid "News %s have been successfully created"
-msgstr "A not&iacute;cia %s foi criada com sucesso"
-
-msgid "News successfully modified"
-msgstr "A not&iacute;cia foi modificada com sucesso"
-
-msgid "News could NOT be successfully modified"
-msgstr "A not&iacute;cia n&atilde;o foi modificada com sucesso"
 
 # ######## ximDEMOS ########
 #: xmd/js/user_connect.js

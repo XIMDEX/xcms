@@ -82,11 +82,9 @@ class Action_fileupload extends ActionAbstract {
 		$idNode = $this->request->getParam('nodeid');
 
 		//Pvd has it own upload manager system. Then if it not a pvd we use the generic
-		if($params == "pvd") {
-			$messages = $this->_uploadPvdFile($idNode);
-		} else { //If a pvd will be upload
-			$messages = $this->_uploadCommonFile($idNode);
-		}
+
+        $messages = $this->_uploadCommonFile($idNode);
+
 		if ($messages === false) {
 			return; // makes a redirect;
 		}
@@ -245,61 +243,5 @@ class Action_fileupload extends ActionAbstract {
     }
 
 
-    private function _uploadPvdFile($idNode) {
-    		$templateFileName = $_FILES['template']['name'];
-		$templateFilePath = $_FILES['template']['tmp_name'];
-		$contentFilePath = $_FILES['content']['tmp_name'];
-		$templateType = $this->request->getParam('template_type');
 
-		$validTemplateTypeValues = array('generic_template', 'news_template', 'bulletin_template');
-		if (!in_array($templateType, $validTemplateTypeValues)) {
-			$templateType = 'generic_template';
-		}
-
-		$templatecontent = FsUtils::file_get_contents($templateFilePath);
-
-		// Detects if template is RNG and gets the content
-
-		$doc = new DOMDocument;
-		$result = $doc->loadXML($templatecontent);
-
-		if (!$result) {
-			$this->messages->add(_('Document could not be parsed'), MSG_TYPE_ERROR);
-		}
-		$grammarElement = $doc->getElementsByTagName('grammar')->item(0);
-
-		if (!is_null($grammarElement) && $grammarElement->isDefaultNamespace('http://relaxng.org/ns/structure/1.0')) {
-			$nodeTypeName = 'RngVisualTemplate';
-			$fileContent = $templatecontent;
-		} else {
-			$nodeTypeName = 'VisualTemplate';
-
-			$contentContent = FsUtils::file_get_contents($contentFilePath);
-			$fileContent = $templatecontent . "##########" . $contentContent;
-		}
-
-		$nodeType = new NodeType();
-		$nodeType->SetByName($nodeTypeName);
-
-		$nodeTypeID = $nodeType->GetID();
-
-		$node = new Node();
-
-		$node_pvd = $node->CreateNode($templateFileName, $idNode, $nodeTypeID, null, $templateFilePath, $templateType);
-		if (!$node->numErr) {
-			$node->class->SetContent($fileContent);
-			$this->messages->add(sprintf(_('Template %s has been successfully saved.'), $templateFileName),
-				MSG_TYPE_NOTICE);
-			if (!empty($templateType) && $templateType != 'generic_template') {
-				$node->setProperty('TemplateType', $templateType);
-			}
-			//Recargamos el nodo padre
-			$node = new Node($node_pvd);
-			$this->reloadNode($node->get("IdParent"));
-		} else {
-			$this->messages->add(_("Error while saving template. The operation has not been successfully performed: {$node->msgErr}"), MSG_TYPE_ERROR);
-		}
-
-		return $this->messages;
-    }
 }

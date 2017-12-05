@@ -41,7 +41,6 @@ include_once(XIMDEX_ROOT_PATH . '/modules/ximSYNC/inc/manager/BatchManager.class
 include_once(XIMDEX_ROOT_PATH . '/modules/ximSYNC/inc/model/Batch.class.php');
 
 
-$otfMode = null;
 
 function main($argc, $argv)
 {
@@ -84,12 +83,11 @@ function createBatchsForBlock($nodesToPublish)
     // Get list of physicalServers related to generator node.
     $idServer = $node->GetServer();
     $nodeServer = new Node($idServer);
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          $otfMode = 0; //For the moment, otfMode is disabled
     if (App::getValue('PublishOnDisabledServers') == 1) {
         Logger::info("PublishOnDisabledServers is true");
-        $physicalServers = $nodeServer->class->GetPhysicalServerList(true, $otfMode);
+        $physicalServers = $nodeServer->class->GetPhysicalServerList(true);
     } else {
-        $physicalServers = $nodeServer->class->GetEnabledPhysicalServerList(true, $otfMode);
+        $physicalServers = $nodeServer->class->GetEnabledPhysicalServerList(true);
     }
     if (count($physicalServers) == 0) {
         Logger::error(_('Fisical server does not exist for nodeId:') . " " . $idNodeGenerator . " " . _('returning empty arrays.'));
@@ -106,7 +104,6 @@ function createBatchsForBlock($nodesToPublish)
         $nodesToPublish['dateUp'],
         $nodesToPublish['dateDown'],
         $physicalServers,
-        $otfMode,
         $nodesToPublish['forcePublication'],
         $nodesToPublish['userId']
     );
@@ -140,22 +137,6 @@ function createBatchsForBlock($nodesToPublish)
 
                 if (App::getValue("PurgeSubversionsOnNewVersion")) {
                     $data->_purgeSubVersions($prevVersion, true);
-                }
-
-                // Updating data in ximNEWS tables
-
-                if (!is_null($colectorID)) {
-
-                    if ($nodeTypeName == "XimNewsNewLanguage") {
-                        $ximNewsNew = new XimNewsNew($id);
-                        $ximNewsNew->updateDataAfterPublish($colectorID, $curVersion);
-                    }
-
-                    if ($nodeTypeName == "XimNewsBulletinLanguage") {
-                        $ximNewsBulletin = new XimNewsBulletin($id);
-                        $ximNewsBulletin->set('State', 'published');
-                        $ximNewsBulletin->update();
-                    }
                 }
             }
         }

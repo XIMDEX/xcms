@@ -57,7 +57,6 @@ class BatchManager
     public $idBatchUp;
     public $idBatchDown;
     public $syncStatObj;
-    public $otfPublication;
 
     /**
      * Public constructor
@@ -67,7 +66,6 @@ class BatchManager
     {
         $this->setFlag('idBatchUp', NULL);
         $this->setFlag('idBatchDown', NULL);
-        $this->setFlag('otfPublication', false);
     }
 
     /**
@@ -91,22 +89,19 @@ class BatchManager
      * @param int nodeID
      * @param int up
      * @param int down
-     * @param bool otfPublication
      * @param bool force
      */
 
-    function publicate($idNode, $docsToPublish, $docsToPublishVersion, $docsToPublishSubVersion, $up, $down, $physicalServers, $otfPublication, $force, $userId = null)
+    function publicate($idNode, $docsToPublish, $docsToPublishVersion, $docsToPublishSubVersion, $up, $down, $physicalServers, $force, $userId = null)
     {
 
         $timer = new \Ximdex\Utils\Timer();
         $timer->start();
-        $this->setFlag('otfPublication', $otfPublication);
         $node = new Node($idNode);
         $idServer = $node->GetServer();
 
         Logger::info(_("Publication starts for ") . $node->GetPath() . "($idNode)");
 
-        $isOTF = $node->getSimpleBooleanProperty('otf');
         $ancestors = array();
         $unchangedDocs = array();
         $docsToUpVersion = array();
@@ -240,7 +235,6 @@ class BatchManager
         // Increment version for documents batch
         //finding if there are any otf docs
         if (!is_array($generated)) $generated = array();
-        $existDocOtf = false;
         Logger::info(sprintf(_("Incrementing version for %d documents"), count($docs)), 1);
         $totalDocs = count($docs);
         $mod = (int)($totalDocs / 10);
@@ -255,15 +249,12 @@ class BatchManager
                 if (!is_array($generatedNew)) $generatedNew = (array)$generatedNew;
                 $generated = array_merge($generatedNew, $generated);
             }
-
-            if (!$existDocOtf) {
-                $existDocOtf = ($n->getSimpleBooleanProperty('otf'));
-            }
+            
             $dataFactory = new DataFactory($value);
             $dataFactory->AddVersion(true);
             $i++;
         }
-        return $existDocOtf;
+        return false;
     }
 
 
@@ -423,24 +414,6 @@ class BatchManager
                     //If it is a structured document, check the server and the otf document
                     if ($channelId != 'NULL') {
                         $server = new Server($physicalServer);
-                        if ($server->get('otf') == '1') {
-                            $isServerOTF = true;
-                        } else {
-                            $isServerOTF = false;
-                        }
-
-                        if (!$isServerOTF && $this->getFlag('otfPublication')) {
-                            //server not otf and publication mode is otf
-                            Logger::warning(sprintf(_("Server %s is NOT OFT, it will be omitted because of publishing mode is OTF"), $physicalServer));
-                            break;
-                        }
-
-                        if ($isServerOTF && !$this->getFlag('otfPublication')) {
-                            //server otf and publication mode no otf
-                            Logger::warning(sprintf(_("Server %s is OFT, it will be omitted because of publishing mode is NOT OTF"), $physicalServer));
-                            break;
-                        }
-
                     }
 
                     $generatedNodes = array();
@@ -455,15 +428,7 @@ class BatchManager
                             $transformer = $node->getProperty('Transformer');
                             $data['TRANSFORMER'] = $transformer[0];
                             $pipeMng = new PipelineManager();
-
-                            if (!$isServerOTF) {
-
-                                $name = $node->GetPublishedNodeName($channelId, true);
-
-                            } else {
-
-                                $name = $nodeName . '.tar';
-                            }
+                            $name = $node->GetPublishedNodeName($channelId, true);
                         } else {
 
                             $name = $node->GetPublishedNodeName($channelId, true);
@@ -482,22 +447,6 @@ class BatchManager
                         $isServerCreated = true;
                         $numFrames++;
 
-                        //insert into ximnewsframebulletin
-                        if ($node->nodeType->get('Module') == 'ximNEWS') {
-
-                            $nodeTypeID = $node->get('IdNodeType');
-                            $nodeType = new NodeType($nodeTypeID);
-
-                            if ($nodeType->get('Name') == 'XimNewsBulletinLanguage') {
-                                $db = new Db();
-                                $sql = "INSERT INTO XimNewsFrameBulletin VALUES ($idFrame, $idNode, 'mail_pending')";
-                                if ($db->Execute($sql) === false)
-                                	return false;
-                                if (!($db->numRows > 0)) {
-                                    Logger::info(_("Error inserting ximnewsframebulletin"));
-                                }
-                            }
-                        }
                         $docsOk[$idNode][$physicalServer][$channelId] = $idFrame;
                     }
                 }

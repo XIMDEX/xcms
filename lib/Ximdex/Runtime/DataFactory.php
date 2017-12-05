@@ -356,8 +356,6 @@ class DataFactory
 
             $idNode = $version->get('IdNode');
             $node = new Node($idNode);
-            $isOTF = $node->getSimpleBooleanProperty('otf');
-
 
             if (!($node->get('IdNode') > 0)) {
                 return NULL;
@@ -373,13 +371,10 @@ class DataFactory
                 Logger::info("Generation cache for version $idVersion and the channel $idChannel");
                 $data = array('CHANNEL' => $idChannel);
 
-                if (!$isOTF) {
-                    $transformer = $node->getProperty('Transformer');
-                    $data['TRANSFORMER'] = $transformer[0];
-                    $res = $pipelineManager->getCacheFromProcess($idVersion, 'StrDocToDexT', $data);
-                } else {
-                    $res = $pipelineManager->getCacheFromProcess($idVersion, 'ximOTFSql', $data);
-                }
+                $transformer = $node->getProperty('Transformer');
+                $data['TRANSFORMER'] = $transformer[0];
+                $res = $pipelineManager->getCacheFromProcess($idVersion, 'StrDocToDexT', $data);
+
             }
         }
         return $res;

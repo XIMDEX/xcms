@@ -35,7 +35,6 @@ if (!defined('XIMDEX_ROOT_PATH'))
 include_once(XIMDEX_ROOT_PATH . '/inc/mail/Mail.class.php');
 
 ModulesManager::file('ximSYNC', '/inc/manager/BatchManager.class.php');
-ModulesManager::file('ximNEWS', '/inc/model/XimNewsNews.inc');
 ModulesManager::file('ximSYNC', '/inc/model/NodesToPublish.class.php');
 ModulesManager::file('ximSYNC', '/conf/synchro_conf.php');
 
@@ -51,11 +50,7 @@ class SyncManager
     var $markEnd;
     var $linked;
     var $type;
-    var $bulletinID;
     var $mail;
-
-    //flag for the add to colector otf publication
-    var $otfPublication;
 
     private $docsToPublishByLevel = array();
     private $computedDocsToPublish = array();
@@ -71,9 +66,7 @@ class SyncManager
         $this->setFlag('linked', false);
         $this->setFlag('recurrence', false);
         $this->setFlag('type', 'core');
-        $this->setFlag('bulletinID', NULL);
         $this->setFlag('mail', false);
-        $this->setFlag('otfPublication', false);
 
         $this->setFlag('deeplevel', DEEP_LEVEL < 0 ? 1 : DEEP_LEVEL);
         $this->setFlag('globalForcePublication', FORCE_PUBLICATION);
@@ -104,26 +97,7 @@ class SyncManager
         return NULL;
     }
 
-    /**
-     * Function for callback in MPM.
-     * @param array args
-     * @return array
-     */
 
-    function pushDocInPublishingPoolForMPM($args)
-    {
-        $nodeID = $args[0];
-        $colectorID = $args[1];
-        $up = $args[2];
-        $down = null;
-
-        $this->setFlag('type', 'ximNEWS');
-        $this->setFlag('colector', $colectorID);
-
-        $ret = $this->pushDocInPublishingPool($nodeID, $up, $down);
-
-        return $ret;
-    }
 
     public function buildPublishingDependencies($idNode, $params)
     {
@@ -183,7 +157,7 @@ class SyncManager
 
 
         $userID = \Ximdex\Utils\Session::get('userID');
-        error_log($userID);
+
         foreach ($docsToPublish as $idDoc) {
             if (!array_key_exists($idDoc, $this->docsToPublishByLevel)) {
                 continue;
@@ -262,14 +236,7 @@ class SyncManager
         $node = new node($nodeID);
         $name = $node->Get('Name');
 
-        if (strtolower($type) == 'ximnews') {
-            $bulletinID = $this->getFlag('bulletinID');
-            $node = new node($bulletinID);
-            $bulletinName = $node->Get('Name');
-            $msg = sprintf(_("News %s is going to be published in the bulletin %s"), $name, $bulletinName);
-        } else {
-            $msg = sprintf(_("Node %s is going to be published"), $name);
-        }
+        $msg = sprintf(_("Node %s is going to be published"), $name);
 
         if (!$down) {
             $downString = _('Undetermined');

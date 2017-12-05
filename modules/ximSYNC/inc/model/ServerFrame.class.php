@@ -39,7 +39,6 @@ ModulesManager::file('/inc/model/ChannelFrame.class.php', 'ximSYNC');
 ModulesManager::file('/inc/model/NodeFrame.class.php', 'ximSYNC');
 ModulesManager::file('/conf/synchro_conf.php', 'ximSYNC');
 ModulesManager::file('/inc/repository/nodeviews/View_FilterMacros.class.php');
-ModulesManager::file('/inc/repository/nodeviews/View_UnpublishOTF.class.php');
 ModulesManager::file('/inc/model/PublishingReport.class.php', 'ximSYNC');
 
 /**
@@ -296,11 +295,6 @@ class ServerFrame extends ServerFrames_ORM {
 		$nodeFrameId = $this->get('IdNodeFrame');
 		$server = $this->get('IdServer');
 		$s = new Server($server);
-		if ($s->get('otf') == '1') {
-			$isServerOTF = true;
-		} else {
-			$isServerOTF = false;
-		}
 
 		$channelFrame = new ChannelFrame($channelFrameId);
 		$channelId = $channelFrame->get('ChannelId');
@@ -309,7 +303,6 @@ class ServerFrame extends ServerFrames_ORM {
 		$idVersion = $nodeFrame->get('VersionId');
 		$idNode = $nodeFrame->get('NodeId');
 		$node = new Node($idNode);
-		$isOTF = $node->getSimpleBooleanProperty('otf');
 		$isHybrid = $node->getSimpleBooleanProperty('hybridColector');
 
 		if (!($idNode > 0)) {
@@ -334,57 +327,28 @@ class ServerFrame extends ServerFrames_ORM {
 
 		if (!is_null($channelId)) {
 
-			$channel = new Channel($channelId);
+            $content = $pipeMng->getCacheFromProcessAsContent($idVersion, 'StrDocFromDexTToFinal',$data);
 
-			if (!$isOTF || (!$isServerOTF && $isHybrid)) {
-				$content = $pipeMng->getCacheFromProcessAsContent($idVersion, 'StrDocFromDexTToFinal',$data);
+            $nodoTypeContent = $nodo->nodeType->get('Name');
 
-				$nodoTypeContent = $nodo->nodeType->get('Name');
+            //only encoding the content if the node is not one of this 3.
+            if (!(($nodoTypeContent == 'ImageFile') ||  ($nodoTypeContent == 'BinaryFile'))) {
 
-				//only encoding the content if the node is not one of this 3.
-				if (!(($nodoTypeContent == 'XimNewsImageFile') || ($nodoTypeContent == 'ImageFile') ||
-						 ($nodoTypeContent == 'BinaryFile'))) {
+                //Looking for idEncode for this server
+                $db = new Db();
+                $sql = "SELECT idEncode FROM Servers WHERE IdServer=" . $server;
+                $db->Query($sql);
+                $encodingServer = $db->GetValue("idEncode");
 
-					//Looking for idEncode for this server
-					$db = new Db();
-					$sql = "SELECT idEncode FROM Servers WHERE IdServer=" . $server;
-					$db->Query($sql);
-					$encodingServer = $db->GetValue("idEncode");
+                Logger::info("Encoding content to " . $encodingServer . ' with server: ' . $server);
+                $content = \Ximdex\XML\Base::recodeSrc($content, $encodingServer);
+            }
 
-					Logger::info("Encoding content to " . $encodingServer . ' with server: ' . $server);
-					$content = \Ximdex\XML\Base::recodeSrc($content, $encodingServer);
-				}
-
-				if (FsUtils::file_put_contents($path, $content) === false) {
-					return false;
-				}
-
-			} else {
-
-				$data['PATH'] = $path;
-				$data['NODENAME'] = $nodeFrame->get('Name');
-				$data['NODEID'] = $idNode;
-
-				$node = new Node($idNode);
-
-				if (!($node->get('IdNode') > 0)) {
-
-					// Node has deleted call to unpublish pipeline
+            if (FsUtils::file_put_contents($path, $content) === false) {
+                return false;
+            }
 
 
-					$viewUnpublishOTF = new View_UnpublishOTF();
-					$content = $viewUnpublishOTF->transform(NULL, '', $data);
-
-					if (FsUtils::file_put_contents($path, $content) === false) {
-						return false;
-					}
-				} else {
-
-					// OTF pipeline packs a tar.gz file, don't returns content
-					$pipeMng->getCacheFromProcess($idVersion,
-							'ximOTFTargz', $data);
-				}
-			}
 
 		} else {
 

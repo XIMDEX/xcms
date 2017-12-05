@@ -30,14 +30,11 @@ use Ximdex\Models\Node;
 use Ximdex\Models\NodeType;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\Models\Version;
-use Ximdex\Parsers\ParsingRng;
 use Ximdex\Runtime\App;
-use Ximdex\Runtime\DataFactory;
 use Ximdex\Utils\FsUtils;
 use Ximdex\Utils\TarArchiver;
 
 
- ModulesManager::file('/inc/model/XimNewsBulletins.php', 'ximNEWS');
 require_once(XIMDEX_ROOT_PATH . "/inc/repository/nodeviews/View_SQL.class.php");
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Abstract_View.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Interface_View.class.php');
@@ -86,32 +83,6 @@ class View_TARGZ extends Abstract_View implements Interface_View
             return false;
         }
 
-        //Work with each nodetype
-        switch ($nodeTypeName) {
-            case 'XimNewsNewLanguage':
-                //Add the insert query for ximNewsCache to sql content
-                //this is here because when a doc is published, its version is up, and if we do it
-                //in view sql, the version is old.
-
-                //Generate caches for this versions
-                $this->generateNewsCache($version->get('IdNode'));
-
-                $condition = "idNew=%s order by IdVersion desc limit 1";
-                $params = array('IdNew' => $nodeId);
-                $vistaSql = new View_SQL();
-
-                $insertQuery = $vistaSql->makeInsertQuery('XimNewsCache', $condition, $params);
-                $sqlContent .= $insertQuery;
-                break;
-            case 'XmlDocument':
-
-
-                break;
-            default:
-                //do nothing
-                break;
-        }
-
         $sqlContaent = \Ximdex\XML\Base::recodeSrc($sqlContent, \Ximdex\XML\XML::ISO88591);
         if (!FsUtils::file_put_contents($tmpSqlFile, $sqlContent)) {
             return false;
@@ -122,29 +93,6 @@ class View_TARGZ extends Abstract_View implements Interface_View
         $tarArchiver->addEntity($tmpDocFile);
         $tarArchiver->addEntity($tmpSqlFile);
 
-        $additionalFiles = $this->getAdditionalFiles($nodeId, $idVersion, $args);
-        if (!is_null($additionalFiles)) {
-            //Encode the files to ISO, OTF only works in ISO mode
-            if (($dataEncoding != \Ximdex\XML\XML::ISO88591) && (is_array($additionalFiles))) {
-                foreach ($additionalFiles as $key => $file) {
-                    if (!\Ximdex\XML\Base::recodeFile($file, \Ximdex\XML\XML::ISO88591)) {
-                        return false;
-                    }
-                }
-            }
-            $tarArchiver->addEntity($additionalFiles);
-        }
-        $tarFileName = $tarArchiver->pack();
-
-        //Recode the files to before encoding, about dataEncoding config valuea
-        if (($dataEncoding != \Ximdex\XML\XML::ISO88591) && (is_array($additionalFiles))) {
-            foreach ($additionalFiles as $key => $file) {
-                if (!\Ximdex\XML\Base::recodeFile($file, $dataEncoding)) {
-                    return false;
-                }
-
-            }
-        }
 
         // Removing tar extension
         rename($tarFile . '.tar', $tarFile);
@@ -152,92 +100,7 @@ class View_TARGZ extends Abstract_View implements Interface_View
         return $this->storeTmpContent($arrayContent[0]);
     }
 
-    /**
-     * Return an array file names for otf
-     *
-     * @param unknown_type $nodeId
-     * @return array String, filenames
-     */
-    function getAdditionalFiles($nodeId, $idVersion, $args)
-    {
 
-        $node = new Node($nodeId);
-        $nodeType = new NodeType($node->get('IdNodeType'));
-        $nodeTypeName = $nodeType->get('Name');
-
-        $additionalFiles = array();
-
-        Logger::info("Getting additional files for node $nodeId type $nodeTypeName");
-
-        switch ($nodeTypeName) {
-            case 'XimNewsNewLanguage':
-                // Adds XimNewsCache file
-                $condition = 'IdNew = %s order by IdVersion desc limit 1';
-                $params = array('IdNew' => $nodeId);
-                $file = $this->getFile('XimNewsCache', 'File', $condition, $params);
-
-                if (!is_null($file)) {
-                    $additionalFiles[] = XIMDEX_ROOT_PATH . '/data/files/' . $file;
-                }
-
-                //Add files for the colectors --> pvdheader & colector
-                $sql = "select IdColector from RelNewsColector where IdNew = $nodeId";
-                $colectors = array();
-                //Work with each colector for this news
-                $dbObj = new DB();
-                $dbObj->Query($sql);
-                $i = 0;
-                while (!$dbObj->EOF) {
-                    $colectors[$i] = $dbObj->GetValue("IdColector");
-                    $i++;
-                    $dbObj->Next();
-                }
-
-                if (count($colectors) > 0) {
-                    foreach ($colectors as $indice => $colectorId) {
-
-                        // Adds the default pvd content
-                        $ximNewsColector = new XimNewsColector($colectorId);
-                        $pvdId = $ximNewsColector->get('IdTemplate');
-
-                        $rngParser = new ParsingRng();
-                        $defaultContent = $rngParser->buildDefaultContent($pvdId);
-                        $tmpFolder = XIMDEX_ROOT_PATH . App::getValue('TempRoot');
-                        $headerFile = $tmpFolder . '/' . "pvdheader$pvdId";
-
-                        if (FsUtils::file_put_contents($headerFile, $defaultContent)) {
-                            $additionalFiles[] = $headerFile;
-                        } else {
-                            Logger::error("View TARG:No se ha podido añadir el archivo $headerFile");
-                        }
-
-                        //Generate Docxap for the bulletin
-                        $idXimlet = $this->getFirstXimlet($colectorId);
-                        if ($idXimlet > 0) {
-                            $node = new Node($idXimlet);
-                            $lastVersion = $this->getLastVersion($idXimlet);
-                            $docxapContent = $this->generateDocXapForBulletin($node, $lastVersion);
-                            $docxapFile = $tmpFolder . '/' . $ximNewsColector->get('Name') . ".docxap";
-
-                            if (FsUtils::file_put_contents($docxapFile, $docxapContent)) {
-                                $additionalFiles[] = $docxapFile;
-                            } else {
-                                Logger::error("View TARG:No se ha podido añadir el archivo $docxapFile");
-                            }
-                        } else {
-                            Logger::error("View TARG:No se ha generado la docxap para el colector $colectorId");
-                        }
-                    }
-                }
-                break;
-            case 'XmlDocument':
-                break;
-            default:
-                //do nothing
-                break;
-        }
-        return $additionalFiles;
-    }
 
     /**
      * Return the file name about the params
@@ -340,109 +203,5 @@ class View_TARGZ extends Abstract_View implements Interface_View
         return $idVersion;
     }
 
-    /**
-     * The news' cache is created when the colector is generated, in otf don't generate colector so the news
-     * cache is created here
-     *
-     * @param unknown_type $idNew
-     * @return unknown
-     */
-    private function generateNewsCache($idNew)
-    {
 
-        $sql = "select IdColector from RelNewsColector where IdNew = $idNew";
-        $colectors = array();
-        //Work with each colector for this news
-        $dbObj = new DB();
-        $dbObj->Query($sql);
-        $i = 0;
-        while (!$dbObj->EOF) {
-            $colectors[$i] = $dbObj->GetValue("IdColector");
-            $i++;
-            $dbObj->Next();
-        }
-
-        if (count($colectors) > 0) {
-            //Get the pvdid for the cache is generated, only one cache for colector and pvdid
-            $idPvdsCacheGenerated = array();
-            foreach ($colectors as $indice => $idColector) {
-
-                $ximNewsColector = new XimNewsColector($idColector);
-                $xslFile = $ximNewsColector->get('XslFile');
-                $idPvd = $ximNewsColector->get('IdTemplate');
-
-                //If havent created cache for this pvd and colector
-                if (!(in_array($idPvd, $idPvdsCacheGenerated))) {
-
-                    //push the pvdid for dont do it any more
-                    array_push($idPvdsCacheGenerated, $idPvd);
-
-                    $relNewsColector = new RelNewsColector();
-                    $idRel = $relNewsColector->hasNews($idColector, $idNew);
-
-                    if ($idRel > 0) {
-                        $relNewsColector = new RelNewsColector($idRel);
-                        $version = $relNewsColector->get('Version');
-                        $subversion = $relNewsColector->get('SubVersion');
-                        $cacheId = $relNewsColector->get('IdCache');
-                    } else {
-                        Logger::info('Sin relación en la base de datos');
-                    }
-
-                    if (!($cacheId > 0)) {
-                        $df = new DataFactory($idNew);
-                        $versionId = $df->getVersionId($version, $subversion);
-
-                        //Creamos la cache (si procede) y modificamos contadores
-                        $cache = new XimNewsCache();
-                        $cacheId = $cache->CheckExistence($idNew, $versionId, $idPvd);
-
-                        if (!($cacheId > 0)) {
-                            $cacheId = $cache->CreateCache($idNew, $versionId, $idPvd, $xslFile);
-
-                            if (!$cacheId) {
-                                Logger::info("ERROR Creando cache de noticia $idNew");
-
-                                //Elimino la asociacion para no dejar inconsistencia entre el boletin y la tabla
-                                $relNewColector = new RelNewsColector($idRel);
-                                $relNewColector->delete();
-                            }
-                        }
-
-                        $cache = new XimNewsCache($cacheId);
-                        $counter = $cache->get('Counter') + 1;
-                        $cache->set('Counter', $counter);
-                        $numRows = $cache->update();
-
-                        if ($numRows == 0) {
-                            Logger::info("ERROR Actualizando contador en $cacheId");
-                            return false;
-                        }
-
-                        $relNewsColector->set('IdCache', $cacheId);
-                        $relNewsColector->update();
-                    }
-
-                    //cogemos el contenido de la noticia
-                    $ximNewsCache = new XimNewsCache($cacheId);
-                    $newContent = $ximNewsCache->getContentCache();
-                    $contenido = $newContent;
-                }
-            }
-        }
-    }
-
-    private function getFirstXimlet($idColector)
-    {
-        $sql = "select IdNode from Nodes as N inner join XimNewsColector as X on N.IdParent = X.IdXimlet where X.IdColector=$idColector limit 1;";
-        $dbObj = new DB();
-        $dbObj->Query($sql);
-        $idXimlet = 0;
-        if ($dbObj->numRows > 0) {
-            $idXimlet = $dbObj->GetValue("IdNode");
-            return $idXimlet;
-        } else {
-            return null;
-        }
-    }
 }

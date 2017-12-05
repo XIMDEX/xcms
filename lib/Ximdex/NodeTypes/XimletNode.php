@@ -111,19 +111,8 @@ class XimletNode extends AbstractStructuredDocument
     // The intended use for this method is just generate a colector, is not related with xmldocument
     function generator()
     {
-        //we need to estimate the colector
-        $node = new Node($this->parent->get('IdParent'));
-        // the colector is the second level parent
-        $idColector = $node->get('IdParent');
-
-        // check the obtained node
-        $colector = new Node($idColector);
-        if ($colector->nodeType->get('Name') != 'XimNewsColector') {
             Logger::fatal('Se ha estimado un tipo de nodo incorrecto');
             return false; // xmd::fatal must kill the process anyway, so dont wait any further trace
-        }
-
-        return $colector->class->generateColector();
     }
 
 
