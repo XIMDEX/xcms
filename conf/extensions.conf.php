@@ -3,12 +3,12 @@
 use Ximdex\Runtime\App;
 
 class Extensions {
-    const JQUERY_PATH = "/extensions/jquery";
-    const JQUERY      = "/extensions/jquery/jquery-1.8.3.min.js";
-    const JQUERY_UI   = "/extensions/jquery/jquery-ui-1.9.1.custom.min.js";
-    const SMARTY      = "/extensions/smarty/libs/Smarty.class.php";
+    const JQUERY_PATH = "/public_xmd/vendors/jquery";
+    const JQUERY      = "/public_xmd/vendors/jquery/jquery-1.8.3.min.js";
+    const JQUERY_UI   = "/public_xmd/vendors/jquery/jquery-ui-1.9.1.custom.min.js";
+    const SMARTY      = "/public_xmd/vendors/smarty/libs/Smarty.class.php";
     const PHPSECLIB   = "/extensions/phpseclib";
-    const BOOTSTRAP   = "/extensions/bootstrap/dist";
+    const BOOTSTRAP   = "/public_xmd/vendors/bootstrap/dist";
      /**
         if function is called then we retrieve  UrlRoot + constant
         @param String $_func  attribute name. e.g: Extensions::smarty() -> smarty

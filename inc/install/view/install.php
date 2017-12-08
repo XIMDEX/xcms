@@ -40,8 +40,8 @@ define('URL_ROOT', App::getValue('UrlRoot'));
     <link rel="shortcut icon" href="<?php echo URL_ROOT; ?>/favicon.ico" >
     <link rel="stylesheet" href="<?php echo URL_ROOT; ?>/public_xmd/assets/style/installer/normalize.css">
     <link rel="stylesheet" href="<?php echo URL_ROOT; ?>/public_xmd/assets/style/installer/main.css">
-    <link rel="stylesheet" href="<?php echo URL_ROOT; ?>/extensions/ladda/dist/ladda-themeless.min.css">
-    <link rel="stylesheet" href="<?php echo URL_ROOT; ?>/extensions/humane/flatty.css">
+    <link rel="stylesheet" href="<?php echo URL_ROOT; ?>/public_xmd/vendors/ladda/dist/ladda-themeless.min.css">
+    <link rel="stylesheet" href="<?php echo URL_ROOT; ?>/public_xmd/vendors/humane/flatty.css">
 
     <link href='<?php echo URL_ROOT; ?>/public_xmd/assets/style/fonts.css' rel='stylesheet' type='text/css' />
 
@@ -50,12 +50,12 @@ define('URL_ROOT', App::getValue('UrlRoot'));
     <!--[if lt IE 9]>
     <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <script type="text/javascript" src="<?php echo URL_ROOT; ?>/extensions/angular/angular.min.js" ></script>
-    <script type="text/javascript" src="<?php echo URL_ROOT; ?>/extensions/angular/angular-animate.min.js" ></script>
-    <script type="text/javascript" src="<?php echo URL_ROOT; ?>/extensions/angular/angular-animate.min.js" ></script>
-    <script type="text/javascript" src="<?php echo URL_ROOT; ?>/extensions/ladda/dist/spin.min.js" ></script>
-    <script type="text/javascript" src="<?php echo URL_ROOT; ?>/extensions/ladda/dist/ladda.min.js" ></script>
-    <script type="text/javascript" src="<?php echo URL_ROOT; ?>/extensions/humane/humane.min.js" ></script>
+    <script type="text/javascript" src="<?php echo URL_ROOT; ?>/public_xmd/vendors/angular/angular.min.js" ></script>
+    <script type="text/javascript" src="<?php echo URL_ROOT; ?>/public_xmd/vendors/angular/angular-animate.min.js" ></script>
+    <script type="text/javascript" src="<?php echo URL_ROOT; ?>/public_xmd/vendors/angular/angular-animate.min.js" ></script>
+    <script type="text/javascript" src="<?php echo URL_ROOT; ?>/public_xmd/vendors/ladda/dist/spin.min.js" ></script>
+    <script type="text/javascript" src="<?php echo URL_ROOT; ?>/public_xmd/vendors/ladda/dist/ladda.min.js" ></script>
+    <script type="text/javascript" src="<?php echo URL_ROOT; ?>/public_xmd/vendors/humane/humane.min.js" ></script>
 
     <script type="text/javascript" >
         var ximdexInstallerApp = angular.module('ximdexInstallerApp',[]);

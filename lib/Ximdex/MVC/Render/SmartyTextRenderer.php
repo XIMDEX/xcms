@@ -6,7 +6,7 @@
  * Time: 12:23
  */
 namespace Ximdex\MVC\Render;
-include_once (XIMDEX_ROOT_PATH . '/extensions/smarty/libs/Smarty.class.php');
+include_once (XIMDEX_ROOT_PATH . '/public_xmd/vendors/smarty/libs/Smarty.class.php');
 use Smarty;
 
 /** ****************** SMARTY_STRING_RENDERER ************************** */

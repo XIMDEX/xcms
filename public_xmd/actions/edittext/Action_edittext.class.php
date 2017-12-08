@@ -52,8 +52,8 @@ class Action_edittext extends ActionAbstract
         $this->addCss('/actions/edittext/resources/css/style.css', 'APP');
 
 
-        $this->addCss('/extensions/vendors/codemirror/Codemirror/lib/codemirror.css');
-        $this->addCss('/extensions/vendors/codemirror/Codemirror/addon/fold/foldgutter.css');
+        $this->addCss('/public_xmd/vendors/codemirror/Codemirror/lib/codemirror.css');
+        $this->addCss('/public_xmd/vendors/codemirror/Codemirror/addon/fold/foldgutter.css');
 
 
         $idNode = $this->request->getParam('nodeid');
@@ -90,29 +90,29 @@ class Action_edittext extends ActionAbstract
 
         switch ($ext) {
             case "java":
-                $this->addJs('/extensions/vendors/codemirror/Codemirror/addon/edit/closebrackets.js');
-                $this->addJs('/extensions/vendors/codemirror/Codemirror/addon/fold/brace-fold.js');
+                $this->addJs('/public_xmd/vendors/codemirror/Codemirror/addon/edit/closebrackets.js');
+                $this->addJs('/public_xmd/vendors/codemirror/Codemirror/addon/fold/brace-fold.js');
                 break;
             case "yml":
-                $this->addJs('/extensions/vendors/codemirror/Codemirror/addon/fold/indent-fold.js');
-                $this->addJs('/extensions/vendors/codemirror/Codemirror/addon/fold/brace-fold.js');
+                $this->addJs('/public_xmd/vendors/codemirror/Codemirror/addon/fold/indent-fold.js');
+                $this->addJs('/public_xmd/vendors/codemirror/Codemirror/addon/fold/brace-fold.js');
                 break;
             case "html":
-                $this->addJs('/extensions/vendors/codemirror/Codemirror/addon/edit/closetag.js');
-                $this->addJs('/extensions/vendors/codemirror/Codemirror/addon/fold/xml-fold.js');
-                $this->addJs('/extensions/vendors/codemirror/Codemirror/addon/edit/closebrackets.js');
+                $this->addJs('/public_xmd/vendors/codemirror/Codemirror/addon/edit/closetag.js');
+                $this->addJs('/public_xmd/vendors/codemirror/Codemirror/addon/fold/xml-fold.js');
+                $this->addJs('/public_xmd/vendors/codemirror/Codemirror/addon/edit/closebrackets.js');
                 break;
             case "md":
-                $this->addJs('/extensions/vendors/codemirror/Codemirror/addon/fold/markdown-fold.js');
+                $this->addJs('/public_xmd/vendors/codemirror/Codemirror/addon/fold/markdown-fold.js');
                 break;
         }
 
-        $this->addJs('/extensions/vendors/codemirror/Codemirror/addon/fold/foldcode.js');
-        $this->addJs('/extensions/vendors/codemirror/Codemirror/addon/fold/foldgutter.js');
-        $this->addJs('/extensions/vendors/codemirror/Codemirror/addon/fold/comment-fold.js');
-        $this->addJs('/extensions/vendors/codemirror/Codemirror/addon/selection/active-line.js');
-        $this->addJs('/extensions/vendors/codemirror/Codemirror/addon/mode/loadmode.js');
-        $this->addJs('/extensions/vendors/codemirror/Codemirror/mode/meta.js');
+        $this->addJs('/public_xmd/vendors/codemirror/Codemirror/addon/fold/foldcode.js');
+        $this->addJs('/public_xmd/vendors/codemirror/Codemirror/addon/fold/foldgutter.js');
+        $this->addJs('/public_xmd/vendors/codemirror/Codemirror/addon/fold/comment-fold.js');
+        $this->addJs('/public_xmd/vendors/codemirror/Codemirror/addon/selection/active-line.js');
+        $this->addJs('/public_xmd/vendors/codemirror/Codemirror/addon/mode/loadmode.js');
+        $this->addJs('/public_xmd/vendors/codemirror/Codemirror/mode/meta.js');
         $this->addJs('/actions/edittext/resources/js/init.js', 'APP');
 
         //if is not node state equals to edition, send a message.
@@ -128,7 +128,7 @@ class Action_edittext extends ActionAbstract
         }
 
         $values = array('id_node' => $idNode,
-            'codemirror_url' => App::getValue('UrlRoot') . '/extensions/vendors/codemirror/Codemirror',
+            'codemirror_url' => App::getValue('UrlRoot') . '/public_xmd/vendors/codemirror/Codemirror',
             'ext' => $ext,
             'content' => $content,
             'go_method' => 'edittext',

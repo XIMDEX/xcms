@@ -78,9 +78,9 @@ class Action_browser3 extends ActionAbstract
 
         $this->addCss('/public_xmd/assets/style/fonts.css');
         $this->addCss('/public_xmd/assets/style/jquery/smoothness/jquery-ui-1.8.2.custom.css');
-        $this->addCss('/extensions/bootstrap/dist/css/bootstrap.min.css');
-        $this->addCss('/extensions/ladda/dist/ladda-themeless.min.css');
-        $this->addCss('/extensions/humane/flatty.css');
+        $this->addCss('/public_xmd/vendors/bootstrap/dist/css/bootstrap.min.css');
+        $this->addCss('/public_xmd/vendors/ladda/dist/ladda-themeless.min.css');
+        $this->addCss('/public_xmd/vendors/humane/flatty.css');
         $this->addCss('/public_xmd/assets/style/jquery/ximdex_theme/widgets/treeview/treeview.css');
         $this->addActionCss('browser.css');
         if (ModulesManager::isEnabled('ximTOUR'))
@@ -115,19 +115,19 @@ class Action_browser3 extends ActionAbstract
         $this->addJs(Extensions::JQUERY);
         $this->addJs(Extensions::JQUERY_UI);
         $this->addJs('/inc/js/i18n.js');
-        $this->addJs('/extensions/vendors/hammerjs/hammer.js/hammer.js');
-        $this->addJs('/extensions/angular/angular.min.js');
-        $this->addJs('/extensions/react/react-with-addons.min.js');
-        $this->addJs('/extensions/react/ngReact.min.js');
-        $this->addJs('/extensions/vendors/RyanMullins/angular-hammer/angular.hammer.js');
-        $this->addJs('/extensions/angular/angular-animate.min.js');
-        $this->addJs('/extensions/angular/angular-sanitize.min.js');
-        $this->addJs('/extensions/angular-ui-sortable/src/sortable.js');
-        $this->addJs('/extensions/ladda/dist/spin.min.js');
-        $this->addJs('/extensions/ladda/dist/ladda.min.js');
-        $this->addJs('/extensions/humane/humane.min.js');
+        $this->addJs('/public_xmd/vendors/hammerjs/hammer.js/hammer.js');
+        $this->addJs('/public_xmd/vendors/angular/angular.min.js');
+        $this->addJs('/public_xmd/vendors/react/react-with-addons.min.js');
+        $this->addJs('/public_xmd/vendors/react/ngReact.min.js');
+        $this->addJs('/public_xmd/vendors/RyanMullins/angular-hammer/angular.hammer.js');
+        $this->addJs('/public_xmd/vendors/angular/angular-animate.min.js');
+        $this->addJs('/public_xmd/vendors/angular/angular-sanitize.min.js');
+        $this->addJs('/public_xmd/vendors/angular-ui-sortable/src/sortable.js');
+        $this->addJs('/public_xmd/vendors/ladda/dist/spin.min.js');
+        $this->addJs('/public_xmd/vendors/ladda/dist/ladda.min.js');
+        $this->addJs('/public_xmd/vendors/humane/humane.min.js');
         $this->addJs('/extensions/flow/ng-flow-standalone.min.js');
-        $this->addJs('/extensions/angular-bootstrap/dist/ui-bootstrap-custom-tpls-0.13.0-SNAPSHOT.min.js');
+        $this->addJs('/public_xmd/vendors/angular-bootstrap/dist/ui-bootstrap-custom-tpls-0.13.0-SNAPSHOT.min.js');
         $this->addJs(Extensions::JQUERY_PATH . '/ui/jquery-ui-timepicker-addon.js');
         $this->addJs(Extensions::JQUERY_PATH . '/ui/jquery.ui.dialog.min.js');
         $this->addJs(Extensions::JQUERY_PATH . '/plugins/jquery-validate/jquery.validate.js');
@@ -138,8 +138,8 @@ class Action_browser3 extends ActionAbstract
         $this->addJs(Extensions::JQUERY_PATH . '/plugins/jquery-file-upload/js/jquery.fileupload.js');
         $this->addJs(Extensions::JQUERY_PATH . '/plugins/jquery-file-upload/js/jquery.fileupload-process.js');
         $this->addJs(Extensions::JQUERY_PATH . '/plugins/jquery-file-upload/js/jquery.fileupload-angular.js');
-        $this->addJs('/extensions/d3js/d3.v3.min.js');
-        $this->addJs('/extensions/vendors/codemirror/Codemirror/lib/codemirror.js');
+        $this->addJs('/public_xmd/vendors/d3js/d3.v3.min.js');
+        $this->addJs('/public_xmd/vendors/codemirror/Codemirror/lib/codemirror.js');
 
         //Old browserwindow js
         $this->addJs('/inc/widgets/browserwindow/js/browserwindow.js');
