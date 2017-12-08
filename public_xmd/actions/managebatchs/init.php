@@ -30,7 +30,7 @@
 	ModulesManager::file('/inc/utils.php');
  	ModulesManager::file('/inc/model/Batch.class.php');
 	ModulesManager::file('/actions/managebatchs/forms.php', 'APP');
-	ModulesManager::file('/xmd/js/sajax/sajax.php');
+	ModulesManager::file('/public_xmd/assets/js/sajax/sajax.php');
 
 	// starting SAJAX stuff
 	$sajax_request_type = "POST";

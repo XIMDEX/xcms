@@ -96,7 +96,7 @@ angular.module('ximdex.common.directive').factory('TreeNode', ['$filter',
                 // loading
                 if(this.props.node.showNodes && this.props.node.loading){
                     loading = React.createElement('span',{className: 'xim-treeview-loading'},
-                        React.createElement('img',{src: window.com.ximdex.baseUrl + '/xmd/images/browser/hbox/loading.gif'})
+                        React.createElement('img',{src: window.com.ximdex.baseUrl + '/public_xmd/assets/images/browser/hbox/loading.gif'})
                     );
                 }
 
@@ -105,7 +105,7 @@ angular.module('ximdex.common.directive').factory('TreeNode', ['$filter',
                     arrow = React.createElement('span',{className: this.dropDownClasses})
 
                     /*loading = React.createElement('ul',{className: 'xim-treeview-loading'},
-                        React.createElement('img',{src: window.com.ximdex.baseUrl + '/xmd/images/browser/hbox/loading.gif'})
+                        React.createElement('img',{src: window.com.ximdex.baseUrl + '/public_xmd/assets/images/browser/hbox/loading.gif'})
                     );*/
                 }
 

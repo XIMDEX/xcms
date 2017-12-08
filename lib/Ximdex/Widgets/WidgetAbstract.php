@@ -52,7 +52,7 @@ abstract class WidgetAbstract
 
 		$this->_widget_dir = sprintf('%s/%s', App::getValue('XIMDEX_ROOT_PATH')  . '/inc/widgets/' , $this->_wname);
 		$this->_widget_style_dir = sprintf(
-			'%s/xmd/style/jquery/%s/widgets/%s',
+			'%s/public_xmd/assets/style/jquery/%s/widgets/%s',
 			XIMDEX_ROOT_PATH,
 			\Ximdex\Utils\Session::get('activeTheme'),
 			$this->_wname

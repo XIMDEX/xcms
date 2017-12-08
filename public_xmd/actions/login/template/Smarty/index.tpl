@@ -16,9 +16,9 @@
 
 	<link rel="icon" href="{$_URL_ROOT}/favicon.ico" type="image/x-icon" />
 	<link rel="shortcut icon" href="{$_URL_ROOT}/favicon.ico" type="image/x-icon" />
-	<link href='{$_URL_ROOT}/xmd/style/fonts.css' rel='stylesheet' type='text/css' />
+	<link href='{$_URL_ROOT}/public_xmd/assets/style/fonts.css' rel='stylesheet' type='text/css' />
 
-	<link href="{$_URL_ROOT}/xmd/style/login/login.css" rel="stylesheet" type="text/css" />
+	<link href="{$_URL_ROOT}/public_xmd/assets/style/login/login.css" rel="stylesheet" type="text/css" />
 	<script type="text/javascript" src="{EXTENSIONS::Jquery()}"></script>
 	{foreach from=$js_files item=js_file}
 	<script type="text/javascript" src="{$js_file}"></script>
@@ -38,20 +38,20 @@
 	<xim:meta name="X-XIMDEX" content="401 Unauthorized"></xim:meta>
 
 	<div id="contenedor">
-		<h1><a href="http://www.ximdex.com" title="Access"><img src="{$_URL_ROOT}/xmd/images/login/logo_ximdex.png" alt="Ximdex logo" title="Visit our web" /></a></h1>
+		<h1><a href="http://www.ximdex.com" title="Access"><img src="{$_URL_ROOT}/public_xmd/assets/images/login/logo_ximdex.png" alt="Ximdex logo" title="Visit our web" /></a></h1>
 
 		<div id="acceso" class="triangle">
 			<form action="{$_URL_ROOT}/xmd/loadaction.php?action=login&amp;method=check" method="post" name="access">
 				<div class="error">{$message}</div>
 				<div class="col-md-12">
 				<div class="form-group">
-					<label for="user"><img src="{$_URL_ROOT}/xmd/images/login/access.png" width="15px"/> {t}User{/t}</label>
+					<label for="user"><img src="{$_URL_ROOT}/public_xmd/assets/images/login/access.png" width="15px"/> {t}User{/t}</label>
 					<input type="text" class="form-control" name="user" id="user" />
 				</div>
 				</div>
 				<div class="col-md-12">
 				<div class="form-group">
-					<label for="password"><img src="{$_URL_ROOT}/xmd/images/login/pass.png" width="15px"/> {t}Password{/t}</label>
+					<label for="password"><img src="{$_URL_ROOT}/public_xmd/assets/images/login/pass.png" width="15px"/> {t}Password{/t}</label>
 					<input type="password" class="form-control" name="password" id="password" onkeypress="capLock(event)" />
 					<span id="capsLockAdvice" class="warning-msg">CapsLock enabled</span>
 				</div>
@@ -76,7 +76,7 @@
 		</div>
 
 		<div id="mas_info" class="triangle">
-			<h2 class="comunidad"><img src="{$_URL_ROOT}/xmd/images/login/join.png" width="30px"/> {t}Join our community{/t}</h2>
+			<h2 class="comunidad"><img src="{$_URL_ROOT}/public_xmd/assets/images/login/join.png" width="30px"/> {t}Join our community{/t}</h2>
 
 			{*<p>Join our <a href="#">community</a>, consult your doubts, contribute with your suggestions. </p>*}
 
@@ -84,7 +84,7 @@
 				{t}Visit{/t} <a href="http://www.ximdex.com" target="_blank">{t}our website{/t}</a> {t}to learn more about the advantages of managing your projects with{/t} <strong>Ximdex</strong>.
 			</p>
 
-			<h2 class="siguenos"><img src="{$_URL_ROOT}/xmd/images/login/follow.png" width="25px"/> {t}Follow us{/t}</h2>
+			<h2 class="siguenos"><img src="{$_URL_ROOT}/public_xmd/assets/images/login/follow.png" width="25px"/> {t}Follow us{/t}</h2>
 
 
 			<a href="http://twitter.com/ximdex" target="_blank" title="{t}Visit Ximdex on Twitter{/t}" class="twit"><div class="text">Twitter</div><div class="text2">Ximdex</div></a>

@@ -155,7 +155,7 @@ class ParsingJsGetText
     {
         $this->setParam($_lang, $_js);
 
-        $no_cacheable = array("/xmd/js/lib/", '/extensions/');
+        $no_cacheable = array("/public_xmd/assets/js/lib/", '/extensions/');
 
         foreach ($no_cacheable as $n_c) {
             if (!substr_compare($_js, $n_c, 0, strlen($n_c))) {

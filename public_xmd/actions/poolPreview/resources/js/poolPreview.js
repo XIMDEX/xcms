@@ -498,7 +498,7 @@ function my_suggester(options) {
 		},
 		formatItem: function(data) {
 			var ret = '';
-			ret += '<div style="float: left; margin-right: 10px;"><img src="'+window.url_root + '/xmd/images/icons/' + data[0].icon+'" /></div>';
+			ret += '<div style="float: left; margin-right: 10px;"><img src="'+window.url_root + '/public_xmd/assets/images/icons/' + data[0].icon+'" /></div>';
 			//ret += '<div>NodeID: '+data[0].id+'</div>';
 			ret += '<div>'+data[0].name+'</div>';
 			ret += '<div>('+data[0].nodetype+')</div>';
@@ -531,7 +531,7 @@ function my_treeview(options) {
 		},
 		colModel: treeview_ColModel(),
 		url_base: window.url_root + '/',
-		img_base: window.url_root + '/xmd/images/icons/'
+		img_base: window.url_root + '/public_xmd/assets/images/icons/'
 	})
 
 	.bind('itemClick', function(event, params) {

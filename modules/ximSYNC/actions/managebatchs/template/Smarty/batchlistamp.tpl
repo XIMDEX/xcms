@@ -42,7 +42,7 @@
 	<tr>
 		<td class="filacerrar" align="right">
 			<a href="javascript:parent.deletetabpage(parent.selected);" class="filacerrar">
-				{t}Close window{/t} <img src="../../../../xmd/images/botones/cerrar.gif" alt="" border="0">
+				{t}Close window{/t} <img src="../../../../public_xmd/assets/images/botones/cerrar.gif" alt="" border="0">
 			</a>
 		</td>
 	</tr>

@@ -27,7 +27,7 @@
 
 use Ximdex\Runtime\App;
 
-include_once '../../bootstrap/start.php';
+include_once '../../../bootstrap/start.php';
 
 ModulesManager::file('/inc/i18n/I18N.class.php');
 

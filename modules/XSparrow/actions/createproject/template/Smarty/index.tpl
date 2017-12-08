@@ -40,7 +40,7 @@
 					          <input type="checkbox" class="validable canales check_group__canales"
 										name="channels_listed[{$channelData.id}]" id="p_{$channelData.id}" />
 					         <label for="p_{$channelData.id}" class="inline nofloat">{$channelData.name}</label> </span>
-					        <!--	<img class="xim-treeview-icon icon-channel"/> The path has been deleted and the icon just is show by CSS, src="{$_URL_ROOT}/xmd/images/icons/channel.png" -->
+					        <!--	<img class="xim-treeview-icon icon-channel"/> The path has been deleted and the icon just is show by CSS, src="{$_URL_ROOT}/public_xmd/assets/images/icons/channel.png" -->
 					        {foreachelse}
 					        <p class="message_warning">{t}There are no channels created in the system{/t}</p>
 					        {/foreach}</div>

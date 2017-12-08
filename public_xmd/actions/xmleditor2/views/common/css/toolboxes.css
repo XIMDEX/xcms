@@ -29,7 +29,7 @@
 	padding: 0.5em;
 	-moz-border-radius: 8px;
 	-webkit-border-radius: 8px;
-	background:  #fff url('../../../../../../xmd/images/search/fnd-search.png') repeat-x left top;
+	background:  #fff url('../../../../../../public_xmd/assets/images/search/fnd-search.png') repeat-x left top;
 	border: 1px solid #eeeeee;
 	-moz-box-shadow: 0px 2px 6px #BBB;
 	padding:  0px;
@@ -69,7 +69,7 @@
 
 
 .ui-dialog .ui-dialog-titlebar-close span{
-	background:url("../../../../../../xmd/images/browser/hbox/views-icons.png") no-repeat scroll -3px -119px transparent;
+	background:url("../../../../../../public_xmd/assets/images/browser/hbox/views-icons.png") no-repeat scroll -3px -119px transparent;
 	cursor:pointer;
 	float:left;
 	height:16px;
@@ -89,7 +89,7 @@
 }*/
 
 .ui-dialog .ui-resizable-se{
-	background:url("../../../../../../xmd/images/browser/hbox/views-icons.png") no-repeat scroll -2px -166px transparent !important;
+	background:url("../../../../../../public_xmd/assets/images/browser/hbox/views-icons.png") no-repeat scroll -2px -166px transparent !important;
 	height:18px;
 	width:18px;
 	}
@@ -106,7 +106,7 @@
 .ui-dialog .ui-dialog-buttonpane button, .kupu-toolbox-buttonbar button {
 	-moz-border-radius:6px 6px 6px 6px;
 	-moz-box-shadow:0 2px 0 #FFFFFF inset;
-	background:url("../../../../../../xmd/images/action/fnd-buttons-form.png") repeat-x scroll left center transparent;
+	background:url("../../../../../../public_xmd/assets/images/action/fnd-buttons-form.png") repeat-x scroll left center transparent;
 	border:1px solid #E1E1E1;
 	cursor:pointer;
 	float:none;
@@ -123,7 +123,7 @@
 }
 
 	.ui-dialog .ui-dialog-buttonpane button:hover{
-	background: url('../../../../../../xmd/images/action/fnd-buttons-form-hover.png') repeat-x left center;
+	background: url('../../../../../../public_xmd/assets/images/action/fnd-buttons-form-hover.png') repeat-x left center;
 	-moz-box-shadow: inset 0px 2px 0px #ebebeb;
 	-webkit-box-shadow: inset 0px 2px 0px #ebebeb;
 	box-shadow: inset 0px 2px 0px #ebebeb;
@@ -200,6 +200,6 @@
 
 
 /* Overwrite default jQuery UI styles */
-.ui-state-active, .ui-widget-content .ui-state-active { border: 1px solid #d3d3d3; background: #e6e6e6 url(../../../../../../xmd/style/jquery/smoothness/images/ui-bg_glass_75_e6e6e6_1x400.png) 50% 50% repeat-x; font-weight: normal; color: #555555; outline: none; }
+.ui-state-active, .ui-widget-content .ui-state-active { border: 1px solid #d3d3d3; background: #e6e6e6 url(../../../../../../public_xmd/assets/style/jquery/smoothness/images/ui-bg_glass_75_e6e6e6_1x400.png) 50% 50% repeat-x; font-weight: normal; color: #555555; outline: none; }
 .ui-state-active a, .ui-state-active a:link, .ui-state-active a:visited { color: #555555; text-decoration: none; outline: none; }
-.ui-state-active .ui-icon { background-image: url(../../../../../../xmd/style/jquery/css/smoothness/images/ui-icons_888888_256x240.png); }
+.ui-state-active .ui-icon { background-image: url(../../../../../../public_xmd/assets/style/jquery/css/smoothness/images/ui-icons_888888_256x240.png); }

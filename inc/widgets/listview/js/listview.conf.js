@@ -49,7 +49,7 @@
 		showBrowser: true,
 		draggables: true,
 		url_base: window.url_root + '/',
-		img_base: window.url_root + '/xmd/images/icons/',
+		img_base: window.url_root + '/public_xmd/assets/images/icons/',
 		colModel: colModel,
 		datastore: {
 			ds: new DataSource({

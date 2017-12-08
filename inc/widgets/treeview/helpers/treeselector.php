@@ -61,7 +61,7 @@ var xmdRoot = "<?php echo $urlroot; ?>/xmd/"
 <script type="text/javascript" src="<?php echo $urlroot; ?>/inc/widgets/treeview/js/xtree.js"></script>
 <script type="text/javascript" src="<?php echo $urlroot; ?>/inc/widgets/treeview/js/xmlextras.js"></script>
 <script type="text/javascript" src="<?php echo $urlroot; ?>/inc/widgets/treeview/js/xloadtree.js"></script>
-<link type="text/css" rel="stylesheet" href="<?php echo $urlroot; ?>/xmd/style/style.css" />
+<link type="text/css" rel="stylesheet" href="<?php echo $urlroot; ?>/public_xmd/assets/style/style.css" />
 <link type="text/css" rel="stylesheet" href="<?php echo $urlroot; ?>/inc/widgets/treeview/css/xtree.css" />
 
 <style type="text/css">
@@ -133,7 +133,7 @@ var numMaxFiles_origen = busca_numMaxFiles();
 					urlencode($nodeType)
 	);
 ?>
-var tree = new WebFXLoadTree("<?php echo $rootNode->GetNodeName()?>", "<?php echo $targetPath; ?>", "javascript: parent.setInfo('<?php echo $rootNode->GetPath()?>','<?php echo $rootNode->GetID()?>')", "classic", "../../xmd/images/icons/<?php echo urlencode($rootNode->nodeType->GetIcon()); ?>","../../xmd/images/icons/<?php echo $rootNode->nodeType->GetIcon()?>");
+var tree = new WebFXLoadTree("<?php echo $rootNode->GetNodeName()?>", "<?php echo $targetPath; ?>", "javascript: parent.setInfo('<?php echo $rootNode->GetPath()?>','<?php echo $rootNode->GetID()?>')", "classic", "../../public_xmd/assets/images/icons/<?php echo urlencode($rootNode->nodeType->GetIcon()); ?>","../../public_xmd/assets/images/icons/<?php echo $rootNode->nodeType->GetIcon()?>");
 
 document.write(tree);
 //tree.expand();

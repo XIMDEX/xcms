@@ -45,7 +45,7 @@ class Action_setmetadata extends ActionAbstract
      */
     function index()
     {
-        $this->addCss('/xmd/style/jquery/ximdex_theme/widgets/tagsinput/tagsinput.css');
+        $this->addCss('/public_xmd/assets/style/jquery/ximdex_theme/widgets/tagsinput/tagsinput.css');
         $this->addCss('/inc/widgets/select/css/ximdex.select.css');
         $this->addJs('/inc/widgets/select/js/ximdex.select.js');
         $this->addJs('/actions/setmetadata/resources/js/setmetadata.js', 'ximTAGS');

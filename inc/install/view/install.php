@@ -38,12 +38,12 @@ define('URL_ROOT', App::getValue('UrlRoot'));
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="shortcut icon" href="<?php echo URL_ROOT; ?>/favicon.ico" >
-    <link rel="stylesheet" href="<?php echo URL_ROOT; ?>/xmd/style/installer/normalize.css">
-    <link rel="stylesheet" href="<?php echo URL_ROOT; ?>/xmd/style/installer/main.css">
+    <link rel="stylesheet" href="<?php echo URL_ROOT; ?>/public_xmd/assets/style/installer/normalize.css">
+    <link rel="stylesheet" href="<?php echo URL_ROOT; ?>/public_xmd/assets/style/installer/main.css">
     <link rel="stylesheet" href="<?php echo URL_ROOT; ?>/extensions/ladda/dist/ladda-themeless.min.css">
     <link rel="stylesheet" href="<?php echo URL_ROOT; ?>/extensions/humane/flatty.css">
 
-    <link href='<?php echo URL_ROOT; ?>/xmd/style/fonts.css' rel='stylesheet' type='text/css' />
+    <link href='<?php echo URL_ROOT; ?>/public_xmd/assets/style/fonts.css' rel='stylesheet' type='text/css' />
 
     <title>Ximdex Installer</title>
 

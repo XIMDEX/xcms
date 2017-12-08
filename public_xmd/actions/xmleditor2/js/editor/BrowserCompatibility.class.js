@@ -101,7 +101,7 @@ _create_xslOutput: function(xsldoc) {
 
 _create_minusButton: function(xsldoc) {
 	var minusButton = xsldoc.createElement('img');
-	minusButton.setAttribute('src', url_root + '/xmd/images/tree/Lminus.png');
+	minusButton.setAttribute('src', url_root + '/public_xmd/assets/images/tree/Lminus.png');
 	minusButton.setAttribute('align', 'absmiddle');
 	minusButton.setAttribute('class', 'minus folding');
 
@@ -110,7 +110,7 @@ _create_minusButton: function(xsldoc) {
 
 _create_folderIcon: function(xsldoc) {
 	var folderIcon = xsldoc.createElement('img');
-	folderIcon.setAttribute('src', url_root + '/xmd/images/tree/openfolder.png');
+	folderIcon.setAttribute('src', url_root + '/public_xmd/assets/images/tree/openfolder.png');
 	folderIcon.setAttribute('align', 'absmiddle');
 	folderIcon.setAttribute('class', 'folder folding');
 
@@ -119,7 +119,7 @@ _create_folderIcon: function(xsldoc) {
 
 _create_blankImage: function(xsldoc) {
 	var blankImage = xsldoc.createElement('img');
-	blankImage.setAttribute('src', url_root + '/xmd/images/tree/blank.png');
+	blankImage.setAttribute('src', url_root + '/public_xmd/assets/images/tree/blank.png');
 	blankImage.setAttribute('align', 'absmiddle');
 	blankImage.setAttribute('width', '10px');
 

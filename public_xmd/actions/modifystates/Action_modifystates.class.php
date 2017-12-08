@@ -76,7 +76,7 @@ class Action_modifystates extends ActionAbstract
         }
 
         $this->addJs('/actions/modifystates/resources/js/manager.js', 'APP');
-        $this->addCss('/xmd/style/forms/tabulators.css');
+        $this->addCss('/public_xmd/assets/style/forms/tabulators.css');
         $this->addCss('/actions/modifystates/resources/css/default.css', 'APP');
 
         $nodeType = new NodeType();

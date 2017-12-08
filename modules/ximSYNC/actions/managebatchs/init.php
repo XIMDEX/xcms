@@ -39,7 +39,7 @@ use Ximdex\Runtime\App;
   	 ModulesManager::file('/inc/model/Batch.class.php', 'ximSYNC');
  	 ModulesManager::file('/conf/synchro_conf.php', 'ximSYNC');
  	 ModulesManager::file('/actions/managebatchs/forms.php', 'ximSYNC');
-	 ModulesManager::file('/xmd/js/sajax/sajax.php');
+	 ModulesManager::file('/public_xmd/assets/js/sajax/sajax.php');
 	
 	if($_GET['mode'] == "action") {
 		

@@ -303,7 +303,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
         $kupuURL = App::getValue('UrlRoot') . $kupuURL;
 
         $cssFiles = array(
-            App::getValue('UrlRoot') . '/xmd/style/jquery/custom_theme/jquery-ui-1.7.custom.css',
+            App::getValue('UrlRoot') . '/public_xmd/assets/style/jquery/custom_theme/jquery-ui-1.7.custom.css',
             $actionURL . '/views/common/css/kupustyles.css',
             $actionURL . '/views/common/css/toolboxes.css',
             $actionURL . '/views/common/css/treeview.css',
@@ -317,11 +317,11 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
             $extensionsURL . '/bootstrap/dist/css/bootstrap.min.css',
 
 //future		$actionURL . '/views/common/css/colorpicker.css',
-            App::getValue('UrlRoot') . '/xmd/style/fonts.css',
-            App::getValue('UrlRoot') . '/xmd/style/jquery/ximdex_theme/widgets/tabs/common_views.css',
+            App::getValue('UrlRoot') . '/public_xmd/assets/style/fonts.css',
+            App::getValue('UrlRoot') . '/public_xmd/assets/style/jquery/ximdex_theme/widgets/tabs/common_views.css',
             App::getValue('UrlRoot') . '/inc/widgets/select/css/ximdex.select.css',
-            App::getValue('UrlRoot') . '/xmd/style/jquery/ximdex_theme/widgets/treeview/treeview.css',
-            App::getValue('UrlRoot') . '/xmd/style/jquery/ximdex_theme/widgets/tagsinput/tagsinput_editor.css',
+            App::getValue('UrlRoot') . '/public_xmd/assets/style/jquery/ximdex_theme/widgets/treeview/treeview.css',
+            App::getValue('UrlRoot') . '/public_xmd/assets/style/jquery/ximdex_theme/widgets/tagsinput/tagsinput_editor.css',
         );
 
         $baseTags = array(

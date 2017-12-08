@@ -4,9 +4,9 @@
         <span id="{@uid}" />
         <div uid="{@uid}">
 	        <span uid="{@uid}" editable="no" class="rngeditor_block">
-				<img src="../../xmd/images/tree/L.png" align="absmiddle"/>
-				<img src="../../xmd/images/tree/file.png" align="absmiddle"/>
-				<img src="../../xmd/images/tree/blank.png" width="10px" align="absmiddle"/>
+				<img src="../../public_xmd/assets/images/tree/L.png" align="absmiddle"/>
+				<img src="../../public_xmd/assets/images/tree/file.png" align="absmiddle"/>
+				<img src="../../public_xmd/assets/images/tree/blank.png" width="10px" align="absmiddle"/>
 			</span>
 			<span uid="{@uid}" editable="no" class="rngeditor_title">xim:type:</span> <xsl:apply-templates/>
         </div>

@@ -144,7 +144,7 @@
 			<tr>
 				<td class="filacerrar" align="right">
 					<a href="javascript:parent.deletetabpage(parent.selected);" class="filacerrar">
-					<?php echo _("Close window"); ?><img src="../../../../xmd/images/botones/cerrar.gif" alt="" border="0">
+					<?php echo _("Close window"); ?><img src="../../../../public_xmd/assets/images/botones/cerrar.gif" alt="" border="0">
 					</a>
 				</td>
 			</tr>
@@ -370,7 +370,7 @@
  echo $batch['IdBatch']; ?>);">
 										<img src="<?php
 
- echo App::getValue('UrlRoot');?>/xmd/images/botones/subir_p.gif" alt="" border="0">
+ echo App::getValue('UrlRoot');?>/public_xmd/assets/images/botones/subir_p.gif" alt="" border="0">
 									</a>
 							</td>
 						</tr>
@@ -688,7 +688,7 @@
 			foreach ($lines as $line) {
 
 				$out .= "<td valign='middle'><img style='width:" . $line['width'] . "px;height:3px;' " .
-						"src='../../../../xmd/images/pix_" . $line['color'] . ".png'></td>\n";
+						"src='../../../../public_xmd/assets/images/pix_" . $line['color'] . ".png'></td>\n";
 			}
 			$out .= "</tr>\n";
 			$out .= "</table><br />\n";
@@ -705,8 +705,8 @@
 		$out = "";
 		$out .= "<table cellpadding='0' cellspacing='0'>\n";
 		$out .= "<tr>";
-		$out .= "<td><img style='width:" . $finishedLineWidth . "px;height:6px;' src='../../../../xmd/images/pix_green.png'></td>";
-		$out .= "<td><img style='width:" . $pendingLineWidth . "px;height:6px;' src='../../../../xmd/images/pix_red.png'></td>";
+		$out .= "<td><img style='width:" . $finishedLineWidth . "px;height:6px;' src='../../../../public_xmd/assets/images/pix_green.png'></td>";
+		$out .= "<td><img style='width:" . $pendingLineWidth . "px;height:6px;' src='../../../../public_xmd/assets/images/pix_red.png'></td>";
 		$out .= "</tr>";
 		$out .= "</table>";
 

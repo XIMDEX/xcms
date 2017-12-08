@@ -270,7 +270,7 @@ class Action_poolPreview extends ActionAbstract {
     	$this->addJs(Extensions::JQUERY_PATH.'/plugins/thickbox/thickbox.js');
 
     	$this->addJs('/actions/poolPreview/resources/js/poolPreview.js', 'APP');
-    	$this->addJs('/xmd/js/helper/query_manager.js');
+    	$this->addJs('/public_xmd/assets/js/helper/query_manager.js');
     	$this->addJs('/actions/manageList/resources/js/common.js', 'APP');
     	
     	
@@ -284,8 +284,8 @@ class Action_poolPreview extends ActionAbstract {
     	$this->addCss('/actions/poolPreview/resources/css/ui.dropdownchecklist.css', 'APP');
     	$this->addCss('/extensions/jquery/plugins/thickbox/thickbox.css');
     	$this->addCss('/actions/manageList/resources/css/common.css', 'APP');
-		$this->addCss('/xmd/style/jquery/ximdex_theme/jquery-ui-1.8.2.custom.css');
-		$this->addCss('/xmd/style/main_extended.css');
+		$this->addCss('/public_xmd/assets/style/jquery/ximdex_theme/jquery-ui-1.8.2.custom.css');
+		$this->addCss('/public_xmd/assets/style/main_extended.css');
     	
 	}
 }

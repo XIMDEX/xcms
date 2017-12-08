@@ -11,13 +11,13 @@
 		<span id="{@uid}" />
 		<body uid="{@uid}">
 			<h2>
-				<img src="../../xmd/images/logo_ximdex.gif" align="absmiddle" />
+				<img src="../../public_xmd/assets/images/logo_ximdex.gif" align="absmiddle" />
 				Rng Editor
 			</h2>
 			<div class="rngeditor_block">
-				<!--<img src="../../xmd/images/tree/blank.png" width="19px" align="absmiddle" />-->
-				<img src="../../xmd/images/icons/root.png" align="absmiddle" />
-				<!--<img src="../../xmd/images/tree/blank.png" width="10px" align="absmiddle" />-->
+				<!--<img src="../../public_xmd/assets/images/tree/blank.png" width="19px" align="absmiddle" />-->
+				<img src="../../public_xmd/assets/images/icons/root.png" align="absmiddle" />
+				<!--<img src="../../public_xmd/assets/images/tree/blank.png" width="10px" align="absmiddle" />-->
 				<span class="rngeditor_title">RNG Schema</span>
 				<xsl:apply-templates/>
 			</div>

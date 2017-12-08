@@ -76,12 +76,12 @@ class Action_browser3 extends ActionAbstract
             'xinversion' => App::getValue("VersionName")
         );
 
-        $this->addCss('/xmd/style/fonts.css');
-        $this->addCss('/xmd/style/jquery/smoothness/jquery-ui-1.8.2.custom.css');
+        $this->addCss('/public_xmd/assets/style/fonts.css');
+        $this->addCss('/public_xmd/assets/style/jquery/smoothness/jquery-ui-1.8.2.custom.css');
         $this->addCss('/extensions/bootstrap/dist/css/bootstrap.min.css');
         $this->addCss('/extensions/ladda/dist/ladda-themeless.min.css');
         $this->addCss('/extensions/humane/flatty.css');
-        $this->addCss('/xmd/style/jquery/ximdex_theme/widgets/treeview/treeview.css');
+        $this->addCss('/public_xmd/assets/style/jquery/ximdex_theme/widgets/treeview/treeview.css');
         $this->addActionCss('browser.css');
         if (ModulesManager::isEnabled('ximTOUR'))
             $this->addCss('/modules/ximTOUR/resources/css/tour.css');
@@ -94,17 +94,17 @@ class Action_browser3 extends ActionAbstract
         }
 
         //Old browserwindow styles
-        $this->addCss('/xmd/style/jquery/ximdex_theme/widgets/browserwindow/actionPanel.css');
-        $this->addCss('/xmd/style/jquery/ximdex_theme/widgets/browserwindow/browserwindow.css');
-        $this->addCss('/xmd/style/jquery/ximdex_theme/widgets/browserwindow/icons.css');
+        $this->addCss('/public_xmd/assets/style/jquery/ximdex_theme/widgets/browserwindow/actionPanel.css');
+        $this->addCss('/public_xmd/assets/style/jquery/ximdex_theme/widgets/browserwindow/browserwindow.css');
+        $this->addCss('/public_xmd/assets/style/jquery/ximdex_theme/widgets/browserwindow/icons.css');
 
         //Old hbox styles
-        $this->addCss('/xmd/style/jquery/ximdex_theme/widgets/hbox/hbox.css');
+        $this->addCss('/public_xmd/assets/style/jquery/ximdex_theme/widgets/hbox/hbox.css');
 
         //Old tabs styles
-        $this->addCss('/xmd/style/jquery/ximdex_theme/widgets/tabs/common_views.css');
-        $this->addCss('/xmd/style/jquery/ximdex_theme/widgets/tabs/tabs-container.css');
-        $this->addCss('/xmd/style/jquery/ximdex_theme/widgets/tabs/tabs.css');
+        $this->addCss('/public_xmd/assets/style/jquery/ximdex_theme/widgets/tabs/common_views.css');
+        $this->addCss('/public_xmd/assets/style/jquery/ximdex_theme/widgets/tabs/tabs-container.css');
+        $this->addCss('/public_xmd/assets/style/jquery/ximdex_theme/widgets/tabs/tabs.css');
 
         $this->addJs('/inc/js/helpers.js');
         $this->addJs('/inc/js/collection.js');

@@ -772,7 +772,7 @@ this.setDefaultImages = function () {
             var img_url = elem.src.replace(this._baseActionURL, '');
 
             if (!img_url || "index.html" == img_url || !elem.src) {
-                elem.src = url_root + '/xmd/images/insert_img.png';
+                elem.src = url_root + '/public_xmd/assets/images/insert_img.png';
             }
         }.bind(this)
     );
@@ -1208,11 +1208,11 @@ this.afterUpdateContent = function (options) {
                 var target = event.currentTarget || event.target;
                 var ctrl = $(target).siblings('div').toggle().siblings('.ctrl');
                 if ($(ctrl).hasClass('minus')) {
-                    $(ctrl).attr('src', '../../xmd/images/tree/Lplus.png').toggleClass('minus');
-                    $('.folder', $(target).parent()).attr('src', '../../xmd/images/tree/folder.png');
+                    $(ctrl).attr('src', '../../public_xmd/assets/images/tree/Lplus.png').toggleClass('minus');
+                    $('.folder', $(target).parent()).attr('src', '../../public_xmd/assets/images/tree/folder.png');
                 } else {
-                    $(ctrl).attr('src', '../../xmd/images/tree/Lminus.png').toggleClass('minus');
-                    $('.folder', $(target).parent()).attr('src', '../../xmd/images/tree/openfolder.png');
+                    $(ctrl).attr('src', '../../public_xmd/assets/images/tree/Lminus.png').toggleClass('minus');
+                    $('.folder', $(target).parent()).attr('src', '../../public_xmd/assets/images/tree/openfolder.png');
                 }
             }
         );

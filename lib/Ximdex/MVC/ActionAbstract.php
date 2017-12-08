@@ -595,9 +595,9 @@ abstract class ActionAbstract extends IController
     /**
      * Remplace files con [LANG] to i18n file
      * Example:
-     *  /var/www/ximdex/xmd/images/[LANG]/pingu.gif -> /var/www/ximdex/xmd/images/es/pingu.gif
+     *  /var/www/ximdex/public_xmd/assets/images/[LANG]/pingu.gif -> /var/www/ximdex/public_xmd/assets/images/es/pingu.gif
      *  or
-     *  /var/www/ximdex/xmd/images/ximTAGS/pingu_[LANG].gif -> /var/www/ximdex/xmd/images/ximTAGS/pingu_es.gif
+     *  /var/www/ximdex/public_xmd/assets/images/ximTAGS/pingu_[LANG].gif -> /var/www/ximdex/public_xmd/assets/images/ximTAGS/pingu_es.gif
      *  or ...
      *  This can be also done in html with the smarty var locale
      * @param $file

@@ -4,9 +4,9 @@
         <span id="{@uid}" name="{@name}" value="{@value}" />
         <div uid="{@uid}">
 	        <span uid="{@uid}" class="rngeditor_block" editable="no">
-				<img src="../../xmd/images/tree/L.png" align="absmiddle"/>
-				<img src="../../xmd/images/tree/file.png" align="absmiddle"/>
-				<img src="../../xmd/images/tree/blank.png" width="10px" align="absmiddle"/>
+				<img src="../../public_xmd/assets/images/tree/L.png" align="absmiddle"/>
+				<img src="../../public_xmd/assets/images/tree/file.png" align="absmiddle"/>
+				<img src="../../public_xmd/assets/images/tree/blank.png" width="10px" align="absmiddle"/>
 			</span>
 			<span uid="{@uid}" editable="no">
 				<span class="rngeditor_title">xim:attribute:</span> Name: <xsl:value-of select="@name"/> - Value: <xsl:value-of select="@value"/>

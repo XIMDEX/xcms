@@ -66,7 +66,7 @@
 </form>
 <div id="publishing_message" style="display: none;">
 	<p>
-		<img src="{$_URL_ROOT}/xmd/images/publicando_seccion.gif" alt="" border="0" />
+		<img src="{$_URL_ROOT}/public_xmd/assets/images/publicando_seccion.gif" alt="" border="0" />
 	</p>
 	<p>{t}Publishing...{/t}</p>
 	<p class="small">{t}Please, wait{/t}</p>

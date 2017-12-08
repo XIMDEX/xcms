@@ -27,6 +27,8 @@ App::setValue('XIMDEX_ROOT_PATH', dirname(dirname(__FILE__)));
 
 include_once(XIMDEX_ROOT_PATH . '/inc/db/DB_zero.class.php');
 
+
+
 // get Config from install file
 if ( file_exists( App::getValue('XIMDEX_ROOT_PATH') . '/conf/install-params.conf.php' ) ) {
     $conf = require_once(App::getValue('XIMDEX_ROOT_PATH') . '/conf/install-params.conf.php');
@@ -39,6 +41,7 @@ if ( file_exists( App::getValue('XIMDEX_ROOT_PATH') . '/conf/install-params.conf
 // set ximdex root path
 Ximdex\Modules\Manager::init( App::getValue('XIMDEX_ROOT_PATH')   );
 Ximdex\Modules\Manager::file( Ximdex\Modules\Manager::get_modules_install_params() );
+
 
 // generate general purpose logs files
 Logger::generate('XMD', 'xmd', true);
@@ -54,6 +57,8 @@ if( file_exists($installModulesPath) ){
     $modulesConfString = file_get_contents($installModulesPath);
 }
 
+
+
 $matches = array();
 preg_match_all('/define\(\'(.*)\',(.*)\);/iUs', $modulesConfString, $matches);
 foreach ($matches[1] as $key => $value) {
@@ -63,6 +68,7 @@ foreach ($matches[1] as $key => $value) {
 // use config values
 define('DEFAULT_LOCALE', App::getValue('locale', 'ES_es'));
 date_default_timezone_set(App::getValue('timezone', 'Europe/Madrid'));
+
 
 // set DB Connection
 $dbConfig = App::getValue('db');
@@ -87,6 +93,8 @@ if ( !empty( $dbConfig ) ) {
         App::setValue($row['ConfigKey'], $row['ConfigValue']);
     }
 }
+
+
 
 // special objects (pseudo-DI)
 class_alias('Ximdex\Utils\Messages', 'Messages');

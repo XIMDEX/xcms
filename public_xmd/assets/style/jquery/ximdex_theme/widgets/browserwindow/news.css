@@ -26,7 +26,7 @@
   overflow: hidden; }
 
 .languages-news .xim-tabs-list-selector {
-  background: url("../../../../../../xmd/images/action/fnd-legend-span.png") repeat-x scroll left bottom transparent;
+  background: url("../../../../../../public_xmd/assets/images/action/fnd-legend-span.png") repeat-x scroll left bottom transparent;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
@@ -50,11 +50,11 @@
   padding: 2px 5px; }
 
 .languages-news .xim-tabs-list-selector:hover {
-  background: url("../../../../../../xmd/images/action/fnd-lang-span-default.png") repeat-x scroll left bottom transparent; }
+  background: url("../../../../../../public_xmd/assets/images/action/fnd-lang-span-default.png") repeat-x scroll left bottom transparent; }
 
 .languages-news .xim-tabs-list:before {
   content: ' ';
-  background: url("../../../../../../xmd/images/action/fnd-legend.png") no-repeat scroll left bottom transparent;
+  background: url("../../../../../../public_xmd/assets/images/action/fnd-legend.png") no-repeat scroll left bottom transparent;
   display: block;
   width: 22px;
   height: 8px;

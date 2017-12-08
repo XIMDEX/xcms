@@ -25,16 +25,16 @@
 
 
 
- @import "../../../../xmd/style/jquery/ximdex_theme/widgets/themes/ximdex_theme";
- @import "../../../../xmd/style/jquery/ximdex_theme/widgets/themes/extends";
- @import "../../../../xmd/style/jquery/ximdex_theme/widgets/themes/icons";
+ @import "../../../../public_xmd/assets/style/jquery/ximdex_theme/widgets/themes/ximdex_theme";
+ @import "../../../../public_xmd/assets/style/jquery/ximdex_theme/widgets/themes/extends";
+ @import "../../../../public_xmd/assets/style/jquery/ximdex_theme/widgets/themes/icons";
 
 .tour_tooltip{
 	position:absolute;
 	width:250px;
 	left:0;
 	top:0;
-	background: url("../../../../xmd/images/action/bg_strike.png") repeat scroll 0 0 rgba(0, 0, 0, 0.85);
+	background: url("../../../../public_xmd/assets/images/action/bg_strike.png") repeat scroll 0 0 rgba(0, 0, 0, 0.85);
 	color:white;
 	z-index:10000;
 	-moz-border-radius:5px;
@@ -134,7 +134,7 @@
 .tourcontrols{
 	position:fixed;
 	width:270px;
-	background: url(../../../../xmd/images/action/bg_strike.png) rgba(0,0,0,.8);
+	background: url(../../../../public_xmd/assets/images/action/bg_strike.png) rgba(0,0,0,.8);
 	color:#fff;
 	padding:10px;
 	-moz-border-radius:5px;
@@ -165,7 +165,7 @@
 	cursor:pointer;
 	font-weight:normal;
 	margin:10px 8px 10px 0;
-	background:  url(../../../../xmd/images/action/controls_tour.png) no-repeat left top;
+	background:  url(../../../../public_xmd/assets/images/action/controls_tour.png) no-repeat left top;
 	padding-left: 15px;
 	font-size: 1.4rem;
 }

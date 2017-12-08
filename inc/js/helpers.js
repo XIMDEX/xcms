@@ -39,7 +39,7 @@
 			XMLNS_XIM: 'http://ximdex.com/schema/1.0',
 			baseUrl: baseUrl,
 			restUrl: baseUrl + '/xmd/loadaction.php',
-			iconsUrl: baseUrl + '/xmd/images/icons',
+			iconsUrl: baseUrl + '/public_xmd/assets/images/icons',
 			tourInstance: null,
 			getUID: function() {
 				return Object.rand(10000000, 99999999);
