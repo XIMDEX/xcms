@@ -68,6 +68,8 @@ class InstallModulesManager extends InstallManager
 
     public function enableModule($name)
     {
+            $modMngr = new ModulesManager();
+            $modMngr->enableModule($name);
     }
 
     public function uninstallModule($name)
