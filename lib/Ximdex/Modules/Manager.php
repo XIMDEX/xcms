@@ -39,7 +39,7 @@ class Manager
     public $modules;
     public $caller;
     private static $core_modules = array("ximIO", "ximSYNC");
-    private static $deprecated_modules = array("ximDAV", "ximTRASH", "ximLOADERDEVEL", "ximTHEMES",  "ximPAS", "ximSIR", "ximDEMOS", "ximPORTA", "ximTEST", "ximTAINT");
+    private static $deprecated_modules = array("ximDAV", "ximTRASH", "ximTHEMES",  "ximPAS", "ximSIR", "ximDEMOS", "ximPORTA", "ximTEST", "ximTAINT");
     public static $msg = null;
     private static $root_path;
 

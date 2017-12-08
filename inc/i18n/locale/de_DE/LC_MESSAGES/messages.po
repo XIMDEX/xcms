@@ -7514,12 +7514,6 @@ msgid "Processing "
 msgstr "Wird verarbeitet"
 
 
-# ######## ximLOADER ########
-#: /modules/ximLOADER/BuildParser.class.php
-msgid "Error parsing XML document"
-msgstr "Fehler beim Parsing des XML-Dokuments"
-
-
 # ######## ximIO ########
 #: /modules/ximIO/actions/console_wrapper/template/Smarty/export.tpl
 msgid "Introduce the first node identifier:"

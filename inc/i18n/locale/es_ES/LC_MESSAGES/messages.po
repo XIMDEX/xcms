@@ -7899,10 +7899,6 @@ msgstr "Falló la conexión"
 msgid "Processing "
 msgstr "Procesando "
 
-#: ---------- ximLOADER -----------
-#: /modules/ximLOADER/BuildParser.class.php
-msgid "Error parsing XML document"
-msgstr "Error parseando el documento XML"
 
 #: ---------- ximIO ----------
 #: /modules/ximIO/actions/console_wrapper/template/Smarty/export.tpl
