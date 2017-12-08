@@ -2394,17 +2394,6 @@ VALUES
 	(7,'Edition','Document is under development',1,0,8),
 	(8,'Publication','Document is waiting for being published',0,1,7);
 
-INSERT INTO `SystemProperties` (`IdSysProp`, `Name`)
-VALUES
-	(1,'Language'),
-	(2,'Document_type'),
-	(3,'Channel'),
-	(4,'Channels'),
-	(5,'Nodeid'),
-	(6,'Project'),
-	(7,'Server'),
-	(8,'Document'),
-	(9,'Document_name');
 
 INSERT INTO `Users` (`IdUser`, `Login`, `Pass`, `Name`, `Email`, `Locale`, `LastLogin`, `NumAccess`)
 VALUES

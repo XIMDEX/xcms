@@ -732,13 +732,6 @@ CREATE TABLE `SynchronizerHistory` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 DELAY_KEY_WRITE=1 COMMENT='Table of sync history of Ximdex';
 
 
-CREATE TABLE `SystemProperties` (
-  `IdSysProp` int(12) unsigned NOT NULL AUTO_INCREMENT,
-  `Name` varchar(250) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`IdSysProp`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-
 CREATE TABLE `UpdateDb_historic` (
   `IdLog` int(11) NOT NULL AUTO_INCREMENT,
   `Priority` int(11) NOT NULL,
