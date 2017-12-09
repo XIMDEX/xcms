@@ -33,7 +33,7 @@ if (!defined('XIMDEX_ROOT_PATH'))
 if (!defined('CLI_MODE'))
     define('CLI_MODE', 0);
 
-require_once (XIMDEX_ROOT_PATH . '/extensions/vendors/autoload.php');
+require_once (XIMDEX_ROOT_PATH . '/vendors/autoload.php');
 
 include_once(XIMDEX_ROOT_PATH . '/inc/modules/modules.const');
 include_once(XIMDEX_ROOT_PATH . '/inc/modules/ModulesConfig.class.php');

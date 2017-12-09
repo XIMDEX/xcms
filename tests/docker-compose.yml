@@ -32,4 +32,4 @@ services:
       - selenium
     volumes:
       - ../:/var/www/html
-    command: sh -c "sleep 10s && cd /var/www/html && chmod -R 777 data conf logs && chmod a+s data conf logs && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer && composer install && extensions/vendors/bin/codecept run --steps"
+    command: sh -c "sleep 10s && cd /var/www/html && chmod -R 777 data conf logs && chmod a+s data conf logs && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer && composer install && vendors/bin/codecept run --steps"

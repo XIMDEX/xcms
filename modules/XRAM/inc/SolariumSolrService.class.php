@@ -34,7 +34,7 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 
 require_once(XIMDEX_ROOT_PATH . "/inc/utils.php");
 require_once("ISolrService.iface.php");
-require_once(XIMDEX_ROOT_PATH . '/extensions/vendors/autoload.php');
+require_once(XIMDEX_ROOT_PATH . '/vendors/autoload.php');
 
 /**
  * <p>SolrService class</p>
