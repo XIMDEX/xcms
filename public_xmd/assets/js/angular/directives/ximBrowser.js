@@ -18,7 +18,7 @@
       var base_url;
       base_url = $window.X.baseUrl;
       return {
-        templateUrl: base_url + '/inc/js/angular/templates/ximBrowser.html',
+        templateUrl: base_url + '/public_xmd/assets/js/angular/templates/ximBrowser.html',
         restrict: "E",
         replace: true,
         scope: {

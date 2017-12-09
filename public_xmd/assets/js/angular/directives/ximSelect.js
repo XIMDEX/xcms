@@ -37,7 +37,7 @@ angular.module('ximdex.common.directive')
                 style: '=ximStyle',
                 labelHref: '=ximLabelHref'
             },
-            templateUrl: base_url+'/inc/js/angular/templates/ximSelect.html',
+            templateUrl: base_url+'/public_xmd/assets/js/angular/templates/ximSelect.html',
             restrict: 'E',
             replace: true,
             link: function (scope, element, attrs, ctrl) {

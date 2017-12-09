@@ -3,7 +3,7 @@ angular.module("ximdex.common.directive").directive "ximList", [
     ($window) ->
         base_url = $window.X.baseUrl
         return (
-            templateUrl: base_url+'/inc/js/angular/templates/ximList.html'
+            templateUrl: base_url+'/public_xmd/assets/js/angular/templates/ximList.html'
             restrict: "E"
         )
 ]

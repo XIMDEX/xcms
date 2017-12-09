@@ -38,12 +38,12 @@
 		{* constant js includes *}
 	<script type="text/javascript" src="{EXTENSIONS::Jquery()}"></script>
 	<script type="text/javascript" src="{EXTENSIONS::Jquery_ui()}"></script>
-	<script type="text/javascript" src="{$_URL_ROOT}/inc/js/helpers.js"></script>
+	<script type="text/javascript" src="{$_URL_ROOT}/public_xmd/assets/js/helpers.js"></script>
         <script type="text/javascript" src="{$_URL_ROOT}/public_xmd/vendors/jquery/plugins/jquery-validate/jquery.validate.js"></script>
         <script type="text/javascript" src="{$_URL_ROOT}/public_xmd/vendors/jquery/plugins/jquery-validate/localization/messages_{$user_locale.Lang}.js"></script>
         <script type="text/javascript" src="{$_URL_ROOT}/public_xmd/actions/composer/resources/js/widgets_controllers/default.js"></script>
         <script type="text/javascript" src="{$_URL_ROOT}/public_xmd/assets/js/helper/query_manager.js"></script>
-	<script type="text/javascript" src="{$_URL_ROOT}/inc/js/collection.class.js"></script>
+	<script type="text/javascript" src="{$_URL_ROOT}/public_xmd/assets/js/collection.class.js"></script>
 		{* js widgets *}
 		%=js_widgets%
 	</head>

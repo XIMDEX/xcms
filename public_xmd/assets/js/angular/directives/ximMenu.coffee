@@ -27,7 +27,7 @@ angular.module("ximdex.common.directive").directive "ximMenu", [
     ($window) ->
         base_url = $window.X.baseUrl
         return (
-            templateUrl: base_url+'/inc/js/angular/templates/ximMenu.html'
+            templateUrl: base_url+'/public_xmd/assets/js/angular/templates/ximMenu.html'
             restrict: "E"
             replace: true
             link: (scope) ->

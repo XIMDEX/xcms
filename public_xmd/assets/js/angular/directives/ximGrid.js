@@ -39,7 +39,7 @@ angular.module('ximdex.common.directive').directive('ximGrid', [
         downPage: '=ximDownPage',
         searching: '=ximSearching'
       },
-      templateUrl: 'inc/js/angular/templates/ximGrid.html',
+      templateUrl: 'public_xmd/assets/js/angular/templates/ximGrid.html',
       controller: [
         '$scope', '$element', '$attrs', '$http', 'xUrlHelper', '$window', 'xMenu', 'xTabs', function($scope, $element, $attrs, $http, xUrlHelper, $window, xMenu, xTabs) {
           var postLoadActions, url;

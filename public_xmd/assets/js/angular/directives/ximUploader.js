@@ -27,7 +27,7 @@ angular.module('ximdex.common.directive')
         return {
             replace: true,
             restrict: 'E',
-            templateUrl : 'inc/js/angular/templates/ximUploader.html',
+            templateUrl : 'public_xmd/assets/js/angular/templates/ximUploader.html',
             controller: ['$scope', '$element', '$attrs', 'xUrlHelper', 'xTranslate', '$rootScope', function($scope, $element, $attrs, xUrlHelper, xTranslate, $rootScope){
             	
             	$scope.nodeId = $attrs.ximNodeId;

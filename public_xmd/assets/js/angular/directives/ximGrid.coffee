@@ -36,7 +36,7 @@ angular.module('ximdex.common.directive').directive 'ximGrid', [ ->
         upPage: '=ximUpPage'
         downPage: '=ximDownPage'
         searching: '=ximSearching'
-    templateUrl: 'inc/js/angular/templates/ximGrid.html'
+    templateUrl: 'public_xmd/assets/js/angular/templates/ximGrid.html'
     controller: [
         '$scope'
         '$element'

@@ -11,7 +11,7 @@
 </div>
 
 <ul class="xim-treeview-branch" ng-show="node.showNodes">
-  <li ng-repeat="node in node.collection track by (node.nodeid + node.nodeFrom + '_' + node.nodeTo)" static-include="inc/js/angular/templates/tree_item_renderer.html" class="xim-treeview-node xim-treeview-expanded"></li>
+  <li ng-repeat="node in node.collection track by (node.nodeid + node.nodeFrom + '_' + node.nodeTo)" static-include="public_xmd/assets/js/angular/templates/tree_item_renderer.html" class="xim-treeview-node xim-treeview-expanded"></li>
 </ul>
 
 <ul class="xim-treeview-loading" id="treeloading-undefined" ng-show="node.showNodes && node.loading">

@@ -4,7 +4,7 @@ angular.module("ximdex.common.directive").directive("ximTabs", [
     var base_url;
     base_url = $window.X.baseUrl;
     return {
-      templateUrl: base_url + '/inc/js/angular/templates/ximTabs.html',
+      templateUrl: base_url + '/public_xmd/assets/js/angular/templates/ximTabs.html',
       restrict: "E",
       replace: true,
       scope: {
