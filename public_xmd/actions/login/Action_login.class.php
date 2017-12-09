@@ -80,6 +80,8 @@ class Action_login extends ActionAbstract
 
     function get_news()
     {
+        $lang = strtolower(DEFAULT_LOCALE);
+
         $REMOTE_NEWS = STATS_SERVER . "/stats/getnews.php";
 
         $ctx = stream_context_create(array(
@@ -89,20 +91,21 @@ class Action_login extends ActionAbstract
             )
         );
 
-        //$url =
-        $REMOTE_NEWS . "?lang=" . strtolower(DEFAULT_LOCALE) . "&ximid=" . App::getValue('ximid');
-        $url = $REMOTE_NEWS . "?lang=" . strtolower(DEFAULT_LOCALE);
+        //$url = $REMOTE_NEWS . "?lang=" . strtolower(DEFAULT_LOCALE) . "&ximid=" . App::getValue('ximid');
+        $url = $REMOTE_NEWS . "?lang=" . $lang;
 
         //get remote content
-        $news_content = @file_get_contents($url, 0, $ctx);
+       $news_content = @file_get_contents($url, 0, $ctx);
+
 
         if (empty($news_content)) {
-            $file = "index_" . strtolower(DEFAULT_LOCALE) . ".html";
+            $file = "index_" . $lang . ".html";
+            $news_path = APP_ROOT_PATH . "/assets/news/";
 
-            if (file_exists(XIMDEX_ROOT_PATH . "/xmd/news/$file")) {
-                return file_get_contents(XIMDEX_ROOT_PATH . "/xmd/news/$file");
+            if (file_exists($news_path . $file)) {
+                return file_get_contents($news_path . $file);
             }else{
-                return file_get_contents(XIMDEX_ROOT_PATH . "/xmd/news/index.html");
+                return file_get_contents($news_path . "index.html");
             }
         }
 
