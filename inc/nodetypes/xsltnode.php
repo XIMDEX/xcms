@@ -679,6 +679,7 @@ class xsltnode extends FileNode
                 . $templatesFolderNode->GetRelativePath($node->getProject());
         $content = str_replace('##PATH_TO_LOCAL_TEMPLATE_INCLUDE##', $PATH_TEMPLATE_INCLUDE, $content);
         $urlTemplatesInclude = $PATH_TEMPLATE_INCLUDE . '/templates_include.xsl';
+        Logger::info('Using document: ' . $urlTemplatesInclude);
         
         return true;
     }

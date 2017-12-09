@@ -61,6 +61,11 @@ class View_Xslt extends Abstract_View
 
         $ptdFolder = App::getValue("TemplatesDirName");
         
+        // creates the XSLT log if there is not one yet
+        $defaultLog = Logger::get_active_instance();
+        Logger::generate('XSLT', 'xslt');
+        Logger::setActiveLog('xslt');
+        
         // get always the project docxap file
         $projectId = $this->_idProject;
         $project = new Node($projectId);
@@ -78,6 +83,7 @@ class View_Xslt extends Abstract_View
                 $content = str_replace($xmlHeader, $xmlHeader . $inclusionHeader, $content);
 
                 Logger::info('Render in client, return XML content + path to template');
+                Logger::setActiveLog($defaultLog);
                 return $content;
             }
         }
@@ -88,7 +94,7 @@ class View_Xslt extends Abstract_View
         if (!isset($GLOBALS['errorsInXslTransformation']))
             $GLOBALS['errorsInXslTransformation'] = array();
         
-        Logger::info('Starting xslt transformation');
+        Logger::info('Starting XSLT transformation');
         if ($this->_node and $this->_node->GetID())
             Logger::info('Processing XML document with ID: ' . $this->_node->GetID() . ' and name: ' . $this->_node->GetNodeName());
         
@@ -130,10 +136,10 @@ class View_Xslt extends Abstract_View
         if (App::debug())
         {
             # DEBUG
-            @file_put_contents("/tmp/docxap-pre.xsl", $docxap);
-            @file_put_contents("/tmp/docxap-post.xsl", $docxapContent);
-            @file_put_contents("/tmp/pointer.xml", $pointer);
-            @file_put_contents("/tmp/content-pre.xml", $content);
+            @file_put_contents(XIMDEX_ROOT_PATH . '/data/tmp/docxap-pre.xsl', $docxap);
+            @file_put_contents(XIMDEX_ROOT_PATH . '/data/tmp/docxap-post.xsl', $docxapContent);
+            @file_put_contents(XIMDEX_ROOT_PATH . '/data/tmp/pointer.xml', $pointer);
+            @file_put_contents(XIMDEX_ROOT_PATH . '/data/tmp/content-pre.xml', $content);
             # END DEBUG
         }
         
@@ -146,7 +152,7 @@ class View_Xslt extends Abstract_View
         if (App::debug())
         {
             # DEBUG
-            @file_put_contents("/tmp/content-post.xml", $content);
+            @file_put_contents(XIMDEX_ROOT_PATH . '/data/tmp/content-post.xml', $content);
             # END DEBUG
         }
         
@@ -177,23 +183,19 @@ class View_Xslt extends Abstract_View
                     if (App::debug())
                     {
                         # DEBUG
-                        @file_put_contents("/tmp/content-post.xml", $content);
+                        @file_put_contents(XIMDEX_ROOT_PATH . '/data/tmp/content-post.xml', $content);
                         # END DEBUG
                     }
                 }
             }
         }
         
-        // creates the XSLT log if there is not one yet
-        Logger::generate('XSLT', 'xslt');
-        
-        if (empty($content)) {
+        if ($content === false) {
             
-            $error = 'Error in XSL transformation process (' . \Ximdex\Error::error_message('XSLTProcessor::transformToXml(): ') . ')';
-            $GLOBALS['errorsInXslTransformation'][] = $error;
-            // activation of the XSLT log and init the XSLT errors array
-            $defaultLog = Logger::get_active_instance();
-            Logger::setActiveLog('xslt');
+            if ($xsltHandler->errors())
+            {
+                $GLOBALS['errorsInXslTransformation'] = array_merge($GLOBALS['errorsInXslTransformation'], $xsltHandler->errors());
+            }
             foreach ($GLOBALS['errorsInXslTransformation'] as $error)
                 Logger::error($error);
             // we save the error trace into the previous file
@@ -213,28 +215,26 @@ class View_Xslt extends Abstract_View
         if ($channel->get("OutputType") == "xml") {
             if (!@$domDoc->loadXML($content)) {
                 
-                $defaultLog = Logger::get_active_instance();
-                Logger::setActiveLog('xslt');
                 Logger::error('XML invalid: ' . $content);
-                Logger::setActiveLog($defaultLog);
                 $GLOBALS['errorsInXslTransformation'][] = 'Invalid XML source: ' . $content;
                 // we save the error trace into the previous file
                 $this->set_xslt_errors($GLOBALS['errorsInXslTransformation']);
+                Logger::setActiveLog($defaultLog);
                 return false;
             }
         } else if ($channel->get("OutputType") == "web") {
             if (!@$domDoc->loadHTML($content)) {
                 
-                $defaultLog = Logger::get_active_instance();
-                Logger::setActiveLog('xslt');
                 Logger::error('HTML invalid: ' . $content);
-                Logger::setActiveLog($defaultLog);
                 $GLOBALS['errorsInXslTransformation'][] = 'Invalid HTML or XHTML source: ' . $content;
                 // we save the error trace into the previous file
                 $this->set_xslt_errors($GLOBALS['errorsInXslTransformation']);
+                Logger::setActiveLog($defaultLog);
                 return false;
             }
         } else {
+            
+            Logger::setActiveLog($defaultLog);
             return $this->storeTmpContent($content);
         }
         $xpath = new DOMXPath($domDoc);
@@ -254,7 +254,9 @@ class View_Xslt extends Abstract_View
         
         // the document has been processed propertly, so if there is any previous errors they will be deleted
         $this->reset_xslt_errors();
-
+        
+        Logger::info('XSLT transformation completed');
+        Logger::setActiveLog($defaultLog);
         return $this->storeTmpContent($content);
     }
     
