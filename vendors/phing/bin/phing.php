@@ -14,8 +14,8 @@
 		define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
 	}
 	define('PHP_CLASSPATH', (get_include_path() 
-	. ':' . XIMDEX_ROOT_PATH . '/extensions/' 
-	. ':' . XIMDEX_ROOT_PATH . '/extensions/phing'));
+	. ':' . XIMDEX_ROOT_PATH . '/vendors/'
+	. ':' . XIMDEX_ROOT_PATH . '/vendors/phing'));
 	set_include_path(PHP_CLASSPATH);
 /* set classpath */
 /*if (getenv('PHP_CLASSPATH')) {

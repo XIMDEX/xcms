@@ -134,7 +134,8 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
         $actionUrlShowPost = $this->_base_url . '&method=showPost';
 
         $actionURL = '/public_xmd/actions/xmleditor2';
-        $kupuURL = '/extensions/kupu';
+        $vendorsURL = '/public_xmd/vendors';
+        $kupuURL = $vendorsURL . '/kupu';
 
         $jsFiles = array(
             Extensions::JQUERY,
@@ -152,17 +153,17 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
             '/inc/js/console.js',
             '/inc/widgets/select/js/ximdex.select.js',
             '/inc/js/i18n.js',
-            '/public_xmd/vendors/hammerjs/hammer.js/hammer.js',
-            '/public_xmd/vendors/angular/angular.min.js',
-            '/public_xmd/vendors/RyanMullins/angular-hammer/angular.hammer.js',
-            '/public_xmd/vendors/angular-bootstrap/dist/ui-bootstrap-custom-tpls-0.13.0-SNAPSHOT.min.js',
-            '/public_xmd/vendors/react/react-with-addons.min.js',
-            '/public_xmd/vendors/react/ngReact.min.js',
+            $vendorsURL . '/hammerjs/hammer.js/hammer.js',
+            $vendorsURL . '/angular/angular.min.js',
+            $vendorsURL . '/RyanMullins/angular-hammer/angular.hammer.js',
+            $vendorsURL . '/angular-bootstrap/dist/ui-bootstrap-custom-tpls-0.13.0-SNAPSHOT.min.js',
+            $vendorsURL . '/react/react-with-addons.min.js',
+            $vendorsURL . '/react/ngReact.min.js',
 
             $actionURL . '/js/angular/app.js',
             $actionURL . '/js/angular/ximOntologyBrowser.js',
 
-            '/public_xmd/vendors/d3js/d3.v3.min.js',
+            $vendorsURL . '/d3js/d3.v3.min.js',
             //'/inc/js/angular/app.js',
             '/inc/js/angular/services/xTranslate.js',
             '/inc/js/angular/services/xBackend.js',

@@ -13,11 +13,16 @@ if (!defined('APP_ROOT_PATH')) {
 }
 
 
+if (!defined('XIMDEX_VENDORS')) {
+    define('XIMDEX_VENDORS', '/vendors');
+}
+
+
 
 if (!defined('CLI_MODE'))
     define('CLI_MODE', 0);
 
-include_once dirname(dirname(__FILE__)) . '/extensions/vendors/autoload.php';
+include_once XIMDEX_ROOT_PATH.XIMDEX_VENDORS . '/autoload.php';
 
 class_alias('Ximdex\Modules\Manager', 'ModulesManager');
 

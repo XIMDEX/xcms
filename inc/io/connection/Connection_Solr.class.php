@@ -34,7 +34,7 @@ use Ximdex\Models\RelTagsNodes;
 
 require_once (XIMDEX_ROOT_PATH . '/inc/model/RelNodeMetadata.class.php');
 require_once (XIMDEX_ROOT_PATH . '/inc/io/connection/I_Connector.class.php');
-require_once (XIMDEX_ROOT_PATH . '/extensions/vendors/autoload.php');
+require_once (XIMDEX_ROOT_PATH . '/vendors/autoload.php');
 
 class Connection_Solr implements I_Connector {
 

@@ -35,13 +35,13 @@ use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\App;
 
 ModulesManager::file('/inc/io/BaseIOInferer.class.php');
-require_once(XIMDEX_ROOT_PATH . '/extensions/flow/ConfigInterface.php');
-require_once(XIMDEX_ROOT_PATH . '/extensions/flow/Config.php');
-require_once(XIMDEX_ROOT_PATH . '/extensions/flow/Exception.php');
-require_once(XIMDEX_ROOT_PATH . '/extensions/flow/File.php');
-require_once(XIMDEX_ROOT_PATH . '/extensions/flow/RequestInterface.php');
-require_once(XIMDEX_ROOT_PATH . '/extensions/flow/Request.php');
-require_once(XIMDEX_ROOT_PATH . '/extensions/flow/Uploader.php');
+require_once(XIMDEX_ROOT_PATH . XIMDEX_VENDORS . '/flow/ConfigInterface.php');
+require_once(XIMDEX_ROOT_PATH . XIMDEX_VENDORS . '/flow/Config.php');
+require_once(XIMDEX_ROOT_PATH . XIMDEX_VENDORS . '/flow/Exception.php');
+require_once(XIMDEX_ROOT_PATH . XIMDEX_VENDORS . '/flow/File.php');
+require_once(XIMDEX_ROOT_PATH . XIMDEX_VENDORS . '/flow/RequestInterface.php');
+require_once(XIMDEX_ROOT_PATH . XIMDEX_VENDORS . '/flow/Request.php');
+require_once(XIMDEX_ROOT_PATH . XIMDEX_VENDORS . '/flow/Uploader.php');
 
 
 class Action_fileupload_common_multiple extends ActionAbstract {
