@@ -9,6 +9,8 @@ Version 3.9
   * Merged API
   * New Blog module
   * New multichannel management
+  * New template hierarchy system for XSLT
+  * XSLT debug easier
 
 Version 3.8
 -----------
