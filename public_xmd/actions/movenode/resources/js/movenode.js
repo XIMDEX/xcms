@@ -44,7 +44,7 @@ X.actionLoaded(function (event, fn, params){
 				}
 				id = result[1];
 				var type = $('#contenttype', params.context).val();
-				$.getJSON(X.baseUrl + '/xmd/loadaction.php', 
+				$.getJSON(X.baseUrl + '/public_xmd/',
 						{method: 'getPath', id_node: id, ajax: 'json', nodetype: type},
 						function(data, textStatus) {
 							if (data.node == '') {

@@ -446,7 +446,7 @@ abstract class ActionAbstract extends IController
         // TODO search and destroy the %20 generated in the last char of the query string
         $queryManager = new QueryManager(false);
         $file = sprintf('%s%s',
-            '/xmd/loadaction.php',
+            '/public_xmd/',
             $queryManager->buildWith(array(
                 'xparams[reload_node_id]' => $idnode,
                 'js_file' => 'reloadNode',

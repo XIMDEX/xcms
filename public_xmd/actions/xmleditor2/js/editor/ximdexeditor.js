@@ -219,10 +219,10 @@ function XimdocEditor(options) {
         var xslIncludesOnServer = $('.kupu-fulleditor .kupu-ximparams #kupu-xslIncludesOnServer').html().trim();
 
         // ximdex initialize stuff
-        //this._baseURL = url_root + '/xmd/loadaction.php?actionid=' + this.actionId + '&nodeid=' + this.nodeId;
-        this._baseURL = url_root + '/xmd/loadaction.php?action=xmleditor2&nodeid=' + this.nodeId;
+        //this._baseURL = url_root + '/public_xmd/?actionid=' + this.actionId + '&nodeid=' + this.nodeId;
+        this._baseURL = url_root + '/public_xmd/?action=xmleditor2&nodeid=' + this.nodeId;
         this._baseActionURL = url_root + '/public_xmd/actions/xmleditor2/';
-        this._loadActionURL = url_root + '/xmd/loadaction.php?nodeid=' + this.nodeId;
+        this._loadActionURL = url_root + '/public_xmd/?nodeid=' + this.nodeId;
         var xmlI18N = url_root + '/public_xmd/vendors/kupu/i18n/kupu-' + locale + '.pox';
         var verifyTmpUrl = this._baseURL + '&ajax=json&method=verifyTmpFile';
         var checkEditionStatusUrl = this._baseURL + '&method=checkEditionStatus';

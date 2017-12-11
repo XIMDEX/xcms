@@ -4,7 +4,7 @@
 
 <p>{t}It's one of the suggested modules during the installation process{/t}.</p>
 
-<form method="post" name="mg_form" id="mg_form" action="{$_URL_ROOT}/xmd/loadaction.php?action=moduleslist&modsel={$module_name}&method=changeState">
+<form method="post" name="mg_form" id="mg_form" action="{$_URL_ROOT}/public_xmd/?action=moduleslist&modsel={$module_name}&method=changeState">
 
 	<p class="states">
 

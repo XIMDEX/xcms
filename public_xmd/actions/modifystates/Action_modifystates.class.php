@@ -93,7 +93,7 @@ class Action_modifystates extends ActionAbstract
             }
         }
 
-        $checkUrl = App::getValue('UrlRoot') . '/xmd/loadaction.php?actionid='
+        $checkUrl = App::getValue('UrlRoot') . '/public_xmd/?actionid='
             . $this->request->getParam('actionid') . '&nodeid=' . $this->request->getParam('nodeid')
             . '&id_nodetype=IDNODETYPE&is_workflow_master=ISWORKFLOWMASTER&method=checkNodeDependencies';
 

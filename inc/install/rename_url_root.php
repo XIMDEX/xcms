@@ -16,7 +16,7 @@
         echo 'ERROR: The parameter URL ' . $url . ' is not valid (ie. http://ximdex.com)' . "\n";
         exit();
     }
-    
+
     // parse the URL given into its host name and path
     $data = parse_url($url);
     $values = [];

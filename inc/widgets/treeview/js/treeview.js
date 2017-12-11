@@ -34,7 +34,7 @@ window.com.ximdex = Object.extend(window.com.ximdex, {
 /**
  * Extends window.com.ximdex object with preferences from server
  */
-$.get( window.com.ximdex.baseUrl+"/xmd/loadaction.php?action=browser3&method=getPreferences", function( data ) {
+$.get( window.com.ximdex.baseUrl+"/public_xmd/?action=browser3&method=getPreferences", function( data ) {
     window.com.ximdex = Object.extend(window.com.ximdex, {
         preferences:data.preferences
     });
@@ -505,7 +505,7 @@ $.get( window.com.ximdex.baseUrl+"/xmd/loadaction.php?action=browser3&method=get
                         lblCheck.click(function(event) {
                             checked = $(this).attr('checked') ? '1' : '0';
                             $.post(
-                                url_base + '/xmd/loadaction.php?method=set_index_for_section&mod=ximTHEMES',
+                                url_base + '/public_xmd/?method=set_index_for_section&mod=ximTHEMES',
                                 {
                                     action : 'composer',
                                     mod : 'ximTHEMES',

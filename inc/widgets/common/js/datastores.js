@@ -97,7 +97,7 @@ function menubar_DataStore() {
 		ds: new DataSource({
 			method: 'get',
 			type: 'xml',
-			url:  window.url_root + '/xmd/loadaction.php?method=ximmenu'
+			url:  window.url_root + '/public_xmd/?method=ximmenu'
 		}),
 		colModel: menubar_ColModel(),
 		// First level

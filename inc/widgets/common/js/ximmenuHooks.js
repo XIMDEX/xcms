@@ -54,17 +54,17 @@ var XimMenuHooks = {
 	},
 
 	hook_mnuTotalActions: function(params) {
-		var url = window.url_root + '/xmd/loadaction.php?nodeid=NULL&action=actionsstats&method=index';
+		var url = window.url_root + '/public_xmd/?nodeid=NULL&action=actionsstats&method=index';
 		$('#tabs').tabs('add', url, params.data.text);
 	},
 
 	hook_mnuTempAvarage: function(params) {
-		var url = window.url_root + '/xmd/loadaction.php?nodeid=NULL&action=actionsstats&method=avarage';
+		var url = window.url_root + '/public_xmd/?nodeid=NULL&action=actionsstats&method=avarage';
 		$('#tabs').tabs('add', url, params.data.text);
 	},
 
 	hook_mnuView1: function(params) {
-		var url = window.url_root + '/xmd/loadaction.php?actionid=7300&nodeid=NULL&method=batchlist';
+		var url = window.url_root + '/public_xmd/?actionid=7300&nodeid=NULL&method=batchlist';
 		$('#tabs').tabs('add', url, params.data.text);
 	},
 
@@ -145,11 +145,11 @@ var XimMenuHooks = {
 	},
 
 	hook_mnuXimdexClose: function(params) {
-		var url = window.url_root + '/xmd/loadaction.php?action=ximdexclose&method=index';
+		var url = window.url_root + '/public_xmd/?action=ximdexclose&method=index';
 		$('#tabs').tabs('add', url, params.data.text.value);
 	},
         hook_mnuManageThemes: function(params) {
-                var url = window.url_root + '/xmd/loadaction.php?action=templatecreator&mod=ximTHEMES';
+                var url = window.url_root + '/public_xmd/?action=templatecreator&mod=ximTHEMES';
                 $('#tabs').tabs('add', url, 'Definir nuevo layout');
         }
 

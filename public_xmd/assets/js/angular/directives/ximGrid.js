@@ -48,7 +48,7 @@ angular.module('ximdex.common.directive').directive('ximGrid', [
           }
           $scope.selected = [];
           $attrs.ximList = $scope.list;
-          url = xUrlHelper.baseUrl() + '/xmd/loadaction.php';
+          url = xUrlHelper.baseUrl() + '/public_xmd/';
           $scope.lastpage;
           $scope.page = 1;
           $scope.searching = false;

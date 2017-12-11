@@ -86,7 +86,7 @@ X.ActionsManager = Object.xo_create({
 			'noCacheVar='+(new Date().getTime())
 		].join('&');
 		
-		var url = '%s/xmd/loadaction.php?%s'.printf(window.url_root, qs);
+		var url = '%s/public_xmd/?%s'.printf(window.url_root, qs);
 
 		if (!Object.isFunction($(this.options.container)[this.method])) return;
 		

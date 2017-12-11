@@ -248,7 +248,7 @@ abstract class WidgetAbstract
 		$attributes = $this->parseWidgetAttributes($params);
 		if (count($attributes) > 0 && !$asInclude) {
 			$jsParams = $this->createJsParams($attributes['id'], $attributes);
-			$url = sprintf('%s/xmd/loadaction.php?method=includeDinamicJs&%s&js_file=widgetsVars',
+			$url = sprintf('%s/public_xmd/?method=includeDinamicJs&%s&js_file=widgetsVars',
 				App::getValue('UrlRoot'), implode('&', $jsParams));
 			$this->_js[] = $url;
 		}

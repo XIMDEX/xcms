@@ -1,5 +1,5 @@
 {if (!$core_module)}
-<form method="post" name="mg_form" id="mg_form" action="{$_URL_ROOT}/xmd/loadaction.php?action=moduleslist&modsel={$module_name}&method=changeState">
+<form method="post" name="mg_form" id="mg_form" action="{$_URL_ROOT}/public_xmd/?action=moduleslist&modsel={$module_name}&method=changeState">
 	<p class="states">
 		<label><input type="checkbox" name="module_active" {if ($module_actived)} checked="checked" {/if} value="1" disabled/> {t}Actived{/t}</label><br />
 		<input type="hidden" name="laststate" value="{$module_actived}" />

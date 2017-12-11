@@ -114,7 +114,7 @@ class Action_modifyserver extends ActionAbstract {
 			'id_node' => $idNode,
 			'id_action' => $actionID,
 			'params' => $params,
-			"nodeURL" => App::getValue('UrlRoot')."/xmd/loadaction.php?$actionParam&nodeid={$idNode}",
+			"nodeURL" => App::getValue('UrlRoot')."/public_xmd/?$actionParam&nodeid={$idNode}",
 			"go_method" => "modify_server",
 			'servers' => $_servers,
 			'num_servers' => $num_servers,
@@ -160,7 +160,7 @@ class Action_modifyserver extends ActionAbstract {
 						'goback' => true,
 						'id_node' => $idNode,
 						'params' => $params,
-						'nodeURL' => App::getValue('UrlRoot').'/xmd/loadaction.php?actionid=$actionID&nodeid={$idNode}',
+						'nodeURL' => App::getValue('UrlRoot').'/public_xmd/?actionid=$actionID&nodeid={$idNode}',
 					);
 
 					$this->sendJSON($values);
@@ -252,7 +252,7 @@ class Action_modifyserver extends ActionAbstract {
 			'goback' => true,
 			'id_node' => $idNode,
 			'params' => $params,
-			'nodeURL' => App::getValue('UrlRoot').'/xmd/loadaction.php?actionid=$actionID&nodeid={$idNode}',
+			'nodeURL' => App::getValue('UrlRoot').'/public_xmd/?actionid=$actionID&nodeid={$idNode}',
 		);
 		
 		$this->index($action, $serverID);

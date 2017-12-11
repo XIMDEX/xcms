@@ -51,7 +51,7 @@ angular.module('ximdex.common.directive').directive 'ximGrid', [ ->
                 $scope.fields = angular.fromJson($attrs.ximInitFields)
             $scope.selected = []
             $attrs.ximList = $scope.list
-            url = xUrlHelper.baseUrl() + '/xmd/loadaction.php'
+            url = xUrlHelper.baseUrl() + '/public_xmd/'
             $scope.lastpage
             $scope.page = 1
             #$scope.pages=$scope.list.pages;
