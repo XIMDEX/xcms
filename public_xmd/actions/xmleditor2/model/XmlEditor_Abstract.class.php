@@ -26,13 +26,12 @@
 
 use Ximdex\Models\Channel;
 use Ximdex\Models\Node;
-use Ximdex\Parsers\PVD2RNG\PVD2RNG;
+use Ximdex\Parsers\ParsingRng;
 use Ximdex\Runtime\App;
 use Ximdex\Runtime\DataFactory;
 use Ximdex\Utils\FsUtils;
 use Ximdex\Logger;
 
-ModulesManager::file('/inc/parsers/pvd2rng/PVD2RNG.class.php');
 ModulesManager::file('/inc/model/RelTemplateContainer.class.php');
 
 abstract class XmlEditor_Abstract
@@ -187,19 +186,9 @@ abstract class XmlEditor_Abstract
             return array('id' => 0, 'content' => $templateNode);
         }
         $schemaId = $templateNode->getID();
-        
-        //TODO ajlucena: VisualTemplate? actually is RngVisualTemplate
-        if (!empty($schemaId) &&  $templateNode->nodeType->get('Name') == 'VisualTemplate') {
-            $pvdt = new PVD2RNG();
-            $pvdt->loadPVD($templateNode->getID(), $node);
 
-            if ($pvdt->transform()) {
-                $content = $pvdt->getRNG()->saveXML();
-            }
-        } else {
-            $rngTemplate = new Node($schemaId);
-            $content = $rngTemplate->GetContent();
-        }
+        $rngTemplate = new Node($schemaId);
+        $content = $rngTemplate->GetContent();
 
         $schemaData['id'] = $schemaId;
         $schemaData['content'] = $content;
@@ -231,7 +220,7 @@ abstract class XmlEditor_Abstract
             $content = array('error' => $errors);
         } else {
 
-            $content = preg_replace('/xmlns:xim="([^"]*)"/', sprintf('xmlns:xim="%s"', PVD2RNG::XMLNS_XIM),  $content);
+            $content = preg_replace('/xmlns:xim="([^"]*)"/', sprintf('xmlns:xim="%s"', ParsingRng::XMLNS_XIM),  $content);
         }
 
         return $content;

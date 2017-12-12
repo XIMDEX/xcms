@@ -34,7 +34,6 @@ use Ximdex\Models\User;
 use Ximdex\Parsers\ParsingJsGetText;
 use Ximdex\Parsers\ParsingRng;
 use Ximdex\Parsers\ParsingXsl;
-use Ximdex\Parsers\PVD2RNG\PVD2RNG;
 use Ximdex\Runtime\App;
 use Ximdex\Runtime\DataFactory;
 use Ximdex\Utils\FsUtils;
@@ -547,7 +546,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
         // TODO: Do correct docxap parametrize & insertion in document
         $nodeTypeName = $this->node->nodeType->get('Name');
         if ($nodeTypeName == 'RngVisualTemplate') {
-            $content = sprintf('%s%s<docxap uid="%s.0" xmlns:xim="%s">%s</docxap>', App::getValue('EncodingTag'), App::getValue('DoctypeTag'), $idNode, PVD2RNG::XMLNS_XIM, str_replace('<?xml version="1.0" encoding="UTF-8"?>', '', $this->node->getContent()));
+            $content = sprintf('%s%s<docxap uid="%s.0" xmlns:xim="%s">%s</docxap>', App::getValue('EncodingTag'), App::getValue('DoctypeTag'), $idNode, ParsingRng::XMLNS_XIM, str_replace('<?xml version="1.0" encoding="UTF-8"?>', '', $this->node->getContent()));
             return $content;
         }
 

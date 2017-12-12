@@ -31,12 +31,13 @@ use DOMDocument;
 use domNode;
 use DOMXPath;
 use Ximdex\Models\Node;
-use Ximdex\Parsers\PVD2RNG\PVD2RNG;
 use Ximdex\Logger;
 
 
 class ParsingRng
 {
+    const XMLNS_XIM = 'http://ximdex.com/schema/1.0';
+
 
     var $minimalXml = '';
     /**
@@ -148,24 +149,9 @@ class ParsingRng
         if (!($node->get('IdNode') > 0)) {
             return NULL;
         }
-        // Gets template content
 
-        if ($node->nodeType->get('Name') == 'RngVisualTemplate') {
-            $content = $node->GetContent();
-        } else {
+        $content = $node->GetContent();
 
-            // If template is not a RNG builds its XML
-
-            $pvdt = new PVD2RNG();
-            $pvdt->loadPVD($templateID);
-
-            if ($pvdt->transform()) {
-                $content = htmlspecialchars_decode($pvdt->getRNG()->saveXML());
-            } else {
-                Logger::error("Pvd $templateID not RNG compatible");
-                return NULL;
-            }
-        }
         /**
          * @TODO: DOMDocument::loadXML(): Empty string supplied as input
          */

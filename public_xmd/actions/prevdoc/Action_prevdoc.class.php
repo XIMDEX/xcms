@@ -36,7 +36,6 @@ use Ximdex\Utils\PipelineManager;
 ModulesManager::file('/inc/filters/Filter.class.php');
 ModulesManager::file('/inc/repository/nodeviews/View_NodeToRenderizedContent.class.php');
 ModulesManager::file('/inc/repository/nodeviews/View_PrefilterMacros.class.php');
-ModulesManager::file('/inc/repository/nodeviews/View_Dext.class.php');
 ModulesManager::file('/inc/repository/nodeviews/View_Xslt.class.php');
 ModulesManager::file('/inc/repository/nodeviews/View_FilterMacrosPreview.class.php');
 
@@ -146,7 +145,6 @@ class Action_prevdoc extends ActionAbstract
 		$node = new Node($idNode);
 		$transformer = $node->getProperty('Transformer');
 		$args['TRANSFORMER'] = $transformer[0];
-		// Process Structured Document -> dexT/XSLT:
 		$pipelineManager = new PipelineManager();
 
 		$content = $pipelineManager->getCacheFromProcess(NULL, 'StrDocToDexT', $args);

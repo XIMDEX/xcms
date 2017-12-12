@@ -34,7 +34,6 @@ use Ximdex\Models\ORM\PipeCacheTemplatesOrm;
  *
  * @brief Template cache class
  *
- * Class used in the View_Dext uses for store dependencies at the template level
  *
  */
 class PipeCacheTemplates extends PipeCacheTemplatesOrm

@@ -32,7 +32,6 @@ use Ximdex\Models\StructuredDocument;
 use Ximdex\Models\Version;
 use Ximdex\Runtime\App;
 
-ModulesManager::file('/xslt/functions.php', 'dexT');
 ModulesManager::file('/inc/repository/nodeviews/Abstract_View.class.php');
 ModulesManager::file('/inc/repository/nodeviews/Interface_View.class.php');
 ModulesManager::file('/inc/nodetypes/xsltnode.php');

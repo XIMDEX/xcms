@@ -16,7 +16,6 @@ conf/install-modules.php
 conf/install-params.conf_bk_*.php
 conf/install-params.conf.phpbck_*.php
 
-modules/dexT/xslt/dext_main.xsl
 modules/modules_PRO/
 modules/xlyre
 

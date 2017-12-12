@@ -44,10 +44,6 @@ class TransformerProperty extends InheritableProperty {
 				'Name' => 'Obtener valor heredado'
 			),
 			array(
-				'IdTransformer' => 'dext',
-				'Name' => 'DEXT'
-			),
-			array(
 				'IdTransformer' => 'xslt',
 				'Name' => 'XSLT'
 			)

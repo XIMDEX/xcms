@@ -311,7 +311,6 @@ VALUES
 	(6,'UrlRoot',''),
 	(7,'GeneralGroup','101'),
 	(8,'ProjectsNode','10000'),
-	(9,'GeneratorCommand','/modules/dexT/dexTdin_xmd25.pl'),
 	(10,'EncodingTag','<?xml version="1.0" encoding="UTF-8"?>'),
 	(11,'DoctypeTag','<!DOCTYPE docxap [
 <!ENTITY Ntilde "_MAPGENcode_Ntilde_">
@@ -1315,7 +1314,7 @@ VALUES
 	(2,'Renderized',''),
 	(3,'PreFilter',''),
 	(4,'Dependencies',''),
-	(5,'DexT',''),
+	(5,'Xslt',''),
 	(6,'FilterMacros',''),
 	(7,'Edición','El documento está en fase de desarrollo'),
 	(8,'Publicación','El documento está a la espera de ser publicado.'),
