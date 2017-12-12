@@ -42,7 +42,7 @@ var XimMenuHooks = {
 	},
 
 	hook_mnuQuit: function(params) {
-		location.href = window.url_root+'/xmd/loadaction=logout';
+		location.href = window.url_root+'/public_xmd/?action=logout';
 	},
 
 	hook_mnuShowTree: function(params) {

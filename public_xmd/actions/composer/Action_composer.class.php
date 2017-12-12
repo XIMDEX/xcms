@@ -47,7 +47,7 @@ ModulesManager::file('/actions/browser3/inc/GenericDatasource.class.php', 'APP')
 class Action_composer extends ActionAbstract
 {
 
-    const COMPOSER_INDEX = 'loadaction.php';
+    const COMPOSER_INDEX = '../public_xmd/';
 
     public function index()
     {

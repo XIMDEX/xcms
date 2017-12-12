@@ -312,7 +312,7 @@ function XimdocEditor(options) {
                     if (this.method && this.method == 'verifyTmpFile') {
                         that[propertyName] = this.result;
                     }
-                    else if (url.indexOf("loadaction") == -1) {
+                    else if (url.indexOf("?") == -1) {
                         that[propertyName] = that.createDomDocument(data, 0, true);
                     }
                     else {
@@ -339,7 +339,7 @@ function XimdocEditor(options) {
             content: content,
             success: function (data) {
 
-                if (url.indexOf("loadaction") == -1) {
+                if (url.indexOf("?") == -1) {
                     //this[propertyName] = this.createDomDocument(data,0,true);
                 }
                 else {
