@@ -23,38 +23,34 @@
  *  @version $Revision$
  *}
 
-{include file="`$_APP_ROOT`/xmd/template/Smarty/helper/li_for_js.tpl"}
+{include file="`$_APP_ROOT`/public_xmd/actions/commons/views/helper/li_for_js.tpl"}
 
-<div class="container">
-	<div class="action_header">
-		{if $view_head}
-			<!-- <h2>{$_ACTION_NAME|gettext}</h2>-->
-			{if $num_nodes > 1}
-				<h2>
-					{foreach from=$nodes item=node}
-						{$node.name},
-					{/foreach}
-				</h2>
-			{else}
-				<h2>{$_NODE_PATH}</h2>
-			{/if}
-		{/if}
-
-		<fieldset class="buttons-form">
-			{if ($goback)}
-				{button type="goback" history="$history_value" label="Go back"}
-			{else}
-				{button type="close" label="Close" class="btn main_action"}
-			{/if}
-		</fieldset>
+<div id="ajax_container" class="ui-widget ui-widget-content ui-corner-all">
+	<div class="progress ui-widget ui-widget-content ui-helper-reset ui-corner-all" >
+		<ul class=" indexProgress">
+			{foreach from=$steps item=step}
+				<li>{$step}</li>
+			{/foreach}
+		</ul>
 	</div>
-
-	<div class="action_container ui-widget">
-		<div class="message-wrapper">
-			{include file="`$_APP_ROOT`/xmd/template/Smarty/helper/messages.tpl"}
+	<div class="contentProgress ui-helper-reset">
+		<div class="container">
+			{if ($view_head)}
+				<h1>{$_ACTION_NAME|gettext}</h1>
+				<h2 class='action_desc'><strong>{t}Description{/t}: </strong>{$_ACTION_DESCRIPTION|gettext}</h2>
+				<h2 class='nodo_path'><strong>{t}Node{/t}: </strong>{$_NODE_PATH}</h2>
+			{/if}
+			{if ($_ACTION_CONTROLLER)}
+				{include file="$_ACTION_CONTROLLER"}
+			{/if}
+		</div>
+		<div class="footerActionProgress">
+			<div class="buttonBefore">
+				{button class="previousAction" label="Back" onclick="previous()}
+			</div>
+			<div class="buttonNext">
+				{button label="Next" class="nextAction" onclick="next()"}
+			</div>
 		</div>
 	</div>
 </div>
-
-<script>
-</script>

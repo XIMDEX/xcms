@@ -5251,7 +5251,7 @@ msgstr ""
 msgid "Executing the action on the nodes"
 msgstr ""
 
-#: /xmd/template/Smarty/helper/messages.tpl
+#: /public_xmd/actions/commons/views/helper/messages.tpl
 msgid "No messages found"
 msgstr ""
 

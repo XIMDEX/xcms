@@ -23,25 +23,7 @@
  *  @version $Revision$
  *}
 
-	{include file="`$_APP_ROOT`/xmd/template/Smarty/helper/li_for_js.tpl"}
-
-	<div class="container">
-
-	{if ($view_head)}
-		<h1>{$_ACTION_NAME|gettext}</h1>
-		<h2 class='action_desc'><strong>{t}Description{/t}: </strong>{$_ACTION_DESCRIPTION|gettext}</h2>
-		<h2 class='nodo_path'><strong>{t}Node{/t}: </strong>{$_NODE_PATH}</h2>
-	{/if}
-
-		<div class="action_container ui-widget">
-			<div class="action_container_header ui-widget ui-widget-header">
-				<a href="#" 
-					onclick="$(this).closest('.ui-tabs').tabs('close_tab', $(this).closest('.ui-tabs').tabs('get_tab_id', this));">
-					<span class="ui-icon ui-icon-closethick" style="margin-top: 4px" ></span>
-					<span class="text">{t}close{/t}</span>
-				</a>
-			</div>
-			{if ($_ACTION_CONTROLLER)}
-				{include file="$_ACTION_CONTROLLER"}
-			{/if}
-		</div>
+{include file="`$_APP_ROOT`/public_xmd/actions/commons/views/helper/messages.tpl"}
+{if !$action_with_no_return}
+	{button label="Back" class="focus" onclick="$(this).closest('.ui-tabs').tabs('backToIndex', this);"}
+{/if}

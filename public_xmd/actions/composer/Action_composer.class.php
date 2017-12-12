@@ -784,7 +784,7 @@ and rug.idrole in (select idrole from RelRolesPermissions where IdPermission = 1
         if (empty($jsFile))
             $jsFile = "widgetsVars";
 
-        $jsFile = sprintf('/xmd/template/Smarty/helper/%s.tpl', $jsFile);
+        $jsFile = sprintf('/public_xmd/actions/commons/views/helper/%s.tpl', $jsFile);
 
         // The class AssociativeArray does not return an array, then it obtains _GET value
         $params = isset($_GET['xparams']) ? $_GET['xparams'] : $_GET['amp;xparams'];

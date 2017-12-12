@@ -5603,7 +5603,7 @@ msgstr "Por favor, consulte con el administrador la hora aproximada del reinicio
 msgid "Executing the action on the nodes"
 msgstr "Ejecutando acción sobre los nodos"
 
-#: /xmd/template/Smarty/helper/messages.tpl
+#: /public_xmd/actions/commons/views/helper/messages.tpl
 msgid "No messages found"
 msgstr "No se han encontrado mensajes"
 

@@ -23,34 +23,25 @@
  *  @version $Revision$
  *}
 
-{include file="`$_APP_ROOT`/xmd/template/Smarty/helper/li_for_js.tpl"}
+	{include file="`$_APP_ROOT`/public_xmd/actions/commons/views/helper/li_for_js.tpl"}
 
-<div id="ajax_container" class="ui-widget ui-widget-content ui-corner-all">
-	<div class="progress ui-widget ui-widget-content ui-helper-reset ui-corner-all" >
-		<ul class=" indexProgress">
-			{foreach from=$steps item=step}
-				<li>{$step}</li>
-			{/foreach}
-		</ul>
-	</div>
-	<div class="contentProgress ui-helper-reset">
-		<div class="container">
-			{if ($view_head)}
-				<h1>{$_ACTION_NAME|gettext}</h1>
-				<h2 class='action_desc'><strong>{t}Description{/t}: </strong>{$_ACTION_DESCRIPTION|gettext}</h2>
-				<h2 class='nodo_path'><strong>{t}Node{/t}: </strong>{$_NODE_PATH}</h2>
-			{/if}
+	<div class="container">
+
+	{if ($view_head)}
+		<h1>{$_ACTION_NAME|gettext}</h1>
+		<h2 class='action_desc'><strong>{t}Description{/t}: </strong>{$_ACTION_DESCRIPTION|gettext}</h2>
+		<h2 class='nodo_path'><strong>{t}Node{/t}: </strong>{$_NODE_PATH}</h2>
+	{/if}
+
+		<div class="action_container ui-widget">
+			<div class="action_container_header ui-widget ui-widget-header">
+				<a href="#" 
+					onclick="$(this).closest('.ui-tabs').tabs('close_tab', $(this).closest('.ui-tabs').tabs('get_tab_id', this));">
+					<span class="ui-icon ui-icon-closethick" style="margin-top: 4px" ></span>
+					<span class="text">{t}close{/t}</span>
+				</a>
+			</div>
 			{if ($_ACTION_CONTROLLER)}
 				{include file="$_ACTION_CONTROLLER"}
 			{/if}
 		</div>
-		<div class="footerActionProgress">
-			<div class="buttonBefore">
-				{button class="previousAction" label="Back" onclick="previous()}
-			</div>
-			<div class="buttonNext">
-				{button label="Next" class="nextAction" onclick="next()"}
-			</div>
-		</div>
-	</div>
-</div>

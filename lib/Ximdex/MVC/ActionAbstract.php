@@ -346,7 +346,7 @@ abstract class ActionAbstract extends IController
             }
         }
 
-        $this->renderer->setTemplate(XIMDEX_ROOT_PATH . '/xmd/template/Smarty/layouts/' . $layout);
+        $this->renderer->setTemplate(XIMDEX_ROOT_PATH . '/public_xmd/actions/commons/layouts/' . $layout);
         $output = $this->renderer->render($view);
 
         // Apply widgets renderer after smarty renderer

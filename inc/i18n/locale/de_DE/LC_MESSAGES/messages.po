@@ -5265,7 +5265,7 @@ msgstr "Setzen Sie sich bitte mit Ihrem Administrator in Verbindung um die ungef
 msgid "Executing the action on the nodes"
 msgstr "F&uuml;hrt die Aktion auf die Knoten aus"
 
-#: /xmd/template/Smarty/helper/messages.tpl
+#: /public_xmd/actions/commons/views/helper/messages.tpl
 msgid "No messages found"
 msgstr "Keine Nachrichten gefunden"
 
