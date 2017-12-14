@@ -360,7 +360,6 @@ VALUES
 	(12,'DefaultLanguage','es'),
 	(13,'BlockExpireTime','120'),
 	(14,'MaximunGapSizeTolerance','180'),
-	(15,'SynchronizerCommand','/modules/synchronizer/ximCRON.pl'),
 	(16,'SchemasDirName','schemes'),
 	(17,'TemplatesDirName','templates'),
 	(18,'PurgeSubversionsOnNewVersion','1'),
