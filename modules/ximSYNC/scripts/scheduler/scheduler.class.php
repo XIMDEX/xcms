@@ -53,7 +53,7 @@ class Scheduler
     
     public static function start($global_execution = true)
     {
-        global $synchro_pid;
+        global $synchro_pid, $argv;
         $synchro_pid = posix_getpid();
 
         $startStamp = 0;
@@ -64,6 +64,7 @@ class Scheduler
         if (isset ($argv [1])) {
             $testTime = $argv [1];
         }
+
 
         $syncStatObj = new SynchronizerStat ();
         $pumperManager = new PumperManager ();
@@ -83,7 +84,8 @@ class Scheduler
         $syncStatObj->create(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "INFO", 8, $msg);
         Logger::info($msg);
 
-        $mutex = new Mutex (App::getValue("AppRoot") . App::getValue("TempRoot") . "/scheduler.lck");
+
+        $mutex = new Mutex (XIMDEX_ROOT_PATH . App::getValue("TempRoot") . "/scheduler.lck");
 
         if (!$mutex->acquire()) {
             
@@ -107,7 +109,7 @@ class Scheduler
         do {
 
             // STOPPER
-            $stopper_file_path = App::getValue("AppRoot") . App::getValue("TempRoot") . "/scheduler.stop";
+            $stopper_file_path = XIMDEX_ROOT_PATH . App::getValue("TempRoot") . "/scheduler.stop";
             if (file_exists($stopper_file_path)) {
                 $mutex->release();
                 $msg = _("STOP: Detected file") . " $stopper_file_path " . _("You need to delete this file in order to restart Scheduler successfully");

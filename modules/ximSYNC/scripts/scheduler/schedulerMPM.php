@@ -30,6 +30,12 @@ use Ximdex\Runtime\App;
 use Ximdex\Utils\Sync\Mutex;
 
 
+// for legacy compatibility
+if (!defined('XIMDEX_ROOT_PATH')) {
+    require_once dirname(__FILE__) . '/../../../../bootstrap.php';
+}
+
+
 ModulesManager::file('/inc/utils.php');
 ModulesManager::file('/inc/manager/NodeFrameManager.class.php', 'ximSYNC');
 ModulesManager::file('/inc/manager/ServerFrameManager.class.php', 'ximSYNC');
@@ -70,7 +76,7 @@ function mainLoop()
     //Init
     $syncStatObj->create(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "INFO", 8, _("Starting Scheduler") . " $synchro_pid");
     //Adquire the mutex
-    $mutex = new Mutex(App::getValue("AppRoot") . App::getValue("TempRoot") . "/scheduler.lck");
+    $mutex = new Mutex(XIMDEX_ROOT_PATH . App::getValue("TempRoot") . "/scheduler.lck");
     if (!$mutex->acquire()) {
         $syncStatObj->create(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__,
             __LINE__, "INFO", 8, _("Lock file existing"));
@@ -82,7 +88,7 @@ function mainLoop()
 
     do {
         // STOPPER
-        $stopper_file_path =  App::getValue("AppRoot") .  App::getValue("TempRoot") . "/scheduler.stop";
+        $stopper_file_path =  XIMDEX_ROOT_PATH .  App::getValue("TempRoot") . "/scheduler.stop";
         if (file_exists($stopper_file_path)) {
             $mutex->release();
             die(_("STOP: Detected file") . " $stopper_file_path " . _("You need to delete this file in order to restart Scheduler successfully"));

@@ -25,6 +25,12 @@
  */
 
 
+// for legacy compatibility
+if (!defined('XIMDEX_ROOT_PATH')) {
+    require_once dirname(__FILE__) . '/../../../../bootstrap.php';
+}
+
+
 	//ModulesManager::file('/scripts/scheduler/scheduler.class.php', 'ximSYNC');
     ModulesManager::file('/modules/ximSYNC/scripts/scheduler/scheduler.class.php');
 

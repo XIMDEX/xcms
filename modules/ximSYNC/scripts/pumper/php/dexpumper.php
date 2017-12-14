@@ -29,6 +29,10 @@ use Ximdex\Models\Pumper;
 use Ximdex\Models\Server;
 use Ximdex\Runtime\Cli\CliParser;
 
+// for legacy compatibility
+if (!defined('XIMDEX_ROOT_PATH')) {
+    require_once dirname(__FILE__) . '/../../../../bootstrap.php';
+}
 
 
 function showErrors($errno, $errstr, $errfile = NULL, $errline= NULL) {

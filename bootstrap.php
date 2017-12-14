@@ -3,9 +3,12 @@
 use Ximdex\Logger;
 use Ximdex\Runtime\App;
 
+
 // for legacy compatibility
 if (!defined('XIMDEX_ROOT_PATH')) {
     define('XIMDEX_ROOT_PATH', __DIR__);
+}else {
+    return false; //only once this file
 }
 
 if (!defined('APP_ROOT_PATH')) {
@@ -15,6 +18,15 @@ if (!defined('APP_ROOT_PATH')) {
 
 if (!defined('XIMDEX_VENDORS')) {
     define('XIMDEX_VENDORS', '/vendors');
+}
+
+/**
+ * XIMDEX_DIRECT is true when bootstrap is called directly
+ * XIMDEX_DIRECT is false when bootstrap is called from other php.
+ */
+if(!defined('XIMDEX_DIRECT')) {
+    $included_files = get_included_files();
+    define('XIMDEX_DIRECT', !isset($included_files[1]));
 }
 
 
@@ -138,18 +150,26 @@ if (!defined('SMARTY_TMP_PATH')) {
 }
 
 
-if(CLI_MODE && isset($argv[1])) {
-    $script_path =  parse_url ( $argv[1],  PHP_URL_PATH );
-    $is_absolute_path = ( '/' == $script_path[0])?: false;
+if(XIMDEX_DIRECT && CLI_MODE && isset($argv[1])) {
+
+    /* e.g:  $ /bootstrap.php modules/ximSYNC/scripts/scheduler/scheduler.php
+     *  $command = /bootstrap.php  => argv[0]
+     *  $script = modules/ximSYNC/scripts/scheduler/scheduler.php => new_command
+     *
+     */
+
+    $command = array_shift($argv);
+    $script =  parse_url ( $argv[0],  PHP_URL_PATH );
+    $is_absolute_path = ( '/' == $script[0])?: false;
 
     if( $is_absolute_path ) {
-        $external_script = $script_path;
-
+        $external_script = $script;
     }else {
-        $external_script = XIMDEX_ROOT_PATH.'/'.$script_path;
+        $external_script = XIMDEX_ROOT_PATH.'/'.$script;
     }
 
-    if(file_exists($external_script)) {
-        require_once($external_script);
+    $new_command = $argv[0] = $script;
+    if(file_exists($new_command)) {
+        require_once($new_command);
     }
 }
