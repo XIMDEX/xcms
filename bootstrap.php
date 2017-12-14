@@ -18,8 +18,16 @@ if (!defined('XIMDEX_VENDORS')) {
 }
 
 
-if (!defined('CLI_MODE'))
-    define('CLI_MODE', 0);
+/** Checking cli mode */
+if (!defined('CLI_MODE')) {
+    global $argv, $argc;
+    $cli_mode = true;
+    if('cli' != php_sapi_name() || empty($argv) || 0 == $argc  ) {
+        $cli_mode = false;
+    }
+
+    define('CLI_MODE', $cli_mode);
+}
 
 include_once XIMDEX_ROOT_PATH.XIMDEX_VENDORS . '/autoload.php';
 
@@ -127,4 +135,21 @@ if (!defined('RENDERER_ROOT_PATH')) {
 }
 if (!defined('SMARTY_TMP_PATH')) {
     define('SMARTY_TMP_PATH', XIMDEX_ROOT_PATH . App::getValue('TempRoot'));
+}
+
+
+if(CLI_MODE && isset($argv[1])) {
+    $script_path =  parse_url ( $argv[1],  PHP_URL_PATH );
+    $is_absolute_path = ( '/' == $script_path[0])?: false;
+
+    if( $is_absolute_path ) {
+        $external_script = $script_path;
+
+    }else {
+        $external_script = XIMDEX_ROOT_PATH.'/'.$script_path;
+    }
+
+    if(file_exists($external_script)) {
+        require_once($external_script);
+    }
 }
