@@ -25,13 +25,12 @@
  *  @version $Revision$
  */
 
+require dirname(__DIR__) . '/bootstrap.php';
 
 use Ximdex\Logger;
 use Ximdex\Models\Node;
 use Ximdex\Utils\Sync\Synchronizer;
 
-ini_set("include_path",".:inc:../inc:../../inc");
-$ximDEX_path = realpath(dirname(__FILE__) .  "/../../");
 
 /// Array with call parameters 
 $config = array();
