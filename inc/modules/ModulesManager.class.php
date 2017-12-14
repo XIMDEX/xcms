@@ -27,11 +27,6 @@
 
 use Ximdex\Utils\FsUtils;
 
-if (!defined('XIMDEX_ROOT_PATH'))
-    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../"));
-
-if (!defined('CLI_MODE'))
-    define('CLI_MODE', 0);
 
 require_once (XIMDEX_ROOT_PATH . '/vendors/autoload.php');
 

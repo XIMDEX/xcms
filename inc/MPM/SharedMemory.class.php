@@ -26,10 +26,6 @@
 
 
 
-
-if (!defined('XIMDEX_ROOT_PATH'))
-define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../"));
-
 include_once(XIMDEX_ROOT_PATH . "/inc/MPM/Semaphore.class.php");
 
 //TODO: Now, 1 SharedMemory class --> 1 shared memory, it's better than 1 class could have more "shared memory"

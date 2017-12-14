@@ -30,9 +30,7 @@ use Ximdex\Models\NodeAllowedContent;
 use Ximdex\Models\NodeType;
 use Ximdex\MVC\ActionAbstract;
 
-if (!defined('XIMDEX_ROOT_PATH')) {
-    define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__)) . '/../../');
-}
+
  require_once XIMDEX_ROOT_PATH . '/inc/model/RelNodeTypeMimeType.class.php';
 
 class Action_newemptynode extends ActionAbstract {

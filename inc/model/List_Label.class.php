@@ -26,10 +26,6 @@
 
 
 
-if (!defined('XIMDEX_ROOT_PATH')) {
-	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__)) . '/../..');
-}
-
 require_once XIMDEX_ROOT_PATH . '/inc/model/orm/List_Label_ORM.class.php';
 
 class List_Label extends List_Label_ORM {

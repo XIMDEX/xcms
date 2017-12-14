@@ -25,10 +25,11 @@
  */
 
 
-
+// for legacy compatibility
 if (!defined('XIMDEX_ROOT_PATH')) {
-	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__)) . '/../../../../');
+    require_once dirname(__FILE__) . '/../../../../bootstrap.php';
 }
+
 
 //
 

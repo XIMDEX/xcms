@@ -28,7 +28,9 @@ use Ximdex\MVC\FrontControllerAPI;
 use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
 
-include_once '../bootstrap.php';
+if (!defined('XIMDEX_ROOT_PATH')) {
+    require_once '../bootstrap.php';
+}
 
 //Including composer autoloader
 ModulesManager::file('/inc/io/BaseIO.class.php');

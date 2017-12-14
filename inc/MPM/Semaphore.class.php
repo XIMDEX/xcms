@@ -26,8 +26,6 @@
 
 
 
-if (!defined('XIMDEX_ROOT_PATH'))
-define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../"));
 
 //TODO: Now, 1 Semaphore class --> 1 semaphore, it's better than 1 class could have more semaphores
 class Semaphore{

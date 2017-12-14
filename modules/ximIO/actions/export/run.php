@@ -1,4 +1,4 @@
-<?php
+ <?php
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -25,12 +25,18 @@
  */
 
 
+
+ // for legacy compatibility
+ if (!defined('XIMDEX_ROOT_PATH')) {
+     require_once dirname(__FILE__) . '/../../../../bootstrap.php';
+ }
+
+
+
 use Ximdex\Models\Node;
 use Ximdex\Runtime\Cli\CliReader;
 
-if (!defined('XIMDEX_ROOT_PATH')) {
-	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../../../'));
-}
+
 
 //
  ModulesManager::file('/inc/ExportXml.class.php');

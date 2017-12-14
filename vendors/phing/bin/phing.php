@@ -10,9 +10,8 @@
 // Set any INI options for PHP
 // ---------------------------
 
-	if (!defined('XIMDEX_ROOT_PATH')) {
-		define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
-	}
+require_once('../../../bootstrap.php');
+
 	define('PHP_CLASSPATH', (get_include_path() 
 	. ':' . XIMDEX_ROOT_PATH . '/vendors/'
 	. ':' . XIMDEX_ROOT_PATH . '/vendors/phing'));

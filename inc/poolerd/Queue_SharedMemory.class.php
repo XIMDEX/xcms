@@ -25,11 +25,6 @@
  */
 
 
-
-
-if (!defined('XIMDEX_ROOT_PATH'))
-	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
-
 if (!defined('POOLER_ROOT_PATH'))
 	define('POOLER_ROOT_PATH', realpath(dirname(__FILE__)));
 

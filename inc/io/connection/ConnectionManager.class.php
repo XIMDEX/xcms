@@ -26,9 +26,6 @@
 
 use Ximdex\Logger;
 
-if (!defined('XIMDEX_ROOT_PATH')) {
-	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
-}
 
 class ConnectionManager {
     

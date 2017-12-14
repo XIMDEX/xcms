@@ -24,6 +24,13 @@
  * @version $Revision$
  */
 
+
+// for legacy compatibility
+if (!defined('XIMDEX_ROOT_PATH')) {
+    require_once dirname(__FILE__) . '/../../../../bootstrap.php';
+}
+
+
 use Ximdex\Logger;
 
 ModulesManager::file('/modules/ximSYNC/scripts/scheduler/scheduler.class.php');
@@ -39,3 +46,4 @@ Logger::generate('SCHEDULER', 'scheduler');
 Logger::setActiveLog('scheduler');
 
 Scheduler::start();
+

@@ -28,8 +28,7 @@
 use Ximdex\Authenticator;
 use Ximdex\Utils\FsUtils;
 
-if(!defined('XIMDEX_ROOT_PATH'))
-	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../../"));
+
 
 require_once("Server.php");
 require_once(XIMDEX_ROOT_PATH . "/inc/dav/DAV_Log.class.php");

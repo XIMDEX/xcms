@@ -26,9 +26,10 @@
 
 
 
-	if (!defined('XIMDEX_ROOT_PATH')) {
-		define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__)) . '/../../../../');
-	}
+// for legacy compatibility
+if (!defined('XIMDEX_ROOT_PATH')) {
+    require_once dirname(__FILE__) . '/../../../../bootstrap.php';
+}
 
 	echo "\n"._("List of available packages:")."\n";
 	

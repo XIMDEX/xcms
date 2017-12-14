@@ -28,9 +28,6 @@
 use Ximdex\Logger;
 use phpseclib\Net\SFTP;
 
-if (!defined('XIMDEX_ROOT_PATH')) {
-    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
-}
 
 require_once(XIMDEX_ROOT_PATH . '/inc/io/connection/I_Connector.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/io/connection/Connection_Local.class.php');

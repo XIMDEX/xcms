@@ -27,12 +27,6 @@ use Ximdex\Runtime\Cli\Shell;
 use Ximdex\Utils\FsUtils;
 
 
-/**
- * XIMDEX_ROOT_PATH
- */
-
-if (!defined('XIMDEX_ROOT_PATH'))
-    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../"));
 
 define('TMP_FOLDER', XIMDEX_ROOT_PATH . '/data/tmp/');
 

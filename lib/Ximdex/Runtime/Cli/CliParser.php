@@ -29,9 +29,6 @@ namespace Ximdex\Runtime\Cli;
 
 use Ximdex\Utils\Messages;
 
-if (!defined('XIMDEX_ROOT_PATH')) {
-    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
-}
 
 
 define('TYPE_INT', 1);

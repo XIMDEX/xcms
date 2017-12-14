@@ -28,7 +28,6 @@
 
 use Ximdex\Logger;
 
-if (!defined('XIMDEX_ROOT_PATH')) define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__)) . '/../../');
 require_once(XIMDEX_ROOT_PATH . '/inc/model/orm/NodeEdition_ORM.class.php');
 
 class NodeEdition extends NodeEdition_ORM {

@@ -27,9 +27,7 @@
 
 use Ximdex\Runtime\Request;
 
-if (!defined('XIMDEX_ROOT_PATH')) {
-	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) .  "/../../"));
-}
+require_once('../../bootstrap.php');
 
 require_once(XIMDEX_ROOT_PATH . '/services/pull/Pull.class.php');
 

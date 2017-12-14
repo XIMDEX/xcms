@@ -28,11 +28,9 @@ use Ximdex\MVC\FrontControllerAPIREST;
 use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
 
-/**
- * XIMDEX_ROOT_PATH
- */
-if (!defined('XIMDEX_ROOT_PATH'))
-    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../"));
+if (!defined('XIMDEX_ROOT_PATH')) {
+    require_once '../bootstrap.php';
+}
 
 
 //Including composer autoloader

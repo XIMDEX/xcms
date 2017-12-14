@@ -24,9 +24,6 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
-if (!defined('XIMDEX_ROOT_PATH')) {
-    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
-}
 
 use Ximdex\Models\ORM\NodesOrm as Nodes_ORM;
 use Ximdex\Logger;

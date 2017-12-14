@@ -29,8 +29,7 @@ use Ximdex\Logger;
 use Ximdex\Models\Node;
 use Ximdex\Models\User;
 
-if (!defined('XIMDEX_ROOT_PATH'))
-    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../../../"));
+
 
 include_once(XIMDEX_ROOT_PATH . '/inc/mail/Mail.class.php');
 
