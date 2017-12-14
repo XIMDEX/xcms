@@ -1,5 +1,5 @@
 <?php
-include_once '../../bootstrap/start.php';
+include_once '../../bootstrap.php';
 
 ModulesManager::file('/src/SolrSearchManager.php', 'XSearch');
 

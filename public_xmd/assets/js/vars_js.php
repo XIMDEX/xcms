@@ -27,7 +27,7 @@
 
 use Ximdex\Runtime\App;
 
-include_once '../../../bootstrap/start.php';
+include_once '../../../bootstrap.php';
 
 ModulesManager::file('/inc/i18n/I18N.class.php');
 
@@ -43,7 +43,7 @@ header('Content-type: application/javascript');
 echo "renderer = '" . \Ximdex\Utils\Session::get("renderer") . "';";
 echo "\nurl_host = '" . App::getValue('UrlHost') . "';";
 echo "\nurl_root = '" . App::getValue('UrlRoot') . "';";
-echo "\nximdex_root = '" . App::getValue('XIMDEX_ROOT_PATH') . "';";
+echo "\nximdex_root = '" . XIMDEX_ROOT_PATH . "';";
 echo "\nbase_action = '" . \Ximdex\Utils\Session::get("base_action") . "';";
 echo "\nuser_id = '" . \Ximdex\Utils\Session::get('userID') . "';";
 echo "\nlocale = '" . \Ximdex\Utils\Session::get('locale') . "';";

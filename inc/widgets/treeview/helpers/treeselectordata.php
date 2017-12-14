@@ -31,7 +31,7 @@ use Ximdex\Models\NodeType;
 use Ximdex\Models\User;
 use Ximdex\Runtime\App;
 
-include_once realpath(dirname(__FILE__) . "/../../../../").'/bootstrap/start.php';
+include_once realpath(dirname(__FILE__) . "/../../../../").'/bootstrap.php';
 
 \Ximdex\Utils\Session::check();
 $userID = \Ximdex\Utils\Session::get('userID');

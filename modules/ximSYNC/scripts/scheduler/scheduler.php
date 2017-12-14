@@ -27,7 +27,7 @@
 
 use Ximdex\Logger;
 
-include_once dirname(__FILE__) . '/../../../../bootstrap/start.php';
+include_once dirname(__FILE__) . '/../../../../bootstrap.php';
 
 ModulesManager::file('/modules/ximSYNC/scripts/scheduler/scheduler.class.php');
 

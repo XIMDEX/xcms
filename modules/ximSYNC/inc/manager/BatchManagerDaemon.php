@@ -33,7 +33,7 @@ use Ximdex\Runtime\App;
 use Ximdex\Runtime\DataFactory;
 use Ximdex\Utils\Sync\SynchroFacade;
 
-include_once dirname(__FILE__) . '/../../../../bootstrap/start.php';
+include_once dirname(__FILE__) . '/../../../../bootstrap.php';
 
 
 include_once(XIMDEX_ROOT_PATH . "/inc/utils.php");

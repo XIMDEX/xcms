@@ -41,23 +41,18 @@ class Manager
     private static $core_modules = array("ximIO", "ximSYNC");
     private static $deprecated_modules = array("ximDAV", "ximTRASH", "ximTHEMES",  "ximPAS", "ximSIR", "ximDEMOS", "ximPORTA", "ximTEST", "ximTAINT");
     public static $msg = null;
-    private static $root_path;
 
-    public static function init($root_path)
-    {
-        self::$root_path = $root_path;
-    }
 
     public static function get_modules_dir()
     {
         // replaces XIMDEX_MODULES_DIR
-        return self::$root_path . "/modules/";
+        return XIMDEX_ROOT_PATH. "/modules/";
     }
 
     public static function get_modules_pro_dir()
     {
         // replaces XIMDEX_MODULES_PRO_DIR
-        return self::$root_path . '/modules/modules_PRO/';
+        return XIMDEX_ROOT_PATH. '/modules/modules_PRO/';
     }
 
     public static function get_module_prefix()
@@ -150,10 +145,10 @@ class Manager
         $modules = self::getModules();
         $str = "<?php\n\n";
         foreach ($modules as $mod) {
-            $str .= Manager::get_pre_define_module() . strtoupper($mod["name"]) . Manager::get_post_path_define_module() . str_replace(self::$root_path, '', $mod["path"]) . "');" . "\n";
+            $str .= Manager::get_pre_define_module() . strtoupper($mod["name"]) . Manager::get_post_path_define_module() . str_replace(XIMDEX_ROOT_PATH, '', $mod["path"]) . "');" . "\n";
         }
         $str .= "\n?>";
-        FsUtils::file_put_contents(self::$root_path . Manager::get_modules_install_params(), $str);
+        FsUtils::file_put_contents(XIMDEX_ROOT_PATH. Manager::get_modules_install_params(), $str);
 
     }
 
@@ -380,7 +375,7 @@ class Manager
 
         $moduleClassName = Manager::get_module_prefix() . $name;
         $moduleClassFile = Manager::get_module_prefix() . $name . ".class.php";
-        $moduleClassPath = self::$root_path . self::path($name) . "/" . $moduleClassFile;
+        $moduleClassPath = XIMDEX_ROOT_PATH. self::path($name) . "/" . $moduleClassFile;
         if (file_exists($moduleClassPath)) {
             include_once($moduleClassPath);
         } else {
@@ -442,12 +437,12 @@ class Manager
     {
 
         if("XIMDEX" == $_module) {
-            $path = self::$root_path;
+            $path = XIMDEX_ROOT_PATH;
         }else  if("APP" == $_module) {
             $path = APP_ROOT_PATH;
         }else {
             $dir = self::path($_module);
-            $path = self::$root_path.$dir;
+            $path = XIMDEX_ROOT_PATH.$dir;
         }
 
 

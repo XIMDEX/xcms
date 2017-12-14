@@ -28,7 +28,7 @@
 use Ximdex\MVC\FrontController;
 use Ximdex\Runtime\App;
 
-include_once 'bootstrap/start.php';
+include_once 'bootstrap.php';
 
 /**
  * Dispatch XIMDEX_START event

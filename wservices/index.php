@@ -4,7 +4,7 @@ use Ximdex\API\Response;
 use Ximdex\API\Router;
 use Ximdex\Modules\Manager;
 
-include_once '../bootstrap/start.php';
+include_once '../bootstrap.php';
 
 /**
  * @TODO: check global setup

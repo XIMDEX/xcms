@@ -33,7 +33,7 @@ Class Logger
     public static function generate(string $id, string $file, bool $default = false)
     {
         $log = new \Monolog\Logger($id);
-        $log->pushHandler(new StreamHandler(App::getValue('XIMDEX_ROOT_PATH') . '/logs/' . $file . '.log', \Monolog\Logger::DEBUG, true, 0666));
+        $log->pushHandler(new StreamHandler(XIMDEX_ROOT_PATH . '/logs/' . $file . '.log', \Monolog\Logger::DEBUG, true, 0666));
         if ($default)
             self::addLog($log);
         else

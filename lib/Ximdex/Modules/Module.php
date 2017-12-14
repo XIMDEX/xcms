@@ -78,7 +78,7 @@ class Module  {
      * Uninstalled modules hasn't
      */
     protected function getStateFile() {
-        return App::getValue('XIMDEX_ROOT_PATH') . "/data/.{$this->getModuleName()}";
+        return XIMDEX_ROOT_PATH . "/data/.{$this->getModuleName()}";
     }
 
     protected function checkStateFile() {

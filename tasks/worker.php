@@ -1,7 +1,7 @@
 #!/usr/bin/php
 <?php
 
-include_once "../bootstrap/start.php";
+include_once "../bootstrap.php";
 
 
 $worker = new \Ximdex\Tasks\Worker();

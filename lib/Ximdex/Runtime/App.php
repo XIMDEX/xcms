@@ -145,7 +145,7 @@ Class App
 
             return self::getObject( $key ) ;
         }
-        require_once( App::getValue('XIMDEX_ROOT_PATH') .  $objectData  ) ;
+        require_once( XIMDEX_ROOT_PATH .  $objectData  ) ;
         return self::getObject( $key ) ;
     }
 

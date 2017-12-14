@@ -28,7 +28,7 @@
 
 use Ximdex\Models\Link;
 use Ximdex\Runtime\Db;
-include_once dirname(__FILE__) . '/../../../../bootstrap/start.php';
+include_once dirname(__FILE__) . '/../../../../bootstrap.php';
 
 function main ($argc, $argv){
     // Command line mode call

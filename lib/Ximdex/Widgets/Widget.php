@@ -65,7 +65,7 @@ class Widget
 
 
 
-		self::$_widgets = FsUtils::readFolder( App::getValue('XIMDEX_ROOT_PATH')  . '/inc/widgets/' , false, 'common');
+		self::$_widgets = FsUtils::readFolder( XIMDEX_ROOT_PATH  . '/inc/widgets/' , false, 'common');
 		return self::$_widgets;
 	}
 
@@ -100,7 +100,7 @@ class Widget
 
 		if (!is_array(self::$_instances)) self::$_instances = array();
 
-		$dir_widget = App::getValue('XIMDEX_ROOT_PATH')  . '/inc/widgets/';
+		$dir_widget = XIMDEX_ROOT_PATH  . '/inc/widgets/';
 		if (file_exists($dir_widget . "/" . $name)) {
 			$dir_widget = $dir_widget . "/" . $name;
 		}
@@ -334,7 +334,7 @@ class Widget
 	static public function getWidgetConf($wn, $wi, $a, $m)
 	{
 
-		$defaultConf = sprintf('%s/inc/widgets/%s/js/%s.conf.js', App::getValue('XIMDEX_ROOT_PATH')   , $wn, $wn);
+		$defaultConf = sprintf('%s/inc/widgets/%s/js/%s.conf.js', XIMDEX_ROOT_PATH   , $wn, $wn);
 
 		$fileName = sprintf('%s_%s.conf.js', $wn, $wi);
 		if (empty($wi)) {

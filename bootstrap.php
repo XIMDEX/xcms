@@ -5,7 +5,7 @@ use Ximdex\Runtime\App;
 
 // for legacy compatibility
 if (!defined('XIMDEX_ROOT_PATH')) {
-    define('XIMDEX_ROOT_PATH', dirname(dirname(__FILE__)));
+    define('XIMDEX_ROOT_PATH', __DIR__);
 }
 
 if (!defined('APP_ROOT_PATH')) {
@@ -16,7 +16,6 @@ if (!defined('APP_ROOT_PATH')) {
 if (!defined('XIMDEX_VENDORS')) {
     define('XIMDEX_VENDORS', '/vendors');
 }
-
 
 
 if (!defined('CLI_MODE'))
@@ -35,8 +34,8 @@ include_once(XIMDEX_ROOT_PATH . '/inc/db/DB_zero.class.php');
 
 
 // get Config from install file
-if ( file_exists( App::getValue('XIMDEX_ROOT_PATH') . '/conf/install-params.conf.php' ) ) {
-    $conf = require_once(App::getValue('XIMDEX_ROOT_PATH') . '/conf/install-params.conf.php');
+if ( file_exists( XIMDEX_ROOT_PATH . '/conf/install-params.conf.php' ) ) {
+    $conf = require_once(XIMDEX_ROOT_PATH . '/conf/install-params.conf.php');
                  foreach ($conf as $key => $value) {
         App::setValue($key, $value);
     }
@@ -44,7 +43,6 @@ if ( file_exists( App::getValue('XIMDEX_ROOT_PATH') . '/conf/install-params.conf
 
 // Initialize Modules Manager
 // set ximdex root path
-Ximdex\Modules\Manager::init( App::getValue('XIMDEX_ROOT_PATH')   );
 Ximdex\Modules\Manager::file( Ximdex\Modules\Manager::get_modules_install_params() );
 
 
@@ -57,7 +55,7 @@ Logger::setActiveLog();
 
 // read install-modules.php
 $modulesConfString = "";
-$installModulesPath = App::getValue('XIMDEX_ROOT_PATH') . '/conf/install-modules.php';
+$installModulesPath = XIMDEX_ROOT_PATH . '/conf/install-modules.php';
 if( file_exists($installModulesPath) ){
     $modulesConfString = file_get_contents($installModulesPath);
 }
@@ -106,7 +104,7 @@ class_alias('Ximdex\Utils\Messages', 'Messages');
 App::setValue( 'class::definition::DB', '/inc/db/DB.class.php' );
 
 // Extensions setup
-include_once( App::getValue('XIMDEX_ROOT_PATH') . '/conf/extensions.conf.php');
+include_once( XIMDEX_ROOT_PATH . '/conf/extensions.conf.php');
 
 $mManager = new ModulesManager;
 
@@ -120,6 +118,8 @@ foreach(ModulesManager::getEnabledModules() as $module){
         $moduleInstance->init();
     }
 }
+
+
 
 // FROM MVC
 if (!defined('RENDERER_ROOT_PATH')) {

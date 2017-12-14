@@ -28,7 +28,7 @@ use Ximdex\MVC\FrontControllerAPI;
 use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
 
-include_once '../bootstrap/start.php';
+include_once '../bootstrap.php';
 
 //Including composer autoloader
 ModulesManager::file('/inc/io/BaseIO.class.php');

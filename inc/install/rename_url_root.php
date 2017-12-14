@@ -26,7 +26,7 @@
     else
         $values['urlRoot'] = '';
     
-    include_once 'bootstrap/start.php';
+    include_once 'bootstrap.php';
     
     // change the database config values
     foreach ($values as $key => $value)
