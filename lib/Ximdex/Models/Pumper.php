@@ -132,14 +132,14 @@ class Pumper extends PumpersOrm
      * @return bool
      */
 
-    function startPumper($pumperId, $modo = "pl")
+    function startPumper($pumperId, $modo = "php")
     {
 
-        $separador = ($modo == "pl") ? " " : "=";
+        $separador =  "=";
 
         $dbObj = new DB();
 
-        $startCommand = (($modo == "pl") ? PUMPER_PATH : PUMPERPHP_PATH) . "/dexpumper." . $modo .
+        $startCommand =  XIMDEX_ROOT_PATH.'/bootstrap.php '.PUMPERPHP_PATH . "/dexpumper." . $modo .
             " --pumperid" . $separador . "$pumperId --sleeptime" . $separador . "2 --maxvoidcycles" .
             $separador . "10 --localbasepath" . $separador . SERVERFRAMES_SYNC_PATH . " > /dev/null 2>&1 &";
 

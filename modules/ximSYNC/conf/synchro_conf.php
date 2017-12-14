@@ -26,9 +26,6 @@
  */
 
 
-if (!defined('XIMDEX_ROOT_PATH'))
-	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../../../"));
-
 /*
  *	Paths and directories related to the Synchronizer.
 */
@@ -39,8 +36,6 @@ if (!defined('CHANNELFRAMES_SYNC_PATH'))
 if (!defined('SERVERFRAMES_SYNC_PATH'))
 	define('SERVERFRAMES_SYNC_PATH', XIMDEX_ROOT_PATH."/data/sync/serverframes");
 
-if (!defined('PUMPER_PATH'))
-	define('PUMPER_PATH', XIMDEX_ROOT_PATH.ModulesManager::path('ximSYNC')."/scripts/pumper/perl");
 
 if (!defined('PUMPERPHP_PATH'))
 	define('PUMPERPHP_PATH', XIMDEX_ROOT_PATH.ModulesManager::path('ximSYNC')."/scripts/pumper/php");

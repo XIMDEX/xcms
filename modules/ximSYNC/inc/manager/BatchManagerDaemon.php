@@ -1,4 +1,3 @@
-#!/usr/bin/env php
 <?php
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
@@ -32,9 +31,6 @@ use Ximdex\Models\NodeType;
 use Ximdex\Runtime\App;
 use Ximdex\Runtime\DataFactory;
 use Ximdex\Utils\Sync\SynchroFacade;
-
-include_once dirname(__FILE__) . '/../../../../bootstrap.php';
-
 
 include_once(XIMDEX_ROOT_PATH . "/inc/utils.php");
 include_once(XIMDEX_ROOT_PATH . '/modules/ximSYNC/inc/manager/BatchManager.class.php');

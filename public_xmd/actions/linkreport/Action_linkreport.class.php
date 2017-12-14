@@ -213,7 +213,7 @@ class Action_linkreport extends ActionAbstract
             $link->set('CheckTime', time());
             $link->update();
         }
-        $cmd = 'php ' . APP_ROOT_PATH . '/actions/linkreport/resources/scripts/links_checker.php ' . $nodeid;
+        $cmd = 'php ' . XIMDEX_ROOT_PATH . '/bootstrap.php '.APP_ROOT_PATH.'/actions/linkreport/resources/scripts/links_checker.php ' . $nodeid;
         $pid = shell_exec(sprintf("%s > /dev/null & echo $!", $cmd));
         echo json_encode(array('state' => $st, 'date' => date('d/m/Y H:i', time())));
         die();

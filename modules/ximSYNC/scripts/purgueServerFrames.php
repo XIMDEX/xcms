@@ -30,13 +30,9 @@
 /*
 *	Purgue files from data/sync/serverframes directory
 *
-* 	Launch as follow: <ximDEX_HOME/modules/ximSYNC/scripts>$ php purgueServerFrames.php
+* 	Launch as follow: <ximDEX_HOME>$ php bootstrap.php modules/ximSYNC/scripts/purgueServerFrames.php
 *
 */
-
-
-if (!defined('XIMDEX_ROOT_PATH'))
-	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../../"));
 
 //
 ModulesManager::file('/inc/model/ServerFrame.class.php', 'ximSYNC');

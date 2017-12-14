@@ -1,4 +1,3 @@
-#!/usr/bin/env php
 <?php
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
@@ -30,11 +29,6 @@ use Ximdex\Models\Pumper;
 use Ximdex\Models\Server;
 use Ximdex\Runtime\Cli\CliParser;
 
-include_once dirname(__FILE__) . '/../../../../../bootstrap.php';
-
-if (!defined('XIMDEX_ROOT_PATH')) {
-	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../../../../"));
-}
 
 
 function showErrors($errno, $errstr, $errfile = NULL, $errline= NULL) {

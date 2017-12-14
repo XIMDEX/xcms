@@ -1,4 +1,3 @@
-#!/usr/bin/env php
 <?php
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
@@ -26,8 +25,6 @@
  */
 
 use Ximdex\Logger;
-
-include_once dirname(__FILE__) . '/../../../../bootstrap.php';
 
 ModulesManager::file('/modules/ximSYNC/scripts/scheduler/scheduler.class.php');
 

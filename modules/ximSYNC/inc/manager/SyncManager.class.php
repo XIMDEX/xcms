@@ -178,7 +178,7 @@ class SyncManager
         }
 
         // Exec batchmanagerdaemon in background and get its pid (in case we needed in the future)
-        $cmd = 'php ' . XIMDEX_ROOT_PATH . '/modules/ximSYNC/inc/manager/BatchManagerDaemon.php';
+        $cmd = 'php ' . XIMDEX_ROOT_PATH . '/bootstrap.php  modules/ximSYNC/inc/manager/BatchManagerDaemon.php';
         $pid = shell_exec(sprintf("%s > /dev/null & echo $!", $cmd));
 
         return $docsToPublish;
