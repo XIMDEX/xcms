@@ -23,9 +23,13 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
+
+require_once dirname(__DIR__, 2) . '/bootstrap.php';
+
 use Ximdex\Logger;
 use Ximdex\Runtime\Cli\CliParser;
 use Ximdex\Runtime\Cli\CliReader;
+
 
 
 /**

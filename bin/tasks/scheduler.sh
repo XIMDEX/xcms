@@ -2,7 +2,7 @@
 SOURCE="${BASH_SOURCE[0]}"
 
 BASEDIR="$( dirname `dirname "$SOURCE"` )"
-SCRIPT="modules/ximSYNC/scripts/scheduler/scheduler.php"
+SCRIPT="php bootstrap.php modules/ximSYNC/scripts/scheduler/scheduler.php"
 LOG="logs/scheduler.log"
 
 

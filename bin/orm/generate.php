@@ -24,15 +24,12 @@
  * @version $Revision$
  */
 
+require_once dirname(__DIR__, 2) . '/bootstrap.php';
+
 
 // TODO: Eliminar HEREDOC y usar buffer ob o similar...
 use Ximdex\Utils\FsUtils;
 
-/**
- * XIMDEX_ROOT_PATH
- */
-if (!defined('XIMDEX_ROOT_PATH'))
-    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../"));
 
 include_once(XIMDEX_ROOT_PATH . '/extensions/adodb/adodb.inc.php');
 include_once(XIMDEX_ROOT_PATH . '/extensions/adodb/adodb-active-record.inc.php');
@@ -46,13 +43,13 @@ Sintaxis incorrecta.
 La sintaxis correcta es:
 
 Para generar una sola clase:
-	$ php script/orm/generate [Nombre de la tabla]
+	$ php bin/orm/generate [Nombre de la tabla]
 
 o para generar todas las clases
-	$ php script/orm/generate all
+	$ php bin/orm/generate all
 
 o para generar solo las nuevas
-	$ php script/orm/generate new_tables
+	$ php bin/orm/generate new_tables
 
 HEREDOC;
     exit();

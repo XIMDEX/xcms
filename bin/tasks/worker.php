@@ -1,7 +1,7 @@
 #!/usr/bin/php
 <?php
 
-include_once "../bootstrap.php";
+require_once dirname(__DIR__, 2) . '/bootstrap.php';
 
 
 $worker = new \Ximdex\Tasks\Worker();
