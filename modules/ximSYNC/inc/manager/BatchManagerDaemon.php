@@ -25,6 +25,13 @@
  */
 
 
+// for legacy compatibility
+if (!defined('XIMDEX_ROOT_PATH')) {
+    require_once dirname(__FILE__) . '/../../../../bootstrap.php';
+}
+
+
+
 use Ximdex\Logger;
 use Ximdex\Models\Node;
 use Ximdex\Models\NodeType;

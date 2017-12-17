@@ -139,7 +139,7 @@ class Pumper extends PumpersOrm
 
         $dbObj = new DB();
 
-        $startCommand =  XIMDEX_ROOT_PATH.'/bootstrap.php '.PUMPERPHP_PATH . "/dexpumper." . $modo .
+        $startCommand =  "php ".XIMDEX_ROOT_PATH.'/bootstrap.php '.PUMPERPHP_PATH . "/dexpumper." . $modo .
             " --pumperid" . $separador . "$pumperId --sleeptime" . $separador . "2 --maxvoidcycles" .
             $separador . "10 --localbasepath" . $separador . SERVERFRAMES_SYNC_PATH . " > /dev/null 2>&1 &";
 

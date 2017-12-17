@@ -159,6 +159,8 @@ if(XIMDEX_DIRECT && CLI_MODE && isset($argv[1])) {
      */
 
     $command = array_shift($argv);
+    $argc--;
+
     $script =  parse_url ( $argv[0],  PHP_URL_PATH );
     $is_absolute_path = ( '/' == $script[0])?: false;
 
@@ -167,6 +169,7 @@ if(XIMDEX_DIRECT && CLI_MODE && isset($argv[1])) {
     }else {
         $external_script = XIMDEX_ROOT_PATH.'/'.$script;
     }
+
 
     $new_command = $argv[0] = $script;
     if(file_exists($new_command)) {

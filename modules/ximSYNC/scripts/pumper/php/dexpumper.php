@@ -31,7 +31,7 @@ use Ximdex\Runtime\Cli\CliParser;
 
 // for legacy compatibility
 if (!defined('XIMDEX_ROOT_PATH')) {
-    require_once dirname(__FILE__) . '/../../../../bootstrap.php';
+    require_once dirname(__FILE__) . '/../../../../../bootstrap.php';
 }
 
 
