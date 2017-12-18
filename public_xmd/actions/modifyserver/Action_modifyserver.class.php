@@ -150,24 +150,6 @@ class Action_modifyserver extends ActionAbstract {
 		$states		= $this->request->getParam('states');
 		$encode		= $this->request->getParam('encode');
 
-		//validate the fields about protocol
-		//If ximDEMOS is actived and nodeis is rol "Demo" then  remove is not allowed
-		if(ModulesManager::isEnabled("ximDEMOS") ) {
-			if("FTP" != $protocol && \Ximdex\Utils\Session::get('user_demo')) {
-					$this->messages->add(_("Not allowed protocol for demo user. Get Ximdex open source to get full functionality."), MSG_TYPE_ERROR);
-					$values = array(
-						'messages' => $this->messages->messages,
-						'goback' => true,
-						'id_node' => $idNode,
-						'params' => $params,
-						'nodeURL' => App::getValue('UrlRoot').'/public_xmd/?actionid=$actionID&nodeid={$idNode}',
-					);
-
-					$this->sendJSON($values);
-					return true;
-			}
-		}
-        
 		$server = new Node($nodeID);
 		$list = $server->class->GetPhysicalServerList();
 		

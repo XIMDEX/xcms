@@ -99,9 +99,6 @@ if($contentType) {
         elseif ($filterType=='ImagesRootFolder') {
             $filterTypeAdd='ImagesFolder';
         }
-        elseif ($filterType=='ximPORTA') {
-            $filterTypeAdd='LinkManager';
-        }
         elseif (($filterType=='Server')&&($targetNodeType->GetName()=='Section')) {
             $filterTypeAdd='Section';
         }
@@ -113,17 +110,11 @@ if($contentType) {
 
         if ($filterTypeAdd!="") {
             $typeList[]=$filterTypeAdd;
-            if ($filterType=='ximPORTA') {
-                $typeList[]='LinkFolder';
-            }
         }
         $typeList = nameToId($typeList);
         $selectableList = array($filterType);
         if ($filterTypeAdd!="") {
             $selectableList[]=$filterTypeAdd;
-            if ($filterType=='ximPORTA') {
-                $selectableList[]='LinkFolder';
-            }
         }
         $selectableList = nameToId($selectableList);
     }else {
@@ -521,10 +512,6 @@ function getTypeAndSelectableList($contentType, &$typeList, &$selectableList) {
 
             $typeList = array('Projects', 'Project', 'Server', 'Section', 'LinkManager', 'LinkFolder', 'XmlRootFolder', 'XmlDocument', 'XmlContainer', 'CommonRootFolder', 'CommonFolder', 'Link', 'TextFile', 'BinaryFile', 'ImageFile');
             $selectableList = array('XmlDocument', 'Link', 'ImageFile', 'TextFile', 'BinaryFile', 'ImageFile');
-            $nodeTypeXimPorta=new NodeType();
-            if ($nodeTypeXimPorta->IsNodeType('ximPORTA')) {
-                $typeList[]='ximPORTA';
-            }
             break;
 
         case 'ximletContainer':

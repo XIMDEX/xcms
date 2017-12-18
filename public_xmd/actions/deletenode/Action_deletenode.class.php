@@ -221,23 +221,7 @@ class Action_deletenode extends ActionAbstract {
 	        $this->sendJSON($values);
 	        return false;
 		}
-		
-		//If ximDEMOS is actived and nodeis is rol "Demo" then  remove is not allowed
-		if(ModulesManager::isEnabled("ximDEMOS") &&  \Ximdex\Utils\Session::get('user_demo')) {
-			$node = new Node($idNode);
-			$name = $node->get("Name");
-			if("Demo" == $name ) {
-				$this->messages->add(_('Changes in Demo role are not allowed'), MSG_TYPE_NOTICE);
 
-				$values = array(
-					'action_with_no_return' => true,
-					'messages' => $this->messages->messages
-				);
-				$this->sendJSON($values);
-
-				return ;
-			}
-		}
 		
 		$depList = array();
 		$deleteDep = $this->request->getParam("unpublishnode");

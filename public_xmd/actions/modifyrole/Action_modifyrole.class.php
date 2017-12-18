@@ -153,24 +153,6 @@ class Action_modifyrole extends ActionAbstract
     function modifyrole()
     {
         $idNode = $this->request->getParam('nodeid');
-
-        //If ximDEMOS is actived and nodeis is rol "Demo" then no modify is allowed
-        if (ModulesManager::isEnabled("ximDEMOS") && \Ximdex\Utils\Session::get('user_demo')) {
-            $node = new Node($idNode);
-            $name = $node->get("Name");
-            if ("Demo" == $name) {
-                $this->messages->add(_('Changes in Demo role are not allowed'), MSG_TYPE_NOTICE);
-
-                $values = array(
-                    'goback' => true,
-                    'messages' => $this->messages->messages
-                );
-                $this->render($values);
-
-                return;
-            }
-        }
-
         $idPipeline = $this->request->getParam('id_pipeline');
         $role = new Role($idNode);
         $role->set('Description', $this->request->getParam('description'));

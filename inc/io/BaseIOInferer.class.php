@@ -305,10 +305,6 @@ class BaseIOInferer {
 				$friendlyName = _('Ximlet folder');
 				break;
 
-			case 'ModuleInfoContainer':
-				$newNodeTypeName = 'ximPortaAllowedContent';
-				$friendlyName = _('Ximporta document definition node');
-				break;
 
 			default:
 				return null;

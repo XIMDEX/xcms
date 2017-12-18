@@ -344,30 +344,6 @@ class User extends UsersOrm
         }
     }
 
-    function isDemo()
-    {
-        if (!ModulesManager::isEnabled("ximDEMOS")) {
-            return false;
-        }
-
-        $idUser = $this->get('IdUser');
-        if ($this->get('IdUser') > 0) {
-            //Get Nodeid rol "Demo"
-            $idRole = Role::GetByName("Demo");
-            $query = sprintf("SELECT IdUser FROM RelUsersGroups WHERE IdUser = %d AND IdRole = %d", $this->get('IdUser'), $idRole);
-            $dbObj = new Db();
-            $dbObj->Query($query);
-            if (!$dbObj->numErr) {
-                if ($dbObj->numRows) {
-                    return true;
-                }
-            }
-        } else {
-            $this->SetError(1);
-        }
-        return false;
-    }
-
     // Function which returns the role of an user in a group
     function getRoleOnGroup($groupid)
     {
@@ -541,12 +517,6 @@ class User extends UsersOrm
     {
         $this->ClearError();
         if ($this->get('IdUser') > 0) {
-            $groupList = $this->GetGroupList();
-            $dbObj = new Db();
-
-            $query = sprintf("DELETE FROM UnverifiedUsers where email='%s'", $this->get('Email'));
-
-            $dbObj->Execute($query);
             parent::delete();
         } else
             $this->SetError(1);

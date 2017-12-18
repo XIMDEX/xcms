@@ -47,8 +47,6 @@ echo "\nximdex_root = '" . XIMDEX_ROOT_PATH . "';";
 echo "\nbase_action = '" . \Ximdex\Utils\Session::get("base_action") . "';";
 echo "\nuser_id = '" . \Ximdex\Utils\Session::get('userID') . "';";
 echo "\nlocale = '" . \Ximdex\Utils\Session::get('locale') . "';";
-$load_welcome = (int)(ModulesManager::isEnabled("ximDEMOS") && \Ximdex\Utils\Session::get('user_demo'));
-echo "\nload_welcome =" . $load_welcome . ";\n";
 ?>
 function NodeTypes()
 {

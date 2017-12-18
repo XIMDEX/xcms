@@ -32,7 +32,6 @@ use Ximdex\Parsers\ParsingPathTo;
 use Ximdex\Runtime\App;
 
 
-ModulesManager::file('/inc/PAS_Conector.class.php', 'ximPAS');
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Abstract_View.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/View_FilterMacros.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Interface_View.class.php');

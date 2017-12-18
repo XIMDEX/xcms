@@ -57,11 +57,8 @@ class Action_login extends ActionAbstract
         else
             $values["message"] = NULL;
 
-        //Login change if ximDEMOS is active and the Smarty exists.
-        if (ModulesManager::isEnabled('ximDEMOS') && file_exists(APP_ROOT_PATH . "/actions/login/template/Smarty/indexDEMO.tpl"))
-            $this->render($values, 'indexDEMO', 'only_template.tpl');
-        else
-            $this->render($values, 'index', 'only_template.tpl');
+        $this->render($values, 'index', 'only_template.tpl');
+
         die();
     }
 

@@ -76,12 +76,6 @@ class Authenticator
                 return false;
             }
 
-            if (ModulesManager::isEnabled("ximDEMOS")) {
-                $user_demo = (int)$user->isDemo();
-            } else {
-                $user_demo = 0;
-            }
-
             unset($user);
 
             if (ModulesManager::isEnabled('ximADM')) {
@@ -94,7 +88,6 @@ class Authenticator
 
             // TODO: Add new session system.
             Session::set('user_name', $name);
-            Session::set('user_demo', $user_demo);
             Session::set('logged', $user_id);
             Session::set('userID', $user_id);
             Session::set('locale', $user_locale);

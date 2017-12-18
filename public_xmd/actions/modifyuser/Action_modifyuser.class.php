@@ -76,11 +76,6 @@ class Action_modifyuser extends ActionAbstract {
     	$locale = trim($this->request->getParam('locale'));
         $general_role = $this->request->getParam('generalrole');
 
-		$node = new Node($idNode);
-	    $idUser = \Ximdex\Utils\Session::get('userID');
-	    if(ModulesManager::isEnabled('ximDEMOS') && $idUser != $idNode && $idUser != 301){
-	        $this->render($values, NULL, 'messages.tpl');
-	    }
 
         $idRegisteredUser = \Ximdex\Utils\Session::get('userID');
         $registeredUser = new User($idRegisteredUser);

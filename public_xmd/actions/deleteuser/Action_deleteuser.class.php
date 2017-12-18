@@ -28,9 +28,6 @@ use Ximdex\Models\Node;
 use Ximdex\Models\User;
 use Ximdex\MVC\ActionAbstract;
 
-if(ModulesManager::isEnabled('ximDEMOS')){
-	require_once(XIMDEX_ROOT_PATH . '/inc/model/orm/UnverifiedUsers_ORM.class.php');
-}
 
 class Action_deleteuser extends ActionAbstract {
    // Main method: it shows init form
@@ -63,39 +60,8 @@ class Action_deleteuser extends ActionAbstract {
 			$user->messages->add(_('User could not be found'), MSG_TYPE_ERROR);
 		} else {
 			$idParent = $user->get('IdParent');
-/************************ ximDEMOS *******************/
-			if (ModulesManager::isEnabled('ximDEMOS')){
-				//Now we have to delete the project's user
-				$userNode = new User($idNode);
-				$groupList = $userNode->GetGroupList();
-				$idNode=false;
-				foreach ($groupList as $idGroup) {
-					if ($idGroup != 101){
-						$group = new Node($idGroup);
-						$node = new Node(10000);
-
-						$idProject = $node->GetChildByName("Picasso_".$group->GetNodeName());
-						if ($idProject){
-				    		error_log("[ximDEMOS] The project with Id {$idProject} is going to be deleted.");
-				    			$nodeToDelete = new Node($idProject);
-				    			$nodeToDelete->DeleteNode();
-						}
-
-						error_log("[ximDEMOS] The group with Id $idGroup is going to be deleted.");
-						$group->delete();
-			    		}
-				}
-			}
-/************************ ximDEMOS *******************/
 		   	$result = $user->delete();
-/************************ ximDEMOS *******************/
-			if (ModulesManager::isEnabled('ximDEMOS')){
-				$uUser = new UnverifiedUsers_ORM();
-				$dbObj = new DB();
-	                        $query = sprintf("DELETE FROM UnverifiedUsers where email='%s'",$userNode->get('Email'));
-	                        $dbObj->Execute($query);
-			}
-/************************ ximDEMOS *******************/
+
 			if($result) {
 				$user->messages->add(_('User has been successfully deleted'), MSG_TYPE_NOTICE);
 			}

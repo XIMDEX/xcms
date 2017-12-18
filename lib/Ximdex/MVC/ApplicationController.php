@@ -128,10 +128,6 @@ class ApplicationController extends IController
             $this->timer = new \Ximdex\Utils\Timer();
             $this->timer->start();
 
-            if (ModulesManager::isEnabled('ximDEMOS')) {
-                $actionStats = new ActionsStats();
-                $idStat = $actionStats->create(NULL, $nodeId, $userId, $action, 1);
-            }
             $stats = array("action" => $action, "nodeid" => $nodeId, "idStat" => 0);
         }
         return $stats;
@@ -147,22 +143,10 @@ class ApplicationController extends IController
         $actionStats = App::getValue('ActionsStats');
         $action = $this->request->getParam("action");
         $method = $this->request->getParam("method");
-        $nodeId = (int)$this->request->getParam("nodeid");
-        $userId = Session::get("userID");
 
         if ($actionStats == 1 && !is_null($action) && "index" == $method && $this->timer) {
             $stats_time = $this->timer->mark('End action');
 
-            if (ModulesManager::isEnabled('ximDEMOS')) {
-                if ($stats["idStat"]) {
-                    $actionStats = new ActionsStats($stats["idStat"]);
-                    $actionStats->set("Duration", $this->timer->display_parcials(null, true));
-                    $actionStats->update();
-                } else {
-                    $actionStats = new ActionsStats();
-                    $actionStats->create(NULL, $nodeId, $userId, $action, $this->timer->display_parcials(null, true));
-                }
-            }
             // else {
             $this->send_stats($stats, $method, $stats_time);
             //}

@@ -35,7 +35,6 @@ use Ximdex\Parsers\ParsingPathTo;
 use Ximdex\Runtime\App;
 use Ximdex\Utils\Sync\SynchroFacade;
 
- ModulesManager::file('/inc/PAS_Conector.class.php', 'ximPAS');
 ModulesManager::file('/inc/repository/nodeviews/Abstract_View.class.php');
 ModulesManager::file('/inc/repository/nodeviews/Interface_View.class.php');
 
@@ -573,19 +572,7 @@ class View_FilterMacros extends Abstract_View implements Interface_View
     protected function getRDFByNodeId($params, $rdfa = false)
     {
 
-        if (!ModulesManager::isEnabled('ximPAS')) {
-            return '';
-        }
-
-        $nodeId = $params[1];
-        $node = new Node($nodeId);
-        if (!$node->get('IdNode')) {
-            return '';
-        }
-
-        $pas = new PAS_Conector();
-        $rdf = $rdfa === false ? $pas->getRDFByNodeId($nodeId) : $pas->getRDFaByNodeId($nodeId);
-        return "\n$rdf\n";
+        return '';
     }
 
     protected function getRDFaByNodeId($params)

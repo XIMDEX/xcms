@@ -40,7 +40,6 @@ use Ximdex\Utils\Session;
 use Ximdex\Widgets\Widget;
 use Ximdex\XML\Base;
  
-ModulesManager::file('/inc/model/orm/UnverifiedUsers_ORM.class.php');
 ModulesManager::file('/actions/browser3/inc/GenericDatasource.class.php', 'APP');
 
 
@@ -1054,15 +1053,8 @@ and rug.idrole in (select idrole from RelRolesPermissions where IdPermission = 1
     {
         $id = \Ximdex\Utils\Session::get('userID');
         $user = new User($id);
-        if (ModulesManager::isEnabled('ximDEMOS')) {
-            $email = $user->GetEmail();
-            $unverifiedUser = new UnverifiedUsers_ORM();
-            $result = $unverifiedUser->find("name", "email=%s", array($email));
-            $this->render(array('username' => $result[0]["name"]));
-        } else {
-            $this->render(array('username' => $user->GetLogin()));
-        }
 
+        $this->render(array('username' => $user->GetLogin()));
     }
 
     function getDefaultNode()
@@ -1080,25 +1072,9 @@ and rug.idrole in (select idrole from RelRolesPermissions where IdPermission = 1
         $this->actionCommand = "xmleditor2";
 
         if ($this->tourEnabled($userID)) {
-            if (ModulesManager::isEnabled('ximDEMOS')) {
-                foreach ($groupList as $idGroup) {
-                    if ($idGroup != 101) {
-                        $group = new Group($idGroup);
-                        $groupName = $group->GetGroupName();
-                    }
-                }
-
-                if ($groupName) {
-                    $fullPath = "/ximdex/projects/Picasso_{$groupName}" . $defaultNodePath;
-                    $node = new Node();
-                    $nodes = $node->GetByNameAndPath($defaultNodeName, $fullPath);
-                }
-            } else {
                 $fullPath = "/ximdex/projects/Picasso" . $defaultNodePath;
                 $node = new Node();
                 $nodes = $node->GetByNameAndPath($defaultNodeName, $fullPath);
-
-            }
         }
 
         $this->render(array('nodes' => $nodes));

@@ -157,17 +157,9 @@ class FrontControllerHTTP extends FrontController
     function ModuleShortUrl()
     {
         $actionName = $this->request->getParam('action');
-        $ximDEMOS = ModulesManager::isEnabled('ximDEMOS');
 
         if ("createaccount" == $actionName) {
-            if ($ximDEMOS) {
-                $this->request->setParam('mod', 'ximDEMOS');
-                $this->request->setParam('actionid', 0);
-                $this->request->setParam('actionName', $actionName);
-            } else {
                 $this->request->setParam('action', 'login');
-            }
-
         }
     }
 

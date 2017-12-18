@@ -465,11 +465,6 @@ class BaseIO
             // document nodes
             case 'XMLDOCUMENTNODE' :
 
-                if (isset($data['FILTER']) && $data['FILTER'] == 'XIMPORTA') {
-                    ModulesManager::file('/actions/io/generalBaseIO.php', 'ximPORTA');
-                    include_once(XIMDEX_BASEIO_PATH . "/types/BaseIO_ximPORTA.class.php");
-                }
-
                 $data['TEMPLATE'] = $this->_getVisualTemplateFromChildrens($data['CHILDRENS']);
                 if (empty($data['TEMPLATE'])) {
                     $this->messages->add(_('It was not specified a template for the node ') . $data['NAME'], MSG_TYPE_WARNING);
@@ -502,35 +497,28 @@ class BaseIO
                 $documentName = sprintf("%s%s", $documentName, $sufix);
 
                 $idNode = NULL;
-                if (isset($data['FILTER']) && $data['FILTER'] == 'XIMPORTA') {
-                    $data['PATH'] = renameFile($paths[0], $documentName, $this->messages);
-                    $base_io = new BaseIO_ximPORTA();
-                    $idNode = $base_io->build($data);
-                    if (isset($base_io->messages)) {
-                        $this->_dumpMessages($base_io->messages);
-                    }
-                } else {
-
-                    //XMLDOCUMENT
-                    $nodeType = new NodeType();
-                    $nodeType->SetByName($data['NODETYPENAME']);
-
-                    $xmlDocument = new Node();
-                    $xmlDocument->CreateNode($documentName, $data['PARENTID'], $nodeType->get('IdNodeType'), $data['STATE'], $data['TEMPLATE'], $data['LANG'], $data['ALIASNAME'], $data['CHANNELS']);
-                    //Creating a symbolic link with the master and stablishing its workflow.
 
 
-                    $idNode = $xmlDocument->get('IdNode');
-                    $strDoc = new StructuredDocument($xmlDocument->get('IdNode'));
+                //XMLDOCUMENT
+                $nodeType = new NodeType();
+                $nodeType->SetByName($data['NODETYPENAME']);
 
-                    if (array_key_exists('NEWTARGETLINK', $data)) {
-                        $xmlDocument->SetWorkflowMaster($data['NEWTARGETLINK']);
-                        $strDoc->SetSymLink($data['NEWTARGETLINK']);
-                    }
-                    if (isset($data['CONTENT']) && $data['CONTENT']) {
-                        $xmlDocument->SetContent($data['CONTENT']);
-                    }
+                $xmlDocument = new Node();
+                $xmlDocument->CreateNode($documentName, $data['PARENTID'], $nodeType->get('IdNodeType'), $data['STATE'], $data['TEMPLATE'], $data['LANG'], $data['ALIASNAME'], $data['CHANNELS']);
+                //Creating a symbolic link with the master and stablishing its workflow.
+
+
+                $idNode = $xmlDocument->get('IdNode');
+                $strDoc = new StructuredDocument($xmlDocument->get('IdNode'));
+
+                if (array_key_exists('NEWTARGETLINK', $data)) {
+                    $xmlDocument->SetWorkflowMaster($data['NEWTARGETLINK']);
+                    $strDoc->SetSymLink($data['NEWTARGETLINK']);
                 }
+                if (isset($data['CONTENT']) && $data['CONTENT']) {
+                    $xmlDocument->SetContent($data['CONTENT']);
+                }
+
                 if ($idNode > 0) {
                     $node = new Node($idNode);
                     $parent = new Node($node->GetParent()); // The logic names are inserted in the father
