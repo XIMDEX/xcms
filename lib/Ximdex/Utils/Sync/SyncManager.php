@@ -27,7 +27,6 @@ namespace Ximdex\Utils\Sync;
 
 use Ximdex\Runtime\App;
 use Ximdex\Runtime\DataFactory;
-use DexCache;
 use Mail;
 use Ximdex\Models\User;
 use Ximdex\Models\Node;
@@ -127,12 +126,7 @@ class SyncManager
 			$this->errors = false;
 			$this->errors_str = NULL;
 		}
-
-
-		// Add relation to cache.
-		if (App::getValue('dexCache')) {
-			DexCache::setRelation($node_id, $frameID, $versionID);
-		}
+        
 
 		// Send mail
 		if ($this->getFlag('mail')) {

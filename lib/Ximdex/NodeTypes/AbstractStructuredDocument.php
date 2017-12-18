@@ -30,7 +30,6 @@ use Ximdex\Runtime\App;
 use Ximdex\Runtime\DataFactory;
 use Ximdex\Deps\DepsManager;
 use DOMDocument;
-use DexCache;
 use ModulesManager;
 use Namespaces;
 use Ximdex\Models\NodeType;
@@ -53,7 +52,6 @@ define('DOCXAP_VIEW', 1);
 define('SOLR_VIEW', 2);
 define('XIMIO_VIEW', 3);
 
-require_once(XIMDEX_ROOT_PATH . "/inc/cache/DexCache.class.php");
 ModulesManager::file('/inc/SolrViews.class.php', 'ximRAM');
 ModulesManager::file('/inc/metadata/MetadataManager.class.php');
 ModulesManager::file('/inc/model/Namespaces.class.php');
@@ -763,14 +761,6 @@ abstract class AbstractStructuredDocument extends FileNode
         $nodeid = $this->nodeID;
 
         $node = new Node($nodeid);
-
-        if (App::getValue('dexCache')) {
-            if (!DexCache::isModified($nodeid)) {
-                $content = DexCache::getPersistentSyncFile($nodeid, $channel);
-                return $content;
-                // Si no modificado. Devuelve el sync antiguo.
-            }
-        }
 
         $dataFactory = new DataFactory($nodeid);
         $version = $dataFactory->GetLastVersionId();
