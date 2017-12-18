@@ -5,10 +5,17 @@ use Ximdex\API\Router;
 use Ximdex\Modules\Manager;
 
 
-
 if (!defined('XIMDEX_ROOT_PATH')) {
     require_once '../bootstrap.php';
 }
+
+
+ModulesManager::file('/public_rest/classes/Request.php');
+ModulesManager::file('/public_rest/classes/Response.php');
+ModulesManager::file('/public_rest/classes/Router.php');
+ModulesManager::file('/public_rest/classes/APIException.php');
+ModulesManager::file('/public_rest/classes/AbstractAPIAction.php');
+
 
 /**
  * @TODO: check global setup
@@ -33,7 +40,11 @@ $router->addRoute('ping', function (Request $r, Response $w) {
 
 foreach(Manager::getEnabledModules() as $module){
     $name = $module["name"];
-    $mManager->instanceModule($name)->addApiRoutes( $router );
+
+    $module = $mManager->instanceModule($name);
+    if(method_exists($module, 'addApiRoutes')) {
+        $module->addApiRoutes( $router );
+    }
 }
 
 
