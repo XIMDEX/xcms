@@ -298,7 +298,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
         $i18n = new ParsingJsGetText();
         $jsFiles = $i18n->getTextArrayOfJs($jsFiles);
 
-        $extensionsURL = App::getValue('UrlRoot') . '/extensions';
+        $extensionsURL = App::getValue('UrlRoot') . '/vendors';
         $actionURL = App::getValue('UrlRoot') . $actionURL;
         $kupuURL = App::getValue('UrlRoot') . $kupuURL;
 

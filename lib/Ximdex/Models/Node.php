@@ -971,7 +971,7 @@ class Node extends NodesOrm
                 elseif ($node->getNodeType() == \Ximdex\Services\NodeType::RNG_VISUAL_TEMPLATE)
                 {
                     //validation of the RNG schema for the RNG template
-                    $schema = FsUtils::file_get_contents(App::getValue( 'AppRoot') . '/actions/xmleditor2/views/common/schema/relaxng-1.0.rng.xml');
+                    $schema = FsUtils::file_get_contents(XIMDEX_ROOT_PATH . '/actions/xmleditor2/views/common/schema/relaxng-1.0.rng.xml');
                     $rngValidator = new \Ximdex\XML\Validators\RNG();
                     $res = $rngValidator->validate($schema, $content);
                     if ($res === false)

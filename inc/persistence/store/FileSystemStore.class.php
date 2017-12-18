@@ -62,7 +62,7 @@ class FileSystemStore implements Store
             return false;
 	}
 
-	$targetPath = App::getValue( "AppRoot") . App::getValue( "FileRoot"). "/". $uniqueName;
+	$targetPath = XIMDEX_ROOT_PATH . App::getValue( "FileRoot"). "/". $uniqueName;
         $content = FsUtils::file_get_contents($targetPath);
 			
 	Logger::debug("GetContent for Node:".$nodeId.", Version: ".$versionId.".".$subversion.", File: .".$uniqueName. ", Chars: ".strlen($content));
@@ -88,7 +88,7 @@ class FileSystemStore implements Store
             return false;
 	}
 
-	$targetPath = App::getValue( "AppRoot") . App::getValue( "FileRoot"). "/". $uniqueName;
+	$targetPath = XIMDEX_ROOT_PATH . App::getValue( "FileRoot"). "/". $uniqueName;
 
 	return FsUtils::file_put_contents($targetPath, $content);
     }
@@ -108,7 +108,7 @@ class FileSystemStore implements Store
             return false;
 	}
 
-	$targetPath = App::getValue( "AppRoot") . App::getValue( "FileRoot"). "/". $uniqueName;
+	$targetPath = XIMDEX_ROOT_PATH . App::getValue( "FileRoot"). "/". $uniqueName;
 
 	if (is_file($targetPath)) {
             return FsUtils::delete($targetPath);

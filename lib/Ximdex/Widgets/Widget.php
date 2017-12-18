@@ -352,7 +352,7 @@ class Widget
 		}
 
 		/*if (!empty($m) && empty($a)) {
-            $filePath = sprintf('%s/modules/%s/conf/', \App::getValue( 'AppRoot'), $m);
+            $filePath = sprintf('%s/modules/%s/conf/', \XIMDEX_ROOT_PATH, $m);
         }*/
 
 		$filePath = sprintf('%s%s', $filePath, $fileName);

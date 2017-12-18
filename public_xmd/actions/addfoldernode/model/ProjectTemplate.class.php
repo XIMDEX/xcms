@@ -126,7 +126,7 @@ class ProjectTemplate{
 		//Returned array if everything is ok.
 		$result = array();
 		
-		$rootThemesFolder =  App::getValue( "AppRoot").THEMES_FOLDER;
+		$rootThemesFolder =  XIMDEX_ROOT_PATH.THEMES_FOLDER;
 		//Getting all theme folders
 		$themesFolders = FsUtils::readFolder($rootThemesFolder,false);
 

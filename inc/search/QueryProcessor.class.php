@@ -40,7 +40,7 @@ class QueryProcessor {
 	
 	static public function getQueryDefinition($definitionPath, $params=array()) {
 		
-		$definitionPath = sprintf('%s/%s', \App::getValue( 'AppRoot'), $definitionPath);
+		$definitionPath = sprintf('%s/%s', \XIMDEX_ROOT_PATH, $definitionPath);
 		$xml = FsUtils::file_get_contents($definitionPath);
 
 		if (empty($xml)) {

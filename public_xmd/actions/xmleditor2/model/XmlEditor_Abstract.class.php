@@ -163,7 +163,7 @@ abstract class XmlEditor_Abstract
 
         $nodeTypeName = $node->nodeType->GetName();
         if ($nodeTypeName == 'RngVisualTemplate') {
-            $rngPath = App::getValue( 'AppRoot') . '/public_xmd/actions/xmleditor2/views/rngeditor/schema/rng-schema.xml';
+            $rngPath = XIMDEX_ROOT_PATH . '/public_xmd/actions/xmleditor2/views/rngeditor/schema/rng-schema.xml';
 
             return trim(FsUtils::file_get_contents($rngPath));
         }
@@ -209,7 +209,7 @@ abstract class XmlEditor_Abstract
 
 //		$content = '<root><node>value</node></root>';
 
-        $schema = FsUtils::file_get_contents(App::getValue( 'AppRoot') . '/public_xmd/actions/xmleditor2/views/common/schema/relaxng-1.0.rng.xml');
+        $schema = FsUtils::file_get_contents(XIMDEX_ROOT_PATH . '/public_xmd/actions/xmleditor2/views/common/schema/relaxng-1.0.rng.xml');
         $rngvalidator = new \Ximdex\XML\Validators\RNG();
         $valid = $rngvalidator->validate($schema, $content);
 
@@ -380,11 +380,11 @@ abstract class XmlEditor_Abstract
             $schemaName = $schemaNode->GetNodeName();
             $dataFactory = new DataFactory($idSchema);
             $maxIdVersion = $dataFactory->GetLastVersionId();
-            $formXslFile = App::getValue( 'AppRoot').App::getValue( 'FileRoot')."/xslformview_{$schemaName}_{$maxIdVersion}.xsl";
+            $formXslFile = XIMDEX_ROOT_PATH.App::getValue( 'FileRoot')."/xslformview_{$schemaName}_{$maxIdVersion}.xsl";
             if (file_exists($formXslFile)) {
                 return $formXslFile;
             } else {
-                 array_map('unlink', glob(App::getValue( 'AppRoot').App::getValue( 'FileRoot')."/xslformview_{$schemaName}*"));
+                 array_map('unlink', glob(XIMDEX_ROOT_PATH.App::getValue( 'FileRoot')."/xslformview_{$schemaName}*"));
                 return $this->buildFormXsl($idSchema, $maxIdVersion);
             }
 
@@ -399,7 +399,7 @@ abstract class XmlEditor_Abstract
     private function buildFormXsl($idSchema, $maxIdVersion)
     {
         $warnings = "";
-        $xslTemplateContent = FsUtils::file_get_contents(App::getValue( 'AppRoot') . '/public_xmd/actions/xmleditor2/views/editor/form/templates/docxap.xsl');
+        $xslTemplateContent = FsUtils::file_get_contents(XIMDEX_ROOT_PATH . '/public_xmd/actions/xmleditor2/views/editor/form/templates/docxap.xsl');
         $rngXpathObj = $this->getXPathFromSchema($idSchema);
 
         $textElements = $this->getTextElements($rngXpathObj);

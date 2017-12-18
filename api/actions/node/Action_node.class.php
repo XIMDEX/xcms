@@ -78,8 +78,8 @@ class Action_node extends AbstractAPIAction   {
             $c = array("nodeid"=>$ch->GetID(),"name"=>$ch->GetNodeName(),"nodetype"=>$ch->GetNodeType());
             if($ch->GetNodeType() == NodeTypeID::IMAGE_FILE){
                 $info = $ch->GetLastVersion();
-                $file = App::get('UrlRoot') . '/data/files/' . $info['File'];
-                $fileLocal = App::get('AppRoot') . '/data/files/' . $info['File'];
+                $file = XIMDEX_ROOT_PATH . '/data/files/' . $info['File'];
+                $fileLocal = XIMDEX_ROOT_PATH . '/data/files/' . $info['File'];
                 if(!file_exists($fileLocal) || !@is_array(getimagesize($fileLocal))){
                     continue;
                 }
@@ -248,7 +248,7 @@ class Action_node extends AbstractAPIAction   {
             'creationDate' => $node->get('CreationDate'),
             'modificationDate' => $node->get('ModificationDate'),
             'path' => $node->GetPath(),
-            'url' => App::get('UrlRoot') . '/data/files/' . $info['File'],
+            'url' => XIMDEX_ROOT_PATH . '/data/files/' . $info['File'],
             'parent' => $node->GetParent(),
             'children' => $node->GetChildren(null, [
                 'FIELD' => 'ModificationDate',
