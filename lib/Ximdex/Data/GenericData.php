@@ -28,7 +28,6 @@ namespace Ximdex\Data;
 
 use Ximdex\Logger;
 use Ximdex\Behaviours\Collection;
-use Ximdex\Helpers\Cache;
 use Ximdex\Runtime\Db;
 use Ximdex\Utils\Messages;
 use Ximdex\Utils\Overloadable;
@@ -109,7 +108,6 @@ class GenericData extends Overloadable
     public $_metaData = null;
 
     public $_cache       = 0;
-    public $_useMemCache = 0;
 
     public $_fieldsToTraduce = null;
 
@@ -143,17 +141,6 @@ class GenericData extends Overloadable
         $className = null;
 
         if ($id > 0) {
-            if ((bool) $this->_useMemCache) {
-                $cache     = new Cache();
-                $className = get_class($this);
-                $result    = $cache->get($className . $id);
-                if ($result) {
-                    $unserialized = $this->_unserialize($result);
-                    if ($unserialized) {
-                        return;
-                    }
-                }
-            }
             $query = sprintf("SELECT * FROM {$this->_table} WHERE {$this->_idField} = %d LIMIT 1",
                 $id);
             if ((DEBUG_LEVEL == LOG_LEVEL_ALL) || (DEBUG_LEVEL == LOG_LEVEL_QUERY)) {
@@ -170,13 +157,6 @@ class GenericData extends Overloadable
                         Logger::warning(sprintf('[CONSTRUCTOR] Inconsistency between the model and the database [inc/helper/GenericData.class.php] script: %s file: %s line: %s table: %s field: %s', $_SERVER['SCRIPT_FILENAME'], $backtrace[0]['file'], $backtrace[0]['line'], $this->_table, $key));
                         $this->modelInError = true;
                     }
-                }
-            }
-            if ((bool) $this->_useMemCache) {
-                $cache  = new Cache();
-                $values = $this->_serialize();
-                if ($values) {
-                    $cache->set($className . $this->{$this->_idField}, $values);
                 }
             }
         }
@@ -282,16 +262,6 @@ class GenericData extends Overloadable
                         $insertedId = $result[0];
                     }
                 }
-
-                if ((bool) $this->_useMemCache) {
-                    $cache     = new Cache();
-                    $className = get_class($this);
-                    $result    = $this->_serialize();
-                    if ($result) {
-                        $cache->set($className . $this->{$this->_idField}, $result);
-                    }
-                }
-
             }
         } else {
             Logger::error('Integrity errors found while executing a SQL query');
@@ -706,14 +676,6 @@ class GenericData extends Overloadable
         if ($this->_checkDataIntegrity()) {
             $dbObj = new Db();
             $dbObj->Execute($query);
-            if (($dbObj->numRows > 0) && (bool) $this->_useMemCache) {
-                $cache     = new Cache();
-                $className = get_class($this);
-                $result    = $this->_serialize();
-                if ($result) {
-                    $cache->replace($className . $this->{$this->_idField}, $result);
-                }
-            }
             $updatedRows = $dbObj->numRows;
         }
         $this->_applyFilter('afterUpdate');
@@ -738,13 +700,6 @@ class GenericData extends Overloadable
         }
         $dbObj  = new Db();
         $result = $dbObj->Execute($query);
-        if (($dbObj->numRows > 0) && (bool) $this->_useMemCache) {
-            $cache     = new Cache();
-            $className = get_class($this);
-            if ($result) {
-                $cache->delete($className . $this->{$this->_idField});
-            }
-        }
 
         $this->_applyFilter('afterDelete');
         return $dbObj->numRows;
