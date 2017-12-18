@@ -33,7 +33,7 @@ use Ximdex\Runtime\App;
 class Action_moduleslist extends ActionAbstract
 {
 
-    public static $new_modules = array("Xowl", "XSparrow", "Xlyre");
+    public static $new_modules = array("Xowl", "Xlyre");
 
     public function index()
     {
