@@ -28,8 +28,8 @@ use Ximdex\MVC\IController;
 use Ximdex\Runtime\Request;
 use Ximdex\Runtime\Response;
 
-require_once(XIMDEX_ROOT_PATH . '/inc/install/InstallStepFactory.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/install/managers/InstallManager.class.php');
+require_once(APP_ROOT_PATH.'/install/InstallStepFactory.class.php');
+require_once(APP_ROOT_PATH.'/install/managers/InstallManager.class.php');
 
 /**
  * Controller for install steps.

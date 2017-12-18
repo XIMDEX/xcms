@@ -28,7 +28,16 @@ use Ximdex\MVC\FrontController;
 
 
 
-include_once '../bootstrap.php';
+include_once dirname(__DIR__).'/bootstrap.php';
+
+
+//General class
+ModulesManager::file('/inc/io/BaseIO.class.php');
+ModulesManager::file('/inc/i18n/I18N.class.php');
+ModulesManager::file('/inc/mvc/App.class.php');
+ModulesManager::file('/install/InstallController.class.php', 'APP');
+
+App::dispatchEvent(\Ximdex\Events::XIMDEX_START);
 
 
 // FROM MVC
@@ -39,14 +48,6 @@ if (!defined('SMARTY_TMP_PATH')) {
     define('SMARTY_TMP_PATH', XIMDEX_ROOT_PATH . App::getValue('TempRoot'));
 }
 
-
-//General class
-ModulesManager::file('/inc/io/BaseIO.class.php');
-ModulesManager::file('/inc/i18n/I18N.class.php');
-ModulesManager::file('/inc/mvc/App.class.php');
-ModulesManager::file('/inc/install/InstallController.class.php');
-
-App::dispatchEvent(\Ximdex\Events::XIMDEX_START);
 
 
 //Main thread

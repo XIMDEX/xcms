@@ -25,7 +25,7 @@
  */
 use Ximdex\Runtime\App;
 
-require_once(XIMDEX_ROOT_PATH . '/inc/install/steps/welcome/WelcomeInstallStep.class.php');
+require_once(APP_ROOT_PATH.'/install/steps/welcome/WelcomeInstallStep.class.php');
 
 class GenericInstallStep {
 
@@ -68,10 +68,10 @@ class GenericInstallStep {
 		$folderName = trim(strtolower($this->steps[$this->currentStep]["class-name"]));
 		if ($this->exceptions && is_array($this->exceptions) && count($this->exceptions)){
 			$exceptions = $this->exceptions;
-			$includeTemplateStep = XIMDEX_ROOT_PATH."/inc/install/steps/generic/view/exception.php";
+			$includeTemplateStep = APP_ROOT_PATH."/install/steps/generic/view/exception.php";
 		}else
-			$includeTemplateStep = XIMDEX_ROOT_PATH."/inc/install/steps/{$folderName}/view/{$view}.php";
-		  	include(XIMDEX_ROOT_PATH."/inc/install/view/install.php");
+			$includeTemplateStep = APP_ROOT_PATH."/install/steps/{$folderName}/view/{$view}.php";
+		  	include(APP_ROOT_PATH."/install/view/install.php");
 		ob_end_flush();
 		exit;
 
@@ -106,7 +106,7 @@ class GenericInstallStep {
 
    protected function addJs($jsPath){
    		$folderName = trim(strtolower($this->steps[$this->currentStep]["class-name"]));
-    	$this->js_files[] = "inc/install/steps/{$folderName}/js/{$jsPath}";
+    	$this->js_files[] = "public_xmd/install/steps/{$folderName}/js/{$jsPath}";
     }
 
     public function loadNextAction(){
@@ -137,7 +137,12 @@ class GenericInstallStep {
    protected function initialize_values(bool $persist = true)
    {
        //relative URL ( do not save it if its value is only / )
-       $pathInfo = pathinfo($_SERVER['SCRIPT_NAME']);
+       $pathInfo = pathinfo($_SERVER['SCRIPT_NAME']?? '/');
+
+
+       $pathInfo['dirname'] = str_replace('/public_xmd', '', $pathInfo['dirname']);
+
+
        App::setValue('UrlRoot', ($pathInfo['dirname'] != '/') ? $pathInfo['dirname'] : '', $persist);
        // host and protocol
        App::setValue('UrlHost', $_SERVER['REQUEST_SCHEME'] . '://'. $_SERVER['HTTP_HOST'], $persist);

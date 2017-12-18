@@ -24,8 +24,8 @@
  *  @version $Revision$
  */
 
-require_once(XIMDEX_ROOT_PATH . '/inc/install/steps/generic/GenericInstallStep.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/install/managers/InstallModulesManager.class.php');
+require_once(APP_ROOT_PATH.'/install/steps/generic/GenericInstallStep.class.php');
+require_once(APP_ROOT_PATH.'/install/managers/InstallModulesManager.class.php');
 
 class GetStartedInstallStep extends GenericInstallStep {
 
@@ -53,7 +53,7 @@ class GetStartedInstallStep extends GenericInstallStep {
 		$this->changePermissions();
         $this->deleteTempFiles();
 		$this->loadNextAction();		
-		header(sprintf("Location: %s", "index.php"));
+		header("Location: /");
 		die();
 	}
 

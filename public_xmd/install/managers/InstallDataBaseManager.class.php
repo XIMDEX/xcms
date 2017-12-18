@@ -26,14 +26,14 @@
 
 use Ximdex\Logger;
 
-require_once(XIMDEX_ROOT_PATH . '/inc/install/managers/InstallManager.class.php');
+require_once(APP_ROOT_PATH.'/install/managers/InstallManager.class.php');
 
 class InstallDataBaseManager extends InstallManager
 {
     const DB_ARRAY_KEY = "db_installer_connection";
     const DEFAULT_PORT = 3306;
-    const SCHEMA_SCRIPT_PATH = "/inc/install/ximdex_data/ximdex_schema.sql";
-    const DATA_SCRIPT_PATH = "/inc/install/ximdex_data/ximdex_data.sql";
+    const SCHEMA_SCRIPT_PATH = "/install/ximdex_data/ximdex_schema.sql";
+    const DATA_SCRIPT_PATH = "/install/ximdex_data/ximdex_data.sql";
 
     private $dbConnection = null;
     private $host;
@@ -187,8 +187,8 @@ class InstallDataBaseManager extends InstallManager
 
     public function loadData($host, $port, $user, $pass, $name)
     {
-    	$data = file_get_contents(XIMDEX_ROOT_PATH . self::SCHEMA_SCRIPT_PATH);
-    	$data .= file_get_contents(XIMDEX_ROOT_PATH . self::DATA_SCRIPT_PATH);
+    	$data = file_get_contents(APP_ROOT_PATH . self::SCHEMA_SCRIPT_PATH);
+    	$data .= file_get_contents(APP_ROOT_PATH . self::DATA_SCRIPT_PATH);
     	try
     	{
     		$statement = $this->dbConnection->prepare($data);

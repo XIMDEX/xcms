@@ -26,7 +26,7 @@
 
 use Ximdex\Utils\FsUtils;
 
-require_once(XIMDEX_ROOT_PATH . '/inc/install/managers/InstallManager.class.php');
+require_once(APP_ROOT_PATH.'/install/managers/InstallManager.class.php');
 
 class InstallModulesManager extends InstallManager
 {

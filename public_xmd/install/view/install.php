@@ -60,8 +60,8 @@ define('URL_ROOT', App::getValue('UrlRoot'));
     <script type="text/javascript" >
         var ximdexInstallerApp = angular.module('ximdexInstallerApp',[]);
     </script>
-    <script type="text/javascript" src="<?php echo URL_ROOT; ?>/inc/install/view/js/directives/ladda.js"></script>
-    <script type="text/javascript" src="<?php echo URL_ROOT; ?>/inc/install/view/js/services/installerService.js"></script>
+    <script type="text/javascript" src="<?php echo URL_ROOT; ?>/public_xmd/install/view/js/directives/ladda.js"></script>
+    <script type="text/javascript" src="<?php echo URL_ROOT; ?>/public_xmd/install/view/js/services/installerService.js"></script>
     <?php
     foreach($js_files as $js_file){
         ?>

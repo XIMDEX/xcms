@@ -24,9 +24,9 @@
  * @version $Revision$
  */
 
-require_once(XIMDEX_ROOT_PATH . '/inc/install/steps/generic/GenericInstallStep.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/install/managers/InstallModulesManager.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/install/managers/InstallDataBaseManager.class.php');
+require_once(APP_ROOT_PATH.'/install/steps/generic/GenericInstallStep.class.php');
+require_once(APP_ROOT_PATH.'/install/managers/InstallModulesManager.class.php');
+require_once(APP_ROOT_PATH.'/install/managers/InstallDataBaseManager.class.php');
 
 class BuildDataBaseInstallStep extends GenericInstallStep
 {

@@ -28,8 +28,8 @@ use Ximdex\Helpers\ServerConfig;
 use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
 
-require_once(XIMDEX_ROOT_PATH . '/inc/install/managers/messages/ConsoleMessagesStrategy.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/install/managers/messages/WebMessagesStrategy.class.php');
+require_once(APP_ROOT_PATH.'/install/managers/messages/ConsoleMessagesStrategy.class.php');
+require_once(APP_ROOT_PATH.'/install/managers/messages/WebMessagesStrategy.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/rest/REST_Provider.class.php');
 
 
@@ -45,7 +45,7 @@ class InstallManager
     const STATUSFILE = "/conf/_STATUSFILE";
 
     const INSTALL_CONF_FILE = "install.xml";
-    const INSTALL_PARAMS_TEMPLATE = "/inc/install/templates/install-params.conf.php";
+    const INSTALL_PARAMS_TEMPLATE = "/install/templates/install-params.conf.php";
     const INSTALL_PARAMS_FILE = "/conf/install-params.conf.php";
     const LAST_STATE = "INSTALLED";
     const FIRST_STATE = "INIT";
@@ -67,7 +67,7 @@ class InstallManager
         $this->mode = $mode;
         $messageClassName = $this->mode . "MessagesStrategy";
         $this->installMessages = new $messageClassName();
-        $installConfFile = XIMDEX_ROOT_PATH . "/inc/install/conf/" . self::INSTALL_CONF_FILE;
+        $installConfFile = APP_ROOT_PATH . "/install/conf/" . self::INSTALL_CONF_FILE;
 
         $this->installConfig = new DomDocument();
         $this->installConfig->load($installConfFile);
@@ -384,7 +384,7 @@ class InstallManager
             rename(XIMDEX_ROOT_PATH . self::INSTALL_PARAMS_FILE, XIMDEX_ROOT_PATH . self::INSTALL_PARAMS_FILE . "bck_" . date('Ymd_his'));
         }
 
-        $content = FsUtils::file_get_contents(XIMDEX_ROOT_PATH . self::INSTALL_PARAMS_TEMPLATE);
+        $content = FsUtils::file_get_contents(APP_ROOT_PATH . self::INSTALL_PARAMS_TEMPLATE);
         FsUtils::file_put_contents(XIMDEX_ROOT_PATH . self::INSTALL_PARAMS_FILE, $content);
 
         $result = $this->setSingleParam("##DB_HOST##", $host);

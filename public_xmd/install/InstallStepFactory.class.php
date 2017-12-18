@@ -33,7 +33,7 @@ class InstallStepFactory {
 
 
 	/*Constant*/
-	const STEP_PATH = "/inc/install/steps"; //Where the step class are defined
+	const STEP_PATH = "/install/steps"; //Where the step class are defined
 	
 	/**
 	 * Build an instance for the current step.
@@ -63,7 +63,7 @@ class InstallStepFactory {
 			$className = $currentStep["class-name"];			
 		}
 		$currentState = strtolower($className);
-		$stepPath = XIMDEX_ROOT_PATH.self::STEP_PATH."/".$currentState;
+		$stepPath = APP_ROOT_PATH.self::STEP_PATH."/".$currentState;
 
 		//Build the object and set the index for the current step
 		$factory = new \Ximdex\Utils\Factory($stepPath, $className);

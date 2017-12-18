@@ -1,6 +1,5 @@
 Options -Indexes
 
-DirectoryIndex public_xmd/index.php
 
 #RewriteEngine on
 #
@@ -12,5 +11,4 @@ RewriteRule (.*) api-rest/index.php
 #
 RewriteCond %{REQUEST_FILENAME} api/(.*)
 RewriteRule (.*) api/index.php
-
 
