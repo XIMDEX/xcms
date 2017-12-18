@@ -695,7 +695,7 @@ class Action_node extends AbstractAPIAction   {
         $transition = new \Ximdex\Models\PipeTransition($idTransition);
         $callback = $transition->get('Callback');
 
-        $viewPath = \Ximdex\Runtime\App::getValue('AppRoot') . sprintf('/inc/repository/nodeviews/View_%s.class.php', $callback);
+        $viewPath = XIMDEX_ROOT_PATH . sprintf('/inc/repository/nodeviews/View_%s.class.php', $callback);
         if (!empty($callback) && is_file($viewPath)) {
             $dataFactory = new DataFactory();
             $idVersion = $dataFactory->GetLastVersionId();

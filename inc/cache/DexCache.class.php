@@ -92,7 +92,7 @@ class DexCache
      */
     static public function _createName($idNode, $channelId)
     {
-        return App::getValue('AppRoot') . App::getValue('SyncRoot') . "/$idNode.$channelId.cache";
+        return XIMDEX_ROOT_PATH . App::getValue('SyncRoot') . "/$idNode.$channelId.cache";
     }
 
     /**

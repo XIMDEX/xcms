@@ -85,7 +85,7 @@ abstract class WidgetAbstract
 			$array[$i] = sprintf(
 				'%s%s/%s',
 			    App::getValue('UrlRoot'),
-				preg_replace('#^' . realpath(App::getValue('AppRoot')) . '#', '', realpath($this->_widget_style_dir)),
+				preg_replace('#^' . realpath(XIMDEX_ROOT_PATH) . '#', '', realpath($this->_widget_style_dir)),
 				$array[$i]
 			);
 		}

@@ -115,7 +115,7 @@ class Scheduler
                 $msg = _("STOP: Detected file") . " $stopper_file_path " . _("You need to delete this file in order to restart Scheduler successfully");
                 $syncStatObj->create(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "INFO", 8, $msg);
                 Logger::warning($msg);
-                @unlink(App::getValue('AppRoot') . App::getValue('TempRoot') . '/scheduler.lck');
+                @unlink(XIMDEX_ROOT_PATH . App::getValue('TempRoot') . '/scheduler.lck');
                 die();
             }
 

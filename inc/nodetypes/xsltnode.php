@@ -65,7 +65,7 @@ class xsltnode extends FileNode
             $xslContent = FsUtils::file_get_contents($ptdSourcePath);
             $xslContent = $this->sanitizeContent($xslContent);
 
-            $xslSourcePath = App::getValue('AppRoot') . App::getValue('TempRoot') . '/' . $parentID . $xsltName;
+            $xslSourcePath = XIMDEX_ROOT_PATH . App::getValue('TempRoot') . '/' . $parentID . $xsltName;
 
             if (!FsUtils::file_put_contents($xslSourcePath, $xslContent)) {
                 Logger::error("Error saving xslt file");
@@ -110,7 +110,7 @@ class xsltnode extends FileNode
 				<dext:root xmlns:dext=\"http://www.ximdex.com\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\">
 				<xsl:dummy />
 				</dext:root>";
-        $xslSourcePath = App::getValue('AppRoot') . App::getValue('TempRoot') . '/templates_include.xsl';
+        $xslSourcePath = XIMDEX_ROOT_PATH . App::getValue('TempRoot') . '/templates_include.xsl';
         if (!FsUtils::file_put_contents($xslSourcePath, $dummyXml))
         {
             Logger::error("Error saving templates_include.xsl file");
@@ -319,7 +319,7 @@ class xsltnode extends FileNode
             $dom = new DOMDocument();
             @$dom->loadXML($content);
             $project = new Node($node->GetProject());
-            $dom->documentURI = App::getValue('AppRoot') . App::getValue('NodeRoot') . $node->GetRelativePath($project->GetID());
+            $dom->documentURI = XIMDEX_ROOT_PATH . App::getValue('NodeRoot') . $node->GetRelativePath($project->GetID());
             if (@$xsltprocessor->importStyleSheet($dom) === false)
             {
                 $error = \Ximdex\Error::error_message('XSLTProcessor::importStylesheet(): ');
@@ -479,9 +479,9 @@ class xsltnode extends FileNode
             return null;
         
         //generation of the file docxap.xsl with project name inside
-        $xslSourcePath = App::getValue('AppRoot') . App::getValue('TempRoot') . '/docxap.xsl';
+        $xslSourcePath = XIMDEX_ROOT_PATH . App::getValue('TempRoot') . '/docxap.xsl';
         Logger::info('Creating unexisting docxap XSLT file in ' . $xslSourcePath);
-        $docxapTemplate = App::getValue('AppRoot') . '/xmd/xslt/docxap.xsl.template';
+        $docxapTemplate = XIMDEX_ROOT_PATH . '/xmd/xslt/docxap.xsl.template';
         $content = FsUtils::file_get_contents($docxapTemplate);
         if (!$content)
             return false;

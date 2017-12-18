@@ -194,7 +194,7 @@ class Action_prevdoc extends ActionAbstract
 		$this->response->set('Content-type', 'text/html');
 
     	$hash = $this->request->getParam('hash');
-    	$file = sprintf('%s%s/%s', App::getValue('AppRoot'), App::getValue("TempRoot"), $hash);
+    	$file = sprintf('%s%s/%s', XIMDEX_ROOT_PATH, App::getValue("TempRoot"), $hash);
 
     	if (file_exists($file)) {
     		$content = FsUtils::file_get_contents($file);
@@ -206,7 +206,7 @@ class Action_prevdoc extends ActionAbstract
     	}
         if(isset($_GET["nodeid"])){
             //Remove all used cache
-            exec(sprintf('rm -f %s%s/preview_%s_*', App::getValue('AppRoot'),App::getValue("TempRoot"), $_GET["nodeid"]));
+            exec(sprintf('rm -f %s%s/preview_%s_*', XIMDEX_ROOT_PATH,App::getValue("TempRoot"), $_GET["nodeid"]));
         }
 
 		//Show preview as web

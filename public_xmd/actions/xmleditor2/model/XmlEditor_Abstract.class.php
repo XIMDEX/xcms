@@ -105,7 +105,7 @@ abstract class XmlEditor_Abstract
         $docxap = $this->getXslPath($idnode, false, $view);
 
         if ($docxap !== null) {
-            $pathDocxap = str_replace(App::getValue('UrlHost') . App::getValue('UrlRoot'), App::getValue('AppRoot'), $docxap);
+            $pathDocxap = str_replace(App::getValue('UrlHost') . App::getValue('UrlRoot'), XIMDEX_ROOT_PATH, $docxap);
             $pos = strrpos($pathDocxap, '/');
             $pathToFileRel = substr($pathDocxap,0, $pos);
             $this->rel_path_docxap=$pathToFileRel."/";
@@ -147,11 +147,11 @@ abstract class XmlEditor_Abstract
             Logger::error('A non-existing project cannot be obtained from node: ' . $idnode);
             return false;
         }
-        $docxap = App::getValue('AppRoot') . App::getValue('NodeRoot') . '/' . $project->GetNodeName() . '/' . App::getValue('TemplatesDirName') 
+        $docxap = XIMDEX_ROOT_PATH . App::getValue('NodeRoot') . '/' . $project->GetNodeName() . '/' . App::getValue('TemplatesDirName')
                 . '/docxap.xsl';
 
         if ($docxap && $asURL) {
-            $docxap = str_replace(App::getValue('AppRoot'), App::getValue('UrlHost') . App::getValue('UrlRoot'),  $docxap);
+            $docxap = str_replace(XIMDEX_ROOT_PATH, App::getValue('UrlHost') . App::getValue('UrlRoot'),  $docxap);
         }
 
         return $docxap;
@@ -503,7 +503,7 @@ abstract class XmlEditor_Abstract
 
         $schemaNode = new Node ($idSchema);
         $schemaName = $schemaNode->GetNodeName();
-        $formViewFile = App::getValue('AppRoot').App::getValue('FileRoot')."/xslformview_{$schemaName}_{$maxIdVersion}.xsl";
+        $formViewFile = XIMDEX_ROOT_PATH.App::getValue('FileRoot')."/xslformview_{$schemaName}_{$maxIdVersion}.xsl";
         FsUtils::file_put_contents($formViewFile, $xslTemplateContent);
 
         return $formViewFile;

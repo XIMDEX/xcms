@@ -174,7 +174,7 @@ class AbstractRenderer
         }
 
         $this->set('_URL_ROOT', App::getValue('UrlRoot'));
-        $this->set('_APP_ROOT', App::getValue('AppRoot'));
+        $this->set('_APP_ROOT', XIMDEX_ROOT_PATH);
 
         //Si es la misma accion que se ha ejecutado en FrontControllerHttp:
         //Guardamos los datos en los valores de session
@@ -281,9 +281,9 @@ class AbstractRenderer
     private function _set_module($module = NULL, $_ACTION_COMMAND)
     {
         if ($module) {
-            $base_action = App::getValue('AppRoot') . ModulesManager::path($module) . "/actions/" . $_ACTION_COMMAND . "/";
+            $base_action = XIMDEX_ROOT_PATH . ModulesManager::path($module) . "/actions/" . $_ACTION_COMMAND . "/";
             //We indicate the specfieds module parameters
-            $this->set("base_module", App::getValue('AppRoot') . ModulesManager::path($module) . "/");
+            $this->set("base_module", XIMDEX_ROOT_PATH . ModulesManager::path($module) . "/");
             $this->set("module", $module);
         } else {
             $base_action = "/public_xmd/actions/" . $_ACTION_COMMAND . "/";

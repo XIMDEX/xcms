@@ -164,7 +164,7 @@ class ParsingJsGetText
             }
         }
 
-        if (!is_file(App::getValue('AppRoot') . $_js)) { // dinamic call
+        if (!is_file(XIMDEX_ROOT_PATH . $_js)) { // dinamic call
             $no_cached_url = App::getValue('UrlRoot') . $_js;
             return $no_cached_url;
         }

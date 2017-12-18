@@ -341,14 +341,14 @@ class Widget
 			$fileName = sprintf('%s.conf.js', $wn);
 		}
 
-		$filePath = sprintf('%s/conf/',  App::getValue('AppRoot'));
+		$filePath = sprintf('%s/conf/',  XIMDEX_ROOT_PATH);
 
 		if (!empty($a)) {
-			$filePath = sprintf('%s/actions/%s/conf/',  App::getValue('AppRoot'), $a);
+			$filePath = sprintf('%s/actions/%s/conf/',  XIMDEX_ROOT_PATH, $a);
 		}
 
 		if (!empty($m) && !empty($a)) {
-			$filePath = sprintf('%s%s/actions/%s/conf/',  App::getValue('AppRoot'), ModulesManager::path($m), $a);
+			$filePath = sprintf('%s%s/actions/%s/conf/',  XIMDEX_ROOT_PATH, ModulesManager::path($m), $a);
 		}
 
 		/*if (!empty($m) && empty($a)) {

@@ -41,7 +41,7 @@ class WidgetDependencies
     protected static function loadDependencies()
     {
         if (self::$deps === null) {
-            self::$deps = include( App::getValue('AppRoot') . '/conf/wdeps.php');
+            self::$deps = include( XIMDEX_ROOT_PATH . '/conf/wdeps.php');
         }
         return self::$deps;
     }

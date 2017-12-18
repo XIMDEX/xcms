@@ -43,7 +43,7 @@ class Disk
      */
     static private function computeFolder($folder)
     {
-        return is_null($folder) ? App::getValue('AppRoot') : $folder;
+        return is_null($folder) ? XIMDEX_ROOT_PATH : $folder;
     }
 
     /**

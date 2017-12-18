@@ -403,7 +403,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
             $response['result'] = false;
             return $response;
         }
-        $tmpFilePath = App::getValue('AppRoot') . App::getValue('TempRoot') . "/xedit_" . $idUser . "_" . $idNode;
+        $tmpFilePath = XIMDEX_ROOT_PATH . App::getValue('TempRoot') . "/xedit_" . $idUser . "_" . $idNode;
 
         if (!file_exists($tmpFilePath) || !$response['tmp_mod_date'] = filectime($tmpFilePath)) {
             $response['result'] = false;
@@ -431,7 +431,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
             $response['result'] = false;
             return $response;
         }
-        $tmpFilePath = App::getValue('AppRoot') . App::getValue('TempRoot') . "/xedit_" . $idUser . "_" . $idNode;
+        $tmpFilePath = XIMDEX_ROOT_PATH . App::getValue('TempRoot') . "/xedit_" . $idUser . "_" . $idNode;
 
         if (file_exists($tmpFilePath) && !FsUtils::delete($tmpFilePath)) {
             $response['result'] = false;
@@ -449,7 +449,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
             $response['result'] = false;
             return $response;
         }
-        $tmpFilePath = App::getValue('AppRoot') . App::getValue('TempRoot') . "/xedit_" . $idUser . "_" . $idNode;
+        $tmpFilePath = XIMDEX_ROOT_PATH . App::getValue('TempRoot') . "/xedit_" . $idUser . "_" . $idNode;
 
         if (!$this->setNode($idNode)) {
             Logger::error(_("A non-existing node cannot be saved: ") . $idNode);
@@ -501,7 +501,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
                 $this->node->RenderizeNode();
             } else {
                 $idUser = \Ximdex\Utils\Session::get('userID');
-                if (!$idUser || !FsUtils::file_put_contents(App::getValue('AppRoot') . App::getValue('TempRoot') . "/xedit_" . $idUser . "_" . $idNode, \Ximdex\Utils\Strings::stripslashes($xmlContent))) {
+                if (!$idUser || !FsUtils::file_put_contents(XIMDEX_ROOT_PATH . App::getValue('TempRoot') . "/xedit_" . $idUser . "_" . $idNode, \Ximdex\Utils\Strings::stripslashes($xmlContent))) {
                     Logger::error(_("The content of " . $idNode . " could not be saved"));
                     return false;
                 }
@@ -569,7 +569,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
 
         $pipelineManager = new PipelineManager();
         $content = $pipelineManager->getCacheFromProcessAsContent($lastVersion, 'StrDocToXedit', $args);
-        exec(sprintf('rm -f %s%s/preview_%s_*', App::getValue('AppRoot'), App::getValue('TempRoot'), $_GET["nodeid"]));
+        exec(sprintf('rm -f %s%s/preview_%s_*', XIMDEX_ROOT_PATH, App::getValue('TempRoot'), $_GET["nodeid"]));
         return $content;
     }
 
@@ -722,7 +722,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
                 return false;
             }
             
-            $templatesIncludePath = str_replace(App::getValue('UrlHost') . App::getValue('UrlRoot'), App::getValue('AppRoot'), $templatesInclude[0]);
+            $templatesIncludePath = str_replace(App::getValue('UrlHost') . App::getValue('UrlRoot'), XIMDEX_ROOT_PATH, $templatesInclude[0]);
             
             $xslParser = new ParsingXsl(NULL, $templatesIncludePath);
             $templatesElements = $xslParser->getIncludedElements(NULL, true, true);
