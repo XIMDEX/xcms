@@ -377,7 +377,7 @@ class Root
         $pathList = $this->GetPathList();
         $relativePath = $pathList;
 
-        return App::getValue("AppRoot") . App::getValue("NodeRoot") . $relativePath;
+        return XIMDEX_ROOT_PATH . App::getValue("NodeRoot") . $relativePath;
     }
 
     /**

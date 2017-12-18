@@ -114,7 +114,7 @@ class Action_login extends ActionAbstract
 
     function check()
     {
-        $stopper = file_exists(App::getValue("AppRoot") . App::getValue("TempRoot") . "/login.stop");
+        $stopper = file_exists(XIMDEX_ROOT_PATH . App::getValue("TempRoot") . "/login.stop");
         $user_lower = strtolower(Request::post('user'));
         $user = Request::post('user');
         $password = Request::post('password');

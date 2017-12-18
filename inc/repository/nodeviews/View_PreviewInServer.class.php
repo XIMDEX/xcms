@@ -74,7 +74,7 @@ class View_PreviewInServer extends Abstract_View implements Interface_View
         $commandParams['publishedBaseURL'] = $this->_serverNode->class->GetURL($previewServer);
         $commandParams['publishedURL'] = $commandParams['publishedBaseURL'] . $commandParams['publishedPath']
             . "/" . $commandParams['publishedName'];
-        $commandParams['tmpPath'] = App::getValue("AppRoot") . App::getValue("TempRoot");
+        $commandParams['tmpPath'] = XIMDEX_ROOT_PATH . App::getValue("TempRoot");
         $commandParams['tmpfile'] = tempnam($commandParams['tmpPath'], $prefix = null);
         $commandParams['tmpfileName'] = basename($commandParams['tmpfile']);
 
@@ -82,7 +82,7 @@ class View_PreviewInServer extends Abstract_View implements Interface_View
             return false;
         }
         
-        $command = App::getValue("AppRoot") . App::getValue("SynchronizerCommand") .
+        $command = XIMDEX_ROOT_PATH . App::getValue("SynchronizerCommand") .
             " --verbose 10 --direct --hostid " . $previewServer . " " .
             " --localbasepath " . $commandParams['tmpPath'] . " --dcommand up --dlfile " .
             $commandParams['tmpfileName'] . " --drfile " . $commandParams['publishedName'] . " " .

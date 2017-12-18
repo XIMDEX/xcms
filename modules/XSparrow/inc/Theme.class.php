@@ -108,7 +108,7 @@ class Theme
             $themesFolderPath = substr($themesFolderPath, $lastSlash + 1);
         }
 
-        $fullPath = App::getValue("AppRoot") . THEMES_FOLDER . "/$themesFolderPath/$themesFolderPath.xml";
+        $fullPath = XIMDEX_ROOT_PATH . THEMES_FOLDER . "/$themesFolderPath/$themesFolderPath.xml";
 
 
         if (file_exists($fullPath)) {
@@ -203,7 +203,7 @@ class Theme
 
 
         $this->version = $xsparrowThemeNode->getAttribute("version");
-        $rngFilePath = App::getValue("AppRoot") . SCHEMES_FOLDER . "/" . SCHEME_BASENAME . $this->version . ".xml";
+        $rngFilePath = XIMDEX_ROOT_PATH . SCHEMES_FOLDER . "/" . SCHEME_BASENAME . $this->version . ".xml";
 
         //if doesnt exist rng file.
         if (!file_exists($rngFilePath)) {
@@ -247,7 +247,7 @@ class Theme
         }
 
 
-        $templateRootFolder = App::getValue("AppRoot") . THEMES_FOLDER;//Root theme folder
+        $templateRootFolder = XIMDEX_ROOT_PATH . THEMES_FOLDER;//Root theme folder
 
         $templateFolders = FsUtils::readFolder($templateRootFolder, false); //Getting all theme folders
         $excluded = array();

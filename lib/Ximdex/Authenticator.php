@@ -70,7 +70,7 @@ class Authenticator
                 $user_locale =  App::getValue('locale');
 
             // STOPPER
-            $stopperFilePath =  App::getValue("AppRoot") . App::getValue("TempRoot") . "/login.stop";
+            $stopperFilePath =  XIMDEX_ROOT_PATH . App::getValue("TempRoot") . "/login.stop";
             if ($user->getID() != "301" && file_exists($stopperFilePath)) {
                 // login closed
                 return false;

@@ -72,7 +72,6 @@ class SettingsInstallStep extends GenericInstallStep
             App::setValue("ActionStats", "1", 1);
         }
         $this->installManager->setSingleParam("##XIMDEX_LOCALE##", $language);
-        App::setValue("AppRoot", XIMDEX_ROOT_PATH, true );
         $this->initialize_values();
         App::setValue("locale", $language , true );
         $this->installManager->setLocale($language);

@@ -1112,7 +1112,7 @@ class Node extends NodesOrm
             // $pathList = array();
 
             /// Consigue el path hasta el directorio de nodos
-            $absPath = App::getValue("AppRoot") . App::getValue("NodeRoot");
+            $absPath = XIMDEX_ROOT_PATH . App::getValue("NodeRoot");
 
             /// consigue la lista de paths del nodo
             $pathList = $this->class->GetPathList();
@@ -1435,7 +1435,7 @@ class Node extends NodesOrm
 
         // Deleting from file system
         if ($this->nodeType->get('HasFSEntity')) {
-            $absPath = App::getValue("AppRoot") . App::getValue("NodeRoot");
+            $absPath = XIMDEX_ROOT_PATH . App::getValue("NodeRoot");
             $deletablePath = $this->class->GetPathList();
 
             $nodePath = $absPath . $deletablePath;
@@ -1616,11 +1616,11 @@ class Node extends NodesOrm
 
             if ($isDir) {
                 /// Temporal backup of children nodes. In this case, it is passed the path and a flag to specify that it is a path
-                $folderPath = App::getValue("AppRoot") . App::getValue("NodeRoot") . $this->class->GetChildrenPath();
+                $folderPath = XIMDEX_ROOT_PATH . App::getValue("NodeRoot") . $this->class->GetChildrenPath();
             }
 
             if ($isFile) {
-                $absPath = App::getValue("AppRoot") . App::getValue("NodeRoot");
+                $absPath = XIMDEX_ROOT_PATH . App::getValue("NodeRoot");
                 $deletablePath = $this->class->GetPathList();
                 FsUtils::delete($absPath . $deletablePath);
             }
@@ -1644,7 +1644,7 @@ class Node extends NodesOrm
             if ($isDir) {
                 /// Retrieving all children from the backup we kept, identified by $backupID
                 $parentNode = new Node($this->get('IdParent'));
-                $newPath = App::getValue("AppRoot") . App::getValue("NodeRoot") . $parentNode->GetChildrenPath() . '/' . $name;
+                $newPath = XIMDEX_ROOT_PATH . App::getValue("NodeRoot") . $parentNode->GetChildrenPath() . '/' . $name;
                 rename($folderPath, $newPath);
             }
 
@@ -1674,7 +1674,7 @@ class Node extends NodesOrm
                 $target = new Node($targetNode);
                 if (!$target->IsOnNode($this->get('IdNode'))) {
                     // $fsEntity = $this->nodeType->get('HasFSEntity');
-                    $absPath = App::getValue("AppRoot") . App::getValue("NodeRoot");
+                    $absPath = XIMDEX_ROOT_PATH . App::getValue("NodeRoot");
                     ignore_user_abort(true);
 
                     // Temporal children backup. In this case it is passed the path and a flag to indicate that it is a path

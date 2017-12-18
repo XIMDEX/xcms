@@ -60,7 +60,7 @@ class BuildParser
     public function __construct($name = null)
     {
 
-        $patternProjectPath = App::getValue("AppRoot") . THEMES_FOLDER . "/%s/";
+        $patternProjectPath = XIMDEX_ROOT_PATH . THEMES_FOLDER . "/%s/";
         $isDefault = false;
 
         $buildFilePath = sprintf($patternProjectPath, $name) . PROJECT_CONFIG_FILENAME;

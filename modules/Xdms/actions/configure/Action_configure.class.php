@@ -189,7 +189,7 @@ class Action_setmetadata extends ActionAbstract
         if (!$format)
             $format = "json";
 
-        $ontologyPath = App::getValue("AppRoot") . "/modules/ximTAGS/ontologies/{$format}/{$ontologyName}";
+        $ontologyPath = XIMDEX_ROOT_PATH . "/modules/ximTAGS/ontologies/{$format}/{$ontologyName}";
         $content = "";
         if (file_exists($ontologyPath)) {
             $content = FsUtils::file_get_contents($ontologyPath);

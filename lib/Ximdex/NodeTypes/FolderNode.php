@@ -57,7 +57,7 @@ class FolderNode extends Root
 
         $folder = $this->GetChildrenPath();
 
-        $folder = App::getValue("AppRoot") . App::getValue("NodeRoot") . $folder;
+        $folder = XIMDEX_ROOT_PATH . App::getValue("NodeRoot") . $folder;
 
         if (file_exists($folder))
             FsUtils::deltree($folder);

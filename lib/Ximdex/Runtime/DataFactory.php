@@ -326,7 +326,7 @@ class DataFactory
             return false;
         }
 
-        $targetPath = App::getValue("AppRoot") . App::getValue("FileRoot") . "/" . $uniqueName;
+        $targetPath = XIMDEX_ROOT_PATH . App::getValue("FileRoot") . "/" . $uniqueName;
         $content = FsUtils::file_get_contents($targetPath);
 
         Logger::debug("GetContent for Node:" . $this->nodeID . ", Version: " . $versionID . "." . $subVersion . ", File: ." . $uniqueName . ", Chars: " . strlen($content));
@@ -433,7 +433,7 @@ class DataFactory
                 return false;
             }
 
-            $targetPath = App::getValue("AppRoot") . App::getValue("FileRoot") . "/" . $uniqueName;
+            $targetPath = XIMDEX_ROOT_PATH . App::getValue("FileRoot") . "/" . $uniqueName;
             Logger::info("SetContent for Node:" . $this->nodeID . ", Version: " . $versionID . "." . $subVersion . ", File: ." . $uniqueName . ", Chars: " . strlen($content));
             $result = FsUtils::file_put_contents($targetPath, $content);
 
@@ -532,7 +532,7 @@ class DataFactory
 
         $uniqueName = $this->_getUniqueFileName();
 
-        FsUtils::file_put_contents(App::getValue("AppRoot") .
+        FsUtils::file_put_contents(XIMDEX_ROOT_PATH .
             App::getValue("FileRoot") .
             "/" . $uniqueName, $newContent);
 
@@ -566,7 +566,7 @@ class DataFactory
     function _getUniqueFileName()
     {
 
-        return FsUtils::getUniqueFile(App::getValue("AppRoot") . App::getValue("FileRoot"));
+        return FsUtils::getUniqueFile(XIMDEX_ROOT_PATH . App::getValue("FileRoot"));
     }
 
     /*
@@ -611,7 +611,7 @@ class DataFactory
 
         /// Se guarda en un archivo de id unico
         $uniqueName = $this->_getUniqueFileName();
-        $targetPath = App::getValue("AppRoot") . App::getValue("FileRoot") . "/" . $uniqueName;
+        $targetPath = XIMDEX_ROOT_PATH . App::getValue("FileRoot") . "/" . $uniqueName;
 
         if (!FsUtils::file_put_contents($targetPath, $newContent)) {
             Logger::error('failed to set document content');
@@ -744,7 +744,7 @@ class DataFactory
             return false;
         }
 
-        $targetPath = App::getValue("AppRoot") . App::getValue("FileRoot") . "/" . $uniqueName;
+        $targetPath = XIMDEX_ROOT_PATH . App::getValue("FileRoot") . "/" . $uniqueName;
 
         /* Tal y como estaba el codigo dejaba sucia la base de datos
             si se borraba el archivo manualmente o simplemente no se podia borrar por permisos
