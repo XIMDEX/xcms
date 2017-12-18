@@ -16,7 +16,7 @@ if( file_exists('data/previos/picasso-iden-idhtml.html') ){
 
 $I->wantTo('Ensure that installation works');
 
-$I->amOnPage('/index.php');
+$I->amOnPage('/');
 
 $I->see("Welcome to Ximdex CMS");
 

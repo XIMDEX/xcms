@@ -26,6 +26,8 @@
 
 use Ximdex\MVC\FrontController;
 
+
+
 include_once '../bootstrap.php';
 
 
@@ -41,11 +43,19 @@ if (!defined('SMARTY_TMP_PATH')) {
 //General class
 ModulesManager::file('/inc/io/BaseIO.class.php');
 ModulesManager::file('/inc/i18n/I18N.class.php');
+ModulesManager::file('/inc/mvc/App.class.php');
+ModulesManager::file('/inc/install/InstallController.class.php');
 
-$locale = \Ximdex\Utils\Session::get('locale');
-// Check coherence with HTTP_ACCEPT_LANGUAGE
-I18N::setup($locale);
+App::dispatchEvent(\Ximdex\Events::XIMDEX_START);
 
-// FrontController dipatches HTTP requests
-$frontController = new FrontController();
-$frontController->dispatch();
+
+//Main thread
+if (!InstallController::isInstalled()) {
+    $installController = new InstallController();
+    $installController->dispatch();
+} else {
+    $locale = \Ximdex\Utils\Session::get('locale');
+    I18N::setup($locale); // Check coherence with HTTP_ACCEPT_LANGUAGE
+    $frontController = new FrontController();
+    $frontController->dispatch();
+}
