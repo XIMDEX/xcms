@@ -41,7 +41,7 @@ use Ximdex\Utils\Session;
 
 ModulesManager::file('/inc/search/QueryProcessor.class.php');
 ModulesManager::file('/actions/browser3/inc/GenericDatasource.class.php', 'APP');
-ModulesManager::file('/inc/validation/FormValidation.class.php');
+ModulesManager::file('/actions/browser3/inc/FormValidation.class.php', 'APP');
 
 class Action_browser3 extends ActionAbstract
 {
@@ -131,7 +131,7 @@ class Action_browser3 extends ActionAbstract
         $this->addJs(Extensions::JQUERY_PATH . '/ui/jquery.ui.dialog.min.js');
         $this->addJs(Extensions::JQUERY_PATH . '/plugins/jquery-validate/jquery.validate.js');
         $this->addJs(Extensions::JQUERY_PATH . '/plugins/jquery-validate/localization/messages_' . $user_locale["Lang"] . '.js');
-        $this->addJs('/inc/validation/js/ximdex.form.validation.js');
+        $this->addActionJs('ximdex.form.validation.js');
         $this->addJs(Extensions::JQUERY_PATH . '/plugins/jquery.json/jquery.json-2.2.min.js');
         $this->addJs(Extensions::JQUERY_PATH . '/plugins/jquery.labelwidth/jquery.labelwidth.js');
         $this->addJs(Extensions::JQUERY_PATH . '/plugins/jquery-file-upload/js/jquery.fileupload.js');
