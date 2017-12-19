@@ -30,7 +30,6 @@ use Ximdex\Runtime\Request;
 
 ModulesManager::file('/actions/browser3/inc/IDatasource.iface.php', 'APP');
 ModulesManager::file('/actions/browser3/inc/AbstractDatasource.class.php', 'APP');
-ModulesManager::file('/inc/xvfs/XVFS.class.php');
 
 
  // Generic interface for data source control.
@@ -38,7 +37,6 @@ ModulesManager::file('/inc/xvfs/XVFS.class.php');
 class GenericDatasource extends AbstractDatasource {
 
 	const DS_COMPOSER = 'Composer';
-	const DS_XVFS = 'XVFS';
 	const DS_TAGS = 'tags';
 
 	static protected $confFile = null;
@@ -65,28 +63,6 @@ class GenericDatasource extends AbstractDatasource {
 
 
 			$datasource = self::$confFile['defaultDatasource'];
-
-
-			if ($datasource == self::DS_XVFS) {
-				foreach (self::$confFile['datasources'][self::$confFile['defaultDatasource']]['MOUNTPOINTS'] as $mp) {
-					$ret = XVFS::mount($mp['mountpoint'], $mp['uri']);
-					if (!$ret) {
-						// Log this; already logged by xvfs
-					}
-				}
-
-				$backEnd = XVFS::_getBackend($bpath);
-				$backEndString = strtolower(get_class($backEnd));
-
-				$backEndtoConst = array(
-						'xvfs_backend_xnodes' => self::DS_XVFS,
-						'xvfs_backend_tags' => self::DS_TAGS
-						);
-
-				if (array_key_exists($backEndString, $backEndtoConst)) {
-					$datasource = $backEndtoConst[$backEndString];
-				}
-			}
 
 			$conf = self::$confFile['datasources'][self::$confFile['defaultDatasource']];
 
@@ -171,15 +147,7 @@ class GenericDatasource extends AbstractDatasource {
 			$request->setParam('children', false);
 			$entity = $ds->read($request);
 
-			// NOTE: __nodeid comes from Datasource_XVFS
-			$ret[] =
-				isset($entity['__nodeid'])
-				? $entity['__nodeid']
-				: (
-					isset($entity['nodeid'])
-					? $entity['nodeid']
-					: $entity['bpath']
-					);
+			$ret[] =  $entity['nodeid']?? $entity['bpath'];
 
 		}
 

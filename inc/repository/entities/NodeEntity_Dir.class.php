@@ -76,7 +76,6 @@ class NodeEntity_Dir extends NodeEntity {
     	if (!is_null($descriptor)) return $descriptor;
     	
     	$descriptor = $this->_tmpdir . '/' . md5($this->getMIME());
-    	//'/tmp/xvfs_' . $this->get('name');
 		if (!file_exists($descriptor)) {
 			$ret = mkdir($descriptor);
 			if (!$ret) return $ret;

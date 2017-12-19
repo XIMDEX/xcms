@@ -89,7 +89,6 @@ class NodeEntity_File extends NodeEntity {
     	
     	$descriptor = $this->get('descriptor');
     	if (is_null($descriptor)) {
-	    	 //$descriptor = tempnam('/tmp', 'xvfs_');
 	    	 $descriptor = $this->_tmpdir . '/' . $this->get('name');
     	}
     	

@@ -188,7 +188,7 @@ class Datasource_Composer extends AbstractDatasource implements IDatasource {
 		$output = strtoupper($request->getParam('output'));
 		$query = $request->getParam('query');
 
-		$handler = $handler !== null ? $handler : 'SQL';	// SQL / Solr / XVFS ?
+		$handler = $handler !== null ? $handler : 'SQL';	// SQL / Solr
 		$output = $output !== null ? $output : 'JSON';		// JSON / XML
 
 		if (is_string($query)) {

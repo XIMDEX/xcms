@@ -193,10 +193,6 @@ abstract class WidgetAbstract
 						? 'true' : 'false';
 					$this->includeWidgetLib('itemsSelector');
 					break;
-				case 'useXVFS':
-					$ret[$key] = in_array(strtoupper($value), array('YES', 'TRUE'))
-						? 'true' : 'false';
-					break;
 				default:
 					$ret[$key] = $value;
 					break;

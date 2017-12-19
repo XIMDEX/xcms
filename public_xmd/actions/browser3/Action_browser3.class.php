@@ -40,7 +40,6 @@ use Ximdex\Utils\Serializer;
 use Ximdex\Utils\Session;
 
 ModulesManager::file('/inc/search/QueryProcessor.class.php');
-ModulesManager::file('/inc/xvfs/XVFS.class.php');
 ModulesManager::file('/actions/browser3/inc/GenericDatasource.class.php', 'APP');
 ModulesManager::file('/inc/validation/FormValidation.class.php');
 

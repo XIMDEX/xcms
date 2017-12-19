@@ -35,7 +35,6 @@ use Ximdex\Runtime\Db;
 
 
 
-// Define estructure at inc/xvfs/backends/XVFS_Backend_xnodes.class.php here.
 if (!defined('ROOT_NODE')) {
     define('ROOT_NODE', 1);
 }

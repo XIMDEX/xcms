@@ -63,7 +63,7 @@ class NodeEntity {
 		$this->_db = new DB();
 
 		// Directorio temporal para los descriptores
-		$this->_tmpdir = XIMDEX_ROOT_PATH . App::getValue("TempRoot")."/xvfs";
+		$this->_tmpdir = XIMDEX_ROOT_PATH . App::getValue("TempRoot")."/descriptors";
 		if (!is_dir($this->_tmpdir)) mkdir($this->_tmpdir);
 
 		// Inicializa las propiedades del objeto

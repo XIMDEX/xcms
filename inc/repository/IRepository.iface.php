@@ -26,7 +26,6 @@
 
 
 
-	// Estas constantes de error coinciden con las de XVFS
 	define('REP_NONE',					 1);		// Sin errores (TRUE)
 	define('REP_INVALID_ROOT',			-1);		// La raiz del respositorio no es valida: No existe o no es directorio
 	define('REP_NOT_EXISTS',			-2);		// El nodo indicado no existe
