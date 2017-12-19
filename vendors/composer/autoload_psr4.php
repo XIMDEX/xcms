@@ -28,4 +28,5 @@ return array(
     'Doctrine\\Common\\' => array($vendorDir . '/doctrine/common/lib/Doctrine/Common'),
     'DI\\' => array($vendorDir . '/php-di/php-di/src/DI'),
     'Carbon\\' => array($vendorDir . '/nesbot/carbon/src/Carbon'),
+    'Ximdex\\' => array($baseDir . '/src')
 );
