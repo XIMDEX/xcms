@@ -29,8 +29,13 @@ use Ximdex\Utils\FsUtils;
 
 
 
-require_once(XIMDEX_ROOT_PATH . '/inc/mail/class.phpmailer.php');
-//
+require_once(XIMDEX_ROOT_PATH.XIMDEX_VENDORS  . '/phpmailer/phpmailer/src/Exception.php');
+require_once(XIMDEX_ROOT_PATH.XIMDEX_VENDORS  . '/phpmailer/phpmailer/src/PHPMailer.php');
+require_once(XIMDEX_ROOT_PATH.XIMDEX_VENDORS  . '/phpmailer/phpmailer/src/SMTP.php');
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
 
 // Include mail configuration.
 include_once(XIMDEX_ROOT_PATH . "/conf/mail.php");
