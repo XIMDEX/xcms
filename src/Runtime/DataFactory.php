@@ -41,7 +41,6 @@ use Ximdex\Utils\Sync\SynchroFacade;
 use Ximdex\Logger;
 
 
-require_once(XIMDEX_ROOT_PATH . '/inc/poolerd/PoolerClient.class.php');
 
 ModulesManager::file('/inc/persistence/store/StoreFactory.class.php');
 ModulesManager::file('/inc/metadata/MetadataManager.class.php');
@@ -1196,15 +1195,6 @@ class DataFactory
         if (!$usePool) {
 
             $this->conector->indexNode($idVersion, $commitNode);
-        } else {
-
-            try {
-                PoolerClient::request('Solr', array(
-                    array('versionid' => $idVersion, 'commit' => $commitNode)
-                ));
-            } catch (Exception $e) {
-                // do something
-            }
         }
     }
 
