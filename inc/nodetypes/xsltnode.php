@@ -481,7 +481,7 @@ class xsltnode extends FileNode
         //generation of the file docxap.xsl with project name inside
         $xslSourcePath = XIMDEX_ROOT_PATH . App::getValue('TempRoot') . '/docxap.xsl';
         Logger::info('Creating unexisting docxap XSLT file in ' . $xslSourcePath);
-        $docxapTemplate = XIMDEX_ROOT_PATH . '/xmd/xslt/docxap.xsl.template';
+        $docxapTemplate = __DIR__ . '/docxap.xsl.template';
         $content = FsUtils::file_get_contents($docxapTemplate);
         if (!$content)
             return false;
