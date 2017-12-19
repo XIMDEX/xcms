@@ -30,7 +30,6 @@ use Ximdex\Models\Node;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\MVC\ActionAbstract;
 
-ModulesManager::file('/inc/model/RelPvds.class.php');
 
 class Action_xmlsetlink extends ActionAbstract {
 
@@ -87,15 +86,6 @@ class Action_xmlsetlink extends ActionAbstract {
 		$targetStructuredDocument = new StructuredDocument($idTarget);
 		$idTargetTemplate = $targetStructuredDocument->get('IdTemplate');
 
-		$rel = new RelPvds();
-
-		if (($idTarget > 0)
-			&& (!$rel->isCompatible($idNodeTemplate, $idTargetTemplate))) {
-			$this->messages->add(_('The document to link has a different view template. The link cannot be created'), MSG_TYPE_ERROR);
-            $values = array('messages' => $this->messages->messages);
-            $this->sendJSON($values);
-            return false;
-		}
         $targetOfTarget=$targetStructuredDocument->get('TargetLink');
 
         if($targetOfTarget==$idNode){
