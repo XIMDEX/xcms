@@ -29,7 +29,6 @@ namespace Ximdex\MVC;
 
 
 use Ximdex\Logger;
-use Ximdex\Notifications\EmailNotificationStrategy;
 use ModulesManager;
 use Ximdex\Parsers\ParsingJsGetText;
 use Ximdex\Utils\Serializer;
@@ -41,7 +40,9 @@ use Ximdex\Runtime\Request;
 use Ximdex\Utils\Factory;
 use Ximdex\Utils\QueryManager;
 use Ximdex\Utils\Session;
-use Ximdex\Notifications\XimdexNotificationStrategy;
+
+ModulesManager::file('/inc/mail/Mail.class.php');
+ModulesManager::file('/inc/model/orm/Messages_ORM.class.php');
 
 
 /**
@@ -673,10 +674,8 @@ abstract class ActionAbstract extends IController
     protected function sendNotifications($subject, $content, $to)
     {
         $from = Session::get("userID");
-        $emailNotification = new EmailNotificationStrategy();
-        $result = $emailNotification->sendNotification($subject, $content, $from, $to);
-        $messagesNotification = new XimdexNotificationStrategy();
-        $messagesNotification->sendNotification($subject, $content, $from, $to);
+        $result = $this->sendNotification($subject, $content, $from, $to);
+        $this->sendNotificationXimdex($subject, $content, $from, $to);
 
         foreach ($result as $idUser => $resultByUser) {
             $user = new User($idUser);
@@ -685,6 +684,48 @@ abstract class ActionAbstract extends IController
                 $this->messages->add(sprintf(_("Message successfully sent to %s"), $userEmail), MSG_TYPE_NOTICE);
             } else {
                 $this->messages->add(sprintf(_("Error sending message to the mail address %s"), $userEmail), MSG_TYPE_WARNING);
+            }
+        }
+
+        return $result;
+    }
+
+
+    protected function sendNotification($subject, $content, $from, $to) {
+        $result = array();
+        foreach ($to as $toUser) {
+
+            $user = new User($toUser);
+            $userEmail = $user->get('Email');
+            $userName = $user->get('Name');
+            $mail = new Mail();
+            $mail->addAddress($userEmail, $userName);
+            $mail->Subject = $subject;
+            $mail->Body = $content;
+            if ($mail->Send()) {
+                $result[$toUser] = true;
+            } else {
+                $result[$toUser] = false;
+            }
+        }
+
+        return $result;
+    }
+
+    protected function sendNotificationXimdex($subject, $content, $from, $to)
+    {
+
+        $result = array();
+        foreach ($to as $toUser) {
+            $messages = new Messages_ORM();
+            $messages->set("IdFrom", $from);
+            $messages->set("IdOwner", $toUser);
+            $messages->set("Subject", $subject);
+            $messages->set("Content", $content);
+            if ($messages->add()) {
+                $result[$toUser] = true;
+            } else {
+                $result[$toUser] = false;
             }
         }
 
