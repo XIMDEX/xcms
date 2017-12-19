@@ -674,8 +674,8 @@ abstract class ActionAbstract extends IController
     protected function sendNotifications($subject, $content, $to)
     {
         $from = Session::get("userID");
-        $result = $this->sendNotification($subject, $content, $from, $to);
-        $this->sendNotificationXimdex($subject, $content, $from, $to);
+        $result = $this->_sendNotification($subject, $content, $from, $to);
+        $this->_sendNotificationXimdex($subject, $content, $from, $to);
 
         foreach ($result as $idUser => $resultByUser) {
             $user = new User($idUser);
@@ -691,7 +691,7 @@ abstract class ActionAbstract extends IController
     }
 
 
-    protected function sendNotification($subject, $content, $from, $to) {
+    protected function _sendNotification($subject, $content, $from, $to) {
         $result = array();
         foreach ($to as $toUser) {
 
@@ -712,7 +712,7 @@ abstract class ActionAbstract extends IController
         return $result;
     }
 
-    protected function sendNotificationXimdex($subject, $content, $from, $to)
+    protected function _sendNotificationXimdex($subject, $content, $from, $to)
     {
 
         $result = array();
