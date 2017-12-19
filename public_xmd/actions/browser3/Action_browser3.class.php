@@ -39,7 +39,7 @@ use Ximdex\Runtime\Request;
 use Ximdex\Utils\Serializer;
 use Ximdex\Utils\Session;
 
-ModulesManager::file('/inc/search/QueryProcessor.class.php');
+ModulesManager::file('/actions/browser3/inc/search/QueryProcessor.class.php', 'APP');
 ModulesManager::file('/actions/browser3/inc/GenericDatasource.class.php', 'APP');
 ModulesManager::file('/actions/browser3/inc/FormValidation.class.php', 'APP');
 
@@ -410,7 +410,7 @@ class Action_browser3 extends ActionAbstract
 
         if ("SQLTREE" != $handler) {
             $queryHandler = QueryProcessor::getInstance($handler);
-            $query = $handler->getQueryOptions($query);
+            $query = $queryHandler->getQueryOptions($query);
 
             $ret['query'] = $query;
             $ret = $this->resultsHierarchy($view, isset($query['parentid']) ? $query['parentid'] : null, $ret, $queryHandler);

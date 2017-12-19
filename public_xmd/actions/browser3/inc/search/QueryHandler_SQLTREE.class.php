@@ -28,7 +28,7 @@
 use Ximdex\Models\Node;
 use Ximdex\Models\NodeType;
 
-require_once(XIMDEX_ROOT_PATH . '/inc/search/QueryHandler_SQL.class.php');
+require_once(__DIR__ . '/QueryHandler_SQL.class.php');
 
 class QueryHandler_SQLTREE extends QueryHandler_SQL {
 
