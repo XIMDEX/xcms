@@ -29,9 +29,7 @@ use Ximdex\Models\Node;
 use Ximdex\Models\Version;
 
 
-require_once(XIMDEX_ROOT_PATH . "/inc/utils.php");
 require_once("ISolrService.iface.php");
-require_once(XIMDEX_ROOT_PATH . '/vendors/autoload.php');
 
 /**
  * <p>SolrService class</p>

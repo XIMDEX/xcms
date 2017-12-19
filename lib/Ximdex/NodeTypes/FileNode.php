@@ -39,7 +39,6 @@ use Ximdex\Parsers\ParsingDependencies;
 use Ximdex\Utils\FsUtils;
 use Ximdex\Logger;
 
-include_once(XIMDEX_ROOT_PATH . "/inc/utils.php");
 include_once(XIMDEX_ROOT_PATH . "/public_xmd/actions/fileupload/baseIO.php");
 require_once(XIMDEX_ROOT_PATH . "/inc/model/RelTemplateContainer.class.php");
 

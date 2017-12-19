@@ -46,7 +46,6 @@ use Ximdex\Workflow\WorkFlow;
 use Ximdex\XML\Base;
 use Ximdex\XML\XML;
 
-require_once(XIMDEX_ROOT_PATH . '/inc/utils.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/model/NodeProperty.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/nodetypes/xsltnode.php');
 

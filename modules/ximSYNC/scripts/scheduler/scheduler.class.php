@@ -30,7 +30,6 @@ use Ximdex\Runtime\App;
 use Ximdex\Utils\Sync\Mutex;
 use Ximdex\Logger;
 
-ModulesManager::file('/inc/utils.php');
 ModulesManager::file('/inc/manager/NodeFrameManager.class.php', 'ximSYNC');
 ModulesManager::file('/inc/manager/ServerFrameManager.class.php', 'ximSYNC');
 ModulesManager::file('/inc/manager/PumperManager.class.php', 'ximSYNC');

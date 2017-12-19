@@ -30,7 +30,6 @@ use Ximdex\Runtime\App;
 use Ximdex\Runtime\Db;
 
 ModulesManager::file('/inc/model/orm/SynchronizerStats_ORM.class.php', 'ximSYNC');
-ModulesManager::file('/inc/utils.php');
 
 /**
  * @brief Logging for the publication incidences.

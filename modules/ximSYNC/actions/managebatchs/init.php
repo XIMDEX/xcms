@@ -35,7 +35,6 @@ use Ximdex\Runtime\App;
 		define ("XIMDEX_ROOT_PATH", realpath (dirname (__FILE__)."/../../../../"));
 	}
 	
-	 ModulesManager::file('/inc/utils.php');
   	 ModulesManager::file('/inc/model/Batch.class.php', 'ximSYNC');
  	 ModulesManager::file('/conf/synchro_conf.php', 'ximSYNC');
  	 ModulesManager::file('/actions/managebatchs/forms.php', 'ximSYNC');

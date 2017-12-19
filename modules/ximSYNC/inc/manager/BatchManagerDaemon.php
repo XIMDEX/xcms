@@ -39,7 +39,6 @@ use Ximdex\Runtime\App;
 use Ximdex\Runtime\DataFactory;
 use Ximdex\Utils\Sync\SynchroFacade;
 
-include_once(XIMDEX_ROOT_PATH . "/inc/utils.php");
 include_once(XIMDEX_ROOT_PATH . '/modules/ximSYNC/inc/manager/BatchManager.class.php');
 include_once(XIMDEX_ROOT_PATH . '/modules/ximSYNC/inc/model/Batch.class.php');
 

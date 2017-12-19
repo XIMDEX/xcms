@@ -28,7 +28,6 @@ use Ximdex\Logger;
 use Ximdex\Models\Node;
 use Ximdex\Models\Version;
 
-require_once(XIMDEX_ROOT_PATH . "/inc/utils.php");
 require("ISolrService.iface.php");
 
 /**

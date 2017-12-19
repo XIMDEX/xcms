@@ -31,7 +31,6 @@ if (!defined('XIMDEX_ROOT_PATH')) {
     require_once dirname(__FILE__) . '/../../../../bootstrap.php';
 }
 
-ModulesManager::file('/inc/utils.php');
 
 \Ximdex\Utils\Session::check();
 $urlroot = App::getValue('UrlRoot');

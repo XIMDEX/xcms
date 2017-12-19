@@ -43,7 +43,6 @@ use Ximdex\Utils\FsUtils;
 use Ximdex\Logger;
 
 
-include_once(XIMDEX_ROOT_PATH . "/inc/utils.php");
 
 include_once(XIMDEX_ROOT_PATH . "/inc/model/orm/Synchronizer_ORM.class.php");
 include_once(XIMDEX_ROOT_PATH . "/inc/model/orm/SynchronizerHistory_ORM.class.php");
