@@ -66,9 +66,11 @@ class Mail extends PHPMailer
     }
 
 
-    function setFrom($email, $name = "")
+    function setFrom($address, $name = '', $auto = true)
     {
-        $this->From = $email;
+        parent::setFrom($address, $name, $auto);
+
+        $this->From = $address;
         $this->FromName = $name;
         $this->Sender = $this->From;
     }
