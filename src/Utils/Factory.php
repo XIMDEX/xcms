@@ -55,32 +55,30 @@ class Factory
      * @param array $args
      * @return mixed
      */
-    public function instantiate($type = NULL, $args = null )
+    public function instantiate($type = NULL, $args = null, $namespace = '\Ximdex\MVC\Render' )
     {
 
-        $class = $this->_root_name;
+        $classname = ltrim($this->_root_name,'\\');
+        $namespace = trim($namespace,'\\');
+
         if (!is_null($type)) {
-            $class .= $type;
+            $classname .= $type;
         }
 
-        // @todo -> make render load dynamic
+        $class =  '\\'. $classname;
+        if(!empty($namespace)) {
+            $nsClass =  '\\'.$namespace . $class;
 
-        $nsClass = '\\Ximdex\MVC\\Render\\' . $class ;
+            if ( class_exists( $nsClass )) {
+                return new $nsClass( $args ) ;
+            }
 
-
-        if ( class_exists( $nsClass )) {
-            return new $nsClass( $args ) ;
         }
 
-
-        $class_path = $this->_path . "/$class.class.php";
-
-
-        // Add / to the beginning of class name (to prevent namespace mistake )
-        if ( substr( $class, 0, 1) != '\\' ) {
-            $class = '\\' . $class ;
-        }
         if (!class_exists($class)) {
+            $class_path = $this->_path . "/$classname.class.php";
+
+
             if (file_exists($class_path) && is_readable($class_path)) {
                 require_once($class_path);
             } else {
@@ -93,11 +91,16 @@ class Factory
             $this->_setError("Factory::instantiate(): '$class' class not found in file $class_path");
             return NULL;
         }
+
+
         if ( is_null( $args) ) {
             $obj = new $class();
         } else {
             $obj = new $class($args);
         }
+
+
+
         if (!is_object($obj)) {
             Logger::fatal("Could'nt instanciate the class $class");
             return null ;
