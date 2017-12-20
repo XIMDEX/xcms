@@ -160,7 +160,7 @@ class QueryHandler_SQLTREE extends QueryHandler_SQL {
 			switch ($field) {
 				case 'nodetype':
 					$allowedNodeTypes = $this->getAllowedNodeTypes($cont);
-					$this->filters[] = sprintf(' (n.IdNodeType  %s  OR %s OR n.IdNodetype = "' . \Ximdex\Services\NodeType::PROJECT 
+					$this->filters[] = sprintf(' (n.IdNodeType  %s  OR %s OR n.IdNodetype = "' . \Ximdex\NodeTypes\NodeType::PROJECT
 					       . '")', $this->createComparation($comp, array($cont)), $allowedNodeTypes);
 					break;
 

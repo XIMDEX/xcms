@@ -164,8 +164,8 @@ class Action_renamenode extends ActionAbstract
                 }
                 
                 //update all the references in the templates includes of the old name of this node to the new one
-                if ($node->GetNodeType() == Ximdex\Services\NodeType::PROJECT or $node->GetNodeType() == Ximdex\Services\NodeType::SERVER 
-                        or $node->GetNodeType() == Ximdex\Services\NodeType::SECTION)
+                if ($node->GetNodeType() == Ximdex\NodeTypes\NodeType::PROJECT or $node->GetNodeType() == Ximdex\NodeTypes\NodeType::SERVER
+                        or $node->GetNodeType() == Ximdex\NodeTypes\NodeType::SECTION)
                 {
                     $xsltNode = new xsltnode($node);
                     if (!$xsltNode->reload_templates_include(new Node($node->GetProject())))

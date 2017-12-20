@@ -50,7 +50,7 @@ class LanguageProperty extends InheritableProperty {
 		// The Project node shows all the system languages
 		$availableLanguages = $language->find('IdLanguage, Name', 'Enabled = 1', NULL);
 
-		if ($this->nodeTypeId != \Ximdex\Services\NodeType::PROJECT) {
+		if ($this->nodeTypeId != \Ximdex\NodeTypes\NodeType::PROJECT) {
 
 			// Nodes below the Project shows only inherited languages
 			$parentId = $this->node->getParent();

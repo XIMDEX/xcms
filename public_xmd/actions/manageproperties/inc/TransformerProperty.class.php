@@ -55,7 +55,7 @@ class TransformerProperty extends InheritableProperty {
 
 		$availableTransformers = array();
 
-		if ($this->nodeTypeId == \Ximdex\Services\NodeType::PROJECT) {
+		if ($this->nodeTypeId == \Ximdex\NodeTypes\NodeType::PROJECT) {
 
 			// The Project node shows all the system transformers
 			$availableTransformers = $_availableTransformers;

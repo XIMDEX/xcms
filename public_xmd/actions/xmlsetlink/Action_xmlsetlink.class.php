@@ -191,7 +191,7 @@ class Action_xmlsetlink extends ActionAbstract {
 	*/
 	private function getTargetNodes($idNode){
 		//Creating nodeservice in no-lazy mode
-		$nodeService = new \Ximdex\Services\Node($idNode,false);
+		$nodeService = new \Ximdex\NodeTypes\Node($idNode,false);
 		$siblings = $nodeService->getSiblings();
 		$targetNodes = array();
 		foreach ($siblings as $sibling) {

@@ -332,7 +332,7 @@ function createImage($client, $token, $images_id, $imageName) {
 		'form_params' => [
 			'ximtoken' => $token,
 			'nodeid' => $images_id,
-		    'nodetype' => Ximdex\Services\NodeType::IMAGE_FILE,
+		    'nodetype' => Ximdex\NodeTypes\NodeType::IMAGE_FILE,
 			'name' => $imageName,
 		],
 	]);

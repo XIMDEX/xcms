@@ -493,7 +493,7 @@ class Action_xmleditor2 extends ActionAbstract
         $node = new Node($idNode);
         $idProject = $node->getProject();
         $project = new Node($idProject);
-        $children = $project->getChildren(\Ximdex\Services\NodeType::LINK_MANAGER);
+        $children = $project->getChildren(\Ximdex\NodeTypes\NodeType::LINK_MANAGER);
         $result["success"] = true;
         $result["idLinkFolder"] = $children[0];
         $this->sendJSON($result);

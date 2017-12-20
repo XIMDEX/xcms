@@ -25,7 +25,7 @@
  * @version $Revision$
  */
 
-namespace Ximdex\Services ;
+namespace Ximdex\NodeTypes;
 
 use Ximdex\Models\Node as ModelsNode;
 use Ximdex\Models\User ;

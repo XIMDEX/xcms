@@ -914,13 +914,13 @@ class Node extends NodesOrm
                 $GLOBALS['errorsInXslTransformation'] = array();
                 
                 $domDoc = new DOMDocument();
-                if ($node->getNodeType() == \Ximdex\Services\NodeType::NODE_HT or $node->getNodeType() == \Ximdex\Services\NodeType::RNG_VISUAL_TEMPLATE)
+                if ($node->getNodeType() == \Ximdex\NodeTypes\NodeType::NODE_HT or $node->getNodeType() == \Ximdex\NodeTypes\NodeType::RNG_VISUAL_TEMPLATE)
                 {
                     //check the XML of the given RNG template content
                     $res = @$domDoc->loadXML($content);
                 }
-                if ($node->getNodeType() == \Ximdex\Services\NodeType::XSL_TEMPLATE 
-                        or $node->getNodeType() == \Ximdex\Services\NodeType::XML_DOCUMENT)
+                if ($node->getNodeType() == \Ximdex\NodeTypes\NodeType::XSL_TEMPLATE
+                        or $node->getNodeType() == \Ximdex\NodeTypes\NodeType::XML_DOCUMENT)
                 {
                     //check the valid XML template and dependencies
                     $res = @$domDoc->loadXML($content);
@@ -928,10 +928,10 @@ class Node extends NodesOrm
                     {
                         //dotdot dependencies only can be checked in templates under a server node
                         $templatesNode = new Node($node->GetParent());
-                        if ($templatesNode->GetNodeType() == \Ximdex\Services\NodeType::TEMPLATES_ROOT_FOLDER)
+                        if ($templatesNode->GetNodeType() == \Ximdex\NodeTypes\NodeType::TEMPLATES_ROOT_FOLDER)
                         {
                             $projectNode = new Node($templatesNode->getParent());
-                            if ($projectNode->GetNodeType() == \Ximdex\Services\NodeType::PROJECT)
+                            if ($projectNode->GetNodeType() == \Ximdex\NodeTypes\NodeType::PROJECT)
                                 $idServer = false;
                         }
                         if (!isset($idServer))
@@ -967,7 +967,7 @@ class Node extends NodesOrm
                         $GLOBALS['errorsInXslTransformation'] = [$error];
                     }
                 }
-                elseif ($node->getNodeType() == \Ximdex\Services\NodeType::RNG_VISUAL_TEMPLATE)
+                elseif ($node->getNodeType() == \Ximdex\NodeTypes\NodeType::RNG_VISUAL_TEMPLATE)
                 {
                     //validation of the RNG schema for the RNG template
                     $schema = FsUtils::file_get_contents(XIMDEX_ROOT_PATH . '/actions/xmleditor2/views/common/schema/relaxng-1.0.rng.xml');
@@ -1366,7 +1366,7 @@ class Node extends NodesOrm
 
         $node = new Node($this->get('IdNode'));
         
-        if ($nodeTypeID == \Ximdex\Services\NodeType::TEMPLATES_ROOT_FOLDER)
+        if ($nodeTypeID == \Ximdex\NodeTypes\NodeType::TEMPLATES_ROOT_FOLDER)
         {
             // if the node is a type of templates folder, generates the templates_include.xsl inside
             $xsltNode = new xsltnode($node);
@@ -1376,7 +1376,7 @@ class Node extends NodesOrm
                 return false;
             }
         }
-        elseif ($nodeTypeID == \Ximdex\Services\NodeType::METADATA_SECTION)
+        elseif ($nodeTypeID == \Ximdex\NodeTypes\NodeType::METADATA_SECTION)
         {
             // if the node is a type of metadata section, generates the relation with the templates folder
             $xsltNode = new xsltnode($node);
@@ -1451,7 +1451,7 @@ class Node extends NodesOrm
         $nodeProperty->deleteByNode($this->get('IdNode'));
 
         // first invoking the particular Delete...
-        if ($this->GetNodeType() != \Ximdex\Services\NodeType::XSL_TEMPLATE)
+        if ($this->GetNodeType() != \Ximdex\NodeTypes\NodeType::XSL_TEMPLATE)
             $this->class->DeleteNode();
 
         // and the the general one
@@ -1465,15 +1465,15 @@ class Node extends NodesOrm
         $dbObj->Execute(sprintf("DELETE FROM NoActionsInNode WHERE IdNode = %d", $this->get('IdNode')));
         
         // if the folder is of documents type, the relation with templates folder will be deleted
-        if ($this->nodeType->get('IdNodeType') == \Ximdex\Services\NodeType::XML_ROOT_FOLDER 
-                or $this->nodeType->get('IdNodeType') == \Ximdex\Services\NodeType::METADATA_SECTION)
+        if ($this->nodeType->get('IdNodeType') == \Ximdex\NodeTypes\NodeType::XML_ROOT_FOLDER
+                or $this->nodeType->get('IdNodeType') == \Ximdex\NodeTypes\NodeType::METADATA_SECTION)
         {
             $depsMngr = new DepsManager();
             $depsMngr->deleteBySource(DepsManager::DOCFOLDER_TEMPLATESINC, $this->nodeID);
         }
         
         // delete the references to the XML documents folders, if the node type is templates folder
-        if ($this->nodeType->get('IdNodeType') == \Ximdex\Services\NodeType::TEMPLATES_ROOT_FOLDER)
+        if ($this->nodeType->get('IdNodeType') == \Ximdex\NodeTypes\NodeType::TEMPLATES_ROOT_FOLDER)
         {
             $depsMngr = new DepsManager();
             $depsMngr->deleteByTarget(DepsManager::STRDOC_TEMPLATE, $this->nodeID);
@@ -1502,7 +1502,7 @@ class Node extends NodesOrm
 
         $res = parent::delete();
         
-        if ($this->GetNodeType() == \Ximdex\Services\NodeType::XSL_TEMPLATE)
+        if ($this->GetNodeType() == \Ximdex\NodeTypes\NodeType::XSL_TEMPLATE)
             $this->class->DeleteNode(false);
         
         Logger::info("Node " . $this->nodeID . " deleted");
@@ -2299,11 +2299,11 @@ class Node extends NodesOrm
     function getServer()
     {
 
-        $result = $this->_getParentByType(\Ximdex\Services\NodeType::SERVER);
+        $result = $this->_getParentByType(\Ximdex\NodeTypes\NodeType::SERVER);
 
         if (!($result > 0)) {
 
-            $result = $this->_getParentByType(\Ximdex\Services\NodeType::METADATA_SECTION);
+            $result = $this->_getParentByType(\Ximdex\NodeTypes\NodeType::METADATA_SECTION);
         }
 
         return $result;
@@ -2315,15 +2315,15 @@ class Node extends NodesOrm
     function getProject()
     {
 
-        $result = $this->_getParentByType(\Ximdex\Services\NodeType::PROJECT);
+        $result = $this->_getParentByType(\Ximdex\NodeTypes\NodeType::PROJECT);
 
         if (!($result > 0)) {
 
-            $result = $this->_getParentByType(\Ximdex\Services\NodeType::METADATA_SECTION);
+            $result = $this->_getParentByType(\Ximdex\NodeTypes\NodeType::METADATA_SECTION);
         }
         if (!($result > 0)) {
 
-            $result = $this->_getParentByType(\Ximdex\Services\NodeType::XSIR_REPOSITORY);
+            $result = $this->_getParentByType(\Ximdex\NodeTypes\NodeType::XSIR_REPOSITORY);
         }
 
         return $result;
@@ -3464,7 +3464,7 @@ class Node extends NodesOrm
         $schemas = $this->getProperty('DefaultSchema');
 
         if (empty($schemas)) {
-            $schemas = \Ximdex\Services\NodeType::VISUAL_TEMPLATE . ',' . \Ximdex\Services\NodeType::RNG_VISUAL_TEMPLATE;
+            $schemas = \Ximdex\NodeTypes\NodeType::VISUAL_TEMPLATE . ',' . \Ximdex\NodeTypes\NodeType::RNG_VISUAL_TEMPLATE;
         } else {
             $schemas = implode(',', $schemas);
         }

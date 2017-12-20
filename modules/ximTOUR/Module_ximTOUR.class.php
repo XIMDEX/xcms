@@ -60,7 +60,7 @@ class Module_ximTOUR extends Module
             $languages = [10002, 10003];
             $addFolderNode->request->setParam("theme", "picasso");
 
-            $nodeTypeId = \Ximdex\Services\NodeType::PROJECT;
+            $nodeTypeId = \Ximdex\NodeTypes\NodeType::PROJECT;
             $nodeTypeName = "Project";
 
             $nodeType = new NodeType();

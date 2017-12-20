@@ -80,21 +80,21 @@ class MetadataManager{
     public function getMetadataSchema(){
         $node = new Node($this->node->GetID());
         $projectNode = new Node($node->getProject());
-        $schemesFolder = $projectNode->getChildren(\Ximdex\Services\NodeType::TEMPLATE_VIEW_FOLDER);
+        $schemesFolder = $projectNode->getChildren(\Ximdex\NodeTypes\NodeType::TEMPLATE_VIEW_FOLDER);
 
         $nt = $this->node->nodeType->GetID(); 
         switch($nt){
-            case \Ximdex\Services\NodeType::IMAGE_FILE:
-            case \Ximdex\Services\NodeType::XSIR_IMAGE_FILE:
+            case \Ximdex\NodeTypes\NodeType::IMAGE_FILE:
+            case \Ximdex\NodeTypes\NodeType::XSIR_IMAGE_FILE:
                 $name=MetadataManager::IMAGE_METADATA_SCHEMA;
                 break;
-            case \Ximdex\Services\NodeType::BINARY_FILE:
+            case \Ximdex\NodeTypes\NodeType::BINARY_FILE:
                 $name=MetadataManager::COMMON_METADATA_SCHEMA;
                 break;
-            case \Ximdex\Services\NodeType::TEXT_FILE:
+            case \Ximdex\NodeTypes\NodeType::TEXT_FILE:
                 $name=MetadataManager::COMMON_METADATA_SCHEMA;
                 break;
-            case \Ximdex\Services\NodeType::XML_CONTAINER:
+            case \Ximdex\NodeTypes\NodeType::XML_CONTAINER:
                 $name=MetadataManager::DOCUMENT_METADATA_SCHEMA;
                 break;
             default:
@@ -246,7 +246,7 @@ class MetadataManager{
      * add a new row to RelNodeVersionMetadataVersion
      */
     public function updateMetadataVersion(){
-        if ( $this->node->GetNodeType() != Ximdex\Services\NodeType::METADATA_DOCUMENT ){
+        if ( $this->node->GetNodeType() != Ximdex\NodeTypes\NodeType::METADATA_DOCUMENT ){
             $rnm = new RelNodeMetadata();
             $metadata_container = $rnm->find('IdRel, IdMetadata', "IdNode = %s", [$this->node->GetID()], MULTI);
             if( count($metadata_container) == 1 ){
@@ -616,7 +616,7 @@ class MetadataManager{
             $idmNode = new Node($idm);
             $pairs=array();
 
-            if($sourceNode->nodeType->GetID()==\Ximdex\Services\NodeType::XML_CONTAINER){
+            if($sourceNode->nodeType->GetID()==\Ximdex\NodeTypes\NodeType::XML_CONTAINER){
                 $children = $sourceNode->GetChildren();
                 //insert the structured documents ids
                 foreach($children as $child){

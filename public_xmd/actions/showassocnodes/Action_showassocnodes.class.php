@@ -34,7 +34,7 @@ class Action_showassocnodes extends ActionAbstract {
 	const COMPOSER_INDEX = '../public_xmd/';
 
 	// Server, Section
-	const SEARCHED_NODETYPE = \Ximdex\Services\NodeType::SERVER . ',' . \Ximdex\Services\NodeType::SECTION;
+	const SEARCHED_NODETYPE = \Ximdex\NodeTypes\NodeType::SERVER . ',' . \Ximdex\NodeTypes\NodeType::SECTION;
 
 	// Tree root
 	const TREE_ROOT = 10000;
@@ -253,8 +253,8 @@ class Action_showassocnodes extends ActionAbstract {
 			$rel = null;
 
 			switch ($idnodetype) {
-			    case \Ximdex\Services\NodeType::SERVER:
-			    case \Ximdex\Services\NodeType::SECTION:
+			    case \Ximdex\NodeTypes\NodeType::SERVER:
+			    case \Ximdex\NodeTypes\NodeType::SECTION:
 					$rel = DepsManager::SECTION_XIMLET;
 					break;
 			}
@@ -313,8 +313,8 @@ class Action_showassocnodes extends ActionAbstract {
 			$rel = null;
 
 			switch ($idnodetype) {
-			    case \Ximdex\Services\NodeType::SERVER:
-			    case \Ximdex\Services\NodeType::SECTION:
+			    case \Ximdex\NodeTypes\NodeType::SERVER:
+			    case \Ximdex\NodeTypes\NodeType::SECTION:
 					$rel = DepsManager::SECTION_XIMLET;
 					break;
 			}

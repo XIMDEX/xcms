@@ -4,7 +4,7 @@ use Ximdex\Models\Language;
 use Ximdex\Models\Node;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\Runtime\Db;
-use Ximdex\Services\NodeType;
+use Ximdex\NodeTypes\NodeType;
 
 ModulesManager::file('/inc/metadata/MetadataManager.class.php');
 ModulesManager::file('/src/Exporter.php', 'XSearch');
@@ -34,7 +34,7 @@ class SolrExporter implements Exporter
     {
         //Select all XSIR repo
         $node = new Node();
-        $XSIRIdNodes = $node->find('IdNode', 'IdNodeType = %s', [\Ximdex\Services\NodeType::XSIR_REPOSITORY], MONO);
+        $XSIRIdNodes = $node->find('IdNode', 'IdNodeType = %s', [\Ximdex\NodeTypes\NodeType::XSIR_REPOSITORY], MONO);
 
         $sql = "SELECT n.IdNode FROM FastTraverse f INNER JOIN Nodes n on f.IdChild = n.IdNode INNER JOIN NodeTypes nt ON nt.IdNodeType = n.IdNodeType WHERE f.IdNode in (%s) AND nt.IsPlainFile AND nt.IdNodeType NOT IN (%s)";
 

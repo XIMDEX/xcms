@@ -26,7 +26,7 @@
  */
 
 
-namespace Ximdex\Services;
+namespace Ximdex\NodeTypes;
 
 class NodeType
 {

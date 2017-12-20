@@ -173,9 +173,9 @@ abstract class AbstractStructuredDocument extends FileNode
         {
             switch ($node->getNodeType())
             {
-                case \Ximdex\Services\NodeType::XML_DOCUMENT:
-                case \Ximdex\Services\NodeType::METADATA_DOCUMENT:
-                case \Ximdex\Services\NodeType::XIMLET:
+                case \Ximdex\NodeTypes\NodeType::XML_DOCUMENT:
+                case \Ximdex\NodeTypes\NodeType::METADATA_DOCUMENT:
+                case \Ximdex\NodeTypes\NodeType::XIMLET:
                     // in this case we will format the XML content with correct indentation
                     $domDoc = new DOMDocument();
                     $domDoc->formatOutput = true;
@@ -272,11 +272,11 @@ abstract class AbstractStructuredDocument extends FileNode
         }
         $idNodeType = $node->get('IdNodeType');
         switch ($idNodeType) {
-            case \Ximdex\Services\NodeType::XML_DOCUMENT:
-                $folderNodeType = \Ximdex\Services\NodeType::XML_ROOT_FOLDER;
+            case \Ximdex\NodeTypes\NodeType::XML_DOCUMENT:
+                $folderNodeType = \Ximdex\NodeTypes\NodeType::XML_ROOT_FOLDER;
                 break;
-            case \Ximdex\Services\NodeType::XIMLET:
-                $folderNodeType = \Ximdex\Services\NodeType::XIMLET_FOLDER;
+            case \Ximdex\NodeTypes\NodeType::XIMLET:
+                $folderNodeType = \Ximdex\NodeTypes\NodeType::XIMLET_FOLDER;
                 break;
             case 8002: //pdf
                 $folderNodeType = 8000;
@@ -354,7 +354,7 @@ abstract class AbstractStructuredDocument extends FileNode
         $node = new Node($this->nodeID);
         $nt = $node->nodeType->get('IdNodeType');
         $metadata = '';
-        if ($nt == \Ximdex\Services\NodeType::XML_DOCUMENT) {
+        if ($nt == \Ximdex\NodeTypes\NodeType::XML_DOCUMENT) {
             $metadata = 'metadata_id=""';
         }
 

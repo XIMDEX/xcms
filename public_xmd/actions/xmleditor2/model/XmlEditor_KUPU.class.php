@@ -698,7 +698,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
         $rngElements = $parser->getElements();
 
         // Obtaining array with templates referenced from templates_include.xsl
-        if ($this->node->GetNodeType() != Ximdex\Services\NodeType::METADATA_DOCUMENT)
+        if ($this->node->GetNodeType() != Ximdex\NodeTypes\NodeType::METADATA_DOCUMENT)
         {
             $docxapId = NULL;
             $depsMngr = new DepsManager();

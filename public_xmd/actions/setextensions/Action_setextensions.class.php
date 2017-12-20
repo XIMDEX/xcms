@@ -9,7 +9,7 @@ class Action_setextensions extends ActionAbstract
 {
     public function index()
     {
-        $commonFolderNodeType = new NodeType(\Ximdex\Services\NodeType::COMMON_ROOT_FOLDER);
+        $commonFolderNodeType = new NodeType(\Ximdex\NodeTypes\NodeType::COMMON_ROOT_FOLDER);
         $commonAllowedExtensions = $commonFolderNodeType->getAllowedExtensions();
 
         $this->addCss('/actions/setextensions/resources/css/style.css', 'APP');

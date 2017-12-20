@@ -164,7 +164,7 @@ class Action_workflow_forward extends ActionAbstract {
         );
 
         //Only for Strdocs, goes to next state
-        if ($node->nodeType->GetID() == \Ximdex\Services\NodeType::XML_DOCUMENT) {
+        if ($node->nodeType->GetID() == \Ximdex\NodeTypes\NodeType::XML_DOCUMENT) {
             if ($workflowNext->IsFinalState()) {
                 $values['go_method'] = 'publicateNode';
                 $values['hasDisabledFunctions'] = $this->hasDisabledFunctions();

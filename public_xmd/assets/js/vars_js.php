@@ -51,7 +51,7 @@ echo "\nlocale = '" . \Ximdex\Utils\Session::get('locale') . "';";
 function NodeTypes()
 {
 <?php
-    $nodeType = new \Ximdex\Services\NodeType;
+    $nodeType = new \Ximdex\NodeTypes\NodeType;
     $reflect = new ReflectionClass($nodeType);
     $constants = $reflect->getConstants();
     foreach ($constants as $constant => $value) {

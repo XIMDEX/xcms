@@ -105,7 +105,7 @@ class XmlContainerNode extends FolderNode
     private function buildMetadata($idNodeType, $aliases)
     {
 
-        if (\Ximdex\Services\NodeType::METADATA_CONTAINER != $idNodeType) {
+        if (\Ximdex\NodeTypes\NodeType::METADATA_CONTAINER != $idNodeType) {
             $langs = array();
             foreach ($aliases as $idLang => $alias) {
                 $langs[] = $idLang;

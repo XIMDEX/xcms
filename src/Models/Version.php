@@ -41,8 +41,8 @@ class Version extends VersionsOrm
                         (select IdVersion, IdNode, Version, Subversion, File, IdUser, Date from Versions order by Date desc) x
                         group by x.IdNode) 
                 v inner join Nodes n on n.Idnode=v.Idnode where IdUser=$idUser and n.name not like'%templates_include%' and n.idnodetype not in (" 
-                . \Ximdex\Services\NodeType::METADATA_CONTAINER . "," . \Ximdex\Services\NodeType::METADATA_SECTION . "," 
-                . \Ximdex\Services\NodeType::METADATA_DOCUMENT . ") group by n.IdNode Order by IdVersion desc, path desc,
+                . \Ximdex\NodeTypes\NodeType::METADATA_CONTAINER . "," . \Ximdex\NodeTypes\NodeType::METADATA_SECTION . ","
+                . \Ximdex\NodeTypes\NodeType::METADATA_DOCUMENT . ") group by n.IdNode Order by IdVersion desc, path desc,
                     Subversion desc, max(Date)  LIMIT 10";
         $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->Query($query);

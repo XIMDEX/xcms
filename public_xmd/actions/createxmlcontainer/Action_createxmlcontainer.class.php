@@ -63,7 +63,7 @@ class Action_createxmlcontainer extends ActionAbstract {
 		}
 		
 		if($schemes === null){
-		    $schemes = $nt == \Ximdex\Services\NodeType::METADATA_SECTION ? $node->getSchemas('metadata_schema') : $node->getSchemas();
+		    $schemes = $nt == \Ximdex\NodeTypes\NodeType::METADATA_SECTION ? $node->getSchemas('metadata_schema') : $node->getSchemas();
 		}
 		
 		$schemaArray = array();

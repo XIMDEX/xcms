@@ -172,7 +172,7 @@ class Action_movenode extends Action_copy {
 		}
 		
 		//update templates_includes files if node type is a XSL template
-		if ($node->GetNodeType() == \Ximdex\Services\NodeType::XSL_TEMPLATE)
+		if ($node->GetNodeType() == \Ximdex\NodeTypes\NodeType::XSL_TEMPLATE)
 		{
             $xsltNode = new xsltnode($node);
             if ($xsltNode->move_node($targetParentID) === false)
