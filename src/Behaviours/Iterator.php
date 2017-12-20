@@ -24,7 +24,7 @@
  *  @version $Revision$
  */
 
-namespace Ximdex\Utils ;
+namespace Ximdex\Behaviours;
 
 define('ESCAPE', true);
 define('NO_ESCAPE', false);

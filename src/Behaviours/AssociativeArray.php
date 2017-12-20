@@ -25,7 +25,7 @@
  */
 
 
-namespace Ximdex\Utils ;
+namespace Ximdex\Behaviours;
 
 class AssociativeArray {
 
