@@ -25,44 +25,19 @@
  */
 
 
-namespace Ximdex\MVC\Render;
-
-use Xmd\Widgets\Widget;
+use Xmd\Widgets\WidgetAbstract;
 
 
-/**
- *
- * @brief Renderer for the widget system
- *
- * Renderer for the widget system
- *
- */
-class WidgetsRenderer extends AbstractRenderer
+class Widget_uploader extends WidgetAbstract
 {
 
-
-    public function __construct($fileName = NULL)
+    public function process($params)
     {
-        parent::__construct($fileName);
+        $this->setTemplate("uploader_html5");
+        $this->addCss("uploader_html5.css");
+        $params["nodeid"] = $params["_enviroment"]["id_node"];
+
+        return parent::process($params);
     }
 
-
-    public function render($view = NULL)
-    {
-        parent::render(null);
-        $params = $this->getParameters();
-        return $this->process($view, $params);
-    }
-
-    public function process($source, $params)
-    {
-
-        $ret = Widget::process($source, $params);
-
-        if ($ret === null) {
-            return $source;
-        }
-
-        return $ret['tpl'];
-    }
 }

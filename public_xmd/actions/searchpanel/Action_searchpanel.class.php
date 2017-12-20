@@ -28,7 +28,7 @@
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Parsers\ParsingJsGetText;
 use Ximdex\Utils\FsUtils;
-use Ximdex\Widgets\Widget;
+use Xmd\Widgets\Widget;
 
 
 class Action_searchpanel extends ActionAbstract {

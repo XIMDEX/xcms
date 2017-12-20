@@ -37,7 +37,7 @@ use Ximdex\Runtime\App;
 use Ximdex\Runtime\Db;
 use Ximdex\Utils\Serializer;
 use Ximdex\Utils\Session;
-use Ximdex\Widgets\Widget;
+use Xmd\Widgets\Widget;
 use Ximdex\XML\Base;
  
 ModulesManager::file('/actions/browser3/inc/GenericDatasource.class.php', 'APP');

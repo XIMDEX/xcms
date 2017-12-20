@@ -30,7 +30,7 @@ namespace Ximdex\MVC\Render;
 use Extensions;
 use ModulesManager;
 use Smarty;
- use Ximdex\Widgets\Widget;
+ use Xmd\Widgets\Widget;
 
 require_once(XIMDEX_ROOT_PATH . Extensions::SMARTY);
 

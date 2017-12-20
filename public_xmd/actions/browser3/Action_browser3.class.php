@@ -141,20 +141,20 @@ class Action_browser3 extends ActionAbstract
         $this->addJs('/public_xmd/vendors/codemirror/Codemirror/lib/codemirror.js');
 
         //Old browserwindow js
-        $this->addJs('/inc/widgets/browserwindow/js/browserwindow.js');
-        $this->addJs('/inc/widgets/browserwindow/js/dialogs.js');
-        $this->addJs('/inc/widgets/browserwindow/js/actions.js');
+        $this->addJs('/public_xmd/src/Widgets/browserwindow/js/browserwindow.js');
+        $this->addJs('/public_xmd/src/Widgets/browserwindow/js/dialogs.js');
+        $this->addJs('/public_xmd/src/Widgets/browserwindow/js/actions.js');
 
         //Old listview js
-        $this->addJs('/inc/widgets/listview/js/fix.jquery.events.js');
-        $this->addJs('/inc/widgets/listview/js/listview.js');
-        $this->addJs('/inc/widgets/listview/js/listviewRenderer_Columns.js');
-        $this->addJs('/inc/widgets/listview/js/listviewRenderer_Details.js');
-        $this->addJs('/inc/widgets/listview/js/listviewRenderer_Grid.js');
-        $this->addJs('/inc/widgets/listview/js/listviewRenderer_Icon.js');
-        $this->addJs('/inc/widgets/listview/js/listviewRenderer_List.js');
-        $this->addJs('/inc/widgets/listview/js/selections.js');
-        $this->addJs('/inc/widgets/listview/js/jquery.fixheadertable.js');
+        $this->addJs('/public_xmd/src/Widgets/listview/js/fix.jquery.events.js');
+        $this->addJs('/public_xmd/src/Widgets/listview/js/listview.js');
+        $this->addJs('/public_xmd/src/Widgets/listview/js/listviewRenderer_Columns.js');
+        $this->addJs('/public_xmd/src/Widgets/listview/js/listviewRenderer_Details.js');
+        $this->addJs('/public_xmd/src/Widgets/listview/js/listviewRenderer_Grid.js');
+        $this->addJs('/public_xmd/src/Widgets/listview/js/listviewRenderer_Icon.js');
+        $this->addJs('/public_xmd/src/Widgets/listview/js/listviewRenderer_List.js');
+        $this->addJs('/public_xmd/src/Widgets/listview/js/selections.js');
+        $this->addJs('/public_xmd/src/Widgets/listview/js/jquery.fixheadertable.js');
 
 
         $this->addJs('/public_xmd/assets/js/angular/app.js');

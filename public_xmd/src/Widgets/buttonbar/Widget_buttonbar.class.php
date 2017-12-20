@@ -25,44 +25,16 @@
  */
 
 
-namespace Ximdex\MVC\Render;
-
-use Xmd\Widgets\Widget;
+use Xmd\Widgets\WidgetAbstract;
 
 
-/**
- *
- * @brief Renderer for the widget system
- *
- * Renderer for the widget system
- *
- */
-class WidgetsRenderer extends AbstractRenderer
+class Widget_buttonbar extends WidgetAbstract
 {
 
-
-    public function __construct($fileName = NULL)
+    public function __construct()
     {
-        parent::__construct($fileName);
+        parent::__construct();
     }
 
 
-    public function render($view = NULL)
-    {
-        parent::render(null);
-        $params = $this->getParameters();
-        return $this->process($view, $params);
-    }
-
-    public function process($source, $params)
-    {
-
-        $ret = Widget::process($source, $params);
-
-        if ($ret === null) {
-            return $source;
-        }
-
-        return $ret['tpl'];
-    }
 }

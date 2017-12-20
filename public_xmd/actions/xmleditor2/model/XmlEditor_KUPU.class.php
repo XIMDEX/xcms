@@ -150,7 +150,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
             '/public_xmd/assets/js/dialogs.js',
             '/public_xmd/assets/js/ximtimer.js',
             '/public_xmd/assets/js/console.js',
-            '/inc/widgets/select/js/ximdex.select.js',
+            '/public_xmd/src/Widgets/select/js/ximdex.select.js',
             '/public_xmd/assets/js/i18n.js',
             $vendorsURL . '/hammerjs/hammer.js/hammer.js',
             $vendorsURL . '/angular/angular.min.js',
@@ -319,7 +319,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
 //future		$actionURL . '/views/common/css/colorpicker.css',
             App::getValue('UrlRoot') . '/public_xmd/assets/style/fonts.css',
             App::getValue('UrlRoot') . '/public_xmd/assets/style/jquery/ximdex_theme/widgets/tabs/common_views.css',
-            App::getValue('UrlRoot') . '/inc/widgets/select/css/ximdex.select.css',
+            App::getValue('UrlRoot') . '/public_xmd/src/Widgets/select/css/ximdex.select.css',
             App::getValue('UrlRoot') . '/public_xmd/assets/style/jquery/ximdex_theme/widgets/treeview/treeview.css',
             App::getValue('UrlRoot') . '/public_xmd/assets/style/jquery/ximdex_theme/widgets/tagsinput/tagsinput_editor.css',
         );

@@ -25,44 +25,22 @@
  */
 
 
-namespace Ximdex\MVC\Render;
-
-use Xmd\Widgets\Widget;
+use Xmd\Widgets\WidgetAbstract;
 
 
-/**
- *
- * @brief Renderer for the widget system
- *
- * Renderer for the widget system
- *
- */
-class WidgetsRenderer extends AbstractRenderer
+class Widget_ontologyBrowser extends WidgetAbstract
 {
 
-
-    public function __construct($fileName = NULL)
-    {
-        parent::__construct($fileName);
-    }
-
-
-    public function render($view = NULL)
-    {
-        parent::render(null);
-        $params = $this->getParameters();
-        return $this->process($view, $params);
-    }
-
-    public function process($source, $params)
+    public function process($params)
     {
 
-        $ret = Widget::process($source, $params);
+        $this->addCss("public_xmd/src/Widgets/ontologyBrowser/css/ontologyBrowser.css");
 
-        if ($ret === null) {
-            return $source;
+        if (array_key_exists("editor", $params)) {
+            $this->setTemplate("ontologyBrowser_editor");
         }
 
-        return $ret['tpl'];
+        return parent::process($params);
     }
+
 }
