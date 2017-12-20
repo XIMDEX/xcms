@@ -30,7 +30,6 @@ use Ximdex\Logger;
 use Ximdex\Behaviours\Collection;
 use Ximdex\Runtime\Db;
 use Ximdex\Utils\Messages;
-use Ximdex\Utils\Overloadable;
 
 /**
  * TODO Remove this defines
@@ -49,7 +48,7 @@ if (!defined('DEBUG_LEVEL')) {
     define('DEBUG_LEVEL', LOG_LEVEL_NONE); //Only for debugging purposes
 }
 
-class GenericData extends Overloadable
+class GenericData
 {
 
     const MAX_TINYINT   = '255';
@@ -880,5 +879,14 @@ class GenericData extends Overloadable
             return $res[$idName];
         }
         return null;
+    }
+
+    public function __call($method, $params = array())
+    {
+        if (!method_exists($this, 'call__')) {
+            trigger_error(sprintf( __('Magic method handler call__ not defined in %s', true), get_class($this)), E_USER_ERROR);
+        } else {
+            return $this->call__($method, $params);
+        }
     }
 }
