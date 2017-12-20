@@ -30,6 +30,7 @@ use Ximdex\MVC\FrontController;
 
 include_once dirname(__DIR__).'/bootstrap.php';
 
+include_once __DIR__.'/src/autoload.php';
 
 //General class
 ModulesManager::file('/inc/io/BaseIO.class.php');
