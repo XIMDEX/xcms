@@ -85,7 +85,7 @@ class NodeProperty extends NodeProperties_ORM {
 			return false;
 		}
 
- 		$dbObj = new DB();
+ 		$dbObj = new \Ximdex\Runtime\Db();
         $sql = sprintf("DELETE FROM NodeProperties WHERE IdNode = %d", $idNode);
 		$dbObj->Execute($sql);
 
@@ -108,7 +108,7 @@ class NodeProperty extends NodeProperties_ORM {
 			return false;
 		}
 
- 		$dbObj = new DB();
+ 		$dbObj = new \Ximdex\Runtime\Db();
         $sql = "DELETE FROM NodeProperties WHERE IdNode = $idNode AND Property = '$property'";
 		$dbObj->Execute($sql);
 
@@ -134,7 +134,7 @@ class NodeProperty extends NodeProperties_ORM {
 	}
 	
 	function cleanUpPropertyValue($property, $value) {
-		$db = new DB();
+		$db = new \Ximdex\Runtime\Db();
 		$query = sprintf("DELETE FROM NodeProperties WHERE Property = %s AND Value = %s", 
 			$db->sqlEscapeString($property), $db->sqlEscapeString($value));
 		$db->execute($query);

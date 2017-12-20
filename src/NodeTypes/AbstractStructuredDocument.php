@@ -431,7 +431,7 @@ abstract class AbstractStructuredDocument extends FileNode
     {
         $parent = new Node($this->parent->get('IdParent'));
         $st = new StructuredDocument($this->parent->get('IdNode'));
-        $dbObj = new Db();
+        $dbObj = new \Ximdex\Runtime\Db();
         $query = sprintf("DELETE FROM NodeNameTranslations WHERE IdNode = %s AND IdLanguage = %s",
             $dbObj->sqlEscapeString($parent->get('IdNode')),
             $dbObj->sqlEscapeString($st->get('IdLanguage')));

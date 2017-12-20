@@ -141,7 +141,7 @@ class MPMManager {
 				//the child ended, there are some secundary effects
 				//With this, we force to the reconnect
 
-				$db = new Db();
+				$db = new \Ximdex\Runtime\Db();
 				$db->reconectDataBase();
 
 				//We are the parent

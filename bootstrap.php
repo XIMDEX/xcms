@@ -49,9 +49,6 @@ class_alias('Ximdex\Modules\Manager', 'ModulesManager');
 class_alias('Ximdex\Runtime\App', 'App');
 App::setValue('XIMDEX_ROOT_PATH', dirname(dirname(__FILE__)));
 
-include_once(XIMDEX_ROOT_PATH . '/inc/db/DB_zero.class.php');
-
-
 
 // get Config from install file
 if ( file_exists( XIMDEX_ROOT_PATH . '/conf/install-params.conf.php' ) ) {

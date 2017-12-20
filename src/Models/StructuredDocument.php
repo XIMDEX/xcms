@@ -29,7 +29,7 @@ namespace Ximdex\Models;
 
 use Ximdex\Runtime\DataFactory;
 use Ximdex\Logger;
-use DB;
+use Ximdex\Runtime\Db;
 use Ximdex\Models\ORM\StructuredDocumentsOrm;
 use Ximdex\Parsers\ParsingDependencies;
 
@@ -61,7 +61,7 @@ class StructuredDocument extends StructuredDocumentsOrm
 	function GetAllStructuredDocuments()
 	{
 		$sql = "SELECT idDoc FROM StructuredDocuments";
-		$dbObj = new DB();
+		$dbObj = new \Ximdex\Runtime\Db();
 		$dbObj->Query($sql);
 		if ($dbObj->numErr != 0) {
 			$this->SetError(1);
@@ -384,7 +384,7 @@ class StructuredDocument extends StructuredDocumentsOrm
 	{
 		$sqls = sprintf("INSERT INTO RelStrDocChannels (IdDoc, IdChannel)"
 			. " VALUES (%d, %d)", $this->get('IdDoc'), $IdChannel);
-		$dbObj = new DB();
+		$dbObj = new \Ximdex\Runtime\Db();
 		$dbObj->Execute($sqls);
 		if ($dbObj->numErr != 0) {
 			$this->SetError(1);
@@ -397,7 +397,7 @@ class StructuredDocument extends StructuredDocumentsOrm
 		$sql = sprintf("SELECT COUNT(*) as total FROM RelStrDocChannels"
 			. " WHERE IdDoc = %d"
 			. " AND IdChannel = %d", $this->get('IdDoc'), $idChannel);
-		$dbObj = new DB();
+		$dbObj = new \Ximdex\Runtime\Db();
 		$dbObj->Query($sql);
 		if ($dbObj->numErr != 0)
 			$this->SetError(1);
@@ -408,7 +408,7 @@ class StructuredDocument extends StructuredDocumentsOrm
 	{
 		$sql = sprintf("SELECT DISTINCT(IdChannel) FROM RelStrDocChannels" .
 			" WHERE IdDoc = %d", $this->get('IdDoc'));
-		$dbObj = new DB();
+		$dbObj = new \Ximdex\Runtime\Db();
 		$dbObj->Query($sql);
 		if ($dbObj->numErr != 0) {
 			$this->SetError(1);
@@ -427,7 +427,7 @@ class StructuredDocument extends StructuredDocumentsOrm
 	{
 		$sqls = sprintf("DELETE FROM RelStrDocChannels WHERE IdDoc = %d"
 			. " AND IdChannel = %d", $this->get('IdDoc'), $idChannel);
-		$dbObj = new DB();
+		$dbObj = new \Ximdex\Runtime\Db();
 		$dbObj->Execute($sqls);
 		if ($dbObj->numErr != 0) {
 			$this->SetError(1);
@@ -436,7 +436,7 @@ class StructuredDocument extends StructuredDocumentsOrm
 
 	function DeleteChannels()
 	{
-		$dbObj = new DB();
+		$dbObj = new \Ximdex\Runtime\Db();
 		$sqls = sprintf("DELETE FROM RelStrDocChannels WHERE IdDoc = %d", $this->get('IdDoc'));
 		$dbObj->Execute($sqls);
 		if ($dbObj->numErr != 0) {
@@ -468,7 +468,7 @@ class StructuredDocument extends StructuredDocumentsOrm
 
 		if ($this->get('IdDoc') > 0) {
 			if ($IdChannelList) foreach ($IdChannelList as $idChannel) {
-				$dbObj = new DB();
+				$dbObj = new \Ximdex\Runtime\Db();
 				$sql = sprintf("INSERT INTO RelStrDocChannels (IdDoc, IdChannel) "
 					. " VALUES (%d, %d)", $this->get('IdDoc'), $idChannel);
 				$dbObj->Execute($sql);
@@ -496,7 +496,7 @@ class StructuredDocument extends StructuredDocumentsOrm
 	{
 		parent::delete();
 		$sql = sprintf("DELETE FROM RelStrDocChannels WHERE idDoc = " . $this->get('IdDoc'));
-		$dbObj = new DB();
+		$dbObj = new \Ximdex\Runtime\Db();
 		$dbObj->Execute($sql);
 		if ($dbObj->numErr) {
 			$this->SetError(1);
@@ -509,7 +509,7 @@ class StructuredDocument extends StructuredDocumentsOrm
 	function GetLastVersion()
 	{
 		$sql = sprintf("select max(Version) as UltimaVersion from Versions where IdNode=%d", $this->get('IdDoc'));
-		$dbObj = new DB();
+		$dbObj = new \Ximdex\Runtime\Db();
 		$dbObj->Query($sql);
 		if ($dbObj->numErr != 0) {
 			$this->SetError(1);
@@ -529,7 +529,7 @@ class StructuredDocument extends StructuredDocumentsOrm
 
 		$sql = sprintf("select IdNodeDependent from Dependencies WHERE IdNodeMaster = %d and DepType='LINK'",
 			$this->get('IdDoc'));
-		$dbObj = new DB();
+		$dbObj = new \Ximdex\Runtime\Db();
 		$dbObj->Query($sql);
 		if ($dbObj->numErr != 0) {
 			$this->SetError(1);
@@ -559,7 +559,7 @@ class StructuredDocument extends StructuredDocumentsOrm
 
 		$sql = sprintf("SELECT IdNodeMaster FROM Dependencies"
 			. " WHERE IdNodeDependent= %d AND DepType='LINK' AND IdNodeMaster!= %d", $ximletID, $nodeID);
-		$dbObj = new DB();
+		$dbObj = new \Ximdex\Runtime\Db();
 		$dbObj->Query($sql);
 		if ($dbObj->numErr != 0) {
 			$this->SetError(1);

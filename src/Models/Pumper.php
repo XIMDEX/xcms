@@ -27,7 +27,7 @@
 
 namespace Ximdex\Models;
 
-use DB;
+use Ximdex\Runtime\Db;
 use ServerErrorByPumper;
 use ServerErrorManager;
 use SynchronizerStat;
@@ -108,7 +108,7 @@ class Pumper extends PumpersOrm
 
     function getPumpersInRegistry()
     {
-        $dbObj = new DB();
+        $dbObj = new \Ximdex\Runtime\Db();
         $pumpers = array();
         $sql = "SELECT PumperId FROM Pumpers WHERE State != 'Ended'";
         $dbObj->Query($sql);
@@ -137,7 +137,7 @@ class Pumper extends PumpersOrm
 
         $separador =  "=";
 
-        $dbObj = new DB();
+        $dbObj = new \Ximdex\Runtime\Db();
 
         $startCommand =  "php ".XIMDEX_ROOT_PATH.'/bootstrap.php '.PUMPERPHP_PATH . "/dexpumper." . $modo .
             " --pumperid" . $separador . "$pumperId --sleeptime" . $separador . "2 --maxvoidcycles" .

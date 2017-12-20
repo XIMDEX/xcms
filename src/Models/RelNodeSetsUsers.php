@@ -138,7 +138,7 @@ class RelNodeSetsUsers extends RelNodeSetsUsersOrm
     public function delete()
     {
         $ret = parent::delete();
-        //$db = new DB();
+        //$db = new \Ximdex\Runtime\Db();
         // $sql = 'alter table RelNodeSetsUsers auto_increment = 0';
         return $ret;
     }

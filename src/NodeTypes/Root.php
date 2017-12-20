@@ -91,7 +91,7 @@ class Root
         else if (is_numeric($node) || $node == null)
             $this->parent = new Node($node, false);
         $this->nodeID = $this->parent->get('IdNode');
-        $this->dbObj = new Db();
+        $this->dbObj = new \Ximdex\Runtime\Db();
         $this->nodeType = &$this->parent->nodeType;
         $this->messages = new \Ximdex\Utils\Messages();
     }
@@ -305,7 +305,7 @@ class Root
         // This method is overwritten in FileNode and FolderNode.
         $node = new Node($this->nodeID);
         $path = pathinfo($node->GetPath());
-        $db = new Db();
+        $db = new \Ximdex\Runtime\Db();
         $db->execute(sprintf("update Nodes set Path = '%s' where IdNode = %s", $path['dirname'], $this->nodeID));
     }
 
@@ -398,7 +398,7 @@ class Root
     function GetPublishedPath($channelID = NULL, $addNodeName)
     {
 
-        $db = new Db();
+        $db = new \Ximdex\Runtime\Db();
         $nodes = array();
         $query = sprintf("SELECT n.IdNode"
             . " FROM `FastTraverse` ft"

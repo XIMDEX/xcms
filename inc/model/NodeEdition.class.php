@@ -103,7 +103,7 @@ class NodeEdition extends NodeEdition_ORM {
 			return false;
 		}
 
- 		$dbObj = new DB();
+ 		$dbObj = new \Ximdex\Runtime\Db();
                 $sql = sprintf("DELETE FROM NodeEdition WHERE IdNode = %d AND IdUser = %s", $idNode, $idUser);
 		$dbObj->Execute($sql);
 
@@ -124,7 +124,7 @@ class NodeEdition extends NodeEdition_ORM {
 			return false;
 		}
 
- 		$dbObj = new DB();
+ 		$dbObj = new \Ximdex\Runtime\Db();
                 $sql = sprintf("DELETE FROM NodeEdition WHERE IdUser = %s", $idUser);
 		$dbObj->Execute($sql);
 

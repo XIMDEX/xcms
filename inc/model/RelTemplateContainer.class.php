@@ -75,7 +75,7 @@ class RelTemplateContainer extends RelTemplateContainer_ORM {
 
     function deleteRel($idContainer) {
 
-		$db = new DB();
+		$db = new \Ximdex\Runtime\Db();
                 $sql = "DELETE FROM RelTemplateContainer Where IdContainer=$idContainer";
 
                 $db->Execute($sql);
@@ -83,7 +83,7 @@ class RelTemplateContainer extends RelTemplateContainer_ORM {
 
 	function deleteRelByTemplate($idTemplate) {
 
-		$db = new DB();
+		$db = new \Ximdex\Runtime\Db();
 		$sql = "DELETE FROM RelTemplateContainer WHERE IdTemplate = $idTemplate";
 
                 $db->Execute($sql);

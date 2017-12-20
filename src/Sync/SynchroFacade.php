@@ -128,7 +128,7 @@ class SynchroFacade
 			$table = 'Synchronizer';
 		}
 
-		$dbObj = new Db();
+		$dbObj = new \Ximdex\Runtime\Db();
 		$sql = "DELETE FROM $table WHERE IdServer = $physicalServerID";
 		$dbObj->Execute($sql);
 

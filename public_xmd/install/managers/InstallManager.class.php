@@ -418,13 +418,13 @@ class InstallManager
 
     public function setLocale($lang)
     {
-        $db = new DB();
+        $db = new \Ximdex\Runtime\Db();
         $db->execute("UPDATE Locales SET Enabled='1' where Code = '$lang'");
     }
 
     public function insertXimdexUser($pass)
     {
-        $db = new DB();
+        $db = new \Ximdex\Runtime\Db();
         $db->execute("UPDATE Users SET Pass=MD5('$pass') where IdUser = '301'");
     }
 
@@ -451,7 +451,7 @@ class InstallManager
         exec('openssl enc -aes-128-cbc -k "' . $random . '" -P -md sha1', $res);
         $key = explode("=", $res[1])[1];
         $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length('AES-128-CBC'));
-        $db = new DB();
+        $db = new \Ximdex\Runtime\Db();
         $db->execute("UPDATE Config SET ConfigValue='" . $key . "' where ConfigKey='ApiKey'");
         $db->execute("UPDATE Config SET ConfigValue='" . $iv . "' where ConfigKey='ApiIV'");
     }

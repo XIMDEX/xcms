@@ -75,7 +75,7 @@ class RelFramesPortal extends RelFramesPortal_ORM {
 			return NULL;
 		}
 
-		$db = new DB();
+		$db = new \Ximdex\Runtime\Db();
 		$db->Query("SELECT n.VersionId FROM NodeFrames n, RelFramesPortal r WHERE r.IdPortalVersion = $idPortalVersion
 			AND n.NodeId = $nodeId AND r.IdFrame = n.IdNodeFrame");
 

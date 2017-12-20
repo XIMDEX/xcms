@@ -27,7 +27,7 @@
 
 namespace Ximdex\Models;
 
-use DB;
+use Ximdex\Runtime\Db;
 use ImageFile;
 use ModulesManager;
 use RelTagsDescriptions;
@@ -48,7 +48,7 @@ class RelTagsNodes extends RelTagsNodesOrm
 	function getTags($_id_node)
 	{
 		$this->ClearError();
-		$dbObj = new DB();
+		$dbObj = new \Ximdex\Runtime\Db();
 
 		$sql = sprintf("SELECT Tag, Name, n.idNamespace as Type, Link, Description, IdTagDescription FROM XimTAGSTags tag inner join Namespaces n on n.idNamespace=tag.idNamespace , RelTagsNodes rel, RelTagsDescriptions relD WHERE tag.IdTag = relD.Tag AND relD.IdTagDescription = rel.TagDesc AND Node = '%s'", $_id_node);
 

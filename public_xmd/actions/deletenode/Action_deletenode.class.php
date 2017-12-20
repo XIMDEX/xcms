@@ -54,7 +54,7 @@ class Action_deletenode extends ActionAbstract {
 
 		if($node->GetNodeType()== \Ximdex\Services\NodeType::XML_DOCUMENT){
 
-            $dbObj=new DB();
+            $dbObj=new \Ximdex\Runtime\Db();
             $query="select IdDoc from StructuredDocuments where TargetLink=".$idNode;
             $dbObj->Query($query);
 
@@ -279,7 +279,7 @@ class Action_deletenode extends ActionAbstract {
 
 				if ($node->nodeType->get('Name') == 'Channel') {
 					$sql = sprintf('delete from RelStrDocChannels where IdChannel = %s', $idNode);
-					$db = new DB();
+					$db = new \Ximdex\Runtime\Db();
 					$db->execute($sql);
 				}
 			}

@@ -87,7 +87,7 @@ class BaseIOInferer {
         $query .= "INNER JOIN NodeTypes nt on nac.NodeType = nt.IdNodeType ";
         $query .= "WHERE (nac.IdNodeType=$fatherNodeType $extraQuery)";
 
-        $db = new DB();
+        $db = new \Ximdex\Runtime\Db();
         $db->Query($query);
 
         if($db->numRows <= 0){
@@ -97,7 +97,7 @@ class BaseIOInferer {
             $query .= "WHERE (nac.IdNodeType=$fatherNodeType AND rntmt.extension='*')";
 
             //For
-            $db = new DB();
+            $db = new \Ximdex\Runtime\Db();
             $db->Query($query);
         }
 
@@ -133,7 +133,7 @@ class BaseIOInferer {
 					. " INNER JOIN RelNodeTypeMimeType rntmt on nac.NodeType = rntmt.IdNodeType"
 					. " INNER JOIN NodeTypes nt on nac.NodeType = nt.IdNodeType"
 					. " WHERE nac.IdNodeType = %s", $parent_type);
-		$db = new DB();
+		$db = new \Ximdex\Runtime\Db();
 		$db->Query($query);
 		$results = array();
 		if (is_file($path)) {

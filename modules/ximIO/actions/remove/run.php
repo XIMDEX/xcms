@@ -57,7 +57,7 @@ if ($delete != 'ONLY_DB') {
 if ($delete != 'ONLY_FILES') {
     echo _("Checking package in database...") . "\n";
 
-    $dbObj = new DB();
+    $dbObj = new \Ximdex\Runtime\Db();
     $query = sprintf("SELECT idXimIOExportation FROM XimIOExportations where timeStamp = %s", $dbObj->sqlEscapeString($file));
     $dbObj->Query($query);
     if (!($dbObj->numRows > 0)) {
@@ -132,7 +132,7 @@ if (isset($folder)) {
 }
 
 if (isset($idXimioExportation)) {
-    $dbObj = new DB();
+    $dbObj = new \Ximdex\Runtime\Db();
     $query = "DELETE FROM XimIOExportations WHERE idXimIOExportation = " . $dbObj->sqlEscapeString($idXimioExportation);
     $dbObj->Execute($query);
 
@@ -142,7 +142,7 @@ if (isset($idXimioExportation)) {
         $messages->add(_('Importation data could not been deleted from XimIOExportations'), MSG_TYPE_NOTICE);
     }
 
-    $dbObj = new DB();
+    $dbObj = new \Ximdex\Runtime\Db();
     $query = "DELETE FROM XimIONodeTranslations WHERE IdXimioExportation = " . $dbObj->sqlEscapeString($idXimioExportation);
     $dbObj->Execute($query);
 

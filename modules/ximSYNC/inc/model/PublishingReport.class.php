@@ -72,7 +72,7 @@ class PublishingReport extends PublishingReport_ORM {
     , $pubTime, $state, $progress, $fileName, $filePath, $idSync, $idBatch, $idParentServer) {
 
         if ($idSection != null && $idNode != null) {
-            $dbObj = new Db();
+            $dbObj = new \Ximdex\Runtime\Db();
             $sql = "SELECT * " .
                     "FROM PublishingReport " .
                     "WHERE IdNode = " . $idNode . //" AND IdSection=" . $idSection .
@@ -155,14 +155,14 @@ class PublishingReport extends PublishingReport_ORM {
         Logger::debug($query);
         Logger::debug(print_r($updateFields,1));
         Logger::debug(print_r($searchFields, 1));
-        $dbObj = new Db();
+        $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->execute($query);
 
         return null;
     }
 
     function getReports($params) {
-        $dbObj = new Db();
+        $dbObj = new \Ximdex\Runtime\Db();
         $sql = "SELECT * " .
                 "FROM PublishingReport pr INNER JOIN Nodes n on pr.IdNode = n.IdNode inner join
                  NodeTypes nt on n.IdNodeType = nt.IdNodeType ";

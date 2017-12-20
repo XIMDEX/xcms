@@ -201,7 +201,7 @@ class Module  {
         $result = false;
 
         if (file_exists($sql_file)) {
-            $db = new Db();
+            $db = new \Ximdex\Runtime\Db();
             $sql = file_get_contents($sql_file);
             $result = $db->ExecuteScript($sql);
             if ($result === false)

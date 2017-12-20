@@ -100,7 +100,7 @@ class SynchronizerStat extends SynchronizerStats_ORM
         parent::__construct($idStat);
 
         $stat = array();
-        $dbObj = new Db();
+        $dbObj = new \Ximdex\Runtime\Db();
         if ($stats['IdStat'] = $dbObj->GetValue("IdStat")) {
 
             $stats['BatchId'] = $dbObj->GetValue("BatchId");

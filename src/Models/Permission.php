@@ -60,7 +60,7 @@ class Permission extends PermissionsOrm
         $this->ClearError();
         $result = array();
         $sql = "SELECT IdPermission FROM Permissions";
-        $dbObj = new Db();
+        $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->Query($sql);
         if (!$dbObj->numErr) {
             while (!$dbObj->EOF) {
@@ -96,7 +96,7 @@ class Permission extends PermissionsOrm
     function SetByName($name)
     {
         $this->ClearError();
-        $dbObj = new Db();
+        $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->Query(sprintf("SELECT IdPermission FROM Permissions WHERE Name = %s", $dbObj->sqlEscapeString($name)));
         if ($dbObj->numRows) {
             $this->SetID($dbObj->GetValue("IdPermission"));
@@ -160,7 +160,7 @@ class Permission extends PermissionsOrm
     // Creates a new permit if this not exist in the database and loads its idPermission
     function CreateNewPermission($name, $pID = NULL)
     {
-        $dbObj = new Db();
+        $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->Query("SELECT IdPermission FROM Permissions WHERE Name = %s", $dbObj->sqlEscapeString($name));
         if (!$dbObj->numRows) {
             $this->set('Name', $name);

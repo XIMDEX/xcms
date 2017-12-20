@@ -44,8 +44,8 @@ class Db
      */
     static public function getInstance($conf = null)
     {
-        //return new  Db($conf);
-        return new   Db();
+        //return new  \Ximdex\Runtime\Db($conf);
+        return new   \Ximdex\Runtime\Db();
     }
 
     /**

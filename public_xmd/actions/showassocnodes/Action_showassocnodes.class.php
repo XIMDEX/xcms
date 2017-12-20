@@ -136,7 +136,7 @@ class Action_showassocnodes extends ActionAbstract {
 			$parentId,
 			self::SEARCHED_NODETYPE
 		);
-		$db = new DB();
+		$db = new \Ximdex\Runtime\Db();
 		$db->query($query);
 		$targets = array();
 

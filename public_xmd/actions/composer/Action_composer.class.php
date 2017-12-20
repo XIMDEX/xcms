@@ -119,7 +119,7 @@ and rug.idrole in (select idrole from RelRolesPermissions where IdPermission = 1
         if ($partial) {
             $sql .= sprintf(" LIMIT %d OFFSET %d", $to - $from + 1, $from);
         }
-        $db = new DB();
+        $db = new \Ximdex\Runtime\Db();
         $db->query($sql);
         $ret = $this->_echoNodeTree($idNode, App::getValue('displayEncoding'));
         if (($db->numRows > $items) && ($items != 0)) {
@@ -243,7 +243,7 @@ and rug.idrole in (select idrole from RelRolesPermissions where IdPermission = 1
         if ($partial) {
             $sql .= sprintf(" LIMIT %d OFFSET %d", $size, $offset);
         }
-        $db = new DB();
+        $db = new \Ximdex\Runtime\Db();
         $db->query($sql);
         $ret = $this->_echoNodeTree($idNode, App::getValue('displayEncoding'));
         if (($db->numRows > $items) && ($items != 0)) {
@@ -444,7 +444,7 @@ and rug.idrole in (select idrole from RelRolesPermissions where IdPermission = 1
         if ($partial) {
             $sql .= sprintf(" LIMIT %d OFFSET %d", $to - $from + 1, $from);
         }
-        $db = new DB();
+        $db = new \Ximdex\Runtime\Db();
         $db->query($sql);
         $queryToMatch = "/" . $find . "/i";
         $queryToMatch = str_replace(array(".", "_"), array('\.', "."), $queryToMatch);
@@ -921,7 +921,7 @@ and rug.idrole in (select idrole from RelRolesPermissions where IdPermission = 1
         $user = new User();
         $user->SetID($userID);
 
-        $dbObj = new DB();
+        $dbObj = new \Ximdex\Runtime\Db();
         $sql = "select IdNodeType, Name, Icon
 			from NodeTypes
 			where IdNodeType in (select IdNodeType from Nodes where IdParent >= 10000)

@@ -79,7 +79,7 @@ class FileUpdater
 
         $dependencesGetter = new ParsingDependencies();
 
-        $dbObj = new DB();
+        $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->Query($query);
         while (!$dbObj->EOF) {
             $idImportationNode = $dbObj->GetValue('IdImportationNode');
@@ -169,7 +169,7 @@ class FileUpdater
         $query = sprintf("SELECT IdImportationNode"
             . " FROM XimIONodeTranslations"
             . " WHERE IdExportationNode = %d", $idNode);
-        $tmpDbObj = new DB();
+        $tmpDbObj = new \Ximdex\Runtime\Db();
         $tmpDbObj->Query($query);
         $importationNode = $tmpDbObj->GetValue('IdImportationNode');
         unset($tmpDbObj);
@@ -225,7 +225,7 @@ class FileUpdater
         }
 
         if ($updateToPending) {
-            $dbObj = new DB();
+            $dbObj = new \Ximdex\Runtime\Db();
             $query = sprintf("UPDATE XimIONodeTranslations SET status = %d"
                 . " WHERE IdNodeTranslation = %d",
                 Constants::IMPORTED_STATUS_PENDING_LINKS,

@@ -103,7 +103,7 @@ class NodeEntity_Dir extends NodeEntity {
      */
     function & getCollection() {
     	
-    	$this->_db = new DB();
+    	$this->_db = new \Ximdex\Runtime\Db();
     	$db =& $this->_db;
     	$id = $this->get('idnode');
     	

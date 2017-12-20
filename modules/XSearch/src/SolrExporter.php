@@ -39,7 +39,7 @@ class SolrExporter implements Exporter
         $sql = "SELECT n.IdNode FROM FastTraverse f INNER JOIN Nodes n on f.IdChild = n.IdNode INNER JOIN NodeTypes nt ON nt.IdNodeType = n.IdNodeType WHERE f.IdNode in (%s) AND nt.IsPlainFile AND nt.IdNodeType NOT IN (%s)";
 
         $sql = sprintf($sql, implode(',', $XSIRIdNodes), implode(',', self::AVOIDED_NODETYPES));
-        $db = new DB();
+        $db = new \Ximdex\Runtime\Db();
         $db->query($sql);
 
         while (!$db->EOF) {

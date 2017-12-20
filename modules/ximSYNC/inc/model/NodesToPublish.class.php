@@ -80,7 +80,7 @@ class NodesToPublish extends NodesToPublish_ORM {
 		$docsToPublish = array();
 		$docsToPublishVersion = array();
 		$docsToPublishSubVersion = array();
-		$db = new Db();
+		$db = new \Ximdex\Runtime\Db();
 
 		// 1. Get older dateup in table
 		$sql_dateup = "select distinct DateUp, DateDown from NodesToPublish where State = 0 order by DateUp ASC limit 1";
@@ -150,7 +150,7 @@ class NodesToPublish extends NodesToPublish_ORM {
 	 *	Mark a chunk of nodes as processed (2) in database.
 	 */
 	static public function  setProcessed($chunk, $dateUp) {
-		$db = new Db();
+		$db = new \Ximdex\Runtime\Db();
 		$strNodes = implode (",", $chunk);
 		$sql = sprintf("Update NodesToPublish set State = 2 where IdNode in (%s) and DateUp = %s", $strNodes, $dateUp);
 		$db->Query($sql);
@@ -158,7 +158,7 @@ class NodesToPublish extends NodesToPublish_ORM {
 
 
 	public function getIntervals($idNode){
-		$dbObj = new Db();
+		$dbObj = new \Ximdex\Runtime\Db();
 		$arrayDates = array();
 		$gaps = array();
 		$now = time();

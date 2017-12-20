@@ -171,7 +171,7 @@ class Action_modifyserver extends ActionAbstract {
 				$serverID = null;
 			} else {
 
-				$dbObj = new DB();
+				$dbObj = new \Ximdex\Runtime\Db();
 				$sql = "SELECT IdProtocol FROM Protocols WHERE IdProtocol='".$protocol."'";
 				$dbObj->Query($sql);
 				if($dbObj->numRows) {
@@ -315,7 +315,7 @@ class Action_modifyserver extends ActionAbstract {
 	}
 
 	private function _getEncodes() {
-		$dbObj = new DB();
+		$dbObj = new \Ximdex\Runtime\Db();
 		$sql = "SELECT IdEncode,Description FROM Encodes";
 		$dbObj->Query($sql);
 		$_protocols = array();
@@ -331,7 +331,7 @@ class Action_modifyserver extends ActionAbstract {
 	}
 
 	private function _getProtocols() {
-		$dbObj = new DB();
+		$dbObj = new \Ximdex\Runtime\Db();
 		$sql = "SELECT IdProtocol,Description FROM Protocols";
 		$dbObj->Query($sql);
 		$_protocols = array();

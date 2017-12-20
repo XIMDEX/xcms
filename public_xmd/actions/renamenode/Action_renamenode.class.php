@@ -214,7 +214,7 @@ class Action_renamenode extends ActionAbstract
         }
 
         if ($idPipeline != $oldIdPipeline) {
-            $db = new Db();
+            $db = new \Ximdex\Runtime\Db();
             $query = sprintf("SELECT IdChild FROM FastTraverse WHERE IdNode = %s", $idNode);
             $db->Query($query);
 

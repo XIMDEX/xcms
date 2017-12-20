@@ -64,7 +64,7 @@ class Action_manageversions extends ActionAbstract
             }
         }
 
-        $dbObj = new Db();
+        $dbObj = new \Ximdex\Runtime\Db();
         $query = sprintf("SELECT v.IdVersion, v.Version, v.SubVersion,"
             . " v.Date, v.Comment, u.Name"
             . " FROM Versions v INNER JOIN Users u USING (IdUser)"

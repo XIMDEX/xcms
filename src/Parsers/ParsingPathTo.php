@@ -303,7 +303,7 @@ class ParsingPathTo
 					({$nodetypeCondition})AND
 					{$nodePathCondition} AND
 					{$fastTraverseCondition} ORDER BY LENGTH(n.path)";
-        $dbObj = new Db();
+        $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->query($sql);
         if ($dbObj->numErr != 0) {
             return false;

@@ -86,7 +86,7 @@ class QueryHandler_SQLTREE extends QueryHandler_SQL {
 		$pages = ceil($records / $options['items']);
 		$offset = ($options['page'] - 1) * $options['items'];
 
-		$rset = new DB();
+		$rset = new \Ximdex\Runtime\Db();
 		$rset->query($query);
 		$rset = $this->recordsetToArray($rset);
 

@@ -26,7 +26,7 @@
 
 namespace Ximdex\Models;
 
-use DB;
+ use Ximdex\Runtime\Db;
  use Ximdex\Models\ORM\LanguagesOrm;
 
 class Language extends LanguagesOrm
@@ -70,7 +70,7 @@ class Language extends LanguagesOrm
 	{
 		$validDirs = array('ASC', 'DESC');
 		$this->ClearError();
-		$dbObj = new DB();
+		$dbObj = new \Ximdex\Runtime\Db();
 		$sql = "SELECT IdLanguage FROM Languages";
 		if (!empty($order) && is_array($order) && isset($order['FIELD'])) {
 			$sql .= sprintf(" ORDER BY %s %s", $order['FIELD'],
@@ -195,7 +195,7 @@ class Language extends LanguagesOrm
 	function SetByName($name)
 	{
 		$this->ClearError();
-		$dbObj = new DB();
+		$dbObj = new \Ximdex\Runtime\Db();
 		$query = sprintf("SELECT IdLanguage FROM Languages WHERE Name = %s", $dbObj->sqlEscapeString($name));
 		$dbObj->Query($query);
 		if ($dbObj->numRows)
@@ -208,7 +208,7 @@ class Language extends LanguagesOrm
 	function SetByIsoName($isoName)
 	{
 		$this->ClearError();
-		$dbObj = new DB();
+		$dbObj = new \Ximdex\Runtime\Db();
 		$query = sprintf("SELECT IdLanguage FROM Languages WHERE IsoName = %s", $dbObj->sqlEscapeString($isoName));
 		$dbObj->Query($query);
 		if ($dbObj->numRows) {
@@ -246,7 +246,7 @@ class Language extends LanguagesOrm
 	function DeleteLanguage()
 	{
 		$this->ClearError();
-		$dbObj = new DB();
+		$dbObj = new \Ximdex\Runtime\Db();
 		if (!is_null($this->get('IdLanguage'))) {
 			// Deleting from database
 			$dbObj->Execute(sprintf("DELETE FROM Languages WHERE IdLanguage= %d", $this->get('IdLanguage')));
@@ -260,7 +260,7 @@ class Language extends LanguagesOrm
 	{
 		$this->ClearError();
 		$sql = sprintf("select count(*) AS total from StructuredDocuments where IdLanguage = %d", $this->get('IdLanguage'));
-		$dbObj = new DB();
+		$dbObj = new \Ximdex\Runtime\Db();
 		$dbObj->Query($sql);
 		if ($dbObj->numErr)
 			$this->SetError(4);
@@ -274,7 +274,7 @@ class Language extends LanguagesOrm
 
 	function DocumentsWithLanguage($idlang)
 	{
-		$dbObj = new DB();
+		$dbObj = new \Ximdex\Runtime\Db();
 		$query = sprintf("SELECT IdDoc FROM StructuredDocuments WHERE IdLanguage = %d", $idlang);
 
 		$dbObj->Query($query);
@@ -295,7 +295,7 @@ class Language extends LanguagesOrm
 	function LanguageEnabled($idlang)
 	{
 
-		$dbObj = new DB();
+		$dbObj = new \Ximdex\Runtime\Db();
 		$query = sprintf("SELECT Enabled FROM Languages WHERE IdLanguage = %d", $idlang);
 		$dbObj->Query($query);
 		if ($dbObj->numErr != 0) {

@@ -112,7 +112,7 @@ class RelNodeSetsNode extends RelNodeSetsNodeOrm
     public function delete()
     {
         $ret = parent::delete();
-        // $db = new DB();
+        // $db = new \Ximdex\Runtime\Db();
         // $sql = 'alter table RelNodeSetsNode auto_increment = 0';
         return $ret;
     }

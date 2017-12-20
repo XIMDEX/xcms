@@ -68,7 +68,7 @@ class NodeSets extends NodeSetsOrm
      */
     public function getItems()
     {
-        $db = new Db();
+        $db = new \Ximdex\Runtime\Db();
         $db->query(sprintf('select count(1) as total from RelNodeSetsNode where IdSet = %s', $this->getId()));
         return $db->getValue('total');
     }
@@ -91,7 +91,7 @@ class NodeSets extends NodeSetsOrm
     public function delete()
     {
 
-        $db = new Db();
+        $db = new \Ximdex\Runtime\Db();
 
         $sql = sprintf('delete from RelNodeSetsNode where IdSet = %s', $this->getId());
         $db->execute($sql);

@@ -78,7 +78,7 @@ class Synchronizer
     /// Construct
     function __construct($nodeID = null)
     {
-        $this->dbObj = new Db();
+        $this->dbObj = new \Ximdex\Runtime\Db();
         if (!is_null($nodeID))
             $this->SetID($nodeID);
         $this->errorList[1] = _('The node does not exist');
@@ -320,7 +320,7 @@ class Synchronizer
                         if ($state == 'In') {
                             Logger::info("Don't delete serverFrame $frameID - settig Due2Out for unpublish");
 
-                            $dbUp = new Db();
+                            $dbUp = new \Ximdex\Runtime\Db();
                             $sql = "UPDATE Synchronizer SET State = 'Due2Out' WHERE IdSync = $frameID";
                             $dbUp->Execute($sql);
 
@@ -959,7 +959,7 @@ class Synchronizer
 
     function IsPublished()
     {
-        $dbObj = new Db();
+        $dbObj = new \Ximdex\Runtime\Db();
 
         $sql = "SELECT IdSync FROM Synchronizer WHERE IdNode=" . $this->nodeID . " AND STATE = 'DUE'";
 
@@ -1334,7 +1334,7 @@ class Synchronizer
 
         $this->dbObj->Query($sql);
         Logger::info("[SQL: " . $sql . " -> " . $this->dbObj->numRows);
-        $dbObj = new Db();
+        $dbObj = new \Ximdex\Runtime\Db();
         $rawList = array();
         $list = array();
         $servers = array();
@@ -1601,7 +1601,7 @@ class Synchronizer
 
                 if ($islinked == 0) {
                     $idSync = $this->dbObj->GetValue("IdSync");
-                    $db2 = new Db();
+                    $db2 = new \Ximdex\Runtime\Db();
                     if (!in_array($idSync, $rawList)) {
                         $sql = "UPDATE Synchronizer SET State='DUE', Linked=1 WHERE State='IN' AND IdSync=" . $idSync;
                         $counterline = $db2->Execute($sql);
@@ -1641,7 +1641,7 @@ class Synchronizer
             $idFrame = $this->dbObj->GetValue('IdSync');
             $this->DeleteSyncFile($idFrame);
             Logger::info("Deleting file sync/$idFrame");
-            $db = new Db();
+            $db = new \Ximdex\Runtime\Db();
             $db->Execute("DELETE FROM Synchronizer WHERE IdSync = $idFrame");
 
             $this->dbObj->Next();
@@ -1674,8 +1674,8 @@ class Synchronizer
             return false;
         }
 
-        $dbObjExe = new Db();
-        $dbObjDeps = new Db();
+        $dbObjExe = new \Ximdex\Runtime\Db();
+        $dbObjDeps = new \Ximdex\Runtime\Db();
 
         $columnsAllowed = array('IdNode', 'IdServer');
 
@@ -1753,7 +1753,7 @@ class Synchronizer
 
     function getPendingFrames($nodeID)
     {
-        $dbObj = new Db();
+        $dbObj = new \Ximdex\Runtime\Db();
         $frames = array();
 
         $sql = "SELECT IdSync FROM Synchronizer WHERE State = 'DUE' AND IdNode = $nodeID";
@@ -1815,7 +1815,7 @@ class Synchronizer
         $sql .= " AND IdNode = $nodeid ";
         $sql .= " AND (DateDown > $now OR DateDown IS NULL) AND State = 'In' ";
 
-        $dbObj = new Db();
+        $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->Query($sql);
         $path = $dbObj->GetValue("RemotePath");
         $filename = $dbObj->GetValue("FileName");

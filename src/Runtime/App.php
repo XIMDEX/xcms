@@ -117,7 +117,7 @@ Class App
      * @return \PDO|null
      * @throws \Exception
      */
-    public static function Db($conf = null)
+    public static function db($conf = null)
     {
         if (is_null($conf)) {
             $conf = self::getInstance()->getValue('default.db', 'db');

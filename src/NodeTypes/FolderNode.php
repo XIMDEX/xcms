@@ -27,7 +27,7 @@
 namespace Ximdex\NodeTypes;
 
 use baseIO;
-use DB;
+use Ximdex\Runtime\Db;
 use Ximdex\Models\Node;
 use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
@@ -150,7 +150,7 @@ class FolderNode extends Root
         $node = new Node($this->nodeID);
         $path = pathinfo($node->GetPath());
         if(isset($path['dirname'])) {
-            $db = new DB();
+            $db = new \Ximdex\Runtime\Db();
             $db->execute(sprintf("update Nodes set Path = '%s' where IdNode = %s", $path['dirname'], $this->nodeID));
         }
 
@@ -382,13 +382,13 @@ class FolderNode extends Root
 
                         //setting the type of schema
                         $sql = "INSERT INTO NodeProperties VALUES (NULL,$rngId,'SchemaType','metadata_schema')";
-                        $dbObj = new DB();
+                        $dbObj = new \Ximdex\Runtime\Db();
                         if (!$dbObj->Execute($sql)) {
                             error_log("Fail! Default metadata RNG " . $entry . " couldn't be modified!");
                         }
                         //forbidding rng deletion
                         $sql = "INSERT INTO NoActionsInNode VALUES ($rngId,7318)";
-                        $dbObj = new DB();
+                        $dbObj = new \Ximdex\Runtime\Db();
                         if (!$dbObj->Execute($sql)) {
                             error_log("Fail! Default metadata RNG " . $entry . " could be deleted!");
                         }

@@ -48,7 +48,7 @@ class xsltnode extends FileNode
         else if (is_numeric($node) || $node == null)
             $this->parent = new Node($node, false);
         $this->nodeID = $this->parent->get('IdNode');
-        $this->dbObj = new DB();
+        $this->dbObj = new \Ximdex\Runtime\Db();
         $this->nodeType = &$this->parent->nodeType;
         $this->messages = new \Ximdex\Utils\Messages();
         $this->xsltOldName = $this->parent->get("Name");

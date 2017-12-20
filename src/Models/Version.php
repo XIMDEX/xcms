@@ -27,7 +27,7 @@
 
 namespace Ximdex\Models;
 
-use DB;
+use Ximdex\Runtime\Db;
 use Ximdex\Models\ORM\VersionsOrm;
 
 
@@ -44,7 +44,7 @@ class Version extends VersionsOrm
                 . \Ximdex\Services\NodeType::METADATA_CONTAINER . "," . \Ximdex\Services\NodeType::METADATA_SECTION . "," 
                 . \Ximdex\Services\NodeType::METADATA_DOCUMENT . ") group by n.IdNode Order by IdVersion desc, path desc,
                     Subversion desc, max(Date)  LIMIT 10";
-        $dbObj = new DB();
+        $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->Query($query);
         $i = 0;
         $res = array();

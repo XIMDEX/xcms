@@ -48,7 +48,7 @@ class ExportXml {
 	 * @return ExportXml
 	 */
 	function __construct($nodeID) {
-		$this->dbObj = new DB();
+		$this->dbObj = new \Ximdex\Runtime\Db();
 		
 		$this->messages = new \Ximdex\Utils\Messages();
 		
@@ -154,7 +154,7 @@ class ExportXml {
 	 */
 	function getContentXml($recurrence, &$files) {
 		global $TOTAL_NODES;
-		$db = new DB();
+		$db = new \Ximdex\Runtime\Db();
 		$files = array();
 		reset($this->_arrNodeId);
 		while (list(, $idNode) = each($this->_arrNodeId)) {

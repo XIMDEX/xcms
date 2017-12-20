@@ -60,7 +60,7 @@ class NodeEntity {
 	 */
 	function NodeEntity($node=null) {
 
-		$this->_db = new DB();
+		$this->_db = new \Ximdex\Runtime\Db();
 
 		// Directorio temporal para los descriptores
 		$this->_tmpdir = XIMDEX_ROOT_PATH . App::getValue("TempRoot")."/descriptors";

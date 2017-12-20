@@ -47,7 +47,7 @@ class ServerErrorByPumper extends ServerErrorByPumper_ORM {
 
     function loadByPumper($pumperId = null){
 		if($pumperId){
-			$dbObj = new Db();
+			$dbObj = new \Ximdex\Runtime\Db();
 			$sql = "SELECT ErrorId FROM ServerErrorByPumper WHERE PumperId = $pumperId";
 			$dbObj->Query($sql);
 

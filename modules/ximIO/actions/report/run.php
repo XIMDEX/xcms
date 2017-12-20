@@ -42,7 +42,7 @@ $file = $parameterCollector->getParameter('--file');
 $nodeList = $parameterCollector->getParameter('--nodeList');
 $filterByStatus = $parameterCollector->getParameter('--filterByStatus');
 
-$dbObj = new DB();
+$dbObj = new \Ximdex\Runtime\Db();
 $query = sprintf("SELECT idXimIOExportation FROM XimIOExportations"
 		. " WHERE timeStamp = '%s'",
 		mysqli_real_escape_string($file));
@@ -67,7 +67,7 @@ $neededResults[' = -4']= _("%d nodes has not been successfully imported due to t
 
 reset($neededResults);
 while(list($condition, $message) = each($neededResults)) {
-	$dbObj = new DB();
+	$dbObj = new \Ximdex\Runtime\Db();
 	$query = sprintf("SELECT count(*) as total FROM XimIONodeTranslations xnt"
 			. " INNER JOIN XimIOExportations xe ON xnt.IdXimioExportation = xe.IdXimioExportation AND xe.timeStamp = %s"
 			. " WHERE xnt.status %s",
@@ -82,7 +82,7 @@ while(list($condition, $message) = each($neededResults)) {
 	unset($dbObj);
 }
 if ($nodeList == '1') {
-	$dbObj = new DB();
+	$dbObj = new \Ximdex\Runtime\Db();
 	$query = sprintf("SELECT IdExportationNode, status FROM XimIONodeTranslations xnt"
 			. " INNER JOIN XimIOExportations xe ON xnt.IdXimioExportation = xe.IdXimioExportation AND xe.timeStamp = %s", 
 			$dbObj->sqlEscapeString($file));

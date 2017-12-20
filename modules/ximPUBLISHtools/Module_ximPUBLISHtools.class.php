@@ -57,7 +57,7 @@ class Module_ximPUBLISHtools extends Module {
     // Due to recent lmd class removal, unique way to do this is via DB class
     function enable() {
         Logger::info("Module_ximPUBLISHtools enable");
-        $db = new DB();
+        $db = new \Ximdex\Runtime\Db();
         $sql = array();
 
         // Pub. Report
@@ -98,7 +98,7 @@ class Module_ximPUBLISHtools extends Module {
     // It's necessary to disable actions on this method, not on 'uninstall' method.
     // Due to recent lmd class removal, unique way to do this is via DB class
     function disable() {
-        $db = new DB();
+        $db = new \Ximdex\Runtime\Db();
         $sql = array();
         $relRolesActions = new RelRolesActions();
 

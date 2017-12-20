@@ -40,7 +40,7 @@ class NodeDependencies
      */
     public function __construct()
     {
-        $this->dbObj = new Db();
+        $this->dbObj = new \Ximdex\Runtime\Db();
     }
 
 

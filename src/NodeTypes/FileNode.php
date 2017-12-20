@@ -27,7 +27,7 @@
 namespace Ximdex\NodeTypes;
 
 use Ximdex\Runtime\DataFactory;
-use DB;
+use Ximdex\Runtime\Db;
 use DOMDocument;
 use Ximdex\Deps\DepsManager;
 use ModulesManager;
@@ -281,7 +281,7 @@ class FileNode extends Root
         $node = new Node($this->nodeID);
         $path = pathinfo($node->GetPath());
         if(isset($path['dirname'])) {
-            $db = new DB();
+            $db = new \Ximdex\Runtime\Db();
             $db->execute(sprintf("update Nodes set Path = '%s' where IdNode = %s", $path['dirname'], $this->nodeID));
         }
     }

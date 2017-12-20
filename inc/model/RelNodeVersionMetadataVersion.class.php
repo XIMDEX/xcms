@@ -43,7 +43,7 @@ class RelNodeVersionMetadataVersion extends RelNodeVersionMetadataVersion_ORM
             $this->_table,
             $idNodeVersion
         );
-        $dbObj = new DB();
+        $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->Query($query);
 
         $idMetadataVersions = [];

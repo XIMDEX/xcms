@@ -101,7 +101,7 @@ class ximlinkResolver {
 		//$query = sprintf($query, $idprj);
 		Logger::debug($query);
 		$data = array();
-		$db = new DB();
+		$db = new \Ximdex\Runtime\Db();
 		$db->query($query);
 
 		while (!$db->EOF) {
@@ -168,7 +168,7 @@ class ximlinkResolver {
 				f.depth > 0 and
 				n.idnodetype = " . \Ximdex\Services\NodeType::LINK, $name, $idprj);
 
-		$db = new DB();
+		$db = new \Ximdex\Runtime\Db();
 		$db->query($query);
 
 		$idlink = $db->EOF ? false : $idlink = $db->getValue('IdNode');

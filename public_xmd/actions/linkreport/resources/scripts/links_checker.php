@@ -40,7 +40,7 @@ function main ($argc, $argv){
                 updateLinkState($idlink, $checkResult);
             }
         }else{
-            $dbObj = new Db();
+            $dbObj = new \Ximdex\Runtime\Db();
             $sql = "SELECT IdLink,Url FROM Links";
             $dbObj->Query($sql);
 
@@ -77,7 +77,7 @@ function checkLink($url,$idLink){
 }
 
 function updateLinkState($idLink, $errorString){
-    $dbObj = new Db();
+    $dbObj = new \Ximdex\Runtime\Db();
     $sql = "UPDATE Links SET ErrorString='$errorString',CheckTime=".time()." WHERE IdLink=$idLink";
     $dbObj->Execute($sql);
 }

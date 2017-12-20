@@ -27,7 +27,7 @@
 
 namespace Ximdex\NodeTypes;
 
-use DB;
+use Ximdex\Runtime\Db;
 use Ximdex\Models\NodeType;
 use Ximdex\Models\Server;
 use Ximdex\Sync\Synchronizer;
@@ -89,7 +89,7 @@ class ServerNode extends FolderNode
 	public static function getServersForPumping()
 	{
 
-		$dbObj = new DB();
+		$dbObj = new \Ximdex\Runtime\Db();
 		$sql = "SELECT IdServer FROM Servers WHERE Enabled = 1 AND ActiveForPumping = 1";
 		$dbObj->Query($sql);
 

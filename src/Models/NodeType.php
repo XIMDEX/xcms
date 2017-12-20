@@ -73,7 +73,7 @@ class NodeType extends NodeTypesOrm
     function GetConstructor()
     {
         $query = sprintf("SELECT IdAction FROM NodeConstructors WHERE IdNodeType = %d", $this->get('IdNodeType'));
-        $dbObj = new Db();
+        $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->Query($query);
         if ($dbObj->numRows == 1) return $dbObj->GetValue('IdAction');
         return 0;
@@ -128,7 +128,7 @@ class NodeType extends NodeTypesOrm
     {
         $salida = null;
         $sql = "SELECT idNodeType FROM NodeTypes";
-        $dbObj = new Db();
+        $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->Query($sql);
         if ($dbObj->numErr != 0) {
             $this->SetError(1);
@@ -175,7 +175,7 @@ class NodeType extends NodeTypesOrm
      */
     function SetByName($name)
     {
-        $dbObj = new Db();
+        $dbObj = new \Ximdex\Runtime\Db();
         $query = sprintf("SELECT IdNodeType FROM NodeTypes WHERE Name LIKE %s", $dbObj->sqlEscapeString($name));
         $dbObj->Query($query);
         if (!($dbObj->numRows > 0)) {
@@ -213,7 +213,7 @@ class NodeType extends NodeTypesOrm
      */
     function IsNodeType($name)
     {
-        $dbObj = new Db();
+        $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->Query("SELECT IdNodeType FROM NodeTypes WHERE Name = %s", $dbObj->sqlEscapeString($name));
         if ($dbObj->numRows == 0) {
             return false;
@@ -591,7 +591,7 @@ class NodeType extends NodeTypesOrm
     {
         $query = sprintf("SELECT COUNT(*) AS total FROM NodeAllowedContents"
             . " WHERE IdNodeType = %d AND NodeType = %d", $this->get('IdNodeType'), $nodeType);
-        $dbObj = new Db();
+        $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->Query($query);
         if ($dbObj->GetValue('total') > 0) {
             $sql = sprintf("UPDATE NodeAllowedContents SET Amount = %d"
@@ -601,7 +601,7 @@ class NodeType extends NodeTypesOrm
             $sql = sprintf("INSERT INTO NodeAllowedContents (IdNodeType,NodeType,Amount)"
                 . " VALUES (%d, %d, %d)", $this->get('IdNodeType'), $nodeType, $amount);
         }
-        $dbObj = new Db();
+        $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->Execute($sql);
         if ($dbObj->numErr != 0) {
             $this->SetError(1);
@@ -620,7 +620,7 @@ class NodeType extends NodeTypesOrm
         $sql = sprintf("DELETE FROM NodeAllowedContents "
             . " WHERE IdNodeType = "
             . " AND NodeType = ", $this->get('IdNodeType'), $nodeType);
-        $dbObj = new Db();
+        $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->Execute($sql);
         if ($dbObj->numErr != 0) {
             $this->SetError(1);
@@ -637,7 +637,7 @@ class NodeType extends NodeTypesOrm
     {
         $sql = sprintf("DELETE FROM NodeAllowedContents "
             . " WHERE IdNodeType = " . $this->get('IdNodeType'));
-        $dbObj = new Db();
+        $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->Execute($sql);
         $sal = $dbObj->numErr;
         if ($dbObj->numErr != 0) {
@@ -671,7 +671,7 @@ class NodeType extends NodeTypesOrm
      */
     function AddADefaultContent($nodeType, $name)
     {
-        $dbObj = new Db();
+        $dbObj = new \Ximdex\Runtime\Db();
         $sql = sprintf("INSERT INTO NodeDefaultContents (IdNodeType,NodeType,Name)" .
             " VALUES (%d, %d, %s)", $this->get('IdNodeType'), $nodeType, $dbObj->sqlEscapeString($name));
         $dbObj->Execute($sql);
@@ -690,7 +690,7 @@ class NodeType extends NodeTypesOrm
         $sql = sprintf("DELETE FROM NodeDefaultContents "
             . " WHERE IdNodeType = %d"
             . " AND NodeType = %d", $this->get('IdNodeType'), $nodeType);
-        $dbObj = new Db();
+        $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->Execute($sql);
         if ($dbObj->numErr != 0) {
             $this->SetError(1);
@@ -705,7 +705,7 @@ class NodeType extends NodeTypesOrm
     {
         $sql = sprintf("SELECT NodeType,Name FROM NodeDefaultContents" .
             " WHERE idNodeType = %d", $this->get('IdNodeType'));
-        $dbObj = new Db();
+        $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->Query($sql);
         if ($dbObj->numErr != 0) {
             $this->SetError(1);
@@ -730,7 +730,7 @@ class NodeType extends NodeTypesOrm
     {
         $sql = sprintf("DELETE FROM NodeDefaultContents " .
             " WHERE IdNodeType = %d", $this->get('IdNodeType'));
-        $dbObj = new Db();
+        $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->Execute($sql);
         if ($dbObj->numErr != 0) {
             $this->SetError(1);
@@ -755,7 +755,7 @@ class NodeType extends NodeTypesOrm
     function DeleteNodeType()
     {
         $sql = sprintf("DELETE FROM NodeAllowedContents WHERE idNodeType = %d", $this->get('IdNodeType'));
-        $dbObj = new Db();
+        $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->Execute($sql);
         $salida = $dbObj->numErr;
         if ($dbObj->numErr != 0) {
@@ -877,7 +877,7 @@ class NodeType extends NodeTypesOrm
 
         $returnObject = array();
         foreach ($nodeTypes as $idNodeType) {
-            $dbObj = new Db();
+            $dbObj = new \Ximdex\Runtime\Db();
             $query = sprintf("SELECT IdNodeType FROM NodeAllowedContents WHERE NodeType = %d", $idNodeType);
             $dbObj->Query($query);
             while (!$dbObj->EOF) {
@@ -891,7 +891,7 @@ class NodeType extends NodeTypesOrm
 
     public function getAllowedExtensions()
     {
-        $dbObj = new Db();
+        $dbObj = new \Ximdex\Runtime\Db();
         $sql = sprintf('SELECT rntmt.idRelNodeTypeMimeType as idRelNodeTypeMimeType,
             nt.Name as Name, nt.Description as Description, rntmt.extension as extension FROM
             NodeAllowedContents as nac INNER JOIN RelNodeTypeMimeType rntmt on

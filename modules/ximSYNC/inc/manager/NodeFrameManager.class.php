@@ -256,7 +256,7 @@ class NodeFrameManager {
 	 */
 
     function getNodeFramesInTime($nodeId, $up, $now) {
-		$dbObj = new Db();
+		$dbObj = new \Ximdex\Runtime\Db();
 
 		$sql = "SELECT IdNodeFrame, Active, if(TimeDown IS NULL, 1988146800, TimeDown) as TimeDown2 FROM NodeFrames
 			WHERE TimeUp < $now AND (TimeDown > $now OR TimeDown IS NULL) AND (IsProcessUp = 0 OR Active = 1)
@@ -290,7 +290,7 @@ class NodeFrameManager {
 
     function getNotProcessNodeFrames($batchId, $chunk, $batchType) {
 
-		$dbObj = new Db();
+		$dbObj = new \Ximdex\Runtime\Db();
 		$nodeFrame = new NodeFrame();
 
 		if ($batchType == 'Up') {
@@ -347,7 +347,7 @@ class NodeFrameManager {
 	*/
 
 	function getPendingNodeFrames($nodeID) {
-		$dbObj = new Db();
+		$dbObj = new \Ximdex\Runtime\Db();
 
 		$sql = "SELECT IdNodeFrame FROM NodeFrames WHERE NodeId = $nodeID AND IsProcessUp = 0 AND Active = 0";
 

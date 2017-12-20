@@ -38,7 +38,7 @@ class Action_modifyrolesstate extends ActionAbstract {
     			. " FROM Roles r"
     			. " INNER JOIN RelRolesStates rrs ON r.IdRole = rrs.IdRole AND rrs.IdState = %d", $idNode);
 
-    	$dbObj = new DB();
+    	$dbObj = new \Ximdex\Runtime\Db();
     	$dbObj->query($query);
     	$rolesStates = array();
 	$asociatedRoles=array();

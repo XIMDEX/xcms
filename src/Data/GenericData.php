@@ -134,7 +134,7 @@ class GenericData extends Overloadable
             $this->_fieldsToTraduce = array();
         }
         $id             = (int) $id;
-        $dbObj          = new Db();
+        $dbObj          = new \Ximdex\Runtime\Db();
         $this->messages = new Messages();
 
         $cache     = null;
@@ -233,7 +233,7 @@ class GenericData extends Overloadable
         if ($this->_checkDataIntegrity()) {
             $className = null;
 
-            $dbObj = new Db();
+            $dbObj = new \Ximdex\Runtime\Db();
             $dbObj->Execute($query);
             if ($dbObj->numErr > 0) {
                 $this->messages->add($dbObj->desErr[2], MSG_TYPE_ERROR);
@@ -481,7 +481,7 @@ class GenericData extends Overloadable
      */
     public function _getCondition($condition, $params, $escape)
     {
-        $dbObj = new Db();
+        $dbObj = new \Ximdex\Runtime\Db();
 
         if (is_null($params)) {
             $params = array();
@@ -516,7 +516,7 @@ class GenericData extends Overloadable
         // TODO check $fields Usage
         unset($fields);
         $this->_applyFilter('beforeFind');
-        $dbObj = new Db();
+        $dbObj = new \Ximdex\Runtime\Db();
 
         if ((DEBUG_LEVEL == LOG_LEVEL_ALL) || (DEBUG_LEVEL == LOG_LEVEL_QUERY)) {
             $this->_logQuery($query);
@@ -674,7 +674,7 @@ class GenericData extends Overloadable
         }
         $updatedRows = null;
         if ($this->_checkDataIntegrity()) {
-            $dbObj = new Db();
+            $dbObj = new \Ximdex\Runtime\Db();
             $dbObj->Execute($query);
             $updatedRows = $dbObj->numRows;
         }
@@ -698,7 +698,7 @@ class GenericData extends Overloadable
         if ($this->returnQuery) {
             return $query;
         }
-        $dbObj  = new Db();
+        $dbObj  = new \Ximdex\Runtime\Db();
         $result = $dbObj->Execute($query);
 
         $this->_applyFilter('afterDelete');
@@ -736,7 +736,7 @@ class GenericData extends Overloadable
             Logger::warning('No pre-filter applied for query: ' . $query);
         }
 
-        $dbObj = new Db();
+        $dbObj = new \Ximdex\Runtime\Db();
 
         if ((DEBUG_LEVEL == LOG_LEVEL_ALL) || (DEBUG_LEVEL == LOG_LEVEL_EXECUTE)) {
             $this->_logQuery($query);

@@ -90,7 +90,7 @@ class Module_Xowl extends Module
             printf("\nStoring your personal key ...\n");
 
             $sql = "UPDATE Config SET ConfigValue='" . $key . "' WHERE ConfigKey='EnricherKey'";
-            $db = new DB();
+            $db = new \Ximdex\Runtime\Db();
             $db->Execute($sql);
             printf("Key stored successfully!. Testing service conection ...\n\n");
 
@@ -144,7 +144,7 @@ class Module_Xowl extends Module
         if ($this->checkLMFPath($lmfUrl)) {
             $installationOk = true;
             $sql = "REPLACE INTO Config (ConfigKey, ConfigValue) VALUES ('LMF_url','{$lmfUrl}')";
-            $db = new DB();
+            $db = new \Ximdex\Runtime\Db();
             $db->Execute($sql);
             $result = true;
         } else {

@@ -194,7 +194,7 @@ class View_TARGZ extends Abstract_View implements Interface_View
     {
         $sql = "select IdVersion from Versions where IdNode = $idNode order by Version desc limit 1;";
 
-        $dbObj = new DB();
+        $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->Query($sql);
         while (!$dbObj->EOF) {
             $idVersion = $dbObj->GetValue("IdVersion");

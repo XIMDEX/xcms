@@ -183,7 +183,7 @@ class ServerFrame extends ServerFrames_ORM {
 
 	function getServers($mode = "simple") {
 
-		$dbObj = new Db();
+		$dbObj = new \Ximdex\Runtime\Db();
 		$extraSql = ($mode == "simple") ? "" : ", Servers.Description, Servers.Url";
 		$dbObj->Query(
 				"SELECT DISTINCT(ServerFrames.IdServer)" . $extraSql . " FROM ServerFrames, Servers
@@ -215,7 +215,7 @@ class ServerFrame extends ServerFrames_ORM {
 	*/
 
 	function getCurrentPublicatedFrame($nodeID, $serverID) {
-		$dbObj = new Db();
+		$dbObj = new \Ximdex\Runtime\Db();
 
 		$sql = "SELECT ServerFrames.IdSync FROM ServerFrames, NodeFrames WHERE ServerFrames.IdNodeFrame =
 			NodeFrames.IdNodeFrame AND NodeFrames.NodeId = $nodeID AND ServerFrames.IdServer = $serverID AND
@@ -241,7 +241,7 @@ class ServerFrame extends ServerFrames_ORM {
 	*/
 
 	function getFrameOnDate($nodeID, $time = null) {
-		$dbObj = new Db();
+		$dbObj = new \Ximdex\Runtime\Db();
 		if (!is_null($this->nodeID)) {
 			if (!$time) {
 				$time = time();
@@ -267,7 +267,7 @@ class ServerFrame extends ServerFrames_ORM {
 	*/
 
 	function getLastFrame($nodeID, $IdServer) {
-		$dbObj = new Db();
+		$dbObj = new \Ximdex\Runtime\Db();
 		if (!is_null($nodeID)) {
 			$sql = "SELECT ServerFrames.IdSync FROM ServerFrames, NodeFrames WHERE
 					ServerFrames.IdNodeFrame = NodeFrames.IdNodeFrame AND NodeFrames.IdNode = $nodeID AND
@@ -335,7 +335,7 @@ class ServerFrame extends ServerFrames_ORM {
             if (!(($nodoTypeContent == 'ImageFile') ||  ($nodoTypeContent == 'BinaryFile'))) {
 
                 //Looking for idEncode for this server
-                $db = new Db();
+                $db = new \Ximdex\Runtime\Db();
                 $sql = "SELECT idEncode FROM Servers WHERE IdServer=" . $server;
                 $db->Query($sql);
                 $encodingServer = $db->GetValue("idEncode");
@@ -400,7 +400,7 @@ class ServerFrame extends ServerFrames_ORM {
 
 	function getFramesOnBatch($batchId, $batchColumn, $mode = "simple", & $progress = array(), $limitCriteria = null) {
 
-		$dbObj = new Db();
+		$dbObj = new \Ximdex\Runtime\Db();
 		$sql = "SELECT ServerFrames.IdSync" . (($mode == 'simple') ? '' : ', ServerFrames.DateUp, ServerFrames.DateDown, ' .
 				 'ServerFrames.FileSize, ServerFrames.State, ServerFrames.FileName, ServerFrames.PumperId, ServerFrames.IdServer, ServerFrames.RemotePath') .
 				 " FROM ServerFrames, Batchs WHERE ServerFrames.IdBatchUp = Batchs.IdBatch AND Batchs.$batchColumn = $batchId";
@@ -538,7 +538,7 @@ class ServerFrame extends ServerFrames_ORM {
 	*/
 
 	function getUncompletedTasks($pumperID, $activeAndEnabledServers) {
-		$dbObj = new Db();
+		$dbObj = new \Ximdex\Runtime\Db();
 		$servers = implode(',', $activeAndEnabledServers);
 
 		$sql = "SELECT ServerFrames.IdSync FROM ServerFrames, Pumpers WHERE ServerFrames.PumperId = Pumpers.PumperId AND " .
@@ -562,7 +562,7 @@ class ServerFrame extends ServerFrames_ORM {
 		$sql = "UPDATE ServerFrames SET State = LEFT(State,LENGTH(State)-LENGTH('witherror'))
 				WHERE State IN ('Due2PumpedWithError','Due2OutWithError') WHERE PumperId = $pumperId";
 
-		$dbObj = new Db();
+		$dbObj = new \Ximdex\Runtime\Db();
 		$dbObj->Execute($sql);
 	}
 
@@ -610,7 +610,7 @@ class ServerFrame extends ServerFrames_ORM {
 
 		Logger::info("[GETCURRENT]: Getting current frame for node " . $nodeID);
 
-		$dbObj = new Db();
+		$dbObj = new \Ximdex\Runtime\Db();
 		$dbObj->Query($sql);
 
 		$result = ($dbObj->EOF) ? 'IdSync: none' : 'IdSync: ' . $dbObj->GetValue("IdSync");
@@ -638,7 +638,7 @@ where cf.nodeid=$nodeId ";
 
                 $sql .= $extraCondition;
 
-                $dbObj = new Db();
+                $dbObj = new \Ximdex\Runtime\Db();
                 $dbObj->Query($sql);
                 $list = array();
                 while (!$dbObj->EOF) {
@@ -669,7 +669,7 @@ where cf.nodeid=$nodeId ";
 		$sql .= " AND IdNodeFrame = $frameId ";
 		$sql .= " AND (DateDown > $now OR DateDown IS NULL) AND State = 'In'";
 
-		$dbObj = new Db();
+		$dbObj = new \Ximdex\Runtime\Db();
 		$dbObj->Query($sql);
 		$path = $dbObj->GetValue("RemotePath");
 		$filename = $dbObj->GetValue("FileName");
@@ -758,7 +758,7 @@ where cf.nodeid=$nodeId ";
 						 " AND sf.State IN ('In', 'Due2In_', 'Due2In', 'Due2Pumped', 'Pumped', 'Replaced', 'Removed')" .
 						 " WHERE s.IdServer IN (" . $physicalServersString . ") AND sf.IdSync IS NULL",
 						$idNodeFrame, $now, $now);
-		$dbObj = new Db();
+		$dbObj = new \Ximdex\Runtime\Db();
 		$dbObj->Query($sql);
 
 		return ($dbObj->EOF) ? true : false;
@@ -807,7 +807,7 @@ where cf.nodeid=$nodeId ";
 	}
 
 	function getPublicationQueue($idServer) {
-		$dbObj = new Db();
+		$dbObj = new \Ximdex\Runtime\Db();
 		$sql = "SELECT n.idnode, n.path,v.version, n.name, dateup, state, filesize,concat(v.`Version`,'.',v.`SubVersion`) FROM ServerFrames sf INNER JOIN NodeFrames nf using (idnodeframe) INNER JOIN Nodes n ON n.idnode=nf.nodeid INNER JOIN  Versions v ON v.Idnode=n.idnode INNER JOIN Servers s ON sf.IdServer=s.IdServer AND s.IdNode=$idServer where subversion=0  and state not in ('Removed','Replaced','Canceled') and Not exists (select idversion from Versions v2 where v2.idversion<> v.idversion and v.idnode=v2.idnode and v2.version>v.version) order by sf.idsync  DESC LIMIT 20";
 		$dbObj->Query($sql);
 		if ($dbObj->numRows > 0) {

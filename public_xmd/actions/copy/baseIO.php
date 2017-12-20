@@ -82,7 +82,7 @@ ModulesManager::file('/inc/FileUpdater.class.php', 'ximIO');
 		if ($destNode->nodeType->get('IdNodeType') == $sourceNode->nodeType->get('IdNodeType')) {
 			$processFirstNode = true;
 		} else {
-			$dbObj = new DB();
+			$dbObj = new \Ximdex\Runtime\Db();
 			$query = sprintf('SELECT Amount from NodeAllowedContents'
 				. ' WHERE IdNodeType = %s AND NodeType = %s',
 				$dbObj->sqlEscapeString($destNode->nodeType->get('IdNodeType')), 
@@ -116,7 +116,7 @@ ModulesManager::file('/inc/FileUpdater.class.php', 'ximIO');
 		unset($fileImport);
 
 		// 4.- Cleaning transform table to repeat the copy
-		$dbConn = new DB();
+		$dbConn = new \Ximdex\Runtime\Db();
 		
 		$query = sprintf("SELECT idXimIOExportation FROM XimIOExportations WHERE timeStamp = '%s'", Constants::REVISION_COPY);
 		$dbConn->Query($query);

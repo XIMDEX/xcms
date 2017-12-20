@@ -616,7 +616,7 @@ class DataFactory
             $this->SetError(5);
         }
 
-        $dbObj = new DB();
+        $dbObj = new \Ximdex\Runtime\Db();
 
         /// Ejecutamos la insercion en la BD
         $version = new Version();
@@ -751,7 +751,7 @@ class DataFactory
             FsUtils::delete($targetPath);
         }
 
-        $dbObj = new DB();
+        $dbObj = new \Ximdex\Runtime\Db();
         if (is_null($subVersion)) {
             $query = sprintf("DELETE FROM Versions WHERE IdVersion = %d AND IdNode = %d",
                 $versionID, $this->nodeID);
@@ -879,7 +879,7 @@ class DataFactory
         $parentId = $node->GetParent();
         unset($node);
 
-        $dbObj = new DB();
+        $dbObj = new \Ximdex\Runtime\Db();
 
         if (is_null($subVersion)) {
             $query = sprintf("SELECT File FROM Versions v"
@@ -925,7 +925,7 @@ class DataFactory
             return NULL;
         }
 
-        $dbObj = new DB();
+        $dbObj = new \Ximdex\Runtime\Db();
         if (is_null($subVersion)) {
             $query = sprintf("SELECT Comment FROM Versions WHERE IdVersion = %d AND IdNode = %d",
                 $versionID, $this->nodeID);
@@ -957,7 +957,7 @@ class DataFactory
             $this->SetError(1);
             return NULL;
         }
-        $dbObj = new DB();
+        $dbObj = new \Ximdex\Runtime\Db();
 
         if (is_null($subVersion)) {
             $query = sprintf("SELECT Date FROM Versions WHERE IdVersion = %d AND IdNode = %d",
@@ -991,7 +991,7 @@ class DataFactory
             return NULL;
         }
 
-        $dbObj = new DB();
+        $dbObj = new \Ximdex\Runtime\Db();
 
         if (is_null($subVersion)) {
             $query = sprintf("SELECT IdUser FROM Versions WHERE IdVersion = %d AND IdNode = %d",
@@ -1022,7 +1022,7 @@ class DataFactory
     function GetFiles()
     {
         $query = "SELECT File FROM Versions";
-        $dbObj = new DB();
+        $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->Query($query);
 
         if (!((int)$dbObj->numRows > 0)) {
@@ -1094,7 +1094,7 @@ class DataFactory
     */
     function GetPublishedIdVersion()
     {
-        $dbObj = new DB();
+        $dbObj = new \Ximdex\Runtime\Db();
         $this->ClearError();
         if ((int)$this->nodeID > 0) {
             $query = sprintf("SELECT MAX(IdVersion) AS max_version FROM Versions WHERE SubVersion = 0 AND IdNode = %d", $this->nodeID);
@@ -1137,7 +1137,7 @@ class DataFactory
     function GetLastVersionId()
     {
 
-        $dbObj = new DB();
+        $dbObj = new \Ximdex\Runtime\Db();
         $this->ClearError();
         if (!is_null($this->nodeID)) {
 
@@ -1152,7 +1152,7 @@ class DataFactory
     function GetVersionFromId($idVersion)
     {
 
-        $dbObj = new DB();
+        $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->Query("SELECT Version, SubVersion FROM Versions WHERE IdVersion = $idVersion");
 
         $version = array();

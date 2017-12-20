@@ -124,7 +124,7 @@ class ChannelProperty extends InheritableProperty {
 
 		// Nodes to unjoin from channels
 		$affectedNodes = array();
-		$db = new DB();
+		$db = new \Ximdex\Runtime\Db();
 		$db->query($sqlAffectedNodes);
 		while (!$db->EOF) {
 			$affectedNodes[] = $db->getValue('affectedNodes');
@@ -144,7 +144,7 @@ class ChannelProperty extends InheritableProperty {
 		$sql = 'delete from RelStrDocChannels where IdDoc in (%s) and IdChannel in (%s)';
 		$sql = sprintf($sql, implode(', ', $affectedNodes['nodes']), implode(', ', $affectedNodes['props']));
 
-		$db = new DB();
+		$db = new \Ximdex\Runtime\Db();
 		$db->execute($sql);
 		if ($db->numErr != 0) {
 	 		Logger::error($this->desErr);
@@ -168,7 +168,7 @@ class ChannelProperty extends InheritableProperty {
 
 		$nodes = 0;
 
-		$db = new DB();
+		$db = new \Ximdex\Runtime\Db();
 		$db->query($sql);
 		while (!$db->EOF) {
 

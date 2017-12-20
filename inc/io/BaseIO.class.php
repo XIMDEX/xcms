@@ -1056,7 +1056,7 @@ class BaseIO
                 }
                 if ($result) {
                     foreach ($channels as $channel) {
-                        $db = new DB();
+                        $db = new \Ximdex\Runtime\Db();
                         if (isset($channel['OPERATION']) && (strtoupper($channel['OPERATION']) ==
                                 'REMOVE')
                         ) {

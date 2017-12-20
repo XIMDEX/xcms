@@ -19,7 +19,7 @@
         {
             if ($idNode < 1)
                 return false;
-            $db = new Db();
+            $db = new \Ximdex\Runtime\Db();
             $sql = 'select ft.IdChild, ft.Depth';
             if ($nodeTypes)
                 $sql .= ', node.IdNodeType';
@@ -61,7 +61,7 @@
         {
             if ($idNode < 1)
                 return false;
-            $db = new Db();
+            $db = new \Ximdex\Runtime\Db();
             $sql = 'select IdNode, Depth from FastTraverse where IdChild = ' . $idNode;
             if ($db->Query($sql) === false)
                 return false;

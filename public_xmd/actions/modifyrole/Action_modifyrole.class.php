@@ -76,7 +76,7 @@ class Action_modifyrole extends ActionAbstract
         }
         
         $sql = 'select id, Pipeline from Pipelines where IdNode > 0 order by id asc limit 1';
-        $db = new DB();
+        $db = new \Ximdex\Runtime\Db();
         $db->query($sql);
 
         $pipelines = array($db->getValue('id') => $db->getValue('Pipeline'));

@@ -374,7 +374,7 @@ class PipeCache extends PipeCachesOrm
         if (!($this->get('id') > 0)) {
             return false;
         }
-        $db = new Db();
+        $db = new \Ximdex\Runtime\Db();
         /*
         The table named bellow doesn't appear in the database schema
         The only table that have the IdPipeCache field is PipePropertyValues

@@ -156,7 +156,7 @@ function getContainers($idNodeTypeArray) {
     reset($idNodeTypeArray);
     $returnObject = array();
     while (list (, $idNodeType) = each($idNodeTypeArray)) {
-        $dbObj = new DB();
+        $dbObj = new \Ximdex\Runtime\Db();
         $query = sprintf("SELECT IdNodeType FROM NodeAllowedContents WHERE NodeType = %d", $idNodeType);
         $dbObj->Query($query);
 

@@ -27,7 +27,7 @@
 
 namespace Ximdex\Models;
 
-use DB;
+use Ximdex\Runtime\Db;
 use I_PipeProcesses;
 use Ximdex\Logger;
 use Ximdex\Models\ORM\PipelinesOrm;
@@ -311,7 +311,7 @@ class Pipeline extends PipelinesOrm
         $nodeString = implode(', ', $nodes);
 
         $initialStatus = $this->getFirstStatus();
-        $db = new DB();
+        $db = new \Ximdex\Runtime\Db();
         $query = sprintf('UPDATE Nodes SET IdState = %s WHERE IdNode IN (%s)', $initialStatus, $nodeString);
         $db->Execute($query);
 

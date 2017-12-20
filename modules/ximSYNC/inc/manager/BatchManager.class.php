@@ -542,7 +542,7 @@ class BatchManager
         // NOTE: See setBatchsActiveOrEnded and getBatchToProcess
         // Ensure that batchs have frames or getBatchToProcess will return the same batch over and over
         $sql = "update Batchs set State = 'NoFrames' where idbatch not in (select distinct idbatchup from ServerFrames) and Batchs.State IN ('InTime','Closing')";
-        $db = new Db();
+        $db = new \Ximdex\Runtime\Db();
         if ($db->execute($sql) === false)
         	return false;
         
@@ -561,7 +561,7 @@ class BatchManager
     {
 
         $ended = array();
-        $dbObj = new Db();
+        $dbObj = new \Ximdex\Runtime\Db();
 
         // Ending batchs type UP
 
@@ -737,7 +737,7 @@ class BatchManager
             $batch->set('IdPortalVersion', $idPortalVersion);
             $batch->update();
 
-            $db = new Db();
+            $db = new \Ximdex\Runtime\Db();
             $res = $db->execute("UPDATE Batchs SET IdPortalVersion = IdPortalVersion + 1 WHERE State != 'Ended'
 				AND IdBatch > $idBatch");
             if (!$res)
@@ -769,7 +769,7 @@ class BatchManager
 
     function getBatchToProcess()
     {
-        $dbObj = new Db();
+        $dbObj = new \Ximdex\Runtime\Db();
         $sql = "SELECT IdBatch, Type, IdNodeGenerator, MajorCycle, MinorCycle, ServerFramesTotal FROM Batchs
 				WHERE Playing = 1 AND State = 'InTime' AND ServerFramesTotal > 0
 				ORDER BY Priority DESC, MajorCycle DESC, MinorCycle DESC, Type = 'Down' DESC LIMIT 1";
@@ -897,7 +897,7 @@ class BatchManager
     function checkBatchState($activeAndEnabledServers)
     {
 
-        $dbObj = new Db();
+        $dbObj = new \Ximdex\Runtime\Db();
         $batchType = $this->get('Type');
         $totalServerFrames = $this->get('ServerFramesTotal');
         $sucessServerFrames = $this->get('ServerFramesSucess');
@@ -938,7 +938,7 @@ class BatchManager
     {
 
         $batch = new Batch();
-        $dbObj = new Db();
+        $dbObj = new \Ximdex\Runtime\Db();
 
         $sql = "UPDATE Batchs set Playing = '$playingValue'";
 
@@ -1062,7 +1062,7 @@ class BatchManager
     function getAllBatchToProcess()
     {
 
-        $dbObj = new Db();
+        $dbObj = new \Ximdex\Runtime\Db();
         $sql = "SELECT IdBatch, Type, IdNodeGenerator, MajorCycle, MinorCycle, ServerFramesTotal FROM Batchs
 				WHERE Playing = 1 AND State = 'InTime' AND ServerFramesTotal > 0
 				ORDER BY Priority DESC, MajorCycle DESC, MinorCycle DESC, Type = 'Down'";

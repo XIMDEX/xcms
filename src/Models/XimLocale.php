@@ -26,7 +26,7 @@
  */
 
 namespace Ximdex\Models;
-use DB;
+use Ximdex\Runtime\Db;
 use Ximdex\Models\ORM\LocalesOrm;
 
 
@@ -72,7 +72,7 @@ class XimLocale extends LocalesOrm
 	{
 		$validDirs = array('ASC', 'DESC');
 		$this->ClearError();
-		$dbObj = new DB();
+		$dbObj = new \Ximdex\Runtime\Db();
 		$sql = "SELECT ID FROM Locales";
 		if (!empty($order) && is_array($order) && isset($order['FIELD'])) {
 			$sql .= sprintf(" ORDER BY %s %s", $order['FIELD'],
@@ -194,7 +194,7 @@ class XimLocale extends LocalesOrm
 	function SetByName($name)
 	{
 		$this->ClearError();
-		$dbObj = new DB();
+		$dbObj = new \Ximdex\Runtime\Db();
 		$query = sprintf("SELECT ID FROM Locales WHERE Name = %s", $dbObj->sqlEscapeString($name));
 		$dbObj->Query($query);
 		if ($dbObj->numRows)
@@ -229,7 +229,7 @@ class XimLocale extends LocalesOrm
 	function DeleteLanguage()
 	{
 		$this->ClearError();
-		$dbObj = new DB();
+		$dbObj = new \Ximdex\Runtime\Db();
 		if (!is_null($this->get('ID'))) {
 			// Lo borramos de la base de datos
 			$dbObj->Execute(sprintf("DELETE FROM Locales WHERE ID= %d", $this->get('ID')));
@@ -242,7 +242,7 @@ class XimLocale extends LocalesOrm
 	function LocaleEnabled($ID)
 	{
 
-		$dbObj = new DB();
+		$dbObj = new \Ximdex\Runtime\Db();
 		$query = sprintf("SELECT Enabled FROM Locales WHERE ID = %d", $ID);
 		$dbObj->Query($query);
 		if ($dbObj->numErr != 0) {

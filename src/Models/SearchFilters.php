@@ -90,7 +90,7 @@ class SearchFilters extends SearchFiltersOrm
         // TODO: Create a unique key in SearchFilters table.
         // Key length for Filter field must be specified....
         $checksum = md5(sprintf('%s:%s', $handler, $filter));
-        $db = new Db();
+        $db = new \Ximdex\Runtime\Db();
         $sql = sprintf("select Name from SearchFilters where md5(concat(Handler, ':', Filter)) = '%s'", $checksum);
         $db->query($sql);
 
@@ -113,7 +113,7 @@ class SearchFilters extends SearchFiltersOrm
      */
     public function delete()
     {
-        $db = new Db();
+        $db = new \Ximdex\Runtime\Db();
         $ret = parent::delete();
         $sql = sprintf('alter table %s auto_increment = 0', $this->_table);
         $db->execute($sql);

@@ -39,7 +39,7 @@ class FastTraverseManager extends InstallManager{
 		$this->deleteFastTraverse();
 		$node = new Node();
 		$results = $node->find("IdNode",'',array(), MONO);
-		$dbUpdate = new DB();
+		$dbUpdate = new \Ximdex\Runtime\Db();
 		foreach ($results as $i => $idNode) {
 			$node = new Node($idNode);
 			$node->updateFastTraverse(false);
@@ -58,7 +58,7 @@ class FastTraverseManager extends InstallManager{
 	 */
 	private function deleteFastTraverse(){
 		$sql = "DELETE FROM FastTraverse";
-		$db = new DB();
+		$db = new \Ximdex\Runtime\Db();
 		$db->Execute($sql);
 	}
 }

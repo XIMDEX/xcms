@@ -98,7 +98,7 @@ class QueryHandler_SQL extends QueryHandler_Abstract {
 			return array('records' => 0, 'items' => 0, 'page' => 1, 'data' => array());
 		}
 //debug::log($query);
-		$rset = new DB();
+		$rset = new \Ximdex\Runtime\Db();
 		$rset->query($query);
 		$rset = $this->recordsetToArray($rset);
 
@@ -117,7 +117,7 @@ class QueryHandler_SQL extends QueryHandler_Abstract {
 	public function count($query) {
 		$options = $this->getQueryOptions($query);
 		$query = $this->createQuery($options);
-		$rset = new DB();
+		$rset = new \Ximdex\Runtime\Db();
 		$countQuery = preg_replace('/^select\s(.+?)\sfrom/ims', 'select count(1) as records from', $query);
 		$countQuery = preg_replace('/\sorder\sby\s(.+?)$/ims', '', $countQuery);
 //debug::log($query, $countQuery);

@@ -77,7 +77,7 @@ class User extends UsersOrm
     {
         $this->ClearError();
         if ($this->get('IdUser') > 0) {
-            $dbObj = new Db();
+            $dbObj = new \Ximdex\Runtime\Db();
             $sql = sprintf("SELECT IdGroup FROM RelUsersGroups WHERE IdUser = %d", $this->get('IdUser'));
             $dbObj->Query($sql);
             if (!$dbObj->numErr) {
@@ -209,7 +209,7 @@ class User extends UsersOrm
     function setByLogin($login)
     {
         $this->ClearError();
-        $dbObj = new Db();
+        $dbObj = new \Ximdex\Runtime\Db();
         $query = sprintf("SELECT IdUser FROM Users WHERE Login = %s", $dbObj->sqlEscapeString($login));
         $dbObj->Query($query);
         if ($dbObj->numRows) {
@@ -329,7 +329,7 @@ class User extends UsersOrm
     {
         $this->ClearError();
         if ($this->get('IdUser') > 0) {
-            $dbObj = new Db();
+            $dbObj = new \Ximdex\Runtime\Db();
             $query = sprintf("SELECT IdUser FROM RelUsersGroups WHERE IdUser = %d AND IdGroup = %d", $this->get('IdUser'), $groupID);
             $dbObj->Query($query);
             if (!$dbObj->numErr) {
@@ -349,7 +349,7 @@ class User extends UsersOrm
     {
         $this->ClearError();
         if (!is_null($groupid)) {
-            $dbObj = new Db();
+            $dbObj = new \Ximdex\Runtime\Db();
             $query = sprintf("SELECT IdRole FROM RelUsersGroups WHERE IdUser = %d AND IdGroup = %d", $this->get('IdUser'), $groupid);
             $dbObj->Query($query);
             if ($dbObj->numRows > 0) {
@@ -363,7 +363,7 @@ class User extends UsersOrm
     {
         $this->ClearError();
         $query = sprintf("SELECT IdRole FROM RelUsersGroups WHERE IdUser = %d group by IdRole", $this->get('IdUser'));
-        $dbObj = new Db();
+        $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->Query($query);
         $roles = array();
         while (!$dbObj->EOF) {
@@ -378,7 +378,7 @@ class User extends UsersOrm
     {
         $this->ClearError();
         if ($this->get('IdUser') > 0) {
-            $dbObj = new Db();
+            $dbObj = new \Ximdex\Runtime\Db();
             $query = sprintf("SELECT Pass FROM Users WHERE IdUser = %d", $this->get('IdUser'));
             $dbObj->Query($query);
             if (!strcmp(md5($pass), $dbObj->GetValue("Pass"))) {

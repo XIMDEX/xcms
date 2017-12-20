@@ -308,7 +308,7 @@ class Action_browser3 extends ActionAbstract
     protected function checkNodeAction(&$nodes)
     {
 
-        $db = new DB();
+        $db = new \Ximdex\Runtime\Db();
         $sql = 'select count(1) as total from Actions a left join Nodes n using(IdNodeType) where IdNode = %s and a.Sort > 0';
         $sql2 = $sql . " AND a.Command='fileupload_common_multiple' ";
 
@@ -322,7 +322,7 @@ class Action_browser3 extends ActionAbstract
                 $node['hasActions'] = $total;
 
 
-                $db = new DB();
+                $db = new \Ximdex\Runtime\Db();
                 $sql2 = sprintf($sql2, $nodeid);
                 $db->query($sql2);
                 $total = $db->getValue('total');
@@ -1063,7 +1063,7 @@ class Action_browser3 extends ActionAbstract
 			where r.IdNode in (%s)
 			group by r.IdSet, s.Name
 			having c = %s';
-        $db = new DB();
+        $db = new \Ximdex\Runtime\Db();
         $db->query(sprintf($sql, implode(',', $nodes), count($nodes)));
 
         $data = array();

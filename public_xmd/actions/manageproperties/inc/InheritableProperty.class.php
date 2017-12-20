@@ -168,7 +168,7 @@ abstract class InheritableProperty {
 		if (count($propertiesToDelete) == 0) return;
 
 		$prop = $this->getPropertyName();
-		$db = new DB();
+		$db = new \Ximdex\Runtime\Db();
 
 		$sql = "select distinct(p.IdNode) as IdNode
 				from FastTraverse f  join NodeProperties p on f.idchild = p.idnode

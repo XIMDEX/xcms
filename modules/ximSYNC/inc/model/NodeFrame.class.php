@@ -85,7 +85,7 @@ class NodeFrame extends NodeFrames_ORM {
 	*	@return array
 	*/
     	function getFrames($idNdFr) {
-		$dbObj = new Db();
+		$dbObj = new \Ximdex\Runtime\Db();
 		$dbObj->Query("SELECT IdSync FROM ServerFrames WHERE IdNodeFrame = $idNdFr");
 
 		$frames = array();
@@ -104,7 +104,7 @@ class NodeFrame extends NodeFrames_ORM {
 	*/
 
     	function getGaps($nodeId) {
-		$dbObj = new Db();
+		$dbObj = new \Ximdex\Runtime\Db();
 		$arrayDates = array();
 		$gaps = array();
 		$now = time();
@@ -167,7 +167,7 @@ class NodeFrame extends NodeFrames_ORM {
 	*	@return array / NULL
 	*/
     	function getActiveNodeFrame($nodeId,$nodeFrId,$up,$down=null,$testTime = NULL) {
-		$dbObj = new Db();
+		$dbObj = new \Ximdex\Runtime\Db();
 
 		if (!$testTime) {
 			$now = time();

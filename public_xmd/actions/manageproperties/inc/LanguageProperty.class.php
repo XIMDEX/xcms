@@ -121,7 +121,7 @@ class LanguageProperty extends InheritableProperty {
 
 		// Language versions to delete
 		$affectedNodes = array();
-		$db = new DB();
+		$db = new \Ximdex\Runtime\Db();
 		$db->query($sqlAffectedNodes);
 		while (!$db->EOF) {
 			$affectedNodes[] = $db->getValue('affectedNodes');

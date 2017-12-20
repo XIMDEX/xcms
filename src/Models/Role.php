@@ -66,7 +66,7 @@ class Role extends RolesOrm
      */
     public static function GetByName($name)
     {
-        $dbObj = new Db();
+        $dbObj = new \Ximdex\Runtime\Db();
         $name = $dbObj->sqlEscapeString($name);
 
         if (empty($name))
@@ -88,7 +88,7 @@ class Role extends RolesOrm
     {
         $salida = array();
         $sql = "SELECT IdRole FROM Roles ORDER BY Name";
-        $dbObj = new Db();
+        $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->Query($sql);
         if ($dbObj->numErr != 0) {
             $this->SetError(1);
@@ -211,7 +211,7 @@ class Role extends RolesOrm
     // return int (status)
     function DeleteRole()
     {
-        $dbObj = new Db();
+        $dbObj = new \Ximdex\Runtime\Db();
         $sql = sprintf("DELETE FROM RelRolesActions WHERE idRol = %d", $this->get('IdRole'));
         $dbObj->Execute($sql);
         if ($dbObj->numErr) {
@@ -222,14 +222,14 @@ class Role extends RolesOrm
         $this->DeleteAllPermissions();
 
 
-        $dbObj = new Db();
+        $dbObj = new \Ximdex\Runtime\Db();
         $sql = sprintf("DELETE FROM RelUsersGroups WHERE idRol = %d", $this->get('IdRole'));
         $dbObj->Execute($sql);
         if ($dbObj->numErr) {
             $this->SetError(1);
         }
 
-        $dbObj = new Db();
+        $dbObj = new \Ximdex\Runtime\Db();
         $sql = sprintf("DELETE FROM RelGroupsNodes WHERE idRol = %d", $this->get('IdRole'));
         $dbObj->Execute($sql);
         if ($dbObj->numErr) {
@@ -252,7 +252,7 @@ class Role extends RolesOrm
      */
     function HasAction($actionID, $idState = null, $idPipeline = null)
     {
-        $dbObj = new Db();
+        $dbObj = new \Ximdex\Runtime\Db();
         $query = sprintf("SELECT IdAction FROM RelRolesActions WHERE IdRol = %d"
             . " AND IdAction = %d ", $this->get('IdRole'), $actionID);
 
@@ -278,7 +278,7 @@ class Role extends RolesOrm
     // return int (status)
     function AddAction($actionID, $stateID = null, $idPipeline)
     {
-        $dbObj = new Db();
+        $dbObj = new \Ximdex\Runtime\Db();
         $sql = sprintf("INSERT INTO RelRolesActions (IdRol,IdAction,IdState, IdPipeline)"
             . " VALUES (%s, %s, %s, %s)", $dbObj->sqlEscapeString($this->get('IdRole')), $dbObj->sqlEscapeString($actionID), $dbObj->sqlEscapeString($stateID), $dbObj->sqlEscapeString($idPipeline)
         );
@@ -300,7 +300,7 @@ class Role extends RolesOrm
         else
             $sql .= " AND ((IdState IS NULL) OR IdState = 0) ";
 
-        $dbObj = new Db();
+        $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->Query($sql);
         if ($dbObj->numErr != 0) {
             $this->SetError(1);
@@ -373,7 +373,7 @@ class Role extends RolesOrm
         $sql = sprintf("DELETE FROM RelRolesPermissions"
             . " WHERE IdRole = %d"
             . " AND IdPermission = %d", $this->get('IdRole'), $permissionID);
-        $dbObj = new Db();
+        $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->Execute($sql);
         if ($dbObj->numErr != 0) {
             $this->SetError(1);
@@ -387,7 +387,7 @@ class Role extends RolesOrm
         $sql = sprintf("DELETE FROM RelRolesPermissions" .
             " WHERE IdRole = %d", $this->get('IdRole'));
 
-        $dbObj = new Db();
+        $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->Execute($sql);
         if ($dbObj->numErr != 0) {
             $this->SetError(1);
@@ -401,7 +401,7 @@ class Role extends RolesOrm
         );
 
 
-        $dbObj = new Db();
+        $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->Execute($sql);
         if ($dbObj->numErr != 0) {
             $this->SetError(1);
@@ -420,7 +420,7 @@ class Role extends RolesOrm
     // return boolean (hasPermission)
     function HasState($transitionID)
     {
-        $dbObj = new Db();
+        $dbObj = new \Ximdex\Runtime\Db();
         $query = sprintf("SELECT IdRel FROM RelRolesStates WHERE IdRole = %d AND  IdState = %d", $this->get('IdRole'), $transitionID);
         $dbObj->Query($query);
         if ($dbObj->numErr)
@@ -433,7 +433,7 @@ class Role extends RolesOrm
     // return int (status)
     function AddState($transitionID)
     {
-        $dbObj = new Db();
+        $dbObj = new \Ximdex\Runtime\Db();
         $sql = sprintf("INSERT INTO RelRolesStates (IdRole,IdState)" .
             " VALUES (%d, %d)", $this->get('IdRole'), $transitionID);
         $dbObj->Execute($sql);
@@ -449,7 +449,7 @@ class Role extends RolesOrm
         $sql = sprintf("DELETE FROM RelRolesStates"
             . " WHERE IdRole = %d"
             . " AND IdState = %d", $this->get('IdRole'), $transitionID);
-        $dbObj = new Db();
+        $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->Execute($sql);
         if ($dbObj->numErr != 0) {
             $this->SetError(1);
@@ -462,7 +462,7 @@ class Role extends RolesOrm
     {
         $sql = sprintf("DELETE FROM RelRolesStates" .
             " WHERE IdRole = %d", $this->get('IdRole'));
-        $dbObj = new Db();
+        $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->Execute($sql);
         if ($dbObj->numErr != 0) {
             $this->SetError(1);
@@ -476,7 +476,7 @@ class Role extends RolesOrm
         $salida = NULL;
         $sql = sprintf("SELECT IdState FROM RelRolesStates"
             . " WHERE IdRole = %d", $this->get('IdRole'));
-        $dbObj = new Db();
+        $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->Query($sql);
         if ($dbObj->numErr != 0) {
             $this->SetError(1);
@@ -496,7 +496,7 @@ class Role extends RolesOrm
      */
     function getAllRolesForStatus($idStatus)
     {
-        $db = new Db();
+        $db = new \Ximdex\Runtime\Db();
         $query = sprintf("SELECT IdRole FROM RelRolesStates WHERE IdState = %d", $idStatus);
         $db->Query($query);
 
@@ -567,7 +567,7 @@ class Role extends RolesOrm
             return NULL;
         }
 
-        $dbObj = new Db();
+        $dbObj = new \Ximdex\Runtime\Db();
         $query = sprintf("SELECT IdState FROM RelRolesStates WHERE IdRole = %s AND IdState > 0", $dbObj->sqlEscapeString($this->get('IdRole')));
 
         $dbObj->Query($query);
@@ -588,7 +588,7 @@ class Role extends RolesOrm
     function getDemoRoleFromName($roleName)
     {
         $sql = "SELECT IdRole FROM Roles where Name like \"" . $roleName . "\"";
-        $dbObj = new Db();
+        $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->Query($sql);
         if ($dbObj->numErr != 0) {
             $this->SetError(1);
