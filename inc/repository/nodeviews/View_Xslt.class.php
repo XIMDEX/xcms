@@ -100,7 +100,7 @@ class View_Xslt extends Abstract_View
         $xsltHandler = new \Ximdex\XML\XSLT();
         if (!$xsltHandler->setXML($pointer))
         {
-            $error = 'The XML document has syntax errors (' . \Ximdex\Error::error_message('DOMDocument::load(): ') . ')';
+            $error = 'The XML document has syntax errors (' . \Ximdex\Utils\Messages::error_message('DOMDocument::load(): ') . ')';
             $GLOBALS['errorsInXslTransformation'][] = $error;
         }
         
@@ -109,7 +109,7 @@ class View_Xslt extends Abstract_View
         // load the docxap content
         $domDoc = new DOMDocument();
         if (@$domDoc->load($docxap) === false)
-            $GLOBALS['errorsInXslTransformation'][] = 'Invalid docxap.xsl file (' . \Ximdex\Error::error_message('DOMDocument::load(): ') . ')';
+            $GLOBALS['errorsInXslTransformation'][] = 'Invalid docxap.xsl file (' . \Ximdex\Utils\Messages::error_message('DOMDocument::load(): ') . ')';
         $docxapContent = $domDoc->saveXML();
         
         // include the correspondant includes_template.xsl for the current document

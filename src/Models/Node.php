@@ -958,7 +958,7 @@ class Node extends NodesOrm
                 if ($res === false)
                 {
                     Logger::error('Invalid XML for IdNode: ' . $node->GetID() . ' (' . $node->GetDescription() . ')');
-                    $error = \Ximdex\Error::error_message('DOMDocument::loadXML(): ');
+                    $error = \Ximdex\Utils\Messages::error_message('DOMDocument::loadXML(): ');
                     if ($error)
                     {
                         $error = 'Invalid XML content for node: ' . $node->GetID() . ' (' . $error . ')';
@@ -976,8 +976,8 @@ class Node extends NodesOrm
                     if ($res === false)
                     {
                         $errors = $rngValidator->getErrors();
-                        if (!$errors and \Ximdex\Error::error_message())
-                            $error = \Ximdex\Error::error_message('DOMDocument::relaxNGValidateSource(): ');
+                        if (!$errors and \Ximdex\Utils\Messages::error_message())
+                            $error = \Ximdex\Utils\Messages::error_message('DOMDocument::relaxNGValidateSource(): ');
                         else
                         {
                             //only will be shown the first error (more easy to read)

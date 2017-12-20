@@ -71,7 +71,7 @@ class XSLT
             {
                 if (@$this->xsl->load($xsl_file) === false)
                 {
-                    $error = 'Error loading file ' . $xsl_file . ' (' . \Ximdex\Error::error_message('DOMDocument::loadXML(): ') . ')';
+                    $error = 'Error loading file ' . $xsl_file . ' (' . \Ximdex\Utils\Messages::error_message('DOMDocument::loadXML(): ') . ')';
                     Logger::error($error);
                     $GLOBALS['errorsInXslTransformation'][] = $error;
                     return false;
@@ -82,7 +82,7 @@ class XSLT
         {
             if (@$this->xsl->loadXML($content) === false)
             {
-                $error = 'Loading XSL content (' . \Ximdex\Error::error_message('DOMDocument::loadXML(): ') . ')';
+                $error = 'Loading XSL content (' . \Ximdex\Utils\Messages::error_message('DOMDocument::loadXML(): ') . ')';
                 Logger::error($error);
                 $GLOBALS['errorsInXslTransformation'][] = $error;
                 return false;
@@ -97,7 +97,7 @@ class XSLT
         }
         if (@$this->xsltprocessor->importStyleSheet($this->xsl) === false) {
             
-            $error = \Ximdex\Error::error_message('XSLTProcessor::importStylesheet(): ');
+            $error = \Ximdex\Utils\Messages::error_message('XSLTProcessor::importStylesheet(): ');
             $GLOBALS['errorsInXslTransformation'][] = 'Error importing XSL stylesheet (' . $error . ')';
             return false;
         }
@@ -122,7 +122,7 @@ class XSLT
         $res = @$this->xsltprocessor->transformToXML($this->xml);
         if ($res === false)
         {
-            $error = 'Cannot transform the XML document: ' . \Ximdex\Error::error_message('XSLTProcessor::transformToXml(): ');
+            $error = 'Cannot transform the XML document: ' . \Ximdex\Utils\Messages::error_message('XSLTProcessor::transformToXml(): ');
             Logger::error($error);
             $this->errors[] = $error;
         }

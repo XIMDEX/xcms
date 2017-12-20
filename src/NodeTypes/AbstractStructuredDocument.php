@@ -196,7 +196,7 @@ abstract class AbstractStructuredDocument extends FileNode
             if ($res === false)
             {
                 Logger::error('Invalid XML for idNode: ' . $node->getIdNode());
-                $error = \Ximdex\Error::error_message('DOMDocument::loadXML(): ');
+                $error = \Ximdex\Utils\Messages::error_message('DOMDocument::loadXML(): ');
                 if ($error)
                 {
                     $this->messages->add($error, MSG_TYPE_WARNING);

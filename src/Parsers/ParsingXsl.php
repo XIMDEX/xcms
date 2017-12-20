@@ -142,8 +142,8 @@ class ParsingXsl
 		if (!$content)
 		{
 		    $error = 'setXpathObj error: empty XML content or another problem to get it';
-		    if (\Ximdex\Error::error_message())
-		        $error .= ' (' . \Ximdex\Error::error_message() . ')';
+		    if (\Ximdex\Utils\Messages::error_message())
+		        $error .= ' (' . \Ximdex\Utils\Messages::error_message() . ')';
 		    Logger::error($error);
 		    return false;
 		}
@@ -154,7 +154,7 @@ class ParsingXsl
 		$res = @$domDoc->loadXML($content);
 		if ($res === false)
 		{
-		    Logger::error('setXpathObj error: can\'t load XML content (' . \Ximdex\Error::error_message() . ')');
+		    Logger::error('setXpathObj error: can\'t load XML content (' . \Ximdex\Utils\Messages::error_message() . ')');
 		    return false;
 		}
 

@@ -51,7 +51,7 @@ class RNG {
         $result = @$domdoc->loadXML($xmldoc);
 
         if (!$result || strtoupper(get_class($domdoc)) != 'DOMDOCUMENT') {
-            $this->_errors[] = 'It\'s trying to validate a mal formed XML (' . \Ximdex\Error::error_message() . ')';
+            $this->_errors[] = 'It\'s trying to validate a mal formed XML (' . \Ximdex\Utils\Messages::error_message() . ')';
             return false;
         }
 

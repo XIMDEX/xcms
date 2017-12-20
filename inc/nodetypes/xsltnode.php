@@ -322,7 +322,7 @@ class xsltnode extends FileNode
             $dom->documentURI = XIMDEX_ROOT_PATH . App::getValue('NodeRoot') . $node->GetRelativePath($project->GetID());
             if (@$xsltprocessor->importStyleSheet($dom) === false)
             {
-                $error = \Ximdex\Error::error_message('XSLTProcessor::importStylesheet(): ');
+                $error = \Ximdex\Utils\Messages::error_message('XSLTProcessor::importStylesheet(): ');
                 
                 // avoid the PATH_TO_LOCAL_TEMPLATE_INCLUDE token error
                 if ($error and strpos($error, '##PATH_TO_LOCAL_TEMPLATE_INCLUDE##') === false)
