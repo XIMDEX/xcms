@@ -88,7 +88,7 @@ class Filter {
 	 */
 	function initObject() {
 		// Default init for specialized classes.
-		$this->config = new \Ximdex\Utils\AssociativeArray();
+		$this->config = new \Ximdex\Behaviours\AssociativeArray();
 	}
 
 	/**

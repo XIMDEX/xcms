@@ -27,7 +27,7 @@
 
 namespace Ximdex\Runtime;
 
-use Ximdex\Utils\AssociativeArray;
+use Ximdex\Behaviours\AssociativeArray;
 
 
 /**

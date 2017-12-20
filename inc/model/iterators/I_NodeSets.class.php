@@ -26,7 +26,7 @@
 
 
 
-class I_NodeSets extends \Ximdex\Utils\Iterator {
+class I_NodeSets extends \Ximdex\Behaviours\Iterator {
 
 	/**
 	 * @param string $condition

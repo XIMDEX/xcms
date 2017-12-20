@@ -34,6 +34,6 @@
  * Basic iterator for the PipeProperty object
  *
  */
-class I_PipeProperties extends  \Ximdex\Utils\Iterator {
+class I_PipeProperties extends  \Ximdex\Behaviours\Iterator {
 	var $_objectName = '\\Ximdex\\Models\\PipeProperty';
 }

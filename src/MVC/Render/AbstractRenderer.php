@@ -52,7 +52,7 @@ class AbstractRenderer
     var $_template;
 
     /**
-     * @var \Ximdex\Utils\AssociativeArray
+     * @var \Ximdex\Behaviours\AssociativeArray
      */
     var $_parameters;
 
@@ -66,7 +66,7 @@ class AbstractRenderer
 
         $this->displayEncoding = App::getValue('displayEncoding');
         $this->_template = $fileName;
-        $this->_parameters = new \Ximdex\Utils\AssociativeArray();
+        $this->_parameters = new \Ximdex\Behaviours\AssociativeArray();
     }
 
     /**

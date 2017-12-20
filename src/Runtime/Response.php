@@ -5,7 +5,7 @@ namespace Ximdex\Runtime;
 class Response
 {
     /**
-     * @var \Ximdex\Utils\AssociativeArray
+     * @var \Ximdex\Behaviours\AssociativeArray
      */
     private $_headers;
     /**
@@ -19,7 +19,7 @@ class Response
     function __construct()
     {
 
-        $this->_headers = new \Ximdex\Utils\AssociativeArray();
+        $this->_headers = new \Ximdex\Behaviours\AssociativeArray();
         ob_start();
         foreach ($_SERVER as $key => $value) {
             if (preg_match('/^HTTP_(.*)$/', $key)) {

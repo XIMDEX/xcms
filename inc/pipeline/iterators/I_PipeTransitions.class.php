@@ -35,7 +35,7 @@
  * the results in the sequence of the status stored in the database
  *
  */
-class I_PipeTransitions extends  \Ximdex\Utils\Iterator {
+class I_PipeTransitions extends  \Ximdex\Behaviours\Iterator {
 	var $_objectName = '\\Ximdex\\Models\\PipeTransition';
 	/**
 	 * Carga el iterador de la condicion dada y lo ordena por sus transiciones

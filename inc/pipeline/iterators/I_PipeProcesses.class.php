@@ -34,6 +34,6 @@
  * Basic iterator for the PipeProcess class
  *
  */
-class I_PipeProcesses extends  \Ximdex\Utils\Iterator {
+class I_PipeProcesses extends  \Ximdex\Behaviours\Iterator {
 	var $_objectName = '\\Ximdex\\Models\\PipeProcess';
 }

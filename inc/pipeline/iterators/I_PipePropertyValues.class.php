@@ -34,6 +34,6 @@ require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/PipePropertyValue.class.php');
  * Basic iterator for the PipePropertyValue object
  *
  */
-class I_PipePropertyValues extends  \Ximdex\Utils\Iterator {
+class I_PipePropertyValues extends  \Ximdex\Behaviours\Iterator {
 	var $_objectName = 'PipePropertyValue';
 }
