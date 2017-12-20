@@ -39,6 +39,8 @@ class Token {
      * <p>Default Token Time-To-Live in minutes</p>
      */
     const DEFAULT_TTL = 5;
+    const ALGO_AES_128_CBC = "aes-128-cbc";
+
 
     /**
      * <p>Default constructor</p>
@@ -46,6 +48,35 @@ class Token {
     public function __construct() {
 
     }
+
+    /**
+     * <p>Encrypts a text using the given key and iv (Initialization Vector) parameters
+     * @param string $plaintext the text to encrypt
+     * @param string $key the key to be used to encrypt
+     * @param string $iv the initialization vector to be used to encrypt
+     * @return string the encrypted text
+     */
+    protected static function encryptAES($plaintext, $key, $iv)
+    {
+        /*   Key and IV generated with the command
+         * openssl enc -aes-128-cbc -k "MY_SECRET_PHRASE" -P -md sha1
+         */
+        return \openssl_encrypt($plaintext, self::ALGO_AES_128_CBC, $key, 0, $iv);
+
+    }
+
+    /**
+     * <p>Decrypts the text using the given key and iv (Initialization Vector) parameters</p>
+     * @param string $encryptedtext the text to decrypt
+     * @param string $key the key to be used to decrypt
+     * @param string $iv the initialization vector to be used to decrypt
+     * @return string the decrypted text
+     */
+    protected static function decryptAES($encryptedtext, $key, $iv)
+    {
+        return \openssl_decrypt($encryptedtext, self::ALGO_AES_128_CBC, $key, 0, $iv);
+    }
+
 
     /**
      * <p>Generates a new token for the given user</p>
@@ -60,7 +91,7 @@ class Token {
 
         $token = array('user' => $user, 'created' => time(), 'validTo' => $validTo);
         $token = json_encode($token);
-        $token = base64_encode(Crypto::encryptAES($token, App::getValue( 'ApiKey'), App::getValue( 'ApiIV')));
+        $token = base64_encode(self::encryptAES($token, App::getValue( 'ApiKey'), App::getValue( 'ApiIV')));
         return $token;
     }
 
@@ -70,7 +101,7 @@ class Token {
      * @return boolean indicating whether the token is valid or not
      */
     public function validateToken($token) {
-        $decryptedToken = json_decode(Crypto::decryptAES(base64_decode($token), App::getValue( 'ApiKey'), App::getValue( 'ApiIV')), true);
+        $decryptedToken = json_decode(self::decryptAES(base64_decode($token), App::getValue( 'ApiKey'), App::getValue( 'ApiIV')), true);
 
         if ($decryptedToken == null)
             return false;
@@ -89,7 +120,7 @@ class Token {
      * @return array the decrypted token
      */
     public function decryptToken($token, $key, $iv) {
-        $decryptedToken = json_decode(Crypto::decryptAES(base64_decode($token), $key, $iv), true);
+        $decryptedToken = json_decode(self::decryptAES(base64_decode($token), $key, $iv), true);
         return $decryptedToken;
     }
 
