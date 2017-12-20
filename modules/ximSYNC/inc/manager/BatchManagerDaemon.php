@@ -37,7 +37,7 @@ use Ximdex\Models\Node;
 use Ximdex\Models\NodeType;
 use Ximdex\Runtime\App;
 use Ximdex\Runtime\DataFactory;
-use Ximdex\Utils\Sync\SynchroFacade;
+use Ximdex\Sync\SynchroFacade;
 
 include_once(XIMDEX_ROOT_PATH . '/modules/ximSYNC/inc/manager/BatchManager.class.php');
 include_once(XIMDEX_ROOT_PATH . '/modules/ximSYNC/inc/model/Batch.class.php');

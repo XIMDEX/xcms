@@ -35,7 +35,7 @@ use Ximdex\Models\User;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\DataFactory;
 use Ximdex\Utils\Serializer;
-use Ximdex\Utils\Sync\SynchroFacade;
+use Ximdex\Sync\SynchroFacade;
 use Ximdex\Workflow\WorkFlow;
 
 ModulesManager::file('/inc/mail/Mail.class.php');

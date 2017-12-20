@@ -1,6 +1,6 @@
 <?php
 use Ximdex\Models\Node;
-use Ximdex\Utils\Sync\Synchronizer;
+use Ximdex\Sync\Synchronizer;
 
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]

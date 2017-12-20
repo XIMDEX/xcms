@@ -25,7 +25,7 @@
  */
 
 
-namespace Ximdex\Utils\Sync;
+namespace Ximdex\Sync;
 
 class Mutex
 {

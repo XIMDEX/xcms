@@ -27,7 +27,7 @@
 
 use Ximdex\Helpers\ServerConfig;
 use Ximdex\Runtime\App;
-use Ximdex\Utils\Sync\Mutex;
+use Ximdex\Sync\Mutex;
 use Ximdex\Logger;
 
 ModulesManager::file('/inc/manager/NodeFrameManager.class.php', 'ximSYNC');

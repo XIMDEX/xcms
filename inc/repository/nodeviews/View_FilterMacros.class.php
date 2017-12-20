@@ -33,7 +33,7 @@ use Ximdex\Models\Server;
 use Ximdex\Models\Version;
 use Ximdex\Parsers\ParsingPathTo;
 use Ximdex\Runtime\App;
-use Ximdex\Utils\Sync\SynchroFacade;
+use Ximdex\Sync\SynchroFacade;
 
 ModulesManager::file('/inc/repository/nodeviews/Abstract_View.class.php');
 ModulesManager::file('/inc/repository/nodeviews/Interface_View.class.php');

@@ -28,7 +28,7 @@
 use Ximdex\Models\Node;
 use Ximdex\Models\NodeAllowedContent;
 use Ximdex\Runtime\App;
-use Ximdex\Utils\Sync\SynchroFacade;
+use Ximdex\Sync\SynchroFacade;
 
 ModulesManager::file('/actions/movenode/baseIO.php', 'APP');
 ModulesManager::file('/actions/copy/Action_copy.class.php', 'APP');

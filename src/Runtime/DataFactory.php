@@ -37,7 +37,7 @@ use Ximdex\Models\PipeCache;
 use Ximdex\Models\Version;
 use Ximdex\Utils\FsUtils;
 use Ximdex\Utils\PipelineManager;
-use Ximdex\Utils\Sync\SynchroFacade;
+use Ximdex\Sync\SynchroFacade;
 use Ximdex\Logger;
 
 

@@ -26,7 +26,7 @@
 
 use Ximdex\Models\Node;
 use Ximdex\MVC\ActionAbstract;
-use Ximdex\Utils\Sync\SynchroFacade;
+use Ximdex\Sync\SynchroFacade;
 
 class Action_publicatesection extends ActionAbstract
 {

@@ -30,7 +30,7 @@ namespace Ximdex\NodeTypes;
 use DB;
 use Ximdex\Models\NodeType;
 use Ximdex\Models\Server;
-use Ximdex\Utils\Sync\Synchronizer;
+use Ximdex\Sync\Synchronizer;
 use Ximdex\Models\Node;
 
 

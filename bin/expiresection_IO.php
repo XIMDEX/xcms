@@ -29,7 +29,7 @@ require_once dirname(__DIR__) . '/bootstrap.php';
 
 use Ximdex\Logger;
 use Ximdex\Models\Node;
-use Ximdex\Utils\Sync\Synchronizer;
+use Ximdex\Sync\Synchronizer;
 
 
 /// Array with call parameters 

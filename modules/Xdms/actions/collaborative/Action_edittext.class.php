@@ -32,7 +32,7 @@ use Ximdex\Models\StructuredDocument;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\App;
 use Ximdex\Runtime\DataFactory;
-use Ximdex\Utils\Sync\SyncManager;
+use Ximdex\Sync\SyncManager;
 
 
 class Action_edittext extends ActionAbstract

@@ -23,7 +23,7 @@
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
-namespace Ximdex\Utils\Sync;
+namespace Ximdex\Sync;
 
 use Ximdex\Runtime\App;
 use Ximdex\Runtime\DataFactory;

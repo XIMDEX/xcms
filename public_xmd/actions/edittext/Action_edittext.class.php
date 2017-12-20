@@ -34,7 +34,7 @@ use Ximdex\Runtime\App;
 use Ximdex\Runtime\Constants;
 use Ximdex\Runtime\DataFactory;
 use Ximdex\Utils\Strings;
-use Ximdex\Utils\Sync\SyncManager;
+use Ximdex\Sync\SyncManager;
 
 
 /**

@@ -27,7 +27,7 @@
 
 
 use Ximdex\Runtime\App;
-use Ximdex\Utils\Sync\Mutex;
+use Ximdex\Sync\Mutex;
 
 
 // for legacy compatibility

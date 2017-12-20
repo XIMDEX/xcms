@@ -39,7 +39,7 @@ use Ximdex\Runtime\DataFactory;
 use Ximdex\Utils\FsUtils;
 use Ximdex\Utils\PipelineManager;
 use Ximdex\Logger;
-use Ximdex\Utils\Sync\SynchroFacade;
+use Ximdex\Sync\SynchroFacade;
 
 ModulesManager::file('/actions/xmleditor2/model/XmlEditor_Abstract.class.php', 'APP');
 ModulesManager::file('/actions/xmleditor2/HTML2XML.class.php', 'APP');

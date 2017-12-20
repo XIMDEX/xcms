@@ -28,7 +28,7 @@
 use Ximdex\Models\Node;
 use Ximdex\Models\User;
 use Ximdex\MVC\ActionAbstract;
-use Ximdex\Utils\Sync\SynchroFacade;
+use Ximdex\Sync\SynchroFacade;
 
 ModulesManager::file('/actions/browser3/inc/GenericDatasource.class.php', 'APP');
 
