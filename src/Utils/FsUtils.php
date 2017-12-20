@@ -498,4 +498,98 @@ class FsUtils
     {
         return filter_var($url, FILTER_VALIDATE_URL);
     }
+
+    static private function computeFolder($folder)
+    {
+        return is_null($folder) ? XIMDEX_ROOT_PATH : $folder;
+    }
+
+    /**
+     * @param string $unit
+     * @param null $directory
+     * @return bool|float
+     */
+    static public function disk_total_space($unit = 'B', $directory = null)
+    {
+        $directory = self::computeFolder($directory);
+        $bytes = disk_total_space($directory);
+        return self::transformUnits($bytes, $unit);
+    }
+
+    /**
+     * @param string $unit
+     * @param null $directory
+     * @return bool|float
+     */
+    static public function disk_free_space($unit = 'B', $directory = null)
+    {
+        $directory = self::computeFolder($directory);
+        $bytes = disk_free_space($directory);
+        return self::transformUnits($bytes, $unit);
+    }
+
+    /**
+     * @param null $target
+     * @param string $unit
+     * @return bool|float|int
+     */
+    static public function transform($target = null, $unit = "B")
+    {
+        if (empty($target)) {
+            return 0;
+        }
+
+        preg_match('/(\d*)(\w*)/', $target, $out);
+
+        return self::transformToUnits($out[1], $out[2], $unit);
+    }
+
+    /**
+     * @param $bytes
+     * @param $unit
+     * @return bool|float
+     */
+    static public function transformUnits($bytes, $unit)
+    {
+        $units = array('B', 'KB', 'MB', 'GB', 'TB');
+        $count = array_search($unit, $units);
+        if ($count === false) {
+            Logger::error('It is being tried to transform a value to a invalid units: ' . $unit);
+            return false;
+        }
+        if ($count === 0) {
+            return $bytes;
+        }
+        $bytes = round($bytes / pow(1024, $count), 2);
+        return $bytes;
+    }
+
+    /**
+     * @param $target
+     * @param $unit_from
+     * @param $unit_to
+     * @return bool|float
+     */
+    static public function transformToUnits($target, $unit_from, $unit_to)
+    {
+        $units = array('B', 'KB', 'MB', 'GB', 'TB');
+        $ini = array_search($unit_from, $units);
+        $end = array_search($unit_to, $units);
+        $diff = $ini - $end;
+
+        if ($ini === false || $end === false) {
+            Logger::error('It is being tried to transform a value to a invalids units');
+            return false;
+        }
+
+        if ($diff === 0) {
+            return $target;
+        }
+        if ($diff > 0) {
+            return round($target * pow(1024, $diff), 2);
+        } else {
+            $diff = -$diff;
+            return round($target / pow(1024, $diff), 2);
+        }
+    }
 }
