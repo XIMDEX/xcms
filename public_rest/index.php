@@ -10,11 +10,11 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 }
 
 
-ModulesManager::file('/public_rest/classes/Request.php');
-ModulesManager::file('/public_rest/classes/Response.php');
-ModulesManager::file('/public_rest/classes/Router.php');
-ModulesManager::file('/public_rest/classes/APIException.php');
-ModulesManager::file('/public_rest/classes/AbstractAPIAction.php');
+ModulesManager::file('/public_rest/src/Request.php');
+ModulesManager::file('/public_rest/src/Response.php');
+ModulesManager::file('/public_rest/src/Router.php');
+ModulesManager::file('/public_rest/src/APIException.php');
+ModulesManager::file('/public_rest/src/AbstractAPIAction.php');
 
 
 /**
