@@ -60,7 +60,7 @@ class Action_welcome extends ActionAbstract
         $permissionsToCreateProject = $user->isAllowedAction($idNodeRoot, $action->get("IdAction"));
 
         $values["permissionsToCreateProject"] = $permissionsToCreateProject;
-        $values["projects_info"] = \Ximdex\Services\Project::getProjectsInfo();
+        $values["projects_info"] = \Ximdex\NodeTypes\Projects::getProjectsInfo();
         $values["user"] = \Ximdex\Utils\Session::get("user_name");
         $values["docs"] = $user->getLastestDocs();
 
