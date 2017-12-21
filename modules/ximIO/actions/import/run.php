@@ -25,7 +25,7 @@
  */
 
 
-use Ximdex\Authenticator;
+use Ximdex\Models\User;
 use Ximdex\Models\Node;
 use Ximdex\Runtime\Constants;
 use Ximdex\Runtime\Cli\CliReader;
@@ -53,15 +53,15 @@ if (empty($password)) {
     $attempts = 0;
     do {
         $password = CliReader::getString(_('Password:'));
-        $auth = new Authenticator();
-        if ($auth->login($user, $password)) {
+        $_user = new User();
+        if ($_user->login($user, $password)) {
             break;
         }
         ++$attempts;
     } while ($attempts < 3);
 } else {
-    $auth = new Authenticator();
-    if (!$auth->login($user, $password)) {
+    $_user = new User();
+    if (!$_user->login($user, $password)) {
         echo _("Incorrect login") . "\n";
         die();
     }

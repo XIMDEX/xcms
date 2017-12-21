@@ -25,7 +25,6 @@
  * @version $Revision$
  */
 
-use Ximdex\Authenticator;
 use Ximdex\Models\User;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\App;
@@ -133,8 +132,8 @@ class Action_login extends ActionAbstract
             $this->showLogin('Access blocked. At this moment maintenance tasks are being performed. Sorry for the inconveniences.');
         }
 
-        $authenticator = new Authenticator();
-        $success = $authenticator->login($user, $password);
+        $_user = new User();
+        $success = $_user->login($user, $password);
 
         if ($success) {
             $userObject = new User();

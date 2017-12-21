@@ -33,6 +33,7 @@ use Ximdex\Logger;
 use Ximdex\Models\ORM\UsersOrm;
 use Ximdex\Runtime\App;
 use Ximdex\Runtime\Db;
+use Ximdex\Runtime\Session;
 
 
 ModulesManager::file('/inc/model/NoActionsInNode.class.php');
@@ -212,6 +213,7 @@ class User extends UsersOrm
         $dbObj = new \Ximdex\Runtime\Db();
         $query = sprintf("SELECT IdUser FROM Users WHERE Login = %s", $dbObj->sqlEscapeString($login));
         $dbObj->Query($query);
+
         if ($dbObj->numRows) {
             return $this->SetID($dbObj->GetValue("IdUser"));
         }
@@ -687,4 +689,64 @@ class User extends UsersOrm
         return in_array($idAction, $arrayActions);
     }
 
+    /**
+     *
+     * @param $name
+     * @param $password
+     * @return boolean
+     */
+    function login($name, $password)
+    {
+
+        $this->setByLogin($name);
+
+        if ($this->checkPassword($password)) {
+
+            // Is a valid user !
+            $user_id = $this->getID();
+            $user = new user($user_id);
+
+            $user_locale = $user->get('Locale');
+
+            if (empty($user_locale))
+                $user_locale =  App::getValue('locale');
+
+            // STOPPER
+            $stopperFilePath =  XIMDEX_ROOT_PATH . App::getValue("TempRoot") . "/login.stop";
+            if ($user->getID() != "301" && file_exists($stopperFilePath)) {
+                // login closed
+                return false;
+            }
+
+            unset($user);
+
+            // TODO: Add new session system.
+            Session::set('user_name', $name);
+            Session::set('logged', $user_id);
+            Session::set('userID', $user_id);
+            Session::set('locale', $user_locale);
+            Session::set('loginTimestamp', time());
+            $session_info = session_get_cookie_params();
+            $session_lifetime = $session_info['lifetime']; // session cookie lifetime in seconds
+            $session_duration = $session_lifetime != 0 ? $session_lifetime : session_cache_expire() * 60;
+            $loginTimestamp = Session::get("loginTimestamp");
+            setcookie("loginTimestamp", $loginTimestamp, 0,  '/' );
+            setcookie("sessionLength", $session_duration , 0,  '/' );
+            /**/
+
+
+            return true;
+        }
+        return false;
+    }
+
+
+
+    function logout()
+    {
+
+        // TODO: Add new session system.
+        Session::destroy();
+
+    }
 }

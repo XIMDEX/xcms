@@ -25,7 +25,7 @@
  *  @version $Revision$
  */
 
-use Ximdex\Authenticator;
+use Ximdex\Models\User;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\App;
 
@@ -40,8 +40,8 @@ class Action_logout extends ActionAbstract
         $userID = (int)\Ximdex\Runtime\Session::get('userID');
         $nodeEdition = new NodeEdition();
         $nodeEdition->deleteByUser($userID);
-        $authenticator = new Authenticator();
-        $authenticator->logout();
+        $user = new User();
+        $user->logout();
         header(sprintf("Location: %s/", App::getValue('UrlRoot')));
         die();
     }
