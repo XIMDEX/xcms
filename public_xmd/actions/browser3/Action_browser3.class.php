@@ -86,12 +86,6 @@ class Action_browser3 extends ActionAbstract
             $this->addCss('/modules/ximTOUR/resources/css/tour.css');
 
 
-        if (ModulesManager::isEnabled('ximADM')) {
-            $time_id = time() . "_" . $userID;
-
-            $this->addJs('/utils/user_connect.js.php?id=' . $time_id . '&lang=' . $user_locale["Lang"], 'ximADM');
-        }
-
         //Old browserwindow styles
         $this->addCss('/public_xmd/assets/style/jquery/ximdex_theme/widgets/browserwindow/actionPanel.css');
         $this->addCss('/public_xmd/assets/style/jquery/ximdex_theme/widgets/browserwindow/browserwindow.css');

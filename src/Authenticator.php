@@ -78,14 +78,6 @@ class Authenticator
 
             unset($user);
 
-            if (ModulesManager::isEnabled('ximADM')) {
-                ModulesManager::file('/inc/Status.class.php', 'ximADM');
-
-                $user_status = new Status();
-                $user_status->remove($user_id);
-                $user_status->init($user_id);
-            }
-
             // TODO: Add new session system.
             Session::set('user_name', $name);
             Session::set('logged', $user_id);

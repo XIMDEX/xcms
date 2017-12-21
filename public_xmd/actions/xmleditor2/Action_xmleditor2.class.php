@@ -108,13 +108,6 @@ class Action_xmleditor2 extends ActionAbstract
 
         $values["user_connect"] = null;
         $values['time_id'] = 0;
-        if (ModulesManager::isEnabled('ximADM')) {
-            $userID = (int)\Ximdex\Runtime\Session::get('userID');
-
-            $time_id = time() . "_" . $userID;
-            $values['time_id'] = $time_id;
-            $values["user_connect"] = $this->addJs('/utils/user_connect.js.php?id=' . $time_id . '&lang=' . \Ximdex\Runtime\Session::get('locale'), 'ximADM');
-        }
 
 
         $this->render($values, $template, 'xmleditor2.tpl');

@@ -33,7 +33,6 @@ use Ximdex\Runtime\Session;
 
 
 require_once(XIMDEX_ROOT_PATH . '/conf/stats.php');
-ModulesManager::file('/inc/Status.class.php', 'ximADM');
 
 /**
  *
@@ -57,7 +56,6 @@ class ApplicationController extends IController
         if ($actionController == NULL) {
             $actionController = $this->_error_no_action();
         } else {
-            $this->setUserState();
             $stats = $this->actionStatsStart();
             $actionController->execute($this->request);
         }
@@ -87,29 +85,7 @@ class ApplicationController extends IController
         return $actionController;
     }
 
-    /**
-     * Error cuando no hay una action asociada
-     */
-    function setUserState()
-    {
-        if (ModulesManager::isEnabled('ximADM')) {
-            $userID = (int)Session::get('userID');
-            $action = $this->request->getParam("action");
-            $method = $this->request->getParam("method");
 
-            if ($userID && !is_null($action) && "index" == $method) {
-                // this class does not exist
-                $user_status = new Status();
-                $status = $user_status->get($userID);
-                $hash = NULL;
-                if (!empty($status)) {
-                    $hash = $status->hash;
-                    $action = ("moduleslist" == $action) ? "browser" : $action;
-                }
-                $user_status->assign($userID, $hash, $action);
-            }
-        }
-    }
 
     /**
      * @return array
