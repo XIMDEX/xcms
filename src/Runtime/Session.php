@@ -24,9 +24,7 @@
  *  @version $Revision$
  */
 
-namespace Ximdex\Utils ;
-use Ximdex\Runtime\Response ;
-use Ximdex\Runtime\App ;
+namespace Ximdex\Runtime;
 
 
 /** @const DEFAULT_SESSION - Name of default session */

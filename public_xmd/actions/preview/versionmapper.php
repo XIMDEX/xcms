@@ -27,7 +27,7 @@
 
 use Ximdex\Runtime\DataFactory;
 
-\Ximdex\Utils\Session::check();
+\Ximdex\Runtime\Session::check();
 		
 ////
 //// Initiation of action flow.

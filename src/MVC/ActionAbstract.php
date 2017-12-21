@@ -39,7 +39,7 @@ use Ximdex\Runtime\App;
 use Ximdex\Runtime\Request;
 use Ximdex\Utils\Factory;
 use Ximdex\Utils\QueryManager;
-use Ximdex\Utils\Session;
+use Ximdex\Runtime\Session;
 
 ModulesManager::file('/inc/mail/Mail.class.php');
 ModulesManager::file('/inc/model/orm/Messages_ORM.class.php');

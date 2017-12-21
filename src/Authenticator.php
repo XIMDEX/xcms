@@ -30,7 +30,7 @@ namespace Ximdex;
 use ModulesManager;
 use Ximdex\Models\User;
 use Ximdex\Runtime\App;
-use Ximdex\Utils\Session;
+use Ximdex\Runtime\Session;
 
 
 class Authenticator

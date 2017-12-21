@@ -39,7 +39,7 @@ class Action_modifyuser extends ActionAbstract {
 	    $idNode = $this->request->getParam('nodeid');
 		$user = new User($idNode);
 
-        $idRegisteredUser = \Ximdex\Utils\Session::get('userID');
+        $idRegisteredUser = \Ximdex\Runtime\Session::get('userID');
         $registeredUser = new User($idRegisteredUser);
 
         $canModifyUserGroup = $registeredUser->isAllowedAction($idNode, 6004);
@@ -77,7 +77,7 @@ class Action_modifyuser extends ActionAbstract {
         $general_role = $this->request->getParam('generalrole');
 
 
-        $idRegisteredUser = \Ximdex\Utils\Session::get('userID');
+        $idRegisteredUser = \Ximdex\Runtime\Session::get('userID');
         $registeredUser = new User($idRegisteredUser);
 
         $canModifyUserGroup = $registeredUser->isAllowedAction($idNode, 6004);

@@ -35,8 +35,8 @@ if (!defined('XIMDEX_ROOT_PATH')) {
     require_once dirname(__FILE__) . '/../../../../bootstrap.php';
 }
 
-\Ximdex\Utils\Session::check();
-$userID = \Ximdex\Utils\Session::get('userID');
+\Ximdex\Runtime\Session::check();
+$userID = \Ximdex\Runtime\Session::get('userID');
 $contentType = isset($_GET['contenttype']) ? $_GET['contenttype'] : NULL;
 $selectedNodeID = isset($_GET['nodeid']) ? $_GET['nodeid'] : NULL;
 $targetNodeID = isset($_GET['targetid']) ? $_GET['targetid'] : NULL;
@@ -394,7 +394,7 @@ function getNodelist($userID, $nodeID) {
     $group = new Group();
 
 
-    if (!\Ximdex\Utils\Session::get("nodelist") or $nodeID==1)
+    if (!\Ximdex\Runtime\Session::get("nodelist") or $nodeID==1)
     {
         $groupList= $user->GetGroupList();
         $groupList = array_diff($groupList,array($group->GetGeneralGroup()));
@@ -414,10 +414,10 @@ function getNodelist($userID, $nodeID) {
 
         $nodeList = getParentList($nodeList);
 
-        \Ximdex\Utils\Session::set("nodelist", $nodeList);
+        \Ximdex\Runtime\Session::set("nodelist", $nodeList);
 
     }else {
-        $nodeList = \Ximdex\Utils\Session::get("nodelist");
+        $nodeList = \Ximdex\Runtime\Session::get("nodelist");
     }
 
     return $nodeList;

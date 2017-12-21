@@ -37,7 +37,7 @@ class Action_logout extends ActionAbstract
 
     function index()
     {
-        $userID = (int)\Ximdex\Utils\Session::get('userID');
+        $userID = (int)\Ximdex\Runtime\Session::get('userID');
         $nodeEdition = new NodeEdition();
         $nodeEdition->deleteByUser($userID);
         $authenticator = new Authenticator();

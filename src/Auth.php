@@ -37,7 +37,7 @@ use Ximdex\Models\ORM\RelUsersGroupsOrm;
 use Ximdex\Models\Role;
 use Ximdex\Models\User;
 use Ximdex\Runtime\Constants;
-use Ximdex\Utils\Session;
+use Ximdex\Runtime\Session;
 use Ximdex\Workflow\WorkFlow;
 use Ximdex\Logger;
 

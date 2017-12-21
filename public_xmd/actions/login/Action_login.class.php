@@ -140,7 +140,7 @@ class Action_login extends ActionAbstract
             $userObject = new User();
             $userObject->setByLogin($user);
             $userObject->afterLogin();
-            \Ximdex\Utils\Session::set('context', 'ximdex');
+            \Ximdex\Runtime\Session::set('context', 'ximdex');
             $this->logSuccessAction();
 
             if (Request::get('backto')) {

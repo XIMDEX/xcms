@@ -29,7 +29,7 @@ namespace Ximdex\MVC;
 use ModulesManager;
 use Ximdex\Models\ActionsStats;
 use Ximdex\Runtime\App;
-use Ximdex\Utils\Session;
+use Ximdex\Runtime\Session;
 
 
 require_once(XIMDEX_ROOT_PATH . '/conf/stats.php');

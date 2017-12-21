@@ -36,7 +36,7 @@ use Ximdex\Parsers\ParsingXimMenu;
 use Ximdex\Runtime\App;
 use Ximdex\Runtime\Db;
 use Ximdex\Utils\Serializer;
-use Ximdex\Utils\Session;
+use Ximdex\Runtime\Session;
 use Xmd\Widgets\Widget;
 use Ximdex\XML\Base;
  
@@ -68,7 +68,7 @@ class Action_composer extends ActionAbstract
             'ximid' => $ximid,
             "versionname" => $versionname,
             "userID" => $userID,
-            "debug" => \Ximdex\Utils\Session::checkUserID(),
+            "debug" => \Ximdex\Runtime\Session::checkUserID(),
             'theme' => $theme,
             'user_locale' => $user_locale);
 
@@ -598,7 +598,7 @@ and rug.idrole in (select idrole from RelRolesPermissions where IdPermission = 1
         }
 
         //Filtering by debufilter
-        if ($idNode == 1 && !empty($find) && \Ximdex\Utils\Session::checkUserID()) {
+        if ($idNode == 1 && !empty($find) && \Ximdex\Runtime\Session::checkUserID()) {
             $_nodes = $selectedNode->GetChildren();
             if (count($_nodes) > 0) {
                 foreach ($_nodes as $idNode) {
@@ -612,7 +612,7 @@ and rug.idrole in (select idrole from RelRolesPermissions where IdPermission = 1
         $user = new User($userID);
         $group = new Group();
 
-        if (!\Ximdex\Utils\Session::get("nodelist")) {
+        if (!\Ximdex\Runtime\Session::get("nodelist")) {
 
             $groupList = $user->GetGroupList();
             // Removing general group
@@ -646,11 +646,11 @@ and rug.idrole in (select idrole from RelRolesPermissions where IdPermission = 1
                         $padre = $node->get('IdParent');
                     }
                 }
-                \Ximdex\Utils\Session::set("nodelist", $nodeList);
+                \Ximdex\Runtime\Session::set("nodelist", $nodeList);
             }
 
         } else {
-            $nodeList = \Ximdex\Utils\Session::get("nodelist");
+            $nodeList = \Ximdex\Runtime\Session::get("nodelist");
         }
 
 
@@ -738,7 +738,7 @@ and rug.idrole in (select idrole from RelRolesPermissions where IdPermission = 1
                 $user_perm_van = $user->HasPermission("view all nodes");
 
                 if (($desde !== null) && ($hasta !== null)) {
-                    $nodeList = \Ximdex\Utils\Session::get("nodelist");
+                    $nodeList = \Ximdex\Runtime\Session::get("nodelist");
                     $endFor = $hasta - $desde + 1;
 
                     for ($i = 0; $i < $endFor; $i++) {
@@ -871,15 +871,15 @@ and rug.idrole in (select idrole from RelRolesPermissions where IdPermission = 1
         if ($value !== null) {
 
             // setter
-            $data = \Ximdex\Utils\Session::get('browser');
+            $data = \Ximdex\Runtime\Session::get('browser');
             if (!is_array($data)) $data = array();
             $data[$name] = $value;
-            \Ximdex\Utils\Session::set('browser', $data);
+            \Ximdex\Runtime\Session::set('browser', $data);
 
         } else {
 
             // Getter
-            $data = \Ximdex\Utils\Session::get('browser');
+            $data = \Ximdex\Runtime\Session::get('browser');
             if (!is_array($data)) $data = array();
             $value = isset($data[$name]) ? $data[$name] : null;
             $data = Serializer::encode(SZR_JSON, array($name => $value));
@@ -893,7 +893,7 @@ and rug.idrole in (select idrole from RelRolesPermissions where IdPermission = 1
     public function ximmenu()
     {
 
-        \Ximdex\Utils\Session::check();
+        \Ximdex\Runtime\Session::check();
 
         $pxm = new ParsingXimMenu(XIMDEX_ROOT_PATH . '/conf/ximmenu.xml');
         $ximmenu = $pxm->processMenu(true);
@@ -904,7 +904,7 @@ and rug.idrole in (select idrole from RelRolesPermissions where IdPermission = 1
 
     function modules()
     {
-        \Ximdex\Utils\Session::check();
+        \Ximdex\Runtime\Session::check();
 
         $data = ModulesManager::getModules();
 
@@ -914,9 +914,9 @@ and rug.idrole in (select idrole from RelRolesPermissions where IdPermission = 1
 
     public function nodetypes()
     {
-        \Ximdex\Utils\Session::check();
+        \Ximdex\Runtime\Session::check();
 
-        $userID = \Ximdex\Utils\Session::get('userID');
+        $userID = \Ximdex\Runtime\Session::get('userID');
 
         $user = new User();
         $user->SetID($userID);
@@ -1051,7 +1051,7 @@ and rug.idrole in (select idrole from RelRolesPermissions where IdPermission = 1
 
     function getUserName()
     {
-        $id = \Ximdex\Utils\Session::get('userID');
+        $id = \Ximdex\Runtime\Session::get('userID');
         $user = new User($id);
 
         $this->render(array('username' => $user->GetLogin()));

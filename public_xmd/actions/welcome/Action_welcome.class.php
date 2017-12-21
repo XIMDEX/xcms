@@ -40,7 +40,7 @@ class Action_welcome extends ActionAbstract
 
         $values = array();
         if ( !isset($_REQUEST['actionReload']) || $_REQUEST['actionReload'] != 'true') {
-            if ($this->tourEnabled(\Ximdex\Utils\Session::get("userID"), "welcome")) {
+            if ($this->tourEnabled(\Ximdex\Runtime\Session::get("userID"), "welcome")) {
                 $values[] = $this->addJs('/resources/js/start_tour.js', 'ximTOUR');
             }
             if (ModulesManager::isEnabled('ximTOUR')) {
@@ -53,7 +53,7 @@ class Action_welcome extends ActionAbstract
         $this->addJs('/actions/welcome/resources/js/index.js', 'APP');
 
         //Getting idaction to check Create new project permissions for user
-        $user = new User(\Ximdex\Utils\Session::get("userID"));
+        $user = new User(\Ximdex\Runtime\Session::get("userID"));
         $idNodeRoot = 10000;
         $action = new Action();
         $action->setByCommandAndModule("addfoldernode", $idNodeRoot);
@@ -61,7 +61,7 @@ class Action_welcome extends ActionAbstract
 
         $values["permissionsToCreateProject"] = $permissionsToCreateProject;
         $values["projects_info"] = \Ximdex\NodeTypes\Projects::getProjectsInfo();
-        $values["user"] = \Ximdex\Utils\Session::get("user_name");
+        $values["user"] = \Ximdex\Runtime\Session::get("user_name");
         $values["docs"] = $user->getLastestDocs();
 
 

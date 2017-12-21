@@ -88,7 +88,7 @@ class ParsingXimMenu
 
     protected function filter_hasPermission(&$node)
     {
-        $userid = \Ximdex\Utils\Session::get('userID');
+        $userid = \Ximdex\Runtime\Session::get('userID');
         $user = new User($userid);
         $perms = $node->getAttribute('hasPermission');
         $perms = explode(',', $perms);
@@ -107,7 +107,7 @@ class ParsingXimMenu
     protected function filter_allowedRoles(&$node)
     {
 
-        $userid = \Ximdex\Utils\Session::get('userID');
+        $userid = \Ximdex\Runtime\Session::get('userID');
         $user = new User($userid);
         $assignedRoles = $user->GetRoles();
 
@@ -140,7 +140,7 @@ class ParsingXimMenu
     protected function filter_allowedUsers(&$node)
     {
 
-        $userid = \Ximdex\Utils\Session::get('userID');
+        $userid = \Ximdex\Runtime\Session::get('userID');
         $user = new User($userid);
         $login = strtoupper($user->GetLogin());
         $allUsers = $user->GetAllUsers();

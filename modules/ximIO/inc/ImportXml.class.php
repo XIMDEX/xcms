@@ -755,7 +755,7 @@ class ImportXml
         */
 
         $baseIO = new BaseIO();
-        $idUser = \Ximdex\Utils\Session::get("userID");
+        $idUser = \Ximdex\Runtime\Session::get("userID");
         if (!($idUser > 0)) {
             $this->abort = true;
             $this->messages[] = _('No valid user to perform the importation found');
@@ -1161,7 +1161,7 @@ class ImportXml
             $template['PARENTID'] = $idximPvdNode;
             $baseIO = new BaseIO();
 
-            $idUser = \Ximdex\Utils\Session::get('userID');
+            $idUser = \Ximdex\Runtime\Session::get('userID');
             if ($this->heuristicMode) {
                 $result = $baseIO->check($template, $idUser);
             } else {

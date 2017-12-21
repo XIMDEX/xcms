@@ -30,7 +30,7 @@ use ModulesManager;
 use Ximdex\Models\Action;
 use Ximdex\Models\Node;
 use Ximdex\Runtime\App;
-use Ximdex\Utils\Session;
+use Ximdex\Runtime\Session;
 
 
 //

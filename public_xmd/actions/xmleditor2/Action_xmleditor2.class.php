@@ -65,7 +65,7 @@ class Action_xmleditor2 extends ActionAbstract
 
         $queryManager = \Ximdex\Runtime\App::get('\Ximdex\Utils\QueryManager');
         $locale = new XimLocale();
-        $user_locale = $locale->GetLocaleByCode(\Ximdex\Utils\Session::get('locale'));
+        $user_locale = $locale->GetLocaleByCode(\Ximdex\Runtime\Session::get('locale'));
         $locales = $locale->GetEnabledLocales();
         $node=new Node($idnode);
         //if is not node state equals to edition, send a message.
@@ -109,11 +109,11 @@ class Action_xmleditor2 extends ActionAbstract
         $values["user_connect"] = null;
         $values['time_id'] = 0;
         if (ModulesManager::isEnabled('ximADM')) {
-            $userID = (int)\Ximdex\Utils\Session::get('userID');
+            $userID = (int)\Ximdex\Runtime\Session::get('userID');
 
             $time_id = time() . "_" . $userID;
             $values['time_id'] = $time_id;
-            $values["user_connect"] = $this->addJs('/utils/user_connect.js.php?id=' . $time_id . '&lang=' . \Ximdex\Utils\Session::get('locale'), 'ximADM');
+            $values["user_connect"] = $this->addJs('/utils/user_connect.js.php?id=' . $time_id . '&lang=' . \Ximdex\Runtime\Session::get('locale'), 'ximADM');
         }
 
 
@@ -258,7 +258,7 @@ class Action_xmleditor2 extends ActionAbstract
     public function canEditNode()
     {
         $ximcludeId = $this->request->getParam('nodeid');
-        $userId = \Ximdex\Utils\Session::get('userID');
+        $userId = \Ximdex\Runtime\Session::get('userID');
         $ret = Auth::canWrite($userId, array('node_id' => $ximcludeId));
         $this->printContent(array('editable' => $ret));
     }
@@ -420,7 +420,7 @@ class Action_xmleditor2 extends ActionAbstract
     public function checkEditionStatus()
     {
         $idnode = $this->request->getParam('nodeid');
-        $userID = (int)\Ximdex\Utils\Session::get('userID');
+        $userID = (int)\Ximdex\Runtime\Session::get('userID');
         $nodeEdition = new NodeEdition();
         $results = $nodeEdition->getByNode($idnode);
         $edition = false;
@@ -454,7 +454,7 @@ class Action_xmleditor2 extends ActionAbstract
     public function removeNodeEdition()
     {
         $nodeid = $this->request->get('nodeid');
-        $userid = \Ximdex\Utils\Session::get('userID');
+        $userid = \Ximdex\Runtime\Session::get('userID');
         $nodeEdition = new NodeEdition();
         $res = $nodeEdition->deleteByNodeAndUser($nodeid, $userid);
         if (!$res) {

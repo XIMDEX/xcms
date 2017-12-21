@@ -42,7 +42,7 @@ class Action_deletenode extends ActionAbstract {
 
 		$nodes = GenericDatasource::normalizeEntities($nodes);
 		$params = $this->request->getParam("params");
-		$userID = \Ximdex\Utils\Session::get('userID');
+		$userID = \Ximdex\Runtime\Session::get('userID');
 		$texto = "";
 
 		if (count($nodes) == 1) {
@@ -226,7 +226,7 @@ class Action_deletenode extends ActionAbstract {
 		$depList = array();
 		$deleteDep = $this->request->getParam("unpublishnode");
 
-		$userID = \Ximdex\Utils\Session::get('userID');
+		$userID = \Ximdex\Runtime\Session::get('userID');
 		$unpublishDoc = ($this->request->getParam("unpublishdoc") == 1) ? true : false;
 
 		// Deleting publication tasks

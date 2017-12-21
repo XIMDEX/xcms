@@ -58,11 +58,11 @@ class Widget_contextmenu extends WidgetAbstract
         $this->setTemplate($params["initialize"]);
 
         //Modify your user
-        $params["userid"] = \Ximdex\Utils\Session::get('userID');
+        $params["userid"] = \Ximdex\Runtime\Session::get('userID');
 
         //Change your language
         $locale = new XimLocale();
-        $params["user_locale"] = $locale->GetLocaleByCode(\Ximdex\Utils\Session::get('locale'));
+        $params["user_locale"] = $locale->GetLocaleByCode(\Ximdex\Runtime\Session::get('locale'));
         $params["locales"] = $locale->GetEnabledLocales();
     }
 }

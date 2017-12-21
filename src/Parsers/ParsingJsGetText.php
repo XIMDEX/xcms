@@ -44,8 +44,8 @@ class ParsingJsGetText
     {
         $this->PATH_CACHE = App::getValue('TempRoot') . "/js/";
         //Definimos el default lang
-        if (\Ximdex\Utils\Session::get('locale'))
-            $this->setDefaultLang(\Ximdex\Utils\Session::get('locale'));
+        if (\Ximdex\Runtime\Session::get('locale'))
+            $this->setDefaultLang(\Ximdex\Runtime\Session::get('locale'));
         else
             $this->setDefaultLang(DEFAULT_LOCALE);
     }

@@ -166,13 +166,13 @@ class FrontControllerHTTP extends FrontController
 
     function checkSession()
     {
-        $session_exists = \Ximdex\Utils\Session::get("userID");
+        $session_exists = \Ximdex\Runtime\Session::get("userID");
 
         $action_without_session = array("createaccount", "logout", "installer");
         $actionName = $this->request->getParam('action');
         $method = $this->request->getParam('method');
 
-        $session_exists = \Ximdex\Utils\Session::get("userID");
+        $session_exists = \Ximdex\Runtime\Session::get("userID");
         $need_session = !in_array($actionName, $action_without_session);
 
         if ("installer" == $actionName) {
@@ -333,8 +333,8 @@ class FrontControllerHTTP extends FrontController
     function setXsessionParams($renderer, $_action_path)
     {
         /** Guardado de datos persistente */
-        \Ximdex\Utils\Session::set("renderer", $renderer);
-        \Ximdex\Utils\Session::set("actionPath", $_action_path);
+        \Ximdex\Runtime\Session::set("renderer", $renderer);
+        \Ximdex\Runtime\Session::set("actionPath", $_action_path);
 
     }
 }

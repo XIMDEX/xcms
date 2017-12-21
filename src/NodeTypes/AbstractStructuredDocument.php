@@ -45,7 +45,7 @@ use Ximdex\Models\NodeDependencies;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\Utils\FsUtils;
 use Ximdex\Logger;
-use Ximdex\Utils\Session;
+use Ximdex\Runtime\Session;
 
 
 define('DOCXAP_VIEW', 1);

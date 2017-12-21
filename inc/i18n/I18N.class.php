@@ -24,7 +24,7 @@
  *  @version $Revision$
  */
 use Ximdex\Runtime\App;
-use Ximdex\Utils\Session;
+use Ximdex\Runtime\Session;
 
 
 if (!defined('DEFAULT_LOCALE'))

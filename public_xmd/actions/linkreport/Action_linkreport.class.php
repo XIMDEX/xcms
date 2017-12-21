@@ -67,7 +67,7 @@ class Action_linkreport extends ActionAbstract
         $criteria = $criteria == 'undefined' ? NULL : $criteria;
         $field = $field == 'undefined' ? NULL : $field;
 
-        $userID = \Ximdex\Utils\Session::get("userID");
+        $userID = \Ximdex\Runtime\Session::get("userID");
         $node = new Node($idNode);
 
         // get link folders

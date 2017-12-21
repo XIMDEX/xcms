@@ -66,7 +66,7 @@ class Action_fileupload_common_multiple extends ActionAbstract {
         $type_folder = $baseIoInferer->infereType('FOLDER', $idNode );
         $type_node = $type_folder["NODETYPENAME"];
         /** ********* Checking permits **************************** */
-        $userid = \Ximdex\Utils\Session::get('userID');
+        $userid = \Ximdex\Runtime\Session::get('userID');
 
         if(empty($userid)) {
             $this->messages->add(_('It is necessary to be an active user to upload files'), MSG_TYPE_ERROR);

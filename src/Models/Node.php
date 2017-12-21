@@ -38,7 +38,7 @@ use Ximdex\Runtime\App;
 use Ximdex\Runtime\DataFactory;
 use Ximdex\Runtime\Db;
 use Ximdex\Utils\FsUtils;
-use Ximdex\Utils\Session;
+use Ximdex\Runtime\Session;
 use Ximdex\Sync\Synchronizer;
 use Ximdex\Workflow\WorkFlow;
 use Ximdex\XML\Base;

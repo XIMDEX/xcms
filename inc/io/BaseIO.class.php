@@ -34,7 +34,7 @@ use Ximdex\Runtime\App;
 use Ximdex\Runtime\Constants;
 use Ximdex\Utils\FsUtils;
 use Ximdex\Utils\Messages;
-use Ximdex\Utils\Session;
+use Ximdex\Runtime\Session;
 
 
 // BaseIO API

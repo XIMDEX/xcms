@@ -113,7 +113,7 @@ class FrontController extends IController
     {
         if (!$idNode)
             return true;
-        $idUser = \Ximdex\Utils\Session::get("userID");
+        $idUser = \Ximdex\Runtime\Session::get("userID");
         if (!$idUser) {
             return false;
         }

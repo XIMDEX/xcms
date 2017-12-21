@@ -106,7 +106,7 @@ class Action_managebatchs extends ActionAbstract {
 
 		$acceso = true;
 		// Inicializando variables.
-		$userID = \Ximdex\Utils\Session::get('userID');
+		$userID = \Ximdex\Runtime\Session::get('userID');
 
 		$user = new User();
 		$user->SetID($userID);

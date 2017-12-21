@@ -81,7 +81,7 @@ class Action_workflow_forward extends ActionAbstract {
         $this->addCss('/public_xmd/assets/style/jquery/ximdex_theme/widgets/calendar/calendar.css');
 
         //Get the current user to check his permissions.
-        $idUser = \Ximdex\Utils\Session::get('userID');
+        $idUser = \Ximdex\Runtime\Session::get('userID');
         $user = new User($idUser);
 
         //Getting user roles on current node
@@ -387,7 +387,7 @@ class Action_workflow_forward extends ActionAbstract {
     private function buildExtraValues($idNode) {
         setlocale(LC_TIME, "es_ES");
 
-        $idUser = \Ximdex\Utils\Session::get('userID');
+        $idUser = \Ximdex\Runtime\Session::get('userID');
         $user = new User($idUser);
 
         $node = new Node($idNode);
@@ -417,7 +417,7 @@ class Action_workflow_forward extends ActionAbstract {
      */
     private function promoteNode($idNode, $idState) {
 
-        $idUser = \Ximdex\Utils\Session::get("userID");
+        $idUser = \Ximdex\Runtime\Session::get("userID");
         $node = new Node($idNode);
         $idActualState = $node->get('IdState');
         $actualWorkflowStatus = new WorkFlow($idNode, $idActualState);
@@ -471,7 +471,7 @@ class Action_workflow_forward extends ActionAbstract {
             return false;
         }
 
-        $idUser = \Ximdex\Utils\Session::get("userID");
+        $idUser = \Ximdex\Runtime\Session::get("userID");
 
         $node = new Node($idNode);
         $idActualState = $node->get('IdState');

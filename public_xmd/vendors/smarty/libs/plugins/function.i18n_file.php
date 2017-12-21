@@ -4,7 +4,7 @@ use Ximdex\Runtime\App;
 
 function smarty_function_i18n_file($params, &$smarty)
 { 
-  \Ximdex\Utils\Session::check();
+  \Ximdex\Runtime\Session::check();
 
   //Fichero a traducir
   $file = trim(isset($params['file']) ? $params['file']:null);
@@ -26,7 +26,7 @@ function smarty_function_i18n_file($params, &$smarty)
 	}
 
 	//Si no existe archivo asociado al idioma pasado, se comprueba con el idioma del sistema
-	$_lang = \Ximdex\Utils\Session::get('default_lang');
+	$_lang = \Ximdex\Runtime\Session::get('default_lang');
 	if($_lang != null ) {
 		$_file = str_replace("[LANG]", $_lang, $file);
 		if(file_exists(XIMDEX_ROOT_PATH.$_file) )

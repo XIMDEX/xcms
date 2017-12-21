@@ -155,7 +155,7 @@ class SyncManager
         }
 
 
-        $userID = \Ximdex\Utils\Session::get('userID');
+        $userID = \Ximdex\Runtime\Session::get('userID');
 
         foreach ($docsToPublish as $idDoc) {
             if (!array_key_exists($idDoc, $this->docsToPublishByLevel)) {

@@ -86,9 +86,9 @@ class Action_moduleslist extends ActionAbstract
     {
         $this->addJs('/public_xmd/actions/moduleslist/resources/js/validate.js');
         $this->addCss('/public_xmd/actions/moduleslist/resources/css/moduleslist.css');
-        $lang = strtolower(\Ximdex\Utils\Session::get("locale"));
+        $lang = strtolower(\Ximdex\Runtime\Session::get("locale"));
         $base = APP_ROOT_PATH . "/actions/moduleslist/template/Smarty/modules";
-        $userId = \Ximdex\Utils\Session::get('userID');
+        $userId = \Ximdex\Runtime\Session::get('userID');
 
         $module_name = $this->request->getParam('modsel');
         $module_exists = ModulesManager::moduleExists($module_name);

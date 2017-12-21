@@ -54,7 +54,7 @@ abstract class WidgetAbstract
 		$this->_widget_style_dir = sprintf(
 			'%s/public_xmd/assets/style/jquery/%s/widgets/%s',
 			XIMDEX_ROOT_PATH,
-			\Ximdex\Utils\Session::get('activeTheme'),
+			\Ximdex\Runtime\Session::get('activeTheme'),
 			$this->_wname
 		);
 

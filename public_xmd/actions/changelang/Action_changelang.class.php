@@ -37,7 +37,7 @@ class Action_changelang extends ActionAbstract {
 		$error 						= true;
 
 		if (!empty($locale_selected)){
-			$user = new User(\Ximdex\Utils\Session::get('userID'));
+			$user = new User(\Ximdex\Runtime\Session::get('userID'));
 
 			if ( $user->SetLocale($locale_selected["Code"]) ){
 				$this->messages->add(

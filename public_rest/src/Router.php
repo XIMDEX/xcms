@@ -2,7 +2,7 @@
 namespace Ximdex\API;
 
 use Ximdex\Logger;
-use Ximdex\Utils\Session;
+use Ximdex\Runtime\Session;
 
 class Router
 {

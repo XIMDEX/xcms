@@ -41,7 +41,7 @@ if (ModulesManager::isEnabled('ximSYNC')) {
 $userximio = "ximIO";
 session_id("ximIO");
 session_name("ximIO");
-\Ximdex\Utils\Session::set("userID",$userximio);
+\Ximdex\Runtime\Session::set("userID",$userximio);
 
 /// Array with call parameters
 $config = array();
@@ -113,7 +113,7 @@ function Main($argv, $argc)
 		} while(fread($stdin, 1)!= 'A');
 	fclose($stdin);	
 
-	\Ximdex\Utils\Session::set("userID",$userximio);
+	\Ximdex\Runtime\Session::set("userID",$userximio);
 
 	if ($rec=="-r") {
 		PublicateSection($config['sectionid'], time(), true);

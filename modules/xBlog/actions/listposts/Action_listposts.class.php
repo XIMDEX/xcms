@@ -43,13 +43,13 @@ class Action_listposts extends ActionAbstract
         $idnode = $this->request->getParam('nodeid');
         $node = new Node($idnode);
         $values["documentsid"] = $node->GetChildByName("documents");
-        $values["user"] = \Ximdex\Utils\Session::get("user_name");
+        $values["user"] = \Ximdex\Runtime\Session::get("user_name");
         $this->render($values, "index.tpl", 'default-3.0.tpl');
     }
 
     public function getPosts(){
         $idnode = $this->request->getParam('nodeid');
-        $user = new User(\Ximdex\Utils\Session::get("userID"));
+        $user = new User(\Ximdex\Runtime\Session::get("userID"));
         $lastestDocs = $user->getLastestNodes(NodeType::XHTML5_DOC, $idnode);
         $consultaTitle = "//x-meta[@data-key='title']";
         $consultaMeta = "//x-meta[@data-key='image']";

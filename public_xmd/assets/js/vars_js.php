@@ -31,22 +31,22 @@ include_once '../../../bootstrap.php';
 
 ModulesManager::file('/inc/i18n/I18N.class.php');
 
-\Ximdex\Utils\Session::check();
+\Ximdex\Runtime\Session::check();
 
-$locale = \Ximdex\Utils\Session::get('locale');
+$locale = \Ximdex\Runtime\Session::get('locale');
 // Check coherence with HTTP_ACCEPT_LANGUAGE
 I18N::setup($locale);
-$userID = \Ximdex\Utils\Session::get('userID');
+$userID = \Ximdex\Runtime\Session::get('userID');
 
 header('Content-type: application/javascript');
 
-echo "renderer = '" . \Ximdex\Utils\Session::get("renderer") . "';";
+echo "renderer = '" . \Ximdex\Runtime\Session::get("renderer") . "';";
 echo "\nurl_host = '" . App::getValue('UrlHost') . "';";
 echo "\nurl_root = '" . App::getValue('UrlRoot') . "';";
 echo "\nximdex_root = '" . XIMDEX_ROOT_PATH . "';";
-echo "\nbase_action = '" . \Ximdex\Utils\Session::get("base_action") . "';";
-echo "\nuser_id = '" . \Ximdex\Utils\Session::get('userID') . "';";
-echo "\nlocale = '" . \Ximdex\Utils\Session::get('locale') . "';";
+echo "\nbase_action = '" . \Ximdex\Runtime\Session::get("base_action") . "';";
+echo "\nuser_id = '" . \Ximdex\Runtime\Session::get('userID') . "';";
+echo "\nlocale = '" . \Ximdex\Runtime\Session::get('locale') . "';";
 ?>
 function NodeTypes()
 {

@@ -349,7 +349,7 @@ class BatchManager
             $nodeName = $node->GetNodeName();
 
             // Blocking node
-            $userID = \Ximdex\Utils\Session::get('userID');
+            $userID = \Ximdex\Runtime\Session::get('userID');
             if (is_null($userID)) {
                 $userID = 301;
             }

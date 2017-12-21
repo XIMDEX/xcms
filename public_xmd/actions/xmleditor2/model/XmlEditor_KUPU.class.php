@@ -365,7 +365,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
             Logger::error(_("A non-existing node cannot be edited: ") . $idNode);
         }
 
-        $hasPermission = Auth::hasPermission(\Ximdex\Utils\Session::get('userID'), 'expert_mode_allowed');
+        $hasPermission = Auth::hasPermission(\Ximdex\Runtime\Session::get('userID'), 'expert_mode_allowed');
         $expert_mode_allowed = $hasPermission ? '1' : '0';
 
         $canPublicate = $this->canPublicate($idNode);
@@ -399,7 +399,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
     public function verifyTmpFile($idNode)
     {
         $response = array('method' => 'verifyTmpFile');
-        if (!$idUser = \Ximdex\Utils\Session::get('userID')) {
+        if (!$idUser = \Ximdex\Runtime\Session::get('userID')) {
             $response['result'] = false;
             return $response;
         }
@@ -427,7 +427,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
     public function removeTmpFile($idNode)
     {
         $response = array('method' => 'removeTmpFile');
-        if (!$idUser = \Ximdex\Utils\Session::get('userID')) {
+        if (!$idUser = \Ximdex\Runtime\Session::get('userID')) {
             $response['result'] = false;
             return $response;
         }
@@ -445,7 +445,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
     public function recoverTmpFile($idNode)
     {
         $response = array('method' => 'recoverTmpFile');
-        if (!$idUser = \Ximdex\Utils\Session::get('userID')) {
+        if (!$idUser = \Ximdex\Runtime\Session::get('userID')) {
             $response['result'] = false;
             return $response;
         }
@@ -500,7 +500,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
                 $this->node->SetContent(\Ximdex\Utils\Strings::stripslashes($xmlContent), true);
                 $this->node->RenderizeNode();
             } else {
-                $idUser = \Ximdex\Utils\Session::get('userID');
+                $idUser = \Ximdex\Runtime\Session::get('userID');
                 if (!$idUser || !FsUtils::file_put_contents(XIMDEX_ROOT_PATH . App::getValue('TempRoot') . "/xedit_" . $idUser . "_" . $idNode, \Ximdex\Utils\Strings::stripslashes($xmlContent))) {
                     Logger::error(_("The content of " . $idNode . " could not be saved"));
                     return false;
@@ -791,7 +791,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
 
     private function canPublicate($idNode)
     {
-        $user = new User(\Ximdex\Utils\Session::get('userID'));
+        $user = new User(\Ximdex\Runtime\Session::get('userID'));
 
         if (ModulesManager::isEnabled('wix')) {
             return $user->HasPermissionInNode('Ximedit_publication_allowed', $idNode);

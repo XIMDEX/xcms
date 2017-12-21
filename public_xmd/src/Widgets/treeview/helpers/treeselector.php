@@ -32,7 +32,7 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 }
 
 
-\Ximdex\Utils\Session::check();
+\Ximdex\Runtime\Session::check();
 $urlroot = App::getValue('UrlRoot');
 
 /* Verifica variables $_GET

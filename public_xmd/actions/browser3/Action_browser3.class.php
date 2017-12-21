@@ -37,7 +37,7 @@ use Ximdex\Runtime\App;
 use Ximdex\Runtime\Db;
 use Ximdex\Runtime\Request;
 use Ximdex\Utils\Serializer;
-use Ximdex\Utils\Session;
+use Ximdex\Runtime\Session;
 
 ModulesManager::file('/actions/browser3/inc/search/QueryProcessor.class.php', 'APP');
 ModulesManager::file('/actions/browser3/inc/GenericDatasource.class.php', 'APP');
@@ -213,7 +213,7 @@ class Action_browser3 extends ActionAbstract
             )
         );
 
-        $url = REMOTE_WELCOME . "?lang=" . strtolower(\Ximdex\Utils\Session::get("locale"));
+        $url = REMOTE_WELCOME . "?lang=" . strtolower(\Ximdex\Runtime\Session::get("locale"));
         //get remote content
         $splash_content = @file_get_contents($url, 0, $ctx);
         if (!empty($splash_content)) {
@@ -248,7 +248,7 @@ class Action_browser3 extends ActionAbstract
      */
     public function refreshSession()
     {
-        \Ximdex\Utils\Session::refresh();
+        \Ximdex\Runtime\Session::refresh();
     }
 
     /**
@@ -501,7 +501,7 @@ class Action_browser3 extends ActionAbstract
     public function listSets()
     {
 
-        $idUser = \Ximdex\Utils\Session::get('userID');
+        $idUser = \Ximdex\Runtime\Session::get('userID');
 
         $sets = array();
         $it = NodeSets::getSets($idUser);
@@ -576,7 +576,7 @@ class Action_browser3 extends ActionAbstract
             $errors = array_merge($errors, $ret);
         }
 
-        $sessionUser = \Ximdex\Utils\Session::get('userID');
+        $sessionUser = \Ximdex\Runtime\Session::get('userID');
         $errors = array_merge(
             $errors, $this->addUserToSet(
             $set->getId(), $sessionUser, RelNodeSetsUsers::OWNER_YES
@@ -758,7 +758,7 @@ class Action_browser3 extends ActionAbstract
     public function deleteUserFromSet()
     {
 
-        $sessionUser = \Ximdex\Utils\Session::get('userID');
+        $sessionUser = \Ximdex\Runtime\Session::get('userID');
         $setid = $this->request->getParam('setid');
         $users = $this->request->getParam('users');
 
@@ -815,7 +815,7 @@ class Action_browser3 extends ActionAbstract
     public function getUsers()
     {
 
-        $sessionUser = \Ximdex\Utils\Session::get('userID');
+        $sessionUser = \Ximdex\Runtime\Session::get('userID');
         $idSet = $this->request->getParam('setid');
 
         $ret = array();
@@ -1001,7 +1001,7 @@ class Action_browser3 extends ActionAbstract
     protected function getActions($nodes = null)
     {
 
-        $idUser = \Ximdex\Utils\Session::get('userID');
+        $idUser = \Ximdex\Runtime\Session::get('userID');
         $nodes = $nodes !== null ? $nodes : $this->request->getParam('nodes');
 
         if (!is_array($nodes))

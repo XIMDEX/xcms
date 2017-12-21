@@ -29,7 +29,7 @@ use Ximdex\Models\User;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\App;
 use Ximdex\Utils\Serializer;
-use Ximdex\Utils\Session;
+use Ximdex\Runtime\Session;
 
 ModulesManager::file('/actions/FilterParameters.php', 'ximPUBLISHtools');
 ModulesManager::file('/inc/model/PublishingReport.class.php', 'ximSYNC');
