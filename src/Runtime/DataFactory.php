@@ -31,7 +31,6 @@ use Exception;
 use MetadataManager;
 use ModulesManager;
 use PoolerClient;
-use Ximdex\Event\NodeEvent;
 use Ximdex\Models\Node;
 use Ximdex\Models\PipeCache;
 use Ximdex\Models\Version;
@@ -417,8 +416,7 @@ class DataFactory
             if ($this->_generateCaches($idVersion) === false)
                 return false;
 
-            $event = new NodeEvent($this->nodeID);
-            App::dispatchEvent(\Ximdex\Events::NODE_TOUCHED, $event);
+
             return $idVersion;
         }
 
@@ -441,8 +439,6 @@ class DataFactory
             }
             $this->_generateCaches($idVersion);
 
-            $event = new NodeEvent($this->nodeID);
-            App::dispatchEvent(\Ximdex\Events::NODE_TOUCHED, $event);
 
             return $result;
         }

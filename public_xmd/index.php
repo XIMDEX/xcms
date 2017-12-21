@@ -38,8 +38,6 @@ ModulesManager::file('/inc/i18n/I18N.class.php');
 ModulesManager::file('/inc/mvc/App.class.php');
 ModulesManager::file('/install/InstallController.class.php', 'APP');
 
-App::dispatchEvent(\Ximdex\Events::XIMDEX_START);
-
 
 // FROM MVC
 if (!defined('RENDERER_ROOT_PATH')) {

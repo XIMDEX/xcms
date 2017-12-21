@@ -7,16 +7,7 @@ use Ximdex\Modules\Module;
  */
 class Module_xBlog extends Module
 {
-    /**
-     *  Listen the XIMDEX_START event
-     */
-    function init(){
-        /*
-        App::setListener(Events::XIMDEX_START, function($event){
-           // error_log("Hello from xBlog!");
-        });
-        */
-    }
+
 
     //Class constructor
     public function __construct()

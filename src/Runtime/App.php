@@ -4,8 +4,6 @@ namespace Ximdex\Runtime;
 
 use DI\ContainerBuilder;
 use Doctrine\Common\Cache\ArrayCache;
-use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\EventDispatcher\Event;
 
 Class App
 {
@@ -14,7 +12,6 @@ Class App
     protected $DIContainer = null;
     protected $DIBuilder = null;
     protected $config = null;
-    private $dispatcher = null;
     private static $debug = false;
 
     public function __construct()
@@ -26,8 +23,6 @@ Class App
         $this->DIBuilder->setDefinitionCache(new ArrayCache());
         $this->DIContainer = $this->DIBuilder->build();
         $this->config = array();
-
-        $this->dispatcher = new EventDispatcher();
 
         if (self::$instance instanceof self) {
             throw new \Exception('-10, Cannot be instantiated more than once');
@@ -149,34 +144,6 @@ Class App
         return self::getObject( $key ) ;
     }
 
-    /**
-     * Get the previously defined dispatcher
-     *
-     * @return null|EventDispatcher
-     */
-    public static function getDispatcher(){
-        return self::getInstance()->dispatcher;
-    }
-
-    /**
-     * Set a listener to an event
-     *
-     * @param $eventName
-     * @param $listener
-     */
-    public static function setListener($eventName, $listener){
-        self::getDispatcher()->addListener($eventName, $listener);
-    }
-
-    /**
-     * Dispatch an event
-     *
-     * @param string $eventName
-     * @param Event $event
-     */
-    public static function dispatchEvent($eventName, $event = null){
-        self::getDispatcher()->dispatch($eventName, $event);
-    }
 
     /**
      * Get the in application debug value

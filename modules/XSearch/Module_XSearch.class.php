@@ -1,10 +1,6 @@
 <?php
 
-
-use Ximdex\Event\NodeEvent;
 use Ximdex\Modules\Module;
-use Ximdex\Events;
-use Ximdex\Runtime\App;
 
 ModulesManager::file('/src/SolrExporter.php', 'XSearch');
 
@@ -13,18 +9,7 @@ ModulesManager::file('/src/SolrExporter.php', 'XSearch');
  */
 class Module_XSearch extends Module
 {
-    /**
-     *  Listen the XIMDEX_START event
-     */
-    function init(){
-        App::setListener(Events::NODE_TOUCHED, function(NodeEvent $event){
-            return ;
-            /*
-            $exporter = new SolrExporter;
-            $exporter->ExportByNodeId($event->getNodeId());
-            */
-        });
-    }
+
 
     //Class constructor
     public function __construct()

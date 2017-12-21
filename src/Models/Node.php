@@ -31,8 +31,6 @@ use DOMDocument;
 use NodeProperty;
 use xsltnode;
 use Ximdex\Deps\DepsManager;
-use Ximdex\Event\NodeEvent;
-use Ximdex\Events;
 use Ximdex\Logger;
 use Ximdex\Models\ORM\NodesOrm;
 use Ximdex\Parsers\ParsingDependencies;
@@ -904,95 +902,81 @@ class Node extends NodesOrm
     {
         $this->ClearError();
         if ($this->get('IdNode') > 0) {
-            
+
             //validate HTML or XML valid contents (including XSL schemas)
-            if ($node)
-            {
+            if ($node) {
                 $res = true;
-                
+
                 //TODO change global variable to another entity
                 $GLOBALS['errorsInXslTransformation'] = array();
-                
+
                 $domDoc = new DOMDocument();
-                if ($node->getNodeType() == \Ximdex\NodeTypes\NodeType::NODE_HT or $node->getNodeType() == \Ximdex\NodeTypes\NodeType::RNG_VISUAL_TEMPLATE)
-                {
+                if ($node->getNodeType() == \Ximdex\NodeTypes\NodeType::NODE_HT or $node->getNodeType() == \Ximdex\NodeTypes\NodeType::RNG_VISUAL_TEMPLATE) {
                     //check the XML of the given RNG template content
                     $res = @$domDoc->loadXML($content);
                 }
                 if ($node->getNodeType() == \Ximdex\NodeTypes\NodeType::XSL_TEMPLATE
-                        or $node->getNodeType() == \Ximdex\NodeTypes\NodeType::XML_DOCUMENT)
-                {
+                    or $node->getNodeType() == \Ximdex\NodeTypes\NodeType::XML_DOCUMENT
+                ) {
                     //check the valid XML template and dependencies
                     $res = @$domDoc->loadXML($content);
-                    if ($res and $node->GetNodeName() != 'templates_include.xsl')
-                    {
+                    if ($res and $node->GetNodeName() != 'templates_include.xsl') {
                         //dotdot dependencies only can be checked in templates under a server node
                         $templatesNode = new Node($node->GetParent());
-                        if ($templatesNode->GetNodeType() == \Ximdex\NodeTypes\NodeType::TEMPLATES_ROOT_FOLDER)
-                        {
+                        if ($templatesNode->GetNodeType() == \Ximdex\NodeTypes\NodeType::TEMPLATES_ROOT_FOLDER) {
                             $projectNode = new Node($templatesNode->getParent());
                             if ($projectNode->GetNodeType() == \Ximdex\NodeTypes\NodeType::PROJECT)
                                 $idServer = false;
                         }
                         if (!isset($idServer))
                             $idServer = $node->getServer();
-                        if ($idServer)
-                        {
+                        if ($idServer) {
                             //check the dotdot dependencies
-                            if (ParsingDependencies::getDotDot($content, $idServer) === false)
-                            {
+                            if (ParsingDependencies::getDotDot($content, $idServer) === false) {
                                 $this->messages->add($GLOBALS['parsingDependenciesError'], MSG_TYPE_WARNING);
-                                Logger::error('Saving content: ' . $GLOBALS['parsingDependenciesError'] . ' for IdNode: ' . $node->GetID() . ' (' 
-                                        . $node->GetDescription() . ')');
+                                Logger::error('Saving content: ' . $GLOBALS['parsingDependenciesError'] . ' for IdNode: ' . $node->GetID() . ' ('
+                                    . $node->GetDescription() . ')');
                             }
                         }
                         //check the pathto dependencies
-                        if (ParsingDependencies::getPathTo($content, $node->GetID(), true) === false)
-                        {
+                        if (ParsingDependencies::getPathTo($content, $node->GetID(), true) === false) {
                             $this->messages->add($GLOBALS['parsingDependenciesError'], MSG_TYPE_WARNING);
-                            Logger::error('Saving content: ' . $GLOBALS['parsingDependenciesError'] . ' for IdNode: ' . $node->GetID() . ' (' 
-                                    . $node->GetDescription() . ')');
+                            Logger::error('Saving content: ' . $GLOBALS['parsingDependenciesError'] . ' for IdNode: ' . $node->GetID() . ' ('
+                                . $node->GetDescription() . ')');
                         }
                     }
                 }
-                if ($res === false)
-                {
+                if ($res === false) {
                     Logger::error('Invalid XML for IdNode: ' . $node->GetID() . ' (' . $node->GetDescription() . ')');
                     $error = \Ximdex\Utils\Messages::error_message('DOMDocument::loadXML(): ');
-                    if ($error)
-                    {
+                    if ($error) {
                         $error = 'Invalid XML content for node: ' . $node->GetID() . ' (' . $error . ')';
                         $this->messages->add($error, MSG_TYPE_WARNING);
                         Logger::error($error);
                         $GLOBALS['errorsInXslTransformation'] = [$error];
                     }
-                }
-                elseif ($node->getNodeType() == \Ximdex\NodeTypes\NodeType::RNG_VISUAL_TEMPLATE)
-                {
+                } elseif ($node->getNodeType() == \Ximdex\NodeTypes\NodeType::RNG_VISUAL_TEMPLATE) {
                     //validation of the RNG schema for the RNG template
                     $schema = FsUtils::file_get_contents(XIMDEX_ROOT_PATH . '/actions/xmleditor2/views/common/schema/relaxng-1.0.rng.xml');
                     $rngValidator = new \Ximdex\XML\Validators\RNG();
                     $res = $rngValidator->validate($schema, $content);
-                    if ($res === false)
-                    {
+                    if ($res === false) {
                         $errors = $rngValidator->getErrors();
                         if (!$errors and \Ximdex\Utils\Messages::error_message())
                             $error = \Ximdex\Utils\Messages::error_message('DOMDocument::relaxNGValidateSource(): ');
-                        else
-                        {
+                        else {
                             //only will be shown the first error (more easy to read)
                             $error = $errors[0];
                         }
                         $this->messages->add($error, MSG_TYPE_WARNING);
-                        Logger::error('Saving content: Invalid RNG template for node: ' . $node->GetID() . ' ' . $node->GetDescription() 
-                                . ' (' . $error . ')');
+                        Logger::error('Saving content: Invalid RNG template for node: ' . $node->GetID() . ' ' . $node->GetDescription()
+                            . ' (' . $error . ')');
                         $GLOBALS['errorsInXslTransformation'] = [$error];
                     }
                 }
             }
-            
-            if ($this->class->SetContent($content, $commitNode, $node) === false)
-            {
+
+            if ($this->class->SetContent($content, $commitNode, $node) === false) {
                 $this->messages->mergeMessages($this->class->messages);
                 return false;
             }
@@ -1000,8 +984,6 @@ class Node extends NodesOrm
             if ($this->RenderizeNode() === false)
                 return false;
 
-            $event = new NodeEvent($this->nodeID);
-            App::dispatchEvent(Events::NODE_TOUCHED, $event);
         }
         return true;
     }
@@ -1647,9 +1629,6 @@ class Node extends NodesOrm
                 rename($folderPath, $newPath);
             }
 
-            $event = new NodeEvent($this->nodeID);
-            App::dispatchEvent(Events::NODE_TOUCHED, $event);
-
             return true;
         }
         $this->SetError(1);
@@ -1712,8 +1691,6 @@ class Node extends NodesOrm
                         $this->SetNodeName($newName);
                     }
 
-                    $event = new NodeEvent($this->nodeID);
-                    App::dispatchEvent(Events::NODE_TOUCHED, $event);
                 } else {
                     $this->SetError(12);
                 }
