@@ -38,6 +38,8 @@ class Factory
         'workflow_process' => array('ClassName' => '\\Ximdex\\NodeTypes\\WorkflowProcess'),
         'XimletNode' => array('ClassName' => '\\Ximdex\\NodeTypes\\XimletNode'),
         'xmldocumentnode' => array('ClassName' => '\\Ximdex\\NodeTypes\\XmlDocumentNode'),
+        'xmlcontainernode' => array('ClassName' => '\\Ximdex\\NodeTypes\\XmlContainerNode'),
+        'xsltnode' => array('ClassName' => '\\Ximdex\\NodeTypes\\XsltNode'),
 
     );
 
@@ -49,15 +51,16 @@ class Factory
      */
     public static function getNodeTypeByName($name, &$node, $module = '')
     {
-        if (isset(self::$baseNodeTypes[$name])) {
-            $className = self::$baseNodeTypes[$name]['ClassName'];
+        $_name = strtolower($name);
+        if (isset(self::$baseNodeTypes[$_name])) {
+            $className = self::$baseNodeTypes[$_name]['ClassName'];
             return new $className($node);
         }
 
         if (!empty($module)) {
-            $fileToInclude = sprintf('%s%s/inc/nodetypes/%s.php', XIMDEX_ROOT_PATH, ModulesManager::path($module), strtolower($name));
+            $fileToInclude = sprintf('%s%s/src/NodeTypes/%s.php', XIMDEX_ROOT_PATH, ModulesManager::path($module), strtolower($name));
         } else {
-            $fileToInclude = sprintf('%s/inc/nodetypes/%s.php', XIMDEX_ROOT_PATH, strtolower($name));
+            $fileToInclude = sprintf('%s/src/NodeTypes/%s.php', XIMDEX_ROOT_PATH, strtolower($name));
         }
         if (is_file($fileToInclude)) {
             include_once($fileToInclude);

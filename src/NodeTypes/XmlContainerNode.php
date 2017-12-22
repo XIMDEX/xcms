@@ -24,13 +24,14 @@
  * @version $Revision$
  */
 
+namespace Ximdex\NodeTypes;
 use Ximdex\Models\Language;
 use Ximdex\Models\Node;
 use Ximdex\Models\NodeType;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\NodeTypes\FolderNode;
 
-ModulesManager::file('/inc/metadata/MetadataManager.class.php');
+\ModulesManager::file('/inc/metadata/MetadataManager.class.php');
 
 class XmlContainerNode extends FolderNode
 {
