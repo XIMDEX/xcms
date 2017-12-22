@@ -145,7 +145,7 @@ class Action_managefolders extends ActionAbstract {
 			    $project = new Node($parent->getProject());
 			    
 			    // reload the templates include files for this new project
-			    $xsltNode = new xsltnode($parent);
+			    $xsltNode = new \Ximdex\NodeTypes\XsltNode($parent);
 			    if ($xsltNode->reload_templates_include($project) === false)
 			        $this->messages->mergeMessages($xsltNode->messages);
 			            

@@ -562,7 +562,7 @@ class BaseIO
                 unset($data['CHILDRENS']);
 
                 $node = new Node();
-                $idNodeType = Ximdex\NodeTypes\NodeType::IMAGE_FILE;
+                $idNodeType =\Ximdex\NodeTypes\NodeType::IMAGE_FILE;
                 if ($nodeTypeName == "XSIRIMAGEFILE") {
                     $idNodeType = \Ximdex\NodeTypes\NodeType::XSIR_IMAGE_FILE;
                 }

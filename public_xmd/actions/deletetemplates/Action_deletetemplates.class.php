@@ -76,7 +76,7 @@ class Action_deletetemplates extends ActionAbstract {
 
 		// update the templates_include.xsl files
 		$node = new Node($idNode);
-		$xsltNode = new xsltnode($node);
+		$xsltNode = new \Ximdex\NodeTypes\XsltNode($node);
 		if ($xsltNode->reload_templates_include(new Node($node->getProject())) === false)
 		    $this->messages->mergeMessages($xsltNode->messages);
 		

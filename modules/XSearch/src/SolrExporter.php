@@ -4,7 +4,7 @@ use Ximdex\Models\Language;
 use Ximdex\Models\Node;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\Runtime\Db;
-use Ximdex\NodeTypes\NodeType;
+use\Ximdex\NodeTypes\NodeType;
 
 ModulesManager::file('/inc/metadata/MetadataManager.class.php');
 ModulesManager::file('/src/Exporter.php', 'XSearch');

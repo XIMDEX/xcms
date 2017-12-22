@@ -244,7 +244,7 @@ class MetadataManager{
      * add a new row to \Ximdex\Models\RelNodeVersionMetadataVersion
      */
     public function updateMetadataVersion(){
-        if ( $this->node->GetNodeType() != Ximdex\NodeTypes\NodeType::METADATA_DOCUMENT ){
+        if ( $this->node->GetNodeType() !=\Ximdex\NodeTypes\NodeType::METADATA_DOCUMENT ){
             $rnm = new \Ximdex\Models\RelNodeMetadata();
             $metadata_container = $rnm->find('IdRel, IdMetadata', "IdNode = %s", [$this->node->GetID()], MULTI);
             if( count($metadata_container) == 1 ){

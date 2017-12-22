@@ -84,7 +84,7 @@ class Action_filepreview extends ActionAbstract
         $parentNode = new Node($parentID);
 
         /* Gets all child nodes of type image (nodetype IMAGE_FILE) of this node */
-        $nodes = $node->GetChildren(Ximdex\NodeTypes\NodeType::IMAGE_FILE);
+        $nodes = $node->GetChildren(\Ximdex\NodeTypes\NodeType::IMAGE_FILE);
         $imageNodes = array();
         $imagePath = App::getValue('UrlRoot') . App::getValue('FileRoot');
         $nodePath = App::getValue('UrlRoot') . App::getValue('NodeRoot');

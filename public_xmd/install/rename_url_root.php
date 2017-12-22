@@ -51,7 +51,7 @@
     
     // regenerate the templates_include.xsl with the new URL
     $ximdex = new Node(10000);
-    $xsltNode = new xsltnode($ximdex);
+    $xsltNode = new \Ximdex\NodeTypes\XsltNode($ximdex);
     $res = $xsltNode->reload_templates_include($ximdex);
     if (!$res)
     {

@@ -94,14 +94,14 @@ class Action_newemptynode extends ActionAbstract {
 			    // reload the templates include files for this new project when adding a template node
 			    if ($nodetype == \Ximdex\NodeTypes\NodeType::XSL_TEMPLATE)
 			    {
-			        $xsltNode = new xsltnode($file);
+			        $xsltNode = new \Ximdex\NodeTypes\XsltNode($file);
 			        if ($xsltNode->reload_templates_include(new Node($file->getProject())) === false)
 			            $this->messages->mergeMessages($xsltNode->messages);
 			    }
                 $this->messages->add(sprintf('%s'._(' has been successfully created'), $name), MSG_TYPE_NOTICE);
                 if ($name == 'docxap')
                 {
-                    $xsltNode = new xsltnode(new Node($idfile));
+                    $xsltNode = new \Ximdex\NodeTypes\XsltNode(new Node($idfile));
                     $xsltNode->add_parents_includesTemplates();
                 }
 			}

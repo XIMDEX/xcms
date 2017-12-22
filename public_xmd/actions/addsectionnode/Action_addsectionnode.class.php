@@ -29,7 +29,7 @@ use Ximdex\Models\Node;
 use Ximdex\Models\NodeType;
 use Ximdex\Models\SectionType;
 use Ximdex\MVC\ActionAbstract;
-use Ximdex\NodeTypes\NodeType as NodetypeService;
+use\Ximdex\NodeTypes\NodeType as NodetypeService;
 
 ModulesManager::file('/actions/manageproperties/inc/InheritedPropertiesManager.class.php', 'APP');
 ModulesManager::file('/inc/io/XlyreBaseIO.class.php', 'xlyre');
@@ -103,7 +103,7 @@ class Action_addsectionnode extends ActionAbstract {
             $project = new Node($section->getProject());
             
             // reload the templates include files for this new project
-            $xsltNode = new xsltnode($section);
+            $xsltNode = new \Ximdex\NodeTypes\XsltNode($section);
             if ($xsltNode->reload_templates_include($project) === false)
                 $this->messages->mergeMessages($xsltNode->messages);
             

@@ -85,7 +85,7 @@ class Action_modifystates extends ActionAbstract
         foreach ($allNodeTypes as $nodeTypeInfo) {
             if ($nodeTypeInfo['IdNodeType'] == \Ximdex\NodeTypes\NodeType::XML_DOCUMENT ||
                 $nodeTypeInfo['IdNodeType'] == \Ximdex\NodeTypes\NodeType::TEXT_FILE ||
-                $nodeTypeInfo['IdNodeType'] == Ximdex\NodeTypes\NodeType::IMAGE_FILE ||
+                $nodeTypeInfo['IdNodeType'] ==\Ximdex\NodeTypes\NodeType::IMAGE_FILE ||
                 $nodeTypeInfo['IdNodeType'] == \Ximdex\NodeTypes\NodeType::BINARY_FILE
             ) {
                 $nodeTypeValues[] = array("id" => $nodeTypeInfo['IdNodeType'],

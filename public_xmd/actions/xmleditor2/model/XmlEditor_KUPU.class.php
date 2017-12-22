@@ -44,7 +44,6 @@ use Ximdex\Sync\SynchroFacade;
 ModulesManager::file('/actions/xmleditor2/model/XmlEditor_Abstract.class.php', 'APP');
 ModulesManager::file('/actions/xmleditor2/HTML2XML.class.php', 'APP');
 ModulesManager::file('/inc/repository/nodeviews/View_PreviewInServer.class.php');
-ModulesManager::file('/inc/nodetypes/xsltnode.php');
 ModulesManager::file('/actions/enricher/model/Enricher.class.php', 'Xowl');
 ModulesManager::file('/actions/enricher/model/TagSuggester.class.php', 'Xowl');
 ModulesManager::file('/inc/repository/nodeviews/View_NodeToRenderizedContent.class.php');
@@ -702,7 +701,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
         $rngElements = $parser->getElements();
 
         // Obtaining array with templates referenced from templates_include.xsl
-        if ($this->node->GetNodeType() != Ximdex\NodeTypes\NodeType::METADATA_DOCUMENT)
+        if ($this->node->GetNodeType() !=\Ximdex\NodeTypes\NodeType::METADATA_DOCUMENT)
         {
             $docxapId = NULL;
             $depsMngr = new DepsManager();

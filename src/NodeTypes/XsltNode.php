@@ -25,6 +25,8 @@
  * @version $Revision$
  */
 
+namespace Ximdex\NodeTypes;
+
 use Ximdex\Deps\DepsManager;
 use Ximdex\Models\Node;
 use Ximdex\NodeTypes\FileNode;
@@ -34,7 +36,7 @@ use Ximdex\Logger;
 use Ximdex\Models\FastTraverse;
 
 
-class xsltnode extends FileNode
+class XsltNode extends FileNode
 {
 
     private $xsltOldName = ""; //String;
@@ -227,7 +229,7 @@ class xsltnode extends FileNode
         foreach ($nodes[1] as $idChildNode => $idNodeType)
         {
             // only project, servers and section/subsections can storage template folders
-            if ($idNodeType == Ximdex\NodeTypes\NodeType::SERVER or $idNodeType == Ximdex\NodeTypes\NodeType::SECTION)
+            if ($idNodeType == \Ximdex\NodeTypes\NodeType::SERVER or $idNodeType == \Ximdex\NodeTypes\NodeType::SECTION)
             {
                 // call in recursive mode with the templates folder, for whole project nodes tree
                 $childNode = new Node($idChildNode);
@@ -307,7 +309,7 @@ class xsltnode extends FileNode
     public function SetContent($content, $commitNode = NULL, Node $node = null)
     {
         //checking the valid XML of the given content
-        $domDoc = new DOMDocument();
+        $domDoc = new \DOMDocument();
         $domDoc->formatOutput = true;
         $domDoc->preserveWhiteSpace = false;
         $res = @$domDoc->loadXML($content);
@@ -315,8 +317,8 @@ class xsltnode extends FileNode
         //validating of the correct XSL document in the correct system path (only if node is given)
         if ($node and $res)
         {
-            $xsltprocessor = new XSLTProcessor();
-            $dom = new DOMDocument();
+            $xsltprocessor = new \XSLTProcessor();
+            $dom = new \DOMDocument();
             @$dom->loadXML($content);
             $project = new Node($node->GetProject());
             $dom->documentURI = XIMDEX_ROOT_PATH . App::getValue('NodeRoot') . $node->GetRelativePath($project->GetID());
@@ -380,12 +382,12 @@ class xsltnode extends FileNode
             return $content;
         }
         
-        $xsldom = new DOMDocument();
+        $xsldom = new \DOMDocument();
         $xsldom->formatOutput = true;
         $xsldom->preserveWhiteSpace = false;
         if (@$xsldom->loadXML($content) === false)
             return $content;
-        $xpath = new DOMXPath($xsldom);
+        $xpath = new \DOMXPath($xsldom);
 
         $nodelist = $xpath->query('//xsl:text');
         $count = $nodelist->length;
@@ -480,16 +482,28 @@ class xsltnode extends FileNode
         
         //generation of the file docxap.xsl with project name inside
         $xslSourcePath = XIMDEX_ROOT_PATH . App::getValue('TempRoot') . '/docxap.xsl';
-        Logger::info('Creating unexisting docxap XSLT file in ' . $xslSourcePath);
-        $docxapTemplate = __DIR__ . '/docxap.xsl.template';
-        $content = FsUtils::file_get_contents($docxapTemplate);
-        if (!$content)
-            return false;
+
+        //generation of the file docxap.xsl with project name inside
+        $content=<<<DOCXAP
+<?xml version="1.0" encoding="utf-8"?>
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+	<xsl:output method="html" />
+   	<xsl:param name="xmlcontent" />
+   	<!-- DO NOT REPLACE THE FOLLOWING LINE IF LOCAL XSLT INCLUDES ARE IN USE -->
+   	<xsl:include href="##PATH_TO_LOCAL_TEMPLATE_INCLUDE##/templates_include.xsl" />
+   	<!-- END XSLT INCLUDE INSERTION -->
+	<xsl:template name="docxap" match="docxap">
+		<!-- XHTML Document -->
+	</xsl:template>
+</xsl:stylesheet>
+DOCXAP;
+
+
 		if (!FsUtils::file_put_contents($xslSourcePath, $content))
 		    return false;
 		
 		//obtain the ID for XSL templates node type
-		$nodeTypeID = Ximdex\NodeTypes\NodeType::XSL_TEMPLATE;
+		$nodeTypeID =\Ximdex\NodeTypes\NodeType::XSL_TEMPLATE;
 		
 		//create the node for the generated file
 		$node = new Node();
@@ -580,7 +594,7 @@ class xsltnode extends FileNode
         //get includes template node and its content
         $includeNode = new Node($docxapId);
         $includeContent = $includeNode->getContent();
-        $dom = new DOMDocument();
+        $dom = new \DOMDocument();
         if (!@$dom->loadXML($includeContent))
         {
             Logger::error('Can\'t load XML content from docxap node with ID: ' . $includeNode->GetID());
@@ -588,7 +602,7 @@ class xsltnode extends FileNode
         }
         
         //check if there is a template with that name
-        $xPath = new DOMXPath($dom);
+        $xPath = new \DOMXPath($dom);
         $projectId = $node->GetProject();
         $templateURL = App::getValue('UrlHost') . App::getValue('UrlRoot') . App::getValue('NodeRoot') . $node->GetRelativePath($projectId);
         $includeTag = $xPath->query("/xsl:stylesheet/xsl:include[@href='$templateURL']");
@@ -693,8 +707,8 @@ class xsltnode extends FileNode
         if (!$ft)
         {
             // only project, servers and section/subsections can storage template folders
-            if ($node->GetNodeType() != Ximdex\NodeTypes\NodeType::PROJECTS and $node->GetNodeType() != Ximdex\NodeTypes\NodeType::PROJECT
-                    and $node->GetNodeType() != Ximdex\NodeTypes\NodeType::SERVER and $node->GetNodeType() != Ximdex\NodeTypes\NodeType::SECTION)
+            if ($node->GetNodeType() !=\Ximdex\NodeTypes\NodeType::PROJECTS and $node->GetNodeType() !=\Ximdex\NodeTypes\NodeType::PROJECT
+                    and $node->GetNodeType() !=\Ximdex\NodeTypes\NodeType::SERVER and $node->GetNodeType() !=\Ximdex\NodeTypes\NodeType::SECTION)
             {
                 $this->messages->add('Cannot reload nodes with a node type diferent than project, server or section', MSG_TYPE_ERROR);
                 return false;
@@ -705,7 +719,7 @@ class xsltnode extends FileNode
         }
         
         // look for templates folder
-        $templateFolderId = $node->GetChildren(Ximdex\NodeTypes\NodeType::TEMPLATES_ROOT_FOLDER);
+        $templateFolderId = $node->GetChildren(\Ximdex\NodeTypes\NodeType::TEMPLATES_ROOT_FOLDER);
         if ($templateFolderId)
         {
             $templateFolder = new Node($templateFolderId[0]);
@@ -769,8 +783,8 @@ class xsltnode extends FileNode
         foreach ($nodes[1] as $idChildNode => $idNodeType)
         {
             // only project, servers and section/subsections can storage template folders
-            if ($idNodeType == Ximdex\NodeTypes\NodeType::PROJECT or $idNodeType == Ximdex\NodeTypes\NodeType::SERVER
-                    or $idNodeType == Ximdex\NodeTypes\NodeType::SECTION)
+            if ($idNodeType ==\Ximdex\NodeTypes\NodeType::PROJECT or $idNodeType ==\Ximdex\NodeTypes\NodeType::SERVER
+                    or $idNodeType ==\Ximdex\NodeTypes\NodeType::SECTION)
             {
                 // call in recursive mode with the child node
                 $childNode = new Node($idChildNode);

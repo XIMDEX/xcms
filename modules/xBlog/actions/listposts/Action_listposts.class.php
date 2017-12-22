@@ -27,7 +27,7 @@ use Ximdex\Models\Node;
 use Ximdex\Models\User;
 use Ximdex\MVC\ActionAbstract;
 use DiDom\Document;
-use Ximdex\NodeTypes\NodeType;
+use\Ximdex\NodeTypes\NodeType;
 
 ModulesManager::file("/actions/browser3/Action_browser3.class.php");
 ModulesManager::file('/inc/utils/XHTMLEditorUtils.php', 'xBlog');

@@ -32,7 +32,7 @@ use Ximdex\Models\NodeType;
 use Ximdex\Modules\Module;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\App;
-use Ximdex\NodeTypes\NodeType as ServicesNodeType;
+use\Ximdex\NodeTypes\NodeType as ServicesNodeType;
 
 ModulesManager::file('/actions/addfoldernode/model/ProjectTemplate.class.php', 'APP');
 ModulesManager::file('/actions/addfoldernode/conf/addfoldernode.conf', 'APP');
@@ -359,7 +359,7 @@ class Action_addfoldernode extends ActionAbstract
             if ($node->GetNodeType() == \Ximdex\NodeTypes\NodeType::PROJECT or $node->GetNodeType() == \Ximdex\NodeTypes\NodeType::TEMPLATES_ROOT_FOLDER
                     or $node->GetNodeType() == \Ximdex\NodeTypes\NodeType::SERVER or $node->GetNodeType() == \Ximdex\NodeTypes\NodeType::SECTION)
             {
-                $xsltNode = new xsltnode($node);
+                $xsltNode = new \Ximdex\NodeTypes\XsltNode($node);
                 if ($xsltNode->reload_templates_include(new Node($node->getProject())) === false)
                     $this->messages->mergeMessages($xsltNode->messages);
             }

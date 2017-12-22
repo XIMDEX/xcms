@@ -522,25 +522,25 @@ class ParsingDependencies
         $depNode = new Node($idNode);
         if ($depNode->get('IdNode') > 0) {
             switch ((int)$depNode->get("IdNodeType")) {
-                case Ximdex\NodeTypes\NodeType::LINK:
+                case\Ximdex\NodeTypes\NodeType::LINK:
                     $type = Dependencies::XIMLINK;
                     break;
-                case Ximdex\NodeTypes\NodeType::CSS_FILE:
-                case Ximdex\NodeTypes\NodeType::BINARY_FILE:
-                case Ximdex\NodeTypes\NodeType::TEXT_FILE:
+                case\Ximdex\NodeTypes\NodeType::CSS_FILE:
+                case\Ximdex\NodeTypes\NodeType::BINARY_FILE:
+                case\Ximdex\NodeTypes\NodeType::TEXT_FILE:
                 case \Ximdex\NodeTypes\NodeType::NODE_HT:
-                case Ximdex\NodeTypes\NodeType::IMAGE_FILE:
+                case\Ximdex\NodeTypes\NodeType::IMAGE_FILE:
                     $type = Dependencies::ASSET;
                     break;
-                case Ximdex\NodeTypes\NodeType::XIMLET_CONTAINER:
-                case Ximdex\NodeTypes\NodeType::XIMLET:
+                case\Ximdex\NodeTypes\NodeType::XIMLET_CONTAINER:
+                case\Ximdex\NodeTypes\NodeType::XIMLET:
                     $type = Dependencies::XIMLET;
                     break;
-                case Ximdex\NodeTypes\NodeType::XML_DOCUMENT:
+                case\Ximdex\NodeTypes\NodeType::XML_DOCUMENT:
                 case \Ximdex\NodeTypes\NodeType::METADATA_DOCUMENT:
                     $type = Dependencies::XML;
                     break;
-                case Ximdex\NodeTypes\NodeType::XSL_TEMPLATE:
+                case\Ximdex\NodeTypes\NodeType::XSL_TEMPLATE:
                     $type = Dependencies::TEMPLATE;
                     break;
                 default:

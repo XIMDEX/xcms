@@ -34,7 +34,6 @@ use Ximdex\Runtime\App;
 
 ModulesManager::file('/inc/repository/nodeviews/Abstract_View.class.php');
 ModulesManager::file('/inc/repository/nodeviews/Interface_View.class.php');
-ModulesManager::file('/inc/nodetypes/xsltnode.php');
 
 class View_Xslt extends Abstract_View
 {
@@ -118,7 +117,7 @@ class View_Xslt extends Abstract_View
         else
             $idNode = null;
         $urlTemplatesInclude = null;
-        if (!xsltnode::replace_path_to_local_templatesInclude($docxapContent, $idNode, $projectId, $urlTemplatesInclude))
+        if (!\Ximdex\NodeTypes\XsltNode::replace_path_to_local_templatesInclude($docxapContent, $idNode, $projectId, $urlTemplatesInclude))
         {
             $error = 'Cannot load the XSL file ' . $urlTemplatesInclude . ' for XML document ';
             if ($idNode)
@@ -170,7 +169,7 @@ class View_Xslt extends Abstract_View
                 {
                     Logger::info('XSL templates file: ' . $urlTemplatesInclude 
                             . ' is empty; trying to reload the templates files in the project ID: ' . $projectId);
-                    $xsltNode = new xsltnode($project);
+                    $xsltNode = new \Ximdex\NodeTypes\XsltNode($project);
                     if ($xsltNode->reload_templates_include($project) === false)
                     {
                         foreach ($xsltNode->messages as $message)

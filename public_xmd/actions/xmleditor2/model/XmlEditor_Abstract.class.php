@@ -110,7 +110,7 @@ abstract class XmlEditor_Abstract
             $this->rel_path_docxap=$pathToFileRel."/";
             $content = FsUtils::file_get_contents($pathDocxap);
             // include the correspondant includes_template.xsl for the current document
-            xsltnode::replace_path_to_local_templatesInclude($content, $idnode);
+            \Ximdex\NodeTypes\XsltNode::replace_path_to_local_templatesInclude($content, $idnode);
         } else {
             $msg = "docxap.xsl was not found for node $idnode";
             Logger::error($msg);

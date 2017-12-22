@@ -174,7 +174,7 @@ class Action_movenode extends Action_copy {
 		//update templates_includes files if node type is a XSL template
 		if ($node->GetNodeType() == \Ximdex\NodeTypes\NodeType::XSL_TEMPLATE)
 		{
-            $xsltNode = new xsltnode($node);
+            $xsltNode = new \Ximdex\NodeTypes\XsltNode($node);
             if ($xsltNode->move_node($targetParentID) === false)
             {
                 $this->messages->mergeMessages($xsltNode->messages);

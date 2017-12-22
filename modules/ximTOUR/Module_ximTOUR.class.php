@@ -85,7 +85,7 @@ class Module_ximTOUR extends Module
                 
                 // generate the templates includes content
                 $project = new Node($projectid);
-                $xsltNode = new xsltnode($project);
+                $xsltNode = new \Ximdex\NodeTypes\XsltNode($project);
                 $xsltNode->reload_templates_include($project);
             }
             $GLOBALS['fromTheme'] = null;

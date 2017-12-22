@@ -28,7 +28,6 @@ namespace Ximdex\Models;
 
 
 use DOMDocument;
-use xsltnode;
 use Ximdex\Deps\DepsManager;
 use Ximdex\Logger;
 use Ximdex\Models\ORM\NodesOrm;
@@ -43,7 +42,6 @@ use Ximdex\Workflow\WorkFlow;
 use Ximdex\XML\Base;
 use Ximdex\XML\XML;
 
-require_once(XIMDEX_ROOT_PATH . '/inc/nodetypes/xsltnode.php');
 
 /**
  *
@@ -1349,7 +1347,7 @@ class Node extends NodesOrm
         if ($nodeTypeID == \Ximdex\NodeTypes\NodeType::TEMPLATES_ROOT_FOLDER)
         {
             // if the node is a type of templates folder, generates the templates_include.xsl inside
-            $xsltNode = new xsltnode($node);
+            $xsltNode = new \Ximdex\NodeTypes\XsltNode($node);
             if ($xsltNode->create_templates_include($node->GetID()) === false)
             {
                 $this->messages->mergeMessages($xsltNode->messages);
@@ -1359,7 +1357,7 @@ class Node extends NodesOrm
         elseif ($nodeTypeID == \Ximdex\NodeTypes\NodeType::METADATA_SECTION)
         {
             // if the node is a type of metadata section, generates the relation with the templates folder
-            $xsltNode = new xsltnode($node);
+            $xsltNode = new \Ximdex\NodeTypes\XsltNode($node);
             if ($xsltNode->rel_include_templates_to_metadata_section($node) === false)
             {
                 $this->messages->mergeMessages($xsltNode->messages);
@@ -1460,7 +1458,7 @@ class Node extends NodesOrm
             
             // reload the dependencies to the documents folders if exist (with the templates folder node)
             $project = new Node($this->getProject());
-            $xsltNode = new xsltnode($this);
+            $xsltNode = new \Ximdex\NodeTypes\XsltNode($this);
             if (!$xsltNode->rel_include_templates_to_documents_folders($project))
             {
                 $this->messages->mergeMessages($xsltNode->messages);
