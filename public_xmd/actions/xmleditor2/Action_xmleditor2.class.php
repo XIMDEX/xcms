@@ -251,7 +251,9 @@ class Action_xmleditor2 extends ActionAbstract
     {
         $ximcludeId = $this->request->getParam('nodeid');
         $userId = \Ximdex\Runtime\Session::get('userID');
-        $ret = Auth::canWrite($userId, array('node_id' => $ximcludeId));
+
+        $user = new \Ximdex\Models\User($userId);
+        $ret = $user->canWrite(array('node_id' => $ximcludeId));
         $this->printContent(array('editable' => $ret));
     }
 

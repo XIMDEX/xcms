@@ -76,7 +76,9 @@ class Action_fileupload_common_multiple extends ActionAbstract {
             $this->messages->add(_('NodeType is empty'), MSG_TYPE_ERROR);
         }
 
-        if(!Auth::canWrite($userid, array('node_id' => $idNode)) ) {
+        $user = new \Ximdex\Models\User($userId);
+
+        if(!$user->canWrite(array('node_id' => $idNode)) ) {
             $this->messages->add(_('Files cannot be added because of lack of permits'), MSG_TYPE_ERROR);
         }
 

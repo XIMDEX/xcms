@@ -365,7 +365,11 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
             Logger::error(_("A non-existing node cannot be edited: ") . $idNode);
         }
 
-        $hasPermission = Auth::hasPermission(\Ximdex\Runtime\Session::get('userID'), 'expert_mode_allowed');
+
+
+        $user = new \Ximdex\Models\User(\Ximdex\Runtime\Session::get('userID'));
+
+        $hasPermission = $user->hasPermission('expert_mode_allowed');
         $expert_mode_allowed = $hasPermission ? '1' : '0';
 
         $canPublicate = $this->canPublicate($idNode);

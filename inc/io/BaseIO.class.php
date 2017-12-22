@@ -204,24 +204,23 @@ class BaseIO
         $nodeType = new NodeType();
         $nodeType->SetByName($nodeTypeName);
         $idNodeType = $nodeType->ID;
+
+        $user = new \Ximdex\Models\User($userId);
+
         switch ($operation) {
-            case Constants::WRITE :
-                if (!Auth::canWrite($userId, array('node_type' => $idNodeType))) {
-                    return Constants::ERROR_NO_PERMISSIONS;
-                }
-                break;
             case Constants::UPDATE :
-                if (!Auth::canModify($userId, array('node_type' => $idNodeType))) {
+                if (!$user->canModify(array('node_type' => $idNodeType))) {
                     return Constants::ERROR_NO_PERMISSIONS;
                 }
                 break;
             case Constants::DELETE :
-                if (!Auth::canDelete($userId, array('node_type' => $idNodeType))) {
+                if (!$user->canDelete( array('node_type' => $idNodeType))) {
                     return Constants::ERROR_NO_PERMISSIONS;
                 }
                 break;
+            case Constants::WRITE:
             default :
-                if (!Auth::canWrite($userId, array('node_type' => $idNodeType))) {
+                if (!$user->canWrite(array('node_type' => $idNodeType))) {
                     return Constants::ERROR_NO_PERMISSIONS;
                 }
                 break;

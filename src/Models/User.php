@@ -33,7 +33,16 @@ use Ximdex\Models\ORM\UsersOrm;
 use Ximdex\Runtime\App;
 use Ximdex\Runtime\Db;
 use Ximdex\Runtime\Session;
-
+use Ximdex\Models\Group;
+use Ximdex\Models\Node;
+use Ximdex\Models\NodeType;
+use Ximdex\Models\NodetypeMode;
+use Ximdex\Models\ORM\ContextsOrm;
+use Ximdex\Models\ORM\RelRolesActionsOrm;
+use Ximdex\Models\ORM\RelUsersGroupsOrm;
+use Ximdex\Models\Role;
+use Ximdex\Runtime\Constants;
+use Ximdex\Workflow\WorkFlow;
 
 
 class User extends UsersOrm
@@ -746,4 +755,288 @@ class User extends UsersOrm
         Session::destroy();
 
     }
+
+
+    /**
+     *
+     * @param $userId
+     * @param $nodeId
+     * @return bool
+     */
+    public function hasAccess($nodeId)
+    {
+
+        // TODO: define as global constans nodeid=10000 && nodeid=2
+        if ($nodeId == 1 || $nodeId == 10000 || $nodeId == 2 || $this->getID() == 301) {
+            return true;
+        }
+
+        $group = new Group();
+
+        $userGroupList = $this->getGroupList();
+        $generalGroup = array($group->getGeneralGroup());
+        $user_groups = array_diff($userGroupList, $generalGroup);
+
+        $node = new Node($nodeId);
+        $nodeGroupList = $node->getGroupList();
+        $node_groups = array_diff($nodeGroupList, $generalGroup);
+
+        $rel_groups = array_intersect($user_groups, $node_groups);
+
+        if ((count($rel_groups) > 0) || $this->isOnNode($nodeId, true)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    /**
+     *
+     * @param $userId
+     * @param $params
+     * @return boolean
+     */
+    public  function canRead($params)
+    {
+
+        $wfParams = $this->parseParams($params);
+
+        $nodeId = $wfParams['node_id'];
+
+        if ($this->hasPermission('view all nodes')) {
+            return true;
+        }
+
+        if ($this->hasAccess($nodeId)) {
+            return true;
+        }
+
+        return false;
+    }
+
+
+    /**
+     * Comprueba si un usuario puede escribir un nodo
+     *
+     * @param int $userId
+     * @param array $params array asociativo que debe contener las claves node_id o node_type
+     * @return bool (true, si puede escribir, false en caso contrario)
+     */
+    public function canWrite($params)
+    {
+
+        $wfParams = $this->parseParams($params);
+        $idPipeline = NULL;
+
+        if (isset($wfParams['node_id'])) {
+
+            $nodeId = (int)$wfParams['node_id'];
+
+            // Usuario ximdex
+            if ($this->getID() == 301) return true;
+
+            if (!$this->hasAccess($nodeId)) {
+                return false;
+            }
+
+            $workflow = new WorkFlow($nodeId);
+            $idPipeline = $workflow->pipeline->get('id');
+
+        }
+
+        // Should be always set.
+        if (!isset($wfParams['node_type'])) {
+            return false;
+        }
+
+        $nodeTypeId = (int)$wfParams['node_type'];
+
+        if ($this->checkContext($nodeTypeId, Constants::CREATE)) {
+            return true;
+        }
+
+        // Check groups&roles and defined actions...
+        $userRoles = $this->GetRoles();
+
+        if (!is_array($userRoles)) {
+            return false;
+        }
+
+        $userRoles = array_unique($userRoles);
+        unset($user);
+
+        $nodeType = new NodeType($nodeTypeId);
+        $actionId = $nodeType->GetConstructor();
+
+        unset($nodeType);
+
+        if (!$actionId > 0) {
+            Logger::warning(sprintf(_("The nodetype %d has no create action associated"), $nodeTypeId));
+            return false;
+        }
+
+        foreach ($userRoles as $userRole) {
+            $role = new Role($userRole);
+            if ($role->HasAction($actionId, $idPipeline)) {
+                return true;
+            }
+        }
+
+        // Not write action found for roles of userId.
+        return false;
+
+    }
+
+
+    /**
+     *
+     * @param $userId
+     * @param $params
+     * @return boolean
+     */
+    public function canDelete($params)
+    {
+
+        // TODO: extend relation table with delete actions/nodetypes mapping.
+
+        $wfParams = $this->parseParams($params);
+
+        if (!isset($wfParams['node_type'])) {
+            return false;
+        }
+
+        $nodeTypeId = (int)$wfParams['node_type'];
+
+        if ($this->checkContext($nodeTypeId, Constants::DELETE)) {
+            return true;
+        }
+
+        return $this->canWrite($params);
+    }
+
+
+
+    /**
+     *
+     * @param $userId
+     * @param $params
+     * @return boolean
+     */
+    public  function canModify($params)
+    {
+
+        // TODO: extend relation table with modify actions/nodetypes mapping.
+
+        $wfParams = $this->parseParams($params);
+
+        if (!isset($wfParams['node_type'])) {
+            return false;
+        }
+
+        $nodeTypeId = (int)$wfParams['node_type'];
+
+        if ($this->checkContext( $nodeTypeId, Constants::UPDATE)) {
+            return true;
+        }
+
+        return $this->canWrite($params);
+    }
+
+
+
+    /**
+     *
+     * @param $params
+     * @return array
+     */
+    protected function parseParams($params)
+    {
+
+        $formedParams = array();
+
+        if (is_array($params)) {
+
+            if (isset($params['node_id']) && $params['node_id'] > 0) {
+
+                $nodeId = (int)$params['node_id'];
+
+                if (isset($params['node_type']) && $params['node_type'] > 0) {
+
+                    $formedParams['node_id'] = $nodeId;
+                    $formedParams['node_type'] = (int)$params['node_type'];
+
+                } else {
+
+                    $node = new Node($nodeId);
+                    $idNodeType = $node->GetNodeType();
+
+                    $formedParams['node_id'] = $nodeId;
+                    $formedParams['node_type'] = $idNodeType;
+
+                    unset($node);
+                }
+
+                return $formedParams;
+            }
+
+            if (isset($params['node_type']) && $params['node_type'] > 0) {
+
+                $idNodeType = $params['node_type'];
+
+                // TODO: Check if is a valid nodetype.
+
+                $formedParams['node_type'] = $idNodeType;
+
+                return $formedParams;
+            }
+
+        }
+        return null;
+
+    }
+
+
+    /**
+     *
+     * @param $idUser
+     * @param $idNodeType
+     * @param $mode
+     * @return boolean
+     */
+    protected function checkContext($idNodeType, $mode)
+    {
+        $nodeTypeMode = new NodetypeMode();
+        $idAction = $nodeTypeMode->getActionForOperation($idNodeType, $mode);
+        if (!($idAction > 0)) {
+            return false;
+        }
+
+        $context = Session::get('context');
+        $contextsObject = new ContextsOrm();
+        $result = $contextsObject->find('id', 'Context = %s', array($context), MONO);
+        $idContext = count($result) == 1 ? $result[0] : '1';
+
+        $relRolesActions = new RelRolesActionsOrm();
+        $result = $relRolesActions->find('IdRol',
+            'IdAction = %s AND IdContext = %s',
+            array($idAction, $idContext),
+            MONO);
+
+        $idRol = count($result) == 1 ? $result[0] : NULL;
+        if (!($idRol) > 0) {
+            return false;
+        }
+
+        $relUserGroup = new RelUsersGroupsOrm();
+        $relations = $relUserGroup->find('IdRel',
+            'IdUser = %s AND IdRole %s',
+            array($this->getID(), $idRol),
+            MONO);
+
+        return (count($relations) > 0);
+    }
+
+
+
 }
