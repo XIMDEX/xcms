@@ -33,7 +33,6 @@ use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
 use Ximdex\Utils\PipelineManager;
 
-ModulesManager::file('/inc/filters/Filter.class.php');
 ModulesManager::file('/inc/repository/nodeviews/View_NodeToRenderizedContent.class.php');
 ModulesManager::file('/inc/repository/nodeviews/View_PrefilterMacros.class.php');
 ModulesManager::file('/inc/repository/nodeviews/View_Xslt.class.php');

@@ -28,7 +28,6 @@
 use Ximdex\Logger;
 use Ximdex\Models\Channel;
 
-require_once(XIMDEX_ROOT_PATH . '/inc/filters/Filter.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Abstract_View.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Interface_View.class.php');
 
@@ -49,10 +48,6 @@ class View_ChannelFilter extends Abstract_View implements Interface_View {
 		}
 
 		$content = $this->retrieveContent($pointer);
-		if ($channel->get('Filter')) {
-			$filter = new Filter($channel->get('Filter'));
-			$content = $filter->doFilter($content);
-		}
 
 		return $this->storeTmpContent($content);
 	}
