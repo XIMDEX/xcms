@@ -30,7 +30,7 @@ use Ximdex\Runtime\Db;
 
 
 //Handler the signal
-$callback = array("MPMManager", "singnalHandler");
+$callback = array("\\Ximdex\\MPM\\MPMManager", "singnalHandler");
 declare(ticks=1);
 //pcntl_signal(SIGTERM, $callback);
 //pcntl_signal(SIGINT, $callback);
