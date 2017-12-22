@@ -248,7 +248,7 @@ class SyncManager
 
         $user = new User(301);
         $email = $user->Get('Email');
-        $mail = new Mail();
+        $mail = new \Ximdex\Utils\Mail();
         $mail->addAddress($email);
         $mail->Subject = _("Publication of") . " $name";
         $mail->Body = $msg;

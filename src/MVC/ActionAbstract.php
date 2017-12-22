@@ -697,7 +697,7 @@ abstract class ActionAbstract extends IController
             $user = new User($toUser);
             $userEmail = $user->get('Email');
             $userName = $user->get('Name');
-            $mail = new Mail();
+            $mail = new \Ximdex\Utils\Mail();
             $mail->addAddress($userEmail, $userName);
             $mail->Subject = $subject;
             $mail->Body = $content;
