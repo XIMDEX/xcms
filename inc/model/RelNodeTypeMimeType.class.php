@@ -26,10 +26,24 @@
 
 
 
-require_once XIMDEX_ROOT_PATH . '/inc/model/orm/RelNodeTypeMimeType_ORM.class.php';
 
-class RelNodeTypeMimeType extends RelNodeTypeMimeType_ORM
+class RelNodeTypeMimeType  extends \Ximdex\Data\GenericData
 {
+
+    var $_idField = 'idRelNodeTypeMimeType';
+    var $_table = 'RelNodeTypeMimeType';
+    var $_metaData = array(
+        'idRelNodeTypeMimeType' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
+        'idNodeType' => array('type' => "int(12)", 'not_null' => 'true'),
+        'extension' => array('type' => "varchar(255)", 'not_null' => 'false'),
+        'filter' => array('type' => "char(50)", 'not_null' => 'false')
+    );
+    var $_uniqueConstraints = array();
+    var $_indexes = array('idRelNodeTypeMimeType');
+    var $idRelNodeTypeMimeType;
+    var $idNodeType = 0;
+    var $extension;
+    var $filter;
 
     function getFileExtension($nodetype)
     {

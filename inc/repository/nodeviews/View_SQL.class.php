@@ -122,7 +122,7 @@ class View_SQL extends Abstract_View implements Interface_View {
 
 		$insertQuery = '';
 
-		$factory = new \Ximdex\Utils\Factory(XIMDEX_ROOT_PATH . "/inc/model/orm/", $tableName);
+		$factory = new \Ximdex\Utils\Factory(XIMDEX_ROOT_PATH . "/src/Models/ORM/", $tableName);
 		$object = $factory->instantiate("_ORM");
 
 		if (!is_object($object)) {

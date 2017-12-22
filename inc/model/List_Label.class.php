@@ -26,8 +26,18 @@
 
 
 
-require_once XIMDEX_ROOT_PATH . '/inc/model/orm/List_Label_ORM.class.php';
 
-class List_Label extends List_Label_ORM {
-
+class List_Label extends \Ximdex\Data\GenericData {
+    var $_idField = 'id';
+    var $_table = 'List_Label';
+    var $_metaData = array(
+        'id' => array('type' => "int(11)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
+        'Name' => array('type' => "varchar(250)", 'not_null' => 'true'),
+        'Description' => array('type' => "varchar(250)", 'not_null' => 'false')
+    );
+    var $_uniqueConstraints = array();
+    var $_indexes = array('id');
+    var $id;
+    var $Name;
+    var $Description;
 }

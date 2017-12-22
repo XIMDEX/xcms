@@ -24,10 +24,16 @@
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
-class Synchronizer_ORM extends \Ximdex\Data\GenericData
+
+namespace Ximdex\Models\ORM;
+
+use Ximdex\Data\GenericData ;
+
+class SynchronizerHistoryOrm extends GenericData
 {
+
     var $_idField = 'IdSync';
-    var $_table = 'Synchronizer';
+    var $_table = 'SynchronizerHistory';
     var $_metaData = array(
         'IdSync' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
         'IdServer' => array('type' => "int(12)", 'not_null' => 'true'),

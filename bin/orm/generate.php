@@ -115,7 +115,7 @@ Posibles causas:
 HEREDOC;
         continue;
     }
-    $fileName = XIMDEX_ROOT_PATH . "/inc/model/orm/{$tableName}_ORM.class.php";
+    $fileName = XIMDEX_ROOT_PATH . "/src/Models/ORM/{$tableName}_ORM.class.php";
     if (is_file($fileName)) {
         if ($tableMode == 'new_tables') {
             echo <<< HEREDOC

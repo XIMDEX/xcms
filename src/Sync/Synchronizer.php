@@ -32,8 +32,8 @@ use Ximdex\Runtime\Db as DB;
 use ModulesManager;
 use Ximdex\Utils\PipelineManager;
 use Ximdex\Models\Server;
-use Synchronizer_ORM;
-use SynchronizerHistory_ORM;
+use Ximdex\Models\ORM\SynchronizerOrm;
+use Ximdex\Models\ORM\SynchronizerHistoryOrm;
 use View_ChannelFilter;
 use Ximdex\Models\Channel;
 use Ximdex\Models\Language;
@@ -44,8 +44,6 @@ use Ximdex\Logger;
 
 
 
-include_once(XIMDEX_ROOT_PATH . "/inc/model/orm/Synchronizer_ORM.class.php");
-include_once(XIMDEX_ROOT_PATH . "/inc/model/orm/SynchronizerHistory_ORM.class.php");
 include_once(XIMDEX_ROOT_PATH . "/inc/repository/nodeviews/View_ChannelFilter.class.php");
 
 
@@ -1684,7 +1682,7 @@ class Synchronizer
             return false;
         }
 
-        $syncOrm = new Synchronizer_ORM();
+        $syncOrm = new SynchronizerOrm();
         $result = $syncOrm->find(ALL, "$column = %s", array($column => $idColumn), MULTI);
 
         if (!is_null($result)) {
@@ -1692,7 +1690,7 @@ class Synchronizer
                 $idSync = $data['IdSync'];
                 $state = $data['State'];
 
-                $syncOrm = new Synchronizer_ORM($idSync);
+                $syncOrm = new SynchronizerOrm($idSync);
 
                 // Setting date down if node is published (don't move the frame)
 
@@ -1709,7 +1707,7 @@ class Synchronizer
                 if (!is_null($moveToHistory)) {
                     // Moving frame to history
 
-                    $syncHistoryOrm = new SynchronizerHistory_ORM();
+                    $syncHistoryOrm = new SynchronizerHistoryOrm();
                     $syncHistoryOrm->loadFromArray($data);
                     $syncHistoryOrm->add();
 

@@ -25,9 +25,21 @@
  */
 
 
-require_once XIMDEX_ROOT_PATH . '/inc/model/orm/RelBulletinXimlet_ORM.class.php';
 
-class RelBulletinXimlet extends RelBulletinXimlet_ORM
+class RelBulletinXimlet extends \Ximdex\Data\GenericData
 {
-
+    var $_idField = 'id';
+    var $_table = 'RelBulletinXimlet';
+    var $_metaData = array(
+        'id' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
+        'source' => array('type' => "int(12)", 'not_null' => 'true'),
+        'target' => array('type' => "int(12)", 'not_null' => 'true')
+    );
+    var $_uniqueConstraints = array(
+        'rel' => array('source', 'target')
+    );
+    var $_indexes = array('id');
+    var $id;
+    var $source = 0;
+    var $target = 0;
 }

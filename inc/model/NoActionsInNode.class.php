@@ -25,9 +25,20 @@
  */
 
 
-require_once XIMDEX_ROOT_PATH . '/inc/model/orm/NoActionsInNode_ORM.class.php';
 
-class NoActionsInNode extends NoActionsInNode_ORM {
+class NoActionsInNode extends \Ximdex\Data\GenericData {
+
+    public $_idField = 'idNamespace';
+    public $_table = 'NoActionsInNode';
+    public $_metaData = array(
+        'IdNode' => array('type' => "int(11)", 'not_null' => 'true'),
+        'IdAction' => array('type' => "varchar(255)", 'not_null' => 'true')
+    );
+    var $_uniqueConstraints = array(
+        'uniq' => array('IdNode', 'IdAction')
+    );
+    public $IdNode;
+    public $IdAction;
 
     /**
      * Check if an action is disabled for a node

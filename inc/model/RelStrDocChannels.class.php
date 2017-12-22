@@ -25,10 +25,20 @@
  */
 
 
-require_once XIMDEX_ROOT_PATH . '/inc/model/orm/RelStrDocChannels_ORM.class.php';
 
-class RelStrDocChannels extends RelStrDocChannels_ORM
+class RelStrDocChannels extends \Ximdex\Data\GenericData
 {
-
+    var $_idField = 'IdRel';
+    var $_table = 'RelStrDocChannels';
+    var $_metaData = array(
+        'IdRel' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
+        'IdDoc' => array('type' => "int(12)", 'not_null' => 'false'),
+        'IdChannel' => array('type' => "int(12)", 'not_null' => 'false')
+    );
+    var $_uniqueConstraints = array();
+    var $_indexes = array('IdRel');
+    var $IdRel;
+    var $IdDoc = 0;
+    var $IdChannel = 0;
 }
 

@@ -44,17 +44,6 @@ use Ximdex\Logger;
 
 class Auth
 {
-    /**
-     *
-     * @param $userId
-     * @param $nodeId
-     * @return boolean
-     */
-    public static function _checkExistence($userId, $nodeId)
-    {
-
-        return true;
-    }
 
     /**
      *
@@ -155,10 +144,6 @@ class Auth
 
         $nodeId = $wfParams['node_id'];
 
-        if (!Auth::_checkExistence($userId, $nodeId)) {
-            return false;
-        }
-
         $user = new User($userId);
         /*
                 if ( Auth::_access($userId, $nodeId) || $user->hasPermission('view all nodes') ) {
@@ -193,10 +178,6 @@ class Auth
         if (isset($wfParams['node_id'])) {
 
             $nodeId = (int)$wfParams['node_id'];
-
-            if (!Auth::_checkExistence($userId, $nodeId)) {
-                return false;
-            }
 
             // Usuario ximdex
             if ($userId == 301) return true;

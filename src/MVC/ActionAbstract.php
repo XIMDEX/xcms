@@ -42,7 +42,6 @@ use Ximdex\Utils\QueryManager;
 use Ximdex\Runtime\Session;
 
 ModulesManager::file('/inc/mail/Mail.class.php');
-ModulesManager::file('/inc/model/orm/Messages_ORM.class.php');
 
 
 /**
@@ -717,7 +716,7 @@ abstract class ActionAbstract extends IController
 
         $result = array();
         foreach ($to as $toUser) {
-            $messages = new Messages_ORM();
+            $messages = new \Ximdex\Models\ORM\MessagesOrm();
             $messages->set("IdFrom", $from);
             $messages->set("IdOwner", $toUser);
             $messages->set("Subject", $subject);

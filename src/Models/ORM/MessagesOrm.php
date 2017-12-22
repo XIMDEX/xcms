@@ -24,18 +24,34 @@
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
-class NodeConstructors_ORM extends \Ximdex\Data\GenericData
+
+namespace Ximdex\Models\ORM;
+
+use Ximdex\Data\GenericData;
+
+
+class  MessagesOrm extends GenericData
 {
-    var $_idField = 'IdNodeConstructor';
-    var $_table = 'NodeConstructors';
+    var $_idField = 'IdMessage';
+    var $_table = 'Messages';
     var $_metaData = array(
-        'IdNodeConstructor' => array('type' => "int(11)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
-        'IdNodeType' => array('type' => "int(11)", 'not_null' => 'true'),
-        'IdAction' => array('type' => "int(11)", 'not_null' => 'true')
+        'IdMessage' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
+        'IdFrom' => array('type' => "int(12)", 'not_null' => 'true'),
+        'IdOwner' => array('type' => "int(12)", 'not_null' => 'true'),
+        'ToString' => array('type' => "varchar(255)", 'not_null' => 'false'),
+        'Folder' => array('type' => "int(12)", 'not_null' => 'true'),
+        'Subject' => array('type' => "varchar(255)", 'not_null' => 'false'),
+        'Content' => array('type' => "blob", 'not_null' => 'false'),
+        'IsRead' => array('type' => "int(1)", 'not_null' => 'true')
     );
     var $_uniqueConstraints = array();
-    var $_indexes = array('IdNodeConstructor');
-    var $IdNodeConstructor;
-    var $IdNodeType;
-    var $IdAction;
+    var $_indexes = array('IdMessage');
+    var $IdMessage;
+    var $IdFrom = 0;
+    var $IdOwner = 0;
+    var $ToString;
+    var $Folder = 1;
+    var $Subject;
+    var $Content;
+    var $IsRead = 0;
 }

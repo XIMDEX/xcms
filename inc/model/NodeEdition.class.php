@@ -28,9 +28,23 @@
 
 use Ximdex\Logger;
 
-require_once(XIMDEX_ROOT_PATH . '/inc/model/orm/NodeEdition_ORM.class.php');
 
-class NodeEdition extends NodeEdition_ORM {
+class NodeEdition extends \Ximdex\Data\GenericData {
+
+    var $_idField = 'Id';
+    var $_table = 'NodeEdition';
+    var $_metaData = array(
+        'Id' => array('type' => "int(11)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
+        'IdNode' => array('type' => "int(11)", 'not_null' => 'true'),
+        'IdUser' => array('type' => "int(11)", 'not_null' => 'true'),
+        'StartTime' => array('type' => "int(11)", 'not_null' => 'true')
+    );
+    var $_uniqueConstraints = array();
+    var $_indexes = array('Id');
+    var $Id;
+    var $IdNode;
+    var $IdUser;
+    var $StartTime;
 
         /**
          * <p>Creates a new row in the NodeEdition database</p>

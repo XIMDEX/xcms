@@ -26,9 +26,23 @@
 
 use Ximdex\Logger;
 
-require_once(XIMDEX_ROOT_PATH . '/inc/model/orm/NodeProperties_ORM.class.php');
 
-class NodeProperty extends NodeProperties_ORM {
+class NodeProperty extends \Ximdex\Data\GenericData {
+
+    var $_idField = 'IdNodeProperty';
+    var $_table = 'NodeProperties';
+    var $_metaData = array(
+        'IdNodeProperty' => array('type' => "int(11)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
+        'IdNode' => array('type' => "int(11)", 'not_null' => 'true'),
+        'Property' => array('type' => "varchar(255)", 'not_null' => 'true'),
+        'Value' => array('type' => "longblob", 'not_null' => 'true')
+    );
+    var $_uniqueConstraints = array();
+    var $_indexes = array('IdNodeProperty');
+    var $IdNodeProperty;
+    var $IdNode;
+    var $Property;
+    var $Value;
 
 	function create($idNode, $property, $value = NULL) {
 

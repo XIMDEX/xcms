@@ -29,9 +29,21 @@ use Ximdex\Models\Dependencies;
 use Ximdex\Models\Node;
 use Ximdex\Models\StructuredDocument;
 
-require_once XIMDEX_ROOT_PATH . '/inc/model/orm/RelTemplateContainer_ORM.class.php';
 
-class RelTemplateContainer extends RelTemplateContainer_ORM {
+class RelTemplateContainer extends \Ximdex\Data\GenericData{
+
+    var $_idField = 'IdRel';
+    var $_table = 'RelTemplateContainer';
+    var $_metaData = array(
+        'IdRel' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
+        'IdTemplate' => array('type' => "int(12)", 'not_null' => 'true'),
+        'IdContainer' => array('type' => "int(12)", 'not_null' => 'true')
+    );
+    var $_uniqueConstraints = array();
+    var $_indexes = array('IdRel');
+    var $IdRel;
+    var $IdTemplate = 0;
+    var $IdContainer = 0;
 
 	function getTemplate($idContainer) {
 

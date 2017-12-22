@@ -25,8 +25,21 @@
  */
 
 
-require_once XIMDEX_ROOT_PATH . '/inc/model/orm/RelNode2Asset_ORM.class.php';
 
-class RelNode2Asset extends RelNode2Asset_ORM {
+class RelNode2Asset extends \Ximdex\Data\GenericData {
 
+    var $_idField = 'id';
+    var $_table = 'RelNode2Asset';
+    var $_metaData = array(
+        'id' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
+        'source' => array('type' => "int(12)", 'not_null' => 'true'),
+        'target' => array('type' => "int(12)", 'not_null' => 'true')
+    );
+    var $_uniqueConstraints = array(
+        'rel' => array('source', 'target')
+    );
+    var $_indexes = array('id');
+    var $id;
+    var $source = 0;
+    var $target = 0;
 }

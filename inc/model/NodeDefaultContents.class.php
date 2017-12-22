@@ -25,9 +25,30 @@
  *  @version $Revision$
  */
 
-require_once XIMDEX_ROOT_PATH . '/inc/model/orm/NodeDefaultContents_ORM.class.php';
 
-class NodeDefaultContents extends NodeDefaultContents_ORM {
+class NodeDefaultContents extends \Ximdex\Data\GenericData {
+
+
+    var $_idField = 'IdNodeDefaultContent';
+    var $_table = 'NodeDefaultContents';
+    var $_metaData = array(
+        'IdNodeDefaultContent' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
+        'IdNodeType' => array('type' => "int(12)", 'not_null' => 'true'),
+        'NodeType' => array('type' => "int(12)", 'not_null' => 'true'),
+        'Name' => array('type' => "varchar(255)", 'not_null' => 'true'),
+        'State' => array('type' => "int(12)", 'not_null' => 'false'),
+        'Params' => array('type' => "varchar(255)", 'not_null' => 'false')
+    );
+    var $_uniqueConstraints = array(
+        'UniqueName' => array('Name', 'IdNodeType')
+    );
+    var $_indexes = array('IdNodeDefaultContent');
+    var $IdNodeDefaultContent;
+    var $IdNodeType = 0;
+    var $NodeType = 0;
+    var $Name = 0;
+    var $State;
+    var $Params;
 
     /**
      * Returns all the allowed children for a given nodetype. 

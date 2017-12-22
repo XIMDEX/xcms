@@ -26,7 +26,6 @@
 
 
 
-require_once(XIMDEX_ROOT_PATH . '/inc/model/orm/PipePropertyValues_ORM.class.php');
 
 /**
  *
@@ -36,6 +35,20 @@ require_once(XIMDEX_ROOT_PATH . '/inc/model/orm/PipePropertyValues_ORM.class.php
  * recover a cache, in that moment if this info matchs the cache is returned
  *
  */
-class PipePropertyValue extends PipePropertyValues_ORM
+class PipePropertyValue extends \Ximdex\Data\GenericData
 {
+    var $_idField = 'id';
+    var $_table = 'PipePropertyValues';
+    var $_metaData = array(
+        'id' => array('type' => "int(11)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
+        'IdPipeProperty' => array('type' => "int(11)", 'not_null' => 'true'),
+        'IdPipeCache' => array('type' => "int(11)", 'not_null' => 'true'),
+        'Value' => array('type' => "varchar(255)", 'not_null' => 'true')
+    );
+    var $_uniqueConstraints = array();
+    var $_indexes = array('id');
+    var $id;
+    var $IdPipeProperty;
+    var $IdPipeCache;
+    var $Value;
 }

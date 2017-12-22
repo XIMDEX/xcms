@@ -29,9 +29,24 @@ use Ximdex\Logger;
 
 
 
-require_once XIMDEX_ROOT_PATH . '/inc/model/orm/RelFramesPortal_ORM.class.php';
 
-class RelFramesPortal extends RelFramesPortal_ORM {
+class RelFramesPortal extends \Ximdex\Data\GenericData{
+
+
+    var $_idField = 'id';
+    var $_table = 'RelFramesPortal';
+    var $_metaData = array(
+        'id' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
+        'IdPortalVersion' => array('type' => "int(12)", 'not_null' => 'false'),
+        'IdFrame' => array('type' => "int(12)", 'not_null' => 'false')
+    );
+    var $_uniqueConstraints = array(
+        'PortalFrame' => array('IdPortalVersion', 'IdFrame')
+    );
+    var $_indexes = array('id');
+    var $id;
+    var $IdPortalVersion = 0;
+    var $IdFrame = 0;
 
 	function __construct($id = null)  {
 		parent::__construct($id);
