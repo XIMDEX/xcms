@@ -1,6 +1,6 @@
 <?php
 
-namespace Ximdex\Runtime\Cli;
+namespace Ximdex\Cli;
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *

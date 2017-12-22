@@ -25,7 +25,7 @@
  */
 
 
-use Ximdex\Runtime\Cli\CliReader;
+use Ximdex\Cli\CliReader;
 use Ximdex\Utils\FsUtils;
 
 //

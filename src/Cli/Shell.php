@@ -25,7 +25,7 @@
  */
 
 
-namespace Ximdex\Runtime\Cli;
+namespace Ximdex\Cli;
 
 use Ximdex\Utils\Messages;
 

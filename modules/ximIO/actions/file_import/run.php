@@ -32,7 +32,7 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 
 
 use Ximdex\Runtime\Constants;
-use Ximdex\Runtime\Cli\CliReader;
+use Ximdex\Cli\CliReader;
 
 
 	//

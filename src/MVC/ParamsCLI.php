@@ -27,7 +27,7 @@
 
 namespace Ximdex\MVC;
 
-use Ximdex\Runtime\Cli\CliParser;
+use Ximdex\Cli\CliParser;
 
 
 /**

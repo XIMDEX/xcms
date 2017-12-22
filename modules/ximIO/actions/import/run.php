@@ -28,7 +28,7 @@
 use Ximdex\Models\User;
 use Ximdex\Models\Node;
 use Ximdex\Runtime\Constants;
-use Ximdex\Runtime\Cli\CliReader;
+use Ximdex\Cli\CliReader;
 
 ModulesManager::file('/inc/ImportXml.class.php', 'ximIO');
 ModulesManager::file('/actions/file_import/inc/FileUpdaterCli.class.php', 'ximIO');

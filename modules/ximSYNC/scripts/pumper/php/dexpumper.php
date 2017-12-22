@@ -27,7 +27,7 @@
 use Ximdex\Logger;
 use Ximdex\Models\Pumper;
 use Ximdex\Models\Server;
-use Ximdex\Runtime\Cli\CliParser;
+use Ximdex\Cli\CliParser;
 
 // for legacy compatibility
 if (!defined('XIMDEX_ROOT_PATH')) {

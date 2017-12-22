@@ -25,7 +25,7 @@
  */
 
 
-use Ximdex\Runtime\Cli\CliParser;
+use Ximdex\Cli\CliParser;
 
 
 class ReportCli extends CliParser  {

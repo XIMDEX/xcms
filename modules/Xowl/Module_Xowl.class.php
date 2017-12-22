@@ -26,7 +26,7 @@
 
 use Ximdex\Modules\Module;
 use Ximdex\Runtime\App;
-use Ximdex\Runtime\Cli\CliReader;
+use Ximdex\Cli\CliReader;
 
 
 // Point to ximdex root and include necessary class.

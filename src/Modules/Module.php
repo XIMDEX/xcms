@@ -28,7 +28,7 @@
 namespace Ximdex\Modules;
 
 use Symfony\Component\Console\Application;
-use Ximdex\Runtime\Cli\Shell,
+use Ximdex\Cli\Shell,
     Ximdex\Logger,
     Ximdex\Runtime\App;
 use Ximdex\Runtime\Db;

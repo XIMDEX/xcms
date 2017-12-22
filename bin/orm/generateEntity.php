@@ -27,8 +27,8 @@
 require_once dirname(__DIR__, 2) . '/bootstrap.php';
 
 use Ximdex\Logger;
-use Ximdex\Runtime\Cli\CliParser;
-use Ximdex\Runtime\Cli\CliReader;
+use Ximdex\Cli\CliParser;
+use Ximdex\Cli\CliReader;
 
 
 
