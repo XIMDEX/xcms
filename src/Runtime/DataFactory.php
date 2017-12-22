@@ -28,9 +28,7 @@
 namespace Ximdex\Runtime;
 
 use Exception;
-use MetadataManager;
 use ModulesManager;
-use PoolerClient;
 use Ximdex\Models\Node;
 use Ximdex\Models\PipeCache;
 use Ximdex\Models\Version;
@@ -42,7 +40,6 @@ use Ximdex\Logger;
 
 
 ModulesManager::file('/inc/persistence/store/StoreFactory.class.php');
-ModulesManager::file('/inc/metadata/MetadataManager.class.php');
 
 
 /**
@@ -551,7 +548,7 @@ class DataFactory
             $this->indexNode($this->getVersionId($newVersion, $newSubVersion), $commitNode);
         }
 
-        $mm = new MetadataManager($this->nodeID);
+        $mm = new \Ximdex\Metadata\MetadataManager($this->nodeID);
         $mm->updateMetadataVersion();
 
         return $IdVersion;

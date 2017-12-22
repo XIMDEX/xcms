@@ -26,11 +26,9 @@
 
 namespace Ximdex\NodeTypes;
 use DOMDocument;
-use MetadataManager;
 use ModulesManager;
 use Ximdex\Models\Node;
 
-ModulesManager::file('/inc/metadata/MetadataManager.class.php');
 
 /***
  * Class for NodeType Image
@@ -46,7 +44,7 @@ class ImageNode extends FileNode
     function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = 7, $sourcePath = "")
     {
         parent::CreateNode($name, $parentID, $nodeTypeID, $stateID, $sourcePath);
-        $mm = new MetadataManager($this->nodeID);
+        $mm = new \Ximdex\Metadata\MetadataManager($this->nodeID);
         $mm->generateMetadata();
         $mm->updateSystemMetadata();
     }
@@ -57,14 +55,14 @@ class ImageNode extends FileNode
     function DeleteNode()
     {
         parent::DeleteNode();
-        $mm = new MetadataManager($this->nodeID);
+        $mm = new \Ximdex\Metadata\MetadataManager($this->nodeID);
         $mm->deleteMetadata();
     }
 
 
     function RenameNode($name = null)
     {
-        $mm = new MetadataManager($this->nodeID);
+        $mm = new \Ximdex\Metadata\MetadataManager($this->nodeID);
         $mm->updateSystemMetadata();
     }
 
@@ -72,7 +70,7 @@ class ImageNode extends FileNode
     function SetContent($content, $commitNode = NULL, Node $node = null)
     {
         parent::SetContent($content, $commitNode, $node);
-        $mm = new MetadataManager($this->nodeID);
+        $mm = new \Ximdex\Metadata\MetadataManager($this->nodeID);
         $mm->updateSystemMetadata();
     }
 

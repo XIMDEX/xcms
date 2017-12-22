@@ -118,7 +118,7 @@ class Action_manageversions extends ActionAbstract
             $data = new DataFactory($idNode);
             $ret = $data->RecoverVersion($version, $subVersion);
 
-            $mm = new MetadataManager($idNode);
+            $mm = new \Ximdex\Metadata\MetadataManager($idNode);
             $metadataNodes = $mm->getMetadataNodes();
             if( count($metadataNodes) > 0 ){
                 $v = new \Ximdex\Models\Version();

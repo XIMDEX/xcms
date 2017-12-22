@@ -67,7 +67,7 @@ class Namespaces extends  \Ximdex\Data\GenericData {
 		$namespaces = $this->find("idNamespace");
 		if ($namespaces !== null){
 			foreach ($namespaces as $nspace) {
-				$result[] = new Namespaces($nspace["idNamespace"]);
+				$result[] = new \Ximdex\Models\Namespaces($nspace["idNamespace"]);
 			}
 		}
 		return $result;
@@ -79,7 +79,7 @@ class Namespaces extends  \Ximdex\Data\GenericData {
 		$namespaces = $this->find("idNamespace", "uri='$uri'");
 		if ($namespaces !== null){
 			foreach ($namespaces as $nspace) {
-				$result[] = new Namespaces($nspace["idNamespace"]);
+				$result[] = new \Ximdex\Models\Namespaces($nspace["idNamespace"]);
 			}
 		}
 		return $result;

@@ -33,7 +33,6 @@ use Ximdex\Utils\FsUtils;
 
 ModulesManager::file('/inc/Tags.inc', 'ximTAGS');
 ModulesManager::file('/services/Xowl/OntologyService.class.php');
-ModulesManager::file('/inc/metadata/MetadataManager.class.php');
 
 class Action_setmetadata extends ActionAbstract
 {
@@ -161,7 +160,7 @@ class Action_setmetadata extends ActionAbstract
             $tags->saveAll($data->tags, $idNode, $previous_tags);
         }
 
-        $mm = new MetadataManager($idNode);
+        $mm = new \Ximdex\Metadata\MetadataManager($idNode);
         $mm->updateSystemMetadata();
 
         $this->messages->add(_("All the tags have been properly associated."), MSG_TYPE_NOTICE);

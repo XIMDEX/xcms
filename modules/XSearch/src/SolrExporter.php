@@ -6,7 +6,6 @@ use Ximdex\Models\StructuredDocument;
 use Ximdex\Runtime\Db;
 use\Ximdex\NodeTypes\NodeType;
 
-ModulesManager::file('/inc/metadata/MetadataManager.class.php');
 ModulesManager::file('/src/Exporter.php', 'XSearch');
 ModulesManager::file('/src/SolrConnection.php', 'XSearch');
 
@@ -135,7 +134,7 @@ class SolrExporter implements Exporter
         // TODO: Filter text files to add content
         //$doc->content = $node->GetContent();
 
-        $mm = new MetadataManager($node->IdNode);
+        $mm = new \Ximdex\Metadata\MetadataManager($node->IdNode);
         $metadata_nodes = $mm->getMetadataNodes();
 
         foreach ($metadata_nodes as $metadata_node_id) {

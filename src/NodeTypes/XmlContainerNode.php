@@ -31,7 +31,6 @@ use Ximdex\Models\NodeType;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\NodeTypes\FolderNode;
 
-\ModulesManager::file('/inc/metadata/MetadataManager.class.php');
 
 class XmlContainerNode extends FolderNode
 {
@@ -110,7 +109,7 @@ class XmlContainerNode extends FolderNode
             foreach ($aliases as $idLang => $alias) {
                 $langs[] = $idLang;
             }
-            $mm = new MetadataManager($this->nodeID);
+            $mm = new \Ximdex\Metadata\MetadataManager($this->nodeID);
             $mm->generateMetadata($langs);
             $mm->updateSystemMetadata();
         }
@@ -197,7 +196,7 @@ class XmlContainerNode extends FolderNode
     {
         $templatecontainer = new  \Ximdex\Models\RelTemplateContainer();
         $templatecontainer->deleteRel($this->nodeID);
-        $mm = new MetadataManager($this->nodeID);
+        $mm = new \Ximdex\Metadata\MetadataManager($this->nodeID);
         $mm->deleteMetadata();
     }
 
@@ -216,7 +215,7 @@ class XmlContainerNode extends FolderNode
             }
         }
         $this->updatePath();
-        $mm = new MetadataManager($this->nodeID);
+        $mm = new \Ximdex\Metadata\MetadataManager($this->nodeID);
         $mm->updateSystemMetadata();
     }
 

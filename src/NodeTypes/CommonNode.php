@@ -26,10 +26,8 @@
 
 namespace Ximdex\NodeTypes;
 use Ximdex\Models\Node;
-use MetadataManager;
 use ModulesManager;
 
-ModulesManager::file('/inc/metadata/MetadataManager.class.php');
 
 /***
  * Class for NodeType common
@@ -45,7 +43,7 @@ class CommonNode extends FileNode
     function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = 7, $sourcePath = "")
     {
         parent::CreateNode($name, $parentID, $nodeTypeID, $stateID, $sourcePath);
-        $mm = new MetadataManager($this->nodeID);
+        $mm = new \Ximdex\Metadata\MetadataManager($this->nodeID);
         $mm->generateMetadata();
         $mm->updateSystemMetadata();
     }
@@ -56,14 +54,14 @@ class CommonNode extends FileNode
     function DeleteNode()
     {
         parent::DeleteNode();
-        $mm = new MetadataManager($this->nodeID);
+        $mm = new \Ximdex\Metadata\MetadataManager($this->nodeID);
         $mm->deleteMetadata();
     }
 
 
     function RenameNode($name = null)
     {
-        $mm = new MetadataManager($this->nodeID);
+        $mm = new \Ximdex\Metadata\MetadataManager($this->nodeID);
         $mm->updateSystemMetadata();
     }
 
@@ -71,7 +69,7 @@ class CommonNode extends FileNode
     function SetContent($content, $commitNode = NULL, Node $node = null)
     {
         parent::SetContent($content, $commitNode, $node);
-        $mm = new MetadataManager($this->nodeID);
+        $mm = new \Ximdex\Metadata\MetadataManager($this->nodeID);
         $mm->updateSystemMetadata();
     }
 

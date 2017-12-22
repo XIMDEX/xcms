@@ -31,7 +31,6 @@ use Ximdex\Models\NodeType;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\MVC\ActionAbstract;
 
-ModulesManager::file('/inc/metadata/MetadataManager.class.php');
 ModulesManager::file('/inc/io/BaseIOInferer.class.php');
 
 class Action_createxmlcontainer extends ActionAbstract {

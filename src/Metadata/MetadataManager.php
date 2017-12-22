@@ -24,6 +24,9 @@
  *  @version $Revision$
  */
 
+
+namespace Ximdex\Metadata;
+
 use Ximdex\Logger;
 use Ximdex\Models\Channel;
 use Ximdex\Models\Language;
@@ -35,9 +38,9 @@ use Ximdex\Runtime\App;
 use Ximdex\Runtime\DataFactory;
 
 
-ModulesManager::file('/inc/io/BaseIOInferer.class.php');
+\ModulesManager::file('/inc/io/BaseIOInferer.class.php');
 
-ModulesManager::file('/inc/io/BaseIO.class.php');
+\ModulesManager::file('/inc/io/BaseIO.class.php');
 
 /***
     Class for Metadata Manegement
@@ -160,7 +163,7 @@ class MetadataManager{
 
         $info = $node->loadData();
         $idLanguage = $metadata_node->get('IdLanguage');
-        $domDoc = new DOMDocument();
+        $domDoc = new \DOMDocument();
         $domDoc->formatOutput = true;
         $domDoc->preserveWhiteSpace = false;
         if (@$domDoc->loadXML("<root>".$content."</root>")) {
@@ -204,13 +207,13 @@ class MetadataManager{
                 }
             }
 
-            if (ModulesManager::isEnabled('ximTAGS')) {
+            if (\ModulesManager::isEnabled('ximTAGS')) {
                 $relTags = new RelTagsNodes();
                 $tags = $relTags->getTags($node->nodeID);
                 $tagsNode = $domDoc->createElement('tags');
 
                 foreach ($tags as $tag) {
-                    $ns = new Namespaces($tag['IdNamespace']);
+                    $ns = new \Ximdex\Models\Namespaces($tag['IdNamespace']);
                     $nemo = $ns->get('nemo');
                     $tagNode = $domDoc->createElement('tag');
                     $tagNode->nodeValue = "{$tag["Name"]}:{$nemo}";
@@ -283,7 +286,7 @@ class MetadataManager{
             $metadata_node = new StructuredDocument($metadata_node_id);
             $idLanguage = $metadata_node->get('IdLanguage');
             $content = $metadata_node->getContent();
-            $domDoc = new DOMDocument();
+            $domDoc = new \DOMDocument();
             $domDoc->formatOutput = true;
             $domDoc->preserveWhiteSpace = false;
             if ($domDoc->loadXML("<root>".$content."</root>")) {
@@ -327,13 +330,13 @@ class MetadataManager{
                     }
                 }
 
-                if(ModulesManager::isEnabled('ximTAGS')){
+                if(\ModulesManager::isEnabled('ximTAGS')){
                     $relTags = new RelTagsNodes();
                     $tags = $relTags->getTags($this->node->nodeID);
                     $tagsNode = $domDoc->createElement('tags');
 
                     foreach($tags as $tag){
-                        $ns = new Namespaces($tag['IdNamespace']);
+                        $ns = new \Ximdex\Models\Namespaces($tag['IdNamespace']);
                         $nemo = $ns->get('nemo');
                         $tagNode = $domDoc->createElement('tag');
                         $tagNode->nodeValue = "{$tag["Name"]}:{$nemo}";
@@ -377,7 +380,7 @@ class MetadataManager{
             $idLanguage = $metadata_node->get('IdLanguage');
             if ($selectedLanguage == $idLanguage) {
                 $content = $metadata_node->getContent();
-                $domDoc = new DOMDocument();
+                $domDoc = new \DOMDocument();
                 $domDoc->formatOutput = true;
                 $domDoc->preserveWhiteSpace = false;
                 if ($domDoc->loadXML("<root>".$content."</root>")) {
@@ -548,7 +551,7 @@ class MetadataManager{
         }
 
         // Creating container
-        $baseIoInferer = new BaseIOInferer();
+        $baseIoInferer = new \BaseIOInferer();
         $inferedNodeType = $baseIoInferer->infereType('FOLDER', $idNode);
         $nodeType = new NodeType();
         $nodeType->SetByName($inferedNodeType['NODETYPENAME']);
@@ -576,7 +579,7 @@ class MetadataManager{
             "MASTER" => $master
         );
         
-        $baseIO = new baseIO();
+        $baseIO = new \baseIO();
         $idContainer = $result = $baseIO->build($data);
 
         if (!($result > 0)) {

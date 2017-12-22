@@ -85,7 +85,7 @@ class ExternalVocabularySearcherStrategy extends AbstractSearcherStrategy{
 				$name = false;
 				if (is_array($typesArray) && count($typesArray)){
 					$docArray["type_uri"] = $typesArray[0];
-					$namespace = new Namespaces();
+					$namespace = new \Ximdex\Models\Namespaces();
 					$inferedTypes = $namespace->getByUri($typesArray[0]);
 					if (count($inferedTypes)){
 						$docArray["type"] = $inferedTypes[0]->get("type");

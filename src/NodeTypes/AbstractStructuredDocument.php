@@ -36,7 +36,6 @@ use Ximdex\Runtime\Db;
 use Ximdex\Utils\PipelineManager;
 use Properties;
 use Ximdex\Models\RelTagsNodes;
-use SolrViews;
 use Ximdex\Models\Channel;
 use Ximdex\Models\Language;
 use Ximdex\Models\Node;
@@ -51,8 +50,6 @@ define('DOCXAP_VIEW', 1);
 define('SOLR_VIEW', 2);
 define('XIMIO_VIEW', 3);
 
-ModulesManager::file('/inc/SolrViews.class.php', 'ximRAM');
-ModulesManager::file('/inc/metadata/MetadataManager.class.php');
 
 /**
  * Class AbstractStructuredDocument
@@ -252,8 +249,6 @@ abstract class AbstractStructuredDocument extends FileNode
         switch ($viewType) {
             case DOCXAP_VIEW:
                 return $this->RenderizeNode($channel, $content);
-            case SOLR_VIEW:
-                return SolrViews::solRview($this->nodeID, $channel, $content, $idVersion);
         }
 
         return NULL;

@@ -32,7 +32,6 @@ use Ximdex\MVC\ActionAbstract;
 use Ximdex\Parsers\ParsingRng;
 use Ximdex\Runtime\App;
 
-ModulesManager::file('/inc/metadata/MetadataManager.class.php');
 ModulesManager::file('/actions/manageproperties/inc/LanguageProperty.class.php', 'APP');
 
 
@@ -100,7 +99,7 @@ class Action_managemetadata extends ActionAbstract
         }
 
         $values['languages_metadata'] = array();
-        $mm = new MetadataManager($nodeId);
+        $mm = new \Ximdex\Metadata\MetadataManager($nodeId);
         $metadata_nodes = $mm->getMetadataNodes();
 
         foreach ($metadata_nodes as $metadata_node_id) {
@@ -159,7 +158,7 @@ class Action_managemetadata extends ActionAbstract
         }
 
         // Retrieve Metadata XMLs
-        $mm = new MetadataManager($nodeId);
+        $mm = new \Ximdex\Metadata\MetadataManager($nodeId);
         $metadata_nodes = $mm->getMetadataNodes();
         foreach ($metadata_nodes as $metadata_node_id) {
             $metadata_node = new StructuredDocument($metadata_node_id);
