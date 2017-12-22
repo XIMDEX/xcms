@@ -28,11 +28,13 @@
 use Ximdex\Deps\DepsManager;
 use Ximdex\Models\Pumper;
 use Ximdex\Runtime\Db;
+use Ximdex\MPM\MPMManager;
+use Ximdex\MPM\MPMProcess;
+
 
 
 ModulesManager::file('/inc/model/ServerFrame.class.php', 'ximSYNC');
-include_once(XIMDEX_ROOT_PATH . "/inc/MPM/MPMManager.class.php");
-include_once(XIMDEX_ROOT_PATH . "/inc/MPM/MPMProcess.class.php");
+
 
 /**
  * @brief Handles the life cycle of a ServerFrame.

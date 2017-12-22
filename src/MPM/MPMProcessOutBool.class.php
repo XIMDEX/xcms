@@ -25,9 +25,7 @@
  */
 
 
-
-
-include_once(XIMDEX_ROOT_PATH . "/inc/MPM/MPMProcess.class.php");
+namespace Ximdex\MPM;
 
 class MPMProcessOutBool extends MPMProcess {
 
@@ -41,7 +39,7 @@ class MPMProcessOutBool extends MPMProcess {
 		if (is_array($args) && ($numArgs == 5)){
 			parent::__construct($args[0], $args[1], $args[2], $args[3], $args[4]);
 		}else{
-			throw new Exception("Can not instanciate MPMProcessOutBool, ilegal arguments");
+			throw new \Exception("Can not instanciate MPMProcessOutBool, ilegal arguments");
 		}
 	}
 

@@ -26,35 +26,42 @@
 
 
 
+namespace Ximdex\MPM;
 
-//TODO: Now, 1 Semaphore class --> 1 semaphore, it's better than 1 class could have more semaphores
-class Semaphore{
-	public $key;
-	public $sem_identifier;
-	
+
+class MPMProcessOutFile extends MPMProcess {
+
 	/**
-	 * Create a new semaphore
+	 * Public constructor
 	 *
-	 * @param unknown_type $key
+	 * @param array $args
 	 */
-	public function getSemaphore($key){
-		//TODO: check if is a valid key
-		$this->key = $key;
-		$this->sem_identifier =  sem_get($this->key);
+	public function __construct($args){
+		$numArgs = count($args);
+		if (is_array($args) && ($numArgs == 5)){
+			parent::__construct($args[0], $args[1], $args[2], $args[3], $args[4]);
+		}else{
+			throw new \Exception("Can not instanciate MPMProcessOutBool, ilegal arguments");
+		}
 	}
 	/**
-	 * Lock the resource that the semaphore control
-	 */
-	public function lock(){
-		sem_acquire($this->sem_identifier);
-	}
-	/**
-	 * Unlock the resource that the semaphore control
+	 * Extends the run from his parents and change the dataOut format data
 	 *
-	 */	
-	public function unlock(){
-		sem_release($this->sem_identifier);
+	 */
+	public function run(){
+		$this->getMethod();
+
+		//Note:  Call private, protected or abstract methods throw an exception in the invoke method
+		//Note: For static method, you have to call invoke() with NULL in the first argument
+		//      In other cases, you have to pass an instance of the class
+		//TODO: check the correct arguments for the function
+		$ret = $this->method->invoke(NULL,$this->dataIn[$this->key]);
+		$dataOut = $this->sharedMemory->getVar($this->keyOutVar);
+		$dataOut[$this->key]= $ret;
+		$this->sharedMemory->putVar($this->keyOutVar, $dataOut);
 	}
+
+
 }
 
 ?>

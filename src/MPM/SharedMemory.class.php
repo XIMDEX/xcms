@@ -26,7 +26,8 @@
 
 
 
-include_once(XIMDEX_ROOT_PATH . "/inc/MPM/Semaphore.class.php");
+namespace Ximdex\MPM;
+
 
 //TODO: Now, 1 SharedMemory class --> 1 shared memory, it's better than 1 class could have more "shared memory"
 class SharedMemory{

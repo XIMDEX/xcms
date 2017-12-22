@@ -24,10 +24,9 @@
  *  @version $Revision$
  */
 
-use Ximdex\Runtime\Db;
+namespace Ximdex\MPM;
 
-include_once(XIMDEX_ROOT_PATH . "/inc/MPM/Semaphore.class.php");
-include_once(XIMDEX_ROOT_PATH . "/inc/MPM/SharedMemory.class.php");
+use Ximdex\Runtime\Db;
 
 
 //Handler the signal
@@ -73,24 +72,24 @@ class MPMManager {
 		(MPMProcess::MPM_PROCESS_OUT_FILE == $typeProcess)){
 			$this->typeProcess = $typeProcess;
 		}else{
-			throw new Exception("Type Process for MPMManager not valid");
+			throw new \Exception("Type Process for MPMManager not valid");
 		}
 
 		//check numMaxChild
 		if ($numMaxChild <= 0){
-			throw new Exception("numMaxChild have to be > 0");
+			throw new \Exception("numMaxChild have to be > 0");
 		}else{
 			$this->numMaxChild = $numMaxChild;
 		}
 		//check callback
 		if(!MPMManager::is_callback($callback)){
-			throw new Exception("Instanciate MPMManager with a not valid callback function");
+			throw new \Exception("Instanciate MPMManager with a not valid callback function");
 		}else{
 			$this->callbackFunction = $callback;
 		}
 		//check dataIn
 		if (!is_array($dataIn)){
-			throw new Exception("Instanciate MPMManager with a not valid dataIn format");
+			throw new \Exception("Instanciate MPMManager with a not valid dataIn format");
 		}else{
 			$this->dataIn = $dataIn;
 		}
@@ -167,14 +166,14 @@ class MPMManager {
 	private function createProcess($key){
 		//Call the user function
 		try {
-			$factory = new \Ximdex\Utils\Factory(XIMDEX_ROOT_PATH . "/inc/MPM/", "MPMProcess");
+			$factory = new \Ximdex\Utils\Factory(XIMDEX_ROOT_PATH . "/src/MPM/", "MPMProcess");
 			$args = array($this->callbackFunction, $this->dataIn, $key, $this->sharedMemory, MPMManager::KEY_DATAOUT);
-			$process = $factory->instantiate($this->typeProcess, $args);
+			$process = $factory->instantiate($this->typeProcess, $args, '\Ximdex\MPM');
 
 			$process->run();
 			//TODO:Can not have the status for the child finish?
 			$this->childEnded();
-		}catch (Exception $e){
+		}catch (\Exception $e){
 			//If anything was wrong, we kill the process
 			//TODO:how send the error message???
 			echo "\n".$e->getMessage()."\n";
@@ -207,7 +206,7 @@ class MPMManager {
 					return false;
 				}
 				$isObj = is_object($className);
-				$class = new ReflectionClass($isObj ? get_class($className) : $className);
+				$class = new \ReflectionClass($isObj ? get_class($className) : $className);
 				if ($class->isAbstract()) {
 					return false;
 				}
@@ -219,7 +218,7 @@ class MPMManager {
 					if (!$isObj && !$method->isStatic()) {
 						return false;
 					}
-				} catch (ReflectionException $e) {
+				} catch (\ReflectionException $e) {
 					return false;
 				}
 				return true;

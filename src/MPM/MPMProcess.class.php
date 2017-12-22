@@ -26,10 +26,7 @@
 
 
 
-
-include_once(XIMDEX_ROOT_PATH . "/inc/MPM/MPMManager.class.php");
-include_once(XIMDEX_ROOT_PATH . "/inc/MPM/Semaphore.class.php");
-include_once(XIMDEX_ROOT_PATH . "/inc/MPM/SharedMemory.class.php");
+namespace Ximdex\MPM;
 
 
 class MPMProcess {
@@ -77,27 +74,27 @@ class MPMProcess {
 		if (is_array($dataIn)){
 			$this->dataIn = $dataIn;
 		}else{
-			throw new Exception("DataIn in MPMProcess have to be an array");
+			throw new \Exception("DataIn in MPMProcess have to be an array");
 		}
 		if (array_key_exists($key,$dataIn)){
 			$this->key = $key;
 		}else{
-			throw new Exception("The key for the data in MPMProcess not exits in dataIn array");
+			throw new \Exception("The key for the data in MPMProcess not exits in dataIn array");
 		}
 		if ($sharedMemory != null){
 			$this->sharedMemory = $sharedMemory;
 		}else{
-			throw new Exception("The sharedMemory can not be null in MPMProcess");
+			throw new \Exception("The sharedMemory can not be null in MPMProcess");
 		}
 		if ($keyOutVar > 0){
 			$this->keyOutVar = $keyOutVar;
 		}else{
-			throw new Exception("The key for the shared memory have to be > 0");
+			throw new \Exception("The key for the shared memory have to be > 0");
 		}
 		if (MPMManager::is_callback($callback)){
 			$this->callbackFunction = $callback;
 		}else{
-			throw new Exception("Instanciate MPMProcess with a not valid callback function");
+			throw new \Exception("Instanciate MPMProcess with a not valid callback function");
 		}
 
 		//Get the pid and the ppid
@@ -111,7 +108,7 @@ class MPMProcess {
 	public function run(){
 		$this->getMethod();
 
-		//Note:  Call private, protected or abstract methods throw an exception in the invoke method
+		//Note:  Call private, protected or abstract methods throw an \Exception in the invoke method
 		//Note: For static method, you have to call invoke() with NULL in the first argument
 		//      In other cases, you have to pass an instance of the class
 		//TODO: check the correct arguments for the function
@@ -137,20 +134,20 @@ class MPMProcess {
 					$this->functionName = $methodName;
 				}else{
 					$isObj = is_object($className);
-					$class = new ReflectionClass($isObj ? get_class($className) : $className);
+					$class = new \ReflectionClass($isObj ? get_class($className) : $className);
 					$this->method = $class->getMethod($methodName);
 				}
-			}catch (Exception $e){
-				throw new Exception("Error invoking a class for Reflection --> ".$e->getMessage());
+			}catch (\Exception $e){
+				throw new \Exception("Error invoking a class for Reflection --> ".$e->getMessage());
 			}
 			$this->callbackIsClass = true;
 
 		} elseif (is_string($this->callbackFunction) && function_exists($this->callbackFunction)) {
 			try {
 				//	TODO: check the correct arguments for the function
-				$this->method = new ReflectionFunction($this->callbackFunction);
-			}catch (Exception $e){
-				throw new Exception("Error invoking a method for Reflection --> ".$e->getMessage());
+				$this->method = new \ReflectionFunction($this->callbackFunction);
+			}catch (\Exception $e){
+				throw new \Exception("Error invoking a method for Reflection --> ".$e->getMessage());
 			}
 			$this->callbackIsClass = false;
 		}

@@ -28,7 +28,8 @@
 
 use Ximdex\Runtime\App;
 use Ximdex\Sync\Mutex;
-
+use Ximdex\MPM\MPMManager;
+use Ximdex\MPM\MPMProcess;
 
 // for legacy compatibility
 if (!defined('XIMDEX_ROOT_PATH')) {
@@ -44,8 +45,7 @@ ModulesManager::file('/inc/manager/ServerErrorManager.class.php', 'ximSYNC');
 ModulesManager::file('/inc/model/Batch.class.php', 'ximSYNC');
 ModulesManager::file('/inc/model/SynchronizerStat.class.php', 'ximSYNC');
 ModulesManager::file('/conf/synchro_conf.php', 'ximSYNC');
-ModulesManager::file('/inc/MPM/MPMManager.class.php');
-ModulesManager::file('/inc/MPM/MPMProcess.class.php');
+
 
 if (!ModulesManager::isEnabled('XIMSYNC')) {
     die(_("ximSYNC module is not active, you must run syncronizer module") . "\n");
