@@ -35,7 +35,7 @@ ModulesManager::file('/inc/i18n/I18N.class.php');
 
 $locale = \Ximdex\Runtime\Session::get('locale');
 // Check coherence with HTTP_ACCEPT_LANGUAGE
-I18N::setup($locale);
+\Ximdex\I18n\I18N::setup($locale);
 $userID = \Ximdex\Runtime\Session::get('userID');
 
 header('Content-type: application/javascript');

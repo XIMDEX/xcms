@@ -23,6 +23,10 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
+
+
+namespace Ximdex\I18n;
+
 use Ximdex\Runtime\App;
 use Ximdex\Runtime\Session;
 
@@ -42,14 +46,14 @@ class I18N {
 			if (empty($locale))
 				$locale =  App::getValue( 'locale');
 
-			if (empty($locale) || !@file_exists(XIMDEX_ROOT_PATH . '/inc/i18n/locale/'.$locale) )
+			if (empty($locale) || !@file_exists(XIMDEX_ROOT_PATH . '/src/I18n/locale/'.$locale) )
 				$locale = DEFAULT_LOCALE;
 
 
 			putenv("LC_ALL=$locale");
 			putenv("LANG=$locale");
 			setlocale(LC_ALL, "$locale.utf8");
-		 	bindtextdomain("messages", XIMDEX_ROOT_PATH . '/inc/i18n/locale');
+		 	bindtextdomain("messages", XIMDEX_ROOT_PATH . '/src/I18n/locale');
 			textdomain("messages");
 			bind_textdomain_codeset("messages", 'UTF-8');
 

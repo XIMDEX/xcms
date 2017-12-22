@@ -37,7 +37,7 @@ class Action_installer extends ActionAbstract {
 		$values = array();
 		$this->checkConfigFiles($install_params, $install_modules);
 
-		I18N::setup();
+		\Ximdex\I18n\I18N::setup();
 		$values["ximid"] = App::getValue( "ximid");
 		$values["versionname"] = App::getValue( "VersionName");
 		$values["install_params"] = (int) $install_params;

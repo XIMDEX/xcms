@@ -65,7 +65,7 @@ class Action_login extends ActionAbstract
     {
         $values = array();
 
-        I18N::setup();
+        \Ximdex\I18n\I18N::setup();
         $values["ximid"] = App::getValue("ximid");
         $values["versionname"] = App::getValue("VersionName");
         $values["news_content"] = $this->get_news();

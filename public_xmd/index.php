@@ -55,7 +55,7 @@ if (!InstallController::isInstalled()) {
     $installController->dispatch();
 } else {
     $locale = \Ximdex\Runtime\Session::get('locale');
-    I18N::setup($locale); // Check coherence with HTTP_ACCEPT_LANGUAGE
+    \Ximdex\I18n\I18N::setup($locale); // Check coherence with HTTP_ACCEPT_LANGUAGE
     $frontController = new FrontController();
     $frontController->dispatch();
 }
