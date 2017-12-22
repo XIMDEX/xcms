@@ -25,6 +25,8 @@
  */
 
 
+namespace Ximdex\Models;
+
 
 class NoActionsInNode extends \Ximdex\Data\GenericData {
 

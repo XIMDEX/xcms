@@ -34,7 +34,6 @@ ModulesManager::file('/inc/model/ServerFrame.class.php', 'ximSYNC');
 ModulesManager::file('/inc/model/ChannelFrame.class.php', 'ximSYNC');
 ModulesManager::file('/inc/manager/ServerFrameManager.class.php', 'ximSYNC');
 ModulesManager::file('/inc/model/SynchronizerStat.class.php', 'ximSYNC');
-ModulesManager::file('/inc/model/RelStrDocChannels.class.php');
 
 /**
 *	@brief Handles operations with NodeFrames.
@@ -240,7 +239,7 @@ class NodeFrame extends NodeFrames_ORM {
 					$channelList[] = $cf->get('ChannelId');
 				}
 			}
-			$rdc = new RelStrDocChannels();
+			$rdc = new \Ximdex\Models\RelStrDocChannels();
 			$rdcResult = $rdc->find('IdChannel', 'IdDoc = %s', array($nodeId), MONO);
 			foreach ($rdcResult as $idChannel) {
 				if (!in_array($idChannel, $channelList)) {

@@ -25,9 +25,10 @@
  */
 
 
-use Ximdex\Models\Dependencies;
-use Ximdex\Models\Node;
-use Ximdex\Models\StructuredDocument;
+
+namespace Ximdex\Models;
+
+
 
 
 class RelTemplateContainer extends \Ximdex\Data\GenericData{

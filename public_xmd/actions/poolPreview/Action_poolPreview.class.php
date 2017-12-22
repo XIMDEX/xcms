@@ -32,9 +32,6 @@ use Ximdex\Models\Version;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\DataFactory;
 
-ModulesManager::file('/inc/model/RelStrdocNode.class.php');
-ModulesManager::file('/inc/model/List_Label.class.php');
-ModulesManager::file('/inc/model/RelVersionsLabel.class.php');
 
 class Action_poolPreview extends ActionAbstract {
 
@@ -103,7 +100,7 @@ class Action_poolPreview extends ActionAbstract {
     		}
     	}
     	
-    	$relStrDocNode = new RelStrdocNode();
+    	$relStrDocNode = new  \Ximdex\Models\RelStrdocNode();
     	
     	$result = $this->_getNodeInfo($relStrDocNode->find('target', 'source = %s', array($idNode), MONO));
     	$this->render(array('links' => $result));
@@ -124,7 +121,7 @@ class Action_poolPreview extends ActionAbstract {
     		}
     	}
     	
-    	$relStrDocNode = new RelStrdocNode();
+    	$relStrDocNode = new  \Ximdex\Models\RelStrdocNode();
     	$result = $this->_getNodeInfo($relStrDocNode->find('source', 'target = %s', array($idNode), MONO));
 		$this->render(array('links' => $result));
     }
@@ -132,7 +129,7 @@ class Action_poolPreview extends ActionAbstract {
 	 * Returns all labels
 	 */
     function getLabels(){
-    	$label = new List_Label();
+    	$label = new \Ximdex\Models\ListLabel();
     	$labels = $label->find(ALL, "1=1 order by Name asc");
 		$this->render(array('labels' => $labels));
 	}
@@ -144,7 +141,7 @@ class Action_poolPreview extends ActionAbstract {
     	if (!($idNode > 0)) {
     		return NULL;
     	} else {
-    		$rel = new RelVersionsLabel();
+    		$rel = new  \Ximdex\Models\RelVersionsLabel();
     		$rels = $rel->find(ALL, 'idLabel = %s', array($idNode));
     		
     		$relsInfo = array();
@@ -197,7 +194,7 @@ class Action_poolPreview extends ActionAbstract {
 					
 					foreach ($labels as $key => $value) {
 						Logger::info(_("It is associated IdVersion") . $versionid . _("with label") . $value);
-						$rel = new RelVersionsLabel();
+						$rel = new  \Ximdex\Models\RelVersionsLabel();
 						$rel->set('idVersion',$versionid);
 						$rel->set('idLabel', $value);
 						$rel->add();
@@ -205,7 +202,7 @@ class Action_poolPreview extends ActionAbstract {
 				}else{
 					//only have a label, insert the relation 
 					Logger::info(_("It is associated IdVersion") . $versionid._("with label") . $labels);
-					$rel = new RelVersionsLabel();
+					$rel = new  \Ximdex\Models\RelVersionsLabel();
 					$rel->set('idVersion',$versionid);
 					$rel->set('idLabel', $labels);
 					$rel->add();

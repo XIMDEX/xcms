@@ -35,8 +35,6 @@ use Ximdex\Runtime\App;
 use Ximdex\Runtime\DataFactory;
 
 
-ModulesManager::file('/inc/model/RelNodeMetadata.class.php');
-ModulesManager::file('/inc/model/RelNodeVersionMetadataVersion.class.php');
 ModulesManager::file('/inc/io/BaseIOInferer.class.php');
 
 ModulesManager::file('/inc/io/BaseIO.class.php');
@@ -120,7 +118,7 @@ class MetadataManager{
 
 
     public function updateMetadataNodes() {
-        $rnm = new RelNodeMetadata();
+        $rnm = new \Ximdex\Models\RelNodeMetadata();
         $metadata_container = $rnm->find('idMetadata', "idNode = %s", array($this->node->GetID()), MONO);
         if ($metadata_container) {
             $node = new Node($metadata_container[0]);
@@ -142,7 +140,7 @@ class MetadataManager{
     }
 
     public static function getNodeFromMetadata($idMetadata){
-        $rnm = new RelNodeMetadata();
+        $rnm = new \Ximdex\Models\RelNodeMetadata();
         $metadata_container = $rnm->find('IdRel, IdNode', "IdMetadata = %s", [$idMetadata], MULTI);
         if( count($metadata_container) == 1 ) {
             $idRel = $metadata_container[0]['IdNode'];
@@ -243,11 +241,11 @@ class MetadataManager{
     /**
      * This function has to be called each time a new version/subversion of a node is created
      * If $this->node has type metadatadoc, it will search the node who has the metadata and
-     * add a new row to RelNodeVersionMetadataVersion
+     * add a new row to \Ximdex\Models\RelNodeVersionMetadataVersion
      */
     public function updateMetadataVersion(){
         if ( $this->node->GetNodeType() != Ximdex\NodeTypes\NodeType::METADATA_DOCUMENT ){
-            $rnm = new RelNodeMetadata();
+            $rnm = new \Ximdex\Models\RelNodeMetadata();
             $metadata_container = $rnm->find('IdRel, IdMetadata', "IdNode = %s", [$this->node->GetID()], MULTI);
             if( count($metadata_container) == 1 ){
                 $nodeInfo = $this->node->GetLastVersion();
@@ -260,7 +258,7 @@ class MetadataManager{
                     $df->AddVersion();
                     $metadataDoc = new Node($metadataIdDoc);
                     $metadataDocInfo = $metadataDoc->GetLastVersion();
-                    $rnvmv = new RelNodeVersionMetadataVersion();
+                    $rnvmv = new \Ximdex\Models\RelNodeVersionMetadataVersion();
                     $rnvmv->set('idrnm', $idRel);
                     $rnvmv->set('idNodeVersion', $nodeInfo['IdVersion']);
                     $rnvmv->set('idMetadataVersion', $metadataDocInfo['IdVersion']);
@@ -597,7 +595,7 @@ class MetadataManager{
 
     private function addRelation($name){
         $res = 0;
-        $rnm = new RelNodeMetadata();
+        $rnm = new \Ximdex\Models\RelNodeMetadata();
         $idm = $this->getMetadataDocument($name);
         //TODO: foreach language version, one entry
         $rnm->set('IdNode', $this->node->GetID());
@@ -609,7 +607,7 @@ class MetadataManager{
         if($res<0){
             Logger::error("Relation between nodes not added.");
         }
-        //TODO: move this logic to the RelNodeMetadata class
+        //TODO: move this logic to the \Ximdex\Models\RelNodeMetadata class
         //For structured documents, the association between versions have to be more accurate.
         else{
             $sourceNode = new Node($this->node->GetID());
@@ -641,7 +639,7 @@ class MetadataManager{
                     $idMetadataVersion = $dtf->GetLastVersionId();
 
                     //adding the info
-                    $rnvmv = new RelNodeVersionMetadataVersion();
+                    $rnvmv = new \Ximdex\Models\RelNodeVersionMetadataVersion();
                     $rnvmv->set('idrnm',$res);
                     $rnvmv->set('idNodeVersion',$idNodeVersion);
                     $rnvmv->set('idMetadataVersion',$idMetadataVersion);
@@ -665,7 +663,7 @@ class MetadataManager{
                     $idMetadataVersion = $dtf->GetLastVersionId();
 
                     //adding the info
-                    $rnvmv = new RelNodeVersionMetadataVersion();
+                    $rnvmv = new \Ximdex\Models\RelNodeVersionMetadataVersion();
                     $rnvmv->set('idrnm',$res);
                     $rnvmv->set('idNodeVersion',$idNodeVersion);
                     $rnvmv->set('idMetadataVersion',$idMetadataVersion);
@@ -688,7 +686,7 @@ class MetadataManager{
         if( ! App::getValue('MODULE_XIMNOTA_ENABLED', false) ){
             return;
         }
-        $rnm = new RelNodeMetadata();
+        $rnm = new \Ximdex\Models\RelNodeMetadata();
         $id=$rnm->find("idRel","IdMetadata=%s",array($idContent),MONO);
         $rnm->set('idRel', $id[0]);
         $res = $rnm->delete();
@@ -696,7 +694,7 @@ class MetadataManager{
             Logger::error("Relation between nodes not deleted.");
         }
         else{
-            $rnvmv = new RelNodeVersionMetadataVersion();
+            $rnvmv = new \Ximdex\Models\RelNodeVersionMetadataVersion();
             $ids=$rnvmv->find("id","idrnm=%s",array($id[0]),MONO);
             if(count($ids)>0){
                 foreach($ids as $id){

@@ -30,7 +30,7 @@ use Ximdex\Models\Pumper;
 use Ximdex\Runtime\Db;
 
 
-include_once(XIMDEX_ROOT_PATH . '/modules/ximSYNC/inc/model/ServerFrame.class.php');
+ModulesManager::file('/inc/model/ServerFrame.class.php', 'ximSYNC');
 include_once(XIMDEX_ROOT_PATH . "/inc/MPM/MPMManager.class.php");
 include_once(XIMDEX_ROOT_PATH . "/inc/MPM/MPMProcess.class.php");
 

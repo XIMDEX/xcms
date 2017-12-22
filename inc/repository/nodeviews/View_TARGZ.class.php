@@ -114,8 +114,8 @@ class View_TARGZ extends Abstract_View implements Interface_View
     function getFile($tableName, $field, $condition, $params)
     {
 
-        $factory = new \Ximdex\Utils\Factory(XIMDEX_ROOT_PATH . "/inc/model/orm/", $tableName);
-        $object = $factory->instantiate("_ORM");
+        $factory = new \Ximdex\Utils\Factory(XIMDEX_ROOT_PATH . "/src/Models/", $tableName);
+        $object = $factory->instantiate(null, null, '\Ximdex\Models');
 
         if (!is_object($object)) {
             Logger::info("Error, la clase $tableName de orm especificada no existe");

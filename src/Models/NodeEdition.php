@@ -26,7 +26,11 @@
 
 
 
-use Ximdex\Logger;
+
+namespace Ximdex\Models;
+
+use  Ximdex\Logger;
+
 
 
 class NodeEdition extends \Ximdex\Data\GenericData {

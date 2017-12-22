@@ -31,7 +31,6 @@ use Ximdex\Runtime\DataFactory;
 use Ximdex\Deps\DepsManager;
 use DOMDocument;
 use ModulesManager;
-use Namespaces;
 use Ximdex\Models\NodeType;
 use Ximdex\Runtime\Db;
 use Ximdex\Utils\PipelineManager;
@@ -54,7 +53,6 @@ define('XIMIO_VIEW', 3);
 
 ModulesManager::file('/inc/SolrViews.class.php', 'ximRAM');
 ModulesManager::file('/inc/metadata/MetadataManager.class.php');
-ModulesManager::file('/inc/model/Namespaces.class.php');
 
 /**
  * Class AbstractStructuredDocument
@@ -366,7 +364,7 @@ abstract class AbstractStructuredDocument extends FileNode
             $nodeTags = $rtn->getTags($this->nodeID);
             if (!empty($nodeTags)) {
                 foreach ($nodeTags as $tag) {
-                    $ns = new Namespaces();
+                    $ns = new \Ximdex\Models\Namespaces();
                     $idns = $ns->getNemo($tag['IdNamespace']);
                     $xtags .= $tag['Name'] . ":" . $idns . ",";
                 }

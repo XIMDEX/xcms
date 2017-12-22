@@ -33,7 +33,7 @@ use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
 
 ModulesManager::file('/inc/io/BaseIOInferer.class.php');
- ModulesManager::file('/inc/model/RelNodeTypeMimeType.class.php');
+
 
 class Action_fileupload extends ActionAbstract {
 
@@ -130,7 +130,7 @@ class Action_fileupload extends ActionAbstract {
 				$inSearch = sprintf("'%s'", $inSearch);
 			}
 
-			$rntmt = new RelNodeTypeMimeType();
+			$rntmt = new \Ximdex\Models\RelNodeTypeMimeType();
 			$types = $rntmt->find('distinct extension', 'idNodeType in (%s)', array($inSearch), MONO, false);
 			if (empty($types)) {
 				$this->messages->add(_('No type of file which can be inserted in this folder has been found, contact with your administrator'), MSG_TYPE_ERROR);

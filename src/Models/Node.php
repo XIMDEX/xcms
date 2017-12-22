@@ -28,7 +28,6 @@ namespace Ximdex\Models;
 
 
 use DOMDocument;
-use NodeProperty;
 use xsltnode;
 use Ximdex\Deps\DepsManager;
 use Ximdex\Logger;
@@ -44,7 +43,6 @@ use Ximdex\Workflow\WorkFlow;
 use Ximdex\XML\Base;
 use Ximdex\XML\XML;
 
-require_once(XIMDEX_ROOT_PATH . '/inc/model/NodeProperty.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/nodetypes/xsltnode.php');
 
 /**
@@ -1429,7 +1427,7 @@ class Node extends NodesOrm
         }
 
         // Deleting properties it may has
-        $nodeProperty = new  NodeProperty();
+        $nodeProperty = new  \Ximdex\Models\NodeProperty();
         $nodeProperty->deleteByNode($this->get('IdNode'));
 
         // first invoking the particular Delete...
@@ -2829,7 +2827,7 @@ class Node extends NodesOrm
 
         // Getting node Properties
 
-        $nodeProperty = new NodeProperty();
+        $nodeProperty = new \Ximdex\Models\NodeProperty();
         $result = $nodeProperty->getPropertiesByNode($this->get('IdNode'));
 
         if (!is_null($result)) {
@@ -3117,7 +3115,7 @@ class Node extends NodesOrm
                 if ($db->getValue('IdNode') < 1) {
                     break;
                 }
-                $nodeProperty = new NodeProperty();
+                $nodeProperty = new \Ximdex\Models\NodeProperty();
                 $propertyValue = $nodeProperty->getProperty($db->getValue('IdNode'), $property);
 
                 if (!is_null($propertyValue)) {
@@ -3127,7 +3125,7 @@ class Node extends NodesOrm
                 $db->Next();
             }
         } else {
-            $nodeProperty = new NodeProperty();
+            $nodeProperty = new \Ximdex\Models\NodeProperty();
             return $nodeProperty->getProperty($this->get('IdNode'), $property);
         }
 
@@ -3144,7 +3142,7 @@ class Node extends NodesOrm
     {
 
         $returnValue = array();
-        $nodeProperty = new NodeProperty();
+        $nodeProperty = new \Ximdex\Models\NodeProperty();
 
         if ($withInheritance) {
             $sql = "SELECT IdNode FROM FastTraverse WHERE IdChild = " . $this->get('IdNode') . " ORDER BY Depth ASC";
@@ -3222,7 +3220,7 @@ class Node extends NodesOrm
      */
     function setSingleProperty($property, $value)
     {
-        $nodeProperty = new NodeProperty();
+        $nodeProperty = new \Ximdex\Models\NodeProperty();
 
         $properties = $nodeProperty->find('IdNodeProperty', 'IdNode = %s AND Property = %s AND Value = %s', array($this->get('IdNode'), $property, $value));
         if (empty($properties)) {
@@ -3240,7 +3238,7 @@ class Node extends NodesOrm
         // Removing previous values
         if (!is_array($values))
             $values = array("0" => $values);
-        $nodeProperty = new NodeProperty();
+        $nodeProperty = new \Ximdex\Models\NodeProperty();
         $nodeProperty->deleteByNodeProperty($this->get('IdNode'), $property);
 
         // Adding new values
@@ -3262,7 +3260,7 @@ class Node extends NodesOrm
             $this->messages->add(_('The node over which property want to be deleted does not exist ') . $property, MSG_TYPE_WARNING);
             return false;
         }
-        $nodeProperty = new NodeProperty();
+        $nodeProperty = new \Ximdex\Models\NodeProperty();
         return $nodeProperty->deleteByNodeProperty($this->get('IdNode'), $property);
     }
 
@@ -3278,12 +3276,12 @@ class Node extends NodesOrm
             return false;
         }
 
-        $nodeProperty = new NodeProperty();
+        $nodeProperty = new \Ximdex\Models\NodeProperty();
         $properties = $nodeProperty->find('IdNodeProperty', 'IdNode = %s AND Property = %s AND Value = %s', array($this->get('IdNode'), $property, $value), MONO);
 
         //debug::log($properties);
         foreach ($properties as $idNodeProperty) {
-            $nodeProperty = new NodeProperty($idNodeProperty);
+            $nodeProperty = new \Ximdex\Models\NodeProperty($idNodeProperty);
             $nodeProperty->delete();
         }
         return true;

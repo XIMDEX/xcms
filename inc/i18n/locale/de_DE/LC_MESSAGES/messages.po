@@ -4577,39 +4577,39 @@ msgstr "Gew&uuml;nscht Aktion nicht gefunden."
 msgid "The action %s cannot be executed on the selected node"
 msgstr "Die Aktion %s kann f&uuml;r den gew&auml;hlten Knoten nicht ausgef&uuml;hrt werden"
 
-#: /inc/model/user.php
+#: /src/Models/user.php
 msgid "User does not exist"
 msgstr "Benutzer existiert nicht"
 
 msgid "An user with this login already exists"
 msgstr "Es existiert bereits ein Benutzer mit diesem Login"
 
-#: /inc/model/user.php
-#: /inc/model/group.php
-#: /inc/model/language.php
-#: /inc/model/locale.php
+#: /src/Models/user.php
+#: /src/Models/group.php
+#: /src/Models/language.php
+#: /src/Models/locale.php
 msgid "Arguments missing"
 msgstr "Fehlen von Argumenten"
 
-#: /inc/model/user.php
+#: /src/Models/user.php
 msgid "Some of the connections with your groups could not be deleted"
 msgstr "Einige der Verbindungen mit Ihren Gruppen konnten nicht gel&ouml;scht werden"
 
 #: inc/sync/synchro.php
-#: /inc/model/user.php
-#: /inc/model/node.php
-#: /inc/model/action.php
-#: /inc/model/channel.php
-#: /inc/model/group.php
-#: /inc/model/language.php
-#: /inc/model/locale.php
-#: /inc/model/nodetype.php
-#: /inc/model/permissions.php
-#: /inc/model/role.php
+#: /src/Models/user.php
+#: /src/Models/node.php
+#: /src/Models/action.php
+#: /src/Models/channel.php
+#: /src/Models/group.php
+#: /src/Models/language.php
+#: /src/Models/locale.php
+#: /src/Models/nodetype.php
+#: /src/Models/permissions.php
+#: /src/Models/role.php
 msgid "Database connection error"
 msgstr "Datenbankverbindungsfehler"
 
-#: /inc/model/user.php
+#: /src/Models/user.php
 msgid "Error in associated object"
 msgstr "Fehler in zugeordnetem Objekt"
 
@@ -4734,7 +4734,7 @@ msgstr "Zeitlicher Ordner %s konnte nicht erstellt werden"
 msgid "Specified file could not be found"
 msgstr "Spezifizierte Datei konnte nicht gefunden werden"
 
-#: /inc/model/node.php
+#: /src/Models/node.php
 msgid "The nodetype does not exist"
 msgstr "Der Knotentyp existiert nicht"
 
@@ -4879,22 +4879,22 @@ msgstr "Eigenschaft %s nicht gefunden"
 msgid "The node over which property want to be deleted does not exist "
 msgstr "Der Knoten dessen Eigenschaft Sie l&ouml;schen m&ouml;chten existiert nicht "
 
-#: /inc/model/action.php
+#: /src/Models/action.php
 msgid "Action does not exist"
 msgstr "Aktion existiert nicht"
 
-#: /inc/model/channel.php
+#: /src/Models/channel.php
 msgid "Channel does not exist"
 msgstr "Kanal existiert nicht"
 
 msgid "Database inconsistency"
 msgstr "Datenbankinkonsistenz"
 
-#: inc/model/dependencies.in
+#: src/Models/dependencies.in
 msgid "No dependencies deleted"
 msgstr "Keine Abh&auml;ngigkeiten gel&ouml;scht"
 
-#: /inc/model/group.php
+#: /src/Models/group.php
 msgid "Group does not exist"
 msgstr "Gruppe existiert nicht"
 
@@ -4913,21 +4913,21 @@ msgstr "Spezifizierte Relation existiert bereits"
 msgid "General group cant be removed"
 msgstr "Allgemeine Gruppe kann nicht entfernt werden"
 
-#: /inc/model/language.php
+#: /src/Models/language.php
 msgid "Language does not exist"
 msgstr "Sprache existiert nicht"
 
 msgid "A language with this name already exists"
 msgstr "Sprache mit diesem Namen existiert bereits"
 
-#: /inc/model/locale.php
+#: /src/Models/locale.php
 msgid "Locale does not exist"
 msgstr "Locale exisitiert nicht"
 
 msgid "A locale with this name already exists"
 msgstr "Es existiert bereits eine locale mit diesem Namen"
 
-#: /inc/model/NodeProperty.class.php
+#: /src/Models/NodeProperty.class.php
 msgid "Params node and property are mandatory"
 msgstr "Die Parameter Knoten und Eigenschaft sind obligatorisch"
 
@@ -4937,18 +4937,18 @@ msgstr "Knoteneigenschaft hinzuf&uuml;gen"
 msgid "Param nodeId is mandatory"
 msgstr "Parameter nodeId ist obligatorisch"
 
-#: /inc/model/nodetype.php
+#: /src/Models/nodetype.php
 msgid "Nodetype does not exist"
 msgstr "Knotentyp existiert nicht"
 
-#: /inc/model/permissions.php
+#: /src/Models/permissions.php
 msgid "Permit does not exist"
 msgstr "Berechtigung existiert nicht"
 
 msgid "Not initialized object"
 msgstr "Nicht initialisiertes Objekt"
 
-#: /inc/model/role.php
+#: /src/Models/role.php
 msgid "Role does not exist"
 msgstr "Rolle existiert nicht"
 
@@ -5039,12 +5039,12 @@ msgid "No nodetype allowed in %s"
 msgstr "Kein Knotentyp erlaubt in %s"
 
 #: /inc/sync/synchro.php
-#: inc/model/node.php
+#: src/Models/node.php
 msgid "The node does not exist"
 msgstr "Knoten existiert nicht"
 
 #: /inc/sync/synchro.php
-#: /inc/model/node.php
+#: /src/Models/node.php
 msgid "Error accessing to file system"
 msgstr "Fehler beim Zugreifen auf Dateisystem"
 
@@ -7348,7 +7348,7 @@ msgstr "Ablaufdatum"
 msgid "Publication of"
 msgstr "Ver&ouml;ffentlichung von"
 
-#: /modules/ximSYNC/inc/model/ServerErrorByPumper.class.php
+#: /modules/ximSYNC/src/Models/ServerErrorByPumper.class.php
 msgid "Pumper %s does not exist"
 msgstr "Pumper %s existiert nicht"
 
@@ -7358,7 +7358,7 @@ msgstr "serverError wird erstellt"
 msgid "Server %d has %d cycles inactive"
 msgstr "Server %d hat %d inaktive Zyklen"
 
-#: /modules/ximSYNC/inc/model/Batch.class.php
+#: /modules/ximSYNC/src/Models/Batch.class.php
 msgid "ERROR batch type %s for node %s"
 msgstr "FEHLER Stapeltyp %s f&uuml;r Knoten %s"
 

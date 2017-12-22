@@ -20,18 +20,17 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
-if (!defined("XIMDEX_ROOT_PATH")) {
-	define("XIMDEX_ROOT_PATH", realpath(dirname(__FILE__)) . "/../../");
-}
 
+namespace Ximdex\Models;
 
-class RelXml2Xml extends \Ximdex\Data\GenericData{
+class RelStrdocXimlet extends \Ximdex\Data\GenericData
+{
     var $_idField = 'id';
-    var $_table = 'RelXml2Xml';
+    var $_table = 'RelStrdocXimlet';
     var $_metaData = array(
         'id' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
         'source' => array('type' => "int(12)", 'not_null' => 'true'),

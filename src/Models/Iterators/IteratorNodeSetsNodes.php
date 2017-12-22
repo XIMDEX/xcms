@@ -20,27 +20,23 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- * @author Ximdex DevTeam <dev@ximdex.com>
- * @version $Revision$
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
  */
 
+namespace Ximdex\Models\Iterators;
+use Ximdex\Behaviours\Iterator;
 
 
-class RelDocumentFolderToTemplatesIncludeFile extends \Ximdex\Data\GenericData
-{
-    var $_idField = 'id';
-    var $_table = 'RelDocumentFolderToTemplatesIncludeFile';
-    var $_metaData = array(
-        'id' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
-        'source' => array('type' => "int(12)", 'not_null' => 'true'),
-        'target' => array('type' => "int(12)", 'not_null' => 'true')
-    );
-    var $_uniqueConstraints = array(
-        'rel' => array('source', 'target')
-    );
-    var $_indexes = array('id');
-    var $id;
-    var $source = 0;
-    var $target = 0;
+class IteratorNodeSetsNodes extends Iterator {
 
+	/**
+	 * @param string $condition
+	 * @param array $args
+	 * @return IteratorNodeSetsNodes
+	 */
+	public function __construct($condition, $args, $escape=ESCAPE) {
+		$this->_objectName = 'RelNodeSetsNode';
+		parent::__construct($condition, $args, $escape);
+	}
 }

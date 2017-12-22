@@ -24,23 +24,23 @@
  * @version $Revision$
  */
 
+namespace Ximdex\Models;
 
-
-
-class RelStrdocXimlet extends \Ximdex\Data\GenericData
+class RelNodeMetadata extends \Ximdex\Data\GenericData
 {
-    var $_idField = 'id';
-    var $_table = 'RelStrdocXimlet';
+
+    var $_idField = 'idRel';
+    var $_table = 'RelNodeMetadata';
     var $_metaData = array(
-        'id' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
-        'source' => array('type' => "int(12)", 'not_null' => 'true'),
-        'target' => array('type' => "int(12)", 'not_null' => 'true')
+        'idRel' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
+        'IdNode' => array('type' => "int(12)", 'not_null' => 'true'),
+        'IdMetadata' => array('type' => "int(12)", 'not_null' => 'true')
     );
     var $_uniqueConstraints = array(
-        'rel' => array('source', 'target')
+        'rel' => array('IdNode', 'IdMetadata')
     );
-    var $_indexes = array('id');
-    var $id;
-    var $source = 0;
-    var $target = 0;
+    var $_indexes = array('idRel');
+    var $idRel;
+    var $IdNode = 0;
+    var $IdMetadata = 0;
 }

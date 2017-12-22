@@ -31,7 +31,7 @@ use Ximdex\Models\NodeType;
 use Ximdex\MVC\ActionAbstract;
 
 
- require_once XIMDEX_ROOT_PATH . '/inc/model/RelNodeTypeMimeType.class.php';
+
 
 class Action_newemptynode extends ActionAbstract {
 
@@ -68,7 +68,7 @@ class Action_newemptynode extends ActionAbstract {
 		$name = $this->request->getParam("name");
 
 		//getting and adding file extension
-		$rntmt = new RelNodeTypeMimeType();
+		$rntmt = new \Ximdex\Models\RelNodeTypeMimeType();
 		$ext = $rntmt->getFileExtension($nodetype);
 		if(strcmp($ext,'')!=0){
 			$name_ext = $name.".".$ext;		

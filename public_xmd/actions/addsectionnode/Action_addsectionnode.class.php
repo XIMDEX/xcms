@@ -24,13 +24,13 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
+
 use Ximdex\Models\Node;
 use Ximdex\Models\NodeType;
 use Ximdex\Models\SectionType;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\NodeTypes\NodeType as NodetypeService;
 
-ModulesManager::file('/inc/model/NodeDefaultContents.class.php');
 ModulesManager::file('/actions/manageproperties/inc/InheritedPropertiesManager.class.php', 'APP');
 ModulesManager::file('/inc/io/XlyreBaseIO.class.php', 'xlyre');
 
@@ -177,7 +177,7 @@ class Action_addsectionnode extends ActionAbstract {
     }
 
     private function _getAvailableSubfolders($nodetype_sec) {
-        $ndc = new NodeDefaultContents();
+        $ndc = new \Ximdex\Models\NodeDefaultContents();
 
         $subfolders = array();
         $subfoldersAll = $ndc->getDefaultChilds($nodetype_sec);

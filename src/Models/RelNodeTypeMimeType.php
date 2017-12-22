@@ -25,7 +25,7 @@
  */
 
 
-
+namespace Ximdex\Models;
 
 class RelNodeTypeMimeType  extends \Ximdex\Data\GenericData
 {

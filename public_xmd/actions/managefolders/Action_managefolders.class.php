@@ -28,7 +28,6 @@ use Ximdex\Models\Node;
 use Ximdex\Models\NodeType;
 use Ximdex\MVC\ActionAbstract;
 
-ModulesManager::file('/inc/model/NodeDefaultContents.class.php');
 
 class Action_managefolders extends ActionAbstract {
 
@@ -113,7 +112,7 @@ class Action_managefolders extends ActionAbstract {
 			if($addfolders){
 				foreach($folderlst as $folderNt){
 					$folder = new Node();
-					$ndc = new NodeDefaultContents();
+					$ndc = new \Ximdex\Models\NodeDefaultContents();
 					$name=$ndc->getDefaultName($folderNt);
 	        	        	$idFolder = $folder->CreateNode($name, $nodeID, $folderNt, null);
 					if(!$idFolder){
@@ -124,7 +123,7 @@ class Action_managefolders extends ActionAbstract {
 			}
 			else{
 				foreach($folderlst as $folderNt){
-                    $ndc = new NodeDefaultContents();
+                    $ndc = new \Ximdex\Models\NodeDefaultContents();
                     $name=$ndc->getDefaultName($folderNt);
 
 					$nodeid = $parent->GetChildByName($name);
@@ -169,7 +168,7 @@ class Action_managefolders extends ActionAbstract {
 	/** 
         * Getting all the children folders. 
         *
-        * Using the NodeDefaultContents of the data model, returns all the avaliable children folders 
+        * Using the \Ximdex\Models\NodeDefaultContents of the data model, returns all the avaliable children folders
 	* with a description for a given nodetype. 
         *
         * Request params: 
@@ -180,7 +179,7 @@ class Action_managefolders extends ActionAbstract {
 	private function _getAvailableSubfolders($nodetype_sec){
 		$subfolders=array();
 		$res=array();
-		$ndc = new NodeDefaultContents();
+		$ndc = new \Ximdex\Models\NodeDefaultContents();
 
 		$subfolders=$ndc->getDefaultChilds($nodetype_sec);
 		foreach($subfolders as $subfolder){

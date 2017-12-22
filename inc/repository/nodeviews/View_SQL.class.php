@@ -32,7 +32,6 @@ use Ximdex\Models\StructuredDocument;
 use Ximdex\Models\Version;
 
 
-require_once(XIMDEX_ROOT_PATH . '/inc/model/RelStrDocChannels.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Abstract_View.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Interface_View.class.php');
 
@@ -122,8 +121,8 @@ class View_SQL extends Abstract_View implements Interface_View {
 
 		$insertQuery = '';
 
-		$factory = new \Ximdex\Utils\Factory(XIMDEX_ROOT_PATH . "/src/Models/ORM/", $tableName);
-		$object = $factory->instantiate("_ORM");
+		$factory = new \Ximdex\Utils\Factory(XIMDEX_ROOT_PATH . "/src/Models/", $tableName);
+		$object = $factory->instantiate(null, null, '\Ximdex\Models');
 
 		if (!is_object($object)) {
 			Logger::error("Error, la clase de orm especificada no existe");

@@ -33,9 +33,9 @@ use Ximdex\Models\User;
 
 include_once(XIMDEX_ROOT_PATH . '/inc/mail/Mail.class.php');
 
-ModulesManager::file('ximSYNC', '/inc/manager/BatchManager.class.php');
-ModulesManager::file('ximSYNC', '/inc/model/NodesToPublish.class.php');
-ModulesManager::file('ximSYNC', '/conf/synchro_conf.php');
+ModulesManager::file('/inc/manager/BatchManager.class.php', 'ximSYNC');
+ModulesManager::file('/inc/model/NodesToPublish.class.php', 'ximSYNC');
+ModulesManager::file( '/conf/synchro_conf.php', 'ximSYNC');
 
 /**
  * @brief Manages the phases previous and later of the publication process.

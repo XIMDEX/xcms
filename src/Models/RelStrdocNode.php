@@ -20,25 +20,27 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- * @author Ximdex DevTeam <dev@ximdex.com>
- * @version $Revision$
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
  */
 
 
+namespace Ximdex\Models;
 
-class RelStrDocChannels extends \Ximdex\Data\GenericData
-{
-    var $_idField = 'IdRel';
-    var $_table = 'RelStrDocChannels';
+
+class RelStrdocNode extends \Ximdex\Data\GenericData{
+    var $_idField = 'id';
+    var $_table = 'RelStrdocNode';
     var $_metaData = array(
-        'IdRel' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
-        'IdDoc' => array('type' => "int(12)", 'not_null' => 'false'),
-        'IdChannel' => array('type' => "int(12)", 'not_null' => 'false')
+        'id' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
+        'source' => array('type' => "int(12)", 'not_null' => 'true'),
+        'target' => array('type' => "int(12)", 'not_null' => 'true')
     );
-    var $_uniqueConstraints = array();
-    var $_indexes = array('IdRel');
-    var $IdRel;
-    var $IdDoc = 0;
-    var $IdChannel = 0;
+    var $_uniqueConstraints = array(
+        'rel' => array('source', 'target')
+    );
+    var $_indexes = array('id');
+    var $id;
+    var $source = 0;
+    var $target = 0;
 }
-

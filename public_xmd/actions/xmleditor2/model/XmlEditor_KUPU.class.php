@@ -690,7 +690,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
 
         // Obtaining idTemplate (RNG)
         $idcontainer = $this->node->getParent();
-        $reltemplate = new RelTemplateContainer();
+        $reltemplate = new \Ximdex\Models\RelTemplateContainer();
         $idTemplate = $reltemplate->getTemplate($idcontainer);
 
         // Obtaining RNG elements array

@@ -20,15 +20,16 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
+namespace Ximdex\Models;
 
-
-class RelSectionXimlet extends \Ximdex\Data\GenericData {
+class RelDocumentFolderToTemplatesIncludeFile extends \Ximdex\Data\GenericData
+{
     var $_idField = 'id';
-    var $_table = 'RelSectionXimlet';
+    var $_table = 'RelDocumentFolderToTemplatesIncludeFile';
     var $_metaData = array(
         'id' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
         'source' => array('type' => "int(12)", 'not_null' => 'true'),
@@ -41,4 +42,5 @@ class RelSectionXimlet extends \Ximdex\Data\GenericData {
     var $id;
     var $source = 0;
     var $target = 0;
+
 }

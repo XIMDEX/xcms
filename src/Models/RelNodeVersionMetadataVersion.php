@@ -25,6 +25,7 @@
  */
 
 
+namespace Ximdex\Models;
 
 class RelNodeVersionMetadataVersion extends \Ximdex\Data\GenericData
 {

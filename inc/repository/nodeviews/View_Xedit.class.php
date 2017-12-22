@@ -127,7 +127,7 @@ class View_Xedit extends Abstract_View implements Interface_View {
 	private function setXimletIds() {
 
 		$idcontainer = $this->node->getParent();
-		$reltemplate = new RelTemplateContainer();
+		$reltemplate = new \Ximdex\Models\RelTemplateContainer();
 		$idTemplate = $reltemplate->getTemplate($idcontainer);
 		
 		$parser = new ParsingRng($idTemplate);

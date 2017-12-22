@@ -3,7 +3,6 @@
 use Ximdex\Models\NodeType;
 use Ximdex\MVC\ActionAbstract;
 
-ModulesManager::file('/inc/model/RelNodeTypeMimeType.class.php');
 
 class Action_setextensions extends ActionAbstract
 {
@@ -58,7 +57,7 @@ class Action_setextensions extends ActionAbstract
         }
 
         foreach($extensions as $ext){
-            $e = new RelNodeTypeMimeType($ext["id"]);
+            $e = new \Ximdex\Models\RelNodeTypeMimeType($ext["id"]);
             if(count($ext["extension"])==0){
                 $e->set("extension","");
             }elseif(isset($ext["extension"][0]) && $ext["extension"][0]=="*"){

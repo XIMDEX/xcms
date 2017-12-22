@@ -32,7 +32,6 @@ use Ximdex\Runtime\DataFactory;
 use Ximdex\Utils\FsUtils;
 use Ximdex\Logger;
 
-ModulesManager::file('/inc/model/RelTemplateContainer.class.php');
 
 abstract class XmlEditor_Abstract
 {
@@ -169,7 +168,7 @@ abstract class XmlEditor_Abstract
         }
 
         $idcontainer = $node->getParent();
-        $reltemplate = new RelTemplateContainer();
+        $reltemplate = new \Ximdex\Models\RelTemplateContainer();
         $idTemplate = $reltemplate->getTemplate($idcontainer);
 
         $templateNode = new Node($idTemplate);

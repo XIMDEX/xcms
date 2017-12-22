@@ -20,18 +20,16 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- * @author Ximdex DevTeam <dev@ximdex.com>
- * @version $Revision$
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
  */
 
 
+namespace Ximdex\Models;
 
-
-
-class RelStrdocTemplate extends \Ximdex\Data\GenericData
-{
+class RelStrdocAsset extends \Ximdex\Data\GenericData {
     var $_idField = 'id';
-    var $_table = 'RelStrdocTemplate';
+    var $_table = 'RelStrdocAsset';
     var $_metaData = array(
         'id' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
         'source' => array('type' => "int(12)", 'not_null' => 'true'),

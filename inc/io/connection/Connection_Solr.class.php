@@ -29,7 +29,6 @@ use Ximdex\Models\ORM\NodesOrm as Nodes_ORM;
 use Ximdex\Logger;
 use Ximdex\Models\RelTagsNodes;
 
-require_once (XIMDEX_ROOT_PATH . '/inc/model/RelNodeMetadata.class.php');
 require_once (XIMDEX_ROOT_PATH . '/inc/io/connection/I_Connector.class.php');
 require_once (XIMDEX_ROOT_PATH . '/vendors/autoload.php');
 
@@ -377,7 +376,7 @@ class Connection_Solr implements I_Connector {
         }
         
         // add xml metadata fields if the file exists
-        $relNodeMetaData = new RelNodeMetaData();
+        $relNodeMetaData = new \Ximdex\Models\RelNodeMetadata();
         $idMetadata = $relNodeMetaData->find('idMetadata', 'idNode = %s', array($result[0]), MONO);
 //        if (isset($idMetadata[0])) {
 //            $metaNode = new Node($idMetadata[0]);

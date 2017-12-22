@@ -30,7 +30,6 @@ use Ximdex\Models\NodeType;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\NodeTypes\FolderNode;
 
-ModulesManager::file('/inc/model/RelTemplateContainer.class.php');
 ModulesManager::file('/inc/metadata/MetadataManager.class.php');
 
 class XmlContainerNode extends FolderNode
@@ -57,7 +56,7 @@ class XmlContainerNode extends FolderNode
      */
     public function getIdSchema()
     {
-        $relTemplateContainer = new RelTemplateContainer();
+        $relTemplateContainer = new  \Ximdex\Models\RelTemplateContainer();
         $result = $relTemplateContainer->find("IdTemplate", "IdContainer = %s", array($this->nodeID), MONO);
         if (!$result || !is_array($result) || !count($result))
             return false;
@@ -83,7 +82,7 @@ class XmlContainerNode extends FolderNode
 
         $result = false;
 
-        $reltemplate = new RelTemplateContainer();
+        $reltemplate = new  \Ximdex\Models\RelTemplateContainer();
         $reltemplate->createRel($idSchema, $this->nodeID);
 
         if (is_array($aliasLangList)) {
@@ -195,7 +194,7 @@ class XmlContainerNode extends FolderNode
 
     function DeleteNode()
     {
-        $templatecontainer = new RelTemplateContainer();
+        $templatecontainer = new  \Ximdex\Models\RelTemplateContainer();
         $templatecontainer->deleteRel($this->nodeID);
         $mm = new MetadataManager($this->nodeID);
         $mm->deleteMetadata();

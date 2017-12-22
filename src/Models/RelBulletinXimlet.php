@@ -20,21 +20,26 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
+namespace Ximdex\Models;
 
-
-class I_NodeSetsUsers extends  \Ximdex\Behaviours\Iterator {
-
-	/**
-	 * @param string $condition
-	 * @param array $args
-	 * @return I_NodeSetsUsers
-	 */
-	public function __construct($condition, $args, $escape=ESCAPE) {
-		$this->_objectName = 'RelNodeSetsUsers';
-		parent::__construct($condition, $args, $escape);
-	}
+class RelBulletinXimlet extends \Ximdex\Data\GenericData
+{
+    var $_idField = 'id';
+    var $_table = 'RelBulletinXimlet';
+    var $_metaData = array(
+        'id' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
+        'source' => array('type' => "int(12)", 'not_null' => 'true'),
+        'target' => array('type' => "int(12)", 'not_null' => 'true')
+    );
+    var $_uniqueConstraints = array(
+        'rel' => array('source', 'target')
+    );
+    var $_indexes = array('id');
+    var $id;
+    var $source = 0;
+    var $target = 0;
 }

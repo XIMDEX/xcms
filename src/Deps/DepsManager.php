@@ -63,21 +63,7 @@ class DepsManager
      * @var string
      */
     const STRDOC_ASSET = 'RelStrdocAsset';
-    /**
-     *
-     * @var string
-     */
-    const STRDOC_CSS = 'RelStrdocCss';
-    /**
-     *
-     * @var string
-     */
-    const STRDOC_SCRIPT = 'RelStrdocScript';
-    /**
-     *
-     * @var string
-     */
-    const STRDOC_STRUCTURE = 'RelStrdocStructure';
+
 
     const NODE2ASSET = 'RelNode2Asset';
 
@@ -122,8 +108,8 @@ class DepsManager
      */
     private function getModel($tableName, $id = NULL)
     {
-        $factory = new Factory(XIMDEX_ROOT_PATH . "/inc/model/", $tableName);
-        $object = $factory->instantiate(NULL, $id);
+        $factory = new Factory(XIMDEX_ROOT_PATH . "/src/Models/", $tableName);
+        $object = $factory->instantiate(NULL, $id, '\Ximdex\Models');
 
         if (!is_object($object)) {
             Logger::error(sprintf("Can't instantiate a %s model", $tableName));

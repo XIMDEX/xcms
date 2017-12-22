@@ -42,7 +42,6 @@ ModulesManager::file('/inc/model/NodeFrame.class.php', 'ximSYNC');
 ModulesManager::file('/inc/model/ServerFrame.class.php', 'ximSYNC');
 ModulesManager::file('/inc/model/ChannelFrame.class.php', 'ximSYNC');
 ModulesManager::file('/inc/model/NodesToPublish.class.php', 'ximSYNC');
-ModulesManager::file('/inc/model/RelFramesPortal.class.php');
 
 
 /**
@@ -753,7 +752,7 @@ class BatchManager
 
         if (($nodeFrames != null) && (is_array($nodeFrames))) {
             foreach ($nodeFrames as $nodeFrameId) {
-                $relFramePortal = new RelFramesPortal();
+                $relFramePortal = new \Ximdex\Models\RelFramesPortal();
                 $relFramePortal->addVersion($idPortalVersion, $nodeFrameId);
             }
         } else {

@@ -28,7 +28,6 @@
 namespace Ximdex\Models;
 
 use ModulesManager;
-use NoActionsInNode;
 use Ximdex\Logger;
 use Ximdex\Models\ORM\UsersOrm;
 use Ximdex\Runtime\App;
@@ -36,8 +35,6 @@ use Ximdex\Runtime\Db;
 use Ximdex\Runtime\Session;
 
 
-ModulesManager::file('/inc/model/NoActionsInNode.class.php');
-require_once XIMDEX_ROOT_PATH . '/inc/model/NoActionsInNode.class.php';
 
 class User extends UsersOrm
 {
@@ -576,7 +573,7 @@ class User extends UsersOrm
         $result = array();
 
         //Getting no specific not allowed actions for $idNode
-        $noActionsInNode = new NoActionsInNode();
+        $noActionsInNode = new \Ximdex\Models\NoActionsInNode();
         $arrayForbiddenActions = $noActionsInNode->getForbiddenActions($idNode);
 
         /* To get the actions the steps are:

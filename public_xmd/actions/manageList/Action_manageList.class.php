@@ -27,7 +27,6 @@
 
 use Ximdex\MVC\ActionAbstract;
 
-ModulesManager::file('/inc/model/List.class.php');
 
 class Action_manageList extends ActionAbstract {
 
@@ -117,8 +116,8 @@ class Action_manageList extends ActionAbstract {
 		), '_element', 'only_template.tpl');
 	}
 	private function getObjectInstance($type, $arg = NULL) {
-		$rootName = 'List_';
-		$factory = new \Ximdex\Utils\Factory(XIMDEX_ROOT_PATH . '/inc/model/', $rootName);
+		$rootName = 'List';
+		$factory = new \Ximdex\Utils\Factory(XIMDEX_ROOT_PATH . '/src/Models/', $rootName);
 		return $factory->instantiate($type, $arg);
 	}
 }

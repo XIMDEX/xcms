@@ -31,10 +31,6 @@ use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\App;
 
 ModulesManager::file('/actions/manageproperties/inc/InheritedPropertiesManager.class.php', 'APP');
-ModulesManager::file('/inc/model/RelNode2Asset.class.php');
-ModulesManager::file('/inc/model/RelStrdocTemplate.class.php');
-ModulesManager::file('/inc/model/RelXml2Xml.class.php');
-ModulesManager::file('/inc/model/RelNodeMetadata.class.php');
 ModulesManager::file('/actions/manageversions/Action_manageversions.class.php', 'APP');
 
 
@@ -107,7 +103,7 @@ class Action_infonode extends ActionAbstract
     {
         $idNode = (int)$this->request->getParam("nodeid");
         $depMasterList = array();
-        $classes = array(new RelNode2Asset(), new RelXml2Xml(), new RelStrdocTemplate());
+        $classes = array(new \Ximdex\Models\RelNode2Asset(), new \Ximdex\Models\RelXml2Xml(), new \Ximdex\Models\RelStrdocTemplate());
         
         foreach ($classes as $c) {
             $res = $c->find("target", "source=" . $idNode, null, MONO);
@@ -116,7 +112,7 @@ class Action_infonode extends ActionAbstract
             }
         }
 
-        $relnodemetadata = new RelNodeMetadata();
+        $relnodemetadata = new \Ximdex\Models\RelNodeMetadata();
 
 
 

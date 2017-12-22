@@ -30,7 +30,6 @@ use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\App;
 
 
-ModulesManager::file('/inc/model/NodeEdition.class.php');
 
 class Action_logout extends ActionAbstract
 {
@@ -38,7 +37,7 @@ class Action_logout extends ActionAbstract
     function index()
     {
         $userID = (int)\Ximdex\Runtime\Session::get('userID');
-        $nodeEdition = new NodeEdition();
+        $nodeEdition = new \Ximdex\Models\NodeEdition();
         $nodeEdition->deleteByUser($userID);
         $user = new User();
         $user->logout();

@@ -27,6 +27,7 @@ use Ximdex\Logger;
  */
 
 
+namespace Ximdex\Models;
 
 
 

@@ -25,22 +25,22 @@
  */
 
 
+namespace Ximdex\Models;
 
+class RelNode2Asset extends \Ximdex\Data\GenericData {
 
-
-class RelVersionsLabel extends \Ximdex\Data\GenericData{
     var $_idField = 'id';
-    var $_table = 'RelVersionsLabel';
+    var $_table = 'RelNode2Asset';
     var $_metaData = array(
         'id' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
-        'idVersion' => array('type' => "int(12)", 'not_null' => 'false'),
-        'idLabel' => array('type' => "int(12)", 'not_null' => 'false')
+        'source' => array('type' => "int(12)", 'not_null' => 'true'),
+        'target' => array('type' => "int(12)", 'not_null' => 'true')
     );
     var $_uniqueConstraints = array(
-        'VersionsLabelRest' => array('idVersion', 'idLabel')
+        'rel' => array('source', 'target')
     );
     var $_indexes = array('id');
     var $id;
-    var $idVersion = 0;
-    var $idLabel = 0;
+    var $source = 0;
+    var $target = 0;
 }

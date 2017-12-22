@@ -24,22 +24,19 @@
  *  @version $Revision$
  */
 
+namespace Ximdex\Models\Iterators;
+use Ximdex\Behaviours\Iterator;
 
 
-class RelNode2Asset extends \Ximdex\Data\GenericData {
+class IteratorNodeSetsUsers extends  Iterator {
 
-    var $_idField = 'id';
-    var $_table = 'RelNode2Asset';
-    var $_metaData = array(
-        'id' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
-        'source' => array('type' => "int(12)", 'not_null' => 'true'),
-        'target' => array('type' => "int(12)", 'not_null' => 'true')
-    );
-    var $_uniqueConstraints = array(
-        'rel' => array('source', 'target')
-    );
-    var $_indexes = array('id');
-    var $id;
-    var $source = 0;
-    var $target = 0;
+	/**
+	 * @param string $condition
+	 * @param array $args
+	 * @return IteratorNodeSets
+	 */
+	public function __construct($condition, $args, $escape=ESCAPE) {
+		$this->_objectName = 'RelNodeSetsUsers';
+		parent::__construct($condition, $args, $escape);
+	}
 }

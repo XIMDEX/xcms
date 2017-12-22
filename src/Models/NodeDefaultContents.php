@@ -26,6 +26,9 @@
  */
 
 
+namespace Ximdex\Models;
+
+
 class NodeDefaultContents extends \Ximdex\Data\GenericData {
 
 

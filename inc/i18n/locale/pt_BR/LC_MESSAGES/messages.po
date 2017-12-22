@@ -4574,39 +4574,39 @@ msgstr "A a&ccedil;&atilde;o requerida n&atilde;o foi encontrada."
 msgid "The action %s cannot be executed on the selected node"
 msgstr "A a&ccedil;&atilde;o %s n&atilde;o p&ocirc;de ser executada sobre o nodo selecionado"
 
-#: /inc/model/user.php
+#: /src/Models/user.php
 msgid "User does not exist"
 msgstr "Usu&aacute;rio n&atilde;o existente"
 
 msgid "An user with this login already exists"
 msgstr "J&aacute; existe um usu&aacute;rio com este login"
 
-#: /inc/model/user.php
-#: /inc/model/group.php
-#: /inc/model/language.php
-#: /inc/model/locale.php
+#: /src/Models/user.php
+#: /src/Models/group.php
+#: /src/Models/language.php
+#: /src/Models/locale.php
 msgid "Arguments missing"
 msgstr "Faltam argumentos"
 
-#: /inc/model/user.php
+#: /src/Models/user.php
 msgid "Some of the connections with your groups could not be deleted"
 msgstr "Alguma das conex&otilde;es e os seus grupos n&atilde;o puderam ser eliminada"
 
 #: inc/sync/synchro.php
-#: /inc/model/user.php
-#: /inc/model/node.php
-#: /inc/model/action.php
-#: /inc/model/channel.php
-#: /inc/model/group.php
-#: /inc/model/language.php
-#: /inc/model/locale.php
-#: /inc/model/nodetype.php
-#: /inc/model/permissions.php
-#: /inc/model/role.php
+#: /src/Models/user.php
+#: /src/Models/node.php
+#: /src/Models/action.php
+#: /src/Models/channel.php
+#: /src/Models/group.php
+#: /src/Models/language.php
+#: /src/Models/locale.php
+#: /src/Models/nodetype.php
+#: /src/Models/permissions.php
+#: /src/Models/role.php
 msgid "Database connection error"
 msgstr "Erro de conex&atilde;o com a base de dados"
 
-#: /inc/model/user.php
+#: /src/Models/user.php
 msgid "Error in associated object"
 msgstr "Erro no objeto associado"
 
@@ -4731,7 +4731,7 @@ msgstr "N&atilde;o foi poss&iacute;vel criar a pasta temporal %s"
 msgid "Specified file could not be found"
 msgstr "N&atilde;o foi poss&iacute;vel encontrar o arquivo especificado"
 
-#: /inc/model/node.php
+#: /src/Models/node.php
 msgid "The nodetype does not exist"
 msgstr "N&atilde;o existe o tipo de nodo"
 
@@ -4876,22 +4876,22 @@ msgstr "Propriedade %s n&atilde;o encontrada"
 msgid "The node over which property want to be deleted does not exist "
 msgstr "O nodo cuja propriedade deseja eliminar n&atilde;o existe"
 
-#: /inc/model/action.php
+#: /src/Models/action.php
 msgid "Action does not exist"
 msgstr "A a&ccedil;&atilde;o n&atilde;o existe"
 
-#: /inc/model/channel.php
+#: /src/Models/channel.php
 msgid "Channel does not exist"
 msgstr "N&atilde;o existe o canal"
 
 msgid "Database inconsistency"
 msgstr "Inconsist&ecirc;ncia na base de dados"
 
-#: inc/model/dependencies.in
+#: src/Models/dependencies.in
 msgid "No dependencies deleted"
 msgstr "N&atilde;o foram eliminadas depend&ecirc;ncias"
 
-#: /inc/model/group.php
+#: /src/Models/group.php
 msgid "Group does not exist"
 msgstr "O grupo n&atilde;o existe"
 
@@ -4910,21 +4910,21 @@ msgstr "A rela&ccedil;&atilde;o especificada j&aacute; existe"
 msgid "General group cant be removed"
 msgstr "N&atilde;o foi poss&iacute;vel eliminar o grupo geral"
 
-#: /inc/model/language.php
+#: /src/Models/language.php
 msgid "Language does not exist"
 msgstr "O idioma n&atilde;o existe"
 
 msgid "A language with this name already exists"
 msgstr "J&aacute; existe um idioma com esse nome"
 
-#: /inc/model/locale.php
+#: /src/Models/locale.php
 msgid "Locale does not exist"
 msgstr "Locale n&atilde;o existente"
 
 msgid "A locale with this name already exists"
 msgstr "J&aacute; existe um locale com esse nome"
 
-#: /inc/model/NodeProperty.class.php
+#: /src/Models/NodeProperty.class.php
 msgid "Params node and property are mandatory"
 msgstr "Os par&acirc;metros do nodo e propriedade s&atilde;o obrigat&oacute;rios"
 
@@ -4934,18 +4934,18 @@ msgstr "Adicionando nodeproperty"
 msgid "Param nodeId is mandatory"
 msgstr "O par&acirc;metro nodeId &eacute; obrigat&oacute;rio"
 
-#: /inc/model/nodetype.php
+#: /src/Models/nodetype.php
 msgid "Nodetype does not exist"
 msgstr "N&atilde;o existe o tipo de nodo"
 
-#: /inc/model/permissions.php
+#: /src/Models/permissions.php
 msgid "Permit does not exist"
 msgstr "N&atilde;o h&aacute; uma permiss&atilde;o"
 
 msgid "Not initialized object"
 msgstr "Objeto sem inicializar"
 
-#: /inc/model/role.php
+#: /src/Models/role.php
 msgid "Role does not exist"
 msgstr "N&atilde;o existe o rol"
 
@@ -5036,12 +5036,12 @@ msgid "No nodetype allowed in %s"
 msgstr "N&atilde;o se permite nenhum tipo de nodo em %s"
 
 #: /inc/sync/synchro.php
-#: inc/model/node.php
+#: src/Models/node.php
 msgid "The node does not exist"
 msgstr "Nodo n&atilde;o existente"
 
 #: /inc/sync/synchro.php
-#: /inc/model/node.php
+#: /src/Models/node.php
 msgid "Error accessing to file system"
 msgstr "Erro ao aceder ao sistema de arquivos"
 
@@ -7353,7 +7353,7 @@ msgstr "Data de vencimento"
 msgid "Publication of"
 msgstr "Publica&ccedil;&atilde;o de"
 
-#: /modules/ximSYNC/inc/model/ServerErrorByPumper.class.php
+#: /modules/ximSYNC/src/Models/ServerErrorByPumper.class.php
 msgid "Pumper %s does not exist"
 msgstr "O bombeador %s n&atilde;o existe"
 
@@ -7363,7 +7363,7 @@ msgstr "Criando serverError"
 msgid "Server %d has %d cycles inactive"
 msgstr "Servidor %d tem %d ciclos inativos"
 
-#: /modules/ximSYNC/inc/model/Batch.class.php
+#: /modules/ximSYNC/src/Models/Batch.class.php
 msgid "ERROR batch type %s for node %s"
 msgstr "ERRO Lote de tipo %s para o nodo %s"
 

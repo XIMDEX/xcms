@@ -272,7 +272,7 @@ class Action_addlangxmlcontainer extends ActionAbstract {
 			     }
 			}
 	    } else {
-			$reltemplate = new RelTemplateContainer();
+			$reltemplate = new \Ximdex\Models\RelTemplateContainer();
 			$idTemplate = $reltemplate->getTemplate($idNode);
 			return $idTemplate;
 		}

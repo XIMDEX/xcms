@@ -27,7 +27,6 @@
 
 use Ximdex\Runtime\App;
 
-ModulesManager::file('/inc/model/Namespaces.class.php');
 ModulesManager::file('/services/Xowl/searchers/AnnotationSearcherStrategy.class.php');
 ModulesManager::file('/services/Xowl/searchers/ContentEnricherSearcherStrategy.class.php');
 ModulesManager::file('/services/Xowl/searchers/ExternalVocabularySearcherStrategy.class.php');
@@ -109,7 +108,7 @@ class OntologyService
      */
     public static function getAllNamespaces()
     {
-        $namespace = new Namespaces();
+        $namespace = new \Ximdex\Models\Namespaces();
         return $namespace->getAll();
     }
 

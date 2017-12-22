@@ -24,20 +24,19 @@
  *  @version $Revision$
  */
 
+namespace Ximdex\Models\Iterators;
+use Ximdex\Behaviours\Iterator;
 
 
+class IteratorNodeSets extends Iterator {
 
-class List_Label extends \Ximdex\Data\GenericData {
-    var $_idField = 'id';
-    var $_table = 'List_Label';
-    var $_metaData = array(
-        'id' => array('type' => "int(11)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
-        'Name' => array('type' => "varchar(250)", 'not_null' => 'true'),
-        'Description' => array('type' => "varchar(250)", 'not_null' => 'false')
-    );
-    var $_uniqueConstraints = array();
-    var $_indexes = array('id');
-    var $id;
-    var $Name;
-    var $Description;
+	/**
+	 * @param string $condition
+	 * @param array $args
+	 * @return IteratorNodeSets
+	 */
+	public function __construct($condition, $args, $escape=ESCAPE) {
+		$this->_objectName = 'NodeSets';
+		parent::__construct($condition, $args, $escape);
+	}
 }

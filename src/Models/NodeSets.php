@@ -28,16 +28,13 @@
 namespace Ximdex\Models;
 
 use Ximdex\Runtime\Db;
-use I_NodeSets;
-use I_NodeSetsNodes;
-use I_NodeSetsUsers;
+use Ximdex\Models\Iterators\IteratorNodeSets;
+use Ximdex\Models\Iterators\IteratorNodeSetsNodes;
+use Ximdex\Models\Iterators\IteratorNodeSetsUsers;
 use RelNodeSetsUsers;
 use Ximdex\Models\ORM\NodeSetsOrm;
 
 
-require_once(XIMDEX_ROOT_PATH . '/inc/model/iterators/I_NodeSets.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/model/iterators/I_NodeSetsNodes.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/model/iterators/I_NodeSetsUsers.class.php');
 
 class NodeSets extends NodeSetsOrm
 {
@@ -114,16 +111,16 @@ class NodeSets extends NodeSetsOrm
      */
     /**
      * @param $idUser
-     * @return I_NodeSets|I_NodeSetsUsers
+     * @return IteratorNodeSets|IteratorNodeSetsUsers
      */
     static public function & getSets($idUser)
     {
-        $it = new I_NodeSetsUsers('IdUser = %s', array($idUser));
+        $it = new IteratorNodeSetsUsers('IdUser = %s', array($idUser));
         $sets = array();
         while ($set = $it->next()) {
             $sets[] = $set->getIdSet();
         }
-        $it = new I_NodeSets('Id in (%s)', array(implode(',', $sets)), NO_ESCAPE);
+        $it = new IteratorNodeSets('Id in (%s)', array(implode(',', $sets)), NO_ESCAPE);
         return $it;
     }
 
@@ -132,7 +129,7 @@ class NodeSets extends NodeSetsOrm
      */
     static public function & getAllSets()
     {
-        $it = new I_NodeSets('', array());
+        $it = new IteratorNodeSets('', array());
         return $it;
     }
 
@@ -140,11 +137,11 @@ class NodeSets extends NodeSetsOrm
      *    Returns an iterator of all related nodes in this set
      */
     /**
-     * @return I_NodeSetsNodes
+     * @return IteratorNodeSetsNodes
      */
     public function & getNodes()
     {
-        $it = new I_NodeSetsNodes('IdSet = %s', array($this->getId()));
+        $it = new IteratorNodeSetsNodes('IdSet = %s', array($this->getId()));
         return $it;
     }
 
@@ -176,7 +173,7 @@ class NodeSets extends NodeSetsOrm
      */
     public function & getUsers()
     {
-        $it = new I_NodeSetsUSers('IdSet = %s', array($this->getId()));
+        $it = new IteratorNodeSetsUSers('IdSet = %s', array($this->getId()));
         return $it;
     }
 

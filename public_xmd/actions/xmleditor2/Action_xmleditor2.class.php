@@ -40,7 +40,6 @@ use Ximdex\Logger;
 ModulesManager::file('/actions/xmleditor2/XimlinkResolver.class.php', 'APP');
 ModulesManager::file('/actions/createlink/Action_createlink.class.php', 'APP');
 ModulesManager::file('/inc/i18n/I18N.class.php');
-ModulesManager::file('/inc/model/NodeEdition.class.php');
 
 
 class Action_xmleditor2 extends ActionAbstract
@@ -414,7 +413,7 @@ class Action_xmleditor2 extends ActionAbstract
     {
         $idnode = $this->request->getParam('nodeid');
         $userID = (int)\Ximdex\Runtime\Session::get('userID');
-        $nodeEdition = new NodeEdition();
+        $nodeEdition = new \Ximdex\Models\NodeEdition();
         $results = $nodeEdition->getByNode($idnode);
         $edition = false;
         $extraEdition = array();
@@ -448,7 +447,7 @@ class Action_xmleditor2 extends ActionAbstract
     {
         $nodeid = $this->request->get('nodeid');
         $userid = \Ximdex\Runtime\Session::get('userID');
-        $nodeEdition = new NodeEdition();
+        $nodeEdition = new \Ximdex\Models\NodeEdition();
         $res = $nodeEdition->deleteByNodeAndUser($nodeid, $userid);
         if (!$res) {
             Logger::error("Error deleting Node Edition for node " . $nodeid . " and user " . $userid);

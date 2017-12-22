@@ -24,6 +24,7 @@
  *  @version $Revision$
  */
 
+namespace Ximdex\Models;
 
 
 class Namespaces extends  \Ximdex\Data\GenericData {

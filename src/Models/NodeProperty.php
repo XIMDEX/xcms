@@ -24,6 +24,8 @@
  *  @version $Revision$
  */
 
+namespace Ximdex\Models;
+
 use Ximdex\Logger;
 
 

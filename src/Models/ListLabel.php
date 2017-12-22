@@ -20,27 +20,25 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- * @author Ximdex DevTeam <dev@ximdex.com>
- * @version $Revision$
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
  */
 
 
+namespace Ximdex\Models;
 
-class RelNodeMetadata extends \Ximdex\Data\GenericData
-{
 
-    var $_idField = 'idRel';
-    var $_table = 'RelNodeMetadata';
+class ListLabel extends \Ximdex\Data\GenericData {
+    var $_idField = 'id';
+    var $_table = 'List_Label';
     var $_metaData = array(
-        'idRel' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
-        'IdNode' => array('type' => "int(12)", 'not_null' => 'true'),
-        'IdMetadata' => array('type' => "int(12)", 'not_null' => 'true')
+        'id' => array('type' => "int(11)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
+        'Name' => array('type' => "varchar(250)", 'not_null' => 'true'),
+        'Description' => array('type' => "varchar(250)", 'not_null' => 'false')
     );
-    var $_uniqueConstraints = array(
-        'rel' => array('IdNode', 'IdMetadata')
-    );
-    var $_indexes = array('idRel');
-    var $idRel;
-    var $IdNode = 0;
-    var $IdMetadata = 0;
+    var $_uniqueConstraints = array();
+    var $_indexes = array('id');
+    var $id;
+    var $Name;
+    var $Description;
 }
