@@ -77,7 +77,6 @@ Class Logger
 
     public static function error($string, $object = array())
     {
-        error_log($string);
         try{
             return self::get()->logger->addError($string, $object);
         }catch (\Exception $e){
@@ -87,13 +86,11 @@ Class Logger
 
     public static function warning($string)
     {
-        error_log($string);
         return self::get()->logger->addWarning($string);
     }
 
     public static function debug($string)
     {
-        error_log($string);
         if (App::debug())
         {
             try{
@@ -106,7 +103,6 @@ Class Logger
 
     public static function fatal($string)
     {
-        error_log($string);
         try{
             return self::get()->logger->addCritical($string);
         }catch (Exception $e){
@@ -116,7 +112,6 @@ Class Logger
 
     public static function info($string)
     {
-        error_log($string);
         try{
             return self::get()->logger->addInfo($string);
         }catch (Exception $e){

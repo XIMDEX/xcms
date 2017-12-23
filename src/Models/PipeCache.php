@@ -27,8 +27,6 @@
 
 namespace Ximdex\Models;
 
-use I_PipePropertyValues;
-use PipePropertyValue;
 use Ximdex\Logger;
 use Ximdex\Models\ORM\PipeCachesOrm;
 use Ximdex\Runtime\App;
@@ -36,7 +34,6 @@ use Ximdex\Runtime\Db;
 use Ximdex\Utils\FsUtils;
 
 
-require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/iterators/I_PipePropertyValues.class.php');
 
 define('CACHE_FOLDER', '/data/cache/pipelines/');
 define('DATA_FOLDER', '/data/files/');
@@ -225,7 +222,7 @@ class PipeCache extends PipeCachesOrm
         while (list(, $idCache) = each($idCaches)) {
             $localQuery = implode(' AND ', $queryArray);
             $localArgs = array_merge($propertiesIds, array($idCache));
-            $propertyValuesIterator = new I_PipePropertyValues($localQuery, $localArgs);
+            $propertyValuesIterator = new \Ximdex\Pipeline\Iterators\IteratorPipePropertyValues($localQuery, $localArgs);
 
             $continue = false;
             while ($propertyValue = $propertyValuesIterator->next()) {
@@ -350,7 +347,7 @@ class PipeCache extends PipeCachesOrm
         if ($this->_transition->properties->count() > 0) {
             $this->_transition->properties->reset();
             while ($property = $this->_transition->properties->next()) {
-                $propertyValue = new PipePropertyValue();
+                $propertyValue = new \Ximdex\Pipeline\PipePropertyValue();
                 $propertyValue->set('IdPipeProperty', $property->get('id'));
 
                 $propertyValue->set('IdPipeCache', $idCache);

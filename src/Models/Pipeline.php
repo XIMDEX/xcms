@@ -28,12 +28,10 @@
 namespace Ximdex\Models;
 
 use Ximdex\Runtime\Db;
-use I_PipeProcesses;
 use Ximdex\Logger;
 use Ximdex\Models\ORM\PipelinesOrm;
 use Ximdex\Runtime\App;
 
-require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/iterators/I_PipeProcesses.class.php');
 
 /**
  *
@@ -46,7 +44,7 @@ require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/iterators/I_PipeProcesses.class.p
 class Pipeline extends PipelinesOrm
 {
     /**
-     * @var $processes I_PipeProcesses
+     * @var $processes \Ximdex\Pipeline\Iterators\IteratorPipeProcesses
      */
     var $processes = NULL;
     var $idNodeType = NULL;
@@ -65,7 +63,7 @@ class Pipeline extends PipelinesOrm
             return;
         }
 
-        $this->processes = new I_PipeProcesses('IdPipeline = %s', array($this->get('id')));
+        $this->processes = new \Ximdex\Pipeline\Iterators\IteratorPipeProcesses('IdPipeline = %s', array($this->get('id')));
         $this->processes->reloadConstructors();
 
         $pipeNodeType = new PipeNodeTypes();

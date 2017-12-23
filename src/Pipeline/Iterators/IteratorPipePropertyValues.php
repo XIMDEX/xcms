@@ -24,16 +24,16 @@
  *  @version $Revision$
  */
 
-
+namespace  Ximdex\Pipeline\Iterators;
 
 
 /**
  * 
- * @brief Basic iterator for the PipeProcess class
+ * @brief Basic iterator for the PipePropertyValue object
  * 
- * Basic iterator for the PipeProcess class
+ * Basic iterator for the PipePropertyValue object
  *
  */
-class I_PipeProcesses extends  \Ximdex\Behaviours\Iterator {
-	var $_objectName = '\\Ximdex\\Models\\PipeProcess';
+class IteratorPipePropertyValues extends  \Ximdex\Behaviours\Iterator {
+	var $_objectName = '\\Ximdex\Pipeline\PipePropertyValue';
 }

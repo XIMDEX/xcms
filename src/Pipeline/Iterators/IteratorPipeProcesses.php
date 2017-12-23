@@ -25,15 +25,15 @@
  */
 
 
+namespace  Ximdex\Pipeline\Iterators;
 
-require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/PipePropertyValue.class.php');
 /**
  * 
- * @brief Basic iterator for the PipePropertyValue object
+ * @brief Basic iterator for the PipeProcess class
  * 
- * Basic iterator for the PipePropertyValue object
+ * Basic iterator for the PipeProcess class
  *
  */
-class I_PipePropertyValues extends  \Ximdex\Behaviours\Iterator {
-	var $_objectName = 'PipePropertyValue';
+class IteratorPipeProcesses extends  \Ximdex\Behaviours\Iterator {
+	var $_objectName = '\\Ximdex\\Models\\PipeProcess';
 }

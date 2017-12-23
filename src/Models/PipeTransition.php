@@ -27,13 +27,11 @@
 
 namespace Ximdex\Models;
 
-use I_PipeProperties;
 
 use Ximdex\Logger;
 use Ximdex\Models\ORM\PipeTransitionsOrm;
 
 
- require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/iterators/I_PipeProperties.class.php');
 
 /**
  *
@@ -53,7 +51,7 @@ define('CALLBACK_FOLDER', XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/');
 class PipeTransition extends PipeTransitionsOrm
 {
 	/**
-	 * @var I_PipeProperties|null
+	 * @var \Ximdex\Pipeline\Iterators\IteratorPipeProperties|null
      */
 	var $properties = NULL;
 
@@ -71,7 +69,7 @@ class PipeTransition extends PipeTransitionsOrm
 			return;
 		}
 
-		$this->properties = new I_PipeProperties('IdPipeTransition = %s', array($id));
+		$this->properties = new \Ximdex\Pipeline\Iterators\IteratorPipeProperties('IdPipeTransition = %s', array($id));
 	}
 
 	/**

@@ -25,6 +25,7 @@
  */
 
 
+namespace  Ximdex\Pipeline\Iterators;
 
 
 /**
@@ -35,14 +36,14 @@
  * the results in the sequence of the status stored in the database
  *
  */
-class I_PipeTransitions extends  \Ximdex\Behaviours\Iterator {
+class IteratorPipeTransitions extends  \Ximdex\Behaviours\Iterator {
 	var $_objectName = '\\Ximdex\\Models\\PipeTransition';
 	/**
 	 * Carga el iterador de la condicion dada y lo ordena por sus transiciones
 	 *
 	 * @param string $condition
 	 * @param array $args
-	 * @return I_PipeTransitions
+	 * @return \Ximdex\Pipeline\Iterators\IteratorPipeTransitions
 	 */
 	public function __construct($condition, $args) {
 		parent::__construct($condition, $args);

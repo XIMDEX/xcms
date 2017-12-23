@@ -27,12 +27,10 @@
 
 namespace Ximdex\Models;
 
-use I_PipeTransitions;
 use Ximdex\Logger;
 use Ximdex\Models\ORM\PipeProcessOrm;
 
 
-require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/iterators/I_PipeTransitions.class.php');
 
 /**
  *
@@ -45,7 +43,7 @@ require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/iterators/I_PipeTransitions.class
 class PipeProcess extends PipeProcessOrm
 {
     /**
-     * @var $transitions I_PipeTransitions
+     * @var $transitions \Ximdex\Pipeline\Iterators\IteratorPipeTransitions
      */
     var $transitions;
 
@@ -78,7 +76,7 @@ class PipeProcess extends PipeProcessOrm
     {
         parent::__construct($id);
         if ($this->get('id') > 0) {
-            $this->transitions = new I_PipeTransitions('IdPipeProcess = %s', array($id));
+            $this->transitions = new \Ximdex\Pipeline\Iterators\IteratorPipeTransitions('IdPipeProcess = %s', array($id));
         }
     }
 
