@@ -597,21 +597,24 @@ class User extends UsersOrm
         $arrayActions = array();
 
 
+        if(!empty($arrayGroups)) {
+            //Getting roles for the user for every group.
+            foreach ($arrayGroups as $idGroup) {
+                $aux = array();
+                $aux[] = $this->GetRoleOnGroup($idGroup);
+                $arrayRoles = array_merge($arrayRoles, $aux);
+            }
 
-
-        //Getting roles for the user for every group.
-        foreach ($arrayGroups as $idGroup) {
-            $aux = array();
-            $aux[] = $this->GetRoleOnGroup($idGroup);
-            $arrayRoles = array_merge($arrayRoles, $aux);
         }
 
         $arrayRoles = array_unique($arrayRoles);
 
-        //Getting actions for every rol .
-        foreach ($arrayRoles as $idRol) {
-            $role = new Role($idRol);
-            $arrayActions = array_merge($arrayActions, $role->GetActionsOnNode($idNode, $includeActionsWithNegativeSort));
+        if(!empty($arrayRoles)) {
+            //Getting actions for every rol .
+            foreach ($arrayRoles as $idRol) {
+                $role = new Role($idRol);
+                $arrayActions = array_merge($arrayActions, $role->GetActionsOnNode($idNode, $includeActionsWithNegativeSort));
+            }
         }
 
         $arrayActions = array_unique($arrayActions);

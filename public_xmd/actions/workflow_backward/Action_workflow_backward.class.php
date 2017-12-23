@@ -32,7 +32,6 @@ use Ximdex\Models\User;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Workflow\WorkFlow;
 
- ModulesManager::file('/inc/mail/Mail.class.php');
 
 class Action_workflow_backward extends ActionAbstract {
 

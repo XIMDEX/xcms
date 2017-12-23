@@ -32,7 +32,6 @@ use Ximdex\Models\User;
 use Ximdex\Models\Node;
 
 
-include_once(XIMDEX_ROOT_PATH . '/inc/mail/Mail.class.php');
 
 
 class SyncManager

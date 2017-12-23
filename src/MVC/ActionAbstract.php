@@ -41,7 +41,6 @@ use Ximdex\Utils\Factory;
 use Ximdex\Utils\QueryManager;
 use Ximdex\Runtime\Session;
 
-ModulesManager::file('/inc/mail/Mail.class.php');
 
 
 /**

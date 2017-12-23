@@ -38,7 +38,6 @@ use Ximdex\Utils\Serializer;
 use Ximdex\Sync\SynchroFacade;
 use Ximdex\Workflow\WorkFlow;
 
-ModulesManager::file('/inc/mail/Mail.class.php');
 ModulesManager::file('/actions/browser3/inc/GenericDatasource.class.php', 'APP');
 
 ModulesManager::file('/inc/model/NodesToPublish.class.php', 'ximSYNC');

@@ -296,7 +296,7 @@ class StructuredDocument extends StructuredDocumentsOrm
 
 		$node = new Node($this->get('IdDoc'));
 		if(\Ximdex\NodeTypes\NodeType::METADATA_DOCUMENT == $node->GetNodeType()){
-			$content = \MetadataManager::addSystemMetadataToContent($node->nodeID, $content);
+			$content = \Ximdex\Metadata\MetadataManager::addSystemMetadataToContent($node->nodeID, $content);
 			if ($content === false)
 			{
 			    //invalid XML

@@ -31,7 +31,6 @@ use Ximdex\Models\User;
 
 
 
-include_once(XIMDEX_ROOT_PATH . '/inc/mail/Mail.class.php');
 
 ModulesManager::file('/inc/manager/BatchManager.class.php', 'ximSYNC');
 ModulesManager::file('/inc/model/NodesToPublish.class.php', 'ximSYNC');

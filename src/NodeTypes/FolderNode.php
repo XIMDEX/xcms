@@ -349,7 +349,7 @@ class FolderNode extends Root
 
     private function _createDefaultRNGs()
     {
-        $defaultRNGs_folder = "/inc/metadata/schemes/";
+        $defaultRNGs_folder = "/src/Metadata/schemes/";
         $idparent = $this->parent->GetID();
 
         $this->buildDefaultRngFromPath($idparent, $defaultRNGs_folder);
