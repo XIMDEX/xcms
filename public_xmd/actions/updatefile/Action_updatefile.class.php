@@ -29,7 +29,6 @@ use Ximdex\Models\Node;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\Request;
 
-ModulesManager::file('/inc/io/BaseIOInferer.class.php');
 
 class Action_updatefile extends ActionAbstract {
    // Main method: shows initial form
@@ -57,7 +56,7 @@ class Action_updatefile extends ActionAbstract {
 			$this->messages->add(_('File could not be uploaded, contact with your administrator'), MSG_TYPE_ERROR);
 		}
 
-		$baseIoInferer = new BaseIOInferer();
+		$baseIoInferer = new \Ximdex\IO\BaseIOInferer();
 		$idParent = $node->get('IdParent');
 		$types = $baseIoInferer->infereType('FILE', $idParent, $filePath);
 		if (!count($types) > 0) {
@@ -84,7 +83,7 @@ class Action_updatefile extends ActionAbstract {
                 );
 
 
-		$baseIO = new baseIO();
+		$baseIO = new \Ximdex\IO\BaseIO();
 		$result = $baseIO->update($data);
 
 		if ($result > 0) {

@@ -321,7 +321,7 @@ class FolderNode extends Root
                 )
             );
 
-            $baseIO = new baseIO();
+            $baseIO = new \Ximdex\IO\BaseIO();
             $baseIO->build($data);
         }
     }
@@ -370,7 +370,7 @@ class FolderNode extends Root
                             array('NODETYPENAME' => 'PATH', 'SRC' => '')
                         )
                     );
-                    $baseIO = new baseIO();
+                    $baseIO = new \Ximdex\IO\BaseIO();
                     $rngId = $baseIO->build($data);
 
                     if (!$rngId > 0) {

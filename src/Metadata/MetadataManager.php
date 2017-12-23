@@ -38,9 +38,7 @@ use Ximdex\Runtime\App;
 use Ximdex\Runtime\DataFactory;
 
 
-\ModulesManager::file('/inc/io/BaseIOInferer.class.php');
 
-\ModulesManager::file('/inc/io/BaseIO.class.php');
 
 /***
     Class for Metadata Manegement
@@ -551,7 +549,7 @@ class MetadataManager{
         }
 
         // Creating container
-        $baseIoInferer = new \BaseIOInferer();
+        $baseIoInferer = new \Ximdex\IO\BaseIOInferer();
         $inferedNodeType = $baseIoInferer->infereType('FOLDER', $idNode);
         $nodeType = new NodeType();
         $nodeType->SetByName($inferedNodeType['NODETYPENAME']);
@@ -579,7 +577,7 @@ class MetadataManager{
             "MASTER" => $master
         );
         
-        $baseIO = new \baseIO();
+        $baseIO = new \Ximdex\IO\BaseIO();
         $idContainer = $result = $baseIO->build($data);
 
         if (!($result > 0)) {

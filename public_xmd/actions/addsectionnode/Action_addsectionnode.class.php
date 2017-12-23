@@ -79,7 +79,7 @@ class Action_addsectionnode extends ActionAbstract {
         if ($nodetype == 3) {
             $id = $this->addcatalog($data);
         } else {
-            $baseio = new baseIO();
+            $baseio = new \Ximdex\IO\BaseIO();
             $id = $baseio->build($data);
         }
 
@@ -237,7 +237,7 @@ class Action_addsectionnode extends ActionAbstract {
                 array('DESCRIPTION' => $link_description)
             )
         );
-        $bio = new baseIO();
+        $bio = new \Ximdex\IO\BaseIO();
         $bio->build($data);
     }
 

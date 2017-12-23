@@ -31,7 +31,6 @@ use Ximdex\Models\NodeType;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\MVC\ActionAbstract;
 
-ModulesManager::file('/inc/io/BaseIOInferer.class.php');
 
 class Action_createxmlcontainer extends ActionAbstract {
 
@@ -54,7 +53,7 @@ class Action_createxmlcontainer extends ActionAbstract {
 		
 		if ($section > 0) {
 			$section = new Node($section);
-			$hasTheme = (bool) count($section->getProperty('theme'));
+			$hasTheme = (bool) count((array) $section->getProperty('theme'));
 			
 			if ($hasTheme) {
 				$schemes = $section->getProperty('theme_visualtemplates');
@@ -68,7 +67,7 @@ class Action_createxmlcontainer extends ActionAbstract {
 		$schemaArray = array();
 		if (!is_null($schemes)) {
 			foreach ($schemes as $idSchema) {
-                $np = new NodeProperty();
+                $np = new \Ximdex\Models\NodeProperty();
                 $res = $np->find('IdNodeProperty','IdNode = %s AND Property = %s AND Value = %s', array($idSchema,'SchemaType','metadata_schema'));
                 if(!$res){
 				    $sch = new Node($idSchema);
@@ -148,7 +147,7 @@ class Action_createxmlcontainer extends ActionAbstract {
         	$languages = $this->request->getParam('languages');
 
 		if (isset($result) && $result && is_array($languages)) {
-	    		$baseIoInferer = new BaseIOInferer();
+	    		$baseIoInferer = new \Ximdex\IO\BaseIOInferer();
 	    		$inferedNodeType = $baseIoInferer->infereType('FILE', $idContainer);
 	    		$nodeType = new NodeType();
 	    		$nodeType->SetByName($inferedNodeType['NODETYPENAME']);
@@ -203,7 +202,7 @@ class Action_createxmlcontainer extends ActionAbstract {
     private function buildXmlContainer($idNode, $aliases, $name, $idSchema, $channels, $languages, $master){
 
     	// Creating container
-		$baseIoInferer = new BaseIOInferer();
+		$baseIoInferer = new \Ximdex\IO\BaseIOInferer();
 		$inferedNodeType = $baseIoInferer->infereType('FOLDER', $idNode);
 		$nodeType = new NodeType();
 		$nodeType->SetByName($inferedNodeType['NODETYPENAME']);
@@ -231,7 +230,7 @@ class Action_createxmlcontainer extends ActionAbstract {
 	        "ALIASES" => $selectedAlias,
 	        "MASTER" => $master
     	);
-    	$baseIO = new baseIO();
+    	$baseIO = new \Ximdex\IO\BaseIO();
     	return $baseIO->build($data);
     }
 }

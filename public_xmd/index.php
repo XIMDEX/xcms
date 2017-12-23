@@ -33,7 +33,6 @@ include_once dirname(__DIR__).'/bootstrap.php';
 include_once __DIR__.'/src/autoload.php';
 
 //General class
-ModulesManager::file('/inc/io/BaseIO.class.php');
 ModulesManager::file('/inc/i18n/I18N.class.php');
 ModulesManager::file('/inc/mvc/App.class.php');
 ModulesManager::file('/install/InstallController.class.php', 'APP');

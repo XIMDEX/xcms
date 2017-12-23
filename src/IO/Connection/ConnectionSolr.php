@@ -25,14 +25,15 @@
  *  @version $Revision$
  */
 
-use Ximdex\Models\ORM\NodesOrm as Nodes_ORM;
+namespace Ximdex\IO\Connection;
+
 use Ximdex\Logger;
+use Ximdex\Models\ORM\NodesOrm as Nodes_ORM;
 use Ximdex\Models\RelTagsNodes;
+use Exception;
 
-require_once (XIMDEX_ROOT_PATH . '/inc/io/connection/I_Connector.class.php');
-require_once (XIMDEX_ROOT_PATH . '/vendors/autoload.php');
 
-class Connection_Solr implements I_Connector {
+class ConnectionSolr implements IConnector {
 
     private $connected = false;
     private $validExtensions = array('xml' => 1, 'pdf' => 1, 'epub' => 1);
@@ -251,7 +252,7 @@ class Connection_Solr implements I_Connector {
         }
 
         // delete solr document using id
-        $client = new Solarium\Client($this->config);
+        $client = new \Solarium\Client($this->config);
         $update = $client->createUpdate();
         $update->addDeleteById($result[0]);
         $update->addCommit();
@@ -306,7 +307,7 @@ class Connection_Solr implements I_Connector {
 
         // Create client
         try {
-            $client = new Solarium\Client($this->config);
+            $client = new \Solarium\Client($this->config);
         } catch (Exception $e) {
             Logger::error("fail to create a Solarium_Client instance");
             return false;
@@ -356,7 +357,7 @@ class Connection_Solr implements I_Connector {
         }
         
         // create an extract query instance and add settings
-        $client = new Solarium\Client($this->config);
+        $client = new \Solarium\Client($this->config);
         $query = $client->createExtract();
         $query->setFile($localFile);
         $query->setCommit(true);

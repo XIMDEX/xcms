@@ -41,7 +41,6 @@ function showErrors($errno, $errstr, $errfile = NULL, $errline= NULL) {
 set_error_handler("showErrors");
 
 
-ModulesManager::file('/inc/io/connection/ConnectionManager.class.php');
 ModulesManager::file('/inc/model/ServerFrame.class.php', 'ximSYNC');
 
 
@@ -324,7 +323,7 @@ class DexPumper {
 				$idProtocol = $this->server->get('IdProtocol');
 			}
 
-			$this->connection = ConnectionManager::getConnection($idProtocol);
+			$this->connection = \Ximdex\IO\Connection\ConnectionManager::getConnection($idProtocol);
 		}
 
 		if (!$this->connection->isConnected()) {

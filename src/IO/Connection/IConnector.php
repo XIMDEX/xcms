@@ -25,14 +25,15 @@
  */
 
 
-
+namespace Ximdex\IO\Connection;
+use Ximdex\Logger;
 
 /**
  * 
  * @author jmgomez
  *
  */
-interface I_Connector {
+interface IConnector {
 	
 	/**
 	 * Connect to server

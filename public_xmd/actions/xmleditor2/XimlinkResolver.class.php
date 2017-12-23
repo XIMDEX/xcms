@@ -191,7 +191,7 @@ class ximlinkResolver {
 				)
 			);
 
-		$bio = new baseIO();
+		$bio = new \Ximdex\IO\BaseIO();
 		$result = $bio->build($data);
 
 		if ($result < 1) {

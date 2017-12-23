@@ -35,8 +35,6 @@ use Ximdex\Runtime\Constants;
 use Ximdex\Utils\FsUtils;
 use Ximdex\Runtime\Db ;
 
-ModulesManager::file('/inc/io/BaseIO.class.php');
-ModulesManager::file('/inc/io/BaseIORelations.class.php');
 
 
 
@@ -312,8 +310,7 @@ class ImportXml
                     }
                 }
             }
-            $baseIORelation = new BaseIORelations();
-            $baseIORelation->build($relation);
+
         }
         return true;
     }
@@ -753,7 +750,7 @@ class ImportXml
          *
         */
 
-        $baseIO = new BaseIO();
+        $baseIO = new \Ximdex\IO\BaseIO();
         $idUser = \Ximdex\Runtime\Session::get("userID");
         if (!($idUser > 0)) {
             $this->abort = true;
@@ -1158,7 +1155,7 @@ class ImportXml
         if ($parentProject->get('IdNode') > 0) {
             $idximPvdNode = $parentProject->GetChildByName('schemas');
             $template['PARENTID'] = $idximPvdNode;
-            $baseIO = new BaseIO();
+            $baseIO = new \Ximdex\IO\BaseIO();
 
             $idUser = \Ximdex\Runtime\Session::get('userID');
             if ($this->heuristicMode) {

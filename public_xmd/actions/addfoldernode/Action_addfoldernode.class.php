@@ -419,7 +419,7 @@ class Action_addfoldernode extends ActionAbstract
             return false;
         }
 
-        $io = new BaseIO();
+        $io = new \Ximdex\IO\BaseIO();
 
         foreach ($files as $file) {
 
@@ -494,7 +494,7 @@ class Action_addfoldernode extends ActionAbstract
             'PARENTID' => $projectId
         );
 
-        $io = new BaseIO();
+        $io = new \Ximdex\IO\BaseIO();
         $serverId = $io->build($data);
         if ($serverId < 1) {
             return false;
@@ -628,7 +628,7 @@ class Action_addfoldernode extends ActionAbstract
         $nodeType->SetByName($nodeTypeName);
         $idNodeType = $nodeType->get('IdNodeType') > 0 ? $nodeType->get('IdNodeType') : NULL;
 
-        $io = new BaseIO();
+        $io = new \Ximdex\IO\BaseIO();
         $languageObject = new Language();
         foreach ($files as $file) {
             $idSchema = $this->schemas[$file->templatename];

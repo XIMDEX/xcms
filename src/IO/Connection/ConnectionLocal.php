@@ -24,13 +24,15 @@
  *  @version $Revision$
  */
 
+
+namespace Ximdex\IO\Connection;
 use Ximdex\Logger;
+use Exception;
 
 
 
-require_once (XIMDEX_ROOT_PATH . '/inc/io/connection/I_Connector.class.php');
 
-class Connection_Local implements I_Connector {
+class ConnectionLocal implements IConnector {
 	
 	/**
 	 * Connect to server

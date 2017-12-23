@@ -32,7 +32,6 @@ use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
 
-ModulesManager::file('/inc/io/BaseIOInferer.class.php');
 
 
 class Action_fileupload extends ActionAbstract {
@@ -56,7 +55,7 @@ class Action_fileupload extends ActionAbstract {
 		}
 
 		/** ********* VERIFYING PERMITS **************************** */
-		$baseIoInferer = new BaseIOInferer();
+		$baseIoInferer = new \Ximdex\IO\BaseIOInferer();
 		$typeInfo = $baseIoInferer->infereType($lookUpType, $nodeTypeLookUp);
 		$nodeTypeName = $typeInfo["NODETYPENAME"];
 
@@ -113,7 +112,7 @@ class Action_fileupload extends ActionAbstract {
 		}
 
 		//Searching parent node type (folder)
-		$baseIoInferer = new BaseIOInferer();
+		$baseIoInferer = new \Ximdex\IO\BaseIOInferer();
 		//Searching node type
 		$nodeTypeName = !empty($type) ? $baseIoInferer->infereFileType($_FILES['upload'], $type)
 			: $baseIoInferer->infereFileType($_FILES['upload']);
@@ -166,7 +165,7 @@ class Action_fileupload extends ActionAbstract {
 									array ('NODETYPENAME' => 'PATH', 'SRC' => $filePath)
 							)
 					);
-			$baseIO = new baseIO();
+			$baseIO = new \Ximdex\IO\BaseIO();
 			$result = $baseIO->build($data);
 			if ($result > 0) {
 				$baseIO->messages->add(sprintf(_('File %s has been successfully inserted'), $fileName), MSG_TYPE_NOTICE);
@@ -231,7 +230,7 @@ class Action_fileupload extends ActionAbstract {
 							)
 					);
 
-			$baseIO = new baseIO();
+			$baseIO = new \Ximdex\IO\BaseIO();
 			$result = $baseIO->update($data);
 			if ($result > 0) {
 				$this->messages->add(_('Document has been successfully replaced'), MSG_TYPE_NOTICE);

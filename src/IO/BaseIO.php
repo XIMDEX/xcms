@@ -24,7 +24,10 @@
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision: 8778 $
  */
-use Ximdex\Auth;
+
+
+namespace Ximdex\IO;
+
 use Ximdex\Logger;
 use Ximdex\Models\Language;
 use Ximdex\Models\Node;
@@ -35,12 +38,6 @@ use Ximdex\Runtime\Constants;
 use Ximdex\Utils\FsUtils;
 use Ximdex\Utils\Messages;
 use Ximdex\Runtime\Session;
-
-
-// BaseIO API
-if (!defined('XIMDEX_BASEIO_PATH')) {
-    define('XIMDEX_BASEIO_PATH', realpath(dirname(__FILE__)));
-}
 
 
 class BaseIO

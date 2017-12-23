@@ -190,7 +190,7 @@ class Action_addlangxmlcontainer extends ActionAbstract {
 								'DESCRIPTION' => utf8_encode($aliases[$idLanguage]));
 						}
 
-						$baseIO = new baseIO();
+						$baseIO = new \Ximdex\IO\BaseIO();
 						$result = $baseIO->update($data);
 
 						if (!$result > 0) {
@@ -205,7 +205,7 @@ class Action_addlangxmlcontainer extends ActionAbstract {
 							'ID' => $idNode,
 							'NODETYPENAME' => $nodeType->get('Name')
 						);
-						$baseIO = new baseIO();
+						$baseIO = new \Ximdex\IO\BaseIO();
 						$result = $baseIO->delete($data);
 						if (!$result > 0) {
 
@@ -241,7 +241,7 @@ class Action_addlangxmlcontainer extends ActionAbstract {
 													'DESCRIPTION' => $aliases[$idLanguage]);
 						}
 
-						$baseIO = new baseIO();
+						$baseIO = new \Ximdex\IO\BaseIO();
 						$result = $baseIO->build($data);
 						if (!$result > 0) {
 							reset($baseIO->messages->messages);

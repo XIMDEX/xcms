@@ -120,7 +120,7 @@ msgstr "Falha na opera&ccedil;&atilde;o: %s"
 
 #: /actions/addfoldernode/Action_addfoldernode.class.php
 # install/ximdex_data/ximdex.sql table Nodes
-#: /inc/io/BaseIO.class.php
+#: /src/IO/BaseIO.php
 msgid "Project"
 msgstr "Projeto"
 
@@ -134,12 +134,12 @@ msgstr "Criar Projeto"
 #: /actions/addfoldernode/Action_addfoldernode.class.php
 #: /actions/workflow_forward/template/Smarty/show_results.tpl
 # install/ximdex_data/ximdex.sql table Nodes
-#: /inc/io/BaseIOInferer.class.php
+#: /src/IO/BaseIOInferer.php
 msgid "Server"
 msgstr "Servidor"
 
 #: /actions/addfoldernode/Action_addfoldernode.class.php
-#: /inc/io/BaseIOInferer.class.php
+#: /src/IO/BaseIOInferer.php
 msgid "Section"
 msgstr "Se&ccedil;&atilde;o"
 
@@ -4949,7 +4949,7 @@ msgstr "Objeto sem inicializar"
 msgid "Role does not exist"
 msgstr "N&atilde;o existe o rol"
 
-#: /inc/io/BaseIO.class.php
+#: /src/IO/BaseIO.php
 msgid "Empty nodetype"
 msgstr "O tipo de nodo est&aacute; vazio"
 
@@ -5025,7 +5025,7 @@ msgstr "N&atilde;o foi poss&iacute;vel determinar um tipo de nodo para a sua ins
 msgid "Error obtaining object messages"
 msgstr "Erro ao obter as mensagens de um objeto"
 
-#: /inc/io/BaseIOInferer.class.php
+#: /src/IO/BaseIOInferer.php
 msgid "Unsupported mime-type %s extension %s"
 msgstr "Exten&ccedil;&atilde;o %s mime-type %s n&atilde;o suportada"
 

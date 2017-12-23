@@ -29,7 +29,6 @@ use Ximdex\Models\NodeType;
 use Ximdex\Modules\Module;
 
 
-ModulesManager::file('/inc/io/BaseIO.class.php');
 
 ModulesManager::file('/actions/addfoldernode/model/ProjectTemplate.class.php', 'APP');
 ModulesManager::file('/actions/addfoldernode/conf/addfoldernode.conf', 'APP');

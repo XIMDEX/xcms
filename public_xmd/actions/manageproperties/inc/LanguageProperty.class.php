@@ -150,7 +150,7 @@ class LanguageProperty extends InheritableProperty {
 				'NODETYPENAME' => $nodeType->get('Name')
 			);
 
-			$baseIO = new baseIO();
+			$baseIO = new \Ximdex\IO\BaseIO();
 			$result = $baseIO->delete($data);
 			if (!($result > 0)) {
 				$messages = $baseIO->messages->messages;

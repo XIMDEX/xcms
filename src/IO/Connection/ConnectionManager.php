@@ -24,21 +24,21 @@
  *  @version $Revision$
  */
 
+namespace Ximdex\IO\Connection;
 use Ximdex\Logger;
 
 
 class ConnectionManager {
     
-	private static $basePath = '/inc/io/connection/';
-	private static $baseName = 'Connection_'; 
+	private static $baseName = 'Connection';
 	// Static class emulation
 	private function ConnectionManager() {}
 	
 	static function getConnection($type) {
 	    
-		$baseFullPath = XIMDEX_ROOT_PATH . self::$basePath;
+		$baseFullPath = __DIR__.'/';
 		$className = self::$baseName . self::normalizeName($type);
-		$connectionclass = $baseFullPath.$className.'.class.php';
+		$connectionclass = $baseFullPath.$className.'.php';
 		$connection_routes = $baseFullPath . 'connection_routes.ini';
 		
 		if (!is_file( $connectionclass )) {
@@ -59,7 +59,7 @@ class ConnectionManager {
 		
 		$factory = new \Ximdex\Utils\Factory($baseFullPath,self::$baseName);
 
-		return $factory->instantiate(self::normalizeName($type));
+		return $factory->instantiate(self::normalizeName($type), null, '\Ximdex\IO\Connection');
 	}
 	
 	private static function normalizeName($name) {

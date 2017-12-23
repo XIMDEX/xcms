@@ -25,7 +25,6 @@
  */
 
 
-use Ximdex\Auth;
 use Ximdex\Logger;
 use Ximdex\Models\Channel;
 use Ximdex\Models\Language;
@@ -34,7 +33,6 @@ use Ximdex\Models\NodeType;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\App;
 
-ModulesManager::file('/inc/io/BaseIOInferer.class.php');
 require_once(XIMDEX_ROOT_PATH . XIMDEX_VENDORS . '/flow/ConfigInterface.php');
 require_once(XIMDEX_ROOT_PATH . XIMDEX_VENDORS . '/flow/Config.php');
 require_once(XIMDEX_ROOT_PATH . XIMDEX_VENDORS . '/flow/Exception.php');
@@ -62,7 +60,7 @@ class Action_fileupload_common_multiple extends ActionAbstract {
         $node = new Node($idNode);
 
         /** ********* Find out folder nodetype **** */
-        $baseIoInferer = new BaseIOInferer();
+        $baseIoInferer = new \Ximdex\IO\BaseIOInferer();
         $type_folder = $baseIoInferer->infereType('FOLDER', $idNode );
         $type_node = $type_folder["NODETYPENAME"];
         /** ********* Checking permits **************************** */
@@ -76,7 +74,7 @@ class Action_fileupload_common_multiple extends ActionAbstract {
             $this->messages->add(_('NodeType is empty'), MSG_TYPE_ERROR);
         }
 
-        $user = new \Ximdex\Models\User($userId);
+        $user = new \Ximdex\Models\User($userid);
 
         if(!$user->canWrite(array('node_id' => $idNode)) ) {
             $this->messages->add(_('Files cannot be added because of lack of permits'), MSG_TYPE_ERROR);
@@ -271,7 +269,7 @@ class Action_fileupload_common_multiple extends ActionAbstract {
     private function _createNode($file, $idNode,  $type, $metadata, $overwrite) {
 
         $normalizedName = \Ximdex\Utils\Strings::normalize($file["name"]);
-        $baseIoInferer = new BaseIOInferer();
+        $baseIoInferer = new \Ximdex\IO\BaseIOInferer();
         //Finding out element nodetype
         if (empty($type) || $type == 'null') {
             $nodeTypeName = $baseIoInferer->infereFileType($file, $idNode);
@@ -296,7 +294,7 @@ class Action_fileupload_common_multiple extends ActionAbstract {
                     )
                 );
 
-                $baseIO = new baseIO();
+                $baseIO = new \Ximdex\IO\BaseIO();
                 $result = $baseIO->update($data);
             } else {
                 return  $this->_setRest(_('A file already exists with same name.') );
@@ -316,7 +314,7 @@ class Action_fileupload_common_multiple extends ActionAbstract {
                         )
                     )
                 );
-                $baseIO = new baseIO();
+                $baseIO = new \Ximdex\IO\BaseIO();
                 $result = $baseIO->build($data);
                 $documentNodeType = new NodeType();
                 $documentNodeType->SetByName("XMLDOCUMENT");
@@ -332,7 +330,8 @@ class Action_fileupload_common_multiple extends ActionAbstract {
                     )
                 );
 
-                $allChannels = Channel::GetAllChannels();
+                $channels = new Channel();
+                $allChannels = $channels->GetAllChannels();
                 if(!empty($allChannels ) ) {
                     foreach ($allChannels as $channel) {
                         $data['CHILDRENS'][] = array('NODETYPENAME' => 'CHANNEL', 'ID' => $channel);;
@@ -356,7 +355,7 @@ class Action_fileupload_common_multiple extends ActionAbstract {
                         array ('NODETYPENAME' => 'PATH', 'SRC' => $file["tmp_name"] )
                     )
                 );
-                $baseIO = new baseIO();
+                $baseIO = new \Ximdex\IO\BaseIO();
                 $result = $baseIO->build($data);
             } else {
                 return  $this->_setRest(_(" File is not of expected type " ) );

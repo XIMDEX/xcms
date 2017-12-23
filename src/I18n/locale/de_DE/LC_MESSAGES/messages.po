@@ -120,7 +120,7 @@ msgstr "Die Aktion war nicht erfolgreich: %s"
 
 #: /actions/addfoldernode/Action_addfoldernode.class.php
 # install/ximdex_data/ximdex.sql table Nodes
-#: /inc/io/BaseIO.class.php
+#: /src/IO/BaseIO.php
 msgid "Project"
 msgstr "Projekt"
 
@@ -134,12 +134,12 @@ msgstr "Projekt erstellen"
 #: /actions/addfoldernode/Action_addfoldernode.class.php
 #: /actions/workflow_forward/template/Smarty/show_results.tpl
 # install/ximdex_data/ximdex.sql table Nodes
-#: /inc/io/BaseIOInferer.class.php
+#: /src/IO/BaseIOInferer.php
 msgid "Server"
 msgstr "Server"
 
 #: /actions/addfoldernode/Action_addfoldernode.class.php
-#: /inc/io/BaseIOInferer.class.php
+#: /src/IO/BaseIOInferer.php
 msgid "Section"
 msgstr "Abschnitt"
 
@@ -4952,7 +4952,7 @@ msgstr "Nicht initialisiertes Objekt"
 msgid "Role does not exist"
 msgstr "Rolle existiert nicht"
 
-#: /inc/io/BaseIO.class.php
+#: /src/IO/BaseIO.php
 msgid "Empty nodetype"
 msgstr "Leerer Knotentyp"
 
@@ -5028,7 +5028,7 @@ msgstr "Es konnte keine Knotentyp zur Eingabe bestimmt werden"
 msgid "Error obtaining object messages"
 msgstr "Fehler beim Finden der Nachrichten eines Objekts"
 
-#: /inc/io/BaseIOInferer.class.php
+#: /src/IO/BaseIOInferer.php
 msgid "Unsupported mime-type %s extension %s"
 msgstr "Nichtunterst&uuml;tzer Mimetype %s Erweiterung %s"
 

@@ -25,14 +25,12 @@
  */
 
 
+namespace Ximdex\IO\Connection;
 use Ximdex\Logger;
 use phpseclib\Net\SFTP;
 
 
-require_once(XIMDEX_ROOT_PATH . '/inc/io/connection/I_Connector.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/io/connection/Connection_Local.class.php');
-
-class Connection_Ssh implements I_Connector
+class ConnectionSsh implements IConnector
 {
     // Connection location and credentials
     private $host;
