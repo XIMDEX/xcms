@@ -77,7 +77,7 @@
                     <div class="themeContainer">
                         <div class="theme">
                             <div class="img_container">
-                                <img src="actions/addfoldernode/themes/{$theme.name}/{$theme.name}.png" alt="{$theme.title}" />
+                                <img src="public_xmd/actions/addfoldernode/themes/{$theme.name}/{$theme.name}.png" alt="{$theme.title}" />
                                 <div class="actions">
                                     <a href="" class="icon select" data-theme="{$theme.name}">Select</a> {if $theme.configurable}
                                         <a data-theme="{$theme.name}" href="" class="icon custom">Custom</a> {/if}

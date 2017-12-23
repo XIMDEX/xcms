@@ -261,10 +261,10 @@ class Action_addfoldernode extends ActionAbstract
         $idNode = $this->request->getParam("nodeid");
         $nodeProjectRoot = new Node($idNode);
         $cssFolder = "/actions/addfoldernode/resources/css/";
-        $this->addCss($cssFolder . "style.css");
+        $this->addCss($cssFolder . "style.css", 'APP');
 
         $jsFolder = "/actions/addfoldernode/resources/js/";
-        $this->addJs($jsFolder . "init.js");
+        $this->addJs($jsFolder . "init.js", 'APP');
 
         $arrayTheme = array();
         foreach ($themes as $theme) {
