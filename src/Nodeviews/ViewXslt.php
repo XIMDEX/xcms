@@ -25,6 +25,8 @@
  */
 
 
+namespace Ximdex\Nodeviews;
+
 use Ximdex\Logger;
 use Ximdex\Models\Channel;
 use Ximdex\Models\Node;
@@ -32,10 +34,8 @@ use Ximdex\Models\StructuredDocument;
 use Ximdex\Models\Version;
 use Ximdex\Runtime\App;
 
-ModulesManager::file('/inc/repository/nodeviews/Abstract_View.class.php');
-ModulesManager::file('/inc/repository/nodeviews/Interface_View.class.php');
 
-class View_Xslt extends Abstract_View
+class ViewXslt extends AbstractView
 {
     private $_node;
     private $_idSection;
@@ -106,7 +106,7 @@ class View_Xslt extends Abstract_View
         Logger::info('Loading XSL content from ' . $docxap);
         
         // load the docxap content
-        $domDoc = new DOMDocument();
+        $domDoc = new \DOMDocument();
         if (@$domDoc->load($docxap) === false)
             $GLOBALS['errorsInXslTransformation'][] = 'Invalid docxap.xsl file (' . \Ximdex\Utils\Messages::error_message('DOMDocument::load(): ') . ')';
         $docxapContent = $domDoc->saveXML();
@@ -158,12 +158,12 @@ class View_Xslt extends Abstract_View
         {
             // try to reload templates includes in order to try to solve the problem, in case of empty templates_include.xsl
             Logger::info('Checking if the local templates_include.xsl is empty to reload its content');
-            $dom = new DOMDocument();
+            $dom = new \DOMDocument();
             if (!$dom->load($urlTemplatesInclude))
                 $GLOBALS['errorsInXslTransformation'][] = 'Cannot load the includes template URL: ' . $urlTemplatesInclude;
             else
             {
-                $xPath = new DOMXPath($dom);
+                $xPath = new \DOMXPath($dom);
                 $templates = $xPath->query('/xsl:stylesheet/xsl:include');
                 if (!$templates->length)
                 {
@@ -235,13 +235,13 @@ class View_Xslt extends Abstract_View
             Logger::setActiveLog($defaultLog);
             return $this->storeTmpContent($content);
         }
-        $xpath = new DOMXPath($domDoc);
+        $xpath = new \DOMXPath($domDoc);
 
         $nodeList = $xpath->query('/html/body//*[string(text())]');
 
         // In non-node transform we've not got a nodeid, and it's not necessary for tag counting.
         foreach ($nodeList as $element) {
-            $element->setAttributeNode(new DOMAttr('uid', (($this->_node) ? $this->_node->get('IdNode') : '00000') . ".$counter"));
+            $element->setAttributeNode(new \DOMAttr('uid', (($this->_node) ? $this->_node->get('IdNode') : '00000') . ".$counter"));
             $counter++;
         }
 

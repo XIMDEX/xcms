@@ -25,6 +25,9 @@
  */
 
 
+namespace Ximdex\Nodeviews;
+
+
 use Ximdex\Logger;
 use Ximdex\Models\Channel;
 use Ximdex\Models\Node;
@@ -32,11 +35,8 @@ use Ximdex\Parsers\ParsingPathTo;
 use Ximdex\Runtime\App;
 
 
-require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Abstract_View.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/View_FilterMacros.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Interface_View.class.php');
 
-class View_FilterMacrosPreview extends View_FilterMacros implements Interface_View
+class ViewFilterMacrosPreview extends ViewFilterMacros implements IView
 {
 
     private $_nodeTypeName = NULL;

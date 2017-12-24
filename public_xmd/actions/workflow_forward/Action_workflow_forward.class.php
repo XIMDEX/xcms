@@ -424,8 +424,9 @@ class Action_workflow_forward extends ActionAbstract {
         $idTransition = $actualWorkflowStatus->pipeProcess->getTransition($idActualState);
         $transition = new PipeTransition($idTransition);
         $callback = $transition->get('Callback');
+        $callback = str_replace('_', '', ucfirst($callback) );
 
-        if (!empty($callback) && is_file(XIMDEX_ROOT_PATH . sprintf('/inc/repository/nodeviews/View_%s.class.php', $callback))) {
+        if (!empty($callback) && is_file(XIMDEX_ROOT_PATH . sprintf('/src/Nodeviews/View%.php', $callback))) {
             $dataFactory = new DataFactory();
             $idVersion = $dataFactory->GetLastVersionId();
             $transformedContent = $transition->generate($idVersion, $node->GetContent(), array());

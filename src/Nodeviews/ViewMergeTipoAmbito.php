@@ -20,35 +20,21 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 
-use Ximdex\Logger;
-use Ximdex\Models\Channel;
+namespace Ximdex\Nodeviews;
 
-require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Abstract_View.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Interface_View.class.php');
 
-class View_ChannelFilter extends Abstract_View implements Interface_View {
-	
-	private $_idChannel;
-	
-	public function transform($idVersion = NULL, $pointer = NULL, $args = NULL) {
-		
-		if (array_key_exists('CHANNEL', $args)) {
-			$channel = new Channel($args['CHANNEL']);
-			$this->_idChannel = $channel->get('IdChannel');
-		}
-	
-		if (!($this->_idChannel > 0)) {
-			Logger::error('VIEW CHANNELFILTER: Channel not specified for node');
-			return NULL;
-		}
 
-		$content = $this->retrieveContent($pointer);
 
-		return $this->storeTmpContent($content);
-	}
+class ViewMergeTipoAmbito extends ViewMergeTags implements IView
+{
+    protected $query1 = '//tipodoc';
+    protected $query2 = '//ambitodoc';
+    protected $merge = '//tipoambito';
+
 }
+

@@ -25,12 +25,14 @@
  */
 
 
+namespace Ximdex\Nodeviews;
+
+
 use Ximdex\Runtime\App;
 
-require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Abstract_View.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Interface_View.class.php');
 
-class View_Dependencies extends Abstract_View implements Interface_View
+
+class ViewDependencies extends AbstractView implements IView
 {
     function transform($idVersion = NULL, $pointer = NULL, $args = NULL)
     {

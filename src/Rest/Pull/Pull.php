@@ -34,11 +34,10 @@ use Ximdex\Models\RelFramesPortal;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\Utils\PipelineManager;
 use Ximdex\Utils\Serializer;
+use Ximdex\Nodeviews\ViewFilterMacrosPreview;
+use Ximdex\Nodeviews\ViewPreviewInServer;
 
 
-
-require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/View_FilterMacrosPreview.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/View_PreviewInServer.class.php');
 
 class Pull
 {
@@ -68,13 +67,13 @@ class Pull
         $server = new Node($args['SERVERNODE']);
 
         if ($server->class->GetPreviewServersForChannel($args['CHANNEL'])) {
-            $viewPreviewInServer = new View_PreviewInserver();
+            $viewPreviewInServer = new ViewPreviewInserver();
             $content = $viewPreviewInServer->transform($idVersion, $content, $args);
         }
 
         // Specific FilterMacros View for previsuals
 
-        $viewFilterMacrosPreview = new View_FilterMacrosPreview();
+        $viewFilterMacrosPreview = new ViewFilterMacrosPreview();
         $content = $viewFilterMacrosPreview->transform($idVersion, $content, $args);
 
         return $content;

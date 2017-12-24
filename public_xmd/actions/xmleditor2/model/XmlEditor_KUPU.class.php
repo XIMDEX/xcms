@@ -39,15 +39,12 @@ use Ximdex\Utils\FsUtils;
 use Ximdex\Utils\PipelineManager;
 use Ximdex\Logger;
 use Ximdex\Sync\SynchroFacade;
+use Ximdex\Nodeviews\ViewPreviewInServer;
 
 ModulesManager::file('/actions/xmleditor2/model/XmlEditor_Abstract.class.php', 'APP');
 ModulesManager::file('/actions/xmleditor2/HTML2XML.class.php', 'APP');
-ModulesManager::file('/inc/repository/nodeviews/View_PreviewInServer.class.php');
 ModulesManager::file('/actions/enricher/model/Enricher.class.php', 'Xowl');
 ModulesManager::file('/actions/enricher/model/TagSuggester.class.php', 'Xowl');
-ModulesManager::file('/inc/repository/nodeviews/View_NodeToRenderizedContent.class.php');
-ModulesManager::file('/inc/repository/nodeviews/View_PrefilterMacros.class.php');
-ModulesManager::file('/inc/repository/nodeviews/View_Xedit.class.php');
 ModulesManager::file('/actions/xmleditor2/model/XmlEditor_Enricher.class.php', 'APP');
 
 
@@ -677,7 +674,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
         $args['CHANNEL'] = $idChannel;
         $args['SERVERNODE'] = $node->getServer();
 
-        $viewPreviewInServer = new View_PreviewInserver();
+        $viewPreviewInServer = new ViewPreviewInServer();
         $content = $viewPreviewInServer->transform($idVersion, $content, $args);
 
         return $content;

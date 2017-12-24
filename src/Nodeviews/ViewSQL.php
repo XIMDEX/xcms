@@ -25,6 +25,9 @@
  */
 
 
+namespace Ximdex\Nodeviews;
+
+
 use Ximdex\Logger;
 use Ximdex\Models\Node;
 use Ximdex\Models\NodeType;
@@ -32,10 +35,8 @@ use Ximdex\Models\StructuredDocument;
 use Ximdex\Models\Version;
 
 
-require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Abstract_View.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Interface_View.class.php');
 
-class View_SQL extends Abstract_View implements Interface_View {
+class ViewSQL extends AbstractView implements IView {
 	function transform($idVersion = NULL, $pointer = NULL, $args = NULL) {
 		
 		$content = $this->retrieveContent($pointer);

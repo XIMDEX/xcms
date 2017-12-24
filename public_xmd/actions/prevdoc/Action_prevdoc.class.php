@@ -32,11 +32,7 @@ use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
 use Ximdex\Utils\PipelineManager;
-
-ModulesManager::file('/inc/repository/nodeviews/View_NodeToRenderizedContent.class.php');
-ModulesManager::file('/inc/repository/nodeviews/View_PrefilterMacros.class.php');
-ModulesManager::file('/inc/repository/nodeviews/View_Xslt.class.php');
-ModulesManager::file('/inc/repository/nodeviews/View_FilterMacrosPreview.class.php');
+use Ximdex\Nodeviews\ViewFilterMacrosPreview;
 
 
 class Action_prevdoc extends ActionAbstract
@@ -163,7 +159,7 @@ class Action_prevdoc extends ActionAbstract
 		else
 		{
     		// Specific FilterMacros View for previsuals:
-    		$viewFilterMacrosPreview = new View_FilterMacrosPreview();
+    		$viewFilterMacrosPreview = new ViewFilterMacrosPreview();
     		$file = $viewFilterMacrosPreview->transform(NULL, $content, $args);
     		$hash = basename($file);
     

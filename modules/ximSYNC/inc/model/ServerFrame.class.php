@@ -38,7 +38,6 @@ ModulesManager::file('/inc/model/orm/ServerFrames_ORM.class.php', 'ximSYNC');
 ModulesManager::file('/inc/model/ChannelFrame.class.php', 'ximSYNC');
 ModulesManager::file('/inc/model/NodeFrame.class.php', 'ximSYNC');
 ModulesManager::file('/conf/synchro_conf.php', 'ximSYNC');
-ModulesManager::file('/inc/repository/nodeviews/View_FilterMacros.class.php');
 ModulesManager::file('/inc/model/PublishingReport.class.php', 'ximSYNC');
 
 /**

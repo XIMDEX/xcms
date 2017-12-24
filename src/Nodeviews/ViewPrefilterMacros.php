@@ -25,14 +25,15 @@
  */
 
 
+namespace Ximdex\Nodeviews;
+
+
 use Ximdex\Models\Node;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\Runtime\App;
 
-require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Abstract_View.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Interface_View.class.php');
 
-class View_PrefilterMacros extends Abstract_View implements Interface_View {
+class ViewPrefilterMacros extends AbstractView implements IView {
 	
 	public function transform($idVersion = NULL, $pointer = NULL, $args = NULL) {
 		$content = $this->retrieveContent($pointer);

@@ -25,6 +25,9 @@
  */
 
 
+namespace Ximdex\Nodeviews;
+
+
 use Ximdex\Logger;
 use Ximdex\Deps\LinksManager;
 use Ximdex\Models\Node;
@@ -32,10 +35,9 @@ use Ximdex\Models\NodeType;
 use Ximdex\Models\Version;
 
 
-require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Abstract_View.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Interface_View.class.php');
 
-class View_LinkParams extends Abstract_View implements Interface_View {
+
+class ViewLinkParams extends AbstractView implements IView {
 
 	function transform($idVersion = NULL, $pointer = NULL, $args = NULL) {
 
@@ -57,12 +59,12 @@ class View_LinkParams extends Abstract_View implements Interface_View {
 			return NULL;
 		}
 
-		$domDoc = new DOMDocument();
+		$domDoc = new \DOMDocument();
 		$domDoc->formatOutput = true;
 		$domDoc->preserveWhiteSpace = false;
 		$domDoc->loadXML(\Ximdex\XML\Base::recodeSrc($content, \Ximdex\XML\XML::UTF8));
 
-		$xpath = new DOMXPath($domDoc);
+		$xpath = new \DOMXPath($domDoc);
 		$nodeList = $xpath->query('/docxap//@*[starts-with(local-name(.), "a_enlaceid")]');
 
 		if ($nodeList->length > 0) {

@@ -1,5 +1,4 @@
 <?php
-
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -21,10 +20,37 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- * @author Ximdex DevTeam <dev@ximdex.com>
- * @version $Revision$
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
  */
-interface Interface_View
-{
-    public function transform($idVersion = NULL, $pointer = NULL, $args = NULL);
+
+
+
+namespace Ximdex\Nodeviews;
+
+
+use Ximdex\Logger;
+use Ximdex\Models\Channel;
+
+
+class ViewChannelFilter extends AbstractView implements IView {
+	
+	private $_idChannel;
+	
+	public function transform($idVersion = NULL, $pointer = NULL, $args = NULL) {
+		
+		if (array_key_exists('CHANNEL', $args)) {
+			$channel = new Channel($args['CHANNEL']);
+			$this->_idChannel = $channel->get('IdChannel');
+		}
+	
+		if (!($this->_idChannel > 0)) {
+			Logger::error('VIEW CHANNELFILTER: Channel not specified for node');
+			return NULL;
+		}
+
+		$content = $this->retrieveContent($pointer);
+
+		return $this->storeTmpContent($content);
+	}
 }

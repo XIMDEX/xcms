@@ -26,6 +26,9 @@
  */
 
 
+namespace Ximdex\Nodeviews;
+
+
 use Ximdex\Logger;
 use Ximdex\Models\Channel;
 use Ximdex\Models\Node;
@@ -35,10 +38,10 @@ use Ximdex\Parsers\ParsingPathTo;
 use Ximdex\Runtime\App;
 use Ximdex\Sync\SynchroFacade;
 
-ModulesManager::file('/inc/repository/nodeviews/Abstract_View.class.php');
-ModulesManager::file('/inc/repository/nodeviews/Interface_View.class.php');
+ModulesManager::file('/inc/manager/NodeFrameManager.class.php', 'ximSYNC');
 
-class View_FilterMacros extends Abstract_View implements Interface_View
+
+class ViewFilterMacros extends AbstractView implements IView
 {
 
     protected $_node = NULL;

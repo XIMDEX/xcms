@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -25,14 +26,10 @@
  */
 
 
-require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/View_Merge_Tags.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Interface_View.class.php');
+namespace Ximdex\Nodeviews;
 
-class View_Merge_Tipo_Ambito extends View_Merge_Tags implements Interface_View
+
+interface IView
 {
-    protected $query1 = '//tipodoc';
-    protected $query2 = '//ambitodoc';
-    protected $merge = '//tipoambito';
-
+    public function transform($idVersion = NULL, $pointer = NULL, $args = NULL);
 }
-

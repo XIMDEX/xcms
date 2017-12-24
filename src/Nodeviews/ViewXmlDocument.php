@@ -24,14 +24,14 @@
  * @version $Revision$
  */
 
+
+namespace Ximdex\Nodeviews;
+
 use Ximdex\Logger;
 use Ximdex\Models\Node;
 
 
-require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Abstract_View.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Interface_View.class.php');
-
-class View_XmlDocument extends Abstract_View implements Interface_View
+class ViewXmlDocument extends AbstractView implements IView
 {
 
     /**
@@ -91,7 +91,7 @@ class View_XmlDocument extends Abstract_View implements Interface_View
     private function delDocxap($content)
     {
 
-        $doc = new DOMDocument();
+        $doc = new \DOMDocument();
         $doc->formatOutput = true;
         $doc->preserveWhiteSpace = false;
         $result = $doc->loadXML($content);

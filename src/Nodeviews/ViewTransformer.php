@@ -25,15 +25,14 @@
  */
 
 
+namespace Ximdex\Nodeviews;
+
 use Ximdex\Models\Node;
 use Ximdex\Models\Version;
 use Ximdex\Logger;
 
 
-require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Abstract_View.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Interface_View.class.php');
-
-class View_Transformer extends Abstract_View implements Interface_View {
+class ViewTransformer extends AbstractView implements IView {
 	public function transform($idVersion = NULL, $pointer = NULL, $args = NULL) {
 		
 		if (!array_key_exists('TRANSFORMER', $args) || empty($args['TRANSFORMER'])) {
@@ -50,12 +49,12 @@ class View_Transformer extends Abstract_View implements Interface_View {
 		}
 
 
-		$transformer = ucfirst($args['TRANSFORMER']);
+		$transformer = str_replace('_', '', ucfirst($args['TRANSFORMER']) );
 		if("Xlst" == $transformer) {
 			$transformer="Xslt";
 		}
-		$factory = new \Ximdex\Utils\Factory(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews', 'View_');
-		$instanceOfView = $factory->instantiate($transformer);
+		$factory = new \Ximdex\Utils\Factory(__DIR__ , 'View');
+		$instanceOfView = $factory->instantiate($transformer, null, 'Ximdex\Nodeviews');
 
 		$res = $instanceOfView->transform($idVersion, $pointer, $args);
 		return $res;

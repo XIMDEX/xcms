@@ -25,20 +25,21 @@
  */
 
 
+namespace Ximdex\Nodeviews;
+
+
 use Ximdex\Logger;
 use Ximdex\Utils\FsUtils;
 
-require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Abstract_View.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Interface_View.class.php');
 
-class View_Merge_Tags extends Abstract_View implements Interface_View {
+class ViewMergeTags extends AbstractView implements IView {
 	protected $query1 = '';
 	protected $query2 = '';
 	protected $merge = '';	
 	
 	function transform($idVersion = NULL, $pointer = NULL, $args = NULL) {
 
-		$domDocument = new DOMDocument();
+		$domDocument = new \DOMDocument();
 		$domDocument->preserveWhiteSpace = false;
 		$domDocument->validateOnParse = true;
 		$domDocument->loadXML(FsUtils::file_get_contents($pointer));
@@ -47,7 +48,7 @@ class View_Merge_Tags extends Abstract_View implements Interface_View {
 			return false;
 		}
 		
-		$xpathExp = new DOMXPath($domDocument);
+		$xpathExp = new \DOMXPath($domDocument);
 		
 		if ($xpathExp) {
 	 		$query1Result = $xpathExp->query($this->query1);

@@ -25,6 +25,9 @@
  */
 
 
+namespace Ximdex\Nodeviews;
+
+
 use Ximdex\Logger;
 use Ximdex\Models\Node;
 use Ximdex\Models\Version;
@@ -37,10 +40,7 @@ if(!defined('TREE_VIEW_DOCXAP_PATH'))
 if(!defined('RNG_EDITION_DOCXAP_PATH'))
     define('RNG_EDITION_DOCXAP_PATH', App::getValue('UrlHost') . App::getValue('UrlRoot') . '/public_xmd/actions/xmleditor2/views/rngeditor/templates/docxap.xsl');
 
-require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Abstract_View.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Interface_View.class.php');
-	
-class View_Xedit extends Abstract_View implements Interface_View {
+class ViewXedit extends AbstractView implements IView {
 	
 	private $content = NULL;
 	private $domDocument = NULL;
@@ -79,18 +79,18 @@ class View_Xedit extends Abstract_View implements Interface_View {
 	}
 	
 	private function setUids() {
-		$xpath = new DOMXPath($this->domDocument);
+		$xpath = new \DOMXPath($this->domDocument);
 		$nodeList = $xpath->query('//*');
 		$counter = 1;
 		foreach ($nodeList as $element) {
-			$element->setAttributeNode(new DOMAttr('uid', $this->node->get('IdNode') . '.' . ($counter ++) ));
+			$element->setAttributeNode(new \DOMAttr('uid', $this->node->get('IdNode') . '.' . ($counter ++) ));
 		}
 		
 		return $this->setContent($this->domDocument->saveXml());
 	}
 	
 	private function populateVoidNode () {
-		$xpath = new DOMXPath($this->domDocument);
+		$xpath = new \DOMXPath($this->domDocument);
 
 		// Check if there is no content
 		$query = '//docxap/*';
@@ -112,7 +112,7 @@ class View_Xedit extends Abstract_View implements Interface_View {
 	private function setDomDocument() {
 		if(!$this->domDocument)
 		{
-			$this->domDocument = new DOMDocument();
+			$this->domDocument = new \DOMDocument();
 			$this->domDocument->formatOutput = true;
 			$this->domDocument->preserveWhiteSpace = false;
 		}
@@ -136,13 +136,13 @@ class View_Xedit extends Abstract_View implements Interface_View {
 		$idLanguage = $this->node->class->GetLanguage();
 		$linkedXimlets = $this->node->class->getLinkedximletS($idLanguage);
 
-		$xpath = new DOMXPath($this->domDocument);
+		$xpath = new \DOMXPath($this->domDocument);
 		$nodeList = $xpath->query('//*');
 		foreach ($nodeList as $element) {
 			if(in_array($element->nodeName, $ximletTags) && preg_match("/@@@GMximdex\.ximlet\(([0-9]+)\)@@@/", $element->textContent, $matches)) {
-					$element->setAttributeNode(new DOMAttr('ximlet_id', $matches[1]));
+					$element->setAttributeNode(new \DOMAttr('ximlet_id', $matches[1]));
 					if(in_array($matches[1], $linkedXimlets))
-						$element->setAttributeNode(new DOMAttr('section_ximlet', 'yes'));
+						$element->setAttributeNode(new \DOMAttr('section_ximlet', 'yes'));
 			}
 		}
 		

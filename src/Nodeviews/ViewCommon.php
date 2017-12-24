@@ -25,15 +25,15 @@
  */
 
 
+namespace Ximdex\Nodeviews;
+
+
 use Ximdex\Logger;
 use Ximdex\Deps\LinksManager;
 use Ximdex\Models\Version;
 use Ximdex\Runtime\App;
 
-require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Abstract_View.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Interface_View.class.php');
-
-class View_Common extends Abstract_View implements Interface_View
+class ViewCommon extends AbstractView implements IView
 {
 
     private $_filePath;

@@ -25,12 +25,14 @@
  */
 
 
+namespace Ximdex\Nodeviews;
+
 use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
 use Ximdex\Logger;
 
 
-abstract class Abstract_View
+abstract class AbstractView
 {
 
     public function storeTmpContent($content)

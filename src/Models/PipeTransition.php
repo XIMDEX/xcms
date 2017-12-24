@@ -36,7 +36,7 @@ use Ximdex\Models\ORM\PipeTransitionsOrm;
 /**
  *
  */
-define('CALLBACK_FOLDER', XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/');
+define('CALLBACK_FOLDER', XIMDEX_ROOT_PATH . '/src/Nodeviews/');
 
 /**
  *
@@ -193,10 +193,12 @@ class PipeTransition extends PipeTransitionsOrm
 	 */
 	function callback($idVersion, $pointer, $args, $function)
 	{
-		$factory = new \Ximdex\Utils\Factory(CALLBACK_FOLDER, 'View_');
+		$factory = new \Ximdex\Utils\Factory(CALLBACK_FOLDER, 'View');
 		$callback = $this->get('Callback');
 
-		$object = $factory->instantiate($callback);
+        $callback = str_replace('_', '', ucfirst($callback) );
+
+		$object = $factory->instantiate($callback, null, 'Ximdex\Nodeviews');
 
 		$timer = new \Ximdex\Utils\Timer();
 

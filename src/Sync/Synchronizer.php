@@ -34,7 +34,7 @@ use Ximdex\Utils\PipelineManager;
 use Ximdex\Models\Server;
 use Ximdex\Models\ORM\SynchronizerOrm;
 use Ximdex\Models\ORM\SynchronizerHistoryOrm;
-use View_ChannelFilter;
+use Ximdex\Nodeviews\ViewChannelFilter;
 use Ximdex\Models\Channel;
 use Ximdex\Models\Language;
 use Ximdex\Models\Node;
@@ -42,9 +42,6 @@ use Ximdex\Models\StructuredDocument;
 use Ximdex\Utils\FsUtils;
 use Ximdex\Logger;
 
-
-
-include_once(XIMDEX_ROOT_PATH . "/inc/repository/nodeviews/View_ChannelFilter.class.php");
 
 
 
@@ -1483,8 +1480,9 @@ class Synchronizer
             $file = $pipeMng->getCacheFromProcess($idVersion, 'StrDocFromDexTToFinal', $data);
 
             // Post-filter
+            $viewChannelFilter = new ViewChannelFilter();
 
-            $file = View_ChannelFilter::transform($idVersion, $file, $data);
+            $file = $viewChannelFilter->transform($idVersion, $file, $data);
 
         } else {
 

@@ -24,16 +24,14 @@
  *  @version $Revision$
  */
 
+namespace Ximdex\Nodeviews;
 
 
 use Ximdex\Logger;
 use Ximdex\Runtime\App;
 
-ModulesManager::file('/inc/repository/nodeviews/Abstract_View.class.php');
-ModulesManager::file('/inc/repository/nodeviews/Interface_View.class.php');
 
-
-class View_Xslt_Transformer extends Abstract_View implements Interface_View {
+class ViewXsltTransformer extends AbstractView implements IView {
 	
 	
 	function transform($idVersion = NULL, $pointer = NULL, $args = NULL) {
@@ -58,7 +56,7 @@ class View_Xslt_Transformer extends Abstract_View implements Interface_View {
 	
 	function _fixDocumentEncoding($content) {
 		
-		$doc = new DOMDocument();
+		$doc = new \DOMDocument();
 		$doc->formatOutput = true;
 		$doc->preserveWhiteSpace = false;
 		$doc->loadXML($content);

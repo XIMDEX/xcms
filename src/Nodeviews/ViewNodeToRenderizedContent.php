@@ -24,6 +24,11 @@
  * @version $Revision$
  */
 
+
+
+namespace Ximdex\Nodeviews;
+
+
 use Ximdex\Models\Channel;
 use Ximdex\Models\Node;
 use Ximdex\Models\StructuredDocument;
@@ -32,11 +37,7 @@ use Ximdex\NodeTypes\XmlDocumentNode;
 use Ximdex\Runtime\App;
 use Ximdex\Logger;
 
-
-require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Abstract_View.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Interface_View.class.php');
-
-class View_NodeToRenderizedContent extends Abstract_View implements Interface_View
+class ViewNodeToRenderizedContent extends AbstractView implements IView
 {
 
     private $_node = null;
