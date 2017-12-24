@@ -29,7 +29,6 @@ use Ximdex\Models\Node;
 use Ximdex\Models\RelTagsNodes;
 use Xmd\Widgets\WidgetAbstract;
 
-ModulesManager::file('/services/Xowl/OntologyService.class.php');
 
 class Widget_tagsinput extends WidgetAbstract
 {
@@ -69,7 +68,7 @@ class Widget_tagsinput extends WidgetAbstract
     {
         $result = array();
         //Load from Xowl Service
-        $namespacesArray = OntologyService::getAllNamespaces();
+        $namespacesArray = \Ximdex\Rest\Services\Xowl\OntologyService::getAllNamespaces();
         //For every namespace build an array. This will be a json object
         foreach ($namespacesArray as $namespace) {
             $array = array(

@@ -25,9 +25,9 @@
  */
 
 
+namespace Ximdex\Rest\Providers\Dbpedia;
 
-
-class DBpedia extends SPARQL_Provider {
+class DBpedia extends \Ximdex\Rest\SPARQLProvider {
 
 	const URL_ENDPOINT = "http://dbpedia.org/sparql";
 

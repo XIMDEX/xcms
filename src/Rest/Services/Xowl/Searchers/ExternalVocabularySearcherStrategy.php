@@ -1,5 +1,7 @@
 <?php
 
+namespace Ximdex\Rest\Services\Xowl\Searchers;
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -29,7 +31,6 @@
 use Ximdex\Runtime\App;
 use Ximdex\Utils\Curl;
 
-ModulesManager::file('/services/Xowl/searchers/AbstractSearcherStrategy.class.php');
 class ExternalVocabularySearcherStrategy extends AbstractSearcherStrategy{
 
 	private $core="art";

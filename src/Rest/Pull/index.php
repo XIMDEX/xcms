@@ -25,11 +25,12 @@
  */
 
 
+namespace Ximdex\Rest\Pull;
+
 use Ximdex\Runtime\Request;
 
-require_once('../../bootstrap.php');
+require_once('../../../bootstrap.php');
 
-require_once(XIMDEX_ROOT_PATH . '/services/pull/Pull.class.php');
 
 // authentication
 
@@ -53,4 +54,3 @@ if (\Ximdex\Runtime\Session::check()) {
 } else {
 	echo 'Access denied';
 }
-?>

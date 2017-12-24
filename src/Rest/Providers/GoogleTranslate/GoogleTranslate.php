@@ -25,13 +25,14 @@
  */
 
 
+namespace Ximdex\Rest\Providers\GoogleTranslate;
+
+
 use Ximdex\Logger;
 use Ximdex\Utils\Serializer;
 
-require_once(XIMDEX_ROOT_PATH . '/inc/rest/providers/google_translate/Languages.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/rest/REST_Provider.class.php');
 
-class GoogleTranslate extends REST_Provider
+class GoogleTranslate extends \Ximdex\Rest\RESTProvider
 {
 
     const ENCODING = "UTF-8";
@@ -49,12 +50,13 @@ class GoogleTranslate extends REST_Provider
 
         // gets only text nodes
 
-        $domDoc = new DOMDocument();
+        $domDoc = new \DOMDocument();
         $domDoc->validateOnParse = true;
         $domDoc->preserveWhiteSpace = false;
         $domDoc->loadXML(\Ximdex\XML\Base::recodeSrc($text, \Ximdex\XML\XML::UTF8));
+        $textNodes= [];
 
-        $xpath = new DOMXPath($domDoc);
+        $xpath = new \DOMXPath($domDoc);
 
         $nodeList = $xpath->query('//text()');
         if ($nodeList->length > 0) {

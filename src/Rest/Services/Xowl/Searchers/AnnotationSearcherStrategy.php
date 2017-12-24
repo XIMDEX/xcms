@@ -25,11 +25,12 @@
  * @version $Revision$
  */
 
+namespace Ximdex\Rest\Services\Xowl\Searchers;
+
 
 use Ximdex\Runtime\App;
 use Ximdex\Utils\Curl;
 
-ModulesManager::file('/services/Xowl/searchers/AbstractSearcherStrategy.class.php');
 
 class AnnotationSearcherStrategy extends AbstractSearcherStrategy
 {

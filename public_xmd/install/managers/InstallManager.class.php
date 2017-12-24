@@ -30,7 +30,6 @@ use Ximdex\Utils\FsUtils;
 
 require_once(APP_ROOT_PATH.'/install/managers/messages/ConsoleMessagesStrategy.class.php');
 require_once(APP_ROOT_PATH.'/install/managers/messages/WebMessagesStrategy.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/rest/REST_Provider.class.php');
 
 
 /**
@@ -430,7 +429,7 @@ class InstallManager
 
     public function setXid()
     {
-        $restProvider = new REST_Provider();
+        $restProvider = new \Ximdex\Rest\RESTProvider();
         $hostName = $_SERVER["HTTP_HOST"];
         $url = "http://xid.ximdex.net/stats/getximid.php?host=$hostName";
         $response = $restProvider->getHttp_provider()->get($url);

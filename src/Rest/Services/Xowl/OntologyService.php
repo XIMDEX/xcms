@@ -25,16 +25,16 @@
  * @version $Revision$
  */
 
-use Ximdex\Runtime\App;
 
-ModulesManager::file('/services/Xowl/searchers/AnnotationSearcherStrategy.class.php');
-ModulesManager::file('/services/Xowl/searchers/ContentEnricherSearcherStrategy.class.php');
-ModulesManager::file('/services/Xowl/searchers/ExternalVocabularySearcherStrategy.class.php');
-ModulesManager::file('/services/Xowl/searchers/XimdexSearcherStrategy.class.php');
+namespace Ximdex\Rest\Services\Xowl;
+
+use Ximdex\Runtime\App;
+use ModulesManager;
+
 
 
 /**
- * Class OntologyService
+ * Class \Ximdex\Rest\Services\Xowl\OntologyService
  */
 class OntologyService
 {
@@ -43,9 +43,9 @@ class OntologyService
      * @var array
      */
     private static $allProviders = array(
-        "semantic" => "AnnotationSearcherStrategy",
-        "content" => "ContentEnricherSearcherStrategy",
-        "external" => "ExternalVocabularySearcherStrategy"
+        "semantic" => "\\Ximdex\\Rest\\Services\\Xowl\\Searchers\\AnnotationSearcherStrategy",
+        "content" => "\\Ximdex\\Rest\\Services\\Xowl\\Searchers\\ContentEnricherSearcherStrategy",
+        "external" => "\\Ximdex\\Rest\\Services\\Xowl\\Searchers\\ExternalVocabularySearcherStrategy"
     );
     /**
      * @var bool

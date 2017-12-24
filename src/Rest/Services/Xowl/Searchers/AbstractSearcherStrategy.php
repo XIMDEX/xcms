@@ -25,7 +25,8 @@
  *  @version $Revision$
  */
 
-ModulesManager::file('/inc/rest/REST_Provider.class.php');
+namespace Ximdex\Rest\Services\Xowl\Searchers;
+
 /**
 *<p>Abstract class of strategy pattern for Xowl Searcher</p>
 *<p>Use ximdex's rest provider to call an specific web service</p>
@@ -45,7 +46,7 @@ abstract class AbstractSearcherStrategy {
 	protected $data;
 	
 	public function __construct(){		
-		$this->restProvider = new REST_Provider();
+		$this->restProvider = new \Ximdex\Rest\RESTProvider();
 	}
 
 	/**
@@ -96,4 +97,3 @@ abstract class AbstractSearcherStrategy {
 
 }
 
-?>

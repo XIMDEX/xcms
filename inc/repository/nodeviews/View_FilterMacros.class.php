@@ -510,7 +510,7 @@ class View_FilterMacros extends Abstract_View implements Interface_View
 
         if (App::getValue('PullMode') == 1) {
 
-            return App::getValue('UrlRoot') . '/services/pull/index.php?idnode=' . $targetNode->get(
+            return App::getValue('UrlRoot') . '/src/Rest/Pull/index.php?idnode=' . $targetNode->get(
                 'IdNode') . '&idchannel=' . $idTargetChannel . '&idportal=' . $this->_serverNode->get(
                 'IdNode');
         }

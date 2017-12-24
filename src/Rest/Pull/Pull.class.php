@@ -24,13 +24,17 @@
  * @version $Revision$
  */
 
+namespace Ximdex\Rest\Pull;
+
 
 use Ximdex\Models\Language;
 use Ximdex\Models\Node;
 use Ximdex\Models\PortalVersions;
+use Ximdex\Models\RelFramesPortal;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\Utils\PipelineManager;
 use Ximdex\Utils\Serializer;
+
 
 
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/View_FilterMacrosPreview.class.php');
@@ -214,5 +218,3 @@ class Pull
     }
 
 }
-
-?>

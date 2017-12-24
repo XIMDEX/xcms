@@ -178,9 +178,7 @@ class Action_xmlsetlink extends ActionAbstract {
 		$lang = new Language($masterLang);
 		$langFrom = $lang->get('IsoName');
 
-		ModulesManager::file("/inc/rest/providers/google_translate/GoogleTranslate.class.php");
-
-		$googleTrans = new GoogleTranslate();
+		$googleTrans = new  \Ximdex\Rest\Providers\GoogleTranslate\GoogleTranslate();
 		$translation = $googleTrans->translate($content, $langFrom, $langTo);
 		echo $translation;
 	}

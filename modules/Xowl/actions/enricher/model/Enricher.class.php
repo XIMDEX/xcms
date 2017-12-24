@@ -27,10 +27,9 @@
 
 use Ximdex\Utils\Curl;
 
-ModulesManager::file('/inc/rest/REST_Provider.class.php');
 
 
-class Enricher extends REST_Provider {
+class Enricher extends \Ximdex\Rest\RESTProvider {
 
 	const ENCODING = "UTF-8";
 	const URL_STRING = "http://api.zemanta.com/services/rest/0.0/";
@@ -70,4 +69,3 @@ class Enricher extends REST_Provider {
 
 }
 
-?>

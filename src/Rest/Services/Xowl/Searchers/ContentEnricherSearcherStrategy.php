@@ -1,4 +1,8 @@
 <?php
+
+namespace Ximdex\Rest\Services\Xowl\Searchers;
+
+
 use Ximdex\Runtime\App;
 use Ximdex\Utils\Curl;
 
@@ -49,7 +53,8 @@ class ContentEnricherSearcherStrategy extends AbstractSearcherStrategy{
 		$key = App::getValue( 'EnricherKey');
 		if(!$key)
 			return false;
-		$xmlData = $this->query('zemanta.suggest', $key, $text["content"], 'xml');
+
+		$xmlData = $this->query('zemanta.suggest', $key, $text["content"]?? '', 'xml');
 		$this->data = $this->parseData($xmlData);
 		return $this;
 	}
@@ -95,12 +100,12 @@ class ContentEnricherSearcherStrategy extends AbstractSearcherStrategy{
 	*/
 	private function parseData($xml){
 			$result = array();
-			$domDoc = new DOMDocument();
+			$domDoc = new \DOMDocument();
 			$domDoc->preserveWhiteSpace = false;
 			$domDoc->validateOnParse = true;
 			$domDoc->formatOutput = true;
 			if ($domDoc->loadXML($xml)){
-				$xpathObj = new DOMXPath($domDoc);
+				$xpathObj = new \DOMXPath($domDoc);
 				//each category has its own format.
 				$result["articles"] = $this->parseArticleData($xpathObj);
 				$result["images"] = $this->parseImageData($xpathObj);
@@ -119,6 +124,8 @@ class ContentEnricherSearcherStrategy extends AbstractSearcherStrategy{
 		$result = array();
 		$nodeList0 = $xpathObj->query('/rsp/articles/article');
 		for($i = 0; $i < $nodeList0->length; $i++){
+            $name = null;
+
 			$nodeArticle = $nodeList0->item($i);
 			$articleArray = array();	
 			foreach ($nodeArticle->childNodes as $child) {						
@@ -137,8 +144,11 @@ class ContentEnricherSearcherStrategy extends AbstractSearcherStrategy{
 			}
 			$articleArray["isSemantic"] = self::IS_SEMANTIC;
 			$articleArray["type"] = "zArticle";
-			$result[$name]=$articleArray;
-			}
+
+            if ($name) {
+                $result[$name]=$articleArray;
+            }
+        }
 
 			return $result;
 	}
@@ -152,6 +162,7 @@ class ContentEnricherSearcherStrategy extends AbstractSearcherStrategy{
 		$result = array();
 		$nodeList0 = $xpathObj->query('/rsp/markup/links/link');
 		for($i = 0; $i < $nodeList0->length; $i++){
+		    $name = null;
 			$nodeLink = $nodeList0->item($i);
 			$linkArray = array();
 			$others = array();
@@ -174,8 +185,9 @@ class ContentEnricherSearcherStrategy extends AbstractSearcherStrategy{
 			$linkArray["isSemantic"] = self::IS_SEMANTIC;
 			$linkArray["type"] = "zLink";
 
-			if ($name)
+			if ($name) {
 				$result[$name]=$linkArray;
+            }
 		}
 
 		return $result;
@@ -206,6 +218,7 @@ class ContentEnricherSearcherStrategy extends AbstractSearcherStrategy{
 		$result = array();
 		$nodeList0 = $xpathObj->query('/rsp/images/image');
 		for($i = 0; $i < $nodeList0->length; $i++){
+		    $name = null;
 			$nodeImage = $nodeList0->item($i);
 			$imageArray = array();
 			$others = array();
@@ -224,7 +237,10 @@ class ContentEnricherSearcherStrategy extends AbstractSearcherStrategy{
 			$imageArray["isSemantic"] = self::IS_SEMANTIC;
 			$imageArray["type"] = "zImage";
 			$imageArray["others"] = $others;
-			$result[$name] = $imageArray;
+
+			if($name) {
+			    $result[$name] = $imageArray;
+            }
 		}
 
 		return $result;

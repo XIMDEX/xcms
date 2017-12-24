@@ -24,6 +24,7 @@
  *  @version $Revision$
  */
 
+namespace Ximdex\Rest\Providers\GoogleTranslate;
 
 
 final class Languages {
@@ -74,7 +75,7 @@ final class Languages {
 	public static function isValidLanguage($language) {
 
 		// Reflection way (cheaper)
-		$self_reflected_class = new ReflectionClass(__CLASS__);
+		$self_reflected_class = new \ReflectionClass(__CLASS__);
 		$self_defined_constants = $self_reflected_class->getConstants();
 
 		return in_array($language, $self_defined_constants);

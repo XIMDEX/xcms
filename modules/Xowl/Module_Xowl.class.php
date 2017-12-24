@@ -32,8 +32,6 @@ use Ximdex\Cli\CliReader;
 // Point to ximdex root and include necessary class.
 
 ModulesManager::file('modules/Xowl/config/xowl.conf');
-ModulesManager::file('/inc/rest/REST_Provider.class.php');
-ModulesManager::file('/services/Xowl/searchers/AnnotationSearcherStrategy.class.php');
 //Xowl is not actived in this point
 //require_once(XIMDEX_ROOT_PATH . ModulesManager::path('Xowl') . '/actions/enricher/model/TagSuggester.class.php');
 
@@ -61,7 +59,7 @@ class Module_Xowl extends Module
         App::setValue('Xowl_location', $urlService, true);
         App::setValue('Xowl_token', $key, true);
 
-        $provider = new AnnotationSearcherStrategy;
+        $provider = new \Ximdex\Rest\Services\Xowl\Searchers\AnnotationSearcherStrategy;
         $ret = $provider->suggest('');
         /*$ra = new TagSuggester();
         $text = '';
@@ -171,7 +169,7 @@ class Module_Xowl extends Module
             'Accept: application/json',
             'Content-type: text/plain');
 
-        $restProvider = new REST_Provider();
+        $restProvider = new \Ximdex\Rest\RESTProvider();
         $pingUrl = $lmfUrl . "users";
         try {
             $response = $restProvider->getHttp_provider()->get($pingUrl, $headers);

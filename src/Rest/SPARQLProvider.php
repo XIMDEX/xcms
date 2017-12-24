@@ -25,14 +25,13 @@
  */
 
 
-// Include defined rest service providers.
-require_once(XIMDEX_ROOT_PATH . '/inc/rest/providers/dbpedia/DBpedia.class.php');
+namespace Ximdex\Rest;
 
 // Include RAP library.
 //define('RDFAPI_INCLUDE_DIR', XIMDEX_ROOT_PATH . '/extensions/rdfapi-php/api/');
 //require_once(RDFAPI_INCLUDE_DIR . 'RdfAPI.php');
 
-abstract class SPARQL_Provider
+abstract class SPARQLProvider
 {
 
     protected $sparql_client;
@@ -41,8 +40,8 @@ abstract class SPARQL_Provider
     public function __construct($endpoint)
     {
 
-        $this->sparql_client = ModelFactory::getSparqlClient($endpoint);
-        $this->sparql_courier = new ClientQuery();
+        $this->sparql_client = \ModelFactory::getSparqlClient($endpoint);
+        $this->sparql_courier = new \ClientQuery();
     }
 
 }

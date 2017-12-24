@@ -32,7 +32,6 @@ use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
 
 ModulesManager::file('/inc/Tags.inc', 'ximTAGS');
-ModulesManager::file('/services/Xowl/OntologyService.class.php');
 
 class Action_setmetadata extends ActionAbstract
 {
@@ -84,7 +83,7 @@ class Action_setmetadata extends ActionAbstract
     {
         $result = array();
         //Load from Xowl Service
-        $namespacesArray = OntologyService::getAllNamespaces();
+        $namespacesArray = \Ximdex\Rest\Services\Xowl\OntologyService::getAllNamespaces();
         //For every namespace build an array. This will be a json object
         foreach ($namespacesArray as $namespace) {
             $array = array(
@@ -125,7 +124,7 @@ class Action_setmetadata extends ActionAbstract
     private function getRelatedTags($content)
     {
 
-        $ontologyService = new OntologyService("semantic");
+        $ontologyService = new \Ximdex\Rest\Services\Xowl\OntologyService("semantic");
         return $ontologyService->suggest($content);
     }
 

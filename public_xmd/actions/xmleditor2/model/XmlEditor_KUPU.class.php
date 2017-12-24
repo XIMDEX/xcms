@@ -49,7 +49,6 @@ ModulesManager::file('/inc/repository/nodeviews/View_NodeToRenderizedContent.cla
 ModulesManager::file('/inc/repository/nodeviews/View_PrefilterMacros.class.php');
 ModulesManager::file('/inc/repository/nodeviews/View_Xedit.class.php');
 ModulesManager::file('/actions/xmleditor2/model/XmlEditor_Enricher.class.php', 'APP');
-ModulesManager::file('/services/Xowl/OntologyService.class.php');
 
 
 class XmlEditor_KUPU extends XmlEditor_Abstract
@@ -648,7 +647,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
                 Logger::error(_("Xowl_token configuration value has not been defined"));
                 $resp = array("status" => "No  Xowl_token defined", "videourl" => "<center><iframe width='420' height='315' src='http://www.youtube.com/embed/xnhUzYKqJPw' frameborder='0' allowfullscreen></iframe></center>");
             } else {
-                $ontologyService = new OntologyService();
+                $ontologyService = new \Ximdex\Rest\Services\Xowl\OntologyService();
                 $resp = $ontologyService->suggest($content);
 
             }
@@ -806,7 +805,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
     {
         $result = array();
         //Load from Xowl Service
-        $namespacesArray = OntologyService::getAllNamespaces();
+        $namespacesArray = \Ximdex\Rest\Services\Xowl\OntologyService::getAllNamespaces();
         //For every namespace build an array. This will be a json object
         foreach ($namespacesArray as $namespace) {
             $array = array(

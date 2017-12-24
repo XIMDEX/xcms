@@ -28,7 +28,6 @@
 use Ximdex\Runtime\App;
 use Ximdex\Utils\Curl;
 
-ModulesManager::file('/inc/rest/REST_Provider.class.php');
 //
 
 /**
@@ -38,7 +37,7 @@ ModulesManager::file('/inc/rest/REST_Provider.class.php');
  * @author fjcarretero
  *
  */
-class TagSuggester extends REST_Provider {
+class TagSuggester extends \Ximdex\Rest\RESTProvider {
 
 	const ENCODING = "UTF-8";
 	const URL_STRING = "";
@@ -243,5 +242,3 @@ class TagSuggester extends REST_Provider {
 	}
 
 }
-
-?>

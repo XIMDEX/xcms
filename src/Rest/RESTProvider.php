@@ -25,14 +25,14 @@
  */
 
 
+namespace Ximdex\Rest;
+
 // Include defined rest service providers.
 use Ximdex\Utils\Curl;
 
-require_once(XIMDEX_ROOT_PATH . '/inc/rest/providers/google_translate/GoogleTranslate.class.php');
-
 // Include utility class.
 
-class REST_Provider
+class RESTProvider
 {
 
     protected $http_provider;
