@@ -34,7 +34,7 @@ if (!defined ('XIMDEX_ROOT_PATH')) {
  * <p>Represents a information store. Mainly used to store and retrieves nodes </p>
  * 
  */
-interface Store
+interface IStore
 {
 
     /**

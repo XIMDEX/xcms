@@ -28,15 +28,15 @@ use Ximdex\Logger;
 use Ximdex\Runtime\DataFactory;
 
 //
-ModulesManager::file('/inc/persistence/store/Store.iface.php');
 require_once('SolariumSolrService.class.php');
 
+require_once(__DIR__.'/IStore.php');
 /**
  * <p>SolrStore class</p>
  * <p>Manages the CRUD operations of nodes using Solr as backend</p>
  * 
  */
-class SolrStore implements Store {
+class SolrStore implements IStore {
 
     private $solrService;
     private $processors = array();

@@ -39,9 +39,6 @@ use Ximdex\Logger;
 
 
 
-ModulesManager::file('/inc/persistence/store/StoreFactory.class.php');
-
-
 /**
  *
  * Clase que modela el Repositorio de Versiones a bajo nivel.
