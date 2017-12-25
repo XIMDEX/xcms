@@ -41,7 +41,7 @@ class Factory
      */
     public function __construct($path, $root_name)
     {
-        $this->_path = $path;
+        $this->_path = rtrim($path, '/');
         $this->_root_name = $root_name;
 
     }
@@ -67,19 +67,21 @@ class Factory
 
         $class =  '\\'. $classname;
         if(!empty($namespace)) {
-            $nsClass =  '\\'.$namespace . $class;
+            $nsClass =  '\\'.$namespace  .$class;
 
             if ( class_exists( $nsClass )) {
                 return new $nsClass( $args ) ;
             }
-
         }
 
         if (!class_exists($class)) {
-            $class_path = $this->_path . "/$classname.class.php";
+            $old_class_path = $this->_path . "/$classname.class.php";
+            $class_path = $this->_path . "/$classname.php";
 
 
-            if (file_exists($class_path) && is_readable($class_path)) {
+            if (file_exists($old_class_path) && is_readable($old_class_path)) {
+                require_once($old_class_path);
+            } else if (file_exists($class_path) && is_readable($class_path)) {
                 require_once($class_path);
             } else {
                 $this->_setError("Factory::instantiate(): Unable to read $class_path ");

@@ -37,6 +37,7 @@ use Ximdex\Models\Version;
 use Ximdex\Parsers\ParsingPathTo;
 use Ximdex\Runtime\App;
 use Ximdex\Sync\SynchroFacade;
+use ModulesManager;
 
 ModulesManager::file('/inc/manager/NodeFrameManager.class.php', 'ximSYNC');
 
