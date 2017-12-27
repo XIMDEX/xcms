@@ -146,6 +146,39 @@ Class App
 
 
     /**
+     * getUrl forms an url to $suburl of APP using params if this exists
+     *
+     * @param $suburl
+     * @param array ...$params
+     * @return string
+     */
+    public static function getUrl($suburl,  ...$params) {
+
+        if(!empty($params)) {
+            $suburl = sprintf($suburl, ...$params);
+        }
+
+        return App::getValue('UrlRoot') . '/public_xmd/' . ltrim($suburl, '/');
+    }
+
+    /**
+     * getPath forms an path to $subpath  of APP  using params if this exists
+     * @param $subpath
+     * @param array ...$params
+     * @return string
+     */
+    public static function getPath($subpath,  ...$params) {
+
+        if(!empty($params)) {
+            $subpath = sprintf($subpath, ...$params);
+        }
+
+        return APP_ROOT_PATH. '/public_xmd/'. ltrim($subpath, '/');
+    }
+
+
+
+    /**
      * Get the in application debug value
      * @return boolean
      */
