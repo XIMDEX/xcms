@@ -81,7 +81,7 @@ class Action_filedownload_multiple extends ActionAbstract {
 			'name' => $nodName
 		);
 
-		$this->addJs('/actions/filedownload_multiple/resources/js/index.js', 'APP');
+		$this->addJs('/actions/filedownload_multiple/resources/js/index.js');
 		$this->render($values, '', 'default-3.0.tpl');
     }
 

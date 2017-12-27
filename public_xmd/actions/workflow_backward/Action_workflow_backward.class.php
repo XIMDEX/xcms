@@ -38,7 +38,7 @@ class Action_workflow_backward extends ActionAbstract {
 	// Main method: shows the initial form
 	function index () {
  		$idNode = (int) $this->request->getParam("nodeid");
-        $this->addJs('/actions/workflow_forward/resources/js/workflow_forward.js', 'APP');
+        $this->addJs('/actions/workflow_forward/resources/js/workflow_forward.js');
 
 		$idUser = \Ximdex\Runtime\Session::get('userID');
         $user = new User($idUser);
@@ -77,7 +77,7 @@ class Action_workflow_backward extends ActionAbstract {
             return ;
         }
 
-        $conf = ModulesManager::file('/conf/notifications.php');
+        $conf = ModulesManager::file('/conf/notifications.php', 'XIMDEX');
         $defaultMessage=$this->buildMessage($conf["defaultMessage"], $prevStateName,$node->GetNodeName());
 
 

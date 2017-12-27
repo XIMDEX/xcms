@@ -32,7 +32,7 @@ use Ximdex\MVC\ActionAbstract;
 use Ximdex\Parsers\ParsingRng;
 use Ximdex\Runtime\App;
 
-ModulesManager::file('/actions/manageproperties/inc/LanguageProperty.class.php', 'APP');
+ModulesManager::file('/actions/manageproperties/inc/LanguageProperty.class.php');
 
 
 /**
@@ -56,8 +56,8 @@ class Action_managemetadata extends ActionAbstract
     {
 
         //Load css and js resources for action form.
-        $this->addCss('/actions/managemetadata/resources/css/style.css', 'APP');
-        $this->addJs('/actions/managemetadata/resources/js/index.js', 'APP');
+        $this->addCss('/actions/managemetadata/resources/css/style.css');
+        $this->addJs('/actions/managemetadata/resources/js/index.js');
 
         $nodeId = $this->request->getParam('nodeid');
 

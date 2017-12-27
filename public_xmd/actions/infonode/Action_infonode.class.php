@@ -30,8 +30,8 @@ use Ximdex\Models\PipeStatus;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\App;
 
-ModulesManager::file('/actions/manageproperties/inc/InheritedPropertiesManager.class.php', 'APP');
-ModulesManager::file('/actions/manageversions/Action_manageversions.class.php', 'APP');
+ModulesManager::file('/actions/manageproperties/inc/InheritedPropertiesManager.class.php');
+ModulesManager::file('/actions/manageversions/Action_manageversions.class.php');
 
 
 
@@ -40,12 +40,12 @@ class Action_infonode extends ActionAbstract
 
     function index()
     {
-        $this->addCss('/actions/infonode/resources/css/style.css', 'APP');
-        $this->addCss('/actions/infonode/resources/css/svg.css', 'APP');
+        $this->addCss('/actions/infonode/resources/css/style.css');
+        $this->addCss('/actions/infonode/resources/css/svg.css');
 
-        $this->addJs('/actions/infonode/resources/js/colorbrewer.js', 'APP');
-        $this->addJs('/actions/infonode/resources/js/geometry.js', 'APP');
-        $this->addJs('/actions/infonode/resources/js/script.js', 'APP');
+        $this->addJs('/actions/infonode/resources/js/colorbrewer.js');
+        $this->addJs('/actions/infonode/resources/js/geometry.js');
+        $this->addJs('/actions/infonode/resources/js/script.js');
 
         $idNode = (int)$this->request->getParam("nodeid");
         $node = new Node($idNode);
@@ -83,8 +83,8 @@ class Action_infonode extends ActionAbstract
 
         $manageVersions= new Action_manageversions();
         $valuesManageVersion=$manageVersions->values($idNode);
-        $this->addJs('/actions/manageversions/resources/js/index.js', 'APP');
-        $this->addCss('/actions/manageversions/resources/css/index.css', 'APP');
+        $this->addJs('/actions/manageversions/resources/js/index.js');
+        $this->addCss('/actions/manageversions/resources/css/index.css');
 
 
         $values = array(

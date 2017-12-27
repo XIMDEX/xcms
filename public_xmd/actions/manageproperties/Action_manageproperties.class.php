@@ -28,7 +28,7 @@
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Models\Node;
 
-ModulesManager::file('/actions/manageproperties/inc/InheritedPropertiesManager.class.php', 'APP');
+ModulesManager::file('/actions/manageproperties/inc/InheritedPropertiesManager.class.php');
 
 /**
  * Manage properties action.
@@ -54,9 +54,9 @@ class Action_manageproperties extends ActionAbstract
     {
 
         //Load css and js resources for action form.
-        $this->addCss('/actions/manageproperties/resources/css/styles.css', 'APP');
-        $this->addJs('/actions/manageproperties/resources/js/dialog.js', 'APP');
-        $this->addJs('/actions/manageproperties/resources/js/index.js', 'APP');
+        $this->addCss('/actions/manageproperties/resources/css/styles.css');
+        $this->addJs('/actions/manageproperties/resources/js/dialog.js');
+        $this->addJs('/actions/manageproperties/resources/js/index.js');
 
         $nodeId = $this->request->getParam('nodeid');
         $nodeId = $nodeId < 10000 ? 10000 : $nodeId;
@@ -167,8 +167,8 @@ class Action_manageproperties extends ActionAbstract
     protected function showConfirmation($nodeId, $properties, $affected)
     {
 
-        $this->addJs('/actions/manageproperties/resources/js/dialog.js', 'APP');
-        $this->addJs('/actions/manageproperties/resources/js/confirm.js', 'APP');
+        $this->addJs('/actions/manageproperties/resources/js/dialog.js');
+        $this->addJs('/actions/manageproperties/resources/js/confirm.js');
 
         foreach ($affected as $prop => $value) {
 

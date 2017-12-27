@@ -29,8 +29,8 @@ use Ximdex\MVC\FrontController;
 use Ximdex\Runtime\App;
 use Ximdex\XML\Base;
 
-ModulesManager::file('/actions/composer/Action_composer.class.php', 'APP');
-ModulesManager::file('/actions/browser3/inc/search/QueryProcessor.class.php', 'APP');
+ModulesManager::file('/actions/composer/Action_composer.class.php');
+ModulesManager::file('/actions/browser3/inc/search/QueryProcessor.class.php');
 
 
  // Standard data source.

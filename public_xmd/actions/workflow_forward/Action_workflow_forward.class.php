@@ -38,7 +38,7 @@ use Ximdex\Utils\Serializer;
 use Ximdex\Sync\SynchroFacade;
 use Ximdex\Workflow\WorkFlow;
 
-ModulesManager::file('/actions/browser3/inc/GenericDatasource.class.php', 'APP');
+ModulesManager::file('/actions/browser3/inc/GenericDatasource.class.php');
 
 ModulesManager::file('/inc/model/NodesToPublish.class.php', 'ximSYNC');
 ModulesManager::file('/conf/synchro_conf.php', 'ximSYNC');
@@ -75,9 +75,9 @@ class Action_workflow_forward extends ActionAbstract {
         }
 
         //Loading resources for the action form
-        $this->addJs('/actions/workflow_forward/resources/js/workflow_forward.js', 'APP');
-        $this->addCss('/actions/workflow_forward/resources/css/style.css', 'APP');
-        $this->addCss('/public_xmd/assets/style/jquery/ximdex_theme/widgets/calendar/calendar.css');
+        $this->addJs('/actions/workflow_forward/resources/js/workflow_forward.js');
+        $this->addCss('/actions/workflow_forward/resources/css/style.css');
+        $this->addCss('/assets/style/jquery/ximdex_theme/widgets/calendar/calendar.css');
 
         //Get the current user to check his permissions.
         $idUser = \Ximdex\Runtime\Session::get('userID');
@@ -150,7 +150,7 @@ class Action_workflow_forward extends ActionAbstract {
         $nextStateName = $workflowNext->GetName();
 
         //Loading Notifications default values
-        $conf = ModulesManager::file('/conf/notifications.php');
+        $conf = ModulesManager::file('/conf/notifications.php', 'XIMDEX');
         $defaultMessage = $this->buildMessage($conf["defaultMessage"], $nextStateName, $node->get('Name'));
         $values = array(
             'group_state_info' => Group::getSelectableGroupsInfo($idNode),
@@ -239,7 +239,7 @@ class Action_workflow_forward extends ActionAbstract {
         $idNode = $this->request->getParam('nodeid');
         $nextState = $this->request->getParam('nextstate');
 
-        $conf = ModulesManager::file('/conf/notifications.php');
+        $conf = ModulesManager::file('/conf/notifications.php', 'XIMDEX');
 
         $node = new Node($idNode);
         $workflow = new WorkFlow($idNode, $nextState);
@@ -264,7 +264,7 @@ class Action_workflow_forward extends ActionAbstract {
 
         //If the next state is final state, it must be publication, so we move to publicateForm
         if ($workflow->IsFinalState()) {
-            $this->addJs('/actions/workflow_forward/resources/js/workflow_forward.js', 'APP');
+            $this->addJs('/actions/workflow_forward/resources/js/workflow_forward.js');
             $defaultMessage = $this->buildMessage($conf["defaultMessage"], $workflow->pipeStatus->get("Name"), $node->GetNodeName());
 
             $values = array(
@@ -559,7 +559,7 @@ class Action_workflow_forward extends ActionAbstract {
 
     protected function sendToPublish($idNode, $up, $down, $markEnd, $force, $structure, $deepLevel, $sendNotifications, $notificableUsers, $idState, $texttosend, $lastPublished) {
         Logger::info("ADDSECTION publicateNode sendToPublish parent");
-        $this->addJs('/actions/workflow_forward/resources/js/workflow_forward.js', 'APP');
+        $this->addJs('/actions/workflow_forward/resources/js/workflow_forward.js');
 
         //If send notifications
         if ((boolean) $sendNotifications) {

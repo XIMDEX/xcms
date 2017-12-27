@@ -75,9 +75,9 @@ class Action_modifystates extends ActionAbstract
                     'description' => $nextStatus->get('Description'));
         }
 
-        $this->addJs('/actions/modifystates/resources/js/manager.js', 'APP');
-        $this->addCss('/public_xmd/assets/style/forms/tabulators.css');
-        $this->addCss('/actions/modifystates/resources/css/default.css', 'APP');
+        $this->addJs('/actions/modifystates/resources/js/manager.js');
+        $this->addCss('/assets/style/forms/tabulators.css');
+        $this->addCss('/actions/modifystates/resources/css/default.css');
 
         $nodeType = new NodeType();
         $allNodeTypes = $nodeType->find('IdNodeType, Name', 'IsPublishable = 1', array());

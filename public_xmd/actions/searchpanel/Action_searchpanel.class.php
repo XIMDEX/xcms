@@ -41,8 +41,8 @@ class Action_searchpanel extends ActionAbstract {
 	 */
 	public function showResults() {
 
-		$this->addJs('/actions/searchpanel/resources/js/results.js', 'APP');
-		$this->addCSS('/actions/searchpanel/resources/css/searchpanel.css', 'APP');
+		$this->addJs('/actions/searchpanel/resources/js/results.js');
+		$this->addCSS('/actions/searchpanel/resources/css/searchpanel.css');
 		$fields = array(
 			array(
 				'key' => 'nodetype_nemo',

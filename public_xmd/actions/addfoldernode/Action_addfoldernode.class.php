@@ -34,8 +34,8 @@ use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\App;
 use\Ximdex\NodeTypes\NodeType as ServicesNodeType;
 
-ModulesManager::file('/actions/addfoldernode/model/ProjectTemplate.class.php', 'APP');
-ModulesManager::file('/actions/addfoldernode/conf/addfoldernode.conf', 'APP');
+ModulesManager::file('/actions/addfoldernode/model/ProjectTemplate.class.php');
+ModulesManager::file('/actions/addfoldernode/conf/addfoldernode.conf');
 
 class Action_addfoldernode extends ActionAbstract
 {
@@ -261,10 +261,10 @@ class Action_addfoldernode extends ActionAbstract
         $idNode = $this->request->getParam("nodeid");
         $nodeProjectRoot = new Node($idNode);
         $cssFolder = "/actions/addfoldernode/resources/css/";
-        $this->addCss($cssFolder . "style.css", 'APP');
+        $this->addCss($cssFolder . "style.css");
 
         $jsFolder = "/actions/addfoldernode/resources/js/";
-        $this->addJs($jsFolder . "init.js", 'APP');
+        $this->addJs($jsFolder . "init.js");
 
         $arrayTheme = array();
         foreach ($themes as $theme) {

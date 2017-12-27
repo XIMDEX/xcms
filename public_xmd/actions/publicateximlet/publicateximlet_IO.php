@@ -24,7 +24,7 @@
  *  @version $Revision$
  */
 
-ModulesManager::file('/actions/publicateximlet/publicateximlet.php', 'APP');
+ModulesManager::file('/actions/publicateximlet/publicateximlet.php');
 
 function main($argc, $argv) {
 

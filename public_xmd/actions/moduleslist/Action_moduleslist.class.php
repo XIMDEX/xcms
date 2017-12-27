@@ -84,8 +84,8 @@ class Action_moduleslist extends ActionAbstract
 
     public function opentab()
     {
-        $this->addJs('/public_xmd/actions/moduleslist/resources/js/validate.js');
-        $this->addCss('/public_xmd/actions/moduleslist/resources/css/moduleslist.css');
+        $this->addJs('/actions/moduleslist/resources/js/validate.js');
+        $this->addCss('/actions/moduleslist/resources/css/moduleslist.css');
         $lang = strtolower(\Ximdex\Runtime\Session::get("locale"));
         $base = APP_ROOT_PATH . "/actions/moduleslist/template/Smarty/modules";
         $userId = \Ximdex\Runtime\Session::get('userID');

@@ -144,6 +144,8 @@ class GenericInstallStep {
 
 
        App::setValue('UrlRoot', ($pathInfo['dirname'] != '/') ? $pathInfo['dirname'] : '', $persist);
+
+
        // host and protocol
        App::setValue('UrlHost', $_SERVER['REQUEST_SCHEME'] . '://'. $_SERVER['HTTP_HOST'], $persist);
    }

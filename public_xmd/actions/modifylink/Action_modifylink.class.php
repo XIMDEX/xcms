@@ -43,7 +43,7 @@ class Action_modifylink extends ActionAbstract {
 			return false;
 		}
 		
-		$this->addJs('/actions/createlink/resources/js/index.js', 'APP');
+		$this->addJs('/actions/createlink/resources/js/index.js');
 		
 		$values = array(
 					'name' => $node->get('Name'),

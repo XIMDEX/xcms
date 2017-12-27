@@ -107,8 +107,8 @@ class Action_modifyserver extends ActionAbstract {
 		$numChannels = count($channels);
 
 		//add a js for validation and hidden or display elements about the protocol selected
-		$this->addJs('/actions/modifyserver/resources/js/validate.js', 'APP');
-		$this->addCss('/actions/modifyserver/resources/css/style.css', 'APP');
+		$this->addJs('/actions/modifyserver/resources/js/validate.js');
+		$this->addCss('/actions/modifyserver/resources/css/style.css');
 
 		$values = array(
 			'id_node' => $idNode,

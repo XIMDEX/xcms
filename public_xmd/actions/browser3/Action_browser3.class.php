@@ -39,15 +39,15 @@ use Ximdex\Runtime\Request;
 use Ximdex\Utils\Serializer;
 use Ximdex\Runtime\Session;
 
-ModulesManager::file('/actions/browser3/inc/search/QueryProcessor.class.php', 'APP');
-ModulesManager::file('/actions/browser3/inc/GenericDatasource.class.php', 'APP');
-ModulesManager::file('/actions/browser3/inc/FormValidation.class.php', 'APP');
+ModulesManager::file('/actions/browser3/inc/search/QueryProcessor.class.php');
+ModulesManager::file('/actions/browser3/inc/GenericDatasource.class.php');
+ModulesManager::file('/actions/browser3/inc/FormValidation.class.php');
 
 class Action_browser3 extends ActionAbstract
 {
 
-    const CSS_PATH = '/public_xmd/actions/browser3/resources/css';
-    const JS_PATH = '/public_xmd/actions/browser3/resources/js';
+    const CSS_PATH = '/actions/browser3/resources/css';
+    const JS_PATH = '/actions/browser3/resources/js';
     // Used previously for session cache
     const ACTIONS_INTERSECTION = 'browser_actions_intersection';
 
@@ -75,52 +75,51 @@ class Action_browser3 extends ActionAbstract
             'xinversion' => App::getValue("VersionName")
         );
 
-        $this->addCss('/public_xmd/assets/style/fonts.css');
-        $this->addCss('/public_xmd/assets/style/jquery/smoothness/jquery-ui-1.8.2.custom.css');
-        $this->addCss('/public_xmd/vendors/bootstrap/dist/css/bootstrap.min.css');
-        $this->addCss('/public_xmd/vendors/ladda/dist/ladda-themeless.min.css');
-        $this->addCss('/public_xmd/vendors/humane/flatty.css');
-        $this->addCss('/public_xmd/assets/style/jquery/ximdex_theme/widgets/treeview/treeview.css');
+        $this->addCss('/assets/style/fonts.css');
+        $this->addCss('/assets/style/jquery/smoothness/jquery-ui-1.8.2.custom.css');
+        $this->addCss('/vendors/bootstrap/dist/css/bootstrap.min.css');
+        $this->addCss('/vendors/ladda/dist/ladda-themeless.min.css');
+        $this->addCss('/vendors/humane/flatty.css');
+        $this->addCss('/assets/style/jquery/ximdex_theme/widgets/treeview/treeview.css');
         $this->addActionCss('browser.css');
-        if (ModulesManager::isEnabled('ximTOUR'))
-            $this->addCss('/modules/ximTOUR/resources/css/tour.css');
+        $this->addCss('/resources/css/tour.css', 'ximTOUR');
 
 
         //Old browserwindow styles
-        $this->addCss('/public_xmd/assets/style/jquery/ximdex_theme/widgets/browserwindow/actionPanel.css');
-        $this->addCss('/public_xmd/assets/style/jquery/ximdex_theme/widgets/browserwindow/browserwindow.css');
-        $this->addCss('/public_xmd/assets/style/jquery/ximdex_theme/widgets/browserwindow/icons.css');
+        $this->addCss('/assets/style/jquery/ximdex_theme/widgets/browserwindow/actionPanel.css');
+        $this->addCss('/assets/style/jquery/ximdex_theme/widgets/browserwindow/browserwindow.css');
+        $this->addCss('/assets/style/jquery/ximdex_theme/widgets/browserwindow/icons.css');
 
         //Old hbox styles
-        $this->addCss('/public_xmd/assets/style/jquery/ximdex_theme/widgets/hbox/hbox.css');
+        $this->addCss('/assets/style/jquery/ximdex_theme/widgets/hbox/hbox.css');
 
         //Old tabs styles
-        $this->addCss('/public_xmd/assets/style/jquery/ximdex_theme/widgets/tabs/common_views.css');
-        $this->addCss('/public_xmd/assets/style/jquery/ximdex_theme/widgets/tabs/tabs-container.css');
-        $this->addCss('/public_xmd/assets/style/jquery/ximdex_theme/widgets/tabs/tabs.css');
+        $this->addCss('/assets/style/jquery/ximdex_theme/widgets/tabs/common_views.css');
+        $this->addCss('/assets/style/jquery/ximdex_theme/widgets/tabs/tabs-container.css');
+        $this->addCss('/assets/style/jquery/ximdex_theme/widgets/tabs/tabs.css');
 
-        $this->addJs('/public_xmd/assets/js/helpers.js');
-        $this->addJs('/public_xmd/assets/js/collection.js');
-        $this->addJs('/public_xmd/assets/js/dialogs.js');
-        $this->addJs('/public_xmd/assets/js/console.js');
-        $this->addJs('/public_xmd/assets/js/sess.js');
-        $this->addJs('/public_xmd/assets/js/eventHandler.js');
+        $this->addJs('/assets/js/helpers.js');
+        $this->addJs('/assets/js/collection.js');
+        $this->addJs('/assets/js/dialogs.js');
+        $this->addJs('/assets/js/console.js');
+        $this->addJs('/assets/js/sess.js');
+        $this->addJs('/assets/js/eventHandler.js');
         $this->addJs(Extensions::JQUERY);
         $this->addJs(Extensions::JQUERY_UI);
-        $this->addJs('/public_xmd/assets/js/i18n.js');
-        $this->addJs('/public_xmd/vendors/hammerjs/hammer.js/hammer.js');
-        $this->addJs('/public_xmd/vendors/angular/angular.min.js');
-        $this->addJs('/public_xmd/vendors/react/react-with-addons.min.js');
-        $this->addJs('/public_xmd/vendors/react/ngReact.min.js');
-        $this->addJs('/public_xmd/vendors/RyanMullins/angular-hammer/angular.hammer.js');
-        $this->addJs('/public_xmd/vendors/angular/angular-animate.min.js');
-        $this->addJs('/public_xmd/vendors/angular/angular-sanitize.min.js');
-        $this->addJs('/public_xmd/vendors/angular-ui-sortable/src/sortable.js');
-        $this->addJs('/public_xmd/vendors/ladda/dist/spin.min.js');
-        $this->addJs('/public_xmd/vendors/ladda/dist/ladda.min.js');
-        $this->addJs('/public_xmd/vendors/humane/humane.min.js');
+        $this->addJs('/assets/js/i18n.js');
+        $this->addJs('/vendors/hammerjs/hammer.js/hammer.js');
+        $this->addJs('/vendors/angular/angular.min.js');
+        $this->addJs('/vendors/react/react-with-addons.min.js');
+        $this->addJs('/vendors/react/ngReact.min.js');
+        $this->addJs('/vendors/RyanMullins/angular-hammer/angular.hammer.js');
+        $this->addJs('/vendors/angular/angular-animate.min.js');
+        $this->addJs('/vendors/angular/angular-sanitize.min.js');
+        $this->addJs('/vendors/angular-ui-sortable/src/sortable.js');
+        $this->addJs('/vendors/ladda/dist/spin.min.js');
+        $this->addJs('/vendors/ladda/dist/ladda.min.js');
+        $this->addJs('/vendors/humane/humane.min.js');
         $this->addJs(XIMDEX_VENDORS . '/flow/ng-flow-standalone.min.js');
-        $this->addJs('/public_xmd/vendors/angular-bootstrap/dist/ui-bootstrap-custom-tpls-0.13.0-SNAPSHOT.min.js');
+        $this->addJs('/vendors/angular-bootstrap/dist/ui-bootstrap-custom-tpls-0.13.0-SNAPSHOT.min.js');
         $this->addJs(Extensions::JQUERY_PATH . '/ui/jquery-ui-timepicker-addon.js');
         $this->addJs(Extensions::JQUERY_PATH . '/ui/jquery.ui.dialog.min.js');
         $this->addJs(Extensions::JQUERY_PATH . '/plugins/jquery-validate/jquery.validate.js');
@@ -131,70 +130,70 @@ class Action_browser3 extends ActionAbstract
         $this->addJs(Extensions::JQUERY_PATH . '/plugins/jquery-file-upload/js/jquery.fileupload.js');
         $this->addJs(Extensions::JQUERY_PATH . '/plugins/jquery-file-upload/js/jquery.fileupload-process.js');
         $this->addJs(Extensions::JQUERY_PATH . '/plugins/jquery-file-upload/js/jquery.fileupload-angular.js');
-        $this->addJs('/public_xmd/vendors/d3js/d3.v3.min.js');
-        $this->addJs('/public_xmd/vendors/codemirror/Codemirror/lib/codemirror.js');
+        $this->addJs('/vendors/d3js/d3.v3.min.js');
+        $this->addJs('/vendors/codemirror/Codemirror/lib/codemirror.js');
 
         //Old browserwindow js
-        $this->addJs('/public_xmd/src/Widgets/browserwindow/js/browserwindow.js');
-        $this->addJs('/public_xmd/src/Widgets/browserwindow/js/dialogs.js');
-        $this->addJs('/public_xmd/src/Widgets/browserwindow/js/actions.js');
+        $this->addJs('/src/Widgets/browserwindow/js/browserwindow.js');
+        $this->addJs('/src/Widgets/browserwindow/js/dialogs.js');
+        $this->addJs('/src/Widgets/browserwindow/js/actions.js');
 
         //Old listview js
-        $this->addJs('/public_xmd/src/Widgets/listview/js/fix.jquery.events.js');
-        $this->addJs('/public_xmd/src/Widgets/listview/js/listview.js');
-        $this->addJs('/public_xmd/src/Widgets/listview/js/listviewRenderer_Columns.js');
-        $this->addJs('/public_xmd/src/Widgets/listview/js/listviewRenderer_Details.js');
-        $this->addJs('/public_xmd/src/Widgets/listview/js/listviewRenderer_Grid.js');
-        $this->addJs('/public_xmd/src/Widgets/listview/js/listviewRenderer_Icon.js');
-        $this->addJs('/public_xmd/src/Widgets/listview/js/listviewRenderer_List.js');
-        $this->addJs('/public_xmd/src/Widgets/listview/js/selections.js');
-        $this->addJs('/public_xmd/src/Widgets/listview/js/jquery.fixheadertable.js');
+        $this->addJs('/src/Widgets/listview/js/fix.jquery.events.js');
+        $this->addJs('/src/Widgets/listview/js/listview.js');
+        $this->addJs('/src/Widgets/listview/js/listviewRenderer_Columns.js');
+        $this->addJs('/src/Widgets/listview/js/listviewRenderer_Details.js');
+        $this->addJs('/src/Widgets/listview/js/listviewRenderer_Grid.js');
+        $this->addJs('/src/Widgets/listview/js/listviewRenderer_Icon.js');
+        $this->addJs('/src/Widgets/listview/js/listviewRenderer_List.js');
+        $this->addJs('/src/Widgets/listview/js/selections.js');
+        $this->addJs('/src/Widgets/listview/js/jquery.fixheadertable.js');
 
 
-        $this->addJs('/public_xmd/assets/js/angular/app.js');
-        $this->addJs('/public_xmd/assets/js/angular/animations/slide.js');
-        $this->addJs('/public_xmd/assets/js/angular/services/xTranslate.js');
-        $this->addJs('/public_xmd/assets/js/angular/services/xBackend.js');
-        $this->addJs('/public_xmd/assets/js/angular/services/xUrlHelper.js');
-        $this->addJs('/public_xmd/assets/js/angular/services/xEventRelay.js');
-        $this->addJs('/public_xmd/assets/js/angular/services/xDialog.js');
-        $this->addJs('/public_xmd/assets/js/angular/services/xCheck.js');
-        $this->addJs('/public_xmd/assets/js/angular/services/xMenu.js');
-        $this->addJs('/public_xmd/assets/js/angular/services/xTabs.js');
-        $this->addJs('/public_xmd/assets/js/angular/services/angularLoad.js');
-        $this->addJs('/public_xmd/assets/js/angular/directives/ximButton.js');
-        $this->addJs('/public_xmd/assets/js/angular/directives/ximSelect.js');
-        $this->addJs('/public_xmd/assets/js/angular/directives/ximValidators.js');
-        $this->addJs('/public_xmd/assets/js/angular/directives/xtagsSuggested.js');
-        $this->addJs('/public_xmd/assets/js/angular/directives/contenteditable.js');
-        $this->addJs('/public_xmd/assets/js/angular/directives/ximFile.js');
-        $this->addJs('/public_xmd/assets/js/angular/directives/ximUploader.js');
-        $this->addJs('/public_xmd/assets/js/angular/directives/ximFocusOn.js');
-        $this->addJs('/public_xmd/assets/js/angular/directives/rightClick.js');
-        $this->addJs('/public_xmd/assets/js/angular/directives/ximGrid.js');
-        $this->addJs('/public_xmd/assets/js/angular/directives/ximInverted.js');
-        $this->addJs('/public_xmd/assets/js/angular/directives/ximFitText.js');
-        $this->addJs('/public_xmd/assets/js/angular/directives/ximMenu.js');
-        $this->addJs('/public_xmd/assets/js/angular/directives/ximTree.js');
-        $this->addJs('/public_xmd/assets/js/angular/directives/ximList.js');
-        $this->addJs('/public_xmd/assets/js/angular/directives/ximBrowser.js');
-        $this->addJs('/public_xmd/assets/js/angular/directives/datepicker.js');
-        $this->addJs('/public_xmd/assets/js/angular/directives/ximTabs.js');
-        $this->addJs('/public_xmd/assets/js/angular/directives/treeAssocNodes.jsx.js');
-        $this->addJs('/public_xmd/assets/js/angular/directives/treeNode.jsx.js');
+        $this->addJs('/assets/js/angular/app.js');
+        $this->addJs('/assets/js/angular/animations/slide.js');
+        $this->addJs('/assets/js/angular/services/xTranslate.js');
+        $this->addJs('/assets/js/angular/services/xBackend.js');
+        $this->addJs('/assets/js/angular/services/xUrlHelper.js');
+        $this->addJs('/assets/js/angular/services/xEventRelay.js');
+        $this->addJs('/assets/js/angular/services/xDialog.js');
+        $this->addJs('/assets/js/angular/services/xCheck.js');
+        $this->addJs('/assets/js/angular/services/xMenu.js');
+        $this->addJs('/assets/js/angular/services/xTabs.js');
+        $this->addJs('/assets/js/angular/services/angularLoad.js');
+        $this->addJs('/assets/js/angular/directives/ximButton.js');
+        $this->addJs('/assets/js/angular/directives/ximSelect.js');
+        $this->addJs('/assets/js/angular/directives/ximValidators.js');
+        $this->addJs('/assets/js/angular/directives/xtagsSuggested.js');
+        $this->addJs('/assets/js/angular/directives/contenteditable.js');
+        $this->addJs('/assets/js/angular/directives/ximFile.js');
+        $this->addJs('/assets/js/angular/directives/ximUploader.js');
+        $this->addJs('/assets/js/angular/directives/ximFocusOn.js');
+        $this->addJs('/assets/js/angular/directives/rightClick.js');
+        $this->addJs('/assets/js/angular/directives/ximGrid.js');
+        $this->addJs('/assets/js/angular/directives/ximInverted.js');
+        $this->addJs('/assets/js/angular/directives/ximFitText.js');
+        $this->addJs('/assets/js/angular/directives/ximMenu.js');
+        $this->addJs('/assets/js/angular/directives/ximTree.js');
+        $this->addJs('/assets/js/angular/directives/ximList.js');
+        $this->addJs('/assets/js/angular/directives/ximBrowser.js');
+        $this->addJs('/assets/js/angular/directives/datepicker.js');
+        $this->addJs('/assets/js/angular/directives/ximTabs.js');
+        $this->addJs('/assets/js/angular/directives/treeAssocNodes.jsx.js');
+        $this->addJs('/assets/js/angular/directives/treeNode.jsx.js');
 
-        $this->addJs('/public_xmd/assets/js/angular/filters/xFilters.js');
-        $this->addJs('/public_xmd/assets/js/angular/controllers/XTagsCtrl.js');
-        $this->addJs('/public_xmd/assets/js/angular/controllers/XModifyUserGroupsCtrl.js');
-        $this->addJs('/public_xmd/assets/js/angular/controllers/XModifyGroupUsersCtrl.js');
-        $this->addJs('/public_xmd/assets/js/angular/controllers/XModifyStates.js');
-        $this->addJs('/public_xmd/assets/js/angular/controllers/XModifyStatesRole.js');
-        $this->addJs('/public_xmd/assets/js/angular/controllers/AdvancedSearchModalCtrl.js');
-        $this->addJs('/public_xmd/assets/js/angular/controllers/AssocNodesCtrl.js');
-        $this->addJs('/public_xmd/assets/js/angular/controllers/XSetExtensions.js');
-        $this->addJs('/public_xmd/assets/js/angular/controllers/ximPUBLISHtools.js');
-        $this->addJs('/public_xmd/assets/js/angular/controllers/XUserMenuCtrl.js');
-        $this->addJs('/public_xmd/assets/js/angular/directives/ximAssocNodes.js');
+        $this->addJs('/assets/js/angular/filters/xFilters.js');
+        $this->addJs('/assets/js/angular/controllers/XTagsCtrl.js');
+        $this->addJs('/assets/js/angular/controllers/XModifyUserGroupsCtrl.js');
+        $this->addJs('/assets/js/angular/controllers/XModifyGroupUsersCtrl.js');
+        $this->addJs('/assets/js/angular/controllers/XModifyStates.js');
+        $this->addJs('/assets/js/angular/controllers/XModifyStatesRole.js');
+        $this->addJs('/assets/js/angular/controllers/AdvancedSearchModalCtrl.js');
+        $this->addJs('/assets/js/angular/controllers/AssocNodesCtrl.js');
+        $this->addJs('/assets/js/angular/controllers/XSetExtensions.js');
+        $this->addJs('/assets/js/angular/controllers/ximPUBLISHtools.js');
+        $this->addJs('/assets/js/angular/controllers/XUserMenuCtrl.js');
+        $this->addJs('/assets/js/angular/directives/ximAssocNodes.js');
         $this->addActionJs('XMainCtrl.js');
         $this->addActionJs('controller.js');
 

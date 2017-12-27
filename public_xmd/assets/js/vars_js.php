@@ -29,7 +29,6 @@ use Ximdex\Runtime\App;
 
 include_once '../../../bootstrap.php';
 
-ModulesManager::file('/inc/i18n/I18N.class.php');
 
 \Ximdex\Runtime\Session::check();
 

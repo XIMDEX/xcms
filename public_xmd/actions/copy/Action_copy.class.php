@@ -28,7 +28,7 @@ use Ximdex\Models\Node;
 use Ximdex\Models\NodeAllowedContent;
 use Ximdex\MVC\ActionAbstract;
 
-ModulesManager::file('/actions/copy/baseIO.php', 'APP');
+ModulesManager::file('/actions/copy/baseIO.php');
 
 class Action_copy extends ActionAbstract {
 
@@ -61,7 +61,7 @@ class Action_copy extends ActionAbstract {
                 'name' => $node->GetNodeName()
             );
 
-            $this->addCss('/actions/copy/resources/css/style.css', 'APP');
+            $this->addCss('/actions/copy/resources/css/style.css');
             $this->render($values, NULL, 'default-3.0.tpl');
         }
     }

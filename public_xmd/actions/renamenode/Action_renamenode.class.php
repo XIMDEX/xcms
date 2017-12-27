@@ -107,7 +107,7 @@ class Action_renamenode extends ActionAbstract
             . $this->request->getParam('actionid') . '&nodeid=' . $this->request->getParam('nodeid')
             . '&id_pipeline=IDPIPELINE&method=checkNodeDependencies';
 
-        $this->addJs('/actions/renamenode/resources/js/renamenode.js', 'APP');
+        $this->addJs('/actions/renamenode/resources/js/renamenode.js');
         $values = array('name' => $node->get('Name'),
             'is_section' => $isSection,
             'is_project' => $isProject,

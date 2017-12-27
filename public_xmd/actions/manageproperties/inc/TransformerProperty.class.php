@@ -27,7 +27,7 @@
 
 
 
-ModulesManager::file('/actions/manageproperties/inc/InheritableProperty.class.php', 'APP');
+ModulesManager::file('/actions/manageproperties/inc/InheritableProperty.class.php');
 
 class TransformerProperty extends InheritableProperty {
 

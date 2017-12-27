@@ -463,12 +463,12 @@ abstract class ActionAbstract extends IController
      * @param null $params
      * @return array|string
      */
-    public function addJs($_js, $_module = 'XIMDEX', $params = null)
+    public function addJs($_js, $_module = 'APP', $params = null)
     {
 
         if ('APP' == $_module) {
             $_js = '/public_xmd' . $_js;
-        }else if ('XIMDEX' != $_module) {
+        }else if ('XIMDEX' != $_module && 'internet'  != $_module ) {
             $path = ModulesManager::path($_module);
             $_js = $path . $_js;
         }
@@ -490,7 +490,7 @@ abstract class ActionAbstract extends IController
      * @param $_css
      * @param string $_module
      */
-    public function addCss($_css, $_module = 'XIMDEX')
+    public function addCss($_css, $_module = 'APP')
     {
 
         if ('APP' == $_module) {

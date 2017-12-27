@@ -433,7 +433,7 @@ class Manager
     }
 
 
-    public static function file($_file, $_module = 'XIMDEX')
+    public static function file($_file, $_module = 'APP')
     {
 
         if("XIMDEX" == $_module) {

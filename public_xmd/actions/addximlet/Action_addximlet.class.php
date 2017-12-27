@@ -32,7 +32,7 @@ use Ximdex\Models\StructuredDocument;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\App;
 
-ModulesManager::file('/actions/browser3/inc/GenericDatasource.class.php', 'APP');
+ModulesManager::file('/actions/browser3/inc/GenericDatasource.class.php');
 
 /**
  * @brief This class implements the action of add a ximlet in a Node
@@ -58,7 +58,7 @@ class Action_addximlet extends ActionAbstract
         $idNode = $this->request->getParam('nodeid');
         $node = new Node($idNode);
 
-        $this->addCss('/actions/addximlet/resources/css/style.css', 'APP');
+        $this->addCss('/actions/addximlet/resources/css/style.css');
 
         $depsMngr = new DepsManager();
         $ximlets = $depsMngr->getBySource(DepsManager::SECTION_XIMLET, $idNode);
@@ -82,7 +82,7 @@ class Action_addximlet extends ActionAbstract
             'name' => $node->get('Name')
         );
 
-        $this->addCss('/actions/copy/resources/css/style.css', 'APP');
+        $this->addCss('/actions/copy/resources/css/style.css');
         $this->render($values, 'index', 'default-3.0.tpl');
     }
 

@@ -30,7 +30,7 @@ use Ximdex\Models\User;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Sync\SynchroFacade;
 
-ModulesManager::file('/actions/browser3/inc/GenericDatasource.class.php', 'APP');
+ModulesManager::file('/actions/browser3/inc/GenericDatasource.class.php');
 
 class Action_deletenode extends ActionAbstract {
 
@@ -201,7 +201,7 @@ class Action_deletenode extends ActionAbstract {
 			$values["pendingTasks"] = count($pendingTasks);
 			$values["isPublished"] = $isPublished;
 		}
-		$this->addJs('/actions/deletenode/resources/js/deletenode.js', 'APP');
+		$this->addJs('/actions/deletenode/resources/js/deletenode.js');
 		$this->render($values, null, 'default-3.0.tpl');
 	}
 

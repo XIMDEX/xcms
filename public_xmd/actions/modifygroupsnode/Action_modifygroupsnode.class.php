@@ -72,7 +72,7 @@ class Action_modifygroupsnode extends ActionAbstract
             }
         }
 
-        $this->addJs('/actions/modifygroupsnode/resources/js/helper.js', 'APP');
+        $this->addJs('/actions/modifygroupsnode/resources/js/helper.js');
         $values = array(
             'id_node' => $idNode,
             'node_name' => $node->get('Name'),

@@ -35,7 +35,7 @@ class Action_modifyusergroups extends ActionAbstract {
     function index () {
         $idNode = $this->request->getParam('nodeid');
 
-        $this->addJs('/actions/modifyusergroups/resources/js/helper.js', 'APP');
+        $this->addJs('/actions/modifyusergroups/resources/js/helper.js');
 
         $user = new User($idNode);
 

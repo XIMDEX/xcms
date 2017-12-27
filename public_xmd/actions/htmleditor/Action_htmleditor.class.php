@@ -39,7 +39,7 @@ class Action_htmleditor extends ActionAbstract {
 		}
 
 		$this->addJs('/public_xmd/vendors/ckeditor/ckeditor.js');
-		$this->addJs('/actions/htmleditor/resources/js/htmleditor.js', 'APP');
+		$this->addJs('/actions/htmleditor/resources/js/htmleditor.js');
 
 
 		$values = array(

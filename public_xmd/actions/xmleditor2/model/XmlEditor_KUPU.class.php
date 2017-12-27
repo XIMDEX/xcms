@@ -41,11 +41,11 @@ use Ximdex\Logger;
 use Ximdex\Sync\SynchroFacade;
 use Ximdex\Nodeviews\ViewPreviewInServer;
 
-ModulesManager::file('/actions/xmleditor2/model/XmlEditor_Abstract.class.php', 'APP');
-ModulesManager::file('/actions/xmleditor2/HTML2XML.class.php', 'APP');
+ModulesManager::file('/actions/xmleditor2/model/XmlEditor_Abstract.class.php');
+ModulesManager::file('/actions/xmleditor2/HTML2XML.class.php');
 ModulesManager::file('/actions/enricher/model/Enricher.class.php', 'Xowl');
 ModulesManager::file('/actions/enricher/model/TagSuggester.class.php', 'Xowl');
-ModulesManager::file('/actions/xmleditor2/model/XmlEditor_Enricher.class.php', 'APP');
+ModulesManager::file('/actions/xmleditor2/model/XmlEditor_Enricher.class.php');
 
 
 class XmlEditor_KUPU extends XmlEditor_Abstract
@@ -131,12 +131,12 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
         $kupuURL = $vendorsURL . '/kupu';
 
         $jsFiles = array(
-            Extensions::JQUERY,
-            Extensions::JQUERY_UI,
-            Extensions::JQUERY_PATH . '/js/fix.jquery.getters.js',
-            Extensions::JQUERY_PATH . '/js/fix.jquery.parsejson.js',
-            Extensions::JQUERY_PATH . '/plugins/jquery.json/jquery.json-2.2.min.js',
-            Extensions::BOOTSTRAP . '/js/bootstrap.min.js',
+            '/public_xmd/'.Extensions::JQUERY,
+            '/public_xmd/'.Extensions::JQUERY_UI,
+            '/public_xmd/'.Extensions::JQUERY_PATH . '/js/fix.jquery.getters.js',
+            '/public_xmd/'.Extensions::JQUERY_PATH . '/js/fix.jquery.parsejson.js',
+            '/public_xmd/'.Extensions::JQUERY_PATH . '/plugins/jquery.json/jquery.json-2.2.min.js',
+            '/public_xmd/'.Extensions::BOOTSTRAP . '/js/bootstrap.min.js',
 
             '/public_xmd/assets/js/helpers.js',
             '/public_xmd/assets/js/sess.js',
@@ -292,7 +292,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
         $i18n = new ParsingJsGetText();
         $jsFiles = $i18n->getTextArrayOfJs($jsFiles);
 
-        $extensionsURL = App::getValue('UrlRoot') . '/vendors';
+        $extensionsURL = App::getValue('UrlRoot') . '/public_xmd/vendors';
         $actionURL = App::getValue('UrlRoot') . $actionURL;
         $kupuURL = App::getValue('UrlRoot') . $kupuURL;
 

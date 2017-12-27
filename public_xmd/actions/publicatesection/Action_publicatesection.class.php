@@ -58,7 +58,7 @@ class Action_publicatesection extends ActionAbstract
             $values['messages'] = $this->messages->messages;
         }
 
-        $this->addJs('/actions/publicatesection/resources/js/index.js', 'APP');
+        $this->addJs('/actions/publicatesection/resources/js/index.js');
 
         $this->render($values, NULL, 'default-3.0.tpl');
     }

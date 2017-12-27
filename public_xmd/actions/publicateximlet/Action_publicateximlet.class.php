@@ -55,7 +55,7 @@ class Action_publicateximlet extends ActionAbstract {
 		$actionDescription = sprintf(_("Following documents and sections are going to be published:"), count($docsToPublish));
 		$alertDescription = sprintf(_("Are you sure you want to publish?"));
 
-		$this->addJs('/actions/publicateximlet/resources/js/handler.js', 'APP');
+		$this->addJs('/actions/publicateximlet/resources/js/handler.js');
 
 		$values = array(
 			'actionDescription' => $actionDescription,

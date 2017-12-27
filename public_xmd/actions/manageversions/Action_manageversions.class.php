@@ -93,8 +93,8 @@ class Action_manageversions extends ActionAbstract
 
         $versionList[$lastVersion][$lastSubversion]['isLastVersion'] = 'true';
 
-        $this->addJs('/actions/manageversions/resources/js/index.js', 'APP');
-        $this->addCss('/actions/manageversions/resources/css/index.css', 'APP');
+        $this->addJs('/actions/manageversions/resources/js/index.js');
+        $this->addCss('/actions/manageversions/resources/css/index.css');
 
         $values = array('versionList' => $versionList,
             'isStructuredDocument' => $isStructuredDocument,

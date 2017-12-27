@@ -28,7 +28,7 @@ use Ximdex\Models\User;
 use Ximdex\MVC\ActionAbstract;
 
 
-ModulesManager::file("/actions/browser3/Action_browser3.class.php", 'APP');
+ModulesManager::file("/actions/browser3/Action_browser3.class.php");
 
 
 class Action_welcome extends ActionAbstract
@@ -44,13 +44,13 @@ class Action_welcome extends ActionAbstract
                 $values[] = $this->addJs('/resources/js/start_tour.js', 'ximTOUR');
             }
             if (ModulesManager::isEnabled('ximTOUR')) {
-                $values[] = $this->addJs('/actions/welcome/resources/js/tour.js', 'APP');
+                $values[] = $this->addJs('/actions/welcome/resources/js/tour.js');
                 $values[] = $this->addJs('/resources/js/tour.js', 'ximTOUR');
             }
-            $this->addCss('/actions/welcome/resources/css/welcome.css', 'APP');
+            $this->addCss('/actions/welcome/resources/css/welcome.css');
         }
 
-        $this->addJs('/actions/welcome/resources/js/index.js', 'APP');
+        $this->addJs('/actions/welcome/resources/js/index.js');
 
         //Getting idaction to check Create new project permissions for user
         $user = new User(\Ximdex\Runtime\Session::get("userID"));

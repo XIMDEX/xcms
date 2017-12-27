@@ -30,7 +30,7 @@ use Ximdex\Models\Role;
 use Ximdex\Models\XimLocale;
 use Ximdex\MVC\ActionAbstract;
 
-ModulesManager::file('/conf/install-params.conf.php');
+ModulesManager::file('/conf/install-params.conf.php', 'XIMDEX');
 
 class Action_createuser extends ActionAbstract
 {

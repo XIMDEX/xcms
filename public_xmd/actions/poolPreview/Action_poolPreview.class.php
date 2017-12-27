@@ -266,23 +266,23 @@ class Action_poolPreview extends ActionAbstract {
     	$this->addJs(Extensions::JQUERY_PATH.'/plugins/ui.dropdownchecklist.js');
     	$this->addJs(Extensions::JQUERY_PATH.'/plugins/thickbox/thickbox.js');
 
-    	$this->addJs('/actions/poolPreview/resources/js/poolPreview.js', 'APP');
+    	$this->addJs('/actions/poolPreview/resources/js/poolPreview.js');
     	$this->addJs('/public_xmd/assets/js/helper/query_manager.js');
-    	$this->addJs('/actions/manageList/resources/js/common.js', 'APP');
+    	$this->addJs('/actions/manageList/resources/js/common.js');
     	
     	
 	} 
 	private function insertCssFiles(){
-		$this->addCss('/actions/poolPreview/resources/css/resources/css/default.css', 'APP');
-    	$this->addCss('/actions/poolPreview/resources/css/slidebox.css', 'APP');
-    	$this->addCss('/actions/poolPreview/resources/css/ui.panel.css', 'APP');
-    	$this->addCss('/actions/poolPreview/resources/css/jquery-ui-1.8.2.custom.css', 'APP');
-    	$this->addCss('/actions/poolPreview/resources/css/poolPreview.css', 'APP');
-    	$this->addCss('/actions/poolPreview/resources/css/ui.dropdownchecklist.css', 'APP');
-    	$this->addCss('/public_xmd/vendors/jquery/plugins/thickbox/thickbox.css');
-    	$this->addCss('/actions/manageList/resources/css/common.css', 'APP');
-		$this->addCss('/public_xmd/assets/style/jquery/ximdex_theme/jquery-ui-1.8.2.custom.css');
-		$this->addCss('/public_xmd/assets/style/main_extended.css');
+		$this->addCss('/actions/poolPreview/resources/css/resources/css/default.css');
+    	$this->addCss('/actions/poolPreview/resources/css/slidebox.css');
+    	$this->addCss('/actions/poolPreview/resources/css/ui.panel.css');
+    	$this->addCss('/actions/poolPreview/resources/css/jquery-ui-1.8.2.custom.css');
+    	$this->addCss('/actions/poolPreview/resources/css/poolPreview.css');
+    	$this->addCss('/actions/poolPreview/resources/css/ui.dropdownchecklist.css');
+    	$this->addCss('/vendors/jquery/plugins/thickbox/thickbox.css');
+    	$this->addCss('/actions/manageList/resources/css/common.css');
+		$this->addCss('/assets/style/jquery/ximdex_theme/jquery-ui-1.8.2.custom.css');
+		$this->addCss('/assets/style/main_extended.css');
     	
 	}
 }

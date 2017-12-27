@@ -88,8 +88,8 @@ class Action_checkstatus extends ActionAbstract
             );
         }
 
-        $this->addJs('/actions/checkstatus/resources/js/index.js', 'APP');
-        $this->addCss('/actions/checkstatus/resources/css/index.css', 'APP');
+        $this->addJs('/actions/checkstatus/resources/js/index.js');
+        $this->addCss('/actions/checkstatus/resources/css/index.css');
 
         $values = array('files' => $data,
             'statesFull' => $statesFull,

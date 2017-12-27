@@ -70,10 +70,10 @@ class Action_preview extends ActionAbstract {
 			}
 		}
 
-		$this->addCss('/actions/preview/resources/css/style.css', 'APP');
+		$this->addCss('/actions/preview/resources/css/style.css');
 
 		$queryManager = \Ximdex\Runtime\App::get('\Ximdex\Utils\QueryManager');
-		$this->addJs('/actions/preview/resources/js/preview.js', 'APP');
+		$this->addJs('/actions/preview/resources/js/preview.js');
 		$values = array(
 			'id_node' => $idNode,
 			'params' => $params,

@@ -55,9 +55,9 @@ class Action_xmlsetlink extends ActionAbstract {
 	    $targetNodes = $this->getTargetNodes($node->GetID());
 
 		$type = $node->get('IdNodeType');
-		$this->addJs('/actions/xmlsetlink/resources/js/xmlsetlink.js', 'APP');
-		$this->addJs('/actions/xmlsetlink/resources/js/setinfo.js', 'APP');
-		$this->addCss('/actions/copy/resources/css/style.css', 'APP');
+		$this->addJs('/actions/xmlsetlink/resources/js/xmlsetlink.js');
+		$this->addJs('/actions/xmlsetlink/resources/js/setinfo.js');
+		$this->addCss('/actions/copy/resources/css/style.css');
 
 		$values = array(
 			'id_node' => $idNode,
@@ -151,7 +151,7 @@ class Action_xmlsetlink extends ActionAbstract {
 
 	function show_translation() {
 		$values = array('go_method' => 'unlink');
-		$this->addJs('/actions/xmlsetlink/resources/js/show_translation.js', 'APP');
+		$this->addJs('/actions/xmlsetlink/resources/js/show_translation.js');
 		$this->render($values, 'show_translation', 'default-3.0.tpl');
 	}
 

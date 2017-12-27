@@ -42,7 +42,7 @@ class Action_managefolders extends ActionAbstract {
 	* 
  	*/ 
     	function index () {
-		$this->addCss('/actions/addsectionnode/resources/css/style.css', 'APP');
+		$this->addCss('/actions/addsectionnode/resources/css/style.css');
 		$nodeID = $this->request->getParam("nodeid");
 		$node = new Node($nodeID);
 
@@ -60,7 +60,7 @@ class Action_managefolders extends ActionAbstract {
 			}
 		}
 		
-		$this->addJs('/actions/managefolders/resources/js/index.js', 'APP');
+		$this->addJs('/actions/managefolders/resources/js/index.js');
 
         	$values = array('nodeID' => $nodeID,
 				'sectionName' => $node->get('Name'),

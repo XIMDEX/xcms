@@ -75,7 +75,7 @@ class Action_modifygroupusers extends ActionAbstract
             }
         }
 
-        $this->addJs('/actions/modifygroupusers/resources/js/helper.js', 'APP');
+        $this->addJs('/actions/modifygroupusers/resources/js/helper.js');
 
         $values = array('name' => $node->get('Name'),
             'users_not_associated' => json_encode($users),

@@ -36,7 +36,7 @@ class Action_filedownload extends ActionAbstract
         $values = array('node_name' => $node->get('Name'),
                         'id_node' => $node->get('IdNode'));
 
-        $this->addJs('/actions/filedownload/resources/js/index.js', 'APP');
+        $this->addJs('/actions/filedownload/resources/js/index.js');
 
         $this->render($values, '', 'default-3.0.tpl');
     }

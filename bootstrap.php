@@ -43,6 +43,7 @@ if (!defined('CLI_MODE')) {
 
 include_once XIMDEX_ROOT_PATH.XIMDEX_VENDORS . '/autoload.php';
 
+
 class_alias('Ximdex\Modules\Manager', 'ModulesManager');
 
 // Initialize App
@@ -53,14 +54,15 @@ App::setValue('XIMDEX_ROOT_PATH', dirname(dirname(__FILE__)));
 // get Config from install file
 if ( file_exists( XIMDEX_ROOT_PATH . '/conf/install-params.conf.php' ) ) {
     $conf = require_once(XIMDEX_ROOT_PATH . '/conf/install-params.conf.php');
-                 foreach ($conf as $key => $value) {
+
+    foreach ($conf as $key => $value) {
         App::setValue($key, $value);
     }
 }
 
 // Initialize Modules Manager
 // set ximdex root path
-Ximdex\Modules\Manager::file( Ximdex\Modules\Manager::get_modules_install_params() );
+Ximdex\Modules\Manager::file( Ximdex\Modules\Manager::get_modules_install_params(), 'XIMDEX');
 
 
 // generate general purpose logs files

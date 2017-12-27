@@ -36,9 +36,8 @@ use Ximdex\Runtime\Request;
 use Ximdex\Utils\Serializer;
 use Ximdex\Logger;
 
-ModulesManager::file('/actions/xmleditor2/XimlinkResolver.class.php', 'APP');
-ModulesManager::file('/actions/createlink/Action_createlink.class.php', 'APP');
-ModulesManager::file('/inc/i18n/I18N.class.php');
+ModulesManager::file('/actions/xmleditor2/XimlinkResolver.class.php');
+ModulesManager::file('/actions/createlink/Action_createlink.class.php');
 
 
 class Action_xmleditor2 extends ActionAbstract
@@ -129,7 +128,7 @@ class Action_xmleditor2 extends ActionAbstract
             exit();
         }
 
-        ModulesManager::file($file, 'APP');
+        ModulesManager::file($file);
 
         if (!class_exists($class)) {
             $msg->add(_('A non-existing editor has been refered.'), MSG_TYPE_ERROR);

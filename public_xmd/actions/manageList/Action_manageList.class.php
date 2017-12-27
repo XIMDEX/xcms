@@ -40,8 +40,8 @@ class Action_manageList extends ActionAbstract {
 		$all = $list->find('id, Name, Description');
 		
 		$this->addJs(Extensions::JQUERY_PATH.'/plugins/jquery.blockUI.js');
-		$this->addJs('/actions/manageList/resources/js/common.js', 'APP');
-		$this->addCss('/actions/manageList/resources/css/common.css', 'APP');
+		$this->addJs('/actions/manageList/resources/js/common.js');
+		$this->addCss('/actions/manageList/resources/css/common.css');
 		$values = array('list' => $all, 'type' => $type);
 		if ($mode == 'single') {
 			$this->render($values, 'index.tpl', 'single.tpl');

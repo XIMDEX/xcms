@@ -30,8 +30,8 @@ use Ximdex\Models\NodeAllowedContent;
 use Ximdex\Runtime\App;
 use Ximdex\Sync\SynchroFacade;
 
-ModulesManager::file('/actions/movenode/baseIO.php', 'APP');
-ModulesManager::file('/actions/copy/Action_copy.class.php', 'APP');
+ModulesManager::file('/actions/movenode/baseIO.php');
+ModulesManager::file('/actions/copy/Action_copy.class.php');
 
 class Action_movenode extends Action_copy {
 
@@ -73,7 +73,7 @@ class Action_movenode extends Action_copy {
             return $nodes['idnode'] != $node->GetID();
         });
 
-		$this->addCss('/actions/copy/resources/css/style.css', 'APP');
+		$this->addCss('/actions/copy/resources/css/style.css');
 		
 		$values = array(
 			'id_node' => $node->get('IdNode'),

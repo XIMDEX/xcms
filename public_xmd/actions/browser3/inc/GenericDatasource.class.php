@@ -28,8 +28,8 @@
 use Ximdex\Logger;
 use Ximdex\Runtime\Request;
 
-ModulesManager::file('/actions/browser3/inc/IDatasource.iface.php', 'APP');
-ModulesManager::file('/actions/browser3/inc/AbstractDatasource.class.php', 'APP');
+ModulesManager::file('/actions/browser3/inc/IDatasource.iface.php');
+ModulesManager::file('/actions/browser3/inc/AbstractDatasource.class.php');
 
 
  // Generic interface for data source control.
@@ -58,7 +58,7 @@ class GenericDatasource extends AbstractDatasource {
 	static public function & getInstance($bpath) {
 
 			if (self::$confFile === null) {
-				self::$confFile =  ModulesManager::file('/conf/browser.php');
+				self::$confFile =  ModulesManager::file('/conf/browser.php', 'XIMDEX');
 			}
 
 

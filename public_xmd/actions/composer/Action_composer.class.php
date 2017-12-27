@@ -40,7 +40,7 @@ use Ximdex\Runtime\Session;
 use Xmd\Widgets\Widget;
 use Ximdex\XML\Base;
  
-ModulesManager::file('/actions/browser3/inc/GenericDatasource.class.php', 'APP');
+ModulesManager::file('/actions/browser3/inc/GenericDatasource.class.php');
 
 
 class Action_composer extends ActionAbstract

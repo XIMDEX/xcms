@@ -30,8 +30,8 @@ class Action_dummy extends ActionAbstract {
 
 	public function index() {
 
-		$this->addJs('/actions/dummy/resources/js/dummy.js', 'APP');
-		$this->addCss('/actions/dummy/resources/css/dummy.css', 'APP');
+		$this->addJs('/actions/dummy/resources/js/dummy.js');
+		$this->addCss('/actions/dummy/resources/css/dummy.css');
 
 		$values = array();
 		$this->render($values, 'dummy', 'default-3.0.tpl');

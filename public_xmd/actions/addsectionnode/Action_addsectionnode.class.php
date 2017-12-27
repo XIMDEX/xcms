@@ -31,7 +31,7 @@ use Ximdex\Models\SectionType;
 use Ximdex\MVC\ActionAbstract;
 use\Ximdex\NodeTypes\NodeType as NodetypeService;
 
-ModulesManager::file('/actions/manageproperties/inc/InheritedPropertiesManager.class.php', 'APP');
+ModulesManager::file('/actions/manageproperties/inc/InheritedPropertiesManager.class.php');
 ModulesManager::file('/inc/io/XlyreBaseIO.class.php', 'xlyre');
 
 class Action_addsectionnode extends ActionAbstract {
@@ -139,9 +139,9 @@ class Action_addsectionnode extends ActionAbstract {
     }
 
     private function loadResources() {
-        $this->addCss('/actions/addsectionnode/resources/css/style.css', 'APP');
-        $this->addJs('/actions/addsectionnode/resources/js/init.js', 'APP');
-        $this->addJs('/actions/addsectionnode/resources/js/addSectionCtrl.js', 'APP');
+        $this->addCss('/actions/addsectionnode/resources/css/style.css');
+        $this->addJs('/actions/addsectionnode/resources/js/init.js');
+        $this->addJs('/actions/addsectionnode/resources/js/addSectionCtrl.js');
     }
 
     private function loadValues() {

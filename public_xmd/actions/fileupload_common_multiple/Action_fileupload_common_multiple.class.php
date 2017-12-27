@@ -33,13 +33,13 @@ use Ximdex\Models\NodeType;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\App;
 
-require_once(XIMDEX_ROOT_PATH . XIMDEX_VENDORS . '/flow/ConfigInterface.php');
-require_once(XIMDEX_ROOT_PATH . XIMDEX_VENDORS . '/flow/Config.php');
-require_once(XIMDEX_ROOT_PATH . XIMDEX_VENDORS . '/flow/Exception.php');
-require_once(XIMDEX_ROOT_PATH . XIMDEX_VENDORS . '/flow/File.php');
-require_once(XIMDEX_ROOT_PATH . XIMDEX_VENDORS . '/flow/RequestInterface.php');
-require_once(XIMDEX_ROOT_PATH . XIMDEX_VENDORS . '/flow/Request.php');
-require_once(XIMDEX_ROOT_PATH . XIMDEX_VENDORS . '/flow/Uploader.php');
+require_once(APP_ROOT_PATH . XIMDEX_VENDORS . '/flow/ConfigInterface.php');
+require_once(APP_ROOT_PATH . XIMDEX_VENDORS . '/flow/Config.php');
+require_once(APP_ROOT_PATH . XIMDEX_VENDORS . '/flow/Exception.php');
+require_once(APP_ROOT_PATH . XIMDEX_VENDORS . '/flow/File.php');
+require_once(APP_ROOT_PATH . XIMDEX_VENDORS . '/flow/RequestInterface.php');
+require_once(APP_ROOT_PATH . XIMDEX_VENDORS . '/flow/Request.php');
+require_once(APP_ROOT_PATH . XIMDEX_VENDORS . '/flow/Uploader.php');
 
 
 class Action_fileupload_common_multiple extends ActionAbstract {
@@ -117,9 +117,9 @@ class Action_fileupload_common_multiple extends ActionAbstract {
                 break;
         };
 
-        $this->addJs('/actions/fileupload_common_multiple/resources/js/loader.js', 'APP');
-        $this->addCss('/actions/fileupload_common_multiple/resources/css/loader.css', 'APP');
-        $this->addCss('/actions/fileupload_common_multiple/resources/css/uploader_html5.css', 'APP');
+        $this->addJs('/actions/fileupload_common_multiple/resources/js/loader.js');
+        $this->addCss('/actions/fileupload_common_multiple/resources/css/loader.css');
+        $this->addCss('/actions/fileupload_common_multiple/resources/css/uploader_html5.css');
 
         $uploaderOptions = array (
             "nodeURL" => App::getValue('UrlRoot')."/public_xmd/?actionid=$actionID&nodeid={$idNode}",

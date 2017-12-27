@@ -153,7 +153,7 @@ class Action_prevdoc extends ActionAbstract
 		        $errors = str_replace("\n", "\n<br />\n", $errors);
 		    else
 		        $errors = 'The preview cannot be processed due to an unknown error';
-		    $this->addCss('/public_xmd/assets/style/jquery/ximdex_theme/widgets/browserwindow/actionPanel.css');
+		    $this->addCss('/assets/style/jquery/ximdex_theme/widgets/browserwindow/actionPanel.css');
 		    $this->render(array('errors' => $errors), 'index', 'basic_html.tpl');
 		}
 		else

@@ -41,7 +41,7 @@ class Action_linkreport extends ActionAbstract
         $actionID = $this->request->getParam("actionid");
         $node = new Node($idNode);
 
-        $this->addCss('/actions/linkreport/resources/css/linkreport.css', 'APP');
+        $this->addCss('/actions/linkreport/resources/css/linkreport.css');
 
         $values = array(
             'id_node' => $idNode,
@@ -143,7 +143,7 @@ class Action_linkreport extends ActionAbstract
             }
         }
         $links = array_unique($links);
-        $this->addJs('/actions/linkreport/resources/js/index.js', 'APP');
+        $this->addJs('/actions/linkreport/resources/js/index.js');
 
         $records = count($links);
         if ($records > 0) {

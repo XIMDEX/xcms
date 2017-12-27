@@ -44,7 +44,7 @@ class Action_showassocnodes extends ActionAbstract {
 
       	$ximletId = (int) $this->request->getParam("nodeid");
 
-		$this->addCss('/actions/showassocnodes/resources/css/index.css', 'APP');
+		$this->addCss('/actions/showassocnodes/resources/css/index.css');
 
 		$sections = $this->getReferencedSections($ximletId);
 
