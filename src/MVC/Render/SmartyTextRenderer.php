@@ -17,11 +17,13 @@ class SmartyTextRenderer
     {
 
         $smarty = new Smarty();
-        $smarty->setTemplateDir(SMARTY_TMP_PATH . '/templates');
+        $smarty->setTemplateDir([\APP_ROOT_PATH, \XIMDEX_ROOT_PATH ] );
         $smarty->setCompileDir(SMARTY_TMP_PATH . '/templates_c');
         $smarty->setCacheDir(SMARTY_TMP_PATH . '/cache');
         $smarty->setConfigDir(SMARTY_TMP_PATH . '/configs');
 
+
+        $smarty->config_vars = get_defined_constants();
 
         /*	$smarty->register->resource('text', array(this,
                  'smarty_resource_text_get_template',

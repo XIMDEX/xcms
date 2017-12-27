@@ -58,12 +58,14 @@ class SmartyRenderer extends AbstractRenderer
 		parent::render($view);
 
 		$smarty = new Smarty();
-		$smarty->setTemplateDir(SMARTY_TMP_PATH . '/templates');
+        $smarty->setTemplateDir([\APP_ROOT_PATH, \XIMDEX_ROOT_PATH ] );
 		$smarty->setCompileDir(SMARTY_TMP_PATH . '/templates_c');
 		$smarty->setCacheDir(SMARTY_TMP_PATH . '/cache');
 		$smarty->setConfigDir(SMARTY_TMP_PATH . '/configs');
 
-		//Remove whitespaces
+        $smarty->config_vars = get_defined_constants();
+
+        //Remove whitespaces
 //  		$smarty->autoload_filters = array('output' => array('trimwhitespace'));
 
 		//Initialize NDOE_PATH
