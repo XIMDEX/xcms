@@ -29,7 +29,7 @@
 	<input type="hidden" name="id_node" value="{$id_node}" />
 	<input type="hidden" name="node_type_name" value="{$node_type_name}" />
 	<fieldset><legend><span>{t}Messages{/t}</span></legend>
-	{include file="`$_APP_ROOT`/public_xmd/actions/commons/views/helper/messages.tpl"}
+	{include file="actions/commons/views/helper/messages.tpl"}
 	</fieldset>
 	<fieldset class="buttons-form">
 		{button label="Go back" class="focus btn" onclick="$(this).closest('.ui-tabs').tabs('backToIndex', this);"}

@@ -23,7 +23,7 @@
  *  @version $Revision$
  *}
 
-{include file="`$_APP_ROOT`/public_xmd/actions/commons/views/helper/li_for_js.tpl"}
+{include file="actions/commons/views/helper/li_for_js.tpl"}
 
 <div id="ajax_container" class="ui-widget ui-widget-content ui-corner-all">
 	<div class="progress ui-widget ui-widget-content ui-helper-reset ui-corner-all" >

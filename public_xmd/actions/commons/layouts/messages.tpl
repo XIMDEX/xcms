@@ -23,7 +23,7 @@
  *  @version $Revision$
  *}
 
-{include file="`$_APP_ROOT`/public_xmd/actions/commons/views/helper/li_for_js.tpl"}
+{include file="actions/commons/views/helper/li_for_js.tpl"}
 
 <div class="container">
 	<div class="action_header">
@@ -51,7 +51,7 @@
 
 	<div class="action_container ui-widget">
 		<div class="message-wrapper">
-			{include file="`$_APP_ROOT`/public_xmd/actions/commons/views/helper/messages.tpl"}
+			{include file="actions/commons/views/helper/messages.tpl"}
 		</div>
 	</div>
 </div>

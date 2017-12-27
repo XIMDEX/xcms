@@ -34,7 +34,7 @@
 
 			{foreach from=$list key=key item=listInfo}
 			<tr class="list_{$listInfo.id}">
-				{include file="`$_APP_ROOT`/public_xmd/actions/manageList/template/Smarty/_element.tpl"}
+				{include file="actions/manageList/template/Smarty/_element.tpl"}
 			</tr>
 			{/foreach}
 		</table>

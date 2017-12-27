@@ -25,7 +25,7 @@
 
 <tr>
 	<td>
-		{include file="$_APP_ROOT/public_xmd/actions/commons/views/helper/messages.tpl"}
+		{include file="actions/commons/views/helper/messages.tpl"}
 		<form action="{$action}" method="post" id="console_wrapper">
 			<input type="hidden" name="nodeid" value=""/>
 			<input type="hidden" name="actionid" value="{$id_action}"/>

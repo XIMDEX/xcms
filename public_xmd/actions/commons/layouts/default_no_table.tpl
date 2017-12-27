@@ -23,7 +23,7 @@
  *  @version $Revision$
  *}
 
-	{include file="`$_APP_ROOT`/public_xmd/actions/commons/views/helper/li_for_js.tpl"}
+	{include file="actions/commons/views/helper/li_for_js.tpl"}
 
 	<div class="container">
 
