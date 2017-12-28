@@ -144,7 +144,7 @@ class ParsingJsGetText
             fclose($file_in);
             fclose($file_out);
             Logger::debug('Js Cache generated ' . App::getValue('UrlRoot') . $this->PATH_CACHE . $this->_lang . "/" . $this->_file);
-            return App::getUrlXimdex( $this->PATH_CACHE . $this->_lang . "/" . $this->_file );
+            return App::getXimdexUrl( $this->PATH_CACHE . $this->_lang . "/" . $this->_file );
         }
 
     }
@@ -164,21 +164,21 @@ class ParsingJsGetText
 
         foreach ($no_cacheable as $n_c) {
             if (!substr_compare($_js, $n_c, 0, strlen($n_c))) {
-                $no_cached_url =  App::getUrlXimdex( $_js );
+                $no_cached_url = $_js;
                 return $no_cached_url;
             }
         }
 
 
         if (!is_file(XIMDEX_ROOT_PATH . $_js)) { // dinamic call
-            $no_cached_url =  App::getUrlXimdex( $_js );
+            $no_cached_url =   $_js;
             return $no_cached_url;
         }
 
         //Checking if the file gettexted for the specificed langauge is existing
         if ($this->fileExists()) {
             //If it exists, returning its url
-            return App::getUrlXimdex($this->PATH_CACHE . $this->_lang . "/" . $this->_file);
+            return App::getXimdexUrl($this->PATH_CACHE . $this->_lang . "/" . $this->_file);
         }
 
 

@@ -103,7 +103,7 @@ class SmartyRenderer extends AbstractRenderer
     public function urlXimdex($params, $url, \Smarty_Internal_Template $template, &$repeat) {
         if(!$repeat){
             if (isset($url)) {
-                return \App::getUrlXimdex($url);
+                return \App::getXimdexUrl($url);
             }
         }
     }

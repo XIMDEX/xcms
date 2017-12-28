@@ -53,7 +53,7 @@ class GetStartedInstallStep extends GenericInstallStep {
 		$this->changePermissions();
         $this->deleteTempFiles();
 		$this->loadNextAction();		
-		header("Location: /");
+		header("Location: ".\App::getXimdexUrl('/'));
 		die();
 	}
 

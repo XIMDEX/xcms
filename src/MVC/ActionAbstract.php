@@ -494,16 +494,13 @@ abstract class ActionAbstract extends IController
 
         if ('APP' == $_module) {
             $this->_css[] = App::getUrl( $_css );
+            return ;
         }else if ('XIMDEX' != $_module) {
             $path = \Ximdex\Modules\Manager::path($_module);
             $_css = $path . $_css;
-
-            $this->_css[] = App::getValue('UrlRoot') . ltrim($_css, '/');
-        }else {
-            $this->_css[] = App::getValue('UrlRoot') . ltrim($_css, '/');
         }
 
-
+        $this->_css[] = App::getValue('UrlRoot') . $_css;
     }
 
     /**

@@ -176,7 +176,7 @@ Class App
      * @param array ...$params
      * @return string
      */
-    public static function getUrlXimdex($suburl,  ...$params) {
+    public static function getXimdexUrl($suburl,  ...$params) {
 
         if(!empty($params)) {
             $suburl = sprintf($suburl, ...$params);
