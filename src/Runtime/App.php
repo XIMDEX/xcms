@@ -158,7 +158,7 @@ Class App
             $suburl = sprintf($suburl, ...$params);
         }
 
-        $base = trim(App::getValue('UrlFronController'), '/');
+        $base = trim(App::getValue('UrlFrontController'), '/');
 
         $url =   $base. '/' . ltrim($suburl, '/');
 
