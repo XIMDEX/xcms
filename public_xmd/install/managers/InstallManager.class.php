@@ -320,7 +320,7 @@ class InstallManager
             } else if (!$this->isWritable(XIMDEX_ROOT_PATH . $file)) {
             	$result['state'] = "error";
             	$result['messages'][] = "Write permissions on $file directory required. Please, execute this command:";
-            	$result['help'][] = "sudo chmod -R g+s " . XIMDEX_ROOT_PATH . $file;
+            	$result['help'][] = "sudo chmod -R g+ws " . XIMDEX_ROOT_PATH . $file;
             }
         }
         
