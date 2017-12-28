@@ -94,6 +94,8 @@ abstract class WidgetAbstract
 		$c = count($array);
 		$getTextJs = new ParsingJsGetText();
 		for ($i = 0; $i < $c; $i++) {
+            $array[$i] =  preg_replace('#^' . \App::getXimdexUrl('/'). '#', '',  $array[$i]) ;
+
 			$array[$i] = $getTextJs->getFile( $array[$i]);
 		}
 		return $array;
