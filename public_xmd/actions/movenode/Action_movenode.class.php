@@ -109,7 +109,7 @@ class Action_movenode extends Action_copy {
 			'messages' => $this->messages->messages,
 			'id_node' => $idNode,
 			'params' => '',
-			'nodeURL' => App::getValue('UrlRoot')."/public_xmd/?action=movenode&nodeid={$idNode}",
+			'nodeURL' => App::getUrl("/?action=movenode&nodeid={$idNode}"),
 			'action_with_no_return' => true,
 			'parentID' => $targetParentID,
 			'oldParentID' => $node->GetParent()
@@ -147,7 +147,7 @@ class Action_movenode extends Action_copy {
 			"targetPath" => $targetNode->GetPath(),
 			"targetid" => $targetParentID,
 			'params' => '',
-			"nodeURL" => App::getValue('UrlRoot')."/public_xmd/?action=movenode&nodeid={$idNode}",
+			"nodeURL" => App::getUrl("/?action=movenode&nodeid={$idNode}"),
 			"go_method" => "move_node"
 		);
 

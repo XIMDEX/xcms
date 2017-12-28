@@ -39,8 +39,7 @@ use Ximdex\Parsers\ParsingDependencies;
 use Ximdex\Utils\FsUtils;
 use Ximdex\Logger;
 
-include_once(XIMDEX_ROOT_PATH . "/public_xmd/actions/fileupload/baseIO.php");
-
+ModulesManager::file('/actions/fileupload/baseIO.php');
 ModulesManager::file('/inc/CacheWriter.class.php', 'ximRAM');
 
 /**

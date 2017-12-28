@@ -219,11 +219,11 @@ function XimdocEditor(options) {
         var xslIncludesOnServer = $('.kupu-fulleditor .kupu-ximparams #kupu-xslIncludesOnServer').html().trim();
 
         // ximdex initialize stuff
-        //this._baseURL = url_root + '/public_xmd/?actionid=' + this.actionId + '&nodeid=' + this.nodeId;
-        this._baseURL = url_root + '/public_xmd/?action=xmleditor2&nodeid=' + this.nodeId;
-        this._baseActionURL = url_root + '/public_xmd/actions/xmleditor2/';
-        this._loadActionURL = url_root + '/public_xmd/?nodeid=' + this.nodeId;
-        var xmlI18N = url_root + '/public_xmd/vendors/kupu/i18n/kupu-' + locale + '.pox';
+        //this._baseURL = url_root + '/?actionid=' + this.actionId + '&nodeid=' + this.nodeId;
+        this._baseURL = url_root + '/?action=xmleditor2&nodeid=' + this.nodeId;
+        this._baseActionURL = url_root + '/actions/xmleditor2/';
+        this._loadActionURL = url_root + '/?nodeid=' + this.nodeId;
+        var xmlI18N = url_root + '/vendors/kupu/i18n/kupu-' + locale + '.pox';
         var verifyTmpUrl = this._baseURL + '&ajax=json&method=verifyTmpFile';
         var checkEditionStatusUrl = this._baseURL + '&method=checkEditionStatus';
         var removeNodeEditionUrl = this._baseURL + '&method=removeNodeEdition';
@@ -772,7 +772,7 @@ this.setDefaultImages = function () {
             var img_url = elem.src.replace(this._baseActionURL, '');
 
             if (!img_url || "index.html" == img_url || !elem.src) {
-                elem.src = url_root + '/public_xmd/assets/images/insert_img.png';
+                elem.src = url_root + '/assets/images/insert_img.png';
             }
         }.bind(this)
     );
@@ -795,7 +795,7 @@ this.removeAnnotationTags = function (domItem) {
 this.setDinamicContentImages = function () {
     var bodyText = $(this.getBody()).html();
     var rgx = new RegExp("&lt;php?([^<>]*)?&gt;", "g");
-    bodyText = bodyText.replace(rgx, "<div style='background-color: gray; padding-left: 25px; border: 1px solid black; color: white; font-weight: bold; text-decoration: italic; height: 16px; background-repeat: no-repeat; background-image: url(" + url_root + "/public_xmd/actions/xmleditor2/gfx/page_white_php.png);'>Non XHTML Code</div>");
+    bodyText = bodyText.replace(rgx, "<div style='background-color: gray; padding-left: 25px; border: 1px solid black; color: white; font-weight: bold; text-decoration: italic; height: 16px; background-repeat: no-repeat; background-image: url(" + url_root + "actions/xmleditor2/gfx/page_white_php.png);'>Non XHTML Code</div>");
     $(this.getBody()).html(bodyText);
 };
 
@@ -1208,11 +1208,11 @@ this.afterUpdateContent = function (options) {
                 var target = event.currentTarget || event.target;
                 var ctrl = $(target).siblings('div').toggle().siblings('.ctrl');
                 if ($(ctrl).hasClass('minus')) {
-                    $(ctrl).attr('src', '../../public_xmd/assets/images/tree/Lplus.png').toggleClass('minus');
-                    $('.folder', $(target).parent()).attr('src', '../../public_xmd/assets/images/tree/folder.png');
+                    $(ctrl).attr('src',   window.url_root + 'assets/images/tree/Lplus.png').toggleClass('minus');
+                    $('.folder', $(target).parent()).attr('src',  window.url_root + 'assets/images/tree/folder.png');
                 } else {
-                    $(ctrl).attr('src', '../../public_xmd/assets/images/tree/Lminus.png').toggleClass('minus');
-                    $('.folder', $(target).parent()).attr('src', '../../public_xmd/assets/images/tree/openfolder.png');
+                    $(ctrl).attr('src',  window.url_root + 'assets/images/tree/Lminus.png').toggleClass('minus');
+                    $('.folder', $(target).parent()).attr('src',  window.url_root + 'assets/images/tree/openfolder.png');
                 }
             }
         );

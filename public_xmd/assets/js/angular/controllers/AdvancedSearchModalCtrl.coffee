@@ -71,7 +71,7 @@ angular.module('ximdex.main.controller').controller 'AdvancedSearchModalCtrl', [
         $scope.deleteSavedFilter = (id) ->
             modalInstance = $modal.open(
                 animation: true
-                templateUrl: $window.X.baseUrl + '/public_xmd/assets/js/angular/templates/confirmDeleteFilterModal.html'
+                templateUrl: $window.X.baseUrl + '/assets/js/angular/templates/confirmDeleteFilterModal.html'
                 controller: 'ConfirmDeleteFilterModalCtrl'
                 size: 'sm'
                 resolve: {}
@@ -95,7 +95,7 @@ angular.module('ximdex.main.controller').controller 'AdvancedSearchModalCtrl', [
         $scope.saveQuery = ->
             modalInstance = $modal.open(
                 animation: true
-                templateUrl: $window.X.baseUrl + '/public_xmd/assets/js/angular/templates/enterNameFilterModal.html'
+                templateUrl: $window.X.baseUrl + '/assets/js/angular/templates/enterNameFilterModal.html'
                 controller: 'EnterNameFilterModalCtrl'
                 size: 'sm'
                 resolve:

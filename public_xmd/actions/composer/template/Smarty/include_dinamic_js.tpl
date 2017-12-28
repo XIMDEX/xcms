@@ -24,4 +24,4 @@
  *}
 
 
-{include file="`$_APP_ROOT``$js_file`"}
+{include file=$js_file|ltrim:'/'}

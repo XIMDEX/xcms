@@ -131,12 +131,12 @@ abstract class XmlEditor_Abstract
                 if ($view == "form") {
                     return $this->getFormViewXsl($idnode);
                 } elseif ($view == 'tree') {
-                    return App::getValue( 'UrlHost') . App::getValue('UrlRoot') . '/public_xmd/actions/xmleditor2/views/editor/tree/templates/docxap.xsl';
+                    return App::getValue( 'UrlHost') . App::getUrl('/actions/xmleditor2/views/editor/tree/templates/docxap.xsl' );
         }
 
         $nodeTypeName = $node->nodeType->GetName();
         if ($nodeTypeName == 'RngVisualTemplate') {
-            return App::getValue( 'UrlHost') . App::getValue('UrlRoot') . '/public_xmd/actions/xmleditor2/views/rngeditor/templates/docxap.xsl';
+            return App::getValue( 'UrlHost') .  App::getUrl('/actions/xmleditor2/views/rngeditor/templates/docxap.xsl');
         }
 
         // return full project docxap path
@@ -162,7 +162,7 @@ abstract class XmlEditor_Abstract
 
         $nodeTypeName = $node->nodeType->GetName();
         if ($nodeTypeName == 'RngVisualTemplate') {
-            $rngPath = XIMDEX_ROOT_PATH . '/public_xmd/actions/xmleditor2/views/rngeditor/schema/rng-schema.xml';
+            $rngPath = APP_ROOT_PATH . '/actions/xmleditor2/views/rngeditor/schema/rng-schema.xml';
 
             return trim(FsUtils::file_get_contents($rngPath));
         }
@@ -208,7 +208,7 @@ abstract class XmlEditor_Abstract
 
 //		$content = '<root><node>value</node></root>';
 
-        $schema = FsUtils::file_get_contents(XIMDEX_ROOT_PATH . '/public_xmd/actions/xmleditor2/views/common/schema/relaxng-1.0.rng.xml');
+        $schema = FsUtils::file_get_contents(APP_ROOT_PATH . '/actions/xmleditor2/views/common/schema/relaxng-1.0.rng.xml');
         $rngvalidator = new \Ximdex\XML\Validators\RNG();
         $valid = $rngvalidator->validate($schema, $content);
 
@@ -398,7 +398,7 @@ abstract class XmlEditor_Abstract
     private function buildFormXsl($idSchema, $maxIdVersion)
     {
         $warnings = "";
-        $xslTemplateContent = FsUtils::file_get_contents(XIMDEX_ROOT_PATH . '/public_xmd/actions/xmleditor2/views/editor/form/templates/docxap.xsl');
+        $xslTemplateContent = FsUtils::file_get_contents(APP_ROOT_PATH . '/actions/xmleditor2/views/editor/form/templates/docxap.xsl');
         $rngXpathObj = $this->getXPathFromSchema($idSchema);
 
         $textElements = $this->getTextElements($rngXpathObj);

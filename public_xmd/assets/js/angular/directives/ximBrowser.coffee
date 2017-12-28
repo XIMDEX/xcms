@@ -10,7 +10,7 @@ angular.module("ximdex.common.directive").directive "ximBrowser", [
     (xTranslate, $window, $http, xUrlHelper, xMenu, $document, $timeout, $q, xTabs, $rootScope) ->
         base_url = $window.X.baseUrl
         return (
-            templateUrl: base_url+'/public_xmd/assets/js/angular/templates/ximBrowser.html'
+            templateUrl: base_url+'assets/js/angular/templates/ximBrowser.html'
             restrict: "E"
             replace: true
             scope:

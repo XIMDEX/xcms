@@ -4,7 +4,7 @@ angular.module("ximdex.common.directive").directive("ximAssocNodes", [
     var base_url;
     base_url = $window.X.baseUrl;
     return {
-      templateUrl: base_url + '/public_xmd/assets/js/angular/templates/ximAssocNodes.html',
+      templateUrl: base_url + 'assets/js/angular/templates/ximAssocNodes.html',
       restrict: "E",
       replace: true,
       scope: {

@@ -143,7 +143,7 @@
 					showSelectionHandlers: true,
 					colModel: X.searchpanel.colmodels.search,
 					url_base: X.baseUrl,
-					img_base: X.baseUrl + '/public_xmd/assets/images/icons'
+					img_base: X.baseUrl + 'assets/images/icons'
 				})
 				.listview('setModel', [])
 				.bind('paginatorChange', function(event, params) {

@@ -32,11 +32,11 @@ use Ximdex\Utils\FsUtils;
 
 class XmlEditor_Enricher {
 
-	public static $config =  "/public_xmd/actions/xmleditor2/conf/schemaEnricher.xml";
+	public static $config =  "/actions/xmleditor2/conf/schemaEnricher.xml";
 
 
 	static function enrichSchema($content) {
-    	$enricher = XIMDEX_ROOT_PATH . self::$config;
+    	$enricher = App::getPath(self::$config );
 
     	if (is_file($enricher) && !empty($content)) {
     		//Loading the RNG piece which should be included everywhere,
@@ -91,8 +91,8 @@ class XmlEditor_Enricher {
     }
 
     public static function readConfig() {
-    	$enricher = XIMDEX_ROOT_PATH . self::$config;
-    	if (is_file($enricher)) {
+        $enricher = App::getPath(self::$config );
+        if (is_file($enricher)) {
     		//Loading the RNG piece that should be included everywhere
     		// We should obtain its name to include it in the RNG
     		$content = FsUtils::file_get_contents($enricher);

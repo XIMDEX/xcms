@@ -128,7 +128,7 @@ class Action_edittext extends ActionAbstract
         }
 
         $values = array('id_node' => $idNode,
-            'codemirror_url' => App::getValue('UrlRoot') . '/public_xmd/vendors/codemirror/Codemirror',
+            'codemirror_url' => App::getUrl('/vendors/codemirror/Codemirror'),
             'ext' => $ext,
             'content' => $content,
             'go_method' => 'edittext',

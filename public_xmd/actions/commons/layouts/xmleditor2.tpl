@@ -37,8 +37,8 @@
 
 	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 
-	<link rel="icon" href="../../../favicon.ico" type="image/x-icon" />
-	<link rel="shortcut icon" href="../../../favicon.ico" type="image/x-icon" />
+	<link rel="icon" href="{url}favicon.ico{/url}" type="image/x-icon" />
+	<link rel="shortcut icon" href="{url}favicon.ico{/url}" type="image/x-icon" />
 
 	{foreach from=$css_files key=id item=href}
 		<link type="text/css" href="{$href}" rel="stylesheet" />
@@ -48,7 +48,7 @@
 	%=css_widgets%
 
 	<!-- constant js includes -->
-	<script type="text/javascript" src="{$_URL_ROOT}/public_xmd/assets/js/vars_js.php?id={$time_id}"></script>
+	<script type="text/javascript" src="{url}/assets/js/vars_js.php?id={$time_id}{/url}"></script>
 	{if ($user_connect != NULL)}
 			<script type="text/javascript" src="{$_URL_ROOT}{$user_connect}"></script>
 	{/if}

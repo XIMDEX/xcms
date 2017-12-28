@@ -108,7 +108,7 @@ X.browser.NewSetDialog = Object.xo_create(X.browser.BrowserInputDialog, {
 		var nodes = Object.isArray(this.options.nodes) ?this.options.nodes : [];
 	
 		$.post(
-			'%s/public_xmd/'.printf(window.url_root),
+			window.url_root,
 			{
 				action: 'browser3',
 				method: 'addSet',
@@ -173,7 +173,7 @@ X.browser.ManageSetReadersDialog = Object.xo_create(X.dialogs.MessageDialog, {
 		users = $.makeArray(users);
 	
 		$.post(
-			'%s/public_xmd/'.printf(window.url_root),
+			window.url_root,
 			{
 				action: 'browser3',
 				method: 'updateSetUsers',
@@ -232,7 +232,7 @@ X.browser.RenameSetDialog = Object.xo_create(X.browser.BrowserInputDialog, {
 		}
 	
 		$.post(
-			'%s/public_xmd/'.printf(window.url_root),
+			window.url_root,
 			{
 				action: 'browser3',
 				method: 'renameSet',
@@ -280,7 +280,7 @@ X.browser.DeleteSetDialog = Object.xo_create(X.dialogs.MessageDialog, {
 		}
 		
 		$.post(
-			'%s/public_xmd/'.printf(window.url_root),
+			window.url_root,
 			{
 				action: 'browser3',
 				method: 'deleteSet',
@@ -329,7 +329,7 @@ X.browser.DeleteNodesFromSetDialog = Object.xo_create(X.dialogs.MessageDialog, {
 		}
 		
 		$.post(
-			'%s/public_xmd/'.printf(window.url_root),
+			window.url_root,
 			{
 				action: 'browser3',
 				method: 'deleteNodeFromSet',
@@ -411,7 +411,7 @@ X.browser.NewFilterDialog = Object.xo_create(X.browser.BrowserInputDialog, {
 		}
 	
 		$.post(
-			'%s/public_xmd/'.printf(window.url_root),
+			window.url_root,
 			{
 				action: 'browser3',
 				method: 'addFilter',
@@ -473,7 +473,7 @@ X.browser.RenameFilterDialog = Object.xo_create(X.browser.BrowserInputDialog, {
 		}
 	
 		$.post(
-			'%s/public_xmd/'.printf(window.url_root),
+			window.url_root,
 			{
 				action: 'browser3',
 				method: 'renameFilter',
@@ -521,7 +521,7 @@ X.browser.DeleteFilterDialog = Object.xo_create(X.dialogs.MessageDialog, {
 		}
 		
 		$.post(
-			'%s/public_xmd/'.printf(window.url_root),
+			window.url_root,
 			{
 				action: 'browser3',
 				method: 'deleteFilter',
@@ -579,7 +579,7 @@ X.browser.SaveFilterAsSetDialog = Object.xo_create(X.browser.BrowserInputDialog,
 			});
 	
 			$.post(
-				'%s/public_xmd/'.printf(window.url_root),
+				window.url_root,
 				{
 					action: 'browser3',
 					method: 'addSet',

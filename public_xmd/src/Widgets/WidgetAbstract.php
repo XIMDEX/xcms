@@ -50,16 +50,18 @@ abstract class WidgetAbstract
 	{
 		$this->_wname = str_replace('Widget_', '', get_class($this));
 
-		$this->_widget_dir = sprintf('%s/%s', XIMDEX_ROOT_PATH  . '/public_xmd/src/Widgets/' , $this->_wname);
+		$this->_widget_dir = sprintf('%s/%s', APP_ROOT_PATH  . '/src/Widgets/' , $this->_wname);
+
 		$this->_widget_style_dir = sprintf(
-			'%s/public_xmd/assets/style/jquery/%s/widgets/%s',
-			XIMDEX_ROOT_PATH,
+			'%s/assets/style/jquery/%s/widgets/%s',
+			APP_ROOT_PATH,
 			\Ximdex\Runtime\Session::get('activeTheme'),
 			$this->_wname
 		);
 
-		$this->_assets_url = 'public_xmd/src/Widgets/';
-		$this->_template_dir = sprintf('%s/template/', $this->_widget_dir);
+		$this->_assets_url = \App::getUrl('/src/Widgets/');
+
+        $this->_template_dir = sprintf('%s/template/', $this->_widget_dir);
 
 		if ($this->_enable) {
 			$this->_js = WidgetDependencies::getDependencies($this->_wname);
@@ -82,13 +84,8 @@ abstract class WidgetAbstract
 	{
 		$c = count($array);
 		for ($i = 0; $i < $c; $i++) {
-			$array[$i] = sprintf(
-				'%s%s/%s',
-			    App::getValue('UrlRoot'),
-				preg_replace('#^' . realpath(XIMDEX_ROOT_PATH) . '#', '', realpath($this->_widget_style_dir)),
-				$array[$i]
-			);
-		}
+			$array[$i] = \App::getUrl('%s/%s', preg_replace('#^' . realpath(APP_ROOT_PATH) . '#', '', realpath($this->_widget_style_dir)),  $array[$i] );
+        }
 		return $array;
 	}
 
@@ -97,7 +94,7 @@ abstract class WidgetAbstract
 		$c = count($array);
 		$getTextJs = new ParsingJsGetText();
 		for ($i = 0; $i < $c; $i++) {
-			$array[$i] = $getTextJs->getFile(sprintf('/%s/%s', $this->_assets_url, $array[$i]));
+			$array[$i] = $getTextJs->getFile( $array[$i]);
 		}
 		return $array;
 	}
@@ -244,8 +241,7 @@ abstract class WidgetAbstract
 		$attributes = $this->parseWidgetAttributes($params);
 		if (count($attributes) > 0 && !$asInclude) {
 			$jsParams = $this->createJsParams($attributes['id'], $attributes);
-			$url = sprintf('%s/public_xmd/?method=includeDinamicJs&%s&js_file=widgetsVars',
-				App::getValue('UrlRoot'), implode('&', $jsParams));
+			$url = \App::getUrl('/?method=includeDinamicJs&%s&js_file=widgetsVars', implode('&', $jsParams));
 			$this->_js[] = $url;
 		}
 

@@ -32,7 +32,7 @@ class Action_widgets extends ActionAbstract {
   function index() {
 		$widget = strtolower($this->request->getParam("widget"));
 		$wmethod = ($this->request->getParam("wmethod"))? $this->request->getParam("wmethod") : "update";
-		$wpath = XIMDEX_ROOT_PATH."/public_xmd/src/Widgets/";
+		$wpath = App::getPath("/src/Widgets/");
 
 		$class = "Widget_{$widget}";
 

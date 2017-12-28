@@ -89,7 +89,7 @@ div#action_info {
 }
 
 div#action_buttons {
-	background-image: url('../../public_xmd/assets/images/logo_ximdex.gif');
+	background-image: url('../../images/logo_ximdex.gif');
 	height: 32px;
 	padding-left: 170px;
 	background-repeat: no-repeat;
@@ -179,7 +179,7 @@ div#tabs .ui-corner-top {
 }
 
 div.message_notice {
-	background-image: url('../../public_xmd/assets/images/viewers/dialogs/success_header.gif');
+	background-image: url('../../images/viewers/dialogs/success_header.gif');
 	background-repeat: repeat-x;
 	padding-top: 3px;
 	list-style-type: none;
@@ -188,7 +188,7 @@ div.message_notice {
 }
 
 div.message_warning {
-	background-image: url('../../public_xmd/assets/images/viewers/dialogs/warning_header.gif');
+	background-image: url('../../images/viewers/dialogs/warning_header.gif');
 	background-repeat: repeat;
 	padding-top: 3px;
 	list-style-type: none;
@@ -197,7 +197,7 @@ div.message_warning {
 }
 
 div.message_error {
-	background-image: url('../../public_xmd/assets/images/viewers/dialogs/error_header.gif');
+	background-image: url('../../images/viewers/dialogs/error_header.gif');
 	background-repeat: repeat;
 	padding-top: 3px;
 	font: bold 15px verdana;

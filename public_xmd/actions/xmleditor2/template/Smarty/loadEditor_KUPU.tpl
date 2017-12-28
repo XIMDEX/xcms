@@ -47,7 +47,7 @@ xim-document-tags='{$tags}'
                 		{include file="./tagnavbar.tpl"}
 			<div class="iwrapper">{*Added for autoscrolling*}
 				<div class="scrollup autoscroll"><span>{t}Scroll up{/t}</span></div>
-				<iframe id="kupu-editor" class="kupu-editor-iframe" frameborder="0" src="{$_URL_ROOT}/public_xmd/actions/xmleditor2/index.html" scrolling="auto">
+				<iframe id="kupu-editor" class="kupu-editor-iframe" frameborder="0" src="{url}/actions/xmleditor2/index.html{/url}" scrolling="auto">
 				</iframe>
 				<div class="scrolldown autoscroll"><span>{t}Scroll down{/t}</span></div>
 			</div>

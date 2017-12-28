@@ -58,9 +58,9 @@
 
                     <input ng-disabled="!$middle" placeholder="{t}Description{/t}" type="text" class="description input_general" ng-model="status.description">
 
-                    {*<img src="{$_URL_ROOT}/public_xmd/assets/images/show.png" class="modifyrolesstate"/>*}
+                    {*<img src="{url}/assets/images/show.png{/url}" class="modifyrolesstate"/>*}
 
-                    <img ng-if="!$first && !$last" alt="<t>Flecha</t>" title="Cambiar orden" src="{$_URL_ROOT}/public_xmd/assets/images/action/move.png" class="sortable_element"/>
+                    <img ng-if="!$first && !$last" alt="<t>Flecha</t>" title="Cambiar orden" src="{url}/assets/images/action/move.png{/url}" class="sortable_element"/>
 
                     <button ng-if="$middle" type="button" class="delete-btn icon btn-unlabel-rounded" ng-click="deleteStatus($index)"></button>
 

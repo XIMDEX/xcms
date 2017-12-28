@@ -40,7 +40,7 @@
 }	
 
 body.xedit-rngelement > .rngeditor_block > .rngeditor_title {
-	background: url("../../../../../../public_xmd/assets/images/tree/treeview-icons.png") no-repeat -22px -315px;
+	background: url("../../../../../../images/tree/treeview-icons.png") no-repeat -22px -315px;
 	padding-left: 21px;
 	display: block;
 	height: 15px;
@@ -54,10 +54,10 @@ span.xedit-rngelement{
 	line-height: 1.8em;
 }
 .folding + span.xedit-rngelement{
-	background:  url("../../../../../../public_xmd/assets/images/tree/treeview-icons.png") no-repeat left -535px;
+	background:  url("../../../../../../images/tree/treeview-icons.png") no-repeat left -535px;
 }
 .minus + span.xedit-rngelement{
-	background: url("../../../../../../public_xmd/assets/images/tree/treeview-icons.png") no-repeat left -559px;
+	background: url("../../../../../../images/tree/treeview-icons.png") no-repeat left -559px;
 }
 
 span.xedit-rngelement div.xedit-rngelement{

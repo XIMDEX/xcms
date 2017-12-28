@@ -204,7 +204,7 @@ function ximletTool() {
 				} else {
 					if(this.editor) {
 						$.getJSON(
-				    		window.url_root + '/public_xmd/',
+				    		window.url_root + '',
 				    		{actionid: this.editor.actionId, nodeid: this.getMacroId(), ajax: 'json', method: 'canEditNode'},
 				    		function(data, textStatus) {
 				    			if (textStatus == 'success') {
@@ -232,7 +232,7 @@ function ximletTool() {
 		//confirm dialog functions: Yes pressed, go on.
 		var cbYes = function() {
 			var macroId = target.ximElement.getMacroId();
-			var url = window.url_root + '/public_xmd/?actionid='+this.editor.actionId+'&nodes[]='+macroId;
+			var url = window.url_root + '?actionid='+this.editor.actionId+'&nodes[]='+macroId;
 			var win = window.open(url);
 
 			// Register unload event so we can refresh the ximlet content

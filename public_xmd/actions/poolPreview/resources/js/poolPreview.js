@@ -31,7 +31,7 @@ function initPoolPreview(){
 	getLabels();
 
     //Add the manageList action in a div
-    $('#actionManagerList').load(window.url_root + '/public_xmd/?action=manageList&mode=single&params[type]=Label&thickbox=true', {}, function (){
+    $('#actionManagerList').load(window.url_root + '?action=manageList&mode=single&params[type]=Label&thickbox=true', {}, function (){
     	var buttonClose = "<input type='button' value='Close' onclick='tb_remove();getLabels();' />";
         $('#actionManagerList').append(buttonClose);
 
@@ -161,7 +161,7 @@ function tooglePanels(type){
 function loadPreview(idnode, version, subversion){
 
 	selectedChannel = $('.channel:options:selected').attr('value');
-	urlAction = window.url_root +"/public_xmd/?action=prevdoc&mode=dinamic&nodeid="+idnode+"&channel=" + selectedChannel;
+	urlAction = window.url_root +"?action=prevdoc&mode=dinamic&nodeid="+idnode+"&channel=" + selectedChannel;
 	if (version >= 0 && subversion >= 0) {
 		urlAction = urlAction + '&version=' + version + '&sub_version=' + subversion;
 	}
@@ -178,7 +178,7 @@ function loadPreview(idnode, version, subversion){
  */
 function insertLinksTo(idnode){
 
-	urlAction = window.url_root +"/public_xmd/?action=poolPreview&idnode="+idnode+"&ajax=json&method=getLinkedNodes";
+	urlAction = window.url_root +"?action=poolPreview&idnode="+idnode+"&ajax=json&method=getLinkedNodes";
 	$.ajax({
         type: "POST",
         url: urlAction,
@@ -200,7 +200,7 @@ function insertLinksTo(idnode){
  */
 function insertLinksBy(idnode){
 
-	urlAction = window.url_root +"/public_xmd/?action=poolPreview&idnode="+idnode+"&ajax=json&method=getLinkNodes";
+	urlAction = window.url_root +"?action=poolPreview&idnode="+idnode+"&ajax=json&method=getLinkNodes";
 	$.ajax({
         type: "POST",
         url: urlAction,
@@ -222,7 +222,7 @@ function insertLinksBy(idnode){
  * @param idnode
  */
 function insertVersions(idnode){
-	urlAction = window.url_root +"/public_xmd/?action=poolPreview&idnode="+idnode+"&ajax=json&method=getVersionsNode";
+	urlAction = window.url_root +"?action=poolPreview&idnode="+idnode+"&ajax=json&method=getVersionsNode";
 	$.ajax({
         type: "POST",
         url: urlAction,
@@ -240,7 +240,7 @@ function insertVersions(idnode){
  */
 function getLabels(){
 
-	 urlAction = window.url_root +"/public_xmd/?action=poolPreview&ajax=json&method=getLabels";
+	 urlAction = window.url_root +"?action=poolPreview&ajax=json&method=getLabels";
 		$.ajax({
 	        type: "POST",
 	        url: urlAction,
@@ -261,7 +261,7 @@ function getLabels(){
  */
 function getVersionsByLabel(idLabel){
 	selectedLabel = $('.labelPoolPreview:options:selected').attr('value');
-	urlAction = window.url_root +"/public_xmd/?action=poolPreview&idnode="+selectedLabel+"&ajax=json&method=getVersionsForLabel";
+	urlAction = window.url_root +"?action=poolPreview&idnode="+selectedLabel+"&ajax=json&method=getVersionsForLabel";
 	$.ajax({
         type: "POST",
         url: urlAction,
@@ -292,7 +292,7 @@ function updateLabelsForVersions(selector) {
 	var idVersion = $("[name=idversionPreview]").val();
 	var idSubVersion = $("[name=idsubversionPreview]").val();
 
-	urlAction = window.url_root +"/public_xmd/?action=poolPreview&ajax=json&method=asociateNodeToLabel";
+	urlAction = window.url_root +"?action=poolPreview&ajax=json&method=asociateNodeToLabel";
 	urlAction += "&idnode="+idNode+"&idversion="+idVersion+"&idsubversion="+idSubVersion+"&labels="+labelsSelected;
 	$.blockUI({ message: '<h1> Just a moment...</h1>' });
 	$.ajax({
@@ -323,7 +323,7 @@ function updateLabelsForVersions(selector) {
  * Update the info in the info div for the actual doc preview
  */
 function updateInfoAboutDocPreview(idnode, version, subversion, selectedChannel){
-	urlAction = window.url_root +"/public_xmd/?action=poolPreview&ajax=json&method=getInfoForPreview&idnode="+idnode;
+	urlAction = window.url_root +"?action=poolPreview&ajax=json&method=getInfoForPreview&idnode="+idnode;
 	$.ajax({
         type: "POST",
         url: urlAction,
@@ -498,7 +498,7 @@ function my_suggester(options) {
 		},
 		formatItem: function(data) {
 			var ret = '';
-			ret += '<div style="float: left; margin-right: 10px;"><img src="'+window.url_root + '/public_xmd/assets/images/icons/' + data[0].icon+'" /></div>';
+			ret += '<div style="float: left; margin-right: 10px;"><img src="'+window.url_root + 'assets/images/icons/' + data[0].icon+'" /></div>';
 			//ret += '<div>NodeID: '+data[0].id+'</div>';
 			ret += '<div>'+data[0].name+'</div>';
 			ret += '<div>('+data[0].nodetype+')</div>';
@@ -531,7 +531,7 @@ function my_treeview(options) {
 		},
 		colModel: treeview_ColModel(),
 		url_base: window.url_root + '/',
-		img_base: window.url_root + '/public_xmd/assets/images/icons/'
+		img_base: window.url_root + 'assets/images/icons/'
 	})
 
 	.bind('itemClick', function(event, params) {

@@ -46,7 +46,6 @@ ModulesManager::file('/actions/browser3/inc/GenericDatasource.class.php');
 class Action_composer extends ActionAbstract
 {
 
-    const COMPOSER_INDEX = '../public_xmd/';
 
     public function index()
     {
@@ -64,7 +63,7 @@ class Action_composer extends ActionAbstract
         Session::set('debug_render', NULL);
         Session::set('activeTheme', $theme);
 
-        $values = array('composer_index' => self::COMPOSER_INDEX,
+        $values = array('composer_index' => App::getUrl('/'),
             'ximid' => $ximid,
             "versionname" => $versionname,
             "userID" => $userID,
@@ -156,9 +155,9 @@ and rug.idrole in (select idrole from RelRolesPermissions where IdPermission = 1
                     'nodeTo' => $nodoHasta,
                     'startIndex' => $numArchivos,
                     'endIndex' => $hasta_aux,
-                    'src' => sprintf(
-                        '%s?method=treedata&amp;nodeid=%s&#38;from=%s&#38;to=%s',
-                        self::COMPOSER_INDEX, $idNode, $numArchivos, $hasta_aux
+                    'src' => App::getUrl(
+                        '?method=treedata&amp;nodeid=%s&#38;from=%s&#38;to=%s',
+                         $idNode, $numArchivos, $hasta_aux
                     ),
                     'nodeid' => '0',
                     'icon' => 'folder_a-z',
@@ -280,9 +279,9 @@ and rug.idrole in (select idrole from RelRolesPermissions where IdPermission = 1
                     'nodeTo' => $nodoHasta,
                     'startIndex' => $numArchivos,
                     'endIndex' => $hasta_aux,
-                    'src' => sprintf(
-                        '%s?method=treedata&amp;nodeid=%s&#38;from=%s&#38;to=%s',
-                        self::COMPOSER_INDEX, $idNode, $numArchivos, $hasta_aux
+                    'src' => App::getUrl(
+                        '?method=treedata&amp;nodeid=%s&#38;from=%s&#38;to=%s',
+                        $idNode, $numArchivos, $hasta_aux
                     ),
                     'nodeid' => '0',
                     'icon' => 'folder_a-z',
@@ -484,9 +483,9 @@ and rug.idrole in (select idrole from RelRolesPermissions where IdPermission = 1
                     'nodeTo' => $nodoHasta,
                     'startIndex' => $numArchivos,
                     'endIndex' => $hasta_aux,
-                    'src' => sprintf(
-                        '%s?method=treedata&amp;nodeid=%s&#38;from=%s&#38;to=%s',
-                        self::COMPOSER_INDEX, $idNode, $numArchivos, $hasta_aux
+                    'src' => App::getUrl(
+                        '?method=treedata&amp;nodeid=%s&#38;from=%s&#38;to=%s',
+                         $idNode, $numArchivos, $hasta_aux
                     ),
                     'nodeid' => '0',
                     'icon' => 'folder_a-z',
@@ -719,9 +718,9 @@ and rug.idrole in (select idrole from RelRolesPermissions where IdPermission = 1
                         'nodeTo' => $nodoHasta,
                         'startIndex' => $numArchivos,
                         'endIndex' => $hasta_aux,
-                        'src' => sprintf(
-                            '%s?method=treedata&amp;nodeid=%s&#38;from=%s&#38;to=%s',
-                            self::COMPOSER_INDEX, $selectedNode->GetParent(), $numArchivos, $hasta_aux
+                        'src' => App::getUrl(
+                            '?method=treedata&amp;nodeid=%s&#38;from=%s&#38;to=%s',
+                            $selectedNode->GetParent(), $numArchivos, $hasta_aux
                         ),
                         'nodeid' => '0',
                         'icon' => 'folder_a-z',
@@ -783,7 +782,7 @@ and rug.idrole in (select idrole from RelRolesPermissions where IdPermission = 1
         if (empty($jsFile))
             $jsFile = "widgetsVars";
 
-        $jsFile = sprintf('/public_xmd/actions/commons/views/helper/%s.tpl', $jsFile);
+        $jsFile = App::getUrl('/actions/commons/views/helper/%s.tpl', $jsFile);
 
         // The class AssociativeArray does not return an array, then it obtains _GET value
         $params = isset($_GET['xparams']) ? $_GET['xparams'] : $_GET['amp;xparams'];

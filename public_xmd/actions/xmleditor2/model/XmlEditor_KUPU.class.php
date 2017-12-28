@@ -126,26 +126,26 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
         $xmlFile = $this->_base_url . '&method=getXmlFile&view=' . $view;
         $actionUrlShowPost = $this->_base_url . '&method=showPost';
 
-        $actionURL = '/public_xmd/actions/xmleditor2';
-        $vendorsURL = '/public_xmd/vendors';
+        $actionURL = App::getUrl('/actions/xmleditor2');
+        $vendorsURL = App::getUrl('/vendors');
         $kupuURL = $vendorsURL . '/kupu';
 
         $jsFiles = array(
-            '/public_xmd/'.Extensions::JQUERY,
-            '/public_xmd/'.Extensions::JQUERY_UI,
-            '/public_xmd/'.Extensions::JQUERY_PATH . '/js/fix.jquery.getters.js',
-            '/public_xmd/'.Extensions::JQUERY_PATH . '/js/fix.jquery.parsejson.js',
-            '/public_xmd/'.Extensions::JQUERY_PATH . '/plugins/jquery.json/jquery.json-2.2.min.js',
-            '/public_xmd/'.Extensions::BOOTSTRAP . '/js/bootstrap.min.js',
+            App::getUrl(Extensions::JQUERY),
+            App::getUrl(Extensions::JQUERY_UI),
+             App::getUrl(Extensions::JQUERY_PATH . '/js/fix.jquery.getters.js'),
+            App::getUrl(Extensions::JQUERY_PATH . '/js/fix.jquery.parsejson.js'),
+            App::getUrl(Extensions::JQUERY_PATH . '/plugins/jquery.json/jquery.json-2.2.min.js'),
+            App::getUrl(Extensions::BOOTSTRAP . '/js/bootstrap.min.js'),
 
-            '/public_xmd/assets/js/helpers.js',
-            '/public_xmd/assets/js/sess.js',
-            '/public_xmd/assets/js/collection.js',
-            '/public_xmd/assets/js/dialogs.js',
-            '/public_xmd/assets/js/ximtimer.js',
-            '/public_xmd/assets/js/console.js',
-            '/public_xmd/src/Widgets/select/js/ximdex.select.js',
-            '/public_xmd/assets/js/i18n.js',
+            App::getUrl('/assets/js/helpers.js'),
+            App::getUrl('/assets/js/sess.js'),
+            App::getUrl('/assets/js/collection.js'),
+            App::getUrl('/assets/js/dialogs.js'),
+            App::getUrl('/assets/js/ximtimer.js'),
+            App::getUrl('/assets/js/console.js'),
+            App::getUrl('/src/Widgets/select/js/ximdex.select.js'),
+            App::getUrl('/assets/js/i18n.js'),
             $vendorsURL . '/hammerjs/hammer.js/hammer.js',
             $vendorsURL . '/angular/angular.min.js',
             $vendorsURL . '/RyanMullins/angular-hammer/angular.hammer.js',
@@ -157,26 +157,26 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
             $actionURL . '/js/angular/ximOntologyBrowser.js',
 
             $vendorsURL . '/d3js/d3.v3.min.js',
-            //'/public_xmd/assets/js/angular/app.js',
-            '/public_xmd/assets/js/angular/services/xTranslate.js',
-            '/public_xmd/assets/js/angular/services/xBackend.js',
-            '/public_xmd/assets/js/angular/services/xUrlHelper.js',
-            '/public_xmd/assets/js/angular/services/xTranslate.js',
-            '/public_xmd/assets/js/angular/services/xMenu.js',
-            '/public_xmd/assets/js/angular/services/angularLoad.js',
-            '/public_xmd/assets/js/angular/services/xTabs.js',
-            '/public_xmd/assets/js/angular/directives/ximButton.js',
-            '/public_xmd/assets/js/angular/directives/ximSelect.js',
-            '/public_xmd/assets/js/angular/directives/ximMenu.js',
-            '/public_xmd/assets/js/angular/directives/ximBrowser.js',
-            '/public_xmd/assets/js/angular/directives/ximValidators.js',
-            '/public_xmd/assets/js/angular/filters/xFilters.js',
-            '/public_xmd/assets/js/angular/directives/ximButton.js',
-            '/public_xmd/assets/js/angular/directives/xtagsSuggested.js',
-            '/public_xmd/assets/js/angular/directives/ximTree.js',
-            '/public_xmd/assets/js/angular/directives/treeNode.jsx.js',
-            '/public_xmd/assets/js/angular/controllers/XTagsCtrl.js',
-            '/public_xmd/assets/js/angular/controllers/SearchTreeModal.js',
+            //'/assets/js/angular/app.js',
+            App::getUrl('/assets/js/angular/services/xTranslate.js'), 
+            App::getUrl('/assets/js/angular/services/xBackend.js'),
+            App::getUrl('/assets/js/angular/services/xUrlHelper.js'),
+            App::getUrl('/assets/js/angular/services/xTranslate.js'),
+            App::getUrl('/assets/js/angular/services/xMenu.js'),
+            App::getUrl( '/assets/js/angular/services/angularLoad.js'),
+            App::getUrl('/assets/js/angular/services/xTabs.js'),
+            App::getUrl('/assets/js/angular/directives/ximButton.js'),
+            App::getUrl('/assets/js/angular/directives/ximSelect.js'),
+            App::getUrl('/assets/js/angular/directives/ximMenu.js'),
+            App::getUrl('/assets/js/angular/directives/ximBrowser.js'),
+            App::getUrl( '/assets/js/angular/directives/ximValidators.js'),
+            App::getUrl('/assets/js/angular/filters/xFilters.js'),
+            App::getUrl('/assets/js/angular/directives/ximButton.js'),
+            App::getUrl('/assets/js/angular/directives/xtagsSuggested.js'),
+             App::getUrl( '/assets/js/angular/directives/ximTree.js'),
+             App::getUrl('/assets/js/angular/directives/treeNode.jsx.js'),
+             App::getUrl( '/assets/js/angular/controllers/XTagsCtrl.js'),
+            App::getUrl('/assets/js/angular/controllers/SearchTreeModal.js'),
 
 
             $kupuURL . '/common/sarissa.js',
@@ -292,12 +292,12 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
         $i18n = new ParsingJsGetText();
         $jsFiles = $i18n->getTextArrayOfJs($jsFiles);
 
-        $extensionsURL = App::getValue('UrlRoot') . '/public_xmd/vendors';
-        $actionURL = App::getValue('UrlRoot') . $actionURL;
-        $kupuURL = App::getValue('UrlRoot') . $kupuURL;
+        $actionURL =  App::getUrl('/actions/xmleditor2');
+        $kupuURL = App::getUrl('/vendors/kupu');
+
 
         $cssFiles = array(
-            App::getValue('UrlRoot') . '/public_xmd/assets/style/jquery/custom_theme/jquery-ui-1.7.custom.css',
+            App::getUrl('/assets/style/jquery/custom_theme/jquery-ui-1.7.custom.css'),
             $actionURL . '/views/common/css/kupustyles.css',
             $actionURL . '/views/common/css/toolboxes.css',
             $actionURL . '/views/common/css/treeview.css',
@@ -308,14 +308,14 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
             $actionURL . '/views/common/css/ximages.css',
             $actionURL . '/views/common/css/popover.css',
 
-            $extensionsURL . '/bootstrap/dist/css/bootstrap.min.css',
+            App::getUrl( '/vendors/bootstrap/dist/css/bootstrap.min.css'),
 
 //future		$actionURL . '/views/common/css/colorpicker.css',
-            App::getValue('UrlRoot') . '/public_xmd/assets/style/fonts.css',
-            App::getValue('UrlRoot') . '/public_xmd/assets/style/jquery/ximdex_theme/widgets/tabs/common_views.css',
-            App::getValue('UrlRoot') . '/public_xmd/src/Widgets/select/css/ximdex.select.css',
-            App::getValue('UrlRoot') . '/public_xmd/assets/style/jquery/ximdex_theme/widgets/treeview/treeview.css',
-            App::getValue('UrlRoot') . '/public_xmd/assets/style/jquery/ximdex_theme/widgets/tagsinput/tagsinput_editor.css',
+            App::getUrl('/assets/style/fonts.css'),
+            App::getUrl('/assets/style/jquery/ximdex_theme/widgets/tabs/common_views.css'),
+            App::getUrl('/src/Widgets/select/css/ximdex.select.css'),
+            App::getUrl('/assets/style/jquery/ximdex_theme/widgets/treeview/treeview.css'),
+            App::getUrl('/assets/style/jquery/ximdex_theme/widgets/tagsinput/tagsinput_editor.css'),
         );
 
         $baseTags = array(

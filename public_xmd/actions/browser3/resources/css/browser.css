@@ -117,7 +117,7 @@ strong {
   width: 100%;
   height: 100%;
   background-color: #fff;
-  background: url(../../../../../public_xmd/assets/images/browser/splash/watermark.png) no-repeat right bottom, url(../../../../../public_xmd/assets/images/browser/splash/bg-pattern-net.png) repeat left top, #fff;
+  background: url(../../../../../images/browser/splash/watermark.png) no-repeat right bottom, url(../../../../../images/browser/splash/bg-pattern-net.png) repeat left top, #fff;
   overflow: auto;
   -webkit-animation: fadeout 3s ease-in;
   animation: fadeout 3s ease-in;
@@ -175,7 +175,7 @@ strong {
   box-shadow: 0 1px 0 #9c9c9c inset;
   display: inline-block;
   height: inherit;
-  background: #4f4f4f url(../../../../../public_xmd/assets/images/browser/splash/bg-pattern-grey.png) repeat;
+  background: #4f4f4f url(../../../../../images/browser/splash/bg-pattern-grey.png) repeat;
   max-width: 100%;
   width: 100%;
   -webkit-animation: loadingBar 2s ease-out;
@@ -219,7 +219,7 @@ strong {
   font-size: 20px;
   font-size: 2rem;
   display: block;
-  background: url(../../../../../public_xmd/assets/images/browser/splash/dots.png) no-repeat left center;
+  background: url(../../../../../images/browser/splash/dots.png) no-repeat left center;
   padding: 0.6em 0 4px 3em;
   border-top: 1px solid #d9d9d9;
   -moz-box-shadow: 0 2px 0 #fff inset;
@@ -261,7 +261,7 @@ button::-moz-focus-inner {
 	$LAYOUT
 \*------------------------------------*/
 #header {
-  background: url("../../../../../public_xmd/assets/images/header/cabecera_fnd.png") repeat left top;
+  background: url("../../../../../images/header/cabecera_fnd.png") repeat left top;
   height: 38px;
   /*float: left;*/
   -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3);

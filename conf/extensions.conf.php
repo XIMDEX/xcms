@@ -6,7 +6,7 @@ class Extensions {
     const JQUERY_PATH = "/vendors/jquery";
     const JQUERY      = "/vendors/jquery/jquery-1.8.3.min.js";
     const JQUERY_UI   = "/vendors/jquery/jquery-ui-1.9.1.custom.min.js";
-    const SMARTY      = "/public_xmd/vendors/smarty/libs/Smarty.class.php";
+    const SMARTY      = "/vendors/smarty/libs/Smarty.class.php";
     const PHPSECLIB   = "/vendors/phpseclib";
     const BOOTSTRAP   = "/vendors/bootstrap/dist";
      /**

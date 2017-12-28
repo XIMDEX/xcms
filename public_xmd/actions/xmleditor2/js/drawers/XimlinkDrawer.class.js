@@ -190,7 +190,7 @@ var XimlinkDrawer = Object.xo_create(new Drawer(), {
 			},
 			colModel: tcm,
 			url_base: window.url_root + '/',
-			img_base: window.url_root + '/public_xmd/assets/images/icons/'
+			img_base: window.url_root + 'assets/images/icons/'
 		})
 		.bind('select', function(event, params) {
 			getClosestInput(params.element, 'link_id_parent').val(params.data.nodeid.value);

@@ -31,8 +31,6 @@ use Ximdex\MVC\ActionAbstract;
 
 class Action_showassocnodes extends ActionAbstract {
 
-	const COMPOSER_INDEX = '../public_xmd/';
-
 	// Server, Section
 	const SEARCHED_NODETYPE = \Ximdex\NodeTypes\NodeType::SERVER . ',' . \Ximdex\NodeTypes\NodeType::SECTION;
 
@@ -102,7 +100,7 @@ class Action_showassocnodes extends ActionAbstract {
 	public function treecontainer() {
 
 		$values = array(
-			'composer_index' =>  "../public_xmd/?actionid=$actionID&nodeid=$idNode",
+			'composer_index' =>  App::getUrl("/?actionid=$actionID&nodeid=$idNode" ),
 			"debug" => $this->_checkDebug(),
 		);
 
@@ -116,7 +114,7 @@ class Action_showassocnodes extends ActionAbstract {
 		$rootNode->SetID($rootID);
 
 		$values = array(
-			'composer_index' => "../public_xmd/?actionid=$actionID&nodeid=$idNode",
+			'composer_index' =>  App::getUrl("/?actionid=$actionID&nodeid=$idNode" ),
 			'nodeName' => $rootNode->GetNodeName(),
 			'nodeid' =>  $rootNode->GetID(),
 			'nodeicon' => $rootNode->nodeType->GetIcon(),
@@ -169,7 +167,7 @@ class Action_showassocnodes extends ActionAbstract {
 		$selecteds = $this->getReferencedSections($ximletId);
 
 
-		$src = "../public_xmd/?actionid=$actionId&amp;ximletid=$ximletId&amp;method=treedata";
+		$src = App::getUrl("?actionid=$actionId&amp;ximletid=$ximletId&amp;method=treedata");
 
 		$ximlet = new Node($ximletId);
 		$idproject = $ximlet->getProject();

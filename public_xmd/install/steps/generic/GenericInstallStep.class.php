@@ -106,7 +106,7 @@ class GenericInstallStep {
 
    protected function addJs($jsPath){
    		$folderName = trim(strtolower($this->steps[$this->currentStep]["class-name"]));
-    	$this->js_files[] = "public_xmd/install/steps/{$folderName}/js/{$jsPath}";
+    	$this->js_files[] = "install/steps/{$folderName}/js/{$jsPath}";
     }
 
     public function loadNextAction(){
@@ -138,12 +138,24 @@ class GenericInstallStep {
    {
        //relative URL ( do not save it if its value is only / )
        $pathInfo = pathinfo($_SERVER['SCRIPT_NAME']?? '/');
+       $basepath = rtrim( $pathInfo['dirname'], '/');
 
 
-       $pathInfo['dirname'] = str_replace('/public_xmd', '', $pathInfo['dirname']);
+       $subpath = '';
+       if(defined('CORE_FRONTCONTROLLER')) {
+           $subpath = '/'.basename(APP_ROOT_PATH);
+       }else {
+            //No access to /public_xmd directly without own domain
+           if($basepath == '/'.basename(APP_ROOT_PATH)) {
+              header('Location: /');
+              die();
+           }
+       }
 
 
-       App::setValue('UrlRoot', ($pathInfo['dirname'] != '/') ? $pathInfo['dirname'] : '', $persist);
+
+       App::setValue('UrlRoot', ($basepath)?: '', $persist);
+       App::setValue('UrlFronController', $basepath.$subpath, $persist);
 
 
        // host and protocol

@@ -33,7 +33,7 @@ window.com.ximdex = Object.extend(window.com.ximdex, {
 /**
  * Extend window.com.ximdex object with preferences from server
  */
-$.get( window.com.ximdex.baseUrl+"/public_xmd/?action=browser3&method=getPreferences", function( data ) {
+$.get( window.com.ximdex.baseUrl+"?action=browser3&method=getPreferences", function( data ) {
     window.com.ximdex = Object.extend(window.com.ximdex, {
         preferences:data.preferences
     });

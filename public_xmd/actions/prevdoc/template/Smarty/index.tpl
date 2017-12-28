@@ -32,7 +32,7 @@
 	<html>
 		<head>
 			<title>{t}Preview{/t}</title>
-			<link href="{$_URL_ROOT}/public_xmd/actions/prevdoc/resources/css/prevdoc.css" type="text/css" rel="stylesheet">
+			<link href="{url}/actions/prevdoc/resources/css/prevdoc.css{/url}" type="text/css" rel="stylesheet">
 			{literal}
 				<script type="text/javascript">
 					$(document).ready(function() {

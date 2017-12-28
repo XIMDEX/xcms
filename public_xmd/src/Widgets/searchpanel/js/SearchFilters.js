@@ -150,7 +150,7 @@
 			});
 			
 			$(this.nodeTypesList).each(function(id, nodetype) {
-				var img = '%s/public_xmd/assets/images/icons/%s'.printf(X.baseUrl, nodetype.icon.value);
+				var img = '%s/assets/images/icons/%s'.printf(X.baseUrl, nodetype.icon.value);
 				$('<option style="background: url(%s) no-repeat;"></option>'.printf(img))
 					.val(nodetype.idnodetype.value)
 					.html('('+nodetype.idnodetype.value+') ' + nodetype.name.value)

@@ -33,7 +33,7 @@ angular.module('ximdex.module.xtags')
                 filter: '&ximTagsFilter'
             },
             restrict: 'E',
-            templateUrl : 'public_xmd/assets/js/angular/templates/xtagsSuggested.html',
+            templateUrl : window.url_root + 'assets/js/angular/templates/xtagsSuggested.html',
             controller: ['$scope', '$element', '$attrs', '$http', 'xUrlHelper', function($scope, $element, $attrs, $http, xUrlHelper){   
             	
             	var url = xUrlHelper.baseUrl()+'/?mod=ximTAGS&action=setmetadata&method=getRelatedTagsFromContent';

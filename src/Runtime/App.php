@@ -158,7 +158,40 @@ Class App
             $suburl = sprintf($suburl, ...$params);
         }
 
-        return App::getValue('UrlRoot') . '/public_xmd/' . ltrim($suburl, '/');
+        $base = trim(App::getValue('UrlFronController'), '/');
+
+        $url =   $base. '/' . ltrim($suburl, '/');
+
+        if($url[0] != '/') {
+            $url = '/'.$url;
+        }
+
+        return $url;
+    }
+
+    /**
+     * getUrl forms an url to $suburl of Ximdex using params if this exists
+     *
+     * @param $suburl
+     * @param array ...$params
+     * @return string
+     */
+    public static function getUrlXimdex($suburl,  ...$params) {
+
+        if(!empty($params)) {
+            $suburl = sprintf($suburl, ...$params);
+        }
+
+        $base = trim(App::getValue('UrlRoot'), '/');
+
+        $url =   $base. '/' . ltrim($suburl, '/');
+
+
+        if($url[0] != '/') {
+            $url = '/'.$url;
+        }
+
+        return $url;
     }
 
     /**
@@ -173,7 +206,7 @@ Class App
             $subpath = sprintf($subpath, ...$params);
         }
 
-        return APP_ROOT_PATH. '/public_xmd/'. ltrim($subpath, '/');
+        return APP_ROOT_PATH. '/'. ltrim($subpath, '/');
     }
 
 

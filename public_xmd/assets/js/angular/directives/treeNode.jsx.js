@@ -90,7 +90,7 @@ angular.module('ximdex.common.directive').factory('TreeNode', ['$filter', functi
             }
 
             if (this.props.node.showNodes && this.props.node.loading) {
-                loading = React.createElement('ul', { className: 'xim-treeview-loading' }, React.createElement('img', { src: window.com.ximdex.baseUrl + '/public_xmd/assets/images/browser/hbox/loading.gif' }));
+                loading = React.createElement('ul', { className: 'xim-treeview-loading' }, React.createElement('img', { src: window.com.ximdex.baseUrl + 'assets/images/browser/hbox/loading.gif' }));
             }
             var iconClasses = "xim-treeview-icon icon-" + this.props.node.icon;
             /*var selected = false;

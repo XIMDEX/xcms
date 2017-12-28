@@ -55,8 +55,8 @@ class Action_managebatchs extends ActionAbstract {
 
 
         $jsFiles = array(
-            App::getValue('UrlRoot') . ModulesManager::path('ximPUBLISHtools') . '/actions/managebatchs/resources/js/index.js',
-            App::getValue('UrlRoot') . '/public_xmd/assets/js/ximtimer.js'
+            App::getUrl('UrlRoot') . ModulesManager::path('ximPUBLISHtools') . '/actions/managebatchs/resources/js/index.js',
+            App::getUrl('/public_xmd/assets/js/ximtimer.js')
         );
 
         $cssFiles = array(

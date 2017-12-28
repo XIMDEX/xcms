@@ -35,7 +35,7 @@
 			    {if $projects_info|@count gt 0}	
                     {foreach from=$projects_info key=index item=p }
 				    <div class="project_item">
-					    <img src="public_xmd/actions/welcome/resources/imgs/project_default.jpg" alt="" class="project_image">
+					    <img src="{url}/actions/welcome/resources/imgs/project_default.jpg{/url}" alt="" class="project_image">
 					    <span class="project_name">{$p.name}</span>
 				    	<div class="project_actions hidden">
 						    <button class="config_button icon">{t}Details{/t}</button>

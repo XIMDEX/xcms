@@ -39,7 +39,7 @@ angular.module('ximdex.common.directive').directive('ximGrid', [
         downPage: '=ximDownPage',
         searching: '=ximSearching'
       },
-      templateUrl: 'public_xmd/assets/js/angular/templates/ximGrid.html',
+      templateUrl: window.url_root + 'assets/js/angular/templates/ximGrid.html',
       controller: [
         '$scope', '$element', '$attrs', '$http', 'xUrlHelper', '$window', 'xMenu', 'xTabs', function($scope, $element, $attrs, $http, xUrlHelper, $window, xMenu, xTabs) {
           var postLoadActions, url;
@@ -48,7 +48,7 @@ angular.module('ximdex.common.directive').directive('ximGrid', [
           }
           $scope.selected = [];
           $attrs.ximList = $scope.list;
-          url = xUrlHelper.baseUrl() + '/public_xmd/';
+          url = xUrlHelper.baseUrl();
           $scope.lastpage;
           $scope.page = 1;
           $scope.searching = false;

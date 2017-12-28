@@ -61,12 +61,9 @@ function smarty_function_button($params, &$smarty) {
 			);
 		}
 
-		$sUrl .= sprintf(
-			'<div class="index" style="display: none">%s/public_xmd/?method=index&action=%s&nodeid=%s</div>',
-			$smarty->getTemplateVars('_URL_ROOT'),
-			$smarty->getTemplateVars('action'),
-			$smarty->getTemplateVars('nodeid')
-		);
+		$sUrl .=
+			'<div class="index" style="display: none">'.App::getUrl('/?method=index&action=%s&nodeid=%s',$smarty->getTemplateVars('action'), $smarty->getTemplateVars('nodeid')).'</div>';
+
 		$sButton = "$sUrl\n$sButton";
 	}
 

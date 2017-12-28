@@ -357,7 +357,7 @@ margin-bottom: 6px;
 }
 
 .swiper span{
-  background: url(../../../../public_xmd/assets/fonts/svg/tic.svg) no-repeat center -2px;
+  background: url(../../../../fonts/svg/tic.svg) no-repeat center -2px;
   text-indent: 100%;
   white-space: nowrap;
   display: block;

@@ -38,7 +38,7 @@ function start_reading() {
 
 function read_log() {
 
-	var url = window.url_root + '/public_xmd/?actionid=' + window.actionId + '&nodeid=' + window.nodeId + '&method=publication_progress';
+	var url = window.url_root + '?actionid=' + window.actionId + '&nodeid=' + window.nodeId + '&method=publication_progress';
 
 	$.get(
 		url,

@@ -32,7 +32,7 @@ use Ximdex\Models\User;
 use Ximdex\Runtime\App;
 
 if (!defined('XIMDEX_ROOT_PATH')) {
-    require_once dirname(__FILE__) . '/../../../../bootstrap.php';
+    require_once dirname(__FILE__) . '/../../../../../bootstrap.php';
 }
 
 \Ximdex\Runtime\Session::check();
@@ -286,10 +286,10 @@ function PrintContent($nodeID, $contentType=null, $pathList=null, $targetNodeID=
                             $channelNameList .= "'".$chan->GetName().".".$chan->GetExtension()."'";
                             $channelIdList .= "'".$channelID."'";
                         }
-                        echo '<tree text="'.$textoDesde.' -> '.$textoHasta.'" padre="'.$selectedNode->GetParent().'" nodoDesde="'.$nodoDesde.'" nodoHasta="'.$nodoHasta.'" src="treeselectordata.php?nodeid='.$selectedNode->GetParent().'&amp;contenttype='.$contentType.'&amp;targetid='.$targetNodeID.'&amp;filtertype='.$filterType.'&amp;desde='.$desde_aux.'&amp;hasta='.$hasta_aux.'" contenidotipo="'.$contentType.'&amp;nodetype='.$idNodeType.'"  icon="../../public_xmd/assets/images/icons/folder_a-z.png" openIcon="../../public_xmd/assets/images/icons/folder_a-z.png" nodeid="'.$childNode[$i].'" state="'.$nodeState[$i].'" children="2" open="'.$open.'" selected="'.$selected.'"  tipofiltro="'.$filterType.'" targetid="'.$targetNodeID.'"/>';
+                        echo '<tree text="'.$textoDesde.' -> '.$textoHasta.'" padre="'.$selectedNode->GetParent().'" nodoDesde="'.$nodoDesde.'" nodoHasta="'.$nodoHasta.'" src="treeselectordata.php?nodeid='.$selectedNode->GetParent().'&amp;contenttype='.$contentType.'&amp;targetid='.$targetNodeID.'&amp;filtertype='.$filterType.'&amp;desde='.$desde_aux.'&amp;hasta='.$hasta_aux.'" contenidotipo="'.$contentType.'&amp;nodetype='.$idNodeType.'"  icon="../assets/images/icons/folder_a-z.png" openIcon="../assets/images/icons/folder_a-z.png" nodeid="'.$childNode[$i].'" state="'.$nodeState[$i].'" children="2" open="'.$open.'" selected="'.$selected.'"  tipofiltro="'.$filterType.'" targetid="'.$targetNodeID.'"/>';
                     }
                     else {
-                        echo '<tree text="'.$textoDesde.' -> '.$textoHasta.'" padre="'.$selectedNode->GetParent().'" nodoDesde="'.$nodoDesde.'" nodoHasta="'.$nodoHasta.'" src="treeselectordata.php?nodeid='.$selectedNode->GetParent().'&amp;contenttype='.$contentType.'&amp;targetid='.$targetNodeID.'&amp;filtertype='.$filterType.'&amp;desde='.$desde_aux.'&amp;hasta='.$hasta_aux.'" contenidotipo="'.$contentType.'&amp;nodetype='.$idNodeType.'" icon="../../public_xmd/assets/images/icons/folder_a-z.png" openIcon="images/icons/folder_a-z.png" nodeid="'.$childNode[$i].'" state="'.$nodeState[$i].'" children="2" open="'.$open.'" selected="'.$selected.'"  tipofiltro="'.$filterType.'" targetid="'.$targetNodeID.'"/>';
+                        echo '<tree text="'.$textoDesde.' -> '.$textoHasta.'" padre="'.$selectedNode->GetParent().'" nodoDesde="'.$nodoDesde.'" nodoHasta="'.$nodoHasta.'" src="treeselectordata.php?nodeid='.$selectedNode->GetParent().'&amp;contenttype='.$contentType.'&amp;targetid='.$targetNodeID.'&amp;filtertype='.$filterType.'&amp;desde='.$desde_aux.'&amp;hasta='.$hasta_aux.'" contenidotipo="'.$contentType.'&amp;nodetype='.$idNodeType.'" icon="../assets/images/icons/folder_a-z.png" openIcon="images/icons/folder_a-z.png" nodeid="'.$childNode[$i].'" state="'.$nodeState[$i].'" children="2" open="'.$open.'" selected="'.$selected.'"  tipofiltro="'.$filterType.'" targetid="'.$targetNodeID.'"/>';
                     }
                     $numArchivos = $numArchivos + $nelementos;
                     $desde_aux=$desde_aux+$nelementos;

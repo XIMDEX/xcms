@@ -103,9 +103,9 @@ class Action_renamenode extends ActionAbstract
         }
 
 
-        $checkUrl = App::getValue('UrlRoot') . '/public_xmd/?actionid='
+        $checkUrl = App::getUrl( '/public_xmd/?actionid='
             . $this->request->getParam('actionid') . '&nodeid=' . $this->request->getParam('nodeid')
-            . '&id_pipeline=IDPIPELINE&method=checkNodeDependencies';
+            . '&id_pipeline=IDPIPELINE&method=checkNodeDependencies');
 
         $this->addJs('/actions/renamenode/resources/js/renamenode.js');
         $values = array('name' => $node->get('Name'),

@@ -34,7 +34,7 @@ class Widget_ontologyBrowser extends WidgetAbstract
     public function process($params)
     {
 
-        $this->addCss("/public_xmd/src/Widgets/ontologyBrowser/css/ontologyBrowser.css");
+        $this->addCss("/src/Widgets/ontologyBrowser/css/ontologyBrowser.css");
 
         if (array_key_exists("editor", $params)) {
             $this->setTemplate("ontologyBrowser_editor");

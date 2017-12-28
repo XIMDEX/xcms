@@ -38,8 +38,8 @@
 		X = Object.extend(X, {
 			XMLNS_XIM: 'http://ximdex.com/schema/1.0',
 			baseUrl: baseUrl,
-			restUrl: baseUrl + '/public_xmd/',
-			iconsUrl: baseUrl + '/public_xmd/assets/images/icons',
+			restUrl: baseUrl,
+			iconsUrl: baseUrl + 'assets/images/icons',
 			tourInstance: null,
 			getUID: function() {
 				return Object.rand(10000000, 99999999);

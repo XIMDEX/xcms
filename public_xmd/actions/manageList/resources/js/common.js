@@ -32,7 +32,7 @@
 		add: function() {
 			var name = $('.name_updater', this.element).val();
 			var description = $('.description_updater', this.element).val();
-			var url = window.url_root +	'/public_xmd/';
+			var url = window.url_root;
 			this.hide_properties_list();
 			var msg = _("Wait, please...");
 			$.blockUI({ message: '<h1> '+msg+'</h1>' });
@@ -52,7 +52,7 @@
 							$('.list', this.element)
 								.append('<tr class="list_' + data.result + '"></tr>');
 							$('.list_' + data.result, this.element).load(window.url_root +
-									'/public_xmd/?action=manageList&method=loadElement&id='
+									'/?action=manageList&method=loadElement&id='
 									+ data.result + '&name=' + $('.name_updater', this.element).attr('value')
 									+ '&description=' + $('.description_updater', this.element).attr('value')
 							);
@@ -76,7 +76,7 @@
 
 			this.hide_properties_list();
 
-			var url = window.url_root + '/public_xmd/';
+			var url = window.url_root;
 			$.blockUI({ message: _('<h1> Please wait...</h1>') });
 			$.getJSON(
 					url,
@@ -116,7 +116,7 @@
 			this.show_properties_list();
 		},
 		remove: function(id, element) {
-			var url = window.url_root + '/public_xmd/';
+			var url = window.url_root;
 			$.blockUI({ message: '<h1> Please wait...</h1>' });
 			$.getJSON(
 					url,

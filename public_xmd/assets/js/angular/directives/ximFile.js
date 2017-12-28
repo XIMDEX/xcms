@@ -33,7 +33,7 @@ angular.module('ximdex.common.directive')
             	parentId: '=ximNodeId'
             },
             restrict: 'E',
-            templateUrl : 'public_xmd/assets/js/angular/templates/ximFile.html',
+            templateUrl : window.url_root + 'assets/js/angular/templates/ximFile.html',
             controller: ['$scope', '$element', '$attrs', function($scope, $element, $attrs){
             	$scope.file.ximFilename = $scope.file.name;
                 

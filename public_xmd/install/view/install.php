@@ -26,7 +26,6 @@
 
 use Ximdex\Runtime\App;
 
-define('URL_ROOT', App::getValue('UrlRoot'));
 ?>
 <!DOCTYPE html>
 <html>
@@ -37,35 +36,35 @@ define('URL_ROOT', App::getValue('UrlRoot'));
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="shortcut icon" href="<?php echo URL_ROOT; ?>/favicon.ico" >
-    <link rel="stylesheet" href="<?php echo URL_ROOT; ?>/public_xmd/assets/style/installer/normalize.css">
-    <link rel="stylesheet" href="<?php echo URL_ROOT; ?>/public_xmd/assets/style/installer/main.css">
-    <link rel="stylesheet" href="<?php echo URL_ROOT; ?>/public_xmd/vendors/ladda/dist/ladda-themeless.min.css">
-    <link rel="stylesheet" href="<?php echo URL_ROOT; ?>/public_xmd/vendors/humane/flatty.css">
+    <link rel="shortcut icon" href="<?php echo App::getUrl('/favicon.ico'); ?>" >
+    <link rel="stylesheet" href="<?php echo App::getUrl('/assets/style/installer/normalize.css'); ?>">
+    <link rel="stylesheet" href="<?php echo App::getUrl('/assets/style/installer/main.css'); ?>">
+    <link rel="stylesheet" href="<?php echo App::getUrl('/vendors/ladda/dist/ladda-themeless.min.css'); ?>">
+    <link rel="stylesheet" href="<?php echo App::getUrl('/vendors/humane/flatty.css'); ?>">
 
-    <link href='<?php echo URL_ROOT; ?>/public_xmd/assets/style/fonts.css' rel='stylesheet' type='text/css' />
+    <link href='<?php echo App::getUrl('/assets/style/fonts.css'); ?>' rel='stylesheet' type='text/css' />
 
     <title>Ximdex Installer</title>
 
     <!--[if lt IE 9]>
     <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <script type="text/javascript" src="<?php echo URL_ROOT; ?>/public_xmd/vendors/angular/angular.min.js" ></script>
-    <script type="text/javascript" src="<?php echo URL_ROOT; ?>/public_xmd/vendors/angular/angular-animate.min.js" ></script>
-    <script type="text/javascript" src="<?php echo URL_ROOT; ?>/public_xmd/vendors/angular/angular-animate.min.js" ></script>
-    <script type="text/javascript" src="<?php echo URL_ROOT; ?>/public_xmd/vendors/ladda/dist/spin.min.js" ></script>
-    <script type="text/javascript" src="<?php echo URL_ROOT; ?>/public_xmd/vendors/ladda/dist/ladda.min.js" ></script>
-    <script type="text/javascript" src="<?php echo URL_ROOT; ?>/public_xmd/vendors/humane/humane.min.js" ></script>
+    <script type="text/javascript" src="<?php echo App::getUrl('/vendors/angular/angular.min.js'); ?>" ></script>
+    <script type="text/javascript" src="<?php echo App::getUrl('/vendors/angular/angular-animate.min.js'); ?>" ></script>
+    <script type="text/javascript" src="<?php echo App::getUrl('/vendors/angular/angular-animate.min.js'); ?>" ></script>
+    <script type="text/javascript" src="<?php echo App::getUrl('/vendors/ladda/dist/spin.min.js'); ?>" ></script>
+    <script type="text/javascript" src="<?php echo App::getUrl('/vendors/ladda/dist/ladda.min.js'); ?>" ></script>
+    <script type="text/javascript" src="<?php echo App::getUrl('/vendors/humane/humane.min.js'); ?>" ></script>
 
     <script type="text/javascript" >
         var ximdexInstallerApp = angular.module('ximdexInstallerApp',[]);
     </script>
-    <script type="text/javascript" src="<?php echo URL_ROOT; ?>/public_xmd/install/view/js/directives/ladda.js"></script>
-    <script type="text/javascript" src="<?php echo URL_ROOT; ?>/public_xmd/install/view/js/services/installerService.js"></script>
+    <script type="text/javascript" src="<?php echo App::getUrl('/install/view/js/directives/ladda.js'); ?>"></script>
+    <script type="text/javascript" src="<?php echo App::getUrl('/install/view/js/services/installerService.js'); ?>"></script>
     <?php
     foreach($js_files as $js_file){
         ?>
-        <script type="text/javascript" src="<?php echo URL_ROOT; ?>/<?php echo $js_file; ?>"></script>
+        <script type="text/javascript" src="<?php echo App::getUrl($js_file); ?>"></script>
         <?php
     }
     ?>

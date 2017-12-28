@@ -11,9 +11,9 @@
 		</head>
 		<body uid="{@uid}">
 			<div class="rngeditor_block">
-				<!--<img src="../../public_xmd/assets/images/tree/blank.png" width="19px" align="absmiddle" />
-				<img src="../../public_xmd/assets/images/icons/root.png" align="absmiddle" />-->
-				<!--<img src="../../public_xmd/assets/images/tree/blank.png" width="10px" align="absmiddle" />-->
+				<!--<img src="../../assets/images/tree/blank.png" width="19px" align="absmiddle" />
+				<img src="../../assets/images/icons/root.png" align="absmiddle" />-->
+				<!--<img src="../../assets/images/tree/blank.png" width="10px" align="absmiddle" />-->
 				<span class="rngeditor_title">Docxap</span>
 				<xsl:apply-templates/>
 			</div>
@@ -22,9 +22,9 @@
 	</xsl:template>
 	<xsl:template name="container" match="*">
 		<div class="rngeditor_block">
-			<img src="../../public_xmd/assets/images/tree/Lminus.png" class="ctrl minus folding"/>
-			<!--<img src="../../public_xmd/assets/images/tree/openfolder.png" align="absmiddle" class="folder folding"/>
-			<img src="../../public_xmd/assets/images/tree/blank.png" width="10px" align="absmiddle"/>-->
+			<img src="../../assets/images/tree/Lminus.png" class="ctrl minus folding"/>
+			<!--<img src="../../assets/images/tree/openfolder.png" align="absmiddle" class="folder folding"/>
+			<img src="../../assets/images/tree/blank.png" width="10px" align="absmiddle"/>-->
 			<span uid="{@uid}" editable="no" class="rngeditor_title folding"> <xsl:value-of select="local-name(.)"/> </span>
 			<div uid="{@uid}" id="tg_{@uid}">
 				<xsl:apply-templates/>

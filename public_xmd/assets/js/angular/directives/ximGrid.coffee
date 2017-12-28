@@ -36,7 +36,7 @@ angular.module('ximdex.common.directive').directive 'ximGrid', [ ->
         upPage: '=ximUpPage'
         downPage: '=ximDownPage'
         searching: '=ximSearching'
-    templateUrl: 'public_xmd/assets/js/angular/templates/ximGrid.html'
+    templateUrl:  xUrlHelper.baseUrl() + 'assets/js/angular/templates/ximGrid.html'
     controller: [
         '$scope'
         '$element'
@@ -51,7 +51,7 @@ angular.module('ximdex.common.directive').directive 'ximGrid', [ ->
                 $scope.fields = angular.fromJson($attrs.ximInitFields)
             $scope.selected = []
             $attrs.ximList = $scope.list
-            url = xUrlHelper.baseUrl() + '/public_xmd/'
+            url = xUrlHelper.baseUrl()
             $scope.lastpage
             $scope.page = 1
             #$scope.pages=$scope.list.pages;

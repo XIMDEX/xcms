@@ -3,9 +3,9 @@
 	<xsl:template name="xim:attribute_relations" match="xim:attribute_relations">
         <span id="{@uid}" />
         <div uid="{@uid}" class="rngeditor_block">
-			<img src="../../public_xmd/assets/images/tree/Lminus.png" align="absmiddle" class="ctrl minus folding"/>
-			<img src="../../public_xmd/assets/images/tree/folder.png" align="absmiddle" class="folder folding"/>
-			<img src="../../public_xmd/assets/images/tree/blank.png" width="10px" align="absmiddle"/>
+			<img src="../../assets/images/tree/Lminus.png" align="absmiddle" class="ctrl minus folding"/>
+			<img src="../../assets/images/tree/folder.png" align="absmiddle" class="folder folding"/>
+			<img src="../../assets/images/tree/blank.png" width="10px" align="absmiddle"/>
 			<span class="rngeditor_title">xim:attribute_relations</span>
         	<div id="tg_{@uid}">
 				<xsl:apply-templates/>

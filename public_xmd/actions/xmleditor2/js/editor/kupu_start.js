@@ -90,7 +90,7 @@ function startKupu(options) {
 
 	// This ensures that all posible scripts loaded in memory are unloaded ;)
 	// $('#kupu-editor').hide();
-	$('#kupu-editor')[0].src = url_root + '/public_xmd/actions/xmleditor2/index.html';
+	$('#kupu-editor')[0].src = url_root + '/actions/xmleditor2/index.html';
 }
 
 function startKupuCallback(kupu, errors) {

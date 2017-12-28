@@ -26,9 +26,9 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 	<head>
-		<link rel="icon" href="{$_URL_ROOT}/favicon.ico" type="image/x-icon" />
-		<link rel="shortcut icon" href="{$_URL_ROOT}/favicon.ico" type="image/x-icon" />
-		<link href='{$_URL_ROOT}/public_xmd/assets/style/fonts.css' rel='stylesheet' type='text/css'>
+		<link rel="icon" href="{url}favicon.ico{/url}" type="image/x-icon" />
+		<link rel="shortcut icon" href="{url}favicon.ico{/url}" type="image/x-icon" />
+		<link href='{url}/assets/style/fonts.css{/url}' rel='stylesheet' type='text/css'>
 		{foreach from=$js_files item=js_file}
 			<script type="text/javascript" src="{$js_file}"></script>
 		{/foreach}

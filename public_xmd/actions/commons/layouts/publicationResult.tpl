@@ -26,13 +26,13 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<link rel="stylesheet" type="text/css" href="{$_URL_ROOT}/public_xmd/assets/style/style.css" >
-<link rel="stylesheet" type="text/css" href="{$_URL_ROOT}/public_xmd/assets/style/ximdex.css" >
-<link rel="stylesheet" type="text/css" href="{$_URL_ROOT}/public_xmd/assets/style/lightbox/lightbox.css" media="screen,projection">
+<link rel="stylesheet" type="text/css" href="{url}/assets/style/style.css{/url}" >
+<link rel="stylesheet" type="text/css" href="{url}/assets/style/ximdex.css{/url}" >
+<link rel="stylesheet" type="text/css" href="{url}/assets/style/lightbox/lightbox.css{/url}" media="screen,projection">
 
-<script type="text/javascript" src="{$_URL_ROOT}/public_xmd/assets/js/lib/prototype/prototype.js"></script>
-<script type="text/javascript" src="{$_URL_ROOT}/public_xmd/assets/js/lib/lightbox/lightbox.js"></script>
-<script type="text/javascript" src="{$_URL_ROOT}/public_xmd/assets/js/validator/validator.js"></script>
+<script type="text/javascript" src="{url}/assets/js/lib/prototype/prototype.js{/url}"></script>
+<script type="text/javascript" src="{url}/assets/js/lib/lightbox/lightbox.js{/url}"></script>
+<script type="text/javascript" src="{url}/assets/js/validator/validator.js{/url}"></script>
 
 {foreach from=$js_files item=js_file}
 <script type="text/javascript" src="{$js_file}"></script>
@@ -49,7 +49,7 @@
 <tr>
 <td class='filacerrar' align='right'>
 <a href='javascript:parent.deletetabpage(parent.selected);' class='filacerrar'>
-	cerrar ventana <img src='{$_URL_ROOT}/public_xmd/assets/images/botones/cerrar.gif' alt='' border='0'>
+	cerrar ventana <img src='{url}/assets/images/botones/cerrar.gif{/url}' alt='' border='0'>
 	</a>
 </td>
 </tr>

@@ -28,7 +28,7 @@ use Ximdex\Models\Node;
 use Ximdex\Runtime\App;
 
 if (!defined('XIMDEX_ROOT_PATH')) {
-    require_once dirname(__FILE__) . '/../../../../bootstrap.php';
+    require_once dirname(__FILE__) . '/../../../../../bootstrap.php';
 }
 
 
@@ -55,14 +55,14 @@ $rootNode->SetID($rootID);
 <head>
 
 <script type="text/javascript">
-var xmdRoot = "<?php echo $urlroot; ?>/xmd/"
+var xmdRoot = "<?php echo App::getUrl('').'/'; ?>"
 </script>
 
-<script type="text/javascript" src="<?php echo $urlroot; ?>/public_xmd/src/Widgets/treeview/js/xtree.js"></script>
-<script type="text/javascript" src="<?php echo $urlroot; ?>/public_xmd/src/Widgets/treeview/js/xmlextras.js"></script>
-<script type="text/javascript" src="<?php echo $urlroot; ?>/public_xmd/src/Widgets/treeview/js/xloadtree.js"></script>
-<link type="text/css" rel="stylesheet" href="<?php echo $urlroot; ?>/public_xmd/assets/style/style.css" />
-<link type="text/css" rel="stylesheet" href="<?php echo $urlroot; ?>/public_xmd/src/Widgets/treeview/css/xtree.css" />
+<script type="text/javascript" src="<?php echo App::getUrl('/src/Widgets/treeview/js/xtree.js'); ?>"></script>
+<script type="text/javascript" src="<?php echo App::getUrl('/src/Widgets/treeview/js/xmlextras.js'); ?>"></script>
+<script type="text/javascript" src="<?php echo App::getUrl('/src/Widgets/treeview/js/xloadtree.js'); ?>"></script>
+<link type="text/css" rel="stylesheet" href="<?php echo App::getUrl('/assets/style/style.css'); ?>" />
+<link type="text/css" rel="stylesheet" href="<?php echo App::getUrl('/src/Widgets/treeview/css/xtree.css'); ?>" />
 
 <style type="text/css">
 
@@ -99,18 +99,18 @@ function SetSelectedNode(nodeID)
 	}
 
 /// XP Look
-webFXTreeConfig.rootIcon		= xmdRoot+"/public_xmd/src/Widgets/treeview/images/folder.png";
-webFXTreeConfig.openRootIcon	= xmdRoot+"/public_xmd/src/Widgets/treeview/images/openfolder.png";
-webFXTreeConfig.folderIcon		= xmdRoot+"/public_xmd/src/Widgets/treeview/images/folder.png";
-webFXTreeConfig.openFolderIcon	= xmdRoot+"/public_xmd/src/Widgets/treeview/images/openfolder.png";
-webFXTreeConfig.fileIcon		= xmdRoot+"/public_xmd/src/Widgets/treeview/images/file.png";
-webFXTreeConfig.lMinusIcon		= xmdRoot+"/public_xmd/src/Widgets/treeview/images/Lminus.png";
-webFXTreeConfig.lPlusIcon		= xmdRoot+"/public_xmd/src/Widgets/treeview/images/Lplus.png";
-webFXTreeConfig.tMinusIcon		= xmdRoot+"/public_xmd/src/Widgets/treeview/images/Tminus.png";
-webFXTreeConfig.tPlusIcon		= xmdRoot+"/public_xmd/src/Widgets/treeview/images/Tplus.png";
-webFXTreeConfig.iIcon			= xmdRoot+"/public_xmd/src/Widgets/treeview/images/I.png";
-webFXTreeConfig.lIcon			= xmdRoot+"/public_xmd/src/Widgets/treeview/images/L.png";
-webFXTreeConfig.tIcon			= xmdRoot+"/public_xmd/src/Widgets/treeview/images/T.png";
+webFXTreeConfig.rootIcon		= xmdRoot+"/src/Widgets/treeview/images/folder.png";
+webFXTreeConfig.openRootIcon	= xmdRoot+"/src/Widgets/treeview/images/openfolder.png";
+webFXTreeConfig.folderIcon		= xmdRoot+"/src/Widgets/treeview/images/folder.png";
+webFXTreeConfig.openFolderIcon	= xmdRoot+"/src/Widgets/treeview/images/openfolder.png";
+webFXTreeConfig.fileIcon		= xmdRoot+"/src/Widgets/treeview/images/file.png";
+webFXTreeConfig.lMinusIcon		= xmdRoot+"/src/Widgets/treeview/images/Lminus.png";
+webFXTreeConfig.lPlusIcon		= xmdRoot+"/src/Widgets/treeview/images/Lplus.png";
+webFXTreeConfig.tMinusIcon		= xmdRoot+"/src/Widgets/treeview/images/Tminus.png";
+webFXTreeConfig.tPlusIcon		= xmdRoot+"/src/Widgets/treeview/images/Tplus.png";
+webFXTreeConfig.iIcon			= xmdRoot+"/src/Widgets/treeview/images/I.png";
+webFXTreeConfig.lIcon			= xmdRoot+"/src/Widgets/treeview/images/L.png";
+webFXTreeConfig.tIcon			= xmdRoot+"/src/Widgets/treeview/images/T.png";
 
 function busca_numMaxFiles()
 	{
@@ -133,7 +133,7 @@ var numMaxFiles_origen = busca_numMaxFiles();
 					urlencode($nodeType)
 	);
 ?>
-var tree = new WebFXLoadTree("<?php echo $rootNode->GetNodeName()?>", "<?php echo $targetPath; ?>", "javascript: parent.setInfo('<?php echo $rootNode->GetPath()?>','<?php echo $rootNode->GetID()?>')", "classic", "../../public_xmd/assets/images/icons/<?php echo urlencode($rootNode->nodeType->GetIcon()); ?>","../../public_xmd/assets/images/icons/<?php echo $rootNode->nodeType->GetIcon()?>");
+var tree = new WebFXLoadTree("<?php echo $rootNode->GetNodeName()?>", "<?php echo $targetPath; ?>", "javascript: parent.setInfo('<?php echo $rootNode->GetPath()?>','<?php echo $rootNode->GetID()?>')", "classic", "../../assets/images/icons/<?php echo urlencode($rootNode->nodeType->GetIcon()); ?>","../../assets/images/icons/<?php echo $rootNode->nodeType->GetIcon()?>");
 
 document.write(tree);
 //tree.expand();

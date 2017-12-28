@@ -38,7 +38,7 @@ use Ximdex\Logger;
 
 
 
-define('VIEWS_FOLDER', XIMDEX_ROOT_PATH . '/public_xmd/actions/commons/views/');
+define('VIEWS_FOLDER', APP_ROOT_PATH . '/actions/commons/views/');
 
 class ScafoldCli extends CliParser
 {

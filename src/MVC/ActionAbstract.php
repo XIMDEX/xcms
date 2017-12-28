@@ -345,7 +345,7 @@ abstract class ActionAbstract extends IController
             }
         }
 
-        $this->renderer->setTemplate(XIMDEX_ROOT_PATH . '/public_xmd/actions/commons/layouts/' . $layout);
+        $this->renderer->setTemplate('actions/commons/layouts/' . $layout);
         $output = $this->renderer->render($view);
 
         // Apply widgets renderer after smarty renderer
@@ -444,9 +444,7 @@ abstract class ActionAbstract extends IController
     {
         // TODO search and destroy the %20 generated in the last char of the query string
         $queryManager = new QueryManager(false);
-        $file = sprintf('%s%s',
-            '/public_xmd/',
-            $queryManager->buildWith(array(
+        $file = \App::getUrl( $queryManager->buildWith(array(
                 'xparams[reload_node_id]' => $idnode,
                 'js_file' => 'reloadNode',
                 'method' => 'includeDinamicJs',
@@ -467,10 +465,12 @@ abstract class ActionAbstract extends IController
     {
 
         if ('APP' == $_module) {
-            $_js = '/public_xmd' . $_js;
+            $_js = \App::getUrl($_js);
         }else if ('XIMDEX' != $_module && 'internet'  != $_module ) {
             $path = ModulesManager::path($_module);
             $_js = $path . $_js;
+        }else if ('XIMDEX' == $_module) {
+            $_js = \App::getUrl($_js);
         }
 
         if ($params === null) {
@@ -494,13 +494,17 @@ abstract class ActionAbstract extends IController
     {
 
         if ('APP' == $_module) {
-            $_css = '/public_xmd' . $_css;
+            $this->_css[] = App::getUrl( $_css );
         }else if ('XIMDEX' != $_module) {
             $path = ModulesManager::path($_module);
             $_css = $path . $_css;
+
+            $this->_css[] = App::getValue('UrlRoot') . ltrim($_css, '/');
+        }else {
+            $this->_css[] = App::getValue('UrlRoot') . ltrim($_css, '/');
         }
 
-        $this->_css[] = App::getValue('UrlRoot') . $_css;
+
     }
 
     /**
@@ -594,9 +598,9 @@ abstract class ActionAbstract extends IController
     /**
      * Remplace files con [LANG] to i18n file
      * Example:
-     *  /var/www/ximdex/public_xmd/assets/images/[LANG]/pingu.gif -> /var/www/ximdex/public_xmd/assets/images/es/pingu.gif
+     *  /assets/images/[LANG]/pingu.gif -> /assets/images/es/pingu.gif
      *  or
-     *  /var/www/ximdex/public_xmd/assets/images/ximTAGS/pingu_[LANG].gif -> /var/www/ximdex/public_xmd/assets/images/ximTAGS/pingu_es.gif
+     *  /assets/images/ximTAGS/pingu_[LANG].gif -> /assets/images/ximTAGS/pingu_es.gif
      *  or ...
      *  This can be also done in html with the smarty var locale
      * @param $file

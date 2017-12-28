@@ -33,7 +33,7 @@ angular.module('ximdex.main.controller')
             $scope.openModal = function () {
                 $modal.open({
                     animation: $scope.animationsEnabled,
-                    templateUrl: $window.X.baseUrl + '/public_xmd/assets/js/angular/templates/advancedSearchModal.html',
+                    templateUrl: $window.X.baseUrl + 'assets/js/angular/templates/advancedSearchModal.html',
                     controller: 'AdvancedSearchModalCtrl',
                     size: "lg",
                     resolve: {}

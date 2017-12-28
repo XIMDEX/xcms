@@ -32,7 +32,8 @@ use ModulesManager;
 use Smarty;
  use Xmd\Widgets\Widget;
 
-require_once(XIMDEX_ROOT_PATH . Extensions::SMARTY);
+require_once(APP_ROOT_PATH . Extensions::SMARTY);
+
 
 
 /**
@@ -63,7 +64,12 @@ class SmartyRenderer extends AbstractRenderer
 		$smarty->setCacheDir(SMARTY_TMP_PATH . '/cache');
 		$smarty->setConfigDir(SMARTY_TMP_PATH . '/configs');
 
-        $smarty->config_vars = get_defined_constants();
+        $smarty->config_vars = get_defined_constants() + \App::config();
+
+
+        $smarty->registerPlugin("block","url", [$this, 'url'] );
+        $smarty->registerPlugin("block","ximdex", [$this, 'urlXimdex'] );
+
 
         //Remove whitespaces
 //  		$smarty->autoload_filters = array('output' => array('trimwhitespace'));
@@ -87,7 +93,23 @@ class SmartyRenderer extends AbstractRenderer
 		return $smarty->fetch($this->_template);
 	}
 
-	/**
+	public function url($params, $url, \Smarty_Internal_Template $template, &$repeat) {
+        if(!$repeat){
+            if (isset($url)) {
+               return \App::getUrl($url);
+            }
+        }
+    }
+
+    public function urlXimdex($params, $url, \Smarty_Internal_Template $template, &$repeat) {
+        if(!$repeat){
+            if (isset($url)) {
+                return \App::getUrlXimdex($url);
+            }
+        }
+    }
+
+    /**
 	 *
 	 * @param $smarty
 	 * @return unknown_type

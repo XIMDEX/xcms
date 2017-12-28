@@ -267,7 +267,7 @@ class Action_poolPreview extends ActionAbstract {
     	$this->addJs(Extensions::JQUERY_PATH.'/plugins/thickbox/thickbox.js');
 
     	$this->addJs('/actions/poolPreview/resources/js/poolPreview.js');
-    	$this->addJs('/public_xmd/assets/js/helper/query_manager.js');
+    	$this->addJs('/assets/js/helper/query_manager.js');
     	$this->addJs('/actions/manageList/resources/js/common.js');
     	
     	

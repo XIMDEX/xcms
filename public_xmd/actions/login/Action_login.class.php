@@ -49,7 +49,7 @@ class Action_login extends ActionAbstract
     function showLogin($msg = NULL)
     {
         $values = $this->getDefaultVars();
-        $this->addJs("/public_xmd/assets/js/browser_checker.js");
+        $this->addJs("/assets/js/browser_checker.js");
 
         if (!empty($msg))
             $values["message"] = _($msg);

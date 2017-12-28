@@ -28,9 +28,9 @@
 	<head>
 		<title> {$versionname} </title>
 		{* constant css includes *}
-		<link type="text/css" href="{$_URL_ROOT}/public_xmd/assets/style/main_extended.css" rel="stylesheet" />
+		<link type="text/css" href="{url}/assets/style/main_extended.css{/url}" rel="stylesheet" />
 
-		<link id="main_css" type="text/css" href="{$_URL_ROOT}/public_xmd/assets/style/jquery/{$theme}/jquery-ui-1.8.2.custom.css" rel="stylesheet" />
+		<link id="main_css" type="text/css" href="{url}/assets/style/jquery/{$theme}/jquery-ui-1.8.2.custom.css{/url}" rel="stylesheet" />
 
 		{* css widgets *}
 		%=css_widgets%
@@ -38,12 +38,12 @@
 		{* constant js includes *}
 	<script type="text/javascript" src="{EXTENSIONS::Jquery()}"></script>
 	<script type="text/javascript" src="{EXTENSIONS::Jquery_ui()}"></script>
-	<script type="text/javascript" src="{$_URL_ROOT}/public_xmd/assets/js/helpers.js"></script>
-        <script type="text/javascript" src="{$_URL_ROOT}/public_xmd/vendors/jquery/plugins/jquery-validate/jquery.validate.js"></script>
-        <script type="text/javascript" src="{$_URL_ROOT}/public_xmd/vendors/jquery/plugins/jquery-validate/localization/messages_{$user_locale.Lang}.js"></script>
-        <script type="text/javascript" src="{$_URL_ROOT}/public_xmd/actions/composer/resources/js/widgets_controllers/default.js"></script>
-        <script type="text/javascript" src="{$_URL_ROOT}/public_xmd/assets/js/helper/query_manager.js"></script>
-	<script type="text/javascript" src="{$_URL_ROOT}/public_xmd/assets/js/collection.class.js"></script>
+	<script type="text/javascript" src="{url}/assets/js/helpers.js{/url}"></script>
+        <script type="text/javascript" src="{url}/vendors/jquery/plugins/jquery-validate/jquery.validate.js"{/url}></script>
+        <script type="text/javascript" src="{url}/vendors/jquery/plugins/jquery-validate/localization/messages_{$user_locale.Lang}.js{/url}"></script>
+        <script type="text/javascript" src="{url}/actions/composer/resources/js/widgets_controllers/default.js{/url}"></script>
+        <script type="text/javascript" src="{url}/assets/js/helper/query_manager.js{/url}"></script>
+	<script type="text/javascript" src="{url}/assets/js/collection.class.js"{/url}></script>
 		{* js widgets *}
 		%=js_widgets%
 	</head>

@@ -72,7 +72,7 @@ class WidgetDependencies
 
         $jsFiles = self::$deps[$widget]['js'];
         for ($i = 0, $l = count($jsFiles); $i < $l; $i++) {
-            $jsFiles[$i] = $widget . '/js/' . $jsFiles[$i];
+            $jsFiles[$i] = \App::getUrl('/src/Widgets/'.$widget .'/js/' . $jsFiles[$i]);
         }
 
         foreach (self::$deps[$widget]['deps'] as $wname) {

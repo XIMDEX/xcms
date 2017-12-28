@@ -251,7 +251,7 @@ var AttributesToolBox = Object.xo_create(FloatingToolBox, {
             var $modal = angular.element('*[ng-app]').injector().get('$modal');
             this.imageSelector = $modal.open({
                 animation: false,
-                templateUrl: window.X.baseUrl + '/public_xmd/assets/js/angular/templates/SearchTreeModal.html',
+                templateUrl: window.X.baseUrl + 'assets/js/angular/templates/SearchTreeModal.html',
                 //template: '<xim-tree />',
                 controller: 'SearchTreeModalCtrl',
                 size: 'md',

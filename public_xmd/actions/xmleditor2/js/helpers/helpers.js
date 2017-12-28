@@ -90,7 +90,7 @@
 	}
 
 	$.fn.extend({
-		// Defined in public_xmd/assets/js/helpers.js
+		// Defined in /assets/js/helpers.js
 		contains: Array.prototype.contains
 	});
 

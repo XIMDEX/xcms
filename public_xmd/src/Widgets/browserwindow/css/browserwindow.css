@@ -53,7 +53,7 @@ div.browser-window-toolbar {
 	height: 45px;
 	width: 100%;
 	margin: 0px;
-	background: url('../../../../../public_xmd/assets/images/toolbar/fnd_menu.png') repeat;
+	background: url('../../../../../images/toolbar/fnd_menu.png') repeat;
 	overflow: hidden;
 }
 
@@ -83,7 +83,7 @@ div.window-toolbar-buttongroup {
 	position: relative;
 	float: left;
 	margin-left: 10px;
-	background: url('../../../../../public_xmd/assets/images/toolbar/separador.png') no-repeat right center;
+	background: url('../../../../../images/toolbar/separador.png') no-repeat right center;
 	padding: 0px 10px;
 	margin-top: auto;
 }

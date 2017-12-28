@@ -3,9 +3,9 @@
 	<xsl:template name="zeroormore" match="zeroormore">
 		<span id="{@uid}" />
 		<div uid="{@uid}" class="rngeditor_block">
-			<img src="../../public_xmd/assets/images/tree/Lminus.png" align="absmiddle" class="ctrl minus folding"/>
-			<img src="../../public_xmd/assets/images/tree/folder.png" align="absmiddle" class="folder folding"/>
-			<img src="../../public_xmd/assets/images/tree/blank.png" width="10px" align="absmiddle"/>
+			<img src="../../assets/images/tree/Lminus.png" align="absmiddle" class="ctrl minus folding"/>
+			<img src="../../assets/images/tree/folder.png" align="absmiddle" class="folder folding"/>
+			<img src="../../assets/images/tree/blank.png" width="10px" align="absmiddle"/>
 			<span class="rngeditor_title">ZeroOrMore</span>
 			<div id="tg_{@uid}">
 				<xsl:apply-templates/>
@@ -15,9 +15,9 @@
     <xsl:template name="zeroOrMore" match="zeroOrMore">
         <span id="{@uid}" />
         <div uid="{@uid}" class="rngeditor_block">
-			<img src="../../public_xmd/assets/images/tree/Lminus.png" align="absmiddle" class="ctrl minus folding"/>
-			<img src="../../public_xmd/assets/images/tree/folder.png" align="absmiddle" class="folder folding"/>
-			<img src="../../public_xmd/assets/images/tree/blank.png" width="10px" align="absmiddle"/>
+			<img src="../../assets/images/tree/Lminus.png" align="absmiddle" class="ctrl minus folding"/>
+			<img src="../../assets/images/tree/folder.png" align="absmiddle" class="folder folding"/>
+			<img src="../../assets/images/tree/blank.png" width="10px" align="absmiddle"/>
             <span class="rngeditor_title">ZeroOrMore</span>
             <div id="tg_{@uid}">
             	<xsl:apply-templates/>

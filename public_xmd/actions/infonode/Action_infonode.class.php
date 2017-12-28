@@ -78,8 +78,7 @@ class Action_infonode extends ActionAbstract
             }
         }
 
-        $urlRoot = App::getValue('UrlRoot');
-        $jsonUrl = $urlRoot . "/public_xmd/?action=infonode&method=getDependencies&nodeid=" . $idNode;
+        $jsonUrl = App::getUrl( "/?action=infonode&method=getDependencies&nodeid=" . $idNode );
 
         $manageVersions= new Action_manageversions();
         $valuesManageVersion=$manageVersions->values($idNode);

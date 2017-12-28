@@ -47,7 +47,7 @@
 			show: false
 		},
 		url_base: window.url_root + '/',
-		img_base: window.url_root + '/public_xmd/assets/images/icons/',
+		img_base: window.url_root + 'assets/images/icons/',
 		colModel: colModel,
 		datastore: {
 			ds: new DataSource({

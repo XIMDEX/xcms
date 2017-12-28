@@ -4,7 +4,7 @@ angular.module("ximdex.common.directive").directive("ximTree", [
     var base_url;
     base_url = $window.X.baseUrl;
     return {
-      templateUrl: base_url + '/public_xmd/assets/js/angular/templates/ximTree.html',
+      templateUrl: base_url + 'assets/js/angular/templates/ximTree.html',
       restrict: "E"
     };
   }
