@@ -782,7 +782,7 @@ and rug.idrole in (select idrole from RelRolesPermissions where IdPermission = 1
         if (empty($jsFile))
             $jsFile = "widgetsVars";
 
-        $jsFile = App::getUrl('/actions/commons/views/helper/%s.tpl', $jsFile);
+        $jsFile = "actions/commons/views/helper/{$jsFile}.tpl";
 
         // The class AssociativeArray does not return an array, then it obtains _GET value
         $params = isset($_GET['xparams']) ? $_GET['xparams'] : $_GET['amp;xparams'];

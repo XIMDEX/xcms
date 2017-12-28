@@ -114,6 +114,7 @@ class FrontControllerHTTP extends FrontController
 
         //Remove base of request_uri
         $url = str_replace($base, "", $_SERVER["REQUEST_URI"]);
+
         //split params/query_string
         list($url, $query_string) = explode("?", $url, 2) + array(NULL, NULL);
 
@@ -124,12 +125,12 @@ class FrontControllerHTTP extends FrontController
             $_GET["action"] = "browser3";
         }
 
-        //remove index.php|loadaction.php of url if this is
+        //remove index.php|frontcontroller of url if this is
         $url = preg_replace("/index\.php/", "", $url);
-        $url = preg_replace("/loadaction\.php/", "", $url);
+        $url = str_replace(basename(APP_ROOT_PATH), "", $url);
 
         //get friendly params
-        $params = explode("/", $url);
+        $params = explode("/", ltrim($url, '/'));
         $max = count($params);
 
 
@@ -227,7 +228,9 @@ class FrontControllerHTTP extends FrontController
         $actionPath = $this->getActionPath($module);
         $this->actionLog();
 
+
         //if action doesnt exist
+
         if (empty($module) && !file_exists(XIMDEX_ROOT_PATH . $actionPath . $actionName)) {
             $actionId = null;
             $actionName = 'browser3';

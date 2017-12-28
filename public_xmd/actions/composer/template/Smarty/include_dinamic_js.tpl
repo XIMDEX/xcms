@@ -24,4 +24,4 @@
  *}
 
 
-{include file=$js_file|ltrim:'/'}
+{include file=$js_file}
