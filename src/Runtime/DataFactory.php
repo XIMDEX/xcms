@@ -28,7 +28,6 @@
 namespace Ximdex\Runtime;
 
 use Exception;
-use ModulesManager;
 use Ximdex\Models\Node;
 use Ximdex\Models\PipeCache;
 use Ximdex\Models\Version;
@@ -339,7 +338,7 @@ class DataFactory
     function _generateCaches($idVersion)
     {
         $res = true;
-        if (ModulesManager::isEnabled('ximSYNC')) {
+        if (\Ximdex\Modules\Manager::isEnabled('ximSYNC')) {
             $version = new Version($idVersion);
             if (!($version->get('IdVersion') > 0)) {
                 return NULL;
@@ -428,7 +427,7 @@ class DataFactory
             $result = FsUtils::file_put_contents($targetPath, $content);
 
             $idVersion = $this->getVersionId($versionID, $subVersion);
-            if ($result && ModulesManager::isEnabled('ximRAM')) {
+            if ($result && \Ximdex\Modules\Manager::isEnabled('ximRAM')) {
                 $this->indexNode($idVersion, $commitNode);
             }
             $this->_generateCaches($idVersion);
@@ -541,7 +540,7 @@ class DataFactory
         Logger::debug('AddVersion for Node:' . $this->nodeID . ', Version: ' . $newVersion . '.' . $newSubVersion . ', File: ' . $uniqueName);
 
 
-        if (ModulesManager::isEnabled('ximRAM')) {
+        if (\Ximdex\Modules\Manager::isEnabled('ximRAM')) {
             $this->indexNode($this->getVersionId($newVersion, $newSubVersion), $commitNode);
         }
 
@@ -636,7 +635,7 @@ class DataFactory
             $IdVersion . ", Version: " . $newVersion . "." . $newSubVersion .
             ", OldVersion: " . $tmpVersion . "." . $subversion . ", File: ." . $uniqueName, 4, "DataFactory");
 
-        if (ModulesManager::isEnabled('ximRAM')) {
+        if (\Ximdex\Modules\Manager::isEnabled('ximRAM')) {
             $this->indexNode($this->getVersionId($newVersion, $newSubVersion), null);
         }
 
@@ -759,7 +758,7 @@ class DataFactory
         $pipeline->deleteCache($versionToDelete);
 
         // Se ejecutaba en cualquier caso
-        if (ModulesManager::isEnabled('ximRAM')) {
+        if (\Ximdex\Modules\Manager::isEnabled('ximRAM')) {
             $this->conector->deleteNode($versionToDelete, true);
         }
 

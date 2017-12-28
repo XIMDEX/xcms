@@ -27,7 +27,6 @@
 
 namespace Ximdex\Models;
 
-use ModulesManager;
 use Ximdex\Logger;
 use Ximdex\Models\ORM\UsersOrm;
 use Ximdex\Runtime\App;

@@ -40,7 +40,7 @@ use Ximdex\Runtime\Session;
 use Xmd\Widgets\Widget;
 use Ximdex\XML\Base;
  
-ModulesManager::file('/actions/browser3/inc/GenericDatasource.class.php');
+\Ximdex\Modules\Manager::file('/actions/browser3/inc/GenericDatasource.class.php');
 
 
 class Action_composer extends ActionAbstract
@@ -905,7 +905,7 @@ and rug.idrole in (select idrole from RelRolesPermissions where IdPermission = 1
     {
         \Ximdex\Runtime\Session::check();
 
-        $data = ModulesManager::getModules();
+        $data = \Ximdex\Modules\Manager::getModules();
 
         $this->sendJSON($data);
         die();

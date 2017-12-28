@@ -39,8 +39,8 @@ use Ximdex\Cli\CliReader;
 
 
 //
- ModulesManager::file('/inc/ExportXml.class.php');
-ModulesManager::file('/actions/export/inc/ExportCli.class.php');
+ \Ximdex\Modules\Manager::file('/inc/ExportXml.class.php');
+\Ximdex\Modules\Manager::file('/actions/export/inc/ExportCli.class.php');
 
 $PROCESSED_NODES = 0;
 $LAST_REPORT = 0;

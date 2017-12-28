@@ -2,7 +2,7 @@
 require_once dirname(__DIR__, 2) . '/bootstrap.php';
 
 
-ModulesManager::file('/src/SolrSearchManager.php', 'XSearch');
+\Ximdex\Modules\Manager::file('/src/SolrSearchManager.php', 'XSearch');
 
 $sm = new SolrSearchManager();
 

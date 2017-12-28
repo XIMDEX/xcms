@@ -47,10 +47,10 @@ class RunnerCli extends CliParser  {
 	$parameterCollector = new RunnerCli($argc, $argv, false);
 	
 	$mode = $parameterCollector->getParameter('--mode');
-	if (empty($mode) || !is_dir(XIMDEX_ROOT_PATH .ModulesManager::path('ximIO'). '/actions/' . $mode)) {
+	if (empty($mode) || !is_dir(XIMDEX_ROOT_PATH .\Ximdex\Modules\Manager::path('ximIO'). '/actions/' . $mode)) {
 		echo _("The param --mode is obligatory")."\n";
 		echo _("Available modes are:")."\n";
-		$handler = opendir(XIMDEX_ROOT_PATH .ModulesManager::path('ximIO').'/actions/');
+		$handler = opendir(XIMDEX_ROOT_PATH .\Ximdex\Modules\Manager::path('ximIO').'/actions/');
 		while (false !== ($file = readdir($handler))) {
 			if ($file == '.' || $file == '..') {
 				continue;

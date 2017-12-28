@@ -30,8 +30,8 @@ use Ximdex\Models\PipeStatus;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\App;
 
-ModulesManager::file('/actions/manageproperties/inc/InheritedPropertiesManager.class.php');
-ModulesManager::file('/actions/manageversions/Action_manageversions.class.php');
+\Ximdex\Modules\Manager::file('/actions/manageproperties/inc/InheritedPropertiesManager.class.php');
+\Ximdex\Modules\Manager::file('/actions/manageversions/Action_manageversions.class.php');
 
 
 

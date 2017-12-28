@@ -9,7 +9,6 @@
 namespace Ximdex\NodeTypes;
 
 
-use ModulesManager;
 use Ximdex\Logger;
 
 class Factory
@@ -58,7 +57,7 @@ class Factory
         }
 
         if (!empty($module)) {
-            $fileToInclude = sprintf('%s%s/src/NodeTypes/%s.php', XIMDEX_ROOT_PATH, ModulesManager::path($module), strtolower($name));
+            $fileToInclude = sprintf('%s%s/src/NodeTypes/%s.php', XIMDEX_ROOT_PATH, \Ximdex\Modules\Manager::path($module), strtolower($name));
         } else {
             $fileToInclude = sprintf('%s/src/NodeTypes/%s.php', XIMDEX_ROOT_PATH, strtolower($name));
         }

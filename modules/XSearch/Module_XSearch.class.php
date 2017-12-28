@@ -2,7 +2,7 @@
 
 use Ximdex\Modules\Module;
 
-ModulesManager::file('/src/SolrExporter.php', 'XSearch');
+\Ximdex\Modules\Manager::file('/src/SolrExporter.php', 'XSearch');
 
 /**
  * Class Module_XSearch

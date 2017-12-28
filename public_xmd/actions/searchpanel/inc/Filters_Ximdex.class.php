@@ -24,7 +24,7 @@
  *  @version $Revision$
  */
 
-ModulesManager::file("/actions/searchpanel/inc/Searchpanel_Filters.class.php");
+\Ximdex\Modules\Manager::file("/actions/searchpanel/inc/Searchpanel_Filters.class.php");
 
 class Filters_Ximdex {
 
@@ -85,7 +85,7 @@ class Filters_Ximdex {
 		$filters['date-comparation'][2]['value']=_('after than');
 		$filters['date-comparation'][3]['value']=_('in the range');
 
-		if(!ModulesManager::isEnabled('ximTAGS')){
+		if(!\Ximdex\Modules\Manager::isEnabled('ximTAGS')){
 			array_pop($filters['field']);
 		}
 		return $filters;

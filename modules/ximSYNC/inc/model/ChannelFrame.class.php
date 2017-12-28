@@ -26,9 +26,9 @@
 
 use Ximdex\Logger;
 
-ModulesManager::file('/inc/model/ChannelFrame.class.php', 'ximSYNC');
-ModulesManager::file('/conf/synchro_conf.php', 'ximSYNC');
-ModulesManager::file('/inc/model/orm/ChannelFrames_ORM.class.php', 'ximSYNC');
+\Ximdex\Modules\Manager::file('/inc/model/ChannelFrame.class.php', 'ximSYNC');
+\Ximdex\Modules\Manager::file('/conf/synchro_conf.php', 'ximSYNC');
+\Ximdex\Modules\Manager::file('/inc/model/orm/ChannelFrames_ORM.class.php', 'ximSYNC');
 
 /**
 *	@brief Handles operations with ChannelFrames.

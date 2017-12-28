@@ -26,7 +26,6 @@
 
 namespace Ximdex\MVC;
 
-use ModulesManager;
 use Ximdex\Models\ActionsStats;
 use Ximdex\Runtime\App;
 use Ximdex\Runtime\Session;

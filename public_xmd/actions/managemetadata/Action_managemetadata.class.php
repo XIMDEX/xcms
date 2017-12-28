@@ -32,7 +32,7 @@ use Ximdex\MVC\ActionAbstract;
 use Ximdex\Parsers\ParsingRng;
 use Ximdex\Runtime\App;
 
-ModulesManager::file('/actions/manageproperties/inc/LanguageProperty.class.php');
+\Ximdex\Modules\Manager::file('/actions/manageproperties/inc/LanguageProperty.class.php');
 
 
 /**

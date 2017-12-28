@@ -29,15 +29,14 @@ namespace Ximdex\Models;
 
 use Ximdex\Runtime\Db;
 use ImageFile;
-use ModulesManager;
 use RelTagsDescriptions;
 use Tag;
 
 use Ximdex\Models\ORM\RelTagsNodesOrm;
 
-ModulesManager::file('/inc/Tags.inc', 'ximTAGS');
-ModulesManager::file('/inc/RelTagsDescriptions.inc', 'ximTAGS');
-ModulesManager::file('/inc/metadata/ImageFile.class.php', 'ximTAGS');
+\Ximdex\Modules\Manager::file('/inc/Tags.inc', 'ximTAGS');
+\Ximdex\Modules\Manager::file('/inc/RelTagsDescriptions.inc', 'ximTAGS');
+\Ximdex\Modules\Manager::file('/inc/metadata/ImageFile.class.php', 'ximTAGS');
 
 class RelTagsNodes extends RelTagsNodesOrm
 {

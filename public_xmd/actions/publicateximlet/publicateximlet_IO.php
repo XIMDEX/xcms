@@ -24,7 +24,7 @@
  *  @version $Revision$
  */
 
-ModulesManager::file('/actions/publicateximlet/publicateximlet.php');
+\Ximdex\Modules\Manager::file('/actions/publicateximlet/publicateximlet.php');
 
 function main($argc, $argv) {
 

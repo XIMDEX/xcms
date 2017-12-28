@@ -26,7 +26,6 @@
 namespace Ximdex\MVC;
 
 use Ximdex\Runtime\App;
-use ModulesManager;
 use Ximdex\Models\Action;
 
 
@@ -284,7 +283,7 @@ class FrontControllerHTTP extends FrontController
     function getActionPath($module = NULL)
     {
         if (!empty($module)) {
-            return ModulesManager::path($module) . "/actions/";
+            return \Ximdex\Modules\Manager::path($module) . "/actions/";
         }
 
         return "/public_xmd/actions/";

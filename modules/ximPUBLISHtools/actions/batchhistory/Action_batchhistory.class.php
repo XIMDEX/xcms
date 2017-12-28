@@ -30,8 +30,8 @@ use Ximdex\Runtime\App;
 use Ximdex\Utils\Serializer;
 use Ximdex\Runtime\Session;
 
-ModulesManager::file('/actions/FilterParameters.php', 'ximPUBLISHtools');
-ModulesManager::file('/inc/model/PublishingReport.class.php', 'ximSYNC');
+\Ximdex\Modules\Manager::file('/actions/FilterParameters.php', 'ximPUBLISHtools');
+\Ximdex\Modules\Manager::file('/inc/model/PublishingReport.class.php', 'ximSYNC');
 
 class Action_batchhistory extends ActionAbstract {
 
@@ -62,7 +62,7 @@ class Action_batchhistory extends ActionAbstract {
 
 
         $jsFiles = array(
-            App::getValue('UrlRoot') . ModulesManager::path('ximPUBLISHtools') . '/actions/batchhistory/resources/js/index.js'
+            App::getValue('UrlRoot') . \Ximdex\Modules\Manager::path('ximPUBLISHtools') . '/actions/batchhistory/resources/js/index.js'
         );
 
         $cssFiles = array();

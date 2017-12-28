@@ -30,7 +30,6 @@ use Ximdex\Runtime\App;
 use Ximdex\Runtime\DataFactory;
 use Ximdex\Deps\DepsManager;
 use DOMDocument;
-use ModulesManager;
 use Ximdex\Models\NodeType;
 use Ximdex\Runtime\Db;
 use Ximdex\Utils\PipelineManager;
@@ -354,7 +353,7 @@ abstract class AbstractStructuredDocument extends FileNode
         //include the associated semantic tags of the document into the docxap tag.
         $xtags = '';
 
-        if (ModulesManager::isEnabled('ximTAGS')) {
+        if (\Ximdex\Modules\Manager::isEnabled('ximTAGS')) {
             $rtn = new RelTagsNodes();
             $nodeTags = $rtn->getTags($this->nodeID);
             if (!empty($nodeTags)) {

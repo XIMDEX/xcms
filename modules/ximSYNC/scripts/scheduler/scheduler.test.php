@@ -31,7 +31,7 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 }
 
 
-	//ModulesManager::file('/scripts/scheduler/scheduler.class.php', 'ximSYNC');
-    ModulesManager::file('/scripts/scheduler/scheduler.class.php', 'ximSYNC');
+	//\Ximdex\Modules\Manager::file('/scripts/scheduler/scheduler.class.php', 'ximSYNC');
+    \Ximdex\Modules\Manager::file('/scripts/scheduler/scheduler.class.php', 'ximSYNC');
 
 	Scheduler::start(false);

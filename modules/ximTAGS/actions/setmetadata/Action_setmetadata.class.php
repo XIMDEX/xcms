@@ -31,7 +31,7 @@ use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
 
-ModulesManager::file('/inc/Tags.inc', 'ximTAGS');
+\Ximdex\Modules\Manager::file('/inc/Tags.inc', 'ximTAGS');
 
 class Action_setmetadata extends ActionAbstract
 {

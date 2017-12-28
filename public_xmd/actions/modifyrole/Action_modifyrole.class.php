@@ -111,7 +111,7 @@ class Action_modifyrole extends ActionAbstract
 
             //Skipping permissions for actions in disabled modules.
             if (!empty($nodeType['Module']) &&
-                !ModulesManager::isEnabled($allNodeTypes[$i]['Module'])
+                !\Ximdex\Modules\Manager::isEnabled($allNodeTypes[$i]['Module'])
             ) {
                 continue;
             }
@@ -123,7 +123,7 @@ class Action_modifyrole extends ActionAbstract
                 foreach ($nodeType['actions'] as $actionKey => $actionInfo) {
 
                     if (!empty($actionInfo['Module']) &&
-                        !ModulesManager::isEnabled($actionInfo['Module'])
+                        !\Ximdex\Modules\Manager::isEnabled($actionInfo['Module'])
                     ) {
                         unset($nodeType['actions'][$actionKey]);
                         continue;

@@ -41,7 +41,7 @@ function showErrors($errno, $errstr, $errfile = NULL, $errline= NULL) {
 set_error_handler("showErrors");
 
 
-ModulesManager::file('/inc/model/ServerFrame.class.php', 'ximSYNC');
+\Ximdex\Modules\Manager::file('/inc/model/ServerFrame.class.php', 'ximSYNC');
 
 
     /*
@@ -485,7 +485,7 @@ class DexPumper {
 	}
 
 	public function updateStats($state_pumper) {
-		if(!ModulesManager::isEnabled("wix") ) return false;
+		if(!\Ximdex\Modules\Manager::isEnabled("wix") ) return false;
 
 		 $IdSync = (int)  $this->serverFrame->get('IdSync');
  	  	$idBatchUp = (int) $this->serverFrame->get('IdBatchUp');

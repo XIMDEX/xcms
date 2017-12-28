@@ -26,8 +26,6 @@
 
 namespace Ximdex\Modules;
 
-use ModulesManager,
-    Ximdex\Runtime\App;
 
 /**
  *
@@ -44,9 +42,9 @@ class Config
     public function __construct()
     {
 
-        $this->defMngr = new \Ximdex\Modules\DefManager(XIMDEX_ROOT_PATH . ModulesManager::get_modules_install_params());
-        $this->defMngr->setPrefix(ModulesManager::get_pre_define_module());
-        $this->defMngr->setPostfix(ModulesManager::get_post_define_module());
+        $this->defMngr = new \Ximdex\Modules\DefManager(XIMDEX_ROOT_PATH . \Ximdex\Modules\Manager::get_modules_install_params());
+        $this->defMngr->setPrefix(\Ximdex\Modules\Manager::get_pre_define_module());
+        $this->defMngr->setPostfix(\Ximdex\Modules\Manager::get_post_define_module());
     }
 
 

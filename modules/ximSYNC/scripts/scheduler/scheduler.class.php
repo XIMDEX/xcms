@@ -30,17 +30,17 @@ use Ximdex\Runtime\App;
 use Ximdex\Sync\Mutex;
 use Ximdex\Logger;
 
-ModulesManager::file('/inc/manager/NodeFrameManager.class.php', 'ximSYNC');
-ModulesManager::file('/inc/manager/ServerFrameManager.class.php', 'ximSYNC');
-ModulesManager::file('/inc/manager/PumperManager.class.php', 'ximSYNC');
-ModulesManager::file('/inc/manager/BatchManager.class.php', 'ximSYNC');
-ModulesManager::file('/inc/manager/ServerErrorManager.class.php', 'ximSYNC');
-ModulesManager::file('/inc/model/Batch.class.php', 'ximSYNC');
-ModulesManager::file('/inc/model/SynchronizerStat.class.php', 'ximSYNC');
-ModulesManager::file('/conf/synchro_conf.php', 'ximSYNC');
-ModulesManager::file('/inc/model/ServerFrame.class.php', 'ximSYNC');
+\Ximdex\Modules\Manager::file('/inc/manager/NodeFrameManager.class.php', 'ximSYNC');
+\Ximdex\Modules\Manager::file('/inc/manager/ServerFrameManager.class.php', 'ximSYNC');
+\Ximdex\Modules\Manager::file('/inc/manager/PumperManager.class.php', 'ximSYNC');
+\Ximdex\Modules\Manager::file('/inc/manager/BatchManager.class.php', 'ximSYNC');
+\Ximdex\Modules\Manager::file('/inc/manager/ServerErrorManager.class.php', 'ximSYNC');
+\Ximdex\Modules\Manager::file('/inc/model/Batch.class.php', 'ximSYNC');
+\Ximdex\Modules\Manager::file('/inc/model/SynchronizerStat.class.php', 'ximSYNC');
+\Ximdex\Modules\Manager::file('/conf/synchro_conf.php', 'ximSYNC');
+\Ximdex\Modules\Manager::file('/inc/model/ServerFrame.class.php', 'ximSYNC');
 
-if (!ModulesManager::isEnabled('XIMSYNC')) {
+if (!\Ximdex\Modules\Manager::isEnabled('XIMSYNC')) {
     Logger::error(_("ximSYNC module is not active, you must run syncronizer module") . "\n");
     die();
 }

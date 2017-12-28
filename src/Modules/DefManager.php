@@ -25,7 +25,6 @@
  */
 namespace Ximdex\Modules ;
 
-use ModulesManager;
 /**
  *
  */
@@ -96,11 +95,11 @@ class DefManager
 
     function get_modules_path()
     {
-        $modMngr = new ModulesManager();
+        $modMngr = new \Ximdex\Modules\Manager();
         $consts = '';
         $modules = $modMngr->getModules();
         foreach ($modules as $id => $module) {
-            $consts .= "define('" . ModulesManager::get_pre_define_module() . strtoupper($module['name']) . ModulesManager::get_post_path_define_module() . "', '" . $module["path"] . "');\n";
+            $consts .= "define('" . \Ximdex\Modules\Manager::get_pre_define_module() . strtoupper($module['name']) . \Ximdex\Modules\Manager::get_post_path_define_module() . "', '" . $module["path"] . "');\n";
         }
 
         return $consts;

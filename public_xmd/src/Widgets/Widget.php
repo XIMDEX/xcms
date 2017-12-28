@@ -28,7 +28,6 @@
 namespace Xmd\Widgets;
 
 
-use ModulesManager;
 use Ximdex\MVC\Render\SmartyTextRenderer;
 use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
@@ -346,7 +345,7 @@ class Widget
 		}
 
 		if (!empty($m) && !empty($a)) {
-			$filePath = sprintf('%s%s/actions/%s/conf/',  APP_ROOT_PATH, ModulesManager::path($m), $a);
+			$filePath = sprintf('%s%s/actions/%s/conf/',  APP_ROOT_PATH, \Ximdex\Modules\Manager::path($m), $a);
 		}
 
 		/*if (!empty($m) && empty($a)) {

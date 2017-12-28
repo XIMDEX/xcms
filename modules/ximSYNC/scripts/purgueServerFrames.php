@@ -40,7 +40,7 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 */
 
 //
-ModulesManager::file('/inc/model/ServerFrame.class.php', 'ximSYNC');
+\Ximdex\Modules\Manager::file('/inc/model/ServerFrame.class.php', 'ximSYNC');
 
 $serverFrame = new ServerFrame();
 

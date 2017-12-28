@@ -33,7 +33,7 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 
 use Ximdex\Logger;
 
-ModulesManager::file('/scripts/scheduler/scheduler.class.php', 'ximSYNC');
+\Ximdex\Modules\Manager::file('/scripts/scheduler/scheduler.class.php', 'ximSYNC');
 
 /*
  This global variable will indicate to database connections that we are in a batch process and do the reconnect

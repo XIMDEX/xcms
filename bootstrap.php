@@ -44,8 +44,6 @@ if (!defined('CLI_MODE')) {
 include_once XIMDEX_ROOT_PATH.XIMDEX_VENDORS . '/autoload.php';
 
 
-class_alias('Ximdex\Modules\Manager', 'ModulesManager');
-
 // Initialize App
 class_alias('Ximdex\Runtime\App', 'App');
 App::setValue('XIMDEX_ROOT_PATH', dirname(dirname(__FILE__)));
@@ -62,7 +60,7 @@ if ( file_exists( XIMDEX_ROOT_PATH . '/conf/install-params.conf.php' ) ) {
 
 // Initialize Modules Manager
 // set ximdex root path
-Ximdex\Modules\Manager::file( Ximdex\Modules\Manager::get_modules_install_params(), 'XIMDEX');
+Ximdex\Modules\Manager::file(\Ximdex\Modules\Manager::get_modules_install_params(), 'XIMDEX');
 
 
 // generate general purpose logs files
@@ -125,12 +123,12 @@ App::setValue( 'class::definition::DB', '/inc/db/DB.class.php' );
 // Extensions setup
 include_once( XIMDEX_ROOT_PATH . '/conf/extensions.conf.php');
 
-$mManager = new ModulesManager;
+$mManager = new \Ximdex\Modules\Manager;
 
 /**
  * Execute function init for each enabled module
  */
-foreach(ModulesManager::getEnabledModules() as $module){
+foreach(\Ximdex\Modules\Manager::getEnabledModules() as $module){
     $name = $module["name"];
     $moduleInstance = $mManager->instanceModule($name);
     if( method_exists( $moduleInstance, 'init' ) ){

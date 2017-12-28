@@ -26,8 +26,8 @@
  */
 
 //
-ModulesManager::file('/inc/AESProcessor.class.php', 'XRAM');
-ModulesManager::file('/inc/Base64Processor.class.php', 'XRAM');
+\Ximdex\Modules\Manager::file('/inc/AESProcessor.class.php', 'XRAM');
+\Ximdex\Modules\Manager::file('/inc/Base64Processor.class.php', 'XRAM');
 
 /**
  * <p>ProcessorFactory class</p>

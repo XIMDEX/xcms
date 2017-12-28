@@ -29,7 +29,6 @@ namespace Ximdex\MVC;
 
 
 use Ximdex\Logger;
-use ModulesManager;
 use Ximdex\Parsers\ParsingJsGetText;
 use Ximdex\Utils\Serializer;
 use Ximdex\Models\User;
@@ -467,7 +466,7 @@ abstract class ActionAbstract extends IController
         if ('APP' == $_module) {
             $_js = \App::getUrl($_js);
         }else if ('XIMDEX' != $_module && 'internet'  != $_module ) {
-            $path = ModulesManager::path($_module);
+            $path = \Ximdex\Modules\Manager::path($_module);
             $_js = $path . $_js;
         }else if ('XIMDEX' == $_module) {
             $_js = \App::getUrl($_js);
@@ -496,7 +495,7 @@ abstract class ActionAbstract extends IController
         if ('APP' == $_module) {
             $this->_css[] = App::getUrl( $_css );
         }else if ('XIMDEX' != $_module) {
-            $path = ModulesManager::path($_module);
+            $path = \Ximdex\Modules\Manager::path($_module);
             $_css = $path . $_css;
 
             $this->_css[] = App::getValue('UrlRoot') . ltrim($_css, '/');
@@ -658,7 +657,7 @@ abstract class ActionAbstract extends IController
     {
         unset($userId);
 
-        if (!ModulesManager::isEnabled('ximTOUR')) {
+        if (!\Ximdex\Modules\Manager::isEnabled('ximTOUR')) {
             return false;
         }
         $numReps = App::getValue('ximTourRep');

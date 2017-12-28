@@ -28,8 +28,8 @@
 use Ximdex\Logger;
 use Ximdex\Runtime\Db;
 
-ModulesManager::file('/inc/model/orm/ServerErrorByPumper_ORM.class.php', 'ximSYNC');
-ModulesManager::file('/inc/model/ServerFrame.class.php', 'ximSYNC');
+\Ximdex\Modules\Manager::file('/inc/model/orm/ServerErrorByPumper_ORM.class.php', 'ximSYNC');
+\Ximdex\Modules\Manager::file('/inc/model/ServerFrame.class.php', 'ximSYNC');
 
 /**
 *	@brief Manages the errors found during the sending of ServerFrames to Server.

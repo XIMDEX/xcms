@@ -33,7 +33,7 @@ use Ximdex\MPM\MPMProcess;
 
 
 
-ModulesManager::file('/inc/model/ServerFrame.class.php', 'ximSYNC');
+\Ximdex\Modules\Manager::file('/inc/model/ServerFrame.class.php', 'ximSYNC');
 
 
 /**

@@ -28,7 +28,7 @@ use Ximdex\Models\User;
 use Ximdex\MVC\ActionAbstract;
 
 
-ModulesManager::file("/actions/browser3/Action_browser3.class.php");
+\Ximdex\Modules\Manager::file("/actions/browser3/Action_browser3.class.php");
 
 
 class Action_welcome extends ActionAbstract
@@ -43,7 +43,7 @@ class Action_welcome extends ActionAbstract
             if ($this->tourEnabled(\Ximdex\Runtime\Session::get("userID"), "welcome")) {
                 $values[] = $this->addJs('/resources/js/start_tour.js', 'ximTOUR');
             }
-            if (ModulesManager::isEnabled('ximTOUR')) {
+            if (\Ximdex\Modules\Manager::isEnabled('ximTOUR')) {
                 $values[] = $this->addJs('/actions/welcome/resources/js/tour.js');
                 $values[] = $this->addJs('/resources/js/tour.js', 'ximTOUR');
             }

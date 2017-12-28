@@ -83,7 +83,7 @@ class Action_console_wrapper extends ActionAbstract
             return;
         }
 
-        $command = sprintf('php %s' . ModulesManager::path('ximIO') . '/actions/run.php --mode export --nodes %s --test 1',
+        $command = sprintf('php %s' . \Ximdex\Modules\Manager::path('ximIO') . '/actions/run.php --mode export --nodes %s --test 1',
             XIMDEX_ROOT_PATH, $idNode);
         if (!empty($file)) {
             $command .= sprintf(' --file %s', $file);
@@ -219,7 +219,7 @@ class Action_console_wrapper extends ActionAbstract
         $language = $this->request->getParam('language');
         $group = $this->request->getParam('group');
 
-        $command = sprintf('php %s' . ModulesManager::path('ximIO') . '/actions/run.php --mode import --interfaceWeb 1',
+        $command = sprintf('php %s' . \Ximdex\Modules\Manager::path('ximIO') . '/actions/run.php --mode import --interfaceWeb 1',
             XIMDEX_ROOT_PATH);
 
         if (!empty($node) && is_numeric($node)) {
@@ -322,7 +322,7 @@ class Action_console_wrapper extends ActionAbstract
     public function executeFileImport()
     {
         $backup = $this->request->getParam('backup');
-        $command = sprintf('php %s' . ModulesManager::path('ximIO') . '/actions/run.php --mode file_import',
+        $command = sprintf('php %s' . \Ximdex\Modules\Manager::path('ximIO') . '/actions/run.php --mode file_import',
             XIMDEX_ROOT_PATH);
 
         $command .= ' --file ' . $backup;

@@ -28,7 +28,7 @@
 use Ximdex\Logger;
 use Ximdex\Models\Node;
 
-ModulesManager::file('/actions/movenode/baseIO.php');
+\Ximdex\Modules\Manager::file('/actions/movenode/baseIO.php');
 
 	
 function baseIO_MoveNode($nodeID, $targetParentNodeID) {

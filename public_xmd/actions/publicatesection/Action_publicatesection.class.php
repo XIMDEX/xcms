@@ -43,8 +43,8 @@ class Action_publicatesection extends ActionAbstract
         $values = array(
             'go_method' => 'publicate_section',
             'publishabledtypes' => $publishabledNodeTypes,
-            'synchronizer_to_use' => ModulesManager::isEnabled('ximSYNC') ? 'ximSYNC' : 'default',
-            'ximpublish_tools_enabled' => ModulesManager::isEnabled('ximPUBLISHtools'),
+            'synchronizer_to_use' => \Ximdex\Modules\Manager::isEnabled('ximSYNC') ? 'ximSYNC' : 'default',
+            'ximpublish_tools_enabled' => \Ximdex\Modules\Manager::isEnabled('ximPUBLISHtools'),
             'folderName' => in_array($nodeTypeName, array( 'Section',  'ImagesFolder', 'ImagesRootFolder', 'CssRootFolder', 'CssFolder', 'CommonFolder', 'CommonRootFolder')) ? 'section' : 'server',
             'name' => $node->GetNodeName()
         );

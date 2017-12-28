@@ -29,7 +29,6 @@
 namespace Ximdex\Rest\Services\Xowl;
 
 use Ximdex\Runtime\App;
-use ModulesManager;
 
 
 
@@ -68,7 +67,7 @@ class OntologyService
 
         $this->loadProviders(func_get_args());
 
-        if (ModulesManager::isEnabled('Xowl')) {
+        if (\Ximdex\Modules\Manager::isEnabled('Xowl')) {
             $key = App::getValue('Xowl_token');
 
             if ($key !== NULL && $key != '') {

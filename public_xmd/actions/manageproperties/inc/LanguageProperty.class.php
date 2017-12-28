@@ -30,7 +30,7 @@ use Ximdex\Models\Language;
 use Ximdex\Models\Node;
 use Ximdex\Models\NodeType;
 
-ModulesManager::file('/actions/manageproperties/inc/InheritableProperty.class.php');
+\Ximdex\Modules\Manager::file('/actions/manageproperties/inc/InheritableProperty.class.php');
 
 class LanguageProperty extends InheritableProperty {
 

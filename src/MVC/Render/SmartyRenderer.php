@@ -28,7 +28,6 @@
 namespace Ximdex\MVC\Render;
 
 use Extensions;
-use ModulesManager;
 use Smarty;
  use Xmd\Widgets\Widget;
 
@@ -164,7 +163,7 @@ class SmartyRenderer extends AbstractRenderer
 			$_ACTION_CONTROLLER = APP_ROOT_PATH . '/actions/' . $this->get('_ACTION_COMMAND') . '/template/Smarty/' . $_method;
 			$this->set('_ACTION_CONTROLLER', $_ACTION_CONTROLLER);
 		} else {
-			$_ACTION_CONTROLLER = XIMDEX_ROOT_PATH . ModulesManager::path($module) . '/actions/' . $this->get('_ACTION_COMMAND') . '/template/Smarty/' . $_method;
+			$_ACTION_CONTROLLER = XIMDEX_ROOT_PATH . \Ximdex\Modules\Manager::path($module) . '/actions/' . $this->get('_ACTION_COMMAND') . '/template/Smarty/' . $_method;
 			$this->set('_ACTION_CONTROLLER', $_ACTION_CONTROLLER);
 
 		}

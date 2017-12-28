@@ -28,7 +28,7 @@
 use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
 
-ModulesManager::file('/actions/addfoldernode/model/BuildParser.class.php');
+\Ximdex\Modules\Manager::file('/actions/addfoldernode/model/BuildParser.class.php');
 
 /**
  * Manage the ProjectTemplate. 

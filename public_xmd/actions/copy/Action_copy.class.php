@@ -28,7 +28,7 @@ use Ximdex\Models\Node;
 use Ximdex\Models\NodeAllowedContent;
 use Ximdex\MVC\ActionAbstract;
 
-ModulesManager::file('/actions/copy/baseIO.php');
+\Ximdex\Modules\Manager::file('/actions/copy/baseIO.php');
 
 class Action_copy extends ActionAbstract {
 

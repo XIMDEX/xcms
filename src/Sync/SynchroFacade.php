@@ -31,7 +31,6 @@ use ChannelFrame;
 
 use Ximdex\Runtime\App;
 use Ximdex\Runtime\Db as DB;
-use ModulesManager;
 use NodeFrame;
 use NodeFrameManager;
 use Ximdex\Models\Server;
@@ -40,10 +39,10 @@ use Ximdex\Models\Node;
 use Ximdex\Logger;
 
 
-if (ModulesManager::isEnabled('ximSYNC')) {
-	ModulesManager::file('/inc/model/ServerFrame.class.php', 'ximSYNC');
-	ModulesManager::file('/inc/manager/NodeFrameManager.class.php', 'ximSYNC');
-	ModulesManager::file('/inc/manager/SyncManager.class.php', 'ximSYNC');
+if (\Ximdex\Modules\Manager::isEnabled('ximSYNC')) {
+	\Ximdex\Modules\Manager::file('/inc/model/ServerFrame.class.php', 'ximSYNC');
+	\Ximdex\Modules\Manager::file('/inc/manager/NodeFrameManager.class.php', 'ximSYNC');
+	\Ximdex\Modules\Manager::file('/inc/manager/SyncManager.class.php', 'ximSYNC');
 }
 
 class SynchroFacade
@@ -64,7 +63,7 @@ class SynchroFacade
 			return NULL;
 		}
 
-		if (ModulesManager::isEnabled('ximSYNC')) {
+		if (\Ximdex\Modules\Manager::isEnabled('ximSYNC')) {
 
 			// Looking for a possible frame for the destiny channel
 
@@ -122,7 +121,7 @@ class SynchroFacade
 	 */
 	function removeFromUnexistingServer($physicalServerID)
 	{
-		if (ModulesManager::isEnabled('ximSYNC')) {
+		if (\Ximdex\Modules\Manager::isEnabled('ximSYNC')) {
 			$table = 'ServerFrames';
 		} else {
 			$table = 'Synchronizer';
@@ -153,7 +152,7 @@ class SynchroFacade
 			return NULL;
 		}
 
-		if (ModulesManager::isEnabled('ximSYNC')) {
+		if (\Ximdex\Modules\Manager::isEnabled('ximSYNC')) {
 			$nodeFramesMng = new NodeFrameManager();
 			$pendingTasks = $nodeFramesMng->getPendingNodeFrames($nodeID);
 		} else {
@@ -177,7 +176,7 @@ class SynchroFacade
 			return false;
 		}
 
-		if (ModulesManager::isEnabled('ximSYNC')) {
+		if (\Ximdex\Modules\Manager::isEnabled('ximSYNC')) {
 			$nodeFrame = new NodeFrame();
 			$result = $nodeFrame->getPublishedId($nodeID);
 		} else {
@@ -200,7 +199,7 @@ class SynchroFacade
 			return NULL;
 		}
 
-		if (ModulesManager::isEnabled('ximSYNC')) {
+		if (\Ximdex\Modules\Manager::isEnabled('ximSYNC')) {
 			$nodeFrame = new NodeFrame();
 			$nodeFrameId = $nodeFrame->getNodeFrameByNode($nodeID);
 
@@ -250,7 +249,7 @@ class SynchroFacade
 		$deleteIDs = self::getAllTaskByNode($nodeID);
 
 		foreach ($deleteIDs as $id) {
-			if (ModulesManager::isEnabled('ximSYNC')) {
+			if (\Ximdex\Modules\Manager::isEnabled('ximSYNC')) {
 
 				$nodeFrameMng = new NodeFrameManager();
 				$tasks = $nodeFrameMng->getByNode($id);
@@ -336,7 +335,7 @@ class SynchroFacade
 			return NULL;
 		}
 
-		if (ModulesManager::isEnabled('ximSYNC')) {
+		if (\Ximdex\Modules\Manager::isEnabled('ximSYNC')) {
 
 			$serverFrame = new ServerFrame($idFrame);
 			$state = $serverFrame->get('State');
@@ -365,7 +364,7 @@ class SynchroFacade
 			return NULL;
 		}
 
-		if (ModulesManager::isEnabled('ximSYNC')) {
+		if (\Ximdex\Modules\Manager::isEnabled('ximSYNC')) {
 
 			$serverFrame = new ServerFrame($idFrame);
 			$path = $serverFrame->get('RemotePath');
@@ -394,7 +393,7 @@ class SynchroFacade
 			return NULL;
 		}
 
-		if (ModulesManager::isEnabled('ximSYNC')) {
+		if (\Ximdex\Modules\Manager::isEnabled('ximSYNC')) {
 
 			$serverFrame = new ServerFrame($idFrame);
 			$name = $serverFrame->get('FileName');
@@ -423,7 +422,7 @@ class SynchroFacade
 			return NULL;
 		}
 
-		if (ModulesManager::isEnabled('ximSYNC')) {
+		if (\Ximdex\Modules\Manager::isEnabled('ximSYNC')) {
 
 			$serverFrame = new ServerFrame($idFrame);
 			$server = $serverFrame->get('IdServer');
@@ -452,7 +451,7 @@ class SynchroFacade
 			return NULL;
 		}
 
-		if (ModulesManager::isEnabled('ximSYNC')) {
+		if (\Ximdex\Modules\Manager::isEnabled('ximSYNC')) {
 
 			$serverFrame = new ServerFrame($idFrame);
 			$channelFrameId = $serverFrame->get('IdChannelFrame');
@@ -485,7 +484,7 @@ class SynchroFacade
 			return NULL;
 		}
 		$channelID = null ;
-		if (ModulesManager::isEnabled('ximSYNC')) {
+		if (\Ximdex\Modules\Manager::isEnabled('ximSYNC')) {
 			$nodeFrame = new NodeFrame();
 			$id = $nodeFrame->getPublishedId($nodeID);
 
@@ -526,7 +525,7 @@ class SynchroFacade
 	 */
 	function getGaps($idNode)
 	{
-		if (ModulesManager::isEnabled('ximSYNC')) {
+		if (\Ximdex\Modules\Manager::isEnabled('ximSYNC')) {
 			$nodefr = new NodeFrame();
 			$gaps = $nodefr->getGaps($idNode);
 		} else {
@@ -569,7 +568,7 @@ class SynchroFacade
 	function pushDocInPublishingPool($idNode, $upDate, $downDate = NULL, $flagsArray = NULL, $recurrence = false)
 	{
 
-		if (ModulesManager::isEnabled('ximSYNC')) {
+		if (\Ximdex\Modules\Manager::isEnabled('ximSYNC')) {
 
 			$syncMngr = new \SyncManager();
 			$node = new Node($idNode);

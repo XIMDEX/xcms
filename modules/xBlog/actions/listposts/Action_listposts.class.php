@@ -29,8 +29,8 @@ use Ximdex\MVC\ActionAbstract;
 use DiDom\Document;
 use\Ximdex\NodeTypes\NodeType;
 
-ModulesManager::file("/actions/browser3/Action_browser3.class.php");
-ModulesManager::file('/inc/utils/XHTMLEditorUtils.php', 'xBlog');
+\Ximdex\Modules\Manager::file("/actions/browser3/Action_browser3.class.php");
+\Ximdex\Modules\Manager::file('/inc/utils/XHTMLEditorUtils.php', 'xBlog');
 
 class Action_listposts extends ActionAbstract
 {

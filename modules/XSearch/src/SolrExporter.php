@@ -6,8 +6,8 @@ use Ximdex\Models\StructuredDocument;
 use Ximdex\Runtime\Db;
 use\Ximdex\NodeTypes\NodeType;
 
-ModulesManager::file('/src/Exporter.php', 'XSearch');
-ModulesManager::file('/src/SolrConnection.php', 'XSearch');
+\Ximdex\Modules\Manager::file('/src/Exporter.php', 'XSearch');
+\Ximdex\Modules\Manager::file('/src/SolrConnection.php', 'XSearch');
 
 class SolrExporter implements Exporter
 {

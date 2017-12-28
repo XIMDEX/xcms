@@ -31,12 +31,11 @@ use Ximdex\Runtime\Db;
 use ServerErrorByPumper;
 use ServerErrorManager;
 use SynchronizerStat;
-use ModulesManager ;
 use Ximdex\Models\ORM\PumpersOrm;
 
-ModulesManager::file('/inc/model/ServerErrorByPumper.class.php', 'ximSYNC');
-ModulesManager::file('/inc/manager/ServerErrorManager.class.php', 'ximSYNC');
-ModulesManager::file('/conf/synchro_conf.php', 'ximSYNC');
+\Ximdex\Modules\Manager::file('/inc/model/ServerErrorByPumper.class.php', 'ximSYNC');
+\Ximdex\Modules\Manager::file('/inc/manager/ServerErrorManager.class.php', 'ximSYNC');
+\Ximdex\Modules\Manager::file('/conf/synchro_conf.php', 'ximSYNC');
 
 
 /**

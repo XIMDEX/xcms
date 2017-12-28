@@ -34,8 +34,8 @@ use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\App;
 use\Ximdex\NodeTypes\NodeType as ServicesNodeType;
 
-ModulesManager::file('/actions/addfoldernode/model/ProjectTemplate.class.php');
-ModulesManager::file('/actions/addfoldernode/conf/addfoldernode.conf');
+\Ximdex\Modules\Manager::file('/actions/addfoldernode/model/ProjectTemplate.class.php');
+\Ximdex\Modules\Manager::file('/actions/addfoldernode/conf/addfoldernode.conf');
 
 class Action_addfoldernode extends ActionAbstract
 {

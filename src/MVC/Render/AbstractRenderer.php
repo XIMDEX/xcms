@@ -26,7 +26,6 @@
 
 namespace Ximdex\MVC\Render;
 
-use ModulesManager;
 use Ximdex\Models\Action;
 use Ximdex\Models\Node;
 use Ximdex\Runtime\App;
@@ -281,9 +280,9 @@ class AbstractRenderer
     private function _set_module($module = NULL, $_ACTION_COMMAND)
     {
         if ($module) {
-            $base_action = XIMDEX_ROOT_PATH . ModulesManager::path($module) . "/actions/" . $_ACTION_COMMAND . "/";
+            $base_action = XIMDEX_ROOT_PATH . \Ximdex\Modules\Manager::path($module) . "/actions/" . $_ACTION_COMMAND . "/";
             //We indicate the specfieds module parameters
-            $this->set("base_module", XIMDEX_ROOT_PATH . ModulesManager::path($module) . "/");
+            $this->set("base_module", XIMDEX_ROOT_PATH . \Ximdex\Modules\Manager::path($module) . "/");
             $this->set("module", $module);
         } else {
             $base_action = "/public_xmd/actions/" . $_ACTION_COMMAND . "/";

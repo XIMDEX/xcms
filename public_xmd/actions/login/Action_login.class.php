@@ -31,7 +31,7 @@ use Ximdex\Runtime\App;
 use Ximdex\Runtime\Request;
 
 require_once(XIMDEX_ROOT_PATH . '/conf/stats.php');
-ModulesManager::file('/inc/i18n/I18N.class.php');
+\Ximdex\Modules\Manager::file('/inc/i18n/I18N.class.php');
 
 class Action_login extends ActionAbstract
 {

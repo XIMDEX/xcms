@@ -30,8 +30,8 @@ use Ximdex\Models\Node;
 use Ximdex\Runtime\Constants;
 use Ximdex\Cli\CliReader;
 
-ModulesManager::file('/inc/ImportXml.class.php', 'ximIO');
-ModulesManager::file('/actions/file_import/inc/FileUpdaterCli.class.php', 'ximIO');
+\Ximdex\Modules\Manager::file('/inc/ImportXml.class.php', 'ximIO');
+\Ximdex\Modules\Manager::file('/actions/file_import/inc/FileUpdaterCli.class.php', 'ximIO');
 
 $parameterCollector = new ImportCli($argc, $argv);
 

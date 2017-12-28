@@ -30,7 +30,7 @@ use Ximdex\Models\User;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Sync\SynchroFacade;
 
-ModulesManager::file('/actions/browser3/inc/GenericDatasource.class.php');
+\Ximdex\Modules\Manager::file('/actions/browser3/inc/GenericDatasource.class.php');
 
 class Action_deletenode extends ActionAbstract {
 

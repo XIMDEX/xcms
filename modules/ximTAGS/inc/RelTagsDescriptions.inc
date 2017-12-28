@@ -25,8 +25,8 @@
  *  @version $Revision$
  */
 
-ModulesManager::file('/inc/model/orm/RelTagsDescriptions.class.php', 'ximTAGS');
-ModulesManager::file('/inc/Tags.inc', 'ximTAGS');
+\Ximdex\Modules\Manager::file('/inc/model/orm/RelTagsDescriptions.class.php', 'ximTAGS');
+\Ximdex\Modules\Manager::file('/inc/Tags.inc', 'ximTAGS');
 
 class RelTagsDescriptions extends RelTagsDescriptions_ORM {
 

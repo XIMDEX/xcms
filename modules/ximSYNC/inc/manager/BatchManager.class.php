@@ -37,11 +37,11 @@ use Ximdex\Models\Channel;
 use Ximdex\Models\Node;
 use Ximdex\Utils\PipelineManager;
 
-ModulesManager::file('/inc/model/Batch.class.php', 'ximSYNC');
-ModulesManager::file('/inc/model/NodeFrame.class.php', 'ximSYNC');
-ModulesManager::file('/inc/model/ServerFrame.class.php', 'ximSYNC');
-ModulesManager::file('/inc/model/ChannelFrame.class.php', 'ximSYNC');
-ModulesManager::file('/inc/model/NodesToPublish.class.php', 'ximSYNC');
+\Ximdex\Modules\Manager::file('/inc/model/Batch.class.php', 'ximSYNC');
+\Ximdex\Modules\Manager::file('/inc/model/NodeFrame.class.php', 'ximSYNC');
+\Ximdex\Modules\Manager::file('/inc/model/ServerFrame.class.php', 'ximSYNC');
+\Ximdex\Modules\Manager::file('/inc/model/ChannelFrame.class.php', 'ximSYNC');
+\Ximdex\Modules\Manager::file('/inc/model/NodesToPublish.class.php', 'ximSYNC');
 
 
 /**

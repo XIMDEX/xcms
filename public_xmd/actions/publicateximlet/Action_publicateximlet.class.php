@@ -78,8 +78,8 @@ class Action_publicateximlet extends ActionAbstract {
 		$idAction = $this->request->getParam("actionid");
 		$upDate = time();
 
-		if (ModulesManager::isEnabled('ximSYNC')) {							
-			ModulesManager::file('/inc/manager/SyncManager.class.php', 'ximSYNC');
+		if (\Ximdex\Modules\Manager::isEnabled('ximSYNC')) {
+			\Ximdex\Modules\Manager::file('/inc/manager/SyncManager.class.php', 'ximSYNC');
 			$syncMngr = new SyncManager();
 			$syncMngr->setFlag('forcePublication', true);
 			$syncResult = $syncMngr->pushDocInPublishingPool($idNode, $upDate, NULL);

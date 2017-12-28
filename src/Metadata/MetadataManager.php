@@ -205,7 +205,7 @@ class MetadataManager{
                 }
             }
 
-            if (\ModulesManager::isEnabled('ximTAGS')) {
+            if (\Ximdex\Modules\Manager::isEnabled('ximTAGS')) {
                 $relTags = new RelTagsNodes();
                 $tags = $relTags->getTags($node->nodeID);
                 $tagsNode = $domDoc->createElement('tags');
@@ -328,7 +328,7 @@ class MetadataManager{
                     }
                 }
 
-                if(\ModulesManager::isEnabled('ximTAGS')){
+                if(\Ximdex\Modules\Manager::isEnabled('ximTAGS')){
                     $relTags = new RelTagsNodes();
                     $tags = $relTags->getTags($this->node->nodeID);
                     $tagsNode = $domDoc->createElement('tags');

@@ -26,7 +26,6 @@
 
 namespace Ximdex\NodeTypes;
 use DOMDocument;
-use ModulesManager;
 use Ximdex\Models\Node;
 
 

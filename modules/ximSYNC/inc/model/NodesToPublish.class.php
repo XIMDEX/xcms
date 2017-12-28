@@ -29,7 +29,7 @@ use Ximdex\Logger;
 use Ximdex\Runtime\DataFactory;
 use Ximdex\Runtime\Db;
 
-ModulesManager::file('/inc/model/orm/NodesToPublish_ORM.class.php', 'ximSYNC');
+\Ximdex\Modules\Manager::file('/inc/model/orm/NodesToPublish_ORM.class.php', 'ximSYNC');
 
 
 class NodesToPublish extends NodesToPublish_ORM {

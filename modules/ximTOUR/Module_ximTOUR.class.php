@@ -30,9 +30,9 @@ use Ximdex\Modules\Module;
 
 
 
-ModulesManager::file('/actions/addfoldernode/model/ProjectTemplate.class.php');
-ModulesManager::file('/actions/addfoldernode/conf/addfoldernode.conf');
-ModulesManager::file('/actions/addfoldernode/Action_addfoldernode.class.php');
+\Ximdex\Modules\Manager::file('/actions/addfoldernode/model/ProjectTemplate.class.php');
+\Ximdex\Modules\Manager::file('/actions/addfoldernode/conf/addfoldernode.conf');
+\Ximdex\Modules\Manager::file('/actions/addfoldernode/Action_addfoldernode.class.php');
 
 class Module_ximTOUR extends Module
 {

@@ -28,7 +28,7 @@
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Models\Node;
 
-ModulesManager::file('/actions/manageproperties/inc/InheritedPropertiesManager.class.php');
+\Ximdex\Modules\Manager::file('/actions/manageproperties/inc/InheritedPropertiesManager.class.php');
 
 /**
  * Manage properties action.

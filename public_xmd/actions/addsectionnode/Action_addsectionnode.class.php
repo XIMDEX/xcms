@@ -31,8 +31,8 @@ use Ximdex\Models\SectionType;
 use Ximdex\MVC\ActionAbstract;
 use\Ximdex\NodeTypes\NodeType as NodetypeService;
 
-ModulesManager::file('/actions/manageproperties/inc/InheritedPropertiesManager.class.php');
-ModulesManager::file('/inc/io/XlyreBaseIO.class.php', 'xlyre');
+\Ximdex\Modules\Manager::file('/actions/manageproperties/inc/InheritedPropertiesManager.class.php');
+\Ximdex\Modules\Manager::file('/inc/io/XlyreBaseIO.class.php', 'xlyre');
 
 class Action_addsectionnode extends ActionAbstract {
 
@@ -156,7 +156,7 @@ class Action_addsectionnode extends ActionAbstract {
         $sectionType = new SectionType();
         $sectionTypes = $sectionType->find(ALL);
         while (list(, $sectionTypeInfo) = each($sectionTypes)) {
-            if (empty($sectionTypeInfo['module']) || ModulesManager::isEnabled($sectionTypeInfo['module'])) {
+            if (empty($sectionTypeInfo['module']) || \Ximdex\Modules\Manager::isEnabled($sectionTypeInfo['module'])) {
                 $sectionTypeOptions[] = array(
                     'value' => $sectionTypeInfo['idSectionType'],
                     'label' => $sectionTypeInfo['sectionType'],

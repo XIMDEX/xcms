@@ -29,7 +29,7 @@ use Ximdex\Logger;
 use Ximdex\Runtime\App;
 use Ximdex\Runtime\Db;
 
-ModulesManager::file('/inc/model/orm/SynchronizerStats_ORM.class.php', 'ximSYNC');
+\Ximdex\Modules\Manager::file('/inc/model/orm/SynchronizerStats_ORM.class.php', 'ximSYNC');
 
 /**
  * @brief Logging for the publication incidences.

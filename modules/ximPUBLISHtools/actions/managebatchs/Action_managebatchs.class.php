@@ -31,9 +31,9 @@ use Ximdex\Runtime\App;
 use Ximdex\Utils\Serializer;
 use Ximdex\Runtime\Session;
 
-ModulesManager::file('/actions/FilterParameters.php', 'ximPUBLISHtools');
-ModulesManager::file('/inc/model/PublishingReport.class.php', 'ximSYNC');
-ModulesManager::file('/inc/model/Batch.class.php', 'ximSYNC');
+\Ximdex\Modules\Manager::file('/actions/FilterParameters.php', 'ximPUBLISHtools');
+\Ximdex\Modules\Manager::file('/inc/model/PublishingReport.class.php', 'ximSYNC');
+\Ximdex\Modules\Manager::file('/inc/model/Batch.class.php', 'ximSYNC');
 
 class Action_managebatchs extends ActionAbstract {
 
@@ -55,12 +55,12 @@ class Action_managebatchs extends ActionAbstract {
 
 
         $jsFiles = array(
-            App::getUrl('UrlRoot') . ModulesManager::path('ximPUBLISHtools') . '/actions/managebatchs/resources/js/index.js',
+            App::getUrl('UrlRoot') . \Ximdex\Modules\Manager::path('ximPUBLISHtools') . '/actions/managebatchs/resources/js/index.js',
             App::getUrl('/public_xmd/assets/js/ximtimer.js')
         );
 
         $cssFiles = array(
-            App::getValue('UrlRoot') . ModulesManager::path('ximPUBLISHtools') . '/actions/managebatchs/resources/css/index.css'
+            App::getValue('UrlRoot') . \Ximdex\Modules\Manager::path('ximPUBLISHtools') . '/actions/managebatchs/resources/css/index.css'
         );
 
         $arrValores = array(

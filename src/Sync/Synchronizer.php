@@ -29,7 +29,6 @@ namespace Ximdex\Sync;
 use Ximdex\Runtime\App;
 use Ximdex\Runtime\DataFactory;
 use Ximdex\Runtime\Db as DB;
-use ModulesManager;
 use Ximdex\Utils\PipelineManager;
 use Ximdex\Models\Server;
 use Ximdex\Models\ORM\SynchronizerOrm;

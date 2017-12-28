@@ -30,8 +30,8 @@ use Ximdex\Models\NodeAllowedContent;
 use Ximdex\Runtime\App;
 use Ximdex\Sync\SynchroFacade;
 
-ModulesManager::file('/actions/movenode/baseIO.php');
-ModulesManager::file('/actions/copy/Action_copy.class.php');
+\Ximdex\Modules\Manager::file('/actions/movenode/baseIO.php');
+\Ximdex\Modules\Manager::file('/actions/copy/Action_copy.class.php');
 
 class Action_movenode extends Action_copy {
 

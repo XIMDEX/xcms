@@ -29,9 +29,9 @@ use Ximdex\Models\Node;
 use Ximdex\Models\NodeType;
 use Ximdex\Runtime\Constants;
 
-ModulesManager::file('/inc/ExportXml.class.php', 'ximIO');
-ModulesManager::file('/inc/ImportXml.class.php', 'ximIO');
-ModulesManager::file('/inc/FileUpdater.class.php', 'ximIO');
+\Ximdex\Modules\Manager::file('/inc/ExportXml.class.php', 'ximIO');
+\Ximdex\Modules\Manager::file('/inc/ImportXml.class.php', 'ximIO');
+\Ximdex\Modules\Manager::file('/inc/FileUpdater.class.php', 'ximIO');
 
 	
 	function copyNode ($source, $dest, $recurrence) {

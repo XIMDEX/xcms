@@ -7,7 +7,7 @@ require_once dirname(__DIR__, 2) . '/bootstrap.php';
 $worker = new \Ximdex\Tasks\Worker();
 
 
-foreach (ModulesManager::getEnabledModules() as $module) {
+foreach (\Ximdex\Modules\Manager::getEnabledModules() as $module) {
     $name = $module["name"];
     $mManager->instanceModule($name)->addTasks($worker);
 }

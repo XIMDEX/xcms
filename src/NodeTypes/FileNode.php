@@ -30,7 +30,6 @@ use Ximdex\Runtime\DataFactory;
 use Ximdex\Runtime\Db;
 use DOMDocument;
 use Ximdex\Deps\DepsManager;
-use ModulesManager;
 use Ximdex\Models\NodeDependencies;
 use Ximdex\Models\State;
 use Ximdex\Models\Version;
@@ -39,8 +38,8 @@ use Ximdex\Parsers\ParsingDependencies;
 use Ximdex\Utils\FsUtils;
 use Ximdex\Logger;
 
-ModulesManager::file('/actions/fileupload/baseIO.php');
-ModulesManager::file('/inc/CacheWriter.class.php', 'ximRAM');
+\Ximdex\Modules\Manager::file('/actions/fileupload/baseIO.php');
+\Ximdex\Modules\Manager::file('/inc/CacheWriter.class.php', 'ximRAM');
 
 /**
  * @brief Handles files.
@@ -162,7 +161,7 @@ class FileNode extends Root
         }
 
         /*if (($this->parent->nodeType->get('Name') == 'VisualTemplate')
-            && ModulesManager::isEnabled('ximRAM')) {
+            && \Ximdex\Modules\Manager::isEnabled('ximRAM')) {
             CacheWriter::writeCache($this->nodeID, $content);
         }*/
 

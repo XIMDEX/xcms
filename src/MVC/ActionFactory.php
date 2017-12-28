@@ -29,7 +29,6 @@
 
 namespace Ximdex\MVC;
 
-use ModulesManager;
 use Ximdex\Logger;
 
 
@@ -71,7 +70,7 @@ class ActionFactory
                     DIRECTORY_SEPARATOR .trim($actionPath, '/').
                     DIRECTORY_SEPARATOR . $action;
             } else {
-                $path_module = ModulesManager::path($module);
+                $path_module = \Ximdex\Modules\Manager::path($module);
                 $actionPath = sprintf('%s%s%s%s%s%s',
                     XIMDEX_ROOT_PATH,
                     $path_module,

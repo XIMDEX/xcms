@@ -30,8 +30,8 @@ use Ximdex\Models\PipeStatus;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Workflow\WorkFlow;
 
-ModulesManager::file('/inc/nodetypes/statenode.php');
-ModulesManager::file('/inc/model/ServerFrame.class.php', 'ximSYNC');
+\Ximdex\Modules\Manager::file('/inc/nodetypes/statenode.php');
+\Ximdex\Modules\Manager::file('/inc/model/ServerFrame.class.php', 'ximSYNC');
 
 class Action_checkstatus extends ActionAbstract
 {

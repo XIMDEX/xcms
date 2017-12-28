@@ -38,7 +38,7 @@ if (!defined('SERVERFRAMES_SYNC_PATH'))
 
 
 if (!defined('PUMPERPHP_PATH'))
-	define('PUMPERPHP_PATH', XIMDEX_ROOT_PATH.ModulesManager::path('ximSYNC')."/scripts/pumper/php");
+	define('PUMPERPHP_PATH', XIMDEX_ROOT_PATH.\Ximdex\Modules\Manager::path('ximSYNC')."/scripts/pumper/php");
 
 /*
  *	Paging the monitor panel of batch publication

@@ -77,7 +77,7 @@ class Action_workflow_backward extends ActionAbstract {
             return ;
         }
 
-        $conf = ModulesManager::file('/conf/notifications.php', 'XIMDEX');
+        $conf = \Ximdex\Modules\Manager::file('/conf/notifications.php', 'XIMDEX');
         $defaultMessage=$this->buildMessage($conf["defaultMessage"], $prevStateName,$node->GetNodeName());
 
 

@@ -34,11 +34,11 @@ use Ximdex\Runtime\Db;
 use Ximdex\Utils\FsUtils;
 use Ximdex\Utils\PipelineManager;
 
-ModulesManager::file('/inc/model/orm/ServerFrames_ORM.class.php', 'ximSYNC');
-ModulesManager::file('/inc/model/ChannelFrame.class.php', 'ximSYNC');
-ModulesManager::file('/inc/model/NodeFrame.class.php', 'ximSYNC');
-ModulesManager::file('/conf/synchro_conf.php', 'ximSYNC');
-ModulesManager::file('/inc/model/PublishingReport.class.php', 'ximSYNC');
+\Ximdex\Modules\Manager::file('/inc/model/orm/ServerFrames_ORM.class.php', 'ximSYNC');
+\Ximdex\Modules\Manager::file('/inc/model/ChannelFrame.class.php', 'ximSYNC');
+\Ximdex\Modules\Manager::file('/inc/model/NodeFrame.class.php', 'ximSYNC');
+\Ximdex\Modules\Manager::file('/conf/synchro_conf.php', 'ximSYNC');
+\Ximdex\Modules\Manager::file('/inc/model/PublishingReport.class.php', 'ximSYNC');
 
 /**
 *	@brief Handles operations with ServerFrames.
@@ -85,7 +85,7 @@ class ServerFrame extends ServerFrames_ORM {
 
 
 	function update() {
-		if(ModulesManager::isEnabled('ximPUBLISHtools')) {
+		if(\Ximdex\Modules\Manager::isEnabled('ximPUBLISHtools')) {
 			if($this->get('IdNodeFrame') > 0) {
 				$batch = new Batch($this->get('IdBatchUp'));
 				$nodeFrame = new NodeFrame($this->get('IdNodeFrame'));
@@ -155,7 +155,7 @@ class ServerFrame extends ServerFrames_ORM {
 		$idServerFrame = $this->get('IdSync');
 
 		if ($idServerFrame > 0) {
-			if(ModulesManager::isEnabled('ximPUBLISHtools')) {
+			if(\Ximdex\Modules\Manager::isEnabled('ximPUBLISHtools')) {
 				$batch = new Batch($idBatchUp);
 				$idSection = $batch->get('IdNodeGenerator');
 				$sectionNode = new Node($idSection);

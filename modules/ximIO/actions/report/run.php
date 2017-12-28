@@ -34,7 +34,7 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 //
 
 // We're not using the orm, bacuse this code has to be also compatible with v2.5 
- ModulesManager::file('/actions/report/inc/ReportCli.class.php', 'ximIO');
+ \Ximdex\Modules\Manager::file('/actions/report/inc/ReportCli.class.php', 'ximIO');
 
 $parameterCollector = new ReportCli($argc, $argv);
 

@@ -36,8 +36,8 @@ use Ximdex\Cli\CliReader;
 
 
 	//
-	ModulesManager::file('/inc/FileUpdater.class.php', 'ximIO');
-	ModulesManager::file('/actions/file_import/inc/FileUpdaterCli.class.php', 'ximIO');
+	\Ximdex\Modules\Manager::file('/inc/FileUpdater.class.php', 'ximIO');
+	\Ximdex\Modules\Manager::file('/actions/file_import/inc/FileUpdaterCli.class.php', 'ximIO');
 
 	$parameterCollector = new FileUpdaterCli($argc, $argv);
 	$revision = $parameterCollector->getParameter('--file');
@@ -62,6 +62,6 @@ use Ximdex\Cli\CliReader;
 
 
 	if ($autoDelete) {
-		passthru(sprintf('php %s'.ModulesManager::path('ximIO').'/actions/remove/run.php --file %s', 
+		passthru(sprintf('php %s'.\Ximdex\Modules\Manager::path('ximIO').'/actions/remove/run.php --file %s',
 			XIMDEX_ROOT_PATH,  $revision));
 	}

@@ -41,22 +41,22 @@ class InstallModulesManager extends InstallManager
     {
 
         $installState = self::UNINSTALLED;
-        $modMngr = new ModulesManager();
+        $modMngr = new \Ximdex\Modules\Manager();
         $state = $modMngr->checkModule($name);
         $myenabled = $modMngr->isEnabled($name);
 
         switch ($state) {
-            case ModulesManager::get_module_state_installed():
+            case \Ximdex\Modules\Manager::get_module_state_installed():
                 $installState = self::ALREADY_INSTALL;
                 # code...
                 break;
-            case ModulesManager::get_module_state_uninstalled():
+            case \Ximdex\Modules\Manager::get_module_state_uninstalled():
                 if (!$myenabled) {
                     $result = $modMngr->installModule($name);
                     $installState = $result ? self::SUCCESS_INSTALL : self::ERROR_INSTALL;
                 }
                 break;
-            case ModulesManager::get_module_state_error():
+            case \Ximdex\Modules\Manager::get_module_state_error():
                 $installState = self::ERROR_INSTALL;
                 break;
             default:
@@ -68,13 +68,13 @@ class InstallModulesManager extends InstallManager
 
     public function enableModule($name)
     {
-            $modMngr = new ModulesManager();
+            $modMngr = new \Ximdex\Modules\Manager();
             $modMngr->enableModule($name);
     }
 
     public function uninstallModule($name)
     {
-        $modMngr = new ModulesManager();
+        $modMngr = new \Ximdex\Modules\Manager();
         $modMngr->uninstallModule($name);
     }
 	
@@ -82,13 +82,13 @@ class InstallModulesManager extends InstallManager
     {
 
 
-        $fileName = XIMDEX_ROOT_PATH . ModulesManager::get_modules_install_params();
+        $fileName = XIMDEX_ROOT_PATH . \Ximdex\Modules\Manager::get_modules_install_params();
         @unlink($fileName);
         /*if(!file_exists($fileName) || !is_writable($fileName))
             return false;*/
         //$config = FsUtils::file_get_contents($fileName);	the file has not been created yet
 
-        $modMan = new ModulesManager();
+        $modMan = new \Ximdex\Modules\Manager();
         $modules = $modMan->getModules();
         foreach ($modules as $mod) {
             if (isset($mod["enabled"])) {
@@ -104,7 +104,7 @@ class InstallModulesManager extends InstallManager
 
         foreach ($modules as $mod) {
             @unlink(XIMDEX_ROOT_PATH . "/data/." . $mod["name"]);
-            $str .= ModulesManager::get_pre_define_module() . strtoupper($mod["name"]) . ModulesManager::get_post_path_define_module() . str_replace(XIMDEX_ROOT_PATH, '', $mod["path"]) . "');" . "\n";
+            $str .= \Ximdex\Modules\Manager::get_pre_define_module() . strtoupper($mod["name"]) . \Ximdex\Modules\Manager::get_post_path_define_module() . str_replace(XIMDEX_ROOT_PATH, '', $mod["path"]) . "');" . "\n";
         }
         $str .= "\n?>";
         $result = FsUtils::file_put_contents($fileName, $str);

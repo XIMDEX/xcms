@@ -25,7 +25,6 @@
  */
 
 use Ximdex\Models\Node;
-use Ximdex\Modules\Manager as ModulesManager;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\App;
 
@@ -91,14 +90,14 @@ class Action_moduleslist extends ActionAbstract
         $userId = \Ximdex\Runtime\Session::get('userID');
 
         $module_name = $this->request->getParam('modsel');
-        $module_exists = ModulesManager::moduleExists($module_name);
+        $module_exists = \Ximdex\Modules\Manager::moduleExists($module_name);
         if (!$module_exists) {
             return $this->moduleNotFound();
         }
-        $module_actived = ModulesManager::isEnabled($module_name);
-        $module_state = ModulesManager::checkModule($module_name);
-        $module_installed = (ModulesManager::get_module_state_installed() == $module_state);
-        $core_module = in_array($module_name, ModulesManager::getCoreModules());
+        $module_actived = \Ximdex\Modules\Manager::isEnabled($module_name);
+        $module_state = \Ximdex\Modules\Manager::checkModule($module_name);
+        $module_installed = (\Ximdex\Modules\Manager::get_module_state_installed() == $module_state);
+        $core_module = in_array($module_name, \Ximdex\Modules\Manager::getCoreModules());
 
         $values = array(
             "module_name" => $module_name,
@@ -124,16 +123,16 @@ class Action_moduleslist extends ActionAbstract
     public function changeState()
     {
         $module_name = $this->request->getParam('modsel');
-        $module_exists = ModulesManager::moduleExists($module_name);
+        $module_exists = \Ximdex\Modules\Manager::moduleExists($module_name);
         $module_active = (int)$this->request->getParam('module_active');
         $module_install = (int)$this->request->getParam('module_install');
         if (!$module_exists) {
             return $this->moduleNotFound();
         }
-        $state_now = ModulesManager::isEnabled($module_name);
-        $module_state = ModulesManager::checkModule($module_name);
-        $install_now = (ModulesManager::get_module_state_installed() == $module_state);
-        $core_module = in_array($module_name, ModulesManager::getCoreModules());
+        $state_now = \Ximdex\Modules\Manager::isEnabled($module_name);
+        $module_state = \Ximdex\Modules\Manager::checkModule($module_name);
+        $install_now = (\Ximdex\Modules\Manager::get_module_state_installed() == $module_state);
+        $core_module = in_array($module_name, \Ximdex\Modules\Manager::getCoreModules());
 
         if ($state_now != $module_active && !$core_module) {
             if ($module_active) {
@@ -171,11 +170,11 @@ class Action_moduleslist extends ActionAbstract
     function installModule($module_name)
     {
 
-        ModulesManager::$msg = null;
-        ModulesManager::installModule($module_name);
-        if (ModulesManager::$msg != null) {
-            $this->messages->add(ModulesManager::$msg, MSG_TYPE_NOTICE);
-            ModulesManager::$msg = null;
+        \Ximdex\Modules\Manager::$msg = null;
+        \Ximdex\Modules\Manager::installModule($module_name);
+        if (\Ximdex\Modules\Manager::$msg != null) {
+            $this->messages->add(\Ximdex\Modules\Manager::$msg, MSG_TYPE_NOTICE);
+            \Ximdex\Modules\Manager::$msg = null;
         } else {
             $this->messages->add(_("Module installed"), MSG_TYPE_NOTICE);
         }
@@ -184,11 +183,11 @@ class Action_moduleslist extends ActionAbstract
     function enableModule($module_name)
     {
 
-        ModulesManager::$msg = null;
-        ModulesManager::enableModule($module_name);
-        if (ModulesManager::$msg != null) {
-            $this->messages->add(ModulesManager::$msg, MSG_TYPE_NOTICE);
-            ModulesManager::$msg = null;
+        \Ximdex\Modules\Manager::$msg = null;
+        \Ximdex\Modules\Manager::enableModule($module_name);
+        if (\Ximdex\Modules\Manager::$msg != null) {
+            $this->messages->add(\Ximdex\Modules\Manager::$msg, MSG_TYPE_NOTICE);
+            \Ximdex\Modules\Manager::$msg = null;
         } else {
             $this->messages->add(_("Module actived"), MSG_TYPE_NOTICE);
         }
@@ -197,10 +196,10 @@ class Action_moduleslist extends ActionAbstract
     function uninstallModule($module_name)
     {
 
-        ModulesManager::uninstallModule($module_name);
-        if (ModulesManager::$msg != null) {
-            $this->messages->add(ModulesManager::$msg, MSG_TYPE_NOTICE);
-            ModulesManager::$msg = null;
+        \Ximdex\Modules\Manager::uninstallModule($module_name);
+        if (\Ximdex\Modules\Manager::$msg != null) {
+            $this->messages->add(\Ximdex\Modules\Manager::$msg, MSG_TYPE_NOTICE);
+            \Ximdex\Modules\Manager::$msg = null;
         } else {
             $this->messages->add(_("Module uninstalled"), MSG_TYPE_NOTICE);
         }
@@ -208,12 +207,12 @@ class Action_moduleslist extends ActionAbstract
 
     function disableModule($module_name)
     {
-        ModulesManager::$msg = null;
+        \Ximdex\Modules\Manager::$msg = null;
         $this->messages->add(_("Module disabled"), MSG_TYPE_NOTICE);
-        ModulesManager::disableModule($module_name);
-        if (ModulesManager::$msg != null) {
-            $this->messages->add(ModulesManager::$msg, MSG_TYPE_NOTICE);
-            ModulesManager::$msg = null;
+        \Ximdex\Modules\Manager::disableModule($module_name);
+        if (\Ximdex\Modules\Manager::$msg != null) {
+            $this->messages->add(\Ximdex\Modules\Manager::$msg, MSG_TYPE_NOTICE);
+            \Ximdex\Modules\Manager::$msg = null;
         } else {
             $this->messages->add(_("Module disabled"), MSG_TYPE_NOTICE);
         }

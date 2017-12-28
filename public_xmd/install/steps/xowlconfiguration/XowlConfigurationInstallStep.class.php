@@ -45,7 +45,7 @@ class XowlConfigurationInstallStep extends GenericInstallStep
 
     public function configure()
     {
-        $moduleManager = new ModulesManager();
+        $moduleManager = new \Ximdex\Modules\Manager();
         $module = $moduleManager->instanceModule("Xowl");
 
         $apikey = trim($this->request->getParam("apikey"));

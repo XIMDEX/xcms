@@ -32,9 +32,9 @@ use Ximdex\Models\User;
 
 
 
-ModulesManager::file('/inc/manager/BatchManager.class.php', 'ximSYNC');
-ModulesManager::file('/inc/model/NodesToPublish.class.php', 'ximSYNC');
-ModulesManager::file( '/conf/synchro_conf.php', 'ximSYNC');
+\Ximdex\Modules\Manager::file('/inc/manager/BatchManager.class.php', 'ximSYNC');
+\Ximdex\Modules\Manager::file('/inc/model/NodesToPublish.class.php', 'ximSYNC');
+\Ximdex\Modules\Manager::file( '/conf/synchro_conf.php', 'ximSYNC');
 
 /**
  * @brief Manages the phases previous and later of the publication process.

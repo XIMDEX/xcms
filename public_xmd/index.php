@@ -33,7 +33,7 @@ include_once dirname(__DIR__).'/bootstrap.php';
 include_once __DIR__.'/src/autoload.php';
 
 //General class
-ModulesManager::file('/install/InstallController.class.php');
+\Ximdex\Modules\Manager::file('/install/InstallController.class.php');
 
 
 // FROM MVC

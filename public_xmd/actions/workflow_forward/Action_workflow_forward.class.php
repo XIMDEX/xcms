@@ -38,10 +38,10 @@ use Ximdex\Utils\Serializer;
 use Ximdex\Sync\SynchroFacade;
 use Ximdex\Workflow\WorkFlow;
 
-ModulesManager::file('/actions/browser3/inc/GenericDatasource.class.php');
+\Ximdex\Modules\Manager::file('/actions/browser3/inc/GenericDatasource.class.php');
 
-ModulesManager::file('/inc/model/NodesToPublish.class.php', 'ximSYNC');
-ModulesManager::file('/conf/synchro_conf.php', 'ximSYNC');
+\Ximdex\Modules\Manager::file('/inc/model/NodesToPublish.class.php', 'ximSYNC');
+\Ximdex\Modules\Manager::file('/conf/synchro_conf.php', 'ximSYNC');
 
 /**
  * Move a node to next state. 
@@ -150,7 +150,7 @@ class Action_workflow_forward extends ActionAbstract {
         $nextStateName = $workflowNext->GetName();
 
         //Loading Notifications default values
-        $conf = ModulesManager::file('/conf/notifications.php', 'XIMDEX');
+        $conf = \Ximdex\Modules\Manager::file('/conf/notifications.php', 'XIMDEX');
         $defaultMessage = $this->buildMessage($conf["defaultMessage"], $nextStateName, $node->get('Name'));
         $values = array(
             'group_state_info' => Group::getSelectableGroupsInfo($idNode),
@@ -239,7 +239,7 @@ class Action_workflow_forward extends ActionAbstract {
         $idNode = $this->request->getParam('nodeid');
         $nextState = $this->request->getParam('nextstate');
 
-        $conf = ModulesManager::file('/conf/notifications.php', 'XIMDEX');
+        $conf = \Ximdex\Modules\Manager::file('/conf/notifications.php', 'XIMDEX');
 
         $node = new Node($idNode);
         $workflow = new WorkFlow($idNode, $nextState);
@@ -400,8 +400,8 @@ class Action_workflow_forward extends ActionAbstract {
             'structural_publication' => $user->HasPermission('structural_publication') ? '1' : '0',
             'advanced_publication' => $user->HasPermission('advanced_publication') ? '1' : '0',
             'nodetypename' => $nodeTypeName,
-            'synchronizer_to_use' => ModulesManager::isEnabled('ximSYNC') ? 'ximSYNC' : 'default',
-            'ximpublish_tools_enabled' => ModulesManager::isEnabled('ximPUBLISHtools'),
+            'synchronizer_to_use' => \Ximdex\Modules\Manager::isEnabled('ximSYNC') ? 'ximSYNC' : 'default',
+            'ximpublish_tools_enabled' => \Ximdex\Modules\Manager::isEnabled('ximPUBLISHtools'),
             'show_rep_option' => true
         );
     }
@@ -626,7 +626,7 @@ class Action_workflow_forward extends ActionAbstract {
 
         Logger::info("ADDSECTION sendToPublish pre render");
         
-        if (ModulesManager::isEnabled('ximSYNC')) {
+        if (\Ximdex\Modules\Manager::isEnabled('ximSYNC')) {
             Logger::info("ADDSECTION sendToPublish pre render if");
             $values = array(
                 'options' => $arrayOpciones,
@@ -644,7 +644,7 @@ class Action_workflow_forward extends ActionAbstract {
                 'messages' => $this->messages->messages,
                 'options' => $arrayOpciones,
                 'result' => $valuesToShow,
-                'synchronizer_to_use' => ModulesManager::isEnabled('ximSYNC') ? 'ximSYNC' : 'default'
+                'synchronizer_to_use' => \Ximdex\Modules\Manager::isEnabled('ximSYNC') ? 'ximSYNC' : 'default'
             );
             
             $this->render($values, 'show_results', 'default-3.0.tpl');

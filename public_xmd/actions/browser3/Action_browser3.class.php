@@ -39,9 +39,9 @@ use Ximdex\Runtime\Request;
 use Ximdex\Utils\Serializer;
 use Ximdex\Runtime\Session;
 
-ModulesManager::file('/actions/browser3/inc/search/QueryProcessor.class.php');
-ModulesManager::file('/actions/browser3/inc/GenericDatasource.class.php');
-ModulesManager::file('/actions/browser3/inc/FormValidation.class.php');
+\Ximdex\Modules\Manager::file('/actions/browser3/inc/search/QueryProcessor.class.php');
+\Ximdex\Modules\Manager::file('/actions/browser3/inc/GenericDatasource.class.php');
+\Ximdex\Modules\Manager::file('/actions/browser3/inc/FormValidation.class.php');
 
 class Action_browser3 extends ActionAbstract
 {

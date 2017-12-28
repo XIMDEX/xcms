@@ -26,7 +26,7 @@
  */
 
 //
-ModulesManager::file('/inc/IndexerLifecycle.iface.php', 'XRAM');
+\Ximdex\Modules\Manager::file('/inc/IndexerLifecycle.iface.php', 'XRAM');
 
 class Base64Processor implements IndexerLifecycle
 {

@@ -45,8 +45,8 @@ class Module_ximPUBLISHtools extends Module {
 
     // Uninstalling without disabling not allowed for this module.
     function uninstall() {
-        if (ModulesManager::isEnabled($this->getModuleName())) {
-            ModulesManager::disableModule($this->getModuleName());
+        if (\Ximdex\Modules\Manager::isEnabled($this->getModuleName())) {
+            \Ximdex\Modules\Manager::disableModule($this->getModuleName());
         }
 
         $this->loadDestructorSQL("ximPUBLISHtools.destructor.sql");

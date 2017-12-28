@@ -41,11 +41,11 @@ use Ximdex\Logger;
 use Ximdex\Sync\SynchroFacade;
 use Ximdex\Nodeviews\ViewPreviewInServer;
 
-ModulesManager::file('/actions/xmleditor2/model/XmlEditor_Abstract.class.php');
-ModulesManager::file('/actions/xmleditor2/HTML2XML.class.php');
-ModulesManager::file('/actions/enricher/model/Enricher.class.php', 'Xowl');
-ModulesManager::file('/actions/enricher/model/TagSuggester.class.php', 'Xowl');
-ModulesManager::file('/actions/xmleditor2/model/XmlEditor_Enricher.class.php');
+\Ximdex\Modules\Manager::file('/actions/xmleditor2/model/XmlEditor_Abstract.class.php');
+\Ximdex\Modules\Manager::file('/actions/xmleditor2/HTML2XML.class.php');
+\Ximdex\Modules\Manager::file('/actions/enricher/model/Enricher.class.php', 'Xowl');
+\Ximdex\Modules\Manager::file('/actions/enricher/model/TagSuggester.class.php', 'Xowl');
+\Ximdex\Modules\Manager::file('/actions/xmleditor2/model/XmlEditor_Enricher.class.php');
 
 
 class XmlEditor_KUPU extends XmlEditor_Abstract
@@ -639,7 +639,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
 
     public function getAnnotationFile($idNode, $content)
     {
-        if (ModulesManager::isEnabled('Xowl')) {
+        if (\Ximdex\Modules\Manager::isEnabled('Xowl')) {
             if (App::getValue('EnricherKey') === NULL || App::getValue('EnricherKey') == '') {
                 Logger::error(_("Xowl_token configuration value has not been defined"));
                 $resp = array("status" => "No  Xowl_token defined", "videourl" => "<center><iframe width='420' height='315' src='http://www.youtube.com/embed/xnhUzYKqJPw' frameborder='0' allowfullscreen></iframe></center>");
@@ -791,7 +791,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
     {
         $user = new User(\Ximdex\Runtime\Session::get('userID'));
 
-        if (ModulesManager::isEnabled('wix')) {
+        if (\Ximdex\Modules\Manager::isEnabled('wix')) {
             return $user->HasPermissionInNode('Ximedit_publication_allowed', $idNode);
         } else {
             return false;

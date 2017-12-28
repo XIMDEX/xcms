@@ -174,8 +174,8 @@ class Action_edittext extends ActionAbstract
     function publicateDocs()
     {
 
-        if (ModulesManager::isEnabled('ximSYNC')) {
-            ModulesManager::file('/inc/manager/SyncManager.class.php', 'ximSYNC');
+        if (\Ximdex\Modules\Manager::isEnabled('ximSYNC')) {
+            \Ximdex\Modules\Manager::file('/inc/manager/SyncManager.class.php', 'ximSYNC');
         }
 
         $docs = explode('_', $this->request->getParam('docsList'));

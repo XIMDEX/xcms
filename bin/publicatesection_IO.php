@@ -35,8 +35,8 @@ use Ximdex\Sync\SyncManager;
 
 
 
-if (ModulesManager::isEnabled('ximSYNC')) {							
-	ModulesManager::file('/inc/manager/SyncManager.class.php', 'ximSYNC');
+if (\Ximdex\Modules\Manager::isEnabled('ximSYNC')) {
+	\Ximdex\Modules\Manager::file('/inc/manager/SyncManager.class.php', 'ximSYNC');
 }
 $userximio = "ximIO";
 session_id("ximIO");

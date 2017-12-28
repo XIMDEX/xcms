@@ -35,7 +35,7 @@ class Widget_tagsinput extends WidgetAbstract
 
     public function __construct()
     {
-        if (!ModulesManager::isEnabled("ximTAGS")) {
+        if (!\Ximdex\Modules\Manager::isEnabled("ximTAGS")) {
             $this->setEnable(false);
         }
 

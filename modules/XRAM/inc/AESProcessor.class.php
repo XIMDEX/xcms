@@ -28,8 +28,8 @@ use Ximdex\Runtime\App;
 
 
 //
-ModulesManager::file('/inc/IndexerLifecycle.iface.php', 'XRAM');
-ModulesManager::file('/inc/AES.class.php', 'XRAM');
+\Ximdex\Modules\Manager::file('/inc/IndexerLifecycle.iface.php', 'XRAM');
+\Ximdex\Modules\Manager::file('/inc/AES.class.php', 'XRAM');
 
 class AESProcessor implements IndexerLifecycle
 {

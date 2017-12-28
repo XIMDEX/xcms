@@ -29,11 +29,11 @@ use Ximdex\Models\Node;
 use Ximdex\Runtime\DataFactory;
 use Ximdex\Runtime\Db;
 
-ModulesManager::file('/inc/model/orm/NodeFrames_ORM.class.php', 'ximSYNC');
-ModulesManager::file('/inc/model/ServerFrame.class.php', 'ximSYNC');
-ModulesManager::file('/inc/model/ChannelFrame.class.php', 'ximSYNC');
-ModulesManager::file('/inc/manager/ServerFrameManager.class.php', 'ximSYNC');
-ModulesManager::file('/inc/model/SynchronizerStat.class.php', 'ximSYNC');
+\Ximdex\Modules\Manager::file('/inc/model/orm/NodeFrames_ORM.class.php', 'ximSYNC');
+\Ximdex\Modules\Manager::file('/inc/model/ServerFrame.class.php', 'ximSYNC');
+\Ximdex\Modules\Manager::file('/inc/model/ChannelFrame.class.php', 'ximSYNC');
+\Ximdex\Modules\Manager::file('/inc/manager/ServerFrameManager.class.php', 'ximSYNC');
+\Ximdex\Modules\Manager::file('/inc/model/SynchronizerStat.class.php', 'ximSYNC');
 
 /**
 *	@brief Handles operations with NodeFrames.

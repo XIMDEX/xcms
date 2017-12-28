@@ -32,7 +32,7 @@ use Ximdex\Models\StructuredDocument;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\App;
 
-ModulesManager::file('/actions/browser3/inc/GenericDatasource.class.php');
+\Ximdex\Modules\Manager::file('/actions/browser3/inc/GenericDatasource.class.php');
 
 /**
  * @brief This class implements the action of add a ximlet in a Node

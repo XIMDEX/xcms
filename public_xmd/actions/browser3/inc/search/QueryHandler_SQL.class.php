@@ -305,7 +305,7 @@ class QueryHandler_SQL extends QueryHandler_Abstract {
 					break;
 
 				case 'tag':
-					if(ModulesManager::isEnabled('ximTAGS')){
+					if(\Ximdex\Modules\Manager::isEnabled('ximTAGS')){
 						$conditions = array();
 
 					$this->joins[] = 'left join RelTagsNodes rtn on rtn.Node = n.IdNode left join RelTagsDescriptions rtd on rtd.IdTagDescription = rtn.TagDesc left join XimTAGSTags xt on xt.IdTag = rtd.Tag';

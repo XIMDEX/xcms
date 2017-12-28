@@ -29,7 +29,7 @@ use Ximdex\Cli\CliReader;
 use Ximdex\Utils\FsUtils;
 
 //
-ModulesManager::file('/actions/remove/inc/RemoveCli.class.php', 'ximIO');
+\Ximdex\Modules\Manager::file('/actions/remove/inc/RemoveCli.class.php', 'ximIO');
 
 
 $parameterCollector = new RemoveCli($argc, $argv);

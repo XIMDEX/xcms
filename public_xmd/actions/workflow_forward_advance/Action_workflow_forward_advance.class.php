@@ -25,7 +25,7 @@
  */
 
 
-ModulesManager::file('/actions/workflow_forward/Action_workflow_forward.class.php');
+\Ximdex\Modules\Manager::file('/actions/workflow_forward/Action_workflow_forward.class.php');
 /**
 * Move a node to next state. 
 * 

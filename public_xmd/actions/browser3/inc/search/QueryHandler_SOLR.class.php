@@ -31,7 +31,7 @@ use Ximdex\Runtime\App;
 use Ximdex\Runtime\DataFactory;
 
 require_once(__DIR__ . '/QueryHandler_Abstract.class.php');
-ModulesManager::file('/inc/SolrOp.class.php', 'ximRAM');
+\Ximdex\Modules\Manager::file('/inc/SolrOp.class.php', 'ximRAM');
 
 class QueryHandler_SOLR extends QueryHandler_Abstract {
 

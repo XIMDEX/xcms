@@ -27,7 +27,7 @@
 
 use Ximdex\Models\Node;
 
-ModulesManager::file('/actions/manageproperties/inc/InheritableProperty.class.php');
+\Ximdex\Modules\Manager::file('/actions/manageproperties/inc/InheritableProperty.class.php');
 
 class SchemaProperty extends InheritableProperty {
 
