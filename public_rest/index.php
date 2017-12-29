@@ -2,6 +2,7 @@
 use Ximdex\API\Request;
 use Ximdex\API\Response;
 use Ximdex\API\Router;
+use Ximdex\Modules\Manager;
 
 
 if (!defined('XIMDEX_ROOT_PATH')) {
@@ -9,11 +10,11 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 }
 
 
-\Ximdex\Modules\Manager::file('/public_rest/src/Request.php');
-\Ximdex\Modules\Manager::file('/public_rest/src/Response.php');
-\Ximdex\Modules\Manager::file('/public_rest/src/Router.php');
-\Ximdex\Modules\Manager::file('/public_rest/src/APIException.php');
-\Ximdex\Modules\Manager::file('/public_rest/src/AbstractAPIAction.php');
+Manager::file('/public_rest/src/Request.php');
+Manager::file('/public_rest/src/Response.php');
+Manager::file('/public_rest/src/Router.php');
+Manager::file('/public_rest/src/APIException.php');
+Manager::file('/public_rest/src/AbstractAPIAction.php');
 
 
 /**

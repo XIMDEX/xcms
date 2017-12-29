@@ -38,12 +38,6 @@ class FileUpdater
 {
     var $revision = '';
 
-    /**
-     * Objeto de interacción con la base de datos
-     *
-     * @var $dbObj DB
-     */
-
     function __construct($revision)
     {
         $this->revision = $revision;

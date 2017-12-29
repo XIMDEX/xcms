@@ -368,7 +368,7 @@ VALUES
 	(21,'PurgeVersionsOnNewVersion','0'),
 	(22,'MaxVersionsAllowed','3'),
 	(23,'ximid','-'),
-	(24,'VersionName','Ximdex 3.9'),
+	(24,'VersionName','Ximdex 4.0'),
 	(25,'UTFLevel','0'),
 	(26,'EmptyHrefCode','/404.html'),
 	(27,'defaultRNG',NULL),

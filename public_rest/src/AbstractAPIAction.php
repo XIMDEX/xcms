@@ -78,7 +78,6 @@ abstract class AbstractAPIAction
 
     /**
      * <p>Gets the ResponseBuilder object</p>
-     * @return type
      */
     public function getResponseBuilder()
     {

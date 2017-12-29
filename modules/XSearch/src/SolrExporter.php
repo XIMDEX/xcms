@@ -2,8 +2,8 @@
 
 use Ximdex\Models\Language;
 use Ximdex\Models\Node;
+use Ximdex\Models\RelNodeMetadata;
 use Ximdex\Models\StructuredDocument;
-use Ximdex\Runtime\Db;
 use\Ximdex\NodeTypes\NodeType;
 
 \Ximdex\Modules\Manager::file('/src/Exporter.php', 'XSearch');

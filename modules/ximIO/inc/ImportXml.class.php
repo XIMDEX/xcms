@@ -33,10 +33,6 @@ use Ximdex\Models\NodeType;
 use Ximdex\Runtime\App;
 use Ximdex\Runtime\Constants;
 use Ximdex\Utils\FsUtils;
-use Ximdex\Runtime\Db ;
-
-
-
 
 define('COPY_MODE', true);
 define('IMPORT_MODE', false);
@@ -93,7 +89,7 @@ class ImportXml
     /**
      * Associations received by the importation function
      *
-     * @var hash
+     * @var array
      */
     var $nodeAssociations = null;
     var $processedNodes = null;
@@ -396,11 +392,11 @@ class ImportXml
         $this->_resolvePendingRelations();
         return $this->abort;
     }
-
+    
     /**
      * Function for init element parsing
      *
-     * @param xml_parser $parser
+     * @param $parser
      * @param string $name
      * @param array $attrs
      */
@@ -612,7 +608,7 @@ class ImportXml
     /**
      * Function to parse final elements
      *
-     * @param xml_parser $parser
+     * @param $parser
      * @param string $name
      */
     function _endElement($parser, $name)
@@ -698,7 +694,7 @@ class ImportXml
     /**
      * Function which manage the CDATA contents
      *
-     * @param parser $parser
+     * @param $parser
      * @param string $data
      */
     function _characterDataHandler($parser, $data)
