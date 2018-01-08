@@ -27,7 +27,6 @@
 
 namespace Ximdex\Models;
 
-use Ximdex\Models\Node;
 use Ximdex\Models\ORM\RelSectionXimletOrm;
 use\Ximdex\NodeTypes\NodeType;
 

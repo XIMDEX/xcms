@@ -31,7 +31,6 @@ use Ximdex\Runtime\DataFactory;
 use Ximdex\Deps\DepsManager;
 use DOMDocument;
 use Ximdex\Models\NodeType;
-use Ximdex\Runtime\Db;
 use Ximdex\Utils\PipelineManager;
 use Properties;
 use Ximdex\Models\RelTagsNodes;
@@ -240,7 +239,7 @@ abstract class AbstractStructuredDocument extends FileNode
      * @param $channel
      * @param null $content
      * @param null $idVersion
-     * @return bool|null|unknown
+     * @return bool|null
      */
     function view($viewType, $channel, $content = NULL, $idVersion = NULL)
     {
@@ -746,7 +745,7 @@ abstract class AbstractStructuredDocument extends FileNode
 
     /**
      * @param $channel
-     * @return null|string|\Ximdex\Utils\unknown_type
+     * @return null|string
      */
     private function Generate($channel )
     {

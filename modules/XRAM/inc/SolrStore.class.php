@@ -154,7 +154,7 @@ class SolrStore implements IStore {
      * <p>Retrieves the Solr document representing a node</p>
      * 
      * @param integer $idVersion The id of the version to be retrieved (matches the Solr document ID)
-     * @return The Solr document representing the node
+     * @return : The Solr document representing the node
      */
     private function retrieveNode($idVersion) {
         if (!is_numeric($idVersion)) {
@@ -209,9 +209,9 @@ class SolrStore implements IStore {
     /**
      * <p>Indexes a node identified by the version if in Solr</p>
      * 
-     * @param type $idVersion The id of the Solr document
-     * @param type $content The content of the document
-     * @param type $commitNode Boolean indicating whether a commit must be done after insert
+     * @param $idVersion : The id of the Solr document
+     * @param $content : The content of the document
+     * @param $commitNode Boolean indicating whether a commit must be done after insert
      * @return boolean
      */
     private function indexNode($idVersion, $content, $commitNode = true) {

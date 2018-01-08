@@ -25,9 +25,7 @@
  */
 namespace Ximdex\Sync;
 
-use Ximdex\Runtime\App;
 use Ximdex\Runtime\DataFactory;
-use Mail;
 use Ximdex\Models\User;
 use Ximdex\Models\Node;
 

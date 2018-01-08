@@ -1,8 +1,4 @@
 <?php
-
-namespace Xmd\Widgets;
-use Ximdex\Runtime\App;
-
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -27,6 +23,10 @@ use Ximdex\Runtime\App;
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
+
+namespace Xmd\Widgets;
+
+use Ximdex\Runtime\App;
 
 class WidgetDependencies
 {
@@ -72,7 +72,7 @@ class WidgetDependencies
 
         $jsFiles = self::$deps[$widget]['js'];
         for ($i = 0, $l = count($jsFiles); $i < $l; $i++) {
-            $jsFiles[$i] = \App::getUrl('/src/Widgets/'.$widget .'/js/' . $jsFiles[$i]);
+            $jsFiles[$i] = App::getUrl('/src/Widgets/'.$widget .'/js/' . $jsFiles[$i]);
         }
 
         foreach (self::$deps[$widget]['deps'] as $wname) {

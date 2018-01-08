@@ -27,8 +27,6 @@
 
 namespace Ximdex\NodeTypes;
 
-use description;
-
 use Ximdex\Models\Role;
 
 

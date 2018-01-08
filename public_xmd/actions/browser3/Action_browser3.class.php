@@ -34,7 +34,6 @@ use Ximdex\Models\User;
 use Ximdex\Models\XimLocale;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\App;
-use Ximdex\Runtime\Db;
 use Ximdex\Runtime\Request;
 use Ximdex\Utils\Serializer;
 use Ximdex\Runtime\Session;

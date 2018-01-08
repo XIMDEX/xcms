@@ -28,7 +28,6 @@
 namespace Ximdex\Models;
 
 use Ximdex\Models\ORM\NodeTypesOrm;
-use Ximdex\Runtime\Db;
 
 define('NODETYPE_SECTION', \Ximdex\NodeTypes\NodeType::SECTION);
 
@@ -439,10 +438,6 @@ class NodeType extends NodeTypesOrm
         return false;
     }
 
-    /**
-     *
-     * @return unknown_type
-     */
     function GetIsStructuredDocument()
     {
         return $this->get("IsStructuredDocument");
@@ -451,7 +446,6 @@ class NodeType extends NodeTypesOrm
     /**
      *
      * @param $value
-     * @return unknown_type
      */
     function SetIsStructuredDocument($value)
     {
@@ -467,10 +461,6 @@ class NodeType extends NodeTypesOrm
         return false;
     }
 
-    /**
-     *
-     * @return unknown_type
-     */
     function GetIsSection()
     {
         return $this->get("IsSection");
@@ -479,7 +469,6 @@ class NodeType extends NodeTypesOrm
     /**
      *
      * @param $value
-     * @return unknown_type
      */
     function SetIsSection($value)
     {
@@ -525,7 +514,6 @@ class NodeType extends NodeTypesOrm
 
     /**
      * Returns if the node can abort its deletion
-     * @return unknown_type
      */
     function GetCanDenyDeletion()
     {
@@ -631,7 +619,6 @@ class NodeType extends NodeTypesOrm
      * Replace a set of data of the AllowedContents by the pram.
      * The param array of associative arrays of two fields: 'nodetype' and 'amount' means 'node type allowed' and 'allowed quantity'
      * @param $arrayAllowed
-     * @return unknown_type
      */
     function ReplaceAllowedNodeTypeList($arrayAllowed)
     {
@@ -653,7 +640,7 @@ class NodeType extends NodeTypesOrm
 
     /**
      * Returns an array of associative arrays of two fields:  'nodetype' and 'amount' means 'node type allowed' and 'allowed quantity'
-     * @return Array[i][nodetype||amount]
+     * @return array
      */
     function GetAllowedNodeTypes()
     {
@@ -698,8 +685,8 @@ class NodeType extends NodeTypesOrm
     }
 
     /**
-     *  Returns an array of associative arrays of two fields: 'nodetype' and 'name', as 'allowed node type' and 'node type name'
-     * @return Array[i][nodetype||name]
+     * Returns an array of associative arrays of two fields: 'nodetype' and 'name', as 'allowed node type' and 'node type name'
+     * @return array
      */
     function GetDefaultContents()
     {
@@ -721,10 +708,9 @@ class NodeType extends NodeTypesOrm
     }
 
     /**
-     * REplace the whole set of data of DefaultContents by the param.
+     * Replace the whole set of data of DefaultContents by the param.
      * Param is an array of associative arrays with two fields: 'nodetype' and 'name', as 'allowed node type' and 'node type name'
      * @param $arrayDefault
-     * @return unknown_type
      */
     function ReplaceDefaultContentsList($arrayDefault)
     {
@@ -788,17 +774,12 @@ class NodeType extends NodeTypesOrm
 
     /**
      * Deletes last error
-     * @return unknown_type
      */
     function ClearError()
     {
         $this->flagErr = FALSE;
     }
 
-    /**
-     *
-     * @return unknown_type
-     */
     function SetAutoCleanOn()
     {
         $this->autoCleanErr = TRUE;
@@ -812,7 +793,6 @@ class NodeType extends NodeTypesOrm
     /**
      * Carga un error en la clase
      * @param $code
-     * @return unknown_type
      */
     function SetError($code)
     {
@@ -823,7 +803,6 @@ class NodeType extends NodeTypesOrm
 
     /**
      * Returns true if tha class has had an error
-     * @return unknown_type
      */
     function HasError()
     {

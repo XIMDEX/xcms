@@ -26,7 +26,6 @@
  */
 
 namespace Ximdex\Models;
-use Ximdex\Runtime\Db;
 use Ximdex\Workflow\WorkFlow;
 use Ximdex\Models\ORM\GroupsOrm;
 use Ximdex\Runtime\App;
@@ -281,7 +280,6 @@ class Group extends GroupsOrm
 	 * Allows to change the role used by an user in a group
 	 * @param $userID
 	 * @param $roleID
-	 * @return unknown_type
 	 */
 	function ChangeUserRole($userID, $roleID)
 	{
@@ -299,7 +297,6 @@ class Group extends GroupsOrm
 	/**
 	 * Returns true if the user belongs to a group
 	 * @param $userID
-	 * @return unknown_type
 	 */
 	function HasUser($userID)
 	{
@@ -323,7 +320,7 @@ class Group extends GroupsOrm
 
 	/**
 	 * @param $nodeID
-	 * @return null|String|unknown_type
+	 * @return null|String
 	 */
 	function GetRoleOnNode($nodeID)
 	{
@@ -339,7 +336,6 @@ class Group extends GroupsOrm
 	/**
 	 *
 	 * @param $nodeID
-	 * @return unknown_type
 	 */
 	function IsOnNode($nodeID)
 	{
@@ -359,7 +355,6 @@ class Group extends GroupsOrm
 
 	/**
 	 * Cleans class errors
-	 * @return unknown_type
 	 */
 	function ClearError()
 	{
@@ -370,7 +365,6 @@ class Group extends GroupsOrm
 	/**
 	 * Loads class error
 	 * @param $code
-	 * @return unknown_type
 	 */
 	function SetError($code)
 	{
@@ -380,17 +374,12 @@ class Group extends GroupsOrm
 
 	/**
 	 * Returns true if there was an error in the class.
-	 * @return unknown_type
 	 */
 	function HasError()
 	{
 		return ($this->numErr != null);
 	}
-
-	/**
-	 *
-	 * @return unknown_type
-	 */
+    
 	function getUserRoleInfo()
 	{
 		$dbObj = new \Ximdex\Runtime\Db();

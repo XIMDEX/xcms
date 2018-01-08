@@ -443,7 +443,7 @@ abstract class ActionAbstract extends IController
     {
         // TODO search and destroy the %20 generated in the last char of the query string
         $queryManager = new QueryManager(false);
-        $file = \App::getUrl( $queryManager->buildWith(array(
+        $file = App::getUrl( $queryManager->buildWith(array(
                 'xparams[reload_node_id]' => $idnode,
                 'js_file' => 'reloadNode',
                 'method' => 'includeDinamicJs',
@@ -464,12 +464,12 @@ abstract class ActionAbstract extends IController
     {
 
         if ('APP' == $_module) {
-            $_js = \App::getUrl($_js);
+            $_js = App::getUrl($_js);
         }else if ('XIMDEX' != $_module && 'internet'  != $_module ) {
             $path = \Ximdex\Modules\Manager::path($_module);
             $_js = $path . $_js;
         }else if ('XIMDEX' == $_module) {
-            $_js = \App::getUrl($_js);
+            $_js = App::getUrl($_js);
         }
 
         if ($params === null) {

@@ -60,7 +60,7 @@ abstract class AbstractSearcherStrategy {
 
 	/**
 	*<p>Get the loaded datas in several formats</p>
-	*@param $format output format for data: array or json is waited.
+	*@param $format : output format for data: array or json is waited.
 	*@return false if there aren't data. Json or array otherwise.
 	*/
 	public final function getData($format = null){

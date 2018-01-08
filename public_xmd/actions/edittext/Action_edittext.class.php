@@ -24,7 +24,6 @@
  * @version $Revision$
  */
 
-use Ximdex\Logger;
 use Ximdex\Models\Node;
 use Ximdex\Models\NodeType;
 use Ximdex\Models\PipeCacheTemplates;

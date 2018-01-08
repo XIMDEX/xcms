@@ -26,7 +26,6 @@
 
 
 use Ximdex\Models\Channel;
-use Ximdex\Models\Node;
 
 
 include_once( XIMDEX_ROOT_PATH . '/modules/ximSYNC/inc/manager/ServerFrameManager.class.php');

@@ -28,6 +28,7 @@ use Ximdex\Logger;
 use Ximdex\Deps\DepsManager;
 use Ximdex\Models\Node;
 use Ximdex\MVC\ActionAbstract;
+use Ximdex\Runtime\App;
 
 class Action_showassocnodes extends ActionAbstract {
 

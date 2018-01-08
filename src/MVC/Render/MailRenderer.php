@@ -25,9 +25,6 @@
  */
 namespace Ximdex\MVC\Render;
 
-use Ximdex\MVC\Render\PHPRenderer;
-
-
 class MailRenderer extends PHPRenderer
 {
 }

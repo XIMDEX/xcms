@@ -26,7 +26,6 @@
 
 
 use Ximdex\Logger;
-use Ximdex\Runtime\Db;
 
 \Ximdex\Modules\Manager::file('/inc/model/orm/ServerErrorByPumper_ORM.class.php', 'ximSYNC');
 \Ximdex\Modules\Manager::file('/inc/model/ServerFrame.class.php', 'ximSYNC');
@@ -42,7 +41,6 @@ class ServerErrorByPumper extends ServerErrorByPumper_ORM {
 	/**
 	*  Gets the field ErrorId from ServerErrorByPumper table which matching the value of pumperId.
 	*  @param int pumperId
-	*  @return unknown
 	*/
 
     function loadByPumper($pumperId = null){

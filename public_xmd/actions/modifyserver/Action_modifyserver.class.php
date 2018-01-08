@@ -27,7 +27,6 @@
 
 use Ximdex\Models\Channel;
 use Ximdex\Models\Node;
-use Ximdex\Models\Server;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\App;
 

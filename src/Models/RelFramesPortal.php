@@ -1,6 +1,4 @@
 <?php
-use Ximdex\Logger;
-
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -26,10 +24,9 @@ use Ximdex\Logger;
  *  @version $Revision$
  */
 
-
 namespace Ximdex\Models;
 
-
+use Ximdex\Logger;
 
 class RelFramesPortal extends \Ximdex\Data\GenericData{
 

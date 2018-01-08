@@ -27,7 +27,6 @@
 
 use Ximdex\Logger;
 use Ximdex\Models\Node;
-use Ximdex\Runtime\Db;
 
 \Ximdex\Modules\Manager::file('/inc/model/orm/PublishingReport_ORM.class.php', 'ximSYNC');
 \Ximdex\Modules\Manager::file('/inc/model/Batch.class.php', 'ximSYNC');

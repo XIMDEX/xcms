@@ -30,7 +30,6 @@ namespace Ximdex\Models;
 use Ximdex\Logger;
 use Ximdex\Models\ORM\PipeCachesOrm;
 use Ximdex\Runtime\App;
-use Ximdex\Runtime\Db;
 use Ximdex\Utils\FsUtils;
 
 
@@ -58,7 +57,7 @@ class PipeCache extends PipeCachesOrm
      * @param $idTransition
      * @param null $args
      * @param int $depth
-     * @return null|pointer
+     * @return null
      */
     function load($idVersion, $idTransition, $args = NULL, $depth = 0)
     {

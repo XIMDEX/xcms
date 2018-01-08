@@ -27,7 +27,6 @@
 
 use Ximdex\Logger;
 use Ximdex\Runtime\App;
-use Ximdex\Runtime\Db;
 
 \Ximdex\Modules\Manager::file('/inc/model/orm/SynchronizerStats_ORM.class.php', 'ximSYNC');
 

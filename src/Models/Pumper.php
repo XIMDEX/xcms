@@ -27,7 +27,6 @@
 
 namespace Ximdex\Models;
 
-use Ximdex\Runtime\Db;
 use ServerErrorByPumper;
 use ServerErrorManager;
 use SynchronizerStat;

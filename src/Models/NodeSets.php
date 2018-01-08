@@ -27,7 +27,6 @@
 
 namespace Ximdex\Models;
 
-use Ximdex\Runtime\Db;
 use Ximdex\Models\Iterators\IteratorNodeSets;
 use Ximdex\Models\Iterators\IteratorNodeSetsNodes;
 use Ximdex\Models\Iterators\IteratorNodeSetsUsers;

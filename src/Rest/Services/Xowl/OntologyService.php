@@ -103,7 +103,7 @@ class OntologyService
 
     /**
      * <p>Load all existing namespaces in this ximdex instance.</p>
-     * @return Namespaces[] with all namespaces in Namespaces table.
+     * @return array An Array with all namespaces in Namespaces table.
      */
     public static function getAllNamespaces()
     {

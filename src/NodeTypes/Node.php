@@ -28,7 +28,7 @@
 namespace Ximdex\NodeTypes;
 
 use Ximdex\Models\Node as ModelsNode;
-use Ximdex\Models\User ;
+use Ximdex\Models\User;
 /**
  * <p>Service responsible of deal with nodes</p>
  *
@@ -60,7 +60,7 @@ class Node
      * @param int $nodeId the node id
      * @param string $permission the permission
      *
-     * @return a boolean indicating if the user has permission over the node
+     * @return bool a boolean indicating if the user has permission over the node
      */
     public function hasPermissionOnNode($username, $nodeid, $permission = "View all nodes")
     {
@@ -198,8 +198,7 @@ class Node
      */
     public function isEnabledMetadata()
     {
-
-        $nodeTypeService = new \NodeTypeService($this->node->get("IdNodeType"));
+        $nodeTypeService = new NodeTypeService($this->node->get("IdNodeType"));
         return $nodeTypeService->isEnabledMetadata();
     }
 
@@ -209,8 +208,7 @@ class Node
      */
     public function isMetadataForced()
     {
-
-        $nodeTypeService = new \NodeTypeService($this->node->get("IdNodeType"));
+        $nodeTypeService = new NodeTypeService($this->node->get("IdNodeType"));
         return $nodeTypeService->isMetadataForced();
     }
 

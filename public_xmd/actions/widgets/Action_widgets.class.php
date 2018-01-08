@@ -25,6 +25,7 @@
  */
 
 use Ximdex\MVC\ActionAbstract;
+use Ximdex\Runtime\App;
 use Xmd\Widgets\Widget;
 
 class Action_widgets extends ActionAbstract {

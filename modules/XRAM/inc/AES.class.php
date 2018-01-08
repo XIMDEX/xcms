@@ -48,10 +48,10 @@ class AES {
 
     /**
      * <p>Creates a new AES instance using the provided data, key, block size and mode</p>
-     * @param type $data
-     * @param type $key
-     * @param type $blockSize
-     * @param type $mode
+     * @param $data
+     * @param $key
+     * @param $blockSize
+     * @param $mode
      */
     function __construct($data = null, $key = null, $blockSize = null, $mode = null) {
         $this->setData($data);
@@ -184,7 +184,7 @@ class AES {
 
     /**
      * <p>Encrypts the data with the configured key using the selected cipher algorithm (by the block size) and the cipher mode</p>
-     * @return The encrypted data encoded in base 64 or false if an error ocurred while encrypting or encoding the data
+     * @return : The encrypted data encoded in base 64 or false if an error ocurred while encrypting or encoding the data
      * @throws Exception if the provided information is not valid
      */
     public function encrypt() {
@@ -199,7 +199,7 @@ class AES {
 
     /**
      * <p>Decrypts the data (encoded in base 64) with the configured key using the selected cipher algorithm (by the block size) and the ciphering mode</p> 
-     * @return The decrypted data or false if an error ocurred while decrypting or decoding the data
+     * @return : The decrypted data or false if an error ocurred while decrypting or decoding the data
      * @throws Exception if the provided information is not valid
      */
     public function decrypt() {

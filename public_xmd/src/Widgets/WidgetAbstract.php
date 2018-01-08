@@ -59,7 +59,7 @@ abstract class WidgetAbstract
 			$this->_wname
 		);
 
-		$this->_assets_url = \App::getUrl('/src/Widgets/');
+		$this->_assets_url = App::getUrl('/src/Widgets/');
 
         $this->_template_dir = sprintf('%s/template/', $this->_widget_dir);
 
@@ -84,7 +84,7 @@ abstract class WidgetAbstract
 	{
 		$c = count($array);
 		for ($i = 0; $i < $c; $i++) {
-			$array[$i] = \App::getUrl('%s/%s', preg_replace('#^' . realpath(APP_ROOT_PATH) . '#', '', realpath($this->_widget_style_dir)),  $array[$i] );
+			$array[$i] = App::getUrl('%s/%s', preg_replace('#^' . realpath(APP_ROOT_PATH) . '#', '', realpath($this->_widget_style_dir)),  $array[$i] );
         }
 		return $array;
 	}
@@ -94,7 +94,7 @@ abstract class WidgetAbstract
 		$c = count($array);
 		$getTextJs = new ParsingJsGetText();
 		for ($i = 0; $i < $c; $i++) {
-            $array[$i] =  preg_replace('#^' . \App::getXimdexUrl('/'). '#', '',  $array[$i]) ;
+            $array[$i] =  preg_replace('#^' . App::getXimdexUrl('/'). '#', '',  $array[$i]) ;
 
 			$array[$i] = $getTextJs->getFile( $array[$i]);
 		}
@@ -243,7 +243,7 @@ abstract class WidgetAbstract
 		$attributes = $this->parseWidgetAttributes($params);
 		if (count($attributes) > 0 && !$asInclude) {
 			$jsParams = $this->createJsParams($attributes['id'], $attributes);
-			$url = \App::getUrl('/?method=includeDinamicJs&%s&js_file=widgetsVars', implode('&', $jsParams));
+			$url = App::getUrl('/?method=includeDinamicJs&%s&js_file=widgetsVars', implode('&', $jsParams));
 			$this->_js[] = $url;
 		}
 

@@ -25,7 +25,6 @@
  */
 
 use Ximdex\Models\Group;
-use Ximdex\Models\Node;
 use Ximdex\Models\ORM\RelUsersGroupsOrm;
 use Ximdex\Models\Role;
 use Ximdex\Models\User;

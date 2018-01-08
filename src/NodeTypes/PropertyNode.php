@@ -27,8 +27,6 @@
 
 namespace Ximdex\NodeTypes;
 
-use Ximdex\NodeTypes\Root;
-
 
 /**
  * @brief Handles Properties as ximDEX Nodes.

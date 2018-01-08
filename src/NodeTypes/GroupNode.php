@@ -56,7 +56,6 @@ class GroupNode extends Root
 	 * @param int parentID
 	 * @param int nodeTypeID
 	 * @param int stateID
-	 * @return unknown
 	 */
 
 	function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null)
@@ -69,7 +68,6 @@ class GroupNode extends Root
 
 	/**
 	 *  Calls to method for deleting.
-	 * @return unknown
 	 */
 
 	function DeleteNode()
@@ -94,7 +92,6 @@ class GroupNode extends Root
 	/**
 	 *  Calls to method for updating the Name on the database.
 	 * @param string name
-	 * @return unknown
 	 */
 
 	function RenameNode($name = null)

@@ -1,5 +1,7 @@
 <?php
 
+use Ximdex\Runtime\App;
+
 function smarty_function_button($params, &$smarty) {
 
 	$label = trim(isset($params['label']) ? $params['label'] : '');
@@ -74,4 +76,3 @@ function smarty_function_button($params, &$smarty) {
 		echo sprintf('<input type="text" class="submit_message ui-helper-hidden" value="%s">', $message);
 	}
 }
-?>

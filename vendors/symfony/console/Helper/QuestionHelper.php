@@ -47,6 +47,12 @@ class QuestionHelper extends Helper
         }
 
         if (!$input->isInteractive()) {
+            if ($question instanceof ChoiceQuestion) {
+                $choices = $question->getChoices();
+
+                return $choices[$question->getDefault()];
+            }
+
             return $question->getDefault();
         }
 
@@ -79,7 +85,7 @@ class QuestionHelper extends Helper
      */
     public function setInputStream($stream)
     {
-        @trigger_error(sprintf('The %s() method is deprecated since version 3.2 and will be removed in 4.0. Use %s::setStream() instead.', __METHOD__, StreamableInputInterface::class), E_USER_DEPRECATED);
+        @trigger_error(sprintf('The %s() method is deprecated since Symfony 3.2 and will be removed in 4.0. Use %s::setStream() instead.', __METHOD__, StreamableInputInterface::class), E_USER_DEPRECATED);
 
         if (!is_resource($stream)) {
             throw new InvalidArgumentException('Input stream must be a valid resource.');
@@ -99,7 +105,7 @@ class QuestionHelper extends Helper
     public function getInputStream()
     {
         if (0 === func_num_args() || func_get_arg(0)) {
-            @trigger_error(sprintf('The %s() method is deprecated since version 3.2 and will be removed in 4.0. Use %s::getStream() instead.', __METHOD__, StreamableInputInterface::class), E_USER_DEPRECATED);
+            @trigger_error(sprintf('The %s() method is deprecated since Symfony 3.2 and will be removed in 4.0. Use %s::getStream() instead.', __METHOD__, StreamableInputInterface::class), E_USER_DEPRECATED);
         }
 
         return $this->inputStream;
@@ -155,7 +161,7 @@ class QuestionHelper extends Helper
                 $ret = trim($ret);
             }
         } else {
-            $ret = trim($this->autocomplete($output, $question, $inputStream));
+            $ret = trim($this->autocomplete($output, $question, $inputStream, is_array($autocomplete) ? $autocomplete : iterator_to_array($autocomplete, false)));
         }
 
         $ret = strlen($ret) > 0 ? $ret : $question->getDefault();
@@ -211,12 +217,12 @@ class QuestionHelper extends Helper
      * @param OutputInterface $output
      * @param Question        $question
      * @param resource        $inputStream
+     * @param array           $autocomplete
      *
      * @return string
      */
-    private function autocomplete(OutputInterface $output, Question $question, $inputStream)
+    private function autocomplete(OutputInterface $output, Question $question, $inputStream, array $autocomplete)
     {
-        $autocomplete = $question->getAutocompleterValues();
         $ret = '';
 
         $i = 0;

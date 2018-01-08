@@ -30,16 +30,10 @@ namespace Ximdex\Models;
 use Ximdex\Logger;
 use Ximdex\Models\ORM\UsersOrm;
 use Ximdex\Runtime\App;
-use Ximdex\Runtime\Db;
 use Ximdex\Runtime\Session;
-use Ximdex\Models\Group;
-use Ximdex\Models\Node;
-use Ximdex\Models\NodeType;
-use Ximdex\Models\NodetypeMode;
 use Ximdex\Models\ORM\ContextsOrm;
 use Ximdex\Models\ORM\RelRolesActionsOrm;
 use Ximdex\Models\ORM\RelUsersGroupsOrm;
-use Ximdex\Models\Role;
 use Ximdex\Runtime\Constants;
 use Ximdex\Workflow\WorkFlow;
 
@@ -549,10 +543,6 @@ class User extends UsersOrm
         return ($this->numErr != null);
     }
 
-    /**
-     *
-     * @return [type] [description]
-     */
     public function afterLogin()
     {
         $numAccess = $this->NumAccess;

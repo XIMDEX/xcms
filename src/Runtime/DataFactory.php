@@ -27,7 +27,6 @@
 
 namespace Ximdex\Runtime;
 
-use Exception;
 use Ximdex\Models\Node;
 use Ximdex\Models\PipeCache;
 use Ximdex\Models\Version;

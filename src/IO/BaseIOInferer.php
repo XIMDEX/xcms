@@ -70,7 +70,6 @@ class BaseIOInferer {
 	 *
 	 * @param $file
 	 * @param $nodeTypeFilter
-	 * @return unknown_type
 	 */
 	function infereFileType($file, $idFather, $nodeTypeFilter = "" ) {
 
@@ -127,7 +126,6 @@ class BaseIOInferer {
 	 *
 	 * @param $parent_type
 	 * @param $path
-	 * @return unknown_type
 	 */
 	function _infereFileType($parent_type, $path) {
 
@@ -190,7 +188,6 @@ class BaseIOInferer {
 	/**
 	 *
 	 * @param $idParentNode
-	 * @return unknown_type
 	 */
 	function _infereFolderType($idParentNode) {
 		$parent = new Node($idParentNode);

@@ -26,9 +26,6 @@
 
 namespace Ximdex\MPM;
 
-use Ximdex\Runtime\Db;
-
-
 //Handler the signal
 $callback = array("\\Ximdex\\MPM\\MPMManager", "singnalHandler");
 declare(ticks=1);
@@ -161,7 +158,7 @@ class MPMManager {
 	 * Create a new Process
 	 *
 	 * @param int $key
-	 * @param unknown_type $dataFunction --> data for call the callback function
+	 * @param $dataFunction --> data for call the callback function
 	 */
 	private function createProcess($key){
 		//Call the user function
@@ -184,7 +181,7 @@ class MPMManager {
 	 * Check if the parameter is a correct callback function
 	 * callback function can be --> array, with [0] = class and [1] = static method
 	 *                              string, with the function name declared
-	 * @param unknown_type $var
+	 * @param $var
 	 * @return boolean
 	 */
 	public static function is_callback($var){
@@ -246,7 +243,7 @@ class MPMManager {
 	/**
 	 * Handler for the signal
 	 *
-	 * @param Signal $signal
+	 * @param $signal
 	 */
 	public static function singnalHandler($signal){
 		switch($signal){

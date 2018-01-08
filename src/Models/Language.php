@@ -26,8 +26,7 @@
 
 namespace Ximdex\Models;
 
- use Ximdex\Runtime\Db;
- use Ximdex\Models\ORM\LanguagesOrm;
+use Ximdex\Models\ORM\LanguagesOrm;
 
 class Language extends LanguagesOrm
 {

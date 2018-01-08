@@ -129,7 +129,7 @@ class Smarty_Internal_Compile_Private_Print_Expression extends Smarty_Internal_C
     /**
     * @param object $compiler compiler object
     * @param string $name     name of variable filter
-    * @param type   $output   embedded output
+    * @param $output : embedded output
     * @return string
     */
     private function compile_output_filter($compiler, $name, $output)

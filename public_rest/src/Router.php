@@ -26,9 +26,9 @@ class Router
     }
 
     /**
+     * Add new route and function to router
      * @param $path
      * @param $func
-     * Add new route and function to router
      */
     public function addRoute($path, $func)
     {

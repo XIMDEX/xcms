@@ -30,7 +30,6 @@ namespace Ximdex\Sync;
 use ChannelFrame;
 
 use Ximdex\Runtime\App;
-use Ximdex\Runtime\Db as DB;
 use NodeFrame;
 use NodeFrameManager;
 use Ximdex\Models\Server;
@@ -117,7 +116,7 @@ class SynchroFacade
 	/**
 	 * Delete frames belongs to unexisting physical server
 	 *
-	 * @param unknown_type $physicalServerID
+	 * @param $physicalServerID
 	 */
 	function removeFromUnexistingServer($physicalServerID)
 	{
@@ -142,8 +141,7 @@ class SynchroFacade
 	/**
 	 * Return pending tasks for a given node
 	 *
-	 * @param unknown_type $nodeID
-	 * @return unknown
+	 * @param $nodeID
 	 */
 	function getPendingTasksByNode($nodeID)
 	{
@@ -166,7 +164,7 @@ class SynchroFacade
 	/**
 	 * Return if node is published
 	 *
-	 * @param unknown_type $nodeID
+	 * @param $nodeID
 	 * @return boolean
 	 */
 	function isNodePublished($nodeID)
@@ -189,8 +187,7 @@ class SynchroFacade
 	/**
 	 * Return if node is published in all of active servers
 	 *
-	 * @param unknown_type $nodeID
-	 * @return unknown
+	 * @param $nodeID
 	 */
 	function isNodePublishedInAllActiveServer($nodeID)
 	{
@@ -229,9 +226,8 @@ class SynchroFacade
 	/**
 	 * Delete all tasks by node
 	 *
-	 * @param unknown_type $nodeID
+	 * @param $nodeID
 	 * @param boolean $unPublish --> don't delete task, set it to Due2Out state
-	 * @return unknown
 	 */
 	function deleteAllTasksByNode($nodeID, $unPublish = false)
 	{
@@ -272,10 +268,7 @@ class SynchroFacade
 	}
 
 	/**
-	 * Enter description here...
-	 *
-	 * @param unknown_type $nodeID
-	 * @return unknown
+	 * @param $nodeID
 	 */
 	function getAllTaskByNode($nodeID)
 	{
@@ -472,10 +465,9 @@ class SynchroFacade
 	/**
 	 * Return last Url
 	 *
-	 * @param unknown_type $nodeID
-	 * @param unknown_type $serverid
-	 * @param unknown_type $channel
-	 * @return unknown
+	 * @param $nodeID
+	 * @param $serverid
+	 * @param $channel
 	 */
 	function getLastPublishedNews($nodeID, $serverid, $channel)
 	{
@@ -518,10 +510,7 @@ class SynchroFacade
 	}
 
 	/**
-	 * Enter description here...
-	 *
-	 * @param unknown_type $idNode
-	 * @return unknown
+	 * @param $idNode
 	 */
 	function getGaps($idNode)
 	{
@@ -555,15 +544,14 @@ class SynchroFacade
 	 * PushDocInPublishingPool
 	 *
 	 * @param int $idNode
-	 * @param timestamp $upDate --> date for publication document
-	 * @param timestamp $downDate --> date for unpublish the document
+	 * @param $upDate --> date for publication document (timestamp type)
+	 * @param $downDate --> date for unpublish the document (timestamp type)
 	 * @param boolean $forcePublication
 	 *        --> if true --> publish the document although it is in the last version
 	 *      --> if false --> only publish the document if there is a new mayor version no publish
 	 * @param boolean $forceDependencies
 	 *        --> if true --> publish the dependencies although they are in the last version
 	 * @param array $flagsArray
-	 * @return unknown
 	 */
 	function pushDocInPublishingPool($idNode, $upDate, $downDate = NULL, $flagsArray = NULL, $recurrence = false)
 	{
@@ -635,10 +623,7 @@ class SynchroFacade
 	}
 
 	/**
-	 * Enter description here...
-	 *
-	 * @param unknown_type $idNode
-	 * @return unknown
+	 * @param $idNode
 	 */
 	public static function HasUnlimitedLifeTime($idNode)
 	{

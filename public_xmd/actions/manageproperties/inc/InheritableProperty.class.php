@@ -104,7 +104,7 @@ abstract class InheritableProperty {
 
 	/**
 	 * Updates the affected nodes when deleting a property value
-	 * @param unknown_type $values
+	 * @param $values
 	 */
 	abstract protected function updateAffectedNodes($values);
 

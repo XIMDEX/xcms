@@ -27,8 +27,9 @@
 
 namespace Ximdex\NodeTypes;
 
-use NodeProperty;
+
 use Ximdex\Models\Channel;
+use Ximdex\Models\NodeProperty;
 
 
 /**
@@ -62,7 +63,6 @@ class ChannelNode extends Root
 	 * @param string description
 	 * @param string filter
 	 * @param string renderMode
-	 * @return unknown
 	 */
 
 	function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $channelName = null, $extension = null, $format = null, $description = null, $filter = "", $renderMode = NULL, $outputType = NULL)
@@ -77,7 +77,6 @@ class ChannelNode extends Root
 
 	/**
 	 *  Deletes the rows of the Channel from both tables Channels and NodeProperties.
-	 * @return unknown
 	 */
 
 	function DeleteNode()

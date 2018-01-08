@@ -40,8 +40,8 @@ abstract class SPARQLProvider
     public function __construct($endpoint)
     {
 
-        $this->sparql_client = \ModelFactory::getSparqlClient($endpoint);
-        $this->sparql_courier = new \ClientQuery();
+        $this->sparql_client = ModelFactory::getSparqlClient($endpoint);
+        $this->sparql_courier = new ClientQuery();
     }
 
 }

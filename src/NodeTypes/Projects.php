@@ -27,8 +27,6 @@
 
 namespace Ximdex\NodeTypes;
 
-use Ximdex\NodeTypes\FolderNode;
-
 
 /**
  * @brief Handles the Projects Node.

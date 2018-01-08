@@ -43,7 +43,7 @@ class ServerConfig
 
 	/**
 	 * Return boolean if found a function in disabled_functions directive in php.ini_get
-	 * @param undefined $function non required param. It can be the name of the function to check, an array of functions name or null.
+	 * @param $function : non required param. It can be the name of the function to check, an array of functions name or null.
 	 */
 	public function hasDisabledFunctions($function = null)
 	{

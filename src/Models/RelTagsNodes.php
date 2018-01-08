@@ -27,7 +27,6 @@
 
 namespace Ximdex\Models;
 
-use Ximdex\Runtime\Db;
 use ImageFile;
 use RelTagsDescriptions;
 use Tag;

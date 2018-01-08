@@ -24,7 +24,6 @@
  * @version $Revision$
  */
 
-
 namespace Ximdex\MVC\Render;
 
 /**
@@ -35,17 +34,9 @@ namespace Ximdex\MVC\Render;
  */
 class ShellRenderer extends AbstractRenderer
 {
-
-    /**
-     *
-     * @return unknown_type
-     */
     function render()
     {
         //tomamos todos los datos comunes a todos los renders
         parent::render();
-
-//		var_dump($this);
     }
-
 }

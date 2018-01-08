@@ -1,5 +1,6 @@
 <?php
     // The purpose of this script is change the domain host URL
+    // Usage: php public_xmd/install/rename_url_root.php http://nuevaURL
     // IMPORTANT: must be called from Ximdex root directory
     
     use Ximdex\Models\Node;

@@ -45,7 +45,7 @@ include_once XIMDEX_ROOT_PATH.XIMDEX_VENDORS . '/autoload.php';
 
 
 // Initialize App
-class_alias('Ximdex\Runtime\App', 'App');
+//TODO ajlucena: class_alias('Ximdex\Runtime\App', 'App');
 App::setValue('XIMDEX_ROOT_PATH', dirname(dirname(__FILE__)));
 
 

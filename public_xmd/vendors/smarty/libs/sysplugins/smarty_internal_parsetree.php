@@ -350,7 +350,7 @@ class _smarty_text extends _smarty_parsetree {
     /**
      * Return buffer content
      *
-     * @return strint text
+     * @return string text
      */
     public function to_smarty_php()
     {

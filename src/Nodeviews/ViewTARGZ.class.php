@@ -103,10 +103,10 @@ class ViewTARGZ extends AbstractView implements IView
     /**
      * Return the file name about the params
      *
-     * @param unknown_type $tableName
-     * @param unknown_type $field
-     * @param unknown_type $condition
-     * @param unknown_type $params
+     * @param $tableName
+     * @param $field
+     * @param $condition
+     * @param $params
      * @return String filename
      */
     function getFile($tableName, $field, $condition, $params)

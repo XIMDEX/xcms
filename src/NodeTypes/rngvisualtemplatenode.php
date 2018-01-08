@@ -52,7 +52,6 @@ class rngvisualtemplatenode extends FileNode
 	 * @param int nodeTypeID
 	 * @param int stateID
 	 * @param string sourcePath
-	 * @return unknown
 	 */
 
 	function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $sourcePath = null)

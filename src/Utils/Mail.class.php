@@ -33,9 +33,7 @@ require_once(XIMDEX_ROOT_PATH . XIMDEX_VENDORS . '/phpmailer/phpmailer/src/PHPMa
 require_once(XIMDEX_ROOT_PATH . XIMDEX_VENDORS . '/phpmailer/phpmailer/src/SMTP.php');
 
 use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
 use Ximdex\Runtime\App;
-use Ximdex\Utils\FsUtils;
 
 // Include mail configuration.
 include_once(XIMDEX_ROOT_PATH . "/conf/mail.php");

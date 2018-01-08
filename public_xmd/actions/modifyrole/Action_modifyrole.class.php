@@ -24,7 +24,6 @@
  * @version $Revision$
  */
 use Ximdex\Models\Action;
-use Ximdex\Models\Node;
 use Ximdex\Models\NodeType;
 use Ximdex\Models\Permission;
 use Ximdex\Models\Pipeline;

@@ -414,7 +414,7 @@ abstract class Smarty_Internal_TemplateBase extends Smarty_Internal_Data {
      *
      * @param string   $type       plugin type
      * @param string   $tag        name of template tag
-     * @param callback $callback   PHP callback to register
+     * @param $callback : PHP callback to register
      * @param boolean  $cacheable  if true (default) this fuction is cachable
      * @param array    $cache_attr caching attributes if any
      * @return Smarty_Internal_Templatebase current Smarty_Internal_Templatebase (or Smarty or Smarty_Internal_Template) instance for chaining
@@ -651,7 +651,7 @@ abstract class Smarty_Internal_TemplateBase extends Smarty_Internal_Data {
      * Registers a filter function
      *
      * @param string $type filter type
-     * @param callback $callback
+     * @param $callback
      * @return Smarty_Internal_Templatebase current Smarty_Internal_Templatebase (or Smarty or Smarty_Internal_Template) instance for chaining
      */
     public function registerFilter($type, $callback)
@@ -664,7 +664,7 @@ abstract class Smarty_Internal_TemplateBase extends Smarty_Internal_Data {
      * Unregisters a filter function
      *
      * @param string $type filter type
-     * @param callback $callback
+     * @param $callback
      * @return Smarty_Internal_Templatebase current Smarty_Internal_Templatebase (or Smarty or Smarty_Internal_Template) instance for chaining
      */
     public function unregisterFilter($type, $callback)
@@ -680,7 +680,7 @@ abstract class Smarty_Internal_TemplateBase extends Smarty_Internal_Data {
     /**
      * Return internal filter name
      *
-     * @param callback $function_name
+     * @param $function_name
      * @return string internal filter name
      */
     public function _get_filter_name($function_name)
@@ -807,5 +807,3 @@ abstract class Smarty_Internal_TemplateBase extends Smarty_Internal_Data {
     }
 
 }
-
-?>

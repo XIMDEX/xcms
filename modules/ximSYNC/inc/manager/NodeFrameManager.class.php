@@ -26,7 +26,6 @@
 
 
 use Ximdex\Logger;
-use Ximdex\Runtime\Db;
 
 include_once( XIMDEX_ROOT_PATH . '/modules/ximSYNC/inc/model/NodeFrame.class.php');
 include_once( XIMDEX_ROOT_PATH . '/modules/ximSYNC/inc/manager/ServerFrameManager.class.php');

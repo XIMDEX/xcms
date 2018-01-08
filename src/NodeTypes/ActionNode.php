@@ -44,7 +44,6 @@ class ActionNode extends Root
      * @param string command
      * @param string icon
      * @param string description
-     * @return unknown
      */
 
     function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $command = null, $icon = null, $description = null)
@@ -69,7 +68,6 @@ class ActionNode extends Root
     /**
      *  Calls to method for updating the Name on the database.
      * @param string name
-     * @return unknown
      */
 
     function RenameNode($name = null)
@@ -82,7 +80,6 @@ class ActionNode extends Root
 
     /**
      *  Calls to method for deleting.
-     * @return unknown
      */
 
     function DeleteNode()

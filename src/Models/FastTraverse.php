@@ -2,7 +2,6 @@
     namespace Ximdex\Models;
     
     use Ximdex\Models\ORM\FastTraverseOrm;
-    use Ximdex\Runtime\Db;
     
     class FastTraverse extends FastTraverseOrm
     {

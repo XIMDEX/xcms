@@ -27,7 +27,7 @@
 
 
 use Ximdex\Models\Link;
-use Ximdex\Runtime\Db;
+
 include_once dirname(__FILE__) . '/../../../../bootstrap.php';
 
 function main ($argc, $argv){

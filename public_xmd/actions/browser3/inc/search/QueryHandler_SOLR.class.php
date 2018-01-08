@@ -290,7 +290,8 @@ class QueryHandler_SOLR extends QueryHandler_Abstract {
 		}
 		return $field;
 	}
+    public function count($query)
+    {}
+
 
 }
-
-?>

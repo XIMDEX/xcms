@@ -50,7 +50,7 @@ abstract class Smarty_CacheResource {
     *
     * @param Smarty_Internal_Template $_template template object
     * @param Smarty_Template_Cached $cached cached object
-    * @return booelan true or false if the cached content does not exist
+    * @return boolean true or false if the cached content does not exist
     */
     public abstract function process(Smarty_Internal_Template $_template, Smarty_Template_Cached $cached=null);
 

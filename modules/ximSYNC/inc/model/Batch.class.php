@@ -26,7 +26,6 @@
  */
 use Ximdex\Logger;
 use Ximdex\Models\Node;
-use Ximdex\Runtime\Db;
 
 \Ximdex\Modules\Manager::file('/inc/model/orm/SynchronizerStats_ORM.class.php', 'ximSYNC');
 \Ximdex\Modules\Manager::file('/inc/model/NodeFrame.class.php', 'ximSYNC');

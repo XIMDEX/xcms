@@ -30,7 +30,6 @@ use Ximdex\Models\Pipeline;
 use Ximdex\Models\PipeNodeTypes;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\App;
-use Ximdex\Runtime\Db;
 
 
 class Action_renamenode extends ActionAbstract

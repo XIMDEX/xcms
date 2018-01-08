@@ -60,7 +60,6 @@ class NodeTypeNode extends Root
      * @param int isContentNode
      * @param string description
      * @param string class
-     * @return unknown
      */
 
     function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $icon = null, $isRenderizable = null, $hasFSEntity = null, $canAttachGroups = null, $isContentNode = null, $description = null, $class = null)
@@ -75,7 +74,6 @@ class NodeTypeNode extends Root
 
     /**
      *  Calls to method for deleting.
-     * @return unknown
      */
 
     function DeleteNode()

@@ -29,7 +29,6 @@ namespace Xmd\Widgets;
 
 
 use Ximdex\MVC\Render\SmartyTextRenderer;
-use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
 
 

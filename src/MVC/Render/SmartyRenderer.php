@@ -29,7 +29,8 @@ namespace Ximdex\MVC\Render;
 
 use Extensions;
 use Smarty;
- use Xmd\Widgets\Widget;
+use Ximdex\Runtime\App;
+use Xmd\Widgets\Widget;
 
 require_once(APP_ROOT_PATH . Extensions::SMARTY);
 
@@ -63,7 +64,7 @@ class SmartyRenderer extends AbstractRenderer
 		$smarty->setCacheDir(SMARTY_TMP_PATH . '/cache');
 		$smarty->setConfigDir(SMARTY_TMP_PATH . '/configs');
 
-        $smarty->config_vars = get_defined_constants() + \App::config();
+        $smarty->config_vars = get_defined_constants() + App::config();
 
 
         $smarty->registerPlugin("block","url", [$this, 'url'] );
@@ -95,7 +96,7 @@ class SmartyRenderer extends AbstractRenderer
 	public function url($params, $url, \Smarty_Internal_Template $template, &$repeat) {
         if(!$repeat){
             if (isset($url)) {
-               return \App::getUrl($url);
+               return App::getUrl($url);
             }
         }
     }
@@ -103,7 +104,7 @@ class SmartyRenderer extends AbstractRenderer
     public function urlXimdex($params, $url, \Smarty_Internal_Template $template, &$repeat) {
         if(!$repeat){
             if (isset($url)) {
-                return \App::getXimdexUrl($url);
+                return App::getXimdexUrl($url);
             }
         }
     }
@@ -111,7 +112,6 @@ class SmartyRenderer extends AbstractRenderer
     /**
 	 *
 	 * @param $smarty
-	 * @return unknown_type
 	 */
 	private function _set_params(& $smarty)
 	{
@@ -154,7 +154,6 @@ class SmartyRenderer extends AbstractRenderer
 	 *
 	 * @param $module
 	 * @param $_method
-	 * @return unknown_type
 	 */
 	private function _set_controller_path($module = NULL, $_method = NULL)
 	{
@@ -176,7 +175,6 @@ class SmartyRenderer extends AbstractRenderer
 	 * and includes dependencies (javascript, css, etc...)
 	 * @param $source
 	 * @param $smarty
-	 * @return unknown_type
 	 */
 	public function prefilter_widgets($source, &$smarty)
 	{

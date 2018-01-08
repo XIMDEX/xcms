@@ -27,7 +27,6 @@
 
 namespace Ximdex\NodeTypes;
 
-use Ximdex\Runtime\Db;
 use Ximdex\Deps\DepsManager;
 use Ximdex\Models\Node;
 use Ximdex\Models\NodeType;
@@ -72,7 +71,6 @@ class SectionNode extends FolderNode
 
     /**
      *  Deletes the Section and its dependencies.
-     * @return unknown
      */
 
     function DeleteNode()

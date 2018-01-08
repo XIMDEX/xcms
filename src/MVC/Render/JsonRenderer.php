@@ -27,7 +27,6 @@
 
 namespace Ximdex\MVC\Render;
 
-use Ximdex\MVC\Render\AbstractRenderer;
 use Ximdex\Utils\Serializer;
 
 

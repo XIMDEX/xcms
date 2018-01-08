@@ -28,8 +28,6 @@
 use Ximdex\Runtime\App;
 use Ximdex\Utils\Curl;
 
-//
-
 /**
  * 
  * Conection Module with Apache Stanbol
@@ -52,7 +50,7 @@ class TagSuggester extends \Ximdex\Rest\RESTProvider {
 	 * 
 	 * Query the server with the default response format (application/json)
 	 * 
-	 * @param unknown_type $text
+	 * @param $text
 	 */
 	public function suggest($text) {
 		return $this->query($text, self::RESPONSE_FORMAT);
@@ -61,8 +59,8 @@ class TagSuggester extends \Ximdex\Rest\RESTProvider {
 	/**
 	 * Send petition to stanbol server and returns the parsed response
 	 * 
-	 * @param unknown_type $text
-	 * @param unknown_type $format 
+	 * @param $text
+	 * @param $format 
 	 */
 	private function query($text, $format) {
 
@@ -100,7 +98,7 @@ class TagSuggester extends \Ximdex\Rest\RESTProvider {
 	 * 
 	 * Check parsed data
 	 * 
-	 * @param unknown_type $data
+	 * @param $data
 	 */
 	private function checkData($data){
 		$correct = true;
@@ -114,7 +112,7 @@ class TagSuggester extends \Ximdex\Rest\RESTProvider {
 	 * 
 	 * Parse response data from stanbol server. JSON Format default.
 	 * 
-	 * @param unknown_type $data
+	 * @param $data
 	 */
 	private function parseData($data){
 		if(function_exists('json_decode')){
@@ -173,7 +171,7 @@ class TagSuggester extends \Ximdex\Rest\RESTProvider {
 	/**
 	 * UNUSED! 
 	 * Returns the short  type (places, people or organisations)
-	 * @param unknown_type $tipo
+	 * @param $tipo
 	 */
 
 	private function getTipo($tipo){
@@ -192,9 +190,9 @@ class TagSuggester extends \Ximdex\Rest\RESTProvider {
 	 * 
 	 * Search for a value in the results array
 	 * 
-	 * @param unknown_type $value
-	 * @param unknown_type $array
-	 * @param unknown_type $type
+	 * @param  $value
+	 * @param  $array
+	 * @param  $type
 	 */
 	private function search($value, $array){
 		$notexists = -1;

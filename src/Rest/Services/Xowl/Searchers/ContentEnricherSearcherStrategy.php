@@ -117,7 +117,7 @@ class ContentEnricherSearcherStrategy extends AbstractSearcherStrategy{
 
 	/**
 	*<p>Parse tags to an array for this category</p>
-	*@param $xpathObj. DOMXPath object for the current XML.
+	*@param $xpathObj : DOMXPath object for the current XML.
 	*@return array.
 	*/
 	private function parseArticleData($xpathObj){
@@ -155,7 +155,7 @@ class ContentEnricherSearcherStrategy extends AbstractSearcherStrategy{
 
 	/**
 	*<p>Parse tags to an array for this category</p>
-	*@param $xpathObj. DOMXPath object for the current XML.
+	*@param $xpathObj : DOMXPath object for the current XML.
 	*@return array.
 	*/
 	private function parseLinkData($xpathObj){		
@@ -210,7 +210,7 @@ class ContentEnricherSearcherStrategy extends AbstractSearcherStrategy{
 
 	/**
 	*<p>Parse tags to an array for this category</p>
-	*@param $xpathObj. DOMXPath object for the current XML.
+	*@param $xpathObj : DOMXPath object for the current XML.
 	*@return array.
 	*/
 	private function parseImageData($xpathObj){

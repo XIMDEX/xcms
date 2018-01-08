@@ -24,6 +24,8 @@
  *  @version $Revision$
  */
 
+use Ximdex\Runtime\App;
+
 require_once(APP_ROOT_PATH.'/install/steps/generic/GenericInstallStep.class.php');
 require_once(APP_ROOT_PATH.'/install/managers/InstallModulesManager.class.php');
 
@@ -53,7 +55,7 @@ class GetStartedInstallStep extends GenericInstallStep {
 		$this->changePermissions();
         $this->deleteTempFiles();
 		$this->loadNextAction();		
-		header("Location: ".\App::getXimdexUrl('/'));
+		header("Location: ". App::getXimdexUrl('/'));
 		die();
 	}
 

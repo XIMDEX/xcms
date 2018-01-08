@@ -27,7 +27,6 @@
 
 namespace Ximdex\Models;
 
-use Ximdex\Runtime\Db;
 use Ximdex\Models\Iterators\IteratorSearchFilters;
 use Ximdex\Models\ORM\SearchFiltersOrm;
 

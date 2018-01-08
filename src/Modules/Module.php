@@ -30,9 +30,7 @@ namespace Ximdex\Modules;
 use Symfony\Component\Console\Application;
 use Ximdex\Cli\Shell,
     Ximdex\Logger,
-    Ximdex\Runtime\App;
-use Ximdex\Runtime\Db;
-use Ximdex\Tasks\Worker;
+    Ximdex\Tasks\Worker;
 
 class Module  {
 

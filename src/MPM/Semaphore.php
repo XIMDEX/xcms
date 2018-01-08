@@ -36,7 +36,7 @@ class Semaphore{
 	/**
 	 * Create a new semaphore
 	 *
-	 * @param unknown_type $key
+	 * @param $key
 	 */
 	public function getSemaphore($key){
 		//TODO: check if is a valid key

@@ -27,7 +27,6 @@
 
 namespace Ximdex\Models;
 
-use Ximdex\Runtime\Db;
 use Ximdex\Logger;
 use Ximdex\Models\ORM\PipelinesOrm;
 use Ximdex\Runtime\App;

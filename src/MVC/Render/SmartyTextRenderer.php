@@ -6,7 +6,10 @@
  * Time: 12:23
  */
 namespace Ximdex\MVC\Render;
+
 include_once (APP_ROOT_PATH . '/vendors/smarty/libs/Smarty.class.php');
+
+use Ximdex\Runtime\App;
 use Smarty;
 
 /** ****************** SMARTY_STRING_RENDERER ************************** */
@@ -23,7 +26,7 @@ class SmartyTextRenderer
         $smarty->setConfigDir(SMARTY_TMP_PATH . '/configs');
 
 
-        $smarty->config_vars = get_defined_constants() + \App::config();
+        $smarty->config_vars = get_defined_constants() + App::config();
 
 
         /*	$smarty->register->resource('text', array(this,

@@ -27,12 +27,8 @@
 
 namespace Ximdex\NodeTypes;
 
-use description;
-
-use NodeProperty;
-
 use Ximdex\Models\Language;
-use Ximdex\NodeTypes\Root;
+use Ximdex\Models\NodeProperty;
 
 
 /**
@@ -50,7 +46,6 @@ class LanguageNode extends Root
 	 * @param string isoname
 	 * @param string description
 	 * @param int enabled
-	 * @return unknown
 	 */
 	function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $isoname = null, $description = null, $enabled = null)
 	{
@@ -68,7 +63,6 @@ class LanguageNode extends Root
 
 	/**
 	 *  Deletes the Language and its dependencies.
-	 * @return unknown
 	 */
 	function DeleteNode()
 	{
@@ -82,7 +76,6 @@ class LanguageNode extends Root
 	/**
 	 *  Calls to method for updating the Name on the database.
 	 * @param string name
-	 * @return unknown
 	 */
 	function RenameNode($name = null)
 	{

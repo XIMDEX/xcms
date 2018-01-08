@@ -27,7 +27,6 @@
 
 use Ximdex\Logger;
 use Ximdex\Runtime\DataFactory;
-use Ximdex\Runtime\Db;
 
 \Ximdex\Modules\Manager::file('/inc/model/orm/NodesToPublish_ORM.class.php', 'ximSYNC');
 

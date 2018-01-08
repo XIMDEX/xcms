@@ -25,7 +25,6 @@
  */
 
 use Ximdex\Logger;
-use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
 
 /**

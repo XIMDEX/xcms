@@ -1,7 +1,6 @@
 <?php
 namespace Ximdex\Parsers;
 
-use Ximdex\Runtime\Db;
 use Ximdex\Models\Channel;
 use Ximdex\Models\Language;
 use Ximdex\Models\Node;
@@ -255,7 +254,7 @@ class ParsingPathTo
      * @param $ancestorNodeNames
      * @param $language
      * @param $nodetype
-     * @return bool|unknown_type
+     * @return bool
      */
     private function inferIdNode($nodeName, $ancestorIds, $ancestorNodeNames, $language, $nodetype, $currentNodeServer)
     {

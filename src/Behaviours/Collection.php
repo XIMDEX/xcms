@@ -27,7 +27,6 @@
 namespace Ximdex\Behaviours;
 
 use  Ximdex\Utils\Messages;
-use  Ximdex\Behaviours\AssociativeArray;
 
 class  Collection
 {

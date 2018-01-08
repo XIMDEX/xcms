@@ -26,7 +26,7 @@
  */
 
 namespace Ximdex\Models;
-use Ximdex\Runtime\Db;
+
 use Ximdex\Models\ORM\LocalesOrm;
 
 

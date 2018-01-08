@@ -27,7 +27,6 @@
 namespace Ximdex\NodeTypes;
 
 use Ximdex\Runtime\DataFactory;
-use Ximdex\Runtime\Db;
 use DOMDocument;
 use Ximdex\Deps\DepsManager;
 use Ximdex\Models\NodeDependencies;

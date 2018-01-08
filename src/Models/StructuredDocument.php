@@ -29,7 +29,6 @@ namespace Ximdex\Models;
 
 use Ximdex\Runtime\DataFactory;
 use Ximdex\Logger;
-use Ximdex\Runtime\Db;
 use Ximdex\Models\ORM\StructuredDocumentsOrm;
 use Ximdex\Parsers\ParsingDependencies;
 

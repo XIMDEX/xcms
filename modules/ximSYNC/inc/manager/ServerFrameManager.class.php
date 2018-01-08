@@ -27,7 +27,6 @@
 
 use Ximdex\Deps\DepsManager;
 use Ximdex\Models\Pumper;
-use Ximdex\Runtime\Db;
 use Ximdex\MPM\MPMManager;
 use Ximdex\MPM\MPMProcess;
 
@@ -324,7 +323,6 @@ class ServerFrameManager
      * @param array pumpers
      * @param int chunk
      * @param array activeAndEnabledServers
-     * @return unknown
      */
 
     function setTasksForPumping($pumpers, $chunk, $activeAndEnabledServers)
