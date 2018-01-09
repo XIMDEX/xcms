@@ -47,7 +47,7 @@ class Action_showassocnodes extends ActionAbstract {
 
 		$sections = $this->getReferencedSections($ximletId);
 
-		$query = \Ximdex\Runtime\App::get('\Ximdex\Utils\QueryManager');
+		$query = App::get('\Ximdex\Utils\QueryManager');
         $actionDelete = $query->getPage() . $query->buildWith(array('method' => 'deleterel'));
         $actionCreate = $query->getPage() . $query->buildWith(array('method' => 'createrel'));
 

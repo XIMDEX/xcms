@@ -3,6 +3,7 @@ use Ximdex\Models\Node;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\Models\User;
 use Ximdex\MVC\ActionAbstract;
+use Ximdex\Runtime\App;
 use Ximdex\Runtime\DataFactory;
 
 /**
@@ -72,7 +73,7 @@ class Action_preview extends ActionAbstract {
 
 		$this->addCss('/actions/preview/resources/css/style.css');
 
-		$queryManager = \Ximdex\Runtime\App::get('\Ximdex\Utils\QueryManager');
+		$queryManager = App::get('\Ximdex\Utils\QueryManager');
 		$this->addJs('/actions/preview/resources/js/preview.js');
 		$values = array(
 			'id_node' => $idNode,
@@ -116,7 +117,7 @@ class Action_preview extends ActionAbstract {
 			$this->messages->add(_("The file has been successfully deleted."), MSG_TYPE_NOTICE);
 		}
 
-		$queryManager = \Ximdex\Runtime\App::get('\Ximdex\Utils\QueryManager');
+		$queryManager = App::get('\Ximdex\Utils\QueryManager');
 		$values = array(
 			'messages' => $this->messages->messages,
 			'id_node' => $idNode,

@@ -28,6 +28,7 @@
 use Ximdex\Models\Node;
 use Ximdex\Models\NodeAllowedContent;
 use Ximdex\MVC\ActionAbstract;
+use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
 
 
@@ -204,7 +205,7 @@ class Action_fileupload extends ActionAbstract {
     		$node->get('Name'), $tmpName), MSG_TYPE_WARNING);
 	}
 
-    	$queryManager = \Ximdex\Runtime\App::get('\Ximdex\Utils\QueryManager');
+    	$queryManager = App::get('\Ximdex\Utils\QueryManager');
     	$action = $queryManager->getPage() . $queryManager->buildWith(array('method' => 'update'));
     	$values = array('messages' => $this->messages->messages,
     					'action' => $action,

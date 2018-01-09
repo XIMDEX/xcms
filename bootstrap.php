@@ -25,6 +25,7 @@ if (!defined('XIMDEX_VENDORS')) {
  * XIMDEX_DIRECT is false when bootstrap is called from other php.
  */
 if(!defined('XIMDEX_DIRECT')) {
+    
     $included_files = get_included_files();
     define('XIMDEX_DIRECT', !isset($included_files[1]));
 }
@@ -33,19 +34,17 @@ if(!defined('XIMDEX_DIRECT')) {
 /** Checking cli mode */
 if (!defined('CLI_MODE')) {
     global $argv, $argc;
-    $cli_mode = true;
-    if('cli' != php_sapi_name() || empty($argv) || 0 == $argc  ) {
+    if('cli' != php_sapi_name() || empty($argv) || 0 == $argc)
         $cli_mode = false;
-    }
-
+    else
+        $cli_mode = true;
     define('CLI_MODE', $cli_mode);
 }
 
 include_once XIMDEX_ROOT_PATH.XIMDEX_VENDORS . '/autoload.php';
 
 
-// Initialize App
-//TODO ajlucena: class_alias('Ximdex\Runtime\App', 'App');
+// Initialize XIMDEX_ROOT_PATH
 App::setValue('XIMDEX_ROOT_PATH', dirname(dirname(__FILE__)));
 
 

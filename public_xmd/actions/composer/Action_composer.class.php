@@ -844,9 +844,7 @@ and rug.idrole in (select idrole from RelRolesPermissions where IdPermission = 1
         $data = preg_replace_callback($patron,
             create_function('$coincidencias', '$_out = null; eval(\'$_out = \'.$coincidencias[0].";"); return \'"\'.$_out.\'"\';'),
             $data);
-
-
-//		header('Content-type: application/json');
+        
         header('Content-type: text/javascript');
         print($data);
         exit;
@@ -946,48 +944,6 @@ and rug.idrole in (select idrole from RelRolesPermissions where IdPermission = 1
      */
     public function parents()
     {
-        /*
-                $idNode = (int) $this->request->getParam('nodeid');
-                $node = new Node($idNode);
-
-                $dom = new DOMDocument('1.0', \App::getValue( 'workingEncoding'));
-                $parents = $dom->createElement('node');
-                $dom->appendChild($parents);
-
-                if ($node->get('IdNode') > 0) {
-
-                    $attr = $dom->createAttribute('name');
-                    $attr->value = $node->getNodeName();
-                    $parents->appendChild($attr);
-                    $attr = $dom->createAttribute('nodeid');
-                    $attr->value = $idNode;
-                    $parents->appendChild($attr);
-                    $attr = $dom->createAttribute('path');
-                    $attr->value = $node->getPath();
-                    $parents->appendChild($attr);
-
-                    $parentId = $node->getParent();
-                    while ($parentId > 0) {
-
-                        $p = new Node($parentId);
-
-                        $parent = $dom->createElement('parent');
-                        $parents->appendChild($parent);
-                        $attr = $dom->createAttribute('name');
-                        $attr->value = $p->getNodeName();
-                        $parent->appendChild($attr);
-                        $attr = $dom->createAttribute('nodeid');
-                        $attr->value = $parentId;
-                        $parent->appendChild($attr);
-                        $attr = $dom->createAttribute('isdir');
-                        $attr->value = '1';
-                        $parent->appendChild($attr);
-
-                        $parentId = $p->getParent();
-                    }
-                }
-        */
-
         $idNode = (int)$this->request->getParam('nodeid');
         $node = new Node($idNode);
 

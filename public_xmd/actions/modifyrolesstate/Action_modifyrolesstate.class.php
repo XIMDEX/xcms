@@ -27,6 +27,7 @@
 use Ximdex\Logger;
 use Ximdex\Models\Role;
 use Ximdex\MVC\ActionAbstract;
+use Ximdex\Runtime\App;
 
 class Action_modifyrolesstate extends ActionAbstract {
    // Main method: shows initial form
@@ -43,7 +44,7 @@ class Action_modifyrolesstate extends ActionAbstract {
     	$rolesStates = array();
 	$asociatedRoles=array();
 
-        $query = \Ximdex\Runtime\App::get('\Ximdex\Utils\QueryManager');
+        $query = App::get('\Ximdex\Utils\QueryManager');
         $action = $query->getPage();
         $actionAdd = $action . $query->buildWith(array('method' => 'addrolestate'));
         $actionDelete = $action . $query->buildWith(array('method' => 'deleterolestate'));

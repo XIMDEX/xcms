@@ -206,7 +206,7 @@ class ViewFilterMacrosPreview extends ViewFilterMacros implements IView
             if ($this->mode == 'dinamic') {
                 return "javascript:parent.loadDivsPreview(" . $idNode . ")";
             } else {
-                $query = \Ximdex\Runtime\App::get('\Ximdex\Utils\QueryManager');
+                $query = App::get('\Ximdex\Utils\QueryManager');
                 return $query->getPage() . $query->buildWith(array('nodeid' => $idNode, 'channelid' => $idTargetChannel));
             }
         } else {

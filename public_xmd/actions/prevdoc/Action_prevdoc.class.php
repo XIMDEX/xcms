@@ -169,7 +169,7 @@ class Action_prevdoc extends ActionAbstract
     			return;
     		}
     
-    		$queryManager = \Ximdex\Runtime\App::get('\Ximdex\Utils\QueryManager');
+    		$queryManager = App::get('\Ximdex\Utils\QueryManager');
     		$prevUrl = $queryManager->getPage() . $queryManager->buildWith(array('method' => 'prevdoc', 'hash' => $hash));
     		
     		if ($json == 'json') {

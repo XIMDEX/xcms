@@ -60,7 +60,7 @@ class Action_xmleditor2 extends ActionAbstract
             return false;
         }
 
-        $queryManager = \Ximdex\Runtime\App::get('\Ximdex\Utils\QueryManager');
+        $queryManager = App::get('\Ximdex\Utils\QueryManager');
         $locale = new XimLocale();
         $user_locale = $locale->GetLocaleByCode(\Ximdex\Runtime\Session::get('locale'));
         $locales = $locale->GetEnabledLocales();
@@ -136,7 +136,7 @@ class Action_xmleditor2 extends ActionAbstract
             exit();
         }
 
-        $query = \Ximdex\Runtime\App::get('\Ximdex\Utils\QueryManager');
+        $query = App::get('\Ximdex\Utils\QueryManager');
         $base_url = $query->getPage() . $query->buildWith(array());
 
         $editor = new $class();
