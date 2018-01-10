@@ -1,13 +1,8 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: drzippie
- * Date: 6/11/14
- * Time: 18:11
- */
 
 namespace Ximdex;
 
+use Colors\Color;
 use Monolog\Handler\StreamHandler;
 use Ximdex\Runtime\App;
 use Exception;
@@ -18,10 +13,16 @@ Class Logger
     private static $instances = array();
     private static $active = '';
     private $logger = null;
+    private static $color;
 
     public function __construct($logger)
     {
         $this->logger = $logger;
+        if (!self::$color)
+        {
+            self::$color = new Color();
+            self::$color->setForceStyle(true);
+        }
     }
     
     /**
@@ -78,7 +79,7 @@ Class Logger
     public static function error($string, $object = array())
     {
         try{
-            return self::get()->logger->addError($string, $object);
+            return self::get()->logger->addError(self::$color->__invoke($string)->red()->bold(), $object);
         }catch (\Exception $e){
             error_log($e->getMessage());
         }
@@ -86,7 +87,7 @@ Class Logger
 
     public static function warning($string)
     {
-        return self::get()->logger->addWarning($string);
+        return self::get()->logger->addWarning(self::$color->__invoke($string)->yellow()->bold());
     }
 
     public static function debug($string)
@@ -104,7 +105,7 @@ Class Logger
     public static function fatal($string)
     {
         try{
-            return self::get()->logger->addCritical($string);
+            return self::get()->logger->addCritical(self::$color->__invoke($string)->red()->bold());
         }catch (Exception $e){
             error_log($e->getMessage());
         }

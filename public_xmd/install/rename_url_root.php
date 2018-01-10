@@ -76,7 +76,7 @@ echo 'XSL templates content regenerated' . PHP_EOL;
 // restart the scheduler batch
 echo 'Waiting to restart the scheduler daemon process...';
 if (!@touch(XIMDEX_ROOT_PATH . '/data/tmp/scheduler.stop'))
-    echo PHP_EOL . $color('WARNING: Cannot create the scheduler.stop file; please, restart process manually')->orange() . PHP_EOL;
+    echo PHP_EOL . $color('WARNING: Cannot create the scheduler.stop file; please, restart process manually')->yellow() . PHP_EOL;
 else
 {
     $cont = 1;
@@ -94,7 +94,7 @@ else
     while($cont < 150);
     echo PHP_EOL;
     if (!@unlink(XIMDEX_ROOT_PATH . '/data/tmp/scheduler.stop'))
-        echo $color('WARNING: Cannot delete the scheduler.stop file; please, start process manually')->orange() . PHP_EOL;
+        echo $color('WARNING: Cannot delete the scheduler.stop file; please, start process manually')->yellow() . PHP_EOL;
 }
 
 echo $color('OK: Host configuration changed to ' . $values['UrlHost'] . $values['UrlRoot'] . ' sucessfully')->green()->bold() . PHP_EOL;

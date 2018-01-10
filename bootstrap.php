@@ -99,7 +99,13 @@ if ( !empty( $dbConfig ) ) {
 	}
 	catch (\PDOException $e)
 	{
-	    Logger::error('Can\'t connect to database at ' . $dbConfig['host'] . ':' . $dbConfig['port'] . ' (' . $e->getMessage() . ')');
+	    $error = 'Can\'t connect to database at ' . $dbConfig['host'] . ':' . $dbConfig['port'] . ' (' . $e->getMessage() . ')';
+	    Logger::error($error);
+	    if (CLI_MODE)
+	    {
+	        $color = new Colors\Color();
+	        echo $color($error)->red()->bold() . PHP_EOL;
+	    }
 		die();
 	}
     $dbConn->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_ASSOC);
