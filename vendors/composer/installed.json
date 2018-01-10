@@ -784,75 +784,6 @@
         ]
     },
     {
-        "name": "doctrine/inflector",
-        "version": "v1.2.0",
-        "version_normalized": "1.2.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/doctrine/inflector.git",
-            "reference": "e11d84c6e018beedd929cff5220969a3c6d1d462"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/doctrine/inflector/zipball/e11d84c6e018beedd929cff5220969a3c6d1d462",
-            "reference": "e11d84c6e018beedd929cff5220969a3c6d1d462",
-            "shasum": ""
-        },
-        "require": {
-            "php": "^7.0"
-        },
-        "require-dev": {
-            "phpunit/phpunit": "^6.2"
-        },
-        "time": "2017-07-22 12:18:28",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "1.2.x-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "Doctrine\\Common\\Inflector\\": "lib/Doctrine/Common/Inflector"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Roman Borschel",
-                "email": "roman@code-factory.org"
-            },
-            {
-                "name": "Benjamin Eberlei",
-                "email": "kontakt@beberlei.de"
-            },
-            {
-                "name": "Guilherme Blanco",
-                "email": "guilhermeblanco@gmail.com"
-            },
-            {
-                "name": "Jonathan Wage",
-                "email": "jonwage@gmail.com"
-            },
-            {
-                "name": "Johannes Schmitt",
-                "email": "schmittjoh@gmail.com"
-            }
-        ],
-        "description": "Common String Manipulations with regard to casing and singular/plural rules.",
-        "homepage": "http://www.doctrine-project.org",
-        "keywords": [
-            "inflection",
-            "pluralize",
-            "singularize",
-            "string"
-        ]
-    },
-    {
         "name": "doctrine/collections",
         "version": "v1.5.0",
         "version_normalized": "1.5.0.0",
@@ -1580,5 +1511,127 @@
             }
         ],
         "description": "PHPMailer is a full-featured email creation and transfer class for PHP"
+    },
+    {
+        "name": "doctrine/inflector",
+        "version": "v1.3.0",
+        "version_normalized": "1.3.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/doctrine/inflector.git",
+            "reference": "5527a48b7313d15261292c149e55e26eae771b0a"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/doctrine/inflector/zipball/5527a48b7313d15261292c149e55e26eae771b0a",
+            "reference": "5527a48b7313d15261292c149e55e26eae771b0a",
+            "shasum": ""
+        },
+        "require": {
+            "php": "^7.1"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "^6.2"
+        },
+        "time": "2018-01-09 20:05:19",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.3.x-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Doctrine\\Common\\Inflector\\": "lib/Doctrine/Common/Inflector"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Roman Borschel",
+                "email": "roman@code-factory.org"
+            },
+            {
+                "name": "Benjamin Eberlei",
+                "email": "kontakt@beberlei.de"
+            },
+            {
+                "name": "Guilherme Blanco",
+                "email": "guilhermeblanco@gmail.com"
+            },
+            {
+                "name": "Jonathan Wage",
+                "email": "jonwage@gmail.com"
+            },
+            {
+                "name": "Johannes Schmitt",
+                "email": "schmittjoh@gmail.com"
+            }
+        ],
+        "description": "Common String Manipulations with regard to casing and singular/plural rules.",
+        "homepage": "http://www.doctrine-project.org",
+        "keywords": [
+            "inflection",
+            "pluralize",
+            "singularize",
+            "string"
+        ]
+    },
+    {
+        "name": "kevinlebrun/colors.php",
+        "version": "1.0.2",
+        "version_normalized": "1.0.2.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/kevinlebrun/colors.php.git",
+            "reference": "6d7140aeedef46c97c2324f09b752c599ef17dac"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/kevinlebrun/colors.php/zipball/6d7140aeedef46c97c2324f09b752c599ef17dac",
+            "reference": "6d7140aeedef46c97c2324f09b752c599ef17dac",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.0"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "3.7.*",
+            "satooshi/php-coveralls": "1.0.*",
+            "squizlabs/php_codesniffer": "1.*"
+        },
+        "time": "2016-04-12 20:58:34",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "Colors": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Kevin Le Brun",
+                "email": "lebrun.k@gmail.com",
+                "homepage": "http://kevinlebrun.fr",
+                "role": "developer"
+            }
+        ],
+        "description": "Colors for PHP CLI scripts",
+        "homepage": "https://github.com/kevinlebrun/colors.php",
+        "keywords": [
+            "cli",
+            "color",
+            "colors",
+            "console",
+            "shell"
+        ]
     }
 ]

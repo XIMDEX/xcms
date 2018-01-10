@@ -182,6 +182,13 @@ class ComposerStaticInitf028cc5a2ca1799cafe03d03b71645cf
                 0 => __DIR__ . '/..' . '/doctrine/collections/lib',
             ),
         ),
+        'C' => 
+        array (
+            'Colors' => 
+            array (
+                0 => __DIR__ . '/..' . '/kevinlebrun/colors.php/src',
+            ),
+        ),
     );
 
     public static function getInitializer(ClassLoader $loader)

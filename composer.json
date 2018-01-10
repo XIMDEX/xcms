@@ -16,9 +16,10 @@
         "doctrine/common": "2.8.*",
         "illuminate/support": "5.5.*",
         "phpseclib/phpseclib": "2.0.*",
-        "phpmailer/phpmailer": "^6.0"
+        "phpmailer/phpmailer": "^6.0",
+        "kevinlebrun/colors.php" : "1.*"
     },
-     "require-dev": {
+    "require-dev": {
         "mockery/mockery": "0.9.*",
         "codeception/codeception": "2.3.*"
     },
