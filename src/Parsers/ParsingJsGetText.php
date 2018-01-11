@@ -77,7 +77,7 @@ class ParsingJsGetText
     public function setFile($_js = null)
     {
         if ($_js != null) {
-            if (!file_exists(XIMDEX_ROOT_PATH . $_js)) {
+            if (!file_exists(XIMDEX_ROOT_PATH . '/' . $_js)) {
                 Logger::error('The file ' . $_js . ' could not be included because of it is not existing in the path: ' . XIMDEX_ROOT_PATH . $_js);
                 return null;
             }

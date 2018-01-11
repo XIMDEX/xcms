@@ -87,7 +87,7 @@ Class Logger
 
     public static function warning($string)
     {
-        return self::get()->logger->addWarning(self::$color->__invoke($string)->yellow()->bold());
+        return self::get()->logger->addWarning(self::$color->__invoke($string)->yellow());
     }
 
     public static function debug($string)

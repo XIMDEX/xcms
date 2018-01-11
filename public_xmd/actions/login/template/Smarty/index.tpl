@@ -19,7 +19,7 @@
 	<link href='{url}/assets/style/fonts.css{/url}' rel='stylesheet' type='text/css' />
 
 	<link href="{url}/assets/style/login/login.css{/url}" rel="stylesheet" type="text/css" />
-	<script type="text/javascript" src="{EXTENSIONS::Jquery()}"></script>
+	<script type="text/javascript" src="{url}{EXTENSIONS::Jquery()}{/url}"></script>
 	{foreach from=$js_files item=js_file}
 	<script type="text/javascript" src="{$js_file}"></script>
 	{/foreach}

@@ -177,7 +177,7 @@ div.t_fixed_header.ui .headtable .hover {
 }
 
 div.t_fixed_header.ui .headtable th span.ui-resize {
-	background		: url(../../../../../images/viewers/bg-pattern-resizable.png) repeat-y right;
+	background		: url(../../../../images/viewers/bg-pattern-resizable.png) repeat-y right;
 	cursor			: col-resize;
 	display			: inline;
 	float			: right;
@@ -207,7 +207,7 @@ div.t_fixed_header.ui .body td {
 
 div.t_fixed_header.ui .body tr td {
 	border: none;
-	background: url(../../../../../images/viewers/bg-pattern-resizable-even.png) repeat-y right;
+	background: url(../../../../images/viewers/bg-pattern-resizable-even.png) repeat-y right;
 }
 
 div.t_fixed_header.ui .body tr:nth-child(odd) {
@@ -215,7 +215,7 @@ div.t_fixed_header.ui .body tr:nth-child(odd) {
 }
 
 div.t_fixed_header.ui .body tr:nth-child(odd) td{
-	background: url(../../../../../images/viewers/bg-pattern-resizable-odd.png) repeat-y right;
+	background: url(../../../../images/viewers/bg-pattern-resizable-odd.png) repeat-y right;
 }
 
 div.t_fixed_header.ui .body tr:hover {
