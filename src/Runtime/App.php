@@ -149,16 +149,17 @@ Class App
      * getUrl forms an url to $suburl of APP using params if this exists
      *
      * @param $suburl
+     * @param bool $includeUrlRoot
      * @param array ...$params
      * @return string
      */
-    public static function getUrl($suburl,  ...$params) {
+    public static function getUrl($suburl, bool $includeUrlRoot = true,  ...$params) {
 
         if(!empty($params)) {
             $suburl = sprintf($suburl, ...$params);
         }
 
-        $base = trim(App::getValue('UrlFrontController'), '/');
+        $base = (($includeUrlRoot) ? App::GetValue('UrlRoot') : '') . App::getValue('UrlFrontController');
 
         $url =   $base. '/' . ltrim($suburl, '/');
 

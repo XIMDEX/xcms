@@ -783,7 +783,7 @@ and rug.idrole in (select idrole from RelRolesPermissions where IdPermission = 1
         $jsFile = "actions/commons/views/helper/{$jsFile}.tpl";
 
         // The class AssociativeArray does not return an array, then it obtains _GET value
-        $params = isset($_GET['xparams']) ? $_GET['xparams'] : $_GET['amp;xparams'];
+        $params = isset($_GET['xparams']) ? $_GET['xparams'] : (isset($_GET['amp;xparams']) ? $_GET['amp;xparams'] : null);
 
         $values = array();
         if (is_array($params)) {

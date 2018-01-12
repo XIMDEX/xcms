@@ -84,7 +84,7 @@ abstract class WidgetAbstract
 	{
 		$c = count($array);
 		for ($i = 0; $i < $c; $i++) {
-			$array[$i] = App::getUrl('%s/%s', preg_replace('#^' . realpath(APP_ROOT_PATH) . '#', '', realpath($this->_widget_style_dir)),  $array[$i] );
+			$array[$i] = App::getUrl('%s/%s', true, preg_replace('#^' . realpath(APP_ROOT_PATH) . '#', '', realpath($this->_widget_style_dir)),  $array[$i] );
         }
 		return $array;
 	}
@@ -94,9 +94,10 @@ abstract class WidgetAbstract
 		$c = count($array);
 		$getTextJs = new ParsingJsGetText();
 		for ($i = 0; $i < $c; $i++) {
-            $array[$i] =  preg_replace('#^' . App::getXimdexUrl('/'). '#', '',  $array[$i]) ;
-
-			$array[$i] = $getTextJs->getFile( $array[$i]);
+            //$array[$i] =  preg_replace('#^' . App::getXimdexUrl('/'). '#', '',  $array[$i]) ;
+		    if (App::getValue('UrlRoot'))
+		        $array[$i] = '/' . ltrim($array[$i], App::getValue('UrlRoot'));
+			$array[$i] = $getTextJs->getFile($array[$i]);
 		}
 		return $array;
 	}

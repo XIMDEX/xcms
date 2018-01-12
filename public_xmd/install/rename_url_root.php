@@ -36,7 +36,7 @@ else
 if (isset($argv[2]))
     $values['UrlFrontController'] = $argv[2];
 else
-    $values['UrlFrontController'] = (($values['UrlRoot']) ? $values['UrlRoot'] : '') . '/public_xmd';
+    $values['UrlFrontController'] = '/public_xmd';
 
 // change the database config values
 foreach ($values as $key => $value)

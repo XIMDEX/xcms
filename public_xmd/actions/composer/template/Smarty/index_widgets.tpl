@@ -36,8 +36,8 @@
 		%=css_widgets%
 
 		{* constant js includes *}
-	<script type="text/javascript" src="{EXTENSIONS::Jquery()}"></script>
-	<script type="text/javascript" src="{EXTENSIONS::Jquery_ui()}"></script>
+	<script type="text/javascript" src="{EXTENSIONS::Jquery(true)}"></script>
+	<script type="text/javascript" src="{EXTENSIONS::Jquery_ui(true)}"></script>
 	<script type="text/javascript" src="{url}/assets/js/helpers.js{/url}"></script>
         <script type="text/javascript" src="{url}/vendors/jquery/plugins/jquery-validate/jquery.validate.js"{/url}></script>
         <script type="text/javascript" src="{url}/vendors/jquery/plugins/jquery-validate/localization/messages_{$user_locale.Lang}.js{/url}"></script>

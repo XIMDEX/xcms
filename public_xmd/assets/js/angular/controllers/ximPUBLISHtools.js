@@ -129,11 +129,14 @@ angular.module("ximdex.main.controller").controller("ximPUBLISHtools", [
       timeDiffSecs = Math.floor(timeDiffSecs % 60);
       return timeStr = hours + 'H ' + min + 'm ' + timeDiffSecs + 's';
     };
+    /*
     return;
     return $scope.initShowing = function(idPortal) {
       if ($scope.showing[idPortal] == null) {
         return $scope.showing[idPortal] = false;
       }
     };
+    */
+    return;
   }
 ]);

@@ -462,16 +462,15 @@ abstract class ActionAbstract extends IController
      */
     public function addJs($_js, $_module = 'APP', $params = null)
     {
-
         if ('APP' == $_module) {
-            $_js = App::getUrl($_js);
+            $_js = App::getUrl($_js, false);
         }else if ('XIMDEX' != $_module && 'internet'  != $_module ) {
             $path = \Ximdex\Modules\Manager::path($_module);
             $_js = $path . $_js;
         }else if ('XIMDEX' == $_module) {
-            $_js = App::getUrl($_js);
+            $_js = App::getUrl($_js, false);
         }
-
+        
         if ($params === null) {
 
             return $this->_js[] = $_js;
@@ -491,16 +490,14 @@ abstract class ActionAbstract extends IController
      */
     public function addCss($_css, $_module = 'APP')
     {
-
         if ('APP' == $_module) {
-            $this->_css[] = App::getUrl( $_css );
-            return ;
+            $_css = App::getUrl($_css);
         }else if ('XIMDEX' != $_module) {
-            $path = \Ximdex\Modules\Manager::path($_module);
+            $path = App::getValue('UrlRoot') . \Ximdex\Modules\Manager::path($_module);
             $_css = $path . $_css;
         }
 
-        $this->_css[] = App::getValue('UrlRoot') . $_css;
+        $this->_css[] = $_css;
     }
 
     /**
@@ -509,10 +506,6 @@ abstract class ActionAbstract extends IController
      */
     private function _get_render($rendererClass = null)
     {
-
-
-
-
         if ($rendererClass == null) {
             if (Session::get('debug_render') > 0) {
                 switch (Session::get('debug_render')) {

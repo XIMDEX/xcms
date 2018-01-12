@@ -303,7 +303,6 @@ VALUES
  
 INSERT INTO `Config` (`IdConfig`, `ConfigKey`, `ConfigValue`)
 VALUES
-	(1,'AppRoot',''),
 	(2,'NodeRoot','/data/nodes'),
 	(3,'TempRoot','/data/tmp'),
 	(4,'SyncRoot','/data/sync'),

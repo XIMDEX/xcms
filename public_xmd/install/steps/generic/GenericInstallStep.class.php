@@ -151,12 +151,9 @@ class GenericInstallStep {
               die();
            }
        }
-
-
-
+       
        App::setValue('UrlRoot', ($basepath)?: '', $persist);
-       App::setValue('UrlFrontController', $basepath.$subpath, $persist);
-
+       App::setValue('UrlFrontController', $subpath, $persist);
 
        // host and protocol
        App::setValue('UrlHost', $_SERVER['REQUEST_SCHEME'] . '://'. $_SERVER['HTTP_HOST'], $persist);

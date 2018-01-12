@@ -23,23 +23,23 @@
  *  @version $Revision$
  *}
 
+{if isset($wv)}
+	{foreach from=$wv key=wkey item=widget}
 
-{foreach from=$wv key=wkey item=widget}
-
-	X.widgetsVars.setJSONString('{$wkey}', '{$widget}');
-
-	{literal}
-	$(document).ready(function() {
-
-		var w = X.widgetsVars.getWidget({/literal}'{$wkey}'{literal});
-		if (w.id) {
-			w.element = $('#'+w.id);
-		}
-		if (Object.isFunction(w.handler)) {
-			w.handler(w);
-		}
-
-	});
-	{/literal}
-
-{/foreach}
+		X.widgetsVars.setJSONString('{$wkey}', '{$widget}');
+	
+		{literal}
+			$(document).ready(function() {
+		
+				var w = X.widgetsVars.getWidget({/literal}'{$wkey}'{literal});
+				if (w.id) {
+					w.element = $('#'+w.id);
+				}
+				if (Object.isFunction(w.handler)) {
+					w.handler(w);
+				}
+		
+			});
+		{/literal}
+	{/foreach}
+{/if}

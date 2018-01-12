@@ -8,7 +8,7 @@ class Extensions {
     const JQUERY      = self::JQUERY_PATH . '/jquery-1.8.3.min.js';
     const JQUERY_UI   = self::JQUERY_PATH . '/jquery-ui-1.9.1.custom.min.js';
     const SMARTY      = '/vendors/smarty/libs/Smarty.class.php';
-    const PHPSECLIB   = '/vendors/phpseclib';
+    //const PHPSECLIB   = '/vendors/phpseclib';
     const BOOTSTRAP   = '/vendors/bootstrap/dist';
     
     /**
@@ -20,8 +20,12 @@ class Extensions {
       public static function __callStatic($_func, $_args) {
           
           $const = strtoupper($_func);
-          $urlRoot = App::getValue('UrlRoot');
-          $value = constant(sprintf('%s::%s', 'self', $const));
-          return $urlRoot . $value;
+          $value = constant("self::$const");
+          
+          // for now only the CMS vendor extensions
+          $res = App::getValue('UrlFrontController') . $value;
+          if (isset($_args[0]) and $_args[0])
+              $res = App::getValue('UrlRoot') . $res;
+          return $res;
       }
 }
