@@ -35,6 +35,7 @@ use Ximdex\Runtime\App;
 use Ximdex\Workflow\WorkFlow;
 
 
+
 define('NODETYPE_WORKFLOW_STATE', \Ximdex\NodeTypes\NodeType::WORKFLOW_STATE);
 
 class Action_modifystates extends ActionAbstract
@@ -111,7 +112,9 @@ class Action_modifystates extends ActionAbstract
 
     function update_states()
     {
-        $req = json_decode($GLOBALS['HTTP_RAW_POST_DATA'], true);
+        $post = file_get_contents('php://input');
+        $req = json_decode($post, true);
+        
         $idNode = $req["idNode"];
         $all_status = $req["states"];
         $toDelete = $req["toDelete"];

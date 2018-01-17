@@ -62,8 +62,9 @@ class Action_modifystatesrole extends ActionAbstract
     }
 
     function update_states()
-    {
-        $request = json_decode($GLOBALS['HTTP_RAW_POST_DATA'], true);
+    {   
+        $post = file_get_contents('php://input');
+        $request = json_decode($post, true);
         $states = $request["states"];
         $idRole = $request["idRole"];
         $role = new Role($idRole);

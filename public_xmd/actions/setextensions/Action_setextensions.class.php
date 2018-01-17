@@ -20,7 +20,9 @@ class Action_setextensions extends ActionAbstract
 
     public function update_extensions()
     {
-        $extensions = json_decode($GLOBALS['HTTP_RAW_POST_DATA'],true)["states"];
+        $post = file_get_contents('php://input');
+        $extensions = json_decode($post, true);
+        $extensions = $extensions["states"];
         $patt = '/^((\w+|\*))?(,(\w+|\*))*\s*$/i';
         $res = true;
 
