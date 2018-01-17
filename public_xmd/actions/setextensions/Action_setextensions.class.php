@@ -21,7 +21,8 @@ class Action_setextensions extends ActionAbstract
     public function update_extensions()
     {
         $post = file_get_contents('php://input');
-        $extensions = json_decode($post, true)["states"];
+        $extensions = json_decode($post, true);
+        $extensions = $extensions["states"];
         $patt = '/^((\w+|\*))?(,(\w+|\*))*\s*$/i';
         $res = true;
 
