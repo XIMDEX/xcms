@@ -25,6 +25,7 @@
  */
 
 
+use Ximdex\NodeTypes\NodeTypeConstants;
 use Ximdex\Runtime\App;
 
 include_once '../../../bootstrap.php';
@@ -50,7 +51,7 @@ echo "\nlocale = '" . \Ximdex\Runtime\Session::get('locale') . "';";
 function NodeTypes()
 {
 <?php
-    $nodeType = new \Ximdex\NodeTypes\NodeType;
+    $nodeType = new NodeTypeConstants();
     $reflect = new ReflectionClass($nodeType);
     $constants = $reflect->getConstants();
     foreach ($constants as $constant => $value) {

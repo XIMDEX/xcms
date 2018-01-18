@@ -39,7 +39,6 @@ use Ximdex\Logger;
  This global variable will indicate to database connections that we are in a batch process and do the reconnect
  method when it's necessary
  */
-//TODO ajlucena: will be removed
 $GLOBALS['InBatchProcess'] = true;
 
 Logger::generate('SCHEDULER', 'scheduler');

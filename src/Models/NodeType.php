@@ -29,7 +29,7 @@ namespace Ximdex\Models;
 
 use Ximdex\Models\ORM\NodeTypesOrm;
 
-define('NODETYPE_SECTION', \Ximdex\NodeTypes\NodeType::SECTION);
+define('NODETYPE_SECTION', \Ximdex\NodeTypes\NodeTypeConstants::SECTION);
 
 /**
  * @property bool autoCleanErr
@@ -875,7 +875,7 @@ class NodeType extends NodeTypesOrm
             nt.Name as Name, nt.Description as Description, rntmt.extension as extension FROM
             NodeAllowedContents as nac INNER JOIN RelNodeTypeMimeType rntmt on
             nac.NodeType = rntmt.IdNodeType INNER JOIN NodeTypes nt on nac.NodeType = nt.IdNodeType
-            where nac.IdNodeType=' . \Ximdex\NodeTypes\NodeType::COMMON_ROOT_FOLDER . ' and nt.IsFolder=0', $this->get('IdNodeType'));
+            where nac.IdNodeType=' . \Ximdex\NodeTypes\NodeTypeConstants::COMMON_ROOT_FOLDER . ' and nt.IsFolder=0', $this->get('IdNodeType'));
         $dbObj->Query($sql);
         $returnArray = array();
         while (!$dbObj->EOF) {

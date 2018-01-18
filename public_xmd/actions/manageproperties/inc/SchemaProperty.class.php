@@ -40,11 +40,11 @@ class SchemaProperty extends InheritableProperty {
 		// All system schemas
 		$_availableSchemas = array(
 			array(
-			    'IdSchema' => \Ximdex\NodeTypes\NodeType::VISUAL_TEMPLATE,
+			    'IdSchema' => \Ximdex\NodeTypes\NodeTypeConstants::VISUAL_TEMPLATE,
 				'Name' => 'PVD'
 			),
 			array(
-			    'IdSchema' => \Ximdex\NodeTypes\NodeType::RNG_VISUAL_TEMPLATE,
+			    'IdSchema' => \Ximdex\NodeTypes\NodeTypeConstants::RNG_VISUAL_TEMPLATE,
 				'Name' => 'RNG'
 			)
 		);
@@ -56,7 +56,7 @@ class SchemaProperty extends InheritableProperty {
 		$availableSchemas = array();
 
 
-		if ($this->nodeTypeId == \Ximdex\NodeTypes\NodeType::PROJECT) {
+		if ($this->nodeTypeId == \Ximdex\NodeTypes\NodeTypeConstants::PROJECT) {
 
 			// The Project node shows all the system schemas
 			$availableSchemas = $_availableSchemas;

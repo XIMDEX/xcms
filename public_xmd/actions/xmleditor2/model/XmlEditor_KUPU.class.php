@@ -488,7 +488,6 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
 
         } else {
 
-            //TODO ajlucena: KUPU
             // NOTE: Delete docxap tags and UID attributes
             $xmlContent = $this->_normalizeXmlDocument($idNode, $content);
             $xmlContent = \Ximdex\Utils\Strings::stripslashes($xmlContent);
@@ -696,7 +695,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
         $rngElements = $parser->getElements();
 
         // Obtaining array with templates referenced from templates_include.xsl
-        if ($this->node->GetNodeType() !=\Ximdex\NodeTypes\NodeType::METADATA_DOCUMENT)
+        if ($this->node->GetNodeType() !=\Ximdex\NodeTypes\NodeTypeConstants::METADATA_DOCUMENT)
         {
             $docxapId = NULL;
             $depsMngr = new DepsManager();

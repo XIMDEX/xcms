@@ -36,7 +36,7 @@ use Ximdex\Workflow\WorkFlow;
 
 
 
-define('NODETYPE_WORKFLOW_STATE', \Ximdex\NodeTypes\NodeType::WORKFLOW_STATE);
+define('NODETYPE_WORKFLOW_STATE', \Ximdex\NodeTypes\NodeTypeConstants::WORKFLOW_STATE);
 
 class Action_modifystates extends ActionAbstract
 {
@@ -84,10 +84,10 @@ class Action_modifystates extends ActionAbstract
         $allNodeTypes = $nodeType->find('IdNodeType, Name', 'IsPublishable = 1', array());
 
         foreach ($allNodeTypes as $nodeTypeInfo) {
-            if ($nodeTypeInfo['IdNodeType'] == \Ximdex\NodeTypes\NodeType::XML_DOCUMENT ||
-                $nodeTypeInfo['IdNodeType'] == \Ximdex\NodeTypes\NodeType::TEXT_FILE ||
-                $nodeTypeInfo['IdNodeType'] ==\Ximdex\NodeTypes\NodeType::IMAGE_FILE ||
-                $nodeTypeInfo['IdNodeType'] == \Ximdex\NodeTypes\NodeType::BINARY_FILE
+            if ($nodeTypeInfo['IdNodeType'] == \Ximdex\NodeTypes\NodeTypeConstants::XML_DOCUMENT ||
+                $nodeTypeInfo['IdNodeType'] == \Ximdex\NodeTypes\NodeTypeConstants::TEXT_FILE ||
+                $nodeTypeInfo['IdNodeType'] ==\Ximdex\NodeTypes\NodeTypeConstants::IMAGE_FILE ||
+                $nodeTypeInfo['IdNodeType'] == \Ximdex\NodeTypes\NodeTypeConstants::BINARY_FILE
             ) {
                 $nodeTypeValues[] = array("id" => $nodeTypeInfo['IdNodeType'],
                     "name" => $nodeTypeInfo['Name']);

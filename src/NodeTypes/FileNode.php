@@ -142,13 +142,13 @@ class FileNode extends Root
         /// @todo: move this piece to Template nodetype
         // Not neccesary up version here for template nodetypes (makes previously for insert correct idversion in xml wrapper)
 
-        if ($this->parent->nodeType->GetID() == \Ximdex\NodeTypes\NodeType::XSL_TEMPLATE) {
+        if ($this->parent->nodeType->GetID() == \Ximdex\NodeTypes\NodeTypeConstants::XSL_TEMPLATE) {
             $lastVersionID = $data->GetLastVersionId();
             list($version, $subversion) = $data->GetVersionAndSubVersion($lastVersionID);
             $data->SetContent($content, $version, $subversion, $commitNode);
         } else {
             
-            if ($this->parent->nodeType->GetID() == \Ximdex\NodeTypes\NodeType::RNG_VISUAL_TEMPLATE)
+            if ($this->parent->nodeType->GetID() == \Ximdex\NodeTypes\NodeTypeConstants::RNG_VISUAL_TEMPLATE)
             {
                 $dom = new DOMDocument();
                 $dom->formatOutput = true;

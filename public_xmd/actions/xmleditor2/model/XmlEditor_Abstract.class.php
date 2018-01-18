@@ -272,8 +272,7 @@ abstract class XmlEditor_Abstract
 
         return $node->tagName;
     }
-
-    //TODO ajlucena: KUPU
+    
     /**
 	 * Delete docxap tags
 	 * Delete UID attributes
@@ -307,7 +306,6 @@ abstract class XmlEditor_Abstract
         return $xmldoc;
     }
 
-    //TODO ajlucena: KUPU
     /**
 	 * Recursive!
 	 * Called by _normalizeXmlDocument()

@@ -355,15 +355,16 @@ class DataFactory
             }
 
             $channels = $node->GetChannels();
-            $pipelineManager = new PipelineManager();
-            foreach ($channels as $idChannel) {
-                Logger::info("Generation cache for version $idVersion and the channel $idChannel");
-                $data = array('CHANNEL' => $idChannel);
-
-                $transformer = $node->getProperty('Transformer');
-                $data['TRANSFORMER'] = $transformer[0];
-                $res = $pipelineManager->getCacheFromProcess($idVersion, 'StrDocToDexT', $data);
-
+            if ($channels)
+            {
+                $pipelineManager = new PipelineManager();
+                foreach ($channels as $idChannel) {
+                    Logger::info("Generation cache for version $idVersion and the channel $idChannel");
+                    $data = array('CHANNEL' => $idChannel);
+                    $transformer = $node->getProperty('Transformer');
+                    $data['TRANSFORMER'] = $transformer[0];
+                    $res = $pipelineManager->getCacheFromProcess($idVersion, 'StrDocToDexT', $data);
+                }
             }
         }
         return $res;

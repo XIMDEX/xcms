@@ -32,7 +32,7 @@ use Ximdex\Models\NodeType;
 use Ximdex\Modules\Module;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\App;
-use\Ximdex\NodeTypes\NodeType as ServicesNodeType;
+use Ximdex\NodeTypes\NodeTypeConstants as ServicesNodeType;
 
 \Ximdex\Modules\Manager::file('/actions/addfoldernode/model/ProjectTemplate.class.php');
 \Ximdex\Modules\Manager::file('/actions/addfoldernode/conf/addfoldernode.conf');
@@ -356,8 +356,8 @@ class Action_addfoldernode extends ActionAbstract
             // reload the templates include files for this new project
             if (!isset($node))
                 $node = new Node($idFolder);
-            if ($node->GetNodeType() == \Ximdex\NodeTypes\NodeType::PROJECT or $node->GetNodeType() == \Ximdex\NodeTypes\NodeType::TEMPLATES_ROOT_FOLDER
-                    or $node->GetNodeType() == \Ximdex\NodeTypes\NodeType::SERVER or $node->GetNodeType() == \Ximdex\NodeTypes\NodeType::SECTION)
+            if ($node->GetNodeType() == \Ximdex\NodeTypes\NodeTypeConstants::PROJECT or $node->GetNodeType() == \Ximdex\NodeTypes\NodeTypeConstants::TEMPLATES_ROOT_FOLDER
+                    or $node->GetNodeType() == \Ximdex\NodeTypes\NodeTypeConstants::SERVER or $node->GetNodeType() == \Ximdex\NodeTypes\NodeTypeConstants::SECTION)
             {
                 $xsltNode = new \Ximdex\NodeTypes\XsltNode($node);
                 if ($xsltNode->reload_templates_include(new Node($node->getProject())) === false)

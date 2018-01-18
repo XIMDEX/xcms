@@ -33,7 +33,7 @@
 
 <div class="languages-available small_12 columns">
 
-	<label class="label_title label_general">{t}Languages{/t}</label>
+	<label class="label_title label_general">{t}Languages{/t} *</label>
 
     {if count($languages) > 0}
 

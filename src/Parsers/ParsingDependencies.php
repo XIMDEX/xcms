@@ -112,11 +112,11 @@ class ParsingDependencies
         }
 
         switch ($node->get("IdNodeType")) {
-            case \Ximdex\NodeTypes\NodeType::XHTML5_DOC:
-            case \Ximdex\NodeTypes\NodeType::XML_DOCUMENT:
+            case \Ximdex\NodeTypes\NodeTypeConstants::XHTML5_DOC:
+            case \Ximdex\NodeTypes\NodeTypeConstants::XML_DOCUMENT:
                 $result = self::parseXMLDependencies($node, $content, $idVersion);
                 break;
-            case \Ximdex\NodeTypes\NodeType::CSS_FILE:
+            case \Ximdex\NodeTypes\NodeTypeConstants::CSS_FILE:
                 $result = self::parseCssDependencies($node, $content, $idVersion);
                 break;
             default:
@@ -521,25 +521,25 @@ class ParsingDependencies
         $depNode = new Node($idNode);
         if ($depNode->get('IdNode') > 0) {
             switch ((int)$depNode->get("IdNodeType")) {
-                case\Ximdex\NodeTypes\NodeType::LINK:
+                case\Ximdex\NodeTypes\NodeTypeConstants::LINK:
                     $type = Dependencies::XIMLINK;
                     break;
-                case\Ximdex\NodeTypes\NodeType::CSS_FILE:
-                case\Ximdex\NodeTypes\NodeType::BINARY_FILE:
-                case\Ximdex\NodeTypes\NodeType::TEXT_FILE:
-                case \Ximdex\NodeTypes\NodeType::NODE_HT:
-                case\Ximdex\NodeTypes\NodeType::IMAGE_FILE:
+                case\Ximdex\NodeTypes\NodeTypeConstants::CSS_FILE:
+                case\Ximdex\NodeTypes\NodeTypeConstants::BINARY_FILE:
+                case\Ximdex\NodeTypes\NodeTypeConstants::TEXT_FILE:
+                case \Ximdex\NodeTypes\NodeTypeConstants::NODE_HT:
+                case\Ximdex\NodeTypes\NodeTypeConstants::IMAGE_FILE:
                     $type = Dependencies::ASSET;
                     break;
-                case\Ximdex\NodeTypes\NodeType::XIMLET_CONTAINER:
-                case\Ximdex\NodeTypes\NodeType::XIMLET:
+                case\Ximdex\NodeTypes\NodeTypeConstants::XIMLET_CONTAINER:
+                case\Ximdex\NodeTypes\NodeTypeConstants::XIMLET:
                     $type = Dependencies::XIMLET;
                     break;
-                case\Ximdex\NodeTypes\NodeType::XML_DOCUMENT:
-                case \Ximdex\NodeTypes\NodeType::METADATA_DOCUMENT:
+                case\Ximdex\NodeTypes\NodeTypeConstants::XML_DOCUMENT:
+                case \Ximdex\NodeTypes\NodeTypeConstants::METADATA_DOCUMENT:
                     $type = Dependencies::XML;
                     break;
-                case\Ximdex\NodeTypes\NodeType::XSL_TEMPLATE:
+                case\Ximdex\NodeTypes\NodeTypeConstants::XSL_TEMPLATE:
                     $type = Dependencies::TEMPLATE;
                     break;
                 default:
@@ -569,7 +569,6 @@ class ParsingDependencies
         return $assets;
     }
 
-    //TODO ajlucena: KUPU
     public static function getDotDot($content, $idServer)
     {
         preg_match_all("/@@@RMximdex\.dotdot\((css|common)([^\)]*)\)@@@/", $content, $matches);
@@ -621,8 +620,7 @@ class ParsingDependencies
 
         return $result;
     }
-
-    //TODO ajlucena: KUPU
+    
     /**
      * Get an array with the NodeId values of PathTo links in the content given
      * If the $test param is passed with true value, return true if the nodes linked exists in nodes database (now is inter-projects)

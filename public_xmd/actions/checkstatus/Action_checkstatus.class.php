@@ -58,8 +58,8 @@ class Action_checkstatus extends ActionAbstract
 
         $dbObj = new \Ximdex\Runtime\Db();
         $query = "SELECT n.IdState,n.IdNode,n.Path,n.Name,v1.Version, v1.SubVersion,v1.Date FROM Versions v1 INNER JOIN Nodes n USING (IdNode) WHERE n.IdNodetype in (" 
-                . \Ximdex\NodeTypes\NodeType::XML_DOCUMENT . "," . \Ximdex\NodeTypes\NodeType::TEXT_FILE . "," .\Ximdex\NodeTypes\NodeType::IMAGE_FILE
-                . "," . \Ximdex\NodeTypes\NodeType::BINARY_FILE . "," . \Ximdex\NodeTypes\NodeType::CSS_FILE . ") AND n.Path like '%" . $projectName . "%" . $serverName . "%' AND NOT v1.SubVersion=0 AND NOT EXISTS (select Idnode from Versions v2 where v2.IdNOde=v1.IdNOde and (v2.Version>v1.Version OR (v1.Version=v2.Version AND v2.SubVersion>v1.Subversion))) ORDER BY n.IdNode";
+                . \Ximdex\NodeTypes\NodeTypeConstants::XML_DOCUMENT . "," . \Ximdex\NodeTypes\NodeTypeConstants::TEXT_FILE . "," .\Ximdex\NodeTypes\NodeTypeConstants::IMAGE_FILE
+                . "," . \Ximdex\NodeTypes\NodeTypeConstants::BINARY_FILE . "," . \Ximdex\NodeTypes\NodeTypeConstants::CSS_FILE . ") AND n.Path like '%" . $projectName . "%" . $serverName . "%' AND NOT v1.SubVersion=0 AND NOT EXISTS (select Idnode from Versions v2 where v2.IdNOde=v1.IdNOde and (v2.Version>v1.Version OR (v1.Version=v2.Version AND v2.SubVersion>v1.Subversion))) ORDER BY n.IdNode";
 
         $dbObj->query($query);
         $data = array();

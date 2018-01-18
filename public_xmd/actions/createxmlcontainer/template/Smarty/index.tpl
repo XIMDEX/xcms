@@ -34,7 +34,7 @@
 	<div class="action_content icon">
 		<div class="row tarjeta">
 			<div class="small-12 columns title_tarjeta">
-				<h2 class="h2_general">{t}Add new XML{/t}</h2>
+				<h2 class="h2_general">{t}Add new XML{/t} ({$nodeTypeName})</h2>
 			</div>
 			<div class="small-8 columns">
 				<div class="input">

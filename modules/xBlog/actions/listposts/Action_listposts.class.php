@@ -27,7 +27,7 @@ use Ximdex\Models\Node;
 use Ximdex\Models\User;
 use Ximdex\MVC\ActionAbstract;
 use DiDom\Document;
-use\Ximdex\NodeTypes\NodeType;
+use Ximdex\NodeTypes\NodeTypeConstants;
 
 \Ximdex\Modules\Manager::file("/actions/browser3/Action_browser3.class.php");
 \Ximdex\Modules\Manager::file('/inc/utils/XHTMLEditorUtils.php', 'xBlog');
@@ -50,7 +50,7 @@ class Action_listposts extends ActionAbstract
     public function getPosts(){
         $idnode = $this->request->getParam('nodeid');
         $user = new User(\Ximdex\Runtime\Session::get("userID"));
-        $lastestDocs = $user->getLastestNodes(NodeType::XHTML5_DOC, $idnode);
+        $lastestDocs = $user->getLastestNodes(NodeTypeConstants::XHTML5_DOC, $idnode);
         $consultaTitle = "//x-meta[@data-key='title']";
         $consultaMeta = "//x-meta[@data-key='image']";
         $consultaIntro = "//x-meta[@data-key='intro']";

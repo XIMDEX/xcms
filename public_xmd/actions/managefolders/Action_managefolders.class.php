@@ -203,13 +203,13 @@ class Action_managefolders extends ActionAbstract {
         */
 	private function _getDescription($nodetype){
 		switch($nodetype){
-			case \Ximdex\NodeTypes\NodeType::XML_ROOT_FOLDER: return "This is the main repository for all your XML contents. It's the most important folder in a section.";
-			case \Ximdex\NodeTypes\NodeType::IMAGES_ROOT_FOLDER: return "Inside this folder you can store all the image files you need in several formats (gif, png,jpg, tiff,...)";
-			case \Ximdex\NodeTypes\NodeType::IMPORT_ROOT_FOLDER: return "Into this folder you could store several HTML snippets that you can add directly into your XML documents";
-			case \Ximdex\NodeTypes\NodeType::COMMON_ROOT_FOLDER: return "Use this folder if you need to store JavaScript scripts or text files like PDFs, MS Office documents, etc.";
-			case \Ximdex\NodeTypes\NodeType::TEMPLATES_ROOT_FOLDER: return "Create here your own XSL Templates to redefine some particular appareance in your XML documents.";
-			case \Ximdex\NodeTypes\NodeType::XIMLET_ROOT_FOLDER: return "Create XML snippets that you can import into your XML documents. Typical uses are menus, shared headers, shared footers between all your XML documents.";
-			case \Ximdex\NodeTypes\NodeType::METADATA_SECTION: return "Create metadata structured documents to describe other resources stored in Ximdex CMS.";
+			case \Ximdex\NodeTypes\NodeTypeConstants::XML_ROOT_FOLDER: return "This is the main repository for all your XML contents. It's the most important folder in a section.";
+			case \Ximdex\NodeTypes\NodeTypeConstants::IMAGES_ROOT_FOLDER: return "Inside this folder you can store all the image files you need in several formats (gif, png,jpg, tiff,...)";
+			case \Ximdex\NodeTypes\NodeTypeConstants::IMPORT_ROOT_FOLDER: return "Into this folder you could store several HTML snippets that you can add directly into your XML documents";
+			case \Ximdex\NodeTypes\NodeTypeConstants::COMMON_ROOT_FOLDER: return "Use this folder if you need to store JavaScript scripts or text files like PDFs, MS Office documents, etc.";
+			case \Ximdex\NodeTypes\NodeTypeConstants::TEMPLATES_ROOT_FOLDER: return "Create here your own XSL Templates to redefine some particular appareance in your XML documents.";
+			case \Ximdex\NodeTypes\NodeTypeConstants::XIMLET_ROOT_FOLDER: return "Create XML snippets that you can import into your XML documents. Typical uses are menus, shared headers, shared footers between all your XML documents.";
+			case \Ximdex\NodeTypes\NodeTypeConstants::METADATA_SECTION: return "Create metadata structured documents to describe other resources stored in Ximdex CMS.";
 			default: "...";
 		}
 	}
@@ -233,7 +233,7 @@ class Action_managefolders extends ActionAbstract {
 			foreach($children as $child){
 				$ch = new Node ($child);
 				$idNodeType = $ch->GetNodeType();
-				if (\Ximdex\NodeTypes\NodeType::SECTION != $idNodeType)
+				if (\Ximdex\NodeTypes\NodeTypeConstants::SECTION != $idNodeType)
 					$children_nt[]=$idNodeType;
 			}
 		}

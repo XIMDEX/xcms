@@ -74,7 +74,7 @@ class ViewSQL extends AbstractView implements IView {
 		
 
 				$s = "select n.IdNode,n.Name n.IdParent from FastTraverse as f inner join Nodes as n on f.IdNode = n.IdNode";
-				$s .= " where f.IdChild = $nodeId and n.IdNodeType = " . \Ximdex\NodeTypes\NodeType::SECTION;
+				$s .= " where f.IdChild = $nodeId and n.IdNodeType = " . \Ximdex\NodeTypes\NodeTypeConstants::SECTION;
 				$result = $node->query($s);
 				if (!is_null($result)){
 					$idSection = $result[0]['IdNode'];

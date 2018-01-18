@@ -63,7 +63,7 @@ class Module_ximPUBLISHtools extends Module {
         // Pub. Report
         $sql['Creating ximPUBLISH report action'] = "INSERT INTO Actions
 		(IdAction,IdNodeType,Name,Command,Icon,Description,Sort,Module,Multiple)
-		VALUES ('" . self::PUB_REPORT_ACTION_ID . "','" . \Ximdex\NodeTypes\NodeType::SERVER
+		VALUES ('" . self::PUB_REPORT_ACTION_ID . "','" . \Ximdex\NodeTypes\NodeTypeConstants::SERVER
 		      . "','Publishing report','managebatchs','publicate_section.png',
 		'View documents in publishing queue',100,'ximPUBLISHtools',0)";
 
@@ -73,7 +73,7 @@ class Module_ximPUBLISHtools extends Module {
 
         $sql['Creating ximPUBLISH history action'] = "INSERT INTO Actions
 		(IdAction,IdNodeType,Name,Command,Icon,Description,Sort,Module,Multiple)
-		VALUES ('" . self::PUB_REPORT_HISTORY_ID . "','" . \Ximdex\NodeTypes\NodeType::SERVER
+		VALUES ('" . self::PUB_REPORT_HISTORY_ID . "','" . \Ximdex\NodeTypes\NodeTypeConstants::SERVER
 		      . "','Publishing history','batchhistory','publicate_section.png',
 		'View document Publishing history',100,'ximPUBLISHtools',0)";
         

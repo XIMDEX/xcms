@@ -88,6 +88,7 @@ class XmlContainerNode extends FolderNode
             foreach ($aliasLangList as $idLanguage => $alias) {
                 $result = $this->addLanguageVersion($idLanguage, $alias, $channelList, $dataChildren);
             }
+            
             $this->buildMetadata($nodeTypeID, $aliasLangList);
         }
 
@@ -102,8 +103,8 @@ class XmlContainerNode extends FolderNode
 
     private function buildMetadata($idNodeType, $aliases)
     {
-
-        if (\Ximdex\NodeTypes\NodeType::METADATA_CONTAINER != $idNodeType) {
+        // only generate metadata nodes for XML document containers
+        if ($idNodeType == \Ximdex\NodeTypes\NodeTypeConstants::XML_CONTAINER) {
             $langs = array();
             foreach ($aliases as $idLang => $alias) {
                 $langs[] = $idLang;
@@ -270,5 +271,3 @@ class XmlContainerNode extends FolderNode
         return $xml;
     }
 }
-
-?>

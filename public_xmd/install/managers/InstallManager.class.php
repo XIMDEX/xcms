@@ -392,7 +392,6 @@ class InstallManager
         $result = $result && $this->setSingleParam("##DB_PASSWD##", $pass);
         $result = $result && $this->setSingleParam("##DB_NAME##", $bdName);
         $result = $result && $this->setSingleParam("##XIMDEX_TIMEZONE##", $this->getTimeZone());
-        $result = $result && $this->setSingleParam("##XIMDEX_PATH##", XIMDEX_ROOT_PATH);
 
         return $result;
     }

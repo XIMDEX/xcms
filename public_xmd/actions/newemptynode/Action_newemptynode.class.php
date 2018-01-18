@@ -92,7 +92,7 @@ class Action_newemptynode extends ActionAbstract {
 			else
 			{
 			    // reload the templates include files for this new project when adding a template node
-			    if ($nodetype == \Ximdex\NodeTypes\NodeType::XSL_TEMPLATE)
+			    if ($nodetype == \Ximdex\NodeTypes\NodeTypeConstants::XSL_TEMPLATE)
 			    {
 			        $xsltNode = new \Ximdex\NodeTypes\XsltNode($file);
 			        if ($xsltNode->reload_templates_include(new Node($file->getProject())) === false)
@@ -124,15 +124,15 @@ class Action_newemptynode extends ActionAbstract {
 	{
 		switch ($nt)
 		{
-		    case \Ximdex\NodeTypes\NodeType::TEXT_FILE:
+		    case \Ximdex\NodeTypes\NodeTypeConstants::TEXT_FILE:
 		        $content = '<<< DELETE \nTHIS\n CONTENT >>>';
 		        break;
 		    
-		    case \Ximdex\NodeTypes\NodeType::CSS_FILE:
+		    case \Ximdex\NodeTypes\NodeTypeConstants::CSS_FILE:
 		        $content = '/* CSS File: ' . $name . '. Write your rules here. */\n\n * {}';
 		        break;
 
-		    case \Ximdex\NodeTypes\NodeType::XSL_TEMPLATE:
+		    case \Ximdex\NodeTypes\NodeTypeConstants::XSL_TEMPLATE:
 		        $content = "<?xml version='1.0' encoding='UTF-8'?>";
 		        $content .= "\n<xsl:stylesheet xmlns:xsl='http://www.w3.org/1999/XSL/Transform' version='1.0'>";
 		        if ($name != 'templates_include')
@@ -148,7 +148,7 @@ class Action_newemptynode extends ActionAbstract {
 		        $content .= '</xsl:stylesheet>';
 		        break;
 
-            case \Ximdex\NodeTypes\NodeType::RNG_VISUAL_TEMPLATE:
+            case \Ximdex\NodeTypes\NodeTypeConstants::RNG_VISUAL_TEMPLATE:
                 $content = "<?xml version='1.0' encoding='UTF-8' ?>\n";
                 $content .= "<grammar xmlns='http://relaxng.org/ns/structure/1.0' xmlns:xim='http://ximdex.com/schema/1.0'>";
                 $content .= "\n\t<!-- Create your own grammar here -->";
@@ -156,7 +156,7 @@ class Action_newemptynode extends ActionAbstract {
                 $content .= "\n</grammar>";
 				break;
 
-		    case \Ximdex\NodeTypes\NodeType::NODE_HT:
+		    case \Ximdex\NodeTypes\NodeTypeConstants::NODE_HT:
 				$content = "<html>\n\t<head>\n\t</head>\n\t<body>\n\t</body>\n</html>";
 				break;
 		}

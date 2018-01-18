@@ -51,7 +51,7 @@ class ChannelProperty extends InheritableProperty {
 		// The Project node shows all the system channels
 		$availableChannels = $channel->find('IdChannel, Name');
 
-		if ($this->nodeTypeId != \Ximdex\NodeTypes\NodeType::PROJECT) {
+		if ($this->nodeTypeId != \Ximdex\NodeTypes\NodeTypeConstants::PROJECT) {
 
 			// Nodes below the Project shows only inherited channels
 			$parentId = $this->node->getParent();
@@ -163,7 +163,7 @@ class ChannelProperty extends InheritableProperty {
 			from FastTraverse f
 				join Nodes n on f.IdChild = n.IdNode
 			where f.IdNode = %s
-				and n.IdNodeType = " . \Ximdex\NodeTypes\NodeType::XML_DOCUMENT ;
+				and n.IdNodeType = " . \Ximdex\NodeTypes\NodeTypeConstants::XML_DOCUMENT ;
 		$sql = sprintf($sql, $this->nodeId);
 
 		$nodes = 0;

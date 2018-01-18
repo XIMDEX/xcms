@@ -24,6 +24,7 @@
  *  @version $Revision$
  */
 
+use Ximdex\Logger;
 use Ximdex\Models\Channel;
 use Ximdex\Models\Language;
 use Ximdex\Models\Node;
@@ -46,6 +47,13 @@ class Action_createxmlcontainer extends ActionAbstract {
 			// Why die ? show error to user.
 			die(_("Error with parameters"));
 		}
+		
+		$nodeType = new NodeType($nt);
+		if (!$nodeType->GetID())
+		{
+		    Logger::error('Cannot load the node type with ID: ' . $nt);
+		    die();
+		}
 
 		// Gets default schema for XML through propInheritance
 		$schemes = null;
@@ -61,7 +69,7 @@ class Action_createxmlcontainer extends ActionAbstract {
 		}
 		
 		if($schemes === null){
-		    $schemes = $nt == \Ximdex\NodeTypes\NodeType::METADATA_SECTION ? $node->getSchemas('metadata_schema') : $node->getSchemas();
+		    $schemes = $nt == \Ximdex\NodeTypes\NodeTypeConstants::METADATA_SECTION ? $node->getSchemas('metadata_schema') : $node->getSchemas();
 		}
 		
 		$schemaArray = array();
@@ -97,7 +105,8 @@ class Action_createxmlcontainer extends ActionAbstract {
 			'channels' => $channels,
 			'languages' => $languages,
 			'go_method' => 'createxmlcontainer',
-			'reload_tree' => $reloadTree
+			'reload_tree' => $reloadTree,
+		    'nodeTypeName' => $nodeType->GetDescription()
 		);
 		$this->render($values, null, 'default-3.0.tpl');
     }

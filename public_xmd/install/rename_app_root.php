@@ -1,8 +1,8 @@
 <?php
 
 /*
-The purpose of this script is change the domain host URL and a optional different urlFrontController
-Usage: php public_xmd/install/rename_url_root.php http://nuevaURL [urlFront]
+The purpose of this script is change the app full path and a optional different urlFrontController in the file system
+Usage: php public_xmd/install/rename_app_root.php /home/user/html/ximdex [pathFront]
 IMPORTANT: must be called from Ximdex root directory
 */
 
@@ -15,7 +15,7 @@ include 'bootstrap.php';
 $color = new Color();
 if (!isset($argv) or !$argv or $argc < 2)
 {
-    echo $color('ERROR: The parameter URL has not been specified')->red()->bold() . PHP_EOL;
+    echo $color('ERROR: The parameter PATH has not been specified')->red()->bold() . PHP_EOL;
     exit();
 }
 $url = $argv[1];

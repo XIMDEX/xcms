@@ -98,7 +98,7 @@ class Action_modifyrole extends ActionAbstract
     protected function getAllNodeTypes($allStates, $role, $selectedPipeline)
     {
 
-        for ($i = \Ximdex\NodeTypes\NodeType::USER_MANAGER; $i < \Ximdex\NodeTypes\NodeType::PROJECTS; $i++) {
+        for ($i = \Ximdex\NodeTypes\NodeTypeConstants::USER_MANAGER; $i < \Ximdex\NodeTypes\NodeTypeConstants::PROJECTS; $i++) {
             $groupeds[$i] = _("Control center permissions");
         }
 

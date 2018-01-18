@@ -49,7 +49,7 @@ class RelNodeTypeMimeType  extends \Ximdex\Data\GenericData
     {
         $filter = $this->find('filter', 'idnodetype = %s', array($nodetype), MONO);
         if (strcmp($filter[0], 'ptd') == 0) {
-            $ext = ($nodetype == \Ximdex\NodeTypes\NodeType::TEMPLATE) ? "xml" : "xsl";
+            $ext = ($nodetype == \Ximdex\NodeTypes\NodeTypeConstants::TEMPLATE) ? "xml" : "xsl";
         } elseif (strcmp($filter[0], 'pvd') == 0) {
             $ext = "xml";
         } else {

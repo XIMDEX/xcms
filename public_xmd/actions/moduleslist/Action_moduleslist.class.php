@@ -45,7 +45,7 @@ class Action_moduleslist extends ActionAbstract
         $modules = array();
 
         $node = new Node();
-        $mods = $node->find(ALL, "IdNodeType=" . \Ximdex\NodeTypes\NodeType::MODULE_INFO_CONTAINER, NULL, MULTI);
+        $mods = $node->find(ALL, "IdNodeType=" . \Ximdex\NodeTypes\NodeTypeConstants::MODULE_INFO_CONTAINER, NULL, MULTI);
         if (!is_array($mods)) {
             $mods = array();
         }

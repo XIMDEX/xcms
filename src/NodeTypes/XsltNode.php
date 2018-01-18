@@ -79,7 +79,7 @@ class XsltNode extends FileNode
         
         // Creating include file with the template inside
         $parent = new Node($parentID);
-        if ($parent->GetNodeType() != \Ximdex\NodeTypes\NodeType::TEMPLATES_ROOT_FOLDER)
+        if ($parent->GetNodeType() != \Ximdex\NodeTypes\NodeTypeConstants::TEMPLATES_ROOT_FOLDER)
         {
             $this->messages->add('The node ' . $parentID . ' is not a templates folder', MSG_TYPE_ERROR);
             return false;
@@ -119,7 +119,7 @@ class XsltNode extends FileNode
             return false;
         }
         $incNode = new Node();
-        $id = $incNode->CreateNode('templates_include.xsl', $idTemplatesFolder, \Ximdex\NodeTypes\NodeType::XSL_TEMPLATE, $stateID, $xslSourcePath);
+        $id = $incNode->CreateNode('templates_include.xsl', $idTemplatesFolder, \Ximdex\NodeTypes\NodeTypeConstants::XSL_TEMPLATE, $stateID, $xslSourcePath);
         if ($id > 0) {
             $incNode = new Node($id);
             $includeContent = '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
@@ -163,7 +163,7 @@ class XsltNode extends FileNode
     }
     
     /**
-     * Make the relations between a templates parent section node given and the dependant documents folders nodes
+     * Make the relations between a templates parent section node given and the dependant documents/ximlets folders nodes
      * @param Node $section
      * @param Node $node
      * @param DepsManager $depsMngr
@@ -176,7 +176,7 @@ class XsltNode extends FileNode
         if (!$depsMngr)
             Logger::info('Making a relation between documents section and templates with section ' . $section->GetID());
         // check if there is a local templates_includes
-        $idTemplatesNode = $section->GetChildren(\Ximdex\NodeTypes\NodeType::TEMPLATES_ROOT_FOLDER);
+        $idTemplatesNode = $section->GetChildren(\Ximdex\NodeTypes\NodeTypeConstants::TEMPLATES_ROOT_FOLDER);
         if ($idTemplatesNode)
         {
             // there is a templates folder, search for a template with the name templates_include.xsl
@@ -194,7 +194,7 @@ class XsltNode extends FileNode
             }
         }
         // get the documents folder node
-        $documentsNode = $section->GetChildren(\Ximdex\NodeTypes\NodeType::XML_ROOT_FOLDER);
+        $documentsNode = $section->GetChildren(\Ximdex\NodeTypes\NodeTypeConstants::XML_ROOT_FOLDER);
         if ($documentsNode)
         {
             // there is a documents folder in this place
@@ -209,6 +209,26 @@ class XsltNode extends FileNode
                 if ($depsMngr->set(DepsManager::DOCFOLDER_TEMPLATESINC, $idDocFolder, $node->GetID()) === false)
                 {
                     $this->messages->add('Cannot link templates node ' . $node->GetID() . ' with documents folder ' . $idDocFolder, MSG_TYPE_ERROR);
+                    return false;
+                }
+            }
+        }
+        // get the ximlets folder node
+        $ximletsNode = $section->GetChildren(\Ximdex\NodeTypes\NodeTypeConstants::XIMLET_ROOT_FOLDER);
+        if ($ximletsNode)
+        {
+            // there is a ximlets folder in this place
+            if ($node)
+            {
+                $idXimletFolder = $ximletsNode[0];
+                if (!$depsMngr)
+                    $depsMngr = new DepsManager();
+                // delete the previous relation
+                $depsMngr->deleteBySource(DepsManager::DOCFOLDER_TEMPLATESINC, $idXimletFolder);
+                // set the relation
+                if ($depsMngr->set(DepsManager::DOCFOLDER_TEMPLATESINC, $idXimletFolder, $node->GetID()) === false)
+                {
+                    $this->messages->add('Cannot link templates node ' . $node->GetID() . ' with ximlets folder ' . $idXimletFolder, MSG_TYPE_ERROR);
                     return false;
                 }
             }
@@ -228,7 +248,7 @@ class XsltNode extends FileNode
         foreach ($nodes[1] as $idChildNode => $idNodeType)
         {
             // only project, servers and section/subsections can storage template folders
-            if ($idNodeType == \Ximdex\NodeTypes\NodeType::SERVER or $idNodeType == \Ximdex\NodeTypes\NodeType::SECTION)
+            if ($idNodeType == \Ximdex\NodeTypes\NodeTypeConstants::SERVER or $idNodeType == \Ximdex\NodeTypes\NodeTypeConstants::SECTION)
             {
                 // call in recursive mode with the templates folder, for whole project nodes tree
                 $childNode = new Node($idChildNode);
@@ -249,7 +269,7 @@ class XsltNode extends FileNode
     {
         Logger::info('Making a relation between metadata section and templates with node ' . $node->GetID());
         $server = new Node($node->getServer());
-        $idTemplatesNode = $server->GetChildren(\Ximdex\NodeTypes\NodeType::TEMPLATES_ROOT_FOLDER);
+        $idTemplatesNode = $server->GetChildren(\Ximdex\NodeTypes\NodeTypeConstants::TEMPLATES_ROOT_FOLDER);
         $depsMngr = new DepsManager();
         if ($depsMngr->set(DepsManager::DOCFOLDER_TEMPLATESINC, $node->GetID(), $idTemplatesNode[0]) === false)
         {
@@ -359,7 +379,7 @@ class XsltNode extends FileNode
                 //if the templates folder is the project one, and there is not a docxap file, send a alert to the user
                 $templates = new Node($node->getParent());
                 $section = new Node($templates->getParent());
-                if ($section->GetNodeType() == \Ximdex\NodeTypes\NodeType::PROJECT)
+                if ($section->GetNodeType() == \Ximdex\NodeTypes\NodeTypeConstants::PROJECT)
                 {
                     $docxapId = $templates->GetChildByName('docxap.xsl');
                     if (!$docxapId)
@@ -502,7 +522,7 @@ DOCXAP;
 		    return false;
 		
 		//obtain the ID for XSL templates node type
-		$nodeTypeID =\Ximdex\NodeTypes\NodeType::XSL_TEMPLATE;
+		$nodeTypeID =\Ximdex\NodeTypes\NodeTypeConstants::XSL_TEMPLATE;
 		
 		//create the node for the generated file
 		$node = new Node();
@@ -633,15 +653,16 @@ DOCXAP;
                 Logger::error('Cannot replace the local templates include: The node ' . $idDocLocalNode . ' does not exists');
                 return false;
             }
-            
             // get the documents folder ID of the document node ID given
-            if ($node->GetNodeType() == \Ximdex\NodeTypes\NodeType::XML_DOCUMENT)
-                $documentsFolderId = $node->_getParentByType(\Ximdex\NodeTypes\NodeType::XML_ROOT_FOLDER);
-            elseif ($node->GetNodeType() == \Ximdex\NodeTypes\NodeType::METADATA_DOCUMENT)
-                $documentsFolderId = $node->_getParentByType(\Ximdex\NodeTypes\NodeType::METADATA_SECTION);
+            if ($node->GetNodeType() == NodeTypeConstants::XML_DOCUMENT)
+                $documentsFolderId = $node->_getParentByType(NodeTypeConstants::XML_ROOT_FOLDER);
+            elseif ($node->GetNodeType() == NodeTypeConstants::METADATA_DOCUMENT)
+                $documentsFolderId = $node->_getParentByType(NodeTypeConstants::METADATA_SECTION);
+            elseif ($node->GetNodeType() == NodeTypeConstants::XIMLET)
+                $documentsFolderId = $node->_getParentByType(NodeTypeConstants::XIMLET_ROOT_FOLDER);
             else
             {
-                Logger::error('Cannot replace the local templates include: Node is not of XML or METADATA type');
+                Logger::error('Cannot replace the local templates include: Node is not of XML document, Ximlet or METADATA type');
                 return false;
             }
             if (!$documentsFolderId)
@@ -664,7 +685,7 @@ DOCXAP;
                 Logger::error('Cannot replace the local templates include: Project node ' . $idProject . ' does not exists');
                 return false;
             }
-            $idTemplatesFolder = $node->GetChildren(\Ximdex\NodeTypes\NodeType::TEMPLATES_ROOT_FOLDER);
+            $idTemplatesFolder = $node->GetChildren(\Ximdex\NodeTypes\NodeTypeConstants::TEMPLATES_ROOT_FOLDER);
         }
         else
         {
@@ -706,8 +727,8 @@ DOCXAP;
         if (!$ft)
         {
             // only project, servers and section/subsections can storage template folders
-            if ($node->GetNodeType() !=\Ximdex\NodeTypes\NodeType::PROJECTS and $node->GetNodeType() !=\Ximdex\NodeTypes\NodeType::PROJECT
-                    and $node->GetNodeType() !=\Ximdex\NodeTypes\NodeType::SERVER and $node->GetNodeType() !=\Ximdex\NodeTypes\NodeType::SECTION)
+            if ($node->GetNodeType() !=\Ximdex\NodeTypes\NodeTypeConstants::PROJECTS and $node->GetNodeType() !=\Ximdex\NodeTypes\NodeTypeConstants::PROJECT
+                    and $node->GetNodeType() !=\Ximdex\NodeTypes\NodeTypeConstants::SERVER and $node->GetNodeType() !=\Ximdex\NodeTypes\NodeTypeConstants::SECTION)
             {
                 $this->messages->add('Cannot reload nodes with a node type diferent than project, server or section', MSG_TYPE_ERROR);
                 return false;
@@ -718,7 +739,7 @@ DOCXAP;
         }
         
         // look for templates folder
-        $templateFolderId = $node->GetChildren(\Ximdex\NodeTypes\NodeType::TEMPLATES_ROOT_FOLDER);
+        $templateFolderId = $node->GetChildren(\Ximdex\NodeTypes\NodeTypeConstants::TEMPLATES_ROOT_FOLDER);
         if ($templateFolderId)
         {
             $templateFolder = new Node($templateFolderId[0]);
@@ -782,8 +803,8 @@ DOCXAP;
         foreach ($nodes[1] as $idChildNode => $idNodeType)
         {
             // only project, servers and section/subsections can storage template folders
-            if ($idNodeType ==\Ximdex\NodeTypes\NodeType::PROJECT or $idNodeType ==\Ximdex\NodeTypes\NodeType::SERVER
-                    or $idNodeType ==\Ximdex\NodeTypes\NodeType::SECTION)
+            if ($idNodeType ==\Ximdex\NodeTypes\NodeTypeConstants::PROJECT or $idNodeType ==\Ximdex\NodeTypes\NodeTypeConstants::SERVER
+                    or $idNodeType ==\Ximdex\NodeTypes\NodeTypeConstants::SECTION)
             {
                 // call in recursive mode with the child node
                 $childNode = new Node($idChildNode);

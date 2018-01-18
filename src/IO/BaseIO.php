@@ -384,7 +384,7 @@ class BaseIO
                 }
 
                 $link = new Node();
-                $idNode = $link->CreateNode($data['NAME'], $data['PARENTID'], \Ximdex\NodeTypes\NodeType::LINK, null, $data['URL']
+                $idNode = $link->CreateNode($data['NAME'], $data['PARENTID'], \Ximdex\NodeTypes\NodeTypeConstants::LINK, null, $data['URL']
                         , isset($data['DESCRIPTION']) ? $data['DESCRIPTION'] : null);
 
                 $this->_dumpMessages($link->messages);
@@ -559,9 +559,9 @@ class BaseIO
                 unset($data['CHILDRENS']);
 
                 $node = new Node();
-                $idNodeType =\Ximdex\NodeTypes\NodeType::IMAGE_FILE;
+                $idNodeType =\Ximdex\NodeTypes\NodeTypeConstants::IMAGE_FILE;
                 if ($nodeTypeName == "XSIRIMAGEFILE") {
-                    $idNodeType = \Ximdex\NodeTypes\NodeType::XSIR_IMAGE_FILE;
+                    $idNodeType = \Ximdex\NodeTypes\NodeTypeConstants::XSIR_IMAGE_FILE;
                 }
                 $result = $node->CreateNode($data['NAME'], $data['PARENTID'], $idNodeType, null, $data['PATH']);
                 if (!($result > 0)) {

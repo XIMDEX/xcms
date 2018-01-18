@@ -63,7 +63,7 @@
 		  	{if $numlanguages neq 0}
 			<div class="small-12 columns">
 				<div class="input">
-				<label class="label_title label_general">{t}Languages availables{/t}</label>
+				<label class="label_title label_general">{t}Languages availables{/t} *</label>
 						{foreach from=$languages item=language}
 				<div class="languages-section">
 				{if ($language.idChildren > 0)}

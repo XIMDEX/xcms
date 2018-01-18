@@ -32,6 +32,7 @@ use Ximdex\Models\Channel;
 use Ximdex\Models\Node;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\Models\Version;
+use Ximdex\NodeTypes\XsltNode;
 use Ximdex\Runtime\App;
 
 
@@ -117,7 +118,7 @@ class ViewXslt extends AbstractView
         else
             $idNode = null;
         $urlTemplatesInclude = null;
-        if (!\Ximdex\NodeTypes\XsltNode::replace_path_to_local_templatesInclude($docxapContent, $idNode, $projectId, $urlTemplatesInclude))
+        if (!XsltNode::replace_path_to_local_templatesInclude($docxapContent, $idNode, $projectId, $urlTemplatesInclude))
         {
             $error = 'Cannot load the XSL file ' . $urlTemplatesInclude . ' for XML document ';
             if ($idNode)
@@ -159,7 +160,7 @@ class ViewXslt extends AbstractView
             // try to reload templates includes in order to try to solve the problem, in case of empty templates_include.xsl
             Logger::info('Checking if the local templates_include.xsl is empty to reload its content');
             $dom = new \DOMDocument();
-            if (!$dom->load($urlTemplatesInclude))
+            if (!@$dom->load($urlTemplatesInclude))
                 $GLOBALS['errorsInXslTransformation'][] = 'Cannot load the includes template URL: ' . $urlTemplatesInclude;
             else
             {
@@ -169,7 +170,7 @@ class ViewXslt extends AbstractView
                 {
                     Logger::info('XSL templates file: ' . $urlTemplatesInclude 
                             . ' is empty; trying to reload the templates files in the project ID: ' . $projectId);
-                    $xsltNode = new \Ximdex\NodeTypes\XsltNode($project);
+                    $xsltNode = new XsltNode($project);
                     if ($xsltNode->reload_templates_include($project) === false)
                     {
                         foreach ($xsltNode->messages as $message)

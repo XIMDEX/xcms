@@ -137,13 +137,22 @@ class DepsManager
      * From a given source node returns its target nodes
      * @param $rel
      * @param $source
+     * @param array An array with Dependencies types ID that will be exclude in the search
      * @return array|bool
      */
-    function getBySource($rel, $source)
+    function getBySource($rel, $source, array $exclude = [])
     {
         $object = $this->getModel($rel);
         if (!is_object($object)) return false;
-        $result = $object->find('target', 'source = %s', array($source), MONO);
+        $sqlConditions = 'source = %s';
+        if ($exclude)
+        {
+            $sqlConditions .= ' and target not in (select distinct idNodeDependent from Dependencies where idNodeMaster = ' . $source . ' and (false';
+            foreach ($exclude as $exclusionType)
+                $sqlConditions .= ' or DepType = ' . $exclusionType;
+            $sqlConditions .= ') order by version desc)';   // [not in + limit] is not working in MariaDB 10.2
+        }
+        $result = $object->find('target', $sqlConditions, array($source), MONO);
         return count($result) > 0 ? $result : array();
     }
 

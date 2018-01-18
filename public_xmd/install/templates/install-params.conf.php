@@ -43,7 +43,6 @@ return array(
         'log' => false,
 
     ),
-    'ximdex_root_path' => '##XIMDEX_PATH##',
     'default.db' => 'db' ,
     'timezone' => '##XIMDEX_TIMEZONE##',
     'locale' => '##XIMDEX_LOCALE##',

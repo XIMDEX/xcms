@@ -33,7 +33,7 @@ use Ximdex\Runtime\App;
 class Action_showassocnodes extends ActionAbstract {
 
 	// Server, Section
-	const SEARCHED_NODETYPE = \Ximdex\NodeTypes\NodeType::SERVER . ',' . \Ximdex\NodeTypes\NodeType::SECTION;
+	const SEARCHED_NODETYPE = \Ximdex\NodeTypes\NodeTypeConstants::SERVER . ',' . \Ximdex\NodeTypes\NodeTypeConstants::SECTION;
 
 	// Tree root
 	const TREE_ROOT = 10000;
@@ -252,8 +252,8 @@ class Action_showassocnodes extends ActionAbstract {
 			$rel = null;
 
 			switch ($idnodetype) {
-			    case \Ximdex\NodeTypes\NodeType::SERVER:
-			    case \Ximdex\NodeTypes\NodeType::SECTION:
+			    case \Ximdex\NodeTypes\NodeTypeConstants::SERVER:
+			    case \Ximdex\NodeTypes\NodeTypeConstants::SECTION:
 					$rel = DepsManager::SECTION_XIMLET;
 					break;
 			}
@@ -312,8 +312,8 @@ class Action_showassocnodes extends ActionAbstract {
 			$rel = null;
 
 			switch ($idnodetype) {
-			    case \Ximdex\NodeTypes\NodeType::SERVER:
-			    case \Ximdex\NodeTypes\NodeType::SECTION:
+			    case \Ximdex\NodeTypes\NodeTypeConstants::SERVER:
+			    case \Ximdex\NodeTypes\NodeTypeConstants::SECTION:
 					$rel = DepsManager::SECTION_XIMLET;
 					break;
 			}

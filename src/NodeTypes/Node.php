@@ -29,6 +29,8 @@ namespace Ximdex\NodeTypes;
 
 use Ximdex\Models\Node as ModelsNode;
 use Ximdex\Models\User;
+use\Ximdex\NodeTypes\NodeType as NodetypeService;
+
 /**
  * <p>Service responsible of deal with nodes</p>
  *

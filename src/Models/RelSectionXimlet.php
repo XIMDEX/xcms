@@ -28,7 +28,7 @@
 namespace Ximdex\Models;
 
 use Ximdex\Models\ORM\RelSectionXimletOrm;
-use\Ximdex\NodeTypes\NodeType;
+use Ximdex\NodeTypes\NodeTypeConstants;
 
 
 class RelSectionXimlet extends RelSectionXimletOrm
@@ -36,7 +36,7 @@ class RelSectionXimlet extends RelSectionXimletOrm
     public function getAllXimlets()
     {
         $node = new Node();
-        $where = 'IdNodeType = ' . NodeType::XIMLET_CONTAINER;
+        $where = 'IdNodeType = ' . NodeTypeConstants::XIMLET_CONTAINER;
 
         $result = $node->find('IdNode', $where, array(), MONO);
         return $result;

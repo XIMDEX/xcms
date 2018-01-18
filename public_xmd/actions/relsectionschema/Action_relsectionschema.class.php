@@ -77,7 +77,7 @@ class Action_relsectionschema extends ActionAbstract {
 		$selected = $this->request->getParam('schema');
 
 		if ($selected == 'all') {
-		    $selected = array(\Ximdex\NodeTypes\NodeType::VISUAL_TEMPLATE, \Ximdex\NodeTypes\NodeType::RNG_VISUAL_TEMPLATE);
+		    $selected = array(\Ximdex\NodeTypes\NodeTypeConstants::VISUAL_TEMPLATE, \Ximdex\NodeTypes\NodeTypeConstants::RNG_VISUAL_TEMPLATE);
 		}
 		$node = new Node($idNode);
 		$node->deleteProperty('DefaultSchema');

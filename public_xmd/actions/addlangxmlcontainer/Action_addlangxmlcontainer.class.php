@@ -1,12 +1,4 @@
 <?php
-use Ximdex\Logger;
-use Ximdex\Models\Channel;
-use Ximdex\Models\Language;
-use Ximdex\Models\Node;
-use Ximdex\Models\NodeType;
-use Ximdex\Models\StructuredDocument;
-use Ximdex\MVC\ActionAbstract;
-
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -32,7 +24,13 @@ use Ximdex\MVC\ActionAbstract;
  *  @version $Revision$
  */
 
-
+use Ximdex\Logger;
+use Ximdex\Models\Channel;
+use Ximdex\Models\Language;
+use Ximdex\Models\Node;
+use Ximdex\Models\NodeType;
+use Ximdex\Models\StructuredDocument;
+use Ximdex\MVC\ActionAbstract;
 
 class Action_addlangxmlcontainer extends ActionAbstract {
    // Main Method: it shows the initial form

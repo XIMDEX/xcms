@@ -96,7 +96,6 @@ class HTML2XML {
 		$this->_ximNode = $idNode;
 	}
 
-	//TODO ajlucena: KUPU
 	/**
 	 * Function which performs the HTML transformation
 	 * @return boolean

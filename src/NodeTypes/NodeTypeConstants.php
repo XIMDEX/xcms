@@ -28,7 +28,7 @@
 
 namespace Ximdex\NodeTypes;
 
-class NodeType
+class NodeTypeConstants
 {
     const ROOT = 5001;
     const CONTROL_CENTER = 5002;

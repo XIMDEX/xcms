@@ -90,7 +90,7 @@ if ($tableName == 'all' || $tableName == 'new_tables') {
 reset($tables);
 while (list(, $tableName) = each($tables)) {
 
-    //TODO ajlucena: change to current DB class 
+    //TODO change to current DB class 
     $activeRecord = new ADODB_Active_Record($tableName, false, $dbConnection);
     $indexArray = $activeRecord->GetPrimaryKeys($dbConnection, $tableName);
     if (is_array($indexArray)) {

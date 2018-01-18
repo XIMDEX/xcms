@@ -124,7 +124,7 @@ class FolderNode extends Root
     function CreateNode($name = null, $parentID = null, $nodeTypeID = null)
     {
         //By default, when a schemes folder is created, we insert the default RNGs for metadata
-        if ($nodeTypeID == \Ximdex\NodeTypes\NodeType::TEMPLATE_VIEW_FOLDER) {
+        if ($nodeTypeID == \Ximdex\NodeTypes\NodeTypeConstants::TEMPLATE_VIEW_FOLDER) {
             $this->_createDefaultRNGs();
         }
         $this->updatePath();
@@ -247,7 +247,7 @@ class FolderNode extends Root
 
         // For controlling the file creation
         $createFile = true;
-        $childrens = $section->GetChildren(\Ximdex\NodeTypes\NodeType::XSL_TEMPLATE);
+        $childrens = $section->GetChildren(\Ximdex\NodeTypes\NodeTypeConstants::XSL_TEMPLATE);
 
         foreach ($childrens as $idChildren) {
             $children = new Node($idChildren);

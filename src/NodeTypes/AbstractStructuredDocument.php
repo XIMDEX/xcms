@@ -33,6 +33,7 @@ use DOMDocument;
 use Ximdex\Models\NodeType;
 use Ximdex\Utils\PipelineManager;
 use Properties;
+use Ximdex\Models\Dependencies;
 use Ximdex\Models\RelTagsNodes;
 use Ximdex\Models\Channel;
 use Ximdex\Models\Language;
@@ -131,8 +132,13 @@ abstract class AbstractStructuredDocument extends FileNode
 
         $idDoc = $this->parent->get('IdNode');
 
+        // only for dependences with ximlets
+        $dependencies = new Dependencies();
+        $idDepXimlets = [$dependencies->getDepTypeId(Dependencies::XIMLET)];
+        
         $depsMngr = new DepsManager();
-        $structure = $depsMngr->getBySource(DepsManager::XML2XML, $idDoc);
+        $structure = $depsMngr->getBySource(DepsManager::XML2XML, $idDoc, $idDepXimlets);
+        
 
         $asset = empty($params['withstructure']) ? array() :
             $depsMngr->getBySource(DepsManager::NODE2ASSET, $idDoc);
@@ -166,9 +172,9 @@ abstract class AbstractStructuredDocument extends FileNode
         {
             switch ($node->getNodeType())
             {
-                case \Ximdex\NodeTypes\NodeType::XML_DOCUMENT:
-                case \Ximdex\NodeTypes\NodeType::METADATA_DOCUMENT:
-                case \Ximdex\NodeTypes\NodeType::XIMLET:
+                case \Ximdex\NodeTypes\NodeTypeConstants::XML_DOCUMENT:
+                case \Ximdex\NodeTypes\NodeTypeConstants::METADATA_DOCUMENT:
+                case \Ximdex\NodeTypes\NodeTypeConstants::XIMLET:
                     // in this case we will format the XML content with correct indentation
                     $domDoc = new DOMDocument();
                     $domDoc->formatOutput = true;
@@ -263,11 +269,11 @@ abstract class AbstractStructuredDocument extends FileNode
         }
         $idNodeType = $node->get('IdNodeType');
         switch ($idNodeType) {
-            case \Ximdex\NodeTypes\NodeType::XML_DOCUMENT:
-                $folderNodeType = \Ximdex\NodeTypes\NodeType::XML_ROOT_FOLDER;
+            case \Ximdex\NodeTypes\NodeTypeConstants::XML_DOCUMENT:
+                $folderNodeType = \Ximdex\NodeTypes\NodeTypeConstants::XML_ROOT_FOLDER;
                 break;
-            case \Ximdex\NodeTypes\NodeType::XIMLET:
-                $folderNodeType = \Ximdex\NodeTypes\NodeType::XIMLET_FOLDER;
+            case \Ximdex\NodeTypes\NodeTypeConstants::XIMLET:
+                $folderNodeType = \Ximdex\NodeTypes\NodeTypeConstants::XIMLET_FOLDER;
                 break;
             case 8002: //pdf
                 $folderNodeType = 8000;
@@ -345,7 +351,7 @@ abstract class AbstractStructuredDocument extends FileNode
         $node = new Node($this->nodeID);
         $nt = $node->nodeType->get('IdNodeType');
         $metadata = '';
-        if ($nt == \Ximdex\NodeTypes\NodeType::XML_DOCUMENT) {
+        if ($nt == \Ximdex\NodeTypes\NodeTypeConstants::XML_DOCUMENT) {
             $metadata = 'metadata_id=""';
         }
 

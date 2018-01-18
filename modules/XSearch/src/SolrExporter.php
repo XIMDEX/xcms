@@ -4,14 +4,14 @@ use Ximdex\Models\Language;
 use Ximdex\Models\Node;
 use Ximdex\Models\RelNodeMetadata;
 use Ximdex\Models\StructuredDocument;
-use\Ximdex\NodeTypes\NodeType;
+use Ximdex\NodeTypes\NodeTypeConstants;
 
 \Ximdex\Modules\Manager::file('/src/Exporter.php', 'XSearch');
 \Ximdex\Modules\Manager::file('/src/SolrConnection.php', 'XSearch');
 
 class SolrExporter implements Exporter
 {
-    const AVOIDED_NODETYPES = [NodeType::METADATA_DOCUMENT, NodeType::RNG_VISUAL_TEMPLATE];
+    const AVOIDED_NODETYPES = [NodeTypeConstants::METADATA_DOCUMENT, NodeTypeConstants::RNG_VISUAL_TEMPLATE];
 
     private $client;
     public function __construct()
@@ -33,7 +33,7 @@ class SolrExporter implements Exporter
     {
         //Select all XSIR repo
         $node = new Node();
-        $XSIRIdNodes = $node->find('IdNode', 'IdNodeType = %s', [\Ximdex\NodeTypes\NodeType::XSIR_REPOSITORY], MONO);
+        $XSIRIdNodes = $node->find('IdNode', 'IdNodeType = %s', [NodeTypeConstants::XSIR_REPOSITORY], MONO);
 
         $sql = "SELECT n.IdNode FROM FastTraverse f INNER JOIN Nodes n on f.IdChild = n.IdNode INNER JOIN NodeTypes nt ON nt.IdNodeType = n.IdNodeType WHERE f.IdNode in (%s) AND nt.IsPlainFile AND nt.IdNodeType NOT IN (%s)";
 
@@ -62,14 +62,14 @@ class SolrExporter implements Exporter
     {
         $n = new Node($nodeid);
 
-        if($n->IdNodeType == NodeType::METADATA_DOCUMENT) {
+        if($n->IdNodeType == NodeTypeConstants::METADATA_DOCUMENT) {
             $n = $this->getSourceNodeFromMetadataDoc($nodeid);
             if(is_null($n)){
                 return;
             }
         }
 
-        if(!$n->IsOnNodeWithNodeType(NodeType::XSIR_REPOSITORY)){
+        if(!$n->IsOnNodeWithNodeType(NodeTypeConstants::XSIR_REPOSITORY)){
             return;
         }
 

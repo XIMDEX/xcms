@@ -52,9 +52,9 @@ class ViewXmlDocument extends AbstractView implements IView
 
         $name = $node->get('Name');
         $nodeType = $node->getNodeType();
-        if ($nodeType != \Ximdex\NodeTypes\NodeType::XML_DOCUMENT && $name != 'docxap.xsl') return false;
+        if ($nodeType != \Ximdex\NodeTypes\NodeTypeConstants::XML_DOCUMENT && $name != 'docxap.xsl') return false;
 
-        if ($nodeType == \Ximdex\NodeTypes\NodeType::XML_DOCUMENT) {
+        if ($nodeType == \Ximdex\NodeTypes\NodeTypeConstants::XML_DOCUMENT) {
             // Si $content == null se insertan las etiquetas docxap, en caso contrario se eliminan
             if (is_null($content)) {
                 $content = $this->addDocxap($node);
@@ -175,7 +175,7 @@ class ViewXmlDocument extends AbstractView implements IView
 
                 if ($cssFolder !== false) {
                     $cssFolder = new Node($cssFolder);
-                    $cssList = $cssFolder->GetChildren(\Ximdex\NodeTypes\NodeType::CSS_FILE);
+                    $cssList = $cssFolder->GetChildren(\Ximdex\NodeTypes\NodeTypeConstants::CSS_FILE);
                     foreach ($cssList as $css) {
                         $css = new Node($css);
                         $content .= $css->getContent() . "\n";
