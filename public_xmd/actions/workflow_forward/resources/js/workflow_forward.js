@@ -71,9 +71,11 @@ X.actionLoaded(function(event, fn, params) {
 	
 	function getNotificableUsers() {	
 		var val = $groupList.val().split('|');
+		
 		var groupid = val[0];
 		var stateid = val[1];
-		fn('input[name=groupid]').val(groupid);		
+		fn('input[name=groupid]').val(groupid);
+		
 		request({
 			cb: notificableUsers,
 			data: {method: 'notificableUsers', groupid: groupid, stateid: stateid}

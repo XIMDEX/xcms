@@ -44,6 +44,10 @@
             mode = info.mode;
         }
 
+        // permission denied to edit the text
+        if (!document.getElementById(id_editor))
+        	return false;
+        
 	 	editor = CodeMirror.fromTextArea(document.getElementById(id_editor), {
 			mode: mode,
 			htmlMode: true,

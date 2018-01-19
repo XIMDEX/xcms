@@ -24,6 +24,6 @@
  *}
 
 {include file="actions/commons/views/helper/messages.tpl"}
-{if !$action_with_no_return}
+{if !isset($action_with_no_return) or !$action_with_no_return}
 	{button label="Back" class="focus" onclick="$(this).closest('.ui-tabs').tabs('backToIndex', this);"}
 {/if}
