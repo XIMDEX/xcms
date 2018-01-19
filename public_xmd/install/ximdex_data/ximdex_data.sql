@@ -377,7 +377,7 @@ VALUES
 	(31,'defaultWebdavPVD',NULL),
 	(32,'locale','en_US'),
 	(33,'displayEncoding','UTF-8'),
-	(34,'dbEncoding','ISO-8859-1'),
+	(34,'dbEncoding','UTF-8'),
 	(35,'dataEncoding','UTF-8'),
 	(36,'workingEncoding','UTF-8'),
 	(37,'ActionsStats','0'),
@@ -1315,7 +1315,7 @@ VALUES
 	(5,'Xslt',''),
 	(6,'FilterMacros',''),
 	(7,'Edición','El documento está en fase de desarrollo'),
-	(8,'Publicación','El documento está a la espera de ser publicado.'),
+	(8,'Publicación','El documento está a la espera de ser publicado'),
 	(9,'Xedit','');
 
 INSERT INTO `PipeTransitions` (`id`, `IdStatusFrom`, `IdStatusTo`, `IdPipeProcess`, `Cacheable`, `Name`, `Callback`)
