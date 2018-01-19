@@ -3109,7 +3109,11 @@ class Node extends NodesOrm
      */
     function getProperty($property, $withInheritance = true)
     {
-        //$propertyValues = array();
+        if (!$this->get('IdNode'))
+        {
+            Logger::error('Cannot load the \'' . $property . '\' property without a node ID');
+            return false;
+        }
         if ($withInheritance) {
             $sql = "SELECT IdNode FROM FastTraverse WHERE IdChild = " . $this->get('IdNode') . " ORDER BY Depth ASC";
 

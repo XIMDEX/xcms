@@ -310,7 +310,11 @@ class Action_workflow_forward extends ActionAbstract {
             )
         );
 
-        if ($group->get('IdGroup') > 0 && $this->validateInSelectedGroup($group, $workflow, $idState, $idGroup)) {
+        $validateInGroup = $this->validateInSelectedGroup($group, $workflow, $idState, $idGroup);
+        if ($validateInGroup === false)
+            return false;
+        
+        if ($group->get('IdGroup') > 0 && $validateInGroup) {
 
             $role = new Role();
             $roles = $role->getAllRolesForStatus($idState);
@@ -337,7 +341,7 @@ class Action_workflow_forward extends ActionAbstract {
             );
         }
 
-        header('Content-type: application/x-json');
+        header('Content-type: application/json');
         $values = Serializer::encode(SZR_JSON, $values);
         echo $values;
     }

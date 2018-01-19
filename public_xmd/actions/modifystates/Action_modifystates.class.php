@@ -70,10 +70,13 @@ class Action_modifystates extends ActionAbstract
                         'description' => $currentStatus->get('Description'));
             }
 
-            $allStatusInfo[] =
-                array('id' => $nextStatus->get('id'),
-                    'name' => $nextStatus->get('Name'),
-                    'description' => $nextStatus->get('Description'));
+            if (!isset($nextStatus))
+                $allStatusInfo = [];
+            else
+                $allStatusInfo[] =
+                    array('id' => $nextStatus->get('id'),
+                        'name' => $nextStatus->get('Name'),
+                        'description' => $nextStatus->get('Description'));
         }
 
         $this->addJs('/actions/modifystates/resources/js/manager.js');

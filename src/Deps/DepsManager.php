@@ -150,7 +150,7 @@ class DepsManager
             $sqlConditions .= ' and target not in (select distinct idNodeDependent from Dependencies where idNodeMaster = ' . $source . ' and (false';
             foreach ($exclude as $exclusionType)
                 $sqlConditions .= ' or DepType = ' . $exclusionType;
-            $sqlConditions .= ') order by version desc)';   // [not in + limit] is not working in MariaDB 10.2
+            $sqlConditions .= '))';
         }
         $result = $object->find('target', $sqlConditions, array($source), MONO);
         return count($result) > 0 ? $result : array();

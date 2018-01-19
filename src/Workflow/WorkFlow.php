@@ -56,21 +56,24 @@ class WorkFlow
     public function __construct($idNode, $idStatus = NULL, $idPipelineNode = NULL)
     {
         if (!($idPipelineNode > 0)) {
-            $node = new Node($idNode);
-            $propertyPipeline = $node->getProperty('Pipeline');
-            $propertyPipeline = $propertyPipeline[0];
-            if ($propertyPipeline > 0) {
-                $idPipelineNode = $propertyPipeline;
-            } else {
-                $idNodeType = $node->get('IdNodeType');
-                $pipeNodetype = new PipeNodeTypes();
-                $result = $pipeNodetype->find('IdPipeline', 'IdNodeType = %s', array($idNodeType), MONO);
-                if (count($result) === 1) {
-                    $idPipelineNode = $result[0];
+            
+            if ($idNode)
+            {
+                $node = new Node($idNode);
+                $propertyPipeline = $node->getProperty('Pipeline');
+                $propertyPipeline = $propertyPipeline[0];
+                if ($propertyPipeline > 0) {
+                    $idPipelineNode = $propertyPipeline;
+                } else {
+                    $idNodeType = $node->get('IdNodeType');
+                    $pipeNodetype = new PipeNodeTypes();
+                    $result = $pipeNodetype->find('IdPipeline', 'IdNodeType = %s', array($idNodeType), MONO);
+                    if (count($result) === 1) {
+                        $idPipelineNode = $result[0];
+                    }
                 }
             }
-
-            if ($idPipelineNode == NULL) {
+            if (!$idNode or $idPipelineNode == NULL) {
                 $idPipelineNode =  App::getValue('IdDefaultWorkflow');
             }
         }

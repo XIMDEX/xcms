@@ -36,7 +36,7 @@
           <ol>
              <li>
                 <span>{t}Do you want to move this file{/t} {t}from the state{/t} <strong>{$currentStateName}</strong> {t}to the state{/t}: </span>
-                <select name="nextstate">
+                <select name="nextstate" style="width: auto;">
                    {foreach from=$allowedstates key=state item=stateName}
                    <option value="{$state}">
                     {$stateName} 

@@ -325,18 +325,19 @@ class ParsingDependencies
         $pathToByChannel = array();
 
         //Transforming the content for each defined channel.
-        foreach ($channels as $idChannel) {
-            $postContent = $pipelineManager->getCacheFromProcessAsContent($idVersion, 'StrDocToDexT',
-                array('CHANNEL' => $idChannel, 'TRANSFORMER' => $transformer[0]));
-
-            // post-transformation dependencies
-            $pathToByChannel[$idChannel] = self::getPathTo($postContent, $idNode);
-            $pathTos = array_merge($pathTos, $pathToByChannel[$idChannel]);
-            $res = self::getDotDot($postContent, $idServer);
-            if ($res === false)
-                return false;
-            $dotDots = array_merge($dotDots, $res);
-        }
+        if ($channels)
+            foreach ($channels as $idChannel) {
+                $postContent = $pipelineManager->getCacheFromProcessAsContent($idVersion, 'StrDocToDexT',
+                    array('CHANNEL' => $idChannel, 'TRANSFORMER' => $transformer[0]));
+    
+                // post-transformation dependencies
+                $pathToByChannel[$idChannel] = self::getPathTo($postContent, $idNode);
+                $pathTos = array_merge($pathTos, $pathToByChannel[$idChannel]);
+                $res = self::getDotDot($postContent, $idServer);
+                if ($res === false)
+                    return false;
+                $dotDots = array_merge($dotDots, $res);
+            }
 
         $links = array_unique(array_merge($assets, $links, $pathTos, $dotDots));
         //Add dependencies between nodes for every channel in NodeDependencies
