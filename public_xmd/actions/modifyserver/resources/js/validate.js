@@ -54,7 +54,6 @@ X.actionLoaded(function (event, fn, params) {
 
     fn('#delete_server').click(function (event) {
         if (fn('#serverid').val() != "none") {
-            fn('input[name=borrar]').val(1);
             confirm_dialog(event, _('Are you sure you want to remove this server?'), form, fm);
             return true;
         }
@@ -142,9 +141,11 @@ X.actionLoaded(function (event, fn, params) {
             buttons: {
                 accept: function () {
                     dialogCallback(true);
+                    fn('input[name=borrar]').val(1);
                 },
                 cancel: function () {
                     dialogCallback(false);
+                    fn('input[name=borrar]').val(0);
                 }
             }
         });
