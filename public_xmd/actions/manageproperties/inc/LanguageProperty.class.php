@@ -24,148 +24,40 @@
  *  @version $Revision$
  */
 
-
-use Ximdex\Logger;
 use Ximdex\Models\Language;
-use Ximdex\Models\Node;
-use Ximdex\Models\NodeType;
 
 \Ximdex\Modules\Manager::file('/actions/manageproperties/inc/InheritableProperty.class.php');
 
 class LanguageProperty extends InheritableProperty {
 
-	public function getPropertyName() {
-		return 'language';
+    private $language;
+    
+	protected function getPropertyName() {
+	    
+		return self::LANGUAGE;
 	}
-
-	public function getValues() {
-
-		// Selected languages on the node
-		$nodeLanguages = $this->getProperty(false);
-		if (empty($nodeLanguages)) $nodeLanguages = array();
-
-		$language = new Language();
-
-		$availableLanguages = null;
-		// The Project node shows all the system languages
-		$availableLanguages = $language->find('IdLanguage, Name', 'Enabled = 1', NULL);
-
-		if ($this->nodeTypeId != \Ximdex\NodeTypes\NodeTypeConstants::PROJECT) {
-
-			// Nodes below the Project shows only inherited languages
-			$parentId = $this->node->getParent();
-			$parent = new Node($parentId);
-			$inheritedLanguages = $parent->getProperty($this->getPropertyName(), true);
-
-			if (empty($inheritedLanguages)) {
-
-				// Inherits all the system properties
-				$inheritedLanguages = $availableLanguages;
-			} else {
-
-				$availableLanguages = $language->find(
-					'IdLanguage, Name', 'Enabled = 1 and IdLanguage in (%s)',
-					array(implode(', ', $inheritedLanguages)),
-					MULTI, false
-				);
-			}
-		}
-
-		if(!empty($availableLanguages) ) {
-			foreach ($availableLanguages as &$language) {				
-				unset($language[0], $language[1]);
-				//If is availableLanguages and nodeLanguages is empty, we use the availableLanguages				
-				if (count($nodeLanguages))
-					$language['Checked'] = in_array($language['IdLanguage'], $nodeLanguages) ? true : false;
-				else
-					$language['Checked'] = 1;
-			}
-		}
-		return $availableLanguages;
-	}
-
-	public function setValues($values) {
-
-		if (!is_array($values)) $values = array();
-
-		$affected = $this->updateAffectedNodes($values);
-		$this->deleteProperty($values);
-
-		if (is_array($values) && count($values) > 0) {
-
-			$this->setProperty($values);
-		}
-
-		return array('affectedNodes' => $affected, 'values' => $values);
-	}
-
-	public function getAffectedNodes($values) {
-
-		$languagesToDelete = $this->getAffectedProperties($values);
-		$strLanguages = implode(', ', $languagesToDelete);
-
-		if (count($values) == 0 || count($languagesToDelete) == 0) {
-			// Inherits all the languages or there are languages to delete
-			return false;
-		}
-
-		$sql = 'select distinct(s.IdDoc) as affectedNodes
-				from FastTraverse f join StructuredDocuments s on f.IdChild = s.IdDoc
-				where f.IdNode = %s and s.IdLanguage in (%s)';
-
-		$sqlAffectedNodes = sprintf(
-			$sql,
-			$this->nodeId,
-			$strLanguages
-		);
-
-		// Language versions to delete
-		$affectedNodes = array();
-		$db = new \Ximdex\Runtime\Db();
-		$db->query($sqlAffectedNodes);
-		while (!$db->EOF) {
-			$affectedNodes[] = $db->getValue('affectedNodes');
-			$db->next();
-		}
-
-		if (count($affectedNodes) == 0) return false;
-
-		return array('nodes' => $affectedNodes, 'props' => $languagesToDelete);
-	}
-
-	protected function updateAffectedNodes($values) {
-
-		$affectedNodes = $this->getAffectedNodes($values);
-		if (!$affectedNodes) return false;
-
-		$messages = array();
-
-		foreach ($affectedNodes['nodes'] as $nodeId) {
-
-			$node = new Node($nodeId);
-			$nodeType = new NodeType($node->get('IdNodeType'));
-
-			$data = array(
-				'ID' => $nodeId,
-				'NODETYPENAME' => $nodeType->get('Name')
-			);
-
-			$baseIO = new \Ximdex\IO\BaseIO();
-			$result = $baseIO->delete($data);
-			if (!($result > 0)) {
-				$messages = $baseIO->messages->messages;
-				foreach ($messages as $message) {
-					Logger::error($message['message']);
-				}
-			}
-		}
-
-		return array('affectedNodes' => $affectedNodes, 'messages' => $messages);
-	}
-
-	public function applyPropertyRecursively($values) {
-
-		// Ooops! we need the template ID for language creation
-		return false;
-	}
+	
+	/**
+	 * Obtain system properties for channels
+	 * {@inheritDoc}
+	 * @see InheritableProperty::get_system_properties()
+	 */
+    protected function get_system_properties()
+    {
+        if (!$this->language)
+            $this->language = New Language();
+        return $language->find('Id as IdLanguage, Name', 'Enabled = 1', NULL);
+    }
+    
+    /**
+     * Get the inherited languages
+     * {@inheritDoc}
+     * @see InheritableProperty::get_inherit_properties()
+     */
+    protected function get_inherit_properties(array $availableProperties)
+    {
+        if (!$this->language)
+            $this->language = New Language();
+        return $language->find('Id as IdLanguage, Name', 'Enabled = 1 and IdLanguage in (%s)', array(implode(', ', $availableProperties)), MULTI, false);
+    }
 }

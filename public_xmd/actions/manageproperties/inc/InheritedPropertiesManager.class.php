@@ -24,8 +24,6 @@
  *  @version $Revision$
  */
 
-
-
 /**
  * Manager class for Inherited properties
  */
@@ -137,27 +135,4 @@ class InheritedPropertiesManager {
 
 		return $ret;
 	}
-
-	/**
-	 * Applies a property value recursively
-	 * @param string $property
-	 * @param integer $nodeId
-	 * @param mixed $values
-	 */
-	static public function applyPropertyRecursively($property, $nodeId, $values) {
-
-		$factory = new \Ximdex\Utils\Factory(dirname(__FILE__), '');
-		$ret = array();
-
-		$p = $factory->instantiate($property . 'Property', $nodeId);
-		if (!is_object($p)) {
-			Logger::error(_("Inheritable property cannot be instantiate: ") . $property);
-			return $ret;
-		}
-
-		$ret[$property] = $p->applyPropertyRecursively($values);
-
-		return $ret;
-	}
-
 }

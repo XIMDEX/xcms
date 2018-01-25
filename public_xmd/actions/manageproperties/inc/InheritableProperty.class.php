@@ -23,9 +23,10 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
+
+use Ximdex\Logger;
 use Ximdex\Models\Node;
 use Ximdex\Models\NodeType;
-
 
 /**
  * Abstract inheritable property class. 
@@ -55,6 +56,12 @@ abstract class InheritableProperty {
 	 * @var Object
 	 */
 	protected $nodeType = null;
+	
+	/*
+	 * Contanst for properties names
+	 */
+	const CHANNEL = 'channel';
+	const LANGUAGE = 'language';
 
 	/**
 	 * Construct method. Load the properties of the class.
@@ -62,11 +69,11 @@ abstract class InheritableProperty {
 	 * @param int $nodeid Node identificator
 	 */
 	public function __construct($nodeId) {
+	    
 		$this->nodeId = $nodeId;
 		$this->node = new Node($nodeId);
-		if ($this->node->get('IdNode') < 1) {
-			// TODO: Log error
-		}
+		if ($this->node->get('IdNode') < 1)
+			Logger::error('There is no value for node ID when InheritableProperty was instanced');
 		$this->nodeTypeId = $this->node->get('IdNodeType');
 		$this->nodeType = new NodeType($this->nodeTypeId);
 	}
@@ -79,34 +86,126 @@ abstract class InheritableProperty {
 	/**
 	 * Returns the property values
 	 */
-	abstract public function getValues();
+	public function getValues() {
+	    
+	    // Selected channels on the node
+	    $nodeProperties = $this->getProperty(false);
+	    if (empty($nodeProperties)) $nodeProperties = array();
+	    
+	    if ($this->nodeTypeId != \Ximdex\NodeTypes\NodeTypeConstants::PROJECT) {
+	        
+	        // All the project properties will be the available ones
+	        $projectNode = new Node($this->node->getProject());
+	        if (!$projectNode->GetID('Cannot load the project with node ID: ' . $this->node->getProject()))
+	        {
+	            Logger::error();
+	            return false;
+	        }
+	        $availableProperties = $projectNode->getProperty($this->getPropertyName());
+	        if (!$availableProperties)
+	        {
+	            // If the project has no specified properties, then the system will be the availables
+	            $availableProperties = $this->get_system_properties();
+	        }
+	        else
+	        {
+	            // obtain the information about each property ID
+	            $availableProperties = $this->get_inherit_properties($availableProperties);
+	        }
+	        
+	        // Nodes below the Project shows only inherited channels
+	        $parentId = $this->node->getParent();
+	        $parent = new Node($parentId);
+	        $inheritProperties = $parent->getProperty($this->getPropertyName(), true);
+	    }
+	    else
+	    {
+	        // The Project node shows all the system channels as availables
+	        $availableProperties = $this->get_system_properties();
+	    }
+	    
+	    // for each available property, assing the the values in use
+	    foreach ($availableProperties as & $property) {
+	        
+	        // If is availableChannel and nodeChannels is empty, we use the availableChannels
+	        $property['Checked'] = in_array($property['Id'], $nodeProperties) ? true : false;
+	        
+	        // update the inherit value in the result
+	        if (isset($inheritProperties))
+	            $property['Inherited'] = in_array($property['Id'], $inheritProperties) ? true : false;
+	        else
+	            $property['Inherited'] = true;
+	    }
+	    
+	    // returning available properties with the activated ones for the current node
+	    return $availableProperties;
+	}
 
 	/**
 	 * Sets the property values
 	 * 
 	 * @param mixed $values
 	 */
-	abstract public function setValues($values);
-
-	/**
-	 * Applies the property values recursively
-	 * 
-	 * @param mixed $values
-	 */
-	abstract public function applyPropertyRecursively($values);
+	public function setValues($values) {
+	    
+	    if (!is_array($values)) $values = array();
+	    
+	    $affectedNodes = $this->updateAffectedNodes($values);
+	    $this->deleteProperty($values);
+	    
+	    if (is_array($values) && count($values) > 0) {
+	        
+	        $this->setProperty($values);
+	    }
+	    
+	    return array('affectedNodes' => $affectedNodes, 'values' => $values);
+	}
 
 	/**
 	 * Returns the affected nodes when deleting a property value
 	 * 
 	 * @param mixed $values Values to be deleted
 	 */
-	abstract public function getAffectedNodes($values);
-
-	/**
-	 * Updates the affected nodes when deleting a property value
-	 * @param $values
-	 */
-	abstract protected function updateAffectedNodes($values);
+	protected function getAffectedNodes($values) {
+	    
+	    $propertiesToDelete = $this->getAffectedProperties($values);
+	    $strProperties = implode(', ', $propertiesToDelete);
+	    
+	    if (count($values) == 0 || count($propertiesToDelete) == 0) {
+	        
+	        // Inherits all the properties or there are properties to delete
+	        return false;
+	    }
+	    
+	    $sql = 'select distinct(r.IdDoc) as affectedNodes from FastTraverse f';
+	    if ($this->getPropertyName() == self::CHANNEL)
+	    {
+	        //TODO ajlucena
+	        // $sql .= 'join RelStrDocChannels r on f.IdChild = r.IdDoc where f.IdNode = %s and r.IdChannel in (%s)';
+	    }
+	    else
+	        $sql .= ' join StructuredDocuments s on f.IdChild = s.IdDoc where f.IdNode = %s and s.IdLanguage in (%s)';
+	    
+	    $sqlAffectedNodes = sprintf(
+	        $sql,
+	        $this->nodeId,
+	        $strProperties
+	        );
+	    
+	    // Nodes to unjoin from properties
+	    $affectedNodes = array();
+	    $db = new \Ximdex\Runtime\Db();
+	    $db->query($sqlAffectedNodes);
+	    while (!$db->EOF) {
+	        
+	        $affectedNodes[] = $db->getValue('affectedNodes');
+	        $db->next();
+	    }
+	    
+	    if (count($affectedNodes) == 0) return false;
+	    
+	    return array('nodes' => $affectedNodes, 'props' => $propertiesToDelete);
+	}
 
 	/**
 	 * Returns the affected properties
@@ -141,6 +240,7 @@ abstract class InheritableProperty {
 	 * @param mixed $values
 	 */
 	protected function setProperty($values) {
+	    
 		$prop = $this->getPropertyName();
 		return $this->node->setProperty($prop, $values);
 	}
@@ -151,6 +251,7 @@ abstract class InheritableProperty {
 	 * @param mixed $values
 	 */
 	protected function deleteProperty($values) {
+	    
 		$this->deleteChildrenProperties($values);
 		$prop = $this->getPropertyName();
 		$ret = $this->node->deleteProperty($prop);
@@ -188,4 +289,14 @@ abstract class InheritableProperty {
 			$db->next();
 		}
 	}
+	
+	/**
+	 * Obtain the system properties
+	 */
+	abstract protected function get_system_properties();
+	
+	/**
+	 * Obtain the local or inherited properties from available an array of properties ID
+	 */
+	abstract protected function get_inherit_properties(array $availableProperties);
 }
