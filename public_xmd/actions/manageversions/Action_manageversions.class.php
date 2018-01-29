@@ -86,12 +86,12 @@ class Action_manageversions extends ActionAbstract
         }
 
         $keys = array_keys($versionList);
-        $lastVersion = $keys[0];
-
-        $keys = array_keys($versionList[$lastVersion]);
-        $lastSubversion = $keys[0];
-
-        $versionList[$lastVersion][$lastSubversion]['isLastVersion'] = 'true';
+        if(count($keys) != '0'){
+            $lastVersion = $keys[0];
+            $keys = array_keys($versionList[$lastVersion]);
+            $lastSubversion = $keys[0];
+            $versionList[$lastVersion][$lastSubversion]['isLastVersion'] = 'true';
+        }
 
         $this->addJs('/actions/manageversions/resources/js/index.js');
         $this->addCss('/actions/manageversions/resources/css/index.css');
