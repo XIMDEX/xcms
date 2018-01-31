@@ -215,7 +215,7 @@ class PipelineManager
         $server = new Server();
         $result = $server->find('IdServer, Enabled', 'IdNode = %s', array($idServer));
         if (!(count($result) > 0)) {
-            Logger::error("[PipelineManager:_checkChannelIsEnabled] An unexistent cache version $idVersion has been requested, but there are any logical servers defined.");
+            Logger::error("[PipelineManager:_checkChannelIsEnabled] An unexistent cache version $idVersion has been requested, but there are not any logical servers defined.");
             return false;
         }
 

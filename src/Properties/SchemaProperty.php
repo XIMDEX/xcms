@@ -24,10 +24,9 @@
  *  @version $Revision$
  */
 
+namespace Ximdex\Properties;
 
 use Ximdex\Models\Node;
-
-\Ximdex\Modules\Manager::file('/actions/manageproperties/inc/InheritableProperty.class.php');
 
 class SchemaProperty extends InheritableProperty {
 
@@ -91,21 +90,6 @@ class SchemaProperty extends InheritableProperty {
 		return $availableSchemas;
 	}
 
-	public function setValues($values) {
-
-		if (!is_array($values)) $values = array();
-
-		$affected = $this->updateAffectedNodes($values);
-		$this->deleteProperty($values);
-
-		if (is_array($values) && count($values) > 0) {
-
-			$this->setProperty($values);
-		}
-
-		return array('affectedNodes' => $affected, 'values' => $values);
-	}
-
 	public function getAffectedNodes($values) {
 
 		return false;
@@ -120,5 +104,10 @@ class SchemaProperty extends InheritableProperty {
 
 		return false;
 	}
+	
+	protected function get_system_properties()
+    {}
 
+    protected function get_inherit_properties(array $availableProperties)
+    {}
 }

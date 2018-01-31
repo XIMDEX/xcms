@@ -2443,8 +2443,11 @@ msgstr "Usar los canales heredados"
 msgid "Overwrite inherited channels"
 msgstr "Sobreescribir los canales heredados"
 
-msgid "Associate channel recursively with all documents."
-msgstr "Asociar canal recursivamente a todos los documentos."
+msgid "Associate channel recursively with all documents"
+msgstr "Asociar canal recursivamente a todos los documentos"
+
+msgid "Create idiomatic version recursively"
+msgstr "Crear versión idiomática de forma recursiva"
 
 #: /actions/manageproperties/template/Smarty/confirm.tpl
 #: /install/ximdex_data/ximdex.sql table Nodes
@@ -8959,3 +8962,21 @@ msgstr "El documento XML no es v&aacute;lido. No se han guardado los cambios"
 
 msgid "This node cannot be created with this name"
 msgstr "Este nodo no se puede crear con este nombre"
+
+msgid "Available languages"
+msgstr "Idiomas disponibles"
+
+msgid "At least one language and one channel must be gived"
+msgstr "Se debe dar al menos un idioma y un canal"
+
+msgid "An enconding type is required"
+msgstr "Es necesario indicar un tipo de codificaci&oacute;n",
+
+msgid "At least one channel is required"
+msgstr "Al menos un canal es necesario"
+
+msgid "Available project channels"
+msgstr "Canales disponibles en el proyecto"
+
+msgid "Available project languages"
+msgstr "Idiomas disponibles en el proyecto"

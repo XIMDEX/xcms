@@ -52,7 +52,7 @@ class NodeDependencies
      */
     function set($idSource, $idTarget, $idChannel)
     {
-        //check before if there is already a same dependencie
+        //check before if there is already a same dependence
         $res = $this->dbObj->Query("SELECT * FROM NodeDependencies WHERE IdNode = '$idSource' and IdResource = '$idTarget' and IdChannel = '$idChannel'");
         if ($res === false)
             return false;

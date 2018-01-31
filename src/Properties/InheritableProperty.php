@@ -24,9 +24,14 @@
  *  @version $Revision$
  */
 
+namespace Ximdex\Properties;
+
 use Ximdex\Logger;
 use Ximdex\Models\Node;
 use Ximdex\Models\NodeType;
+use Ximdex\Models\FastTraverse;
+use Ximdex\NodeTypes\NodeTypeConstants;
+use Ximdex\Models\NodeProperty;
 
 /**
  * Abstract inheritable property class. 
@@ -96,12 +101,12 @@ abstract class InheritableProperty {
 	        
 	        // All the project properties will be the available ones
 	        $projectNode = new Node($this->node->getProject());
-	        if (!$projectNode->GetID('Cannot load the project with node ID: ' . $this->node->getProject()))
+	        if (!$projectNode->GetID())
 	        {
-	            Logger::error();
+	            Logger::error('Cannot load the project with node ID: ' . $this->node->getProject());
 	            return false;
 	        }
-	        $availableProperties = $projectNode->getProperty($this->getPropertyName());
+	        $availableProperties = $projectNode->getProperty($this->getPropertyName(), false);
 	        if (!$availableProperties)
 	        {
 	            // If the project has no specified properties, then the system will be the availables
@@ -116,7 +121,7 @@ abstract class InheritableProperty {
 	        // Nodes below the Project shows only inherited channels
 	        $parentId = $this->node->getParent();
 	        $parent = new Node($parentId);
-	        $inheritProperties = $parent->getProperty($this->getPropertyName(), true);
+	        $inheritProperties = $parent->getProperty($this->getPropertyName());
 	    }
 	    else
 	    {
@@ -125,6 +130,7 @@ abstract class InheritableProperty {
 	    }
 	    
 	    // for each available property, assing the the values in use
+	    $values = [];
 	    foreach ($availableProperties as & $property) {
 	        
 	        // If is availableChannel and nodeChannels is empty, we use the availableChannels
@@ -135,10 +141,15 @@ abstract class InheritableProperty {
 	            $property['Inherited'] = in_array($property['Id'], $inheritProperties) ? true : false;
 	        else
 	            $property['Inherited'] = true;
+	        
+	        // save the result with the property ID with index
+            unset($property[0]);
+            unset($property[1]);
+            $values[$property['Id']] = $property;
 	    }
 	    
 	    // returning available properties with the activated ones for the current node
-	    return $availableProperties;
+	    return $values;
 	}
 
 	/**
@@ -151,6 +162,7 @@ abstract class InheritableProperty {
 	    if (!is_array($values)) $values = array();
 	    
 	    $affectedNodes = $this->updateAffectedNodes($values);
+	    
 	    $this->deleteProperty($values);
 	    
 	    if (is_array($values) && count($values) > 0) {
@@ -168,6 +180,8 @@ abstract class InheritableProperty {
 	 */
 	protected function getAffectedNodes($values) {
 	    
+	    return false;
+	    /*
 	    $propertiesToDelete = $this->getAffectedProperties($values);
 	    $strProperties = implode(', ', $propertiesToDelete);
 	    
@@ -179,10 +193,7 @@ abstract class InheritableProperty {
 	    
 	    $sql = 'select distinct(r.IdDoc) as affectedNodes from FastTraverse f';
 	    if ($this->getPropertyName() == self::CHANNEL)
-	    {
-	        //TODO ajlucena
-	        // $sql .= 'join RelStrDocChannels r on f.IdChild = r.IdDoc where f.IdNode = %s and r.IdChannel in (%s)';
-	    }
+	        $sql .= 'join RelStrDocChannels r on f.IdChild = r.IdDoc where f.IdNode = %s and r.IdChannel in (%s)';
 	    else
 	        $sql .= ' join StructuredDocuments s on f.IdChild = s.IdDoc where f.IdNode = %s and s.IdLanguage in (%s)';
 	    
@@ -205,6 +216,7 @@ abstract class InheritableProperty {
 	    if (count($affectedNodes) == 0) return false;
 	    
 	    return array('nodes' => $affectedNodes, 'props' => $propertiesToDelete);
+	    */
 	}
 
 	/**
@@ -291,6 +303,12 @@ abstract class InheritableProperty {
 	}
 	
 	/**
+	 * Obtain updated nodes or false is there is not changes
+	 * @param array $values
+	 */
+	abstract protected function updateAffectedNodes($values);
+	
+	/**
 	 * Obtain the system properties
 	 */
 	abstract protected function get_system_properties();
@@ -299,4 +317,50 @@ abstract class InheritableProperty {
 	 * Obtain the local or inherited properties from available an array of properties ID
 	 */
 	abstract protected function get_inherit_properties(array $availableProperties);
+	
+	/**
+	 * Applies the property values recursively deleting all specified properties in its children
+	 * @param mixed $values
+	 */
+	public function applyPropertyRecursively($values) {
+	    
+	    if (empty($values))
+	        return false;
+	    if (!is_array($values))
+	        $values = array($values);
+	    if (count($values) == 0)
+	        return false;
+	    
+	    // obtain the target nodes under the specified one
+	    $ft = new FastTraverse();
+	    $children = $ft->getChildren($this->nodeId, true, null, array('IdNodeType' => array(NodeTypeConstants::SERVER
+	           , NodeTypeConstants::SECTION, NodeTypeConstants::XML_ROOT_FOLDER, NodeTypeConstants::XML_CONTAINER)));
+	    if ($children === false)
+	        return false;
+	    if (isset($children[0]))
+	        unset($children[0]);
+	    
+	    // for each node, delete the local property if that one exists 
+	    $nodes = 0;
+	    $nodeProperty = new NodeProperty();
+	    foreach ($children as $level)
+	    {
+	        foreach ($level as $child => $type)
+	        {
+	           if ($nodeProperty->getProperty($child, $this->getPropertyName()))
+	           {
+	               if ($nodeProperty->deleteByNodeProperty($child, $this->getPropertyName()) === false)
+	               {
+	                   Logger::error('Cannot apply recursively deleting the property ' . $this->getPropertyName() . ' in the node ' . $child);
+	                   return false;
+	               }
+	               $nodes++;
+	           }
+	        }
+	    }
+	    return array(
+	        'nodes' => $nodes,
+	        'values' => $values
+	    );
+	}
 }

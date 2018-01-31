@@ -24,11 +24,9 @@
  * @version $Revision$
  */
 
-
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Models\Node;
-
-\Ximdex\Modules\Manager::file('/actions/manageproperties/inc/InheritedPropertiesManager.class.php');
+use Ximdex\Properties\InheritedPropertiesManager;
 
 /**
  * Manage properties action.
@@ -37,7 +35,6 @@ use Ximdex\Models\Node;
  */
 class Action_manageproperties extends ActionAbstract
 {
-
     /**
      * Main function
      *
@@ -52,11 +49,11 @@ class Action_manageproperties extends ActionAbstract
      */
     public function index()
     {
-
         //Load css and js resources for action form.
         $this->addCss('/actions/manageproperties/resources/css/styles.css');
-        $this->addJs('/actions/manageproperties/resources/js/dialog.js');
         $this->addJs('/actions/manageproperties/resources/js/index.js');
+        $this->addJs('/actions/manageproperties/resources/js/confirm.js');
+        $this->addJs('/actions/manageproperties/resources/js/dialog.js');
 
         $nodeId = $this->request->getParam('nodeid');
         $nodeId = $nodeId < 10000 ? 10000 : $nodeId;
@@ -65,9 +62,15 @@ class Action_manageproperties extends ActionAbstract
 
         //Get Values for all the dependencies
         $properties = InheritedPropertiesManager::getValues($nodeId);
-
-        $inherit = array();
-        //Update the checked properties in the array.
+        
+        $values = array(
+            'properties' => $properties,
+            'go_method' => 'save_changes',
+            'name' => $node->GetNodeName(),
+            'inProject' => ($node->getParent() == 10000)
+        );
+        
+        //Update the checked properties in the array (inherit or overwrite option)
         foreach ($properties as $name => $prop) {
             $checked = false;
             if (!empty($prop)) {
@@ -79,17 +82,11 @@ class Action_manageproperties extends ActionAbstract
                 }
             }
             if ($checked) {
-                $inherit[sprintf('%s_inherited', $name)] = 'overwrite';
+                $values[sprintf('%s_inherited', $name)] = 'overwrite';
             } else {
-                $inherit[sprintf('%s_inherited', $name)] = 'inherited';
+                $values[sprintf('%s_inherited', $name)] = 'inherited';
             }
         }
-        $values = array(
-            'properties' => $properties,
-            'go_method' => 'save_changes',
-            'name' => $node->GetNodeName()
-        );
-        $values = array_merge($values, $inherit);
 
         $this->render($values, '', 'default-3.0.tpl');
     }
@@ -114,8 +111,6 @@ class Action_manageproperties extends ActionAbstract
      */
     public function save_changes()
     {
-
-
         //Get the form properties
         $nodeId = $this->request->getParam('nodeid');
         $nodeId = $nodeId < 10000 ? 10000 : $nodeId;
@@ -131,6 +126,8 @@ class Action_manageproperties extends ActionAbstract
         $inherited_languages = $this->request->getParam('inherited_languages');
         $languages = $this->request->getParam('Language');
         $languages = empty($languages) || $inherited_languages == 'inherited' ? array() : $languages;
+        $language_recursive = $this->request->getParam('Language_recursive');
+        $language_recursive = empty($language_recursive) ? array() : $language_recursive;
 
         $inherited_schemas = $this->request->getParam('inherited_schemas');
         $schemas = $this->request->getParam('Schema');
@@ -159,14 +156,16 @@ class Action_manageproperties extends ActionAbstract
             if (count($channel_recursive) > 0) {
                 $applyResults = array_merge($applyResults, $this->_applyPropertyRecursively('Channel', $nodeId, $channel_recursive));
             }
-
+            if (count($language_recursive) > 0) {
+                $applyResults = array_merge($applyResults, $this->_applyPropertyRecursively('Language', $nodeId, $language_recursive));
+            }
+            
             $this->showResult($nodeId, $results, $applyResults, $confirmed);
         }
     }
 
-    protected function showConfirmation($nodeId, $properties, $affected)
+    private function showConfirmation($nodeId, $properties, $affected)
     {
-
         $this->addJs('/actions/manageproperties/resources/js/dialog.js');
         $this->addJs('/actions/manageproperties/resources/js/confirm.js');
 
@@ -200,9 +199,8 @@ class Action_manageproperties extends ActionAbstract
         $this->render($values, 'confirm', 'default-3.0.tpl');
     }
 
-    protected function showResult($nodeId, $results, $applyResults, $confirmed)
+    private function showResult($nodeId, $results, $applyResults, $confirmed)
     {
-
         foreach ($results as $prop => $value) {
 
             if ($value !== false) {
@@ -288,23 +286,20 @@ class Action_manageproperties extends ActionAbstract
         );
         $this->sendJSON($values);
     }
-
-
+    
     public function applyPropertyRecursively()
-    {
-
+    {   
         $nodeId = $this->request->getParam('nodeid');
         $nodeId = $nodeId < 10000 ? 10000 : $nodeId;
         $property = $this->request->getParam('property');
         $values = $this->request->getParam('values');
-
+        
         $result = $this->_applyPropertyRecursively($property, $nodeId, $values);
         $this->sendJSON(array('nodeId' => $nodeId, 'property' => $property, 'result' => $result[$property]));
     }
-
-    protected function _applyPropertyRecursively($property, $nodeId, $values)
+    
+    private function _applyPropertyRecursively($property, $nodeId, $values)
     {
-
         $result = InheritedPropertiesManager::applyPropertyRecursively($property, $nodeId, $values);
         return $result;
     }

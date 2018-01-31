@@ -25,7 +25,8 @@
 
 X.actionLoaded(function(event, fn, params) {
 	
-	var properties = ['channels', 'languages', 'schemas'];
+	var properties = ['channels', 'languages'];
+	
 	// TODO: gettext method "_()" must translate these string!
 	var _properties = {channels: 'canales', languages: 'idiomas', schemas: 'plantillas'};
 	
@@ -80,19 +81,18 @@ X.actionLoaded(function(event, fn, params) {
 		
 		// Inherited or overwritten values
 		fn('input[name=inherited_%s]'.printf(property)).change(function(event) {
+			
 			var name = $(this).attr('name').replace(/inherited_/, '');
 			var value = $(this).val();
 			
 			if (value == 'inherited') {
 				
 				fn('input.%s'.printf(name)).attr('disabled', true);
-				fn('input.%s_recursive'.printf(property)).attr('disabled', true);
-				fn('button.%s_apply'.printf(property)).attr('disabled', true);
+				fn('span.' + name + 'mp').addClass('disabled');
 			} else {
 
 				fn('input.%s'.printf(name)).removeAttr('disabled');
-				fn('input.%s_recursive'.printf(property)).removeAttr('disabled');
-				fn('button.%s_apply'.printf(property)).removeAttr('disabled');
+				fn('span.' + name + 'mp').removeClass('disabled');
 			}
 		});
 		

@@ -25,28 +25,46 @@
 
 {if isset($properties.Language) and count($properties.Language) > 0}
 	{assign var="languages" value=$properties.Language}
-	<fieldset>
+	<div class="row tarjeta propertyform">
+		<h2 class="h2_general">{t}Languages{/t}</h2>
 		<div class="manageproperties">
-			<div class="small-12 columns">
-			<label class="label_title label_general2">{t}Languages{/t}</label>
-			<div class="row-item row-special">
-				<div class="hidden">
-					<input type="radio" name="inherited_languages" class="languages_overwritten"
-						value="overwrite" checked />
-					<label>{t}Overwrite inherited languages{/t}</label>
+			{if ($inProject eq false)}
+				<div>
+					<input type="radio" name="inherited_languages" class="languages_inherited" value="inherited" id="languages_inherited" 
+							{if $Language_inherited == 'inherited'}checked="checked"{/if} />
+					<label for="languages_inherited">{t}Use inherited languages{/t}:</label>
+					<ul class="inheritlist">
+						{foreach from=$languages item=language}
+							{if $language.Inherited}
+								<li>{$language.Name}</li>
+							{/if}
+						{/foreach}
+					</ul>
 				</div>
-				{foreach from=$languages item=language}
-					<span class="slide-element languagemp">
-						<input type="checkbox" class="languages input-slide" name="Language[]" id="{$language.Name}_{$id_node}" 
-							value="{$language.IdLanguage}"
-							{if $language.Checked == 1}
-								checked="checked"
-							{/if} />
-						<label for="{$language.Name}_{$id_node}" class="label-slide "> {$language.Name}</label>
-					</span>
-				{/foreach}
-			</div>
+				<div>
+					<input type="radio" name="inherited_languages" class="languages_overwritten" value="overwrite" id="languages_overwritten" 
+							{if $Language_inherited == 'overwrite'}checked="checked"{/if} />
+					<label for="languages_overwritten">{t}Overwrite inherited languages{/t}:</label>
+				</div>
+			{else}
+				<input type="hidden" name="inherited_languages" value="overwrite" />
+				<label for="channels_inherited">{t}Available project languages{/t}:</label>
+			{/if}
+			{if ($languages)}
+				<div class="overwrited_properties">
+					{foreach from=$languages item=language}
+						<span name="check_languages" class="slide-element languagesmp{if $Language_inherited == 'inherited'} disabled{/if}">
+							<input type="checkbox" class="languages input-slide" name="Language[]" id="{$language.Name}_{$id_node}" 
+									value="{$language.Id}" {if $language.Checked == 1}checked="checked"{/if} />
+								<label for="{$language.Name}_{$id_node}" class="label-slide"> {$language.Name}</label>
+						</span>
+					{/foreach}
+				</div>
+			{/if}
+			<div>
+				<input type="checkbox" class="languages_recursive" name="Language_recursive" id="Language_recursive" value="1" /> 
+				<label for="Language_recursive">{t}Associate language recursively with all documents below{/t}</label>
 			</div>
 		</div>
-	</fieldset>
+	</div>
 {/if}

@@ -44,7 +44,7 @@
 			</p></div></div>
 				<div class="small-4 columns">
 					<div class="input-select icon">
-						<label for="id_schema" class="label_title label_general">{t}Schema{/t}</label>
+						<label for="id_schema" class="label_title label_general">{t}Schema{/t} *</label>
 				<select name="id_schema" id="schemaid" class="cajaxg validable not_empty document-type">
 					<option value="">{t}Select schema{/t}</option>
                     {foreach from=$schemes item=schema}

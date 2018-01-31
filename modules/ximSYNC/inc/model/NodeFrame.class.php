@@ -27,6 +27,8 @@
 use Ximdex\Logger;
 use Ximdex\Models\Node;
 use Ximdex\Runtime\DataFactory;
+use Ximdex\Properties\InheritedPropertiesManager;
+use Ximdex\Models\StructuredDocument;
 
 \Ximdex\Modules\Manager::file('/inc/model/orm/NodeFrames_ORM.class.php', 'ximSYNC');
 \Ximdex\Modules\Manager::file('/inc/model/ServerFrame.class.php', 'ximSYNC');
@@ -204,8 +206,8 @@ class NodeFrame extends NodeFrames_ORM {
 	*	@param int down
 	*	@return boolean
 	*/
-
-    	function existsNodeFrame($nodeId, $up, $down = NULL) {
+    function existsNodeFrame($nodeId, $up, $down = NULL) {
+        
 		$dataFactory = new DataFactory($nodeId);
 		$idVersion = $dataFactory->GetLastVersionId();
 
@@ -238,23 +240,32 @@ class NodeFrame extends NodeFrames_ORM {
 					$channelList[] = $cf->get('ChannelId');
 				}
 			}
-			$rdc = new \Ximdex\Models\RelStrDocChannels();
-			$rdcResult = $rdc->find('IdChannel', 'IdDoc = %s', array($nodeId), MONO);
-			foreach ($rdcResult as $idChannel) {
-				if (!in_array($idChannel, $channelList)) {
-					return false;
-				}
+			
+			// check if the channels from document properties are in the server frame channels list
+			$properties = InheritedPropertiesManager::getValues($nodeId);
+			if (isset($values['Channel']))
+			{
+			    $strDoc = new StructuredDocument($nodeId);
+			    foreach ($channelList as $channelID)
+			        if (!$strDoc->HasChannel($channelID))
+			            return false;
+			}
+			else
+			{
+			    // there is no channels assigned to this document
+			    return false;
 			}
 		}
 		return true;
-    	}
+    }
 
 	/**
 	*  Gets the field IdNodeFrame from NodeFrames table which matching the value of nodeId.
 	*  @param int nodeId
 	*  @return int|null
 	*/
-    	function getNodeFrameByNode($nodeId) {
+    function getNodeFrameByNode($nodeId) {
+        
 		$dataFactory = new DataFactory($nodeId);
 		$idVersion = $dataFactory->GetLastVersionId();
 

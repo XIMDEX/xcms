@@ -112,7 +112,7 @@ class Factory
 
     private function _setError($msg)
     {
-        Logger::warning($msg);
+        Logger::error($msg);
         $this->_error = $msg;
     }
 

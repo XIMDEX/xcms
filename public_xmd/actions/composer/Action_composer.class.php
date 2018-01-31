@@ -24,7 +24,6 @@
  * @version $Revision$
  */
 
-
 use Ximdex\Logger;
 use Ximdex\Models\Group;
 use Ximdex\Models\Node;
@@ -40,13 +39,13 @@ use Ximdex\XML\Base;
  
 \Ximdex\Modules\Manager::file('/actions/browser3/inc/GenericDatasource.class.php');
 
-
 class Action_composer extends ActionAbstract
 {
-
-
     public function index()
     {
+        header('Location:' . App::getUrl('/'));
+        exit();
+        
         Session::check();
 
         $ximid = App::getValue("ximid");

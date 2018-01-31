@@ -27,10 +27,8 @@
 
 namespace Ximdex\NodeTypes;
 
-
 use Ximdex\Models\Channel;
 use Ximdex\Models\NodeProperty;
-
 
 /**
  * @brief Handles channels.
@@ -39,15 +37,12 @@ use Ximdex\Models\NodeProperty;
  */
 class ChannelNode extends Root
 {
-
 	/**
 	 *  Does nothing.
 	 * @return null
 	 */
-
 	function RenderizeNode()
 	{
-
 		return null;
 	}
 
@@ -64,10 +59,8 @@ class ChannelNode extends Root
 	 * @param string filter
 	 * @param string renderMode
 	 */
-
 	function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $channelName = null, $extension = null, $format = null, $description = null, $filter = "", $renderMode = NULL, $outputType = NULL)
 	{
-
 		$channel = new Channel();
 		$channel->CreateNewChannel($channelName, $extension, $format, $description, $this->parent->get('IdNode'), $filter,
 			$renderMode, $outputType);
@@ -78,10 +71,8 @@ class ChannelNode extends Root
 	/**
 	 *  Deletes the rows of the Channel from both tables Channels and NodeProperties.
 	 */
-
 	function DeleteNode()
 	{
-
 		$channel = new Channel($this->nodeID);
 		$channel->DeleteChannel();
 		$nodeProperty = new NodeProperty();
@@ -89,28 +80,22 @@ class ChannelNode extends Root
 	}
 
 	/**
-	 *  Gets all documents that will be transformed by the Channel.
-	 * @return array
+	 * Gets all documents that will be transformed by the Channel.
+	 * @return array|bool
 	 */
-
-	function GetDependencies()
+	public function GetDependencies()
 	{
-
+	    //TODO ajlucena: at this time this method is not in use
+	    return [];
+	    /*
 		$sql = "SELECT DISTINCT IdDoc FROM RelStrDocChannels WHERE IdChannel='" . $this->nodeID . "'";
 		$this->dbObj->Query($sql);
-
 		$deps = array();
-
 		while (!$this->dbObj->EOF) {
 			$deps[] = $this->dbObj->row["IdDoc"];
 			$this->dbObj->Next();
 		}
-
 		return $deps;
-	}
-
-	function RenameNode($name = null)
-	{
-		parent::RenameNode($name);
+		*/
 	}
 }

@@ -28,7 +28,6 @@ namespace Ximdex\Models;
 
 use Ximdex\Logger;
 
-
 class NodeProperty extends \Ximdex\Data\GenericData {
 
     var $_idField = 'IdNodeProperty';
@@ -46,7 +45,7 @@ class NodeProperty extends \Ximdex\Data\GenericData {
     var $Property;
     var $Value;
 
-	function create($idNode, $property, $value = NULL) {
+	public function create($idNode, $property, $value = NULL) {
 
 		if (is_null($idNode) || is_null($property)) {
 			Logger::error(_('Params node and property are mandatory'));
@@ -75,8 +74,7 @@ class NodeProperty extends \Ximdex\Data\GenericData {
 	 * @param string property
 	 * @return string / null
 	 */
-
-	function getProperty($idNode, $property) {
+	public function getProperty($idNode, $property) {
 		
 		if (is_null($idNode) || is_null($property)) {
 			Logger::error(_('Params node and property are mandatory'));
@@ -93,8 +91,7 @@ class NodeProperty extends \Ximdex\Data\GenericData {
 	 * @param int idNode
 	 * @return true / false
 	 */
-	
-	function deleteByNode($idNode) {
+	public function deleteByNode($idNode) {
 		
 		if (is_null($idNode)) {
 			Logger::error(_('Param nodeId is mandatory'));
@@ -116,8 +113,7 @@ class NodeProperty extends \Ximdex\Data\GenericData {
 	 * @param string property
 	 * @return true / false
 	 */
-	
-	function deleteByNodeProperty($idNode, $property) {
+	public function deleteByNodeProperty($idNode, $property) {
 		
 		if (is_null($idNode) || is_null($property)) {
 			Logger::error(_('Params nodeId and property are mandatories'));
@@ -137,8 +133,7 @@ class NodeProperty extends \Ximdex\Data\GenericData {
 	 * @param int idNode
 	 * @return array / NULL
 	 */
-	
-	function getPropertiesByNode($idNode) {
+	public function getPropertiesByNode($idNode) {
 
 		$result = $this->find('Property, Value', 'IdNode = %s', array($idNode), MULTI);
 
@@ -149,15 +144,16 @@ class NodeProperty extends \Ximdex\Data\GenericData {
 		return $result;
 	}
 	
-	function cleanUpPropertyValue($property, $value) {
+	public function cleanUpPropertyValue($property, $value) {
+	    
 		$db = new \Ximdex\Runtime\Db();
 		$query = sprintf("DELETE FROM NodeProperties WHERE Property = %s AND Value = %s", 
 			$db->sqlEscapeString($property), $db->sqlEscapeString($value));
 		$db->execute($query);
 	}
 
-	function getNodeByPropertyValue($property, $value) {
+	public function getNodeByPropertyValue($property, $value) {
+	    
 		return $this->find('IdNode', 'Property = %s AND Value = %s', array($property, $value), MONO);
 	}
 }
-?>

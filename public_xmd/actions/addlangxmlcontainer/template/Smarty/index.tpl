@@ -36,7 +36,7 @@
 	<div class="action_content">
 		<div class="row tarjeta">
 			<div class="small-12 columns title_tarjeta">
-				<h2 class="h2_general">{t}Add language and channels{/t}</h2>
+				<h2 class="h2_general">{t}Add language{/t}</h2>
 			</div>
 			<div class="small-12 columns">
 				<div class="input">
@@ -45,21 +45,7 @@
 				<div class="text-border">
                 <span class="infor_form ">{$templateName}</span>
 				</div></div></div></div>
-		  	<div class="small-12 columns">
-				<div class="input">
-				<label class="label_title label_general">{t}Available channels{/t}</label>
-		  	{if $numchannels neq 0}
-		 		{foreach from=$channels item=channel}
-		  		    <div class="channel-section">
-		  			    <input type="checkbox" name="channels[]" id="channel_{$channel.IdChannel}_{$idNode}" value="{$channel.IdChannel}" {if ($channel.selected)} checked="checked" {/if} class="hidden-focus">
-		  				<label class="icon checkbox-label" for="channel_{$channel.IdChannel}_{$idNode}">{$channel.Description}</label>
-					</div></div>
-		  		{/foreach}
-		  	{else}
-		  			<p>{t}There aren't any channels associated to this project{/t}.</p>
-		  	{/if}
-		  	</div>	
-
+				
 		  	{if $numlanguages neq 0}
 			<div class="small-12 columns">
 				<div class="input">

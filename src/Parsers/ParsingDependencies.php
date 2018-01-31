@@ -242,7 +242,6 @@ class ParsingDependencies
      */
     private static function buildDependenciesFromStructuredDocument($node, $structuredDocument)
     {
-
         $channels = $structuredDocument->GetChannels();
         $schemas = (array)$structuredDocument->get('IdTemplate');
         $languages = (array)$structuredDocument->get('IdLanguage');
@@ -278,7 +277,6 @@ class ParsingDependencies
      */
     private static function buildDependenciesWithXimlets($node, $structuredDocument, $content)
     {
-
         $sectionXimlets = self::getSectionXimlets($node, $structuredDocument->get('IdLanguage'));
         $ximlets = self::getXimletsInContent($content);
         $ximlets = array_unique(array_merge($ximlets, $sectionXimlets));
@@ -294,7 +292,6 @@ class ParsingDependencies
      */
     private static function buildDependenciesWithXsl($node, $content)
     {
-
         $xslTemplates = self::getXslDependencies($node, $content);
         return self::addDependencies($node, $xslTemplates, "template") ? $xslTemplates : false;
     }
@@ -309,8 +306,6 @@ class ParsingDependencies
      */
     private static function buildDependenciesWithAssetsAndLinks($node, $content, $idVersion)
     {
-
-
         $dotDots = $pathTos = array();
         $idNode = $node->get("IdNode");
         $idServer = $node->getServer();
@@ -376,8 +371,6 @@ class ParsingDependencies
      */
     private static function getXslDependencies($node, $content)
     {
-
-
         $section = new Node($node->GetSection());
         $sectionTemplates = new Node($section->GetChildByName('templates'));
 
@@ -426,7 +419,6 @@ class ParsingDependencies
      */
     private static function clearDependencies($node)
     {
-
         // deletes old dependency (if exists)
         $idNode = $node->get("IdNode");
         $nodeDependencies = new NodeDependencies();
@@ -463,7 +455,6 @@ class ParsingDependencies
      */
     private static function addDependencies($master, $idDeps, $type = null)
     {
-
         $result = true;
 
         $idMaster = $master->get("IdNode");
@@ -563,7 +554,6 @@ class ParsingDependencies
 
     private static function getAssets($content, $nodeTypeName = NULL)
     {
-
         preg_match_all('/<url.*>\s*(\d+)\s*<\/url>/i', $content, $matches);
         $assets = count($matches[1]) > 0 ? $matches[1] : array();
 
@@ -677,7 +667,6 @@ class ParsingDependencies
      */
     private static function _getIdNode($_path)
     {
-
         //Building file and path
         $file = pathinfo($_path);
         $filename = $file["filename"] . "." . $file['extension'];
@@ -700,7 +689,6 @@ class ParsingDependencies
      */
     private static function getSectionXimlets($node, $idLanguage)
     {
-
         $sectionId = $node->getSection();
         $depsManager = new DepsManager();
         $ximletContainers = $depsManager->getBySource(DepsManager::SECTION_XIMLET, $sectionId);

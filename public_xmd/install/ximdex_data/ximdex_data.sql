@@ -139,7 +139,6 @@ VALUES
 	(7310,5018,'Modify properties','manageproperties','xix.png','Modify properties of a document folder',61,NULL,0,NULL,0),
 	(7311,5031,'Modify properties','manageproperties','xix.png','Modify properties',60,NULL,0,NULL,0),
 	(7312,5032,'Modify properties','manageproperties','xix.png','Modify properties of a document',60,NULL,0,NULL,0),
-	(7317,5082,'Modify properties','manageproperties','xix.png','Modify global properties',60,NULL,0,NULL,0),
 	(7321,5078,'Modify properties','renamenode','modiy_templateview','Modify properties of a RNG schema',60,NULL,0,NULL,0),
 	(6004,5009,'Manage groups','modifyusergroups','manage_user_groups.png','Enroll, disenroll, and change user role in groups where he/she belongs to',60,NULL,0,'',0),
 	(6007,5015,'Configure section','managefolders','change_name_section.png','Configure the folders of a section',61,NULL,0,'',0),
@@ -299,7 +298,7 @@ VALUES
 
 INSERT INTO `Channels` (`IdChannel`, `Name`, `Description`, `DefaultExtension`, `Format`, `Filter`, `RenderMode`, `OutputType`, `Default_Channel`)
 VALUES
-	(10001,'html','Html channel','html',NULL,NULL,'ximdex','web',1);
+	(10001,'HTML','HyperText Markup Language','html',NULL,NULL,'ximdex','web',1);
  
 INSERT INTO `Config` (`IdConfig`, `ConfigKey`, `ConfigValue`)
 VALUES
@@ -857,7 +856,7 @@ VALUES
 	(6349,5025,5008,'Add style Sheets',NULL,0,NULL,0,0,NULL,NULL,NULL),
 	(6385,5032,5008,'Preview',0,0,NULL,0,0,NULL,NULL,NULL),
 	(10000,1,5012,'Projects',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
-	(10001,9,5033,'Html.html',NULL,0,NULL,NULL,NULL,'Html',NULL,'/Ximdex/Centro de Control/Gestor de Canales'),
+	(10001,9,5033,'HTML.html',NULL,0,NULL,NULL,NULL,'HTML',NULL,'/Ximdex/Centro de Control/Gestor de Canales'),
 	(10002,7,5034,'Spanish',NULL,0,NULL,NULL,NULL,'Spanish language',NULL,'/Ximdex/Centro de Control/Gestor de Idiomas'),
 	(10003,7,5034,'English',NULL,0,NULL,NULL,NULL,'English language',NULL,'/Ximdex/Centro de Control/Gestor de Idiomas'),
 	(5076,6,5007,'NodeHt',0,0,NULL,0,0,NULL,NULL,NULL),
@@ -1265,7 +1264,7 @@ VALUES
 	(5079,'Workflow','workflow_process','workflow','Workflow for documents',0,0,0,0,0,0,0,0,0,0,0,0,0,1,''),
 	(5080,'ModulesFolder','foldernode','modulesconfig','Container of module settings',0,0,0,0,1,0,0,0,0,1,0,0,0,1,NULL),
 	(5081,'ModuleInfoContainer','foldernode','modulesconfig','Container of a module settings',0,0,0,0,0,0,0,0,0,0,0,0,0,1,NULL),
-	(5082,'InheritableProperties','foldernode','modulesconfig','Heritable properties',0,0,0,0,0,0,0,0,0,0,0,0,0,1,NULL),
+	(5082,'AllowedExtensions','foldernode','modulesconfig','Allowed extensions',0,0,0,0,0,0,0,0,0,0,0,0,0,1,NULL),
 	(5083,'MetaDataSection','foldernode','folder_xml_meta','Metadata Section',1,1,0,0,1,0,0,0,1,0,NULL,0,0,1,NULL),
 	(5084,'MetaDataContainer','Xmlcontainernode','metacontainer','Metadata Document',1,0,0,0,1,1,0,0,0,0,NULL,0,0,0,NULL),
 	(5085,'MetaDataDoc','xmldocumentnode','doc','Metadata Language Document',1,0,0,0,0,0,0,1,1,0,NULL,0,0,0,NULL);

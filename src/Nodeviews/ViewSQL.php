@@ -59,7 +59,7 @@ class ViewSQL extends AbstractView implements IView {
 		return $this->storeTmpContent($content);
 	}
 
-	function getSQLContent($nodeId, $args) {
+	private function getSQLContent($nodeId, $args) {
 		$node = new Node($nodeId);
 		$nodeType = new NodeType($node->get('IdNodeType'));
 		$nodeTypeName = $nodeType->get('Name');
@@ -83,9 +83,7 @@ class ViewSQL extends AbstractView implements IView {
 
 					$sql = "insert into Sections values ($idSection, $idParent, $name);";
 					$sql .= "insert into XimDocs values ($nodeId, $idSection, '".$node->get('Name')."',$lang);";
-				}
-		
-				$sql .= $this->makeInsertQuery('RelStrDocChannels', 'IdDoc = %s', array('IdDoc' => $nodeId));	
+				}	
 
 				break;
 			default:

@@ -289,7 +289,7 @@ class Action_addfoldernode extends ActionAbstract
         $name = $this->request->getParam("name");
         $this->name = $name;
         $channels = $this->request->getParam('channels_listed');
-        $languages = $this->request->getParam('langs_listed');
+        $languages = $this->request->getParam('languages_listed');
 
         $nodeType = [];
 

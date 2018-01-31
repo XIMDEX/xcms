@@ -194,8 +194,6 @@ DELETE FROM `Nodes` WHERE `IdNode` = "6951";
 
 -- -- Nodetype: 5061 ----
 DELETE FROM `RelRolesActions` WHERE `IdAction` = "5061";
-DELETE FROM `Actions` WHERE `IdAction` = "6953";
-DELETE FROM `Nodes` WHERE `IdNode` = "6953";
 
 -- -- Nodetype: 5063 ----
 DELETE FROM `RelRolesActions` WHERE `IdAction` = "5063";

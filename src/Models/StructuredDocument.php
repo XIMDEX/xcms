@@ -1,5 +1,4 @@
 <?php
-
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -31,7 +30,7 @@ use Ximdex\Runtime\DataFactory;
 use Ximdex\Logger;
 use Ximdex\Models\ORM\StructuredDocumentsOrm;
 use Ximdex\Parsers\ParsingDependencies;
-
+use Ximdex\Properties\ChannelProperty;
 
 class StructuredDocument extends StructuredDocumentsOrm
 {
@@ -378,69 +377,36 @@ class StructuredDocument extends StructuredDocumentsOrm
 		return false;
 	}
 
-	// Adds a channel to the current document
-	function AddChannel($IdChannel)
+	/**
+	 * Return true if the specified channel ID is in the node's properties
+	 * @param $channelID
+	 * @return bool
+	 */
+	public function HasChannel($idChannel)
 	{
-		$sqls = sprintf("INSERT INTO RelStrDocChannels (IdDoc, IdChannel)"
-			. " VALUES (%d, %d)", $this->get('IdDoc'), $IdChannel);
-		$dbObj = new \Ximdex\Runtime\Db();
-		$dbObj->Execute($sqls);
-		if ($dbObj->numErr != 0) {
-			$this->SetError(1);
-		}
+	    $values = $this->GetChannels();
+	    if ($values === false)
+	        return false;
+	    if (isset($values[$channelID]))
+	        return true;
+	    return false;
 	}
 
-	// Checks if the current document has the given channel
-	function HasChannel($idChannel)
+	/**
+	 * Return an array with all the channels ID for the current node
+	 * @return array
+	 */
+	public function GetChannels()
 	{
-		$sql = sprintf("SELECT COUNT(*) as total FROM RelStrDocChannels"
-			. " WHERE IdDoc = %d"
-			. " AND IdChannel = %d", $this->get('IdDoc'), $idChannel);
-		$dbObj = new \Ximdex\Runtime\Db();
-		$dbObj->Query($sql);
-		if ($dbObj->numErr != 0)
-			$this->SetError(1);
-		return $dbObj->GetValue("total");
-	}
-
-	function GetChannels()
-	{
-		$sql = sprintf("SELECT DISTINCT(IdChannel) FROM RelStrDocChannels" .
-			" WHERE IdDoc = %d", $this->get('IdDoc'));
-		$dbObj = new \Ximdex\Runtime\Db();
-		$dbObj->Query($sql);
-		if ($dbObj->numErr != 0) {
-			$this->SetError(1);
-			return null;
-		}
-		$salida = NULL;
-		while (!$dbObj->EOF) {
-			$salida[] = $dbObj->getValue("IdChannel");
-			$dbObj->Next();
-		}
-		return $salida;
-	}
-
-	// Delete the given channel for the current node
-	function DeleteChannel($idChannel)
-	{
-		$sqls = sprintf("DELETE FROM RelStrDocChannels WHERE IdDoc = %d"
-			. " AND IdChannel = %d", $this->get('IdDoc'), $idChannel);
-		$dbObj = new \Ximdex\Runtime\Db();
-		$dbObj->Execute($sqls);
-		if ($dbObj->numErr != 0) {
-			$this->SetError(1);
-		}
-	}
-
-	function DeleteChannels()
-	{
-		$dbObj = new \Ximdex\Runtime\Db();
-		$sqls = sprintf("DELETE FROM RelStrDocChannels WHERE IdDoc = %d", $this->get('IdDoc'));
-		$dbObj->Execute($sqls);
-		if ($dbObj->numErr != 0) {
-			$this->SetError(1);
-		}
+	    $channelProperty = new ChannelProperty($this->get('IdDoc'));
+	    $values = $channelProperty->getValues($this->get('IdDoc'));
+	    if ($values === false)
+	        return false;
+	    $res = [];
+	    foreach ($values as $channel)
+            if ($channel['Checked'] or $channel['Inherited'])
+                $res[] = $channel['Id'];
+	    return $res;
 	}
 
 	function add()
@@ -449,9 +415,19 @@ class StructuredDocument extends StructuredDocumentsOrm
 			$this->get('CreationDate'), $this->get('UpdateDate'), $this->get('IdLanguage'),
 			$this->get('IdTemplate'));
 	}
-	// Crea un nuevo structure document y carga su id en el docID de la clase.
-	// return docID - lo carga como atributo
-	function CreateNewStrDoc($docID, $name, $IdCreator, $IdLanguage, $templateID, $IdChannelList, $content = '')
+	
+	/**
+	 * Crea un nuevo structure document y carga su id en el docID de la clase
+	 * return docID - lo carga como atributo
+	 * @param $docID
+	 * @param $name
+	 * @param $IdCreator
+	 * @param $IdLanguage
+	 * @param $templateID
+	 * @param $IdChannelList
+	 * @param string $content
+	 */
+	public function CreateNewStrDoc($docID, $name, $IdCreator, $IdLanguage, $templateID, $IdChannelList, $content = '')
 	{
 		$this->set('Name', $name);
 		$this->set('IdCreator', $IdCreator);
@@ -464,23 +440,14 @@ class StructuredDocument extends StructuredDocumentsOrm
 			$this->set('IdDoc', $docID);
 		}
 		$result = parent::add();
-
 		if ($this->get('IdDoc') > 0) {
-			if ($IdChannelList) foreach ($IdChannelList as $idChannel) {
-				$dbObj = new \Ximdex\Runtime\Db();
-				$sql = sprintf("INSERT INTO RelStrDocChannels (IdDoc, IdChannel) "
-					. " VALUES (%d, %d)", $this->get('IdDoc'), $idChannel);
-				$dbObj->Execute($sql);
-
-				if ($dbObj->numErr) {
-					$this->SetError(1);
-				}
-			}
+		    
 			$this->ID = $docID;
 
 			/// Guardamos su contenido
 			$this->SetContent($content);
 		} else {
+		    
 			$this->SetError(1);
 		}
 	}
@@ -489,19 +456,13 @@ class StructuredDocument extends StructuredDocumentsOrm
 	{
 		$this->DeleteStrDoc();
 	}
-	// Elimina el structure document actual.
-	// return int (status)
-	function DeleteStrDoc()
+	
+	/**
+	 * Elimina el structure document actual
+	 */
+	public function DeleteStrDoc()
 	{
 		parent::delete();
-		$sql = sprintf("DELETE FROM RelStrDocChannels WHERE idDoc = " . $this->get('IdDoc'));
-		$dbObj = new \Ximdex\Runtime\Db();
-		$dbObj->Execute($sql);
-		if ($dbObj->numErr) {
-			$this->SetError(1);
-			return;
-		}
-
 		$this->ID = null;
 	}
 

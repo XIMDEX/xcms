@@ -26,9 +26,6 @@
 {* Accepts
 	$languages[Idlanguage]
 	$languages[Name]
-
-	$channels[IdChannel]
-	$channels[Description]
 *}
 
 <div class="languages-available small_12 columns">
@@ -59,19 +56,4 @@
     {else}
 		<p>{t}There are no languages associated to this project{/t}</p>
     {/if}
-	</div>
-<div class="small_12 columns">
-<label class="label_title label_general">{t}Channels{/t}</label>
-
-{if count($channels) > 0}
-    {foreach from=$channels item=channel}
-		<div class="channel-section">
-			<input name='channels[]' type='checkbox' value='{$channel.IdChannel}' class="hidden-focus" id="{$channel.IdChannel}_{$idNode}"/>
-			<label  class="icon checkbox-label"  for="{$channel.IdChannel}_{$idNode}">{$channel.Description|gettext}</label>
-		</div>
-    {/foreach}
-
-{else}
-	<p>{t}There are no channels associated to this project{/t}</p>
-{/if}
 </div>

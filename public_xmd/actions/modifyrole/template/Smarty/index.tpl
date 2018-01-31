@@ -91,7 +91,7 @@
                 {foreach name="outer_nodetypes" from=$nodetypes key=index item=nodetype}
                     {assign var=displayed_nodetype value=1}
 
-                    {if (isset($nodetype.actions) && (count($nodetype.actions)) > 0)}
+                    {if (isset($nodetype.actions) and (count($nodetype.actions)) > 0)}
                         <accordion-group heading="{$nodetype.Description}" ng-init="$parent.status.push(false)" is-open="$parent.status[{$index + 2}]">
                             <table class="table">
                                 <tr>

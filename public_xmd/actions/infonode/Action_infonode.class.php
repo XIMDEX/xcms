@@ -30,10 +30,7 @@ use Ximdex\Models\PipeStatus;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\App;
 
-\Ximdex\Modules\Manager::file('/actions/manageproperties/inc/InheritedPropertiesManager.class.php');
 \Ximdex\Modules\Manager::file('/actions/manageversions/Action_manageversions.class.php');
-
-
 
 class Action_infonode extends ActionAbstract
 {

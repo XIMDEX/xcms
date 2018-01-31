@@ -32,7 +32,6 @@ use Ximdex\Deps\DepsManager;
 use DOMDocument;
 use Ximdex\Models\NodeType;
 use Ximdex\Utils\PipelineManager;
-use Properties;
 use Ximdex\Models\Dependencies;
 use Ximdex\Models\RelTagsNodes;
 use Ximdex\Models\Channel;
@@ -43,7 +42,8 @@ use Ximdex\Models\StructuredDocument;
 use Ximdex\Utils\FsUtils;
 use Ximdex\Logger;
 use Ximdex\Runtime\Session;
-
+use Ximdex\Properties\ChannelProperty;
+use Ximdex\Models\NodeProperty;
 
 define('DOCXAP_VIEW', 1);
 define('SOLR_VIEW', 2);
@@ -56,7 +56,6 @@ define('XIMIO_VIEW', 3);
  */
 abstract class AbstractStructuredDocument extends FileNode
 {
-
     /**
 	 * Creates a new structured node
      * @param null $name
@@ -70,7 +69,6 @@ abstract class AbstractStructuredDocument extends FileNode
      */
     function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $templateID = null, $IdLanguage = null, $aliasName = '', $channelList = null)
     {
-
         $loginID = Session::get("userID");
 
         $templateNode = new Node($templateID);
@@ -115,7 +113,6 @@ abstract class AbstractStructuredDocument extends FileNode
      */
     function GetPublishedNodeName($channel = null)
     {
-
         $channel = new Channel($channel);
         $fileName = $this->parent->GetNodeName() . "-id" . $channel->GetName() . "." . $channel->GetExtension();
 
@@ -129,7 +126,6 @@ abstract class AbstractStructuredDocument extends FileNode
      */
     public function getPublishabledDeps($params)
     {
-
         $idDoc = $this->parent->get('IdNode');
 
         // only for dependences with ximlets
@@ -155,7 +151,6 @@ abstract class AbstractStructuredDocument extends FileNode
      */
     function GetContent()
     {
-
         $strDoc = new StructuredDocument($this->nodeID);
 
         return $strDoc->GetContent();
@@ -228,7 +223,6 @@ abstract class AbstractStructuredDocument extends FileNode
      */
     function GetIcon()
     {
-
         $strDoc = new StructuredDocument($this->nodeID);
         if ($strDoc->GetSymLink()) {
             $icon = pathinfo($this->parent->nodeType->GetIcon());
@@ -249,7 +243,6 @@ abstract class AbstractStructuredDocument extends FileNode
      */
     function view($viewType, $channel, $content = NULL, $idVersion = NULL)
     {
-
         switch ($viewType) {
             case DOCXAP_VIEW:
                 return $this->RenderizeNode($channel, $content);
@@ -304,7 +297,6 @@ abstract class AbstractStructuredDocument extends FileNode
      */
     function RenderizeNode($channel = null, $content = null)
     {
-
         // Se obtiene el id del nodo padre (ya que parent contiene una instancia del node actual)
         // y creamos un objeto nodo con ese id
         $parentID = $this->parent->GetParent();
@@ -338,9 +330,8 @@ abstract class AbstractStructuredDocument extends FileNode
      * @param boolean $solrView
      * @return string
      */
-    function _getDocXapHeader($channel, $idLanguage, $documentType)
+    public function _getDocXapHeader($channel, $idLanguage, $documentType)
     {
-
         $schema = new Node($documentType);
         $schemaName = $schema->get('Name');
         $schemaTag = 'schema="' . $schemaName . '"';
@@ -395,7 +386,6 @@ abstract class AbstractStructuredDocument extends FileNode
      */
     function GetRenderizedContent($channel = null, $content = null, $onlyDocXap = null)
     {
-
         $strDoc = new StructuredDocument($this->nodeID);
         if (!($strDoc->get('IdDoc') > 0)) {
             return NULL;
@@ -464,7 +454,6 @@ abstract class AbstractStructuredDocument extends FileNode
      */
     function RenameNode($name = null)
     {
-
         $doc = new StructuredDocument($this->nodeID);
         $doc->SetName($name);
         $this->updatePath();
@@ -475,7 +464,6 @@ abstract class AbstractStructuredDocument extends FileNode
      */
     function GetAllGenerations()
     {
-
         $result = array();
 
         $chanList = $this->GetChannels();
@@ -490,27 +478,37 @@ abstract class AbstractStructuredDocument extends FileNode
     }
 
     /**
+     * Return true if the specified channel ID is in the node's properties
      * @param $channelID
-     * @return int
+     * @return bool
      */
-    function HasChannel($channelID)
+    public function HasChannel($channelID)
     {
-
-        $query = sprintf("SELECT IdDoc FROM RelStrDocChannels WHERE"
-            . " IdDoc= %s"
-            . " AND IdChannel= %s",
-            $this->dbObj->sqlEscapeString($this->nodeID),
-            $this->dbObj->sqlEscapeString($channelID));
-
-        $this->dbObj->Query($query);
-
-        if ($this->dbObj->numErr) {
-            $this->parent->SetError(5);
-        }
-
-        return $this->dbObj->numRows;
+        $values = $this->GetChannels();
+        if ($values === false)
+            return false;
+        if (isset($values['Channel'][$channelID]))
+            return true;
+        return false;
     }
 
+    /**
+     * Return an array with all the channels ID for the current node
+     * @return array
+     */
+    public function GetChannels()
+    {
+        $channelProperty = new ChannelProperty($this->nodeID);
+        $values = $channelProperty->getValues($this->nodeID);
+        if ($values === false)
+            return false;
+        $res = [];
+        foreach ($values as $channel)
+            if ($channel['Checked'] or $channel['Inherited'])
+                $res[] = $channel['Id'];
+        return $res;
+    }
+    
     // TODO: Rewrite in Views.
     /**
      * @param $depth
@@ -520,7 +518,6 @@ abstract class AbstractStructuredDocument extends FileNode
      */
     function ToXml($depth, & $files, $recurrence)
     {
-
         $xmlBody = parent::ToXML($depth, $files, $recurrence);
 
         $channelList = $this->GetChannels();
@@ -562,7 +559,6 @@ abstract class AbstractStructuredDocument extends FileNode
      */
     function getXmlTail()
     {
-
         $returnValue = '';
         $query = sprintf("SELECT TargetLink FROM StructuredDocuments WHERE IdDoc = %d", $this->nodeID);
         $this->dbObj->Query($query);
@@ -579,34 +575,10 @@ abstract class AbstractStructuredDocument extends FileNode
     }
 
     /**
-     * @return array|null
-     */
-    function GetChannels()
-    {
-
-        $query = sprintf("SELECT idChannel FROM RelStrDocChannels WHERE IdDoc = %d", $this->nodeID);
-
-        $this->dbObj->Query($query);
-
-        if ($this->dbObj->numErr) {
-            $this->parent->SetError(5);
-        }
-
-        $out = NULL;
-        while (!$this->dbObj->EOF) {
-            $out[] = $this->dbObj->GetValue("idChannel");
-            $this->dbObj->Next();
-        }
-
-        return $out;
-    }
-
-    /**
      * @return bool|string
      */
     function getTemplate()
     {
-
         $structuredDocument = new StructuredDocument($this->nodeID);
 
         if ($structuredDocument->get('IdDoc') > 0) {
@@ -621,57 +593,9 @@ abstract class AbstractStructuredDocument extends FileNode
      */
     function getLanguage()
     {
-        $structuredDodument = new StructuredDocument($this->nodeID);
-        $idLanguage = $structuredDodument->get('IdLanguage');
+        $structuredDocument = new StructuredDocument($this->nodeID);
+        $idLanguage = $structuredDocument->get('IdLanguage');
         return $idLanguage > 0 ? $idLanguage : NULL;
-    }
-
-    /**
-     * @param $channelID
-     */
-    function SetChannel($channelID)
-    {
-
-        $sqls = "INSERT INTO RelStrDocChannels " .
-            "(IdRel, IdDoc, IdChannel) " .
-            "VALUES (NULL, " . $this->nodeID . ", " . $channelID . ")";
-
-        $this->dbObj->Execute($sqls);
-
-        if ($this->dbObj->numErr)
-            $this->parent->SetError(5);
-    }
-
-    /**
-	 * Deletes the association between a channel and the current document
-     * @param $channelID
-     */
-    function DeleteChannel($channelID)
-    {
-
-        $sqls = "DELETE FROM RelStrDocChannels " .
-            " WHERE IdDoc = " . $this->nodeID .
-            " AND IdChannel = " . $channelID;
-
-        $this->dbObj->Execute($sqls);
-
-        if ($this->dbObj->numErr)
-            $this->parent->SetError(5);
-    }
-
-    /**
-     * Deletes all the associations between a channel and the current document
-     */
-    function DeleteChannels()
-    {
-
-        $sqls = "DELETE FROM RelStrDocChannels " .
-            " WHERE IdDoc = " . $this->nodeID;
-
-        $this->dbObj->Execute($sqls);
-
-        if ($this->dbObj->numErr)
-            $this->parent->SetError(5);
     }
 
     /**
@@ -711,7 +635,6 @@ abstract class AbstractStructuredDocument extends FileNode
      */
     function _buildDocXapAttribs($idLang)
     {
-
         return $this->DocXapAttribLevels($idLang);
     }
 
@@ -721,7 +644,6 @@ abstract class AbstractStructuredDocument extends FileNode
      */
     function ChannelsXapAttrib($channelID = null)
     {
-
         $doc = new StructuredDocument($this->nodeID);
         $channelList = $doc->GetChannels();
 
@@ -830,9 +752,8 @@ abstract class AbstractStructuredDocument extends FileNode
      */
     function DocXapDynamicAttrib($nodeID)
     {
-
-        $prop = new Properties();
-        $array_prop = $prop->GetPropertiesNode($nodeID);
+        $prop = new NodeProperty();
+        $array_prop = $prop->getPropertiesByNode($nodeID);
         $nprop = count($array_prop);
 
         $str_props = "";
@@ -850,7 +771,6 @@ abstract class AbstractStructuredDocument extends FileNode
      */
     function DocXapAttribLevels($langID)
     {
-
         $node = new Node($this->parent->get('IdNode'));
 
         $parent = new Node($node->get('IdParent'));
@@ -901,7 +821,6 @@ abstract class AbstractStructuredDocument extends FileNode
      */
     function GetDependencies()
     {
-
         $nodeDependencies = new NodeDependencies();
         return $nodeDependencies->getByTarget($this->nodeID);
     }

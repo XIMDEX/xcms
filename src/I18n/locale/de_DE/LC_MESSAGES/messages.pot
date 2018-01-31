@@ -2192,7 +2192,7 @@ msgstr ""
 msgid "Overwrite inherited channels"
 msgstr ""
 
-msgid "Associate channel recursively with all documents."
+msgid "Associate channel recursively with all documents"
 msgstr ""
 
 #: /actions/manageproperties/template/Smarty/confirm.tpl

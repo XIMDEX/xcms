@@ -29,9 +29,9 @@ use Ximdex\Models\Node;
 use Ximdex\Models\NodeType;
 use Ximdex\Models\SectionType;
 use Ximdex\MVC\ActionAbstract;
-use\Ximdex\NodeTypes\NodeType as NodetypeService;
+use Ximdex\NodeTypes\NodeTypeConstants;
+use Ximdex\Properties\InheritedPropertiesManager;
 
-\Ximdex\Modules\Manager::file('/actions/manageproperties/inc/InheritedPropertiesManager.class.php');
 \Ximdex\Modules\Manager::file('/inc/io/XlyreBaseIO.class.php', 'xlyre');
 
 class Action_addsectionnode extends ActionAbstract {
@@ -208,7 +208,7 @@ class Action_addsectionnode extends ActionAbstract {
             // Creating Licenses subfolder in links folder
             $catalognode = new Node($id);
             $projectnode = new Node($catalognode->getProject());
-            $folder = $projectnode->getChildren(NodetypeService::LINK_MANAGER);
+            $folder = $projectnode->getChildren(NodeTypeConstants::LINK_MANAGER);
             $this->_createLicenseLinksFolder($folder[0]);
         }
         return $id;
@@ -216,7 +216,7 @@ class Action_addsectionnode extends ActionAbstract {
 
     private function _createLicenseLinksFolder($links_id) {
         $nodeaux = new Node();
-        $linkfolder = $nodeaux->find('IdNode', "idnodetype = %s AND Name = 'Licenses'", array(NodetypeService::LINK_FOLDER), MONO);
+        $linkfolder = $nodeaux->find('IdNode', "idnodetype = %s AND Name = 'Licenses'", array(NodeTypeConstants::LINK_FOLDER), MONO);
         if (!$linkfolder) {
             $nodeType = new NodeType();
             $nodeType->SetByName('LinkFolder');

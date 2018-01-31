@@ -145,7 +145,7 @@ class Action_login extends ActionAbstract
             if (Request::get('backto')) {
                 header(sprintf('Location: %s', base64_decode(Request::get('backto'))));
             } else {
-                header(sprintf("Location: %s/", App::getValue('UrlRoot')));
+                header(sprintf("Location: %s/", App::getUrl('/')));
             }
 
             die();

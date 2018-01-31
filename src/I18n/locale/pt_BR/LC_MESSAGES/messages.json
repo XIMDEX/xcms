@@ -544,7 +544,7 @@
     "%s language versions have been created.": "Foram criadas %s vers&otilde;es idiom&aacute;ticas.",
     "Use inherited channels": "Usar os canais herdados",
     "Overwrite inherited channels": "Sobrescrever os canais herdados",
-    "Associate channel recursively with all documents.": "Associar canal recursivamente a todos os documentos.",
+    "Associate channel recursively with all documents": "Associar canal recursivamente a todos os documentos",
     "Edit properties": "Modificar propriedades",
     "Changes will not be undone.": "N&atilde;o &eacute; poss&iacute;vel desfazer as altera&ccedil;&otilde;es.",
     "Use inherited languages": "Usar os idiomas herdados",

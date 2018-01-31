@@ -49,14 +49,6 @@ class XimletNode extends AbstractStructuredDocument
         return $docsToPublish;
     }
 
-    function getLanguage()
-    {
-        $strDoc = new StructuredDocument($this->nodeID);
-        $langId = $strDoc->get('IdLanguage');
-
-        return !empty($langId) ? $langId : NULL;
-    }
-
     /**
      * Gets the ximlet dependencies
      * @param int documentId
@@ -65,7 +57,6 @@ class XimletNode extends AbstractStructuredDocument
 
     function GetDependencies()
     {
-
         $depsMngr = new DepsManager();
 
         $deps = array();
@@ -81,7 +72,6 @@ class XimletNode extends AbstractStructuredDocument
 
     function DeleteNode()
     {
-
         // Deletes dependencies in rel tables
 
         $depsMngr = new DepsManager();
@@ -113,6 +103,4 @@ class XimletNode extends AbstractStructuredDocument
             Logger::fatal('Se ha estimado un tipo de nodo incorrecto');
             return false; // xmd::fatal must kill the process anyway, so dont wait any further trace
     }
-
-
 }

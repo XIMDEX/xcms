@@ -274,14 +274,6 @@ class Action_deletenode extends ActionAbstract {
 
 				$err = _("An error occurred while deleting:");
 				$err .= '<br>' . $node->get('IdNode') . " " . $node->GetPath() . '<br>' . _("Error message: ") . $node->msgErr . "<br><br>";
-
-			} else {
-
-				if ($node->nodeType->get('Name') == 'Channel') {
-					$sql = sprintf('delete from RelStrDocChannels where IdChannel = %s', $idNode);
-					$db = new \Ximdex\Runtime\Db();
-					$db->execute($sql);
-				}
 			}
 
 			if (is_array($depList)) {

@@ -128,7 +128,7 @@ while(!fileExistAndIsNotEmpty('data/previos/picasso-iden-idhtml.html') && $count
 }
 $I->seeFileFound('picasso-iden-idhtml.html','data/previos');
 
-$I->amOnPage("/data/previos/picasso-iden-idhtml.html");
+$I->amOnPage("/data/previos/picasso-iden-idHTML.html");
 
 $I->see("Picasso", ".header");
 $I->see("Cubism", ".header");

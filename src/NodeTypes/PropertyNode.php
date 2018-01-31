@@ -27,7 +27,6 @@
 
 namespace Ximdex\NodeTypes;
 
-
 /**
  * @brief Handles Properties as ximDEX Nodes.
  */
@@ -38,7 +37,6 @@ class PropertyNode extends Root
 	 *  Does nothing.
 	 * @return null
 	 */
-
 	function RenderizeNode()
 	{
 		return null;

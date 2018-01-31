@@ -1050,38 +1050,8 @@ class BaseIO
                     $result = $structuredDocument->update();
                     $this->_dumpMessages($structuredDocument->messages);
                 }
-                if ($result) {
-                    foreach ($channels as $channel) {
-                        $db = new \Ximdex\Runtime\Db();
-                        if (isset($channel['OPERATION']) && (strtoupper($channel['OPERATION']) ==
-                                'REMOVE')
-                        ) {
-                            $query = sprintf(
-                                "DELETE FROM RelStrDocChannels WHERE IdDoc = %s AND IdChannel = %s", $db->sqlEscapeString($data['ID']), $db->sqlEscapeString($channel['ID']));
-                            $db->execute($query);
-                            if ($db->numErr > 0) {
-                                $this->messages->add(_("Error deleting the document channel"), MSG_TYPE_ERROR);
-                                return Constants::ERROR_INCORRECT_DATA;
-                            }
-                            continue;
-                        }
-                        $query = sprintf("SELECT IdRel FROM RelStrDocChannels where IdDoc = %s AND IdChannel = %s", $db->sqlEscapeString($data['ID']), $db->sqlEscapeString($channel['ID']));
-                        $db->query($query);
-                        if ($db->EOF) {
-                            $query = sprintf("INSERT INTO RelStrDocChannels (IdDoc, IdChannel) VALUES (%s, %s)", $db->sqlEscapeString($data['ID']), $db->sqlEscapeString($channel['ID']));
-                            $db->execute($query);
-                            if ($db->numErr > 0) {
-                                $this->messages->add(_("Error inserting a document channel"), MSG_TYPE_ERROR);
-                                return Constants::ERROR_INCORRECT_DATA;
-                            }
-                        }
-                    }
-                }
-
-
 
                 return $result;
-                break;
 
             default :
                 // TODO: trigger error.

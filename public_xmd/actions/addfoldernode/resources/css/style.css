@@ -444,6 +444,14 @@ dd {
 	margin-right: 1%;
 }
 
+.language
+{
+	width: 32%;
+	float: left;
+	margin-right: 1%;
+}
+
+
 .sep
 {
 	clear: both;

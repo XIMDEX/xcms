@@ -23,31 +23,48 @@
  *  @version $Revision$
  *}
 
-{assign var="channels" value=$properties.Channel}
-<fieldset>
-
-	<div class="manageproperties">
-		<div class="small-12 columns">
-		<label class="label_title label_general2">{t}Channels{/t}</label>
-		<div class="row-item row-special">
-
-		<div class="hidden">
-			<input type="radio" name="inherited_channels" class="channels_overwritten" value="overwrite" checked />
-			<label>{t}Overwrite inherited channels{/t}</label>
-		</div>
-	{if ($channels)}
-		{foreach from=$channels item=channel}
-		<span class="slide-element channelmp">
-			<input type="checkbox" class="channels input-slide" name="Channel[]" value="{$channel.IdChannel}" 
-			{if $channel.Checked == 1}
-				checked="checked"
+{if isset($properties.Channel) and count($properties.Channel) > 0}
+	{assign var="channels" value=$properties.Channel}
+	<div class="row tarjeta propertyform">
+		<h2 class="h2_general">{t}Channels{/t}</h2>
+		<div class="manageproperties">
+			{if ($inProject eq false)}
+				<div>
+					<input type="radio" name="inherited_channels" class="channels_inherited" value="inherited" id="channels_inherited"
+							{if $Channel_inherited == 'inherited'}checked="checked"{/if} />
+					<label for="channels_inherited">{t}Use inherited channels{/t}:</label>
+					<ul class="inheritlist">
+						{foreach from=$channels item=channel}
+							{if $channel.Inherited}
+								<li>{$channel.Name}</li>
+							{/if}
+						{/foreach}
+					</ul>
+				</div>
+				<div>
+					<input type="radio" name="inherited_channels" class="channels_overwritten" value="overwrite" id="channels_overwritten"
+							{if $Channel_inherited == 'overwrite'}checked="checked"{/if} />
+					<label for="channels_overwritten">{t}Overwrite inherited channels{/t}:</label>
+				</div>
+			{else}
+				<input type="hidden" name="inherited_channels" value="overwrite" />
+				<label for="channels_inherited">{t}Available project channels{/t}:</label>
 			{/if}
-			 id="{$channel.Name}_{$id_node}"/>
-			<label for="{$channel.Name}_{$id_node}" class="label-slide"> {$channel.Name}</label>
-		</span>
-		{/foreach}
-	{/if}
+				{if ($channels)}
+				<div class="overwrited_properties">
+					{foreach from=$channels item=channel}
+						<span name="check_channels" class="slide-element channelsmp{if $Channel_inherited == 'inherited'} disabled{/if}">
+							<input type="checkbox" class="channels input-slide" name="Channel[]" value="{$channel.Id}" 
+									{if $channel.Checked == 1}checked="checked"{/if} id="{$channel.Name}_{$id_node}" />
+							<label for="{$channel.Name}_{$id_node}" class="label-slide">{$channel.Name}</label>
+						</span>
+					{/foreach}
+				</div>
+			{/if}
+			<div>
+				<input type="checkbox" class="channels_recursive" name="Channel_recursive" id="Channel_recursive" value="1" />
+				<label for="Channel_recursive">{t}Associate channel recursively with all documents below{/t}</label>
+			</div>
+		</div>
 	</div>
-		</div></div>
-
-</fieldset>
+{/if}

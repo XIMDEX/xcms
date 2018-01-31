@@ -24,13 +24,10 @@
  *  @version $Revision$
  */
 
-//
-
 /**
  * Factory class to instance every step object.
  */
 class InstallStepFactory {
-
 
 	/*Constant*/
 	const STEP_PATH = "/install/steps"; //Where the step class are defined
@@ -72,4 +69,3 @@ class InstallStepFactory {
 		return $stepObject;
 	}
 }
-?>

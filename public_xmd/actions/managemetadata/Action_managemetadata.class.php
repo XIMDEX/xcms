@@ -30,6 +30,7 @@ use Ximdex\Models\StructuredDocument;
 use Ximdex\Models\Version;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Parsers\ParsingRng;
+use Ximdex\Properties\LanguageProperty;
 use Ximdex\Runtime\App;
 
 \Ximdex\Modules\Manager::file('/actions/manageproperties/inc/LanguageProperty.class.php');

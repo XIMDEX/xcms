@@ -25,7 +25,6 @@
  */
 
 use Ximdex\Logger;
-use Ximdex\Models\Channel;
 use Ximdex\Models\Language;
 use Ximdex\Models\Node;
 use Ximdex\Models\NodeType;
@@ -33,8 +32,10 @@ use Ximdex\Models\StructuredDocument;
 use Ximdex\MVC\ActionAbstract;
 
 class Action_addlangxmlcontainer extends ActionAbstract {
-   // Main Method: it shows the initial form
-    function index() {
+    
+    // Main Method: it shows the initial form
+    public function index() {
+        
     	$idNode = $this->request->getParam("nodeid");
     	$node = new Node($idNode);
     	$idNode = $node->get('IdNode');
@@ -46,12 +47,7 @@ class Action_addlangxmlcontainer extends ActionAbstract {
 
 		$idTemplate = $this->_getVisualTemplate($idNode);
 		$template = new Node($idTemplate);
-
-		// Getting channels
-
-		$channels = $this->_getChannels($idNode);
-		$numChannels = count($channels);
-
+        
 		// Getting languages
 
 		$languages = $this->_getLanguages($idNode);
@@ -83,8 +79,6 @@ class Action_addlangxmlcontainer extends ActionAbstract {
 			'nodeName' => htmlentities($node->get('Name')),
 			'idTemplate' => $template->get('IdNode'),
 			'templateName' => htmlentities($template->get('Name')),
-			'channels' => $channels,
-			'numchannels' => $numChannels,
 			'languages' => $languageData,
 			'numlanguages' => $numLanguages,
 			'reload_tree' => $reloadTree,
@@ -93,20 +87,17 @@ class Action_addlangxmlcontainer extends ActionAbstract {
 		$this->render($values, null, 'default-3.0.tpl');
 	}
 
-	function updateXmlContainer() {
+	public function updateXmlContainer() {
 
 		$nodeid = $this->request->getParam('nodeid');
 		$templateid = $this->request->getParam('templateid');
 		$name = $this->request->getParam('name');
 		$languages = $this->request->getParam('languages');
 		$aliases = $this->request->getParam('aliases');
-		$channels = $this->request->getParam('channels');
 
 
 		if (empty($languages)) {	
 			$this->messages->add(_('There are no specified languages'), MSG_TYPE_ERROR);
-		}else if (empty($channels)) {
-			$this->messages->add(_('There are no specified channels'), MSG_TYPE_ERROR);
 		} else {
 
 			$node = new Node($nodeid);
@@ -147,12 +138,6 @@ class Action_addlangxmlcontainer extends ActionAbstract {
 				return;
 			}
 
-			$asignedChannels = array();
-			$_asignedChannels = $this->_getChannels($nodeid);
-			foreach ($_asignedChannels as $channel) {
-				$asignedChannels[] = $channel['IdChannel'];
-			}
-
 			foreach ($allLanguages as $idLanguage) {
 
 				$child = $this->_hasLang($node->get('IdNode'), $idLanguage);
@@ -166,20 +151,6 @@ class Action_addlangxmlcontainer extends ActionAbstract {
 							'ID' => $idNode,
 							'NODETYPENAME' => $nodeType->get('Name')
 						);
-
-						foreach ($asignedChannels as $idChannel) {
-
-							$channelData = array(
-								'NODETYPENAME' => 'CHANNEL',
-								'ID' => $idChannel
-							);
-
-							if (!in_array($idChannel, $channels)) {
-								$channelData['OPERATION'] = 'REMOVE';
-							}
-
-							$data['CHILDRENS'][] = $channelData;
-						}
 
 						if (isset($aliases[$idLanguage])) {
 							$data['CHILDRENS'][] = array(
@@ -227,11 +198,7 @@ class Action_addlangxmlcontainer extends ActionAbstract {
 								array ("NODETYPENAME" => "LANGUAGE", "ID" => $idLanguage)
 							)
 						);
-
-						foreach ($channels as $idChannel) {
-							$data['CHILDRENS'][] = array('NODETYPENAME' => 'CHANNEL', 'ID' => $idChannel);
-						}
-
+						
 						if (isset($aliases[$idLanguage])) {
 							$data['CHILDRENS'][] = array(
 													'NODETYPENAME' => 'NODENAMETRANSLATION',
@@ -259,7 +226,7 @@ class Action_addlangxmlcontainer extends ActionAbstract {
         $this->sendJSON($values);
 	}
 
-	function _getVisualTemplate($idNode) {
+	private function _getVisualTemplate($idNode) {
 		$node = new Node($idNode);
 		if(count($node->GetChildren())){
 			foreach ($node->GetChildren() as $childID) {
@@ -277,7 +244,7 @@ class Action_addlangxmlcontainer extends ActionAbstract {
 		return false;
 	}
 
-	function _hasLang($idNode, $idLanguage) {
+	private function _hasLang($idNode, $idLanguage) {
 		$node = new Node($idNode);
 		$children = $node->GetChildren();
 
@@ -306,29 +273,4 @@ class Action_addlangxmlcontainer extends ActionAbstract {
 
 		return $languages;
 	}
-
-	private function _getChannels($nodeID) {
-
-		$node = new Node($nodeID);
-		$channel = new Channel();
-		$channels = $channel->getChannelsForNode($nodeID);
-		if (empty($channels)) $channels = array();
-
-		$children = $node->GetChildren();
-		if (empty($children)) {
-			$lang = null;
-		} else {
-			$lang = new Node($children[0]);
-		}
-
-		foreach ($channels as &$channel) {
-			$ch = new Channel($channel['IdChannel']);
-			$channel['selected'] = $lang === null
-				? false
-				: ($lang->class->hasChannel($channel['IdChannel']) ? true : false);
-		}
-
-		return $channels;
-	}
-
 }

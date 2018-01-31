@@ -24,10 +24,7 @@
  *  @version $Revision$
  */
 
-
-
-
-\Ximdex\Modules\Manager::file('/actions/manageproperties/inc/InheritableProperty.class.php');
+namespace Ximdex\Properties;
 
 class TransformerProperty extends InheritableProperty {
 
@@ -111,5 +108,10 @@ class TransformerProperty extends InheritableProperty {
 
 		return false;
 	}
+	
+    protected function get_system_properties()
+    {}
 
+    protected function get_inherit_properties(array $availableProperties)
+    {}
 }

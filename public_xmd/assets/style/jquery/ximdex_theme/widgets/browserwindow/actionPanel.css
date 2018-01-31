@@ -520,7 +520,7 @@ h2.nodo_path {
 fieldset.buttons-form, div.buttonset, .ui-dialog .ui-dialog-buttonpane {
     background: none;
     text-align: right;
-    margin-bottom: 40px;
+    /* margin-bottom: 40px; */
 }
 .positioned_btn {
     position: absolute;

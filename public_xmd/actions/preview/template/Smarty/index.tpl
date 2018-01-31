@@ -28,7 +28,7 @@
 		<input type="hidden" name="node_id" class="node_id" value="{$id_node}" />
 		{*  If it is a document, it shows combo with channels *}
 		{if ($nameNodeType != 'TextFile' and $nameNodeType != 'ImageFile' and $nameNodeType !='BinaryFile' and $nameNodeType != 'NodeHt')}
-			<select id="channellist{$id_node}" name="channellist" class="prevdoc-channel-selector">
+			<select id="channellist{$id_node}" name="channellist" class="prevdoc-channel-selector" style="width: auto;">
 				{foreach from=$channels item=_channel}
 					<option value='{$_channel.Id}'>{$_channel.Name}</option>
 				{/foreach}

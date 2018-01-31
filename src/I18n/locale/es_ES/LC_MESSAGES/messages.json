@@ -625,7 +625,8 @@
     "%s language versions have been created.": "Se han creado %s versiones idiom&aacute;ticas.",
     "Use inherited channels": "Usar los canales heredados",
     "Overwrite inherited channels": "Sobreescribir los canales heredados",
-    "Associate channel recursively with all documents.": "Asociar canal recursivamente a todos los documentos.",
+    "Associate channel recursively with all documents": "Asociar canal recursivamente a todos los documentos",
+    "Create idiomatic version recursively" : "Crear versión idiomática de forma recursiva",
     "Edit properties": "Modificar propiedades",
     "Manage properties": "Modificar propiedades",
     "Changes will not be undone.": "No ser&aacute; posible deshacer los cambios.",
@@ -2464,5 +2465,10 @@
     "Show": "Mostrar",
     "(Only if you want to change the actual one)": "(S&oacute;lo si desea cambiar la actual)",
     "The XML document is not valid. Changes have not been saved": "El documento XML no es v&aacute;lido. No se han guardado los cambios",
-    "This node cannot be created with this name": "Este nodo no se puede crear con este nombre"
+    "This node cannot be created with this name": "Este nodo no se puede crear con este nombre",
+    "Available languages": "Idiomas disponibles",
+    "An enconding type is required": "Es necesario indicar un tipo de codificaci&oacute;n",
+    "At least one channel is required": "Al menos un canal es necesario",
+    "Available project channels": "Canales disponibles en el proyecto",
+    "Available project languages": "Idiomas disponibles en el proyecto"
 }

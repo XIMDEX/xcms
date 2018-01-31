@@ -24,40 +24,45 @@
  *  @version $Revision$
  */
 
-use Ximdex\Models\Language;
+namespace Ximdex\Properties;
 
-\Ximdex\Modules\Manager::file('/actions/manageproperties/inc/InheritableProperty.class.php');
+use Ximdex\Models\Channel;
 
-class LanguageProperty extends InheritableProperty {
+class ChannelProperty extends InheritableProperty {
 
-    private $language;
+    private $channel;
     
-	protected function getPropertyName() {
+	public function getPropertyName() {
 	    
-		return self::LANGUAGE;
+	    return self::CHANNEL;
 	}
 	
 	/**
-	 * Obtain system properties for channels
+	 * Obtain the system properties for languages
 	 * {@inheritDoc}
 	 * @see InheritableProperty::get_system_properties()
 	 */
     protected function get_system_properties()
     {
-        if (!$this->language)
-            $this->language = New Language();
-        return $language->find('Id as IdLanguage, Name', 'Enabled = 1', NULL);
+        if (!$this->channel)
+            $this->channel = new Channel;
+        return $this->channel->find('IdChannel as Id, Name');
     }
     
     /**
-     * Get the inherited languages
+     * Get the inherited channels
      * {@inheritDoc}
      * @see InheritableProperty::get_inherit_properties()
      */
     protected function get_inherit_properties(array $availableProperties)
     {
-        if (!$this->language)
-            $this->language = New Language();
-        return $language->find('Id as IdLanguage, Name', 'Enabled = 1 and IdLanguage in (%s)', array(implode(', ', $availableProperties)), MULTI, false);
+        if (!$this->channel)
+            $this->channel = new Channel;
+        return $this->channel->find('IdChannel as Id, Name, Description', 'IdChannel in (%s)', array(implode(', ', $availableProperties)), MULTI, false);
+    }
+    
+    protected function updateAffectedNodes($values) {
+        
+        return false;
     }
 }

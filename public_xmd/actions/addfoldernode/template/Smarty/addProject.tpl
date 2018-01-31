@@ -54,15 +54,29 @@
             </div>
 
             <div class="small-12 columns">
-                <label class="label_title label_general">{t}Available channels{/t}</label>
+                <label class="label_title label_general">{t}Available channels{/t} *</label>
                 {foreach from=$channels key=index item=channelData}
                 	<div class="channel">
-                		<input type="checkbox" class="validable canales check_group__canales hidden-focus" checked="checked" 
+                		<input type="checkbox" class="validable canales check_group__canales hidden-focus"  
                 				name="channels_listed[{$channelData.id}]" id="p_{$channelData.id}" value="{$channelData.id}" />
                 		<label for="p_{$channelData.id}" class="checkbox-label icon">{$channelData.name}</label>
                 	</div>
             	{foreachelse}
             		<p class="message_warning">{t}There are no channels created in the system{/t}.</p>
+            	{/foreach}
+            	<div class="sep"></div>
+            </div>
+            
+            <div class="small-12 columns">
+                <label class="label_title label_general">{t}Available languages{/t} *</label>
+                {foreach from=$languages key=index item=languageData}
+                	<div class="language">
+                		<input type="checkbox" class="validable idiomas check_group__idiomas hidden-focus"  
+                				name="languages_listed[{$languageData.id}]" id="p_{$languageData.id}" value="{$languageData.id}" />
+                		<label for="p_{$languageData.id}" class="checkbox-label icon">{$languageData.name}</label>
+                	</div>
+            	{foreachelse}
+            		<p class="message_warning">{t}There are no languages created in the system{/t}.</p>
             	{/foreach}
             	<div class="sep"></div>
             </div>

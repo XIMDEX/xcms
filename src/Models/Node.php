@@ -3105,7 +3105,7 @@ class Node extends NodesOrm
     /**
      * @param $property
      * @param bool $withInheritance
-     * @return null|string
+     * @return bool|null|array
      */
     function getProperty($property, $withInheritance = true)
     {
@@ -3142,7 +3142,7 @@ class Node extends NodesOrm
 
         Logger::warning(sprintf(_("Property %s not found for node %d"), $property, $this->get('IdNode')));
 
-        return NULL;
+        return null;
     }
 
     /**

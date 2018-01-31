@@ -238,7 +238,7 @@ CREATE TABLE `NodeProperties` (
   `IdNodeProperty` int(11) NOT NULL AUTO_INCREMENT,
   `IdNode` int(11) NOT NULL,
   `Property` varchar(255) NOT NULL,
-  `Value` blob NOT NULL,
+  `Value` text NOT NULL,
   PRIMARY KEY (`IdNodeProperty`),
   KEY `IdNode` (`IdNode`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -550,14 +550,6 @@ CREATE TABLE `RelServersStates` (
   UNIQUE KEY `IdRel` (`IdRel`),
   KEY `IdRel_2` (`IdRel`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Table which associates servers with workflow status';
-
-CREATE TABLE `RelStrDocChannels` (
-  `IdRel` int(12) unsigned NOT NULL AUTO_INCREMENT,
-  `IdDoc` int(12) unsigned DEFAULT '0',
-  `IdChannel` int(12) unsigned DEFAULT '0',
-  PRIMARY KEY (`IdRel`),
-  UNIQUE KEY `IdDoc` (`IdDoc`,`IdChannel`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Association between structured documents and their channels';
 
 CREATE TABLE `RelStrdocTemplate` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,

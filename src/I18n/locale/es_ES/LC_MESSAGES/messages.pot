@@ -2191,7 +2191,10 @@ msgstr ""
 msgid "Overwrite inherited channels"
 msgstr ""
 
-msgid "Associate channel recursively with all documents."
+msgid "Associate channel recursively with all documents"
+msgstr ""
+
+msgid msgid "Create idiomatic version recursively"
 msgstr ""
 
 #: /actions/manageproperties/template/Smarty/confirm.tpl
@@ -7994,4 +7997,13 @@ msgid "The XML document is not valid. Changes have not been saved"
 msgstr ""
 
 msgid "This node cannot be created with this name"
+msgstr ""
+
+msgid "Available languages"
+msgstr ""
+
+msgid "Available project channels"
+msgstr ""
+
+msgid "Available project languages"
 msgstr ""

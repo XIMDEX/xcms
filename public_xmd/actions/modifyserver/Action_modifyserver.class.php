@@ -158,7 +158,7 @@ class Action_modifyserver extends ActionAbstract {
 		    $action = "new";
 		}
 		
-		if ($this->_validate($serverID, $protocol,$host,$port,$initialDir,$url,$login,$password,$description, $encode, $idNode)){
+		if ($this->_validate($serverID, $protocol,$host,$port,$initialDir,$url,$login,$password,$description, $encode, $idNode, $channels)){
 
 			$node = new Node($nodeID);
             
@@ -243,7 +243,7 @@ class Action_modifyserver extends ActionAbstract {
 	 * Function for validation the fields
 	 *
 	 */
-	private function _validate($serverID, $protocol,$host,$port,$initialDir,$url,$login,$password,$description, $encode, $idNode){
+	private function _validate($serverID, $protocol,$host,$port,$initialDir,$url,$login,$password,$description, $encode, $idNode, $channels){
 		$validation = true;
 
 		if ($protocol == 'LOCAL'){
@@ -308,6 +308,11 @@ class Action_modifyserver extends ActionAbstract {
 		{
 			$this->messages->add(_("An enconding type is required"), MSG_TYPE_ERROR);
 			$validation = false;
+		}
+		if (!$channels)
+		{
+		    $this->messages->add(_('At least one channel is required'), MSG_TYPE_ERROR);
+		    $validation = false;
 		}
 
 		return $validation;

@@ -2189,8 +2189,8 @@ msgstr "Usar os canais herdados"
 msgid "Overwrite inherited channels"
 msgstr "Sobrescrever os canais herdados"
 
-msgid "Associate channel recursively with all documents."
-msgstr "Associar canal recursivamente a todos os documentos."
+msgid "Associate channel recursively with all documents"
+msgstr "Associar canal recursivamente a todos os documentos"
 
 #: /actions/manageproperties/template/Smarty/confirm.tpl
 #: /install/ximdex_data/ximdex.sql table Nodes

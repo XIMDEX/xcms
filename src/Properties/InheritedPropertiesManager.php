@@ -24,6 +24,8 @@
  *  @version $Revision$
  */
 
+namespace Ximdex\Properties;
+
 /**
  * Manager class for Inherited properties
  */
@@ -55,7 +57,7 @@ class InheritedPropertiesManager {
 
 		foreach (self::$properties as $prop) {
 
-			$p = $factory->instantiate($prop . 'Property', $nodeId);
+			$p = $factory->instantiate($prop . 'Property', $nodeId, '\Ximdex\Properties');
 
 			if (!is_object($p)) {
 				Logger::error(_("Inheritable property cannot be instantiate: ") . $prop);
@@ -91,7 +93,7 @@ class InheritedPropertiesManager {
 			if (!in_array($prop, array_keys($properties))) $properties[$prop] = array();
 			$value = $properties[$prop];
 
-			$p = $factory->instantiate($prop . 'Property', $nodeId);
+			$p = $factory->instantiate($prop . 'Property', $nodeId, 'Ximdex\Properties');
 			if (!is_object($p)) {
 				Logger::error("Inheritable property cannot be instantiate: " . $prop);
 				continue;
@@ -115,24 +117,27 @@ class InheritedPropertiesManager {
 	 */
 	static public function getAffectedNodes($nodeId, $properties) {
 
-		$factory = new \Ximdex\Utils\Factory(dirname(__FILE__), '');
-		if (!is_array($properties)) $properties = array();
-		$ret = array();
-
-		foreach (self::$properties as $prop) {
-
-			if (!in_array($prop, array_keys($properties))) $properties[$prop] = array();
-			$value = $properties[$prop];
-
-			$p = $factory->instantiate($prop . 'Property', $nodeId);
-			if (!is_object($p)) {
-				Logger::error(_("Inheritable property cannot be instantiate: ") . $prop);
-				continue;
-			}
-
-			$ret[$prop] = $p->getAffectedNodes($value);
-		}
-
-		return $ret;
+	    return false;
 	}
+	
+	/**
+	 * Applies a property value recursively
+	 * @param string $property
+	 * @param integer $nodeId
+	 * @param mixed $values
+	 */
+	static public function applyPropertyRecursively($property, $nodeId, $values) {
+	    
+	    $factory = new \Ximdex\Utils\Factory(dirname(__FILE__), '');
+	    $ret = array();
+	    $p = $factory->instantiate($property . 'Property', $nodeId, '\Ximdex\Properties');
+	    if (!is_object($p)) {
+	        
+	        Logger::error(_("Inheritable property cannot be instantiate: ") . $property);
+	        return $ret;
+	    }
+	    $ret[$property] = $p->applyPropertyRecursively($values);
+	    return $ret;
+	}
+	
 }
