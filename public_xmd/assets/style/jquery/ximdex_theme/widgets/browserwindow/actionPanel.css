@@ -1410,7 +1410,8 @@ input:focus+ .tooltip_info {
     position: absolute;
     right: -10%;
     width: 50%;
-    top: 55%;
+    height: 40%;
+    top: 15%;
     -webkit-transform: translateY(-50%);
     -moz-transform: translateY(-50%);
     -ms-transform: translateY(-50%);
