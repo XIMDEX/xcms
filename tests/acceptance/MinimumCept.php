@@ -10,8 +10,8 @@ if( file_exists('data/previos/css/default.css') ){
     $I->deleteDir('data/previos/css');
 }
 
-if( file_exists('data/previos/picasso-iden-idhtml.html') ){
-    $I->deleteFile('data/previos/picasso-iden-idhtml.html');
+if( file_exists('data/previos/picasso-iden-idHTML.html') ){
+    $I->deleteFile('data/previos/picasso-iden-idHTML.html');
 }
 
 $I->wantTo('Ensure that installation works');
@@ -122,11 +122,11 @@ while(!fileExistAndIsNotEmpty('data/previos/css/default.css') && $count < 45){
 }
 $I->seeFileFound('default.css','data/previos/css');
 
-while(!fileExistAndIsNotEmpty('data/previos/picasso-iden-idhtml.html') && $count < 45){
+while(!fileExistAndIsNotEmpty('data/previos/picasso-iden-idHTML.html') && $count < 45){
     sleep(2);
     $count++;
 }
-$I->seeFileFound('picasso-iden-idhtml.html','data/previos');
+$I->seeFileFound('picasso-iden-idHTML.html','data/previos');
 
 $I->amOnPage("/data/previos/picasso-iden-idHTML.html");
 
