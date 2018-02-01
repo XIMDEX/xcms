@@ -236,7 +236,7 @@ class XsltNode extends FileNode
         // get the children nodes of the current section
         if (!$ft)
             $ft = new FastTraverse();
-        $nodes = $ft->getChildren($section->GetID(), true, 1);
+        $nodes = $ft->get_children($section->GetID(), true, 1);
         if ($nodes === false)
         {
             $this->messages->add('Cannot get children nodes from node: ' . $section->GetID() . ' in reload templates include files process'
@@ -792,7 +792,7 @@ DOCXAP;
         }
         
         // get children of the node with its node types
-        $nodes = $ft->getChildren($node->GetID(), true, 1);
+        $nodes = $ft->get_children($node->GetID(), true, 1);
         if ($nodes === false)
         {
             $this->messages->add('Cannot get children nodes from node: ' . $node->GetID() . ' in reload templates include files process', MSG_TYPE_ERROR);

@@ -333,7 +333,7 @@ abstract class InheritableProperty {
 	    
 	    // obtain the target nodes under the specified one
 	    $ft = new FastTraverse();
-	    $children = $ft->getChildren($this->nodeId, true, null, array('IdNodeType' => array(NodeTypeConstants::SERVER
+	    $children = $ft->get_children($this->nodeId, true, null, array('IdNodeType' => array(NodeTypeConstants::SERVER
 	           , NodeTypeConstants::SECTION, NodeTypeConstants::XML_ROOT_FOLDER, NodeTypeConstants::XML_CONTAINER)));
 	    if ($children === false)
 	        return false;

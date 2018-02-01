@@ -683,7 +683,7 @@ class Node extends NodesOrm
             if ($this->IsOnNode($nodeID))
             {
                 $ft = new FastTraverse();
-                $nodes = $ft->getParents($this->get('IdNode'));
+                $nodes = $ft->get_parents($this->get('IdNode'));
                 if ($nodes)
                 {
                     $path = '';
@@ -722,7 +722,7 @@ class Node extends NodesOrm
         if ($this->get('IdNode') > 0) {
             
             $ft = new FastTraverse();
-            $nodes = $ft->getParents($this->get('IdNode'));
+            $nodes = $ft->get_parents($this->get('IdNode'));
             if ($nodes === false)
                 return false;
             foreach ($nodes as $parentId)
@@ -747,7 +747,7 @@ class Node extends NodesOrm
         if ($this->get('IdNode') > 0)
         {
             $ft = new FastTraverse();
-            $nodes = $ft->getParents($this->get('IdNode'));
+            $nodes = $ft->get_parents($this->get('IdNode'));
             if ($nodes === false)
                 return false;
             foreach ($nodes as $parentId)
@@ -776,7 +776,7 @@ class Node extends NodesOrm
         if ($this->get('IdNode') > 0)
         {
             $ft = new FastTraverse();
-            $nodes = $ft->getParents($node->get('IdNode'));
+            $nodes = $ft->get_parents($node->get('IdNode'));
             if ($nodes === false)
                 return false;
             $levels = count($nodes);
