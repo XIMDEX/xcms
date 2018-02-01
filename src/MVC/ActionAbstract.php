@@ -148,7 +148,7 @@ abstract class ActionAbstract extends IController
         if (!is_null($nodeId)) {
             $node = new Node();
             $nodeTypeId = $node->find('IdNodeType', 'IdNode = %s', array($nodeId), MONO);
-            $nodeTypeId = $nodeTypeId[0];
+            $nodeTypeId = serialize($nodeTypeId);
         }
 
 

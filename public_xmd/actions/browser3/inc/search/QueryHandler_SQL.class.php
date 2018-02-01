@@ -37,7 +37,7 @@ class QueryHandler_SQL extends QueryHandler_Abstract {
 
 		while (!$rset->EOF) {
 
-			$nodeId = $rset->getValue(0);
+		    $nodeId = $rset->getValue('IdNode');
 			$node = new Node($nodeId);
 
 			if ($node->getID() !== null) {
