@@ -24,15 +24,13 @@
  *}
 
 <form method="post" name="alx_form" id="alx_form" action="{$action_url}">
-	<input type="hidden" name="nodeid" value="{$idNode}" class="ecajag">
-	<input type="hidden" name="templateid" value="{$idTemplate}" class="ecajag">
-
+	<input type="hidden" name="nodeid" value="{$idNode}" class="ecajag" />
+	<input type="hidden" name="templateid" value="{$idTemplate}" class="ecajag" />
     <div class="action_header">
 		<h5 class="direction_header"> Name Node: {$node_name}</h5>
 		<h5 class="nodeid_header"> ID Node: {$nodeid}</h5>
-		<hr>
+		<hr />
     </div>
-
 	<div class="action_content">
 		<div class="row tarjeta">
 			<div class="small-12 columns title_tarjeta">
@@ -40,39 +38,42 @@
 			</div>
 			<div class="small-12 columns">
 				<div class="input">
-		    <div class="info-node">
-		  	    <label class="label_title label_general">{t}Used schema{/t}</label>
-				<div class="text-border">
-                <span class="infor_form ">{$templateName}</span>
-				</div></div></div></div>
-				
-		  	{if $numlanguages neq 0}
-			<div class="small-12 columns">
-				<div class="input">
-				<label class="label_title label_general">{t}Languages availables{/t} *</label>
-						{foreach from=$languages item=language}
-				<div class="languages-section">
-				{if ($language.idChildren > 0)}
-                    <input type="checkbox" name="languages[]" id="lang_{$language.idLanguage}_{$idNode}" value="{$language.idLanguage}" checked="checked" class="hidden-focus" />
-				{else}
-					<input type="checkbox" name="languages[]" id="lang_{$language.idLanguage}_{$idNode}" value="{$language.idLanguage}" class= "hidden-focus"/>
-				{/if}
-				<label for="lang_{$language.idLanguage}_{$idNode}" class="icon checkbox-label">{$language.name}</label>
-				<input type="text" name="aliases[{$language.idLanguage}]" class="alternative-name" value="{$language.alias}" class="cajag" placeholder="{t}Alternative name for paths &amp; breadcrumbs{/t}">
+				    <div class="info-node">
+			  	    	<label class="label_title label_general">{t}Used schema{/t}</label>
+						<div class="text-border">
+	    	            	<span class="infor_form ">{$templateName}</span>
+						</div>
+					</div>
 				</div>
+			</div>
+		  	{if $numlanguages neq 0}
+				<div class="small-12 columns">
+					<div class="input">
+						<label class="label_title label_general">{t}Languages availables{/t} *</label>
+						{foreach from=$languages item=language}
+							<div class="languages-section">
+								{if ($language.idChildren > 0)}
+                   					<input type="checkbox" name="languages[]" id="lang_{$language.idLanguage}_{$idNode}" value="{$language.idLanguage}" 
+                   							checked="checked" class="hidden-focus" />
+								{else}
+									<input type="checkbox" name="languages[]" id="lang_{$language.idLanguage}_{$idNode}" value="{$language.idLanguage}" 
+											class= "hidden-focus"/>
+								{/if}
+								<label for="lang_{$language.idLanguage}_{$idNode}" class="icon checkbox-label">{$language.name}</label>
+								<input type="text" name="aliases[{$language.idLanguage}]" class="alternative-name" value="{$language.alias}" 
+										class="cajag" placeholder="{t}Alternative name for paths &amp; breadcrumbs{/t}">
+							</div>
 						{/foreach}
-					
-				{else}
-					<p>{t}There are no languages associated to this project{/t}.</p>
-				{/if}
-			</div>
-			</div>
-			<div class="small-12 columns">
-				<fieldset class="buttons-form">
-                    {button label="Modify" class='validate btn main_action' }{*message="Would you like to save changes?"*}
-				</fieldset>
-			</div>
-	</div>
+					</div>
+				</div>
+			{else}
+				<p>{t}There are no languages associated to this project{/t}.</p>
+			{/if}
+		</div>
+		<div class="small-12 columns">
+			<fieldset class="buttons-form">
+				{button label="Modify" class='validate btn main_action' }{*message="Would you like to save changes?"*}
+			</fieldset>
+		</div>
 	</div>
 </form>
-

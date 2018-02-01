@@ -49,7 +49,6 @@ define('DOCXAP_VIEW', 1);
 define('SOLR_VIEW', 2);
 define('XIMIO_VIEW', 3);
 
-
 /**
  * Class AbstractStructuredDocument
  * @package Ximdex\NodeTypes
