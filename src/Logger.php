@@ -7,7 +7,6 @@ use Monolog\Handler\StreamHandler;
 use Ximdex\Runtime\App;
 use Exception;
 
-
 Class Logger
 {
     private static $instances = array();

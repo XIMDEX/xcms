@@ -34,16 +34,13 @@ use Ximdex\Utils\FsUtils;
 use Ximdex\Logger;
 use Ximdex\Models\FastTraverse;
 
-
 class XsltNode extends FileNode
 {
-
     private $xsltOldName = ""; //String;
     public $messages;
 
     public function __construct(&$node)
     {
-
         if (is_object($node))
             $this->parent = $node;
         else if (is_numeric($node) || $node == null)
@@ -54,7 +51,6 @@ class XsltNode extends FileNode
         $this->messages = new \Ximdex\Utils\Messages();
         $this->xsltOldName = $this->parent->get("Name");
     }
-
 
     public function CreateNode($xsltName = null, $parentID = null, $nodeTypeID = null, $stateID = null, $ptdSourcePath = NULL)
     {

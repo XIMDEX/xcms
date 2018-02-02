@@ -59,8 +59,10 @@ class ParsingDependencies
     {
         $regExp = '';
         if (preg_match_all('/<ximlet(\s*idExportationXimlet\="(\d*?)"\s*)?>@@@GMximdex.ximlet\((\d+)\)/i', $content, $matches) > 0) {
+            
             // Looking for in all results in a iterative way
             $totalMatches = count($matches[0]);
+            
             /* In position 2 of the array: IdExportationXimlet
              * In position 3 of the array: Gmximdex.ximlet
              *
@@ -70,10 +72,13 @@ class ParsingDependencies
             $results[0] = array();
             $results[1] = array();
             for ($i = 0; $i < $totalMatches; $i++) {
+                
                 $results[0][] = $matches[0][$i];
+                
                 // Previous node which is included in the xml
                 $results[2][] = $matches[3][$i];
                 if (!empty($matches[2][$i])) {
+                    
                     $results[1][] = $matches[2][$i];
                     continue;
                 }
@@ -94,9 +99,9 @@ class ParsingDependencies
      */
     public function parseAllDependencies($idNode, $content)
     {
-
         $node = new Node($idNode);
         if (!($node->get('IdNode') > 0)) {
+            
             Logger::error('Error while node loading.');
             $this->messages->add('There is not a Node with the IdNode: ' . $idNode, MSG_TYPE_ERROR);
             return false;
@@ -106,12 +111,14 @@ class ParsingDependencies
         $idVersion = $dataFactory->GetLastVersionId();
 
         if (!($node->nodeType->get('IsStructuredDocument') == 1)) {
+            
             Logger::info('This node is not a structured document');
             $this->messages->add('This node is not a structured document (IdNode: ' . $idNode . ')', MSG_TYPE_ERROR);
             return false;
         }
 
         switch ($node->get("IdNodeType")) {
+            
             case \Ximdex\NodeTypes\NodeTypeConstants::XHTML5_DOC:
             case \Ximdex\NodeTypes\NodeTypeConstants::XML_DOCUMENT:
                 $result = self::parseXMLDependencies($node, $content, $idVersion);
@@ -191,8 +198,8 @@ class ParsingDependencies
         $matches = array();
         $idNode = $node->getID();
 
-
         if (!($node->get('IdNode') > 0)) {
+            
             Logger::error('Error while node loading.');
             return false;
         }
@@ -216,22 +223,26 @@ class ParsingDependencies
         //Search for images inside the css file content
         preg_match_all($patron, $content, $matches);
         if (!empty($matches) && !empty($matches[1])) {
+            
             $images = array_unique(array_values($matches[1]));
 
 
             //inserting new dependencies between css file and images.
             foreach ($images as $_image) {
+                
                 $dependencies = new Dependencies();
                 $pathImage = preg_replace("/\.\.(\/\.\.)*/", $server_path, $_image);
                 $idNodeDep = self::_getIdNode($pathImage);
                 $res = $dependencies->find('IdDep', 'IdNodeMaster = %s and IdNodeDependent = %s', array($idNode, $idNodeDep), MONO);
                 if (empty($res)) {
+                    
                     $dependencies->insertDependence($idNode, $idNodeDep, $type, $version);
                     $nodeDependencies->set($idNode, $idNodeDep, NULL);
                     $depsMngr->set(DepsManager::NODE2ASSET, $idNode, $idNodeDep);
                 }
             }
         }
+        return true;
     }
 
     /**
@@ -322,6 +333,7 @@ class ParsingDependencies
         //Transforming the content for each defined channel.
         if ($channels)
             foreach ($channels as $idChannel) {
+                
                 $postContent = $pipelineManager->getCacheFromProcessAsContent($idVersion, 'StrDocToDexT',
                     array('CHANNEL' => $idChannel, 'TRANSFORMER' => $transformer[0]));
     
@@ -335,10 +347,10 @@ class ParsingDependencies
             }
 
         $links = array_unique(array_merge($assets, $links, $pathTos, $dotDots));
+        
         //Add dependencies between nodes for every channel in NodeDependencies
         if (self::addIntoNodeDependencies($idNode, $pathToByChannel) === false)
             return false;
-        unset($pathToByChannel);
         return self::addDependencies($node, $links) ? $links : false;
     }
 
@@ -352,6 +364,7 @@ class ParsingDependencies
     {
         $nodeDependencies = new NodeDependencies();
         foreach ($nodesByChannel as $idChannel => $nodes) {
+            
             foreach ($nodes as $idDep) {
                 if ($nodeDependencies->set($idNode, $idDep, $idChannel) === false)
                 {
@@ -396,14 +409,19 @@ class ParsingDependencies
         $xslDependencies = array();
         $parsedTags = array();
         foreach ($nodeList as $element) {
+            
             $tagName = $element->nodeName;
             if (!in_array($tagName, $parsedTags)) {
+                
                 $xsltId = $sectionTemplates->GetChildByName($tagName . '.xsl');
+                
                 // If not found in section it searchs in project
                 if (!($xsltId > 0)) {
+                    
                     $xsltId = $projectTemplates->GetChildByName($tagName . '.xsl');
                 }
                 if ($xsltId > 0) {
+                    
                     $xslDependencies[] = $xsltId;
                 }
                 $parsedTags[] = $tagName;
@@ -458,12 +476,12 @@ class ParsingDependencies
         $result = true;
 
         $idMaster = $master->get("IdNode");
-        if (!is_array($idDeps)) {
+        if (!is_array($idDeps))
             $idDeps = (array)$idDeps;
-        }
 
         if (count($idDeps)) {
             foreach ($idDeps as $idDep) {
+                
                 if ($idMaster == $idDeps)
                     continue;
                 if (!$idDep)
@@ -477,7 +495,9 @@ class ParsingDependencies
                 //if we don't know the type, we'll get it from IdNodeType
                 $currentType = $type ? strtolower($type) : self::inferType($idDep);
                 if ($currentType) {
+                    
                     switch ($currentType) {
+                        
                         case Dependencies::ASSET:
                             $table = DepsManager::NODE2ASSET;
                             break;
@@ -492,9 +512,8 @@ class ParsingDependencies
                     }
 
                     $dependencies->insertDependence($idMaster, $idDep, $currentType);
-                    if ($table) {
+                    if ($table)
                         $result = $depsMngr->set($table, $idMaster, $idDep) && $result;
-                    }
                 }
             }
         }
@@ -512,7 +531,9 @@ class ParsingDependencies
         $type = false;
         $depNode = new Node($idNode);
         if ($depNode->get('IdNode') > 0) {
+            
             switch ((int)$depNode->get("IdNodeType")) {
+                
                 case\Ximdex\NodeTypes\NodeTypeConstants::LINK:
                     $type = Dependencies::XIMLINK;
                     break;
@@ -576,7 +597,9 @@ class ParsingDependencies
             $commonNode = new Node($idCommonFolder);
             $css = $common = array();
             foreach ($matches[1] as $n => $match) {
+                
                 switch ($match) {
+                    
                     case 'css':
                         $id = $cssNode->GetChildByName(substr($matches[2][$n], 1));
                         if (!($id > 0)) {
@@ -586,6 +609,7 @@ class ParsingDependencies
                             $GLOBALS['parsingDependenciesError'] = $error;
                             return false;
                         } else {
+                            
                             $css[] = $id;
                         }
                         break;
@@ -598,6 +622,7 @@ class ParsingDependencies
                             $GLOBALS['parsingDependenciesError'] = $error;
                             return false;
                         } else {
+                            
                             $common[] = $id;
                         }
                         break;
@@ -623,42 +648,30 @@ class ParsingDependencies
     public static function getPathTo($content, $nodeId, $test = false)
     {
         preg_match_all("/@@@RMximdex\.pathto\(([^\)]*)\)@@@/", $content, $matches);
-        if ($test)
+        $links = array();
+        if (count($matches[1]))
         {
-            if (count($matches[1]))
+            $node = new Node($nodeId);
+            $server = $node->getServer();
+            $parserPathTo = new ParsingPathTo();
+            foreach ($matches[1] as $pathTo)
             {
-                $parserPathTo = new ParsingPathTo();
-                foreach ($matches[1] as $pathTo)
+                // if the document is a template in the project templates node, the resources in the macros (not nodeId given) cannot be obtained
+                if (($server !== null or is_numeric($pathTo)) and ($parserPathTo->parsePathTo($pathTo, $nodeId) === false))
                 {
-                    // avoid check no nodes (i.e. {@a_enlaceid_url})
-                    if ($pathTo[0] == '{')
-                        continue;
-                    $node = new Node($pathTo);
-                    if (!$node->GetID())
+                    $error = 'The document or its dependencies references a non existant node or resource (' . $pathTo 
+                            . ') in a RMximdex.pathto directive';
+                    Logger::error($error);
+                    if ($test)
                     {
-                        $error = 'The document or its dependencies references a non existant node ' . $pathTo . ' in a RMximdex.pathto directive';
-                        Logger::error($error);
                         $GLOBALS['parsingDependenciesError'] = $error;
                         return false;
                     }
                 }
+                $links[$parserPathTo->getIdNode()] = $parserPathTo->getIdNode();
             }
-            return true;
         }
-        else
-        {
-            $links = array();
-            if (count($matches[1]))
-            {
-                $parserPathTo = new ParsingPathTo();
-                foreach ($matches[1] as $pathTo)
-                {
-                    $parserPathTo->parsePathTo($pathTo, $nodeId);
-                    $links[$parserPathTo->getIdNode()] = $parserPathTo->getIdNode();
-                }
-            }
-            return $links;
-        }
+        return $links;
     }
 
     /**
@@ -693,9 +706,8 @@ class ParsingDependencies
         $depsManager = new DepsManager();
         $ximletContainers = $depsManager->getBySource(DepsManager::SECTION_XIMLET, $sectionId);
 
-        if (empty($ximletContainers) ) {
+        if (empty($ximletContainers))
             return array();
-        }
 
         foreach ($ximletContainers as $idXimletContainer) {
 
@@ -705,11 +717,8 @@ class ParsingDependencies
             foreach ($ximlets as $ximletId) {
 
                 $ximlet = new StructuredDocument($ximletId);
-
-                if ($ximlet->get('IdLanguage') == $idLanguage) {
-
+                if ($ximlet->get('IdLanguage') == $idLanguage)
                     $ximlets[] = $ximletId;
-                }
             }
         }
 

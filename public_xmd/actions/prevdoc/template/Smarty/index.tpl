@@ -36,7 +36,7 @@
 			{literal}
 				<script type="text/javascript">
 					$(document).ready(function() {
-						$("iframe").onload("load",function(){
+						$("prevdoc-document").onload("load",function(){
 							$("a",window.frames[0].document).attr("target","_parent");
 						});
 					});

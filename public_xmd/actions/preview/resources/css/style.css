@@ -38,4 +38,5 @@
 
 .prevdoc-channel-selector {
   vertical-align: middle;
+  width: auto !important;
 }

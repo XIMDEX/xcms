@@ -24,39 +24,56 @@
  *  @version $Revision$
  */
 
-
+use Ximdex\Logger;
 use Ximdex\Models\Node;
 use Ximdex\MVC\ActionAbstract;
-
+use Ximdex\Parsers\ParsingPathTo;
 
 class Action_filemapper extends ActionAbstract {
+    
    // Main method: shows initial form
-    function index () {
+    function index() {
+        
 		if ($this->request->getParam('nodeid')) {
+		    
 			$idNode = $this->request->getParam("nodeid");
             $this->echoNode($idNode);
-			exit();
 		}
     }
 
     public function nodeFromExpresion(){
-    	if ($this->request->getParam('expresion')) {
-    		$expression = $this->request->getParam("expresion");
-            $this->echoNode($expression);
-		}
+        
+        if ($this->request->getParam('expresion')) {
+            
+            $expression = $this->request->getParam("expresion");
+            Logger::setActiveLog('preview');
+            Logger::debug('Call to filemapper->nodeFromExpresion(Expresion: ' . $expression . ')');
+            $parserPathTo = new ParsingPathTo();
+            $parserPathTo->parsePathTo($expression);
+            if ($parserPathTo->getIdNode()){
+                
+                $idNode = $parserPathTo->getIdNode();
+                Logger::debug('Calling to filemapper->echoNode(' . $idNode . ')');
+                $this->echoNode($idNode);
+            }
+            Logger::setActiveLog();
+        }
     }
 
     private function echoNode($idNode){
+        
     	$fileNode = new Node($idNode);
 		$fileName = $fileNode->get('Name');
+		
+		Logger::debug('Procesing filemapper->echoNode(' . $idNode . '): filename: ' . $fileName);
+		
         $gmDate =  gmdate("D, d M Y H:i:s");
         $fileContent = $fileNode->GetContent();
         
         /// Expiration headers
         $this->response->set('Expires', 'Mon, 26 Jul 1997 05:00:00 GMT');
         $this->response->set('Last-Modified', $gmDate . " GMT");
-        $this->response->set('Cache-Control',
-            array('no-store, no-cache, must-revalidate', 'post-check=0, pre-check=0'));
+        $this->response->set('Cache-Control', array('no-store, no-cache, must-revalidate', 'post-check=0, pre-check=0'));
         $this->response->set('Pragma', 'no-cache');
         $this->response->set('ETag', md5($idNode.$gmDate));
         $this->response->set('Content-transfer-encoding', 'binary');

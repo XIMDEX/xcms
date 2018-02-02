@@ -65,6 +65,7 @@ Ximdex\Modules\Manager::file(\Ximdex\Modules\Manager::get_modules_install_params
 // generate general purpose logs files
 Logger::generate('XMD', 'xmd', true);
 Logger::generate('ACTIONS', 'actions');
+Logger::generate('PREVIEW', 'preview');
 
 // set default log (xmd.log)
 Logger::setActiveLog();

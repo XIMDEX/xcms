@@ -1,7 +1,4 @@
 <?php
-namespace Ximdex\Models;
-
-use Ximdex\Runtime\Db;
 
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
@@ -27,9 +24,13 @@ use Ximdex\Runtime\Db;
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
+
+namespace Ximdex\Models;
+
+use Ximdex\Runtime\Db;
+
 class NodeDependencies
 {
-
     /**
      * @var Db
      */
@@ -43,44 +44,39 @@ class NodeDependencies
         $this->dbObj = new \Ximdex\Runtime\Db();
     }
 
-
     /**
      * @param $idSource
      * @param $idTarget
      * @param $idChannel
      * @return bool
      */
-    function set($idSource, $idTarget, $idChannel)
+    public function set($idSource, $idTarget, $idChannel)
     {
         //check before if there is already a same dependence
         $res = $this->dbObj->Query("SELECT * FROM NodeDependencies WHERE IdNode = '$idSource' and IdResource = '$idTarget' and IdChannel = '$idChannel'");
         if ($res === false)
             return false;
-        if (!$this->dbObj->EOF)
+        if ($this->dbObj->numRows)
         {
-            //dependencie exists already
+            //dependency already exists
             return true;
         }
         return $this->dbObj->Execute("INSERT INTO NodeDependencies (IdNode, IdResource, IdChannel) VALUES ('$idSource', '$idTarget', '$idChannel')");
     }
 
-
     /**
      * @param $idTarget
      * @return array
      */
-    function getByTarget($idTarget)
+    public function getByTarget($idTarget)
     {
-
         $this->dbObj->Query("SELECT DISTINCT IdNode FROM NodeDependencies WHERE IdResource = $idTarget");
-
         $deps = array();
-
         while (!$this->dbObj->EOF) {
+            
             $deps[] = $this->dbObj->GetValue("IdNode");
             $this->dbObj->Next();
         }
-
         return $deps;
     }
 
@@ -88,21 +84,17 @@ class NodeDependencies
      * @param $idTarget
      * @return bool
      */
-    function deleteByTarget($idTarget)
+    public function deleteByTarget($idTarget)
     {
-
         return $this->dbObj->Execute("DELETE FROM NodeDependencies WHERE IdResource = $idTarget");
     }
-
 
     /**
      * @param $idSource
      * @return bool
      */
-    function deleteBySource($idSource)
+    public function deleteBySource($idSource)
     {
-
         return $this->dbObj->Execute("DELETE FROM NodeDependencies WHERE IdNode = $idSource");
     }
-
 }

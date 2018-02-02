@@ -2463,7 +2463,7 @@
     "Name of your catalog": "Nombre de tu cat&aacute;logo",
     "A dataset should be for a single data in several formats": "Un dataset deber&iacute;a emplearse para un mismo dato en diferentes formatos",
     "Show": "Mostrar",
-    "(Only if you want to change the actual one)": "(S&oacute;lo si desea cambiar la actual)",
+    "(Only to change the actual one)": "(S&oacute;lo para cambiar la actual)",
     "The XML document is not valid. Changes have not been saved": "El documento XML no es v&aacute;lido. No se han guardado los cambios",
     "This node cannot be created with this name": "Este nodo no se puede crear con este nombre",
     "Available languages": "Idiomas disponibles",
