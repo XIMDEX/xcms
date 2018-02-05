@@ -24,16 +24,14 @@
  *  @version $Revision$
  */
 
-
 use Ximdex\Models\Channel;
 use Ximdex\Models\Node;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\App;
 
-
 class Action_modifyserver extends ActionAbstract {
 
-    function index($operation = null, $serverID = null) {
+    public function index($operation = null, $serverID = null) {
 
 		$idNode = (int) $this->request->getParam("nodeid");
 		$actionID = (int) $this->request->getParam("actionid");
@@ -49,7 +47,9 @@ class Action_modifyserver extends ActionAbstract {
 
 		$_servers = array();
 		if ($num_servers > 0) {
+		    
 			foreach($list as $id) {
+			    
 				$_servers[] = array( "Id" => $id, "Description" => $servers->class->GetDescription($id) );
 			}
 		}
@@ -75,6 +75,7 @@ class Action_modifyserver extends ActionAbstract {
 		    $server['channels'] = $this->request->getParam('channels');
 		}
 		elseif ($operation != 'erase' and $servers and $serverID) {
+		    
 			$server = array(
 				"id" => $serverID,
 				"name" => $servers->GetNodeName(),
@@ -128,7 +129,8 @@ class Action_modifyserver extends ActionAbstract {
 		$this->render($values, "index", 'default-3.0.tpl');
 	}
 
-	function modify_server() {
+	public function modify_server() {
+	    
 		$idNode		= (int) $this->request->getParam("nodeid");
 		$actionID	= (int) $this->request->getParam("actionid");
 		$params 	= $this->request->getParam("params");
@@ -152,17 +154,17 @@ class Action_modifyserver extends ActionAbstract {
 		$server = new Node($nodeID);
 		$list = $server->class->GetPhysicalServerList();
 		
-		if (is_array($list) && in_array($serverID, $list)) {
+		if (is_array($list) && in_array($serverID, $list))
 		    $action = "mod";
-		} else {
+		else
 		    $action = "new";
-		}
 		
 		if ($this->_validate($serverID, $protocol,$host,$port,$initialDir,$url,$login,$password,$description, $encode, $idNode, $channels)){
 
 			$node = new Node($nodeID);
             
-			if( $this->request->getParam('borrar') == 1) {
+			if ($this->request->getParam('borrar') == 1) {
+			    
 				$server = new Node($nodeID);
 				$server->class->DeletePhysicalServer($serverID);
 				$action = "erase";
@@ -173,9 +175,10 @@ class Action_modifyserver extends ActionAbstract {
 				$dbObj = new \Ximdex\Runtime\Db();
 				$sql = "SELECT IdProtocol FROM Protocols WHERE IdProtocol='".$protocol."'";
 				$dbObj->Query($sql);
-				if($dbObj->numRows) {
+				if ($dbObj->numRows) {
 
-					if($action == "mod") {
+					if ($action == "mod") {
+					    
 						$node->class->SetProtocol($serverID,$protocol);
 						$node->class->SetHost($serverID,$host);
 						$node->class->SetPort($serverID,$port);
@@ -188,8 +191,8 @@ class Action_modifyserver extends ActionAbstract {
 						$node->class->SetOverrideLocalPaths($serverID,!!$override);
 						$node->class->SetEncode($serverID,$encode);
 
-
 						if($password){
+						    
 							$node->class->SetPassword($serverID, $password);
 						}
 						elseif ($serverID and $server)
@@ -198,31 +201,39 @@ class Action_modifyserver extends ActionAbstract {
 							$password = $server->class->GetPassword($serverID);
 						}
 						$this->messages->add(_("Server successfully modified"), MSG_TYPE_NOTICE);
-					}else{
-						$serverID = $node->class->AddPhysicalServer($protocol, $login, $password, $host, $port, $url, $initialDir, !!$override, !!$enabled, !!$preview, $description);
-						if($serverID) {
+					} else {
+					    
+						$serverID = $node->class->AddPhysicalServer($protocol, $login, $password, $host, $port, $url, $initialDir, !!$override
+						      , !!$enabled, !!$preview, $description);
+						if ($serverID) {
+						    
                             $node->class->SetEncode($serverID,$encode);
 							$this->messages->add(_("Server successfully created"), MSG_TYPE_NOTICE);
-						}else {
+						} else {
+						    
 							$this->messages->add(_("Error while creating server"), MSG_TYPE_ERROR);
 						}
 					}
 
 					$node->class->DeleteAllChannels($serverID);
-					if($channels) {
+					if ($channels) {
+					    
 						foreach($channels as $chan) {
+						    
 							$node->class->AddChannel($serverID, $chan);
 						}
 					}
 
 					$node->class->DeleteAllStates($serverID);
-					if($states) {
+					if ($states) {
+					    
 						foreach($states as $stat) {
+						    
 							$node->class->AddState($serverID, $stat);
 						}
 					}
-
-				}else {
+				} else {
+				    
 					$this->messages->add(_("Not allowed protocol"), MSG_TYPE_ERROR);
 				}
 			}
@@ -241,42 +252,51 @@ class Action_modifyserver extends ActionAbstract {
 
 	/**
 	 * Function for validation the fields
-	 *
 	 */
 	private function _validate($serverID, $protocol,$host,$port,$initialDir,$url,$login,$password,$description, $encode, $idNode, $channels){
+	    
 		$validation = true;
 
 		if ($protocol == 'LOCAL'){
+		    
 			if ((!$initialDir) || ($initialDir=='')){
+			    
 				$this->messages->add(_("A local directory is required"), MSG_TYPE_ERROR);
 				$validation=false;
 			}
 			if ((!$url) || ($url == '')){
+			    
 				$this->messages->add(_("A local url is required"), MSG_TYPE_ERROR);
 				$validation=false;
 			}
-		}else if (($protocol == 'FTP') || ($protocol == 'SSH')){
+		} else if (($protocol == 'FTP') || ($protocol == 'SSH')){
+		    
 			if (!$serverID and (!$password)){
 				$this->messages->add(_("A password is required"), MSG_TYPE_ERROR);
 				$validation=false;
 			}
 			if ((!$initialDir) || ($initialDir=='')){
+			    
 				$this->messages->add(_("A remote directory is required"), MSG_TYPE_ERROR);
 				$validation=false;
 			}
 			if ((!$url) || ($url == '')){
+			    
 				$this->messages->add(_("A remote url is required"), MSG_TYPE_ERROR);
 				$validation=false;
 			}
 			if ((!$port) || ($port == '')){
+			    
 				$this->messages->add(_("A connection port is required"), MSG_TYPE_ERROR);
 				$validation=false;
 			}
 			if ((!$host) || ($host == '')){
+			    
 				$this->messages->add(_("A remote address is required"), MSG_TYPE_ERROR);
 				$validation=false;
 			}
 			if ((!$login) || ($login == '')){
+			    
 				$this->messages->add(_("A login is required"), MSG_TYPE_ERROR);
 				$validation=false;
 			}
@@ -284,6 +304,7 @@ class Action_modifyserver extends ActionAbstract {
 		}
 		//validate the common fields
 		if ((!$description) || ($description =='')){
+		    
 			$this->messages->add(_("Server description is required"), MSG_TYPE_ERROR);
 			$validation=false;
 		}
@@ -319,11 +340,13 @@ class Action_modifyserver extends ActionAbstract {
 	}
 
 	private function _getEncodes() {
+	    
 		$dbObj = new \Ximdex\Runtime\Db();
 		$sql = "SELECT IdEncode,Description FROM Encodes";
 		$dbObj->Query($sql);
 		$_protocols = array();
 		while(!$dbObj->EOF) {
+		    
 			$_protocols[] = array(
 				"Id" => $dbObj->GetValue("IdEncode"),
 				"Description" => $dbObj->GetValue("Description")
@@ -335,11 +358,13 @@ class Action_modifyserver extends ActionAbstract {
 	}
 
 	private function _getProtocols() {
+	    
 		$dbObj = new \Ximdex\Runtime\Db();
 		$sql = "SELECT IdProtocol,Description FROM Protocols";
 		$dbObj->Query($sql);
 		$_protocols = array();
 		while(!$dbObj->EOF) {
+		    
 			$_protocols[] = array(
 				"Id" => $dbObj->GetValue("IdProtocol"),
 				"Description" => $dbObj->GetValue("Description")

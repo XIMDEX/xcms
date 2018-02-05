@@ -24,7 +24,7 @@
  *  @version $Revision$
  */
 
-
+use Ximdex\Logger;
 use Ximdex\Models\Channel;
 use Ximdex\Models\Node;
 use Ximdex\Models\StructuredDocument;
@@ -34,12 +34,13 @@ use Ximdex\Utils\FsUtils;
 use Ximdex\Utils\PipelineManager;
 use Ximdex\Nodeviews\ViewFilterMacrosPreview;
 
-
 class Action_prevdoc extends ActionAbstract
 {
+    public function index() {
 
-    function index () {
-
+        // change the logs output to preview file
+        Logger::setActiveLog('preview');
+        
     	// Initializes variables:
 		$args = array();
 
@@ -47,8 +48,8 @@ class Action_prevdoc extends ActionAbstract
 		$idNode = $this->request->getParam("nodeid");
 		$idChannel = $this->request->getParam("channelid");
 
-		if(empty($idChannel) )
-				$idChannel = $this->request->getParam("channel");
+		if (empty($idChannel))
+			$idChannel = $this->request->getParam("channel");
 
 		$showprev = $this->request->getParam("showprev");
 		$json = $this->request->getParam("ajax");
@@ -58,6 +59,7 @@ class Action_prevdoc extends ActionAbstract
 		// TODO: If node does not exist, receives rest of params by request
 		$node = new Node($idNode);
 		if (!($node->get('IdNode') > 0)) {
+		    
 			$this->messages->add(_('It is not possible to show preview.')
 				. _(' The node you are trying to preview does not exist.'),
 				MSG_TYPE_NOTICE);
@@ -68,30 +70,36 @@ class Action_prevdoc extends ActionAbstract
 		// Checks if node is a structured document
 		$structuredDocument = new StructuredDocument($idNode);
 		if (!($structuredDocument->get('IdDoc') > 0)) {
+		    
 			$this->messages->add(_('It is not possible to show preview.')
-				. _(' Provided node is not a structured document.'),
-				MSG_TYPE_NOTICE);
+			 	. _(' Provided node is not a structured document.'),
+			 	MSG_TYPE_NOTICE);
 			$values = array('messages' => $this->messages->messages);
 			$this->render($values, NULL, 'messages.tpl');
 		}
 
 		// Checks content existence
 		if (!$content) {
+		    
 			$content = $structuredDocument->GetContent(
-				$this->request->getParam('version'),
-				$this->request->getParam('sub_version')
+				    $this->request->getParam('version'),
+				    $this->request->getParam('sub_version')
 			);
 		} else {
+		    
 			$content = $this->_normalizeXmlDocument($content);
 		}
 
 		// Validates channel
 		if (!is_numeric($idChannel)) {
+		    
 			$channels = $node->getChannels();
 			$firstChannel = null;
 			$idChannel = NULL;
 			if (!empty($channels)) {
+			    
 				foreach ($channels as $c) {
+				    
 					$c = new Channel($c);
 					$cName = $c->getName();
 					$ic = $c->get('IdChannel');
@@ -103,6 +111,7 @@ class Action_prevdoc extends ActionAbstract
 			if ($idChannel === null) $idChannel = $firstChannel;
 
 			if ($idChannel === null) {
+			    
 				$this->messages->add(_('It is not possible to show preview. There is not any defined channel.'), MSG_TYPE_NOTICE);
 				$values = array('messages' => $this->messages->messages);
 				$this->render($values, NULL, 'messages.tpl');
@@ -118,11 +127,11 @@ class Action_prevdoc extends ActionAbstract
 		$idLanguage = $structuredDocument->getLanguage();
 		$docXapHeader = null;
 		if(method_exists($node->class, "_getDocXapHeader" ) ) {
+		    
 			$docXapHeader = $node->class->_getDocXapHeader($idChannel, $idLanguage, $documentType);
 		}
 		$nodeName = $node->get('Name');
 		$depth = $node->GetPublishedDepth();
-
 
 		$args['MODE'] = $this->request->getParam('mode') == 'dinamic' ? 'dinamic' : 'static';
 		$args['CHANNEL'] = $idChannel;
@@ -160,24 +169,30 @@ class Action_prevdoc extends ActionAbstract
 		{
     		// Specific FilterMacros View for previsuals:
     		$viewFilterMacrosPreview = new ViewFilterMacrosPreview();
-    		$file = $viewFilterMacrosPreview->transform(NULL, $content, $args);
+    		$file = $viewFilterMacrosPreview->transform(NULL, $content, $args, $idNode, $idChannel);
     		$hash = basename($file);
     
     		if (!empty($showprev)) {
+    		    
     			$this->request->setParam('hash', $hash);
     			$this->prevdoc();
-    			return;
+    			Logger::setActiveLog();
+    			return true;
     		}
     
     		$queryManager = App::get('\Ximdex\Utils\QueryManager');
     		$prevUrl = $queryManager->getPage() . $queryManager->buildWith(array('method' => 'prevdoc', 'hash' => $hash));
     		
     		if ($json == 'json') {
+    		    
     		    $this->sendJSON(array('prevUrl' => $prevUrl));
-    		    return;
+    		    Logger::setActiveLog();
+    		    return true;
             }
             $this->render(array('prevUrl' => $prevUrl), 'index', 'only_template.tpl');
 		}
+		Logger::setActiveLog();
+		return true;
     }
 
     public function prevdoc() {
@@ -192,6 +207,7 @@ class Action_prevdoc extends ActionAbstract
     	$file = sprintf('%s%s/%s', XIMDEX_ROOT_PATH, App::getValue("TempRoot"), $hash);
 
     	if (file_exists($file)) {
+    	    
     		$content = FsUtils::file_get_contents($file);
     	}
     	else
@@ -199,7 +215,8 @@ class Action_prevdoc extends ActionAbstract
     	    echo 'File does not exist: ' . $file;
     	    die();
     	}
-        if(isset($_GET["nodeid"])){
+        if (isset($_GET["nodeid"])){
+            
             //Remove all used cache
             exec(sprintf('rm -f %s%s/preview_%s_*', XIMDEX_ROOT_PATH,App::getValue("TempRoot"), $_GET["nodeid"]));
         }
@@ -232,8 +249,10 @@ class Action_prevdoc extends ActionAbstract
 
 		$xmldoc = '';
 		for ($i=0; $i<$l; $i++) {
+		    
 			$child = $childrens->item($i);
 			if ($child->nodeType == 1) {
+			    
 				$xmldoc .= $doc->saveXML($child) . "";
 			}
 		}

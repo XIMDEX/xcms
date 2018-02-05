@@ -112,7 +112,7 @@
 						<label for='password' class="aligned label_general">
 							{t}Password{/t}
 							{if {$server.password}}
-								{t}(Only if you want to change the actual one){/t}
+								{t}(Only to change the actual one){/t}
 							{/if}
 						</label>
 						<input type="password" id='password' name='password' class='cajag' />

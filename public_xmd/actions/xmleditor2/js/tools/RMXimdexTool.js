@@ -23,8 +23,6 @@
  *  @version $Revision$
  */
 
-
-
 var RMXimdexTool = Object.xo_create(XimdocTool, {
 	
 	initialize: function(editor) {
@@ -44,27 +42,34 @@ var RMXimdexTool = Object.xo_create(XimdocTool, {
 
 		// dotdot macro
 		$("[src*='@@@RMximdex.dotdot']", $('body', xslResult)[0]).each(function(index, elem) {
+			
 			var path = unescape($(elem).attr('src'));
 			path = this.editor.getDotDotPath() + path.replace(/@@@RMximdex.dotdot\((.*)\)@@@/ig, "$1");
+			path += '?token=' + Math.random();
 			$(elem).attr('src', path);
 		}.bind(this));
 
 		$("link[href*='@@@RMximdex.dotdot']", $('html', xslResult)[0]).each(function(index, elem) {
+			
 			var path = unescape($(elem).attr('href'));
 			path = this.editor.getDotDotPath() + path.replace(/@@@RMximdex.dotdot\((.*)\)@@@/ig, "$1");
+			path += '?token=' + Math.random();
 			$(elem).attr('href', path);
 		}.bind(this));
 
 		// pathto macro
 		$("img[src*='@@@RMximdex.pathto']", $('body', xslResult)[0]).each(function(index, elem) {
+			
 			var targetid = unescape($(elem).attr('src'));
 			targetid = targetid.replace(/@@@RMximdex.pathto\((.*)\)@@@/ig, "$1");
 			var path = '%s?expresion=%s&action=filemapper&method=nodeFromExpresion'.printf(X.restUrl, targetid);
+			path += '?token=' + Math.random();
 			$(elem).attr('src', path);
 		});
 
         // pathto macro
         $("[style*='@@@RMximdex']", $('body', xslResult)[0]).each(function(index, elem) {
+        	
             var targetid = unescape($(elem).attr('style'));
             targetid = targetid.replace(/@@@RMximdex\.pathto\((.*)\)@@@/ig, X.restUrl+"?expresion=$1&action=filemapper&method=nodeFromExpresion");
             targetid = targetid.replace(/@@@RMximdex\.dotdot\((.*)\)@@@/ig, this.editor.getDotDotPath() + "$1");

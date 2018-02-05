@@ -192,9 +192,7 @@ class ViewXslt extends AbstractView
         if ($content === false) {
             
             if ($xsltHandler->errors())
-            {
                 $GLOBALS['errorsInXslTransformation'] = array_merge($GLOBALS['errorsInXslTransformation'], $xsltHandler->errors());
-            }
             foreach ($GLOBALS['errorsInXslTransformation'] as $error)
                 Logger::error($error);
             // we save the error trace into the previous file

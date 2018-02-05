@@ -24,9 +24,7 @@
  * @version $Revision$
  */
 
-
 namespace Ximdex\Nodeviews;
-
 
 use Ximdex\Logger;
 use Ximdex\Models\Channel;
@@ -34,32 +32,10 @@ use Ximdex\Models\Node;
 use Ximdex\Parsers\ParsingPathTo;
 use Ximdex\Runtime\App;
 
-
-
 class ViewFilterMacrosPreview extends ViewFilterMacros implements IView
 {
-
     private $_nodeTypeName = NULL;
     private $mode = NULL;
-
-    /**
-     * Main method. Get a pointer content file and return a new transformed content file. This probably cames from Transformer (View_XSLT), so will be the renderized content.
-     * @param  int $idVersion Node version
-     * @param  string $pointer file name with the content to transform
-     * @param  array $args Params about the current node
-     * @return string file name with the transformed content.
-     */
-    public function transform($idVersion = NULL, $pointer = NULL, $args = NULL)
-    {
-
-        //Check the conditions
-        if (!$this->initializeParams($args, $idVersion))
-            return NULL;
-
-        $content = $this->transformFromPointer($pointer);
-        //Return the pointer to the transformed content.
-        return $this->storeTmpContent($content);
-    }
 
     /**
      * Initialize params from transformation args
@@ -69,54 +45,34 @@ class ViewFilterMacrosPreview extends ViewFilterMacros implements IView
      */
     protected function initializeParams($args, $idVersion)
     {
-
         $this->mode = (isset($args['MODE']) && $args['MODE'] == 'dinamic') ? 'dinamic' : 'static';
-
-        if (!$this->_setNode($idVersion, $args))
-            return NULL;
-
-        if (!$this->_setIdChannel($args))
-            return NULL;
-
-        if (!$this->_setServer($args))
-            return NULL;
-
-        if (!$this->_setServerNode($args))
-            return NULL;
 
         if (!$this->_setIdSection($args))
             return NULL;
-
-        if (!$this->_setProjectNode($args))
-            return NULL;
-
-        if (!$this->_setDepth($args))
-            return NULL;
-
-        if (!$this->_setNodeName($args))
-            return NULL;
-
-        return true;
+        
+        return parent::initializeParams($args, $idVersion);
     }
 
     /**
-     * Load the node param from an idVersion.
+     * Load the node param from an idVersion
      * @param int $idVersion Version id
+     * @param array $args
      * @return boolean True if exists node for selected version or the current node.
      */
     protected function _setNode($idVersion = NULL, $args = NULL)
     {
-
         if (is_null($idVersion)) {
-            if (array_key_exists('NODETYPENAME', $args)) {
+            
+            if ($this->idNode)
+                return parent::_setNode();
+            elseif (array_key_exists('NODETYPENAME', $args))
                 $this->_nodeTypeName = $args['NODETYPENAME'];
-            }
         } else {
+            
             return parent::_setNode($idVersion);
         }
         return true;
     }
-
 
     /**
      * Load the section id from the args array.
@@ -125,25 +81,25 @@ class ViewFilterMacrosPreview extends ViewFilterMacros implements IView
      */
     private function _setIdSection($args = array())
     {
-        if (array_key_exists('SECTION', $args)) {
+        if (array_key_exists('SECTION', $args))
             $this->_idSection = $args['SECTION'];
-        }
 
         // Check Params:
         if (!isset($this->_idSection) || !($this->_idSection > 0)) {
+            
             Logger::error('VIEW FILTERMACROSPREVIEW: Node section not specified: ' . $args['NODENAME']);
             return NULL;
         }
-
+        
         return true;
     }
 
     private function getSectionPath($matches)
     {
-
         //Getting section from parent function.
         $section = $this->getSectionNode($matches[1]);
         if (!$section) {
+            
             return App::getValue('EmptyHrefCode');
         }
         $idTargetChannel = isset($matches[2]) ? $matches[2] : NULL;
@@ -153,11 +109,9 @@ class ViewFilterMacrosPreview extends ViewFilterMacros implements IView
 
     private function getdotdotpath($matches)
     {
-
         $section = new Node($this->_idSection);
         $sectionPath = $section->class->GetNodeURL() . "/";
-
-        $targetPath = $matches[1];
+        $targetPath = $matches[1] . '?token=' . uniqid();
         $dotdot = str_repeat('../', $this->_depth - 2);
         return $sectionPath . $dotdot . $targetPath;
     }
@@ -165,52 +119,59 @@ class ViewFilterMacrosPreview extends ViewFilterMacros implements IView
 
     private function getLinkPath($matches)
     {
-
         //Get parentesis content
         $pathToParams = $matches[1];
+        
         // Link target-node
         $parserPathTo = new ParsingPathTo();
-        $parserPathTo->parsePathTo($pathToParams);
+        if (!$parserPathTo->parsePathTo($pathToParams, $this->idNode))
+        {
+            Logger::error('Parse PathTo is not working for: ' . $pathToParams);
+            return false;
+        }
 
         $res["idNode"] = $parserPathTo->getIdNode();
         $res["pathMethod"] = $parserPathTo->getPathMethod();
         $res["channel"] = $parserPathTo->getChannel();
 
-        if (!$res || !is_array($res) || !count($res)) {
-            return '';
-        } else {
-            $idNode = $res["idNode"];
-            $idTargetChannel = (count($res) == 3 && isset($res["channel"])) ? $res["channel"] : NULL;
-
-        }
-
+        $idNode = $res["idNode"];
         $targetNode = new Node($idNode);
-        if (!$targetNode->get('IdNode')) {
+        if (!$targetNode->get('IdNode'))
             return '';
-        }
 
-        if ($this->_node && !$this->_node->get('IdNode')) {
+        if ($this->_node && !$this->_node->get('IdNode'))
             return '';
-        }
 
         $isStructuredDocument = $targetNode->nodeType->GetIsStructuredDocument();
 
+        if ($res["channel"])
+            $idTargetChannel = $res["channel"];
+        elseif ($this->idChannel)
+            $idTargetChannel = $this->idChannel;
+        else
+            $idTargetChannel = null;
         $targetChannelNode = new Channel($idTargetChannel);
 
         // External Link
-        if ($targetNode->nodeType->get('Name') == 'Link') {
+        if ($targetNode->nodeType->get('Name') == 'Link')
             return $targetNode->class->GetUrl();
-        }
 
         if ($isStructuredDocument) {
-            if ($this->mode == 'dinamic') {
+            
+            if ($this->mode == 'dinamic')
                 return "javascript:parent.loadDivsPreview(" . $idNode . ")";
-            } else {
+            else {
+                
                 $query = App::get('\Ximdex\Utils\QueryManager');
                 return $query->getPage() . $query->buildWith(array('nodeid' => $idNode, 'channelid' => $idTargetChannel));
             }
-        } else {
-            return $targetNode->class->GetNodeURL();
+        }
+        else
+        {
+            // generate the URL to the filemapper action
+            $url = App::getValue('UrlRoot') . '/?expresion=' . (($idNode) ? $idNode : $pathToParams) 
+                    . '&action=filemapper&method=nodeFromExpresion&token=' . uniqid();
+            return $url;
         }
     }
 

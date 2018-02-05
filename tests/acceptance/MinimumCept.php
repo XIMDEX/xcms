@@ -22,11 +22,11 @@ $I->see("Welcome to Ximdex CMS");
 
 $I->click("Check configuration");
 
-$I->wait(5);
+$I->wait(3);
 
 $I->click("Start installation");
 
-$I->waitForText("Installing Database", 5);
+$I->waitForText("Installing Database", 3);
 
 $I->fillField("host", "db");
 $I->fillField("root_user", "ximdex");
@@ -44,7 +44,7 @@ $I->fillField("pass2", "ximdex");
 
 $I->click("Save settings");
 
-$I->wait(5);
+$I->wait(3);
 
 $I->see("Installing Ximdex CMS's default modules");
 
@@ -54,7 +54,7 @@ $I->waitForText("Xowl configuration (optional)", 10);
 
 $I->click("Continue");
 
-$I->waitForText("Installation finished!", 5);
+$I->waitForText("Installation finished!", 3);
 
 $I->click("Get started");
 
@@ -66,11 +66,11 @@ $I->fillField("password", "ximdex");
 
 $I->click("Sign in");
 
-$I->waitForText("WELCOME TO XIMDEX CMS, XIMDEX!", 5);
+$I->waitForText("WELCOME TO XIMDEX CMS, XIMDEX!", 3);
 
 $I->wantTo('Ensure that publish works');
 
-$I->waitForText("Hello ximdex, first time here?", 5, "#tourcontrols");
+$I->waitForText("Hello ximdex, first time here?", 3, "#tourcontrols");
 
 $I->click("#canceltour");
 
@@ -81,22 +81,22 @@ function reload($I){
 $I->click("//span[contains(text(),'Picasso')]", "#angular-tree");
 reload($I);
 
-$I->waitForText("Picasso_Server", 5, "#angular-tree");
+$I->waitForText("Picasso_Server", 3, "#angular-tree");
 
 $I->click("//span[contains(text(),'Picasso_Server')]", "#angular-tree");
 reload($I);
 
-$I->waitForText("documents", 5, "#angular-tree");
+$I->waitForText("documents", 3, "#angular-tree");
 
 $I->click("//span[contains(text(),'documents')]", "#angular-tree");
 reload($I);
 
-$I->waitForText("picasso", 5, "#angular-tree");
+$I->waitForText("picasso", 3, "#angular-tree");
 
 $I->click("//span[contains(text(),'picasso')]", "#angular-tree");
 reload($I);
 
-$I->waitForText("picasso-iden", 5, "#angular-tree");
+$I->waitForText("picasso-iden", 3, "#angular-tree");
 
 // Open picasso-iden menu
 $I->click("//*[@id=\"angular-tree\"]/div[1]/div[2]/div/div[1]/div[2]/xim-tree/div/div[2]/ul/li/tree-node/span/ul/li/span/ul/li[4]/span/ul/li[3]/span/ul/li[1]/span/ul/li/span/div/span[2]");
@@ -134,6 +134,6 @@ $I->see("Picasso", ".header");
 $I->see("Cubism", ".header");
 
 $I->amOnPage('/?action=xmleditor2&method=load&nodeid=10134');
-$I->wait(5);
+$I->wait(3);
 $I->switchToIframe('kupu-editor');
 $I->see('Early periods');

@@ -26,6 +26,7 @@
 
 .prevdoc-channel-selector{
 	padding: 0 .7em;
+	width: auto !important;
 }
 
 .prevdoc-body{
