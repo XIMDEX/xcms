@@ -37,7 +37,7 @@ class QueryHandler_SQL extends QueryHandler_Abstract {
 
 		while (!$rset->EOF) {
 
-			$nodeId = $rset->getValue(0);
+		    $nodeId = $rset->getValue('IdNode');
 			$node = new Node($nodeId);
 
 			if ($node->getID() !== null) {
@@ -214,11 +214,8 @@ class QueryHandler_SQL extends QueryHandler_Abstract {
 			$field = $filter['field'];
 			$comp = $filter['comparation'];
 			$cont = isset($filter['content']) ? $filter['content'] : null;
-			$cont = !empty($cont)
-				? $cont
-				: (isset($filter['from'])
-					? $filter['from']
-					: null);
+			$cont = !empty($cont) ? $cont : (isset($filter['from']) ? $filter['from'] : (isset($filter['nodetype_content']) ? $filter['nodetype_content'] : null));
+			$cont = (empty($filter['content']) && $field == 'url') ? null : $cont;
 			$to = isset($filter['to']) ? $filter['to'] : null;
 			switch ($field) {
 				case 'nodeid':
