@@ -24,6 +24,7 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
+
 use Ximdex\Logger;
 use Ximdex\Helpers\ServerConfig;
 use Ximdex\Models\Group;
@@ -39,7 +40,6 @@ use Ximdex\Sync\SynchroFacade;
 use Ximdex\Workflow\WorkFlow;
 
 \Ximdex\Modules\Manager::file('/actions/browser3/inc/GenericDatasource.class.php');
-
 \Ximdex\Modules\Manager::file('/inc/model/NodesToPublish.class.php', 'ximSYNC');
 \Ximdex\Modules\Manager::file('/conf/synchro_conf.php', 'ximSYNC');
 
@@ -210,6 +210,7 @@ class Action_workflow_forward extends ActionAbstract {
      * @return string with the text replaced.
      */
     private function buildMessage($message, $stateName, $nodeName) {
+        
         $mesg = preg_replace('/%doc/', $nodeName, $message);
         $mesg = preg_replace('/%state/', $stateName, $mesg);
         return $mesg;
@@ -275,9 +276,9 @@ class Action_workflow_forward extends ActionAbstract {
                 'defaultMessage' => $defaultMessage,
                 'hasDisabledFunctions' => $this->hasDisabledFunctions(),
                 'stateid' => $idState,
-			'globalForcedEnabled' => FORCE_PUBLICATION
+                'globalForcedEnabled' => FORCE_PUBLICATION
             );
-                 $values = array_merge($values, $this->buildExtraValues($idNode));
+            $values = array_merge($values, $this->buildExtraValues($idNode));
             $this->render($values, 'index.tpl', 'default-3.0.tpl');
         } else { //if the next state is not the final, we show a success message
             $node->setState($nextState);
@@ -355,6 +356,7 @@ class Action_workflow_forward extends ActionAbstract {
      * @return array With info about the available gaps
      */
     private function getPublicationIntervals($idNode) {
+        
         $nodesToPublish = new NodesToPublish();
         $intervals = $nodesToPublish->getIntervals($idNode);
         return $this->formatInterval($intervals);
@@ -388,6 +390,7 @@ class Action_workflow_forward extends ActionAbstract {
      * @return array.
      */
     private function buildExtraValues($idNode) {
+        
         setlocale(LC_TIME, "es_ES");
 
         $idUser = \Ximdex\Runtime\Session::get('userID');
@@ -536,9 +539,10 @@ class Action_workflow_forward extends ActionAbstract {
      * * stateid
      * * texttosend
      */
-    public function publicateNode() {
-
+    public function publicateNode()
+    {
         $idNode = $this->request->getParam('nodeid');
+        
         //The publication times are in milliseconds.
         $dateUp = $this->request->getParam('dateUp_timestamp');
         $dateDown = $this->request->getParam('dateDown_timestamp');
@@ -547,21 +551,42 @@ class Action_workflow_forward extends ActionAbstract {
         $down = (!is_null($dateDown) && $dateDown != "") ? $dateDown / 1000 : null;
 
         $markEnd = $this->request->getParam('markend') ? true : false;
-
-	$structure = $this->request->getParam('no_structure') == '1' ? false : true;
-        $deepLevel = $this->request->getParam('all_levels') == 1 ? -1 : $this->request->getParam('deeplevel');
-	$force = $this->request->getParam('no_force') == '0' ? false : true;
+        $structure = $this->request->getParam('no_structure') ? false : true;
+        
+        // $deepLevel = $this->request->getParam('all_levels') == 1 ? -1 : $this->request->getParam('deeplevel');
+        $levels = $this->request->getParam('levels');
+        if ($levels == 'all')
+        {
+            // all linked elements
+            $deepLevel = -1;
+        }
+        elseif ($levels == 'deep')
+        {
+            // n levels of depth
+            $deepLevel = abs($this->request->getParam('deeplevel'));
+        }
+        else
+        {
+            // zero levels, only the given node
+            $deepLevel = 0;
+        }
+        
+        $force = $this->request->getParam('force') ? true : false;
 
         $sendNotifications = $this->request->getParam('sendNotifications');
         $notificableUsers = $this->request->getParam('users');
         $idState = $this->request->getParam('stateid');
         $texttosend = $this->request->getParam('texttosend');
-	$lastPublished = $this->request->getParam('latest') == '1' ? false : true;
+        $lastPublished = $this->request->getParam('latest') ? false : true;
         Logger::info("ADDSECTION publicateNode PRE");
-	$this->sendToPublish($idNode, $up, $down, $markEnd, $force, $structure, $deepLevel, $sendNotifications, $notificableUsers, $idState, $texttosend, $lastPublished);
+        
+        $this->sendToPublish($idNode, $up, $down, $markEnd, $force, $structure, $deepLevel, $sendNotifications, $notificableUsers, $idState
+                , $texttosend, $lastPublished);
 	}
 
-    protected function sendToPublish($idNode, $up, $down, $markEnd, $force, $structure, $deepLevel, $sendNotifications, $notificableUsers, $idState, $texttosend, $lastPublished) {
+    protected function sendToPublish($idNode, $up, $down, $markEnd, $force, $structure, $deepLevel, $sendNotifications, $notificableUsers, $idState
+            , $texttosend, $lastPublished) {
+        
         Logger::info("ADDSECTION publicateNode sendToPublish parent");
         $this->addJs('/actions/workflow_forward/resources/js/workflow_forward.js');
 
@@ -654,25 +679,21 @@ class Action_workflow_forward extends ActionAbstract {
             $this->render($values, 'show_results', 'default-3.0.tpl');
         }
     }
-
-	/**
-	 *
-	 */
-	protected function buildFlagsPublication($markEnd, $structure, $deepLevel, $force, $lastPublished)
-	{
-
-		//Creating flags to publicate
-		$flagsPublication = array(
-			'markEnd' => $markEnd,
-			'structure' => 1,
-			'deeplevel' => 1,
-			'force' => $force,
-			'recurrence' => false,
-			'workflow' => true,
-			'lastPublished' => 0
-		);
-
-		return $flagsPublication;
+	
+	protected function buildFlagsPublication($markEnd, $structure = 1, $deepLevel = 1, $force = false, $lastPublished = 0) {
+	    
+	    //Creating flags to publicate
+	    $flagsPublication = array(
+	        'markEnd' => $markEnd,
+	        'structure' => $structure,
+	        'deeplevel' => $deepLevel,
+	        'force' => $force,
+	        'recurrence' => false,
+	        'workflow' => true,
+	        'lastPublished' => $lastPublished
+	    );
+	    
+	    return $flagsPublication;
 	}
      
     /*

@@ -23,13 +23,10 @@
  *  @version $Revision$
  */
 
-
 X.actionLoaded(function(event, fn, params) {
-
-//	console.info(params);
 	
 	//Create calendars
-	var cals = fn ('.xim-calendar-layer-container');	
+	var cals = fn('.xim-calendar-layer-container');	
 
 	var $groupList = fn('fieldset.notifications select[name=groups]');
 	var $userList = fn('fieldset.notifications ol.user-list');
@@ -37,18 +34,31 @@ X.actionLoaded(function(event, fn, params) {
 	var $defaultMsg = fn('input[name=default_message]');
 	var $gapList = fn('fieldset.publish_date select.gap_info');
 	var $notifications = fn('fieldset.notifications input.send-notifications');
-	var $allLevelCheck = fn('[id*="all_levels"]');
-
-	if ($allLevelCheck){
-		$allLevelCheck.change(function(){
-			if ($(this).is(":checked")){
-				fn('[id*="deeplevel"]').addClass("disabled").attr("disabled",true);
-			}else{
-				fn('[id*="deeplevel"]').removeClass("disabled").attr("disabled",false);
+	
+	var $levelsRadio = fn('[name="levels"]');
+	if ($levelsRadio)
+	{
+		$levelsRadio.change(function() {
+			
+			fn('[id="last_edited_option"]').removeClass("disabled").attr("disabled", false);
+			var value = $('input[name=levels]:checked').val();
+			if (value != 'deep')
+			{
+				// all levels or zero level
+				fn('[id="deeplevel"]').addClass("disabled").attr("disabled", true);
+				if (value == 'zero')
+				{
+					fn('[id="last_edited_option"]').addClass("disabled").attr("disabled", true);
+					fn('[id="last_edited"]').attr("checked", false);
+				}
+			}
+			else
+			{
+				// n levels of deep
+				fn('[id="deeplevel"]').removeClass("disabled").attr("disabled", false);
 			}
 		});
 	}
-
 	
 	function request(options) {
 	
@@ -64,8 +74,6 @@ X.actionLoaded(function(event, fn, params) {
 			data: options.data,
 			success: options.cb,
 			error: options.cb
-//			error(XMLHttpRequest, textStatus, errorThrown)
-//			successdata, textStatus, XMLHttpRequest)
 		});
 	}
 	
@@ -124,7 +132,6 @@ X.actionLoaded(function(event, fn, params) {
 			
 		});
 	}
-	
 	
 	$groupList.change(getNotificableUsers).change();
 	
