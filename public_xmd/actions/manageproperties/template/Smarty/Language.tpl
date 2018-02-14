@@ -61,9 +61,10 @@
 					{/foreach}
 				</div>
 			{/if}
+			<hr />
 			<div>
 				<input type="checkbox" class="languages_recursive" name="Language_recursive" id="Language_recursive" value="1" /> 
-				<label for="Language_recursive">{t}Associate language recursively with all documents below{/t}</label>
+				<label for="Language_recursive">{t}Associate languages recursively{/t}</label>
 			</div>
 		</div>
 	</div>

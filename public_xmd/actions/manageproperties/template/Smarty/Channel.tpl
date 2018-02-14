@@ -61,9 +61,10 @@
 					{/foreach}
 				</div>
 			{/if}
+			<hr />
 			<div>
 				<input type="checkbox" class="channels_recursive" name="Channel_recursive" id="Channel_recursive" value="1" />
-				<label for="Channel_recursive">{t}Associate channel recursively with all documents below{/t}</label>
+				<label for="Channel_recursive">{t}Associate channels recursively{/t}</label>
 			</div>
 		</div>
 	</div>
