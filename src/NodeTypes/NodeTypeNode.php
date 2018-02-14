@@ -29,26 +29,22 @@ namespace Ximdex\NodeTypes;
 
 use Ximdex\Models\NodeType;
 
-
 /**
- * @brief Manages the NodeTypes as ximDEX Nodes.
+ * @brief Manages the NodeTypes as ximDEX Nodes
  */
 class NodeTypeNode extends Root
 {
-
     /**
-     *  Does nothing.
+     * Does nothing
      * @return null
      */
-
     function RenderizeNode()
     {
-
         return null;
     }
 
     /**
-     *  Calls to method for adding a row to Actions table.
+     * Calls to method for adding a row to Actions table
      * @param string name
      * @param int parentID
      * @param int nodeTypeID
@@ -61,24 +57,20 @@ class NodeTypeNode extends Root
      * @param string description
      * @param string class
      */
-
-    function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $icon = null, $isRenderizable = null, $hasFSEntity = null, $canAttachGroups = null, $isContentNode = null, $description = null, $class = null)
+    function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $icon = null, $isRenderizable = null
+            , $hasFSEntity = null, $canAttachGroups = null, $isContentNode = null, $description = null, $class = null)
     {
-
         $nodeType = new NodeType();
         $nodeType->CreateNewNodeType($name, $icon, $isRenderizable, $hasFSEntity, $canAttachGroups, $isContentNode,
             $description, $class, $this->parent->get('IdNode'));
-
         $this->UpdatePath();
     }
 
     /**
-     *  Calls to method for deleting.
+     * Calls to method for deleting.
      */
-
     function DeleteNode()
     {
-
         $ntype = new NodeType($this->nodeID);
         $ntype->DeleteNodeType();
     }

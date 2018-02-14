@@ -24,7 +24,6 @@
  * @version $Revision$
  */
 
-
 namespace Ximdex\Nodeviews;
 
 use Ximdex\Logger;
@@ -34,7 +33,6 @@ use Ximdex\Models\StructuredDocument;
 use Ximdex\Models\Version;
 use Ximdex\NodeTypes\XsltNode;
 use Ximdex\Runtime\App;
-
 
 class ViewXslt extends AbstractView
 {
@@ -46,6 +44,7 @@ class ViewXslt extends AbstractView
     public function transform($idVersion = NULL, $pointer = NULL, $args = NULL)
     {
         $content = $this->retrieveContent($pointer);
+        
         if (!$this->_setNode($idVersion))
             return NULL;
 
@@ -94,6 +93,7 @@ class ViewXslt extends AbstractView
             $GLOBALS['errorsInXslTransformation'] = array();
         
         Logger::info('Starting XSLT transformation');
+        
         if ($this->_node and $this->_node->GetID())
             Logger::info('Processing XML document with ID: ' . $this->_node->GetID() . ' and name: ' . $this->_node->GetNodeName());
         
@@ -109,7 +109,10 @@ class ViewXslt extends AbstractView
         // load the docxap content
         $domDoc = new \DOMDocument();
         if (@$domDoc->load($docxap) === false)
-            $GLOBALS['errorsInXslTransformation'][] = 'Invalid docxap.xsl file (' . \Ximdex\Utils\Messages::error_message('DOMDocument::load(): ') . ')';
+        {
+            $GLOBALS['errorsInXslTransformation'][] = 'Invalid docxap.xsl file (' 
+                    . \Ximdex\Utils\Messages::error_message('DOMDocument::load(): ') . ')';
+        }
         $docxapContent = $domDoc->saveXML();
         
         // include the correspondant includes_template.xsl for the current document
@@ -252,7 +255,17 @@ class ViewXslt extends AbstractView
         // the document has been processed propertly, so if there is any previous errors they will be deleted
         $this->reset_xslt_errors();
         
-        Logger::info('XSLT transformation completed');
+        $logMessage = 'XSLT transformation completed';
+        if ($this->_node and $this->_node->GetID())
+        {
+            $logMessage .= ' for document: ' . $this->_node->GetNodeName() . ' (' . $this->_node->GetID() . ')';
+        }
+        if ($idVersion)
+        {
+            $logMessage .= ' with version: ' . $idVersion;
+        }
+        $logMessage .= ' with channel: ' . $channel->GetName();
+        Logger::info($logMessage, true);
         Logger::setActiveLog($defaultLog);
         return $this->storeTmpContent($content);
     }

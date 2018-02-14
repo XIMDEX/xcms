@@ -34,11 +34,6 @@ use Ximdex\Utils\FsUtils;
 
 class Widget
 {
-
-
-	// Smarty style
-//	const START_TAG = '{\$';
-//	const END_TAG = '}';
 	// Ximdex style
 	const START_TAG = '%=';
 	const END_TAG = '%';
@@ -49,10 +44,6 @@ class Widget
 	static protected $_widgets = null;
 	// Search regexps
 	static protected $_widgetsRegexps = null;
-
-	private function __construct()
-	{
-	}
 
 	/**
 	 * Finds all allowed widgets from file system and registers them

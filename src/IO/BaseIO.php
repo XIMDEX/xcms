@@ -466,12 +466,14 @@ class BaseIO
                     $this->messages->add(_('It was not specified a template for the node ') . $data['NAME'], MSG_TYPE_WARNING);
                     return Constants::ERROR_INCORRECT_DATA;
                 }
-
+                /*
                 $data['CHANNELS'] = $this->_getChannelFromChildrens($data['CHILDRENS']);
                 if (empty($data['CHANNELS'])) {
-                    $this->messages->add(_('It was not specified any template for the node ') . $data['NAME'], MSG_TYPE_WARNING);
+                    $this->messages->add(_('It was not specified any channel for the node ') . $data['NAME'], MSG_TYPE_WARNING);
                     return Constants::ERROR_INCORRECT_DATA;
                 }
+                */
+                $data['CHANNELS'] = [];
 
                 $data['LANG'] = $this->_getLanguageFromChildrens($data['CHILDRENS']);
                 if (empty($data['LANG'])) {

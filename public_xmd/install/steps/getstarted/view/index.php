@@ -25,7 +25,7 @@
  */
 ?>
 
-<form method="post" action=".">
+<form method="post" action="public_xmd/">
     <input type="hidden" name="method" value="<?php echo $goMethod ?>">
 	<h2>Installation finished!</h2>
 	<p>You've succesfully installed Ximdex CMS on your server.<br/>Log in and discover a different way to manage your content and data.</p>

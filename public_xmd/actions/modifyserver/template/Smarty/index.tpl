@@ -68,9 +68,11 @@
 								placeholder="{t}New server name{/t}" />
 					</div>
 					<span>
-						<input type="checkbox" id='enabled_{$id_node}' name='enabled' {if ($server.enabled)}checked="checked"{/if} class="input-slide"/>
+						<input type="checkbox" id='enabled_{$id_node}' name='enabled' {if ($server.enabled)}checked="checked"{/if} 
+								class="input-slide"/>
 						<label for='enabled_{$id_node}' class="label-slide"> {t}Enabled{/t}</label>
-						<input type="checkbox" id='preview_{$id_node}' name='preview' {if ($server.preview)}checked="checked"{/if} class="input-slide">
+						<input type="checkbox" id='preview_{$id_node}' name='preview' {if ($server.preview)}checked="checked"{/if} 
+								class="input-slide">
 						<label for='preview_{$id_node}' class="label-slide">{t}Preview server{/t}</label>
 					</span>
 				</div>
@@ -79,7 +81,8 @@
 						<label>{t}Connection{/t} &nbsp;</label>
 							{foreach from=$protocols item=_protocol}
 								<label for="{$_protocol.Id}">
-									<input type="radio" name="protocol" id="{$_protocol.Id}" value='{$_protocol.Id}' {if ($server.protocol eq $_protocol.Id)}checked="checked"{/if} />
+									<input type="radio" name="protocol" id="{$_protocol.Id}" value='{$_protocol.Id}' 
+											{if ($server.protocol eq $_protocol.Id)}checked="checked"{/if} />
 		                           	{$_protocol.Id|gettext}
 		                        </label>
 		                   {/foreach}
@@ -90,7 +93,8 @@
 					</div>
 					<div class="remote_folder">
 						<label id='labelDirectorio' for='initialdirectory' class="aligned label_general">{t}Remote directory{/t}</label>
-						<input type="text" id='initialdirectory' name='initialdirectory' MAXLENGTH="100" VALUE="{$server.initialdirectory}" class='cajag'/>
+						<input type="text" id='initialdirectory' name='initialdirectory' MAXLENGTH="100" VALUE="{$server.initialdirectory}" 
+								class='cajag'/>
 					</div>
 					<div class="port not_local">
 						<label for='port' class="aligned label_general">{t}Port{/t}</label>
@@ -100,8 +104,9 @@
 						<label id='labeldirRemota' for='host' class="aligned label_general">{t}Web URL{/t}</label>
 						<input style="margin-bottom:10px;" type="text" id='host' name='host' MAXLENGTH="100" VALUE="{$server.host}" class='cajag'/>
 						<div class="abs_url">
-								<input type="checkbox" id='override_{$id_node}' name='overridelocalpaths' {if ($server.overridelocalpaths)}checked="checked"{/if} class="input-slide"/>
-								<label for='override_{$id_node}' class="label-slide">{t}Absolute URLs{/t}</label>
+							<input type="checkbox" id='override_{$id_node}' name='overridelocalpaths' 
+									{if ($server.overridelocalpaths)}checked="checked"{/if} class="input-slide"/>
+							<label for='override_{$id_node}' class="label-slide">{t}Absolute URLs{/t}</label>
 						</div>
 					</div>
 					<div class="login not_local">
@@ -121,7 +126,8 @@
 						<label>{t}Encoding{/t} &nbsp;</label>
 		                {foreach from=$encodes item=_encode}
 							<label for="{$_encode.Id}">
-							<input type="radio" name="encode" value='{$_encode.Id}' {if ($server.encode eq $_encode.Id)}checked="checked"{/if} id="{$_encode.Id}"/>
+							<input type="radio" name="encode" value='{$_encode.Id}' {if ($server.encode eq $_encode.Id)}checked="checked"{/if} 
+									id="{$_encode.Id}"/>
 							{$_encode.Id}</label>
 		           		{/foreach}
 					</div>
@@ -131,7 +137,8 @@
 							{foreach from=$channels item=_channel}
 								<div class="slide-element channelms">
 									<input id='channels{$_channel.IdChannel}_{$id_node}' name='channels[]' type='checkbox' 
-											value='{$_channel.IdChannel}' {if isset($_channel.InServer) and ($_channel.InServer)}checked="checked"{/if} class="input-slide"/>
+											value='{$_channel.IdChannel}' {if isset($_channel.InServer) 
+											and ($_channel.InServer)}checked="checked"{/if} class="input-slide"/>
 									<label for='channels{$_channel.IdChannel}_{$id_node}' 
 											class="label-slide server_channel">{$_channel.Description|gettext}</label>
 								</div>
@@ -145,9 +152,11 @@
 							<input type="hidden" name="borrar"/>
 				            {if (0 != $id_server)}
 				                {button id="delete_server" label="Delete server" class="btn"}
-				                {button id="update_server" label="Update server" class="validate btn main_action update-server"}{*message="Would you like to create this server?"*}
+				                {button id="save_server" label="Update server" 
+				                		class="validate btn main_action update-server"}{*message="Would you like to create this server?"*}
 				            {else}
-				                {button id="save_server" label="Save server" class="validate btn main_action"}{*message="Would you like to create this server?"*}
+				                {button id="save_server" label="Save server" 
+				                		class="validate btn main_action"}{*message="Would you like to create this server?"*}
 				            {/if}
 						</fieldset>
 					</div>

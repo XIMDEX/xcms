@@ -799,6 +799,11 @@ DOCXAP;
             {
                 // call in recursive mode with the child node
                 $childNode = new Node($idChildNode);
+                if (!$childNode->GetID())
+                {
+                    Logger::error('Cannot load a node with ID: ' . $childNode->GetID() . ' in reload templates includes process');
+                    return false;
+                }
                 $res = $this->reload_templates_include($childNode, $priorTemplates, $projectId, false);
                 if ($res === false)
                     return false;

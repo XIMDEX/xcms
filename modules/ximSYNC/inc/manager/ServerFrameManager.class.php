@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,16 +25,11 @@
  * @version $Revision$
  */
 
-
-use Ximdex\Deps\DepsManager;
 use Ximdex\Models\Pumper;
 use Ximdex\MPM\MPMManager;
 use Ximdex\MPM\MPMProcess;
 
-
-
 \Ximdex\Modules\Manager::file('/inc/model/ServerFrame.class.php', 'ximSYNC');
-
 
 /**
  * @brief Handles the life cycle of a ServerFrame.
@@ -52,19 +48,16 @@ use Ximdex\MPM\MPMProcess;
  */
 class ServerFrameManager
 {
-
     /**
-     *    Change the ServerFrame's state.
+     * Change the ServerFrame's state.
      * @param int serverFrameId
      * @param string operation
      * @param int nodeId
      * @param int delayed
      * @return bool
      */
-
     function changeState($serverFrameId, $operation, $nodeId, $delayed = NULL)
     {
-
         $serverFrame = new ServerFrame($serverFrameId);
         $initialState = $serverFrame->get('State');
         $server = $serverFrame->get('IdServer');
@@ -188,6 +181,8 @@ class ServerFrameManager
 
         // Republish serverFrames' ancestors
 
+        //TODO ajlucena
+        /*
         if ($republishAncestors === true) {
 
             $depsMngr = new DepsManager();
@@ -222,6 +217,7 @@ class ServerFrameManager
                 }
             }
         }
+        */
 
         if (!$result) {
             $serverFrame->ServerFrameToLog(null, null, null, $serverFrameId, null, __CLASS__, __FUNCTION__, __FILE__,

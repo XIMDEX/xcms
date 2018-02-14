@@ -214,7 +214,9 @@ CREATE TABLE `NodeDependencies` (
   `IdNode` int(12) unsigned NOT NULL DEFAULT '0',
   `IdResource` int(12) unsigned NOT NULL DEFAULT '0',
   `IdChannel` int(12) unsigned DEFAULT NULL,
-  PRIMARY KEY (`IdNode`,`IdResource`)
+  PRIMARY KEY (`IdNode`,`IdResource`),
+  KEY `IdResource` (`IdResource`),
+  KEY `IdNode` (`IdNode`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Dependencies between nodes in Ximdex CMS';
 
 CREATE TABLE `NodeEdition` (
@@ -768,13 +770,14 @@ CREATE TABLE `Versions` (
   KEY `IdNode` (`IdNode`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Table of contents and version management';
 
+/*
 CREATE TABLE `RelStrdocNode` (
 	`id` int(12) unsigned NOT NULL auto_increment,
 	`source` int(12) unsigned NOT NULL default '0',
 	`target` int(12) unsigned NOT NULL default '0',
 	PRIMARY KEY (id),
 	UNIQUE KEY `rel` (`source`,`target`)
-) ENGINE=MYISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `RelStrdocAsset` (
 	`id` int(12) unsigned NOT NULL auto_increment,
@@ -782,7 +785,8 @@ CREATE TABLE `RelStrdocAsset` (
 	`target` int(12) unsigned NOT NULL default '0',
 	PRIMARY KEY (id),
 	UNIQUE KEY `rel` (`source`,`target`)
-) ENGINE=MYISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+*/
 
 CREATE TABLE RelStrdocXimlet (
 	id int(12) unsigned NOT NULL auto_increment,
@@ -790,7 +794,7 @@ CREATE TABLE RelStrdocXimlet (
 	target int(12) unsigned NOT NULL default '0',
 	PRIMARY KEY (id),
 	UNIQUE KEY `rel` (`source`,`target`)
-) ENGINE=MYISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `RelDocumentFolderToTemplatesIncludeFile` (
   `id` int(12) NOT NULL,

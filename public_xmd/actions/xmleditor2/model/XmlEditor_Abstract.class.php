@@ -204,23 +204,16 @@ abstract class XmlEditor_Abstract
     {
         $schemaData = $this->getSchemaData($idnode);
         $content = $schemaData['content'];
-        //$content = $this->enrichSchema($content);
-
-//		$content = '<root><node>value</node></root>';
 
         $schema = FsUtils::file_get_contents(APP_ROOT_PATH . '/actions/xmleditor2/views/common/schema/relaxng-1.0.rng.xml');
         $rngvalidator = new \Ximdex\XML\Validators\RNG();
         $valid = $rngvalidator->validate($schema, $content);
 
         $errors = $rngvalidator->getErrors();
-        if (count($errors) > 0) {
-
-            //$content = array('error' => array_merge(array('RNG schema not valid:'), $errors));
+        if (count($errors) > 0)
             $content = array('error' => $errors);
-        } else {
-
+        else
             $content = preg_replace('/xmlns:xim="([^"]*)"/', sprintf('xmlns:xim="%s"', ParsingRng::XMLNS_XIM),  $content);
-        }
 
         return $content;
     }

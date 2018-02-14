@@ -69,7 +69,7 @@
             
             <div class="small-12 columns">
                 <label class="label_title label_general">{t}Available languages{/t} *</label>
-                {foreach from=$languages key=index item=languageData}
+                {foreach from=$langs key=index item=languageData}
                 	<div class="language">
                 		<input type="checkbox" class="validable idiomas check_group__idiomas hidden-focus"  
                 				name="languages_listed[{$languageData.id}]" id="p_{$languageData.id}" value="{$languageData.id}" />

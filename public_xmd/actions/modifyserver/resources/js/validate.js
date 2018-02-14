@@ -67,8 +67,9 @@ X.actionLoaded(function (event, fn, params) {
         fm.sendForm();
         return false;
     });
-    fn('#create_server').get(0).beforeSubmit.add(function (event) {
-        console.log("Firing beforesubmit", event);
+    
+    fn('#save_server').get(0).beforeSubmit.add(function (event) {
+    	
         clearErrors();
         var protocolSelected = fn('#protocol').val();
 
@@ -161,7 +162,7 @@ X.actionLoaded(function (event, fn, params) {
             var url = fn("input[name=url]");
 
             if (null == url.val() || "" == url.val()) {
-                url.val(url_host + url_root + "/data/previos");
+                url.val(url_host + ximdex_url_root + "/data/previos");
             }
             
             var directory = fn("input[name=initialdirectory]");

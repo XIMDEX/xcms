@@ -110,5 +110,3 @@ if (!defined('DEEP_LEVEL'))
 // Force the publication of documents already published. TRUE or FALSE, by default FALSE
 if (!defined('FORCE_PUBLICATION'))
 	define('FORCE_PUBLICATION', false);
-
-?>

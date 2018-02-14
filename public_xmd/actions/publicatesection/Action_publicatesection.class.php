@@ -65,10 +65,9 @@ class Action_publicatesection extends ActionAbstract
 
     function publicate_section()
     {
-
         $idNode = (int)$this->request->getParam("nodeid");
         $recurrence = ($this->request->getParam("rec") == "rec") ? true : false;
-        $forcePublication = ($this->request->getParam("force_publication") == 1) ? true : false;
+        $forcePublication = $this->request->getParam("force_publication") ? true : false;
         $type = $this->request->getParam("types");
         $type = (isset($type) && $type > 0) ? $type : false;
         $dateUp = time();

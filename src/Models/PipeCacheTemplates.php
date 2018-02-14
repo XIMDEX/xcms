@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,11 +25,9 @@
  * @version $Revision$
  */
 
-
 namespace Ximdex\Models;
 
 use Ximdex\Models\ORM\PipeCacheTemplatesOrm;
-
 
 /**
  *
@@ -38,7 +37,6 @@ use Ximdex\Models\ORM\PipeCacheTemplatesOrm;
  */
 class PipeCacheTemplates extends PipeCacheTemplatesOrm
 {
-
 	public function __construct($id = null)
 	{
 		parent::__construct($id);
@@ -57,8 +55,10 @@ class PipeCacheTemplates extends PipeCacheTemplatesOrm
 		$result = parent::find('DISTINCT(NodeId)', $condition, $params, MULTI);
 
 		if (is_null($result)) {
+		    
 			return NULL;
 		} else {
+		    
 			return $result;
 		}
 	}

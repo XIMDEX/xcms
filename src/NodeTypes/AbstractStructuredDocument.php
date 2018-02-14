@@ -321,7 +321,7 @@ abstract class AbstractStructuredDocument extends FileNode
     }
 
     /**
-     * builds the docxap header for a structured document
+     * Builds the docxap header for a structured document
      *
      * @param int $channel
      * @param int $idLanguage
@@ -336,23 +336,23 @@ abstract class AbstractStructuredDocument extends FileNode
         $schemaTag = 'schema="' . $schemaName . '"';
         $layoutName = str_replace('.xml', '', $schemaName);
         $layoutTag = 'layout ="' . $layoutName . '"';
-
-        //$node = new Node($this->parent->get('IdNode'));
         $node = new Node($this->nodeID);
         $nt = $node->nodeType->get('IdNodeType');
         $metadata = '';
-        if ($nt == \Ximdex\NodeTypes\NodeTypeConstants::XML_DOCUMENT) {
+        if ($nt == \Ximdex\NodeTypes\NodeTypeConstants::XML_DOCUMENT)
+        {
             $metadata = 'metadata_id=""';
         }
-
         //include the associated semantic tags of the document into the docxap tag.
         $xtags = '';
-
-        if (\Ximdex\Modules\Manager::isEnabled('ximTAGS')) {
+        if (\Ximdex\Modules\Manager::isEnabled('ximTAGS'))
+        {
             $rtn = new RelTagsNodes();
             $nodeTags = $rtn->getTags($this->nodeID);
-            if (!empty($nodeTags)) {
-                foreach ($nodeTags as $tag) {
+            if (!empty($nodeTags))
+            {
+                foreach ($nodeTags as $tag)
+                {
                     $ns = new \Ximdex\Models\Namespaces();
                     $idns = $ns->getNemo($tag['IdNamespace']);
                     $xtags .= $tag['Name'] . ":" . $idns . ",";
@@ -361,7 +361,6 @@ abstract class AbstractStructuredDocument extends FileNode
             $xtags = substr_replace($xtags, "", -1);
         }
         $xtags = 'xtags = "' . $xtags . '"';
-
         $docxap = sprintf("<docxap %s %s %s %s %s %s %s %s %s>",
             $layoutTag,
             $this->_langXapAttrib($idLanguage),
@@ -373,7 +372,6 @@ abstract class AbstractStructuredDocument extends FileNode
             $metadata,
             NULL
         );
-
         return $docxap;
     }
 
@@ -645,28 +643,28 @@ abstract class AbstractStructuredDocument extends FileNode
     {
         $doc = new StructuredDocument($this->nodeID);
         $channelList = $doc->GetChannels();
-
         $outPut = NULL;
-        if ($channelList) {
-            if (in_array($channelID, $channelList)) {
+        if ($channelList)
+        {
+            if (in_array($channelID, $channelList))
+            {
                 $channel = new Channel($channelID);
                 $outPut = 'channel="' . $channel->GetName() . '"';
                 $outPut .= ' extension="' . $channel->GetExtension() . '"';
-            } else {
+            }
+            else
+            {
                 $outPut = 'channel="" ';
             }
-
             reset($channelList);
-            while (list(, $channelID) = each($channelList)) {
+            while (list(, $channelID) = each($channelList))
+            {
                 $channel = new Channel($channelID);
                 $channelNames[] = $channel->get('Name');
                 $channelDesc[] = $channel->get('Description');
             }
-
             $outPut .= ' channels="' . implode(",", $channelNames) . '"';
-            //$outPut .= ' channels_desc="'.implode(",",$channelDesc).'"';
         }
-
         return $outPut;
     }
 
@@ -677,7 +675,6 @@ abstract class AbstractStructuredDocument extends FileNode
     private function Generate($channel )
     {
         $nodeid = $this->nodeID;
-
         $node = new Node($nodeid);
 
         $dataFactory = new DataFactory($nodeid);
@@ -686,10 +683,10 @@ abstract class AbstractStructuredDocument extends FileNode
         $data['CHANNEL'] = $channel;
         $transformer = $node->getProperty('Transformer');
         $data['TRANSFORMER'] = $transformer[0];
+        $data['DISABLE_CACHE'] = App::getValue("DisableCache");
 
         $pipeMng = new PipelineManager();
         $content = $pipeMng->getCacheFromProcessAsContent($version, 'StrDocToDexT', $data);
-
 
         return $content;
     }

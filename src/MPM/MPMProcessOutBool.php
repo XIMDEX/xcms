@@ -72,5 +72,3 @@ class MPMProcessOutBool extends MPMProcess {
 		$this->sharedMemory->putVar($this->keyOutVar, $dataOut);
 	}
 }
-
-?>

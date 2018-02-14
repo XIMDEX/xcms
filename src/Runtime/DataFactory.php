@@ -228,7 +228,6 @@ class DataFactory
 
     function getVersionId($version, $subversion)
     {
-
         if (!($this->nodeID > 0)) {
             $this->SetError(1);
             return false;
@@ -320,8 +319,8 @@ class DataFactory
 
         Logger::debug("GetContent for Node:" . $this->nodeID . ", Version: " . $versionID . "." . $subVersion . ", File: ." . $uniqueName . ", Chars: " . strlen($content));
 
-        $nodo = new Node($this->nodeID);
-        $isPlainFile = $nodo->nodeType->get('IsPlainFile');
+        $node = new Node($this->nodeID);
+        $isPlainFile = $node->nodeType->get('IsPlainFile');
 
         //only encoding the content if the node is not one of this 3.
         if (!$isPlainFile) {
@@ -337,32 +336,34 @@ class DataFactory
     function _generateCaches($idVersion)
     {
         $res = true;
-        if (\Ximdex\Modules\Manager::isEnabled('ximSYNC')) {
+        if (\Ximdex\Modules\Manager::isEnabled('ximSYNC'))
+        {
             $version = new Version($idVersion);
-            if (!($version->get('IdVersion') > 0)) {
+            if (!($version->get('IdVersion') > 0))
+            {                
                 return NULL;
             }
-
             $idNode = $version->get('IdNode');
             $node = new Node($idNode);
-
-            if (!($node->get('IdNode') > 0)) {
+            if (!($node->get('IdNode') > 0))
+            {
                 return NULL;
             }
-
-            if (!$node->nodeType->GetIsStructuredDocument()) {
+            if (!$node->nodeType->GetIsStructuredDocument())
+            {
                 return NULL;
             }
-
             $channels = $node->GetChannels();
             if ($channels)
             {
                 $pipelineManager = new PipelineManager();
-                foreach ($channels as $idChannel) {
+                foreach ($channels as $idChannel)
+                {
                     Logger::info("Generation cache for version $idVersion and the channel $idChannel");
                     $data = array('CHANNEL' => $idChannel);
                     $transformer = $node->getProperty('Transformer');
                     $data['TRANSFORMER'] = $transformer[0];
+                    $data['DISABLE_CACHE'] = App::getValue("DisableCache");
                     $res = $pipelineManager->getCacheFromProcess($idVersion, 'StrDocToDexT', $data);
                 }
             }
@@ -384,13 +385,12 @@ class DataFactory
      */
     function SetContent($content, $versionID = NULL, $subVersion = NULL, $commitNode = NULL)
     {
-        $nodo = new Node($this->nodeID);
-
-
-        $isPlainFile = @$nodo->nodeType->get('IsPlainFile');
+        $node = new Node($this->nodeID);
+        $isPlainFile = @$node->nodeType->get('IsPlainFile');
 
         //only encoding the content if the node is not one of this 3.
         if (!$isPlainFile) {
+            
             //look for the working encoding from Config
             $dataEncoding = App::getValue('dataEncoding');
             $content = \Ximdex\XML\Base::recodeSrc($content, $dataEncoding);
@@ -399,6 +399,7 @@ class DataFactory
         $this->ClearError();
 
         if (!($this->nodeID > 0)) {
+            
             $this->SetError(1);
             return false;
         }
@@ -408,16 +409,16 @@ class DataFactory
             $idVersion = $this->AddVersion(NULL, NULL, $content, $commitNode);
             if ($this->_generateCaches($idVersion) === false)
                 return false;
-
-
             return $idVersion;
         }
 
         // (2) Se pasa version determinada y se machaca el contenido de esa version.
         if (!is_null($versionID) && !is_null($subVersion)) {
+            
             $uniqueName = $this->GetTmpFile($versionID, $subVersion);
 
             if (!$uniqueName) {
+                
                 Logger::error("Error making a setContent for Node (Unable to get the file):" . $this->nodeID . ", Version: " . $versionID . "." . $subVersion . ", File: ." . $uniqueName . ", Chars: " . strlen($content));
                 return false;
             }
@@ -428,17 +429,16 @@ class DataFactory
 
             $idVersion = $this->getVersionId($versionID, $subVersion);
             if ($result && \Ximdex\Modules\Manager::isEnabled('ximRAM')) {
+                
                 $this->indexNode($idVersion, $commitNode);
             }
             $this->_generateCaches($idVersion);
-
 
             return $result;
         }
 
         return false;
     }
-
 
     /**
      *

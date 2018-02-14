@@ -263,7 +263,7 @@ class GenericData
                 }
             }
         } else {
-            Logger::error('Integrity errors found while executing a SQL query');
+            Logger::error('Integrity errors found while executing a SQL query (' . $query . ')');
             foreach ($this->messages->messages as $message) {
                 Logger::error($message['message']);
             }
@@ -866,7 +866,7 @@ class GenericData
         }
         if (!$this->_checkDataIntegrity())
         {
-            Logger::error('Integrity errors found while executing a SQL query');
+            Logger::error('Integrity errors found while executing a SQL query (' . $query . ')');
             foreach ($this->messages->messages as $message)
                 Logger::error($message['message']);
             return false;

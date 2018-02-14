@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -118,9 +119,15 @@ class Action_createxmlcontainer extends ActionAbstract {
 		$languages = $this->request->getParam('languages');
 		$master = $this->request->getParam('master');
 		
+		if (!$languages)
+		{
+		    $this->messages->add(_('You must select alt least one language'), MSG_TYPE_WARNING);
+		    $values = array('aliases' => $aliases, 'name' => $name, 'idSchema' => $idSchema, 'messages' => $this->messages->messages);
+		    $this->sendJSON($values);
+		}
+		
 		$node = new Node($idNode);
     	$idNode = $node->get('IdNode');
-	
     	if (!($idNode > 0)) {
     		$this->messages->add(_('An error ocurred estimating parent node,')
     			._(' operation will be aborted, contact with your administrator'), MSG_TYPE_ERROR);

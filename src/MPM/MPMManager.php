@@ -288,7 +288,4 @@ class MPMManager {
 	public function __unset($name) {
 		unset($this->$name);
 	}
-
-
 }
-?>

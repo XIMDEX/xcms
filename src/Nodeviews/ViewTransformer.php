@@ -24,15 +24,14 @@
  *  @version $Revision$
  */
 
-
 namespace Ximdex\Nodeviews;
 
 use Ximdex\Models\Node;
 use Ximdex\Models\Version;
 use Ximdex\Logger;
 
-
 class ViewTransformer extends AbstractView implements IView {
+    
 	public function transform($idVersion = NULL, $pointer = NULL, $args = NULL) {
 		
 		if (!array_key_exists('TRANSFORMER', $args) || empty($args['TRANSFORMER'])) {
@@ -48,16 +47,14 @@ class ViewTransformer extends AbstractView implements IView {
 			}
 		}
 
-
 		$transformer = str_replace('_', '', ucfirst($args['TRANSFORMER']) );
-		if("Xlst" == $transformer) {
-			$transformer="Xslt";
-		}
+		if("Xlst" == $transformer)
+			$transformer = "Xslt";   // ???
+		
 		$factory = new \Ximdex\Utils\Factory(__DIR__ , 'View');
 		$instanceOfView = $factory->instantiate($transformer, null, 'Ximdex\Nodeviews');
 
 		$res = $instanceOfView->transform($idVersion, $pointer, $args);
 		return $res;
 	}
-
 }

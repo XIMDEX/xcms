@@ -24,7 +24,6 @@
  * @version $Revision$
  */
 
-
 namespace Ximdex\Nodeviews;
 
 use Ximdex\Logger;
@@ -36,13 +35,10 @@ use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
 use Ximdex\Utils\TarArchiver;
 
-
 class ViewTARGZ extends AbstractView implements IView
 {
-
     function transform($idVersion = NULL, $pointer = NULL, $args = NULL)
     {
-
         $content = $this->retrieveData($content);
         //VALIDATING DATA
         $version = new Version($idVersion);

@@ -24,7 +24,6 @@
  *  @version $Revision$
  */
 
-
 use Ximdex\Logger;
 use Ximdex\Models\Node;
 use Ximdex\Models\Server;
@@ -44,7 +43,6 @@ use Ximdex\Utils\PipelineManager;
 *	A ServerFrame is the representation of a ChannelFrame in a Server.
 *	This class includes the methods that interact with the Database.
 */
-
 class ServerFrame extends ServerFrames_ORM {
 
 	const PENDING = 'Pending';
@@ -279,11 +277,10 @@ class ServerFrame extends ServerFrames_ORM {
 	}
 
 	/**
-	*  Creates the file which will be sended to the production Server.
+	*  Creates the file which will be sent to the production Server.
 	*  @param int frameID
 	*  @return int|null
-	 */
-
+	*/
 	function createSyncFile($frameID) {
 
 		$path = SERVERFRAMES_SYNC_PATH . "/" . $frameID;
@@ -299,37 +296,41 @@ class ServerFrame extends ServerFrames_ORM {
 		$nodeFrame = new NodeFrame($nodeFrameId);
 		$idVersion = $nodeFrame->get('VersionId');
 		$idNode = $nodeFrame->get('NodeId');
+		if (!($idNode > 0))
+		{
+		    Logger::error("Unexisting node for serverframe $frameID");
+		    return false;
+		}
 		$node = new Node($idNode);
 		$isHybrid = $node->getSimpleBooleanProperty('hybridColector');
-
-		if (!($idNode > 0)) {
-			Logger::error("Unexisting node for serverframe $frameID");
-			return NULL;
-		}
-
-		$pipeMng = new PipelineManager();
 
 		$data['CHANNEL'] = $channelId;
 		$data['SERVER'] = $server;
 		$data['DISABLE_CACHE'] = App::getValue("DisableCache");
 
-		$nodo = new Node($idNode);
+		$node = new Node($idNode);
 
-		if ($nodo->get('IdNode') < 1) {
-			return 0;
+		if ($node->get('IdNode') < 1)
+		{
+			return false;
 		}
-
-		$transformer = $nodo->getProperty('Transformer');
+		$transformer = $node->getProperty('Transformer');
 		$data['TRANSFORMER'] = $transformer[0];
 
-		if (!is_null($channelId)) {
+		$pipeMng = new PipelineManager();
+		if (!is_null($channelId))
+		{
+            $content = $pipeMng->getCacheFromProcessAsContent($idVersion, 'StrDocFromDexTToFinal', $data);
+            if ($content === false)
+            {
+                Logger::error('cannot load the cache or actual version content for version: ' . $idVersion);
+                return false;
+            }
 
-            $content = $pipeMng->getCacheFromProcessAsContent($idVersion, 'StrDocFromDexTToFinal',$data);
-
-            $nodoTypeContent = $nodo->nodeType->get('Name');
+            $nodeTypeContent = $node->nodeType->get('Name');
 
             //only encoding the content if the node is not one of this 3.
-            if (!(($nodoTypeContent == 'ImageFile') ||  ($nodoTypeContent == 'BinaryFile'))) {
+            if (!(($nodeTypeContent == 'ImageFile') ||  ($nodeTypeContent == 'BinaryFile'))) {
 
                 //Looking for idEncode for this server
                 $db = new \Ximdex\Runtime\Db();
@@ -340,17 +341,18 @@ class ServerFrame extends ServerFrames_ORM {
                 Logger::info("Encoding content to " . $encodingServer . ' with server: ' . $server);
                 $content = \Ximdex\XML\Base::recodeSrc($content, $encodingServer);
             }
+            else
+            {
+                Logger::warning('The node is not a structured document with a channel');
+            }
 
             if (FsUtils::file_put_contents($path, $content) === false) {
                 return false;
             }
 
-
-
 		} else {
 
 			// Replaces macros
-
 
 			$node = new Node($idNode);
 

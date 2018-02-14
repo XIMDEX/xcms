@@ -52,7 +52,7 @@ class DepsManager
      *
      * @var string
      */
-    const STRDOC_NODE = 'RelStrdocNode';
+    //TODO ajlucena: const STRDOC_NODE = 'RelStrdocNode';
     /**
      *
      * @var string
@@ -62,8 +62,7 @@ class DepsManager
      *
      * @var string
      */
-    const STRDOC_ASSET = 'RelStrdocAsset';
-
+    //TODO ajlucena: const STRDOC_ASSET = 'RelStrdocAsset';
 
     const NODE2ASSET = 'RelNode2Asset';
 

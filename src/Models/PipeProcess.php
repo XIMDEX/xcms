@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,13 +25,10 @@
  * @version $Revision$
  */
 
-
 namespace Ximdex\Models;
 
 use Ximdex\Logger;
 use Ximdex\Models\ORM\PipeProcessOrm;
-
-
 
 /**
  *
@@ -49,19 +47,20 @@ class PipeProcess extends PipeProcessOrm
 
     /**
      * Load a pipeline by name instead of by id
-     *
      * @param $name
      * @return boolean
      */
     public function loadByName($name)
     {
         if (empty($name)) {
+            
             Logger::error('Se ha solicitado la carga de un proceso sin introducir su nombre');
             return false;
         }
 
         $result = $this->find('id', 'Name = %s', array($name), MONO);
         if (count($result) == 1) {
+            
             $this->__construct($result[0]);
             return true;
         }
@@ -76,19 +75,16 @@ class PipeProcess extends PipeProcessOrm
     {
         parent::__construct($id);
         if ($this->get('id') > 0) {
+            
             $this->transitions = new \Ximdex\Pipeline\Iterators\IteratorPipeTransitions('IdPipeProcess = %s', array($id));
         }
     }
 
     /**
      * Load the previous process in list
-     *
-     */
-
-    /**
      * @return bool|null
      */
-    function getPreviousProcess()
+    public function getPreviousProcess()
     {
         //Obtenemos la transición anterior
         $result = $this->find('id', 'IdPipeline = %s AND IdTransitionTo = %s',
@@ -96,11 +92,13 @@ class PipeProcess extends PipeProcessOrm
         $resultsCount = count($result);
         //Si son muchas error (No previsto, creo que ni siquiera lo soporta el modelo)
         if ($resultsCount > 1) {
+            
             Logger::fatal('No se ha podido determinar el proceso anterior a uno dado');
             return false;
         }
 
         if ($resultsCount == 1) {
+            
             return $result[0];
         }
         return NULL;
@@ -108,14 +106,13 @@ class PipeProcess extends PipeProcessOrm
 
     /**
      * Removes a intermediate status from a sequence
-     */
-    /**
      * @param $idStatus
      * @return bool
      */
-    function removeStatus($idStatus)
+    public function removeStatus($idStatus)
     {
         if (!($this->get('id') > 0)) {
+            
             Logger::error('No se ha podido encontrar el proceso de workflow');
             $this->messages->add(_('Ha ocurrido un error no recuperable durante la gestión de estados de workflow, consulte con su administrador'),
                 MSG_TYPE_ERROR);
@@ -127,15 +124,19 @@ class PipeProcess extends PipeProcessOrm
         $transitionTo = NULL;
         $this->transitions->reset();
         while ($transition = $this->transitions->next()) {
+            
             if ($transition->get('IdStatusFrom') == $idStatus) {
+                
                 $transitionFrom = $transition;
             }
             if ($transition->get('IdStatusTo') == $idStatus) {
+                
                 $transitionTo = $transition;
             }
         }
 
         if (!(is_object($transitionFrom) && is_object($transitionTo))) {
+            
             $this->messages->add(_('No se han podido determinar las transiciones de un estado para su eliminación, esto es normal si el estado es estado inicial o final'), MSG_TYPE_WARNING);
             Logger::warning('No se han podido determinar las transiciones de un estado para su eliminación, esto es normal si el estado es estado inicial o final');
             return false;
@@ -150,6 +151,7 @@ class PipeProcess extends PipeProcessOrm
 
         $results = $this->find('id', 'IdStatusFrom = %s OR IdStatusTo = %s', array($idStatus, $idStatus), MONO);
         if (count($results) == 0) {
+            
             $pipeStatus = new PipeStatus($idStatus);
             $pipeStatus->delete();
         }
@@ -162,7 +164,7 @@ class PipeProcess extends PipeProcessOrm
      * @param $idStatus
      * @return boolean
      */
-    function isStatusFirst($idStatus)
+    public function isStatusFirst($idStatus)
     {
         $transition = $this->transitions->first();
 
@@ -176,7 +178,7 @@ class PipeProcess extends PipeProcessOrm
      * @param $idStatus
      * @return boolean
      */
-    function isStatusLast($idStatus)
+    public function isStatusLast($idStatus)
     {
         $transition = $this->transitions->last();
 
@@ -188,7 +190,7 @@ class PipeProcess extends PipeProcessOrm
      *
      * @return integer
      */
-    function getLastStatus()
+    public function getLastStatus()
     {
         $transition = $this->transitions->last();
         return $transition->get('IdStatusTo');
@@ -200,12 +202,14 @@ class PipeProcess extends PipeProcessOrm
      * @param $idStatus
      * @return integer
      */
-    function getNextStatus($idStatus)
+    public function getNextStatus($idStatus)
     {
         $this->transitions->reset();
 
         while ($transition = $this->transitions->next()) {
+            
             if ($transition->get('IdStatusFrom') == $idStatus) {
+                
                 return $transition->get('IdStatusTo');
             }
         }
@@ -217,7 +221,7 @@ class PipeProcess extends PipeProcessOrm
      *
      * @return integer
      */
-    function getFirstStatus()
+    public function getFirstStatus()
     {
         $transition = $this->transitions->first();
         return $transition->get('IdStatusFrom');
@@ -229,11 +233,13 @@ class PipeProcess extends PipeProcessOrm
      * @param $idStatus
      * @return integer
      */
-    function getPreviousStatus($idStatus)
+    public function getPreviousStatus($idStatus)
     {
         $this->transitions->reset();
         while ($transition = $this->transitions->next()) {
+            
             if ($transition->get('IdStatusTo') == $idStatus) {
+                
                 return $transition->get('IdStatusFrom');
             }
         }
@@ -245,11 +251,12 @@ class PipeProcess extends PipeProcessOrm
      *
      * @return array
      */
-    function getAllStatus()
+    public function getAllStatus()
     {
         $allStatus = array();
         $this->transitions->reset();
         while ($transition = $this->transitions->next()) {
+            
             $pipeStatus = new PipeStatus($transition->get('IdStatusFrom'));
             $allStatus[] = $pipeStatus->get('id');
             $lastTransition = $transition;
@@ -265,11 +272,13 @@ class PipeProcess extends PipeProcessOrm
      * @param $idStatusFrom
      * @return integer
      */
-    function getTransition($idStatusFrom)
+    public function getTransition($idStatusFrom)
     {
         $this->transitions->reset();
         while ($localTransition = $this->transitions->next()) {
+            
             if ($localTransition->get('IdStatusFrom') == $idStatusFrom) {
+                
                 return $localTransition->get('id');
             }
         }

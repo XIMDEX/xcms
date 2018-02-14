@@ -24,9 +24,7 @@
  *  @version $Revision$
  */
 
-
 namespace Ximdex\Nodeviews;
-
 
 use Ximdex\Logger;
 use Ximdex\Models\Node;

@@ -58,7 +58,6 @@ class Pull
 
     private function showStructuredDocument($idVersion, $args)
     {
-
         $pipelineManager = new PipelineManager();
         $content = $pipelineManager->getCacheFromProcessAsContent($idVersion, 'StrDocToDexT', $args);
 
@@ -81,7 +80,6 @@ class Pull
 
     private function showCommonFile($idVersion, $args)
     {
-
         $pipelineManager = new PipelineManager();
         $content = $pipelineManager->getCacheFromProcessAsContent($idVersion, 'NotStrDocToFinal', $args);
 

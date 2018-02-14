@@ -129,12 +129,13 @@ class Action_addsectionnode extends ActionAbstract {
     private function _getLanguages($nodeID) {
         $properties = InheritedPropertiesManager::getValues($nodeID);
         $propertiesLang = array();
-        foreach ($properties["Language"] as $prop) {
-            $newLang = array();
-            $newLang["IdLanguage"] = $prop["IdLanguage"];
-            $newLang["Name"] = _($prop["Name"]);
-            $propertiesLang[] = $newLang;
-        }
+        if (isset($properties['Language']))
+            foreach ($properties['Language'] as $prop) {
+                $newLang = array();
+                $newLang['Id'] = $prop['Id'];
+                $newLang['Name'] = _($prop['Name']);
+                $propertiesLang[] = $newLang;
+            }
         return $propertiesLang;
     }
 

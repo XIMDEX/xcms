@@ -27,6 +27,7 @@
 namespace Ximdex\Parsers;
 
 use Ximdex\Logger;
+use Ximdex\Runtime\App;
 use Ximdex\Runtime\DataFactory;
 use Ximdex\Models\Dependencies;
 use Ximdex\Deps\DepsManager;
@@ -334,15 +335,13 @@ class ParsingDependencies
         if ($channels)
             foreach ($channels as $idChannel) {
                 
-                $postContent = $pipelineManager->getCacheFromProcessAsContent($idVersion, 'StrDocToDexT',
-                    array('CHANNEL' => $idChannel, 'TRANSFORMER' => $transformer[0]));
+                $postContent = $pipelineManager->getCacheFromProcessAsContent($idVersion, 'StrDocToDexT', 
+                    array('CHANNEL' => $idChannel, 'TRANSFORMER' => $transformer[0], 'DISABLE_CACHE' => App::getValue("DisableCache")));
     
                 // post-transformation dependencies
                 $pathToByChannel[$idChannel] = self::getPathTo($postContent, $idNode);
                 $pathTos = array_merge($pathTos, $pathToByChannel[$idChannel]);
                 $res = self::getDotDot($postContent, $idServer);
-                if ($res === false)
-                    return false;
                 $dotDots = array_merge($dotDots, $res);
             }
 
@@ -607,7 +606,6 @@ class ParsingDependencies
                             $error = "CSS file {$matches[2][$n]} not found";
                             Logger::error($error);
                             $GLOBALS['parsingDependenciesError'] = $error;
-                            return false;
                         } else {
                             
                             $css[] = $id;
@@ -620,7 +618,6 @@ class ParsingDependencies
                             $error = "Common file {$matches[2][$n]} not found";
                             Logger::error($error);
                             $GLOBALS['parsingDependenciesError'] = $error;
-                            return false;
                         } else {
                             
                             $common[] = $id;
@@ -645,7 +642,7 @@ class ParsingDependencies
      * @param string $test
      * @return boolean|array()
      */
-    public static function getPathTo($content, $nodeId, $test = false)
+    public static function getPathTo($content, $nodeId)
     {
         preg_match_all("/@@@RMximdex\.pathto\(([^\)]*)\)@@@/", $content, $matches);
         $links = array();
@@ -662,11 +659,7 @@ class ParsingDependencies
                     $error = 'The document or its dependencies references a non existant node or resource (' . $pathTo 
                             . ') in a RMximdex.pathto directive';
                     Logger::error($error);
-                    if ($test)
-                    {
-                        $GLOBALS['parsingDependenciesError'] = $error;
-                        return false;
-                    }
+                    $GLOBALS['parsingDependenciesError'] = $error;
                 }
                 $links[$parserPathTo->getIdNode()] = $parserPathTo->getIdNode();
             }

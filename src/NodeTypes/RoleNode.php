@@ -29,22 +29,17 @@ namespace Ximdex\NodeTypes;
 
 use Ximdex\Models\Role;
 
-
-
 /**
  * @brief Handles roles.
  */
 class RoleNode extends Root
 {
-
 	/**
 	 *  Does nothing.
 	 * @return null
 	 */
-
 	function RenderizeNode()
 	{
-
 		return null;
 	}
 
@@ -56,12 +51,9 @@ class RoleNode extends Root
 	 * @param int stateID
 	 * @param string icon
 	 * @param string description
-	 * @return unknown
 	 */
-
 	function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $icon = null, $description = null)
 	{
-
 		$role = new Role();
 		$role->CreateNewRole($name, $icon, $description, $this->parent->get('IdNode'));
 		$this->UpdatePath();
@@ -69,15 +61,10 @@ class RoleNode extends Root
 
 	/**
 	 *  Calls to method for deleting the Role from database.
-	 * @return unknown
 	 */
-
 	function DeleteNode()
 	{
-
 		//Before delete delGroupRol
-
-
 		$role = new Role($this->parent->get('IdNode'));
 		$role->DeleteRole();
 	}
@@ -86,12 +73,9 @@ class RoleNode extends Root
 	 *  Users and Groups arent dependecies,they are associations;
 	 * @return array
 	 */
-
 	function GetDependencies()
 	{
-
 		$deps = array();
-
 		return $deps;
 	}
 }

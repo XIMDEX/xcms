@@ -81,11 +81,11 @@ class ChannelNode extends Root
 
 	/**
 	 * Gets all documents that will be transformed by the Channel.
-	 * @return array|bool
+	 * @return array
 	 */
 	public function GetDependencies()
 	{
-	    //TODO ajlucena: at this time this method is not in use
+	    // At this time this method is not in use
 	    return [];
 	    /*
 		$sql = "SELECT DISTINCT IdDoc FROM RelStrDocChannels WHERE IdChannel='" . $this->nodeID . "'";

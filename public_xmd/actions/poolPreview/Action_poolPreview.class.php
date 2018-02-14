@@ -24,7 +24,6 @@
  *  @version $Revision$
  */
 
-
 use Ximdex\Logger;
 use Ximdex\Models\Channel;
 use Ximdex\Models\Node;
@@ -32,22 +31,20 @@ use Ximdex\Models\Version;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\DataFactory;
 
-
 class Action_poolPreview extends ActionAbstract {
 
 	/**
 	 * Main method: shows initial form
 	 */
-    function index () {
+    public function index () {
     	
     	$this->insertJsFiles();
     	$this->insertCssFiles();
 		
     	$channel = new Channel();
     	$allChannels = $channel->find('IdChannel, Name');
-    	foreach ($allChannels as $channelInfo) {
-    		$channels[$channelInfo['IdChannel']] = $channelInfo['Name'];  
-    	}
+    	foreach ($allChannels as $channelInfo)
+    		$channels[$channelInfo['IdChannel']] = $channelInfo['Name'];
     	
     	$values = array(
     		'nodeid' => $this->request->getParam('nodeid'),
@@ -57,13 +54,12 @@ class Action_poolPreview extends ActionAbstract {
     	$this->render($values, NULL, 'only_template.tpl');
     }
     
-
-    
     //AJAX FUNCTIONS
+    
 	/**
 	 * Returns an array with all versions and subversion for idNode
 	 */
-    function getVersionsNode(){
+    public function getVersionsNode(){
     	
     	$verAndSubVerList = array();
     	$idNode = $this->request->getParam('idnode');
@@ -73,6 +69,7 @@ class Action_poolPreview extends ActionAbstract {
     	$versionList = $datafactory->GetVersionList("desc");
     	if (!empty($versionList)){
     		foreach ($versionList as $key => $value){
+    		    
     			//Get all subversion for each version
     			$subVersionList = $datafactory->GetSubVersionList($value);
     			$verAndSubVerList[$value] = $subVersionList;
@@ -80,14 +77,15 @@ class Action_poolPreview extends ActionAbstract {
     	}
     	
     	$this->render(array('verAndSubVerList' => $verAndSubVerList));
-    	
     }
     
     /**
      * Returns the nodes that have linked in this node
      */
-    function getLinkedNodes() {
-    	
+    public function getLinkedNodes() {
+        
+        $result = [];
+        /*
     	$idNode = $this->request->getParam('idnode');
     	if (!($idNode > 0)) {
     		Logger::error(_("Idnode does not arrive"));
@@ -103,14 +101,17 @@ class Action_poolPreview extends ActionAbstract {
     	$relStrDocNode = new  \Ximdex\Models\RelStrdocNode();
     	
     	$result = $this->_getNodeInfo($relStrDocNode->find('target', 'source = %s', array($idNode), MONO));
+    	*/
     	$this->render(array('links' => $result));
-    	
     }
+    
     /**
      * Returns the nodes that have a link to this node
      */
-    function getLinkNodes() {
+    public function getLinkNodes() {
     	
+        $result = [];
+        /*
     	$idNode = $this->request->getParam('idnode');
     	if (!($idNode > 0)) {
     		return NULL;
@@ -123,30 +124,38 @@ class Action_poolPreview extends ActionAbstract {
     	
     	$relStrDocNode = new  \Ximdex\Models\RelStrdocNode();
     	$result = $this->_getNodeInfo($relStrDocNode->find('source', 'target = %s', array($idNode), MONO));
+    	*/
 		$this->render(array('links' => $result));
     }
+    
 	/**
 	 * Returns all labels
 	 */
-    function getLabels(){
+    public function getLabels(){
+        
     	$label = new \Ximdex\Models\ListLabel();
     	$labels = $label->find(ALL, "1=1 order by Name asc");
 		$this->render(array('labels' => $labels));
 	}
+	
 	/**
 	 * Returns the versions that have associated this label
 	 */
-	function getVersionsForLabel(){
+	public function getVersionsForLabel(){
+	    
 		$idNode = $this->request->getParam('idnode');
-    	if (!($idNode > 0)) {
+    	if (!($idNode > 0))
     		return NULL;
-    	} else {
+        else {
+    	    
     		$rel = new  \Ximdex\Models\RelVersionsLabel();
     		$rels = $rel->find(ALL, 'idLabel = %s', array($idNode));
     		
     		$relsInfo = array();
 			if (is_array($rels)){
+			    
 				foreach ($rels as $key => $value) {
+				    
 					$v = new Version($value['idVersion']);
 					$idNode = $v->get('IdNode');
 					$relsInfo[$value['idVersion']] = $this->_getNodeInfo(array($idNode));
@@ -156,10 +165,12 @@ class Action_poolPreview extends ActionAbstract {
     		$this->render(array('relations' => $relsInfo));
     	}
 	}
+	
 	/**
 	 * Inserts a relation between idLabel and IdVersion in the RelVersionsLabel table
 	 */
-	function asociateNodeToLabel(){
+	public function asociateNodeToLabel(){
+	    
 		Logger::info("asociate");
 		$idNode = $this->request->getParam('idnode');
 		$idVersion = $this->request->getParam('idversion');
@@ -169,30 +180,32 @@ class Action_poolPreview extends ActionAbstract {
 		//this var has the version id from the version table
 		$versionid = null;
 		
-		if (is_null($idNode)){
+		if (is_null($idNode))
 			array_push($sms, _("Label cannot be associated with version, empty idnode"));
-		}else {
-			if (is_null($labels) || (!is_array($labels) && ($labels <= 0))){
+		else {
+		    
+			if (is_null($labels) || (!is_array($labels) && ($labels <= 0)))
 				array_push($sms, _("Wrong label value"));
-			}else{
+			else{
 				
 				if (is_null($idVersion) || (is_null($idSubVersion))){
+				    
 					//if it has not version or subversion, i get it the last version for this idnode
 					$dataFactory = new DataFactory($idNode);
 					$versionid = $dataFactory->GetLastVersionId();
-				}else{
+				}else
 					$versionid = $dataFactory->getVersionId($idVersion, $idSubVersion);
-				}
 				
-				if (is_null($versionid)){
+				if (is_null($versionid))
 					array_push($sms, _("Id version has not been found in the association of labels with versions"));
-				}
+				
 				Logger::info(_("Labels are going to be associated with version") . $versionid);
 
 				if (is_array($labels)){
+				    
 					//i have a label array, insert a relation for each
-					
 					foreach ($labels as $key => $value) {
+					    
 						Logger::info(_("It is associated IdVersion") . $versionid . _("with label") . $value);
 						$rel = new  \Ximdex\Models\RelVersionsLabel();
 						$rel->set('idVersion',$versionid);
@@ -200,6 +213,7 @@ class Action_poolPreview extends ActionAbstract {
 						$rel->add();
 					}
 				}else{
+				    
 					//only have a label, insert the relation 
 					Logger::info(_("It is associated IdVersion") . $versionid._("with label") . $labels);
 					$rel = new  \Ximdex\Models\RelVersionsLabel();
@@ -214,22 +228,25 @@ class Action_poolPreview extends ActionAbstract {
 		$sms = \Ximdex\XML\Base::encodeArrayElement($sms, \Ximdex\XML\XML::UTF8);
 		$this->render(array('sms' => $sms));
 	}
+	
 	/**
 	 * Deletes a label
 	 */
-	function deleteLabel(){
+	public function deleteLabel(){
 		
 	}
     
     /**
      * Returns info about a node
      */
-	function getInfoForPreview(){
+	public function getInfoForPreview(){
+	    
     	$idNode = $this->request->getParam('idnode');
     	$idversion = $this->request->getParam('idversion');
     	$idsubversion = $this->request->getParam('idsubversion');
     	
 		$node = new Node($idNode);
+		
 		//only show links to structuredDocument document
 		if ($node->nodeType != null && $node->nodeType->get('IsStructuredDocument')){
 			$path = $node->GetPath();
@@ -240,15 +257,16 @@ class Action_poolPreview extends ActionAbstract {
     
     //AUXILIARY FUNCTIONS
     private function _getNodeInfo($nodeList) {
+        
 		if (!is_array($nodeList)) return array();
 		
 		$processedNodeList = array();
 		foreach ($nodeList as $idNode) {
+		    
 			$node = new Node($idNode);
 			//only show links to structuredDocument document
-			if ($node->nodeType != null && $node->nodeType->get('IsStructuredDocument')){
+			if ($node->nodeType != null && $node->nodeType->get('IsStructuredDocument'))
 				$processedNodeList[$idNode] = $node->GetPath();
-			}
 		}
 		return $processedNodeList;
 	}
@@ -271,8 +289,10 @@ class Action_poolPreview extends ActionAbstract {
     	$this->addJs('/actions/manageList/resources/js/common.js');
     	
     	
-	} 
+	}
+	
 	private function insertCssFiles(){
+	    
 		$this->addCss('/actions/poolPreview/resources/css/resources/css/default.css');
     	$this->addCss('/actions/poolPreview/resources/css/slidebox.css');
     	$this->addCss('/actions/poolPreview/resources/css/ui.panel.css');

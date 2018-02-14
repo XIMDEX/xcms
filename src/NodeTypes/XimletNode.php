@@ -28,7 +28,6 @@
 namespace Ximdex\NodeTypes;
 
 use Ximdex\Deps\DepsManager;
-use Ximdex\Models\StructuredDocument;
 use Ximdex\Logger;
 
 class XimletNode extends AbstractStructuredDocument
@@ -77,7 +76,7 @@ class XimletNode extends AbstractStructuredDocument
         $depsMngr = new DepsManager();
         $depsMngr->deleteByTarget(DepsManager::SECTION_XIMLET, $this->parent->get('IdNode'));
         $depsMngr->deleteByTarget(DepsManager::STRDOC_XIMLET, $this->parent->get('IdNode'));
-        $depsMngr->deleteBySource(DepsManager::STRDOC_NODE, $this->parent->get('IdNode'));
+        //TODO ajlucena: $depsMngr->deleteBySource(DepsManager::STRDOC_NODE, $this->parent->get('IdNode'));
         $depsMngr->deleteBySource(DepsManager::STRDOC_TEMPLATE, $this->parent->get('IdNode'));
         $depsMngr->deleteByTarget(DepsManager::BULLETIN_XIMLET, $this->parent->get('IdNode'));
 

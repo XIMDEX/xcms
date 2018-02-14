@@ -438,8 +438,8 @@ class ViewFilterMacros extends AbstractView implements IView
         $parserPathTo = new ParsingPathTo();
         if (!$parserPathTo->parsePathTo($pathToParams, $this->idNode))
         {
-            Logger::error('Parse PathTo is not working for: ' . $pathToParams);
-            return false;
+            Logger::warning('Parse PathTo is not working for: ' . $pathToParams);
+            return App::getValue('EmptyHrefCode');
         }
         $res["idNode"] = $parserPathTo->getIdNode();
         $res["pathMethod"] = $parserPathTo->getPathMethod();
@@ -448,7 +448,7 @@ class ViewFilterMacros extends AbstractView implements IView
         $idNode = $res["idNode"];
         
         $targetNode = new Node($idNode);
-        $nodeFrameManager = new NodeFrameManager();
+        $nodeFrameManager = new \NodeFrameManager();
         $nodeFrame = $nodeFrameManager->getNodeFramesInTime($idNode, NULL, time());
 
         if (!isset($nodeFrame))

@@ -24,18 +24,13 @@
  *  @version $Revision$
  */
 
-
 namespace Ximdex\Nodeviews;
-
 
 use Ximdex\Logger;
 use Ximdex\Deps\LinksManager;
 use Ximdex\Models\Node;
 use Ximdex\Models\NodeType;
 use Ximdex\Models\Version;
-
-
-
 
 class ViewLinkParams extends AbstractView implements IView {
 
@@ -45,6 +40,7 @@ class ViewLinkParams extends AbstractView implements IView {
 		$version = new Version($idVersion);
 
 		if (!($version->get('IdVersion') > 0)) {
+		    
 			Logger::error("Incorrect version $idVersion");
 			return NULL;
 		}
@@ -55,6 +51,7 @@ class ViewLinkParams extends AbstractView implements IView {
 		$nodeTypeName = $nodeType->get('Name');
 
 		if (!($nodeId > 0)) {
+		    
 			Logger::error("Unexisting node: " . $version->get('IdNode'));
 			return NULL;
 		}
@@ -73,7 +70,6 @@ class ViewLinkParams extends AbstractView implements IView {
 
 				$linksManager = new LinksManager();
 				$domNode->nodeValue = $linksManager->aenlaceid($domNode->nodeValue);
-					
 			}
 
 		}
@@ -85,7 +81,6 @@ class ViewLinkParams extends AbstractView implements IView {
 
 				$linksManager = new LinksManager();
 				$domNode->nodeValue = $linksManager->url($domNode->nodeValue);
-					
 			}
 
 		}
@@ -94,5 +89,4 @@ class ViewLinkParams extends AbstractView implements IView {
 
 		return $this->storeTmpContent($content);
 	}
-
 }

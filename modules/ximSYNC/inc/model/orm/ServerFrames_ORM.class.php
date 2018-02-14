@@ -24,6 +24,7 @@
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
+
 class ServerFrames_ORM extends \Ximdex\Data\GenericData
 {
     var $_idField = 'IdSync';
@@ -63,5 +64,3 @@ class ServerFrames_ORM extends \Ximdex\Data\GenericData
     var $IdChannelFrame = 0;
     var $PumperId;
 }
-
-?>

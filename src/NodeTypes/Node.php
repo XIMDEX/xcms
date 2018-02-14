@@ -27,9 +27,7 @@
 
 namespace Ximdex\NodeTypes;
 
-use Ximdex\Models\Node as ModelsNode;
 use Ximdex\Models\User;
-use\Ximdex\NodeTypes\NodeType as NodetypeService;
 
 /**
  * <p>Service responsible of deal with nodes</p>
@@ -46,12 +44,9 @@ class Node
      */
     public function __construct($idNode = null, $lazyMode = true)
     {
-
-
-
-        if ($idNode) {
-            $this->node = new ModelsNode($idNode);
-
+        if ($idNode)
+        {
+            $this->node = new \Ximdex\Models\Node($idNode);
         }
         $this->lazyMode = $lazyMode;
     }
@@ -69,22 +64,20 @@ class Node
         $user = new User();
         $user->setByLogin($username);
         $user_id = $user->GetID();
-        if ($user_id == null) {
+        if ($user_id == null)
+        {
             return false;
         }
-
-        if ($nodeid == null) {
+        if ($nodeid == null)
+        {
             return false;
         }
-
-        $node = new ModelsNode($nodeid);
-
-        if ($node->GetID() == null) {
+        $node = new \Ximdex\Models\Node($nodeid);
+        if ($node->GetID() == null)
+        {
             return false;
         }
-
         $hasPermissionOnNode = $user->HasPermissionOnNode($nodeid, $permission);
-
         return $hasPermissionOnNode;
     }
 
@@ -94,22 +87,25 @@ class Node
      */
     public function existsNode($nodeId)
     {
-        $id = (int)$nodeId;
-        $node = new ModelsNode($id);
-
+        $id = (int) $nodeId;
+        $node = new \Ximdex\Models\Node($id);
         return $node->get("IdNode") != null;
     }
 
     /**
      * @param null $idNode
-     * @return null|ModelsNode[]
+     * @return null|\Ximdex\Models\Node[]
      */
     public function getNode($idNode = null)
     {
         if ($idNode)
-            return $this->existsNode($idNode) ? new ModelsNode($idNode) : null;
+        {
+            return $this->existsNode($idNode) ? new \Ximdex\Models\Node($idNode) : null;
+        }
         else
+        {
             return $this->node;
+        }
     }
 
     /**
@@ -134,10 +130,12 @@ class Node
     public function getNodeInfo($nodeid)
     {
         $node = $this->getNode($nodeid);
-
         if ($node == null)
+        {
             return array();
+        }
         else
+        {
             return array(
                 'nodeid' => $node->GetID(),
                 'nodeType' => $node->GetNodeType(),
@@ -149,6 +147,7 @@ class Node
                 'parent' => $node->GetParent(),
                 'children' => $node->GetChildren(),
             );
+        }
     }
 
     /**
@@ -161,8 +160,7 @@ class Node
      */
     public function isOfNodeType($node, $nodetypeId)
     {
-        $n = is_object($node) && $node instanceof Node ? $node : new ModelsNode($node);
-
+        $n = is_object($node) && $node instanceof Node ? $node : new \Ximdex\Models\Node($node);
         return $n->GetNodeType() == $nodetypeId;
     }
 
@@ -186,12 +184,9 @@ class Node
     public function deleteNode($node)
     {
         $nid = $node instanceof Node ? $node->GetID() : $node;
-
-        $n = new ModelsNode($nid);
+        $n = new \Ximdex\Models\Node($nid);
         $res = $n->DeleteNode(true);
-
         return $res > 0;
-
     }
 
     /**
@@ -200,7 +195,7 @@ class Node
      */
     public function isEnabledMetadata()
     {
-        $nodeTypeService = new NodeTypeService($this->node->get("IdNodeType"));
+        $nodeTypeService = new Node($this->node->get("IdNodeType"));
         return $nodeTypeService->isEnabledMetadata();
     }
 
@@ -210,23 +205,24 @@ class Node
      */
     public function isMetadataForced()
     {
-        $nodeTypeService = new NodeTypeService($this->node->get("IdNodeType"));
+        $nodeTypeService = new Node($this->node->get("IdNodeType"));
         return $nodeTypeService->isMetadataForced();
     }
 
     /**
-     * @return  ModelsNode[]
+     * @return  \Ximdex\Models\Node[]
      */
     public function getSiblings()
     {
         $result = $this->node->find("IdNode", "idparent=%s", array($this->node->get("IdParent")), MONO);
-        for ($i = 0; count($result); $i++) {
-            if ($result[$i] == $this->node->nodeID) {
+        for ($i = 0; count($result); $i++)
+        {
+            if ($result[$i] == $this->node->nodeID)
+            {
                 unset($result[$i]);
                 break;
             }
         }
-
         return $this->returnNode(array_values($result));
     }
 
@@ -243,26 +239,31 @@ class Node
 
     private function returnNode($valueToReturn)
     {
-
         if ($this->lazyMode)
             return $valueToReturn;
 
         $result = array();
         //If $valueToReturn is array of Ids
-        if (is_array($valueToReturn)) {
-            foreach ($valueToReturn as $idNode) {
-                $tmpNode = new ModelsNode($idNode);
+        if (is_array($valueToReturn))
+        {
+            foreach ($valueToReturn as $idNode)
+            {
+                $tmpNode = new \Ximdex\Models\Node($idNode);
                 if ($tmpNode->get("IdNode"))
+                {
                     $result[] = $tmpNode;
+                }
             }
-        } else if (is_int($valueToReturn)) { //If $valueToReturn is a node id.
-            $result = new ModelsNode($valueToReturn);
-        } else if (is_object($valueToReturn)
-            && strtolower(get_class($valueToReturn)) == "node"
-        ) { //If $valueToReturn is a Node object
+        }
+        elseif (is_int($valueToReturn))
+        {
+            //If $valueToReturn is a node id.
+            $result = new \Ximdex\Models\Node($valueToReturn);
+        }
+        else if (is_object($valueToReturn) && strtolower(get_class($valueToReturn)) == "node")
+        { //If $valueToReturn is a Node object
             return $valueToReturn;
         }
-
         return $result;
     }
 }

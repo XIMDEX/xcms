@@ -563,17 +563,22 @@ class SynchroFacade
 			$result = array();
 
 			//dafault values
-
 			$syncMngr->setFlag('recurrence', false);
-			if (!isset($flagsArray['force'])) {
+			if (!isset($flagsArray['force']))
+			{
 				$syncMngr->setFlag('force', false);
-			} else {
+			}
+			else
+			{
 				$syncMngr->setFlag('force', $flagsArray['force']);
 			}
-
-
-			if (($flagsArray != null) && (is_array($flagsArray))) {
-				foreach ($flagsArray as $key => $value) {
+			
+			if ($flagsArray)
+			{
+				foreach ($flagsArray as $key => $value)
+				{
+				    if ($key == 'force')
+				        continue;
 					$syncMngr->setFlag($key, $value);
 				}
 			}
@@ -583,15 +588,19 @@ class SynchroFacade
 			$result = $syncMngr->pushDocInPublishingPool($idNode, $upDate, $downDate);
 
 			return $result;
-		} else {
+		}
+		else
+		{
 			$syncMngr = new SyncManager();
 			//dafault values
 			$syncMngr->setFlag('workflow', true);
 			$syncMngr->setFlag('recurrence', $recurrence);
 
 			//It's needs markend and linked
-			if (($flagsArray != null) && (is_array($flagsArray))) {
-				foreach ($flagsArray as $key => $value) {
+			if (($flagsArray != null) && (is_array($flagsArray)))
+			{
+				foreach ($flagsArray as $key => $value)
+				{
 					$syncMngr->setFlag($key, $value);
 				}
 			}

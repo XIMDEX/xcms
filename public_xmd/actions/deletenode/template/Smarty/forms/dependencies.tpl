@@ -57,7 +57,7 @@
 			</div>
 				<div class="small-12 columns">
 					<input type="checkbox" name="unpublishnode" id="asegurado" class="hidden-focus"/>
-					<label class="input-form checkbox-label" for="asegurado">{t}Tick to delete all dependencies{/t}</label>
+					<label class="input-form checkbox-label" for="asegurado" style="color: red;">{t}Tick to delete all dependencies{/t}</label>
 				</div>
 
 

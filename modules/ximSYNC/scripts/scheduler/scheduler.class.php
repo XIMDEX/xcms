@@ -90,7 +90,7 @@ class Scheduler
             
             $msg = _("Lock file existing");
             $syncStatObj->create(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "INFO", 8, $msg);
-            Logger::info($msg);
+            Logger::warning($msg);
             die ();
         }
 

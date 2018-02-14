@@ -24,9 +24,7 @@
  *  @version $Revision$
  */
 
-
 namespace Ximdex\Nodeviews;
-
 
 use Ximdex\Logger;
 use Ximdex\Models\Node;
@@ -34,9 +32,8 @@ use Ximdex\Models\NodeType;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\Models\Version;
 
-
-
 class ViewSQL extends AbstractView implements IView {
+    
 	function transform($idVersion = NULL, $pointer = NULL, $args = NULL) {
 		
 		$content = $this->retrieveContent($pointer);

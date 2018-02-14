@@ -26,21 +26,19 @@
 
 namespace Ximdex\Nodeviews;
 
-
 use Ximdex\Logger;
 use Ximdex\Runtime\App;
 
-
 class ViewXsltTransformer extends AbstractView implements IView {
 	
-	
 	function transform($idVersion = NULL, $pointer = NULL, $args = NULL) {
+	    
 		$xsltFile = '';	
-		if (array_key_exists('XSLT', $args)) {
+		if (array_key_exists('XSLT', $args))
         	$xsltFile = $args['XSLT'];
-		} 
 		
 		if (!is_file(XIMDEX_ROOT_PATH . $xsltFile)) {
+		    
 			Logger::error('No se ha encontrado la xslt solicitada ' . $xsltFile);
 			return $pointer;
 		}
@@ -63,6 +61,7 @@ class ViewXsltTransformer extends AbstractView implements IView {
 		
 		// In this case the XSLT template does not provide an encoding
 		if (empty($doc->encoding)) {
+		    
 			$encoding = App::getValue( 'displayEncoding');
 			$doc->encoding = $encoding;
 			$content = $doc->saveXML();
@@ -70,5 +69,4 @@ class ViewXsltTransformer extends AbstractView implements IView {
 		
 		return $content;
 	}
-
 }

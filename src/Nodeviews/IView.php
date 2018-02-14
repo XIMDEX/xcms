@@ -25,9 +25,7 @@
  * @version $Revision$
  */
 
-
 namespace Ximdex\Nodeviews;
-
 
 interface IView
 {

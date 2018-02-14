@@ -91,38 +91,32 @@ class Db
 
     public function Query($sql, $cache = false)
     {
-
         // todo remove cache parameter
         unset($cache);
-
-
+        
         if (!$this->_getEncodings())
         {
             Logger::error($this->desErr);
             return false;
         }
-        $sql = \Ximdex\XML\Base::recodeSrc($sql, self::$dbEncoding);
-
-        $this->sql = $sql;
-
+        $this->sql = \Ximdex\XML\Base::recodeSrc($sql, self::$dbEncoding);
         $this->rows = array();
-
         try
         {
-            $this->stm = $this->db->query($this->sql, \PDO::FETCH_ASSOC);
+            $this->stm = @$this->db->query($this->sql, \PDO::FETCH_ASSOC);
         }
         catch (\PDOException $e)
         {
             if (isset($GLOBALS['InBatchProcess']) and $GLOBALS['InBatchProcess'])
                 echo $e->getMessage() . PHP_EOL;
         }
-        
-        if ($this->stm === false) {
-            
+        if ($this->stm === false)
+        {    
             if (isset($GLOBALS['InBatchProcess']) and $GLOBALS['InBatchProcess'])
             {
                 //if the database server has gone away, try a new connection
                 $res = $this->database_reconnection();
+                
                 //Trying the method call again if the reconnection process works right
                 if ($res)
                 {
@@ -134,33 +128,32 @@ class Db
             $error = $this->error();
             $this->desErr = $error[2];
             Logger::error('Query error: ' . $error[2] . '. (SQL: ' . $this->sql . ')');
-            
-            if ($this->db->errorCode() == \PDO::ERR_NONE) {
+            if ($this->db->errorCode() == \PDO::ERR_NONE)
+            {
                 $this->numErr = null;
-            } else {
+            }
+            else
+            {
                 $this->numErr = $this->db->errorCode();
             }
             return false;
         }
-
-        foreach ($this->stm as $row) {
-
+        foreach ($this->stm as $row)
+        {
             $this->rows[] = $row;
-
         }
-
-        if (count($this->rows) == 0) {
-
+        if (count($this->rows) == 0)
+        {
             $this->EOF = true;
-
-        } else {
+        }
+        else
+        {
             $this->index = 0;
             $this->EOF = false;
             $this->numRows = count($this->rows);
             $this->row = $this->rows[0];
             $this->numFields = count($this->row);
         }
-
 		return true;
     }
 
@@ -177,9 +170,7 @@ class Db
             Logger::error($this->desErr);
             return false;
         }
-        $sql = \Ximdex\XML\Base::recodeSrc($sql, self::$dbEncoding);
-        $this->sql = $sql;
-
+        $this->sql = \Ximdex\XML\Base::recodeSrc($sql, self::$dbEncoding);;
         $this->rows = array();
         $this->EOF = true;
         $this->newID = null;
@@ -187,20 +178,19 @@ class Db
         // Change to prepare to obtain num rows
         try
         {
-            $res = $this->db->exec($this->sql);
+            $res = @$this->db->exec($this->sql);
         }
         catch (\PDOException $e)
         {
             if (isset($GLOBALS['InBatchProcess']) and $GLOBALS['InBatchProcess'])
                 echo $e->getMessage() . PHP_EOL;
         }
-        
-        if ($res !== false) {
+        if ($res !== false)
+        {
             $this->newID = $this->db->lastInsertId();
             $this->numRows = $res;
             return true;
         }
-        
         if (isset($GLOBALS['InBatchProcess']) and $GLOBALS['InBatchProcess'])
         {
             //if the database server has gone away, try a new connection
@@ -212,10 +202,12 @@ class Db
                 return $res;
             }
         }
-        
-        if ($this->db->errorCode() == \PDO::ERR_NONE) {
+        if ($this->db->errorCode() == \PDO::ERR_NONE)
+        {
             $this->numErr = null;
-        } else {
+        }
+        else
+        {
             $this->numErr = $this->db->errorCode();
         }
         $error = $this->error();

@@ -27,9 +27,12 @@
 namespace Ximdex\Models;
 
 use Ximdex\Runtime\DataFactory;
+use Ximdex\Utils\FsUtils;
+use Ximdex\XML\Validators\RNG;
 use Ximdex\Logger;
 use Ximdex\Models\ORM\StructuredDocumentsOrm;
 use Ximdex\Parsers\ParsingDependencies;
+use Ximdex\Parsers\ParsingRng;
 use Ximdex\Properties\ChannelProperty;
 
 class StructuredDocument extends StructuredDocumentsOrm
@@ -285,15 +288,16 @@ class StructuredDocument extends StructuredDocumentsOrm
 		$symLinks = $this->find('IdDoc', 'TargetLink = %s', array($this->get('IdDoc')), MONO);
 
 		// Repetimos para todos los nodos que son enlaces simbolicos a este
-		if (!empty($symLinks)) {
+		if (!empty($symLinks))
 			foreach ($symLinks as $link) {
+			    
 				$node = new Node($link);
 				$node->RenderizeNode();
 			}
-		}
 
 		$node = new Node($this->get('IdDoc'));
-		if(\Ximdex\NodeTypes\NodeTypeConstants::METADATA_DOCUMENT == $node->GetNodeType()){
+		if (\Ximdex\NodeTypes\NodeTypeConstants::METADATA_DOCUMENT == $node->GetNodeType()) {
+		    
 			$content = \Ximdex\Metadata\MetadataManager::addSystemMetadataToContent($node->nodeID, $content);
 			if ($content === false)
 			{
@@ -308,12 +312,17 @@ class StructuredDocument extends StructuredDocumentsOrm
 		$this->SetUpdateDate();
 		$data = new DataFactory($this->get('IdDoc'));
 		$node = new Node($this->get('IdDoc'));
-		if($commitNode == false){
+		if ($commitNode == false) {
+		    
 			$info = $node->GetLastVersion();
 			$res = $data->SetContent($content, $info['Version'], $info['SubVersion'], $commitNode);
-		}else{
-			$res = $data->SetContent($content, NULL, NULL, $commitNode);
 		}
+		else
+		    $res = $data->SetContent($content, NULL, NULL, $commitNode);
+		
+		// the document will be validate against the associated RNG schema
+		$this->validate_schema($node);
+		    
 		if ($res === false)
 		{
 		    if ($data->msgErr)
@@ -345,7 +354,99 @@ class StructuredDocument extends StructuredDocumentsOrm
 		}
 		return true;
 	}
-
+	
+	/**
+	 * Return the object node for the document node specified 
+	 * @param Node $node
+	 * @return Node
+	 */
+	private function get_schema_node(Node $node) : Node
+	{
+	    $nodeTypeName = $node->nodeType->GetName();
+	    if ($nodeTypeName == 'RngVisualTemplate') {
+	        
+	        $rngPath = APP_ROOT_PATH . '/actions/xmleditor2/views/rngeditor/schema/rng-schema.xml';
+	        return trim(FsUtils::file_get_contents($rngPath));
+	    }
+	    $idContainer = $node->getParent();
+	    if (!$idContainer)
+	        return null;
+	    $relTemplate = new RelTemplateContainer();
+	    $idTemplate = $relTemplate->getTemplate($idContainer);
+	    if (!$idTemplate)
+	        return null;
+	    $templateNode = new Node($idTemplate);
+	    if (!$templateNode->GetID())
+	        return null;
+	    return $templateNode;
+	}
+	
+	/**
+	 * Get the schema data for a document node given
+	 * @param Node $docNode
+	 * @return array
+	 */
+	private function get_schema_data(Node $docNode) : array
+	{
+	    $schemaData = [];
+	    if (!is_object($templateNode = $this->get_schema_node($docNode))) {
+	        return array('id' => 0, 'content' => $templateNode);
+	    }
+	    $schemaId = $templateNode->getID();
+	    if (!$schemaId)
+	        return null;
+	    $rngTemplate = new Node($schemaId);
+	    $content = $rngTemplate->GetContent();
+	    $schemaData['id'] = $schemaId;
+	    $schemaData['content'] = $content;
+	    return $schemaData;
+	}
+	
+	/**
+	 * Get the content of the schema file associated to a specified document
+	 * @param Node $docNode
+	 * @return string
+	 */
+	private function get_schema_file(Node $docNode) : string
+	{
+	    $schemaData = $this->get_schema_data($docNode);
+	    $content = $schemaData['content'];
+	    $schema = FsUtils::file_get_contents(APP_ROOT_PATH . '/actions/xmleditor2/views/common/schema/relaxng-1.0.rng.xml');
+	    $rngValidator = new RNG();
+	    $valid = $rngValidator->validate($schema, $content);
+	    $errors = $rngValidator->getErrors();
+	    if ($errors)
+	    {
+	        foreach ($errors as $error)
+	            $this->messages->add('Error in the associated RNG schema: ' . $error, MSG_TYPE_WARNING);
+	        return null;
+	    }
+	    $content = preg_replace('/xmlns:xim="([^"]*)"/', sprintf('xmlns:xim="%s"', ParsingRng::XMLNS_XIM),  $content);
+	    return $content;
+	}
+	
+	/**
+	 * Validate a structured document against its own RNG schema
+	 * @param Node $docNode
+	 * @return bool
+	 */
+	public function validate_schema(Node $docNode) : bool
+	{
+	    $schema = $this->get_schema_file($docNode);
+	    if ($schema === null)
+	        return false;
+	        $xmlDoc = '<?xml version="1.0" encoding="UTF-8"?>' . PHP_EOL . '<docxap>' . PHP_EOL . \Ximdex\Utils\Strings::stripslashes($docNode->GetContent()) 
+	               . PHP_EOL . '</docxap>';
+	    $rngValidator = new RNG();
+	    $valid = $rngValidator->validate($schema, $xmlDoc);
+	    if (!$valid)
+	    {
+	        foreach ($rngValidator->getErrors() as $error)
+	            $this->messages->add('Error parsing with the RNG schema: ' . $error, MSG_TYPE_WARNING);
+	        return false;
+	    }
+        return true;
+	}
 
 	// Devuelve el timestamp de creacion del structure document actual.
 	// return string (CreationDate)
@@ -427,7 +528,7 @@ class StructuredDocument extends StructuredDocumentsOrm
 	 * @param $IdChannelList
 	 * @param string $content
 	 */
-	public function CreateNewStrDoc($docID, $name, $IdCreator, $IdLanguage, $templateID, $IdChannelList, $content = '')
+	public function CreateNewStrDoc($docID, $name, $IdCreator, $IdLanguage, $templateID, $IdChannelList = [], $content = '')
 	{
 		$this->set('Name', $name);
 		$this->set('IdCreator', $IdCreator);

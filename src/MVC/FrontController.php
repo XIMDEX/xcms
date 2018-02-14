@@ -68,8 +68,7 @@ class FrontController extends IController
                     ]
                 ]
             ];
-            // echo json_encode( $error ) ;
-            $this->sendJSON($error);
+            echo json_encode($error);
         }
     }
 

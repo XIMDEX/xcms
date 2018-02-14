@@ -138,7 +138,6 @@ VALUES
 	(7309,5015,'Modify properties','manageproperties','xix.png','Modify properties of a section',60,NULL,0,NULL,0),
 	(7310,5018,'Modify properties','manageproperties','xix.png','Modify properties of a document folder',61,NULL,0,NULL,0),
 	(7311,5031,'Modify properties','manageproperties','xix.png','Modify properties',60,NULL,0,NULL,0),
-	(7312,5032,'Modify properties','manageproperties','xix.png','Modify properties of a document',60,NULL,0,NULL,0),
 	(7321,5078,'Modify properties','renamenode','modiy_templateview','Modify properties of a RNG schema',60,NULL,0,NULL,0),
 	(6004,5009,'Manage groups','modifyusergroups','manage_user_groups.png','Enroll, disenroll, and change user role in groups where he/she belongs to',60,NULL,0,'',0),
 	(6007,5015,'Configure section','managefolders','change_name_section.png','Configure the folders of a section',61,NULL,0,'',0),
@@ -181,7 +180,6 @@ VALUES
 	(6131,5040,'Move to previous state','workflow_backward','change_last_state.png','Move a text document to the previous state',-70,NULL,0,'',0),
 	(6132,5028,'Publish','workflow_forward','change_next_state.png','Move a text document to the next state',70,NULL,0,'',0),
 	(6133,5028,'Move to previous state','workflow_backward','change_last_state.png','Move a text document to the previous state',-70,NULL,0,'',0),
-	(6100,5032,'Advance publisher','workflow_forward_advance','change_next_state.png','Advance publish',70,NULL,0,'',0),
 	(6204,5015,'Publish section','publicatesection','publicate_section.png','Publish a section massively',70,NULL,1,'',0),
 	(7016,5057,'Publish ximlet','publicateximlet','xix.png','Publish documents associated with a ximlet',70,NULL,0,'',0),
 	(8101,5016,'Publish section','publicatesection','publicate_section.png','Publish a section massively',70,NULL,1,'',0),
@@ -398,8 +396,9 @@ VALUES
 	(53,'ChunksFolder','uploaded_files'),
 	(54,'UploadsFolder','uploaded_files'),
 	(55,'MaxItemsPerGroup','50'),
-	(56,'DisableCache','0'),
-	(57,'UrlHost','');
+	(56,'DisableCache','1'),
+	(57, 'UrlHost', ''),
+	(58, 'CacheRoot', '/data/cache');
  
 INSERT INTO `Contexts` (`id`, `Context`)
 VALUES

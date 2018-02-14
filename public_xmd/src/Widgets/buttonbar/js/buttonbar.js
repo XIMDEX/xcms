@@ -133,7 +133,7 @@
 			images_url: null
 		},
 		
-		getter ['getModel', 'getDatastore']
+		getter: ['getModel', 'getDatastore']
 	});
 
 })(jQuery);

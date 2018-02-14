@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,11 +25,9 @@
  * @version $Revision$
  */
 
-
 namespace Ximdex\Models;
 
 use Ximdex\Models\ORM\PipePropertiesOrm;
-
 
 /**
  *
@@ -40,5 +39,4 @@ use Ximdex\Models\ORM\PipePropertiesOrm;
  *
  */
 class PipeProperty extends PipePropertiesOrm
-{
-}
+{}

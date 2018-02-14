@@ -67,7 +67,7 @@ class PipelineManager
 
     function getCacheFromTransition($idVersion, $idTransition, $args)
     {
-        if (!isset($args['DISABLE_CACHE']) || $args['DISABLE_CACHE'] === false) {
+        if (!isset($args['DISABLE_CACHE']) || !$args['DISABLE_CACHE']) {
             if (!($idVersion > 0)) {
                 Logger::error('[PipelineManager:getCacheFromTransition] An non-existent version has been requested.');
                 return false;
@@ -100,21 +100,25 @@ class PipelineManager
     function getCacheFromProcess($idVersion, $processName, $args)
     {
         // TODO Check that the requested process belongs to a registered pipeline for this node
-        if (!isset($args['DISABLE_CACHE']) || $args['DISABLE_CACHE'] === false) {
+        if (!isset($args['DISABLE_CACHE']) || !$args['DISABLE_CACHE']) {
             if (!($idVersion > 0)) {
+                
                 Logger::error('[PipelineManager:getCacheFromProcess] An unexistent version has been requested.');
                 return false;
             }
         }
         $process = new PipeProcess();
         if (!$process->loadByName($processName)) {
+            
             $this->messages->add(_('[PipelineManager:getCacheFromProcess] Process not found: ' . $processName), MSG_TYPE_ERROR);
             Logger::fatal('[PipelineManager:getCacheFromProcess] Process not found: ' . $processName);
         }
         if (!$process->get('id') > 0) {
+            
             Logger::fatal('[PipelineManager:getCacheFromProcess] Process not found with the given name: ' . $processName);
         }
         if (!($process->transitions->count() > 0)) {
+            
             Logger::fatal("[PipelineManager:getCacheFromProcess] The loaded process doesn't have any transition: " . $processName);
         }
 

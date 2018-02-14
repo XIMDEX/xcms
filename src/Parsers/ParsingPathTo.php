@@ -58,11 +58,13 @@ class ParsingPathTo
      * @param int $nodeId
      * @param int $language
      * @return bool
-     * @return Object This
      */
     public function parsePathTo(string $pathToParams, int $nodeId = null, int $language = null) : bool
     {
-        Logger::info('Parsing pathTo with: ' . $pathToParams . ' and document node: ' . $nodeId);
+        $msg = 'Parsing pathTo with: ' . $pathToParams;
+        if ($nodeId)
+            $msg .= ' and document node: ' . $nodeId;
+        Logger::info($msg);
         $params = explode(",", $pathToParams);
 
         //Error if there aren't any params

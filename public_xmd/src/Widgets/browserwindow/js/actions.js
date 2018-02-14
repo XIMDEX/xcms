@@ -56,7 +56,6 @@
 			'addximlet', 
 			'linkreport', 
 			'workflow_forward',
-			'workflow_forward_advance',
             'workflow_backward',
 			'modifyserver',
 			'modifygroupsnode',

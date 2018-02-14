@@ -24,9 +24,7 @@
  * @version $Revision$
  */
 
-
 namespace Ximdex\Nodeviews;
-
 
 use Ximdex\Logger;
 use Ximdex\Deps\LinksManager;
@@ -35,12 +33,10 @@ use Ximdex\Runtime\App;
 
 class ViewCommon extends AbstractView implements IView
 {
-
     private $_filePath;
 
     function transform($idVersion = NULL, $pointer = NULL, $args = NULL)
     {
-
         if (!$this->_setFilePath($idVersion, $args))
             return NULL;
 
@@ -66,7 +62,6 @@ class ViewCommon extends AbstractView implements IView
 
     private function _setFilePath($idVersion = NULL, $args = array())
     {
-
         if (!is_null($idVersion)) {
             $version = new Version($idVersion);
             $file = $version->get('File');
@@ -85,5 +80,4 @@ class ViewCommon extends AbstractView implements IView
 
         return true;
     }
-
 }

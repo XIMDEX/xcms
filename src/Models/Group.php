@@ -445,5 +445,3 @@ class Group extends GroupsOrm
 		return $groupStateInfo;
 	}
 }
-
-?>

@@ -44,6 +44,7 @@ echo "renderer = '" . \Ximdex\Runtime\Session::get("renderer") . "';";
 echo "\nurl_host = '" . App::getValue('UrlHost') . "';";
 echo "\nurl_root = '" . App::getUrl('/') . "';";
 echo "\nximdex_root = '" . XIMDEX_ROOT_PATH . "';";
+echo "\nximdex_url_root = '" . App::GetValue('UrlRoot') . "';";
 echo "\nbase_action = '" . \Ximdex\Runtime\Session::get("base_action") . "';";
 echo "\nuser_id = '" . \Ximdex\Runtime\Session::get('userID') . "';";
 echo "\nlocale = '" . \Ximdex\Runtime\Session::get('locale') . "';";

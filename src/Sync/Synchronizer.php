@@ -1238,17 +1238,20 @@ class Synchronizer
     }
 
     /// Function which looks for a frame remote path
-    /// Object method, it requieres previous SetID.
+    /// Object method, it requieres previous SetID
     function HasUnlimitedLifeTime()
     {
         $this->ClearError();
-
         $lastFrame = $this->GetLastFrame();
-        $lastTime = $this->GetDateDownOnFrame($lastFrame);
-
-
+        if ($lastFrame)
+        {
+            $lastTime = $this->GetDateDownOnFrame($lastFrame);
+        }
+        else
+        {
+            $lastTime = null;
+        }
         return (bool)($lastFrame && !$lastTime);
-
     }
 
 

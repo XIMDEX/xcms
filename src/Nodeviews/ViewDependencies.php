@@ -24,13 +24,9 @@
  * @version $Revision$
  */
 
-
 namespace Ximdex\Nodeviews;
 
-
 use Ximdex\Runtime\App;
-
-
 
 class ViewDependencies extends AbstractView implements IView
 {
@@ -42,15 +38,16 @@ class ViewDependencies extends AbstractView implements IView
 
         /// Y se vuelve a construir
         foreach ($deps as $depID) {
+            
             $pair = explode(",", $depID);
             $depID = $pair[0];
 
 
             $channelID = (isset($pair[1]) ) ? $pair[1] : null ;
             $dbObj = App::get('DB');
+            
             // TODO: Check if this SQL runs OK.
             $dbObj->Execute("INSERT INTO SynchronizerDependencies (IdSync, IdResource) VALUES (" . $frameID . ", " . $depID . ")");
-
         }
         return $this->storeTmpContent($content);
     }

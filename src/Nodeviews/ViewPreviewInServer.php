@@ -26,7 +26,6 @@
 
 namespace Ximdex\Nodeviews;
 
-
 use Ximdex\Logger;
 use Ximdex\Models\Node;
 use Ximdex\Models\Version;
@@ -36,7 +35,6 @@ use Ximdex\Utils\FsUtils;
 
 class ViewPreviewInServer extends AbstractView implements IView
 {
-
     private $_node = NULL;
     private $_serverNode = NULL;
     private $_idChannel;

@@ -33,13 +33,13 @@ CREATE TABLE IF NOT EXISTS `XimTAGSTags` (
   UNIQUE KEY `Name` (`Name`, `IdNamespace`),
   KEY `IdNamespace` (`IdNamespace`),
   FULLTEXT KEY `Name_2` (`Name`)
-) ENGINE=MyISAM  CHARSET='utf8' COMMENT='List Tags' AUTO_INCREMENT=1;
+) ENGINE=InnoDB  CHARSET='utf8' COMMENT='List Tags' AUTO_INCREMENT=1;
 
 CREATE TABLE IF NOT EXISTS `RelTagsNodes` (
   `Node` int(10) unsigned NOT NULL DEFAULT '0',
   `TagDesc` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'RelTagsDescriptions  id ',
   PRIMARY KEY (`Node`,`TagDesc`)
-) ENGINE=MyISAM  COMMENT='Tags for each node';
+) ENGINE=InnoDB  COMMENT='Tags for each node';
 
 CREATE TABLE `RelTagsDescriptions` (
 `IdTagDescription` int(11) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,

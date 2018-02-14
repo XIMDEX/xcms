@@ -26,6 +26,7 @@
 
 
 namespace Ximdex\Utils;
+
 use Ximdex\Logger;
 
 if (!defined('SZR_JSON')) define('SZR_JSON', 'json');
@@ -33,11 +34,6 @@ if (!defined('SZR_XMLRPC')) define('SZR_XMLRPC', 'xmlrpc');
 
 class Serializer
 {
-
-	private function __construct()
-	{
-	}
-
 	static public function encode($mode, $var)
 	{
 		/**

@@ -56,8 +56,8 @@ class NodeFrame extends NodeFrames_ORM {
 	*  @param int down
 	*  @return int|null
 	*/
-
-    	function create($nodeId, $name, $version, $up, $down = NULL) {
+    function create($nodeId, $name, $version, $up, $down = NULL) {
+        
 		$this->set('NodeId',$nodeId);
 		$this->set('VersionId',$version);
 		$this->set('TimeUp',$up);

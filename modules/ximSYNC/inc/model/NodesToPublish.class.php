@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,23 +25,24 @@
  *  @version $Revision$
  */
 
-
 use Ximdex\Logger;
 use Ximdex\Runtime\DataFactory;
+use Ximdex\Models\Node;
 
 \Ximdex\Modules\Manager::file('/inc/model/orm/NodesToPublish_ORM.class.php', 'ximSYNC');
 
-
 class NodesToPublish extends NodesToPublish_ORM {
 
-	public function __construct($id=null) {
+	public function __construct($id = null)
+	{
 		parent::__construct($id);
 	}
 
 	/**
 	 *	Static method that creates a new NodeSet and returns the related object
 	 */
-	static public function & create($idNode, $idNodeGenerator, $dateUp, $dateDown, $userId, $force, $lastPublishedVersion, $deepLevel) {
+	static public function create($idNode, $idNodeGenerator, $dateUp, $dateDown, $userId, $force, $lastPublishedVersion, $deepLevel)
+	{    
 		$node = new NodesToPublish();
 		$node->set('IdNode', $idNode);
 		$node->set('IdNodeGenerator', $idNodeGenerator);
@@ -48,32 +50,44 @@ class NodesToPublish extends NodesToPublish_ORM {
 		$node->set('DateDown', $dateDown);
 		$node->set('State', 0); //Pending
 		$node->set('UserId', $userId);
-
-		$force = $force == true ? 1 : 0;
-		$node->set('ForcePublication', $force);
+		$node->set('ForcePublication', $force ? 1 : 0);
 		$node->set('DeepLevel', $deepLevel);
 
 		$dataFactory = new DataFactory($idNode);
-
 		$idVersion = $dataFactory->GetLastVersion();
-		if ($idNode != $idNodeGenerator && $lastPublishedVersion){
+		if ($idNode != $idNodeGenerator && $lastPublishedVersion)
+		{
 			$idSubversion = 0;
 		}
-		else{
+		else
+		{
 			$idSubversion = $dataFactory->GetLastSubVersion($idVersion);
 		}
-
 		$node->set('Version', $idVersion);
 		$node->set('Subversion', $idSubversion);
-		$node->add();
-		return $node;
+		
+		$versionZero = !$idVersion && !$idSubversion;
+		if ($versionZero && $idNode != $idNodeGenerator)
+		{
+		    $myNode = new Node($idNode);
+		    if ($myNode->nodeType->get('IsStructuredDocument'))
+		    {
+		        Logger::warning(sprintf(_("Skipping 0.0 version for Linked Structured Document: %s"), $idNode));
+		        return null;
+		    }
+		}
+		
+		if (!$node->add())
+		    return false;
+		
+		return true;
 	}
 
 	/**
 	 *	Get next group of nodes to publish and mark them as locked (1) in database.
 	 *	Query is order by DateUp asc to get older publication jobs first.
 	 */
-	static public function & getNext() {
+	static public function getNext() {
 
 		$result = null;
 		$docsToPublish = array();
@@ -106,20 +120,25 @@ class NodesToPublish extends NodesToPublish_ORM {
 		$db->Query($sql_update);
 
 		// 3. Build and array with locked nodes and their common attributes: dateUp, dateDown, forcePublication and idNodeGenerator
-		$sql_nodes ="select IdNode,IdNodeGenerator,ForcePublication,DateDown,UserId, Version, SubVersion from NodesToPublish where DateUp = ".$dateUp." and State = 1";
-		if(!empty($dateDown)){
+		$sql_nodes ="select IdNode,IdNodeGenerator,ForcePublication,DateDown,UserId, Version, SubVersion from NodesToPublish where DateUp = " 
+		      . $dateUp . " and State = 1";
+		if (!empty($dateDown))
+		{
 			$sql_nodes .= " and DateDown = ".$dateDown;
-		}else{
+		}
+		else
+		{
 			$sql_nodes .= " and DateDown is NULL";
 		}
 		$sql_nodes .= " order by deepLevel DESC";
 		$db->Query($sql_nodes);
 
-		$force = true;
+		$force = false;
 		$idNodeGenerator = null;
 		$userId = null;
 
-		while (!$db->EOF) {
+		while (!$db->EOF)
+		{
 			array_push($docsToPublish, $db->getValue('IdNode'));
 			$docsToPublishVersion[$db->getValue('IdNode')]=$db->getValue('Version');
 			$docsToPublishSubVersion[$db->getValue('IdNode')]=$db->getValue('SubVersion');
@@ -130,7 +149,7 @@ class NodesToPublish extends NodesToPublish_ORM {
 
 			$db->Next();
 		}
-		$force = $force == 1 ? true : false;
+		$force = $force ? true : false;
 		$result = array (
 			'docsToPublish' => $docsToPublish,
 			'idNodeGenerator' => $idNodeGenerator,
@@ -148,7 +167,8 @@ class NodesToPublish extends NodesToPublish_ORM {
 	/**
 	 *	Mark a chunk of nodes as processed (2) in database.
 	 */
-	static public function  setProcessed($chunk, $dateUp) {
+	static public function setProcessed($chunk, $dateUp) {
+	    
 		$db = new \Ximdex\Runtime\Db();
 		$strNodes = implode (",", $chunk);
 		$sql = sprintf("Update NodesToPublish set State = 2 where IdNode in (%s) and DateUp = %s", $strNodes, $dateUp);
@@ -157,6 +177,7 @@ class NodesToPublish extends NodesToPublish_ORM {
 
 
 	public function getIntervals($idNode){
+	    
 		$dbObj = new \Ximdex\Runtime\Db();
 		$arrayDates = array();
 		$gaps = array();

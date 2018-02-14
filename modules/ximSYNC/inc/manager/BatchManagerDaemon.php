@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,13 +25,11 @@
  * @version $Revision$
  */
 
-
 // for legacy compatibility
 if (!defined('XIMDEX_ROOT_PATH')) {
+    
     require_once dirname(__FILE__) . '/../../../../bootstrap.php';
 }
-
-
 
 use Ximdex\Logger;
 use Ximdex\Models\Node;
@@ -42,8 +41,6 @@ use Ximdex\Sync\SynchroFacade;
 include_once(XIMDEX_ROOT_PATH . '/modules/ximSYNC/inc/manager/BatchManager.class.php');
 include_once(XIMDEX_ROOT_PATH . '/modules/ximSYNC/inc/model/Batch.class.php');
 
-
-
 function main($argc, $argv)
 {
     Logger::generate('PUBLICATION', 'publication');
@@ -51,6 +48,7 @@ function main($argc, $argv)
 
     // Command line mode call
     if ($argv != null && isset($argv[1]) && is_numeric($argv[1])) {
+        
         Logger::logTrace(_("IdNode passed:") . " " . $argv[1]);
         // Add node to publishing pool and exit (SyncManager will call this daemon again when inserting node job is done)
         $syncFac = new SynchroFacade();
@@ -63,6 +61,7 @@ function main($argc, $argv)
     $nodesToPublish = NodesToPublish::getNext();
 
     while ($nodesToPublish != null) {
+        
         Logger::info(_("Publication cycle triggered by") . " " . $nodesToPublish['idNodeGenerator']);
         createBatchsForBlock($nodesToPublish);
 
@@ -73,11 +72,12 @@ function main($argc, $argv)
 
 function createBatchsForBlock($nodesToPublish)
 {
-
     $idNodeGenerator = $nodesToPublish['idNodeGenerator'];
+    
     // If the node which trigger publication do not exists anymore return null and cancel.
     $node = new Node($idNodeGenerator);
     if (!($node->get('IdNode') > 0)) {
+        
         Logger::error(_("Required node does not exist") . " " . $idNodeGenerator);
         return NULL;
     }
@@ -86,13 +86,16 @@ function createBatchsForBlock($nodesToPublish)
     $idServer = $node->GetServer();
     $nodeServer = new Node($idServer);
     if (App::getValue('PublishOnDisabledServers') == 1) {
+        
         Logger::info("PublishOnDisabledServers is true");
         $physicalServers = $nodeServer->class->GetPhysicalServerList(true);
     } else {
+        
         $physicalServers = $nodeServer->class->GetEnabledPhysicalServerList(true);
     }
     if (count($physicalServers) == 0) {
-        Logger::error(_('Fisical server does not exist for nodeId:') . " " . $idNodeGenerator . " " . _('returning empty arrays.'));
+        
+        Logger::error(_('Physical server does not exist for nodeId:') . " " . $idNodeGenerator . " " . _('returning empty arrays.'));
         return null;
     }
 
@@ -112,6 +115,7 @@ function createBatchsForBlock($nodesToPublish)
 
     // Clean up caches, tmp files, etc...
     if (is_null($docsPublicated)) {
+        
         Logger::error("PUSHDOCINPOOL - docsPublicated null");
         return null;
     }
@@ -143,7 +147,6 @@ function createBatchsForBlock($nodesToPublish)
             }
         }
 
-
         // Delete major version in docs with error
 
         if (array_key_exists('notok', $docsPublicated[1])) {
@@ -166,11 +169,11 @@ function createBatchsForBlock($nodesToPublish)
     $node = new Node($idNodeGenerator);
 
     if ($node->get('IdState') > 0) {
+        
         $workflow = new \Ximdex\Workflow\WorkFlow($idNodeGenerator);
         $firstState = $workflow->GetInitialState();
         $node->SetState($firstState);
     }
-
 }
 
 main($argc, $argv);

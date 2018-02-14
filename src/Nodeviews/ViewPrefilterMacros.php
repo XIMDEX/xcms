@@ -24,18 +24,16 @@
  *  @version $Revision$
  */
 
-
 namespace Ximdex\Nodeviews;
-
 
 use Ximdex\Models\Node;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\Runtime\App;
 
-
 class ViewPrefilterMacros extends AbstractView implements IView {
 	
 	public function transform($idVersion = NULL, $pointer = NULL, $args = NULL) {
+	    
 		$content = $this->retrieveContent($pointer);
 		if (preg_match("/@@@GMximdex\.ximlet\(([0-9]+)\)@@@/", $content)) {
 			$content = preg_replace_callback("/@@@GMximdex\.ximlet\(([0-9]+)\)@@@/",  
@@ -56,6 +54,7 @@ class ViewPrefilterMacros extends AbstractView implements IView {
 	}
 
 	private function GetXimletContent($matches) {
+	    
 		$node = new Node($matches[1]);
 
 		if (!($node->get('IdNode') > 0)) {

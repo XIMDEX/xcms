@@ -30,13 +30,6 @@ use Ximdex\Logger;
 
 class FsUtils
 {
-
-    private function __construct()
-    {
-
-    }
-
-
     /**
      * @param $file
      * @return mixed|null
@@ -176,13 +169,14 @@ class FsUtils
     static public function file_get_contents($filename, $use_include_path = false, $context = NULL)
     {
         if (!is_file($filename)) {
+            
             $backtrace = debug_backtrace();
             Logger::error(sprintf(_('Trying to obtaing the content of a nonexistent file [lib/Ximdex/Utils/FsUtils.php] script: %s file: %s line: %s nonexistent_file: %s'),
                 $_SERVER['SCRIPT_FILENAME'],
                 $backtrace[0]['file'],
                 $backtrace[0]['line'],
                 $filename));
-            return NULL;
+            return false;
         }
 
         return file_get_contents($filename, $use_include_path, $context);
@@ -399,18 +393,29 @@ class FsUtils
         } while (is_dir($tmpFolder));
         return $tmpFolder;
     }
-
-    static public function copy($sourceFile, $destFile)
+    
+    /**
+     * Copy a file to a specified destination file
+     * If the parameter $move is true, the original file will be deleted
+     * @param string $sourceFile
+     * @param string $destFile
+     * @param bool $move
+     * @return bool
+     */
+    static public function copy($sourceFile, $destFile, bool $move = false) : bool
     {
         if (!empty($sourceFile) && !empty($destFile)) {
+            
             $result = copy($sourceFile, $destFile);
-        } else {
+            if ($move)
+            {
+                if (!@unlink($sourceFile))
+                    Logger::warning('Cannot delete the source file: ' . $sourceFile);
+            }
+        } else
             $result = false;
-        }
-
-        if (!$result) {
+        if (!$result)
             Logger::error(sprintf('An error occurred while trying to copy from %s to %s', $sourceFile, $destFile));
-        }
         return $result;
     }
 

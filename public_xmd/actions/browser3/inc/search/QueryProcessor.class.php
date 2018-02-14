@@ -29,9 +29,6 @@ use Ximdex\Utils\FsUtils;
 
 class QueryProcessor {
 
-	private function __construct() {
-	}
-
 	static public function & getInstance($handler) {
 		$factory = new \Ximdex\Utils\Factory(dirname(__FILE__), 'QueryHandler_');
 		$qh = $factory->instantiate($handler);

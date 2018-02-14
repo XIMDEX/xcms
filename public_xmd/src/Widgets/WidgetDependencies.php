@@ -34,10 +34,6 @@ class WidgetDependencies
     static protected $deps = null;
     static protected $parsed = null;
 
-    private function __construct()
-    {
-    }
-
     protected static function loadDependencies()
     {
         if (self::$deps === null) {

@@ -47,7 +47,7 @@ CREATE TABLE `Batchs` (
   PRIMARY KEY  (`IdBatch`),
   KEY `IdBatchDown` (`IdBatchDown`),
   KEY `IdNodeGenerator` (`IdNodeGenerator`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -63,7 +63,7 @@ CREATE TABLE `ChannelFrames` (
   PRIMARY KEY  (`IdChannelFrame`),
   KEY `ChannelId` (`ChannelId`),
   KEY `NodeId` (`NodeId`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -86,7 +86,7 @@ CREATE TABLE `NodeFrames` (
   KEY `NodeId` (`NodeId`),
   KEY `VersionId` (`VersionId`),
   UNIQUE KEY `NodeVersion` (`NodeId`,`VersionId`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -103,7 +103,7 @@ CREATE TABLE `Pumpers` (
   `ProcessId` varchar(255) NOT NULL,
   PRIMARY KEY  (`PumperId`),
   KEY `IdServer` (`IdServer`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -118,7 +118,7 @@ CREATE TABLE `ServerErrorByPumper` (
   `WithError` int(12) unsigned NOT NULL,
   `UnactivityCycles` int(12) unsigned NOT NULL,
   PRIMARY KEY  (`ErrorId`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -134,7 +134,7 @@ CREATE TABLE `ServerFrames` (
   `State` varchar(255) default 'DUE',
   `Error` varchar(255) default NULL,
   `ErrorLevel` tinyint(3) unsigned NOT NULL default '0',
-  `RemotePath` blob,
+  `RemotePath` TEXT,
   `FileName` varchar(255) NOT NULL default '',
   `Retry` int(12) unsigned default '0',
   `Linked` tinyint(3) unsigned NOT NULL default '1',
@@ -144,14 +144,12 @@ CREATE TABLE `ServerFrames` (
   `IdChannelFrame` int(12) default '0',
   `FileSize` int(11) unsigned NOT NULL default '0',
   PRIMARY KEY  (`IdSync`),
-  UNIQUE KEY `IdSync` (`IdSync`),
-  KEY `IdSync_2` (`IdSync`,`IdServer`,`DateUp`,`DateDown`,`State`),
   KEY `IdNodeFrame` (`IdNodeFrame`),
   KEY `IdBatchUp` (`IdBatchUp`),
   KEY `IdServer` (`IdServer`),
   KEY `PumperId` (`PumperId`),
   KEY `IdChannelFrame` (`IdChannelFrame`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='XimDEX Table Synchronization';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='XimDEX Table Synchronization';
 
 -- --------------------------------------------------------
 
@@ -175,7 +173,7 @@ CREATE TABLE `SynchronizerStats` (
   `Time` int(11) unsigned NOT NULL,
   `Comment` varchar(255) NOT NULL,
   PRIMARY KEY  (`IdStat`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Statistics module synchronization';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Statistics module synchronization';
 
 
 -- --------------------------------------------------------
@@ -200,7 +198,7 @@ CREATE TABLE `PublishingReport` (
   `IdBatch` int(11) default NULL, 
   `IdParentServer` int(11) default NULL, 
 PRIMARY KEY  (`IdReport`) 
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Publishing report'; 
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Publishing report'; 
 
 --
 -- Table Structure for `NodesToPublish` table
@@ -219,7 +217,7 @@ CREATE TABLE `NodesToPublish` (
   `ForcePublication` tinyint(3) unsigned NOT NULL default '0',
   `DeepLevel` int(12) unsigned NOT NULL default '0',
   PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Nodes to push into publishing pool';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Nodes to push into publishing pool';
 
 
 -- Action "Publish a server massively"

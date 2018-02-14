@@ -44,8 +44,7 @@ class Action_addlangxmlcontainer extends ActionAbstract {
 			die(_("Error with parameters"));
 		}
 
-
-		$idTemplate = $this->_getVisualTemplate($idNode);
+		$idTemplate = $this->getVisualTemplate($idNode);
 		$template = new Node($idTemplate);
         
 		// Getting languages
@@ -95,13 +94,13 @@ class Action_addlangxmlcontainer extends ActionAbstract {
 		$languages = $this->request->getParam('languages');
 		$aliases = $this->request->getParam('aliases');
 
-
-		if (empty($languages)) {	
+		if (empty($languages))	
 			$this->messages->add(_('There are no specified languages'), MSG_TYPE_ERROR);
-		} else {
+		else {
 
 			$node = new Node($nodeid);
 			if (!($node->get('IdNode') > 0)) {
+			    
 				$msg = _('The selected node was not found:') . $nodeid;
 				Logger::error($msg);
 				$this->messages->add($msg, MSG_TYPE_ERROR);
@@ -110,14 +109,16 @@ class Action_addlangxmlcontainer extends ActionAbstract {
 			}
 
 			$allowedNodeTypes = $node->nodeType->GetAllowedNodeTypes();
-			if (count($allowedNodeTypes) == 1) {
+			if (count($allowedNodeTypes) == 1)
 				$idNodeType = $allowedNodeTypes[0]['nodetype'];
-			} else {
+			else {
+			    
 				Logger::error(_('More than one allowed nodetype has been found for this folder, it is recovered returning to the first'));
 				$idNodeType = $allowedNodeTypes[0]['nodetype'];
 			}
 
 			if (!isset($idNodeType)) {
+			    
 				$msg = sprintf(_('The node with id %d has not any nodeAllowedContent with necessary features to store a language list'), $nodeid);
 				Logger::error($msg);
 				$this->messages->add($msg, MSG_TYPE_ERROR);
@@ -131,6 +132,7 @@ class Action_addlangxmlcontainer extends ActionAbstract {
 			$allLanguages = $language->find('IdLanguage', NULL, NULL, MONO);
 
 			if (!$allLanguages) {
+			    
 				$msg = _('No language has been found');
 				Logger::error($msg);
 				$this->messages->add($msg, MSG_TYPE_ERROR);
@@ -146,6 +148,7 @@ class Action_addlangxmlcontainer extends ActionAbstract {
 				if ($idNode > 0) {
 
 					if (in_array($idLanguage, $languages)) {
+					    
 						//update
 						$data = array(
 							'ID' => $idNode,
@@ -153,6 +156,7 @@ class Action_addlangxmlcontainer extends ActionAbstract {
 						);
 
 						if (isset($aliases[$idLanguage])) {
+						    
 							$data['CHILDRENS'][] = array(
 								'NODETYPENAME' => 'NODENAMETRANSLATION',
 								'IDLANG' => $idLanguage,
@@ -162,13 +166,15 @@ class Action_addlangxmlcontainer extends ActionAbstract {
 						$baseIO = new \Ximdex\IO\BaseIO();
 						$result = $baseIO->update($data);
 
-						if (!$result > 0) {
+						if ($result <= 0) {
+						    
 							reset($baseIO->messages->messages);
-							while(list(, $message) = each($baseIO->messages->messages)) {
+							while(list(, $message) = each($baseIO->messages->messages))
 								$this->messages->messages[] = $message;
-							}
+							break;
 						}
 					} else {
+					    
 						//delete
 						$data = array(
 							'ID' => $idNode,
@@ -176,17 +182,18 @@ class Action_addlangxmlcontainer extends ActionAbstract {
 						);
 						$baseIO = new \Ximdex\IO\BaseIO();
 						$result = $baseIO->delete($data);
-						if (!$result > 0) {
+						if ($result <= 0) {
 
 							reset($baseIO->messages->messages);
-							while(list(, $message) = each($baseIO->messages->messages)) {
+							while(list(, $message) = each($baseIO->messages->messages))
 								$this->messages->messages[] = $message;
-							}
+							break;
 						}
 					}
 				} else {
 
 					if (in_array($idLanguage, $languages)) {
+					    
 						// add
 						$data = array(
 							'NODETYPENAME' => $nodeType->get('Name'),
@@ -200,6 +207,7 @@ class Action_addlangxmlcontainer extends ActionAbstract {
 						);
 						
 						if (isset($aliases[$idLanguage])) {
+						    
 							$data['CHILDRENS'][] = array(
 													'NODETYPENAME' => 'NODENAMETRANSLATION',
 													'IDLANG' => $idLanguage,
@@ -208,35 +216,39 @@ class Action_addlangxmlcontainer extends ActionAbstract {
 
 						$baseIO = new \Ximdex\IO\BaseIO();
 						$result = $baseIO->build($data);
-						if (!$result > 0) {
+						if ($result <= 0) {
+						    
 							reset($baseIO->messages->messages);
-							while(list(, $message) = each($baseIO->messages->messages)) {
-								$this->messages->messages[] = $message; } }
+							while(list(, $message) = each($baseIO->messages->messages))
+								$this->messages->messages[] = $message;
+							break;
+					   }
 					}
 				}
 			}
 		}
 
-		if (isset($result) && $result > 0) {
+		if (isset($result) && $result > 0)
 			$this->messages->add(_('Changes have been successfully done'), MSG_TYPE_NOTICE);
-		}
 
-        $values = array('messages' => $this->messages->messages, "parentID" =>$nodeid );
-
+        $values = array('messages' => $this->messages->messages, "parentID" => $nodeid);
         $this->sendJSON($values);
 	}
 
-	private function _getVisualTemplate($idNode) {
+	private function getVisualTemplate($idNode) {
+	    
 		$node = new Node($idNode);
 		if(count($node->GetChildren())){
+		    
 			foreach ($node->GetChildren() as $childID) {
+			    
 			     $child = new StructuredDocument($childID);
 			     $idTemplate = $child->get('IdTemplate');
-			     if ($idTemplate) {
+			     if ($idTemplate)
 			     	return $idTemplate;
-			     }
 			}
 	    } else {
+	        
 			$reltemplate = new \Ximdex\Models\RelTemplateContainer();
 			$idTemplate = $reltemplate->getTemplate($idNode);
 			return $idTemplate;
@@ -245,13 +257,17 @@ class Action_addlangxmlcontainer extends ActionAbstract {
 	}
 
 	private function _hasLang($idNode, $idLanguage) {
+	    
 		$node = new Node($idNode);
 		$children = $node->GetChildren();
 
 		if (is_array($children)) {
+		    
 			foreach ($children as $idChild) {
-				$children = new StructuredDocument($idChild);
-				if ($children->GetLanguage() == $idLanguage) {
+			    
+				$childrenDoc = new StructuredDocument($idChild);
+				if ($childrenDoc->GetLanguage() == $idLanguage) {
+				    
 					$node = new Node($idChild);
 					return array(
 						'idChildren' => $idChild,

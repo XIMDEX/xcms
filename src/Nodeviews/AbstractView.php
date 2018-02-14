@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,34 +25,42 @@
  * @version $Revision$
  */
 
-
 namespace Ximdex\Nodeviews;
 
 use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
 use Ximdex\Logger;
 
-
 abstract class AbstractView
-{
-
+{   
+    public function transform()
+    {
+        Logger::info('Transforming with ' . class_basename($this));
+    }
+    
     public function storeTmpContent($content)
     {
         //Si el contenido es una variable que contiene false ha ocurrido un error
-        if ($content !== false) {
-            $basePath = XIMDEX_ROOT_PATH . App::getValue('TempRoot') . "/";
+        if ($content !== false)
+        {
+            $basePath = XIMDEX_ROOT_PATH . App::getValue('TempRoot') . '/';
             $pointer = FsUtils::getUniqueFile($basePath);
-            if (isset($_GET["nodeid"])) {
-                if (FsUtils::file_put_contents($basePath . "preview_" . $_GET["nodeid"] . "_" . $pointer, $content)) {
-                    return $basePath . "preview_" . $_GET["nodeid"] . "_" . $pointer;
-                }
-            } else {
-                if (FsUtils::file_put_contents($basePath . $pointer, $content)) {
-                    return $basePath . $pointer;
-                }
+            if (isset($_GET["nodeid"]))
+            {
+                $file = $basePath . "preview_" . $_GET["nodeid"] . '_' . $pointer;
+            }
+            else
+            {
+                $file = $basePath . $pointer;
+            }
+            Logger::info('Storing temporal file in ' . $file);
+            if (FsUtils::file_put_contents($file, $content))
+            {
+                Logger::info($file . ' has been saved');
+                return $file;
             }
         }
-        Logger::error('An error has happened trying to store the content');
+        Logger::error('An error has happened trying to store the temporal file with content ' . $file);
         return NULL;
     }
 

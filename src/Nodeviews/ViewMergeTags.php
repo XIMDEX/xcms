@@ -24,15 +24,13 @@
  *  @version $Revision$
  */
 
-
 namespace Ximdex\Nodeviews;
-
 
 use Ximdex\Logger;
 use Ximdex\Utils\FsUtils;
 
-
 class ViewMergeTags extends AbstractView implements IView {
+    
 	protected $query1 = '';
 	protected $query2 = '';
 	protected $merge = '';	
@@ -51,6 +49,7 @@ class ViewMergeTags extends AbstractView implements IView {
 		$xpathExp = new \DOMXPath($domDocument);
 		
 		if ($xpathExp) {
+		    
 	 		$query1Result = $xpathExp->query($this->query1);
 	 		$query2Result = $xpathExp->query($this->query2);
 	 		
@@ -59,6 +58,7 @@ class ViewMergeTags extends AbstractView implements IView {
 			
 	 		$mergeLength = $mergeItem->length;
 	 		if ($mergeLength != 1) {
+	 		    
 	 			Logger::error('Wrong count of items detected, returning unmodified document');
 	 			return $pointer;
 	 		}
@@ -67,8 +67,10 @@ class ViewMergeTags extends AbstractView implements IView {
 			$childNodes = $element->childNodes;
 			$childNodesLength = $childNodes->length;
 			for ($j = 0; $j < $childNodesLength; $j++) {
+			    
 				$item = $childNodes->item($j);
 				if (strtolower(get_class($item)) == 'domtext') {
+				    
 					$element->removeChild($item);
 				}
 			}

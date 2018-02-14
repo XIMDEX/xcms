@@ -103,6 +103,12 @@ padding:0!important;
     border-radius: 0 0 5px 5px;
 }
 
+.tarjeta hr
+{
+	border: 1px solid #ddd;
+	width: 100%;
+}
+
 .input-select select{
     border:2px solid lightgray!important;
     height:40px;

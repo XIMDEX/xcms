@@ -159,7 +159,9 @@ class ViewFilterMacrosPreview extends ViewFilterMacros implements IView
         if ($isStructuredDocument) {
             
             if ($this->mode == 'dinamic')
+            {
                 return "javascript:parent.loadDivsPreview(" . $idNode . ")";
+            }
             else {
                 
                 $query = App::get('\Ximdex\Utils\QueryManager');

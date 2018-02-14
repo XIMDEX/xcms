@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,13 +25,11 @@
  * @version $Revision$
  */
 
-
 namespace Ximdex\Models;
 
 use Ximdex\Logger;
 use Ximdex\Models\ORM\PipelinesOrm;
 use Ximdex\Runtime\App;
-
 
 /**
  *
@@ -68,10 +67,12 @@ class Pipeline extends PipelinesOrm
         $pipeNodeType = new PipeNodeTypes();
         $result = $pipeNodeType->find('IdNodeType', 'IdPipeline = %s', array($this->get('id')), MONO);
         if (count($result) === 1) {
+            
             $this->idNodeType = $result[0];
         }
 
         if (App::getValue('IdDefaultWorkflow') == $this->get('IdNode')) {
+            
             $this->isWorkflowMaster = true;
         }
     }
@@ -84,11 +85,11 @@ class Pipeline extends PipelinesOrm
      */
     public function loadByNodeType($idNodeType)
     {
-        //$this->Pipeline();
         $this->__construct();
 
         $nodeType = new NodeType($idNodeType);
         if (!($nodeType->get('IdNodeType') > 0)) {
+            
             Logger::error('El nodetype especificado para el pipeline no existe: ' . $idNodeType);
             $this->messages->add(_("An error has occurred while the document's transformation and the process cannot continue"), MSG_TYPE_ERROR);
             return false;
@@ -96,7 +97,7 @@ class Pipeline extends PipelinesOrm
 
         $result = $this->find('id', 'IdNodeType = %s', array($idNodeType));
         if (count($result) == 1) {
-            //$this->Pipeline($result[0]);
+            
             $this->__construct($result[0]);
             return $this->get('id');
         }
@@ -118,11 +119,13 @@ class Pipeline extends PipelinesOrm
 
         $result = $this->find('id', 'IdNode = %s', array($idNode), MONO);
         if (count($result) > 1) {
+            
             Logger::warning("Se ha intentado cargar el pipeline con el idnode $idNode y se han encontrado multiples resultados, abortando operación");
             $this->messages->add(_("Se ha intentado cargar el pipeline con el idnode $idNode y se han encontrado multiples resultados, abortando operación"), MSG_TYPE_WARNING);
             return NULL;
         }
         if (count($result) === 0) {
+            
             Logger::warning("Se ha intentado cargar el pipeline con el idnode $idNode y no se han encontrado resultados, abortando operación");
             $this->messages->add(_("Se ha intentado cargar el pipeline con el idnode $idNode y no se han encontrado resultados, abortando operación"), MSG_TYPE_WARNING);
             return NULL;
@@ -135,6 +138,7 @@ class Pipeline extends PipelinesOrm
     public function initialize()
     {
         if (!($this->get('id')) > 0) {
+            
             return false;
         }
 
@@ -170,12 +174,12 @@ class Pipeline extends PipelinesOrm
     }
 
     /**
-     * (non-PHPdoc)
      * @see inc/helper/GenericData#set($attribute, $value)
      */
-    function set($key, $value)
+    public function set($key, $value)
     {
         if ($key == 'IdNodeType') {
+            
             $this->idNodeType = $value;
             return;
         }
@@ -183,25 +187,25 @@ class Pipeline extends PipelinesOrm
     }
 
     /**
-     * (non-PHPdoc)
      * @see inc/helper/GenericData#get($attribute)
      */
-    function get($key)
+    public function get($key)
     {
         if ($key == 'IdNodeType') {
+            
             return $this->idNodeType;
         }
         return parent::get($key);
     }
 
     /**
-     * (non-PHPdoc)
      * @see inc/helper/GenericData#add()
      */
-    function add()
+    public function add()
     {
         $idPipeline = parent::add();
         if ($idPipeline > 0) {
+            
             $pipeNodeType = new PipeNodeTypes();
             $pipeNodeType->set('IdPipeline', $idPipeline);
             $pipeNodeType->set('IdNodeType', $this->get('IdNodeType'));
@@ -211,47 +215,57 @@ class Pipeline extends PipelinesOrm
     }
 
     /**
-     * (non-PHPdoc)
      * @see inc/helper/GenericData#update()
      */
-    function update()
+    public function update()
     {
         $pipelineChanged = false;
         $pipeNodeType = new PipeNodeTypes();
         if ($this->idNodeType > 0) {
+            
             $result = $pipeNodeType->find('id, IdNodeType', 'IdPipeline = %s', array($this->get('id')));
             if (count($result) === 1) {
+                
                 $oldNodeType = $result[0]['IdNodeType'];
                 $pipeNodeType = new PipeNodeTypes($result[0]['id']);
                 $pipeNodeType->set('IdNodeType', $this->idNodeType);
                 $pipelineChanged = $pipeNodeType->update();
             } else {
+                
                 $pipeNodeType = new PipeNodeTypes();
                 $pipeNodeType->set('IdPipeline', $this->get('id'));
                 $pipeNodeType->set('IdNodeType', $this->get('IdNodeType'));
                 $pipelineChanged = $pipeNodeType->add();
             }
         } else {
+            
             $result = $pipeNodeType->find('id, IdNodeType', 'IdPipeline = %s', array($this->get('id')));
             if (count($result) === 1) {
+                
                 $oldNodeType = $result[0]['IdNodeType'];
                 $pipeNodeType = new PipeNodeTypes($result[0]['id']);
                 $pipelineChanged = $pipeNodeType->delete();
             }
         }
         if ($pipelineChanged) {
+            
             $oldNodeType = $result[0]['IdNodeType'];
             $node = new Node();
             if (isset($oldNodeType)) {
+                
                 $strVals[] = $oldNodeType;
             }
             if ($this->get('IdNodeType') > 0) {
+                
                 $strVals[] = $this->get('IdNodeType');
             }
             if (!empty($strVals)) {
+                
                 $nodes = $node->find('IdNode', 'IdNodeType IN (%s)', array(implode(', ', $strVals)), MONO, false);
                 if (!empty($nodes)) {
+                    
                     foreach ($nodes as $idNode) {
+                        
                         $node = new Node($idNode);
                         $idStatus = $node->getFirstStatus();
                         $node->set('IdState', $idStatus);
@@ -265,16 +279,18 @@ class Pipeline extends PipelinesOrm
     }
 
     /**
-     * (non-PHPdoc)
      * @see inc/helper/GenericData#delete()
      */
-    function delete($recursive = false)
+    public function delete($recursive = false)
     {
         if ($recursive) {
+            
             echo "\nborrando en cascada";
             $this->processes->reset();
             while ($process = $this->processes->next()) {
+                
                 while ($transition = $process->transitions->next()) {
+                    
                     $transition->delete();
                 }
                 $process->delete();
@@ -283,6 +299,7 @@ class Pipeline extends PipelinesOrm
         $pipeNodeType = new PipeNodeTypes();
         $result = $pipeNodeType->find('id', 'IdPipeline = %s', array($this->get('id')));
         if (count($result) === 1) {
+            
             $pipeNodeType = new PipeNodeTypes($result[0]);
             $pipeNodeType->delete();
         }
@@ -295,7 +312,7 @@ class Pipeline extends PipelinesOrm
      *
      * @param $oldPipeline
      */
-    function activatePipelineForNodes($oldPipeline)
+    public function activatePipelineForNodes($oldPipeline)
     {
         $pipeline = new Pipeline();
         $pipeline->loadByIdNode($oldPipeline);
@@ -313,8 +330,4 @@ class Pipeline extends PipelinesOrm
         $db->Execute($query);
 
     }
-
-
 }
-
-?>

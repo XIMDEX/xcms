@@ -225,31 +225,31 @@ class DexPumper {
 	}
 
 	private function RenameFile($file) {
+	    
 		$initialDirectory = $this->server->get('InitialDirectory');
 		$remotePath = $file['RemotePath'];
 		$IdSync = (int) $file['IdSync'];
 		$fileName =  $file['FileName'];
 
-		$targetFolder = "{$initialDirectory}{$remotePath}";
-		$originFile = "{$targetFolder}/.{$IdSync}_{$fileName}";
+		$targetFolder = "{$initialDirectory}{$remotePath}/";
+		$originFile = "{$targetFolder}.{$IdSync}_{$fileName}";
 		$targetFile = $fileName;
 
 		$this->info("RenameFile [{$targetFolder}] $originFile -> $targetFile ");
-
 
 		return $this->taskRename($originFile, $targetFolder,  $targetFile);
 	}
 
 	private function getFilesToRename($IdBatchUp, $IdServer) {
+	    
 		$IdSync = (int)  $this->serverFrame->get('IdSync');
 		$this->info("ServerFrame $IdSync Rename hidden file to final file ");
-
 
 		$fields = 'IdSync, RemotePath, FileName';
 		$state_pumped = " state = 'Pumped' ";
 		$conditions = "{$state_pumped} AND IdBatchUp = %s AND IdServer = %s ";
 
-		return $this->serverFrame->find($fields, $conditions,  array($IdBatchUp,$IdServer) , MULTI, false );
+		return $this->serverFrame->find($fields, $conditions,  array($IdBatchUp, $IdServer) , MULTI, false);
 	}
 
 	private function updateStateFiles($IdBatchUp, $IdServer) {
@@ -369,7 +369,7 @@ class DexPumper {
 	private function taskUpload($localFile, $baseRemoteFolder, $relativeRemoteFolder, $remoteFile) {
 
 
-		$this->info("Copying $localFile in {$baseRemoteFolder}{$relativeRemoteFolder}{$remoteFile}");
+		$this->info("Copying $localFile in {$baseRemoteFolder}{$relativeRemoteFolder}/{$remoteFile}");
                 $this->getHostConnection();
 		if ( !$this->taskBasic($baseRemoteFolder, $relativeRemoteFolder) ) {
 			return false;
@@ -386,23 +386,24 @@ class DexPumper {
 
 		return true;
 	}
-	private function taskDelete($remoteFile) {
+	
+	private function taskDelete($remoteFile)
+	{
 		return $this->connection->rm($remoteFile);
 	}
 
-	private function taskRename($targetFile, $targetFolder, $newFile) {
-		$msg_not_rename= "Could not rename the target document: {$targetFile} -> {$targetFolder}/{$newFile} ";
-                $this->getHostConnection();
-		if ( !$this->taskBasic($targetFolder, "") ) {
+	private function taskRename($targetFile, $targetFolder, $newFile)
+	{
+        $this->getHostConnection();
+		if (!$this->taskBasic($targetFolder, ''))
+		{
 			return false;
 		}
-
-
-		if (!$this->connection->rename($targetFile, $targetFolder . '/' . $newFile)) {
-				$this->error($msg_not_rename);
-			   return false;
+		if (!$this->connection->rename($targetFile, $targetFolder . $newFile))
+		{
+		    $this->error("Could not rename the target document: {$targetFile} -> {$targetFolder}{$newFile} ");
+            return false;
 		}
-
 		return true;
 	}
 
