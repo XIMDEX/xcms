@@ -134,11 +134,20 @@ class PipelineManager
      * @param $idVersion
      * @param $processName
      * @param $args
-     * @return null|string
+     * @return bool|string
      */
     function getCacheFromProcessAsContent($idVersion, $processName, $args)
     {
-        return FsUtils::file_get_contents($this->getCacheFromProcess($idVersion, $processName, $args));
+        $res = FsUtils::file_get_contents($this->getCacheFromProcess($idVersion, $processName, $args));
+        if ($res === false)
+        {
+            Logger::error('Cannot load the cache from process: ' . $processName . ' for version: ' . $idVersion);
+        }
+        else
+        {
+            Logger::info('Loaded cache from process: ' . $processName . ' for version: ' . $idVersion, true);
+        }
+        return $res;
     }
 
     /**

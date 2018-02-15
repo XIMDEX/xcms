@@ -343,14 +343,6 @@ class DataFactory
             {                
                 return NULL;
             }
-            
-            // delete cache if the parameter $delete is true
-            $pipelineManager = new PipelineManager();
-            if ($delete)
-            {
-                $pipelineManager->deleteCache($idVersion);
-            }
-            
             $idNode = $version->get('IdNode');
             $node = new Node($idNode);
             if (!($node->get('IdNode') > 0))
@@ -361,6 +353,14 @@ class DataFactory
             {
                 return NULL;
             }
+            
+            // delete cache if the parameter $delete is true
+            $pipelineManager = new PipelineManager();
+            if ($delete)
+            {
+                $pipelineManager->deleteCache($idVersion);
+            }
+            
             $channels = $node->GetChannels();
             if ($channels)
             {
@@ -406,7 +406,7 @@ class DataFactory
         $this->ClearError();
 
         if (!($this->nodeID > 0)) {
-            
+                
             $this->SetError(1);
             return false;
         }
@@ -414,8 +414,7 @@ class DataFactory
         if (is_null($versionID) && is_null($subVersion)) {
             
             $idVersion = $this->AddVersion(NULL, NULL, $content, $commitNode);
-            if ($this->_generateCaches($idVersion) === false)
-                return false;
+            $this->_generateCaches($idVersion);
             return $idVersion;
         }
 

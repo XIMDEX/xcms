@@ -27,7 +27,6 @@
 namespace Ximdex\Parsers;
 
 use Ximdex\Logger;
-use Ximdex\Runtime\App;
 use Ximdex\Runtime\DataFactory;
 use Ximdex\Models\Dependencies;
 use Ximdex\Deps\DepsManager;
@@ -335,13 +334,19 @@ class ParsingDependencies
         if ($channels)
             foreach ($channels as $idChannel) {
                 
+                /*
                 $postContent = $pipelineManager->getCacheFromProcessAsContent($idVersion, 'StrDocToDexT', 
                     array('CHANNEL' => $idChannel, 'TRANSFORMER' => $transformer[0], 'DISABLE_CACHE' => App::getValue("DisableCache")));
-    
+                */
+                // transforming with the given content and no cache
+                $postContent = $pipelineManager->getCacheFromProcessAsContent($idVersion, 'StrDocToDexT',
+                    array('CHANNEL' => $idChannel, 'TRANSFORMER' => $transformer[0], 'DISABLE_CACHE' => true, 'CONTENT' => $content));
+                    
                 // post-transformation dependencies
                 $pathToByChannel[$idChannel] = self::getPathTo($postContent, $idNode);
                 $pathTos = array_merge($pathTos, $pathToByChannel[$idChannel]);
                 $res = self::getDotDot($postContent, $idServer);
+                
                 $dotDots = array_merge($dotDots, $res);
             }
 

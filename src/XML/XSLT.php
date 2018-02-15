@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -23,21 +24,17 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
+
 namespace Ximdex\XML;
 
 use Ximdex\Logger;
 
 class XSLT
 {
-
     protected $xsltprocessor;
-
     protected $xml;
-
     protected $xsl;
-
     protected $xsd;
-    
     private $errors = [];
 
     public function __construct()
@@ -117,10 +114,10 @@ class XSLT
     public function validate()
     {}
 
-    public function process()
+    public function process(bool $showLog = true)
     {
         $res = @$this->xsltprocessor->transformToXML($this->xml);
-        if ($res === false)
+        if ($res === false and $showLog)
         {
             $error = 'Cannot transform the XML document: ' . \Ximdex\Utils\Messages::error_message('XSLTProcessor::transformToXml(): ');
             Logger::error($error);

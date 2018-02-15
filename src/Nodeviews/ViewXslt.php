@@ -149,7 +149,7 @@ class ViewXslt extends AbstractView
             $xsltHandler->setParameter(array($param => $value));
         }
 
-        $content = $xsltHandler->process();
+        $content = $xsltHandler->process(false);
         
         if (App::debug())
         {

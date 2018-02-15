@@ -362,7 +362,7 @@ class PipeCache extends PipeCachesOrm
                 Logger::error('PipeCache: An error has ocurred while storing the cache file information');
                 return false;
             }
-            Logger::info('PipeCache: Cache information was successfusly saved', true);
+            Logger::info('PipeCache: Cache information was successfusly saved');
         }
         else
         {    
