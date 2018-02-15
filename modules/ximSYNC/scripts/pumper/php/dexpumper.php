@@ -351,14 +351,18 @@ class DexPumper {
 		return true;
 	}
 
-	private function taskBasic($baseRemoteFolder, $relativeRemoteFolder) {
+	private function taskBasic($baseRemoteFolder, $relativeRemoteFolder)
+	{
 		$msg_not_found_folder =  _('Could not find the base folder').": {$baseRemoteFolder}";
 		$msg_cant_create_folder = _('Could not find or create the destination folder')." {$baseRemoteFolder}{$relativeRemoteFolder}";
 
-		if (!$this->connection->cd($baseRemoteFolder)) {
+		if (!$this->connection->cd($baseRemoteFolder))
+		{    
 			$this->error($msg_not_found_folder);
 		}
-		if (!$this->connection->mkdir($baseRemoteFolder . $relativeRemoteFolder, 0755, true)) {
+		if (!$this->connection->mkdir($baseRemoteFolder . $relativeRemoteFolder, 0755, true))
+		{
+		    
 			$this->error($msg_cant_create_folder);
 			return false;
 		}
@@ -367,7 +371,6 @@ class DexPumper {
 	}
 
 	private function taskUpload($localFile, $baseRemoteFolder, $relativeRemoteFolder, $remoteFile) {
-
 
 		$this->info("Copying $localFile in {$baseRemoteFolder}{$relativeRemoteFolder}/{$remoteFile}");
                 $this->getHostConnection();

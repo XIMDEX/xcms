@@ -28,5 +28,3 @@ pi.php
 /.buildpath
 /.project
 /.data
-/scheduler.lck
-/.gitignore

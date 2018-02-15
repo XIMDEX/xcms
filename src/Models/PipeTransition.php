@@ -221,6 +221,18 @@ class PipeTransition extends PipeTransitionsOrm
 				Logger::error('Could not store the cache for transition with version ' . $version);
 				return false;
 			}
+			else
+			{
+			    Logger::info('Cache was generated/reversed successfusly for version: ' . $idVersion, true);
+			}
+		}
+		if ($transformedPointer)
+		{
+		    Logger::info('Pipeline Transition has been successfusly processed for version: ' . $idVersion . ' and function: ' . $function, true);
+		}
+		else
+		{
+		    Logger::error('Pipeline Transition has not been processed for version: ' . $idVersion . ' and function: ' . $function);
 		}
 		return $transformedPointer;
 	}

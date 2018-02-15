@@ -333,7 +333,7 @@ class DataFactory
     }
 
 
-    function _generateCaches($idVersion)
+    function _generateCaches($idVersion, bool $delete = false)
     {
         $res = true;
         if (\Ximdex\Modules\Manager::isEnabled('ximSYNC'))
@@ -343,6 +343,14 @@ class DataFactory
             {                
                 return NULL;
             }
+            
+            // delete cache if the parameter $delete is true
+            $pipelineManager = new PipelineManager();
+            if ($delete)
+            {
+                $pipelineManager->deleteCache($idVersion);
+            }
+            
             $idNode = $version->get('IdNode');
             $node = new Node($idNode);
             if (!($node->get('IdNode') > 0))
@@ -356,7 +364,6 @@ class DataFactory
             $channels = $node->GetChannels();
             if ($channels)
             {
-                $pipelineManager = new PipelineManager();
                 foreach ($channels as $idChannel)
                 {
                     Logger::info("Generation cache for version $idVersion and the channel $idChannel");
@@ -432,7 +439,7 @@ class DataFactory
                 
                 $this->indexNode($idVersion, $commitNode);
             }
-            $this->_generateCaches($idVersion);
+            $this->_generateCaches($idVersion, true);
 
             return $result;
         }

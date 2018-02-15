@@ -87,25 +87,25 @@ class PipeCache extends PipeCachesOrm
                     self::__construct($idCache);
                     if ($this->get('id') > 0)
                     {
-                        Logger::info("PipeCache: Cache was correctly estimated for a previous version. Version: $idVersion Transition: $idTransition");
+                        Logger::info("PipeCache: Cache was correctly estimated for a previous version. Version: $idVersion Transition: $idTransition"
+                                , true);
                         return $this->_getPointer();
                     }
                     else
                     {
                         
-                        Logger::fatal("PipeCache: A cache was estimated but it doesn't exist. Version: $idVersion Transition: $idTransition");
+                        Logger::error("PipeCache: A cache was estimated but it doesn't exist. Version: $idVersion Transition: $idTransition");
                         return null;
                     }
                 }
                 else
                 {
-                    Logger::info('PipeCache: there is a problem with the cache properties');
+                    Logger::warning('PipeCache: there is a problem with the cache properties');
                 }
             }
             else
             {
                 Logger::info("PipeCache: Previous cache not found for version $idVersion and transition $idTransition");
-                //Logger::info("PipeCache: Previous cache not found for IdVersion $idVersion, IdTransition $idTransition, arguments " . str_replace("\n", " ", print_r($args, true)));
             }
         }
         else
@@ -362,7 +362,7 @@ class PipeCache extends PipeCachesOrm
                 Logger::error('PipeCache: An error has ocurred while storing the cache file information');
                 return false;
             }
-            Logger::info('PipeCache: Cache information was successfusly saved');
+            Logger::info('PipeCache: Cache information was successfusly saved', true);
         }
         else
         {    
