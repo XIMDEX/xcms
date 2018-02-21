@@ -882,89 +882,108 @@ class Node extends NodesOrm
         if ($this->get('IdNode') > 0) {
 
             //validate HTML or XML valid contents (including XSL schemas)
-            if ($node) {
-                $res = true;
-
-                //TODO change global variable to another entity
-                $GLOBALS['errorsInXslTransformation'] = array();
-
-                $domDoc = new DOMDocument();
-                if ($node->getNodeType() == NodeTypeConstants::NODE_HT or $node->getNodeType() == NodeTypeConstants::RNG_VISUAL_TEMPLATE) {
+            if ($node)
+            {
+                if ($node->getNodeType() == NodeTypeConstants::NODE_HT or $node->getNodeType() == NodeTypeConstants::RNG_VISUAL_TEMPLATE
+                        or $node->getNodeType() == NodeTypeConstants::XSL_TEMPLATE or $node->getNodeType() == NodeTypeConstants::XML_DOCUMENT)
+                {
+                    $res = true;
                     
-                    //check the XML of the given RNG template content
-                    $res = @$domDoc->loadXML($content);
-                }
-                if ($node->getNodeType() == NodeTypeConstants::XSL_TEMPLATE
-                    or $node->getNodeType() == NodeTypeConstants::XML_DOCUMENT
-                ) {
-                    //check the valid XML template and dependencies
-                    $res = @$domDoc->loadXML($content);
-                    if ($res and $node->GetNodeName() != 'templates_include.xsl') {
-                        
-                        //dotdot dependencies only can be checked in templates under a server node
-                        $templatesNode = new Node($node->GetParent());
-                        if ($templatesNode->GetNodeType() == NodeTypeConstants::TEMPLATES_ROOT_FOLDER) {
-                            
-                            $projectNode = new Node($templatesNode->getParent());
-                            if ($projectNode->GetNodeType() == NodeTypeConstants::PROJECT)
-                                $idServer = false;
-                        }
-                        if (!isset($idServer))
-                            $idServer = $node->getServer();
-                        if ($idServer) {
-                            
-                            //check the dotdot dependencies
-                            ParsingDependencies::getDotDot($content, $idServer);
+                    //TODO change global variable to another entity
+                    $GLOBALS['errorsInXslTransformation'] = array();
+                    
+                    $domDoc = new DOMDocument();
+                    if ($node->getNodeType() == NodeTypeConstants::NODE_HT or $node->getNodeType() == NodeTypeConstants::RNG_VISUAL_TEMPLATE)
+                    {
+                        //check the XML of the given RNG template content
+                        $res = @$domDoc->loadXML($content);
+                    }
+                    elseif ($node->getNodeType() == NodeTypeConstants::XSL_TEMPLATE or $node->getNodeType() == NodeTypeConstants::XML_DOCUMENT)
+                    {
+                        //check the valid XML template and dependencies
+                        $res = @$domDoc->loadXML($content);
+                        if ($res and $node->GetNodeName() != 'templates_include.xsl')
+                        {
+                            //dotdot dependencies only can be checked in templates under a server node
+                            $templatesNode = new Node($node->GetParent());
+                            if ($templatesNode->GetNodeType() == NodeTypeConstants::TEMPLATES_ROOT_FOLDER)
+                            {
+                                $projectNode = new Node($templatesNode->getParent());
+                                if ($projectNode->GetNodeType() == NodeTypeConstants::PROJECT)
+                                    $idServer = false;
+                            }
+                            if (!isset($idServer))
+                            {
+                                $idServer = $node->getServer();
+                            }
+                            if ($idServer)
+                            {
+                                //check the dotdot dependencies
+                                ParsingDependencies::getDotDot($content, $idServer);
+                                if (isset($GLOBALS['parsingDependenciesError']) and $GLOBALS['parsingDependenciesError'])
+                                {
+                                    $this->messages->add($GLOBALS['parsingDependenciesError'], MSG_TYPE_WARNING);
+                                    Logger::warning('Parsing dotDot dependencies: ' . $GLOBALS['parsingDependenciesError'] . ' for IdNode: ' 
+                                            . $node->GetID() . ' (' . $node->GetDescription() . ')');
+                                    $GLOBALS['parsingDependenciesError'] = null;
+                                }
+                            }
+                            //check the pathto dependencies
+                            ParsingDependencies::getPathTo($content, $node->GetID());
                             if (isset($GLOBALS['parsingDependenciesError']) and $GLOBALS['parsingDependenciesError'])
                             {
                                 $this->messages->add($GLOBALS['parsingDependenciesError'], MSG_TYPE_WARNING);
-                                Logger::error('Parsing dotDot dependencies: ' . $GLOBALS['parsingDependenciesError'] . ' for IdNode: ' . $node->GetID() . ' (' 
-                                        . $node->GetDescription() . ')');
+                                Logger::warning('Parsing pathTo dependencies: ' . $GLOBALS['parsingDependenciesError'] . ' for IdNode: ' 
+                                        . $node->GetID() . ' (' . $node->GetDescription() . ')');
                                 $GLOBALS['parsingDependenciesError'] = null;
                             }
                         }
-                        //check the pathto dependencies
-                        ParsingDependencies::getPathTo($content, $node->GetID());
-                        if (isset($GLOBALS['parsingDependenciesError']) and $GLOBALS['parsingDependenciesError'])
+                    }
+                    if ($res === false)
+                    {
+                        Logger::error('Invalid XML for IdNode: ' . $node->GetID() . ' (' . $node->GetDescription() . ')');
+                        $error = \Ximdex\Utils\Messages::error_message('DOMDocument::loadXML(): ');
+                        if ($error)
                         {
-                            $this->messages->add($GLOBALS['parsingDependenciesError'], MSG_TYPE_WARNING);
-                            Logger::error('Parsing pathTo dependencies: ' . $GLOBALS['parsingDependenciesError'] . ' for IdNode: ' . $node->GetID() . ' (' 
-                                    . $node->GetDescription() . ')');
-                            $GLOBALS['parsingDependenciesError'] = null;
+                            $error = 'Invalid XML content for node: ' . $node->GetID() . ' (' . $error . ')';
+                            $this->messages->add($error, MSG_TYPE_WARNING);
+                            Logger::warning($error);
+                            $GLOBALS['errorsInXslTransformation'] = [$error];
+                        }
+                    }
+                    elseif ($node->getNodeType() == NodeTypeConstants::RNG_VISUAL_TEMPLATE)
+                    {
+                        //validation of the RNG schema for the RNG template
+                        $schema = FsUtils::file_get_contents(APP_ROOT_PATH . '/actions/xmleditor2/views/common/schema/relaxng-1.0.rng.xml');
+                        $rngValidator = new \Ximdex\XML\Validators\RNG();
+                        $res = $rngValidator->validate($schema, $content);
+                        if ($res === false)
+                        {
+                            $errors = $rngValidator->getErrors();
+                            if (!$errors and \Ximdex\Utils\Messages::error_message())
+                            {
+                                $error = \Ximdex\Utils\Messages::error_message('DOMDocument::relaxNGValidateSource(): ');
+                            }
+                            else
+                            {
+                                //only will be shown the first error (more easy to read)
+                                $error = $errors[0];
+                            }
+                            $this->messages->add($error, MSG_TYPE_WARNING);
+                            Logger::warning('Saving content: Invalid RNG template for node: ' . $node->GetID() . ' ' . $node->GetDescription()
+                                . ' (' . $error . ')');
+                            $GLOBALS['errorsInXslTransformation'] = [$error];
                         }
                     }
                 }
-                if ($res === false) {
-                    
-                    Logger::error('Invalid XML for IdNode: ' . $node->GetID() . ' (' . $node->GetDescription() . ')');
-                    $error = \Ximdex\Utils\Messages::error_message('DOMDocument::loadXML(): ');
-                    if ($error) {
-                        
-                        $error = 'Invalid XML content for node: ' . $node->GetID() . ' (' . $error . ')';
+                else if ($node->getNodeType() == NodeTypeConstants::HTML_LAYOUT_JSON)
+                {
+                    $res = json_decode($content);
+                    if ($res === null or $res === false)
+                    {
+                        $error = 'Invalid JSON schema';
                         $this->messages->add($error, MSG_TYPE_WARNING);
-                        Logger::error($error);
-                        $GLOBALS['errorsInXslTransformation'] = [$error];
-                    }
-                } elseif ($node->getNodeType() == NodeTypeConstants::RNG_VISUAL_TEMPLATE) {
-                    
-                    //validation of the RNG schema for the RNG template
-                    $schema = FsUtils::file_get_contents(APP_ROOT_PATH . '/actions/xmleditor2/views/common/schema/relaxng-1.0.rng.xml');
-                    $rngValidator = new \Ximdex\XML\Validators\RNG();
-                    $res = $rngValidator->validate($schema, $content);
-                    if ($res === false) {
-                        
-                        $errors = $rngValidator->getErrors();
-                        if (!$errors and \Ximdex\Utils\Messages::error_message())
-                            $error = \Ximdex\Utils\Messages::error_message('DOMDocument::relaxNGValidateSource(): ');
-                        else {
-                            
-                            //only will be shown the first error (more easy to read)
-                            $error = $errors[0];
-                        }
-                        $this->messages->add($error, MSG_TYPE_WARNING);
-                        Logger::error('Saving content: Invalid RNG template for node: ' . $node->GetID() . ' ' . $node->GetDescription()
-                            . ' (' . $error . ')');
-                        $GLOBALS['errorsInXslTransformation'] = [$error];
+                        Logger::warning('Saving content: Invalid JSON HTML schema for node: ' . $node->GetID() . ' ' . $node->GetDescription());
                     }
                 }
             }
@@ -1176,8 +1195,6 @@ class Node extends NodesOrm
 
     /**
      * Creates a new node and loads its ID in the class
-     */
-    /**
      * @param $name
      * @param $parentID
      * @param $nodeTypeID
@@ -1186,81 +1203,91 @@ class Node extends NodesOrm
      * @return bool|string
      */
     function CreateNode($name, $parentID, $nodeTypeID, $stateID = null, $subfolders = array())
-    {
-        $this->set('IdParent', (int)$parentID);
-        $this->set('IdNodeType', (int)$nodeTypeID);
+    { 
+        $this->set('IdParent', (int) $parentID);
+        $this->set('IdNodeType', (int) $nodeTypeID);
         $this->set('Name', $name);
         $this->set('CreationDate', time());
         $this->set('ModificationDate', time());
-
         $nodeType   = new NodeType($nodeTypeID);
         $parentNode = new Node($this->get('IdParent'));
 
         // Set IdState
-        if ($nodeType->get('IsPublishable')) {
+        if ($nodeType->get('IsPublishable'))
+        {
             $this->set('IdState', $this->getFirstStatus($parentID, $nodeTypeID));
-        }else{
+        }
+        else
+        {
             $this->set('IdState', NULL);
         }
 
         // check name, parentID and nodeTypeID
-        if (!($name || $parentID || $nodeTypeID)) {
+        if (!($name || $parentID || $nodeTypeID))
+        {
             $this->SetError(3);
             $this->messages->add(_('The name, parent or nodetype is missing'), MSG_TYPE_ERROR);
             return false;
         }
 
         // If nodetype is not existing, we are done
-        if (!($nodeType->get('IdNodeType')) > 0) {
+        if (!($nodeType->get('IdNodeType')) > 0)
+        {
             $this->messages->add(_('The specified nodetype does not exist'), MSG_TYPE_ERROR);
             $this->SetError(11);
             return false;
         }
 
         // Checking for correct name format
-        if (!$this->IsValidName($this->get('Name'), $this->get('IdNodeType'))) {
+        if (!$this->IsValidName($this->get('Name'), $this->get('IdNodeType')))
+        {
             $this->messages->add(_('Node name is not valid'), MSG_TYPE_ERROR);
             $this->SetError(9);
             return false;
         }
 
         // If parent does not exist, we are done
-        if (!($parentNode->get('IdNode') > 0)) {
+        if (!($parentNode->get('IdNode') > 0))
+        {
             $this->messages->add(_('Parent node does not exist'), MSG_TYPE_ERROR);
             $this->SetError(10);
             return false;
         }
 
         // check if already exist a node with the same name under the current parent
-        if (!($parentNode->GetChildByName($this->get('Name')) === false)) {
+        if (!($parentNode->GetChildByName($this->get('Name')) === false))
+        {
             $this->messages->add(_('There is already a node with this name under this parent'), MSG_TYPE_ERROR);
             $this->SetError(8);
             return false;
         }
-        // unset($parentNode);
 
         // node is not allowed to live there
-        if (!$this->checkAllowedContent($nodeTypeID, $parentID)) {
+        if (!$this->checkAllowedContent($nodeTypeID, $parentID))
+        {
             $this->messages->add(_('This node is not allowed under this parent'), MSG_TYPE_ERROR);
             $this->SetError(17);
             return false;
         }
 
         // Inserts the node in the Nodes table
-        parent::add();
+        if (parent::add() === false)
+            return false;
 
-        if (!($this->get('IdNode') > 0)) {
+        if (!($this->get('IdNode') > 0))
+        {
             $this->messages->add(_('Error creating the node'), MSG_TYPE_ERROR);
             $this->SetError(5);
             return false;
         }
-
         $this->SetID($this->get('IdNode'));
+        
         // Updating fastTraverse before the setcontent, because in the node cache this information is needed
         $this->UpdateFastTraverse();
 
         // All the args from this function call are passed to this nodetype create method.
-        if (is_object($this->class)) {
+        if (is_object($this->class))
+        {
             $argv = func_get_args();
             call_user_func_array(array(& $this->class, 'CreateNode'), $argv);
             if (is_object($this->class))
@@ -1269,8 +1296,10 @@ class Node extends NodesOrm
             }
         }
 
-        if ($this->messages->count(MSG_TYPE_ERROR) > 0) {
-            if ($this->get('IdNode') > 0) {
+        if ($this->messages->count(MSG_TYPE_ERROR) > 0)
+        {
+            if ($this->get('IdNode') > 0)
+            {
                 $this->delete();
                 return false;
             }
@@ -1280,19 +1309,18 @@ class Node extends NodesOrm
         $id_usuario = Session::get('userID');
         $user       = new User($id_usuario);
         $group      = new Group();
-
         $this->AddGroupWithRole($group->GetGeneralGroup());
 
         // get associated groups from the parent/s
-        if ($nodeType->get('CanAttachGroups')) {
-
+        if ($nodeType->get('CanAttachGroups'))
+        {
             $nearestId  = $this->GetNearest($parentNode);
             $nearest    = new Node($nearestId);
-
             $associated = $nearest->GetGroupList();
-
-            if (count($associated) > 0) {
-                foreach ($associated as &$group) {
+            if (count($associated) > 0)
+            {
+                foreach ($associated as &$group)
+                {
                     $this->AddGroupWithRole($group, $user->GetRoleOnGroup($group));
                 }
             }
@@ -1301,15 +1329,17 @@ class Node extends NodesOrm
         // if the create node type is Section (section inside a server)
         // it is checked if the user who created it belongs to some group
         // to include the relation between nodes and groups
-        if ($this->nodeType->get('Name') == 'Section') {
-            // $id_usuario = Session::get('userID');
-            // $user = new User($id_usuario);
+        if ($this->nodeType->get('Name') == 'Section')
+        {
             $grupos = $user->GetGroupList();
+            
             // The first element of the list $grupos is always the general group
             // this insertion is not considered as it the relation by default
-            if (is_array($grupos)) {
+            if (is_array($grupos))
+            {
                 reset($grupos);
-                while (list(, $grupo) = each($grupos)) {
+                while (list(, $grupo) = each($grupos))
+                {
                     $this->AddGroupWithRole($grupo, $user->GetRoleOnGroup($grupo));
                 }
             }
@@ -1323,24 +1353,31 @@ class Node extends NodesOrm
         /// Once created, its content by default is added.
         $dbObj = new \Ximdex\Runtime\Db();
 
-        if (!empty($subfolders) && is_array($subfolders)) {
+        if (!empty($subfolders) && is_array($subfolders))
+        {
             $subfolders_str = implode(",", $subfolders);
             $query = sprintf("SELECT NodeType, Name, State, Params FROM NodeDefaultContents WHERE IdNodeType = %d AND NodeType in (%s)", $this->get('IdNodeType'), $subfolders_str);
-        } else {
+        }
+        else
+        {
             $query = sprintf("SELECT NodeType, Name, State, Params FROM NodeDefaultContents WHERE IdNodeType = %d", $this->get('IdNodeType'));
         }
-
         $dbObj->Query($query);
 
-        while (!$dbObj->EOF) {
+        while (!$dbObj->EOF)
+        {
             $childNode = new Node();
             Logger::debug("Model::Node::CreateNode: Creating child name(" . $this->get('Name') . "), type(" . $this->get('IdNodeType') . ").");
-            $childNode->CreateNode($dbObj->GetValue('Name'), $this->get('IdNode'), $dbObj->GetValue('NodeType'), $dbObj->GetVAlue('State'));
+            $res = $childNode->CreateNode($dbObj->GetValue('Name'), $this->get('IdNode'), $dbObj->GetValue('NodeType'), $dbObj->GetVAlue('State'));
+            if ($res === false)
+            {
+                $this->messages->mergeMessages($childNode->messages);
+                return false;
+            }
             $dbObj->Next();
         }
 
         $node = new Node($this->get('IdNode'));
-        
         if ($nodeTypeID == NodeTypeConstants::TEMPLATES_ROOT_FOLDER)
         {
             // if the node is a type of templates folder or ximlets section, generates the templates_include.xsl inside
@@ -1371,7 +1408,6 @@ class Node extends NodesOrm
                 return false;
             }
         }
-        
         return $node->get('IdNode');
     }
 
@@ -2963,15 +2999,19 @@ class Node extends NodesOrm
     /**
      * Function which determines if the name $name is valid for the nodetype $nodeTypeID,
      * nodetype is optional, if it is not passed, it is loaded from current node
-     */
-    /**
      * @param $name
      * @param int $idNodeType
      * @return bool
      */
     function IsValidName($name, $idNodeType = 0)
     {
-        if ($idNodeType === 0) {
+        if ($idNodeType === 0)
+        {
+            if (!$this->nodeType)
+            {
+                $this->messages->add('Cannot obtain the node type in order to validate the node name', MSG_TYPE_ERROR);
+                return false;
+            }
             $idNodeType = $this->nodeType->get('IdNodeType');
         }
         $nodeType = new NodeType($idNodeType);
@@ -3009,62 +3049,70 @@ class Node extends NodesOrm
      */
     function checkAllowedContent($idNodeType, $parent = NULL, $checkAmount = true)
     {
-        if (is_null($parent)) {
-            if (is_null($this->get('IdParent'))) {
-                Logger::info(_('Error checking if the node is allowed - parent does not exist [1]'));
+        if (is_null($parent))
+        {
+            if (is_null($this->get('IdParent')))
+            {
+                Logger::error(_('Error checking if the node is allowed - parent does not exist [1]'));
                 return false;
             }
             $parent = $this->get('IdParent');
         }
         $parentNode = new Node($parent);
-        if (!($parentNode->GetID() > 0)) {
-            Logger::info(_('Error checking if the node is allowed - parent does not exist [2]'));
+        if (!$parentNode->GetID())
+        {
+            Logger::error(_('Error checking if the node is allowed - parent does not exist [2]'));
             $this->messages->add(_('The specified parent node does not exist'), MSG_TYPE_ERROR);
             return false;
         }
 
         $nodeAllowedContents = $parentNode->GetCurrentAllowedChildren();
-        if (!(count($nodeAllowedContents) > 0)) {
-            Logger::info(sprintf(_("The parent %s does not allow any nested node from him"), $parent));
+        if (!$nodeAllowedContents)
+        {
+            Logger::error(sprintf(_("The parent %s does not allow any nested node from him"), $parent));
             $this->messages->add(_('This node type is not allowed in this position'), MSG_TYPE_ERROR);
             return false;
         }
 
         $nodeType = new NodeType($idNodeType);
-        if (!($nodeType->GetID() > 0)) {
-            Logger::info(sprintf(_("The introduced nodetype %s does not exist"), $idNodeType));
+        if (!$nodeType->GetID())
+        {
+            Logger::error(sprintf(_("The introduced nodetype %s does not exist"), $idNodeType));
             $this->messages->add(_('The specified nodetype does not exist'), MSG_TYPE_ERROR);
             return false;
         }
 
-        if (!in_array($idNodeType, $nodeAllowedContents)) {
-            Logger::info("The nodetype $idNodeType is not allowed in the parent (idnode =" . $parent . ") - (idnodetype =" . $parentNode->get('IdNodeType') . ") which allowed nodetypes are" . print_r($nodeAllowedContents, true));
+        if (!in_array($idNodeType, $nodeAllowedContents))
+        {
+            Logger::error("The nodetype $idNodeType is not allowed in the parent (idnode = " . $parent . ") - (idnodetype = " 
+                    . $parentNode->get('IdNodeType') . ") which allowed nodetypes are: " . print_r($nodeAllowedContents, true));
             $this->messages->add(_('This node type is not allowed in this position'), MSG_TYPE_ERROR);
             return false;
         }
 
         $dbObj = new \Ximdex\Runtime\Db();
-        $query = sprintf('SELECT Amount from NodeAllowedContents'
-            . ' WHERE IdNodeType = %s AND NodeType = %s', $dbObj->sqlEscapeString($parentNode->nodeType->get('IdNodeType')), $dbObj->sqlEscapeString($idNodeType));
-
+        $query = sprintf('SELECT Amount from NodeAllowedContents WHERE IdNodeType = %s AND NodeType = %s'
+                , $dbObj->sqlEscapeString($parentNode->nodeType->get('IdNodeType')), $dbObj->sqlEscapeString($idNodeType));
         $dbObj->query($query);
-        if (!($dbObj->numRows > 0)) {
-            $this->messages->add(_('The node is not allowed inside this parent'), MSG_TYPE_WARNING);
+        if (!$dbObj->numRows)
+        {
+            $this->messages->add(_('The node is not allowed inside this parent'), MSG_TYPE_ERROR);
             return false;
         }
-        if (!$checkAmount) {
+        if (!$checkAmount)
+        {
             return true;
         }
 
         $amount = $dbObj->getValue('Amount');
-
-        if ($amount == 0) {
+        if ($amount == 0)
+        {
             return true;
         }
 
         $nodeTypesInParent = count($parentNode->GetChildren($idNodeType));
-
-        if ($amount > $nodeTypesInParent) {
+        if ($amount > $nodeTypesInParent)
+        {
             return true;
         }
 
@@ -3419,63 +3467,79 @@ class Node extends NodesOrm
     }
 
     /**
-     * @param null $type
-     * @return array|null|string
+     * @param $type
+     * @param int $schemaTypeID
+     * @return NULL|array|bool
      */
-    function getSchemas($type = NULL)
+    function getSchemas($type = NULL, int $schemaTypeID = null)
     {
-
         $idProject = $this->GetProject();
-
-        if (!($idProject > 0)) {
-            Logger::debug(_('It was not possible to obtain the node project folder'));
+        if (!$idProject)
+        {
+            Logger::error(_('It was not possible to obtain the node project folder'));
             return NULL;
         }
-
         $project = new Node($idProject);
-        if (!($project->get('IdNode') > 0)) {
-            Logger::debug('An unexistent project has be obtained');
+        if (!$project->getID())
+        {
+            Logger::error('A project with ID: ' . $idProject . ' could not be obtained');
             return NULL;
         }
-
-        $folder = new Node($project->GetChildByName(App::getValue("SchemasDirName")));
-        if (!($folder->get('IdNode') > 0)) {
-            Logger::debug('Pvd folder could not be obtained');
+        if ($schemaTypeID == NodeTypeConstants::HTML_LAYOUT_JSON)
+        {
+            $dirName = App::getValue('HTMLLayoutsDirName');
+        }
+        else
+        {
+            $dirName = App::getValue("SchemasDirName");
+        }
+        $folder = new Node($project->GetChildByName($dirName));
+        if (!$folder->getID())
+        {
+            Logger::debug('Schemas folder could not be obtained');
             return NULL;
         }
-
-        $schemas = $this->getProperty('DefaultSchema');
-
-        if (empty($schemas)) {
-            $schemas = NodeTypeConstants::VISUAL_TEMPLATE . ',' . NodeTypeConstants::RNG_VISUAL_TEMPLATE;
-        } else {
-            $schemas = implode(',', $schemas);
+        if (!$schemaTypeID)
+        {
+            $schemas = $this->getProperty('DefaultSchema');
+            if (empty($schemas))
+            {
+                $schemas = NodeTypeConstants::VISUAL_TEMPLATE . ',' . NodeTypeConstants::RNG_VISUAL_TEMPLATE;
+            }
+            else
+            {
+                $schemas = implode(',', $schemas);
+            }
         }
-
+        else
+        {
+            $schemas = $schemaTypeID;
+        }
         $schemas = $folder->find('IdNode', 'IdParent = %s AND IdNodeType in (%s) ORDER BY Name', array($folder->get('IdNode'), $schemas), MONO, false);
-        if (!empty($type)) {
-            foreach ($schemas as $key => $idSchema) {
+        if (!empty($type))
+        {
+            foreach ($schemas as $key => $idSchema)
+            {
                 $schema = new Node($idSchema);
                 $schemaType = $schema->getProperty('SchemaType');
-
-                if (is_array($schemaType) && count($schemaType) == 1) {
+                if (is_array($schemaType) && count($schemaType) == 1)
+                {
                     $schemaType = $schemaType[0];
                 }
-
-                if ($schemaType != $type) {
+                if ($schemaType != $type)
+                {
                     unset($schemas[$key]);
                 }
             }
         }
-
-        if (!is_array($schemas)) {
-            Logger::debug(sprintf('The specified folder (%s) is not containing schemas', $folder->get('IdNode')));
-            return NULL;
+        if (!is_array($schemas))
+        {
+            Logger::info(sprintf('The specified folder (%s) is not containing schemas', $folder->get('IdNode')));
+            return ;
         }
-
         return $schemas;
     }
-
+    
     /**
      * @param $destNodeId
      * @return array

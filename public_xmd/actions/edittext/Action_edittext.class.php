@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -35,30 +36,25 @@ use Ximdex\Runtime\DataFactory;
 use Ximdex\Utils\Strings;
 use Ximdex\Sync\SyncManager;
 
-
 /**
  * Class Action_edittext
  */
 class Action_edittext extends ActionAbstract
 {
-    // Main method: shows initial form
     /**
+     * Main method: shows initial form
      * @return bool
      */
-    function index()
+    public function index()
     {
-
         $this->addCss('/actions/edittext/resources/css/style.css');
-
-
         $this->addCss('/vendors/codemirror/Codemirror/lib/codemirror.css');
         $this->addCss('/vendors/codemirror/Codemirror/addon/fold/foldgutter.css');
 
-
         $idNode = $this->request->getParam('nodeid');
-
         $strDoc = new StructuredDocument($idNode);
-        if ($strDoc->GetSymLink()) {
+        if ($strDoc->GetSymLink())
+        {
             $masterNode = new Node($strDoc->GetSymLink());
             $values = array(
                 'path_master' => $masterNode->GetPath()
@@ -75,19 +71,25 @@ class Action_edittext extends ActionAbstract
 
         $fileName = $node->get('Name');
         $infoFile = pathinfo($fileName);
-        if (array_key_exists("extension", $infoFile)) {
+        if (array_key_exists("extension", $infoFile))
+        {
             $ext = $infoFile['extension'];
-        } elseif ($idNodeType == \Ximdex\NodeTypes\NodeTypeConstants::XML_DOCUMENT) {
+        }
+        elseif ($idNodeType == \Ximdex\NodeTypes\NodeTypeConstants::XML_DOCUMENT)
+        {
             //for the documents
             $ext = "xml";
-        } else {
+        }
+        else
+        {
             $ext = "txt";
         }
 
         $content = $node->GetContent();
         $content = htmlspecialchars($content);
 
-        switch ($ext) {
+        switch ($ext)
+        {
             case "java":
                 $this->addJs('/vendors/codemirror/Codemirror/addon/edit/closebrackets.js');
                 $this->addJs('/vendors/codemirror/Codemirror/addon/fold/brace-fold.js');
@@ -115,9 +117,10 @@ class Action_edittext extends ActionAbstract
         $this->addJs('/actions/edittext/resources/js/init.js');
 
         //if is not node state equals to edition, send a message.
-        $allowed=$node->GetState();
+        $allowed = $node->GetState();
 
-        if ($nodeType->get('IsStructuredDocument') > 0 && $allowed != Constants::EDITION_STATUS_ID) {
+        if ($nodeType->get('IsStructuredDocument') > 0 && $allowed != Constants::EDITION_STATUS_ID)
+        {
             $this->messages->add(_('You can not edit the document.'), MSG_TYPE_WARNING);
             $values = array(
                 'messages' => $this->messages->messages
@@ -138,34 +141,30 @@ class Action_edittext extends ActionAbstract
         );
 
         $this->render($values, null, 'default-3.0.tpl');
-        return true ;
+        return true;
     }
-
-    /*
-    *	If nodeType is a template display documents affected by change
-    */
+    
     /**
-     *
+     * If nodeType is a template display documents affected by change
      */
-    function publishForm()
+    public function publishForm()
     {
         $idNode = $this->request->getParam('nodeid');
-
+        
         $dataFactory = new DataFactory($idNode);
         $lastVersion = $dataFactory->GetLastVersionId();
         $prevVersion = $dataFactory->GetPreviousVersion($lastVersion);
 
         $cacheTemplate = new PipeCacheTemplates();
         $docs = $cacheTemplate->GetDocsContainTemplate($prevVersion);
-
-        if (is_null($docs)) {
+        if (is_null($docs))
+        {
             $this->redirectTo('index');
             return;
         }
-
         $numDocs = count($docs);
-
-        for ($i = 0; $i < $numDocs; $i++) {
+        for ($i = 0; $i < $numDocs; $i++)
+        {
             $docsList[] = $docs[$i]['NodeId'];
         }
 
@@ -173,21 +172,16 @@ class Action_edittext extends ActionAbstract
             'docsList' => implode('_', $docsList),
             'go_method' => 'publicateDocs',
         );
-
         $this->render($values);
-
     }
-
-    /*
-    *	Publicate documents from publishForm method (above)
-    */
+    
     /**
-     *
+     * Publicate documents from publishForm method (above)
      */
-    function publicateDocs()
+    public function publicateDocs()
     {
-
-        if (\Ximdex\Modules\Manager::isEnabled('ximSYNC')) {
+        if (\Ximdex\Modules\Manager::isEnabled('ximSYNC'))
+        {
             \Ximdex\Modules\Manager::file('/inc/manager/SyncManager.class.php', 'ximSYNC');
         }
 
@@ -197,7 +191,8 @@ class Action_edittext extends ActionAbstract
         $syncMngr->setFlag('deleteOld', true);
         $syncMngr->setFlag('linked', false);
 
-        foreach ($docs as $documentID) {
+        foreach ($docs as $documentID)
+        {
             $result = $syncMngr->pushDocInPublishingPool($documentID, time(), NULL, NULL);
         }
 
@@ -211,13 +206,9 @@ class Action_edittext extends ActionAbstract
 
         $this->render($values, NULL, 'publicationResult.tpl');
     }
-
-    /**
-     *
-     */
-    function edittext()
+    
+    public function edittext()
     {
-
         $idNode = $this->request->getParam('nodeid');
         $content = $this->request->getParam('editor');
 
@@ -225,7 +216,8 @@ class Action_edittext extends ActionAbstract
         $content = empty($content) ? " " : $content;
 
         $node = new Node($idNode);
-        if ((!$node->get('IdNode') > 0)) {
+        if ((!$node->get('IdNode') > 0))
+        {
             $this->messages->add(_('The document which is trying to be edited does not exist'), MSG_TYPE_ERROR);
             $this->renderMessages();
         }

@@ -27,32 +27,27 @@
 	$languages[Idlanguage]
 	$languages[Name]
 *}
-
 <div class="languages-available small_12 columns">
-
 	<label class="label_title label_general">{t}Languages{/t} *</label>
-
     {if count($languages) > 0}
-
         {foreach from=$languages item=language}
-
 			<div class="languages-section">
-
-				<input name='languages[]' type='checkbox' value='{$language.IdLanguage}'  id='{$language.IdLanguage}_{$idNode}' class="hidden-focus"/>
+				<input name='languages[]' type='checkbox' value='{$language.IdLanguage}'  id='{$language.IdLanguage}_{$idNode}' class="hidden-focus" />
 				<label  for="{$language.IdLanguage}_{$idNode}" class="icon checkbox-label">{$language.Name|gettext}</label>
-				<input type='text' name='aliases[{$language.IdLanguage}]' class="alternative-name" placeholder="{t}Alternative name for paths &amp; breadcrumbs{/t}"/>
+				<input type='text' name='aliases[{$language.IdLanguage}]' class="alternative-name" 
+						placeholder="{t}Alternative name for paths &amp; breadcrumbs{/t}" />
 			</div>
-
         {/foreach}
-
 		<div class="input-select icon">
-		<select name='master' class="cajaxg document-type" id="master">
-			<option value="">{t}Select master language{/t}</option>
-            {foreach from=$languages item=language}
-				<option  value='{$language.IdLanguage}'>{$language.Name|gettext}</option>
-            {/foreach}
-		</select></div>
-
+			<p>
+				<select name='master' class="cajaxg document-type" id="master">
+					<option value="">{t}Select master language{/t}</option>
+		            {foreach from=$languages item=language}
+						<option  value='{$language.IdLanguage}'>{$language.Name|gettext}</option>
+	        	    {/foreach}
+				</select>
+			</p>
+		</div>
     {else}
 		<p>{t}There are no languages associated to this project{/t}</p>
     {/if}

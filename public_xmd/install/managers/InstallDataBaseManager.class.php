@@ -32,9 +32,10 @@ class InstallDataBaseManager extends InstallManager
 {
     const DB_ARRAY_KEY = "db_installer_connection";
     const DEFAULT_PORT = 3306;
-    const SCHEMA_SCRIPT_PATH = "/install/ximdex_data/ximdex_schema.sql";
-    const DATA_SCRIPT_PATH = "/install/ximdex_data/ximdex_data.sql";
-
+    const DATA_PATH = '/install/ximdex_data/';
+    const SCHEMA_SCRIPT_FILES = ['ximdex_schema.sql'];
+    const DATA_SCRIPT_FILES = ['ximdex_data.sql', 'ximdex_data_html.sql'];
+    
     private $dbConnection = null;
     private $host;
     private $port;
@@ -187,12 +188,27 @@ class InstallDataBaseManager extends InstallManager
 
     public function loadData($host, $port, $user, $pass, $name)
     {
-    	$data = file_get_contents(APP_ROOT_PATH . self::SCHEMA_SCRIPT_PATH);
-    	$data .= file_get_contents(APP_ROOT_PATH . self::DATA_SCRIPT_PATH);
+        foreach (self::SCHEMA_SCRIPT_FILES as $schemaFile)
+        {
+            $data = file_get_contents(APP_ROOT_PATH . self::DATA_PATH . $schemaFile);
+            if ($data === false)
+                return false;
+        }
+        foreach (self::DATA_SCRIPT_FILES as $dataFile)
+        {
+            $data .= file_get_contents(APP_ROOT_PATH . self::DATA_PATH . $dataFile);
+            if ($data === false)
+                return false;
+        }
     	try
     	{
     		$statement = $this->dbConnection->prepare($data);
     		$res = $statement->execute();
+    		if (!$res)
+    		{
+    		    Logger::error($this->getErrors());
+    		    return false;
+    		}
     	}
     	catch (PDOException $e)
     	{

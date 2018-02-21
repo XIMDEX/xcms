@@ -25,7 +25,6 @@
  * @version $Revision$
  */
 
-use Ximdex\Deps\DepsManager;
 use Ximdex\Logger;
 use Ximdex\Models\PortalVersions;
 use Ximdex\Models\Server;
@@ -189,7 +188,7 @@ class BatchManager
 
         $timer->stop();
 
-        Logger::info(_("Publication ended; time for publication") . " = " . $timer->display('m') . _(" minutes"));
+        Logger::info(_("Publication ended; time for publication") . " = " . $timer->display('s') . _(" seconds"));
 
         return array($docsBatch, $unchangedDocs);
     }
@@ -206,8 +205,7 @@ class BatchManager
     function isPublishable($nodeId, $up, $down, $forcePublication = false)
     {
         $node = new Node($nodeId);
-        $depsMngr = new DepsManager();
-        if ($node->nodeType->get('IsPublishable') == 0 && !$depsMngr->getByTarget(DepsManager::BULLETIN_XIMLET, $nodeId))
+        if ($node->nodeType->get('IsPublishable') == 0)
         {
             Logger::info(sprintf(_("Node %s belongs to an unpublished nodetype"), $nodeId));
             return false;

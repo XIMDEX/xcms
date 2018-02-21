@@ -325,10 +325,8 @@ class Db
      */
     function GetValue($col)
     {
-
-
-        if (isset($col, $this->row[$col])) {
-
+        if (isset($col, $this->row[$col]))
+        {
             if (!$this->_getEncodings())
             {
                 Logger::error($this->desErr);
@@ -337,7 +335,6 @@ class Db
             $value = \Ximdex\XML\Base::recodeSrc($this->row[$col], self::$workingEncoding);
             return $value;
         }
-
         return NULL;
     }
 

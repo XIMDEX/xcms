@@ -76,13 +76,15 @@ class MetadataManager{
      * @param null
      * @return int
     */
-    public function getMetadataSchema(){
+    public function getMetadataSchema()
+    {    
         $node = new Node($this->node->GetID());
         $projectNode = new Node($node->getProject());
         $schemesFolder = $projectNode->getChildren(\Ximdex\NodeTypes\NodeTypeConstants::TEMPLATE_VIEW_FOLDER);
 
         $nt = $this->node->nodeType->GetID(); 
-        switch($nt){
+        switch($nt)
+        {
             case \Ximdex\NodeTypes\NodeTypeConstants::IMAGE_FILE:
             case \Ximdex\NodeTypes\NodeTypeConstants::XSIR_IMAGE_FILE:
                 $name=MetadataManager::IMAGE_METADATA_SCHEMA;

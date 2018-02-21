@@ -69,38 +69,39 @@ abstract class AbstractStructuredDocument extends FileNode
     function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $templateID = null, $IdLanguage = null, $aliasName = '', $channelList = null)
     {
         $loginID = Session::get("userID");
-
         $templateNode = new Node($templateID);
-
-        if ($templateNode->get('IdNode') > 0) {
-
+        $content = '';
+        if ($templateNode->get('IdNode') > 0)
+        {
             // relaxng schema
             $templateNodeType = new NodeType($templateNode->get('IdNodeType'));
-
-            if ($templateNodeType->get('Name') == 'RngVisualTemplate') {
+            if ($templateNodeType->get('Name') == 'RngVisualTemplate')
+            {
                 $content = $templateNode->class->buildDefaultContent();
-            } else {
+            }
+            else
+            {
                 $templateContent = $templateNode->class->GetContent();
-                $templateContent = split("##########", $templateContent);
-                $content = str_replace("'", "\'", $templateContent[1]);
+                $templateContent = explode('##########', $templateContent);
+                if (isset($templateContent[1]))
+                {
+                    $content = str_replace("'", "\'", $templateContent[1]);
+                }
             }
 
-        } else {
-            $content = '';
         }
-
         $doc = new StructuredDocument();
         $doc->CreateNewStrDoc($this->nodeID, $name, $loginID, $IdLanguage, $templateID, $channelList, $content);
-
-        if ($doc->HasError()) {
+        if ($doc->HasError())
+        {
             $this->parent->SetError(5);
         }
-
         $nodeContainer = new Node($this->parent->GetParent());
         $nodeContainer->SetAliasForLang($IdLanguage, $aliasName);
         if ($nodeContainer->HasError())
+        {
             $this->parent->SetError(5);
-
+        }
         $this->updatePath();
     }
 

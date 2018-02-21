@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,12 +25,10 @@
  * @version $Revision$
  */
 
-
 namespace Ximdex\Models;
 
 class RelNodeTypeMimeType  extends \Ximdex\Data\GenericData
 {
-
     var $_idField = 'idRelNodeTypeMimeType';
     var $_table = 'RelNodeTypeMimeType';
     var $_metaData = array(
@@ -47,14 +46,23 @@ class RelNodeTypeMimeType  extends \Ximdex\Data\GenericData
 
     function getFileExtension($nodetype)
     {
+        if (!$nodetype)
+        {
+            return null;
+        }
         $filter = $this->find('filter', 'idnodetype = %s', array($nodetype), MONO);
-        if (strcmp($filter[0], 'ptd') == 0) {
+        if (strcmp($filter[0], 'ptd') == 0)
+        {
             $ext = ($nodetype == \Ximdex\NodeTypes\NodeTypeConstants::TEMPLATE) ? "xml" : "xsl";
-        } elseif (strcmp($filter[0], 'pvd') == 0) {
+        }
+        elseif (strcmp($filter[0], 'pvd') == 0)
+        {
             $ext = "xml";
-        } else {
+        }
+        else
+        {
             $ext = $filter[0];
         }
-        return $ext;
+         return $ext;
     }
 }

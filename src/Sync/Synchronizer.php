@@ -259,23 +259,23 @@ class Synchronizer
     function ParseDependencies($frameID, $content)
     {
         /// Looking for content dependencies, directly the ids
-        //Logger::info("Extracting dependencies for FRAME $frameID with content $content");
         preg_match_all("/@@@RMximdex\.pathto\(([0-9,]+)\)@@@/i", $content, $contentTags);
         $deps = $contentTags[sizeof($contentTags) - 1];
 
         /// And it is built again
-        foreach ($deps as $depID) {
-            $pair = split(",", $depID);
+        foreach ($deps as $depID)
+        {
+            $pair = explode(",", $depID);
             $depID = $pair[0];
-
-            if (array_key_exists(1, $pair)) {
+            if (array_key_exists(1, $pair))
+            {
                 $channelID = $pair[1];
-            } else {
+            }
+            else
+            {
                 $channelID = NULL;
             }
-
             $this->dbObj->Execute("INSERT INTO SynchronizerDependencies (IdSync, IdResource) VALUES (" . $frameID . ", " . $depID . ")");
-
             Logger::info("channel: $channelID frameID: $frameID depID: $depID");
         }
     }

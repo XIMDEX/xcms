@@ -112,10 +112,12 @@ class BuildDataBaseInstallStep extends GenericInstallStep
         }
         else
         {
-            if ($idbManager->existDataBase($name)) {
+            if ($idbManager->existDataBase($name))
+            {
                 $idbManager->deleteDataBase($name);
             }
-            if ($idbManager->connect($host, $port, $user, $pass)) {
+            if ($idbManager->connect($host, $port, $user, $pass))
+            {
                 $result = $idbManager->createDataBase($name);
                 if (!$result)
                 {
@@ -123,13 +125,23 @@ class BuildDataBaseInstallStep extends GenericInstallStep
                 	if ($idbManager->getErrors())
                 		$values["errors"] = $idbManager->getErrors();
                 	else
-                		$values["errors"] = 'Can\'t create database';
+                		$values["errors"] = 'Can\'t create database with the specified parameters';
                 }
-                $idbManager->connect($host, $port, $user, $pass, $name, true);
-                $idbManager->loadData($host, $port, $user, $pass, $name);
+                $result = $idbManager->connect($host, $port, $user, $pass, $name, true);
+                if ($result === false)
+                {
+                    $values["failure"] = true;
+                    $values["errors"] = 'Cannot connect to database';
+                }
+                $result = $idbManager->loadData($host, $port, $user, $pass, $name);
+                if ($result === false)
+                {
+                    $values["failure"] = true;
+                    $values["errors"] = 'Cannot generate the database schema and data';
+                }
                 $result = $idbManager->checkDataBase($host, $port, $user, $pass, $name);
-                if ($result) {
-                    
+                if ($result)
+                {
                     // if the app is working under a Docker instance, the new user creation will be omited
                     if (isset($_SERVER['DOCKER_CONF_HOME']))
                     {
@@ -137,16 +149,26 @@ class BuildDataBaseInstallStep extends GenericInstallStep
                         $values['skipNewDBUser'] = true;
                     }
                     else
+                    {
                         $values['skipNewDBUser'] = false;
+                    }
                     $values["success"] = true;
-                } else {
+                }
+                else
+                {
                     $values["failure"] = true;
                     if ($idbManager->getErrors())
+                    {
                     	$values["errors"] = $idbManager->getErrors();
+                    }
                    	else
+                   	{
                    		$values["errors"] = 'Can\'t create database schema and content';
+                   	}
                 }
-            } else {
+            }
+            else
+            {
                 $values["failure"] = true;
                 $values["errors"] = $idbManager->getErrors();
             }

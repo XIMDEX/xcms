@@ -94,7 +94,7 @@ Class Logger
         if (App::debug())
         {
             try{
-                return self::get()->logger->addDebug($string);
+                return self::get()->logger->addDebug(self::$color->__invoke($string)->white());
             }catch (Exception $e){
                 error_log($e->getMessage());
             }

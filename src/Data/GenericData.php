@@ -460,7 +460,6 @@ class GenericData
      */
     public function find($fields = ALL, $condition = '', $params = null, $returnType = MULTI, $escape = true)
     {
-
         $condition = $this->_getCondition($condition, $params, $escape);
         $query     = sprintf(
             'SELECT %s FROM %s WHERE %s',
@@ -468,7 +467,6 @@ class GenericData
             $this->_table,
             empty($condition) ? '1' : $condition
         );
-
         return $this->query($query, $returnType, $fields);
     }
 

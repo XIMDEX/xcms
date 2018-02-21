@@ -34,8 +34,7 @@ use Ximdex\Utils\FsUtils;
 use Ximdex\Utils\PipelineManager;
 use Ximdex\Sync\SynchroFacade;
 use Ximdex\Logger;
-
-
+use Ximdex\NodeTypes\NodeTypeConstants;
 
 /**
  *
@@ -379,7 +378,6 @@ class DataFactory
     }
 
     /**
-     *
      * Cambia el contenido de una version.
      *
      * @name        SetContent
@@ -396,53 +394,54 @@ class DataFactory
         $isPlainFile = @$node->nodeType->get('IsPlainFile');
 
         //only encoding the content if the node is not one of this 3.
-        if (!$isPlainFile) {
-            
+        if (!$isPlainFile)
+        {    
             //look for the working encoding from Config
             $dataEncoding = App::getValue('dataEncoding');
             $content = \Ximdex\XML\Base::recodeSrc($content, $dataEncoding);
         }
-
         $this->ClearError();
-
-        if (!($this->nodeID > 0)) {
-                
+        if (!($this->nodeID > 0))
+        {        
             $this->SetError(1);
             return false;
         }
+        
         // (1) No se pasa version determinada, se incrementa la version con el contenido nuevo.
-        if (is_null($versionID) && is_null($subVersion)) {
-            
+        if (is_null($versionID) && is_null($subVersion))
+        {
             $idVersion = $this->AddVersion(NULL, NULL, $content, $commitNode);
-            $this->_generateCaches($idVersion);
+                
+            //TODO ajlucena! no cache until HTML documents Pipeline is operative
+            if ($node->GetNodeType() != NodeTypeConstants::HTML_DOCUMENT)
+            {
+                $this->_generateCaches($idVersion);
+            }
             return $idVersion;
         }
 
         // (2) Se pasa version determinada y se machaca el contenido de esa version.
-        if (!is_null($versionID) && !is_null($subVersion)) {
-            
+        if (!is_null($versionID) && !is_null($subVersion))
+        {
             $uniqueName = $this->GetTmpFile($versionID, $subVersion);
-
-            if (!$uniqueName) {
-                
-                Logger::error("Error making a setContent for Node (Unable to get the file):" . $this->nodeID . ", Version: " . $versionID . "." . $subVersion . ", File: ." . $uniqueName . ", Chars: " . strlen($content));
+            if (!$uniqueName)
+            {
+                Logger::error("Error making a setContent for Node (Unable to get the file):" . $this->nodeID . ", Version: " . $versionID . "." 
+                        . $subVersion . ", File: ." . $uniqueName . ", Chars: " . strlen($content));
                 return false;
             }
-
             $targetPath = XIMDEX_ROOT_PATH . App::getValue("FileRoot") . "/" . $uniqueName;
-            Logger::info("SetContent for Node:" . $this->nodeID . ", Version: " . $versionID . "." . $subVersion . ", File: ." . $uniqueName . ", Chars: " . strlen($content));
+            Logger::info("SetContent for Node:" . $this->nodeID . ", Version: " . $versionID . "." . $subVersion . ", File: ." . $uniqueName 
+                    . ", Chars: " . strlen($content));
             $result = FsUtils::file_put_contents($targetPath, $content);
-
             $idVersion = $this->getVersionId($versionID, $subVersion);
-            if ($result && \Ximdex\Modules\Manager::isEnabled('ximRAM')) {
-                
+            if ($result && \Ximdex\Modules\Manager::isEnabled('ximRAM'))
+            {
                 $this->indexNode($idVersion, $commitNode);
             }
             $this->_generateCaches($idVersion, true);
-
             return $result;
         }
-
         return false;
     }
 

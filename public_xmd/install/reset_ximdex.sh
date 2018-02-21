@@ -7,7 +7,7 @@ rm ./conf/install-modules.php
 rm -rf ./data/cache/pipelines/*
 rm -rf ./data/files/*
 rm -rf ./data/nodes/*
-rm -rf ./data/previos
+rm -rf ./data/previos/*
 rm -rf ./data/sync/serverframes/*
 rm ./data/tmp/*
 rm -rf ./data/tmp/js/*

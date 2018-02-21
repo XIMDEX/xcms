@@ -8,19 +8,20 @@ Defines in this file
 - PROJECT_CONFIG_FILENAME: File with info about the project to build
 */
 
-
 // themes folder
 if (!defined('THEMES_FOLDER'))
     define('THEMES_FOLDER', "/public_xmd/actions/addfoldernode/themes");
+
 if (!defined('SCHEMES_FOLDER'))
     define('SCHEMES_FOLDER', "/schemes");
+
 if (!defined('TEMPLATES_FOLDER'))
     define('TEMPLATES_FOLDER', "/templates");
-//default project
+
+// Default project
 if (!defined('DEFAULT_PROJECT'))
     define('DEFAULT_PROJECT', "default");
 
-//project config filename
+// Project config filename
 if (!defined('PROJECT_CONFIG_FILENAME'))
     define('PROJECT_CONFIG_FILENAME', "build.xml");
-?>

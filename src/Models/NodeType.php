@@ -38,7 +38,6 @@ class NodeType extends NodeTypesOrm
 {
     var $ID;            //Current node id
     var $dbObj;            // DB object used in methods
-
     var $flagErr;                // shows if there was an error
     var $numErr;                // Error code
     var $msgErr;                // Error message
@@ -49,13 +48,13 @@ class NodeType extends NodeTypesOrm
     var $_cache = 0;
     var $_useMemCache = 0;
     var $_fieldsToTraduce = array('Description');
-
     var $autoCleanErr ;
+    
     /**
      * NodeType constructor.
      * @param null $nodeTypeID
      */
-    function NodeType($nodeTypeID = null)
+    function __construct($nodeTypeID = null)
     {
         $this->errorList[1] = _('Database connection error');
         $this->errorList[2] = _('Nodetype does not exist');

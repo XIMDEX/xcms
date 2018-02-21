@@ -50,7 +50,7 @@
                         {if $child.nodetypename=='NodeHt'}
                             <option value="{$child.idnodetype}">{t}HTML File{/t}</option>
                         {else}
-                            <option value="{$child.idnodetype}">{t}{$child.nodetypename}{/t}</option>
+                            <option value="{$child.idnodetype}">{$child.description} ({t}{$child.nodetypename}{/t})</option>
                         {/if}
                     {/foreach}
                     </select>

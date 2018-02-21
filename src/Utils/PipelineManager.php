@@ -145,7 +145,7 @@ class PipelineManager
         }
         else
         {
-            Logger::info('Loaded cache from process: ' . $processName . ' for version: ' . $idVersion, true);
+            Logger::info('Loaded cache from process: ' . $processName . ' for version: ' . $idVersion);
         }
         return $res;
     }

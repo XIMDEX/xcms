@@ -25,7 +25,6 @@
  * @version $Revision: 8778 $
  */
 
-
 namespace Ximdex\IO;
 
 use Ximdex\Logger;
@@ -33,21 +32,19 @@ use Ximdex\Models\Language;
 use Ximdex\Models\Node;
 use Ximdex\Models\NodeType;
 use Ximdex\Models\StructuredDocument;
+use Ximdex\Models\User;
 use Ximdex\Runtime\App;
 use Ximdex\Runtime\Constants;
 use Ximdex\Utils\FsUtils;
 use Ximdex\Utils\Messages;
 use Ximdex\Runtime\Session;
 
-
 class BaseIO
 {
-
     /**
      * @var null|Messages
      */
     var $messages = NULL;
-
 
     public function __construct()
     {
@@ -56,7 +53,7 @@ class BaseIO
 
     /**
      * Creates an object desribed in data array
-     *
+     * 
      * @param array $data Data of the object to create
      * @param int $userid Optional param, if it is not specified, the identifier is obtained from the session user identifier
      * @return bool|int|null|string  identifier of the inserted node or a state specifying why it was not inserted
@@ -64,58 +61,68 @@ class BaseIO
     function build($data, $userid = NULL)
     {
         $metaTypesArray = Constants::$METATYPES_ARRAY;
-
-
         $data = $this->_checkVisualTemplate($data);
-
-        if (!$userid) {
+        if (!$userid)
+        {
             $userid = Session::get('userID');
-        } elseif ($userid) {
+        }
+        elseif ($userid)
+        {
             Session::set('userID', $userid);
         }
-
-        if (empty($data['NODETYPENAME'])) {
+        if (empty($data['NODETYPENAME']))
+        {
             Logger::error(_('Empty nodetype in baseIO'));
             $this->messages->add(_('Empty nodetype'), MSG_TYPE_ERROR);
             return Constants::ERROR_INCORRECT_DATA;
         }
-
         if (!isset($data['CHILDRENS']))
+        {
             $data['CHILDRENS'] = array();
-
+        }
         if (!isset($data['ALIASNAME']))
+        {
             $data['ALIASNAME'] = '';
-
-        if (empty($data['CLASS'])) {
+        }
+        if (empty($data['CLASS']))
+        {
             $data['CLASS'] = $this->_infereNodeTypeClass($data['NODETYPENAME']);
-            if (empty($data['CLASS'])) {
+            if (empty($data['CLASS']))
+            {
                 Logger::error(_('Nodetype could not be infered'));
                 $this->messages->add(_('Nodetype could not be infered'), MSG_TYPE_ERROR);
                 return Constants::ERROR_INCORRECT_DATA;
             }
         }
-
         $nodeTypeClass = strtoupper($data['CLASS']);
         $nodeTypeName = strtoupper($data['NODETYPENAME']);
-
         $metaType = "";
-        if (array_key_exists($nodeTypeClass, $metaTypesArray)) {
+        if (array_key_exists($nodeTypeClass, $metaTypesArray))
+        {
             $metaType = $metaTypesArray[$nodeTypeClass];
         }
-
+        
         // upper all the indexes in data.		
         $data = $this->dataToUpper($data);
 
-        if (!($this->_checkPermissions($nodeTypeName, $userid, Constants::WRITE) || $this->_checkName($data))) {
+        if (!$this->_checkName($data))
+        {
+            Logger::error(_('Node could not be inserted due to a incorrect node name'), MSG_TYPE_ERROR);
+            return Constants::ERROR_INCORRECT_DATA;
+        }
+        if (!$this->_checkPermissions($nodeTypeName, $userid, Constants::WRITE))
+        {
             Logger::error(_('Node could not be inserted due to lack of permits'));
             $this->messages->add(_('Node could not be inserted due to lack of permits'), MSG_TYPE_ERROR);
             return Constants::ERROR_NO_PERMISSIONS;
         }
-        if (!empty($data['PARENTID']) && !empty($data['NODETYPENAME'])) {
+        if (!empty($data['PARENTID']) && !empty($data['NODETYPENAME']))
+        {
             $node = new Node();
             $nodeType = new NodeType();
             $nodeType->SetByName($data['NODETYPENAME']);
-            if (!$node->checkAllowedContent($nodeType->GetID(), $data['PARENTID'], false)) {
+            if (!$node->checkAllowedContent($nodeType->GetID(), $data['PARENTID'], false))
+            {
                 Logger::error(_('Node could not be inserted due to it is not allowed in the folder'));
                 $this->_dumpMessages($node->messages);
                 return Constants::ERROR_NOT_ALLOWED;
@@ -123,40 +130,38 @@ class BaseIO
         }
 
         //general check
-        if (!array_key_exists('PARENTID', $data)) {
+        if (!array_key_exists('PARENTID', $data))
+        {
             Logger::error(_('Parentid was not specified'));
             $this->messages->add(_('Node parent was not specified'), MSG_TYPE_ERROR);
             return Constants::ERROR_INCORRECT_DATA;
         }
-        if (!array_key_exists('NAME', $data)) {
+        if (!array_key_exists('NAME', $data))
+        {
             Logger::error(_('Node name was not specified'));
             $this->messages->add(_('Node name was not specified'), MSG_TYPE_ERROR);
             return Constants::ERROR_INCORRECT_DATA;
         }
-
+        
         return $this->createNode($data, $metaType, $nodeTypeClass, $nodeTypeName);
     }
 
     function _checkVisualTemplate($data)
     {
-
-        if (!isset($data['NODETYPENAME']) || $data['NODETYPENAME'] != 'VisualTemplate') {
+        if (!isset($data['NODETYPENAME']) || $data['NODETYPENAME'] != 'VisualTemplate')
+        {
             return $data;
         }
-
-        if (!isset($data['CHILDRENS'], $data['CHILDRENS'][0], $data['CHILDRENS'][0]['SRC'])) {
+        if (!isset($data['CHILDRENS'], $data['CHILDRENS'][0], $data['CHILDRENS'][0]['SRC']))
+        {
             return $data;
         }
-
         $content = FsUtils::file_get_contents($data['CHILDRENS'][0]['SRC']);
-
         $rngXMLNS = '#xmlns="http://relaxng.org/ns/structure/1.0"#';
-        if (preg_match($rngXMLNS, $content) > 0) {
-
+        if (preg_match($rngXMLNS, $content) > 0){
             // The template is a RNG template
             $data['NODETYPENAME'] = 'RngVisualTemplate';
         }
-
         return $data;
     }
 
@@ -196,28 +201,28 @@ class BaseIO
      */
     function _checkPermissions($nodeTypeName, $userId, $operation)
     {
-
-        // Check permissions.
         $nodeType = new NodeType();
         $nodeType->SetByName($nodeTypeName);
         $idNodeType = $nodeType->ID;
-
-        $user = new \Ximdex\Models\User($userId);
-
-        switch ($operation) {
+        $user = new User($userId);
+        switch ($operation)
+        {
             case Constants::UPDATE :
-                if (!$user->canModify(array('node_type' => $idNodeType))) {
+                if (!$user->canModify(array('node_type' => $idNodeType)))
+                {
                     return Constants::ERROR_NO_PERMISSIONS;
                 }
                 break;
             case Constants::DELETE :
-                if (!$user->canDelete( array('node_type' => $idNodeType))) {
+                if (!$user->canDelete( array('node_type' => $idNodeType)))
+                {
                     return Constants::ERROR_NO_PERMISSIONS;
                 }
                 break;
             case Constants::WRITE:
             default :
-                if (!$user->canWrite(array('node_type' => $idNodeType))) {
+                if (!$user->canWrite(array('node_type' => $idNodeType)))
+                {
                     return Constants::ERROR_NO_PERMISSIONS;
                 }
                 break;
@@ -233,8 +238,9 @@ class BaseIO
         // Check del nombre del nodo
         $node = new Node();
         $nodeName = !empty($data['NAME']) ? $data['NAME'] : '';
-        $nodeType = !empty($data['NODETYPE']) ? (int)$data['NODETYPE'] : 0;
-        if (!$node->IsValidName($nodeName, $nodeType)) {
+        $nodeType = !empty($data['NODETYPE']) ? (int) $data['NODETYPE'] : 0;
+        if (!$node->IsValidName($nodeName, $nodeType))
+        {
             return Constants::ERROR_INCORRECT_DATA;
         }
         return true;
@@ -397,29 +403,34 @@ class BaseIO
 
             // xml container nodes
             case 'XMLCONTAINERNODE' :
+                
                 $idsVisualTemplate = array_merge(
-                    (array)$this->_getIdFromChildrenType($data['CHILDRENS'], 'VISUALTEMPLATE'), (array)$this->_getIdFromChildrenType($data['CHILDRENS'], 'RNGVISUALTEMPLATE'));
+                    (array) $this->_getIdFromChildrenType($data['CHILDRENS'], 'VISUALTEMPLATE'), 
+                    (array) $this->_getIdFromChildrenType($data['CHILDRENS'], 'RNGVISUALTEMPLATE'));
                 $data['TEMPLATE'] = isset($idsVisualTemplate[0]) ? $idsVisualTemplate[0] : $this->_getDefaultRNG();
-                if (empty($data['TEMPLATE'])) {
+                if (empty($data['TEMPLATE']))
+                {
                     $this->messages->add(_('It is being tried to insert a xmlcontainer without its corresponding schema'), MSG_TYPE_ERROR);
                     return Constants::ERROR_INCORRECT_DATA;
                 }
                 $idNode = $this->_checkForceNew($data);
-                if ($idNode > 0) {
+                if ($idNode > 0)
+                {
                     return $idNode;
                 }
                 //Obtaining the identifier of the father nodetype to know the child nodetype
                 $node = new Node($data['PARENTID']); // creating a father instance
                 $parentNodeTypeName = $node->nodeType->GetName();
                 unset($node);
-
                 $nodeType = new NodeType();
-                if (!empty($data['NODETYPENAME'])) {
+                if (!empty($data['NODETYPENAME']))
+                {
                     $nodeType->SetByName($data['NODETYPENAME']);
                 }
 
                 //TODO Change it for a query crossing Nodeallowedcontents and nodetype
-                if (!($nodeType->get('IdNodeType') > 0)) {
+                if (!$nodeType->get('IdNodeType'))
+                {
                     switch ($parentNodeTypeName) {
                         case 'XmlRootFolder' :
                             $nodeType->SetByName('XmlContainer');
@@ -438,9 +449,9 @@ class BaseIO
                             break;
                     }
                 }
-
                 $idNodetype = $nodeType->get('IdNodeType');
-                if (!($idNodetype > 0)) {
+                if (!($idNodetype > 0))
+                {
                     Logger::error('Nodetype not found');
                     return false;
                 }
@@ -448,12 +459,12 @@ class BaseIO
                 // Creating the node
                 // TODO left to be implemented $aliasLangArray, $channelLst, $master
                 $xmlcontainer = new Node();
-                $idNode = $xmlcontainer->CreateNode($data['NAME'], $data["PARENTID"], $idNodetype, null, $data['TEMPLATE'], isset($data["ALIASES"]) ? $data["ALIASES"] : null, isset($data["CHANNELS"]) ? $data["CHANNELS"] : null, isset($data["MASTER"]) ? $data["MASTER"] : null
-                );
-
+                $idNode = $xmlcontainer->CreateNode($data['NAME'], $data["PARENTID"], $idNodetype, null, $data['TEMPLATE']
+                        , isset($data["ALIASES"]) ? $data["ALIASES"] : null, isset($data["CHANNELS"]) ? $data["CHANNELS"] : null
+                        , isset($data["MASTER"]) ? $data["MASTER"] : null);
                 $this->_dumpMessages($xmlcontainer->messages);
-
-                if (!($idNode > 0)) {
+                if (!($idNode > 0))
+                {
                     return Constants::ERROR_INCORRECT_DATA;
                 }
                 return $idNode;

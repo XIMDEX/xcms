@@ -25,7 +25,6 @@
  * @version $Revision$
  */
 
-
 namespace Ximdex\NodeTypes;
 
 class NodeTypeConstants
@@ -106,4 +105,9 @@ class NodeTypeConstants
     const XBLOG_SECTION = 9601;
     const XHTML5_CONTAINER = 9602;
     const XHTML5_DOC = 9603;
+    const HTML_LAYOUT_JSON = 5100;
+    const HTML_LAYOUT_FOLDER = 5105;
+    const HTML_COMPONENTS_FOLDER = 5101;
+    const HTML_CONTAINER = 5103;
+    const HTML_DOCUMENT = 5104;
 }

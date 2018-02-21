@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -25,15 +26,14 @@
  */
 
 namespace Ximdex\NodeTypes;
+
 use Ximdex\Models\Language;
 use Ximdex\Models\Node;
 use Ximdex\Models\NodeType;
 use Ximdex\Models\StructuredDocument;
 
-
 class XmlContainerNode extends FolderNode
 {
-
     function RenderizeNode()
     {
         return null;
@@ -58,10 +58,10 @@ class XmlContainerNode extends FolderNode
         $relTemplateContainer = new  \Ximdex\Models\RelTemplateContainer();
         $result = $relTemplateContainer->find("IdTemplate", "IdContainer = %s", array($this->nodeID), MONO);
         if (!$result || !is_array($result) || !count($result))
+        {
             return false;
-
+        }
         return $result[0];
-
     }
 
     /**
@@ -76,26 +76,26 @@ class XmlContainerNode extends FolderNode
      * @param int $nodeMaster
      * @param array $dataChildren Required data.
      */
-    function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $idSchema = null, $aliasLangList = null, $channelList = null, $idNodeMaster = null, $dataChildren = null)
+    function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $idSchema = null, $aliasLangList = null
+            , $channelList = null, $idNodeMaster = null, $dataChildren = null)
     {
-
         $result = false;
-
         $reltemplate = new  \Ximdex\Models\RelTemplateContainer();
         $reltemplate->createRel($idSchema, $this->nodeID);
-
-        if (is_array($aliasLangList)) {
-            foreach ($aliasLangList as $idLanguage => $alias) {
+        if (is_array($aliasLangList))
+        {
+            foreach ($aliasLangList as $idLanguage => $alias)
+            {
                 $result = $this->addLanguageVersion($idLanguage, $alias, $channelList, $dataChildren);
             }
-            
             $this->buildMetadata($nodeTypeID, $aliasLangList);
         }
-
         if (!$result)
+        {
             return false;
-
-        if ($idNodeMaster) {
+        }
+        if ($idNodeMaster)
+        {
             $this->setNodeMaster($idNodeMaster);
         }
 
@@ -104,9 +104,11 @@ class XmlContainerNode extends FolderNode
     private function buildMetadata($idNodeType, $aliases)
     {
         // only generate metadata nodes for XML document containers
-        if ($idNodeType == \Ximdex\NodeTypes\NodeTypeConstants::XML_CONTAINER) {
+        if ($idNodeType == \Ximdex\NodeTypes\NodeTypeConstants::XML_CONTAINER)
+        {
             $langs = array();
-            foreach ($aliases as $idLang => $alias) {
+            foreach ($aliases as $idLang => $alias)
+            {
                 $langs[] = $idLang;
             }
             $mm = new \Ximdex\Metadata\MetadataManager($this->nodeID);
@@ -114,7 +116,6 @@ class XmlContainerNode extends FolderNode
             $mm->updateSystemMetadata();
         }
     }
-
 
     /**
      * Add a new language version for the current document
@@ -131,7 +132,8 @@ class XmlContainerNode extends FolderNode
         //TODO: Every container nodetype should implement a getLanguageVersionNodeType.
         //$childrenNodetype = $this->getLanguageVersionNodeType;
         //It would be better than this switch.
-        switch ($this->nodeType->GetName()) {
+        switch ($this->nodeType->GetName())
+        {
             case 'XmlContainer':
                 $childrenNodeType->SetByName('XmlDocument');
                 break;
@@ -144,32 +146,32 @@ class XmlContainerNode extends FolderNode
             case 'MetaDataContainer':
                 $childrenNodeType->SetByName('MetaDataDoc');
                 break;
+            case 'HTMLContainer':
+                $childrenNodeType->SetByName('HTMLDocument');
+                break;
             default:
                 return;
         }
-
-        if ($childrenNodeType->HasError()) {
+        if ($childrenNodeType->HasError())
+        {
             $this->parent->SetError(1);
             return false;
         }
-
         $lang = new Language($idLang);
-        if ($lang->HasError()) {
+        if ($lang->HasError())
+        {
             $this->parent->SetError(1);
             return false;
         }
-
         $idSchema = $this->getIdSchema();
-
         $nameDoc = $this->parent->getNodeName() . "-id" . $lang->GetIsoName();
-        $idDoc = $xmldoc->CreateNode($nameDoc, $this->nodeID, $childrenNodeType->GetID(), $stateID = null, $idSchema, $idLang, $alias, $channelList, $data);
-
-
-        if ($xmldoc->HasError()) {
+        $idDoc = $xmldoc->CreateNode($nameDoc, $this->nodeID, $childrenNodeType->GetID(), $stateID = null, $idSchema, $idLang, $alias
+                , $channelList, $data);
+        if ($xmldoc->HasError())
+        {
             $this->parent->SetError(1);
             return false;
         }
-
         return $idDoc;
     }
 

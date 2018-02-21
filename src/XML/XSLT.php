@@ -117,10 +117,9 @@ class XSLT
     public function process(bool $showLog = true)
     {
         $res = @$this->xsltprocessor->transformToXML($this->xml);
-        if ($res === false and $showLog)
+        if (($res === false or $res === null) and $showLog)
         {
             $error = 'Cannot transform the XML document: ' . \Ximdex\Utils\Messages::error_message('XSLTProcessor::transformToXml(): ');
-            Logger::error($error);
             $this->errors[] = $error;
         }
         return $res;

@@ -22,19 +22,18 @@
 *  @author Ximdex DevTeam <dev@ximdex.com>
 *  @version $Revision$
 *}
+
 <form method="post" name="workflow_forward" action="{$action_url}">
 	<input type="hidden" name="nodeid" value="{$id_node}" />
 	<input type="hidden" name="default_message" value="{$defaultMessage}">
 	<input type="hidden" name="groupid" value="" />
 	<input type="hidden" name="state" value="{$state}" />
 	<input type="hidden" name="stateid" value="{$stateid}" />
-
 	<div class="action_header">
 		<h5 class="direction_header"> Name Node: {$name}</h5>
 		<h5 class="nodeid_header"> ID Node: {$nodeid}</h5>
 		<hr>
 	</div>
-
 	{if $hasDisabledFunctions}
 		<div class="message message-warning">
 			<p class="disable-functions-alert">
@@ -42,7 +41,6 @@
 			</p>
 		</div>
 	{/if}
-
 	{if isset($globalForcedEnabled) and $globalForcedEnabled}
 		<div class="message message-warning">
 			<p class="disable-functions-alert">
@@ -50,13 +48,10 @@
 			</p>
 		</div>
 	{/if}
-
 	<div class="action_content">
-	
 		<p class="next_state">
 			{t}Next state{/t}: <strong>{$state}</strong>
 		</p>
-	
 		<fieldset class="publish_date">
 			<div class="xim_calendar_container">
 				<calendar
@@ -75,84 +70,80 @@
 						first_date_name="dateUp"
 						last_date_name="dateDown"
 						/>
-				{if !isset($globalForcedEnabled)}
-				<div class="row tarjeta propertyform">
-					<h2 class="h2_general">{t}Publication options{/t}</h2>
-					<div class="publication_options">
-						{if $show_rep_option}
-							{if $nodetypename eq 'XmlDocument'}
+				{if !isset($globalForcedEnabled) and $show_rep_option and $nodetypename eq 'XmlDocument'}
+					<div class="row tarjeta propertyform">
+						<h2 class="h2_general">{t}Publication options{/t}</h2>
+						<div class="publication_options">
+							<div class="publication_option">
+								<div class="option_checkbox">
+									<input type="radio" name="levels" id="all_levels" value="all" checked="checked" />
+								</div>
+								<div class="option_info">
+									<label for="all_levels">{t}Publish all linked files.{/t}</label>
+								</div>
+								<div class="options_separator"></div>
+							</div>
+							<div class="publication_option">
+								<div class="option_checkbox">
+									<input type="radio" name="levels" id="deep_levels" value="deep" />
+								</div>
+								<div class="option_info">
+									<label for="deep_levels" >{t}Publish until a certain depth level{/t}:</label>
+									<span id="div_deeplevel">
+										&nbsp;
+										<input id="deeplevel" min="1" max="99999" type="number" name="deeplevel" value="1" 
+												class="disabled" disabled="disabled" />
+									</span>
+								</div>
+								<div class="options_separator"></div>
+							</div>
+							<div class="publication_option">
+								<div class="option_checkbox">
+									<input type="radio" name="levels" id="zero" value="zero" />
+								</div>
+								<div class="option_info">
+									<label for="zero">{t}Publish only the current file.{/t}</label>
+								</div>
+								<div class="options_separator"></div>
+							</div>
+							{if $advanced_publication eq '1'}
+								<hr />
 								<div class="publication_option">
 									<div class="option_checkbox">
-										<input type="radio" name="levels" id="all_levels" value="all" checked="checked" />
+										<input type="checkbox" name="no_structure" id="no_structure" value="1" />
 									</div>
 									<div class="option_info">
-										<label for="all_levels">{t}Publish all linked files.{/t}</label>
+										<label for="no_structure">{t}Ignore structure: css, images, scripts, pdf, ...{/t}</label>
+									</div>
+									<div class="options_separator"></div>
+								</div>
+								<div class="publication_option" id="last_edited_option">
+									<div class="option_checkbox">
+										<input type="checkbox" name="latest" id="last_edited" value="1" />
+									</div>
+									<div class="option_info">
+										<label for="last_edited">{t}Use drafts for linked documents instead of already published 
+												versions.{/t}</label>
 									</div>
 									<div class="options_separator"></div>
 								</div>
 								<div class="publication_option">
 									<div class="option_checkbox">
-										<input type="radio" name="levels" id="deep_levels" value="deep" />
+										<input type="checkbox" name="force" id="force" value="1" />
 									</div>
 									<div class="option_info">
-										<label for="deep_levels" >{t}Publish until a certain depth level{/t}:</label>
-										<span id="div_deeplevel">
-											&nbsp;
-											<input id="deeplevel" min="1" max="99999" type="number" name="deeplevel" value="1" 
-													class="disabled" disabled="disabled" />
-										</span>
+										<label for="force">{t}Force republish.{/t}</label>
 									</div>
 									<div class="options_separator"></div>
 								</div>
-								<div class="publication_option">
-									<div class="option_checkbox">
-										<input type="radio" name="levels" id="zero" value="zero" />
-									</div>
-									<div class="option_info">
-										<label for="zero">{t}Publish only the current file.{/t}</label>
-									</div>
-									<div class="options_separator"></div>
-								</div>
-								{if $advanced_publication eq '1'}
-									<hr />
-									<div class="publication_option">
-										<div class="option_checkbox">
-											<input type="checkbox" name="no_structure" id="no_structure" value="1" />
-										</div>
-										<div class="option_info">
-											<label for="no_structure">{t}Ignore structure: css, images, scripts, pdf, ...{/t}</label>
-										</div>
-										<div class="options_separator"></div>
-									</div>
-									<div class="publication_option" id="last_edited_option">
-										<div class="option_checkbox">
-											<input type="checkbox" name="latest" id="last_edited" value="1" />
-										</div>
-										<div class="option_info">
-											<label for="last_edited">{t}Use drafts for linked documents instead of already published 
-													versions.{/t}</label>
-										</div>
-										<div class="options_separator"></div>
-									</div>
-									<div class="publication_option">
-										<div class="option_checkbox">
-											<input type="checkbox" name="force" id="force" value="1" />
-										</div>
-										<div class="option_info">
-											<label for="force">{t}Force republish.{/t}</label>
-										</div>
-										<div class="options_separator"></div>
-									</div>
-								{/if}
 							{/if}
-						{/if}
+						</div>
 					</div>
-				</div>
 				{/if}
-
 				<fieldset class="notifications">
 					<span class="">
-		    			<input type="checkbox" name="sendNotifications" id="sendNotifications_forward_{$idNode}" class="send-notifications hidden-focus" value="1" {if $required eq 1}checked="checked"{/if} />
+		    			<input type="checkbox" name="sendNotifications" id="sendNotifications_forward_{$idNode}" 
+		    					class="send-notifications hidden-focus" value="1" {if $required eq 1}checked="checked"{/if} />
 						<label for="sendNotifications_forward_{$idNode}" class="checkbox-label icon">{t}Send notifications{/t}</label>
 					</span>
 					<ol>
@@ -162,12 +153,13 @@
 							<select id="groups" name="groups" class="cajaxg group_info">
 								{counter assign=index start=1}
 								{foreach from=$group_state_info key=index item=group}
-									<option value="{$group.IdGroup}|{$group.IdState}" {if $index == 0}selected="selected"{/if}>{$group.groupName} ({$group.stateName})</option>
+									<option value="{$group.IdGroup}|{$group.IdState}" {if $index == 0}selected="selected"{/if}>
+										{$group.groupName} ({$group.stateName})
+									</option>
 									{counter assign=index}
 								{/foreach}
 							</select></div>
 						</li>
-
 						<li class="conditioned {if $required != 1}hidden{/if}">
 							<label class="label_title label_general">{t}Users{/t}</label>
 							<div class="user-list-container">
@@ -176,7 +168,9 @@
 										{counter assign=index start=1}
 										{foreach from=$notificableUsers item=notificable_user_info}
 											<li class="user-info">
-												<input type="checkbox" name="users[]" class="validable notificable check_group__notificable" id="user_{$notificable_user_info.idUser}" value="{$notificable_user_info.idUser}" {if $index == 1}checked="checked"{/if} />
+												<input type="checkbox" name="users[]" class="validable notificable check_group__notificable" 
+														id="user_{$notificable_user_info.idUser}" 
+														value="{$notificable_user_info.idUser}" {if $index == 1}checked="checked"{/if} />
 												<label for="user_{$notificable_user_info.idUser}">{$notificable_user_info.userName}</label>
 											</li>
 											{counter assign=index}
@@ -185,19 +179,14 @@
 								</ol>
 							</div>
 						</li>
-
 						<li class="conditioned {if $required != 1}hidden{/if}">
 							<label for="texttosend" class="label_title label_general">{t}Comments{/t}:</label>
-							<textarea style="border: 2px solid lightgray!important;" class="validable not_empty comments" name="texttosend" id="texttosend" rows="4" wrap="soft" tabindex="7">{$defaultMessage}</textarea>
+							<textarea style="border: 2px solid lightgray!important;" class="validable not_empty comments" name="texttosend" 
+									id="texttosend" rows="4" wrap="soft" tabindex="7">{$defaultMessage}</textarea>
 						</li>
 					</ol>
 				</fieldset>
-
-
-
-
 			</div>
-
 			<div class="programed_publication row-item">
 				<h2 class="icon clock" style="color:white!important; margin-bottom:0!important;">{t}Scheduled publications{/t}</h2>
 				{if $gap_info|@count gt 0}
@@ -226,7 +215,6 @@
 				<input type="checkbox" name="markend" id="markend" />
 				<label for="markend">{t}Do you want to set the begin-date of the new window as the end-date of the previous window?{/t}</label>
 			{/if}
-
 		</fieldset>
 		<div class="small-12 columns">
 			<fieldset class="buttons-form">

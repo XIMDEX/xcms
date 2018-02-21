@@ -34,6 +34,7 @@ use Ximdex\Models\ORM\StructuredDocumentsOrm;
 use Ximdex\Parsers\ParsingDependencies;
 use Ximdex\Parsers\ParsingRng;
 use Ximdex\Properties\ChannelProperty;
+use Ximdex\NodeTypes\NodeTypeConstants;
 
 class StructuredDocument extends StructuredDocumentsOrm
 {
@@ -279,7 +280,6 @@ class StructuredDocument extends StructuredDocumentsOrm
 	}
 
 	/**
-	 *
 	 * @param string $content
 	 * @param boolean $commitNode
 	 */
@@ -289,15 +289,17 @@ class StructuredDocument extends StructuredDocumentsOrm
 
 		// Repetimos para todos los nodos que son enlaces simbolicos a este
 		if (!empty($symLinks))
-			foreach ($symLinks as $link) {
+		{
+			foreach ($symLinks as $link)
+			{
 			    
 				$node = new Node($link);
 				$node->RenderizeNode();
 			}
-
+		}
 		$node = new Node($this->get('IdDoc'));
-		if (\Ximdex\NodeTypes\NodeTypeConstants::METADATA_DOCUMENT == $node->GetNodeType()) {
-		    
+		if (\Ximdex\NodeTypes\NodeTypeConstants::METADATA_DOCUMENT == $node->GetNodeType())
+		{   
 			$content = \Ximdex\Metadata\MetadataManager::addSystemMetadataToContent($node->nodeID, $content);
 			if ($content === false)
 			{
@@ -312,17 +314,23 @@ class StructuredDocument extends StructuredDocumentsOrm
 		$this->SetUpdateDate();
 		$data = new DataFactory($this->get('IdDoc'));
 		$node = new Node($this->get('IdDoc'));
-		if ($commitNode == false) {
-		    
+		if ($commitNode == false)
+		{   
 			$info = $node->GetLastVersion();
 			$res = $data->SetContent($content, $info['Version'], $info['SubVersion'], $commitNode);
 		}
 		else
+		{
 		    $res = $data->SetContent($content, NULL, NULL, $commitNode);
+		}
 		
-		// the document will be validate against the associated RNG schema
-		$this->validate_schema($node);
-		    
+		// the document will be validate against the associated RNG schema with XML documents
+		if ($node->GetNodeType() == NodeTypeConstants::XML_DOCUMENT)
+		{
+		    $this->validate_schema($node);
+		}
+		
+		// check possible errors
 		if ($res === false)
 		{
 		    if ($data->msgErr)
@@ -331,12 +339,15 @@ class StructuredDocument extends StructuredDocumentsOrm
 		        return false;
 		    }
 		    if (!$this->messages->count())
+		    {
 		        if (isset($GLOBALS['errorsInXslTransformation']) and $GLOBALS['errorsInXslTransformation'])
 		        {
 		            $this->messages->add($GLOBALS['errorsInXslTransformation'][0], MSG_TYPE_WARNING);
 		            $GLOBALS['errorsInXslTransformation'] = null;
 		        }
+		    }
 		}
+		
 		// set dependencies
 		$dependeciesParser = new ParsingDependencies();
 		if ($dependeciesParser->parseAllDependencies($this->get('IdDoc'), $content) === false)
@@ -434,15 +445,19 @@ class StructuredDocument extends StructuredDocumentsOrm
 	{
 	    $schema = $this->get_schema_file($docNode);
 	    if ($schema === null)
+	    {
 	        return false;
-	        $xmlDoc = '<?xml version="1.0" encoding="UTF-8"?>' . PHP_EOL . '<docxap>' . PHP_EOL . \Ximdex\Utils\Strings::stripslashes($docNode->GetContent()) 
+	    }
+	    $xmlDoc = '<?xml version="1.0" encoding="UTF-8"?>' . PHP_EOL . '<docxap>' . PHP_EOL . \Ximdex\Utils\Strings::stripslashes($docNode->GetContent()) 
 	               . PHP_EOL . '</docxap>';
 	    $rngValidator = new RNG();
 	    $valid = $rngValidator->validate($schema, $xmlDoc);
 	    if (!$valid)
 	    {
 	        foreach ($rngValidator->getErrors() as $error)
+	        {
 	            $this->messages->add('Error parsing with the RNG schema: ' . $error, MSG_TYPE_WARNING);
+	        }
 	        return false;
 	    }
         return true;
@@ -488,7 +503,7 @@ class StructuredDocument extends StructuredDocumentsOrm
 	    $values = $this->GetChannels();
 	    if ($values === false)
 	        return false;
-	    if (isset($values[$channelID]))
+	    if (isset($values[$idChannel]))
 	        return true;
 	    return false;
 	}
@@ -506,7 +521,7 @@ class StructuredDocument extends StructuredDocumentsOrm
 	    $res = [];
 	    foreach ($values as $channel)
             if ($channel['Checked'] or $channel['Inherited'])
-                $res[] = $channel['Id'];
+                $res[$channel['Id']] = $channel['Id'];
 	    return $res;
 	}
 

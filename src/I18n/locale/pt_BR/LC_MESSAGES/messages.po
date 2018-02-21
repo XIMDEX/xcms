@@ -5665,6 +5665,9 @@ msgstr "Eliminar o nodo"
 msgid "Add new XML document"
 msgstr "Adicionar novo documento XML"
 
+msgid "Add new HTML document"
+msgstr "Adicionar novo documento HTML"
+
 msgid "Create a new structured document in several languages"
 msgstr "Criar um novo documento estruturado em v&aacute;rios idiomas"
 
@@ -6641,7 +6644,7 @@ msgstr "Se&ccedil;&atilde;o Ximdex"
 msgid "Root of image folder"
 msgstr "Raiz da pasta imagens"
 
-msgid "Root of XML folder"
+msgid "Root of documents folder"
 msgstr "Raiz da pasta XML"
 
 msgid "Root of import folder"

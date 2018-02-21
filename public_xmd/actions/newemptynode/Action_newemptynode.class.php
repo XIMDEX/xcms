@@ -29,40 +29,44 @@ use Ximdex\Models\Node;
 use Ximdex\Models\NodeAllowedContent;
 use Ximdex\Models\NodeType;
 use Ximdex\MVC\ActionAbstract;
-
-
-
+use Ximdex\NodeTypes\NodeTypeConstants;
+use Ximdex\NodeTypes\XsltNode;
 
 class Action_newemptynode extends ActionAbstract {
 
     // Main Method: it shows the initial form
-    function index() {
+    function index()
+    {
 		$nodeID = $this->request->getParam("nodeid");
 		$node = new Node($nodeID);
-		$nodetype = $node->nodeType->GetID();		
+		$nodetype = $node->nodeType->GetID();
 
 		$nac = new NodeAllowedContent();
-		$allowedchildsId=$nac->getAllowedChilds($nodetype);
-		$childs=array();
-		foreach($allowedchildsId as $ch){
+		$allowedchildsId = $nac->getAllowedChilds($nodetype);
+		$childs = array();
+		foreach ($allowedchildsId as $ch)
+		{
 			$nt = new NodeType($ch);
 			$name = $nt->GetName();
-			if($nt->GetIsPlainFile() && !(strcmp($name,'ImageFile')==0 || strcmp($name,'BinaryFile')==0 || strcmp($name,'VisualTemplate')==0 || strcmp($name,'Template')==0)){
-				$childs[]=array("idnodetype"=>$ch,"nodetypename"=>$name);
+			if ($nt->GetIsPlainFile() && !(strcmp($name,'ImageFile') == 0 || strcmp($name,'BinaryFile') == 0 || strcmp($name,'VisualTemplate') == 0 
+                    || strcmp($name,'Template') == 0))
+			{
+				$childs[] = array("idnodetype" => $ch, "nodetypename" => $name, 'description' => $nt->GetDescription());
 			}
 		}
-		$countChilds=count($childs);		
+		$countChilds = count($childs);
 		$this->request->setParam("go_method", "addNode");
 
 		$values = array ("childs" => $childs,
-				"countChilds" => $countChilds,
-				"nodeID" => $nodeID,"name" => $node->get('Name'));
+		      "countChilds" => $countChilds,
+		      "nodeID" => $nodeID, "name" => $node->get('Name'));
 
 		$this->render($values, 'addNode', 'default-3.0.tpl');
     }	
 
 	// Adds a new empty node to Ximdex
-	function addNode() {
+	function addNode()
+	{
 		$parentId = $this->request->getParam("nodeid");
 		$nodetype = $this->request->getParam("nodetype");
 		$name = $this->request->getParam("name");
@@ -70,18 +74,21 @@ class Action_newemptynode extends ActionAbstract {
 		//getting and adding file extension
 		$rntmt = new \Ximdex\Models\RelNodeTypeMimeType();
 		$ext = $rntmt->getFileExtension($nodetype);
-		if(strcmp($ext,'')!=0){
+		if ($ext)
+		{
 			$name_ext = $name.".".$ext;		
 		}
-		else{
-			$name_ext=$name;
+		else
+		{
+			$name_ext = $name;
 		}
+		
 		// creating new node and refreshing the tree
 		$file = new Node();
         $idfile = $file->CreateNode($name_ext, $parentId, $nodetype, null);
-
-        if ($idfile > 0) {
-			$content = $this->getDefaultContent($nodetype,$name);
+        if ($idfile)
+        {
+			$content = $this->getDefaultContent($nodetype, $name);
 			if ($file->SetContent($content) === false)
 			{
 			    if ($file->msgErr)
@@ -92,25 +99,25 @@ class Action_newemptynode extends ActionAbstract {
 			else
 			{
 			    // reload the templates include files for this new project when adding a template node
-			    if ($nodetype == \Ximdex\NodeTypes\NodeTypeConstants::XSL_TEMPLATE)
+			    if ($nodetype == NodeTypeConstants::XSL_TEMPLATE)
 			    {
-			        $xsltNode = new \Ximdex\NodeTypes\XsltNode($file);
+			        $xsltNode = new XsltNode($file);
 			        if ($xsltNode->reload_templates_include(new Node($file->getProject())) === false)
 			            $this->messages->mergeMessages($xsltNode->messages);
 			    }
                 $this->messages->add(sprintf('%s'._(' has been successfully created'), $name), MSG_TYPE_NOTICE);
                 if ($name == 'docxap')
                 {
-                    $xsltNode = new \Ximdex\NodeTypes\XsltNode(new Node($idfile));
+                    $xsltNode = new XsltNode(new Node($idfile));
                     $xsltNode->add_parents_includesTemplates();
                 }
 			}
-        } else {
+        }
+        else
+        {
             $this->messages->mergeMessages($file->messages);
         }
-        
 		$values = array('messages' => $this->messages->messages, 'parentID' => $parentId, 'nodeID' => $idfile);
-		
 		$this->sendJSON($values);
 	}
 	
@@ -124,15 +131,15 @@ class Action_newemptynode extends ActionAbstract {
 	{
 		switch ($nt)
 		{
-		    case \Ximdex\NodeTypes\NodeTypeConstants::TEXT_FILE:
+		    case NodeTypeConstants::TEXT_FILE:
 		        $content = '<<< DELETE \nTHIS\n CONTENT >>>';
 		        break;
 		    
-		    case \Ximdex\NodeTypes\NodeTypeConstants::CSS_FILE:
+		    case NodeTypeConstants::CSS_FILE:
 		        $content = '/* CSS File: ' . $name . '. Write your rules here. */\n\n * {}';
 		        break;
 
-		    case \Ximdex\NodeTypes\NodeTypeConstants::XSL_TEMPLATE:
+		    case NodeTypeConstants::XSL_TEMPLATE:
 		        $content = "<?xml version='1.0' encoding='UTF-8'?>";
 		        $content .= "\n<xsl:stylesheet xmlns:xsl='http://www.w3.org/1999/XSL/Transform' version='1.0'>";
 		        if ($name != 'templates_include')
@@ -148,7 +155,7 @@ class Action_newemptynode extends ActionAbstract {
 		        $content .= '</xsl:stylesheet>';
 		        break;
 
-            case \Ximdex\NodeTypes\NodeTypeConstants::RNG_VISUAL_TEMPLATE:
+            case NodeTypeConstants::RNG_VISUAL_TEMPLATE:
                 $content = "<?xml version='1.0' encoding='UTF-8' ?>\n";
                 $content .= "<grammar xmlns='http://relaxng.org/ns/structure/1.0' xmlns:xim='http://ximdex.com/schema/1.0'>";
                 $content .= "\n\t<!-- Create your own grammar here -->";
@@ -156,9 +163,15 @@ class Action_newemptynode extends ActionAbstract {
                 $content .= "\n</grammar>";
 				break;
 
-		    case \Ximdex\NodeTypes\NodeTypeConstants::NODE_HT:
+		    case NodeTypeConstants::NODE_HT:
 				$content = "<html>\n\t<head>\n\t</head>\n\t<body>\n\t</body>\n</html>";
 				break;
+				
+		    case NodeTypeConstants::HTML_LAYOUT_JSON:
+		        $content = "{\n\t\"schemes\": [\n\t\t\n\t]\n}";
+		        break;
+		    default:
+		        $content = '';
 		}
 		return $content;
 	}

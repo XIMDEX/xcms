@@ -1,16 +1,20 @@
 <?php
+
 $I = new AcceptanceTester($scenario);
 
-if(file_exists('conf/_STATUSFILE')){
+if (file_exists('conf/_STATUSFILE'))
+{
     $I->deleteFile('conf/_STATUSFILE');
 }
 
-if( file_exists('data/previos/css/default.css') ){
+if (file_exists('data/previos/css/default.css'))
+{
     $I->deleteFile('data/previos/css/default.css');
     $I->deleteDir('data/previos/css');
 }
 
-if( file_exists('data/previos/picasso-iden-idHTML.html') ){
+if (file_exists('data/previos/picasso-iden-idHTML.html'))
+{
     $I->deleteFile('data/previos/picasso-iden-idHTML.html');
 }
 
@@ -58,6 +62,8 @@ $I->waitForText("Installation finished!", 3);
 
 $I->click("Get started");
 
+$I->amOnPage('/public_xmd/');
+
 $I->see("User");
 $I->see("Password");
 
@@ -74,7 +80,8 @@ $I->waitForText("Hello ximdex, first time here?", 3, "#tourcontrols");
 
 $I->click("#canceltour");
 
-function reload($I){
+function reload($I)
+{
     $I->click("#angular-tree > div.ui-tabs.ui-widget.ui-widget-content.ui-corner-all.tabs-container.hbox-panel.ng-isolate-scope > div.ui-tabs.ui-widget.ui-widget-content.ui-corner-all.tabs-container > div > div.browser-view.ui-tabs-panel.ui-widget-content.ui-corner-bottom.tab-pane.ng-scope.active > div.ng-scope > xim-tree > div > div.xim-treeview-btnreload.ui-corner-all.ui-state-default.ng-binding");
 }
 
@@ -99,7 +106,7 @@ reload($I);
 $I->waitForText("picasso-iden", 3, "#angular-tree");
 
 // Open picasso-iden menu
-$I->click("//*[@id=\"angular-tree\"]/div[1]/div[2]/div/div[1]/div[2]/xim-tree/div/div[2]/ul/li/tree-node/span/ul/li/span/ul/li[4]/span/ul/li[3]/span/ul/li[1]/span/ul/li/span/div/span[2]");
+$I->click("//*[@id=\"angular-tree\"]/div[1]/div[2]/div/div[1]/div[2]/xim-tree/div/div[2]/ul/li/tree-node/span/ul/li/span/ul/li[5]/span/ul/li[3]/span/ul/li[1]/span/ul/li/span/div/span[2]");
 
 $I->waitForText("Publish", 3, "body > div.xim-actions-menu.destroy-on-click.noselect.xim-actions-menu-list");
 
@@ -111,18 +118,21 @@ $I->click("Publish", "#angular-content");
 
 $I->waitForText("State has been successfully changed", 3, "#angular-content");
 
-function fileExistAndIsNotEmpty($path){
+function fileExistAndIsNotEmpty($path)
+{
     return file_exists($path) && filesize($path);
 }
 
 $count = 0;
-while(!fileExistAndIsNotEmpty('data/previos/css/default.css') && $count < 45){
+while(!fileExistAndIsNotEmpty('data/previos/css/default.css') && $count < 45)
+{
     sleep(2);
     $count++;
 }
 $I->seeFileFound('default.css','data/previos/css');
 
-while(!fileExistAndIsNotEmpty('data/previos/picasso-iden-idHTML.html') && $count < 45){
+while(!fileExistAndIsNotEmpty('data/previos/picasso-iden-idHTML.html') && $count < 45)
+{
     sleep(2);
     $count++;
 }
@@ -133,7 +143,7 @@ $I->amOnPage("/data/previos/picasso-iden-idHTML.html");
 $I->see("Picasso", ".header");
 $I->see("Cubism", ".header");
 
-$I->amOnPage('/?action=xmleditor2&method=load&nodeid=10134');
+$I->amOnPage('?action=xmleditor2&method=load&nodeid=10141');
 $I->wait(3);
 $I->switchToIframe('kupu-editor');
 $I->see('Early periods');

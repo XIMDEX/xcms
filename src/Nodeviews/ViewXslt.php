@@ -149,7 +149,7 @@ class ViewXslt extends AbstractView
             $xsltHandler->setParameter(array($param => $value));
         }
 
-        $content = $xsltHandler->process(false);
+        $content = $xsltHandler->process();
         
         if (App::debug())
         {
@@ -158,7 +158,7 @@ class ViewXslt extends AbstractView
             # END DEBUG
         }
         
-        if ($content === false)
+        if ($content === false or $content === null)
         {
             // try to reload templates includes in order to try to solve the problem, in case of empty templates_include.xsl
             Logger::info('Checking if the local templates_include.xsl is empty to reload its content');
@@ -167,11 +167,12 @@ class ViewXslt extends AbstractView
                 $GLOBALS['errorsInXslTransformation'][] = 'Cannot load the includes template URL: ' . $urlTemplatesInclude;
             else
             {
+                $GLOBALS['errorsInXslTransformation'] = array();
                 $xPath = new \DOMXPath($dom);
                 $templates = $xPath->query('/xsl:stylesheet/xsl:include');
                 if (!$templates->length)
                 {
-                    Logger::info('XSL templates file: ' . $urlTemplatesInclude 
+                    Logger::warning('XSL templates file: ' . $urlTemplatesInclude 
                             . ' is empty; trying to reload the templates files in the project ID: ' . $projectId);
                     $xsltNode = new XsltNode($project);
                     if ($xsltNode->reload_templates_include($project) === false)
@@ -192,8 +193,8 @@ class ViewXslt extends AbstractView
             }
         }
         
-        if ($content === false) {
-            
+        if ($content === false or $content === null)
+        {
             if ($xsltHandler->errors())
                 $GLOBALS['errorsInXslTransformation'] = array_merge($GLOBALS['errorsInXslTransformation'], $xsltHandler->errors());
             foreach ($GLOBALS['errorsInXslTransformation'] as $error)

@@ -992,22 +992,19 @@ class Action_browser3 extends ActionAbstract
      */
     protected function getActions($nodes = null)
     {
-
         $idUser = \Ximdex\Runtime\Session::get('userID');
         $nodes = $nodes !== null ? $nodes : $this->request->getParam('nodes');
-
         if (!is_array($nodes))
+        {
             $nodes = array($nodes);
-
+        }
         $actions = $this->getActionsOnNodeList($idUser, $nodes);
 
-        /**
-         * Users can modify their account
-         */
-        if (is_array($nodes) && count($nodes) == 1 && $nodes[0] == $idUser && !in_array(6002, $actions)) {
+        // Users can modify their account
+        if (is_array($nodes) && count($nodes) == 1 && $nodes[0] == $idUser && !in_array(6002, $actions))
+        {
             $actions[] = 6002;
         }
-
         return $actions;
     }
 
@@ -1016,11 +1013,11 @@ class Action_browser3 extends ActionAbstract
      * It depends on roles, states and nodetypes of nodes.
      * @param int $idUser Current user.
      * @param array $nodes IdNodes array.
-     * @return array IdActions array.         *
+     * @return array IdActions array.
      */
     public function getActionsOnNodeList($idUser, $nodes, $processActionName = true)
     {
-        unset( $processActionName) ;
+        unset($processActionName);
         $user = new User($idUser);
         return $user->getActionsOnNodeList($nodes);
     }
@@ -1082,21 +1079,21 @@ class Action_browser3 extends ActionAbstract
         $nodes = GenericDatasource::normalizeEntities($nodes);
         $sets = $this->getSetsIntersection($nodes);
         $actions = $this->getActions($nodes);
-
         $arrayActionsParams = array();
+        
         //For every action, build the params for json response
-
-        foreach ($actions as $idAction) {
+        foreach ($actions as $idAction)
+        {
             $actionsParamsAux = array();
             $action = new Action($idAction);
             $name = $action->get("Name");
 
-            //Changing name when node sets.
-            if (count($nodes) > 1) {
+            //Changing name when node sets
+            if (count($nodes) > 1)
+            {
                 $auxName = explode(" ", $name);
                 $name = $auxName[0] . " " . _("selection");
             }
-
             $actionsParamsAux["id"] = $action->get("IdAction") ? $action->get("IdAction") : "";
             $actionsParamsAux["name"] = $name;
             $actionsParamsAux["module"] = $action->get("Module") ? $action->get("Module") : "";
@@ -1107,9 +1104,7 @@ class Action_browser3 extends ActionAbstract
             $actionsParamsAux["bulk"] = $action->get("IsBulk");
             $arrayActionsParams[] = $actionsParamsAux;
         }
-
         $options = array_merge($sets, $arrayActionsParams);
-
         $this->sendJSON($options);
     }
 
@@ -1120,14 +1115,17 @@ class Action_browser3 extends ActionAbstract
     {
         $request = $this->request->getRequests();
         $method = $this->request->getParam('validationMethod');
-        if (empty($method)) {
+        if (empty($method))
+        {
             $request_content = file_get_contents("php://input");
             $request = (array)json_decode($request_content);
-            if (array_key_exists('validationMethod', $request)) {
+            if (array_key_exists('validationMethod', $request))
+            {
                 $method = $request['validationMethod'];
             }
         }
-        if (method_exists("FormValidation", $method)) {
+        if (method_exists("FormValidation", $method))
+        {
             FormValidation::$method($request);
         }
         die("false");
@@ -1139,10 +1137,7 @@ class Action_browser3 extends ActionAbstract
     function disableTour()
     {
         $numRep = $this->request->getParam('numRep');
-
         App::setValue('ximTourRep', $numRep, true);
-
-
         $result["success"] = true;
         $this->sendJSON($result);
     }
@@ -1157,10 +1152,7 @@ class Action_browser3 extends ActionAbstract
         $res["preferences"] = array("MaxItemsPerGroup" => App::getValue("MaxItemsPerGroup"));
         $this->sendJSON($res);
     }
-
-    /**
-     *
-     */
+	
     protected function actionIsExcluded($idAction, $idNode)
     {
         $node = new Node($idNode);
@@ -1178,5 +1170,4 @@ class Action_browser3 extends ActionAbstract
         }
         return $ret;
     }
-
 }

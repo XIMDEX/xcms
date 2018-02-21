@@ -1,7 +1,7 @@
 INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`, `IsBulk`)
 VALUES
 	(6043,5018,'Add XML documents','fileupload_common_multiple','add_xml.png','Create new XML documents in several languages',9,NULL,0,'',0),
-	(6044,5018,'Add new document','createxmlcontainer','add_xml.png','Create a new document structured in several languages',10,NULL,0,'',0),
+	(6044,5018,'Add new XML document','createxmlcontainer','add_xml.png','Create a new XML document in several languages',10,NULL,0,'',0),
 	(6071,5050,'Add new external link','createlink','add_external_link.png','Create a new external link',10,NULL,0,'',0),
 	(6072,5048,'Add new external link','createlink','add_external_link.png','Create a new external link',10,NULL,0,'',0),
 	(6138,5054,'Add new ximlet','createxmlcontainer','add_xml.png','Create a new document structured in several languages',10,NULL,0,'',0),
@@ -1219,7 +1219,7 @@ VALUES
 	(5015,'Section','sectionnode','folder','Ximdex section',1,1,1,1,1,0,0,0,1,0,0,0,0,0,NULL),
 	(5016,'ImagesRootFolder','foldernode','folder_images','Root of image folder',1,1,0,0,1,0,0,0,1,0,1,0,0,1,NULL),
 	(5017,'ImagesFolder','foldernode','folder_images','Image folder',1,1,0,0,1,0,0,0,1,0,0,0,0,1,NULL),
-	(5018,'XmlRootFolder','foldernode','folder_xml','Root of XML folder',1,1,0,0,1,1,0,0,0,0,1,0,0,1,NULL),
+	(5018,'XmlRootFolder','foldernode','folder_xml','Root of documents folder',1,1,0,0,1,1,0,0,0,0,1,0,0,1,NULL),
 	(5020,'ImportRootFolder','foldernode','folder_import','Root of import folder',1,1,0,0,1,0,0,0,0,0,1,0,0,1,NULL),
 	(5021,'ImportFolder','foldernode','folder_import','Import folder',1,1,0,0,1,0,0,0,0,0,0,0,0,1,NULL),
 	(5022,'CommonRootFolder','foldernode','folder_common','Root of common folder',1,1,0,0,1,0,0,0,1,0,1,0,0,1,NULL),

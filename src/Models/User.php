@@ -574,7 +574,8 @@ class User extends UsersOrm
         $noActionsInNode = new \Ximdex\Models\NoActionsInNode();
         $arrayForbiddenActions = $noActionsInNode->getForbiddenActions($idNode);
 
-        /* To get the actions the steps are:
+        /**
+         * To get the actions the steps are:
          * 1. Get the Groups on node for the current User
          * 2. For every group, the user roles.
          * 3. For every role get the actions on idnode
@@ -584,33 +585,30 @@ class User extends UsersOrm
         $arrayGroups = $this->GetGroupListOnNode($idNode);
         $arrayRoles = array();
         $arrayActions = array();
-
-
-        if(!empty($arrayGroups)) {
+        if (!empty($arrayGroups))
+        {
             //Getting roles for the user for every group.
-            foreach ($arrayGroups as $idGroup) {
+            foreach ($arrayGroups as $idGroup)
+            {
                 $aux = array();
                 $aux[] = $this->GetRoleOnGroup($idGroup);
                 $arrayRoles = array_merge($arrayRoles, $aux);
             }
-
         }
-
         $arrayRoles = array_unique($arrayRoles);
-
-        if(!empty($arrayRoles)) {
+        if (!empty($arrayRoles))
+        {
             //Getting actions for every rol .
-            foreach ($arrayRoles as $idRol) {
+            foreach ($arrayRoles as $idRol)
+            {
                 $role = new Role($idRol);
                 $arrayActions = array_merge($arrayActions, $role->GetActionsOnNode($idNode, $includeActionsWithNegativeSort));
             }
         }
-
         $arrayActions = array_unique($arrayActions);
-
+        
         //Deleting not allowed actions from actions array.
         $result = array_diff($arrayActions, $arrayForbiddenActions);
-
         return $result;
     }
 
@@ -620,48 +618,50 @@ class User extends UsersOrm
      * @param array $nodes IdNodes array.
      * @return array IdActions array
      * @since Ximdex 3.6
-     *
      */
     public function getActionsOnNodeList($nodes)
     {
         $result = array();
-
         $nodes = array_unique($nodes);
         $actionsArray = array();
         //Get idactions for everynode
-        foreach ($nodes as $idNode) {
+        foreach ($nodes as $idNode)
+        {
             $aux = $this->getActionsOnNode($idNode);
             $actionsArray = array_merge($actionsArray, $aux);
         }
 
-        /* Actions can be different idactions and same command, params
+        /**
+         * Actions can be different idactions and same command, params
          * and module, so we must group this actions.
          * The idActions returned have allowed commands for the selected
          * nodes.
          */
-        //$actionsArray = array_unique($actionsArray);
-        if (count($nodes) > 1) {
-            foreach ($actionsArray as $idAction) {
+        if (count($nodes) > 1)
+        {
+            foreach ($actionsArray as $idAction)
+            {
                 $action = new Action($idAction);
-
                 $command = $action->get("Command");
                 $aliasModule = $action->get("Module") ? $action->get("Module") : "nomodule";
                 $aliasParam = $action->get("Params") ? $action->get("Params") : "noparams";
-
-                if (isset($founded[$command][$aliasModule][$aliasParam]) &&
-                    $founded[$command][$aliasModule][$aliasParam] == count($nodes) - 1
-                ) {
+                if (isset($founded[$command][$aliasModule][$aliasParam]) && $founded[$command][$aliasModule][$aliasParam] == count($nodes) - 1)
+                {
                     $result[] = $idAction;
                     continue;
                 }
-                if (!isset($founded[$command][$aliasModule][$aliasParam])) {
+                if (!isset($founded[$command][$aliasModule][$aliasParam]))
+                {
                     $founded[$command][$aliasModule][$aliasParam] = 1;
-                } else {
-                    $founded[$command][$aliasModule][$aliasParam] =
-                        $founded[$command][$aliasModule][$aliasParam] + 1;
+                }
+                else
+                {
+                    $founded[$command][$aliasModule][$aliasParam] = $founded[$command][$aliasModule][$aliasParam] + 1;
                 }
             }
-        } else {
+        }
+        else
+        {
             return $actionsArray;
         }
         return $result;
@@ -806,8 +806,7 @@ class User extends UsersOrm
 
         return false;
     }
-
-
+    
     /**
      * Comprueba si un usuario puede escribir un nodo
      *
@@ -817,67 +816,63 @@ class User extends UsersOrm
      */
     public function canWrite($params)
     {
-
         $wfParams = $this->parseParams($params);
         $idPipeline = NULL;
-
-        if (isset($wfParams['node_id'])) {
-
+        if (isset($wfParams['node_id']))
+        {
             $nodeId = (int)$wfParams['node_id'];
 
             // Usuario ximdex
-            if ($this->getID() == 301) return true;
-
-            if (!$this->hasAccess($nodeId)) {
+            if ($this->getID() == 301)
+            {
+                return true;
+            }
+            if (!$this->hasAccess($nodeId))
+            {
                 return false;
             }
-
             $workflow = new WorkFlow($nodeId);
             $idPipeline = $workflow->pipeline->get('id');
-
         }
 
-        // Should be always set.
+        // Should be always set
         if (!isset($wfParams['node_type'])) {
             return false;
         }
-
         $nodeTypeId = (int)$wfParams['node_type'];
-
-        if ($this->checkContext($nodeTypeId, Constants::CREATE)) {
+        if ($this->checkContext($nodeTypeId, Constants::CREATE))
+        {
             return true;
         }
 
         // Check groups&roles and defined actions...
         $userRoles = $this->GetRoles();
-
-        if (!is_array($userRoles)) {
+        if (!is_array($userRoles))
+        {
             return false;
         }
 
         $userRoles = array_unique($userRoles);
         unset($user);
-
         $nodeType = new NodeType($nodeTypeId);
         $actionId = $nodeType->GetConstructor();
-
         unset($nodeType);
-
-        if (!$actionId > 0) {
+        if (!$actionId > 0)
+        {
             Logger::warning(sprintf(_("The nodetype %d has no create action associated"), $nodeTypeId));
             return false;
         }
-
-        foreach ($userRoles as $userRole) {
+        foreach ($userRoles as $userRole)
+        {
             $role = new Role($userRole);
-            if ($role->HasAction($actionId, $idPipeline)) {
+            if ($role->HasAction($actionId, $idPipeline))
+            {
                 return true;
             }
         }
 
         // Not write action found for roles of userId.
         return false;
-
     }
 
 
@@ -988,9 +983,7 @@ class User extends UsersOrm
 
     }
 
-
     /**
-     *
      * @param $idUser
      * @param $idNodeType
      * @param $mode
@@ -1000,35 +993,23 @@ class User extends UsersOrm
     {
         $nodeTypeMode = new NodetypeMode();
         $idAction = $nodeTypeMode->getActionForOperation($idNodeType, $mode);
-        if (!($idAction > 0)) {
+        if (!($idAction > 0))
+        {
             return false;
         }
-
         $context = Session::get('context');
         $contextsObject = new ContextsOrm();
         $result = $contextsObject->find('id', 'Context = %s', array($context), MONO);
         $idContext = count($result) == 1 ? $result[0] : '1';
-
         $relRolesActions = new RelRolesActionsOrm();
-        $result = $relRolesActions->find('IdRol',
-            'IdAction = %s AND IdContext = %s',
-            array($idAction, $idContext),
-            MONO);
-
+        $result = $relRolesActions->find('IdRol', 'IdAction = %s AND IdContext = %s', array($idAction, $idContext), MONO);
         $idRol = count($result) == 1 ? $result[0] : NULL;
-        if (!($idRol) > 0) {
+        if (!($idRol) > 0)
+        {
             return false;
         }
-
         $relUserGroup = new RelUsersGroupsOrm();
-        $relations = $relUserGroup->find('IdRel',
-            'IdUser = %s AND IdRole %s',
-            array($this->getID(), $idRol),
-            MONO);
-
+        $relations = $relUserGroup->find('IdRel', 'IdUser = %s AND IdRole = %s', array($this->getID(), $idRol), MONO);
         return (count($relations) > 0);
     }
-
-
-
 }

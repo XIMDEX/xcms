@@ -74,8 +74,8 @@ msgstr "Añadir nueva hoja de estilos"
 msgid "Add empty XSL template"
 msgstr "Añadir nueva plantilla XSL"
 
-msgid "Add an empty RNG schema"
-msgstr "Añadir un nuevo esquema RNG"
+msgid "Add a new empty schema"
+msgstr "Añadir un nuevo esquema vacío"
 
 msgid "Create a new empty file"
 msgstr "Crea un nuevo archivo vacío"
@@ -6008,8 +6008,12 @@ msgstr "Eliminar la carpeta seleccionada"
 msgid "Delete a node"
 msgstr "Eliminar el nodo"
 
-msgid "Add new document"
-msgstr "Añadir nuevo documento"
+msgid "Add new XML document"
+msgstr "Añadir nuevo documento XML"
+
+#: /actions/createhtml5container/template/Smarty/index.tpl
+msgid "Add new HTML5 document"
+msgstr "Añadir nuevo documento HTML5"
 
 msgid "Create a new structured document in several languages"
 msgstr "Crear un nuevo documento estructurado en varios idiomas"
@@ -6996,8 +7000,8 @@ msgstr "Sección de Ximdex"
 msgid "Root of image folder"
 msgstr "Raíz de carpeta imágenes"
 
-msgid "Root of XML folder"
-msgstr "Raíz de carpeta XML"
+msgid "Root of documents folder"
+msgstr "Raíz de carpeta de documentos"
 
 msgid "Root of import folder"
 msgstr "Raíz de carpeta import"

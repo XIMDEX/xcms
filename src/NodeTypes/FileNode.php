@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -49,15 +50,12 @@ use Ximdex\Logger;
  */
 class FileNode extends Root
 {
-
     /**
-     *  Creates a file in data/nodes directory.
+     * Creates a file in data/nodes directory.
      * @return
      */
-
     function RenderizeNode()
     {
-
         $parentID = $this->parent->GetParent();
         $parent = new Node($parentID);
 
@@ -158,11 +156,6 @@ class FileNode extends Root
             }
             $data->SetContent($content, NULL, NULL, $commitNode);
         }
-
-        /*if (($this->parent->nodeType->get('Name') == 'VisualTemplate')
-            && \Ximdex\Modules\Manager::isEnabled('ximRAM')) {
-            CacheWriter::writeCache($this->nodeID, $content);
-        }*/
 
         if ($this->parent->nodeType->get('Name') == 'CssFile') {
 
@@ -288,11 +281,11 @@ class FileNode extends Root
     }
 
     /**
-     *  Promotes the File to the next workflow state.
+     * Promotes the File to the next workflow state.
      * @param string newState
      * @return bool
      */
-    function promoteToWorkFlowState($newState)
+    public function promoteToWorkFlowState($newState)
     {
         $state = new State();
         $idState = $state->loadByName($newState);
@@ -310,5 +303,14 @@ class FileNode extends Root
             $down = $up + 36000000; // unpublish date = dateup + 1year
             baseIO_PublishDocument($this->nodeID, $up, $down, null);
         }
+    }
+    
+    /**
+     * Gets the minimal content of a document created by a template
+     * @return string
+     */
+    public function buildDefaultContent()
+    {
+        return '';
     }
 }

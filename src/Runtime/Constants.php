@@ -1,22 +1,19 @@
 <?php
+
 /**
  * Temporary Class to manage old Defines as costants
  */
-
 namespace Ximdex\Runtime;
-
 
 class Constants
 {
-
     // NodeId Codes
-
-     //
     const CREATE = 'C';
     const WRITE = 'W';
     const DELETE = 'D';
     const READ = 'R';
     const UPDATE = 'U';
+    
     // BaseIO
     const MODE_NODETYPE = 0;
     const MODE_NODEATTRIB = 1;
@@ -56,6 +53,4 @@ class Constants
     const RUN_HEURISTIC_MODE = true;
     const RUN_IMPORT_MODE = false;
     const PUBLISH_STATUS = 'Publish';
-
-
 }

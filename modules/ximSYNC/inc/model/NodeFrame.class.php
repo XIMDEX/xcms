@@ -232,7 +232,7 @@ class NodeFrame extends NodeFrames_ORM {
 				$sf = new ServerFrame();
 				$sfResult = $sf->find('IdChannelFrame', 'IdNodeFrame = %s', array($idNodeFrame), MONO);
 				if (empty($sfResult)) {
-					Logger::error('ServerFrame not found for NodeFrame ' . $idNodeFrame);
+					Logger::info('ServerFrame not found for NodeFrame ' . $idNodeFrame);
 					return false;
 				}
 				foreach($sfResult as $idChannelFrame) {
@@ -243,7 +243,7 @@ class NodeFrame extends NodeFrames_ORM {
 			
 			// check if the channels from document properties are in the server frame channels list
 			$properties = InheritedPropertiesManager::getValues($nodeId);
-			if (isset($values['Channel']))
+			if (isset($properties['Channel']))
 			{
 			    $strDoc = new StructuredDocument($nodeId);
 			    foreach ($channelList as $channelID)

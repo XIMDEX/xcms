@@ -167,7 +167,7 @@ X.actionLoaded(function (event, fn, params) {
             
             var directory = fn("input[name=initialdirectory]");
             if (null == directory.val() || "" == directory.val()) {
-                directory.val(ximdex_root + "/data/previos/");
+                directory.val(ximdex_root + "/data/previos");
             }
             fn('#labelDirectorio').text(_('Directory'));
             fn('#labeldirRemota').text(_('Address'));

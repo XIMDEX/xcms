@@ -5661,6 +5661,9 @@ msgstr "Knoten l&ouml;schen"
 msgid "Add new XML document"
 msgstr "Neues XML-Dokument hinzuf&uuml;gen"
 
+msgid "Add new HTML document"
+msgstr "Neues HTML-Dokument hinzuf&uuml;gen"
+
 msgid "Create a new structured document in several languages"
 msgstr "Erstellen eines strukturierten Dokuments in mehreren Sprachen"
 
@@ -6635,7 +6638,7 @@ msgstr "Ximdex-Sektion"
 msgid "Root of image folder"
 msgstr "Stamm des Bildordners"
 
-msgid "Root of XML folder"
+msgid "Root of documents folder"
 msgstr "Stamm des XML-Ordners"
 
 msgid "Root of import folder"

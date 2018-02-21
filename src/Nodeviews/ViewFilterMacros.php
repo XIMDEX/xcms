@@ -41,17 +41,20 @@ use Ximdex\Sync\SynchroFacade;
 
 class ViewFilterMacros extends AbstractView implements IView
 {
-    protected $_node = NULL;
-    protected $_server = NULL;
-    protected $_serverNode = NULL;
-    protected $_projectNode = NULL;
-    protected $_idChannel;
-    protected $_isPreviewServer = false;
-    protected $_depth = NULL;
-    protected $_idSection = NULL;
-    protected $_nodeName = "";
-    protected $idNode;
-    protected $idChannel;
+    private $_node = NULL;
+    private $_server = NULL;
+    private $_serverNode = NULL;
+    private $_projectNode = NULL;
+    private $_idChannel;
+    private $_isPreviewServer = false;
+    private $_depth = NULL;
+    private $_idSection = NULL;
+    private $_nodeName = "";
+    private $idNode;
+    private $idChannel;
+    private $_nodeTypeName = NULL;
+    private $mode = NULL;
+    private $preview = false;
     
     const MACRO_SERVERNAME = "/@@@RMximdex\.servername\(\)@@@/";
     const MACRO_PROJECTNAME = "/@@@RMximdex\.projectname\(\)@@@/";
@@ -64,6 +67,16 @@ class ViewFilterMacros extends AbstractView implements IView
     const MACRO_RDF = "/@@@RMximdex\.rdf\(([^\)]+)\)@@@/";
     const MACRO_RDFA = "/@@@RMximdex\.rdfa\(([^\)]+)\)@@@/";
 
+    /**
+     * Constructor with mode preview choise parameter 
+     * @param bool $preview
+     */
+    public function __construct($preview = false)
+    {
+        $this->preview = $preview;
+        // parent::__construct();
+    }
+    
     /**
      * Main method. Get a pointer content file and return a new transformed content file. This probably cames from Transformer (View_XSLT), so will be the renderized content.
      * @param  int $idVersion Node version
@@ -97,7 +110,7 @@ class ViewFilterMacros extends AbstractView implements IView
      * @param int $idVersion
      * @return boolean True if everything is allright.
      */
-    protected function initializeParams($args, $idVersion)
+    private function initializeParams($args, $idVersion)
     {
         if (!$this->_setNode($idVersion, $args))
             return NULL;
@@ -122,14 +135,24 @@ class ViewFilterMacros extends AbstractView implements IView
 
         return true;
     }
-
+    /*
+    private function initializeParams($args, $idVersion)
+    {
+        $this->mode = (isset($args['MODE']) && $args['MODE'] == 'dinamic') ? 'dinamic' : 'static';
+        
+        if (!$this->_setIdSection($args))
+            return NULL;
+            
+        return parent::initializeParams($args, $idVersion);
+    }
+    */
     /**
      * Load the node param from an idVersion.
      * @param int $idVersion Version id
      * @param array $args
      * @return boolean True if exists node for selected version or the current node.
      */
-    protected function _setNode($idVersion = NULL, $args = null)
+    private function _setNode($idVersion = NULL, $args = null)
     {
         if ($this->idNode)
         {
@@ -159,7 +182,7 @@ class ViewFilterMacros extends AbstractView implements IView
      * @param array $args [description]
      * @return boolean true if exists channel.
      */
-    protected function _setIdChannel($args = array())
+    private function _setIdChannel($args = array())
     {
         if (array_key_exists('CHANNEL', $args))
             $this->_idChannel = $args['CHANNEL'];
@@ -178,7 +201,7 @@ class ViewFilterMacros extends AbstractView implements IView
      * @param array $args [description]
      * @return boolean true if exists the server in args.
      */
-    protected function _setServer($args = array())
+    private function _setServer($args = array())
     {
         if (array_key_exists('SERVER', $args)) {
             $this->_server = new Server($args['SERVER']);
@@ -198,7 +221,7 @@ class ViewFilterMacros extends AbstractView implements IView
      * @param array $args Transformation args.
      * @return  boolean True if exists the server node.
      */
-    protected function _setServerNode($args = array())
+    private function _setServerNode($args = array())
     {
         if ($this->_node)
             $this->_serverNode = new Node($this->_node->getServer());
@@ -221,7 +244,7 @@ class ViewFilterMacros extends AbstractView implements IView
      * @param array $args Transformation args.
      * @return  boolean true if exists the project node.
      */
-    protected function _setProjectNode($args = array())
+    private function _setProjectNode($args = array())
     {
         if ($this->_node)
             $this->_projectNode = $this->_node->getProject();
@@ -243,7 +266,7 @@ class ViewFilterMacros extends AbstractView implements IView
      * @param array $args Transformation args.
      * @return boolean true if exits depth form the current node.
      */
-    protected function _setDepth($args = array())
+    private function _setDepth($args = array())
     {
         if ($this->_node)
             $this->_depth = $this->_node->GetPublishedDepth();
@@ -266,7 +289,7 @@ class ViewFilterMacros extends AbstractView implements IView
      * @param array $args Transformation args.
      * @return  boolean true if exists name for the current node.
      */
-    protected function _setNodeName($args = array())
+    private function _setNodeName($args = array())
     {
         if ($this->_node)
             $this->_nodeName = $this->_node->get('Name');
@@ -283,7 +306,7 @@ class ViewFilterMacros extends AbstractView implements IView
     }
 
 
-    protected function transformFromPointer($pointer)
+    private function transformFromPointer($pointer)
     {
         //Get the content.
         $content = $this->retrieveContent($pointer);
@@ -362,7 +385,7 @@ class ViewFilterMacros extends AbstractView implements IView
      * @param  int $idNode descendant of the searched Section.
      * @return Node The section node.
      */
-    protected function getSectionNode($idNode)
+    private function getSectionNode($idNode)
     {
         $node = new Node($idNode);
         if (!($node->get('IdNode') > 0))
@@ -545,12 +568,12 @@ class ViewFilterMacros extends AbstractView implements IView
         return $targetServer->get('Url') . $targetNode->GetPublishedPath($idTargetChannel, true);
     }
 
-    protected function getRDFByNodeId($params, $rdfa = false)
+    private function getRDFByNodeId($params, $rdfa = false)
     {
         return '';
     }
 
-    protected function getRDFaByNodeId($params)
+    private function getRDFaByNodeId($params)
     {
         return $this->getRDFByNodeId($params, true);
     }

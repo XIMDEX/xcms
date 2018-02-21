@@ -35,7 +35,7 @@ use Ximdex\Runtime\App;
 use Ximdex\NodeTypes\NodeTypeConstants as ServicesNodeType;
 
 \Ximdex\Modules\Manager::file('/actions/addfoldernode/model/ProjectTemplate.class.php');
-\Ximdex\Modules\Manager::file('/actions/addfoldernode/conf/addfoldernode.conf');
+\Ximdex\Modules\Manager::file('/actions/addfoldernode/conf/addfoldernode.conf.php');
 
 class Action_addfoldernode extends ActionAbstract
 {
@@ -101,7 +101,7 @@ class Action_addfoldernode extends ActionAbstract
 
     function GetTypeOfNewNode($nodeID)
     {
-//TODO: change this switch sentence for a query to the NodeAllowedContents table to check what subfolders can contain.
+        //TODO: change this switch sentence for a query to the NodeAllowedContents table to check what subfolders can contain.
         $node = new Node($nodeID);
         if (!$node->get('IdNode') > 0) {
             return null;
@@ -356,16 +356,32 @@ class Action_addfoldernode extends ActionAbstract
             // reload the templates include files for this new project
             if (!isset($node))
                 $node = new Node($idFolder);
-            if ($node->GetNodeType() == \Ximdex\NodeTypes\NodeTypeConstants::PROJECT or $node->GetNodeType() == \Ximdex\NodeTypes\NodeTypeConstants::TEMPLATES_ROOT_FOLDER
-                    or $node->GetNodeType() == \Ximdex\NodeTypes\NodeTypeConstants::SERVER or $node->GetNodeType() == \Ximdex\NodeTypes\NodeTypeConstants::SECTION)
+            if ($node->GetNodeType() == \Ximdex\NodeTypes\NodeTypeConstants::PROJECT 
+                    or $node->GetNodeType() == \Ximdex\NodeTypes\NodeTypeConstants::TEMPLATES_ROOT_FOLDER
+                    or $node->GetNodeType() == \Ximdex\NodeTypes\NodeTypeConstants::SERVER 
+                    or $node->GetNodeType() == \Ximdex\NodeTypes\NodeTypeConstants::SECTION)
             {
                 $xsltNode = new \Ximdex\NodeTypes\XsltNode($node);
                 if ($xsltNode->reload_templates_include(new Node($node->getProject())) === false)
                     $this->messages->mergeMessages($xsltNode->messages);
             }
             $this->messages->add(sprintf(_('%s has been successfully created'), $name), MSG_TYPE_NOTICE);
-        } else {
-            $this->messages->add(sprintf(_('The operation has failed: %s'), $folder->msgErr), MSG_TYPE_ERROR);
+        }
+        else
+        {
+            if ($folder->msgErr)
+            {
+                $error = $folder->msgErr;
+            }
+            elseif ($folder->messages->messages)
+            {
+                $error = $folder->messages->messages[0];
+            }
+            else
+            {
+                $error = 'Unknown error';
+            }
+            $this->messages->add(sprintf(_('The operation has failed: %s'), $error), MSG_TYPE_ERROR);
         }
 
         $arrValores = array('messages' => $this->messages->messages, 'parentID' => $nodeID);
@@ -375,26 +391,29 @@ class Action_addfoldernode extends ActionAbstract
     public function createProjectNodes($projectId)
     {
         $theme = $this->request->getParam("theme");
-        if ($theme) {
-            
+        if ($theme)
+        {
             // we use this global variable to know that we are creating a project from a theme
             $GLOBALS['fromTheme'] = true;
             
             $projectTemplate = new ProjectTemplate($theme);
-
+            
             $servers = $projectTemplate->getServers();
             $schemas = $projectTemplate->getSchemes();
             $templates = $projectTemplate->getTemplates();
 
-            foreach ($schemas as $schema) {
+            foreach ($schemas as $schema)
+            {
                 $this->schemas = $this->insertFiles($projectId, App::getValue("SchemasDirName"), array($schema));
             }
 
-            foreach ($templates as $template) {
+            foreach ($templates as $template)
+            {
                 $this->insertFiles($projectId, "templates", array($template));
             }
             
-            foreach ($servers as $server) {
+            foreach ($servers as $server)
+            {
                 $this->insertServer($projectId, $server);
             }
             

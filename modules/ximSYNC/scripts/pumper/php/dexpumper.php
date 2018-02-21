@@ -358,11 +358,10 @@ class DexPumper {
 
 		if (!$this->connection->cd($baseRemoteFolder))
 		{    
-			$this->error($msg_not_found_folder);
+			$this->warning($msg_not_found_folder);
 		}
 		if (!$this->connection->mkdir($baseRemoteFolder . $relativeRemoteFolder, 0755, true))
 		{
-		    
 			$this->error($msg_cant_create_folder);
 			return false;
 		}

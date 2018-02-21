@@ -32,7 +32,7 @@ use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
 use Ximdex\Utils\PipelineManager;
-use Ximdex\Nodeviews\ViewFilterMacrosPreview;
+use Ximdex\Nodeviews\ViewFilterMacros;
 
 class Action_prevdoc extends ActionAbstract
 {
@@ -168,7 +168,7 @@ class Action_prevdoc extends ActionAbstract
 		else
 		{
     		// Specific FilterMacros View for previsuals:
-    		$viewFilterMacrosPreview = new ViewFilterMacrosPreview();
+    		$viewFilterMacrosPreview = new ViewFilterMacros(true);
     		$file = $viewFilterMacrosPreview->transform(NULL, $content, $args, $idNode, $idChannel);
     		$hash = basename($file);
     

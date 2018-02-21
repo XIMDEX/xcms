@@ -292,32 +292,33 @@ class Role extends RolesOrm
     // return array of ID (actionID)
     function GetActionsList($stateID = null)
     {
-        $sql = sprintf("SELECT IdAction FROM RelRolesActions"
-            . " WHERE IdRol = %d", $this->get('IdRole'));
+        $sql = sprintf("SELECT IdAction FROM RelRolesActions WHERE IdRol = %d", $this->get('IdRole'));
         if ($stateID > 0)
+        {
             $sql .= sprintf(" AND IdState = %d", $stateID);
+        }
         else
+        {
             $sql .= " AND ((IdState IS NULL) OR IdState = 0) ";
-
+        }
         $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->Query($sql);
-        if ($dbObj->numErr != 0) {
+        if ($dbObj->numErr != 0)
+        {
             $this->SetError(1);
             return null;
         }
         $salida = array();
-        while (!$dbObj->EOF) {
+        while (!$dbObj->EOF)
+        {
             $salida[] = $dbObj->GetValue("IdAction");
             $dbObj->Next();
         }
-        // print_r($salida);
         return $salida;
     }
 
     /**
-     * Obtains the list of available actions of a node.
-     */
-    /**
+     * Obtains the list of available actions of a node
      * @param $nodeID
      * @param bool $includeActionsWithNegativeSort
      * @return array|bool
@@ -325,17 +326,18 @@ class Role extends RolesOrm
     function GetActionsOnNode($nodeID, $includeActionsWithNegativeSort = false)
     {
         $node = new Node($nodeID);
-        if ($node->get('IdNode') > 0) {
+        if ($node->get('IdNode') > 0)
+        {
             $nodeType = $node->get('IdNodeType');
             $stateID = $node->get('IdState');
-
-            if ($nodeType) {
+            if ($nodeType)
+            {
                 $result = array();
                 $action = new Action();
                 $actions1 = $action->GetActionListOnNodeType($nodeType, $includeActionsWithNegativeSort);
                 $actions2 = $this->GetActionsList($stateID);
-
-                if ($actions1 && $actions2) {
+                if ($actions1 && $actions2)
+                {
                     $result = array_intersect($actions1, $actions2);
                 }
                 return $result;
@@ -343,9 +345,9 @@ class Role extends RolesOrm
         }
         return false;
     }
-
-    // Returns if the given permit belongs to the current role
+    
     /**
+     * Returns if the given permit belongs to the current role
      * @param $permissionID
      * @return bool
      */

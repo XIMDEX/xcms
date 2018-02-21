@@ -5653,6 +5653,9 @@ msgstr ""
 msgid "Add new XML document"
 msgstr ""
 
+msgid "Add new HTML document"
+msgstr ""
+
 msgid "Create a new structured document in several languages"
 msgstr ""
 
@@ -6632,7 +6635,7 @@ msgstr ""
 msgid "Root of image folder"
 msgstr ""
 
-msgid "Root of XML folder"
+msgid "Root of documents folder"
 msgstr ""
 
 msgid "Root of import folder"
