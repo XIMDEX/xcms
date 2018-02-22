@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -26,6 +27,7 @@
 
 namespace Ximdex\Models;
 
+use Ximdex\Runtime\App;
 use Ximdex\Runtime\DataFactory;
 use Ximdex\Utils\FsUtils;
 use Ximdex\XML\Validators\RNG;
@@ -35,6 +37,7 @@ use Ximdex\Parsers\ParsingDependencies;
 use Ximdex\Parsers\ParsingRng;
 use Ximdex\Properties\ChannelProperty;
 use Ximdex\NodeTypes\NodeTypeConstants;
+use Ximdex\NodeTypes\XmlContainerNode;
 
 class StructuredDocument extends StructuredDocumentsOrm
 {
@@ -42,13 +45,13 @@ class StructuredDocument extends StructuredDocumentsOrm
 	var $flagErr;
 	var $numErr;
 	var $msgErr;
-
 	var $errorList = array(
 		1 => 'Error while connecting with the database',
 		2 => 'The structured document does not exist',
 		3 => 'Not implemented yet',
 		4 => 'A document cannot be linked to itself'
 	);
+	private $documentsRoot;
 
 	public function __construct($id = null)
 	{
@@ -700,5 +703,157 @@ class StructuredDocument extends StructuredDocumentsOrm
 	    if ($result)
 	        return $this->update();
 	    return false;
+	}
+	
+	public function getInclude(string $include)
+	{
+	    if (!$this->GetID())
+	    {
+	        $this->messages->add('The structured document has not been loaded', MSG_TYPE_ERROR);
+	        return false;
+	    }
+	    if (!$this->documentsRoot)
+	    {
+	        $node = new Node($this->GetID());
+	        if (!$node->GetID())
+	        {
+	            $this->messages->add('Cannot load the node for the document with ID: ' . $this->GetID(), MSG_TYPE_ERROR);
+	            return false;
+	        }
+	        $documentsRootId = $node->_getParentByType(NodeTypeConstants::XML_ROOT_FOLDER);
+	        if (!$documentsRootId)
+	        {
+	            $this->messages->add('Cannot load the documents root folder for the document with ID: ' . $this->GetID(), MSG_TYPE_ERROR);
+	            return false;
+	        }
+	        $documents = new Node($documentsRootId);
+	        if (!$documents->GetID())
+	        {
+	            $this->messages->add('Cannot load the documents root folder node with ID: ' . $documents->GetID(), MSG_TYPE_ERROR);
+	            return false;
+	        }
+	        $this->documentsRoot = $documents;
+	    }
+	    $docContainerId = $this->documentsRoot->GetChildByName($include);
+	    if (!$docContainerId)
+	    {
+	        $this->messages->add('Cannot load the document container for include: ' . $include, MSG_TYPE_ERROR);
+	        return false;
+	    }
+	    $xmlContainer = new XmlContainerNode($docContainerId);
+	    $includeDocId = $xmlContainer->GetChildByLang($this->GetLanguage());
+	    if (!$includeDocId)
+	    {
+	        $this->messages->add('Cannot load the document for include: ' . $include . ' and language: ' . $this->GetLanguage(), MSG_TYPE_ERROR);
+	        return false;
+	    }
+	    $includeStrDoc = new StructuredDocument($IncludeDocId);
+	    if (!$includeStrDoc->GetID())
+	    {
+	        $this->messages->add('Cannot load the document for ID: ' . $IncludeDocId, MSG_TYPE_ERROR);
+	        return false;
+	    }
+	    return $includeStrDoc->GetContent();
+	}
+	
+	public function getLayout()
+	{
+	    if (!$this->GetID())
+	    {
+	        $this->messages->add('The structured document has not been loaded', MSG_TYPE_ERROR);
+	        return false;
+	    }
+	    if (!$this->get('IdTemplate'))
+	    {
+	        $this->messages->add('There is not defined a layout ID in the document', MSG_TYPE_ERROR);
+	        return false;
+	    }
+	    $layout = new Node($this->get('IdTemplate'));
+	    if (!$layout->getID())
+	    {
+	        $this->messages->add('The layout with ID: ' . $layout->GetID() . ' does not exist', MSG_TYPE_ERROR);
+	        return false;
+	    }
+	    return $layout->GetContent();
+	}
+	
+	public function getComponent(string $component)
+	{
+	    if (!$this->GetID())
+	    {
+	        $this->messages->add('The structured document has not been loaded', MSG_TYPE_ERROR);
+	        return false;
+	    }
+	    $node = new Node($this->GetID());
+	    if (!$node->GetID())
+	    {
+	        $this->messages->add('Cannot load the node for the document with ID: ' . $this->GetID(), MSG_TYPE_ERROR);
+	        return false;
+	    }
+	    $project = new Node($node->getProject());
+	    if (!$project->GetID())
+	    {
+	        $this->messages->add('Cannot load the project for the node with ID: ' . $node->GetID(), MSG_TYPE_ERROR);
+	        return false;
+	    }
+	    $layoutsFolder = new Node($project->GetChildByName(App::GetValue('HTMLLayoutsDirName')));
+	    if (!$layoutsFolder->GetID())
+	    {
+	        $this->messages->add('Cannot load the layouts folder for the project with ID: ' . $project->GetID(), MSG_TYPE_ERROR);
+	        return false;
+	    }
+	    $componentsFolder = new Node($layoutsFolder->GetChildByName(App::GetValue('HTMLComponentsDirName')));
+	    if (!$componentsFolder->GetID())
+	    {
+	        $this->messages->add('Cannot load the components folder for the layout folder with ID: ' . $layoutsFolder->GetID(), MSG_TYPE_ERROR);
+	        return false;
+	    }
+	    $componentNode = new Node($componentsFolder->GetChildByName($component));
+	    if (!$componentNode->GetID())
+	    {
+	        $this->messages->add('Cannot load the component with name: ' . $component, MSG_TYPE_ERROR);
+	        return false;
+	    }
+	    return $componentNode->GetContent();
+	}
+	
+	public function getView(string $view)
+	{
+	    if (!$this->GetID())
+	    {
+	        $this->messages->add('The structured document has not been loaded', MSG_TYPE_ERROR);
+	        return false;
+	    }
+	    $node = new Node($this->GetID());
+	    if (!$node->GetID())
+	    {
+	        $this->messages->add('Cannot load the node for the document with ID: ' . $this->GetID(), MSG_TYPE_ERROR);
+	        return false;
+	    }
+	    $project = new Node($node->getProject());
+	    if (!$project->GetID())
+	    {
+	        $this->messages->add('Cannot load the project for the node with ID: ' . $node->GetID(), MSG_TYPE_ERROR);
+	        return false;
+	    }
+	    $layoutsFolder = new Node($project->GetChildByName(App::GetValue('HTMLLayoutsDirName')));
+	    if (!$layoutsFolder->GetID())
+	    {
+	        $this->messages->add('Cannot load the layouts folder for the project with ID: ' . $project->GetID(), MSG_TYPE_ERROR);
+	        return false;
+	    }
+	    $viewsFolder = new Node($layoutsFolder->GetChildByName(App::GetValue('HTMLViewsDirName')));
+	    if (!$viewsFolder->GetID())
+	    {
+	        $this->messages->add('Cannot load the views folder for the layout folder with ID: ' . $layoutsFolder->GetID(), MSG_TYPE_ERROR);
+	        return false;
+	    }
+	    $viewNode = new Node($viewsFolder->GetChildByName($view));
+	    if (!$viewNode->GetID())
+	    {
+	        $this->messages->add('Cannot load the view with name: ' . $view, MSG_TYPE_ERROR);
+	        return false;
+	    }
+	    return $viewNode->GetContent();
 	}
 }
