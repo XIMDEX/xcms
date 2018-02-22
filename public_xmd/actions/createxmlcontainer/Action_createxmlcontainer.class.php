@@ -57,7 +57,7 @@ class Action_createxmlcontainer extends ActionAbstract
 		// If node type is HTML then obtain JSON schemas, otherwise the schemas will be the RNG ones
 		if ($type == 'HTML')
 		{
-		    $schemes = $node->getSchemas(null, NodeTypeConstants::HTML_LAYOUT_JSON);
+		    $schemes = $node->getSchemas(null, NodeTypeConstants::HTML_LAYOUT);
 		}
 		else
 		{

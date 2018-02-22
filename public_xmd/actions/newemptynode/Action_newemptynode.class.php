@@ -167,9 +167,11 @@ class Action_newemptynode extends ActionAbstract {
 				$content = "<html>\n\t<head>\n\t</head>\n\t<body>\n\t</body>\n</html>";
 				break;
 				
-		    case NodeTypeConstants::HTML_LAYOUT_JSON:
-		        $content = "{\n\t\"schemes\": [\n\t\t\n\t]\n}";
+		    case NodeTypeConstants::HTML_LAYOUT:
+		    case NodeTypeConstants::HTML_COMPONENT:
+		        $content = '{}';
 		        break;
+		    
 		    default:
 		        $content = '';
 		}

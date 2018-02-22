@@ -39,10 +39,10 @@ INSERT INTO `NodetypeModes` (`IdNodeType`, `Mode`) VALUES
 INSERT INTO `RelNodeTypeMimeType` (`idNodeType`, `extension`, `filter`) VALUES (5105, '', '');
 
 INSERT INTO `NodeAllowedContents` (`IdNodeType`, `NodeType`) VALUES (5013, 5105);
-INSERT INTO `NodeAllowedContents` (`IdNodeType`, `NodeType`) VALUES (5014, 5105);
+-- INSERT INTO `NodeAllowedContents` (`IdNodeType`, `NodeType`) VALUES (5014, 5105);
 
 INSERT INTO `NodeDefaultContents` (`IdNodeType`, `NodeType`, `Name`) VALUES (5013, 5105, 'layouts');
-INSERT INTO `NodeDefaultContents` (`IdNodeType`, `NodeType`, `Name`) VALUES (5014, 5105, 'layouts');
+-- INSERT INTO `NodeDefaultContents` (`IdNodeType`, `NodeType`, `Name`) VALUES (5014, 5105, 'layouts');
 
 INSERT INTO `Config` (`ConfigKey`, `ConfigValue`) VALUES ('HTMLLayoutsDirName', 'layouts');
 
@@ -67,8 +67,7 @@ INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Des
 			, NULL, 0, '', 1),
 	(7416, 5101, 'Upload components files', 'fileupload_common_multiple', 'add_template_pvd.png', 'Add a set of HTML components to the server'
 		, 9, NULL, 0, 'type=json', 0),
-	(7417, 5101, 'Add a new empty component', 'newemptynode', 'add_file_common.png', 'Create a new empty HTML component file', 9
-		, NULL, 0, '', 0);
+	(7417, 5101, 'Add a new empty component', 'newemptynode', 'add_file_common.png', 'Create a new empty HTML component file', 9, NULL, 0, '', 0);
 
 INSERT INTO `RelRolesActions` (`IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (201, 7413, 0, 1, 3);
 INSERT INTO `RelRolesActions` (`IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (201, 7414, 0, 1, 3);
@@ -82,12 +81,14 @@ INSERT INTO `NodeAllowedContents` (`IdNodeType`, `NodeType`) VALUES (5105, 5101)
 
 INSERT INTO `NodeDefaultContents` (`IdNodeType`, `NodeType`, `Name`) VALUES (5105, 5101, 'components');
 
--- HTMLSectionsFolder (5106)
+INSERT INTO `RelNodeTypeMimeType` (`idNodeType`, `extension`, `filter`) VALUES (5101, ';json;', 'json');
+
+-- HTMLViewsFolder (5106)
 
 INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`
 	, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublishable`, `IsHidden`, `CanDenyDeletion`, `isGenerator`
 	, `IsEnriching`, `System`, `Module`) VALUES
-	(5106, 'HTMLSectionsFolder', 'FolderNode', 'folder_template_view', 'Folder of HTML sections', 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, NULL);
+	(5106, 'HTMLViewsFolder', 'FolderNode', 'folder_template_view', 'Folder of HTML views', 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, NULL);
 
 INSERT INTO `NodetypeModes` (`IdNodeType`, `Mode`) VALUES
 	(5106, 'C'),
@@ -99,12 +100,10 @@ INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Des
 	(7418, 5106, 'Semantic Tags', 'setmetadata', 'change_next_state.png', 'Managing semantic tags related to the current node.', 999
 		, 'ximTAGS', 0, NULL, 0),
 	(7419, 5106, 'Copy', 'copy', 'copiar_carpeta_ximdoc.png', 'Copy a HTML sections folder to another destination', 31, NULL, 0, '', 0),
-	(7420, 5106, 'Download all sections', 'filedownload_multiple', 'download_template_view.png', 'Download all HTML sections files', 80
-			, NULL, 0, '', 1),
-	(7421, 5106, 'Upload sections files', 'fileupload_common_multiple', 'add_template_pvd.png', 'Add a set of HTML sections to the server', 9, NULL
-		, 0, 'type=json', 0),
-	(7422, 5106, 'Add a new empty section', 'newemptynode', 'add_file_common.png', 'Create a new empty HTML section file', 9
-		, NULL, 0, '', 0);
+	(7420, 5106, 'Download all sections', 'filedownload_multiple', 'download_template_view.png', 'Download all HTML views files', 80, NULL, 0, '', 1),
+	(7421, 5106, 'Upload views files', 'fileupload_common_multiple', 'add_template_pvd.png', 'Add a set of HTML views to the server', 9, NULL
+		, 0, 'type=html', 0),
+	(7422, 5106, 'Add a new empty view', 'newemptynode', 'add_file_common.png', 'Create a new empty HTML view file', 9, NULL, 0, '', 0);
 
 INSERT INTO `RelRolesActions` (`IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (201, 7418, 0, 1, 3);
 INSERT INTO `RelRolesActions` (`IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (201, 7419, 0, 1, 3);
@@ -112,24 +111,26 @@ INSERT INTO `RelRolesActions` (`IdRol`, `IdAction`, `IdState`, `IdContext`, `IdP
 INSERT INTO `RelRolesActions` (`IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (201, 7421, 0, 1, 3);
 INSERT INTO `RelRolesActions` (`IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (201, 7422, 0, 1, 3);
 
-INSERT INTO `Config` (`ConfigKey`, `ConfigValue`) VALUES ('HTMLSectionsDirName', 'sections');
+INSERT INTO `Config` (`ConfigKey`, `ConfigValue`) VALUES ('HTMLViewsDirName', 'views');
+
+INSERT INTO `NodeDefaultContents` (`IdNodeType`, `NodeType`, `Name`) VALUES (5105, 5106, 'views');
+
+INSERT INTO `RelNodeTypeMimeType` (`idNodeType`, `extension`, `filter`) VALUES (5106, ';html;', 'html');
 
 INSERT INTO `NodeAllowedContents` (`IdNodeType`, `NodeType`) VALUES (5105, 5106);
 
-INSERT INTO `NodeDefaultContents` (`IdNodeType`, `NodeType`, `Name`) VALUES (5105, 5106, 'sections');
-
--- HTMLLayoutJSON (5100)
+-- HTMLLayout (5100)
 
 INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`
 	, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublishable`, `IsHidden`, `CanDenyDeletion`, `isGenerator`
-	, `IsEnriching`, `System`, `Module`) VALUES (5100, 'HTMLLayoutJSON', 'HTMLLayoutJSONNode', 'xml_document', 'JSON schema for HTML documents', 1
+	, `IsEnriching`, `System`, `Module`) VALUES (5100, 'HTMLLayout', 'HTMLLayoutNode', 'xml_document', 'JSON layout schema for HTML documents', 1
 	, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, NULL);
 
 INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`, `IsBulk`) VALUES
 	(7400, 5100, 'Semantic Tags', 'setmetadata', 'change_next_state.png', 'Managing semantic tags related to the current node.', 999, 'ximTAGS'
 		, 0, NULL, 0),
-	(7401, 5100, 'Delete JSON schema', 'deletenode', 'delete_template_view.png', 'Delete a JSON schema', 75, NULL, 0, NULL, 0),
-	(7402, 5100, 'Edit JSON schema', 'edittext', 'edit_template_view.png', 'Edit a JSON schema', 20, NULL, 0, NULL, 0),
+	(7401, 5100, 'Delete layout', 'deletenode', 'delete_template_view.png', 'Delete layout schema', 75, NULL, 0, NULL, 0),
+	(7402, 5100, 'Edit layout', 'edittext', 'edit_template_view.png', 'Edit layout schema', 20, NULL, 0, NULL, 0),
 	(7403, 5100, 'Modify properties', 'renamenode', 'modiy_templateview', 'Modify properties of a JSON schema', 60, NULL, 0, NULL, 0);
 
 INSERT INTO `RelRolesActions` (`IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (201, 7400, 0, 1, 3);
@@ -139,9 +140,53 @@ INSERT INTO `RelRolesActions` (`IdRol`, `IdAction`, `IdState`, `IdContext`, `IdP
 
 INSERT INTO `RelNodeTypeMimeType` (`idNodeType`, `extension`, `filter`) VALUES (5100, ';json;', 'json');
 
-INSERT INTO `NodeAllowedContents` (`IdNodeType`, `NodeType`) VALUES (5101, 5100);
 INSERT INTO `NodeAllowedContents` (`IdNodeType`, `NodeType`) VALUES (5105, 5100);
-INSERT INTO `NodeAllowedContents` (`IdNodeType`, `NodeType`) VALUES (5106, 5100);
+
+-- HTMLComponent (5107)
+
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`
+	, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublishable`, `IsHidden`, `CanDenyDeletion`, `isGenerator`
+	, `IsEnriching`, `System`, `Module`) VALUES (5107, 'HTMLComponent', 'HTMLComponentNode', 'xml_document', 'JSON component for HTML documents', 1
+	, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, NULL);
+
+INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`, `IsBulk`) VALUES
+	(7409, 5107, 'Semantic Tags', 'setmetadata', 'change_next_state.png', 'Managing semantic tags related to the current node.', 999, 'ximTAGS'
+		, 0, NULL, 0),
+	(7410, 5107, 'Delete component', 'deletenode', 'delete_template_view.png', 'Delete a component schema', 75, NULL, 0, NULL, 0),
+	(7411, 5107, 'Edit component', 'edittext', 'edit_template_view.png', 'Edit a component schema', 20, NULL, 0, NULL, 0),
+	(7412, 5107, 'Modify properties', 'renamenode', 'modiy_templateview', 'Modify properties of a component schema', 60, NULL, 0, NULL, 0);
+
+INSERT INTO `RelRolesActions` (`IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (201, 7409, 0, 1, 3);
+INSERT INTO `RelRolesActions` (`IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (201, 7410, 0, 1, 3);
+INSERT INTO `RelRolesActions` (`IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (201, 7411, 0, 1, 3);
+INSERT INTO `RelRolesActions` (`IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (201, 7412, 0, 1, 3);
+
+INSERT INTO `RelNodeTypeMimeType` (`idNodeType`, `extension`, `filter`) VALUES (5107, ';json;', 'json');
+
+INSERT INTO `NodeAllowedContents` (`IdNodeType`, `NodeType`) VALUES (5101, 5107);
+
+-- HTMLView (5108)
+
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`
+	, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublishable`, `IsHidden`, `CanDenyDeletion`, `isGenerator`
+	, `IsEnriching`, `System`, `Module`) VALUES (5108, 'HTMLView', 'HTMLViewNode', 'xml_document', 'HTML view for HTML documents', 1
+	, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, NULL);
+
+INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`, `IsBulk`) VALUES
+	(7470, 5108, 'Semantic Tags', 'setmetadata', 'change_next_state.png', 'Managing semantic tags related to the current node.', 999, 'ximTAGS'
+		, 0, NULL, 0),
+	(7471, 5108, 'Delete view', 'deletenode', 'delete_template_view.png', 'Delete a HTML view', 75, NULL, 0, NULL, 0),
+	(7472, 5108, 'Edit view', 'edittext', 'edit_template_view.png', 'Edit a HTML view', 20, NULL, 0, NULL, 0),
+	(7473, 5108, 'Modify properties', 'renamenode', 'modiy_templateview', 'Modify properties of a HTML view', 60, NULL, 0, NULL, 0);
+
+INSERT INTO `RelRolesActions` (`IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (201, 7470, 0, 1, 3);
+INSERT INTO `RelRolesActions` (`IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (201, 7471, 0, 1, 3);
+INSERT INTO `RelRolesActions` (`IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (201, 7472, 0, 1, 3);
+INSERT INTO `RelRolesActions` (`IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (201, 7473, 0, 1, 3);
+
+INSERT INTO `RelNodeTypeMimeType` (`idNodeType`, `extension`, `filter`) VALUES (5108, ';html;', 'html');
+
+INSERT INTO `NodeAllowedContents` (`IdNodeType`, `NodeType`) VALUES (5106, 5108);
 
 -- JsRootFolder (5090)
 	
@@ -149,21 +194,16 @@ INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `
 	, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublishable`, `IsHidden`, `CanDenyDeletion`
 	, `isGenerator`, `IsEnriching`, `System`, `Module`) VALUES
 	(5090, 'JsRootFolder', 'FolderNode', 'folder_import', 'Root of Javascript folder', 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 1, NULL);
-
-INSERT INTO `Nodes` (`IdNode`, `IdParent`, `IdNodeType`, `Name`, `IdState`, `BlockTime`, `BlockUser`, `CreationDate`, `ModificationDate`
-	, `Description`, `SharedWorkflow`, `Path`, `sortorder`, `deleted`) VALUES
-	(5090, 6, 5007, 'JsRootFolder', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '/Ximdex/Control center/Type of node manager', 0, 0),
-	(7425, 5090, 5008, 'Add JS folder', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '/Ximdex/Control center/Type of node manager/JsRootFolder', 0, 0);
 	
 INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`, `IsBulk`) VALUES
-	(7425, 5090, 'Add JS folder', 'addfoldernode', 'add_folder_css.png', 'Create a new javascript folder', 11, NULL, 0, '', 0),
-	(7426, 5090, 'Add JS files', 'fileupload_common_multiple', 'add_file_css.png', 'Add a set of javascript files to the server', 10
+	(7425, 5090, 'Add new JS folder', 'addfoldernode', 'add_folder_css.png', 'Create a new javascript folder', 11, NULL, 0, '', 0),
+	(7426, 5090, 'Upload JS files', 'fileupload_common_multiple', 'add_file_css.png', 'Add a set of javascript files to the server', 10
 		, NULL, 0, 'type=js', 0),
 	(7427, 5090, 'Semantic Tags', 'setmetadata', 'change_next_state.png', 'Managing semantic tags related to the current node.', 999
 		, 'ximTAGS', 0, NULL, 0),
 	(7428, 5090, 'Publish section', 'publicatesection', 'publicate_section.png', 'Publish a section massively', 70, NULL, 1, '', 0),
 	(7429, 5090, 'Download all JS files', 'filedownload_multiple', 'download_file_css.png', 'Download all javascript files', 80, NULL, 0, '', 1),
-	(7430, 5090, 'Add empty JS document', 'newemptynode', 'add_file_common.png', 'Create a new javascript empty file', 9, NULL, 0, '', 0);
+	(7430, 5090, 'Add an empty JS document', 'newemptynode', 'add_file_common.png', 'Create a new javascript empty file', 9, NULL, 0, '', 0);
 
 INSERT INTO `RelRolesActions` (`IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (201, 7425, 7, 1, 3);
 INSERT INTO `RelRolesActions` (`IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (201, 7426, 7, 1, 3);
@@ -197,7 +237,7 @@ INSERT INTO `NodeAllowedContents` (`IdNodeType`, `NodeType`, `Amount`) VALUES (5
 INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`
 	, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublishable`, `IsHidden`, `CanDenyDeletion`, `isGenerator`
 	, `IsEnriching`, `System`, `Module`) VALUES
-	(5091, 'JsFolder', 'FolderNode', 'folder_css', 'Javascript folder', 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, NULL);
+	(5091, 'JsFolder', 'FolderNode', 'folder_import', 'Javascript folder', 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, NULL);
 
 INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`, `IsBulk`) VALUES
 	(7431, 5091, 'Add JS files', 'fileupload_common_multiple', 'add_file_css.png', 'Add a set of javascript files to the server', 10

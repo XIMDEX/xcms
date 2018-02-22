@@ -26,7 +26,6 @@
  */
 namespace Ximdex\Models;
 
-
 use DOMDocument;
 use Ximdex\Deps\DepsManager;
 use Ximdex\Logger;
@@ -42,32 +41,14 @@ use Ximdex\Workflow\WorkFlow;
 use Ximdex\XML\Base;
 use Ximdex\XML\XML;
 
-
-/**
- *
- */
 define('DETAIL_LEVEL_LOW', 0);
-/**
- *
- */
 define('DETAIL_LEVEL_MEDIUM', 1);
-/**
- *
- */
 define('DETAIL_LEVEL_HIGH', 2);
 
-if (!defined('COUNT')) {
-    /**
-     *
-     */
+if (!defined('COUNT'))
+{
     define('COUNT', 0);
-    /**
-     *
-     */
     define('NO_COUNT', 1);
-    /**
-     *
-     */
     define('NO_COUNT_NO_RETURN', 2);
 }
 
@@ -77,27 +58,32 @@ if (!defined('COUNT')) {
  */
 class Node extends NodesOrm
 {
-
     /**
      * @var bool|string
      */
     var $nodeID;            // current node ID.
+    
     /**
      * @var mixed
      */
     var $class;                // Class which implements the specific methos for this nodetype.
+    
     /* @var $nodeType \Ximdex\Models\NodeType */
     var $nodeType;            // nodetype object.
+    
     /* @var $dbObj \Ximdex\Runtime\Db */
     var $dbObj;                // DB object which will be used in the methods.
+    
     /**
      * @var
      */
     var $numErr;            // Error code.
+    
     /**
      * @var
      */
     var $msgErr;            // Error message.
+    
     /**
      * @var array
      */
@@ -129,21 +115,22 @@ class Node extends NodesOrm
         $this->errorList[17] = _('This node is not allowed in this position');
         $this->flagErr = FALSE;
         $this->autoCleanErr = TRUE;
-
         parent::__construct($nodeID);
         //In order to do not breack compatibility with previous version
-        if ($this->get('IdNode') > 0) {
+        if ($this->get('IdNode') > 0)
+        {
             $this->nodeID = $this->get('IdNode');
         }
-        if ($this->get('IdNodeType') > 0) {
+        if ($this->get('IdNodeType') > 0)
+        {
             $this->nodeType = new NodeType($this->get('IdNodeType'));
-            if ($this->nodeType->get('IdNodeType') > 0) {
+            if ($this->nodeType->get('IdNodeType') > 0)
+            {
                 $nodeTypeClass = $this->nodeType->get('Class');
                 $nodeTypeModule = $this->nodeType->get('Module');
-
                 $this->class = \Ximdex\NodeTypes\Factory::getNodeTypeByName($nodeTypeClass, $this, $nodeTypeModule);
-
-                if (!$fullLoad) {
+                if (!$fullLoad)
+                {
                     return;
                 }
             }
@@ -976,7 +963,7 @@ class Node extends NodesOrm
                         }
                     }
                 }
-                else if ($node->getNodeType() == NodeTypeConstants::HTML_LAYOUT_JSON)
+                elseif ($node->getNodeType() == NodeTypeConstants::HTML_LAYOUT or $node->getNodeType() == NodeTypeConstants::HTML_COMPONENT)
                 {
                     $res = json_decode($content);
                     if ($res === null or $res === false)
@@ -984,6 +971,17 @@ class Node extends NodesOrm
                         $error = 'Invalid JSON schema';
                         $this->messages->add($error, MSG_TYPE_WARNING);
                         Logger::warning('Saving content: Invalid JSON HTML schema for node: ' . $node->GetID() . ' ' . $node->GetDescription());
+                    }
+                }
+                elseif ($node->getNodeType() == NodeTypeConstants::HTML_VIEW or $node->getNodeType() == NodeTypeConstants::HTML_DOCUMENT)
+                {
+                    $domDoc = new DOMDocument();
+                    $res = @$domDoc->loadHTML($content);
+                    if ($res === false)
+                    {
+                        $error = 'Invalid HTML';
+                        $this->messages->add($error, MSG_TYPE_WARNING);
+                        Logger::warning('Saving content: Invalid HTML for node: ' . $node->GetID() . ' ' . $node->GetDescription());
                     }
                 }
             }
@@ -3485,7 +3483,7 @@ class Node extends NodesOrm
             Logger::error('A project with ID: ' . $idProject . ' could not be obtained');
             return NULL;
         }
-        if ($schemaTypeID == NodeTypeConstants::HTML_LAYOUT_JSON)
+        if ($schemaTypeID == NodeTypeConstants::HTML_LAYOUT)
         {
             $dirName = App::getValue('HTMLLayoutsDirName');
         }

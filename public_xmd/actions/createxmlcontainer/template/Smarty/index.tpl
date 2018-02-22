@@ -67,7 +67,10 @@
 				<div class="small-12 columns">
 					<div class="alert alert-info">
 						<strong>Info!</strong> {t}No schemes found{/t}.
-						{if (!$type)}
+						{if ($type eq 'HTML')}
+							<br />
+							{t}You must create one in project <em>layout folder</em> or upload a new one{/t}.
+						{else}
 							<br />
 							{t}Maybe you need to set properly the type of your RNG schemes (performing the <em>Modify properties</em> action on them) or create/upload a new one{/t}.
 						{/if}

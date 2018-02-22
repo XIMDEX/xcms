@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,20 +25,18 @@
  *  @version $Revision$
  */
 
-
 namespace Ximdex\IO;
-
 
 use Ximdex\Logger;
 use Ximdex\Models\Node;
 use Ximdex\Utils\FsUtils;
 
-
-class BaseIOInferer {
+class BaseIOInferer
+{
 	var $messages = NULL;
-
-
-	public function __construct() {
+	
+	public function __construct()
+	{
 		$this->messages = new \Ximdex\Utils\Messages();
 	}
 
@@ -49,17 +48,22 @@ class BaseIOInferer {
 	 * @param string $path
 	 * @return array asociativo
 	 */
-	function infereType($type, $idParent, $path = NULL) {
-		if (empty($type) || empty($idParent)) {
+	function infereType($type, $idParent, $path = NULL)
+	{
+		if (empty($type) || empty($idParent))
+		{
 			return false;
 		}
-		switch ($type) {
+		switch ($type)
+		{
 			case 'FILE':
 				$parent = new Node($idParent);
 				return $this->_infereFileType($parent->GetNodeType(), $path);
+				
 			case 'FOLDER':
 				$result = $this->_infereFolderType($idParent);
-				if ($result && is_array($result)) {
+				if ($result && is_array($result))
+				{
 					return array('NODETYPENAME' => $result['name']);
 				}
 		}
@@ -67,68 +71,54 @@ class BaseIOInferer {
 	}
 
 	/**
-	 *
 	 * @param $file
 	 * @param $nodeTypeFilter
 	 */
-	function infereFileType($file, $idFather, $nodeTypeFilter = "" ) {
-
+	function infereFileType($file, $idFather, $nodeTypeFilter = '')
+	{
 		$filePath = isset($file) && isset($file['tmp_name']) ? $file['tmp_name'] : NULL;
 		$fileName = isset($file) && isset($file['name']) ? $file['name'] : NULL;
-
 		$fileMimeType = FsUtils::get_mime_type($filePath);
 		$extension = FsUtils::get_extension($fileName);
-
         $father = new Node($idFather);
         $fatherNodeType = $father->Get('IdNodeType');
-
         $extraQuery = $extension ? "AND rntmt.extension like '%;$extension;%'" : "";
-
         $query = "SELECT distinct nt.Name  FROM NodeAllowedContents nac ";
         $query .= "INNER JOIN RelNodeTypeMimeType rntmt on nac.NodeType = rntmt.IdNodeType  ";
         $query .= "INNER JOIN NodeTypes nt on nac.NodeType = nt.IdNodeType ";
         $query .= "WHERE (nac.IdNodeType=$fatherNodeType $extraQuery)";
-
         $db = new \Ximdex\Runtime\Db();
         $db->Query($query);
-
-        if($db->numRows <= 0){
+        if ($db->numRows <= 0)
+        {
             $query = "SELECT distinct nt.Name  FROM NodeAllowedContents nac ";
             $query .= "INNER JOIN RelNodeTypeMimeType rntmt on nac.NodeType = rntmt.IdNodeType  ";
             $query .= "INNER JOIN NodeTypes nt on nac.NodeType = nt.IdNodeType ";
             $query .= "WHERE (nac.IdNodeType=$fatherNodeType AND rntmt.extension='*')";
-
-            //For
             $db = new \Ximdex\Runtime\Db();
             $db->Query($query);
         }
-
-		if ($db->numRows > 0) {
+		if ($db->numRows > 0)
+		{
 			$nodeType = $db->GetValue('Name');
-			/*if( $nodeTypeFilter == "common" && $nodeType != "TextFile" &&  $nodeType != "ImageFile" && $nodeType != "XslTemplate") {
-					$nodeType = "BinaryFile";
-			}*/
 
 			//Added only for xsl files 
-			if ($extension == "xsl" && $nodeType == "Template"){
+			if ($extension == "xsl" && $nodeType == "Template")
+			{
 				$nodeType = "XslTemplate";
 			}
 			return $nodeType;
 		}
-		
-		Logger::error(sprintf(_("Unsupported mime-type %s extension %s"), $fileMimeType, $extension));
-
+		Logger::warning(sprintf(_("Unsupported mime-type %s extension %s"), $fileMimeType, $extension));
 		return '';
 	}
 
-
 	/**
-	 *
 	 * @param $parent_type
 	 * @param $path
 	 */
-	function _infereFileType($parent_type, $path) {
-
+	function _infereFileType($parent_type, $path)
+	{
 		$query = sprintf("SELECT nt.Name, rntmt.extension, rntmt.filter"
 					. " FROM NodeAllowedContents nac"
 					. " INNER JOIN RelNodeTypeMimeType rntmt on nac.NodeType = rntmt.IdNodeType"
@@ -137,64 +127,63 @@ class BaseIOInferer {
 		$db = new \Ximdex\Runtime\Db();
 		$db->Query($query);
 		$results = array();
-		if (is_file($path)) {
+		if (is_file($path))
+		{
 			$fileMimeType = FsUtils::get_mime_type($path);
 			$extension = strtolower(FsUtils::get_extension($path));
-			if ($fileMimeType == 'application/x-empty') {
+			if ($fileMimeType == 'application/x-empty')
+			{
 				Logger::warning(_("Empty mimetype detected on _infereFileType"));
 			}
-
-			while (!$db->EOF) {
-				if (strpos($db->GetValue('mimeString'), $fileMimeType) !== false) {
-						// if we're coming from webdav, extension will not be received, that's why previous check is optional.
-						$results[] = array('NODETYPENAME' => $db->getValue('Name'),
-							'FILTER' => $db->GetValue('filter'));
-				} else {
-					if (!empty($extension)) {
+			while (!$db->EOF)
+			{
+				if (strpos($db->GetValue('mimeString'), $fileMimeType) !== false)
+				{
+				    // if we're coming from webdav, extension will not be received, that's why previous check is optional.
+				    $results[] = array('NODETYPENAME' => $db->getValue('Name'), 'FILTER' => $db->GetValue('filter'));
+				}
+				else
+				{
+					if (!empty($extension))
+					{
 						$extensions = explode(';', strtolower($db->GetValue('extension')));
-						if (in_array(strtolower($extension), $extensions)) {
-							$results[] = array('NODETYPENAME' => $db->getValue('Name'),
-								'FILTER' => $db->GetValue('filter'));
+						if (in_array(strtolower($extension), $extensions))
+						{
+							$results[] = array('NODETYPENAME' => $db->getValue('Name'), 'FILTER' => $db->GetValue('filter'));
 						}
 					}
 				}
-
 				$db->Next();
 			}
-		} else {
-			while (!$db->EOF) {
+		}
+		else
+		{
+			while (!$db->EOF)
+			{
 				$results[] = array('NODETYPENAME' => $db->getValue('Name'),
 							'FILTER' => $db->GetValue('filter'));
 				$db->Next();
 			}
 		}
-
 		$countResults = count($results);
-		if ($countResults === 0) {
+		if ($countResults === 0)
+		{
 			$this->messages->add(sprintf(_("No nodetype allowed in %s"), $parent_type), MSG_TYPE_WARNING);
 			return null;
 		}
-
-
-		if ($countResults == 1) {
-			$nodetype = $results[0];
-			return $nodetype;
-		} else {
-			$nodetype = $results[0];
-			return $nodetype;
-		}
+		$nodetype = $results[0];
+		return $nodetype;
 	}
 
 	/**
-	 *
 	 * @param $idParentNode
 	 */
-	function _infereFolderType($idParentNode) {
+	function _infereFolderType($idParentNode)
+	{
 		$parent = new Node($idParentNode);
 		$nodeTypeName = $parent->nodeType->GetName();
-
-		switch ($nodeTypeName) {
-
+		switch ($nodeTypeName)
+		{
 			case 'Projects':
 				$newNodeTypeName ='Project';
 				$friendlyName = _('Project');
@@ -216,9 +205,9 @@ class BaseIOInferer {
 				break;
 
 			case 'MetaDataSection':
-                                $newNodeTypeName ='MetaDataContainer';
-                                $friendlyName = _('MetaDataContainer');
-                                break;
+			    $newNodeTypeName ='MetaDataContainer';
+			    $friendlyName = _('MetaDataContainer');
+			    break;
 
 			case 'ImagesRootFolder':
 				$newNodeTypeName ='ImagesFolder';
@@ -304,16 +293,22 @@ class BaseIOInferer {
 				$newNodeTypeName ='XimletContainer';
 				$friendlyName = _('Ximlet folder');
 				break;
-
+			
+			case 'JsRootFolder':
+			    $newNodeTypeName ='JsFolder';
+			    $friendlyName = _('JS folder');
+			    break;
+			    
+			case 'JsFolder':
+			    $newNodeTypeName ='JsFolder';
+			    $friendlyName = _('JS folder');
+			    break;
 
 			default:
 				return null;
 		}
-
 		$data['name'] = $newNodeTypeName;
 		$data['friendlyName'] = $friendlyName;
-
 		return $data;
 	}
 }
-?>

@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -39,62 +40,59 @@ use Ximdex\NodeTypes\NodeTypeConstants as ServicesNodeType;
 
 class Action_addfoldernode extends ActionAbstract
 {
-
     public $channels;
     public $languages;
 
     /**
      * Main Method: shows the initial form
      */
-    function index()
+    public function index()
     {
-
         //Getting node info from params.
         $nodeID = $this->request->getParam("nodeid");
-        $nodeType = [];
-
         $node = new Node($nodeID);
 
-        /**
-         * First, checks if has nodetypeid param
-         */
-        if ($this->request->get("nodetypeid")) {
+        // First, checks if has nodetypeid param
+        if ($this->request->get("nodetypeid"))
+        {
             $nt = new NodeType($this->request->get("nodetypeid"));
+            $nodeType = [];
             $nodeType["name"] = $nt->get('Name');
             $nodeType["friendlyName"] = $nt->get('Description');
-        } else {
+        }
+        else
+        {
             $nodeType = $this->GetTypeOfNewNode($nodeID);
         }
-
         $friendlyName = (!empty($nodeType["friendlyName"])) ? $nodeType["friendlyName"] : $nodeType["name"];
-
         $go_method = ($nodeType["name"] == "Section") ? "addSectionNode" : "addNode";
-
+        
         // show disclaimer if node canAttachGroups
         $CanAttachGroups = 0;
-
-        if ($this->request->get("nodetypeid")) {
+        if ($this->request->get("nodetypeid"))
+        {
             $nt = new NodeType($this->request->get("nodetypeid"));
             $CanAttachGroups = $nt->get('CanAttachGroups');
-        } else {
-            $nodeType = $this->GetTypeOfNewNode($nodeID);
-            $CanAttachGroups = (isset( $nodeType['CanAttachGroups'] )) ? $nodeType['CanAttachGroups'] : false ;
         }
-        //
-
+        else
+        {
+            $nodeType = $this->GetTypeOfNewNode($nodeID);
+            $CanAttachGroups = (isset( $nodeType['CanAttachGroups'] )) ? $nodeType['CanAttachGroups'] : false;
+        }
         $this->request->setParam("go_method", $go_method);
         $this->request->setParam("friendlyName", $friendlyName);
         $this->request->setParam("CanAttachGroups", $CanAttachGroups);
-
         $values = array(
             'go_method' => 'addNode',
             'nodeID' => $nodeID,
             'name' => $node->GetNodeName()
         );
-
-        if ($nodeType['name'] == 'Project') {
+        if (isset($nodeType['name']) and $nodeType['name'] == 'Project')
+        {
             $this->loadNewProjectForm($values);
-        } else {
+        }
+        else
+        {
             $this->render($values, "index", 'default-3.0.tpl');
         }
     }
@@ -103,12 +101,13 @@ class Action_addfoldernode extends ActionAbstract
     {
         //TODO: change this switch sentence for a query to the NodeAllowedContents table to check what subfolders can contain.
         $node = new Node($nodeID);
-        if (!$node->get('IdNode') > 0) {
+        if (!$node->get('IdNode') > 0)
+        {
             return null;
         }
         $nodeTypeName = $node->nodeType->GetName();
-
-        switch ($nodeTypeName) {
+        switch ($nodeTypeName)
+        {
             case "Projects":
                 $newNodeTypeName = "Project";
                 $friendlyName = "Project";
@@ -214,16 +213,25 @@ class Action_addfoldernode extends ActionAbstract
                 $newNodeTypeName = "OpenDataDataset";
                 $friendlyName = "Dataset";
                 break;
+                
+            case 'JsRootFolder':
+                $newNodeTypeName = 'JsFolder';
+                $friendlyName = 'JS folder';
+                break;
+                
+            case 'JsFolder':
+                $newNodeTypeName = 'JsFolder';
+                $friendlyName = 'JS folder';
+                break;
 
             default:
-                // Log to user.
+                // Log to user
                 return null;
         }
-
-        $a["name"] = $newNodeTypeName;
-        $a["friendlyName"] = $friendlyName;
-
-        return $a;
+        $type = [];
+        $type["name"] = $newNodeTypeName;
+        $type["friendlyName"] = $friendlyName;
+        return $type;
     }
 
     /**

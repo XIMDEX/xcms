@@ -62,8 +62,6 @@ $I->waitForText("Installation finished!", 3);
 
 $I->click("Get started");
 
-$I->amOnPage('/public_xmd/');
-
 $I->see("User");
 $I->see("Password");
 
@@ -143,7 +141,7 @@ $I->amOnPage("/data/previos/picasso-iden-idHTML.html");
 $I->see("Picasso", ".header");
 $I->see("Cubism", ".header");
 
-$I->amOnPage('?action=xmleditor2&method=load&nodeid=10141');
+$I->amOnPage('?action=xmleditor2&method=load&nodeid=10138');
 $I->wait(3);
 $I->switchToIframe('kupu-editor');
 $I->see('Early periods');

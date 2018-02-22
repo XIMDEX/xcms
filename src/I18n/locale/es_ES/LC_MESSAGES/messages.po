@@ -253,6 +253,8 @@ msgstr "Carpeta common"
 #: /install/ximdex_data/ximdex.sql table nodeTypes (`Description`)
 msgid "CSS folder"
 msgstr "Carpeta CSS"
+msgid "JS folder"
+msgstr "Carpeta JS"
 
 #: /actions/addfoldernode/Action_addfoldernode.class.php
 msgid "Template folder"
@@ -5953,6 +5955,12 @@ msgstr "Añadir carpeta CSS"
 msgid "Create a new CSS folder"
 msgstr "Crear una nueva carpeta CSS"
 
+msgid "Add JS folder"
+msgstr "Añadir carpeta JS"
+
+msgid "Create a new JS folder"
+msgstr "Crear una nueva carpeta JS"
+
 msgid "Add template folder"
 msgstr "Añadir carpeta Templates"
 
@@ -6507,6 +6515,12 @@ msgstr "Exportar la carpeta CSS completa"
 msgid "Export a CSS subfolder"
 msgstr "Exportar una subcarpeta de CSS"
 
+msgid "Export a complete JS folder"
+msgstr "Exportar la carpeta JS completa"
+
+msgid "Export a JS subfolder"
+msgstr "Exportar una subcarpeta de JS"
+
 msgid "Export a complete image folder"
 msgstr "Exportar la carpeta de imágenes completa"
 
@@ -6573,6 +6587,12 @@ msgstr "Importar la carpeta CSS completa"
 msgid "Import a CSS subfolder"
 msgstr "Importar una subcarpeta de CSS"
 
+msgid "Import a complete JS folder"
+msgstr "Importar la carpeta JS completa"
+
+msgid "Import a JS subfolder"
+msgstr "Importar una subcarpeta de JS"
+
 msgid "Import a complete image folder"
 msgstr "Importar la carpeta de imágenes completa"
 
@@ -6635,6 +6655,12 @@ msgstr "Copiar la carpeta CSS completa"
 
 msgid "Copy a CSS subfolder"
 msgstr "Copiar una subcarpeta de CSS"
+
+msgid "Copy a complete JS folder"
+msgstr "Copiar la carpeta JS completa"
+
+msgid "Copy a JS subfolder"
+msgstr "Copiar una subcarpeta de JS"
 
 msgid "Copy a complete image folder"
 msgstr "Copiar la carpeta de imágenes completa"
@@ -6743,6 +6769,12 @@ msgstr "Copiar una carpeta CSS a otro destino"
 
 msgid "Copy a CSS subfolder to another destination"
 msgstr "Copiar una subcarpeta CSS a otro destino"
+
+msgid "Copy a JS folder to another destination"
+msgstr "Copiar una carpeta JS a otro destino"
+
+msgid "Copy a JS subfolder to another destination"
+msgstr "Copiar una subcarpeta JS a otro destino"
 
 msgid "Copy a ximptd folder to another destination"
 msgstr "Copiar una carpeta ximptd a otro destino"
@@ -7014,6 +7046,9 @@ msgstr "Raíz de la carpeta common"
 
 msgid "Root of CSS folder"
 msgstr "Raíz de carpeta"
+
+msgid "Root of JS folder"
+msgstr "Raíz de la carpeta JS"
 
 msgid "Root of template folder"
 msgstr "Raíz de carpeta plantillas"
@@ -8678,6 +8713,9 @@ msgstr "Todas las etiquetas han sido asociadas correctamente."
 
 msgid "CSS folder name"
 msgstr "Nombre de carpeta CSS"
+
+msgid "JS folder name"
+msgstr "Nombre de carpeta JS"
 
 msgid "Common folder name"
 msgstr "Nombre de carpeta Common"
