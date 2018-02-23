@@ -4,6 +4,7 @@ use XimdexApi\core\Request;
 use XimdexApi\core\Response;
 use XimdexApi\core\Router;
 use Ximdex\Modules\Manager;
+use XimdexApi\actions\LoginAction;
 
 
 if (!defined('XIMDEX_ROOT_PATH')) {
@@ -37,6 +38,7 @@ $router->addRoute('ping', function (Request $r, Response $w) {
 
 
 /************ ACTIONS ************/
+LoginAction::addMethods($router);
 
 
 /************ Modules actions ************/
