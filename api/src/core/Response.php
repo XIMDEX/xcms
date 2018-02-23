@@ -6,7 +6,7 @@
  * Time: 14:39
  */
 
-namespace Ximdex\API;
+namespace XimdexApi\core;
 
 
 class Response

@@ -1,5 +1,5 @@
 <?php
-namespace Ximdex\API;
+namespace XimdexApi\core;
 
 use Ximdex\Runtime\ResponseBuilder;
 

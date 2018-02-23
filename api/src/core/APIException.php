@@ -6,7 +6,7 @@
  * Time: 16:12
  */
 
-namespace Ximdex\API;
+namespace XimdexApi\core;
 
 
 class APIException extends \Exception

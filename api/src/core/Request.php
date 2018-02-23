@@ -6,7 +6,7 @@
  * Time: 8:59
  */
 
-namespace Ximdex\API;
+namespace XimdexApi\core;
 
 
 class Request

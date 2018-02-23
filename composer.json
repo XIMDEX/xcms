@@ -1,13 +1,16 @@
 {
-	"name": "ximdex/ximdex",
+    "name": "ximdex/ximdex",
     "description": "Ximdex CMS is a Semantic Content Management System (CMS)",
     "license": "AGPL",
     "type": "project",
-    "keywords": ["cms", "semantic"],
+    "keywords": [
+        "cms",
+        "semantic"
+    ],
     "homepage": "https://github.com/XIMDEX/ximdex",
     "repositories": [],
     "require": {
-    	"php": ">=7.1",
+        "php": ">=7.1",
         "solarium/solarium": "3.8.*",
         "monolog/monolog": "1.23.*",
         "pda/pheanstalk": "3.1.*",
@@ -17,14 +20,17 @@
         "illuminate/support": "5.5.*",
         "phpseclib/phpseclib": "2.0.*",
         "phpmailer/phpmailer": "^6.0",
-        "kevinlebrun/colors.php" : "1.*"
+        "kevinlebrun/colors.php": "1.*"
     },
     "require-dev": {
         "mockery/mockery": "0.9.*",
         "codeception/codeception": "2.3.*"
     },
     "autoload": {
-        "psr-4": { "Ximdex\\": "src"}
+        "psr-4": {
+            "Ximdex\\": "src",
+            "XimdexApi\\": "api/src"
+        }
     },
     "config": {
         "vendor-dir": "vendors/"
