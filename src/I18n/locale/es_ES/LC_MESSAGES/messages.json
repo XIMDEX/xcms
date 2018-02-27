@@ -2483,5 +2483,7 @@
     "An enconding type is required": "Es necesario indicar un tipo de codificaci&oacute;n",
     "At least one channel is required": "Al menos un canal es necesario",
     "Available project channels": "Canales disponibles en el proyecto",
-    "Available project languages": "Idiomas disponibles en el proyecto"
+    "Available project languages": "Idiomas disponibles en el proyecto",
+    "There is not an URL for the HTML editor in the system configuration": "No hay una URL para el editor HTML en la configuraci&oacute;n del sistema",
+    "The HTML editor is not enabled in the system configuration": "El editor HTML no está habilitado en la configuraci&oacute;n del sistema"
 }

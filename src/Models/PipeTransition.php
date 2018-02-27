@@ -190,7 +190,7 @@ class PipeTransition extends PipeTransitionsOrm
 		
 		if (method_exists($object, $function))
 		{
-		    Logger::info("Calling method $function in order to make the transformation process for version $idVersion");
+		    Logger::info("TRANSITION START: Calling method $function in order to make the transformation process for version $idVersion");
 			$transformedPointer = $object->$function($idVersion, $pointer, $args);
 			
 			if ($transformedPointer === false)
@@ -226,13 +226,15 @@ class PipeTransition extends PipeTransitionsOrm
 			    Logger::info('Cache was generated/reversed successfusly for version: ' . $idVersion, true);
 			}
 		}
+		$msg = ' for version: ' . $idVersion . ' and callback: ' . $callback . ' with channel: ' . $args['CHANNEL'] . ', transformer: ' . $args['TRANSFORMER'] 
+		      . ' and cache disabled: ' . $args['DISABLE_CACHE'];
 		if ($transformedPointer)
 		{
-		    Logger::info('Pipeline Transition has been successfusly processed for version: ' . $idVersion . ' and function: ' . $function, true);
+		    Logger::info('TRANSITION END: Pipeline Transition has been successfusly processed' . $msg, true);
 		}
 		else
 		{
-		    Logger::error('Pipeline Transition has not been processed for version: ' . $idVersion . ' and function: ' . $function);
+		    Logger::error('TRANSITION END: Pipeline Transition has not been processed' . $msg);
 		}
 		return $transformedPointer;
 	}

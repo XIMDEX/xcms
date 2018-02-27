@@ -141,7 +141,7 @@ $I->amOnPage("/data/previos/picasso-iden-idHTML.html");
 $I->see("Picasso", ".header");
 $I->see("Cubism", ".header");
 
-$I->amOnPage('?action=xmleditor2&method=load&nodeid=10141   ');
+$I->amOnPage('?action=xmleditor2&method=load&nodeid=10141');
 $I->wait(3);
 $I->switchToIframe('kupu-editor');
 $I->see('Early periods');

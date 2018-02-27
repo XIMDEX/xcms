@@ -379,8 +379,9 @@ INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `
 	(5104, 'HtmlDocument', 'XmlDocumentNode', 'doc', 'HTML document', 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, NULL);
 
 INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`, `IsBulk`) VALUES
-	(7458, 5104, 'Edit in text mode', 'edittext', 'edit_file_xml_txt.png', 'Edit content of structured document in plain text', 21, NULL, 0, '', 0),
-	(7459, 5104, 'Edit HTML document', 'htmleditor', 'edit_file_xml.png', 'Edit content of HTML document', 20, NULL, 0, '', 0),
+	(7458, 5104, 'Edit in text mode', 'xEdit', 'edit_file_xml_txt.png', 'Edit content of HTML in plain text', 21, NULL, 0, 'type=text', 0),
+	(7459, 5104, 'Edit HTML document', 'xEdit', 'edit_file_xml.png', 'Edit content of HTML document with the wysiwyg editor', 20, NULL, 0
+	       , 'type=html', 0),
 	(7460, 5104, 'Publish', 'workflow_forward', 'change_next_state.png', 'Move to the next state', 70, NULL, 0, '', 0),
 	(7461, 5104, 'Move to previous state', 'workflow_backward', 'change_last_state.png', 'Move to the previous state', -70, NULL, 0, '', 0),
 	(7462, 5104, 'Expire document', 'expiredoc', 'expire_section.png', 'Expire a document', 71, NULL, 0, '', 0),
@@ -388,7 +389,8 @@ INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Des
 	(7464, 5104, 'Symbolic link', 'xmlsetlink', 'file_xml_symbolic.png', 'Modify document which borrows the content', 74, NULL, 0, '', 0),
 	(7465, 5104, 'Delete document', 'deletenode', 'delete_file_xml.png', 'Delete selected HTML document', 75, NULL, 1, '', 0),
 	(7466, 5104, 'Preview', 'preview', 'xix.png', 'Preview of the document', 80, NULL, 0, '', 0),
-	(7467, 5104, 'Semantic Tags', 'setmetadata', 'change_next_state.png', 'Managing semantic tags related to the current node.', 999, 'ximTAGS', 0, NULL, 0);
+	(7467, 5104, 'Semantic Tags', 'setmetadata', 'change_next_state.png', 'Managing semantic tags related to the current node.', 999
+	       , 'ximTAGS', 0, NULL, 0);
 
 INSERT INTO `RelRolesActions` (`IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (201, 7458, 7, 1, 3);
 INSERT INTO `RelRolesActions` (`IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (201, 7458, 8, 1, 3);
@@ -426,3 +428,7 @@ INSERT INTO `NodetypeModes` (`IdNodeType`, `Mode`, `IdAction`) VALUES
 -- INSERT INTO `RelNodeTypeMetadata` (`idNodeType`, `force`) VALUES (5104, 0);
 
 INSERT INTO `RelNodeTypeMimeType` (`idNodeType`, `extension`, `filter`) VALUES (5104, '', '');
+
+-- HTML EDITOR CONFIGURATION
+
+INSERT INTO `Config` (`ConfigKey`, `ConfigValue`) VALUES ('HTMLEditorURL', null), ('HTMLEditorEnabled', '1');

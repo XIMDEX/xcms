@@ -9022,3 +9022,9 @@ msgstr "Canales disponibles en el proyecto"
 
 msgid "Available project languages"
 msgstr "Idiomas disponibles en el proyecto"
+
+msgid "There is not an URL for the HTML editor in the system configuration"
+msgstr "No hay una URL para el editor HTML en la configuraci&oacute;n del sistema"
+
+msgid "The HTML editor is not enabled in the system configuration"
+msgstr "El editor HTML no está habilitado en la configuraci&oacute;n del sistema"
