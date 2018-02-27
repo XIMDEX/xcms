@@ -24,6 +24,7 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
+
 if (angular.module('ximdex').notRegistred('addSectionCtrl')) {
   angular.module('ximdex').controllerProvider.register('addSectionCtrl', [
     '$scope', '$http', 'xUrlHelper', function($scope, $http, xUrlHelper) {
@@ -33,6 +34,7 @@ if (angular.module('ximdex').notRegistred('addSectionCtrl')) {
       $scope.languageOptionsSelected = null;
       $scope.subfolders = {};
       $scope.subfoldersSelected = null;
+      
       $scope.init = function(params) {
         var url, urlParams;
         urlParams = {
@@ -41,7 +43,7 @@ if (angular.module('ximdex').notRegistred('addSectionCtrl')) {
           module: params.action.module,
           method: 'getSectionInfo'
         };
-        url = xUrlHelper.getAction(urlParams);
+        url = xUrlHelper.getAction(urlParams); 
         $http.get(url).success(function(data) {
           angular.forEach(data.sectionTypeOptions, function(obj, key) {
             $scope.sectionTypeOptions.push({
@@ -56,11 +58,13 @@ if (angular.module('ximdex').notRegistred('addSectionCtrl')) {
           $scope.changeSubfolders();
         });
       };
+      
       $scope.changeSubfolders = function() {
         var key;
         key = $scope.sectionTypeSelected.value;
         $scope.subfoldersSelected = $scope.subfolders[key];
       };
+      
       $scope.submit = function() {
         if ($scope.add_form.$invalid) {
           return false;

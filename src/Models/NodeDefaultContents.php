@@ -62,7 +62,7 @@ class NodeDefaultContents extends \Ximdex\Data\GenericData {
      * @return Array result: 
      */
     function getDefaultChilds($idnodetype) {
-        $result = $this->find('NodeType, Name', 'IdNodeType = %s AND Nodetype <> %s', array($idnodetype, $idnodetype), MULTI);
+        $result = $this->find('NodeType, Name', 'IdNodeType = %s AND Nodetype <> %s', array($idnodetype, $idnodetype), MULTI, true, null, 'Name');
         return $result;
     }
 

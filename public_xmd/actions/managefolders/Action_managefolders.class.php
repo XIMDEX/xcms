@@ -210,6 +210,7 @@ class Action_managefolders extends ActionAbstract {
 			case \Ximdex\NodeTypes\NodeTypeConstants::TEMPLATES_ROOT_FOLDER: return "Create here your own XSL Templates to redefine some particular appareance in your XML documents.";
 			case \Ximdex\NodeTypes\NodeTypeConstants::XIMLET_ROOT_FOLDER: return "Create XML snippets that you can import into your XML documents. Typical uses are menus, shared headers, shared footers between all your XML documents.";
 			case \Ximdex\NodeTypes\NodeTypeConstants::METADATA_SECTION: return "Create metadata structured documents to describe other resources stored in Ximdex CMS.";
+			case \Ximdex\NodeTypes\NodeTypeConstants::HTML_LAYOUT_FOLDER: return 'This folder will storage the layouts, components and HTML views for HTML documents';
 			default: "...";
 		}
 	}

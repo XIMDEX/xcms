@@ -22,45 +22,45 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
-
         
 X.actionLoaded(function(event, fn, params) {
 
 	var form = fn('form');
 	var fm = fn('form').get(0).getFormMgr();
 	var submit = fn('.validate').get(0);
-    var name="";
+    var name = "";
 
 	fn('select#type_sec').change(function() {
 		var type= fn('#type_sec option:selected').val();
         var urler = fn('#nodeURL').val() + '&type_sec=' + type;
 
 		//if we select a new opendata section, we must to change the actions name (xlyre module)
-		if(type==3){
+		if (type == 3) {
 			urler=fn('#nodeURL').val().replace("addsectionnode","createcatalog") + '&type_sec=' + type + '&mod=xlyre';
 		}
-		if(fn("input#name").val()!=""){
-			urler+="&name="+fn("input#name").val();
+		if (fn("input#name").val() != "") {
+			urler += "&name=" + fn("input#name").val();
 		}
-
         fn('#as_form').attr('action', urler);
         fm.sendForm();
-		
     });
 
-	var url_params=form.attr('action').split("&");
-    $.each(url_params, function( index, value ) { 
-        if(value.indexOf("name=")==0){
-            name=value.substring(5,value.length);
-        }   
+	var url_params = form.attr('action').split("&");
+    $.each(url_params, function(index, value) { 
+        if (value.indexOf("name=") == 0) {
+            name = value.substring(5,value.length);
+        }
     });
-		
-    if(name!=""){fn("input#name").val(name);}
-    else{fn("input#name").val("");}
+    if (name != "") {
+    	fn("input#name").val(name);
+    }
+    else {
+    	fn("input#name").val("");
+    }
 
 	$("div.folder-name").removeClass("folder-news").addClass("folder-normal");
 
-	fn(".subfolder > label.icon").click(function(){
+	fn(".subfolder > label.icon").click(function() {
 		var readonly = $(this).prev().attr("readonly");
 		if(readonly && readonly.toLowerCase()!=='false') {
             return false;
@@ -68,13 +68,13 @@ X.actionLoaded(function(event, fn, params) {
 	});
 
 	submit.beforeSubmit.add(function(event, button) {
-        if(!fn("form#as_form input[name='folderlst[]']").is(":checked")){
+        if (!fn("form#as_form input[name='folderlst[]']").is(":checked")) {
       	    alert("You cannot create an empty section. Please, click at least one of the allowed subfolders.");
             event.preventDefault();
             event.stopPropagation();
             return true;
    		}
-		if(fn("input#name").val()==""){
+		if (fn("input#name").val() == "") {
 			fn("input#name").addClass("validable");
 			fn("input#name").addClass("not_empty");
 		}

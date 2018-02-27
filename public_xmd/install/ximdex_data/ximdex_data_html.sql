@@ -45,6 +45,7 @@ INSERT INTO `NodeAllowedContents` (`IdNodeType`, `NodeType`) VALUES (5015, 5105)
 
 INSERT INTO `NodeDefaultContents` (`IdNodeType`, `NodeType`, `Name`) VALUES (5013, 5105, 'layouts');
 INSERT INTO `NodeDefaultContents` (`IdNodeType`, `NodeType`, `Name`) VALUES (5014, 5105, 'layouts');
+INSERT INTO `NodeDefaultContents` (`IdNodeType`, `NodeType`, `Name`) VALUES (5015, 5105, 'layouts');
 
 INSERT INTO `Config` (`ConfigKey`, `ConfigValue`) VALUES ('HTMLLayoutsDirName', 'layouts');
 

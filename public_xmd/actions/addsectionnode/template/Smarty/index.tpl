@@ -48,7 +48,8 @@
         	<div class="subfolders-available small-8 columns">
             	<label  class="label_title label_general" style="margin-top: 20px;">{t}Subfolders availables{/t}</label>
 				<div ng-repeat="folder in subfoldersSelected" class="subfolder box-col1-1">
-                	<input id="#/$parent.$parent.tab.id + '_' + folder.NodeType/#" class="hidden-focus" type="checkbox" value="#/folder.NodeType/#" name="folderlst[]">
+                	<input id="#/$parent.$parent.tab.id + '_' + folder.NodeType/#" class="hidden-focus" type="checkbox" value="#/folder.NodeType/#" 
+                	       name="folderlst[]">
                 	<label style="border-radius: 5px; padding-left:0!important;" class="icon" 
                 			for="#/$parent.$parent.tab.id + '_' + folder.NodeType/#">
                     	<strong class="icon #/folder.Name/#">#/folder.Name/#</strong>

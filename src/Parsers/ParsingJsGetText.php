@@ -1,4 +1,5 @@
 <?php
+
 namespace Ximdex\Parsers;
 
 use Ximdex\Runtime\App;
@@ -28,6 +29,7 @@ use Ximdex\Logger;
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
+
 class ParsingJsGetText
 {
     private $PATH_CACHE;
@@ -36,6 +38,7 @@ class ParsingJsGetText
 
     //Final file name, cached and gettexted
     private $_file;
+    
     //File from which cache is going to be obtained
     private $_file_orig;
     private $_gettext_file;
@@ -43,6 +46,7 @@ class ParsingJsGetText
     function __construct()
     {
         $this->PATH_CACHE = App::getValue('TempRoot') . "/js/";
+        
         //Definimos el default lang
         if (\Ximdex\Runtime\Session::get('locale'))
             $this->setDefaultLang(\Ximdex\Runtime\Session::get('locale'));
@@ -57,6 +61,7 @@ class ParsingJsGetText
 
         //Given need permits in case of cache folder has not the correct ones
         @chmod(XIMDEX_ROOT_PATH . $this->PATH_CACHE, 0777);
+        
         //Checking if the asociated language folder is ixisting, if not, we create it
         $_pathname = XIMDEX_ROOT_PATH . $this->PATH_CACHE . $this->_default_lang;
         if (!is_dir($_pathname))
@@ -82,6 +87,7 @@ class ParsingJsGetText
                 return null;
             }
             $this->_file_orig = $_js;
+            
             //Deleting first "/", if it has it
             if ($_js[0] == '/') $_js = substr($_js, 1);
 
@@ -99,7 +105,6 @@ class ParsingJsGetText
         if ($_js != NULL) {
             $this->setFile($_js);
         }
-
         $this->_lang = ($_lang) ? $_lang : $this->_lang;
         $this->_lang = ($this->_lang) ? $this->_lang : $this->_default_lang;
     }
@@ -107,8 +112,6 @@ class ParsingJsGetText
     /** gettexting the file and returning the path to final gettexted and cached js file */
     public function process($_js = null, $_lang = null)
     {
-
-
         $this->setParam($_lang, $_js);
 
         //If there is not source file we quit
@@ -116,10 +119,9 @@ class ParsingJsGetText
             Logger::warning("ERROR, file_orig not stablished");
             return null;
         }
-
+        
         //Opening the source file to start to gettext it
         $file_in = @fopen(XIMDEX_ROOT_PATH . $this->_file_orig, "r");
-
         if (!$file_in) {
             Logger::warning("ERROR, the file " . XIMDEX_ROOT_PATH . $this->_file_orig . " could not be opened");
             return null;
@@ -127,48 +129,39 @@ class ParsingJsGetText
 
         //Opening the destiny file to start to create it
         $file_out = @fopen(XIMDEX_ROOT_PATH . $this->PATH_CACHE . $this->_lang . "/" . $this->_file, "w");
-
         if (!$file_out) {
-            Logger::warning("ERROR, you have not permits, or the language directory is not existing. Review permits in \'data/tmp/js\'. Error opening the file " . XIMDEX_ROOT_PATH . $this->PATH_CACHE . $this->_lang . "/" . $this->_file);
+            Logger::error('You have not permits, or the language directory is not existing. Review permits in \'data/tmp/js\'. Error opening the file ' 
+                . XIMDEX_ROOT_PATH . $this->PATH_CACHE . $this->_lang . "/" . $this->_file);
             return null;
         }
         Logger::debug("Caching: " . XIMDEX_ROOT_PATH . $this->_file_orig . " --> " . XIMDEX_ROOT_PATH . $this->PATH_CACHE . $this->_lang . "/" . $this->_file);
-
         if ($file_in && $file_out) {
             while (!feof($file_in)) {
                 $content = fgets($file_in);
                 $content = $this->parseContent($content);
                 fputs($file_out, $content);
             }
-
             fclose($file_in);
             fclose($file_out);
             Logger::debug('Js Cache generated ' . App::getValue('UrlRoot') . $this->PATH_CACHE . $this->_lang . "/" . $this->_file);
             return App::getXimdexUrl( $this->PATH_CACHE . $this->_lang . "/" . $this->_file );
         }
-
     }
-
 
     /** Obtaining the name and path to the (selected) file gettexted to the specified language (if it does not exist for selected language, in the language by default */
     public function getFile($_js = null, $_lang = null)
     {
         static $no_cacheable = null;
-
-        if(!isset($no_cacheable) ) {
+        if (!isset($no_cacheable) ) {
             $no_cacheable = array(App::getUrl("/assets/js/"), App::getUrl('/vendors/') );
         }
-
         $this->setParam($_lang, $_js);
-
-
         foreach ($no_cacheable as $n_c) {
             if (!substr_compare($_js, $n_c, 0, strlen($n_c))) {
                 $no_cached_url = $_js;
                 return $no_cached_url;
             }
         }
-
 
         if (!is_file(XIMDEX_ROOT_PATH . $_js)) { // dinamic call
             $no_cached_url =   $_js;
@@ -177,10 +170,10 @@ class ParsingJsGetText
 
         //Checking if the file gettexted for the specificed langauge is existing
         if ($this->fileExists()) {
+            
             //If it exists, returning its url
             return App::getXimdexUrl($this->PATH_CACHE . $this->_lang . "/" . $this->_file);
         }
-
 
         //If it does not exist, sending the file to parsing and returning
         return $this->process();
@@ -190,11 +183,11 @@ class ParsingJsGetText
     public function fileExists($_lang = null, $_js = null)
     {
         $this->setParam($_lang, $_js);
-
         $nombre_file_cacheado = XIMDEX_ROOT_PATH . $this->PATH_CACHE . $this->_lang . "/" . $this->_file;
 
         //If the cached file exists, we start checking dates
         if (file_exists($nombre_file_cacheado)) {
+            
             //Checking that cached file modification date is later than the original file one
             $date_file_cache = filectime($nombre_file_cacheado);
             $date_file_nuevo = filectime(XIMDEX_ROOT_PATH . $this->_file_orig);
@@ -212,7 +205,6 @@ class ParsingJsGetText
     public function getTextArrayOfJs($_arrayjs, $_lang = null)
     {
         $_files = Array();
-
         if (count($_arrayjs) > 0) {
             foreach ($_arrayjs as $_js) {
                 $_file = $this->getFile($_js, $_lang);
@@ -226,14 +218,10 @@ class ParsingJsGetText
 
     public static function parseContent($content)
     {
-
         $patron = '/_\(\s*([\'"])(.*)(?<!\\\\)\1\s*(\\/[*](.*)[*]\\/)?\s*\)/Usi';
-
         $content = preg_replace_callback($patron,
             create_function('$coincidencias', '$_out = null; eval(\'$_out = \'.$coincidencias[0].";"); return \'"\'.$_out.\'"\';'),
             $content);
-        
         return $content;
     }
-
 }

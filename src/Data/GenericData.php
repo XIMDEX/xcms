@@ -437,7 +437,8 @@ class GenericData
      * @param bool $escape
      * @return array
      */
-    public function find($fields = ALL, $condition = '', $params = null, $returnType = MULTI, $escape = true, string $index = null)
+    public function find($fields = ALL, $condition = '', $params = null, $returnType = MULTI, $escape = true, string $index = null
+            , string $order = null)
     {
         $condition = $this->_getCondition($condition, $params, $escape);
         $query     = sprintf(
@@ -446,6 +447,9 @@ class GenericData
             $this->_table,
             empty($condition) ? '1' : $condition
         );
+        if ($order) {
+            $query .= ' ORDER BY ' . $order;
+        }
         return $this->query($query, $returnType, $fields, $index);
     }
 

@@ -32,40 +32,79 @@ use Ximdex\MVC\ActionAbstract;
 use Ximdex\NodeTypes\NodeTypeConstants;
 use Ximdex\Properties\InheritedPropertiesManager;
 
-\Ximdex\Modules\Manager::file('/inc/io/XlyreBaseIO.class.php', 'xlyre');
+//TODO unable to load \Ximdex\Modules\Manager::file('/inc/io/XlyreBaseIO.class.php', 'xlyre');
 
-class Action_addsectionnode extends ActionAbstract {
-
-    // Main method: shows initial form
-    public function index() {
+class Action_addsectionnode extends ActionAbstract
+{
+    /**
+     * Main method: shows initial form
+     */
+    public function index()
+    {
         $nodeID = $this->request->getParam("nodeid");
-        $node   = new Node($nodeID);
-
+        $node = new Node($nodeID);
         $values = array(
             'name' => $node->GetNodeName()
         );
-
-        $this->loadResources();
+        $this->addCss('/actions/addsectionnode/resources/css/style.css');
+        $this->addJs('/actions/addsectionnode/resources/js/init.js');
+        $this->addJs('/actions/addsectionnode/resources/js/addSectionCtrl.js');
         $this->render($values, "index", 'default-3.0.tpl');
     }
 
-    public function getSectionInfo() {
-        $this->sendJSON($this->loadValues());
+    public function getSectionInfo()
+    {
+        $nodeID = $this->request->getParam("nodeid");
+        $nodetype_sec = $this->request->getParam("type_sec");   // never used !
+        $nt = array();
+        if (empty($nodetype_sec)) {
+            $nodetype_sec = 1;
+        }
+        $sectionType = new SectionType();
+        $sectionTypes = $sectionType->find(ALL);
+        $ndc = new \Ximdex\Models\NodeDefaultContents();
+        while (list (, $sectionTypeInfo) = each($sectionTypes)) {
+            if (empty($sectionTypeInfo['module']) || \Ximdex\Modules\Manager::isEnabled($sectionTypeInfo['module'])) {
+                $subfolders = array();
+                $subfoldersAll = $ndc->getDefaultChilds($sectionTypeInfo['idNodeType']);
+                foreach ($subfoldersAll as $sub) {
+                    $newFolder = array(
+                        'NodeType' => $sub['NodeType'],
+                        'Name' => $sub['Name'],
+                        'description' => $this->_getDescription($sub['NodeType'])
+                    );
+                    $subfolders[] = $newFolder;
+                }
+                $sectionTypeOptions[] = array(
+                    'value' => $sectionTypeInfo['idSectionType'],
+                    'label' => $sectionTypeInfo['sectionType'],
+                    'subfolders' => $subfolders
+                );
+                $nt[] = $sectionTypeInfo['idNodeType'];
+            }
+        }
+        
+        // Getting languages
+        $languageOptions = $this->_getLanguages($nodeID);
+        $values = array(
+            'sectionTypeOptions' => $sectionTypeOptions,
+            'languageOptions' => $languageOptions
+        );
+        $this->sendJSON($values);
     }
 
-    public function addsectionnode() {
+    public function addsectionnode()
+    {
         $nodeid = $this->request->getParam('nodeid');
         $name = $this->request->getParam('name');
         $langidlst = $this->request->getParam('langidlst');
         $namelst = $this->request->getParam('namelst');
         $folderlst = $this->request->getParam('folderlst');
         $nodetype = $this->request->getParam('nodetype');
-
         $sectionType = new SectionType($nodetype);
         if ($sectionType->get('idSectionType') > 0) {
             $idNodeType = $sectionType->get('idNodeType');
         }
-
         $nodeTypeObj = new NodeType($idNodeType);
         $nodeTypeName = $nodeTypeObj->get('Name');
         $data = array(
@@ -75,26 +114,23 @@ class Action_addsectionnode extends ActionAbstract {
             'PARENTID' => $nodeid,
             'FORCENEW' => true
         );
-
         if ($nodetype == 3) {
             $id = $this->addcatalog($data);
         } else {
             $baseio = new \Ximdex\IO\BaseIO();
             $id = $baseio->build($data);
         }
-
         if ($id > 0) {
             $section = new Node($id);
-
+            
             // language block
-            if (!$langidlst) {
+            if (! $langidlst) {
                 $langidlst = array();
             }
             $aliasLangArray = array();
             foreach ($langidlst as $key) {
                 $aliasLangArray[$key] = $namelst[$key];
             }
-
             foreach ($aliasLangArray as $langID => $longName) {
                 $section->SetAliasForLang($langID, $longName);
             }
@@ -104,105 +140,52 @@ class Action_addsectionnode extends ActionAbstract {
             
             // reload the templates include files for this new project
             $xsltNode = new \Ximdex\NodeTypes\XsltNode($section);
-            if ($xsltNode->reload_templates_include($project) === false)
+            if ($xsltNode->reload_templates_include($project) === false) {
                 $this->messages->mergeMessages($xsltNode->messages);
+            }
             
             // reload the document folders and template folders relations
-            if (!$xsltNode->rel_include_templates_to_documents_folders($project))
+            if (! $xsltNode->rel_include_templates_to_documents_folders($project)) {
                 $this->messages->mergeMessages($xsltNode->messages);
-
+            }
             $this->messages->add(sprintf(_('%s has been successfully created'), $name), MSG_TYPE_NOTICE);
-            
         } else {
             $this->messages->mergeMessages($baseio->messages);
             $this->messages->add(_('Operation could not be successfully completed'), MSG_TYPE_ERROR);
         }
-
         $values = array(
             'parentID' => $nodeid,
             'messages' => $this->messages->messages
         );
-
         $this->sendJSON($values);
     }
 
-    private function _getLanguages($nodeID) {
+    private function _getLanguages($nodeID)
+    {
         $properties = InheritedPropertiesManager::getValues($nodeID);
         $propertiesLang = array();
-        if (isset($properties['Language']))
+        if (isset($properties['Language'])) {
             foreach ($properties['Language'] as $prop) {
                 $newLang = array();
                 $newLang['Id'] = $prop['Id'];
                 $newLang['Name'] = _($prop['Name']);
                 $propertiesLang[] = $newLang;
             }
+        }
         return $propertiesLang;
     }
 
-    private function loadResources() {
-        $this->addCss('/actions/addsectionnode/resources/css/style.css');
-        $this->addJs('/actions/addsectionnode/resources/js/init.js');
-        $this->addJs('/actions/addsectionnode/resources/js/addSectionCtrl.js');
-    }
-
-    private function loadValues() {
-        $nodeID = $this->request->getParam("nodeid");
-        $nodetype_sec = $this->request->getParam("type_sec");
-
-        $nt = array();
-        if (empty($nodetype_sec)) {
-            $nodetype_sec = 1;
-        }
-
-        $sectionType = new SectionType();
-        $sectionTypes = $sectionType->find(ALL);
-        while (list(, $sectionTypeInfo) = each($sectionTypes)) {
-            if (empty($sectionTypeInfo['module']) || \Ximdex\Modules\Manager::isEnabled($sectionTypeInfo['module'])) {
-                $sectionTypeOptions[] = array(
-                    'value' => $sectionTypeInfo['idSectionType'],
-                    'label' => $sectionTypeInfo['sectionType'],
-                    'subfolders' => $this->_getAvailableSubfolders($sectionTypeInfo['idNodeType'])
-                );
-                $nt[] = $sectionTypeInfo['idNodeType'];
-            }
-        }
-
-        // Getting languages
-        $languageOptions = $this->_getLanguages($nodeID);
-        $values = array(
-            'sectionTypeOptions' => $sectionTypeOptions,
-            'languageOptions' => $languageOptions,
-        );
-
-        return $values;
-    }
-
-    private function _getAvailableSubfolders($nodetype_sec) {
-        $ndc = new \Ximdex\Models\NodeDefaultContents();
-
-        $subfolders = array();
-        $subfoldersAll = $ndc->getDefaultChilds($nodetype_sec);
-        foreach ($subfoldersAll as $sub) {
-            $newFolder = array(
-                'NodeType' => $sub['NodeType'],
-                'Name' => $sub['Name'],
-                'description' => $this->_getDescription($sub['NodeType'])
-            );
-            $subfolders[] = $newFolder;
-        }
-
-        return $subfolders;
-    }
-
-    private function _getDescription($nodetypeId) {
+    private function _getDescription($nodetypeId)
+    {
         $nt = new NodeType($nodetypeId);
-        if (!$nt) {
+        if (! $nt) {
             return "";
         }
         return $nt->GetDescription();
     }
 
-    private function addcatalog($data) {
+    private function addcatalog($data)
+    {
         $baseio = new XlyreBaseIO();
         $id = $baseio->build($data);
         if ($id > 0) {
@@ -215,31 +198,39 @@ class Action_addsectionnode extends ActionAbstract {
         return $id;
     }
 
-    private function _createLicenseLinksFolder($links_id) {
+    private function _createLicenseLinksFolder($links_id)
+    {
         $nodeaux = new Node();
-        $linkfolder = $nodeaux->find('IdNode', "idnodetype = %s AND Name = 'Licenses'", array(NodeTypeConstants::LINK_FOLDER), MONO);
-        if (!$linkfolder) {
+        $linkfolder = $nodeaux->find('IdNode', "idnodetype = %s AND Name = 'Licenses'", array(
+            NodeTypeConstants::LINK_FOLDER
+        ), MONO);
+        if (! $linkfolder) {
             $nodeType = new NodeType();
             $nodeType->SetByName('LinkFolder');
             $folder = new Node();
             $idFolder = $folder->CreateNode('Licenses', $links_id, $nodeType->GetID(), null);
-            $this->_createLicenseLinks("ODbL", "http://opendatacommons.org/licenses/odbl/", "Open Data Commons Open Database License (ODbL)", $idFolder);
+            $this->_createLicenseLinks("ODbL", "http://opendatacommons.org/licenses/odbl/", "Open Data Commons Open Database License (ODbL)"
+                    , $idFolder);
         }
     }
 
-    private function _createLicenseLinks($link_name, $link_url, $link_description, $idFolder) {
+    private function _createLicenseLinks($link_name, $link_url, $link_description, $idFolder)
+    {
         $data = array(
             'NODETYPENAME' => 'LINK',
             'NAME' => $link_name,
             'PARENTID' => $idFolder,
             'IDSTATE' => 0,
             'CHILDRENS' => array(
-                array('URL' => $link_url),
-                array('DESCRIPTION' => $link_description)
+                array(
+                    'URL' => $link_url
+                ),
+                array(
+                    'DESCRIPTION' => $link_description
+                )
             )
         );
         $bio = new \Ximdex\IO\BaseIO();
         $bio->build($data);
     }
-
 }
