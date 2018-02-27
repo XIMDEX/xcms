@@ -24,11 +24,11 @@ INSERT INTO `RelRolesActions` (`IdRol`, `IdAction`, `IdState`, `IdContext`, `IdP
 INSERT INTO `RelRolesActions` (`IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (201, 7406, 0, 1, 3);
 INSERT INTO `RelRolesActions` (`IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (201, 7407, 0, 1, 3);
 INSERT INTO `RelRolesActions` (`IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (201, 7408, 0, 1, 3);
-	
-INSERT INTO `NodeAllowedContents` (`IdNodeType`, `NodeType`) VALUES (5053, 5105);
 
 INSERT INTO `NodeConstructors` (`IdNodeType`, `IdAction`) VALUES (5105, 6011);
 INSERT INTO `NodeConstructors` (`IdNodeType`, `IdAction`) VALUES (5105, 6012);
+INSERT INTO `NodeConstructors` (`IdNodeType`, `IdAction`) VALUES (5105, 6013);
+INSERT INTO `NodeConstructors` (`IdNodeType`, `IdAction`) VALUES (5105, 6014);
 
 INSERT INTO `NodetypeModes` (`IdNodeType`, `Mode`) VALUES
 	(5105, 'C'),
@@ -39,10 +39,12 @@ INSERT INTO `NodetypeModes` (`IdNodeType`, `Mode`) VALUES
 INSERT INTO `RelNodeTypeMimeType` (`idNodeType`, `extension`, `filter`) VALUES (5105, '', '');
 
 INSERT INTO `NodeAllowedContents` (`IdNodeType`, `NodeType`) VALUES (5013, 5105);
--- INSERT INTO `NodeAllowedContents` (`IdNodeType`, `NodeType`) VALUES (5014, 5105);
+INSERT INTO `NodeAllowedContents` (`IdNodeType`, `NodeType`) VALUES (5014, 5105);
+INSERT INTO `NodeAllowedContents` (`IdNodeType`, `NodeType`) VALUES (5015, 5105);
+
 
 INSERT INTO `NodeDefaultContents` (`IdNodeType`, `NodeType`, `Name`) VALUES (5013, 5105, 'layouts');
--- INSERT INTO `NodeDefaultContents` (`IdNodeType`, `NodeType`, `Name`) VALUES (5014, 5105, 'layouts');
+INSERT INTO `NodeDefaultContents` (`IdNodeType`, `NodeType`, `Name`) VALUES (5014, 5105, 'layouts');
 
 INSERT INTO `Config` (`ConfigKey`, `ConfigValue`) VALUES ('HTMLLayoutsDirName', 'layouts');
 
@@ -340,7 +342,7 @@ INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `
 	(5103, 'HTMLContainer', 'XmlContainerNode', 'contenedordoc', 'Container of HTML documents', 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, NULL);
 
 INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`, `IsBulk`) VALUES
-	(7450, 5103, 'Add new language', 'addlanghtmlcontainer', 'add_language_xml.png', 'Add a document with a different language', 10, NULL, 0, '', 0),
+	(7450, 5103, 'Add new language', 'addlangxmlcontainer', 'add_language_xml.png', 'Add a document with a different language', 10, NULL, 0, '', 0),
 	(7451, 5103, 'Copy', 'copy', 'copiar_carpeta_ximdoc.png', 'Copy a document to another destination', 30, NULL, 0, '', 0),
 	(7452, 5103, 'Move node', 'movenode', 'move_node.png', 'Move a node', 40, NULL, 0, '', 0),
 	(7453, 5103, 'Change name of HTML document', 'renamenode', 'change_name_xml.png', 'Change the document name and all its language versions'

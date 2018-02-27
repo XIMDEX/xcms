@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -241,9 +242,6 @@ class GenericData
                 }
                 return false;
             } else {
-
-                // $className = get_class($this);
-
                 $isAutoField = isset($this->_metaData[$this->_idField])
                 && array_key_exists('auto_increment', $this->_metaData[$this->_idField])
                 && true == $this->_metaData[$this->_idField]['auto_increment'];
@@ -285,9 +283,6 @@ class GenericData
 
     }
 
-    /**
-     *
-     */
     private function _mergeMessagesFromBehaviors()
     {
         if (!empty($this->behaviors)) {
@@ -358,18 +353,7 @@ class GenericData
 
                     break;
                 case in_array($fieldType, $dataTypeText):
-                    /*                case 'text':
-                    case 'tinytext':
-                    case 'mediumtext':
-                    case 'mediumblob':
-                    case 'varchar':
-                    case 'char':
-                    case 'longtext':
-                    case 'blob':
-                    case 'longblob':*/
-                    //if (!is_string($value)) $this->messages->add("El campo $key tiene un formato inválido", MSG_TYPE_ERROR);
                     break;
-                //                case in_array($fieldType, $dataTypeDate):
                 case 'datetime':
                     if (!preg_match(sprintf('/%s/', self::REGEXP_DATETIME), $value)) {
                         $this->messages->add(sprintf(_('The field %s has not the correct format'), $key)
@@ -438,11 +422,6 @@ class GenericData
                     }
                     break;
                 case in_array($fieldType, $dataTypeElse):
-                    /*                case 'binary':
-                    case 'decimal':
-                    case 'enum':
-                    case 'set':*/
-
                     break;
             }
         }
@@ -458,7 +437,7 @@ class GenericData
      * @param bool $escape
      * @return array
      */
-    public function find($fields = ALL, $condition = '', $params = null, $returnType = MULTI, $escape = true)
+    public function find($fields = ALL, $condition = '', $params = null, $returnType = MULTI, $escape = true, string $index = null)
     {
         $condition = $this->_getCondition($condition, $params, $escape);
         $query     = sprintf(
@@ -467,7 +446,7 @@ class GenericData
             $this->_table,
             empty($condition) ? '1' : $condition
         );
-        return $this->query($query, $returnType, $fields);
+        return $this->query($query, $returnType, $fields, $index);
     }
 
     /**
@@ -500,33 +479,28 @@ class GenericData
         }
         return $condition;
     }
-
+    
     /**
-     * @param $query
-     * @param bool $returnType
+     * @param string $query
+     * @param string $returnType
      * @param string $fields
-     * @return array
+     * @param string $indexField
+     * @return boolean|array
      */
-    public function query($query, $returnType = MULTI, $fields = '')
+    public function query($query, $returnType = MULTI, $fields = '', string $indexField = null)
     {
-
-        // TODO check $fields Usage
-        unset($fields);
         $this->_applyFilter('beforeFind');
         $dbObj = new \Ximdex\Runtime\Db();
-
         if ((DEBUG_LEVEL == LOG_LEVEL_ALL) || (DEBUG_LEVEL == LOG_LEVEL_QUERY)) {
             $this->_logQuery($query);
         }
-
-        if ($dbObj->query($query) === false)
+        if ($dbObj->query($query) === false) {
             return false;
-
+        }
         $result = array();
         if (!$dbObj->numRows) {
             return $result;
         }
-
         while (!$dbObj->EOF) {
             if (MULTI == $returnType) {
                 $subResult = array();
@@ -538,12 +512,19 @@ class GenericData
                 }
                 $result[] = $subResult;
             } elseif (MONO == $returnType) {
-                //
                 $subResult = null;
                 foreach ($dbObj->row as $key => $value) {
                     $subResult = $this->_getValueForFind($key, $value);
                 }
-                $result[] = $subResult;
+                if ($indexField) {
+                    if (!isset($dbObj->row[$indexField])) {
+                        Logger::error('Field ' . $indexField . ' does not exist in query: ' . $query);
+                        return false;
+                    }
+                    $result[$dbObj->row[$indexField]] = $subResult;
+                }else{
+                    $result[] = $subResult;
+                }
             }
             $dbObj->next();
         }

@@ -33,8 +33,6 @@ use Ximdex\Runtime\App;
 use Ximdex\Runtime\Constants;
 use Ximdex\Runtime\Db;
 
-
-
 if (!defined('ROOT_NODE')) {
     define('ROOT_NODE', 1);
 }
@@ -83,7 +81,7 @@ class Root
      * @param int|null $node
      */
 
-    public function __construct(&$node = null)
+    public function __construct($node = null)
     {
 
         if (is_object($node))
