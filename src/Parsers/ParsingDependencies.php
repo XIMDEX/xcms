@@ -330,19 +330,15 @@ class ParsingDependencies
         $pipelineManager = new PipelineManager();
         $pathToByChannel = array();
 
-        //Transforming the content for each defined channel.
+        // Transforming the content for each defined channel.
         if ($channels)
             foreach ($channels as $idChannel) {
                 
-                /*
-                $postContent = $pipelineManager->getCacheFromProcessAsContent($idVersion, 'StrDocToDexT', 
-                    array('CHANNEL' => $idChannel, 'TRANSFORMER' => $transformer[0], 'DISABLE_CACHE' => App::getValue("DisableCache")));
-                */
-                // transforming with the given content and no cache
+                // Transforming with the given content and no cache
                 $postContent = $pipelineManager->getCacheFromProcessAsContent($idVersion, 'StrDocToDexT',
                     array('CHANNEL' => $idChannel, 'TRANSFORMER' => $transformer[0], 'DISABLE_CACHE' => true, 'CONTENT' => $content));
                     
-                // post-transformation dependencies
+                // Post-transformation dependencies
                 $pathToByChannel[$idChannel] = self::getPathTo($postContent, $idNode);
                 $pathTos = array_merge($pathTos, $pathToByChannel[$idChannel]);
                 $res = self::getDotDot($postContent, $idServer);

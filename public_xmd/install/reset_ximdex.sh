@@ -3,6 +3,12 @@ rm ./conf/install-params.conf.php
 rm ./conf/install-modules.php
 
 # rm ./logs/*.log
+cp /dev/null ./logs/actions.log
+cp /dev/null ./logs/preview.log
+cp /dev/null ./logs/publication.log
+cp /dev/null ./logs/scheduler.log
+cp /dev/null ./logs/xmd.log
+cp /dev/null ./logs/xslt.log
 
 rm -rf ./data/cache/pipelines/*
 rm -rf ./data/files/*

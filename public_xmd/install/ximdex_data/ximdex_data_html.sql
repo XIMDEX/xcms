@@ -3,6 +3,14 @@
 -- Pipeline (5)
 INSERT INTO `Pipelines` (`id`, `Pipeline`) VALUES (5, 'PublishHTMLDoc');
 
+INSERT INTO `PipeTransitions` (`id`, `IdStatusFrom`, `IdStatusTo`, `IdPipeProcess`, `Cacheable`, `Name`, `Callback`) VALUES 
+    ('10', NULL, '3', '6', '1', 'PrepareHTML', 'PrepareHTML'), 
+    ('11', '3', '6', '7', '0', 'PublishHTML', 'PublishHTML');
+
+INSERT INTO `PipeProcess` (`id`, `IdTransitionFrom`, `IdTransitionTo`, `IdPipeline`, `Name`) VALUES 
+    ('6', NULL, '10', '5', 'HTMLToPrepared'), 
+    ('7', '10', '11', '5', 'HTMLToPublished');
+
 -- HTMLlayoutsFolder (5105)
 
 INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`
@@ -379,7 +387,7 @@ INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `
 	(5104, 'HtmlDocument', 'XmlDocumentNode', 'doc', 'HTML document', 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, NULL);
 
 INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`, `IsBulk`) VALUES
-	(7458, 5104, 'Edit in text mode', 'xEdit', 'edit_file_xml_txt.png', 'Edit content of HTML in plain text', 21, NULL, 0, 'type=text', 0),
+	(7458, 5104, 'Edit in text mode', 'edittext', 'edit_file_xml_txt.png', 'Edit content of HTML in plain text', 21, NULL, 0, 'type=text', 0),
 	(7459, 5104, 'Edit HTML document', 'xEdit', 'edit_file_xml.png', 'Edit content of HTML document with the wysiwyg editor', 20, NULL, 0
 	       , 'type=html', 0),
 	(7460, 5104, 'Publish', 'workflow_forward', 'change_next_state.png', 'Move to the next state', 70, NULL, 0, '', 0),

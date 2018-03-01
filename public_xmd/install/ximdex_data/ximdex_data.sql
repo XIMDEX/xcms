@@ -379,8 +379,8 @@ VALUES
 	(36,'workingEncoding','UTF-8'),
 	(37,'ActionsStats','0'),
 	(38,'IdDefaultWorkflow','403'),
-	(39,'DefaultInitialStatus','Edición'),
-	(40,'DefaultFinalStatus','Publicación'),
+	(39,'DefaultInitialStatus','Edition'),
+	(40,'DefaultFinalStatus','Publication'),
 	(41,'PullMode','0'),
 	(42,'EnricherKey',''),
 	(43,'AddVersionUsesPool','0'),
@@ -1312,8 +1312,8 @@ VALUES
 	(4,'Dependencies',''),
 	(5,'Xslt',''),
 	(6,'FilterMacros',''),
-	(7,'Edición','El documento está en fase de desarrollo'),
-	(8,'Publicación','El documento está a la espera de ser publicado'),
+	(7,'Edition','The document is in the development phase'),
+	(8,'Publication','The document is waiting to be published'),
 	(9,'Xedit','');
 
 INSERT INTO `PipeTransitions` (`id`, `IdStatusFrom`, `IdStatusTo`, `IdPipeProcess`, `Cacheable`, `Name`, `Callback`)
@@ -1323,7 +1323,7 @@ VALUES
 	(3,3,5,1,1,'FromPreFilterToDexT','Transformer'),
 	(4,5,6,2,0,'FromToDexTToFinal','FilterMacros'),
 	(5,NULL,6,3,0,'ToFinal','Common'),
-	(6,7,8,4,0,'Edici?n_to_Publicaci?n','-'),
+	(6,7,8,4,0,'EditiontoPublication', null),
 	(7,NULL,2,5,0,'ToRenderize','NodeToRenderizedContent'),
 	(8,2,9,5,0,'FromRenderToXedit','Xedit'),
 	(9,9,3,5,0,'FromXeditToPreFilter','PrefilterMacros');

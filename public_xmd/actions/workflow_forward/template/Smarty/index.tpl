@@ -70,7 +70,7 @@
 						first_date_name="dateUp"
 						last_date_name="dateDown"
 						/>
-				{if !isset($globalForcedEnabled) and $show_rep_option and $nodetypename eq 'XmlDocument'}
+				{if $show_rep_option and ($nodetypename eq 'XmlDocument' or $nodetypename eq 'HtmlDocument')}
 					<div class="row tarjeta propertyform">
 						<h2 class="h2_general">{t}Publication options{/t}</h2>
 						<div class="publication_options">
@@ -127,15 +127,17 @@
 									</div>
 									<div class="options_separator"></div>
 								</div>
-								<div class="publication_option">
-									<div class="option_checkbox">
-										<input type="checkbox" name="force" id="force" value="1" />
+								{if (!isset($globalForcedEnabled))}
+									<div class="publication_option">
+										<div class="option_checkbox">
+											<input type="checkbox" name="force" id="force" value="1" />
+										</div>
+										<div class="option_info">
+											<label for="force">{t}Force republish.{/t}</label>
+										</div>
+										<div class="options_separator"></div>
 									</div>
-									<div class="option_info">
-										<label for="force">{t}Force republish.{/t}</label>
-									</div>
-									<div class="options_separator"></div>
-								</div>
+								{/if}
 							{/if}
 						</div>
 					</div>

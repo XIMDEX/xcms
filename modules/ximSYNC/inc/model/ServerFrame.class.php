@@ -27,6 +27,7 @@
 use Ximdex\Logger;
 use Ximdex\Models\Node;
 use Ximdex\Models\Server;
+use Ximdex\NodeTypes\NodeTypeConstants;
 use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
 use Ximdex\Utils\PipelineManager;
@@ -320,7 +321,15 @@ class ServerFrame extends ServerFrames_ORM {
 		$pipeMng = new PipelineManager();
 		if (!is_null($channelId))
 		{
-            $content = $pipeMng->getCacheFromProcessAsContent($idVersion, 'StrDocFromDexTToFinal', $data);
+		    if ($node->GetNodeType() == NodeTypeConstants::HTML_DOCUMENT)
+		    {
+		        $process = 'HTMLToPublished';
+		    }
+		    else
+		    {
+		        $process = 'StrDocFromDexTToFinal';
+		    }
+            $content = $pipeMng->getCacheFromProcessAsContent($idVersion, $process, $data);
             if ($content === false)
             {
                 Logger::error('cannot load the cache or actual version content for version: ' . $idVersion);

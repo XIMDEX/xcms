@@ -24,7 +24,7 @@
  *}
 
 <form id="et_form" class="text-editor-form" enctype="multipart/form-data" method="post" action="{$action_url}">
-	<div class="action_header" style="padding-bottom: 90px!important;">
+	<div class="action_header">
 		<h5 class="direction_header"> Name Node: {$node_name}</h5>
 		<h5 class="nodeid_header"> ID Node: {$nodeid}</h5>
 		<hr>

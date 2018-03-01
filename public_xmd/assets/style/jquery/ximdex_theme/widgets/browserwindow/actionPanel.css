@@ -423,8 +423,10 @@ fieldset {
     -webkit-border-radius: 0 12px 0 0;
     -moz-border-radius: 0 12px 0 0;
     border-radius: 0 12px 0 0;
+    /*
     height: 3em;
     max-height: 3em;
+    */
     overflow: hidden;
     min-width: 400px;
     /*border-bottom: 2px solid #eee;*/

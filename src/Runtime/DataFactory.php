@@ -367,10 +367,22 @@ class DataFactory
                 {
                     Logger::info("Generation cache for version $idVersion and the channel $idChannel");
                     $data = array('CHANNEL' => $idChannel);
+                    $data['DISABLE_CACHE'] = App::getValue("DisableCache");
                     $transformer = $node->getProperty('Transformer');
                     $data['TRANSFORMER'] = $transformer[0];
-                    $data['DISABLE_CACHE'] = App::getValue("DisableCache");
-                    $res = $pipelineManager->getCacheFromProcess($idVersion, 'StrDocToDexT', $data);
+                    if ($node->GetNodeType() == NodeTypeConstants::XML_DOCUMENT)
+                    {
+                        $process = 'StrDocToDexT';
+                    }
+                    elseif ($node->GetNodeType() == NodeTypeConstants::HTML_DOCUMENT)
+                    {
+                        $process = 'HTMLToPrepared';
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                    $res = $pipelineManager->getCacheFromProcess($idVersion, $process, $data);
                 }
             }
         }
@@ -411,12 +423,7 @@ class DataFactory
         if (is_null($versionID) && is_null($subVersion))
         {
             $idVersion = $this->AddVersion(NULL, NULL, $content, $commitNode);
-                
-            //TODO ajlucena! no cache until HTML documents Pipeline is operative
-            if ($node->GetNodeType() != NodeTypeConstants::HTML_DOCUMENT)
-            {
-                $this->_generateCaches($idVersion);
-            }
+            $this->_generateCaches($idVersion);
             return $idVersion;
         }
 
