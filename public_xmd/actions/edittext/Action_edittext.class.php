@@ -80,6 +80,11 @@ class Action_edittext extends ActionAbstract
             //for the documents
             $ext = "xml";
         }
+        elseif ($idNodeType == \Ximdex\NodeTypes\NodeTypeConstants::HTML_DOCUMENT)
+        {
+            //for the documents
+            $ext = "html";
+        }
         else
         {
             $ext = "txt";
