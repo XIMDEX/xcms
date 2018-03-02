@@ -1323,7 +1323,7 @@ VALUES
 	(3,3,5,1,1,'FromPreFilterToDexT','Transformer'),
 	(4,5,6,2,0,'FromToDexTToFinal','FilterMacros'),
 	(5,NULL,6,3,0,'ToFinal','Common'),
-	(6,7,8,4,0,'EditiontoPublication', null),
+	(6,7,8,4,0,'EditiontoPublication', '-'),
 	(7,NULL,2,5,0,'ToRenderize','NodeToRenderizedContent'),
 	(8,2,9,5,0,'FromRenderToXedit','Xedit'),
 	(9,9,3,5,0,'FromXeditToPreFilter','PrefilterMacros');

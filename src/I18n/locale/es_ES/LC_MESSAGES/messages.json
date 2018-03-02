@@ -2273,7 +2273,7 @@
     "You need to delete this file in order to restart Scheduler successfully": "Necesitas borrar este archivo para poder reiniciar Scheduler satisfactoriamente",
     "No active server": "Ning&uacute;n servidor activo",
     "Sleeping...": "Durmiendo...",
-    "No proccessable batchs found": "No se han encontrado lotes procesables",
+    "No processable batchs found": "No se han encontrado lotes procesables",
     "STARTING BATCH PROCESSING": "COMENZANDO PROCESADO DE LOTES",
     "Cycle num": "Ciclo n&uacute;m",
     "Exceding max. cycles (%d > %d). Exiting scheduler": "Excediendo max. de ciclos (%d > %d). Terminando scheduler",

@@ -234,7 +234,11 @@ class DexPumper {
 		$targetFolder = "{$initialDirectory}{$remotePath}/";
 		$originFile = "{$targetFolder}.{$IdSync}_{$fileName}";
 		$targetFile = $fileName;
-
+		
+		if (!file_exists($originFile)) {
+		    $this->warning("Renaming file: $originFile file not found");
+		    return null;
+		}
 		$this->info("RenameFile [{$targetFolder}] $originFile -> $targetFile ");
 
 		return $this->taskRename($originFile, $targetFolder,  $targetFile);
@@ -276,7 +280,7 @@ class DexPumper {
 		$batchId = (int) $batch->get('IdBatch');
 		$batchState = $batch->get('State');
 
-		if (!empty($batchId) &&  ServerFrame::CLOSING == $batchState) {
+		if (!empty($batchId) && ServerFrame::CLOSING == $batchState) {
 		    
 			$filesToRename = $this->getFilesToRename($idBatchUp,$idServer);
 			$totalToRename = count($filesToRename);
@@ -285,13 +289,18 @@ class DexPumper {
 				$this->info("$totalToRename files to rename ");
 				foreach ($filesToRename as $file) {
 					 $renameResult = $this->RenameFile($file);
-                     if ($renameResult)
-                         $this->finishTask ($file["IdSync"]);
-                     else
-                     {
-                         // if this rename task does not work, generates a infinite loop
+					 if ($renameResult) {
+                         $this->finishTask($file["IdSync"]);
+					 } elseif ($renameResult === false) {
+					     
+					     //TODO check the conflict with process
+                         // If this rename task does not work, generates a infinite loop
                          $this->updateTask(0, ServerFrame::DUE2OUTWITHERROR);
-                     }
+					 } else {
+					     
+					     // If this rename task does not work, generates a infinite loop
+					     $this->updateTask(0, ServerFrame::IN);
+					 }
 				}
 			}
 		}
@@ -409,7 +418,7 @@ class DexPumper {
 		return true;
 	}
 
-	private function updateTask($result, $status) {
+	private function updateTask($result, $status = null) {
 		$this->info('Processing ' . $this->serverFrame->get('IdSync'));
 		if (!$result > 0) {
 			$retries = $this->serverFrame->get('Retry');
@@ -422,7 +431,9 @@ class DexPumper {
 		$this->serverFrame->set('ErrorLevel', $result ? 0 : 1);
 		$retries ++;
 		$this->serverFrame->set('Retry', $retries);
-		$this->serverFrame->set('State', $status);
+		if ($status !== null) {
+		    $this->serverFrame->set('State', $status);
+		}
 		$this->serverFrame->set('Linked', 0);
 		$this->serverFrame->update();
 
@@ -514,11 +525,11 @@ class DexPumper {
 	public function error($_msg = NULL) { $this->msg_log("ERROR PUMPER: $_msg"); Logger::error($_msg); }
 	public function fatal($_msg = NULL) { $this->msg_log("FATAL PUMPER: $_msg"); Logger::fatal($_msg); }
 	public function debug($_msg = NULL) { $this->msg_log("DEBUG PUMPER: $_msg"); Logger::debug($_msg); }
+	public function warning($_msg = NULL) { $this->msg_log("WARNING PUMPER: $_msg"); Logger::warning($_msg); }
 
 	public function msg_log($_msg) {
 		$pumperID = (int) $this->pumper->get('PumperId');
 		$_msg = "[PumperId: $pumperID] ".$_msg;
-        
 		error_log($_msg);
 	}
 

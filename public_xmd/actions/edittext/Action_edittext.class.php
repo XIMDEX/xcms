@@ -226,7 +226,7 @@ class Action_edittext extends ActionAbstract
             $this->messages->add(_('The document which is trying to be edited does not exist'), MSG_TYPE_ERROR);
             $this->renderMessages();
         }
-        if ($node->SetContent(Strings::stripslashes($content), true, $node) === false)
+        if ($node->SetContent(Strings::stripslashes($content), true) === false)
         {
             $this->messages->mergeMessages($node->messages);
             $this->sendJSON(array('messages' => $this->messages->messages, 'type' => MSG_TYPE_WARNING));

@@ -849,7 +849,6 @@ class Node extends NodesOrm
                             $child = new Node($childID);
                             if ($child->RenderizeNode(true) === false)
                                 return false;
-                            // unset($child);
                         }
                     }
                 }
@@ -880,108 +879,116 @@ class Node extends NodesOrm
      *
      * @param string $content
      * @param string $commitNode
-     * @param Node $node
      * @return boolean
      */
-    function SetContent($content, $commitNode = NULL, Node $node = null)
+    function SetContent($content, $commitNode = NULL)
     {
         $this->ClearError();
-        if ($this->get('IdNode') > 0) {
+        if ($this->getID()) {
             
-            // validate HTML or XML valid contents (including XSL schemas)
-            if ($node) {
-                if ($node->getNodeType() == NodeTypeConstants::NODE_HT or $node->getNodeType() == NodeTypeConstants::RNG_VISUAL_TEMPLATE or $node->getNodeType() == NodeTypeConstants::XSL_TEMPLATE or $node->getNodeType() == NodeTypeConstants::XML_DOCUMENT) {
-                    $res = true;
-                    
-                    // TODO change global variable to another entity
+            // Validate HTML or XML valid contents (including XSL schemas)
+            if ($this->GetNodeType()) {
+                $res = true;
+                if ($this->GetNodeType() == NodeTypeConstants::XSL_TEMPLATE or $this->GetNodeType() == NodeTypeConstants::XML_DOCUMENT 
+                    or $this->getNodeType() == NodeTypeConstants::RNG_VISUAL_TEMPLATE) {
+                            
+                    //TODO change global variable to another entity
                     $GLOBALS['errorsInXslTransformation'] = array();
                     
+                    // Check the valid XML
                     $domDoc = new DOMDocument();
-                    if ($node->getNodeType() == NodeTypeConstants::NODE_HT or $node->getNodeType() == NodeTypeConstants::RNG_VISUAL_TEMPLATE) {
-                        // check the XML of the given RNG template content
-                        $res = @$domDoc->loadXML($content);
-                    } elseif ($node->getNodeType() == NodeTypeConstants::XSL_TEMPLATE or $node->getNodeType() == NodeTypeConstants::XML_DOCUMENT) {
-                        // check the valid XML template and dependencies
-                        $res = @$domDoc->loadXML($content);
-                        if ($res and $node->GetNodeName() != 'templates_include.xsl') {
-                            // dotdot dependencies only can be checked in templates under a server node
-                            $templatesNode = new Node($node->GetParent());
-                            if ($templatesNode->GetNodeType() == NodeTypeConstants::TEMPLATES_ROOT_FOLDER) {
-                                $projectNode = new Node($templatesNode->getParent());
-                                if ($projectNode->GetNodeType() == NodeTypeConstants::PROJECT)
-                                    $idServer = false;
-                            }
-                            if (! isset($idServer)) {
-                                $idServer = $node->getServer();
-                            }
-                            if ($idServer) {
-                                // check the dotdot dependencies
-                                ParsingDependencies::getDotDot($content, $idServer);
-                                if (isset($GLOBALS['parsingDependenciesError']) and $GLOBALS['parsingDependenciesError']) {
-                                    $this->messages->add($GLOBALS['parsingDependenciesError'], MSG_TYPE_WARNING);
-                                    Logger::warning('Parsing dotDot dependencies: ' . $GLOBALS['parsingDependenciesError'] . ' for IdNode: ' . $node->GetID() . ' (' . $node->GetDescription() . ')');
-                                    $GLOBALS['parsingDependenciesError'] = null;
-                                }
-                            }
-                            // check the pathto dependencies
-                            ParsingDependencies::getPathTo($content, $node->GetID());
-                            if (isset($GLOBALS['parsingDependenciesError']) and $GLOBALS['parsingDependenciesError']) {
-                                $this->messages->add($GLOBALS['parsingDependenciesError'], MSG_TYPE_WARNING);
-                                Logger::warning('Parsing pathTo dependencies: ' . $GLOBALS['parsingDependenciesError'] . ' for IdNode: ' . $node->GetID() . ' (' . $node->GetDescription() . ')');
-                                $GLOBALS['parsingDependenciesError'] = null;
-                            }
-                        }
-                    }
+                    $res = @$domDoc->loadXML($content);
                     if ($res === false) {
-                        Logger::error('Invalid XML for IdNode: ' . $node->GetID() . ' (' . $node->GetDescription() . ')');
+                        Logger::error('Invalid XML for IdNode: ' . $this->GetID() . ' (' . $this->GetDescription() . ')');
                         $error = \Ximdex\Utils\Messages::error_message('DOMDocument::loadXML(): ');
                         if ($error) {
-                            $error = 'Invalid XML content for node: ' . $node->GetID() . ' (' . $error . ')';
+                            $error = 'Invalid XML content for node: ' . $this->GetID() . ' (' . $error . ')';
                             $this->messages->add($error, MSG_TYPE_WARNING);
                             Logger::warning($error);
-                            $GLOBALS['errorsInXslTransformation'] = [
-                                $error
-                            ];
-                        }
-                    } elseif ($node->getNodeType() == NodeTypeConstants::RNG_VISUAL_TEMPLATE) {
-                        // validation of the RNG schema for the RNG template
-                        $schema = FsUtils::file_get_contents(APP_ROOT_PATH . '/actions/xmleditor2/views/common/schema/relaxng-1.0.rng.xml');
-                        $rngValidator = new \Ximdex\XML\Validators\RNG();
-                        $res = $rngValidator->validate($schema, $content);
-                        if ($res === false) {
-                            $errors = $rngValidator->getErrors();
-                            if (! $errors and \Ximdex\Utils\Messages::error_message()) {
-                                $error = \Ximdex\Utils\Messages::error_message('DOMDocument::relaxNGValidateSource(): ');
-                            } else {
-                                // only will be shown the first error (more easy to read)
-                                $error = $errors[0];
-                            }
-                            $this->messages->add($error, MSG_TYPE_WARNING);
-                            Logger::warning('Saving content: Invalid RNG template for node: ' . $node->GetID() . ' ' . $node->GetDescription() . ' (' . $error . ')');
-                            $GLOBALS['errorsInXslTransformation'] = [
-                                $error
-                            ];
+                            $GLOBALS['errorsInXslTransformation'] = [$error];
                         }
                     }
-                } elseif ($node->getNodeType() == NodeTypeConstants::HTML_LAYOUT or $node->getNodeType() == NodeTypeConstants::HTML_COMPONENT) {
-                    $res = json_decode($content);
-                    if ($res === null or $res === false) {
-                        $error = 'Invalid JSON schema';
-                        $this->messages->add($error, MSG_TYPE_WARNING);
-                        Logger::warning('Saving content: Invalid JSON HTML schema for node: ' . $node->GetID() . ' ' . $node->GetDescription());
-                    }
-                } elseif ($node->getNodeType() == NodeTypeConstants::HTML_VIEW or $node->getNodeType() == NodeTypeConstants::HTML_DOCUMENT) {
+                } elseif ($this->getNodeType() == NodeTypeConstants::HTML_VIEW or $this->getNodeType() == NodeTypeConstants::HTML_DOCUMENT) {
+                    
+                    // Validation of HTML documents and views
                     $domDoc = new DOMDocument();
                     $res = @$domDoc->loadHTML($content);
                     if ($res === false) {
                         $error = 'Invalid HTML';
                         $this->messages->add($error, MSG_TYPE_WARNING);
-                        Logger::warning('Saving content: Invalid HTML for node: ' . $node->GetID() . ' ' . $node->GetDescription());
+                        Logger::warning('Saving content: Invalid HTML for node: ' . $this->GetID() . ' ' . $this->GetDescription());
+                    }
+                }
+                
+                // Check dependencias for HTML and XML documents
+                if ($res and $this->getNodeType() == NodeTypeConstants::XML_DOCUMENT or $this->GetNodeType() == NodeTypeConstants::HTML_DOCUMENT) {
+                    if ($this->GetNodeName() != 'templates_include.xsl') {
+                            
+                        // dotdot dependencies only can be checked in templates under a server node
+                        $templatesNode = new Node($this->GetParent());
+                        if ($templatesNode->GetNodeType() == NodeTypeConstants::TEMPLATES_ROOT_FOLDER) {
+                            $projectNode = new Node($templatesNode->getParent());
+                            if ($projectNode->GetNodeType() == NodeTypeConstants::PROJECT)
+                                $idServer = false;
+                        }
+                        if (! isset($idServer)) {
+                            $idServer = $this->getServer();
+                        }
+                        if ($idServer) {
+                            
+                            // Check the dotdot dependencies
+                            ParsingDependencies::getDotDot($content, $idServer);
+                            if (isset($GLOBALS['parsingDependenciesError']) and $GLOBALS['parsingDependenciesError']) {
+                                $this->messages->add($GLOBALS['parsingDependenciesError'], MSG_TYPE_WARNING);
+                                Logger::warning('Parsing dotDot dependencies: ' . $GLOBALS['parsingDependenciesError'] 
+                                        . ' for IdNode: ' . $this->GetID() . ' (' . $this->GetDescription() . ')');
+                                $GLOBALS['parsingDependenciesError'] = null;
+                            }
+                        }
+                        
+                        // Check the pathto dependencies
+                        ParsingDependencies::getPathTo($content, $this->GetID());
+                        if (isset($GLOBALS['parsingDependenciesError']) and $GLOBALS['parsingDependenciesError']) {
+                            $this->messages->add($GLOBALS['parsingDependenciesError'], MSG_TYPE_WARNING);
+                            Logger::warning('Parsing pathTo dependencies: ' . $GLOBALS['parsingDependenciesError'] 
+                                . ' for IdNode: ' . $this->GetID() . ' (' . $this->GetDescription() . ')');
+                            $GLOBALS['parsingDependenciesError'] = null;
+                        }
+                    }
+                }
+                
+                // Validation of the RNG schema for the RNG template
+                if ($res and $this->getNodeType() == NodeTypeConstants::RNG_VISUAL_TEMPLATE) {
+                    $schema = FsUtils::file_get_contents(APP_ROOT_PATH . '/actions/xmleditor2/views/common/schema/relaxng-1.0.rng.xml');
+                    $rngValidator = new \Ximdex\XML\Validators\RNG();
+                    $res = $rngValidator->validate($schema, $content);
+                    if ($res === false) {
+                        $errors = $rngValidator->getErrors();
+                        if (! $errors and \Ximdex\Utils\Messages::error_message()) {
+                            $error = \Ximdex\Utils\Messages::error_message('DOMDocument::relaxNGValidateSource(): ');
+                        } else {
+                            
+                            // Only will be shown the first error (more easy to read)
+                            $error = $errors[0];
+                        }
+                        $this->messages->add($error, MSG_TYPE_WARNING);
+                        Logger::warning('Saving content: Invalid RNG template for node: ' . $this->GetID() . ' ' . $this->GetDescription() 
+                                . ' (' . $error . ')');
+                        $GLOBALS['errorsInXslTransformation'] = [$error];
+                    }
+                }
+                
+                // Validation of the JSON schemas
+                if ($this->getNodeType() == NodeTypeConstants::HTML_LAYOUT or $this->GetNodeType() == NodeTypeConstants::HTML_COMPONENT) {
+                    $res = json_decode($content);
+                    if ($res === null or $res === false) {
+                        $error = 'Invalid JSON schema';
+                        $this->messages->add($error, MSG_TYPE_WARNING);
+                        Logger::warning('Saving content: Invalid JSON HTML schema for node: ' . $this->GetID() . ' ' . $this->GetDescription());
                     }
                 }
             }
-            
-            if ($this->class->SetContent($content, $commitNode, $node) === false) {
+            if ($this->class->SetContent($content, $commitNode) === false) {
                 $this->messages->mergeMessages($this->class->messages);
                 return false;
             }
@@ -1020,7 +1027,6 @@ class Node extends NodesOrm
     function GetBlockTime()
     {
         $this->ClearError();
-        
         if ($this->get('IdNode') > 0) {
             if (time() < ($this->get('BlockTime') + App::getValue('BlockExpireTime'))) {
                 return $this->get('BlockTime');
@@ -1036,8 +1042,7 @@ class Node extends NodesOrm
     /**
      * Blocks a node and returns the blocking timestamp
      *
-     * @param
-     *            $userID
+     * @param $userID
      * @return bool|null|string
      */
     function Block($userID)
@@ -1182,12 +1187,9 @@ class Node extends NodesOrm
     /**
      * Creates a new node and loads its ID in the class
      *
-     * @param
-     *            $name
-     * @param
-     *            $parentID
-     * @param
-     *            $nodeTypeID
+     * @param $name
+     * @param $parentID
+     * @param $nodeTypeID
      * @param null $stateID
      * @param array $subfolders
      * @return bool|string

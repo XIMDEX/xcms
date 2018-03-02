@@ -2139,7 +2139,7 @@
     "You need to delete this file in order to restart Scheduler successfully": "Sie m&uuml;ssen diese Datei l&ouml;schen um den Scheduler erfolgreich neuzustarten",
     "No active server": "Kein aktiver Server",
     "Sleeping...": "Schl&auml;ft...",
-    "No proccessable batchs found": "Keine zu verarbeitenden Stapel gefunden",
+    "No processable batchs found": "Keine zu verarbeitenden Stapel gefunden",
     "STARTING BATCH PROCESSING": "VERARBEITUNG DER STAPEL WIRD GESTARTET",
     "Cycle num": "Zyklusanzahl",
     "Exceding max. cycles (%d > %d). Exiting scheduler": "&Uuml;bersteigt max. Zyklen (%d > %d). scheduler wird fertig gestellt",

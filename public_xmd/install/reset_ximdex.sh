@@ -9,6 +9,7 @@ cp /dev/null ./logs/publication.log
 cp /dev/null ./logs/scheduler.log
 cp /dev/null ./logs/xmd.log
 cp /dev/null ./logs/xslt.log
+cp /dev/null ./logs/preview.log
 
 rm -rf ./data/cache/pipelines/*
 rm -rf ./data/files/*

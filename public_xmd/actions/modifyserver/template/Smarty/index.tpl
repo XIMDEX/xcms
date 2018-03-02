@@ -74,6 +74,9 @@
 						<input type="checkbox" id='preview_{$id_node}' name='preview' {if ($server.preview)}checked="checked"{/if} 
 								class="input-slide">
 						<label for='preview_{$id_node}' class="label-slide">{t}Preview server{/t}</label>
+                        <input type="checkbox" id='override_{$id_node}' name='overridelocalpaths' 
+                                {if ($server.overridelocalpaths)}checked="checked"{/if} class="input-slide"/>
+                        <label for='override_{$id_node}' class="label-slide">{t}Absolute URLs{/t}</label>
 					</span>
 				</div>
 				<div style="margin-top: 100px!important;" class="content_server">
@@ -103,11 +106,6 @@
 					<div class="host not_local">
 						<label id='labeldirRemota' for='host' class="aligned label_general">{t}Web URL{/t}</label>
 						<input style="margin-bottom:10px;" type="text" id='host' name='host' MAXLENGTH="100" VALUE="{$server.host}" class='cajag'/>
-						<div class="abs_url">
-							<input type="checkbox" id='override_{$id_node}' name='overridelocalpaths' 
-									{if ($server.overridelocalpaths)}checked="checked"{/if} class="input-slide"/>
-							<label for='override_{$id_node}' class="label-slide">{t}Absolute URLs{/t}</label>
-						</div>
 					</div>
 					<div class="login not_local">
 						<label for='login' class="aligned label_general">{t}User{/t}</label>

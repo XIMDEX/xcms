@@ -156,7 +156,7 @@ class Scheduler
 
                 $pumperManager->callingPumpers($activeAndEnabledServers);
 
-                $msg = _("No proccessable batchs found");
+                $msg = _("No processable batchs found");
                 $syncStatObj->create(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "INFO", 8, $msg);
                 Logger::info($msg);
 

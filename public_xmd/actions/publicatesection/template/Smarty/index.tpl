@@ -25,7 +25,7 @@
 <form method="post" name="publication_form" id="publication_form" action="{$action_url}">
 	<input type="hidden" name="nodeid" value="{$id_node}" class="ecajag" />
 	<div class="action_header">
-		<h2>{t}Publish section{/t} {$name}</h2>
+		<h2>{t}Publish {$folderType}{/t} {$name}</h2>
 		<fieldset class="buttons-form">{button label="Accept"
 			class="validate btn main_action" }{*message="You are going to publish
 			$node_name. Would you like to continue?"*}</fieldset>
@@ -49,6 +49,12 @@
 					{t}and its subsections{/t}.
 				</label>
 			</p>
+			<hr />
+			<p>
+                <label for="force_publication" class="col1-2"> <input type="checkbox" 
+                        name="force_publication" value="1" id="force_publication"> {t}Force republish{/t}.
+                </label>
+            </p>
 			{if $synchronizer_to_use eq 'ximSYNC' and $ximpublish_tools_enabled and isset($publishabledtypes)}
 				<p>
 					<label>{t}Node types to publish{/t}:</label>

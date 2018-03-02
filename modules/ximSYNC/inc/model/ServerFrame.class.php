@@ -321,12 +321,9 @@ class ServerFrame extends ServerFrames_ORM {
 		$pipeMng = new PipelineManager();
 		if (!is_null($channelId))
 		{
-		    if ($node->GetNodeType() == NodeTypeConstants::HTML_DOCUMENT)
-		    {
+		    if ($node->GetNodeType() == NodeTypeConstants::HTML_DOCUMENT) {
 		        $process = 'HTMLToPublished';
-		    }
-		    else
-		    {
+		    } else {
 		        $process = 'StrDocFromDexTToFinal';
 		    }
             $content = $pipeMng->getCacheFromProcessAsContent($idVersion, $process, $data);
@@ -598,7 +595,7 @@ class ServerFrame extends ServerFrames_ORM {
 		}
 		$nodeServer = new Node($serverID);
 
-		if (App::getValue( 'PublishOnDisabledServers') == 1) {
+		if (App::getValue('PublishOnDisabledServers') == 1) {
 			$physicalServers = $nodeServer->class->GetPhysicalServerList(true);
 		} else {
 			$physicalServers = $nodeServer->class->GetEnabledPhysicalServerList(true);

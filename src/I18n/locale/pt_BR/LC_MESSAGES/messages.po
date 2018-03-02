@@ -7438,7 +7438,7 @@ msgstr "Nenhum servidor ativo"
 msgid "Sleeping..."
 msgstr "Dormindo..."
 
-msgid "No proccessable batchs found"
+msgid "No processable batchs found"
 msgstr "N&atilde;o foram encontrados lotes process&aacute;veis"
 
 msgid "STARTING BATCH PROCESSING"

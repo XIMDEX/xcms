@@ -7433,7 +7433,7 @@ msgstr "Kein aktiver Server"
 msgid "Sleeping..."
 msgstr "Schl&auml;ft..."
 
-msgid "No proccessable batchs found"
+msgid "No processable batchs found"
 msgstr "Keine zu verarbeitenden Stapel gefunden"
 
 msgid "STARTING BATCH PROCESSING"

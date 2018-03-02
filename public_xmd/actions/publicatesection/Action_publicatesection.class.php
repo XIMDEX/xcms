@@ -27,6 +27,7 @@
 use Ximdex\Models\Node;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Sync\SynchroFacade;
+use Ximdex\NodeTypes\NodeTypeConstants;
 
 class Action_publicatesection extends ActionAbstract
 {
@@ -45,7 +46,7 @@ class Action_publicatesection extends ActionAbstract
             'publishabledtypes' => $publishabledNodeTypes,
             'synchronizer_to_use' => \Ximdex\Modules\Manager::isEnabled('ximSYNC') ? 'ximSYNC' : 'default',
             'ximpublish_tools_enabled' => \Ximdex\Modules\Manager::isEnabled('ximPUBLISHtools'),
-            'folderName' => in_array($nodeTypeName, array( 'Section',  'ImagesFolder', 'ImagesRootFolder', 'CssRootFolder', 'CssFolder', 'CommonFolder', 'CommonRootFolder')) ? 'section' : 'server',
+            'folderType' => $node->nodeType->getID() == NodeTypeConstants::SERVER ? 'server' : 'section',
             'name' => $node->GetNodeName()
         );
 
@@ -74,8 +75,7 @@ class Action_publicatesection extends ActionAbstract
 
         $node = new Node($idNode);
         $nodename = $node->get('Name');
-        $nodeTypeName = $node->nodeType->GetName();
-        $folderName = in_array($nodeTypeName, array( 'ImagesFolder', 'ImagesRootFolder', 'CssFolder', 'CssRootFolder', 'CommonFolder', 'CommonRootFolder')) ? 'Section' : 'Server';
+        $folderType = $node->nodeType->getID() == NodeTypeConstants::SERVER ? 'server' : 'section';
 
         $flagsPublication = array('markEnd' => true,
             'linked' => true,
@@ -88,7 +88,7 @@ class Action_publicatesection extends ActionAbstract
         $syncFac = new SynchroFacade();
         $result = $syncFac->pushDocInPublishingPool($idNode, $dateUp, NULL, $flagsPublication, $recurrence);
 
-        $this->messages->add(sprintf(_("%s %s has been successfully sent to publish"), $folderName, $nodename), MSG_TYPE_NOTICE);
+        $this->messages->add(sprintf(_("%s %s has been successfully sent to publish"), $folderType, $nodename), MSG_TYPE_NOTICE);
 
         $values = array(
             'messages' => $this->messages->messages,

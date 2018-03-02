@@ -226,8 +226,16 @@ class PipeTransition extends PipeTransitionsOrm
 			    Logger::info('Cache was generated/reversed successfusly for version: ' . $idVersion, true);
 			}
 		}
-		$msg = ' for version: ' . $idVersion . ' and callback: ' . $callback . ' with channel: ' . $args['CHANNEL'] . ', transformer: ' . $args['TRANSFORMER'] 
-		      . ' and cache disabled: ' . $args['DISABLE_CACHE'];
+		$msg = ' for version: ' . $idVersion . ' and callback: ' . $callback;
+		if (isset($args['CHANNEL'])) {
+		    $msg .= ' with channel: ' . $args['CHANNEL'];
+		}
+		if (isset($args['TRANSFORMER'])) {
+		    $msg .= ' with transformer: ' . $args['TRANSFORMER'];
+		}
+		if (isset($args['DISABLE_CACHE'])) {
+		    $msg .= ' with cache disabled: ' . $args['DISABLE_CACHE'];
+		}
 		if ($transformedPointer)
 		{
 		    Logger::info('TRANSITION END: Pipeline Transition has been successfusly processed' . $msg, true);

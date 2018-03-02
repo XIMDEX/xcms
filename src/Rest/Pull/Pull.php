@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -26,7 +27,6 @@
 
 namespace Ximdex\Rest\Pull;
 
-
 use Ximdex\Models\Language;
 use Ximdex\Models\Node;
 use Ximdex\Models\PortalVersions;
@@ -34,22 +34,13 @@ use Ximdex\Models\RelFramesPortal;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\Utils\PipelineManager;
 use Ximdex\Utils\Serializer;
-use Ximdex\Nodeviews\ViewFilterMacrosPreview;
+use Ximdex\Nodeviews\ViewFilterMacros;
 use Ximdex\Nodeviews\ViewPreviewInServer;
-
-
 
 class Pull
 {
-
-    function __construct()
-    {
-
-    }
-
     function get_portal_versions($args)
     {
-
         $portal = new PortalVersions();
         $portalVersions = $portal->getAllVersions($args['idportal']);
 
@@ -72,7 +63,7 @@ class Pull
 
         // Specific FilterMacros View for previsuals
 
-        $viewFilterMacrosPreview = new ViewFilterMacrosPreview();
+        $viewFilterMacrosPreview = new ViewFilterMacros(true);
         $content = $viewFilterMacrosPreview->transform($idVersion, $content, $args);
 
         return $content;

@@ -136,7 +136,7 @@ function mainLoop()
 function noBatchsToProcess($syncStatObj)
 {
     $syncStatObj->create(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__,
-        __LINE__, "INFO", 8, _("No proccessable batchs found"));
+        __LINE__, "INFO", 8, _("No processable batchs found"));
 
     // Sleeping...
     $syncStatObj->create(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__,

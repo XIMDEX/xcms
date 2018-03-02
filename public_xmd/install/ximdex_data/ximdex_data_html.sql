@@ -5,7 +5,7 @@ INSERT INTO `Pipelines` (`id`, `Pipeline`) VALUES (5, 'PublishHTMLDoc');
 
 INSERT INTO `PipeTransitions` (`id`, `IdStatusFrom`, `IdStatusTo`, `IdPipeProcess`, `Cacheable`, `Name`, `Callback`) VALUES 
     ('10', NULL, '3', '6', '1', 'PrepareHTML', 'PrepareHTML'), 
-    ('11', '3', '6', '7', '0', 'PublishHTML', 'PublishHTML');
+    ('11', '3', '6', '7', '0', 'PublishHTML', 'FilterMacros');
 
 INSERT INTO `PipeProcess` (`id`, `IdTransitionFrom`, `IdTransitionTo`, `IdPipeline`, `Name`) VALUES 
     ('6', NULL, '10', '5', 'HTMLToPrepared'), 
@@ -439,4 +439,4 @@ INSERT INTO `RelNodeTypeMimeType` (`idNodeType`, `extension`, `filter`) VALUES (
 
 -- HTML EDITOR CONFIGURATION
 
-INSERT INTO `Config` (`ConfigKey`, `ConfigValue`) VALUES ('HTMLEditorURL', null), ('HTMLEditorEnabled', '1');
+INSERT INTO `Config` (`ConfigKey`, `ConfigValue`) VALUES ('HTMLEditorURL', null), ('HTMLEditorEnabled', '0');

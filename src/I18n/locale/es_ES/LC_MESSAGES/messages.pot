@@ -7429,7 +7429,7 @@ msgstr ""
 msgid "Sleeping..."
 msgstr ""
 
-msgid "No proccessable batchs found"
+msgid "No processable batchs found"
 msgstr ""
 
 msgid "STARTING BATCH PROCESSING"
