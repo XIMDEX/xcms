@@ -1,7 +1,8 @@
 <div class="html5editor">
     {if ($enabled)}
         {if ($url)}
-            <iframe src="{$url}?_action=document/{$id}/get&type={$type}" id="iframe-html5editor"></iframe>
+            <iframe src="{$url}?url=http://localhost/ximdex4/api/&nodeId={$id}&type={$type}&token={$token}"
+                    id="iframe-html5editor"></iframe>
         {else}
             <h2 class="warning">{t}There is not a URL for the HTML editor in the system configuration{/t}</h2>
         {/if}

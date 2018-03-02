@@ -3,11 +3,17 @@
 use Ximdex\Models\Node;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\App;
+use Ximdex\Runtime\Session;
+use Ximdex\Models\User;
+use XimdexApi\core\Token;
 
 class Action_xEdit extends ActionAbstract
 {
     function index()
     {
+        $userID = (int)Session::get('userID');
+        $user = new User($userID);
+
         $id = $this->request->getParam('nodeid');
         $node = new Node($id);
         if (!$node->GetID()) {
@@ -20,7 +26,8 @@ class Action_xEdit extends ActionAbstract
             'type' => $type,
             'id' => $id,
             'url' => App::GetValue('HTMLEditorURL'),
-            'enabled' => App::GetValue('HTMLEditorEnabled')
+            'enabled' => App::GetValue('HTMLEditorEnabled'),
+            'token' => Token::getToken($user->get('Login'))
         );
         $this->addCss('/actions/xEdit/resources/css/iframe.css');
         $this->render($values, NULL, 'default-3.0.tpl');

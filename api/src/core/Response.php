@@ -15,7 +15,8 @@ class Response
     private $response = null;
     private $message = '';
 
-    public function __construct(){
+    public function __construct()
+    {
 
     }
 
@@ -25,7 +26,8 @@ class Response
      * @param $status
      * @return $this
      */
-    public function setStatus($status){
+    public function setStatus($status)
+    {
         $this->status = $status;
         return $this;
     }
@@ -36,7 +38,8 @@ class Response
      * @param $message
      * @return $this
      */
-    public function setMessage($message){
+    public function setMessage($message)
+    {
         $this->message = $message;
         return $this;
     }
@@ -47,7 +50,8 @@ class Response
      * @param $response
      * @return $this
      */
-    public function setResponse($response){
+    public function setResponse($response)
+    {
         $this->response = $response;
         return $this;
     }
@@ -55,21 +59,22 @@ class Response
     /**
      * Sends reponse and exists
      *
-     * @param string $method
      * @return string
      */
-    public function send(  ){
+    public function send()
+    {
         $data = [
-          'status' => $this->status,
-          'message' => $this->message,
-          'response' => $this->response,
+            'status' => $this->status,
+            'message' => $this->message,
+            'response' => $this->response,
         ];
         // TODO: Check CORS and filters 
-        header( "Access-Control-Allow-Origin: *");
-        header( "Access-Control-Allow-Credentials: true");
+        header("Access-Control-Allow-Origin: *");
+        header("Access-Control-Allow-Headers: Authorization");
+        header("Access-Control-Allow-Credentials: true");
         header('Content-Type: application/json; charset=utf-8');
         echo json_encode($data, JSON_UNESCAPED_UNICODE);
-       exit ;
+        exit;
 
     }
 }

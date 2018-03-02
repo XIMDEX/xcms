@@ -1,4 +1,5 @@
 <?php
+
 namespace XimdexApi\core;
 
 use Ximdex\Logger;
@@ -59,13 +60,22 @@ class Router
                 }
                 return array(
                     "function" => $value,
-                    "public" => $public,
+                    "public" => $public
                 );
 
             }
 
         }
         throw new APIException('Route Not Found', 404);
+    }
+
+    /**
+     * Get user token for authentication
+     * @return string
+     */
+    public function getUserToken()
+    {
+        return isset($_SERVER['PHP_AUTH_USER']) ? $_SERVER['PHP_AUTH_USER'] : null;
     }
 
     public function addAllowedRequest($item)
@@ -75,22 +85,23 @@ class Router
     }
 
     /**
-     * Executes de current path
-     * @throws APIException
+     * Executes the current path
      */
     public function execute()
     {
         $response = new Response();
         try {
             $action = $this->getFunction();
+            $token = $this->getUserToken();
+
             // check user
-            if (!Session::check(false) && false === $action['public']) {
+            if (!$action['public'] && !Token::validateToken($token)) {
                 throw new APIException('User not logged', -1);
             }
-            if ( !is_callable( $action['function'])) {
+            if (!is_callable($action['function'])) {
                 throw new APIException('Bad Action', 500);
             }
-            call_user_func( $action['function'], $this->request, $response  );
+            call_user_func($action['function'], $this->request, $response);
         } catch (APIException $e) {
             Logger::error($this->request->getPath() . ': ' . $e->getMessage());
             $response->setStatus($e->getStatus())->setMessage($e->getMessage());

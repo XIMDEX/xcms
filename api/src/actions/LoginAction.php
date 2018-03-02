@@ -12,6 +12,7 @@ use Ximdex\Models\User;
 use Ximdex\Runtime\Session;
 use XimdexApi\core\Request;
 use XimdexApi\core\Response;
+use XimdexApi\core\Token;
 
 
 class LoginAction extends Action
@@ -39,6 +40,7 @@ class LoginAction extends Action
         $response->setMessage("Bad Credentials");
         if ($auth->login($user, $pwd)) {
             $response->setStatus(0);
+            $response->setResponse(json_encode(['token' => Token::getToken($user)]));
             $response->setMessage("Auth:login");
         }
         $response->send();
