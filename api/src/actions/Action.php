@@ -23,8 +23,8 @@ abstract class Action
         foreach (static::ROUTES as $route => $action) {
             $router->addRoute(static::getPath($route), [static::class, $action]);
 
-            if (in_array($action, static::PUBLIC)) {
-                $router->addAllowedRequest($action);
+            if (in_array($route, static::PUBLIC)) {
+                $router->addAllowedRequest(static::getPath($route));
             }
         }
     }
