@@ -113,4 +113,5 @@ class NodeTypeConstants
     const HTML_VIEW = 5108;
     const HTML_CONTAINER = 5103;
     const HTML_DOCUMENT = 5104;
+    const JS_FILE = 5092;
 }

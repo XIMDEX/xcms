@@ -84,7 +84,7 @@ class ParsingPathTo
             $targetNode = new Node($idNode);
             if (!$targetNode->GetID())
             {
-                Logger::error('Cannot load the node: ' . $idNode . ' in order to parse pathto');
+                Logger::warning('Cannot load the node: ' . $idNode . ' in order to parse pathto');
                 return false;
             }
         }
