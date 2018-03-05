@@ -370,16 +370,13 @@ class DataFactory
                     $data['DISABLE_CACHE'] = App::getValue("DisableCache");
                     $transformer = $node->getProperty('Transformer');
                     $data['TRANSFORMER'] = $transformer[0];
-                    if ($node->GetNodeType() == NodeTypeConstants::XML_DOCUMENT)
-                    {
+                    if ($node->GetNodeType() == NodeTypeConstants::XML_DOCUMENT) {
                         $process = 'StrDocToDexT';
                     }
-                    elseif ($node->GetNodeType() == NodeTypeConstants::HTML_DOCUMENT)
-                    {
+                    elseif ($node->GetNodeType() == NodeTypeConstants::HTML_DOCUMENT) {
                         $process = 'HTMLToPrepared';
                     }
-                    else
-                    {
+                    else {
                         return false;
                     }
                     $res = $pipelineManager->getCacheFromProcess($idVersion, $process, $data);

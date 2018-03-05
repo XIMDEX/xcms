@@ -34,6 +34,7 @@ use Ximdex\Models\RelFramesPortal;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\Utils\PipelineManager;
 use Ximdex\Utils\Serializer;
+use Ximdex\NodeTypes\NodeTypeConstants;
 use Ximdex\Nodeviews\ViewFilterMacros;
 use Ximdex\Nodeviews\ViewPreviewInServer;
 
@@ -49,23 +50,24 @@ class Pull
 
     private function showStructuredDocument($idVersion, $args)
     {
+        if ($node->GetNodeType() == NodeTypeConstants::HTML_DOCUMENT) {
+            $process = 'HTMLToPrepared';
+        } else {
+            $process = 'StrDocToDexT';
+        }
         $pipelineManager = new PipelineManager();
-        $content = $pipelineManager->getCacheFromProcessAsContent($idVersion, 'StrDocToDexT', $args);
+        $content = $pipelineManager->getCacheFromProcessAsContent($idVersion, $process, $args);
 
         // channel has preview in server
-
         $server = new Node($args['SERVERNODE']);
-
         if ($server->class->GetPreviewServersForChannel($args['CHANNEL'])) {
             $viewPreviewInServer = new ViewPreviewInserver();
             $content = $viewPreviewInServer->transform($idVersion, $content, $args);
         }
 
         // Specific FilterMacros View for previsuals
-
         $viewFilterMacrosPreview = new ViewFilterMacros(true);
         $content = $viewFilterMacrosPreview->transform($idVersion, $content, $args);
-
         return $content;
     }
 

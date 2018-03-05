@@ -673,22 +673,23 @@ abstract class AbstractStructuredDocument extends FileNode
      * @param $channel
      * @return null|string
      */
-    private function Generate($channel )
+    private function Generate($channel)
     {
         $nodeid = $this->nodeID;
         $node = new Node($nodeid);
-
         $dataFactory = new DataFactory($nodeid);
         $version = $dataFactory->GetLastVersionId();
-
         $data['CHANNEL'] = $channel;
         $transformer = $node->getProperty('Transformer');
         $data['TRANSFORMER'] = $transformer[0];
         $data['DISABLE_CACHE'] = App::getValue("DisableCache");
-
+        if ($node->GetNodeType() == NodeTypeConstants::HTML_DOCUMENT) {
+            $process = 'HTMLToPrepared';
+        } else {
+            $process = 'StrDocToDexT';
+        }
         $pipeMng = new PipelineManager();
-        $content = $pipeMng->getCacheFromProcessAsContent($version, 'StrDocToDexT', $data);
-
+        $content = $pipeMng->getCacheFromProcessAsContent($version, $process, $data);
         return $content;
     }
 

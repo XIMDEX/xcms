@@ -423,10 +423,12 @@ fieldset {
     -webkit-border-radius: 0 12px 0 0;
     -moz-border-radius: 0 12px 0 0;
     border-radius: 0 12px 0 0;
-    height: 6em;
-    max-height: 6em;
+    height: 12%;
+    /*
+    max-height: 3em;
     overflow: hidden;
     min-width: 400px;
+    */
     /*border-bottom: 2px solid #eee;*/
 }
 .action_header .buttons-form {
@@ -437,12 +439,11 @@ fieldset {
     float: left;
 }
 .content_container.prevdoc {
-    height: calc(100% - 3.5em);
+    height: 88%;	/* calc(100% - 3.5em); */
 }
 .action_content {
     min-width: 350px;
-    height: 100%;
-    height: calc(100% - 3em);
+    height: 88%;	/* height: calc(100% - 3em); */
     overflow-y: auto;
     overflow-x: hidden;
     padding: 2em 4% 2em;
