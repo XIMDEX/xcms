@@ -786,17 +786,19 @@ where cf.nodeid=$nodeId ";
 	*  @param int doInsertSql
 	*/
 
-	function ServerFrameToLog($batchId, $nodeFrameId, $channelFrameId, $serverFrameId, $pumperId,
-			$class, $method, $file, $line, $type, $level, $comment, $doInsertSql = false) {
-
-		if (!isset($this->syncStatObj)) {
-
-			$this->syncStatObj = new SynchronizerStat();
-		}
-
-		$this->syncStatObj->create($batchId, $nodeFrameId, $channelFrameId, $serverFrameId,
-				$pumperId, $class, $method, $file, $line, $type, $level, $comment, $doInsertSql);
-
+	function ServerFrameToLog($batchId, $nodeFrameId, $channelFrameId, $serverFrameId, $pumperId, $class, $method, $file
+	    , $line, $type, $level, $comment, $doInsertSql = false) {
+	    if (strcmp(App::getValue("SyncStats"), "1") == 0) {
+	        if (!isset($this->syncStatObj)) {
+	            $this->syncStatObj = new SynchronizerStat();
+	        }
+	        $this->syncStatObj->create($batchId, $nodeFrameId, $channelFrameId, $serverFrameId, $pumperId, $class, $method
+	           , $file, $line, $type, $level, $comment, $doInsertSql);
+	    }
+	    Logger::debug('ServerFrameToLog -> batchId: ' . $batchId  . ' nodeFrameId: ' . $nodeFrameId . ' channelFrameId: ' 
+	        . $channelFrameId . ' serverFrameId:' . $serverFrameId . ' pumperId:' . $pumperId . ' method:' . $method 
+	        . ' file:' . $file . ' line:' . $line . ' type:' . $type . ' level:' . $level . ' comment:' . $comment 
+	        . ' doInsertSql:' . $doInsertSql);
 	}
 
 	/**

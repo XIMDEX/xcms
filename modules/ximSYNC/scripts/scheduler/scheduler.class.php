@@ -171,7 +171,7 @@ class Scheduler
 
             } else {
 
-                // Some processable Bacths found...
+                // Some processable Batchs found...
 
                 $startStamp = time();
                 $msg = "[Id: $startStamp]" . _("STARTING BATCH PROCESSING");

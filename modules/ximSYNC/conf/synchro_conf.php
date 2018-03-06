@@ -61,7 +61,7 @@ if (!defined('UNACTIVITY_CYCLES'))
 	define('UNACTIVITY_CYCLES', 5);
 
 if (!defined('MAX_CHECK_TIME_FOR_PUMPER'))
-	define('MAX_CHECK_TIME_FOR_PUMPER', 60);
+	define('MAX_CHECK_TIME_FOR_PUMPER', 240);
 
 // Minimum batch system priority...
 if (!defined('MIN_SYSTEM_PRIORITY'))
