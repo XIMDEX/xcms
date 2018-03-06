@@ -9028,3 +9028,6 @@ msgstr "No hay una URL para el editor HTML en la configuraci&oacute;n del sistem
 
 msgid "The HTML editor is not enabled in the system configuration"
 msgstr "El editor HTML no está habilitado en la configuraci&oacute;n del sistema"
+
+msgid "The file has been published succesfuslly"
+msgstr "El archivo ha sido publicado correctamente"
