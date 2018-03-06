@@ -30,6 +30,9 @@ namespace Ximdex\Parsers;
 use Ximdex\Logger;
 use Ximdex\Models\FastTraverse;
 use Ximdex\Models\Node;
+use Ximdex\NodeTypes\NodeTypeConstants;
+use Ximdex\NodeTypes\XmlContainerNode;
+use Ximdex\Models\StructuredDocument;
 
 class ParsingPathTo
 {
@@ -67,47 +70,45 @@ class ParsingPathTo
         Logger::info($msg);
         $params = explode(",", $pathToParams);
 
-        //Error if there aren't any params
+        // Error if there aren't any params
         if (!$params)
         {
             Logger::error('Parsing pathto need any param to work');
             return false;
         }
 
-        //Checking the first params. It could be number, or .number or string
+        // Checking the first params. It could be number, or .number or string
         $nodeValue = trim(urldecode($params[0]));
 
         if (is_numeric($nodeValue))
         {
-            // the macro has the node ID
-            $idNode = $nodeValue;
-            $targetNode = new Node($idNode);
+            // The macro has the node ID
+            $id = $nodeValue;
+            $targetNode = new Node($id);
             if (!$targetNode->GetID())
             {
-                Logger::warning('Cannot load the node: ' . $idNode . ' in order to parse pathto');
+                Logger::warning('Cannot load the node: ' . $id . ' in order to parse pathto');
                 return false;
             }
         }
         else
         {
-            // the macro has a Ximdex resource path
+            // The macro has a Ximdex resource path
             if (!$nodeId)
             {
                 Logger::error('Value for IdNode is needed to parse pathto: ' . $nodeValue);
                 return false;
             }
-
-            //TODO ajlucena: language ?
             
-            // the node of the parsed document is given, load it
+            // The node of the parsed document is given, load it
             $nodeDoc = new Node($nodeId);
             if (!$nodeDoc->GetID())
             {
-                Logger::error('Cannot load the param node: ' . $idNode . ' in order to parse pathto');
+                Logger::error('Cannot load the param node: ' . $id . ' in order to parse pathto');
                 return false;
             }
 
-            // obtain the path and file of the resource given in the macro
+            // Obtain the path and file of the resource given in the macro
             $data = pathinfo($nodeValue);
             if (count($data) < 2)
             {
@@ -117,10 +118,10 @@ class ParsingPathTo
             $path = $data['dirname'];
             $resource = $data['basename'];
             
-            // absolute position, to the server of the document
+            // Absolute position, to the server of the document
             if (strpos($path, '/') === 0)
             {
-                // get the server node
+                // Get the server node
                 $idServer = $nodeDoc->getServer();
                 $nodeServer = new Node($idServer);
                 if (!$nodeServer->GetID())
@@ -129,19 +130,19 @@ class ParsingPathTo
                     return false;
                 }
                 
-                // sanitize path
+                // Sanitize path
                 if (!self::sanitize_pathTo($path))
                 {
                     Logger::error('Cannot sanitize the path: ' . $path . ' when parsing pathto');
                     return false;
                 }
                 
-                // get the target node with the resource name and path obtained from server + pathTo param
-                $idNode = $nodeServer->GetByNameAndPath($resource, $nodeServer->GetPath() . '/' . $path);
+                // Get the target node with the resource name and path obtained from server + pathTo param
+                $id = $nodeServer->GetByNameAndPath($resource, $nodeServer->GetPath() . '/' . $path);
             }
             else
             {
-                // relative to the previewed document
+                // Relative to the previewed document
                 $nodeSection = new Node($nodeDoc->getSection());
                 if (!$nodeSection->GetID())
                 {
@@ -149,13 +150,13 @@ class ParsingPathTo
                     return false;
                 }
                 
-                // get an array with the path entities (including ..)
+                // Get an array with the path entities (including ..)
                 $pathData = explode('/', $path);
                 
-                // get the path to the required node
+                // Get the path to the required node
                 if (current($pathData) == '..')
                 {
-                    // get the parent nodes of the section with node types, without the current one
+                    // Get the parent nodes of the section with node types, without the current one
                     $sectionParents = FastTraverse::get_parents($nodeSection->GetID(), 'IdNodeType', 'IdNode');
                     if (!$sectionParents)
                     {
@@ -168,22 +169,22 @@ class ParsingPathTo
                         return false;
                     }
                     
-                    // while the path entitie is .. go back into the path (or server was reached)
+                    // While the path entitie is .. go back into the path (or server was reached)
                     while (current($pathData) == '..')
                     {
-                        // remove the current ../ entitie from the path
+                        // Remove the current ../ entitie from the path
                         array_shift($pathData);
                         
-                        // get the ID and type for the actual parent
+                        // Get the ID and type for the actual parent
                         $parentNode = each($sectionParents);
                         if ($parentNode['value'] == \Ximdex\NodeTypes\NodeTypeConstants::SERVER)
                         {
-                            // server node has been reached
+                            // Server node has been reached
                             break;
                         }
                     }
                     
-                    // get the node for reached section or server
+                    // Get the node for reached section or server
                     if (!isset($parentNode))
                     {
                         Logger::error('Cannot load the parent node for path: ' . $path . ' in pathto macro');
@@ -197,7 +198,7 @@ class ParsingPathTo
                     }
                 }
                 
-                // sanitize path
+                // Sanitize path
                 $path = implode('/', $pathData);
                 if (!self::sanitize_pathTo($path))
                 {
@@ -205,24 +206,55 @@ class ParsingPathTo
                     return false;
                 }
                 
-                // merge section path with cleaned path given in pathTo resource path param
+                // Merge section path with cleaned path given in pathTo resource path param
                 $path = $nodeSection->GetPath() . '/' . $path;
                 
-                // load de node ID for the path and resource obtained
-                $idNode = $nodeDoc->GetByNameAndPath($resource, $path);
+                // Load de node ID for the path and resource obtained
+                $id = $nodeDoc->GetByNameAndPath($resource, $path);
             }
-            if (!$idNode)
+            if (!$id)
             {
                 Logger::error('Cannot obtain the node for resource: ' . $nodeValue);
                 return false;
             }
-            $idNode = $idNode[0]['IdNode'];
-            Logger::info('Obtained IdNode: ' . $idNode);
+            $id = $id[0]['IdNode'];
+            $node = new Node($id);
+            if (!$node->GetID()) {
+                Logger::error('Cannot load the node with ID:' . $id);
+                return false;
+            }
+            if ($node->GetNodeType() == NodeTypeConstants::XML_CONTAINER or $node->GetNodeType() == NodeTypeConstants::HTML_CONTAINER) {
+                
+                // Load the document language version
+                if (!$language) {
+                    $strDoc = new StructuredDocument($nodeId);
+                    if (!$strDoc->GetID()) {
+                        Logger::error('Cannot load the structured document with ID: ' . $nodeId);
+                        return false;
+                    }
+                    if (!$strDoc->GetLanguage()) {
+                        Logger::error('The structured document with ID: ' . $nodeId . ' has not any language value');
+                        return false;
+                    }
+                    $language = $strDoc->GetLanguage();
+                }
+                $docContainer = new XmlContainerNode($id);
+                $id = $docContainer->GetChildByLang($language);
+                if (!$id) {
+                    Logger::error('Cannot load the language version for contaniner: ' . $nodeId . ' and language: ' . $language);
+                    return false;
+                }
+                $name = $strDoc->GetName();
+            }
+            else {
+                $name = $node->GetNodeName();
+            }
+            Logger::info('ParsingPathTo: Obtained node with ID: ' . $id . ' and name: ' . $name, true);
         }
         
         $pathMethod = false;
         $this->pathMethod = !$pathMethod ? array("relative" => false, "absolute" => false) : $pathMethod;
-        $this->idNode = $idNode;
+        $this->idNode = $id;
         
         //TODO ajlucena: channel ?
         $channel = false;
