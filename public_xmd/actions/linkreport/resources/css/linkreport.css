@@ -46,6 +46,9 @@
     -o-transform: none;
     transform: none;
     z-index: auto;
+    width: auto;
+	right: 0;
+	margin-right: 1em;
 }
 .result_info .row-item-actions a .status_tooltip {
     margin-top: 3em;
@@ -138,8 +141,8 @@
     -ms-animation: spin 0.75s infinite ease-in-out;
     -o-animation: spin 0.75s infinite ease-in-out;
     animation: spin 0.75s infinite ease-in-out;
-    border-width: .85em;
-    right: .8em;
+    border-width: .88em;
+    right: 0;
     margin-top: -.8em;
     left: auto;
 }

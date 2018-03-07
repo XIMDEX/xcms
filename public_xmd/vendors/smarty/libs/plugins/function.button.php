@@ -64,7 +64,7 @@ function smarty_function_button($params, &$smarty) {
 		}
 
 		$sUrl .=
-			'<div class="index" style="display: none">'.App::getUrl('/?method=index&action=%s&nodeid=%s',$smarty->getTemplateVars('action'), $smarty->getTemplateVars('nodeid')).'</div>';
+			'<div class="index" style="display: none">'.App::getUrl('/?method=index&action=%s&nodeid=%s',true ,$smarty->getTemplateVars('action'), $smarty->getTemplateVars('nodeid')).'</div>';
 
 		$sButton = "$sUrl\n$sButton";
 	}
