@@ -137,16 +137,23 @@ class Action_modifyserver extends ActionAbstract {
 		$nodeID		= $this->request->getParam('nodeid');
 		$serverID	= $this->request->getParam('serverid');
 		$protocol	= $this->request->getParam('protocol');
-		$host		= $this->request->getParam('host');
-		$port		= $this->request->getParam('port');
+		if (empty($serverID) && ($protocol == "LOCAL"))
+		{
+		    $host		= "localhost";
+		    $port		= 0;
+		}
+		else {
+		    $host		= $this->request->getParam('host');
+		    $port		= $this->request->getParam('port');
+		}
 		$initialDir	= $this->request->getParam('initialdirectory');
 		$url		= $this->request->getParam('url');
 		$login		= $this->request->getParam('login');
 		$password	= $this->request->getParam('password');
 		$description= $this->request->getParam('description');
-		$enabled	= $this->request->getParam('enabled');
-		$preview	= $this->request->getParam('preview');
-		$override	= $this->request->getParam('overridelocalpaths');
+		$enabled	= empty($this->request->getParam('enabled'))? 0 : $this->request->getParam('enabled');
+		$preview	= empty($this->request->getParam('preview'))? 0 : $this->request->getParam('preview');
+		$override	= empty($this->request->getParam('overridelocalpaths'))? 0 : $this->request->getParam('overridelocalpaths');
 		$channels	= $this->request->getParam('channels');
 		$states		= $this->request->getParam('states');
 		$encode		= $this->request->getParam('encode');

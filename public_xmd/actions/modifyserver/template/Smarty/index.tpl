@@ -147,15 +147,15 @@
 					</div>
 					<div class="small-2 columns" style="width: 100%;">
 						<fieldset class="buttons-form">
-							<input type="hidden" name="borrar"/>
-				            {if (0 != $id_server)}
-				                {button id="delete_server" label="Delete server" class="btn"}
-				                {button id="save_server" label="Update server" 
-				                		class="validate btn main_action update-server"}{*message="Would you like to create this server?"*}
-				            {else}
-				                {button id="save_server" label="Save server" 
-				                		class="validate btn main_action"}{*message="Would you like to create this server?"*}
-				            {/if}
+							{if (0 != $id_server)}
+								<input type="hidden" name="borrar" value="1"/>
+									{button id="delete_server" label="Delete server" class="btn"}
+									{button id="save_server" label="Update server" 
+									class="validate btn main_action update-server"}{*message="Would you like to create this server?"*}
+								{else}
+									{button id="save_server" label="Save server" 
+								class="validate btn main_action"}{*message="Would you like to create this server?"*}
+							{/if}
 						</fieldset>
 					</div>
 				</div>
