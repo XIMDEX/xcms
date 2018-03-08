@@ -50,7 +50,9 @@ class Action_expiredoc extends ActionAbstract
         $node = new Node($idNode);
         $nodeName = $node->get('Name');
 
-        SynchroFacade::deleteAllTasksByNode($idNode, true);
+        $synchroFacade = new SynchroFacade();
+        $synchroFacade->deleteAllTasksByNode($idNode, true);
+        
         $df = new DataFactory($idNode);
         $df->AddVersion();
 
