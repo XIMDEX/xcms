@@ -65,7 +65,7 @@ class Action_xmlsetlink extends ActionAbstract {
             'name_target' => $targetNode->GetNodeName(),
 			'type' => $type,
 			'targetNodes' => $targetNodes,
-			'go_method' => 'setlink',
+		    'go_method' => empty($idTarget) ? 'setlink' : 'unlink',
 			'sharewf' => $sharewf
 		);
 
