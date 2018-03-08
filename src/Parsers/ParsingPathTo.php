@@ -32,13 +32,22 @@ use Ximdex\Models\FastTraverse;
 use Ximdex\Models\Node;
 use Ximdex\NodeTypes\NodeTypeConstants;
 use Ximdex\NodeTypes\XmlContainerNode;
+use Ximdex\Properties\InheritedPropertiesManager;
 use Ximdex\Models\StructuredDocument;
+use Ximdex\Utils\Messages;
+use Ximdex\Models\Channel;
 
 class ParsingPathTo
 {
     private $idNode = null;
     private $pathMethod = null;
     private $channel = null;
+    private $messages;
+    
+    public function __construct()
+    {
+        $this->messages = new Messages();
+    }
 
     public function getIdNode()
     {
@@ -54,19 +63,26 @@ class ParsingPathTo
     {
         return $this->channel;
     }
+    
+    public function messages() : Messages
+    {
+        return $this->messages;
+    }
 
     /**
      * Get Idnode and channel from the params of the pathto method
      * @param string $pathToParams
      * @param int $nodeId
      * @param int $language
+     * @param int $channel
      * @return bool
      */
-    public function parsePathTo(string $pathToParams, int $nodeId = null, int $language = null) : bool
+    public function parsePathTo(string $pathToParams, int $nodeId = null, int $language = null, $channel = null) : bool
     {
         $msg = 'Parsing pathTo with: ' . $pathToParams;
-        if ($nodeId)
+        if ($nodeId) {
             $msg .= ' and document node: ' . $nodeId;
+        }
         Logger::info($msg);
         $params = explode(",", $pathToParams);
 
@@ -79,13 +95,29 @@ class ParsingPathTo
 
         // Checking the first params. It could be number, or .number or string
         $nodeValue = trim(urldecode($params[0]));
+        
+        // The second one is value is the channel name, optional
+        if (isset($params[1])) {
+            $channel = new Channel();
+            $channel = $channel->find('IdChannel', 'Name =  \'' . trim($params[1]) . '\'');
+            if (!$channel) {
+                $error = 'The specified channel ' . trim($params[1]) . ' does not exist';
+                $this->messages->add($error, MSG_TYPE_WARNING);
+                Logger::warning($error);
+                return false;
+            }
+            $this->channel = $channel[0]['IdChannel'];
+        }
+        else {
+            $this->channel = null;
+        }
 
         if (is_numeric($nodeValue))
         {
             // The macro has the node ID
             $id = $nodeValue;
-            $targetNode = new Node($id);
-            if (!$targetNode->GetID())
+            $node = new Node($id);
+            if (!$node->GetID())
             {
                 Logger::warning('Cannot load the node: ' . $id . ' in order to parse pathto');
                 return false;
@@ -177,7 +209,7 @@ class ParsingPathTo
                         
                         // Get the ID and type for the actual parent
                         $parentNode = each($sectionParents);
-                        if ($parentNode['value'] == \Ximdex\NodeTypes\NodeTypeConstants::SERVER)
+                        if ($parentNode['value'] == NodeTypeConstants::SERVER)
                         {
                             // Server node has been reached
                             break;
@@ -244,22 +276,61 @@ class ParsingPathTo
                     Logger::error('Cannot load the language version for contaniner: ' . $nodeId . ' and language: ' . $language);
                     return false;
                 }
-                $name = $strDoc->GetName();
+                $node = new Node($id);
+                if (!$node->GetID()) {
+                    Logger::error('Cannot load the node with ID:' . $id);
+                    return false;
+                }
             }
-            else {
-                $name = $node->GetNodeName();
-            }
+            $name = $node->GetNodeName();
             Logger::info('ParsingPathTo: Obtained node with ID: ' . $id . ' and name: ' . $name, true);
         }
         
+        // Target channel
+        if (!$this->channel and $node->nodeType->GetIsStructuredDocument()) {
+            
+            // The channel has not been passed in the pathTo expression
+            if ($channel) {
+                $strDoc = new StructuredDocument($id);
+                if (!$strDoc->GetID()) {
+                    Logger::error('Cannot load the structured document with ID: ' . $id);
+                    return false;
+                }
+                if ($strDoc->HasChannel($channel)) {
+                    
+                    // The document channel is in the inherited channels of the target document
+                    $this->channel = $channel;
+                }
+            }
+            if (!$this->channel) {
+                
+                // The channel will be the first one available in the inherited properties
+                $properties = InheritedPropertiesManager::getValues($id);
+                if (!$properties['Channel']) {
+                    Logger::error('The document with ID: ' . $id . ' has no channels');
+                    return false;
+                }
+                foreach ($properties['Channel'] as $channelProperty) {
+                    if ($channelProperty['Inherited']) {
+                        $this->channel = $channelProperty['Id'];
+                    }
+                }
+                if (!$this->channel) {
+                    
+                    // There is no channel available for the target document
+                    $error = 'The target path ' . $pathToParams . ' has not any channel available';
+                    $this->messages->add($error, MSG_TYPE_WARNING);
+                    Logger::warning($error);
+                    return false;
+                }
+            }
+        }
+        
+        //TODO
         $pathMethod = false;
+        
         $this->pathMethod = !$pathMethod ? array("relative" => false, "absolute" => false) : $pathMethod;
         $this->idNode = $id;
-        
-        //TODO ajlucena: channel ?
-        $channel = false;
-        $this->channel = $channel ? $channel : null;
-
         return true;
     }
 

@@ -36,6 +36,7 @@ use Ximdex\Models\Version;
 use Ximdex\Parsers\ParsingPathTo;
 use Ximdex\Runtime\App;
 use Ximdex\Sync\SynchroFacade;
+use Ximdex\Utils\Messages;
 use NodeFrameManager;
 
 \Ximdex\Modules\Manager::file('/inc/manager/NodeFrameManager.class.php', 'ximSYNC');
@@ -56,6 +57,7 @@ class ViewFilterMacros extends AbstractView implements IView
     private $idChannel;
     private $mode;
     private $preview;
+    private $messages;
 
     const MACRO_SERVERNAME = "/@@@RMximdex\.servername\(\)@@@/";
     const MACRO_PROJECTNAME = "/@@@RMximdex\.projectname\(\)@@@/";
@@ -76,6 +78,7 @@ class ViewFilterMacros extends AbstractView implements IView
     public function __construct($preview = false)
     {
         $this->preview = $preview;
+        $this->messages = new Messages();
     }
 
     /**
@@ -499,7 +502,8 @@ class ViewFilterMacros extends AbstractView implements IView
         
         // Link target-node
         $parserPathTo = new ParsingPathTo();
-        if (! $parserPathTo->parsePathTo($pathToParams, $this->idNode)) {
+        if (! $parserPathTo->parsePathTo($pathToParams, $this->idNode, null, $this->idChannel)) {
+            $this->messages->mergeMessages($parserPathTo->messages());
             Logger::warning('Parse PathTo is not working for: ' . $pathToParams);
             if ($this->preview) {
                 return false;

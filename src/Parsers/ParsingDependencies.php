@@ -337,7 +337,9 @@ class ParsingDependencies
                 
                 // Post-transformation dependencies
                 $pathToByChannel[$idChannel] = self::getPathTo($postContent, $idNode);
-                $pathTos = array_merge($pathTos, $pathToByChannel[$idChannel]);
+                if ($pathToByChannel[$idChannel]) {
+                    $pathTos = array_merge($pathTos, $pathToByChannel[$idChannel]);
+                }
                 $res = self::getDotDot($postContent, $idServer);
                 $dotDots = array_merge($dotDots, $res);
             }
@@ -623,10 +625,12 @@ class ParsingDependencies
                 // If the document is a template in the project templates node, the resources in the macros (not nodeId given) cannot be obtained
                 if (($server !== null or is_numeric($pathTo)) and ($parserPathTo->parsePathTo($pathTo, $nodeId) === false)) {
                     $error = 'The document or its dependencies references a non existant node or resource (' . $pathTo . ') in a RMximdex.pathto directive';
-                    Logger::error($error);
+                    Logger::warning($error);
                     $GLOBALS['parsingDependenciesError'] = $error;
                 }
-                $links[$parserPathTo->getIdNode()] = $parserPathTo->getIdNode();
+                else {
+                    $links[$parserPathTo->getIdNode()] = $parserPathTo->getIdNode();
+                }
             }
         }
         return $links;
