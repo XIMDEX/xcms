@@ -32,7 +32,7 @@ var AttributesToolBox = Object.xo_create(FloatingToolBox, {
 
         var label = _('Update');
 
-        eval("this.buttons = { " + label + ": this.updateButtonHandler.bind(this) };");
+        eval('"this.buttons = { " + label + ": this.updateButtonHandler.bind(this) };"');
 
         AttributesToolBox._super(this, 'initialize', tool, editor);
 
