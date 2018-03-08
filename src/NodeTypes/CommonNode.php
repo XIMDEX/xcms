@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -25,15 +26,17 @@
  */
 
 namespace Ximdex\NodeTypes;
-use Ximdex\Models\Node;
 
+use Ximdex\Logger;
+use Ximdex\Models\Node;
+use Ximdex\Models\Version;
+use Ximdex\Runtime\App;
 
 /***
  * Class for NodeType common
  */
 class CommonNode extends FileNode
 {
-
     /**
      * Build a new common node file.
      * Use parent CreateNode method and generate a new metadata document for the new common node created.
@@ -57,13 +60,11 @@ class CommonNode extends FileNode
         $mm->deleteMetadata();
     }
 
-
     function RenameNode($name = null)
     {
         $mm = new \Ximdex\Metadata\MetadataManager($this->nodeID);
         $mm->updateSystemMetadata();
     }
-
 
     function SetContent($content, $commitNode = NULL, Node $node = null)
     {
@@ -72,5 +73,40 @@ class CommonNode extends FileNode
         $mm->updateSystemMetadata();
     }
 
-
+    /**
+     * Get the mime type of the file
+     * @param Node $node
+     * @return boolean|string
+     */
+    public function getMimeType(Node $node)
+    {
+        $info = pathinfo($node->GetNodeName());
+        if (strtolower($info['extension']) == 'css') {
+            
+            // CSS files return text/plain by default
+            $mimeType = 'text/css';
+        }
+        else {
+            
+            // Obtain the mime type from the last version of the file
+            $version = $node->GetLastVersion();
+            if (!isset($version['IdVersion']) or !$version['IdVersion']) {
+                Logger::error('There is no a version for node: ' . $node->GetID());
+                return false;
+            }
+            $versionID = $version['IdVersion'];
+            $version = new Version($versionID);
+            $file = XIMDEX_ROOT_PATH . App::getValue('FileRoot') . '/' . $version->get('File');
+            if (!file_exists($file)) {
+                Logger::error('Cannot load the file: ' . $file . ' for version: ' . $versionID);
+                return false;
+            }
+            $mimeType = mime_content_type($file);
+            if (!$mimeType) {
+                Logger::error('Cannot load the mime type for the file: ' . $file);
+                return false;
+            }
+        }
+        return $mimeType;
+    }
 }

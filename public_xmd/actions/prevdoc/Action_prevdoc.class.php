@@ -222,9 +222,11 @@ class Action_prevdoc extends ActionAbstract
             die();
         }
         if (isset($_GET["nodeid"])) {
+            
             // Remove all used cache
             exec(sprintf('rm -f %s%s/preview_%s_*', XIMDEX_ROOT_PATH, App::getValue("TempRoot"), $_GET["nodeid"]));
         }
+        
         // Show preview as web
         $content = str_replace("&ajax=json", "&showprev=1", $content);
         echo $content;

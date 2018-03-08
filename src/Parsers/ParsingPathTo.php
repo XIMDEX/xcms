@@ -98,10 +98,16 @@ class ParsingPathTo
         
         // The second one is value is the channel name, optional
         if (isset($params[1])) {
+            $channelParam = trim($params[1]);
             $channel = new Channel();
-            $channel = $channel->find('IdChannel', 'Name =  \'' . trim($params[1]) . '\'');
+            if (is_numeric($channelParam)) {
+                $channel = $channel->find('IdChannel', 'IdChannel = ' . $channelParam);
+            }
+            else {
+                $channel = $channel->find('IdChannel', 'Name =  \'' . $channelParam . '\'');
+            }
             if (!$channel) {
-                $error = 'The specified channel ' . trim($params[1]) . ' does not exist';
+                $error = 'The specified channel ' . $channelParam . ' does not exist';
                 $this->messages->add($error, MSG_TYPE_WARNING);
                 Logger::warning($error);
                 return false;
