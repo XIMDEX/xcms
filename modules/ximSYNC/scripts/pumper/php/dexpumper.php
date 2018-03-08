@@ -99,10 +99,8 @@ class DexPumper {
 	private $idUser;
 	private $verbose;
 	private $maxVoidCycles;
-	private $sleepTime = 10;
+	private $sleepTime;
 	private $localBasePath;
-
-	private $cycle = 0;
 
 	private $pumper;
 	private $connection;
@@ -191,7 +189,6 @@ class DexPumper {
 
 
 	private function uploadAsHiddenFile() {
-
 		$localPath = $this->localBasePath."/";
 		$initialDirectory = $this->server->get('InitialDirectory');
 		$IdSync = (int)  $this->serverFrame->get('IdSync');

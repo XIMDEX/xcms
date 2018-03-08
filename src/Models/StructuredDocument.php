@@ -497,10 +497,12 @@ class StructuredDocument extends StructuredDocumentsOrm
     public function HasChannel($idChannel)
     {
         $values = $this->GetChannels();
-        if ($values === false)
+        if ($values === false) {
             return false;
-        if (isset($values[$idChannel]))
+        }
+        if (isset($values[$idChannel])) {
             return true;
+        }
         return false;
     }
 
@@ -513,18 +515,22 @@ class StructuredDocument extends StructuredDocumentsOrm
     {
         $channelProperty = new ChannelProperty($this->get('IdDoc'));
         $values = $channelProperty->getValues($this->get('IdDoc'));
-        if ($values === false)
+        if ($values === false) {
             return false;
+        }
         $res = [];
-        foreach ($values as $channel)
-            if ($channel['Checked'] or $channel['Inherited'])
+        foreach ($values as $channel) {
+            if ($channel['Checked'] or $channel['Inherited']) {
                 $res[$channel['Id']] = $channel['Id'];
+            }
+        }
         return $res;
     }
 
     function add()
     {
-        $this->CreateNewStrDoc($this->get('IdDoc'), $this->get('Name'), $this->get('IdCreator'), $this->get('CreationDate'), $this->get('UpdateDate'), $this->get('IdLanguage'), $this->get('IdTemplate'));
+        $this->CreateNewStrDoc($this->get('IdDoc'), $this->get('Name'), $this->get('IdCreator'), $this->get('CreationDate')
+            , $this->get('UpdateDate'), $this->get('IdLanguage'), $this->get('IdTemplate'));
     }
 
     /**

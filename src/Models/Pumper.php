@@ -47,7 +47,8 @@ use Ximdex\Runtime\App;
  */
 class Pumper extends PumpersOrm
 {
-
+    private $maxvoidcycles = 10;
+    private $sleeptime = 2;
     var $syncStatObj;
 
     /**
@@ -133,17 +134,15 @@ class Pumper extends PumpersOrm
      */
     function startPumper($pumperId, $modo = "php")
     {
-        $separador =  "=";
-
         $dbObj = new \Ximdex\Runtime\Db();
         
         // Initialize the pumper to Starting state
         $this->set('State', 'Starting');
         $this->update();
         
-        $startCommand =  "php ".XIMDEX_ROOT_PATH.'/bootstrap.php '.PUMPERPHP_PATH . "/dexpumper." . $modo .
-            " --pumperid" . $separador . "$pumperId --sleeptime" . $separador . "2 --maxvoidcycles" .
-            $separador . "10 --localbasepath" . $separador . SERVERFRAMES_SYNC_PATH . " > /dev/null 2>&1 &";
+        $startCommand =  "php ".XIMDEX_ROOT_PATH.'/bootstrap.php '.PUMPERPHP_PATH . "/dexpumper." . $modo 
+            . " --pumperid=$pumperId --sleeptime=" . $this->sleeptime . " --maxvoidcycles=" . $this->maxvoidcycles 
+            . " --localbasepath=" . SERVERFRAMES_SYNC_PATH . " > /dev/null 2>&1 &";
 
         $this->PumperToLog(null, null, null, null, $pumperId, __CLASS__, __FUNCTION__, __FILE__,
             __LINE__, "INFO", 8, "Pumper call: $startCommand");

@@ -74,6 +74,7 @@ class SynchroFacade
 				return NULL;
 			}
 
+			//TODO ajlucena: add status published or being published
 			// Calculating physical origin and destiny servers
 			$physicalTargetServers = $targetFrame->getCompleteServerList($idTargetNode, $idTargetChannel);
 
