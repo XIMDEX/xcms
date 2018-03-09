@@ -188,7 +188,7 @@ class Dependencies extends DependenciesOrm
         $this->set('IdNodeMaster', $master);
         $this->set('IdNodeDependent', $dependent);
         $this->set('DepType', $type);
-        if (!empty($version)) {
+        if (isset($version)) {
             $this->set('version', $version);
         } else {
             $dataFactory = new DataFactory($master);
