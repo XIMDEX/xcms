@@ -90,7 +90,8 @@ class Action_preview extends ActionAbstract
             'channels' => $_channels,
             "nodeURL" => $queryManager->getPage() . $queryManager->build(),
             "go_method" => "preview",
-            'name' => $node->GetNodeName()
+            'name' => $node->GetNodeName(),
+            'token' => uniqid()
         );
         
         $this->render($values, null, 'default-3.0.tpl');

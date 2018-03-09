@@ -23,17 +23,19 @@ class Action_rendernode extends ActionAbstract
             
             // Receives request node param
             $idNode = $this->request->getParam("nodeid");
-            Logger::info('Call to filemapper from given ID: ' . $idNode);
+            Logger::info('Call to rendernode from given ID: ' . $idNode);
         }
         elseif ($this->request->getParam('expresion')) {
             
             // Receives an expression param containing a nodeID or a path
             $expression = $this->request->getParam("expresion");
-            Logger::info('Call to filemapper from expresion: ' . $expression);
+            Logger::info('Call to rendernode from expresion: ' . $expression);
             
             // Generate the node ID using pathTo parser
             $parserPathTo = new ParsingPathTo();
-            $parserPathTo->parsePathTo($expression);
+            if (!$parserPathTo->parsePathTo($expression)) {
+                $this->messages->mergeMessages($parserPathTo->messages());
+            }
             if (!$parserPathTo->getIdNode()) {
                 
                 // The node can not be found
@@ -79,23 +81,22 @@ class Action_rendernode extends ActionAbstract
             $this->messages->mergeMessages($xmlDocNode->messages);
             $this->render(array('messages' => $this->messages->messages), null, 'messages.tpl');
         }
-        
+        $commonNode = new CommonNode();
         if ($node->nodeType->GetIsStructuredDocument()) {
             
-            // Response headers for structured documents
-            $this->response->set('Content-type', 'text/html');
+            // Get mime type for structured documents
+            $mimeType = $node->getMimeType($content);
         }
         else {
             
             // Response headers for non structured documents
-            $commonNode = new CommonNode();
-            $mimeType = $commonNode->getMimeType($node);
-            $this->response->set('Content-type', $mimeType);
+            $mimeType = $node->getMimeType();
             $this->response->set('Content-Disposition', "attachment; filename=" . $node->GetNodeName());
             $this->response->set('Content-Length', strlen(strval($content)));
         }
         
         // Common response headers
+        $this->response->set('Content-type', $mimeType);
         $this->response->set('Expires', 'Mon, 26 Jul 1997 05:00:00 GMT');
         $this->response->set('Last-Modified', gmdate("D, d M Y H:i:s") . " GMT");
         $this->response->set('Cache-Control', array('no-store, no-cache, must-revalidate','post-check=0, pre-check=0'));

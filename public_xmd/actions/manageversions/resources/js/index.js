@@ -59,16 +59,8 @@ X.actionLoaded(function(event, fn, params) {
 			channel = 1;
 		}
 
-		var command = (nodetypename=='ImageFile' || nodetypename=='BinaryFile')	? 'filepreview'	: 'prevdoc';
-
-		/*
-		var action = $.extend({}, params.action, {
-			command: command,
-			name: "Preview",
-			params: 'version=%s&sub_version=%s&channel=%s'.printf(v.version, v.subversion, channel)
-
-		});
-		*/
+		var command = (nodetypename=='ImageFile' || nodetypename=='BinaryFile')	? 'filepreview'	: 'rendernode';
+		
 		var action = {
 			command: command,
 			name: 'Preview v' + v.version + '.' + v.subversion,

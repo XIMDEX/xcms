@@ -139,7 +139,7 @@ class PipeCache extends PipeCachesOrm
         }
         Logger::info('PipeCache: Obtained file ' . $pointer . ' to generate the pipeline transition ' . $idTransition . ' for version ' . $idVersion);
         $res = $this->_transition->generate($idVersion, $pointer, $args);
-        if (isset($tmpFileToRemove)) {
+        if (isset($tmpFileToRemove) and file_exists($tmpFileToRemove)) {
             @unlink($tmpFileToRemove);
         }
         return $res;

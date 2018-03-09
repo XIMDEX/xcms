@@ -32,6 +32,7 @@ use Ximdex\Logger;
 use Ximdex\Models\ORM\NodesOrm;
 use Ximdex\NodeTypes\NodeTypeConstants;
 use Ximdex\Parsers\ParsingDependencies;
+use Ximdex\Properties\InheritedPropertiesManager;
 use Ximdex\Runtime\App;
 use Ximdex\Runtime\DataFactory;
 use Ximdex\Utils\FsUtils;
@@ -3618,7 +3619,6 @@ class Node extends NodesOrm
     }
 
     /**
-     *
      * @return bool
      */
     function IsModified()
@@ -3631,5 +3631,104 @@ class Node extends NodesOrm
             return false;
         }
         return true;
+    }
+    
+    /**
+     * Get the mime type of the node content
+     * 
+     * @param Node $node
+     * @return boolean|string
+     */
+    public function getMimeType(string $content = null)
+    {
+        if (!$this->GetID()) {
+            Logger::error('No node ID has been specified');
+            return false;
+        }
+        if ($content) {
+            
+            // Get the mime type from given content
+            $basePath = XIMDEX_ROOT_PATH . App::getValue('TempRoot');
+            $pointer = FsUtils::getUniqueFile($basePath);
+            $file = $basePath . "/preview_" . $this->GetID() . '_' . $pointer;
+            FsUtils::file_put_contents($file, $content);
+        }
+        else {
+            
+            // Get the mime type from node content
+            $info = pathinfo($this->GetNodeName());
+            if (strtolower($info['extension']) == 'css') {
+                
+                // CSS files return text/plain by default
+                return 'text/css';
+            }
+            else {
+                
+                // Obtain the mime type from the last version of the file
+                $version = $this->GetLastVersion();
+                if (!isset($version['IdVersion']) or !$version['IdVersion']) {
+                    Logger::error('There is no a version for node: ' . $this->GetID());
+                    return false;
+                }
+                $versionID = $version['IdVersion'];
+                $version = new Version($versionID);
+                $file = XIMDEX_ROOT_PATH . App::getValue('FileRoot') . '/' . $version->get('File');
+                if (!file_exists($file)) {
+                    Logger::error('Cannot load the file: ' . $file . ' for version: ' . $versionID);
+                    return false;
+                }
+            }
+        }
+        $mimeType = mime_content_type($file);
+        if ($content) {
+            @unlink($file);
+        }
+        if (!$mimeType) {
+            Logger::error('Cannot load the mime type for the file: ' . $file);
+            return false;
+        }
+        return $mimeType;
+    }
+    
+    /**
+     * Get the channel that will be available to render the node
+     * If Channel parameter is provided and is in available ones, use it
+     * 
+     * @param int $channel
+     * @return boolean|int
+     */
+    public function getTargetChannel(int $channel = null)
+    {
+        if (!$this->GetID()) {
+            $this->messages->add('The node has not the ID value', MSG_TYPE_ERROR);
+            return false;
+        }
+        if ($channel) {
+            $strDoc = new StructuredDocument($this->GetID());
+            if (!$strDoc->GetID()) {
+                $this->messages->add('Cannot load the structured document with ID: ' . $this->GetID(), MSG_TYPE_WARNING);
+                return false;
+            }
+            if ($strDoc->HasChannel($channel)) {
+                
+                // The document channel is in the inherited channels of the target document
+                return $channel;
+            }
+        }
+        
+        // The channel will be the first one available in the inherited properties
+        $properties = InheritedPropertiesManager::getValues($this->GetID());
+        if (!$properties['Channel']) {
+            Logger::error('The document with ID: ' . $this->GetID() . ' has no channels');
+            return false;
+        }
+        foreach ($properties['Channel'] as $channelProperty) {
+            if ($channelProperty['Inherited']) {
+               return $channelProperty['Id'];
+            }
+        }
+        // There is no channel available for the target document
+        $this->messages->add('The target path ' . $pathToParams . ' has not any channel available', MSG_TYPE_WARNING);
+        return false;
     }
 }

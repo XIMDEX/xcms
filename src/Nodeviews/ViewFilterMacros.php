@@ -555,6 +555,7 @@ class ViewFilterMacros extends AbstractView implements IView
             return $targetNode->class->GetUrl();
         }
         
+        // Generate the path
         if ($this->preview) {
             
             // Generate URL for preview mode
@@ -564,13 +565,13 @@ class ViewFilterMacros extends AbstractView implements IView
                 }
                 else {
                     $query = App::get('\Ximdex\Utils\QueryManager');
-                    return $query->getPage() . $query->buildWith(array('nodeid' => $idNode, 'channelid' => $idTargetChannel));
+                    // return $query->getPage() . $query->buildWith(array('nodeid' => $idNode, 'channelid' => $idTargetChannel));
+                    return $query->getPage() . $query->buildWith(array('nodeid' => $idNode, 'token' => uniqid()));
                 }
             }
             
-            // Generate the URL to the filemapper action
-            $url = App::getValue('UrlRoot') . '/?expresion=' . (($idNode) ? $idNode : $pathToParams)
-                    . '&action=filemapper&method=nodeFromExpresion&token=' . uniqid();
+            // Generate the URL to the rendernode action
+            $url = App::getValue('UrlRoot') . '/?expresion=' . (($idNode) ? $idNode : $pathToParams) . '&action=rendernode&token=' . uniqid();
             return $url;
         }
         if ($this->_isPreviewServer) {

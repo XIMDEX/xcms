@@ -108,7 +108,7 @@
 							</div>
 							{if $advanced_publication eq '1'}
 								<hr />
-								<div class="publication_option">
+								<div class="publication_option disabled" id="no_structure_option" disabled="disabled">
 									<div class="option_checkbox">
 										<input type="checkbox" name="no_structure" id="no_structure" value="1" />
 									</div>

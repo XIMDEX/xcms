@@ -70,7 +70,7 @@ com.ximdex.ximdex.editors.ValidateHandler = function(baseURL, content, callback)
 
 com.ximdex.ximdex.editors.PreviewHandler = function(loadActionURL, content, callback, bxeOptions) {
 
-	var url = loadActionURL + '&action=prevdoc&ajax=json';
+	var url = loadActionURL + '&action=rendernode&ajax=json';
 	com.ximdex.ximdex.editors.AjaxRequest(url, content, callback);
 }
 

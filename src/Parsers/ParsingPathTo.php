@@ -32,7 +32,6 @@ use Ximdex\Models\FastTraverse;
 use Ximdex\Models\Node;
 use Ximdex\NodeTypes\NodeTypeConstants;
 use Ximdex\NodeTypes\XmlContainerNode;
-use Ximdex\Properties\InheritedPropertiesManager;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\Utils\Messages;
 use Ximdex\Models\Channel;
@@ -296,40 +295,12 @@ class ParsingPathTo
         if (!$this->channel and $node->nodeType->GetIsStructuredDocument()) {
             
             // The channel has not been passed in the pathTo expression
-            if ($channel) {
-                $strDoc = new StructuredDocument($id);
-                if (!$strDoc->GetID()) {
-                    Logger::error('Cannot load the structured document with ID: ' . $id);
-                    return false;
-                }
-                if ($strDoc->HasChannel($channel)) {
-                    
-                    // The document channel is in the inherited channels of the target document
-                    $this->channel = $channel;
-                }
+            $channel = $node->getTargetChannel($channel);
+            if ($channel === false) {
+                $this->messages->mergeMessages($node->messages);
+                return false;
             }
-            if (!$this->channel) {
-                
-                // The channel will be the first one available in the inherited properties
-                $properties = InheritedPropertiesManager::getValues($id);
-                if (!$properties['Channel']) {
-                    Logger::error('The document with ID: ' . $id . ' has no channels');
-                    return false;
-                }
-                foreach ($properties['Channel'] as $channelProperty) {
-                    if ($channelProperty['Inherited']) {
-                        $this->channel = $channelProperty['Id'];
-                    }
-                }
-                if (!$this->channel) {
-                    
-                    // There is no channel available for the target document
-                    $error = 'The target path ' . $pathToParams . ' has not any channel available';
-                    $this->messages->add($error, MSG_TYPE_WARNING);
-                    Logger::warning($error);
-                    return false;
-                }
-            }
+            $this->channel = $channel;
         }
         
         //TODO

@@ -3106,7 +3106,7 @@ msgstr "Etiquetas"
 msgid "Navigate by tags"
 msgstr "Navegar por etiquetas"
 
-#: /actions/prevdoc/Action_prevdoc.class.php
+#: /actions/rendernode/Action_rendernode.class.php
 msgid "It is not possible to show preview."
 msgstr "No es posible mostrar la previsualización."
 
@@ -4147,7 +4147,7 @@ msgstr "Publicador avanzado"
 
 #: /actions/xmleditor2/template/Smarty/toolbar.tpl
 #: /actions/manageversions/template/Smarty/index.tpl
-#: /actions/prevdoc/Action_prevdoc.class.php
+#: /actions/rendernode/Action_rendernode.class.php
 #install/ximdex_data/ximdex.sql table Nodes
 msgid "Preview"
 msgstr "Previsualizar"

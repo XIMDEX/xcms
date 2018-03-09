@@ -2,9 +2,9 @@
 
 namespace Ximdex\NodeTypes;
 
-use Ximdex\Models\Channel;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\Nodeviews\ViewFilterMacros;
+use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
 use Ximdex\Utils\PipelineManager;
 use Ximdex\Models\Node;
@@ -101,6 +101,8 @@ class XmlDocumentNode extends AbstractStructuredDocument
                 $content = XmlDocumentNode::normalizeXmlDocument($content);
             }
             
+            //TODO ajlucena
+            /*
             // Validates channel
             if (! is_numeric($idChannel)) {
                 $channels = $node->getChannels();
@@ -128,6 +130,8 @@ class XmlDocumentNode extends AbstractStructuredDocument
                     return false;
                 }
             }
+            */
+            $idChannel = $node->getTargetChannel($idChannel);
             
             // Populates variables and view/pipelines args
             $idSection = $node->GetSection();
@@ -146,6 +150,7 @@ class XmlDocumentNode extends AbstractStructuredDocument
             
             // Initializes variables:
             $args = array();
+            $args['NODEID'] = $idNode;
             $args['MODE'] = $mode == 'dinamic' ? 'dinamic' : 'static';
             $args['CHANNEL'] = $idChannel;
             $args['SECTION'] = $idSection;
@@ -172,8 +177,8 @@ class XmlDocumentNode extends AbstractStructuredDocument
                 $process = 'StrDocToDexT';
             }
             $pipelineManager = new PipelineManager();
-            $content = $pipelineManager->getCacheFromProcess(NULL, $process, $args);
-            if ($content === false) {
+            $file = $pipelineManager->getCacheFromProcess(NULL, $process, $args);
+            if ($file === false) {
                 
                 // The transformation process did not work !
                 if ($node->GetNodeType() == NodeTypeConstants::XML_DOCUMENT) {
@@ -188,7 +193,6 @@ class XmlDocumentNode extends AbstractStructuredDocument
                 if (!isset($errors)) {
                     $errors = 'The preview cannot be processed due to an unknown error';
                 }
-                //TODO ajlucena!
                 /*
                 $this->addCss('/assets/style/jquery/ximdex_theme/widgets/browserwindow/actionPanel.css');
                 $this->render(array('errors' => $errors), 'index', 'basic_html.tpl');
@@ -199,12 +203,18 @@ class XmlDocumentNode extends AbstractStructuredDocument
             
             // Specific FilterMacros View for previsuals
             $viewFilterMacrosPreview = new ViewFilterMacros(true);
-            $file = $viewFilterMacrosPreview->transform(NULL, $content, $args, $idNode, $idChannel);
-            if ($file === false) {
+            $filePrev = $viewFilterMacrosPreview->transform(NULL, $file, $args, $idNode, $idChannel);
+            if (strpos($file, App::getValue('TempRoot')) and file_exists($file)) {
+                @unlink($file);
+            }
+            if ($filePrev === false) {
                 $this->messages->add('Cannot transform the document ' . $node->GetNodeName() . ' for a preview operation', MSG_TYPE_WARNING);
                 return false;
             }
-            $content = FsUtils::file_get_contents($file);
+            $content = FsUtils::file_get_contents($filePrev);
+            if (strpos($filePrev, App::getValue('TempRoot')) and file_exists($filePrev)) {
+                @unlink($filePrev);
+            }
             if ($content === false) {
                 return false;
             }

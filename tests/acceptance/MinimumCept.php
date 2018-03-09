@@ -112,6 +112,8 @@ $I->click("body > div.xim-actions-menu.destroy-on-click.noselect.xim-actions-men
 
 $I->wait(3);
 
+$I->click('#all_levels');
+
 $I->click("Publish", "#angular-content");
 
 $I->waitForText("State has been successfully changed", 3, "#angular-content");
