@@ -270,7 +270,7 @@ class Action_fileupload_common_multiple extends ActionAbstract {
 
     private function _setRest($msg, $status=500) {
         $retval = array();
-        $retval["msg"] = utf8_encode($msg);
+        $retval["msg"] = $msg;
         $retval['status'] =  $status;
 
         return $retval;
