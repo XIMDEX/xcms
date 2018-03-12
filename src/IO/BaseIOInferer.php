@@ -29,7 +29,9 @@ namespace Ximdex\IO;
 
 use Ximdex\Logger;
 use Ximdex\Models\Node;
+use Ximdex\Models\NodeType;
 use Ximdex\Utils\FsUtils;
+use Ximdex\NodeTypes\NodeTypeConstants;
 
 class BaseIOInferer
 {
@@ -76,6 +78,13 @@ class BaseIOInferer
 	 */
 	function infereFileType($file, $idFather, $nodeTypeFilter = '')
 	{
+	    if ($nodeTypeFilter == 'layout') {
+	        $nodeType = new NodeType(NodeTypeConstants::HTML_LAYOUT);
+	        if (!$nodeType->GetID()) {
+	            return false;
+	        }
+	        return $nodeType->GetName();
+	    }
 		$filePath = isset($file) && isset($file['tmp_name']) ? $file['tmp_name'] : NULL;
 		$fileName = isset($file) && isset($file['name']) ? $file['name'] : NULL;
 		$fileMimeType = FsUtils::get_mime_type($filePath);
@@ -302,6 +311,16 @@ class BaseIOInferer
 			case 'JsFolder':
 			    $newNodeTypeName ='JsFolder';
 			    $friendlyName = _('JS folder');
+			    break;
+			    
+			case 'HTMLLayout':
+			    $newNodeTypeName ='HTMLLayout';
+			    $friendlyName = _('HTML layout');
+			    break;
+			    
+			case 'HTMLlayoutsFolder':
+			    $newNodeTypeName ='HTMLlayoutsFolder';
+			    $friendlyName = _('HTML layouts folder');
 			    break;
 
 			default:

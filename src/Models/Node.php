@@ -24,6 +24,7 @@
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
+
 namespace Ximdex\Models;
 
 use DOMDocument;
@@ -31,11 +32,14 @@ use Ximdex\Deps\DepsManager;
 use Ximdex\Logger;
 use Ximdex\Models\ORM\NodesOrm;
 use Ximdex\NodeTypes\NodeTypeConstants;
+use Ximdex\NodeTypes\XmlDocumentNode;
+use Ximdex\Nodeviews\ViewFilterMacros;
 use Ximdex\Parsers\ParsingDependencies;
 use Ximdex\Properties\InheritedPropertiesManager;
 use Ximdex\Runtime\App;
 use Ximdex\Runtime\DataFactory;
 use Ximdex\Utils\FsUtils;
+use Ximdex\Utils\PipelineManager;
 use Ximdex\Runtime\Session;
 use Ximdex\Sync\Synchronizer;
 use Ximdex\Workflow\WorkFlow;
@@ -59,7 +63,6 @@ if (! defined('COUNT')) {
  */
 class Node extends NodesOrm
 {
-
     /**
      *
      * @var bool|string
@@ -3645,7 +3648,7 @@ class Node extends NodesOrm
             Logger::error('No node ID has been specified');
             return false;
         }
-        if ($content) {
+        if ($content !== null) {
             
             // Get the mime type from given content
             $basePath = XIMDEX_ROOT_PATH . App::getValue('TempRoot');
@@ -3730,5 +3733,172 @@ class Node extends NodesOrm
         // There is no channel available for the target document
         $this->messages->add('The target path ' . $pathToParams . ' has not any channel available', MSG_TYPE_WARNING);
         return false;
+    }
+    
+    /**
+     * Return data to render the node to desired output with response headers
+     * 
+     * @param string $idChannel
+     * @param string $showprev
+     * @param string $content
+     * @param string $version
+     * @param string $subversion
+     * @param string $mode
+     * @return boolean|array
+     */
+    public function filemapper(string $idChannel = null, string $showprev = null, string $content = null
+        , string $version = null, string $subversion = null, string $mode = null)
+    {
+        // Checks node existence
+        if (! $this->GetID()) {
+            $this->messages->add(_('It is not possible to show preview.') . _(' The node you are trying to preview does not exist.'), MSG_TYPE_NOTICE);
+            return false;
+        }
+        
+        // If the node is a structured document, render the preview, else return the file content
+        if ($this->nodeType->GetIsStructuredDocument()) {
+            
+            // Checks if node is a structured document
+            $structuredDocument = new StructuredDocument($this->GetID());
+            if (! $structuredDocument->get('IdDoc')) {
+                $this->messages->add(_('It is not possible to show preview.') . _(' Provided node is not a structured document.'), MSG_TYPE_NOTICE);
+                return false;
+            }
+            
+            // Checks content existence
+            if ($content !== null) {
+                $content = $structuredDocument->GetContent($version, $subversion);
+            } elseif ($this->GetNodeType() == NodeTypeConstants::XML_DOCUMENT) {
+                $content = XmlDocumentNode::normalizeXmlDocument($content);
+            }
+            
+            // Get the available target channel
+            $idChannel = $this->getTargetChannel($idChannel);
+            if (!$idChannel) {
+                $this->messages->add(_('It is not possible to show preview. There is not any defined channel.'), MSG_TYPE_NOTICE);
+                return false;
+            }
+            
+            // Populates variables and view/pipelines args
+            $idSection = $this->GetSection();
+            $idProject = $this->GetProject();
+            $idServerNode = $this->getServer();
+            $documentType = $structuredDocument->getDocumentType();
+            $idLanguage = $structuredDocument->getLanguage();
+            if ($this->GetNodeType() == NodeTypeConstants::XML_DOCUMENT and method_exists($this->class, "_getDocXapHeader")) {
+                
+                $docXapHeader = $this->class->_getDocXapHeader($idChannel, $idLanguage, $documentType);
+            } else {
+                $docXapHeader = null;
+            }
+            $nodeName = $this->get('Name');
+            $depth = $this->GetPublishedDepth();
+            
+            // Initializes variables:
+            $args = array();
+            $args['NODEID'] = $this->GetID();
+            $args['MODE'] = $mode == 'dinamic' ? 'dinamic' : 'static';
+            $args['CHANNEL'] = $idChannel;
+            $args['SECTION'] = $idSection;
+            $args['PROJECT'] = $idProject;
+            $args['SERVERNODE'] = $idServerNode;
+            $args['LANGUAGE'] = $idLanguage;
+            if ($this->GetNodeType() == NodeTypeConstants::XML_DOCUMENT) {
+                $args['DOCXAPHEADER'] = $docXapHeader;
+            }
+            $args['NODENAME'] = $nodeName;
+            $args['DEPTH'] = $depth;
+            $args['DISABLE_CACHE'] = true;
+            $args['CONTENT'] = $content;
+            $args['NODETYPENAME'] = $this->nodeType->get('Name');
+            if ($this->GetID() < 10000) {
+                $idNode = 10000;
+                $node = new Node($idNode);
+                $transformer = $node->getProperty('Transformer');
+            }
+            else {
+                $idNode = $this->GetID();
+                $transformer = $this->getProperty('Transformer');
+            }
+            $args['TRANSFORMER'] = $transformer[0];
+            if ($this->GetNodeType() == NodeTypeConstants::HTML_DOCUMENT) {
+                $process = 'HTMLToPrepared';
+            } else {
+                $process = 'StrDocToDexT';
+            }
+            $pipelineManager = new PipelineManager();
+            $file = $pipelineManager->getCacheFromProcess(NULL, $process, $args);
+            if ($file === false) {
+                
+                // The transformation process did not work !
+                if ($this->GetNodeType() == NodeTypeConstants::XML_DOCUMENT) {
+                    
+                    // If content is false, show the xslt errors instead the document preview
+                    $stDoc = new StructuredDocument($idNode);
+                    $errors = $stDoc->GetXsltErrors();
+                    if ($errors) {
+                        $errors = str_replace("\n", "\n<br />\n", $errors);
+                    }
+                }
+                if (!isset($errors)) {
+                    $errors = 'The preview cannot be processed due to an unknown error';
+                }
+                $this->messages->add($errors, MSG_TYPE_WARNING);
+                return false;
+            }
+            
+            // Specific FilterMacros View for previsuals
+            $viewFilterMacrosPreview = new ViewFilterMacros(true);
+            $filePrev = $viewFilterMacrosPreview->transform(NULL, $file, $args, $idNode, $idChannel);
+            if (strpos($file, App::getValue('TempRoot')) and file_exists($file)) {
+                @unlink($file);
+            }
+            if ($filePrev === false) {
+                $this->messages->add('Cannot transform the document ' . $this->GetNodeName() . ' for a preview operation', MSG_TYPE_WARNING);
+                return false;
+            }
+            $content = FsUtils::file_get_contents($filePrev);
+            if (strpos($filePrev, App::getValue('TempRoot')) and file_exists($filePrev)) {
+                @unlink($filePrev);
+            }
+            if ($content === false) {
+                return false;
+            }
+        }
+        else {
+            
+            // Node is not a structured document
+            $content = $this->GetContent();
+            if ($content === false) {
+                $this->messages->add('Cannot get the content from file ' . $this->GetNodeName() . ' for a preview operation', MSG_TYPE_WARNING);
+                return false;
+            }
+        }
+        $headers = array();
+        if ($this->nodeType->GetIsStructuredDocument()) {
+            
+            // Get mime type for structured documents
+            $mimeType = $this->getMimeType($content);
+        }
+        else {
+            
+            // Response headers for non structured documents
+            $mimeType = $this->getMimeType();
+            $headers['Content-Disposition'] = 'attachment; filename=' . $this->GetNodeName();
+            $headers['Content-Length'] = strlen(strval($content));
+        }
+        
+        // Common response headers
+        $headers['Content-type'] = $mimeType;
+        $headers['Expires'] = 'Mon, 26 Jul 1997 05:00:00 GMT';
+        $headers['Last-Modified'] = gmdate('D, d M Y H:i:s') . ' GMT';
+        $headers['Cache-Control'] = array('no-store, no-cache, must-revalidate','post-check=0, pre-check=0');
+        $headers['Pragma'] = 'no-cache';
+        
+        // Return the obtained information
+        $data = array();
+        $data['content'] = $content;
+        $data['headers'] = $headers;
+        return $data;
     }
 }

@@ -4,8 +4,6 @@ use Ximdex\Logger;
 use Ximdex\Models\Node;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Parsers\ParsingPathTo;
-use Ximdex\NodeTypes\XmlDocumentNode;
-use Ximdex\NodeTypes\CommonNode;
 
 class Action_rendernode extends ActionAbstract
 {
@@ -74,35 +72,19 @@ class Action_rendernode extends ActionAbstract
             $mode = null;
         }
         
-        // Render the node
-        $xmlDocNode = new XmlDocumentNode();
-        $xmlDocNode->filemapper($idNode, $idChannel, $showprev, $content, $version, $subversion, $mode);
-        if ($content === false) {
-            $this->messages->mergeMessages($xmlDocNode->messages);
+        // Obtain the content and data to render the node
+        $data = $node->filemapper($idChannel, $showprev, $content, $version, $subversion, $mode);
+        if ($data === false) {
+            $this->messages->mergeMessages($node->messages);
             $this->render(array('messages' => $this->messages->messages), null, 'messages.tpl');
         }
-        $commonNode = new CommonNode();
-        if ($node->nodeType->GetIsStructuredDocument()) {
-            
-            // Get mime type for structured documents
-            $mimeType = $node->getMimeType($content);
-        }
-        else {
-            
-            // Response headers for non structured documents
-            $mimeType = $node->getMimeType();
-            $this->response->set('Content-Disposition', "attachment; filename=" . $node->GetNodeName());
-            $this->response->set('Content-Length', strlen(strval($content)));
-        }
         
-        // Common response headers
-        $this->response->set('Content-type', $mimeType);
-        $this->response->set('Expires', 'Mon, 26 Jul 1997 05:00:00 GMT');
-        $this->response->set('Last-Modified', gmdate("D, d M Y H:i:s") . " GMT");
-        $this->response->set('Cache-Control', array('no-store, no-cache, must-revalidate','post-check=0, pre-check=0'));
-        $this->response->set('Pragma', 'no-cache');
+        // Response headers
+        foreach ($data['headers'] as $header => $info) {
+            $this->response->set($header, $info);
+        }
         $this->response->sendHeaders();
-        echo $content;
+        echo $data['content'];
         
         // Change the logs output to default one
         Logger::setActiveLog();
