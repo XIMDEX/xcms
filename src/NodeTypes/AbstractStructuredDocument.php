@@ -56,7 +56,7 @@ define('XIMIO_VIEW', 3);
 abstract class AbstractStructuredDocument extends FileNode
 {
     /**
-	 * Creates a new structured node
+     * Creates a new structured node
      * @param null $name
      * @param null $parentID
      * @param null $nodeTypeID
@@ -71,20 +71,15 @@ abstract class AbstractStructuredDocument extends FileNode
         $loginID = Session::get("userID");
         $templateNode = new Node($templateID);
         $content = '';
-        if ($templateNode->get('IdNode') > 0)
-        {
+        if ($templateNode->get('IdNode') > 0) {
             // relaxng schema
             $templateNodeType = new NodeType($templateNode->get('IdNodeType'));
-            if ($templateNodeType->get('Name') == 'RngVisualTemplate')
-            {
+            if ($templateNodeType->get('Name') == 'RngVisualTemplate') {
                 $content = $templateNode->class->buildDefaultContent();
-            }
-            else
-            {
+            } else {
                 $templateContent = $templateNode->class->GetContent();
                 $templateContent = explode('##########', $templateContent);
-                if (isset($templateContent[1]))
-                {
+                if (isset($templateContent[1])) {
                     $content = str_replace("'", "\'", $templateContent[1]);
                 }
             }
@@ -92,14 +87,12 @@ abstract class AbstractStructuredDocument extends FileNode
         }
         $doc = new StructuredDocument();
         $doc->CreateNewStrDoc($this->nodeID, $name, $loginID, $IdLanguage, $templateID, $channelList, $content);
-        if ($doc->HasError())
-        {
+        if ($doc->HasError()) {
             $this->parent->SetError(5);
         }
         $nodeContainer = new Node($this->parent->GetParent());
         $nodeContainer->SetAliasForLang($IdLanguage, $aliasName);
-        if ($nodeContainer->HasError())
-        {
+        if ($nodeContainer->HasError()) {
             $this->parent->SetError(5);
         }
         $this->updatePath();
@@ -107,7 +100,7 @@ abstract class AbstractStructuredDocument extends FileNode
 
 
     /**
-	 * Name for the file/resource on production servers
+     * Name for the file/resource on production servers
      * @param null $channel
      * @return string
      */
@@ -131,10 +124,10 @@ abstract class AbstractStructuredDocument extends FileNode
         // only for dependences with ximlets
         $dependencies = new Dependencies();
         $idDepXimlets = [$dependencies->getDepTypeId(Dependencies::XIMLET)];
-        
+
         $depsMngr = new DepsManager();
         $structure = $depsMngr->getBySource(DepsManager::XML2XML, $idDoc, $idDepXimlets);
-        
+
 
         $asset = empty($params['withstructure']) ? array() :
             $depsMngr->getBySource(DepsManager::NODE2ASSET, $idDoc);
@@ -163,10 +156,8 @@ abstract class AbstractStructuredDocument extends FileNode
     function SetContent($content, $commitNode = NULL, Node $node = null)
     {
         //Checking the valid XML of the given content, if it is necessary
-        if ($node)
-        {
-            switch ($node->getNodeType())
-            {
+        if ($node) {
+            switch ($node->getNodeType()) {
                 case \Ximdex\NodeTypes\NodeTypeConstants::XML_DOCUMENT:
                 case \Ximdex\NodeTypes\NodeTypeConstants::METADATA_DOCUMENT:
                 case \Ximdex\NodeTypes\NodeTypeConstants::XIMLET:
@@ -177,8 +168,7 @@ abstract class AbstractStructuredDocument extends FileNode
                     $res = @$domDoc->loadXML($content);
                     $domDoc->encoding = 'UTF-8';
                     $domDoc->version = '1.0';
-                    if ($res)
-                    {
+                    if ($res) {
                         $content = $domDoc->saveXML();
                         $content = str_replace('<?xml version="1.0" encoding="UTF-8"?>', '', $content);
                         $content = trim($content);
@@ -187,26 +177,23 @@ abstract class AbstractStructuredDocument extends FileNode
                 default:
                     $res = true;
             }
-            if ($res === false)
-            {
+            if ($res === false) {
                 Logger::error('Invalid XML for idNode: ' . $node->getIdNode());
                 $error = \Ximdex\Utils\Messages::error_message('DOMDocument::loadXML(): ');
-                if ($error)
-                {
+                if ($error) {
                     $this->messages->add($error, MSG_TYPE_WARNING);
                     Logger::error($error . ' (' . $node->GetNodeName() . ')');
                 }
             }
         }
-        
+
         $strDoc = new StructuredDocument($this->nodeID);
         $res = $strDoc->SetContent($content, $commitNode);
         $this->messages->mergeMessages($strDoc->messages);
-        if ($res === false)
-        {
+        if ($res === false) {
             return false;
         }
-        
+
         $wfSlaves = $this->parent->GetWorkflowSlaves();
 
         if (!is_null($wfSlaves)) {
@@ -290,7 +277,7 @@ abstract class AbstractStructuredDocument extends FileNode
     }
 
     /**
-	 * Renderiza el nodo en el sistema de archivos
+     * Renderiza el nodo en el sistema de archivos
      * @param null $channel
      * @param null $content
      * @return bool
@@ -340,20 +327,16 @@ abstract class AbstractStructuredDocument extends FileNode
         $node = new Node($this->nodeID);
         $nt = $node->nodeType->get('IdNodeType');
         $metadata = '';
-        if ($nt == \Ximdex\NodeTypes\NodeTypeConstants::XML_DOCUMENT)
-        {
+        if ($nt == \Ximdex\NodeTypes\NodeTypeConstants::XML_DOCUMENT) {
             $metadata = 'metadata_id=""';
         }
         //include the associated semantic tags of the document into the docxap tag.
         $xtags = '';
-        if (\Ximdex\Modules\Manager::isEnabled('ximTAGS'))
-        {
+        if (\Ximdex\Modules\Manager::isEnabled('ximTAGS')) {
             $rtn = new RelTagsNodes();
             $nodeTags = $rtn->getTags($this->nodeID);
-            if (!empty($nodeTags))
-            {
-                foreach ($nodeTags as $tag)
-                {
+            if (!empty($nodeTags)) {
+                foreach ($nodeTags as $tag) {
                     $ns = new \Ximdex\Models\Namespaces();
                     $idns = $ns->getNemo($tag['IdNamespace']);
                     $xtags .= $tag['Name'] . ":" . $idns . ",";
@@ -411,7 +394,7 @@ abstract class AbstractStructuredDocument extends FileNode
             "</docxap>\n");
 
     }
-	
+
     function DeleteNode()
     {
         $parent = new Node($this->parent->get('IdParent'));
@@ -506,8 +489,9 @@ abstract class AbstractStructuredDocument extends FileNode
                 $res[] = $channel['Id'];
         return $res;
     }
-    
+
     // TODO: Rewrite in Views.
+
     /**
      * @param $depth
      * @param $files
@@ -645,21 +629,16 @@ abstract class AbstractStructuredDocument extends FileNode
         $doc = new StructuredDocument($this->nodeID);
         $channelList = $doc->GetChannels();
         $outPut = NULL;
-        if ($channelList)
-        {
-            if (in_array($channelID, $channelList))
-            {
+        if ($channelList) {
+            if (in_array($channelID, $channelList)) {
                 $channel = new Channel($channelID);
                 $outPut = 'channel="' . $channel->GetName() . '"';
                 $outPut .= ' extension="' . $channel->GetExtension() . '"';
-            }
-            else
-            {
+            } else {
                 $outPut = 'channel="" ';
             }
             reset($channelList);
-            while (list(, $channelID) = each($channelList))
-            {
+            while (list(, $channelID) = each($channelList)) {
                 $channel = new Channel($channelID);
                 $channelNames[] = $channel->get('Name');
                 $channelDesc[] = $channel->get('Description');
@@ -683,6 +662,7 @@ abstract class AbstractStructuredDocument extends FileNode
         $transformer = $node->getProperty('Transformer');
         $data['TRANSFORMER'] = $transformer[0];
         $data['DISABLE_CACHE'] = App::getValue("DisableCache");
+        $data['NODEID'] = $nodeid;
         if ($node->GetNodeType() == NodeTypeConstants::HTML_DOCUMENT) {
             $process = 'HTMLToPrepared';
         } else {

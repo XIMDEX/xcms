@@ -9012,7 +9012,7 @@ msgid "At least one language and one channel must be gived"
 msgstr "Se debe dar al menos un idioma y un canal"
 
 msgid "An enconding type is required"
-msgstr "Es necesario indicar un tipo de codificaci&oacute;n",
+msgstr "Es necesario indicar un tipo de codificaci&oacute;n"
 
 msgid "At least one channel is required"
 msgstr "Al menos un canal es necesario"
