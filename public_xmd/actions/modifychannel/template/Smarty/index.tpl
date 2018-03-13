@@ -84,7 +84,7 @@
             </div>
 
                     <div class="small-12 columns">
-                        <input type="checkbox" name="Default_Channel" id="default_channel" checked="checked" {if $default_channel==1}checked{/if} class="hidden-focus"/>
+                        <input type="checkbox" name="Default_Channel" id="default_channel" {if $default_channel==1}checked="checked"{/if} class="hidden-focus"/>
                         <label class="input-form checkbox-label" for="default_channel">{t}Default channel{/t}</label>
                     </div>
                 </div></div>

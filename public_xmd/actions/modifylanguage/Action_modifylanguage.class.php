@@ -62,7 +62,7 @@ class Action_modifylanguage extends ActionAbstract {
 
         if($node->IsValidName($this->request->getParam('Name'), $node->get('IdNodeType'))){
             $language->loadFromArray($_POST);
-            $language->set('Enabled', $this->request->getParam('Enabled') ? 1 : 0);
+            $language->set('Enabled', $this->request->getParam('enabled') ? 1 : 0);
             $languageResult = $language->update();
 
             $node->set('Description', $this->request->getParam('Description'));

@@ -31,6 +31,6 @@
   </div>
   <div class="message message-warning">    <p>{t}Publication windows configured for these files will be cancelled.{/t}</p></div>
 <div class="action_content">
-    <p> {t section_name=$section_name}You have selected to expire the document:{/t} {$doc_name}</p>
+    <p> {t}You have selected to expire the document:{/t} {$doc_name}</p>
 </div>
 </form>
