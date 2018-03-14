@@ -69,7 +69,6 @@ class ViewFilterMacros extends AbstractView implements IView
     const MACRO_PATHTOABS = "/@@@RMximdex\.pathtoabs\(([,-_#%=\.\w\s]+)\)@@@/";
     const MACRO_RDF = "/@@@RMximdex\.rdf\(([^\)]+)\)@@@/";
     const MACRO_RDFA = "/@@@RMximdex\.rdfa\(([^\)]+)\)@@@/";
-    const MACRO_CODE = "/@@@RMximdex\.code\((.*),(.*)\)@@@/";
 
     /**
      * Constructor with mode preview choise parameter
@@ -360,12 +359,6 @@ class ViewFilterMacros extends AbstractView implements IView
             'getLinkPath'
         ), $content);
 
-        // Mapped code to language programming
-        $content = preg_replace_callback(self::MACRO_CODE, array(
-            $this,
-            'getCodeTranslation'
-        ), $content);
-
         // Pathtoabs
         $content = preg_replace_callback(self::MACRO_PATHTOABS, array(
             $this,
@@ -597,25 +590,6 @@ class ViewFilterMacros extends AbstractView implements IView
             return $this->getAbsolutePath($targetNode, $targetServer, $idTargetChannel);
         }
         return $this->getRelativePath($targetNode, $idTargetChannel);
-    }
-
-    /**
-     * @param $matches
-     * @return string
-     */
-    private function getCodeTranslation($matches)
-    {
-        // Get channel
-        $channel = 'php';
-
-        // Get function
-        $function = $matches[1];
-
-        $translations['php']['include'] = '<?php include(\'%s"); ?>';
-
-        $translation = $translations[$channel][$function];
-
-        return sprintf($translation, trim($matches[2]));
     }
 
     /**
