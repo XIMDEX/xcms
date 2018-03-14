@@ -53,22 +53,23 @@ X.actionLoaded(function (event, fn, params) {
     });
 
     fn('#delete_server').click(function (event) {
-        if (fn('#serverid').val() != "none") {
+    	if (fn('#serverid').val() != "none") {
             confirm_dialog(event, _('Are you sure you want to remove this server?'), form, fm);
+            fn('input[name=borrar]').val(1);
             return true;
         }
     });
 
     //On click, reload the action without server id, so the inputs will be empty.
     fn("div.create-server").click(function (e) {
-        var urler = fn("#nodeURL").val();
+    	var urler = fn("#nodeURL").val();
         urler += '&action=modifyserver';
         fn("#mdfsv_form").attr("action", urler);
         fm.sendForm();
         return false;
     });
     
-    fn('#save_server').get(0).beforeSubmit.add(function (event) {
+    fn('#save_server').click(function (event) {
     	
         clearErrors();
         var protocolSelected = fn('#protocol').val();
@@ -97,21 +98,20 @@ X.actionLoaded(function (event, fn, params) {
             }
         }
 
-        if (empty(fn('#description').val())) {
+        /*if (empty(fn('#description').val())) {
             addError(_('It is necessary to specify a description for this server.'));
-        }
+        }*/
 
         if (!valid) {
             $(form).closest('.action_container').scrollTop(0);
             return true;
         }
 
-        var msg = _('Are you sure you want to modify these properties?');
+        /*var msg = _('Are you sure you want to modify these properties?');
         if (fn('#enabled').attr('checked') == false) {
             msg = _('Server is not enabled. Documents will not be published on this server.') + msg;
         }
-        confirm_dialog(event, msg, form, fm);
-
+        confirm_dialog(event, msg, form, fm);*/
         return true;
     });
 
@@ -133,20 +133,18 @@ X.actionLoaded(function (event, fn, params) {
         div_dialog.html(msg);
         var dialogButtons = {};
         dialogButtons[_('Accept')] = function () {
-            dialogCallback(true);
+        	dialogCallback(true);
         };
         dialogButtons[_('Cancel')] = function () {
             dialogCallback(false);
         };
         div_dialog.dialog({
             buttons: {
-                accept: function () {
+                Accept: function () {
                     dialogCallback(true);
-                    fn('input[name=borrar]').val(1);
                 },
-                cancel: function () {
+                Cancel: function () {
                     dialogCallback(false);
-                    fn('input[name=borrar]').val(0);
                 }
             }
         });
@@ -203,5 +201,5 @@ X.actionLoaded(function (event, fn, params) {
         fn('fieldset.mdfsv_errors').show();
         valid = false;
     }
-
+    
 });
