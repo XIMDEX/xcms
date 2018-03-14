@@ -170,7 +170,8 @@ class ViewFilterMacros extends AbstractView implements IView
             }
         } elseif (!is_null($idVersion)) {
             $version = new Version($idVersion);
-            if (! $version->get('IdVersion')) {
+            if (!$version->get('IdVersion')) {
+
                 Logger::error('VIEW FILTERMACROS: An incorrect version has been loaded (' . $idVersion . ')');
                 return false;
             }
@@ -501,6 +502,8 @@ class ViewFilterMacros extends AbstractView implements IView
      */
     private function getLinkPath($matches, $forceAbsolute = false)
     {
+        $absolute = $relative = false;
+
         // Get parentesis content
         $pathToParams = $matches[1];
 
@@ -533,8 +536,12 @@ class ViewFilterMacros extends AbstractView implements IView
         if ($this->_node && !$this->_node->get('IdNode')) {
             return '';
         }
-        
-        // Target channel
+        if (!$this->preview) {
+            if (isset($res["pathMethod"])) {
+                $absolute = isset($res["pathMethod"]["absolute"]) && $res["pathMethod"]["absolute"];
+                $relative = isset($res["pathMethod"]["relative"]) && $res["pathMethod"]["relative"];
+            }
+        }
         if ($res["channel"]) {
             $idTargetChannel = $res["channel"];
         } elseif ($this->idChannel) {
@@ -543,8 +550,10 @@ class ViewFilterMacros extends AbstractView implements IView
             $idTargetChannel = null;
         }
         $isStructuredDocument = $targetNode->nodeType->GetIsStructuredDocument();
-        if (!$this->preview and $isStructuredDocument) {
+        if (!$this->preview) {
             $targetChannelNode = new Channel($idTargetChannel);
+        }
+        if (!$this->preview and $isStructuredDocument) {
             $idTargetChannel = ($targetChannelNode->get('IdChannel') > 0) ? $targetChannelNode->get('IdChannel') : $this->_idChannel;
         }
 
@@ -560,9 +569,9 @@ class ViewFilterMacros extends AbstractView implements IView
             if ($isStructuredDocument) {
                 if ($this->mode == 'dinamic') {
                     return "javascript:parent.loadDivsPreview(" . $idNode . ")";
-                }
-                else {
+                } else {
                     $query = App::get('\Ximdex\Utils\QueryManager');
+                    // return $query->getPage() . $query->buildWith(array('nodeid' => $idNode, 'channelid' => $idTargetChannel));
                     return $query->getPage() . $query->buildWith(array('nodeid' => $idNode, 'token' => uniqid()));
                 }
             }
@@ -579,24 +588,29 @@ class ViewFilterMacros extends AbstractView implements IView
             }
         }
         if (App::getValue('PullMode') == 1) {
-            return App::getValue('UrlRoot') . '/src/Rest/Pull/index.php?idnode=' . $targetNode->get('IdNode') . '&idchannel=' . $idTargetChannel 
-                    . '&idportal=' . $this->_serverNode->get('IdNode');
+            return App::getValue('UrlRoot') . '/src/Rest/Pull/index.php?idnode=' . $targetNode->get('IdNode') . '&idchannel=' . $idTargetChannel
+                . '&idportal=' . $this->_serverNode->get('IdNode');
         }
-        
-        // Get the server to publicate the node with the correspondant channel
         $sync = new SynchroFacade();
         $idTargetServer = $sync->getServer($targetNode->get('IdNode'), $idTargetChannel, $this->_server->get('IdServer'));
         $targetServer = new server($idTargetServer);
-        if (! $targetServer->get('IdServer')) {
+        $idTargetServer = $targetServer->get('IdServer');
+        if (!($idTargetServer > 0)) {
             return App::getValue('EmptyHrefCode');
         }
-        
-        // Get the relative or absolute path
-        if ($forceAbsolute or ($targetServer->get('IdServer') != $this->_server->get('IdServer')) or $this->_server->get('OverrideLocalPaths')
-            or (isset($res['pathMethod']['absolute']) and $res['pathMethod']['absolute'])) {
+        if (!$forceAbsolute && !$absolute && !$relative) {
+            if (!$this->_server->get('OverrideLocalPaths') && ($idTargetServer == $this->_server->get('IdServer'))) {
+                return $this->getRelativePath($targetNode, $idTargetChannel);
+            } else {
+                return $this->getAbsolutePath($targetNode, $targetServer, $idTargetChannel);
+            }
+        } elseif ($forceAbsolute || $absolute) {
             return $this->getAbsolutePath($targetNode, $targetServer, $idTargetChannel);
+        } else {
+
+            // Must be relative
+            return $this->getRelativePath($targetNode, $idTargetChannel);
         }
-        return $this->getRelativePath($targetNode, $idTargetChannel);
     }
 
     /**
