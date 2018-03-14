@@ -91,7 +91,7 @@ function createBatchsForBlock($nodesToPublish)
         $physicalServers = $nodeServer->class->GetPhysicalServerList(true);
     } else {
         
-        $physicalServers = $nodeServer->class->GetEnabledPhysicalServerList(true);
+        $physicalServers = $nodeServer->class->GetPhysicalServerList(true, true);
     }
     if (count($physicalServers) == 0) {
         

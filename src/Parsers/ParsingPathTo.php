@@ -94,9 +94,9 @@ class ParsingPathTo
 
         // Checking the first params. It could be number, or .number or string
         $nodeValue = trim(urldecode($params[0]));
-        
-        // The second one is value is the channel name, optional
         if (isset($params[1])) {
+            
+            // The second one is value is the channel name or ID (optional)
             $channelParam = trim($params[1]);
             $channel = new Channel();
             if (is_numeric($channelParam)) {
@@ -114,6 +114,8 @@ class ParsingPathTo
             $this->channel = $channel[0]['IdChannel'];
         }
         else {
+            
+            // Specified channel has not been given in function parameters
             $this->channel = null;
         }
 
@@ -288,7 +290,7 @@ class ParsingPathTo
                 }
             }
             $name = $node->GetNodeName();
-            Logger::info('ParsingPathTo: Obtained node with ID: ' . $id . ' and name: ' . $name, true);
+            Logger::info('ParsingPathTo: Obtained node with ID: ' . $id . ' and name: ' . $name);
         }
         
         // Target channel
@@ -302,11 +304,7 @@ class ParsingPathTo
             }
             $this->channel = $channel;
         }
-        
-        //TODO
-        $pathMethod = false;
-        
-        $this->pathMethod = !$pathMethod ? array("relative" => false, "absolute" => false) : $pathMethod;
+        $this->pathMethod = array('absolute' => false);
         $this->idNode = $id;
         return true;
     }

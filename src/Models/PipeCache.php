@@ -79,8 +79,7 @@ class PipeCache extends PipeCachesOrm
                 if ($idCache) {
                     self::__construct($idCache);
                     if ($this->get('id') > 0) {
-                        Logger::info("PipeCache: Cache was correctly estimated for a previous version. Version: $idVersion Transition: $idTransition"
-                                , true);
+                        Logger::info("PipeCache: Cache was correctly estimated for a previous version. Version: $idVersion Transition: $idTransition");
                         return $this->_getPointer();
                     } else {
                         Logger::error("PipeCache: A cache was estimated but it doesn't exist. Version: $idVersion Transition: $idTransition");
