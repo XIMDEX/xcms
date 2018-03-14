@@ -339,7 +339,7 @@ class DataFactory
         {
             $version = new Version($idVersion);
             if (!($version->get('IdVersion') > 0))
-            {                
+            {
                 return NULL;
             }
             $idNode = $version->get('IdNode');
@@ -352,14 +352,14 @@ class DataFactory
             {
                 return NULL;
             }
-            
+
             // delete cache if the parameter $delete is true
             $pipelineManager = new PipelineManager();
             if ($delete)
             {
                 $pipelineManager->deleteCache($idVersion);
             }
-            
+
             $channels = $node->GetChannels();
             if ($channels)
             {
@@ -367,6 +367,7 @@ class DataFactory
                 {
                     Logger::info("Generation cache for version $idVersion and the channel $idChannel");
                     $data = array('CHANNEL' => $idChannel);
+                    $data['NODEID'] = $idNode;
                     $data['DISABLE_CACHE'] = App::getValue("DisableCache");
                     $transformer = $node->getProperty('Transformer');
                     $data['TRANSFORMER'] = $transformer[0];
@@ -404,18 +405,18 @@ class DataFactory
 
         //only encoding the content if the node is not one of this 3.
         if (!$isPlainFile)
-        {    
+        {
             //look for the working encoding from Config
             $dataEncoding = App::getValue('dataEncoding');
             $content = \Ximdex\XML\Base::recodeSrc($content, $dataEncoding);
         }
         $this->ClearError();
         if (!($this->nodeID > 0))
-        {        
+        {
             $this->SetError(1);
             return false;
         }
-        
+
         // (1) No se pasa version determinada, se incrementa la version con el contenido nuevo.
         if (is_null($versionID) && is_null($subVersion))
         {
@@ -430,12 +431,12 @@ class DataFactory
             $uniqueName = $this->GetTmpFile($versionID, $subVersion);
             if (!$uniqueName)
             {
-                Logger::error("Error making a setContent for Node (Unable to get the file):" . $this->nodeID . ", Version: " . $versionID . "." 
+                Logger::error("Error making a setContent for Node (Unable to get the file):" . $this->nodeID . ", Version: " . $versionID . "."
                         . $subVersion . ", File: ." . $uniqueName . ", Chars: " . strlen($content));
                 return false;
             }
             $targetPath = XIMDEX_ROOT_PATH . App::getValue("FileRoot") . "/" . $uniqueName;
-            Logger::info("SetContent for Node:" . $this->nodeID . ", Version: " . $versionID . "." . $subVersion . ", File: ." . $uniqueName 
+            Logger::info("SetContent for Node:" . $this->nodeID . ", Version: " . $versionID . "." . $subVersion . ", File: ." . $uniqueName
                     . ", Chars: " . strlen($content));
             $result = FsUtils::file_put_contents($targetPath, $content);
             $idVersion = $this->getVersionId($versionID, $subVersion);
