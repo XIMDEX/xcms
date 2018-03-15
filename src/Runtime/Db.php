@@ -107,8 +107,10 @@ class Db
         }
         catch (\PDOException $e)
         {
-            if (isset($GLOBALS['InBatchProcess']) and $GLOBALS['InBatchProcess'])
+            if (isset($GLOBALS['InBatchProcess']) and $GLOBALS['InBatchProcess']) {
                 echo $e->getMessage() . PHP_EOL;
+            }
+            $this->stm = false;
         }
         if ($this->stm === false)
         {    
@@ -182,8 +184,10 @@ class Db
         }
         catch (\PDOException $e)
         {
-            if (isset($GLOBALS['InBatchProcess']) and $GLOBALS['InBatchProcess'])
+            if (isset($GLOBALS['InBatchProcess']) and $GLOBALS['InBatchProcess']) {
                 echo $e->getMessage() . PHP_EOL;
+            }
+            $res = false;
         }
         if ($res !== false)
         {

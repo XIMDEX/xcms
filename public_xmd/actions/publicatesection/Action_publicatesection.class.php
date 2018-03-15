@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -31,16 +32,15 @@ use Ximdex\NodeTypes\NodeTypeConstants;
 
 class Action_publicatesection extends ActionAbstract
 {
-
-    // Main method: shows initial form
-    function index()
+    /**
+     * Main method: shows initial form
+     */
+    public function index()
     {
-
         $idNode = (int)$this->request->getParam("nodeid");
         $node = new Node($idNode);
         $nodeTypeName = $node->nodeType->GetName();
-        $publishabledNodeTypes = array();
-        
+        $publishabledNodeTypes = array();        
         $values = array(
             'go_method' => 'publicate_section',
             'publishabledtypes' => $publishabledNodeTypes,
@@ -49,7 +49,6 @@ class Action_publicatesection extends ActionAbstract
             'folderType' => $node->nodeType->getID() == NodeTypeConstants::SERVER ? 'server' : 'section',
             'name' => $node->GetNodeName()
         );
-
         $serverID = $node->getServer();
         $nodeServer = new Node($serverID);
         $nameServer = $nodeServer->get('Name');
@@ -58,42 +57,37 @@ class Action_publicatesection extends ActionAbstract
             $this->messages->add(sprintf(_("There is not any defined physical server in: '%s'"), $nameServer), MSG_TYPE_ERROR);
             $values['messages'] = $this->messages->messages;
         }
-
         $this->addJs('/actions/publicatesection/resources/js/index.js');
-
         $this->render($values, NULL, 'default-3.0.tpl');
     }
 
-    function publicate_section()
+    public function publicate_section()
     {
         $idNode = (int)$this->request->getParam("nodeid");
         $recurrence = ($this->request->getParam("rec") == "rec") ? true : false;
         $forcePublication = $this->request->getParam("force_publication") ? true : false;
         $type = $this->request->getParam("types");
         $type = (isset($type) && $type > 0) ? $type : false;
+        $noUseDrafts = $this->request->getParam('latest') ? false : true;
         $dateUp = time();
-
         $node = new Node($idNode);
         $nodename = $node->get('Name');
         $folderType = $node->nodeType->getID() == NodeTypeConstants::SERVER ? 'server' : 'section';
-
         $flagsPublication = array('markEnd' => true,
             'linked' => true,
             'recurrence' => $recurrence,
             'childtype' => $type,
             'workflow' => false,
-            'force' => $forcePublication
+            'force' => $forcePublication,
+            'lastPublished' => $noUseDrafts,
+            'publicateSection' => $recurrence
         );
-
         $syncFac = new SynchroFacade();
         $result = $syncFac->pushDocInPublishingPool($idNode, $dateUp, NULL, $flagsPublication, $recurrence);
-
         $this->messages->add(sprintf(_("%s %s has been successfully sent to publish"), $folderType, $nodename), MSG_TYPE_NOTICE);
-
         $values = array(
             'messages' => $this->messages->messages,
         );
-
         $this->sendJSON($values);
     }
 }

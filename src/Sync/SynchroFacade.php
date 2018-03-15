@@ -74,7 +74,6 @@ class SynchroFacade
                 return NULL;
             }
             
-            // TODO ajlucena: add status published or being published
             // Calculating physical origin and destiny servers
             $physicalTargetServers = $targetFrame->getCompleteServerList($idTargetNode, $idTargetChannel);
             if (count($physicalTargetServers) == 0) {
@@ -483,11 +482,13 @@ class SynchroFacade
      * @param int $idNode
      * @param $upDate --> date for publication document (timestamp type)
      * @param $downDate --> date for unpublish the document (timestamp type)
-     * @param boolean $forcePublication
+     * @param array $flagsArray
+     *            forcePublication:
      *            --> if true --> publish the document although it is in the last version
      *            --> if false --> only publish the document if there is a new mayor version no publish
-     * @param boolean $forceDependencies --> if true --> publish the dependencies although they are in the last version
-     * @param array $flagsArray
+     *            forceDependencies: --> if true --> publish the dependencies although they are in the last version
+     * @param bool $recurrence
+     * @return array|bool
      */
     function pushDocInPublishingPool($idNode, $upDate, $downDate = NULL, $flagsArray = NULL, $recurrence = false)
     {
@@ -514,45 +515,44 @@ class SynchroFacade
             $syncMngr->setFlag('deleteOld', true);
             $result = $syncMngr->pushDocInPublishingPool($idNode, $upDate, $downDate);
             return $result;
-        } else {
-            $syncMngr = new SyncManager();
-            
-            // Default values
-            $syncMngr->setFlag('workflow', true);
-            $syncMngr->setFlag('recurrence', $recurrence);
-            
-            // It's needs markend and linked
-            if (($flagsArray != null) && (is_array($flagsArray))) {
-                foreach ($flagsArray as $key => $value) {
-                    $syncMngr->setFlag($key, $value);
-                }
-            }
-            $workflow = isset($workflow) ? $workflow : true;
-            $forcePublication = isset($flagsArray['force']) && $flagsArray['force'] == 1 ? true : false;
-            $syncMngr->setFlag('deleteOld', true);
-            $syncMngr->setFlag('workflow', $workflow);
-            $node = new Node($idNode);
-            $result = array(
-                'ok' => array(),
-                'notok' => array(),
-                'unchanged' => array()
-            );
-            $nodeList = $node->class->getPublishabledDeps(array(
-                'recurrence' => $recurrence
-            ));
-            foreach ($nodeList as $nodeID) {
-                
-                // Push document in publishing pool
-                $syncMngr->pushDocInPublishingPool($nodeID, $upDate, $downDate, $forcePublication);
-                $publishedNode = new Node($nodeID);
-                if ($syncMngr->error()) {
-                    $result['notok']["#" . $nodeID][0][0] = true;
-                } else {
-                    $result['ok']["#" . $nodeID][0][0] = true;
-                }
-            }
-            return $result;
         }
+        $syncMngr = new SyncManager();
+        
+        // Default values
+        $syncMngr->setFlag('workflow', true);
+        $syncMngr->setFlag('recurrence', $recurrence);
+        
+        // It's needs markend and linked
+        if (($flagsArray != null) && (is_array($flagsArray))) {
+            foreach ($flagsArray as $key => $value) {
+                $syncMngr->setFlag($key, $value);
+            }
+        }
+        $workflow = isset($workflow) ? $workflow : true;
+        $forcePublication = isset($flagsArray['force']) && $flagsArray['force'] == 1 ? true : false;
+        $syncMngr->setFlag('deleteOld', true);
+        $syncMngr->setFlag('workflow', $workflow);
+        $node = new Node($idNode);
+        $result = array(
+            'ok' => array(),
+            'notok' => array(),
+            'unchanged' => array()
+        );
+        $nodeList = $node->class->getPublishabledDeps(array(
+            'recurrence' => $recurrence
+        ));
+        foreach ($nodeList as $nodeID) {
+            
+            // Push document in publishing pool
+            $syncMngr->pushDocInPublishingPool($nodeID, $upDate, $downDate, $forcePublication);
+            $publishedNode = new Node($nodeID);
+            if ($syncMngr->error()) {
+                $result['notok']["#" . $nodeID][0][0] = true;
+            } else {
+                $result['ok']["#" . $nodeID][0][0] = true;
+            }
+        }
+        return $result;
     }
 
     /**

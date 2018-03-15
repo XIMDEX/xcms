@@ -90,7 +90,7 @@ class XmlContainerNode extends FolderNode
             foreach ($aliasLangList as $idLanguage => $alias) {
                 $result = $this->addLanguageVersion($idLanguage, $alias, $channelList, $dataChildren);
             }
-            $this->buildMetadata($nodeTypeID, $aliasLangList);
+            // $this->buildMetadata($nodeTypeID, $aliasLangList);
         }
         if (! $result) {
             return false;
@@ -98,7 +98,8 @@ class XmlContainerNode extends FolderNode
         if ($idNodeMaster) {
             $this->setNodeMaster($idNodeMaster);
         }
-        if ($nodeTypeID == \Ximdex\NodeTypes\NodeTypeConstants::XML_CONTAINER or $nodeTypeID == \Ximdex\NodeTypes\NodeTypeConstants::HTML_CONTAINER) {
+        if ($nodeTypeID == \Ximdex\NodeTypes\NodeTypeConstants::XML_CONTAINER 
+            or $nodeTypeID == \Ximdex\NodeTypes\NodeTypeConstants::HTML_CONTAINER) {
             $this->UpdatePath();
         }
         return true;
@@ -106,16 +107,13 @@ class XmlContainerNode extends FolderNode
 
     private function buildMetadata($idNodeType, $aliases)
     {
-        // only generate metadata nodes for XML document containers
-        if ($idNodeType == \Ximdex\NodeTypes\NodeTypeConstants::XML_CONTAINER) {
-            $langs = array();
-            foreach ($aliases as $idLang => $alias) {
-                $langs[] = $idLang;
-            }
-            $mm = new \Ximdex\Metadata\MetadataManager($this->nodeID);
-            $mm->generateMetadata($langs);
-            $mm->updateSystemMetadata();
+        $langs = array();
+        foreach ($aliases as $idLang => $alias) {
+            $langs[] = $idLang;
         }
+        $mm = new \Ximdex\Metadata\MetadataManager($this->nodeID);
+        $mm->generateMetadata($langs);
+        $mm->updateSystemMetadata();
     }
 
     /**

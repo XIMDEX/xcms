@@ -29,7 +29,7 @@ namespace Ximdex\NodeTypes;
 
 use Ximdex\Models\Node;
 
-/***
+/**
  * Class for NodeType common
  */
 class CommonNode extends FileNode
@@ -42,9 +42,11 @@ class CommonNode extends FileNode
     function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = 7, $sourcePath = "")
     {
         parent::CreateNode($name, $parentID, $nodeTypeID, $stateID, $sourcePath);
+        /*
         $mm = new \Ximdex\Metadata\MetadataManager($this->nodeID);
         $mm->generateMetadata();
         $mm->updateSystemMetadata();
+        */
     }
 
     /**

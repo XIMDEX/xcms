@@ -79,7 +79,7 @@ class PipeCache extends PipeCachesOrm
                 if ($idCache) {
                     self::__construct($idCache);
                     if ($this->get('id') > 0) {
-                        Logger::info("PipeCache: Cache was correctly estimated for a previous version. Version: $idVersion Transition: $idTransition");
+                        Logger::info("PipeCache: Cache was correctly estimated for a previous version. Version: $idVersion Transition: $idTransition", true);
                         return $this->_getPointer();
                     } else {
                         Logger::error("PipeCache: A cache was estimated but it doesn't exist. Version: $idVersion Transition: $idTransition");
@@ -110,7 +110,7 @@ class PipeCache extends PipeCachesOrm
             Logger::warning('PipeCache: There is a problem to obtain the cache data for transition ' . $idTransition 
                     . '. Obtaining no cache data instead');
         } else {
-            Logger::info('PipeCache: There is no previous transition for transition ' . $idTransition);
+            Logger::info('PipeCache: There is no previous transition for transition ' . $idTransition . ' with version: ' . $idVersion);
         }
         if (isset($args['CONTENT'])) {
             
@@ -157,7 +157,7 @@ class PipeCache extends PipeCachesOrm
         }
         $result = $this->query($query, MONO, 'id');
         if (! $result) {
-            Logger::info('PipeCache: There is not cache for the specified version and transition');
+            Logger::info('PipeCache: There is not cache for the specified version: ' . $idVersion . ' and transition: ' . $idTransition);
         }
         return $result;
     }

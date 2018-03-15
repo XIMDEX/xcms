@@ -44,14 +44,14 @@ require_once(APP_ROOT_PATH . XIMDEX_VENDORS . '/flow/Uploader.php');
 
 class Action_fileupload_common_multiple extends ActionAbstract
 {
-    function __construct() {
+    public function __construct() {
         parent::__construct();
         $this->uploadsFolder = XIMDEX_ROOT_PATH . App::getValue( 'TempRoot') .'/'. App::getValue( 'UploadsFolder');
         $this->chunksFolder = XIMDEX_ROOT_PATH . App::getValue( 'TempRoot') .'/'. App::getValue( 'ChunksFolder');
     }
 
     // Main method: shows initial form
-    function index () {
+    public function index () {
         $is_structured = false;
         $idNode = (int) $this->request->getParam("nodeid");
         $actionID = (int) $this->request->getParam("actionid");
@@ -179,14 +179,14 @@ class Action_fileupload_common_multiple extends ActionAbstract
         $this->clearChunks();
     }
 
-    function clearChunks() {
+    public function clearChunks() {
         if (file_exists($this->chunksFolder)) {
             $uploader = new \Flow\Uploader();
             $uploader->pruneChunks($this->chunksFolder);
         }
     }
 
-    function _saveFile($path) {
+    private function _saveFile($path) {
         if (!file_exists($this->chunksFolder)) {
             mkdir($this->chunksFolder, 0777, true);
         }
@@ -209,7 +209,7 @@ class Action_fileupload_common_multiple extends ActionAbstract
         return false;
     }
 
-    function uploadFlowFile() {
+    public function uploadFlowFile() {
         if (!file_exists($this->uploadsFolder)) {
             mkdir($this->uploadsFolder, 0777, true);
         }

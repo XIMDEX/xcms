@@ -241,7 +241,7 @@ class BatchManager
     }
 
 
-    function buildBatchs($nodeGenerator, $timeUp, $docsToPublish, $docsToUpVersion, $version, $subversion, $server, $physicalServers, $priority
+    function buildBatchs($nodeGenerator, $timeUp, $docsToPublish, $docsToUpVersion, $versions, $subversions, $server, $physicalServers, $priority
         , $timeDown = null, $statStart = 0, $statTotal = 0, $idPortalVersion = 0, $userId = null)
     {
         // If the server is publishing through a channell in which there is not existing documents
@@ -263,7 +263,7 @@ class BatchManager
             Logger::info(_('Creating up batch: ') . $timeUp);
             Logger::info(sprintf(_("[Generator %s]: Creating up batch with id %s"), $nodeGenerator, $relBatchsServers[$serverId]));
         }
-        $frames = $this->buildFrames($timeUp, $timeDown, $docsToPublish, $docsToUpVersion, $version, $subversion, $server, $relBatchsServers
+        $frames = $this->buildFrames($timeUp, $timeDown, $docsToPublish, $docsToUpVersion, $versions, $subversions, $server, $relBatchsServers
             , $statStart, $statTotal, $nodeGenerator);
         return $frames;
     }
@@ -280,6 +280,10 @@ class BatchManager
 
         // Creating the frames for each idNode
         foreach ($docsToPublish as $idNode) {
+            if (!isset($versions[$idNode]) or $versions[$idNode] === null) {
+                Logger::error('There is not any version for node: ' . $idNode);
+                continue;
+            }
             if (($totalDocs > 20) && ($j % $mod == 0))
             {
                 Logger::info((int)($j / $totalDocs * 100) . "% " . _("completed"), 1);
@@ -338,10 +342,10 @@ class BatchManager
             // upgrade document and caches version to the published one
             if (isset($docsToUpVersion[$idNode]) and $docsToUpVersion[$idNode])
             {
-                if ($versions = $this->_upVersion(array($docsToUpVersion[$idNode]), NULL))
+                if ($version = $this->_upVersion(array($docsToUpVersion[$idNode]), NULL))
                 {
                     // now $idVersion will be upgraded one 
-                    $idVersion = $versions[0];
+                    $idVersion = $version[0];
                 }
             }
             

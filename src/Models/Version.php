@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,15 +25,12 @@
  * @version $Revision$
  */
 
-
 namespace Ximdex\Models;
 
 use Ximdex\Models\ORM\VersionsOrm;
 
-
 class Version extends VersionsOrm
 {
-
     public function getLastestDocsByUser($idUser)
     {
         $query = "select n.IdNode,n.name,n.IdNodeType,n.path,Version,Subversion,max(Date) from
@@ -68,7 +66,8 @@ class Version extends VersionsOrm
      * @param $subVersion
      * @return null | string
      */
-    public function getIdVersion($idNode, $version, $subVersion){
+    public function getIdVersion($idNode, $version, $subVersion)
+    {
         $res = $this->find('IdVersion', 'IdNode = %s and Version = %s and SubVersion = %s', [$idNode, $version, $subVersion]);
         if( count($res) == 1 ){
             return $res[0]['IdVersion'];
