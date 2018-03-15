@@ -80,7 +80,8 @@ class Action_publicatesection extends ActionAbstract
             'workflow' => false,
             'force' => $forcePublication,
             'lastPublished' => $noUseDrafts,
-            'publicateSection' => $recurrence
+            'publicateSection' => true,
+            'publicateFullSection' => $recurrence
         );
         $syncFac = new SynchroFacade();
         $result = $syncFac->pushDocInPublishingPool($idNode, $dateUp, NULL, $flagsPublication, $recurrence);
