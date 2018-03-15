@@ -51,6 +51,11 @@
 			</p>
 			<hr />
 			<p>
+                <label for="last_edited" class="col1-2"> <input type="checkbox" name="latest" id="last_edited" value="1" /> 
+                    {t}Use drafts instead of already published versions.{/t}
+                </label>
+            </p>
+			<p>
                 <label for="force_publication" class="col1-2"> <input type="checkbox" 
                         name="force_publication" value="1" id="force_publication"> {t}Force republish{/t}.
                 </label>

@@ -70,17 +70,18 @@ class ParsingPathTo
 
     /**
      * Get Idnode and channel from the params of the pathto method
-     * @param string $pathToParams
-     * @param int $nodeId
-     * @param int $language
-     * @param int $channel
+     * 
+     * @param string $pathToParams : Path or node ID to parse
+     * @param int $nodeId : Parent document node ID
+     * @param int $language : Parent language ID
+     * @param int $channel : Parent language ID
      * @return bool
      */
     public function parsePathTo(string $pathToParams, int $nodeId = null, int $language = null, $channel = null) : bool
     {
         $msg = 'Parsing pathTo with: ' . $pathToParams;
         if ($nodeId) {
-            $msg .= ' and document node: ' . $nodeId;
+            $msg .= ' for parent document node: ' . $nodeId;
         }
         Logger::info($msg);
         $params = explode(",", $pathToParams);

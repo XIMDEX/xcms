@@ -189,7 +189,7 @@ class PipeTransition extends PipeTransitionsOrm
 		$timer->start();
 		if (method_exists($object, $function))
 		{
-		    Logger::info("TRANSITION START: Calling method $function in order to make the transformation process for version $idVersion");
+		    Logger::info("TRANSITION START: Calling method $function in order to make the transformation process for version $idVersion", true);
 			$transformedPointer = $object->$function($idVersion, $pointer, $args);
 			if (strpos($pointer, App::getValue('TempRoot')) and file_exists($pointer)) {
 			    @unlink($pointer);
@@ -234,6 +234,9 @@ class PipeTransition extends PipeTransitionsOrm
 		}
 		if (isset($args['DISABLE_CACHE'])) {
 		    $msg .= ' with cache disabled: ' . $args['DISABLE_CACHE'];
+		}
+		if (isset($args['NODEID'])) {
+		    $msg .= ' with node ID: ' . $args['NODEID'];
 		}
 		if ($transformedPointer)
 		{

@@ -16,12 +16,13 @@ class FastTraverse extends FastTraverseOrm
      * 'Id' => '10001') can be used to make the result more precise
      *
      * @param int $idNode
-     * @param bool $nodeTypes
+     * @param array $fields
      * @param int $level
      * @param array $filters
-     * @return bool|string[]
+     * @param array $nodeTypeFlags
+     * @return bool|array
      */
-    public static function get_children(int $idNode, bool $nodeTypes = false, int $level = null, array $filters = [])
+    public static function get_children(int $idNode, array $fields = null, int $level = null, array $filters = null, array $nodeTypeFlags = null)
     {
         if ($idNode < 1) {
             Logger::error('Getting children in FastTraverse without node given');
@@ -29,17 +30,34 @@ class FastTraverse extends FastTraverseOrm
         }
         $db = new Db();
         $sql = 'select ft.IdChild, ft.Depth';
-        if ($nodeTypes) {
-            $sql .= ', node.IdNodeType';
+        if ($fields) {
+            foreach ($fields as $field) {
+                $sql .= ', node.' . $field;
+            }
         }
         $sql .= ' from FastTraverse ft';
-        if ($nodeTypes) {
+        
+        // If the node type will be the key value, we need to make a joion with Nodes table
+        if ($fields or $nodeTypeFlags) {
             $sql .= ' inner join Nodes node on (node.IdNode = ft.IdChild)';
         }
+        
+        // Filter for node type flags, we need to make a join to NodeType table
+        if ($nodeTypeFlags) {
+            $sql .= ' inner join NodeTypes nt on (nt.IdNodeType = node.IdNodeType';
+            foreach ($nodeTypeFlags as $flag => $value) {
+                $sql .= ' and nt.' . $flag . ' is ' . (($value) ? 'true' : 'false'); 
+            }
+            $sql .= ')';
+        }
         $sql .= ' where ft.IdNode = ' . $idNode;
+        
+        // Get only a specified level
         if ($level) {
             $sql .= ' and ft.Depth = ' . $level;
         }
+        
+        // Filters add some criteria to obtain specified nodes
         if ($filters) {
             foreach ($filters as $field => $values) {
                 if (is_array($values)) {
@@ -53,12 +71,18 @@ class FastTraverse extends FastTraverseOrm
             return false;
         }
         $children = array();
-        if ($nodeTypes) {
+        if ($fields) {
+            
+            // The returned array will have the Depth as the primary level, the node ID as the second with an array with the specfied fields
             while (! $db->EOF) {
-                $children[$db->GetValue('Depth')][$db->GetValue('IdChild')] = $db->GetValue('IdNodeType');
+                foreach ($fields as $field) {
+                    $children[$db->GetValue('Depth')][$db->GetValue('IdChild')][$field] = $db->GetValue($field);
+                }
                 $db->Next();
             }
         } else {
+            
+            // The returned array will have the Depth as key with the node ID as the value
             while (! $db->EOF) {
                 $children[$db->GetValue('Depth')][] = $db->GetValue('IdChild');
                 $db->Next();
@@ -73,7 +97,7 @@ class FastTraverse extends FastTraverseOrm
      *
      * @param int $idNode
      * @param string $index
-     * @return boolean|array
+     * @return bool|array
      */
     public static function get_parents(int $idNode, string $value = null, string $index = null)
     {

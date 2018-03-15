@@ -451,88 +451,77 @@ class DataFactory
     }
 
     /**
-     *
-     * Crea una nueva Version
-     *
-     * @name        AddVersion
-     * @author    Jose I. Villar
-     * @version    1.0
-     * @param    bool $newVersion = null
-     * @param    string $comment = null
-     *
+     * Create a new version
+     * 
+     * @param $jumpNewVersion
+     * @param $comment
+     * @param $content
+     * @param $commitNode
+     * @return boolean|NULL|string
      */
     function AddVersion($jumpNewVersion = NULL, $comment = NULL, $content = NULL, $commitNode = NULL)
     {
-
         $this->ClearError();
-
         if (!($this->nodeID > 0)) {
             $this->SetError(1);
             return false;
         }
-
-        /// Si tiene versiones anteriores, calculamos cual es la siguiente
+        
+        // Si tiene versiones anteriores, calculamos cual es la siguiente
         if ($this->HasPreviousVersions()) {
             $purgeAll = false;
             $curVersion = $this->GetLastVersion();
-
             if (is_null($curVersion)) {
                 Logger::warning('Unable to get the last version of the document');
                 return false;
             }
             $curSubVersion = $this->GetLastSubVersion($curVersion);
-
-            /// Si queremos saltar de version x.y -> x+1.0
-                if ($jumpNewVersion) {
-                    $purgeAll = true;
-                    $newVersion = $curVersion + 1;
-                    $newSubVersion = '0';
-                    $updateCaches = true;
-                    $oldIdVersion = $this->getVersionId($curVersion, $curSubVersion);
-
-                } else {
-                    /// Si queremos saltar solo de subversion x.y -> x.y+1
-                    $newVersion = $curVersion;
-                    $newSubVersion = $curSubVersion + 1;
-                }
-
+            if ($jumpNewVersion) {
+                
+                // Si queremos saltar de version x.y -> x+1.0
+                $purgeAll = true;
+                $newVersion = $curVersion + 1;
+                $newSubVersion = '0';
+                $updateCaches = true;
+                $oldIdVersion = $this->getVersionId($curVersion, $curSubVersion);
+            }
+            else {
+                
+                // Si queremos saltar solo de subversion x.y -> x.y+1
+                $newVersion = $curVersion;
+                $newSubVersion = $curSubVersion + 1;
+            }
             if (is_null($content)) {
                 $newContent = $this->GetContent($curVersion, $curSubVersion);
-            } else {
+            }
+            else {
                 $newContent = $content;
             }
-
             if (App::getValue("PurgeVersionsOnNewVersion")) {
                 $this->_purgeVersions();
             }
-
             if (App::getValue("PurgeSubversionsOnNewVersion")) {
                 $this->_purgeSubVersions($newVersion);
             }
 
-        } else {
-            /// Si es la primera version a guardar -> 0.0
+        }
+        else {
+            
+            // Si es la primera version a guardar -> 0.0
             $newVersion = 0;
             $newSubVersion = 0;
-
             if (is_null($content)) {
                 $newContent = '';
             } else {
                 $newContent = $content;
             }
         }
-
         $userID = \Ximdex\Runtime\Session::get("userID");
         if ($userID == null) {
             $userID = "301"; // ximdex admin
         }
-
         $uniqueName = $this->_getUniqueFileName();
-
-        FsUtils::file_put_contents(XIMDEX_ROOT_PATH .
-            App::getValue("FileRoot") .
-            "/" . $uniqueName, $newContent);
-
+        FsUtils::file_put_contents(XIMDEX_ROOT_PATH . App::getValue("FileRoot") . "/" . $uniqueName, $newContent);
         $version = new Version();
         $version->set('IdNode', $this->nodeID);
         $version->set('Version', $newVersion);
@@ -542,21 +531,15 @@ class DataFactory
         $version->set('Date', time());
         $version->set('Comment', $comment);
         $IdVersion = $version->add();
-
         if (isset($updateCaches) && $updateCaches) {
             $this->updateCaches($oldIdVersion, $IdVersion);
         }
-
         Logger::debug('AddVersion for Node:' . $this->nodeID . ', Version: ' . $newVersion . '.' . $newSubVersion . ', File: ' . $uniqueName);
-
-
         if (\Ximdex\Modules\Manager::isEnabled('ximRAM')) {
             $this->indexNode($this->getVersionId($newVersion, $newSubVersion), $commitNode);
         }
-
         $mm = new \Ximdex\Metadata\MetadataManager($this->nodeID);
         $mm->updateMetadataVersion();
-
         return $IdVersion;
     }
 

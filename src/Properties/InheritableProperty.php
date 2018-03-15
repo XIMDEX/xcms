@@ -332,8 +332,8 @@ abstract class InheritableProperty {
 	        return false;
 	    
 	    // obtain the target nodes under the specified one
-	    $children = FastTraverse::get_children($this->nodeId, true, null, array('IdNodeType' => array(NodeTypeConstants::SERVER
-	           , NodeTypeConstants::SECTION, NodeTypeConstants::XML_ROOT_FOLDER, NodeTypeConstants::XML_CONTAINER)));
+	    $children = FastTraverse::get_children($this->nodeId, ['IdNodeType'], null, array('IdNodeType' => array(NodeTypeConstants::SERVER
+	        , NodeTypeConstants::SECTION, NodeTypeConstants::XML_ROOT_FOLDER, NodeTypeConstants::XML_CONTAINER)));
 	    if ($children === false)
 	        return false;
 	    if (isset($children[0]))

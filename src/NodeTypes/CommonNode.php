@@ -29,7 +29,7 @@ namespace Ximdex\NodeTypes;
 
 use Ximdex\Models\Node;
 
-/***
+/**
  * Class for NodeType common
  */
 class CommonNode extends FileNode

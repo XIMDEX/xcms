@@ -27,6 +27,7 @@
 use Ximdex\Logger;
 use Ximdex\Models\Pumper;
 use Ximdex\Models\Server;
+use Ximdex\Runtime\App;
 use Ximdex\Cli\CliParser;
 
 // for legacy compatibility
@@ -154,7 +155,14 @@ class DexPumper {
 				if ($cycle <= $this->maxVoidCycles) {
 					$this->updateTimeInPumper();
 					$this->activeWaiting();
-					$this->info("cycle $cycle without working. Sleeeping.....");
+					
+					// Manual stop for pumpers in sleeping mode
+					$stopper_file_path = XIMDEX_ROOT_PATH . App::getValue("TempRoot") . "/pumper.stop";
+					if (file_exists($stopper_file_path)) {
+					    Logger::warning('[PUMPERS] ' . _("STOP: Detected file") . " $stopper_file_path");
+					    break;
+					}
+					$this->info("cycle $cycle without working. Sleeping.....");
 					continue;
 				} else {
 					$this->info("Max Cycle $cycle. Bye!");

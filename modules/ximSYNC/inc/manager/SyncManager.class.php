@@ -28,6 +28,7 @@
 use Ximdex\Logger;
 use Ximdex\Models\Node;
 use Ximdex\Models\User;
+use Ximdex\Models\FastTraverse;
 
 \Ximdex\Modules\Manager::file('/inc/manager/BatchManager.class.php', 'ximSYNC');
 \Ximdex\Modules\Manager::file('/inc/model/NodesToPublish.class.php', 'ximSYNC');
@@ -39,13 +40,14 @@ use Ximdex\Models\User;
 class SyncManager
 {
     // State flags.
-    var $workflow;
-    var $deleteOld;
-    var $markEnd;
-    var $linked;
-    var $type;
-    var $mail;
-
+    public $workflow;
+    public $deleteOld;
+    public $markEnd;
+    public $linked;
+    public $type;
+    public $mail;
+    private $lastPublished;
+    private $publicateSection;
     private $docsToPublishByLevel = array();
     private $computedDocsToPublish = array();
     private $pendingDocsToPublish = array();
@@ -88,7 +90,7 @@ class SyncManager
         return NULL;
     }
 
-    public function buildPublishingDependencies($idNode, $params)
+    private function buildPublishingDependencies($idNode, $params)
     {
         $this->pendingDocsToPublish = $this->computedDocsToPublish = array();
         $this->pendingDocsToPublish[] = $idNode;
@@ -102,6 +104,30 @@ class SyncManager
         }
         return $this->computedDocsToPublish;
     }
+    
+    /**
+     * Get the nodes over a section, only the publishable and no folder type ones
+     * 
+     * @param int $nodeID
+     * @param array $nodes
+     * @return bool
+     */
+    private function buildPublishingSection(int $nodeID, array & $nodes) : bool
+    {
+        $nodeTypeFlags = array('IsPublishable' => true, 'IsFolder' => false);
+        $children = FastTraverse::get_children($nodeID, null, null, null, $nodeTypeFlags);
+        if ($children === false) {
+            return false;
+        }
+        foreach ($children as $level => $levelNodes) {
+            foreach ($levelNodes as $nodeID) {
+                $nodes[] = $nodeID;
+                $this->docsToPublishByLevel[$nodeID] = $level;
+            }
+        }
+        return true;
+    }
+    
 
     /**
      * Gets the Nodes that must be published with the current Node and calls the methods for build the Batchs.
@@ -118,18 +144,29 @@ class SyncManager
             return NULL;
         }
         $force = $this->getFlag('globalForcePublication') ? true : $this->getFlag("force");
-        $params['deeplevel'] = $this->getFlag('deeplevel');
         $lastPublishedDocument = $this->getFlag("lastPublished");
-        
-        // flags for dependencies
-        $params['withstructure'] = ($this->getFlag('structure') === false) ? false : true;
+        $publicateSection = $this->getFlag('publicateSection');
         $node = new Node($idNode);
         if (!($node->get('IdNode') > 0)) {
             
             Logger::error(sprintf(_("Node %s does not exist"), $idNode));
             return NULL;
         }
-        $docsToPublish = $this->buildPublishingDependencies($idNode, $params);
+        if ($publicateSection) {
+            
+            // Obtain all the whole children above the given section
+            $docsToPublish = [];
+            if (!$this->buildPublishingSection($idNode, $docsToPublish)) {
+                return null;
+            }
+        }
+        else {
+            // Flags for dependencies
+            $params = [];
+            $params['withstructure'] = ($this->getFlag('structure') === false) ? false : true;
+            $params['deeplevel'] = $this->getFlag('deeplevel');
+            $docsToPublish = $this->buildPublishingDependencies($idNode, $params);
+        }
         if ($node->nodeType->get('IsPublishable') == '1') {
             if (sizeof($docsToPublish) > 0) {
                 $docsToPublish = array_unique(array_merge(array($idNode), $docsToPublish));
@@ -170,7 +207,6 @@ class SyncManager
     /**
      * @param $nodeId
      * @param $params
-     * @param $currentDeepLevel
      * @return mixed
      */
     public function hasDependences($nodeId, $params)
@@ -209,7 +245,7 @@ class SyncManager
         }
     }
 
-    function sendMail($nodeID, $type, $up, $down)
+    private function sendMail($nodeID, $type, $up, $down)
     {
         $node = new node($nodeID);
         $name = $node->Get('Name');
