@@ -241,12 +241,10 @@ INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdConte
 
 -- Publication of XML and HTML documents
 INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`, `IsBulk`) 
-    VALUES ('7240', '5018', 'Publish XML documents', 'publicatesection', 'publicate_section.png', 'Publish a XML document section', '100'
+    VALUES ('7240', '5018', 'Publish documents', 'publicatesection', 'publicate_section.png', 'Publish a XML or HTML document section', '100'
     , NULL, '0', NULL, '0');
-INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 7240, 8, 1, 3);
-INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 7240, 7, 1, 3);
+INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 7240, 0, 1, 3);
 INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`, `IsBulk`) 
-    VALUES ('7241', '5103', 'Publish XML document', 'publicatesection', 'publicate_section.png', 'Publish a XML document', '101'
+    VALUES ('7241', '5103', 'Publish document', 'publicatesection', 'publicate_section.png', 'Publish a XML or HTML document', '101'
     , NULL, '0', NULL, '0');
-INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 7241, 8, 1, 3);
-INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 7241, 7, 1, 3);
+INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 7241, 0, 1, 3);

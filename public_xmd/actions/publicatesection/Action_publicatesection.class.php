@@ -91,7 +91,7 @@ class Action_publicatesection extends ActionAbstract
         );
         $syncFac = new SynchroFacade();
         $result = $syncFac->pushDocInPublishingPool($idNode, $dateUp, NULL, $flagsPublication, $recurrence);
-        $this->messages->add(sprintf(_("%s %s has been successfully sent to publish"), $folderType, $nodename), MSG_TYPE_NOTICE);
+        $this->messages->add(sprintf(_("%s %s has been successfully sent to publish"), ucfirst($folderType), $nodename), MSG_TYPE_NOTICE);
         $values = array(
             'messages' => $this->messages->messages,
         );

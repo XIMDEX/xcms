@@ -206,7 +206,8 @@ class SyncManager
                 $this->docsToPublishByLevel = array($idNode);
             }
         }
-        else {
+        elseif ($node->GetNodeType() != NodeTypeConstants::XML_ROOT_FOLDER and $node->GetNodeType() != NodeTypeConstants::XML_CONTAINER 
+            and $node->GetNodeType() != NodeTypeConstants::HTML_CONTAINER) {
             return array();
         }
         $userID = \Ximdex\Runtime\Session::get('userID');
