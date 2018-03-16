@@ -63,7 +63,7 @@ class Response
      */
     public function send($headers = null)
     {
-        if ($headers) {
+        if (!is_null($headers)) {
             foreach ($headers as $key => $value) {
                 header($key . ":" . $value);
             }
