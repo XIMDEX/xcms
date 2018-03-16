@@ -29,6 +29,7 @@ use Ximdex\Logger;
 use Ximdex\Models\Node;
 use Ximdex\Models\User;
 use Ximdex\Models\FastTraverse;
+use Ximdex\NodeTypes\NodeTypeConstants;
 
 \Ximdex\Modules\Manager::file('/inc/manager/BatchManager.class.php', 'ximSYNC');
 \Ximdex\Modules\Manager::file('/inc/model/NodesToPublish.class.php', 'ximSYNC');
@@ -48,7 +49,7 @@ class SyncManager
     public $mail;
     private $lastPublished;
     private $publicateSection;
-    private $publicateFullSection;
+    private $level;
     private $docsToPublishByLevel = array();
     private $computedDocsToPublish = array();
     private $pendingDocsToPublish = array();
@@ -109,22 +110,43 @@ class SyncManager
     /**
      * Get the nodes over a section, only the publishable and no folder type ones
      * 
-     * @param int $nodeID
+     * @param Node $node
      * @param array $nodes
      * @param int $level
      * @return bool
      */
-    private function buildPublishingSection(int $nodeID, array & $nodes, int $level = null) : bool
+    private function buildPublishingSection(Node $node, array & $nodes, int $level = null) : bool
     {
-        $nodeTypeFlags = array('IsPublishable' => true, 'IsFolder' => false);
-        $children = FastTraverse::get_children($nodeID, null, $level, null, $nodeTypeFlags);
+        $nodeTypeFlags = ['IsPublishable' => true, 'IsFolder' => false];
+        if ($level !== null) {
+            
+            // Publication of the section until a given level
+            if ($node->GetNodeType() == NodeTypeConstants::SERVER or $node->GetNodeType() == NodeTypeConstants::SECTION) {
+                
+                // Server and sections nodes must increment one level more
+                $level++;
+            }
+        }
+        // First search for structural assets nodes
+        $nodeTypeFlagsAux = $nodeTypeFlags + ['IsStructuredDocument' => false];
+        $assetsChildren = FastTraverse::get_children($node->GetID(), null, $level, null, $nodeTypeFlagsAux);
+        
+        // Then search the structured documents with one plus level to include at the end of the pool
+        $nodeTypeFlagsAux = $nodeTypeFlags + ['IsStructuredDocument' => true];
+        if ($level) {
+            $level++;
+        }
+        $documentsChildren = FastTraverse::get_children($node->GetID(), null, $level, null, $nodeTypeFlagsAux);
+        
+        // Combine the two pools
+        $children = array_merge_recursive($assetsChildren, $documentsChildren);
         if ($children === false) {
             return false;
         }
         foreach ($children as $level => $levelNodes) {
-            foreach ($levelNodes as $nodeID) {
-                $nodes[] = $nodeID;
-                $this->docsToPublishByLevel[$nodeID] = $level;
+            foreach ($levelNodes as $id) {
+                $nodes[] = $id;
+                $this->docsToPublishByLevel[$id] = $level;
             }
         }
         return true;
@@ -154,15 +176,9 @@ class SyncManager
         if ($publicateSection) {
             
             // Obtain all the whole children above the given section
-            $publicateFullSection = $this->getFlag('publicateFullSection');
-            if ($publicateFullSection) {
-                $level = null;
-            }
-            else {
-                $level = 3;
-            }
+            $level = $this->getFlag('level');
             $docsToPublish = [];
-            if (!$this->buildPublishingSection($idNode, $docsToPublish, $level)) {
+            if (!$this->buildPublishingSection($node, $docsToPublish, $level)) {
                 return null;
             }
         }
@@ -202,7 +218,7 @@ class SyncManager
                 $ntp = NodesToPublish::create($idDoc, $idNode, $up, null, $userID, $force, $lastPublishedDocument, $deepLevel);
             }
         }
-        if ($this->getFlag('mail')) {   
+        if ($this->getFlag('mail')) {
             $this->sendMail($idNode, $type, $up, $down);
         }
 

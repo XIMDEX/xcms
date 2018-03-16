@@ -10,10 +10,11 @@ class FastTraverse extends FastTraverseOrm
 {
     /**
      * Get an array with all the child nodes which depend of a parent node given
-     * This array contains the IdNode field with the Depth value in its index
-     * If the parameter nodeTypes is a true value, the index of each node will be its ID and the value the Node Type ID
-     * Also an array named $filters with field name and value (ex. 'Id' => '10001') can be used to make the result more precise
+     * This array contains the IdNode field with the Depth value in its index by default
+     * If other fields are needed, fields parameter can be used to declare each one
+     * Also an array named filters with field name and value (ex. 'Id' => '10001') can be used to make the result more precise
      * The level parameter can specify the maximun depth level to obtain
+     * Filters must be an array of fields to include or exclude some field values (using index 'exclude' or 'include')
      *
      * @param int $idNode
      * @param array $fields
@@ -70,11 +71,23 @@ class FastTraverse extends FastTraverseOrm
         
         // Filters add some criteria to obtain specified nodes
         if ($filters) {
-            foreach ($filters as $field => $values) {
-                if (is_array($values)) {
-                    $sql .= ' and ' . $field . ' in (' . implode(',', $values) . ')';
-                } else {
-                    $sql .= ' and ' . $field . ' = \'' . $values . '\'';
+            foreach ($filters as $operation => $opFilters) {
+                if ($operation == 'exclude') {
+                    $operator = 'not in';
+                }
+                else {
+                    $operator = 'in';
+                }
+                if (!is_array($opFilters)) {
+                    Logger::error(ucfirst($operation) . ' filters parameter must be an array of fields');
+                    return false;
+                }
+                foreach ($opFilters as $field => $values) {
+                    if (!is_array($values)) {
+                        Logger::error('Filter parameter for ' . $field . ' field must be an array of fields');
+                        return false;
+                    }
+                    $sql .= ' and ' . $field . ' ' . $operator . ' (' . implode(',', $values) . ')';
                 }
             }
         }

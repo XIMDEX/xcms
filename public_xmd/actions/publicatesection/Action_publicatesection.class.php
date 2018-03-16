@@ -65,6 +65,12 @@ class Action_publicatesection extends ActionAbstract
     {
         $idNode = (int)$this->request->getParam("nodeid");
         $recurrence = ($this->request->getParam("rec") == "rec") ? true : false;
+        if ($recurrence) {
+            $level = null;
+        }
+        else {
+            $level = 1;
+        }
         $forcePublication = $this->request->getParam("force_publication") ? true : false;
         $type = $this->request->getParam("types");
         $type = (isset($type) && $type > 0) ? $type : false;
@@ -81,7 +87,7 @@ class Action_publicatesection extends ActionAbstract
             'force' => $forcePublication,
             'lastPublished' => $noUseDrafts,
             'publicateSection' => true,
-            'publicateFullSection' => $recurrence
+            'level' => $level
         );
         $syncFac = new SynchroFacade();
         $result = $syncFac->pushDocInPublishingPool($idNode, $dateUp, NULL, $flagsPublication, $recurrence);
