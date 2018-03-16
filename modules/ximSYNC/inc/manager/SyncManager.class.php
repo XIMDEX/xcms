@@ -130,6 +130,16 @@ class SyncManager
         // First search for structural assets nodes
         $nodeTypeFlagsAux = $nodeTypeFlags + ['IsStructuredDocument' => false];
         $assetsChildren = FastTraverse::get_children($node->GetID(), null, $level, null, $nodeTypeFlagsAux);
+        if ($assetsChildren === false) {
+            return false;
+        }
+        foreach ($assetsChildren as $nodeLevel => $levelNodes) {
+            $nodeLevel += 100;
+            foreach ($levelNodes as $id) {
+                $nodes[] = $id;
+                $this->docsToPublishByLevel[$id] = $nodeLevel;
+            }
+        }
         
         // Then search the structured documents with one plus level to include at the end of the pool
         $nodeTypeFlagsAux = $nodeTypeFlags + ['IsStructuredDocument' => true];
@@ -137,16 +147,13 @@ class SyncManager
             $level++;
         }
         $documentsChildren = FastTraverse::get_children($node->GetID(), null, $level, null, $nodeTypeFlagsAux);
-        
-        // Combine the two pools
-        $children = array_merge_recursive($assetsChildren, $documentsChildren);
-        if ($children === false) {
+        if ($documentsChildren === false) {
             return false;
         }
-        foreach ($children as $level => $levelNodes) {
+        foreach ($documentsChildren as $nodeLevel => $levelNodes) {
             foreach ($levelNodes as $id) {
                 $nodes[] = $id;
-                $this->docsToPublishByLevel[$id] = $level;
+                $this->docsToPublishByLevel[$id] = $nodeLevel;
             }
         }
         return true;
@@ -183,6 +190,7 @@ class SyncManager
             }
         }
         else {
+            
             // Flags for dependencies
             $params = [];
             $params['withstructure'] = ($this->getFlag('structure') === false) ? false : true;
