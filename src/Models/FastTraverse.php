@@ -12,8 +12,8 @@ class FastTraverse extends FastTraverseOrm
      * Get an array with all the child nodes which depend of a parent node given
      * This array contains the IdNode field with the Depth value in its index
      * If the parameter nodeTypes is a true value, the index of each node will be its ID and the value the Node Type ID
-     * Also an array named $filters with field name and value (ex.
-     * 'Id' => '10001') can be used to make the result more precise
+     * Also an array named $filters with field name and value (ex. 'Id' => '10001') can be used to make the result more precise
+     * The level parameter can specify the maximun depth level to obtain
      *
      * @param int $idNode
      * @param array $fields
@@ -31,30 +31,41 @@ class FastTraverse extends FastTraverseOrm
         $db = new Db();
         $sql = 'select ft.IdChild, ft.Depth';
         if ($fields) {
-            foreach ($fields as $field) {
-                $sql .= ', node.' . $field;
+            if (isset($fields['nodeType'])) {
+                foreach ($fields['nodeType'] as $field) {
+                    $sql .= ', nt.' . $field;
+                }
+            }
+            if (isset($fields['node'])) {
+                foreach ($fields['node'] as $field) {
+                    $sql .= ', node.' . $field;
+                }
             }
         }
         $sql .= ' from FastTraverse ft';
-        
-        // If the node type will be the key value, we need to make a joion with Nodes table
-        if ($fields or $nodeTypeFlags) {
+        if (isset($fields['node']) or isset($fields['nodeType']) or $nodeTypeFlags) {
+            
+            // If the fields contain node or nodetype values, or node type flags, we need to make a join with Nodes table
             $sql .= ' inner join Nodes node on (node.IdNode = ft.IdChild)';
-        }
-        
-        // Filter for node type flags, we need to make a join to NodeType table
-        if ($nodeTypeFlags) {
-            $sql .= ' inner join NodeTypes nt on (nt.IdNodeType = node.IdNodeType';
-            foreach ($nodeTypeFlags as $flag => $value) {
-                $sql .= ' and nt.' . $flag . ' is ' . (($value) ? 'true' : 'false'); 
+            if (isset($fields['nodeType']) or $nodeTypeFlags) {
+                
+                // We need to make a join to NodeType table in order to use the node type values and flags
+                $sql .= ' inner join NodeTypes nt on (nt.IdNodeType = node.IdNodeType';
+                
+                // Filter for node type flags
+                if ($nodeTypeFlags) {
+                    foreach ($nodeTypeFlags as $flag => $value) {
+                        $sql .= ' and nt.' . $flag . ' is ' . (($value) ? 'true' : 'false'); 
+                    }
+                }
+                $sql .= ')';
             }
-            $sql .= ')';
         }
         $sql .= ' where ft.IdNode = ' . $idNode;
         
         // Get only a specified level
         if ($level) {
-            $sql .= ' and ft.Depth = ' . $level;
+            $sql .= ' and ft.Depth <= ' . $level;
         }
         
         // Filters add some criteria to obtain specified nodes
@@ -75,8 +86,10 @@ class FastTraverse extends FastTraverseOrm
             
             // The returned array will have the Depth as the primary level, the node ID as the second with an array with the specfied fields
             while (! $db->EOF) {
-                foreach ($fields as $field) {
-                    $children[$db->GetValue('Depth')][$db->GetValue('IdChild')][$field] = $db->GetValue($field);
+                foreach ($fields as $source => $sourceFields) {
+                    foreach ($sourceFields as $field) {
+                        $children[$db->GetValue('Depth')][$db->GetValue('IdChild')][$source][$field] = $db->GetValue($field);
+                    }
                 }
                 $db->Next();
             }

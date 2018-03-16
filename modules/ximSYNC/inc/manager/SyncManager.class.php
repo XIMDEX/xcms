@@ -48,6 +48,7 @@ class SyncManager
     public $mail;
     private $lastPublished;
     private $publicateSection;
+    private $publicateFullSection;
     private $docsToPublishByLevel = array();
     private $computedDocsToPublish = array();
     private $pendingDocsToPublish = array();
@@ -110,12 +111,13 @@ class SyncManager
      * 
      * @param int $nodeID
      * @param array $nodes
+     * @param int $level
      * @return bool
      */
-    private function buildPublishingSection(int $nodeID, array & $nodes) : bool
+    private function buildPublishingSection(int $nodeID, array & $nodes, int $level = null) : bool
     {
         $nodeTypeFlags = array('IsPublishable' => true, 'IsFolder' => false);
-        $children = FastTraverse::get_children($nodeID, null, null, null, $nodeTypeFlags);
+        $children = FastTraverse::get_children($nodeID, null, $level, null, $nodeTypeFlags);
         if ($children === false) {
             return false;
         }
@@ -139,24 +141,28 @@ class SyncManager
      */
     function pushDocInPublishingPool(int $idNode, int $up, int $down = null)
     {
-        if (is_null($idNode)) {
+        if (!$idNode) {
             Logger::error(_("Pushdocinpool - Empty IdNode"));
             return NULL;
         }
-        $force = $this->getFlag('globalForcePublication') ? true : $this->getFlag("force");
-        $lastPublishedDocument = $this->getFlag("lastPublished");
-        $publicateSection = $this->getFlag('publicateSection');
         $node = new Node($idNode);
-        if (!($node->get('IdNode') > 0)) {
-            
+        if (!$node->GetID()) {
             Logger::error(sprintf(_("Node %s does not exist"), $idNode));
             return NULL;
         }
+        $publicateSection = $this->getFlag('publicateSection');
         if ($publicateSection) {
             
             // Obtain all the whole children above the given section
+            $publicateFullSection = $this->getFlag('publicateFullSection');
+            if ($publicateFullSection) {
+                $level = null;
+            }
+            else {
+                $level = 3;
+            }
             $docsToPublish = [];
-            if (!$this->buildPublishingSection($idNode, $docsToPublish)) {
+            if (!$this->buildPublishingSection($idNode, $docsToPublish, $level)) {
                 return null;
             }
         }
@@ -180,6 +186,8 @@ class SyncManager
             return array();
         }
         $userID = \Ximdex\Runtime\Session::get('userID');
+        $force = $this->getFlag('globalForcePublication') ? true : $this->getFlag("force");
+        $lastPublishedDocument = $this->getFlag("lastPublished");
         foreach ($docsToPublish as $idDoc) {
             if (!array_key_exists($idDoc, $this->docsToPublishByLevel)) {
                 continue;

@@ -228,19 +228,20 @@ class XsltNode extends FileNode
             }
         }
         // get the children nodes of the current section
-        $nodes = FastTraverse::get_children($section->GetID(), ['IdNodeType'], 1);
+        $nodes = FastTraverse::get_children($section->GetID(), ['node' => ['IdNodeType']], 1);
         if ($nodes === false)
         {
             $this->messages->add('Cannot get children nodes from node: ' . $section->GetID() . ' in reload templates include files process'
                     , MSG_TYPE_ERROR);
             return false;
         }
-        if (!$nodes)
+        if (!$nodes) {
             return true;
+        }
         foreach ($nodes[1] as $idChildNode => $nodeData)
         {
             // only project, servers and section/subsections can storage template folders
-            $idNodeType = $nodeData['IdNodeType'];
+            $idNodeType = $nodeData['node']['IdNodeType'];
             if ($idNodeType == \Ximdex\NodeTypes\NodeTypeConstants::SERVER or $idNodeType == \Ximdex\NodeTypes\NodeTypeConstants::SECTION)
             {
                 // call in recursive mode with the templates folder, for whole project nodes tree
@@ -785,7 +786,7 @@ DOCXAP;
         }
         
         // Get children of the node with its node types
-        $nodes = FastTraverse::get_children($node->GetID(), ['IdNodeType'], 1);
+        $nodes = FastTraverse::get_children($node->GetID(), ['node' => ['IdNodeType']], 1);
         if ($nodes === false)
         {
             $this->messages->add('Cannot get children nodes from node: ' . $node->GetID() . ' in reload templates include files process', MSG_TYPE_ERROR);
@@ -797,7 +798,7 @@ DOCXAP;
         foreach ($nodes[1] as $idChildNode => $nodeData)
         {
             // Only project, servers and section/subsections can storage template folders
-            $idNodeType = $nodeData['IdNodeType'];
+            $idNodeType = $nodeData['node']['IdNodeType'];
             if ($idNodeType ==\Ximdex\NodeTypes\NodeTypeConstants::PROJECT or $idNodeType ==\Ximdex\NodeTypes\NodeTypeConstants::SERVER
                     or $idNodeType ==\Ximdex\NodeTypes\NodeTypeConstants::SECTION)
             {
