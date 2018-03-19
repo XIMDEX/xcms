@@ -8,6 +8,8 @@ use Ximdex\Runtime\Db;
 
 class FastTraverse extends FastTraverseOrm
 {
+    static $db;
+    
     /**
      * Get an array with all the child nodes which depend of a parent node given
      * This array contains the IdNode field with the Depth value in its index by default
@@ -29,7 +31,6 @@ class FastTraverse extends FastTraverseOrm
             Logger::error('Getting children in FastTraverse without node given');
             return false;
         }
-        $db = new Db();
         $sql = 'select ft.IdChild, ft.Depth';
         if ($fields) {
             if (isset($fields['nodeType'])) {
@@ -91,27 +92,30 @@ class FastTraverse extends FastTraverseOrm
                 }
             }
         }
-        if ($db->Query($sql) === false) {
+        if (!self::$db) {
+            self::$db = new Db();
+        }
+        if (self::$db->Query($sql) === false) {
             return false;
         }
         $children = array();
         if ($fields) {
             
             // The returned array will have the Depth as the primary level, the node ID as the second with an array with the specfied fields
-            while (! $db->EOF) {
+            while (! self::$db->EOF) {
                 foreach ($fields as $source => $sourceFields) {
                     foreach ($sourceFields as $field) {
-                        $children[$db->GetValue('Depth')][$db->GetValue('IdChild')][$source][$field] = $db->GetValue($field);
+                        $children[self::$db->GetValue('Depth')][self::$db->GetValue('IdChild')][$source][$field] = self::$db->GetValue($field);
                     }
                 }
-                $db->Next();
+                self::$db->Next();
             }
         } else {
             
             // The returned array will have the Depth as key with the node ID as the value
-            while (! $db->EOF) {
-                $children[$db->GetValue('Depth')][] = $db->GetValue('IdChild');
-                $db->Next();
+            while (! self::$db->EOF) {
+                $children[self::$db->GetValue('Depth')][] = self::$db->GetValue('IdChild');
+                self::$db->Next();
             }
         }
         return $children;
@@ -144,15 +148,17 @@ class FastTraverse extends FastTraverseOrm
             $sql = 'select ft.IdNode as _index, Depth as _value from FastTraverse ft';
         }
         $sql .= ' where ft.IdChild = ' . $idNode . ' order by ft.Depth';
-        $db = new Db();
-        if ($db->Query($sql) === false) {
-            Logger::error('Getting parents in FastTraverse with node: ' . $idNode . ' (' . $db->desErr . ')');
+        if (!self::$db) {
+            self::$db = new Db();
+        }
+        if (self::$db->Query($sql) === false) {
+            Logger::error('Getting parents in FastTraverse with node: ' . $idNode . ' (' . self::$db->desErr . ')');
             return false;
         }
         $parents = array();
-        while (! $db->EOF) {
-            $parents[$db->GetValue('_index')] = $db->GetValue('_value');
-            $db->Next();
+        while (! self::$db->EOF) {
+            $parents[self::$db->GetValue('_index')] = self::$db->GetValue('_value');
+            self::$db->Next();
         }
         return $parents;
     }

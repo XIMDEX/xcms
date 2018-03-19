@@ -31,8 +31,8 @@ use Ximdex\Models\Node;
 
 \Ximdex\Modules\Manager::file('/inc/model/orm/NodesToPublish_ORM.class.php', 'ximSYNC');
 
-class NodesToPublish extends NodesToPublish_ORM {
-
+class NodesToPublish extends NodesToPublish_ORM
+{
 	public function __construct($id = null)
 	{
 		parent::__construct($id);
@@ -165,23 +165,41 @@ class NodesToPublish extends NodesToPublish_ORM {
 		$db->Query($sql);
 	}
 
-	public function getIntervals($idNode)
-	{    
-		$dbObj = new \Ximdex\Runtime\Db();
+	/**
+	 * @param $idNode
+	 * @param int $idNodeGenerator
+	 * @return array
+	 */
+	public function getIntervals($idNode, int $idNodeGenerator = null)
+	{
 		$arrayDates = array();
-		$gaps = array();
 		$now = time();
-		$infinite = mktime(0,0,0,12,12,2099);
 		$j = 0;
-		$results = $this->find("DateUp, DateDown", "IdNode = %s AND (DateUp > %s or DateDown > %s) order by dateup", array($idNode, $now, $now));
+		$fields = 'DateUp, DateDown';
+		$condition = '(DateUp > %s or DateDown > %s)';
+		$order = 'DateUp';
+		if ($idNodeGenerator) {
+		    $fields .= ', COUNT(IdNode) as nodes';
+		    $condition .= ' AND IdNodeGenerator = ' . $idNodeGenerator;
+		    $group = 'DateUp';
+		}
+		else {
+		    $group = null;
+		    $condition .= ' AND IdNode = ' . $idNode;
+		}
+		$results = $this->find($fields, $condition, array($now, $now), true, true, null, $order, $group);
+		if ($results === false) {
+		    return false;
+		}
 		if (is_null($results)) {
 			return array();
 		}
 		foreach ($results as $row) {
-			$timeUp = $row["DateUp"];
-			$timeDown = $row["DateDown"];
-			$arrayDates[$j]['start'] = $timeUp;
-			$arrayDates[$j]['end'] = $timeDown? $timeDown: null;
+			$arrayDates[$j]['start'] = $row["DateUp"];
+			$arrayDates[$j]['end'] = ($row["DateDown"]) ? $row["DateDown"] : null;
+			if ($idNodeGenerator) {
+			    $arrayDates[$j]['nodes'] = $row['nodes'];
+			}
 			$j++;
 		}
 		return $arrayDates;

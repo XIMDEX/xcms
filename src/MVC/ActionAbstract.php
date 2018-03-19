@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,9 +25,7 @@
  * @version $Revision$
  */
 
-
 namespace Ximdex\MVC;
-
 
 use Ximdex\Logger;
 use Ximdex\Parsers\ParsingJsGetText;
@@ -37,10 +36,9 @@ use Ximdex\Models\Node;
 use Ximdex\Runtime\App;
 use Ximdex\Runtime\Request;
 use Ximdex\Utils\Factory;
+use Ximdex\Utils\Mail;
 use Ximdex\Utils\QueryManager;
 use Ximdex\Runtime\Session;
-
-
 
 /**
  *
@@ -52,13 +50,13 @@ use Ximdex\Runtime\Session;
  */
 abstract class ActionAbstract extends IController
 {
-
     /**
      * Keeps the js to use
      */
     public $displayEncoding;
     public $actionMethod;
     public $actionModule;
+    
     /**
      * @var array
      */
@@ -689,7 +687,7 @@ abstract class ActionAbstract extends IController
             $user = new User($toUser);
             $userEmail = $user->get('Email');
             $userName = $user->get('Name');
-            $mail = new \Ximdex\Utils\Mail();
+            $mail = new Mail();
             $mail->addAddress($userEmail, $userName);
             $mail->Subject = $subject;
             $mail->Body = $content;

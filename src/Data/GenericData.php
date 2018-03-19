@@ -430,15 +430,19 @@ class GenericData
 
     /**
      * Ejecuta una consulta simple contra la base de datos y devuelve un array con los valores obtenidos
+     * 
      * @param string $fields
      * @param string $condition
      * @param null $params
      * @param bool $returnType
      * @param bool $escape
+     * @param string $index
+     * @param string $order
+     * @param string $groupBy
      * @return array
      */
     public function find($fields = ALL, $condition = '', $params = null, $returnType = MULTI, $escape = true, string $index = null
-            , string $order = null)
+        , string $order = null, string $groupBy = null)
     {
         $condition = $this->_getCondition($condition, $params, $escape);
         $query     = sprintf(
@@ -447,6 +451,9 @@ class GenericData
             $this->_table,
             empty($condition) ? '1' : $condition
         );
+        if ($groupBy) {
+            $query .= ' GROUP BY ' . $groupBy;
+        }
         if ($order) {
             $query .= ' ORDER BY ' . $order;
         }

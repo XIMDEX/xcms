@@ -1,5 +1,4 @@
 <?php
-namespace Ximdex\Helpers;
 
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
@@ -26,18 +25,15 @@ namespace Ximdex\Helpers;
  * @version $Revision$
  */
 
+namespace Ximdex\Helpers;
 
 class ServerConfig
 {
-
-
 	private $disabledFunctionsInConfig = array();
 	private $ximdexRequiredFunctions = array("pcntl_fork", "pcntl_waitpid");
 
-
 	public function __construct()
 	{
-
 		$this->disabledFunctionsInConfig = explode(',', ini_get('disable_functions'));
 	}
 
@@ -47,7 +43,6 @@ class ServerConfig
 	 */
 	public function hasDisabledFunctions($function = null)
 	{
-
 		$disabledFunctionsFounded = $this->findDisabledFunctions($function);
 		return is_array($disabledFunctionsFounded) && count($disabledFunctionsFounded);
 	}
@@ -57,20 +52,16 @@ class ServerConfig
 	 * Check if a function is disabled in php.ini_get
 	 * @param string $functionName function name to check.
 	 */
-
 	public function isDisabledFunctions($functionName)
 	{
-
 		if (is_string($functionName)) {
 			return $this->hasDisabledFunctions($functionName);
 		}
 		return false;
 	}
 
-
 	private function findDisabledFunctions($function = null)
 	{
-
 		if (!$function) {
 			$requiredFunctions = $this->ximdexRequiredFunctions;
 		} else if (is_string($function)) {
@@ -78,15 +69,12 @@ class ServerConfig
 		} else if (is_array($function)) {
 			$requiredFunctions = $function;
 		}
-
 		$disabledFunctionsFounded = array();
-
 		foreach ($requiredFunctions as $functionName) {
 			if (in_array($functionName, $this->disabledFunctionsInConfig)) {
 				$disabledFunctionsFounded[] = $functionName;
 			}
 		}
-
 		return $disabledFunctionsFounded;
 	}
 
@@ -94,6 +82,4 @@ class ServerConfig
 	{
 		return $this->disabledFunctionsInConfig;
 	}
-
-
 }

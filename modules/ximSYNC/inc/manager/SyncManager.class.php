@@ -127,17 +127,22 @@ class SyncManager
                 $level++;
             }
         }
-        // First search for structural assets nodes
-        $nodeTypeFlagsAux = $nodeTypeFlags + ['IsStructuredDocument' => false];
-        $assetsChildren = FastTraverse::get_children($node->GetID(), null, $level, null, $nodeTypeFlagsAux);
-        if ($assetsChildren === false) {
-            return false;
-        }
-        foreach ($assetsChildren as $nodeLevel => $levelNodes) {
-            $nodeLevel += 100;
-            foreach ($levelNodes as $id) {
-                $nodes[] = $id;
-                $this->docsToPublishByLevel[$id] = $nodeLevel;
+        
+        // Avoid structure assets (images, stylesheets, javascript files, etc) if structure flag is false
+        if ($this->getFlag('structure')) {
+            
+            // First search for structural assets nodes
+            $nodeTypeFlagsAux = $nodeTypeFlags + ['IsStructuredDocument' => false];
+            $assetsChildren = FastTraverse::get_children($node->GetID(), null, $level, null, $nodeTypeFlagsAux);
+            if ($assetsChildren === false) {
+                return false;
+            }
+            foreach ($assetsChildren as $nodeLevel => $levelNodes) {
+                $nodeLevel += 100;
+                foreach ($levelNodes as $id) {
+                    $nodes[] = $id;
+                    $this->docsToPublishByLevel[$id] = $nodeLevel;
+                }
             }
         }
         
