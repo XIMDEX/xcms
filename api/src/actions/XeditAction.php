@@ -62,6 +62,13 @@ class XeditAction extends Action
             $node['editable'] = strcmp($node['type'], HTMLDocumentNode::CONTENT_DOCUMENT) == 0 ? true : false;
             $name = strcmp($node['type'], HTMLDocumentNode::CONTENT_DOCUMENT) == 0 ? $node['title'] : $name;
             $node['content'] = static::transformContentToXedit($node['content']);
+            if (strcmp($node['type'], HTMLDocumentNode::CONTENT_DOCUMENT) == 0) {
+                $schemas = $node['schema'];
+                foreach ($schemas as $key => $value) {
+                    $schemas[$key]['view'] = static::transformContentToXedit($value['view']);
+                }
+                $node['schema'] = $schemas;
+            }
         }
 
 
