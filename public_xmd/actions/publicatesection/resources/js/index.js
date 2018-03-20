@@ -31,6 +31,7 @@ X.actionLoaded(function(event, fn, params) {
 	var $gapList = fn('fieldset.publish_date select.gap_info');
 	var $notifications = fn('fieldset.notifications input.send-notifications');
 	
+	// Levels selector
 	var $levelsRadio = fn('[name="levels"]');
 	if ($levelsRadio) {
 		$levelsRadio.change(function() {
@@ -42,8 +43,23 @@ X.actionLoaded(function(event, fn, params) {
 			}
 			else {
 				
-				// n levels of deep
+				// N levels of deep
 				fn('[id="deeplevel"]').removeClass("disabled").attr("disabled", false);
+			}
+		});
+	}
+	
+	// Node types checbox and selector
+	var $publishType = fn('[name="publishType"]');
+	if ($publishType) {
+		$publishType.change(function() {
+			var nodeTypes = $('select[name=types]');
+			if ($publishType.attr('checked')) {
+				nodeTypes.attr('disabled', false);
+			}
+			else {
+				nodeTypes.val(0);
+				nodeTypes.attr('disabled', true);
 			}
 		});
 	}

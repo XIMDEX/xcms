@@ -159,3 +159,13 @@ hr
 {
 	margin-top: 10pt;
 }
+
+#types
+{
+    width: auto !important;
+}
+
+.option_publish_type
+{
+	margin-top: 5pt;
+}

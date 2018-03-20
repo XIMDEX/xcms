@@ -302,7 +302,7 @@ p {
 }
 input[type="text"], input[type="password"], select, textarea {
     width: 100%;
-    padding: .5em .7em;
+    padding: .3em .3em;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border: 1px solid #ccc;
@@ -1508,8 +1508,9 @@ input:focus+ .tooltip_info {
     border-color: #74c6bb;
     text-shadow: 0 -1px 0 #60b6aa, 0 1px 0 rgba(255, 255, 255, 0.2);*/
     background: #7bcabf;
-    margin-top: 10px;
-
+    /* margin-top: 10px; */
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
 .browser-window .btn_margin {
 margin-top: 40px!important;

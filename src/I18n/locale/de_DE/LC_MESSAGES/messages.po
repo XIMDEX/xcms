@@ -2924,7 +2924,7 @@ msgstr "wird ver&ouml;ffentlicht..."
 msgid "Please, wait"
 msgstr "Bitte warten Sie"
 
-msgid "Node types to publish"
+msgid "Node type to publish"
 msgstr "Zu ver&ouml;ffentlichende Knotentypen"
 
 

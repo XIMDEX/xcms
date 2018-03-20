@@ -3213,7 +3213,7 @@ msgstr "Publicando..."
 msgid "Please, wait"
 msgstr "Por favor, espere"
 
-msgid "Node types to publish"
+msgid "Node type to publish"
 msgstr "Tipos de nodo a publicar"
 
 

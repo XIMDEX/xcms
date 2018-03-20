@@ -10,7 +10,6 @@ use Ximdex\Data\GenericData;
  */
 class NodeTypesOrm extends GenericData
 {
-
     var $_idField = 'IdNodeType';
     var $_table = 'NodeTypes';
     var $_metaData = array(

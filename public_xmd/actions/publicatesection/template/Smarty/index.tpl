@@ -123,17 +123,21 @@
 							</div>
 						{/if}
 						{if $synchronizer_to_use eq 'ximSYNC' and $ximpublish_tools_enabled and isset($publishabledtypes)}
-			                <p>
-			                    <label>{t}Node types to publish{/t}:</label>
-			                </p>
-			                <p>
-			                    <select name="types" id="types">
-			                        <option value="0">{t}All{/t}</option>
-			                        {foreach from=$publishabledtypes item=type}
-			                            <option value="{$type.id}">{$type.name}</option>
-			                        {/foreach}
-			                    </select>
-			                </p>
+						    <div class="publication_option">
+                                <div class="option_checkbox option_publish_type">
+                                    <input type="checkbox" name="publishType" id="publishType" value="1" />
+                                </div>
+                                <div class="option_info">
+                                    <label for="publishType">{t}Node type to publish{/t}:</label>&nbsp;
+                                    <select name="types" id="types" disabled="disabled">
+                                        <option value="0">{t}All{/t}</option>
+                                        {foreach from=$publishabledtypes item=type}
+                                            <option value="{$type.IdNodeType}">{$type.Description} ({$type.IdNodeType})</option>
+                                        {/foreach}
+                                    </select>
+                                </div>
+                                <div class="options_separator"></div>
+                            </div>
 			            {/if}
 					</div>
 				</div>
@@ -200,8 +204,7 @@
 							   		<span class="publication_date">{t}No Expire{/t}</span>
 							   	{/if}
 						    </span>
-						    <span class="nodes_for_publication">{t}Total{/t}: 
-                                <span class="publication_nodes">{$gap_info[$index]['NODES']} {t}nodes{/t}</span>
+						    <span class="nodes_for_publication">{t}Total{/t}: {$gap_info[$index]['NODES']} {t}nodes to publish{/t}
                             </span>
 						</div>
 					{/foreach}

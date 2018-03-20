@@ -33,6 +33,7 @@ use Ximdex\MVC\ActionAbstract;
 use Ximdex\Sync\SynchroFacade;
 use Ximdex\Utils\Serializer;
 use Ximdex\NodeTypes\NodeTypeConstants;
+use Ximdex\Models\NodeType;
 
 class Action_publicatesection extends ActionAbstract
 {
@@ -44,7 +45,9 @@ class Action_publicatesection extends ActionAbstract
         $idNode = (int)$this->request->getParam("nodeid");
         $node = new Node($idNode);
         $nodeTypeName = $node->nodeType->GetName();
-        $publishabledNodeTypes = array();        
+        $nodeType = New NodeType();
+        $publishabledNodeTypes = $nodeType->find('IdNodeType, Description', 'IsPublishable is true and IsFolder is false'
+            , null, true, true, null, 'Description');
         $values = array(
             'go_method' => 'publicate_section',
             'publishabledtypes' => $publishabledNodeTypes,
@@ -106,10 +109,15 @@ class Action_publicatesection extends ActionAbstract
             $recurrence = false;
         }
         $forcePublication = $this->request->getParam('force') ? true : false;
-        $type = $this->request->getParam('types');
-        $type = (isset($type) && $type > 0) ? $type : false;
+        
+        // Filter by specified node type
+        if ($this->request->getParam('publishType')) {
+            $type = (int) $this->request->getParam('types');
+        }
+        else {
+            $type = null;
+        }
         $noUseDrafts = $this->request->getParam('latest') ? false : true;
-        // $dateUp = time();
         $node = new Node($idNode);
         $nodename = $node->get('Name');
         $folderType = $node->nodeType->getID() == NodeTypeConstants::SERVER ? 'server' : 'section';
@@ -119,6 +127,12 @@ class Action_publicatesection extends ActionAbstract
         $dateDown = $this->request->getParam('dateDown_timestamp');
         $up = (! is_null($dateUp) && $dateUp != "") ? $dateUp / 1000 : time();
         $down = (! is_null($dateDown) && $dateDown != "") ? $dateDown / 1000 : null;
+        if ($down <= $up) {
+            $this->messages->add('Expiration date cannot be older than beginning one', MSG_TYPE_WARNING);
+            $values = array('messages' => $this->messages->messages);
+            $this->render($values, 'index', 'default-3.0.tpl');
+            return false;
+        }
         $markEnd = $this->request->getParam('markend') ? true : false;
         $structure = $this->request->getParam('no_structure') ? false : true;
         
@@ -149,14 +163,13 @@ class Action_publicatesection extends ActionAbstract
             'lastPublished' => $noUseDrafts,
             'publicateSection' => true,
             'level' => $level,
-            'structure' => $structure
+            'structure' => $structure,
+            'nodeType' => $type
         );
         $syncFac = new SynchroFacade();
         $result = $syncFac->pushDocInPublishingPool($idNode, $up, $down, $flagsPublication, $recurrence);
         $this->messages->add(sprintf(_("%s %s has been successfully sent to publish"), ucfirst($folderType), $nodename), MSG_TYPE_NOTICE);
-        $values = array(
-            'messages' => $this->messages->messages,
-        );
+        $values = array('messages' => $this->messages->messages);
         $this->sendJSON($values);
     }
     

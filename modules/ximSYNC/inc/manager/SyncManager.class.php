@@ -50,6 +50,7 @@ class SyncManager
     private $lastPublished;
     private $publicateSection;
     private $level;
+    private $nodeType;
     private $docsToPublishByLevel = array();
     private $computedDocsToPublish = array();
     private $pendingDocsToPublish = array();
@@ -113,11 +114,18 @@ class SyncManager
      * @param Node $node
      * @param array $nodes
      * @param int $level
+     * @param int $nodeTypeID
      * @return bool
      */
-    private function buildPublishingSection(Node $node, array & $nodes, int $level = null) : bool
+    private function buildPublishingSection(Node $node, array & $nodes, int $level = null, int $nodeTypeID = null) : bool
     {
         $nodeTypeFlags = ['IsPublishable' => true, 'IsFolder' => false];
+        if ($nodeTypeID) {
+            $filters = ['include' => ['node.IdNodeType' => [$nodeTypeID]]];
+        }
+        else {
+            $filters = null;
+        }
         if ($level !== null) {
             
             // Publication of the section until a given level
@@ -133,7 +141,7 @@ class SyncManager
             
             // First search for structural assets nodes
             $nodeTypeFlagsAux = $nodeTypeFlags + ['IsStructuredDocument' => false];
-            $assetsChildren = FastTraverse::get_children($node->GetID(), null, $level, null, $nodeTypeFlagsAux);
+            $assetsChildren = FastTraverse::get_children($node->GetID(), null, $level, $filters, $nodeTypeFlagsAux);
             if ($assetsChildren === false) {
                 return false;
             }
@@ -151,7 +159,7 @@ class SyncManager
         if ($level) {
             $level++;
         }
-        $documentsChildren = FastTraverse::get_children($node->GetID(), null, $level, null, $nodeTypeFlagsAux);
+        $documentsChildren = FastTraverse::get_children($node->GetID(), null, $level, $filters, $nodeTypeFlagsAux);
         if ($documentsChildren === false) {
             return false;
         }
@@ -189,8 +197,9 @@ class SyncManager
             
             // Obtain all the whole children above the given section
             $level = $this->getFlag('level');
+            $nodeTypeID = $this->getFlag('nodeType');
             $docsToPublish = [];
-            if (!$this->buildPublishingSection($node, $docsToPublish, $level)) {
+            if (!$this->buildPublishingSection($node, $docsToPublish, $level, $nodeTypeID)) {
                 return null;
             }
         }
@@ -225,7 +234,7 @@ class SyncManager
             $deepLevel = $this->docsToPublishByLevel[$idDoc];
 
             // Dependencies won't be expired
-            if ($idNode == $idDoc) {
+            if ($publicateSection or $idNode == $idDoc) {
                 $ntp = NodesToPublish::create($idDoc, $idNode, $up, $down, $userID, $force, $lastPublishedDocument, $deepLevel);
             }
             else {

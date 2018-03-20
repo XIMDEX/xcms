@@ -189,7 +189,11 @@ class PipeTransition extends PipeTransitionsOrm
 		$timer->start();
 		if (method_exists($object, $function))
 		{
-		    Logger::info("TRANSITION START: Calling method $function in order to make the transformation process for version $idVersion", true);
+		    $msg = "TRANSITION START: Calling method: $function to process version: $idVersion";
+		    if (isset($args['NODENAME'])) {
+		        $msg .= ' of document: ' . $args['NODENAME'];
+		    }
+		    Logger::info($msg, true);
 			$transformedPointer = $object->$function($idVersion, $pointer, $args);
 			if (strpos($pointer, App::getValue('TempRoot')) and file_exists($pointer)) {
 			    @unlink($pointer);
@@ -203,7 +207,7 @@ class PipeTransition extends PipeTransitionsOrm
 		else
 		{
 			$idTransition = $this->get('id');
-			Logger::warning("Method $function not found when calling to the view: IdVersion $idVersion, Transition $idTransition");
+			Logger::error("Method $function not found when calling to the view: IdVersion $idVersion, Transition $idTransition");
 			$transformedPointer = $pointer;
 		}
 		$timer->stop();
@@ -237,6 +241,9 @@ class PipeTransition extends PipeTransitionsOrm
 		}
 		if (isset($args['NODEID'])) {
 		    $msg .= ' with node ID: ' . $args['NODEID'];
+		}
+		if (isset($args['NODENAME'])) {
+		    $msg .= ' and name: ' . $args['NODENAME'];
 		}
 		if ($transformedPointer)
 		{

@@ -70,7 +70,7 @@ class FastTraverse extends FastTraverseOrm
             $sql .= ' and ft.Depth <= ' . $level;
         }
         
-        // Filters add some criteria to obtain specified nodes
+        // Filters add some criteria to obtain specified nodes (ex. 'include' => ['IdNodeType' =>  [5014, 5015]])
         if ($filters) {
             foreach ($filters as $operation => $opFilters) {
                 if ($operation == 'exclude') {

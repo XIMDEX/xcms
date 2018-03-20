@@ -2921,8 +2921,8 @@ msgstr "Publicando..."
 msgid "Please, wait"
 msgstr "Por favor, espere"
 
-msgid "Node types to publish"
-msgstr "Tipos de nodo para publicar"
+msgid "Node type to publish"
+msgstr "Tipo de nodo para publicar"
 
 
 #: /actions/publicateximlet/Action_publicateximlet.class.php

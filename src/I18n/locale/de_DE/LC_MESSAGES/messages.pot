@@ -2924,7 +2924,7 @@ msgstr ""
 msgid "Please, wait"
 msgstr ""
 
-msgid "Node types to publish"
+msgid "Node type to publish"
 msgstr ""
 
 
