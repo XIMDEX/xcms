@@ -666,6 +666,10 @@ class BatchManager
             $portal->upPortalVersion($serverId);
             $result = $batch->find('IdPortalVersion', 'State != %s AND IdBatch > %s AND Type = %s ORDER BY IdBatch ASC',
                 array('State' => 'Ended', 'IdBatch' => $idBatch, 'Type' => 'Up'), MONO);
+            if (!$result) {
+                Logger::error('No portal version found for batch: ' . $idBatch);
+                return false;
+            }
             $idPortalVersion = $result[0];
             $batch->set('IdPortalVersion', $idPortalVersion);
             $batch->update();

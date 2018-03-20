@@ -127,7 +127,7 @@ class Action_publicatesection extends ActionAbstract
         $dateDown = $this->request->getParam('dateDown_timestamp');
         $up = (! is_null($dateUp) && $dateUp != "") ? $dateUp / 1000 : time();
         $down = (! is_null($dateDown) && $dateDown != "") ? $dateDown / 1000 : null;
-        if ($down <= $up) {
+        if ($down and $down <= $up) {
             $this->messages->add('Expiration date cannot be older than beginning one', MSG_TYPE_WARNING);
             $values = array('messages' => $this->messages->messages);
             $this->render($values, 'index', 'default-3.0.tpl');

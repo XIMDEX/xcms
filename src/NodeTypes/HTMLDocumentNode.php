@@ -202,7 +202,10 @@ class HTMLDocumentNode extends FileNode
                     $body .= $node['content'];
                 }
             }
-            $render = static::createBasicHTMLTemplate($body, $css, $js);
+            $pos = strpos($name, "_");
+            if ($pos !== 0) {
+                $render = static::createBasicHTMLTemplate($body, $css, $js);
+            }
         }
 
         return $render;

@@ -664,7 +664,10 @@ class GenericData
         $updatedRows = null;
         if ($this->_checkDataIntegrity()) {
             $dbObj = new \Ximdex\Runtime\Db();
-            $dbObj->Execute($query);
+            $res = $dbObj->Execute($query);
+            if ($res === false) {
+                return false;
+            }
             $updatedRows = $dbObj->numRows;
         }
         $this->_applyFilter('afterUpdate');

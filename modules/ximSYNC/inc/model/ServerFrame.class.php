@@ -298,16 +298,16 @@ class ServerFrame extends ServerFrames_ORM
             return false;
         }
         $node = new Node($idNode);
+        if (!$node->GetID()) {
+            return false;
+        }
         $isHybrid = $node->getSimpleBooleanProperty('hybridColector');
         $data['CHANNEL'] = $channelId;
         $data['SERVER'] = $server;
         $data['DISABLE_CACHE'] = App::getValue("DisableCache");
-        $node = new Node($idNode);
-        if ($node->get('IdNode') < 1) {
-            return false;
-        }
         $transformer = $node->getProperty('Transformer');
         $data['TRANSFORMER'] = $transformer[0];
+        $data['NODEID'] = $idNode;
         $pipeMng = new PipelineManager();
         if (! is_null($channelId)) {
             if ($node->GetNodeType() == NodeTypeConstants::HTML_DOCUMENT) {
