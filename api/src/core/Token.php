@@ -8,6 +8,7 @@
 
 namespace XimdexApi\core;
 
+use Ximdex\Runtime\App;
 
 class Token
 {
@@ -17,8 +18,6 @@ class Token
     const DEFAULT_TTL = 5;
 
     const ALG_AES_128_CBC = "aes-128-cbc";
-    const ApiKey = '40A9CF9EF63909727C6F5FE773E30ECF'; //Todo Provisional
-    const ApiIV = '633F8EC770998AC569BB0410770B665E'; //Todo Provisional
     const EXPIRATION_ENABLE = false; // TODO provisional
 
     /**
@@ -42,7 +41,7 @@ class Token
         $validTo = $now + ($tokenTTL * 60);
         $token = array('user' => $user, 'created' => time(), 'validTo' => $validTo);
         $token = json_encode($token);
-        $token = base64_encode(static::encryptAES($token, static::ApiKey, static::ApiIV));
+        $token = base64_encode(static::encryptAES($token, App::GetValue('ApiKey'), App::GetValue('ApiIV')));
         return $token;
     }
 
@@ -53,7 +52,7 @@ class Token
      */
     public static function validateToken($token)
     {
-        $decryptedToken = json_decode(static::decryptAES(base64_decode($token), static::ApiKey, static::ApiIV), true);
+        $decryptedToken = json_decode(static::decryptAES(base64_decode($token), App::GetValue('ApiKey'), App::GetValue('ApiIV')), true);
         if ($decryptedToken == null)
             return false;
         if (static::EXPIRATION_ENABLE && !($decryptedToken['validTo'] > time()))
@@ -113,7 +112,6 @@ class Token
      */
     public static function decryptAES($encryptedtext, $key, $iv)
     {
-        return \openssl_decrypt($encryptedtext, self::ALG_AES_128_CBC, $key, 0, $iv);
+        return @openssl_decrypt($encryptedtext, self::ALG_AES_128_CBC, $key, 0, $iv);
     }
-
 }

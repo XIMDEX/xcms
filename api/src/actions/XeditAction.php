@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: jvargas
- * Date: 19/02/16
- * Time: 14:39
- */
 
 namespace XimdexApi\actions;
 
@@ -13,6 +7,7 @@ use Ximdex\Models\Node;
 use Ximdex\NodeTypes\HTMLDocumentNode;
 use Ximdex\NodeTypes\NodeTypeConstants;
 use Ximdex\Runtime\App;
+use Ximdex\Logger;
 use XimdexApi\core\Request;
 use XimdexApi\core\Response;
 

@@ -25,6 +25,7 @@ class Action_Xedit extends ActionAbstract
         $values = array(
             'type' => $type,
             'id' => $id,
+            'ximdex_API' => App::getValue('UrlHost') . App::GetValue('UrlRoot') . '/api',
             'url' => App::GetValue('HTMLEditorURL'),
             'enabled' => App::GetValue('HTMLEditorEnabled'),
             'token' => Token::getToken($user->get('Login'))
