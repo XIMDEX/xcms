@@ -58,6 +58,8 @@ class ViewFilterMacros extends AbstractView implements IView
     private $mode;
     private $preview;
     private $messages;
+    private $originHasLangPath;
+    private $originNodeID;
 
     const MACRO_SERVERNAME = "/@@@RMximdex\.servername\(\)@@@/";
     const MACRO_PROJECTNAME = "/@@@RMximdex\.projectname\(\)@@@/";
@@ -477,7 +479,7 @@ class ViewFilterMacros extends AbstractView implements IView
                 if ($this->_server->get('OverrideLocalPaths')) {
                     return $this->_server->get('Url') . '/' . $targetPath;
                 }
-                if (App::getValue('PublishPathFormat', null) !== null && $this->_node->class && method_exists($this->_node->class, 'getPathToDeep')) {
+                if (App::getValue('PublishPathFormat') !== null && $this->_node->class && method_exists($this->_node->class, 'getPathToDeep')) {
                     $deep = $this->_node->class->getPathToDeep();
                 }
                 $sectionPath = '';
@@ -600,20 +602,43 @@ class ViewFilterMacros extends AbstractView implements IView
     {
         return $this->getLinkPath($matches, true);
     }
-
+    
     /**
      * @param $targetNode
      * @param $idTargetChannel
      * @return mixed
      */
-    private function getRelativePath($targetNode, $idTargetChannel)
+    private function getRelativePath(Node $targetNode, $idTargetChannel)
     {
         $deep = 2;
-        if (App::getValue("PublishPathFormat", null) !== null && $this->_node->class && method_exists($this->_node->class, "getPathToDeep")) {
-            $deep = $this->_node->class->getPathToDeep();
+        if (!$this->preview and App::getValue("PublishPathFormat") == App::PREFIX) {
+            if ($this->_node->nodeType->GetIsStructuredDocument()) {
+                
+                // Language for the original document
+                if (!$this->originHasLangPath or $this->originNodeID != $this->_node->GetID()) {
+                    $this->originHasLangPath = $this->_node->hasLangPath();
+                    $this->originNodeID = $this->_node->GetID();
+                }
+            }
+            else {
+                $this->originHasLangPath = null;
+            }
+            if ($targetNode->nodeType->GetIsStructuredDocument()) {
+                
+                // Language for the target document
+                $targetHasLangPath = $targetNode->hasLangPath();
+            }
+            else {
+                $targetHasLangPath = null;
+            }
+            
+            // If the origin and target document has language in their paths, or only the origin: deep is only a level
+            if (($this->originHasLangPath and $targetHasLangPath) or ($this->originHasLangPath and !$targetHasLangPath)) {
+                $deep = 1;
+            }
         }
         $dotdot = str_repeat('../', $this->_depth - $deep);
-
+        
         // Removing last dash
         $dotdot = preg_replace('/\/$/', '', $dotdot);
         $dotdot = './' . $dotdot;

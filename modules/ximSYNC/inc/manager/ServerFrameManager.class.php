@@ -25,6 +25,7 @@
  * @version $Revision$
  */
 
+use Ximdex\Logger;
 use Ximdex\Models\Pumper;
 use Ximdex\MPM\MPMManager;
 use Ximdex\MPM\MPMProcess;
@@ -48,6 +49,7 @@ use Ximdex\MPM\MPMProcess;
  */
 class ServerFrameManager
 {
+    const useMPMManager = false;
     /**
      * Change the ServerFrame's state.
      * @param int serverFrameId
@@ -305,6 +307,9 @@ class ServerFrameManager
 					ServerFrames.Retry ASC LIMIT $numTasksForPumping";
                 $dbObj->Query($sql);
                 if ($dbObj->numRows > 0) {
+                    $timer = new \Ximdex\Utils\Timer();
+                    Logger::info('Set task for pumping starting');
+                    $timer->start();
                     $tasks = array();
                     while (!$dbObj->EOF) {
                         $tasks[] = $dbObj->GetValue("IdSync");
@@ -312,11 +317,23 @@ class ServerFrameManager
                     }
                     $serverFrame->ServerFrameToLog(null, null, null, null, $pumperId, __CLASS__, __FUNCTION__, __FILE__,
                         __LINE__, "INFO", 8, _("Setting tasks $numTasksForPumping for pumper $pumperId"));
-
-                    //Process All Task with MPMManager
-                    $callback = array("/modules/ximSYNC/inc/model/ServerFrameManager", "processTaskForMPM");
-                    $mpm = new MPMManager($callback, $tasks, MPMProcess::MPM_PROCESS_OUT_BOOL, 4, 2);
-                    $mpm->run();
+                    
+                    if (self::useMPMManager) {
+                        
+                        //Process All Task with MPMManager
+                        $callback = array("/modules/ximSYNC/inc/model/ServerFrameManager", "processTaskForServerFrame");
+                        Logger::info('Starting MPM Manager for Pumper ID: ' . $pumperId . ' -> Task: ' . print_r($tasks, true), true);
+                        $mpm = new MPMManager($callback, $tasks, MPMProcess::MPM_PROCESS_OUT_BOOL, 4, 2);
+                        $mpm->run();
+                    }
+                    else {
+                        foreach ($tasks as $task) {
+                            Logger::info('Running processTaskForServerFrame with task: ' . $task);
+                            $this->processTaskForServerFrame($task);
+                        }
+                    }
+                    $timer->stop();
+                    Logger::info('Set task for pumping ended; time: ' . $timer->display() . ' milliseconds', true);
                 } else {
                     $serverFrame->ServerFrameToLog(null, null, null, null, $pumperId, __CLASS__, __FUNCTION__, __FILE__,
                         __LINE__, "INFO", 8, _("All tasks pumped for pumper $pumperId"));
@@ -396,7 +413,7 @@ class ServerFrameManager
      *  Sets the ServerFrame ready for upload (remove) to publication Server.
      * @param int task
      */
-    function processTaskForMPM($task)
+    function processTaskForServerFrame($task)
     {
         $serverFrame = new ServerFrame($task);
         $state = $serverFrame->get('State');

@@ -392,7 +392,7 @@ VALUES
 	(49,'ApiIV',''),
 	(50,'ApiKey',''),
 	(51,'DevEnv','1'),
-	(52,'PublishPathFormat','prefix'),
+	(52,'PublishPathFormat','suffix'),
 	(53,'ChunksFolder','uploaded_files'),
 	(54,'UploadsFolder','uploaded_files'),
 	(55,'MaxItemsPerGroup','50'),

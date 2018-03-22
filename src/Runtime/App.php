@@ -13,6 +13,9 @@ Class App
     protected $DIBuilder = null;
     protected $config = null;
     private static $debug = false;
+    
+    const PREFIX = 'prefix';
+    const SUFFIX = 'suffix';
 
     public function __construct()
     {

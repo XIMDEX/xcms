@@ -202,9 +202,9 @@ class NodeFrameManager
 		$sfOK = true;
 		
 		// todo: make foreach channelframes (not serverframes)
-		$frames = $nodeFrame->getFrames($nodeFrId);
+		$frames = $nodeFrame->getFrames($nodeFrId, $operation);
 		foreach($frames as $serverFrId) {
-			Logger::info(_("Procesing serverFrame")." $serverFrId");
+			Logger::info("Procesing serverFrame $serverFrId for nodeFrameID: " . $nodeFrId . ' and nodeID: ' . $nodeId);
 			$channelFrameManager = new ChannelFrameManager();
 			$result = $channelFrameManager->changeState($serverFrId, $operation, $nodeId, $canceled);
 			if ($result === false) {

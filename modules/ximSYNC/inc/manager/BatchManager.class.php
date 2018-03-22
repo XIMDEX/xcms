@@ -32,7 +32,6 @@ use Ximdex\NodeTypes\ServerNode;
 use Ximdex\Runtime\DataFactory;
 use Ximdex\Models\Channel;
 use Ximdex\Models\Node;
-use Ximdex\Utils\PipelineManager;
 
 \Ximdex\Modules\Manager::file('/inc/model/Batch.class.php', 'ximSYNC');
 \Ximdex\Modules\Manager::file('/inc/model/NodeFrame.class.php', 'ximSYNC');
@@ -279,6 +278,7 @@ class BatchManager
         $j = 0;
 
         // Creating the frames for each idNode
+        $serverFrame = new ServerFrame();
         foreach ($docsToPublish as $idNode) {
             if (!isset($versions[$idNode]) or $versions[$idNode] === null) {
                 Logger::error('There is not any version for node: ' . $idNode);
@@ -401,20 +401,10 @@ class BatchManager
                     }
                     $generatedNodes = array();
                     if ($nodeServer->class->HasChannel($physicalServer, $channelId) || $channelId == 'NULL') {
-                        $serverFrame = new ServerFrame();
                         
                         // Creating serverFrames
                         // Generating cache (only if is structured document)
-                        if ($channelId > 0) {
-                            $data['CHANNEL'] = $channelId;
-                            $node = new Node($idNode);
-                            $transformer = $node->getProperty('Transformer');
-                            $data['TRANSFORMER'] = $transformer[0];
-                            $pipeMng = new PipelineManager();
-                            $name = $node->GetPublishedNodeName($channelId, true);
-                        } else {
-                            $name = $node->GetPublishedNodeName($channelId, true);
-                        }
+                        $name = $node->GetPublishedNodeName($channelId, true);
                         $path = $node->GetPublishedPath($channelId);
                         $publishLinked = 1;
                         $idFrame = $serverFrame->create($idNode, $physicalServer, $up, $path, $name, $publishLinked, $nodeFrameId

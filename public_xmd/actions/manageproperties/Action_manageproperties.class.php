@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -27,6 +28,9 @@
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Models\Node;
 use Ximdex\Properties\InheritedPropertiesManager;
+use Ximdex\Runtime\App;
+use Ximdex\NodeTypes\NodeTypeConstants;
+use Ximdex\Models\NodeProperty;
 
 /**
  * Manage properties action.
@@ -49,20 +53,17 @@ class Action_manageproperties extends ActionAbstract
      */
     public function index()
     {
-        //Load css and js resources for action form.
+        // Load css and js resources for action form
         $this->addCss('/actions/manageproperties/resources/css/styles.css');
         $this->addJs('/actions/manageproperties/resources/js/index.js');
         $this->addJs('/actions/manageproperties/resources/js/confirm.js');
         $this->addJs('/actions/manageproperties/resources/js/dialog.js');
-
         $nodeId = $this->request->getParam('nodeid');
         $nodeId = $nodeId < 10000 ? 10000 : $nodeId;
-
         $node = new Node($nodeId);
-
-        //Get Values for all the dependencies
-        $properties = InheritedPropertiesManager::getValues($nodeId);
         
+        // Get Values for all the dependencies
+        $properties = InheritedPropertiesManager::getValues($nodeId);
         $values = array(
             'properties' => $properties,
             'go_method' => 'save_changes',
@@ -70,7 +71,7 @@ class Action_manageproperties extends ActionAbstract
             'inProject' => ($node->getParent() == 10000)
         );
         
-        //Update the checked properties in the array (inherit or overwrite option)
+        // Update the checked properties in the array (inherit or overwrite option)
         foreach ($properties as $name => $prop) {
             $checked = false;
             if (!empty($prop)) {
@@ -87,7 +88,18 @@ class Action_manageproperties extends ActionAbstract
                 $values[sprintf('%s_inherited', $name)] = 'inherited';
             }
         }
-
+        
+        // Default server language for server node in prefix mode
+        if ($node->GetNodeType() == NodeTypeConstants::SERVER and App::getValue('PublishPathFormat') == App::PREFIX) {
+            $nodeProperty = new NodeProperty();
+            $property = $nodeProperty->getProperty($node->GetID(), NodeProperty::DEFAULTSERVERLANGUAGE);
+            if ($property) {
+                $values[NodeProperty::DEFAULTSERVERLANGUAGE] = $property[0];
+            }
+            else {
+                $values[NodeProperty::DEFAULTSERVERLANGUAGE] = 0;
+            }
+        }
         $this->render($values, '', 'default-3.0.tpl');
     }
 
@@ -116,42 +128,34 @@ class Action_manageproperties extends ActionAbstract
         $nodeId = $nodeId < 10000 ? 10000 : $nodeId;
         $confirmed = $this->request->getParam('confirmed');
         $confirmed = $confirmed == 'YES' ? true : false;
-
         $inherited_channels = $this->request->getParam('inherited_channels');
         $channel_recursive = $this->request->getParam('Channel_recursive');
         $channel_recursive = empty($channel_recursive) ? array() : $channel_recursive;
         $channels = $this->request->getParam('Channel');
         $channels = empty($channels) || $inherited_channels == 'inherited' ? array() : $channels;
-
         $inherited_languages = $this->request->getParam('inherited_languages');
         $languages = $this->request->getParam('Language');
         $languages = empty($languages) || $inherited_languages == 'inherited' ? array() : $languages;
         $language_recursive = $this->request->getParam('Language_recursive');
         $language_recursive = empty($language_recursive) ? array() : $language_recursive;
-
         $inherited_schemas = $this->request->getParam('inherited_schemas');
         $schemas = $this->request->getParam('Schema');
         $schemas = empty($schemas) || $inherited_schemas == 'inherited' ? array() : $schemas;
-
         $transformer = $this->request->getParam('Transformer');
         $transformer = empty($transformer) ? array() : $transformer;
-
         $properties = array(
             'Channel' => $channels,
             'Language' => $languages,
             'Schema' => $schemas,
             'Transformer' => $transformer,
         );
-
         $confirm = false;
-        //this part don't show the confirm step (wait for JSON response)
-
+        
+        // This part don't show the confirm step (wait for JSON response)
         if ($confirm) {
-
             $this->showConfirmation($nodeId, $properties, $affected);
         } else {
             $results = InheritedPropertiesManager::setValues($nodeId, $properties);
-
             $applyResults = array();
             if (count($channel_recursive) > 0) {
                 $applyResults = array_merge($applyResults, $this->_applyPropertyRecursively('Channel', $nodeId, $channel_recursive));
@@ -159,7 +163,42 @@ class Action_manageproperties extends ActionAbstract
             if (count($language_recursive) > 0) {
                 $applyResults = array_merge($applyResults, $this->_applyPropertyRecursively('Language', $nodeId, $language_recursive));
             }
-            
+            $node = new Node($nodeId);
+            if ($node->GetNodeType() == NodeTypeConstants::SERVER and App::getValue('PublishPathFormat') == App::PREFIX) {
+                
+                // Save the value of the default server language property
+                $defaultServerLanguage = (int) $this->request->getParam('default_server_language');
+                if (!$defaultServerLanguage) {
+                    
+                    // If there is not checked any language, the first one from the project will be the selected
+                    $properties = InheritedPropertiesManager::getValues($nodeId);
+                    foreach ($properties['Language'] as $language) {
+                        if (isset($language['Inherited']) and $language['Inherited']) {
+                            $defaultServerLanguage = $language['Id'];
+                            break;
+                        }
+                    }
+                }
+                if ($defaultServerLanguage) {
+                    $nodeProperty = new NodeProperty();
+                    $property = $nodeProperty->find(ALL, 'IdNode = ' . $nodeId . ' and property = \'' . NodeProperty::DEFAULTSERVERLANGUAGE . '\'');
+                    if ($property) {
+                        
+                        // Update the property value
+                        $nodeProperty->set('IdNode', $nodeId);
+                        $nodeProperty->set('Property', NodeProperty::DEFAULTSERVERLANGUAGE);
+                        $nodeProperty->set('IdNodeProperty', $property[0]['IdNodeProperty']);
+                        $nodeProperty->set('Value', $defaultServerLanguage);
+                        $nodeProperty->update();
+                    }
+                    else {
+                        
+                        // Create the property
+                        $nodeProperty->create($nodeId, NodeProperty::DEFAULTSERVERLANGUAGE, $defaultServerLanguage);
+                    }
+                    $this->messages->add('Default server language has been saved', MSG_TYPE_NOTICE);
+                }
+            }
             $this->showResult($nodeId, $results, $applyResults, $confirmed);
         }
     }
@@ -168,14 +207,10 @@ class Action_manageproperties extends ActionAbstract
     {
         $this->addJs('/actions/manageproperties/resources/js/dialog.js');
         $this->addJs('/actions/manageproperties/resources/js/confirm.js');
-
         foreach ($affected as $prop => $value) {
-
             if ($value !== false) {
-
                 $totalNodes = count($value['nodes']);
                 $totalProps = count($value['props']);
-
                 $message = '';
                 switch ($prop) {
                     case 'Channel':
@@ -185,35 +220,28 @@ class Action_manageproperties extends ActionAbstract
                         $message = sprintf(_('A total of %s language versions are going to be deleted.'), $totalNodes);
                         break;
                 }
-
                 $this->messages->add(_($message), MSG_TYPE_WARNING);
             }
         }
-
         $values = array(
             'nodeId' => $nodeId,
             'properties' => $properties,
             'messages' => $this->messages->messages
         );
-
         $this->render($values, 'confirm', 'default-3.0.tpl');
     }
 
     private function showResult($nodeId, $results, $applyResults, $confirmed)
     {
         foreach ($results as $prop => $value) {
-
             if ($value !== false) {
-
                 $affectedNodes = $value['affectedNodes'];
                 if ($affectedNodes !== false) $affectedNodes = $value['affectedNodes']['affectedNodes'];
                 $totalProps = count($value['values']);
-
                 $message = array();
                 if ($totalProps > 0) {
                     switch ($prop) {
                         case 'Channel':
-
                             if ($affectedNodes !== false) {
                                 $totalNodes = count($affectedNodes['nodes']);
                                 $totalProps = count($affectedNodes['props']);
@@ -225,7 +253,6 @@ class Action_manageproperties extends ActionAbstract
                                     $message[] = sprintf(_('%s Channels have been successfully assigned.'), $totalProps);
                                 }
                             }
-
                             if (isset($applyResults['Channel']) && $applyResults['Channel'] !== false && $applyResults['Channel']['nodes'] > 0) {
                                 $message[] = sprintf(
                                     _('A total of %s channels have been recursively associated with %s documents.'),
@@ -233,11 +260,8 @@ class Action_manageproperties extends ActionAbstract
                                     $applyResults['Channel']['nodes']
                                 );
                             }
-
                             break;
-
                         case 'Language':
-
                             if ($affectedNodes !== false) {
                                 $totalProps = count($affectedNodes['props']);
                                 $message[] = sprintf(_('A total of %s language versions have been deleted.'), $totalProps);
@@ -248,16 +272,13 @@ class Action_manageproperties extends ActionAbstract
                                     $message[] = sprintf(_('%s Languages have been successfully assigned.'), $totalProps);
                                 }
                             }
-
                             if (isset($applyResults['Language']) && $applyResults['Language'] !== false && $applyResults['Language']['nodes'] > 0) {
                                 $message[] = sprintf(
                                     _('A total of %S language versions have been recursively created.'),
                                     count($applyResults['Language']['values'])
                                 );
                             }
-
                             break;
-
                         case 'Schema':
                             if ($totalProps == 0) {
                                 $message[] = _('Template values will be inherited.');
@@ -272,13 +293,11 @@ class Action_manageproperties extends ActionAbstract
                             break;
                     }
                 }
-
                 foreach ($message as $msg) {
                     $this->messages->add($msg, MSG_TYPE_NOTICE);
                 }
             }
         }
-
         $values = array(
             'messages' => $this->messages->messages,
             'goback' => true,
@@ -293,7 +312,6 @@ class Action_manageproperties extends ActionAbstract
         $nodeId = $nodeId < 10000 ? 10000 : $nodeId;
         $property = $this->request->getParam('property');
         $values = $this->request->getParam('values');
-        
         $result = $this->_applyPropertyRecursively($property, $nodeId, $values);
         $this->sendJSON(array('nodeId' => $nodeId, 'property' => $property, 'result' => $result[$property]));
     }

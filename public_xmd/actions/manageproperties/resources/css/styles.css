@@ -66,3 +66,9 @@ div.propertyform
 {
 	margin-bottom: 10pt;
 }
+
+ul.inheritlist li
+{
+	float: left;
+    margin-right: 50pt;
+}

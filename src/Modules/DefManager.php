@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -23,26 +24,18 @@
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
-namespace Ximdex\Modules ;
 
-/**
- *
- */
+namespace Ximdex\Modules;
+
 class DefManager
 {
-
-    var $configFilename;
-    var $configData;
-
-    var $prefix;
-    var $postfix;
-
-    /**
-     * @public
-     */
-    public function __construct($fileName, $prefix = '', $postfix = '')
+    private $configFilename;
+    private $configData;
+    private $prefix;
+    private $postfix;
+    
+    public function __construct($fileName)
     {
-
         $this->configFilename = $fileName;
 
         // Check config presence.
@@ -52,9 +45,8 @@ class DefManager
 
         // Acquire data
         if (is_readable($this->configFilename)) {
-
             $this->configData = file($this->configFilename);
-
+            
             // Clean data.
             foreach ($this->configData as $idx => $line) {
                 $line = rtrim($line);
@@ -66,96 +58,72 @@ class DefManager
         }
     }
 
-    function setPrefix($prefix)
+    public function setPrefix($prefix)
     {
         $this->prefix = $prefix;
     }
 
-    function setPostfix($postfix)
+    public function setPostfix($postfix)
     {
         $this->postfix = $postfix;
     }
 
-    /**
-     * @protected
-     */
-    function createConfigFile()
+    private function createConfigFile()
     {
-
         //TODO: Check if we can open it!
         $file_hnd = fopen($this->configFilename, "w");
-
         fwrite($file_hnd, "<?php\n  ");
-        //input modules path
+        
+        // Input modules path
         fwrite($file_hnd, self::get_modules_path());
         fwrite($file_hnd, "?>");
-
         fclose($file_hnd);
     }
 
-    function get_modules_path()
+    private function get_modules_path()
     {
-        $modMngr = new \Ximdex\Modules\Manager();
+        $modMngr = new Manager();
         $consts = '';
         $modules = $modMngr->getModules();
         foreach ($modules as $id => $module) {
-            $consts .= "define('" . \Ximdex\Modules\Manager::get_pre_define_module() . strtoupper($module['name']) . \Ximdex\Modules\Manager::get_post_path_define_module() . "', '" . $module["path"] . "');\n";
+            $consts .= "define('" . Manager::get_pre_define_module() . strtoupper($module['name']) . Manager::get_post_path_define_module() 
+                . "', '" . $module["path"] . "');\n";
         }
-
         return $consts;
     }
 
-
-    /**
-     * @public
-     */
-    function enableItem($name)
+    public function enableItem($name)
     {
-
         if ($this->isEnabledItem($name) === FALSE) {
-
             $str = $this->prefix . $name . $this->postfix;
             $end_tag_idx = array_search("?>", $this->configData);
-
             array_splice($this->configData, $end_tag_idx, 0, $str);
-
             $this->writeToConfig();
-
         }
-
     }
 
-    /**
-     * @public
-     */
-    function disableItem($name)
+    public function disableItem($name)
     {
-
         if (($key = $this->isEnabledItem($name)) !== FALSE) {
             unset($this->configData[$key]);
             $this->writeToConfig();
         }
-
     }
 
-    function isEnabledItem($name)
+    public function isEnabledItem($name)
     {
         $str = $this->prefix . $name . $this->postfix;
         return array_search($str, $this->configData);
     }
 
-    function writeToConfig()
+    private function writeToConfig()
     {
-
         if (is_writable($this->configFilename)) {
-
             $file_hnd = fopen($this->configFilename, "w");
-
             foreach ($this->configData as $line) {
                 fwrite($file_hnd, "$line\n");
             }
             fclose($file_hnd);
-
         } else {
             print("* ERROR: " . __CLASS__ . "::" . __FUNCTION__ . ": Cant write to file " . $this->configFilename . "\n");
         }

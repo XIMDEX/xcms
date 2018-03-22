@@ -82,20 +82,23 @@ class NodeFrame extends NodeFrames_ORM {
 	/**
     	*	Gets all ServerFrames associated to a NodeFrame.
 	*	@param int idNdFr
+	*   @param string operation
 	*	@return array
 	*/
-    	function getFrames($idNdFr) {
+    function getFrames($idNdFr, string $operation) {
+        $sql = "SELECT IdSync FROM ServerFrames WHERE IdNodeFrame = $idNdFr";
+        if ($operation == 'Up') {
+            $sql .= ' and State not in (\'' . ServerFrame::REMOVED . '\', \'' . ServerFrame::REPLACED . '\')';
+        }
 		$dbObj = new \Ximdex\Runtime\Db();
-		$dbObj->Query("SELECT IdSync FROM ServerFrames WHERE IdNodeFrame = $idNdFr");
-
+		$dbObj->Query($sql);
 		$frames = array();
 		while(!$dbObj->EOF) {
 			$frames[] = $dbObj->GetValue("IdSync");
 			$dbObj->Next();
 		}
-
 		return $frames;
-    	}
+    }
 
 	/**
 	*  Gets the time intervals without NodeFrames for a given Node.

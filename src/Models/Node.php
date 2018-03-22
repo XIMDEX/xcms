@@ -3901,4 +3901,30 @@ class Node extends NodesOrm
         $data['headers'] = $headers;
         return $data;
     }
+    
+    /**
+     * Return true if the node has included a language in its path, in prefix mode; or null instead
+     * 
+     * @return boolean|NULL
+     */
+    public function hasLangPath()   
+    {
+        $structuredDocument = new StructuredDocument($this->GetID());
+        if (!$structuredDocument->get('IdLanguage')) {
+            $error = 'Language has not been specified for document: ' . $this->GetNodeName();
+            $this->messages->add($error, MSG_TYPE_ERROR);
+            Logger::error($error);
+            return false;
+        }
+        $nodeProperty = new NodeProperty();
+        $property = $nodeProperty->getProperty($this->getServer(), NodeProperty::DEFAULTSERVERLANGUAGE);
+        if ($property) {
+            if ($structuredDocument->get('IdLanguage') != $property[0]) {
+                
+                // Language of the document is different than the default server
+                return true;
+            }
+        }
+        return null;
+    }
 }

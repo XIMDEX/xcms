@@ -42,35 +42,41 @@ if (!defined('ROOT_NODE')) {
  */
 class Root
 {
-
     /**
      * @var Node
      */
     var $parent;
+    
     /**
      * @var bool|string
      */
     var $nodeID;
+    
     /**
      * @var Db
      */
     var $dbObj;
+    
     /**
      * @var \Ximdex\Models\NodeType
      */
     var $nodeType;
+    
     /**
      * @var
      */
     var $numErr;
+    
     /**
      * @var
      */
     var $msgErr;
+    
     /**
      * @var \Ximdex\Utils\Messages
      */
     var $messages;
+    
     /**
      * @var array
      */
@@ -78,16 +84,17 @@ class Root
 
     /**
      * Root constructor.
+     * 
      * @param int|null $node
      */
-
     public function __construct($node = null)
     {
-
-        if (is_object($node))
+        if (is_object($node)) {
             $this->parent = $node;
-        else if (is_numeric($node) || $node == null)
+        }
+        elseif (is_numeric($node) || $node == null) {
             $this->parent = new Node($node, false);
+        }
         $this->nodeID = $this->parent->get('IdNode');
         $this->dbObj = new \Ximdex\Runtime\Db();
         $this->nodeType = &$this->parent->nodeType;
@@ -95,16 +102,13 @@ class Root
     }
 
     /**
-     *  Gets the MetaType of a NodeType.
+     * Gets the MetaType of a NodeType.
      * @return string|null
      */
-
     function getMetaType()
     {
-
         $metaTypesArray = Constants::$METATYPES_ARRAY;
         $class = get_class($this);
-
         if (isset($metaTypesArray[strtoupper($class)])) {
             return $metaTypesArray[strtoupper($class)];
         }
@@ -112,191 +116,160 @@ class Root
     }
 
     /**
-     *  Gets the path relating to its Project of the Node in the filesystem.
+     * Gets the path relating to its Project of the Node in the filesystem.
+     * 
      * @return string
      */
-
     function GetPathList()
     {
         $idParentNode = $this->parent->get('IdParent');
         $parentNode = new Node($idParentNode);
-
         if (!($parentNode->get('IdNode') > 0)) {
             return "";
         }
-
         $parentPath = $parentNode->class->getPathList();
-
         if (!$this->nodeType->GetIsRenderizable()) {
             Logger::warning('Se ha solicitado el path de un nodo no renderizable con id ' . $this->parent->get('IdNode'));
             return $parentPath;
         }
-
-        /// Obtenemos el path donde el nodo padre guarda a sus hijos
-        /// Unimos el path del padre y el nombre del nodo para obtener el path de este nodo si este nodo no es virtual.
+        
+        // Obtenemos el path donde el nodo padre guarda a sus hijos
+        // Unimos el path del padre y el nombre del nodo para obtener el path de este nodo si este nodo no es virtual.
         if ($this->nodeType->GetHasFSEntity()) {
-            return $parentPath . "/" . $this->parent->get('Name');            /// CON ENTIDAD EN EL FS O NO VIRTUAL (ROOT, XML, IMAGES)
+            return $parentPath . "/" . $this->parent->get('Name');            // CON ENTIDAD EN EL FS O NO VIRTUAL (ROOT, XML, IMAGES)
         }
-
         return $parentPath;
     }
 
     /**
-     *  Gets the path for storing the Node children.
+     * Gets the path for storing the Node children.
      */
-
     function GetChildrenPath()
     {
-
         return $this->GetPathList();
     }
 
     /**
-     *  Creates the Node in the data/nodes directory.
+     * Creates the Node in the data/nodes directory.
+     * 
      * @return null
      */
-
     function RenderizeNode()
     {
-
         return null;
     }
 
     /**
      *  Clears the error messages.
-      */
-
+     */
     function ClearError()
     {
-
         $this->numErr = null;
         $this->msgErr = null;
     }
 
     /**
-     *  Sets an error (code and message).
-      */
-
+     * Sets an error (code and message).
+     */
     function SetError($code)
     {
-
         $this->numErr = $code;
         $this->msgErr = $this->errorList[$code];
     }
 
     /**
-     *  Checks if has happened any error.
+     * Checks if has happened any error.
      * @return bool
      */
-
     function HasError()
     {
-
         return ($this->numErr != null);
     }
 
     /**
-     *  Builds a XML wich contains the properties of the Node.
+     * Builds a XML wich contains the properties of the Node.
+     * 
      * @param int - depth
      * @param array - files
      * @param bool - recurrence
      * @return string
      */
-
     function ToXml($depth, & $files, $recurrence)
     {
-
         return "";
     }
 
     /**
-     *  Returns a xml fragment
+     * Returns a xml fragment
+     * 
      * @return string
      */
-
     function getXmlTail()
     {
-
         return '';
     }
 
     /**
-     *  Gets all channels which transform the Node.
+     * Gets all channels which transform the Node.
      * @return array
      */
-
     function GetChannels()
     {
-
         return array();
     }
 
     /**
-     *  Gets the content of the Node.
+     * Gets the content of the Node.
      * @return string
      */
-
     function GetContent()
     {
-
         return '';
     }
-
 
     /**
      * @param $content
      * @param $commitNode
+     * @return boolean
      */
     function SetContent($content, $commitNode)
     {
-
-        return;
+        return true;
     }
 
-
     /**
-     * @param null $name
-     * @param null $parentID
-     * @param null $nodeTypeID
+     * @param $name
+     * @param $parentID
+     * @param $nodeTypeID
+     * @return boolean
      */
     function CreateNode($name = null, $parentID = null, $nodeTypeID = null)
     {
         $this->UpdatePath();
-        return;
+        return true;
     }
-
-
-    /**
-     *
-     */
+    
     function DeleteNode()
     {
-
+        return true;
     }
-
 
     /**
      * @return bool|string
      */
     function CanDenyDeletion()
     {
-
         return $this->parent->nodeType->get('CanDenyDeletion');
     }
-
 
     /**
      * @return array
      */
     function GetDependencies()
     {
-
         return array();
     }
 
-    /**
-     *
-     */
     function UpdatePath()
     {
         // Think in root node as a file for performance purposes.
@@ -308,11 +281,11 @@ class Root
     }
 
     /**
-     *  Changes the name of the Node.
+     * Changes the name of the Node.
+     * 
      * @param string name
      * @return boolean
      */
-
     function RenameNode($name = null)
     {
         $this->UpdatePath();
@@ -320,27 +293,24 @@ class Root
     }
 
     /**
-     *  Gets the Url of the Node.
+     * Gets the Url of the Node.
+     * 
      * @return string
      */
-
     function GetNodeURL()
     {
-
         $pathList = $this->GetPathList();
         $relativePath = $pathList;
-
         return App::getValue('UrlRoot') . App::getValue("NodeRoot") . $relativePath;
     }
 
     /**
-     *  Gets all Nodes of a given NodeType.
+     * Gets all Nodes of a given NodeType.
+     * 
      * @return array|null
      */
-
     function getAll()
     {
-
         $query = sprintf("SELECT IdNode,Name FROM Nodes WHERE IdNodeType = %d", $this->parent->get('IdNodeType'));
         $this->dbObj->query($query);
         $return = NULL;
@@ -352,39 +322,34 @@ class Root
     }
 
     /**
-     *  Gets the name in which the Node will be published.
+     * Gets the name in which the Node will be published.
+     *  
      * @param int channel
      * @return string
      */
-
     function GetPublishedNodeName($channel = NULL)
     {
-
         return $this->parent->get('Name');
     }
 
     /**
-     *  Gets the path of the Node in the data/nodes directory.
+     * Gets the path of the Node in the data/nodes directory.
+     * 
      * @return string
      */
-
     function GetNodePath()
     {
-
         $pathList = $this->GetPathList();
         $relativePath = $pathList;
-
         return XIMDEX_ROOT_PATH . App::getValue("NodeRoot") . $relativePath;
     }
 
     /**
-     *  Checks whether the NodeType has the is_section_index property.
+     * Checks whether the NodeType has the is_section_index property.
      * @return null
      */
-
     function getIndex()
     {
-
         return NULL;
     }
 
@@ -393,9 +358,8 @@ class Root
      * @param $addNodeName
      * @return string
      */
-    function GetPublishedPath($channelID = NULL, $addNodeName)
+    public function GetPublishedPath($channelID = NULL, $addNodeName = null)
     {
-
         $db = new \Ximdex\Runtime\Db();
         $nodes = array();
         $query = sprintf("SELECT n.IdNode"
@@ -403,21 +367,17 @@ class Root
             . " INNER JOIN Nodes n USING(IdNode)"
             . " INNER JOIN NodeTypes nt ON n.IdNodeType = nt.IdNodeType AND nt.IsVirtualFolder = 0"
             . " WHERE ft.`IdChild` = %s AND ft.`IdChild` != ft.`IdNode` order by ft.Depth DESC",
-            $db->sqlEscapeString($this->parent->get('IdNode')));
-
+        $db->sqlEscapeString($this->parent->get('IdNode')));
         $db->query($query);
         while (!$db->EOF) {
             $node = new Node($db->getValue('IdNode'));
             $nodes[] = $node->GetPublishedNodeName($channelID);
             $db->next();
         }
-
         if ($addNodeName && !$this->nodeType->get('IsVirtualFolder')) {
             $parent = new Node($this->parent->get('IdNode'));
             $nodes[] = $parent->GetPublishedNodeName($channelID);
         }
-
         return '/' . implode('/', $nodes);
     }
-
 }

@@ -26,6 +26,8 @@
 
 namespace Ximdex\MPM;
 
+use Ximdex\Logger;
+
 //Handler the signal
 $callback = array("\\Ximdex\\MPM\\MPMManager", "singnalHandler");
 declare(ticks=1);
@@ -127,10 +129,12 @@ class MPMManager {
 
 			if ($pid == -1){
 				//Error, TODO
+				Logger::error('MPM Key: ' . $key . ' Error: NO FORK');
 				exit;
 			}else if ($pid == 0){
 				//We are in the child, create a new Process
 				//echo " child $key created \n";
+			    Logger::info('MPM Key: ' . $key . ' Child created', true);
 				$this->createProcess($key);
 			}else{
 				//Reset the database, the database connection is duplicated in the forking and when
@@ -142,6 +146,7 @@ class MPMManager {
 
 				//We are the parent
 				//Inc the numChild
+				Logger::info('MPM Key: ' . $key . ' Parent created child: ' . $pid, true);
 				$this->sharedMemory->incVar(MPMManager::KEY_NUM_CHILD);
 			}
 		}
@@ -238,6 +243,7 @@ class MPMManager {
 		//dec the num of child created
 		$this->sharedMemory->decVar(MPMManager::KEY_NUM_CHILD);
 		//kill the process --> This it's important, be careful with the zombies process
+		Logger::info('MPM Child ended with pid: ' . getmypid(), true);
 		exit();
 	}
 	/**
@@ -246,6 +252,7 @@ class MPMManager {
 	 * @param $signal
 	 */
 	public static function singnalHandler($signal){
+	    Logger::info('MPM Captured signal: ' . $signal, true);
 		switch($signal){
 			case SIGTERM:
 				echo "signal cached SIGTERM";
