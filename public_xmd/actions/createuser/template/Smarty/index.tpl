@@ -26,8 +26,8 @@
 <form method="post" name="cu_form" id="cu_form" action="{$action_url}">
 	<input type="hidden" name="id_node" VALUE="{$id_node}">
 	<div class="action_header">
-		<h5 class="direction_header"> Name Node: {t}User Manager{/t}</h5>
-		<h5 class="nodeid_header"> ID Node: {$nodeid}</h5>
+		<h5 class="direction_header"> {t}Name Node:{/t} {t}User manager{/t}</h5>
+		<h5 class="nodeid_header"> {t}ID Node:{/t} {$nodeid}</h5>
 		<hr>
 	</div>
 	<div class="action_content">

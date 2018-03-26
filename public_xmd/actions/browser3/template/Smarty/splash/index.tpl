@@ -1,4 +1,4 @@
-<h2>Ximdex, making content management easy</h2>
+<h2>{t}Ximdex, making content management easy{/t}</h2>
 <ul>
 	<li><strong>{t}Faster{/t}</strong>
 	<p>{t}Drag&amp;Drop functionality to add and move elements, the new publication module ximPUBLISH 2.0, and more to make Ximdex faster!{/t}</p>

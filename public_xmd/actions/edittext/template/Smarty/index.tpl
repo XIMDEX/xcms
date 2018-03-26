@@ -25,8 +25,8 @@
 
 <form id="et_form" class="text-editor-form" enctype="multipart/form-data" method="post" action="{$action_url}">
 	<div class="action_header">
-		<h5 class="direction_header"> Name Node: {$node_name}</h5>
-		<h5 class="nodeid_header"> ID Node: {$nodeid}</h5>
+		<h5 class="direction_header"> {t}Name Node:{/t} {t}{$node_name}{/t}</h5>
+		<h5 class="nodeid_header"> {t}ID Node:{/t} {$nodeid}</h5>
 		<hr>
 		<fieldset class="buttons-form">
             {button label="Save" type="submit" class="validate btn main_action"}{*message="{t}Are you sure you want to save the changes?{/t}"*}

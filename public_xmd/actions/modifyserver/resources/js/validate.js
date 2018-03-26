@@ -55,6 +55,7 @@ X.actionLoaded(function (event, fn, params) {
     fn('#delete_server').click(function (event) {
         if (fn('#serverid').val() != "none") {
             confirm_dialog(event, _('Are you sure you want to remove this server?'), form, fm);
+            fn('input[name=borrar]').val(1);
             return true;
         }
     });

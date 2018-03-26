@@ -25,15 +25,15 @@
 
 <form method="post" name="el_form" action="{$action_url}">
 	<div class="action_header">
-		<h5 class="direction_header"> Name Node: {$node_name}</h5>
-		<h5 class="nodeid_header"> ID Node: {$nodeid}</h5>
+		<h5 class="direction_header"> {t}Name Node:{/t} {t}{$node_name}{/t}</h5>
+		<h5 class="nodeid_header"> {t}ID Node:{/t} {$nodeid}</h5>
 		<hr>
 
 	</div>
 
 	<div class="action_content">
 		<div class="row tarjeta">
-			<h2 class="h2_general">{t}Add channel{/t}</h2>
+			<h2 class="h2_general">{t}Delete user{/t}</h2>
 			<div class="small-12 columns">
 			<input type=hidden name='id_node' value="{$id_node}">
 			<div class="alert alert-info" >

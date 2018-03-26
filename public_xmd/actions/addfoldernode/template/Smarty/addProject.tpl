@@ -27,8 +27,8 @@
     <input name="theme" type="hidden" />
 
     <div class="action_header">
-        <h5 class="direction_header"> Name Node: {t}Projects{/t}</h5>
-        <h5 class="nodeid_header"> ID Node: {$nodeid}</h5>
+        <h5 class="direction_header"> {t}Name Node:{/t} {t}Projects{/t}</h5>
+        <h5 class="nodeid_header"> {t}ID Node:{/t} {$nodeid}</h5>
         <hr>
     </div>
     {if {empty($langs)}}
@@ -40,7 +40,7 @@
     <div class="action_content">
         <div class="row tarjeta">
             <div class="small-12 columns title_tarjeta">
-                <h2 class="h2_general">{t friendlyName=$friendlyName}Add %1{/t}</h2>
+                <h2 class="h2_general">{t}Add project{/t}</h2>
             </div>
             <div class="small-12 columns">
                 <div class="input">
@@ -108,7 +108,7 @@
             
             <div class="small-12 columns">
                 <fieldset class="buttons-form ">
-                    {button label="Create `$friendlyName`" class='validate btn main_action' }
+                    {button label="{t}Create project{/t}" class='validate btn main_action' }
                 </fieldset>
             </div>
 		</div>

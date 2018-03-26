@@ -28,8 +28,8 @@
       users_associated={$users_associated}; init();' method="post" action="{$action_url}" class="form_group_user">
 
     <div class="action_header">
-        <h5 class="direction_header"> Name Node: {t}Change users{/t}</h5>
-        <h5 class="nodeid_header"> ID Node: {$nodeid}</h5>
+        <h5 class="direction_header"> {t}Name Node:{/t} {t}Change users{/t}</h5>
+        <h5 class="nodeid_header"> {t}ID Node:{/t} {$nodeid}</h5>
         <hr>
     </div>
 
@@ -60,7 +60,7 @@
 
             <div class="small-12 columns">
                 <fieldset class="buttons-form">
-                    <button type="button" id="" ng-click="addGroup()" class="btn ui-state-default ui-corner-all button submit-button ladda-button main_action" data-style="slide-up" data-size="xs" tabindex=""><span class="ladda-label">Add</span></button>
+                    <button type="button" id="" ng-click="addGroup()" class="btn ui-state-default ui-corner-all button submit-button ladda-button main_action" data-style="slide-up" data-size="xs" tabindex=""><span class="ladda-label">{t}Add{/t}</span></button>
                 </fieldset></div>
         </div>
         <br>

@@ -27,8 +27,8 @@
 <form method="post" action="{$action_url}" id="channel_form" class='form_active validate_ajax'>
     <input type="hidden" name="id_node" value="{$id_node}">
     <div class="action_header">
-        <h5 class="direction_header"> Name Node: {t}Channel Manager{/t}</h5>
-        <h5 class="nodeid_header"> ID Node: {$nodeid}</h5>
+        <h5 class="direction_header"> {t}Name Node:{/t} {t}Channel manager{/t}</h5>
+        <h5 class="nodeid_header"> {t}ID Node:{/t} {$nodeid}</h5>
         <hr>
     </div>
     <div class="action_content">

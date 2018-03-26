@@ -137,25 +137,25 @@ class ServerNode extends FolderNode
 
     function SetPassword($physicalID, $pass)
     {
-        $sql = "UPDATE Servers SET Password= '" . $pass . "' WHERE IdNode=" . $this->nodeID . " AND IdServer=" . $physicalID;
+        $sql = "UPDATE Servers SET Password= " . DB::sqlEscapeString($pass) . " WHERE IdNode=" . $this->nodeID . " AND IdServer=" . $physicalID;
         $this->dbObj->Execute($sql);
     }
 
     function SetLogin($physicalID, $login)
     {
-        $sql = "UPDATE Servers SET Login= '" . $login . "' WHERE IdNode=" . $this->nodeID . " AND IdServer=" . $physicalID;
+        $sql = "UPDATE Servers SET Login= " . DB::sqlEscapeString($login) . " WHERE IdNode=" . $this->nodeID . " AND IdServer=" . $physicalID;
         $this->dbObj->Execute($sql);
     }
 
     function SetHost($physicalID, $host)
     {
-        $sql = "UPDATE Servers SET Host= '" . $host . "' WHERE IdNode=" . $this->nodeID . " AND IdServer=" . $physicalID;
+        $sql = "UPDATE Servers SET Host= " . DB::sqlEscapeString($host) . " WHERE IdNode=" . $this->nodeID . " AND IdServer=" . $physicalID;
         $this->dbObj->Execute($sql);
     }
 
     function SetPort($physicalID, $port)
     {
-        $sql = "UPDATE Servers SET Port= '" . $port . "' WHERE IdNode=" . $this->nodeID . " AND IdServer=" . $physicalID;
+        $sql = "UPDATE Servers SET Port=" . DB::sqlEscapeString($port) . " WHERE IdNode=" . $this->nodeID . " AND IdServer=" . $physicalID;
         $this->dbObj->Execute($sql);
     }
 
@@ -193,7 +193,8 @@ class ServerNode extends FolderNode
 
     function SetOverrideLocalPaths($physicalID, $overrideLocalPaths)
     {
-        $sql = "UPDATE Servers SET OverrideLocalPaths= '" . $overrideLocalPaths . "' WHERE IdNode=" . $this->nodeID . " AND IdServer=" . $physicalID;
+        $overrideLocalPaths = ($overrideLocalPaths) ? 'true' : 'false';
+        $sql = "UPDATE Servers SET OverrideLocalPaths= " . $overrideLocalPaths . " WHERE IdNode=" . $this->nodeID . " AND IdServer=" . $physicalID;
         $this->dbObj->Execute($sql);
     }
 
