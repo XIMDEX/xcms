@@ -25,8 +25,8 @@
 
 <form method="post" id="mu_action" action="{$action_url}">
 	<div class="action_header">
-		<h5 class="direction_header"> Name Node: {$name}</h5>
-		<h5 class="nodeid_header"> ID Node: {$nodeid}</h5>
+		<h5 class="direction_header"> {t}Name Node:{/t} {t}{$name}{/t}</h5>
+		<h5 class="nodeid_header"> {t}ID Node:{/t} {$nodeid}</h5>
 		<hr>
 	</div>
 

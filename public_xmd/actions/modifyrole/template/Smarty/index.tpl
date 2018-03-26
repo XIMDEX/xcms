@@ -25,8 +25,8 @@
 
 <form method="post" id="modify_role_form" class="modify_role_form" action="{$action_url}&amp;id_pipeline={$selected_pipeline}" ng-init="status = []">
     <div class="action_header">
-        <h5 class="direction_header"> Name Node: {t}Role data{/t}</h5>
-        <h5 class="nodeid_header"> ID Node: {$nodeid}</h5>
+        <h5 class="direction_header"> {t}Name Node:{/t} {t}Role data{/t}</h5>
+        <h5 class="nodeid_header"> {t}ID Node:{/t} {$nodeid}</h5>
         <hr>
         <script>
             Array.prototype.sum = function () {
@@ -39,7 +39,7 @@
 
 	<div ng-cloak class="action_content">
         <fieldset class="buttons-form-special">
-            <button type="button" id="" ng-click="status.sum() < status.length ? status.fill(true) : status.fill(false)" class="btn ui-state-default ui-corner-all button submit-button ladda-button main_action" data-style="slide-up" data-size="xs" tabindex=""><span class="ladda-label">Toggle all</span></button>
+            <button type="button" id="" ng-click="status.sum() < status.length ? status.fill(true) : status.fill(false)" class="btn ui-state-default ui-corner-all button submit-button ladda-button main_action" data-style="slide-up" data-size="xs" tabindex=""><span class="ladda-label">{t}Toggle all{/t}</span></button>
 
             {button label="Modify" onclick="window.com.ximdex.emptyActionsCache();" class="validate button-modify btn main_action"}
 
@@ -49,7 +49,7 @@
         <fieldset>
             <accordion close-others="false" ng-init="firstOpen=true; firstDisabled=false;">
                 <!-- datos generales -->
-                <accordion-group heading="Datos generales" ng-init="$parent.status.push(true)" is-open="$parent.status[0]" is-disabled="firstDisabled">
+                <accordion-group heading="{t}General data{/t}" ng-init="$parent.status.push(true)" is-open="$parent.status[0]" is-disabled="firstDisabled">
                     <div class="form-group">
                         <label for="name">{t}Name{/t}</label>
 

@@ -25,8 +25,8 @@
 
 <form method="post" id="msr_action" ng-controller="XModifyStatesRoleCtrl">
     <div class="action_header">
-        <h5 class="direction_header"> Name Node: {t}Role Manager{/t}</h5>
-        <h5 class="nodeid_header"> ID Node: {$nodeid}</h5>
+        <h5 class="direction_header"> {t}Name Node:{/t} {t}Role Manager{/t}</h5>
+        <h5 class="nodeid_header"> {t}ID Node:{/t} {$nodeid}</h5>
         <hr>
     </div>
     <div ng-view ng-show="thereAreMessages" class="slide-item #/messageClass/# message">

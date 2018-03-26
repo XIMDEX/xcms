@@ -319,7 +319,7 @@ class Action_modifyserver extends ActionAbstract {
 		            //we check that the server name is not in use for another one
 		            if (strtoupper($servers->class->GetDescription($id)) == strtoupper($description) and $serverID != $id)
 		            {
-		                $this->messages->add(_("Server description " . strtoupper($description) . " is already in use"), MSG_TYPE_ERROR);
+		                $this->messages->add(sprintf(_('Server description %s is already in use'), strtoupper($description)), MSG_TYPE_ERROR);
 		                $validation = false;
 		            }
 		        }

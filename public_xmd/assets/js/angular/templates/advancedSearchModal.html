@@ -2,47 +2,47 @@
     <div class="xim-search-dialog">
         <div class="xim-search-panel search_options">
             <div ng-if="results != null" class="buttonset save_search">
-                <button ng-click="saveQuery()">Save</button>
+                <button ng-click="saveQuery()">#/'Save' | xI18n/#</button>
             </div>
-            <h2>Advanced search</h2>
+            <h2>#/'Advanced search' | xI18n/#</h2>
 
             <div class="filters">
 
                 <div id="search-filters" class="xim-search-filters" style="display: block;">
                     <div class="xim-search-filter" ng-repeat="filter in filters" >
                         <select class="xim-filter-field ui-widget select" ng-model="filter.field" >
-                            <option value="name">Name</option>
-                            <option value="path">Path</option>
+                            <option value="name">#/'Name' | xI18n/#</option>
+                            <option value="path">#/'Path' | xI18n/#</option>
                             <!-- For ximRAM Module
                             <option value="content">Content</option>-->
-                            <option value="nodetype">Nodetype</option>
-                            <option value="creation">Creation date</option>
-                            <option value="versioned">Version date</option>
-                            <option value="publication">Publication date</option>
-                            <option value="tag">Tag</option>
-                            <option value="url">ximLINK Url</option>
-                            <option value="desc">ximLINK Description</option>
+                            <option value="nodetype">#/'Nodetype' | xI18n/#</option>
+                            <option value="creation">#/'Creation date' | xI18n/#</option>
+                            <option value="versioned">#/'Version date' | xI18n/#</option>
+                            <option value="publication">#/'Publication date' | xI18n/#</option>
+                            <option value="tag">#/'Tag' | xI18n/#</option>
+                            <option value="url">#/'ximLINK Url' | xI18n/#</option>
+                            <option value="desc">#/'ximLINK Description' | xI18n/#</option>
                         </select>
                         <select ng-model="filter.comparation" ng-show="filter.field=='name' || filter.field=='path' ||
                         filter.field=='content' || filter.field=='tag' || filter.field=='url' ||
                         filter.field=='desc'" class="xim-filter-comparation xim-filter-active-comparation ui-widget select" style="display: inline-block;">
-                            <option value="contains">contains</option>
-                            <option value="nocontains">does not contain</option>
-                            <option value="equal">equal to</option>
-                            <option value="nonequal">not equal to</option>
-                            <option value="startswith">begins with</option>
-                            <option value="endswith">ends with</option>
+                            <option value="contains">#/'contains' | xI18n/#</option>
+                            <option value="nocontains">#/'does not contain' | xI18n/#</option>
+                            <option value="equal">#/'equal to' | xI18n/#</option>
+                            <option value="nonequal">#/'not equal to' | xI18n/#</option>
+                            <option value="startswith">#/'begins with' | xI18n/#</option>
+                            <option value="endswith">#/'ends with' | xI18n/#</option>
                         </select>
                         <select ng-model="filter.nodetype_comparation" ng-show="filter.field=='nodetype'"
                                 class="xim-filter-nodetype-comparation xim-filter-active-comparation ui-widget select" style="display: inline-block;">
-                            <option value="equal">is</option>
+                            <option value="equal">#/'is' | xI18n/#</option>
                         </select>
                         <select ng-model="filter.date_comparation" ng-show="filter.field=='creation' || filter.field=='versioned' ||
                         filter.field=='publication'" class="xim-filter-date-comparation xim-filter-active-comparation ui-widget select" style="display: inline-block;">
-                            <option value="equal">equal to</option>
-                            <option value="previousto">before than</option>
-                            <option value="laterto">after than</option>
-                            <option value="inrange">in the range</option>
+                            <option value="equal">#/'equal to' | xI18n/#</option>
+                            <option value="previousto">#/'before than' | xI18n/#</option>
+                            <option value="laterto">#/'after than' | xI18n/#</option>
+                            <option value="inrange">#/'in the range' | xI18n/#</option>
                         </select>
 
                         <input ng-model="filter.content" type="text" ng-show="filter.field=='name' || filter.field=='path' ||
@@ -93,20 +93,20 @@
                     </div>
                 </div>
                 <div class="xim-search-options visible" ng-show="filters.length>1">
-                    <span class="label">Must be satisfied:</span>
+                    <span class="label">#/'Must be satisfied:' | xI18n/#</span>
                     <input  type="radio" name="sopt" ng-model="condition" value="and"/>
-                    <label for="sopt-and">All rules</label>
+                    <label for="sopt-and">#/'All rules' | xI18n/#</label>
                     <input  type="radio" name="sopt" ng-model="condition" value="or"/>
-                    <label for="sopt-or">Any rules</label>
+                    <label for="sopt-or">#/'Any rules' | xI18n/#</label>
                 </div>
 
                 <div class="buttonset">
-                    <button value="search" ng-click="search()" class="search_button">Search</button>
+                    <button value="search" ng-click="search()" class="search_button">#/'Search' | xI18n/#</button>
                 </div>
 
                 <div class="xim-search-panel">
                     <div class="saved-searches">
-                        <h3>Saved searches</h3>
+                        <h3>#/'Saved searches' | xI18n/#</h3>
 
                         <div class="saved-searches-item-container">
                             <ul class="saved-searches-items">
@@ -118,7 +118,7 @@
                         </div>
                     </div>
                     <div class="last-searches">
-                        <h3>Last searches</h3>
+                        <h3>#/'Last searches' | xI18n/#</h3>
 
                         <div class="last-searches-item-container">
                             <ul class="last-searches-items">
@@ -144,24 +144,21 @@
             <div id="loading" class="loading-icon"></div>
 
             <div ng-if="results==null" class="howto">
-                <h2 >How to create filters?</h2>
+                <h2 >#/'How to create filters' | xI18n/#?</h2>
 
-                <p >You can make custom filters adding(+)/removing(-) filter at the
-                    left side of this window. Then click on the SEARCH button to search nodes using
-                    the current filter.</p>
+                <p >#/'You can make custom filters adding(+)/removing(-) filter at the left side of this window' | xI18n/#. #/'Then click on the SEARCH button to search nodes using the current filter' | xI18n/#.</p>
 
-                <h2 >Can I save my custom filters?</h2>
+                <h2 >#/'Can I save my custom filters' | xI18n/#?</h2>
 
-                <p >Yes, you have to click on the save button and enter a name
-                    for the filter. You can also delete it clicking on the trash button.</p>
+                <p >#/'Yes, you have to click on the save button and enter a name for the filter' | xI18n/#. #/'You can also delete it clicking on the trash button' | xI18n/#.</p>
             </div>
 
-            <h2 ng-if="results!=null">Results</h2>
+            <h2 ng-if="results!=null">#/'Results' | xI18n/#</h2>
 
             <div class="results-view xim-listview-container ui-droppable" style="opacity: 1;">
                 <div ng-if="results!=null"
                      class="xim-itemsSelector xim-listview-itemsSelector">
-                    <span class="xim-itemsSelector-legend">Show</span>
+                    <span class="xim-itemsSelector-legend">#/'Show' | xI18n/#</span>
                     <select ng-disabled="results.data.length==0"
                             ng-model="results.query.items" ng-change="updateView()">
                         <option class="xim-itemsSelector-option"
@@ -185,13 +182,13 @@
                 </div>
                 <div ng-if="results!=null" class="btn-group btn-group-sm" role="group" >
                     <button ng-disabled="results!=null && results.data.length==0"
-                            type="button" class="btn btn-default" ng-click="selectAll()">All</button>
+                            type="button" class="btn btn-default" ng-click="selectAll()">#/'All' | xI18n/#</button>
                     <button ng-disabled="results!=null && results.data.length==0"
-                            type="button" class="btn btn-default" ng-click="selectNone()">None</button>
+                            type="button" class="btn btn-default" ng-click="selectNone()">#/'None' | xI18n/#</button>
                     <button ng-disabled="results!=null && results.data.length==0"
-                            type="button" class="btn btn-default" ng-click="invertSelection()">Invert</button>
+                            type="button" class="btn btn-default" ng-click="invertSelection()">#/'Invert' | xI18n/#</button>
                 </div>
-                <div ng-if="results!=null" class="number_results">Results<span>#/results.records/#</span></div>
+                <div ng-if="results!=null" class="number_results">#/'Results' | xI18n/#<span>#/results.records/#</span></div>
                 <div class="xim-listview-table-container">
                     <div style="width: 625px;">
                         <div class="t_fixed_header_main_wrapper ui-widget
@@ -202,7 +199,7 @@
                                     <div class="body ui-widget-content">
                                         <div>
                                             <div ng-if="results!=null && results.data.length==0">
-                                                No results found.
+                                                #/'No results found' | xI18n/#.
                                             </div>
                                             <table class="xim-listview-table">
                                                 <tbody>

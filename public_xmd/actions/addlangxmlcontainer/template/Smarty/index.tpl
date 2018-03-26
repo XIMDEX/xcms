@@ -27,8 +27,8 @@
 	<input type="hidden" name="nodeid" value="{$idNode}" class="ecajag" />
 	<input type="hidden" name="templateid" value="{$idTemplate}" class="ecajag" />
     <div class="action_header">
-		<h5 class="direction_header"> Name Node: {$node_name}</h5>
-		<h5 class="nodeid_header"> ID Node: {$nodeid}</h5>
+		<h5 class="direction_header"> {t}Name Node:{/t} {t}{$node_name}{/t}</h5>
+		<h5 class="nodeid_header"> {t}ID Node:{/t} {$nodeid}</h5>
 		<hr />
     </div>
 	<div class="action_content">

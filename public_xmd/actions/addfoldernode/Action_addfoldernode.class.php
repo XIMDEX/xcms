@@ -150,12 +150,12 @@ class Action_addfoldernode extends ActionAbstract
 
             case "ImportRootFolder":
                 $newNodeTypeName = "ImportFolder";
-                $friendlyName = "XimCLUDE folder";
+                $friendlyName = "Ximclude folder";
                 break;
 
             case "ImportFolder":
                 $newNodeTypeName = "ImportFolder";
-                $friendlyName = "XimCLUDE folder";
+                $friendlyName = "Ximclude folder";
                 break;
 
             case "CommonRootFolder":
@@ -201,12 +201,12 @@ class Action_addfoldernode extends ActionAbstract
 
             case "XimletRootFolder":
                 $newNodeTypeName = "XimletFolder";
-                $friendlyName = "Ximlets folder";
+                $friendlyName = "Ximlet folder";
                 break;
 
             case "XimletFolder":
                 $newNodeTypeName = "XimletFolder";
-                $friendlyName = "Ximlets folder";
+                $friendlyName = "Ximlet folder";
                 break;
 
             case "OpenDataSection":

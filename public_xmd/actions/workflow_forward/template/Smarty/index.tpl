@@ -30,8 +30,8 @@
 	<input type="hidden" name="state" value="{$state}" />
 	<input type="hidden" name="stateid" value="{$stateid}" />
 	<div class="action_header">
-		<h5 class="direction_header"> Name Node: {$name}</h5>
-		<h5 class="nodeid_header"> ID Node: {$nodeid}</h5>
+		<h5 class="direction_header"> {t}Name Node:{/t} {t}{$name}{/t}</h5>
+		<h5 class="nodeid_header"> {t}ID Node:{/t} {$nodeid}</h5>
 		<hr>
 	</div>
 	{if $hasDisabledFunctions}
@@ -133,7 +133,7 @@
 											<input type="checkbox" name="force" id="force" value="1" />
 										</div>
 										<div class="option_info">
-											<label for="force">{t}Force republish.{/t}</label>
+											<label for="force">{t}Force republish{/t}</label>
 										</div>
 										<div class="options_separator"></div>
 									</div>

@@ -59,7 +59,7 @@
 
 
 				<div class="col-md-12 text-center">
-					<button type="submit" name="login" id="login" value="{t}Sign in{/t}" class="btn btn-default">Sign in</button>
+					<button type="submit" name="login" id="login" value="{t}Sign in{/t}" class="btn btn-default">{t}Sign in{/t}</button>
 				</div>
 				<div class="col-md-12">
 					<div class="alert alert-info">
@@ -68,7 +68,7 @@
 				</div>
 				<!--
 				<p style="text-align: center;">
-					<button type="submit" name="login" id="login" value="{t}Sign in{/t}" >{t}Sign in{/t}</button>
+					<button type="submit" name="login" id="login" value="{t}Sign in{/t}">{t}Sign in{/t}</button>
 					<span>{t}Recommended browsers{/t}:<br/> Firefox &gt; 4, Chrome, Opera and Safari.</span> {* <a href="http://lab04.ximdex.net/ximdexDEMO/public_xmd/?action=forgot">Forgot your password?</a> *}
 				</p>
 				-->
@@ -101,7 +101,10 @@
 
 		<div id="news" class="news">
 			<div class="alert alert-info">
-				<strong>Info!</strong> {$news_content}
+				<strong>Info!</strong>
+				{if $file='../../../../assets/news/index_$locale.html'}
+					{include file="../../../../assets/news/index_$locale.html"}
+				{/if}
 			</div>
 		</div>
 	</div>
