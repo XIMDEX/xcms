@@ -45,7 +45,11 @@ input.name{
 }
 
 input.description{
-    width: 55%;
+    width: 35%;
+}
+
+select.action {
+	width: 26%;
 }
 
 div.separator{
@@ -73,7 +77,7 @@ div.separator:hover button{
 }
 
 label.status{
-    width: 12% !important;
+    width: 8% !important;
     display: inline;
     float: left;
     margin-top: 0.4em;
