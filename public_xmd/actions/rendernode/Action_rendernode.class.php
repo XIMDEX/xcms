@@ -16,7 +16,6 @@ class Action_rendernode extends ActionAbstract
     {
         // Change the logs output to preview file
         Logger::setActiveLog('preview');
-        
         if ($this->request->getParam("nodeid")) {
             
             // Receives request node param
@@ -47,7 +46,8 @@ class Action_rendernode extends ActionAbstract
         // Checks node existence
         $node = new Node($idNode);
         if (! ($node->get('IdNode') > 0)) {
-            $this->messages->add(_('It is not possible to show preview.') . _(' The node you are trying to preview does not exist.'), MSG_TYPE_NOTICE);
+            $this->messages->add(_('It is not possible to show preview.') . _(' The node you are trying to preview does not exist.')
+            , MSG_TYPE_NOTICE);
             $this->render(array('messages' => $this->messages->messages), null, 'messages.tpl');
         }
         if ($node->nodeType->GetIsStructuredDocument()) {

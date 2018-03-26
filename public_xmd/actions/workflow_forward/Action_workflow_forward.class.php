@@ -538,7 +538,7 @@ class Action_workflow_forward extends ActionAbstract
             , $texttosend, $lastPublished);
     }
 
-    protected function sendToPublish($idNode, $up, $down, $markEnd, $force, $structure, $deepLevel, $sendNotifications, $notificableUsers
+    private function sendToPublish($idNode, $up, $down, $markEnd, $force, $structure, $deepLevel, $sendNotifications, $notificableUsers
         , $idState, $texttosend, $lastPublished)
     {
         Logger::info("ADDSECTION publicateNode sendToPublish parent");
@@ -621,7 +621,7 @@ class Action_workflow_forward extends ActionAbstract
         }
     }
 
-    protected function buildFlagsPublication($markEnd, $structure = 1, $deepLevel = 1, $force = false, $lastPublished = 0)
+    private function buildFlagsPublication($markEnd, $structure = 1, $deepLevel = 1, $force = false, $lastPublished = 0)
     {
         // Creating flags to publicate
         $flagsPublication = array(

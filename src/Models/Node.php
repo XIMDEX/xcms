@@ -3660,7 +3660,12 @@ class Node extends NodesOrm
             
             // Get the mime type from node content
             $info = pathinfo($this->GetNodeName());
-            if (strtolower($info['extension']) == 'css') {
+            if (strtolower($info['extension']) == 'svg') {
+                
+                // SVG files return text/plain by default
+                return 'image/svg+xml';
+            }
+            elseif (strtolower($info['extension']) == 'css') {
                 
                 // CSS files return text/plain by default
                 return 'text/css';
