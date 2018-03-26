@@ -30,8 +30,8 @@
 	<input type="hidden" id="num_servers" name="num_servers" value="{$num_servers}" />
 	<input type="hidden" name="id" value="{if (!isset($server.id))}{$id_server}{else}none{/if}" />
 	<div class="action_header">
-		<h5 class="direction_header"> Name Node: {$node_name}</h5>
-		<h5 class="nodeid_header"> ID Node: {$nodeid}</h5>
+		<h5 class="direction_header"> {t}Name Node:{/t} {t}{$node_name}{/t}</h5>
+		<h5 class="nodeid_header"> {t}ID Node:{/t} {$nodeid}</h5>
 		<hr />
 	</div>
 	<div class="action_content">
@@ -147,8 +147,8 @@
 					</div>
 					<div class="small-2 columns" style="width: 100%;">
 						<fieldset class="buttons-form">
+							<input type="hidden" name="borrar" />
 							{if (0 != $id_server)}
-								<input type="hidden" name="borrar" value="1"/>
 									{button id="delete_server" label="Delete server" class="btn"}
 									{button id="save_server" label="Update server" 
 									class="validate btn main_action update-server"}{*message="Would you like to create this server?"*}

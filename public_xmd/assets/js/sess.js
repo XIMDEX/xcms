@@ -137,7 +137,7 @@
 								onclose: function(event,params) {
 									window.location.href = url_root + '/?action=logout';
 								}.bind(this),
-								message: [{type: 'STRING', message: _('You have reached the limit of inactivity period. Please, re-authenticate again in order to continue working. ')}],
+								message: [{type: 'STRING', message: _("You have reached the limit of inactivity period. Please, re-authenticate again in order to continue working.")}],
 								buttons: [{text: 'Login', value: 6, onPress: function() {window.location.href= url_root + '/?action=logout'; this.close();} }]
 							});
 							

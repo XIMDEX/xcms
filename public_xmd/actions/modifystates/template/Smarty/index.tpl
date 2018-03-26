@@ -26,8 +26,8 @@
 <form method="post" id="msu_form" ng-controller="XModifyStatesCtrl" ng-init="idNode={$idNode};">
     <!-- header -->
     <div class="action_header">
-        <h5 class="direction_header"> Name Node: {t}Manage workflow{/t}</h5>
-        <h5 class="nodeid_header"> ID Node: {$nodeid}</h5>
+        <h5 class="direction_header"> {t}Name Node:{/t} {t}Manage workflow{/t}</h5>
+        <h5 class="nodeid_header"> {t}ID Node:{/t} {$nodeid}</h5>
         <hr>
     </div>
     <!-- / header -->

@@ -23,15 +23,15 @@
             <div class="browser-modules-view-list-container" style="display: block;">
                 <ul ng-if="modules!='null' && modules!=null" class="browser-modules-view-list">
                     <li ng-class="::{'browser-modules-view-enabled': node.enabled, 'browser-modules-view-disabled': !node.enabled}" ng-repeat="node in ::modules" hm-tap="openModuleAction(node)">
-                        #/::node.name/#
+                        #/::node.name | xI18n/#
                     </li>
                 </ul>
             </div>
         </tab>
     </tabset>
 
-    <button hm-tap="toggleView()" ng-if="selectedTab == 1" ng-class="{'btn-view-list': !treeMode}" class="btn btn-sidebar btn-treeview btn-view" title="Change view"></button>
-    <button id="angular-tree-toggle" ng-click="toggleTree()" class="btn btn-sidebar btn-anchor hidden-sm hidden-xs" type="button" title="Collapse menu"></button>
+    <button hm-tap="toggleView()" ng-if="selectedTab == 1" ng-class="{'btn-view-list': !treeMode}" class="btn btn-sidebar btn-treeview btn-view" title="#/'Change view' | xI18n/#"></button>
+    <button id="angular-tree-toggle" ng-click="toggleTree()" class="btn btn-sidebar btn-anchor hidden-sm hidden-xs" type="button" title="#/'Collapse menu' | xI18n/#"></button>
 
     <!--<div class="filter-tree" ng-show="selectedTab==1">
         <input ng-change="doFilter()" ng-model="filter" type="text" class="form-control" placeholder="#/::('browser.filter' | xI18n)+'...'/#">
