@@ -3,7 +3,6 @@
 namespace XimdexApi\core;
 
 use Ximdex\Logger;
-use Ximdex\Runtime\Session;
 
 class Router
 {
@@ -75,7 +74,11 @@ class Router
      */
     public function getUserToken()
     {
-        return isset($_SERVER['PHP_AUTH_USER']) ? $_SERVER['PHP_AUTH_USER'] : null;
+        $token = isset($_SERVER['PHP_AUTH_USER']) ? $_SERVER['PHP_AUTH_USER'] : null;
+        if (is_null($token)) {
+            $token = isset($_GET['token']) ? $_GET['token'] : null;
+        }
+        return $token;
     }
 
     public function addAllowedRequest($item)

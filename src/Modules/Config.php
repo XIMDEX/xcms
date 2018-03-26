@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -26,43 +27,24 @@
 
 namespace Ximdex\Modules;
 
-
-/**
- *
- */
 class Config
 {
-
-    // Object composition.
-    var $defMngr;
-
-    /**
-     * @public
-     */
+    private $defMngr;
+    
     public function __construct()
     {
-
-        $this->defMngr = new \Ximdex\Modules\DefManager(XIMDEX_ROOT_PATH . \Ximdex\Modules\Manager::get_modules_install_params());
-        $this->defMngr->setPrefix(\Ximdex\Modules\Manager::get_pre_define_module());
-        $this->defMngr->setPostfix(\Ximdex\Modules\Manager::get_post_define_module());
+        $this->defMngr = new DefManager(XIMDEX_ROOT_PATH . Manager::get_modules_install_params());
+        $this->defMngr->setPrefix(Manager::get_pre_define_module());
+        $this->defMngr->setPostfix(Manager::get_post_define_module());
     }
 
-
-    /**
-     * @public
-     */
-    function enableModule($name)
+    public function enableModule($name)
     {
         $this->defMngr->enableItem(strtoupper($name));
     }
 
-    /**
-     * @public
-     */
-    function disableModule($name)
+    public function disableModule($name)
     {
-
         $this->defMngr->disableItem(strtoupper($name));
     }
-
 }

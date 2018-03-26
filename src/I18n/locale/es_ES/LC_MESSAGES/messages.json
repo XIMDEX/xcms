@@ -850,7 +850,7 @@
     "All": "Todos",
     "Publishing...": "Publicando...",
     "Please, wait": "Por favor, espere",
-    "Node types to publish": "Tipos de nodo a publicar",
+    "Node type to publish": "Tipos de nodo a publicar",
     "No physical server has been defined in '%s'": "No se ha definido ning&uacute;n servidor f&iacute;sico en '%s'",
     "Following documents and sections are going to be published:": "Se van a publicar los siguientes documentos y secciones:",
     "Are you sure you want to publish?": "&iquest;Est&aacute; seguro de que desea publicar?",
@@ -2485,5 +2485,6 @@
     "Available project channels": "Canales disponibles en el proyecto",
     "Available project languages": "Idiomas disponibles en el proyecto",
     "There is not an URL for the HTML editor in the system configuration": "No hay una URL para el editor HTML en la configuraci&oacute;n del sistema",
-    "The HTML editor is not enabled in the system configuration": "El editor HTML no está habilitado en la configuraci&oacute;n del sistema"
+    "The HTML editor is not enabled in the system configuration": "El editor HTML no está habilitado en la configuraci&oacute;n del sistema",
+    "The file has been published succesfuslly": "El archivo ha sido publicado correctamente"
 }

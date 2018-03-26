@@ -121,7 +121,6 @@ class Timer
 
         switch ($unit) {
             case 's':
-                $total = ($total);
                 $this->word = ' seconds';
                 break;
             case 'm':

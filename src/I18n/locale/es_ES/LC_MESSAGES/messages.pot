@@ -2828,7 +2828,7 @@ msgstr ""
 msgid "Navigate by tags"
 msgstr ""
 
-#: /actions/prevdoc/Action_prevdoc.class.php
+#: /actions/rendernode/Action_rendernode.class.php
 msgid "It is not possible to show preview."
 msgstr ""
 
@@ -2926,7 +2926,7 @@ msgstr ""
 msgid "Please, wait"
 msgstr ""
 
-msgid "Node types to publish"
+msgid "Node type to publish"
 msgstr ""
 
 
@@ -3802,7 +3802,7 @@ msgstr ""
 
 #: /actions/xmleditor2/template/Smarty/toolbar.tpl
 #: /actions/manageversions/template/Smarty/index.tpl
-#: /actions/prevdoc/Action_prevdoc.class.php
+#: /actions/rendernode/Action_rendernode.class.php
 #install/ximdex_data/ximdex.sql table Nodes
 msgid "Preview"
 msgstr ""
@@ -8015,4 +8015,7 @@ msgid "There is not an URL for the HTML editor in the system configuration"
 msgstr ""
 
 msgid "The HTML editor is not enabled in the system configuration"
+msgstr ""
+
+msgid "The file has been published succesfuslly"
 msgstr ""

@@ -114,7 +114,7 @@ if angular.module('ximdex').notRegistred('listPostsCtrl')
 
             $scope.preview = (nodeid) ->
                 action =
-                    command: "prevdoc"
+                    command: "rendernode"
                     name: "Preview"
                 nodes = [
                     nodeid: nodeid

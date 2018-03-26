@@ -75,7 +75,7 @@ class StructuredDocument extends StructuredDocumentsOrm
             $this->SetError(1);
             return null;
         }
-        while (! $dbObj->EOF) {
+        while (!$dbObj->EOF) {
             $salida[] = $dbObj->row["idDoc"];
             $dbObj->Next();
         }
@@ -93,7 +93,7 @@ class StructuredDocument extends StructuredDocumentsOrm
     function SetID($docID)
     {
         self::__construct($docID);
-        if (! ($this->get('IdDoc') > 0)) {
+        if (!($this->get('IdDoc') > 0)) {
             $this->SetError(2);
             return null;
         }
@@ -111,11 +111,11 @@ class StructuredDocument extends StructuredDocumentsOrm
     // return int (status)
     function SetName($name)
     {
-        if (! ($this->get('IdDoc') > 0)) {
+        if (!($this->get('IdDoc') > 0)) {
             $this->SetError(2);
             return false;
         }
-        
+
         $result = $this->set('Name', $name);
         if ($result) {
             return $this->update();
@@ -134,11 +134,11 @@ class StructuredDocument extends StructuredDocumentsOrm
     // return int (status)
     function SetCreator($IdCreator)
     {
-        if (! ($this->get('IdDoc') > 0)) {
+        if (!($this->get('IdDoc') > 0)) {
             $this->SetError(2);
             return false;
         }
-        
+
         $result = $this->set('IdCreator', $IdCreator);
         if ($result) {
             return $this->update();
@@ -157,11 +157,11 @@ class StructuredDocument extends StructuredDocumentsOrm
     // return int (status)
     function SetLanguage($IdLanguage)
     {
-        if (! ($this->get('IdDoc') > 0)) {
+        if (!($this->get('IdDoc') > 0)) {
             $this->SetError(2);
             return false;
         }
-        
+
         $result = $this->set('IdLanguage', $IdLanguage);
         if ($result) {
             return $this->update();
@@ -176,11 +176,11 @@ class StructuredDocument extends StructuredDocumentsOrm
 
     function SetDocumentType($templateID)
     {
-        if (! ($this->get('IdDoc') > 0)) {
+        if (!($this->get('IdDoc') > 0)) {
             $this->SetError(2);
             return false;
         }
-        
+
         $result = $this->set('IdTemplate', $templateID);
         if ($result) {
             return $this->update();
@@ -195,17 +195,17 @@ class StructuredDocument extends StructuredDocumentsOrm
 
     function SetSymLink($docID)
     {
-        if (! ($this->get('IdDoc') >= 0)) {
+        if (!($this->get('IdDoc') >= 0)) {
             $this->SetError(2);
             return false;
         }
-        
+
         if ($docID != $this->get('IdDoc')) {
             $result = $this->set('TargetLink', $docID);
             if ($result) {
                 $this->update();
             }
-            
+
             $dependencies = new Dependencies();
             $dependencies->insertDependence($docID, $this->get('IdDoc'), 'SYMLINK', $this->GetLastVersion());
             return true;
@@ -216,21 +216,21 @@ class StructuredDocument extends StructuredDocumentsOrm
 
     function ClearSymLink()
     {
-        if (! ($this->get('IdDoc') > 0)) {
+        if (!($this->get('IdDoc') > 0)) {
             $this->SetError(2);
             return false;
         }
-        
+
         $result = $this->set('TargetLink', '');
         if ($result) {
-            
+
             $result = $this->update();
             $this->SetContent($this->GetContent());
-            
+
             // Elimina la dependencia
             $dependencies = new Dependencies();
             $dependencies->deleteDependenciesByDependentAndType($this->get('IdDoc'), 'SYMLINK');
-            
+
             return $result;
         }
         return false;
@@ -250,7 +250,7 @@ class StructuredDocument extends StructuredDocumentsOrm
             $targetContent = preg_replace('/<url>\s*([^\<]+)\s*<\/url>/i', "'<url>'.\$this->UpdateLinkParseLink($targetLang , '\\1').'</url>'", $targetContent);
             return $targetContent;
         }
-        
+
         $data = new DataFactory($this->get('IdDoc'));
         $content = $data->GetContent($version, $subversion);
         return $content;
@@ -262,7 +262,7 @@ class StructuredDocument extends StructuredDocumentsOrm
         if ($pos != FALSE) {
             $linkID = substr($linkID, 0, $pos);
         }
-        
+
         $node = new Node($linkID);
         if (($node->get('IdNode') > 0) && ($node->nodeType->get('Name') != "XmlDocument")) {
             return $linkID;
@@ -270,13 +270,13 @@ class StructuredDocument extends StructuredDocumentsOrm
         $linkDoc = new StructuredDocument($linkID);
         if ($linkDoc->GetLanguage() != $sourceLang)
             return $linkID;
-        
+
         $node->SetID($node->GetParent());
         if ($node->nodeType->get('Name') != "XmlContainer")
             return $linkID;
-        
+
         $sibling = $node->class->GetChildByLang($this->GetLanguage());
-        
+
         if ($sibling)
             return $sibling;
         else
@@ -293,11 +293,11 @@ class StructuredDocument extends StructuredDocumentsOrm
         $symLinks = $this->find('IdDoc', 'TargetLink = %s', array(
             $this->get('IdDoc')
         ), MONO);
-        
+
         // Repetimos para todos los nodos que son enlaces simbolicos a este
-        if (! empty($symLinks)) {
+        if (!empty($symLinks)) {
             foreach ($symLinks as $link) {
-                
+
                 $node = new Node($link);
                 $node->RenderizeNode();
             }
@@ -312,7 +312,7 @@ class StructuredDocument extends StructuredDocumentsOrm
                 return false;
             }
         }
-        
+
         // refrescamos la fecha de Actualizacion del nodo
         $this->SetUpdateDate();
         $data = new DataFactory($this->get('IdDoc'));
@@ -323,33 +323,33 @@ class StructuredDocument extends StructuredDocumentsOrm
         } else {
             $res = $data->SetContent($content, NULL, NULL, $commitNode);
         }
-        
+
         // the document will be validate against the associated RNG schema with XML documents
         if ($node->GetNodeType() == NodeTypeConstants::XML_DOCUMENT) {
             $this->validate_schema($node);
         }
-        
+
         // check possible errors
         if ($res === false) {
             if ($data->msgErr) {
                 $this->messages->add($data->msgErr, MSG_TYPE_ERROR);
                 return false;
             }
-            if (! $this->messages->count()) {
+            if (!$this->messages->count()) {
                 if (isset($GLOBALS['errorsInXslTransformation']) and $GLOBALS['errorsInXslTransformation']) {
                     $this->messages->add($GLOBALS['errorsInXslTransformation'][0], MSG_TYPE_WARNING);
                     $GLOBALS['errorsInXslTransformation'] = null;
                 }
             }
         }
-        
+
         // set dependencies
         $dependeciesParser = new ParsingDependencies();
         if ($dependeciesParser->parseAllDependencies($this->get('IdDoc'), $content) === false) {
-            if (! $this->messages->count())
+            if (!$this->messages->count())
                 $this->messages->mergeMessages($dependeciesParser->messages);
         }
-        
+
         // Renderizamos el nodo para reflejar los cambios
         $node = new Node($this->get('IdDoc'));
         if ($node->RenderizeNode() === false) {
@@ -369,19 +369,19 @@ class StructuredDocument extends StructuredDocumentsOrm
     {
         $nodeTypeName = $node->nodeType->GetName();
         if ($nodeTypeName == 'RngVisualTemplate') {
-            
+
             $rngPath = APP_ROOT_PATH . '/actions/xmleditor2/views/rngeditor/schema/rng-schema.xml';
             return trim(FsUtils::file_get_contents($rngPath));
         }
         $idContainer = $node->getParent();
-        if (! $idContainer)
+        if (!$idContainer)
             return null;
         $relTemplate = new RelTemplateContainer();
         $idTemplate = $relTemplate->getTemplate($idContainer);
-        if (! $idTemplate)
+        if (!$idTemplate)
             return null;
         $templateNode = new Node($idTemplate);
-        if (! $templateNode->GetID())
+        if (!$templateNode->GetID())
             return null;
         return $templateNode;
     }
@@ -395,14 +395,14 @@ class StructuredDocument extends StructuredDocumentsOrm
     private function get_schema_data(Node $docNode): array
     {
         $schemaData = [];
-        if (! is_object($templateNode = $this->get_schema_node($docNode))) {
+        if (!is_object($templateNode = $this->get_schema_node($docNode))) {
             return array(
                 'id' => 0,
                 'content' => $templateNode
             );
         }
         $schemaId = $templateNode->getID();
-        if (! $schemaId)
+        if (!$schemaId)
             return null;
         $rngTemplate = new Node($schemaId);
         $content = $rngTemplate->GetContent();
@@ -449,7 +449,7 @@ class StructuredDocument extends StructuredDocumentsOrm
         $xmlDoc = '<?xml version="1.0" encoding="UTF-8"?>' . PHP_EOL . '<docxap>' . PHP_EOL . \Ximdex\Utils\Strings::stripslashes($docNode->GetContent()) . PHP_EOL . '</docxap>';
         $rngValidator = new RNG();
         $valid = $rngValidator->validate($schema, $xmlDoc);
-        if (! $valid) {
+        if (!$valid) {
             foreach ($rngValidator->getErrors() as $error) {
                 $this->messages->add('Error parsing with the RNG schema: ' . $error, MSG_TYPE_WARNING);
             }
@@ -476,11 +476,11 @@ class StructuredDocument extends StructuredDocumentsOrm
     // return int (status)
     function SetUpdateDate()
     {
-        if (! ($this->get('IdDoc') > 0)) {
+        if (!($this->get('IdDoc') > 0)) {
             $this->SetError(2);
             return false;
         }
-        
+
         $result = $this->set('UpdateDate', date('Y/m/d H:i:s'));
         if ($result) {
             return $this->update();
@@ -490,17 +490,19 @@ class StructuredDocument extends StructuredDocumentsOrm
 
     /**
      * Return true if the specified channel ID is in the node's properties
-     * 
+     *
      * @param $idChannel
      * @return boolean
      */
     public function HasChannel($idChannel)
     {
         $values = $this->GetChannels();
-        if ($values === false)
+        if ($values === false) {
             return false;
-        if (isset($values[$idChannel]))
+        }
+        if (isset($values[$idChannel])) {
             return true;
+        }
         return false;
     }
 
@@ -513,24 +515,28 @@ class StructuredDocument extends StructuredDocumentsOrm
     {
         $channelProperty = new ChannelProperty($this->get('IdDoc'));
         $values = $channelProperty->getValues($this->get('IdDoc'));
-        if ($values === false)
+        if ($values === false) {
             return false;
+        }
         $res = [];
-        foreach ($values as $channel)
-            if ($channel['Checked'] or $channel['Inherited'])
+        foreach ($values as $channel) {
+            if ($channel['Checked'] or $channel['Inherited']) {
                 $res[$channel['Id']] = $channel['Id'];
+            }
+        }
         return $res;
     }
 
     function add()
     {
-        $this->CreateNewStrDoc($this->get('IdDoc'), $this->get('Name'), $this->get('IdCreator'), $this->get('CreationDate'), $this->get('UpdateDate'), $this->get('IdLanguage'), $this->get('IdTemplate'));
+        $this->CreateNewStrDoc($this->get('IdDoc'), $this->get('Name'), $this->get('IdCreator'), $this->get('CreationDate')
+            , $this->get('UpdateDate'), $this->get('IdLanguage'), $this->get('IdTemplate'));
     }
 
     /**
      * Crea un nuevo structure document y carga su id en el docID de la clase
      * return docID - lo carga como atributo
-     * 
+     *
      * @param $docID
      * @param $name
      * @param $IdCreator
@@ -548,18 +554,18 @@ class StructuredDocument extends StructuredDocumentsOrm
         $this->set('UpdateDate', $now);
         $this->set('IdLanguage', $IdLanguage);
         $this->set('IdTemplate', $templateID);
-        if ((int) $docID > 0) {
+        if ((int)$docID > 0) {
             $this->set('IdDoc', $docID);
         }
         $result = parent::add();
         if ($this->get('IdDoc') > 0) {
-            
+
             $this->ID = $docID;
-            
+
             // Guardamos su contenido
             $this->SetContent($content);
         } else {
-            
+
             $this->SetError(1);
         }
     }
@@ -587,7 +593,7 @@ class StructuredDocument extends StructuredDocumentsOrm
             $this->SetError(1);
         } else {
             $salida = NULL;
-            while (! $dbObj->EOF) {
+            while (!$dbObj->EOF) {
                 $salida = $dbObj->GetValue("UltimaVersion");
                 $dbObj->Next();
             }
@@ -605,16 +611,16 @@ class StructuredDocument extends StructuredDocumentsOrm
             $this->SetError(1);
         } else {
             $salida = NULL;
-            while (! $dbObj->EOF) {
+            while (!$dbObj->EOF) {
                 $links[] = $dbObj->GetValue("IdNodeDependent");
                 $dbObj->Next();
             }
-            
+
             if (is_array($links))
                 foreach ($links as $link) {
                     $node_ximlet = new Node($link);
                     $node_type = new NodeType($node_ximlet->GetNodeType());
-                    
+
                     if ($node_type->GetName() == 'Ximlet') {
                         $salida[] = $link;
                     }
@@ -633,7 +639,7 @@ class StructuredDocument extends StructuredDocumentsOrm
             $this->SetError(1);
         } else {
             $link = NULL;
-            while (! $dbObj->EOF) {
+            while (!$dbObj->EOF) {
                 $link[] = $dbObj->GetValue("IdNodeMaster");
                 $dbObj->Next();
             }
@@ -682,7 +688,7 @@ class StructuredDocument extends StructuredDocumentsOrm
 
     function SetXsltErrors($xsltErrors)
     {
-        if (! $this->get('IdDoc')) {
+        if (!$this->get('IdDoc')) {
             $this->SetError(2);
             return false;
         }
@@ -696,15 +702,15 @@ class StructuredDocument extends StructuredDocumentsOrm
      * Get the include HTML document for the given name provided
      *
      * @param string $include
-     * @return boolean|\Ximdex\Models\Node
+     * @return boolean| StructuredDocument
      */
     public function getInclude(string $include)
     {
-        if (! $this->GetID()) {
+        if (!$this->GetID()) {
             $this->messages->add('The structured document has not been loaded', MSG_TYPE_ERROR);
             return false;
         }
-        
+
         // Load parent nodes
         $parents = FastTraverse::get_parents($this->GetID(), 'IdNodeType');
         if ($parents === false) {
@@ -715,38 +721,38 @@ class StructuredDocument extends StructuredDocumentsOrm
             switch ($nodeTypeID) {
                 case NodeTypeConstants::SERVER:
                 case NodeTypeConstants::SECTION:
-                    
+
                     // Load the node for the section, or server ID given
                     $node = new Node($nodeID);
-                    if (! $node->GetID()) {
+                    if (!$node->GetID()) {
                         $this->messages->add('Cannot load a node with the ID: ' . $nodeID, MSG_TYPE_ERROR);
                         return false;
                     }
-                    
+
                     // Load the documents root folder inside the previous node, if it exists
                     $documentsFolder = new Node($node->GetChildByType(NodeTypeConstants::XML_ROOT_FOLDER));
-                    if (! $documentsFolder->getID()) {
+                    if (!$documentsFolder->getID()) {
                         continue;
                     }
-                    
+
                     // Load the correspondant documents container folder for the include string given
                     $documentFolder = new Node($documentsFolder->GetChildByName($include));
-                    if (! $documentFolder->GetID()) {
+                    if (!$documentFolder->GetID()) {
                         continue;
                     }
-                    
+
                     // Create an instance of the XML container handler
                     $xmlContainer = new XmlContainerNode($documentFolder->GetID());
-                    
+
                     // Load the document for the required language
                     $includeDocId = $xmlContainer->GetChildByLang($this->GetLanguage());
-                    if (! $includeDocId) {
-                        $this->messages->add('Cannot load the document for include: ' . $include . ' and language: ' 
-                                . $this->GetLanguage(), MSG_TYPE_ERROR);
+                    if (!$includeDocId) {
+                        $this->messages->add('Cannot load the document for include: ' . $include . ' and language: '
+                            . $this->GetLanguage(), MSG_TYPE_ERROR);
                         return false;
                     }
-                    $includeDoc = new Node($includeDocId);
-                    if (! $includeDoc->GetID()) {
+                    $includeDoc = new StructuredDocument($includeDocId);
+                    if (!$includeDoc->GetID()) {
                         $this->messages->add('Cannot load the include document for ID: ' . $includeDocId . ' (name: ' . $include . ')', MSG_TYPE_ERROR);
                         return false;
                     }
@@ -764,16 +770,16 @@ class StructuredDocument extends StructuredDocumentsOrm
      */
     public function getLayout()
     {
-        if (! $this->GetID()) {
+        if (!$this->GetID()) {
             $this->messages->add('The structured document has not been loaded', MSG_TYPE_ERROR);
             return false;
         }
-        if (! $this->get('IdTemplate')) {
+        if (!$this->get('IdTemplate')) {
             $this->messages->add('There is not defined a layout ID in the document', MSG_TYPE_ERROR);
             return false;
         }
         $layout = new Node($this->get('IdTemplate'));
-        if (! $layout->GetID()) {
+        if (!$layout->GetID()) {
             $this->messages->add('The layout with ID: ' . $layout->GetID() . ' does not exist', MSG_TYPE_ERROR);
             return false;
         }
@@ -788,11 +794,11 @@ class StructuredDocument extends StructuredDocumentsOrm
      */
     public function getComponent(string $component)
     {
-        if (! $this->GetID()) {
+        if (!$this->GetID()) {
             $this->messages->add('The structured document has not been loaded', MSG_TYPE_ERROR);
             return false;
         }
-        
+
         // Load parent nodes
         $parents = FastTraverse::get_parents($this->GetID(), 'IdNodeType');
         if ($parents === false) {
@@ -804,31 +810,31 @@ class StructuredDocument extends StructuredDocumentsOrm
                 case NodeTypeConstants::PROJECT:
                 case NodeTypeConstants::SERVER:
                 case NodeTypeConstants::SECTION:
-                    
+
                     // Load the node for the section, server or project ID given
                     $node = new Node($nodeID);
-                    if (! $node->GetID()) {
+                    if (!$node->GetID()) {
                         $this->messages->add('Cannot load a node with the ID: ' . $nodeID, MSG_TYPE_ERROR);
                         return false;
                     }
-                    
+
                     // Load the layouts root folder inside the previous node, if it exists
                     $layoutsFolder = new Node($node->GetChildByType(NodeTypeConstants::HTML_LAYOUT_FOLDER));
-                    if (! $layoutsFolder->getID()) {
+                    if (!$layoutsFolder->getID()) {
                         continue;
                     }
-                    
+
                     // Load the components folder
                     $componentsFolder = new Node($layoutsFolder->GetChildByType(NodeTypeConstants::HTML_COMPONENTS_FOLDER));
-                    if (! $componentsFolder->GetID()) {
-                        $this->messages->add('Cannot load the components folder for the layout folder with ID: ' 
-                                . $layoutsFolder->GetID(), MSG_TYPE_ERROR);
+                    if (!$componentsFolder->GetID()) {
+                        $this->messages->add('Cannot load the components folder for the layout folder with ID: '
+                            . $layoutsFolder->GetID(), MSG_TYPE_ERROR);
                         return false;
                     }
-                    
+
                     // Load the component by the name given and json extension
                     $componentNode = new Node($componentsFolder->GetChildByName($component . '.json'));
-                    if (! $componentNode->GetID()) {
+                    if (!$componentNode->GetID()) {
                         continue;
                     }
                     return $componentNode;
@@ -840,17 +846,17 @@ class StructuredDocument extends StructuredDocumentsOrm
 
     /**
      * Get a HTML view by name into the nearest views folder for the current document
-     * 
+     *
      * @param string $view
      * @return boolean|\Ximdex\Models\Node
      */
     public function getView(string $view)
     {
-        if (! $this->GetID()) {
+        if (!$this->GetID()) {
             $this->messages->add('The structured document has not been loaded', MSG_TYPE_ERROR);
             return false;
         }
-        
+
         // Load parent nodes
         $parents = FastTraverse::get_parents($this->GetID(), 'IdNodeType');
         if ($parents === false) {
@@ -862,30 +868,30 @@ class StructuredDocument extends StructuredDocumentsOrm
                 case NodeTypeConstants::PROJECT:
                 case NodeTypeConstants::SERVER:
                 case NodeTypeConstants::SECTION:
-                    
+
                     // Load the node for the section, server or project ID given
                     $node = new Node($nodeID);
-                    if (! $node->GetID()) {
+                    if (!$node->GetID()) {
                         $this->messages->add('Cannot load a node with the ID: ' . $nodeID, MSG_TYPE_ERROR);
                         return false;
                     }
-                    
+
                     // Load the layouts root folder inside the previous node, if it exists
                     $layoutsFolder = new Node($node->GetChildByType(NodeTypeConstants::HTML_LAYOUT_FOLDER));
-                    if (! $layoutsFolder->getID()) {
+                    if (!$layoutsFolder->getID()) {
                         continue;
                     }
-                    
+
                     // Load the components folder
                     $viewsFolder = new Node($layoutsFolder->GetChildByType(NodeTypeConstants::HTML_VIEWS_FOLDER));
-                    if (! $viewsFolder->GetID()) {
-                        $this->messages->add('Cannot load the views folder for the layout folder with ID: '. $layoutsFolder->GetID(), MSG_TYPE_ERROR);
+                    if (!$viewsFolder->GetID()) {
+                        $this->messages->add('Cannot load the views folder for the layout folder with ID: ' . $layoutsFolder->GetID(), MSG_TYPE_ERROR);
                         return false;
                     }
-                    
+
                     // Load the view by the name given and html extension
                     $viewNode = new Node($viewsFolder->GetChildByName($view . '.html'));
-                    if (! $viewNode->GetID()) {
+                    if (!$viewNode->GetID()) {
                         continue;
                     }
                     return $viewNode;

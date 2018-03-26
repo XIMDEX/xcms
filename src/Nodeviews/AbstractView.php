@@ -53,7 +53,7 @@ abstract class AbstractView
             {
                 $file = $basePath . $pointer;
             }
-            Logger::info('Storing temporal file in ' . $file);
+            Logger::debug('Storing temporal file in ' . $file);
             if (FsUtils::file_put_contents($file, $content))
             {
                 Logger::info($file . ' has been saved');

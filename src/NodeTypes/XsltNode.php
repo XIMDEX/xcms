@@ -228,18 +228,20 @@ class XsltNode extends FileNode
             }
         }
         // get the children nodes of the current section
-        $nodes = FastTraverse::get_children($section->GetID(), true, 1);
+        $nodes = FastTraverse::get_children($section->GetID(), ['node' => ['IdNodeType']], 1);
         if ($nodes === false)
         {
             $this->messages->add('Cannot get children nodes from node: ' . $section->GetID() . ' in reload templates include files process'
                     , MSG_TYPE_ERROR);
             return false;
         }
-        if (!$nodes)
+        if (!$nodes) {
             return true;
-        foreach ($nodes[1] as $idChildNode => $idNodeType)
+        }
+        foreach ($nodes[1] as $idChildNode => $nodeData)
         {
             // only project, servers and section/subsections can storage template folders
+            $idNodeType = $nodeData['node']['IdNodeType'];
             if ($idNodeType == \Ximdex\NodeTypes\NodeTypeConstants::SERVER or $idNodeType == \Ximdex\NodeTypes\NodeTypeConstants::SECTION)
             {
                 // call in recursive mode with the templates folder, for whole project nodes tree
@@ -708,6 +710,7 @@ DOCXAP;
     /**
      * Regenerate the content of all the templates_include.xsl file under the node given (usually the project node)
      * The $priorTemplates parameter is loaded with the nearest templates URLs to the current section
+     * 
      * @param Node $node
      * @param array $priorTemplates
      * @param int $projectId
@@ -718,7 +721,7 @@ DOCXAP;
     {
         if ($init)
         {
-            // only project, servers and section/subsections can storage template folders
+            // Only project, servers and section/subsections can storage template folders
             if ($node->GetNodeType() !=\Ximdex\NodeTypes\NodeTypeConstants::PROJECTS 
                     and $node->GetNodeType() !=\Ximdex\NodeTypes\NodeTypeConstants::PROJECT
                     and $node->GetNodeType() !=\Ximdex\NodeTypes\NodeTypeConstants::SERVER 
@@ -729,27 +732,27 @@ DOCXAP;
             }
         }
         
-        // look for templates folder
+        // Look for templates folder
         $templateFolderId = $node->GetChildren(\Ximdex\NodeTypes\NodeTypeConstants::TEMPLATES_ROOT_FOLDER);
         if ($templateFolderId)
         {
             $templateFolder = new Node($templateFolderId[0]);
             
-            // look for templates_include
+            // Look for templates_include
             $templatesIncludeId = $templateFolder->GetChildByName('templates_include.xsl');
             if ($templatesIncludeId)
             {
                 if (!$projectId)
                 {
-                    // get the project node ID
+                    // Get the project node ID
                     $projectId = $node->getProject();
                 }
                 
-                // generate the basic XML header
+                // Generate the basic XML header
                 $content = '<?xml version="1.0" encoding="UTF-8"?>';
                 $content .= "\n" . '<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">';
                 
-                // add the local templates
+                // Add the local templates
                 $templates = $templateFolder->GetChildren();
                 foreach ($templates as $idTemplate)
                 {
@@ -757,22 +760,22 @@ DOCXAP;
                     if ($template->GetNodeName() == 'templates_include.xsl' or $template->GetNodeName() == 'docxap.xsl')
                         continue;
                         
-                    // generate the template URL
+                    // Generate the template URL
                     $templateURL = App::getValue('UrlHost') . App::getValue('UrlRoot') . App::getValue('NodeRoot') 
                             . $template->GetRelativePath($projectId);
                     
-                    // save the template and remove a possible ocurrence with the same name (local one is always priority)
+                    // Save the template and remove a possible ocurrence with the same name (local one is always priority)
                     $priorTemplates[$template->GetNodeName()] = $templateURL;
                 }
                 
-                //include the prior templates
+                // Include the prior templates
                 foreach ($priorTemplates as $templateURL)
                     $content .= "\n\t" . '<xsl:include href="' . $templateURL . '"/>';
                     
-                // close the XSL content
+                // Close the XSL content
                 $content .= "\n" . '</xsl:stylesheet>';
                 
-                // save the XSL content into the templates_include.xsl node
+                // Save the XSL content into the templates_include.xsl node
                 $templatesInclude = new Node($templatesIncludeId);
                 if ($templatesInclude->SetContent($content) === false)
                 {
@@ -782,22 +785,24 @@ DOCXAP;
             }
         }
         
-        // get children of the node with its node types
-        $nodes = FastTraverse::get_children($node->GetID(), true, 1);
+        // Get children of the node with its node types
+        $nodes = FastTraverse::get_children($node->GetID(), ['node' => ['IdNodeType']], 1);
         if ($nodes === false)
         {
             $this->messages->add('Cannot get children nodes from node: ' . $node->GetID() . ' in reload templates include files process', MSG_TYPE_ERROR);
             return false;
         }
-        if (!$nodes)
+        if (!$nodes) {
             return true;
-        foreach ($nodes[1] as $idChildNode => $idNodeType)
+        }
+        foreach ($nodes[1] as $idChildNode => $nodeData)
         {
-            // only project, servers and section/subsections can storage template folders
+            // Only project, servers and section/subsections can storage template folders
+            $idNodeType = $nodeData['node']['IdNodeType'];
             if ($idNodeType ==\Ximdex\NodeTypes\NodeTypeConstants::PROJECT or $idNodeType ==\Ximdex\NodeTypes\NodeTypeConstants::SERVER
                     or $idNodeType ==\Ximdex\NodeTypes\NodeTypeConstants::SECTION)
             {
-                // call in recursive mode with the child node
+                // Call in recursive mode with the child node
                 $childNode = new Node($idChildNode);
                 if (!$childNode->GetID())
                 {

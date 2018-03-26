@@ -388,7 +388,7 @@ INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `
 
 INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`, `IsBulk`) VALUES
 	(7458, 5104, 'Edit in text mode', 'edittext', 'edit_file_xml_txt.png', 'Edit content of HTML in plain text', 21, NULL, 0, 'type=text', 0),
-	(7459, 5104, 'Edit HTML document', 'xEdit', 'edit_file_xml.png', 'Edit content of HTML document with the wysiwyg editor', 20, NULL, 0
+	(7459, 5104, 'Edit HTML document', 'xedit', 'edit_file_xml.png', 'Edit content of HTML document with the wysiwyg editor', 20, NULL, 0
 	       , 'type=html', 0),
 	(7460, 5104, 'Publish', 'workflow_forward', 'change_next_state.png', 'Move to the next state', 70, NULL, 0, '', 0),
 	(7461, 5104, 'Move to previous state', 'workflow_backward', 'change_last_state.png', 'Move to the previous state', -70, NULL, 0, '', 0),

@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -28,11 +29,9 @@
  * The var %doc will be replaced by the doc to publish name.
  * By default, notifications are no.
  */
-
-$message= array(
+$message = array(
 	'required' => false,
-	'defaultMessage' => 'The document %doc is going to be moved to the state %state.'
+    'defaultMessage' => _('The document %doc is going to be moved to the state %state.'),
+    'defaultSectionMessage' => _('The section %doc is going to be published.')
 );
-
-$message['defaultMessage']=_('The document %doc is going to be moved to the state %state.');
 return $message;

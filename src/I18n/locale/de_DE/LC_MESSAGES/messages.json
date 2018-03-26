@@ -760,7 +760,7 @@
     "All": "Alle",
     "Publishing...": "wird ver&ouml;ffentlicht...",
     "Please, wait": "Bitte warten Sie",
-    "Node types to publish": "Zu ver&ouml;ffentlichende Knotentypen",
+    "Node type to publish": "Zu ver&ouml;ffentlichende Knotentypen",
     "No physical server has been defined in '%s'": "Es wurde kein physischer Server definiert in '%s'",
     "Following documents and sections are going to be published:": "N&auml;chste Dokumente und Abschnitte werden ver&ouml;ffentlicht:",
     "Are you sure you want to publish?": "Sind Sie sicher dass Sie ver&ouml;ffentlichen m&ouml;chten?",

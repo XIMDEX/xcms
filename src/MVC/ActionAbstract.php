@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,9 +25,7 @@
  * @version $Revision$
  */
 
-
 namespace Ximdex\MVC;
-
 
 use Ximdex\Logger;
 use Ximdex\Parsers\ParsingJsGetText;
@@ -37,10 +36,9 @@ use Ximdex\Models\Node;
 use Ximdex\Runtime\App;
 use Ximdex\Runtime\Request;
 use Ximdex\Utils\Factory;
+use Ximdex\Utils\Mail;
 use Ximdex\Utils\QueryManager;
 use Ximdex\Runtime\Session;
-
-
 
 /**
  *
@@ -52,13 +50,13 @@ use Ximdex\Runtime\Session;
  */
 abstract class ActionAbstract extends IController
 {
-
     /**
      * Keeps the js to use
      */
     public $displayEncoding;
     public $actionMethod;
     public $actionModule;
+    
     /**
      * @var array
      */
@@ -102,34 +100,19 @@ abstract class ActionAbstract extends IController
 
     /**
      * ActionAbstract constructor.
+     * 
      * @param null $_render
      */
     public function __construct($_render = null)
     {
-
         parent::__construct();
-
         $this->displayEncoding = App::getValue('displayEncoding');
 
         /** Obtaining the render to use */
-
-
         $rendererClass = $this->_get_render($_render);
-
-
-
         $factory = new Factory(RENDERER_ROOT_PATH, '');
-
-
-
-
         $this->renderer = $factory->instantiate($rendererClass . 'Renderer');
-
-
-
-
         $this->renderer->set("_BASE_TEMPLATE_PATH", sprintf('%s/xmd/template/%s/', XIMDEX_ROOT_PATH, $rendererClass));
-
     }
 
     /**
@@ -141,35 +124,28 @@ abstract class ActionAbstract extends IController
      */
     private function getActionInfo($actionName, $module, $actionId, $nodeId)
     {
-
         unset($actionId);
-
         $nodeTypeId = "";
         if (!is_null($nodeId)) {
             $node = new Node();
             $nodeTypeId = $node->find('IdNodeType', 'IdNode = %s', array($nodeId), MONO);
             $nodeTypeId = serialize($nodeTypeId);
         }
-
-
         $action = new Action();
         $data = $action->find(
             'Command, Name, Description, Module, IdAction',
         	'IdNodeType = %s and Command = %s and Module ' . (($module === null) ? 'is null' : '= %s'),
             array($nodeTypeId, $actionName, $module)
         );
-
         if (!empty($data)) {
             $data = $data[0];
-
-
         }
-
         return $data;
     }
 
     /**
      * Execute the action
+     * 
      * @param $request Request
      */
     function execute($request)
@@ -177,20 +153,15 @@ abstract class ActionAbstract extends IController
         // Setting path or subset which current action belongs to
         $nodeid = $request->getParam("nodeid");
         $actionid = $request->getParam("actionid");
-
         $method = ($var = $request->getParam("method")) ? $var : 'index';
         $this->request = $request;
-
         $actionInfo = $this->getActionInfo(
             $request->getParam('action'),
             $request->getParam('module'),
             $request->getParam('actionid'),
             $request->getParam('nodeid')
         );
-
-
         if (!empty($actionInfo)) {
-
             $this->actionId = $actionInfo['IdAction'];
             $this->actionCommand = $actionInfo['Command'];
             $this->actionName = $actionInfo['Name'];
@@ -206,26 +177,20 @@ abstract class ActionAbstract extends IController
         } else {
             Logger::debug("MVC::ActionAbstract Method {$method} not found");
         }
-
     }
 
     private function getDefaultLogMessage()
     {
         $user = Session::get("userID") ? 'by ' . Session::get('user_name') . ' (' . Session::get('userID') . ')' : '';
-
         $moduleString = '';
-
         if (isset($this->actionModule)) {
             $moduleString = $this->actionModule ? "in module {$this->actionModule}." : "";
-
         }
-        
         $actionId = '';
-        if ($this->actionId)
+        if ($this->actionId) {
             $actionId = ' (' . $this->actionId . ')';
-
+        }
         return $moduleString . get_class($this) . "->{$this->actionMethod}$actionId {$user}";
-
     }
 
     private function logInitAction()
@@ -241,15 +206,15 @@ abstract class ActionAbstract extends IController
     protected function logEndAction($success = true, $message = null)
     {
         $message = $message ? ". $message" : "";
-        
         $defaultLog = Logger::get_active_instance();
         Logger::setActiveLog('actions');
-        if ($success)
+        if ($success) {
             Logger::info("FINISH OK " . $this->getDefaultLogMessage() . " $message");
-        else
+        }
+        else {
             Logger::error("FINISH FAIL " . $this->getDefaultLogMessage() . " $message");
+        }
         Logger::setActiveLog($defaultLog);
-        
         $this->endActionLogged = true;
     }
 
@@ -263,9 +228,9 @@ abstract class ActionAbstract extends IController
         $this->logEndAction(false, $message);
     }
 
-
     /**
      * Renders the action
+     * 
      * @param null $arrValores
      * @param null $view
      * @param null $layout
@@ -274,10 +239,8 @@ abstract class ActionAbstract extends IController
      */
     function render($arrValores = NULL, $view = NULL, $layout = NULL, $return = FALSE)
     {
-
         if (!$this->endActionLogged)
             $this->logSuccessAction();
-
         if (is_null($this->renderer)) {
             $this->_setError("Renderizador no definido", "Actions");
             return null;
@@ -294,9 +257,7 @@ abstract class ActionAbstract extends IController
 
         // Saving in the request the css and js(passed by gettext before)
         $this->request->setParam("locale", Session::get('locale'));
-
         $getTextJs = new ParsingJsGetText();
-
         $this->request->setParam("js_files", $getTextJs->getTextArrayOfJs($this->_js));
         $this->request->setParam("css_files", $this->_css);
 
@@ -305,63 +266,51 @@ abstract class ActionAbstract extends IController
         $arrValores['_ACTION_COMMAND'] = $this->actionCommand;
         $arrValores['_ACTION_NAME'] = $this->actionName;
         $arrValores['_ACTION_DESCRIPTION'] = $this->actionDescription;
-
         $query = App::get('\Ximdex\Utils\QueryManager');
         $arrValores['_MESSAGES_PATH'] = $query->getPage() . $query->buildWith();
-
 
         // Passing specified values
         $this->request->setParameters($arrValores);
         $this->renderer->setParameters($this->request->getRequests());
 
-
         // If layout was not specified
         if (empty($layout) || $layout == "messages.tpl") {
-
             if ($this->request->getParam("ajax") == "json") {
 
-                //If there are some errors and op=json, errors are returned in json format
+                // If there are some errors and op=json, errors are returned in json format
                 if (isset($arrValores["messages"])) {
                     $this->sendJSON($arrValores["messages"]);
                 } else {
                     $this->sendJSON($arrValores);
                 }
-
             } else if (isset($arrValores["messages"])) {
 
-                //If there are some arrores and op is not found, the errors are shown in a message.
+                // If there are some arrores and op is not found, the errors are shown in a message.
                 $layout = 'messages.tpl';
                 if ($this->request->getParam("nodeid") > 0) {
-
                     $this->reloadNode($this->request->getParam("nodeid"));
                     $this->request->setParam("js_files", $getTextJs->getTextArrayOfJs($this->_js));
                 }
-
             } else {
-
+                
                 // If there is no errors, $view is visualized
                 $layout = 'default.tpl';
             }
         }
-
         $this->renderer->setTemplate('actions/commons/layouts/' . $layout);
         $output = $this->renderer->render($view);
 
         // Apply widgets renderer after smarty renderer
         $output = $this->_renderWidgets($output);
-
         if ($return === true) {
             return $output;
         }
-
         $this->request->setParam('outHTML', $output);
         $this->request->setParameters($this->renderer->getParameters());
         $this->response->sendHeaders();
-
         if ($this->request->getParam("out") == "WEB") {
             echo $this->request->getParam("outHTML");
         }
-
         return null;
     }
 
@@ -372,7 +321,6 @@ abstract class ActionAbstract extends IController
      */
     function _renderWidgets($output)
     {
-
         // DEBUG: Apply widgets renderer after smarty renderer
         $factory = new  Factory(RENDERER_ROOT_PATH, '');
         $wr = $factory->instantiate('WidgetsRenderer');
@@ -381,16 +329,16 @@ abstract class ActionAbstract extends IController
         // Important!, clean up assets
         $params['css_files'] = array();
         $params['js_files'] = array();
-
         $wr->setParameters($params);
         $output = $wr->render($output);
+        
         // DEBUG: Apply widgets renderer after smarty renderer
-
         return $output;
     }
 
     /**
      * Redirects the action to another
+     * 
      * @param null $method
      * @param null $actionName
      * @param null $parameters
@@ -400,12 +348,10 @@ abstract class ActionAbstract extends IController
         if (empty($method)) {
             $method = 'index';
         }
-
         $_GET["redirect_other_action"] = 1;
         if (!empty($actionName)) {
             $action = new Action();
             $idNode = $this->request->getParam("nodeid");
-
             $node = new Node($idNode);
             $idAction = $action->setByCommand($actionName, $node->get('IdNodeType'));
 
@@ -417,26 +363,22 @@ abstract class ActionAbstract extends IController
                 $this->render($values);
                 die();
             }
-
-
             $_GET["actionid"] = $idAction;
             $_REQUEST["actionid"] = $idAction;
         }
-
-
         $_GET["method"] = $method;
         $frontController = new FrontController();
         if (!empty($parameters)) {
             $frontController->request->setParameters($parameters);
         }
         $frontController->dispatch();
-
         die();
     }
 
     /**
      * Recargamos el arbol sobre el nodo especificado
      * This method doesn't work when returning a JSON response
+     * 
      * @param int $idnode
      */
     function reloadNode($idnode)
@@ -450,7 +392,6 @@ abstract class ActionAbstract extends IController
                 'void' => 'SpacesInIE7HerePlease'
             ))
         );
-
         $this->addJs(urldecode($file));
     }
 
@@ -464,19 +405,17 @@ abstract class ActionAbstract extends IController
     {
         if ('APP' == $_module) {
             $_js = App::getUrl($_js, false);
-        }else if ('XIMDEX' != $_module && 'internet'  != $_module ) {
+        } elseif ('XIMDEX' != $_module && 'internet'  != $_module ) {
             $path = \Ximdex\Modules\Manager::path($_module);
             $_js = $path . $_js;
-        }else if ('XIMDEX' == $_module) {
+        } elseif ('XIMDEX' == $_module) {
             $_js = App::getUrl($_js, false);
         }
-        
         if ($params === null) {
-
             return $this->_js[] = $_js;
         } else {
 
-            // if "params" attribute is set, javascript will be parsed
+            // If "params" attribute is set, javascript will be parsed
             return $this->_js[] = array(
                 'file' => $_js,
                 'params' => $params
@@ -492,11 +431,10 @@ abstract class ActionAbstract extends IController
     {
         if ('APP' == $_module) {
             $_css = App::getUrl($_css);
-        }else if ('XIMDEX' != $_module) {
+        } elseif ('XIMDEX' != $_module) {
             $path = App::getValue('UrlRoot') . \Ximdex\Modules\Manager::path($_module);
             $_css = $path . $_css;
         }
-
         $this->_css[] = $_css;
     }
 
@@ -526,12 +464,12 @@ abstract class ActionAbstract extends IController
             }
         }
 
-        //Si no hay definido ningún render
+        // Si no hay definido ningún render
         if (!$rendererClass) {
             $rendererClass = "Smarty";
         }
 
-        //Guardamos el render
+        // Guardamos el render
         $this->request->setParam("renderer", $rendererClass);
         return $rendererClass;
     }
@@ -541,8 +479,9 @@ abstract class ActionAbstract extends IController
      */
     public function sendJSON($data)
     {
-        if (!$this->endActionLogged)
+        if (!$this->endActionLogged) {
             $this->logSuccessAction();
+        }
         if (isset($data['status']) && is_int($data['status'])) {
             header('HTTP/1.1 {$data["status"]}');
         }
@@ -572,7 +511,6 @@ abstract class ActionAbstract extends IController
                 echo $data;
                 die();
             }
-
         } else {
             header(sprintf('Content-type: application/json; charset=', $this->displayEncoding));
             $data = Serializer::encode(SZR_JSON, $data);
@@ -592,6 +530,7 @@ abstract class ActionAbstract extends IController
      *  /assets/images/ximTAGS/pingu_[LANG].gif -> /assets/images/ximTAGS/pingu_es.gif
      *  or ...
      *  This can be also done in html with the smarty var locale
+     *  
      * @param $file
      * @param null $_lang
      * @param null $_default
@@ -615,20 +554,15 @@ abstract class ActionAbstract extends IController
             if (file_exists($_file))
                 return $_file;
         }
-
         $_lang = DEFAULT_LOCALE;
         if ($_lang != null) {
             $_file = str_replace("[LANG]", $_lang, $file);
             if (file_exists($_file))
                 return $_file;
         }
-
         return $_default;
     }
 
-    /**
-     *
-     */
     protected function renderMessages()
     {
         $this->render(array('messages' => $this->messages->messages));
@@ -637,8 +571,7 @@ abstract class ActionAbstract extends IController
 
     /**
      * Decides if a tour is be able to be launched automatically given an user
-     */
-    /**
+     * 
      * @param $userId
      * @param null $action
      * @return bool
@@ -646,7 +579,6 @@ abstract class ActionAbstract extends IController
     public function tourEnabled($userId, $action = null)
     {
         unset($userId);
-
         if (!\Ximdex\Modules\Manager::isEnabled('ximTOUR')) {
             return false;
         }
@@ -667,7 +599,6 @@ abstract class ActionAbstract extends IController
         $from = Session::get("userID");
         $result = $this->_sendNotification($subject, $content, $from, $to);
         $this->_sendNotificationXimdex($subject, $content, $from, $to);
-
         foreach ($result as $idUser => $resultByUser) {
             $user = new User($idUser);
             $userEmail = $user->get('Email');
@@ -677,19 +608,16 @@ abstract class ActionAbstract extends IController
                 $this->messages->add(sprintf(_("Error sending message to the mail address %s"), $userEmail), MSG_TYPE_WARNING);
             }
         }
-
         return $result;
     }
-
 
     protected function _sendNotification($subject, $content, $from, $to) {
         $result = array();
         foreach ($to as $toUser) {
-
             $user = new User($toUser);
             $userEmail = $user->get('Email');
             $userName = $user->get('Name');
-            $mail = new \Ximdex\Utils\Mail();
+            $mail = new Mail();
             $mail->addAddress($userEmail, $userName);
             $mail->Subject = $subject;
             $mail->Body = $content;
@@ -699,13 +627,11 @@ abstract class ActionAbstract extends IController
                 $result[$toUser] = false;
             }
         }
-
         return $result;
     }
 
     protected function _sendNotificationXimdex($subject, $content, $from, $to)
     {
-
         $result = array();
         foreach ($to as $toUser) {
             $messages = new \Ximdex\Models\ORM\MessagesOrm();
@@ -719,7 +645,6 @@ abstract class ActionAbstract extends IController
                 $result[$toUser] = false;
             }
         }
-
         return $result;
     }
 }

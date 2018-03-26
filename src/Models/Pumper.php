@@ -30,7 +30,9 @@ namespace Ximdex\Models;
 use ServerErrorByPumper;
 use ServerErrorManager;
 use SynchronizerStat;
+use Ximdex\Logger;
 use Ximdex\Models\ORM\PumpersOrm;
+use Ximdex\Runtime\App;
 
 \Ximdex\Modules\Manager::file('/inc/model/ServerErrorByPumper.class.php', 'ximSYNC');
 \Ximdex\Modules\Manager::file('/inc/manager/ServerErrorManager.class.php', 'ximSYNC');
@@ -45,7 +47,8 @@ use Ximdex\Models\ORM\PumpersOrm;
  */
 class Pumper extends PumpersOrm
 {
-
+    private $maxvoidcycles = 10;
+    private $sleeptime = 2;
     var $syncStatObj;
 
     /**
@@ -129,17 +132,17 @@ class Pumper extends PumpersOrm
      * @param string modo
      * @return bool
      */
-
     function startPumper($pumperId, $modo = "php")
     {
-
-        $separador =  "=";
-
         $dbObj = new \Ximdex\Runtime\Db();
-
-        $startCommand =  "php ".XIMDEX_ROOT_PATH.'/bootstrap.php '.PUMPERPHP_PATH . "/dexpumper." . $modo .
-            " --pumperid" . $separador . "$pumperId --sleeptime" . $separador . "2 --maxvoidcycles" .
-            $separador . "10 --localbasepath" . $separador . SERVERFRAMES_SYNC_PATH . " > /dev/null 2>&1 &";
+        
+        // Initialize the pumper to Starting state
+        $this->set('State', 'Starting');
+        $this->update();
+        
+        $startCommand =  "php ".XIMDEX_ROOT_PATH.'/bootstrap.php '.PUMPERPHP_PATH . "/dexpumper." . $modo 
+            . " --pumperid=$pumperId --sleeptime=" . $this->sleeptime . " --maxvoidcycles=" . $this->maxvoidcycles 
+            . " --localbasepath=" . SERVERFRAMES_SYNC_PATH . " > /dev/null 2>&1 &";
 
         $this->PumperToLog(null, null, null, null, $pumperId, __CLASS__, __FUNCTION__, __FILE__,
             __LINE__, "INFO", 8, "Pumper call: $startCommand");
@@ -202,14 +205,16 @@ class Pumper extends PumpersOrm
     function PumperToLog($batchId, $nodeFrameId, $channelFrameId, $serverFrameId, $pumperId,
                          $class, $method, $file, $line, $type, $level, $comment, $doInsertSql = false)
     {
-
-        if (!isset($this->syncStatObj)) {
-
-            $this->syncStatObj = new SynchronizerStat();
+        if (strcmp(App::getValue("SyncStats"), "1") == 0) {
+            if (!isset($this->syncStatObj)) {
+    
+                $this->syncStatObj = new SynchronizerStat();
+            }
+            $this->syncStatObj->create($batchId, $nodeFrameId, $channelFrameId, $serverFrameId, $pumperId,
+                $class, $method, $file, $line, $type, $level, $comment, $doInsertSql);
         }
-
-        $this->syncStatObj->create($batchId, $nodeFrameId, $channelFrameId, $serverFrameId, $pumperId,
-            $class, $method, $file, $line, $type, $level, $comment, $doInsertSql);
-
+        Logger::debug('PumperToLog -> batchId:' . $batchId . ' nodeFrameId:' . $nodeFrameId . ' channelFrameId:' . $channelFrameId 
+            . ' serverFrameId:' . $serverFrameId . ' pumperId:' . $pumperId . ' class:' . $class . ' method:' . $method . ' $file:' . $file
+            . ' line:' . $line . ' type:' . $type . ' level:' . $level . ' comment:' . $comment . ' doInsertSql:' . $doInsertSql);
     }
 }

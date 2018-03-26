@@ -79,8 +79,7 @@ class PipeCache extends PipeCachesOrm
                 if ($idCache) {
                     self::__construct($idCache);
                     if ($this->get('id') > 0) {
-                        Logger::info("PipeCache: Cache was correctly estimated for a previous version. Version: $idVersion Transition: $idTransition"
-                                , true);
+                        Logger::info("PipeCache: Cache was correctly estimated for a previous version. Version: $idVersion Transition: $idTransition", true);
                         return $this->_getPointer();
                     } else {
                         Logger::error("PipeCache: A cache was estimated but it doesn't exist. Version: $idVersion Transition: $idTransition");
@@ -111,7 +110,7 @@ class PipeCache extends PipeCachesOrm
             Logger::warning('PipeCache: There is a problem to obtain the cache data for transition ' . $idTransition 
                     . '. Obtaining no cache data instead');
         } else {
-            Logger::info('PipeCache: There is no previous transition for transition ' . $idTransition);
+            Logger::info('PipeCache: There is no previous transition for transition ' . $idTransition . ' with version: ' . $idVersion);
         }
         if (isset($args['CONTENT'])) {
             
@@ -139,7 +138,7 @@ class PipeCache extends PipeCachesOrm
         }
         Logger::info('PipeCache: Obtained file ' . $pointer . ' to generate the pipeline transition ' . $idTransition . ' for version ' . $idVersion);
         $res = $this->_transition->generate($idVersion, $pointer, $args);
-        if (isset($tmpFileToRemove)) {
+        if (isset($tmpFileToRemove) and file_exists($tmpFileToRemove)) {
             @unlink($tmpFileToRemove);
         }
         return $res;
@@ -158,7 +157,7 @@ class PipeCache extends PipeCachesOrm
         }
         $result = $this->query($query, MONO, 'id');
         if (! $result) {
-            Logger::info('PipeCache: There is not cache for the specified version and transition');
+            Logger::info('PipeCache: There is not cache for the specified version: ' . $idVersion . ' and transition: ' . $idTransition);
         }
         return $result;
     }

@@ -34,13 +34,13 @@
 				{/foreach}
 			</select>
 		{/if}
-		<a id="prevdoc-button" href="{url}/?action=prevdoc&nodeid={$id_node}{/url}"
+		<a id="prevdoc-button" href="{url}/?action=rendernode&nodeid={$id_node}&token={$token}{/url}"
 				class="btn main_action ui-state-default ui-corner-all button submit-button ladda-button"><span 
 				class="ladda-label">{t}View in a new window{/t}</span></a>
 	</fieldset>
 </div>
 <div class="content_container prevdoc">
-	<iframe id="preview{$id_node}" src="{url}/?action=prevdoc&nodeid={$id_node}&channel=10001{/url}" height="100%" width="100%">
+	<iframe id="preview{$id_node}" src="{url}/?action=rendernode&nodeid={$id_node}&channel=10001&token={$token}{/url}" height="100%" width="100%">
 		<p>Your browser does not support iframes.</p>
 	</iframe>
 </div>

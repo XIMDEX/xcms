@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -25,15 +26,14 @@
  */
 
 namespace Ximdex\NodeTypes;
+
 use Ximdex\Models\Node;
 
-
-/***
+/**
  * Class for NodeType common
  */
 class CommonNode extends FileNode
 {
-
     /**
      * Build a new common node file.
      * Use parent CreateNode method and generate a new metadata document for the new common node created.
@@ -42,9 +42,11 @@ class CommonNode extends FileNode
     function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = 7, $sourcePath = "")
     {
         parent::CreateNode($name, $parentID, $nodeTypeID, $stateID, $sourcePath);
+        /*
         $mm = new \Ximdex\Metadata\MetadataManager($this->nodeID);
         $mm->generateMetadata();
         $mm->updateSystemMetadata();
+        */
     }
 
     /**
@@ -57,13 +59,11 @@ class CommonNode extends FileNode
         $mm->deleteMetadata();
     }
 
-
     function RenameNode($name = null)
     {
         $mm = new \Ximdex\Metadata\MetadataManager($this->nodeID);
         $mm->updateSystemMetadata();
     }
-
 
     function SetContent($content, $commitNode = NULL, Node $node = null)
     {
@@ -71,6 +71,4 @@ class CommonNode extends FileNode
         $mm = new \Ximdex\Metadata\MetadataManager($this->nodeID);
         $mm->updateSystemMetadata();
     }
-
-
 }

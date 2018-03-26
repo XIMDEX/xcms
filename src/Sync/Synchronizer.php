@@ -155,7 +155,7 @@ class Synchronizer
         if (App::getValue('PublishOnDisabledServers') == 1) {
             $physicalServers = $nodeServer->class->GetPhysicalServerList(true);
         } else {
-            $physicalServers = $nodeServer->class->GetEnabledPhysicalServerList(true);
+            $physicalServers = $nodeServer->class->GetPhysicalServerList(true, true);
         }
 
         if (is_null($physicalServers)) {

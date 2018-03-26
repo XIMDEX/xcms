@@ -61,7 +61,8 @@ class NodeDependencies
             //dependency already exists
             return true;
         }
-        return $this->dbObj->Execute("INSERT INTO NodeDependencies (IdNode, IdResource, IdChannel) VALUES ('$idSource', '$idTarget', " . (empty($idChannel)? 'null' : '$idChannel') . ")");
+        return $this->dbObj->Execute("INSERT INTO NodeDependencies (IdNode, IdResource, IdChannel) VALUES ('$idSource', '$idTarget', " 
+            . (empty($idChannel)? 'null' : "'$idChannel'") . ")");
     }
 
     /**

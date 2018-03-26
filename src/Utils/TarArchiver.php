@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,13 +25,12 @@
  * @version $Revision$
  */
 
-
 namespace Ximdex\Utils;
+
 /**
  * Constant definition
  *
  */
-
 define('TAR_COMPRESSION', 'compression');
 define('TAR_COMPRESSION_BZIP2', '--bzip2');
 define('TAR_COMPRESSION_GZIP', '--gzip');
@@ -45,7 +45,6 @@ define('NO_COPY', 1);
 
 /**
  * Class to compress and decompress files using the linux command tar
- *
  */
 class TarArchiver
 {
@@ -55,18 +54,21 @@ class TarArchiver
      * @var string
      */
     var $fileName = '';
+    
     /**
      *
      * @var string
      */
     var $extension = 'tar';
+    
     /**
      * Options which affects to the tar creation
      *
      * @var array
      */
     var $options = NULL;
-    /**
+    
+	/**
      * Array which contains a file list which contain the tar in case of edition, files to insert in case of creation
      *
      * @var array
@@ -92,15 +94,12 @@ class TarArchiver
         $this->messages = new \Ximdex\Utils\Messages();
         $validCompressions = array(TAR_COMPRESSION_BZIP2, TAR_COMPRESSION_GZIP);
         $validTypes = array(TAR_TYPE_FULL, TAR_TYPE_INCREMENTAL);
-
         $this->fileName = $fileName;
         $this->files = $this->_getFiles();
-
         if (!is_array($options)) {
             $this->options = array();
             return;
         }
-
         $this->extension = 'tar';
         reset($options);
         while (list($type, $option) = each($options)) {
@@ -109,10 +108,12 @@ class TarArchiver
                     $this->options[$type] = $option;
                     if ($this->options[$type] == TAR_COMPRESSION_BZIP2) {
                         $this->extension = 'tar.bz2';
-                    } else {
+                    }
+                    else {
                         $this->extension = 'tar.gz';
                     }
-                } else {
+                }
+                else {
                     $this->messages->add(sprintf(_("The compression option %s is not valid"), $type), MSG_TYPE_WARNING);
                 }
             }
@@ -128,21 +129,19 @@ class TarArchiver
     }
 
     /**
-     *
      * @return array
      */
     function _getFiles()
     {
-
-        if (!is_file($this->fileName . $this->extension)) return array();
-
+        if (!is_file($this->fileName . $this->extension)) {
+            return array();
+        }
         $files = array();
         exec(sprintf('tar -tf %s', $this->fileName . $this->extension), $tarContents);
         reset($tarContents);
         while (list(, $line) = each($tarContents)) {
             if (!in_array($line, $files)) $files[] = $line;
         }
-
         return $files;
     }
 
@@ -153,7 +152,6 @@ class TarArchiver
      */
     function addEntity($elements)
     {
-
         if (!is_array($elements)) $elements = array($elements);
 
         // List of elements which are going to be aded to a tar (new or added)
@@ -162,10 +160,12 @@ class TarArchiver
             if (in_array(TAR_TYPE_INCREMENTAL, $this->options)) {
                 if (is_dir($element)) {
                     $this->files[] = $element;
-                } else {
+                }
+                else {
                     $this->messages->add(sprintf(_("In incremental copies just folders are allowed, the element %s will be ignored"), $element), MSG_TYPE_WARNING);
                 }
-            } else {
+            }
+            else {
                 if (is_file($element) && !in_array($element, $this->files)) {
                     $this->files[] = $element;
                 }
@@ -181,16 +181,12 @@ class TarArchiver
      */
     function pack($dirName = '', $tarDirName = '')
     {
-
         $fileString = "";
-
         if (!empty($dirName) && !is_dir($dirName)) {
             $command = sprintf("mkdir %s", $dirName);
             exec($command);
         }
-
         $mode = is_dir($dirName) ? COPY : NO_COPY;
-
         if ($mode == COPY) {
             if (!is_dir($dirName)) {
                 if (!mkdir($dirName)) {
@@ -198,24 +194,23 @@ class TarArchiver
                     return false;
                 }
             }
-
             reset($this->files);
             while (list(, $file) = each($this->files)) {
+                
                 // It can be done through php copy
                 $command = sprintf("cp %s %s", $file, $dirName);
                 exec($command);
             }
             $fileString = '.';
             $options[] = sprintf('--directory=%s', $dirName);
-        } elseif ($mode == NO_COPY) {
+        }
+        elseif ($mode == NO_COPY) {
             $fileString = implode(' ', $this->files);
         }
-
         $options = array();
+        
         // If compression is incremental
-        if (isset($this->options[TAR_TYPE])
-            && ($this->options[TAR_TYPE] == TAR_TYPE_INCREMENTAL)
-        ) {
+        if (isset($this->options[TAR_TYPE]) && ($this->options[TAR_TYPE] == TAR_TYPE_INCREMENTAL)) {
             $pathInfo = pathinfo($this->fileName);
             $baseName = $pathInfo['basename'];
             $dirName = $pathInfo['dirname'];
@@ -224,28 +219,25 @@ class TarArchiver
                 $completePath = sprintf("%s/%s_%'05d.%s", $dirName, $baseName, $i, $this->extension);
                 $i++;
             } while (is_file($completePath));
-
             $options[] = '--create';
             $options[] = sprintf('%s=%s.TarArchiver.control', TAR_TYPE_INCREMENTAL, $this->fileName);
         } else {
             $completePath = sprintf('%s/%s.%s', $tarDirName, $this->fileName, $this->extension);
             if (is_file($completePath)) {
                 $options[] = '--update';
-            } else {
+            }
+            else {
                 $options[] = '--create';
             }
             if (!empty($dirName)) {
                 $options[] = sprintf('--directory=%s', $dirName);
             }
         }
-
         if (isset($this->options[TAR_COMPRESSION])) {
             $options[] = $this->options[TAR_COMPRESSION];
         }
-
         $options[] = '--preserve-permissions';
         $options[] = sprintf('--file=%s', $completePath);
-
         $options = implode(' ', $options);
         $command = sprintf('tar %s %s', $options, $fileString);
         exec($command, $result);
@@ -258,19 +250,16 @@ class TarArchiver
      */
     function unpack($dest = '')
     {
-
         //We try to create destiny folder if it does not exist
         if (!is_dir($dest) && !empty($dest)) {
             if (!mkdir($dest, 0755)) {
                 return false;
             }
         }
-
         $options = array();
+        
         // If compression is incremental
-        if (isset($this->options[TAR_TYPE])
-            && ($this->options[TAR_TYPE] == TAR_TYPE_INCREMENTAL)
-        ) {
+        if (isset($this->options[TAR_TYPE]) && ($this->options[TAR_TYPE] == TAR_TYPE_INCREMENTAL)) {
             $pathInfo = pathinfo($this->fileName);
             $baseName = $pathInfo['basename'];
             $dirName = $pathInfo['dirname'];
@@ -281,29 +270,30 @@ class TarArchiver
                 if (!$result) {
                     $i--;
                     $completePath = sprintf("%s/%s_%'05d.%s", $dirName, $baseName, $i, $this->extension);
-                } else {
+                }
+                else {
                     $i++;
                 }
             } while ($result);
 
             $options[] = '--incremental';
-        } else {
-            // TODO  Workaround until solving the extension problem
+        }
+        else {
+            
+            //TODO  Workaround until solving the extension problem
             $completePath = is_file($this->fileName) ? $this->fileName : $this->fileName . $this->extension;
         }
-
         if (isset($this->options[TAR_COMPRESSION])) {
             $options[] = $this->options[TAR_COMPRESSION];
         }
-
         $options[] = '--extract';
         $options[] = '--preserve-permissions';
         $options[] = sprintf('--file=%s', $completePath);
-
         $options = implode(' ', $options);
         if (!empty($dest)) {
             $command = sprintf('tar %s -C %s', $options, $dest);
-        } else {
+        }
+        else {
             $command = sprintf('tar %s', $options);
         }
         exec($command, $result);

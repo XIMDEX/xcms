@@ -31,8 +31,8 @@ use Ximdex\Models\Node;
 
 \Ximdex\Modules\Manager::file('/inc/model/orm/NodesToPublish_ORM.class.php', 'ximSYNC');
 
-class NodesToPublish extends NodesToPublish_ORM {
-
+class NodesToPublish extends NodesToPublish_ORM
+{
 	public function __construct($id = null)
 	{
 		parent::__construct($id);
@@ -52,7 +52,6 @@ class NodesToPublish extends NodesToPublish_ORM {
 		$node->set('UserId', $userId);
 		$node->set('ForcePublication', $force ? 1 : 0);
 		$node->set('DeepLevel', $deepLevel);
-
 		$dataFactory = new DataFactory($idNode);
 		$idVersion = $dataFactory->GetLastVersion();
 		if ($idNode != $idNodeGenerator && $lastPublishedVersion)
@@ -65,7 +64,6 @@ class NodesToPublish extends NodesToPublish_ORM {
 		}
 		$node->set('Version', $idVersion);
 		$node->set('Subversion', $idSubversion);
-		
 		$versionZero = !$idVersion && !$idSubversion;
 		if ($versionZero && $idNode != $idNodeGenerator)
 		{
@@ -76,10 +74,9 @@ class NodesToPublish extends NodesToPublish_ORM {
 		        return null;
 		    }
 		}
-		
-		if (!$node->add())
+		if (!$node->add()) {
 		    return false;
-		
+		}
 		return true;
 	}
 
@@ -87,8 +84,8 @@ class NodesToPublish extends NodesToPublish_ORM {
 	 *	Get next group of nodes to publish and mark them as locked (1) in database.
 	 *	Query is order by DateUp asc to get older publication jobs first.
 	 */
-	static public function getNext() {
-
+	static public function getNext()
+	{
 		$result = null;
 		$docsToPublish = array();
 		$docsToPublishVersion = array();
@@ -98,7 +95,6 @@ class NodesToPublish extends NodesToPublish_ORM {
 		// 1. Get older dateup in table
 		$sql_dateup = "select distinct DateUp, DateDown from NodesToPublish where State = 0 order by DateUp ASC limit 1";
 		$db->Query($sql_dateup);
-
 		if ($db->EOF) {
 			// No nodes to publish
 			Logger::info("No more documents to publish found. Returning null");
@@ -110,13 +106,12 @@ class NodesToPublish extends NodesToPublish_ORM {
 		// 2. Mark every node with previous dateUp as locked (state=1) to start working on it.
 		// (This prevent collisions if multiple BatchManagerDaemons are working at the same time)
 		$sql_update ="update NodesToPublish set State = 1 where DateUp = ".$dateUp." and State = 0";
-
-		if(!empty($dateDown)){
+		if (!empty($dateDown)) {
 			$sql_update .= " and DateDown = ".$dateDown;
-		}else{
+		}
+		else {
 			$sql_update .= " and DateDown is NULL";
 		}
-
 		$db->Query($sql_update);
 
 		// 3. Build and array with locked nodes and their common attributes: dateUp, dateDown, forcePublication and idNodeGenerator
@@ -132,21 +127,17 @@ class NodesToPublish extends NodesToPublish_ORM {
 		}
 		$sql_nodes .= " order by deepLevel DESC";
 		$db->Query($sql_nodes);
-
 		$force = false;
 		$idNodeGenerator = null;
 		$userId = null;
-
 		while (!$db->EOF)
 		{
 			array_push($docsToPublish, $db->getValue('IdNode'));
 			$docsToPublishVersion[$db->getValue('IdNode')]=$db->getValue('Version');
 			$docsToPublishSubVersion[$db->getValue('IdNode')]=$db->getValue('SubVersion');
-
 			$idNodeGenerator = $db->getValue('IdNodeGenerator');
 			$force = $db->getValue('ForcePublication');
 			$userId = $db->getValue('UserId');
-
 			$db->Next();
 		}
 		$force = $force ? true : false;
@@ -160,42 +151,57 @@ class NodesToPublish extends NodesToPublish_ORM {
 			'docsToPublishVersion' => $docsToPublishVersion,
 			'docsToPublishSubVersion' => $docsToPublishSubVersion
 		);
-
 		return $result;
 	}
 
 	/**
 	 *	Mark a chunk of nodes as processed (2) in database.
 	 */
-	static public function setProcessed($chunk, $dateUp) {
-	    
+	static public function setProcessed($chunk, $dateUp)
+	{
 		$db = new \Ximdex\Runtime\Db();
 		$strNodes = implode (",", $chunk);
 		$sql = sprintf("Update NodesToPublish set State = 2 where IdNode in (%s) and DateUp = %s", $strNodes, $dateUp);
 		$db->Query($sql);
 	}
 
-
-	public function getIntervals($idNode){
-	    
-		$dbObj = new \Ximdex\Runtime\Db();
+	/**
+	 * @param $idNode
+	 * @param int $idNodeGenerator
+	 * @return array
+	 */
+	public function getIntervals($idNode, int $idNodeGenerator = null)
+	{
 		$arrayDates = array();
-		$gaps = array();
 		$now = time();
-		$infinite = mktime(0,0,0,12,12,2099);
-		$j=0;
-		$results = $this->find("DateUp, DateDown", "IdNode=%s AND (DateUp > %s or DateDown > %s) order by dateup", array($idNode, $now, $now));
-		if(is_null($results))
+		$j = 0;
+		$fields = 'DateUp, DateDown';
+		$condition = '(DateUp > %s or DateDown > %s)';
+		$order = 'DateUp';
+		if ($idNodeGenerator) {
+		    $fields .= ', COUNT(IdNode) as nodes';
+		    $condition .= ' AND IdNodeGenerator = ' . $idNodeGenerator;
+		    $group = 'DateUp';
+		}
+		else {
+		    $group = null;
+		    $condition .= ' AND IdNode = ' . $idNode;
+		}
+		$results = $this->find($fields, $condition, array($now, $now), true, true, null, $order, $group);
+		if ($results === false) {
+		    return false;
+		}
+		if (is_null($results)) {
 			return array();
+		}
 		foreach ($results as $row) {
-			$timeUp = $row["DateUp"];
-			$timeDown = $row["DateDown"];
-			$arrayDates[$j]['start'] = $timeUp;
-			$arrayDates[$j]['end'] = $timeDown? $timeDown: null;
-
+			$arrayDates[$j]['start'] = $row["DateUp"];
+			$arrayDates[$j]['end'] = ($row["DateDown"]) ? $row["DateDown"] : null;
+			if ($idNodeGenerator) {
+			    $arrayDates[$j]['nodes'] = $row['nodes'];
+			}
 			$j++;
 		}
-
 		return $arrayDates;
 	}
 }

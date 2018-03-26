@@ -28,6 +28,8 @@
 use Ximdex\Logger;
 use Ximdex\Models\Node;
 use Ximdex\Models\User;
+use Ximdex\Models\FastTraverse;
+use Ximdex\NodeTypes\NodeTypeConstants;
 
 \Ximdex\Modules\Manager::file('/inc/manager/BatchManager.class.php', 'ximSYNC');
 \Ximdex\Modules\Manager::file('/inc/model/NodesToPublish.class.php', 'ximSYNC');
@@ -39,13 +41,16 @@ use Ximdex\Models\User;
 class SyncManager
 {
     // State flags.
-    var $workflow;
-    var $deleteOld;
-    var $markEnd;
-    var $linked;
-    var $type;
-    var $mail;
-
+    public $workflow;
+    public $deleteOld;
+    public $markEnd;
+    public $linked;
+    public $type;
+    public $mail;
+    private $lastPublished;
+    private $publicateSection;
+    private $level;
+    private $nodeType;
     private $docsToPublishByLevel = array();
     private $computedDocsToPublish = array();
     private $pendingDocsToPublish = array();
@@ -65,44 +70,108 @@ class SyncManager
     }
 
     /**
-     *  Sets the value of any variable.
+     * Sets the value of any variable.
+     *  
      * @param string key
      * @param unknown value
      */
-
     function setFlag($key, $value)
     {
         $this->$key = $value;
     }
 
     /**
-     *  Gets the value of any variable.
+     * Gets the value of any variable.
+     * 
      * @param string key
      */
-
     function getFlag($key)
     {
-        if (isset($this->$key))
+        if (isset($this->$key)) {
             return $this->$key;
+        }
         return NULL;
     }
 
-    public function buildPublishingDependencies($idNode, $params)
+    private function buildPublishingDependencies($idNode, $params)
     {
         $this->pendingDocsToPublish = $this->computedDocsToPublish = array();
         $this->pendingDocsToPublish[] = $idNode;
         $this->docsToPublishByLevel["$idNode"] = 0;
-
         while (!empty($this->pendingDocsToPublish)) {
-            
             $nodeId = array_shift($this->pendingDocsToPublish);
-            if ($this->hasDependences($nodeId, $params))
+            if ($this->hasDependences($nodeId, $params)) {
                 continue;
+            }
             $this->computedDocsToPublish[] = $nodeId;
         }
-
         return $this->computedDocsToPublish;
     }
+    
+    /**
+     * Get the nodes over a section, only the publishable and no folder type ones
+     * 
+     * @param Node $node
+     * @param array $nodes
+     * @param int $level
+     * @param int $nodeTypeID
+     * @return bool
+     */
+    private function buildPublishingSection(Node $node, array & $nodes, int $level = null, int $nodeTypeID = null) : bool
+    {
+        $nodeTypeFlags = ['IsPublishable' => true, 'IsFolder' => false];
+        if ($nodeTypeID) {
+            $filters = ['include' => ['node.IdNodeType' => [$nodeTypeID]]];
+        }
+        else {
+            $filters = null;
+        }
+        if ($level !== null) {
+            
+            // Publication of the section until a given level
+            if ($node->GetNodeType() == NodeTypeConstants::SERVER or $node->GetNodeType() == NodeTypeConstants::SECTION) {
+                
+                // Server and sections nodes must increment one level more
+                $level++;
+            }
+        }
+        
+        // Avoid structure assets (images, stylesheets, javascript files, etc) if structure flag is false
+        if ($this->getFlag('structure')) {
+            
+            // First search for structural assets nodes
+            $nodeTypeFlagsAux = $nodeTypeFlags + ['IsStructuredDocument' => false];
+            $assetsChildren = FastTraverse::get_children($node->GetID(), null, $level, $filters, $nodeTypeFlagsAux);
+            if ($assetsChildren === false) {
+                return false;
+            }
+            foreach ($assetsChildren as $nodeLevel => $levelNodes) {
+                $nodeLevel += 100;
+                foreach ($levelNodes as $id) {
+                    $nodes[] = $id;
+                    $this->docsToPublishByLevel[$id] = $nodeLevel;
+                }
+            }
+        }
+        
+        // Then search the structured documents with one plus level to include at the end of the pool
+        $nodeTypeFlagsAux = $nodeTypeFlags + ['IsStructuredDocument' => true];
+        if ($level) {
+            $level++;
+        }
+        $documentsChildren = FastTraverse::get_children($node->GetID(), null, $level, $filters, $nodeTypeFlagsAux);
+        if ($documentsChildren === false) {
+            return false;
+        }
+        foreach ($documentsChildren as $nodeLevel => $levelNodes) {
+            foreach ($levelNodes as $id) {
+                $nodes[] = $id;
+                $this->docsToPublishByLevel[$id] = $nodeLevel;
+            }
+        }
+        return true;
+    }
+    
 
     /**
      * Gets the Nodes that must be published with the current Node and calls the methods for build the Batchs.
@@ -114,105 +183,108 @@ class SyncManager
      */
     function pushDocInPublishingPool(int $idNode, int $up, int $down = null)
     {
-        if (is_null($idNode)) {
-            
+        if (!$idNode) {
             Logger::error(_("Pushdocinpool - Empty IdNode"));
             return NULL;
         }
-
-        $force = $this->getFlag('globalForcePublication') ? true : $this->getFlag("force");
-        $params['deeplevel'] = $this->getFlag('deeplevel');
-        $lastPublishedDocument = $this->getFlag("lastPublished");
-        
-        // flags for dependencies
-        $params['withstructure'] = ($this->getFlag('structure') === false) ? false : true;
-        
         $node = new Node($idNode);
-        if (!($node->get('IdNode') > 0)) {
-            
+        if (!$node->GetID()) {
             Logger::error(sprintf(_("Node %s does not exist"), $idNode));
             return NULL;
         }
-
-        $docsToPublish = $this->buildPublishingDependencies($idNode, $params);
-
-        if ($node->nodeType->get('IsPublishable') == '1') {
+        $publicateSection = $this->getFlag('publicateSection');
+        if ($publicateSection) {
             
-            if (sizeof($docsToPublish) > 0)
+            // Obtain all the whole children above the given section
+            $level = $this->getFlag('level');
+            $nodeTypeID = $this->getFlag('nodeType');
+            $docsToPublish = [];
+            if (!$this->buildPublishingSection($node, $docsToPublish, $level, $nodeTypeID)) {
+                return null;
+            }
+        }
+        else {
+            
+            // Flags for dependencies
+            $params = [];
+            $params['withstructure'] = ($this->getFlag('structure') === false) ? false : true;
+            $params['deeplevel'] = $this->getFlag('deeplevel');
+            $docsToPublish = $this->buildPublishingDependencies($idNode, $params);
+        }
+        if ($node->nodeType->get('IsPublishable') == '1') {
+            if (sizeof($docsToPublish) > 0) {
                 $docsToPublish = array_unique(array_merge(array($idNode), $docsToPublish));
+            }
             else {
-                
                 $docsToPublish = array($idNode);
                 $this->docsToPublishByLevel = array($idNode);
             }
-        } else
+        }
+        elseif ($node->GetNodeType() != NodeTypeConstants::XML_ROOT_FOLDER and $node->GetNodeType() != NodeTypeConstants::XML_CONTAINER 
+            and $node->GetNodeType() != NodeTypeConstants::HTML_CONTAINER) {
             return array();
-
+        }
         $userID = \Ximdex\Runtime\Session::get('userID');
-
+        $force = $this->getFlag('globalForcePublication') ? true : $this->getFlag("force");
+        $lastPublishedDocument = $this->getFlag("lastPublished");
         foreach ($docsToPublish as $idDoc) {
-            
-            if (!array_key_exists($idDoc, $this->docsToPublishByLevel))
+            if (!array_key_exists($idDoc, $this->docsToPublishByLevel)) {
                 continue;
-            
+            }
             $deepLevel = $this->docsToPublishByLevel[$idDoc];
 
             // Dependencies won't be expired
-            if ($idNode == $idDoc)
+            if ($publicateSection or $idNode == $idDoc) {
                 $ntp = NodesToPublish::create($idDoc, $idNode, $up, $down, $userID, $force, $lastPublishedDocument, $deepLevel);
-            else
+            }
+            else {
                 $ntp = NodesToPublish::create($idDoc, $idNode, $up, null, $userID, $force, $lastPublishedDocument, $deepLevel);
+            }
         }
-
-
         if ($this->getFlag('mail')) {
-            
             $this->sendMail($idNode, $type, $up, $down);
         }
 
         // Exec batchmanagerdaemon in background and get its pid (in case we needed in the future)
         $cmd = 'php ' . XIMDEX_ROOT_PATH . '/bootstrap.php  modules/ximSYNC/inc/manager/BatchManagerDaemon.php';
         $pid = shell_exec(sprintf("%s > /dev/null & echo $!", $cmd));
-
         return $docsToPublish;
     }
 
     /**
      * @param $nodeId
      * @param $params
-     * @param $currentDeepLevel
      * @return mixed
      */
     public function hasDependences($nodeId, $params)
     {
         $deepLevel = $params["deeplevel"];
-        
-        if (!isset($this->docsToPublishByLevel["$nodeId"]))
+        if (!isset($this->docsToPublishByLevel["$nodeId"])) {
             return false;
-
+        }
         $currentDeepLevel = $this->docsToPublishByLevel["$nodeId"] + 1;
-        if ($deepLevel != -1 && $deepLevel < $currentDeepLevel)
+        if ($deepLevel != -1 && $deepLevel < $currentDeepLevel) {
             return false;
-
+        }
         $node = new Node($nodeId);
         $nodeDependences = $node->class->getPublishabledDeps($params);
-
-        if (!isset($nodeDependences) || empty($nodeDependences))
+        if (!isset($nodeDependences) || empty($nodeDependences)) {
             return false;
-        
+        }
         $pending = array_values(array_diff($nodeDependences, $this->pendingDocsToPublish, $this->computedDocsToPublish));
-        if (empty($pending))
+        if (empty($pending)) {
             return false;
+        }
         else {
-            
             $idDoc = $pending[0];
             while($idDoc == $nodeId){
-                
                 $res = array_shift($pending);
-                if (!empty($pending))
+                if (!empty($pending)) {
                     $idDoc = $pending[0];
-                else
+                }
+                else {
                     return false;
+                }
             }
             $this->docsToPublishByLevel["$idDoc"] = $currentDeepLevel;
             $this->pendingDocsToPublish = array_merge([$idDoc, $nodeId], $this->pendingDocsToPublish);
@@ -220,21 +292,19 @@ class SyncManager
         }
     }
 
-    function sendMail($nodeID, $type, $up, $down)
+    private function sendMail($nodeID, $type, $up, $down)
     {
         $node = new node($nodeID);
         $name = $node->Get('Name');
-
         $msg = sprintf(_("Node %s is going to be published"), $name);
-
-        if (!$down)
+        if (!$down) {
             $downString = _('Undetermined');
-        else
+        }
+        else {
             $downString = date('d-m-Y H:i:s', $down);
-
+        }
         $msg .= "\n" . _("Publication date") . ": " . date('d-m-Y H:i:s', $up);
         $msg .= "\n" . _("Expiration date") . ":" . " $downString";
-
         $user = new User(301);
         $email = $user->Get('Email');
         $mail = new \Ximdex\Utils\Mail();

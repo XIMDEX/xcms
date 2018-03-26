@@ -65,7 +65,6 @@ class NodeType extends NodeTypesOrm
     }
 
     /**
-     *
      * @return string
      */
     function GetConstructor()
@@ -79,17 +78,7 @@ class NodeType extends NodeTypesOrm
 
     /**
      * Creates a new nodetype and load its nodeTypeID
-     * @param $name
-     * @param $icon
-     * @param $isRenderizable
-     * @param $hasFSEntity
-     * @param $canAttachGroups
-     * @param $isContentNode
-     * @param $description
-     * @param $class
-     * @param $nodeTypeID
-     */
-    /**
+     * 
      * @param $name
      * @param $icon
      * @param $isRenderizable
@@ -132,7 +121,6 @@ class NodeType extends NodeTypesOrm
             $this->SetError(1);
             return null;
         }
-
         while (!$dbObj->EOF) {
             $salida[] = $dbObj->getValue("idNodeType");
             $dbObj->Next();
@@ -186,7 +174,6 @@ class NodeType extends NodeTypesOrm
                 $backtrace[0]['line']));
             return false;
         }
-
         if (($dbObj->GetValue("IdNodeType") > 0)) {
             return $this->SetID($dbObj->GetValue("IdNodeType"));
         }
@@ -204,8 +191,7 @@ class NodeType extends NodeTypesOrm
 
     /**
      * Returns true or false depending on a nodetype existence
-     */
-    /**
+     * 
      * @param $name
      * @return bool
      */
@@ -231,7 +217,6 @@ class NodeType extends NodeTypesOrm
             $this->SetError(1);
             return false;
         }
-
         $result = $this->set('Name', $name);
         if ($result) {
             return $this->update();
@@ -259,7 +244,6 @@ class NodeType extends NodeTypesOrm
             $this->SetError(1);
             return false;
         }
-
         $result = $this->set('Class', $class);
         if ($result) {
             return $this->update();
@@ -287,7 +271,6 @@ class NodeType extends NodeTypesOrm
             $this->SetError(1);
             return false;
         }
-
         $result = $this->set('Description', $description);
         if ($result) {
             return $this->update();
@@ -315,7 +298,6 @@ class NodeType extends NodeTypesOrm
             $this->SetError(1);
             return false;
         }
-
         $result = $this->set('IsRenderizable', $isRenderizable);
         if ($result) {
             return $this->update();
@@ -343,7 +325,6 @@ class NodeType extends NodeTypesOrm
             $this->SetError(1);
             return false;
         }
-
         $result = $this->set('HasFSEntity', $hasFSEntity);
         if ($result) {
             return $this->update();
@@ -377,7 +358,6 @@ class NodeType extends NodeTypesOrm
             $this->SetError(1);
             return false;
         }
-
         $result = $this->set('IsFolder', $value);
         if ($result) {
             return $this->update();
@@ -403,7 +383,6 @@ class NodeType extends NodeTypesOrm
             $this->SetError(1);
             return false;
         }
-
         $result = $this->set('IsPlainFile', $value);
         if ($result) {
             return $this->update();
@@ -429,7 +408,6 @@ class NodeType extends NodeTypesOrm
             $this->SetError(1);
             return false;
         }
-
         $result = $this->set('IsVirtualFolder', $value);
         if ($result) {
             return $this->update();
@@ -452,7 +430,6 @@ class NodeType extends NodeTypesOrm
             $this->SetError(1);
             return false;
         }
-
         $result = $this->set('IsStructuredDocument', $value);
         if ($result) {
             return $this->update();
@@ -475,7 +452,6 @@ class NodeType extends NodeTypesOrm
             $this->SetError(1);
             return false;
         }
-
         $result = $this->set('IsSection', $value);
         if ($result) {
             return $this->update();
@@ -503,7 +479,6 @@ class NodeType extends NodeTypesOrm
             $this->SetError(1);
             return false;
         }
-
         $result = $this->set('CanDenyDeletion', $canDenyDeletion);
         if ($result) {
             return $this->update();
@@ -530,7 +505,6 @@ class NodeType extends NodeTypesOrm
             $this->SetError(1);
             return false;
         }
-
         $result = $this->set('CanAttachGroups', $canAttachGroups);
         if ($result) {
             return $this->update();
@@ -560,7 +534,6 @@ class NodeType extends NodeTypesOrm
             $this->SetError(1);
             return false;
         }
-
         $result = $this->set('Icon', $icon);
         if ($result) {
             return $this->update();
@@ -645,7 +618,6 @@ class NodeType extends NodeTypesOrm
     {
         $allowedNodetypes = new NodeAllowedContent();
         $results = $allowedNodetypes->find('NodeType as nodetype, Amount as amount', 'idNodetype = %s', array($this->get('IdNodeType')));
-        // print_r($salida);
         return $results ? $results : NULL;
     }
 
@@ -702,7 +674,6 @@ class NodeType extends NodeTypesOrm
                 "name" => $dbObj->row["Name"]);
             $dbObj->Next();
         }
-        // print_r($salida);
         return $salida;
     }
 
@@ -748,7 +719,6 @@ class NodeType extends NodeTypesOrm
             return null;
         }
         if ($salida != 0) return $salida;
-
         $sql = sprintf("DELETE FROM NodeDefaultContents WHERE idNodeType = %d", $this->get('IdNodeType'));
         $dbObj->Execute($sql);
         $salida = $dbObj->numErr;
@@ -757,7 +727,6 @@ class NodeType extends NodeTypesOrm
             return null;
         }
         if ($salida != 0) return $salida;
-
         $sql = sprintf("DELETE FROM NodeTypes WHERE idNodeType = %d", $this->get('IdNodeType'));
         $dbObj->Execute($sql);
         $salida = $dbObj->numErr;
@@ -766,7 +735,6 @@ class NodeType extends NodeTypesOrm
             return null;
         }
         if ($salida != 0) return $salida;
-
         $this->ID = null;
         return $salida;
     }
@@ -806,8 +774,9 @@ class NodeType extends NodeTypesOrm
     function HasError()
     {
         $aux = $this->flagErr;
-        if ($this->autoCleanErr)
+        if ($this->autoCleanErr) {
             $this->ClearError();
+        }
         return $aux;
     }
 
@@ -815,6 +784,7 @@ class NodeType extends NodeTypesOrm
     {
         if ($this->get('IdNodeType')) {
             $firstNode = array($this->get('IdNodeType'));
+            
             // El primer nivel va a ser la variable $selectableList, el resto va a ser $typeList
             $idTypeList = $idSelectableList = $tmpArray = $this->getContainers($firstNode);
             do {
@@ -836,15 +806,12 @@ class NodeType extends NodeTypesOrm
             $typeList = NULL;
             $selectableList = NULL;
         }
-
         return $typeList;
     }
 
     private function getContainers($nodeTypes)
     {
-
         $nodeArray = array();
-
         if (is_numeric($nodeTypes)) {
             $nodeArray[] = $nodeTypes;
         } else if (is_array($nodeTypes)) {
@@ -852,7 +819,6 @@ class NodeType extends NodeTypesOrm
         } else {
             return array();
         }
-
         $returnObject = array();
         foreach ($nodeTypes as $idNodeType) {
             $dbObj = new \Ximdex\Runtime\Db();
@@ -889,7 +855,4 @@ class NodeType extends NodeTypesOrm
         unset($dbObj);
         return $returnArray;
     }
-
 }
-
-?>

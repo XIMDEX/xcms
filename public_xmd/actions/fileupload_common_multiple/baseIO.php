@@ -1,6 +1,4 @@
 <?php
-use Ximdex\Models\Node;
-use Ximdex\Models\NodeType;
 
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
@@ -26,6 +24,9 @@ use Ximdex\Models\NodeType;
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
+
+use Ximdex\Models\Node;
+use Ximdex\Models\NodeType;
 
 function baseIO_uploadFile($fileName,$typeName,$nodeID,$filePath){
 	$nodeType = new NodeType();

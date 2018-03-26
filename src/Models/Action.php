@@ -53,7 +53,7 @@ class Action extends ActionsOrm
      */
     public static function getAlwaysAllowedActions()
     {
-        return array("browser3", "composer", "welcome", "infonode", "changelang", "prevdoc");
+        return array("browser3", "composer", "welcome", "infonode", "changelang", 'rendernode');
     }
 
     /**

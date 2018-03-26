@@ -112,6 +112,8 @@ $I->click("body > div.xim-actions-menu.destroy-on-click.noselect.xim-actions-men
 
 $I->wait(3);
 
+$I->click('#all_levels');
+
 $I->click("Publish", "#angular-content");
 
 $I->waitForText("State has been successfully changed", 3, "#angular-content");
@@ -141,7 +143,7 @@ $I->amOnPage("/data/previos/picasso-iden-idHTML.html");
 $I->see("Picasso", ".header");
 $I->see("Cubism", ".header");
 
-$I->amOnPage('?action=xmleditor2&method=load&nodeid=10141');
+$I->amOnPage('?action=xmleditor2&method=load&nodeid=10090');
 $I->wait(3);
 $I->switchToIframe('kupu-editor');
 $I->see('Early periods');

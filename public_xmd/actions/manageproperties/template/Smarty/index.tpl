@@ -34,6 +34,20 @@
 			{foreach from=$properties key=prop item=property}
 				{include file="actions/manageproperties/template/Smarty/`$prop`.tpl"}
 			{/foreach}
+            {if isset($DefaultServerLanguage) and isset($properties['Language']) and count($properties['Language'])}
+                <div class="row tarjeta propertyform">
+			        <h2 class="h2_general">{t}Default server language{/t}</h2>
+			        <div class="manageproperties">
+			             {foreach from=$properties['Language'] item=language}
+                            {if $language.Inherited}
+                                <input type="radio" name="default_server_language" value="{$language.Id}" id="default_server_language_{$language.Id}" 
+                                    {if ($DefaultServerLanguage == $language.Id)}checked="checked"{/if} />
+                                <label for="default_server_language_{$language.Id}">{$language.Name}</label>
+                            {/if}
+                        {/foreach}
+			        </div>
+			    </div>
+			{/if}
 		</fieldset>
 		<div class="small-12 columns">
 			<fieldset class="buttons-form">

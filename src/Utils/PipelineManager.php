@@ -138,7 +138,11 @@ class PipelineManager
      */
     function getCacheFromProcessAsContent($idVersion, $processName, $args)
     {
-        $res = FsUtils::file_get_contents($this->getCacheFromProcess($idVersion, $processName, $args));
+        $pointer = $this->getCacheFromProcess($idVersion, $processName, $args);
+        $res = FsUtils::file_get_contents($pointer);
+        if (strpos($pointer, App::getValue('TempRoot')) and file_exists($pointer)) {
+            @unlink($pointer);
+        }
         if ($res === false)
         {
             Logger::error('Cannot load the cache from process: ' . $processName . ' for version: ' . $idVersion);

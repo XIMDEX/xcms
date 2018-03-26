@@ -25,7 +25,7 @@
  * @version $Revision$
  */
 
-// for legacy compatibility
+// For legacy compatibility
 if (!defined('XIMDEX_ROOT_PATH')) {
     
     require_once dirname(__FILE__) . '/../../../../bootstrap.php';
@@ -47,9 +47,9 @@ function main($argc, $argv)
     Logger::setActiveLog('publication');
 
     // Command line mode call
-    if ($argv != null && isset($argv[1]) && is_numeric($argv[1])) {
-        
+    if ($argv != null && isset($argv[1]) && is_numeric($argv[1])) {      
         Logger::logTrace(_("IdNode passed:") . " " . $argv[1]);
+        
         // Add node to publishing pool and exit (SyncManager will call this daemon again when inserting node job is done)
         $syncFac = new SynchroFacade();
 		$syncFac->pushDocInPublishingPool($argv[1], time(), null);
@@ -59,9 +59,7 @@ function main($argc, $argv)
     // One block of nodes to publish, sorted and grouped by dateup
     // Every node in the block shares same dateup
     $nodesToPublish = NodesToPublish::getNext();
-
     while ($nodesToPublish != null) {
-        
         Logger::info(_("Publication cycle triggered by") . " " . $nodesToPublish['idNodeGenerator']);
         createBatchsForBlock($nodesToPublish);
 
@@ -86,15 +84,12 @@ function createBatchsForBlock($nodesToPublish)
     $idServer = $node->GetServer();
     $nodeServer = new Node($idServer);
     if (App::getValue('PublishOnDisabledServers') == 1) {
-        
         Logger::info("PublishOnDisabledServers is true");
         $physicalServers = $nodeServer->class->GetPhysicalServerList(true);
     } else {
-        
-        $physicalServers = $nodeServer->class->GetEnabledPhysicalServerList(true);
+        $physicalServers = $nodeServer->class->GetPhysicalServerList(true, true);
     }
     if (count($physicalServers) == 0) {
-        
         Logger::error(_('Physical server does not exist for nodeId:') . " " . $idNodeGenerator . " " . _('returning empty arrays.'));
         return null;
     }
@@ -114,33 +109,25 @@ function createBatchsForBlock($nodesToPublish)
     );
 
     // Clean up caches, tmp files, etc...
-    if (is_null($docsPublicated)) {
-        
+    if (is_null($docsPublicated)) {        
         Logger::error("PUSHDOCINPOOL - docsPublicated null");
         return null;
     }
-
     $unchanged = array('unchanged' => $docsPublicated[1]);
     $result = array_merge($docsPublicated[0], $docsPublicated[1]);
 
     // Purge subversions in docs publicated successfully
     if (sizeof($docsPublicated[1]) > 0) {
-
         if (array_key_exists('ok', $docsPublicated[1])) {
-
             foreach ($docsPublicated[1]['ok'] as $id => $dataResult) {
-
                 $node = new Node($id);
                 $nodeTypeID = $node->get('IdNodeType');
                 $nodeType = new NodeType($nodeTypeID);
                 $nodeTypeName = $nodeType->get('Name');
-
                 Logger::info(_("Purging subversions for node") . " $id");
-
                 $data = new DataFactory($id);
                 $curVersion = $data->getLastVersion(true);
                 $prevVersion = $curVersion - 1;
-
                 if (App::getValue("PurgeSubversionsOnNewVersion")) {
                     $data->_purgeSubVersions($prevVersion, true);
                 }
@@ -148,16 +135,11 @@ function createBatchsForBlock($nodesToPublish)
         }
 
         // Delete major version in docs with error
-
         if (array_key_exists('notok', $docsPublicated[1])) {
-
             foreach ($docsPublicated[1]['notok'] as $id => $dataResult) {
-
                 $data = new DataFactory($id);
                 $curVersion = $data->getLastVersion(true);
-
                 Logger::info("Publication error: deleting version $curVersion for node $id");
-
                 if (App::getValue("PurgeSubversionsOnNewVersion")) {
                     $data->DeleteVersion($curVersion);
                 }
@@ -167,9 +149,7 @@ function createBatchsForBlock($nodesToPublish)
 
     // Back node to initial state
     $node = new Node($idNodeGenerator);
-
     if ($node->get('IdState') > 0) {
-        
         $workflow = new \Ximdex\Workflow\WorkFlow($idNodeGenerator);
         $firstState = $workflow->GetInitialState();
         $node->SetState($firstState);

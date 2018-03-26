@@ -7,7 +7,7 @@ use Ximdex\Runtime\Session;
 use Ximdex\Models\User;
 use XimdexApi\core\Token;
 
-class Action_xEdit extends ActionAbstract
+class Action_Xedit extends ActionAbstract
 {
     function index()
     {
@@ -25,11 +25,12 @@ class Action_xEdit extends ActionAbstract
         $values = array(
             'type' => $type,
             'id' => $id,
+            'ximdex_API' => App::getValue('UrlHost') . App::GetValue('UrlRoot') . '/api',
             'url' => App::GetValue('HTMLEditorURL'),
             'enabled' => App::GetValue('HTMLEditorEnabled'),
             'token' => Token::getToken($user->get('Login'))
         );
-        $this->addCss('/actions/xEdit/resources/css/iframe.css');
+        $this->addCss('/actions/xedit/resources/css/iframe.css');
         $this->render($values, NULL, 'default-3.0.tpl');
     }
 }

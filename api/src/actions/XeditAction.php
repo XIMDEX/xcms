@@ -1,15 +1,13 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: jvargas
- * Date: 19/02/16
- * Time: 14:39
- */
 
 namespace XimdexApi\actions;
 
+use Ximdex\Models\FastTraverse;
 use Ximdex\Models\Node;
-use Ximdex\Models\StructuredDocument;
+use Ximdex\NodeTypes\HTMLDocumentNode;
+use Ximdex\NodeTypes\NodeTypeConstants;
+use Ximdex\Runtime\App;
+use Ximdex\Logger;
 use XimdexApi\core\Request;
 use XimdexApi\core\Response;
 
@@ -17,16 +15,23 @@ use XimdexApi\core\Response;
 class XeditAction extends Action
 {
 
+    const PATTERN_PATHTO = "/[[:word:]]+=\"@@@RMximdex\.pathto\(([,-_#%=\.\w\s]+)\)@@@\"/";
+    const PATTERN_XE_LINK = "/xe_link\=\"([^\"]*)\"/";
+
     const PREFIX = 'xedit';
 
     const CONTENT_DOCUMENT = 'content';
 
     const ROUTE_GET = '\d+/get';
     const ROUTE_SET = 'set';
+    const ROUTE_FILE = 'file';
+    const ROUTE_GET_TREE_INFO = 'get_tree_info';
 
     protected const ROUTES = [
         self::ROUTE_GET => 'get',
-        self::ROUTE_SET => 'set'
+        self::ROUTE_SET => 'set',
+        self::ROUTE_FILE => 'file',
+        self::ROUTE_GET_TREE_INFO => 'getTreeInfo'
     ];
 
     protected const PUBLIC = [
@@ -42,95 +47,55 @@ class XeditAction extends Action
     {
         $pathElements = explode('/', $r->getPath());
         $nodeId = $pathElements[1];
-        $doc = new StructuredDocument($nodeId);
         $response = '';
+        $name = '';
 
-        if ($doc->GetID()) {
+        $nodes = HTMLDocumentNode::getNodesHTMLDocument($nodeId);
 
-            // Layout
-            $layout = $doc->getLayout();
-            if ($layout && $layout->GetContent()) {
-                $layout = json_decode($layout->GetContent(), true);
-                $nodes = [];
-                foreach ($layout as $schema => $value) {
-                    $node = null;
-                    $properties = [];
-                    if ($schema == static::CONTENT_DOCUMENT) {
-                        // Node content
-                        $node = $doc;
-                        $properties['editable'] = true;
-                    } else {
-                        // Includes
-                        $node = $doc->getInclude($value);
-                        $properties['editable'] = false;
-                    }
-
-
-                    $schemas = [];
-                    if ($schema == static::CONTENT_DOCUMENT) {
-                        $content = '';
-
-                        // First get all main schemas
-                        foreach ($value as $section => $data) {
-                            $schemas[$section] = XeditAction::getSchemaFromComponent($doc, $section, $data);
-                            if (isset($schemas[$section]) && $schemas[$section]['template'] != null && !empty($schemas[$section]['template'])) {
-                                $content .= $schemas[$section]['template'];
-                            } else {
-                                $content .= '<div>EMPTY COMPONENT</div>';
-                            }
-                        }
-
-                        // Last get dependent schemas
-                        foreach ($schemas as $section => $data) {
-                            if (isset($data['sections'])) {
-                                $schemas = XeditAction::getChildSchemasBySections($doc, $schemas, $data['sections']);
-                            }
-                        }
-                    } else {
-                        $content = '<div>EMPTY NODE</div>';
-                    }
-
-                    if ($node && $node->GetContent()) {
-                        $content = $node->GetContent();
-                    }
-
-
-                    // Properties
-                    $properties['content'] = $content;
-                    $properties['title'] = $node ? $node->get('Name') : '';
-                    $properties['attributes'] = [];
-                    $properties['js'] = [];
-                    $properties['css'] = [
-                        "http://lab03/files/css/ficha.min.css",
-                        "http://lab03/files/js/owlcarousel/owl.carousel.min.css",
-                        "http://lab03/files/js/owlcarousel/owl.theme.default.min.css",
-                        "https://use.fontawesome.com/releases/v5.0.6/css/all.css"
-                    ];
-                    $properties['schema'] = $schemas;
-
-                    $nodes[$node ? $node->GetID() : 'not_found_' . count($nodes)] = $properties;
+        // Transform data to Xedit editor
+        foreach ($nodes as &$node) {
+            $node['editable'] = strcmp($node['type'], HTMLDocumentNode::CONTENT_DOCUMENT) == 0 ? true : false;
+            $name = strcmp($node['type'], HTMLDocumentNode::CONTENT_DOCUMENT) == 0 ? $node['title'] : $name;
+            $node['content'] = static::transformContentToXedit($node['content']);
+            if (strcmp($node['type'], HTMLDocumentNode::CONTENT_DOCUMENT) == 0) {
+                $schemas = $node['schema'];
+                foreach ($schemas as $key => $value) {
+                    $schemas[$key]['view'] = static::transformContentToXedit($value['view']);
                 }
-
-
-                $response = [
-                    'resourceUrl' => '',
-                    'metas' => [
-                        'title' => 'Ejemplo',
-                        'tags' => 'ejemplo test prueba'
-                    ],
-                    'nodes' => $nodes
-                ];
-
+                $node['schema'] = $schemas;
             }
-
-        } else {
-            $w->setMessage('Document not found')->setStatus(1);
         }
+
+
+        if ($nodes === false) {
+            $w->setMessage('Document not found')->setStatus(1);
+        } else {
+            $response = [
+                'baseUrl' => App::get('UrlHost') . App::get('UrlRoot') . '/api',
+                'routerMapper' => [
+                    'routes' => [
+                        'resource' => '_action=' . XeditAction::getPath(XeditAction::ROUTE_FILE),
+                        'treeInfo' => '_action=' . XeditAction::getPath(XeditAction::ROUTE_GET_TREE_INFO),
+                    ]
+                ],
+                'name' => $name,
+                'metas' => [
+                    'title' => 'Ejemplo',
+                    'tags' => 'ejemplo test prueba'
+                ],
+                'nodes' => $nodes
+            ];
+        }
+
         $w->setResponse($response);
         $w->send();
     }
 
 
+    /**
+     * @param Request $r
+     * @param Response $w
+     */
     public static function set(Request $r, Response $w)
     {
         $data = json_decode(file_get_contents('php://input'), true);
@@ -139,78 +104,178 @@ class XeditAction extends Action
 
             foreach ($nodes as $nodeId => $value) {
                 if (isset($value['editable']) && $value['editable']) {
-                    $node = new Node(($nodeId));
-                    $node->SetContent($value['content']);
+                    $node = new Node(intval(str_replace('xe_', '', $nodeId)));
+                    $content = static::transformContentToXimdex($value['content']);
+                    $node->SetContent($content, true);
                 }
-                $w->setResponse(file_get_contents('php://input'));
             }
         } else {
             $w->setMessage("Nodes not found")->setStatus(0);
+        }
+        $w->setResponse('Saved');
+        $w->send();
+    }
+
+    /**
+     * Get file from nodeid
+     *
+     * @param Request $r
+     * @param Response $w
+     */
+    public static function file(Request $r, Response $w)
+    {
+        $nodeId = $_GET['id'];
+        $response = '';
+        $headers = [];
+        if (intval($nodeId)) {
+            $node = new Node($nodeId);
+            if ($node->GetID() !== null) {
+                $data = $node->filemapper();
+                $headers = $data['headers'];
+                $response = $data['content'];
+            }
+        }
+        $w->setResponse($response);
+        $w->send($headers);
+    }
+
+    /**
+     * Get children nodes from parent node
+     *
+     * @param Request $r
+     * @param Response $w
+     */
+    public static function getTreeInfo(Request $r, Response $w)
+    {
+
+        $types = [
+            'image' => NodeTypeConstants::IMAGE_FILE,
+            'link' => NodeTypeConstants::LINK
+        ];
+
+        $nodeId = isset($_GET['id']) ? $_GET['id'] : null;
+        $type = isset($_GET['type']) ? $_GET['type'] : null;
+        $type = isset($types[$type]) ? $types[$type] : false;
+        $result = [];
+
+        if (ctype_digit($nodeId) && $type !== false) {
+            $children = FastTraverse::get_children($nodeId, ['node' => ['Name'], 'nodeType' =>
+                ['isFolder', 'isVirtualFolder', 'IdNodeType']], 1, null, ['IsRenderizable' => true, 'IsHidden' => false]);
+            $children = !isset($children[1]) ?: $children[1];
+            foreach ($children as $key => $child) {
+                if ($child['nodeType']['IdNodeType'] == $types[$type] || $child['nodeType']['isFolder'] ||
+                    $child['nodeType']['isVirtualFolder']) {
+                    $type = $child['nodeType']['isFolder'] || $child['nodeType']['isVirtualFolder'] ? 'folder' : 'item';
+                    $result[$key] = ['name' => $child['node']['Name'], 'type' => $type];
+                }
+            }
+            $w->setResponse($result);
+        } else {
+            $w->setStatus(1)->setMessage('Id and type are required');
         }
         $w->send();
     }
 
     /********************************************* AUX METHODS *********************************************/
-
     /**
-     * @param $doc
-     * @param $schemas
-     * @param $sections
-     *
-     * @return array
+     * @param $content
+     * @return string
      */
-    private static function getChildSchemasBySections($doc, $schemas, $sections)
+    public static function transformContentToXedit($content)
     {
-        foreach ($sections as $section => $data) {
-            if (!array_key_exists($section, $schemas)) {
-                $schemas = XeditAction::getChildSchemasBySection($doc, $section, $data, $schemas);
-            }
-        }
-        return $schemas;
+        $content = preg_replace_callback(static::PATTERN_PATHTO, array(
+            XeditAction::class,
+            'transformPathtoToXeLink'
+        ), $content);
+
+        return $content;
     }
 
     /**
-     * @param $doc StructuredDocument
-     * @param $section string
-     * @param $schemas array
-     * @param $data array
-     *
-     * @return array
+     * @param $content
+     * @return string
      */
-    private static function getChildSchemasBySection($doc, $section, $data, $schemas): array
+    public static function transformContentToXimdex($content)
     {
-        $schema = XeditAction::getSchemaFromComponent($doc, $section, $data);
-        if ($schema != null) {
-            $schemas[$section] = $schema;
-            if (array_key_exists('sections', $schemas[$section])) {
-                $schemas = XeditAction::getChildSchemasBySections($doc, $schemas, $schemas[$section]['sections']);
-            }
-        }
-        return $schemas;
+
+        $content = preg_replace_callback(static::PATTERN_XE_LINK, [
+            XeditAction::class,
+            'transformXeLinkToPathto'
+        ], $content);
+
+        return $content;
+    }
+
+
+    /**
+     * @param $matches
+     * @return string
+     */
+    private static function transformPathtoToXeLink($matches)
+    {
+        $replace = 'xe_link="%s"';
+        return sprintf($replace, trim($matches[1]));
     }
 
     /**
-     * @param $doc StructuredDocument
-     * @param $compName string
-     * @param $data array
-     *
-     * @return array
+     * @param $matches
+     * @return string
      */
-    private static function getSchemaFromComponent($doc, $compName, $data)
+    private static function transformXeLinkToPathto($matches)
     {
-        $schema = null;
-        $comp = $doc->getComponent($compName);
-        if ($comp && $comp->GetContent()) {
-            $schemaComp = json_decode($comp->GetContent(), true);
-            $schema = array_merge($schemaComp[$compName], $data);
-            $schema['name'] = $compName;
-            $view = $doc->getView($schemaComp[$compName]['template']);
-            if ($view && $view->GetContent()) {
-                $schema['template'] = $view->GetContent();
-            } else {
-                $schema['template'] = '';
-            }
-        }
-        return $schema;
+        //TODO Realizar comprobaciones si es IMG / LINK / ...
+        $replace = 'src="@@@RMximdex.pathto(%s)@@@"';
+        return sprintf($replace, trim($matches[1]), trim($matches[1]));
     }
+
+    /**
+     * Get user token
+     * @return string
+     */
+    public static function getUserToken()
+    {
+        $token = isset($_SERVER['PHP_AUTH_USER']) ? $_SERVER['PHP_AUTH_USER'] : null;
+        if (is_null($token)) {
+            $token = isset($_GET['token']) ? $_GET['token'] : null;
+        }
+        return $token;
+    }
+
+    /**
+     * Check if the nodes have associated actions
+     *
+     * @param $nodes
+     * @return null
+     */
+    protected function checkNodeAction(&$nodes)
+    {
+        //TODO Copiado de la clase Action_browser3 (Sacar en común)
+        $db = new \Ximdex\Runtime\Db();
+        $sql = 'select count(1) as total from Actions a left join Nodes n using(IdNodeType) where IdNode = %s and a . Sort > 0';
+        $sql2 = $sql . " AND a.Command='fileupload_common_multiple' ";
+
+        if (!empty($nodes)) {
+            foreach ($nodes as &$node) {
+                $nodeid = $node['nodeid'];
+                $_sql = sprintf($sql, $nodeid);
+
+                $db->query($_sql);
+                $total = $db->getValue('total');
+                $node['hasActions'] = $total;
+
+
+                $db = new \Ximdex\Runtime\Db();
+                $sql2 = sprintf($sql2, $nodeid);
+                $db->query($sql2);
+                $total = $db->getValue('total');
+                $node['canUploadFiles'] = $total;
+            }
+
+            return $nodes;
+        } else {
+            Logger::info(_('Empty nodes in checkNodeAction [browser3]'));
+            return null;
+        }
+    }
+
 }

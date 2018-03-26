@@ -11,16 +11,15 @@ class Db
      */
     private $db = null;
     private static $defaultConf = null;
-
     private $sql = '';
     private static $dbEncoding = '';
     private static $workingEncoding = '';
     private $rows = array();
+    private $index = 0;
     public $EOF = true;
     public $row = array();
     public $numRows = 0;
     public $numFields = 0;
-    private $index = 0;
     public $numErr = null;
     public $desErr = null;
     public $newID = null;
@@ -29,7 +28,6 @@ class Db
      * @var \PDOStatement
      */
     private $stm = null;
-    
     private $TIME_TO_RECONNECT = 10;	//sleeping time to reconnect to the database in seconds
 
     /**
@@ -93,7 +91,6 @@ class Db
     {
         // todo remove cache parameter
         unset($cache);
-        
         if (!$this->_getEncodings())
         {
             Logger::error($this->desErr);
@@ -107,24 +104,25 @@ class Db
         }
         catch (\PDOException $e)
         {
-            if (isset($GLOBALS['InBatchProcess']) and $GLOBALS['InBatchProcess'])
+            if (isset($GLOBALS['InBatchProcess']) and $GLOBALS['InBatchProcess']) {
                 echo $e->getMessage() . PHP_EOL;
+            }
+            $this->stm = false;
         }
         if ($this->stm === false)
         {    
             if (isset($GLOBALS['InBatchProcess']) and $GLOBALS['InBatchProcess'])
             {
-                //if the database server has gone away, try a new connection
+                // If the database server has gone away, try a new connection
                 $res = $this->database_reconnection();
                 
-                //Trying the method call again if the reconnection process works right
+                // Trying the method call again if the reconnection process works right
                 if ($res)
                 {
                     $res = $this->Query($sql);
                     return $res;
                 }
             }
-            
             $error = $this->error();
             $this->desErr = $error[2];
             Logger::error('Query error: ' . $error[2] . '. (SQL: ' . $this->sql . ')');
@@ -182,8 +180,10 @@ class Db
         }
         catch (\PDOException $e)
         {
-            if (isset($GLOBALS['InBatchProcess']) and $GLOBALS['InBatchProcess'])
+            if (isset($GLOBALS['InBatchProcess']) and $GLOBALS['InBatchProcess']) {
                 echo $e->getMessage() . PHP_EOL;
+            }
+            $res = false;
         }
         if ($res !== false)
         {
@@ -193,9 +193,10 @@ class Db
         }
         if (isset($GLOBALS['InBatchProcess']) and $GLOBALS['InBatchProcess'])
         {
-            //if the database server has gone away, try a new connection
+            // If the database server has gone away, try a new connection
             $res = $this->database_reconnection();
-            //Trying the method call again if the reconnection process works right
+            
+            // Trying the method call again if the reconnection process works right
             if ($res)
             {
                 $res = $this->Execute($sql);
@@ -226,7 +227,6 @@ class Db
     {
         $this->db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
         $result = true;
-
         try {
             $statement = $this->db->prepare($sql);
             $statement->execute();
@@ -235,7 +235,6 @@ class Db
             $result = false;
             Logger::error($e->errorInfo[2]);
         }
-
         $this->db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_SILENT);
         return $result;
     }
@@ -253,9 +252,7 @@ class Db
                 $this->row = $this->rows[$this->index];
             }
         }
-
         return $this->EOF;
-
     }
 
     function Go($number)
@@ -276,7 +273,6 @@ class Db
     private function _getEncodings()
     {
         if ((self::$dbEncoding == '') && (self::$workingEncoding == '')) {
-            
             $sql = "select ConfigKey,ConfigValue from Config where ConfigKey='workingEncoding' or ConfigKey='dbEncoding'";
             $this->sql = $sql;
             try
@@ -292,9 +288,10 @@ class Db
             {
             	if (isset($GLOBALS['InBatchProcess']) and $GLOBALS['InBatchProcess'])
             	{
-            	   //if the database server has gone away, try a new connection
+            	   // If the database server has gone away, try a new connection
             	   $res = $this->database_reconnection();
-            	   //Trying the method call again if the reconnection process works right
+            	   
+            	   // Trying the method call again if the reconnection process works right
             	   if ($res)
             	   {
             	       $res = $this->_getEncodings();
@@ -345,14 +342,10 @@ class Db
      */
     public static function sqlEscapeString($value)
     {
-
-
         if (is_null($value)) {
             return 'NULL';
         }
-
         if (!(strlen($value) > 0)) {
-            //Logger::warning("A SQL statement is converting an empty string to NULL");
             return 'NULL';
         }
         return self::getInstance()->db->quote($value);
@@ -376,10 +369,10 @@ class Db
     	$error = $db->errorInfo();
     	if ($error[0] == 'HY000' and $error[1] == 2006)
     	{
-    		//MySQL server has gone away error; we will sleep for a few seconds and try again a new connection later
+    		// MySQL server has gone away error; we will sleep for a few seconds and try again a new connection later
     		do
     		{
-    			//we will do a loop until the connection has been stablished
+    			// We will do a loop until the connection has been stablished
     			Logger::warning('Connection to database has been lost. Trying to reconnect in ' . $this->TIME_TO_RECONNECT . ' seconds');
     			$res = $this->reconectDataBase();
     			sleep($this->TIME_TO_RECONNECT);
@@ -399,8 +392,9 @@ class Db
     {
         $version = $this->db->getAttribute(constant('PDO::ATTR_SERVER_VERSION'));
         $info = explode('.', $version);
-        if (count($info) < 2)
+        if (count($info) < 2) {
             return false;
+        }
         $version = $info[0] . '.' . $info[1];
         return $version;
     }

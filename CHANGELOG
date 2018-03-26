@@ -1,5 +1,18 @@
-Ximdex (Free & Semantic CMS for XML) - CHANGELOG	
-------------------------------------------------
+
+Ximdex (Free & Semantic Headless CMS & DMS for HTML/XML) - CHANGELOG	
+--------------------------------------------------------------------
+
+Version 4.0
+-----------
+-> 01.03.2018 Ximdex team
+  * New Decoupled WYWIWYG/WYSIWYM Editor as a Service for HTML5/CSS and XML/XSLT: XEDIT (new project)
+  * New system to define the layout of web sites
+  * New pipelines for HTML5
+  * Structured documents are XML and HTML5 now: use xml for really important structured info and html for quick deployments.
+  * New code organization to provide better separation core/services
+  * Former modules removed
+  * Updated external components through composer
+  * Performance improvement for decoupled publishing
 
 Version 3.9
 -----------
@@ -20,7 +33,7 @@ Version 3.8
   *Form View for Xedit and Xnews
   *XEDIT lite
   *Xedit with wysiwyg for XML for tablets
-  *I18N at JS and JS compilation and caché
+  *I18N at JS and JS compilation and cache
   *AngularJS everywhere
 
 Version 3.7
@@ -271,10 +284,6 @@ Version 3.0
  * New link multi-description supported.
  * Optimized node dependency system.
 
-------------------------------------------------------------------
-
-2010: Ximdex 3.0 is a fork of Ximdex 2.6 developed by Ximetrix network thoughts SL
-
-------------------------------------------------------------------
-
-.
+...
+...
+...

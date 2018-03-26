@@ -41,6 +41,7 @@ X.actionLoaded(function(event, fn, params) {
 		$levelsRadio.change(function() {
 			
 			fn('[id="last_edited_option"]').removeClass("disabled").attr("disabled", false);
+			fn('[id="no_structure_option"]').removeClass("disabled").attr("disabled", false);
 			var value = $('input[name=levels]:checked').val();
 			if (value != 'deep')
 			{
@@ -50,6 +51,8 @@ X.actionLoaded(function(event, fn, params) {
 				{
 					fn('[id="last_edited_option"]').addClass("disabled").attr("disabled", true);
 					fn('[id="last_edited"]').attr("checked", false);
+					fn('[id="no_structure_option"]').addClass("disabled").attr("disabled", true);
+					fn('[id="no_structure"]').attr("checked", false);
 				}
 			}
 			else

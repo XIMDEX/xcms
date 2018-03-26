@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,9 +25,7 @@
  * @version $Revision$
  */
 
-
 namespace Ximdex\Utils;
-
 
 require_once(XIMDEX_ROOT_PATH . XIMDEX_VENDORS . '/phpmailer/phpmailer/src/Exception.php');
 require_once(XIMDEX_ROOT_PATH . XIMDEX_VENDORS . '/phpmailer/phpmailer/src/PHPMailer.php');
@@ -42,19 +41,13 @@ include_once(XIMDEX_ROOT_PATH . "/conf/mail.php");
 
 class Mail extends PHPMailer
 {
-
-
     function __construct()
     {
-
         $this->From = FROM;
         $this->FromName = FROM_NAME;
         $this->Sender = FROM;
-
         if (defined('SMTP_AUTH') && SMTP_AUTH == true) {
-
             $this->Mailer = "smtp";
-
             $this->Host = SMTP_SERVER;
             $this->SMTPAuth = true;
             $this->Username = AUTH_USERNAME;
@@ -63,38 +56,31 @@ class Mail extends PHPMailer
         }
     }
 
-
     function setFrom($address, $name = '', $auto = true)
     {
         parent::setFrom($address, $name, $auto);
-
         $this->From = $address;
         $this->FromName = $name;
         $this->Sender = $this->From;
     }
 
-
     function error_handler($msg)
     {
-        // write to logging system.
+        // Write to logging system.
         echo "Mail ERROR: $msg\n";
     }
 
     function Send()
     {
-
         $ret_send = parent::Send();
-
         if (defined('MAIL_DEBUG') && MAIL_DEBUG) {
             $tmp_path = XIMDEX_ROOT_PATH .  App::getValue('TempRoot');
             $filename = tempnam($tmp_path, 'mail_');
             $data = parent::CreateBody();
-            // just a log, no sense to log the fsutils error too
+            
+            // Just a log, no sense to log the fsutils error too
             FsUtils::file_put_contents($filename, $data);
         }
-
         return $ret_send;
-
     }
-
 }

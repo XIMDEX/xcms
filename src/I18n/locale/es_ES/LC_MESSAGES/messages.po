@@ -3106,7 +3106,7 @@ msgstr "Etiquetas"
 msgid "Navigate by tags"
 msgstr "Navegar por etiquetas"
 
-#: /actions/prevdoc/Action_prevdoc.class.php
+#: /actions/rendernode/Action_rendernode.class.php
 msgid "It is not possible to show preview."
 msgstr "No es posible mostrar la previsualización."
 
@@ -3213,7 +3213,7 @@ msgstr "Publicando..."
 msgid "Please, wait"
 msgstr "Por favor, espere"
 
-msgid "Node types to publish"
+msgid "Node type to publish"
 msgstr "Tipos de nodo a publicar"
 
 
@@ -4147,7 +4147,7 @@ msgstr "Publicador avanzado"
 
 #: /actions/xmleditor2/template/Smarty/toolbar.tpl
 #: /actions/manageversions/template/Smarty/index.tpl
-#: /actions/prevdoc/Action_prevdoc.class.php
+#: /actions/rendernode/Action_rendernode.class.php
 #install/ximdex_data/ximdex.sql table Nodes
 msgid "Preview"
 msgstr "Previsualizar"
@@ -9012,7 +9012,7 @@ msgid "At least one language and one channel must be gived"
 msgstr "Se debe dar al menos un idioma y un canal"
 
 msgid "An enconding type is required"
-msgstr "Es necesario indicar un tipo de codificaci&oacute;n",
+msgstr "Es necesario indicar un tipo de codificaci&oacute;n"
 
 msgid "At least one channel is required"
 msgstr "Al menos un canal es necesario"
@@ -9028,3 +9028,6 @@ msgstr "No hay una URL para el editor HTML en la configuraci&oacute;n del sistem
 
 msgid "The HTML editor is not enabled in the system configuration"
 msgstr "El editor HTML no está habilitado en la configuraci&oacute;n del sistema"
+
+msgid "The file has been published succesfuslly"
+msgstr "El archivo ha sido publicado correctamente"

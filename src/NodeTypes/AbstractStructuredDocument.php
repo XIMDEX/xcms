@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -29,7 +30,6 @@ namespace Ximdex\NodeTypes;
 use Ximdex\Runtime\App;
 use Ximdex\Runtime\DataFactory;
 use Ximdex\Deps\DepsManager;
-use DOMDocument;
 use Ximdex\Models\NodeType;
 use Ximdex\Utils\PipelineManager;
 use Ximdex\Models\Dependencies;
@@ -56,7 +56,8 @@ define('XIMIO_VIEW', 3);
 abstract class AbstractStructuredDocument extends FileNode
 {
     /**
-	 * Creates a new structured node
+     * Creates a new structured node
+     * 
      * @param null $name
      * @param null $parentID
      * @param null $nodeTypeID
@@ -66,61 +67,83 @@ abstract class AbstractStructuredDocument extends FileNode
      * @param string $aliasName
      * @param null $channelList
      */
-    function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $templateID = null, $IdLanguage = null, $aliasName = '', $channelList = null)
+    function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $templateID = null, $IdLanguage = null
+        , $aliasName = '', $channelList = null)
     {
         $loginID = Session::get("userID");
         $templateNode = new Node($templateID);
         $content = '';
-        if ($templateNode->get('IdNode') > 0)
-        {
-            // relaxng schema
+        if ($templateNode->get('IdNode') > 0) {
+            
+            // Relaxng schema
             $templateNodeType = new NodeType($templateNode->get('IdNodeType'));
-            if ($templateNodeType->get('Name') == 'RngVisualTemplate')
-            {
+            if ($templateNodeType->get('Name') == 'RngVisualTemplate') {
                 $content = $templateNode->class->buildDefaultContent();
-            }
-            else
-            {
+            } else {
                 $templateContent = $templateNode->class->GetContent();
                 $templateContent = explode('##########', $templateContent);
-                if (isset($templateContent[1]))
-                {
+                if (isset($templateContent[1])) {
                     $content = str_replace("'", "\'", $templateContent[1]);
                 }
             }
-
         }
         $doc = new StructuredDocument();
         $doc->CreateNewStrDoc($this->nodeID, $name, $loginID, $IdLanguage, $templateID, $channelList, $content);
-        if ($doc->HasError())
-        {
+        if ($doc->HasError()) {
             $this->parent->SetError(5);
         }
         $nodeContainer = new Node($this->parent->GetParent());
         $nodeContainer->SetAliasForLang($IdLanguage, $aliasName);
-        if ($nodeContainer->HasError())
-        {
+        if ($nodeContainer->HasError()) {
             $this->parent->SetError(5);
         }
         $this->updatePath();
     }
 
-
     /**
-	 * Name for the file/resource on production servers
+     * Name for the file/resource on production servers
+     * 
      * @param null $channel
      * @return string
      */
     function GetPublishedNodeName($channel = null)
     {
         $channel = new Channel($channel);
-        $fileName = $this->parent->GetNodeName() . "-id" . $channel->GetName() . "." . $channel->GetExtension();
-
+        if (!$channel->GetID()){
+            $error = 'Channel not found for ID: ' . $channel;
+            $this->messages->add($error, MSG_TYPE_ERROR);
+            Logger::error($error);
+            return false;
+        }
+        if (App::getValue('PublishPathFormat') == App::SUFFIX) {
+            $fileName = $this->parent->GetNodeName();
+            $fileName .= '-id' . $channel->GetName();
+        }
+        else {
+            
+            // In prefix mode the name of the document will be obtained from the parent document folder 
+            if (!$this->parent->GetParent()) {
+                $error = 'There is not specified a parent node ID for document: ' . $this->parent->GetNodeName();
+                $this->messages->add($error, MSG_TYPE_ERROR);
+                Logger::error($error);
+                return false;
+            }
+            $docFolder = new Node($this->parent->GetParent());
+            if (!$docFolder->GetID()) {
+                $error = 'Document folder not found for ID: ' . $this->parent->GetParent();
+                $this->messages->add($error, MSG_TYPE_ERROR);
+                Logger::error($error);
+                return false;
+            }
+            $fileName = $docFolder->GetNodeName();
+        }
+        $fileName .= '.' . $channel->GetExtension();
         return $fileName;
     }
 
     /**
      * Get the documents that must be publicated when the template is published
+     * 
      * @param array $params
      * @return array
      */
@@ -128,31 +151,25 @@ abstract class AbstractStructuredDocument extends FileNode
     {
         $idDoc = $this->parent->get('IdNode');
 
-        // only for dependences with ximlets
+        // Only for dependences with ximlets
         $dependencies = new Dependencies();
         $idDepXimlets = [$dependencies->getDepTypeId(Dependencies::XIMLET)];
-        
         $depsMngr = new DepsManager();
         $structure = $depsMngr->getBySource(DepsManager::XML2XML, $idDoc, $idDepXimlets);
-        
-
         $asset = empty($params['withstructure']) ? array() :
-            $depsMngr->getBySource(DepsManager::NODE2ASSET, $idDoc);
-
+        $depsMngr->getBySource(DepsManager::NODE2ASSET, $idDoc);
         $node = new Node($idDoc);
         $tmpWorkFlowSlaves = $node->GetWorkFlowSlaves();
         $workFlowSlaves = is_null($tmpWorkFlowSlaves) ? array() : $tmpWorkFlowSlaves;
-
         return array_merge($workFlowSlaves, $asset, $structure);
     }
 
     /**
      * @return mixed|string
      */
-    function GetContent()
+    public function GetContent()
     {
         $strDoc = new StructuredDocument($this->nodeID);
-
         return $strDoc->GetContent();
     }
 
@@ -160,25 +177,23 @@ abstract class AbstractStructuredDocument extends FileNode
      * @param $content
      * @param null $commitNode
      */
-    function SetContent($content, $commitNode = NULL, Node $node = null)
+    public function SetContent($content, $commitNode = NULL, Node $node = null)
     {
         //Checking the valid XML of the given content, if it is necessary
-        if ($node)
-        {
-            switch ($node->getNodeType())
-            {
+        if ($node) {
+            switch ($node->getNodeType()) {
                 case \Ximdex\NodeTypes\NodeTypeConstants::XML_DOCUMENT:
                 case \Ximdex\NodeTypes\NodeTypeConstants::METADATA_DOCUMENT:
                 case \Ximdex\NodeTypes\NodeTypeConstants::XIMLET:
-                    // in this case we will format the XML content with correct indentation
-                    $domDoc = new DOMDocument();
+                    
+                    // In this case we will format the XML content with correct indentation
+                    $domDoc = new \DOMDocument();
                     $domDoc->formatOutput = true;
                     $domDoc->preserveWhiteSpaces = false;
                     $res = @$domDoc->loadXML($content);
                     $domDoc->encoding = 'UTF-8';
                     $domDoc->version = '1.0';
-                    if ($res)
-                    {
+                    if ($res) {
                         $content = $domDoc->saveXML();
                         $content = str_replace('<?xml version="1.0" encoding="UTF-8"?>', '', $content);
                         $content = trim($content);
@@ -187,28 +202,22 @@ abstract class AbstractStructuredDocument extends FileNode
                 default:
                     $res = true;
             }
-            if ($res === false)
-            {
+            if ($res === false) {
                 Logger::error('Invalid XML for idNode: ' . $node->getIdNode());
                 $error = \Ximdex\Utils\Messages::error_message('DOMDocument::loadXML(): ');
-                if ($error)
-                {
+                if ($error) {
                     $this->messages->add($error, MSG_TYPE_WARNING);
                     Logger::error($error . ' (' . $node->GetNodeName() . ')');
                 }
             }
         }
-        
         $strDoc = new StructuredDocument($this->nodeID);
         $res = $strDoc->SetContent($content, $commitNode);
         $this->messages->mergeMessages($strDoc->messages);
-        if ($res === false)
-        {
+        if ($res === false) {
             return false;
         }
-        
         $wfSlaves = $this->parent->GetWorkflowSlaves();
-
         if (!is_null($wfSlaves)) {
             foreach ($wfSlaves as $docID) {
                 $strDoc = new StructuredDocument($docID);
@@ -226,11 +235,11 @@ abstract class AbstractStructuredDocument extends FileNode
         $strDoc = new StructuredDocument($this->nodeID);
         if ($strDoc->GetSymLink()) {
             $icon = pathinfo($this->parent->nodeType->GetIcon());
-            /// Separa la extension del nombre del archivo
+            
+            // Separa la extension del nombre del archivo
             $fileName = preg_replace('/(.+)\..*$/', '$1', $icon["basename"]);
             return $fileName . "-link." . $icon["extension"];
         }
-
         return $this->parent->nodeType->GetIcon();
     }
 
@@ -247,7 +256,6 @@ abstract class AbstractStructuredDocument extends FileNode
             case DOCXAP_VIEW:
                 return $this->RenderizeNode($channel, $content);
         }
-
         return NULL;
     }
 
@@ -272,7 +280,6 @@ abstract class AbstractStructuredDocument extends FileNode
                 $folderNodeType = 8000;
                 break;
         }
-
         do {
             $idNodeType = 0;
             $node = new Node($node->get('IdParent'));
@@ -290,7 +297,7 @@ abstract class AbstractStructuredDocument extends FileNode
     }
 
     /**
-	 * Renderiza el nodo en el sistema de archivos
+     * Renderiza el nodo en el sistema de archivos
      * @param null $channel
      * @param null $content
      * @return bool
@@ -302,17 +309,17 @@ abstract class AbstractStructuredDocument extends FileNode
         $parentID = $this->parent->GetParent();
         $parent = new Node($parentID);
 
-        /// Renderizamos hacia arriba toda la jerarqu\EDa
+        // Renderizamos hacia arriba toda la jerarqu\EDa
         if (!$parent->IsRenderized()) {
             if ($parent->RenderizeNode() === false)
                 return false;
         }
 
-        /// Conseguimos el path del archivo de destino
+        // Conseguimos el path del archivo de destino
         $fileName = $this->GetNodePath();
         $fileContent = $this->GetRenderizedContent($channel, $content);
 
-        /// Lo guardamos en el sistema de archivos
+        // Lo guardamos en el sistema de archivos
         if (!FsUtils::file_put_contents($fileName, $fileContent)) {
             $this->parent->SetError(7);
             $this->parent->messages->add(_('An error occured while trying to save the document'), MSG_TYPE_ERROR);
@@ -340,20 +347,17 @@ abstract class AbstractStructuredDocument extends FileNode
         $node = new Node($this->nodeID);
         $nt = $node->nodeType->get('IdNodeType');
         $metadata = '';
-        if ($nt == \Ximdex\NodeTypes\NodeTypeConstants::XML_DOCUMENT)
-        {
+        if ($nt == \Ximdex\NodeTypes\NodeTypeConstants::XML_DOCUMENT) {
             $metadata = 'metadata_id=""';
         }
-        //include the associated semantic tags of the document into the docxap tag.
+        
+        // Include the associated semantic tags of the document into the docxap tag.
         $xtags = '';
-        if (\Ximdex\Modules\Manager::isEnabled('ximTAGS'))
-        {
+        if (\Ximdex\Modules\Manager::isEnabled('ximTAGS')) {
             $rtn = new RelTagsNodes();
             $nodeTags = $rtn->getTags($this->nodeID);
-            if (!empty($nodeTags))
-            {
-                foreach ($nodeTags as $tag)
-                {
+            if (!empty($nodeTags)) {
+                foreach ($nodeTags as $tag) {
                     $ns = new \Ximdex\Models\Namespaces();
                     $idns = $ns->getNemo($tag['IdNamespace']);
                     $xtags .= $tag['Name'] . ":" . $idns . ",";
@@ -388,19 +392,14 @@ abstract class AbstractStructuredDocument extends FileNode
         if (!($strDoc->get('IdDoc') > 0)) {
             return NULL;
         }
-
         $documentType = $strDoc->GetDocumentType();
         $idLanguage = $strDoc->GetLanguage();
-
         $docXapHeader = $this->_getDocXapHeader($channel, $idLanguage, $documentType);
-
         if ($onlyDocXap) {
             return $docXapHeader;
         }
-
         $doctypeTag = App::getValue("DoctypeTag");
         $encodingTag = App::getValue("EncodingTag");
-
         if (is_null($content)) {
             $content = $strDoc->GetContent();
         }
@@ -409,17 +408,16 @@ abstract class AbstractStructuredDocument extends FileNode
             $this->InsertLinkedximletS($idLanguage) . "\n" .
             $content . "\n" .
             "</docxap>\n");
-
     }
-	
+
     function DeleteNode()
     {
         $parent = new Node($this->parent->get('IdParent'));
         $st = new StructuredDocument($this->parent->get('IdNode'));
         $dbObj = new \Ximdex\Runtime\Db();
         $query = sprintf("DELETE FROM NodeNameTranslations WHERE IdNode = %s AND IdLanguage = %s",
-            $dbObj->sqlEscapeString($parent->get('IdNode')),
-            $dbObj->sqlEscapeString($st->get('IdLanguage')));
+        $dbObj->sqlEscapeString($parent->get('IdNode')),
+        $dbObj->sqlEscapeString($st->get('IdLanguage')));
         $dbObj->execute($query);
         $doc = new StructuredDocument();
         $doc->SetID($this->nodeID);
@@ -427,23 +425,16 @@ abstract class AbstractStructuredDocument extends FileNode
             $this->parent->SetError(5);
             return;
         }
-
         $doc->DeleteStrDoc();
-
         if ($doc->HasError()) {
             $this->parent->SetError(5);
         }
 
         // Deletes dependencies in rel tables
-
         $depsMngr = new DepsManager();
-
         $depsMngr->deleteByTarget(DepsManager::XML2XML, $this->parent->get('IdNode'));
         $depsMngr->deleteBySource(DepsManager::XML2XML, $this->parent->get('IdNode'));
-
         $depsMngr->deleteBySource(DepsManager::NODE2ASSET, $this->parent->get('IdNode'));
-
-
         Logger::info('StrDoc dependencies deleted');
     }
 
@@ -463,15 +454,12 @@ abstract class AbstractStructuredDocument extends FileNode
     function GetAllGenerations()
     {
         $result = array();
-
         $chanList = $this->GetChannels();
-
         if ($chanList) {
             foreach ($chanList as $chanID) {
                 $result[] = array('channel' => $chanID, 'content' => $this->Generate($chanID));
             }
         }
-
         return $result;
     }
 
@@ -483,10 +471,12 @@ abstract class AbstractStructuredDocument extends FileNode
     public function HasChannel($channelID)
     {
         $values = $this->GetChannels();
-        if ($values === false)
+        if ($values === false) {
             return false;
-        if (isset($values['Channel'][$channelID]))
+        }
+        if (isset($values['Channel'][$channelID])) {
             return true;
+        }
         return false;
     }
 
@@ -498,16 +488,18 @@ abstract class AbstractStructuredDocument extends FileNode
     {
         $channelProperty = new ChannelProperty($this->nodeID);
         $values = $channelProperty->getValues($this->nodeID);
-        if ($values === false)
+        if ($values === false) {
             return false;
+        }
         $res = [];
-        foreach ($values as $channel)
-            if ($channel['Checked'] or $channel['Inherited'])
+        foreach ($values as $channel) {
+            if ($channel['Checked'] or $channel['Inherited']) {
                 $res[] = $channel['Id'];
+            }
+        }
         return $res;
     }
-    
-    // TODO: Rewrite in Views.
+
     /**
      * @param $depth
      * @param $files
@@ -517,7 +509,6 @@ abstract class AbstractStructuredDocument extends FileNode
     function ToXml($depth, & $files, $recurrence)
     {
         $xmlBody = parent::ToXML($depth, $files, $recurrence);
-
         $channelList = $this->GetChannels();
         if (is_array($channelList)) {
             reset($channelList);
@@ -525,11 +516,9 @@ abstract class AbstractStructuredDocument extends FileNode
                 $node = new Node($idChannel);
                 $xmlBody .= $node->ToXml($depth, $files, $recurrence);
                 unset($node);
-
             }
         }
         unset($channelList);
-
         $indexTabs = str_repeat("\t", $depth + 1);
         $query = sprintf("SELECT nt.IdLanguage, nt.Name"
             . " FROM NodeNameTranslations nt"
@@ -541,13 +530,10 @@ abstract class AbstractStructuredDocument extends FileNode
         while (!$this->dbObj->EOF) {
             $idLanguage = $this->dbObj->GetValue('IdLanguage');
             $name = $this->dbObj->GetValue('Name');
-            $xmlBody .= sprintf("%s<NodeNameTranslation IdLang=\"%d\">\n",
-                $indexTabs, $idLanguage);
-            $xmlBody .= sprintf("%s\t<![CDATA[%s]]>\n",
-                $indexTabs, utf8_encode($name));
+            $xmlBody .= sprintf("%s<NodeNameTranslation IdLang=\"%d\">\n", $indexTabs, $idLanguage);
+            $xmlBody .= sprintf("%s\t<![CDATA[%s]]>\n", $indexTabs, utf8_encode($name));
             $xmlBody .= sprintf("%s</NodeNameTranslation>\n", $indexTabs);
             $this->dbObj->Next();
-
         }
         return $xmlBody;
     }
@@ -560,15 +546,12 @@ abstract class AbstractStructuredDocument extends FileNode
         $returnValue = '';
         $query = sprintf("SELECT TargetLink FROM StructuredDocuments WHERE IdDoc = %d", $this->nodeID);
         $this->dbObj->Query($query);
-
         if ($this->dbObj->numRows == 1) {
-
             $targetLink = $this->dbObj->GetValue('TargetLink');
             if ((int)$targetLink > 0) {
                 $returnValue = sprintf(' targetLink="%d"', $targetLink);
             }
         }
-
         return $returnValue;
     }
 
@@ -578,11 +561,9 @@ abstract class AbstractStructuredDocument extends FileNode
     function getTemplate()
     {
         $structuredDocument = new StructuredDocument($this->nodeID);
-
         if ($structuredDocument->get('IdDoc') > 0) {
             return $structuredDocument->get('IdTemplate');
         }
-
         return false;
     }
 
@@ -611,6 +592,7 @@ abstract class AbstractStructuredDocument extends FileNode
         $docList[] = $nodeParent->GetChildren();
         foreach ($docList as $docID) {
             foreach ($docID as $docdocID) {
+                
                 // Getting the language
                 $strDoc = new StructuredDocument($docdocID);
                 $langID = $strDoc->GetLanguage();
@@ -620,7 +602,6 @@ abstract class AbstractStructuredDocument extends FileNode
         }
         $colectible = substr($colectible, 0, strlen($colectible) - 1);
         $outPut2 .= $colectible . '"';
-
         $lang = new Language($idLang);
         $outPut2 .= ' language="' . $lang->GetIsoName() . '"';
         return $outPut2;
@@ -645,21 +626,16 @@ abstract class AbstractStructuredDocument extends FileNode
         $doc = new StructuredDocument($this->nodeID);
         $channelList = $doc->GetChannels();
         $outPut = NULL;
-        if ($channelList)
-        {
-            if (in_array($channelID, $channelList))
-            {
+        if ($channelList) {
+            if (in_array($channelID, $channelList)) {
                 $channel = new Channel($channelID);
                 $outPut = 'channel="' . $channel->GetName() . '"';
                 $outPut .= ' extension="' . $channel->GetExtension() . '"';
-            }
-            else
-            {
+            } else {
                 $outPut = 'channel="" ';
             }
             reset($channelList);
-            while (list(, $channelID) = each($channelList))
-            {
+            while (list(, $channelID) = each($channelList)) {
                 $channel = new Channel($channelID);
                 $channelNames[] = $channel->get('Name');
                 $channelDesc[] = $channel->get('Description');
@@ -683,6 +659,7 @@ abstract class AbstractStructuredDocument extends FileNode
         $transformer = $node->getProperty('Transformer');
         $data['TRANSFORMER'] = $transformer[0];
         $data['DISABLE_CACHE'] = App::getValue("DisableCache");
+        $data['NODEID'] = $nodeid;
         if ($node->GetNodeType() == NodeTypeConstants::HTML_DOCUMENT) {
             $process = 'HTMLToPrepared';
         } else {
@@ -692,7 +669,6 @@ abstract class AbstractStructuredDocument extends FileNode
         $content = $pipeMng->getCacheFromProcessAsContent($version, $process, $data);
         return $content;
     }
-
 
     /**
      * @param $langID
@@ -708,7 +684,6 @@ abstract class AbstractStructuredDocument extends FileNode
                 $output .= "<ximlet>@@@GMximdex.ximlet($ximletId)@@@</ximlet>";
             }
         }
-
         return $output;
     }
 
@@ -723,11 +698,9 @@ abstract class AbstractStructuredDocument extends FileNode
             $node = New Node($this->nodeID);
             $sectionId = $node->GetSection();
         }
-
         $depsMngr = new DepsManager();
         $ximletContainers = $depsMngr->getBySource(DepsManager::SECTION_XIMLET, $sectionId);
         $linkedXimlets = array();
-
         if (!empty($ximletContainers) > 0) {
             foreach ($ximletContainers as $ximletContaineId) {
                 $node = new Node($ximletContaineId);
@@ -740,7 +713,6 @@ abstract class AbstractStructuredDocument extends FileNode
                 }
             }
         }
-
         return $linkedXimlets;
     }
 
@@ -753,13 +725,10 @@ abstract class AbstractStructuredDocument extends FileNode
         $prop = new NodeProperty();
         $array_prop = $prop->getPropertiesByNode($nodeID);
         $nprop = count($array_prop);
-
         $str_props = "";
-
         for ($i = 0; $i < $nprop; $i++) {
             $str_props = $str_props . ' ' . $array_prop[$i]["Name"] . '="' . $array_prop[$i]["Value"] . '"';
         }
-
         return $str_props;
     }
 
@@ -770,9 +739,7 @@ abstract class AbstractStructuredDocument extends FileNode
     function DocXapAttribLevels($langID)
     {
         $node = new Node($this->parent->get('IdNode'));
-
         $parent = new Node($node->get('IdParent'));
-
         $s = ' nodeid="' . $node->get('IdNode') . '"  parentnodeid="' . $parent->get('IdNode') . '"';
         $s .= ' nodetype-name="' . $node->nodeType->get('Name') . '"  nodetype-id="' . $node->nodeType->get('IdNodeType') . '"';
         $s .= ' document-name="' . $parent->get('Name') . '" alias="' . $parent->GetAliasForLang($langID) . '"';
@@ -780,37 +747,28 @@ abstract class AbstractStructuredDocument extends FileNode
 
         // It must exclude from length the node itself, its container, and its folder
         $length = count($tree) - 3;
-
+        
         // the level
         $j = 0;
-
         for ($i = 1; $i < $length; $i++) {
-
             $ancestor = new Node($tree[$i]);
             $alias = $node->GetAliasForLang($langID);
-
             switch ($i) {
                 case 1:
                     $s .= ' proyect="' . $ancestor->get('Name') . '"';
                     continue;
-
                 case 2:
                     $s .= ' server="' . $ancestor->get('Name') . '"';
                     continue;
-
                 default:
-
                     if ($ancestor->nodeType->get('IsSection') == 1) {
                         $j++;
                         $s .= " level$j=\"" . $ancestor->get('Name') . "\" level_name$j=\"" .
                             $ancestor->GetAliasForLang($langID) . "\"\n";
                     }
-
                     continue;
             }
-
         }
-
         return $s;
     }
 
@@ -850,13 +808,69 @@ abstract class AbstractStructuredDocument extends FileNode
         $node = new Node($this->nodeID);
         $properties = $node->getAllProperties($withInheritance);
         $docxapPropAttrs = "";
-
         if (is_array($properties) & count($properties) > 0) {
             foreach ($properties as $idProperty => $propertyValue) {
                 $docxapPropAttrs .= 'property_' . $idProperty . '="' . $propertyValue[0] . '" ';
             }
         }
-
         return $docxapPropAttrs;
+    }
+    
+    /**
+     * {@inheritDoc}
+     * @see \Ximdex\NodeTypes\Root::GetPublishedPath()
+     */
+    public function GetPublishedPath($channelID = NULL, $addNodeName = null) {
+        if (!$this->parent->GetID()) {
+            $error = 'Missing ID for structured document';
+            $this->messages->add($error, MSG_TYPE_ERROR);
+            Logger::error($error);
+            return false;
+        }
+        $structuredDocument = new StructuredDocument($this->parent->GetID());
+        if (!$structuredDocument->get('IdLanguage')) {
+            $error = 'Language has not been specified for document: ' . $this->parent->GetNodeName();
+            $this->messages->add($error, MSG_TYPE_ERROR);
+            Logger::error($error);
+            return false;
+        }
+        if (App::getValue('PublishPathFormat') == App::PREFIX or App::getValue('PublishPathFormat') == App::SUFFIX) {
+            $language = new Language($structuredDocument->get("IdLanguage"));
+            if (!$language->GetID()) {
+                $error = 'Language not found for ID: ' . $structuredDocument->get("IdLanguage");
+                $this->messages->add($error, MSG_TYPE_ERROR);
+                Logger::error($error);
+                return false;
+            }
+        }
+        $path = '';
+        switch (App::getValue('PublishPathFormat')) {
+            case App::PREFIX:
+                $path = parent::GetPublishedPath($channelID, $addNodeName);
+                
+                // If the language is different than the default server one, the path include its ISO name
+                $nodeProperty = new NodeProperty();
+                $property = $nodeProperty->getProperty($this->parent->getServer(), NodeProperty::DEFAULTSERVERLANGUAGE);
+                if ($property) {
+                    if ($language->GetID() != $property[0]) {
+                        $path = '/'. $language->get("IsoName") . $path;
+                    }
+                }
+                else {
+                    
+                    // No default language in prefix mode, always include the language in path
+                    $path = '/'. $language->get("IsoName") . $path;
+                }
+                break;
+            case App::SUFFIX:
+                $path = parent::GetPublishedPath($channelID);
+                if ($addNodeName) {
+                    $path .= '/' . $this->GetPublishedNodeName($channelID);
+                }
+                break;
+            default:
+                $path = parent::GetPublishedPath($channelID, $addNodeName);
+        }
+        return str_replace('//', '/', $path);
     }
 }

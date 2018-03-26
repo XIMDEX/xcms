@@ -1223,8 +1223,6 @@ class BaseIO
             default :
                 Logger::warning(sprintf(_("The class %s does not exist in BaseIO"), $nodeTypeName));
                 return 1;
-                break;
         }
     }
-
 }

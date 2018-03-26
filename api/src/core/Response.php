@@ -58,22 +58,30 @@ class Response
 
     /**
      * Sends reponse and exists
-     *
+     * @param array $headers
      * @return string
      */
-    public function send()
+    public function send($headers = null)
     {
-        $data = [
-            'status' => $this->status,
-            'message' => $this->message,
-            'response' => $this->response,
-        ];
-        // TODO: Check CORS and filters 
-        header("Access-Control-Allow-Origin: *");
-        header("Access-Control-Allow-Headers: Authorization");
-        header("Access-Control-Allow-Credentials: true");
-        header('Content-Type: application/json; charset=utf-8');
-        echo json_encode($data, JSON_UNESCAPED_UNICODE);
+        if (!is_null($headers)) {
+            foreach ($headers as $key => $value) {
+                header($key . ":" . $value);
+            }
+            echo $this->response;
+        } else {
+            $data = [
+                'status' => $this->status,
+                'message' => $this->message,
+                'response' => $this->response,
+            ];
+
+            // TODO: Check CORS and filters
+            header("Access-Control-Allow-Origin: *");
+            header("Access-Control-Allow-Headers: Authorization");
+            header("Access-Control-Allow-Credentials: true");
+            header('Content-Type: application/json; charset=utf-8');
+            echo json_encode($data, JSON_UNESCAPED_UNICODE);
+        }
         exit;
 
     }

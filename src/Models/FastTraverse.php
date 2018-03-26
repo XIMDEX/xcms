@@ -8,60 +8,114 @@ use Ximdex\Runtime\Db;
 
 class FastTraverse extends FastTraverseOrm
 {
+    static $db;
+    
     /**
      * Get an array with all the child nodes which depend of a parent node given
-     * This array contains the IdNode field with the Depth value in its index
-     * If the parameter nodeTypes is a true value, the index of each node will be its ID and the value the Node Type ID
-     * Also an array named $filters with field name and value (ex.
-     * 'Id' => '10001') can be used to make the result more precise
+     * This array contains the IdNode field with the Depth value in its index by default
+     * If other fields are needed, fields parameter can be used to declare each one
+     * Also an array named filters with field name and value (ex. 'Id' => '10001') can be used to make the result more precise
+     * The level parameter can specify the maximun depth level to obtain
+     * Filters must be an array of fields to include or exclude some field values (using index 'exclude' or 'include')
      *
      * @param int $idNode
-     * @param bool $nodeTypes
+     * @param array $fields
      * @param int $level
      * @param array $filters
-     * @return bool|string[]
+     * @param array $nodeTypeFlags
+     * @return bool|array
      */
-    public static function get_children(int $idNode, bool $nodeTypes = false, int $level = null, array $filters = [])
+    public static function get_children(int $idNode, array $fields = null, int $level = null, array $filters = null, array $nodeTypeFlags = null)
     {
         if ($idNode < 1) {
             Logger::error('Getting children in FastTraverse without node given');
             return false;
         }
-        $db = new Db();
         $sql = 'select ft.IdChild, ft.Depth';
-        if ($nodeTypes) {
-            $sql .= ', node.IdNodeType';
-        }
-        $sql .= ' from FastTraverse ft';
-        if ($nodeTypes) {
-            $sql .= ' inner join Nodes node on (node.IdNode = ft.IdChild)';
-        }
-        $sql .= ' where ft.IdNode = ' . $idNode;
-        if ($level) {
-            $sql .= ' and ft.Depth = ' . $level;
-        }
-        if ($filters) {
-            foreach ($filters as $field => $values) {
-                if (is_array($values)) {
-                    $sql .= ' and ' . $field . ' in (' . implode(',', $values) . ')';
-                } else {
-                    $sql .= ' and ' . $field . ' = \'' . $values . '\'';
+        if ($fields) {
+            if (isset($fields['nodeType'])) {
+                foreach ($fields['nodeType'] as $field) {
+                    $sql .= ', nt.' . $field;
+                }
+            }
+            if (isset($fields['node'])) {
+                foreach ($fields['node'] as $field) {
+                    $sql .= ', node.' . $field;
                 }
             }
         }
-        if ($db->Query($sql) === false) {
+        $sql .= ' from FastTraverse ft';
+        if (isset($fields['node']) or isset($fields['nodeType']) or $nodeTypeFlags) {
+            
+            // If the fields contain node or nodetype values, or node type flags, we need to make a join with Nodes table
+            $sql .= ' inner join Nodes node on (node.IdNode = ft.IdChild)';
+            if (isset($fields['nodeType']) or $nodeTypeFlags) {
+                
+                // We need to make a join to NodeType table in order to use the node type values and flags
+                $sql .= ' inner join NodeTypes nt on (nt.IdNodeType = node.IdNodeType';
+                
+                // Filter for node type flags
+                if ($nodeTypeFlags) {
+                    foreach ($nodeTypeFlags as $flag => $value) {
+                        $sql .= ' and nt.' . $flag . ' is ' . (($value) ? 'true' : 'false'); 
+                    }
+                }
+                $sql .= ')';
+            }
+        }
+        $sql .= ' where ft.IdNode = ' . $idNode;
+        
+        // Get only a specified level
+        if ($level) {
+            $sql .= ' and ft.Depth <= ' . $level;
+        }
+        
+        // Filters add some criteria to obtain specified nodes (ex. 'include' => ['IdNodeType' =>  [5014, 5015]])
+        if ($filters) {
+            foreach ($filters as $operation => $opFilters) {
+                if ($operation == 'exclude') {
+                    $operator = 'not in';
+                }
+                else {
+                    $operator = 'in';
+                }
+                if (!is_array($opFilters)) {
+                    Logger::error(ucfirst($operation) . ' filters parameter must be an array of fields');
+                    return false;
+                }
+                foreach ($opFilters as $field => $values) {
+                    if (!is_array($values)) {
+                        Logger::error('Filter parameter for ' . $field . ' field must be an array of fields');
+                        return false;
+                    }
+                    $sql .= ' and ' . $field . ' ' . $operator . ' (' . implode(',', $values) . ')';
+                }
+            }
+        }
+        if (!self::$db) {
+            self::$db = new Db();
+        }
+        if (self::$db->Query($sql) === false) {
             return false;
         }
         $children = array();
-        if ($nodeTypes) {
-            while (! $db->EOF) {
-                $children[$db->GetValue('Depth')][$db->GetValue('IdChild')] = $db->GetValue('IdNodeType');
-                $db->Next();
+        if ($fields) {
+            
+            // The returned array will have the Depth as the primary level, the node ID as the second with an array with the specfied fields
+            while (! self::$db->EOF) {
+                foreach ($fields as $source => $sourceFields) {
+                    foreach ($sourceFields as $field) {
+                        $children[self::$db->GetValue('Depth')][self::$db->GetValue('IdChild')][$source][$field] = self::$db->GetValue($field);
+                    }
+                }
+                self::$db->Next();
             }
         } else {
-            while (! $db->EOF) {
-                $children[$db->GetValue('Depth')][] = $db->GetValue('IdChild');
-                $db->Next();
+            
+            // The returned array will have the Depth as key with the node ID as the value
+            while (! self::$db->EOF) {
+                $children[self::$db->GetValue('Depth')][] = self::$db->GetValue('IdChild');
+                self::$db->Next();
             }
         }
         return $children;
@@ -73,7 +127,7 @@ class FastTraverse extends FastTraverseOrm
      *
      * @param int $idNode
      * @param string $index
-     * @return boolean|array
+     * @return bool|array
      */
     public static function get_parents(int $idNode, string $value = null, string $index = null)
     {
@@ -94,15 +148,17 @@ class FastTraverse extends FastTraverseOrm
             $sql = 'select ft.IdNode as _index, Depth as _value from FastTraverse ft';
         }
         $sql .= ' where ft.IdChild = ' . $idNode . ' order by ft.Depth';
-        $db = new Db();
-        if ($db->Query($sql) === false) {
-            Logger::error('Getting parents in FastTraverse with node: ' . $idNode . ' (' . $db->desErr . ')');
+        if (!self::$db) {
+            self::$db = new Db();
+        }
+        if (self::$db->Query($sql) === false) {
+            Logger::error('Getting parents in FastTraverse with node: ' . $idNode . ' (' . self::$db->desErr . ')');
             return false;
         }
         $parents = array();
-        while (! $db->EOF) {
-            $parents[$db->GetValue('_index')] = $db->GetValue('_value');
-            $db->Next();
+        while (! self::$db->EOF) {
+            $parents[self::$db->GetValue('_index')] = self::$db->GetValue('_value');
+            self::$db->Next();
         }
         return $parents;
     }

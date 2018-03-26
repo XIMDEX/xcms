@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -44,42 +45,38 @@ class ViewXslt extends AbstractView
     public function transform($idVersion = NULL, $pointer = NULL, $args = NULL)
     {
         $content = $this->retrieveContent($pointer);
-        
-        if (!$this->_setNode($idVersion))
+        if (!$this->_setNode($idVersion, $args)) {
             return NULL;
-
-        if (!$this->_setIdChannel($args))
+        }
+        if (!$this->_setIdChannel($args)) {
             return NULL;
-
-        if (!$this->_setIdSection($args))
+        }
+        if (!$this->_setIdSection($args)) {
             return NULL;
-
-        if (!$this->_setIdProject($args))
+        }
+        if (!$this->_setIdProject($args)) {
             return NULL;
-
+        }
         $ptdFolder = App::getValue("TemplatesDirName");
         
-        // creates the XSLT log if there is not one yet
+        // Creates the XSLT log if there is not one yet
         $defaultLog = Logger::get_active_instance();
         Logger::generate('XSLT', 'xslt');
         Logger::setActiveLog('xslt');
         
-        // get always the project docxap file
+        // Get always the project docxap file
         $projectId = $this->_idProject;
         $project = new Node($projectId);
         $docxap = $project->class->GetNodePath() . '/' . $ptdFolder . '/docxap.xsl';
 
         // Only make transformation if channel's render mode is ximdex (or null)
-
         if ($this->_idChannel) {
             $channel = new Channel($this->_idChannel);
             $renderMode = $channel->get('RenderMode');
-
             if ($renderMode == 'client') {
                 $inclusionHeader = '<?xml-stylesheet type="text/xsl" href="' . $ptdFolder . '/docxap.xsl"?>';
                 $xmlHeader = App::getValue('EncodingTag');
                 $content = str_replace($xmlHeader, $xmlHeader . $inclusionHeader, $content);
-
                 Logger::info('Render in client, return XML content + path to template');
                 Logger::setActiveLog($defaultLog);
                 return $content;
@@ -89,24 +86,22 @@ class ViewXslt extends AbstractView
         // XSLT Transformation
         
         //TODO change the global variable to a function parameter
-        if (!isset($GLOBALS['errorsInXslTransformation']))
+        if (!isset($GLOBALS['errorsInXslTransformation'])) {
             $GLOBALS['errorsInXslTransformation'] = array();
-        
+        }
         Logger::info('Starting XSLT transformation');
-        
-        if ($this->_node and $this->_node->GetID())
+        if ($this->_node and $this->_node->GetID()) {
             Logger::info('Processing XML document with ID: ' . $this->_node->GetID() . ' and name: ' . $this->_node->GetNodeName());
-        
+        }
         $xsltHandler = new \Ximdex\XML\XSLT();
         if (!$xsltHandler->setXML($pointer))
         {
             $error = 'The XML document has syntax errors (' . \Ximdex\Utils\Messages::error_message('DOMDocument::load(): ') . ')';
             $GLOBALS['errorsInXslTransformation'][] = $error;
         }
-        
         Logger::info('Loading XSL content from ' . $docxap);
         
-        // load the docxap content
+        // Load the docxap content
         $domDoc = new \DOMDocument();
         if (@$domDoc->load($docxap) === false)
         {
@@ -115,26 +110,27 @@ class ViewXslt extends AbstractView
         }
         $docxapContent = $domDoc->saveXML();
         
-        // include the correspondant includes_template.xsl for the current document
-        if ($this->_node and $this->_node->GetID())
+        // Include the correspondant includes_template.xsl for the current document
+        if ($this->_node and $this->_node->GetID()) {
             $idNode = $this->_node->GetID();
-        else
+        }
+        else {
             $idNode = null;
+        }
         $urlTemplatesInclude = null;
         if (!XsltNode::replace_path_to_local_templatesInclude($docxapContent, $idNode, $projectId, $urlTemplatesInclude))
         {
             $error = 'Cannot load the XSL file ' . $urlTemplatesInclude . ' for XML document ';
-            if ($idNode)
+            if ($idNode) {
                 $error .= 'with ID: ' . $idNode;
-            else
+            }
+            else {
                 $error .= 'with project ID: ' . $projectId;
+            }
             $GLOBALS['errorsInXslTransformation'][] = $error;
         }
-        
         $xsltHandler->setXSL(null, $docxapContent);
-        
         $params = array('xmlcontent' => $content);
-        
         if (App::debug())
         {
             # DEBUG
@@ -144,27 +140,24 @@ class ViewXslt extends AbstractView
             @file_put_contents(XIMDEX_ROOT_PATH . '/data/tmp/content-pre.xml', $content);
             # END DEBUG
         }
-        
         foreach ($params as $param => $value) {
             $xsltHandler->setParameter(array($param => $value));
         }
-
         $content = $xsltHandler->process();
-        
         if (App::debug())
         {
             # DEBUG
             @file_put_contents(XIMDEX_ROOT_PATH . '/data/tmp/content-post.xml', $content);
             # END DEBUG
         }
-        
         if ($content === false or $content === null)
         {
             // try to reload templates includes in order to try to solve the problem, in case of empty templates_include.xsl
             Logger::info('Checking if the local templates_include.xsl is empty to reload its content');
             $dom = new \DOMDocument();
-            if (!@$dom->load($urlTemplatesInclude))
+            if (!@$dom->load($urlTemplatesInclude)) {
                 $GLOBALS['errorsInXslTransformation'][] = 'Cannot load the includes template URL: ' . $urlTemplatesInclude;
+            }
             else
             {
                 $GLOBALS['errorsInXslTransformation'] = array();
@@ -182,7 +175,6 @@ class ViewXslt extends AbstractView
                     }
                     $xsltHandler->setXSL(null, $docxapContent);
                     $content = $xsltHandler->process();
-                    
                     if (App::debug())
                     {
                         # DEBUG
@@ -195,51 +187,49 @@ class ViewXslt extends AbstractView
         
         if ($content === false or $content === null)
         {
-            if ($xsltHandler->errors())
+            if ($xsltHandler->errors()) {
                 $GLOBALS['errorsInXslTransformation'] = array_merge($GLOBALS['errorsInXslTransformation'], $xsltHandler->errors());
-            foreach ($GLOBALS['errorsInXslTransformation'] as $error)
+            }
+            foreach ($GLOBALS['errorsInXslTransformation'] as $error) {
                 Logger::error($error);
+            }
             // we save the error trace into the previous file
             $this->set_xslt_errors($GLOBALS['errorsInXslTransformation']);
             Logger::setActiveLog($defaultLog);
-            if (isset($GLOBALS['InBatchProcess']))
+            if (isset($GLOBALS['InBatchProcess'])) {
                 return NULL;
+            }
             return false;
         }
 
         // Tags counter
-
         $counter = 1;
-        
         $domDoc->validateOnParse = true;
-
         if ($channel->get("OutputType") == "xml") {
             if (!@$domDoc->loadXML($content)) {
-                
                 Logger::error('XML invalid: ' . $content);
                 $GLOBALS['errorsInXslTransformation'][] = 'Invalid XML source: ' . $content;
-                // we save the error trace into the previous file
+                
+                // We save the error trace into the previous file
                 $this->set_xslt_errors($GLOBALS['errorsInXslTransformation']);
                 Logger::setActiveLog($defaultLog);
                 return false;
             }
         } else if ($channel->get("OutputType") == "web") {
             if (!@$domDoc->loadHTML($content)) {
-                
                 Logger::error('HTML invalid: ' . $content);
                 $GLOBALS['errorsInXslTransformation'][] = 'Invalid HTML or XHTML source: ' . $content;
-                // we save the error trace into the previous file
+                
+                // We save the error trace into the previous file
                 $this->set_xslt_errors($GLOBALS['errorsInXslTransformation']);
                 Logger::setActiveLog($defaultLog);
                 return false;
             }
         } else {
-            
             Logger::setActiveLog($defaultLog);
             return $this->storeTmpContent($content);
         }
         $xpath = new \DOMXPath($domDoc);
-
         $nodeList = $xpath->query('/html/body//*[string(text())]');
 
         // In non-node transform we've not got a nodeid, and it's not necessary for tag counting.
@@ -247,15 +237,13 @@ class ViewXslt extends AbstractView
             $element->setAttributeNode(new \DOMAttr('uid', (($this->_node) ? $this->_node->get('IdNode') : '00000') . ".$counter"));
             $counter++;
         }
-
         if ($channel->get("OutputType") == "xml")
             $content = $domDoc->saveXML();
         else if ($channel->get("OutputType") == "web")
             $content = $domDoc->saveHTML();
         
-        // the document has been processed propertly, so if there is any previous errors they will be deleted
+        // The document has been processed propertly, so if there is any previous errors they will be deleted
         $this->reset_xslt_errors();
-        
         $logMessage = 'XSLT transformation completed';
         if ($this->_node and $this->_node->GetID())
         {
@@ -308,47 +296,49 @@ class ViewXslt extends AbstractView
         return true;
     }
 
-    private function _setNode($idVersion = NULL)
+    private function _setNode($idVersion = NULL, array $args = null)
     {
-
         if (!is_null($idVersion)) {
             $version = new Version($idVersion);
             if (!($version->get('IdVersion') > 0)) {
                 Logger::error('VIEW XSLT: Incorrect version has been loaded (' . $idVersion . ')');
                 return NULL;
             }
-
-            $this->_node = new Node($version->get('IdNode'));
-            if (!($this->_node->get('IdNode') > 0)) {
-                Logger::error('VIEW XSLT: The node that it\'s trying to convert doesn\'t exists: ' . $version->get('IdNode'));
-                return NULL;
-            }
+            $id = $version->get('IdNode');
+        }
+        elseif (isset($args['NODEID']) and $args['NODEID']) {
+            $id = $args['NODEID'];
         } else {
             Logger::info("VIEW XSLT: xslt view is instantiate without 'idVersion'");
+            return true;
         }
-
+        $this->_node = new Node($id);
+        if (!$this->_node->GetID()) {
+            Logger::error('VIEW XSLT: The node that it\'s trying to convert doesn\'t exists: ' . $id);
+            return NULL;
+        }
         return true;
     }
 
     private function _setIdChannel($args = array())
     {
-
         if (array_key_exists('CHANNEL', $args)) {
             $this->_idChannel = $args['CHANNEL'];
         }
-
+        if ($this->_node) {
+            $this->_idChannel = $this->_node->getTargetChannel($this->_idChannel);
+        }
+        
         // Check Params:
         if (!isset($this->_idChannel) || !($this->_idChannel > 0)) {
             Logger::error('VIEW XSLT: Node ' . $args['NODENAME'] . ' has not an associated channel');
             return NULL;
         }
-
         return true;
     }
 
     private function _setIdSection($args = array())
     {
-
         if ($this->_node) {
             $this->_idSection = $this->_node->GetSection();
         } else {
@@ -362,13 +352,11 @@ class ViewXslt extends AbstractView
                 return NULL;
             }
         }
-
         return true;
     }
 
     private function _setIdProject($args = array())
     {
-
         if ($this->_node) {
             $this->_idProject = $this->_node->GetProject();
         } else {
@@ -382,8 +370,6 @@ class ViewXslt extends AbstractView
                 return NULL;
             }
         }
-
         return true;
     }
-
 }

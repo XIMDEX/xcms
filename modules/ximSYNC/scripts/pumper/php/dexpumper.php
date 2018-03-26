@@ -27,6 +27,7 @@
 use Ximdex\Logger;
 use Ximdex\Models\Pumper;
 use Ximdex\Models\Server;
+use Ximdex\Runtime\App;
 use Ximdex\Cli\CliParser;
 
 // for legacy compatibility
@@ -99,10 +100,8 @@ class DexPumper {
 	private $idUser;
 	private $verbose;
 	private $maxVoidCycles;
-	private $sleepTime = 10;
+	private $sleepTime;
 	private $localBasePath;
-
-	private $cycle = 0;
 
 	private $pumper;
 	private $connection;
@@ -137,7 +136,7 @@ class DexPumper {
 
 		while (true) {
 			if(!$cycle) {
-				$this->info("STARTING PUMPER CYCLE.");
+				$this->info("STARTING PUMPER CYCLE");
 			}else {
 				$this->info("PUMPER CYCLE");
 			}
@@ -148,15 +147,22 @@ class DexPumper {
 			$serverFrameInfo = $serverFrame->getPublishableNodesForPumper($pumperID);
 			$countNodes = count($serverFrameInfo);
 
-			$this->info("$countNodes nodes for pumping");
-
+			$this->info("$countNodes nodes for pumping with PumperID: " . $pumperID);
+			
 			// exit condition here when cycles reach max void cycles
 			if (empty($serverFrameInfo)) {
 				$cycle ++;
 				if ($cycle <= $this->maxVoidCycles) {
 					$this->updateTimeInPumper();
 					$this->activeWaiting();
-					$this->info("cycle $cycle without working. Sleeeping.....");
+					
+					// Manual stop for pumpers in sleeping mode
+					$stopper_file_path = XIMDEX_ROOT_PATH . App::getValue("TempRoot") . "/pumper.stop";
+					if (file_exists($stopper_file_path)) {
+					    Logger::warning('[PUMPERS] ' . _("STOP: Detected file") . " $stopper_file_path");
+					    break;
+					}
+					$this->info("cycle $cycle without working. Sleeping.....");
 					continue;
 				} else {
 					$this->info("Max Cycle $cycle. Bye!");
@@ -172,9 +178,7 @@ class DexPumper {
 
 			if (empty($IdSync) ) { $this->fatal("ServerFrame not found :". $task); }
 
-
 			$this->info("ServerFrame $IdSync to proccess.");
-
 
 			$this->getHostConnection();
 			if ($state_task == ServerFrame::DUE2IN) {
@@ -193,14 +197,13 @@ class DexPumper {
 
 
 	private function uploadAsHiddenFile() {
-
 		$localPath = $this->localBasePath."/";
 		$initialDirectory = $this->server->get('InitialDirectory');
 		$IdSync = (int)  $this->serverFrame->get('IdSync');
 		$remotePath = $this->serverFrame->get('RemotePath');
 		$fileName = $this->serverFrame->get('FileName');
 
-		$this->info("ServerFrame $IdSync DU2IN: upload as hidden file ");
+		$this->info("ServerFrame $IdSync DUE2IN: upload as hidden file ");
 
 		$originFile = "{$localPath}{$IdSync}";
 		$targetFile = ".{$IdSync}_{$fileName}";
@@ -215,7 +218,7 @@ class DexPumper {
 		$fileName = $this->serverFrame->get('FileName');
 		$remotePath = $this->serverFrame->get('RemotePath');
 
-		$this->info("ServerFrame $IdSync DU2OUT: download file from server ");
+		$this->info("ServerFrame $IdSync DUE2OUT: download file from server ");
 
 
 		$targetFile = "{$initialDirectory}{$remotePath}/{$fileName}";
@@ -224,24 +227,17 @@ class DexPumper {
 		$this->updateTask($removing, ServerFrame::OUT);
 	}
 
-	private function RenameFile($file) {
-	    
+	private function RenameFile($file)
+	{
 		$initialDirectory = $this->server->get('InitialDirectory');
 		$remotePath = $file['RemotePath'];
 		$IdSync = (int) $file['IdSync'];
 		$fileName =  $file['FileName'];
-
 		$targetFolder = "{$initialDirectory}{$remotePath}/";
 		$originFile = "{$targetFolder}.{$IdSync}_{$fileName}";
 		$targetFile = $fileName;
-		
-		if (!file_exists($originFile)) {
-		    $this->warning("Renaming file: $originFile file not found");
-		    return null;
-		}
-		$this->info("RenameFile [{$targetFolder}] $originFile -> $targetFile ");
-
-		return $this->taskRename($originFile, $targetFolder,  $targetFile);
+		$this->info("Renaming file: $originFile -> $targetFile");
+		return $this->taskRename($originFile, $targetFolder,  $targetFile, $IdSync);
 	}
 
 	private function getFilesToRename($IdBatchUp, $IdServer) {
@@ -378,23 +374,22 @@ class DexPumper {
 		return true;
 	}
 
-	private function taskUpload($localFile, $baseRemoteFolder, $relativeRemoteFolder, $remoteFile) {
-
-		$this->info("Copying $localFile in {$baseRemoteFolder}{$relativeRemoteFolder}/{$remoteFile}");
-                $this->getHostConnection();
+	private function taskUpload($localFile, $baseRemoteFolder, $relativeRemoteFolder, $remoteFile)
+	{
+        $this->getHostConnection();
 		if ( !$this->taskBasic($baseRemoteFolder, $relativeRemoteFolder) ) {
 			return false;
 		}
-
 		$fullPath = $baseRemoteFolder . $relativeRemoteFolder . '/' . $remoteFile;
-		$msg_not_upload = _('Could not upload the file').": {$localFile} -> {$fullPath}";
-
-
+		if ($this->connection->isFile($fullPath)) {
+		    $this->warning("Uploading file: $fullPath file already exist");
+		    return null;
+		}
+		$this->info("Copying $localFile in $fullPath");
 		if (!$this->connection->put($localFile, $fullPath)) {
-			$this->error($msg_not_upload);
+		    $this->error(_('Could not upload the file').": $localFile -> $fullPath");
 			return false;
 		}
-
 		return true;
 	}
 	
@@ -403,18 +398,23 @@ class DexPumper {
 		return $this->connection->rm($remoteFile);
 	}
 
-	private function taskRename($targetFile, $targetFolder, $newFile)
+	private function taskRename($targetFile, $targetFolder, $newFile, $idSync = null)
 	{
         $this->getHostConnection();
 		if (!$this->taskBasic($targetFolder, ''))
 		{
 			return false;
 		}
+		if (!$this->connection->isFile($targetFile)) {
+		    $this->warning("Renaming file: $targetFile file not found");
+		    return null;
+		}
 		if (!$this->connection->rename($targetFile, $targetFolder . $newFile))
 		{
 		    $this->error("Could not rename the target document: {$targetFile} -> {$targetFolder}{$newFile} ");
             return false;
 		}
+		Logger::info(_('The file has been published succesfuslly') . ': ' . $newFile . ' (' . $idSync . ')', true);
 		return true;
 	}
 
@@ -469,7 +469,7 @@ class DexPumper {
 		}
 	}
 
-      public function unRegisterPumper() {
+    private function unRegisterPumper() {
 			$state_pumper = $this->pumper->get('State');
 
 			if ('NEW' == $state_pumper) {

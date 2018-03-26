@@ -74,9 +74,18 @@
 					<div class="row tarjeta propertyform">
 						<h2 class="h2_general">{t}Publication options{/t}</h2>
 						<div class="publication_options">
+						    <div class="publication_option">
+                                <div class="option_checkbox">
+                                    <input type="radio" name="levels" id="zero" value="zero" checked="checked" />
+                                </div>
+                                <div class="option_info">
+                                    <label for="zero">{t}Publish only the current file.{/t}</label>
+                                </div>
+                                <div class="options_separator"></div>
+                            </div>
 							<div class="publication_option">
 								<div class="option_checkbox">
-									<input type="radio" name="levels" id="all_levels" value="all" checked="checked" />
+									<input type="radio" name="levels" id="all_levels" value="all" />
 								</div>
 								<div class="option_info">
 									<label for="all_levels">{t}Publish all linked files.{/t}</label>
@@ -97,18 +106,9 @@
 								</div>
 								<div class="options_separator"></div>
 							</div>
-							<div class="publication_option">
-								<div class="option_checkbox">
-									<input type="radio" name="levels" id="zero" value="zero" />
-								</div>
-								<div class="option_info">
-									<label for="zero">{t}Publish only the current file.{/t}</label>
-								</div>
-								<div class="options_separator"></div>
-							</div>
 							{if $advanced_publication eq '1'}
 								<hr />
-								<div class="publication_option">
+								<div class="publication_option disabled" id="no_structure_option" disabled="disabled">
 									<div class="option_checkbox">
 										<input type="checkbox" name="no_structure" id="no_structure" value="1" />
 									</div>
@@ -117,7 +117,7 @@
 									</div>
 									<div class="options_separator"></div>
 								</div>
-								<div class="publication_option" id="last_edited_option">
+								<div class="publication_option disabled" id="last_edited_option" disabled="disabled">
 									<div class="option_checkbox">
 										<input type="checkbox" name="latest" id="last_edited" value="1" />
 									</div>

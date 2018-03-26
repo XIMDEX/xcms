@@ -25,6 +25,7 @@
  */
 
 
+use Ximdex\Logger;
 use Ximdex\Models\Pumper;
 
 
@@ -55,7 +56,7 @@ class PumperManager
 
             return false;
         }
-
+ 
         $pumpersWithError = 0;
 
         foreach ($pumpersWithTasks as $pumperId) {
@@ -73,17 +74,25 @@ class PumperManager
             $pumper->PumperToLog(null, null, null, null, $pumperId, __CLASS__, __FUNCTION__, __FILE__,
                 __LINE__, "INFO", 8, sprintf(_("Pumper %s at state %s"), $pumperId, $pumperState));
 
+            Logger::info('Pumper with ID: ' . $pumperId . ' has state: ' . $pumperState);
+            
             switch ($pumperState) {
                 case 'Started':
+                    
                     // Checking if pumper is alive
                     $now = time();
                     if ($now - $pumperCheckTime > MAX_CHECK_TIME_FOR_PUMPER) {
                         $pumper->PumperToLog(null, null, null, null, $pumperId, __CLASS__, __FUNCTION__, __FILE__,
                             __LINE__, "INFO", 8, _("No checking time for Pumper") . " $pumperId", true);
+                        
                         // Restart pumper
                         $processId = $pumper->get('ProcessId');
                         if (!empty($processId)) {
                             system("kill -9 $processId", $var);
+                            Logger::warning('Pumper with ID: ' . $pumperId . ' has been restarted (process with pid ' . $processId . ' killed');
+                        }
+                        else {
+                            Logger::warning('Pumper with ID: ' . $pumperId . ' has been restarted');
                         }
 
                         $pumper->set('State', 'New');
@@ -97,15 +106,20 @@ class PumperManager
                     break;
 
                 case 'New':
+                    
                     $result = $pumper->startPumper($pumperId, $modo);
 
                     if ($result == false) {
                         $pumpersWithError++;
                     }
+                    else {
+                        Logger::info('Pumper with ID: ' . $pumperId . ' has been started');
+                    }
                     break;
 
                 case 'Ended':
-                    // Pumper ended without finish all tasks
+                    
+                    // Pumper ended but new tasks have been included
                     $pumper->set('State', 'New');
                     $pumper->update();
 
@@ -114,8 +128,18 @@ class PumperManager
                     if ($result == false) {
                         $pumpersWithError++;
                     }
+                    else {
+                        Logger::info('Pumper with ID: ' . $pumperId . ' has been started from ended state');
+                    }
                     break;
-
+                    
+                case 'Starting':
+                    
+                    // Pumper is starting...
+                    Logger::info('Pumper with ID: ' . $pumperId . ' is starting. Aborting creation');
+                    usleep(100000);
+                    break;
+                    
                 default:
                     $pumper->PumperToLog(null, null, null, null, $pumperId, __CLASS__, __FUNCTION__, __FILE__,
                         __LINE__, "INFO", 8, "default: $pumperId - $pumperState");

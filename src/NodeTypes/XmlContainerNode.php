@@ -42,6 +42,7 @@ class XmlContainerNode extends FolderNode
     /**
      * Get the schema for the current document.
      * Old method. It stay here because backward compatibility.
+     * 
      * @return int Schema Id.
      */
     function getVisualTemplate()
@@ -51,14 +52,16 @@ class XmlContainerNode extends FolderNode
 
     /**
      * Get the schema for the current document.
+     * 
      * @return int Schema Id.
      */
     public function getIdSchema()
     {
-        $relTemplateContainer = new  \Ximdex\Models\RelTemplateContainer();
-        $result = $relTemplateContainer->find("IdTemplate", "IdContainer = %s", array($this->nodeID), MONO);
-        if (!$result || !is_array($result) || !count($result))
-        {
+        $relTemplateContainer = new \Ximdex\Models\RelTemplateContainer();
+        $result = $relTemplateContainer->find("IdTemplate", "IdContainer = %s", array(
+            $this->nodeID
+        ), MONO);
+        if (! $result || ! is_array($result) || ! count($result)) {
             return false;
         }
         return $result[0];
@@ -66,6 +69,7 @@ class XmlContainerNode extends FolderNode
 
     /**
      * Build a new document and all its language versions.
+     * 
      * @param string $name Node name.
      * @param int $parentID Parent node id.
      * @param int $nodeTypeID NodeType id.
@@ -77,48 +81,44 @@ class XmlContainerNode extends FolderNode
      * @param array $dataChildren Required data.
      */
     function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $idSchema = null, $aliasLangList = null
-            , $channelList = null, $idNodeMaster = null, $dataChildren = null)
+        , $channelList = null, $idNodeMaster = null, $dataChildren = null)
     {
         $result = false;
-        $reltemplate = new  \Ximdex\Models\RelTemplateContainer();
+        $reltemplate = new \Ximdex\Models\RelTemplateContainer();
         $reltemplate->createRel($idSchema, $this->nodeID);
-        if (is_array($aliasLangList))
-        {
-            foreach ($aliasLangList as $idLanguage => $alias)
-            {
+        if (is_array($aliasLangList)) {
+            foreach ($aliasLangList as $idLanguage => $alias) {
                 $result = $this->addLanguageVersion($idLanguage, $alias, $channelList, $dataChildren);
             }
-            $this->buildMetadata($nodeTypeID, $aliasLangList);
+            // $this->buildMetadata($nodeTypeID, $aliasLangList);
         }
-        if (!$result)
-        {
+        if (! $result) {
             return false;
         }
-        if ($idNodeMaster)
-        {
+        if ($idNodeMaster) {
             $this->setNodeMaster($idNodeMaster);
         }
-
+        if ($nodeTypeID == \Ximdex\NodeTypes\NodeTypeConstants::XML_CONTAINER 
+            or $nodeTypeID == \Ximdex\NodeTypes\NodeTypeConstants::HTML_CONTAINER) {
+            $this->UpdatePath();
+        }
+        return true;
     }
 
     private function buildMetadata($idNodeType, $aliases)
     {
-        // only generate metadata nodes for XML document containers
-        if ($idNodeType == \Ximdex\NodeTypes\NodeTypeConstants::XML_CONTAINER)
-        {
-            $langs = array();
-            foreach ($aliases as $idLang => $alias)
-            {
-                $langs[] = $idLang;
-            }
-            $mm = new \Ximdex\Metadata\MetadataManager($this->nodeID);
-            $mm->generateMetadata($langs);
-            $mm->updateSystemMetadata();
+        $langs = array();
+        foreach ($aliases as $idLang => $alias) {
+            $langs[] = $idLang;
         }
+        $mm = new \Ximdex\Metadata\MetadataManager($this->nodeID);
+        $mm->generateMetadata($langs);
+        $mm->updateSystemMetadata();
     }
 
     /**
      * Add a new language version for the current document
+     * 
      * @param int $idLang
      * @param string $alias Description name for the language version. Useful in breadcrum.
      * @param array $channelList Array within idchannels
@@ -128,12 +128,11 @@ class XmlContainerNode extends FolderNode
     {
         $xmldoc = new Node();
         $childrenNodeType = new NodeType();
-
-        //TODO: Every container nodetype should implement a getLanguageVersionNodeType.
-        //$childrenNodetype = $this->getLanguageVersionNodeType;
-        //It would be better than this switch.
-        switch ($this->nodeType->GetName())
-        {
+        
+        // TODO: Every container nodetype should implement a getLanguageVersionNodeType.
+        // $childrenNodetype = $this->getLanguageVersionNodeType;
+        // It would be better than this switch.
+        switch ($this->nodeType->GetName()) {
             case 'XmlContainer':
                 $childrenNodeType->SetByName('XmlDocument');
                 break;
@@ -152,23 +151,20 @@ class XmlContainerNode extends FolderNode
             default:
                 return;
         }
-        if ($childrenNodeType->HasError())
-        {
+        if ($childrenNodeType->HasError()) {
             $this->parent->SetError(1);
             return false;
         }
         $lang = new Language($idLang);
-        if ($lang->HasError())
-        {
+        if ($lang->HasError()) {
             $this->parent->SetError(1);
             return false;
         }
         $idSchema = $this->getIdSchema();
         $nameDoc = $this->parent->getNodeName() . "-id" . $lang->GetIsoName();
         $idDoc = $xmldoc->CreateNode($nameDoc, $this->nodeID, $childrenNodeType->GetID(), $stateID = null, $idSchema, $idLang, $alias
-                , $channelList, $data);
-        if ($xmldoc->HasError())
-        {
+            , $channelList, $data);
+        if ($xmldoc->HasError()) {
             $this->parent->SetError(1);
             return false;
         }
@@ -177,6 +173,7 @@ class XmlContainerNode extends FolderNode
 
     /**
      * Set the current idNodeMaster
+     * 
      * @param int $idNodeMaster
      */
     public function setNodeMaster($idNodeMaster)
@@ -196,7 +193,7 @@ class XmlContainerNode extends FolderNode
 
     function DeleteNode()
     {
-        $templatecontainer = new  \Ximdex\Models\RelTemplateContainer();
+        $templatecontainer = new \Ximdex\Models\RelTemplateContainer();
         $templatecontainer->deleteRel($this->nodeID);
         $mm = new \Ximdex\Metadata\MetadataManager($this->nodeID);
         $mm->deleteMetadata();
@@ -204,7 +201,8 @@ class XmlContainerNode extends FolderNode
 
     function RenameNode($name = null)
     {
-        if (!$name) return false;
+        if (! $name)
+            return false;
         $listaDocs = $this->parent->GetChildren();
         if (sizeof($listaDocs) > 0) {
             foreach ($listaDocs as $docID) {
@@ -225,29 +223,25 @@ class XmlContainerNode extends FolderNode
     {
         $node = new Node($this->nodeID);
         $docList = $node->GetChildren();
-
         if ($node->HasError()) {
             $this->parent->SetError(1);
-            return;
+            return false;
         }
-
         foreach ($docList as $docID) {
             $strDoc = new StructuredDocument($docID);
             $langList[] = $strDoc->GetLanguage();
         }
         return $langList;
     }
-
-    function GetChildByLang($langID)
+    
+    public function GetChildByLang($langID)
     {
         $node = new Node($this->nodeID);
         $docList = $node->GetChildren();
-
         if ($node->HasError()) {
             $this->parent->SetError(1);
-            return;
+            return false;
         }
-
         foreach ($docList as $docID) {
             $strDoc = new StructuredDocument($docID);
             $docLang = $strDoc->GetLanguage();
@@ -263,9 +257,10 @@ class XmlContainerNode extends FolderNode
         $xml = '';
         $query = sprintf("SELECT IdTemplate FROM `RelTemplateContainer` WHERE IdContainer = %d", $this->parent->nodeID);
         $this->dbObj->Query($query);
-        while (!$this->dbObj->EOF) {
+        while (! $this->dbObj->EOF) {
             $idTemplate = $this->dbObj->GetValue('IdTemplate');
-            if (!(int)$idTemplate > 0) continue;
+            if (! (int) $idTemplate > 0)
+                continue;
             $template = new Node($idTemplate);
             $xml .= $template->ToXml($depth, $files, $recurrence);
             $this->dbObj->Next();

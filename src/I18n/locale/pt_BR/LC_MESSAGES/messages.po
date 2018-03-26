@@ -2823,7 +2823,7 @@ msgstr "Etiquetas"
 msgid "Navigate by tags"
 msgstr "Navegar por etiquetas"
 
-#: /actions/prevdoc/Action_prevdoc.class.php
+#: /actions/rendernode/Action_rendernode.class.php
 msgid "It is not possible to show preview."
 msgstr "N&atilde;o &eacute; poss&iacute;vel mostrar a visualiza&ccedil;&atilde;o pr&eacute;via."
 
@@ -2921,8 +2921,8 @@ msgstr "Publicando..."
 msgid "Please, wait"
 msgstr "Por favor, espere"
 
-msgid "Node types to publish"
-msgstr "Tipos de nodo para publicar"
+msgid "Node type to publish"
+msgstr "Tipo de nodo para publicar"
 
 
 #: /actions/publicateximlet/Action_publicateximlet.class.php
@@ -3806,7 +3806,7 @@ msgstr "Avançado publisher"
 
 #: /actions/xmleditor2/template/Smarty/toolbar.tpl
 #: /actions/manageversions/template/Smarty/index.tpl
-#: /actions/prevdoc/Action_prevdoc.class.php
+#: /actions/rendernode/Action_rendernode.class.php
 #install/ximdex_data/ximdex.sql table Nodes
 msgid "Preview"
 msgstr "Pr&eacute;-visualizar"

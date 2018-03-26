@@ -35,7 +35,6 @@ use Ximdex\Utils\Messages;
 /**
  * TODO Remove this defines
  */
-
 if (!defined('MULTI')) {
     define('LOG_LEVEL_NONE', 0);
     define('LOG_LEVEL_ALL', 1);
@@ -51,32 +50,36 @@ if (!defined('DEBUG_LEVEL')) {
 
 class GenericData
 {
-
     const MAX_TINYINT   = '255';
     const MAX_SMALLINT  = '65535';
     const MAX_MEDIUMINT = '16777215';
     const MAX_INT       = '4294967295';
     const MAX_BIGINT    = '18446744073709551615';
+    
     /**
      *
      * @var string
      */
     const REGEXP_DATETIME = '\d{4}[-|\/]\d{1,2}[-|\/]\d{1,2}\s\d{1,2}:\d{1,2}:\d{1,2}';
+    
     /**
      *
      * @var String
      */
     const REGEXP_DATE = '\d{4}[-|\/]\d{1,2}[-|\/]\d{1,2}';
+    
     /**
      *
      * @var String
      */
     const REGEXP_TIMESTAMP = '\d{4}[-|\/]\d{1,2}[-|\/]\d{1,2}\s\d{1,2}:\d{1,2}:\d{1,2}';
+    
     /**
      *
      * @var String
      */
     const REGEXP_TIME = '\d{1,2}:\d{1,2}:\d{1,2}';
+    
     /**
      *
      * @var String
@@ -89,12 +92,14 @@ class GenericData
      * @var string
      */
     public $_idField;
+    
     /**
      * Nombre de la tabla si no se llama igual que la clase
      *
      * @var string
      */
     public $_table;
+    
     /**
      * Array asociativo que contiene la estructura de la tabla
      * type = (int, varchar, text, tinytext, ...)
@@ -106,19 +111,17 @@ class GenericData
      * @var array
      */
     public $_metaData = null;
-
-    public $_cache       = 0;
-
+    public $_cache = 0;
     public $_fieldsToTraduce = null;
-
     public $returnQuery = false;
-
     public $modelInError = false;
 
     /* @var $actAs array Lista de behaviours que este modelo implementa */
     public $actsAs = null;
+    
     /* @var $messages Messages */
     public $messages = null;
+    
     /* @var $behaviors array Lista de behavious instanciados */
     public $behaviors = null;
 
@@ -127,22 +130,17 @@ class GenericData
      */
     public function __construct($id = 0)
     {
-
         $this->behaviors = new Collection($this);
-
         if (is_null($this->_fieldsToTraduce)) {
             $this->_fieldsToTraduce = array();
         }
-        $id             = (int) $id;
-        $dbObj          = new \Ximdex\Runtime\Db();
+        $id = (int) $id;
+        $dbObj = new \Ximdex\Runtime\Db();
         $this->messages = new Messages();
-
         $cache     = null;
         $className = null;
-
         if ($id > 0) {
-            $query = sprintf("SELECT * FROM {$this->_table} WHERE {$this->_idField} = %d LIMIT 1",
-                $id);
+            $query = sprintf("SELECT * FROM {$this->_table} WHERE {$this->_idField} = %d LIMIT 1", $id);
             if ((DEBUG_LEVEL == LOG_LEVEL_ALL) || (DEBUG_LEVEL == LOG_LEVEL_QUERY)) {
                 $this->_logQuery($query);
             }
@@ -210,16 +208,16 @@ class GenericData
         $arrayFields = array();
         $arrayValues = array();
         while (list($field, $descriptors) = each($this->_metaData)) {
-            if (isset($descriptors['auto_numeric']) && ('true' == $descriptors['auto_numeric'])) {
+            
+            // if (isset($descriptors['auto_numeric']) && ('true' == $descriptors['auto_numeric'])) {
+            if (isset($descriptors['auto_increment']) && ('true' == $descriptors['auto_increment'])) {
                 continue;
             }
-
             $arrayFields[] = sprintf('`%s`', $field);
             $arrayValues[] = $this->_convertToSql($this->$field, $descriptors);
         }
         $fields = implode(', ', $arrayFields);
         $values = implode(', ', $arrayValues);
-
         $query = "INSERT INTO {$this->_table}"
             . "($fields) VALUES ($values)";
         if ((DEBUG_LEVEL == LOG_LEVEL_ALL) || (DEBUG_LEVEL == LOG_LEVEL_EXECUTE)) {
@@ -229,23 +227,17 @@ class GenericData
             return $query;
         }
         $insertedId = null;
-
         if ($this->_checkDataIntegrity()) {
             $className = null;
-
             $dbObj = new \Ximdex\Runtime\Db();
             $dbObj->Execute($query);
             if ($dbObj->numErr > 0) {
                 $this->messages->add($dbObj->desErr[2], MSG_TYPE_ERROR);
-                foreach ($this->messages->messages as $message) {
-                    Logger::error(sprintf("%s: [%s]", $message['message'], $query));
-                }
                 return false;
             } else {
                 $isAutoField = isset($this->_metaData[$this->_idField])
-                && array_key_exists('auto_increment', $this->_metaData[$this->_idField])
-                && true == $this->_metaData[$this->_idField]['auto_increment'];
-
+                    && array_key_exists('auto_increment', $this->_metaData[$this->_idField])
+                    && true == $this->_metaData[$this->_idField]['auto_increment'];
                 if ($isAutoField) {
                     $this->{$this->_idField} = $dbObj->newID;
                     $insertedId              = $this->{$this->_idField};
@@ -311,7 +303,6 @@ class GenericData
         // $dataTypeDate = array('date', 'datetime', 'timestamp', 'time', 'year');
         $dataTypeInt  = array('tinyint', 'smallint', 'mediumint', 'int', 'bigint');
         $dataTypeElse = array('binary', 'decimal', 'enum', 'set');
-
         $_fieldTypes = array('(text|date|float|double|datetime|timestamp|time|tinytext|blob|mediumblob|mediumtext|longblob|longtext)',
             '(varchar|tinyint|smallint|mediumint|int|bigint|year|char|tinyint|binary)\(([0-9]+)\)',
             '(decimal)\(([0-9]+),([0-9]+)\)',
@@ -327,18 +318,14 @@ class GenericData
                 }
 
             }
-
             $fieldType = !empty($matches[1]) ? $matches[1] : '';
-
             if (empty($fieldType)) {
                 $this->messages->add(sprintf(_("Error parsing the field %s"), $key), MSG_TYPE_ERROR);
             }
             $value = $this->{$key};
-
             if ('false' == $descriptor['not_null'] && is_null($value)) {
                 continue;
             }
-
             if (('true' == $descriptor['not_null']) && !isset($descriptor['auto_increment'])) {
                 if (empty($value) && !in_array($fieldType, $dataTypeInt)) {
                     $this->messages->add(sprintf(_("You must set the field %s"), $key), MSG_TYPE_ERROR);
@@ -350,7 +337,6 @@ class GenericData
                     if (!is_numeric($value)) {
                         $this->messages->add(sprintf(_("The field %s has an invalid format"), $key), MSG_TYPE_ERROR);
                     }
-
                     break;
                 case in_array($fieldType, $dataTypeText):
                     break;
@@ -430,15 +416,19 @@ class GenericData
 
     /**
      * Ejecuta una consulta simple contra la base de datos y devuelve un array con los valores obtenidos
+     * 
      * @param string $fields
      * @param string $condition
      * @param null $params
      * @param bool $returnType
      * @param bool $escape
+     * @param string $index
+     * @param string $order
+     * @param string $groupBy
      * @return array
      */
     public function find($fields = ALL, $condition = '', $params = null, $returnType = MULTI, $escape = true, string $index = null
-            , string $order = null)
+        , string $order = null, string $groupBy = null)
     {
         $condition = $this->_getCondition($condition, $params, $escape);
         $query     = sprintf(
@@ -447,6 +437,9 @@ class GenericData
             $this->_table,
             empty($condition) ? '1' : $condition
         );
+        if ($groupBy) {
+            $query .= ' GROUP BY ' . $groupBy;
+        }
         if ($order) {
             $query .= ' ORDER BY ' . $order;
         }
@@ -462,11 +455,9 @@ class GenericData
     public function _getCondition($condition, $params, $escape)
     {
         $dbObj = new \Ximdex\Runtime\Db();
-
         if (is_null($params)) {
             $params = array();
         }
-
         if (is_array($params)) {
             foreach ($params as $key => $value) {
                 if ($escape) {
@@ -476,7 +467,6 @@ class GenericData
                 }
             }
         }
-
         if (!empty($condition) && !is_null($params)) {
             $value = sprintf('$condition = sprintf("%s", "%s");', $condition, implode('", "', $params));
             eval($value);
@@ -546,7 +536,6 @@ class GenericData
         if (!array_key_exists($key, $this->_metaData)) {
             return $value;
         }
-
         $tmpValue    = $this->$key;
         $this->$key  = $value;
         $returnValue = $this->get($key);
@@ -563,7 +552,6 @@ class GenericData
         if (empty($attribute)) {
             return false;
         }
-
         if (!array_key_exists($attribute, $this->_metaData)) {
             $backtrace = debug_backtrace();
             Logger::error(sprintf('[GET] Trying to get a property that does not exist'
@@ -576,7 +564,6 @@ class GenericData
             $this->modelInError = true;
             return false;
         }
-
         if (!empty($this->_fieldsToTraduce) && in_array($attribute, $this->_fieldsToTraduce)) {
             return _($this->$attribute);
         }
@@ -605,11 +592,7 @@ class GenericData
     {
         return true;
     }
-
-    /*
-     *
-     */
-
+    
     public function beforeDelete()
     {
         return true;
@@ -657,7 +640,10 @@ class GenericData
         $updatedRows = null;
         if ($this->_checkDataIntegrity()) {
             $dbObj = new \Ximdex\Runtime\Db();
-            $dbObj->Execute($query);
+            $res = $dbObj->Execute($query);
+            if ($res === false) {
+                return false;
+            }
             $updatedRows = $dbObj->numRows;
         }
         $this->_applyFilter('afterUpdate');
@@ -689,8 +675,7 @@ class GenericData
 
     /**
      * Deletes a set of elements
-     */
-    /**
+     * 
      * @param string $condition
      * @param null $params
      * @param bool $escape
@@ -699,8 +684,7 @@ class GenericData
     public function deleteAll($condition = '', $params = null, $escape = true)
     {
         $condition = $this->_getCondition($condition, $params, $escape);
-        $query     = sprintf("DELETE FROM %s WHERE %s",
-            $this->_table, $condition);
+        $query = sprintf("DELETE FROM %s WHERE %s", $this->_table, $condition);
         return $this->execute($query);
     }
 
@@ -717,15 +701,11 @@ class GenericData
         } else {
             Logger::warning('No pre-filter applied for query: ' . $query);
         }
-
         $dbObj = new \Ximdex\Runtime\Db();
-
         if ((DEBUG_LEVEL == LOG_LEVEL_ALL) || (DEBUG_LEVEL == LOG_LEVEL_EXECUTE)) {
             $this->_logQuery($query);
         }
-
         $result = $dbObj->execute($query);
-
         if (preg_match('/update/i', $query) > 0) {
             $this->_applyFilter('afterUpdate');
         } else if (preg_match('/delete/i', $query) > 0) {
@@ -766,8 +746,7 @@ class GenericData
     /**
      * <p>Get all rows for the current table.</p>
      * <p>This is a facade method and it just call find method without parameters.</p>
-     */
-    /**
+     * 
      * @return array
      */
     public function findAll()
@@ -795,7 +774,6 @@ class GenericData
         if (!is_array($varsToLoad)) {
             return false;
         }
-
         foreach ($varsToLoad as $key => $value) {
             $this->{$key} = $value;
         }
@@ -820,6 +798,7 @@ class GenericData
      * Useful if you want to know if an entity is created yet to avoid duplicates
      * May be use in add calls under specified conditions
      * IMPORTANT: The returned value will be FALSE in error, element ID if exists and NULL is not
+     * 
      * @param string $idName
      * @return boolean|mixed|NULL
      */
@@ -830,8 +809,10 @@ class GenericData
         $arrayValues = array();
         while (list($field, $descriptors) = each($this->_metaData))
         {
-            if (isset($descriptors['auto_numeric']) && ('true' == $descriptors['auto_numeric']))
+            // if (isset($descriptors['auto_numeric']) && ('true' == $descriptors['auto_numeric']))
+            if (isset($descriptors['auto_increment']) && ('true' == $descriptors['auto_increment'])) {
                 continue;
+            }
             $arrayFields[] = sprintf('`%s`', $field);
             $arrayValues[] = $this->_convertToSql($this->$field, $descriptors);
         }
@@ -872,4 +853,4 @@ class GenericData
             return $this->call__($method, $params);
         }
     }
-}
+}   

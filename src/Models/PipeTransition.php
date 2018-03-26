@@ -29,6 +29,7 @@ namespace Ximdex\Models;
 
 use Ximdex\Logger;
 use Ximdex\Models\ORM\PipeTransitionsOrm;
+use Ximdex\Runtime\App;
 
 define('CALLBACK_FOLDER', XIMDEX_ROOT_PATH . '/src/Nodeviews/');
 
@@ -153,8 +154,8 @@ class PipeTransition extends PipeTransitionsOrm
 	public function generate($idVersion, $content, $args)
 	{
 	    Logger::info('Transforming ' . $content . ' with the version ' . $idVersion);
-		$v = $this->callback($idVersion, $content, $args, 'transform');
-		return $v;
+		$file = $this->callback($idVersion, $content, $args, 'transform');
+		return $file;
 	}
 
 	/**
@@ -184,15 +185,19 @@ class PipeTransition extends PipeTransitionsOrm
 		$callback = $this->get('Callback');
         $callback = str_replace('_', '', ucfirst($callback) );
 		$object = $factory->instantiate($callback, null, 'Ximdex\Nodeviews');
-
 		$timer = new \Ximdex\Utils\Timer();
 		$timer->start();
-		
 		if (method_exists($object, $function))
 		{
-		    Logger::info("TRANSITION START: Calling method $function in order to make the transformation process for version $idVersion");
+		    $msg = "TRANSITION START: Calling method: $function to process version: $idVersion";
+		    if (isset($args['NODENAME'])) {
+		        $msg .= ' of document: ' . $args['NODENAME'];
+		    }
+		    Logger::info($msg, true);
 			$transformedPointer = $object->$function($idVersion, $pointer, $args);
-			
+			if (strpos($pointer, App::getValue('TempRoot')) and file_exists($pointer)) {
+			    @unlink($pointer);
+			}
 			if ($transformedPointer === false)
 			{
 			    $timer->stop();
@@ -202,13 +207,11 @@ class PipeTransition extends PipeTransitionsOrm
 		else
 		{
 			$idTransition = $this->get('id');
-			Logger::warning("Method $function not found when calling to the view: IdVersion $idVersion, Transition $idTransition");
+			Logger::error("Method $function not found when calling to the view: IdVersion $idVersion, Transition $idTransition");
 			$transformedPointer = $pointer;
 		}
 		$timer->stop();
-
 		Logger::info("PIPETRANSITION: View_$callback time: " . $timer->display());
-
 		if ((isset($args['DISABLE_CACHE']) && $args['DISABLE_CACHE']) or !$this->Cacheable)
 		{
 			Logger::info("DISABLE_CACHE active or NON_CACHEABLE transition. The cache won't be stored");
@@ -235,6 +238,12 @@ class PipeTransition extends PipeTransitionsOrm
 		}
 		if (isset($args['DISABLE_CACHE'])) {
 		    $msg .= ' with cache disabled: ' . $args['DISABLE_CACHE'];
+		}
+		if (isset($args['NODEID'])) {
+		    $msg .= ' with node ID: ' . $args['NODEID'];
+		}
+		if (isset($args['NODENAME'])) {
+		    $msg .= ' and name: ' . $args['NODENAME'];
 		}
 		if ($transformedPointer)
 		{
