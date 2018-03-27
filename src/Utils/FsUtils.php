@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -36,17 +37,11 @@ class FsUtils
      */
     static public function get_mime_type($file)
     {
-
         if (!is_file($file)) {
             return NULL;
         }
-
         $command = "file -b --mime-type " . escapeshellarg($file);
-        /* in others systems:
-        $command = "file -b -i " .escapeshellarg($file)."|cut -d ';' -f 1,1"; */
-
         $result = exec($command);
-
         return str_replace('\012- ', '', $result);
     }
 
@@ -66,18 +61,14 @@ class FsUtils
 
     /**
      * Check for available free space on disk and send mail notifications if any limit is exceeded.
+     * 
      * @return boolean TRUE if no limits are exceeded, FALSE otherwise.
      * @param $file
      */
     static public function notifyDiskspace($file)
     {
-
-
-        $ret = true;
-
-        return $ret;
+        return true;
     }
-
 
     /**
      * @param $filename
@@ -90,14 +81,11 @@ class FsUtils
     {
         $result = false;
         $error = null;
-
         if (!self::notifyDiskspace($filename)) {
             return false;
         }
-
         if (!function_exists('file_put_contents')) {
             $hnd = fopen($filename, "w");
-
             if ($hnd) {
                 $result = fwrite($hnd, $data);
                 fclose($hnd);
@@ -107,15 +95,17 @@ class FsUtils
                 $result = file_put_contents($filename, $data, $flags, $context);
             } else {
                 $result = false;
-                if (empty($filename))
+                if (empty($filename)) {
                     $error = 'File name has not been specified';
-                elseif (is_dir($filename))
+                }
+                elseif (is_dir($filename)) {
                     $error = $filename . ' is a directory';
-                elseif (!is_writable(dirname($filename)))
+                }
+                elseif (!is_writable(dirname($filename))) {
                     $error = 'Directory ' . dirname($filename) . ' is not writable';
+                }
             }
         }
-
         if ($result === false) {
             $backtrace = debug_backtrace();
             Logger::error(sprintf(_("Error writing in file [inc/fsutils/FsUtils.class.php] script: %s file: %s line: %s file: %s"),
@@ -128,7 +118,6 @@ class FsUtils
             return false;
         }
         Logger::debug("file_put_contents: input: $filename");
-
         return true;
     }
 
@@ -140,24 +129,20 @@ class FsUtils
      */
     static public function mkdir($path, $mode = 0755, $recursive = false)
     {
-
         if (is_dir($path)) {
             return true;
-        } else {
-            if ($recursive) {
-                if (dirname($path) == $path) {
-                    return true;
-                }
-                preg_match('/(.*)\/(.*)\/?$/', $path, $matches);
-                if (empty($matches[1])) { // We got the beginning, we go out
-                    return true;
-                }
-                return FsUtils::mkdir($matches[1], $mode, true) && mkdir($path, $mode);
-            }
-
-            return mkdir($path, $mode, $recursive);
         }
-
+        if ($recursive) {
+            if (dirname($path) == $path) {
+                return true;
+            }
+            preg_match('/(.*)\/(.*)\/?$/', $path, $matches);
+            if (empty($matches[1])) { // We got the beginning, we go out
+                return true;
+            }
+            return FsUtils::mkdir($matches[1], $mode, true) && mkdir($path, $mode);
+        }
+        return mkdir($path, $mode, $recursive);
     }
 
     /**
@@ -168,8 +153,7 @@ class FsUtils
      */
     static public function file_get_contents($filename, $use_include_path = false, $context = NULL)
     {
-        if (!is_file($filename)) {
-            
+        if (!is_file($filename)) {            
             $backtrace = debug_backtrace();
             Logger::error(sprintf(_('Trying to obtaing the content of a nonexistent file [lib/Ximdex/Utils/FsUtils.php] script: %s file: %s line: %s nonexistent_file: %s'),
                 $_SERVER['SCRIPT_FILENAME'],
@@ -178,7 +162,6 @@ class FsUtils
                 $filename));
             return false;
         }
-
         return file_get_contents($filename, $use_include_path, $context);
     }
 
@@ -190,7 +173,6 @@ class FsUtils
     {
         $ext = self::get_extension($file);
         $len_ext = strlen($ext) + 1;
-
         if (false != $ext) {
             $file = substr($file, 0, -$len_ext);
             return $file;
@@ -204,15 +186,12 @@ class FsUtils
      */
     static public function get_extension($file)
     {
-
         if (empty($file)) {
             return false;
         }
-
         if (!(preg_match('/\.([^\.]*)$/', $file, $matches) > 0)) {
             return false;
         }
-
         return isset($matches[1]) ? $matches[1] : false;
     }
 
@@ -225,28 +204,20 @@ class FsUtils
      */
     static public function walk_dir($path, $callback, $args = NULL, $recursive = true)
     {
-
         $dh = @opendir($path);
-
         if (false === $dh) {
             return false;
         }
-
         while ($file = readdir($dh)) {
-
             if ("." == $file || ".." == $file) {
                 continue;
             }
-
             call_user_func($callback, "{$path}/{$file}", $args);
-
             if (false !== $recursive && is_dir("{$path}/{$file}")) {
                 FsUtils::walk_dir("{$path}/{$file}", $callback, $args, $recursive);
             }
         }
-
         closedir($dh);
-
         return true;
     }
 
@@ -258,17 +229,13 @@ class FsUtils
      */
     static public function readFolder($path, $recursive = true, $excluded = array())
     {
-
         if (!is_dir($path)) {
             return null;
         }
-
-//		assert($recursive);
         if (!is_array($excluded)) $excluded = array($excluded);
         $excluded = array_merge(array('.', '..', '.svn'), $excluded);
         $files = scandir($path);
         $files = array_values(array_diff($files, $excluded));
-
         if ($recursive) {
             foreach ($files as $file) {
                 $dir = $path . '/' . $file;
@@ -278,7 +245,6 @@ class FsUtils
                 }
             }
         }
-
         return $files;
     }
 
@@ -297,17 +263,14 @@ class FsUtils
             $backtrace[0]['file'],
             $backtrace[0]['line'],
             $folder));
-
         if (!is_dir($folder)) {
             Logger::error(sprintf(_("Error estimating folder %s"), $folder));
             return false;
         }
-
         if (!($handler = opendir($folder))) {
             error_log(sprintf(_("It was not possible to open the folder %s %s, %s"), $folder, __FILE__, __LINE__));
             return false;
         }
-
         while ($file = readdir($handler)) {
             if ($file == '.' || $file == '..') {
                 continue;
@@ -321,9 +284,7 @@ class FsUtils
                 FsUtils::delete($pathToElement);
             }
         }
-
         closedir($handler);
-
         if (rmdir($folder)) {
             return true;
         }
@@ -365,14 +326,7 @@ class FsUtils
      */
     static public function getUniqueFile($containerFolder, $sufix = '', $prefix = '')
     {
-        /*		tempnam has a bug and even if it receive a folder in the first param, it creates a file in /tmp
-                Even, in linux, the environment var tmp has more prevalence than the received as param folder
-                if (empty($sufix)) {
-                    return tempnam($containerFolder, $prefix);
-                }
-        */
         do {
-            //$fileName = Utils::generateRandomChars(8);
             $fileName = Strings::generateUniqueID();
             $tmpFile = sprintf("%s/%s%s%s", $containerFolder, $prefix, $fileName, $sufix);
         } while (is_file($tmpFile));
@@ -397,6 +351,7 @@ class FsUtils
     /**
      * Copy a file to a specified destination file
      * If the parameter $move is true, the original file will be deleted
+     * 
      * @param string $sourceFile
      * @param string $destFile
      * @param bool $move
@@ -404,23 +359,26 @@ class FsUtils
      */
     static public function copy($sourceFile, $destFile, bool $move = false) : bool
     {
-        if (!empty($sourceFile) && !empty($destFile)) {
-            
+        if (!empty($sourceFile) && !empty($destFile)) {     
             $result = copy($sourceFile, $destFile);
             if ($move)
             {
                 if (!@unlink($sourceFile))
                     Logger::warning('Cannot delete the source file: ' . $sourceFile);
             }
-        } else
+        }
+        else {
             $result = false;
-        if (!$result)
+        }
+        if (!$result) {
             Logger::error(sprintf('An error occurred while trying to copy from %s to %s', $sourceFile, $destFile));
+        }
         return $result;
     }
 
     /**
      * Get the files in the folder (and descendant) with an extension.
+     * 
      * @param $path string Folder to read
      * @param $extensions array Extension to file
      * @param $recursive boolean Indicate if has to recursive read of path folder
@@ -428,23 +386,18 @@ class FsUtils
      */
     static public function getFolderFilesByExtension($path, $extensions = array(), $recursive = true)
     {
-
         if (!is_dir($path)) {
             return null;
         }
-
         $excluded = array('.', '..', '.svn');
         $files = scandir($path);
         $files = array_values(array_diff($files, $excluded));
-
         foreach ($files as $key => $file) {
             $dotPos = strrpos($file, ".");
             $fileExtension = substr($file, $dotPos + 1);
-
             if (!in_array($fileExtension, $extensions)) {
                 unset($files[$key]);
             }
-
             if ($recursive) {
                 $dir = $path . '/' . $file;
                 if (is_dir($dir)) {
@@ -458,6 +411,7 @@ class FsUtils
     
     /**
      * Return the complete URL path to the URL parameter given, ending in /
+     * 
      * @param string $url
      */
     public static function get_url_path($url)
@@ -469,14 +423,16 @@ class FsUtils
             return false;
         }
         $urlPath = $data['scheme'] . '://' . $data['host'];
-        if (isset($data['port']) and $data['port'])
+        if (isset($data['port']) and $data['port']) {
             $urlPath .= ':' . $data['port'];
+        }
         $urlPath .= dirname($data['path']) . '/';
         return $urlPath;
     }
     
     /**
-     * Return the file name and the extension of an URL given (only for files with extension) or null otherwise 
+     * Return the file name and the extension of an URL given (only for files with extension) or null otherwise
+     *  
      * @param string $url
      * @return boolean|string|null
      */
@@ -488,10 +444,7 @@ class FsUtils
             Logger::error('can\'t load URL path from: ' . $url);
             return false;
         }
-        $urlFile = basename($data['path']);
-        if (count(explode('.', $urlFile)) != 2)
-            return null;
-        return $urlFile;
+        return basename($data['path']);
     }
     
     /**
@@ -543,9 +496,7 @@ class FsUtils
         if (empty($target)) {
             return 0;
         }
-
         preg_match('/(\d*)(\w*)/', $target, $out);
-
         return self::transformToUnits($out[1], $out[2], $unit);
     }
 
@@ -581,12 +532,10 @@ class FsUtils
         $ini = array_search($unit_from, $units);
         $end = array_search($unit_to, $units);
         $diff = $ini - $end;
-
         if ($ini === false || $end === false) {
             Logger::error('It is being tried to transform a value to a invalids units');
             return false;
         }
-
         if ($diff === 0) {
             return $target;
         }

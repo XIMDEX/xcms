@@ -100,7 +100,7 @@ class ServerFrame extends ServerFrames_ORM
     public function set($attribute, $value)
     {
         if ($attribute == 'State') {
-            Logger::error('Changing state for server frame: ' . $this->get('IdSync') . ' from ' . $this->get('State') . ' to ' . $value);
+            Logger::info('Changing state for server frame: ' . $this->get('IdSync') . ' from ' . $this->get('State') . ' to ' . $value);
         }
         parent::set($attribute, $value);
     }

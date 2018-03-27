@@ -281,6 +281,7 @@ class Action_workflow_forward extends ActionAbstract
                 'nextState' => $nextState,
                 'currentState' => $node->GetState()
             );
+            $this->addCss('/actions/workflow_forward/resources/css/style.css');
             $this->render($values, 'success.tpl', 'default-3.0.tpl');
         }
     }

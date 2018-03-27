@@ -133,7 +133,7 @@ class ParsingDependencies
             $GLOBALS['parsingDependenciesError'] = null;
         }
         if ($result) {
-            Logger::info('All dependencies have been parsed for the node with ID: ' . $node->GetID() . ' and name: ' . $node->GetNodeName(), true);
+            Logger::info('All dependencies have been parsed for the node with ID: ' . $node->GetID() . ' and name: ' . $node->GetNodeName());
         }
         return $result;
     }

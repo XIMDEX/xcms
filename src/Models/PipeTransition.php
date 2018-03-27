@@ -193,7 +193,7 @@ class PipeTransition extends PipeTransitionsOrm
 		    if (isset($args['NODENAME'])) {
 		        $msg .= ' of document: ' . $args['NODENAME'];
 		    }
-		    Logger::info($msg, true);
+		    Logger::info($msg);
 			$transformedPointer = $object->$function($idVersion, $pointer, $args);
 			if (strpos($pointer, App::getValue('TempRoot')) and file_exists($pointer)) {
 			    @unlink($pointer);
@@ -247,7 +247,7 @@ class PipeTransition extends PipeTransitionsOrm
 		}
 		if ($transformedPointer)
 		{
-		    Logger::info('TRANSITION END: Pipeline Transition has been successfusly processed' . $msg, true);
+		    Logger::info('TRANSITION END: Pipeline Transition has been successfusly processed' . $msg);
 		}
 		else
 		{

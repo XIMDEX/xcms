@@ -55,7 +55,8 @@ class WorkFlow
      */
     var $pipeline;
     
-    const ACTIONSDIR = 'src/Workflow/Actions';
+    const WORKFLOW_ACTIONS_DIR = 'src/Workflow/Actions';
+    const WORKFLOW_ACTIONS_NAMESPACE = 'Ximdex\\Workflow\\Actions\\';
 
     public function __construct($idNode, $idStatus = NULL, $idPipelineNode = NULL)
     {
@@ -251,7 +252,7 @@ class WorkFlow
         }
         $this->pipeline->set('IdNodeType', $idNodeType);
         $this->pipeline->update();
-        return true ;
+        return true;
     }
 
     function setWorkflowMaster()
@@ -265,10 +266,10 @@ class WorkFlow
      * 
      * @return array
      */
-    public static function getActions() : array
+    public static function & getActions() : array
     {
         $actions = array();
-        if ($dir = opendir(XIMDEX_ROOT_PATH . '/' . self::ACTIONSDIR)) {
+        if ($dir = opendir(XIMDEX_ROOT_PATH . '/' . self::WORKFLOW_ACTIONS_DIR)) {
             do {
                 $file = readdir($dir);
                 if (is_dir($file)) {
@@ -279,7 +280,7 @@ class WorkFlow
                     continue;
                 }
                 $className = $info['filename'];
-                $class = 'Ximdex\\Workflow\\Actions\\' . $className;
+                $class = self::WORKFLOW_ACTIONS_NAMESPACE . $className;
                 if (!class_exists($class)) {
                     continue;
                 }

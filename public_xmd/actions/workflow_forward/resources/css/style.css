@@ -152,3 +152,8 @@ hr
 {
 	margin-top: 10pt;
 }
+
+select
+{
+	width: none !important;
+}

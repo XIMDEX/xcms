@@ -333,7 +333,7 @@ class ServerFrameManager
                         }
                     }
                     $timer->stop();
-                    Logger::info('Set task for pumping ended; time: ' . $timer->display() . ' milliseconds', true);
+                    Logger::info('Set task for pumping ended; time: ' . $timer->display() . ' milliseconds');
                 } else {
                     $serverFrame->ServerFrameToLog(null, null, null, null, $pumperId, __CLASS__, __FUNCTION__, __FILE__,
                         __LINE__, "INFO", 8, _("All tasks pumped for pumper $pumperId"));
