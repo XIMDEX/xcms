@@ -124,14 +124,10 @@ class XmlContainerNode extends FolderNode
      * @param array $channelList Array within idchannels
      * @param array $data Required data to create the language version.
      */
-    public function addLanguageVersion($idLang, $alias, $channelList, $data = null)
+    public function addLanguageVersion($idLang, $alias = '', $channelList = null, $data = null)
     {
         $xmldoc = new Node();
         $childrenNodeType = new NodeType();
-        
-        // TODO: Every container nodetype should implement a getLanguageVersionNodeType.
-        // $childrenNodetype = $this->getLanguageVersionNodeType;
-        // It would be better than this switch.
         switch ($this->nodeType->GetName()) {
             case 'XmlContainer':
                 $childrenNodeType->SetByName('XmlDocument');
@@ -149,7 +145,7 @@ class XmlContainerNode extends FolderNode
                 $childrenNodeType->SetByName('HTMLDocument');
                 break;
             default:
-                return;
+                return false;
         }
         if ($childrenNodeType->HasError()) {
             $this->parent->SetError(1);
@@ -229,7 +225,14 @@ class XmlContainerNode extends FolderNode
         }
         foreach ($docList as $docID) {
             $strDoc = new StructuredDocument($docID);
-            $langList[] = $strDoc->GetLanguage();
+            if (!$strDoc->GetID()) {
+                return false;
+            }
+            $language = new Language($strDoc->get("IdLanguage"));
+            if (!$language->GetID()) {
+                return false;
+            }
+            $langList[$language->GetID()] = ['iso' => $language->GetIsoName(), 'nodeID' => $docID];
         }
         return $langList;
     }

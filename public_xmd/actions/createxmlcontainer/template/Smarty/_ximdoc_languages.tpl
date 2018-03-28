@@ -38,6 +38,7 @@
 						placeholder="{t}Alternative name for paths &amp; breadcrumbs{/t}" />
 			</div>
         {/foreach}
+        <!--
 		<div class="input-select icon">
 			<p>
 				<select name='master' class="cajaxg document-type" id="master">
@@ -48,6 +49,7 @@
 				</select>
 			</p>
 		</div>
+		-->
     {else}
 		<p>{t}There are no languages associated to this project{/t}</p>
     {/if}

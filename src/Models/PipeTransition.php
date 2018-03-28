@@ -226,7 +226,7 @@ class PipeTransition extends PipeTransitionsOrm
 			}
 			else
 			{
-			    Logger::info('Cache was generated/reversed successfusly for version: ' . $idVersion, true);
+			    Logger::info('Cache was generated/reversed successfusly for version: ' . $idVersion);
 			}
 		}
 		$msg = ' for version: ' . $idVersion . ' and callback: ' . $callback;

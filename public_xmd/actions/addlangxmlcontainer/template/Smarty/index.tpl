@@ -38,7 +38,8 @@
 			</div>
 			<div class="small-12 columns">
 				<div class="input">
-				    <div class="info-node">
+				    <!-- <div class="info-node"> -->
+				    <div>
 			  	    	<label class="label_title label_general">{t}Used schema{/t}</label>
 						<div class="text-border">
 	    	            	<span class="infor_form ">{$templateName}</span>
@@ -69,11 +70,11 @@
 			{else}
 				<p>{t}There are no languages associated to this project{/t}.</p>
 			{/if}
-		</div>
-		<div class="small-12 columns">
-			<fieldset class="buttons-form">
-				{button label="Modify" class='validate btn main_action' }{*message="Would you like to save changes?"*}
-			</fieldset>
+			<div class="small-12 columns">
+                <fieldset class="buttons-form">
+                    {button label="Modify" class='validate btn main_action' }{*message="Would you like to save changes?"*}
+                </fieldset>
+            </div>
 		</div>
 	</div>
 </form>

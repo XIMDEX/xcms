@@ -136,7 +136,7 @@ class Action_workflow_forward extends ActionAbstract
                 if (! $foundRol)
                     break;
             }
-            // if found the current state, we activate the flag
+            // If found the current state, we activate the flag
             if ($state == $node->GetState())
                 $find = true;
         }
@@ -160,7 +160,8 @@ class Action_workflow_forward extends ActionAbstract
         );
         
         // Only for Strdocs, goes to next state
-        if ($node->nodeType->GetID() == \Ximdex\NodeTypes\NodeTypeConstants::XML_DOCUMENT) {
+        if ($node->nodeType->GetID() == \Ximdex\NodeTypes\NodeTypeConstants::XML_DOCUMENT 
+                or $node->nodeType->GetID() == \Ximdex\NodeTypes\NodeTypeConstants::HTML_DOCUMENT) {
             if ($workflowNext->IsFinalState()) {
                 $values['go_method'] = 'publicateNode';
                 $values['hasDisabledFunctions'] = $this->hasDisabledFunctions();

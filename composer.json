@@ -8,7 +8,12 @@
         "semantic"
     ],
     "homepage": "https://github.com/XIMDEX/ximdex",
-    "repositories": [],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/XIMDEX/plata-client.git"
+        }
+    ],
     "require": {
         "php": ">=7.1",
         "solarium/solarium": "3.8.*",
@@ -20,7 +25,8 @@
         "illuminate/support": "5.5.*",
         "phpseclib/phpseclib": "2.0.*",
         "phpmailer/phpmailer": "^6.0",
-        "kevinlebrun/colors.php": "1.*"
+        "kevinlebrun/colors.php": "1.*",
+        "ximdex/plata": "dev-master as 1.0"
     },
     "require-dev": {
         "mockery/mockery": "0.9.*",

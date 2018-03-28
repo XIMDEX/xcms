@@ -160,7 +160,7 @@ class DexPumper {
 					$stopper_file_path = XIMDEX_ROOT_PATH . App::getValue("TempRoot") . "/pumper.stop";
 					if (file_exists($stopper_file_path)) {
 					    Logger::warning('[PUMPERS] ' . _("STOP: Detected file") . " $stopper_file_path");
-					    break;
+					    exit();
 					}
 					$this->info("cycle $cycle without working. Sleeping.....");
 					continue;

@@ -302,11 +302,15 @@ class Node extends NodesOrm
     /**
      * Changes the node workflow state
      * 
-     * @param $stateID
+     * @param int $stateID
      * @return boolean
      */
-    function SetState($stateID)
+    function SetState(int $stateID) : bool
     {
+        if (!$this->GetID()) {
+            $this->messages->add(_('The node ID is mandatory in order to change the state'), MSG_TYPE_ERROR);
+            return false;
+        }
         $workflowStatus = new PipeStatus($stateID);
         if (!$workflowStatus->get('id')) {
             $this->messages->add(sprintf(_('The state %s does not exist'), $stateID), MSG_TYPE_ERROR);
@@ -322,23 +326,21 @@ class Node extends NodesOrm
             }
             $action = explode('@', $workflowStatus->get('Action'));
             $className = WorkFlow::WORKFLOW_ACTIONS_NAMESPACE . $action[0];
-            $class = new $className();
+            $class = new $className($this);
             $method = $action[1];
             Logger::info('Calling method ' . $method . ' in ' . $className . ' class before change the status to ' . $workflowStatus->get('Name'));
             if ($class->$method() === false) {
                 $this->messages->add(sprintf(_('The action %s is not working propertly'), $method), MSG_TYPE_ERROR);
                 return false;
             }
-            Logger::info('Method ' . $method . ' (' . $className . ') run succefuslly', true);
+            Logger::info('Method ' . $method . ' (' . $className . ') for node ' . $this->GetID() . ' run succefuslly', true);
         }
         $dbObj = new \Ximdex\Runtime\Db();
-        if (($this->get('IdNode') > 0)) {
-            $sql = sprintf("UPDATE Nodes SET IdState= %d WHERE IdNode=%d OR SharedWorkflow = %d"
-                    , $stateID, $this->get('IdNode'), $this->get('IdNode'));
-            $result = $dbObj->Execute($sql);
-            if ($result) {
-                return true;
-            }
+        $sql = sprintf("UPDATE Nodes SET IdState= %d WHERE IdNode=%d OR SharedWorkflow = %d"
+                , $stateID, $this->get('IdNode'), $this->get('IdNode'));
+        $result = $dbObj->Execute($sql);
+        if ($result) {
+            return true;
         }
         $this->messages->add(sprintf(_('The node could not be moved to state %s'), $stateID), MSG_TYPE_ERROR);
         return false;

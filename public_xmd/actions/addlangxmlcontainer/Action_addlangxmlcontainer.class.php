@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -33,27 +34,24 @@ use Ximdex\MVC\ActionAbstract;
 
 class Action_addlangxmlcontainer extends ActionAbstract {
     
-    // Main Method: it shows the initial form
-    public function index() {
-        
+    /**
+     * Main Method: it shows the initial form
+     */
+    public function index()
+    {        
     	$idNode = $this->request->getParam("nodeid");
     	$node = new Node($idNode);
     	$idNode = $node->get('IdNode');
-
 		if (empty($idNode)) {
 			die(_("Error with parameters"));
 		}
-
 		$idTemplate = $this->getVisualTemplate($idNode);
 		$template = new Node($idTemplate);
         
 		// Getting languages
-
 		$languages = $this->_getLanguages($idNode);
 		$numLanguages = count($languages);
-
 		$languageData = array();
-
 		if (is_array($languages)) {
 			$id = 0;
 			reset($languages);
@@ -66,12 +64,10 @@ class Action_addlangxmlcontainer extends ActionAbstract {
 				$id ++;
 			}
 		}
-
 		$reloadTree = false;
 		if (isset($_REQUEST['reload_tree']) && $_REQUEST['reload_tree']) {
 			$reloadTree = true;
 		}
-
 		$values = array(
 			'go_method' => 'updateXmlContainer',
 			'idNode' => $idNode,
@@ -82,22 +78,20 @@ class Action_addlangxmlcontainer extends ActionAbstract {
 			'numlanguages' => $numLanguages,
 			'reload_tree' => $reloadTree,
 		);
-
 		$this->render($values, null, 'default-3.0.tpl');
 	}
 
-	public function updateXmlContainer() {
-
+	public function updateXmlContainer()
+	{
 		$nodeid = $this->request->getParam('nodeid');
 		$templateid = $this->request->getParam('templateid');
 		$name = $this->request->getParam('name');
 		$languages = $this->request->getParam('languages');
 		$aliases = $this->request->getParam('aliases');
-
-		if (empty($languages))	
+		if (empty($languages)) {
 			$this->messages->add(_('There are no specified languages'), MSG_TYPE_ERROR);
+		}
 		else {
-
 			$node = new Node($nodeid);
 			if (!($node->get('IdNode') > 0)) {
 			    
@@ -105,69 +99,53 @@ class Action_addlangxmlcontainer extends ActionAbstract {
 				Logger::error($msg);
 				$this->messages->add($msg, MSG_TYPE_ERROR);
 				$this->render(array('messages' => $this->messages->messages));
-				return;
+				return false;
 			}
-
 			$allowedNodeTypes = $node->nodeType->GetAllowedNodeTypes();
-			if (count($allowedNodeTypes) == 1)
+			if (count($allowedNodeTypes) == 1) {
 				$idNodeType = $allowedNodeTypes[0]['nodetype'];
-			else {
-			    
+			}
+			else {   
 				Logger::error(_('More than one allowed nodetype has been found for this folder, it is recovered returning to the first'));
 				$idNodeType = $allowedNodeTypes[0]['nodetype'];
 			}
-
 			if (!isset($idNodeType)) {
-			    
 				$msg = sprintf(_('The node with id %d has not any nodeAllowedContent with necessary features to store a language list'), $nodeid);
 				Logger::error($msg);
 				$this->messages->add($msg, MSG_TYPE_ERROR);
 				$this->render(array('messages' => $this->messages->messages));
-				return;
+				return false;
 			}
-
 			$nodeType = new NodeType($idNodeType);
-
 			$language = new Language();
 			$allLanguages = $language->find('IdLanguage', NULL, NULL, MONO);
-
 			if (!$allLanguages) {
-			    
 				$msg = _('No language has been found');
 				Logger::error($msg);
 				$this->messages->add($msg, MSG_TYPE_ERROR);
 				$this->render(array('messages' => $this->messages->messages));
-				return;
+				return false;
 			}
-
 			foreach ($allLanguages as $idLanguage) {
-
 				$child = $this->_hasLang($node->get('IdNode'), $idLanguage);
 				$idNode = $child['idChildren'];
-
 				if ($idNode > 0) {
-
 					if (in_array($idLanguage, $languages)) {
 					    
-						//update
+						// Update
 						$data = array(
 							'ID' => $idNode,
 							'NODETYPENAME' => $nodeType->get('Name')
 						);
-
 						if (isset($aliases[$idLanguage])) {
-						    
 							$data['CHILDRENS'][] = array(
 								'NODETYPENAME' => 'NODENAMETRANSLATION',
 								'IDLANG' => $idLanguage,
 								'DESCRIPTION' => utf8_encode($aliases[$idLanguage]));
 						}
-
 						$baseIO = new \Ximdex\IO\BaseIO();
 						$result = $baseIO->update($data);
-
 						if ($result <= 0) {
-						    
 							reset($baseIO->messages->messages);
 							while(list(, $message) = each($baseIO->messages->messages))
 								$this->messages->messages[] = $message;
@@ -175,7 +153,7 @@ class Action_addlangxmlcontainer extends ActionAbstract {
 						}
 					} else {
 					    
-						//delete
+						// Delete
 						$data = array(
 							'ID' => $idNode,
 							'NODETYPENAME' => $nodeType->get('Name')
@@ -183,7 +161,6 @@ class Action_addlangxmlcontainer extends ActionAbstract {
 						$baseIO = new \Ximdex\IO\BaseIO();
 						$result = $baseIO->delete($data);
 						if ($result <= 0) {
-
 							reset($baseIO->messages->messages);
 							while(list(, $message) = each($baseIO->messages->messages))
 								$this->messages->messages[] = $message;
@@ -191,10 +168,9 @@ class Action_addlangxmlcontainer extends ActionAbstract {
 						}
 					}
 				} else {
-
 					if (in_array($idLanguage, $languages)) {
 					    
-						// add
+						// Add
 						$data = array(
 							'NODETYPENAME' => $nodeType->get('Name'),
 							'NAME' => $node->get('Name'),
@@ -205,19 +181,15 @@ class Action_addlangxmlcontainer extends ActionAbstract {
 								array ("NODETYPENAME" => "LANGUAGE", "ID" => $idLanguage)
 							)
 						);
-						
 						if (isset($aliases[$idLanguage])) {
-						    
 							$data['CHILDRENS'][] = array(
-													'NODETYPENAME' => 'NODENAMETRANSLATION',
-													'IDLANG' => $idLanguage,
-													'DESCRIPTION' => $aliases[$idLanguage]);
+    							'NODETYPENAME' => 'NODENAMETRANSLATION',
+    							'IDLANG' => $idLanguage,
+    							'DESCRIPTION' => $aliases[$idLanguage]);
 						}
-
 						$baseIO = new \Ximdex\IO\BaseIO();
 						$result = $baseIO->build($data);
 						if ($result <= 0) {
-						    
 							reset($baseIO->messages->messages);
 							while(list(, $message) = each($baseIO->messages->messages))
 								$this->messages->messages[] = $message;
@@ -227,28 +199,26 @@ class Action_addlangxmlcontainer extends ActionAbstract {
 				}
 			}
 		}
-
-		if (isset($result) && $result > 0)
+		if (isset($result) && $result > 0) {
 			$this->messages->add(_('Changes have been successfully done'), MSG_TYPE_NOTICE);
-
+		}
         $values = array('messages' => $this->messages->messages, "parentID" => $nodeid);
         $this->sendJSON($values);
 	}
 
-	private function getVisualTemplate($idNode) {
-	    
+	private function getVisualTemplate($idNode)
+	{
 		$node = new Node($idNode);
-		if(count($node->GetChildren())){
-		    
+		if (count($node->GetChildren())) {
 			foreach ($node->GetChildren() as $childID) {
-			    
 			     $child = new StructuredDocument($childID);
 			     $idTemplate = $child->get('IdTemplate');
-			     if ($idTemplate)
+			     if ($idTemplate) {
 			     	return $idTemplate;
+			     }
 			}
-	    } else {
-	        
+	    }
+	    else {
 			$reltemplate = new \Ximdex\Models\RelTemplateContainer();
 			$idTemplate = $reltemplate->getTemplate($idNode);
 			return $idTemplate;
@@ -256,18 +226,14 @@ class Action_addlangxmlcontainer extends ActionAbstract {
 		return false;
 	}
 
-	private function _hasLang($idNode, $idLanguage) {
-	    
+	private function _hasLang($idNode, $idLanguage)
+	{
 		$node = new Node($idNode);
 		$children = $node->GetChildren();
-
 		if (is_array($children)) {
-		    
 			foreach ($children as $idChild) {
-			    
 				$childrenDoc = new StructuredDocument($idChild);
 				if ($childrenDoc->GetLanguage() == $idLanguage) {
-				    
 					$node = new Node($idChild);
 					return array(
 						'idChildren' => $idChild,
@@ -276,17 +242,15 @@ class Action_addlangxmlcontainer extends ActionAbstract {
 				}
 			}
 		}
-
 		return array('idChildren' => NULL);
 	}
 
-	private function _getLanguages($nodeID) {
-
+	private function _getLanguages($nodeID)
+	{
 		$node = new Node($nodeID);
 		$language = new Language();
 		$languages = $language->getLanguagesForNode($nodeID);
 		if (empty($languages)) $languages = array();
-
 		return $languages;
 	}
 }
