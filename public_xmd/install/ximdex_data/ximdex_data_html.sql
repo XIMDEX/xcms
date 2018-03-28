@@ -353,13 +353,13 @@ INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `
 INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`, `IsBulk`) VALUES
 	(7450, 5103, 'Add new language', 'addlangxmlcontainer', 'add_language_xml.png', 'Add a document with a different language', 10, NULL, 0, '', 0),
 	(7451, 5103, 'Copy', 'copy', 'copiar_carpeta_ximdoc.png', 'Copy a document to another destination', 30, NULL, 0, '', 0),
-	(7452, 5103, 'Move node', 'movenode', 'move_node.png', 'Move a node', 40, NULL, 0, '', 0),
+	(7452, 5103, 'Move node', 'movenode', 'move_node.png', 'Move a node', 35, NULL, 0, '', 0),
 	(7453, 5103, 'Change name of HTML document', 'renamenode', 'change_name_xml.png', 'Change the document name and all its language versions'
-		, 60, NULL, 0, '', 0),
-	(7454, 5103, 'Delete document', 'deletenode', 'delete_xml.png', 'Delete HTML document in all its languages', 75, NULL, 1, '', 0),
-	(7455, 5103, 'Edit metadata', 'managemetadata', 'xix.png', 'Edit the metadata info', 20, NULL, 0, NULL, 0),
-	(7456, 5103, 'Modify properties', 'manageproperties', 'xix.png', 'Modify properties', 60, NULL, 0, NULL, 0),
-	(7457, 5103, 'Semantic Tags', 'setmetadata', 'change_next_state.png', 'Managing semantic tags related to the current node.', 999
+		, 25, NULL, 0, '', 0),
+	(7454, 5103, 'Delete document', 'deletenode', 'delete_xml.png', 'Delete HTML document in all its languages', 90, NULL, 1, '', 0),
+	(7455, 5103, 'Edit metadata', 'managemetadata', 'xix.png', 'Edit the metadata info', -20, NULL, 0, NULL, 0),
+	(7456, 5103, 'Modify properties', 'manageproperties', 'xix.png', 'Modify properties', 27, NULL, 0, NULL, 0),
+	(7457, 5103, 'Semantic Tags', 'setmetadata', 'change_next_state.png', 'Managing semantic tags related to the current node.', 81
 		, 'ximTAGS', 0, NULL, 0);
 
 INSERT INTO `RelRolesActions` (`IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (201, 7450, 0, 1, 3);
@@ -387,17 +387,17 @@ INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `
 	(5104, 'HtmlDocument', 'XmlDocumentNode', 'doc', 'HTML document', 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, NULL);
 
 INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`, `IsBulk`) VALUES
-	(7458, 5104, 'Edit in text mode', 'edittext', 'edit_file_xml_txt.png', 'Edit content of HTML in plain text', 21, NULL, 0, 'type=text', 0),
+	(7458, 5104, 'Edit HTML in text mode', 'edittext', 'edit_file_xml_txt.png', 'Edit content of HTML in plain text', 21, NULL, 0, 'type=text', 0),
 	(7459, 5104, 'Edit HTML document', 'xedit', 'edit_file_xml.png', 'Edit content of HTML document with the wysiwyg editor', 20, NULL, 0
 	       , 'type=html', 0),
-	(7460, 5104, 'Publish', 'workflow_forward', 'change_next_state.png', 'Move to the next state', 70, NULL, 0, '', 0),
+	(7460, 5104, 'Publish', 'workflow_forward', 'change_next_state.png', 'Move to the next state', 72, NULL, 0, '', 0),
 	(7461, 5104, 'Move to previous state', 'workflow_backward', 'change_last_state.png', 'Move to the previous state', -70, NULL, 0, '', 0),
-	(7462, 5104, 'Expire document', 'expiredoc', 'expire_section.png', 'Expire a document', 71, NULL, 0, '', 0),
-	(7463, 5104, 'Version manager', 'manageversions', 'manage_versions.png', 'Manage repository of versions', 73, NULL, 0, '', 0),
-	(7464, 5104, 'Symbolic link', 'xmlsetlink', 'file_xml_symbolic.png', 'Modify document which borrows the content', 74, NULL, 0, '', 0),
-	(7465, 5104, 'Delete document', 'deletenode', 'delete_file_xml.png', 'Delete selected HTML document', 75, NULL, 1, '', 0),
-	(7466, 5104, 'Preview', 'preview', 'xix.png', 'Preview of the document', 80, NULL, 0, '', 0),
-	(7467, 5104, 'Semantic Tags', 'setmetadata', 'change_next_state.png', 'Managing semantic tags related to the current node.', 999
+	(7462, 5104, 'Expire document', 'expiredoc', 'expire_section.png', 'Expire a document', 76, NULL, 0, '', 0),
+	(7463, 5104, 'Version manager', 'manageversions', 'manage_versions.png', 'Manage repository of versions', 82, NULL, 0, '', 0),
+	(7464, 5104, 'Symbolic link', 'xmlsetlink', 'file_xml_symbolic.png', 'Modify document which borrows the content', -74, NULL, 0, '', 0),
+	(7465, 5104, 'Delete document', 'deletenode', 'delete_file_xml.png', 'Delete selected HTML document', 90, NULL, 1, '', 0),
+	(7466, 5104, 'Preview', 'preview', 'xix.png', 'Preview of the document', 65, NULL, 0, '', 0),
+	(7467, 5104, 'Semantic Tags', 'setmetadata', 'change_next_state.png', 'Managing semantic tags related to the current node.', 81
 	       , 'ximTAGS', 0, NULL, 0);
 
 INSERT INTO `RelRolesActions` (`IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (201, 7458, 7, 1, 3);
