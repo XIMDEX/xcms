@@ -253,7 +253,7 @@ class Action_workflow_forward extends ActionAbstract
                     'messages' => $this->messages->messages
                 );
                 $this->render($values, 'show_results', 'default-3.0.tpl');
-                return;
+                return false;
             }
         }
         
@@ -276,14 +276,22 @@ class Action_workflow_forward extends ActionAbstract
         } else {
             
             // If the next state is not the final, we show a success message
-            $node->setState($nextState);
-            $values = array(
-                'go_method' => 'publicateForm',
-                'nextState' => $nextState,
-                'currentState' => $node->GetState()
-            );
-            $this->addCss('/actions/workflow_forward/resources/css/style.css');
-            $this->render($values, 'success.tpl', 'default-3.0.tpl');
+            if ($node->setState($nextState) === false) {
+                $values = array(
+                    'goback' => true,
+                    'messages' => $node->messages->messages
+                );
+                $this->render($values, 'show_results', 'default-3.0.tpl');
+            }
+            else {
+                $values = array(
+                    'go_method' => 'publicateForm',
+                    'nextState' => $nextState,
+                    'currentState' => $node->GetState()
+                );
+                $this->addCss('/actions/workflow_forward/resources/css/style.css');
+                $this->render($values, 'success.tpl', 'default-3.0.tpl');
+            }
         }
     }
 
@@ -555,7 +563,7 @@ class Action_workflow_forward extends ActionAbstract
                     'messages' => $this->messages->messages
                 );
                 $this->render($values, 'show_results', 'default-3.0.tpl');
-                return;
+                return false;
             }
         }
         
@@ -599,7 +607,14 @@ class Action_workflow_forward extends ActionAbstract
         $node = new Node($idNode);
         $workflow = new WorkFlow($idNode);
         $firstState = $workflow->GetInitialState();
-        $node->setState($firstState);
+        if ($node->setState($firstState) === false) {
+            $values = array(
+                'goback' => true,
+                'messages' => $node->messages->messages
+            );
+            $this->render($values, 'show_results', 'default-3.0.tpl');
+            return false;
+        }
         Logger::info("ADDSECTION sendToPublish pre render");
         if (\Ximdex\Modules\Manager::isEnabled('ximSYNC')) {
             Logger::info("ADDSECTION sendToPublish pre render if");
@@ -610,7 +625,6 @@ class Action_workflow_forward extends ActionAbstract
             );
             Logger::info("ADDSECTION sendToPublish pre render else value: " . print_r($values, true));
             $this->render($values, 'show_results', 'default-3.0.tpl');
-            return;
         } else {
             $values = array(
                 'node_name' => $node->get('Name'),
@@ -621,6 +635,7 @@ class Action_workflow_forward extends ActionAbstract
             );
             $this->render($values, 'show_results', 'default-3.0.tpl');
         }
+        return true;
     }
 
     private function buildFlagsPublication($markEnd, $structure = 1, $deepLevel = 1, $force = false, $lastPublished = 0)

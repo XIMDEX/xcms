@@ -328,9 +328,16 @@ class Node extends NodesOrm
             $className = WorkFlow::WORKFLOW_ACTIONS_NAMESPACE . $action[0];
             $class = new $className($this);
             $method = $action[1];
-            Logger::info('Calling method ' . $method . ' in ' . $className . ' class before change the status to ' . $workflowStatus->get('Name'));
+            Logger::info('Calling method ' . $method . ' in ' . $action[0] . ' class before change the status to ' . $workflowStatus->get('Name'));
             if ($class->$method() === false) {
-                $this->messages->add(sprintf(_('The action %s is not working propertly'), $method), MSG_TYPE_ERROR);
+                if ($class->getError()) {
+                    $error = $class->getError();
+                }
+                else {
+                    $error = 'The action ' . $method . ' (' . $action[0] . ') is not working propertly';
+                }
+                $this->messages->add($error, MSG_TYPE_ERROR);
+                Logger::error($error);
                 return false;
             }
             Logger::info('Method ' . $method . ' (' . $className . ') for node ' . $this->GetID() . ' run succefuslly', true);

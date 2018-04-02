@@ -2,7 +2,6 @@
     
 namespace Ximdex\Workflow\Actions;
 
-use Ximdex\Logger;
 use Ximdex\Models\Node;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\Models\Language;
@@ -18,19 +17,19 @@ class Translator extends WorkflowAction
     public function sendTranslation() : bool
     {
         if (!$this->node->GetID()) {
-            Logger::error('There is not a node ID for the document to translate');
+            $this->error = 'There is not a node ID for the document to translate';
             return false;
         }
         
         // Check the original document language to do the job only for the default origin language
         $structuredDocument = new StructuredDocument($this->node->GetID());
         if (!$structuredDocument->get('IdLanguage')) {
-            Logger::error('Language has not been specified for document: ' . $this->node->GetNodeName());
+            $this->error = 'Language has not been specified for document: ' . $this->node->GetNodeName();
             return false;
         }
         $language = new Language($structuredDocument->get('IdLanguage'));
         if (!$language->GetID()) {
-            Logger::error('Language not found for ID: ' . $structuredDocument->get('IdLanguage'));
+            $this->error = 'Language not found for ID: ' . $structuredDocument->get('IdLanguage');
             return false;
         }
         if ($language->GetIsoName() != self::DEFAULT_ISO_LANG) {
@@ -39,19 +38,19 @@ class Translator extends WorkflowAction
         
         // We need to load the document container folder
         if (!$this->node->GetParent()) {
-            Logger::error('There is not a parent document folder for the document');
+            $this->error = 'There is not a parent document folder for the document';
             return false;
         }
         $docFolder = new Node($this->node->GetParent());
         if (!$docFolder->GetId()) {
-            Logger::error('Cannot load the document folder with ID: ' . $this->node->GetParent());
+            $this->error = 'Cannot load the document folder with ID: ' . $this->node->GetParent();
             return false;
         }
         
         // Obtain the inherited language properties
         $properties = InheritedPropertiesManager::getValues($docFolder->GetID());
         if (!isset($properties['Language']) or !$properties['Language']) {
-            Logger::error('Cannot load the language properties for the folder with node ID: ' . $docFolder->GetID());
+            $this->error = 'Cannot load the language properties for the folder with node ID: ' . $docFolder->GetID();
             return false;
         }
         if (count($properties['Language']) == 1) {
@@ -62,7 +61,7 @@ class Translator extends WorkflowAction
         $xmlContainerNode = new XmlContainerNode($docFolder);
         $langs = $xmlContainerNode->GetLanguages();
         if ($langs === false) {
-            Logger::error('Cannot load the document language versions for the folder with node ID: ' . $docFolder->GetID());
+            $this->error = 'Cannot load the document language versions for the folder with node ID: ' . $docFolder->GetID();
             return false;
         }
         
@@ -97,7 +96,7 @@ class Translator extends WorkflowAction
             $plata->setTo($languageProp['IsoName']);
             $res = $plata->translate();
             if ($res['status'] == 'fail') {
-                Logger::error($res['message']);
+                $this->error = $res['message'];
                 return false;
             }
             $documents[$languageProp['Id']]['translation'] = $res['message'];
@@ -111,7 +110,7 @@ class Translator extends WorkflowAction
                     // The document does not exist in the current language
                     $id = $xmlContainerNode->addLanguageVersion($idLang);
                     if (!$id) {
-                        Logger::error('Cannot create the document language version for ID: ' . $idLang);
+                        $this->error = 'Cannot create the document language version for ID: ' . $idLang;
                         return false;
                     }
                 }
@@ -120,12 +119,12 @@ class Translator extends WorkflowAction
                 }
                 $node = new Node($id);
                 if (!$node->GetID()) {
-                    Logger::error('Cannot load the document with node ID: ' . $id);
+                    $this->error = 'Cannot load the document with node ID: ' . $id;
                     return false;
                 }
                 if (!$node->SetContent($docInfo['translation'], true)) {
                     foreach ($node->messages->messages as $error) {
-                        Logger::error($error);
+                        $this->error = $error;
                     }
                     return false;
                 }
