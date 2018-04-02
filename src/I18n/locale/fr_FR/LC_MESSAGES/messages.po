@@ -1619,7 +1619,7 @@ msgid "BaseIO has returned the error code"
 msgstr "BaseIO a retourné le code d'erreur"
 
 #: public_xmd/actions/modifychannel/Action_modifychannel.class.php:86
-msgid "Any change has been perfomed"
+msgid "Not any change has been performed"
 msgstr "Tout changement a été effectué"
 
 #: public_xmd/actions/modifychannel/Action_modifychannel.class.php:89
@@ -9570,7 +9570,5 @@ msgstr "Nom du noeud:"
 msgid "ID Node:"
 msgstr "ID du noeud:"
 
-
-
-
-
+msgid "Render type for Web servers"
+msgstr "Type de rendu pour les serveurs Web"

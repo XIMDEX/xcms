@@ -268,9 +268,8 @@ class InstallManager
     private function checkRecommendedPHPExtensions()
     {
         // Apache modules cannot be loaded in Nginx and is not necessary in the recommended PHP extension
-        //$modules = array_merge(apache_get_modules(), get_loaded_extensions());
         $modules = get_loaded_extensions();
-        $recommendedModules = ['xsl', 'curl', 'gd', 'mcrypt'];
+        $recommendedModules = ['xsl', 'curl', 'gd'];
         if (!isset($_SERVER['DOCKER_CONF_HOME']))
         {
             $recommendedModules[] = 'enchant';

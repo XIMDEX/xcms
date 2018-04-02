@@ -36,7 +36,7 @@ use Ximdex\Models\NodeProperty;
  *  Channels are responsible of the document transformation to different output formats (html, text, ...).
  */
 class ChannelNode extends Root
-{
+{   
 	/**
 	 *  Does nothing.
 	 * @return null
@@ -47,7 +47,8 @@ class ChannelNode extends Root
 	}
 
 	/**
-	 *  Calls to method for creating a Channel.
+	 * Calls to method for creating a Channel
+	 * 
 	 * @param string name
 	 * @param int parentID
 	 * @param int nodeTypeID
@@ -59,12 +60,12 @@ class ChannelNode extends Root
 	 * @param string filter
 	 * @param string renderMode
 	 */
-	function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $channelName = null, $extension = null, $format = null, $description = null, $filter = "", $renderMode = NULL, $outputType = NULL)
+	function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $channelName = null, $extension = null
+	       , $format = null, $description = null, $filter = "", $renderMode = NULL, $outputType = NULL, $renderType = null)
 	{
 		$channel = new Channel();
 		$channel->CreateNewChannel($channelName, $extension, $format, $description, $this->parent->get('IdNode'), $filter,
-			$renderMode, $outputType);
-
+			 $renderMode, $outputType, $renderType);
 		$this->UpdatePath();
 	}
 

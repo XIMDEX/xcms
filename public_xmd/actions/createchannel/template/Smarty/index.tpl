@@ -23,13 +23,12 @@
  *  @version $Revision$
  *}
 
-
 <form method="post" action="{$action_url}" id="channel_form" class='form_active validate_ajax'>
     <input type="hidden" name="id_node" value="{$id_node}">
     <div class="action_header">
         <h5 class="direction_header"> {t}Name Node:{/t} {t}Channel manager{/t}</h5>
         <h5 class="nodeid_header"> {t}ID Node:{/t} {$nodeid}</h5>
-        <hr>
+        <hr />
     </div>
     <div class="action_content">
         <div class="row tarjeta">
@@ -38,31 +37,33 @@
                 <div class="input">
                     <label for="name" class="label_title label_general">{t}Name{/t} *</label>
                     <input type="text" name="name" id="channelname" class="full_size cajag validable not_empty input_general"/>
-                </div></div>
+                </div>
+            </div>
             <div class="small-12 columns">
                 <div class="input">
                     <label for="extension" class="label_title label_general">{t}File extension{/t} *</label>
                     <input type="text" name="extension" id="extension" class="cajag validable not_empty full_size input_general"/>
-                </div></div>
-
+                </div>
+            </div>
+            <div class="small-12 columns">
+                <div class="input">
+                    <label for="description" class="label_title label_general">{t}Description{/t} *</label>
+                    <input type="text" name="description" id="description" class="full_size cajag validable not_empty input_general"/>
+                </div>
+            </div>
             <div class="small-12 columns">
                 <label for="rendermode" class="label_title label_general">{t}Output{/t}</label>
-
                 <div class="row">
                     <div class="small-2 columns">
-                        <label class="input-form label_general" for="web_{$id_node_parent}">{t}
-                                <input type='radio' id="web_{$id_node_parent}" name="output_type"  value='web'>
-                                Web{/t}
+                        <label class="input-form label_general" for="web_{$id_node_parent}">
+                            <input type='radio' id="web_{$id_node_parent}" name="output_type" value='web'> {t}Web{/t}
                         </label>
                     </div>
-
                     <div class="small-2 columns">
                         <label class="input-form label_general" for="xml_{$id_node_parent}">
-                            <input type='radio' id="xml_{$id_node_parent}" name="output_type"  value='xml'>
-                            {t}Xml{/t}
+                            <input type='radio' id="xml_{$id_node_parent}" name="output_type" value='xml'> {t}Xml{/t}
                         </label>
                     </div>
-
                     <div class="small-6 columns end">
                         <label class="input-form label_general" for="other_{$id_node_parent}">
                             <input type='radio' id="other_{$id_node_parent}" name="output_type" value='other'>
@@ -71,12 +72,26 @@
                     </div>
                 </div>
             </div>
-            <div class="small-12 columns">
-                <div class="input">
-                    <label for="description" class="label_title label_general">{t}Description{/t} *</label>
-                    <input type="text" name="description" id="description" class="full_size cajag validable not_empty input_general"/>
-                </div></div>
-
+            <div class="small-12 columns hidden" id="render_type_mode">
+                <label for="rendertype" class="label_title label_general">{t}Render type for Web servers{/t} *</label>
+                <div class="row">
+                    <div class="small-2 columns">
+                        <label class="input-form label_general" for="web_render_type_static">
+                            <input type='radio' id="web_render_type_static" name="web_render_type" value="static" /> Static
+                        </label>
+                    </div>
+                    <div class="small-2 columns">
+                        <label class="input-form label_general" for="web_render_type_include">
+                            <input type='radio' id="web_render_type_include" name="web_render_type" value="include" /> Include
+                        </label>
+                    </div>
+                    <div class="small-6 columns end">
+                        <label class="input-form label_general" for="web_render_type_dynamic">
+                            <input type='radio' id="web_render_type_dynamic" name="web_render_type" value='dynamic' /> Dymanic
+                        </label>
+                    </div>
+                </div>
+            </div>
             <div class="small-12 columns">
                 <label for="rendermode" class="label_title label_general">{t}Rendering XSLT in{/t}</label>
                 <div class="row">
@@ -85,7 +100,6 @@
                             <input disabled type="radio" id="rendermode" name="renderMode" checked value='ximdex' /> {t}Ximdex{/t}
                         </label>
                     </div>
-
                     <div class="small-2 columns end">
                         <label for="default_channel label_general" class="input-form disabled">
                             <input disabled type="radio" id="rendermode" name="renderMode" value="client" /> {t}Client{/t}
@@ -102,6 +116,7 @@
                 <fieldset class="buttons-form">
                     {button label="Create channel" class='validate btn main_action btn_margin' }{*message=Would you like to add a channel?"*}
                 </fieldset>
-            </div></div></div>
+            </div>
+        </div>
+    </div>
 </form>
-

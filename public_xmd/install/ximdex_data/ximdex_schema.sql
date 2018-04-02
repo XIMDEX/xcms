@@ -38,6 +38,7 @@ CREATE TABLE `Channels` (
   `Default_Channel` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`IdChannel`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Available channels used to transform content';
+ALTER TABLE `Channels` ADD `RenderType` ENUM('static','include','dynamic') NULL DEFAULT NULL AFTER `Default_Channel`;
 
 CREATE TABLE `Config` (
   `IdConfig` int(12) unsigned NOT NULL AUTO_INCREMENT,

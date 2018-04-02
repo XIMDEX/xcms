@@ -2520,7 +2520,7 @@ msgid "Date"
 msgstr "Fecha"
 
 #: /actions/modifychannel/Action_modifychannel.class.php
-msgid "Any change has been perfomed"
+msgid "Not any change has been performed"
 msgstr "No se ha realizado ningún cambio"
 
 #: /actions/modifychannel/Action_modifychannel.class.php
@@ -9031,3 +9031,6 @@ msgstr "El editor HTML no está habilitado en la configuraci&oacute;n del sistem
 
 msgid "The file has been published succesfuslly"
 msgstr "El archivo ha sido publicado correctamente"
+
+msgid "Render type for Web servers"
+msgstr "Tipo de procesamiento para servidores Web"

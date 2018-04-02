@@ -646,7 +646,7 @@
     "Are you sure you want to delete this version?. This version is the latest published content.": "&iquest;Est&aacute; seguro de querer borrar esta versi&oacute;n?. Esta versi&oacute;n es el contenido publicado m&aacute;s reciente.",
     "Version": "Versi&oacute;n",
     "Date": "Fecha",
-    "Any change has been perfomed": "No se ha realizado ning&uacute;n cambio",
+    "Not any change has been performed": "No se ha realizado ning&uacute;n cambio",
     "An error occurred while modifying channel": "Ha ocurrido un error al modificar el canal",
     "Channel has been successfully modified": "El canal se ha modificado correctamente",
     "Modify channel": "Modificar Canal",

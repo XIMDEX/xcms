@@ -147,7 +147,8 @@ class GenericData
             $dbObj->Query($query, $this->_cache);
             if (!$dbObj->EOF) {
                 reset($this->_metaData);
-                while (list($key) = each($this->_metaData)) {
+                // while (list($key) = each($this->_metaData)) {
+                foreach (array_keys($this->_metaData) as $key) {
                     if (array_key_exists($key, $dbObj->row)) {
                         $this->{$key} = $dbObj->GetValue($key);
                     } else {

@@ -2249,7 +2249,7 @@ msgid "Date"
 msgstr "Data"
 
 #: /actions/modifychannel/Action_modifychannel.class.php
-msgid "Any change has been perfomed"
+msgid "Not any change has been performed"
 msgstr "Nenhuma altera&ccedil;&atilde;o foi realizada"
 
 #: /actions/modifychannel/Action_modifychannel.class.php

@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,11 +25,9 @@
  * @version $Revision$
  */
 
-
 namespace Ximdex\Models\ORM;
 
 use Ximdex\Data\GenericData;
-
 
 class ChannelsOrm extends GenericData
 {
@@ -43,7 +42,8 @@ class ChannelsOrm extends GenericData
         'Filter' => array('type' => "varchar(255)", 'not_null' => 'false'),
         'RenderMode' => array('type' => "varchar(255)", 'not_null' => 'false'),
         'OutputType' => array('type' => "varchar(100)", 'not_null' => 'false'),
-        'Default_Channel' => array('type' => "tinyint(1)", 'not_null' => 'false')
+        'Default_Channel' => array('type' => "tinyint(1)", 'not_null' => 'false'),
+        'RenderType' => array('type' => 'varchar(50)', 'not_null' => 'false')
     );
     var $_uniqueConstraints = array();
     var $_indexes = array('IdChannel');
@@ -56,4 +56,5 @@ class ChannelsOrm extends GenericData
     var $RenderMode;
     var $OutputType;
     var $Default_Channel;
+    var $RenderType;
 }
