@@ -1,10 +1,10 @@
 <?php
 
+namespace Ximdex\Runtime;
+
 /**
  * Temporary Class to manage old Defines as costants
  */
-namespace Ximdex\Runtime;
-
 class Constants
 {
     // NodeId Codes
@@ -24,7 +24,6 @@ class Constants
     const IMPORTED_STATUS_OK = 1;
     const IMPORTED_STATUS_OK_TO_PUBLISH = 2;
     const IMPORTED_STATUS_PENDING_LINKS = 3;
-
     const EDITION_STATUS_ID = 7;
     const PUBLICATION_STATUS_ID = 8;
     
@@ -44,10 +43,13 @@ class Constants
         'XMLDOCUMENTNODE' => 'XMLDOCUMENTNODE',
         'XIMLETNODE' => 'XMLDOCUMENTNODE',
         'IMAGEFILE' => 'FILENODE',
-        'BINARYFILE' => 'COMMONNODE'
+        'BINARYFILE' => 'COMMONNODE',
+        'HTMLLAYOUTNODE' => 'FILENODE',
+        'HTMLCOMPONENTNODE' => 'FILENODE',
+        'HTMLVIEWNODE' => 'FILENODE'
     );
 
-    // ximIO
+    // XimIO
     const REVISION_COPY = 0;
     const IMPORT_FILES = true;
     const UPDATE_LINKS = false;
