@@ -330,8 +330,8 @@ class Node extends NodesOrm
             $method = $action[1];
             Logger::info('Calling method ' . $method . ' in ' . $action[0] . ' class before change the status to ' . $workflowStatus->get('Name'));
             if ($class->$method() === false) {
-                if ($class->getError()) {
-                    $error = $class->getError();
+                if ($class->_getError()) {
+                    $error = $class->_getError();
                 }
                 else {
                     $error = 'The action ' . $method . ' (' . $action[0] . ') is not working propertly';

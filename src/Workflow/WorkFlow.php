@@ -280,12 +280,18 @@ class WorkFlow
                     continue;
                 }
                 $className = $info['filename'];
+                if ($className == 'WorkflowAction') {
+                    continue;
+                }
                 $class = self::WORKFLOW_ACTIONS_NAMESPACE . $className;
                 if (!class_exists($class)) {
                     continue;
                 }
                 $methods = get_class_methods($class);
                 foreach ($methods as $method) {
+                    if (strpos($method, '_') === 0) {
+                        continue;
+                    }
                     $actions[$className . '@' . $method] = $className . '@' . $method;
                 }
             }

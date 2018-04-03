@@ -14,7 +14,7 @@ abstract class WorkflowAction
         $this->node = $node;
     }
     
-    public function getError()
+    public function _getError()
     {
         return $this->error;
     }
