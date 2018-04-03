@@ -293,9 +293,9 @@ VALUES
     (6569,5053,'Import','deserializeNodeXML','xix.png','Import a complete schema',-92,'ximIO',0,'',0),
     (6570,5026,'Import','deserializeNodeXML','xix.png','Import a complete template',-92,'ximIO',0,'',0);
 
-INSERT INTO `Channels` (`IdChannel`, `Name`, `Description`, `DefaultExtension`, `Format`, `Filter`, `RenderMode`, `OutputType`, `Default_Channel`)
+INSERT INTO `Channels` (`IdChannel`, `Name`, `Description`, `DefaultExtension`, `Format`, `Filter`, `RenderMode`, `OutputType`, `Default_Channel`, `RenderType`)
 VALUES
-	(10001,'HTML','HyperText Markup Language','html',NULL,NULL,'ximdex','web',1);
+	(10001,'HTML','HyperText Markup Language','html',NULL,NULL,'ximdex','web',1, 'static');
  
 INSERT INTO `Config` (`IdConfig`, `ConfigKey`, `ConfigValue`)
 VALUES
@@ -2392,7 +2392,3 @@ VALUES
 INSERT INTO `Users` (`IdUser`, `Login`, `Pass`, `Name`, `Email`, `Locale`, `LastLogin`, `NumAccess`)
 VALUES
 	(301,'ximdex','$1$qSGCbgO1$yqxywUuVs1w5pd7capSQV.','Administrador de ximdex','notify@ximdex.org',NULL,0,0);
-
-INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`, `IsBulk`) 
-    VALUES
-        (7240, 5018, 'Publish documents', 'publicatesection', 'publicate_section.png', 'Publish the document section', 75, NULL, 0, NULL, 0);
