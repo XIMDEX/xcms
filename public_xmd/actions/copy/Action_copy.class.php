@@ -24,33 +24,31 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
+
 use Ximdex\Models\Node;
 use Ximdex\Models\NodeAllowedContent;
 use Ximdex\MVC\ActionAbstract;
 
 \Ximdex\Modules\Manager::file('/actions/copy/baseIO.php');
 
-class Action_copy extends ActionAbstract {
-
+class Action_copy extends ActionAbstract
+{
     /**
      * Main method
      */
-    function index() {
-
+    function index()
+    {
         $node = new Node($this->request->getParam('nodeid'));
-
         if (!($node->get('IdNode') > 0)) {
             $this->messages->add(_('Error with parameters'), MSG_TYPE_ERROR);
             $values = array('messages' => $this->messages->messages);
             $this->renderMessages();
-        } else {
-
+        }
+        else {
             $targetNodes = $this->getTargetNodes($node->GetID(), $node->GetNodeType());
-
             $targetNodes = array_filter($targetNodes, function($nodes) use ($node) {
-              return $nodes['idnode'] != $node->GetID();
+                return $nodes['idnode'] != $node->GetID();
             });
-
             $values = array(
                 'id_node' => $node->get('IdNode'),
                 'nodetypeid' => $node->nodeType->get('IdNodeType'),
@@ -60,33 +58,29 @@ class Action_copy extends ActionAbstract {
                 'go_method' => 'copyNodes',
                 'name' => $node->GetNodeName()
             );
-
             $this->addCss('/actions/copy/resources/css/style.css');
             $this->render($values, NULL, 'default-3.0.tpl');
         }
     }
 
-    function copyNodes() {
-        //Extracts info of actual node which the action is executed
+    function copyNodes()
+    {
+        // Extracts info of actual node which the action is executed
         $nodeID = $this->request->getParam("nodeid");
         $node = new Node($nodeID);
         $destIdNode = $this->request->getParam('targetid');
         $target = new Node($destIdNode);
-
         $nodename = $node->Get('Name');
         $idnode = $node->Get('IdNode');
         $idnodetype = $node->nodeType->get('IdNodeType');
-
         $recursive = $this->request->getParam('recursive');
         $recursive = $recursive == 'on' ? true : false;
-
         if ($nodeID == $destIdNode) {
             $this->messages->add(_('Source node cannot be the same as destination node'), MSG_TYPE_ERROR);
             $this->sendJSON(array('messages' => $this->messages->messages));
             return;
         }
         $this->messages = copyNode($nodeID, $destIdNode, $recursive);
-
         $values = array('messages' => $this->messages->messages,
             "parentID"=> $destIdNode,
             'action_with_no_return' => true);
@@ -95,28 +89,28 @@ class Action_copy extends ActionAbstract {
 
     /**
      * Get an array with the available target info
+     * 
      * @param int $idNode of the node to move.
      * @param int $idNodeType of the node to move.
      * @return array With path and idnode for every target folder
      */
-    protected function getTargetNodes($idNode, $idNodeType){
-
+    protected function getTargetNodes($idNode, $idNodeType)
+    {
         $nodeAllowedContent = new NodeAllowedContent();
         $arrayNodeTypesAllowed = $nodeAllowedContent->getAllowedParents($idNodeType);
-
         $node = new Node($idNode);
         $arrayIdnodes = $node->find("IdNode", "idnodetype in (".implode(",", $arrayNodeTypesAllowed).") order by path",array( ),MONO);
         $idTargetNodes = array();
         foreach ($arrayIdnodes as $idCandidateNode) {
-            if ($this->checkTargetConditions($idNode, $idCandidateNode))
+            if ($this->checkTargetConditions($idNode, $idCandidateNode)) {
                 $idTargetNodes[] = $idCandidateNode;
+            }
         }
         $targetNodes = array();
         foreach ($idTargetNodes as $idTargetNode) {
             $targetNode =  new Node($idTargetNode);
             $arrayAux["path"] = str_replace("/Ximdex/Projects/","", $targetNode->GetPath());
             $arrayAux["idnode"] = $targetNode->GetID();
-
             $targetNodes[] = $arrayAux;
         }
         return $targetNodes;
@@ -125,17 +119,20 @@ class Action_copy extends ActionAbstract {
     /**
      * Check if the propousal node can be target for the current one.
      * Must be in the same project
+     * 
      * @param int $idCurrentNode
      * @param int $idCandidateNode
      * @result boolean True if everything is ok.
      */
-    protected function checkTargetConditions($idCurrentNode, $idCandidateNode){
+    protected function checkTargetConditions($idCurrentNode, $idCandidateNode)
+    {
         $node = new Node($idCurrentNode);
         $candidateNode = new Node($idCandidateNode);
         return $node->getProject() == $candidateNode->getProject();
     }
 
-    function checkNodeName() {
+    function checkNodeName()
+    {
         $actionNodeId = $this->request->getParam("nodeid"); //node to copy
         $destNodeId = $this->request->getParam('targetid'); //destination node
         $actionNode = new Node($actionNodeId);

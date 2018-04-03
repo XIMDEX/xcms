@@ -44,14 +44,16 @@ require_once(APP_ROOT_PATH . XIMDEX_VENDORS . '/flow/Uploader.php');
 
 class Action_fileupload_common_multiple extends ActionAbstract
 {
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
         $this->uploadsFolder = XIMDEX_ROOT_PATH . App::getValue( 'TempRoot') .'/'. App::getValue( 'UploadsFolder');
         $this->chunksFolder = XIMDEX_ROOT_PATH . App::getValue( 'TempRoot') .'/'. App::getValue( 'ChunksFolder');
     }
 
     // Main method: shows initial form
-    public function index () {
+    public function index ()
+    {
         $is_structured = false;
         $idNode = (int) $this->request->getParam("nodeid");
         $actionID = (int) $this->request->getParam("actionid");
@@ -65,20 +67,20 @@ class Action_fileupload_common_multiple extends ActionAbstract
         
         /** ********* Checking permits **************************** */
         $userid = \Ximdex\Runtime\Session::get('userID');
-        if(empty($userid)) {
+        if (empty($userid)) {
             $this->messages->add(_('It is necessary to be an active user to upload files'), MSG_TYPE_ERROR);
         }
-        if(empty($type_node)) {
+        if (empty($type_node)) {
             $this->messages->add(_('NodeType is empty'), MSG_TYPE_ERROR);
         }
         $user = new \Ximdex\Models\User($userid);
-        if(!$user->canWrite(array('node_id' => $idNode)) ) {
+        if (!$user->canWrite(array('node_id' => $idNode)) ) {
             $this->messages->add(_('Files cannot be added because of lack of permits'), MSG_TYPE_ERROR);
         }
 
         /** ********* Preparing view ************ */
         //Filter and button tag according to type of upload file
-        switch($type_node)  {
+        switch ($type_node)  {
             case 'CssFolder':
                 $lbl_anadir = _(' Add style sheets');
                 $allowedMimes = 'text/css';
@@ -111,7 +113,6 @@ class Action_fileupload_common_multiple extends ActionAbstract
                 $lbl_anadir = _(' Add files');
                 $allowedMimes = '';
                 $allowedExtensions = '';
-                break;
         };
         $this->addJs('/actions/fileupload_common_multiple/resources/js/loader.js');
         $this->addCss('/actions/fileupload_common_multiple/resources/css/loader.css');
@@ -179,14 +180,16 @@ class Action_fileupload_common_multiple extends ActionAbstract
         $this->clearChunks();
     }
 
-    public function clearChunks() {
+    public function clearChunks()
+    {
         if (file_exists($this->chunksFolder)) {
             $uploader = new \Flow\Uploader();
             $uploader->pruneChunks($this->chunksFolder);
         }
     }
 
-    private function _saveFile($path) {
+    private function _saveFile($path)
+    {
         if (!file_exists($this->chunksFolder)) {
             mkdir($this->chunksFolder, 0777, true);
         }
@@ -209,7 +212,8 @@ class Action_fileupload_common_multiple extends ActionAbstract
         return false;
     }
 
-    public function uploadFlowFile() {
+    public function uploadFlowFile()
+    {
         if (!file_exists($this->uploadsFolder)) {
             mkdir($this->uploadsFolder, 0777, true);
         }
@@ -252,17 +256,19 @@ class Action_fileupload_common_multiple extends ActionAbstract
         }
     }
 
-    private function _setRest($msg, $status=500) {
+    private function _setRest($msg, $status = 500)
+    {
         $retval = array();
         $retval["msg"] = $msg;
-        $retval['status'] =  $status;
+        $retval['status'] = $status;
         return $retval;
     }
 
     /**
      * Creating a node according to name and file path
      */
-    private function _createNode($file, $idNode,  $type, $metadata, $overwrite) {
+    private function _createNode($file, $idNode,  $type, $metadata, $overwrite)
+    {
         $normalizedName = \Ximdex\Utils\Strings::normalize($file["name"]);
         $baseIoInferer = new \Ximdex\IO\BaseIOInferer();
         
@@ -297,7 +303,7 @@ class Action_fileupload_common_multiple extends ActionAbstract
         }
         elseif ($node->nodeType->get('IsFolder')) {
             
-            //To upload xml content
+            // To upload xml content
             if ($node->nodeType->get("Name")=="XmlRootFolder"){
                 $newNodeName = str_replace(".xml","",$normalizedName);
                 $data = array(

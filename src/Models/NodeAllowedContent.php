@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,29 +25,26 @@
  * @version $Revision$
  */
 
-
 namespace Ximdex\Models;
 
 use Ximdex\Models\ORM\NodeAllowedContentsOrm;
 
 /**
  * Class NodeAllowedContent
+ * 
  * @package Ximdex\Models
  */
 class NodeAllowedContent extends NodeAllowedContentsOrm
 {
-
     function getAllowedChilds($idnodetype)
     {
         $result = $this->find('NodeType', 'IdNodeType = %s AND Nodetype <> %s', array($idnodetype, $idnodetype), MONO);
         return $result;
     }
 
-
     function getAllowedParents($idNodetype)
     {
-
-        $result = $this->find("IdNodeType", "NodeType=%s", array($idNodetype), MONO);
+        $result = $this->find("IdNodeType", "NodeType = %s", array($idNodetype), MONO);
         return $result ? array_values(array_unique($result)) : array();
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,7 +25,6 @@
  *  @version $Revision$
  */
 
-
 use Ximdex\Models\Node;
 use Ximdex\Models\NodeAllowedContent;
 use Ximdex\Runtime\App;
@@ -33,48 +33,39 @@ use Ximdex\Sync\SynchroFacade;
 \Ximdex\Modules\Manager::file('/actions/movenode/baseIO.php');
 \Ximdex\Modules\Manager::file('/actions/copy/Action_copy.class.php');
 
-class Action_movenode extends Action_copy {
-
+class Action_movenode extends Action_copy
+{
    // Main method: shows initial form
-   public function index () {
-      	$idNode		= (int) $this->request->getParam("nodeid");
-
-		$node = new Node($idNode);
-		$idNodeType = $node->get('IdNodeType');
-
-		$nac = new NodeAllowedContent();
-		$allowedNodeTypes = $nac->find('IdNodeType', 'NodeType = %s', array($idNodeType), MONO);
-
-		$sync = new SynchroFacade();
-		$isPublished = $sync->isNodePublished($idNode);
-		$childList = $node->GetChildren();
-
-		if ($childList) {
-			foreach($childList as $child) {
-				$childNode = new Node($child);
-				$childList = array_merge($childList, $childNode->TraverseTree());
-			}
-
-			$pendingTasks = array();
-			foreach($childList as $nodeID) {
-				$pendingTasks =  array_merge($pendingTasks, $sync->getPendingTasksByNode($nodeID));
-				$numPendingTasks = count($pendingTasks);
-				$isPublished = $sync->isNodePublished($nodeID);
-
-				if($isPublished && $numPendingTasks > 0) {
-					break;
-				}
-			}
-		}
-
+   public function index ()
+   {
+        $idNode = (int) $this->request->getParam("nodeid");
+        $node = new Node($idNode);
+        $idNodeType = $node->get('IdNodeType');
+        $nac = new NodeAllowedContent();
+        $allowedNodeTypes = $nac->find('IdNodeType', 'NodeType = %s', array($idNodeType), MONO);
+        $sync = new SynchroFacade();
+        $isPublished = $sync->isNodePublished($idNode);
+        $childList = $node->GetChildren();
+        if ($childList) {
+        	foreach($childList as $child) {
+        		$childNode = new Node($child);
+        		$childList = array_merge($childList, $childNode->TraverseTree());
+        	}
+        	$pendingTasks = array();
+        	foreach ($childList as $nodeID) {
+        		$pendingTasks =  array_merge($pendingTasks, $sync->getPendingTasksByNode($nodeID));
+        		$numPendingTasks = count($pendingTasks);
+        		$isPublished = $sync->isNodePublished($nodeID);
+        		if ($isPublished && $numPendingTasks > 0) {
+        			break;
+        		}
+        	}
+        }
         $targetNodes = $this->getTargetNodes($node->GetID(), $node->GetNodeType());
-    
         $targetNodes = array_filter($targetNodes, function($nodes) use ($node) {
             return $nodes['idnode'] != $node->GetID();
         });
-
 		$this->addCss('/actions/copy/resources/css/style.css');
-		
 		$values = array(
 			'id_node' => $node->get('IdNode'),
 			'name' => $node->GetNodeName(),
@@ -88,57 +79,52 @@ class Action_movenode extends Action_copy {
 			'isPublished' => $isPublished,
 			"go_method" => "move_node"
 		);
-
 		$this->render($values, NULL, 'default-3.0.tpl');
     }
 
-	public function move_node() {
+	public function move_node()
+	{
       	$idNode = (int) $this->request->getParam("nodeid");
-
-		$targetParentID =  $this->request->getParam("targetid");
+		$targetParentID = $this->request->getParam("targetid");
 		$unpublishDoc = ($this->request->getParam("unpublishdoc") == 1) ? true : false;
-
 		$node = new Node($idNode);
 		$checks = $node->checkTarget($targetParentID);
-		if(null == $checks || !$checks["insert"] ) {
+		if (null == $checks || !$checks["insert"] ) {
 			$this->messages->add(_("Moving node to selected destination is not allowed"), MSG_TYPE_ERROR);
 			$values = array('messages' => $this->messages->messages);
-		}else {
-		  $this->_move($idNode, $targetParentID,  $unpublishDoc);
-		  $values = array(
-			'messages' => $this->messages->messages,
-			'id_node' => $idNode,
-			'params' => '',
-			'nodeURL' => App::getUrl("/?action=movenode&nodeid={$idNode}"),
-			'action_with_no_return' => true,
-			'parentID' => $targetParentID,
-			'oldParentID' => $node->GetParent()
-		  );
 		}
-
-
+		else {
+		    $this->_move($idNode, $targetParentID,  $unpublishDoc);
+		    $values = array(
+    			'messages' => $this->messages->messages,
+    			'id_node' => $idNode,
+    			'params' => '',
+    			'nodeURL' => App::getUrl("/?action=movenode&nodeid={$idNode}"),
+    			'action_with_no_return' => true,
+    			'parentID' => $targetParentID,
+    			'oldParentID' => $node->GetParent()
+		    );
+		}
 		$this->sendJSON($values);
 	}
 
-	public function confirm_move(){
+	public function confirm_move()
+	{
 		$idNode = (int) $this->request->getParam("nodeid");
-
-		$targetParentID =  $this->request->getParam("targetid");
+		$targetParentID = $this->request->getParam("targetid");
 		$unpublishDoc = ($this->request->getParam("unpublishdoc") == 1) ? true : false;
-
 		$node = new Node($idNode);
 		$checks = $node->checkTarget($targetParentID);
 		$smarty = null;
 		$genericTemplate = null;
-		if(null == $checks || !$checks["insert"] ) {
+		if (null == $checks || !$checks["insert"]) {
 			$this->messages->add(_("Moving node to selected destination is not allowed"), MSG_TYPE_ERROR);
-		}else {
+		}
+		else {
 		  $smarty = "confirm";
 		  $genericTemplate = "default-3.0.tpl";
 		}
-
 		$targetNode = new Node($targetParentID);
-
 		$values = array(
 			'messages' => $this->messages->messages,
 			'nodeid' => $idNode,
@@ -150,38 +136,31 @@ class Action_movenode extends Action_copy {
 			"nodeURL" => App::getUrl("/?action=movenode&nodeid={$idNode}"),
 			"go_method" => "move_node"
 		);
-
 		$this->render($values,$smarty, $genericTemplate);
 	}
 
-    private function _move($idNode, $targetParentID,  $unpublishDoc) {
-
+    private function _move($idNode, $targetParentID,  $unpublishDoc)
+    {
 		$node = new Node($idNode);
 		$oldParentId = $node->GetParent();
-		$parent = null;
-
 		$err = baseIO_MoveNode($idNode, $targetParentID);
-
-		if(!$err) {
+		if (!$err) {
 			$this->messages->add(sprintf(_("Node %s has been successfully moved"), $node->GetNodeName()), MSG_TYPE_NOTICE);
 			$sync = new SynchroFacade();
 			$sync->deleteAllTasksByNode($idNode, $unpublishDoc);
-		}else {
+		}
+		else {
 			$this->messages->add(_($err), MSG_TYPE_ERROR);
 			return false;
 		}
-		
-		//update templates_includes files if node type is a XSL template
-		if ($node->GetNodeType() == \Ximdex\NodeTypes\NodeTypeConstants::XSL_TEMPLATE)
-		{
+		// Update templates_includes files if node type is a XSL template
+		if ($node->GetNodeType() == \Ximdex\NodeTypes\NodeTypeConstants::XSL_TEMPLATE) {
             $xsltNode = new \Ximdex\NodeTypes\XsltNode($node);
-            if ($xsltNode->move_node($targetParentID) === false)
-            {
+            if ($xsltNode->move_node($targetParentID) === false) {
                 $this->messages->mergeMessages($xsltNode->messages);
                 return false;
             }
 		}
-		
 		$targetParent = new Node($targetParentID);
 		return $targetParent->class->updatePath();
     }
@@ -189,20 +168,20 @@ class Action_movenode extends Action_copy {
     /**
      * Check if the propousal node can be target for the current one.
      * Must be in the same project
+     * 
      * @param int $idCurrentNode
      * @param int $idCandidateNode
      * @result boolean True if everything is ok.
      */
-    protected function checkTargetConditions($idCurrentNode, $idCandidateNode){
-
+    protected function checkTargetConditions($idCurrentNode, $idCandidateNode)
+    {
         $result = false;
         $node = new Node($idCurrentNode);
         $currentNodeName = $node->GetNodeName();
         $candidateNode = new Node($idCandidateNode);
-
-        if ($node->getProject() != $candidateNode->getProject())
+        if ($node->getProject() != $candidateNode->getProject()) {
             return false;
-
+        }
         return !$candidateNode->GetChildByName($currentNodeName);
     }
 }
