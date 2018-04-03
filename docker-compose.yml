@@ -15,16 +15,26 @@ services:
   
   db:
     image: "mysql:5.7"
+    
     # Path where MySQL data will be
     volumes:
       - .data/db:/var/lib/mysql
       - ./docker/db.cnf:/etc/mysql/conf.d/db.cnf
+    
     # The first time, it creates a Database called ximdex with user ximdex, modify it if you are in production
     environment:
       MYSQL_ROOT_PASSWORD: ximdex
       MYSQL_USER: ximdex
       MYSQL_PASSWORD: ximdex
       MYSQL_DATABASE: ximdex
+    
     # Only if you want to expose your MySQL
     # ports:
     #   - 3306:3306
+    
+  composer:
+    restart: 'no'
+    image: composer:latest
+    command: install --no-dev
+    volumes:
+      - ./:/app
