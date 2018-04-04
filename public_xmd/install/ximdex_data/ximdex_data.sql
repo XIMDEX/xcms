@@ -1,7 +1,7 @@
 INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`, `IsBulk`)
 VALUES
     (6043,5018,'Add XML or HTML documents','fileupload_common_multiple','add_xml.png','Create new XML and HTML documents in several languages',9,NULL,0,'',0),
-    (6044,5018,'Add new XML or HTML document','createxmlcontainer','add_xml.png','Create a new XML or HTML document in several languages',10,NULL,0,'',0),
+    (6044,5018,'Add new XML document','createxmlcontainer','add_xml.png','Create a new XML or HTML document in several languages',10,NULL,0,'',0),
     (6071,5050,'Add new external link','createlink','add_external_link.png','Create a new external link',10,NULL,0,'',0),
     (6072,5048,'Add new external link','createlink','add_external_link.png','Create a new external link',10,NULL,0,'',0),
     (6138,5054,'Add new ximlet','createxmlcontainer','add_xml.png','Create a new document structured in several languages',10,NULL,0,'',0),

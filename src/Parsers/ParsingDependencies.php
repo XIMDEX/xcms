@@ -122,7 +122,7 @@ class ParsingDependencies
             case NodeTypeConstants::CSS_FILE:
                 $result = self::parseCssDependencies($node, $content, $idVersion);
                 break;
-            //TODO ajlucena Parse js dependencies?
+            //TODO Parse js dependencies?
             default:
                 return true;
         }
@@ -324,7 +324,7 @@ class ParsingDependencies
         }
 
         // Transforming the content for each defined channel
-        if ($channels)
+        if ($channels) {
             foreach ($channels as $idChannel) {
 
                 // Transforming with the given content and no cache
@@ -344,6 +344,7 @@ class ParsingDependencies
                 $res = self::getDotDot($postContent, $idServer);
                 $dotDots = array_merge($dotDots, $res);
             }
+        }
         $links = array_unique(array_merge($assets, $links, $pathTos, $dotDots));
 
         // Add dependencies between nodes for every channel in NodeDependencies
@@ -609,9 +610,8 @@ class ParsingDependencies
      * If the $test param is passed with true value, return true if the nodes linked exists in nodes database (now is inter-projects)
      *
      * @param string $content
-     * @param integer $nodeId
-     * @param string $test
-     * @return boolean|array
+     * @param int $nodeId
+     * @return array
      */
     public static function getPathTo($content, $nodeId)
     {
@@ -625,7 +625,8 @@ class ParsingDependencies
 
                 // If the document is a template in the project templates node, the resources in the macros (not nodeId given) cannot be obtained
                 if (($server !== null or is_numeric($pathTo)) and ($parserPathTo->parsePathTo($pathTo, $nodeId) === false)) {
-                    $error = 'The document or its dependencies references a non existant node or resource (' . $pathTo . ') in a RMximdex.pathto directive';
+                    $error = 'The document or its dependencies references a non existant node or resource (' . $pathTo 
+                            . ') in a RMximdex.pathto directive';
                     Logger::warning($error);
                     $GLOBALS['parsingDependenciesError'] = $error;
                 } else {

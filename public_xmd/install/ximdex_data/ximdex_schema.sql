@@ -803,9 +803,38 @@ CREATE TABLE `RelDocumentFolderToTemplatesIncludeFile` (
   `source` int(12) NOT NULL COMMENT 'idNode of the XML document folder',
   `target` int(12) NOT NULL COMMENT 'idNode of the templates folder'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Relation between XML document and the templates_include.xsl file associated';
+
 ALTER TABLE `RelDocumentFolderToTemplatesIncludeFile`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `unique_source` (`source`) USING BTREE,
   ADD KEY `source` (`source`),
   ADD KEY `target` (`target`);
 ALTER TABLE `RelDocumentFolderToTemplatesIncludeFile` MODIFY `id` int(12) NOT NULL AUTO_INCREMENT;
+
+CREATE TABLE `ProgrammingCode` (
+  `id` int(11) UNSIGNED NOT NULL,
+  `idLanguage` varchar(50) NOT NULL,
+  `idCommand` varchar(50) NOT NULL,
+  `code` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `ProgrammingCommand` (
+  `id` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `ProgrammingLanguage` (
+  `id` varchar(50) NOT NULL,
+  `description` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ALTER TABLE `ProgrammingCode`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `idProgLanguage` (`idLanguage`,`idCommand`),
+  ADD KEY `idCommand` (`idCommand`);
+ALTER TABLE `ProgrammingCommand` ADD PRIMARY KEY (`id`);
+ALTER TABLE `ProgrammingLanguage` ADD PRIMARY KEY (`id`);
+ALTER TABLE `ProgrammingCode` MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+ALTER TABLE `ProgrammingCode`
+  ADD CONSTRAINT `ProgrammingCode_ibfk_1` FOREIGN KEY (`idLanguage`) REFERENCES `ProgrammingLanguage` (`id`),
+  ADD CONSTRAINT `ProgrammingCode_ibfk_2` FOREIGN KEY (`idCommand`) REFERENCES `ProgrammingCommand` (`id`);

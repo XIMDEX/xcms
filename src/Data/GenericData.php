@@ -426,7 +426,7 @@ class GenericData
      * @param string $index
      * @param string $order
      * @param string $groupBy
-     * @return array
+     * @return array|bool
      */
     public function find($fields = ALL, $condition = '', $params = null, $returnType = MULTI, $escape = true, string $index = null
         , string $order = null, string $groupBy = null)

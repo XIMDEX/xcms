@@ -37,7 +37,7 @@ class Db
      */
     static public function getInstance($conf = null)
     {
-        return new   \Ximdex\Runtime\Db();
+        return new \Ximdex\Runtime\Db();
     }
 
     /**
@@ -59,13 +59,15 @@ class Db
    	 * Reconnect the Database
    	 * @return boolean
    	 */
-    public function reconectDataBase(){
+    public function reconectDataBase()
+    {
          $dbConfig = App::getInstance()->getValue('db', 'db');
-         if ( !empty( $dbConfig ) )
+         if (!empty($dbConfig))
          {
          	try
          	{
-         	    $dbConn = new \PDO("{$dbConfig['type']}:host={$dbConfig['host']};port={$dbConfig['port']};dbname={$dbConfig['db']};charset=utf8", $dbConfig['user'], $dbConfig['password']);
+         	    $dbConn = new \PDO("{$dbConfig['type']}:host={$dbConfig['host']};port={$dbConfig['port']};dbname={$dbConfig['db']};charset=utf8"
+         	        , $dbConfig['user'], $dbConfig['password']);
          	}
          	catch (\PDOException $e)
          	{
@@ -100,7 +102,7 @@ class Db
         $this->rows = array();
         try
         {
-            $this->stm = @$this->db->query($this->sql, \PDO::FETCH_ASSOC);
+            $this->stm = $this->db->query($this->sql, \PDO::FETCH_ASSOC);
         }
         catch (\PDOException $e)
         {
@@ -110,7 +112,7 @@ class Db
             $this->stm = false;
         }
         if ($this->stm === false)
-        {    
+        {
             if (isset($GLOBALS['InBatchProcess']) and $GLOBALS['InBatchProcess'])
             {
                 // If the database server has gone away, try a new connection
@@ -176,7 +178,7 @@ class Db
         // Change to prepare to obtain num rows
         try
         {
-            $res = @$this->db->exec($this->sql);
+            $res = $this->db->exec($this->sql);
         }
         catch (\PDOException $e)
         {

@@ -81,7 +81,8 @@ class ParsingPathTo
     public function parsePathTo(string $pathToParams, int $nodeId = null, int $language = null, $channel = null) : bool
     {
         $msg = 'Parsing pathTo with: ' . $pathToParams;
-        if ($nodeId) {
+        if ($nodeId)
+        {
             $msg .= ' for parent document node: ' . $nodeId;
         }
         Logger::info($msg);
@@ -96,18 +97,21 @@ class ParsingPathTo
 
         // Checking the first params. It could be number, or .number or string
         $nodeValue = trim(urldecode($params[0]));
-        if (isset($params[1])) {
-            
+        if (isset($params[1]))
+        {    
             // The second one is value is the channel name or ID (optional)
             $channelParam = trim($params[1]);
             $channel = new Channel();
-            if (is_numeric($channelParam)) {
+            if (is_numeric($channelParam))
+            {
                 $channel = $channel->find('IdChannel', 'IdChannel = ' . $channelParam);
             }
-            else {
+            else
+            {
                 $channel = $channel->find('IdChannel', 'Name =  \'' . $channelParam . '\'');
             }
-            if (!$channel) {
+            if (!$channel)
+            {
                 $error = 'The specified channel ' . $channelParam . ' does not exist';
                 $this->messages->add($error, MSG_TYPE_WARNING);
                 Logger::warning($error);
@@ -115,12 +119,11 @@ class ParsingPathTo
             }
             $this->channel = $channel[0]['IdChannel'];
         }
-        else {
-            
+        else
+        {
             // Specified channel has not been given in function parameters
             $this->channel = null;
         }
-
         if (is_numeric($nodeValue))
         {
             // The macro has the node ID
@@ -172,7 +175,7 @@ class ParsingPathTo
                 }
                 
                 // Sanitize path
-                if (!self::sanitize_pathTo($path))
+                if (!$this->sanitize_pathTo($path))
                 {
                     Logger::error('Cannot sanitize the path: ' . $path . ' when parsing pathto');
                     return false;
@@ -241,7 +244,7 @@ class ParsingPathTo
                 
                 // Sanitize path
                 $path = implode('/', $pathData);
-                if (!self::sanitize_pathTo($path))
+                if (!$this->sanitize_pathTo($path))
                 {
                     Logger::error('Cannot sanitize the path: ' . $idServer . ' when parsing pathto');
                     return false;
@@ -255,7 +258,7 @@ class ParsingPathTo
             }
             if (!$id)
             {
-                Logger::error('Cannot obtain the node for resource: ' . $nodeValue);
+                Logger::warning('Cannot obtain the node for resource: ' . $nodeValue);
                 return false;
             }
             $id = $id[0]['IdNode'];
@@ -330,10 +333,11 @@ class ParsingPathTo
 
     /**
      * Return the given path without ../ and ./ and extra /
+     * 
      * @param string $path
      * @return bool
      */
-    private static function sanitize_pathTo(string & $path) : bool
+    private function sanitize_pathTo(string & $path) : bool
     {
         $path = str_replace(' ', '', $path);
         $pathData = explode('/', $path);
