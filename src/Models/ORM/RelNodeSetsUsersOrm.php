@@ -1,8 +1,5 @@
 <?php
 
-namespace Ximdex\Models\ORM;
-use Ximdex\Data\GenericData;
-
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -27,7 +24,12 @@ use Ximdex\Data\GenericData;
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
-class RelNodeSetsUsersOrm extends  GenericData
+
+namespace Ximdex\Models\ORM;
+
+use Ximdex\Data\GenericData;
+
+class RelNodeSetsUsersOrm extends GenericData
 {
     var $_idField = 'Id';
     var $_table = 'RelNodeSetsUsers';

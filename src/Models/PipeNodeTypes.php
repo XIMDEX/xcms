@@ -30,11 +30,9 @@ namespace Ximdex\Models;
 use Ximdex\Models\ORM\PipeNodeTypesOrm;
 
 /**
- *
  * @brief Describes the relation between pipelines and nodetypes
  *
  * Describes the relation between pipelines and nodetypes, actually is not being used
- *
  */
 class PipeNodeTypes extends PipeNodeTypesOrm
 {}

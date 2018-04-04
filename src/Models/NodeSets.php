@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,7 +25,6 @@
  * @version $Revision$
  */
 
-
 namespace Ximdex\Models;
 
 use Ximdex\Models\Iterators\IteratorNodeSets;
@@ -33,18 +33,15 @@ use Ximdex\Models\Iterators\IteratorNodeSetsUsers;
 use RelNodeSetsUsers;
 use Ximdex\Models\ORM\NodeSetsOrm;
 
-
-
 class NodeSets extends NodeSetsOrm
 {
-
     public function __construct($id = null)
     {
         parent::__construct($id);
     }
 
     /**
-     *    Returns the set id
+     * Returns the set id
      */
     public function getId()
     {
@@ -52,7 +49,7 @@ class NodeSets extends NodeSetsOrm
     }
 
     /**
-     *    Returns the set name
+     * Returns the set name
      */
     public function getName()
     {
@@ -60,7 +57,7 @@ class NodeSets extends NodeSetsOrm
     }
 
     /**
-     *    Returns the sets count
+     * Returns the sets count
      */
     public function getItems()
     {
@@ -70,11 +67,10 @@ class NodeSets extends NodeSetsOrm
     }
 
     /**
-     *    Static method that creates a new NodeSet and returns the related object
+     * Static method that creates a new NodeSet and returns the related object
      */
     static public function & create($name)
     {
-
         $ns = new NodeSets();
         $ns->set('Name', $name);
         $newId = $ns->add();
@@ -82,23 +78,19 @@ class NodeSets extends NodeSetsOrm
     }
 
     /**
-     *    Deletes the current set
+     * Deletes the current set
      */
     public function delete()
     {
-
         $db = new \Ximdex\Runtime\Db();
-
         $sql = sprintf('delete from RelNodeSetsNode where IdSet = %s', $this->getId());
         $db->execute($sql);
         $sql = 'alter table RelNodeSetsNode auto_increment = 0';
         $db->execute($sql);
-
         $sql = sprintf('delete from RelNodeSetsUsers where IdSet = %s', $this->getId());
         $db->execute($sql);
         $sql = 'alter table RelNodeSetsUsers auto_increment = 0';
         $db->execute($sql);
-
         $ret = parent::delete();
         $sql = 'alter table NodeSets auto_increment = 0';
         $db->execute($sql);
@@ -106,9 +98,8 @@ class NodeSets extends NodeSetsOrm
     }
 
     /**
-     *    Returns an iterator of all node sets by user
-     */
-    /**
+     * Returns an iterator of all node sets by user
+     * 
      * @param $idUser
      * @return IteratorNodeSets|IteratorNodeSetsUsers
      */
@@ -124,7 +115,7 @@ class NodeSets extends NodeSetsOrm
     }
 
     /**
-     *    Returns an iterator of all node sets
+     * Returns an iterator of all node sets
      */
     static public function & getAllSets()
     {
@@ -133,9 +124,8 @@ class NodeSets extends NodeSetsOrm
     }
 
     /**
-     *    Returns an iterator of all related nodes in this set
-     */
-    /**
+     * Returns an iterator of all related nodes in this set
+     * 
      * @return IteratorNodeSetsNodes
      */
     public function & getNodes()
@@ -145,7 +135,7 @@ class NodeSets extends NodeSetsOrm
     }
 
     /**
-     *    Adds a new node to the current set and returns the related object
+     * Adds a new node to the current set and returns the related object
      */
     public function & addNode($idNode)
     {
@@ -154,7 +144,7 @@ class NodeSets extends NodeSetsOrm
     }
 
     /**
-     *    Deletes a node from the current set
+     * Deletes a node from the current set
      */
     public function deleteNode($idNode)
     {
@@ -168,7 +158,7 @@ class NodeSets extends NodeSetsOrm
     }
 
     /**
-     *    Returns an iterator of all related users can see this set
+     * Returns an iterator of all related users can see this set
      */
     public function & getUsers()
     {
@@ -177,7 +167,7 @@ class NodeSets extends NodeSetsOrm
     }
 
     /**
-     *    Adds a new user to the current set and returns the related object
+     * Adds a new user to the current set and returns the related object
      */
     public function & addUser($idUser, $owner = RelNodeSetsUsers::OWNER_NO)
     {
@@ -186,7 +176,7 @@ class NodeSets extends NodeSetsOrm
     }
 
     /**
-     *    Deletes an user from the current set
+     * Deletes an user from the current set
      */
     public function deleteUser($idUser)
     {
@@ -198,5 +188,4 @@ class NodeSets extends NodeSetsOrm
         }
         return $rel;
     }
-
 }

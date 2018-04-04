@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -26,9 +27,10 @@
 
 namespace Ximdex\Models;
 
-class RelNodeMetadata extends \Ximdex\Data\GenericData
-{
+use Ximdex\Data\GenericData;
 
+class RelNodeMetadata extends GenericData
+{
     var $_idField = 'idRel';
     var $_table = 'RelNodeMetadata';
     var $_metaData = array(

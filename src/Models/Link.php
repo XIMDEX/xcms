@@ -31,14 +31,9 @@ use Ximdex\Logger;
 use Ximdex\Models\Iterators\IteratorLinkDescriptions;
 use Ximdex\Models\ORM\LinksOrm;
 
-/**
- * @method Array search($conditions)
- */
 class Link extends LinksOrm
 {
-
     var $actsAs = array('\Ximdex\Behaviours\Search' => array('field' => 'IdLink'));
-
 
     const LINK_FAIL = "fail";
     const LINK_OK = "ok";
@@ -47,7 +42,6 @@ class Link extends LinksOrm
 
     function checkUrl($url, $name = null)
     {
-
         $conditions = array('conditions' => array('Url' => $url));
         if (!empty($name)) {
             $conditions['conditions']['name'] = $name;
@@ -95,4 +89,3 @@ class Link extends LinksOrm
         return $rel;
     }
 }
-

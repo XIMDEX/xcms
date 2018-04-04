@@ -24,16 +24,15 @@
  * @version $Revision$
  */
 
-
 namespace Ximdex\Models;
 
 use Ximdex\Models\ORM\NodetypeModesOrm;
 
 use Ximdex\Runtime\Constants ;
 
-
 /**
  * Class NodetypeMode
+ * 
  * @package Ximdex\Models
  */
 class NodetypeMode extends NodetypeModesOrm

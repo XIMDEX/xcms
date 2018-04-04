@@ -1,18 +1,12 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: drzippie
- * Date: 27/1/16
- * Time: 15:39
- */
 
 namespace Ximdex\Models\ORM;
-
 
 use Ximdex\Data\GenericData;
 
 /**
  * Class ConfigOrm
+ * 
  * @package Ximdex\Models
  */
 class ConfigOrm extends GenericData

@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,17 +25,13 @@
  *  @version $Revision$
  */
 
-
-
-
 namespace Ximdex\Models;
 
-use  Ximdex\Logger;
+use Ximdex\Logger;
+use Ximdex\Data\GenericData;
 
-
-
-class NodeEdition extends \Ximdex\Data\GenericData {
-
+class NodeEdition extends GenericData
+{
     var $_idField = 'Id';
     var $_table = 'NodeEdition';
     var $_metaData = array(
@@ -50,103 +47,98 @@ class NodeEdition extends \Ximdex\Data\GenericData {
     var $IdUser;
     var $StartTime;
 
-        /**
-         * <p>Creates a new row in the NodeEdition database</p>
-         * @param int $idNode The Node Id
-         * @param int  $idUser The User Id
-         * @param int $startTime The start time of the edition
-         * @return boolean indicatingwhether the creation has been successful or not
-         */
-	public function create($idNode, $idUser, $startTime = null) {
-
-		if (is_null($idNode) || is_null($idUser)) {
+    /**
+     * Creates a new row in the NodeEdition database
+     * 
+     * @param int $idNode The Node Id
+     * @param int  $idUser The User Id
+     * @param int $startTime The start time of the edition
+     * @return boolean indicatingwhether the creation has been successful or not
+     */
+	public function create($idNode, $idUser, $startTime = null)
+	{
+		if (is_null($idNode) || is_null($idUser))
+		{
 			Logger::error(_('Params node and user are mandatory'));
 			return false;
 		}
-
 		$this->set('IdNode', $idNode);
 		$this->set('IdUser', $idUser);
 		$this->set('StartTime', is_null($startTime) ? time() : $startTime);
-
 		parent::add();
 		$nodeEditionId = $this->get('Id');
-
-		if (!($nodeEditionId > 0)) {
+		if (!($nodeEditionId > 0))
+		{
 			Logger::error(_("Error Adding NodeEdition"));
 			return false;
 		}
-
 		return true;
 	}
 
-        /**
-         * <p>Get the NodeEdition by node</p>
-         * @param mixed $node The Node object or node id
-         * @return array Containing the number of simultaneous editions of this node
-         */
-        public function getByNode($node) {
-            if(is_object($node)) {
-                $nodeId = $node->GetID();
-            }
-            else {
-                $nodeId = $node;
-            }
-            
-            $nodeId = empty($nodeId) ? $this->get("IdNode") : $nodeId;
-            $this->ClearError();
-            if (!empty($nodeId)) {
-                    $result = $this->find("IdUser,StartTime", "IdNode = %s", array($nodeId));
-                    return $result;
-            }
-		/* It is a query, no exception needed
-		 else {
-			$this->SetError(1);
-		}*/
-            return array();
+    /**
+     * Get the NodeEdition by node
+     * 
+     * @param mixed $node The Node object or node id
+     * @return array Containing the number of simultaneous editions of this node
+     */
+    public function getByNode($node)
+    {
+        if (is_object($node))
+        {
+            $nodeId = $node->GetID();
         }
+        else
+        {
+            $nodeId = $node;
+        }
+        $nodeId = empty($nodeId) ? $this->get("IdNode") : $nodeId;
+        $this->ClearError();
+        if (!empty($nodeId))
+        {
+            $result = $this->find("IdUser,StartTime", "IdNode = %s", array($nodeId));
+            return $result;
+        }
+        return array();
+    }
         
 	/**
-	 * <p>Deletes a node edition by node and user</p>
-         * <p>Indicates that a given user has finished the edition of the node</`
+	 * Deletes a node edition by node and user
+     * Indicates that a given user has finished the edition of the node
 	 *
 	 * @param int $idNode The node id
-         * @param int $idUser The user id
+     * @param int $idUser The user id
 	 * @return boolean indicating if the deletion of the edition has been successful or not
 	 */
-	
-	function deleteByNodeAndUser($idNode = null, $idUser = null) {
-		
-		if (is_null($idNode) || is_null($idUser)) {
+	function deleteByNodeAndUser($idNode = null, $idUser = null)
+	{
+		if (is_null($idNode) || is_null($idUser))
+		{
 			Logger::error(_('Params node and user are mandatory'));
 			return false;
 		}
-
  		$dbObj = new \Ximdex\Runtime\Db();
-                $sql = sprintf("DELETE FROM NodeEdition WHERE IdNode = %d AND IdUser = %s", $idNode, $idUser);
+        $sql = sprintf("DELETE FROM NodeEdition WHERE IdNode = %d AND IdUser = %s", $idNode, $idUser);
 		$dbObj->Execute($sql);
-
 		return true;
 	}
+	
 	/**
-	 * <p>Deletes all node edition of a user</p>
-         * <p>Indicates that a given user has finished the edition on the different nodes</`
+	 * Deletes all node edition of a user
+     * Indicates that a given user has finished the edition on the different nodes
 	 *
      * @param int $idUser The user id
 	 * @return boolean indicating if the deletion of the edition has been successful or not
 	 */
-	
-	function deleteByUser($idUser = null) {
-		
-		if (is_null($idUser)) {
+	function deleteByUser($idUser = null)
+	{
+		if (is_null($idUser))
+		{
 			Logger::error(_('Param user is mandatory'));
 			return false;
 		}
-
  		$dbObj = new \Ximdex\Runtime\Db();
-                $sql = sprintf("DELETE FROM NodeEdition WHERE IdUser = %s", $idUser);
+        $sql = sprintf("DELETE FROM NodeEdition WHERE IdUser = %s", $idUser);
 		$dbObj->Execute($sql);
-
 		return true;
 	}
 }
-?>

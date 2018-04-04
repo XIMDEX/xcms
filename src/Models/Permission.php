@@ -29,28 +29,29 @@ namespace Ximdex\Models;
 
 use Ximdex\Models\ORM\PermissionsOrm;
 
-
 class Permission extends PermissionsOrm
 {
     var $permissionID;
     var $dbObj;
     var $numErr;                // Error code
     var $msgErr;                // Error message
-    var $errorList = array(        // Class error list
+    var $errorList = array(     // Class error list
         1 => 'Database connection error',
         2 => 'Permit does not exist',
         3 => 'Not initialized object'
     );
-
     var $_fieldsToTraduce = array('Description');
 
-    //Constructor
-    function Permission($_params = null)
+    /**
+     * Constructor
+     * 
+     * @param $_params
+     */
+    function __construct($_params = null)
     {
         $this->errorList[1] = _('Database connection error');
         $this->errorList[2] = _('Permit does not exist');
         $this->errorList[3] = _('Not initialized object');
-
         parent::__construct($_params);
     }
 
@@ -73,14 +74,22 @@ class Permission extends PermissionsOrm
         return $result;
     }
 
-
-    // Returns the idPermission of an object
+    /**
+     * Returns the idPermission of an object
+     * 
+     * @return int
+     */
     function GetID()
     {
         return $this->get('IdPermission');
     }
 
-    // Allows as to change the object idPermission. This avoid the have to destroy and re-create
+    /**
+     * Allows as to change the object idPermission. This avoid the have to destroy and re-create
+     * 
+     * @param $id
+     * @return NULL|boolean|string
+     */
     function SetID($id = null)
     {
         $this->ClearError();
@@ -105,14 +114,22 @@ class Permission extends PermissionsOrm
         }
     }
 
-    // Returns the user name associated to an idPermission
+    /**
+     * Returns the user name associated to an idPermission
+     * 
+     * @return boolean|string
+     */
     function GetName()
     {
         return $this->get("Name");
     }
 
-
-    // UPdates the database with the new permit name
+    /**
+     * Updates the database with the new permit name
+     * 
+     * @param $name
+     * @return boolean|boolean|number|NULL|string
+     */
     function SetName($name)
     {
         $this->ClearError();
@@ -120,7 +137,6 @@ class Permission extends PermissionsOrm
             $this->SetError(2);
             return false;
         }
-
         $result = $this->set('Name', $name);
         if ($result) {
             return $this->update();
@@ -128,12 +144,10 @@ class Permission extends PermissionsOrm
         return false;
     }
 
-
     function GetDescription()
     {
         return $this->get("Description");
     }
-
 
     function SetDescription($description)
     {
@@ -142,7 +156,6 @@ class Permission extends PermissionsOrm
             $this->SetError(2);
             return false;
         }
-
         $result = $this->set('Description', $description);
         if ($result) {
             return $this->update();
@@ -150,13 +163,17 @@ class Permission extends PermissionsOrm
         return false;
     }
 
-
     function add()
     {
         $this->CreateNewPermission($this->get('Name'));
     }
 
-    // Creates a new permit if this not exist in the database and loads its idPermission
+    /**
+     * Creates a new permit if this not exist in the database and loads its idPermission
+     * @param $name
+     * @param $pID
+     * @return int|bool
+     */
     function CreateNewPermission($name, $pID = NULL)
     {
         $dbObj = new \Ximdex\Runtime\Db();
@@ -177,7 +194,9 @@ class Permission extends PermissionsOrm
         $this->DeletePermission();
     }
 
-    // Deletes the current permit
+    /**
+     * Deletes the current permit
+     */
     function DeletePermission()
     {
         $this->ClearError();
@@ -200,23 +219,31 @@ class Permission extends PermissionsOrm
         $myrole->DeletePermission($this->get('IdPermission'));
     }
 
-
-    /// Cleans the class errors
+    /**
+     * Cleans the class errors
+     */
     function ClearError()
     {
         $this->numErr = null;
         $this->msgErr = null;
     }
 
-    /// Loads the class error
+    /**
+     * Loads the class error
+     * 
+     * @param $code
+     */
     function SetError($code)
     {
         $this->numErr = $code;
         $this->msgErr = $this->errorList[$code];
     }
 
-
-    // Returns true if the class had an error
+    /**
+     * Returns true if the class had an error
+     * 
+     * @return boolean
+     */
     function HasError()
     {
         return ($this->numErr != null);

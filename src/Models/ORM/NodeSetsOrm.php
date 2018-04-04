@@ -1,8 +1,5 @@
 <?php
 
-namespace Ximdex\Models\ORM;
-use Ximdex\Data\GenericData;
-
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -27,7 +24,12 @@ use Ximdex\Data\GenericData;
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
-class NodeSetsOrm extends  GenericData
+
+namespace Ximdex\Models\ORM;
+
+use Ximdex\Data\GenericData;
+
+class NodeSetsOrm extends GenericData
 {
     var $_idField = 'Id';
     var $_table = 'NodeSets';
@@ -40,4 +42,3 @@ class NodeSetsOrm extends  GenericData
     var $Id;
     var $Name;
 }
-

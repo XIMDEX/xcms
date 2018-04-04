@@ -1,6 +1,5 @@
 <?php
 
-namespace Ximdex\Models\ORM;
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -25,7 +24,12 @@ namespace Ximdex\Models\ORM;
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
-class PipeCacheTemplatesOrm extends \Ximdex\Data\GenericData
+
+namespace Ximdex\Models\ORM;
+
+use Ximdex\Data\GenericData;
+
+class PipeCacheTemplatesOrm extends GenericData
 {
     var $_idField = 'id';
     var $_table = 'PipeCacheTemplates';

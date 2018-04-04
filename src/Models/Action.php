@@ -1,19 +1,22 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: drzippie
- * Date: 27/1/16
- * Time: 11:34
- */
 
 namespace Ximdex\Models;
-
 
 use Ximdex\Models\ORM\ActionsOrm;
 
 class Action extends ActionsOrm
 {
-
+    /**
+     * @param null $actionID
+     */
+    function __construct($actionID = null)
+    {
+        $this->flagErr = FALSE;
+        $this->autoCleanErr = TRUE;
+        $errorlist[1] = _('Database connection error');
+        $errorlist[2] = _('Action does not exist');   
+        parent::__construct($actionID);
+    }
 
     /**
      * ID of the current action.
@@ -455,18 +458,4 @@ class Action extends ActionsOrm
         $this->Action($result[0]);
         return $this->get('IdAction');
     }
-
-    /**
-     * @param null $actionID
-     */
-    function Action($actionID = null)
-    {
-        $this->flagErr = FALSE;
-        $this->autoCleanErr = TRUE;
-        $errorlist[1] = _('Database connection error');
-        $errorlist[2] = _('Action does not exist');
-
-        parent::__construct($actionID);
-    }
-
 }

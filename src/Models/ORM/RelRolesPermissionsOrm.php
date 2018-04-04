@@ -2,11 +2,11 @@
 
 namespace Ximdex\Models\ORM;
 
-
 use Ximdex\Data\GenericData;
 
 /**
  * Class RelRolesPermissionsOrm
+ * 
  * @package Ximdex\Models
  */
  class RelRolesPermissionsOrm extends GenericData

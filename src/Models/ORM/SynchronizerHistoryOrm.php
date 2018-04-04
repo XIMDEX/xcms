@@ -27,11 +27,10 @@
 
 namespace Ximdex\Models\ORM;
 
-use Ximdex\Data\GenericData ;
+use Ximdex\Data\GenericData;
 
 class SynchronizerHistoryOrm extends GenericData
 {
-
     var $_idField = 'IdSync';
     var $_table = 'SynchronizerHistory';
     var $_metaData = array(

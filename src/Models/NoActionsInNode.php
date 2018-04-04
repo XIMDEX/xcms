@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,11 +25,11 @@
  *  @version $Revision$
  */
 
-
 namespace Ximdex\Models;
 
+use Ximdex\Data\GenericData;
 
-class NoActionsInNode extends \Ximdex\Data\GenericData {
+class NoActionsInNode extends GenericData {
 
     public $_idField = 'idNamespace';
     public $_table = 'NoActionsInNode';
@@ -44,19 +45,21 @@ class NoActionsInNode extends \Ximdex\Data\GenericData {
 
     /**
      * Check if an action is disabled for a node
+     * 
      * @param int $idNode 
      * @param int $idAction 
      * @return boolean true if exists row in NoActionsInNode table for the params values.
      * @since Ximdex 3.6
      */
-    public function isActionForbiddenForNode($idNode, $idAction){
-        $noAllowedActions = $this->getForbiddenActions($idNode);
-        
-        if (!$noAllowedActions || !is_array($noAllowedActions)){
+    public function isActionForbiddenForNode($idNode, $idAction)
+    {
+        $noAllowedActions = $this->getForbiddenActions($idNode);    
+        if (!$noAllowedActions || !is_array($noAllowedActions))
+        {
             return false;
         }
-        
-        if(!in_array($idAction, $noAllowedActions)){
+        if (!in_array($idAction, $noAllowedActions))
+        {
             return false;
         }
         return true;
@@ -64,13 +67,14 @@ class NoActionsInNode extends \Ximdex\Data\GenericData {
     
     /**
      * Get an array of the actions in NoActionsInNode table for a idnode
+     * 
      * @param int $idNode
      * @return array idActions Array
      * @since Ximdex 3.6
      */
-    public function getForbiddenActions($idNode){
+    public function getForbiddenActions($idNode)
+    {
         $arrayForbiddenActions = $this->find("IdAction","IdNode=%s",array($idNode),MONO);
         return $arrayForbiddenActions? $arrayForbiddenActions: array();
     }
 }
-?>

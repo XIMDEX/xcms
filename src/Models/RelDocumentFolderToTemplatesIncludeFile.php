@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -42,5 +43,4 @@ class RelDocumentFolderToTemplatesIncludeFile extends \Ximdex\Data\GenericData
     var $id;
     var $source = 0;
     var $target = 0;
-
 }

@@ -37,10 +37,8 @@ use Ximdex\Models\ORM\RelUsersGroupsOrm;
 use Ximdex\Runtime\Constants;
 use Ximdex\Workflow\WorkFlow;
 
-
 class User extends UsersOrm
 {
-
     var $userID;
     var $numErr;    // Error code
     var $msgErr;    // Error message
@@ -153,7 +151,6 @@ class User extends UsersOrm
             $this->SetError(1);
             return false;
         }
-
         $result = $this->set('Name', $name);
         if ($result) {
             return $this->update();
@@ -168,7 +165,6 @@ class User extends UsersOrm
             $this->SetError(1);
             return false;
         }
-
         $result = $this->set('Pass', $pass);
         if ($result) {
             return $this->update();
@@ -183,7 +179,6 @@ class User extends UsersOrm
             $this->SetError(1);
             return false;
         }
-
         $result = $this->set('Email', $email);
         if ($result) {
             return $this->update();
@@ -197,7 +192,6 @@ class User extends UsersOrm
             $this->SetError(1);
             return false;
         }
-
         $result = $this->set('Locale', $code);
         if ($result) {
             return $this->update();
@@ -212,7 +206,6 @@ class User extends UsersOrm
         $dbObj = new \Ximdex\Runtime\Db();
         $query = sprintf("SELECT IdUser FROM Users WHERE Login = %s", $dbObj->sqlEscapeString($login));
         $dbObj->Query($query);
-
         if ($dbObj->numRows) {
             return $this->SetID($dbObj->GetValue("IdUser"));
         }
@@ -226,7 +219,6 @@ class User extends UsersOrm
         if (is_array($nodeID)) {
             $nodeID = $nodeID['id'];
         }
-
         $this->ClearError();
         if ($this->get('IdUser') > 0) {
             $node = new Node($nodeID);
@@ -279,7 +271,7 @@ class User extends UsersOrm
         $permission = new Permission();
         $permission->SetByName($pName);
         $pID = $permission->GetID();
-        if ($roles)
+        if ($roles) {
             foreach ($roles as $idRol) {
                 $role = new Role($idRol);
                 $permissionList = $role->GetPermissionsList();
@@ -287,6 +279,7 @@ class User extends UsersOrm
                     if (in_array($pID, $permissionList))
                         return true;
             }
+        }
         return false;
     }
 
@@ -295,13 +288,13 @@ class User extends UsersOrm
         $permission = new Permission();
         $permission->SetByName($pName);
         $pID = $permission->GetID();
-
         $role = new Role($this->GetRoleOnGroup($groupID));
         $permissionList = $role->GetPermissionsList();
-        if (!empty($permissionList))
-            if (in_array($pID, $permissionList))
+        if (!empty($permissionList)) {
+            if (in_array($pID, $permissionList)) {
                 return true;
-
+            }
+        }
         return false;
     }
 
@@ -311,7 +304,7 @@ class User extends UsersOrm
         return $this->HasPermissionOnGroup($groupID, $pName);
     }
 
-    //Check perms with name $pname in all user groups of $nodeID
+    // Check perms with name $pname in all user groups of $nodeID
     function hasPermissionInNode($pName, $nodeID)
     {
         $groups = $this->GetGroupListOnNode($nodeID);

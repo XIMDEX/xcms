@@ -1,6 +1,4 @@
 <?php
-namespace Ximdex\Models\ORM;
-use Ximdex\Data\GenericData;
 
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
@@ -27,8 +25,11 @@ use Ximdex\Data\GenericData;
  * @version $Revision$
  */
 
+namespace Ximdex\Models\ORM;
 
-class LocalesOrm extends  GenericData
+use Ximdex\Data\GenericData;
+
+class LocalesOrm extends GenericData
 {
     var $_idField = 'ID';
     var $_table = 'Locales';

@@ -2,7 +2,9 @@
 
 namespace Ximdex\Models\ORM;
 
-class ServersOrm extends \Ximdex\Data\GenericData
+use Ximdex\Data\GenericData;
+
+class ServersOrm extends GenericData
 {
     var $_idField = 'IdServer';
     var $_table = 'Servers';

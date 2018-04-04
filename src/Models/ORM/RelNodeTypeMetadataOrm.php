@@ -1,6 +1,5 @@
 <?php
 
-namespace Ximdex\Models\ORM;
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -25,11 +24,17 @@ namespace Ximdex\Models\ORM;
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
+
+namespace Ximdex\Models\ORM;
+
+use Ximdex\Data\GenericData;
+
 /**
  * Class RelNodeTypeMetadataOrm
+ * 
  * @package Ximdex\Models\ORM
  */
-class RelNodeTypeMetadataOrm extends \Ximdex\Data\GenericData
+class RelNodeTypeMetadataOrm extends GenericData
 {
     var $_idField = 'idRel';
     var $_table = 'RelNodeTypeMetadata';
@@ -41,7 +46,6 @@ class RelNodeTypeMetadataOrm extends \Ximdex\Data\GenericData
     var $_uniqueConstraints = array(
         'idNodeType' => array('idNodeType')
     );
-
     var $idRel;
     var $forced = 0;
     var $idNodeType = 0;

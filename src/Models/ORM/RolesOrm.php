@@ -2,14 +2,14 @@
 
 namespace Ximdex\Models\ORM;
 
-
 use Ximdex\Data\GenericData;
 
 /**
  * Class RolesOrmextends
+ * 
  * @package Ximdex\Models
  */
-class RolesOrm  extends GenericData
+class RolesOrm extends GenericData
 {
     var $_idField = 'IdRole';
     var $_table = 'Roles';

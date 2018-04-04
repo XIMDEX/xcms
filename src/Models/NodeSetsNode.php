@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,22 +25,19 @@
  * @version $Revision$
  */
 
-
 namespace Ximdex\Models;
 
 use Ximdex\Models\ORM\RelNodeSetsNodeOrm;
 
-
 class RelNodeSetsNode extends RelNodeSetsNodeOrm
 {
-
     public function __construct($id = null)
     {
         parent::__construct($id);
     }
 
     /**
-     *    Returns the rel id
+     * Returns the rel id
      */
     public function getId()
     {
@@ -47,7 +45,7 @@ class RelNodeSetsNode extends RelNodeSetsNodeOrm
     }
 
     /**
-     *    Returns the set id
+     * Returns the set id
      */
     public function getIdSet()
     {
@@ -55,7 +53,7 @@ class RelNodeSetsNode extends RelNodeSetsNodeOrm
     }
 
     /**
-     *    Returns the node id
+     * Returns the node id
      */
     public function getIdNode()
     {
@@ -63,7 +61,7 @@ class RelNodeSetsNode extends RelNodeSetsNodeOrm
     }
 
     /**
-     *    Returns the node object
+     * Returns the node object
      */
     public function & getNode()
     {
@@ -81,39 +79,29 @@ class RelNodeSetsNode extends RelNodeSetsNodeOrm
     }
 
     /**
-     *    Static method that creates a new NodeSet relation and returns the related object
-     */
-    /**
+     * Static method that creates a new NodeSet relation and returns the related object
+     * 
      * @param $idSet
      * @param $idNode
      * @return RelNodeSetsNode
      */
     static public function & create($idSet, $idNode)
     {
-
         $rel = new RelNodeSetsNode();
-
         $node = new Node($idNode);
         if ($node->get('IdNode') <= 0) {
-
             $rel->messages->add("Can't append the node to the set, the node id $idNode doesn't exists.", MSG_TYPE_ERROR);
         } else {
-
             $rel->set('IdSet', $idSet);
             $rel->set('IdNode', $idNode);
-            /*$newId = */
             $rel->add();
         }
-
         return $rel;
     }
 
     public function delete()
     {
         $ret = parent::delete();
-        // $db = new \Ximdex\Runtime\Db();
-        // $sql = 'alter table RelNodeSetsNode auto_increment = 0';
         return $ret;
     }
-
 }

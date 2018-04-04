@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,15 +25,12 @@
  *  @version $Revision$
  */
 
-
-
 namespace Ximdex\Models;
 
+use Ximdex\Data\GenericData;
 
-
-
-class RelTemplateContainer extends \Ximdex\Data\GenericData{
-
+class RelTemplateContainer extends GenericData
+{
     var $_idField = 'IdRel';
     var $_table = 'RelTemplateContainer';
     var $_metaData = array(
@@ -46,10 +44,9 @@ class RelTemplateContainer extends \Ximdex\Data\GenericData{
     var $IdTemplate = 0;
     var $IdContainer = 0;
 
-	function getTemplate($idContainer) {
-
+	function getTemplate($idContainer)
+	{
 		$template = $this->find('IdTemplate', 'IdContainer = %s', array($idContainer), MULTI);
-		
 		if (!empty($template)) {
 			$last = end($template);
 			return $last['IdTemplate'];
@@ -58,12 +55,11 @@ class RelTemplateContainer extends \Ximdex\Data\GenericData{
 		}
 	}
 
-	function createRel($idTemplate, $idNode) {
-
+	function createRel($idTemplate, $idNode)
+	{
 		$this->set('IdRel', NULL);
 		$this->set('IdTemplate', $idTemplate);
 		$this->set('IdContainer', $idNode);
-
 		if (parent::add()) {
 			$idRel = $this->get('IdRel');
 		} else {
@@ -73,11 +69,8 @@ class RelTemplateContainer extends \Ximdex\Data\GenericData{
 		// TODO: NEED TO REFACTOR THIS.
 		$container = new Node($idNode);
 		$arr_child = $container->GetChildren();
-
 		if (!is_null($arr_child)) {
-
 			foreach ($arr_child as $child) {
-
 				$doc = new StructuredDocument($child);
 				$version = $doc->GetLastVersion();
 				$dependencies = new Dependencies();
@@ -86,21 +79,17 @@ class RelTemplateContainer extends \Ximdex\Data\GenericData{
 		}
 	}
 
-    function deleteRel($idContainer) {
-
+    function deleteRel($idContainer)
+    {
 		$db = new \Ximdex\Runtime\Db();
-                $sql = "DELETE FROM RelTemplateContainer Where IdContainer=$idContainer";
+        $sql = "DELETE FROM RelTemplateContainer Where IdContainer = $idContainer";
+        $db->Execute($sql);
+    }
 
-                $db->Execute($sql);
-        }
-
-	function deleteRelByTemplate($idTemplate) {
-
+	function deleteRelByTemplate($idTemplate)
+	{
 		$db = new \Ximdex\Runtime\Db();
 		$sql = "DELETE FROM RelTemplateContainer WHERE IdTemplate = $idTemplate";
-
-                $db->Execute($sql);
-
+        $db->Execute($sql);
 	}
-
 }

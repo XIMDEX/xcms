@@ -86,7 +86,6 @@ class PipeTransition extends PipeTransitionsOrm
 			return NULL;
 		}
 		$finalStatus = new PipeStatus($this->get('IdStatusTo'));
-		
 		$pipeTransition = new PipeTransition();
 		$pipeTransition->set('IdStatusFrom', $idStatus);
 		$pipeTransition->set('IdStatusTo', $finalStatus->get('id'));
@@ -113,11 +112,12 @@ class PipeTransition extends PipeTransitionsOrm
 	 */
 	public function getPreviousTransition()
 	{
-		//Obtenemos la transición anterior
+		// Obtenemos la transición anterior
 		$result = $this->find('id', 'IdPipeProcess = %s AND IdStatusTo = %s',
 		      array($this->get('IdPipeProcess'), $this->get('IdStatusFrom')), MONO);
 		$resultsCount = count($result);
-		//Si son muchas error (No previsto, creo que ni siquiera lo soporta el modelo)
+		
+		// Si son muchas error (No previsto, creo que ni siquiera lo soporta el modelo)
 		if ($resultsCount > 1)
 		{   
 			Logger::fatal('No se ha podido determinar la transicion anterior a una dada');
@@ -127,6 +127,7 @@ class PipeTransition extends PipeTransitionsOrm
 		{    
 			return $result[0];
 		}
+		
 		// Si no la encontramos en este proceso buscamos en el proceso anterior
 		$id = $this->get('IdPipeProcess');
 		$process = new PipeProcess($id);
@@ -146,6 +147,7 @@ class PipeTransition extends PipeTransitionsOrm
 
 	/**
 	 * Transform the given content with the transition asociated callback
+	 * 
 	 * @param $idVersion
 	 * @param $content
 	 * @param $args
@@ -160,6 +162,7 @@ class PipeTransition extends PipeTransitionsOrm
 
 	/**
 	 * Reverse a transformation
+	 * 
 	 * @param $idVersion
 	 * @param $content
 	 * @param $args

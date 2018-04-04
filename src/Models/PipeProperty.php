@@ -30,13 +30,11 @@ namespace Ximdex\Models;
 use Ximdex\Models\ORM\PipePropertiesOrm;
 
 /**
- *
  * @brief Describes the relation between one property and one transition
  *
  * Describes the relation between one property and one transition, one transition
  * can contain many properties and when a cache is recovered is checked that the node
  * and all the properties match with the requested one
- *
  */
 class PipeProperty extends PipePropertiesOrm
 {}

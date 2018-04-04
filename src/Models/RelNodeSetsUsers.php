@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -39,7 +40,7 @@ class RelNodeSetsUsers extends RelNodeSetsUsersOrm
     }
 
     /**
-     *    Returns the rel id
+     * Returns the rel id
      */
     public function getId()
     {
@@ -47,7 +48,7 @@ class RelNodeSetsUsers extends RelNodeSetsUsersOrm
     }
 
     /**
-     *    Returns the set id
+     * Returns the set id
      */
     public function getIdSet()
     {
@@ -55,7 +56,7 @@ class RelNodeSetsUsers extends RelNodeSetsUsersOrm
     }
 
     /**
-     *    Returns the user id
+     * Returns the user id
      */
     public function getIdUser()
     {
@@ -63,7 +64,7 @@ class RelNodeSetsUsers extends RelNodeSetsUsersOrm
     }
 
     /**
-     *    Returns the owner attribute
+     * Returns the owner attribute
      */
     public function getOwner()
     {
@@ -71,7 +72,7 @@ class RelNodeSetsUsers extends RelNodeSetsUsersOrm
     }
 
     /**
-     *    Returns the user object
+     * Returns the user object
      */
     public function & getUser()
     {
@@ -89,23 +90,19 @@ class RelNodeSetsUsers extends RelNodeSetsUsersOrm
     }
 
     /**
-     *    Static method that creates a new SetUser relation and returns the related object
+     * Static method that creates a new SetUser relation and returns the related object
      */
     static public function & create($idSet, $idUser, $owner = RelNodeSetsUsers::OWNER_NO)
     {
-
         $rel = new RelNodeSetsUsers();
-
         $user = new User($idUser);
         if ($user->get('IdUser') <= 0) {
-
             $rel->messages->add("Can't append the user to the set, the user id $idUser doesn't exists.", MSG_TYPE_ERROR);
         } else {
 
             $rel->set('IdSet', $idSet);
             $rel->set('IdUser', $idUser);
             $rel->set('Owner', $owner);
-            /*$newId = */
             $rel->add();
         }
 
@@ -114,8 +111,7 @@ class RelNodeSetsUsers extends RelNodeSetsUsersOrm
 
     /**
      * Returns a RelNodeSetsUsers instance for a specific user and set
-     */
-    /**
+     * 
      * @param $idSet
      * @param $idUser
      * @return null|RelNodeSetsUsers
@@ -138,8 +134,6 @@ class RelNodeSetsUsers extends RelNodeSetsUsersOrm
     public function delete()
     {
         $ret = parent::delete();
-        //$db = new \Ximdex\Runtime\Db();
-        // $sql = 'alter table RelNodeSetsUsers auto_increment = 0';
         return $ret;
     }
 }

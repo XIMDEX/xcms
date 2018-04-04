@@ -29,7 +29,6 @@ namespace Ximdex\Models\ORM;
 
 use Ximdex\Data\GenericData;
 
-
 class  MessagesOrm extends GenericData
 {
     var $_idField = 'IdMessage';

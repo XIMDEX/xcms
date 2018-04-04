@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -28,9 +29,8 @@ namespace Ximdex\Models;
 
 use Ximdex\Logger;
 
-class RelFramesPortal extends \Ximdex\Data\GenericData{
-
-
+class RelFramesPortal extends \Ximdex\Data\GenericData
+{
     var $_idField = 'id';
     var $_table = 'RelFramesPortal';
     var $_metaData = array(
@@ -46,16 +46,17 @@ class RelFramesPortal extends \Ximdex\Data\GenericData{
     var $IdPortalVersion = 0;
     var $IdFrame = 0;
 
-	function __construct($id = null)  {
+	function __construct($id = null)
+	{
 		parent::__construct($id);
 	}
 
-	function addVersion($idPortalVersion, $nodeFrameId) {
-
+	function addVersion($idPortalVersion, $nodeFrameId)
+	{
 		$this->set('IdPortalVersion', $idPortalVersion);
 		$this->set('IdFrame', $nodeFrameId);
 
-		//check for a duplicate of the relation to create
+		// Check for a duplicate of the relation to create
 		$res = parent::exists('id');
 		if ($res === false)
 		{
@@ -64,38 +65,32 @@ class RelFramesPortal extends \Ximdex\Data\GenericData{
 		}
 		if ($res)
 		{
-		    //the relation already exists, returning the ID found
+		    // The relation already exists, returning the ID found
 		    Logger::info('Element to create in RelFramesPortal already exists with ID: ' . $res);
 		    return $res;
 		}
-		
 		$idRel = parent::add();
-
 		return ($idRel > 0) ? $idRel : NULL;
 	}
 
-/*
-*
-*	Returns de IdVersion for a node in a portal
-*	@param idPortalVersion int
-*	@param nodeid int
-*	@return int / NULL
-*
-*/
-	function getNodeVersion($idPortalVersion, $nodeId) {
-
+    /**
+     * Returns de IdVersion for a node in a portal
+     * 
+     * @param $idPortalVersion
+     * @param $nodeId
+     * @return NULL|string
+     */
+	function getNodeVersion($idPortalVersion, $nodeId)
+	{
 		if (is_null($idPortalVersion) || is_null($nodeId)) {
 			return NULL;
 		}
-
 		$db = new \Ximdex\Runtime\Db();
 		$db->Query("SELECT n.VersionId FROM NodeFrames n, RelFramesPortal r WHERE r.IdPortalVersion = $idPortalVersion
 			AND n.NodeId = $nodeId AND r.IdFrame = n.IdNodeFrame");
-
 		if ($db->numRows == 0) {
 			return NULL;
 		}
-
 		return $db->GetValue('VersionId');
 	}
 }

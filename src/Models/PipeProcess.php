@@ -31,12 +31,10 @@ use Ximdex\Logger;
 use Ximdex\Models\ORM\PipeProcessOrm;
 
 /**
- *
  * @brief Describes one Pipeline process
  *
  * Describes one Pipeline process, one pipeline is actually formed by various
  * processes, it is reccomended every transition for a single processes to have same cache status.
- *
  */
 class PipeProcess extends PipeProcessOrm
 {
@@ -47,20 +45,18 @@ class PipeProcess extends PipeProcessOrm
 
     /**
      * Load a pipeline by name instead of by id
+     * 
      * @param $name
      * @return boolean
      */
     public function loadByName($name)
     {
         if (empty($name)) {
-            
             Logger::error('Se ha solicitado la carga de un proceso sin introducir su nombre');
             return false;
         }
-
         $result = $this->find('id', 'Name = %s', array($name), MONO);
         if (count($result) == 1) {
-            
             $this->__construct($result[0]);
             return true;
         }
@@ -69,6 +65,7 @@ class PipeProcess extends PipeProcessOrm
 
     /**
      * Constructor
+     * 
      * @param $id
      */
     public function __construct($id = NULL)
@@ -82,23 +79,22 @@ class PipeProcess extends PipeProcessOrm
 
     /**
      * Load the previous process in list
+     * 
      * @return bool|null
      */
     public function getPreviousProcess()
     {
-        //Obtenemos la transición anterior
+        // Obtenemos la transición anterior
         $result = $this->find('id', 'IdPipeline = %s AND IdTransitionTo = %s',
             array($this->get('IdPipeline'), $this->get('IdTransitionFrom')), MONO);
         $resultsCount = count($result);
-        //Si son muchas error (No previsto, creo que ni siquiera lo soporta el modelo)
+        
+        // Si son muchas error (No previsto, creo que ni siquiera lo soporta el modelo)
         if ($resultsCount > 1) {
-            
             Logger::fatal('No se ha podido determinar el proceso anterior a uno dado');
             return false;
         }
-
         if ($resultsCount == 1) {
-            
             return $result[0];
         }
         return NULL;
@@ -106,52 +102,41 @@ class PipeProcess extends PipeProcessOrm
 
     /**
      * Removes a intermediate status from a sequence
+     * 
      * @param $idStatus
      * @return bool
      */
     public function removeStatus($idStatus)
     {
         if (!($this->get('id') > 0)) {
-            
             Logger::error('No se ha podido encontrar el proceso de workflow');
             $this->messages->add(_('Ha ocurrido un error no recuperable durante la gestión de estados de workflow, consulte con su administrador'),
                 MSG_TYPE_ERROR);
             return false;
         }
-
-
         $transitionFrom = NULL;
         $transitionTo = NULL;
         $this->transitions->reset();
         while ($transition = $this->transitions->next()) {
-            
             if ($transition->get('IdStatusFrom') == $idStatus) {
-                
                 $transitionFrom = $transition;
             }
             if ($transition->get('IdStatusTo') == $idStatus) {
-                
                 $transitionTo = $transition;
             }
         }
-
         if (!(is_object($transitionFrom) && is_object($transitionTo))) {
-            
             $this->messages->add(_('No se han podido determinar las transiciones de un estado para su eliminación, esto es normal si el estado es estado inicial o final'), MSG_TYPE_WARNING);
             Logger::warning('No se han podido determinar las transiciones de un estado para su eliminación, esto es normal si el estado es estado inicial o final');
             return false;
         }
-
         $transitionTo->set('IdStatusTo', $transitionFrom->get('IdStatusTo'));
         $transitionTo->update();
-
         $transitionFrom->delete();
 
         // Check if there is any back reference to the status, else remove it
-
         $results = $this->find('id', 'IdStatusFrom = %s OR IdStatusTo = %s', array($idStatus, $idStatus), MONO);
         if (count($results) == 0) {
-            
             $pipeStatus = new PipeStatus($idStatus);
             $pipeStatus->delete();
         }
@@ -167,9 +152,7 @@ class PipeProcess extends PipeProcessOrm
     public function isStatusFirst($idStatus)
     {
         $transition = $this->transitions->first();
-
         return ($transition->get('IdStatusFrom') == $idStatus);
-
     }
 
     /**
@@ -181,7 +164,6 @@ class PipeProcess extends PipeProcessOrm
     public function isStatusLast($idStatus)
     {
         $transition = $this->transitions->last();
-
         return ($transition->get('IdStatusTo') == $idStatus);
     }
 
@@ -205,11 +187,8 @@ class PipeProcess extends PipeProcessOrm
     public function getNextStatus($idStatus)
     {
         $this->transitions->reset();
-
         while ($transition = $this->transitions->next()) {
-            
             if ($transition->get('IdStatusFrom') == $idStatus) {
-                
                 return $transition->get('IdStatusTo');
             }
         }
@@ -237,9 +216,7 @@ class PipeProcess extends PipeProcessOrm
     {
         $this->transitions->reset();
         while ($transition = $this->transitions->next()) {
-            
             if ($transition->get('IdStatusTo') == $idStatus) {
-                
                 return $transition->get('IdStatusFrom');
             }
         }
@@ -256,7 +233,6 @@ class PipeProcess extends PipeProcessOrm
         $allStatus = array();
         $this->transitions->reset();
         while ($transition = $this->transitions->next()) {
-            
             $pipeStatus = new PipeStatus($transition->get('IdStatusFrom'));
             $allStatus[] = $pipeStatus->get('id');
             $lastTransition = $transition;
@@ -276,9 +252,7 @@ class PipeProcess extends PipeProcessOrm
     {
         $this->transitions->reset();
         while ($localTransition = $this->transitions->next()) {
-            
             if ($localTransition->get('IdStatusFrom') == $idStatusFrom) {
-                
                 return $localTransition->get('id');
             }
         }

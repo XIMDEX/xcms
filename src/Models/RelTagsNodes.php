@@ -39,20 +39,19 @@ use Ximdex\Models\ORM\RelTagsNodesOrm;
 
 class RelTagsNodes extends RelTagsNodesOrm
 {
-
-	/*
-        Get Node Tags
-    */
+    /**
+     * Get Node Tags
+     * 
+     * @param $_id_node
+     * @return NULL|array
+     */
 	function getTags($_id_node)
 	{
 		$this->ClearError();
 		$dbObj = new \Ximdex\Runtime\Db();
-
 		$sql = sprintf("SELECT Tag, Name, n.idNamespace as Type, Link, Description, IdTagDescription FROM XimTAGSTags tag inner join Namespaces n on n.idNamespace=tag.idNamespace , RelTagsNodes rel, RelTagsDescriptions relD WHERE tag.IdTag = relD.Tag AND relD.IdTagDescription = rel.TagDesc AND Node = '%s'", $_id_node);
-
 		$dbObj->Query($sql);
 		$out = array();
-
 		if (!$dbObj->numErr) {
 			while (!$dbObj->EOF) {
 				$out[] = array(
@@ -70,12 +69,10 @@ class RelTagsNodes extends RelTagsNodesOrm
 			$this->SetError(5);
 			return null;
 		}
-
 	}
 
-
 	/**
-	 *    get rel between tag and node
+	 * Get rel between tag and node
 	 */
 	function getRel($_idNode, $_tag = -1)
 	{
@@ -86,7 +83,6 @@ class RelTagsNodes extends RelTagsNodesOrm
 			$_id_tag = (int)$tag->get('IdTag');
 			$idtag = sprintf(" AND Tag='%s' ", $_id_tag);
 		}
-
 		$rel = $this->find(ALL, "Node = '{$_idNode}' $idtag");
 		if (!empty($rel)) {
 			return $rel;
@@ -96,55 +92,61 @@ class RelTagsNodes extends RelTagsNodesOrm
 	}
 
 	/**
-	 *    save $_tags in bbdd
+	 * Save $_tags in bbdd
 	 */
 	function saveAll($_tags = null, $_id_node = 0, $_previous_tags = null)
 	{
-		//save tags
-		//Tags to remove
+		// Save tags
+		// Tags to remove
 		if (!empty($_previous_tags)) {
 			foreach ($_previous_tags as $_tag) {
 				if (!empty($_tag) && !empty($_id_node)) {
-					//remove rel betweeen tag and node
+				    
+					// Remove rel betweeen tag and node
 					$this->removeRel($_tag["iddesc"], $_id_node);
-					//remove tag
+					
+					// Remove tag
 					$tag = new Tag($_tag["idtag"]);
 					$tag->remove();
 				}
 			}
 		}
 		$alltags = '';
-
-		if (!empty($_tags)) {
+		if (!empty($_tags))
+		{
 			$i = 0;
-			foreach ($_tags as $_tag) {
+			foreach ($_tags as $_tag)
+			{
 				$rel = new RelTagsDescriptions();
 				$relinfo = $rel->getId($_tag->Name, $_tag->IdNamespace, '#');
 				$id = $relinfo["IdTagDescription"];
-				//if not rel exits between description and tag, try create it
+				
+				// If not rel exits between description and tag, try create it
 				if (empty($id)) {
-					//save tag
+				    
+					// Save tag
 					$id = $rel->save($_tag->Name, $_tag->IdNamespace,
 						!isset($_tag->Link) || empty($_tag->Link) ? '#' : $_tag->Link,
 						isset($_tag->Description) ? $_tag->Description : '');
 				} else {
-					//if already rel exits between description and node, try create tags and rel
+				    
+					// If already rel exits between description and node, try create tags and rel
 					if (!empty($_previous_tags) && isset($_previous_tags[$id])) {
-						//Quitamos el tags de lats_tags
+					    
+						// Quitamos el tags de lats_tags
 						unset($_previous_tags[$id]);
 					}
 				}
 				$this->createRel($id, $_id_node);
 				if ($i != 0) $alltags .= ",";
 
-				//add tag to alltags
+				// Add tag to alltags
 				$alltags .= $_tag->Name;
 				$i++;
 			}
 		}
 
-
-		//save in exif if nodetype is image
+		// Save in exif if nodetype is image
 		$node = new Node($_id_node);
 		$nodetype = new NodeType($node->GetNodeType());
 		if ("ImageFile" == $nodetype->GetName()) {
@@ -153,23 +155,19 @@ class RelTagsNodes extends RelTagsNodesOrm
 		}
 	}
 
-
 	/**
-	 *    create rel between tag and node
+	 * Create rel between tag and node
 	 */
 	function createRel($_id_tag, $_id_node)
 	{
-
 		$rel = new RelTagsNodes();
 		$rel->set('TagDesc', $_id_tag);
 		$rel->set('Node', $_id_node);
-
 		return $rel->add();
 	}
 
-
 	/**
-	 *    Remove rel between tag and node
+	 * Remove rel between tag and node
 	 */
 	function removeRel($_id_tag, $_id_node)
 	{
@@ -180,26 +178,25 @@ class RelTagsNodes extends RelTagsNodesOrm
 	/**
 	 * Remove relation for the current node. If neither node has that tags,
 	 * the tag must be removed
+	 * 
 	 * @param int $idnode
 	 */
 	public function deleteTags($idnode)
 	{
-		//Get the tags to delete
+		// Get the tags to delete
 		$tagsToDelete = $this->find("TagDesc", "node=%s", array($idnode), MONO);
 
-		//Delete the rows for this idnode
+		// Delete the rows for this idnode
 		$sql = sprintf("DELETE FROM RelTagsNodes WHERE Node='%d'", $idnode);
 		$this->execute($sql);
 
-		//Check if every tag is linked to other node. If it isn't
-		//must to delete the node.
+		// Check if every tag is linked to other node. If it isn't must to delete the node.
 		if ($tagsToDelete) {
 			foreach ($tagsToDelete as $idTag) {
 				$currentExistingRelations = $this->count("TagDesc=%s", array($idTag));
-				if (count($currentExistingRelations) &&
-					intval($currentExistingRelations[0]) === 0
-				) {
-					//Deleting tag.
+				if (count($currentExistingRelations) && intval($currentExistingRelations[0]) === 0) {
+				    
+					// Deleting tag
 					$tag = new Tag($idTag);
 					if ($tag->get("IdTag")) {
 						$tag->delete();
@@ -207,7 +204,5 @@ class RelTagsNodes extends RelTagsNodesOrm
 				}
 			}
 		}
-
-
 	}
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,16 +25,12 @@
  * @version $Revision$
  */
 
-
 namespace Ximdex\Models;
 
 use Ximdex\Models\ORM\RelNodeTypeMetadataOrm;
 
-
 class RelNodeTypeMetadata extends RelNodeTypeMetadataOrm
 {
-
-
     public function buildByIdNodeType($idNodeType)
     {
         $arrayResult = $this->find("idRel", "idNodeType=%s", array($idNodeType), MONO);
@@ -43,5 +40,4 @@ class RelNodeTypeMetadata extends RelNodeTypeMetadataOrm
         }
         return false;
     }
-
 }

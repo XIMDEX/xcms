@@ -6,6 +6,7 @@ use Ximdex\Data\GenericData;
 
 /**
  * Class NodeTypesOrm
+ * 
  * @package Ximdex\Models
  */
 class NodeTypesOrm extends GenericData

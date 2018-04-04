@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -26,7 +27,10 @@
 
 namespace Ximdex\Models;
 
-class RelXml2Xml extends \Ximdex\Data\GenericData{
+use Ximdex\Data\GenericData;
+
+class RelXml2Xml extends GenericData
+{
     var $_idField = 'id';
     var $_table = 'RelXml2Xml';
     var $_metaData = array(

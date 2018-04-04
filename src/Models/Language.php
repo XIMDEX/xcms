@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -41,8 +42,8 @@ class Language extends LanguagesOrm
 		4 => 'Database connection error',
 	);
 
-	//Constructor
-	function Language($_params = null)
+	// Constructor
+	function __construct($_params = null)
 	{
 		$this->errorList[1] = _('Language does not exist');
 		$this->errorList[2] = _('A language with this name already exists');

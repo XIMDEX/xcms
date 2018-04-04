@@ -1,11 +1,12 @@
 <?php
-namespace Ximdex\Models\ORM;
 
+namespace Ximdex\Models\ORM;
 
 use Ximdex\Data\GenericData;
 
 /**
  * Class NodesOrm
+ * 
  * @package Ximdex\Models
  */
 class NodesOrm extends GenericData
@@ -40,5 +41,4 @@ class NodesOrm extends GenericData
     var $ModificationDate = 0;
     var $Description;
     var $SharedWorkflow;
-
 }

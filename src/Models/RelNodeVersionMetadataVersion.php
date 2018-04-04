@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,10 +25,11 @@
  * @version $Revision$
  */
 
-
 namespace Ximdex\Models;
 
-class RelNodeVersionMetadataVersion extends \Ximdex\Data\GenericData
+use Ximdex\Data\GenericData;
+
+class RelNodeVersionMetadataVersion extends GenericData
 {
     var $_idField = 'id';
     var $_table = 'RelNodeVersionMetadataVersion';
@@ -46,14 +48,14 @@ class RelNodeVersionMetadataVersion extends \Ximdex\Data\GenericData
     var $idNodeVersion = 0;
     var $idMetadataVersion = 0;
 
-
     /**
      * Returns the most recent metadata id versions for a id node Version
      *
      * @param $idNodeVersion
      * @return array
      */
-    public function getMostRecentMetadataVersionsForANodeVersion($idNodeVersion){
+    public function getMostRecentMetadataVersionsForANodeVersion($idNodeVersion)
+    {
         $query = "select rnvmv.idMetadataVersion, v.IdNode, v.Date from %s rnvmv inner join (select * from Versions order by Date desc) v on rnvmv.idMetadataVersion = v.IdVersion where rnvmv.idNodeVersion = %s group by v.IdNode";
         $query     = sprintf(
             $query,
@@ -62,7 +64,6 @@ class RelNodeVersionMetadataVersion extends \Ximdex\Data\GenericData
         );
         $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->Query($query);
-
         $idMetadataVersions = [];
         while (!$dbObj->EOF) {
             $idMetadataVersions[] = $dbObj->GetValue("idMetadataVersion");

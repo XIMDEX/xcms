@@ -694,8 +694,6 @@ class Node extends NodesOrm
         $this->SetError(1);
         return NULL;
     }
-
-    // In a process with 20 calls to each function, this consumes a 16% and getpublishedpath2 a 75% in an intermediate case
     
     /**
      *
@@ -743,8 +741,7 @@ class Node extends NodesOrm
     /**
      * Returns if a node is contained in the node with id $nodeID
      *
-     * @param
-     *            $nodeID
+     * @param $nodeID
      * @return bool
      */
     function IsOnNode($nodeID)
@@ -768,8 +765,7 @@ class Node extends NodesOrm
     /**
      * Returns if a node is contained in the node with nodetype $nodeTypeID
      *
-     * @param
-     *            $nodeTypeID
+     * @param $nodeTypeID
      * @return bool
      */
     function IsOnNodeWithNodeType($nodeTypeID)
@@ -2308,7 +2304,6 @@ class Node extends NodesOrm
     }
 
     /**
-     *
      * @param null $type
      * @return bool|null|String
      */
@@ -2336,9 +2331,7 @@ class Node extends NodesOrm
 
     /**
      * If it is depending on a project, its depth is returned
-     */
-    /**
-     *
+     * 
      * @return int|null
      */
     function GetDepth()

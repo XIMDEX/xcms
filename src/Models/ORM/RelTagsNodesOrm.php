@@ -1,5 +1,5 @@
 <?php
-namespace Ximdex\Models\ORM;
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -25,8 +25,11 @@ namespace Ximdex\Models\ORM;
  * @version $Revision$
  */
 
+namespace Ximdex\Models\ORM;
 
-class RelTagsNodesOrm extends \Ximdex\Data\GenericData
+use Ximdex\Data\GenericData;
+
+class RelTagsNodesOrm extends GenericData
 {
 	var $_idField = 'Node';
 	var $_table = 'RelTagsNodes';

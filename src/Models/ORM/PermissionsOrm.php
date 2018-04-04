@@ -1,8 +1,5 @@
 <?php
 
-namespace Ximdex\Models\ORM;
-use Ximdex\Data\GenericData;
-
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -27,7 +24,12 @@ use Ximdex\Data\GenericData;
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
-class PermissionsOrm extends  GenericData
+
+namespace Ximdex\Models\ORM;
+
+use Ximdex\Data\GenericData;
+
+class PermissionsOrm extends GenericData
 {
     var $_idField = 'IdPermission';
     var $_table = 'Permissions';
@@ -44,4 +46,3 @@ class PermissionsOrm extends  GenericData
     var $Name = 0;
     var $Description;
 }
-

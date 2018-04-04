@@ -30,10 +30,7 @@ namespace Ximdex\Models;
 use Ximdex\Models\ORM\PipeCacheTemplatesOrm;
 
 /**
- *
  * @brief Template cache class
- *
- *
  */
 class PipeCacheTemplates extends PipeCacheTemplatesOrm
 {
@@ -53,12 +50,9 @@ class PipeCacheTemplates extends PipeCacheTemplatesOrm
 		$condition = 'TemplateIdVersion = %s';
 		$params = array('TemplateIdVersion' => $templateVersion);
 		$result = parent::find('DISTINCT(NodeId)', $condition, $params, MULTI);
-
 		if (is_null($result)) {
-		    
 			return NULL;
-		} else {
-		    
+		} else {		    
 			return $result;
 		}
 	}

@@ -27,7 +27,9 @@
 
 namespace Ximdex\Models;
 
-class RelNodeTypeMimeType  extends \Ximdex\Data\GenericData
+use Ximdex\Data\GenericData;
+
+class RelNodeTypeMimeType extends GenericData
 {
     var $_idField = 'idRelNodeTypeMimeType';
     var $_table = 'RelNodeTypeMimeType';
@@ -63,6 +65,6 @@ class RelNodeTypeMimeType  extends \Ximdex\Data\GenericData
         {
             $ext = $filter[0];
         }
-         return $ext;
+        return $ext;
     }
 }

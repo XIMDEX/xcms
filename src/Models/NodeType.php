@@ -31,9 +31,6 @@ use Ximdex\Models\ORM\NodeTypesOrm;
 
 define('NODETYPE_SECTION', \Ximdex\NodeTypes\NodeTypeConstants::SECTION);
 
-/**
- * @property bool autoCleanErr
- */
 class NodeType extends NodeTypesOrm
 {
     var $ID;            //Current node id

@@ -2,7 +2,9 @@
 
 namespace Ximdex\Models\ORM;
 
-class FastTraverseOrm extends \Ximdex\Data\GenericData
+use Ximdex\Data\GenericData;
+
+class FastTraverseOrm extends GenericData
 {
     var $_idField = array('IdNode', 'idChild');
     var $_table = 'FastTraverse';

@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,12 +25,10 @@
  * @version $Revision$
  */
 
-
 namespace Ximdex\Models;
 
 use Ximdex\Models\ORM\RelSectionXimletOrm;
 use Ximdex\NodeTypes\NodeTypeConstants;
-
 
 class RelSectionXimlet extends RelSectionXimletOrm
 {
@@ -37,9 +36,7 @@ class RelSectionXimlet extends RelSectionXimletOrm
     {
         $node = new Node();
         $where = 'IdNodeType = ' . NodeTypeConstants::XIMLET_CONTAINER;
-
         $result = $node->find('IdNode', $where, array(), MONO);
         return $result;
     }
 }
-

@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,23 +25,20 @@
  * @version $Revision$
  */
 
-
 namespace Ximdex\Models;
 
 use Ximdex\Models\Iterators\IteratorSearchFilters;
 use Ximdex\Models\ORM\SearchFiltersOrm;
 
-
 class SearchFilters extends SearchFiltersOrm
 {
-
     public function __construct($id = null)
     {
         parent::__construct($id);
     }
 
     /**
-     *    Returns the filter id
+     * Returns the filter id
      */
     public function getId()
     {
@@ -48,7 +46,7 @@ class SearchFilters extends SearchFiltersOrm
     }
 
     /**
-     *    Returns the filter name
+     * Returns the filter name
      */
     public function getName()
     {
@@ -56,7 +54,7 @@ class SearchFilters extends SearchFiltersOrm
     }
 
     /**
-     *    Returns the handler
+     * Returns the handler
      */
     public function getHandler()
     {
@@ -74,10 +72,9 @@ class SearchFilters extends SearchFiltersOrm
     }
 
     /**
-     *    Static method that creates a new SearchFilter and returns the related object
-     *    Filter must by an XML string
-     */
-    /**
+     * Static method that creates a new SearchFilter and returns the related object
+     * Filter must by an XML string
+     * 
      * @param $name
      * @param $handler
      * @param $filter
@@ -85,30 +82,26 @@ class SearchFilters extends SearchFiltersOrm
      */
     static public function & create($name, $handler, $filter)
     {
-
         // TODO: Create a unique key in SearchFilters table.
         // Key length for Filter field must be specified....
         $checksum = md5(sprintf('%s:%s', $handler, serialize($filter)));
         $db = new \Ximdex\Runtime\Db();
         $sql = sprintf("select Name from SearchFilters where md5(concat(Handler, ':', Filter)) = '%s'", $checksum);
         $db->query($sql);
-
         $ns = new SearchFilters();
         if (!$db->EOF) {
             $ns->messages->add(sprintf('The filter exists with name %s', $db->getValue('Name')), MSG_TYPE_ERROR);
             return $ns;
         }
-
         $ns->set('Name', $name);
         $ns->set('Handler', $handler);
         $ns->set('Filter', json_encode($filter, JSON_UNESCAPED_UNICODE));
-        /* $newId = */
         $ns->add();
         return $ns;
     }
 
     /**
-     *    Deletes the current filter
+     * Deletes the current filter
      */
     public function delete()
     {
@@ -120,7 +113,7 @@ class SearchFilters extends SearchFiltersOrm
     }
 
     /**
-     *    Returns an iterator of all node filters
+     * Returns an iterator of all node filters
      */
     static public function & getFilters()
     {
@@ -129,13 +122,10 @@ class SearchFilters extends SearchFiltersOrm
     }
 
     /**
-     *    Executes the filter and returns an array of nodes
+     * Executes the filter and returns an array of nodes
      */
     public function & getNodes()
     {
         // TODO: Use QueryProcessor here or parametrize an instance...
     }
-
 }
-
-?>

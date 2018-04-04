@@ -27,7 +27,7 @@
 
 namespace Ximdex\Models\ORM;
 
-use Ximdex\Data\GenericData ;
+use Ximdex\Data\GenericData;
 
 class SynchronizerOrm extends GenericData
 {

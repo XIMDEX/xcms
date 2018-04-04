@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -26,9 +27,10 @@
 
 namespace Ximdex\Models;
 
+use Ximdex\Data\GenericData;
 
-class Namespaces extends  \Ximdex\Data\GenericData {
-
+class Namespaces extends GenericData
+{
     public $_idField = 'idNamespace';
     public $_table = 'Namespaces';
     public $_metaData = array(
@@ -58,10 +60,9 @@ class Namespaces extends  \Ximdex\Data\GenericData {
 
 	/**
 	* Get an array with an Namespace object for every namespace row
- 	*/
-	/**
-	 * @return array
-	 */
+	* 
+	* @return array
+	*/
 	public function getAll(){
 		$result = array();
 		$namespaces = $this->find("idNamespace");
@@ -97,10 +98,9 @@ class Namespaces extends  \Ximdex\Data\GenericData {
 		$result = count($result)? $result[0]: false;
 		return $result;
 	}
+	
     public function getNemo($idNamespace){
         $res = $this->find("nemo", "idNamespace = %s",array($idNamespace),MONO);
         return $res[0]; 
     }
-
-
 }

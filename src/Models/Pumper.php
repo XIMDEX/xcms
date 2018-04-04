@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,7 +25,6 @@
  * @version $Revision$
  */
 
-
 namespace Ximdex\Models;
 
 use ServerErrorByPumper;
@@ -38,12 +38,11 @@ use Ximdex\Runtime\App;
 \Ximdex\Modules\Manager::file('/inc/manager/ServerErrorManager.class.php', 'ximSYNC');
 \Ximdex\Modules\Manager::file('/conf/synchro_conf.php', 'ximSYNC');
 
-
 /**
  * @brief Handles operations with Pumpers.
  *
- *    A Pumper is an instance of the dexPumper script, wich is responsible for sending the ServerFrames to Server (via ftp, ssh, etc).
- *    This class includes the methods that interact with the Database.
+ * A Pumper is an instance of the dexPumper script, wich is responsible for sending the ServerFrames to Server (via ftp, ssh, etc).
+ * This class includes the methods that interact with the Database.
  */
 class Pumper extends PumpersOrm
 {
@@ -52,28 +51,29 @@ class Pumper extends PumpersOrm
     var $syncStatObj;
 
     /**
-     *  Sets the value of any variable.
+     * Sets the value of any variable
+     * 
      * @param string key
      * @param unknown value
      */
-
     function setFlag($key, $value)
     {
         $this->$key = $value;
     }
 
     /**
-     *  Gets the value of any variable.
+     * Gets the value of any variable
+     * 
      * @param string key
      */
-
     function getFlag($key)
     {
         return $this->$key;
     }
 
     /**
-     *  Adds a row to Pumpers table.
+     * Adds a row to Pumpers table
+     * 
      * @param int idServer
      * @return int|null
      */
@@ -85,49 +85,42 @@ class Pumper extends PumpersOrm
         $this->set('StartTime', time());
         $this->set('CheckTime', time());
         $this->set('ProcessId', 'xxxx');
-
         parent::add();
         $pumperID = $this->get('PumperId');
-
         if ($pumperID > 0) {
             $serverError = new ServerErrorByPumper();
             $serverError->create($pumperID, $idServer);
-
             return $pumperID;
         }
-
         $this->PumperToLog(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__,
             __LINE__, "ERROR", 8, "ERROR Inserting pumper");
-
         return null;
     }
 
     /**
-     *  Gets the Pumpers whose state is different to Ended.
+     * Gets the Pumpers whose state is different to Ended
+     * 
      * @return array|null
      */
-
     function getPumpersInRegistry()
     {
         $dbObj = new \Ximdex\Runtime\Db();
         $pumpers = array();
         $sql = "SELECT PumperId FROM Pumpers WHERE State != 'Ended'";
         $dbObj->Query($sql);
-
         if ($dbObj->numRows == 0) {
             return null;
         }
-
         while (!$dbObj->EOF) {
             $pumpers[] = $dbObj->GetValue("PumperId");
             $dbObj->Next();
         }
-
         return $pumpers;
     }
 
     /**
-     *  Calls to command for start a Pumper.
+     * Calls to command for start a Pumper
+     * 
      * @param int pumperId
      * @param string modo
      * @return bool
@@ -139,44 +132,30 @@ class Pumper extends PumpersOrm
         // Initialize the pumper to Starting state
         $this->set('State', 'Starting');
         $this->update();
-        
         $startCommand =  "php ".XIMDEX_ROOT_PATH.'/bootstrap.php '.PUMPERPHP_PATH . "/dexpumper." . $modo 
             . " --pumperid=$pumperId --sleeptime=" . $this->sleeptime . " --maxvoidcycles=" . $this->maxvoidcycles 
             . " --localbasepath=" . SERVERFRAMES_SYNC_PATH . " > /dev/null 2>&1 &";
-
         $this->PumperToLog(null, null, null, null, $pumperId, __CLASS__, __FUNCTION__, __FILE__,
             __LINE__, "INFO", 8, "Pumper call: $startCommand");
-
         $out = array();
         system($startCommand, $var);
-
         $this->PumperToLog(null, null, null, null, $pumperId, __CLASS__, __FUNCTION__, __FILE__,
             __LINE__, "INFO", 8, $startCommand, true);
-        // exec($startCommand,$out);
-        /**sleep(1);
-         * echo "ESPERANDO ";
-         * while(count($out) == 0){
-         * echo "..........";
-         * }*/
 
-        //0: OK, 200: connection problem, 255: unexistent server, 127:command not found
+        // 0: OK, 200: connection problem, 255: unexistent server, 127:command not found
         if ($var == 0) {
             $this->PumperToLog(null, null, null, null, $pumperId, __CLASS__, __FUNCTION__, __FILE__,
                 __LINE__, "INFO", 8, "Pumper $pumperId started succefully", true);
-
             return true;
         } else if ($var == 200) {
             $this->PumperToLog(null, null, null, null, $pumperId, __CLASS__, __FUNCTION__, __FILE__,
                 __LINE__, "ERROR", 8, "ERROR In server connection starting pumper $pumperId");
-
             $serverMng = new ServerErrorManager();
             $serverMng->disableServerByPumper($pumperId);
-
             return false;
         } else if ($var == 400) {
             $this->PumperToLog(null, null, null, null, $pumperId, __CLASS__, __FUNCTION__, __FILE__,
                 __LINE__, "ERROR", 8, "ERROR registering pumper $pumperId.");
-
             return false;
         } else {
             $this->PumperToLog(null, null, null, null, $pumperId, __CLASS__, __FUNCTION__, __FILE__,
@@ -186,7 +165,8 @@ class Pumper extends PumpersOrm
     }
 
     /**
-     *  Logs the activity of the Pumper.
+     * Logs the activity of the Pumper
+     * 
      * @param int batchId
      * @param int nodeFrameId
      * @param int channelFrameId
@@ -201,13 +181,11 @@ class Pumper extends PumpersOrm
      * @param string comment
      * @param int doInsertSql
      */
-
     function PumperToLog($batchId, $nodeFrameId, $channelFrameId, $serverFrameId, $pumperId,
                          $class, $method, $file, $line, $type, $level, $comment, $doInsertSql = false)
     {
         if (strcmp(App::getValue("SyncStats"), "1") == 0) {
             if (!isset($this->syncStatObj)) {
-    
                 $this->syncStatObj = new SynchronizerStat();
             }
             $this->syncStatObj->create($batchId, $nodeFrameId, $channelFrameId, $serverFrameId, $pumperId,

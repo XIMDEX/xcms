@@ -29,7 +29,6 @@ namespace Ximdex\Models;
 
 use Ximdex\Models\ORM\LocalesOrm;
 
-
 class XimLocale extends LocalesOrm
 {
 	var $dbObj;
@@ -42,8 +41,7 @@ class XimLocale extends LocalesOrm
 		4 => 'Error de conexion con la base de datos',
 	);
 
-
-	//Constructor
+	// Constructor
 	function XimLocale($params = null)
 	{
 		$this->errorList[1] = _('Locale does not exist');
@@ -89,19 +87,16 @@ class XimLocale extends LocalesOrm
 			$this->SetError(4);
 	}
 
-
 	function GetCode()
 	{
 		return $this->get('Code');
 	}
-
 
 	// Devuelve el nombre del locale correspondiente
 	function GetName()
 	{
 		return $this->get('Name');
 	}
-
 
 	function GetAllLocales($order = NULL)
 	{
@@ -110,7 +105,6 @@ class XimLocale extends LocalesOrm
 
 	function GetEnabledLocales()
 	{
-
 		$_locales = $this->find('ID', 'Enabled = 1', null);
 		if (!empty($_locales)) {
 			$locales = array();
@@ -124,22 +118,17 @@ class XimLocale extends LocalesOrm
 					"Name" => $class->GetName()
 				);
 			}
-
 			return $locales;
-		} else {
-			return null;
 		}
+        return null;
 	}
-
 
 	function GetLocaleByCode($_code = NULL)
 	{
 		if (empty($_code)) {
 			$_code = DEFAULT_LOCALE;
 		}
-
 		$_locales = $this->find('ID', "Code = '{$_code}'", null);
-
 		if (!empty($_locales)) {
 			$locales = array();
 			foreach ($_locales as $locale) {
@@ -153,12 +142,9 @@ class XimLocale extends LocalesOrm
 				);
 
 			}
-
-
 			return $locales[0];
-		} else {
-			return null;
 		}
+		return null;
 	}
 
 	// Nos permite cambiar el nombre a una locale
@@ -197,31 +183,27 @@ class XimLocale extends LocalesOrm
 		$dbObj = new \Ximdex\Runtime\Db();
 		$query = sprintf("SELECT ID FROM Locales WHERE Name = %s", $dbObj->sqlEscapeString($name));
 		$dbObj->Query($query);
-		if ($dbObj->numRows)
+		if ($dbObj->numRows) {
 			parent::__construct($dbObj->GetValue("ID"));
-		else
+		}
+		else {
 			$this->SetError(4);
+		}
 	}
-
 
 	// Create a new language and update its ID in the object
 	function CreateLocale($code, $name, $enabled = 0, $ID = null)
 	{
-
 		if ($ID > 0) {
 			$this->set('ID', $ID);
 		}
-
-
 		$this->set('Code', $code);
 		$this->set('Name', $name);
 		$this->set('Enabled', (int)!empty($enabled));
 		$this->add();
-
 		if ($this->get('ID') <= 0) {
 			$this->SetError(4);
 		}
-
 		return $ID;
 	}
 
@@ -231,6 +213,7 @@ class XimLocale extends LocalesOrm
 		$this->ClearError();
 		$dbObj = new \Ximdex\Runtime\Db();
 		if (!is_null($this->get('ID'))) {
+		    
 			// Lo borramos de la base de datos
 			$dbObj->Execute(sprintf("DELETE FROM Locales WHERE ID= %d", $this->get('ID')));
 			if ($dbObj->numErr)
@@ -241,7 +224,6 @@ class XimLocale extends LocalesOrm
 
 	function LocaleEnabled($ID)
 	{
-
 		$dbObj = new \Ximdex\Runtime\Db();
 		$query = sprintf("SELECT Enabled FROM Locales WHERE ID = %d", $ID);
 		$dbObj->Query($query);
@@ -250,19 +232,14 @@ class XimLocale extends LocalesOrm
 			return null;
 		}
 		return $dbObj->row["Enabled"];
-
-
 	}
-
 
 	function SetEnabled($enabled)
 	{
-
 		if (!($this->get('ID') > 0)) {
 			$this->SetError(2, 'No Existe ');
 			return false;
 		}
-
 		$result = $this->set('Enabled', (int)$enabled);
 		if ($result) {
 			return $this->update();
@@ -270,26 +247,23 @@ class XimLocale extends LocalesOrm
 		return false;
 	}
 
-
-	/// Limpia los errores de la clase
+	// Limpia los errores de la clase
 	function ClearError()
 	{
 		$this->numErr = null;
 		$this->msgErr = null;
 	}
 
-	/// Carga un error en la clase
+	// Carga un error en la clase
 	function SetError($code)
 	{
 		$this->numErr = $code;
 		$this->msgErr = $this->errorList[$code];
 	}
 
-	// devuelve true si en la clase se ha producido un error
+	// Devuelve true si en la clase se ha producido un error
 	function HasError()
 	{
 		return ($this->numErr != null);
 	}
 }
-
-?>

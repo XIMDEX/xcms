@@ -40,15 +40,10 @@ use Ximdex\NodeTypes\XmlContainerNode;
 
 class StructuredDocument extends StructuredDocumentsOrm
 {
-
     var $ID;
-
     var $flagErr;
-
     var $numErr;
-
     var $msgErr;
-
     var $errorList = array(
         1 => 'Error while connecting with the database',
         2 => 'The structured document does not exist',
@@ -115,7 +110,6 @@ class StructuredDocument extends StructuredDocumentsOrm
             $this->SetError(2);
             return false;
         }
-
         $result = $this->set('Name', $name);
         if ($result) {
             return $this->update();
@@ -138,7 +132,6 @@ class StructuredDocument extends StructuredDocumentsOrm
             $this->SetError(2);
             return false;
         }
-
         $result = $this->set('IdCreator', $IdCreator);
         if ($result) {
             return $this->update();
@@ -161,7 +154,6 @@ class StructuredDocument extends StructuredDocumentsOrm
             $this->SetError(2);
             return false;
         }
-
         $result = $this->set('IdLanguage', $IdLanguage);
         if ($result) {
             return $this->update();
@@ -180,7 +172,6 @@ class StructuredDocument extends StructuredDocumentsOrm
             $this->SetError(2);
             return false;
         }
-
         $result = $this->set('IdTemplate', $templateID);
         if ($result) {
             return $this->update();
@@ -199,18 +190,16 @@ class StructuredDocument extends StructuredDocumentsOrm
             $this->SetError(2);
             return false;
         }
-
         if ($docID != $this->get('IdDoc')) {
             $result = $this->set('TargetLink', $docID);
             if ($result) {
                 $this->update();
             }
-
             $dependencies = new Dependencies();
             $dependencies->insertDependence($docID, $this->get('IdDoc'), 'SYMLINK', $this->GetLastVersion());
             return true;
-        } else
-            $this->SetError(4);
+        }
+        $this->SetError(4);
         return false;
     }
 
@@ -220,17 +209,14 @@ class StructuredDocument extends StructuredDocumentsOrm
             $this->SetError(2);
             return false;
         }
-
         $result = $this->set('TargetLink', '');
         if ($result) {
-
             $result = $this->update();
             $this->SetContent($this->GetContent());
 
             // Elimina la dependencia
             $dependencies = new Dependencies();
             $dependencies->deleteDependenciesByDependentAndType($this->get('IdDoc'), 'SYMLINK');
-
             return $result;
         }
         return false;
@@ -250,7 +236,6 @@ class StructuredDocument extends StructuredDocumentsOrm
             $targetContent = preg_replace('/<url>\s*([^\<]+)\s*<\/url>/i', "'<url>'.\$this->UpdateLinkParseLink($targetLang , '\\1').'</url>'", $targetContent);
             return $targetContent;
         }
-
         $data = new DataFactory($this->get('IdDoc'));
         $content = $data->GetContent($version, $subversion);
         return $content;
@@ -262,29 +247,28 @@ class StructuredDocument extends StructuredDocumentsOrm
         if ($pos != FALSE) {
             $linkID = substr($linkID, 0, $pos);
         }
-
         $node = new Node($linkID);
         if (($node->get('IdNode') > 0) && ($node->nodeType->get('Name') != "XmlDocument")) {
             return $linkID;
         }
         $linkDoc = new StructuredDocument($linkID);
-        if ($linkDoc->GetLanguage() != $sourceLang)
+        if ($linkDoc->GetLanguage() != $sourceLang) {
             return $linkID;
-
+        }
         $node->SetID($node->GetParent());
-        if ($node->nodeType->get('Name') != "XmlContainer")
+        if ($node->nodeType->get('Name') != "XmlContainer") {
             return $linkID;
-
+        }
         $sibling = $node->class->GetChildByLang($this->GetLanguage());
-
-        if ($sibling)
+        if ($sibling) {
             return $sibling;
-        else
+        }
+        else {
             return $linkID;
+        }
     }
 
     /**
-     *
      * @param string $content
      * @param boolean $commitNode
      */
@@ -297,7 +281,6 @@ class StructuredDocument extends StructuredDocumentsOrm
         // Repetimos para todos los nodos que son enlaces simbolicos a este
         if (!empty($symLinks)) {
             foreach ($symLinks as $link) {
-
                 $node = new Node($link);
                 $node->RenderizeNode();
             }
@@ -306,14 +289,15 @@ class StructuredDocument extends StructuredDocumentsOrm
         if (\Ximdex\NodeTypes\NodeTypeConstants::METADATA_DOCUMENT == $node->GetNodeType()) {
             $content = \Ximdex\Metadata\MetadataManager::addSystemMetadataToContent($node->nodeID, $content);
             if ($content === false) {
-                // invalid XML
+                
+                // Invalid XML
                 $this->msgErr = 'Invalid XML document content';
                 Logger::error('Invalid XML for metadata node: ' . $node->GetDescription());
                 return false;
             }
         }
 
-        // refrescamos la fecha de Actualizacion del nodo
+        // Refrescamos la fecha de Actualizacion del nodo
         $this->SetUpdateDate();
         $data = new DataFactory($this->get('IdDoc'));
         $node = new Node($this->get('IdDoc'));
@@ -324,12 +308,12 @@ class StructuredDocument extends StructuredDocumentsOrm
             $res = $data->SetContent($content, NULL, NULL, $commitNode);
         }
 
-        // the document will be validate against the associated RNG schema with XML documents
+        // The document will be validate against the associated RNG schema with XML documents
         if ($node->GetNodeType() == NodeTypeConstants::XML_DOCUMENT) {
             $this->validate_schema($node);
         }
 
-        // check possible errors
+        // Check possible errors
         if ($res === false) {
             if ($data->msgErr) {
                 $this->messages->add($data->msgErr, MSG_TYPE_ERROR);
@@ -343,7 +327,7 @@ class StructuredDocument extends StructuredDocumentsOrm
             }
         }
 
-        // set dependencies
+        // Set dependencies
         $dependeciesParser = new ParsingDependencies();
         if ($dependeciesParser->parseAllDependencies($this->get('IdDoc'), $content) === false) {
             if (!$this->messages->count())
@@ -374,15 +358,18 @@ class StructuredDocument extends StructuredDocumentsOrm
             return trim(FsUtils::file_get_contents($rngPath));
         }
         $idContainer = $node->getParent();
-        if (!$idContainer)
+        if (!$idContainer) {
             return null;
+        }
         $relTemplate = new RelTemplateContainer();
         $idTemplate = $relTemplate->getTemplate($idContainer);
-        if (!$idTemplate)
+        if (!$idTemplate) {
             return null;
+        }
         $templateNode = new Node($idTemplate);
-        if (!$templateNode->GetID())
+        if (!$templateNode->GetID()) {
             return null;
+        }
         return $templateNode;
     }
 
@@ -402,8 +389,9 @@ class StructuredDocument extends StructuredDocumentsOrm
             );
         }
         $schemaId = $templateNode->getID();
-        if (!$schemaId)
+        if (!$schemaId) {
             return null;
+        }
         $rngTemplate = new Node($schemaId);
         $content = $rngTemplate->GetContent();
         $schemaData['id'] = $schemaId;
@@ -426,8 +414,9 @@ class StructuredDocument extends StructuredDocumentsOrm
         $valid = $rngValidator->validate($schema, $content);
         $errors = $rngValidator->getErrors();
         if ($errors) {
-            foreach ($errors as $error)
+            foreach ($errors as $error) {
                 $this->messages->add('Error in the associated RNG schema: ' . $error, MSG_TYPE_WARNING);
+            }
             return null;
         }
         $content = preg_replace('/xmlns:xim="([^"]*)"/', sprintf('xmlns:xim="%s"', ParsingRng::XMLNS_XIM), $content);
@@ -446,7 +435,8 @@ class StructuredDocument extends StructuredDocumentsOrm
         if ($schema === null) {
             return false;
         }
-        $xmlDoc = '<?xml version="1.0" encoding="UTF-8"?>' . PHP_EOL . '<docxap>' . PHP_EOL . \Ximdex\Utils\Strings::stripslashes($docNode->GetContent()) . PHP_EOL . '</docxap>';
+        $xmlDoc = '<?xml version="1.0" encoding="UTF-8"?>' . PHP_EOL . '<docxap>' . PHP_EOL 
+                . \Ximdex\Utils\Strings::stripslashes($docNode->GetContent()) . PHP_EOL . '</docxap>';
         $rngValidator = new RNG();
         $valid = $rngValidator->validate($schema, $xmlDoc);
         if (!$valid) {
@@ -480,7 +470,6 @@ class StructuredDocument extends StructuredDocumentsOrm
             $this->SetError(2);
             return false;
         }
-
         $result = $this->set('UpdateDate', date('Y/m/d H:i:s'));
         if ($result) {
             return $this->update();
@@ -565,7 +554,6 @@ class StructuredDocument extends StructuredDocumentsOrm
             // Guardamos su contenido
             $this->SetContent($content);
         } else {
-
             $this->SetError(1);
         }
     }
@@ -615,8 +603,7 @@ class StructuredDocument extends StructuredDocumentsOrm
                 $links[] = $dbObj->GetValue("IdNodeDependent");
                 $dbObj->Next();
             }
-
-            if (is_array($links))
+            if (is_array($links)) {
                 foreach ($links as $link) {
                     $node_ximlet = new Node($link);
                     $node_type = new NodeType($node_ximlet->GetNodeType());
@@ -625,6 +612,7 @@ class StructuredDocument extends StructuredDocumentsOrm
                         $salida[] = $link;
                     }
                 }
+            }
             return $salida;
         }
         return NULL;
@@ -693,8 +681,9 @@ class StructuredDocument extends StructuredDocumentsOrm
             return false;
         }
         $result = $this->set('XsltErrors', $xsltErrors);
-        if ($result)
+        if ($result) {
             return $this->update();
+        }
         return false;
     }
 

@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,19 +25,15 @@
  * @version $Revision$
  */
 
-
 namespace Ximdex\Models;
 
 use Ximdex\Logger;
 use Ximdex\Models\ORM\StatesOrm;
 
-
 class State extends StatesOrm
 {
-
 	function loadByName($name)
 	{
-
 		$result = $this->find('IdState', 'Name = %s', array($name), MONO);
 		if (count($result) < 1) {
 			Logger::error('No states found with the given name');
@@ -46,9 +43,7 @@ class State extends StatesOrm
 			Logger::error('Inconsistency: Several states found with the given name');
 			return NULL;
 		}
-
 		$state = new State($result[0]);
-
 		return $state->get('IdState');
 	}
 
@@ -63,7 +58,6 @@ class State extends StatesOrm
 			Logger::error('Inconsistency: Several previous states found');
 			return NULL;
 		}
-
 		if (!($result[0] > 0)) {
 			Logger::error('Inconsistency: The estimated previous state is not valid');
 			return NULL;
@@ -82,7 +76,6 @@ class State extends StatesOrm
 			Logger::error('Inconsistency: Several init states found');
 			return NULL;
 		}
-
 		$this->State($result[0]);
 		return $this->get('IdState');
 	}
@@ -98,7 +91,6 @@ class State extends StatesOrm
 			Logger::error('Inconsistency: Several final states found');
 			return NULL;
 		}
-
 		$this->State($result[0]);
 		return $this->get('IdState');
 	}
@@ -124,18 +116,14 @@ class State extends StatesOrm
 	{
 		$nextState = new State($this->get('NextState'));
 		$idPreviousState = $nextState->getPreviousState();
-
 		$result = parent::add();
 		if (!($result > 0)) {
 			Logger::warning('Workflow state could not be inserted');
 			return false;
 		}
-
 		$previousState = new State($idPreviousState);
 		$previousState->set('NextState', $result);
 		$previousState->update();
-
 		return $this->get('IdState');
 	}
-
 }

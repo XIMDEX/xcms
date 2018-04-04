@@ -25,13 +25,12 @@
  *  @version $Revision$
  */
 
-
 namespace Ximdex\Models;
 
+use Ximdex\Data\GenericData;
 
-class NodeDefaultContents extends \Ximdex\Data\GenericData {
-
-
+class NodeDefaultContents extends GenericData
+{
     var $_idField = 'IdNodeDefaultContent';
     var $_table = 'NodeDefaultContents';
     var $_metaData = array(
@@ -61,7 +60,8 @@ class NodeDefaultContents extends \Ximdex\Data\GenericData {
      * * idnodetype: Nodetype identificator. 
      * @return Array result: 
      */
-    function getDefaultChilds($idnodetype) {
+    function getDefaultChilds($idnodetype)
+    {
         $result = $this->find('NodeType, Name', 'IdNodeType = %s AND Nodetype <> %s', array($idnodetype, $idnodetype), MULTI, true, null, 'Name');
         return $result;
     }
@@ -74,9 +74,9 @@ class NodeDefaultContents extends \Ximdex\Data\GenericData {
      * * idnodetype: Nodetype identificator. 
      * @return Array result: 
      */
-    function getDefaultName($idnodetype) {
+    function getDefaultName($idnodetype)
+    {
         $result = $this->find('Name', 'NodeType = %s', array($idnodetype), MONO);
         return $result[0];
     }
-
 }

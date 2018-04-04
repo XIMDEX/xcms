@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,11 +25,12 @@
  *  @version $Revision$
  */
 
-
 namespace Ximdex\Models;
 
+use Ximdex\Data\GenericData;
 
-class RelStrdocNode extends \Ximdex\Data\GenericData{
+class RelStrdocNode extends GenericData
+{
     var $_idField = 'id';
     var $_table = 'RelStrdocNode';
     var $_metaData = array(

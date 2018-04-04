@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,12 +25,12 @@
  *  @version $Revision$
  */
 
-
 namespace Ximdex\Models;
 
+use Ximdex\Data\GenericData;
 
-
-class RelVersionsLabel extends \Ximdex\Data\GenericData{
+class RelVersionsLabel extends GenericData
+{
     var $_idField = 'id';
     var $_table = 'RelVersionsLabel';
     var $_metaData = array(

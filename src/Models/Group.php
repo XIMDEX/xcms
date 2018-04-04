@@ -26,17 +26,14 @@
  */
 
 namespace Ximdex\Models;
+
 use Ximdex\Workflow\WorkFlow;
 use Ximdex\Models\ORM\GroupsOrm;
 use Ximdex\Runtime\App;
 
-
-/// Group class
-
 class Group extends GroupsOrm
 {
 	var $groupID;
-	//	var $dbObj;
 	var $numErr;                // Error code
 	var $msgErr;                // Error message
 	var $errorList = array(    // Class error list
@@ -51,7 +48,7 @@ class Group extends GroupsOrm
 		9 => 'General group cant be removed'
 	);
 
-	function Group($id = null)
+	public function __construct($id = null)
 	{
 		$this->errorList[1] = _('Group does not exist');
 		$this->errorList[2] = _('A group with this name already exists');

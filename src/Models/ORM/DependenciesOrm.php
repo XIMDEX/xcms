@@ -1,6 +1,4 @@
 <?php
-namespace Ximdex\Models\ORM;
-use Ximdex\Data\GenericData;
 
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
@@ -27,6 +25,9 @@ use Ximdex\Data\GenericData;
  * @version $Revision$
  */
 
+namespace Ximdex\Models\ORM;
+
+use Ximdex\Data\GenericData;
 
 class DependenciesOrm extends  GenericData
 {

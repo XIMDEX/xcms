@@ -2,16 +2,16 @@
 
 namespace Ximdex\Models;
 
-
 use Ximdex\Models\ORM\ActionsStatsOrm;
 
 class ActionsStats extends ActionsStatsOrm {
 
     /**
-     * ActionsStats constructor.
+     * ActionsStats constructor
+     * 
      * @param null $statId
      */
-    function __construct($statId = null)  {
+    function __construct($statId = null) {
         parent::__construct($statId);
     }
 
