@@ -1,0 +1,84 @@
+
+/**
+ *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
+ */
+
+.info--node{
+	.box-content {
+	    padding: .8em;
+	    font-size: 2rem;
+	    color: #fff;
+	    text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.2);
+	    background: #ccc;
+	    -webkit-border-radius: 2px;
+	    -moz-border-radius: 2px;
+	    border-radius: 2px;
+	    /*-webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);*/
+	    /*-moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);*/
+	    /*box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);*/
+	    padding: 1em;
+	    margin-bottom: 1em;
+	    word-wrap: break-word;
+	    min-height: 150px;
+	}
+	.green {
+	    background: #7bcabf;
+	}
+	h3 {
+	    padding: 1.5em 15px 1.5em 30px;
+	}
+	h3::before {
+	    content: "";
+	    border: 6px solid transparent;
+	    position: absolute;
+	    left: .3em;
+	    top: 3.2em;
+		border-top: 3px solid #ccc;
+		left: 0;
+		width: 98%;
+		font-style: normal;
+    	font-weight: 700;
+	    
+	}
+	strong {
+	    display: block;
+	    text-transform: uppercase;
+	    font-size: 1.8rem;
+	    color: #464646;
+	    padding-bottom: .4em;
+	    text-shadow: none;
+	}
+}
+
+.version-info-node-info {
+    padding: 0 2% 0 2% !important;
+    background: #ccc;
+}
+
+
+
+
+
+
+

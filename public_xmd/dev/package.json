@@ -1,0 +1,28 @@
+{
+  "name": "ximdex4",
+  "version": "1.0.0",
+  "description": "Ximdex CMS is a Decoupled Headless Semantic Content and Data Management System (headless CMS DMS) that allows the manipulation and generation of content, data and apps to be published in different target technologies: PHP, J2EE, .NET, XML/XSLT, JS, RDF, JSON, RoR, ...",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "dev": "NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "watch": "NODE_ENV=development node_modules/webpack/bin/webpack.js --watch --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "hot": "NODE_ENV=development webpack-dev-server --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "production": "NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jesusdoradorodriguez/ximdex.git"
+  },
+  "author": "ximdex",
+  "license": "AGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/jesusdoradorodriguez/ximdex/issues"
+  },
+  "homepage": "https://github.com/jesusdoradorodriguez/ximdex#readme",
+  "devDependencies": {
+    "laravel-mix": "^2.1.11"
+  }
+}
