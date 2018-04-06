@@ -518,6 +518,11 @@ class ViewFilterMacros extends AbstractView implements IView
                 return App::getValue('EmptyHrefCode');
             }
         }
+        if ($parserPathTo->getIdNode() === null) {
+            
+            // There is not a node from Ximdex (ex. an external URL)
+            return $pathToParams;
+        }
         $res["idNode"] = $parserPathTo->getIdNode();
         $res["pathMethod"] = $parserPathTo->getPathMethod();
         $res["channel"] = $parserPathTo->getChannel();
@@ -566,7 +571,11 @@ class ViewFilterMacros extends AbstractView implements IView
                 }
                 else {
                     $query = App::get('\Ximdex\Utils\QueryManager');
-                    return $query->getPage() . $query->buildWith(array('nodeid' => $idNode, 'token' => uniqid()));
+                    $src = $query->getPage() . $query->buildWith(array('nodeid' => $idNode, 'token' => uniqid()));
+                    if ($parserPathTo->getAnchor()) {
+                        $src .= '#' . $parserPathTo->getAnchor();
+                    }
+                    return $src;
                 }
             }
 
@@ -576,7 +585,11 @@ class ViewFilterMacros extends AbstractView implements IView
         }
         if ($this->_isPreviewServer) {
             if ($isStructuredDocument) {
-                return App::getValue('UrlRoot') . App::getValue('NodeRoot') . $targetNode->GetPublishedPath($idTargetChannel, true);
+                $src = App::getValue('UrlRoot') . App::getValue('NodeRoot') . $targetNode->GetPublishedPath($idTargetChannel, true);
+                if ($parserPathTo->getAnchor()) {
+                    $src .= '#' . $parserPathTo->getAnchor();
+                }
+                return $src;
             } else {
                 return $targetNode->class->GetNodeURL();
             }
@@ -597,9 +610,17 @@ class ViewFilterMacros extends AbstractView implements IView
         // Get the relative or absolute path
         if ($forceAbsolute or ($targetServer->get('IdServer') != $this->_server->get('IdServer')) or $this->_server->get('OverrideLocalPaths')
             or (isset($res['pathMethod']['absolute']) and $res['pathMethod']['absolute'])) {
-            return $this->getAbsolutePath($targetNode, $targetServer, $idTargetChannel);
+            $src = $this->getAbsolutePath($targetNode, $targetServer, $idTargetChannel);
+            if ($parserPathTo->getAnchor()) {
+                $src .= '#' . $parserPathTo->getAnchor();
+            }
+            return $src;
         }
-        return $this->getRelativePath($targetNode, $idTargetChannel);
+        $src = $this->getRelativePath($targetNode, $idTargetChannel);
+        if ($parserPathTo->getAnchor()) {
+            $src .= '#' . $parserPathTo->getAnchor();
+        }
+        return $src;
     }
 
     /**

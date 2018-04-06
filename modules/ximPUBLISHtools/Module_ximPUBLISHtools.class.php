@@ -70,14 +70,16 @@ class Module_ximPUBLISHtools extends Module {
         $sql['Enabling ximPUBLISH report action'] = "INSERT INTO RelRolesActions
 		(IdRel,IdRol,IdAction,IdState,IdContext)
 		VALUES (NULL,201," . self::PUB_REPORT_ACTION_ID . ",7,1)";
-
+        
+        // commented temporally
+        /*
         $sql['Creating ximPUBLISH history action'] = "INSERT INTO Actions
 		(IdAction,IdNodeType,Name,Command,Icon,Description,Sort,Module,Multiple)
 		VALUES ('" . self::PUB_REPORT_HISTORY_ID . "','" . \Ximdex\NodeTypes\NodeTypeConstants::SERVER
 		      . "','Publishing history','batchhistory','publicate_section.png',
 		'View document Publishing history',100,'ximPUBLISHtools',0)";
-        
-		// commented temporally
+        */
+		
 		/*
         $sql['Enabling ximPUBLISH history action'] = "INSERT INTO RelRolesActions
 		(IdRel,IdRol,IdAction,IdState,IdContext)
@@ -110,12 +112,14 @@ class Module_ximPUBLISHtools extends Module {
         	$sql['Disabling ximPUBLISH report action'] = "DELETE FROM RelRolesActions WHERE IdRel = '" . $result[0] . "'";
         }
 
+        /*
         $sql['Deleting ximPUBLISH history action'] = "DELETE FROM Actions WHERE IdAction = '" . self::PUB_REPORT_HISTORY_ID . "'";
         $result = $relRolesActions->find('IdRel', 'IdAction = %s', array(self::PUB_REPORT_HISTORY_ID), MONO);
         if ($result)
         {
         	$sql['Disabling ximPUBLISH history action'] = "DELETE FROM RelRolesActions WHERE IdRel = '" . $result[0] . "'";
         }
+        */
         
         foreach ($sql as $query) {
             $db->Execute($query);

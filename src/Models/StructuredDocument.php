@@ -503,15 +503,13 @@ class StructuredDocument extends StructuredDocumentsOrm
     public function GetChannels()
     {
         $channelProperty = new ChannelProperty($this->get('IdDoc'));
-        $values = $channelProperty->getValues($this->get('IdDoc'));
+        $values = $channelProperty->getValues($this->get('IdDoc'), true);
         if ($values === false) {
             return false;
         }
         $res = [];
         foreach ($values as $channel) {
-            if ($channel['Checked'] or $channel['Inherited']) {
-                $res[$channel['Id']] = $channel['Id'];
-            }
+            $res[$channel['Id']] = $channel['Id'];
         }
         return $res;
     }

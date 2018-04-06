@@ -25,20 +25,12 @@
  * @version $Revision$
  */
 
-
 namespace Ximdex\Models;
 
 use Ximdex\Models\ORM\RelLinkDescriptionsOrm;
 
-
 class RelLinkDescriptions extends RelLinkDescriptionsOrm
 {
-
-    public function __construct($id = null)
-    {
-        parent::__construct($id);
-    }
-
     public function getIdRel()
     {
         return $this->IdRel;
@@ -56,22 +48,16 @@ class RelLinkDescriptions extends RelLinkDescriptionsOrm
 
     static public function & create($idLink, $description)
     {
-
         $rel = new RelLinkDescriptions();
-
         $node = new Node($idLink);
         $idNode = $node->get('IdNode');
         if ($idNode <= 0) {
-
             $rel->messages->add("Can't append a description to the link, the node id $idNode doesn't exists.", MSG_TYPE_ERROR);
         } else {
-
             $rel->set('IdLink', $idLink);
             $rel->set('Description', $description);
-            /*$newId = */
             $rel->add();
         }
-
         return $rel;
     }
 
@@ -80,5 +66,4 @@ class RelLinkDescriptions extends RelLinkDescriptionsOrm
         $ret = parent::delete();
         return $ret;
     }
-
 }

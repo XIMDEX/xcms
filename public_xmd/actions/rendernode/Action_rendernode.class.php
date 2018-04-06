@@ -33,13 +33,23 @@ class Action_rendernode extends ActionAbstract
             if (!$parserPathTo->parsePathTo($expression)) {
                 $this->messages->mergeMessages($parserPathTo->messages());
             }
+            if ($parserPathTo->getIdNode() === null) {
+                
+                // Change the logs output to default one
+                Logger::setActiveLog();
+                return true;
+            }
+            /*
             if (!$parserPathTo->getIdNode()) {
                 
                 // The node can not be found
                 $this->messages->add(_('It is not possible to show preview.') . _(' The node you are trying to preview does not exist:') 
                     . $expression, MSG_TYPE_NOTICE);
+                // Change the logs output to default one
+                Logger::setActiveLog();
                 $this->render(array('messages' => $this->messages->messages), null, 'messages.tpl');
             }
+            */
             $idNode = $parserPathTo->getIdNode();
         }
         

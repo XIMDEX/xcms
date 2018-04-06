@@ -43,6 +43,7 @@ class ParsingPathTo
     private $pathMethod = null;
     private $channel = null;
     private $messages;
+    private $anchor = '';
     
     public function __construct()
     {
@@ -68,6 +69,11 @@ class ParsingPathTo
     {
         return $this->messages;
     }
+    
+    public function getAnchor() : string
+    {
+        return $this->anchor;
+    }
 
     /**
      * Get Idnode and channel from the params of the pathto method
@@ -80,19 +86,35 @@ class ParsingPathTo
      */
     public function parsePathTo(string $pathToParams, int $nodeId = null, int $language = null, $channel = null) : bool
     {
+        // Avoid URL or # links
+        if (strpos($pathToParams, '#') === 0 or filter_var($pathToParams, FILTER_VALIDATE_URL)) {
+            $this->idNode = null;
+            return true;
+        }
         $msg = 'Parsing pathTo with: ' . $pathToParams;
         if ($nodeId)
         {
             $msg .= ' for parent document node: ' . $nodeId;
         }
         Logger::info($msg);
-        $params = explode(",", $pathToParams);
+        $params = explode(',', $pathToParams);
 
         // Error if there aren't any params
         if (!$params)
         {
-            Logger::error('Parsing pathto need any param to work');
+            $error = 'Parsing pathto need any param to work';
+            $this->messages->add($error, MSG_TYPE_ERROR);
             return false;
+        }
+        
+        // Check for an anchor # at the end of the source given in params
+        $info = explode('#', $params[0]);
+        if (isset($info[1])) {
+            $params[0] = $info[0];
+            $this->anchor = $info[1];
+        }
+        else {
+            $this->anchor = '';
         }
 
         // Checking the first params. It could be number, or .number or string
@@ -114,7 +136,6 @@ class ParsingPathTo
             {
                 $error = 'The specified channel ' . $channelParam . ' does not exist';
                 $this->messages->add($error, MSG_TYPE_WARNING);
-                Logger::warning($error);
                 return false;
             }
             $this->channel = $channel[0]['IdChannel'];
@@ -131,7 +152,8 @@ class ParsingPathTo
             $node = new Node($id);
             if (!$node->GetID())
             {
-                Logger::warning('Cannot load the node: ' . $id . ' in order to parse pathto');
+                $error = 'Cannot load the node: ' . $id . ' in order to parse pathto';
+                $this->messages->add($error, MSG_TYPE_WARNING);
                 return false;
             }
         }
@@ -140,7 +162,8 @@ class ParsingPathTo
             // The macro has a Ximdex resource path
             if (!$nodeId)
             {
-                Logger::error('Value for IdNode is needed to parse pathto: ' . $nodeValue);
+                $error = 'Value for IdNode is needed to parse pathto: ' . $nodeValue;
+                $this->messages->add($error, MSG_TYPE_ERROR);
                 return false;
             }
             
@@ -148,7 +171,8 @@ class ParsingPathTo
             $nodeDoc = new Node($nodeId);
             if (!$nodeDoc->GetID())
             {
-                Logger::error('Cannot load the param node: ' . $id . ' in order to parse pathto');
+                $error = 'Cannot load the param node: ' . $id . ' in order to parse pathto';
+                $this->messages->add($error, MSG_TYPE_ERROR);
                 return false;
             }
 
@@ -156,7 +180,8 @@ class ParsingPathTo
             $data = pathinfo($nodeValue);
             if (count($data) < 2)
             {
-                Logger::error('Path info of the resource given in pathto is incomplete');
+                $error = 'Path info of the resource given in pathto is incomplete';
+                $this->messages->add($error, MSG_TYPE_ERROR);
                 return false;
             }
             $path = $data['dirname'];
@@ -170,14 +195,16 @@ class ParsingPathTo
                 $nodeServer = new Node($idServer);
                 if (!$nodeServer->GetID())
                 {
-                    Logger::error('Cannot load the server node for ID: ' . $idServer);
+                    $error = 'Cannot load the server node for ID: ' . $idServer;
+                    $this->messages->add($error, MSG_TYPE_ERROR);
                     return false;
                 }
                 
                 // Sanitize path
                 if (!$this->sanitize_pathTo($path))
                 {
-                    Logger::error('Cannot sanitize the path: ' . $path . ' when parsing pathto');
+                    $error = 'Cannot sanitize the path: ' . $path . ' when parsing pathto';
+                    $this->messages->add($error, MSG_TYPE_ERROR);
                     return false;
                 }
                 

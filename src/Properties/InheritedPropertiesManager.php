@@ -43,15 +43,15 @@ class InheritedPropertiesManager
 	/**
 	 * Returns the property values
 	 * 
-	 * @param integer $nodeId
-	 *
+	 * @param int $nodeId
+	 * @param bool $onlyInherited
 	 * @return array Associative array $ret["property_name"] = array_values
 	 *
 	 * @uses ChannelProperty::getValues to get the specific values.
 	 * @uses LanguageProperty::getValues to get the specific values. 
 	 * 
 	 */
-	static public function getValues($nodeId)
+	static public function getValues($nodeId, bool $onlyInherited = false)
 	{
 		$factory = new \Ximdex\Utils\Factory(dirname(__FILE__), '');
 		$ret = array();
@@ -61,7 +61,7 @@ class InheritedPropertiesManager
 				Logger::error(_("Inheritable property cannot be instantiate: ") . $prop);
 				continue;
 			}
-			$ret[$prop] = $propManager->getValues();
+			$ret[$prop] = $propManager->getValues($onlyInherited);
 		}
 		return $ret;
 	}

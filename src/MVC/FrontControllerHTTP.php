@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -23,27 +24,24 @@
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
+
 namespace Ximdex\MVC;
 
 use Ximdex\Runtime\App;
 use Ximdex\Models\Action;
 
-
 /**
- *
  * @brief FrontController for the http interface
  *
  * FrontController for the http interface, provide specific methods to read
  * the parameters from http and launches the ApplicationController to compose
  * the http interface
- *
  */
 class FrontControllerHTTP extends FrontController
 {
-
     /**
      * Verifica y parsea la URL, y llama al ApplicationController
-     * (non-PHPdoc)
+     * 
      * @see inc/mvc/FrontController#dispatch()
      */
     function dispatch()
@@ -54,8 +52,7 @@ class FrontControllerHTTP extends FrontController
                 $_GET["action"] = null;
             }
 
-
-            //view /ximdex/trunk/actions/browser3/inc/: 63
+            // View /ximdex/trunk/actions/browser3/inc/: 63
             if (!array_key_exists("redirect_other_action", $_GET) && "installer" != $_GET["action"]) {
                 $this->parseFriendlyUrl();
             }
@@ -66,29 +63,29 @@ class FrontControllerHTTP extends FrontController
             // Llama al ApplicationController
             $appController = new ApplicationController();
             $appController->setRequest($this->request);
-            /* Getting params to check permissions.
+            
+            /* 
+             * Getting params to check permissions.
              * Some actions can be loaded for everyone
              */
             $idNode = $this->request->getParam('nodeid');
             $actionName = $this->request->getParam('action');
             $idAction = $this->getActionId();
             $listAllowedActions = Action::getAlwaysAllowedActions();
-            if (in_array($actionName, $listAllowedActions) ||
-                $this->isAllowedAction($idNode, $idAction)
-            ) {
+            if (in_array($actionName, $listAllowedActions) || $this->isAllowedAction($idNode, $idAction)) {
                 $appController->compose();
                 $this->hasError = $appController->hasError();
                 $this->msgError = $appController->getMsgError();
             } else {
                 $this->hasError = true;
                 $this->msgError = "The action cannot be executed on the selected node";
-                
             }
         }
     }
 
     /**
      * Comprueba si la URL de acceso coincide con UrlRoot
+     * 
      * @return boolean
      */
     function _checkURI()
@@ -96,7 +93,7 @@ class FrontControllerHTTP extends FrontController
         $host_request = $_SERVER["HTTP_HOST"];
         $uri_request = explode("?", $_SERVER["PHP_SELF"], 2);
         $ximdex = parse_url(App::getValue('UrlHost') . App::getValue('UrlRoot'));
-        if (  (isset($ximdex["path"]) && strpos($uri_request[0], $ximdex["path"]) === false)) {
+        if ((isset($ximdex["path"]) && strpos($uri_request[0], $ximdex["path"]) === false)) {
             $this->_setError("Error: la URL de acceso no coincide con la UrlRoot", "FrontController");
             return false;
         } else {
@@ -104,49 +101,50 @@ class FrontControllerHTTP extends FrontController
         }
     }
 
-
     function parseFriendlyUrl()
     {
-
         $urlRoot = App::getValue('UrlHost') . App::getValue('UrlRoot');
-        //get base url of ximdex
+        
+        // Get base url of ximdex
         $base = "/" . preg_replace("/http:\/\/.+?\//", "", $urlRoot) . "/";
 
-        //Remove base of request_uri
+        // Remove base of request_uri
         $url = str_replace($base, "", $_SERVER["REQUEST_URI"]);
 
-        //split params/query_string
+        // Split params/query_string
         list($url, $query_string) = explode("?", $url, 2) + array(NULL, NULL);
 
-        //parse query string as $_GET
+        // Parse query string as $_GET
         parse_str($query_string, $_GET);
-        //Default action without querystring
+        
+        // Default action without querystring
         if (null == $query_string) {
             $_GET["action"] = "browser3";
         }
 
-        //remove index.php|frontcontroller of url if this is
+        // Remove index.php|frontcontroller of url if this is
         $url = preg_replace("/index\.php/", "", $url);
         $url = str_replace(basename(APP_ROOT_PATH), "", $url);
 
-        //get friendly params
+        // Get friendly params
         $params = explode("/", ltrim($url, '/'));
         $max = count($params);
-
-
         if ($max > 0 && !empty($params[0])) {
-            if ("xmd" != $params[0])
+            if ("xmd" != $params[0]) {
                 $_GET["action"] = $params[0]; //fist params is action
-
+            }
             for ($i = 1; $i < $max; $i++) {
-                if (null == $params[$i]) break;
-
-                if ("_" == $params[$i][0]) { //params starting with "_" is method
+                if (null == $params[$i]) {
+                    break;
+                }
+                if ("_" == $params[$i][0]) {
+                    
+                    // Params starting with "_" is method
                     $_GET["method"] = substr($params[$i], 1);
                 }
+                
                 //Params friendly: /mod~ximTAGS/nodeid~500/
                 list($name, $value) = explode("~", $params[$i], 2) + array(NULL, NULL);
-
                 if (!empty($name)) {
                     $_GET[$name] = $value;
                 }
@@ -157,24 +155,19 @@ class FrontControllerHTTP extends FrontController
     function ModuleShortUrl()
     {
         $actionName = $this->request->getParam('action');
-
         if ("createaccount" == $actionName) {
-                $this->request->setParam('action', 'login');
+            $this->request->setParam('action', 'login');
         }
     }
-
 
     function checkSession()
     {
         $session_exists = \Ximdex\Runtime\Session::get("userID");
-
         $action_without_session = array("createaccount", "logout", "installer");
         $actionName = $this->request->getParam('action');
         $method = $this->request->getParam('method');
-
         $session_exists = \Ximdex\Runtime\Session::get("userID");
         $need_session = !in_array($actionName, $action_without_session);
-
         if ("installer" == $actionName) {
             $this->request->setParam("actionName", "installer");
             $this->request->setParam("action", "installer");
@@ -186,11 +179,9 @@ class FrontControllerHTTP extends FrontController
             if ("check" != $method) {
                 $this->request->setParam("method", "index");
             }
-
             $this->request->setParam("actionid", 0);
             $this->request->setParam("mod", null);
         }
-
     }
 
     /**
@@ -198,12 +189,10 @@ class FrontControllerHTTP extends FrontController
      */
     function parseURI()
     {
-        //We add the diferents parameters from get, post and file, to the class request
+        // We add the diferents parameters from get, post and file, to the class request
         $this->setToRequest();
         $this->ModuleShortUrl();
-
         $this->checkSession();
-
         $params = null;
         $nodeid = $this->request->getParam('nodeid');
         $actionName = $this->request->getParam('action');
@@ -212,7 +201,7 @@ class FrontControllerHTTP extends FrontController
         $renderer = $this->request->getParam('renderer');
         $actionId = $this->getActionId();
 
-        //get action by $actionId
+        // Get action by $actionId
         if (!empty($actionId)) {
             $action = new Action($actionId);
             $actionName = $action->get('Command');
@@ -220,86 +209,64 @@ class FrontControllerHTTP extends FrontController
             $params = $action->get('Params');
             $method = $action->get('Params');
             $renderer = $this->getRenderer();
-
             parse_str($action->get('Params'), $params);
         }
-
-
         $actionPath = $this->getActionPath($module);
         $this->actionLog();
 
-
-        //if action doesnt exist
-
+        // If action doesnt exist
         if (empty($module) && !file_exists(XIMDEX_ROOT_PATH . $actionPath . $actionName)) {
             $actionId = null;
             $actionName = 'browser3';
-
         } else if (empty($actionName)) {
             $actionId = null;
             $actionName = 'composer';
-
             $module = null;
         }
-
         $method = $this->getMethod();
-
         $this->setToParams($actionName, $actionId, $actionPath, $method, $module, $renderer, $params);
-
         $this->setXsessionParams($renderer, $actionPath);
         $this->normalizeNodesParam();
     }
 
     function actionlog()
     {
-        //error_log( $_SERVER["REQUEST_URI"].": $actionName|| $actionId|| $actionPath|| $method|| $module|| $renderer|| $params");
+        // error_log( $_SERVER["REQUEST_URI"].": $actionName|| $actionId|| $actionPath|| $method|| $module|| $renderer|| $params");
     }
-
 
     function getActionId()
     {
         $actionId = $this->request->getParam("actionid");
         $actionName = $this->request->getParam('action');
         $nodeid = $this->request->getParam('nodeid');
-
-
         if (empty($actionId)) {
             $actionId = isset($_REQUEST["actionid"]) ? $_REQUEST["actionid"] : 0;
         }
-
         if (!empty($actionId)) {
-            return (int)$actionId;
-        } else if (!empty($actionName) && "browser3" != $actionName && "browser3" != $actionName && !empty($nodeid)) {
-
-            $actionName = $this->request->getParam('action');
+            return (int) $actionId;
+        } else if (!empty($actionName) && "browser3" != $actionName && !empty($nodeid)) {
             $module = $this->request->getParam('mod');
-            $action = new Action($nodeid);
-            $actionId = (int)$action->setByCommandAndModule($actionName, $nodeid, $module);
-
+            $action = new Action();
+            $actionId = (int) $action->setByCommandAndModule($actionName, $nodeid, $module);
             return $actionId;
         }
-
         return null;
     }
-
 
     function getActionPath($module = NULL)
     {
         if (!empty($module)) {
             return \Ximdex\Modules\Manager::path($module) . "/actions/";
         }
-
         return "/public_xmd/actions/";
     }
 
     function getMethod()
     {
         $method = $this->request->getParam("method");
-
         if (empty($method)) {
             return "index";
         }
-
         return $method;
     }
 
@@ -326,7 +293,6 @@ class FrontControllerHTTP extends FrontController
         $this->request->setParam("mod", $module);
         $this->request->setParam("renderer", $renderer);
         $this->request->setParam("out", "WEB");
-
         if (!empty($params)) {
             $this->request->setParam("params", $params);
         }
@@ -337,6 +303,5 @@ class FrontControllerHTTP extends FrontController
         /** Guardado de datos persistente */
         \Ximdex\Runtime\Session::set("renderer", $renderer);
         \Ximdex\Runtime\Session::set("actionPath", $_action_path);
-
     }
 }

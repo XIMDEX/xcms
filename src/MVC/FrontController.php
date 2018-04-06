@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,42 +25,33 @@
  * @version $Revision$
  */
 
-
 namespace Ximdex\MVC;
 
 use Ximdex\Models\User;
 
-
 /**
- *
  * @brief Abstract controller who serves as base for http controller and cli controller
  *
  * Abstract controller who acts as factory for FrontControllerHTTP and FrontControllerCLI, receives the request
  * and send it to the adecuate controller
- *
  */
 class FrontController extends IController
 {
-
     /**
      * Realiza las tareas comunes a todas las acciones
-     */
-    /**
-     *
      */
     function dispatch()
     {
         $frontController = $this->_selectFrontControllerType();
         if (is_null($frontController)) {
-
             $this->_setError("Error: Tipo de entrada no reconocido", "FrontController");
         } else {
             $frontController->setRequest($this->request);
             $frontController->dispatch();
         }
+        
         // Si hay error, no muestra la vista con include ()
         if ($frontController->hasError()) {
-
             $error = [
                 'messages' => [
                     [
@@ -74,19 +66,18 @@ class FrontController extends IController
 
     /**
      * Determina el tipo de controlador que debe gestionar la petición
+     * 
      * @return FrontControllerCLI|FrontControllerHTTP
      */
     function _selectFrontControllerType()
     {
         $sapi_type = php_sapi_name();
-
         if ($sapi_type == "cli") {
             $this->request->setParam("enviroment", "cli");
             return new FrontControllerCLI ();
         } else {
             $this->request->setParam("enviroment", "http");
             return new FrontControllerHTTP();
-
         }
     }
 
@@ -104,6 +95,7 @@ class FrontController extends IController
 
     /**
      * Check permissions for an idnode
+     * 
      * @param int $idNode
      * @param int $idAction
      * @return boolean True if action is allowed
@@ -111,8 +103,9 @@ class FrontController extends IController
      */
     protected function isAllowedAction($idNode, $idAction)
     {
-        if (!$idNode)
+        if (!$idNode) {
             return true;
+        }
         $idUser = \Ximdex\Runtime\Session::get("userID");
         if (!$idUser) {
             return false;
@@ -123,5 +116,4 @@ class FrontController extends IController
         $user = new User($idUser);
         return $user->isAllowedAction($idNode, $idAction);
     }
-
 }

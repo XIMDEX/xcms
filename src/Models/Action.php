@@ -7,9 +7,9 @@ use Ximdex\Models\ORM\ActionsOrm;
 class Action extends ActionsOrm
 {
     /**
-     * @param null $actionID
+     * @param $actionID
      */
-    function __construct($actionID = null)
+    public function __construct($actionID = null)
     {
         $this->flagErr = FALSE;
         $this->autoCleanErr = TRUE;
@@ -19,26 +19,30 @@ class Action extends ActionsOrm
     }
 
     /**
-     * ID of the current action.
+     * ID of the current action
      */
     var $ID;
+    
     /**
-     * DB object used in methods.
+     * DB object used in methods
      */
     var $dbObj;
+    
     /**
-     * Shows if there was an error.
+     * Shows if there was an error
      */
     var $flagErr;
+    
     /**
      * Error code
      */
-
     var $numErr;
+    
     /**
      * Error message
      */
     var $msgErr;
+    
     /**
      * Class error list.
      */
@@ -47,11 +51,11 @@ class Action extends ActionsOrm
         2 => 'Action does not exist'
     );
     var $_fieldsToTraduce = array('Name', 'Description');
-
     var $autoCleanErr = false;
 
     /**
-     * Get an array with actions without permissions required.
+     * Get an array with actions without permissions required
+     * 
      * @return array Array with actions name.
      */
     public static function getAlwaysAllowedActions()
@@ -60,7 +64,8 @@ class Action extends ActionsOrm
     }
 
     /**
-     * Returns an arry with the ids of all the system actions.
+     * Returns an arry with the ids of all the system actions
+     * 
      * @return array of ActionID
      */
     function GetAllActions()
@@ -81,10 +86,8 @@ class Action extends ActionsOrm
     }
 
     /**
-     * Returns an array with the ids of all the action of a nodetype.
-     */
-
-    /**
+     * Returns an array with the ids of all the action of a nodetype
+     * 
      * @param $code
      * @param null $msg
      */
@@ -96,10 +99,8 @@ class Action extends ActionsOrm
     }
 
     /**
-     * Returns the nodetype id assocaited with the current action.
-     */
-
-    /**
+     * Returns the nodetype id assocaited with the current action
+     * 
      * @param null $nodeType
      * @param bool $includeActionsWithNegativeSort
      * @return array|null
@@ -126,10 +127,8 @@ class Action extends ActionsOrm
     }
 
     /**
-     * Returns the current action id.
-     */
-
-    /**
+     * Returns the current action id
+     * 
      * @return bool|string
      */
     function GetNodeType()
@@ -138,10 +137,8 @@ class Action extends ActionsOrm
     }
 
     /**
-     * Changes the current action id.
-     */
-
-    /**
+     * Changes the current action id
+     * 
      * @return bool|string
      */
     function GetID()
@@ -150,10 +147,8 @@ class Action extends ActionsOrm
     }
 
     /**
-     *  Returns the current action name.
-     */
-
-    /**
+     * Returns the current action name
+     * 
      * @param $actionID
      * @return bool|null|string
      */
@@ -168,11 +163,9 @@ class Action extends ActionsOrm
     }
 
     /**
-     * Changes the current action name.
+     * Changes the current action name
+     * 
      * @param $name
-     */
-
-    /**
      * @return bool|string
      */
     function GetName()
@@ -181,10 +174,8 @@ class Action extends ActionsOrm
     }
 
     /**
-     *  Returns the current action description.
-     */
-
-    /**
+     * Returns the current action description
+     * 
      * @param $name
      * @return bool|int|null|string
      */
@@ -194,7 +185,6 @@ class Action extends ActionsOrm
             $this->SetError(2);
             return false;
         }
-
         $result = $this->set('Name', $name);
         if ($result) {
             return $this->update();
@@ -203,11 +193,9 @@ class Action extends ActionsOrm
     }
 
     /**
-     * Change the current action description.
+     * Change the current action description
+     * 
      * @param $description
-     */
-
-    /**
      * @return bool|string
      */
     function GetDescription()
@@ -225,7 +213,6 @@ class Action extends ActionsOrm
             $this->SetError(2, _('Action does not exist'));
             return false;
         }
-
         $result = $this->set('Description', $description);
         if ($result) {
             return $this->update();
@@ -234,7 +221,8 @@ class Action extends ActionsOrm
     }
 
     /**
-     * Returns the current action command.
+     * Returns the current action command
+     * 
      * @return string (command)
      */
     function GetCommand()
@@ -243,9 +231,10 @@ class Action extends ActionsOrm
     }
 
     /**
-     * Changes the current action command.
+     * Changes the current action command
+     * 
      * @param $command
-     * @return  int (status)
+     * @return  bool|int (status)
      */
     function SetCommand($command)
     {
@@ -253,7 +242,6 @@ class Action extends ActionsOrm
             $this->SetError(2, _('Action does not exist'));
             return false;
         }
-
         $result = $this->set('Command', $command);
         if ($result) {
             return $this->update();
@@ -262,7 +250,8 @@ class Action extends ActionsOrm
     }
 
     /**
-     * Returns the current action order.
+     * Returns the current action order
+     * 
      * @return string (command)
      */
     function GetSort()
@@ -271,7 +260,8 @@ class Action extends ActionsOrm
     }
 
     /**
-     * Changes the current action order.
+     * Changes the current action order
+     * 
      * @param $sort
      * @return int (status)
      */
@@ -281,7 +271,6 @@ class Action extends ActionsOrm
             $this->SetError(2, _('Action does not exist'));
             return false;
         }
-
         $result = $this->set('Sort', $sort);
         if ($result) {
             return $this->update();
@@ -290,7 +279,8 @@ class Action extends ActionsOrm
     }
 
     /**
-     * Returns the current action icon.
+     * Returns the current action icon
+     * 
      * @return string (icon)
      */
     function GetIcon()
@@ -299,13 +289,11 @@ class Action extends ActionsOrm
     }
 
     /**
-     * Returns if the given user can execute the action in a given node.
-     */
-
-    /**
-     * Changes the current action icon.
+     * Returns if the given user can execute the action in a given node
+     * Changes the current action icon
+     * 
      * @param $icon
-     * @return int (status)
+     * @return bool|int (status)
      */
     function SetIcon($icon)
     {
@@ -313,7 +301,6 @@ class Action extends ActionsOrm
             $this->SetError(2, _('Action does not exist'));
             return false;
         }
-
         $result = $this->set('Icon', $icon);
         if ($result) {
             return $this->update();
@@ -326,12 +313,11 @@ class Action extends ActionsOrm
      * @param $nodeID
      */
     function CheckAccessPermissionOnNode($userID, $nodeID)
-    {
-
-    }
+    {}
 
     /**
-     * Creates a new action and load its id in the class actionID.
+     * Creates a new action and load its id in the class actionID
+     * 
      * @param $actionID
      * @param $nodeType
      * @param $name
@@ -353,17 +339,16 @@ class Action extends ActionsOrm
     }
 
     /**
-     * Delete current action.
-     * @return int (status)
+     * Delete current action
      */
     function DeleteAction()
     {
         $dbObj = new \Ximdex\Runtime\Db();
         $query = sprintf("DELETE FROM RelRolesActions WHERE IdAction= %d", $this->ID);
         $dbObj->Execute($query);
-        if ($dbObj->numErr != 0)
+        if ($dbObj->numErr != 0) {
             $this->SetError(1);
-
+        }
         $this->delete();
         $this->ID = null;
     }
@@ -376,26 +361,20 @@ class Action extends ActionsOrm
         return $this->get('Module');
     }
 
-    /**
-     *
-     */
     function SetAutoCleanOn()
     {
         $this->autoCleanErr = TRUE;
     }
 
-    /**
-     *
-     */
     function SetAutoCleanOff()
     {
         $this->autoCleanErr = FALSE;
     }
+    
     /**
-     * Loads an errorin the class.* @param $code
-     */
-
-    /**
+     * Loads an errorin the class.*
+     * 
+     * @param $code
      * @return mixed
      */
     function HasError()
@@ -407,11 +386,7 @@ class Action extends ActionsOrm
     }
 
     /**
-     * Returns true if there was an error in the class.
-     */
-
-    /**
-     *
+     * Returns true if there was an error in the class
      */
     function ClearError()
     {
@@ -426,9 +401,8 @@ class Action extends ActionsOrm
      */
     function setByCommandAndModule($name, $idNode, $module = null)
     {
-        $node = new \Ximdex\Models\Node($idNode);
+        $node = new Node($idNode);
         $idNodeType = $node->GetNodeType();
-
         if ($module == NULL) {
             return $this->setByCommand($name, $idNodeType);
         } else {
@@ -440,7 +414,6 @@ class Action extends ActionsOrm
             $this->Action($result[0]);
             return $this->get('IdAction');
         }
-
     }
 
     /**
@@ -455,7 +428,7 @@ class Action extends ActionsOrm
         if (count($result) != 1) {
             return false;
         }
-        $this->Action($result[0]);
+        $this->__construct($result[0]);
         return $this->get('IdAction');
     }
 }

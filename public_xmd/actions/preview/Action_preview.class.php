@@ -41,25 +41,21 @@ class Action_preview extends ActionAbstract
     {
         $idNode = (int) $this->request->getParam("nodeid");
         $params = $this->request->getParam("params");
-        
         $node = new Node($idNode);
         $data = new DataFactory($idNode);
-        
         $version = $data->GetLastVersion();
         $subVersion = $data->GetLastSubVersion($version);
-        
         setlocale(LC_TIME, "es_ES");
-        
         $date = strftime("%a, %d/%m/%G %R", $data->GetDate($version, $subVersion));
         $user = new User($data->GetUserID($version, $subVersion));
         $userName = $user->GetRealName();
         if (($node->nodeType->GetName() != 'TextFile') && ($node->nodeType->GetName() != 'ImageFile') 
                 && ($node->nodeType->GetName() != 'BinaryFile') && ($node->nodeType->GetName() != 'NodeHt')) {
             $channel_title = "channel";
-        } else {
+        }
+        else {
             $channel_title = '';
         }
-        
         $doc = new StructuredDocument($idNode);
         $channelList = $doc->GetChannels();
         $nod = new Node();
@@ -73,9 +69,7 @@ class Action_preview extends ActionAbstract
                 );
             }
         }
-        
         $this->addCss('/actions/preview/resources/css/style.css');
-        
         $queryManager = App::get('\Ximdex\Utils\QueryManager');
         $this->addJs('/actions/preview/resources/js/preview.js');
         $values = array(
@@ -93,7 +87,6 @@ class Action_preview extends ActionAbstract
             'name' => $node->GetNodeName(),
             'token' => uniqid()
         );
-        
         $this->render($values, null, 'default-3.0.tpl');
     }
 
@@ -104,7 +97,6 @@ class Action_preview extends ActionAbstract
     {
         $idNode = (int) $this->request->getParam("nodeid");
         $params = $this->request->getParam("params");
-        
         if (! is_null($this->request->getParam("version")) && ! is_null($this->request->getParam("subVersion")) 
                 && is_null($this->request->getParam("delete"))) {
             
@@ -112,17 +104,16 @@ class Action_preview extends ActionAbstract
             $version = $this->request->getParam("version");
             $subVersion = $this->request->getParam("subVersion");
             $data = new DataFactory($idNode);
-            
             $data->RecoverVersion($version, $subVersion);
             $this->messages->add(_("The file has been successfully recovered."), MSG_TYPE_NOTICE);
-        } elseif (! is_null($this->request->getParam("delete"))) {
+        }
+        elseif (! is_null($this->request->getParam("delete"))) {
             $version = $this->request->getParam("version");
             $subVersion = $this->request->getParam("subVersion");
             $data = new DataFactory($idNode);
             $data->DeleteSubversion($version, $subVersion);
             $this->messages->add(_("The file has been successfully deleted."), MSG_TYPE_NOTICE);
         }
-        
         $queryManager = App::get('\Ximdex\Utils\QueryManager');
         $values = array(
             'messages' => $this->messages->messages,
@@ -130,7 +121,6 @@ class Action_preview extends ActionAbstract
             'params' => $params,
             "nodeURL" => $queryManager->getPage() . $queryManager->build()
         );
-        
         $this->render($values);
     }
 }

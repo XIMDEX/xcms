@@ -59,7 +59,7 @@ class Group extends GroupsOrm
 		$this->errorList[7] = _('Some of the node links could not be deleted');
 		$this->errorList[8] = _('Specified relation already exists');
 		$this->errorList[9] = _('General group cant be removed');
-		$id = (int)$id;
+		$id = (int) $id;
 		parent::__construct($id);
 		if ($this->get('IdGroup')) {
 			$this->groupID = $this->get('IdGroup');
@@ -76,7 +76,7 @@ class Group extends GroupsOrm
 		return $generalGroup;
 	}
 
-	/// Loads the General group
+	// Loads the General group
 	function SetGeneralGroup()
 	{
 		$generalGroup = $this->GetGeneralGroup();
@@ -86,7 +86,7 @@ class Group extends GroupsOrm
 		}
 	}
 
-	// REturns a list of existing idGroups
+	// Returns a list of existing idGroups
 	function GetAllGroups()
 	{
 		$this->ClearError();
@@ -99,11 +99,11 @@ class Group extends GroupsOrm
 				$dbObj->Next();
 			}
 			return $salida;
-		} else
-			$this->SetError(5);
+		}
+        $this->SetError(5);
 	}
 
-	// Obatins a list of userId associated with this group
+	// Obtains a list of userId associated with this group
 	function GetUserList()
 	{
 		$this->ClearError();
@@ -141,10 +141,11 @@ class Group extends GroupsOrm
 					$dbObj->Next();
 				}
 				return $salida;
-			} else
-				$this->SetError(5);
-		} else
+			}
+			$this->SetError(5);
+		} else {
 			$this->SetError(1);
+		}
 	}
 
 	// Returns the groupID (class attribute)
@@ -179,7 +180,6 @@ class Group extends GroupsOrm
 			$this->SetError(1);
 			return false;
 		}
-
 		$result = $this->set('Name', $name);
 		if ($result) {
 			return $this->update();
@@ -198,17 +198,16 @@ class Group extends GroupsOrm
 	}
 
 
-	//Deleting a group, deleting first its subscriptions
+	// Deleting a group, deleting first its subscriptions
 	function DeleteGroup()
 	{
 		$this->ClearError();
-
 		if ($this->GetGeneralGroup() == $this->get('IdGroup')) {
 			$this->SetError(9);
 			return false;
 		}
-
 		if (!is_null($this->get('IdGroup'))) {
+		    
 			// Deleting subscription of all groups
 			$users = $this->GetUserList();
 			if (sizeof($users)) {
@@ -230,12 +229,12 @@ class Group extends GroupsOrm
 
 			// Deleting form DB
 			$this->delete();
-
-		} else
+		} else {
 			$this->SetError(1);
+		}
 	}
 
-	//This function is not deleting an user from Users table, it is disassociate him from the group
+	// This function is not deleting an user from Users table, it is disassociate him from the group
 	// It should be called desuscribeUser or something similar
 	function DeleteUser($userID)
 	{
@@ -245,8 +244,9 @@ class Group extends GroupsOrm
 			$dbObj->Execute(sprintf("DELETE FROM RelUsersGroups WHERE IdGroup= %d AND IdUser = %d", $this->get('IdGroup'), $userID));
 			if ($dbObj->numErr)
 				$this->SetError(5);
-		} else
+		} else {
 			$this->SetError(1);
+		}
 	}
 
 	// Associating an existing user to a group with a concrete role
@@ -258,7 +258,6 @@ class Group extends GroupsOrm
 			$query = sprintf("SELECT IdRel FROM RelUsersGroups"
 				. " WHERE IdUser = %d AND IdGroup = %d AND IdRole = %d",
 				$userID, $this->get('IdGroup'), $roleID);
-
 			$dbObj->query($query);
 			if ($dbObj->numRows > 0) {
 				$this->SetError(8);
@@ -267,14 +266,17 @@ class Group extends GroupsOrm
 			$query = sprintf("INSERT INTO RelUsersGroups (IdUser, IdGroup, IdRole) VALUES (%d, %d, %d)",
 				$userID, $this->get('IdGroup'), $roleID);
 			$dbObj->Execute($query);
-			if ($dbObj->numErr)
+			if ($dbObj->numErr) {
 				$this->SetError(5);
-		} else
+			}
+		} else {
 			$this->SetError(1);
+		}
 	}
 
 	/**
 	 * Allows to change the role used by an user in a group
+	 * 
 	 * @param $userID
 	 * @param $roleID
 	 */
@@ -287,12 +289,14 @@ class Group extends GroupsOrm
 			$dbObj->Execute($query);
 			if ($dbObj->numErr)
 				$this->SetError(5);
-		} else
+		} else {
 			$this->SetError(1);
+		}
 	}
 
 	/**
 	 * Returns true if the user belongs to a group
+	 * 
 	 * @param $userID
 	 */
 	function HasUser($userID)
@@ -302,17 +306,16 @@ class Group extends GroupsOrm
 			$dbObj = new \Ximdex\Runtime\Db();
 			$query = sprintf("SELECT IdUser FROM RelUsersGroups WHERE IdGroup = %d AND IdUser = %d", $this->get('IdGroup'), $userID);
 			$dbObj->Query($query);
-
-			if (!$dbObj->numErr)
+			if (!$dbObj->numErr) {
 				if ($dbObj->numRows) {
 					return true;
-				} else {
-					return false;
 				}
-			else
-				$this->SetError(5);
-		} else
+				return false;
+			}
+			$this->SetError(5);
+		} else {
 			$this->SetError(1);
+		}
 	}
 
 	/**
@@ -324,14 +327,15 @@ class Group extends GroupsOrm
 		$this->ClearError();
 		if ($this->get('IdGroup') > 0) {
 			$node = new Node($nodeID);
-			if (!$node->numErr)
+			if (!$node->numErr) {
 				return $node->GetRoleOfGroup($this->get('IdGroup'));
-		} else
+			}
+		} else {
 			$this->SetError(1);
+		}
 	}
 
 	/**
-	 *
 	 * @param $nodeID
 	 */
 	function IsOnNode($nodeID)
@@ -341,13 +345,14 @@ class Group extends GroupsOrm
 			$node = new Node($nodeID);
 			if (!$node->numErr) {
 				$groupList = $node->GetGroupList();
-				if (in_array($this->GetID(), $groupList))
+				if (in_array($this->GetID(), $groupList)) {
 					return true;
-				else
-					return false;
+				}
+				return false;
 			}
-		} else
+		} else {
 			$this->SetError(1);
+		}
 	}
 
 	/**
@@ -361,6 +366,7 @@ class Group extends GroupsOrm
 
 	/**
 	 * Loads class error
+	 * 
 	 * @param $code
 	 */
 	function SetError($code)
@@ -370,7 +376,7 @@ class Group extends GroupsOrm
 	}
 
 	/**
-	 * Returns true if there was an error in the class.
+	 * Returns true if there was an error in the class
 	 */
 	function HasError()
 	{
@@ -384,30 +390,24 @@ class Group extends GroupsOrm
 			. ' FROM RelUsersGroups'
 			. ' WHERE IdGroup = %s',
 			$dbObj->sqlEscapeString($this->IdGroup));
-
 		$dbObj->Query($query);
-
 		if (!($dbObj->numRows > 0)) {
 			return NULL;
 		}
-
 		$result = array();
 		while (!$dbObj->EOF) {
 			$result[$dbObj->getValue('IdRel')] = array('IdUser' => $dbObj->getValue('IdUser'),
 				'IdRole' => $dbObj->getValue('IdRole'));
 			$dbObj->next();
 		}
-
 		return $result;
 	}
 
 	public static function getSelectableGroupsInfo($idNode)
 	{
-
 		$groupStateInfo = array();
 		$group = new Group();
 		$groupList = $group->find('IdGroup', NULL, NULL, MONO);
-
 		$node = new Node($idNode);
 		$groupState = array();
 		if (is_array($groupList) && !empty($groupList)) {

@@ -97,8 +97,11 @@ abstract class InheritableProperty
 
     /**
      * Returns the property values
+     * 
+     * @param bool $onlyInherited
+     * @return boolean|array
      */
-    public function getValues()
+    public function getValues(bool $onlyInherited = false)
     {
         // Selected channels on the node
         $nodeProperties = $this->getProperty(false);
@@ -147,6 +150,9 @@ abstract class InheritableProperty
             }
             else {
                 $property['Inherited'] = true;
+            }
+            if ($onlyInherited and !$property['Inherited']) {
+                continue;
             }
             
             // Save the result with the property ID with index

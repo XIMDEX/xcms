@@ -466,21 +466,17 @@ class Node extends NodesOrm
             'ASC',
             'DESC'
         );
-        
         $this->ClearError();
         if ($this->get('IdNode') > 0) {
             $childrenList = array();
             $sql = "select N.IdNode, N.Name as name,NT.System FROM Nodes as N inner join NodeTypes as NT on N.IdNodeType = NT.IdNodeType";
             $sql .= " WHERE NOT(NT.IsHidden) AND IdParent =" . $this->get('IdNode');
-            
             if ($idtype) {
                 $sql .= " AND IdNodeType = $idtype";
             }
-            
             if (! empty($order) && is_array($order) && isset($order['FIELD'])) {
                 $sql .= sprintf(" ORDER BY %s %s", $order['FIELD'], isset($order['DIR']) && in_array($order['DIR'], $validDirs) ? $order['DIR'] : '');
             }
-            
             $dbObj = new \Ximdex\Runtime\Db();
             $dbObj->Query($sql);
             $i = 0;
@@ -492,10 +488,9 @@ class Node extends NodesOrm
                 $dbObj->Next();
             }
             return $childrenList;
-        } else {
-            $this->SetError(1);
-            return array();
         }
+        $this->SetError(1);
+        return array();
     }
     
     /**
@@ -513,7 +508,6 @@ class Node extends NodesOrm
         if (($this->get('IdParent') > 0) && ! empty($name)) {
             $dbObj = new \Ximdex\Runtime\Db();
             $sql = sprintf("SELECT IdNode FROM Nodes WHERE IdParent = %d AND Name = %s", $this->get('IdNode'), $dbObj->sqlEscapeString($name));
-            
             $dbObj->Query($sql);
             if ($dbObj->numRows > 0) {
                 return $dbObj->GetValue('IdNode');
@@ -550,8 +544,7 @@ class Node extends NodesOrm
     /**
      * Looks for nodes by name
      *
-     * @param string $name
-     *            name, optional. If none is passed, considered name will be current node name
+     * @param string $name name, optional. If none is passed, considered name will be current node name
      * @return int/false
      */
     function GetByName($name = NULL)
@@ -562,20 +555,19 @@ class Node extends NodesOrm
         $this->ClearError();
         if (! empty($name)) {
             $dbObj = new \Ximdex\Runtime\Db();
-            $sql = sprintf("SELECT Nodes.IdNode, Nodes.Name, NodeTypes.Icon, Nodes.IdParent FROM Nodes, NodeTypes WHERE Nodes.IdNodeType = NodeTypes.IdNodeType AND Nodes.Name like %s", $dbObj->sqlEscapeString("%" . $name . "%"));
-            
-            $dbObj->Query($sql);
-            
+            $sql = sprintf("SELECT Nodes.IdNode, Nodes.Name, NodeTypes.Icon, Nodes.IdParent FROM Nodes, NodeTypes WHERE Nodes.IdNodeType = NodeTypes.IdNodeType AND Nodes.Name like %s"
+                , $dbObj->sqlEscapeString("%" . $name . "%"));
+            $dbObj->Query($sql);            
             if ($dbObj->numRows > 0) {
                 $result = array();
-                
                 while (! $dbObj->EOF) {
                     $node_t = new Node($dbObj->GetValue('IdNode'));
-                    if ($node_t)
+                    if ($node_t) {
                         $children = count($node_t->GetChildren());
-                    else
+                    }
+                    else {
                         $children = 0;
-                    
+                    }
                     $result[] = array(
                         'IdNode' => $dbObj->GetValue('IdNode'),
                         'Name' => $dbObj->GetValue('Name'),
@@ -584,17 +576,14 @@ class Node extends NodesOrm
                     );
                     $dbObj->Next();
                 }
-                
                 return $result;
-            } else {
-                return false;
             }
+            return false;
         }
         return false;
     }
 
     /**
-     *
      * @param null $name
      * @param null $path
      * @return array|bool
@@ -603,35 +592,28 @@ class Node extends NodesOrm
     {
         if (empty($name)) {
             $name = $this->get("Name");
-        }
-        
+        } 
         if (empty($path)) {
             $path = $this->get("Path");
         }
-        
         $result = array();
-        
         $this->ClearError();
         if (! empty($name) && ! empty($path)) {
-            
             $dbObj = new \Ximdex\Runtime\Db();
             $sql = sprintf("SELECT Nodes.IdNode, Nodes.Name, NodeTypes.Icon, Nodes.IdParent FROM Nodes, NodeTypes
 				WHERE Nodes.IdNodeType = NodeTypes.IdNodeType
 				AND Nodes.Name like %s
 				AND Nodes.Path like %s", $dbObj->sqlEscapeString($name), $dbObj->sqlEscapeString($path));
             $dbObj->Query($sql);
-            
             while (! $dbObj->EOF) {
-                
                 $result[] = array(
                     'IdNode' => $dbObj->GetValue('IdNode')
                 );
                 $dbObj->Next();
             }
-            
             return $result;
-        } else
-            return false;
+        }
+        return false;
     }
 
     /**
@@ -657,15 +639,13 @@ class Node extends NodesOrm
     function GetPath()
     {
         $path = $this->_GetPath();
-        // $idNode = $this->get('IdNode');
         if (! $path) {
-            Logger::warning("Model::Node::getPath(): Path can not be deduced from NULL idNode.");
+            Logger::warning("Model::Node::getPath(): Path can not be deduced from NULL idNode");
         }
         return $path;
     }
 
     /**
-     *
      * @return null|string
      */
     function _GetPath()
@@ -673,30 +653,23 @@ class Node extends NodesOrm
         $this->ClearError();
         $idNode = $this->get('IdNode');
         if ($idNode > 0) {
-            
             $sql = "select Name from FastTraverse ft inner join Nodes n on ft.idNode = n.idNode
 					where ft.IdChild = $idNode
 					order by depth desc";
-            
             $db = new \Ximdex\Runtime\Db();
             $db->Query($sql);
-            
             $path = '';
-            
             while (! $db->EOF) {
                 $path .= '/' . $db->getValue('Name');
                 $db->Next();
             }
-            
             return $path;
         }
-        
         $this->SetError(1);
         return NULL;
     }
     
     /**
-     *
      * @param null $channelID
      * @param null $addNodeName
      * @return mixed

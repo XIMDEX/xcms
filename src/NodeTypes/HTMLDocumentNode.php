@@ -310,33 +310,28 @@ class HTMLDocumentNode extends FileNode
     /**
      * Create a basic html template with header and body passed by strings
      * 
-     * @param
-     *            $css
-     * @param
-     *            $js
-     * @param
-     *            $body
+     * @param $css
+     * @param $js
+     * @param $body
      * @return string
      */
     private static function createBasicHTMLTemplate($body, $css, $js)
     {
         $header = '';
-        
         foreach ($css as $file) {
-            $header .= "<link rel='stylesheet' type='text/css' href='@@@RMximdex.pathto($file)@@@'>";
+            $header .= "<link rel='stylesheet' type='text/css' href='@@@RMximdex.pathto($file)@@@'>" . PHP_EOL;
         }
-        
         foreach ($js as $file) {
-            $header .= "<script type='text/javascript' src='@@@RMximdex.pathto($file)@@@'>";
+            $header .= "<script type='text/javascript' src='@@@RMximdex.pathto($file)@@@'></script>" . PHP_EOL;
         }
-        
-        $html = '<!DOCTYPE html>';
-        $html .= '<html><head><meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">';
+        $html = '<!DOCTYPE html>' . PHP_EOL;
+        $html .= '<html><head><meta charset="UTF-8">';
+        $html .= '<meta name="viewport" content="width=device-width, initial-scale=1.0">' . PHP_EOL;
+        $html .= '<meta http-equiv="X-UA-Compatible" content="ie=edge">' . PHP_EOL;
         $html .= $header;
-        $html .= '</head><body> ';
+        $html .= '</head>';
+        $html .= '<body>' . PHP_EOL;
         $html .= $body;
-        return $html . "</body></html>";
+        return $html . '</body>' . PHP_EOL . '</html>';
     }
 }

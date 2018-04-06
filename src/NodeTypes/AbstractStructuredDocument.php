@@ -487,15 +487,13 @@ abstract class AbstractStructuredDocument extends FileNode
     public function GetChannels()
     {
         $channelProperty = new ChannelProperty($this->nodeID);
-        $values = $channelProperty->getValues($this->nodeID);
+        $values = $channelProperty->getValues($this->nodeID, true);
         if ($values === false) {
             return false;
         }
         $res = [];
         foreach ($values as $channel) {
-            if ($channel['Checked'] or $channel['Inherited']) {
-                $res[] = $channel['Id'];
-            }
+            $res[] = $channel['Id'];
         }
         return $res;
     }

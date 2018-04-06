@@ -49,7 +49,6 @@ class Action_manageproperties extends ActionAbstract
      * * nodeid
      *
      * @uses InheritedProperties::getValues Get array with inherited properties from ancestor nodes
-     *
      */
     public function index()
     {

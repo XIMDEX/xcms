@@ -31,6 +31,7 @@ use Ximdex\Models\SectionType;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\NodeTypes\NodeTypeConstants;
 use Ximdex\Properties\InheritedPropertiesManager;
+use Ximdex\Models\NodeDefaultContents;
 
 //TODO unable to load \Ximdex\Modules\Manager::file('/inc/io/XlyreBaseIO.class.php', 'xlyre');
 
@@ -62,7 +63,7 @@ class Action_addsectionnode extends ActionAbstract
         }
         $sectionType = new SectionType();
         $sectionTypes = $sectionType->find(ALL);
-        $ndc = new \Ximdex\Models\NodeDefaultContents();
+        $ndc = new NodeDefaultContents();
         while (list (, $sectionTypeInfo) = each($sectionTypes)) {
             if (empty($sectionTypeInfo['module']) || \Ximdex\Modules\Manager::isEnabled($sectionTypeInfo['module'])) {
                 $subfolders = array();
@@ -123,7 +124,7 @@ class Action_addsectionnode extends ActionAbstract
         if ($id > 0) {
             $section = new Node($id);
             
-            // language block
+            // Language block
             if (! $langidlst) {
                 $langidlst = array();
             }
@@ -135,16 +136,16 @@ class Action_addsectionnode extends ActionAbstract
                 $section->SetAliasForLang($langID, $longName);
             }
             
-            // get the project node for the current section
+            // Get the project node for the current section
             $project = new Node($section->getProject());
             
-            // reload the templates include files for this new project
+            // Reload the templates include files for this new project
             $xsltNode = new \Ximdex\NodeTypes\XsltNode($section);
             if ($xsltNode->reload_templates_include($project) === false) {
                 $this->messages->mergeMessages($xsltNode->messages);
             }
             
-            // reload the document folders and template folders relations
+            // Reload the document folders and template folders relations
             if (! $xsltNode->rel_include_templates_to_documents_folders($project)) {
                 $this->messages->mergeMessages($xsltNode->messages);
             }
@@ -184,11 +185,13 @@ class Action_addsectionnode extends ActionAbstract
         return $nt->GetDescription();
     }
 
+    /*
     private function addcatalog($data)
     {
         $baseio = new XlyreBaseIO();
         $id = $baseio->build($data);
         if ($id > 0) {
+            
             // Creating Licenses subfolder in links folder
             $catalognode = new Node($id);
             $projectnode = new Node($catalognode->getProject());
@@ -197,6 +200,7 @@ class Action_addsectionnode extends ActionAbstract
         }
         return $id;
     }
+    */
 
     private function _createLicenseLinksFolder($links_id)
     {

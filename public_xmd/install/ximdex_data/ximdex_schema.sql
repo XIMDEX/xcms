@@ -37,7 +37,7 @@ CREATE TABLE `Channels` (
   `OutputType` varchar(100) DEFAULT NULL,
   `Default_Channel` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`IdChannel`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Available channels used to transform content';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Available channels used to transform content';
 ALTER TABLE `Channels` ADD `RenderType` ENUM('static','include','dynamic') NULL DEFAULT NULL AFTER `Default_Channel`;
 
 CREATE TABLE `Config` (
@@ -838,3 +838,7 @@ ALTER TABLE `ProgrammingCode` MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREME
 ALTER TABLE `ProgrammingCode`
   ADD CONSTRAINT `ProgrammingCode_ibfk_1` FOREIGN KEY (`idLanguage`) REFERENCES `ProgrammingLanguage` (`id`),
   ADD CONSTRAINT `ProgrammingCode_ibfk_2` FOREIGN KEY (`idCommand`) REFERENCES `ProgrammingCommand` (`id`);
+
+ALTER TABLE `Channels` ADD `idLanguage` VARCHAR(50) NULL DEFAULT NULL COMMENT 'Programming language for code macros' AFTER `RenderType`;
+ALTER TABLE `Channels` ADD CONSTRAINT `idLanguage` FOREIGN KEY (`idLanguage`) REFERENCES `ProgrammingLanguage`(`id`) 
+    ON DELETE RESTRICT ON UPDATE RESTRICT;
