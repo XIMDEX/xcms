@@ -630,8 +630,8 @@ class ParsingDependencies
                     Logger::warning($error);
                     $GLOBALS['parsingDependenciesError'] = $error;
                 } else {
-                    if ($parserPathTo->getIdNode() !== null) {
-                        $links[$parserPathTo->getIdNode()] = $parserPathTo->getIdNode();
+                    if ($parserPathTo->getNode() !== null) {
+                        $links[$parserPathTo->getNode()->GetID()] = $parserPathTo->getNode()->GetID();
                     }
                 }
             }

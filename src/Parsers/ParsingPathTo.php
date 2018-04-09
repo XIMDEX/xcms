@@ -39,7 +39,7 @@ use Ximdex\Models\Channel;
 
 class ParsingPathTo
 {
-    private $idNode = null;
+    private $node = null;
     private $pathMethod = null;
     private $channel = null;
     private $messages;
@@ -50,9 +50,9 @@ class ParsingPathTo
         $this->messages = new Messages();
     }
 
-    public function getIdNode()
+    public function getNode() : Node
     {
-        return $this->idNode;
+        return $this->node;
     }
 
     public function getPathMethod()
@@ -86,9 +86,10 @@ class ParsingPathTo
      */
     public function parsePathTo(string $pathToParams, int $nodeId = null, int $language = null, $channel = null) : bool
     {
+        $this->node = null;
+        
         // Avoid URL or # links
         if (strpos($pathToParams, '#') === 0 or filter_var($pathToParams, FILTER_VALIDATE_URL)) {
-            $this->idNode = null;
             return true;
         }
         $msg = 'Parsing pathTo with: ' . $pathToParams;
@@ -338,8 +339,7 @@ class ParsingPathTo
                     return false;
                 }
             }
-            $name = $node->GetNodeName();
-            Logger::info('ParsingPathTo: Obtained node with ID: ' . $id . ' and name: ' . $name);
+            Logger::info('ParsingPathTo: Obtained node with ID: ' . $id . ' and name: ' . $node->GetNodeName());
         }
         
         // Target channel
@@ -354,7 +354,7 @@ class ParsingPathTo
             $this->channel = $channel;
         }
         $this->pathMethod = array('absolute' => false);
-        $this->idNode = $id;
+        $this->node = $node;
         return true;
     }
 

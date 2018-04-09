@@ -38,6 +38,7 @@ use Ximdex\Runtime\App;
 use Ximdex\Sync\SynchroFacade;
 use Ximdex\Utils\Messages;
 use NodeFrameManager;
+use Ximdex\NodeTypes\NodeTypeConstants;
 
 \Ximdex\Modules\Manager::file('/inc/manager/NodeFrameManager.class.php', 'ximSYNC');
 
@@ -518,25 +519,21 @@ class ViewFilterMacros extends AbstractView implements IView
                 return App::getValue('EmptyHrefCode');
             }
         }
-        if ($parserPathTo->getIdNode() === null) {
+        if ($parserPathTo->getNode() === null) {
             
             // There is not a node from Ximdex (ex. an external URL)
             return $pathToParams;
         }
-        $res["idNode"] = $parserPathTo->getIdNode();
+        $targetNode = $parserPathTo->getNode();
         $res["pathMethod"] = $parserPathTo->getPathMethod();
         $res["channel"] = $parserPathTo->getChannel();
-        $idNode = $res["idNode"];
-        if (!$this->preview) {
+        $idNode = $targetNode->GetID();
+        if (!$this->preview and $targetNode->GetNodeType() != NodeTypeConstants::LINK ) {
             $nodeFrameManager = new NodeFrameManager();
             $nodeFrame = $nodeFrameManager->getNodeFramesInTime($idNode, NULL, time());
             if (!isset($nodeFrame)) {
                 return '';
             }
-        }
-        $targetNode = new Node($idNode);
-        if (!$targetNode->get('IdNode')) {
-            return '';
         }
         if ($this->_node && !$this->_node->get('IdNode')) {
             return '';
@@ -557,7 +554,7 @@ class ViewFilterMacros extends AbstractView implements IView
         }
 
         // When external link, return the url
-        if ($targetNode->nodeType->get('Name') == 'Link') {
+        if ($targetNode->GetNodeType() == NodeTypeConstants::LINK) {
             return $targetNode->class->GetUrl();
         }
 
