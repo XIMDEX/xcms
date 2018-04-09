@@ -112,7 +112,7 @@
 
     <div class="small-12 columns">
         <div class="alert alert-info" ng-if="!user_groups_with_role">
-            <strong>Info!</strong>{t}There are no groups associated with user yet{/t}
+            <strong>Info!</strong> {t}There are no groups associated with user yet{/t}
 
         </div></div>
 </form>

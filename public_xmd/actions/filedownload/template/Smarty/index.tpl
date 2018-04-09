@@ -37,7 +37,7 @@
 		</div>
 		<div class="small-12 columns">
 			<div class="alert alert-info">
-				<strong>Info! </strong>{t}File download will start immediately. If it does not start, click on:{/t}
+				<strong>Info!</strong> {t}File download will start immediately. If it does not start, click on:{/t}
 			<a href="{url}/?action=filedownload&method=downloadFile&nodeid={$id_node}{/url}" class="destacada download_link" title="{t nodename=$node_name}Descargar %1{/t}"> {$node_name}</a>
 			</div>
 		</div>

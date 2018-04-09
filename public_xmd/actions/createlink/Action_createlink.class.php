@@ -1,7 +1,4 @@
 <?php
-use Ximdex\Models\Link;
-use Ximdex\Models\Node;
-use Ximdex\MVC\ActionAbstract;
 
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
@@ -27,6 +24,11 @@ use Ximdex\MVC\ActionAbstract;
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
+
+use Ximdex\Models\Link;
+use Ximdex\Models\Node;
+use Ximdex\MVC\ActionAbstract;
+
 class Action_createlink extends ActionAbstract
 {
     // Main method: shows initial form
@@ -35,8 +37,7 @@ class Action_createlink extends ActionAbstract
         $idNode = $this->request->getParam('nodeid');
         $node = new Node($idNode);
         $this->addJs('/actions/createlink/resources/js/index.js');
-        $values = array('go_method' => 'createlink',
-            'name' => $node->GetNodeName());
+        $values = array('go_method' => 'createlink', 'name' => $node->GetNodeName());
         $this->render($values, null, 'default-3.0.tpl');
     }
 
@@ -46,10 +47,8 @@ class Action_createlink extends ActionAbstract
         $idParent = $this->request->getParam('id_node');
         $url = $this->request->getParam('url');
         $description = $this->request->getParam('description');
-
         $messages = $this->createNodeLink($name, $url, $description, $idParent);
-
-        $values["messages"] = $this->messages->messages;//_('Link has been successfully added');
+        $values["messages"] = $this->messages->messages;
         $values["parentID"] = $idParent;
         $this->sendJSON($values);
     }
@@ -59,7 +58,6 @@ class Action_createlink extends ActionAbstract
         if (empty($description)) {
             $description = " ";
         }
-
         $data = array('NODETYPENAME' => 'LINK',
             'NAME' => $name,
             'PARENTID' => $idParent,
@@ -69,10 +67,8 @@ class Action_createlink extends ActionAbstract
                 array('DESCRIPTION' => $description)
             )
         );
-
         $bio = new \Ximdex\IO\BaseIO();
         $result = $bio->build($data);
-
         if ($result > 0) {
             $link = new Link($result);
             $link->set('ErrorString', 'not_checked');

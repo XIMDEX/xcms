@@ -39,14 +39,14 @@
 		<div class="action_content {$class}">
 			<div class="small-12 columns">
 				<div class="alert alert-info">
-					<strong>Info!</strong>{$message.message}
+					<strong>Info!</strong> {$message.message}
 		</div></div></div>
 	{/foreach}
 {else}
 	<div class="action_content">
 		<div class="small-12 columns">
 			<div class="alert alert-info">
-				<strong>Info!</strong>{t}No messages found{/t}
+				<strong>Info!</strong> {t}No messages found{/t}
 			</div></div>
 	</div>
 {/if}

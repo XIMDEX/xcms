@@ -27,9 +27,8 @@
     <div class="action_header">
         <h5 class="direction_header"> {t}Name Node:{/t} {t}{$name}{/t}</h5>
         <h5 class="nodeid_header"> {t}ID Node:{/t} {$nodeid}</h5>
-        <hr>
+        <hr />
     </div>
-
     <div class="action_content">
         <div class="row tarjeta">
             <div class="small-12 columns title_tarjeta">
@@ -39,41 +38,36 @@
                 <div class="input">
                     <label for="name" class="label_title label_general">{t}Name{/t} *</label>
                     <p class="icon icon-positioned link">
-                        <input type="text" value="{$name}" name="Name" id="name" class=" input_general_icon cajaxg validable not_empty js_val_unique_name js_val_alphanumeric"/>
-                    </p></div>
+                        <input type="text" value="{$name}" name="Name" id="name" 
+                                class="input_general_icon cajaxg validable not_empty js_val_unique_name js_val_alphanumeric" />
+                    </p>
+                </div>
             </div>
-
             <div class="small-4 columns">
                 <div class="input-select icon">
-                    <label for="link_type" class="label_title label_general">{t}Type{/t}</label>
+                    <label for="link_type" class="label_title label_general">{t}Type{/t} *</label>
                     <select name="link_type" id="link_type" class="cajaxg document-type validable not_empty">
                         <option value="url" selected>URL (http:// or https://)</option>
                         <option value="email">E-mail (mailto:)</option>
                     </select>
                 </div>
             </div>
-
             <div class="small-12 columns">
                 <div class="input">
-                    <label for="url" class="label_title label_general"> {t}URL{/t}</label>
-                    <input type="text" name="Url" value="{$url}" id="url" class="input_general cajaxg validable not_empty js_val_unique_url">
+                    <label for="url" class="label_title label_general">{t}URL{/t} *</label>
+                    <input type="text" name="Url" value="{$url}" id="url" class="input_general cajaxg validable not_empty js_val_unique_url" />
                 </div>
             </div>
-
             <div class="small-12 columns">
                 <div class="input">
                     <label for="description" class="label_title label_general"><span>{t}Description{/t}</span></label>
-                    <input type="text" name="Description" value="{$description}" id="description" class="input_general cajaxg">
+                    <input type="text" name="Description" value="{$description}" id="description" class="input_general cajaxg" />
                 </div>
                 <fieldset class="buttons-form ">
                     {button label="Modify" class='validate  btn main_action' }{*message="Would you like to modify this link?"*}
                 </fieldset>
             </div>
-
         </div>
-
-
-
         <!-- <div class="input-select icon icon-positioned link">
             <select name="link_type" id="link_type" class="cajaxg document-type">
                 <option value="url" selected>URL (http:// or https://)</option>
@@ -81,5 +75,4 @@
             </select>
         </div> -->
     </div>
-
 </form>

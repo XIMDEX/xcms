@@ -97,7 +97,7 @@ class Root
         }
         $this->nodeID = $this->parent->get('IdNode');
         $this->dbObj = new \Ximdex\Runtime\Db();
-        $this->nodeType = &$this->parent->nodeType;
+        $this->nodeType = $this->parent->nodeType;
         $this->messages = new \Ximdex\Utils\Messages();
     }
 

@@ -38,23 +38,21 @@ use Ximdex\Logger;
  */
 class LinkNode extends Root
 {
-
 	var $link = NULL;
 
 	/**
-	 *  Constructor.
+	 * Constructor
 	 * @param object parent
 	 */
-
 	public function __construct($parent)
 	{
-
-		parent::__construct($parent);
+ 		parent::__construct($parent);
 		$this->link = new Link($this->nodeID);
 	}
 
 	/**
-	 *  Adds a row to Versions table and creates the file.
+	 * Adds a row to Versions table and creates the file
+	 * 
 	 * @param string name
 	 * @param int parentID
 	 * @param int nodeTypeID
@@ -62,95 +60,74 @@ class LinkNode extends Root
 	 * @param string url
 	 * @param string description
 	 */
-
 	function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $url = null, $description = null)
 	{
-
 		$link = new Link();
 		$link->set('IdLink', $this->nodeID);
 		$link->set('Url', $url);
-
 		$result = $this->parent->SetDescription($description);
-
 		$insertedId = $link->add();
 		if (!$insertedId || !$result) {
 			$this->messages->add(_('No se ha podido insertar el enlace'), MSG_TYPE_ERROR);
 			$this->messages->mergeMessages($link->messages);
 		}
-
 		$this->link = new Link($link->get('IdLink'));
-
 		$relDescription = !empty($description) ? $description : $this->link->get('Name');
 		$rel = RelLinkDescriptions::create($this->nodeID, $relDescription);
 		if ($rel->getIdRel() < 0) {
 			Logger::warning(sprintf('No se ha podido crear la descripcion para el enlace %s en su tabla relacionada.', $link->get('IdLink')));
 		}
-
 		$ret = $this->link->get('IdLink');
 		$this->UpdatePath();
-
 		return $ret;
 	}
 
 	/**
-	 *  Deletes the information of link in the database.
+	 * Deletes the information of link in the database
 	 */
-
 	function DeleteNode()
 	{
-
 		if (!($this->link->get('IdLink') > 0)) {
 			Logger::error("Se ha solicitado eliminar el nodo {$this->nodeID} que actualmente no existe");
 		}
-
 		$result = $this->link->delete();
-
 		if (!$result) {
 			$this->parent->messages->add(_('No se ha podido eliminar el enlace'), MSG_TYPE_ERROR);
 			reset($this->link->messages->messages);
-
 			while (list(, $message) = each($this->link->messages->messages)) {
 				$this->parent->messages[] = $message;
 			}
 		} else {
-
 			$it = new IteratorLinkDescriptions('IdLink = %s', array($this->link->get('IdLink')));
 			while ($rel = $it->next()) {
 				if (!$rel->delete()) {
 					Logger::warning(sprintf('No se ha podido eliminar la descripcion con id %s para el enlace %s.', $rel->getIdRel(), $this->link->get('IdLink')));
 				}
 			}
-
 		}
-
 		return $result;
 	}
 
 	/**
-	 *  Gets the url of the link.
+	 * Gets the url of the link
 	 */
-
 	function GetUrl()
 	{
-
 		return $this->link->get('Url');
 	}
 
 	/**
-	 *  Sets the url of the link.
+	 * Sets the url of the link
+	 * 
 	 * @param string url
 	 * @param bool commit
 	 * @return bool
 	 */
-
 	function SetUrl($url, $commit = true)
 	{
-
 		$this->link->set('Url', $url);
-
 		if ($commit) {
 			$result = $this->link->update();
-
 			if (!$result) {
 				$this->parent->messages->add(_('No se ha podido eliminar el enlace'), MSG_TYPE_ERROR);
 				reset($this->link->messages->messages);
@@ -158,33 +135,30 @@ class LinkNode extends Root
 					$this->parent->messages[] = $message;
 				}
 			}
-
 			return $result;
 		}
-
 		return true;
 	}
 
 	/**
-	 *  Gets the dependencies of the link.
+	 * Gets the dependencies of the link
+	 * 
 	 * @return array
 	 */
-
 	function GetDependencies()
 	{
-
 		$nodeDependencies = new NodeDependencies();
 		return $nodeDependencies->getByTarget($this->nodeID);
 	}
 
 	/**
-	 *  Builds a XML wich contains the properties of the language.
+	 * Builds a XML wich contains the properties of the language
+	 * 
 	 * @param int depth
 	 * @param array files
 	 * @param bool recurrence
 	 * @return string
 	 */
-
 	function ToXml($depth, & $files, $recurrence)
 	{
 		$indexTabs = str_repeat("\t", $depth + 1);

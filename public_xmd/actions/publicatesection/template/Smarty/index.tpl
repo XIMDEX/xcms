@@ -62,7 +62,7 @@
 				   <div class="publication_options">
 					    <div class="publication_option">
                                <div class="option_checkbox">
-                                   <input type="radio" name="levels" id="zero" value="zero" checked="checked" />
+                                   <input type="radio" name="levels" id="zero" value="zero" />
                                </div>
                                <div class="option_info">
                                    <label for="zero">{t}Publish just{/t} <strong>{$node_name}</strong>.</label>
@@ -71,7 +71,7 @@
                            </div>
 						<div class="publication_option">
 							<div class="option_checkbox">
-								<input type="radio" name="levels" id="all_levels" value="all" />
+								<input type="radio" name="levels" id="all_levels" value="all" checked="checked"/>
 							</div>
 							<div class="option_info">
 								<label for="all_levels">{t}Publish{/t} <strong>{$node_name}</strong> {t}and its subsections{/t}.</label>

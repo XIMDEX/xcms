@@ -20,6 +20,14 @@ class Action_rendernode extends ActionAbstract
             
             // Receives request node param
             $idNode = $this->request->getParam("nodeid");
+            
+            // Checks node existence
+            $node = new Node($idNode);
+            if (! ($node->get('IdNode') > 0)) {
+                $this->messages->add(_('It is not possible to show preview.') . _(' The node you are trying to preview does not exist.')
+                    , MSG_TYPE_NOTICE);
+                $this->render(array('messages' => $this->messages->messages), null, 'messages.tpl');
+            }
             Logger::info('Call to rendernode from given ID: ' . $idNode);
         }
         elseif ($this->request->getParam('expresion')) {
@@ -33,32 +41,13 @@ class Action_rendernode extends ActionAbstract
             if (!$parserPathTo->parsePathTo($expression)) {
                 $this->messages->mergeMessages($parserPathTo->messages());
             }
-            if ($parserPathTo->getIdNode() === null) {
+            if ($parserPathTo->getNode() === null) {
                 
                 // Change the logs output to default one
                 Logger::setActiveLog();
                 return true;
             }
-            /*
-            if (!$parserPathTo->getIdNode()) {
-                
-                // The node can not be found
-                $this->messages->add(_('It is not possible to show preview.') . _(' The node you are trying to preview does not exist:') 
-                    . $expression, MSG_TYPE_NOTICE);
-                // Change the logs output to default one
-                Logger::setActiveLog();
-                $this->render(array('messages' => $this->messages->messages), null, 'messages.tpl');
-            }
-            */
-            $idNode = $parserPathTo->getIdNode();
-        }
-        
-        // Checks node existence
-        $node = new Node($idNode);
-        if (! ($node->get('IdNode') > 0)) {
-            $this->messages->add(_('It is not possible to show preview.') . _(' The node you are trying to preview does not exist.')
-            , MSG_TYPE_NOTICE);
-            $this->render(array('messages' => $this->messages->messages), null, 'messages.tpl');
+            $node = $parserPathTo->getNode();
         }
         if ($node->nodeType->GetIsStructuredDocument()) {
             

@@ -37,12 +37,12 @@
 		<div class="small-12 columns">
     {if $numChildren>0}
 		<div class="alert alert-info">
-			<strong>Info! </strong>{t} The download will start immediately. If not, click here{/t}: <a href="{$tarFile}" class="tarfile destacada">{$nodeName}</a>
+			<strong>Info!</strong> {t} The download will start immediately. If not, click here{/t}: <a href="{$tarFile}" class="tarfile destacada">{$nodeName}</a>
 		</div>
 
     {else}
 		<div class="alert alert-info">
-			<strong>Info! </strong>{t} There aren't any files to download{/t}.</a>
+			<strong>Info!</strong> {t} There aren't any files to download{/t}.
 		</div>
     {/if}
 </div>

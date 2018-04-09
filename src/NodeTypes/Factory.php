@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: drzippie
- * Date: 28/1/16
- * Time: 18:38
- */
 
 namespace Ximdex\NodeTypes;
-
 
 use Ximdex\Logger;
 
@@ -38,8 +31,7 @@ class Factory
         'XimletNode' => array('ClassName' => '\\Ximdex\\NodeTypes\\XimletNode'),
         'xmldocumentnode' => array('ClassName' => '\\Ximdex\\NodeTypes\\XmlDocumentNode'),
         'xmlcontainernode' => array('ClassName' => '\\Ximdex\\NodeTypes\\XmlContainerNode'),
-        'xsltnode' => array('ClassName' => '\\Ximdex\\NodeTypes\\XsltNode'),
-
+        'xsltnode' => array('ClassName' => '\\Ximdex\\NodeTypes\\XsltNode')
     );
 
     /**
@@ -48,14 +40,13 @@ class Factory
      * @param string $module
      * @return mixed
      */
-    public static function getNodeTypeByName($name, &$node, $module = '')
+    public static function getNodeTypeByName($name, $node, $module = '')
     {
         $_name = strtolower($name);
         if (isset(self::$baseNodeTypes[$_name])) {
             $className = self::$baseNodeTypes[$_name]['ClassName'];
             return new $className($node);
         }
-
         if (!empty($module)) {
             $fileToInclude = sprintf('%s%s/src/NodeTypes/%s.php', XIMDEX_ROOT_PATH, \Ximdex\Modules\Manager::path($module), strtolower($name));
         } else {
@@ -67,12 +58,10 @@ class Factory
         if (class_exists($name)) {
             return new $name($node);
         }
-
         $className = "\\Ximdex\\NodeTypes\\" . $name ;
         if ( class_exists( $className )) {
             return new $className($node);
         }
-        
         Logger::fatal(sprintf(_('The nodetype associated to %s does not exist'), $fileToInclude));
         die(sprintf(_('Fatal error: the nodetype associated to %s does not exist'), $fileToInclude));
     }
