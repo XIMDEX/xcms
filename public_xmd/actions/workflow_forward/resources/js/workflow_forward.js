@@ -25,7 +25,7 @@
 
 X.actionLoaded(function(event, fn, params) {
 	
-	//Create calendars
+	// Create calendars
 	var cals = fn('.xim-calendar-layer-container');	
 
 	var $groupList = fn('fieldset.notifications select[name=groups]');
@@ -42,10 +42,11 @@ X.actionLoaded(function(event, fn, params) {
 			
 			fn('[id="last_edited_option"]').removeClass("disabled").attr("disabled", false);
 			fn('[id="no_structure_option"]').removeClass("disabled").attr("disabled", false);
+			fn('[id="force_option"]').removeClass("disabled").attr("disabled", false);
 			var value = $('input[name=levels]:checked').val();
 			if (value != 'deep')
 			{
-				// all levels or zero level
+				// All levels or zero level
 				fn('[id="deeplevel"]').addClass("disabled").attr("disabled", true);
 				if (value == 'zero')
 				{
@@ -53,11 +54,13 @@ X.actionLoaded(function(event, fn, params) {
 					fn('[id="last_edited"]').attr("checked", false);
 					fn('[id="no_structure_option"]').addClass("disabled").attr("disabled", true);
 					fn('[id="no_structure"]').attr("checked", false);
+					fn('[id="force_option"]').addClass("disabled").attr("disabled", true);
+					fn('[id="force"]').attr("checked", false);
 				}
 			}
 			else
 			{
-				// n levels of deep
+				// N levels of deep
 				fn('[id="deeplevel"]').removeClass("disabled").attr("disabled", false);
 			}
 		});
@@ -95,7 +98,7 @@ X.actionLoaded(function(event, fn, params) {
 	
 	function notificableUsers(data, textStatus) {
 		
-		// cleanup
+		// Cleanup
 		$userList.unbind().empty();
 		
 		if (textStatus != 'success') return;

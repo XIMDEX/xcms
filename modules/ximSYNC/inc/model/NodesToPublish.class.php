@@ -33,13 +33,8 @@ use Ximdex\Models\Node;
 
 class NodesToPublish extends NodesToPublish_ORM
 {
-	public function __construct($id = null)
-	{
-		parent::__construct($id);
-	}
-
 	/**
-	 *	Static method that creates a new NodeSet and returns the related object
+	 * Static method that creates a new NodeSet and returns the related object
 	 */
 	static public function create($idNode, $idNodeGenerator, $dateUp, $dateDown, $userId, $force, $lastPublishedVersion, $deepLevel)
 	{    
@@ -50,6 +45,9 @@ class NodesToPublish extends NodesToPublish_ORM
 		$node->set('DateDown', $dateDown);
 		$node->set('State', 0); //Pending
 		$node->set('UserId', $userId);
+		if ($idNode == $idNodeGenerator) {
+		    $force = true;
+		}
 		$node->set('ForcePublication', $force ? 1 : 0);
 		$node->set('DeepLevel', $deepLevel);
 		$dataFactory = new DataFactory($idNode);
@@ -155,7 +153,7 @@ class NodesToPublish extends NodesToPublish_ORM
 	}
 
 	/**
-	 *	Mark a chunk of nodes as processed (2) in database.
+	 * Mark a chunk of nodes as processed (2) in database.
 	 */
 	static public function setProcessed($chunk, $dateUp)
 	{
