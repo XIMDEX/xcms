@@ -34,7 +34,7 @@ class LinksOrm extends GenericData
     var $_idField = 'IdLink';
     var $_table = 'Links';
     var $_metaData = array(
-        'IdLink' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
+        'IdLink' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'false', 'primary_key' => true),
         'Url' => array('type' => "blob", 'not_null' => 'true'),
         'Error' => array('type' => "int(12)", 'not_null' => 'false'),
         'ErrorString' => array('type' => "varchar(255)", 'not_null' => 'false'),

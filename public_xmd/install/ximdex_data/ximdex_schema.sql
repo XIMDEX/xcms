@@ -120,14 +120,12 @@ CREATE TABLE `Languages` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Ximdex CMS defined languages';
 
 CREATE TABLE `Links` (
-  `IdLink` int(12) unsigned NOT NULL AUTO_INCREMENT,
-  `Url` blob NOT NULL,
+  `IdLink` int(12) unsigned NOT NULL,
+  `Url` TEXT NOT NULL,
   `Error` int(12) unsigned DEFAULT NULL,
   `ErrorString` varchar(255) DEFAULT NULL,
   `CheckTime` int(12) unsigned DEFAULT NULL,
-  PRIMARY KEY (`IdLink`),
-  UNIQUE KEY `IdLink` (`IdLink`),
-  KEY `IdLink_2` (`IdLink`)
+  PRIMARY KEY (`IdLink`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Table of link manager of Ximdex';
 
 CREATE TABLE `List` (

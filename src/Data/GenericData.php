@@ -147,13 +147,13 @@ class GenericData
             $dbObj->Query($query, $this->_cache);
             if (!$dbObj->EOF) {
                 reset($this->_metaData);
-                // while (list($key) = each($this->_metaData)) {
                 foreach (array_keys($this->_metaData) as $key) {
                     if (array_key_exists($key, $dbObj->row)) {
                         $this->{$key} = $dbObj->GetValue($key);
                     } else {
                         $backtrace = debug_backtrace();
-                        Logger::warning(sprintf('[CONSTRUCTOR] Inconsistency between the model and the database [inc/helper/GenericData.class.php] script: %s file: %s line: %s table: %s field: %s', $_SERVER['SCRIPT_FILENAME'], $backtrace[0]['file'], $backtrace[0]['line'], $this->_table, $key));
+                        Logger::warning(sprintf('[CONSTRUCTOR] Inconsistency between the model and the database [inc/helper/GenericData.class.php] script: %s file: %s line: %s table: %s field: %s'
+                            , $_SERVER['SCRIPT_FILENAME'], $backtrace[0]['file'], $backtrace[0]['line'], $this->_table, $key));
                         $this->modelInError = true;
                     }
                 }
@@ -209,8 +209,6 @@ class GenericData
         $arrayFields = array();
         $arrayValues = array();
         while (list($field, $descriptors) = each($this->_metaData)) {
-            
-            // if (isset($descriptors['auto_numeric']) && ('true' == $descriptors['auto_numeric'])) {
             if (isset($descriptors['auto_increment']) && ('true' == $descriptors['auto_increment'])) {
                 continue;
             }
@@ -238,7 +236,7 @@ class GenericData
             } else {
                 $isAutoField = isset($this->_metaData[$this->_idField])
                     && array_key_exists('auto_increment', $this->_metaData[$this->_idField])
-                    && true == $this->_metaData[$this->_idField]['auto_increment'];
+                    && 'true' == $this->_metaData[$this->_idField]['auto_increment'];
                 if ($isAutoField) {
                     $this->{$this->_idField} = $dbObj->newID;
                     $insertedId              = $this->{$this->_idField};
@@ -810,7 +808,6 @@ class GenericData
         $arrayValues = array();
         while (list($field, $descriptors) = each($this->_metaData))
         {
-            // if (isset($descriptors['auto_numeric']) && ('true' == $descriptors['auto_numeric']))
             if (isset($descriptors['auto_increment']) && ('true' == $descriptors['auto_increment'])) {
                 continue;
             }
