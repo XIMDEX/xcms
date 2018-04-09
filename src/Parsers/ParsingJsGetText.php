@@ -29,7 +29,6 @@ namespace Ximdex\Parsers;
 
 use Ximdex\Runtime\App;
 use Ximdex\Logger;
-use Ximdex\Utils\FsUtils;
 
 class ParsingJsGetText
 {
@@ -99,7 +98,8 @@ class ParsingJsGetText
     public function setFile($_js = null)
     {
         if ($_js != null) {
-            if (FsUtils::get_url_file($_js) === null) {
+            $info = pathinfo($_js);
+            if (!isset($info['extension']) or !$info['extension']) {
                 return true;
             }
             if (!file_exists(XIMDEX_ROOT_PATH . '/' . $_js)) {
