@@ -50,7 +50,7 @@ class ParsingPathTo
         $this->messages = new Messages();
     }
 
-    public function getNode() : Node
+    public function getNode()
     {
         return $this->node;
     }
