@@ -15,9 +15,9 @@ use XimdexApi\core\Response;
 class XeditAction extends Action
 {
 
-    const PATTERN_PATHTO = "/[[:word:]]+=\"@@@RMximdex\.pathto\(([,-_#%=\.\w\s]+)\)@@@\"/";
-    const PATTERN_XE_LINK = "/xe_link\=\"([^\"]*)\"/";
-
+    const PATTERN_PATHTO = "/[[:word:]]+=[\"']@@@RMximdex\.pathto\(([,-_#%=\.\w\s]+)\)@@@[\"']/";
+    //const PATTERN_XE_LINK = "/xe_link\=\"([^\"]*)\"/";
+    const PATTERN_XE_LINK = "/<([a-zA-Z]+)([^>]*?(?=xe_link))xe_link\=[\"']([^\"]*)[\"']([^>]*)>/";
     const PREFIX = 'xedit';
 
     const CONTENT_DOCUMENT = 'content';
@@ -32,6 +32,34 @@ class XeditAction extends Action
         self::ROUTE_SET => 'set',
         self::ROUTE_FILE => 'file',
         self::ROUTE_GET_TREE_INFO => 'getTreeInfo'
+    ];
+
+    const LINK_TYPES = [
+        'a' => 'href',
+        'applet' => 'codebase',
+        'area' => 'href',
+        'base' => 'href',
+        'blockquote' => 'cite',
+        'del' => 'cite',
+        'form' => 'action',
+        'frame' => 'src',
+        'head' => 'profile',
+        'iframe' => 'src',
+        'img' => 'src',
+        'input' => 'src',
+        'ins' => 'cite',
+        'link' => 'href',
+        'object' => 'data',
+        'q' => 'cite',
+        'script' => 'src',
+        'audio' => 'src',
+        'button' => 'formaction',
+        'command' => 'icon',
+        'embed' => 'src',
+        'source' => 'src',
+        'html' => 'manifest',
+        'track' => 'src',
+        'video' => 'src'
     ];
 
     protected const PUBLIC = [
@@ -52,19 +80,18 @@ class XeditAction extends Action
 
         $nodes = HTMLDocumentNode::getNodesHTMLDocument($nodeId);
 
-        // Transform data to Xedit editor
-        foreach ($nodes as &$node) {
-            $node['editable'] = strcmp($node['type'], HTMLDocumentNode::CONTENT_DOCUMENT) == 0 ? true : false;
-            $name = strcmp($node['type'], HTMLDocumentNode::CONTENT_DOCUMENT) == 0 ? $node['title'] : $name;
-            $node['content'] = static::transformContentToXedit($node['content']);
-            if (strcmp($node['type'], HTMLDocumentNode::CONTENT_DOCUMENT) == 0) {
+        if ($nodes)
+            // Transform data to Xedit editor
+            foreach ($nodes as &$node) {
+                $node['editable'] = strcmp($node['type'], HTMLDocumentNode::CONTENT_DOCUMENT) == 0 ? true : false;
+                $name = strcmp($node['type'], HTMLDocumentNode::CONTENT_DOCUMENT) == 0 ? $node['title'] : $name;
+                $node['content'] = static::transformContentToXedit($node['content']);
                 $schemas = $node['schema'];
                 foreach ($schemas as $key => $value) {
                     $schemas[$key]['view'] = static::transformContentToXedit($value['view']);
                 }
                 $node['schema'] = $schemas;
             }
-        }
 
 
         if ($nodes === false) {
@@ -213,7 +240,7 @@ class XeditAction extends Action
      */
     private static function transformPathtoToXeLink($matches)
     {
-        $replace = 'xe_link="%s"';
+        $replace = 'xe_link="%s" ';
         return sprintf($replace, trim($matches[1]));
     }
 
@@ -223,9 +250,9 @@ class XeditAction extends Action
      */
     private static function transformXeLinkToPathto($matches)
     {
-        //TODO Realizar comprobaciones si es IMG / LINK / ...
-        $replace = 'src="@@@RMximdex.pathto(%s)@@@"';
-        return sprintf($replace, trim($matches[1]), trim($matches[1]));
+        $attribute = static::LINK_TYPES[$matches[1]] ?? 'href';
+        $replace = '<%s %s %s="@@@RMximdex.pathto(%s)@@@" %s>';
+        return sprintf($replace, trim($matches[1]), trim($matches[2]), $attribute, trim($matches[3]), trim($matches[4]));
     }
 
     /**
@@ -249,7 +276,7 @@ class XeditAction extends Action
      */
     protected function checkNodeAction(&$nodes)
     {
-        //TODO Copiado de la clase Action_browser3 (Sacar en común)
+        //Todo Copiado de la clase Action_browser3 (Sacar en común)
         $db = new \Ximdex\Runtime\Db();
         $sql = 'select count(1) as total from Actions a left join Nodes n using(IdNodeType) where IdNode = %s and a . Sort > 0';
         $sql2 = $sql . " AND a.Command='fileupload_common_multiple' ";
