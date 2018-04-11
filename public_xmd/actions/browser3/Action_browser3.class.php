@@ -998,7 +998,9 @@ class Action_browser3 extends ActionAbstract
         {
             $nodes = array($nodes);
         }
-        $actions = $this->getActionsOnNodeList($idUser, $nodes);
+        $actions=[6000];
+
+        $actions += $this->getActionsOnNodeList($idUser, $nodes);
 
         // Users can modify their account
         if (is_array($nodes) && count($nodes) == 1 && $nodes[0] == $idUser && !in_array(6002, $actions))
