@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,11 +25,10 @@
  * @version $Revision$
  */
 
-
 namespace Ximdex\IO\Connection;
+
 use Ximdex\Logger;
 use phpseclib\Net\SFTP;
-
 
 class ConnectionSsh implements IConnector
 {
@@ -37,9 +37,7 @@ class ConnectionSsh implements IConnector
     private $port;
     private $username;
     private $password;
-
     private $netSFTP = NULL;
-
 
     /**
      * Connect to server
@@ -51,8 +49,6 @@ class ConnectionSsh implements IConnector
      */
     public function connect($host = NULL, $port = NULL)
     {
-
-
         if (empty($port)) {
             $port = 22;
         }
@@ -66,8 +62,6 @@ class ConnectionSsh implements IConnector
             return false;
         }
         $this->netSFTP = new SFTP($host, $port);
-
-
         return true;
     }
 
@@ -84,7 +78,6 @@ class ConnectionSsh implements IConnector
 
     /**
      * Check the status of the connection
-     *
      */
     public function isConnected()
     {
@@ -99,7 +92,6 @@ class ConnectionSsh implements IConnector
      * Get the server folder
      *
      * @access public
-     * @param dir string
      * @return string
      */
     public function pwd()
@@ -143,7 +135,6 @@ class ConnectionSsh implements IConnector
         if ($this->folderExists($dir)) {
             return true;
         }
-
         $folderComponents = explode('/', $dir);
         if (empty($folderComponents[count($folderComponents) - 1])) {
             unset($folderComponents[count($folderComponents) - 1]);
@@ -160,21 +151,17 @@ class ConnectionSsh implements IConnector
         } else {
             $isParentCreated = true;
         }
-
         if ($isParentCreated) {
             return $this->_mkdir($dir, $mode);
         }
-
         return false;
     }
 
     private function folderExists($dir)
     {
         $localPath = $this->pwd();
-
         $result = $this->cd($dir);
         $this->cd($localPath);
-
         return $result;
     }
 
@@ -213,7 +200,6 @@ class ConnectionSsh implements IConnector
         if ($recursive) {
             Logger::fatal('Not implemented yet Connection_Ssh::chmod with recursive true');
         }
-
         return $this->netSFTP->chmod($mode, $filename);
     }
 
@@ -227,14 +213,14 @@ class ConnectionSsh implements IConnector
      */
     public function rename($renameFrom, $renameTo)
     {
-        if($this->netSFTP->stat($renameFrom)) {
+        if ($this->netSFTP->stat($renameFrom)) {
             if ( !( $result = $this->netSFTP->rename( $renameFrom, $renameTo ) ) ) {
                 if($this->netSFTP->stat( $renameFrom ) && $this->netSFTP->stat( $renameTo )) {
                     $this->netSFTP->delete( $renameTo );
                 }
                 return $this->netSFTP->rename( $renameFrom, $renameTo );
             }
-        }else{
+        } else {
             return true;
         }
         return $result;
@@ -264,7 +250,6 @@ class ConnectionSsh implements IConnector
     public function rm($path)
     {
         $localPath = $this->pwd();
-
         if ($this->cd($path)) {
             $this->cd($localPath);
             return $this->netSFTP->rmdir($path);
@@ -314,12 +299,9 @@ class ConnectionSsh implements IConnector
         if ($this->isDir($path)) {
             return false;
         }
-
         $isFile = false;
-        $pwd = $this->pwd();
         $matches = array();
         preg_match('/(.*\/)([^\/]+)$/', $path, $matches);
-
         if (count($matches) == 3) {
             $folder = $matches[1];
             $file = $matches[2];
@@ -332,11 +314,9 @@ class ConnectionSsh implements IConnector
                 $fileList = $this->ls($folder);
                 $isFile = (in_array($file, $fileList));
             }
-
         }
-        $this->cd($pwd);
+        $this->cd($this->pwd());
         return $isFile;
-
     }
 
     /**

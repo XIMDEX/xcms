@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -28,19 +29,17 @@ namespace Ximdex\Utils;
 
 use Ximdex\Runtime\App;
 
-class QueryManager {
-
+class QueryManager
+{
     var $queryContent = NULL;
     private $levels;
-
 
     /**
      * @param bool $preload
      */
-    public function __construct($preload = true) {
-
+    public function __construct($preload = true)
+    {
         $this->queryContent = array();
-
         if ($preload === false ) {
             return ;
         }
@@ -49,47 +48,47 @@ class QueryManager {
     }
 
     /**
-     *
      * @param $key
      * @param $value
      */
-    function add($key, $value) {
+    function add($key, $value)
+    {
         $this->queryContent[$key] = $value;
     }
 
     /**
-     *
      * @param $key
      * @return mixed
      */
-    function get($key) {
+    function get($key)
+    {
         return isset($this->queryContent[$key]) ? $this->queryContent[$key] : NULL;
     }
 
     /**
-     *
      * @param $key
      */
-    function delete($key) {
+    function delete($key)
+    {
         if (isset($this->queryContent)) {
             unset($this->queryContent[$key]);
         }
     }
 
     /**
-     *
      * @return mixed
      */
-    function build() {
+    function build()
+    {
         return $this->_buildQuery($this->queryContent);
     }
 
     /**
-     *
      * @param $extraParams
      * @return mixed
      */
-    function buildWith($extraParams=null) {
+    function buildWith($extraParams=null)
+    {
         $fullQuery = $this->queryContent;
         if (!is_array($extraParams)) $extraParams = array();
         foreach ($extraParams as $key => $value) {
@@ -99,14 +98,12 @@ class QueryManager {
     }
 
     /**
-     *
      * @param $queryParams
      * @return string
      */
-    function _buildQuery($queryParams) {
-
+    function _buildQuery($queryParams)
+    {
         if (is_array($queryParams)) {
-
             $queryPreImploded = array();
             foreach($queryParams as $key => $value) {
                 if (empty($value)) {
@@ -120,19 +117,17 @@ class QueryManager {
                     $queryPreImploded[] = sprintf('%s=%s', urlencode($key), urlencode($value));
                 }
             }
-
             return sprintf('?%s', implode('&', (array) $queryPreImploded));
         }
-
         return '';
     }
 
     /**
-     *
      * @param $queryParams
      * @return array
      */
-    function _buildSubQuery($queryParams) {
+    function _buildSubQuery($queryParams)
+    {
         $storedValues = array();
         if (is_array($queryParams)) {
             foreach ($queryParams as $key => $value) {
@@ -153,13 +148,22 @@ class QueryManager {
     }
 
     /**
-     *
+     * @param bool $host
      * @return string
      */
-    function getPage()
+    function getPage(bool $host = true)
     {
-    	//Changed getPage method to use UrlHost + UrlRoot value obtained from database table Config value
-    	//NOTE: We add / diretory separator at the end
-        return App::getValue('UrlHost') . App::getValue('UrlRoot') . '/';
+        if ($host) {
+            
+            // Changed getPage method to use UrlHost + UrlRoot value obtained from database table Config value
+            $url = App::getValue('UrlHost');
+        }
+        else {
+            $url = '';
+        }
+        
+        //NOTE: We add / diretory separator at the end
+        $url .= App::getValue('UrlRoot') . '/';
+        return $url;
     }
 }

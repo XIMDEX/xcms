@@ -33,8 +33,8 @@ class InstallDataBaseManager extends InstallManager
     const DB_ARRAY_KEY = "db_installer_connection";
     const DEFAULT_PORT = 3306;
     const DATA_PATH = '/install/ximdex_data/';
-    const SCHEMA_SCRIPT_FILES = ['ximdex_schema.sql'];
-    const DATA_SCRIPT_FILES = ['ximdex_data.sql', 'ximdex_data_html.sql'];
+    const SCHEMA_SCRIPT_FILES = ['ximdex_schema.sql', 'ximdex_html.sql'. 'ximdex_code.sql'];
+    const DATA_SCRIPT_FILES = ['ximdex_data.sql'];
     
     private $dbConnection = null;
     private $host;

@@ -6,19 +6,19 @@ use Ximdex\Data\GenericData;
 
 class ProgrammingCode extends GenericData
 {
-    private $_idField = 'id';
-    private $_table = 'ProgrammingCode';
-    private $_metaData = array(
-        'id' => array('type' => "int(11)", 'not_null' => 'true', 'primary_key' => true),
-        'idLanguage' => array('type' => 'varchar(50)', 'not_null' => 'true'),
-        'idCommand' => array('type' => 'varchar(50)', 'not_null' => 'true'),
+    public $_idField = 'id';
+    public $_table = 'ProgrammingCode';
+    public $_metaData = array(
+        'id' => array('type' => "int(4)", 'not_null' => 'true', 'primary_key' => true),
+        'idLanguage' => array('type' => 'varchar(20)', 'not_null' => 'true'),
+        'idCommand' => array('type' => 'varchar(20)', 'not_null' => 'true'),
         'code' => array('type' => 'text', 'not_null' => 'true')
     );
-    private $_uniqueConstraints = array('idProgLanguage' => array('idLanguage', 'idCommand'));
-    private $id;
-    private $idLanguage;
-    private $idCommand;
-    private $code;
+    public $_uniqueConstraints = array('idProgLanguage' => array('idLanguage', 'idCommand'));
+    protected $id;
+    protected $idLanguage;
+    protected $idCommand;
+    protected $code;
     
     /**
      * Load the code for the current programming language and command
@@ -39,11 +39,13 @@ class ProgrammingCode extends GenericData
             return false;
         }
         $res = $this->find('*', 'idLanguage = \'' . $this->getIdLanguage() . '\' and idCommand = \'' . $this->getIdCommand() . '\'');
-        if ($res === false)
+        if (!$res or !isset($res[0]))
         {
-            $this->messages->add('Cannot obtain translated code for the language and command given', MSG_TYPE_ERROR);
+            $this->messages->add('Cannot obtain translated code for the language ' . $this->getIdLanguage() . ' and command ' 
+                . $this->getIdCommand(), MSG_TYPE_ERROR);
             return false;
         }
+        $res = $res[0];
         if (!$res or !isset($res['code']) or !$res['code'])
         {
             $this->messages->add('There is not a code for language and command given', MSG_TYPE_ERROR);
@@ -51,7 +53,7 @@ class ProgrammingCode extends GenericData
         }
         if ($params)
         {
-            $res['code'] = sprintf($res['code'], $params);
+            $res['code'] = vsprintf($res['code'], $params);
         }
         $this->setCode($res['code']);
         return true;
@@ -64,7 +66,7 @@ class ProgrammingCode extends GenericData
     
 	public function setId(int $id) : void
 	{
-		return $this->set('id', $id);
+	   $this->set('id', $id);
 	}
 	
 	public function getIdLanguage() : string
@@ -74,7 +76,7 @@ class ProgrammingCode extends GenericData
 	
 	public function setIdLanguage(string $idLanguage) : void
 	{
-	    return $this->set('idLanguage', $idLanguage);
+	    $this->set('idLanguage', $idLanguage);
 	}
 	
 	public function getIdCommand() : string
@@ -84,7 +86,7 @@ class ProgrammingCode extends GenericData
 	
 	public function setIdCommand(string $idCommand) : void
 	{
-	    return $this->set('idCommand', $idCommand);
+	    $this->set('idCommand', $idCommand);
 	}
 	
 	public function getCode() : string
@@ -94,6 +96,6 @@ class ProgrammingCode extends GenericData
 	
 	public function setCode(string $code) : void
 	{
-	    return $this->set('code', $code);
+	    $this->set('code', $code);
 	}
 }

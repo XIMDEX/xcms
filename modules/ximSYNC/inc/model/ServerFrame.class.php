@@ -328,6 +328,9 @@ class ServerFrame extends ServerFrames_ORM
                 Logger::error('cannot load the cache or actual version content for version: ' . $idVersion);
                 return false;
             }
+            if ($content === null) {
+                return null;
+            }
             $nodeTypeContent = $node->nodeType->get('Name');
             
             // Only encoding the content if the node is not one of this 3.

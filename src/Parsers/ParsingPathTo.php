@@ -50,7 +50,7 @@ class ParsingPathTo
         $this->messages = new Messages();
     }
 
-    public function getNode()
+    public function getNode() : ?Node
     {
         return $this->node;
     }
@@ -121,7 +121,7 @@ class ParsingPathTo
         // Checking the first params. It could be number, or .number or string
         $nodeValue = trim(urldecode($params[0]));
         if (isset($params[1]))
-        {    
+        {
             // The second one is value is the channel name or ID (optional)
             $channelParam = trim($params[1]);
             $channel = new Channel();

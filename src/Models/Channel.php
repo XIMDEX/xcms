@@ -42,7 +42,7 @@ class Channel extends ChannelsOrm
     public $flagErr;
     public $numErr;
     
-    const WEB_RENDER_TYPES = ['static' => 'Static', 'include' => 'Include', 'dynamic' => 'Dynamic'];
+    const WEB_RENDER_TYPES = ['static' => 'Static', 'include' => 'Include', 'dynamic' => 'Dynamic', 'index' => 'Index'];
     const OUTPUT_TYPE_WEB = 'web';
 
     /**
@@ -385,5 +385,15 @@ class Channel extends ChannelsOrm
     {
         $dbObj = new \Ximdex\Runtime\Db();
         return $dbObj->Execute(sprintf("UPDATE Channels SET Default_Channel=0 WHERE IdChannel<>%s;", $idchannel));
+    }
+    
+    public function getRenderType()
+    {
+        return $this->RenderType;
+    }
+    
+    public function getIdLanguage()
+    {
+        return $this->idLanguage;
     }
 }

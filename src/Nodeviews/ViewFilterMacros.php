@@ -568,7 +568,7 @@ class ViewFilterMacros extends AbstractView implements IView
                 }
                 else {
                     $query = App::get('\Ximdex\Utils\QueryManager');
-                    $src = $query->getPage() . $query->buildWith(array('nodeid' => $idNode, 'token' => uniqid()));
+                    $src = $query->getPage(false) . $query->buildWith(array('nodeid' => $idNode, 'token' => uniqid()));
                     if ($parserPathTo->getAnchor()) {
                         $src .= '#' . $parserPathTo->getAnchor();
                     }

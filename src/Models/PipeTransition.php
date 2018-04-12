@@ -201,7 +201,7 @@ class PipeTransition extends PipeTransitionsOrm
 			if (strpos($pointer, App::getValue('TempRoot')) and file_exists($pointer)) {
 			    @unlink($pointer);
 			}
-			if ($transformedPointer === false)
+			if ($transformedPointer === false or $transformedPointer === null)
 			{
 			    $timer->stop();
 			    return false;
@@ -224,7 +224,7 @@ class PipeTransition extends PipeTransitionsOrm
  			$cache = new PipeCache();
 			if (!$cache->store($idVersion, $this->get('id'), $transformedPointer, $args))
 			{
-				Logger::error('Could not store the cache for transition with version ' . $version);
+				Logger::error('Could not store the cache for transition with version ' . $idVersion);
 				return false;
 			}
 			else

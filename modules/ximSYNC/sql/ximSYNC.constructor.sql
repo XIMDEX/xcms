@@ -33,7 +33,7 @@ CREATE TABLE `Batchs` (
   `TimeOn` int(12) NOT NULL,
   `State` varchar(255) NOT NULL,
   `ServerFramesTotal` int(12) unsigned default '0',
-  `ServerFramesSucess` int(12) unsigned default '0',
+  `ServerFramesSucess` int(12) default '0',
   `ServerFramesError` int(12) unsigned default '0',
   `Playing` int(12) unsigned default NULL,
   `Type` varchar(255) NOT NULL default '0',

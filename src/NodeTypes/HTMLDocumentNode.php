@@ -74,22 +74,23 @@ class HTMLDocumentNode extends FileNode
         $layout = $doc->getLayout();
         if ($layout && $layout->GetContent()) {
             $layout = json_decode($layout->GetContent(), true);
-            
-            foreach ($layout['template'] as $templ) {
-                if (strcmp(key($templ), static::CONTENT_DOCUMENT) == 0) {
-                    $data = static::getNodeData($doc, $templ[key($templ)], $layout, $isCurrentNode);
-                    $nodes['xe_' . $data['id']] = $data; // Todo JS order numbers key, change it by array
-                } else {
-                    $include = $doc->getInclude($templ[key($templ)]);
-                    if ($include && $include->GetID()) {
-                        $nodes = static::getDocumentNodes($include, $nodes);
+            if (isset($layout['template'])) {
+                foreach ($layout['template'] as $templ) {
+                    if (strcmp(key($templ), static::CONTENT_DOCUMENT) == 0) {
+                        $data = static::getNodeData($doc, $templ[key($templ)], $layout, $isCurrentNode);
+                        $nodes['xe_' . $data['id']] = $data; // Todo JS order numbers key, change it by array
                     } else {
-                        $nodes['not_found_' . count($nodes)] = [
-                            'title' => key($templ),
-                            'content' => '<div>NODE EMPTY</div>'
-                        ];
-                        if ($doc->messages->messages[0]) {
-                            Logger::error($doc->messages->messages[0]['message']);
+                        $include = $doc->getInclude($templ[key($templ)]);
+                        if ($include && $include->GetID()) {
+                            $nodes = static::getDocumentNodes($include, $nodes);
+                        } else {
+                            $nodes['not_found_' . count($nodes)] = [
+                                'title' => key($templ),
+                                'content' => '<div>NODE EMPTY</div>'
+                            ];
+                            if ($doc->messages->messages[0]) {
+                                Logger::error($doc->messages->messages[0]['message']);
+                            }
                         }
                     }
                 }
@@ -156,14 +157,16 @@ class HTMLDocumentNode extends FileNode
      * @param int $docId
      * @param string $content
      * @param string $mode
-     *
      * @return string || bool
      */
-    public static function renderHTMLDocument(int $docId, string $content = null, string $mode = HTMLDocumentNode::MODE_STATIC)
+    public static function renderHTMLDocument(int $docId, string $content = null, string $mode = null)
     {
         $render = null;
         $css = $js = [];
         $name = '';
+        if ($mode === null) {
+            $mode = HTMLDocumentNode::MODE_STATIC;
+        }
         
         if ($docId == null || ! in_array($mode, [
             static::MODE_DYNAMIC,
@@ -194,7 +197,7 @@ class HTMLDocumentNode extends FileNode
                     $body .= ! is_null($content) ? $content : $node['content'];
                     $name = $node['title'];
                 } else {
-                    $body .= '@@@GMximdex.code(include, @@@RMximdex.pathto(' . $node['id'] . ')@@@)@@@';
+                    $body .= '@@@RMximdex.code(include, @@@RMximdex.pathto(' . $node['id'] . ')@@@)@@@';
                 }
             }
             $render = $body;

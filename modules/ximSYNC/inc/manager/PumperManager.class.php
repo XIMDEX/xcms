@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,58 +25,46 @@
  * @version $Revision$
  */
 
-
 use Ximdex\Logger;
 use Ximdex\Models\Pumper;
-
 
 include_once(XIMDEX_ROOT_PATH . "/modules/ximSYNC/conf/synchro_conf.php");
 
 /**
  * @brief Handles the activity of Pumpers.
  *
- *    A Pumper is an instance of the dexPumper script, wich is responsible for sending the ServerFrames to Server (via ftp, ssh, etc).
+ * A Pumper is an instance of the dexPumper script, wich is responsible for sending the ServerFrames to Server (via ftp, ssh, etc).
  */
 class PumperManager
 {
-
     /**
-     *    Checks what Pumpers are running and decides whether start or stop them.
+     * Checks what Pumpers are running and decides whether start or stop them.
+     * 
      * @param array pumpersWithTasks
      * @param string modo
      * @return bool
      */
-
     function checkAllPumpers($pumpersWithTasks, $modo = "pl")
     {
         $pumper = new Pumper();
-
         if (is_null($pumpersWithTasks) || count($pumpersWithTasks) == 0) {
             $pumper->PumperToLog(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__,
                 __LINE__, "ERROR", 8, _("Not pumpers available"));
-
             return false;
         }
- 
         $pumpersWithError = 0;
-
         foreach ($pumpersWithTasks as $pumperId) {
             $pumper = new Pumper($pumperId);
-
             if (!($pumper->get('PumperId') > 0)) {
                 $pumper->PumperToLog(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__,
                     __LINE__, "ERROR", 8, _("Non-existing pumper") . " $pumperId");
                 continue;
             }
-
             $pumperState = $pumper->get('State');
             $pumperCheckTime = $pumper->get('CheckTime');
-
             $pumper->PumperToLog(null, null, null, null, $pumperId, __CLASS__, __FUNCTION__, __FILE__,
                 __LINE__, "INFO", 8, sprintf(_("Pumper %s at state %s"), $pumperId, $pumperState));
-
             Logger::info('Pumper with ID: ' . $pumperId . ' has state: ' . $pumperState);
-            
             switch ($pumperState) {
                 case 'Started':
                     
@@ -94,21 +83,16 @@ class PumperManager
                         else {
                             Logger::warning('Pumper with ID: ' . $pumperId . ' has been restarted');
                         }
-
                         $pumper->set('State', 'New');
                         $pumper->update();
                         $result = $pumper->startPumper($pumperId, $modo);
-
                         if ($result == false) {
                             $pumpersWithError++;
                         }
                     }
                     break;
-
                 case 'New':
-                    
                     $result = $pumper->startPumper($pumperId, $modo);
-
                     if ($result == false) {
                         $pumpersWithError++;
                     }
@@ -122,9 +106,7 @@ class PumperManager
                     // Pumper ended but new tasks have been included
                     $pumper->set('State', 'New');
                     $pumper->update();
-
                     $result = $pumper->startPumper($pumperId, $modo);
-
                     if ($result == false) {
                         $pumpersWithError++;
                     }
@@ -139,58 +121,44 @@ class PumperManager
                     Logger::info('Pumper with ID: ' . $pumperId . ' is starting. Aborting creation');
                     usleep(100000);
                     break;
-                    
                 default:
                     $pumper->PumperToLog(null, null, null, null, $pumperId, __CLASS__, __FUNCTION__, __FILE__,
                         __LINE__, "INFO", 8, "default: $pumperId - $pumperState");
                     break;
             }
         }
-
         $pumpersInRegistry = $pumper->getPumpersInRegistry();
-
         if ($pumpersWithError == count($pumpersInRegistry)) {
             $pumper->PumperToLog(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__,
                 __LINE__, "INFO", 8, _("Problems in all pumpers"));
             return false;
         }
-
         return true;
     }
 
     /**
-     *  For each Pumper gets the number of ServerFrames needed to complete the chunk and makes them available.
+     * For each Pumper gets the number of ServerFrames needed to complete the chunk and makes them available.
+     * 
      * @param array activeAndEnabledServers
      */
-
     function callingPumpers($activeAndEnabledServers)
     {
-
         $pumper = new Pumper();
         $pumper->PumperToLog(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__,
             __LINE__, "INFO", 8, _("Calling pumpers"));
-
         $serverFrameManager = new ServerFrameManager();
         $pumpers = $serverFrameManager->getPumpersWithTasks($activeAndEnabledServers);
-
         if (!is_null($pumpers) && count($pumpers) > 0) {
             $pumper->PumperToLog(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__,
                 __LINE__, "INFO", 8, _("There are tasks for pumping"));
             $serverFrameManager->setTasksForPumping($pumpers, SCHEDULER_CHUNK, $activeAndEnabledServers);
             $result = $this->checkAllPumpers($pumpers, PUMPER_SCRIPT_MODE);
-
             if ($result == false) {
                 $pumper->PumperToLog(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__,
                     __LINE__, "INFO", 8, _("All pumpers with errors"));
             }
-
         }
-
         $pumper->PumperToLog(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__,
             __LINE__, "INFO", 8, _("No pumpers to be called"));
-
     }
-
 }
-
-?>

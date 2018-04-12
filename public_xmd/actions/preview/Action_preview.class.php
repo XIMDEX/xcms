@@ -31,6 +31,7 @@ use Ximdex\Models\User;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\App;
 use Ximdex\Runtime\DataFactory;
+use Ximdex\Models\Channel;
 
 class Action_preview extends ActionAbstract
 {
@@ -58,14 +59,13 @@ class Action_preview extends ActionAbstract
         }
         $doc = new StructuredDocument($idNode);
         $channelList = $doc->GetChannels();
-        $nod = new Node();
         $_channels = array();
         if (count($channelList)) {
-            foreach ($channelList as $channel) {
-                $nod->SetID($channel);
+            foreach ($channelList as $id) {
+                $channel = new Channel($id);
                 $_channels[] = array(
-                    "Id" => $channel,
-                    "Name" => $nod->GetNodeName()
+                    "Id" => $id,
+                    "Name" => $channel->GetName()
                 );
             }
         }

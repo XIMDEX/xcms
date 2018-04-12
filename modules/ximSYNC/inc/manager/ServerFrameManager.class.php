@@ -39,8 +39,8 @@ use Ximdex\MPM\MPMProcess;
  *    It can have these status:
  *    - Pending: not yet processed
  *    - Due2In / Due2In_: ready to send to Server
- *   - Pumped: the serverFrame have been sended to the Server but it stays hidden, waiting the sending of the rest of ServerFrame of the same Batch
- *   - In: all ServerFrames of the same Batch are in the Server. Publication completed.
+ *    - Pumped: the serverFrame have been sended to the Server but it stays hidden, waiting the sending of the rest of ServerFrame of the same Batch
+ *    - In: all ServerFrames of the same Batch are in the Server. Publication completed.
  *    - Replaced: the ServerFrame has been replaced by another ServerFrame (with the same name) in the Server
  *    - Removed: the ServerFrame has been replaced by another ServerFrame (with different name) in the Server
  *    - Canceled: the ServerFrame nerver was sended to Server and it's replaced by another ServerFrame
@@ -50,8 +50,10 @@ use Ximdex\MPM\MPMProcess;
 class ServerFrameManager
 {
     const useMPMManager = false;
+    
     /**
      * Change the ServerFrame's state.
+     * 
      * @param int serverFrameId
      * @param string operation
      * @param int nodeId
@@ -245,6 +247,7 @@ class ServerFrameManager
 
     /**
      * Gets the ServerFrames of the same Node, Channel and Server, and State in (in,due2in,due2in_,pumped,canceled).
+     * 
      * @param int frameId
      * @param int server
      * @param int nodeId
@@ -288,6 +291,7 @@ class ServerFrameManager
 
     /**
      * Sets a number of ServerFrames to states Due2In or Due2Out.
+     * 
      * @param array pumpers
      * @param int chunk
      * @param array activeAndEnabledServers
@@ -320,7 +324,7 @@ class ServerFrameManager
                     
                     if (self::useMPMManager) {
                         
-                        //Process All Task with MPMManager
+                        // Process All Task with MPMManager
                         $callback = array("/modules/ximSYNC/inc/model/ServerFrameManager", "processTaskForServerFrame");
                         Logger::info('Starting MPM Manager for Pumper ID: ' . $pumperId . ' -> Task: ' . print_r($tasks, true), true);
                         $mpm = new MPMManager($callback, $tasks, MPMProcess::MPM_PROCESS_OUT_BOOL, 4, 2);
@@ -347,6 +351,7 @@ class ServerFrameManager
 
     /**
      * Gets the identifier of the Pumper responsible of upload (removes) a ServerFrame.
+     * 
      * @param int serverFrameId
      * @return int
      */
@@ -375,6 +380,7 @@ class ServerFrameManager
 
     /**
      * Gets all Pumpers which are currently working.
+     * 
      * @param array activeAndEnabledServers
      * @return array|null
      */
@@ -398,6 +404,7 @@ class ServerFrameManager
 
     /**
      * Gets all ServerFrames associated to a NodeFrame.
+     * 
      * @param int nodeFrameId
      * @return array
      */
@@ -411,6 +418,7 @@ class ServerFrameManager
 
     /**
      *  Sets the ServerFrame ready for upload (remove) to publication Server.
+     *  
      * @param int task
      */
     function processTaskForServerFrame($task)
@@ -422,7 +430,12 @@ class ServerFrameManager
         // Creates Sync file for pumping and updating state
         if ($newState == 'Due2In') {
             $fileSize = $serverFrame->createSyncFile($task);
-            $serverFrame->set('FileSize', $fileSize);
+            if ($fileSize === null) {
+                $newState = ServerFrame::REMOVED;
+            }
+            else {
+                $serverFrame->set('FileSize', $fileSize);
+            }
         }
         $serverFrame->set('State', $newState);
         $serverFrame->update();
@@ -430,6 +443,7 @@ class ServerFrameManager
 
     /**
      * Checks whether the Scheduler script is finished.
+     * 
      * @return int
      */
     function isSchedulerEnded()

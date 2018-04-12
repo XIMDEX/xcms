@@ -34,11 +34,10 @@ CREATE TABLE `Channels` (
   `Format` varchar(255) DEFAULT NULL,
   `Filter` varchar(255) DEFAULT NULL,
   `RenderMode` varchar(255) DEFAULT NULL,
-  `OutputType` varchar(100) DEFAULT NULL,
+  `OutputType` ENUM('web','xml','others') NOT NULL,
   `Default_Channel` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`IdChannel`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Available channels used to transform content';
-ALTER TABLE `Channels` ADD `RenderType` ENUM('static','include','dynamic') NULL DEFAULT NULL AFTER `Default_Channel`;
 
 CREATE TABLE `Config` (
   `IdConfig` int(12) unsigned NOT NULL AUTO_INCREMENT,
@@ -808,35 +807,3 @@ ALTER TABLE `RelDocumentFolderToTemplatesIncludeFile`
   ADD KEY `source` (`source`),
   ADD KEY `target` (`target`);
 ALTER TABLE `RelDocumentFolderToTemplatesIncludeFile` MODIFY `id` int(12) NOT NULL AUTO_INCREMENT;
-
-CREATE TABLE `ProgrammingCode` (
-  `id` int(11) UNSIGNED NOT NULL,
-  `idLanguage` varchar(50) NOT NULL,
-  `idCommand` varchar(50) NOT NULL,
-  `code` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-CREATE TABLE `ProgrammingCommand` (
-  `id` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-CREATE TABLE `ProgrammingLanguage` (
-  `id` varchar(50) NOT NULL,
-  `description` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-ALTER TABLE `ProgrammingCode`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `idProgLanguage` (`idLanguage`,`idCommand`),
-  ADD KEY `idCommand` (`idCommand`);
-ALTER TABLE `ProgrammingCommand` ADD PRIMARY KEY (`id`);
-ALTER TABLE `ProgrammingLanguage` ADD PRIMARY KEY (`id`);
-ALTER TABLE `ProgrammingCode` MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
-ALTER TABLE `ProgrammingCode`
-  ADD CONSTRAINT `ProgrammingCode_ibfk_1` FOREIGN KEY (`idLanguage`) REFERENCES `ProgrammingLanguage` (`id`),
-  ADD CONSTRAINT `ProgrammingCode_ibfk_2` FOREIGN KEY (`idCommand`) REFERENCES `ProgrammingCommand` (`id`);
-
-ALTER TABLE `Channels` ADD `idLanguage` VARCHAR(50) NULL DEFAULT NULL COMMENT 'Programming language for code macros' AFTER `RenderType`;
-ALTER TABLE `Channels` ADD CONSTRAINT `idLanguage` FOREIGN KEY (`idLanguage`) REFERENCES `ProgrammingLanguage`(`id`) 
-    ON DELETE RESTRICT ON UPDATE RESTRICT;
