@@ -34,10 +34,12 @@ CREATE TABLE `Channels` (
   `Format` varchar(255) DEFAULT NULL,
   `Filter` varchar(255) DEFAULT NULL,
   `RenderMode` varchar(255) DEFAULT NULL,
-  `OutputType` ENUM('web','xml','others') NOT NULL,
+  `OutputType` ENUM('web','xml','other') NOT NULL,
   `Default_Channel` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`IdChannel`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Available channels used to transform content';
+ALTER TABLE `Channels` ADD `RenderType` ENUM('static', 'include', 'dynamic', 'index') NOT NULL;
+ALTER TABLE `Channels` ADD `idLanguage` VARCHAR(20) NOT NULL COMMENT 'Programming language for code macros';
 
 CREATE TABLE `Config` (
   `IdConfig` int(12) unsigned NOT NULL AUTO_INCREMENT,
@@ -639,7 +641,8 @@ CREATE TABLE `Servers` (
   `Enabled` int(1) UNSIGNED DEFAULT '1',
   `Previsual` int(1) DEFAULT '0',
   `Description` varchar(255) DEFAULT NULL,
-  `idEncode` varchar(255) NOT NULL DEFAULT 'UTF-8'
+  `idEncode` varchar(255) NOT NULL DEFAULT 'UTF-8',
+  `Token` VARCHAR(255) NULL DEFAULT NULL COMMENT 'API token'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Table with info about Ximdex servers';
 ALTER TABLE `Servers` ADD PRIMARY KEY (`IdServer`);
 ALTER TABLE `Servers` MODIFY `IdServer` int(12) UNSIGNED NOT NULL AUTO_INCREMENT;
@@ -807,3 +810,37 @@ ALTER TABLE `RelDocumentFolderToTemplatesIncludeFile`
   ADD KEY `source` (`source`),
   ADD KEY `target` (`target`);
 ALTER TABLE `RelDocumentFolderToTemplatesIncludeFile` MODIFY `id` int(12) NOT NULL AUTO_INCREMENT;
+
+-- CODE LANGUAGES
+
+CREATE TABLE `ProgrammingCode` (
+  `id` int(4) UNSIGNED NOT NULL,
+  `idLanguage` varchar(20) NOT NULL,
+  `idCommand` varchar(20) NOT NULL,
+  `code` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `ProgrammingCommand` (
+  `id` varchar(20) NOT NULL,
+  `description` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `ProgrammingLanguage` (
+  `id` varchar(20) NOT NULL,
+  `description` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ALTER TABLE `ProgrammingCode`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `idProgLanguage` (`idLanguage`,`idCommand`),
+  ADD KEY `idCommand` (`idCommand`);
+ALTER TABLE `ProgrammingCommand` ADD PRIMARY KEY (`id`);
+ALTER TABLE `ProgrammingLanguage` ADD PRIMARY KEY (`id`);
+ALTER TABLE `ProgrammingCode` MODIFY `id` int(4) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+
+ALTER TABLE `ProgrammingCode`
+  ADD CONSTRAINT `ProgrammingCode_ibfk_1` FOREIGN KEY (`idLanguage`) REFERENCES `ProgrammingLanguage` (`id`),
+  ADD CONSTRAINT `ProgrammingCode_ibfk_2` FOREIGN KEY (`idCommand`) REFERENCES `ProgrammingCommand` (`id`);
+
+ALTER TABLE `Channels` ADD CONSTRAINT `idLanguage` FOREIGN KEY (`idLanguage`) REFERENCES `ProgrammingLanguage`(`id`) 
+    ON DELETE RESTRICT ON UPDATE RESTRICT;

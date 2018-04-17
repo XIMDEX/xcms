@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -33,7 +34,7 @@ class InstallDataBaseManager extends InstallManager
     const DB_ARRAY_KEY = "db_installer_connection";
     const DEFAULT_PORT = 3306;
     const DATA_PATH = '/install/ximdex_data/';
-    const SCHEMA_SCRIPT_FILES = ['ximdex_schema.sql', 'ximdex_html.sql'. 'ximdex_code.sql'];
+    const SCHEMA_SCRIPT_FILES = ['ximdex_schema.sql'];
     const DATA_SCRIPT_FILES = ['ximdex_data.sql'];
     
     private $dbConnection = null;
@@ -58,23 +59,26 @@ class InstallDataBaseManager extends InstallManager
     {
         $myPid = "install";
         $result = false;
-        if (!isset($GLOBALS[self::DB_ARRAY_KEY][$myPid]))
+        if (!isset($GLOBALS[self::DB_ARRAY_KEY][$myPid])) {
             $GLOBALS[self::DB_ARRAY_KEY][$myPid] = null;
-
-            if ($GLOBALS[self::DB_ARRAY_KEY][$myPid] and !$newConn) {
+        }
+        if ($GLOBALS[self::DB_ARRAY_KEY][$myPid] and !$newConn) {
             $this->dbConnection = $GLOBALS[self::DB_ARRAY_KEY][$myPid];
             $result = true;
         } else {
-            if ($port)
+            if ($port) {
             	$host .= ';port=' . $port;
-            if ($name)
+            }
+            if ($name) {
             	$url = 'mysql:dbname=' . $name . ';host=' . $host;
-            else
+            }
+            else {
             	$url = 'mysql:host=' . $host;
+            }
             $url .= ';charset=utf8';
         	try
         	{
-        	    // we need to avoid warning messages due to a problem with JSON reported
+        	    // We need to avoid warning messages due to a problem with JSON reported
         	    $oldErrorReporting = error_reporting();
         	    error_reporting($oldErrorReporting ^ E_WARNING);
         		$this->dbConnection = new PDO($url, $user, $pass);
@@ -91,8 +95,9 @@ class InstallDataBaseManager extends InstallManager
 			$this->user = $user;
 			$this->pass = $pass;
 			$result = true;
-			if ($name)
+			if ($name) {
 				$this->name = $name;
+			}
         }
         return $result;
     }
@@ -100,8 +105,9 @@ class InstallDataBaseManager extends InstallManager
     public function selectDataBase($name)
     {
         $res = $this->connect($this->host, $this->port, $this->user, $this->pass, $name, true);
-        if ($res === false)
+        if ($res === false) {
         	return false;
+        }
         return $this->dbConnection;
     }
 
@@ -112,8 +118,9 @@ class InstallDataBaseManager extends InstallManager
     		$res = $this->dbConnection->errorInfo();
     		return ($res[2]);
     	}
-    	else
+    	else {
     		return 'Can\'t connect to database';
+    	}
     }
 
     public function getErrors()
@@ -146,15 +153,17 @@ class InstallDataBaseManager extends InstallManager
         $result = $this->dbConnection->exec($this->dbConnection, $sql);
         $sql = "FLUSH privileges";
         $result = $result && $this->dbConnection->exec($this->dbConnection, $sql);
-        if ($result === 0)
+        if ($result === 0) {
             $result = false;
+        }
         return $result;
     }
 
     public function createDataBase($name)
     {
-        if (isset($_SERVER['DOCKER_CONF_HOME']))
+        if (isset($_SERVER['DOCKER_CONF_HOME'])) {
             return true;
+        }
         $result = false;
         if ($this->dbConnection) {
             $query = "CREATE DATABASE $name DEFAULT CHARACTER SET utf8";
@@ -170,8 +179,9 @@ class InstallDataBaseManager extends InstallManager
 
     public function deleteDataBase($name)
     {
-        if (isset($_SERVER['DOCKER_CONF_HOME']))
+        if (isset($_SERVER['DOCKER_CONF_HOME'])) {
             return true;
+        }
         $result = false;
         if ($this->dbConnection) {
             $query = sprintf("drop database %s", $name);
@@ -188,17 +198,20 @@ class InstallDataBaseManager extends InstallManager
 
     public function loadData($host, $port, $user, $pass, $name)
     {
+        $data = '';
         foreach (self::SCHEMA_SCRIPT_FILES as $schemaFile)
         {
-            $data = file_get_contents(APP_ROOT_PATH . self::DATA_PATH . $schemaFile);
-            if ($data === false)
+            $data .= file_get_contents(APP_ROOT_PATH . self::DATA_PATH . $schemaFile);
+            if ($data === false) {
                 return false;
+            }
         }
         foreach (self::DATA_SCRIPT_FILES as $dataFile)
         {
             $data .= file_get_contents(APP_ROOT_PATH . self::DATA_PATH . $dataFile);
-            if ($data === false)
+            if ($data === false) {
                 return false;
+            }
         }
     	try
     	{
@@ -243,13 +256,16 @@ class InstallDataBaseManager extends InstallManager
         $result = false;
         if ($this->dbConnection) {
             $host = explode(';', $this->host);
-            if (!$host)
+            if (!$host) {
                 return false;
+            }
             $host = $host[0];
-            if ($host == 'localhost' and !isset($_SERVER['DOCKER_CONF_HOME']))
+            if ($host == 'localhost' and !isset($_SERVER['DOCKER_CONF_HOME'])) {
                 $query = " SELECT user FROM mysql.user where user='$userName' and host='localhost'";
-            else
+            }
+            else {
                 $query = " SELECT user FROM mysql.user where user='$userName' and host='%'";
+            }
             $result = $this->dbConnection->query($query);
         }
         return $result && $result->rowCount();
@@ -259,10 +275,11 @@ class InstallDataBaseManager extends InstallManager
     {
         if ($this->dbConnection) {
             
-            // if the database server is installed in localhost, only the local user can access it, otherwise any remote connection be able
+            // If the database server is installed in localhost, only the local user can access it, otherwise any remote connection be able
             $host = explode(';', $this->host);
-            if (!$host)
+            if (!$host) {
                 return false;
+            }
             $host = $host[0];
             try
             {
@@ -274,15 +291,17 @@ class InstallDataBaseManager extends InstallManager
                         $sql = "CREATE USER '$userName'@'localhost' IDENTIFIED BY '$pass'";
                         $result = $this->dbConnection->exec($sql);
                     }
-                    else
+                    else {
                         $result = true;
+                    }
                     if ($result !== false)
                     {
                         $query = "GRANT ALL PRIVILEGES ON `$name`.* TO '$userName'@'localhost' WITH GRANT OPTION";
                         $result = $this->dbConnection->exec($query);
                     }
-                    if ($result !== false)
+                    if ($result !== false) {
                         Logger::info("User '$userName'@'localhost' created / associated to database");
+                    }
                 }
                 else
                 {
@@ -292,18 +311,21 @@ class InstallDataBaseManager extends InstallManager
                         $sql = "CREATE USER '$userName'@'%' IDENTIFIED BY '$pass'";
                         $result = $this->dbConnection->exec($sql);
                     }
-                    else
+                    else {
                         $result = true;
+                    }
                     if ($result !== false)
                     {
                         $query = "GRANT ALL PRIVILEGES ON `$name`.* TO '$userName'@'%' WITH GRANT OPTION";
                         $result = $this->dbConnection->exec($query);
                     }
-                    if ($result !== false)
+                    if ($result !== false) {
                         Logger::info("User '$userName'@'%' created / associated to database");
+                    }
                 }
-                if ($result !== false)
+                if ($result !== false) {
                     $this->dbConnection->exec("FLUSH privileges");
+                }
             }
             catch (PDOException $e)
             {
@@ -326,8 +348,9 @@ class InstallDataBaseManager extends InstallManager
             $query = "GRANT ALL PRIVILEGES  ON $name.* TO '$userName'@'%'";
             $result = $this->dbConnection->exec($query);
             $result = $result && $this->dbConnection->exec("FLUSH privileges");
-            if ($result === 0)
+            if ($result === 0) {
             	$result = false;
+            }
         }
         return $result;
     }
@@ -350,22 +373,26 @@ class InstallDataBaseManager extends InstallManager
     {
         if ($this->dbConnection)
         {
-            //$version = $this->dbConnection->getAttribute(constant('PDO::ATTR_SERVER_VERSION'));
             $res = $this->dbConnection->query('select version() as dbversion');
-            if (!$res)
+            if (!$res) {
                 return false;
+            }
             $version = $res->fetch(PDO::FETCH_ASSOC);
-            if (!$version)
+            if (!$version) {
                 return false;
+            }
             $version = $version['dbversion'];
             $info = explode('.', $version);
-            if (count($info) < 2)
+            if (count($info) < 2) {
                 return false;
+            }
             $res = array();
-            if (stripos($version, 'mariadb') !== false)
+            if (stripos($version, 'mariadb') !== false) {
                 $res[0] = 'mariadb';
-            else
+            }
+            else {
                 $res[0] = 'mysql';
+            }
             $res[] = $info[0];
             $res[] = $info[1];
             return $res;
