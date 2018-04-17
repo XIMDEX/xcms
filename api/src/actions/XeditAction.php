@@ -16,7 +16,6 @@ class XeditAction extends Action
 {
 
     const PATTERN_PATHTO = "/[[:word:]]+=[\"']@@@RMximdex\.pathto\(([,-_#%=\.\w\s]+)\)@@@[\"']/";
-    //const PATTERN_XE_LINK = "/xe_link\=\"([^\"]*)\"/";
     const PATTERN_XE_LINK = "/<([a-zA-Z]+)([^>]*?(?=xe_link))xe_link\=[\"']([^\"]*)[\"']([^>]*)>/";
     const PREFIX = 'xedit';
 
@@ -83,14 +82,16 @@ class XeditAction extends Action
         if ($nodes)
             // Transform data to Xedit editor
             foreach ($nodes as &$node) {
-                $node['editable'] = strcmp($node['type'], HTMLDocumentNode::CONTENT_DOCUMENT) == 0 ? true : false;
-                $name = strcmp($node['type'], HTMLDocumentNode::CONTENT_DOCUMENT) == 0 ? $node['title'] : $name;
-                $node['content'] = static::transformContentToXedit($node['content']);
-                $schemas = $node['schema'];
-                foreach ($schemas as $key => $value) {
-                    $schemas[$key]['view'] = static::transformContentToXedit($value['view']);
+                if (isset($node['id'])) {
+                    $node['editable'] = strcmp($node['type'], HTMLDocumentNode::CONTENT_DOCUMENT) == 0 ? true : false;
+                    $name = strcmp($node['type'], HTMLDocumentNode::CONTENT_DOCUMENT) == 0 ? $node['title'] : $name;
+                    $node['content'] = static::transformContentToXedit($node['content']);
+                    $schemas = $node['schema'];
+                    foreach ($schemas as $key => $value) {
+                        $schemas[$key]['view'] = static::transformContentToXedit($value['view']);
+                    }
+                    $node['schema'] = $schemas;
                 }
-                $node['schema'] = $schemas;
             }
 
 
@@ -183,19 +184,18 @@ class XeditAction extends Action
         $nodeId = isset($_GET['id']) ? $_GET['id'] : null;
         $type = isset($_GET['type']) ? $_GET['type'] : null;
         $type = isset($types[$type]) ? $types[$type] : false;
-        $result = [];
+        $level = isset($_GET['level']) && ctype_digit($_GET['level']) ? (int)$_GET['level'] : null;
 
         if (ctype_digit($nodeId) && $type !== false) {
-            $children = FastTraverse::get_children($nodeId, ['node' => ['Name'], 'nodeType' =>
-                ['isFolder', 'isVirtualFolder', 'IdNodeType']], 1, null, ['IsRenderizable' => true, 'IsHidden' => false]);
-            $children = !isset($children[1]) ?: $children[1];
-            foreach ($children as $key => $child) {
-                if ($child['nodeType']['IdNodeType'] == $types[$type] || $child['nodeType']['isFolder'] ||
-                    $child['nodeType']['isVirtualFolder']) {
-                    $type = $child['nodeType']['isFolder'] || $child['nodeType']['isVirtualFolder'] ? 'folder' : 'item';
-                    $result[$key] = ['name' => $child['node']['Name'], 'type' => $type];
-                }
-            }
+
+            $children = FastTraverse::get_children($nodeId, ['node' => ['Name', 'idParent'], 'nodeType' =>
+                ['isFolder', 'isVirtualFolder', 'IdNodeType']], null, ["include" => ["nt.IdNodeType" => [$type]]], null);
+            $result = static::buildCompleteTree($children, $types);
+
+            $count = count($result) - 1;
+            if ($level && $count > $level)
+                $result = array_splice($result, $count - $level, $count);
+
             $w->setResponse($result);
         } else {
             $w->setStatus(1)->setMessage('Id and type are required');
@@ -305,4 +305,50 @@ class XeditAction extends Action
         }
     }
 
+    private static function buildCompleteTree($nodes, $types)
+    {
+        $tree = [];
+        $processedNodes = [];
+        foreach ($nodes as $level => $children) {
+            foreach ($children as $nodeId => $info) {
+                list($tree, $processedNodes) = static::buildBranch($tree, $processedNodes, $nodeId, $level, $types);
+            }
+        }
+
+        return $tree;
+    }
+
+    private static function buildBranch($tree, $processedNodes, $nodeId, $level, $types)
+    {
+        $node = new Node($nodeId);
+        //Create node in tree
+        $sheet = static::createSheet($node->GetNodeName(), $node->nodeType->GetID(),
+            $node->nodeType->isFolder(), $node->nodeType->get('IsVirtualFolder'), $types);
+        if ($sheet) {
+            if (!isset($tree["l$level"])) {
+                $tree["l$level"] = [
+                    'level' => $level,
+                    'nodes' => []
+                ];
+            }
+            $tree["l$level"]['nodes'][$nodeId] = $sheet;
+        }
+
+        $processedNodes[] = $nodeId;
+
+        $idParent = $node->GetParent();
+        if ($level > 0 && $idParent && !in_array((int)$idParent, $processedNodes)) {
+            list($tree, $processedNodes) = static::buildBranch($tree, $processedNodes, $idParent, $level - 1, $types);
+        }
+        return [$tree, $processedNodes];
+    }
+
+    private static function createSheet($name, $idNodeType, $isFolder, $isVirtualFolder, $types)
+    {
+        if (in_array($idNodeType, array_values($types)) || $isFolder || $isVirtualFolder) {
+            $ele = $isFolder || $isVirtualFolder ? 'folder' : 'item';
+            return ['name' => $name, 'type' => $ele];
+        }
+        return null;
+    }
 }
