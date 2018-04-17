@@ -42,8 +42,8 @@ class Channel extends ChannelsOrm
     public $flagErr;
     public $numErr;
     
-    const WEB_RENDER_TYPES = ['static' => 'Static', 'include' => 'Include', 'dynamic' => 'Dynamic', 'index' => 'Index'];
-    const OUTPUT_TYPE_WEB = 'web';
+    const RENDER_TYPES = ['static' => 'Static', 'include' => 'Include', 'dynamic' => 'Dynamic', 'index' => 'Ximdex Index Format'];
+    const JSON_CHANNEL = 10010;
 
     /**
      * Channel constructor
@@ -288,12 +288,9 @@ class Channel extends ChannelsOrm
      * @return bool|string
      */
     function CreateNewChannel($name, $defaultExtension, $format, $description, $idChannel, $filter = "", $renderMode = "", $outputType = ""
-            , $renderType = null)
+            , $renderType = null, $language = null)
     {
-        if ($outputType != self::OUTPUT_TYPE_WEB) {
-            $renderType = null;
-        }
-        $this->set('IdChannel', (int)$idChannel);
+        $this->set('IdChannel', (int) $idChannel);
         $this->set('Name', $name);
         $this->set('Description', $description);
         $this->set('DefaultExtension', $defaultExtension);
@@ -303,6 +300,7 @@ class Channel extends ChannelsOrm
         $this->set('OutputType', $outputType);
         $this->set('Default_Channel', 0);
         $this->set('RenderType', $renderType);
+        $this->set('idLanguage', $language);
         if ($this->add()) {
             return $this->get('IdChannel');
         }
@@ -387,13 +385,23 @@ class Channel extends ChannelsOrm
         return $dbObj->Execute(sprintf("UPDATE Channels SET Default_Channel=0 WHERE IdChannel<>%s;", $idchannel));
     }
     
-    public function getRenderType()
+    public function getRenderType() : string
     {
         return $this->RenderType;
     }
     
-    public function getIdLanguage()
+    public function getIdLanguage() : string
     {
         return $this->idLanguage;
+    }
+    
+    public function setRenderType(string $renderType) : void
+    {
+        $this->RenderType = $renderType;
+    }
+    
+    public function setIdLanguage(string $idLanguage) : void
+    {
+        $this->idLanguage = $idLanguage;
     }
 }

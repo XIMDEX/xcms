@@ -23,7 +23,8 @@ class ServersOrm extends GenericData
         'Previsual' => array('type' => "int(1)", 'not_null' => 'false'),
         'Description' => array('type' => "varchar(255)", 'not_null' => 'false'),
         'idEncode' => array('type' => "varchar(255)", 'not_null' => 'false'),
-        'ActiveForPumping' => array('type' => "tinyint(3)", 'not_null' => 'false')
+        'ActiveForPumping' => array('type' => "tinyint(3)", 'not_null' => 'false'),
+        'Token' => array('type' => "varchar(255)", 'not_null' => 'false')
     );
     var $_uniqueConstraints = array();
     var $_indexes = array('IdServer');
@@ -42,4 +43,5 @@ class ServersOrm extends GenericData
     var $Description;
     var $idEncode;
     var $ActiveForPumping = 1;
+    var $Token;
 }
