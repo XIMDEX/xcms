@@ -35,8 +35,12 @@ class Action_createrole extends ActionAbstract
     // Main method: shows initial form
     function index()
     {
+        $idNode = $this->request->getParam('nodeid');
+        $node = new Node($idNode);
 
-        $values = array('go_method' => 'createrole');
+        $values = array('go_method' => 'createrole',
+            'node_Type' => $node->nodeType->GetName()
+        );
         $this->render($values, null, 'default-3.0.tpl');
     }
 

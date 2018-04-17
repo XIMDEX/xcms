@@ -204,6 +204,7 @@ class Action_managemetadata extends ActionAbstract
         $values = array(
             'metadata' => array(),
             'messages' => $messages,
+            'node_Type' => $node->nodeType->GetName(),
             'errors' => $errors
         );
 

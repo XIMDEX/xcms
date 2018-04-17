@@ -59,6 +59,7 @@ class Action_newemptynode extends ActionAbstract {
 
 		$values = array ("childs" => $childs,
 		      "countChilds" => $countChilds,
+		    'node_Type' => $node->nodeType->GetName(),
 		      "nodeID" => $nodeID, "name" => $node->get('Name'));
 
 		$this->render($values, 'addNode', 'default-3.0.tpl');

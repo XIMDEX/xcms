@@ -2,18 +2,22 @@
 
 use Ximdex\Models\NodeType;
 use Ximdex\MVC\ActionAbstract;
+use Ximdex\Models\Node;
 
 
 class Action_setextensions extends ActionAbstract
 {
     public function index()
     {
+        $idNode = $this->request->getParam('nodeid');
+        $node = new Node($idNode);
         $commonFolderNodeType = new NodeType(\Ximdex\NodeTypes\NodeTypeConstants::COMMON_ROOT_FOLDER);
         $commonAllowedExtensions = $commonFolderNodeType->getAllowedExtensions();
 
         $this->addCss('/actions/setextensions/resources/css/style.css');
 
-        $values = array('commonAllowedExtensions' => json_encode($commonAllowedExtensions));
+        $values = array('commonAllowedExtensions' => json_encode($commonAllowedExtensions,
+            ));
 
         $this->render($values, null, 'default-3.0.tpl');
     }
@@ -72,6 +76,7 @@ class Action_setextensions extends ActionAbstract
 
         $values = array(
             'result' => "ok",
+            'node_Type' => $node->nodeType->GetName(),
             'message' => _("The extensions have been updated")
         );
 

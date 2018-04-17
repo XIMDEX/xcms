@@ -24,11 +24,7 @@
 *}
 
 <form ng-controller="addSectionCtrl" method="post" name="add_form" ng-submit="submit()" action="{$action_url}&method=addsectionnode" novalidate>
-    <div class="action_header">
-        <h5 class="direction_header"> {t}Name Node:{/t} {t}{$name}{/t}</h5>
-        <h5 class="nodeid_header"> {t}ID Node:{/t} {$nodeid}</h5>
-        <hr />
-    </div>
+    {include file="actions/components/title_Description.tpl"}
     <div class="action_content section-properties">
         <div class="row tarjeta">
             <h2 class="h2_general">{t}Add section{/t}</h2>

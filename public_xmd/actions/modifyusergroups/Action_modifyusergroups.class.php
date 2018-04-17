@@ -82,6 +82,7 @@ class Action_modifyusergroups extends ActionAbstract {
             'general_role' => $generalRole,
             'all_roles' => json_encode($roles),
             'filtered_groups' => json_encode($filteredGroups),
+            'node_Type' => $user->nodeType->GetName(),
             'user_groups_with_role' => json_encode($userGroupsWithRole));
 
 

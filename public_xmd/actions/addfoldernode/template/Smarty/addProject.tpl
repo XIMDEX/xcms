@@ -26,11 +26,7 @@
 <form method="post" id="print_form" action="{$action_url}">
     <input name="theme" type="hidden" />
 
-    <div class="action_header">
-        <h5 class="direction_header"> {t}Name Node:{/t} {t}Projects{/t}</h5>
-        <h5 class="nodeid_header"> {t}ID Node:{/t} {$nodeid}</h5>
-        <hr>
-    </div>
+   {include file="actions/components/title_Description.tpl"}
     {if {empty($langs)}}
         <div class="message-warning message">
             <p>{t}There aren't any created languages. You should create a new one{/t}.</p>

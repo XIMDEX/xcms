@@ -38,13 +38,16 @@ class Action_createchannel extends ActionAbstract
      */
     public function index()
     {
-		$idNode = $this->request->getParam('nodeid');
+     
+        $idNode = $this->request->getParam('nodeid');
+        $node = new Node($idNode);
 		$progLanguage = new ProgrammingLanguage();
 		$codeLanguages = $progLanguage->find();
 		$this->addJs('/actions/createchannel/resources/js/index.js');
 		$values = array(
 			'id_node' => $idNode,
 		    'code_languages' => $codeLanguages,
+		    'node_Type' => $node->nodeType->GetName(),
 			'go_method' => 'createchannel');
 		$this->render($values, null, 'default-3.0.tpl');
     }

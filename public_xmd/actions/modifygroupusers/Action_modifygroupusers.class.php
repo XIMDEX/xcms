@@ -81,6 +81,7 @@ class Action_modifygroupusers extends ActionAbstract
             'users_not_associated' => json_encode($users),
             'idnode' => $idNode,
             'roles' => json_encode($rolesToSend),
+            'node_Type' => $node->nodeType->GetName(),
             'users_associated' => json_encode($userRI)
         );
 

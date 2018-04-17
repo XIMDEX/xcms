@@ -66,6 +66,7 @@ class Action_setmetadata extends ActionAbstract
             'node_name' => $node->GetNodeName(),
             'go_method' => 'save_metadata',
             'nodeUrl' => App::getUrl("/?actionid=$actionID&nodeid=$idNode"),
+            'node_Type' => $node->nodeType->GetName(),
             'namespaces' => json_encode($this->getAllNamespaces())
         );
 

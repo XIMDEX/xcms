@@ -67,6 +67,7 @@ class Action_manageproperties extends ActionAbstract
             'properties' => $properties,
             'go_method' => 'save_changes',
             'name' => $node->GetNodeName(),
+            'node_Type' => $node->nodeType->GetName(),
             'inProject' => ($node->getParent() == 10000)
         );
         

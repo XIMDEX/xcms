@@ -24,14 +24,11 @@
  *}
 
 <form id="et_form" class="text-editor-form" enctype="multipart/form-data" method="post" action="{$action_url}">
-	<div class="action_header">
-		<h5 class="direction_header"> {t}Name Node:{/t} {t}{$node_name}{/t}</h5>
-		<h5 class="nodeid_header"> {t}ID Node:{/t} {$nodeid}</h5>
-		<hr>
+		{include file="actions/components/title_Description.tpl"}
 		<fieldset class="buttons-form">
             {button label="Save" type="submit" class="validate btn main_action"}{*message="{t}Are you sure you want to save the changes?{/t}"*}
 		</fieldset>
-	</div>
+	
  <div class="action_content full text-editor">
 
  	<fieldset class="editor" id="fieldset_{$id_editor}">

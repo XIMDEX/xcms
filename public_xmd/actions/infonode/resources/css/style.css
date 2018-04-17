@@ -49,7 +49,6 @@
 .info--node h3::before {
 	content: " ";
 	order: 0;
-    border: 6px solid transparent;
     border-top: 3px solid #ccc;
     font-style: normal;
     margin: auto 15px auto 0;
@@ -62,15 +61,11 @@
 .info--node h3::after {
 	content: " ";
 	order: 99;
-    border: 6px solid transparent;
     border-top: 3px solid #ccc;
     font-style: normal;
     margin: auto 0 auto 15px;
  	flex-grow: 1;
  	
- 	
- 	
-    
 }
 	
 
@@ -81,13 +76,4 @@
   color: #464646;
   text-shadow: none;
 }
-
-
-
-
-
-
-
-
-
 

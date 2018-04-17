@@ -24,18 +24,7 @@
  *}
 
 <form method="post" id="modify_role_form" class="modify_role_form" action="{$action_url}&amp;id_pipeline={$selected_pipeline}" ng-init="status = []">
-    <div class="action_header">
-        <h5 class="direction_header"> {t}Name Node:{/t} {t}Role data{/t}</h5>
-        <h5 class="nodeid_header"> {t}ID Node:{/t} {$nodeid}</h5>
-        <hr>
-        <script>
-            Array.prototype.sum = function () {
-                return this.reduce(function(a, b) { return a + b; }, 0);
-            }
-        </script>
-
-
-	</div>
+	{include file="actions/components/title_Description.tpl"}
 
 	<div ng-cloak class="action_content">
         <fieldset class="buttons-form-special">

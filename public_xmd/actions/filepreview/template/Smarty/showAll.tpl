@@ -22,11 +22,7 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  *}
-<div class="action_header">
-    <h5 class="direction_header"> {t}Name Node:{/t} {$serverName} - {$folderName}</h5>
-    <h5 class="nodeid_header"> {t}ID Node:{/t} {$nodeid}</h5>
-    <hr>
-</div>
+{include file="actions/components/title_Description.tpl"}
 {if isset($mesg)}
 	<div class=''>{$mesg}</div>
 {else}

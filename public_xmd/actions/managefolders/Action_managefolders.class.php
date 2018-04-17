@@ -66,6 +66,7 @@ class Action_managefolders extends ActionAbstract {
 				'sectionName' => $node->get('Name'),
 				'sectionType' => $nodetype_name,
 				'subfolders' => $subfolders,
+        	    'node_Type' => $node->nodeType->GetName(),
 				'go_method' => 'configure_section',
 				);
         $this->render($values, null, 'default-3.0.tpl');
