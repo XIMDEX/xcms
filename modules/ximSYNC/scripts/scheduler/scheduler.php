@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,22 +25,20 @@
  * @version $Revision$
  */
 
-// for legacy compatibility
-if (!defined('XIMDEX_ROOT_PATH')) {
-    require_once dirname(__FILE__) . '/../../../../bootstrap.php';
-}
-
 use Ximdex\Logger;
 
 \Ximdex\Modules\Manager::file('/scripts/scheduler/scheduler.class.php', 'ximSYNC');
+
+// For legacy compatibility
+if (!defined('XIMDEX_ROOT_PATH')) {
+    require_once dirname(__FILE__) . '/../../../../bootstrap.php';
+}
 
 /*
  This global variable will indicate to database connections that we are in a batch process and do the reconnect
  method when it's necessary
  */
 $GLOBALS['InBatchProcess'] = true;
-
 Logger::generate('SCHEDULER', 'scheduler');
 Logger::setActiveLog('scheduler');
-
 Scheduler::start();

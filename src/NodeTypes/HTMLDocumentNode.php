@@ -193,11 +193,13 @@ class HTMLDocumentNode extends FileNode
             foreach ($docHTML as $node) {
                 $css = isset($node['css']) ? array_merge($css, $node['css']) : $css;
                 $js = isset($node['css']) ? array_merge($js, $node['js']) : $js;
-                if ($node['type'] == static::CONTENT_DOCUMENT) {
+                if (isset($node['type']) and $node['type'] == static::CONTENT_DOCUMENT) {
                     $body .= ! is_null($content) ? $content : $node['content'];
                     $name = $node['title'];
                 } else {
-                    $body .= '@@@RMximdex.code(include, @@@RMximdex.pathto(' . $node['id'] . ')@@@)@@@';
+                    if (isset($node['id']) and $node['id']) {
+                        $body .= '@@@RMximdex.code(include, @@@RMximdex.pathto(' . $node['id'] . ')@@@)@@@';
+                    }
                 }
             }
             $render = $body;

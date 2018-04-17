@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -25,26 +26,24 @@
  */
 
 namespace Ximdex\IO\Connection;
+
 use Ximdex\Logger;
+use Ximdex\Models\Server;
 
-
-class ConnectionManager {
-    
+class ConnectionManager
+{
+    // Static class emulation
 	private static $baseName = 'Connection';
-	// Static class emulation
 	private function ConnectionManager() {}
 	
-	static function getConnection($type) {
-	    
+	static function getConnection($type, Server $server = null)
+	{    
 		$baseFullPath = __DIR__.'/';
 		$className = self::$baseName . self::normalizeName($type);
 		$connectionclass = $baseFullPath.$className.'.php';
 		$connection_routes = $baseFullPath . 'connection_routes.ini';
-		
-		if (!is_file( $connectionclass )) {
-
+		if (!is_file($connectionclass)) {
 			$fileRoutes = parse_ini_file($connection_routes);
-
 			if (array_key_exists(strtolower($type), $fileRoutes)) {
 				$tmpType = $type;
 				$type = $fileRoutes[$type];
@@ -52,17 +51,15 @@ class ConnectionManager {
 					Logger::fatal("Connection $type neither $tmpType not implemented yet");
 				}
 			} else {
-					Logger::fatal("Connection $type not implemented yet");
-				
+			    Logger::fatal("Connection $type not implemented yet");
 			}
 		}
-		
 		$factory = new \Ximdex\Utils\Factory($baseFullPath,self::$baseName);
-
-		return $factory->instantiate(self::normalizeName($type), null, '\Ximdex\IO\Connection');
+		return $factory->instantiate(self::normalizeName($type), $server, '\Ximdex\IO\Connection');
 	}
 	
-	private static function normalizeName($name) {
+	private static function normalizeName($name)
+	{
 		return ucfirst(strtolower($name));
 	}
 }

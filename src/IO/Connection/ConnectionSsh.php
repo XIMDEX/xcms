@@ -30,7 +30,7 @@ namespace Ximdex\IO\Connection;
 use Ximdex\Logger;
 use phpseclib\Net\SFTP;
 
-class ConnectionSsh implements IConnector
+class ConnectionSsh extends Connector implements IConnector
 {
     // Connection location and credentials
     private $host;
@@ -147,7 +147,6 @@ class ConnectionSsh implements IConnector
                 return false;
             }
             $isParentCreated = $this->mkdir($parentFolder, $mode, true);
-
         } else {
             $isParentCreated = true;
         }
@@ -243,8 +242,6 @@ class ConnectionSsh implements IConnector
      *
      * @access public
      * @param path string
-     * @param recursive boolean
-     * @param filesOnly boolean
      * @return boolean
      */
     public function rm($path)

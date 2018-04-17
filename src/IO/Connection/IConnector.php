@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,16 +25,10 @@
  *  @version $Revision$
  */
 
-
 namespace Ximdex\IO\Connection;
 
-/**
- * 
- * @author jmgomez
- *
- */
-interface IConnector {
-	
+interface IConnector
+{
 	/**
 	 * Connect to server
 	 * 
@@ -54,7 +49,6 @@ interface IConnector {
 	
 	/**
 	 * Check the status of the connection
-	 *
 	 */
 	public function isConnected();
 	
@@ -142,8 +136,6 @@ interface IConnector {
 	 * 
 	 * @access public
 	 * @param path string
-	 * @param recursive boolean
-	 * @param filesOnly boolean
 	 * @return boolean
 	 */
 	public function rm($path);
@@ -189,7 +181,4 @@ interface IConnector {
 	 * @return boolean
 	 */
 	public function isFile($path);
-	
 }
-
-?>

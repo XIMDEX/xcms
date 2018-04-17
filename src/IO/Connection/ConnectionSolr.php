@@ -32,9 +32,8 @@ use Ximdex\Models\ORM\NodesOrm as Nodes_ORM;
 use Ximdex\Models\RelTagsNodes;
 use Exception;
 
-
-class ConnectionSolr implements IConnector {
-
+class ConnectionSolr extends Connector implements IConnector
+{
     private $connected = false;
     private $validExtensions = array('xml' => 1, 'pdf' => 1, 'epub' => 1);
     private $config;
@@ -48,7 +47,8 @@ class ConnectionSolr implements IConnector {
      * @param port int
      * @return boolean
      */
-    public function connect($host = NULL, $port = NULL) {
+    public function connect($host = NULL, $port = NULL)
+    {
         Logger::debug("CONNECT $host $port");
         $this->config = array(
             'endpoint' => array(
@@ -59,7 +59,6 @@ class ConnectionSolr implements IConnector {
                 )
             )
         );
-
         $this->connected = true;
         return true;
     }
@@ -70,16 +69,17 @@ class ConnectionSolr implements IConnector {
      * @access public
      * @return boolean
      */
-    public function disconnect() {
+    public function disconnect()
+    {
         $this->connected = false;
         return true;
     }
 
     /**
      * Check the status of the connection
-     *
      */
-    public function isConnected() {
+    public function isConnected()
+    {
         return $this->connected;
     }
 
@@ -92,7 +92,8 @@ class ConnectionSolr implements IConnector {
      * @param password string
      * @return boolean
      */
-    public function login($username = 'anonymous', $username = 'john.doe@example.com') {
+    public function login($username = 'anonymous', $username = 'john.doe@example.com')
+    {
         return true;
     }
 
@@ -104,7 +105,8 @@ class ConnectionSolr implements IConnector {
      * @param dir string
      * @return boolean false if folder no exist
      */
-    public function cd($dir) {
+    public function cd($dir)
+    {
         return true;
     }
 
@@ -115,7 +117,8 @@ class ConnectionSolr implements IConnector {
      * @param dir string
      * @return string
      */
-    public function pwd() {
+    public function pwd()
+    {
         return "";
     }
 
@@ -128,7 +131,8 @@ class ConnectionSolr implements IConnector {
      * @param recursive boolean
      * @return boolean
      */
-    public function mkdir($dir, $mode = 0755, $recursive = false) {
+    public function mkdir($dir, $mode = 0755, $recursive = false)
+    {
         return true;
     }
 
@@ -141,7 +145,8 @@ class ConnectionSolr implements IConnector {
      * @param recursive boolean
      * @return boolean
      */
-    public function chmod($target, $mode = 0755, $recursive = false) {
+    public function chmod($target, $mode = 0755, $recursive = false)
+    {
         return false;
     }
 
@@ -153,7 +158,8 @@ class ConnectionSolr implements IConnector {
      * @param renameTo string
      * @return boolean
      */
-    public function rename($renameFrom, $renameTo) {
+    public function rename($renameFrom, $renameTo)
+    {
         Logger::debug("RENAME $renameFrom -> $renameTo");
         return true;
     }
@@ -165,7 +171,8 @@ class ConnectionSolr implements IConnector {
      * @param file string
      * @return int
      */
-    public function size($file) {
+    public function size($file)
+    {
         return 0;
     }
 
@@ -177,7 +184,8 @@ class ConnectionSolr implements IConnector {
      * @param mode int
      * @return mixed
      */
-    public function ls($dir, $mode = NULL) {
+    public function ls($dir, $mode = NULL)
+    {
         return array();
     }
 
@@ -188,7 +196,8 @@ class ConnectionSolr implements IConnector {
      * @param path string
      * @return boolean
      */
-    public function isDir($path) {
+    public function isDir($path)
+    {
         return false;
     }
 
@@ -199,7 +208,8 @@ class ConnectionSolr implements IConnector {
      * @param path string
      * @return boolean
      */
-    public function isFile($path) {
+    public function isFile($path)
+    {
         return false;
     }
 
@@ -213,7 +223,8 @@ class ConnectionSolr implements IConnector {
      * @param mode
      * @return boolean
      */
-    public function get($sourceFile, $targetFile, $mode = 0755) {
+    public function get($sourceFile, $targetFile, $mode = 0755)
+    {
         Logger::debug("GET $sourceFile, $targetFile");
         return false;
     }
@@ -227,11 +238,11 @@ class ConnectionSolr implements IConnector {
      * @param filesOnly boolean
      * @return boolean
      */
-    public function rm($path) {
+    public function rm($path)
+    {
         Logger::debug("RM $path");
         $pathInfo = $this->splitPath($path);
         $this->config['endpoint']['localhost']['core'] = $pathInfo["core"];
-
         if ($this->getNameExtension($pathInfo["fullName"]) === "xml") {
             $nodeNameNoIdiom = $this->extractNodeName($pathInfo["fullName"]);
             $qPath = implode("/", array($pathInfo["subPath"], "documents", $nodeNameNoIdiom));
@@ -240,7 +251,6 @@ class ConnectionSolr implements IConnector {
             $qPath = $pathInfo["subPath"];
             $qName = $pathInfo["fullName"];
         }
-
         $node = new Nodes_ORM();
         $result = $node->find('idnode', "Name = %s AND Path REGEXP %s", array($qName, $qPath), MONO);
         if (!isset($result[0])) {
@@ -251,7 +261,7 @@ class ConnectionSolr implements IConnector {
             return false;
         }
 
-        // delete solr document using id
+        // Delete solr document using id
         $client = new \Solarium\Client($this->config);
         $update = $client->createUpdate();
         $update->addDeleteById($result[0]);
@@ -275,9 +285,9 @@ class ConnectionSolr implements IConnector {
      * @param mode
      * @return boolean
      */
-    public function put($localFile, $targetFile, $mode = 0755) {
+    public function put($localFile, $targetFile, $mode = 0755)
+    {
         Logger::debug("PUT $localFile TO $targetFile");
-
         $pathInfo = $this->splitPath($targetFile);
         $this->config['endpoint']['localhost']['core'] = $pathInfo["core"];
 
@@ -286,18 +296,20 @@ class ConnectionSolr implements IConnector {
         $filename = array_pop($targetFileParts);
         $fileParts = explode(".", $filename);
         $fileExtension = array_pop($fileParts);
-
         if ($fileExtension === "xml") {
             return $this->putXmlFile($localFile, $pathInfo);
         } else {
+            
             //Don't publish binary files
             return true;
             return $this->putBinaryFile($localFile, $pathInfo);
         }
     }
 
-    public function putXmlFile($localFile, $pathInfo) {
+    public function putXmlFile($localFile, $pathInfo)
+    {
         Logger::debug("putXmlFile");
+        
         // Load xml coming from transformation
         $xml = simplexml_load_file($localFile);
         if (!$xml) {
@@ -333,22 +345,20 @@ class ConnectionSolr implements IConnector {
             Logger::error("Exception: {$e->getMessage()}");
             return false;
         }
-
         if ($result->getStatus() !== 0) {
             Logger::error("<< Solr update error - status: {$result->getStatus()} >>");
             return false;
         }
-
         Logger::debug("<< Solr put xml ok - id: {$doc->id} >>");
-
         return true;
     }
 
-    public function putBinaryFile($localFile, $pathInfo) {
+    public function putBinaryFile($localFile, $pathInfo)
+    {
         Logger::debug("putBinaryFile - $localFile - " . $pathInfo["fullName"]);
         $trueName = $this->extractNodeNameBinaryPut($pathInfo["fullName"]);
         
-        // get node id
+        // Get node id
         $node = new Nodes_ORM();
         $result = $node->find('idnode', "Name = %s AND Path REGEXP %s", array($trueName, $pathInfo["subPath"] . '$'), MONO);
         if (!isset($result[0])) {
@@ -356,18 +366,18 @@ class ConnectionSolr implements IConnector {
             return false;
         }
         
-        // create an extract query instance and add settings
+        // Create an extract query instance and add settings
         $client = new \Solarium\Client($this->config);
         $query = $client->createExtract();
         $query->setFile($localFile);
         $query->setCommit(true);
         $query->setOmitHeader(false);
         
-        // add document
+        // Add document
         $doc = $query->createDocument();
         $doc->id = $result[0];
 
-        // add tags if attached to ximdex document
+        // Add tags if attached to ximdex document
         $relTag = new RelTagsNodes();
         $tags = $relTag->getTags($result[0]);
         if (count($tags) > 0) {
@@ -376,44 +386,11 @@ class ConnectionSolr implements IConnector {
             }
         }
         
-        // add xml metadata fields if the file exists
+        // Add xml metadata fields if the file exists
         $relNodeMetaData = new \Ximdex\Models\RelNodeMetadata();
         $idMetadata = $relNodeMetaData->find('idMetadata', 'idNode = %s', array($result[0]), MONO);
-//        if (isset($idMetadata[0])) {
-//            $metaNode = new Node($idMetadata[0]);
-//            $content = $metaNode->GetContent();
-//            $Resolucion = new SimpleXMLElement($content);
-//            if ($Resolucion) {
-//                $metaFieldsConf = include_once(XIMDEX_ROOT_PATH . "/data/solr-core/{$pathInfo["core"]}/metadata/metadata.conf");
-//                if (!empty($metaFieldsConf) && count($metaFieldsConf) > 0) {
-//                    foreach ($metaFieldsConf as $xmlPath => $mapSolrField) {
-//                        // check if path exist in xml object
-//                        $xmlPathParts = explode('/', $xmlPath);
-//                        $thisLevel = $Resolucion;
-//                        $existsNode = false;
-//                        foreach ($xmlPathParts as $subLevel) {
-//                            if (isset($thisLevel->{$subLevel})) {
-//                                $thisLevel = $thisLevel->{$subLevel};
-//                                $existsNode = true;
-//                            } else {
-//                                $existsNode = false;
-//                                break;
-//                            }
-//                        }
-//                        if ($existsNode) {
-//                            $thisLevelContent = trim((string) $thisLevel);
-//                            if (strlen($thisLevelContent) > 0) {
-//                                $doc->addField($mapSolrField, $thisLevelContent);
-//                            }
-//                        }
-//                    }
-//                }
-//            } else {
-//                Logger::error("invalid xml metadata file. node id: " . $idMetadata[0]);
-//            }
-//        }
         
-        // this executes the query and returns the result
+        // This executes the query and returns the result
         Logger::debug(print_r($doc->getFields(), true));
         $query->addParam('lowernames', 'false');
         $query->setDocument($doc);
@@ -426,13 +403,15 @@ class ConnectionSolr implements IConnector {
         return true;
     }
 
-    public function getNameExtension($name) {
+    public function getNameExtension($name)
+    {
         $arr = explode(".", $name);
         $ext = array_pop($arr);
         return $ext;
     }
 
-    public function splitPath($path) {
+    public function splitPath($path)
+    {
         $arr = explode("/", $path);
         $core = array_shift($arr);
         $fullName = array_pop($arr);
@@ -442,7 +421,8 @@ class ConnectionSolr implements IConnector {
             "fullName" => $fullName);
     }
 
-    public function extractNodeName($fullName, $withIdiom = false) {
+    public function extractNodeName($fullName, $withIdiom = false)
+    {
         $name = "";
         $fullNameParts = explode("_", $fullName);
         $nameNoServerFrame = implode("", array($fullNameParts[0], $fullNameParts[1]));
@@ -459,25 +439,24 @@ class ConnectionSolr implements IConnector {
         return $name;
     }
 
-    public function loadAdditionalFields($doc, $client, $core) {
-        // data folders are not commited, so must be configured per project.
+    public function loadAdditionalFields($doc, $client, $core)
+    {
+        // Data folders are not commited, so must be configured per project
         $fieldsConf = include(XIMDEX_ROOT_PATH . "/data/solr-core/{$core}/solr_additional_fields.conf");
         if (empty($fieldsConf) || count($fieldsConf) == 0) {
             return;
         }
-
         $fieldnameArray = array_keys($fieldsConf);
         $selectQuery = $client->createSelect();
         $selectQuery->setQuery("id:" . $doc["id"]);
         $selectQuery->setFields($fieldnameArray);
         $resultset = $client->select($selectQuery);
-
         foreach ($fieldnameArray as $fieldname) {
             $fieldCfg = $fieldsConf[$fieldname];
             $fieldValue = "";
-            if ($fieldCfg["STORE"] === 'ALWAYS') { //calculate value
+            if ($fieldCfg["STORE"] === 'ALWAYS') {  // Calculate value
                 $fieldValue = $fieldCfg["FUNCTION"]();
-            } else { //"IF_NEW"
+            } else {    // "IF_NEW"
                 if ($resultset->getNumFound() !== 0) {
                     foreach ($resultset as $document) {
                         foreach ($document as $field => $value) {
@@ -489,20 +468,19 @@ class ConnectionSolr implements IConnector {
                         break;
                     }
                 }
-                if ($fieldValue === "") { //calculate value
+                if ($fieldValue === "") {   // Calculate value
                     $fieldValue = $fieldCfg["FUNCTION"]();
                 }
             }
-
             $doc->addField($fieldname, $fieldValue);
         }
     }
 
-    public function extractNodeNameBinaryPut($fullName) {
+    public function extractNodeNameBinaryPut($fullName)
+    {
         $fullNameParts = explode("_", $fullName, 2);
         array_shift($fullNameParts);
         $trueName = implode("", $fullNameParts);
         return $trueName;
     }
-
 }

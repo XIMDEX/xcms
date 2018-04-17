@@ -205,3 +205,8 @@ fieldset.mdfsv_errors {
 	float:left;
 	margin-bottom: 5pt;
 }
+
+.token
+{
+	width: 98% !important;
+}

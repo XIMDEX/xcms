@@ -188,6 +188,9 @@ class DexPumper
 		$originFile = "{$localPath}{$IdSync}";
 		$targetFile = ".{$IdSync}_{$fileName}";
 		$uploading = $this->taskUpload($originFile, $initialDirectory, $remotePath, $targetFile);
+		
+		//TODO ajlucena!
+		
 		$this->updateTask($uploading, ServerFrame::PUMPED);
 	}
 
@@ -296,13 +299,13 @@ class DexPumper
 				$passwd =  $this->server->get('Password');
 				$idProtocol = $this->server->get('IdProtocol');
 			}
-			$this->connection = \Ximdex\IO\Connection\ConnectionManager::getConnection($idProtocol);
+			$this->connection = \Ximdex\IO\Connection\ConnectionManager::getConnection($idProtocol, $this->server);
 		}
 		if (!$this->connection->isConnected()) {
 			if ($this->connection->connect($host, $port)) {
 			    if (!$this->connection->login($login, $passwd))
 			    {
-			        $this->error('Can\'t log the user into host');
+			        $this->error('Can\'t log the user into host: ' . $host);
 			    }
 			}
 			else
@@ -354,6 +357,9 @@ class DexPumper
 		$this->info("Copying $localFile in $fullPath");
 		if (!$this->connection->put($localFile, $fullPath)) {
 		    $this->error(_('Could not upload the file').": $localFile -> $fullPath");
+		    if ($this->connection->getError()) {
+		        $this->error($this->connection->getError());
+		    }
 			return false;
 		}
 		return true;

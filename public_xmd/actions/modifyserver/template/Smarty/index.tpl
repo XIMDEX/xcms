@@ -120,13 +120,18 @@
 						</label>
 						<input type="password" id='password' name='password' class='cajag' />
 					</div>
+					<div class="token hidden">
+                        <label for='token' class="aligned label_general">{t}Token{/t}</label>
+                        <input type="text" id='token' name='token' maxlength="255" value="{$server.token}" class='cajag'/>
+                    </div>
 					<div class="encoding">
 						<label>{t}Encoding{/t} &nbsp;</label>
 		                {foreach from=$encodes item=_encode}
 							<label for="{$_encode.Id}">
-							<input type="radio" name="encode" value='{$_encode.Id}' {if ($server.encode eq $_encode.Id)}checked="checked"{/if} 
-									id="{$_encode.Id}"/>
-							{$_encode.Id}</label>
+							    <input type="radio" name="encode" value='{$_encode.Id}' {if ($server.encode eq $_encode.Id)}checked="checked"{/if} 
+									id="{$_encode.Id}"/>&nbsp;{$_encode.Id}
+						    </label>
+							&nbsp;
 		           		{/foreach}
 					</div>
 					<label>{t}Channels{/t} &nbsp;</label>

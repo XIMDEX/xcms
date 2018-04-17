@@ -86,8 +86,8 @@ class ServerNode extends FolderNode
         }
     }
 
-    function AddPhysicalServer($protocolID, $login, $password, $host, $port, $url, $initialDirectory, $overrideLocalPaths, $enabled
-        , $previsual, $description)
+    public function AddPhysicalServer($protocolID, $login, $password, $host, $port, $url, $initialDirectory, $overrideLocalPaths, $enabled
+        , $previsual, $description, string $token = null)
     {
         if (! ($overrideLocalPaths)) {
             $overrideLocalPaths = 0;
@@ -100,13 +100,13 @@ class ServerNode extends FolderNode
         }
         $sql = "INSERT INTO Servers ";
         $sql .= "(IdServer, IdNode, IdProtocol, Login, Password, Host,";
-        $sql .= " Port, Url, InitialDirectory, OverrideLocalPaths, Enabled, Previsual, Description) ";
+        $sql .= " Port, Url, InitialDirectory, OverrideLocalPaths, Enabled, Previsual, Description, Token) ";
         $sql .= "VALUES ";
         $sql .= "(NULL, " . DB::sqlEscapeString($this->parent->get('IdNode')) . ", " . DB::sqlEscapeString($protocolID) . ", " 
             . DB::sqlEscapeString($login) . ", " . DB::sqlEscapeString($password) . ", " . DB::sqlEscapeString($host) . ",";
         $sql .= " " . DB::sqlEscapeString($port) . ", " . DB::sqlEscapeString($url) . ", " . DB::sqlEscapeString($initialDirectory) . ", ";
         $sql .= DB::sqlEscapeString($overrideLocalPaths) . ", " . DB::sqlEscapeString($enabled) . ", " . DB::sqlEscapeString($previsual) . ", " 
-            . DB::sqlEscapeString($description) . ")";
+            . DB::sqlEscapeString($description) . ', ' . DB::sqlEscapeString($token) . ")";
         $this->dbObj->Execute($sql);
         return $this->dbObj->newID;
     }
@@ -438,5 +438,18 @@ class ServerNode extends FolderNode
             }
         }
         return $docsToPublish;
+    }
+    
+    public function getToken(int $physicalID) : ?string
+    {
+        $sql = 'SELECT Token FROM Servers WHERE IdNode = ' . $this->nodeID . ' AND IdServer = ' . $physicalID;
+        $this->dbObj->Query($sql);
+        return ($this->dbObj->numRows > 0) ? $this->dbObj->GetValue('Token') : null;
+    }
+    
+    public function SetToken(int $physicalID, string $token = null) : void
+    {
+        $sql = 'UPDATE Servers SET Token = \'' . $token . '\' WHERE IdNode = ' . $this->nodeID . ' AND IdServer = ' . $physicalID;
+        $this->dbObj->Execute($sql);
     }
 }

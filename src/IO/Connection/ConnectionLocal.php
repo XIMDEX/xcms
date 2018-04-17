@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,16 +25,13 @@
  *  @version $Revision$
  */
 
-
 namespace Ximdex\IO\Connection;
+
 use Ximdex\Logger;
 use Exception;
 
-
-
-
-class ConnectionLocal implements IConnector {
-	
+class ConnectionLocal extends Connector implements IConnector
+{	
 	/**
 	 * Connect to server
 	 * 
@@ -42,7 +40,8 @@ class ConnectionLocal implements IConnector {
 	 * @param port int
 	 * @return boolean
 	 */
-	public function connect($host = NULL, $port = NULL) {
+	public function connect($host = NULL, $port = NULL)
+	{    
 		// Nothing to do here
 		return true;
 	}
@@ -53,16 +52,17 @@ class ConnectionLocal implements IConnector {
 	 * @access public
 	 * @return boolean
 	 */
-	public function disconnect() {
+	public function disconnect()
+	{    
 		// Nothing to do here
 		return true;
 	}
 	
 	/**
 	 * Check the status of the connection
-	 *
 	 */
-	public function isConnected() {
+	public function isConnected()
+	{
 		return true;
 	}
 	
@@ -74,7 +74,8 @@ class ConnectionLocal implements IConnector {
 	 * @param password string
 	 * @return boolean
 	 */
-	public function login($username = 'anonymous', $password = 'john.doe@example.com') {
+	public function login($username = 'anonymous', $password = 'john.doe@example.com')
+	{
 		// Nothing to do here
 		return true;
 	}
@@ -86,7 +87,8 @@ class ConnectionLocal implements IConnector {
 	 * @param dir string
 	 * @return boolean false if folder no exist
 	 */
-	public function cd($dir) {
+	public function cd($dir)
+	{
 		if (!is_dir($dir)) {
 			return false;
 		}
@@ -110,7 +112,8 @@ class ConnectionLocal implements IConnector {
 	 * @param dir string
 	 * @return string
 	 */
-	public function pwd() {
+	public function pwd()
+	{
 		return getcwd();
 	}
 	
@@ -123,7 +126,8 @@ class ConnectionLocal implements IConnector {
 	 * @param recursive boolean
 	 * @return boolean
 	 */
-	public function mkdir($dir, $mode = 0755, $recursive = false) {
+	public function mkdir($dir, $mode = 0755, $recursive = false)
+	{
 		if (!is_dir($dir)) {
 			try {
 				return mkdir($dir, $mode, $recursive);
@@ -144,7 +148,8 @@ class ConnectionLocal implements IConnector {
 	 * @param recursive boolean
 	 * @return boolean
 	 */
-	public function chmod($target, $mode = 0755, $recursive = false) {
+	public function chmod($target, $mode = 0755, $recursive = false)
+	{
 		if (!$recursive) {
 			try {
 				return chmod($target, $mode);
@@ -165,7 +170,8 @@ class ConnectionLocal implements IConnector {
 	 * @param renameTo string
 	 * @return boolean
 	 */
-	public function rename($renameFrom, $renameTo) {
+	public function rename($renameFrom, $renameTo)
+	{
 		try {
 			return rename($renameFrom, $renameTo);
 		} catch (Exception $e) {
@@ -181,7 +187,8 @@ class ConnectionLocal implements IConnector {
 	 * @param file string
 	 * @return int
 	 */
-	public function size($file) {
+	public function size($file)
+	{
 		try {
 			return stat($file);
 		} catch (Exception $e) {
@@ -198,7 +205,8 @@ class ConnectionLocal implements IConnector {
 	 * @param mode int
 	 * @return mixed
 	 */
-	public function ls($dir, $mode = NULL) {
+	public function ls($dir, $mode = NULL)
+	{
 		$blackList = array('.', '..');
 		$files = array();
 		if (is_dir($dir)) {
@@ -219,11 +227,10 @@ class ConnectionLocal implements IConnector {
 	 * 
 	 * @access public
 	 * @param path string
-	 * @param recursive boolean
-	 * @param filesOnly boolean
 	 * @return boolean
 	 */
-	public function rm($path) {
+	public function rm($path)
+	{
 		try {
 			if (is_file($path)) {
 				return unlink($path);
@@ -246,7 +253,8 @@ class ConnectionLocal implements IConnector {
 	 * @param mode
 	 * @return boolean
 	 */
-	public function get($sourceFile, $targetFile, $mode = 0755) {
+	public function get($sourceFile, $targetFile, $mode = 0755)
+	{
 		return $this->copy($sourceFile, $targetFile, $mode);
 	}
 	
@@ -260,12 +268,14 @@ class ConnectionLocal implements IConnector {
 	 * @param mode
 	 * @return boolean
 	 */
-	public function put($localFile, $targetFile, $mode = 0755) {
+	public function put($localFile, $targetFile, $mode = 0755)
+	{
 		return $this->copy($localFile, $targetFile, $mode);
 	}
 	
 	//TODO check space
-	private function copy($sourceFile, $targetFile, $mode) {
+	private function copy($sourceFile, $targetFile, $mode)
+	{
 		$result = false;
 		if (is_dir($sourceFile)) {
 			Logger::error("COPY: El primer argumento no puede ser un directorio: $sourceFile");
@@ -277,6 +287,7 @@ class ConnectionLocal implements IConnector {
 		}
 		return $result;
 	}
+	
 	/**
 	 * Checks if the especified path is a folder
 	 * 
@@ -284,7 +295,8 @@ class ConnectionLocal implements IConnector {
 	 * @param path string
 	 * @return boolean
 	 */
-	public function isDir($path) {
+	public function isDir($path)
+	{
 		return is_dir($path);
 	}
 	
@@ -295,9 +307,8 @@ class ConnectionLocal implements IConnector {
 	 * @param path string
 	 * @return boolean
 	 */
-	public function isFile($path) {
+	public function isFile($path)
+	{
 		return is_file($path);
-	}
-	
+	}	
 }
-?>

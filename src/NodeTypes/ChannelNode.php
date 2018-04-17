@@ -61,11 +61,11 @@ class ChannelNode extends Root
 	 * @param string renderMode
 	 */
 	function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $channelName = null, $extension = null
-	       , $format = null, $description = null, $filter = "", $renderMode = NULL, $outputType = NULL, $renderType = null)
+	    , $format = null, $description = null, $filter = "", $renderMode = NULL, $outputType = NULL, $renderType = null, $language = null)
 	{
 		$channel = new Channel();
 		$channel->CreateNewChannel($channelName, $extension, $format, $description, $this->parent->get('IdNode'), $filter,
-			 $renderMode, $outputType, $renderType);
+			 $renderMode, $outputType, $renderType, $language);
 		$this->UpdatePath();
 	}
 
@@ -86,17 +86,6 @@ class ChannelNode extends Root
 	 */
 	public function GetDependencies()
 	{
-	    // At this time this method is not in use
 	    return [];
-	    /*
-		$sql = "SELECT DISTINCT IdDoc FROM RelStrDocChannels WHERE IdChannel='" . $this->nodeID . "'";
-		$this->dbObj->Query($sql);
-		$deps = array();
-		while (!$this->dbObj->EOF) {
-			$deps[] = $this->dbObj->row["IdDoc"];
-			$this->dbObj->Next();
-		}
-		return $deps;
-		*/
 	}
 }

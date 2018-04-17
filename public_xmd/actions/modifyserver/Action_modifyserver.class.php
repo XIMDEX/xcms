@@ -68,6 +68,7 @@ class Action_modifyserver extends ActionAbstract
 		    $server['states'] = $this->request->getParam('states');
 		    $server['encode'] = $this->request->getParam('encode');
 		    $server['channels'] = $this->request->getParam('channels');
+		    $server['token'] = $this->request->getParam('token');
 		}
 		elseif ($operation != 'erase' and $servers and $serverID) {
 			$server = array(
@@ -84,7 +85,8 @@ class Action_modifyserver extends ActionAbstract
 				'description' => $servers->class->GetDescription($serverID),
 				'enabled' => $servers->class->GetEnabled($serverID),
 				'preview' => $servers->class->GetPreview($serverID),
-				'overridelocalpaths' => $servers->class->GetOverrideLocalPaths($serverID)
+				'overridelocalpaths' => $servers->class->GetOverrideLocalPaths($serverID),
+			    'token' => $servers->class->GetToken($serverID)
 			);
 		}
 		else {
@@ -123,25 +125,26 @@ class Action_modifyserver extends ActionAbstract
 
 	public function modify_server()
 	{
-		$idNode		= (int) $this->request->getParam("nodeid");
-		$actionID	= (int) $this->request->getParam("actionid");
-		$params 	= $this->request->getParam("params");
-		$nodeID		= $this->request->getParam('nodeid');
-		$serverID	= $this->request->getParam('serverid');
-		$protocol	= $this->request->getParam('protocol');
-		$host		= $this->request->getParam('host');
-		$port		= $this->request->getParam('port');
+		$idNode = (int) $this->request->getParam("nodeid");
+		$actionID = (int) $this->request->getParam("actionid");
+		$params = $this->request->getParam("params");
+		$nodeID	= $this->request->getParam('nodeid');
+		$serverID = $this->request->getParam('serverid');
+		$protocol = $this->request->getParam('protocol');
+		$host = $this->request->getParam('host');
+		$port = $this->request->getParam('port');
 		$initialDir	= $this->request->getParam('initialdirectory');
-		$url		= $this->request->getParam('url');
-		$login		= $this->request->getParam('login');
-		$password	= $this->request->getParam('password');
-		$description= $this->request->getParam('description');
-		$enabled	= $this->request->getParam('enabled');
-		$preview	= $this->request->getParam('preview');
-		$override	= $this->request->getParam('overridelocalpaths');
-		$channels	= $this->request->getParam('channels');
-		$states		= $this->request->getParam('states');
-		$encode		= $this->request->getParam('encode');
+		$url = $this->request->getParam('url');
+		$login = $this->request->getParam('login');
+		$password = $this->request->getParam('password');
+		$description = $this->request->getParam('description');
+		$enabled = $this->request->getParam('enabled');
+		$preview = $this->request->getParam('preview');
+		$override = $this->request->getParam('overridelocalpaths');
+		$channels = $this->request->getParam('channels');
+		$states	= $this->request->getParam('states');
+		$encode	= $this->request->getParam('encode');
+		$token = $this->request->getParam('token');
 		$server = new Node($nodeID);
 		$list = $server->class->GetPhysicalServerList();
 		if (is_array($list) && in_array($serverID, $list)) {
@@ -160,21 +163,22 @@ class Action_modifyserver extends ActionAbstract
 				$serverID = null;
 			} else {
 				$dbObj = new \Ximdex\Runtime\Db();
-				$sql = "SELECT IdProtocol FROM Protocols WHERE IdProtocol='".$protocol."'";
+				$sql = "SELECT IdProtocol FROM Protocols WHERE IdProtocol='$protocol'";
 				$dbObj->Query($sql);
 				if ($dbObj->numRows) {
 					if ($action == "mod") {
-						$node->class->SetProtocol($serverID,$protocol);
-						$node->class->SetHost($serverID,$host);
-						$node->class->SetPort($serverID,$port);
-						$node->class->SetInitialDirectory($serverID,$initialDir);
-						$node->class->SetLogin($serverID,$login);
-						$node->class->SetURL($serverID,$url);
-						$node->class->SetDescription($serverID,$description);
-						$node->class->SetEnabled($serverID,!!$enabled);
-						$node->class->SetPreview($serverID,!!$preview);
-						$node->class->SetOverrideLocalPaths($serverID,!!$override);
-						$node->class->SetEncode($serverID,$encode);
+						$node->class->SetProtocol($serverID, $protocol);
+						$node->class->SetHost($serverID, $host);
+						$node->class->SetPort($serverID, $port);
+						$node->class->SetInitialDirectory($serverID, $initialDir);
+						$node->class->SetLogin($serverID, $login);
+						$node->class->SetURL($serverID, $url);
+						$node->class->SetDescription($serverID, $description);
+						$node->class->SetEnabled($serverID, !!$enabled);
+						$node->class->SetPreview($serverID, !!$preview);
+						$node->class->SetOverrideLocalPaths($serverID, !!$override);
+						$node->class->SetEncode($serverID, $encode);
+						$node->class->SetToken($serverID, $token);
 						if ($password){
 							$node->class->SetPassword($serverID, $password);
 						}
@@ -186,7 +190,7 @@ class Action_modifyserver extends ActionAbstract
 						$this->messages->add(_("Server successfully modified"), MSG_TYPE_NOTICE);
 					} else {
 						$serverID = $node->class->AddPhysicalServer($protocol, $login, $password, $host, $port, $url, $initialDir, !!$override
-						      , !!$enabled, !!$preview, $description);
+						      , !!$enabled, !!$preview, $description, $token);
 						if ($serverID) {
                             $node->class->SetEncode($serverID,$encode);
 							$this->messages->add(_("Server successfully created"), MSG_TYPE_NOTICE);

@@ -60,7 +60,12 @@ abstract class AbstractView
                 return $file;
             }
         }
-        Logger::error('An error has happened trying to store the temporal file with content ' . $file);
+        if (isset($file)) {
+            Logger::error('An error has happened trying to store the temporal file with content ' . $file);
+        }
+        else {
+            Logger::error('An error has happened with content to save (previous error)');
+        }
         return NULL;
     }
 

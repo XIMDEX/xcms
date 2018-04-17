@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -30,7 +31,6 @@ use Ximdex\Logger;
 
 class Factory
 {
-
     private $_path = null;
     private $_root_name = null;
     private $_error = null;
@@ -43,8 +43,8 @@ class Factory
     {
         $this->_path = rtrim($path, '/');
         $this->_root_name = $root_name;
-
     }
+    
     /**
      * Return an instance of $type Class or null if:
      *
@@ -55,30 +55,23 @@ class Factory
      * @param array $args
      * @return mixed
      */
-    public function instantiate($type = NULL, $args = null, $namespace = '\Ximdex\MVC\Render' )
+    public function instantiate($type = NULL, $args = null, $namespace = '\Ximdex\MVC\Render')
     {
-
         $classname = ltrim($this->_root_name,'\\');
         $namespace = trim($namespace,'\\');
-
         if (!is_null($type)) {
             $classname .= $type;
         }
-
         $class =  '\\'. $classname;
-        if(!empty($namespace)) {
+        if (!empty($namespace)) {
             $nsClass =  '\\'.$namespace  .$class;
-
-            if ( class_exists( $nsClass )) {
-                return new $nsClass( $args ) ;
+            if (class_exists($nsClass)) {
+                return new $nsClass($args) ;
             }
         }
-
         if (!class_exists($class)) {
             $old_class_path = $this->_path . "/$classname.class.php";
             $class_path = $this->_path . "/$classname.php";
-
-
             if (file_exists($old_class_path) && is_readable($old_class_path)) {
                 require_once($old_class_path);
             } else if (file_exists($class_path) && is_readable($class_path)) {
@@ -93,16 +86,11 @@ class Factory
             $this->_setError("Factory::instantiate(): '$class' class not found in file $class_path");
             return NULL;
         }
-
-
-        if ( is_null( $args) ) {
+        if (is_null($args)) {
             $obj = new $class();
         } else {
             $obj = new $class($args);
         }
-
-
-
         if (!is_object($obj)) {
             Logger::fatal("Could'nt instanciate the class $class");
             return null ;
@@ -121,10 +109,8 @@ class Factory
      *
      * @return string
      */
-
     public function getError()
     {
         return $this->_error;
     }
-
 }
