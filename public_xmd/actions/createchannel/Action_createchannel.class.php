@@ -38,6 +38,10 @@ class Action_createchannel extends ActionAbstract
      */
     public function index()
     {
+<<<<<<< HEAD
+=======
+     
+>>>>>>> branch 'develop' of https://github.com/XIMDEX/ximdex.git
         $idNode = $this->request->getParam('nodeid');
         $node = new Node($idNode);
 		$progLanguage = new ProgrammingLanguage();

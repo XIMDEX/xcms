@@ -25,11 +25,7 @@
 
 <form method="post" name="cu_form" id="cu_form" action="{$action_url}">
 	<input type="hidden" name="id_node" VALUE="{$id_node}">
-	<div class="action_header">
-		<h5 class="direction_header"> {t}Name Node:{/t} {t}User manager{/t}</h5>
-		<h5 class="nodeid_header"> {t}ID Node:{/t} {$nodeid}</h5>
-		<hr>
-	</div>
+	{include file="actions/components/title_Description.tpl"}
 	<div class="action_content">
 		<div class="row tarjeta">
 			<div class="small-12 columns title_tarjeta">

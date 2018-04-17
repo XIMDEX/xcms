@@ -27,11 +27,7 @@
 
 	<form method="post" name="formulario" id='formulario' action='{$action_url}'>
 		<input type="hidden" name="nodeid" value="{$id_node}">
-		<div class="action_header">
-			<h5 class="direction_header"> {t}Name Node:{/t} {$nameNode}</h5>
-			<h5 class="nodeid_header"> {t}ID Node:{/t} {$nodeid}</h5>
-			<hr>
-		</div>
+		{include file="actions/components/title_Description.tpl"}
 		<div class="message message-warning">
 			<p class="icon">{t}This action cannot be undone{/t}.</p>
 			{if ($isPublished || $pendingTasks)}

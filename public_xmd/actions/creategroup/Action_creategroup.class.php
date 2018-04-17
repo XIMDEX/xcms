@@ -33,10 +33,11 @@ class Action_creategroup extends ActionAbstract {
    // Main method: shows initial form
     function index() {
 		$idNode = $this->request->getParam('nodeid');
-
+		$folder = new Node($idNode);
         
 		$values = array(
 			'id_node' => $idNode,
+		    'node_Type' => $folder->nodeType->GetName(),
 			'go_method' => 'creategroup');
 
 		$this->render($values, null, 'default-3.0.tpl');

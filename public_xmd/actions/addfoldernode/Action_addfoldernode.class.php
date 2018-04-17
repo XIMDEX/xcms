@@ -85,6 +85,7 @@ class Action_addfoldernode extends ActionAbstract
         $values = array(
             'go_method' => 'addNode',
             'nodeID' => $nodeID,
+            'node_Type' => $node->nodeType->GetName(),
             'name' => $node->GetNodeName()
         );
         if (isset($nodeType['name']) and $nodeType['name'] == 'Project')

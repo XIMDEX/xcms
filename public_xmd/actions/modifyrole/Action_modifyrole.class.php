@@ -34,6 +34,7 @@ use Ximdex\Models\Role;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\App;
 use Ximdex\Workflow\WorkFlow;
+use Ximdex\Models\Node;
 
 class Action_modifyrole extends ActionAbstract
 {
@@ -44,7 +45,6 @@ class Action_modifyrole extends ActionAbstract
     {
         $idNode = $this->request->getParam('nodeid');
         $role = new Role($idNode);
-
         // Getting permisions for current role.
         $permission = new Permission();
         $allPermissionData = $permission->find();
@@ -74,6 +74,7 @@ class Action_modifyrole extends ActionAbstract
         $db = new \Ximdex\Runtime\Db();
         $db->query($sql);
         $pipelines = array($db->getValue('id') => $db->getValue('Pipeline'));
+        $node = new Node ($idNode);
         $this->addJs('/actions/modifyrole/js/modifyrole.js');
         $this->addCss('/actions/modifyrole/css/modifyrole.css');
         $values = array('name' => $role->get('Name'),
@@ -83,6 +84,7 @@ class Action_modifyrole extends ActionAbstract
             'workflow_states' => $allStates,
             'pipelines' => $pipelines,
             'selected_pipeline' => $selectedPipeline,
+            'node_Type' => $node->nodeType->GetName(),
             'go_method' => 'modifyrole'
         );
         $this->render($values, null, 'default-3.0.tpl');

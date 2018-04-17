@@ -24,11 +24,7 @@
  *}
 
 <form method="post" id="formulario" name="formulario" action="{$action_url}">
-  <div class="action_header">
-    <h5 class="direction_header"> {t}Name Node:{/t} {$section_name}</h5>
-    <h5 class="nodeid_header"> {t}ID Node:{/t} {$nodeid}</h5>
-    <hr>
-  </div>
+  {include file="actions/components/title_Description.tpl"}
 
   <div class="message message-warning">
     <p>{t}Publication windows configured for these files will be cancelled.{/t}</p>

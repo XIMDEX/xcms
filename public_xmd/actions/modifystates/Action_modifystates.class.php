@@ -73,6 +73,7 @@ class Action_modifystates extends ActionAbstract
                     array('id' => $nextStatus->get('id'),
                         'name' => $nextStatus->get('Name'),
                         'description' => $nextStatus->get('Description'),
+                        'node_Type' => $pipeline->nodeType->GetName(),
                         'action' => $nextStatus->get('Action')
                     );
             }

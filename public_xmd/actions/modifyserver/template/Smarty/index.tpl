@@ -29,11 +29,7 @@
 	<input type="hidden" id="nodeURL" name="nodeURL" value="{$nodeURL}" />
 	<input type="hidden" id="num_servers" name="num_servers" value="{$num_servers}" />
 	<input type="hidden" name="id" value="{if (!isset($server.id))}{$id_server}{else}none{/if}" />
-	<div class="action_header">
-		<h5 class="direction_header"> {t}Name Node:{/t} {t}{$node_name}{/t}</h5>
-		<h5 class="nodeid_header"> {t}ID Node:{/t} {$nodeid}</h5>
-		<hr />
-	</div>
+	{include file="actions/components/title_Description.tpl"}
 	<div class="action_content">
 		<div class="row tarjeta">
 			<h2 class="h2_general">{t}Manage servers{/t}</h2>

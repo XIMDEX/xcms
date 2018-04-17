@@ -114,6 +114,7 @@ class Action_createxmlcontainer extends ActionAbstract
 			'go_method' => 'createxmlcontainer',
 			'reload_tree' => $reloadTree,
 		    'nodeTypeName' => $nodeType->GetDescription(),
+		    'node_Type' => $node->nodeType->GetName(),
 		    'type' => $type
 		);
 		$this->render($values, null, 'default-3.0.tpl');

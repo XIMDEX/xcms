@@ -90,6 +90,7 @@ class Action_infonode extends ActionAbstract
             'channels' => $channels,
             'languages' => $languages,
             'jsonUrl' => $jsonUrl,
+            'node_Type' => $node->nodeType->GetName(),
             'valuesManageVersion'=>$valuesManageVersion
         );
         $this->render($values, 'index', 'default-3.0.tpl');

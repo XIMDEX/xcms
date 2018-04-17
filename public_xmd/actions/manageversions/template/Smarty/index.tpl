@@ -24,9 +24,7 @@
  *}
 
 <form method="post" name="mv_form" id="mv_form" action="{$action_url}">
-	<div class="action_header">
-		<h2>{t}Available versions{/t}: {$name}</h2>
-	</div>
+	{include file="actions/components/title_Description.tpl"}
 	<div class="action_content">
 		<input type="hidden" name="nodeid" value="{$id_node}" />
 		<input type="hidden" name="nodetypename" value="{$node_type_name}" />

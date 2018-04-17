@@ -51,6 +51,7 @@ class Action_linkreport extends ActionAbstract
             'criteria' => $this->request->getParam("criteria"),
             'stringsearch' => $this->request->getParam("stringsearch"),
             'rec' => ($this->request->getParam('rec') != 'on' ? NULL : 1),
+            'node_Type' => $node->nodeType->GetName(),
             'go_method' => 'get_links'
         );
         $this->render($values, NULL, 'default-3.0.tpl');

@@ -53,6 +53,7 @@ class Action_edittext extends ActionAbstract
 
         $idNode = $this->request->getParam('nodeid');
         $strDoc = new StructuredDocument($idNode);
+        
         if ($strDoc->GetSymLink())
         {
             $masterNode = new Node($strDoc->GetSymLink());
@@ -142,6 +143,7 @@ class Action_edittext extends ActionAbstract
             'on_load_functions' => 'resize_caja()',
             'on_resize_functions' => 'resize_caja()',
             'node_name' => $node_name,
+            'node_Type' => $node->nodeType->GetName(),
             'id_editor' => $idNode . uniqid()
         );
 

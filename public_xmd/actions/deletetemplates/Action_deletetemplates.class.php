@@ -30,8 +30,8 @@ use Ximdex\MVC\ActionAbstract;
 class Action_deletetemplates extends ActionAbstract {
 
     function index() {
+      
  		$idNode	= (int) $this->request->getParam("nodeid");
-
 		$folder = new Node($idNode);
 		$nodes_templates = $folder->GetChildren();
 
@@ -48,6 +48,7 @@ class Action_deletetemplates extends ActionAbstract {
  		$values = array(
 			'id_node' => $idNode,
 			'templates' => $templates,
+ 		    'node_Type' => $folder->nodeType->GetName(),
 			'go_method' => 'delete'
 		);
 
@@ -61,6 +62,7 @@ class Action_deletetemplates extends ActionAbstract {
 	function delete() {
 		$templates = $this->request->getParam("templates");
  		$idNode	= (int) $this->request->getParam("nodeid");
+ 		
 
 		$new_templates = array();
 		if(!empty($templates) )  {

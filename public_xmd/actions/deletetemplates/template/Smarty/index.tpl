@@ -23,11 +23,7 @@
  *  @version $Revision$
  *}
 <form method="post" id="msr_action" action="{$action_url}">
-	<div class="action_header">
-		<h5 class="direction_header"> {t}Name Node:{/t} {t}Delete templates{/t}</h5>
-		<h5 class="nodeid_header"> {t}ID Node:{/t} {$nodeid}</h5>
-		<hr />
-	</div>
+	{include file="actions/components/title_Description.tpl"}
 	{if ($templates)}
 		<div class="message message-warning">
 			<p class="icon">{t}This action cannot be undone{/t}.</p>

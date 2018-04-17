@@ -27,11 +27,7 @@
       ng-init='nodeid={$idnode}; name="{$name}"; users_not_associated={$users_not_associated}; roles={$roles};
       users_associated={$users_associated}; init();' method="post" action="{$action_url}" class="form_group_user">
 
-    <div class="action_header">
-        <h5 class="direction_header"> {t}Name Node:{/t} {t}Change users{/t}</h5>
-        <h5 class="nodeid_header"> {t}ID Node:{/t} {$nodeid}</h5>
-        <hr>
-    </div>
+    {include file="actions/components/title_Description.tpl"}
 
     <div class="action_content">
         <div class="row tarjeta">

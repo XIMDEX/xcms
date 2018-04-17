@@ -34,6 +34,9 @@ class Action_filedownload extends ActionAbstract
         $idNode = $this->request->getParam("nodeid");
         $node = new Node ($idNode);
         $values = array('node_name' => $node->get('Name'),
+                        'node_Type' => $node->nodeType->GetName(),
+                        
+                          
                         'id_node' => $node->get('IdNode'));
 
         $this->addJs('/actions/filedownload/resources/js/index.js');

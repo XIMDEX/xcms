@@ -38,10 +38,9 @@ class Action_createuser extends ActionAbstract
     function index()
     {
         $idNode = $this->request->getParam('nodeid');
-
+        $node = new Node($idNode);
         $role = new Role();
         $roles = $role->find('IdRole, Name');
-
         $locale = new XimLocale();
         $locales = $locale->GetEnabledLocales();
 
@@ -49,6 +48,7 @@ class Action_createuser extends ActionAbstract
             'id_node' => $idNode,
             'go_method' => 'createuser',
             'roles' => $roles,
+            'node_Type' => $node->nodeType->GetName(),
             'locales' => $locales
         );
 

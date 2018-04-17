@@ -39,6 +39,7 @@ class Action_expiresection extends ActionAbstract {
 
 			$values = array(
 				'section_name' 	=> $sectionName,
+			    'node_Type' => $node->nodeType->GetName(),
 				'go_method' 		=> 'result'
 			);
 
