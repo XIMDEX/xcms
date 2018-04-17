@@ -877,7 +877,7 @@ VALUES
 	(6349,5025,5008,'Add style Sheets',NULL,0,NULL,0,0,NULL,NULL,NULL),
 	(6385,5032,5008,'Preview',0,0,NULL,0,0,NULL,NULL,NULL),
 	(10000,1,5012,'Projects',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
-	(10001,9,5033,'HTML.html',NULL,0,NULL,NULL,NULL,'HTML',NULL,'/Ximdex/Centro de Control/Gestor de Canales'),
+	(10001,9,5033,'HTML',NULL,0,NULL,NULL,NULL,'HTML',NULL,'/Ximdex/Centro de Control/Gestor de Canales'),
 	(10002,7,5034,'Spanish',NULL,0,NULL,NULL,NULL,'Spanish language',NULL,'/Ximdex/Centro de Control/Gestor de Idiomas'),
 	(10003,7,5034,'English',NULL,0,NULL,NULL,NULL,'English language',NULL,'/Ximdex/Centro de Control/Gestor de Idiomas'),
 	(5076,6,5007,'NodeHt',0,0,NULL,0,0,NULL,NULL,NULL),
@@ -2801,7 +2801,7 @@ INSERT INTO `NodetypeModes` (`IdNodeType`, `Mode`, `IdAction`) VALUES
 INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`
     , `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublishable`, `IsHidden`, `CanDenyDeletion`, `isGenerator`
     , `IsEnriching`, `System`, `Module`) VALUES 
-    (5104, 'HtmlDocument', 'XmlDocumentNode', 'doc', 'HTML document', 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, NULL);
+    (5104, 'HtmlDocument', 'HTMLDocumentNode', 'doc', 'HTML document', 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, NULL);
 
 INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`, `IsBulk`) VALUES
     (7458, 5104, 'Edit HTML in text mode', 'edittext', 'edit_file_xml_txt.png', 'Edit content of HTML in plain text', 21, NULL, 0, 'type=text', 0),

@@ -147,7 +147,8 @@ class ConnectionApi extends Connector implements IConnector
 	 */
 	public function size($file)
 	{
-		return 0;
+	    //TODO ajlucena!
+		return 1;
 	}
 	
     /**
@@ -187,8 +188,9 @@ class ConnectionApi extends Connector implements IConnector
 	    if ($content === false) {
 	        return false;
 	    }
-	    if (json_decode($content) === null) {
-	        $this->error = 'The content given in PUT request is not in correct JSON syntax';
+	    $dom = new \DOMDocument();
+	    if ($dom->loadXML($content) === false) {
+	        $this->error = 'The content given in PUT request is not a valid XML document';
 	        return false;
 	    }
 	    $res = $this->client->request('PUT', $this->host, ['body' => $content]);

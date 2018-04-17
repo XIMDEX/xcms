@@ -38,13 +38,15 @@ class Action_createchannel extends ActionAbstract
      */
     public function index()
     {
-		$idNode = $this->request->getParam('nodeid');
+        $idNode = $this->request->getParam('nodeid');
+        $node = new Node($idNode);
 		$progLanguage = new ProgrammingLanguage();
 		$codeLanguages = $progLanguage->find();
 		$this->addJs('/actions/createchannel/resources/js/index.js');
 		$values = array(
 			'id_node' => $idNode,
 		    'code_languages' => $codeLanguages,
+		    'node_Type' => $node->nodeType->GetName(),
 			'go_method' => 'createchannel');
 		$this->render($values, null, 'default-3.0.tpl');
     }
@@ -85,11 +87,11 @@ class Action_createchannel extends ActionAbstract
         $renderMode = $this->request->getParam('rendermode');
         $nodeType = new NodeType();
         $nodeType->SetByName('Channel');
-        $complexName = sprintf("%s.%s", $name, $extension);
+        // $complexName = sprintf("%s.%s", $name, $extension);
         
         // Control uniqueness of tupla, channel, format
         $node = new Node();
-        $result = $node->CreateNode($complexName, $idNode, $nodeType->get('IdNodeType'), NULL, $name, $extension, NULL, $description, ''
+        $result = $node->CreateNode(strtoupper($name), $idNode, $nodeType->get('IdNodeType'), NULL, $name, $extension, NULL, $description, ''
                 , $renderMode, $outputType, $renderType, $codeLanguage);
         if ($result > 0) {
             $node->messages->add(_('Channel has been succesfully inserted'), MSG_TYPE_NOTICE);

@@ -139,7 +139,7 @@ class Pull
 
                     $template = $strDoc->get('IdTemplate');
                     $idLanguage = $strDoc->get('IdLanguage');
-                    $docXapHeader = $node->class->_getDocXapHeader($channelId, $idLanguage, $template);
+                    $docXapHeader = $node->class->getDocHeader($channelId, $idLanguage, $template);
 
                     $root = new Node(10000);
                     $transformer = $root->getProperty('Transformer');

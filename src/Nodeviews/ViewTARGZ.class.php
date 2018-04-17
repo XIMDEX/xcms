@@ -166,7 +166,7 @@ class ViewTARGZ extends AbstractView implements IView
                 //xml with a channel selected by the user
                 $channel = $channels[0];
                 $documentType = $structuredDocument->GetDocumentType();
-                $docxapout = $node->class->_getDocXapHeader($channel, $language, $documentType);
+                $docxapout = $node->class->getDocHeader($channel, $language, $documentType);
 
                 // Check out:
                 if (!isset($docxapout) || $docxapout == "") {

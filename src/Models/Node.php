@@ -3772,9 +3772,8 @@ class Node extends NodesOrm
             $idServerNode = $this->getServer();
             $documentType = $structuredDocument->getDocumentType();
             $idLanguage = $structuredDocument->getLanguage();
-            if ($this->GetNodeType() == NodeTypeConstants::XML_DOCUMENT and method_exists($this->class, "_getDocXapHeader")) {
-                
-                $docXapHeader = $this->class->_getDocXapHeader($idChannel, $idLanguage, $documentType);
+            if ($this->GetNodeType() == NodeTypeConstants::XML_DOCUMENT and method_exists($this->class, 'getDocHeader')) {
+                $docXapHeader = $this->class->getDocHeader($idChannel, $idLanguage, $documentType);
             } else {
                 $docXapHeader = null;
             }

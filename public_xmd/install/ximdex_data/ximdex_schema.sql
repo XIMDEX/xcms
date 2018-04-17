@@ -40,6 +40,7 @@ CREATE TABLE `Channels` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Available channels used to transform content';
 ALTER TABLE `Channels` ADD `RenderType` ENUM('static', 'include', 'dynamic', 'index') NOT NULL;
 ALTER TABLE `Channels` ADD `idLanguage` VARCHAR(20) NOT NULL COMMENT 'Programming language for code macros';
+ALTER TABLE `Channels` ADD UNIQUE(`Name`);
 
 CREATE TABLE `Config` (
   `IdConfig` int(12) unsigned NOT NULL AUTO_INCREMENT,
@@ -261,9 +262,9 @@ CREATE TABLE `Nodes` (
   `sortorder` int(11) DEFAULT '0',
   `deleted` int(11) DEFAULT '0',
   PRIMARY KEY (`IdNode`),
-  UNIQUE KEY `UniqueName` (`Name`,`IdParent`),
-  KEY `IdNode_2` (`IdNode`,`IdParent`)
+  UNIQUE KEY `UniqueName` (`Name`,`IdParent`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Table of system nodes';
+ALTER TABLE `Nodes` ADD INDEX(`IdParent`);
 
 CREATE TABLE `NodeSets` (
   `Id` int(10) unsigned NOT NULL AUTO_INCREMENT,

@@ -188,9 +188,6 @@ class DexPumper
 		$originFile = "{$localPath}{$IdSync}";
 		$targetFile = ".{$IdSync}_{$fileName}";
 		$uploading = $this->taskUpload($originFile, $initialDirectory, $remotePath, $targetFile);
-		
-		//TODO ajlucena!
-		
 		$this->updateTask($uploading, ServerFrame::PUMPED);
 	}
 

@@ -27,6 +27,7 @@ class Action_rendernode extends ActionAbstract
                 $this->messages->add(_('It is not possible to show preview.') . _(' The node you are trying to preview does not exist.')
                     , MSG_TYPE_NOTICE);
                 $this->render(array('messages' => $this->messages->messages), null, 'messages.tpl');
+                return false;
             }
             Logger::info('Call to rendernode from given ID: ' . $idNode);
         }
@@ -76,6 +77,7 @@ class Action_rendernode extends ActionAbstract
         if ($data === false) {
             $this->messages->mergeMessages($node->messages);
             $this->render(array('messages' => $this->messages->messages), null, 'messages.tpl');
+            return false;
         }
         
         // Response headers

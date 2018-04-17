@@ -334,10 +334,10 @@ abstract class AbstractStructuredDocument extends FileNode
      * @param int $channel
      * @param int $idLanguage
      * @param int $documentType
-     * @param boolean $solrView
+     * @param string $tagName
      * @return string
      */
-    public function _getDocXapHeader($channel, $idLanguage, $documentType)
+    public function getDocHeader($channel, $idLanguage, $documentType, string $tagName = 'docxap') : string
     {
         $schema = new Node($documentType);
         $schemaName = $schema->get('Name');
@@ -366,7 +366,7 @@ abstract class AbstractStructuredDocument extends FileNode
             $xtags = substr_replace($xtags, "", -1);
         }
         $xtags = 'xtags = "' . $xtags . '"';
-        $docxap = sprintf("<docxap %s %s %s %s %s %s %s %s %s>",
+        $docxap = sprintf('<' . $tagName . ' %s %s %s %s %s %s %s %s %s>',
             $layoutTag,
             $this->_langXapAttrib($idLanguage),
             $schemaTag,
@@ -392,22 +392,26 @@ abstract class AbstractStructuredDocument extends FileNode
         if (!($strDoc->get('IdDoc') > 0)) {
             return NULL;
         }
-        $documentType = $strDoc->GetDocumentType();
         $idLanguage = $strDoc->GetLanguage();
-        $docXapHeader = $this->_getDocXapHeader($channel, $idLanguage, $documentType);
-        if ($onlyDocXap) {
-            return $docXapHeader;
-        }
-        $doctypeTag = App::getValue("DoctypeTag");
-        $encodingTag = App::getValue("EncodingTag");
         if (is_null($content)) {
             $content = $strDoc->GetContent();
         }
-        return ($encodingTag . "\n" . $doctypeTag . "\n\n" .
-            $docXapHeader .
-            $this->InsertLinkedximletS($idLanguage) . "\n" .
-            $content . "\n" .
-            "</docxap>\n");
+        if ($this->parent->GetNodeType() != NodeTypeConstants::HTML_DOCUMENT) {
+            
+            // XML documents
+            $doctypeTag = App::getValue("DoctypeTag");
+            $encodingTag = App::getValue("EncodingTag");
+            $documentType = $strDoc->GetDocumentType();
+            $docXapHeader = $this->getDocHeader($channel, $idLanguage, $documentType);
+            if ($onlyDocXap) {
+                return $docXapHeader;
+            }
+            return $encodingTag . "\n" . $doctypeTag . "\n\n" . $docXapHeader . $this->InsertLinkedximletS($idLanguage) . "\n" 
+                . $content . "\n" . "</docxap>\n";
+        }
+        
+        // HTML documents
+        return $this->InsertLinkedximletS($idLanguage) . "\n" . $content;
     }
 
     function DeleteNode()

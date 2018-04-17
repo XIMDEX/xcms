@@ -232,7 +232,7 @@ class ViewNodeToRenderizedContent extends AbstractView implements IView
     {
         if ($this->_node && $this->_structuredDocument) {
             $documentType = $this->_structuredDocument->GetDocumentType();
-            $this->_docXapHeader = $this->_node->class->_getDocXapHeader($this->_idChannel, $this->_idLanguage, $documentType);
+            $this->_docXapHeader = $this->_node->class->getDocHeader($this->_idChannel, $this->_idLanguage, $documentType);
         }
 
         if (array_key_exists('DOCXAPHEADER', $args)) {
