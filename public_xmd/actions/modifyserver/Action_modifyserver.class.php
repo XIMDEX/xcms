@@ -119,7 +119,8 @@ class Action_modifyserver extends ActionAbstract
 			'channels' => $channels,
 			'numchannels' => $numChannels,
 			'id_server' => (int) $serverID,
-			'messages' => $this->messages->messages
+			'messages' => $this->messages->messages,
+			'node_Type' => $servers->nodeType->GetName()
 		);
 		$this->render($values, "index", 'default-3.0.tpl');
 	}

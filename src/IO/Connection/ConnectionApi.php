@@ -49,7 +49,7 @@ class ConnectionApi extends Connector implements IConnector
 	        if ($this->server->get('Port')) {
 	            $host .= ':' . $this->server->get('Port');
 	        }
-	        $host .= '/' . $this->server->get('InitialDirectory');
+	        $host .= '/' . trim($this->server->get('InitialDirectory'), '/');
 	    }
 	    else {
 	        $host .= ':' . $port;
