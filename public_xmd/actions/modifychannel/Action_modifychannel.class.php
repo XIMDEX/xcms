@@ -26,6 +26,7 @@
  */
 
 use Ximdex\Models\Channel;
+use Ximdex\Models\ProgrammingLanguage;
 use Ximdex\Models\Node;
 use Ximdex\MVC\ActionAbstract;
 
@@ -34,10 +35,11 @@ class Action_modifychannel extends ActionAbstract
 	/**
 	 * Main method: shows initial form
 	 */
-    function index () {
+    public function index()
+    {
         $idNode = $this->request->getParam('nodeid');
         $node = new Node($idNode);	
-		if (!($node->get('IdNode') > 0)) {
+		if (!$node->GetID()) {
     			$this->messages->add(_('Node could not be found'), MSG_TYPE_ERROR);
     			$this->render(array($this->messages), NULL, 'messages.tpl');
     			die();
@@ -51,7 +53,7 @@ class Action_modifychannel extends ActionAbstract
             'xml' => '',
             'other' => ''
 		);
-        $renderTypeCheck = Channel::WEB_RENDER_TYPES;
+        $renderTypeCheck = Channel::RENDER_TYPES;
 		$channel = new Channel($idNode);
 		$renderCheck[$channel->get('RenderMode')] = 'checked';
         $outputCheck[$channel->get("OutputType")] = 'checked';
@@ -60,6 +62,9 @@ class Action_modifychannel extends ActionAbstract
         }
         $ext = $channel->get('DefaultExtension') == NULL ? "(empty)": $channel->get('DefaultExtension');
         $desc = $channel->get('Description') == NULL ? "(empty)": $channel->get('Description');
+        
+        $progLanguage = new ProgrammingLanguage();
+        $codeLanguages = $progLanguage->find();
         $this->addJs('/actions/modifychannel/resources/js/index.js');
 		$values = array(
 			'id_node' => $idNode,
@@ -70,39 +75,57 @@ class Action_modifychannel extends ActionAbstract
 			'render_check' => $renderCheck,
 			'output_check' => $outputCheck,
 			'go_method' => 'modifychannel',
-		    'web_render_type' => $renderTypeCheck
+		    'render_type' => $renderTypeCheck,
+		    'code_languages' => $codeLanguages,
+		    'language' => $channel->getIdLanguage()
     	);
     	$this->render($values, null, 'default-3.0.tpl');
     }
 
-    function modifychannel() {
+    public function modifychannel()
+    {
     	$idNode = $this->request->getParam('nodeid');
-    	$channel = new Channel($idNode);
-        $_POST["Default_Channel"] = isset($_POST["Default_Channel"]) &&
-        $_POST["Default_Channel"] == "on" ? 1 : 0;
-        $outputType = $_POST['OutputType_' . $idNode];
-        if ($outputType == Channel::OUTPUT_TYPE_WEB) {
-            $renderType = $_POST['RenderType_' . $idNode] ?? null;
-            if (!$renderType) {
-                $this->messages->add('No render type selected for Web servers', MSG_TYPE_WARNING);
-                $values = array('messages' => $this->messages->messages, 'idNode' => $idNode);
-                $this->sendJSON($values);
-                return false;
-            }
-            if (!isset(Channel::WEB_RENDER_TYPES[$renderType])) {
-                $this->messages->add('There is not a render type for ' . $renderType, MSG_TYPE_WARNING);
-                $values = array('messages' => $this->messages->messages, 'idNode' => $idNode);
-                $this->sendJSON($values);
-                return false;
-            }
+    	if ($idNode == Channel::JSON_CHANNEL) {
+        	$this->messages->add('This channel cannot be modified', MSG_TYPE_WARNING);
+        	$values = array('messages' => $this->messages->messages, 'idNode' => $idNode);
+        	$this->sendJSON($values);
+        	return false;
+    	}
+    	$outputType = $this->request->getParam('output_type_' . $idNode);
+        if (!$outputType) {
+            $this->messages->add('No output type selected', MSG_TYPE_WARNING);
+            $values = array('messages' => $this->messages->messages, 'idNode' => $idNode);
+            $this->sendJSON($values);
+            return false;
         }
-        else {
-            $renderType = null;
+        $renderType = $this->request->getParam('render_type_' . $idNode);
+        if (!$renderType) {
+            $this->messages->add('No render type selected', MSG_TYPE_WARNING);
+            $values = array('messages' => $this->messages->messages, 'idNode' => $idNode);
+            $this->sendJSON($values);
+            return false;
         }
-        $_POST['OutputType'] = $outputType;
-        $_POST['RenderType'] = $renderType;
-    	$channel->loadFromArray($_POST);
-		$result = $channel->update();
+        if (!isset(Channel::RENDER_TYPES[$renderType])) {
+            $this->messages->add('There is not a render type for ' . $renderType, MSG_TYPE_WARNING);
+            $values = array('messages' => $this->messages->messages, 'idNode' => $idNode);
+            $this->sendJSON($values);
+            return false;
+        }
+        $codeLanguage = $this->request->getParam('language');
+        if (!$codeLanguage) {
+            $this->messages->add('No code language selected', MSG_TYPE_WARNING);
+            $values = array('messages' => $this->messages->messages, 'idNode' => $idNode);
+            $this->sendJSON($values);
+            return false;
+        }
+        $defaultChannel = $this->request->getParam('Default_Channel');
+        $channel = new Channel($idNode);
+        $channel->SetDescription($this->request->getParam('Description'));
+        $channel->set('RenderMode', $this->request->getParam('renderMode'));
+        $channel->set('OutputType', $outputType);
+        $channel->setRenderType($renderType);
+        $channel->setIdLanguage($codeLanguage);
+        $result = $channel->update();
 		switch ($result) {
 			case 0:
 				$channel->messages->add(_('Not any change has been performed'), MSG_TYPE_WARNING);
@@ -111,17 +134,19 @@ class Action_modifychannel extends ActionAbstract
 				$channel->messages->add(_('An error occurred while modifying channel'), MSG_TYPE_ERROR);
 				break;
 			default:
-                if ($_POST["Default_Channel"]==1){
-                    if ($channel->setDefaultChannelToZero($idNode)){
+                if ($_POST["Default_Channel"] == 1) {
+                    if ($channel->setDefaultChannelToZero($idNode)) {
                         $channel->messages->add(_('Channel has been successfully modified'), MSG_TYPE_NOTICE);
-                    } else {
+                    }
+                    else {
                         $channel->messages->add(_('Error setting Default Channel property'), MSG_TYPE_NOTICE);
                     }
-                } else {
+                }
+                else {
                     $channel->messages->add(_('Channel has been successfully modified'), MSG_TYPE_NOTICE);
                 }
 		}
-		$values = array('messages' => $channel->messages->messages );
+		$values = array('messages' => $channel->messages->messages);
         $this->sendJSON($values);
     }
 }

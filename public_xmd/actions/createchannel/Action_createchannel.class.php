@@ -29,44 +29,56 @@ use Ximdex\Models\Channel;
 use Ximdex\Models\Node;
 use Ximdex\Models\NodeType;
 use Ximdex\MVC\ActionAbstract;
+use Ximdex\Models\ProgrammingLanguage;
 
 class Action_createchannel extends ActionAbstract
 {
     /**
      * Main method: shows initial form
      */
-    function index()
+    public function index()
     {
 		$idNode = $this->request->getParam('nodeid');
+		$progLanguage = new ProgrammingLanguage();
+		$codeLanguages = $progLanguage->find();
 		$this->addJs('/actions/createchannel/resources/js/index.js');
 		$values = array(
 			'id_node' => $idNode,
+		    'code_languages' => $codeLanguages,
 			'go_method' => 'createchannel');
 		$this->render($values, null, 'default-3.0.tpl');
     }
 
-	function createchannel()
+	public function createchannel()
 	{
 		$idNode = $this->request->getParam('id_node');
 		$outputType = $this->request->getParam('output_type');
-		if ($outputType == Channel::OUTPUT_TYPE_WEB) {
-		    $renderType = $this->request->getParam('web_render_type');
-            if (!$renderType) {
-                $this->messages->add('No render type selected for Web servers', MSG_TYPE_WARNING);
-                $values = array('messages' => $this->messages->messages, 'idNode' => $idNode);
-                $this->sendJSON($values);
-                return false;
-            }
-            if (!isset(Channel::WEB_RENDER_TYPES[$renderType])) {
-                $this->messages->add('There is not a render type for ' . $renderType, MSG_TYPE_WARNING);
-                $values = array('messages' => $this->messages->messages, 'idNode' => $idNode);
-                $this->sendJSON($values);
-                return false;
-            }
+		if (!$outputType) {
+		    $this->messages->add('No output type selected', MSG_TYPE_WARNING);
+		    $values = array('messages' => $this->messages->messages, 'idNode' => $idNode);
+		    $this->sendJSON($values);
+		    return false;
 		}
-		else {
-		    $renderType = null;
-		}
+	    $renderType = $this->request->getParam('render_type');
+        if (!$renderType) {
+            $this->messages->add('No render type selected', MSG_TYPE_WARNING);
+            $values = array('messages' => $this->messages->messages, 'idNode' => $idNode);
+            $this->sendJSON($values);
+            return false;
+        }
+        if (!isset(Channel::RENDER_TYPES[$renderType])) {
+            $this->messages->add('There is not a render type for ' . $renderType, MSG_TYPE_WARNING);
+            $values = array('messages' => $this->messages->messages, 'idNode' => $idNode);
+            $this->sendJSON($values);
+            return false;
+        }
+        $codeLanguage = $this->request->getParam('language');
+        if (!$codeLanguage) {
+            $this->messages->add('No code language selected', MSG_TYPE_WARNING);
+            $values = array('messages' => $this->messages->messages, 'idNode' => $idNode);
+            $this->sendJSON($values);
+            return false;
+        }
         $name = $this->request->getParam('name');
         $extension = $this->request->getParam('extension');
         $description = $this->request->getParam('description');
@@ -78,7 +90,7 @@ class Action_createchannel extends ActionAbstract
         // Control uniqueness of tupla, channel, format
         $node = new Node();
         $result = $node->CreateNode($complexName, $idNode, $nodeType->get('IdNodeType'), NULL, $name, $extension, NULL, $description, ''
-                , $renderMode, $outputType, $renderType);
+                , $renderMode, $outputType, $renderType, $codeLanguage);
         if ($result > 0) {
             $node->messages->add(_('Channel has been succesfully inserted'), MSG_TYPE_NOTICE);
         }

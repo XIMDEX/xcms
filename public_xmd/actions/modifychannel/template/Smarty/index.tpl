@@ -58,43 +58,61 @@
                 <div class="row">
                     <div class="small-2 columns">
                         <label class="input-form label_general" for="web_{$id_node}">
-                            <input type='radio' id="web_{$id_node}" name="OutputType_{$id_node}" {$output_check.web} value='web'> {t}Web{/t}
+                            <input type='radio' id="web_{$id_node}" name="output_type_{$id_node}" {$output_check.web} value='web'> {t}Web{/t}
                         </label>
 		            </div>
 		            <div class="small-2 columns">
 		                <label class="input-form label_general" for="xml_{$id_node}">
-		                    <input type='radio' id="xml_{$id_node}" name="OutputType_{$id_node}" {$output_check.xml} value='xml'> {t}Xml{/t}
+		                    <input type='radio' id="xml_{$id_node}" name="output_type_{$id_node}" {$output_check.xml} value='xml'> {t}Xml{/t}
 		                </label>
 		            </div>
 		            <div class="small-6 columns end">
 		                <label class="input-form label_general" for="other_{$id_node}">
-		                    <input type='radio' id="other_{$id_node}" name="OutputType_{$id_node}" {$output_check.other} 
+		                    <input type='radio' id="other_{$id_node}" name="output_type_{$id_node}" {$output_check.other} 
                                     value='other'> {t}Other{/t} (JSON, RDF, SQL, ...)
 		                </label>
 		            </div>
 		        </div>
 		    </div>
-		    <div class="small-12 columns hidden" id="render_type_mode_{$id_node}">
-                <label class="label_title label_general">{t}Render type for Web servers{/t} *</label>
+		    <div class="small-12 columns" id="render_type_mode_{$id_node}">
+                <label class="label_title label_general">{t}Render type for selected output{/t} *</label>
                 <div class="row">
                     <div class="small-2 columns">
-                        <label class="input-form label_general" for="web_render_type_static_{$id_node}">
-                            <input type='radio' id="web_render_type_static_{$id_node}" name="RenderType_{$id_node}" {$web_render_type.static} 
+                        <label class="input-form label_general" for="render_type_static_{$id_node}">
+                            <input type='radio' id="render_type_static_{$id_node}" name="render_type_{$id_node}" {$render_type.static} 
                                     value="static" /> Static
                         </label>
                     </div>
                     <div class="small-2 columns">
-                        <label class="input-form label_general" for="web_render_type_include_{$id_node}">
-                            <input type='radio' id="web_render_type_include_{$id_node}" name="RenderType_{$id_node}" {$web_render_type.include} 
+                        <label class="input-form label_general" for="render_type_include_{$id_node}">
+                            <input type='radio' id="render_type_include_{$id_node}" name="render_type_{$id_node}" {$render_type.include} 
                                     value="include" /> Include
                         </label>
                     </div>
-                    <div class="small-6 columns end">
-                        <label class="input-form label_general" for="web_render_type_dynamic_{$id_node}">
-                            <input type='radio' id="web_render_type_dynamic_{$id_node}" name="RenderType_{$id_node}" {$web_render_type.dynamic} 
-                                    value='dynamic' /> Dymanic
+                    <div class="small-2 columns">
+                        <label class="input-form label_general" for="render_type_dynamic_{$id_node}">
+                            <input type='radio' id="render_type_dynamic_{$id_node}" name="render_type_{$id_node}" {$render_type.dynamic} 
+                                    value='dynamic' /> Dynamic
                         </label>
                     </div>
+                    <div class="small-2 columns end">
+                        <label class="input-form label_general" for="render_type_index_{$id_node}">
+                            <input type='radio' id="render_type_index_{$id_node}" name="render_type_{$id_node}" {$render_type.index} 
+                                    value='index' /> Index
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="small-12 columns" id="code_language_{$id_node}">
+                <div class="input">
+                    <label for="language_{$id_node}" class="label_title label_general">{t}Code language for selected render type{/t} *</label>
+                    <select name="language" id="language_{$id_node}" class="validable not_empty">
+                        <option></option>
+                        {foreach from=$code_languages item=_language}
+                            <option id="language_{$_language.id}_{$id_node}" value="{$_language.id}" 
+                                {if $language == $_language.id} selected="selected" {/if}>{$_language.id|upper} ({$_language.description})</option>
+                        {/foreach}
+                    </select>
                 </div>
             </div>
             <div class="small-12 columns">

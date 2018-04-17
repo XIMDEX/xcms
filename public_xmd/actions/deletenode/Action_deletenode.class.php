@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,7 +25,6 @@
  *  @version $Revision$
  */
 
-
 use Ximdex\Models\Node;
 use Ximdex\Models\User;
 use Ximdex\MVC\ActionAbstract;
@@ -34,8 +34,8 @@ use Ximdex\Sync\SynchroFacade;
 
 class Action_deletenode extends ActionAbstract {
 
-	function index () {
-
+	function index()
+	{
 		$formType = "simple";
 
 		$nodes = $this->request->getParam("nodes");
