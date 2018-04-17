@@ -29,11 +29,7 @@
 	<input type="hidden" name="groupid" value="" />
 	<input type="hidden" name="state" value="{$state}" />
 	<input type="hidden" name="stateid" value="{$stateid}" />
-	<div class="action_header">
-		<h5 class="direction_header"> {t}Name Node:{/t} {t}{$name}{/t}</h5>
-		<h5 class="nodeid_header"> {t}ID Node:{/t} {$nodeid}</h5>
-		<hr>
-	</div>
+	{include file="actions/components/title_Description.tpl"}
 	{if $hasDisabledFunctions}
 		<div class="message message-warning">
 			<p class="disable-functions-alert">

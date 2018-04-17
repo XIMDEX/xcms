@@ -118,6 +118,7 @@ class Action_renamenode extends ActionAbstract
             'check_url' => $checkUrl,
             'id_node' => $idNode,
             'id_nodetype' => $nt,
+            'node_Type' => $node->nodeType->GetName(),
             'name' => $node->GetNodeName()
         );
         $this->render($values, NULL, 'default-3.0.tpl');

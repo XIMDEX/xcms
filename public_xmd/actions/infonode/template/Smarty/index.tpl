@@ -23,9 +23,7 @@
  *  @version $Revision$
  *}
 
-<div class="action_header">
-    <h2>{t}Information about{/t}: {$info.name}</h2>
-</div>
+{include file="actions/components/title_Description.tpl"}
 
 <div class="action_content">
     <input class="idNode" type="hidden" value="{$id_node}"/>

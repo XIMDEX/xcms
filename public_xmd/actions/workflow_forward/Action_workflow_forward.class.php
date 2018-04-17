@@ -156,6 +156,7 @@ class Action_workflow_forward extends ActionAbstract
             'required' => $conf['required'] === true ? 1 : 0,
             'defaultMessage' => $defaultMessage,
             'idNode' => $idNode,
+            'node_Type' => $node->nodeType->GetName(),
             'name' => $node->GetNodeName()
         );
         

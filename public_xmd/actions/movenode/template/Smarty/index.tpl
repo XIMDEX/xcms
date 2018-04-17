@@ -29,11 +29,7 @@
 	<input type="hidden" name="filtertype" value="{$filtertype}" />
 	<input type="hidden" name="targetid" id="targetid" />
 	<input type="hidden" id="editor" />
-	<div class="action_header">
-		<h5 class="direction_header"> {t}Name Node:{/t} {t}{$name}{/t}</h5>
-		<h5 class="nodeid_header"> {t}ID Node:{/t} {$nodeid}</h5>
-		<hr />
-	</div>
+	{include file="actions/components/title_Description.tpl"}
 	{if {!count($targetNodes)}}
 		<div class="message-warning message">
 			<p>{t}There aren't any available destination{/t}.</p>

@@ -26,9 +26,8 @@
 <form method="post" name="ren_form" id="ren_form" action="{$action_url}">
 	<input type="hidden" name="id_node" value="{$id_node}" />
 	<div class="action_header">
-		<h5 class="direction_header"> {t}Name Node:{/t} {t}{$name}{/t}</h5>
-		<h5 class="nodeid_header"> {t}ID Node:{/t} {$nodeid}</h5>
-		<hr>
+		
+		{include file="actions/components/title_Description.tpl"}
 	</div>
 	<div class="action_content">
 		<div class="row tarjeta">

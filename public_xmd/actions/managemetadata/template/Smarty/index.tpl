@@ -25,12 +25,7 @@
 
 <form method="post" name="managemetadata" id="managemetadata_form" action="{$action_url}" ng-controller="MetadataCtrl" ng-init="nodeId = '{$nodeid}';" ng-cloak xim-languages='{$json_languages}' xim-defaultlanguage='{$default_language}' xim-method="{$go_method}"
     xim-action="{$action}" novalidate>
-    <div class="action_header">
-        <h5 class="direction_header"> {t}Name Node:{/t} {t}{$name}{/t}</h5>
-        <h5 class="nodeid_header"> {t}ID Node:{/t} {$nodeid}</h5>
-        <hr>
-
-    </div>
+    {include file="actions/components/title_Description.tpl"}
     <!--<div class="message" ng-show="submitMessages.length">
         <p class="ui-state-primary ui-corner-all msg-info">
             #/submitMessages/#

@@ -37,6 +37,8 @@ class Action_createlanguage extends ActionAbstract
     function index()
     {
         $idNode = $this->request->getParam('nodeid');
+        $folder = new Node($idNode);
+        $idNode = $this->request->getParam('nodeid');
 
         $language = new Language();
         $languages = $language->find('IsoName', '', NULL, MONO);
@@ -61,6 +63,7 @@ class Action_createlanguage extends ActionAbstract
         $values = array(
             'id_node' => $idNode,
             'go_method' => 'createlanguage',
+            'node_Type' => $folder->nodeType->GetName(),
             'languages' => $langs);
 
         $this->render($values, null, 'default-3.0.tpl');
@@ -87,6 +90,7 @@ class Action_createlanguage extends ActionAbstract
         }
         
         $values = array('messages' => $this->messages->messages, 'idNode' => $idNode);
+        
         $this->sendJSON($values);
     }
 }

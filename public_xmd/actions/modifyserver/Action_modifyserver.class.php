@@ -85,8 +85,9 @@ class Action_modifyserver extends ActionAbstract
 				'description' => $servers->class->GetDescription($serverID),
 				'enabled' => $servers->class->GetEnabled($serverID),
 				'preview' => $servers->class->GetPreview($serverID),
-				'overridelocalpaths' => $servers->class->GetOverrideLocalPaths($serverID),
-			    'token' => $servers->class->GetToken($serverID)
+			    'token' => $servers->class->GetToken($serverID),
+			    'node_Type' => $servers->nodeType->GetName(),
+				'overridelocalpaths' => $servers->class->GetOverrideLocalPaths($serverID)
 			);
 		}
 		else {

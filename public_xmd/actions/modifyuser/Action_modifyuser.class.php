@@ -30,6 +30,8 @@ use Ximdex\Models\Role;
 use Ximdex\Models\User;
 use Ximdex\Models\XimLocale;
 use Ximdex\MVC\ActionAbstract;
+use Ximdex\Models\Node;
+
 
 
 class Action_modifyuser extends ActionAbstract {
@@ -37,6 +39,7 @@ class Action_modifyuser extends ActionAbstract {
     function index () {
 	    $idNode = $this->request->getParam('nodeid');
 		$user = new User($idNode);
+		$folder = new Node($idNode);
 
         $idRegisteredUser = \Ximdex\Runtime\Session::get('userID');
         $registeredUser = new User($idRegisteredUser);
@@ -61,6 +64,7 @@ class Action_modifyuser extends ActionAbstract {
 			'user_locale' => $user->get('Locale'),
 			'locales' => $locales,
 			'messages' => $this->messages->messages,
+		    'node_Type' => $folder->nodeType->GetName(),
             'canModifyUserGroup' => $canModifyUserGroup
             );
 

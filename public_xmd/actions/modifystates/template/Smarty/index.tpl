@@ -25,11 +25,7 @@
 
 <form method="post" id="msu_form" ng-controller="XModifyStatesCtrl" ng-init="idNode={$idNode};">
     <!-- header -->
-    <div class="action_header">
-        <h5 class="direction_header"> {t}Name Node:{/t} {t}Manage workflow{/t}</h5>
-        <h5 class="nodeid_header"> {t}ID Node:{/t} {$nodeid}</h5>
-        <hr>
-    </div>
+    {include file="actions/components/title_Description.tpl"}
     <!-- / header -->
     <!-- message -->
     <div ng-view ng-show="thereAreMessages" class="slide-item #/messageClass/# message">

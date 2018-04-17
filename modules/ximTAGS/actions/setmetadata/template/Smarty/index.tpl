@@ -24,9 +24,7 @@
  *}
 
 <form method="POST" name="tags_form" class="setmetadata-tags_form" ng-controller="XTagsCtrl" xim-document-tags='{$tags}' xim-cloud-tags='{$cloud_tags}' xim-namespaces='{$namespaces}' xim-node-id="{$id_node}" ng-cloak>
-    <div class="action_header">
-        <h2>{t}Tag this node{/t}: {$node_name}</h2>
-    </div>
+    {include file="actions/components/title_Description.tpl"}
 
     <div class="message slide-item" ng-show="submitMessages.length" ng-class="{literal}{'message-success': submitState == 'success'}{/literal}">
         <p class="ui-state-primary ui-corner-all msg-info" ng-repeat="message in submitMessages">

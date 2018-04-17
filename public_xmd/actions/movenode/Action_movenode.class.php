@@ -77,6 +77,7 @@ class Action_movenode extends Action_copy
 			'target_file' => null,
 			'node_path' => $node->GetPath(),
 			'isPublished' => $isPublished,
+		    'node_Type' => $node->nodeType->GetName(),
 			"go_method" => "move_node"
 		);
 		$this->render($values, NULL, 'default-3.0.tpl');

@@ -77,7 +77,8 @@ class Action_filedownload_multiple extends ActionAbstract {
 		$values = array(
 			'nodeName' => basename($tarFile),
 			'tarFile' => $tarFile,
-      'numChildren' => $numChildren,
+            'numChildren' => $numChildren,
+		    'node_Type' => $nod->nodeType->GetName(),
 			'name' => $nodName
 		);
 

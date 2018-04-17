@@ -80,6 +80,7 @@ class Action_modifygroupsnode extends ActionAbstract
             'all_groups' => $allGroups,
             'roles' => $roles,
             'go_method' => 'modifygroup',
+            'node_Type' => $node->nodeType->GetName(),
             'name' => $node->GetNodeName()
         );
 

@@ -24,11 +24,7 @@
  *}
 
 <form method="post" name="modifyproperties" action="{$action_url}">
-	<div class="action_header">
-		<h5 class="direction_header"> {t}Name Node:{/t} {t}{$name}{/t}</h5>
-		<h5 class="nodeid_header"> {t}ID Node:{/t} {$nodeid}</h5>
-		<hr>
-	</div>
+	{include file="actions/components/title_Description.tpl"}
 	<div class="action_content">
 		<fieldset>
 			{foreach from=$properties key=prop item=property}
