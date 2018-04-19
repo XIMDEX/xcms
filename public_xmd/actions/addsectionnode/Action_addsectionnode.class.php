@@ -45,7 +45,8 @@ class Action_addsectionnode extends ActionAbstract
         $nodeID = $this->request->getParam("nodeid");
         $node = new Node($nodeID);
         $values = array(
-            'name' => $node->GetNodeName()
+            'name' => $node->GetNodeName(),
+            'node_Type' => $node->nodeType->GetName()
         );
         $this->addCss('/actions/addsectionnode/resources/css/style.css');
         $this->addJs('/actions/addsectionnode/resources/js/init.js');
@@ -79,7 +80,6 @@ class Action_addsectionnode extends ActionAbstract
                 $sectionTypeOptions[] = array(
                     'value' => $sectionTypeInfo['idSectionType'],
                     'label' => $sectionTypeInfo['sectionType'],
-                    'node_Type' => $node->nodeType->GetName(),
                     'subfolders' => $subfolders
                 );
                 $nt[] = $sectionTypeInfo['idNodeType'];
@@ -116,12 +116,14 @@ class Action_addsectionnode extends ActionAbstract
             'PARENTID' => $nodeid,
             'FORCENEW' => true
         );
+        /*
         if ($nodetype == 3) {
             $id = $this->addcatalog($data);
         } else {
+        */
             $baseio = new \Ximdex\IO\BaseIO();
             $id = $baseio->build($data);
-        }
+        // }
         if ($id > 0) {
             $section = new Node($id);
             

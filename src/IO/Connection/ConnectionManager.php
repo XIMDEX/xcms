@@ -37,7 +37,7 @@ class ConnectionManager
 	private function ConnectionManager() {}
 	
 	static function getConnection($type, Server $server = null)
-	{    
+	{
 		$baseFullPath = __DIR__.'/';
 		$className = self::$baseName . self::normalizeName($type);
 		$connectionclass = $baseFullPath.$className.'.php';
@@ -55,7 +55,9 @@ class ConnectionManager
 			}
 		}
 		$factory = new \Ximdex\Utils\Factory($baseFullPath,self::$baseName);
-		return $factory->instantiate(self::normalizeName($type), $server, '\Ximdex\IO\Connection');
+		$conn = $factory->instantiate(self::normalizeName($type), $server, '\Ximdex\IO\Connection');
+		$conn->setType($type);
+		return $conn;
 	}
 	
 	private static function normalizeName($name)

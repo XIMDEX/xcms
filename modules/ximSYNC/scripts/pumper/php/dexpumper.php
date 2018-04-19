@@ -26,6 +26,7 @@
  */
 
 use Ximdex\Logger;
+use Ximdex\IO\Connection\Connector;
 use Ximdex\Models\Pumper;
 use Ximdex\Models\Server;
 use Ximdex\Runtime\App;
@@ -53,7 +54,7 @@ define('PUMPER_ERROR_LEVEL_FATAL', 3);
 
 class DexPumperCli extends CliParser
 {
-    var $_metadata = array(
+    public $_metadata = array(
         array('name' => '--iduser', 'mandatory' => false, 'default' => 'ximdex',
                         'message' => 'Username (or identifier)', 'type' => TYPE_STRING),
         array('name' => '--verbose', 'mandatory' => false, 'default' => 5,
@@ -74,7 +75,7 @@ class DexPumperCli extends CliParser
                         'message' => 'Identifier of server to be tested',
                         'type' => TYPE_INT, 'group' => array('name' => 'operation', 'value' => 2)));
 
-    function __construct ($paramsCount, $params)
+    public function __construct ($paramsCount, $params)
     {
         $this->_metadata[0]['message'] = _('Username (or identifier)');
         $this->_metadata[1]['message'] = _('Indicates the verbosity level of the log');
@@ -100,7 +101,7 @@ class DexPumper
 	const RETRIES_TO_HARD_ERROR = 2;
 	const RETRIES_TO_FATAL_ERROR = 5;
 
-	function __construct($params)
+	public function __construct($params)
 	{
 		// Collect parameters
 		$this->tryserver = trim($params['--tryserver']);
@@ -116,7 +117,7 @@ class DexPumper
 		$this->localBasePath = trim($params['--localbasepath']);
 	}
 
-	function start()
+	public function start()
 	{
 		$cycle = 0;
 		$this->registerPumper();
@@ -143,6 +144,7 @@ class DexPumper
 					$stopper_file_path = XIMDEX_ROOT_PATH . App::getValue("TempRoot") . "/pumper.stop";
 					if (file_exists($stopper_file_path)) {
 					    Logger::warning('[PUMPERS] ' . _("STOP: Detected file") . " $stopper_file_path");
+					    $this->unRegisterPumper();
 					    exit();
 					}
 					$this->info("cycle $cycle without working. Sleeping.....");
@@ -191,7 +193,7 @@ class DexPumper
 		$this->updateTask($uploading, ServerFrame::PUMPED);
 	}
 
-	private function  RemoveRemoteFile()
+	private function RemoveRemoteFile()
 	{
 		$IdSync = (int) $this->serverFrame->get('IdSync');
 		$initialDirectory = $this->server->get('InitialDirectory');
@@ -307,13 +309,17 @@ class DexPumper
 			}
 			else
 			{
-			    $this->error('Can\'t connect to host');
+			    $this->error('Can\'t connect to host: ' . $host);
 			}
+		}
+		if ($this->connection->getError()) {
+		    $this->error($this->connection->getError());
 		}
 		if (!$this->connection->isConnected()) {
 			$msg_error = sprintf('Fail to connect o wrong login credentials for server: %s:%s with user: %s',  $host, $port, $login);
 			$this->fatal($msg_error);
 			$this->updateServerState('Failed to connect');
+			$this->unRegisterPumper();
 			exit(200);
 		}
 		$this->updateTimeInPumper();
@@ -364,7 +370,17 @@ class DexPumper
 	
 	private function taskDelete($remoteFile)
 	{
-		return $this->connection->rm($remoteFile);
+	    if ($this->connection->getType() == Connector::TYPE_API) {
+	        $id = $this->serverFrame->getNodeID();
+	        if (!$id) {
+	            $this->error('Cannot load the node ID from the current server channel frame');
+	            return false;
+	        }
+	    }
+	    else {
+	        $id = null;
+	    }
+		return $this->connection->rm($remoteFile, $id);
 	}
 
 	private function taskRename($targetFile, $targetFolder, $newFile, $idSync = null)
@@ -419,7 +435,8 @@ class DexPumper
 	private function updateServerState($status)
 	{
 		if (!empty($status)) {
-		    $this->server->query("UPDATE ServerErrorByPumper SET WithError='$status' WHERE ServerId=" . $this->server->get('IdServer'));
+		    $sql = 'UPDATE ServerErrorByPumper SET WithError = 1, Error = \'' . $status . '\' WHERE ServerId = ' . $this->server->get('IdServer');
+		    $this->server->query($sql);
 			$this->server->set('ActiveForPumping', 1);
 			$this->server->update();
 		}
@@ -431,6 +448,7 @@ class DexPumper
 		if ('NEW' == $state_pumper) {
 			$msg = "No ha sido posible registrar el bombeador al tener estado de NEW";
 			$this->fatal($msg);
+			$this->unRegisterPumper();
 			exit(0);
 		} else {
 			$this->startPumper();

@@ -238,13 +238,10 @@ class ConnectionSsh extends Connector implements IConnector
     }
 
     /**
-     * Removes a file from server
-     *
-     * @access public
-     * @param path string
-     * @return boolean
+     * {@inheritDoc}
+     * @see \Ximdex\IO\Connection\IConnector::rm()
      */
-    public function rm($path)
+    public function rm($path, int $id = null)
     {
         $localPath = $this->pwd();
         if ($this->cd($path)) {

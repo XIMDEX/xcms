@@ -751,4 +751,20 @@ class ServerFrame extends ServerFrames_ORM
         }
         return NULL;
     }
+    
+    /**
+     * @return int|NULL
+     */
+    public function getNodeID() : ?int
+    {
+        if (!$this->IdChannelFrame) {
+            return null;
+        }
+        $channelFrame = new ChannelFrame();
+        $res = $channelFrame->find('NodeID', 'IdChannelFrame = ' . $this->IdChannelFrame);
+        if (!$res) {
+            return null;
+        }
+        return $res['NodeID'];
+    }
 }

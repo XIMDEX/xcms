@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -25,12 +26,10 @@
  */
 
 use Ximdex\Models\Node;
-use Ximdex\Models\NodeType;
 use Ximdex\MVC\ActionAbstract;
 
-
-class Action_managefolders extends ActionAbstract {
-
+class Action_managefolders extends ActionAbstract
+{
 	/** 
 	* Main function 
 	*
@@ -39,15 +38,12 @@ class Action_managefolders extends ActionAbstract {
 	* Request params: 
  	*  
 	* * nodeid 
-	* 
  	*/ 
-    	function index () {
+    function index()
+    {
 		$this->addCss('/actions/addsectionnode/resources/css/style.css');
 		$nodeID = $this->request->getParam("nodeid");
 		$node = new Node($nodeID);
-
-		$nodeType = new NodeType($node->GetNodeType());
-                $nodetype_name = $nodeType->get('Name');
 		$selectedFolders = $this->_getChildrenNodeTypes($nodeID);		
 
 		$subfolders=$this->_getAvailableSubfolders($node->GetNodeType());
@@ -64,7 +60,7 @@ class Action_managefolders extends ActionAbstract {
 
         	$values = array('nodeID' => $nodeID,
 				'sectionName' => $node->get('Name'),
-				'sectionType' => $nodetype_name,
+        	    'sectionType' => $node->nodeType->GetName(),
 				'subfolders' => $subfolders,
         	    'node_Type' => $node->nodeType->GetName(),
 				'go_method' => 'configure_section',

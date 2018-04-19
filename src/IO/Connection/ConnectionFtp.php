@@ -337,15 +337,10 @@ class ConnectionFtp extends Connector implements IConnector
     }
 
     /**
-     * Removes a file from server
-     *
-     * @access public
-     * @param path string
-     * @param recursive boolean
-     * @param filesOnly boolean
-     * @return boolean
+     * {@inheritDoc}
+     * @see \Ximdex\IO\Connection\IConnector::rm()
      */
-    public function rm($path)
+    public function rm($path, int $id = null)
     {
         try {
             if ($this->isDir($path)) {

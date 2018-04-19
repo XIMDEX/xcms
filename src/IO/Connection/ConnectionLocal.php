@@ -223,13 +223,10 @@ class ConnectionLocal extends Connector implements IConnector
 	}
 	
 	/**
-	 * Removes a file from server
-	 * 
-	 * @access public
-	 * @param path string
-	 * @return boolean
-	 */
-	public function rm($path)
+     * {@inheritDoc}
+     * @see \Ximdex\IO\Connection\IConnector::rm()
+     */
+    public function rm($path, int $id = null)
 	{
 		try {
 			if (is_file($path)) {

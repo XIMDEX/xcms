@@ -28,6 +28,7 @@
 namespace Ximdex\IO\Connection;
 
 use GuzzleHttp\Client;
+use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
 
 class ConnectionApi extends Connector implements IConnector
@@ -55,15 +56,21 @@ class ConnectionApi extends Connector implements IConnector
 	        $host .= ':' . $port;
 	    }
 	    $this->host = $host;
-	    $res = $this->client->request('GET', $this->host);
-	    if ($res->getStatusCode() == 200) {
-	        $res = true;
+	    try {
+	       $res = $this->client->request('GET', $this->host);
 	    }
-	    else {
-	        $res = false;
+	    catch (\Exception $e) {
+	        $this->error = $e->getMessage();
+	        $this->connected = false;
+	        return false;
 	    }
-	    $this->connected = $res;
-		return $res;
+	    if ($res->getStatusCode() != 200) {
+	        $this->error = 'The connection to API service return the status code: ' . $res->getStatusCode();
+	        $this->connected = false;
+	        return false;
+	    }
+	    $this->connected = true;
+		return true;
 	}
 	
     /**
@@ -164,9 +171,20 @@ class ConnectionApi extends Connector implements IConnector
 	 * {@inheritDoc}
 	 * @see \Ximdex\IO\Connection\IConnector::rm()
 	 */
-	public function rm($path)
+	public function rm($path, int $id = null)
 	{
-		return true;
+	    try {
+	        $res = $this->client->request('DELETE', $this->host . '/' . App::getValue('ximid') . ':' . $id);
+	    }
+	    catch (\Exception $e) {
+	        $this->error = $e->getMessage();
+	        return false;
+	    }
+	    if ($res->getStatusCode() == 200) {
+	        return true;
+	    }
+	    $this->error = 'The connection to API service return the status code: ' . $res->getStatusCode();
+	    return false;
 	}
 	
 	/**
@@ -184,6 +202,7 @@ class ConnectionApi extends Connector implements IConnector
 	 */
 	public function put($localFile, $targetFile, $mode = 0755)
 	{
+	    $this->isFile = false;
 	    $content = FsUtils::file_get_contents($localFile);
 	    if ($content === false) {
 	        return false;
@@ -191,13 +210,20 @@ class ConnectionApi extends Connector implements IConnector
 	    $dom = new \DOMDocument();
 	    if ($dom->loadXML($content) === false) {
 	        $this->error = 'The content given in PUT request is not a valid XML document';
+            return false;
+	    }
+	    try {
+	       $res = $this->client->request('PUT', $this->host, ['body' => $content]);
+	    }
+	    catch (\Exception $e) {
+	        $this->error = $e->getMessage();
 	        return false;
 	    }
-	    $res = $this->client->request('PUT', $this->host, ['body' => $content]);
 	    if ($res->getStatusCode() == 200) {
 	        $this->isFile = true;
 	        return true;
 	    }
+	    $this->error = 'The connection to API service return the status code: ' . $res->getStatusCode();
 		return false;
 	}
 	

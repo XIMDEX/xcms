@@ -135,10 +135,11 @@ interface IConnector
 	 * Removes a file from server
 	 * 
 	 * @access public
-	 * @param path string
+	 * @param string path
+	 * @param int id
 	 * @return boolean
 	 */
-	public function rm($path);
+	public function rm($path, int $id = null);
 	
 	/**
 	 * Copies a given file from server to local
