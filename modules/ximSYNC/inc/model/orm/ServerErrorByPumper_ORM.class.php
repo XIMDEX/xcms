@@ -26,18 +26,19 @@
  */
 class ServerErrorByPumper_ORM extends \Ximdex\Data\GenericData
 {
-    var $_idField = 'ErrorId';
-    var $_table = 'ServerErrorByPumper';
-    var $_metaData = array(
+    public $_idField = 'ErrorId';
+    public $_table = 'ServerErrorByPumper';
+    public $_metaData = array(
         'ErrorId' => array('type' => 'int(12)', 'not_null' => 'true', 'auto_increment' => 'true'),
         'PumperId' => array('type' => 'int(12)', 'not_null' => 'true'),
         'ServerId' => array('type' => 'int(12)', 'not_null' => 'true'),
         'WithError' => array('type' => 'int(12)', 'not_null' => 'true'),
-        'UnactivityCycles' => array('type' => 'int(12)', 'not_null' => 'true')
+        'UnactivityCycles' => array('type' => 'int(12)', 'not_null' => 'true'),
     );
-    var $ErrorId;
-    var $PumperId;
-    var $ServerId;
-    var $WithError;
-    var $UnactivityCycles;
+    public $ErrorId;
+    public $PumperId;
+    public $ServerId;
+    public $WithError;
+    public $UnactivityCycles;
+    public $Error;
 }

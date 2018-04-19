@@ -112,13 +112,17 @@ CREATE TABLE `Pumpers` (
 --
 
 CREATE TABLE `ServerErrorByPumper` (
-  `ErrorId` int(12) unsigned NOT NULL auto_increment,
-  `PumperId` int(12) unsigned NOT NULL,
-  `ServerId` int(12) unsigned NOT NULL,
-  `WithError` int(12) unsigned NOT NULL,
-  `UnactivityCycles` int(12) unsigned NOT NULL,
-  PRIMARY KEY  (`ErrorId`)
+  `ErrorId` int(12) UNSIGNED NOT NULL,
+  `PumperId` int(12) UNSIGNED NOT NULL,
+  `ServerId` int(12) UNSIGNED NOT NULL,
+  `WithError` tinyint(1) NOT NULL DEFAULT 0,
+  `UnactivityCycles` int(12) UNSIGNED NOT NULL,
+  `Error` text DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+ALTER TABLE `ServerErrorByPumper` ADD PRIMARY KEY (`ErrorId`);
+
+ALTER TABLE `ServerErrorByPumper` MODIFY `ErrorId` int(12) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 -- --------------------------------------------------------
 

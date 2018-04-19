@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,7 +25,6 @@
  *  @version $Revision$
  */
 
-
 use Ximdex\Models\Server;
 use Ximdex\NodeTypes\ServerNode;
 use Ximdex\Logger;
@@ -33,95 +33,83 @@ include_once(XIMDEX_ROOT_PATH."/modules/ximSYNC/inc/model/ServerErrorByPumper.cl
 include_once(XIMDEX_ROOT_PATH."/modules/ximSYNC/conf/synchro_conf.php");
 
 /**
-*	@brief Manages the errors found during the sending of ServerFrames to Server.
+* @brief Manages the errors found during the sending of ServerFrames to Server.
 *
-*	The activity of Pumpers is checked Periodically and if any error is detected the Pumper it's stopped and its ServerFrames  changed to Status WithError.   After an inactivity period, if the error doesn't exists the pumper restart its activity.
+* The activity of Pumpers is checked Periodically and if any error is detected the Pumper it's stopped and its ServerFrames 
+* changed to Status WithError.   After an inactivity period, if the error doesn't exists the pumper restart its activity.
 */
-
-class ServerErrorManager {
-
+class ServerErrorManager
+{
 	/**
-	*  Gets the publication servers that are availables for upload documents.
-	*  @return array
+	* Gets the publication servers that are availables for upload documents
+	* 
+	* @return array
 	*/
-
-   public static function getServersForPumping() {
-
+   public static function getServersForPumping()
+   {
 		$dbObj = new \Ximdex\Runtime\Db();
 		$sql = "SELECT ErrorId, UnactivityCycles FROM ServerErrorByPumper WHERE WithError = 1";
 		$dbObj->Query($sql);
-
 		if($dbObj->numRows > 0){
 			while(!$dbObj->EOF) {
 				$errorId = $dbObj->GetValue('ErrorId');
 				$cycles = $dbObj->GetValue('UnactivityCycles');
-
 				$error = new ServerErrorByPumper($errorId);
 
 				// Enable for pumping servers with num. cycles > unactivityCycles
 				if ($cycles > UNACTIVITY_CYCLES) {
 					$idServer = $error->get('ServerId');
 					$idPumper = $error->get('PumperId');
-
 					$error->set('WithError',0);
 					$error->set('UnactivityCycles',0);
 					$error->update();
-
 					self::enableServer($idServer, $idPumper);
 				} else {
 					$error->sumUnactivityCycles();
 				}
-
 				$dbObj->Next();
 			}
 		}
 
 		// Getting servers
 		$enabledServers = ServerNode::getServersForPumping();
-
 		return $enabledServers;
     }
 
 	/**
-	*  Disables a Server in which have detected an error.
- 	*/
-	/**
-	 * @param $pumperId
-	 */
-    function disableServerByPumper($pumperId) {
+	* Disables a Server in which have detected an error
+	* 
+	* @param $pumperId
+	*/
+    public function disableServerByPumper($pumperId)
+    {
 		$serverError = new ServerErrorByPumper();
 		$serverError->loadByPumper($pumperId);
 		$idServer = $serverError->get('ServerId');
 		$serverError->set('WithError',1);
 		$serverError->update();
-
 		Logger::info(_("Disabling server")." $idServer");
-
 		$serverNode = new Server($idServer);
 		$serverNode->set('ActiveForPumping',0);
 		$serverNode->update();
     }
 
 	/**
-	*  Enables a Server in which a previous error is fixed.
+	* Enables a Server in which a previous error is fixed
+	* 
+	* @param $idServer
+	* @param $idPumper
 	*/
-	/**
-	 * @param $idServer
-	 * @param $idPumper
-	 */
-	  static public function   enableServer($idServer, $idPumper) {
-
+	static public function enableServer($idServer, $idPumper)
+	{
 		Logger::info(_("Enabling server")." $idServer");
-
 		$serverNode = new Server($idServer);
 		$serverNode->set('ActiveForPumping',1);
 		$serverNode->update();
 
 		// Set serverframes to Due2In/Out for retry pumping
 		Logger::info(_("Setting ServerFrames to Due2In/Out to retry pumping"));
-
 		$serverFrame = new ServerFrame();
 		$serverFrame->rescueErroneous($idPumper);
 	}
-
 }

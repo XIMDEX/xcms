@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,77 +25,69 @@
  *  @version $Revision$
  */
 
-
 use Ximdex\Logger;
 
 \Ximdex\Modules\Manager::file('/inc/model/orm/ServerErrorByPumper_ORM.class.php', 'ximSYNC');
 \Ximdex\Modules\Manager::file('/inc/model/ServerFrame.class.php', 'ximSYNC');
 
 /**
-*	@brief Manages the errors found during the sending of ServerFrames to Server.
+* @brief Manages the errors found during the sending of ServerFrames to Server.
 *
-*	This class includes the methods that interact with the Database.
+* This class includes the methods that interact with the Database.
 */
-
-class ServerErrorByPumper extends ServerErrorByPumper_ORM {
-
+class ServerErrorByPumper extends ServerErrorByPumper_ORM
+{
 	/**
-	*  Gets the field ErrorId from ServerErrorByPumper table which matching the value of pumperId.
-	*  @param int pumperId
+	* Gets the field ErrorId from ServerErrorByPumper table which matching the value of pumperId
+	* 
+	* @param int pumperId
 	*/
-
-    function loadByPumper($pumperId = null){
-		if($pumperId){
+    function loadByPumper($pumperId = null)
+    {
+		if ($pumperId) {
 			$dbObj = new \Ximdex\Runtime\Db();
 			$sql = "SELECT ErrorId FROM ServerErrorByPumper WHERE PumperId = $pumperId";
 			$dbObj->Query($sql);
-
-			if($dbObj->numRows == 0){
+			if ($dbObj->numRows == 0){
 				Logger::info(sprintf(_("Pumper %s does not exist"), $pumperId));
 				die();
 			}
-
 			$errorId = $dbObj->GetValue(ErrorId);
-		 }
+		}
 		parent::__construct($errorId);
     }
 
 	/**
-	*  Adds a row to ServerErrorByPumper table.
-	*  @param int pumperId
-	*  @param int serverId
-	*  @return int|null
+	* Adds a row to ServerErrorByPumper table
+	* 
+	* @param int pumperId
+	* @param int serverId
+	* @return int|null
 	*/
-
-    function create($pumperId,$serverId) {
+    function create($pumperId,$serverId)
+    {
 		$this->set('PumperId',$pumperId);
 		$this->set('ServerId',$serverId);
 		$this->set('WithError',0);
 		$this->set('UnactivityCycles',0);
-
 		parent::add();
 		$errorId = $this->get('ErrorId');
-
 		if ($errorId > 0) {
 			return $errorId;
 		}
-
 		Logger::info(_("Creating serverError"));
 		return NULL;
     }
 
 	/**
-	*	Increases the inactivity cycles and updates ServerErrorByPumper table.
+	* Increases the inactivity cycles and updates ServerErrorByPumper table
 	*/
-
-    function sumUnactivityCycles() {
+    function sumUnactivityCycles()
+    {
 		$counter = $this->get('UnactivityCycles');
 		$idServer = $this->get('ServerId');
-
 		Logger::info(sprintf(_("Server %d has %d cycles inactive"), $idServer, $counter));
-
-		$this->set('UnactivityCycles',$counter + 1);
+		$this->set('UnactivityCycles', $counter + 1);
 		$this->update();
     }
-
 }
