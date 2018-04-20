@@ -760,11 +760,10 @@ class ServerFrame extends ServerFrames_ORM
         if (!$this->IdChannelFrame) {
             return null;
         }
-        $channelFrame = new ChannelFrame();
-        $res = $channelFrame->find('NodeID', 'IdChannelFrame = ' . $this->IdChannelFrame);
-        if (!$res) {
+        $channelFrame = new ChannelFrame($this->IdChannelFrame);
+        if (!$channelFrame->get('NodeId')) {
             return null;
         }
-        return $res['NodeID'];
+        return $channelFrame->get('NodeId');
     }
 }

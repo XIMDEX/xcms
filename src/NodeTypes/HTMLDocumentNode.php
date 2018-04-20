@@ -29,10 +29,11 @@ namespace Ximdex\NodeTypes;
 
 use Ximdex\Logger;
 use Ximdex\Models\RelTagsNodes;
-use Ximdex\Models\SectionType;
 use Ximdex\Models\StructuredDocument;
+use Ximdex\Models\Section;
 use SimpleXMLElement;
 use Ximdex\Runtime\App;
+use Ximdex\Models\SectionType;
 
 class HTMLDocumentNode extends AbstractStructuredDocument
 {
@@ -389,20 +390,18 @@ class HTMLDocumentNode extends AbstractStructuredDocument
      */
     private static function createXIF($nodeID, $content, $channel)
     {
-
         $node = new \Ximdex\Models\Node($nodeID);
         $relTagsNodes = new RelTagsNodes();
         $tags = $relTagsNodes->getTags($node->GetID());
         $sectionId = $node->GetSection();
-        $section = new \Ximdex\Models\Node($sectionId);
         $ximID = App::getValue('ximid');
         $version = $node->GetLastVersion() ?? [];
+        $section = new Section($sectionId);
+        $sectionNode = new \Ximdex\Models\Node($section->getIdNode());
+        $sectionType = new SectionType($section->getIdSectionType());
         $sd = new StructuredDocument($nodeID);
         $hDoc = new HTMLDocumentNode($nodeID);
-
         $docxif = $hDoc->getDocHeader($channel, $sd->GetLanguage(), $sd->GetDocumentType(), static::DOCXIF);
-
-
         $xml = new SimpleXMLElement("$docxif</" . static::DOCXIF . '>');
         $xml->addChild('id', implode(":", [$ximID, $node->GetID()]));
         $xml->addChild('file_version', $version["Version"] ?? '');
@@ -412,16 +411,17 @@ class HTMLDocumentNode extends AbstractStructuredDocument
             }
         }
         $xml->addChild('repository_id', $ximID);
+        $xml->addChild('name', $node->GetNodeName());
+        $xml->addChild('slug', $node->GetNodeName());
         $xml->addChild('content_flat', strip_tags($content));
         $xml->addChild('content_render', $content);
-        $xml->addChild('creation_date', $node->get('CreationDate'));
-        $xml->addChild('update_date', $node->get('ModificationDate'));
-        $xml->addChild('section', $section->GetNodeName());
+        $xml->addChild('creation_date', date('Y-m-d H:i:s', $node->get('CreationDate')));
+        $xml->addChild('update_date', date('Y-m-d H:i:s', $node->get('ModificationDate')));
+        $xml->addChild('section', $sectionNode->GetNodeName());
         $xml->addChild('state', "publish"); // TODO state
         $xml->addChild('author', $version["UserName"] ?? ''); //TODO Author
         $xml->addChild('date', '2018-06-10 08:40:34'); //TODO date
-        $xml->addChild('type', $section->nodeType->get('name'));//TODO tipo del documento
-
+        $xml->addChild('type', $sectionType->get('sectionType'));//TODO tipo del documento
         return $xml->asXML();
     }
 }

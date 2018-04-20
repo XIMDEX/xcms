@@ -154,7 +154,6 @@ class ConnectionApi extends Connector implements IConnector
 	 */
 	public function size($file)
 	{
-	    //TODO ajlucena!
 		return 1;
 	}
 	
@@ -213,7 +212,7 @@ class ConnectionApi extends Connector implements IConnector
             return false;
 	    }
 	    try {
-	       $res = $this->client->request('PUT', $this->host, ['body' => $content]);
+	       $res = $this->client->request('PUT', $this->host, ['body' => $content, 'headers' => ['Content-Type' => 'application/xml']]);
 	    }
 	    catch (\Exception $e) {
 	        $this->error = $e->getMessage();

@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -31,49 +32,45 @@ use Ximdex\Logger;
 \Ximdex\Modules\Manager::file('/inc/model/orm/ChannelFrames_ORM.class.php', 'ximSYNC');
 
 /**
-*	@brief Handles operations with ChannelFrames.
+* @brief Handles operations with ChannelFrames
 *
-*	A ChannelFrame stores the relationship between a NodeFrame and the channels in wich the Node will be published.
-*	This class includes the methods that interact with the Database.
+* A ChannelFrame stores the relationship between a NodeFrame and the channels in wich the Node will be published
+* This class includes the methods that interact with the Database
 */
-
-class ChannelFrame extends ChannelFrames_ORM {
-
+class ChannelFrame extends ChannelFrames_ORM
+{
 	/**
-	*  Adds a row to ChannelFrames table.
-	*  @param int channel
-	*  @param int idNode
-	*  @return int|null
+	* Adds a row to ChannelFrames table
+	* 
+	* @param int channel
+	* @param int idNode
+	* @return int|null
 	*/
-
-    function create($channel, $idNode) {
-
+    public function create($channel, $idNode)
+    {
 		if ($channel == 'NULL') {
 			$channel = NULL;
 		}
-
-		$this->set('ChannelId',$channel);
-		$this->set('NodeId',$idNode);
-
+		$this->set('ChannelId', $channel);
+		$this->set('NodeId', $idNode);
 		parent::add();
 		$idChannelFrame = $this->get('IdChannelFrame');
-
 		if ($idChannelFrame > 0) {
 			return $idChannelFrame;
 		}
-
-		Logger::info("ERROR Creando el channelFrame");
+		Logger::error('Cannot create the channel frame for node ID: ' . $idNode);
 		return NULL;
     }
 
 	/**
-	*  Gets the IdChannelFrame from ChannelFrames table which matching the value of nodeId and it is the newest.
-	*  @param int nodeID
-	*  @param int channelID
-	*  @return int|null
+	* Gets the IdChannelFrame from ChannelFrames table which matching the value of nodeId and it is the newest
+	* 
+	* @param int nodeID
+	* @param int channelID
+	* @return int|null
 	*/
-
-	function getLast($nodeID, $channelID = null) {
+	public function getLast($nodeID, $channelID = null)
+	{
 		if (is_null($channelID)) {
 			$params = array( 'NodeId' => $nodeID );
 			$condition = "NodeId = %s";
@@ -81,15 +78,10 @@ class ChannelFrame extends ChannelFrames_ORM {
 			$params = array( 'ChannelId' => $channelID, 'NodeId' => $nodeID );
 			$condition = "ChannelId = %s AND NodeId = %s";
 		}
-
-		$result = $this->find('IdChannelFrame',
-                        $condition . ' ORDER BY IdChannelFrame DESC',
-                        $params, MONO);
+		$result = $this->find('IdChannelFrame', $condition . ' ORDER BY IdChannelFrame DESC', $params, MONO);
 		if (is_null($result)) {
 			return null;
 		}
-
 		return $result;
 	}
-
 }

@@ -371,9 +371,14 @@ class DexPumper
 	private function taskDelete($remoteFile)
 	{
 	    if ($this->connection->getType() == Connector::TYPE_API) {
-	        $id = $this->serverFrame->getNodeID();
+	        if (!$this->serverFrame->get('IdNodeFrame')) {
+	            $this->error('Cannot load the node frame from the current server frame');
+	            return false;
+	        }
+	        $nodeFrame = new NodeFrame($this->serverFrame->get('IdNodeFrame'));
+	        $id = $nodeFrame->get('NodeId');
 	        if (!$id) {
-	            $this->error('Cannot load the node ID from the current server channel frame');
+	            $this->error('Cannot load the node ID from the current node frame');
 	            return false;
 	        }
 	    }

@@ -24,6 +24,7 @@
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
+
 class ChannelFrames_ORM extends \Ximdex\Data\GenericData
 {
     var $_idField = 'IdChannelFrame';

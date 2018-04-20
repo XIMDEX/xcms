@@ -29,11 +29,10 @@ use Ximdex\Models\Node;
 use Ximdex\Models\NodeType;
 use Ximdex\Models\SectionType;
 use Ximdex\MVC\ActionAbstract;
-use Ximdex\NodeTypes\NodeTypeConstants;
 use Ximdex\Properties\InheritedPropertiesManager;
 use Ximdex\Models\NodeDefaultContents;
 
-//TODO unable to load \Ximdex\Modules\Manager::file('/inc/io/XlyreBaseIO.class.php', 'xlyre');
+// \Ximdex\Modules\Manager::file('/inc/io/XlyreBaseIO.class.php', 'xlyre');
 
 class Action_addsectionnode extends ActionAbstract
 {
@@ -114,7 +113,8 @@ class Action_addsectionnode extends ActionAbstract
             'NAME' => $name,
             'SUBFOLDERS' => $folderlst,
             'PARENTID' => $nodeid,
-            'FORCENEW' => true
+            'FORCENEW' => true,
+            'SECTIONTYPE' => $nodetype
         );
         /*
         if ($nodetype == 3) {
@@ -203,7 +203,6 @@ class Action_addsectionnode extends ActionAbstract
         }
         return $id;
     }
-    */
 
     private function _createLicenseLinksFolder($links_id)
     {
@@ -240,4 +239,5 @@ class Action_addsectionnode extends ActionAbstract
         $bio = new \Ximdex\IO\BaseIO();
         $bio->build($data);
     }
+    */
 }

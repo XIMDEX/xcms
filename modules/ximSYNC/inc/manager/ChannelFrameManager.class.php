@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,53 +25,38 @@
  *  @version $Revision$
  */
 
-
 use Ximdex\Models\Channel;
-
 
 include_once( XIMDEX_ROOT_PATH . '/modules/ximSYNC/inc/manager/ServerFrameManager.class.php');
 
 /**
-*	@brief Handles operations with ChannelFrames.
+* @brief Handles operations with ChannelFrames
 *	
-*	A ChannelFrame stores the relationship between a NodeFrame and the channels in wich the Node will be published.
+* A ChannelFrame stores the relationship between a NodeFrame and the channels in wich the Node will be published
 */
-
-class ChannelFrameManager {
-
-	function __construct() {
-
-	}
-
+class ChannelFrameManager
+{
 	/**
-	*  Calls to ServerFrameManager method ChangeState.
-	*  @param int serverFrameId
-	*  @param string operation
-	*  @param int nodeId
-	*  @param int canceled
-	*  @return array
+	* Calls to ServerFrameManager method ChangeState
+	* 
+	* @param int serverFrameId
+	* @param string operation
+	* @param int nodeId
+	* @param int canceled
+	* @return array
 	*/
-
-	function changeState($serverFrameId, $operation, $nodeId, $canceled) {
-
+	public function changeState($serverFrameId, $operation, $nodeId, $canceled)
+	{
 		$serverFrame = new ServerFrame($serverFrameId);
 		$channelFrame = new ChannelFrame($serverFrame->get('IdChannelFrame'));
-
 		$channel = new Channel($channelFrame->get('ChannelId'));
 		$renderMode = $channel->get('RenderMode');
-
 		if ($renderMode == 'client'){
 			$operation = 'Up';
 		}
-		
-
-		// todo:make foreach serverframes
-
+		//TODO make foreach serverframes
 		$serverFrameManager = new ServerFrameManager();
 		$result = $serverFrameManager->changeState($serverFrameId, $operation, $nodeId, $canceled);
-
 		return $result;
 	}
-
 }
-?>

@@ -47,6 +47,7 @@ class NodesToPublish extends NodesToPublish_ORM
 		$node->set('UserId', $userId);
 		if ($idNode == $idNodeGenerator) {
 		    $force = true;
+		    $lastPublishedVersion = true;
 		}
 		$node->set('ForcePublication', $force ? 1 : 0);
 		$node->set('DeepLevel', $deepLevel);
