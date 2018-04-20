@@ -21,8 +21,8 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 use Ximdex\Models\Channel;
@@ -38,34 +38,30 @@ class Action_createchannel extends ActionAbstract
      */
     public function index()
     {
-<<<<<<< HEAD
-=======
-     
->>>>>>> branch 'develop' of https://github.com/XIMDEX/ximdex.git
         $idNode = $this->request->getParam('nodeid');
         $node = new Node($idNode);
-		$progLanguage = new ProgrammingLanguage();
-		$codeLanguages = $progLanguage->find();
-		$this->addJs('/actions/createchannel/resources/js/index.js');
-		$values = array(
-			'id_node' => $idNode,
-		    'code_languages' => $codeLanguages,
-		    'node_Type' => $node->nodeType->GetName(),
-			'go_method' => 'createchannel');
-		$this->render($values, null, 'default-3.0.tpl');
+        $progLanguage = new ProgrammingLanguage();
+        $codeLanguages = $progLanguage->find();
+        $this->addJs('/actions/createchannel/resources/js/index.js');
+        $values = array(
+            'id_node' => $idNode,
+            'code_languages' => $codeLanguages,
+            'node_Type' => $node->nodeType->GetName(),
+            'go_method' => 'createchannel');
+        $this->render($values, null, 'default-3.0.tpl');
     }
 
-	public function createchannel()
-	{
-		$idNode = $this->request->getParam('id_node');
-		$outputType = $this->request->getParam('output_type');
-		if (!$outputType) {
-		    $this->messages->add('No output type selected', MSG_TYPE_WARNING);
-		    $values = array('messages' => $this->messages->messages, 'idNode' => $idNode);
-		    $this->sendJSON($values);
-		    return false;
-		}
-	    $renderType = $this->request->getParam('render_type');
+    public function createchannel()
+    {
+        $idNode = $this->request->getParam('id_node');
+        $outputType = $this->request->getParam('output_type');
+        if (!$outputType) {
+            $this->messages->add('No output type selected', MSG_TYPE_WARNING);
+            $values = array('messages' => $this->messages->messages, 'idNode' => $idNode);
+            $this->sendJSON($values);
+            return false;
+        }
+        $renderType = $this->request->getParam('render_type');
         if (!$renderType) {
             $this->messages->add('No render type selected', MSG_TYPE_WARNING);
             $values = array('messages' => $this->messages->messages, 'idNode' => $idNode);
@@ -92,15 +88,15 @@ class Action_createchannel extends ActionAbstract
         $nodeType = new NodeType();
         $nodeType->SetByName('Channel');
         // $complexName = sprintf("%s.%s", $name, $extension);
-        
+
         // Control uniqueness of tupla, channel, format
         $node = new Node();
         $result = $node->CreateNode(strtoupper($name), $idNode, $nodeType->get('IdNodeType'), NULL, $name, $extension, NULL, $description, ''
-                , $renderMode, $outputType, $renderType, $codeLanguage);
+            , $renderMode, $outputType, $renderType, $codeLanguage);
         if ($result > 0) {
             $node->messages->add(_('Channel has been succesfully inserted'), MSG_TYPE_NOTICE);
         }
         $values = array('messages' => $node->messages->messages, 'idNode' => $idNode);
         $this->sendJSON($values);
-	}
+    }
 }

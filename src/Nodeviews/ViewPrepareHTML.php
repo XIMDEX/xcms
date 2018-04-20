@@ -1,4 +1,5 @@
 <?php
+
 namespace Ximdex\Nodeviews;
 
 use Ximdex\Logger;
@@ -10,7 +11,7 @@ use Ximdex\Models\ProgrammingCode;
 class ViewPrepareHTML extends AbstractView implements IView
 {
     const MACRO_CODE = "/@@@RMximdex\.code\((.*),(.*)\)@@@/";
-    
+
     private $nodeID;
     private $channelID;
 
@@ -20,12 +21,12 @@ class ViewPrepareHTML extends AbstractView implements IView
      */
     public function transform($idVersion = NULL, $pointer = NULL, $args = NULL)
     {
-        if (! isset($args['NODEID']) || empty($args['NODEID'])) {
+        if (!isset($args['NODEID']) || empty($args['NODEID'])) {
             Logger::error('Argument nodeId not found in ViewPrepareHTML');
             return false;
         }
         $this->nodeID = $args['NODEID'];
-        
+
         // Channel
         if (isset($args['CHANNEL']) and $args['CHANNEL']) {
             $channel = new Channel($args['CHANNEL']);
@@ -36,20 +37,18 @@ class ViewPrepareHTML extends AbstractView implements IView
             $this->channelID = $args['CHANNEL'];
             if ($channel->getRenderType()) {
                 $mode = $channel->getRenderType();
-            }
-            else {
+            } else {
                 $mode = HTMLDocumentNode::MODE_STATIC;
             }
-        }
-        else {
+        } else {
             $this->channelID = null;
             $mode = HTMLDocumentNode::MODE_STATIC;
         }
-        
+
         // Get the content
         $content = $this->retrieveContent($pointer);
-        $document = ($content !== false) ? HTMLDocumentNode::renderHTMLDocument($this->nodeID, $content, $mode) : false;
-        
+        $document = ($content !== false) ? HTMLDocumentNode::renderHTMLDocument($this->nodeID, $content, $this->channelID, $mode) : false;
+
         // Process macros
         if ($document !== false) {
             $document = preg_replace_callback(self::MACRO_CODE, array(
@@ -57,7 +56,7 @@ class ViewPrepareHTML extends AbstractView implements IView
                 'getCodeTranslation'
             ), $document);
         }
-        
+
         // Return the pointer to the transformed content
         return $this->storeTmpContent($document);
     }
@@ -66,10 +65,10 @@ class ViewPrepareHTML extends AbstractView implements IView
      * @param array $matches
      * @return string
      */
-    private function getCodeTranslation(array $matches) : string
+    private function getCodeTranslation(array $matches): string
     {
         if (!$this->channelID) {
-            
+
             // Get channel if there is not one specified
             $properties = InheritedPropertiesManager::getValues($this->nodeID, true);
             if (!isset($properties['Channel']) or !$properties['Channel']) {
@@ -78,8 +77,7 @@ class ViewPrepareHTML extends AbstractView implements IView
             }
             $channelProp = current($properties['Channel']);
             $channelID = $channelProp['Id'];
-        }
-        else {
+        } else {
             $channelID = $this->channelID;
         }
         $channel = new Channel($channelID);
@@ -91,7 +89,7 @@ class ViewPrepareHTML extends AbstractView implements IView
             Logger::warning('There is not a programming language defined for the channel ' . $channel->GetName());
             return '';
         }
-        
+
         // Get command function
         $data = explode(',', $matches[1]);
         if (!$data or !$data[0]) {
@@ -99,7 +97,7 @@ class ViewPrepareHTML extends AbstractView implements IView
             return '';
         }
         $function = trim($data[0]);
-        
+
         // Generate the command in the specified language
         $programCode = new ProgrammingCode();
         $programCode->setIdLanguage($channel->getIdLanguage());
@@ -107,16 +105,14 @@ class ViewPrepareHTML extends AbstractView implements IView
         if (isset($matches[2]) and $matches[2]) {
             if (is_array($matches[2])) {
                 $params = trim($matches[2]);
-            }
-            else {
+            } else {
                 $params = array(trim($matches[2]));
             }
-        }
-        else {
+        } else {
             $params = array();
         }
-        if (! $programCode->translate($params)) {
-            Logger::error('Cannot translate the code for the ' . $function . ' command in the ' . strtoupper($channel->getIdLanguage()) 
+        if (!$programCode->translate($params)) {
+            Logger::error('Cannot translate the code for the ' . $function . ' command in the ' . strtoupper($channel->getIdLanguage())
                 . ' language: ' . $programCode->messages->messages[0]['message']);
             return '';
         }
