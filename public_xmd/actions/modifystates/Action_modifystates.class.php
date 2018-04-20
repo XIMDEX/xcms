@@ -44,6 +44,7 @@ class Action_modifystates extends ActionAbstract
     public function index()
     {
         $idNode = $this->request->getParam('nodeid');
+        $node = new Node($idNode);
         $pipeline = new Pipeline();
         $pipeline->loadByIdNode($idNode);
         
@@ -73,7 +74,6 @@ class Action_modifystates extends ActionAbstract
                     array('id' => $nextStatus->get('id'),
                         'name' => $nextStatus->get('Name'),
                         'description' => $nextStatus->get('Description'),
-                        'node_Type' => $pipeline->nodeType->GetName(),
                         'action' => $nextStatus->get('Action')
                     );
             }
@@ -103,7 +103,8 @@ class Action_modifystates extends ActionAbstract
             'id_nodetype' => $pipeline->get('IdNodeType'),
             'url_to_nodelist' => $checkUrl,
             'idNode' => $idNode,
-            'actions' => json_encode(array('' =>  null) + WorkFlow::getActions())
+            'actions' => json_encode(array('' =>  null) + WorkFlow::getActions()),
+            'node_Type' => $node->nodeType->GetName(),
         );
         $this->render($values, null, 'default-3.0.tpl');
     }
