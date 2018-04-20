@@ -30,6 +30,7 @@ namespace Ximdex\NodeTypes;
 use Ximdex\Deps\DepsManager;
 use Ximdex\Models\Node;
 use Ximdex\Models\NodeType;
+use Ximdex\Models\Section;
 use Ximdex\Logger;
 
 /**
@@ -37,52 +38,56 @@ use Ximdex\Logger;
  */
 class SectionNode extends FolderNode
 {
-
+    function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $subfolders = array(), $idSectionType = null)
+    {
+        $section = new Section();
+        $section->setIdNode($this->parent->get('IdNode'));
+        $section->setIdSectionType($idSectionType);
+        if (!$section->add()) {
+            return false;
+        }
+        $this->updatePath();
+    }
+    
     /**
-     *    Gets the documents that must be published together with the section.
+     * Gets the documents that must be published together with the section
+     * 
      * @param array params
      * @return array
      */
-
     function getPublishabledDeps($params)
     {
-
         $childList = $this->parent->GetChildren();
         $node = new Node($this->parent->get('IdNode'));
         $idNodeType = $node->get('IdNodeType');
         $nodeType = new NodeType($idNodeType);
-
         $sectionId = null;
-
         $docsToPublish = array();
         foreach ($childList as $childID) {
             $childNode = new Node($childID);
             $childNodeTypeID = $childNode->get('IdNodeType');
             $childNodeType = new NodeType($childNodeTypeID);
             $childNodeTypeName = $childNodeType->get('Name');
-
             if (isset($params['recurrence']) || ($childNodeTypeName != "Section" && !isset($params['recurrence']))) {
                 $docsToPublish = array_merge($docsToPublish, $childNode->TraverseTree(6));
             }
         }
-
         return $docsToPublish;
     }
 
     /**
-     *  Deletes the Section and its dependencies.
+     * Deletes the Section and its dependencies
      */
-
     function DeleteNode()
     {
-
+        $section = new Section($this->parent->get('IdNode'));
+        if ($section->delete() === false) {
+            return false;
+        }
+        
         // Deletes dependencies in rel tables
-
         $depsMngr = new DepsManager();
         $depsMngr->deleteBySource(DepsManager::SECTION_XIMLET, $this->parent->get('IdNode'));
-
         Logger::info('Section dependencies deleted');
     }
-
-
 }

@@ -626,7 +626,7 @@ CREATE TABLE `SectionTypes` (
   PRIMARY KEY (`idSectionType`),
   UNIQUE KEY `sectionType` (`sectionType`),
   KEY `idSectionType` (`idSectionType`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `Servers` (
   `IdServer` int(12) UNSIGNED NOT NULL,
@@ -845,3 +845,11 @@ ALTER TABLE `ProgrammingCode`
 
 ALTER TABLE `Channels` ADD CONSTRAINT `idLanguage` FOREIGN KEY (`idLanguage`) REFERENCES `ProgrammingLanguage`(`id`) 
     ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+CREATE TABLE `Section` (
+  `IdNode` int(12) NOT NULL,
+  `idSectionType` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+ALTER TABLE `Section` ADD PRIMARY KEY (`IdNode`);
+
+ALTER TABLE `Section` ADD FOREIGN KEY (`idSectionType`) REFERENCES `SectionTypes`(`idSectionType`) ON DELETE RESTRICT ON UPDATE RESTRICT;
