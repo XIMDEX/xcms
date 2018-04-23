@@ -391,9 +391,6 @@ class Manager
             $dir = self::path($_module);
             $path = XIMDEX_ROOT_PATH.$dir;
         }
-        
-        echo "\n\n" . $path . $_file . "\n\n";
-        
         if (file_exists("{$path}{$_file}")){
             if (('XIMDEX' == $_module || 'APP' == $_module || self::isEnabled($_module))) {
                 return require_once("{$path}{$_file}");
