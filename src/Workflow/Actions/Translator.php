@@ -66,15 +66,17 @@ class Translator extends WorkflowAction
         }
         
         // Generate an translations array with all the documents that will be updated / created
-        elseif ($docFolder->GetNodeType() == NodeTypeConstants::HTML_CONTAINER 
-            or $docFolder->GetNodeType() == NodeTypeConstants::XML_CONTAINER) {
+        if ($docFolder->GetNodeType() == NodeTypeConstants::XML_CONTAINER) {
+            $type = Plata::TYPE_XML;
+        }
+        elseif ($docFolder->GetNodeType() == NodeTypeConstants::HTML_CONTAINER) {
             $type = Plata::TYPE_HTML;
         }
         else {
             $type = Plata::TYPE_TXT;
         }
         $documents = array();
-        $plata = new Plata($this->node->GetContent(), $language->GetIsoName(), self::DEFAULT_ISO_LANG, $type);
+        $plata = new Plata($this->node->GetContent(), '', $language->GetIsoName(), $type);
         foreach ($properties['Language'] as $languageProp) {
             if ($languageProp['IsoName'] == self::DEFAULT_ISO_LANG) {
                 continue;
