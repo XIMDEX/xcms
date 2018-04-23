@@ -219,12 +219,13 @@ class InstallDataBaseManager extends InstallManager
     		$res = $statement->execute();
     		if (!$res)
     		{
-    		    Logger::error($this->getErrors());
+    		    Logger::error($statement->errorInfo()[2]);
     		    return false;
     		}
     	}
     	catch (PDOException $e)
     	{
+    	    Logger::error($e->getMessage());
     		return false;
     	}
     	return true;

@@ -30,7 +30,7 @@ services:
     image: selenium/standalone-chrome
 
   test:
-    image: ximdex/nginx-php:php7
+    image: ximdex/nginx-php:php7-xdebug
     environment:
       WEB_DOCUMENT_ROOT: /var/www/html
     links:

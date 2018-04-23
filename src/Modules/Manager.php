@@ -27,8 +27,9 @@
 
 namespace Ximdex\Modules;
 
+use Ximdex\Logger;
 Use Ximdex\Utils\FsUtils;
-use \Ximdex\Runtime\App;
+use Ximdex\Runtime\App;
 
 class Manager
 {
@@ -390,11 +391,16 @@ class Manager
             $dir = self::path($_module);
             $path = XIMDEX_ROOT_PATH.$dir;
         }
+        
+        echo "\n\n" . $path . $_file . "\n\n";
+        
         if (file_exists("{$path}{$_file}")){
             if (('XIMDEX' == $_module || 'APP' == $_module || self::isEnabled($_module))) {
                 return require_once("{$path}{$_file}");
             }
         }
-        else if(!$_module){}
+        else {
+            Logger::error('Could not load the file: ' . $path . $_file);
+        }
     }
 }

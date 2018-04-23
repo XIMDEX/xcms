@@ -175,7 +175,7 @@ if(XIMDEX_DIRECT && CLI_MODE && isset($argv[1])) {
 
 
     $new_command = $argv[0] = $external_script;
-    if(file_exists($new_command)) {
+    if (file_exists($new_command)) {
         require_once($new_command);
     }
 }
