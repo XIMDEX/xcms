@@ -3,41 +3,38 @@
 use Ximdex\Logger;
 use Ximdex\Runtime\App;
 
-
-// for legacy compatibility
+// For legacy compatibility
 if (!defined('XIMDEX_ROOT_PATH')) {
     define('XIMDEX_ROOT_PATH', __DIR__);
-}else {
+}
+else {
     return false; //only once this file
 }
-
 if (!defined('APP_ROOT_PATH')) {
     define('APP_ROOT_PATH', XIMDEX_ROOT_PATH.'/public_xmd');
 }
-
-
 if (!defined('XIMDEX_VENDORS')) {
     define('XIMDEX_VENDORS', '/vendors');
 }
 
 /**
  * XIMDEX_DIRECT is true when bootstrap is called directly
- * XIMDEX_DIRECT is false when bootstrap is called from other php.
+ * XIMDEX_DIRECT is false when bootstrap is called from other php
  */
-if(!defined('XIMDEX_DIRECT')) {
-    
+if (!defined('XIMDEX_DIRECT')) {   
     $included_files = get_included_files();
     define('XIMDEX_DIRECT', !isset($included_files[1]));
 }
 
-
-/** Checking cli mode */
+// Checking cli mode
 if (!defined('CLI_MODE')) {
     global $argv, $argc;
-    if('cli' != php_sapi_name() || empty($argv) || 0 == $argc)
+    if('cli' != php_sapi_name() || empty($argv) || 0 == $argc) {
         $cli_mode = false;
-    else
+    }
+    else {
         $cli_mode = true;
+    }
     define('CLI_MODE', $cli_mode);
 }
 

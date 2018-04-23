@@ -39,7 +39,6 @@ use Ximdex\Utils\FsUtils;
 use Ximdex\Logger;
 
 \Ximdex\Modules\Manager::file('/actions/fileupload/baseIO.php');
-\Ximdex\Modules\Manager::file('/inc/CacheWriter.class.php', 'ximRAM');
 
 /**
  * @brief Handles files.

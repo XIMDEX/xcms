@@ -440,10 +440,6 @@ class DataFactory
                     . ", Chars: " . strlen($content));
             $result = FsUtils::file_put_contents($targetPath, $content);
             $idVersion = $this->getVersionId($versionID, $subVersion);
-            if ($result && \Ximdex\Modules\Manager::isEnabled('ximRAM'))
-            {
-                $this->indexNode($idVersion, $commitNode);
-            }
             $this->_generateCaches($idVersion, true);
             return $result;
         }
@@ -535,9 +531,6 @@ class DataFactory
             $this->updateCaches($oldIdVersion, $IdVersion);
         }
         Logger::debug('AddVersion for Node:' . $this->nodeID . ', Version: ' . $newVersion . '.' . $newSubVersion . ', File: ' . $uniqueName);
-        if (\Ximdex\Modules\Manager::isEnabled('ximRAM')) {
-            $this->indexNode($this->getVersionId($newVersion, $newSubVersion), $commitNode);
-        }
         $mm = new \Ximdex\Metadata\MetadataManager($this->nodeID);
         $mm->updateMetadataVersion();
         return $IdVersion;
@@ -627,11 +620,6 @@ class DataFactory
         Logger::debug("RecoverVersion for Node" . $this->nodeID . " with result:" .
             $IdVersion . ", Version: " . $newVersion . "." . $newSubVersion .
             ", OldVersion: " . $tmpVersion . "." . $subversion . ", File: ." . $uniqueName, 4, "DataFactory");
-
-        if (\Ximdex\Modules\Manager::isEnabled('ximRAM')) {
-            $this->indexNode($this->getVersionId($newVersion, $newSubVersion), null);
-        }
-
 
         $purgePreviousSubVersions = App::getValue("PurgeSubversionsOnNewVersion");
         if ($purgePreviousSubVersions && $this->HasPreviousVersions()) {
@@ -749,11 +737,6 @@ class DataFactory
 
         $pipeline = new PipelineManager();
         $pipeline->deleteCache($versionToDelete);
-
-        // Se ejecutaba en cualquier caso
-        if (\Ximdex\Modules\Manager::isEnabled('ximRAM')) {
-            $this->conector->deleteNode($versionToDelete, true);
-        }
 
         $dbObj->Execute($query);
 

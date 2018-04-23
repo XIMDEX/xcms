@@ -31,9 +31,9 @@ use Ximdex\Cli\CliReader;
 
 // Point to ximdex root and include necessary class.
 
-\Ximdex\Modules\Manager::file('/config/xowl.conf', 'Xowl');
-//Xowl is not actived in this point
-//require_once(XIMDEX_ROOT_PATH . \Ximdex\Modules\Manager::path('Xowl') . '/actions/enricher/model/TagSuggester.class.php');
+// \Ximdex\Modules\Manager::file('/config/xowl.conf', 'Xowl');
+// Xowl is not actived in this point
+// require_once(XIMDEX_ROOT_PATH . \Ximdex\Modules\Manager::path('Xowl') . '/actions/enricher/model/TagSuggester.class.php');
 
 class Module_Xowl extends Module
 {

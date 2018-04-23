@@ -235,7 +235,6 @@ class QueryHandler_SQL extends QueryHandler_Abstract {
 					break;
 
 				case 'content':
-					// IMPORTANT: Suported only by ximRAM
 					break;
 
 				case 'nodetype':
