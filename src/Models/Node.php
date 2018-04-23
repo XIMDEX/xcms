@@ -3707,7 +3707,7 @@ class Node extends NodesOrm
         }
         
         // The channel will be the first one available in the inherited properties
-        $properties = InheritedPropertiesManager::getValues($this->GetID());
+        $properties = InheritedPropertiesManager::getValues($this->GetID(), true);
         if (!$properties['Channel']) {
             Logger::error('The document with ID: ' . $this->GetID() . ' has no channels');
             return false;

@@ -166,7 +166,7 @@ class Action_addsectionnode extends ActionAbstract
 
     private function _getLanguages($nodeID)
     {
-        $properties = InheritedPropertiesManager::getValues($nodeID);
+        $properties = InheritedPropertiesManager::getValues($nodeID, true);
         $propertiesLang = array();
         if (isset($properties['Language'])) {
             foreach ($properties['Language'] as $prop) {

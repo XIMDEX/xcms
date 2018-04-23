@@ -48,7 +48,7 @@ class Translator extends WorkflowAction
         }
         
         // Obtain the inherited language properties
-        $properties = InheritedPropertiesManager::getValues($docFolder->GetID());
+        $properties = InheritedPropertiesManager::getValues($docFolder->GetID(), true);
         if (!isset($properties['Language']) or !$properties['Language']) {
             $this->error = 'Cannot load the language properties for the folder with node ID: ' . $docFolder->GetID();
             return false;
@@ -65,11 +65,8 @@ class Translator extends WorkflowAction
             return false;
         }
         
-        // Generate an translations array with all the documents that will be updated / created
-        if ($docFolder->GetNodeType() == NodeTypeConstants::XML_CONTAINER) {
-            $type = Plata::TYPE_XML;
-        }
-        elseif ($docFolder->GetNodeType() == NodeTypeConstants::HTML_CONTAINER) {
+        // Generate a translations array with all the documents that will be updated / created
+        elseif ($docFolder->GetNodeType() == NodeTypeConstants::HTML_CONTAINER or $docFolder->GetNodeType() == NodeTypeConstants::XML_CONTAINER) {
             $type = Plata::TYPE_HTML;
         }
         else {

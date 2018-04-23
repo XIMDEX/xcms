@@ -245,7 +245,7 @@ class NodeFrame extends NodeFrames_ORM {
 			}
 			
 			// check if the channels from document properties are in the server frame channels list
-			$properties = InheritedPropertiesManager::getValues($nodeId);
+			$properties = InheritedPropertiesManager::getValues($nodeId, true);
 			if (isset($properties['Channel']))
 			{
 			    $strDoc = new StructuredDocument($nodeId);
