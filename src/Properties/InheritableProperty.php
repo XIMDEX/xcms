@@ -142,7 +142,15 @@ abstract class InheritableProperty
         foreach ($availableProperties as & $property) {
             
             // If is availableChannel and nodeChannels is empty, we use the availableChannels
-            $property['Checked'] = in_array($property['Id'], $nodeProperties) ? true : false;
+            if ($nodeProperties) {
+                $property['Checked'] = in_array($property['Id'], $nodeProperties) ? true : false;
+                if ($onlyInherited and !$property['Checked']) {
+                    continue;
+                }
+            }
+            else {
+                $property['Checked'] = false;
+            }
             
             // Update the inherit value in the result
             if (isset($inheritProperties)) {
