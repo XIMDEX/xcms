@@ -5204,7 +5204,7 @@ msgid "Password"
 msgstr ""
 
 #: public_xmd/actions/modifyserver/template/Smarty/index.tpl:115
-msgid "(Only to change the actual one)"
+msgid "Only to change the actual one"
 msgstr ""
 
 #: public_xmd/actions/modifyserver/template/Smarty/index.tpl:121

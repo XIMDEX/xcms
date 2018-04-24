@@ -29,9 +29,9 @@ use Ximdex\Models\User;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\App;
 use Ximdex\Runtime\Request;
+use Ximdex\I18n\I18N;
 
 require_once(XIMDEX_ROOT_PATH . '/conf/stats.php');
-\Ximdex\Modules\Manager::file('/inc/i18n/I18N.class.php');
 
 class Action_login extends ActionAbstract
 {
@@ -65,7 +65,7 @@ class Action_login extends ActionAbstract
     {
         $values = array();
 
-        \Ximdex\I18n\I18N::setup();
+        I18N::setup();
         $values["ximid"] = App::getValue("ximid");
         $values["versionname"] = App::getValue("VersionName");
         $values["news_content"] = $this->get_news();
