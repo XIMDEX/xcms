@@ -69,7 +69,7 @@ class NodesToPublish extends NodesToPublish_ORM
 		    $myNode = new Node($idNode);
 		    if ($myNode->nodeType->get('IsStructuredDocument'))
 		    {
-		        Logger::warning(sprintf(_("Skipping 0.0 version for Linked Structured Document: %s"), $idNode));
+		        Logger::warning(sprintf("Skipping 0.0 version for Linked Structured Document: %s", $idNode));
 		        return null;
 		    }
 		}

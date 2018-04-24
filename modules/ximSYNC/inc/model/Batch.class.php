@@ -72,7 +72,7 @@ class Batch extends Batchs_ORM {
             return $idBatch;
         }
 
-        Logger::info(_("ERROR batch type $type for node $idNodeGenerator"));
+        Logger::info("ERROR batch type $type for node $idNodeGenerator");
         return null;
     }
 
@@ -181,7 +181,7 @@ class Batch extends Batchs_ORM {
             }
         } else {
 
-            Logger::info(_("Error in DB: ") . $dbObj->desErr);
+            Logger::info("Error in DB: " . $dbObj->desErr);
         }
         return false;
     }
