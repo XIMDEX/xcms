@@ -108,7 +108,7 @@ class ParsingXsl
 
 		$this->node = new Node($idNode);
 		if (!($this->node->get('IdNode')) > 0) {
-			Logger::error('Cannot parse template: Non existant node ' . $idNode);
+			Logger::error('Can not parse template: Not existing node ' . $idNode);
 			return false;
 		}
 
