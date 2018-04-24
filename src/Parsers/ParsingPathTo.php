@@ -36,6 +36,7 @@ use Ximdex\NodeTypes\XmlContainerNode;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\Utils\Messages;
 use Ximdex\Models\Channel;
+use Ximdex\Models\Language;
 
 class ParsingPathTo
 {
@@ -120,10 +121,12 @@ class ParsingPathTo
 
         // Checking the first params. It could be number, or .number or string
         $nodeValue = trim(urldecode($params[0]));
-        if (isset($params[1]))
+        
+        // Check the channel parameter
+        if (isset($params[1]) and $params[1])
         {
             // The second one is value is the channel name or ID (optional)
-            $channelParam = trim($params[1]);
+            $channelParam = $params[1];
             $channel = new Channel();
             if (is_numeric($channelParam))
             {
@@ -145,6 +148,9 @@ class ParsingPathTo
         {
             // Specified channel has not been given in function parameters
             $this->channel = null;
+        }
+        if ($nodeValue == 'THIS') {
+            $nodeValue = $nodeId;
         }
         if (is_numeric($nodeValue))
         {
@@ -295,6 +301,34 @@ class ParsingPathTo
                 Logger::error('Cannot load the node with ID:' . $id);
                 return false;
             }
+        }
+        
+        // Check the language parameter if node is structured document
+        if (isset($params[2]) and $node->nodeType->IsStructuredDocument()) {
+            
+            // The third one is value is the language name or ID (optional)
+            $languageParam = $params[2];
+            $language = new Language();
+            if (is_numeric($languageParam)) {
+                $language = $language->find('IdLanguage', 'Idlanguage = ' . $languageParam);
+            }
+            else {
+                $language = $language->find('IdLanguage', 'IsoName like  \'' . $languageParam . '\'');
+            }
+            if (!$language) {
+                $error = 'The specified language ' . $languageParam . ' does not exist';
+                $this->messages->add($error, MSG_TYPE_WARNING);
+                return false;
+            }
+            $language = $language[0]['IdLanguage'];
+            
+            // Load the documents folder
+            $node = new Node($node->GetParent());
+            if (!$node->GetID()) {
+                Logger::error('Cannot load the parent document with node ID: ' . $node->GetParent());
+                return false;
+            }
+            $id = $node->GetID();
         }
         
         // If the target node if a documents container 

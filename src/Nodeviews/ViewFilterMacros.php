@@ -510,8 +510,14 @@ class ViewFilterMacros extends AbstractView implements IView
         // Link target-node
         $parserPathTo = new ParsingPathTo();
         if (!$parserPathTo->parsePathTo($pathToParams, $this->idNode, null, $this->idChannel)) {
-            $this->messages->mergeMessages($parserPathTo->messages());
-            Logger::warning('Parse PathTo is not working for: ' . $pathToParams);
+            if ($parserPathTo->messages()->messages) {
+                foreach ($parserPathTo->messages()->messages as $error) {
+                    Logger::warning($error['message']);
+                }
+            }
+            else {
+                Logger::warning('Parse PathTo is not working for: ' . $pathToParams);
+            }
             if ($this->preview) {
                 return false;
             }
