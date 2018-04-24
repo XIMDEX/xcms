@@ -286,6 +286,7 @@ class Action_workflow_forward extends ActionAbstract
                 $this->render($values, 'show_results', 'default-3.0.tpl');
             }
             else {
+                $this->reloadNode($node->GetParent());
                 $values = array(
                     'go_method' => 'publicateForm',
                     'nextState' => $nextState,
