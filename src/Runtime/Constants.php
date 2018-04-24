@@ -46,7 +46,8 @@ class Constants
         'BINARYFILE' => 'COMMONNODE',
         'HTMLLAYOUTNODE' => 'FILENODE',
         'HTMLCOMPONENTNODE' => 'FILENODE',
-        'HTMLVIEWNODE' => 'FILENODE'
+        'HTMLVIEWNODE' => 'FILENODE',
+        'HTMLDOCUMENTNODE' => 'XMLDOCUMENTNODE'
     );
 
     // XimIO

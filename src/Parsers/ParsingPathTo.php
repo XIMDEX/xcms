@@ -295,52 +295,54 @@ class ParsingPathTo
                 Logger::error('Cannot load the node with ID:' . $id);
                 return false;
             }
-            if ($node->GetNodeType() == NodeTypeConstants::XML_CONTAINER or $node->GetNodeType() == NodeTypeConstants::HTML_CONTAINER) {
+        }
+        
+        // If the target node if a documents container 
+        if ($node->GetNodeType() == NodeTypeConstants::XML_CONTAINER or $node->GetNodeType() == NodeTypeConstants::HTML_CONTAINER) {
+            
+            // Load the document language version
+            if (!$language) {
+                $strDoc = new StructuredDocument($nodeId);
+                if (!$strDoc->GetID()) {
+                    Logger::error('Cannot load the structured document with ID: ' . $nodeId);
+                    return false;
+                }
+                if (!$strDoc->GetLanguage()) {
+                    Logger::error('The structured document with ID: ' . $nodeId . ' has not any language value');
+                    return false;
+                }
+                $language = $strDoc->GetLanguage();
+            }
+            $docContainer = new XmlContainerNode($id);
+            $id = $docContainer->GetChildByLang($language);
+            if (!$id) {
+                Logger::warning('Cannot load the document for container: ' . $nodeId . ' and language: ' . $language
+                    . '. Using default server one instead');
                 
-                // Load the document language version
-                if (!$language) {
-                    $strDoc = new StructuredDocument($nodeId);
-                    if (!$strDoc->GetID()) {
-                        Logger::error('Cannot load the structured document with ID: ' . $nodeId);
-                        return false;
-                    }
-                    if (!$strDoc->GetLanguage()) {
-                        Logger::error('The structured document with ID: ' . $nodeId . ' has not any language value');
-                        return false;
-                    }
-                    $language = $strDoc->GetLanguage();
+                // Load the default server language instead
+                if (!$node->getServer()) {
+                    Logger::error('Cannot load the server node');
+                    return false;
                 }
-                $docContainer = new XmlContainerNode($id);
-                $id = $docContainer->GetChildByLang($language);
+                $nodeProperty = new NodeProperty();
+                $property = $nodeProperty->getProperty($node->getServer(), NodeProperty::DEFAULTSERVERLANGUAGE);
+                if (!$property) {
+                    Logger::error('The default server language is not defined');
+                    return false;
+                }
+                $id = $docContainer->GetChildByLang($property[0]);
                 if (!$id) {
-                    Logger::warning('Cannot load the document for container: ' . $nodeId . ' and language: ' . $language 
-                        . '. Using default server one instead');
-                    
-                    // Load the default server language instead
-                    if (!$node->getServer()) {
-                        Logger::error('Cannot load the server node');
-                        return false;
-                    }
-                    $nodeProperty = new NodeProperty();
-                    $property = $nodeProperty->getProperty($node->getServer(), NodeProperty::DEFAULTSERVERLANGUAGE);
-                    if (!$property) {
-                        Logger::error('The default server language is not defined');
-                        return false;
-                    }
-                    $id = $docContainer->GetChildByLang($property[0]);
-                    if (!$id) {
-                        Logger::error('Cannot load the language version for container: ' . $nodeId . ' and language: ' . $property[0]);
-                        return false;
-                    }
-                }
-                $node = new Node($id);
-                if (!$node->GetID()) {
-                    Logger::error('Cannot load the node with ID:' . $id);
+                    Logger::error('Cannot load the language version for container: ' . $nodeId . ' and language: ' . $property[0]);
                     return false;
                 }
             }
-            Logger::info('ParsingPathTo: Obtained node with ID: ' . $id . ' and name: ' . $node->GetNodeName());
+            $node = new Node($id);
+            if (!$node->GetID()) {
+                Logger::error('Cannot load the node with ID:' . $id);
+                return false;
+            }
         }
+        Logger::info('ParsingPathTo: Obtained node with ID: ' . $id . ' and name: ' . $node->GetNodeName());
         
         // Target channel
         if (!$this->channel and $node->nodeType->GetIsStructuredDocument()) {
