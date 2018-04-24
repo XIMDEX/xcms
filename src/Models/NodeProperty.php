@@ -51,7 +51,7 @@ class NodeProperty extends \Ximdex\Data\GenericData
 	public function create($idNode, $property, $value = NULL)
 	{
 		if (is_null($idNode) || is_null($property)) {
-			Logger::error(_('Params node and property are mandatory'));
+			Logger::error('Params node and property are mandatory');
 			return false;
 		}
 		$this->set('IdNode', $idNode);
@@ -60,7 +60,7 @@ class NodeProperty extends \Ximdex\Data\GenericData
 		parent::add();
 		$propertyId = $this->get('IdNodeProperty');
 		if (!($propertyId > 0)) {
-			Logger::error(_("When adding NodeProperty (idNode: $idNode, property: $property, value: $value)"));
+			Logger::error("When adding NodeProperty (idNode: $idNode, property: $property, value: $value)");
 			return false;
 		}
 		return true;
@@ -76,7 +76,7 @@ class NodeProperty extends \Ximdex\Data\GenericData
 	public function getProperty($idNode, $property)
 	{	
 		if (is_null($idNode) || is_null($property)) {
-			Logger::error(_('Params node and property are mandatory'));
+			Logger::error('Params node and property are mandatory');
 			return NULL;
 		}
 		$result = $this->find('Value', "Property = %s AND IdNode = %s", array($property, $idNode), MONO);
@@ -92,7 +92,7 @@ class NodeProperty extends \Ximdex\Data\GenericData
 	public function deleteByNode($idNode)
 	{	
 		if (is_null($idNode)) {
-			Logger::error(_('Param nodeId is mandatory'));
+			Logger::error('Param nodeId is mandatory');
 			return false;
 		}
  		$dbObj = new \Ximdex\Runtime\Db();
@@ -111,7 +111,7 @@ class NodeProperty extends \Ximdex\Data\GenericData
 	public function deleteByNodeProperty($idNode, $property)
 	{	
 		if (is_null($idNode) || is_null($property)) {
-			Logger::error(_('Params nodeId and property are mandatories'));
+			Logger::error('Params nodeId and property are mandatories');
 			return false;
 		}
  		$dbObj = new \Ximdex\Runtime\Db();

@@ -59,7 +59,7 @@ class NodeEdition extends GenericData
 	{
 		if (is_null($idNode) || is_null($idUser))
 		{
-			Logger::error(_('Params node and user are mandatory'));
+			Logger::error('Params node and user are mandatory');
 			return false;
 		}
 		$this->set('IdNode', $idNode);
@@ -69,7 +69,7 @@ class NodeEdition extends GenericData
 		$nodeEditionId = $this->get('Id');
 		if (!($nodeEditionId > 0))
 		{
-			Logger::error(_("Error Adding NodeEdition"));
+			Logger::error("Error Adding NodeEdition");
 			return false;
 		}
 		return true;
@@ -113,7 +113,7 @@ class NodeEdition extends GenericData
 	{
 		if (is_null($idNode) || is_null($idUser))
 		{
-			Logger::error(_('Params node and user are mandatory'));
+			Logger::error('Params node and user are mandatory');
 			return false;
 		}
  		$dbObj = new \Ximdex\Runtime\Db();
@@ -133,7 +133,7 @@ class NodeEdition extends GenericData
 	{
 		if (is_null($idUser))
 		{
-			Logger::error(_('Param user is mandatory'));
+			Logger::error('Param user is mandatory');
 			return false;
 		}
  		$dbObj = new \Ximdex\Runtime\Db();

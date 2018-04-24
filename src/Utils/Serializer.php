@@ -63,7 +63,7 @@ class Serializer
 		if ( class_exists( $class )) {
 			$instance = new $class();
 		} else  {
-			Logger::error(sprintf(_("Serializer :: The class {%s} could not be instanced."), $class));
+			Logger::error(sprintf("Serializer :: Class {%s} can not be instantiated.", $class));
 			die;
 		}
 		return $instance;

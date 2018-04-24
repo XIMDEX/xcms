@@ -118,7 +118,7 @@ class BaseIOInferer
 			}
 			return $nodeType;
 		}
-		Logger::warning(sprintf(_("Unsupported mime-type %s extension %s"), $fileMimeType, $extension));
+		Logger::warning(sprintf("Unsupported mime-type %s extension %s", $fileMimeType, $extension));
 		return '';
 	}
 
@@ -142,7 +142,7 @@ class BaseIOInferer
 			$extension = strtolower(FsUtils::get_extension($path));
 			if ($fileMimeType == 'application/x-empty')
 			{
-				Logger::warning(_("Empty mimetype detected on _infereFileType"));
+				Logger::warning("Empty mimetype detected on _infereFileType");
 			}
 			while (!$db->EOF)
 			{

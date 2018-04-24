@@ -62,7 +62,7 @@ class Factory
         if ( class_exists( $className )) {
             return new $className($node);
         }
-        Logger::fatal(sprintf(_('The nodetype associated to %s does not exist'), $fileToInclude));
+        Logger::fatal(sprintf('The nodetype associated to %s does not exist', $fileToInclude));
         die(sprintf(_('Fatal error: the nodetype associated to %s does not exist'), $fileToInclude));
     }
 }

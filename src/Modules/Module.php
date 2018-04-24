@@ -67,7 +67,7 @@ class Module  {
 
         //  $this->messages->add(sprintf(_("sys {%s} : Module instanciated (%s) (%s)"),
         //   __CLASS__, $this->name, $this->path), MSG_TYPE_NOTICE);
-       // Logger::info(sprintf(_("sys {%s} : Module instanciated (%s) (%s)"), __CLASS__, $this->name, $this->path));
+       // Logger::info(sprintf("sys {%s} : Module instanciated (%s) (%s)", __CLASS__, $this->name, $this->path));
     }
 
     /**
@@ -228,7 +228,7 @@ class Module  {
             // SQL Insertion
             if (!empty($this->sql_constructor)) {
                 $this->injectSQLFile($this->sql_constructor_file);
-                Logger::info(_("-- SQL constructor loaded"));
+                Logger::info("-- SQL constructor loaded");
             } else {
                 $this->messages->add(_("* ERROR: SQL constructor not loaded"), MSG_TYPE_ERROR);
                 $ret = false;

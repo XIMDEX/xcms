@@ -328,7 +328,7 @@ class Node extends NodesOrm
             $className = WorkFlow::WORKFLOW_ACTIONS_NAMESPACE . $action[0];
             $class = new $className($this);
             $method = $action[1];
-            Logger::info('Calling method ' . $method . ' in ' . $action[0] . ' class before change the status to ' . $workflowStatus->get('Name'));
+            Logger::info('Calling method ' . $method . ' in ' . $action[0] . ' class before changing the status to ' . $workflowStatus->get('Name'));
             if ($class->$method() === false) {
                 if ($class->_getError()) {
                     $error = $class->_getError();
@@ -340,7 +340,7 @@ class Node extends NodesOrm
                 Logger::error($error);
                 return false;
             }
-            Logger::info('Method ' . $method . ' (' . $className . ') for node ' . $this->GetID() . ' run succefuslly', true);
+            Logger::info('Method ' . $method . ' (' . $className . ') for node ' . $this->GetID() . ' executed', true);
         }
         $dbObj = new \Ximdex\Runtime\Db();
         $sql = sprintf("UPDATE Nodes SET IdState= %d WHERE IdNode=%d OR SharedWorkflow = %d"
@@ -640,7 +640,7 @@ class Node extends NodesOrm
     {
         $path = $this->_GetPath();
         if (! $path) {
-            Logger::warning("Model::Node::getPath(): Path can not be deduced from NULL idNode");
+            Logger::warning("Model::Node::getPath(): Path can not be obtained for a NULL idNode");
         }
         return $path;
     }
@@ -2128,14 +2128,14 @@ class Node extends NodesOrm
             
             if ($dbObj->numErr) {
                 $this->messages->add(_('Alias could not be updated, incorrect operation'), MSG_TYPE_ERROR);
-                Logger::error(sprintf(_("Error in query %s or %s"), $query, $sql));
+                Logger::error(sprintf("Error in query %s or %s", $query, $sql));
                 return false;
             }
             return true;
         }
         
         $this->messages->add(_('The node you want to operate with does not exist'), MSG_TYPE_WARNING);
-        Logger::warning(_("Error: unexisting node") . "{$this->IdNode}");
+        Logger::warning("Error: node" . "{$this->IdNode}" . " does not exist");
         return false;
     }
 
@@ -2155,13 +2155,13 @@ class Node extends NodesOrm
             $dbObj->Execute($sql);
             if ($dbObj->numErr) {
                 $this->messages->add(_('Alias could not be deleted, incorrect operation'), MSG_TYPE_ERROR);
-                Logger::error(sprintf(_("Error in query %s"), $sql));
+                Logger::error(sprintf("Error in query %s", $sql));
                 return false;
             }
             return true;
         }
         $this->messages->add(_('The node you want to operate with does not exist'), MSG_TYPE_WARNING);
-        Logger::warning(_("Error: unexisting node") . "{$this->IdNode}");
+        Logger::warning("Error: node" . "{$this->IdNode}" . " does not exist");
         return false;
     }
 
@@ -2283,7 +2283,7 @@ class Node extends NodesOrm
     function _getParentByType($type = NULL)
     {
         if (is_null($type)) {
-            Logger::fatal(_('It is being tried to call a function without param'));
+            Logger::fatal('Trying to call a function without params');
             return false;
         }
         
@@ -2298,7 +2298,7 @@ class Node extends NodesOrm
             return $db->getValue('IdNode');
         }
         
-        Logger::warning(sprintf(_("The nodetype %s could not be obtained for node "), $type) . $this->get('IdNode'));
+        Logger::warning(sprintf("Nodetype %s can not be obtained for node: %d", $type, $this->get('IdNode'));
         return NULL;
     }
 
@@ -2772,7 +2772,7 @@ class Node extends NodesOrm
         global $STOP_COUNT;
         // TODO check if current user has permits to read this node, and if he does not, returns an empty string.
         if (! ($this->get('IdNode') > 0)) {
-            Logger::warning(sprintf(_("It is being tried to load the unexistent node %s"), $this->get('IdNode')));
+            Logger::warning(sprintf("Trying to load non existant node %s"), $this->get('IdNode')));
             return false;
         }
         
@@ -2844,7 +2844,7 @@ class Node extends NodesOrm
                 while (list (, $idChildrenNode) = each($childrens)) {
                     $children = new Node($idChildrenNode);
                     if (! ($children->get('IdNode') > 0)) {
-                        Logger::warning(sprintf(_("It is being tried to load the node %s from the unexistent node %s"), $children->get('IdNode'), $this->get('IdNode')));
+                        Logger::warning(sprintf("Trying to load node %s from non existant node %s", $children->get('IdNode'), $this->get('IdNode')));
                         continue;
                     }
                     
@@ -2853,7 +2853,7 @@ class Node extends NodesOrm
                         $idTemplate = $structuredDocument->GetDocumentType();
                         $node = new Node($idTemplate);
                         if (! ($node->get('IdNode') > 0)) {
-                            Logger::warning(sprintf(_("It is being tried to load the node %s from the unexistent node %s"), $node->get('IdNode'), $this->get('IdNode')));
+                            Logger::warning(sprintf("Trying to load node %s from non existant node %s", $node->get('IdNode'), $this->get('IdNode')));
                             continue;
                         }
                         if ($STOP_COUNT == COUNT) {
@@ -2924,7 +2924,7 @@ class Node extends NodesOrm
                 while (list (, $idChildren) = each($childrens)) {
                     $childrenNode = new Node($idChildren);
                     if (! ($childrenNode->get('IdNode') > 0)) {
-                        Logger::warning(sprintf(_("It is being tried to load the node %s from the unexistent node %s"), $childrenNode->get('IdNode'), $this->get('IdNode')));
+                        Logger::warning(sprintf("Trying to load node %s from non existant node %s", $childrenNode->get('IdNode'), $this->get('IdNode')));
                         continue;
                     }
                     $xmlBody .= $childrenNode->toXml($depth, $files, $recurrence);
@@ -2985,28 +2985,28 @@ class Node extends NodesOrm
     {
         if (is_null($parent)) {
             if (is_null($this->get('IdParent'))) {
-                Logger::error(_('Error checking if the node is allowed - parent does not exist [1]'));
+                Logger::error('Error checking if the node is allowed - parent does not exist [1]');
                 return false;
             }
             $parent = $this->get('IdParent');
         }
         $parentNode = new Node($parent);
         if (! $parentNode->GetID()) {
-            Logger::error(_('Error checking if the node is allowed - parent does not exist [2]'));
+            Logger::error('Error checking if the node is allowed - parent does not exist [2]');
             $this->messages->add(_('The specified parent node does not exist'), MSG_TYPE_ERROR);
             return false;
         }
         
         $nodeAllowedContents = $parentNode->GetCurrentAllowedChildren();
         if (! $nodeAllowedContents) {
-            Logger::error(sprintf(_("The parent %s does not allow any nested node from him"), $parent));
+            Logger::error(sprintf("The parent %s does not allow any nested node from him"), $parent);
             $this->messages->add(_('This node type is not allowed in this position'), MSG_TYPE_ERROR);
             return false;
         }
         
         $nodeType = new NodeType($idNodeType);
         if (! $nodeType->GetID()) {
-            Logger::error(sprintf(_("The introduced nodetype %s does not exist"), $idNodeType));
+            Logger::error(sprintf("Nodetype %s does not exist", $idNodeType));
             $this->messages->add(_('The specified nodetype does not exist'), MSG_TYPE_ERROR);
             return false;
         }
@@ -3109,7 +3109,7 @@ class Node extends NodesOrm
             return $nodeProperty->getProperty($this->get('IdNode'), $property);
         }
         
-        Logger::warning(sprintf(_("Property %s not found for node %d"), $property, $this->get('IdNode')));
+        Logger::warning(sprintf("Property %s not found for node %d", $property, $this->get('IdNode')));
         
         return null;
     }
@@ -3436,7 +3436,7 @@ class Node extends NodesOrm
         // Load parent nodes
         $parents = FastTraverse::get_parents($this->GetID(), 'IdNodeType');
         if ($parents === false) {
-            Logger::error('An error ocurred getting the parent nodes for the document with node ID: ' . $this->GetID());
+            Logger::error('An error ocurred while getting the parents node for document with node ID: ' . $this->GetID());
             return false;
         }
         $schemas = array();
@@ -3485,18 +3485,18 @@ class Node extends NodesOrm
     {
         $idProject = $this->GetProject();
         if (! $idProject) {
-            Logger::error(_('It was not possible to obtain the node project folder'));
+            Logger::error('It was not possible to obtain the node for the project');
             return NULL;
         }
         $project = new Node($idProject);
         if (! $project->getID()) {
-            Logger::error('A project with ID: ' . $idProject . ' could not be obtained');
+            Logger::error('A project with ID: ' . $idProject . ' can not be obtained');
             return NULL;
         }
         $dirName = App::getValue("SchemasDirName");
         $folder = new Node($project->GetChildByName($dirName));
         if (! $folder->getID()) {
-            Logger::error('Schemas folder could not be obtained');
+            Logger::error('Schemas folder can not be obtained');
             return NULL;
         }
         $schemas = $this->getProperty('DefaultSchema');
@@ -3709,7 +3709,7 @@ class Node extends NodesOrm
         // The channel will be the first one available in the inherited properties
         $properties = InheritedPropertiesManager::getValues($this->GetID(), true);
         if (!$properties['Channel']) {
-            Logger::error('The document with ID: ' . $this->GetID() . ' has no channels');
+            Logger::error('The document with ID: ' . $this->GetID() . ' has no channel');
             return false;
         }
         foreach ($properties['Channel'] as $channelProperty) {

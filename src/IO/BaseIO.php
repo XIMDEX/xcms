@@ -72,7 +72,7 @@ class BaseIO
         }
         if (empty($data['NODETYPENAME']))
         {
-            Logger::error(_('Empty nodetype in baseIO'));
+            Logger::error('Empty nodetype in baseIO');
             $this->messages->add(_('Empty nodetype'), MSG_TYPE_ERROR);
             return Constants::ERROR_INCORRECT_DATA;
         }
@@ -89,7 +89,7 @@ class BaseIO
             $data['CLASS'] = $this->_infereNodeTypeClass($data['NODETYPENAME']);
             if (empty($data['CLASS']))
             {
-                Logger::error(_('Nodetype could not be infered'));
+                Logger::error('Nodetype can not be inferred');
                 $this->messages->add(_('Nodetype could not be infered'), MSG_TYPE_ERROR);
                 return Constants::ERROR_INCORRECT_DATA;
             }
@@ -107,12 +107,12 @@ class BaseIO
 
         if (!$this->_checkName($data))
         {
-            Logger::error(_('Node could not be inserted due to a incorrect node name'), MSG_TYPE_ERROR);
+            Logger::error('Node could not be inserted due to incorrect node name', MSG_TYPE_ERROR);
             return Constants::ERROR_INCORRECT_DATA;
         }
         if (!$this->_checkPermissions($nodeTypeName, $userid, Constants::WRITE))
         {
-            Logger::error(_('Node could not be inserted due to lack of permits'));
+            Logger::error('Node could not be inserted due to a lack of permissions');
             $this->messages->add(_('Node could not be inserted due to lack of permits'), MSG_TYPE_ERROR);
             return Constants::ERROR_NO_PERMISSIONS;
         }
@@ -123,7 +123,7 @@ class BaseIO
             $nodeType->SetByName($data['NODETYPENAME']);
             if (!$node->checkAllowedContent($nodeType->GetID(), $data['PARENTID'], false))
             {
-                Logger::error(_('Node could not be inserted due to it is not allowed in the folder'));
+                Logger::error('Node not allowed in this folder. Stopping insertion');
                 $this->_dumpMessages($node->messages);
                 return Constants::ERROR_NOT_ALLOWED;
             }
@@ -132,13 +132,13 @@ class BaseIO
         // General check
         if (!array_key_exists('PARENTID', $data))
         {
-            Logger::error(_('Parentid was not specified'));
+            Logger::error('Parentid was not specified');
             $this->messages->add(_('Node parent was not specified'), MSG_TYPE_ERROR);
             return Constants::ERROR_INCORRECT_DATA;
         }
         if (!array_key_exists('NAME', $data))
         {
-            Logger::error(_('Node name was not specified'));
+            Logger::error('Node name was not specified');
             $this->messages->add(_('Node name was not specified'), MSG_TYPE_ERROR);
             return Constants::ERROR_INCORRECT_DATA;
         }
@@ -256,7 +256,7 @@ class BaseIO
     {
     	$res = strtolower(get_class($messages));
         if ($res != 'messages' and $res != 'ximdex\utils\messages') {
-            Logger::error(_('Error obtaining object messages'));
+            Logger::error('Error obtaining object messages');
             return;
         }
         foreach ($messages->messages as $message) {
@@ -583,7 +583,7 @@ class BaseIO
                 
                 // TODO: trigger error
                 $this->messages->add(_('An error occurred trying to insert the node'), MSG_TYPE_ERROR);
-                Logger::fatal(sprintf(_("The class %s does not exist in BaseIO"), $nodeTypeName));
+                Logger::fatal(sprintf("Class %s does not exist in BaseIO", $nodeTypeName));
                 return Constants::ERROR_INCORRECT_DATA;
         }
     }
@@ -803,7 +803,7 @@ class BaseIO
         if (empty($data['CLASS'])) {
             $data['CLASS'] = $this->_infereNodeTypeClass($data['NODETYPENAME']);
             if (empty($data['CLASS'])) {
-                Logger::error(_('Nodetype could not be infered'));
+                Logger::error('Nodetype can not be inferred');
                 $this->messages->add(_('Nodetype could not be infered'), MSG_TYPE_ERROR);
                 return Constants::ERROR_INCORRECT_DATA;
             }
@@ -1013,7 +1013,7 @@ class BaseIO
             default:
                 
                 // TODO: trigger error.
-                Logger::error(sprintf(_("The class %s is no existing in BaseIO update"), $nodeTypeName));
+                Logger::error(sprintf("Class %s does not exist in BaseIO update", $nodeTypeName));
                 $this->messages->add(_('A nodetype could not be determined for insertion'), MSG_TYPE_ERROR);
                 return Constants::ERROR_INCORRECT_DATA;
         }
@@ -1143,7 +1143,7 @@ class BaseIO
                 return 1;
 
             default:
-                Logger::warning(sprintf(_("The class %s does not exist in BaseIO"), $nodeTypeName));
+                Logger::warning(sprintf("Class %s does not exist in BaseIO", $nodeTypeName));
                 return 1;
         }
     }
