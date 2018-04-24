@@ -2298,7 +2298,7 @@ class Node extends NodesOrm
             return $db->getValue('IdNode');
         }
         
-        Logger::warning(sprintf("Nodetype %s can not be obtained for node: %d", $type, $this->get('IdNode'));
+        Logger::warning(sprintf('Nodetype %s can not be obtained for node: %d', $type, $this->get('IdNode')));
         return NULL;
     }
 
@@ -2770,9 +2770,10 @@ class Node extends NodesOrm
     function ToXml($depth = 0, & $files, $recurrence = NULL)
     {
         global $STOP_COUNT;
+        
         // TODO check if current user has permits to read this node, and if he does not, returns an empty string.
         if (! ($this->get('IdNode') > 0)) {
-            Logger::warning(sprintf("Trying to load non existant node %s"), $this->get('IdNode')));
+            Logger::warning(sprintf('Trying to load non existant node %s', $this->get('IdNode')));
             return false;
         }
         
