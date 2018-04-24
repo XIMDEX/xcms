@@ -406,12 +406,11 @@ class Action extends ActionsOrm
         if ($module == NULL) {
             return $this->setByCommand($name, $idNodeType);
         } else {
-            $result = $this->find('IdAction', 'Command = %s AND IdNodeType = %s AND Module = %s',
-                array($name, $idNodeType, $module), MONO);
+            $result = $this->find('IdAction', 'Command = %s AND IdNodeType = %s AND Module = %s', array($name, $idNodeType, $module), MONO);
             if (count($result) != 1) {
                 return 0;
             }
-            $this->Action($result[0]);
+            $this->__construct($result[0]);
             return $this->get('IdAction');
         }
     }

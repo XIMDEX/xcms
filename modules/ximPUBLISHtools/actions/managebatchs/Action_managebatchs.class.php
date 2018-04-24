@@ -55,6 +55,9 @@ class Action_managebatchs extends ActionAbstract
             $acceso = false;
             $errorMsg = "You have not access to this report. Consult an administrator.";
         }
+        else {
+            $errorMsg = '';
+        }
         $jsFiles = array(
             App::getValue('UrlRoot') . \Ximdex\Modules\Manager::path('ximPUBLISHtools') . '/actions/managebatchs/resources/js/index.js',
             App::getUrl('/assets/js/ximtimer.js')
