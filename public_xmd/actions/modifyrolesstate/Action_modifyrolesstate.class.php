@@ -86,7 +86,7 @@ class Action_modifyrolesstate extends ActionAbstract {
 		$role = new Role($idRole);
 		if (!$role->get('IdRole') > 0) {
 			$this->messages->add(_('Error: Role which you want to associate with workflow status could not be found'), MSG_TYPE_ERROR);
-			Logger::error(_("IdRole has not been found in action modifyrolestate") . $idRole);
+			Logger::error("IdRole " . $idRole . " not found for action modifyrolestate"); 
 			$this->render(array('messages' => $this->messages->messages), '', 'messages.tpl');
 		}
 		$role->AddState($idNode);

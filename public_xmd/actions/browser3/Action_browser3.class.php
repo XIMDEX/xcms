@@ -323,7 +323,7 @@ class Action_browser3 extends ActionAbstract
 
             return $nodes;
         } else {
-            Logger::info(_('Empty nodes in checkNodeAction [ browser3 ]'));
+            Logger::info('Empty nodes in checkNodeAction [ browser3 ]');
             return null;
         }
     }

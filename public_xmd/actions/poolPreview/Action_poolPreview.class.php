@@ -88,12 +88,12 @@ class Action_poolPreview extends ActionAbstract {
         /*
     	$idNode = $this->request->getParam('idnode');
     	if (!($idNode > 0)) {
-    		Logger::error(_("Idnode does not arrive"));
+    		Logger::error("Idnode did not arrive");
     		return NULL;
     	} else {
     		$node = new Node($idNode);
     		if (!($node->get('IdNode') > 0)) {
-    			Logger::error(_("Instantiated node has not idNode"));
+    			Logger::error("Instantiated node has no idNode");
     			return NULL;
     		}
     	}
@@ -171,7 +171,7 @@ class Action_poolPreview extends ActionAbstract {
 	 */
 	public function asociateNodeToLabel(){
 	    
-		Logger::info("asociate");
+		Logger::info("associate");
 		$idNode = $this->request->getParam('idnode');
 		$idVersion = $this->request->getParam('idversion');
 		$idSubVersion = $this->request->getParam('idsubversion');
@@ -199,14 +199,14 @@ class Action_poolPreview extends ActionAbstract {
 				if (is_null($versionid))
 					array_push($sms, _("Id version has not been found in the association of labels with versions"));
 				
-				Logger::info(_("Labels are going to be associated with version") . $versionid);
+				Logger::info("Labels are going to be associated with version " . $versionid);
 
 				if (is_array($labels)){
 				    
-					//i have a label array, insert a relation for each
+					//I have a label array, insert a relation for each
 					foreach ($labels as $key => $value) {
 					    
-						Logger::info(_("It is associated IdVersion") . $versionid . _("with label") . $value);
+						Logger::info("Associated IdVersion " . $versionid . " and label " . $value);
 						$rel = new  \Ximdex\Models\RelVersionsLabel();
 						$rel->set('idVersion',$versionid);
 						$rel->set('idLabel', $value);
@@ -215,7 +215,7 @@ class Action_poolPreview extends ActionAbstract {
 				}else{
 				    
 					//only have a label, insert the relation 
-					Logger::info(_("It is associated IdVersion") . $versionid._("with label") . $labels);
+					Logger::info("Associated IdVersion " . $versionid." and label " . $labels);
 					$rel = new  \Ximdex\Models\RelVersionsLabel();
 					$rel->set('idVersion',$versionid);
 					$rel->set('idLabel', $labels);

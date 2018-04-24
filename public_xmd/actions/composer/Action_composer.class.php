@@ -590,7 +590,7 @@ and rug.idrole in (select idrole from RelRolesPermissions where IdPermission = 1
             $isDir = $selectedNode->nodeType->isFolder() ? '1' : '0';
         } else {
             $isDir = '0';
-            Logger::warning(sprintf(_('A Node without NodeType was requested: idNode=%s, nodeType=%s'), $idNode, $selectedNode->nodeType));
+            Logger::warning(sprintf('A Node without NodeType was requested: idNode=%s, nodeType=%s', $idNode, $selectedNode->nodeType));
         }
 
         //Filtering by debufilter

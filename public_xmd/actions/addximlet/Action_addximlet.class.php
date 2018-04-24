@@ -205,7 +205,7 @@ class Action_addximlet extends ActionAbstract
             foreach ($ximlets as $idXimlet) {
                 $ximletNode = new Node($idXimlet);
                 if (!($ximletNode->get('IdNode') > 0)) {
-                    Logger::warning(_("Ximlet with id ") . $idXimlet . _(" has been deleted."));
+                    Logger::warning("Ximlet with id " . $idXimlet . " has been deleted.");
                     continue;
                 }
 

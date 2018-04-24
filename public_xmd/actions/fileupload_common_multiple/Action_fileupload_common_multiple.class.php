@@ -369,7 +369,7 @@ class Action_fileupload_common_multiple extends ActionAbstract
                 }
                 return $this->_setRest(_('File has been successfully uploaded.'), "ok" );
             }
-            Logger::error(_("BaseIO has returned the error code"). $result);
+            Logger::error("BaseIO has returned error code: ". $result);
             return  $this->_setRest($baseIO->messages->messages[0]["message"]);
         }
         return $result;

@@ -48,7 +48,7 @@ class GenericDatasource extends AbstractDatasource {
 		$ds = $factory->instantiate($datasource, $conf);
 
 		if (!is_object($ds)) {
-			Logger::fatal(_('A class which does not exist is trying to be requested: Datasource_') . $datasource);
+			Logger::fatal('A class which does not exist is trying to be requested: Datasource_' . $datasource);
 		}
 
 		return $ds;
