@@ -90,7 +90,7 @@ function createBatchsForBlock($nodesToPublish)
         $physicalServers = $nodeServer->class->GetPhysicalServerList(true, true);
     }
     if (count($physicalServers) == 0) {
-        Logger::error('Physical server does not exist for nodeId: ' $idNodeGenerator . " " . 'returning empty arrays.');
+        Logger::error('Physical server does not exist for nodeId: ' . $idNodeGenerator . ' ... returning empty arrays.');
         return null;
     }
 
