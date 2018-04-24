@@ -2773,7 +2773,7 @@ class Node extends NodesOrm
         
         // TODO check if current user has permits to read this node, and if he does not, returns an empty string.
         if (! ($this->get('IdNode') > 0)) {
-            Logger::warning(sprintf('Trying to load non existant node %s', $this->get('IdNode')));
+            Logger::warning(sprintf('Trying to load non-existent node %s', $this->get('IdNode')));
             return false;
         }
         
@@ -2845,7 +2845,7 @@ class Node extends NodesOrm
                 while (list (, $idChildrenNode) = each($childrens)) {
                     $children = new Node($idChildrenNode);
                     if (! ($children->get('IdNode') > 0)) {
-                        Logger::warning(sprintf("Trying to load node %s from non existant node %s", $children->get('IdNode'), $this->get('IdNode')));
+                        Logger::warning(sprintf("Trying to load node %s from non-existent node %s", $children->get('IdNode'), $this->get('IdNode')));
                         continue;
                     }
                     
@@ -2854,7 +2854,7 @@ class Node extends NodesOrm
                         $idTemplate = $structuredDocument->GetDocumentType();
                         $node = new Node($idTemplate);
                         if (! ($node->get('IdNode') > 0)) {
-                            Logger::warning(sprintf("Trying to load node %s from non existant node %s", $node->get('IdNode'), $this->get('IdNode')));
+                            Logger::warning(sprintf("Trying to load node %s from non-existent node %s", $node->get('IdNode'), $this->get('IdNode')));
                             continue;
                         }
                         if ($STOP_COUNT == COUNT) {
@@ -2925,7 +2925,7 @@ class Node extends NodesOrm
                 while (list (, $idChildren) = each($childrens)) {
                     $childrenNode = new Node($idChildren);
                     if (! ($childrenNode->get('IdNode') > 0)) {
-                        Logger::warning(sprintf("Trying to load node %s from non existant node %s", $childrenNode->get('IdNode'), $this->get('IdNode')));
+                        Logger::warning(sprintf("Trying to load node %s from non-existent node %s", $childrenNode->get('IdNode'), $this->get('IdNode')));
                         continue;
                     }
                     $xmlBody .= $childrenNode->toXml($depth, $files, $recurrence);
