@@ -97,7 +97,7 @@ class BatchManager
             return false;
         }
         $idServer = $node->GetServer();
-        Logger::info(_("Publication starts for ") . $node->GetPath() . " ($idNode)");
+        Logger::info("Publication starts for " . $node->GetPath() . " ($idNode)");
         $ancestors = array();
         $unchangedDocs = array();
         $docsToUpVersion = array();
@@ -108,7 +108,7 @@ class BatchManager
             $docNode = new Node($idDoc);
             if (!$docNode->get('IdNode'))
             {
-                Logger::error(_("Unexisting node") . " $idDoc");
+                Logger::error("Not existing node " . " $idDoc");
                 continue;
             }
 
@@ -163,7 +163,7 @@ class BatchManager
         $iTotal = count($docsChunked);
         foreach ($docsChunked as $chunk)
         {
-            Logger::info(sprintf(_("[Generator %s]: Creating bach %s / %s"), $idNode, $iCount, $iTotal));
+            Logger::info(sprintf("[Generator %s]: Creating bach %s / %s", $idNode, $iCount, $iTotal));
             $partialDocs = $this->buildBatchs($idNode, $up, $chunk, $docsToUpVersion, $docsToPublishVersion, $docsToPublishSubVersion, $idServer
                 , $physicalServers, 0.8, $down, $iCount, $iTotal, $idPortalVersion, $userId);
             $docsBatch = array_merge($docsBatch, $partialDocs);
@@ -173,7 +173,7 @@ class BatchManager
             NodesToPublish::setProcessed($chunk, $up);
         }
         $timer->stop();
-        Logger::info(_("Publication ended; time for publication") . " = " . $timer->display('s') . _(" seconds"));
+        Logger::info("Publication ended; time for publication " . " = " . $timer->display('s') . " seconds");
         return array($docsBatch, $unchangedDocs);
     }
 
@@ -191,7 +191,7 @@ class BatchManager
         $node = new Node($nodeId);
         if ($node->nodeType->get('IsPublishable') == 0)
         {
-            Logger::info(sprintf(_("Node %s belongs to an unpublished nodetype"), $nodeId));
+            Logger::info(sprintf("Node %s belongs to an unpublished nodetype", $nodeId));
             return false;
         }
         if ($node->nodeType->get('IsFolder') == 1)
@@ -205,7 +205,7 @@ class BatchManager
         $nodeFrame = new NodeFrame();
         if ($nodeFrame->existsNodeFrame($nodeId, $up, $down))
         {
-            Logger::info(sprintf(_("Node %s already exists in a NodeFrame"), $nodeId));
+            Logger::info(sprintf("Node %s already exists in a NodeFrame", $nodeId));
             return false;
         }
         return true;
@@ -217,14 +217,14 @@ class BatchManager
         if (!is_array($generated)) {
             $generated = array();
         }
-        Logger::info(sprintf(_("Incrementing version for %d documents"), count($docs)));
+        Logger::info(sprintf("Incrementing version for %d documents", count($docs)));
         $totalDocs = count($docs);
         $mod = (int)($totalDocs / 10);
         $i = 0;
         $versions = [];
         foreach ($docs as $value) {
             if (($totalDocs > 50) && ($i % $mod == 0)) {
-                Logger::info((int)($i / $totalDocs * 100) . "% " . _("completed"), 1);
+                Logger::info((int)($i / $totalDocs * 100) . "% " . "completed", 1);
             }
             $n = new Node($value);
             if ($n->nodeType->get('isGenerator')) {
@@ -251,16 +251,16 @@ class BatchManager
             $idBatchDown = null;
             if ($timeDown != 0) {
                 $idBatchDown = $batch->create($timeDown, 'Down', $nodeGenerator, 1, null, $idPortalVersion, $userId);
-                Logger::info(_('Creating down batch: ') . $timeDown);
-                Logger::info(sprintf(_("[Generator %s]: Creating down batch with id %s"), $nodeGenerator, $idBatchDown));
+                Logger::info('Creating down batch: ' . $timeDown);
+                Logger::info(sprintf("[Generator %s]: Creating down batch with id %s", $nodeGenerator, $idBatchDown));
             }
             $batch = new Batch();
             $relBatchsServers[$serverId] = $batch->create(
                 $timeUp, 'Up', $nodeGenerator, $priority,
                 $idBatchDown, $idPortalVersion, $userId
             );
-            Logger::info(_('Creating up batch: ') . $timeUp);
-            Logger::info(sprintf(_("[Generator %s]: Creating up batch with id %s"), $nodeGenerator, $relBatchsServers[$serverId]));
+            Logger::info('Creating up batch: ' . $timeUp);
+            Logger::info(sprintf("[Generator %s]: Creating up batch with id %s", $nodeGenerator, $relBatchsServers[$serverId]));
         }
         $frames = $this->buildFrames($timeUp, $timeDown, $docsToPublish, $docsToUpVersion, $versions, $subversions, $server, $relBatchsServers
             , $statStart, $statTotal, $nodeGenerator);
@@ -286,7 +286,7 @@ class BatchManager
             }
             if (($totalDocs > 20) && ($j % $mod == 0))
             {
-                Logger::info((int)($j / $totalDocs * 100) . "% " . _("completed"), 1);
+                Logger::info((int)($j / $totalDocs * 100) . "% " . "completed", 1);
             }
             $j++;
             $node = new Node($idNode);
@@ -314,7 +314,7 @@ class BatchManager
             $versionZero = (0 == $versions[$idNode] && 0 == $subversions[$idNode]);
             if ($versionZero && $node->nodeType->get('IsStructuredDocument') && $idNode != $nodeGenerator)
             {
-                Logger::warning(sprintf(_("Detected 0.0 version for Linked Structured Document: %s to be published"), $idNode));
+                Logger::warning(sprintf("Detected 0.0 version for Linked Structured Document: %s to be published", $idNode));
             }
             $dataFactory = new DataFactory($idNode);
             $idVersion = $dataFactory->getVersionId($versions[$idNode], $subversions[$idNode]);
@@ -323,7 +323,7 @@ class BatchManager
                 $batch = new Batch();
                 $batch->batchToLog(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__,
                     __LINE__, "INFO", 8, _("No version for node") . " $idNode");
-                Logger::warning(sprintf(_("There is no version (%s.%s) publishable for the node %s"), $versions[$idNode], $subversions[$idNode]
+                Logger::warning(sprintf("There is no version (%s.%s) publishable for the node %s", $versions[$idNode], $subversions[$idNode]
                         , $idNode));
                 continue;
             }
@@ -364,7 +364,7 @@ class BatchManager
             }
             if (is_null($nodeFrameId)) {
                 $node->unBlock();
-                Logger::warning(sprintf(_("A NodeFrame could not be obtained for node %s"), $idNode));
+                Logger::warning(sprintf("A NodeFrame could not be obtained for node %s", $idNode));
                 continue;
             }
             $arrayChannels = array();
@@ -388,8 +388,8 @@ class BatchManager
                     // Deleting nodeFrame previously created
                     $nodeFrame = new NodeFrame($nodeFrameId);
                     $nodeFrame->delete();
-                    Logger::warning(sprintf(_("A ChannelFrame could not be obtained for node %s and channel %s"), $idNode, $channelId));
-                    Logger::warning(sprintf(_("Deleting Nodeframe for node %s"), $idNode));
+                    Logger::warning(sprintf("A ChannelFrame could not be obtained for node %s and channel %s", $idNode, $channelId));
+                    Logger::warning(sprintf("Deleting Nodeframe for node %s", $idNode));
                     continue;
                 }
                 foreach ($relBatchsServers as $physicalServer => $idBatch) {
@@ -411,7 +411,7 @@ class BatchManager
                             , $channelFrameId, $idBatch, $down, $size = 0);
                     }
                     if (is_null($idFrame)) {
-                        Logger::warning(sprintf(_("Creation of ServerFrame could not be done: node %s, channel %s, batch %s"), $idNode
+                        Logger::warning(sprintf("Creation of ServerFrame could not be done: node %s, channel %s, batch %s", $idNode
                             , $channelId, $physicalServer, $idBatch));
                         $docsNotOk[$idNode][$physicalServer][$channelId] = $idFrame;
                     } else {
@@ -421,8 +421,8 @@ class BatchManager
                     }
                 }
                 if ($numFrames <= 0) {
-                    Logger::warning(sprintf(_("Creation of ServerFrame could not be done: node %s, channel %s"), $idNode, $channelId));
-                    Logger::warning(sprintf(_("ChannelFrame %s will be removed"), $channelFrameId));
+                    Logger::warning(sprintf("Creation of ServerFrame could not be done: node %s, channel %s", $idNode, $channelId));
+                    Logger::warning(sprintf("ChannelFrame %s will be removed", $channelFrameId));
                     
                     // Deleting the channelFrame previosly created
                     $channelFrame = new ChannelFrame($channelFrameId);
@@ -430,8 +430,8 @@ class BatchManager
                 }
             }
             if (!$isServerCreated) {
-                Logger::warning(sprintf(_("Creation of ServerFrame could not be done: node %s"), $idNode));
-                Logger::warning(sprintf(_("NodeFrame %s will be eliminated"), $nodeFrameId));
+                Logger::warning(sprintf("Creation of ServerFrame could not be done: node %s", $idNode));
+                Logger::warning(sprintf("NodeFrame %s will be eliminated", $nodeFrameId));
                 
                 // Deleting nodeFrame previously created
                 $nodeFrame = new NodeFrame($nodeFrameId);
@@ -449,19 +449,19 @@ class BatchManager
         $serverFrame = new ServerFrame();
         $result = $serverFrame->find('IdBatchUp, count(IdSync)', "IdBatchUp in ($tt) group by IdBatchUp",
             NULL, MULTI, false);
-        Logger::info(sprintf(_("The number of frames in %s batchs will be updated"), count($result)));
+        Logger::info(sprintf("The number of frames in %s batchs will be updated", count($result)));
         if (count($result) > 0) {
             foreach ($result as $dataFrames) {
                 $id = $dataFrames[0];
                 $ss[] = $dataFrames[0];
                 $numFrames = $dataFrames[1];
-                Logger::info(sprintf(_("Batch %s uploaded") . ", " . _("total frames %s"), $id, $numFrames));
+                Logger::info(sprintf("Batch %s uploaded" . ", " . "total frames %s", $id, $numFrames));
                 $batch = new Batch($id);
                 $batch->set('ServerFramesTotal', $numFrames);
                 $batch->update();
                 $idBatchDown = $batch->get('IdBatchDown');
                 if ($idBatchDown > 0) {
-                    Logger::info(sprintf(_("Batch %s downloaded") . ", " . _("total frames %s"), $idBatchDown, $numFrames));
+                    Logger::info(sprintf("Batch %s downloaded" . ", " . "total frames %s", $idBatchDown, $numFrames));
                     $batchDown = new Batch($idBatchDown);
                     $batchDown->set('ServerFramesTotal', $numFrames);
                     $batchDown->update();
@@ -475,7 +475,7 @@ class BatchManager
         // Batchs without serverFrames will be deleted
         if (sizeof($voidBatchs) > 0) {
             foreach ($voidBatchs as $idBatch) {
-                Logger::info(sprintf(_("Baths %s will be removed for being empty"), $idBatch));
+                Logger::info(sprintf("Batchs %s will be removed because they are empty", $idBatch));
                 $batch = new Batch($idBatch);
                 $batch->delete();
                 $idBatchDown = $batch->get('IdBatchDown');
@@ -509,7 +509,7 @@ class BatchManager
         	return false;
         }
         if ($db->numRows > 0) {
-            Logger::warning(sprintf(_('Found %s Batchs without Frames, were marked as NoFrames') . ".", $db->numRows));
+            Logger::warning(sprintf('Found %s Batchs without Frames, were marked as NoFrames', $db->numRows));
         }
     }
 
@@ -549,7 +549,7 @@ class BatchManager
                 $batch->set('State', 'Ended');
                 $batch->BatchToLog($idBatch, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__,
                     __LINE__, "INFO", 8, sprintf(_("Ending %s  batch %d UP"), $prevState, $idBatch));
-                Logger::info(_("Ending up batch with id ") . $idBatch);
+                Logger::info("Ending up batch with id " . $idBatch);
             }
             $batch->update();
             if ($batch->get('State') == 'Ended') {
@@ -576,7 +576,7 @@ class BatchManager
                 $batchDown = new Batch($idBatch);
                 $prevState = $batchDown->get('State');
                 if ($totals == 0) {
-                    Logger::info(sprintf(_("Batch %d type down without associated batch type up"), $idBatch));
+                    Logger::info(sprintf("Batch %d type down without associated batch type up", $idBatch));
                     $generatorId = $batchDown->get('IdNodeGenerator');
                     $sql = "SELECT SUM(IF(ServerFrames.State='Due2OutWithError',1,0)) AS Errors,
 						SUM(IF(ServerFrames.State IN ('Out','Canceled','Removed','Replaced'),1,0)) AS Success,
@@ -595,7 +595,7 @@ class BatchManager
                     $batchDown->set('State', 'Ended');
                     $batchDown->BatchToLog($idBatch, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__,
                         __LINE__, "INFO", 8, _("Ending " . $prevState . "for batch DOWN $idBatch"));
-                    Logger::info(_("Ending down batch with id ") . $idBatch);
+                    Logger::info("Ending down batch with id " . $idBatch);
                 }
                 $batchDown->update();
                 if ($batchDown->get('State') == 'Ended') $this->setPortalRevision($idBatch);
@@ -681,7 +681,7 @@ class BatchManager
                 $relFramePortal->addVersion($idPortalVersion, $nodeFrameId);
             }
         } else {
-            Logger::info(_("Nodesframes to be added to the portal review do not exist"));
+            Logger::info("Nodesframes to be added to the portal review do not exist");
         }
         return true;
     }
@@ -802,7 +802,7 @@ class BatchManager
         } else if ($batchType == 'Down') {
             $batchColumn = 'IdBatchDown';
         } else {
-            Logger::info(sprintf(_("ERROR: %s rare type of batch"), $batchType));
+            Logger::info(sprintf("ERROR: %s rare type of batch", $batchType));
             return false;
         }
         $inactives = implode(',', $activeAndEnabledServers);
@@ -814,7 +814,7 @@ class BatchManager
         }
         $numServerFramesFromInactiveServers = $dbObj->numRows;
         if ($totalServerFrames == $numServerFramesFromInactiveServers + $sucessServerFrames) {
-            Logger::info(sprintf(_("ERROR: %s rare type of batch"), $batchType));
+            Logger::info(sprintf("ERROR: %s rare type of batch", $batchType));
             $this->set('State', 'Ended');
             $this->update();
         }

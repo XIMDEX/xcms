@@ -184,12 +184,12 @@ class SyncManager
     function pushDocInPublishingPool(int $idNode, int $up, int $down = null)
     {
         if (!$idNode) {
-            Logger::error(_("Pushdocinpool - Empty IdNode"));
+            Logger::error("Pushdocinpool - Empty IdNode");
             return NULL;
         }
         $node = new Node($idNode);
         if (!$node->GetID()) {
-            Logger::error(sprintf(_("Node %s does not exist"), $idNode));
+            Logger::error(sprintf("Node %s does not exist", $idNode));
             return NULL;
         }
         $publicateSection = $this->getFlag('publicateSection');

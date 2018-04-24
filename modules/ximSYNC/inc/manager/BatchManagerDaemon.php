@@ -48,7 +48,7 @@ function main($argc, $argv)
 
     // Command line mode call
     if ($argv != null && isset($argv[1]) && is_numeric($argv[1])) {      
-        Logger::logTrace(_("IdNode passed:") . " " . $argv[1]);
+        Logger::logTrace("IdNode passed: " . $argv[1]);
         
         // Add node to publishing pool and exit (SyncManager will call this daemon again when inserting node job is done)
         $syncFac = new SynchroFacade();
@@ -60,7 +60,7 @@ function main($argc, $argv)
     // Every node in the block shares same dateup
     $nodesToPublish = NodesToPublish::getNext();
     while ($nodesToPublish != null) {
-        Logger::info(_("Publication cycle triggered by") . " " . $nodesToPublish['idNodeGenerator']);
+        Logger::info("Publication cycle triggered by " . $nodesToPublish['idNodeGenerator']);
         createBatchsForBlock($nodesToPublish);
 
         // Gext next block (if any) of nodes to publish
@@ -76,7 +76,7 @@ function createBatchsForBlock($nodesToPublish)
     $node = new Node($idNodeGenerator);
     if (!($node->get('IdNode') > 0)) {
         
-        Logger::error(_("Required node does not exist") . " " . $idNodeGenerator);
+        Logger::error("Required node does not exist " . $idNodeGenerator);
         return NULL;
     }
 
@@ -90,7 +90,7 @@ function createBatchsForBlock($nodesToPublish)
         $physicalServers = $nodeServer->class->GetPhysicalServerList(true, true);
     }
     if (count($physicalServers) == 0) {
-        Logger::error(_('Physical server does not exist for nodeId:') . " " . $idNodeGenerator . " " . _('returning empty arrays.'));
+        Logger::error('Physical server does not exist for nodeId: ' $idNodeGenerator . " " . 'returning empty arrays.');
         return null;
     }
 
@@ -124,7 +124,7 @@ function createBatchsForBlock($nodesToPublish)
                 $nodeTypeID = $node->get('IdNodeType');
                 $nodeType = new NodeType($nodeTypeID);
                 $nodeTypeName = $nodeType->get('Name');
-                Logger::info(_("Purging subversions for node") . " $id");
+                Logger::info("Purging subversions for node " . $id);
                 $data = new DataFactory($id);
                 $curVersion = $data->getLastVersion(true);
                 $prevVersion = $curVersion - 1;

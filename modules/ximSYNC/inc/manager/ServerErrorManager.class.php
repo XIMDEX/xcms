@@ -88,7 +88,7 @@ class ServerErrorManager
 		$idServer = $serverError->get('ServerId');
 		$serverError->set('WithError',1);
 		$serverError->update();
-		Logger::info(_("Disabling server")." $idServer");
+		Logger::info("Disabling server ". $idServer);
 		$serverNode = new Server($idServer);
 		$serverNode->set('ActiveForPumping',0);
 		$serverNode->update();
@@ -102,13 +102,13 @@ class ServerErrorManager
 	*/
 	static public function enableServer($idServer, $idPumper)
 	{
-		Logger::info(_("Enabling server")." $idServer");
+		Logger::info("Enabling server ". $idServer);
 		$serverNode = new Server($idServer);
 		$serverNode->set('ActiveForPumping',1);
 		$serverNode->update();
 
 		// Set serverframes to Due2In/Out for retry pumping
-		Logger::info(_("Setting ServerFrames to Due2In/Out to retry pumping"));
+		Logger::info("Setting ServerFrames to Due2In/Out to retry pumping");
 		$serverFrame = new ServerFrame();
 		$serverFrame->rescueErroneous($idPumper);
 	}

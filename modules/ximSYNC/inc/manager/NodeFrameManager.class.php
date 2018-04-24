@@ -208,7 +208,7 @@ class NodeFrameManager
 			$channelFrameManager = new ChannelFrameManager();
 			$result = $channelFrameManager->changeState($serverFrId, $operation, $nodeId, $canceled);
 			if ($result === false) {
-				Logger::error(_("The Serverframe state change has failed")." $serverFrId");
+				Logger::error("The Serverframe state change has failed"." $serverFrId");
 				$sfOK = false;
 			}
 		}
@@ -369,7 +369,7 @@ class NodeFrameManager
 					$serverFrame->delete();
 				}
 			}
-			Logger::info(_("Affected batchs:"). print_r($arrayAffectedBatchs, true));
+			Logger::info("Affected batchs:". print_r($arrayAffectedBatchs, true));
 			if (is_array($arrayAffectedBatchs) && count($arrayAffectedBatchs) > 0) {
 				foreach ($arrayAffectedBatchs as $idBatch => $serverFramesTotal) {
 
