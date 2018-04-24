@@ -58,7 +58,7 @@ class FileUpdater
             $compressedFile = sprintf('%s/files.tar.', $routeToBackupFolder);
             // Descomprimimos los archivos
             //TODO estas dos líneas van descomentadas (solo las comento para hacer pruebas rápidas)
-            Logger::info(_("Starting the decompression of files of the package") . " {$this->revision}");
+            Logger::info("Starting the decompression of files for the package " . " {$this->revision}");
             $tarArchiver = new TarArchiver($compressedFile);
             $tarArchiver->unpack($routeToFiles);
             unset($compressedFile, $routeToBackupFolder);
@@ -86,7 +86,7 @@ class FileUpdater
 
 
             if (!is_file($filePath)) {
-                Logger::info(_("Ignoring unexisting file") . " $filePath");
+                Logger::info("Ignoring not existing file" . " $filePath");
                 $dbObj->Next();
                 continue;
             }
@@ -96,7 +96,7 @@ class FileUpdater
             } elseif ($mode == Constants::UPDATE_LINKS) {
                 $node = new Node($idImportationNode);
                 if (!($node->GetID() > 0)) {
-                    Logger::info(sprintf(_("The document %s with id %s could not been imported due to it could not been loaded"), $filePath, $idImportationNode));
+                    Logger::info(sprintf("The document %s with id %s can not been imported because it can not be loaded", $filePath, $idImportationNode));
                     $dbObj->Next();
                     continue;
                 }
@@ -107,7 +107,7 @@ class FileUpdater
 
             if (empty($contents)) {
                 //File without content, continue
-                Logger::info(sprintf(_("Content of document %s with filepath %s could not been obtained"), $idImportationNode, $filePath));
+                Logger::info(sprintf("Content of document %s with filepath %s could not been obtained", $idImportationNode, $filePath));
                 $dbObj->Next();
                 continue;
             }

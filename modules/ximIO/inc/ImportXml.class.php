@@ -758,7 +758,7 @@ class ImportXml
         } else {
             $idImportationNode = $baseIO->build($elementToInsert, $idUser);
             if ($idImportationNode < 0) {
-                Logger::error(_('Error inserting the node') . $elementToInsert['ID']);
+                Logger::error('Error inserting the node' . $elementToInsert['ID']);
             }
             reset($baseIO->messages->messages);
             while (list(, $message) = each($baseIO->messages->messages)) {
@@ -1164,7 +1164,7 @@ class ImportXml
             $elementToInsert = array();
             $this->_bindNode($template['ID'], $result, $elementToInsert['NULL'], $status, $path);
         }
-        Logger::warning(_('No pvd could be successfully estimated for the node ') . $parentElement['ID']);
+        Logger::warning('No pvd can be successfully estimated for the node ' . $parentElement['ID']);
         return NULL;
     }
 
@@ -1195,7 +1195,7 @@ class ImportXml
         if ($db->numRows == 1) {
             return $db->getValue('IdNode');
         }
-        Logger::error(_('An inconsistency was found in database, there are several UUID in NodeProperties table with same value'));
+        Logger::error('An inconsistency was found in database: several UUID in NodeProperties table with the same value');
         return NULL;
     }
 
