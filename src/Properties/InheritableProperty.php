@@ -159,7 +159,7 @@ abstract class InheritableProperty
             else {
                 $property['Inherited'] = true;
             }
-            if ($onlyInherited and !$property['Inherited']) {
+            if ($onlyInherited and !$property['Inherited'] and !$property['Checked']) {
                 continue;
             }
             
