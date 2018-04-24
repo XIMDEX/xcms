@@ -271,7 +271,8 @@ class Action_workflow_forward extends ActionAbstract
                 'hasDisabledFunctions' => $this->hasDisabledFunctions(),
                 'stateid' => $idState,
                 'globalForcedEnabled' => FORCE_PUBLICATION,
-                'name' => $node->GetNodeName()
+                'name' => $node->GetNodeName(),
+                'node_Type' => $node->nodeType->GetName()
             );
             $values = array_merge($values, $this->buildExtraValues($idNode));
             $this->render($values, 'index.tpl', 'default-3.0.tpl');

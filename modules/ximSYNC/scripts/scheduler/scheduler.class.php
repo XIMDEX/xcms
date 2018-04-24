@@ -186,7 +186,7 @@ class Scheduler
                         $version = $nodeFrameData ['version'];
                         $timeUp = $nodeFrameData ['up'];
                         $timeDown = $nodeFrameData ['down'];
-                        $msg = sprintf("Checking activity, nodeframe %s for batch %s"), $nodeFrameId, $batchId;
+                        $msg = sprintf('Checking activity, nodeframe %s for batch %s', $nodeFrameId, $batchId);
                         $syncStatObj->create(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "INFO", 8, $msg);
                         Logger::info($msg);
                         $result = $nodeFrameManager->checkActivity($nodeFrameId, $nodeId, $timeUp, $timeDown, $batchType, $testTime);
