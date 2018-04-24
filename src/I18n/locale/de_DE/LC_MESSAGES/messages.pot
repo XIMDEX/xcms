@@ -7988,7 +7988,7 @@ msgstr ""
 msgid "Privacy Policy"
 msgstr ""
 
-msgid "(Only to change the actual one)"
+msgid "Only to change the actual one"
 msgstr ""
 
 msgid "The XML document is not valid. Changes have not been saved"

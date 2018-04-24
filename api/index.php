@@ -11,13 +11,6 @@ if (!defined('XIMDEX_ROOT_PATH')) {
     require_once '../bootstrap.php';
 }
 
-
-Manager::file('/api/src/Request.php');
-Manager::file('/api/src/Response.php');
-Manager::file('/api/src/Router.php');
-Manager::file('/api/src/APIException.php');
-Manager::file('/api/src/AbstractAPIAction.php');
-
 /**
  * @TODO: check global setup
  */

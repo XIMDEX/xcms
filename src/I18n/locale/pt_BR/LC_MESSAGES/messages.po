@@ -7994,8 +7994,8 @@ msgstr "!!para aprender m&aacute;s sobre Ximdex y su potencia en la gesti&oacute
 msgid "Privacy Policy"
 msgstr "!!Pol&iacute;tica de privacidad"
 
-msgid "(Only to change the actual one)"
-msgstr "(Somente se voc&ecirc; quiser mudar o atual)"
+msgid "Only to change the actual one"
+msgstr "Somente se voc&ecirc; quiser mudar o atual"
 
 msgid "The XML document is not valid. Changes have not been saved"
 msgstr "O documento XML não é válido. As alterações não foram salvas"
