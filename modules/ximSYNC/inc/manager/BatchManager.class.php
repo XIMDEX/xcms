@@ -86,7 +86,7 @@ class BatchManager
      * @param $userId
      * @return array[]|number[]|bool
      */
-    function publicate($idNode, $docsToPublish, $docsToPublishVersion, $docsToPublishSubVersion, $up, $down, $physicalServers, $force, $userId = null)
+    function publicate($idNode, $docsToPublish, $docsToPublishVersion, $docsToPublishSubVersion, $up, $down, $physicalServers, array $force, $userId = null)
     {
         $timer = new \Ximdex\Utils\Timer();
         $timer->start();
@@ -118,7 +118,7 @@ class BatchManager
                 $content = $docNode->GetContent();
                 $docNode->SetContent($content);
             }
-            if (!$this->isPublishable($idDoc, $up, $down, $force))
+            if (!$this->isPublishable($idDoc, $up, $down, $force[$idDoc]))
             {
                 $docsToPublish = array_diff($docsToPublish, array($idDoc));
                 $unchangedDocs[$idDoc][0][0] = 0;
@@ -161,11 +161,17 @@ class BatchManager
         $docsBatch = array();
         $iCount = 1;
         $iTotal = count($docsChunked);
+        $noCache = [];
         foreach ($docsChunked as $chunk)
         {
             Logger::info(sprintf("[Generator %s]: Creating bach %s / %s", $idNode, $iCount, $iTotal));
+            foreach ($chunk as $id) {
+                if ($force[$id]) {
+                    $noCache[$id] = true;
+                }
+            }
             $partialDocs = $this->buildBatchs($idNode, $up, $chunk, $docsToUpVersion, $docsToPublishVersion, $docsToPublishSubVersion, $idServer
-                , $physicalServers, 0.8, $down, $iCount, $iTotal, $idPortalVersion, $userId);
+                , $physicalServers, 0.8, $down, $iCount, $iTotal, $idPortalVersion, $userId, $noCache);
             $docsBatch = array_merge($docsBatch, $partialDocs);
             $iCount++;
 
@@ -239,12 +245,13 @@ class BatchManager
         return $versions;
     }
 
-
     function buildBatchs($nodeGenerator, $timeUp, $docsToPublish, $docsToUpVersion, $versions, $subversions, $server, $physicalServers, $priority
-        , $timeDown = null, $statStart = 0, $statTotal = 0, $idPortalVersion = 0, $userId = null)
+        , $timeDown = null, $statStart = 0, $statTotal = 0, $idPortalVersion = 0, $userId = null, array $noCache = [])
     {
-        // If the server is publishing through a channell in which there is not existing documents
-        // a batch is created without serverFrames, and it will be deleted at the end of buildFrames method
+        /*
+        If the server is publishing through a channell in which there is not existing documents
+        a batch is created without serverFrames, and it will be deleted at the end of buildFrames method
+        */
         $relBatchsServers = array();
         foreach ($physicalServers as $serverId) {
             $batch = new Batch();
@@ -263,12 +270,12 @@ class BatchManager
             Logger::info(sprintf("[Generator %s]: Creating up batch with id %s", $nodeGenerator, $relBatchsServers[$serverId]));
         }
         $frames = $this->buildFrames($timeUp, $timeDown, $docsToPublish, $docsToUpVersion, $versions, $subversions, $server, $relBatchsServers
-            , $statStart, $statTotal, $nodeGenerator);
+            , $statStart, $statTotal, $nodeGenerator, $noCache);
         return $frames;
     }
 
     function buildFrames($up, $down, $docsToPublish, $docsToUpVersion, $versions, $subversions, $serverID, $relBatchsServers, $statStart = 0
-        , $statTotal = 0, $nodeGenerator)
+        , $statTotal = 0, $nodeGenerator, array $noCache = [])
     {
         $docsOk = array();
         $docsNotOk = array();
@@ -339,12 +346,12 @@ class BatchManager
             }
             $node->Block($userID);
 
-            // upgrade document and caches version to the published one
+            // Upgrade document and caches version to the published one
             if (isset($docsToUpVersion[$idNode]) and $docsToUpVersion[$idNode])
             {
                 if ($version = $this->_upVersion(array($docsToUpVersion[$idNode]), NULL))
                 {
-                    // now $idVersion will be upgraded one 
+                    // Now $idVersion will be upgraded one 
                     $idVersion = $version[0];
                 }
             }
@@ -385,6 +392,7 @@ class BatchManager
                 $channelFrameId = $channelFrame->create($channelId, $idNode);
                 if (is_null($channelFrameId)) {
                     $node->unBlock();
+                    
                     // Deleting nodeFrame previously created
                     $nodeFrame = new NodeFrame($nodeFrameId);
                     $nodeFrame->delete();
@@ -395,7 +403,7 @@ class BatchManager
                 foreach ($relBatchsServers as $physicalServer => $idBatch) {
                     $idFrame = NULL;
 
-                    //If it is a structured document, check the server and the otf document
+                    // If it is a structured document, check the server and the otf document
                     if ($channelId != 'NULL') {
                         $server = new Server($physicalServer);
                     }
@@ -408,7 +416,7 @@ class BatchManager
                         $path = $node->GetPublishedPath($channelId);
                         $publishLinked = 1;
                         $idFrame = $serverFrame->create($idNode, $physicalServer, $up, $path, $name, $publishLinked, $nodeFrameId
-                            , $channelFrameId, $idBatch, $down, $size = 0);
+                            , $channelFrameId, $idBatch, $down, 0, isset($noCache[$idNode]) ? false : true);
                     }
                     if (is_null($idFrame)) {
                         Logger::warning(sprintf("Creation of ServerFrame could not be done: node %s, channel %s, batch %s", $idNode
@@ -447,8 +455,7 @@ class BatchManager
         $tt = implode(',', $allBatchs);
         $result = array();
         $serverFrame = new ServerFrame();
-        $result = $serverFrame->find('IdBatchUp, count(IdSync)', "IdBatchUp in ($tt) group by IdBatchUp",
-            NULL, MULTI, false);
+        $result = $serverFrame->find('IdBatchUp, count(IdSync)', "IdBatchUp in ($tt) group by IdBatchUp", NULL, MULTI, false);
         Logger::info(sprintf("The number of frames in %s batchs will be updated", count($result)));
         if (count($result) > 0) {
             foreach ($result as $dataFrames) {

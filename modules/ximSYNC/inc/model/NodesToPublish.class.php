@@ -126,20 +126,23 @@ class NodesToPublish extends NodesToPublish_ORM
 		}
 		$sql_nodes .= " order by deepLevel DESC";
 		$db->Query($sql_nodes);
-		$force = false;
+		$force = [];
 		$idNodeGenerator = null;
 		$userId = null;
 		while (!$db->EOF)
 		{
 			array_push($docsToPublish, $db->getValue('IdNode'));
-			$docsToPublishVersion[$db->getValue('IdNode')]=$db->getValue('Version');
-			$docsToPublishSubVersion[$db->getValue('IdNode')]=$db->getValue('SubVersion');
-			$idNodeGenerator = $db->getValue('IdNodeGenerator');
-			$force = $db->getValue('ForcePublication');
-			$userId = $db->getValue('UserId');
+			$docsToPublishVersion[$db->getValue('IdNode')] = $db->getValue('Version');
+			$docsToPublishSubVersion[$db->getValue('IdNode')] = $db->getValue('SubVersion');
+			if (!$idNodeGenerator) {
+			    $idNodeGenerator = $db->getValue('IdNodeGenerator');
+			}
+			$force[$db->getValue('IdNode')] = $db->getValue('ForcePublication');
+			if (!$userId) {
+			    $userId = $db->getValue('UserId');
+			}
 			$db->Next();
 		}
-		$force = $force ? true : false;
 		$result = array (
 			'docsToPublish' => $docsToPublish,
 			'idNodeGenerator' => $idNodeGenerator,

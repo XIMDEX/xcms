@@ -156,7 +156,8 @@ class ServerFrame extends ServerFrames_ORM
      * @param int size
      * @return int|null
      */
-    function create($nodeId, $server, $dateUp, $path, $name, $publishLinked, $idNodeFrame, $idChannelFrame, $idBatchUp, $dateDown = NULL, $size = 0)
+    function create($nodeId, $server, $dateUp, $path, $name, $publishLinked, $idNodeFrame, $idChannelFrame, $idBatchUp, $dateDown = NULL
+        , $size = 0, bool $cache = true)
     {
         $this->set('IdServer', $server);
         $this->set('DateUp', $dateUp);
@@ -172,6 +173,7 @@ class ServerFrame extends ServerFrames_ORM
         $this->set('IdNodeFrame', $idNodeFrame);
         $this->set('IdBatchUp', $idBatchUp);
         $this->set('IdChannelFrame', $idChannelFrame);
+        $this->set('cache', (int) $cache);
         parent::add();
         $idServerFrame = $this->get('IdSync');
         if ($idServerFrame > 0) {
@@ -284,12 +286,13 @@ class ServerFrame extends ServerFrames_ORM
     }
 
     /**
-     * Creates the file which will be sent to the production Server.
+     * Creates the file which will be sent to the production Server
      * 
-     * @param int frameID
-     * @return int|null
+     * @param $frameID
+     * @param bool $cache
+     * @return boolean|NULL|int
      */
-    function createSyncFile($frameID)
+    function createSyncFile($frameID, bool $cache = true)
     {
         $path = SERVERFRAMES_SYNC_PATH . "/" . $frameID;
         $channelFrameId = $this->get('IdChannelFrame');
@@ -312,7 +315,12 @@ class ServerFrame extends ServerFrames_ORM
         $isHybrid = $node->getSimpleBooleanProperty('hybridColector');
         $data['CHANNEL'] = $channelId;
         $data['SERVER'] = $server;
-        $data['DISABLE_CACHE'] = App::getValue("DisableCache");
+        if (!$cache) {
+            $data['DISABLE_CACHE'] = true;
+        }
+        else {
+            $data['DISABLE_CACHE'] = App::getValue("DisableCache");
+        }
         $transformer = $node->getProperty('Transformer');
         $data['TRANSFORMER'] = $transformer[0];
         $data['NODEID'] = $idNode;
