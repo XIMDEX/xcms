@@ -742,9 +742,9 @@ abstract class AbstractStructuredDocument extends FileNode
     {
         $node = new Node($this->parent->get('IdNode'));
         $parent = new Node($node->get('IdParent'));
-        $s = ' nodeid="' . $node->get('IdNode') . '"  parentnodeid="' . $parent->get('IdNode') . '"';
-        $s .= ' nodetype-name="' . $node->nodeType->get('Name') . '"  nodetype-id="' . $node->nodeType->get('IdNodeType') . '"';
-        $s .= ' document-name="' . $parent->get('Name') . '" alias="' . $parent->GetAliasForLang($langID) . '"';
+        $s = ' node_id="' . $node->get('IdNode') . '"  parent_node_id="' . $parent->get('IdNode') . '"';
+        $s .= ' nodetype_name="' . $node->nodeType->get('Name') . '"  nodetype_id="' . $node->nodeType->get('IdNodeType') . '"';
+        $s .= ' document_name="' . $parent->get('Name') . '" alias="' . $parent->GetAliasForLang($langID) . '"';
         $tree = $node->TraverseToRoot();
 
         // It must exclude from length the node itself, its container, and its folder
@@ -757,7 +757,7 @@ abstract class AbstractStructuredDocument extends FileNode
             $alias = $node->GetAliasForLang($langID);
             switch ($i) {
                 case 1:
-                    $s .= ' proyect="' . $ancestor->get('Name') . '"';
+                    $s .= ' project_name="' . $ancestor->get('Name') . '"';
                     continue;
                 case 2:
                     $s .= ' server="' . $ancestor->get('Name') . '"';
@@ -807,12 +807,21 @@ abstract class AbstractStructuredDocument extends FileNode
      */
     function _getDocXapPropertiesAttrib($withInheritance = false)
     {
+        $docxapPropAttrs = '';
         $node = new Node($this->nodeID);
         $properties = $node->getAllProperties($withInheritance);
-        $docxapPropAttrs = "";
-        if (is_array($properties) & count($properties) > 0) {
+        if ($properties) {
             foreach ($properties as $idProperty => $propertyValue) {
-                $docxapPropAttrs .= 'property_' . $idProperty . '="' . $propertyValue[0] . '" ';
+                if ($idProperty == 'channel') {
+                    $docxapPropAttrs .= 'channel_id';
+                }
+                elseif ($idProperty == 'language') {
+                    $docxapPropAttrs .= 'language_iso_id';
+                }
+                else {
+                    $docxapPropAttrs .= 'property_' . strtolower($idProperty);
+                }
+                $docxapPropAttrs .= '="' . $propertyValue[0] . '" ';
             }
         }
         return $docxapPropAttrs;

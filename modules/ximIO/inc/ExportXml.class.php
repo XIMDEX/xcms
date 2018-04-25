@@ -72,19 +72,19 @@ class ExportXml {
 				continue;
 			}
 			
-			$nodeIsInProyect = false;
+			$nodeIsInProject = false;
 			
 			do {
 				$idParentNode = $node->GetParent();
 				if((int) $idParentNode > 0) {
 					$node = new Node($idParentNode);
 					if ($node->nodeType->GetName() == CONST_FIRST_ALLOWED_NODE) {
-						$nodeIsInProyect = true;
+						$nodeIsInProject = true;
 						$this->_arrNodeId[] = $idNode;
 					}
 				}
-			} while($idParentNode && !$nodeIsInProyect);
-			if (!$nodeIsInProyect) {
+			} while($idParentNode && !$nodeIsInProject);
+			if (!$nodeIsInProject) {
 				$this->messages->add(sprintf(_('The node %s does not exists or is not included inside of %s'), $idNode, CONST_FIRST_ALLOWED_NODE), MSG_TYPE_ERROR);
 			}
 		}
