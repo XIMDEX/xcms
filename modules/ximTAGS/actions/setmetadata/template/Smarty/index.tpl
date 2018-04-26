@@ -23,67 +23,66 @@
  *  @version $Revision$
  *}
 
-<form method="POST" name="tags_form" class="setmetadata-tags_form" ng-controller="XTagsCtrl" xim-document-tags='{$tags}' xim-cloud-tags='{$cloud_tags}' xim-namespaces='{$namespaces}' xim-node-id="{$id_node}" ng-cloak>
+<form method="POST" name="tags_form" class="setmetadata-tags_form" ng-controller="XTagsCtrl" xim-document-tags='{$tags}' 
+        xim-cloud-tags='{$cloud_tags}' xim-namespaces='{$namespaces}' xim-node-id="{$id_node}" ng-cloak>
     {include file="actions/components/title_Description.tpl"}
-
     <div class="message slide-item" ng-show="submitMessages.length" ng-class="{literal}{'message-success': submitState == 'success'}{/literal}">
         <p class="ui-state-primary ui-corner-all msg-info" ng-repeat="message in submitMessages">
             #/message.message/#
         </p>
     </div>
-
     <div class="action_content">
         <div class="row">
             <div class="small-12 columns">
                 <div class="xim-tagsinput-newtag">
-                    <xim-select class="tag-type btn-rounded" ng-model="newTag.IdNamespace" xim-options="namespaces" xim-label-prop="type" xim-style-prop="nemo" xim-sel-prop="id" ng-init="newTag.IdNamespace = namespaces['1'].id">
+                    <xim-select class="tag-type btn-rounded" ng-model="newTag.IdNamespace" xim-options="namespaces" xim-label-prop="type" 
+                            xim-style-prop="nemo" xim-sel-prop="id" ng-init="newTag.IdNamespace = namespaces['1'].id">
                     </xim-select>
-                    <input type="text" class="xim-tagsinput-input" id="tag_input" placeholder="{t}Create new tags here{/t}..." ng-model="newTag.Name" ng-class="{literal}{error: tagExistInArray(newTag, documentTags)}{/literal}" ng-keyup="keyPress($event)" />
-                    <button type="button" class="btn-unlabel-rounded icon add-btn" ng-show="newTag.Name.length" ng-click="addNewTag()" ng-disabled="tagExistInArray(newTag, documentTags)" ng-class="{literal}{disabled:tagExistInArray(newTag, documentTags)}{/literal}">{t}Add{/t}</button>
+                    <input type="text" class="xim-tagsinput-input" id="tag_input" placeholder="{t}Create new tags here{/t}..." 
+                            ng-model="newTag.Name" ng-class="{literal}{error: tagExistInArray(newTag, documentTags)}{/literal}" 
+                            ng-keyup="keyPress($event)" />
+                    <button type="button" class="btn-unlabel-rounded icon add-btn" ng-show="newTag.Name.length" ng-click="addNewTag()" 
+                            ng-disabled="tagExistInArray(newTag, documentTags)" 
+                            ng-class="{literal}{disabled:tagExistInArray(newTag, documentTags)}{/literal}">{t}Add{/t}</button>
                 </div>
             </div>
-
             <div class="small-8 columns">
                 <div class="xim-tagsinput-container">
                     <div class="title-box">{t}Document tags{/t}</div>
                     <ul class="xim-tagsinput-list">
                         <li class="xim-tagsinput-tag icon xim-tagsinput-type-#/namespaces[tag.IdNamespace].nemo/#" {literal}ng-class="{'noxtooltip': (tag.Description==null||tag.Description=='')}" {/literal} ng-repeat="tag in documentTags">
                             <span ng-if="tag.Link == '#' || tag.Link == ''" class="xim-tagsinput-text" data-xtooltip="#/tag.Description/#">
-    						#/tag.Name/#
-    					</span>
-
-                            <a ng-if="tag.Link != '#' && tag.Link != ''" ng-href="#/tag.Link/#" target="_blank" class="xim-tagsinput-text" data-xtooltip="#/tag.Description/#">
-                            #/tag.Name/#
-                        </a>
-
-                            <span ng-if="
-    					(namespaces[tag.IdNamespace].nemo != 'dPerson'
-     					&& namespaces[tag.IdNamespace].nemo != 'dPlace'
-                        && namespaces[tag.IdNamespace].nemo != 'dOrganisation'
-                        && namespaces[tag.IdNamespace].nemo != 'dCreativeWork'
-                        && namespaces[tag.IdNamespace].nemo != 'dOthers')" class="ontology_link">
-                        	#/namespaces[tag.IdNamespace].type/#
-                        </span>
-
-                            <a ng-if="(namespaces[tag.IdNamespace].nemo == 'dPerson'
-     					|| namespaces[tag.IdNamespace].nemo == 'dPlace'
-                        || namespaces[tag.IdNamespace].nemo == 'dOrganisation'
-                        || namespaces[tag.IdNamespace].nemo == 'dCreativeWork'
-                        || namespaces[tag.IdNamespace].nemo == 'dOthers')
-                        && (namespaces[tag.IdNamespace].uri != NULL && namespaces[tag.IdNamespace].uri != '')" ng-href="namespaces[tag.IdNamespace].uri" class="ontology_link" target="_blank">
-                            #/namespaces[tag.IdNamespace].type/#
-                        </a>
-
-                            <a ng-click="removeTag($index)" class="xim-tagsinput-tag-remove icon" href="#">
-                            &nbsp;&times;&nbsp;
-                        </a>
+                                #/tag.Name/#
+	    					</span>
+	                        <a ng-if="tag.Link != '#' && tag.Link != ''" ng-href="#/tag.Link/#" target="_blank" class="xim-tagsinput-text" 
+	                                data-xtooltip="#/tag.Description/#">
+	                            #/tag.Name/#
+	                        </a>
+	                        <span ng-if="(namespaces[tag.IdNamespace].nemo != 'dPerson'
+	                                && namespaces[tag.IdNamespace].nemo != 'dPlace'
+	                                && namespaces[tag.IdNamespace].nemo != 'dOrganisation'
+	                                && namespaces[tag.IdNamespace].nemo != 'dCreativeWork'
+	                                && namespaces[tag.IdNamespace].nemo != 'dOthers')" class="ontology_link">#/namespaces[tag.IdNamespace].type/#</span>
+	                        <a ng-if="(namespaces[tag.IdNamespace].nemo == 'dPerson'
+	         		 	   		    || namespaces[tag.IdNamespace].nemo == 'dPlace'
+	                                || namespaces[tag.IdNamespace].nemo == 'dOrganisation'
+	                                || namespaces[tag.IdNamespace].nemo == 'dCreativeWork'
+	                                || namespaces[tag.IdNamespace].nemo == 'dOthers')
+	                            && (namespaces[tag.IdNamespace].uri != NULL && namespaces[tag.IdNamespace].uri != '')" 
+	                                ng-href="namespaces[tag.IdNamespace].uri" class="ontology_link" 
+	                                target="_blank">
+                                #/namespaces[tag.IdNamespace].type/#
+	                        </a>
+	                        <a ng-click="removeTag($index)" class="xim-tagsinput-tag-remove icon" href="#">
+	                            &nbsp;&times;&nbsp;
+	                        </a>
                         </li>
                     </ul>
-
-                    <p ng-hide="documentTags.length">{t}There aren't any tags defined yet{/t}.</p>
+                    <p ng-hide="documentTags.length">
+                        {t}There aren't any tags defined yet{/t}.
+                    </p>
                 </div>
             </div>
-
             <div class="small-4 columns">
                 <div class="suggested">
                     {if $isStructuredDocument}
@@ -102,15 +101,9 @@
                 </div>
             </div>
         </div>
+        <fieldset class="buttons-form">
+            <button class="btn main_action ui-state-default ui-corner-all button submit-button ladda-button" xim-button xim-state="submitState"
+                    xim-label="'ui.dialog.confirmation.save' | xI18n" ng-click="saveTags(documentTags)" xim-disabled="!dirty"></button>
+        </fieldset>
     </div>
-
-    <fieldset class="buttons-form positioned_btn">
-        <button
-            class="btn main_action ui-state-default ui-corner-all button submit-button ladda-button"
-            xim-button xim-state="submitState"
-            xim-label="'ui.dialog.confirmation.save' | xI18n"
-            ng-click="saveTags(documentTags)"
-            xim-disabled="!dirty">
-        </button>
-    </fieldset>
 </form>

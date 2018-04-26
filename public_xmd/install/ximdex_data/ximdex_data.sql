@@ -2856,3 +2856,44 @@ INSERT INTO `RelNodeTypeMimeType` (`idNodeType`, `extension`, `filter`) VALUES (
 
 INSERT INTO `Config` (`ConfigKey`, `ConfigValue`) VALUES ('HTMLEditorURL', null), ('HTMLEditorEnabled', '0');
 
+-- XOTF FOLDER
+
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`
+    , `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublishable`, `IsHidden`, `CanDenyDeletion`, `isGenerator`
+    , `IsEnriching`, `System`, `Module`) 
+    VALUES ('5110', 'XOTFFolder', 'FolderNode', 'folder_common', 'Ximdex On The Fly folder', '1', '1'
+    , '0', '0', '1', '0', '0', '0', '1', '0', '1', '0', '0', '1', NULL);
+
+INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`, `IsBulk`) VALUES
+    (6190, 5110, 'Add files', 'fileupload_common_multiple', 'add_file_common.png', 'Add a set of files to this folder', 10, NULL, 0
+        , 'type=common', 0),
+    (6191, 5110, 'Publish section', 'publicatesection', 'publicate_section.png', 'Publish a section massively', 70, NULL, 1, '', 0),
+    (6192, 5110, 'Download all files', 'filedownload_multiple', 'download_html_file.png', 'Download all files', 80, NULL, 0, '', 1),
+    (6193, 5110, 'Add empty file', 'newemptynode', 'add_file_common.png', 'Create a new empty file', 9, NULL, 0, '', 0),
+    (6194, 5110, 'Add common folder', 'addfoldernode', 'add_folder_common.png', 'Create a new common folder', 11, NULL, 0, '', 0);
+
+INSERT INTO `RelRolesActions` (`IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (201, 6190, 7, 1, 3);
+INSERT INTO `RelRolesActions` (`IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (201, 6191, 7, 1, 3);
+INSERT INTO `RelRolesActions` (`IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (201, 6192, 7, 1, 3);
+INSERT INTO `RelRolesActions` (`IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (201, 6193, 7, 1, 3);
+INSERT INTO `RelRolesActions` (`IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (201, 6194, 7, 1, 3);
+INSERT INTO `RelRolesActions` (`IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (201, 6190, 8, 1, 3);
+INSERT INTO `RelRolesActions` (`IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (201, 6191, 8, 1, 3);
+INSERT INTO `RelRolesActions` (`IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (201, 6192, 8, 1, 3);
+INSERT INTO `RelRolesActions` (`IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (201, 6193, 8, 1, 3);
+INSERT INTO `RelRolesActions` (`IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (201, 6194, 8, 1, 3);
+
+INSERT INTO `NodeAllowedContents` (`IdNodeAllowedContent`, `IdNodeType`, `NodeType`, `Amount`) VALUES
+    (NULL, '5014', '5110', '1'), 
+    (NULL, '5015', '5110', '1'),
+    (NULL, '5110', '5023', '0'),
+    (NULL, '5110', '5039', '0'), 
+    (NULL, '5110', '5040', '0'),
+    (NULL, '5110', '5041', '0');
+    
+INSERT INTO `NodeConstructors` (`IdNodeConstructor`, `IdNodeType`, `IdAction`) 
+    VALUES (NULL, '5110', '6012'), (NULL, '5110', '6013'), (NULL, '5110', '6014');
+    
+INSERT INTO `NodetypeModes` (`IdNodeType`, `Mode`) VALUES (5110, 'C'), (5110, 'R'), (5110, 'U'), (5110, 'D');
+
+INSERT INTO `NodeDefaultContents` (`IdNodeType`, `NodeType`, `Name`) VALUES (5014, 5110, 'xotf'), (5015, 5110, 'xotf');

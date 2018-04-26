@@ -114,4 +114,5 @@ class NodeTypeConstants
     const HTML_CONTAINER = 5103;
     const HTML_DOCUMENT = 5104;
     const JS_FILE = 5092;
+    const XOTF_FOLDER = 5110;
 }
