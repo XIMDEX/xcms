@@ -155,6 +155,8 @@ CREATE TABLE `ServerFrames` (
   KEY `IdChannelFrame` (`IdChannelFrame`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='XimDEX Table Synchronization';
 
+ALTER TABLE `ServerFrames` ADD `cache` BOOLEAN NOT NULL DEFAULT TRUE;
+
 -- --------------------------------------------------------
 
 --

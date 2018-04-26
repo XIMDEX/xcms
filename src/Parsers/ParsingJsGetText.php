@@ -158,7 +158,7 @@ class ParsingJsGetText
             Logger::warning("ERROR, the file " . XIMDEX_ROOT_PATH . $this->_file_orig . " could not be opened");
             return null;
         }
-
+        
         // Opening the destiny file to start to create it
         $file_out = @fopen(XIMDEX_ROOT_PATH . $this->PATH_CACHE . $this->_lang . "/" . $this->_file, "w");
         if (!$file_out) {

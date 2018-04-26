@@ -16,8 +16,7 @@ class Action_setextensions extends ActionAbstract
 
         $this->addCss('/actions/setextensions/resources/css/style.css');
 
-        $values = array('commonAllowedExtensions' => json_encode($commonAllowedExtensions,
-            ));
+        $values = array('commonAllowedExtensions' => json_encode($commonAllowedExtensions));
 
         $this->render($values, null, 'default-3.0.tpl');
     }
