@@ -165,6 +165,7 @@ class Action_addfoldernode extends ActionAbstract
                 break;
 
             case "CommonFolder":
+            case 'XOTFFolder':
                 $newNodeTypeName = "CommonFolder";
                 $friendlyName = "Common folder";
                 break;

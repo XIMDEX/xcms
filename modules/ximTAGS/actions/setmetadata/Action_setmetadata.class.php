@@ -35,7 +35,6 @@ use Ximdex\Utils\FsUtils;
 
 class Action_setmetadata extends ActionAbstract
 {
-
     function index()
     {
         $this->addCss('/assets/style/jquery/ximdex_theme/widgets/tagsinput/tagsinput.css');
@@ -43,22 +42,17 @@ class Action_setmetadata extends ActionAbstract
         $this->addJs('/src/Widgets/select/js/ximdex.select.js');
         $this->addJs('/actions/setmetadata/resources/js/setmetadata.js', 'ximTAGS');
         $this->addCss('/actions/setmetadata/resources/css/setmetadata.css', 'ximTAGS');
-
         $idNode = (int)$this->request->getParam("nodeid");
         $actionID = (int)$this->request->getParam("actionid");
         $tags = new Tag();
         $max = $tags->getMaxValue();
-
         $cTags = $tags->getTags();
-
         if (is_null($cTags)) {
             $pcTags = '[]';
         } else {
             $pcTags = str_replace("'", '&#39;', json_encode($cTags, JSON_UNESCAPED_UNICODE));
         }
-
         $node = New Node($idNode);
-
         $values = array(
             'cloud_tags' => $pcTags,
             'max_value' => $max[0][0],
@@ -70,10 +64,9 @@ class Action_setmetadata extends ActionAbstract
             'namespaces' => json_encode($this->getAllNamespaces())
         );
 
-        //Get the actual tags of the document
+        // Get the actual tags of the document
         $relTags = new RelTagsNodes();
         $tags = $relTags->getTags($idNode);
-
         $values["tags"] = str_replace("'", '&#39;', json_encode($tags, JSON_UNESCAPED_UNICODE));
         $node = new Node($idNode);
         $values["isStructuredDocument"] = $node->nodeType->get('IsStructuredDocument');
@@ -83,9 +76,11 @@ class Action_setmetadata extends ActionAbstract
     private function getAllNamespaces()
     {
         $result = array();
-        //Load from Xowl Service
+        
+        // Load from Xowl Service
         $namespacesArray = \Ximdex\Rest\Services\Xowl\OntologyService::getAllNamespaces();
-        //For every namespace build an array. This will be a json object
+        
+        // For every namespace build an array. This will be a json object
         foreach ($namespacesArray as $namespace) {
             $array = array(
                 "id" => $namespace->get("idNamespace"),
@@ -95,19 +90,17 @@ class Action_setmetadata extends ActionAbstract
                 "category" => $namespace->get("category"),
                 "uri" => $namespace->get("uri")
             );
-
             $result[] = $array;
         }
         return $result;
     }
 
     /**
-     *<p>Get Xowl related terms from content. It's just for structuredDocument </p>
+     * Get Xowl related terms from content. It's just for structuredDocument
      */
     public function getRelatedTagsFromContent()
     {
-
-        $idNode = (int)$this->request->getParam("nodeid");
+        $idNode = (int) $this->request->getParam("nodeid");
         $node = new Node($idNode);
         $result = array();
         if ($node->nodeType->get('IsStructuredDocument')) {
@@ -118,56 +111,50 @@ class Action_setmetadata extends ActionAbstract
     }
 
     /**
-     *<p>Get a json string with related terms from $content param</p>
+     * Get a json string with related terms from $content param
+     * 
      * @param $content string with text to search terms.
      * @return false if error, a json string otherwise.
      */
     private function getRelatedTags($content)
     {
-
         $ontologyService = new \Ximdex\Rest\Services\Xowl\OntologyService("semantic");
         return $ontologyService->suggest($content);
     }
 
     /**
-     *<p>Return all ontolgyTypes and mnemo from Namespaces table</p>
-     *<p>The syntax for the json returned is: </p>
-     *<code>   {"nemo1":{
+     * Return all ontolgyTypes and mnemo from Namespaces table
+     * The syntax for the json returned is:
+     * <code>   {"nemo1":{
      *            type:"type1",
      *            isSemantic:"isSemantic"
      *         },
      *         ...
      *    }
-     *</code>
+     * </code>
      */
     function loadAllNamespaces()
     {
-        //Sending json from result array
+        // Sending json from result array
         $this->sendJSON($this->getAllNamespaces());
     }
 
     function save_metadata()
     {
-        $idNode = (int)$this->request->getParam("nodeid");
-
+        $idNode = (int) $this->request->getParam("nodeid");
         $tags = new RelTagsNodes();
         $previous_tags = $tags->getTags($idNode);
-
-
         $request_content = file_get_contents("php://input");
         $data = json_decode($request_content);
         if (array_key_exists('tags', $data)) {
             $tags->saveAll($data->tags, $idNode, $previous_tags);
         }
-
         $mm = new \Ximdex\Metadata\MetadataManager($idNode);
         $mm->updateSystemMetadata();
-
         $this->messages->add(_("All the tags have been properly associated."), MSG_TYPE_NOTICE);
         $values = array(
             'messages' => $this->messages->messages,
         );
-
         $this->sendJSON($values);
     }
 
@@ -175,17 +162,16 @@ class Action_setmetadata extends ActionAbstract
     {
         $ontologyName = $this->request->getParam("ontologyName");
         $format = $this->request->getParam("inputFormat");
-        if (!$format)
+        if (!$format) {
             $format = "json";
-
+        }
         $ontologyPath = XIMDEX_ROOT_PATH . "/modules/ximTAGS/ontologies/{$format}/{$ontologyName}";
         $content = "";
         if (file_exists($ontologyPath)) {
             $content = FsUtils::file_get_contents($ontologyPath);
         }
-
         header('Content-type: application/json');
-        print ($content);
+        print($content);
         exit();
     }
 }
