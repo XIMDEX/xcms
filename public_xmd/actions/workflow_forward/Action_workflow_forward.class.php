@@ -38,6 +38,7 @@ use Ximdex\Runtime\DataFactory;
 use Ximdex\Utils\Serializer;
 use Ximdex\Sync\SynchroFacade;
 use Ximdex\Workflow\WorkFlow;
+use Ximdex\Runtime\Constants;
 
 \Ximdex\Modules\Manager::file('/actions/browser3/inc/GenericDatasource.class.php');
 \Ximdex\Modules\Manager::file('/inc/model/NodesToPublish.class.php', 'ximSYNC');
@@ -90,7 +91,14 @@ class Action_workflow_forward extends ActionAbstract
         $workflow = new WorkFlow($idNode, $node->GetState());
         
         // Getting next state
-        $nextState = $workflow->GetNextState();
+        if ($node->nodeType->GetIsStructuredDocument()) {
+            $nextState = $workflow->GetNextState();
+        }
+        else {
+            
+            // If the node is type of non structured document, then the next status is the publication
+            $nextState = Constants::PUBLICATION_STATUS_ID;
+        }
         
         // Checking if the user has some role with permission to change to next State
         $allowed = FALSE;
@@ -142,7 +150,7 @@ class Action_workflow_forward extends ActionAbstract
         }
         
         // Getting next state
-        $nextState = $workflow->GetNextState();
+        // $nextState = $workflow->GetNextState();
         $workflowNext = new WorkFlow($idNode, $nextState);
         $nextStateName = $workflowNext->GetName();
         
@@ -419,8 +427,9 @@ class Action_workflow_forward extends ActionAbstract
      *
      * @param int $idNode
      * @param int $idState : target state to promote the node
+     * @return bool
      */
-    private function promoteNode($idNode, $idState)
+    private function promoteNode($idNode, $idState) : bool
     {
         $idUser = \Ximdex\Runtime\Session::get("userID");
         $node = new Node($idNode);
@@ -439,9 +448,10 @@ class Action_workflow_forward extends ActionAbstract
         $result = $node->setState($idState);
         if ($result) {
             $this->messages->add(_('State has been successfully changed'), MSG_TYPE_NOTICE);
-        } else {
-            $this->messages->mergeMessages($node->messages);
+            return true;
         }
+        $this->messages->mergeMessages($node->messages);
+        return false;
     }
 
     /**
@@ -518,7 +528,7 @@ class Action_workflow_forward extends ActionAbstract
     {
         $idNode = $this->request->getParam('nodeid');
         
-        // The publication times are in milliseconds.
+        // The publication times are in milliseconds
         $dateUp = $this->request->getParam('dateUp_timestamp');
         $dateDown = $this->request->getParam('dateDown_timestamp');
         $up = (! is_null($dateUp) && $dateUp != "") ? $dateUp / 1000 : time();
@@ -572,7 +582,14 @@ class Action_workflow_forward extends ActionAbstract
         }
         
         // Move the node to next state
-        $this->promoteNode($idNode, $idState);
+        if (!$this->promoteNode($idNode, $idState)) {
+            $values = array(
+                'goback' => true,
+                'messages' => $this->messages->messages
+            );
+            $this->render($values, 'show_results', 'default-3.0.tpl');
+            return false;
+        }
         $node = new Node($idNode);
         $flagsPublication = $this->buildFlagsPublication($markEnd, $structure, $deepLevel, $force, $lastPublished);
         
