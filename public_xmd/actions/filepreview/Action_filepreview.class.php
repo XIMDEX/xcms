@@ -34,8 +34,9 @@ use Ximdex\Models\NodeType;
 
 class Action_filepreview extends ActionAbstract
 {
-
-    // Main method: shows initial form for a single file
+    /**
+     * Main method: shows initial form for a single file
+     */
     function index()
     {
         $this->response->set('Cache-Control',
@@ -52,6 +53,7 @@ class Action_filepreview extends ActionAbstract
             $selectedVersion = $dataFactory->GetLastVersionId();
         }
         if (!$selectedVersion) {
+            
             //TODO error
         }
         $node = new Node($idNode);
@@ -67,14 +69,11 @@ class Action_filepreview extends ActionAbstract
     }
 
     /**
-     * <p>Show all images contained in a node</p>
-     *
+     * Show all images contained in a node
      */
     function showAll()
     {
-
         $idNode = $this->request->getParam('nodeid');
-
         $node = new Node($idNode);
         if (!($node->get('IdNode')) > 0 || ($node->get('IdNodeType') != \Ximdex\NodeTypes\NodeTypeConstants::IMAGES_ROOT_FOLDER
                 && $node->get('IdNodeType') != \Ximdex\NodeTypes\NodeTypeConstants::IMAGES_FOLDER)) {
@@ -85,7 +84,7 @@ class Action_filepreview extends ActionAbstract
         $parentID = $node->GetParent();
         $parentNode = new Node($parentID);
 
-        /* Gets all child nodes of type image (nodetype IMAGE_FILE) of this node */
+        // Gets all child nodes of type image (nodetype IMAGE_FILE) of this node
         $nodes = $node->GetChildren(\Ximdex\NodeTypes\NodeTypeConstants::IMAGE_FILE);
         $imageNodes = array();
         $imagePath = App::getValue('UrlRoot') . App::getValue('FileRoot');
@@ -93,15 +92,13 @@ class Action_filepreview extends ActionAbstract
         if (count($nodes) > 0) {
             foreach ($nodes as $idNode) {
                 $n = new Node($idNode);
-                if (!($n->get('IdNode') > 0))
+                if (!($n->get('IdNode') > 0)) {
                     continue;
-
+                }
                 $dataFactory = new DataFactory($idNode);
                 $selectedVersion = $dataFactory->GetLastVersionId();
-
                 $version = new Version($selectedVersion);
                 $hash = $version->get('File');
-
                 $filepath = XIMDEX_ROOT_PATH . App::getValue('FileRoot') . DIRECTORY_SEPARATOR . $hash;
                 $imageInfo = getimagesize($filepath);
                 $width = $imageInfo[0];
@@ -118,14 +115,12 @@ class Action_filepreview extends ActionAbstract
                         'idnode' => $n->get('IdNode'),)
                 );
             }
-
             $this->addCss('/actions/filepreview/resources/css/showAll.css');
             $this->addJs('/actions/filepreview/resources/js/showAll.js');
             $this->addJs('/actions/filepreview/resources/js/gallerizer.js');
-
-            $values = array('imageNodes' => $imageNodes, 'serverName' => $parentNode->get('Name'), 'folderName' => $node->get('Name'));
+            $values = array('imageNodes' => $imageNodes, 'serverName' => $parentNode->get('Name'), 'folderName' => $node->get('Name')
+                , 'node_Type' => $node->nodeType->GetName());
             $this->render($values, null, 'default-3.0.tpl');
-
         } else {
             $message = _("No images found in this folder");
             $this->render(array('mesg' => $message), null, 'default-3.0.tpl');
@@ -134,14 +129,11 @@ class Action_filepreview extends ActionAbstract
 
     private function humanReadableFilesize($size)
     {
-
         $mod = 1024;
-
         $units = explode(' ', 'B KB MB GB TB PB');
         for ($i = 0; $size > $mod; $i++) {
             $size /= $mod;
         }
-
         return round($size, 2) . ' ' . $units[$i];
     }
 }
