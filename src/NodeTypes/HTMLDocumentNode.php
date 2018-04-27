@@ -424,7 +424,7 @@ class HTMLDocumentNode extends AbstractStructuredDocument
         $author = isset($metadata) && isset($metadata['Autor']) ? $metadata['Autor'] : '';
 
         // Create XML
-        $xml = new SimpleXMLElement("$docxif</" . static::DOCXIF . '>');
+        $xml = new SimpleXMLExtended("$docxif</" . static::DOCXIF . '>');
         $xml->addChild('id', implode(":", [$ximID, $node->GetID()]));
         $xml->addChild('file_version', $version["Version"] ?? '');
         if (is_array($tags)) {
@@ -435,8 +435,8 @@ class HTMLDocumentNode extends AbstractStructuredDocument
         $xml->addChild('repository_id', $ximID);
         $xml->addChild('name', $title ?? $node->GetNodeName());
         $xml->addChild('slug', $node->GetNodeName());
-        $xml->addChild('content_flat', strip_tags($content));
-        $xml->addChild('content_render', $content);
+        $xml->addChild('content_flat', $xml->addCData(strip_tags($content)));
+        $xml->addChild('content_render', $xml->addCData($content));
         $xml->addChild('creation_date', date('Y-m-d H:i:s', $node->get('CreationDate')));
         $xml->addChild('update_date', date('Y-m-d H:i:s', $node->get('ModificationDate')));
         $xml->addChild('section', $sectionNode->GetNodeName());
@@ -448,5 +448,17 @@ class HTMLDocumentNode extends AbstractStructuredDocument
         $content_payload->addChild('type', $sectionType->get('sectionType'));
 
         return $xml->asXML();
+    }
+
+
+}
+
+class SimpleXMLExtended extends SimpleXMLElement
+{
+    public function addCData($cdata_text)
+    {
+        $node = dom_import_simplexml($this);
+        $no = $node->ownerDocument;
+        $node->appendChild($no->createCDATASection($cdata_text));
     }
 }
