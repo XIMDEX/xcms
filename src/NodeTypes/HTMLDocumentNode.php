@@ -124,7 +124,7 @@ class HTMLDocumentNode extends AbstractStructuredDocument
                         } else {
                             $nodes['not_found_' . count($nodes)] = [
                                 'title' => key($templ),
-                                'content' => '<div>NODE EMPTY</div>'
+                                'content' => '<div></div>'
                             ];
                             if ($doc->messages->messages[0]) {
                                 Logger::error($doc->messages->messages[0]['message']);
@@ -162,7 +162,7 @@ class HTMLDocumentNode extends AbstractStructuredDocument
             if (isset($schemas[$section]) && $schemas[$section]['view'] != null) {
                 $content .= $schemas[$section]['view'];
             } else {
-                $content .= '<div>EMPTY COMPONENT</div>';
+                $content .= '<div></div>';
             }
         }
 
@@ -280,6 +280,7 @@ class HTMLDocumentNode extends AbstractStructuredDocument
             if ($pos !== 0) {
                 $render = static::createBasicHTMLTemplate($body, $css, $js);
             }
+
         }
 
         return $render;
@@ -382,11 +383,14 @@ class HTMLDocumentNode extends AbstractStructuredDocument
             $header .= "<script type='text/javascript' src='@@@RMximdex.pathto($file)@@@'></script>" . PHP_EOL;
         }
         $html = '<!DOCTYPE html>' . PHP_EOL;
-        $html .= '<html><head><meta charset="UTF-8">';
-        $html .= '<meta name="viewport" content="width=device-width, initial-scale=1.0">' . PHP_EOL;
-        $html .= '<meta http-equiv="X-UA-Compatible" content="ie=edge">' . PHP_EOL;
+        $html .= '<html>' . PHP_EOL . '<head>' . PHP_EOL;
+        $html .= '<meta charset = "UTF-8" >' . PHP_EOL;
+        $html .= '<meta name = "viewport" content = "width=device-width, initial-scale=1.0" >' . PHP_EOL;
+        $html .= '<meta http - equiv = "X-UA-Compatible" content = "ie=edge" >' . PHP_EOL;
+        $html .= '<meta name = "generator" content = "Ximdex CMS, Semantic Headless CMS and DMS, http://www.ximdex.com" >' . PHP_EOL;
+        $html .= '<meta name = "Owner" content = "' . App::getValue("VersionName") . '" >' . PHP_EOL;
         $html .= $header;
-        $html .= '</head>';
+        $html .= '</head>' . PHP_EOL;;
         $html .= '<body>' . PHP_EOL;
         $html .= $body;
         return $html . '</body>' . PHP_EOL . '</html>';
@@ -436,7 +440,7 @@ class HTMLDocumentNode extends AbstractStructuredDocument
         $xml->addChild('creation_date', date('Y-m-d H:i:s', $node->get('CreationDate')));
         $xml->addChild('update_date', date('Y-m-d H:i:s', $node->get('ModificationDate')));
         $xml->addChild('section', $sectionNode->GetNodeName());
-        $xml->addChild('state', "publish"); // TODO state
+        $xml->addChild('state', "publish");
 
         $content_payload = $xml->addChild('content-payload');
         $content_payload->addChild('author', $author);
