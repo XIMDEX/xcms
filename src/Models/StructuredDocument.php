@@ -27,6 +27,7 @@
 
 namespace Ximdex\Models;
 
+use Ximdex\Runtime\App;
 use Ximdex\Runtime\DataFactory;
 use Ximdex\Utils\FsUtils;
 use Ximdex\XML\Validators\RNG;
@@ -241,6 +242,21 @@ class StructuredDocument extends StructuredDocumentsOrm
         return $content;
     }
 
+    // Devuelve el contenido metadata del structure document actual.
+    // return string (Metadata)
+    function GetMetadata($version = null, $subversion = null)
+    {
+        $targetLink = $this->GetSymLink();
+        if ($targetLink) {
+            $target = new StructuredDocument($targetLink);
+            $targetContent = $target->GetMetadata();
+            return $targetContent;
+        }
+        $data = new DataFactory($this->get('IdDoc'));
+        $content = $data->GetMetadata($version, $subversion);
+        return $content;
+    }
+
     function UpdateLinkParseLink($sourceLang, $linkID)
     {
         $pos = strpos($linkID, ",");
@@ -262,8 +278,7 @@ class StructuredDocument extends StructuredDocumentsOrm
         $sibling = $node->class->GetChildByLang($this->GetLanguage());
         if ($sibling) {
             return $sibling;
-        }
-        else {
+        } else {
             return $linkID;
         }
     }
@@ -272,7 +287,7 @@ class StructuredDocument extends StructuredDocumentsOrm
      * @param string $content
      * @param boolean $commitNode
      */
-    function SetContent($content, $commitNode = NULL)
+    function SetContent($content, $commitNode = NULL, $metadata = null)
     {
         $symLinks = $this->find('IdDoc', 'TargetLink = %s', array(
             $this->get('IdDoc')
@@ -289,7 +304,7 @@ class StructuredDocument extends StructuredDocumentsOrm
         if (\Ximdex\NodeTypes\NodeTypeConstants::METADATA_DOCUMENT == $node->GetNodeType()) {
             $content = \Ximdex\Metadata\MetadataManager::addSystemMetadataToContent($node->nodeID, $content);
             if ($content === false) {
-                
+
                 // Invalid XML
                 $this->msgErr = 'Invalid XML document content';
                 Logger::error('Invalid XML for metadata node: ' . $node->GetDescription());
@@ -303,9 +318,9 @@ class StructuredDocument extends StructuredDocumentsOrm
         $node = new Node($this->get('IdDoc'));
         if ($commitNode == false) {
             $info = $node->GetLastVersion();
-            $res = $data->SetContent($content, $info['Version'], $info['SubVersion'], $commitNode);
+            $res = $data->SetContent($content, $info['Version'], $info['SubVersion'], $commitNode, $metadata);
         } else {
-            $res = $data->SetContent($content, NULL, NULL, $commitNode);
+            $res = $data->SetContent($content, NULL, NULL, $commitNode, $metadata);
         }
 
         // The document will be validate against the associated RNG schema with XML documents
@@ -340,6 +355,7 @@ class StructuredDocument extends StructuredDocumentsOrm
             $this->messages->mergeMessages($node->messages);
             return false;
         }
+
         return true;
     }
 
@@ -435,8 +451,8 @@ class StructuredDocument extends StructuredDocumentsOrm
         if ($schema === null) {
             return false;
         }
-        $xmlDoc = '<?xml version="1.0" encoding="UTF-8"?>' . PHP_EOL . '<docxap>' . PHP_EOL 
-                . \Ximdex\Utils\Strings::stripslashes($docNode->GetContent()) . PHP_EOL . '</docxap>';
+        $xmlDoc = '<?xml version="1.0" encoding="UTF-8"?>' . PHP_EOL . '<docxap>' . PHP_EOL
+            . \Ximdex\Utils\Strings::stripslashes($docNode->GetContent()) . PHP_EOL . '</docxap>';
         $rngValidator = new RNG();
         $valid = $rngValidator->validate($schema, $xmlDoc);
         if (!$valid) {

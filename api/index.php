@@ -6,6 +6,7 @@ use XimdexApi\core\Router;
 use Ximdex\Modules\Manager;
 use XimdexApi\actions\LoginAction;
 use XimdexApi\actions\XeditAction;
+use XimdexApi\actions\NodeAction;
 
 if (!defined('XIMDEX_ROOT_PATH')) {
     require_once '../bootstrap.php';
@@ -33,7 +34,7 @@ $router->addRoute('ping', function (Request $r, Response $w) {
 /************ ACTIONS ************/
 LoginAction::addMethods($router);
 XeditAction::addMethods($router);
-
+NodeAction::addMethods($router);
 
 /************ Modules actions ************/
 

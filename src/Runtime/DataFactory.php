@@ -283,7 +283,7 @@ class DataFactory
      * @return    string $content
      *
      */
-    function GetContent($versionID = null, $subVersion = null)
+    function GetContent($versionID = null, $subVersion = null, $isMetadata = false)
     {
         $this->ClearError();
         if (!($this->nodeID > 0)) {
@@ -301,7 +301,7 @@ class DataFactory
 
         if (!(!(is_null($versionID)) && !(is_null($subVersion)))) {
             //Logger::warning('No se ha podido estimar la versión o la subversion');
-        	Logger::warning('Unable to estimate version or subversion');
+            Logger::warning('Unable to estimate version or subversion');
             return false;
         }
 
@@ -314,6 +314,10 @@ class DataFactory
         }
 
         $targetPath = XIMDEX_ROOT_PATH . App::getValue("FileRoot") . "/" . $uniqueName;
+
+        if ($isMetadata)
+            $targetPath = $targetPath . ".metadata";
+
         $content = FsUtils::file_get_contents($targetPath);
 
         Logger::debug("GetContent for Node:" . $this->nodeID . ", Version: " . $versionID . "." . $subVersion . ", File: ." . $uniqueName . ", Chars: " . strlen($content));
@@ -331,40 +335,39 @@ class DataFactory
         return $content;
     }
 
+    // Devuelve el contenido metadata del structure document actual.
+    // return string (Metadata)
+    function GetMetadata($version = null, $subversion = null)
+    {
+        return $this->GetContent($version, $subversion, true);
+    }
 
     function _generateCaches($idVersion, bool $delete = false)
     {
         $res = true;
-        if (\Ximdex\Modules\Manager::isEnabled('ximSYNC'))
-        {
+        if (\Ximdex\Modules\Manager::isEnabled('ximSYNC')) {
             $version = new Version($idVersion);
-            if (!($version->get('IdVersion') > 0))
-            {
+            if (!($version->get('IdVersion') > 0)) {
                 return NULL;
             }
             $idNode = $version->get('IdNode');
             $node = new Node($idNode);
-            if (!($node->get('IdNode') > 0))
-            {
+            if (!($node->get('IdNode') > 0)) {
                 return NULL;
             }
-            if (!$node->nodeType->GetIsStructuredDocument())
-            {
+            if (!$node->nodeType->GetIsStructuredDocument()) {
                 return NULL;
             }
 
             // delete cache if the parameter $delete is true
             $pipelineManager = new PipelineManager();
-            if ($delete)
-            {
+            if ($delete) {
                 $pipelineManager->deleteCache($idVersion);
             }
 
             $channels = $node->GetChannels();
-            if ($channels)
-            {
-                foreach ($channels as $idChannel)
-                {
+            if ($channels) {
+                foreach ($channels as $idChannel) {
                     Logger::info("Generation cache for version $idVersion and the channel $idChannel");
                     $data = array('CHANNEL' => $idChannel);
                     $data['NODEID'] = $idNode;
@@ -373,11 +376,9 @@ class DataFactory
                     $data['TRANSFORMER'] = $transformer[0];
                     if ($node->GetNodeType() == NodeTypeConstants::XML_DOCUMENT) {
                         $process = 'StrDocToDexT';
-                    }
-                    elseif ($node->GetNodeType() == NodeTypeConstants::HTML_DOCUMENT) {
+                    } elseif ($node->GetNodeType() == NodeTypeConstants::HTML_DOCUMENT) {
                         $process = 'HTMLToPrepared';
-                    }
-                    else {
+                    } else {
                         return false;
                     }
                     $res = $pipelineManager->getCacheFromProcess($idVersion, $process, $data);
@@ -398,57 +399,70 @@ class DataFactory
      * @param    int $subVersion = null    : Si se omite este parametro, el anterior es el identificador unico de version, en otro caso, es el numero de Version
      *
      */
-    function SetContent($content, $versionID = NULL, $subVersion = NULL, $commitNode = NULL)
+    function SetContent($content, $versionID = NULL, $subVersion = NULL, $commitNode = NULL, $metadata = null)
     {
         $node = new Node($this->nodeID);
         $isPlainFile = @$node->nodeType->get('IsPlainFile');
 
         //only encoding the content if the node is not one of this 3.
-        if (!$isPlainFile)
-        {
+        if (!$isPlainFile) {
             //look for the working encoding from Config
             $dataEncoding = App::getValue('dataEncoding');
             $content = \Ximdex\XML\Base::recodeSrc($content, $dataEncoding);
         }
         $this->ClearError();
-        if (!($this->nodeID > 0))
-        {
+        if (!($this->nodeID > 0)) {
             $this->SetError(1);
             return false;
         }
 
         // (1) No se pasa version determinada, se incrementa la version con el contenido nuevo.
-        if (is_null($versionID) && is_null($subVersion))
-        {
+        if (is_null($versionID) && is_null($subVersion)) {
             $idVersion = $this->AddVersion(NULL, NULL, $content, $commitNode);
             $this->_generateCaches($idVersion);
+            $this->generateMetadata($metadata);
             return $idVersion;
         }
 
         // (2) Se pasa version determinada y se machaca el contenido de esa version.
-        if (!is_null($versionID) && !is_null($subVersion))
-        {
+        if (!is_null($versionID) && !is_null($subVersion)) {
             $uniqueName = $this->GetTmpFile($versionID, $subVersion);
-            if (!$uniqueName)
-            {
+            if (!$uniqueName) {
                 Logger::error("Error making a setContent for Node (Unable to get the file):" . $this->nodeID . ", Version: " . $versionID . "."
-                        . $subVersion . ", File: ." . $uniqueName . ", Chars: " . strlen($content));
+                    . $subVersion . ", File: ." . $uniqueName . ", Chars: " . strlen($content));
                 return false;
             }
             $targetPath = XIMDEX_ROOT_PATH . App::getValue("FileRoot") . "/" . $uniqueName;
             Logger::info("SetContent for Node:" . $this->nodeID . ", Version: " . $versionID . "." . $subVersion . ", File: ." . $uniqueName
-                    . ", Chars: " . strlen($content));
+                . ", Chars: " . strlen($content));
             $result = FsUtils::file_put_contents($targetPath, $content);
             $idVersion = $this->getVersionId($versionID, $subVersion);
+            if ($result && \Ximdex\Modules\Manager::isEnabled('ximRAM')) {
+                $this->indexNode($idVersion, $commitNode);
+            }
             $this->_generateCaches($idVersion, true);
+            $this->generateMetadata($metadata);
             return $result;
         }
         return false;
     }
 
+    private function generateMetadata($metadata)
+    {
+        // Metadata
+        if (!is_null($metadata)) {
+            $node = new Node($this->nodeID);
+            $info = $node->GetLastVersion();
+            $targetPath = XIMDEX_ROOT_PATH . App::getValue("FileRoot") . "/" . $info['File'] . ".metadata";
+            if (!FsUtils::file_put_contents($targetPath, $metadata)) {
+                Logger::error(sprintf(_("Error writing metadata to file %s"), $info['File']));
+            }
+        }
+    }
+
     /**
      * Create a new version
-     * 
+     *
      * @param $jumpNewVersion
      * @param $comment
      * @param $content
@@ -462,7 +476,7 @@ class DataFactory
             $this->SetError(1);
             return false;
         }
-        
+
         // Si tiene versiones anteriores, calculamos cual es la siguiente
         if ($this->HasPreviousVersions()) {
             $purgeAll = false;
@@ -473,24 +487,22 @@ class DataFactory
             }
             $curSubVersion = $this->GetLastSubVersion($curVersion);
             if ($jumpNewVersion) {
-                
+
                 // Si queremos saltar de version x.y -> x+1.0
                 $purgeAll = true;
                 $newVersion = $curVersion + 1;
                 $newSubVersion = '0';
                 $updateCaches = true;
                 $oldIdVersion = $this->getVersionId($curVersion, $curSubVersion);
-            }
-            else {
-                
+            } else {
+
                 // Si queremos saltar solo de subversion x.y -> x.y+1
                 $newVersion = $curVersion;
                 $newSubVersion = $curSubVersion + 1;
             }
             if (is_null($content)) {
                 $newContent = $this->GetContent($curVersion, $curSubVersion);
-            }
-            else {
+            } else {
                 $newContent = $content;
             }
             if (App::getValue("PurgeVersionsOnNewVersion")) {
@@ -500,9 +512,8 @@ class DataFactory
                 $this->_purgeSubVersions($newVersion);
             }
 
-        }
-        else {
-            
+        } else {
+
             // Si es la primera version a guardar -> 0.0
             $newVersion = 0;
             $newSubVersion = 0;

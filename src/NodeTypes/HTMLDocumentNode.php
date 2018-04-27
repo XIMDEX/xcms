@@ -166,6 +166,15 @@ class HTMLDocumentNode extends AbstractStructuredDocument
             }
         }
 
+        $docMetadata = json_decode($doc->GetMetadata(), true);
+        $metadata = isset($layout['metadata']) ? $layout['metadata'] : [];
+
+        foreach ($metadata as &$meta) {
+            if (isset($docMetadata[$meta['name']])) {
+                $meta['value'] = $docMetadata[$meta['name']];
+            }
+        }
+
         // Last get dependent schemas
         foreach ($schemas as $section => $data) {
             if (isset($data['sections'])) {
@@ -181,6 +190,7 @@ class HTMLDocumentNode extends AbstractStructuredDocument
         $properties['id'] = $doc->GetID();
         $properties['content'] = !is_null($content) ? $content : '';
         $properties['title'] = $doc->GetName();
+        $properties['metadata'] = $metadata;
         $properties['attributes'] = [];
         $properties['schema'] = $schemas;
         $properties['css'] = array_unique($extraData['css']);
@@ -222,12 +232,12 @@ class HTMLDocumentNode extends AbstractStructuredDocument
 
         if (strcmp($mode, static::MODE_DYNAMIC) == 0 || strcmp($mode, static::MODE_INDEX) == 0) {
             foreach ($docHTML as $node) {
-                if ($node['type'] == static::CONTENT_DOCUMENT) {
+                if (isset($node['type']) && $node['type'] == static::CONTENT_DOCUMENT) {
                     $render .= !is_null($content) ? $content : $node['content'];
                 }
             }
             if (strcmp($mode, static::MODE_INDEX) == 0) {
-                $render = static::createXIF($docId, $content, $channel);
+                $render = static::createXIF($docId, $render, $channel);
             }
         } else if (strcmp($mode, static::MODE_INCLUDE) == 0) {
             $body = '';
@@ -400,8 +410,16 @@ class HTMLDocumentNode extends AbstractStructuredDocument
         $sectionNode = new \Ximdex\Models\Node($section->getIdNode());
         $sectionType = new SectionType($section->getIdSectionType());
         $sd = new StructuredDocument($nodeID);
+        $metadata = $sd->GetMetadata();
+        $metadata = $metadata ? json_decode($metadata, true) : [];
         $hDoc = new HTMLDocumentNode($nodeID);
         $docxif = $hDoc->getDocHeader($channel, $sd->GetLanguage(), $sd->GetDocumentType(), static::DOCXIF);
+
+        $date = isset($metadata) && isset($metadata['Fecha']) ? $metadata['Fecha'] : '';
+        $title = isset($metadata) && isset($metadata['Título']) ? $metadata['Título'] : '';
+        $author = isset($metadata) && isset($metadata['Autor']) ? $metadata['Autor'] : '';
+
+        // Create XML
         $xml = new SimpleXMLElement("$docxif</" . static::DOCXIF . '>');
         $xml->addChild('id', implode(":", [$ximID, $node->GetID()]));
         $xml->addChild('file_version', $version["Version"] ?? '');
@@ -411,7 +429,7 @@ class HTMLDocumentNode extends AbstractStructuredDocument
             }
         }
         $xml->addChild('repository_id', $ximID);
-        $xml->addChild('name', $node->GetNodeName());
+        $xml->addChild('name', $title ?? $node->GetNodeName());
         $xml->addChild('slug', $node->GetNodeName());
         $xml->addChild('content_flat', strip_tags($content));
         $xml->addChild('content_render', $content);
@@ -419,9 +437,12 @@ class HTMLDocumentNode extends AbstractStructuredDocument
         $xml->addChild('update_date', date('Y-m-d H:i:s', $node->get('ModificationDate')));
         $xml->addChild('section', $sectionNode->GetNodeName());
         $xml->addChild('state', "publish"); // TODO state
-        $xml->addChild('author', $version["UserName"] ?? ''); //TODO Author
-        $xml->addChild('date', '2018-06-10 08:40:34'); //TODO date
-        $xml->addChild('type', $sectionType->get('sectionType'));//TODO tipo del documento
+
+        $content_payload = $xml->addChild('content-payload');
+        $content_payload->addChild('author', $author);
+        $content_payload->addChild('date', $date);
+        $content_payload->addChild('type', $sectionType->get('sectionType'));
+
         return $xml->asXML();
     }
 }

@@ -26,7 +26,7 @@
 (function() {
 	//All the customized validations
 	$.validator.addMethod("alphanumeric", function(value, element, params){
-		return this.optional(element) || /^\w+$/.test(value);
+		return this.optional(element) || /^[\w-]+$/.test(value);
 	}, _("Invalid string. Expecting an alphanumeric value without whitespaces."));
 	$.validator.addMethod("email", function(value, element, params){
 		return this.optional(element) || /^(mailto:)?[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/i.test(value);

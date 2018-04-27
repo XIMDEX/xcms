@@ -4,6 +4,7 @@ namespace XimdexApi\actions;
 
 use Ximdex\Models\FastTraverse;
 use Ximdex\Models\Node;
+use Ximdex\Models\StructuredDocument;
 use Ximdex\NodeTypes\HTMLDocumentNode;
 use Ximdex\NodeTypes\NodeTypeConstants;
 use Ximdex\Runtime\App;
@@ -79,7 +80,9 @@ class XeditAction extends Action
 
         $nodes = HTMLDocumentNode::getNodesHTMLDocument($nodeId);
 
-        if ($nodes)
+        $metadata = [];
+
+        if ($nodes) {
             // Transform data to Xedit editor
             foreach ($nodes as &$node) {
                 if (isset($node['id'])) {
@@ -90,27 +93,35 @@ class XeditAction extends Action
                     foreach ($schemas as $key => $value) {
                         $schemas[$key]['view'] = static::transformContentToXedit($value['view']);
                     }
+
+                    if (strcmp($node['type'], HTMLDocumentNode::CONTENT_DOCUMENT) == 0) {
+                        $metadata = $node['metadata'];
+                    }
+
                     $node['schema'] = $schemas;
                 }
             }
+        }
 
 
         if ($nodes === false) {
             $w->setMessage('Document not found')->setStatus(1);
         } else {
+            $action = '_action=/';
             $response = [
-                'baseUrl' => App::get('UrlHost') . App::get('UrlRoot') . '/api',
+                'baseUrl' => App::get('UrlHost') . App::get('UrlRoot') . '/api/',
                 'routerMapper' => [
                     'routes' => [
-                        'resource' => '_action=' . XeditAction::getPath(XeditAction::ROUTE_FILE),
-                        'treeInfo' => '_action=' . XeditAction::getPath(XeditAction::ROUTE_GET_TREE_INFO),
+                        'treeInfo' => $action . XeditAction::getPath(XeditAction::ROUTE_GET_TREE_INFO) .
+                            "&id=:id&type=:type",
+                        'set' => $action . XeditAction::getPath(XeditAction::ROUTE_SET),
+
+                        'infonode' => $action . NodeAction::getPath(NodeAction::ROUTE_GET) . "&id=:id",
+                        'resource' => $action . XeditAction::getPath(XeditAction::ROUTE_FILE) . "&id=:id"
                     ]
                 ],
                 'name' => $name,
-                'metas' => [
-                    'title' => 'Ejemplo',
-                    'tags' => 'ejemplo test prueba'
-                ],
+                'metas' => $metadata,
                 'nodes' => $nodes
             ];
         }
@@ -128,13 +139,24 @@ class XeditAction extends Action
     {
         $data = json_decode(file_get_contents('php://input'), true);
         if (isset($data['nodes'])) {
-            $nodes = $data['nodes'];
+            $metadata = null;
+            if (isset($data['metas'])) {
+                $metadata = [];
+                foreach ($data['metas'] as $meta) {
+                    if (isset($meta['value']) && isset($meta['name'])) {
+                        $metadata[$meta['name']] = static::transformContentToXimdex($meta['value']);
+                    }
+                }
+                $metadata = json_encode($metadata, JSON_PRETTY_PRINT);
 
+            }
+
+            $nodes = $data['nodes'];
             foreach ($nodes as $nodeId => $value) {
                 if (isset($value['editable']) && $value['editable']) {
-                    $node = new Node(intval(str_replace('xe_', '', $nodeId)));
+                    $node = new StructuredDocument(intval(str_replace('xe_', '', $nodeId)));
                     $content = static::transformContentToXimdex($value['content']);
-                    $node->SetContent($content, true);
+                    $node->SetContent($content, true, $metadata);
                 }
             }
         } else {
@@ -184,7 +206,7 @@ class XeditAction extends Action
         $nodeId = isset($_GET['id']) ? $_GET['id'] : null;
         $type = isset($_GET['type']) ? $_GET['type'] : null;
         $type = isset($types[$type]) ? $types[$type] : false;
-        $level = isset($_GET['level']) && ctype_digit($_GET['level']) ? (int)$_GET['level'] : null;
+        $level = isset($_GET['level']) && ctype_digit($_GET['level']) ? (int)$_GET['level'] : 1;
 
         if (ctype_digit($nodeId) && $type !== false) {
 
@@ -193,8 +215,8 @@ class XeditAction extends Action
             $result = static::buildCompleteTree($children, $types);
 
             $count = count($result) - 1;
-            if ($level && $count > $level)
-                $result = array_splice($result, $count - $level, $count);
+            if ($level !== null && $count > $level)
+                $result = array_splice($result, $count - $level, 1);
 
             $w->setResponse($result);
         } else {
