@@ -51,6 +51,7 @@ class Action_modifyserver extends ActionAbstract
 			}
 		}
 		if ($operation == 'mod' or $operation == 'new') {
+		    
 		    // Data provided from the form submit
 		    $server = array();
 		    $server['id'] = $serverID;
@@ -335,21 +336,21 @@ class Action_modifyserver extends ActionAbstract
 	}
 
 	private function _getChannels($nodeID, $serverID = null, $server = null)
-	{	
+	{
+	    $serverNode = new Node($nodeID);
 		$channel = new Channel();
-		$channels = $channel->getChannelsForNode($nodeID);
+		$channels = $channel->getChannelsForNode($serverNode->getProject());
 		if (is_array($channels)) {
-		    if (isset($server['channels']) and $server['channels']) {
+            if (isset($server['channels']) and $server['channels']) {
 		        
-				// Data provided from the form submit
-				foreach ($channels as & $channel) {
+	   			// Data provided from the form submit
+		  		foreach ($channels as & $channel) {
 					$channel['InServer'] = in_array($channel['IdChannel'], $server['channels']);
 				}
 			}
 			elseif ($serverID) {
-				$server = new Node($nodeID);
 				foreach ($channels as & $channel) {
-					$channel['InServer'] = $server->class->HasChannel($serverID, $channel['IdChannel']);
+					$channel['InServer'] = $serverNode->class->HasChannel($serverID, $channel['IdChannel']);
 				}
 			}
 		}

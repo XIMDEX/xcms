@@ -418,11 +418,10 @@ class HTMLDocumentNode extends AbstractStructuredDocument
         $metadata = $metadata ? json_decode($metadata, true) : [];
         $hDoc = new HTMLDocumentNode($nodeID);
         $docxif = $hDoc->getDocHeader($channel, $sd->GetLanguage(), $sd->GetDocumentType(), static::DOCXIF);
-
         $date = isset($metadata) && isset($metadata['Fecha']) ? $metadata['Fecha'] : '';
         $title = isset($metadata) && isset($metadata['Título']) ? $metadata['Título'] : '';
         $author = isset($metadata) && isset($metadata['Autor']) ? $metadata['Autor'] : '';
-
+        
         // Create XML
         $xml = new SimpleXMLExtended("$docxif</" . static::DOCXIF . '>');
         $xml->addChild('id', implode(":", [$ximID, $node->GetID()]));
@@ -435,30 +434,41 @@ class HTMLDocumentNode extends AbstractStructuredDocument
         $xml->addChild('repository_id', $ximID);
         $xml->addChild('name', $title ?? $node->GetNodeName());
         $xml->addChild('slug', $node->GetNodeName());
-        $xml->addChild('content_flat', $xml->addCData(strip_tags($content)));
-        $xml->addChild('content_render', $xml->addCData($content));
+        $xml->addChildCData('content_flat', html_entity_decode(preg_replace('/((\n)(\s{2,}))/', '', strip_tags($content))));
+        $xml->addChildCData('content_render', $content);
         $xml->addChild('creation_date', date('Y-m-d H:i:s', $node->get('CreationDate')));
         $xml->addChild('update_date', date('Y-m-d H:i:s', $node->get('ModificationDate')));
         $xml->addChild('section', $sectionNode->GetNodeName());
         $xml->addChild('state', "publish");
-
         $content_payload = $xml->addChild('content-payload');
         $content_payload->addChild('author', $author);
         $content_payload->addChild('date', $date);
         $content_payload->addChild('type', $sectionType->get('sectionType'));
-
         return $xml->asXML();
     }
-
-
 }
 
 class SimpleXMLExtended extends SimpleXMLElement
 {
-    public function addCData($cdata_text)
+    /**
+     * @param string $cdata_text
+     */
+    public function addCData(string $cdata_text) : void
     {
         $node = dom_import_simplexml($this);
         $no = $node->ownerDocument;
         $node->appendChild($no->createCDATASection($cdata_text));
+    }
+    
+    /**
+     * Create a child with CDATA value
+     * 
+     * @param string $name The name of the child element to add
+     * @param string $cdata_text The CDATA value of the child element
+     */
+    public function addChildCData(string $name, string $cdata_text) : void
+    {
+        $child = $this->addChild($name);
+        $child->addCData($cdata_text);
     }
 }

@@ -295,14 +295,14 @@ class ServerNode extends FolderNode
 
     function GetChannels($physicalID = NULL)
     {
-        $sql = "SELECT IdChannel FROM RelServersChannels";
+        $sql = 'SELECT IdChannel FROM RelServersChannels';
         if ($physicalID != NULL) {
-            $sql .= " WHERE IdServer=" . $physicalID;
+            $sql .= ' WHERE IdServer=' . $physicalID;
         }
         $this->dbObj->Query($sql);
         $list = array();
         while (! $this->dbObj->EOF) {
-            $list[] = $this->dbObj->GetValue("IdChannel");
+            $list[$this->dbObj->GetValue('IdChannel')] = $this->dbObj->GetValue('IdChannel');
             $this->dbObj->Next();
         }
         return $list;

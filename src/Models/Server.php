@@ -28,6 +28,30 @@
 namespace Ximdex\Models;
 
 use Ximdex\Models\ORM\ServersOrm;
+use Ximdex\NodeTypes\ServerNode;
 
 class Server extends ServersOrm
-{}
+{
+    private $serverNode;
+    
+    public function __construct(int $id = null)
+    {
+        parent::__construct($id);
+        if ($id) {
+            $this->setServerNode($id);
+        }
+    }
+    
+    public function setServerNode($id)
+    {
+        $this->serverNode = new ServerNode($id);
+    }
+    
+    public function getChannels() : array
+    {
+        if (!$this->serverNode) {
+            $this->setServerNode($this->get('IdServer'));
+        }
+        return $this->serverNode->GetChannels($this->get('IdServer'));
+    }
+}

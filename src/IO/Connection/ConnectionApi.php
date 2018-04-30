@@ -35,7 +35,6 @@ class ConnectionApi extends Connector implements IConnector
 {
     private $client;
     private $connected = false;
-    private $isFile = false;
     private $host = false;
     
 	/**
@@ -201,7 +200,6 @@ class ConnectionApi extends Connector implements IConnector
 	 */
 	public function put($localFile, $targetFile, $mode = 0755)
 	{
-	    $this->isFile = false;
 	    $content = FsUtils::file_get_contents($localFile);
 	    if ($content === false) {
 	        return false;
@@ -219,7 +217,6 @@ class ConnectionApi extends Connector implements IConnector
 	        return false;
 	    }
 	    if ($res->getStatusCode() == 200) {
-	        $this->isFile = true;
 	        return true;
 	    }
 	    $this->error = 'The connection to API service return the status code: ' . $res->getStatusCode();

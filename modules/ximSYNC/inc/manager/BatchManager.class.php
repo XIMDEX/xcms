@@ -32,6 +32,7 @@ use Ximdex\NodeTypes\ServerNode;
 use Ximdex\Runtime\DataFactory;
 use Ximdex\Models\Channel;
 use Ximdex\Models\Node;
+use Ximdex\Properties\InheritedPropertiesManager;
 
 \Ximdex\Modules\Manager::file('/inc/model/Batch.class.php', 'ximSYNC');
 \Ximdex\Modules\Manager::file('/inc/model/NodeFrame.class.php', 'ximSYNC');
@@ -86,7 +87,8 @@ class BatchManager
      * @param $userId
      * @return array[]|number[]|bool
      */
-    function publicate($idNode, $docsToPublish, $docsToPublishVersion, $docsToPublishSubVersion, $up, $down, $physicalServers, array $force, $userId = null)
+    function publicate($idNode, $docsToPublish, $docsToPublishVersion, $docsToPublishSubVersion, $up, $down, $physicalServers, array $force
+        , $userId = null)
     {
         $timer = new \Ximdex\Utils\Timer();
         $timer->start();
@@ -262,10 +264,7 @@ class BatchManager
                 Logger::info(sprintf("[Generator %s]: Creating down batch with id %s", $nodeGenerator, $idBatchDown));
             }
             $batch = new Batch();
-            $relBatchsServers[$serverId] = $batch->create(
-                $timeUp, 'Up', $nodeGenerator, $priority,
-                $idBatchDown, $idPortalVersion, $userId
-            );
+            $relBatchsServers[$serverId] = $batch->create($timeUp, 'Up', $nodeGenerator, $priority, $idBatchDown, $idPortalVersion, $userId);
             Logger::info('Creating up batch: ' . $timeUp);
             Logger::info(sprintf("[Generator %s]: Creating up batch with id %s", $nodeGenerator, $relBatchsServers[$serverId]));
         }
@@ -286,6 +285,7 @@ class BatchManager
 
         // Creating the frames for each idNode
         $serverFrame = new ServerFrame();
+        $servers = [];
         foreach ($docsToPublish as $idNode) {
             if (!isset($versions[$idNode]) or $versions[$idNode] === null) {
                 Logger::error('There is not any version for node: ' . $idNode);
@@ -297,27 +297,6 @@ class BatchManager
             }
             $j++;
             $node = new Node($idNode);
-            
-            /*
-            // check if current version is 0.0 and not is a node generator. In that case
-            $versionZero = (0 == $versions[$idNode] && 0 == $subversions[$idNode]);
-            // If node subversion is > 0 means that we are publishing a draft.
-            // If it is equals to 0 means that we are publishing a version already published in the past.
-            // In this case we look for that version.subversion specific because
-            // it is possible that exists new drafts that we do not want publish.
-            if ($subversions[$idNode] == 0 && !($versionZero && $idNode == $nodeGenerator)) {
-                $idVersion = $dataFactory->getVersionId($versions[$idNode], $subversions[$idNode]);
-            } else {
-                $idVersion = $dataFactory->GetLastVersionId();
-            }
-            // This var check if a version fof a document 0.0, if node is not the generator
-            // and if is structured. In that case we can not publish that document.
-            // Therefore if a document is not structured(Css or images, etc)
-            // we allow publish it, or if it is the node generator we allow publish it too.
-            $notPublish = ($versionZero && $idNode != $nodeGenerator && $node->nodeType->get('IsStructuredDocument') > 0);
-            // Check if null $idversion or if $version == 0 and subversion== 0
-            */
-            
             $versionZero = (0 == $versions[$idNode] && 0 == $subversions[$idNode]);
             if ($versionZero && $node->nodeType->get('IsStructuredDocument') && $idNode != $nodeGenerator)
             {
@@ -402,10 +381,30 @@ class BatchManager
                 }
                 foreach ($relBatchsServers as $physicalServer => $idBatch) {
                     $idFrame = NULL;
-
-                    // If it is a structured document, check the server and the otf document
-                    if ($channelId != 'NULL') {
-                        $server = new Server($physicalServer);
+                    
+                    // Load the physical server for the current batch
+                    if (!isset($servers[$physicalServer])) {
+                        $servers[$physicalServer] = $server = new Server($physicalServer);
+                    }
+                    else {
+                        $server = $servers[$physicalServer];
+                    }
+                    $serverChannels = $server->getChannels();
+                    
+                    // Load the channels for the node to be publish
+                    $properties = InheritedPropertiesManager::getValues($idNode, true);
+                    if (!isset($properties['Channel'])) {
+                        continue;
+                    }
+                    $ok = false;
+                    foreach ($properties['Channel'] as $key => $prop) {
+                        if (isset($serverChannels[$key])) {
+                            $ok = true;
+                            break;
+                        }
+                    }
+                    if (!$ok) {
+                        continue;
                     }
                     $generatedNodes = array();
                     if ($nodeServer->class->HasChannel($physicalServer, $channelId) || $channelId == 'NULL') {

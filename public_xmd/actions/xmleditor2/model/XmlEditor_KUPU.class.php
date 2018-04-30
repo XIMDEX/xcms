@@ -770,15 +770,13 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
     private function getDefaultChannel()
     {
         $channels = $this->node->getChannels();
-
-        $max = count($channels);
         $defaultChannel = null;
-        for ($i = 0; $i < $max; $i++) {
-            $channel = new Channel($channels[$i]);
+        foreach ($channels as $channelID) {
+            $channel = new Channel($channelID);
             $channelName = $channel->getName();
-            if ($defaultChannel == null) $defaultChannel = $channels[$i];
+            if ($defaultChannel == null) $defaultChannel = $channelID;
             if (strToUpper($channelName) == 'HTML' || strToUpper($channelName) == 'WEB') {
-                $defaultChannel = $channels[$i];
+                $defaultChannel = $channelID;
                 break;
             }
         }

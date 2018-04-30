@@ -164,7 +164,7 @@ class ViewTARGZ extends AbstractView implements IView
             if ((is_array($channels)) && (!is_null($node)) && (!is_null($structuredDocument)) && (array_key_exists(0, $channels)) && (!is_null($language))) {
                 //Select, for example, the first channel, it's the same because otf will renderize the
                 //xml with a channel selected by the user
-                $channel = $channels[0];
+                $channel = reset($channels);
                 $documentType = $structuredDocument->GetDocumentType();
                 $docxapout = $node->class->getDocHeader($channel, $language, $documentType);
 

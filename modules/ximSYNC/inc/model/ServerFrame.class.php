@@ -515,8 +515,8 @@ class ServerFrame extends ServerFrames_ORM
      */
     function rescueErroneous($pumperId)
     {
-        $sql = "UPDATE ServerFrames SET State = LEFT(State,LENGTH(State)-LENGTH('witherror'))
-				WHERE State IN ('Due2PumpedWithError','Due2OutWithError') WHERE PumperId = $pumperId";
+        $sql = "UPDATE ServerFrames SET State = LEFT(State, LENGTH(State) - LENGTH('witherror'))
+				WHERE State IN ('Due2PumpedWithError', 'Due2OutWithError') AND PumperId = $pumperId";
         $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->Execute($sql);
     }

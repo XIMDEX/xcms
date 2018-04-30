@@ -6,6 +6,7 @@ use Ximdex\Models\Server;
 
 class Connector
 {
+    protected $isFile = false;
     protected $server;
     protected $error;
     protected $type;
@@ -44,5 +45,10 @@ class Connector
     public function setType(string $type) : void
     {
         $this->type = $type;
+    }
+    
+    public function setIsFile(bool $isFile) : void
+    {
+        $this->isFile = $isFile;    
     }
 }

@@ -15,7 +15,7 @@ class Section extends GenericData
     protected $IdNode;
     protected $idSectionType;
     
-    public function getIdNode() : int
+    public function getIdNode() : ?int
     {
         return $this->get('IdNode');
     }
@@ -25,7 +25,7 @@ class Section extends GenericData
         $this->set('IdNode', $id);
     }
     
-    public function getIdSectionType() : int
+    public function getIdSectionType() : ?int
     {
         return $this->get('idSectionType');
     }

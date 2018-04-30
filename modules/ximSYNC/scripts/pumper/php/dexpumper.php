@@ -166,12 +166,14 @@ class DexPumper
 			$this->info("ServerFrame $IdSync to proccess.");
 			$this->getHostConnection();
 			if ($state_task == ServerFrame::DUE2IN) {
+			    $this->connection->setIsFile(false);
 			    $this->uploadAsHiddenFile();
 			    $this->updateStats("DUE2IN");
 			} elseif ($state_task == ServerFrame::DUE2OUT) {
 				$this->updateStats("DUE2OUT");
 				$this->RemoveRemoteFile();
 			} elseif ($state_task == ServerFrame::PUMPED) {
+			    $this->connection->setIsFile(true);
 				$this->updateStats("PUMPED");
 				$this->pumpFile();
 			}
@@ -411,21 +413,26 @@ class DexPumper
 	private function updateTask($result, $status = null)
 	{
 		$this->info('Processing ' . $this->serverFrame->get('IdSync'));
-		if (!$result > 0) {
+		if (!$result) {
 			$retries = $this->serverFrame->get('Retry');
 			$this->serverFrame->set('Retry', $retries);
 			if ($retries > self::RETRIES_TO_FATAL_ERROR) {
-				$this->error("State  'Due2' . $status . 'WithError'");
+			    $this->error('Maximum of retries reached (' . self::RETRIES_TO_FATAL_ERROR . ') for server frame: ' . $this->serverFrame->IdSync . '. Marked as errored');
+				$this->serverFrame->set('State', ServerFrame::DUE2INWITHERROR);
 			}
+			else {
+			    $retries++;
+			    $this->serverFrame->set('Retry', $retries);
+			    $this->serverFrame->set('ErrorLevel', 1);
+			}
+			$this->serverFrame->update();
+			return false;
 		}
-		$this->serverFrame->set('ErrorLevel', $result ? 0 : 1);
-		$retries ++;
-		$this->serverFrame->set('Retry', $retries);
 		if ($status !== null) {
 		    $this->serverFrame->set('State', $status);
+		    $this->serverFrame->set('Linked', 0);
+		    $this->serverFrame->update();
 		}
-		$this->serverFrame->set('Linked', 0);
-		$this->serverFrame->update();
 		$this->updateTimeInPumper();
 	}
         
