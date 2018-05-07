@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -26,62 +27,61 @@
 
 namespace Ximdex\Runtime;
 
-
 /** @const DEFAULT_SESSION - Name of default session */
 define('DEFAULT_SESSION', 'SessionID');
+
 /** @const HTTP_SESSION_STARTED - The session was started with the current request */
 define("HTTP_SESSION_STARTED",      1);
+
 /** @const HTTP_SESSION_STARTED - No new session was started with the current request */
 define("HTTP_SESSION_CONTINUED",    2);
 
 
-/**
- *
- */
-class Session {
-
+class Session
+{
     // session_set_save_handler, permite modificar la manera en que se gestionan las sesiones. (bd, etc..)
 
     /**
-     *  Set new name of a session
+     * Set new name of a session
      *
-     *  @static
-     *  @access public
-     *  @param string $name New name of a session
+     * @static
+     * @access public
+     * @param string $name New name of a session
      * @return string
-     *
      */
-    public static function name($name = NULL) {
-        return isset($name) ? session_name($name) : session_name();
+    public static function name($name = NULL)
+    {
+        if (session_status() != PHP_SESSION_ACTIVE and $name) {
+            return session_name($name);
+        }
+        return session_name();
     }
 
     /**
      * @param string $name
-     * @param null $id
+     * @param $id
      */
     public static function start($name = DEFAULT_SESSION, $id = null) {
-        unset( $id ) ;
-        self::name($name);
-        session_cache_limiter('none');
-        session_cache_expire(60);
-
-        @session_start();
-
-        if (!isset($_SESSION['__HTTP_Session_Info'])) {
-            $_SESSION['__HTTP_Session_Info'] = HTTP_SESSION_STARTED;
-        } else {
-            $_SESSION['__HTTP_Session_Info'] = HTTP_SESSION_CONTINUED;
+        if (session_status() != PHP_SESSION_ACTIVE) {
+            unset($id);
+            self::name($name);
+            session_cache_limiter('none');
+            session_cache_expire(60);
+            session_start();
+            if (!isset($_SESSION['__HTTP_Session_Info'])) {
+                $_SESSION['__HTTP_Session_Info'] = HTTP_SESSION_STARTED;
+            } else {
+                $_SESSION['__HTTP_Session_Info'] = HTTP_SESSION_CONTINUED;
+            }
         }
-
     }
-
-    /**
-     *
-     */
-    public static function refresh() {
+    
+    public static function refresh()
+    {
         $sid = session_id();
-        if (empty($sid))
+        if (empty($sid)) {
             self::start();
+        }
         session_regenerate_id();
         setcookie(ini_get("session.name"),
             session_id(), time() . ini_get("session.cookie_lifetime"),
@@ -90,61 +90,64 @@ class Session {
             ini_get("session.cookie_secure"),
             ini_get("session.cookie_httponly")
         );
-
     }
 
-    public static function isNew() {
-
-        return !isset($_SESSION['__HTTP_Session_Info']) ||
-        $_SESSION['__HTTP_Session_Info'] == HTTP_SESSION_STARTED;
+    public static function isNew()
+    {
+        return !isset($_SESSION['__HTTP_Session_Info']) || $_SESSION['__HTTP_Session_Info'] == HTTP_SESSION_STARTED;
     }
 
-    public static function set($key, $data) {
-
+    public static function set($key, $data)
+    {
         $sid = session_id();
-        if (empty($sid)) self::start();
+        if (empty($sid)) {
+            self::start();
+        }
         $_SESSION[$key] = $data;
     }
 
-    public static function delete($key) {
-
+    public static function delete($key)
+    {
         if (self::exists($key)) {
             unset($_SESSION[$key]);
         }
     }
 
-    public static function get($key) {
-
+    public static function get($key)
+    {
         $ret = null;
-        if (self::exists($key)) $ret = $_SESSION[$key];
+        if (self::exists($key)) {
+            $ret = $_SESSION[$key];
+        }
         return $ret;
     }
 
-    public static function exists($key) {
-
+    public static function exists($key)
+    {
         $sid = session_id();
-        if (empty($sid)) self::start();
+        if (empty($sid)) {
+            self::start();
+        }
         $ret = isset($_SESSION[$key]);
         return $ret;
     }
 
-    public static function serialize($key, &$var) {
-
+    public static function serialize($key, & $var)
+    {
         $SESSION[$key] = serialize($var);
     }
 
-    public static function & unserialize($key) {
-
+    public static function & unserialize($key)
+    {
         if (self::exists($key)) {
             $o = unserialize($_SESSION[$key]);
             return $o;
-        } else {
-            return NULL;
         }
+		return NULL;
     }
 
-    public static function destroy() {
-
+    public static function destroy()
+    {
         self::start();
         if (!empty($_SESSION)) {
             session_unset();
@@ -153,40 +156,40 @@ class Session {
         }
     }
 
-
-    function display() {
+    function display()
+    {
         echo "<pre>"; print_r($_SESSION); echo "</pre>";
     }
 
-    function getDisplay() {
+    function getDisplay()
+    {
         return print_r($_SESSION, true);
     }
 
-    public static function check($redirect = true) {
+    public static function check($redirect = true)
+    {
         self::start();
-        if(!array_key_exists("action", $_GET) ) {
+        if (!array_key_exists("action", $_GET) ) {
             $_GET["action"] = null;
         }
-
         if (!self::exists('logged') && "installer" != $_GET["action"]) {
-            if($redirect) {
+            if ($redirect) {
                 $response = new Response();
                 $response->sendStatus(sprintf("Location: %s/", App::getValue('UrlRoot')), true, 301);
                 setcookie("expired", "1", time() + 60);
                 die();
             }
             return false;
-        }else {
-            return true;
         }
+		return true;
     }
 
-    public static function checkUserID() {
+    public static function checkUserID()
+    {
         $userID = self::get('userID');
-
-        if($userID == '301' )
+        if ($userID == '301') {
             return true;
-        else
-            return false;
+        }
+        return false;
     }
 }

@@ -26,12 +26,13 @@
  */
 
 use Ximdex\Models\Node;
-use Ximdex\Models\RelTagsNodes;
+use Ximdex\Models\RelSemanticTagsNodes;
+use Ximdex\Models\SemanticTags;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
-
-\Ximdex\Modules\Manager::file('/inc/Tags.inc', 'ximTAGS');
+use Ximdex\Rest\Services\Xowl\OntologyService;
+use Ximdex\Metadata\MetadataManager;
 
 class Action_setmetadata extends ActionAbstract
 {
@@ -40,11 +41,11 @@ class Action_setmetadata extends ActionAbstract
         $this->addCss('/assets/style/jquery/ximdex_theme/widgets/tagsinput/tagsinput.css');
         $this->addCss('/src/Widgets/select/css/ximdex.select.css');
         $this->addJs('/src/Widgets/select/js/ximdex.select.js');
-        $this->addJs('/actions/setmetadata/resources/js/setmetadata.js', 'ximTAGS');
-        $this->addCss('/actions/setmetadata/resources/css/setmetadata.css', 'ximTAGS');
+        $this->addJs('/actions/setmetadata/resources/js/setmetadata.js');
+        $this->addCss('/actions/setmetadata/resources/css/setmetadata.css');
         $idNode = (int)$this->request->getParam("nodeid");
         $actionID = (int)$this->request->getParam("actionid");
-        $tags = new Tag();
+        $tags = new SemanticTags();
         $max = $tags->getMaxValue();
         $cTags = $tags->getTags();
         if (is_null($cTags)) {
@@ -65,7 +66,7 @@ class Action_setmetadata extends ActionAbstract
         );
 
         // Get the actual tags of the document
-        $relTags = new RelTagsNodes();
+        $relTags = new RelSemanticTagsNodes();
         $tags = $relTags->getTags($idNode);
         $values["tags"] = str_replace("'", '&#39;', json_encode($tags, JSON_UNESCAPED_UNICODE));
         $node = new Node($idNode);
@@ -78,7 +79,7 @@ class Action_setmetadata extends ActionAbstract
         $result = array();
         
         // Load from Xowl Service
-        $namespacesArray = \Ximdex\Rest\Services\Xowl\OntologyService::getAllNamespaces();
+        $namespacesArray = OntologyService::getAllNamespaces();
         
         // For every namespace build an array. This will be a json object
         foreach ($namespacesArray as $namespace) {
@@ -113,17 +114,17 @@ class Action_setmetadata extends ActionAbstract
     /**
      * Get a json string with related terms from $content param
      * 
-     * @param $content string with text to search terms.
+     * @param string $content string with text to search terms.
      * @return false if error, a json string otherwise.
      */
-    private function getRelatedTags($content)
+    private function getRelatedTags(string $content)
     {
-        $ontologyService = new \Ximdex\Rest\Services\Xowl\OntologyService("semantic");
+        $ontologyService = new OntologyService("semantic");
         return $ontologyService->suggest($content);
     }
 
     /**
-     * Return all ontolgyTypes and mnemo from Namespaces table
+     * Return all ontolgyTypes and mnemo from SemanticNamespaces table
      * The syntax for the json returned is:
      * <code>   {"nemo1":{
      *            type:"type1",
@@ -133,23 +134,24 @@ class Action_setmetadata extends ActionAbstract
      *    }
      * </code>
      */
-    function loadAllNamespaces()
+    public function loadAllNamespaces()
     {
         // Sending json from result array
         $this->sendJSON($this->getAllNamespaces());
     }
 
-    function save_metadata()
+    public function save_metadata()
     {
         $idNode = (int) $this->request->getParam("nodeid");
-        $tags = new RelTagsNodes();
-        $previous_tags = $tags->getTags($idNode);
+        $tags = new RelSemanticTagsNodes();
+        $tags->set('Node', $idNode);
+        $previous_tags = $tags->getTags($idNode, true);
         $request_content = file_get_contents("php://input");
         $data = json_decode($request_content);
         if (array_key_exists('tags', $data)) {
-            $tags->saveAll($data->tags, $idNode, $previous_tags);
+            $tags->saveAll($data->tags, $previous_tags);
         }
-        $mm = new \Ximdex\Metadata\MetadataManager($idNode);
+        $mm = new MetadataManager($idNode);
         $mm->updateSystemMetadata();
         $this->messages->add(_("All the tags have been properly associated."), MSG_TYPE_NOTICE);
         $values = array(
@@ -165,7 +167,7 @@ class Action_setmetadata extends ActionAbstract
         if (!$format) {
             $format = "json";
         }
-        $ontologyPath = XIMDEX_ROOT_PATH . "/modules/ximTAGS/ontologies/{$format}/{$ontologyName}";
+        $ontologyPath = XIMDEX_ROOT_PATH . "/src/SemanticTags/ontologies/{$format}/{$ontologyName}";
         $content = "";
         if (file_exists($ontologyPath)) {
             $content = FsUtils::file_get_contents($ontologyPath);

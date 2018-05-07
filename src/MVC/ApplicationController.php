@@ -69,7 +69,7 @@ class ApplicationController extends IController
     {
         $action = $this->request->getParam("action");
         $nodeid = $this->request->getParam("nodeid");
-        $actionController = new ActionAbstract();
+        $actionController = new Action();
         $actionController->messages->add(_("Required action not found."), MSG_TYPE_ERROR);
         $this->request->setParam('messages', $actionController->messages->messages);
         $actionController->render($this->request->getRequests());

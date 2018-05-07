@@ -25,20 +25,7 @@
  * @version $Revision$
  */
 
-namespace Ximdex\Models\ORM;
+namespace Ximdex\MVC;
 
-use Ximdex\Data\GenericData;
-
-class RelTagsNodesOrm extends GenericData
-{
-	var $_idField = 'Node';
-	var $_table = 'RelTagsNodes';
-	var $_metaData = array(
-		'Node' => array('type' => "int(12)", 'not_null' => 'true', 'primary_key' => true),
-		'TagDesc' => array('type' => "int(12)", 'not_null' => 'true', 'primary_key' => true)
-	);
-	var $_uniqueConstraints = array();
-	var $_indexes = array('Node');
-	var $TagDesc;
-	var $Node;
-}
+class Action extends ActionAbstract
+{}

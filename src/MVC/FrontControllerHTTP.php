@@ -64,7 +64,7 @@ class FrontControllerHTTP extends FrontController
             $appController = new ApplicationController();
             $appController->setRequest($this->request);
             
-            /* 
+            /*
              * Getting params to check permissions.
              * Some actions can be loaded for everyone
              */

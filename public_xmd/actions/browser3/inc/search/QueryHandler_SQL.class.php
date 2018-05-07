@@ -301,11 +301,10 @@ class QueryHandler_SQL extends QueryHandler_Abstract {
 					break;
 
 				case 'tag':
-					if(\Ximdex\Modules\Manager::isEnabled('ximTAGS')){
-						$conditions = array();
-
-					$this->joins[] = 'left join RelTagsNodes rtn on rtn.Node = n.IdNode left join RelTagsDescriptions rtd on rtd.IdTagDescription = rtn.TagDesc left join XimTAGSTags xt on xt.IdTag = rtd.Tag';
-
+				    $conditions = array();
+					$this->joins[] = 'left join RelSemanticTagsNodes rtn on rtn.Node = n.IdNode 
+                        left join RelSemanticTagsDescriptions rtd on rtd.IdTagDescription = rtn.TagDesc 
+                        left join SemanticTags xt on xt.IdTag = rtd.Tag';
 						$conditions[] = sprintf(
 							"xt.Name %s",
 							$this->createComparation($comp, array($cont))
@@ -315,7 +314,6 @@ class QueryHandler_SQL extends QueryHandler_Abstract {
 							'(%s)',
 							implode(' and ', $conditions)
 						);
-					}
 					break;
 
 				case 'versioned':

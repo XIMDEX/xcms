@@ -1,7 +1,5 @@
 <?php
 
-namespace Ximdex\Rest\Services\Xowl\Searchers;
-
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -27,92 +25,87 @@ namespace Ximdex\Rest\Services\Xowl\Searchers;
  *  @version $Revision$
  */
 
+namespace Ximdex\Rest\Services\Xowl\Searchers;
 
 use Ximdex\Runtime\App;
 use Ximdex\Utils\Curl;
+use Ximdex\Models\SemanticNamespaces;
 
-class ExternalVocabularySearcherStrategy extends AbstractSearcherStrategy{
-
+class ExternalVocabularySearcherStrategy extends AbstractSearcherStrategy
+{
 	private $core="art";
-        const LMF_URL_KEY ="LMF_url";
+    const LMF_URL_KEY ="LMF_url";
 
-	public function __construct(){
+	public function __construct()
+	{
 		parent::__construct();
 	}
 
-	public function suggest($text){
-
+	public function suggest($text)
+	{
 		$headers = array(
 			//To remove HTTP 100 Continue messages
 			'Expect:',
 			//Response Format
 			'Accept: application/json',
 			'Content-type: text/plain');
-		
-		//$data = urlencode($text);
-		$query = "q=(".urlencode("nombre:{$text}* OR aka:{$text}* OR titulo:{$text}*").")";
+		$query = "q=(" . urlencode("nombre:{$text}* OR aka:{$text}* OR titulo:{$text}*") . ")";
                 if (!App::getValue( self::LMF_URL_KEY))
                     return $this;
-		$uri = App::getValue( self::LMF_URL_KEY).$this->core."/select?wt=json&$query";
+		$uri = App::getValue( self::LMF_URL_KEY).$this->core . "/select?wt=json&$query";
 		$response = $this->restProvider->getHttp_provider()->get($uri, $headers);
-
 		if ($response['http_code'] != Curl::HTTP_OK) {
 			return $this;
 		}
-		
 		$data = $response['data'];		
 		$this->data = $this->parseData($data);
 		return $this;
 	}
 
-	private function getEngine(){
+	private function getEngine()
+	{
 		return "Solr";
 	}	
 
-	private function parseData($data){
+	private function parseData($data)
+	{
 		$result = array();
 		$arrayData = json_decode($data);
 		$docs = $arrayData->response->docs;
-
-		if ($docs){
+		if ($docs) {
 			$uriParam = "lmf.uri";
 			$typeParam = "lmf.type";
 			foreach ($docs as $doc) {
 				$docArray = array();
-				
 				$docArray["uri"] = $doc->$uriParam;
-
 				$typesArray = $doc->$typeParam;
 				$name = false;
-				if (is_array($typesArray) && count($typesArray)){
+				if (is_array($typesArray) && count($typesArray)) {
 					$docArray["type_uri"] = $typesArray[0];
-					$namespace = new \Ximdex\Models\Namespaces();
+					$namespace = new SemanticNamespaces();
 					$inferedTypes = $namespace->getByUri($typesArray[0]);
-					if (count($inferedTypes)){
+					if (count($inferedTypes)) {
 						$docArray["type"] = $inferedTypes[0]->get("type");
-					}else{
-						$docArray["type"] = $typesArray[0];;
+					} else {
+						$docArray["type"] = $typesArray[0];
 					}
 				}
-				if(property_exists($doc, "nombre")){
+				if (property_exists($doc, "nombre")) {
 					$nameArray = $doc->nombre;					
-					if (is_array($nameArray) && count($nameArray)){						
+					if (is_array($nameArray) && count($nameArray)) {						
 						$name = $nameArray[0];						
 					}					
-				}else if (property_exists($doc, "titulo")){
+				} else if (property_exists($doc, "titulo")) {
 					$nameArray = $doc->titulo;
-					if (is_array($nameArray) && count($nameArray)){
+					if (is_array($nameArray) && count($nameArray)) {
 						$name = $nameArray[0];
 					}					
 				}
-
-				if ($name){				
+				if ($name) {				
 					$result[$name] = $docArray;
 				}
 			}
 		}
 		return $result;
 	}
-
-
 }

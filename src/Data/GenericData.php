@@ -217,8 +217,7 @@ class GenericData
         }
         $fields = implode(', ', $arrayFields);
         $values = implode(', ', $arrayValues);
-        $query = "INSERT INTO {$this->_table}"
-            . "($fields) VALUES ($values)";
+        $query = "INSERT INTO {$this->_table} ($fields) VALUES ($values)";
         if ((DEBUG_LEVEL == LOG_LEVEL_ALL) || (DEBUG_LEVEL == LOG_LEVEL_EXECUTE)) {
             $this->_logQuery($query);
         }
@@ -756,12 +755,12 @@ class GenericData
     /**
      * @param string $condition
      * @param null $params
-     * @return bool
+     * @return bool|int
      */
     public function count($condition = '', $params = null)
     {
         $result = $this->find('count(1)', $condition, $params, MONO);
-        return ($result && is_array($result) && count($result)) ? $result[0] : false;
+        return intval($result[0]) ?? false;
     }
 
     /**

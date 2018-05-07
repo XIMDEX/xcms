@@ -25,19 +25,16 @@
  * @version $Revision$
  */
 
-
 namespace Ximdex\Rest\Services\Xowl;
 
 use Ximdex\Runtime\App;
-
-
+use Ximdex\Models\SemanticNamespaces;
 
 /**
  * Class \Ximdex\Rest\Services\Xowl\OntologyService
  */
 class OntologyService
 {
-
     /**
      * @var array
      */
@@ -46,35 +43,30 @@ class OntologyService
         "content" => "\\Ximdex\\Rest\\Services\\Xowl\\Searchers\\ContentEnricherSearcherStrategy",
         "external" => "\\Ximdex\\Rest\\Services\\Xowl\\Searchers\\ExternalVocabularySearcherStrategy"
     );
+    
     /**
      * @var bool
      */
     private $key = false;
+    
     /**
      * @var array
-     *
      */
     private $providers = array();
 
     /**
-     *Class constructor. Check if Xowl module is enabled and if exists EnricherKey;
-     *It can receive a variable number of params with the name of the providers to load.
+     * Class constructor. Check if Xowl module is enabled and if exists EnricherKey;
+     * It can receive a variable number of params with the name of the providers to load.
      */
     public function __construct()
     {
-
-        //Loading all defined providers
-
+        // Loading all defined providers
         $this->loadProviders(func_get_args());
-
         if (\Ximdex\Modules\Manager::isEnabled('Xowl')) {
             $key = App::getValue('Xowl_token');
-
             if ($key !== NULL && $key != '') {
                 $this->key = $key;
             }
-
-
         }
     }
 
@@ -85,8 +77,7 @@ class OntologyService
      */
     private function loadProviders($providers = null)
     {
-
-        //It should be loaded from DB.
+        // It should be loaded from DB.
         if ($providers && count($providers)) {
             foreach ($providers as $provider) {
                 if ($provider) {
@@ -102,41 +93,38 @@ class OntologyService
     }
 
     /**
-     * <p>Load all existing namespaces in this ximdex instance.</p>
+     * Load all existing namespaces in this ximdex instance.
+     * 
      * @return array An Array with all namespaces in Namespaces table.
      */
     public static function getAllNamespaces()
     {
-        $namespace = new \Ximdex\Models\Namespaces();
+        $namespace = new SemanticNamespaces();
         return $namespace->getAll();
     }
 
     /**
-     *Suggest related terms and resources from a text
-     *If key exists return semantic and suggested terms.
-     *
-     */
-    /**
+     * Suggest related terms and resources from a text
+     * If key exists return semantic and suggested terms.
+     * 
      * @param $text
      * @param  null|Provider[]
      * @return array|bool
      */
     public function suggest($text)
     {
-
         if ($this->key) {
             $result = array();
             foreach ($this->providers as $type => $providerName) {
                 if (class_exists($providerName)) {
+                    
                     /**
                      * @var $provider AbstractSearcherStrategy
                      */
                     $provider = new $providerName;
-
                     $result[$type] = $provider->suggest($text)->getData();
                 }
             }
-
             $result["status"] = "ok";
             return $result;
         }

@@ -85,9 +85,8 @@ class Filters_Ximdex {
 		$filters['date-comparation'][2]['value']=_('after than');
 		$filters['date-comparation'][3]['value']=_('in the range');
 
-		if(!\Ximdex\Modules\Manager::isEnabled('ximTAGS')){
-			array_pop($filters['field']);
-		}
+		array_pop($filters['field']);
+		
 		return $filters;
 	}
 }

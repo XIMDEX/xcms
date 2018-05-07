@@ -24,10 +24,15 @@
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
-class Tags_ORM extends \Ximdex\Data\GenericData
+
+namespace Ximdex\Models\ORM;
+
+use Ximdex\Data\GenericData;
+
+class SemanticTagsOrm extends GenericData
 {
     var $_idField = 'IdTag';
-    var $_table = 'XimTAGSTags';
+    var $_table = 'SemanticTags';
     var $_metaData = array(
         'IdTag' => array('type' => "int(11)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
         'Name' => array('type' => "varchar(100)", 'not_null' => 'true'),

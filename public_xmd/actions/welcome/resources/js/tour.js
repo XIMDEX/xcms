@@ -230,7 +230,6 @@ function start_tour(command) {
                 xTabs.openAction({
                     label: labelValue,
                     name: labelValue,
-                    module: "ximTAGS",
                     command: 'setmetadata',
                     params: '',
                     bulk: '0'

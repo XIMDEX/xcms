@@ -36,7 +36,7 @@ angular.module('ximdex.module.xtags')
             templateUrl : window.url_root + 'assets/js/angular/templates/xtagsSuggested.html',
             controller: ['$scope', '$element', '$attrs', '$http', 'xUrlHelper', function($scope, $element, $attrs, $http, xUrlHelper){   
             	
-            	var url = xUrlHelper.baseUrl()+'/?mod=ximTAGS&action=setmetadata&method=getRelatedTagsFromContent';
+            	var url = xUrlHelper.baseUrl() + '/?action=setmetadata&method=getRelatedTagsFromContent';
             	
             	//Fetch suggested tags from backend
                 $scope.loading=true;

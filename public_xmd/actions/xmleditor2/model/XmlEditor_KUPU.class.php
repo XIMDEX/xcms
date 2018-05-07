@@ -28,7 +28,7 @@ use Ximdex\Deps\DepsManager;
 use Ximdex\Models\Channel;
 use Ximdex\Models\Language;
 use Ximdex\Models\Node;
-use Ximdex\Models\RelTagsNodes;
+use Ximdex\Models\RelSemanticTagsNodes;
 use Ximdex\Models\User;
 use Ximdex\Parsers\ParsingJsGetText;
 use Ximdex\Parsers\ParsingRng;
@@ -330,9 +330,8 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
         );
 
         $namespaces = json_encode($this->getAllNamespaces());
-        $relTags = new RelTagsNodes();
-        $tags = str_replace("'", '&#39;',
-            json_encode($relTags->getTags($idnode), JSON_UNESCAPED_UNICODE));
+        $relTags = new RelSemanticTagsNodes();
+        $tags = str_replace("'", '&#39;', json_encode($relTags->getTags($idnode), JSON_UNESCAPED_UNICODE));
 
         $onloadfunctions = sprintf("kupu = startKupu({%s});", implode(", ", $options));
         $values = array('nodeid' => $idnode,

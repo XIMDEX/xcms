@@ -6936,7 +6936,6 @@ msgstr "Ximdex-Administrator"
 # ################################################ MODULES ############################################
 
 # ######## ximTAGS ########
-#: /modules/ximTAGS/sql/ximTAGS_constructor.sql
 msgid "Define metadata"
 msgstr "Metadaten definieren"
 

@@ -136,7 +136,6 @@ angular.module('ximdex.module.xtags')
             $scope.submitState = 'submitting'
             var url = xUrlHelper.getAction({
                 id: $scope.nodeId,
-                module: 'ximTAGS',
                 action: 'setmetadata',
                 method: 'save_metadata'
             });

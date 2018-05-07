@@ -1,7 +1,4 @@
 <?php
-use Ximdex\Models\Node;
-use Ximdex\Models\Version;
-use Ximdex\Runtime\DataFactory;
 
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
@@ -28,88 +25,88 @@ use Ximdex\Runtime\DataFactory;
  *  @version $Revision$
  */
 
-class ImageFile {
+namespace Ximdex\Utils;
+
+use Ximdex\Models\Node;
+use Ximdex\Models\Version;
+use Ximdex\Runtime\DataFactory;
+
+class ImageFile
+{
 	private $idNode;
 	private $file;
 	
-	function __construct($_id_node = -1) {
-		$this->ImageFileConstruct($_id_node);
+	public function __construct($_id_node = -1)
+	{
+	    if (-1 != $_id_node) {
+	        $this->idNode = (int) $_id_node;
+	        $this->getFile();
+	    }
 	}
 	
-	private function ImageFileConstruct($_id_node = 1) {
-		if(-1 != $_id_node) {
-			$this->idNode = (int) $_id_node;
-			$this->getFile();
-		}
-	}
-	
-	function getFile($_id_node = -1, $_version = -1, $_subversion = -1) {
-		$_id_node = $this->_getNode($_id_node);
-	
-	   if (is_numeric($_version) && is_numeric($_subversion) && $_version != -1 && $_subversion != -1 ) {
+	private function getFile($_id_node = -1, $_version = -1, $_subversion = -1)
+	{
+	    $_id_node = $this->_getNode($_id_node);
+	    if (is_numeric($_version) && is_numeric($_subversion) && $_version != -1 && $_subversion != -1 ) {
     		$dataFactory = new DataFactory($_id_node);
     		$selectedVersion = $dataFactory->getVersionId($_version, $_subversion);
     	} else {
 	    	$dataFactory = new DataFactory($_id_node);
 	    	$selectedVersion = $dataFactory->GetLastVersionId();
     	}
-    	
   		$version = new Version($selectedVersion);
     	$hash = $version->get('File');
-	
-    	if(!empty($hash) ) 
-    		$this->file = XIMDEX_ROOT_PATH ."/data/files/".$hash;
-    	else
+    	if (!empty($hash)) {
+    	    $this->file = XIMDEX_ROOT_PATH ."/data/files/" . $hash;
+    	}
+    	else {
     		$this->file = null;
-    	
-    	  return $this->file;
+    	}
+    	return $this->file;
 	}
 
-
-	function saveTags($_tags, $_id_node = -1) {
-		$this->ImageFileConstruct($_id_node);
-
-		if(null != $this->file) {
-			//025 iptc_keyword, see more in http://php.net/manual/en/function.iptcembed.php
+	public function saveTags($_tags, $_id_node = -1)
+	{
+		$this->__construct($_id_node);
+		if (null != $this->file) {
+		    
+			// 025 iptc_keyword, see more in http://php.net/manual/en/function.iptcembed.php
 			$this->write_exif("025", $_tags); 
 		}
 	}
 	
-	function write_exif($_field, $_value) {
+	private function write_exif($_field, $_value)
+	{
 		$image = getimagesize($this->file, $info);
-//		if(isset($info['APP13'])) {
-//			return false;  //Error: IPTC data found in source image, cannot continue
-//		}
-		
-
 		$utf8seq = chr(0x1b) . chr(0x25) . chr(0x47);
 		$length = strlen($utf8seq);
 		$data = chr(0x1C) . chr(1) . chr('090') . chr($length >> 8) . chr($length & 0xFF) . $utf8seq;
 
-		//create data for exif   
-   	$data .= $this->_iptc_make_tag(2, $_field, $_value);
+		// Create data for exif   
+   	    $data .= $this->_iptc_make_tag(2, $_field, $_value);
    	 
-   	// Embed the IPTC data
-		$content = iptcembed($data, $this->file);
-			
-			
+   	    // Embed the IPTC data
+		$content = iptcembed($data, $this->file);	
 		$node = new Node($this->idNode);
 		$node->SetContent($content);
-
 	}
 	
-	// iptc_make_tag() function by Thies C. Arntzen
+	/**
+	 * iptc_make_tag() function by Thies C. Arntzen
+	 * 
+	 * @param $rec
+	 * @param $data
+	 * @param $value
+	 * @return string
+	 */
 	private function _iptc_make_tag($rec, $data, $value)
 	{
 		 $length = strlen($value);
 		 $retval = chr(0x1C) . chr($rec) . chr($data);
-
-		 if($length < 0x8000)
-		 {
+		 if ($length < 0x8000) {
 		     $retval .= chr($length >> 8) .  chr($length & 0xFF);
 		 }
-		 else
-		 {
+		 else {
 		     $retval .= chr(0x80) . 
 		                chr(0x04) . 
 		                chr(($length >> 24) & 0xFF) . 
@@ -117,11 +114,11 @@ class ImageFile {
 		                chr(($length >> 8) & 0xFF) . 
 		                chr($length & 0xFF);
 		 }
-
 		 return $retval . $value;
 	}
 	
-	private function _getNode($_id_node = -1) {
+	private function _getNode($_id_node = -1)
+	{
 		return ($_id_node != -1)? $_id_node : $this->idNode;
 	}
 }

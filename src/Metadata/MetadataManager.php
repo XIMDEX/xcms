@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,7 +25,6 @@
  *  @version $Revision$
  */
 
-
 namespace Ximdex\Metadata;
 
 use Ximdex\Logger;
@@ -32,95 +32,90 @@ use Ximdex\Models\Channel;
 use Ximdex\Models\Language;
 use Ximdex\Models\Node;
 use Ximdex\Models\NodeType;
-use Ximdex\Models\RelTagsNodes;
+use Ximdex\Models\RelSemanticTagsNodes;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\Runtime\App;
 use Ximdex\Runtime\DataFactory;
-
-
-
+use Ximdex\Models\SemanticNamespaces;
+use Ximdex\NodeTypes\NodeTypeConstants;
 
 /***
     Class for Metadata Manegement
 */
-class MetadataManager{
-
+class MetadataManager
+{
     const IMAGE_METADATA_SCHEMA = "image-metadata.xml";
     const COMMON_METADATA_SCHEMA = "common-metadata.xml";
     const DOCUMENT_METADATA_SCHEMA = "document-metadata.xml";
-
     private $node;
     private $array_metadata;
-
-
-    // constructor method //
-
-    public function __construct($source_idnode){
+    
+    public function __construct($source_idnode)
+    {
         $this->node = new Node($source_idnode);
         $this->updateMetadataNodes();
     }
 
-        // getters & setters methods //
-
     /** 
-     * Returns the source node object.
-     * @param null
+     * Returns the source node object
+     * 
      * @return Object
     */
-    public function getSourceNode(){
+    public function getSourceNode()
+    {
         return $this->node;    
     }
 
     /** 
-     * Returns the schema Id for the current node.
-     * @param null
+     * Returns the schema Id for the current node
+	 *
      * @return int
     */
     public function getMetadataSchema()
     {    
         $node = new Node($this->node->GetID());
         $projectNode = new Node($node->getProject());
-        $schemesFolder = $projectNode->getChildren(\Ximdex\NodeTypes\NodeTypeConstants::TEMPLATE_VIEW_FOLDER);
-
+        $schemesFolder = $projectNode->getChildren(NodeTypeConstants::TEMPLATE_VIEW_FOLDER);
         $nt = $this->node->nodeType->GetID(); 
         switch($nt)
         {
-            case \Ximdex\NodeTypes\NodeTypeConstants::IMAGE_FILE:
-            case \Ximdex\NodeTypes\NodeTypeConstants::XSIR_IMAGE_FILE:
-                $name=MetadataManager::IMAGE_METADATA_SCHEMA;
+            case NodeTypeConstants::IMAGE_FILE:
+            case NodeTypeConstants::XSIR_IMAGE_FILE:
+                $name = MetadataManager::IMAGE_METADATA_SCHEMA;
                 break;
-            case \Ximdex\NodeTypes\NodeTypeConstants::BINARY_FILE:
-                $name=MetadataManager::COMMON_METADATA_SCHEMA;
+            case NodeTypeConstants::BINARY_FILE:
+                $name = MetadataManager::COMMON_METADATA_SCHEMA;
                 break;
-            case \Ximdex\NodeTypes\NodeTypeConstants::TEXT_FILE:
-                $name=MetadataManager::COMMON_METADATA_SCHEMA;
+            case NodeTypeConstants::TEXT_FILE:
+                $name = MetadataManager::COMMON_METADATA_SCHEMA;
                 break;
-            case \Ximdex\NodeTypes\NodeTypeConstants::XML_CONTAINER:
-                $name=MetadataManager::DOCUMENT_METADATA_SCHEMA;
+            case NodeTypeConstants::XML_CONTAINER:
+                $name = MetadataManager::DOCUMENT_METADATA_SCHEMA;
                 break;
             default:
                 Logger::warning("Type not found: setting the schema to document-metadata.xml");
-                $name=MetadataManager::DOCUMENT_METADATA_SCHEMA;
+                $name = MetadataManager::DOCUMENT_METADATA_SCHEMA;
         }
         $schema = new Node();
-        if( !isset($schemesFolder[0]) ){
+        if (!isset($schemesFolder[0])){
             return null;
         }
-        $res = $schema->find("Idnode","Name=%s AND IdParent=%s",array($name,$schemesFolder[0]),MONO);
+        $res = $schema->find("Idnode","Name = %s AND IdParent = %s",array($name,$schemesFolder[0]), MONO);
         return $res[0];
     }
 
     /** 
-     * Returns the array with all the metadata files for a given idnode.
-     * @param null 
+     * Returns the array with all the metadata files for a given idnode
+     *  
      * @return array 
     */
-    public function getMetadataNodes(){
+    public function getMetadataNodes()
+    {
         return $this->array_metadata;    
     }
 
-
-    public function updateMetadataNodes() {
+    public function updateMetadataNodes()
+    {
         $rnm = new \Ximdex\Models\RelNodeMetadata();
         $metadata_container = $rnm->find('idMetadata', "idNode = %s", array($this->node->GetID()), MONO);
         if ($metadata_container) {
@@ -132,17 +127,16 @@ class MetadataManager{
         }
     }
 
-
     /** 
      * Returns the last version of the associated metadata file for a given idnode or NULL if not exists
-     * @param int $source_idnode
-     * @return ...
     */
-    public function getLastMetadataVersion(){
+    public function getLastMetadataVersion()
+    {
         //TODO
     }
 
-    public static function getNodeFromMetadata($idMetadata){
+    public static function getNodeFromMetadata($idMetadata)
+    {
         $rnm = new \Ximdex\Models\RelNodeMetadata();
         $metadata_container = $rnm->find('IdRel, IdNode', "IdMetadata = %s", [$idMetadata], MULTI);
         if( count($metadata_container) == 1 ) {
@@ -152,15 +146,15 @@ class MetadataManager{
         return null;
     }
 
-    public static function addSystemMetadataToContent($metadataDocId, $content){
+    public static function addSystemMetadataToContent($metadataDocId, $content)
+    {
         $metadata_node = new StructuredDocument($metadataDocId);
         $metadataDoc = new Node($metadataDocId);
         $idSource = self::getNodeFromMetadata($metadataDoc->GetParent());
-        if(is_null($idSource)){
+        if (is_null($idSource)){
             return $content;
         }
         $node = new Node($idSource);
-
         $info = $node->loadData();
         $idLanguage = $metadata_node->get('IdLanguage');
         $domDoc = new \DOMDocument();
@@ -193,7 +187,6 @@ class MetadataManager{
                 $version = $domDoc->getElementsByTagName('version')->item(0);
                 $version->nodeValue = $version_value;
             }
-
             if (method_exists($node->class, 'getCustomMetadata')) {
                 $domNode = $node->class->getCustomMetadata();
                 $domNode = $domDoc->importNode($domNode, true);
@@ -206,29 +199,23 @@ class MetadataManager{
                     $domDoc->appendChild($domNode);
                 }
             }
-
-            if (\Ximdex\Modules\Manager::isEnabled('ximTAGS')) {
-                $relTags = new RelTagsNodes();
-                $tags = $relTags->getTags($node->nodeID);
-                $tagsNode = $domDoc->createElement('tags');
-
-                foreach ($tags as $tag) {
-                    $ns = new \Ximdex\Models\Namespaces($tag['IdNamespace']);
-                    $nemo = $ns->get('nemo');
-                    $tagNode = $domDoc->createElement('tag');
-                    $tagNode->nodeValue = "{$tag["Name"]}:{$nemo}";
-                    $tagsNode->appendChild($tagNode);
-                }
-
-                $tagsFoundedNodes = $domDoc->getElementsByTagName('tags');
-                if ($tagsFoundedNodes->length > 0) {
-                    $parent = $tagsFoundedNodes->item(0)->parentNode;
-                    $parent->replaceChild($tagsNode, $tagsFoundedNodes->item(0));
-                } else {
-                    $domDoc->appendChild($tagsNode);
-                }
+            $relTags = new RelSemanticTagsNodes();
+            $tags = $relTags->getTags($node->nodeID);
+            $tagsNode = $domDoc->createElement('tags');
+            foreach ($tags as $tag) {
+                $ns = new SemanticNamespaces($tag['IdNamespace']);
+                $nemo = $ns->get('nemo');
+                $tagNode = $domDoc->createElement('tag');
+                $tagNode->nodeValue = "{$tag["Name"]}:{$nemo}";
+                $tagsNode->appendChild($tagNode);
             }
-
+            $tagsFoundedNodes = $domDoc->getElementsByTagName('tags');
+            if ($tagsFoundedNodes->length > 0) {
+                $parent = $tagsFoundedNodes->item(0)->parentNode;
+                $parent->replaceChild($tagsNode, $tagsFoundedNodes->item(0));
+            } else {
+                $domDoc->appendChild($tagsNode);
+            }
             $metadata_node_update = new Node($metadataDocId);
             $string_xml = $domDoc->saveXML();
             $string_xml = str_replace('<?xml version="1.0"?>', '', $string_xml);
@@ -236,8 +223,9 @@ class MetadataManager{
             $string_xml = str_replace('</root>', '', $string_xml);
             return $string_xml;
         }
-        else
+        else {
             Logger::error('Invalid XML content for metadata node ' . $node->GetDescription());
+        }
         return $content;
     }
 
@@ -246,8 +234,10 @@ class MetadataManager{
      * If $this->node has type metadatadoc, it will search the node who has the metadata and
      * add a new row to \Ximdex\Models\RelNodeVersionMetadataVersion
      */
-    public function updateMetadataVersion(){
-        if ( $this->node->GetNodeType() !=\Ximdex\NodeTypes\NodeTypeConstants::METADATA_DOCUMENT ){
+    public function updateMetadataVersion()
+    {
+        if ($this->node->GetNodeType() !=NodeTypeConstants::METADATA_DOCUMENT)
+        {
             $rnm = new \Ximdex\Models\RelNodeMetadata();
             $metadata_container = $rnm->find('IdRel, IdMetadata', "IdNode = %s", [$this->node->GetID()], MULTI);
             if( count($metadata_container) == 1 ){
@@ -269,18 +259,13 @@ class MetadataManager{
                 }
             }
         }
-
     }
-
-
-    // GENERATOR METHODS //
 
     /** 
      * Update basic system info in metadata documents
-     * @param null
-     * @return null
     */
-    public function updateSystemMetadata(){
+    public function updateSystemMetadata()
+    {
         $info = $this->node->loadData();
         foreach ($this->array_metadata as $metadata_node_id) {
             $metadata_node = new StructuredDocument($metadata_node_id);
@@ -316,42 +301,35 @@ class MetadataManager{
                     $version = $domDoc->getElementsByTagName('version')->item(0);
                     $version->nodeValue = $version_value;
                 }
-
                 if(method_exists($this->node->class, 'getCustomMetadata')){
                     $domNode = $this->node->class->getCustomMetadata();
                     $domNode = $domDoc->importNode($domNode, true);
                     $name = $domNode->nodeName;
                     $nameNodes = $domDoc->getElementsByTagName($name);
-                    if($nameNodes->length > 0){
+                    if ($nameNodes->length > 0){
                         $parent = $nameNodes->item(0)->parentNode;
                         $parent->replaceChild($domNode, $nameNodes->item(0));
-                    }else{
+                    } else {
                         $domDoc->appendChild($domNode);
                     }
                 }
-
-                if(\Ximdex\Modules\Manager::isEnabled('ximTAGS')){
-                    $relTags = new RelTagsNodes();
-                    $tags = $relTags->getTags($this->node->nodeID);
-                    $tagsNode = $domDoc->createElement('tags');
-
-                    foreach($tags as $tag){
-                        $ns = new \Ximdex\Models\Namespaces($tag['IdNamespace']);
-                        $nemo = $ns->get('nemo');
-                        $tagNode = $domDoc->createElement('tag');
-                        $tagNode->nodeValue = "{$tag["Name"]}:{$nemo}";
-                        $tagsNode->appendChild($tagNode);
-                    }
-
-                    $tagsFoundedNodes = $domDoc->getElementsByTagName('tags');
-                    if($tagsFoundedNodes->length > 0){
-                        $parent = $tagsFoundedNodes->item(0)->parentNode;
-                        $parent->replaceChild($tagsNode, $tagsFoundedNodes->item(0));
-                    }else{
-                        $domDoc->appendChild($tagsNode);
-                    }
+                $relTags = new RelSemanticTagsNodes();
+                $tags = $relTags->getTags($this->node->nodeID);
+                $tagsNode = $domDoc->createElement('tags');
+                foreach ($tags as $tag) {
+                    $ns = new SemanticNamespaces($tag['IdNamespace']);
+                    $nemo = $ns->get('nemo');
+                    $tagNode = $domDoc->createElement('tag');
+                    $tagNode->nodeValue = "{$tag["Name"]}:{$nemo}";
+                    $tagsNode->appendChild($tagNode);
                 }
-
+                $tagsFoundedNodes = $domDoc->getElementsByTagName('tags');
+                if ($tagsFoundedNodes->length > 0) {
+                    $parent = $tagsFoundedNodes->item(0)->parentNode;
+                    $parent->replaceChild($tagsNode, $tagsFoundedNodes->item(0));
+                } else {
+                    $domDoc->appendChild($tagsNode);
+                }
                 $metadata_node_update = new Node($metadata_node_id);
                 $string_xml = $domDoc->saveXML();
                 $string_xml = str_replace('<?xml version="1.0"?>', '', $string_xml);
@@ -367,13 +345,13 @@ class MetadataManager{
         }
     }
 
-
     /** 
      * Update basic system info in metadata document for a specific language
+     * 
      * @param int $selectedLanguage
-     * @return null
     */
-    public function updateSystemMetadataByLang($selectedLanguage){
+    public function updateSystemMetadataByLang($selectedLanguage)
+    {
         $info = $this->node->loadData();
         foreach ($this->array_metadata as $metadata_node_id) {
             $metadata_node = new StructuredDocument($metadata_node_id);
@@ -393,7 +371,6 @@ class MetadataManager{
                         $version = $domDoc->getElementsByTagName('version')->item(0);
                         $version->nodeValue = $version_node_child["Version"].".".$version_node_child["SubVersion"];
                     }
-
                     $metadata_node_update = new Node($metadata_node_id);
                     $string_xml = $domDoc->saveXML();
                     $string_xml = str_replace('<?xml version="1.0"?>', '', $string_xml);
@@ -409,121 +386,124 @@ class MetadataManager{
             }
         }
     }
-    
 
     /** 
      * Main public function. Returns the last version of the associated metadata file for a given idnode or NULL if not exists
+     * 
      * @param array $lang
-     * @return null
     */
     public function generateMetadata($lang = null){
-        //create the specific name with the format: NODEID-metadata
+        
+        // Create the specific name with the format: NODEID-metadata
         $name = $this->buildMetadataFileName();
-        //check if the metadata node already exists in metadata hidden folder
+        
+        // Check if the metadata node already exists in metadata hidden folder
         $idContent = $this->getMetadataDocument($name);
 
-        //If not exist already the metadata folder.
-        if (empty($idContent)){
+        // If not exist already the metadata folder.
+        if (empty($idContent)) {
             $idm = $this->getMetadataSectionId();
             $aliases = array();
             $idSchema = $this->getMetadataSchema();
-
-            if(!$lang){
+            if (!$lang) {
                 $languages = $this->getMetadataLanguages();
             }
-            else{
-                //$languages = array($lang);
+            else {
                 $languages = $lang;
             }
             $channels = $this->getMetadataChannels();
-            //We use the action like a service layer
-            $this->createXmlContainer($idm,$name,$idSchema,$aliases,$languages,$channels);
+            
+            // We use the action like a service layer
+            $this->createXmlContainer($idm, $name, $idSchema, $aliases, $languages, $channels);
             $this->addRelation($name);
             $this->updateMetadataNodes();
         }
-        else{
-            //$this->updateMetadata(); ¿?
+        else {
             Logger::warning("The metadata file $name already exists!");
         }
     }
 
     /** 
-     * Returns the name for the metadata file.
-     * @param int $source_idnode
+     * Returns the name for the metadata file
+     * 
      * @return string
     */
-    private function buildMetadataFileName(){
+    private function buildMetadataFileName()
+    {
         $idnode = $this->node->GetID();
-        return $idnode."-metadata";
+        return $idnode . "-metadata";
     }
 
     /** 
-     * Returns the id of a given metadata document name, if exists.
+     * Returns the id of a given metadata document name, if exists
+     * 
      * @param string $metafileName
      * @return int 
     */
-    private function getMetadataDocument($metafileName){
-        //getting the metadata folder id
+    private function getMetadataDocument($metafileName)
+    {    
+        // Getting the metadata folder id
         $idMetadataFolder = $this->getMetadataSectionId();
         $metadataFolder = new Node($idMetadataFolder);
 
-        //getting the metadata document by name
+        // Getting the metadata document by name
         $id = $metadataFolder->GetChildByName($metafileName);
         return $id;
     }
 
     /** 
-     * Returns the id for the metadata section that is unique for each project on Ximdex CMS.
-     * @param int $source_idnode
+     * Returns the id for the metadata section that is unique for each project on Ximdex CMS
+     * 
      * @return int 
     */
-    private function getMetadataSectionId(){
+    private function getMetadataSectionId()
+    {
         $idServer = $this->node->getServer();
-        if($idServer){
+        if ($idServer) {
             $nodeServer = new Node($idServer);
             $idSection = $nodeServer->GetChildByName("metadata");
             return $idSection;
-        } else {
-            $idProject = $this->node->getProject();
-            $nodeProject = new Node($idProject);
-            $idSection = $nodeProject->GetChildByName("metadata");
-            return $idSection;
         }
-
+        $idProject = $this->node->getProject();
+        $nodeProject = new Node($idProject);
+        $idSection = $nodeProject->GetChildByName("metadata");
+        return $idSection;
     }
 
     /** 
-     * Returns an array of language identifiers.
-     * @param int $source_idnode
+     * Returns an array of language identifiers
+     * 
      * @return array
     */
-    public function getMetadataLanguages(){
+    public function getMetadataLanguages()
+    {
         $result = array();
         $l = new Language();
         $arrayLanguagesObject = $l->getLanguagesForNode($this->node->getServer());
-        foreach($arrayLanguagesObject as $languageObject){
+        foreach($arrayLanguagesObject as $languageObject) {
             $result[] = $languageObject["IdLanguage"];
         }
         return $result;
     }
 
     /** 
-     * Returns all the channels defined on Ximdex CMS.
-     * @param int $source_idnode
+     * Returns all the channels defined on Ximdex CMS
+     * 
      * @return array
-     * TODO: only return the associated channels.
+     * TODO: only return the associated channels
     */
-    public function getMetadataChannels(){
+    public function getMetadataChannels()
+    {
         $result = array();
         $channel = new Channel();
         $channels = $channel->GetAllChannels();
-        foreach($channels as $idChannel){
+        foreach($channels as $idChannel) {
             $auxChannel = new Channel($idChannel);
-            switch ($auxChannel->GetName()){
+            switch ($auxChannel->GetName()) {
                 case "solr":
                 case "web":
                 case "html":
-                    $result[] = $idChannel;
+                $result[] = $idChannel;
                 break;
             }
         }
@@ -531,7 +511,8 @@ class MetadataManager{
     }
 
     /** 
-     * Most important method. Creates the structured documents.
+     * Most important method. Creates the structured documents
+     * 
      * @param int $idNode
      * @param string $name
      * @param int $idSchema
@@ -540,7 +521,8 @@ class MetadataManager{
      * @param array $channels
      * @return int
     */
-    private function createXmlContainer($idNode,$name,$idschema,&$aliases,&$languages,&$channels, $master=null){
+    private function createXmlContainer($idNode, $name, $idschema, & $aliases, & $languages, & $channels, $master = null)
+    {
         $result = true;
         $node = new Node($idNode);
         $idNode = $node->get('IdNode');
@@ -559,12 +541,11 @@ class MetadataManager{
             Logger::error("A nodetype could not be estimated to create the container folder, operation will be aborted, contact with your administrator");
         }
 
-        //Just the selected checks will be created.
+        // Just the selected checks will be created.
         $selectedAlias = array();
         foreach ($languages as $idLang) {
             $selectedAlias[$idLang] = "";
         }
-
         $data = array(
             'NODETYPENAME' => $nodeType->get('Name'),
             'NAME' => $name,
@@ -578,10 +559,8 @@ class MetadataManager{
             "ALIASES" => $selectedAlias,
             "MASTER" => $master
         );
-        
         $baseIO = new \Ximdex\IO\BaseIO();
         $idContainer = $result = $baseIO->build($data);
-
         if (!($result > 0)) {
             Logger::error("An error ocurred creating the container node");
             $values = array(
@@ -592,86 +571,91 @@ class MetadataManager{
         } else {
             Logger::info("Container $name has been successfully created");            
         }
-        
         return true;
     }
 
-    private function addRelation($name){
+    private function addRelation($name)
+    {
         $res = 0;
         $rnm = new \Ximdex\Models\RelNodeMetadata();
         $idm = $this->getMetadataDocument($name);
+        
         //TODO: foreach language version, one entry
         $rnm->set('IdNode', $this->node->GetID());
         $rnm->set('IdMetadata', $idm);
-        //if( App::getValue('MODULE_XIMNOTA_ENABLED', false) ) {
-            //TODO: foreach language version, one entry
-            $res = $rnm->add();
-        //}
-        if($res<0){
+        
+        //TODO: foreach language version, one entry
+        $res = $rnm->add();
+        if ($res < 0) {
             Logger::error("Relation between nodes not added.");
         }
+        
         //TODO: move this logic to the \Ximdex\Models\RelNodeMetadata class
-        //For structured documents, the association between versions have to be more accurate.
-        else{
+        // For structured documents, the association between versions have to be more accurate.
+        else {
             $sourceNode = new Node($this->node->GetID());
             $idmNode = new Node($idm);
-            $pairs=array();
-
-            if($sourceNode->nodeType->GetID()==\Ximdex\NodeTypes\NodeTypeConstants::XML_CONTAINER){
+            $pairs = array();
+            if ($sourceNode->nodeType->GetID()== NodeTypeConstants::XML_CONTAINER) {
                 $children = $sourceNode->GetChildren();
-                //insert the structured documents ids
-                foreach($children as $child){
+                
+                // Insert the structured documents ids
+                foreach($children as $child) {
                     $sd = new StructuredDocument($child);
                     $l = $sd->GetLanguage();
-                    $pairs[$l]["nv"]=$child;        
+                    $pairs[$l]["nv"] = $child;
                 }
-                //insert the metadata files ids
+                
+                // Insert the metadata files ids
                 $metadocs = $idmNode->GetChildren();
-                foreach($metadocs as $idMetadataLanguage){
+                foreach($metadocs as $idMetadataLanguage) {
                     $sd = new StructuredDocument($idMetadataLanguage);
                     $l = $sd->GetLanguage();
-                    $pairs[$l]["mv"]=$idMetadataLanguage;        
+                    $pairs[$l]["mv"] = $idMetadataLanguage;        
                 }
-                //adding relations between versions
-                foreach($pairs as $lang => $nodes){
-                    // version for the node
+                
+                // Adding relations between versions
+                foreach($pairs as $lang => $nodes) {
+                    
+                    // Version for the node
                     $dtf = New DataFactory($nodes["nv"]);
                     $idNodeVersion = $dtf->GetLastVersionId();
-                    // version for the metadata 
+                    // Version for the metadata 
                     $dtf = New DataFactory($nodes["mv"]);
                     $idMetadataVersion = $dtf->GetLastVersionId();
 
-                    //adding the info
+                    // Adding the info
                     $rnvmv = new \Ximdex\Models\RelNodeVersionMetadataVersion();
                     $rnvmv->set('idrnm',$res);
                     $rnvmv->set('idNodeVersion',$idNodeVersion);
                     $rnvmv->set('idMetadataVersion',$idMetadataVersion);
                     $res2 = $rnvmv->add();
-                    if($res<0){
+                    if ($res < 0) {
                         Logger::error("Relation between versions of nodes [".$nodes['nv']." - ".$nodes['mv']."] not added." );
                     }
                 }
             }
-            else{
-                //getting the source node's last version id
+            else {
+                
+                // Getting the source node's last version id
                 $dtf = New DataFactory($this->node->GetID());
                 $idNodeVersion = $dtf->GetLastVersionId();
 
-                //getting all the language children
+                // Getting all the language children
                 $metadocs = $idmNode->GetChildren();
-                foreach($metadocs as $idMetadataLanguage){
+                foreach($metadocs as $idMetadataLanguage) {
 
-                    //getting the last version of each child.
+                    // Getting the last version of each child
                     $dtf = New DataFactory($idMetadataLanguage);
                     $idMetadataVersion = $dtf->GetLastVersionId();
 
-                    //adding the info
+                    // Adding the info
                     $rnvmv = new \Ximdex\Models\RelNodeVersionMetadataVersion();
                     $rnvmv->set('idrnm',$res);
                     $rnvmv->set('idNodeVersion',$idNodeVersion);
                     $rnvmv->set('idMetadataVersion',$idMetadataVersion);
                     $res2 = $rnvmv->add();
-                    if($res<0){
+                    if ($res < 0){
                         Logger::error("Relation between versions not added.");
                     }
                 }
@@ -679,36 +663,36 @@ class MetadataManager{
         }
     }
 
-    public function deleteMetadata(){
+    public function deleteMetadata()
+    {
         $name = $this->buildMetadataFileName();
         $idContent = $this->getMetadataDocument($name);
         if ($idContent){
             $nodeContainer = new Node($idContent);
             $nodeContainer->DeleteNode();
         }
-        if( ! App::getValue('MODULE_XIMNOTA_ENABLED', false) ){
+        if(! App::getValue('MODULE_XIMNOTA_ENABLED', false)) {
             return;
         }
         $rnm = new \Ximdex\Models\RelNodeMetadata();
-        $id=$rnm->find("idRel","IdMetadata=%s",array($idContent),MONO);
+        $id = $rnm->find("idRel", "IdMetadata=%s", array($idContent), MONO);
         $rnm->set('idRel', $id[0]);
         $res = $rnm->delete();
-        if($res<0){
+        if ($res < 0) {
             Logger::error("Relation between nodes not deleted.");
         }
-        else{
+        else {
             $rnvmv = new \Ximdex\Models\RelNodeVersionMetadataVersion();
-            $ids=$rnvmv->find("id","idrnm=%s",array($id[0]),MONO);
-            if(count($ids)>0){
+            $ids = $rnvmv->find("id", "idrnm=%s", array($id[0]), MONO);
+            if (count($ids) > 0) {
                 foreach($ids as $id){
                     $rnvmv->set('id', $id);
                     $res2 = $rnvmv->delete();
-                    if($res2<0){
+                    if ($res2 < 0) {
                         Logger::error("Relation between versions not deleted.");
                     }
                 }
             }
         }
     }
-
 }

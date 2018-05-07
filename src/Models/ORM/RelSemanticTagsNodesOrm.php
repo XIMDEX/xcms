@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,49 +25,20 @@
  * @version $Revision$
  */
 
-use Ximdex\Modules\Module;
+namespace Ximdex\Models\ORM;
 
+use Ximdex\Data\GenericData;
 
-class Module_ximTAGS extends Module
+class RelSemanticTagsNodesOrm extends GenericData
 {
-
-
-    public function __construct()
-    {
-
-        // Call Module constructor.
-        parent::__construct('ximTAGS', dirname(__FILE__));
-        // Initialization stuff.
-
-    }
-
-
-    function install()
-    {
-
-        // Install logic.
-
-        // ¿get module from ftp, webdav, subversion, etc...?
-        // ¿need to be extracted?
-        // extract and copy files to modules location.
-
-        // get constructor SQL   
-        $this->loadConstructorSQL("ximTAGS.constructor.sql");
-
-        // Install !      
-        $install_ret = parent::install();
-        return $install_ret;
-    }
-
-
-    function uninstall()
-    {
-        // get destructor SQL          
-        $this->loadDestructorSQL("ximTAGS.destructor.sql");
-
-        // Uninstall !      
-        parent::uninstall();
-
-    }
-
+	var $_idField = 'Node';
+	var $_table = 'RelSemanticTagsNodes';
+	var $_metaData = array(
+		'Node' => array('type' => "int(12)", 'not_null' => 'true', 'primary_key' => true),
+		'TagDesc' => array('type' => "int(12)", 'not_null' => 'true', 'primary_key' => true)
+	);
+	var $_uniqueConstraints = array();
+	var $_indexes = array('Node');
+	var $TagDesc;
+	var $Node;
 }

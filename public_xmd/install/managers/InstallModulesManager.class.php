@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -30,7 +31,6 @@ require_once(APP_ROOT_PATH.'/install/managers/InstallManager.class.php');
 
 class InstallModulesManager extends InstallManager
 {
-
     const ALREADY_INSTALL = "Already installed";
     const ERROR_INSTALL = "Error";
     const UNINSTALLED = "Uninstalled";
@@ -39,16 +39,15 @@ class InstallModulesManager extends InstallManager
 
     public function installModule($name)
     {
-
         $installState = self::UNINSTALLED;
         $modMngr = new \Ximdex\Modules\Manager();
         $state = $modMngr->checkModule($name);
         $myenabled = $modMngr->isEnabled($name);
-
         switch ($state) {
             case \Ximdex\Modules\Manager::get_module_state_installed():
                 $installState = self::ALREADY_INSTALL;
-                # code...
+                
+                # Code...
                 break;
             case \Ximdex\Modules\Manager::get_module_state_uninstalled():
                 if (!$myenabled) {
@@ -62,14 +61,13 @@ class InstallModulesManager extends InstallManager
             default:
                 break;
         }
-
         return $installState;
     }
 
     public function enableModule($name)
     {
-            $modMngr = new \Ximdex\Modules\Manager();
-            $modMngr->enableModule($name);
+        $modMngr = new \Ximdex\Modules\Manager();
+        $modMngr->enableModule($name);
     }
 
     public function uninstallModule($name)
@@ -80,14 +78,8 @@ class InstallModulesManager extends InstallManager
 	
     public function buildModulesFile()
     {
-
-
         $fileName = XIMDEX_ROOT_PATH . \Ximdex\Modules\Manager::get_modules_install_params();
         @unlink($fileName);
-        /*if(!file_exists($fileName) || !is_writable($fileName))
-            return false;*/
-        //$config = FsUtils::file_get_contents($fileName);	the file has not been created yet
-
         $modMan = new \Ximdex\Modules\Manager();
         $modules = $modMan->getModules();
         foreach ($modules as $mod) {
@@ -101,10 +93,10 @@ class InstallModulesManager extends InstallManager
  * The path is relative to ximdex folder.
  * define('MODULE_XIMSYNC_PATH','/modules/ximSYNC');
  */\n\n";
-
         foreach ($modules as $mod) {
             @unlink(XIMDEX_ROOT_PATH . "/data/." . $mod["name"]);
-            $str .= \Ximdex\Modules\Manager::get_pre_define_module() . strtoupper($mod["name"]) . \Ximdex\Modules\Manager::get_post_path_define_module() . str_replace(XIMDEX_ROOT_PATH, '', $mod["path"]) . "');" . "\n";
+            $str .= \Ximdex\Modules\Manager::get_pre_define_module() . strtoupper($mod["name"]) 
+                . \Ximdex\Modules\Manager::get_post_path_define_module() . str_replace(XIMDEX_ROOT_PATH, '', $mod["path"]) . "');" . "\n";
         }
         $str .= "\n?>";
         $result = FsUtils::file_put_contents($fileName, $str);

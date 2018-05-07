@@ -171,10 +171,6 @@ class SolrExporter implements Exporter
                 }
             }
         }
-
-        //$relTags = new RelTagsNodes();
-        //$tags = $relTags->getTags($idNode);
-
         return $doc;
     }
 

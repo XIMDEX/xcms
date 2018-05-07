@@ -26,7 +26,8 @@
 <form method="POST" name="tags_form" class="setmetadata-tags_form" ng-controller="XTagsCtrl" xim-document-tags='{$tags}' 
         xim-cloud-tags='{$cloud_tags}' xim-namespaces='{$namespaces}' xim-node-id="{$id_node}" ng-cloak>
     {include file="actions/components/title_Description.tpl"}
-    <div class="message slide-item" ng-show="submitMessages.length" ng-class="{literal}{'message-success': submitState == 'success'}{/literal}">
+    <div class="message slide-item" ng-show="submitMessages.length" 
+            ng-class="{literal}{'message-success': submitState == 'success'}{/literal}">
         <p class="ui-state-primary ui-corner-all msg-info" ng-repeat="message in submitMessages">
             #/message.message/#
         </p>
@@ -45,31 +46,43 @@
                             ng-disabled="tagExistInArray(newTag, documentTags)" 
                             ng-class="{literal}{disabled:tagExistInArray(newTag, documentTags)}{/literal}">{t}Add{/t}</button>
                 </div>
+                <div class="xim-tagsinput-savetags">
+                    <fieldset class="buttons-form">
+			            <button class="btn main_action ui-state-default ui-corner-all button submit-button ladda-button" 
+			                    xim-button xim-state="submitState" xim-label="'ui.dialog.confirmation.save' | xI18n" 
+			                    ng-click="saveTags(documentTags)" xim-disabled="!dirty"></button>
+			        </fieldset>
+                </div>
             </div>
             <div class="small-8 columns">
                 <div class="xim-tagsinput-container">
                     <div class="title-box">{t}Document tags{/t}</div>
                     <ul class="xim-tagsinput-list">
-                        <li class="xim-tagsinput-tag icon xim-tagsinput-type-#/namespaces[tag.IdNamespace].nemo/#" {literal}ng-class="{'noxtooltip': (tag.Description==null||tag.Description=='')}" {/literal} ng-repeat="tag in documentTags">
-                            <span ng-if="tag.Link == '#' || tag.Link == ''" class="xim-tagsinput-text" data-xtooltip="#/tag.Description/#">
+                        <li class="xim-tagsinput-tag icon xim-tagsinput-type-#/namespaces[tag.IdNamespace].nemo/#" 
+                                {literal}ng-class="{'noxtooltip': (tag.Description==null||tag.Description=='')}" {/literal} 
+                                ng-repeat="tag in documentTags">
+                            <span ng-if="tag.Link == '#' || tag.Link == ''" class="xim-tagsinput-text" 
+                                    data-xtooltip="#/tag.Description/#">
                                 #/tag.Name/#
 	    					</span>
-	                        <a ng-if="tag.Link != '#' && tag.Link != ''" ng-href="#/tag.Link/#" target="_blank" class="xim-tagsinput-text" 
-	                                data-xtooltip="#/tag.Description/#">
+	                        <a ng-if="tag.Link != '#' && tag.Link != ''" ng-href="#/tag.Link/#" target="_blank" 
+	                               class="xim-tagsinput-text" data-xtooltip="#/tag.Description/#">
 	                            #/tag.Name/#
 	                        </a>
 	                        <span ng-if="(namespaces[tag.IdNamespace].nemo != 'dPerson'
 	                                && namespaces[tag.IdNamespace].nemo != 'dPlace'
 	                                && namespaces[tag.IdNamespace].nemo != 'dOrganisation'
 	                                && namespaces[tag.IdNamespace].nemo != 'dCreativeWork'
-	                                && namespaces[tag.IdNamespace].nemo != 'dOthers')" class="ontology_link">#/namespaces[tag.IdNamespace].type/#</span>
+	                                && namespaces[tag.IdNamespace].nemo != 'dOthers')" class="ontology_link">
+                                #/namespaces[tag.IdNamespace].type/#
+                            </span>
 	                        <a ng-if="(namespaces[tag.IdNamespace].nemo == 'dPerson'
 	         		 	   		    || namespaces[tag.IdNamespace].nemo == 'dPlace'
 	                                || namespaces[tag.IdNamespace].nemo == 'dOrganisation'
 	                                || namespaces[tag.IdNamespace].nemo == 'dCreativeWork'
 	                                || namespaces[tag.IdNamespace].nemo == 'dOthers')
 	                            && (namespaces[tag.IdNamespace].uri != NULL && namespaces[tag.IdNamespace].uri != '')" 
-	                                ng-href="namespaces[tag.IdNamespace].uri" class="ontology_link" 
+	                                ng-href="#/namespaces[tag.IdNamespace].uri/#" class="ontology_link" 
 	                                target="_blank">
                                 #/namespaces[tag.IdNamespace].type/#
 	                        </a>
@@ -77,21 +90,24 @@
 	                            &nbsp;&times;&nbsp;
 	                        </a>
                         </li>
+                        <li ng-hide="documentTags.length">
+                            {t}There aren't any tags defined yet{/t}
+                        </li>
                     </ul>
-                    <p ng-hide="documentTags.length">
-                        {t}There aren't any tags defined yet{/t}.
-                    </p>
                 </div>
             </div>
             <div class="small-4 columns">
                 <div class="suggested">
                     {if $isStructuredDocument}
-                    <xtags-suggested xim-on-select="addTag(tag)" xim-node-id="nodeId" xim-document-tags="documentTags"></xtags-suggested>
+                    <xtags-suggested xim-on-select="addTag(tag)" xim-node-id="nodeId" 
+                            xim-document-tags="documentTags"></xtags-suggested>
                     {/if}
-                    <div class="tagcloud xim-tagsinput-container-related" ng-if="cloudTags.length && cloudTags.length != selectedCount(cloudTags)">
+                    <div class="tagcloud xim-tagsinput-container-related" 
+                            ng-if="cloudTags.length && cloudTags.length != selectedCount(cloudTags)">
                         <div class="title-box">{t}Suggested tags from Ximdex CMS{/t}</div>
                         <ul class="nube_tags">
-                            <li class="xim-tagsinput-taglist icon xim-tagsinput-type-#/namespaces[tag.IdNamespace].nemo/#" ng-repeat="tag in cloudTags" ng-click="addTag(tag)" ng-hide="tag.selected">
+                            <li class="xim-tagsinput-taglist icon xim-tagsinput-type-#/namespaces[tag.IdNamespace].nemo/#" 
+                                    ng-repeat="tag in cloudTags" ng-click="addTag(tag)" ng-hide="tag.selected">
                                 <span class="tag-text">#/tag.Name/#</span>
                                 <!-- <span class="amount right">#/tag.Total/#</span> -->
                             </li>
@@ -100,10 +116,6 @@
                     <ontologyBrowser/>
                 </div>
             </div>
-        </div>
-        <fieldset class="buttons-form">
-            <button class="btn main_action ui-state-default ui-corner-all button submit-button ladda-button" xim-button xim-state="submitState"
-                    xim-label="'ui.dialog.confirmation.save' | xI18n" ng-click="saveTags(documentTags)" xim-disabled="!dirty"></button>
-        </fieldset>
+        </div>  
     </div>
 </form>

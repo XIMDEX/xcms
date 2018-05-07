@@ -106,7 +106,6 @@ if angular.module('ximdex').notRegistred('listPostsCtrl')
                 action =
                     command: "setmetadata"
                     name: "Semantic tags"
-                    module: "ximTAGS"
                 nodes = [
                     nodeid: nodeid
                 ]

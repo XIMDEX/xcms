@@ -1471,7 +1471,7 @@ class Node extends NodesOrm
         $dependencies = new Dependencies();
         $dependencies->deleteDependentNode($this->get('IdNode'));
 
-        $rtn = new RelTagsNodes();
+        $rtn = new RelSemanticTagsNodes();
         $rtn->deleteTags($this->nodeID);
 
         $res = parent::delete();

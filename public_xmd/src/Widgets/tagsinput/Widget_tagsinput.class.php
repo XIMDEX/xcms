@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,52 +25,35 @@
  * @version $Revision$
  */
 
-
 use Ximdex\Models\Node;
-use Ximdex\Models\RelTagsNodes;
+use Ximdex\Models\RelSemanticTagsNodes;
 use Xmd\Widgets\WidgetAbstract;
-
 
 class Widget_tagsinput extends WidgetAbstract
 {
-
-    public function __construct()
-    {
-        if (!\Ximdex\Modules\Manager::isEnabled("ximTAGS")) {
-            $this->setEnable(false);
-        }
-
-        parent::__construct();
-    }
-
     public function process($params)
     {
-
-
         if ("true" == $params["initialize"]) {
-            $relTags = new RelTagsNodes();
+            $relTags = new RelSemanticTagsNodes();
             $params["tags"] = json_encode($relTags->getTags($params["_enviroment"]["id_node"]));
         }
-
         $node = new Node($params["_enviroment"]["id_node"]);
         $params["isStructuredDocument"] = $node->nodeType->get('IsStructuredDocument');
-
         if (array_key_exists("editor", $params)) {
             $this->setTemplate("tagsinput_editor");
         }
-
         $params['namespaces'] = json_encode($this->getAllNamespaces());
-
-
         return parent::process($params);
     }
 
     private function getAllNamespaces()
     {
         $result = array();
-        //Load from Xowl Service
+        
+        // Load from Xowl Service
         $namespacesArray = \Ximdex\Rest\Services\Xowl\OntologyService::getAllNamespaces();
-        //For every namespace build an array. This will be a json object
+        
+        // For every namespace build an array. This will be a json object
         foreach ($namespacesArray as $namespace) {
             $array = array(
                 "id" => $namespace->get("idNamespace"),
@@ -79,12 +63,8 @@ class Widget_tagsinput extends WidgetAbstract
                 "category" => $namespace->get("category"),
                 "uri" => $namespace->get("uri")
             );
-
             $result[] = $array;
         }
         return $result;
     }
-
 }
-
-?>

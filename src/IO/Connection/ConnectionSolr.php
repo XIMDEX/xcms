@@ -29,7 +29,7 @@ namespace Ximdex\IO\Connection;
 
 use Ximdex\Logger;
 use Ximdex\Models\ORM\NodesOrm as Nodes_ORM;
-use Ximdex\Models\RelTagsNodes;
+use Ximdex\Models\RelSemanticTagsNodes;
 use Exception;
 
 class ConnectionSolr extends Connector implements IConnector
@@ -373,7 +373,7 @@ class ConnectionSolr extends Connector implements IConnector
         $doc->id = $result[0];
 
         // Add tags if attached to ximdex document
-        $relTag = new RelTagsNodes();
+        $relTag = new RelSemanticTagsNodes();
         $tags = $relTag->getTags($result[0]);
         if (count($tags) > 0) {
             foreach ($tags as $tag) {

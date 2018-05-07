@@ -146,7 +146,7 @@ class SmartyRenderer extends AbstractRenderer
 		}
 
 		$messages = $smarty->getTemplateVars('messages');
-		$smarty->assign('messages_count', count($messages));
+		$smarty->assign('messages_count', is_array($messages) ? count($messages) : 0);
 
 	}
 

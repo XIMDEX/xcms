@@ -32,7 +32,7 @@
 		defaults: {
 			messageAdd: "Add",
 			messageDelete: "Delete",
-			jsonURL: X.restUrl+"?mod=ximTAGS&action=setmetadata&method=getLocalOntology",
+			jsonURL: X.restUrl + "?action=setmetadata&method=getLocalOntology",
 			rootElement: defaultValue,
 			inputFormat: "json",
 			inputJson: "SchemaOrg.json",
@@ -54,10 +54,10 @@
 			this._on($("a.close", this.$footer), {click: "_hideFooter"});
 			this._on($("a.ontology-close", this.element), {click: function(){
 
-				// hide infobox
+				// Hide infobox
 				this._hideFooter();
 
-				// hide view
+				// Hide view
 				$("a.ontology-close", this.element).parent().addClass('hidden');
 			}});
 		},
@@ -163,7 +163,6 @@
 
         _textcolor: function(d) {
             return "#000000";
-            // return d._children ? "#ffffff" : d.children ? "#990000" : "#990000";
         },
 
 		_loadDataInBlock: function (e) {
@@ -443,6 +442,7 @@
     	}
 
 		function update(source, that) {
+		
     		// Compute the flattened node list. TODO use d3.layout.hierarchy.
     		var nodes = tree.nodes(root);
 

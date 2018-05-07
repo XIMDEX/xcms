@@ -29,10 +29,10 @@ namespace Ximdex\Models;
 
 use Ximdex\Data\GenericData;
 
-class Namespaces extends GenericData
+class SemanticNamespaces extends GenericData
 {
     public $_idField = 'idNamespace';
-    public $_table = 'Namespaces';
+    public $_table = 'SemanticNamespaces';
     public $_metaData = array(
         'idNamespace' => array('type' => "int(11)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
         'service' => array('type' => "varchar(255)", 'not_null' => 'true'),
@@ -63,34 +63,35 @@ class Namespaces extends GenericData
 	* 
 	* @return array
 	*/
-	public function getAll(){
+	public function getAll()
+	{
 		$result = array();
 		$namespaces = $this->find("idNamespace");
-		if ($namespaces !== null){
+		if ($namespaces !== null) {
 			foreach ($namespaces as $nspace) {
-				$result[] = new \Ximdex\Models\Namespaces($nspace["idNamespace"]);
+			    $result[] = new SemanticNamespaces($nspace["idNamespace"]);
 			}
 		}
 		return $result;
 	}
 
-	public function getByUri($uri){
+	public function getByUri($uri)
+	{
 		$result = array();
-
 		$namespaces = $this->find("idNamespace", "uri='$uri'");
-		if ($namespaces !== null){
+		if ($namespaces !== null) {
 			foreach ($namespaces as $nspace) {
-				$result[] = new \Ximdex\Models\Namespaces($nspace["idNamespace"]);
+			    $result[] = new SemanticNamespaces($nspace["idNamespace"]);
 			}
 		}
 		return $result;
 	}
 
-	public function getByNemo($nemo){
-		$result = array();
-
+	public function getByNemo($nemo)
+	{
+    	$result = array();
 		$namespaces = $this->find("idNamespace", "nemo='$nemo'");
-		if ($namespaces !== null){
+		if ($namespaces !== null) {
 			foreach ($namespaces as $nspace) {
 				$result[] = $nspace["idNamespace"];
 			}
@@ -99,8 +100,9 @@ class Namespaces extends GenericData
 		return $result;
 	}
 	
-    public function getNemo($idNamespace){
-        $res = $this->find("nemo", "idNamespace = %s",array($idNamespace),MONO);
+    public function getNemo($idNamespace)
+    {
+        $res = $this->find("nemo", "idNamespace = %s", array($idNamespace), MONO);
         return $res[0]; 
     }
 }

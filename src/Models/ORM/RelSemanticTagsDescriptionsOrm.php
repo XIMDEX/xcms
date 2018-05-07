@@ -24,14 +24,18 @@
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
-class RelTagsDescriptions_ORM extends \Ximdex\Data\GenericData
+
+namespace Ximdex\Models\ORM;
+
+use Ximdex\Data\GenericData;
+
+class RelSemanticTagsDescriptionsOrm extends GenericData
 {
     var $_idField = 'IdTagDescription';
-    var $_table = 'RelTagsDescriptions';
+    var $_table = 'RelSemanticTagsDescriptions';
     var $_metaData = array(
         'IdTagDescription' => array('type' => "int(11)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
         'Tag' => array('type' => "int(11)", 'not_null' => 'true'),
-        'Type' => array('type' => "enum('GENERICS', 'ORGANISATIONS', 'PLACES', 'PEOPLE')", 'not_null' => 'true'),
         'Link' => array('type' => 'varchar(250)', 'not_null' => 'true'),
         'Description' => array('type' => 'text', 'not_null' => 'false')
     );
@@ -39,7 +43,6 @@ class RelTagsDescriptions_ORM extends \Ximdex\Data\GenericData
     var $_indexes = array('IdTagDescription');
     var $IdTagDescription;
     var $Tag;
-    var $Type;
     var $Link;
     var $Description;
 }

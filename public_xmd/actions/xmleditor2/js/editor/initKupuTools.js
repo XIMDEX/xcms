@@ -4,13 +4,6 @@ function initKupuTools(kupu) {
     var contextmenu = new ContextMenu();
     kupu.setContextMenu(contextmenu);
 
-    // now we can create a UI object which we can use from the UI
-    // var ui = new KupuUI('kupu-tb-styles');
-
-    // the ui must be registered to the editor like a tool so it can be notified
-    // of state changes
-    // kupu.registerTool('ui', ui); // XXX Should this be a different method?
-
     // function that returns a function to execute a button command
     var execCommand = function(cmd) {
         return function(button, editor) {
@@ -20,9 +13,6 @@ function initKupuTools(kupu) {
 
     var removeelementbutton = new XimdocRemoveElementButton('kupu-remove-button');
 	kupu.registerTool('removebutton', removeelementbutton);
-
-//    var proptool = new PropertyTool('kupu-properties-title', 'kupu-properties-description');
-//    kupu.registerTool('proptool', proptool);
 
     var showpathtool = new ShowPathTool();
     kupu.registerTool('showpathtool', showpathtool);
@@ -202,14 +192,11 @@ function initKupuTools(kupu) {
 
 	// MAIN TOOLBOXES
     kupu.maintoolboxes['xedit-attributes-toolbox'] 	= attributestoolbox;
-
-//    kupu.maintoolboxes['xedit-toolbar-toolbox'] = toolbartoolbox;
-    	kupu.maintoolboxes['xedit-rngelements-toolbox'] 	= rngelementstoolbox;
-    	kupu.maintoolboxes['xedit-annotations-toolbox'] 	= annotationstoolbox;
-    	kupu.maintoolboxes['xedit-changeset-toolbox'] 		= changesettoolbox;
+	kupu.maintoolboxes['xedit-rngelements-toolbox'] 	= rngelementstoolbox;
+   	kupu.maintoolboxes['xedit-annotations-toolbox'] 	= annotationstoolbox;
+    kupu.maintoolboxes['xedit-changeset-toolbox'] 		= changesettoolbox;
 	kupu.maintoolboxes['xedit-info-toolbox'] 		= infotoolbox;
-    	kupu.maintoolboxes['xedit-ximdexlogger-toolbox'] 	= kupu.log;
-
+    kupu.maintoolboxes['xedit-ximdexlogger-toolbox'] 	= kupu.log;
 
     // XIMLETS
 
@@ -286,26 +273,13 @@ function initKupuTools(kupu) {
     // removing tags that aren't in the XHTML DTD
     var nonxhtmltagfilter = new NonXHTMLTagFilter();
     kupu.registerFilter(nonxhtmltagfilter);
-
-//    if (window.kuputoolcollapser) {
-//        var collapser = new window.kuputoolcollapser.Collapser('kupu-toolboxes');
-//        collapser.initialize();
-//    };
-
-
-	/*for (var i=0, l=window.kupuToolHandlers.length; i<l; i++) {
-		window.kupuToolHandlers[i].handler(window.kupuToolHandlers[i]);
-	}*/
-
 	$('#kupu-toolboxes').unbind().remove();
-
 	try {
 		var tagslist = $('.xim-tagsinput-container');
 		$(tagslist).tagsinput();
-	}catch(e) {
-		//ximTAGS module needed
 	}
-
+	catch(e)
+	{}
     return kupu;
 };
 
@@ -324,16 +298,7 @@ function continueStartKupu(kupu) {
    	if(!kupu.getXimDocument().checkSpellingIsAllowed())
 	   	KupuButtonDisable(getFromSelector('kupu-spellchecker-button'));
 
-	/*
-	Validate the document on init
-	kupu.getXimDocument().validateXML(function(valid, msg) {
-    		if (!valid) kupu.alert(msg);
-    });
-    */
-
 	loadingImage.hideLoadingImage();
 
     return kupu;
 };
-
-

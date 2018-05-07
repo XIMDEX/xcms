@@ -88,7 +88,7 @@ class FrontController extends IController
     function normalizeNodesParam()
     {
         $nodes = $this->request->getParam('nodes');
-        if (count($nodes) == 1) {
+        if (is_array($nodes) and count($nodes) == 1) {
             $this->request->setParam('nodeid', $nodes[0]);
         }
     }

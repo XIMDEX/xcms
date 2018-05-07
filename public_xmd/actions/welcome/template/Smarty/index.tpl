@@ -32,7 +32,7 @@
 	    <div class="main_content">
 		    <div class="ximdex_projects">
 				<label style="margin-bottom: 10px;" class="label_general label_title">{t}Existing projects{/t}</label>
-			    {if $projects_info|@count gt 0}	
+			    {if is_array($projects_info) and $projects_info|@count gt 0}	
                     {foreach from=$projects_info key=index item=p }
 				    <div class="project_item">
 					    <img src="{url}/actions/welcome/resources/imgs/project_default.jpg{/url}" alt="" class="project_image">
@@ -60,7 +60,7 @@
 					
 			<div class="ximdex_documents">
 				<label style="margin-bottom: 10px;" class="label_general label_title">{t}Your latest documents{/t}</label>
-			    {if $docs|@count gt 0}	
+			    {if is_array($docs) and $docs|@count gt 0}	
                     {foreach from=$docs key=index item=d }
 				<div class="document_item">
                     <span class="icon document">{$d.name} 

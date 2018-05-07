@@ -24,7 +24,7 @@
 # */
 
 -- Key set to empty from Config table
-delete from Namespaces where service = "Xowl";
+delete from SemanticNamespaces where service = "Xowl";
 delete from Config where configkey = 'Xowl_location';
 delete from Config where configkey = 'EnricherKey';
 delete from Config where configkey = 'Xowl_token';

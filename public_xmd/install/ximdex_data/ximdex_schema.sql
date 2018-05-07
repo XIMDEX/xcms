@@ -10,9 +10,7 @@ CREATE TABLE `Actions` (
   `Multiple` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `Params` varchar(255) DEFAULT NULL,
   `IsBulk` tinyint(1) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (`IdAction`),
-  UNIQUE KEY `IdAction` (`IdAction`),
-  KEY `IdAction_2` (`IdAction`,`IdNodeType`)
+  PRIMARY KEY (`IdAction`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Commands which can be executed in a node';
 
 CREATE TABLE `ActionsStats` (
@@ -166,7 +164,7 @@ CREATE TABLE `Messages` (
   PRIMARY KEY (`IdMessage`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Messages sent by Ximdex CMS. Deprecated?';
 
-CREATE TABLE `Namespaces` (
+CREATE TABLE `SemanticNamespaces` (
   `idNamespace` int(12) unsigned NOT NULL AUTO_INCREMENT,
   `service` varchar(255) NOT NULL,
   `type` varchar(255) NOT NULL,
@@ -176,7 +174,7 @@ CREATE TABLE `Namespaces` (
   `category` varchar(255) NOT NULL,
   `isSemantic` tinyint(1) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`idNamespace`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Namespaces for semantic tagging.';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Namespaces for semantic tagging.';
 
 CREATE TABLE `NoActionsInNode` (
   `IdNode` int(11) NOT NULL,
@@ -812,6 +810,7 @@ ALTER TABLE `RelDocumentFolderToTemplatesIncludeFile`
   ADD KEY `target` (`target`);
 ALTER TABLE `RelDocumentFolderToTemplatesIncludeFile` MODIFY `id` int(12) NOT NULL AUTO_INCREMENT;
 
+
 -- CODE LANGUAGES
 
 CREATE TABLE `ProgrammingCode` (
@@ -853,3 +852,39 @@ CREATE TABLE `Section` (
 ALTER TABLE `Section` ADD PRIMARY KEY (`IdNode`);
 
 ALTER TABLE `Section` ADD FOREIGN KEY (`idSectionType`) REFERENCES `SectionTypes`(`idSectionType`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+
+-- SEMANTIC TAGS
+
+CREATE TABLE IF NOT EXISTS `SemanticTags` (
+  `IdTag` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `Name` varchar(100) NOT NULL,
+  `Total` mediumint(6) unsigned NOT NULL DEFAULT '1',
+  `IdNamespace` int(11) UNSIGNED NOT NULL,
+  PRIMARY KEY (`IdTag`),
+  UNIQUE KEY `Name` (`Name`, `IdNamespace`),
+  KEY `IdNamespace` (`IdNamespace`),
+  FULLTEXT KEY `Name_2` (`Name`)
+) ENGINE=InnoDB  CHARSET='utf8' COMMENT='List Tags' AUTO_INCREMENT=1;
+
+CREATE TABLE IF NOT EXISTS `RelSemanticTagsNodes` (
+  `Node` int(10) unsigned NOT NULL DEFAULT '0',
+  `TagDesc` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'RelSemanticTagsDescriptions ID',
+  PRIMARY KEY (`Node`,`TagDesc`)
+) ENGINE=InnoDB  COMMENT='Tags for each node';
+
+CREATE TABLE `RelSemanticTagsDescriptions` (
+`IdTagDescription` int(11) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+`Tag` int(11) UNSIGNED NOT NULL ,
+`Link` VARCHAR( 250 ) NOT NULL ,
+`Description` TEXT NULL
+) ENGINE=InnoDB COMMENT = 'Descriptions and info for Tags';
+
+ALTER TABLE `RelSemanticTagsDescriptions` ADD CONSTRAINT `RelSemanticTagsDescriptions_ibfk_1` FOREIGN KEY (`Tag`) 
+    REFERENCES `SemanticTags`(`IdTag`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `RelSemanticTagsNodes` ADD FOREIGN KEY (`TagDesc`) 
+    REFERENCES `RelSemanticTagsDescriptions`(`IdTagDescription`) ON DELETE CASCADE ON UPDATE CASCADE;
+   
+ALTER TABLE `SemanticTags` ADD FOREIGN KEY (`IdNamespace`) REFERENCES `SemanticNamespaces`(`idNamespace`) 
+    ON DELETE RESTRICT ON UPDATE RESTRICT;

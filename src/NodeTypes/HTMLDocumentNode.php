@@ -28,7 +28,7 @@
 namespace Ximdex\NodeTypes;
 
 use Ximdex\Logger;
-use Ximdex\Models\RelTagsNodes;
+use Ximdex\Models\RelSemanticTagsNodes;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\Models\Section;
 use SimpleXMLElement;
@@ -384,11 +384,11 @@ class HTMLDocumentNode extends AbstractStructuredDocument
         }
         $html = '<!DOCTYPE html>' . PHP_EOL;
         $html .= '<html>' . PHP_EOL . '<head>' . PHP_EOL;
-        $html .= '<meta charset = "UTF-8" >' . PHP_EOL;
-        $html .= '<meta name = "viewport" content = "width=device-width, initial-scale=1.0" >' . PHP_EOL;
-        $html .= '<meta http - equiv = "X-UA-Compatible" content = "ie=edge" >' . PHP_EOL;
-        $html .= '<meta name = "generator" content = "Ximdex CMS, Semantic Headless CMS and DMS, http://www.ximdex.com" >' . PHP_EOL;
-        $html .= '<meta name = "Owner" content = "' . App::getValue("VersionName") . '" >' . PHP_EOL;
+        $html .= '<meta charset="UTF-8" >' . PHP_EOL;
+        $html .= '<meta name="viewport" content="width=device-width, initial-scale=1.0" >' . PHP_EOL;
+        $html .= '<meta http-equiv="X-UA-Compatible" content="ie=edge" >' . PHP_EOL;
+        $html .= '<meta name="generator" content = "Ximdex CMS, Semantic Headless CMS and DMS, http://www.ximdex.com" >' . PHP_EOL;
+        $html .= '<meta name="Owner" content = "' . App::getValue("VersionName") . '" >' . PHP_EOL;
         $html .= $header;
         $html .= '</head>' . PHP_EOL;;
         $html .= '<body>' . PHP_EOL;
@@ -405,8 +405,8 @@ class HTMLDocumentNode extends AbstractStructuredDocument
     private static function createXIF($nodeID, $content, $channel)
     {
         $node = new \Ximdex\Models\Node($nodeID);
-        $relTagsNodes = new RelTagsNodes();
-        $tags = $relTagsNodes->getTags($node->GetID());
+        $relSemanticTagsNodes = new RelSemanticTagsNodes();
+        $tags = $relSemanticTagsNodes->getTags($node->GetID());
         $sectionId = $node->GetSection();
         $ximID = App::getValue('ximid');
         $version = $node->GetLastVersion() ?? [];

@@ -123,8 +123,7 @@ if (angular.module('ximdex').notRegistred('listPostsCtrl')) {
         var action, nodes;
         action = {
           command: "setmetadata",
-          name: "Semantic tags",
-          module: "ximTAGS"
+          name: "Semantic tags"
         };
         nodes = [
           {

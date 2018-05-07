@@ -33,7 +33,7 @@ use Ximdex\Deps\DepsManager;
 use Ximdex\Models\NodeType;
 use Ximdex\Utils\PipelineManager;
 use Ximdex\Models\Dependencies;
-use Ximdex\Models\RelTagsNodes;
+use Ximdex\Models\RelSemanticTagsNodes;
 use Ximdex\Models\Channel;
 use Ximdex\Models\Language;
 use Ximdex\Models\Node;
@@ -44,6 +44,7 @@ use Ximdex\Logger;
 use Ximdex\Runtime\Session;
 use Ximdex\Properties\ChannelProperty;
 use Ximdex\Models\NodeProperty;
+use Ximdex\Models\SemanticNamespaces;
 
 define('DOCXAP_VIEW', 1);
 define('SOLR_VIEW', 2);
@@ -353,18 +354,16 @@ abstract class AbstractStructuredDocument extends FileNode
         
         // Include the associated semantic tags of the document into the docxap tag.
         $xtags = '';
-        if (\Ximdex\Modules\Manager::isEnabled('ximTAGS')) {
-            $rtn = new RelTagsNodes();
-            $nodeTags = $rtn->getTags($this->nodeID);
-            if (!empty($nodeTags)) {
-                foreach ($nodeTags as $tag) {
-                    $ns = new \Ximdex\Models\Namespaces();
-                    $idns = $ns->getNemo($tag['IdNamespace']);
-                    $xtags .= $tag['Name'] . ":" . $idns . ",";
-                }
+        $rtn = new RelSemanticTagsNodes();
+        $nodeTags = $rtn->getTags($this->nodeID);
+        if (!empty($nodeTags)) {
+            foreach ($nodeTags as $tag) {
+                $ns = new SemanticNamespaces();
+                $idns = $ns->getNemo($tag['IdNamespace']);
+                $xtags .= $tag['Name'] . ":" . $idns . ",";
             }
-            $xtags = substr_replace($xtags, "", -1);
         }
+        $xtags = substr_replace($xtags, "", -1);
         $xtags = 'xtags = "' . $xtags . '"';
         $docxap = sprintf('<' . $tagName . ' %s %s %s %s %s %s %s %s %s>',
             $layoutTag,
