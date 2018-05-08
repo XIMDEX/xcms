@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,65 +25,67 @@
  * @version $Revision$
  */
 
+use Ximdex\Logger;
 use Ximdex\Models\Channel;
 use Ximdex\Models\Node;
 use Ximdex\Models\PipeStatus;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\App;
+use Ximdex\Models\RelNode2Asset;
+use Ximdex\Models\RelXml2Xml;
+use Ximdex\Models\RelStrdocTemplate;
+use Ximdex\Models\RelNodeMetadata;
+use Ximdex\NodeTypes\NodeTypeConstants;
 
-\Ximdex\Modules\Manager::file('/actions/manageversions/Action_manageversions.class.php');
+Ximdex\Modules\Manager::file('/actions/manageversions/Action_manageversions.class.php');
 
 class Action_infonode extends ActionAbstract
 {
-
-    function index()
+    const MAX_VERSIONS = 10;
+    
+    public function index()
     {
         $this->addCss('/actions/infonode/resources/css/style.css');
         $this->addCss('/actions/infonode/resources/css/svg.css');
-
         $this->addJs('/actions/infonode/resources/js/colorbrewer.js');
         $this->addJs('/actions/infonode/resources/js/geometry.js');
         $this->addJs('/actions/infonode/resources/js/script.js');
-
-        $idNode = (int)$this->request->getParam("nodeid");
+        $idNode = (int) $this->request->getParam('nodeid');
         $node = new Node($idNode);
         $info = $node->loadData();
 
         // Obtain name of current status
-        if(isset($info['state'])){
+        if (isset($info['state'])) {
             $pipeStatus = new PipeStatus();
-            $params = array( 'id' => $info['state'] );
-            $condition = "id = %s";
-            $pipeStatusInfo=$pipeStatus->find('Name',$condition, $params, MONO);
+            $params = array('id' => $info['state']);
+            $condition = 'id = %s';
+            $pipeStatusInfo = $pipeStatus->find('Name', $condition, $params, MONO);
         }
-        else
+        else {
             $pipeStatusInfo = array(null);
-
-        //channels
+        }
+        
+        // Channels
         $channel = new Channel();
         $channels = $channel->getChannelsForNode($idNode);
 
-        //languages
+        // Languages
         $nodeLanguages = $node->getProperty('language', true);
         $languages = array();
         if (!empty($nodeLanguages)) {
             $i = 0;
             foreach ($nodeLanguages as $_lang) {
                 $_node = new Node($_lang);
-                $languages[$i]["Id"] = $_lang;
-                $languages[$i]["Name"] = $_node->get("Name");
+                $languages[$i]['Id'] = $_lang;
+                $languages[$i]['Name'] = $_node->get('Name');
                 $i++;
             }
         }
-
-        $jsonUrl = App::getUrl( "/?action=infonode&method=getDependencies&nodeid=" . $idNode );
-
-        $manageVersions= new Action_manageversions();
-        $valuesManageVersion=$manageVersions->values($idNode);
+        $jsonUrl = App::getUrl( '/?action=infonode&method=getDependencies&nodeid=' . $idNode );
+        $manageVersions = new Action_manageversions();
+        $valuesManageVersion = $manageVersions->values($idNode, self::MAX_VERSIONS);
         $this->addJs('/actions/manageversions/resources/js/index.js');
         $this->addCss('/actions/manageversions/resources/css/index.css');
-
-
         $values = array(
             'id_node' => $idNode,
             'info' => $info,
@@ -91,125 +94,60 @@ class Action_infonode extends ActionAbstract
             'languages' => $languages,
             'jsonUrl' => $jsonUrl,
             'node_Type' => $node->nodeType->GetName(),
-            'valuesManageVersion'=>$valuesManageVersion
+            'valuesManageVersion' => $valuesManageVersion,
+            'maxVersions' => self::MAX_VERSIONS
         );
         $this->render($values, 'index', 'default-3.0.tpl');
     }
 
-    function getDependencies()
+    public function getDependencies()
     {
-        $idNode = (int)$this->request->getParam("nodeid");
+        $idNode = (int) $this->request->getParam("nodeid");
+        $masterNode = new Node($idNode);
+        if (!$masterNode->GetID()) {
+            Logger::error('Cannot load the node with ID: ' . $idNode);
+            return false;
+        }
         $depMasterList = array();
-        $classes = array(new \Ximdex\Models\RelNode2Asset(), new \Ximdex\Models\RelXml2Xml(), new \Ximdex\Models\RelStrdocTemplate());
-        
+        $classes = array(new RelNode2Asset(), new RelXml2Xml(), new RelStrdocTemplate());
         foreach ($classes as $c) {
             $res = $c->find("target", "source=" . $idNode, null, MONO);
             if (count($res) > 0) {
                 $depMasterList = array_merge($depMasterList, $res);
             }
         }
-
-        $relnodemetadata = new \Ximdex\Models\RelNodeMetadata();
-
-
-
+        $relnodemetadata = new RelNodeMetadata();
         $res = $relnodemetadata->find("IdMetadata", "IdNode=" . $idNode, null, MONO);
-        if (count($res) > 0) {
+        if ($res) {
             $depMasterList = array_merge($depMasterList, $res);
         }
-
-        $depDependentList = array();
-        foreach ($classes as $c) {
-            $res = $c->find("source", "target=" . $idNode, null, MONO);
-            if (count($res) > 0) {
-                $depDependentList = array_merge($depDependentList, $res);
-            }
-        }
-        $res = $relnodemetadata->find("IdNode", "IdMetadata=" . $idNode, null, MONO);
-        if (count($res) > 0) {
-            $depDependentList = array_merge($depDependentList, $res);
-        }
-
-
-
-
-        foreach ($depMasterList as $i => $idDependentNode) {
-            $node = new Node((int)$idDependentNode);
-            if ($node->GetId() && $node->GetNodeType() != \Ximdex\NodeTypes\NodeTypeConstants::METADATA_DOCUMENT) {
-                $obj["name"] = $node->GetNodeName();
+        $data = array();
+        $errors = array();
+        $depMasterNameList = array();
+        foreach ($depMasterList as $idDependentNode) {
+            $node = new Node((int) $idDependentNode);
+            if ($node->GetID() and $node->GetID() != $idNode and $node->GetNodeType() != NodeTypeConstants::METADATA_DOCUMENT) {
+                $obj = [];
+                $name = $node->GetNodeName() . ' (' . $node->GetID() . ')';
+                $obj["name"] = $name;
                 $obj["type"] = $node->GetTypeName();
                 $obj["depends"] = array();
                 $obj["position"] = "master";
-                $objs[$node->GetNodeName()] = $obj;
-                $obj = null;
-            }else{
-                unset($depMasterList[$i]);
+                $obj['dependedOnBy'] = [$name];
+                $data[$name] = $obj;
+                $depMasterNameList[] = $name;
             }
         }
-        $depMasterList = array_values($depMasterList);
-        $depMasterNameList = array();
-        foreach ($depMasterList as $i) {
-            $node = new Node((int)$i);
-            $depMasterNameList[] = $node->GetNodeName();
-        }
-
-
-
-        $node = new Node($idNode);
-        $centerName = $node->GetNodeName();
-        $centerType = $node->GetTypeName();
-
-
-        $obj = array(
-            "name" => $centerName,
-            "type" => $centerType,
+        $data[$masterNode->GetNodeName()] = array(
+            "name" => $masterNode->GetNodeName(),
+            "type" => $masterNode->GetTypeName(),
             "depends" => $depMasterNameList,
-            "position" => "center"
+            "position" => "center",
+            'dependedOnBy' => []
         );
-        $objs[$centerName] = $obj;
-
-
-        foreach ($depDependentList as $d) {
-            $i = (int)$d;
-            $node = new Node($i);
-            if ($node->GetId() && $node->GetNodeType() != \Ximdex\NodeTypes\NodeTypeConstants::METADATA_DOCUMENT) {
-                $obj = array(
-                    "name" => $node->GetNodeName(),
-                    "type" => $node->GetTypeName(),
-                    "depends" => array($centerName),
-                    "position" => "child"
-                );
-                $objs[$node->GetNodeName()] = $obj;
-                $obj = null;
-            }
-        }
-
-        $obj = array();
-        $data = array();
-        $errors = array();
-
-        foreach ($objs as $obj) {
-            $data[$obj['name']] = $obj;
-        }
-
-        foreach ($data as &$obj) {
-            $obj['dependedOnBy'] = array();
-        }
-        foreach ($data as &$obj) {
-            foreach ($obj['depends'] as $name) {
-                if ($data[$name]) {
-                    $data[$name]['dependedOnBy'][] = $obj['name'];
-                } else {
-                    $errors[] = "Unrecognized dependency: '$obj[name]' depends on '$name'";
-                }
-            }
-        }
-        unset($obj);
-
         $this->sendJSON(array(
             'data' => $data,
             'errors' => $errors
         ));
     }
-
 }

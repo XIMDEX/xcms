@@ -221,14 +221,16 @@ class ParsingDependencies
                 $dependencies = new Dependencies();
                 $pathImage = preg_replace("/\.\.(\/\.\.)*/", $server_path, $_image);
                 $idNodeDep = self::_getIdNode($pathImage);
-                $res = $dependencies->find('IdDep', 'IdNodeMaster = %s and IdNodeDependent = %s', array(
-                    $idNode,
-                    $idNodeDep
-                ), MONO);
-                if (empty($res)) {
-                    $dependencies->insertDependence($idNode, $idNodeDep, $type, $version);
-                    $nodeDependencies->set($idNode, $idNodeDep, NULL);
-                    $depsMngr->set(DepsManager::NODE2ASSET, $idNode, $idNodeDep);
+                if ($idNodeDep !== null) {
+                    $res = $dependencies->find('IdDep', 'IdNodeMaster = %s and IdNodeDependent = %s', array(
+                        $idNode,
+                        $idNodeDep
+                    ), MONO);
+                    if (empty($res)) {
+                        $dependencies->insertDependence($idNode, $idNodeDep, $type, $version);
+                        $nodeDependencies->set($idNode, $idNodeDep, NULL);
+                        $depsMngr->set(DepsManager::NODE2ASSET, $idNode, $idNodeDep);
+                    }
                 }
             }
         }
@@ -647,7 +649,10 @@ class ParsingDependencies
     {
         // Building file and path
         $file = pathinfo($_path);
-        $filename = $file["filename"] . "." . $file['extension'];
+        $filename = $file["filename"];
+        if (isset($file['extension']) and $file['extension']) {
+            $filename .= '.' . $file['extension'];
+        }
         $path = $file["dirname"];
 
         // Searching in Nodes by name and path

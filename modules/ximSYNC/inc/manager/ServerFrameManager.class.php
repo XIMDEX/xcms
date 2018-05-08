@@ -156,46 +156,6 @@ class ServerFrameManager
         $serverFrame->set('State', (isset($finalState)) ? $finalState : $initialState);
         $serverFrame->set('PumperId', $pumperId);
         $result = $serverFrame->update();
-
-        // Republish serverFrames' ancestors
-
-        //TODO ajlucena
-        /*
-        if ($republishAncestors === true) {
-
-            $depsMngr = new DepsManager();
-            $ancestorsLinks = $depsMngr->getByTarget(DepsManager::STRDOC_NODE, $nodeId);
-            $ancestorsAssets = $depsMngr->getByTarget(DepsManager::STRDOC_ASSET, $nodeId);
-
-            $ancestorsLinks = !is_array($ancestorsLinks) ? array() : $ancestorsLinks;
-            $ancestorsAssets = !is_array($ancestorsAssets) ? array() : $ancestorsAssets;
-
-            $ancestors = array_merge($ancestorsLinks, $ancestorsAssets);
-
-            if (sizeof($ancestors) > 0) {
-
-                foreach ($ancestors as $idAncestor) {
-                    $nodeFrame = new NodeFrame();
-                    $activeNodeFrame = $nodeFrame->getPublishedId($idAncestor);
-
-                    if (!is_null($activeNodeFrame)) {
-                        $publishServerFrames = $this->getByNodeFrame($activeNodeFrame);
-
-                        $batchMng = new BatchManager();
-                        foreach ($publishServerFrames as $publishID) {
-                            $idA = $publishID[0];
-                            $ancestFrame = new ServerFrame($idA);
-                            $prevState = $ancestFrame->get('State');
-                            $idBatchUp = $ancestFrame->get('IdBatchUp');
-                            $ancestFrame->set('State', 'Due2In_');
-                            $ancestFrame->update();
-                            $batchMng->updateBatchFromRepublishAncestors($idBatchUp, $prevState);
-                        }
-                    }
-                }
-            }
-        }
-        */
         if (!isset($finalState)) {
             $finalState = 'unknown final state';
         }

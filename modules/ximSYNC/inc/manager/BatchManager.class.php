@@ -128,19 +128,6 @@ class BatchManager
                 continue;
             }
 
-            //TODO ajlucena
-            /*
-            // Ancestors Batch (linkedsBy, only if nodeID was renamed, change path or first publishing)
-            $nodeFrame = new NodeFrame();
-            if ($nodeFrame->isTainted($idDoc)) {
-                $depsMngr = new DepsManager();
-                $sourceNodes = $depsMngr->getByTarget(DepsManager::STRDOC_NODE, $idDoc);
-                if (!is_null($sourceNodes)) {
-                    $ancestors = array_merge($ancestors, $sourceNodes);
-                }
-            }
-            */
-
             // We up version if tha current version to publish it is a draft or if the current version is 0.0 and the node is the generator node.
             // Or is a image / binary file
             if ($subversionToPublish != 0 || ($subversionToPublish == 0 && $versionToPublish == 0 && ($idDoc == $idNode or 
@@ -149,13 +136,6 @@ class BatchManager
                 $docsToUpVersion[$idDoc] = $idDoc;
             }
         }
-        
-        //TODO ajlucena
-        /*
-        if (isset($ancestors) && count($ancestors) > 0) {
-            $docsToPublish = array_unique(array_merge($docsToPublish, $ancestors));
-        }
-        */
 
         // Get portal version
         $portal = new PortalVersions();

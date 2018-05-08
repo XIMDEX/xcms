@@ -43,7 +43,7 @@ class Action_manageversions extends ActionAbstract
         $this->render($values, null, 'default-3.0.tpl');
     }
 
-    function values($idNode)
+    function values($idNode, int $max = null)
     {
         $node = new Node($idNode);
         if (!$node->get('IdNode') > 0) {
@@ -52,7 +52,7 @@ class Action_manageversions extends ActionAbstract
             $this->render($values, NULL, 'messages.tpl');
             return false;
         }
-        $isStructuredDocument = (bool)$node->nodeType->get('IsStructuredDocument');
+        $isStructuredDocument = (bool) $node->nodeType->get('IsStructuredDocument');
         $channels = array();
         if ($isStructuredDocument) {
             $structuredDocument = new StructuredDocument($idNode);
@@ -71,6 +71,9 @@ class Action_manageversions extends ActionAbstract
             . " WHERE IdNode = %s"
             . " ORDER BY v.Version DESC, v.SubVersion DESC",
             $dbObj->sqlEscapeString($idNode));
+        if ($max) {
+            $query .= ' LIMIT ' . $max;
+        }
         $dbObj->query($query);
         $versionList = array();
         while (!$dbObj->EOF) {

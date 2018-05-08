@@ -28,15 +28,14 @@
 namespace Ximdex\Rest\Services\Xowl\Searchers;
 
 /**
-*<p>Abstract class of strategy pattern for Xowl Searcher</p>
-*<p>Use ximdex's rest provider to call an specific web service</p>
-*<p>Abstract methods</p>
-*<ul>
-* <li>suggest</li>
-*</ul>
+* Abstract class of strategy pattern for Xowl Searcher
+* Use ximdex's rest provider to call an specific web service
+* Abstract methods
+*
+* suggest
 */
-abstract class AbstractSearcherStrategy {
-
+abstract class AbstractSearcherStrategy
+{
 	protected $restProvider = null;
 	protected static $XIMDEX_TYPE_DPERSON = "dPerson";
 	protected static $XIMDEX_TYPE_DORGANISATION = "dOrganisation";
@@ -45,55 +44,56 @@ abstract class AbstractSearcherStrategy {
 	protected static $XIMDEX_TYPE_DOTHERS = "dOthers";
 	protected $data;
 	
-	public function __construct(){		
+	public function __construct()
+	{
 		$this->restProvider = new \Ximdex\Rest\RESTProvider();
 	}
 
 	/**
-	*<p>Abstract method<p>
-	*<p>Return related resources from a text</p>
-	*<p>@param $text source to search.</p>
-	*<p>@return</p>
+	* Abstract method
+	* Return related resources from a text
+	*
+	* @param $text : source to search
+	* @return
 	*/
-
 	public abstract function suggest($text);
 
 	/**
-	*<p>Get the loaded datas in several formats</p>
-	*@param $format : output format for data: array or json is waited.
-	*@return false if there aren't data. Json or array otherwise.
+	* Get the loaded datas in several formats
+	* 
+	* @param $format : output format for data: array or json is waited
+	* @return false if there aren't data. Json or array otherwise
 	*/
-	public final function getData($format = null){
-
-		if (!$this->data)
+	public final function getData($format = null)
+	{
+	    if (!$this->data) {
 			return false;
+	    }
 		switch (strtolower($format)){			
 			case "json":
 				return json_encode($this->data);
-			case "array":
 			default:
 				return $this->data;
 		}			
 	}
 
 	/**
-	*<p>Get the loaded datas in several formats</p>
-	*@return false if there aren't data. Array otherwise.
+	* Get the loaded datas in several formats
+	* 
+	* @return false if there aren't data. Array otherwise
 	*/
-	public function getDataLikeArray(){
-
+	public function getDataLikeArray()
+	{
 		return $this->getData();
 	}
 
 	/**
-	*<p>Get the loaded datas in several formats</p>
-	*@return false if there aren't data. Json otherwise.
+	* Get the loaded datas in several formats
+	* 
+	* @return false if there aren't data. Json otherwise
 	*/
-	public function getDataLikeJson(){
-		
+	public function getDataLikeJson()
+	{
 		return $this->getData("json");
 	}
-	
-
 }
-

@@ -7,12 +7,10 @@ var idNode =null;
 fn(function() {
     config = {
         "graph" : {
-            "linkDistance" : 180,
-            "charge"       : -400,
+            "linkDistance" : 70,
+            "charge"       : 0,
             "numColors"    : 12,
-            "margin":{
-
-            },
+            "margin"	   : {},
             "labelPadding" : {
                 "left"   : 3,
                 "right"  : 3,
@@ -76,8 +74,8 @@ fn(function() {
         var degree=180/(masterTypes.length+1);
         for(var m in masterTypes){
             if(masterTypes.hasOwnProperty(m)){
-                xpos=Math.sin(toRadians(degree))*0.5+0.5;
-                ypos=Math.cos(toRadians(degree))*0.5+0.5;
+                xpos=Math.sin(toRadians(degree));
+                ypos=Math.cos(toRadians(degree)) * 0.7 + 1;
                 model={
                     "has"    : { "type" : masterTypes[m] },
                     "type"   : "position",
@@ -92,8 +90,8 @@ fn(function() {
         degree=(180/(childTypes.length+1))*(-1);
         for(var c in childTypes){
             if(childTypes.hasOwnProperty(c)){
-                xpos=Math.sin(toRadians(degree))*0.5+0.5;
-                ypos=Math.cos(toRadians(degree))*0.5+0.5;
+                xpos=Math.sin(toRadians(degree));
+                ypos=Math.cos(toRadians(degree)) * 0.7 + 0.2;
                 model={
                     "has"    : { "type" : childTypes[c] },
                     "type"   : "position",
@@ -106,12 +104,15 @@ fn(function() {
             }
         }
         var maxNum=Math.max(numMasters,numCenters,numChildren);
-        if(maxNum<=6){
-            config.graph.height=200;
-        }else{
-            config.graph.height=maxNum*20;
-        }
-        config.graph.margin.top=25/*+maxNum*1.5*/;
+        /*
+        if(maxNum <= 6) {
+            config.graph.height = 480;
+        } else {
+        */
+        // console.log(config.graph.linkDistance);
+        config.graph.height = maxNum * config.graph.linkDistance / 3;
+        //}
+        config.graph.margin.top = 0;	/*+maxNum*1.5*/
         graph.data = data.data;
         drawGraph();
     });

@@ -1,8 +1,4 @@
 <?php
-namespace Ximdex\Deps;
-
-use Ximdex\Logger;
-use Ximdex\Utils\Factory;
 
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
@@ -28,79 +24,49 @@ use Ximdex\Utils\Factory;
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
-//
+
+namespace Ximdex\Deps;
+
+use Ximdex\Logger;
+use Ximdex\Utils\Factory;
 
 class DepsManager
 {
-
-    /**
-     *
-     * @var string
-     */
     const SECTION_XIMLET = 'RelSectionXimlet';
-    /**
-     *
-     * @var string
-     */
     const STRDOC_XIMLET = 'RelStrdocXimlet';
-    /**
-     *
-     * @var string
-     */
     const BULLETIN_XIMLET = 'RelBulletinXimlet';
-    /**
-     *
-     * @var string
-     */
-    //TODO ajlucena: const STRDOC_NODE = 'RelStrdocNode';
-    /**
-     *
-     * @var string
-     */
     const STRDOC_TEMPLATE = 'RelStrdocTemplate';
-    /**
-     *
-     * @var string
-     */
-    //TODO ajlucena: const STRDOC_ASSET = 'RelStrdocAsset';
-
     const NODE2ASSET = 'RelNode2Asset';
-
     const XML2XML = 'RelXml2Xml';
-    
     const DOCFOLDER_TEMPLATESINC = 'RelDocumentFolderToTemplatesIncludeFile';
 
     /**
      * Returns the model object specified by "$tableName" name or NULL
+     * 
      * @param $rel
      * @param $idSource
      * @param $idTarget
      * @return bool
      */
-    function set($rel, $idSource, $idTarget)
+    function set($rel, $idSource, $idTarget) : bool
     {
         $object = $this->getModel($rel);
         if (!is_object($object)) return false;
-
         $res = $object->find(ALL, 'source = %s and target = %s', array($idSource, $idTarget));
-
         if (empty($res)) {
             $object->set('target', $idTarget);
             $object->set('source', $idSource);
-
             if (!$object->add()) {
                 Logger::error('Inserting dependency');
                 return false;
             }
-        } else {
-
         }
-
         return true;
     }
 
     /**
      * Inserts a row in a relation table
+     * 
      * @param $tableName
      * @param null $id
      * @return mixed
@@ -109,7 +75,6 @@ class DepsManager
     {
         $factory = new Factory(XIMDEX_ROOT_PATH . "/src/Models/", $tableName);
         $object = $factory->instantiate(NULL, $id, '\Ximdex\Models');
-
         if (!is_object($object)) {
             Logger::error(sprintf("Can't instantiate a %s model", $tableName));
         }
@@ -118,26 +83,28 @@ class DepsManager
 
     /**
      * From a given target node returns its source node
+     * 
      * @param $rel
      * @param $target
-     * @return bool|null
+     * @return bool|null|array
      */
     function getByTarget($rel, $target)
     {
         $object = $this->getModel($rel);
-        if (!is_object($object)) return false;
-
+        if (!is_object($object)) {
+            return false;
+        }
         $result = $object->find('source', 'target = %s', array($target), MONO);
-
         return count($result) > 0 ? $result : NULL;
     }
 
     /**
      * From a given source node returns its target nodes
+     * 
      * @param $rel
      * @param $source
      * @param array An array with Dependencies types ID that will be exclude in the search
-     * @return array|bool
+     * @return array|bool|array
      */
     function getBySource($rel, $source, array $exclude = [])
     {
@@ -146,7 +113,8 @@ class DepsManager
         $sqlConditions = 'source = %s';
         if ($exclude)
         {
-            $sqlConditions .= ' and target not in (select distinct idNodeDependent from Dependencies where idNodeMaster = ' . $source . ' and (false';
+            $sqlConditions .= ' and target not in (select distinct idNodeDependent from Dependencies where idNodeMaster = ' 
+                . $source . ' and (false';
             foreach ($exclude as $exclusionType)
                 $sqlConditions .= ' or DepType = ' . $exclusionType;
             $sqlConditions .= '))';
@@ -157,6 +125,7 @@ class DepsManager
 
     /**
      * Deletes a row in a relation table
+     * 
      * @param $rel
      * @param $idSource
      * @param $idTarget
@@ -165,13 +134,12 @@ class DepsManager
     function delete($rel, $idSource, $idTarget)
     {
         $object = $this->getModel($rel);
-        if (!is_object($object)) return false;
-
+        if (!is_object($object)) {
+            return false;
+        }
         $object->set('target', $idTarget);
         $object->set('source', $idSource);
-
         $result = $object->find('id', 'source = %s AND target = %s', array($idSource, $idTarget), MONO);
-
         if (sizeof($result) != 1) {
             Logger::error('IN query');
             return false;
@@ -182,6 +150,7 @@ class DepsManager
 
     /**
      * Deletes all relations for a source node
+     * 
      * @param $rel
      * @param $idSource
      * @return bool
@@ -189,19 +158,19 @@ class DepsManager
     function deleteBySource($rel, $idSource)
     {
         $object = $this->getModel($rel);
-        if (!is_object($object)) return false;
-
+        if (!is_object($object)) {
+            return false;
+        }
         $result = $object->find('id', 'source = %s', array($idSource), MONO);
-
         if (sizeof($result) > 0) {
             $object->deleteAll('id in (%s)', array(implode(', ', $result)), false);
         }
-
         return true;
     }
 
     /**
      * Deletes all relations for a target node
+     * 
      * @param $rel
      * @param $idTarget
      * @return bool
@@ -209,14 +178,13 @@ class DepsManager
     function deleteByTarget($rel, $idTarget)
     {
         $object = $this->getModel($rel);
-        if (!is_object($object)) return false;
-
+        if (!is_object($object)) {
+            return false;
+        }
         $result = $object->find('id', 'target = %s', array($idTarget), MONO);
-
         if (sizeof($result) > 0) {
             $object->deleteAll('id in (%s)', array(implode(', ', $result)), false);
         }
-
         return true;
     }
 }

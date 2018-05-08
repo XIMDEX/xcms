@@ -82,49 +82,18 @@ class Action_poolPreview extends ActionAbstract {
     /**
      * Returns the nodes that have linked in this node
      */
-    public function getLinkedNodes() {
-        
+    public function getLinkedNodes()
+    {    
         $result = [];
-        /*
-    	$idNode = $this->request->getParam('idnode');
-    	if (!($idNode > 0)) {
-    		Logger::error("Idnode did not arrive");
-    		return NULL;
-    	} else {
-    		$node = new Node($idNode);
-    		if (!($node->get('IdNode') > 0)) {
-    			Logger::error("Instantiated node has no idNode");
-    			return NULL;
-    		}
-    	}
-    	
-    	$relStrDocNode = new  \Ximdex\Models\RelStrdocNode();
-    	
-    	$result = $this->_getNodeInfo($relStrDocNode->find('target', 'source = %s', array($idNode), MONO));
-    	*/
     	$this->render(array('links' => $result));
     }
     
     /**
      * Returns the nodes that have a link to this node
      */
-    public function getLinkNodes() {
-    	
+    public function getLinkNodes()
+    {	
         $result = [];
-        /*
-    	$idNode = $this->request->getParam('idnode');
-    	if (!($idNode > 0)) {
-    		return NULL;
-    	} else {
-    		$node = new Node($idNode);
-    		if (!($node->get('IdNode') > 0)) {
-    			return NULL;
-    		}
-    	}
-    	
-    	$relStrDocNode = new  \Ximdex\Models\RelStrdocNode();
-    	$result = $this->_getNodeInfo($relStrDocNode->find('source', 'target = %s', array($idNode), MONO));
-    	*/
 		$this->render(array('links' => $result));
     }
     

@@ -72,17 +72,12 @@ class XimletNode extends AbstractStructuredDocument
     function DeleteNode()
     {
         // Deletes dependencies in rel tables
-
         $depsMngr = new DepsManager();
         $depsMngr->deleteByTarget(DepsManager::SECTION_XIMLET, $this->parent->get('IdNode'));
         $depsMngr->deleteByTarget(DepsManager::STRDOC_XIMLET, $this->parent->get('IdNode'));
-        //TODO ajlucena: $depsMngr->deleteBySource(DepsManager::STRDOC_NODE, $this->parent->get('IdNode'));
         $depsMngr->deleteBySource(DepsManager::STRDOC_TEMPLATE, $this->parent->get('IdNode'));
         $depsMngr->deleteByTarget(DepsManager::BULLETIN_XIMLET, $this->parent->get('IdNode'));
-
         Logger::info('Ximlet dependencies deleted');
-
-
     }
 
     /**

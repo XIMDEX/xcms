@@ -105,7 +105,8 @@ Class Logger
     {
         try{
             return self::get()->logger->addCritical(self::$color->__invoke($string)->red()->bold());
-        }catch (Exception $e){
+        }
+        catch (Exception $e) {
             error_log($e->getMessage());
         }
     }
@@ -114,8 +115,9 @@ Class Logger
     {
         try
         {
-            if ($success)
+            if ($success) {
                 $string = self::$color->__invoke($string)->green()->bold();
+            }
             return self::get()->logger->addInfo($string);
         }
         catch (Exception $e)
