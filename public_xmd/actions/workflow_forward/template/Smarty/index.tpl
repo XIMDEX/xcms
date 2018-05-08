@@ -187,7 +187,7 @@
 			</div>
 			<div class="programed_publication row-item">
 				<h2 class="icon clock" style="color:white!important; margin-bottom:0!important;">{t}Scheduled publications{/t}</h2>
-				{if $gap_info|@count gt 0}
+				{if is_array(gap_info) and $gap_info|@count gt 0}
 					{foreach from=$gap_info key=index item=gap}
 						<div class="publication">
 						    <span class="start_publication">{t}From{/t}

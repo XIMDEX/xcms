@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,25 +25,26 @@
  * @version $Revision$
  */
 
-
 use Ximdex\Models\Node;
 use Ximdex\Models\RelNodeVersionMetadataVersion;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\DataFactory;
 
-
 class Action_manageversions extends ActionAbstract
 {
-    //Main method: shows initial form
+    /**
+     * Main method: shows initial form
+     */
     function index()
     {
         $idNode = $this->request->getParam('nodeid');
-        $values=$this->values($idNode);
+        $values = $this->values($idNode);
         $this->render($values, null, 'default-3.0.tpl');
     }
 
-    function values($idNode){
+    function values($idNode)
+    {
         $node = new Node($idNode);
         if (!$node->get('IdNode') > 0) {
             $this->messages->add(_('Node could not be found'), MSG_TYPE_ERROR);
@@ -50,7 +52,6 @@ class Action_manageversions extends ActionAbstract
             $this->render($values, NULL, 'messages.tpl');
             return false;
         }
-
         $isStructuredDocument = (bool)$node->nodeType->get('IsStructuredDocument');
         $channels = array();
         if ($isStructuredDocument) {
@@ -63,7 +64,6 @@ class Action_manageversions extends ActionAbstract
                 }
             }
         }
-
         $dbObj = new \Ximdex\Runtime\Db();
         $query = sprintf("SELECT v.IdVersion, v.Version, v.SubVersion,"
             . " v.Date, v.Comment, u.Name"
@@ -71,7 +71,6 @@ class Action_manageversions extends ActionAbstract
             . " WHERE IdNode = %s"
             . " ORDER BY v.Version DESC, v.SubVersion DESC",
             $dbObj->sqlEscapeString($idNode));
-
         $dbObj->query($query);
         $versionList = array();
         while (!$dbObj->EOF) {
@@ -84,18 +83,15 @@ class Action_manageversions extends ActionAbstract
                 'isLastVersion' => 'false');
             $dbObj->Next();
         }
-
         $keys = array_keys($versionList);
-        if(count($keys) != '0'){
+        if (count($keys) != '0'){
             $lastVersion = $keys[0];
             $keys = array_keys($versionList[$lastVersion]);
             $lastSubversion = $keys[0];
             $versionList[$lastVersion][$lastSubversion]['isLastVersion'] = 'true';
         }
-
         $this->addJs('/actions/manageversions/resources/js/index.js');
         $this->addCss('/actions/manageversions/resources/css/index.css');
-
         $values = array('versionList' => $versionList,
             'isStructuredDocument' => $isStructuredDocument,
             'id_node' => $idNode,
@@ -113,20 +109,19 @@ class Action_manageversions extends ActionAbstract
         $idNode = $this->request->getParam('nodeid');
         $version = $this->request->getParam('version');
         $subVersion = $this->request->getParam('subversion');
-
         if (!is_null($version) && !is_null($subVersion)) {
-            //If it is a recovery of a version, first we recover it and then we show the form
+            
+            // If it is a recovery of a version, first we recover it and then we show the form
             $data = new DataFactory($idNode);
             $ret = $data->RecoverVersion($version, $subVersion);
-
             $mm = new \Ximdex\Metadata\MetadataManager($idNode);
             $metadataNodes = $mm->getMetadataNodes();
-            if( count($metadataNodes) > 0 ){
+            if (count($metadataNodes) > 0) {
                 $v = new \Ximdex\Models\Version();
                 $idVersion = $v->getIdVersion($idNode, $version, $subVersion);
                 $rnvmv = new RelNodeVersionMetadataVersion();
                 $metadataVersionIds = $rnvmv->getMostRecentMetadataVersionsForANodeVersion($idVersion);
-                foreach($metadataVersionIds as $metadataVersionId){
+                foreach($metadataVersionIds as $metadataVersionId) {
                     $v = new \Ximdex\Models\Version($metadataVersionId);
                     $metadataId = $v->get('IdNode');
                     $versionNumber = $v->get('Version');
@@ -136,7 +131,6 @@ class Action_manageversions extends ActionAbstract
                     $ret = $ret && $ret2;
                 }
             }
-
             if ($ret === false) {
                 $this->render(array(
                     'messages' => array(array(
@@ -148,7 +142,6 @@ class Action_manageversions extends ActionAbstract
                 return;
             }
         }
-
         $this->redirectTo('index');
     }
 
@@ -157,10 +150,9 @@ class Action_manageversions extends ActionAbstract
         $idNode = $this->request->getParam('nodeid');
         $version = $this->request->getParam('version');
         $subVersion = $this->request->getParam('subversion');
-
         if (!is_null($version) && !is_null($subVersion)) {
             $data = new DataFactory($idNode);
-            $ret = $data->DeleteSubversion($version, $subVersion);
+            $ret = $data->deleteSubversion($version, $subVersion);
             if ($ret === false) {
                 $this->render(array(
                     'messages' => array(array(

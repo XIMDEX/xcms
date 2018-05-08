@@ -27,7 +27,6 @@
 
 // For legacy compatibility
 if (!defined('XIMDEX_ROOT_PATH')) {
-    
     require_once dirname(__FILE__) . '/../../../../bootstrap.php';
 }
 
@@ -75,7 +74,6 @@ function createBatchsForBlock($nodesToPublish)
     // If the node which trigger publication do not exists anymore return null and cancel.
     $node = new Node($idNodeGenerator);
     if (!($node->get('IdNode') > 0)) {
-        
         Logger::error("Required node does not exist " . $idNodeGenerator);
         return NULL;
     }
@@ -129,7 +127,7 @@ function createBatchsForBlock($nodesToPublish)
                 $curVersion = $data->getLastVersion(true);
                 $prevVersion = $curVersion - 1;
                 if (App::getValue("PurgeSubversionsOnNewVersion")) {
-                    $data->_purgeSubVersions($prevVersion, true);
+                    $data->purgeSubVersions($prevVersion, true);
                 }
             }
         }
@@ -141,7 +139,7 @@ function createBatchsForBlock($nodesToPublish)
                 $curVersion = $data->getLastVersion(true);
                 Logger::info("Publication error: deleting version $curVersion for node $id");
                 if (App::getValue("PurgeSubversionsOnNewVersion")) {
-                    $data->DeleteVersion($curVersion);
+                    $data->deleteVersion($curVersion);
                 }
             }
         }

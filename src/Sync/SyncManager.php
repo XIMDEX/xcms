@@ -115,7 +115,7 @@ class SyncManager
 
 			// Delete major version previously createds
 
-			$data->DeleteVersion($versionID);
+			$data->deleteVersion($versionID);
 
 			// exist with errors.
 			return NULL;

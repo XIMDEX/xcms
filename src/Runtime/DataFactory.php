@@ -37,7 +37,6 @@ use Ximdex\Logger;
 use Ximdex\NodeTypes\NodeTypeConstants;
 
 /**
- *
  * Clase que modela el Repositorio de Versiones a bajo nivel.
  *
  *    Gestiona el repositorio central de datos de ximDEX.
@@ -63,8 +62,7 @@ use Ximdex\NodeTypes\NodeTypeConstants;
  *    , por lo que este parametro indica cuantas queremos guardar. Asi, el sistema
  *    unicamente guardara la primera subversion, y las N ultimas, donde N viene
  *    definido por este parametro.
- *
- **/
+ */
 class DataFactory
 {
     var $ID;                    // Identificador del tipo de nodo actual.
@@ -82,7 +80,6 @@ class DataFactory
     var $nodeID;
 
     /**
-     *
      * Constructor de la clase
      *
      * @name        DataFactory
@@ -90,7 +87,6 @@ class DataFactory
      * @version    1.0
      * @param    int $nodeID =null (opcional) Identificador del Nodo cargado en el objeto
      * @return    $this
-     *
      */
     public function __construct($nodeID = null)
     {
@@ -99,14 +95,12 @@ class DataFactory
     }
 
     /**
-     *
      * Devuelve el identificador del Nodo cargado en el objeto
      *
      * @name        GetID
      * @author    Jose I. Villar
      * @version    1.0
      * @return    $nodeID
-     *
      */
     function GetID()
     {
@@ -119,14 +113,12 @@ class DataFactory
     }
 
     /**
-     *
      * Devuelve la lista de versiones distintas para el nodo cargado en el objeto
      *
      * @name        GetVersionList
      * @author    Jose I. Villar
      * @version    1.0
      * @return    array $versions
-     *
      */
     function GetVersionList($order = 'asc')
     {
@@ -135,13 +127,11 @@ class DataFactory
             $this->SetError(1);
             return false;
         }
-
         $versions = new Version();
         return $versions->find('DISTINCT Version', "IdNode = %s ORDER BY Version $order", array($this->nodeID), MONO);
     }
 
     /**
-     *
      * Devuelve la lista de subversiones de una version concreta para el nodo cargado en el objeto
      *
      * @name        GetSubVersionList
@@ -149,32 +139,26 @@ class DataFactory
      * @version    1.0
      * @param    int $version
      * @return    array $versions
-     *
      */
     function GetSubVersionList($version)
     {
         $this->ClearError();
-
         if (!($this->nodeID > 0)) {
             $this->SetError(1);
             return false;
         }
-
         $versions = new Version();
         return $versions->find('DISTINCT SubVersion',
             'IdNode = %s AND Version = %s ORDER BY SubVersion', array($this->nodeID, $version), MONO);
     }
 
-
     /**
-     *
      * Devuelve la ultima version del nodo que hay en el objeto
      *
      * @name        GetVersionList
      * @author    Jose I. Villar
      * @version    1.0
      * @return    int $version
-     *
      */
     function GetLastVersion()
     {
@@ -183,20 +167,15 @@ class DataFactory
             $this->SetError(1);
             return NULL;
         }
-
         $versions = new Version();
-        $result = $versions->find('MAX(Version) AS max_version',
-            'IdNode = %s', array($this->nodeID), MONO);
+        $result = $versions->find('MAX(Version) AS max_version', 'IdNode = %s', array($this->nodeID), MONO);
         if (empty($result) || !is_array($result)) {
             return NULL;
         }
-
         return $result[0];
     }
 
-
     /**
-     *
      * Devuelve la ultima SubVersion del la version dada
      *
      * @name        GetSubVersionList
@@ -204,7 +183,6 @@ class DataFactory
      * @version    1.0
      * @param    int $version
      * @return    array $subVersions
-     *
      */
     function GetLastSubVersion($version)
     {
@@ -213,17 +191,14 @@ class DataFactory
             $this->SetError(1);
             return NULL;
         }
-
         $versions = new Version();
         $result = $versions->find('MAX(SubVersion) as max_subversion',
             'IdNode = %s AND Version = %s', array($this->nodeID, $version), MONO);
         if (empty($result) || !is_array($result)) {
             return NULL;
         }
-
         return $result[0];
     }
-
 
     function getVersionId($version, $subversion)
     {
@@ -231,26 +206,22 @@ class DataFactory
             $this->SetError(1);
             return false;
         }
-
         $versions = new Version();
         $result = $versions->find('IdVersion',
             'Version = %s AND SubVersion = %s AND IdNode = %s', array($version, $subversion, $this->nodeID), MONO);
         if (empty($result) || !is_array($result)) {
             return NULL;
         }
-
         return $result[0];
     }
 
     /**
-     *
      * Devuelve si ya hay almacenada alguna version del nodo que hay en el objeto
      *
      * @name        HasPreviousVersions
      * @author    Jose I. Villar
      * @version    1.0
      * @return    int $version
-     *
      */
     function HasPreviousVersions()
     {
@@ -259,20 +230,16 @@ class DataFactory
             $this->SetError(1);
             return false;
         }
-
         $versions = new Version();
         $result = $versions->find('COUNT(*) AS has_versions',
             'IdNode = %s', array($this->nodeID), MONO);
         if (empty($result) || !is_array($result)) {
             return NULL;
         }
-
         return $result[0];
     }
 
-
     /**
-     *
      * Devuelve el contenido de una version.
      *
      * @name        GetContent
@@ -281,7 +248,6 @@ class DataFactory
      * @param    int $versionID = null    : Si se omite este parametro y el siguiente, se tomara la ultima version del nodo en el objeto
      * @param    int $subVersion = null    : Si se omite este parametro, el anterior es el identificador unico de version, en otro caso, es el numero de Version
      * @return    string $content
-     *
      */
     function GetContent($versionID = null, $subVersion = null, $isMetadata = false)
     {
@@ -291,52 +257,50 @@ class DataFactory
             return false;
         }
 
-        /// Si no se nos especificaba la version, asumimos la ultima
+        // Si no se nos especificaba la version, asumimos la ultima
         if (is_null($versionID) && is_null($subVersion)) {
             $versionID = $this->GetLastVersion();
             if (!is_null($versionID)) {
                 $subVersion = $this->GetLastSubVersion($versionID);
             }
         }
-
         if (!(!(is_null($versionID)) && !(is_null($subVersion)))) {
-            //Logger::warning('No se ha podido estimar la versión o la subversion');
             Logger::warning('Unable to estimate version or subversion');
             return false;
         }
-
         $uniqueName = $this->GetTmpFile($versionID, $subVersion);
-
         if (!$uniqueName) {
             Logger::warning('Unable to get file');
             $this->SetError(3);
             return false;
         }
-
         $targetPath = XIMDEX_ROOT_PATH . App::getValue("FileRoot") . "/" . $uniqueName;
-
-        if ($isMetadata)
+        if ($isMetadata) {
             $targetPath = $targetPath . ".metadata";
-
+        }
         $content = FsUtils::file_get_contents($targetPath);
-
-        Logger::debug("GetContent for Node:" . $this->nodeID . ", Version: " . $versionID . "." . $subVersion . ", File: ." . $uniqueName . ", Chars: " . strlen($content));
-
+        Logger::debug("GetContent for Node:" . $this->nodeID . ", Version: " . $versionID . "." . $subVersion . ", File: ." . $uniqueName 
+            . ", Chars: " . strlen($content));
         $node = new Node($this->nodeID);
         $isPlainFile = $node->nodeType->get('IsPlainFile');
 
-        //only encoding the content if the node is not one of this 3.
+        // Only encoding the content if the node is not one of this 3.
         if (!$isPlainFile) {
-            //look for the working encoding from Config
+            
+            // Look for the working encoding from Config
             $workingEncoding = App::getValue('workingEncoding');
             $content = \Ximdex\XML\Base::recodeSrc($content, $workingEncoding);
         }
-
         return $content;
     }
 
-    // Devuelve el contenido metadata del structure document actual.
-    // return string (Metadata)
+    /**
+     * Devuelve el contenido metadata del structure document actual
+     * 
+     * @param $version
+     * @param $subversion
+     * @return string
+     */
     function GetMetadata($version = null, $subversion = null)
     {
         return $this->GetContent($version, $subversion, true);
@@ -359,12 +323,11 @@ class DataFactory
                 return NULL;
             }
 
-            // delete cache if the parameter $delete is true
+            // Delete cache if the parameter $delete is true
             $pipelineManager = new PipelineManager();
             if ($delete) {
                 $pipelineManager->deleteCache($idVersion);
             }
-
             $channels = $node->GetChannels();
             if ($channels) {
                 foreach ($channels as $idChannel) {
@@ -397,14 +360,13 @@ class DataFactory
      * @param    string $content
      * @param    int $versionID = null    : Si se omite este parametro y el siguiente, se tomara la ultima version del nodo en el objeto
      * @param    int $subVersion = null    : Si se omite este parametro, el anterior es el identificador unico de version, en otro caso, es el numero de Version
-     *
      */
     function SetContent($content, $versionID = NULL, $subVersion = NULL, $commitNode = NULL, $metadata = null)
     {
         $node = new Node($this->nodeID);
         $isPlainFile = @$node->nodeType->get('IsPlainFile');
 
-        //only encoding the content if the node is not one of this 3.
+        // Only encoding the content if the node is not one of this 3.
         if (!$isPlainFile) {
             //look for the working encoding from Config
             $dataEncoding = App::getValue('dataEncoding');
@@ -492,26 +454,32 @@ class DataFactory
                 $purgeAll = true;
                 $newVersion = $curVersion + 1;
                 $newSubVersion = '0';
-                $updateCaches = true;
+                // $updateCaches = true;
                 $oldIdVersion = $this->getVersionId($curVersion, $curSubVersion);
+                $oldVersion = new Version($oldIdVersion);
+                if (!$oldVersion->get('IdVersion')) {
+                    Logger::error('Unable to load the version with ID: ' . $oldIdVersion);
+                    return false;
+                }
+                if (App::getValue("PurgeVersionsOnNewVersion")) {
+                    $this->purgeVersions();
+                }
             } else {
 
                 // Si queremos saltar solo de subversion x.y -> x.y+1
                 $newVersion = $curVersion;
                 $newSubVersion = $curSubVersion + 1;
+                if (App::getValue("PurgeSubversionsOnNewVersion")) {
+                    $this->purgeSubVersions($newVersion);
+                }
             }
-            if (is_null($content)) {
-                $newContent = $this->GetContent($curVersion, $curSubVersion);
-            } else {
-                $newContent = $content;
+            if (!$jumpNewVersion or $content !== null) {
+                if (is_null($content)) {
+                    $newContent = $this->GetContent($curVersion, $curSubVersion);
+                } else {
+                    $newContent = $content;
+                }
             }
-            if (App::getValue("PurgeVersionsOnNewVersion")) {
-                $this->_purgeVersions();
-            }
-            if (App::getValue("PurgeSubversionsOnNewVersion")) {
-                $this->_purgeSubVersions($newVersion);
-            }
-
         } else {
 
             // Si es la primera version a guardar -> 0.0
@@ -527,8 +495,15 @@ class DataFactory
         if ($userID == null) {
             $userID = "301"; // ximdex admin
         }
-        $uniqueName = $this->_getUniqueFileName();
-        FsUtils::file_put_contents(XIMDEX_ROOT_PATH . App::getValue("FileRoot") . "/" . $uniqueName, $newContent);
+        if ($jumpNewVersion and $content === null) {
+            
+            // Jump a new version does not create a new hash archive in the file system
+            $uniqueName = $oldVersion->get('File');
+        }
+        else  {
+            $uniqueName = $this->_getUniqueFileName();
+            FsUtils::file_put_contents(XIMDEX_ROOT_PATH . App::getValue("FileRoot") . "/" . $uniqueName, $newContent);
+        }
         $version = new Version();
         $version->set('IdNode', $this->nodeID);
         $version->set('Version', $newVersion);
@@ -549,12 +524,10 @@ class DataFactory
 
     function _getUniqueFileName()
     {
-
         return FsUtils::getUniqueFile(XIMDEX_ROOT_PATH . App::getValue("FileRoot"));
     }
 
-    /*
-    *
+    /**
     * Recupera una antigua Version y la coloca como nueva
     *
     * @name		RecoverVersion
@@ -563,13 +536,11 @@ class DataFactory
     * @param	int $version not null
     * @param	int $subversion not null
     * @param	string $comment null
-    *
     **/
     function RecoverVersion($version, $subversion, $comment = null)
     {
         $tmpVersion = $version;
         $this->ClearError();
-
         $node = new Node($this->nodeID);
         if (!((($node->get('IdNode') > 0)) &&
             (!is_null($version)) &&
@@ -578,33 +549,28 @@ class DataFactory
             $this->SetError(1);
             return false;
         }
-
-        $purgeAll = null;
+        $purgeAll = false;
+        
         // Siempre va a tener versiones anteriores (no tiene sentido recuperar la actual), calculamos cual es la siguiente
-
         $newVersion = $this->GetLastVersion();
         $curSubVersion = $this->GetLastSubVersion($newVersion);
         $purgePreviousSubVersions = App::getValue("PurgeSubversionsOnNewVersion");
-
         $newSubVersion = $curSubVersion + 1;
 
-        /// Le ponemos el contenido de la version que queremos recuperar
+        // Le ponemos el contenido de la version que queremos recuperar
         $newContent = $this->GetContent($version, $subversion);
-
         $userID = \Ximdex\Runtime\Session::get("userID");
 
-        /// Se guarda en un archivo de id unico
+        // Se guarda en un archivo de id unico
         $uniqueName = $this->_getUniqueFileName();
         $targetPath = XIMDEX_ROOT_PATH . App::getValue("FileRoot") . "/" . $uniqueName;
-
         if (!FsUtils::file_put_contents($targetPath, $newContent)) {
             Logger::error('failed to set document content');
             $this->SetError(5);
         }
-
         $dbObj = new \Ximdex\Runtime\Db();
 
-        /// Ejecutamos la insercion en la BD
+        // Ejecutamos la insercion en la BD
         $version = new Version();
         $version->set('IdNode', $this->nodeID);
         $version->set('Version', $newVersion);
@@ -614,11 +580,8 @@ class DataFactory
         $version->set('Date', time());
         $version->set('Comment', $comment);
         $IdVersion = $version->add();
-
-
         $fileName = $node->class->GetNodePath();
         $fileContent = $node->class->GetRenderizedContent();
-
         $nodetype = new \Ximdex\Models\NodeType($node->GetNodeType());
 
         /// Lo guardamos en el sistema de archivos
@@ -627,59 +590,48 @@ class DataFactory
             $this->SetError(6);
             return false;
         }
-
         Logger::debug("RecoverVersion for Node" . $this->nodeID . " with result:" .
             $IdVersion . ", Version: " . $newVersion . "." . $newSubVersion .
             ", OldVersion: " . $tmpVersion . "." . $subversion . ", File: ." . $uniqueName, 4, "DataFactory");
-
         $purgePreviousSubVersions = App::getValue("PurgeSubversionsOnNewVersion");
         if ($purgePreviousSubVersions && $this->HasPreviousVersions()) {
-            $this->_purgeSubVersions($newVersion, $purgeAll);
+            $this->purgeSubVersions($newVersion, $purgeAll);
         }
         return true;
     }
 
-    /*
-    *
+    /**
     * Elimina todas las Versiones del Nodo
     *
     * @name		DeleteAllVersions
     * @author 	Jose I. Villar
     * @version	1.0
     * @param	int $version
-    *
     **/
     function DeleteAllVersions()
     {
         $this->ClearError();
-
         if (!($this->nodeID > 0)) {
             $this->SetError(1);
             return false;
         }
-
         $versions = $this->GetVersionList();
         if (!is_array($versions)) {
             return false;
         }
         foreach ($versions as $version) {
-            $this->DeleteVersion($version);
+            $this->deleteVersion($version);
         }
         return true;
     }
 
-
-    /*
-    *
-    * Elimina todas las subVersiones de la Version dada.
-    *
-    * @name		DeleteVersion
-    * @author 	Jose I. Villar
-    * @version	1.0
-    * @param	int $version
-    *
-    **/
-    function DeleteVersion($version)
+    /**
+     * Elimina todas las subVersiones de la Version dada
+     * 
+     * @param int $version
+     * @return bool
+     */
+    public function deleteVersion(int $version) : bool
     {
         $this->ClearError();
         if (!($this->nodeID > 0)) {
@@ -691,102 +643,92 @@ class DataFactory
             return false;
         }
         foreach ($subVersions as $subVersion) {
-            $this->DeleteSubVersion($version, $subVersion);
+            $this->deleteSubVersion($version, $subVersion);
         }
         return true;
     }
 
-
-    /*
-    *
-    * Elimina una SubVersion
-    *
-    * @name		DeleteSubVersion
-    * @author 	Jose I. Villar
-    * @version	1.0
-    * @param	int $versionID	: Si se omite el siguiente parametro, este es el identificador unico de version, en otro caso, es el numero de version. El parametros versionID significa el campo IdVersion de la tabla versions si la funcion recibe $subVersions==null. El parametro versionID siginifica el campo Version de la tabla Versions si la funcion recibe $subVersions!=null;
-    * @param	int $subVersion = null
-    *
-    **/
-    function DeleteSubversion($versionID, $subVersion = null)
+    /**
+     * Elimina una SubVersion.
+     * versionID: Si se omite el siguiente parametro, este es el identificador unico de version, en otro caso, es el numero de version. 
+     * El parametro versionID significa el campo IdVersion de la tabla versions si la funcion recibe $subVersions == null. 
+     * El parametro versionID siginifica el campo Version de la tabla Versions si la funcion recibe $subVersions != null;
+     * 
+     * @param int $versionID
+     * @param int $subVersion
+     * @return bool
+     */
+    public function deleteSubversion(int $versionID, int $subVersion = null) : bool
     {
         $this->ClearError();
         if (!($this->nodeID > 0)) {
             $this->SetError(1);
             return false;
         }
-
         $uniqueName = $this->GetTmpFile($versionID, $subVersion);
-
         if (!$uniqueName) {
             $this->SetError(3);
             return false;
         }
-
-        $targetPath = XIMDEX_ROOT_PATH . App::getValue("FileRoot") . "/" . $uniqueName;
-
-        /* Tal y como estaba el codigo dejaba sucia la base de datos
-            si se borraba el archivo manualmente o simplemente no se podia borrar por permisos
-        */
-        if (is_file($targetPath)) {
-            FsUtils::delete($targetPath);
-        }
-
-        $dbObj = new \Ximdex\Runtime\Db();
         if (is_null($subVersion)) {
-            $query = sprintf("DELETE FROM Versions WHERE IdVersion = %d AND IdNode = %d",
-                $versionID, $this->nodeID);
+            $query = sprintf('DELETE FROM Versions WHERE IdVersion = %d AND IdNode = %d', $versionID, $this->nodeID);
             $versionToDelete = $versionID;
         } else {
-            $query = sprintf("DELETE FROM Versions WHERE Version = %d AND SubVersion = %d AND IdNode = %d",
-                $versionID, $subVersion, $this->nodeID);
+            $query = sprintf('DELETE FROM Versions WHERE Version = %d AND SubVersion = %d AND IdNode = %d', $versionID, $subVersion
+                , $this->nodeID);
             $versionToDelete = $this->getVersionId($versionID, $subVersion);
         }
-
+        
+        // If the file is in use for another version, do not delete it
+        $version = new Version();
+        $res = $version->find('IdVersion', "File = '$uniqueName' and IdVersion != $versionToDelete");
+        if (!$res) {
+            $targetPath = XIMDEX_ROOT_PATH . App::getValue("FileRoot") . "/" . $uniqueName;
+    
+            /*
+            Tal y como estaba el codigo dejaba sucia la base de datos 
+            si se borraba el archivo manualmente o simplemente no se podia borrar por permisos
+            */
+            if (is_file($targetPath)) {
+                FsUtils::delete($targetPath);
+            }
+        }
+        
         // Deleting cache
         Logger::info("Deleting cache from versionId $versionToDelete");
-
         $pipeline = new PipelineManager();
         $pipeline->deleteCache($versionToDelete);
-
+        $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->Execute($query);
-
-
-        Logger::info("DeleteVersion  for Node:" . $this->nodeID . ", Version: " . $versionID . "." . $subVersion . ", File: ." . $uniqueName);
+        Logger::info("DeleteVersion for Node:" . $this->nodeID . ", Version: " . $versionID . "." . $subVersion . ", File: ." . $uniqueName);
         return true;
     }
 
-
-    /*
-    *
-    * Elimina las subVersiones de una determinada version que ya nos sirven. Tiene dos casos de uso, dependiendo del parametro all.
-    * 1) $all = false => Elimina todas las subVersiones de la Version dada menos la primera, las X ultimas segun la tabla de configuracion (X >= 1).
-    * 2) $all = true  =>  Elimina todas las subVersiones de la Version dada menos la primera.
-    *
-    * @name		PurgeSubVersions
-    * @author 	Jose I. Villar
-    * @version	1.0
-    * @param	int $version
-    *
-    **/
-    function _purgeSubVersions($version, $all = null)
+    /**
+     * Elimina las subVersiones de una determinada version que ya nos sirven. Tiene dos casos de uso, dependiendo del parametro all.
+     * 1) $all = false => Elimina todas las subVersiones de la Version dada menos la primera, las X ultimas segun la tabla de configuracion (X >= 1).
+     * 2) $all = true  =>  Elimina todas las subVersiones de la Version dada menos la primera.
+     * 
+     * @param int $version
+     * @param bool $all
+     * @return bool
+     */
+    public function purgeSubVersions(int $version, bool $all = false) : bool
     {
         $this->ClearError();
         if (!($this->nodeID > 0)) {
             $this->SetError(1);
             return false;
         }
-
         $maxSubVersionsAllowed = App::getValue("MaxSubVersionsAllowed");
-
         if ($maxSubVersionsAllowed <= 0) {
             $maxSubVersionsAllowed = 1;
         }
-
         $subVersions = $this->GetSubVersionList($version);
-        if (!is_array($subVersions)) $subVersions = array();
+        if (!is_array($subVersions)) {
+            $subVersions = array();
+        }
         array_shift($subVersions);
-
         if (!$all) {
             for ($i = 0; $i < $maxSubVersionsAllowed - 1; $i++) {
                 if (count($subVersions)) {
@@ -794,46 +736,39 @@ class DataFactory
                 }
             }
         }
-
-
         if ($subVersions) {
             foreach ($subVersions as $subVersion) {
-                $this->DeleteSubVersion($version, $subVersion);
+                $this->deleteSubVersion($version, $subVersion);
             }
         }
         return true;
     }
 
-    function _purgeVersions()
+    private function purgeVersions() : bool
     {
         $this->ClearError();
         if (!($this->nodeID > 0)) {
             $this->SetError(1);
             return false;
         }
-
         $maxVersionsAllowed = App::getValue("MaxVersionsAllowed");
         if ($maxVersionsAllowed <= 0) {
             $maxVersionsAllowed = 1;
         }
-
         $versions = $this->GetVersionList();
-
         for ($i = 0; $i < $maxVersionsAllowed; $i++) {
             if (count($versions) > 0)
                 array_pop($versions);
         }
-
         if (is_array($versions)) {
             foreach ($versions as $version) {
-                $this->DeleteVersion($version);
+                $this->deleteVersion($version);
             }
         }
         return true;
     }
 
-    /*
-    *
+    /**
     * Devuelve el nombre del archivo temporal en el que se guarda el contenido de una SubVersion
     *
     * @name		GetTmpFile
@@ -841,7 +776,6 @@ class DataFactory
     * @version	1.0
     * @param	int $versionID	: Si se omite el siguiente parametro, este es el identificador unico de version, en otro caso, es el numero de version
     * @param	int $subVersion = null
-    *
     **/
     function GetTmpFile($versionID, $subVersion = null)
     {
@@ -850,13 +784,10 @@ class DataFactory
             $this->SetError(1);
             return false;
         }
-
         $node = new Node($this->nodeID);
         $parentId = $node->GetParent();
         unset($node);
-
         $dbObj = new \Ximdex\Runtime\Db();
-
         if (is_null($subVersion)) {
             $query = sprintf("SELECT File FROM Versions v"
                 . " INNER JOIN Nodes n on v.IdNode = n.Idnode AND n.IdParent = %d"
@@ -867,23 +798,16 @@ class DataFactory
                 . " WHERE Version = %d AND SubVersion = %d AND v.IdNode = %d",
                 $parentId, $versionID, $subVersion, $this->nodeID);
         }
-
         $dbObj->Query($query);
-
         $uniqueName = !$dbObj->EOF ? $dbObj->GetValue('File') : false;
-//		$uniqueName = $dbObj->GetValue('File');
-
         if (!$uniqueName) {
             $this->SetError(3);
             return false;
         }
-
         return $uniqueName;
     }
 
-
-    /*
-    *
+    /**
     * Devuelve el comentario de una SubVersion
     *
     * @name		GetComment
@@ -891,7 +815,6 @@ class DataFactory
     * @version	1.0
     * @param	int $versionID	: Si se omite el siguiente parametro, este es el identificador unico de version, en otro caso, es el numero de version
     * @param	int $subVersion = null
-    *
     **/
     function GetComment($versionID, $subVersion = null)
     {
@@ -900,7 +823,6 @@ class DataFactory
             $this->SetError(1);
             return NULL;
         }
-
         $dbObj = new \Ximdex\Runtime\Db();
         if (is_null($subVersion)) {
             $query = sprintf("SELECT Comment FROM Versions WHERE IdVersion = %d AND IdNode = %d",
@@ -909,14 +831,11 @@ class DataFactory
             $query = sprintf("SELECT Comment FROM Versions WHERE Version = %d AND SubVersion = %d AND IdNode = %d",
                 $versionID, $subVersion, $this->nodeID);
         }
-
         $dbObj->Query($query);
         return $dbObj->GetValue('Comment');
     }
 
-
     /**
-     *
      * Devuelve el la fecha de almacenamiento de una SubVersion
      *
      * @name        GetDate
@@ -924,7 +843,6 @@ class DataFactory
      * @version    1.0
      * @param    int $versionID : Si se omite el siguiente parametro, este es el identificador unico de version, en otro caso, es el numero de version
      * @param    int $subVersion = null
-     *
      **/
     function GetDate($versionID, $subVersion = null)
     {
@@ -934,7 +852,6 @@ class DataFactory
             return NULL;
         }
         $dbObj = new \Ximdex\Runtime\Db();
-
         if (is_null($subVersion)) {
             $query = sprintf("SELECT Date FROM Versions WHERE IdVersion = %d AND IdNode = %d",
                 $versionID, $this->nodeID);
@@ -943,13 +860,10 @@ class DataFactory
                 $versionID, $subVersion, $this->nodeID);
         }
         $dbObj->Query($query);
-
         return $dbObj->GetValue('Date');
     }
 
-
-    /*
-    *
+    /**
     * Devuelve el id del usuario que gestiono la version.
     *
     * @name		GetUserID
@@ -957,7 +871,6 @@ class DataFactory
     * @version	1.0
     * @param	int $versionID	: Si se omite el siguiente parametro, este es el identificador unico de version, en otro caso, es el numero de version
     * @param	int $subVersion = null
-    *
     **/
     function GetUserID($versionID, $subVersion = null)
     {
@@ -966,9 +879,7 @@ class DataFactory
             $this->SetError(1);
             return NULL;
         }
-
         $dbObj = new \Ximdex\Runtime\Db();
-
         if (is_null($subVersion)) {
             $query = sprintf("SELECT IdUser FROM Versions WHERE IdVersion = %d AND IdNode = %d",
                 $versionID, $this->nodeID);
@@ -977,54 +888,54 @@ class DataFactory
                 $versionID, $subVersion, $this->nodeID);
         }
         $dbObj->Query($query);
-
         return $dbObj->GetValue('IdUser');
     }
 
-    // Se queda de wrapper
+    /**
+     * Se queda de wrapper
+     * 
+     * @param $versionID
+     * @return boolean|array
+     */
     function GetVersionAndSubVersion($versionID)
     {
         $version = new Version($versionID);
         if (!($version->get('IdVersion') > 0)) {
             return false;
         }
-
         return array($version->get('Version'), $version->get('SubVersion'));
     }
 
-    /*
-        Solo se usa en el script devel/scripts/ficheros_sobrantesIO.php
-    */
+    /**
+     * Solo se usa en el script devel/scripts/ficheros_sobrantesIO.php
+     * 
+     * @return number|NULL|string
+     */
     function GetFiles()
     {
         $query = "SELECT File FROM Versions";
         $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->Query($query);
-
         if (!((int)$dbObj->numRows > 0)) {
             return 0;
         }
-
         if (!$dbObj->numErr) {
             while (!$dbObj->EOF) {
                 $array_files[] = $dbObj->GetValue("File");
                 $dbObj->Next();
             }
             return $array_files;
-        } else {
-            $this->SetError(4);
         }
+        $this->SetError(4);
         return 0;
     }
 
-    /*
-    *
+    /**
     * Resetea el flag de ocurrencia de error
     *
     * @name		ClearError
     * @author 	Jose I. Villar
     * @version	1.0
-    *
     **/
     function ClearError()
     {
@@ -1032,16 +943,13 @@ class DataFactory
         $this->msgErr = null;
     }
 
-
-    /*
-    *
+    /**
     * Carga en el objeto el codigo del ultimo error ocurrido
     *
     * @name		SetError
     * @author 	Jose I. Villar
     * @version	1.0
     * @param	int $code
-    *
     **/
     function SetError($code)
     {
@@ -1049,25 +957,24 @@ class DataFactory
         $this->msgErr = $this->errorList[$code];
     }
 
-
-    /*
-    *
+    /**
     * Devuelve un booleano que indica si hubo algun error
     *
     * @name		HasError
     * @author 	Jose I. Villar
     * @version	1.0
     * @return	bool $hasError
-    *
     **/
     function HasError()
     {
         return $this->numErr;
     }
 
-    /*
-        Devuelve el idversion correspondiente a la version publicada actualmente
-    */
+    /**
+     * Devuelve el idversion correspondiente a la version publicada actualmente
+     * 
+     * @return boolean|string
+     */
     function GetPublishedIdVersion()
     {
         $dbObj = new \Ximdex\Runtime\Db();
@@ -1088,57 +995,50 @@ class DataFactory
         return false;
     }
 
-    /*
-        Si la version de la noticia en el colector la publicada devuelve false
-    */
+    /**
+     * Si la version de la noticia en el colector la publicada devuelve false
+     * 
+     * @param $versionInColector
+     * @return boolean
+     */
     function isEditedForPublishing($versionInColector)
     {
         if (empty($versionInColector)) {
             Logger::error("NOT VERSSION IN COLECTOR");
             return false;
         }
-
         $publishedIdVersion = $this->GetPublishedIdVersion();
         $idVersionInColector = $this->getVersionId($versionInColector[0], $versionInColector[1]);
-
         if ($publishedIdVersion == $idVersionInColector &&
             SynchroFacade::isNodePublishedInAllActiveServer($this->nodeID)
         ) {
             return false;
         }
-
         return true;
     }
 
     function GetLastVersionId()
     {
-
         $dbObj = new \Ximdex\Runtime\Db();
         $this->ClearError();
         if (!is_null($this->nodeID)) {
-
             $dbObj->Query("SELECT MAX(IdVersion) FROM Versions WHERE IdNode = " . $this->nodeID);
             $version = $dbObj->GetValue('MAX(IdVersion)');
-
             return $version;
-        } else
-            $this->SetError(1);
+        }
+        $this->SetError(1);
     }
 
     function GetVersionFromId($idVersion)
     {
-
         $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->Query("SELECT Version, SubVersion FROM Versions WHERE IdVersion = $idVersion");
-
         $version = array();
         while (!$dbObj->EOF) {
-
             $version["version"] = $dbObj->GetValue("Version");
             $version["subversion"] = $dbObj->GetValue("SubVersion");
             $dbObj->Next();
         }
-
         return $version;
     }
 
@@ -1147,36 +1047,28 @@ class DataFactory
         if (!($this->nodeID > 0)) {
             return NULL;
         }
-
         $versions = new Version();
-        $result = $versions->find('Max(IdVersion)', 'IdNode = %s AND IdVersion < %s',
-            array($this->nodeID, $idVersion), MONO);
+        $result = $versions->find('Max(IdVersion)', 'IdNode = %s AND IdVersion < %s', array($this->nodeID, $idVersion), MONO);
         if (empty($result) || !is_array($result)) {
             return NULL;
         }
-
         return $result[0];
     }
 
     function indexNode($idVersion, $commitNode)
     {
-
         if (!is_numeric($idVersion)) {
             Logger::warning('Attempted to index a node by an invalid IdVersion.');
             return;
         }
-
         $usePool = (boolean)App::getValue('AddVersionUsesPool');
-
         if (!$usePool) {
-
             $this->conector->indexNode($idVersion, $commitNode);
         }
     }
 
     private function updateCaches($oldIdVersion, $idVersion)
     {
-
         if (!App::getValue("DisableCache")) {
             $pipeCache = new PipeCache();
             return $pipeCache->upgradeCaches($oldIdVersion, $idVersion);

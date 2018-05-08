@@ -79,9 +79,8 @@ class ServerFrameManager
             if ($initialState == 'Pending') {
                 
                 // Set down overlaped serverFrames
-                $overlapeds = array();
                 $overlapeds = $this->getOverlaped($serverFrameId, $server, $nodeId, $channel);
-                if (sizeof($overlapeds) > 0) {
+                if (is_array($overlapeds) and sizeof($overlapeds) > 0) {
                     foreach ($overlapeds as $n => $overlapedData) {
                         $id = $overlapedData['id'];
                         $overlapedFrame = new ServerFrame($id);
@@ -92,7 +91,6 @@ class ServerFrameManager
                                 // Para que resucite
                                 $overlapedFinalState = 'Delayed';
                             } else {
-                                $overlapedName = $overlapedFrame->get('FileName');
                                 $overlapedName = $overlapedFrame->get('FileName');
                                 $name = $serverFrame->get('FileName');
                                 if ($overlapedName != $name) {

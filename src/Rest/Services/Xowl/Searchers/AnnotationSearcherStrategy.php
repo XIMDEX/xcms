@@ -27,27 +27,23 @@
 
 namespace Ximdex\Rest\Services\Xowl\Searchers;
 
-
 use Ximdex\Runtime\App;
 use Ximdex\Utils\Curl;
-
 
 class AnnotationSearcherStrategy extends AbstractSearcherStrategy
 {
     const ENCODING = "UTF-8";
     const URL_STRING = "";
-    //Default response format
+    
+    // Default response format
     const RESPONSE_FORMAT = "application/json";
     private static $IS_SEMANTIC = 1;
 
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
     /**
-     * <p>Query the server with the default response format (application/json)</p>
-     * @param $text
+     * Query the server with the default response format (application/json)
+     * 
+     * {@inheritDoc}
+     * @see \Ximdex\Rest\Services\Xowl\Searchers\AbstractSearcherStrategy::suggest()
      */
     public function suggest($text)
     {
@@ -55,35 +51,32 @@ class AnnotationSearcherStrategy extends AbstractSearcherStrategy
     }
 
     /**
-     * <p>Send petition to stanbol server and returns the parsed response    </p>
+     * Send petition to stanbol server and returns the parsed response
+     * 
      * @param $text
      * @param $format
-     * @return this.
+     * @return Object
      */
     private function query($text, $format)
     {
         $headers = array(
-            //To remove HTTP 100 Continue messages
+            
+            // To remove HTTP 100 Continue messages
             'Expect:',
-            //Response Format
-            'Accept: ' . $format/*,
-			'Content-type: text/plain'*/);
-
-        //$data = urlencode($text);
+            
+            // Response Format
+            'Accept: ' . $format);
         $data = array();
-        if(is_string($text)){
-            $data["content"] = $text;
+        if (is_string($text)) {
+            $data["content"] = trim(html_entity_decode(strip_tags($text)));
             $data["token"] = App::getValue( "Xowl_token");
-        }else{
+        } else {
             $data = $text;
         }
-
         $response = $this->restProvider->getHttp_provider()->post(App::getValue("Xowl_location"), $data, $headers);
-
         if ($response['http_code'] != Curl::HTTP_OK) {
             return NULL;
         }
-
         $data = $response['data'];
         $this->data = $this->parseData($data);
         return $this;
@@ -114,18 +107,12 @@ class AnnotationSearcherStrategy extends AbstractSearcherStrategy
         } else {
             return NULL;
         }
-
-        //$place = "http://dbpedia.org/ontology/Place";
-        //$person = "http://dbpedia.org/ontology/Person";
-        //$organisation = "http://dbpedia.org/ontology/Organisation";
-
         $result = array();
         $result['people'] = array();
         $result['places'] = array();
         $result['orgs'] = array();
         $result['creativework'] = array();
         $result['others'] = array();
-
         foreach ($data["semantic"] as $key => $value) {
             if (!empty($value['dc:type'])) {
                 switch ($value['dc:type']) {
@@ -158,24 +145,23 @@ class AnnotationSearcherStrategy extends AbstractSearcherStrategy
                     $result[$dcType][$selectedText]["isSemantic"] = self::$IS_SEMANTIC;
                     $result[$dcType][$selectedText]["Name"] = $selectedText;
                     $result[$dcType][$selectedText]["Link"] = $value["entities"][0]["uri"] ? $value["entities"][0]["uri"] : "";
-                    $result[$dcType][$selectedText]["Description"] = (isset($value["entities"][0]["rdfs:comment"]["value"]) and $value["entities"][0]["rdfs:comment"]["value"]) ? $value["entities"][0]["rdfs:comment"]["value"] : "";
-                    $result[$dcType][$selectedText]["Image"] = (isset($value["entities"][0]["foaf:depiction"]) and $value["entities"][0]["foaf:depiction"]) ? $value["entities"][0]["foaf:depiction"] : "";
-                    //$result[$dcType][$selectedText]["others"] = $value;
+                    $result[$dcType][$selectedText]["Description"] = (isset($value["entities"][0]["rdfs:comment"]["value"]) 
+                        and $value["entities"][0]["rdfs:comment"]["value"]) ? $value["entities"][0]["rdfs:comment"]["value"] : "";
+                    $result[$dcType][$selectedText]["Image"] = (isset($value["entities"][0]["foaf:depiction"]) 
+                        and $value["entities"][0]["foaf:depiction"]) ? $value["entities"][0]["foaf:depiction"] : "";
                 }
             }
         }
-
         $result = $this->estimateConfidence($result);
         return $result;
     }
 
     /**
-     *    Re-calculate the confidence
+     * Re-calculate the confidence
      */
     private function estimateConfidence(&$result)
     {
         foreach ($result as $key => $dcType) {
-
             if (is_array($dcType)) {
                 foreach ($dcType as $key2 => $resource) {
                     $acum = 0;
@@ -184,12 +170,10 @@ class AnnotationSearcherStrategy extends AbstractSearcherStrategy
                         $acum += $confidence;
                         $cont++;
                     }
-                    //unset($result[$key][$key2]["confidence"]);
                     $result[$key][$key2]["confidence"] = number_format(($acum / $cont) * 100, 2, ',', '');
                 }
             }
         }
-
         return $result;
     }
 

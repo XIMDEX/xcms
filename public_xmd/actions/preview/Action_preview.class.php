@@ -111,7 +111,7 @@ class Action_preview extends ActionAbstract
             $version = $this->request->getParam("version");
             $subVersion = $this->request->getParam("subVersion");
             $data = new DataFactory($idNode);
-            $data->DeleteSubversion($version, $subVersion);
+            $data->deleteSubversion($version, $subVersion);
             $this->messages->add(_("The file has been successfully deleted."), MSG_TYPE_NOTICE);
         }
         $queryManager = App::get('\Ximdex\Utils\QueryManager');
