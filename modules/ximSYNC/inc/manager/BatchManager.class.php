@@ -33,6 +33,7 @@ use Ximdex\Runtime\DataFactory;
 use Ximdex\Models\Channel;
 use Ximdex\Models\Node;
 use Ximdex\Properties\InheritedPropertiesManager;
+use Ximdex\NodeTypes\NodeTypeConstants;
 
 \Ximdex\Modules\Manager::file('/inc/model/Batch.class.php', 'ximSYNC');
 \Ximdex\Modules\Manager::file('/inc/model/NodeFrame.class.php', 'ximSYNC');
@@ -141,7 +142,9 @@ class BatchManager
             */
 
             // We up version if tha current version to publish it is a draft or if the current version is 0.0 and the node is the generator node.
-            if ($subversionToPublish != 0 || ($subversionToPublish == 0 && $versionToPublish == 0 && $idDoc == $idNode))
+            // Or is a image / binary file
+            if ($subversionToPublish != 0 || ($subversionToPublish == 0 && $versionToPublish == 0 && ($idDoc == $idNode or 
+                $docNode->GetNodeType() == NodeTypeConstants::IMAGE_FILE or $docNode->GetNodeType() == NodeTypeConstants::BINARY_FILE)))
             {
                 $docsToUpVersion[$idDoc] = $idDoc;
             }
