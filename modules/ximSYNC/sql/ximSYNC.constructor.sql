@@ -251,6 +251,6 @@ INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Des
     , NULL, '0', NULL, '0');
 INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 7240, 0, 1, 3);
 INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`, `IsBulk`) 
-    VALUES ('7241', '5103', 'Publish document', 'publicatesection', 'publicate_section.png', 'Publish a XML or HTML document', '101'
-    , NULL, '0', NULL, '0');
+    VALUES ('7241', '5103', 'Publish document in several languages', 'publicatesection', 'publicate_section.png'
+    , 'Publish the XML or HTML documents container', '70', NULL, '0', NULL, '0');
 INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 7241, 0, 1, 3);

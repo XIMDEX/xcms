@@ -277,8 +277,15 @@ class DataFactory
         $targetPath = XIMDEX_ROOT_PATH . App::getValue("FileRoot") . "/" . $uniqueName;
         if ($isMetadata) {
             $targetPath = $targetPath . ".metadata";
+            if (!file_exists($targetPath)) {
+                Logger::warning('Unable to load the metadata file: ' . $targetPath . ' (node ID: ' . $this->nodeID . ')');
+                return false;
+            }
         }
         $content = FsUtils::file_get_contents($targetPath);
+        if ($content === false) {
+            return false;
+        }
         Logger::debug("GetContent for Node:" . $this->nodeID . ", Version: " . $versionID . "." . $subVersion . ", File: ." . $uniqueName 
             . ", Chars: " . strlen($content));
         $node = new Node($this->nodeID);
