@@ -433,7 +433,7 @@ class HTMLDocumentNode extends AbstractStructuredDocument
                 $xml->addChild('tags', $tag['Name']);
             }
         }
-        $xml->addChild('repository_id', $ximID);
+        $xml->addChild('id_ximdex', $ximID);
         $xml->addChild('name', $title && !empty($title) ? $title : $node->GetNodeName());
         $xml->addChild('slug', $node->GetNodeName());
         $xml->addChildCData('content_flat', html_entity_decode(preg_replace('/((\n)(\s{2,}))/', '', strip_tags($content))));
@@ -441,6 +441,7 @@ class HTMLDocumentNode extends AbstractStructuredDocument
         $xml->addChild('creation_date', date('Y-m-d H:i:s', $node->get('CreationDate')));
         $xml->addChild('update_date', date('Y-m-d H:i:s', $node->get('ModificationDate')));
         $xml->addChild('section', $sectionNode->GetNodeName());
+        $xml->addChild('id_section', $sectionNode->GetID());
         $xml->addChild('state', "publish");
         $content_payload = $xml->addChild('content-payload');
         $content_payload->addChild('author', !empty($author) ? $author : 'No author');
