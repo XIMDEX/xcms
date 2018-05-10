@@ -12,10 +12,8 @@ use Ximdex\Logger;
 use XimdexApi\core\Request;
 use XimdexApi\core\Response;
 
-
 class XeditAction extends Action
 {
-
     const PATTERN_PATHTO = "/[[:word:]]+=[\"']@@@RMximdex\.pathto\(([,-_#%=\.\w\s]+)\)@@@[\"']/";
     const PATTERN_XE_LINK = "/<([a-zA-Z]+)([^>]*?(?=xe_link))xe_link\=[\"']([^\"]*)[\"']([^>]*)>/";
     const PREFIX = 'xedit';
@@ -148,7 +146,6 @@ class XeditAction extends Action
                     }
                 }
                 $metadata = json_encode($metadata, JSON_PRETTY_PRINT);
-
             }
 
             $nodes = $data['nodes'];
@@ -197,8 +194,10 @@ class XeditAction extends Action
      */
     public static function getTreeInfo(Request $r, Response $w)
     {
-
         $types = [
+            'xml' => NodeTypeConstants::XML_DOCUMENT,
+            'html' => NodeTypeConstants::HTML_DOCUMENT,
+            'binary' => NodeTypeConstants::BINARY_FILE,
             'image' => NodeTypeConstants::IMAGE_FILE,
             'link' => NodeTypeConstants::LINK
         ];
@@ -208,19 +207,25 @@ class XeditAction extends Action
         $type = isset($types[$type]) ? $types[$type] : false;
         $level = isset($_GET['level']) && ctype_digit($_GET['level']) ? (int)$_GET['level'] : 1;
 
-        if (ctype_digit($nodeId) && $type !== false) {
+        if (ctype_digit($nodeId)) {
+            $filters = null;
+            if ($type && $type !== NodeTypeConstants::LINK) {
+                $filters = ["include" => ["nt.IdNodeType" => [$type]]];
+            }
 
             $children = FastTraverse::get_children($nodeId, ['node' => ['Name', 'idParent'], 'nodeType' =>
-                ['isFolder', 'isVirtualFolder', 'IdNodeType']], null, ["include" => ["nt.IdNodeType" => [$type]]], null);
+                ['isFolder', 'isVirtualFolder', 'IdNodeType']], null, $filters, ['IsRenderizable' => true, 'IsHidden' => false]);
             $result = static::buildCompleteTree($children, $types);
 
             $count = count($result) - 1;
-            if ($level !== null && $count > $level)
-                $result = array_splice($result, $count - $level, 1);
+            if ($level !== null && $count > $level) {
+                $value["l{$level}"] = $result["l{$level}"];
+                $result = $value;
+            }
 
             $w->setResponse($result);
         } else {
-            $w->setStatus(1)->setMessage('Id and type are required');
+            $w->setStatus(1)->setMessage('Id is required');
         }
         $w->send();
     }
@@ -246,7 +251,6 @@ class XeditAction extends Action
      */
     public static function transformContentToXimdex($content)
     {
-
         $content = preg_replace_callback(static::PATTERN_XE_LINK, [
             XeditAction::class,
             'transformXeLinkToPathto'
@@ -344,8 +348,13 @@ class XeditAction extends Action
     {
         $node = new Node($nodeId);
         //Create node in tree
-        $sheet = static::createSheet($node->GetNodeName(), $node->nodeType->GetID(),
-            $node->nodeType->isFolder(), $node->nodeType->get('IsVirtualFolder'), $types);
+        $sheet = static::createSheet(
+            $node->GetNodeName(),
+            $node->nodeType->GetID(),
+            $node->nodeType->isFolder(),
+            $node->nodeType->get('IsVirtualFolder'),
+            $types
+        );
         if ($sheet) {
             if (!isset($tree["l$level"])) {
                 $tree["l$level"] = [
