@@ -385,12 +385,12 @@ abstract class ActionAbstract extends IController
     {
         // TODO search and destroy the %20 generated in the last char of the query string
         $queryManager = new QueryManager(false);
-        $file = App::getUrl( $queryManager->buildWith(array(
+        $file = $queryManager->buildWith(array(
                 'xparams[reload_node_id]' => $idnode,
                 'js_file' => 'reloadNode',
                 'method' => 'includeDinamicJs',
                 'void' => 'SpacesInIE7HerePlease'
-            ))
+            )
         );
         $this->addJs(urldecode($file));
     }
@@ -404,7 +404,7 @@ abstract class ActionAbstract extends IController
     public function addJs($_js, $_module = 'APP', $params = null)
     {
         if ('APP' == $_module) {
-            $_js = App::getUrl($_js, false);
+            $_js = App::getUrl($_js);
         } elseif ('XIMDEX' != $_module && 'internet'  != $_module ) {
             $path = \Ximdex\Modules\Manager::path($_module);
             $_js = $path . $_js;
