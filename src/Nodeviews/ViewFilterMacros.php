@@ -29,15 +29,16 @@
 namespace Ximdex\Nodeviews;
 
 use Ximdex\Logger;
-use Ximdex\Models\Channel;
-use Ximdex\Models\Node;
-use Ximdex\Models\Server;
-use Ximdex\Models\Version;
-use Ximdex\Parsers\ParsingPathTo;
-use Ximdex\Runtime\App;
-use Ximdex\Sync\SynchroFacade;
-use Ximdex\Utils\Messages;
 use NodeFrameManager;
+use Ximdex\Models\Node;
+use Ximdex\Runtime\App;
+use Ximdex\Models\Server;
+use Ximdex\Models\Channel;
+use Ximdex\Models\Version;
+use Ximdex\Utils\Messages;
+use Ximdex\Sync\SynchroFacade;
+use Ximdex\Models\FastTraverse;
+use Ximdex\Parsers\ParsingPathTo;
 use Ximdex\NodeTypes\NodeTypeConstants;
 
 \Ximdex\Modules\Manager::file('/inc/manager/NodeFrameManager.class.php', 'ximSYNC');
@@ -72,6 +73,7 @@ class ViewFilterMacros extends AbstractView implements IView
     const MACRO_PATHTOABS = "/@@@RMximdex\.pathtoabs\(([,-_#%=\.\w\s]+)\)@@@/";
     const MACRO_RDF = "/@@@RMximdex\.rdf\(([^\)]+)\)@@@/";
     const MACRO_RDFA = "/@@@RMximdex\.rdfa\(([^\)]+)\)@@@/";
+    const MACRO_BREADCRUMB = "/@@@RMximdex\.breadcrumb\(([,-_#%=\.\w\s]+)\)@@@/";
 
     /**
      * Constructor with mode preview choise parameter
@@ -99,7 +101,7 @@ class ViewFilterMacros extends AbstractView implements IView
      * @param int $idChannel
      * @return string file name with the transformed content
      */
-    public function transform($idVersion = NULL, $pointer = NULL, $args = NULL, int $idNode = null, int $idChannel = null)
+    public function transform($idVersion = null, $pointer = null, $args = null, int $idNode = null, int $idChannel = null)
     {
         $this->idNode = $idNode;
         $this->idChannel = $idChannel;
@@ -128,7 +130,7 @@ class ViewFilterMacros extends AbstractView implements IView
         if ($this->preview) {
             $this->mode = (isset($args['MODE']) && $args['MODE'] == 'dinamic') ? 'dinamic' : 'static';
             if (!$this->_setIdSection($args)) {
-                return NULL;
+                return null;
             }
         }
         if (!$this->_setNode($idVersion, $args)) {
@@ -162,7 +164,7 @@ class ViewFilterMacros extends AbstractView implements IView
      * @param array $args
      * @return boolean True if exists node for selected version or the current node
      */
-    private function _setNode($idVersion = NULL, $args = null)
+    private function _setNode($idVersion = null, $args = null)
     {
         if ($this->idNode) {
             $this->_node = new Node($this->idNode);
@@ -170,8 +172,7 @@ class ViewFilterMacros extends AbstractView implements IView
                 Logger::error('VIEW FILTERMACROS: The node you are trying to convert does not exist: ' . $this->idNode);
                 return false;
             }
-        }
-        elseif (!is_null($idVersion)) {
+        } elseif (!is_null($idVersion)) {
             $version = new Version($idVersion);
             if (! $version->get('IdVersion')) {
                 Logger::error('VIEW FILTERMACROS: An incorrect version has been loaded (' . $idVersion . ')');
@@ -183,8 +184,7 @@ class ViewFilterMacros extends AbstractView implements IView
                 return false;
             }
             $this->idNode = $this->_node->GetID();
-        }
-        elseif ($this->preview and array_key_exists('NODETYPENAME', $args)) {
+        } elseif ($this->preview and array_key_exists('NODETYPENAME', $args)) {
             $this->_nodeTypeName = $args['NODETYPENAME'];
         }
         return true;
@@ -204,7 +204,14 @@ class ViewFilterMacros extends AbstractView implements IView
 
         // Check Params
         if (!isset($this->_idChannel) || !($this->_idChannel > 0)) {
-            Logger::error('VIEW FILTERMACROS: Channel not specified for node ' . $args['NODENAME']);
+            $error = 'VIEW FILTERMACROS: Channel not specified for node';
+            if (isset($args['NODENAME']) and $args['NODENAME']) {
+                $error .= ' ' . $args['NODENAME'];
+            }
+            if (isset($args['NODEID']) and $args['NODEID']) {
+                $error .= ' ' . $args['NODEID'];
+            }
+            Logger::error($error);
             return false;
         }
         return true;
@@ -239,8 +246,7 @@ class ViewFilterMacros extends AbstractView implements IView
     {
         if ($this->_node) {
             $this->_serverNode = new Node($this->_node->getServer());
-        }
-        elseif (array_key_exists('SERVERNODE', $args)) {
+        } elseif (array_key_exists('SERVERNODE', $args)) {
             $this->_serverNode = new Node($args['SERVERNODE']);
         }
 
@@ -262,8 +268,7 @@ class ViewFilterMacros extends AbstractView implements IView
     {
         if ($this->_node) {
             $this->_projectNode = $this->_node->getProject();
-        }
-        elseif (array_key_exists('PROJECT', $args)) {
+        } elseif (array_key_exists('PROJECT', $args)) {
             $this->_projectNode = $args['PROJECT'];
         }
 
@@ -285,8 +290,7 @@ class ViewFilterMacros extends AbstractView implements IView
     {
         if ($this->_node) {
             $this->_depth = $this->_node->GetPublishedDepth();
-        }
-        elseif (array_key_exists('DEPTH', $args)) {
+        } elseif (array_key_exists('DEPTH', $args)) {
             $this->_depth = $args['DEPTH'];
         }
 
@@ -308,8 +312,7 @@ class ViewFilterMacros extends AbstractView implements IView
     {
         if ($this->_node) {
             $this->_nodeName = $this->_node->get('Name');
-        }
-        elseif (array_key_exists('NODENAME', $args)) {
+        } elseif (array_key_exists('NODENAME', $args)) {
             $this->_nodeName = $args['NODENAME'];
         }
 
@@ -360,6 +363,11 @@ class ViewFilterMacros extends AbstractView implements IView
         $content = preg_replace_callback(self::MACRO_DOTDOT, array(
             $this,
             'getdotdotpath'
+        ), $content);
+
+        $content = preg_replace_callback(self::MACRO_BREADCRUMB, array(
+            $this,
+            'getBreadCrumb'
         ), $content);
 
         // Pathto
@@ -437,13 +445,12 @@ class ViewFilterMacros extends AbstractView implements IView
             return App::getValue('EmptyHrefCode');
         }
         if ($this->_isPreviewServer) {
-            return App::getValue('UrlRoot') . App::getValue('NodeRoot') . '/' . $section->GetPublishedPath(NULL, true);
+            return App::getValue('UrlRoot') . App::getValue('NodeRoot') . '/' . $section->GetPublishedPath(null, true);
         }
         $sync = new SynchroFacade();
         if ($this->preview) {
             $idTargetChannel = isset($matches[2]) ? $matches[2] : null;
-        }
-        else {
+        } else {
             $idTargetChannel = null;
             $idTargetServer = $sync->getServer($target, $idTargetChannel, $this->_server->get('IdServer'));
         }
@@ -464,24 +471,21 @@ class ViewFilterMacros extends AbstractView implements IView
         $targetPath = $matches[1];
         if ($this->preview) {
             $targetPath .= '?token=' . uniqid();
-        }
-        elseif (!($this->_serverNode->get('IdNode') > 0)) {
+        } elseif (!($this->_serverNode->get('IdNode') > 0)) {
             return App::getValue("EmptyHrefCode");
         }
 
         // If preview server, we return the path to data/nodes
         if ($this->_isPreviewServer) {
             return App::getValue('UrlRoot') . App::getValue('NodeRoot') . '/' . $targetPath;
-        }
-        else {
+        } else {
             $deep = 2;
             if ($this->preview) {
 
                 // Get section path
                 $section = new Node($this->_idSection);
                 $sectionPath = $section->class->GetNodeURL() . '/';
-            }
-            else {
+            } else {
 
                 // Getting relative or absolute path
                 if ($this->_server->get('OverrideLocalPaths')) {
@@ -514,14 +518,12 @@ class ViewFilterMacros extends AbstractView implements IView
                 foreach ($parserPathTo->messages()->messages as $error) {
                     Logger::warning($error['message']);
                 }
-            }
-            else {
+            } else {
                 Logger::warning('Parse PathTo is not working for: ' . $pathToParams);
             }
             if ($this->preview) {
                 return false;
-            }
-            else {
+            } else {
                 return App::getValue('EmptyHrefCode');
             }
         }
@@ -534,9 +536,9 @@ class ViewFilterMacros extends AbstractView implements IView
         $res["pathMethod"] = $parserPathTo->getPathMethod();
         $res["channel"] = $parserPathTo->getChannel();
         $idNode = $targetNode->GetID();
-        if (!$this->preview and $targetNode->GetNodeType() != NodeTypeConstants::LINK ) {
+        if (!$this->preview and $targetNode->GetNodeType() != NodeTypeConstants::LINK) {
             $nodeFrameManager = new NodeFrameManager();
-            $nodeFrame = $nodeFrameManager->getNodeFramesInTime($idNode, NULL, time());
+            $nodeFrame = $nodeFrameManager->getNodeFramesInTime($idNode, null, time());
             if (!isset($nodeFrame)) {
                 return '';
             }
@@ -571,8 +573,7 @@ class ViewFilterMacros extends AbstractView implements IView
             if ($isStructuredDocument) {
                 if ($this->mode == 'dinamic') {
                     return "javascript:parent.loadDivsPreview(" . $idNode . ")";
-                }
-                else {
+                } else {
                     $query = App::get('\Ximdex\Utils\QueryManager');
                     $src = $query->getPage(false) . $query->buildWith(array('nodeid' => $idNode, 'token' => uniqid()));
                     if ($parserPathTo->getAnchor()) {
@@ -598,7 +599,7 @@ class ViewFilterMacros extends AbstractView implements IView
             }
         }
         if (App::getValue('PullMode') == 1) {
-            return App::getValue('UrlRoot') . '/src/Rest/Pull/index.php?idnode=' . $targetNode->get('IdNode') . '&idchannel=' . $idTargetChannel 
+            return App::getValue('UrlRoot') . '/src/Rest/Pull/index.php?idnode=' . $targetNode->get('IdNode') . '&idchannel=' . $idTargetChannel
                     . '&idportal=' . $this->_serverNode->get('IdNode');
         }
         
@@ -630,6 +631,27 @@ class ViewFilterMacros extends AbstractView implements IView
      * @param $matches
      * @return string
      */
+    private function getBreadCrumb($matches)
+    {
+        $id = $matches[1];
+        if ($id === 'THIS') {
+            $id = $this->idNode;
+        }
+        
+        $parents = array_reverse(FastTraverse::get_parents($id, 'node.Name', null, ['isPublishable' => 1]));
+        $breadcrumb = '<breadcrumb>';
+        foreach ($parents  as $nodeId => $nodeName) {
+            $breadcrumb .= PHP_EOL . "<link href=\"@@@RMximdex.pathto({$nodeId})@@@\">{$nodeName}</link>";
+        }
+        $breadcrumb .= '</breadcrumb>';
+        
+        return $breadcrumb;
+    }
+    
+    /**
+     * @param $matches
+     * @return string
+     */
     private function getLinkPathAbs($matches)
     {
         return $this->getLinkPath($matches, true);
@@ -651,16 +673,14 @@ class ViewFilterMacros extends AbstractView implements IView
                     $this->originHasLangPath = $this->_node->hasLangPath();
                     $this->originNodeID = $this->_node->GetID();
                 }
-            }
-            else {
+            } else {
                 $this->originHasLangPath = null;
             }
             if ($targetNode->nodeType->GetIsStructuredDocument()) {
                 
                 // Language for the target document
                 $targetHasLangPath = $targetNode->hasLangPath();
-            }
-            else {
+            } else {
                 $targetHasLangPath = null;
             }
             
