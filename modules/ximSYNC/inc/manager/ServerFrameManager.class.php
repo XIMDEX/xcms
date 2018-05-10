@@ -388,6 +388,9 @@ class ServerFrameManager
         // Creates Sync file for pumping and updating state
         if ($newState == 'Due2In') {
             $fileSize = $serverFrame->createSyncFile($task, $serverFrame->get('cache'));
+            if ($fileSize === false) {
+                return false;
+            }
             if ($fileSize === null) {
                 $newState = ServerFrame::REMOVED;
             }
@@ -397,6 +400,7 @@ class ServerFrameManager
         }
         $serverFrame->set('State', $newState);
         $serverFrame->update();
+        return true;
     }
 
     /**

@@ -24,13 +24,15 @@
  *}
 
 <form method="post" id="formulario" name="formulario" action="{$action_url}">
-  <div class="action_header"><h2>{t}Expire document{/t}: {$name}</h2>
-    <fieldset class="buttons-form">
-    {button label="Accept" class='validate btn main_action'}{*message="You will expire this section. Would you like to continue?"*}
-  </fieldset>
-  </div>
-  <div class="message message-warning">    <p>{t}Publication windows configured for these files will be cancelled.{/t}</p></div>
-<div class="action_content">
-    <p> {t}You have selected to expire the document:{/t} {$doc_name}</p>
-</div>
+    <div class="action_header"><h2>{t}Expire document{/t}: {$name}</h2>
+        <fieldset class="buttons-form">
+            {button label="Accept" class='validate btn main_action'}{*message="You will expire this section. Would you like to continue?"*}
+        </fieldset>
+    </div>
+    <div class="message message-warning">
+        <p>{t}Publication windows configured for these files will be cancelled.{/t}</p>
+    </div>
+    <div class="action_content">
+        <p>{t}You have selected to expire the document:{/t} <strong>{$doc_name}</strong></p>
+    </div>
 </form>

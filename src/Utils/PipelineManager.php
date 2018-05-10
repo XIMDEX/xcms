@@ -141,6 +141,9 @@ class PipelineManager
         if ($pointer === null) {
             return null;
         }
+        if ($pointer === false) {
+            return false;
+        }
         $res = FsUtils::file_get_contents($pointer);
         if (strpos($pointer, App::getValue('TempRoot')) and file_exists($pointer)) {
             @unlink($pointer);

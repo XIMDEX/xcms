@@ -300,6 +300,10 @@ class ServerFrame extends ServerFrames_ORM
         $server = $this->get('IdServer');
         $s = new Server($server);
         $channelFrame = new ChannelFrame($channelFrameId);
+        if (!$channelFrame->get('IdChannelFrame')) {
+            Logger::error('Unable to load the channel frame with ID: ' . $channelFrameId);
+            return false;
+        }
         $channelId = $channelFrame->get('ChannelId');
         $nodeFrame = new NodeFrame($nodeFrameId);
         $idVersion = $nodeFrame->get('VersionId');
@@ -333,7 +337,7 @@ class ServerFrame extends ServerFrames_ORM
             }
             $content = $pipeMng->getCacheFromProcessAsContent($idVersion, $process, $data);
             if ($content === false) {
-                Logger::error('cannot load the cache or actual version content for version: ' . $idVersion);
+                Logger::error('Cannot load the cache or actual version content for version: ' . $idVersion);
                 return false;
             }
             if ($content === null) {

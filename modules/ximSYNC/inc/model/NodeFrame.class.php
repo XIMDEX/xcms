@@ -80,15 +80,24 @@ class NodeFrame extends NodeFrames_ORM {
     	}
 
 	/**
-    	*	Gets all ServerFrames associated to a NodeFrame.
+    *	Gets all ServerFrames associated to a NodeFrame
+    *
 	*	@param int idNdFr
 	*   @param string operation
 	*	@return array
 	*/
-    function getFrames($idNdFr, string $operation) {
+    function getFrames($idNdFr, string $operation)
+    {
         $sql = "SELECT IdSync FROM ServerFrames WHERE IdNodeFrame = $idNdFr";
-        if ($operation == 'Up') {
-            $sql .= ' and State not in (\'' . ServerFrame::REMOVED . '\', \'' . ServerFrame::REPLACED . '\')';
+        if ($operation == 'Up' or $operation == 'Down') {
+            $sql .= ' and State not in (\'' . ServerFrame::REMOVED . '\', \'' . ServerFrame::REPLACED . '\'';
+            if ($operation == 'Up') {
+                $sql .= ', \'' . ServerFrame::OUT . '\'';
+            }
+            else {
+                $sql .= ', \'' . ServerFrame::IN . '\'';
+            }
+            $sql .= ')';
         }
 		$dbObj = new \Ximdex\Runtime\Db();
 		$dbObj->Query($sql);

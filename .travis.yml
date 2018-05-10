@@ -5,7 +5,7 @@ group: edge
 
 language: php
 php:
-  - '7.1'
+  - '7.2'
 
 services:
   - docker
@@ -30,3 +30,7 @@ notifications:
       - travis@ximdex.com
     on_success: change
     on_failure: always
+    
+  slack:
+    rooms:
+      - ximdexteam:tJAT66V6VSJeHR3H2CDCImnK#ximdex

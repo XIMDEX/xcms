@@ -24,7 +24,10 @@
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
-class Batchs_ORM extends \Ximdex\Data\GenericData
+
+use Ximdex\Data\GenericData;
+
+class Batchs_ORM extends GenericData
 {
     var $_idField = 'IdBatch';
     var $_table = 'Batchs';
@@ -63,5 +66,3 @@ class Batchs_ORM extends \Ximdex\Data\GenericData
     var $IdPortalVersion;
     var $UserId;
 }
-
-?>

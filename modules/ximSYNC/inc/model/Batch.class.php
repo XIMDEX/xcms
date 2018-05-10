@@ -24,15 +24,16 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
+
 use Ximdex\Logger;
 use Ximdex\Models\Node;
 
-\Ximdex\Modules\Manager::file('/inc/model/orm/SynchronizerStats_ORM.class.php', 'ximSYNC');
-\Ximdex\Modules\Manager::file('/inc/model/NodeFrame.class.php', 'ximSYNC');
-\Ximdex\Modules\Manager::file('/inc/model/ChannelFrame.class.php', 'ximSYNC');
-\Ximdex\Modules\Manager::file('/inc/model/ServerFrame.class.php', 'ximSYNC');
-\Ximdex\Modules\Manager::file('/inc/model/orm/Batchs_ORM.class.php', 'ximSYNC');
-\Ximdex\Modules\Manager::file('/conf/synchro_conf.php', 'ximSYNC');
+Ximdex\Modules\Manager::file('/inc/model/orm/SynchronizerStats_ORM.class.php', 'ximSYNC');
+Ximdex\Modules\Manager::file('/inc/model/NodeFrame.class.php', 'ximSYNC');
+Ximdex\Modules\Manager::file('/inc/model/ChannelFrame.class.php', 'ximSYNC');
+Ximdex\Modules\Manager::file('/inc/model/ServerFrame.class.php', 'ximSYNC');
+Ximdex\Modules\Manager::file('/inc/model/orm/Batchs_ORM.class.php', 'ximSYNC');
+Ximdex\Modules\Manager::file('/conf/synchro_conf.php', 'ximSYNC');
 
 /**
  * 	@brief Handles operations with Batchs.
@@ -40,12 +41,13 @@ use Ximdex\Models\Node;
  * 	A Batch is a set of documents which have to be published together for obtain the correct graph of the portal.
  * 	This class includes the methods that interact with the Database.
  */
-class Batch extends Batchs_ORM {
-
+class Batch extends Batchs_ORM
+{
     var $syncStatObj;
 
     /**
-     *  Adds a row to Batchs table.
+     *  Adds a row to Batchs table
+     *  
      *  @param int timeOn
      *  @param string type
      *  @param int idNodeGenerator
@@ -54,9 +56,9 @@ class Batch extends Batchs_ORM {
      *  @param int idPortalVersion
      *  @return int|null
      */
-    function create($timeOn, $type, $idNodeGenerator, $priority, $idBatchDown = NULL, $idPortalVersion = 0, $userId = NULL) {
+    function create($timeOn, $type, $idNodeGenerator, $priority, $idBatchDown = NULL, $idPortalVersion = 0, $userId = NULL)
+    {
         $priority = (float) (MIN_TOTAL_PRIORITY * $priority);
-
         $this->set('TimeOn', $timeOn);
         $this->set('State', 'Waiting');
         $this->set('Playing', 1);
@@ -67,60 +69,61 @@ class Batch extends Batchs_ORM {
         $this->set('IdPortalVersion', $idPortalVersion);
         $this->set('UserId', $userId);
         $idBatch = parent::add();
-
         if ($idBatch > 0) {
             return $idBatch;
         }
-
-        Logger::info("ERROR batch type $type for node $idNodeGenerator");
+        Logger::error("Batch type $type for node $idNodeGenerator");
         return null;
     }
 
     /**
-     *  Gets the field IdBatch from Batchs table which matching the value of nodeId.
+     *  Gets the field IdBatch from Batchs table which matching the value of nodeId
+     *  
      *  @param int nodeId
      *  @return array
      */
-    function getAllBatchsFromNode($nodeId) {
+    function getAllBatchsFromNode($nodeId)
+    {
         $dbObj = new \Ximdex\Runtime\Db();
         $time = time();
         $dbObj->Query("SELECT IdBatch FROM Batchs WHERE Type='Up' AND TimeOn > $time AND IdNodeGenerator = $nodeId
 						ORDER BY TimeOn ASC");
-
         $arrayBatchs = array();
         while (!$dbObj->EOF) {
             $arrayBatchs[] = $dbObj->GetValue("IdBatch");
             $dbObj->Next();
         }
-
         return $arrayBatchs;
     }
 
     /**
-     *  Increases the number of cycles of a Batch.
+     *  Increases the number of cycles of a Batch
+     *  
      *  @param int majorCycle
      *  @param int minorCycle
      *  @return array
      */
-    function calcCycles($majorCycle, $minorCycle) {
+    function calcCycles($majorCycle, $minorCycle)
+    {
         if (is_null($majorCycle) || is_null($minorCycle)) {
-            $this->BatchToLog(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "ERROR", 8, _("ERROR Params $majorCycle - $minorCycle"));
+            $this->BatchToLog(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "ERROR", 8
+                , _("ERROR Params $majorCycle - $minorCycle"));
             return null;
         }
-
         if ($minorCycle > $majorCycle) {
             $majorCycle++;
             $minorCycle = 0;
-            $this->BatchToLog(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "INFO", 8, _("Up to major cycle $majorCycle batch ") . $this->get('IdBatch') . "");
+            $this->BatchToLog(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "INFO", 8
+                , _("Up to major cycle $majorCycle batch ") . $this->get('IdBatch') . "");
         } else {
             $minorCycle++;
         }
-
         return array($majorCycle, $minorCycle);
     }
 
     /**
-     *  Logs the activity of the Batch.
+     *  Logs the activity of the Batch
+     *  
      *  @param int batchId
      *  @param int nodeFrameId
      *  @param int channelFrameId
@@ -135,43 +138,38 @@ class Batch extends Batchs_ORM {
      *  @param string comment
      *  @param int doInsertSql
      */
-    function BatchToLog($batchId, $nodeFrameId, $channelFrameId, $serverFrameId, $pumperId, $class, $method, $file, $line, $type, $level, $comment, $doInsertSql = false) {
+    function BatchToLog($batchId, $nodeFrameId, $channelFrameId, $serverFrameId, $pumperId, $class, $method, $file
+        , $line, $type, $level, $comment, $doInsertSql = false)
+    {
         if (!isset($this->syncStatObj)) {
-
             $this->syncStatObj = new SynchronizerStat();
         }
-
-        $this->syncStatObj->create($batchId, $nodeFrameId, $channelFrameId, $serverFrameId, $pumperId, $class, $method, $file, $line, $type, $level, $comment, $doInsertSql);
+        $this->syncStatObj->create($batchId, $nodeFrameId, $channelFrameId, $serverFrameId, $pumperId, $class, $method, $file
+            , $line, $type, $level, $comment, $doInsertSql);
     }
 
     /**
-     *  Gets the field IdBatch from Batchs join Nodes which matching the value of State.
+     *  Gets the field IdBatch from Batchs join Nodes which matching the value of State
+     *  
      *  @param string stateCryteria
      *  @return array|false
      */
-    function getNodeGeneratorsFromBatchs($stateCryteria = null) {
+    function getNodeGeneratorsFromBatchs($stateCryteria = null)
+    {
         $dbObj = new \Ximdex\Runtime\Db();
-
         $where = "";
         if ($stateCryteria) {
-
             if ($stateCryteria != "Any") {
-
                 $where .= " AND Batchs.State = '" . $stateCryteria . "'";
             }
         }
-
-        $query = "SELECT Batchs.IdNodeGenerator, Nodes.Name FROM Batchs, Nodes where Batchs.IdNodeGenerator = Nodes.IdNode " . $where . " group by Batchs.IdNodeGenerator";
-
+        $query = "SELECT Batchs.IdNodeGenerator, Nodes.Name FROM Batchs, Nodes where Batchs.IdNodeGenerator = Nodes.IdNode " 
+            . $where . " group by Batchs.IdNodeGenerator";
         $dbObj->Query($query);
-
         if (!$dbObj->numErr) {
-
             if ($dbObj->numRows > 0) {
-
                 $arrayNodes = array();
                 while (!$dbObj->EOF) {
-
                     $arrayNodes[$dbObj->row['IdNodeGenerator']]['Name'] = $dbObj->row['Name'];
                     $nodeGeneratorObj = new Node($dbObj->row['IdNodeGenerator']);
                     $arrayNodes[$dbObj->row['IdNodeGenerator']]['Path'] = $nodeGeneratorObj->getPath();
@@ -180,14 +178,14 @@ class Batch extends Batchs_ORM {
                 return $arrayNodes;
             }
         } else {
-
             Logger::info("Error in DB: " . $dbObj->desErr);
         }
         return false;
     }
 
     /**
-     *  Gets the Batchs which matching some criteria.
+     *  Gets the Batchs which matching some criteria
+     *  
      *  @param string stateCriteria
      *  @param int activeCriteria
      *  @param int downCriteria
@@ -197,92 +195,71 @@ class Batch extends Batchs_ORM {
      *  @param int dateDownCriteria
      *  @return array|false
      */
-    function getAllBatchs($stateCriteria = null, $activeCriteria = null, $downCriteria = null, $limitCriteria = null, $idNodeGenerator = null, $dateUpCriteria = 0, $dateDownCriteria = 0) {
+    function getAllBatchs($stateCriteria = null, $activeCriteria = null, $downCriteria = null, $limitCriteria = null
+        , $idNodeGenerator = null, $dateUpCriteria = 0, $dateDownCriteria = 0)
+    {
         $dbObj = new \Ximdex\Runtime\Db();
-
         $where = " WHERE 1 ";
         if ($stateCriteria) {
-
             if ($stateCriteria != "Any") {
-
                 $where .= " AND State = '" . $stateCriteria . "'";
             }
         }
-
         if ($activeCriteria !== null) {
-
             if ($activeCriteria != "Any") {
-
                 $where .= " AND Playing = '" . $activeCriteria . "'";
             }
         }
-
         if ($downCriteria !== null) {
-
             if ($downCriteria != "Any") {
-
                 $where .= " AND Type = 'Up'";
             }
         }
-
         if ($idNodeGenerator !== null) {
-
             $where .= " AND IdNodeGenerator = " . $idNodeGenerator;
         }
-
         if ($dateUpCriteria != 0) {
-
             $where .= " AND TimeOn >= " . $dateUpCriteria;
         }
-
         if ($dateDownCriteria != 0) {
-
             $where .= " AND TimeOn <= " . $dateDownCriteria;
         }
-
         if ($limitCriteria !== null) {
-
             $limit = " LIMIT 0," . $limitCriteria;
         }
-
         $query = "SELECT IdBatch, TimeOn, State, Playing, Type, IdBatchDown, " .
                 "IdNodeGenerator FROM Batchs" . $where . " ORDER BY Priority DESC, TimeOn DESC" .
                 $limit;
-
         $dbObj->Query($query);
-
         if (!$dbObj->numErr) {
-
             if ($dbObj->numRows > 0) {
-
                 $arrayBatchs = array();
                 while (!$dbObj->EOF) {
-
                     $arrayBatchs[] = $dbObj->row;
                     $dbObj->Next();
                 }
                 return $arrayBatchs;
             }
         } else {
-
             Logger::info("Error en BD: " . $dbObj->desErr);
         }
         return false;
     }
 
     /**
-     *  Gets the Batch of type Down associated to a Batch of type Up.
+     *  Gets the Batch of type Down associated to a Batch of type Up
+     *  
      *  @param int batchId
      *  @return array
      */
-    function getDownBatch($batchId) {
+    function getDownBatch($batchId)
+    {
         $dbObj = new \Ximdex\Runtime\Db();
         $time = time();
         $query = "SELECT downBatchs.IdBatch, downBatchs.TimeOn FROM Batchs upBatchs, " .
                 "Batchs AS downBatchs WHERE downBatchs.IdBatch = upBatchs.IdBatchDown " .
                 "AND upBatchs.IdBatch = $batchId";
         $dbObj->Query($query);
-
         $arrayBatch = array();
         while (!$dbObj->EOF) {
             $arrayBatch = array(
@@ -291,18 +268,18 @@ class Batch extends Batchs_ORM {
             );
             $dbObj->Next();
         }
-
         return $arrayBatch;
     }
 
     /**
-     *  Gets the Batch of type Up associated to a Batch of type Down.
+     *  Gets the Batch of type Up associated to a Batch of type Down
+     *  
      *  @param int batchId
      *  @return array
      */
-    function getUpBatch($batchId) {
+    function getUpBatch($batchId)
+    {
         $result = parent::find('IdBatch', 'IdBatchDown = %s', array('IdBatchDown' => $batchId), MONO);
-
         if (is_null($result)) {
             return null;
         }
@@ -310,22 +287,23 @@ class Batch extends Batchs_ORM {
     }
 
     /**
-     *  Sets the field Playing for a Batch.
+     *  Sets the field Playing for a Batch
+     *  
      *  @param int idBatch
      *  @param int playingValue
      *  return bool
      */
-    function setBatchPlayingOrUnplaying($idBatch, $playingValue = 1) {
-        if ($playingValue == 2)
+    function setBatchPlayingOrUnplaying($idBatch, $playingValue = 1)
+    {
+        if ($playingValue == 2) {
             $playingValue = ($this->get('Playing') == 0) ? 1 : 0;
-
+        }
         parent::__construct($idBatch);
         $this->set('Playing', $playingValue);
-
         $updatedRows = parent::update();
-
         if ($updatedRows == 1) {
-            $this->BatchToLog($idBatch, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "INFO", 8, _("Setting playing Value = $playingValue for batch $idBatch"));
+            $this->BatchToLog($idBatch, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "INFO", 8
+                , _("Setting playing Value = $playingValue for batch $idBatch"));
             return true;
         } else {
             Logger::info("Error en BD: " . $dbObj->desErr);
@@ -334,16 +312,17 @@ class Batch extends Batchs_ORM {
     }
 
     /**
-     *  Sets the field Priority for a Batch.
+     *  Sets the field Priority for a Batch
+     *  
      *  @param int idBatch
      *  @param string mode
      *  return bool
      */
-    function prioritizeBatch($idBatch, $mode = 'up') {
+    function prioritizeBatch($idBatch, $mode = 'up')
+    {
         setlocale (LC_NUMERIC, 'C'); //Hack: fix bad compose of float field in sql update
         parent::__construct($idBatch);
-        $priority = (float) $this->get('Priority');
-        
+        $priority = (float) $this->get('Priority');   
         if ($mode === 'up') {
             $priority += 0.3;
             if ($priority > MAX_TOTAL_PRIORITY) {
@@ -356,15 +335,13 @@ class Batch extends Batchs_ORM {
             }
         }
         $this->set('Priority', $priority);
-
         $hasUpdated = parent::update();
-
         if ($hasUpdated) {
-            $this->BatchToLog($idBatch, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "INFO", 8, _("Setting priority Value = $playingValue for batch $idBatch"));
+            $this->BatchToLog($idBatch, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "INFO"
+                , 8, _("Setting priority Value = $playingValue for batch $idBatch"));
             return true;
         } else {
             return false;
         }
     }
-
 }

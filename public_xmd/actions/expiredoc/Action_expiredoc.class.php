@@ -1,8 +1,4 @@
 <?php
-use Ximdex\Models\Node;
-use Ximdex\MVC\ActionAbstract;
-use Ximdex\Runtime\DataFactory;
-use Ximdex\Sync\SynchroFacade;
 
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
@@ -28,38 +24,36 @@ use Ximdex\Sync\SynchroFacade;
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
+
+use Ximdex\Models\Node;
+use Ximdex\MVC\ActionAbstract;
+use Ximdex\Runtime\DataFactory;
+use Ximdex\Sync\SynchroFacade;
+
 class Action_expiredoc extends ActionAbstract
 {
-    // Main method: shows initial form
-    function index()
+    /**
+     * Main method: shows initial form
+     */
+    public function index()
     {
         $idNode = $this->request->getParam('nodeid');
         $node = new Node($idNode);
-
         $docName = $node->get('Name');
-        $values = array('doc_name' => $docName,
-            'go_method' => 'result', 'name' => $node->GetNodeName());
-
+        $values = array('doc_name' => $docName, 'go_method' => 'result', 'name' => $node->GetNodeName());
         $this->render($values, '', 'default-3.0.tpl');
     }
 
-    function result()
+    public function result()
     {
         $idNode = $this->request->getParam('nodeid');
-
         $node = new Node($idNode);
-        $nodeName = $node->get('Name');
-
         $synchroFacade = new SynchroFacade();
         $synchroFacade->deleteAllTasksByNode($idNode, true);
-        
         $df = new DataFactory($idNode);
         $df->AddVersion();
-
-        $this->messages->add(sprintf(_("Document <strong>%s</strong> has been successfully expired"), $nodeName), MSG_TYPE_NOTICE);
-        $values = array(
-            'messages' => $this->messages->messages,
-        );
+        $this->messages->add(sprintf(_("Document <strong>%s</strong> has been successfully expired"), $node->get('Name')), MSG_TYPE_NOTICE);
+        $values = array('messages' => $this->messages->messages);
         $this->sendJSON($values);
     }
 }

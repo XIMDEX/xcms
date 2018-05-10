@@ -646,7 +646,7 @@ class BatchManager
             $result = $batch->find('IdPortalVersion', 'State != %s AND IdBatch > %s AND Type = %s ORDER BY IdBatch ASC',
                 array('State' => 'Ended', 'IdBatch' => $idBatch, 'Type' => 'Up'), MONO);
             if (!$result) {
-                Logger::error('No portal version found for batch: ' . $idBatch);
+                Logger::warning('No portal version found for batch: ' . $idBatch);
                 return false;
             }
             $idPortalVersion = $result[0];
@@ -873,19 +873,27 @@ class BatchManager
             // Gets portal version
             $node = new Node($nodeId);
             $serverID = $node->GetServer();
+            if (!$serverID) {
+                Logger::error('Unable to load the server with ID: ' . $serverID);
+                return false;
+            }
             $portal = new PortalVersions();
             $idPortalVersion = $portal->upPortalVersion($serverID);
+            if (!$idPortalVersion) {
+                Logger::error('Unable to increase the portal version with ID: ' . $serverID);
+                return false;
+            }
 
             // Creating Batch Type Down if not exist one
             $batchDown = new Batch();
-            $idBatchDown = $batchDown->create(time(), 'Down', $nodeId, 1, null, $userId);
+            $idBatchDown = $batchDown->create(time(), 'Down', $nodeId, 1, null, $idPortalVersion, $userId);
 
             // Updating Serverframes info
             $batchDown = new Batch($idBatchDown);
             $batchDown->set('ServerFramesTotal', $serverFramesTotal);
             $batchDown->set('ServerFramesSucess', 0);
             $batchDown->set('ServerFramesError', 0);
-            $batchDown->set('PortalVersion', $idPortalVersion);
+            $batchDown->set('IdPortalVersion', $idPortalVersion);
             $batchDown->update();
         }
         return true;

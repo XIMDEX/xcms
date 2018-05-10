@@ -264,14 +264,13 @@ class NodeFrameManager
 		} else if ($batchType == 'Down') {
 				$batch = new Batch($batchId);
 				$batchUp = $batch->getUpBatch($batchId);
-				if (!is_null($batchUp)) {
+				if ($batchUp) {
 					$sql = "SELECT NodeFrames.IdNodeFrame, NodeFrames.NodeId, NodeFrames.VersionId, NodeFrames.TimeUp, " .
 					"NodeFrames.TimeDown, NodeFrames.Active FROM NodeFrames, ServerFrames WHERE ServerFrames.IdBatchUp = " .
 					"{$batchUp[0]} AND ServerFrames.IdNodeFrame = NodeFrames.IdNodeFrame AND (NodeFrames.IsProcessDown = 0 "
 					."OR NodeFrames.IsProcessDown IS NULL) LIMIT $chunk";
 				} else {
 					$nodeId = $batch->get('IdNodeGenerator');
-
 					$sql = "SELECT NodeFrames.IdNodeFrame, NodeFrames.NodeId, NodeFrames.VersionId, NodeFrames.TimeUp, " .
 					"NodeFrames.TimeDown, NodeFrames.Active FROM NodeFrames, ServerFrames WHERE
 					NodeFrames.NodeId = $nodeId AND ServerFrames.IdNodeFrame = NodeFrames.IdNodeFrame AND
@@ -363,6 +362,12 @@ class NodeFrameManager
 
 					// Changing ServerFrame State
 					$serverFrameMng->changeState($idServerFrame, 'Down', $nodeId);
+					
+					// Set to null the channel frame field
+					if ($channelFrame->get('IdChannelFrame') and $channelFrame->get('IdChannelFrame') == $serverFrame->get('IdChannelFrame')) {
+					    $serverFrame->set('IdChannelFrame', null);
+					    $serverFrame->update();
+					}
 				} elseif(in_array($state, array('Due2Out', 'Due2Out_'))) {
 					Logger::info("Do not delete serverFrame $idServerFrame - state $state");
 				} else {
