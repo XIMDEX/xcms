@@ -638,16 +638,18 @@ class ViewFilterMacros extends AbstractView implements IView
             $id = $this->idNode;
         }
         
-        $parents = array_reverse(FastTraverse::get_parents($id, 'node.Name', null, ['isPublishable' => 1]));
+        $parents = array_reverse(FastTraverse::get_parents($id, 'node.Name', 'node.IdNode', ['isPublishable' => 1]), true);
         $breadcrumb = '<breadcrumb>';
         foreach ($parents  as $nodeId => $nodeName) {
             if (App::getValue('PublishPathFormat') == App::PREFIX) {
                 $parts = explode('-', $nodeName);
-                unset($parts[count($parts) - 1]);
-                $nodeName = implode('-', $parts);
+                if (count($parts) > 1) {
+                    unset($parts[count($parts) - 1]);
+                    $nodeName = implode('-', $parts);
+                }
             }
-
-            $breadcrumb .= PHP_EOL . "<link href=\"@@@RMximdex.pathto({$nodeId})@@@\">{$nodeName}</link>";
+            $href = "@@@RMximdex.pathto({$nodeId})@@@";
+            $breadcrumb .= PHP_EOL . "<link href=\"{$href}\">{$nodeName}</link>";
         }
         $breadcrumb .= '</breadcrumb>';
         
