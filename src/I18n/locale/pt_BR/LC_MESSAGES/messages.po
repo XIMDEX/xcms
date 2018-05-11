@@ -5808,8 +5808,8 @@ msgstr "Eliminar modelos"
 msgid "Delete selected template"
 msgstr "Eliminar o arquivo selecionado"
 
-msgid "Modify associated workflow status"
-msgstr "Modificar status do workflow associado"
+msgid "Modify workflow states"
+msgstr "Modificar estados do workflow"
 
 msgid "Modify associated status with this role"
 msgstr "Modificar os status associados a este rol"

@@ -7929,7 +7929,7 @@ msgstr ""
 msgid "Modify node type"
 msgstr ""
 
-msgid "Modify associated workflow status"
+msgid "Modify workflow states"
 msgstr ""
 
 msgid "Modify associated roles"

@@ -1706,7 +1706,7 @@
     "Delete templates": "Borrar plantillas",
     "Delete selected template": "Borrar la plantilla seleccionada",
     "Delete selected templates": "Borrar las plantillas seleccionadas",
-    "Modify associated workflow status": "Modificar estados del workflow asociados",
+    "Modify workflow states": "Modificar estados del workflow",
     "Modify associated status with this role": "Modificar los estados asociados a este rol",
     "Modify associated roles": "Modificar roles asociados",
     "Modify associated roles with this status": "Modificar los roles asociados a este estado",
