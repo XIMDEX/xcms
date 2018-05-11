@@ -7929,8 +7929,8 @@ msgstr "Modifier le rôle"
 msgid "Modify node type"
 msgstr "Modifier le type de noeud"
 
-msgid "Modify associated workflow status"
-msgstr "Modifier l'état du Workflow associé"
+msgid "Modify workflow states"
+msgstr "Modifier les états de workflow"
 
 msgid "Modify associated roles"
 msgstr "Modifier les rôles associés"

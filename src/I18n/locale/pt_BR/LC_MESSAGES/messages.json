@@ -1595,7 +1595,7 @@
     "Delete template": "Eliminar modelo",
     "Delete templates": "Eliminar modelos",
     "Delete selected template": "Eliminar o arquivo selecionado",
-    "Modify associated workflow status": "Modificar status do workflow associado",
+    "Modify workflow states": "Modificar estados do workflow",
     "Modify associated status with this role": "Modificar os status associados a este rol",
     "Modify associated roles": "Modificar rols associados",
     "Modify associated roles with this status": "Modificar os rols associados a este status",

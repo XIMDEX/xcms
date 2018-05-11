@@ -5801,8 +5801,8 @@ msgstr "Vorlagen l&ouml;schen"
 msgid "Delete selected template"
 msgstr "Ausgew&auml;hlte Vorlage l&ouml;schen"
 
-msgid "Modify associated workflow status"
-msgstr "Zugeordneten Workflowstatus &auml;ndern"
+msgid "Modify workflow states"
+msgstr "Workflow-Status ändern"
 
 msgid "Modify associated status with this role"
 msgstr "Zu dieser Rolle zugeordnete Stati &auml;ndern"

@@ -1594,7 +1594,7 @@
     "Delete template": "Vorlage l&ouml;schen",
     "Delete templates": "Vorlagen l&ouml;schen",
     "Delete selected template": "Ausgew&auml;hlte Vorlage l&ouml;schen",
-    "Modify associated workflow status": "Zugeordneten Workflowstatus &auml;ndern",
+    "Modify workflow states": "Workflow-Status ändern",
     "Modify associated status with this role": "Zu dieser Rolle zugeordnete Stati &auml;ndern",
     "Modify associated roles": "Zugeordnete Rollen &auml;ndern",
     "Modify associated roles with this status": "Zu diesem Status zugeordnete Rollen &auml;ndern",

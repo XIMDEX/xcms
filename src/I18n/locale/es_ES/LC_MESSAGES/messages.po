@@ -6166,8 +6166,8 @@ msgstr "Eliminar la plantilla seleccionada"
 msgid "Delete selected templates"
 msgstr "Eliminar las plantillas seleccionadas"
 
-msgid "Modify associated workflow status"
-msgstr "Modificar estados del workflow asociados"
+msgid "Modify workflow states"
+msgstr "Modificar estados del workflow"
 
 msgid "Modify associated status with this role"
 msgstr "Modificar los estados asociados a este rol"
