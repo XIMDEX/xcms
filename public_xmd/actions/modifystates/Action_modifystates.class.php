@@ -149,7 +149,7 @@ class Action_modifystates extends ActionAbstract
             $pipeStatus = new PipeStatus($all_status[$i]["id"]);
             $pipeStatus->set('Name', $all_status[$i]["name"]);
             $pipeStatus->set('Description', $all_status[$i]["description"]);
-            if (isset($all_status[$i]['action']) and $all_status[$i]['action']) {
+            if (isset($all_status[$i]['action'])) {
                 $pipeStatus->set('Action', $all_status[$i]['action']);
             }
             if ($all_status[$i]["id"] != null) {

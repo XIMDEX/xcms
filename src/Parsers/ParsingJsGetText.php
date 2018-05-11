@@ -102,10 +102,12 @@ class ParsingJsGetText
             if (!isset($info['extension']) or !$info['extension']) {
                 return true;
             }
-            if (!file_exists(XIMDEX_ROOT_PATH . '/' . $_js)) {
+            /*
+            if (!file_exists(XIMDEX_ROOT_PATH . $_js)) {
                 Logger::error('The file ' . $_js . ' could not be included because of it is not existing in the path: ' . XIMDEX_ROOT_PATH . $_js);
                 return false;
             }
+            */
             $this->_file_orig = $_js;
             
             // Deleting first "/", if it has it

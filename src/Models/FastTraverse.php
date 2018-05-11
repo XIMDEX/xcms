@@ -46,9 +46,11 @@ class FastTraverse extends FastTraverseOrm
         }
         $sql .= ' from FastTraverse ft';
         if (isset($fields['node']) or isset($fields['nodeType']) or $nodeTypeFlags) {
+            
             // If the fields contain node or nodetype values, or node type flags, we need to make a join with Nodes table
             $sql .= ' inner join Nodes node on (node.IdNode = ft.IdChild)';
             if (isset($fields['nodeType']) or $nodeTypeFlags) {
+                
                 // We need to make a join to NodeType table in order to use the node type values and flags
                 $sql .= ' inner join NodeTypes nt on (nt.IdNodeType = node.IdNodeType';
                 
@@ -97,6 +99,7 @@ class FastTraverse extends FastTraverseOrm
         }
         $children = array();
         if ($fields) {
+            
             // The returned array will have the Depth as the primary level, the node ID as the second with an array with the specfied fields
             while (! self::$db->EOF) {
                 foreach ($fields as $source => $sourceFields) {
@@ -107,6 +110,7 @@ class FastTraverse extends FastTraverseOrm
                 self::$db->Next();
             }
         } else {
+            
             // The returned array will have the Depth as key with the node ID as the value
             while (! self::$db->EOF) {
                 $children[self::$db->GetValue('Depth')][] = self::$db->GetValue('IdChild');
