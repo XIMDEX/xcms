@@ -24,12 +24,7 @@
    *}
 
 <form method="post" name="workflow_forward" action="{$action_url}">
-    <div class="action_header">
-        <h2>{t}Next state{/t}</h2>
-        <fieldset class="buttons-form">
-            {button class="validate accept-button btn main_action" label="Accept"}
-        </fieldset>
-    </div>
+    {include file="actions/components/title_Description.tpl"}
     <input type="hidden" name="default_message" value="{$defaultMessage}">
     <div class="action_content">
         <fieldset class="">
@@ -86,6 +81,9 @@
                             tabindex="7">{$defaultMessage}</textarea>
                 </li>
             </ol>
+        </fieldset>
+        <fieldset class="buttons-form">
+            {button class="validate accept-button btn main_action" label="Accept"}
         </fieldset>
     </div>
 </form>
