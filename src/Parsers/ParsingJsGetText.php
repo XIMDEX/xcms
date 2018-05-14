@@ -102,12 +102,10 @@ class ParsingJsGetText
             if (!isset($info['extension']) or !$info['extension']) {
                 return true;
             }
-            /*
             if (!file_exists(XIMDEX_ROOT_PATH . $_js)) {
                 Logger::error('The file ' . $_js . ' could not be included because of it is not existing in the path: ' . XIMDEX_ROOT_PATH . $_js);
                 return false;
             }
-            */
             $this->_file_orig = $_js;
             
             // Deleting first "/", if it has it
@@ -200,13 +198,11 @@ class ParsingJsGetText
         $this->setParam($_lang, $_js);
         foreach ($no_cacheable as $n_c) {
             if (!substr_compare($_js, $n_c, 0, strlen($n_c))) {
-                $no_cached_url = $_js;
-                return $no_cached_url;
+                return $_js;
             }
         }
         if (!is_file(XIMDEX_ROOT_PATH . $_js)) { // dinamic call
-            $no_cached_url =   $_js;
-            return $no_cached_url;
+            return App::getValue('UrlRoot') . $_js;
         }
 
         // Checking if the file gettexted for the specificed langauge is existing

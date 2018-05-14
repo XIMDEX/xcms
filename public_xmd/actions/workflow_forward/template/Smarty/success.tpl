@@ -23,8 +23,11 @@
  *  @version $Revision$
  *}
 
-<div class="action_header">
-    <h2>{t}Next state{/t}</h2>
+{include file="actions/components/title_Description.tpl"}
+<div class="message message-success">
+    <p>{t}The document has been moved to the next state.{/t}</p>
+</div>
+<div class="small-12 columns">
     <fieldset class="buttons-form">
         {if ($goback) }
             {button class="goback-button btn main_action" label="Go back"}
@@ -33,7 +36,3 @@
         {/if}
     </fieldset>
 </div>
-<div class="message message-success">
-    <p>{t}The document has been moved to the next state.{/t}</p>
-</div>
-

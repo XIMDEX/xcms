@@ -259,7 +259,8 @@ class Action_workflow_forward extends ActionAbstract
             if (! $sent) {
                 $values = array(
                     'goback' => true,
-                    'messages' => $this->messages->messages
+                    'messages' => $this->messages->messages,
+                    'node_Type' => $node->nodeType->GetName()
                 );
                 $this->render($values, 'show_results', 'default-3.0.tpl');
                 return false;
@@ -290,16 +291,17 @@ class Action_workflow_forward extends ActionAbstract
             if ($node->setState($nextState) === false) {
                 $values = array(
                     'goback' => true,
-                    'messages' => $node->messages->messages
+                    'messages' => $node->messages->messages,
+                    'node_Type' => $node->nodeType->GetName()
                 );
                 $this->render($values, 'show_results', 'default-3.0.tpl');
             }
             else {
-                $this->reloadNode($node->GetParent());
                 $values = array(
                     'go_method' => 'publicateForm',
                     'nextState' => $nextState,
-                    'currentState' => $node->GetState()
+                    'currentState' => $node->GetState(),
+                    'node_Type' => $node->nodeType->GetName()
                 );
                 $this->addCss('/actions/workflow_forward/resources/css/style.css');
                 $this->render($values, 'success.tpl', 'default-3.0.tpl');
@@ -631,7 +633,8 @@ class Action_workflow_forward extends ActionAbstract
         if ($node->setState($firstState) === false) {
             $values = array(
                 'goback' => true,
-                'messages' => $node->messages->messages
+                'messages' => $node->messages->messages,
+                'node_Type' => $node->nodeType->GetName()
             );
             $this->render($values, 'show_results', 'default-3.0.tpl');
             return false;
@@ -642,7 +645,8 @@ class Action_workflow_forward extends ActionAbstract
             $values = array(
                 'options' => $arrayOpciones,
                 'result' => $valuesToShow,
-                'messages' => $this->messages->messages
+                'messages' => $this->messages->messages,
+                'node_Type' => $node->nodeType->GetName()
             );
             Logger::info("ADDSECTION sendToPublish pre render else value: " . print_r($values, true));
             $this->render($values, 'show_results', 'default-3.0.tpl');
@@ -652,7 +656,8 @@ class Action_workflow_forward extends ActionAbstract
                 'messages' => $this->messages->messages,
                 'options' => $arrayOpciones,
                 'result' => $valuesToShow,
-                'synchronizer_to_use' => \Ximdex\Modules\Manager::isEnabled('ximSYNC') ? 'ximSYNC' : 'default'
+                'synchronizer_to_use' => \Ximdex\Modules\Manager::isEnabled('ximSYNC') ? 'ximSYNC' : 'default',
+                'node_Type' => $node->nodeType->GetName()
             );
             $this->render($values, 'show_results', 'default-3.0.tpl');
         }
