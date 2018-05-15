@@ -361,38 +361,6 @@ fieldset {
     border: none;
     position: relative;
 }
-
-/*******
-//	GRID
-*******/
-
-/*.col1-1, .col1-2, .col1-3, .col2-3 {
-    display: inline-block;
-    vertical-align: top;
-}
-.col1-1 {
-    width: 100%;
-}
-.col1-2 {
-    width: 48%;
-    padding-right: 10px;
-}
-.col1-2:last-child {
-    padding-right: 0;
-}
-.col1-3 {
-    width: 33%;
-}
-.col2-3 {
-    width: 66%;
-}
-.col2-3.left {
-    margin-right: 1%;
-}*/
-
-/*******
-*******/
-
 .full_size {
     width: 100%;
     display: block;
@@ -416,20 +384,12 @@ fieldset {
 
 .action_header {
     background: #f9f9f9;
-  /*  -webkit-box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.2);
-    -moz-box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.2);
-    box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.2);*/
     padding: 14px 20px;
     -webkit-border-radius: 0 12px 0 0;
     -moz-border-radius: 0 12px 0 0;
     border-radius: 0 12px 0 0;
     height: 12%;
-    /*
-    max-height: 3em;
-    overflow: hidden;
-    min-width: 400px;
-    */
-    /*border-bottom: 2px solid #eee;*/
+    margin-bottom: -2%;
 }
 .action_header .buttons-form {
     float: right;
@@ -439,21 +399,17 @@ fieldset {
     float: left;
 }
 .content_container.prevdoc {
-    height: 88%;	/* calc(100% - 3.5em); */
+    height: 88%;	
 }
 .action_content {
     min-width: 350px;
-    height: 88%;	/* height: calc(100% - 3em); */
+    height: 88%;
     overflow-y: auto;
     overflow-x: hidden;
     padding: 2em 4% 2em;
     max-width: 100%;
- /*   border-top: 1px solid lightgray;*/
     position: relative;
     background:#f9f9f9;
-    /*.message + &{
-  	padding-top: 1em;
-  }*/
 }
 .action_content.fullwidth {
     padding: 0;
@@ -461,7 +417,6 @@ fieldset {
 .action_content p {
     position: relative;
     font-size: 1.6rem;
-    /* margin-top: 0!important; */
     border-radius: 0 0 5px 5px!important;
 }
 .full {
