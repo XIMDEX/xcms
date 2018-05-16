@@ -195,11 +195,12 @@ class XeditAction extends Action
     public static function getTreeInfo(Request $r, Response $w)
     {
         $types = [
-            'xml' => NodeTypeConstants::XML_DOCUMENT,
-            'html' => NodeTypeConstants::HTML_DOCUMENT,
-            'binary' => NodeTypeConstants::BINARY_FILE,
-            'image' => NodeTypeConstants::IMAGE_FILE,
-            'link' => NodeTypeConstants::LINK
+            'xml' => [NodeTypeConstants::XML_DOCUMENT],
+            'html' => [NodeTypeConstants::HTML_DOCUMENT],
+            'binary' => [NodeTypeConstants::BINARY_FILE],
+            'image' => [NodeTypeConstants::IMAGE_FILE],
+            'link' => [NodeTypeConstants::LINK, NodeTypeConstants::HTML_DOCUMENT, NodeTypeConstants::BINARY_FILE,
+                NodeTypeConstants::IMAGE_FILE, NodeTypeConstants::XML_DOCUMENT]
         ];
 
         $nodeId = isset($_GET['id']) ? $_GET['id'] : null;
@@ -209,18 +210,20 @@ class XeditAction extends Action
 
         if (ctype_digit($nodeId)) {
             $filters = null;
-            if ($type && $type !== NodeTypeConstants::LINK) {
-                $filters = ["include" => ["nt.IdNodeType" => [$type]]];
+            if ($type) {
+                $filters = ["include" => ["nt.IdNodeType" => $type]];
             }
 
             $children = FastTraverse::get_children($nodeId, ['node' => ['Name', 'idParent'], 'nodeType' =>
-                ['isFolder', 'isVirtualFolder', 'IdNodeType']], null, $filters, ['IsRenderizable' => true, 'IsHidden' => false]);
-            $result = static::buildCompleteTree($children, $types);
+                ['isFolder', 'isVirtualFolder', 'IdNodeType']], null, $filters, ['IsRenderizable' => true,
+                'IsHidden' => false]);
+            $result = static::buildCompleteTree($children, $type);
 
             $count = count($result) - 1;
+
             if ($level !== null && $count > $level) {
-                $value["l{$level}"] = $result["l{$level}"];
-                $result = $value;
+                $tree["l{$level}"] = $result["l{$level}"];
+                $result = $tree;
             }
 
             $w->setResponse($result);
@@ -377,7 +380,9 @@ class XeditAction extends Action
     private static function createSheet($name, $idNodeType, $isFolder, $isVirtualFolder, $types)
     {
         if (in_array($idNodeType, array_values($types)) || $isFolder || $isVirtualFolder) {
-            $ele = $isFolder || $isVirtualFolder ? 'folder' : 'item';
+            $ele = ($isFolder || $isVirtualFolder) &&
+            !in_array($idNodeType, [NodeTypeConstants::XML_CONTAINER, NodeTypeConstants::HTML_CONTAINER])
+                ? 'folder' : 'item';
             return ['name' => $name, 'type' => $ele];
         }
         return null;
