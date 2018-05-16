@@ -31,6 +31,7 @@ use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\App;
 use Ximdex\Utils\Serializer;
 use Ximdex\Runtime\Session;
+use Ximdex\Models\Node;
 
 \Ximdex\Modules\Manager::file('/actions/FilterParameters.php', 'ximPUBLISHtools');
 \Ximdex\Modules\Manager::file('/inc/model/PublishingReport.class.php', 'ximSYNC');
@@ -39,6 +40,7 @@ use Ximdex\Runtime\Session;
 class Action_managebatchs extends ActionAbstract
 {
     private $params = array();
+    
 
     /**
      * Main method: shows initial form
@@ -46,6 +48,8 @@ class Action_managebatchs extends ActionAbstract
     public function index()
     {
         $acceso = true;
+        $idNode = $this->request->getParam('nodeid');
+        $node = new Node($idNode);
         
         // Initializing variables
         $userID = Session::get('userID');
@@ -54,8 +58,7 @@ class Action_managebatchs extends ActionAbstract
         if (!$user->HasPermission("view_publication_resume")) {
             $acceso = false;
             $errorMsg = "You have not access to this report. Consult an administrator.";
-        }
-        else {
+        } else {
             $errorMsg = '';
         }
         $jsFiles = array(
@@ -69,9 +72,10 @@ class Action_managebatchs extends ActionAbstract
             'acceso' => $acceso,
             'errorBox' => $errorMsg,
             'js_files' => $jsFiles,
+            'node_Type' => $node->nodeType->GetName(),
             'css_files' => $cssFiles
         );
-        $this->render($arrValores, NULL, 'default-3.0.tpl');
+        $this->render($arrValores, null, 'default-3.0.tpl');
     }
 
     private function filterParams()
@@ -98,7 +102,7 @@ class Action_managebatchs extends ActionAbstract
     {
         $this->filterParams();
         $values = $this->retrieveFrameList();
-        $this->render($values, NULL, "only_template.tpl");
+        $this->render($values, null, "only_template.tpl");
     }
 
     public function stopBatch()
@@ -118,7 +122,7 @@ class Action_managebatchs extends ActionAbstract
             Logger::info("PUBLISH results: $errorMsg");
         }
         $json = Serializer::encode(SZR_JSON, array('success' => $success));
-        $this->render(array('result' => $json), NULL, "only_template.tpl");
+        $this->render(array('result' => $json), null, "only_template.tpl");
     }
 
     public function startBatch()
@@ -135,7 +139,7 @@ class Action_managebatchs extends ActionAbstract
             }
         }
         $json = Serializer::encode(SZR_JSON, array('success' => true));
-        $this->render(array('result' => $json), NULL, "only_template.tpl");
+        $this->render(array('result' => $json), null, "only_template.tpl");
     }
 
     public function changeBatchPriority()
@@ -143,7 +147,7 @@ class Action_managebatchs extends ActionAbstract
         $mode = 'up';
         if (isset($_POST['frm_increase']) && $_POST['frm_increase'] == "yes") {
             Logger::info('PUBLISH pre doPrioritizeBatch');
-        } else if (isset($_POST['frm_decrease']) && $_POST['frm_decrease'] == "yes") {
+        } elseif (isset($_POST['frm_decrease']) && $_POST['frm_decrease'] == "yes") {
             Logger::info('PUBLISH pre doUnprioritizeBatch');
             $mode = 'down';
         }
@@ -153,7 +157,7 @@ class Action_managebatchs extends ActionAbstract
             Logger::info("Batch #" . $_POST['frm_id_batch'] . " priority has been changed ($mode).");
         }
         $json = Serializer::encode(SZR_JSON, array('success' => true));
-        $this->render(array('result' => $json), NULL, "only_template.tpl");
+        $this->render(array('result' => $json), null, "only_template.tpl");
     }
 
     private function doActivateBatch($idBatch)
