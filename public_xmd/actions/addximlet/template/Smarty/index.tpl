@@ -23,9 +23,7 @@
  *  @version $Revision$
  *}
 
-<div class="action_header">
-    <h2>{t}Associate a ximlet to the section{/t}: {$name}</h2>
-</div>
+{include file="actions/components/title_Description.tpl"}
 <div class="action_content">
 {if count($linked_ximlets) > 0 }
 <form method="post" id="delete_rel" class="delete_rel" action="{$action_delete}">

@@ -634,6 +634,9 @@ msgstr "Los usuarios han sido añadidos correctamente"
 msgid "The filter "
 msgstr "El filtro "
 
+msgid "Dependencies "
+msgstr "Dependencias "
+
 msgid "does not exist."
 msgstr "no existe."
 

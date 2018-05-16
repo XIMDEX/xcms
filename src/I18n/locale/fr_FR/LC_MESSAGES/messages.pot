@@ -8469,6 +8469,9 @@ msgstr ""
 msgid "Delete a project"
 msgstr ""
 
+msgid "Dependencies"
+msgstr ""
+
 msgid "Delete a server"
 msgstr ""
 

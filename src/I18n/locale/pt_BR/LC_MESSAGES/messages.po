@@ -5701,6 +5701,9 @@ msgstr "Adicionar um novo canal a Ximdex"
 msgid "Associated groups"
 msgstr "Grupos associados"
 
+msgstr "Dependencias "
+msgstr  "Dependências "
+
 msgid "Manage associations of groups with this node"
 msgstr "Gerenciar as associa&ccedil;&otilde;es dos grupos a este nodo"
 
