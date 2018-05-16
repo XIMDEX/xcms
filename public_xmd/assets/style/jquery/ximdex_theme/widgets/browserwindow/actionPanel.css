@@ -1768,9 +1768,13 @@ margin-top: 40px!important;
     transform: scale(0);
 }
 
+[type="radio"] + label {
+    padding-left: 10px !important;
+}
+
 [type="checkbox"]:not(:checked) + label, [type="checkbox"]:checked + label,[type="radio"]:not(:checked) + label, [type="radio"]:checked + label {
     cursor: pointer;
-    padding-left: 55px!important;
+    padding-left: 10px;
     position: relative;
 }
 
@@ -1806,6 +1810,7 @@ margin-top: 40px!important;
     border-color: lightgray;
     background: #eee;
     margin-bottom: 1em;
+    padding-left: 55px;
 }
 .action_content .checkbox-label:not(.reduced_label):hover, .action_content .radio-label:hover {
     background: lightgray;
