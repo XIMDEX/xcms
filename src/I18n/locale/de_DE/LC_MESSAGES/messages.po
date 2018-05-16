@@ -5533,6 +5533,9 @@ msgstr "Neue Gruppe erstellen"
 msgid "Modify node type"
 msgstr "Knotentyp &auml;ndern"
 
+msgstr "Dependencias "
+msgstr  "Abhängigkeiten "
+
 msgid "Modify a node type"
 msgstr "Knotentyp &auml;ndern"
 

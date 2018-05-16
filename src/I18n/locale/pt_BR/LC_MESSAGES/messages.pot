@@ -5845,6 +5845,9 @@ msgstr ""
 msgid "Permits"
 msgstr ""
 
+msgid "Dependencies"
+msgstr ""
+
 msgid "Translate name"
 msgstr ""
 

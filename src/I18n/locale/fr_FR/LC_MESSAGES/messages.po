@@ -9007,6 +9007,9 @@ msgstr "Dictionnaire"
 msgid "DicValue"
 msgstr "Valeur du dictionnaire"
 
+msgid "Dependencies"
+msgstr "dépendances"
+
 msgid "Document"
 msgstr "Document"
 

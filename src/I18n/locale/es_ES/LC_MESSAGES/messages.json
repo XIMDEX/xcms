@@ -438,6 +438,7 @@
     "It has tried to call a non-existing method for this node: $node->class->updateNew for nodeid:": "Se han intentado llamar al m&eacute;todo inexistente para este nodo: $node->class->updateNew para el nodeid:",
     "Editing file": "Editando archivo",
     "Clear": "Borrar todo",
+    "Dependencies": "Dependencias",
     "Save and publish": "Guardar y publicar",
     "Modification of this template has affected to %1 documents. Would you like to republish them?": "La modificaci&oacute;n de esta plantilla ha afectado a %1 documentos. &iquest;Desea republicarlos?",
     "You are going to clear the current content. It won't be removed until you save the data. Are you sure?": "Vas a borrar el contenido actual. No ser&aacute; eliminado hasta que guardes el documento. &iquest;Est&aacute;s seguro?",

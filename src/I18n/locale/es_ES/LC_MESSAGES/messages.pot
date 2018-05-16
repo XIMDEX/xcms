@@ -998,6 +998,9 @@ msgstr ""
 msgid "Debug"
 msgstr ""
 
+msgid "Dependencies"
+msgstr ""
+
 #: /actions/composer/template/Smarty/menu_items.tpl
 msgid "View logs"
 msgstr ""

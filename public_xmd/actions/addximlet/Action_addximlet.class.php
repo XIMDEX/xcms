@@ -45,15 +45,13 @@ class Action_addximlet extends ActionAbstract
      */
     public function __construct()
     {
-
         parent::__construct();
-
     }
 
     /**
      * Main method. Build the first form in the action.
      */
-    function index()
+    public function index()
     {
         $idNode = $this->request->getParam('nodeid');
         $node = new Node($idNode);
@@ -79,6 +77,7 @@ class Action_addximlet extends ActionAbstract
             'linkable_ximlets' => $linkable_ximlets,
             'action_delete' => $actionDelete,
             'action_create' => $actionCreate,
+            'node_Type' => $node->nodeType->GetName(),
             'name' => $node->get('Name')
         );
 
@@ -89,7 +88,7 @@ class Action_addximlet extends ActionAbstract
     /**
      * Action called from index form. Add a new relation between ximlet and section;
      */
-    function createrel()
+    public function createrel()
     {
         $idNode = $this->request->getParam('id_node');
         $idXimletContainers = $this->request->getParam('idximlet');
@@ -108,8 +107,9 @@ class Action_addximlet extends ActionAbstract
         }
 
         //Build an array with all the sections to be associated.
-        if ($recursive == 'on')
+        if ($recursive == 'on') {
             $sections = array_merge($sections, $this->getDescentantSections($idNode));
+        }
 
         //Set the association for every ximlet.
         //error_log(print_r($sections, true));
@@ -220,7 +220,7 @@ class Action_addximlet extends ActionAbstract
     /**
      * Remove dependencies between the ximlet and the current section
      */
-    function deleterel()
+    public function deleterel()
     {
 
         //Getting request params.
@@ -244,8 +244,9 @@ class Action_addximlet extends ActionAbstract
         }
 
         //Build an array with all the sections to be associated.
-        if ($recursive == 'on')
+        if ($recursive == 'on') {
             $sections = array_merge($sections, $this->getDescentantSections($idNode));
+        }
         //Set the association for every ximlet.
         //error_log(print_r($ximletContainers,true));
         foreach ($ximletContainers as $idXimletContainer) {
@@ -260,7 +261,6 @@ class Action_addximlet extends ActionAbstract
 
     private function deleteRelXimletSection($sections, $idXimletContainer)
     {
-
         foreach ($sections as $sectionId) {
             $depsMngr = new DepsManager();
             $result = $depsMngr->delete(DepsManager::SECTION_XIMLET, $sectionId, $idXimletContainer);
@@ -299,5 +299,4 @@ class Action_addximlet extends ActionAbstract
             }
         }
     }
-
 }

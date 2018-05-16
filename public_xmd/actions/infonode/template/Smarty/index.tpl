@@ -28,7 +28,7 @@
     <input class="idNode" type="hidden" value="{$id_node}" />
     <input class="depUrl" type="hidden" value="{$jsonUrl}" />
     <div class="info--node">
-        <h3>{t} General info {/t}</h3>
+        <h3>{t}General info{/t}</h3>
         <div class="row">
             <div class="small-6 columns">
                 <div class="row">
@@ -78,7 +78,7 @@
             </div>
         </div>
         {if isset($info.date)}
-            <h3>{t} Properties info {/t}</h3>
+            <h3>{t}Properties info{/t}</h3>
             <div class="row">
                 <div class="small-6 columns">
                     <div class="box-content green"><strong>{t}State{/t}</strong><span
@@ -124,7 +124,7 @@
         {/if}
         <div class="row">
             <div class="small-12 columns">
-                <h3> {t}Dependencies{/t} </h3>
+                <h3>{t}Dependencies{/t}</h3>
                 <div class="graph-container">
                     <div id="graph{$id_node}" class="graph"></div>
                 </div>
