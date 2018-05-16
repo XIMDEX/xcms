@@ -388,8 +388,8 @@ fieldset {
     -webkit-border-radius: 0 12px 0 0;
     -moz-border-radius: 0 12px 0 0;
     border-radius: 0 12px 0 0;
-    height: 12%;
-    margin-bottom: -2%;
+    height: 7%;
+    /* margin-bottom: -2%; */
 }
 .action_header .buttons-form {
     float: right;
@@ -403,10 +403,10 @@ fieldset {
 }
 .action_content {
     min-width: 350px;
-    height: 88%;
+    height: 92%;
     overflow-y: auto;
     overflow-x: hidden;
-    padding: 2em 4% 2em;
+    padding: 1em 4% 1em;
     max-width: 100%;
     position: relative;
     background:#f9f9f9;
@@ -483,6 +483,8 @@ fieldset.buttons-form, div.buttonset, .ui-dialog .ui-dialog-buttonpane {
     background: none;
     text-align: right;
     /* margin-bottom: 40px; */
+    margin-right: 2%;
+    margin-left: 2%;
 }
 .positioned_btn {
     position: absolute;
@@ -1768,9 +1770,13 @@ margin-top: 40px!important;
     transform: scale(0);
 }
 
+[type="radio"] + label {
+    padding-left: 10px !important;
+}
+
 [type="checkbox"]:not(:checked) + label, [type="checkbox"]:checked + label,[type="radio"]:not(:checked) + label, [type="radio"]:checked + label {
     cursor: pointer;
-    padding-left: 55px!important;
+    padding-left: 10px;
     position: relative;
 }
 
@@ -1806,6 +1812,7 @@ margin-top: 40px!important;
     border-color: lightgray;
     background: #eee;
     margin-bottom: 1em;
+    padding-left: 55px;
 }
 .action_content .checkbox-label:not(.reduced_label):hover, .action_content .radio-label:hover {
     background: lightgray;
