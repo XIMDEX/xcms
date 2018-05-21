@@ -239,7 +239,7 @@ class DexPumper
 	private function updateStateFiles($IdBatchUp, $IdServer)
 	{
 		$table = "ServerFrames";
-		$stateToIn = " state = 'In' ";
+		$stateToIn = " state = '" . ServerFrame::IN . "' ";
 		$state_pumped = " state = 'Pumped' ";
 		$conditions = "{$state_pumped} AND IdBatchUp = '{$IdBatchUp}' AND IdServer = '{$IdServer}'";
 		$this->info("UPDATE TO  {$stateToIn} : {$conditions} ");

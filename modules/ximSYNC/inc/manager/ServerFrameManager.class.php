@@ -85,7 +85,7 @@ class ServerFrameManager
                         $id = $overlapedData['id'];
                         $overlapedFrame = new ServerFrame($id);
                         $overlapedInitialState = $overlapedData['state'];
-                        if ($overlapedInitialState == 'In' || $overlapedInitialState == 'Pumped') {
+                        if ($overlapedInitialState == ServerFrame::IN || $overlapedInitialState == 'Pumped') {
                             if (!is_null($delayed)) {
                                 
                                 // Para que resucite
@@ -130,7 +130,7 @@ class ServerFrameManager
             if (in_array($initialState, $states)) {
                 $finalState = 'Canceled';
                 $serverFrame->deleteSyncFile();
-            } elseif ($initialState == 'In' || $initialState == 'Pumped') {
+            } elseif ($initialState == ServerFrame::IN || $initialState == 'Pumped') {
                 $finalState = 'Replaced';
                 $delayedId = $this->getDelayed($serverFrameId, $server, $nodeId, $channel);
                 if (!is_null($delayedId)) {
@@ -229,7 +229,7 @@ class ServerFrameManager
 				AND NodeFrames.NodeId = $nodeId
 				AND ChannelFrames.ChannelId $channelCondition
 				AND ServerFrames.IdSync != $frameId
-				AND (ServerFrames.State = 'In' OR ServerFrames.State = 'Due2In'
+				AND (ServerFrames.State = '" . ServerFrame::IN . "' OR ServerFrames.State = 'Due2In'
 					OR ServerFrames.State = 'Due2In_' OR ServerFrames.State = 'Canceled' OR ServerFrames.State = 'Pumped')";
         $overlaped = array();
         $i = 0;

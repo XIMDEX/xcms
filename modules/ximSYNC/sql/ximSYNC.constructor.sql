@@ -152,7 +152,7 @@ CREATE TABLE `ServerFrames` (
   KEY `IdServer` (`IdServer`),
   KEY `PumperId` (`PumperId`),
   KEY `IdChannelFrame` (`IdChannelFrame`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='XimDEX Table Synchronization';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='XimDEX Table Synchronization';
 
 ALTER TABLE `ServerFrames` ADD `cache` BOOLEAN NOT NULL DEFAULT TRUE;
 ALTER TABLE `ServerFrames` ADD `IdBatchDown` INT(12) UNSIGNED NULL DEFAULT NULL, ADD INDEX (`IdBatchDown`);

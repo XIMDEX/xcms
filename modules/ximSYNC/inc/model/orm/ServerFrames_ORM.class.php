@@ -70,5 +70,5 @@ class ServerFrames_ORM extends \Ximdex\Data\GenericData
     var $cache;
     var $NodeId;
     var $ChannelId;
-    var $IdBatchUDown = null;
+    var $IdBatchDown = null;
 }

@@ -360,7 +360,7 @@ class NodeFrameManager
 				}
 
 				// Deleting (or unpublish) serverFrame
-				if ($state == 'In' && $unPublish == true) {
+				if ($state == ServerFrame::IN && $unPublish == true) {
 					Logger::info("Do not delete ServerFrame $idServerFrame - setting it to Due2Out to be unpublished");
 					$idBatchUp = $serverFrame->get('IdBatchUp');
 					$arrayAffectedBatchs[$idBatchUp] = (!isset($arrayAffectedBatchs[$idBatchUp])) ? 1 : $arrayAffectedBatchs[$idBatchUp] ++;

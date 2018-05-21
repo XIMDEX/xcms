@@ -33,11 +33,11 @@ use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
 use Ximdex\Utils\PipelineManager;
 
-\Ximdex\Modules\Manager::file('/inc/model/orm/ServerFrames_ORM.class.php', 'ximSYNC');
-\Ximdex\Modules\Manager::file('/inc/model/ChannelFrame.class.php', 'ximSYNC');
-\Ximdex\Modules\Manager::file('/inc/model/NodeFrame.class.php', 'ximSYNC');
-\Ximdex\Modules\Manager::file('/conf/synchro_conf.php', 'ximSYNC');
-\Ximdex\Modules\Manager::file('/inc/model/PublishingReport.class.php', 'ximSYNC');
+Ximdex\Modules\Manager::file('/inc/model/orm/ServerFrames_ORM.class.php', 'ximSYNC');
+Ximdex\Modules\Manager::file('/inc/model/ChannelFrame.class.php', 'ximSYNC');
+Ximdex\Modules\Manager::file('/inc/model/NodeFrame.class.php', 'ximSYNC');
+Ximdex\Modules\Manager::file('/conf/synchro_conf.php', 'ximSYNC');
+Ximdex\Modules\Manager::file('/inc/model/PublishingReport.class.php', 'ximSYNC');
 
 /**
  * @brief Handles operations with ServerFrames.
@@ -59,7 +59,8 @@ class ServerFrame extends ServerFrames_ORM
     const CANCELED = 'Canceled';
     const DUE2INWITHERROR = 'Due2InWithError';
     const DUE2OUTWITHERROR = 'Due2OutWithError';
-
+    const OUTDATED = 'Outdated';
+    
     public $initialStatus;
     public $errorStatus;
     public $finalStatus;
@@ -235,7 +236,7 @@ class ServerFrame extends ServerFrames_ORM
         $dbObj = new \Ximdex\Runtime\Db();
         $sql = "SELECT ServerFrames.IdSync FROM ServerFrames, NodeFrames WHERE ServerFrames.IdNodeFrame =
 			NodeFrames.IdNodeFrame AND NodeFrames.NodeId = $nodeID AND ServerFrames.IdServer = $serverID AND
-			(ServerFrames.State='IN' OR ServerFrames.State='Pumped')";
+			(ServerFrames.State = '" . ServerFrame::IN . "' OR ServerFrames.State = 'Pumped')";
         $dbObj->Query($sql);
         if ($dbObj->numRows > 0) {
             return $dbObj->GetValue("IdSync");
@@ -443,18 +444,20 @@ class ServerFrame extends ServerFrames_ORM
                     $progress[$idServer]['percentBatchCompleted'] = 0;
                 }
                 $progress['total']['totalBatchSize'] += $fileSize;
-                $progress['total']['totalBatchSizeCompleted'] += ($dbObj->GetValue("State") == 'In' || $dbObj->GetValue("State") == 'Out' 
+                $progress['total']['totalBatchSizeCompleted'] += ($dbObj->GetValue("State") == ServerFrame::IN || $dbObj->GetValue("State") == 'Out' 
                     || $dbObj->GetValue("State") == 'Removed' || $dbObj->GetValue("State") == 'Replaced' 
                     || $dbObj->GetValue("State") == 'Pumped') ? $fileSize : 0;
-                $progress['total']['totalBatchCompleted'] += ($dbObj->GetValue("State") == 'In' || $dbObj->GetValue("State") == 'Out' 
+                $progress['total']['totalBatchCompleted'] += ($dbObj->GetValue("State") == ServerFrame::IN || $dbObj->GetValue("State") == 'Out' 
                     || $dbObj->GetValue("State") == 'Removed' || $dbObj->GetValue("State") == 'Replaced' 
                     || $dbObj->GetValue("State") == 'Pumped') ? 1 : 0;
                 $progress['total']['totalBatch'] ++;
                 $progress[$idServer]['totalBatchSize'] += $fileSize;
-                $progress[$idServer]['totalBatchSizeCompleted'] += ($dbObj->GetValue("State") == 'In' || $dbObj->GetValue("State") == 'Out' 
+                $progress[$idServer]['totalBatchSizeCompleted'] += ($dbObj->GetValue("State") == ServerFrame::IN
+                    || $dbObj->GetValue("State") == 'Out' 
                     || $dbObj->GetValue("State") == 'Removed' || $dbObj->GetValue("State") == 'Replaced' 
                     || $dbObj->GetValue("State") == 'Pumped') ? $fileSize : 0;
-                $progress[$idServer]['totalBatchCompleted'] += ($dbObj->GetValue("State") == 'In' || $dbObj->GetValue("State") == 'Out' 
+                $progress[$idServer]['totalBatchCompleted'] += ($dbObj->GetValue("State") == ServerFrame::IN 
+                    || $dbObj->GetValue("State") == 'Out' 
                     || $dbObj->GetValue("State") == 'Removed' || $dbObj->GetValue("State") == 'Replaced' 
                     || $dbObj->GetValue("State") == 'Pumped') ? 1 : 0;
                 $progress[$idServer]['totalBatch'] ++;
@@ -542,8 +545,8 @@ class ServerFrame extends ServerFrames_ORM
         }
         $sql = sprintf("SELECT IdSync " . "FROM ServerFrames sf " . "INNER JOIN ChannelFrames c ON c.IdChannelFrame = sf.IdChannelFrame " 
             . "WHERE c.NodeId = " . $nodeID . " " . $channelClause . "AND sf.DateUp < %s AND (sf.DateDown > %s OR sf.DateDown IS NULL) " 
-            . "AND sf.State IN ('In', 'Due2In_', 'Due2In', 'Due2Pumped', 'Pumped', 'Replaced', 'Removed') " . "AND sf.IdServer IN (%s)"
-            , $now, $now, implode(', ', $physicalServers));
+            . "AND sf.State IN ('" . ServerFrame::IN . "', 'Due2In_', 'Due2In', 'Due2Pumped', 'Pumped', 'Replaced', 'Removed') " 
+            . "AND sf.IdServer IN (%s)", $now, $now, implode(', ', $physicalServers));
         $sql .= ' ORDER BY IdSync DESC LIMIT 1';
         Logger::info("[GETCURRENT]: Getting current frame for node " . $nodeID);
         $dbObj = new \Ximdex\Runtime\Db();
@@ -594,7 +597,7 @@ class ServerFrame extends ServerFrames_ORM
         $sql .= " IdChannelFrame = $channelID AND DateUp < $now ";
         $sql .= " AND ServerFrames.IdServer = $serverID ";
         $sql .= " AND IdNodeFrame = $frameId ";
-        $sql .= " AND (DateDown > $now OR DateDown IS NULL) AND State = 'In'";
+        $sql .= " AND (DateDown > $now OR DateDown IS NULL) AND State = '" . ServerFrame::IN . "'";
         $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->Query($sql);
         $path = $dbObj->GetValue("RemotePath");

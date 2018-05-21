@@ -24,6 +24,7 @@
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
+
 namespace Ximdex\Sync;
 
 use Ximdex\Runtime\App;
@@ -41,12 +42,10 @@ use Ximdex\Models\StructuredDocument;
 use Ximdex\Utils\FsUtils;
 use Ximdex\Logger;
 
-
-
+\Ximdex\Modules\Manager::file('/inc/model/ServerFrame.class.php', 'ximSYNC');
 
 class Synchronizer
 {
-
     var $dbObj;
     var $nodeID;
     var $frameID;
@@ -63,7 +62,6 @@ class Synchronizer
         8 => 'Frames cannot overlap',
         9 => 'Document language is not enabled'
     );
-
 
     /// *************************************************************************
     /// CONSTRUCTOR METHODS, GET AND SET OF THE WINDOW LOADED IN THE OBJECT
@@ -311,7 +309,7 @@ class Synchronizer
 
                         // Don't deletes frame if have to unpublish document
 
-                        if ($state == 'In') {
+                        if ($state == ServerFrame::IN) {
                             Logger::info("Don't delete serverFrame $frameID - settig Due2Out for unpublish");
 
                             $dbUp = new \Ximdex\Runtime\Db();
@@ -1811,7 +1809,7 @@ class Synchronizer
         $sql .= " IdChannel = $channelID AND DateUp < $now ";
         $sql .= " AND IdServer = $serverID ";
         $sql .= " AND IdNode = $nodeid ";
-        $sql .= " AND (DateDown > $now OR DateDown IS NULL) AND State = 'In' ";
+        $sql .= " AND (DateDown > $now OR DateDown IS NULL) AND State = '" . ServerFrame::IN . "' ";
 
         $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->Query($sql);

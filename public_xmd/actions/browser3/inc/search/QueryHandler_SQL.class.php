@@ -24,22 +24,18 @@
  *  @version $Revision$
  */
 
-
 use Ximdex\Models\Node;
 
 require_once(__DIR__ . '/QueryHandler_Abstract.class.php');
 
-class QueryHandler_SQL extends QueryHandler_Abstract {
-
-	protected function recordsetToArray($rset) {
-
+class QueryHandler_SQL extends QueryHandler_Abstract
+{
+	protected function recordsetToArray($rset)
+	{
 		$array = array();
-
 		while (!$rset->EOF) {
-
 		    $nodeId = $rset->getValue('IdNode');
 			$node = new Node($nodeId);
-
 			if ($node->getID() !== null) {
 				$record = array();
 				$record['nodeid']               = $nodeId;
@@ -52,7 +48,8 @@ class QueryHandler_SQL extends QueryHandler_Abstract {
 				$record['isdir']                = $node->nodeType->isFolder();
 				$record['icon']                 = $node->getIcon();
 				$record['children']             = count($node->getChildren());
-				$record['abspath']              = str_replace("Project","Proyecto" , sprintf('%s/%s', $rset->getValue('Path'), $rset->getValue('Name')) );
+				$record['abspath']              = str_replace("Project","Proyecto" , sprintf('%s/%s', $rset->getValue('Path')
+				    , $rset->getValue('Name')) );
 				$record['creation']             = $node->get('CreationDate');
 				$record['creationformated']     = date('d/m/Y', $record['creation']);
 				$record['modification']         = $node->get('ModificationDate');
@@ -65,43 +62,35 @@ class QueryHandler_SQL extends QueryHandler_Abstract {
 				$record['versiondateformated']  = $record['versionid'] > 0 ? date('d/m/Y', $record['versiondate']) : '';
 				$array[] = $record;
 			}
-
 			$rset->next();
 		}
-
 		return $array;
 	}
 
-	protected function doSearch($query, &$options, $records) {
-
+	protected function doSearch($query, &$options, $records)
+	{
 		$options['items'] = isset($options['items']) ? $options['items'] : self::ITEMS_PER_PAGE;
 		$options['items'] = $options['items'] >= 1 ? $options['items'] : 1;
 		$options['page'] = isset($options['page']) ? $options['page'] : 1;
 		$options['page'] = $options['page'] >= 1 ? $options['page'] : 1;
-
 		$pages = ceil($records / $options['items']);
 		$offset = ($options['page'] - 1) * $options['items'];
-
 		if (isset($options['low_limit'])
 			&& isset($options['high_limit'])
 			&& $options['low_limit'] >= 0
 			&& $options['high_limit'] > 0) {
-
 			$query .= sprintf(' limit %s, %s', $options['low_limit'], $options['high_limit']);
 		} else {
 			$query .= sprintf(' limit %s, %s', $offset, $options['items']);
-
 		}
-
-		// if there is no filters return empty set
+		
+		// If there is no filters return empty set
 		if (empty($this->filters)) {
 			return array('records' => 0, 'items' => 0, 'page' => 1, 'data' => array());
 		}
-//debug::log($query);
 		$rset = new \Ximdex\Runtime\Db();
 		$rset->query($query);
 		$rset = $this->recordsetToArray($rset);
-
 		$result = array(
 			'records' => $records,
 			'items' => $options['items'],
@@ -109,40 +98,35 @@ class QueryHandler_SQL extends QueryHandler_Abstract {
 			'pages' => $pages,
 			'data' => $rset
 		);
-
 		return $result;
 	}
 
-
-	public function count($query) {
+	public function count($query)
+	{
 		$options = $this->getQueryOptions($query);
 		$query = $this->createQuery($options);
 		$rset = new \Ximdex\Runtime\Db();
 		$countQuery = preg_replace('/^select\s(.+?)\sfrom/ims', 'select count(1) as records from', $query);
 		$countQuery = preg_replace('/\sorder\sby\s(.+?)$/ims', '', $countQuery);
-//debug::log($query, $countQuery);
 		$rset->query($countQuery);
 		$records = $rset->getValue('records');
-
 		return $records;
 	}
 
-	protected function createQuery(&$options) {
-
+	protected function createQuery(&$options)
+	{
 		$this->select = array();
 		$this->joins = array();
 		$this->where = array();
 		$this->filters = array();
 		$this->order = array();
 		$this->limit = array();
-
 		$options['parentid'] = isset($options['parentid']) ? $options['parentid'] : 1;
 		$options['parentid'] = $options['parentid'] >= 1 ? $options['parentid'] : 1;
 		$options['depth'] = isset($options['depth']) ? $options['depth'] : 0;
 		$options['depth'] = $options['depth'] >= 1 ? $options['depth'] : 0;
-
-		$this->select[] = "distinct n.IdNode, n.*, t.name as NodeTypeName, v.IdVersion, v.Version, v.SubVersion, concat(v.Version, '.', v.SubVersion) as VersionNumber,
-							v.Date as VersionDate";
+		$this->select[] = "distinct n.IdNode, n.*, t.name as NodeTypeName, v.IdVersion, v.Version, v.SubVersion, 
+            concat(v.Version, '.', v.SubVersion) as VersionNumber, v.Date as VersionDate";
 		$this->joins[] = 'FastTraverse ft left join Nodes n on ft.idChild = n.idNode left join NodeTypes t on n.IdNodeType=t.IdNodeType';
 		$this->joins[] = 'left join
 						(select v.IdNode, max(IdVersion) as IdVersion, max(v.Version) as Version, max(v.SubVersion) as SubVersion,
@@ -154,32 +138,27 @@ class QueryHandler_SQL extends QueryHandler_Abstract {
 		if ($options['depth'] > 0) {
 			$this->where[] = sprintf('ft.depth <= %s', $options['depth']);
 		}
-
 		$this->createFilters($options['filters']);
 		$this->createSorts($options['sorts']);
-
-
 		$this->select = array_unique($this->select);
 		$this->joins = array_unique($this->joins);
 		$this->where = array_unique($this->where);
 		$this->filters = array_unique($this->filters);
 		$this->order = array_unique($this->order);
 		$this->limit = array_unique($this->limit);
-
-
 		$query = sprintf(
 			'select %s from %s where %s %s %s',
 			implode(', ', $this->select),
 			implode(' ', $this->joins),
 			implode(' and ', $this->where),
-//			implode(" {$options['condition']} ", $this->filters),
 			(count($this->filters) == 0 ? '' : sprintf(' and (%s)', implode(" {$options['condition']} ", $this->filters))),
 			(count($this->order) == 0 ? '' : ' order by ' . implode(', ', $this->order))
 		);
 		return $query;
 	}
 
-	protected function createSorts($sorts) {
+	protected function createSorts($sorts)
+	{
 		foreach ($sorts as $sort) {
 			switch ($sort['field']) {
 				case 'nodeid':
@@ -207,10 +186,9 @@ class QueryHandler_SQL extends QueryHandler_Abstract {
 		}
 	}
 
-	protected function createFilters($filters) {
-
+	protected function createFilters($filters)
+	{
 		foreach ($filters as $filter) {
-
 			$field = $filter['field'];
 			$comp = $filter['comparation'];
 			$cont = isset($filter['content']) ? $filter['content'] : null;
@@ -221,85 +199,63 @@ class QueryHandler_SQL extends QueryHandler_Abstract {
 				case 'nodeid':
 					$this->filters[] = sprintf('(n.IdNode %s)', $this->createComparation($comp, array($cont)));
 					break;
-
 				case 'name':
 					$this->filters[] = sprintf('(n.Name %s)', $this->createComparation($comp, array($cont)));
 					break;
-
 				case 'path':
-					$this->filters[] = sprintf("(replace(concat(n.Path, '/', n.Name), '/ximDEX', '') %s)", $this->createComparation($comp, array($cont)));
+					$this->filters[] = sprintf("(replace(concat(n.Path, '/', n.Name), '/ximDEX', '') %s)"
+					    , $this->createComparation($comp, array($cont)));
 					break;
-
 				case 'parentid':
 					$this->filters[] = sprintf('(n.IdParent %s)', $this->createComparation($comp, array($cont)));
 					break;
-
 				case 'content':
 					break;
-
 				case 'nodetype':
 					$this->filters[] = sprintf('(n.IdNodeType %s)', $this->createComparation($comp, array($cont)));
 					break;
-
 				case 'nodetypeset':
-
 					break;
-
 				case 'creation':
 				case 'fechaalta':
-
 					$conditions = array();
-
 					$conditions[] = sprintf(
 						"unix_timestamp(date_format(from_unixtime(n.CreationDate), '%%Y%%m%%d')) %s",
 						$this->createComparation($comp, array($this->mktime($cont), $this->mktime($to)))
 					);
-
 					$this->filters[] = sprintf(
 						'(%s)',
 						implode(' and ', $conditions)
 					);
-
 					break;
-
 				case 'publication':
-
 					$conditions = array();
-
 					$this->joins[] = 'left join NodeFrames nf on nf.NodeId = n.IdNode left join ServerFrames sf using(IdNodeFrame)';
-
 					$conditions[] = sprintf(
 						"unix_timestamp(date_format(from_unixtime(sf.DateUp), '%%Y%%m%%d')) %s",
 						$this->createComparation($comp, array($this->mktime($cont), $this->mktime($to)))
 					);
+					
 					// Si publicado
-					$conditions[] = sprintf("sf.State in ('In', 'Replaced', 'Removed')");
-					// else
-//					$this->filters[] = sprintf("sf.State = 'Out'");
-
+					$conditions[] = sprintf("sf.State in ('" . ServerFrame::IN . "', 'Replaced', 'Removed')");
 					$conditions[] = sprintf(
 						'(%s)',
 						implode(' and ', $conditions)
 					);
-
 					break;
 
 				case 'categoria':
 					$conditions = array();
-
 					$this->joins[] = 'left join StructuredDocuments sd on sd.IdDoc = n.IdNode left join Nodes nsd on sd.IdTemplate = nsd.IdNode';
-
 					$conditions[] = sprintf(
 						"nsd.Name %s",
 						$this->createComparation($comp, array($cont))
 					);
-
 					$this->filters[] = sprintf(
 						'(%s)',
 						implode(' and ', $conditions)
 					);
 					break;
-
 				case 'tag':
 				    $conditions = array();
 					$this->joins[] = 'left join RelSemanticTagsNodes rtn on rtn.Node = n.IdNode 
@@ -309,16 +265,13 @@ class QueryHandler_SQL extends QueryHandler_Abstract {
 							"xt.Name %s",
 							$this->createComparation($comp, array($cont))
 						);
-
 						$this->filters[] = sprintf(
 							'(%s)',
 							implode(' and ', $conditions)
 						);
 					break;
-
 				case 'versioned':
 					$conditions = array();
-
 					$conditions[] = sprintf(
 						"unix_timestamp(date_format(from_unixtime(v.Date), '%%Y%%m%%d')) %s",
 						$this->createComparation($comp, array($this->mktime($cont), $this->mktime($to)))
@@ -342,17 +295,16 @@ class QueryHandler_SQL extends QueryHandler_Abstract {
 		}
 	}
 
-	protected function createComparation($comp, $values=array()) {
-
+	protected function createComparation($comp, $values = array())
+	{
 		$str = '';
 		for ($i=0; $i<count($values); $i++) {
+		    
 			// Escape special chars and wildcards
 			if (!is_string($values[$i])) continue;
 			$values[$i] = addslashes(stripslashes($values[$i]));
 			$values[$i] = str_replace('%', '\%', $values[$i]);
-//			$values[$i] = str_replace('_', '\_', $values[$i]);
 		}
-
 		switch ($comp) {
 			case 'contains':
 				$str = sprintf("like '%%%s%%'", $values[0]);
@@ -385,10 +337,6 @@ class QueryHandler_SQL extends QueryHandler_Abstract {
 				$str = sprintf("in (%s)", implode(', ', $values[0]));
 				break;
 		}
-
 		return $str;
 	}
-
 }
-
-?>

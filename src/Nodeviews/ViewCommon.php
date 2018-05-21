@@ -23,7 +23,6 @@
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
-
 namespace Ximdex\Nodeviews;
 
 use Ximdex\Logger;
@@ -33,36 +32,36 @@ use Ximdex\Runtime\App;
 
 class ViewCommon extends AbstractView implements IView
 {
+
     private $_filePath;
 
     function transform($idVersion = NULL, $pointer = NULL, $args = NULL)
     {
-        if (!$this->_setFilePath($idVersion, $args))
+        if (! $this->_setFilePath($idVersion, $args))
             return NULL;
-
-        if (!is_file($this->_filePath)) {
+        
+        if (! is_file($this->_filePath)) {
             Logger::error('VIEW COMMON: Se ha solicitado cargar un archivo inexistente. FilePath: ' . $this->_filePath);
             return NULL;
         }
-
-        if (!array_key_exists('REPLACEMACROS', $args)) {
+        
+        if (! array_key_exists('REPLACEMACROS', $args)) {
             return $pointer;
         }
-
+        
         // Replaces macros in content
         $content = $this->retrieveContent($this->_filePath);
-
-
+        
         $linksManager = new LinksManager();
         $content = $linksManager->removeDotDot($content);
         $content = $linksManager->removePathTo($content);
-
+        
         return $this->storeTmpContent($content);
     }
 
     private function _setFilePath($idVersion = NULL, $args = array())
     {
-        if (!is_null($idVersion)) {
+        if (! is_null($idVersion)) {
             $version = new Version($idVersion);
             $file = $version->get('File');
             $this->_filePath = XIMDEX_ROOT_PATH . App::getValue('FileRoot') . '/' . $file;
@@ -72,12 +71,12 @@ class ViewCommon extends AbstractView implements IView
                 $this->_filePath = $args['FILEPATH'];
             }
             // Check Params:
-            if (!isset($this->_filePath) || $this->_filePath == "") {
+            if (! isset($this->_filePath) || $this->_filePath == "") {
                 Logger::error('VIEW COMMON: No se ha especificado la version ni el path del fichero correspondiente al nodo ' . $args['NODENAME'] . ' que quiere renderizar');
                 return NULL;
             }
         }
-
+        
         return true;
     }
 }

@@ -128,7 +128,7 @@ class BatchManager
                 continue;
             }
 
-            // We up version if tha current version to publish it is a draft or if the current version is 0.0 and the node is the generator node.
+            // We up version if the current version to publish it is a draft or if the current version is 0.0 and the node is the generator node.
             // Or is a image / binary file
             if ($subversionToPublish != 0 || ($subversionToPublish == 0 && $versionToPublish == 0 && ($idDoc == $idNode or 
                 $docNode->GetNodeType() == NodeTypeConstants::IMAGE_FILE or $docNode->GetNodeType() == NodeTypeConstants::BINARY_FILE)))
@@ -515,9 +515,10 @@ class BatchManager
         $dbObj = new \Ximdex\Runtime\Db();
 
         // Ending batchs type UP
-        $sql = "SELECT ServerFrames.IdBatchUp, SUM(IF(ServerFrames.State='Due2PumpedWithError',1,0)) AS Errors, 
-			SUM(IF(ServerFrames.State IN ('In','Canceled','Removed','Replaced','Outdated'),1,0)) AS Success, 
-			SUM(IF(ServerFrames.State IN ('Pumped'),1,0)) AS Pumpeds, 
+        $sql = "SELECT ServerFrames.IdBatchUp, SUM(IF(ServerFrames.State = 'Due2PumpedWithError', 1, 0)) AS Errors, 
+			SUM(IF (ServerFrames.State IN ('" . ServerFrame::IN . "', '" . ServerFrame::CANCELED . "', '" . ServerFrame::REMOVED . "', '" 
+			. ServerFrame::REPLACED . "', '" . ServerFrame::OUTDATED . "'), 1, 0)) AS Success, 
+			SUM(IF (ServerFrames.State IN ('Pumped'),1,0)) AS Pumpeds, 
 			COUNT(ServerFrames.IdSync) AS Total FROM ServerFrames, Batchs WHERE Batchs.State IN ('" . Batch::INTIME . "', 
             '" . Batch::CLOSING . "') AND (Batchs.IdBatch = ServerFrames.IdBatchUp OR Batchs.IdBatch = ServerFrames.IdBatchDown) 
             GROUP BY ServerFrames.IdBatchUp HAVING Total = Errors + Success + Pumpeds";
@@ -676,7 +677,7 @@ class BatchManager
         // All the batchs of this portal version are closed
         $serverFrame = new ServerFrame();
         $nodeFrames = $serverFrame->find('DISTINCT(IdNodeFrame)', 'IdServer IN (%s) AND State = %s',
-            array('IdServer' => implode(',', $physicalServers), 'State' => 'IN'), MONO);
+            array('IdServer' => implode(',', $physicalServers), 'State' => ServerFrame::IN), MONO);
         if (($nodeFrames != null) && (is_array($nodeFrames))) {
             foreach ($nodeFrames as $nodeFrameId) {
                 $relFramePortal = new \Ximdex\Models\RelFramesPortal();
