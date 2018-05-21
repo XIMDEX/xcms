@@ -58,7 +58,7 @@ CREATE TABLE `Batchs` (
 CREATE TABLE `ChannelFrames` (
   `IdChannelFrame` int(12) unsigned NOT NULL auto_increment,
   `ChannelId` int(12) unsigned default '0',
-  `NodeId` int(12) unsigned default '0'
+  `NodeId` int(12) unsigned default '0',
   PRIMARY KEY  (`IdChannelFrame`),
   KEY `ChannelId` (`ChannelId`),
   KEY `NodeId` (`NodeId`)
