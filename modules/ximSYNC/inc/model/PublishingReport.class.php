@@ -64,7 +64,9 @@ class PublishingReport extends PublishingReport_ORM
         'Replaced' => '100',
         'Removed' => '100',
         'Error' => '100',
-        'Warning' => '100'
+        'Warning' => '100',
+        'Due2InWithError' => '100',
+        'Due2OutWithError' => '100'
     );
 
     function create($idSection, $idNode, $idChannel, $idSyncServer, $idPortalVersion

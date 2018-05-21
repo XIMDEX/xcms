@@ -490,9 +490,6 @@ class GenericData
             return false;
         }
         $result = array();
-        if (!$dbObj->numRows) {
-            return $result;
-        }
         while (!$dbObj->EOF) {
             if (MULTI == $returnType) {
                 $subResult = array();
@@ -805,8 +802,7 @@ class GenericData
         reset($this->_metaData);
         $arrayFields = array();
         $arrayValues = array();
-        while (list($field, $descriptors) = each($this->_metaData))
-        {
+        while (list($field, $descriptors) = each($this->_metaData)) {
             if (isset($descriptors['auto_increment']) && ('true' == $descriptors['auto_increment'])) {
                 continue;
             }
@@ -815,29 +811,31 @@ class GenericData
         }
         $query = "SELECT $idName FROM {$this->_table} WHERE 1 = 1";
         $i = 0;
-        foreach ($arrayFields as $field)
-        {
-            if ($field == $idName)
+        foreach ($arrayFields as $field) {
+            if ($field == $idName) {
                 continue;
-            if ($arrayValues[$i] === null)
+            }
+            if ($arrayValues[$i] === null) {
                 $query .= ' and ' . $field . ' is null';
-            else
+            }
+            else {
                 $query .= ' and ' . $field . ' = ' . $arrayValues[$i];
+            }
             $i++;
         }
-        if (!$this->_checkDataIntegrity())
-        {
+        if (!$this->_checkDataIntegrity()) {
             Logger::error('Integrity errors found while executing a SQL query (' . $query . ')');
-            foreach ($this->messages->messages as $message)
+            foreach ($this->messages->messages as $message) {
                 Logger::error($message['message']);
+            }
             return false;
         }
         $res = $this->query($query);
-        if ($res === false)
+        if ($res === false) {
             return false;
-        if ($res)
-        {
-            return $res[$idName];
+        }
+        if (isset($res[0][$idName])) {
+            return $res[0][$idName];
         }
         return null;
     }
@@ -850,4 +848,9 @@ class GenericData
             return $this->call__($method, $params);
         }
     }
-}   
+    
+    public function loader(string $id) : void
+    {
+        $this->__construct($id);
+    }
+}

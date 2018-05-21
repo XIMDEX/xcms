@@ -27,11 +27,7 @@
 	<input type="hidden" name="nodeid" value="{$id_node}" />
 	<input type="hidden" name="default_message" value="{$defaultMessage}">
 	<input type="hidden" name="groupid" value="" />
-	<div class="action_header">
-	    <h5 class="direction_header"> Name Node: {$name} (ID Node: {$nodeid})</h5>
-        <hr />
-        <h5>{t}You have selected to publish contents of {/t} <strong>{$node_name}</strong></h5>
-	</div>
+	{include file="actions/components/title_Description.tpl"}
 	{if $hasDisabledFunctions}
 		<div class="message message-warning">
 			<p class="disable-functions-alert">

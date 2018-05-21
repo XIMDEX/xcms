@@ -1002,28 +1002,6 @@ class DataFactory
         return false;
     }
 
-    /**
-     * Si la version de la noticia en el colector la publicada devuelve false
-     * 
-     * @param $versionInColector
-     * @return boolean
-     */
-    function isEditedForPublishing($versionInColector)
-    {
-        if (empty($versionInColector)) {
-            Logger::error("NOT VERSSION IN COLECTOR");
-            return false;
-        }
-        $publishedIdVersion = $this->GetPublishedIdVersion();
-        $idVersionInColector = $this->getVersionId($versionInColector[0], $versionInColector[1]);
-        if ($publishedIdVersion == $idVersionInColector &&
-            SynchroFacade::isNodePublishedInAllActiveServer($this->nodeID)
-        ) {
-            return false;
-        }
-        return true;
-    }
-
     function GetLastVersionId()
     {
         $dbObj = new \Ximdex\Runtime\Db();

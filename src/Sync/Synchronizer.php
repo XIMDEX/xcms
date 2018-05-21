@@ -712,7 +712,7 @@ class Synchronizer
 
     // Function which deletes all the publication frames from a determined date
     // If this date is not provided, all frames from present will be deleted
-    function DeleteFramesFromNow($nodeid, $ximIO = null, $dateDown = null)
+    function deleteFramesFromNow($nodeid, $ximIO = null, $dateDown = null)
     {
 
         $node = new Node($nodeid);

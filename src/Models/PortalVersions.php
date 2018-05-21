@@ -31,11 +31,6 @@ use Ximdex\Models\ORM\PortalVersionsOrm;
 
 class PortalVersions extends PortalVersionsOrm
 {
-    function __construct($id = null)
-    {
-        parent::__construct($id);
-    }
-
     function upPortalVersion($portalId)
     {
         $portalVersion = $this->getLastVersion($portalId);

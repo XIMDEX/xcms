@@ -329,6 +329,8 @@ class BatchManager
                 $nfr->set('IsProcessUp', 0);
                 $nfr->set('IsProcessDown', 0);
                 $nfr->set('Active', 0);
+                $nfr->set('TimeUp', $up);
+                $nfr->set('TimeDown', $down);
                 $nfr->update();
             }
             if (is_null($nodeFrameId)) {
@@ -398,7 +400,8 @@ class BatchManager
                         $path = $node->GetPublishedPath($channelId);
                         $publishLinked = 1;
                         $idFrame = $serverFrame->create($idNode, $physicalServer, $up, $path, $name, $publishLinked, $nodeFrameId
-                            , $channelFrameId, $idBatch, $down, 0, isset($noCache[$idNode]) ? false : true);
+                            , ($channelId === 'NULL') ? null : $channelId , $channelFrameId, $idBatch, $down, 0
+                            , isset($noCache[$idNode]) ? false : true);
                     }
                     if (is_null($idFrame)) {
                         Logger::warning(sprintf("Creation of ServerFrame could not be done: node %s, channel %s, batch %s", $idNode
@@ -435,8 +438,6 @@ class BatchManager
         // Updating num serverFrames in Batchs
         $allBatchs = array_values($relBatchsServers);
         $tt = implode(',', $allBatchs);
-        $result = array();
-        $serverFrame = new ServerFrame();
         $result = $serverFrame->find('IdBatchUp, count(IdSync)', "IdBatchUp in ($tt) group by IdBatchUp", NULL, MULTI, false);
         Logger::info(sprintf("The number of frames in %s batchs will be updated", count($result)));
         if (count($result) > 0) {
@@ -491,8 +492,9 @@ class BatchManager
     {
         // NOTE: See setBatchsActiveOrEnded and getBatchToProcess
         // Ensure that batchs have frames or getBatchToProcess will return the same batch over and over
-        $sql = "update Batchs set State = 'NoFrames' where idbatch not in (select distinct idbatchup from ServerFrames)";
-        $sql .= " and Batchs.State IN ('InTime','Closing')";
+        $sql = "update Batchs set State = 'NoFrames', Playing = false ";
+        $sql .= 'where idbatch not in (select distinct IdBatchUp from ServerFrames) and idbatch not in (select distinct IdBatchDown ';
+        $sql .= "from ServerFrames) and Batchs.State IN ('" . Batch::INTIME . "', '" . Batch::CLOSING . "')";
         $db = new \Ximdex\Runtime\Db();
         if ($db->execute($sql) === false) {
         	return false;
@@ -513,13 +515,15 @@ class BatchManager
         $dbObj = new \Ximdex\Runtime\Db();
 
         // Ending batchs type UP
-        $sql = "SELECT ServerFrames.IdBatchUp, SUM(IF(ServerFrames.State='Due2PumpedWithError',1,0)) AS Errors,
-			SUM(IF(ServerFrames.State IN ('In','Canceled','Removed','Replaced','Outdated'),1,0)) AS Success,
-			SUM(IF(ServerFrames.State IN ('Pumped'),1,0)) AS Pumpeds,
-			COUNT(ServerFrames.IdSync) AS Total FROM ServerFrames, Batchs WHERE Batchs.State IN ('InTime','Closing') AND
-			Batchs.IdBatch = ServerFrames.IdBatchUp GROUP BY ServerFrames.IdBatchUp HAVING Total = Errors + Success + Pumpeds";
-     	if ($dbObj->Query($sql) === false)
+        $sql = "SELECT ServerFrames.IdBatchUp, SUM(IF(ServerFrames.State='Due2PumpedWithError',1,0)) AS Errors, 
+			SUM(IF(ServerFrames.State IN ('In','Canceled','Removed','Replaced','Outdated'),1,0)) AS Success, 
+			SUM(IF(ServerFrames.State IN ('Pumped'),1,0)) AS Pumpeds, 
+			COUNT(ServerFrames.IdSync) AS Total FROM ServerFrames, Batchs WHERE Batchs.State IN ('" . Batch::INTIME . "', 
+            '" . Batch::CLOSING . "') AND (Batchs.IdBatch = ServerFrames.IdBatchUp OR Batchs.IdBatch = ServerFrames.IdBatchDown) 
+            GROUP BY ServerFrames.IdBatchUp HAVING Total = Errors + Success + Pumpeds";
+        if ($dbObj->Query($sql) === false) {
         	return false;
+        }
         while (!$dbObj->EOF) {
             $idBatch = $dbObj->GetValue("IdBatchUp");
             $errors = $dbObj->GetValue("Errors");
@@ -535,13 +539,13 @@ class BatchManager
                 $batch->BatchToLog($idBatch, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__,
                     __LINE__, "INFO", 8, sprintf(_("Setting 'Closing' state to %s batch %d UP"), $prevState, $idBatch));
             } else {
-                $batch->set('State', 'Ended');
+                $batch->set('State', Batch::ENDED);
                 $batch->BatchToLog($idBatch, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__,
                     __LINE__, "INFO", 8, sprintf(_("Ending %s  batch %d UP"), $prevState, $idBatch));
                 Logger::info("Ending up batch with id " . $idBatch);
             }
             $batch->update();
-            if ($batch->get('State') == 'Ended') {
+            if ($batch->get('State') == Batch::ENDED) {
                 $this->setPortalRevision($idBatch);
             }
             $dbObj->Next();
@@ -549,11 +553,14 @@ class BatchManager
 
         // Ending batchs type DOWN
         $batch = new Batch();
-        $batchsDown = $batch->find('IdBatch', "Type = 'Down' AND State = 'InTime' AND Playing = 1", NULL, MONO);
+        $batchsDown = $batch->find('IdBatch', "Type = 'Down' AND State = '" . Batch::INTIME . "' AND Playing = 1", NULL, MONO);
         if (sizeof($batchsDown) > 0) {
             foreach ($batchsDown as $idBatch) {
-                $sql = "SELECT SUM(IF(ServerFrames.State='Due2OutWithError',1,0)) AS Errors,
-					SUM(IF(ServerFrames.State IN ('Out','Canceled','Removed','Replaced'),1,0)) AS Success,
+                
+                // Search the batchs type Down with an associated batch type Up
+                $sql = "SELECT SUM(IF(ServerFrames.State = '" . ServerFrame::DUE2OUTWITHERROR . "', 1, 0)) AS Errors, 
+					SUM(IF (ServerFrames.State IN ('" . ServerFrame::OUT . "', '" . ServerFrame::CANCELED . "', 
+                    '" . ServerFrame::REMOVED . "', '" . ServerFrame::REPLACED . "'), 1, 0)) AS Success, 
 					COUNT(ServerFrames.IdSync) AS Total FROM ServerFrames, Batchs WHERE
 					ServerFrames.IdBatchUp = Batchs.IdBatch AND Batchs.IdBatchDown = $idBatch";
                 if ($dbObj->Query($sql) === false) {
@@ -565,12 +572,14 @@ class BatchManager
                 $batchDown = new Batch($idBatch);
                 $prevState = $batchDown->get('State');
                 if ($totals == 0) {
+                    
+                    // Search the batchs type Down without type Up
                     Logger::info(sprintf("Batch %d type down without associated batch type up", $idBatch));
-                    $generatorId = $batchDown->get('IdNodeGenerator');
-                    $sql = "SELECT SUM(IF(ServerFrames.State='Due2OutWithError',1,0)) AS Errors,
-						SUM(IF(ServerFrames.State IN ('Out','Canceled','Removed','Replaced'),1,0)) AS Success,
-						COUNT(ServerFrames.IdSync) AS Total FROM NodeFrames, ServerFrames WHERE
-							ServerFrames.IdNodeFrame = NodeFrames.IdNodeFrame and NodeFrames.NodeId = $generatorId";
+                    $sql = "SELECT SUM(IF (ServerFrames.State = '" . ServerFrame::DUE2OUTWITHERROR . "', 1, 0)) AS Errors, 
+						SUM(IF (ServerFrames.State IN ('" . ServerFrame::OUT . "', '" . ServerFrame::CANCELED . "', 
+                        '" . ServerFrame::CANCELED . "', '" . ServerFrame::REPLACED . "'), 1, 0)) AS Success, 
+						COUNT(ServerFrames.IdSync) AS Total FROM NodeFrames, ServerFrames WHERE 
+					    ServerFrames.IdNodeFrame = NodeFrames.IdNodeFrame and ServerFrames.IdBatchDown = $idBatch";
                     if ($dbObj->Query($sql) === false) {
                     	return false;
                     }
@@ -581,13 +590,13 @@ class BatchManager
                 $batchDown->set('ServerFramesSucess', $success);
                 $batchDown->set('ServerFramesError', $errors);
                 if ($totals == $errors + $success) {
-                    $batchDown->set('State', 'Ended');
+                    $batchDown->set('State', Batch::ENDED);
                     $batchDown->BatchToLog($idBatch, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__,
                         __LINE__, "INFO", 8, _("Ending " . $prevState . "for batch DOWN $idBatch"));
                     Logger::info("Ending down batch with id " . $idBatch);
                 }
                 $batchDown->update();
-                if ($batchDown->get('State') == 'Ended') $this->setPortalRevision($idBatch);
+                if ($batchDown->get('State') == Batch::ENDED) $this->setPortalRevision($idBatch);
             }
         }
 
@@ -597,7 +606,7 @@ class BatchManager
         } else {
             $now = $testTime;
         }
-        $query = "SELECT IdBatch FROM Batchs WHERE Playing = 1 AND State = 'Waiting' AND TimeOn < $now";
+        $query = "SELECT IdBatch FROM Batchs WHERE Playing = 1 AND State = '" . Batch::WAITING . "' AND TimeOn < $now";
         if ($dbObj->Query($query) === false) {
         	return false;
         }
@@ -610,7 +619,7 @@ class BatchManager
             $batch = new Batch($batchId);
             $batch->BatchToLog($batchId, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__,
                 __LINE__, "INFO", 8, _("Starting batch") . " $batchId");
-            $batch->set('State', 'InTime');
+            $batch->set('State', Batch::INTIME);
             $batch->update();
         }
     }
@@ -627,7 +636,7 @@ class BatchManager
         $idPortalVersion = $batch->get('IdPortalVersion');
         $batchType = $batch->get('Type');
         $result = $batch->find('IdBatch', 'State != %s AND IdPortalVersion = %s AND IdBatch != %s AND Type = %s',
-            array('State' => 'Ended', 'IdPortalVersion' => $idPortalVersion, 'IdBatch' => $idBatch, 'Type' => $batchType),
+            array('State' => Batch::ENDED, 'IdPortalVersion' => $idPortalVersion, 'IdBatch' => $idBatch, 'Type' => $batchType),
             MONO);
 
         // There still are batchs in this portal version to close
@@ -635,6 +644,10 @@ class BatchManager
             return true;
         }
         $portal = new PortalVersions($idPortalVersion);
+        if (!$portal->get('id')) {
+            Logger::warning('There is not a portal version with ID: ' . $idPortalVersion);
+            return false;
+        }
         $serverId = $portal->get('IdPortal');
         $serverNode = new Node($serverId);
         $physicalServers = $serverNode->class->GetPhysicalServerList(true, ServerNode::ALL_SERVERS);
@@ -644,16 +657,16 @@ class BatchManager
             $portal = new PortalVersions();
             $portal->upPortalVersion($serverId);
             $result = $batch->find('IdPortalVersion', 'State != %s AND IdBatch > %s AND Type = %s ORDER BY IdBatch ASC',
-                array('State' => 'Ended', 'IdBatch' => $idBatch, 'Type' => 'Up'), MONO);
+                array('State' => Batch::ENDED, 'IdBatch' => $idBatch, 'Type' => 'Up'), MONO);
             if (!$result) {
-                Logger::warning('No portal version found for batch: ' . $idBatch);
+                Logger::info('No portal version found for batch: ' . $idBatch);
                 return false;
             }
             $idPortalVersion = $result[0];
             $batch->set('IdPortalVersion', $idPortalVersion);
             $batch->update();
             $db = new \Ximdex\Runtime\Db();
-            $res = $db->execute("UPDATE Batchs SET IdPortalVersion = IdPortalVersion + 1 WHERE State != 'Ended'
+            $res = $db->execute("UPDATE Batchs SET IdPortalVersion = IdPortalVersion + 1 WHERE State != '" . Batch::ENDED . "' 
 				AND IdBatch > $idBatch");
             if (!$res) {
             	return false;
@@ -682,13 +695,13 @@ class BatchManager
     {
         $dbObj = new \Ximdex\Runtime\Db();
         $sql = "SELECT IdBatch, Type, IdNodeGenerator, MajorCycle, MinorCycle, ServerFramesTotal FROM Batchs
-				WHERE Playing = 1 AND State = 'InTime' AND ServerFramesTotal > 0
+				WHERE Playing = 1 AND State = '" . Batch::INTIME . "' AND ServerFramesTotal > 0
 				ORDER BY Priority DESC, MajorCycle DESC, MinorCycle DESC, Type = 'Down' DESC LIMIT 1";
-        if ($dbObj->Query($sql) === false)
+        if ($dbObj->Query($sql) === false) {
         	return false;
-        $num = $dbObj->numRows;
-        if ($num == 0) {
-            return false;
+        }
+        if (!$dbObj->numRows) {
+            return array();
         }
         $list = array();
         $list['id'] = $dbObj->GetValue("IdBatch");
@@ -795,7 +808,8 @@ class BatchManager
             return false;
         }
         $inactives = implode(',', $activeAndEnabledServers);
-        $query = "SELECT IdSync FROM ServerFrames, Batchs, Pumpers WHERE ServerFrames.IdBatchUp = Batchs.IdBatch AND " .
+        $query = "SELECT IdSync FROM ServerFrames, Batchs, Pumpers " . 
+            "WHERE (ServerFrames.IdBatchUp = Batchs.IdBatch OR ServerFrames.IdBatchDown = Batchs.IdBatch) AND " .
             "ServerFrames.PumperId = Pumpers.PumperId AND " .
             "Batchs.$batchColumn = $batchId AND Pumpers.IdServer NOT IN ($inactives)";
         if ($dbObj->Query($query) === false) {
@@ -804,7 +818,7 @@ class BatchManager
         $numServerFramesFromInactiveServers = $dbObj->numRows;
         if ($totalServerFrames == $numServerFramesFromInactiveServers + $sucessServerFrames) {
             Logger::info(sprintf("ERROR: %s rare type of batch", $batchType));
-            $this->set('State', 'Ended');
+            $this->set('State', Batch::ENDED);
             $this->update();
         }
     }
@@ -863,7 +877,7 @@ class BatchManager
 
             // Updating Batch Type Down (if exists) State to Waiting
             $batchDown = new Batch($batchDownArray['IdBatch']);
-            $batchDown->set('State', 'Waiting');
+            $batchDown->set('State', Batch::WAITING);
             $batchDown->set('ServerFramesTotal', $serverFramesTotal);
             $batchDown->set('ServerFramesSucess', 0);
             $batchDown->set('ServerFramesError', 0);
@@ -913,8 +927,8 @@ class BatchManager
                 __LINE__, "INFO", 8, sprintf(_("Batch %d does not exist"), $idBatchUp));
             return null;
         }
-        if ($batch->get('State') == 'Ended') {
-            $batch->set('State', 'Waiting');
+        if ($batch->get('State') == Batch::ENDED) {
+            $batch->set('State', Batch::WAITING);
         }
         if (!strpos($frameState, 'ERROR')) {
             $batch->set('ServerFramesSucess', $batch->get('ServerFramesSucess') - 1);
@@ -934,7 +948,7 @@ class BatchManager
     {
         $dbObj = new \Ximdex\Runtime\Db();
         $sql = "SELECT IdBatch, Type, IdNodeGenerator, MajorCycle, MinorCycle, ServerFramesTotal FROM Batchs
-				WHERE Playing = 1 AND State = 'InTime' AND ServerFramesTotal > 0
+				WHERE Playing = 1 AND State = '" . Batch::INTIME . "' AND ServerFramesTotal > 0
 				ORDER BY Priority DESC, MajorCycle DESC, MinorCycle DESC, Type = 'Down'";
         if ($dbObj->Query($sql) === false) {
             return false;

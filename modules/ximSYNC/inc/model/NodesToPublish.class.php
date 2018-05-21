@@ -116,12 +116,10 @@ class NodesToPublish extends NodesToPublish_ORM
 		// 3. Build and array with locked nodes and their common attributes: dateUp, dateDown, forcePublication and idNodeGenerator
 		$sql_nodes ="select IdNode,IdNodeGenerator,ForcePublication,DateDown,UserId, Version, SubVersion from NodesToPublish where DateUp = " 
 		      . $dateUp . " and State = 1";
-		if (!empty($dateDown))
-		{
+		if (!empty($dateDown)) {
 			$sql_nodes .= " and DateDown = ".$dateDown;
 		}
-		else
-		{
+		else {
 			$sql_nodes .= " and DateDown is NULL";
 		}
 		$sql_nodes .= " order by deepLevel DESC";
@@ -161,9 +159,9 @@ class NodesToPublish extends NodesToPublish_ORM
 	 */
 	static public function setProcessed($chunk, $dateUp)
 	{
-		$db = new \Ximdex\Runtime\Db();
 		$strNodes = implode (",", $chunk);
 		$sql = sprintf("Update NodesToPublish set State = 2 where IdNode in (%s) and DateUp = %s", $strNodes, $dateUp);
+		$db = new \Ximdex\Runtime\Db();
 		$db->Query($sql);
 	}
 

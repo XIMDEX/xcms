@@ -44,7 +44,7 @@ function PublicateXimlet($sectionID,$dateUp,$recurrence) {
             $sync = new Synchronizer();
             $node->SetID($nodeID);
             $sync->SetID($nodeID);
-            $sync->DeleteFramesFromNow($nodeID,0,$dateUp);
+            $sync->deleteFramesFromNow($nodeID,0,$dateUp);
             $sync->CreateFrame($dateUp, null, null, 1,1);
         }
 }

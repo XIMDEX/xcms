@@ -27,16 +27,19 @@
 
 namespace Ximdex\Sync;
 
+use Batch;
 use ChannelFrame;
-use Ximdex\Runtime\App;
 use NodeFrame;
 use NodeFrameManager;
 use Ximdex\Models\Server;
 use ServerFrame;
 use Ximdex\Models\Node;
 use Ximdex\Logger;
+use Ximdex\Runtime\Session;
+use Ximdex\Models\PortalVersions;
 
 if (\Ximdex\Modules\Manager::isEnabled('ximSYNC')) {
+    \Ximdex\Modules\Manager::file('/inc/model/Batch.class.php', 'ximSYNC');
     \Ximdex\Modules\Manager::file('/inc/model/ServerFrame.class.php', 'ximSYNC');
     \Ximdex\Modules\Manager::file('/inc/manager/NodeFrameManager.class.php', 'ximSYNC');
     \Ximdex\Modules\Manager::file('/inc/manager/SyncManager.class.php', 'ximSYNC');
@@ -70,7 +73,8 @@ class SynchroFacade
             $targetFrame = new ServerFrame();
             $frameID = $targetFrame->getCurrent($idTargetNode, $idTargetChannel); // esto es un idSync
             if (! ($frameID > 0)) {
-                Logger::error(_("No target frame available") . " FACADE target node: $idTargetNode target channel: $idTargetChannel server: $idServer");
+                Logger::error(_("No target frame available") . " FACADE target node: $idTargetNode target channel: $idTargetChannel" .
+                    " server: $idServer");
                 return NULL;
             }
             
@@ -168,41 +172,7 @@ class SynchroFacade
         }
         return (boolean) $result;
     }
-
-    /**
-     * Return if node is published in all of active servers
-     *
-     * @param $nodeID
-     */
-    function isNodePublishedInAllActiveServer($nodeID)
-    {
-        if (is_null($nodeID)) {
-            Logger::info("Void node");
-            return NULL;
-        }
-        if (\Ximdex\Modules\Manager::isEnabled('ximSYNC')) {
-            $nodeFrame = new NodeFrame();
-            $nodeFrameId = $nodeFrame->getNodeFrameByNode($nodeID);
-            $node = new Node($nodeID);
-            $serverID = $node->GetServer();
-            $nodeServer = new Node($serverID);
-            if (App::getValue('PublishOnDisabledServers') == 1) {
-                $physicalServers = $nodeServer->class->GetPhysicalServerList(true);
-            } else {
-                $physicalServers = $nodeServer->class->GetPhysicalServerList(true, true);
-            }
-            $serverFrame = new ServerFrame();
-            $result = $serverFrame->existFrameInAllActiveServer($nodeFrameId, $physicalServers);
-        } else {
-            $sync = new Synchronizer($nodeID);
-            $result = $sync->IsPublished();
-        }
-        if (! $result || is_null($result)) {
-            return false;
-        }
-        return true;
-    }
-
+    
     /**
      * Delete all tasks by node
      *
@@ -495,7 +465,6 @@ class SynchroFacade
         if (\Ximdex\Modules\Manager::isEnabled('ximSYNC')) {
             $syncMngr = new \SyncManager();
             $node = new Node($idNode);
-            $result = array();
             
             // Default values
             $syncMngr->setFlag('recurrence', false);
@@ -564,5 +533,78 @@ class SynchroFacade
         // Both calls are equivalent
         $synchronizer = new Synchronizer($idNode);
         return $synchronizer->HasUnlimitedLifeTime();
+    }
+    
+    public function expire(Node $node, int $down, array $flagsExpiration) : bool
+    {
+        // Get portal version
+        $portal = new PortalVersions();
+        $idPortalVersion = $portal->upPortalVersion($node->getServer());
+        if (!$idPortalVersion) {
+            Logger::error('Cannot create the portal version for server: ' . $node->getServer());
+            return false;
+        }
+        
+        // Get the implicated nodes to will be expire
+        $syncMngr = new \SyncManager();
+        $syncMngr->setFlags($flagsExpiration);
+        $nodes2expire = $syncMngr->getPublishableDocs($node, $down, $down);
+        $batch = new Batch();
+        $serverFrame = new ServerFrame();
+        $createBatch = true;
+        foreach ($nodes2expire as $id) {
+            
+            // Create batch for down process per max nodes
+            if ($createBatch) {
+                $batchId = $batch->create($down, Batch::TYPE_DOWN, $node->GetID(), 1, null, $idPortalVersion, Session::get('userID'));
+                if (!$batchId) {
+                    Logger::error('Cannot create the down batch process');
+                    return false;
+                }
+                $createBatch = false;
+                $numFrames = 0;
+            }
+            
+            // Obtain the server frames related to the nodes to expire
+            $frames = $serverFrame->getFramesOnDate($id, $down);
+            
+            // Set this the date to expire in these frames
+            foreach ($frames as $frame) {
+                $serverFrame->loader($frame['IdSync']);
+                $serverFrame->set('DateDown', $down);
+                $serverFrame->set('IdBatchDown', $batchId);
+                $serverFrame->update();
+                $numFrames++;
+                if ($numFrames == MAX_NUM_NODES_PER_BATCH) {
+                    $batch->set('ServerFramesTotal', $numFrames);
+                    $batch->update();
+                    $createBatch = true;
+                }
+            }
+            
+            // Obtain the frames to be canceled
+            $frames = $serverFrame->getFutureFramesForDate($id, $down);
+            
+            // Set this the date to expire in these frames
+            foreach ($frames as $frame) {
+                $serverFrame->loader($frame['IdSync']);
+                $serverFrame->set('State', ServerFrame::CANCELED);
+                $serverFrame->update();
+            }
+        }
+        if (isset($batch)) {
+            
+            // Update the batch with the last generated frames 
+            if ($numFrames and $numFrames < MAX_NUM_NODES_PER_BATCH) {
+                $batch->set('ServerFramesTotal', $numFrames);
+                $batch->update();
+            }
+            else {
+                
+                // The batch has no frames, so it will be removed
+                $batch->delete();
+            }
+        }
+        return true;
     }
 }

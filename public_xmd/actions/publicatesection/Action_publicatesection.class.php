@@ -78,7 +78,8 @@ class Action_publicatesection extends ActionAbstract
             'required' => $conf['required'] === true ? 1 : 0,
             'defaultMessage' => $defaultMessage,
             'idNode' => $idNode,
-            'name' => $node->GetNodeName()
+            'name' => $node->GetNodeName(),
+            'node_Type' => $node->nodeType->GetName()
         );
         $this->addJs('/actions/publicatesection/resources/js/index.js');
         $this->addCss('/actions/publicatesection/resources/css/style.css');

@@ -47,7 +47,7 @@ CREATE TABLE `Batchs` (
   PRIMARY KEY  (`IdBatch`),
   KEY `IdBatchDown` (`IdBatchDown`),
   KEY `IdNodeGenerator` (`IdNodeGenerator`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -58,12 +58,11 @@ CREATE TABLE `Batchs` (
 CREATE TABLE `ChannelFrames` (
   `IdChannelFrame` int(12) unsigned NOT NULL auto_increment,
   `ChannelId` int(12) unsigned default '0',
-  `NodeId` int(12) unsigned default '0',
-  `IdBatchUp` int(12) unsigned default '0',
+  `NodeId` int(12) unsigned default '0'
   PRIMARY KEY  (`IdChannelFrame`),
   KEY `ChannelId` (`ChannelId`),
   KEY `NodeId` (`NodeId`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -156,6 +155,10 @@ CREATE TABLE `ServerFrames` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='XimDEX Table Synchronization';
 
 ALTER TABLE `ServerFrames` ADD `cache` BOOLEAN NOT NULL DEFAULT TRUE;
+ALTER TABLE `ServerFrames` ADD `IdBatchDown` INT(12) UNSIGNED NULL DEFAULT NULL, ADD INDEX (`IdBatchDown`);
+ALTER TABLE `ServerFrames` ADD `ChannelId` INT(12) NULL DEFAULT NULL AFTER `IdBatchDown`, ADD `NodeId` INT(12) NULL DEFAULT NULL;
+ALTER TABLE `ServerFrames` ADD INDEX(`NodeId`);
+ALTER TABLE `ServerFrames` ADD INDEX(`ChannelId`);
 
 -- --------------------------------------------------------
 
@@ -233,10 +236,18 @@ INSERT INTO Actions (IdAction, IdNodeType, Name, Command, Icon, Description, Sor
 -- Add field ActiveForPumping on Servers table
 ALTER TABLE `Servers` ADD `ActiveForPumping` tinyint(3) unsigned Default '1';
 
+
 -- Add tables restrictions
+
+ALTER TABLE `Batchs` CHANGE `Type` `Type` ENUM('Up','Down') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'Up';
+ALTER TABLE `Batchs` ADD FOREIGN KEY (`IdBatchDown`) REFERENCES `Batchs`(`IdBatch`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+ALTER TABLE `ServerFrames` ADD FOREIGN KEY (`IdBatchUp`) REFERENCES `Batchs`(`IdBatch`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+ALTER TABLE `ServerFrames` ADD FOREIGN KEY (`IdBatchDown`) REFERENCES `Batchs`(`IdBatch`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 
 -- Add RolesActions
+
 INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES(NULL, 202, 6376, 0, 1, 3);
 INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES(NULL, 204, 7228, 8, 1, 3);
 INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES(NULL, 204, 7228, 7, 1, 3);
@@ -244,13 +255,3 @@ INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdConte
 INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES(NULL, 203, 7228, 7, 1, 3);
 INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES(NULL, 201, 7228, 8, 1, 3);
 INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES(NULL, 201, 7228, 7, 1, 3);
-
--- Publication of XML and HTML documents
-INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`, `IsBulk`) 
-    VALUES ('7240', '5018', 'Publish documents', 'publicatesection', 'publicate_section.png', 'Publish a XML or HTML document section', '100'
-    , NULL, '0', NULL, '0');
-INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 7240, 0, 1, 3);
-INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`, `IsBulk`) 
-    VALUES ('7241', '5103', 'Publish document in several languages', 'publicatesection', 'publicate_section.png'
-    , 'Publish the XML or HTML documents container', '70', NULL, '0', NULL, '0');
-INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 7241, 0, 1, 3);

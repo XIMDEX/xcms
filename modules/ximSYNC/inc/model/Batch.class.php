@@ -44,6 +44,12 @@ Ximdex\Modules\Manager::file('/conf/synchro_conf.php', 'ximSYNC');
 class Batch extends Batchs_ORM
 {
     var $syncStatObj;
+    const TYPE_UP = 'Up';
+    const TYPE_DOWN = 'Down';
+    const WAITING = 'Waiting';
+    const INTIME = 'InTime';
+    const ENDED = 'Ended';
+    const CLOSING = 'Closing';
 
     /**
      *  Adds a row to Batchs table
@@ -60,7 +66,7 @@ class Batch extends Batchs_ORM
     {
         $priority = (float) (MIN_TOTAL_PRIORITY * $priority);
         $this->set('TimeOn', $timeOn);
-        $this->set('State', 'Waiting');
+        $this->set('State', Batch::WAITING);
         $this->set('Playing', 1);
         $this->set('Type', $type);
         $this->set('IdBatchDown', $idBatchDown);

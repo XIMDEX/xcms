@@ -51,7 +51,8 @@ class NodeFrameManager
 	*  @param int batchType
 	*  @return bool
 	*/
-    function checkActivity($nodeFrameId, $nodeId, $timeUp, $timeDown, $batchType, $testTime = NULL) {
+    function checkActivity($nodeFrameId, $nodeId, $timeUp, $timeDown, $batchType, $testTime = NULL)
+    {
 		$nodeFrame = new NodeFrame();
 		if (is_null($nodeFrameId)) {
 			$nodeFrame->NodeFrameToLog(null, $nodeFrameId, null, null, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "ERROR", 8
@@ -156,7 +157,6 @@ class NodeFrameManager
 		return $result;
     }
 
-
 	/**
 	 *  Sets the NodeFrame Activity and modifies the state of its associated ServerFrames.
 	 *	The replacedBy param  sets the nodeFrameId which replaces this NodeFrame when it become inactive.
@@ -168,7 +168,8 @@ class NodeFrameManager
 	 *  @param int replacedBy
 	 *  @return bool
 	 */
-    function setActivity($activity, $nodeFrId, $nodeId, $up, $replacedBy = NULL) {
+    function setActivity($activity, $nodeFrId, $nodeId, $up, $replacedBy = NULL)
+    {
 		$nodeFrame = new NodeFrame($nodeFrId);
 		if (is_null($nodeFrId)) {
 			$nodeFrame->NodeFrameToLog(null, $nodeFrId, null, null, null, __CLASS__, __FUNCTION__, __FILE__,
@@ -204,7 +205,7 @@ class NodeFrameManager
 		// todo: make foreach channelframes (not serverframes)
 		$frames = $nodeFrame->getFrames($nodeFrId, $operation);
 		foreach($frames as $serverFrId) {
-			Logger::info("Procesing serverFrame $serverFrId for nodeFrameID: " . $nodeFrId . ' and nodeID: ' . $nodeId);
+			Logger::info("Processing serverFrame $serverFrId for nodeFrameID: " . $nodeFrId . ' and nodeID: ' . $nodeId);
 			$channelFrameManager = new ChannelFrameManager();
 			$result = $channelFrameManager->changeState($serverFrId, $operation, $nodeId, $canceled);
 			if ($result === false) {
@@ -225,15 +226,13 @@ class NodeFrameManager
 	 *	@param int now
 	 *  @return array|null
 	 */
-    function getNodeFramesInTime($nodeId, $up, $now) {
+    function getNodeFramesInTime($nodeId, $up, $now)
+    {
 		$dbObj = new \Ximdex\Runtime\Db();
 		$sql = "SELECT IdNodeFrame, Active, if(TimeDown IS NULL, 1988146800, TimeDown) as TimeDown2 FROM NodeFrames
 			WHERE TimeUp < $now AND (TimeDown > $now OR TimeDown IS NULL) AND (IsProcessUp = 0 OR Active = 1)
 			AND NodeId = $nodeId ORDER BY VersionId DESC, TimeDown2 DESC";
 		$dbObj->Query($sql);
-		if ($dbObj->numRows == 0) {
-			return NULL;
-		}
 		$nodeFrames = array();
 		$i = 0;
 		while(!$dbObj->EOF) {
@@ -253,34 +252,38 @@ class NodeFrameManager
 	*  @param string batchType
 	*  @return array
 	*/
-    function getNotProcessNodeFrames($batchId, $chunk, $batchType) {
-		$dbObj = new \Ximdex\Runtime\Db();
-		$nodeFrame = new NodeFrame();
+    function getNotProcessNodeFrames($batchId, $chunk, $batchType)
+    {
 		if ($batchType == 'Up') {
 			$sql = "SELECT NodeFrames.IdNodeFrame, NodeFrames.NodeId, NodeFrames.VersionId, NodeFrames.TimeUp, " .
 				"NodeFrames.TimeDown, NodeFrames.Active FROM NodeFrames, ServerFrames WHERE ServerFrames.IdBatchUp = " .
 				"$batchId AND ServerFrames.IdNodeFrame = NodeFrames.IdNodeFrame AND (NodeFrames.IsProcessUp = 0 "
 				."OR NodeFrames.IsProcessUp IS NULL) LIMIT $chunk";
-		} else if ($batchType == 'Down') {
+		} elseif ($batchType == 'Down') {
 				$batch = new Batch($batchId);
 				$batchUp = $batch->getUpBatch($batchId);
 				if ($batchUp) {
+				    
+				    // Batch type Down with a type Up linked
 					$sql = "SELECT NodeFrames.IdNodeFrame, NodeFrames.NodeId, NodeFrames.VersionId, NodeFrames.TimeUp, " .
 					"NodeFrames.TimeDown, NodeFrames.Active FROM NodeFrames, ServerFrames WHERE ServerFrames.IdBatchUp = " .
 					"{$batchUp[0]} AND ServerFrames.IdNodeFrame = NodeFrames.IdNodeFrame AND (NodeFrames.IsProcessDown = 0 "
 					."OR NodeFrames.IsProcessDown IS NULL) LIMIT $chunk";
 				} else {
-					$nodeId = $batch->get('IdNodeGenerator');
-					$sql = "SELECT NodeFrames.IdNodeFrame, NodeFrames.NodeId, NodeFrames.VersionId, NodeFrames.TimeUp, " .
-					"NodeFrames.TimeDown, NodeFrames.Active FROM NodeFrames, ServerFrames WHERE
-					NodeFrames.NodeId = $nodeId AND ServerFrames.IdNodeFrame = NodeFrames.IdNodeFrame AND
-					(NodeFrames.IsProcessDown = 0 OR NodeFrames.IsProcessDown IS NULL) LIMIT $chunk";
+				    
+				    // No batch type Up associated
+				    $sql = "SELECT NodeFrames.IdNodeFrame, NodeFrames.NodeId, NodeFrames.VersionId, NodeFrames.TimeUp, " .
+				        "NodeFrames.TimeDown, NodeFrames.Active FROM NodeFrames, ServerFrames WHERE " . 
+				        "ServerFrames.IdBatchDown = $batchId AND ServerFrames.IdNodeFrame = NodeFrames.IdNodeFrame AND " . 
+					    "(NodeFrames.IsProcessDown = 0 OR NodeFrames.IsProcessDown IS NULL) LIMIT $chunk";
 				}
 		} else {
+		    $nodeFrame = new NodeFrame();
 			$nodeFrame->NodeFrameToLog($batchId, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__,
-				__LINE__, "ERROR", 8, sprintf(_("ERROR: batch %s is a non-existent type of batch %s"),$batchId, $batchType) );
+				__LINE__, "ERROR", 8, sprintf(_("ERROR: batch %s is a non-existent type of batch %s"), $batchId, $batchType) );
 			return false;
 		}
+		$dbObj = new \Ximdex\Runtime\Db();
 		$dbObj->Query($sql);
 		$nodeFrames = array();
 		$i = 0;
@@ -303,7 +306,8 @@ class NodeFrameManager
 	*  @param int nodeID
 	*  @return array
 	*/
-	function getPendingNodeFrames($nodeID) {
+	function getPendingNodeFrames($nodeID)
+	{
 		$dbObj = new \Ximdex\Runtime\Db();
 		$sql = "SELECT IdNodeFrame FROM NodeFrames WHERE NodeId = $nodeID AND IsProcessUp = 0 AND Active = 0";
 		$dbObj->Query($sql);
@@ -321,7 +325,8 @@ class NodeFrameManager
 	*	@param int nodeId
 	*	@return array
 	*/
-    function getByNode($nodeId) {
+    function getByNode($nodeId)
+    {
 		$nodeFrame = new NodeFrame();
 		$result = $nodeFrame->find('IdNodeFrame', 'NodeId = %s', array('NodeId' => $nodeId), MULTI);
 		return $result;
@@ -334,7 +339,8 @@ class NodeFrameManager
 	*  @param int idNodeFrame
 	*  @param bool unPublish
 	*/
-	function delete($idNodeFrame, $unPublish = false) {
+	function delete($idNodeFrame, $unPublish = false)
+	{
 		$nodeFrame = new NodeFrame($idNodeFrame);
 		$nodeId = $nodeFrame->get('NodeId');
 		$serverFrameMng = new ServerFrameManager();
@@ -344,7 +350,6 @@ class NodeFrameManager
 			foreach ($serverFrames as $dataFrames) {
 				$idServerFrame = $dataFrames[0];
 				$serverFrame = new ServerFrame($idServerFrame);
-				$batchMng = new BatchManager();
 				$idChannelFrame = $serverFrame->get('IdChannelFrame');
 				$state = $serverFrame->get('State');
 
@@ -362,12 +367,6 @@ class NodeFrameManager
 
 					// Changing ServerFrame State
 					$serverFrameMng->changeState($idServerFrame, 'Down', $nodeId);
-					
-					// Set to null the channel frame field
-					if ($channelFrame->get('IdChannelFrame') and $channelFrame->get('IdChannelFrame') == $serverFrame->get('IdChannelFrame')) {
-					    $serverFrame->set('IdChannelFrame', null);
-					    $serverFrame->update();
-					}
 				} elseif(in_array($state, array('Due2Out', 'Due2Out_'))) {
 					Logger::info("Do not delete serverFrame $idServerFrame - state $state");
 				} else {
@@ -376,6 +375,7 @@ class NodeFrameManager
 			}
 			Logger::info("Affected batchs:". print_r($arrayAffectedBatchs, true));
 			if (is_array($arrayAffectedBatchs) && count($arrayAffectedBatchs) > 0) {
+			    $batchMng = new BatchManager();
 				foreach ($arrayAffectedBatchs as $idBatch => $serverFramesTotal) {
 
 					// Creating Down-Batch

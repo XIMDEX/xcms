@@ -56,7 +56,7 @@ function DoPublicate($sectionID, $recursive = false) {
 			Logger::display("---------------------------------------------------------------------");
 			Logger::display(_("Expiring node '").$nodeID."'");
 			$sync = new Synchronizer($nodeID);
-			$sync->DeleteFramesFromNow($nodeID);
+			$sync->deleteFramesFromNow($nodeID);
 
 		}
 	}

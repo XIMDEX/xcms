@@ -104,13 +104,10 @@ class Pumper extends PumpersOrm
      */
     function getPumpersInRegistry()
     {
-        $dbObj = new \Ximdex\Runtime\Db();
-        $pumpers = array();
         $sql = "SELECT PumperId FROM Pumpers WHERE State != 'Ended'";
+        $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->Query($sql);
-        if ($dbObj->numRows == 0) {
-            return null;
-        }
+        $pumpers = array();
         while (!$dbObj->EOF) {
             $pumpers[] = $dbObj->GetValue("PumperId");
             $dbObj->Next();

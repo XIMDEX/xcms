@@ -210,7 +210,7 @@ VALUES
     (8104,5025,'Publish section','publicatesection','publicate_section.png','Publish a section massively',70,NULL,1,'',0),
     (8105,5022,'Publish section','publicatesection','publicate_section.png','Publish a section massively',70,NULL,1,'',0),
     (8106,5023,'Publish section','publicatesection','publicate_section.png','Publish a section massively',70,NULL,1,'',0),
-    (9500,5032,'Expire document','expiredoc','expire_section.png','Expire a document',76,NULL,0,'',0),
+    (9500,5032,'Expire','expiredoc','expire_section.png','Expire a document',76,NULL,0,'',0),
     (6144,5040,'Version manager','manageversions','manage_versions.png','Manage version repository',73,NULL,0,'',0),
     (6145,5041,'Version manager','manageversions','manage_versions.png','Manage repository of versions',73,NULL,0,'',0),
     (6146,5028,'Version manager','manageversions','manage_versions.png','Manage repository of versions',73,NULL,0,'',0),
@@ -2808,7 +2808,7 @@ INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Des
            , 'type=html', 0),
     (7460, 5104, 'Publish', 'workflow_forward', 'change_next_state.png', 'Move to the next state', 72, NULL, 0, '', 0),
     (7461, 5104, 'Move to previous state', 'workflow_backward', 'change_last_state.png', 'Move to the previous state', -70, NULL, 0, '', 0),
-    (7462, 5104, 'Expire document', 'expiredoc', 'expire_section.png', 'Expire a document', 76, NULL, 0, '', 0),
+    (7462, 5104, 'Expire', 'expiredoc', 'expire_section.png', 'Expire a document', 76, NULL, 0, '', 0),
     (7463, 5104, 'Version manager', 'manageversions', 'manage_versions.png', 'Manage repository of versions', 82, NULL, 0, '', 0),
     (7464, 5104, 'Symbolic link', 'xmlsetlink', 'file_xml_symbolic.png', 'Modify document which borrows the content', -74, NULL, 0, '', 0),
     (7465, 5104, 'Delete document', 'deletenode', 'delete_file_xml.png', 'Delete selected HTML document', 90, NULL, 1, '', 0),
@@ -3324,3 +3324,98 @@ INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdConte
 INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES(NULL, 204, 6981, 0, 1, 3);
 
 INSERT INTO `SemanticNamespaces` VALUES (NULL,'Ximdex','OntologyBrowser','structured','ontologies/json/SchemaOrg.json',0,'generic',1);
+
+
+-- Publication of XML and HTML documents
+
+INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`, `IsBulk`) 
+    VALUES ('7240', '5018', 'Publish documents', 'publicatesection', 'publicate_section.png', 'Publish a XML or HTML documents section', '75'
+    , NULL, '0', NULL, '0');
+INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 7240, 0, 1, 3);
+
+INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`, `IsBulk`) 
+    VALUES ('7241', '5103', 'Publish document', 'publicatesection', 'publicate_section.png', 'Publish the XML or HTML documents container'
+    , '70', NULL, '0', NULL, '0');
+INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 7241, 0, 1, 3);
+
+
+-- Expire sections
+
+INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`, `IsBulk`) 
+    VALUES (7250, 5018, 'Expire documents', 'expiresection', 'expire_section.png', 'Expire the XML or HTML documents section', '76'
+    , NULL, '0', NULL, '0');
+INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 7250, 0, 1, 3);
+
+INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`, `IsBulk`) 
+    VALUES (7251, 5103, 'Expire document', 'expiresection', 'expire_section.png', 'Expire the HTML documents container'
+    , '71', NULL, '0', NULL, '0');
+INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 7251, 0, 1, 3);
+
+INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`, `IsBulk`) 
+    VALUES (7252, 5031, 'Expire document', 'expiresection', 'expire_section.png', 'Expire the XML documents container'
+    , '71', NULL, '0', NULL, '0');
+INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 7252, 0, 1, 3);
+
+INSERT INTO Actions (IdAction, IdNodeType, Name, Command, Icon, Description, Sort, Module, Multiple) 
+    VALUES (7253, 5014, 'Expire server', 'expiresection', 'expire_section.png', 'Expire the server section massively', 101, NULL, 0);
+INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 7253, 7, 1, 3);
+INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 7253, 8, 1, 3);
+
+-- INSERT INTO Actions (IdAction, IdNodeType, Name, Command, Icon, Description, Sort, Module, Multiple) 
+--     VALUES (7254, 5015, 'Expire section', 'expiresection', 'expire_section.png', 'Expire the section massively', 71, NULL, 0);
+-- INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 7254, 7, 1, 3);
+-- INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 7254, 8, 1, 3);
+
+INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`, `IsBulk`) 
+    VALUES ('9501', '5016', 'Expire section', 'expiresection', 'expire_section.png', 'Expire a images root folder section massively'
+    , '71', NULL, '1', '', '0');
+INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 9501, 7, 1, 3);
+INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 9501, 8, 1, 3);
+
+INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`, `IsBulk`) 
+    VALUES ('9502', '5017', 'Expire section', 'expiresection', 'expire_section.png', 'Expire a images folder section massively'
+    , '71', NULL, '1', '', '0');
+INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 9502, 7, 1, 3);
+INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 9502, 8, 1, 3);
+
+INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`, `IsBulk`) 
+    VALUES ('9503', '5022', 'Expire section', 'expiresection', 'expire_section.png', 'Expire a common root folder section massively'
+    , '71', NULL, '1', '', '0');
+INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 9503, 7, 1, 3);
+INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 9503, 8, 1, 3);
+
+INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`, `IsBulk`) 
+    VALUES ('9504', '5023', 'Expire section', 'expiresection', 'expire_section.png', 'Expire a common folder section massively'
+    , '71', NULL, '1', '', '0');
+INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 9504, 7, 1, 3);
+INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 9504, 8, 1, 3);
+
+INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`, `IsBulk`) 
+    VALUES ('9505', '5024', 'Expire section', 'expiresection', 'expire_section.png', 'Expire a CSS root folder section massively'
+    , '71', NULL, '1', '', '0');
+INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 9505, 7, 1, 3);
+INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 9505, 8, 1, 3);
+
+INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`, `IsBulk`) 
+    VALUES ('9506', '5025', 'Expire section', 'expiresection', 'expire_section.png', 'Expire a CSS folder section massively'
+    , '71', NULL, '1', '', '0');
+INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 9506, 7, 1, 3);
+INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 9506, 8, 1, 3);
+
+INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`, `IsBulk`) 
+    VALUES ('9507', '5090', 'Expire section', 'expiresection', 'expire_section.png', 'Expire a JavaScript root folder section massively'
+    , '71', NULL, '1', '', '0');
+INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 9507, 7, 1, 3);
+INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 9507, 8, 1, 3);
+
+INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`, `IsBulk`) 
+    VALUES ('9508', '5091', 'Expire section', 'expiresection', 'expire_section.png', 'Expire a JavaScript folder section massively'
+    , '71', NULL, '1', '', '0');
+INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 9508, 7, 1, 3);
+INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 9508, 8, 1, 3);
+
+INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`, `IsBulk`) 
+    VALUES ('9509', '5110', 'Expire section', 'expiresection', 'expire_section.png', 'Expire a XOTF section massively'
+    , '71', NULL, '1', '', '0');
+INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 9509, 7, 1, 3);
+INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 9509, 8, 1, 3);

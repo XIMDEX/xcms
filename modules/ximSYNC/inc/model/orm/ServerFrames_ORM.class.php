@@ -46,7 +46,10 @@ class ServerFrames_ORM extends \Ximdex\Data\GenericData
         'IdBatchUp' => array('type' => 'int(12)', 'not_null' => 'false'),
         'IdChannelFrame' => array('type' => 'int(12)', 'not_null' => 'false'),
         'PumperId' => array('type' => 'int(12)', 'not_null' => 'false'),
-        'cache' => array('type' => 'tinyint(1)', 'not_null' => 'true')
+        'cache' => array('type' => 'tinyint(1)', 'not_null' => 'true'),
+        'NodeId' => array('type' => 'int(12)', 'not_null' => 'false'),
+        'ChannelId' => array('type' => 'int(12)', 'not_null' => 'false'),
+        'IdBatchDown' => array('type' => 'int(12)', 'not_null' => 'false'),
     );
     var $IdSync;
     var $IdServer = 0;
@@ -65,4 +68,7 @@ class ServerFrames_ORM extends \Ximdex\Data\GenericData
     var $IdChannelFrame = 0;
     var $PumperId;
     var $cache;
+    var $NodeId;
+    var $ChannelId;
+    var $IdBatchUDown = null;
 }

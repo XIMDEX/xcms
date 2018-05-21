@@ -349,13 +349,13 @@ class ServerFrameManager
         $query = "SELECT DISTINCT(PumperId) FROM ServerFrames WHERE 
             State IN ('Due2In', 'Due2Out', 'Due2In_', 'Due2Out_', 'Pumped') AND IdServer IN ($servers)";
         $dbObj->Query($query);
+        if ($dbObj->numErr) {
+            return NULL;
+        }
         $pumpers = array();
         while (!$dbObj->EOF) {
             $pumpers[] = $dbObj->GetValue("PumperId");
             $dbObj->Next();
-        }
-        if ($dbObj->numErr) {
-            return NULL;
         }
         return $pumpers;
     }
@@ -423,31 +423,5 @@ class ServerFrameManager
         }
         $result = $serverFrame->query(sprintf("SELECT IdSync FROM ServerFrames WHERE State IN (%s)", $status));
         return count($result) == 0;
-    }
-
-    /**
-     * Gets all ServerFrames by cryteria.
-     */
-    function getFrames($idNodeGenerator = null)
-    {
-        $frames = array();
-        $extraWhereClause = ($idNodeGenerator !== null) ? "AND b.IdNodeGenerator = '" . $idNodeGenerator . "' " : "";
-        $dbObj = new \Ximdex\Runtime\Db();
-        $sql = "SELECT n.Name AS NodeName, b.IdPortalVersion, s.IdSync, s.IdServer, s.DateUp, s.DateDown, s.State, s.FileName FROM Batchs b, ServerFrames s, Nodes n WHERE s.IdBatchUp = b.IdBatch AND b.IdNodeGenerator = n.IdNode AND s.State NOT IN ('Replaced', 'Removed') $extraWhereClause ORDER BY b.IdPortalVersion DESC";
-        $dbObj->Query($sql);
-        while (!$dbObj->EOF) {
-            $frame = array();
-            $frame["NodeName"] = $dbObj->GetValue("NodeName");
-            $frame["IdPortalVersion"] = $dbObj->GetValue("IdPortalVersion");
-            $frame["IdSync"] = $dbObj->GetValue("IdSync");
-            $frame["IdServer"] = $dbObj->GetValue("IdServer");
-            $frame["DateUp"] = $dbObj->GetValue("DateUp");
-            $frame["DateDown"] = $dbObj->GetValue("DateDown");
-            $frame["State"] = $dbObj->GetValue("State");
-            $frame["FileName"] = $dbObj->GetValue("FileName");
-            $frames[$frame["IdPortalVersion"]][] = $frame;
-            $dbObj->Next();
-        }
-        return $frames;
     }
 }
