@@ -557,6 +557,25 @@ class BaseIO
                 }
                 return ($result > 0) ? $result : Constants::ERROR_INCORRECT_DATA;
                 
+            case 'VIDEONODE':
+                $paths = $this->_getValueFromChildren($data['CHILDRENS'], 'SRC');
+                if (count($paths) != 1) {
+                    $this->messages->add(_('A file for node creation could not be obtained'), MSG_TYPE_WARNING);
+                    return Constants::ERROR_INCORRECT_DATA;
+                }
+                $data['PATH'] = $paths[0];
+                unset($data['CHILDRENS']);
+                $node = new Node();
+                $idNodeType = \Ximdex\NodeTypes\NodeTypeConstants::VIDEO_FILE;
+                $result = $node->CreateNode($data['NAME'], $data['PARENTID'], $idNodeType, null, $data['PATH']);
+                if (!($result > 0)) {
+                    reset($node->messages->messages);
+                    while (list (, $message) = each($node->messages->messages)) {
+                        Logger::error($message['message']);
+                    }
+                }
+                return ($result > 0) ? $result : Constants::ERROR_INCORRECT_DATA;
+                
             case 'COMMONNODE':
                 $paths = $this->_getValueFromChildren($data['CHILDRENS'], 'SRC');
                 if (count($paths) != 1) {

@@ -3419,3 +3419,53 @@ INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Des
     , '71', NULL, '1', '', '0');
 INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 9509, 7, 1, 3);
 INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 9509, 8, 1, 3);
+
+
+-- Video nodes
+
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`
+    , `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublishable`, `IsHidden`, `CanDenyDeletion`
+    , `isGenerator`, `IsEnriching`, `System`, `Module`) 
+    VALUES ('5042', 'VideoFile', 'VideoNode', 'video', 'Video file', '1', '1', '0', '0', '0', '0', '1', '0', '1', '0', '0', '0'
+    , '0', '0', NULL);
+INSERT INTO `RelNodeTypeMimeType` (`idRelNodeTypeMimeType`, `idNodeType`, `extension`, `filter`) 
+    VALUES (NULL, '5042', ';mp4;avi;wmv;3gp;mkv;flv;mov;', 'video');
+INSERT INTO `NodeAllowedContents` (`IdNodeAllowedContent`, `IdNodeType`, `NodeType`, `Amount`) 
+    VALUES (NULL, '5022', '5042', '0'), (NULL, '5023', '5042', '0');
+
+INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`, `IsBulk`) 
+    VALUES 
+    (7254, '5042', 'Download video', 'filedownload', 'download_video.png', 'Download a video to a local hard disk', '80', NULL, '0', '', '0'), 
+    (7255, '5042', 'Video preview', 'filepreview', 'view_video.png', 'Preview a video', '80', NULL, '0', '', '0'), 
+    (7256, '5042', 'Change video name', 'renamenode', 'change_name_video.png', 'Change file name', '60', NULL, '0', '', '0'), 
+    (7257, '5042', 'Delete video', 'deletenode', 'delete_video.png', 'Delete a video', '75', NULL, '1', '', '0'), 
+    (7258, '5042', 'Move to next state', 'workflow_forward', 'change_next_state.png', 'Move a video to the next state', '70', NULL, '0'
+        , NULL, '0'), 
+    (7259, '5042', 'Move to previous state', 'workflow_backward', 'change_last_state.png', 'Move a video to the previous state', '73'
+        , NULL, '0', NULL, '0'), 
+    (7260, '5042', 'Version manager', 'manageversions', 'manage_versions.png', 'Manage version repository', '73', NULL, '0', '', '0'), 
+    (7261, '5042', 'Move node', 'movenode', 'move_node.png', 'Move a video node', '40', NULL, '1', '', '0'), 
+    (7262, '5042', 'Semantic Tags', 'setmetadata', 'change_next_state.png', 'Managing semantic tags related to the current node', '81'
+        , NULL, '0', NULL, '0'), 
+    (7263, '5042', 'Copy', 'copy', 'copiar_documento.png', 'Copy a video to another destination', '30', NULL, '0', '', '0');
+
+INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 7254, 7, 1, 3);
+INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 7254, 8, 1, 3);
+INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 7255, 7, 1, 3);
+INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 7255, 8, 1, 3);
+INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 7256, 7, 1, 3);
+INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 7256, 8, 1, 3);
+INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 7257, 7, 1, 3);
+INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 7257, 8, 1, 3);
+INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 7258, 7, 1, 3);
+INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 7258, 8, 1, 3);
+INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 7259, 7, 1, 3);
+INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 7259, 8, 1, 3);
+INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 7260, 7, 1, 3);
+INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 7260, 8, 1, 3);
+INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 7261, 7, 1, 3);
+INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 7261, 8, 1, 3);
+INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 7262, 7, 1, 3);
+INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 7262, 8, 1, 3);
+INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 7263, 7, 1, 3);
+INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 7263, 8, 1, 3);

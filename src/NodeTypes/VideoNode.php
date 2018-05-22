@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -27,18 +27,20 @@
 
 namespace Ximdex\NodeTypes;
 
+use Ximdex\Runtime\Constants;
+
 /***
- * Class for NodeType Image
+ * Class for NodeType Video
  */
-class ImageNode extends FileNode
+class VideoNode extends FileNode
 {
     /**
-     * Build a new image node file
-     * Use parent CreateNode method and generate a new metadata document for the new image node created
+     * Build a new video node file
+     * Use parent CreateNode method and generate a new metadata document for the new video node created
      * 
      * @return bool
      */
-    function CreateNode($name, $parentID, $nodeTypeID, $stateID = 7, $sourcePath = "")
+    function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = Constants::EDITION_STATUS_ID, $sourcePath = "")
     {
         parent::CreateNode($name, $parentID, $nodeTypeID, $stateID, $sourcePath);
     }

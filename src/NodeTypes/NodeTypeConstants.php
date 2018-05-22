@@ -66,6 +66,7 @@ class NodeTypeConstants
     const TEXT_FILE = 5039;
     const IMAGE_FILE = 5040;
     const BINARY_FILE = 5041;
+    const VIDEO_FILE = 5042;
     const ERROR_FOLDER = 5043;
     const TEMPLATE = 5044;
     const VISUAL_TEMPLATE = 5045;

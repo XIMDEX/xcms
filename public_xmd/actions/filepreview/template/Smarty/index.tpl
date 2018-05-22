@@ -24,8 +24,8 @@
  *}
 {include file="actions/components/title_Description.tpl"}
 <div class="action_content image-preview">
-	{if $type eq 'XSIRVideoFile'}
-		<video controls>
+	{if $type eq 'XSIRVideoFile' or $type eq 'VideoFile'}
+		<video controls autoplay>
 			<source src="{$path}">
 			Your browser does not support the video tag.
 		</video>

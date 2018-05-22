@@ -201,7 +201,7 @@ class XeditAction extends Action
             'image' => [NodeTypeConstants::IMAGE_FILE],
             'link' => [NodeTypeConstants::LINK, NodeTypeConstants::HTML_DOCUMENT, NodeTypeConstants::BINARY_FILE,
                 NodeTypeConstants::IMAGE_FILE, NodeTypeConstants::XML_DOCUMENT],
-            'video' => [NodeTypeConstants::BINARY_FILE]
+            'video' => [NodeTypeConstants::VIDEO_FILE]
         ];
 
         $nodeId = isset($_GET['id']) ? $_GET['id'] : null;
