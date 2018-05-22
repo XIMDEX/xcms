@@ -3428,26 +3428,28 @@ INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `
     , `isGenerator`, `IsEnriching`, `System`, `Module`) 
     VALUES ('5042', 'VideoFile', 'VideoNode', 'video', 'Video file', '1', '1', '0', '0', '0', '0', '1', '0', '1', '0', '0', '0'
     , '0', '0', NULL);
+
 INSERT INTO `RelNodeTypeMimeType` (`idRelNodeTypeMimeType`, `idNodeType`, `extension`, `filter`) 
     VALUES (NULL, '5042', ';mp4;avi;wmv;3gp;mkv;flv;mov;', 'video');
+
 INSERT INTO `NodeAllowedContents` (`IdNodeAllowedContent`, `IdNodeType`, `NodeType`, `Amount`) 
     VALUES (NULL, '5022', '5042', '0'), (NULL, '5023', '5042', '0');
 
 INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`, `IsBulk`) 
     VALUES 
-    (7254, '5042', 'Download video', 'filedownload', 'download_video.png', 'Download a video to a local hard disk', '80', NULL, '0', '', '0'), 
-    (7255, '5042', 'Video preview', 'filepreview', 'view_video.png', 'Preview a video', '80', NULL, '0', '', '0'), 
-    (7256, '5042', 'Change video name', 'renamenode', 'change_name_video.png', 'Change file name', '60', NULL, '0', '', '0'), 
-    (7257, '5042', 'Delete video', 'deletenode', 'delete_video.png', 'Delete a video', '75', NULL, '1', '', '0'), 
-    (7258, '5042', 'Move to next state', 'workflow_forward', 'change_next_state.png', 'Move a video to the next state', '70', NULL, '0'
+    ('7254', '5042', 'Download video', 'filedownload', 'download_video.png', 'Download a video to a local hard disk', '80', NULL, '0', '', '0'), 
+    ('7255', '5042', 'Video preview', 'filepreview', 'view_video.png', 'Preview a video', '80', NULL, '0', '', '0'), 
+    ('7256', '5042', 'Change video name', 'renamenode', 'change_name_video.png', 'Change file name', '60', NULL, '0', '', '0'), 
+    ('7257', '5042', 'Delete video', 'deletenode', 'delete_video.png', 'Delete a video', '75', NULL, '1', '', '0'), 
+    ('7258', '5042', 'Move to next state', 'workflow_forward', 'change_next_state.png', 'Move a video to the next state', '70', NULL, '0'
         , NULL, '0'), 
-    (7259, '5042', 'Move to previous state', 'workflow_backward', 'change_last_state.png', 'Move a video to the previous state', '73'
+    ('7259', '5042', 'Move to previous state', 'workflow_backward', 'change_last_state.png', 'Move a video to the previous state', '73'
         , NULL, '0', NULL, '0'), 
-    (7260, '5042', 'Version manager', 'manageversions', 'manage_versions.png', 'Manage version repository', '73', NULL, '0', '', '0'), 
-    (7261, '5042', 'Move node', 'movenode', 'move_node.png', 'Move a video node', '40', NULL, '1', '', '0'), 
-    (7262, '5042', 'Semantic Tags', 'setmetadata', 'change_next_state.png', 'Managing semantic tags related to the current node', '81'
+    ('7260', '5042', 'Version manager', 'manageversions', 'manage_versions.png', 'Manage version repository', '73', NULL, '0', '', '0'), 
+    ('7261', '5042', 'Move node', 'movenode', 'move_node.png', 'Move a video node', '40', NULL, '1', '', '0'), 
+    ('7262', '5042', 'Semantic Tags', 'setmetadata', 'change_next_state.png', 'Managing semantic tags related to the current node', '81'
         , NULL, '0', NULL, '0'), 
-    (7263, '5042', 'Copy', 'copy', 'copiar_documento.png', 'Copy a video to another destination', '30', NULL, '0', '', '0');
+    ('7263', '5042', 'Copy', 'copy', 'copiar_documento.png', 'Copy a video to another destination', '30', NULL, '0', '', '0');
 
 INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 7254, 7, 1, 3);
 INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 7254, 8, 1, 3);
@@ -3469,3 +3471,42 @@ INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdConte
 INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 7262, 8, 1, 3);
 INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 7263, 7, 1, 3);
 INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 7263, 8, 1, 3);
+
+
+-- Expire actions for individual nodes
+
+INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`, `IsBulk`) 
+    VALUES ('7264', '5042', 'Expire video', 'expiredoc', 'expire_section.png', 'Expire the publication for a video file', '73'
+        , NULL, '0', NULL, '0');
+INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 7264, 7, 1, 3);
+INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 7264, 8, 1, 3);
+
+INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`, `IsBulk`) 
+    VALUES ('7265', '5039', 'Expire text file', 'expiredoc', 'expire_section.png', 'Expire the publication for a text file', '73'
+        , NULL, '0', NULL, '0');
+INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 7265, 7, 1, 3);
+INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 7265, 8, 1, 3);
+
+INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`, `IsBulk`) 
+    VALUES ('7266', '5041', 'Expire file', 'expiredoc', 'expire_section.png', 'Expire the publication for a file', '73'
+        , NULL, '0', NULL, '0');
+INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 7266, 7, 1, 3);
+INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 7266, 8, 1, 3);
+
+INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`, `IsBulk`) 
+    VALUES ('7267', '5040', 'Expire image', 'expiredoc', 'expire_section.png', 'Expire the publication for a image', '73'
+        , NULL, '0', NULL, '0');
+INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 7267, 7, 1, 3);
+INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 7267, 8, 1, 3);
+
+INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`, `IsBulk`) 
+    VALUES ('7268', '5028', 'Expire CSS', 'expiredoc', 'expire_section.png', 'Expire the publication for a CSS file', '73'
+        , NULL, '0', NULL, '0');
+INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 7268, 7, 1, 3);
+INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 7268, 8, 1, 3);
+
+INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`, `IsBulk`) 
+    VALUES ('7269', '5092', 'Expire JS', 'expiredoc', 'expire_section.png', 'Expire the publication for a JS file', '73'
+        , NULL, '0', NULL, '0');
+INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 7269, 7, 1, 3);
+INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 7269, 8, 1, 3);
