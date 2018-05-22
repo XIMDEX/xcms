@@ -38,7 +38,7 @@ class ImageNode extends FileNode
      * 
      * @return bool
      */
-    function CreateNode($name, $parentID, $nodeTypeID, $stateID = 7, $sourcePath = "")
+    function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = 7, $sourcePath = "")
     {
         parent::CreateNode($name, $parentID, $nodeTypeID, $stateID, $sourcePath);
     }
