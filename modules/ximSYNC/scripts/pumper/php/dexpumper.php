@@ -267,13 +267,12 @@ class DexPumper
                          $this->finishTask($file["IdSync"]);
 					 } elseif ($renameResult === false) {
 					     
-					     //TODO check the conflict with process
                          // If this rename task does not work, generates a infinite loop
-                         $this->updateTask(0, ServerFrame::DUE2OUTWITHERROR);
+                         $this->updateTask(false, ServerFrame::DUE2OUTWITHERROR);
 					 } else {
 					     
 					     // If this rename task does not work, generates a infinite loop
-					     $this->updateTask(0, ServerFrame::IN);
+					     $this->updateTask(false, ServerFrame::IN);
 					 }
 				}
 			}
@@ -305,30 +304,37 @@ class DexPumper
 			}
 			$this->connection = \Ximdex\IO\Connection\ConnectionManager::getConnection($idProtocol, $this->server);
 		}
+		$res = true;
 		if (!$this->connection->isConnected()) {
 			if ($this->connection->connect($host, $port)) {
 			    if (!$this->connection->login($login, $passwd))
 			    {
 			        $this->error('Can\'t log the user into host: ' . $host);
+			        $res = false;
 			    }
 			}
 			else
 			{
 			    $this->error('Can\'t connect to host: ' . $host);
+			    $res = false;
 			}
 		}
 		if ($this->connection->getError()) {
 		    $this->error($this->connection->getError());
 		}
 		if (!$this->connection->isConnected()) {
-			$msg_error = sprintf('Fail to connect o wrong login credentials for server: %s:%s with user: %s',  $host, $port, $login);
+			$msg_error = sprintf('Fail to connect or wrong login credentials for server: %s:%s with user: %s',  $host, $port, $login);
 			$this->fatal($msg_error);
+			$this->updateTask(false);
 			$this->updateServerState('Failed to connect');
+			/*
 			$this->unRegisterPumper();
 			exit(200);
+			*/
+			$res = false;
 		}
 		$this->updateTimeInPumper();
-		return true;
+		return $res;
 	}
 
 	private function taskBasic($baseRemoteFolder, $relativeRemoteFolder)
@@ -423,7 +429,7 @@ class DexPumper
 		if (!$result) {
 			$retries = $this->serverFrame->get('Retry');
 			$this->serverFrame->set('Retry', $retries);
-			if ($retries > self::RETRIES_TO_FATAL_ERROR) {
+			if ($retries >= self::RETRIES_TO_FATAL_ERROR) {
 			    $this->error('Maximum of retries reached (' . self::RETRIES_TO_FATAL_ERROR . ') for server frame: ' 
 			        . $this->serverFrame->IdSync . '. Marked as errored');
 				$this->serverFrame->set('State', ServerFrame::DUE2INWITHERROR);
@@ -443,7 +449,7 @@ class DexPumper
 		}
 		$this->updateTimeInPumper();
 	}
-        
+    
     private function finishTask($idSync)
     {
         $serverFrame = new ServerFrame($idSync);

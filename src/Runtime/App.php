@@ -113,10 +113,10 @@ Class App
             $stm = self::db()->prepare('insert into Config (ConfigValue, ConfigKey ) values ( :value ,:key )');
             $stm->execute(array(
                 'key' => $key,
-                'value' => $value,
+                'value' => is_string($value) ? trim($value) : $value
             ));
         }
-        $this->config[$key] = $value;
+        $this->config[$key] = is_string($value) ? trim($value) : $value;
         return $this;
     }
     public static function addDbConnection(\PDO $connection, $name = null)

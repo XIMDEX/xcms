@@ -8,7 +8,6 @@
 *.idea
 
 node_modules/
-/data/
 
 conf/_STATUSFILE
 conf/install-params.conf.php
@@ -29,3 +28,4 @@ pi.php
 /.project
 /.data
 /vendors/
+/data/

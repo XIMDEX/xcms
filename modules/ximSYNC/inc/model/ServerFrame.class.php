@@ -282,10 +282,22 @@ class ServerFrame extends ServerFrames_ORM
         $s = new Server($server);
         $channelFrame = new ChannelFrame($channelFrameId);
         if (!$channelFrame->get('IdChannelFrame')) {
-            Logger::error('Unable to load the channel frame with ID: ' . $channelFrameId);
-            return false;
+            Logger::warning('Unable to load the channel frame with ID: ' . $channelFrameId . '. Using the frame field instead');
+            if ($this->get('IdSync')) {
+                $channelId = $this->get('ChannelId');
+            }
+            else {
+                $serverFrame = new ServerFrame($frameID);
+                if (!$serverFrame->get('IdSync')) {
+                    Logger::error('Unable to load the server frame with ID: ' . $frameID);
+                    return false;
+                }
+                $channelId = $serverFrame->get('ChannelId');
+            }
         }
-        $channelId = $channelFrame->get('ChannelId');
+        else {
+            $channelId = $channelFrame->get('ChannelId');
+        }
         $nodeFrame = new NodeFrame($nodeFrameId);
         $idVersion = $nodeFrame->get('VersionId');
         $idNode = $nodeFrame->get('NodeId');
