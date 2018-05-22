@@ -14676,7 +14676,7 @@ function $RootScopeProvider() {
        * The event life cycle starts at the scope on which `$broadcast` was called. All
        * {@link ng.$rootScope.Scope#$on listeners} listening for `name` event on this scope get
        * notified. Afterwards, the event propagates to all direct and indirect scopes of the current
-       * scope and calls all registered listeners along the way. The event cannot be canceled.
+       * scope and calls all registered listeners along the way. The event cannot be cancelled.
        *
        * Any exception emitted from the {@link ng.$rootScope.Scope#$on listeners} will be passed
        * onto the {@link ng.$exceptionHandler $exceptionHandler} service.
@@ -16249,11 +16249,11 @@ function $TimeoutProvider() {
       *
       * @param {Promise=} promise Promise returned by the `$timeout` function.
       * @returns {boolean} Returns `true` if the task hasn't executed yet and was successfully
-      *   canceled.
+      *   cancelled.
       */
     timeout.cancel = function(promise) {
       if (promise && promise.$$timeoutId in deferreds) {
-        deferreds[promise.$$timeoutId].reject('canceled');
+        deferreds[promise.$$timeoutId].reject('cancelled');
         delete deferreds[promise.$$timeoutId];
         return $browser.defer.cancel(promise.$$timeoutId);
       }

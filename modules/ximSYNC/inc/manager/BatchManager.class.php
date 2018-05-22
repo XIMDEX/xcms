@@ -516,7 +516,7 @@ class BatchManager
 
         // Ending batchs type UP
         $sql = "SELECT ServerFrames.IdBatchUp, SUM(IF(ServerFrames.State = 'Due2PumpedWithError', 1, 0)) AS Errors, 
-			SUM(IF (ServerFrames.State IN ('" . ServerFrame::IN . "', '" . ServerFrame::CANCELED . "', '" . ServerFrame::REMOVED . "', '" 
+			SUM(IF (ServerFrames.State IN ('" . ServerFrame::IN . "', '" . ServerFrame::CANCELLED . "', '" . ServerFrame::REMOVED . "', '" 
 			. ServerFrame::REPLACED . "', '" . ServerFrame::OUTDATED . "'), 1, 0)) AS Success, 
 			SUM(IF (ServerFrames.State IN ('Pumped'),1,0)) AS Pumpeds, 
 			COUNT(ServerFrames.IdSync) AS Total FROM ServerFrames, Batchs WHERE Batchs.State IN ('" . Batch::INTIME . "', 
@@ -560,7 +560,7 @@ class BatchManager
                 
                 // Search the batchs type Down with an associated batch type Up
                 $sql = "SELECT SUM(IF(ServerFrames.State = '" . ServerFrame::DUE2OUTWITHERROR . "', 1, 0)) AS Errors, 
-					SUM(IF (ServerFrames.State IN ('" . ServerFrame::OUT . "', '" . ServerFrame::CANCELED . "', 
+					SUM(IF (ServerFrames.State IN ('" . ServerFrame::OUT . "', '" . ServerFrame::CANCELLED . "', 
                     '" . ServerFrame::REMOVED . "', '" . ServerFrame::REPLACED . "'), 1, 0)) AS Success, 
 					COUNT(ServerFrames.IdSync) AS Total FROM ServerFrames, Batchs WHERE
 					ServerFrames.IdBatchUp = Batchs.IdBatch AND Batchs.IdBatchDown = $idBatch";
@@ -577,8 +577,8 @@ class BatchManager
                     // Search the batchs type Down without type Up
                     Logger::info(sprintf("Batch %d type down without associated batch type up", $idBatch));
                     $sql = "SELECT SUM(IF (ServerFrames.State = '" . ServerFrame::DUE2OUTWITHERROR . "', 1, 0)) AS Errors, 
-						SUM(IF (ServerFrames.State IN ('" . ServerFrame::OUT . "', '" . ServerFrame::CANCELED . "', 
-                        '" . ServerFrame::CANCELED . "', '" . ServerFrame::REPLACED . "'), 1, 0)) AS Success, 
+						SUM(IF (ServerFrames.State IN ('" . ServerFrame::OUT . "', '" . ServerFrame::CANCELLED . "', 
+                        '" . ServerFrame::CANCELLED . "', '" . ServerFrame::REPLACED . "'), 1, 0)) AS Success, 
 						COUNT(ServerFrames.IdSync) AS Total FROM NodeFrames, ServerFrames WHERE 
 					    ServerFrames.IdNodeFrame = NodeFrames.IdNodeFrame and ServerFrames.IdBatchDown = $idBatch";
                     if ($dbObj->Query($sql) === false) {

@@ -83,7 +83,7 @@ class Action_expiresection extends ActionAbstract
         );
         $this->addJs('/actions/expiresection/resources/js/index.js');
         $this->addCss('/actions/expiresection/resources/css/style.css');
-        $this->addCss('/assets/style/jquery/ximdex_theme/widgets/calendar/calendar.css');
+        // $this->addCss('/assets/style/jquery/ximdex_theme/widgets/calendar/calendar.css');
         $this->render($values, NULL, 'default-3.0.tpl');
     }
 

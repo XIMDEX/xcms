@@ -73,8 +73,8 @@ class SynchroFacade
             $targetFrame = new ServerFrame();
             $frameID = $targetFrame->getCurrent($idTargetNode, $idTargetChannel); // esto es un idSync
             if (! ($frameID > 0)) {
-                Logger::error(_("No target frame available") . " FACADE target node: $idTargetNode target channel: $idTargetChannel" .
-                    " server: $idServer");
+                Logger::warning(_("No target frame available") . " FACADE target node: $idTargetNode target channel: " 
+                    . (is_null($idTargetChannel) ? 'NULL' : $idTargetChannel) . " server: $idServer");
                 return NULL;
             }
             
@@ -582,13 +582,13 @@ class SynchroFacade
                 }
             }
             
-            // Obtain the frames to be canceled
+            // Obtain the frames to be cancelled
             $frames = $serverFrame->getFutureFramesForDate($id, $down);
             
             // Set this the date to expire in these frames
             foreach ($frames as $frame) {
                 $serverFrame->loader($frame['IdSync']);
-                $serverFrame->set('State', ServerFrame::CANCELED);
+                $serverFrame->set('State', ServerFrame::CANCELLED);
                 $serverFrame->update();
             }
         }

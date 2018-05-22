@@ -200,7 +200,8 @@ class XeditAction extends Action
             'binary' => [NodeTypeConstants::BINARY_FILE],
             'image' => [NodeTypeConstants::IMAGE_FILE],
             'link' => [NodeTypeConstants::LINK, NodeTypeConstants::HTML_DOCUMENT, NodeTypeConstants::BINARY_FILE,
-                NodeTypeConstants::IMAGE_FILE, NodeTypeConstants::XML_DOCUMENT]
+                NodeTypeConstants::IMAGE_FILE, NodeTypeConstants::XML_DOCUMENT],
+            'video' => [NodeTypeConstants::BINARY_FILE]
         ];
 
         $nodeId = isset($_GET['id']) ? $_GET['id'] : null;
@@ -208,7 +209,7 @@ class XeditAction extends Action
         $type = isset($types[$type]) ? $types[$type] : false;
         $level = isset($_GET['level']) && ctype_digit($_GET['level']) ? (int)$_GET['level'] : 1;
 
-        if (ctype_digit($nodeId)) {
+        if ($types !== null and ctype_digit($nodeId)) {
             $filters = null;
             if ($type) {
                 $filters = ["include" => ["nt.IdNodeType" => $type]];
@@ -228,7 +229,7 @@ class XeditAction extends Action
 
             $w->setResponse($result);
         } else {
-            $w->setStatus(1)->setMessage('Id is required');
+            $w->setStatus(1)->setMessage('Id and type are required');
         }
         $w->send();
     }

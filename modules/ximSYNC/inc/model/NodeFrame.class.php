@@ -88,7 +88,7 @@ class NodeFrame extends NodeFrames_ORM
     {
         $sql = "SELECT IdSync FROM ServerFrames WHERE IdNodeFrame = $idNdFr";
         if ($operation == 'Up' or $operation == 'Down') {
-            $sql .= ' and State not in (\'' . ServerFrame::REMOVED . '\', \'' . ServerFrame::REPLACED . '\', \'' . ServerFrame::CANCELED . '\')';
+            $sql .= ' and State not in (\'' . ServerFrame::REMOVED . '\', \'' . ServerFrame::REPLACED . '\', \'' . ServerFrame::CANCELLED . '\')';
         }
 		$dbObj = new \Ximdex\Runtime\Db();
 		$dbObj->Query($sql);

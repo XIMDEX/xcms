@@ -179,10 +179,10 @@ class NodeFrameManager
 		$isActive = $nodeFrame->get('Active');
 		$idUnactive = $nodeFrame->get('GetActivityFrom');
 		$nodeFrame->set('Active',$activity);
-		$canceled = NULL;
+		$cancelled = NULL;
 		if ( !is_null($replacedBy) ) {
 			$nodeFrame->set('GetActivityFrom', $replacedBy);
-			$canceled = 1;
+			$cancelled = 1;
 		}
 		if ($up == 1) {
 			$nodeFrame->set('IsProcessUp', 1);
@@ -207,7 +207,7 @@ class NodeFrameManager
 		foreach($frames as $serverFrId) {
 			Logger::info("Processing serverFrame $serverFrId for nodeFrameID: " . $nodeFrId . ' and nodeID: ' . $nodeId);
 			$channelFrameManager = new ChannelFrameManager();
-			$result = $channelFrameManager->changeState($serverFrId, $operation, $nodeId, $canceled);
+			$result = $channelFrameManager->changeState($serverFrId, $operation, $nodeId, $cancelled);
 			if ($result === false) {
 				Logger::error("The Serverframe state change has failed"." $serverFrId");
 				$sfOK = false;

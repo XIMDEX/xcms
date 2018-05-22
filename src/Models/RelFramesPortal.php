@@ -66,7 +66,7 @@ class RelFramesPortal extends \Ximdex\Data\GenericData
 		if ($res)
 		{
 		    // The relation already exists, returning the ID found
-		    Logger::info('Element to create in RelFramesPortal already exists with ID: ' . $res);
+		    // Logger::info('Element to create in RelFramesPortal already exists with ID: ' . $res);
 		    return $res;
 		}
 		$idRel = parent::add();

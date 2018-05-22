@@ -56,7 +56,7 @@ class ServerFrame extends ServerFrames_ORM
     const IN = 'In';
     const REPLACED = 'Replaced';
     const REMOVED = 'Removed';
-    const CANCELED = 'Canceled';
+    const CANCELLED = 'Canceled';
     const DUE2INWITHERROR = 'Due2InWithError';
     const DUE2OUTWITHERROR = 'Due2OutWithError';
     const OUTDATED = 'Outdated';
@@ -91,7 +91,7 @@ class ServerFrame extends ServerFrames_ORM
             ServerFrame::CLOSING
         );
         $this->finalStatusFailed = array(
-            ServerFrame::CANCELED
+            ServerFrame::CANCELLED
         );
         $this->finalStatus = array_merge($this->finalStatusOk, $this->finalStatusLimbo, $this->finalStatusFailed);
         $this->publishingReport = new PublishingReport();
@@ -535,9 +535,14 @@ class ServerFrame extends ServerFrames_ORM
     public function getCurrent($nodeID, $channelID = null)
     {
         $now = time();
-        $channelClause = "";
-        if (! is_null($channelID)) {
+        if ($channelID) {
             $channelClause = "AND c.ChannelId = " . $channelID . " ";
+        }
+        elseif ($channelID === null) {
+            $channelClause = 'AND c.ChannelId IS NULL ';
+        }
+        else {
+            $channelClause = '';
         }
         $node = new Node($nodeID);
         $serverID = $node->GetServer();
@@ -758,7 +763,7 @@ class ServerFrame extends ServerFrames_ORM
         $sql = 'SELECT ServerFrames.IdSync FROM ServerFrames, NodeFrames ' . 
             'WHERE ServerFrames.IdNodeFrame = NodeFrames.IdNodeFrame AND NodeFrames.NodeId = ' . $nodeId . ' AND ' . 
 	        'ServerFrames.DateUp <= ' . $time . ' AND (ServerFrames.DateDown >= ' . $time . ' OR ServerFrames.DateDown IS NULL) ' . 
-	        'AND ServerFrames.State NOT IN (\'' . ServerFrame::CANCELED . '\', \'' . ServerFrame::REMOVED . '\', \'' . ServerFrame::REPLACED . '\')';
+	        'AND ServerFrames.State NOT IN (\'' . ServerFrame::CANCELLED . '\', \'' . ServerFrame::REMOVED . '\', \'' . ServerFrame::REPLACED . '\')';
         return $this->query($sql);
     }
     
@@ -774,7 +779,7 @@ class ServerFrame extends ServerFrames_ORM
         $sql = 'SELECT ServerFrames.IdSync FROM ServerFrames, NodeFrames ' .
             'WHERE ServerFrames.IdNodeFrame = NodeFrames.IdNodeFrame AND NodeFrames.NodeId = ' . $nodeId . ' AND ' .
             'ServerFrames.DateUp > ' . $time . ' ' . 
-            'AND ServerFrames.State NOT IN (\'' . ServerFrame::CANCELED . '\', \'' . ServerFrame::REMOVED . '\', \'' . ServerFrame::REPLACED . '\')';
+            'AND ServerFrames.State NOT IN (\'' . ServerFrame::CANCELLED . '\', \'' . ServerFrame::REMOVED . '\', \'' . ServerFrame::REPLACED . '\')';
         return $this->query($sql);
     }
 }
