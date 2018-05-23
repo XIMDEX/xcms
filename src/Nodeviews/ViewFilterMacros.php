@@ -640,10 +640,10 @@ class ViewFilterMacros extends AbstractView implements IView
         
         $parents = array_reverse(FastTraverse::get_parents($id, 'node.Name', 'node.IdNode', ['isPublishable' => 1]), true);
         $breadcrumb = '<breadcrumb>';
-        foreach ($parents  as $nodeId => $nodeName) {
-            if (App::getValue('PublishPathFormat') == App::PREFIX) {
+        foreach ($parents as $nodeId => $nodeName) {
+            if (App::getValue('PublishPathFormat') == App::PREFIX and $id == $nodeId) {
                 $parts = explode('-', $nodeName);
-                if (count($parts) > 1) {
+                if (count($parts) > 1 ) {
                     unset($parts[count($parts) - 1]);
                     $nodeName = implode('-', $parts);
                 }
