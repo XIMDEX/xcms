@@ -497,10 +497,22 @@ class HTMLDocumentNode extends AbstractStructuredDocument
         // TODO Get dynamically
         $info['metadata']['language'] = $info['language'];
         $info['metadata']['date'] = $metadata['Fecha'] ?? '';
-        $info['metadata']['title'] = !empty($metadata['Título']) ? $metadata['Título'] : $sd->GetName();
+        $info['metadata']['title'] = !empty($metadata['Título']) ? $metadata['Título'] : static::getCleanName($sd->GetName());
         $info['metadata']['author'] = $metadata['Autor'] ?? '';
 
         return $info;
+    }
+
+    private static function getCleanName($nodeName)
+    {
+        if (App::getValue('PublishPathFormat') == App::PREFIX) {
+            $parts = explode('-', $nodeName);
+            if (count($parts) > 1) {
+                unset($parts[count($parts) - 1]);
+                $nodeName = implode('-', $parts);
+            }
+        }
+        return $nodeName;
     }
 }
 
