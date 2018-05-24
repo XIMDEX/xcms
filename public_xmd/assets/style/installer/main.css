@@ -483,6 +483,10 @@ li[class*="module"] {
       background-position: center -6.7em;
       -webkit-background-size: 170%;
       background-size: 170%; }
+    li[class*="module"] .title.Xedit::after {
+      background-position: center -10.9em;
+      -webkit-background-size: 140%;
+      background-size: 140%; }
 
 .module-installed::before, .module-already::before {
   background: #4c4d57 !important;
@@ -565,7 +569,7 @@ li[class*="module"] {
 
 .module-installed .ximTOUR::after, .module-already .ximTOUR::after {
   background-color: #57e3aa !important; }
-.module-installed .ximTAGS::after, .module-already .ximTAGS::after {
+.module-installed .Xedit::after, .module-already .Xedit::after {
   background-color: #ff684f !important; }
 .module-installed .Xowl::after, .module-already .Xowl::after {
   background-color: #e5dc1e !important; }

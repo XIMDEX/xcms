@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -27,8 +28,8 @@ use Ximdex\Runtime\App;
 
 require_once(APP_ROOT_PATH.'/install/steps/welcome/WelcomeInstallStep.class.php');
 
-class GenericInstallStep {
-
+class GenericInstallStep
+{
 	protected $steps;
 	protected $renderer;
 	protected $request;
@@ -39,15 +40,16 @@ class GenericInstallStep {
 	protected $exceptions;
 	const STATUSFILE = "/conf/_STATUSFILE";
 
-	public function __construct(){
+	public function __construct()
+	{
 		$this->js_files = array();
 		$this->installManager = new installManager();
 		$this->steps = $this->installManager->getSteps();		
 		$this->checkPermissions();
 	}
 
-	public function index(){
-	    
+	public function index()
+	{    
 	    $this->initialize_values(false);
 		$this->installManager->prevStep();
 		$this->currentStep = 0;
@@ -55,8 +57,8 @@ class GenericInstallStep {
 		$this->render();		
 	}
 
-	protected function render($values=array(), $view=null, $layout="installer.tpl"){
-		
+	protected function render($values=array(), $view=null, $layout="installer.tpl")
+	{	
 		// header('Content-type', "text/html; charset=utf-8");
 		foreach ($values as $name => $value) {
 			$$name = $value;			
@@ -74,7 +76,6 @@ class GenericInstallStep {
 		  	include(APP_ROOT_PATH."/install/view/install.php");
 		ob_end_flush();
 		exit;
-
 	}
 
 	/**
@@ -82,52 +83,55 @@ class GenericInstallStep {
 	 * @param $_msgs
 	 * @return string
 	 */
-
-	protected function sendJSON($data) {
+	protected function sendJSON($data)
+	{
 		header(sprintf('Content-type: application/json; charset=utf-8'));
 		$data = json_encode($data);
 		echo $data;
 		die();
     }
-
     
-    public function setCurrentStep($currentStep){
-
+    public function setCurrentStep($currentStep)
+    {
     	$this->currentStep = $currentStep;
     }
 
-    public function setRequest($request){
+    public function setRequest($request)
+    {
     	$this->request = $request;
     }
 
-    public function setResponse($response){
+    public function setResponse($response)
+    {
     	$this->response = $response;
     }
 
-   protected function addJs($jsPath){
+    protected function addJs($jsPath)
+    {
    		$folderName = trim(strtolower($this->steps[$this->currentStep]["class-name"]));
     	$this->js_files[] = "install/steps/{$folderName}/js/{$jsPath}";
     }
 
-    public function loadNextAction(){
-
+    public function loadNextAction()
+    {
     	$this->installManager->nextStep();
-
     }
 
-    public function check(){
+    public function check()
+    {
     	return true;
     }
 
-    protected function checkPermissions(){
-        
+    protected function checkPermissions()
+    {    
         $checkGroup = $this->installManager->checkInstanceGroup();
-        if ($checkGroup["state"] != "success")
+        if ($checkGroup["state"] != "success") {
             $this->exceptions[] = $checkGroup;
-        
+        }
     	$checkPermissions = $this->installManager->checkFilePermissions();
-    	if ($checkPermissions["state"]!= "success")
+    	if ($checkPermissions["state"]!= "success") {
     		$this->exceptions[] = $checkPermissions;
+    	}
    }
 
    /**
@@ -136,26 +140,25 @@ class GenericInstallStep {
     */
    protected function initialize_values(bool $persist = true)
    {
-       //relative URL ( do not save it if its value is only / )
-       $pathInfo = pathinfo($_SERVER['SCRIPT_NAME']?? '/');
+       // Relative URL ( do not save it if its value is only / )
+       $pathInfo = pathinfo($_SERVER['SCRIPT_NAME'] ?? '/');
        $basepath = rtrim( $pathInfo['dirname'], '/');
 
-
        $subpath = '';
-       if(defined('CORE_FRONTCONTROLLER')) {
+       if (defined('CORE_FRONTCONTROLLER')) {
            $subpath = '/'.basename(APP_ROOT_PATH);
-       }else {
-            //No access to /public_xmd directly without own domain
-           if($basepath == '/'.basename(APP_ROOT_PATH)) {
-              header('Location: /');
-              die();
+       } else {
+           
+            // No access to /public_xmd directly without own domain
+            if ($basepath == '/'.basename(APP_ROOT_PATH)) {
+                header('Location: /');
+                die();
            }
        }
-       
        App::setValue('UrlRoot', ($basepath)?: '', $persist);
        App::setValue('UrlFrontController', $subpath, $persist);
 
-       // host and protocol
+       // Host and protocol
        App::setValue('UrlHost', $_SERVER['REQUEST_SCHEME'] . '://'. $_SERVER['HTTP_HOST'], $persist);
    }
 }

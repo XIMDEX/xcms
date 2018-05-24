@@ -105,7 +105,7 @@ Class App
 
     public function setRuntimeValue($key, $value, $persistent = false)
     {
-        if ($persistent === true) {
+        if ($persistent) {
             $stm = self::db()->prepare('delete from Config  where ConfigKey = :key');
             $stm->execute(array(
                 'key' => $key,

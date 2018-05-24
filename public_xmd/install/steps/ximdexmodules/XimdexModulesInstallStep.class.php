@@ -24,19 +24,23 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
-require_once(APP_ROOT_PATH.'/install/steps/generic/GenericInstallStep.class.php');
-require_once(APP_ROOT_PATH.'/install/managers/FastTraverseManager.class.php');
-require_once(APP_ROOT_PATH.'/install/managers/InstallModulesManager.class.php');
+
+use Ximdex\Runtime\App;
+
+require_once APP_ROOT_PATH . '/install/steps/generic/GenericInstallStep.class.php';
+require_once APP_ROOT_PATH . '/install/managers/FastTraverseManager.class.php';
+require_once APP_ROOT_PATH . '/install/managers/InstallModulesManager.class.php';
 
 /**
  * Step class to install the modules. It will install the no core modules
  */
-class XimdexModulesInstallStep extends GenericInstallStep {
-
+class XimdexModulesInstallStep extends GenericInstallStep
+{
     /**
-     * Default step method. List all the modules	 
+     * Default step method. List all the modules
      */
-    public function index() {
+    public function index()
+    {
         $this->addJs("InstallModulesController.js");
         $imManager = new InstallModulesManager(InstallModulesManager::WEB_MODE);
         $result = $imManager->buildModulesFile();
@@ -51,8 +55,8 @@ class XimdexModulesInstallStep extends GenericInstallStep {
     /**
      * List all none default modules and send a json object
      */
-    public function getModulesLikeJson() {
-        $imManager = new InstallModulesManager(InstallModulesManager::WEB_MODE);
+    public function getModulesLikeJson()
+    {
         $ftManager = new FastTraverseManager(FastTraverseManager::WEB_MODE);
         $ftManager->buildFastTraverse();
         $modules = $this->installManager->getModulesByDefault(false);
@@ -60,19 +64,40 @@ class XimdexModulesInstallStep extends GenericInstallStep {
     }
 
     /**
-     * Install a module specified in params.	 
+     * Install a module specified in params 
      */
-    public function installModule() {
+    public function installModule()
+    {
         set_time_limit(0);
         $moduleName = $this->request->getParam("module");
-        $imManager = new InstallModulesManager(InstallModulesManager::WEB_MODE);
-        $imManager->uninstallModule($moduleName);
-        $installState = $imManager->installModule($moduleName);
-        $imManager->enableModule($moduleName);
+        $method = 'install' . $moduleName;
+        if (method_exists($this, $method)) {
+            if ($this->$method()) {
+                $installState = InstallModulesManager::SUCCESS_INSTALL;
+            }
+            else {
+                $installState = InstallModulesManager::ERROR_INSTALL;
+            }
+        }
+        else {
+            $imManager = new InstallModulesManager(InstallModulesManager::WEB_MODE);
+            $imManager->uninstallModule($moduleName);
+            $installState = $imManager->installModule($moduleName);
+            $imManager->enableModule($moduleName);
+        }
         $values = array("result" => strtolower($installState));
         $this->sendJSON($values);
     }
-
+    
+    /**
+     * Xedit configuration
+     * 
+     * @return boolean
+     */
+    private function installXedit()
+    { 
+        App::setValue('HTMLEditorURL', App::getValue('UrlHost') . App::getValue('UrlRoot') . '/xedit', true);
+        App::setValue('HTMLEditorEnabled', '1', true);
+        return true;
+    }
 }
-
-?>

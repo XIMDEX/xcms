@@ -22,18 +22,19 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
-ximdexInstallerApp.controller('InstallModulesController', ["$timeout", '$scope', 'installerService', "$q", "$window",
- function($timeout, $scope, installerService, $q, $window) {
 
+ximdexInstallerApp.controller('InstallModulesController', ["$timeout", '$scope', 'installerService', "$q", "$window", 
+function ($timeout, $scope, installerService, $q, $window)
+{
     $scope.modules = {};
     $scope.loaded = false;
     $scope.message = "";
     $scope.error = false;
-    $scope.foundModuleError=false;
+    $scope.foundModuleError = false;
     $scope.modulesInstalled = false;
 
-    installerService.sendAction("getModulesLikeJson").then(function(response) {
-        if (response.data.error){
+    installerService.sendAction("getModulesLikeJson").then(function (response) {
+        if (response.data.error) {
             $scope.error = true;
             $scope.message = response.data.message;
         }
@@ -41,43 +42,47 @@ ximdexInstallerApp.controller('InstallModulesController', ["$timeout", '$scope',
         $scope.loaded = true;
     });
 
-    $scope.processForm = function(){
-        if (!$scope.foundModuleError){
-                $scope.loading = true;
-                var index = 0;
-                $scope.installModule(0);
-        }else{
-            installerService.sendAction("loadNextAction").then(function(response) {                
-                    location.reload();
+    $scope.processForm = function() {
+        if (!$scope.foundModuleError) {
+        	$scope.loading = true;
+        	$scope.installModule(0);
+        } else {
+            installerService.sendAction("loadNextAction").then(function (response) {                
+            	location.reload();
             });
         }
 	};
-        
-        $scope.isButtonHide = function(){
-            return !$scope.loaded || $scope.modulesInstalled;
-        }
-
-	$scope.installModule = function(index){
-		if ($scope.modules.length > index){
-			module = $scope.modules[index];
-			$scope.modules[index]["state"] = "installing";
-			installerService.sendAction("installModule","module="+module.name).then(function(response) {
-		        $scope.modules[index]["processed"]=true;
-		        $scope.modules[index]["state"]=response.data.result;
-                if (response.data.result.toLowerCase() == "error")
-                    $scope.foundModuleError = true;
-		        index++;
-		        $scope.installModule(index);
-		    });
-		}else{
-                        $scope.modulesInstalled = true;			
-            
-            if (!$scope.foundModuleError)
-                installerService.sendAction("loadNextAction").then(function(response) {                
-                    $timeout(function(){location.reload();},1000);
-		    });
+    
+	$scope.isButtonHide = function () {
+		return !$scope.loaded || $scope.modulesInstalled;
+	}
+	
+	$scope.installModule = function (index) {
+		if ($scope.modules.length > index) {
+			var module = $scope.modules[index];
+			if (module['state'] && module['state'] == 'already') {
+				module["processed"] = true;
+		        $scope.installModule(++index);
+			}
+			else {
+				module["state"] = "installing";
+				installerService.sendAction("installModule", "module=" + module.name).then(function (response) {
+			        module["processed"] = true;
+			        module["state"] = response.data.result;
+	                if (response.data.result.toLowerCase() == "error") {
+	                    $scope.foundModuleError = true;
+					}
+			        index++;
+			        $scope.installModule(index);
+			    });
+			}
+		} else {
+			$scope.modulesInstalled = true;
+            if (!$scope.foundModuleError) {
+                installerService.sendAction("loadNextAction").then(function (response) {                
+                    $timeout(function () { location.reload(); }, 1000);
+                });
+            }
 		}
 	}
-
-
 }]);

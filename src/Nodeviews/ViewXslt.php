@@ -165,7 +165,7 @@ class ViewXslt extends AbstractView
                 $templates = $xPath->query('/xsl:stylesheet/xsl:include');
                 if (!$templates->length)
                 {
-                    Logger::warning('XSL templates file: ' . $urlTemplatesInclude 
+                    Logger::info('XSL templates file: ' . $urlTemplatesInclude 
                             . ' is empty; trying to reload the templates files in the project ID: ' . $projectId);
                     $xsltNode = new XsltNode($project);
                     if ($xsltNode->reload_templates_include($project) === false)

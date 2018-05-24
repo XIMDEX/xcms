@@ -395,6 +395,9 @@ class Manager
             if (('XIMDEX' == $_module || 'APP' == $_module || self::isEnabled($_module))) {
                 return require_once("{$path}{$_file}");
             }
+            else {
+                Logger::warning('Module ' . $_module . ' is not enabled');
+            }
         }
         else {
             Logger::error('Could not load the file: ' . $path . $_file);

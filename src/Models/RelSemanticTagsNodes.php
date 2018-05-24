@@ -70,7 +70,6 @@ class RelSemanticTagsNodes extends RelSemanticTagsNodesOrm
 			}
 			return $out;
 		}
-        $this->SetError(5);
         return null;
 	}
 

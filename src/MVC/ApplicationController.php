@@ -52,12 +52,12 @@ class ApplicationController extends IController
         if ($actionController == NULL) {
             $actionController = $this->_error_no_action();
         } else {
-            $stats = $this->actionStatsStart();
+            $stats = $this->actionsStatsStart();
             $actionController->execute($this->request);
         }
 
         // Inserts action stats
-        $this->actionStatsEnd($stats);
+        $this->actionsStatsEnd($stats);
         $this->hasError = $actionController->hasError();
         $this->msgError = $actionController->getMsgError();
     }
@@ -79,9 +79,9 @@ class ApplicationController extends IController
     /**
      * @return array
      */
-    function actionStatsStart()
+    function actionsStatsStart()
     {
-        $actionStats = App::getValue('ActionsStats');
+        $actionsStats = App::getValue('ActionsStats');
         $action = $this->request->getParam("action");
         $method = $this->request->getParam("method");
         $nodeId = (int)$this->request->getParam("nodeid");
@@ -89,7 +89,7 @@ class ApplicationController extends IController
         
         // Starts timer for use in action stats
         $stats = array();
-        if ($actionStats == 1 && !is_null($action) && "index" == $method) {
+        if ($actionsStats == 1 && !is_null($action) && "index" == $method) {
             $this->timer = new \Ximdex\Utils\Timer();
             $this->timer->start();
             $stats = array("action" => $action, "nodeid" => $nodeId, "idStat" => 0);
@@ -102,12 +102,12 @@ class ApplicationController extends IController
      * 
      * @param $stats
      */
-    function actionStatsEnd($stats)
+    function actionsStatsEnd($stats)
     {
-        $actionStats = App::getValue('ActionsStats');
+        $actionsStats = App::getValue('ActionsStats');
         $action = $this->request->getParam("action");
         $method = $this->request->getParam("method");
-        if ($actionStats == 1 && !is_null($action) && "index" == $method && $this->timer) {
+        if ($actionsStats == 1 && !is_null($action) && "index" == $method && $this->timer) {
             $stats_time = $this->timer->mark('End action');
             $this->send_stats($stats, $method, $stats_time);
         }

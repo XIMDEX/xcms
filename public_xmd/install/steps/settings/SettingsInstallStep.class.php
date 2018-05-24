@@ -69,7 +69,7 @@ class SettingsInstallStep extends GenericInstallStep
         $language = $this->request->getParam("language");
         $anonymousInformation = $this->request->getParam("anonymous_information");
         if ($anonymousInformation) {
-            App::setValue("ActionStats", "1", 1);
+            App::setValue("ActionsStats", "1", true);
         }
         $this->installManager->setSingleParam("##XIMDEX_LOCALE##", $language);
         $this->initialize_values();

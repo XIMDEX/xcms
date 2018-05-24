@@ -59,7 +59,7 @@
 					</p>
 				</div>
 			</div>
-            {if $schemes|@count == 0}
+            {if !$schemes}
 				<div class="small-12 columns">
 					<div class="alert alert-info">
 						<strong>Info!</strong> {t}No schemes found{/t}.

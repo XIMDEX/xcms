@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -26,26 +27,21 @@
 
 use Ximdex\Models\Node;
 use Ximdex\MVC\ActionAbstract;
+use Ximdex\NodeTypes\NodeTypeConstants;
 use Ximdex\Runtime\App;
-
 
 class Action_moduleslist extends ActionAbstract
 {
-
     public static $new_modules = array("Xowl", "Xlyre");
 
     public function index()
-    {
-
-    }
+    {}
 
     protected function readModules()
     {
-
         $modules = array();
-
         $node = new Node();
-        $mods = $node->find(ALL, "IdNodeType=" . \Ximdex\NodeTypes\NodeTypeConstants::MODULE_INFO_CONTAINER, NULL, MULTI);
+        $mods = $node->find(ALL, "IdNodeType=" . NodeTypeConstants::MODULE_INFO_CONTAINER, NULL, MULTI);
         if (!is_array($mods)) {
             $mods = array();
         }
@@ -58,20 +54,17 @@ class Action_moduleslist extends ActionAbstract
                 'enabled' => $isEnabled,
             );
         }
-
         $this->sendJSON($modules);
     }
 
     protected static function isEnabled($name)
     {
         $str = "MODULE_" . strtoupper($name) . "_ENABLED";
-
         if (App::getValue($str)) {
             return true;
         } else {
             return false;
         }
-
     }
 
     private function moduleNotFound()
@@ -79,7 +72,6 @@ class Action_moduleslist extends ActionAbstract
         $this->messages->add(_("Module not found"), MSG_TYPE_ERROR);
         return $this->render(array('messages' => $this->messages->messages), NULL, 'messages.tpl');
     }
-
 
     public function opentab()
     {
@@ -98,7 +90,6 @@ class Action_moduleslist extends ActionAbstract
         $module_state = \Ximdex\Modules\Manager::checkModule($module_name);
         $module_installed = (\Ximdex\Modules\Manager::get_module_state_installed() == $module_state);
         $core_module = in_array($module_name, \Ximdex\Modules\Manager::getCoreModules());
-
         $values = array(
             "module_name" => $module_name,
             "module_exists" => $module_exists,
@@ -108,9 +99,7 @@ class Action_moduleslist extends ActionAbstract
             "lang" => $lang,
             "userId" => $userId
         );
-
         $file = "{$module_name}.tpl";
-
         if (file_exists("{$base}/{$file}")) {
             $this->render($values, "modules/{$file}", 'default-3.0.tpl');
         } else {
@@ -118,7 +107,6 @@ class Action_moduleslist extends ActionAbstract
         }
         return null;
     }
-
 
     public function changeState()
     {
@@ -133,19 +121,18 @@ class Action_moduleslist extends ActionAbstract
         $module_state = \Ximdex\Modules\Manager::checkModule($module_name);
         $install_now = (\Ximdex\Modules\Manager::get_module_state_installed() == $module_state);
         $core_module = in_array($module_name, \Ximdex\Modules\Manager::getCoreModules());
-
         if ($state_now != $module_active && !$core_module) {
             if ($module_active) {
-                //Before active, we check if install it
+                
+                // Before active, we check if install it
                 if ($module_install != $install_now && $module_install) {
                     $this->installModule($module_name);
                 }
-
                 $this->enableModule($module_name);
             } else {
                 $this->disableModule($module_name);
 
-                //After disabled, we check if uninstall it
+                // After disabled, we check if uninstall it
                 if ($module_install != $install_now && !$module_install) {
                     $this->uninstallModule($module_name);
                 }
@@ -161,15 +148,12 @@ class Action_moduleslist extends ActionAbstract
                 $this->messages->add(_("Module not changed"), MSG_TYPE_ERROR);
             }
         }
-
         echo json_encode(array('messages' => $this->messages->messages));
         die();
     }
 
-
-    function installModule($module_name)
+    public function installModule($module_name)
     {
-
         \Ximdex\Modules\Manager::$msg = null;
         \Ximdex\Modules\Manager::installModule($module_name);
         if (\Ximdex\Modules\Manager::$msg != null) {
@@ -180,9 +164,8 @@ class Action_moduleslist extends ActionAbstract
         }
     }
 
-    function enableModule($module_name)
+    public function enableModule($module_name)
     {
-
         \Ximdex\Modules\Manager::$msg = null;
         \Ximdex\Modules\Manager::enableModule($module_name);
         if (\Ximdex\Modules\Manager::$msg != null) {
@@ -193,9 +176,8 @@ class Action_moduleslist extends ActionAbstract
         }
     }
 
-    function uninstallModule($module_name)
+    public function uninstallModule($module_name)
     {
-
         \Ximdex\Modules\Manager::uninstallModule($module_name);
         if (\Ximdex\Modules\Manager::$msg != null) {
             $this->messages->add(\Ximdex\Modules\Manager::$msg, MSG_TYPE_NOTICE);
@@ -205,7 +187,7 @@ class Action_moduleslist extends ActionAbstract
         }
     }
 
-    function disableModule($module_name)
+    public function disableModule($module_name)
     {
         \Ximdex\Modules\Manager::$msg = null;
         $this->messages->add(_("Module disabled"), MSG_TYPE_NOTICE);
@@ -218,4 +200,3 @@ class Action_moduleslist extends ActionAbstract
         }
     }
 }
- 
