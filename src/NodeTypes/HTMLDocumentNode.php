@@ -74,14 +74,14 @@ class HTMLDocumentNode extends AbstractStructuredDocument
 
 
     /**
-     * Xim content node flag
+     * Start ximdex body content flag
      */
-    const XIM_CONTENT_NODE = '<!----------XIM_CONTENT_NODE---------->';
+    const START_XIMDEX_BODY_CONTENT = '<!----------START_XIMDEX_BODY_CONTENT---------->';
 
     /**
-     * End xim content node flag
+     * End ximdex body content flag
      */
-    const END_XIM_CONTENT_NODE = '<!----------END_XIM_CONTENT_NODE---------->';
+    const END_XIMDEX_BODY_CONTENT = '<!----------END_XIMDEX_BODY_CONTENT---------->';
 
     /**
      *
@@ -245,9 +245,9 @@ class HTMLDocumentNode extends AbstractStructuredDocument
         if (strcmp($mode, static::MODE_DYNAMIC) == 0 || strcmp($mode, static::MODE_INDEX) == 0) {
             foreach ($docHTML as $node) {
                 if (isset($node['type']) && $node['type'] == static::CONTENT_DOCUMENT) {
-                    $render .= static::XIM_CONTENT_NODE;
+                    $render .= static::START_XIMDEX_BODY_CONTENT;
                     $render .= !is_null($content) ? $content : $node['content'];
-                    $render .= static::END_XIM_CONTENT_NODE;
+                    $render .= static::END_XIMDEX_BODY_CONTENT;
                 }
             }
             if (strcmp($mode, static::MODE_INDEX) == 0) {
@@ -260,9 +260,9 @@ class HTMLDocumentNode extends AbstractStructuredDocument
                 $css = isset($node['css']) ? array_merge($css, $node['css']) : $css;
                 $js = isset($node['css']) ? array_merge($js, $node['js']) : $js;
                 if (isset($node['type']) and $node['type'] == static::CONTENT_DOCUMENT) {
-                    $body .= static::XIM_CONTENT_NODE;
+                    $body .= static::START_XIMDEX_BODY_CONTENT;
                     $body .= !is_null($content) ? $content : $node['content'];
-                    $body .= static::END_XIM_CONTENT_NODE;
+                    $body .= static::END_XIMDEX_BODY_CONTENT;
                     $name = $node['title'];
                 } else {
                     if (isset($node['id']) and $node['id']) {
@@ -284,9 +284,9 @@ class HTMLDocumentNode extends AbstractStructuredDocument
                 $css = isset($node['css']) ? array_merge($css, $node['css']) : $css;
                 $js = isset($node['css']) ? array_merge($js, $node['js']) : $js;
                 if (isset($node['type']) && $node['type'] == static::CONTENT_DOCUMENT) {
-                    $body .= static::XIM_CONTENT_NODE;
+                    $body .= static::START_XIMDEX_BODY_CONTENT;
                     $body .= !is_null($content) ? $content : $node['content'];
-                    $body .= static::END_XIM_CONTENT_NODE;
+                    $body .= static::END_XIMDEX_BODY_CONTENT;
                     $name = $node['title'];
 
                 } else {
