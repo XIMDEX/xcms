@@ -34,8 +34,9 @@ class InstallDataBaseManager extends InstallManager
     const DB_ARRAY_KEY = "db_installer_connection";
     const DEFAULT_PORT = 3306;
     const DATA_PATH = '/install/ximdex_data/';
-    const SCHEMA_SCRIPT_FILES = ['ximdex_schema.sql'];
-    const DATA_SCRIPT_FILES = ['ximdex_data.sql'];
+    const SCHEMA_SCRIPT_FILE = 'ximdex_schema.sql';
+    const DATA_SCRIPT_FILE = 'ximdex_data.sql';
+    const CHANGES_PATH = 'changes/';
     
     private $dbConnection = null;
     private $host;
@@ -198,20 +199,27 @@ class InstallDataBaseManager extends InstallManager
 
     public function loadData($host, $port, $user, $pass, $name)
     {
-        $data = '';
-        foreach (self::SCHEMA_SCRIPT_FILES as $schemaFile)
-        {
-            $data .= file_get_contents(APP_ROOT_PATH . self::DATA_PATH . $schemaFile);
-            if ($data === false) {
-                return false;
-            }
+        $sqlFiles = array(self::SCHEMA_SCRIPT_FILE, self::DATA_SCRIPT_FILE);
+        $dir = opendir(APP_ROOT_PATH . self::DATA_PATH . self::CHANGES_PATH);
+        if ($dir === false) {
+            return false;
         }
-        foreach (self::DATA_SCRIPT_FILES as $dataFile)
+        while ($file = readdir($dir)) {
+            $info = pathinfo($file);
+            if ($info['extension'] != 'sql') {
+                continue;
+            }
+            $sqlFiles[(int) $info['filename']] = self::CHANGES_PATH . $file;
+        }
+        closedir($dir);
+        $data = '';
+        foreach ($sqlFiles as $sqlFile)
         {
-            $data .= file_get_contents(APP_ROOT_PATH . self::DATA_PATH . $dataFile);
-            if ($data === false) {
+            $content = file_get_contents(APP_ROOT_PATH . self::DATA_PATH . $sqlFile);
+            if ($content === false) {
                 return false;
             }
+            $data .= PHP_EOL . $content;
         }
     	try
     	{
@@ -262,10 +270,10 @@ class InstallDataBaseManager extends InstallManager
             }
             $host = $host[0];
             if ($host == 'localhost' and !isset($_SERVER['DOCKER_CONF_HOME'])) {
-                $query = " SELECT user FROM mysql.user where user='$userName' and host='localhost'";
+                $query = " SELECT user FROM mysql.user where user = '$userName' and host = 'localhost'";
             }
             else {
-                $query = " SELECT user FROM mysql.user where user='$userName' and host='%'";
+                $query = " SELECT user FROM mysql.user where user = '$userName' and host = '%'";
             }
             $result = $this->dbConnection->query($query);
         }
