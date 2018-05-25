@@ -28,6 +28,7 @@
 namespace Ximdex\NodeTypes;
 
 use Ximdex\Logger;
+use Ximdex\Models\Language;
 use Ximdex\Models\RelSemanticTagsNodes;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\Models\Section;
@@ -70,6 +71,17 @@ class HTMLDocumentNode extends AbstractStructuredDocument
      * This flag indicate include node from HTML Document
      */
     const INCLUDE_DOCUMENT = 'include';
+
+
+    /**
+     * Start ximdex body content flag
+     */
+    const START_XIMDEX_BODY_CONTENT = '<!----------START_XIMDEX_BODY_CONTENT---------->';
+
+    /**
+     * End ximdex body content flag
+     */
+    const END_XIMDEX_BODY_CONTENT = '<!----------END_XIMDEX_BODY_CONTENT---------->';
 
     /**
      *
@@ -233,7 +245,9 @@ class HTMLDocumentNode extends AbstractStructuredDocument
         if (strcmp($mode, static::MODE_DYNAMIC) == 0 || strcmp($mode, static::MODE_INDEX) == 0) {
             foreach ($docHTML as $node) {
                 if (isset($node['type']) && $node['type'] == static::CONTENT_DOCUMENT) {
+                    $render .= static::START_XIMDEX_BODY_CONTENT;
                     $render .= !is_null($content) ? $content : $node['content'];
+                    $render .= static::END_XIMDEX_BODY_CONTENT;
                 }
             }
             if (strcmp($mode, static::MODE_INDEX) == 0) {
@@ -246,7 +260,9 @@ class HTMLDocumentNode extends AbstractStructuredDocument
                 $css = isset($node['css']) ? array_merge($css, $node['css']) : $css;
                 $js = isset($node['css']) ? array_merge($js, $node['js']) : $js;
                 if (isset($node['type']) and $node['type'] == static::CONTENT_DOCUMENT) {
+                    $body .= static::START_XIMDEX_BODY_CONTENT;
                     $body .= !is_null($content) ? $content : $node['content'];
+                    $body .= static::END_XIMDEX_BODY_CONTENT;
                     $name = $node['title'];
                 } else {
                     if (isset($node['id']) and $node['id']) {
@@ -259,7 +275,8 @@ class HTMLDocumentNode extends AbstractStructuredDocument
             // TODO
             $pos = strpos($name, "_");
             if ($pos !== 0) {
-                $render = static::createBasicHTMLTemplate($body, $css, $js);
+                $info = static::getInfo($docId);
+                $render = static::createBasicHTMLTemplate($info, $body, $css, $js);
             }
         } else {
             $body = '';
@@ -267,8 +284,11 @@ class HTMLDocumentNode extends AbstractStructuredDocument
                 $css = isset($node['css']) ? array_merge($css, $node['css']) : $css;
                 $js = isset($node['css']) ? array_merge($js, $node['js']) : $js;
                 if (isset($node['type']) && $node['type'] == static::CONTENT_DOCUMENT) {
+                    $body .= static::START_XIMDEX_BODY_CONTENT;
                     $body .= !is_null($content) ? $content : $node['content'];
+                    $body .= static::END_XIMDEX_BODY_CONTENT;
                     $name = $node['title'];
+
                 } else {
                     $body .= isset($node['content']) ? $node['content'] : '';
                 }
@@ -278,7 +298,13 @@ class HTMLDocumentNode extends AbstractStructuredDocument
 
             $pos = strpos($name, "_");
             if ($pos !== 0) {
-                $render = static::createBasicHTMLTemplate($body, $css, $js);
+                $tags = implode(",", array_map(function ($tag) {
+                    return $tag['Name'];
+                }, static::getTags($docId)));
+                $info = static::getInfo($docId);
+                if (!empty($tags))
+                    $info['metadata']['keywords'] = $tags;
+                $render = static::createBasicHTMLTemplate($info, $body, $css, $js);
             }
 
         }
@@ -373,7 +399,7 @@ class HTMLDocumentNode extends AbstractStructuredDocument
      * @param $body
      * @return string
      */
-    private static function createBasicHTMLTemplate($body, $css, $js)
+    private static function createBasicHTMLTemplate($info, $body, $css, $js)
     {
         $header = '';
         foreach ($css as $file) {
@@ -383,12 +409,18 @@ class HTMLDocumentNode extends AbstractStructuredDocument
             $header .= "<script type='text/javascript' src='@@@RMximdex.pathto($file)@@@'></script>" . PHP_EOL;
         }
         $html = '<!DOCTYPE html>' . PHP_EOL;
-        $html .= '<html>' . PHP_EOL . '<head>' . PHP_EOL;
+        $html .= '<html lang="' . $info['language'] . '">' . PHP_EOL . '<head>' . PHP_EOL;
+
         $html .= '<meta charset="UTF-8" >' . PHP_EOL;
         $html .= '<meta name="viewport" content="width=device-width, initial-scale=1.0" >' . PHP_EOL;
         $html .= '<meta http-equiv="X-UA-Compatible" content="ie=edge" >' . PHP_EOL;
         $html .= '<meta name="generator" content = "Ximdex CMS, Semantic Headless CMS and DMS, http://www.ximdex.com" >' . PHP_EOL;
-        $html .= '<meta name="Owner" content = "' . App::getValue("VersionName") . '" >' . PHP_EOL;
+        $html .= '<meta name="owner" content = "' . App::getValue("VersionName") . '" >' . PHP_EOL;
+        foreach ($info['metadata'] as $meta => $value) {
+            if (!empty($value)) {
+                $html .= "<meta name=\"$meta\" content=\"$value\" >" . PHP_EOL;
+            }
+        }
         $html .= $header;
         $html .= '</head>' . PHP_EOL;;
         $html .= '<body>' . PHP_EOL;
@@ -405,24 +437,18 @@ class HTMLDocumentNode extends AbstractStructuredDocument
     private static function createXIF($nodeID, $content, $channel)
     {
         $node = new \Ximdex\Models\Node($nodeID);
-        $relSemanticTagsNodes = new RelSemanticTagsNodes();
-        $tags = $relSemanticTagsNodes->getTags($node->GetID());
+        $tags = static::getTags($nodeID);
         $sectionId = $node->GetSection();
         $ximID = App::getValue('ximid');
         $version = $node->GetLastVersion() ?? [];
         $section = new Section($sectionId);
         $sectionNode = new \Ximdex\Models\Node($section->getIdNode());
         $sectionType = new SectionType($section->getIdSectionType());
-        $sd = new StructuredDocument($nodeID);
-        $metadata = $sd->GetMetadata();
-        $metadata = $metadata ? json_decode($metadata, true) : [];
-        $hDoc = new HTMLDocumentNode($nodeID);
-        $docxif = $hDoc->getDocHeader($channel, $sd->GetLanguage(), $sd->GetDocumentType(), static::DOCXIF);
 
-        // TODO Get dynamically
-        $date = isset($metadata) && isset($metadata['Fecha']) ? $metadata['Fecha'] : '';
-        $title = isset($metadata) && isset($metadata['Título']) ? $metadata['Título'] : '';
-        $author = isset($metadata) && isset($metadata['Autor']) ? $metadata['Autor'] : '';
+        $info = static::getInfo($nodeID);
+
+        $hDoc = new HTMLDocumentNode($nodeID);
+        $docxif = $hDoc->getDocHeader($channel, $info['language'], $info['type'], static::DOCXIF);
 
         // Create XML
         $xml = new SimpleXMLExtended("$docxif</" . static::DOCXIF . '>');
@@ -430,11 +456,12 @@ class HTMLDocumentNode extends AbstractStructuredDocument
         $xml->addChild('file_version', $version["Version"] ?? '');
         if (is_array($tags)) {
             foreach ($tags as $tag) {
-                $xml->addChild('tags', $tag['Name']);
+                $xml->addChild('tag', $tag['Name']);
             }
         }
         $xml->addChild('id_ximdex', $ximID);
-        $xml->addChild('name', $title && !empty($title) ? $title : $node->GetNodeName());
+        $xml->addChild('name', $info['metadata']['title']);
+        $xml->addChild('filename', $node->GetNodeName());
         $xml->addChild('slug', $node->GetNodeName());
         $xml->addChildCData('content_flat', html_entity_decode(preg_replace('/((\n)(\s{2,}))/', '', strip_tags($content))));
         $xml->addChildCData('content_render', $content);
@@ -444,10 +471,48 @@ class HTMLDocumentNode extends AbstractStructuredDocument
         $xml->addChild('id_section', $sectionNode->GetID());
         $xml->addChild('state', "publish");
         $content_payload = $xml->addChild('content-payload');
+        $content_payload->addChild('language', $info['language']);
         $content_payload->addChild('author', !empty($author) ? $author : 'No author');
         $content_payload->addChild('date', !empty($date) ? $date : date('Y-m-d H:i:s'));
         $content_payload->addChild('type', $sectionType->get('sectionType'));
         return $xml->asXML();
+    }
+
+    private static function getTags($nodeId)
+    {
+        $relSemanticTagsNodes = new RelSemanticTagsNodes();
+        return $relSemanticTagsNodes->getTags($nodeId) ?? [];
+    }
+
+    private static function getInfo($nodeId)
+    {
+        $info = [];
+        $sd = new StructuredDocument($nodeId);
+        $lang = new Language($sd->GetLanguage());
+
+        $info['language'] = $lang->GetIsoName();
+        $info['type'] = $sd->GetDocumentType();
+        $metadata = json_decode($sd->GetMetadata(), true);
+
+        // TODO Get dynamically
+        $info['metadata']['language'] = $info['language'];
+        $info['metadata']['date'] = $metadata['Fecha'] ?? '';
+        $info['metadata']['title'] = !empty($metadata['Título']) ? $metadata['Título'] : static::getCleanName($sd->GetName());
+        $info['metadata']['author'] = $metadata['Autor'] ?? '';
+
+        return $info;
+    }
+
+    private static function getCleanName($nodeName)
+    {
+        if (App::getValue('PublishPathFormat') == App::PREFIX) {
+            $parts = explode('-', $nodeName);
+            if (count($parts) > 1) {
+                unset($parts[count($parts) - 1]);
+                $nodeName = implode('-', $parts);
+            }
+        }
+        return $nodeName;
     }
 }
 
