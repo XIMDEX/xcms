@@ -136,10 +136,11 @@ class ApplicationController extends IController
         $ximid = App::getValue('ximid');
         $userId = Session::get("userID");
         if (strcmp($stats["nodeid"], '') != 0) {
-            $nodeid = (int)$stats["nodeid"];
+            $nodeid = (int) $stats["nodeid"];
         } else
             $nodeid = 0;
         $code = $stats["action"] . "_" . $method;
-        @file_get_contents("$remote?eventid=$event&nodeId=$nodeid&userid=$userId&duration=$duration&ximid=$ximid&code=$code", 0, $ctx);
+        $url = "$remote?eventid=$event&nodeId=$nodeid&userid=$userId&duration=$duration&ximid=$ximid&code=$code";
+        @file_get_contents($url, 0, $ctx);
     }
 }

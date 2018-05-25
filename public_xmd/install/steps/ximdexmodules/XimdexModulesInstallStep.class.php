@@ -25,8 +25,6 @@
  *  @version $Revision$
  */
 
-use Ximdex\Runtime\App;
-
 require_once APP_ROOT_PATH . '/install/steps/generic/GenericInstallStep.class.php';
 require_once APP_ROOT_PATH . '/install/managers/FastTraverseManager.class.php';
 require_once APP_ROOT_PATH . '/install/managers/InstallModulesManager.class.php';
@@ -71,8 +69,9 @@ class XimdexModulesInstallStep extends GenericInstallStep
         set_time_limit(0);
         $moduleName = $this->request->getParam("module");
         $method = 'install' . $moduleName;
-        if (method_exists($this, $method)) {
-            if ($this->$method()) {
+        $imManager = new InstallModulesManager(InstallModulesManager::WEB_MODE);
+        if (method_exists($imManager, $method)) {
+            if ($imManager->$method()) {
                 $installState = InstallModulesManager::SUCCESS_INSTALL;
             }
             else {
@@ -80,24 +79,11 @@ class XimdexModulesInstallStep extends GenericInstallStep
             }
         }
         else {
-            $imManager = new InstallModulesManager(InstallModulesManager::WEB_MODE);
             $imManager->uninstallModule($moduleName);
             $installState = $imManager->installModule($moduleName);
             $imManager->enableModule($moduleName);
         }
         $values = array("result" => strtolower($installState));
         $this->sendJSON($values);
-    }
-    
-    /**
-     * Xedit configuration
-     * 
-     * @return boolean
-     */
-    private function installXedit()
-    { 
-        App::setValue('HTMLEditorURL', App::getValue('UrlHost') . App::getValue('UrlRoot') . '/xedit', true);
-        App::setValue('HTMLEditorEnabled', '1', true);
-        return true;
     }
 }
