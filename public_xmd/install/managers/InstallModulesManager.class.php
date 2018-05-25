@@ -124,7 +124,7 @@ class InstallModulesManager extends InstallManager
         $xeditPath = App::getValue('XmodulesRoot') . '/xedit';
         if (!is_dir(XIMDEX_ROOT_PATH . $xeditPath)) {
             Logger::error('Cannot configure Xedit. Directory ' . XIMDEX_ROOT_PATH . $xeditPath . ' does not exists');
-            return false;
+            return true;
         }
         App::setValue('HTMLEditorURL', App::getValue('UrlHost') . App::getValue('UrlRoot') . $xeditPath, true);
         App::setValue('HTMLEditorEnabled', '1', true);

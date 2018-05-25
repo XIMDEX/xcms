@@ -184,7 +184,7 @@ class Action_renamenode extends ActionAbstract
                 $newIdPipeline = NULL;
             }
     
-            if (count($oldIdPipeline > 0)) {
+            if (is_array($oldIdPipeline) and count($oldIdPipeline)) {
                 $oldIdPipeline = $oldIdPipeline[0];
             }
     

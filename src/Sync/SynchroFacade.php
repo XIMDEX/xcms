@@ -556,7 +556,7 @@ class SynchroFacade
             
             // Create batch for down process per max nodes
             if ($createBatch) {
-                $batchId = $batch->create($down, Batch::TYPE_DOWN, $node->GetID(), 1, null, $idPortalVersion, Session::get('userID'));
+                $batchId = $batch->create($down, Batch::TYPE_DOWN, $node->GetID(), 0.9, null, $idPortalVersion, Session::get('userID'));
                 if (!$batchId) {
                     Logger::error('Cannot create the down batch process');
                     return false;
