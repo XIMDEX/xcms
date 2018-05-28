@@ -121,7 +121,7 @@ class InstallModulesManager extends InstallManager
      */
     public function installXedit()
     {
-        $xeditPath = App::getValue('XmodulesRoot') . '/xedit';
+        $xeditPath = App::getValue('XmodulesRoot') . '/xedit/dist';
         if (!is_dir(XIMDEX_ROOT_PATH . $xeditPath)) {
             Logger::error('Cannot configure Xedit. Directory ' . XIMDEX_ROOT_PATH . $xeditPath . ' does not exists');
             return true;
