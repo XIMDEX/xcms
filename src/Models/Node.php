@@ -676,11 +676,11 @@ class Node extends NodesOrm
     }
 
     /**
-     * @param null $channelID
-     * @param null $addNodeName
+     * @param $channelID
+     * @param $addNodeName
      * @return mixed
      */
-    function GetPublishedPath($channelID = null, $addNodeName = null)
+    public function GetPublishedPath($channelID = null, $addNodeName = null, bool $structure = false)
     {
         return $this->class->GetPublishedPath($channelID, $addNodeName);
     }
@@ -697,7 +697,7 @@ class Node extends NodesOrm
         $this->ClearError();
         if ($this->get('IdNode')) {
             if ($this->IsOnNode($nodeID)) {
-                $nodes = FastTraverse::get_parents($this->get('IdNode'), 'Name');
+                $nodes = FastTraverse::getParents($this->get('IdNode'), 'Name', 'ft.IdNode');
                 if ($nodes) {
                     $path = '';
                     foreach ($nodes as $parentId => $name) {
@@ -726,14 +726,15 @@ class Node extends NodesOrm
     function IsOnNode($nodeID)
     {
         $this->ClearError();
-        if ($this->get('IdNode') > 0) {
-
-            $nodes = FastTraverse::get_parents($this->get('IdNode'));
-            if ($nodes === false)
+        if ($this->GetID() > 0) {
+            $nodes = FastTraverse::getParents($this->GetID());
+            if ($nodes === false) {
                 return false;
-            foreach ($nodes as $parentId => $level) {
-                if ($parentId == $nodeID)
+            }
+            foreach ($nodes as $level => $parentId) {
+                if ($parentId == $nodeID) {
                     return true;
+                }
             }
             return false;
         }
@@ -750,13 +751,15 @@ class Node extends NodesOrm
     function IsOnNodeWithNodeType($nodeTypeID)
     {
         $this->ClearError();
-        if ($this->get('IdNode') > 0) {
-            $nodes = FastTraverse::get_parents($this->get('IdNode'), 'IdNodeType');
-            if ($nodes === false)
+        if ($this->GetID() > 0) {
+            $nodes = FastTraverse::getParents($this->GetID(), 'IdNodeType');
+            if ($nodes === false) {
                 return false;
+            }
             foreach ($nodes as $idNodeType) {
-                if ($idNodeType == $nodeTypeID)
+                if ($idNodeType == $nodeTypeID) {
                     return true;
+                }
             }
             return false;
         }
@@ -770,17 +773,15 @@ class Node extends NodesOrm
     public function GetNearest(Node $node)
     {
         $this->ClearError();
-        if ($this->get('IdNode') > 0) {
-            $nodes = FastTraverse::get_parents($node->get('IdNode'), 'idNodeType');
-            if ($nodes === false)
+        if ($this->GetID()) {
+            $parent = FastTraverse::getParents($node->GetID(), null, null, ['CanAttachGroups' => 1], 1);
+            if ($parent === false) {
                 return false;
-            foreach ($nodes as $idNodeType) {
-                $parentNodeType = new NodeType($idNodeType);
-                if (!$parentNodeType->GetID())
-                    return false;
-                if ($parentNodeType->get('CanAttachGroups'))
-                    return $node->get('IdNode');
             }
+            if (!$parent) {
+                return null;
+            }
+            return current($parent);
         }
         $this->SetError(1);
         return false;
@@ -2172,7 +2173,7 @@ class Node extends NodesOrm
     }
 
     /**
-     * Deletes all current node aliases.
+     * Deletes all current node aliases
      */
     function DeleteAlias()
     {
@@ -2181,21 +2182,19 @@ class Node extends NodesOrm
             $sql = sprintf("DELETE FROM NodeNameTranslations " . " WHERE IdNode = %d", $this->get('IdNode'));
             $dbObj = new \Ximdex\Runtime\Db();
             $dbObj->Execute($sql);
-            if ($dbObj->numErr)
+            if ($dbObj->numErr) {
                 $this->SetError(5);
-        } else
+            }
+        } else {
             $this->SetError(1);
+        }
     }
 
     /**
      * If it is contained, it give translated names from node $nodeID in a list form
-     */
-    /**
-     *
-     * @param
-     *            $nodeID
-     * @param
-     *            $langID
+     * 
+     * @param $nodeID
+     * @param $langID
      * @return array
      */
     function GetAliasForLangPath($nodeID, $langID)
@@ -2224,61 +2223,47 @@ class Node extends NodesOrm
     }
 
     /**
-     *
-     * @return bool|null|string
+     * Obtain the closest parent section of a node, or null if no section found
+     * 
+     * @return int|NULL
      */
-    function GetSection()
+    public function GetSection() : ?int
     {
-        if (!($this->get('IdNode') > 0)) {
-            return NULL;
+        if (!$this->GetID()) {
+            Logger::error('Call to obtain the section of a node without ID');
+            return null;
         }
-
-        if ($this->nodeType->get('IsSection')) {
-            return $this->get('IdNode');
+        $section = FastTraverse::getParents($this->GetID(), null, null, ['IsSection' => 1], 1);
+        if (!$section) {
+            return null;
         }
-
-        $idParent = $this->get('IdParent');
-        if (!$idParent) {
-            return NULL;
-        }
-
-        $parent = new Node($idParent);
-        return $parent->GetSection();
+        return current($section);
     }
 
     /**
-     *
      * @return bool|null|String
      */
     function getServer()
     {
         $result = $this->_getParentByType(NodeTypeConstants::SERVER);
-
-        if (!($result > 0)) {
-
+        if (!$result) {
             $result = $this->_getParentByType(NodeTypeConstants::METADATA_SECTION);
         }
-
         return $result;
     }
 
     /**
-     *
      * @return bool|null|String
      */
     function getProject()
     {
         $result = $this->_getParentByType(NodeTypeConstants::PROJECT);
-
         if (!($result > 0)) {
-
             $result = $this->_getParentByType(NodeTypeConstants::METADATA_SECTION);
         }
         if (!($result > 0)) {
-
             $result = $this->_getParentByType(NodeTypeConstants::XSIR_REPOSITORY);
         }
-
         return $result;
     }
 
@@ -2292,18 +2277,15 @@ class Node extends NodesOrm
             Logger::fatal('Trying to call a function without params');
             return false;
         }
-
         if ($this->get('IdNodeType') == $type) {
             return $this->get('IdNode');
         }
-
         $query = sprintf("SELECT ft.IdNode FROM `FastTraverse` ft" . " INNER JOIN Nodes n ON ft.IdNode = n.IdNode AND n.IdNodeType = %d" . " WHERE ft.IdChild = %d and ft.IdNode <> %d", $type, $this->get('IdNode'), $this->get('IdNode'));
         $db = new \Ximdex\Runtime\Db();
         $db->query($query);
         if ($db->numRows > 0) {
             return $db->getValue('IdNode');
         }
-
         Logger::warning(sprintf(_("The nodetype %s could not be obtained for node "), $type) . $this->get('IdNode'));
         return NULL;
     }
@@ -2318,31 +2300,25 @@ class Node extends NodesOrm
         if (!($this->get('IdNode') > 0)) {
             return NULL;
         }
-
         if ($this->nodeType->get('Name') == "Server") {
             return 1;
         }
-
         $idParent = $this->get('IdParent');
 
         if (!$idParent) {
             return null;
         }
-
         $parent = new Node($idParent);
         $depth = $parent->GetDepth();
         if ($depth) {
             return NULL;
         }
-
         return ($depth + 1);
     }
 
     /**
      * If its pending on some project, its depth is returned
-     */
-    /**
-     *
+     * 
      * @return int|null
      */
     function GetPublishedDepth()
@@ -2350,16 +2326,13 @@ class Node extends NodesOrm
         if (!($this->get('IdNode') > 0)) {
             return NULL;
         }
-
         if ($this->nodeType->get('Name') == "Server") {
             return 1;
         }
-
         $idParent = $this->get('IdParent');
         if (!$idParent) {
             return NULL;
         }
-
         $parent = new Node($idParent);
         $depth = $parent->GetPublishedDepth();
         if (!$depth) {
@@ -3443,7 +3416,7 @@ class Node extends NodesOrm
         }
 
         // Load parent nodes
-        $parents = FastTraverse::get_parents($this->GetID(), 'IdNodeType');
+        $parents = FastTraverse::getParents($this->GetID(), 'IdNodeType', 'ft.IdNode');
         if ($parents === false) {
             Logger::error('An error ocurred while getting the parents node for document with node ID: ' . $this->GetID());
             return false;
