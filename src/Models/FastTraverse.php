@@ -25,7 +25,7 @@ class FastTraverse extends FastTraverseOrm
      * @param array $nodeTypeFlags
      * @return bool|array
      */
-    public static function get_children(int $idNode, array $fields = null, int $level = null, array $filters = null, array $nodeTypeFlags = null)
+    public static function getChildren(int $idNode, array $fields = null, int $level = null, array $filters = null, array $nodeTypeFlags = null)
     {
         if ($idNode < 1) {
             Logger::error('Getting children in FastTraverse without node given');
@@ -127,9 +127,10 @@ class FastTraverse extends FastTraverseOrm
      * @param int $idNode
      * @param string $index
      * @param array $nodeTypeFlags
+     * @param int $limit
      * @return bool|array
      */
-    public static function get_parents(int $idNode, string $value = null, string $index = null, array $nodeTypeFlags = null)
+    public static function getParents(int $idNode, string $value = null, string $index = null, array $nodeTypeFlags = null, int $limit = null)
     {
         if ($idNode < 1) {
             Logger::error('Getting parents in FastTraverse without node given');
@@ -137,15 +138,15 @@ class FastTraverse extends FastTraverseOrm
         }
         if ($index or $value) {
             if (! $index) {
-                $index = 'ft.IdNode';
+                $index = 'Depth';
             }
             if (! $value) {
-                $value = 'Depth';
+                $value = 'ft.IdNode';
             }
             $sql = 'select ' . $value . ' as _value, ' . $index . ' as _index from FastTraverse ft';
             $sql .= ' inner join Nodes node on (node.IdNode = ft.IdNode)';
         } else {
-            $sql = 'select ft.IdNode as _index, Depth as _value from FastTraverse ft';
+            $sql = 'select Depth as _index, ft.IdNode as _value from FastTraverse ft';
         }
         if ($nodeTypeFlags) {
             
@@ -153,7 +154,7 @@ class FastTraverse extends FastTraverseOrm
             if (!$index and !$value) {
                 
                 // If the fields contain node or nodetype values, or node type flags, we need to make a join with Nodes table
-                $sql .= ' inner join Nodes node on (node.IdNode = ft.IdChild)';
+                $sql .= ' inner join Nodes node on (node.IdNode = ft.IdNode)';
             }
             
             // We need to make a join to NodeType table in order to use the node type values and flags
@@ -164,6 +165,9 @@ class FastTraverse extends FastTraverseOrm
             $sql .= ')';
         }
         $sql .= ' where ft.IdChild = ' . $idNode . ' order by ft.Depth';
+        if ($limit > 0) {
+            $sql .= ' limit ' . $limit;
+        }
         if (!self::$db) {
             self::$db = new Db();
         }
