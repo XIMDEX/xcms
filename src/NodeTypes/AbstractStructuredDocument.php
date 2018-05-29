@@ -45,6 +45,8 @@ use Ximdex\Runtime\Session;
 use Ximdex\Properties\ChannelProperty;
 use Ximdex\Models\NodeProperty;
 use Ximdex\Models\SemanticNamespaces;
+use Ximdex\Models\Section;
+use Ximdex\Models\SectionType;
 
 define('DOCXAP_VIEW', 1);
 define('SOLR_VIEW', 2);
@@ -180,7 +182,7 @@ abstract class AbstractStructuredDocument extends FileNode
      */
     public function SetContent($content, $commitNode = NULL, Node $node = null)
     {
-        //Checking the valid XML of the given content, if it is necessary
+        // Checking the valid XML of the given content, if it is necessary
         if ($node) {
             switch ($node->getNodeType()) {
                 case \Ximdex\NodeTypes\NodeTypeConstants::XML_DOCUMENT:
@@ -830,7 +832,8 @@ abstract class AbstractStructuredDocument extends FileNode
      * {@inheritDoc}
      * @see \Ximdex\NodeTypes\Root::GetPublishedPath()
      */
-    public function GetPublishedPath($channelID = NULL, $addNodeName = null) {
+    public function GetPublishedPath($channelID = null, $addNodeName = null, bool $structure = false)
+    {
         if (!$this->parent->GetID()) {
             $error = 'Missing ID for structured document';
             $this->messages->add($error, MSG_TYPE_ERROR);
@@ -853,10 +856,27 @@ abstract class AbstractStructuredDocument extends FileNode
                 return false;
             }
         }
-        $path = '';
+        if (App::getValue('PublishPathFormat') == App::SUFFIX) {
+            $addNodeName = false;
+        }
+        $nodes = parent::GetPublishedPath($channelID, $addNodeName, true);
+        
+        // Load the section if there is one over the document node
+        $sectionId = $this->parent->GetSection();
+        $section = new Section($sectionId);
+        if ($section->getIdSectionType() == SectionType::TYPE_XNEWS) {
+            
+            // If the section is XNEWS type, the path will have the xotf section before the node name 
+            $nodeName = array_pop($nodes);
+            // $nodes[] = 'xotf';
+            
+            // Node name without extension
+            $nodeInfo = pathinfo($nodeName);
+            $nodes[] = $nodeInfo['filename'];
+        }
+        $path = '/' . implode('/', $nodes);
         switch (App::getValue('PublishPathFormat')) {
             case App::PREFIX:
-                $path = parent::GetPublishedPath($channelID, $addNodeName);
                 
                 // If the language is different than the default server one, the path include its ISO name
                 $nodeProperty = new NodeProperty();
@@ -873,13 +893,9 @@ abstract class AbstractStructuredDocument extends FileNode
                 }
                 break;
             case App::SUFFIX:
-                $path = parent::GetPublishedPath($channelID);
                 if ($addNodeName) {
                     $path .= '/' . $this->GetPublishedNodeName($channelID);
                 }
-                break;
-            default:
-                $path = parent::GetPublishedPath($channelID, $addNodeName);
         }
         return str_replace('//', '/', $path);
     }
