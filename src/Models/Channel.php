@@ -42,7 +42,12 @@ class Channel extends ChannelsOrm
     public $flagErr;
     public $numErr;
     
-    const RENDER_TYPES = ['static' => 'Static', 'include' => 'Include', 'dynamic' => 'Dynamic', 'index' => 'Ximdex Index Format'];
+    const RENDERTYPE_STATIC = 'static';
+    const RENDERTYPE_INCLUDE = 'include';
+    const RENDERTYPE_DYNAMIC = 'dynamic';
+    const RENDERTYPE_INDEX = 'index';
+    const RENDER_TYPES = [self::RENDERTYPE_STATIC => 'Static', self::RENDERTYPE_INCLUDE => 'Include', self::RENDERTYPE_DYNAMIC => 'Dynamic'
+        , self::RENDERTYPE_INDEX => 'Ximdex Index Format'];
     const JSON_CHANNEL = 10010;
 
     /**

@@ -148,7 +148,7 @@ class SyncManager
             
             // First search for structural assets nodes
             $nodeTypeFlagsAux = $nodeTypeFlags + ['IsStructuredDocument' => false];
-            $assetsChildren = FastTraverse::get_children($node->GetID(), null, $level, $filters, $nodeTypeFlagsAux);
+            $assetsChildren = FastTraverse::getChildren($node->GetID(), null, $level, $filters, $nodeTypeFlagsAux);
             if ($assetsChildren === false) {
                 return false;
             }
@@ -166,7 +166,7 @@ class SyncManager
         if ($level) {
             $level++;
         }
-        $documentsChildren = FastTraverse::get_children($node->GetID(), null, $level, $filters, $nodeTypeFlagsAux);
+        $documentsChildren = FastTraverse::getChildren($node->GetID(), null, $level, $filters, $nodeTypeFlagsAux);
         if ($documentsChildren === false) {
             return false;
         }

@@ -250,7 +250,7 @@ class XsltNode extends FileNode
         }
         
         // Get the children nodes of the current section
-        $nodes = FastTraverse::get_children($section->GetID(), ['node' => ['IdNodeType']], 1);
+        $nodes = FastTraverse::getChildren($section->GetID(), ['node' => ['IdNodeType']], 1);
         if ($nodes === false)
         {
             $this->messages->add('Cannot get children nodes from node: ' . $section->GetID() . ' in reload templates include files process'
@@ -850,7 +850,7 @@ DOCXAP;
         }
         
         // Get children of the node with its node types
-        $nodes = FastTraverse::get_children($node->GetID(), ['node' => ['IdNodeType']], 1);
+        $nodes = FastTraverse::getChildren($node->GetID(), ['node' => ['IdNodeType']], 1);
         if ($nodes === false)
         {
             $this->messages->add('Cannot get children nodes from node: ' . $node->GetID() . ' in reload templates include files process'

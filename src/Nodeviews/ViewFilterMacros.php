@@ -71,9 +71,8 @@ class ViewFilterMacros extends AbstractView implements IView
     const MACRO_DOTDOT = "/@@@RMximdex\.dotdot\(([^\)]*)\)@@@/";
     const MACRO_PATHTO = "/@@@RMximdex\.pathto\(([,-_#%=\.\w\s]+)\)@@@/";
     const MACRO_PATHTOABS = "/@@@RMximdex\.pathtoabs\(([,-_#%=\.\w\s]+)\)@@@/";
-    const MACRO_RDF = "/@@@RMximdex\.rdf\(([^\)]+)\)@@@/";
-    const MACRO_RDFA = "/@@@RMximdex\.rdfa\(([^\)]+)\)@@@/";
     const MACRO_BREADCRUMB = "/@@@RMximdex\.breadcrumb\(([,-_#%=\.\w\s]+)\)@@@/";
+    const MACRO_INCLUDE = "/@@@RMximdex\.include\(([^\)]*)\)@@@/";
 
     /**
      * Constructor with mode preview choise parameter
@@ -323,6 +322,26 @@ class ViewFilterMacros extends AbstractView implements IView
         }
         return true;
     }
+    
+    /**
+     * Load the section id from the args array
+     *
+     * @param array $args Transformation args
+     * @return boolean True if exits the section
+     */
+    private function _setIdSection($args = array())
+    {
+        if (array_key_exists('SECTION', $args)) {
+            $this->_idSection = $args['SECTION'];
+        }
+        
+        // Check Params
+        if (!isset($this->_idSection) || !($this->_idSection > 0)) {
+            Logger::error('VIEW FILTERMACROSPREVIEW: Node section not specified: ' . $args['NODENAME']);
+            return false;
+        }
+        return true;
+    }
 
     /**
      * @param $pointer
@@ -341,8 +360,7 @@ class ViewFilterMacros extends AbstractView implements IView
          * * sectionpath
          * * dotdot
          * * pathto
-         * * rdf
-         * * rdfa
+         * * include
          */
         $serverName = $this->_serverNode->get('Name');
         $content = preg_replace(self::MACRO_SERVERNAME, $serverName, $content);
@@ -364,7 +382,6 @@ class ViewFilterMacros extends AbstractView implements IView
             $this,
             'getdotdotpath'
         ), $content);
-
         $content = preg_replace_callback(self::MACRO_BREADCRUMB, array(
             $this,
             'getBreadCrumb'
@@ -381,14 +398,9 @@ class ViewFilterMacros extends AbstractView implements IView
             $this,
             'getLinkPathAbs'
         ), $content);
-        $content = preg_replace_callback(self::MACRO_RDF, array(
-            $this,
-            'getRDFByNodeId'
-        ), $content);
-        $content = preg_replace_callback(self::MACRO_RDFA, array(
-            $this,
-            'getRDFaByNodeId'
-        ), $content);
+        
+        // Files include
+        $content = preg_replace_callback(self::MACRO_INCLUDE, array($this, 'getInclude'), $content);
 
         // Once macros are resolver, remove uid attribute from tags
         $content = preg_replace_callback("/(<.*?)(uid=\".*?\")(.*?\/?>)/", array(
@@ -503,10 +515,11 @@ class ViewFilterMacros extends AbstractView implements IView
 
     /**
      * @param $matches
-     * @param boolean $forceAbsolute
-     * @return string
+     * @param bool $forceAbsolute
+     * @param bool $include
+     * @return bool|string
      */
-    private function getLinkPath($matches, $forceAbsolute = false)
+    private function getLinkPath($matches, $forceAbsolute = false, bool $include = false)
     {
         // Get parentesis content
         $pathToParams = $matches[1];
@@ -614,7 +627,7 @@ class ViewFilterMacros extends AbstractView implements IView
         // Get the relative or absolute path
         if ($forceAbsolute or ($targetServer->get('IdServer') != $this->_server->get('IdServer')) or $this->_server->get('OverrideLocalPaths')
             or (isset($res['pathMethod']['absolute']) and $res['pathMethod']['absolute'])) {
-            $src = $this->getAbsolutePath($targetNode, $targetServer, $idTargetChannel);
+            $src = $this->getAbsolutePath($targetNode, $targetServer, $idTargetChannel, $include);
             if ($parserPathTo->getAnchor()) {
                 $src .= '#' . $parserPathTo->getAnchor();
             }
@@ -637,8 +650,7 @@ class ViewFilterMacros extends AbstractView implements IView
         if ($id === 'THIS') {
             $id = $this->idNode;
         }
-        
-        $parents = array_reverse(FastTraverse::get_parents($id, 'node.Name', 'node.IdNode', ['isPublishable' => 1]), true);
+        $parents = array_reverse(FastTraverse::getParents($id, 'node.Name', 'node.IdNode', ['isPublishable' => 1]), true);
         $breadcrumb = '<breadcrumb>';
         foreach ($parents as $nodeId => $nodeName) {
             if (App::getValue('PublishPathFormat') == App::PREFIX and $id == $nodeId) {
@@ -652,7 +664,6 @@ class ViewFilterMacros extends AbstractView implements IView
             $breadcrumb .= PHP_EOL . "<link href=\"{$href}\">{$nodeName}</link>";
         }
         $breadcrumb .= '</breadcrumb>';
-        
         return $breadcrumb;
     }
     
@@ -711,49 +722,26 @@ class ViewFilterMacros extends AbstractView implements IView
      * @param $targetNode
      * @param $targetServer
      * @param $idTargetChannel
+     * @param bool $include
      * @return string
      */
-    private function getAbsolutePath($targetNode, $targetServer, $idTargetChannel)
+    private function getAbsolutePath($targetNode, $targetServer, $idTargetChannel, bool $include = false)
     {
-        return $targetServer->get('Url') . $targetNode->GetPublishedPath($idTargetChannel, true);
-    }
-
-    /**
-     * @param $params
-     * @param boolean $rdfa
-     * @return string
-     */
-    private function getRDFByNodeId($params, $rdfa = false)
-    {
-        return '';
-    }
-
-    /**
-     * @param $params
-     * @return string
-     */
-    private function getRDFaByNodeId($params)
-    {
-        return $this->getRDFByNodeId($params, true);
-    }
-
-    /**
-     * Load the section id from the args array
-     *
-     * @param array $args Transformation args
-     * @return boolean True if exits the section
-     */
-    private function _setIdSection($args = array())
-    {
-        if (array_key_exists('SECTION', $args)) {
-            $this->_idSection = $args['SECTION'];
+        if ($include) {
+            $url = $targetServer->get('InitialDirectory');
+        } else {
+            $url = $targetServer->get('Url');
         }
-
-        // Check Params
-        if (!isset($this->_idSection) || !($this->_idSection > 0)) {
-            Logger::error('VIEW FILTERMACROSPREVIEW: Node section not specified: ' . $args['NODENAME']);
-            return false;
-        }
-        return true;
+        $url .= $targetNode->GetPublishedPath($idTargetChannel, true);
+        return $url;
+    }
+    
+    /**
+     * @param array $matches
+     * @return bool|string
+     */
+    private function getInclude(array $matches)
+    {
+        return $this->getLinkPath($matches, false, true);
     }
 }

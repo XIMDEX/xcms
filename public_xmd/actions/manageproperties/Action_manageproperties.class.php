@@ -123,21 +123,19 @@ class Action_manageproperties extends ActionAbstract
      */
     public function save_changes()
     {
-        //Get the form properties
+        // Get the form properties
         $nodeId = $this->request->getParam('nodeid');
         $nodeId = $nodeId < 10000 ? 10000 : $nodeId;
         $confirmed = $this->request->getParam('confirmed');
         $confirmed = $confirmed == 'YES' ? true : false;
         $inherited_channels = $this->request->getParam('inherited_channels');
-        $channel_recursive = $this->request->getParam('Channel_recursive');
-        $channel_recursive = empty($channel_recursive) ? array() : $channel_recursive;
+        $channel_recursive = $this->request->getParam('Channel_recursive') ? true : false;
         $channels = $this->request->getParam('Channel');
         $channels = empty($channels) || $inherited_channels == 'inherited' ? array() : $channels;
         $inherited_languages = $this->request->getParam('inherited_languages');
         $languages = $this->request->getParam('Language');
         $languages = empty($languages) || $inherited_languages == 'inherited' ? array() : $languages;
-        $language_recursive = $this->request->getParam('Language_recursive');
-        $language_recursive = empty($language_recursive) ? array() : $language_recursive;
+        $language_recursive = $this->request->getParam('Language_recursive') ? true : false;
         $inherited_schemas = $this->request->getParam('inherited_schemas');
         $schemas = $this->request->getParam('Schema');
         $schemas = empty($schemas) || $inherited_schemas == 'inherited' ? array() : $schemas;
@@ -157,10 +155,10 @@ class Action_manageproperties extends ActionAbstract
         } else {
             $results = InheritedPropertiesManager::setValues($nodeId, $properties);
             $applyResults = array();
-            if (count($channel_recursive) > 0) {
+            if ($channel_recursive) {
                 $applyResults = array_merge($applyResults, $this->_applyPropertyRecursively('Channel', $nodeId, $channel_recursive));
             }
-            if (count($language_recursive) > 0) {
+            if ($language_recursive) {
                 $applyResults = array_merge($applyResults, $this->_applyPropertyRecursively('Language', $nodeId, $language_recursive));
             }
             $node = new Node($nodeId);
@@ -181,7 +179,8 @@ class Action_manageproperties extends ActionAbstract
                 }
                 if ($defaultServerLanguage) {
                     $nodeProperty = new NodeProperty();
-                    $property = $nodeProperty->find(ALL, 'IdNode = ' . $nodeId . ' and property = \'' . NodeProperty::DEFAULTSERVERLANGUAGE . '\'');
+                    $property = $nodeProperty->find(ALL, 'IdNode = ' . $nodeId . ' and property = \'' . NodeProperty::DEFAULTSERVERLANGUAGE 
+                        . '\'');
                     if ($property) {
                         
                         // Update the property value

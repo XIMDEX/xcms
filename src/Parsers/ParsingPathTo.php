@@ -94,16 +94,14 @@ class ParsingPathTo
             return true;
         }
         $msg = 'Parsing pathTo with: ' . $pathToParams;
-        if ($nodeId)
-        {
+        if ($nodeId) {
             $msg .= ' for parent document node: ' . $nodeId;
         }
-        Logger::info($msg);
+        Logger::debug($msg);
         $params = explode(',', $pathToParams);
 
         // Error if there aren't any params
-        if (!$params)
-        {
+        if (!$params) {
             $error = 'Parsing pathto need any param to work';
             $this->messages->add($error, MSG_TYPE_ERROR);
             return false;
@@ -123,37 +121,32 @@ class ParsingPathTo
         $nodeValue = trim(urldecode($params[0]));
         
         // Check the channel parameter
-        if (isset($params[1]) and $params[1])
-        {
+        if (isset($params[1]) and $params[1]) {
+            
             // The second one is value is the channel name or ID (optional)
             $channelParam = $params[1];
             $channel = new Channel();
-            if (is_numeric($channelParam))
-            {
+            if (is_numeric($channelParam)) {
                 $channel = $channel->find('IdChannel', 'IdChannel = ' . $channelParam);
-            }
-            else
-            {
+            } else {
                 $channel = $channel->find('IdChannel', 'Name =  \'' . $channelParam . '\'');
             }
-            if (!$channel)
-            {
+            if (!$channel) {
                 $error = 'The specified channel ' . $channelParam . ' does not exist';
                 $this->messages->add($error, MSG_TYPE_WARNING);
                 return false;
             }
             $this->channel = $channel[0]['IdChannel'];
         }
-        else
-        {
+        else {
             // Specified channel has not been given in function parameters
             $this->channel = null;
         }
         if ($nodeValue == 'THIS') {
             $nodeValue = $nodeId;
         }
-        if (is_numeric($nodeValue))
-        {
+        if (is_numeric($nodeValue)) {
+            
             // The macro has the node ID
             $id = $nodeValue;
             $node = new Node($id);
@@ -235,7 +228,7 @@ class ParsingPathTo
                 if (current($pathData) == '..')
                 {
                     // Get the parent nodes of the section with node types, without the current one
-                    $sectionParents = FastTraverse::get_parents($nodeSection->GetID(), 'IdNodeType', 'IdNode');
+                    $sectionParents = FastTraverse::getParents($nodeSection->GetID(), 'IdNodeType', 'ft.IdNode');
                     if (!$sectionParents)
                     {
                         Logger::error('Cannot load parents node for node: ' . $nodeSection->GetID() . ' (' . $nodeSection->GetNodeName() .  ')');
@@ -304,7 +297,7 @@ class ParsingPathTo
         }
         
         // Check the language parameter if node is structured document
-        if (isset($params[2]) and $node->nodeType->IsStructuredDocument()) {
+        if (isset($params[2]) and $params[2] and $node->nodeType->IsStructuredDocument()) {
             
             // The third one is value is the language name or ID (optional)
             $languageParam = $params[2];
@@ -376,7 +369,7 @@ class ParsingPathTo
                 return false;
             }
         }
-        Logger::info('ParsingPathTo: Obtained node with ID: ' . $id . ' and name: ' . $node->GetNodeName());
+        Logger::debug('ParsingPathTo: Obtained node with ID: ' . $id . ' and name: ' . $node->GetNodeName());
         
         // Target channel
         if (!$this->channel and $node->nodeType->GetIsStructuredDocument()) {

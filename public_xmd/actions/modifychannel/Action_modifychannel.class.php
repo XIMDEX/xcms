@@ -135,7 +135,7 @@ class Action_modifychannel extends ActionAbstract
 				$channel->messages->add(_('An error occurred while modifying channel'), MSG_TYPE_ERROR);
 				break;
 			default:
-                if ($_POST["Default_Channel"] == 1) {
+			    if (isset($_POST['Default_Channel']) and $_POST['Default_Channel'] == 1) {
                     if ($channel->setDefaultChannelToZero($idNode)) {
                         $channel->messages->add(_('Channel has been successfully modified'), MSG_TYPE_NOTICE);
                     }

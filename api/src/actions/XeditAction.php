@@ -215,7 +215,7 @@ class XeditAction extends Action
                 $filters = ["include" => ["nt.IdNodeType" => $type]];
             }
 
-            $children = FastTraverse::get_children($nodeId, ['node' => ['Name', 'idParent'], 'nodeType' =>
+            $children = FastTraverse::getChildren($nodeId, ['node' => ['Name', 'idParent'], 'nodeType' =>
                 ['isFolder', 'isVirtualFolder', 'IdNodeType']], null, $filters, ['IsRenderizable' => true,
                 'IsHidden' => false]);
             $result = static::buildCompleteTree($children, $type);

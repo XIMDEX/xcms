@@ -328,7 +328,7 @@ abstract class InheritableProperty
             return false;
         }
         // Obtain the target nodes under the specified one
-        $children = FastTraverse::get_children($this->nodeId, [
+        $children = FastTraverse::getChildren($this->nodeId, [
             'node' => [
                 'IdNodeType'
             ]

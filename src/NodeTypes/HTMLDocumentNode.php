@@ -266,12 +266,12 @@ class HTMLDocumentNode extends AbstractStructuredDocument
                     $name = $node['title'];
                 } else {
                     if (isset($node['id']) and $node['id']) {
-                        $body .= '@@@RMximdex.code(include, @@@RMximdex.pathto(' . $node['id'] . ')@@@)@@@';
+                        $body .= PHP_EOL . '@@@GMximdex.exec(include, @@@RMximdex.include(' . $node['id'] . ')@@@)@@@' . PHP_EOL;
                     }
                 }
             }
             $render = $body;
-
+            
             // TODO
             $pos = strpos($name, "_");
             if ($pos !== 0) {

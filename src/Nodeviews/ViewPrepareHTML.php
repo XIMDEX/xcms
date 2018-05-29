@@ -10,7 +10,7 @@ use Ximdex\Models\ProgrammingCode;
 
 class ViewPrepareHTML extends AbstractView implements IView
 {
-    const MACRO_CODE = "/@@@RMximdex\.code\((.*),(.*)\)@@@/";
+    const MACRO_CODE = "/@@@GMximdex\.exec\((.*?),(.*)\)@@@/";
 
     private $nodeID;
     private $channelID;

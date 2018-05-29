@@ -31,5 +31,6 @@ use Ximdex\Models\ORM\SectionTypesOrm;
 
 class SectionType extends SectionTypesOrm
 {
-
+    const TYPE_NORMAL = 1;
+    const TYPE_XNEWS = 2;
 }

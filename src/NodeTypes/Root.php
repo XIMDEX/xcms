@@ -354,11 +354,12 @@ class Root
     }
 
     /**
-     * @param null $channelID
+     * @param $channelID
      * @param $addNodeName
+     * @param $structure
      * @return string
      */
-    public function GetPublishedPath($channelID = NULL, $addNodeName = null)
+    public function GetPublishedPath($channelID = null, $addNodeName = null, bool $structure = false)
     {
         $db = new \Ximdex\Runtime\Db();
         $nodes = array();
@@ -377,6 +378,9 @@ class Root
         if ($addNodeName && !$this->nodeType->get('IsVirtualFolder')) {
             $parent = new Node($this->parent->get('IdNode'));
             $nodes[] = $parent->GetPublishedNodeName($channelID);
+        }
+        if ($structure) {
+            return $nodes;
         }
         return '/' . implode('/', $nodes);
     }
