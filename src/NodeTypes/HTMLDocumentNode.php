@@ -472,8 +472,10 @@ class HTMLDocumentNode extends AbstractStructuredDocument
         $xml->addChild('state', "publish");
         $content_payload = $xml->addChild('content-payload');
         $content_payload->addChild('language', $info['language']);
-        $content_payload->addChild('author', !empty($author) ? $author : 'No author');
-        $content_payload->addChild('date', !empty($date) ? $date : date('Y-m-d H:i:s'));
+        $content_payload->addChild('author', !empty($info['metadata']['author']) ?
+            $info['metadata']['author'] : 'No author');
+        $content_payload->addChild('date', !empty($info['metadata']['date']) ?
+            date('Y-m-d H:i:s', strtotime($info['metadata']['date'])) : date('Y-m-d H:i:s'));
         $content_payload->addChild('type', $sectionType->get('sectionType'));
         return $xml->asXML();
     }
