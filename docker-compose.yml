@@ -5,6 +5,8 @@ services:
   # Change this name ( ximdex: ) for your desired host name, for example ( ximdex.mydomain.com: )
   ximdex:
     image: ximdex/nginx-php:php7
+    environment:
+      WEB_DOCUMENT_ROOT: /var/www/html
     volumes:
       - ./:/var/www/html
     links:
@@ -14,7 +16,7 @@ services:
       - 80:80
   
   db:
-    image: "mysql:5.7"
+    image: "mariadb:10.2"
     
     # Path where MySQL data will be
     volumes:

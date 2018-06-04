@@ -21,9 +21,10 @@ Install Ximdex CMS as a docker container or using the web installer on your serv
     You should end with a directory (i.e.: ximdex-develop) containing all the Ximdex files and directories.
 
 
-2. From the Ximdex directory (i.e.: ximdex-develop, where the docker-compose.yml file is locate) run the command:
+2. From the Ximdex directory (i.e.: ximdex-develop, where the docker-compose.yml file is locate) run the commands:
     ```
-    sudo docker-compose up
+    sudo docker-compose up composer
+    sudo docker-compose up ximdex db
     ```
     That will run the containers for Apache2, PHP, MySQL and Ximdex running on the host ximdex:80 
     

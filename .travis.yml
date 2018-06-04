@@ -33,4 +33,4 @@ notifications:
     
   slack:
     rooms:
-      - ximdexteam:tJAT66V6VSJeHR3H2CDCImnK#ximdex
+      - ximdexteam:tJAT66V6VSJeHR3H2CDCImnK#travis-ci
