@@ -53,18 +53,18 @@ class Action_filepreview extends ActionAbstract
             $selectedVersion = $dataFactory->GetLastVersionId();
         }
         if (!$selectedVersion) {
-            
+
             //TODO error
         }
         $node = new Node($idNode);
         $nodetype = new NodeType($node->GetNodeType());
         $values = array('id_node' => $idNode,
-            'path' => App::getValue('UrlRoot') . '/?action=rendernode&nodeid=' . $node->GetID() . '&version=' . $version . '&sub_version=' 
+            'path' => App::getValue('UrlRoot') . '/?action=rendernode&nodeid=' . $node->GetID() . '&version=' . $version . '&sub_version='
                 . $subVersion,
             'Name' => $node->get('Name'),
             'node_Type' => $node->nodeType->GetName(),
             'type' => $nodetype->GetName()
-            );
+        );
         $this->render($values, null, 'default-3.0.tpl');
     }
 
@@ -106,7 +106,8 @@ class Action_filepreview extends ActionAbstract
                 $mime = $imageInfo['mime'];
                 array_push($imageNodes, array('name' => $n->GetNodeName(),
                         'original_path' => $nodePath . str_replace('/Ximdex/Projects', '', $n->GetPath()),
-                        'src' => $imagePath . '/' . $hash,
+                        //'src' => $imagePath . '/' . $hash,
+                        'src' => App::getValue('UrlRoot') . '/?action=rendernode&nodeid=' . $idNode,
                         'width' => $width,
                         'height' => $height,
                         'mime' => $mime,
@@ -119,7 +120,7 @@ class Action_filepreview extends ActionAbstract
             $this->addJs('/actions/filepreview/resources/js/showAll.js');
             $this->addJs('/actions/filepreview/resources/js/gallerizer.js');
             $values = array('imageNodes' => $imageNodes, 'serverName' => $parentNode->get('Name'), 'folderName' => $node->get('Name')
-                , 'node_Type' => $node->nodeType->GetName());
+            , 'node_Type' => $node->nodeType->GetName());
             $this->render($values, null, 'default-3.0.tpl');
         } else {
             $message = _("No images found in this folder");
