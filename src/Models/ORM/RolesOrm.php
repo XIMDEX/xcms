@@ -14,7 +14,7 @@ class RolesOrm extends GenericData
     var $_idField = 'IdRole';
     var $_table = 'Roles';
     var $_metaData = array(
-        'IdRole' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
+        'IdRole' => array('type' => "int(12)", 'not_null' => 'true', 'primary_key' => true),
         'Name' => array('type' => "varchar(255)", 'not_null' => 'true'),
         'Icon' => array('type' => "varchar(255)", 'not_null' => 'false'),
         'Description' => array('type' => "varchar(255)", 'not_null' => 'false')

@@ -245,7 +245,7 @@ class GenericData
                         array($this->{$this->_idField}),
                         MONO);
                     if (count($result) == 1) {
-                        Logger::warning('The table has an auto-increment field, returning id field');
+                        Logger::info('The table has not an auto-increment field, returning id field');
                         $insertedId = $result[0];
                     }
                 }

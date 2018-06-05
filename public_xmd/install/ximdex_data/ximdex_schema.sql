@@ -599,7 +599,7 @@ CREATE TABLE `RelXml2Xml` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `Roles` (
-  `IdRole` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `IdRole` int(12) unsigned NOT NULL,
   `Name` varchar(255) NOT NULL DEFAULT '0',
   `Icon` varchar(255) DEFAULT NULL,
   `Description` varchar(255) DEFAULT NULL,
