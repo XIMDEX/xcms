@@ -182,7 +182,7 @@ and rug.idrole in (select idrole from RelRolesPermissions where IdPermission = 1
                 );
                 if (intval($db->getValue('children')) > 0) {
                     $res = $this->quickRead($db->getValue('IdNode'), null, null, $items, $times);
-                    if (!is_null($res)) {
+                    if (is_array($res) && isset($res["collection"])) {
                         $ret['collection'][count($ret['collection']) - 1]['collection'] = $res["collection"];
                     }
                 }
