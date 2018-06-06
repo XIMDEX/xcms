@@ -3686,6 +3686,7 @@ class Node extends NodesOrm
         }
 
         // The channel will be the first one available in the inherited properties
+        //TODO define master channel and try to use the same server
         $properties = InheritedPropertiesManager::getValues($this->GetID(), true);
         if (!$properties['Channel']) {
             Logger::error('The document with ID: ' . $this->GetID() . ' has no channel');
@@ -3717,7 +3718,8 @@ class Node extends NodesOrm
     {
         // Checks node existence
         if (!$this->GetID()) {
-            $this->messages->add(_('It is not possible to show preview.') . _(' The node you are trying to preview does not exist.'), MSG_TYPE_NOTICE);
+            $this->messages->add(_('It is not possible to show preview.') . _(' The node you are trying to preview does not exist.')
+                , MSG_TYPE_NOTICE);
             return false;
         }
 
@@ -3813,7 +3815,7 @@ class Node extends NodesOrm
 
             // Specific FilterMacros View for previsuals
             $viewFilterMacrosPreview = new ViewFilterMacros(true);
-            $filePrev = $viewFilterMacrosPreview->transform(NULL, $file, $args, $idNode, $idChannel);
+            $filePrev = $viewFilterMacrosPreview->transform(NULL, $file, $args);
             if (strpos($file, App::getValue('TempRoot')) and file_exists($file)) {
                 @unlink($file);
             }

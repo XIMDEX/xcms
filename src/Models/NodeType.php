@@ -830,23 +830,28 @@ class NodeType extends NodeTypesOrm
         return $returnObject;
     }
 
-    public function getAllowedExtensions()
+    public function getAllowedExtensions(bool $onlyExtensions = false)
     {
         $dbObj = new \Ximdex\Runtime\Db();
         $sql = sprintf('SELECT rntmt.idRelNodeTypeMimeType as idRelNodeTypeMimeType,
             nt.Name as Name, nt.Description as Description, rntmt.extension as extension FROM
             NodeAllowedContents as nac INNER JOIN RelNodeTypeMimeType rntmt on
             nac.NodeType = rntmt.IdNodeType INNER JOIN NodeTypes nt on nac.NodeType = nt.IdNodeType
-            where nac.IdNodeType=' . \Ximdex\NodeTypes\NodeTypeConstants::COMMON_ROOT_FOLDER . ' and nt.IsFolder=0', $this->get('IdNodeType'));
+            where nac.IdNodeType = %s and nt.IsFolder = 0', $this->get('IdNodeType'));
         $dbObj->Query($sql);
         $returnArray = array();
         while (!$dbObj->EOF) {
-            $returnElement = array();
-            $returnElement["id"] = $dbObj->GetValue('idRelNodeTypeMimeType');
-            $returnElement["description"] = _($dbObj->GetValue('Description'));
-            $returnElement["extension"] = implode(",",
-                preg_split("/;/", $dbObj->GetValue('extension'), 0, PREG_SPLIT_NO_EMPTY));
-            $returnArray[] = $returnElement;
+            if ($onlyExtensions) {
+                $returnArray = array_merge($returnArray, explode(';', trim($dbObj->GetValue('extension'), ';'))); 
+            }
+            else {
+                $returnElement = array();
+                $returnElement["id"] = $dbObj->GetValue('idRelNodeTypeMimeType');
+                $returnElement["description"] = _($dbObj->GetValue('Description'));
+                $returnElement["extension"] = implode(",",
+                    preg_split("/;/", $dbObj->GetValue('extension'), 0, PREG_SPLIT_NO_EMPTY));
+                $returnArray[] = $returnElement;
+            }
             $dbObj->Next();
         }
         unset($dbObj);

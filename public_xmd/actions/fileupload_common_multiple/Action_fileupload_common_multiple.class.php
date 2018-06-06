@@ -34,13 +34,13 @@ use Ximdex\MVC\ActionAbstract;
 use Ximdex\NodeTypes\XsltNode;
 use Ximdex\Runtime\App;
 
-require_once(APP_ROOT_PATH . XIMDEX_VENDORS . '/flow/ConfigInterface.php');
-require_once(APP_ROOT_PATH . XIMDEX_VENDORS . '/flow/Config.php');
-require_once(APP_ROOT_PATH . XIMDEX_VENDORS . '/flow/Exception.php');
-require_once(APP_ROOT_PATH . XIMDEX_VENDORS . '/flow/File.php');
-require_once(APP_ROOT_PATH . XIMDEX_VENDORS . '/flow/RequestInterface.php');
-require_once(APP_ROOT_PATH . XIMDEX_VENDORS . '/flow/Request.php');
-require_once(APP_ROOT_PATH . XIMDEX_VENDORS . '/flow/Uploader.php');
+require_once APP_ROOT_PATH . XIMDEX_VENDORS . '/flow/ConfigInterface.php';
+require_once APP_ROOT_PATH . XIMDEX_VENDORS . '/flow/Config.php';
+require_once APP_ROOT_PATH . XIMDEX_VENDORS . '/flow/Exception.php';
+require_once APP_ROOT_PATH . XIMDEX_VENDORS . '/flow/File.php';
+require_once APP_ROOT_PATH . XIMDEX_VENDORS . '/flow/RequestInterface.php';
+require_once APP_ROOT_PATH . XIMDEX_VENDORS . '/flow/Request.php';
+require_once APP_ROOT_PATH . XIMDEX_VENDORS . '/flow/Uploader.php';
 
 class Action_fileupload_common_multiple extends ActionAbstract
 {
@@ -52,7 +52,7 @@ class Action_fileupload_common_multiple extends ActionAbstract
     }
 
     // Main method: shows initial form
-    public function index ()
+    public function index()
     {
         $is_structured = false;
         $idNode = (int) $this->request->getParam("nodeid");
@@ -98,7 +98,7 @@ class Action_fileupload_common_multiple extends ActionAbstract
                 break;
             case 'XmlContainer':
                 $lbl_anadir = _(' Add XML files ');
-                $is_structured=true;
+                $is_structured = true;
                 $allowedExtensions = '.xml, .xsl';
                 $allowedMimes = 'text/xml';
                 break;
@@ -126,7 +126,7 @@ class Action_fileupload_common_multiple extends ActionAbstract
             'type' => $type,
             'allowedMimes' => $allowedMimes,
             'allowedExtensions' => $allowedExtensions,
-            'type_node'=>$type_node,
+            'type_node'=> $type_node,
             'is_structured' => $is_structured,
             'name' => $node->get('Name')
         );
@@ -225,20 +225,17 @@ class Action_fileupload_common_multiple extends ActionAbstract
             $overwrite = ($_POST['overwrite'] == 'true') ? true : false;
             $file = $_FILES['file'];
             $file['tmp_name'] = $path;
-            if (!empty($_POST['ximFilename']))
-            {
+            if (!empty($_POST['ximFilename'])) {
                 $file['name'] = $_POST['ximFilename'];
             }
-            else if (isset($_POST['flowFilename']))
-            {
+            else if (isset($_POST['flowFilename'])) {
                 $file['name'] = $_POST['flowFilename'];
             }
             ini_set('memory_limit', -1);
             $result = $this->_createNode($file, $idNode, $type, $metadata, $overwrite);
             
             // Update the templates_include.xsl files if the file is a template
-            if ($result and $type == 'ptd')
-            {
+            if ($result and $type == 'ptd') {
                 $node = new Node($idNode);
                 $xsltNode = new XsltNode($node);
                 if ($xsltNode->reload_templates_include(new Node($node->getProject())) === false) {
