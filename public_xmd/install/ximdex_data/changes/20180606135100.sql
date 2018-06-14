@@ -1,6 +1,6 @@
 ALTER TABLE `Roles` CHANGE `IdRole` `IdRole` INT(12) UNSIGNED NOT NULL;
 
-DELETE FROM `NodeAllowedContents` WHERE `NodeAllowedContents`.`IdNodeAllowedContent` = 29";
+DELETE FROM `NodeAllowedContents` WHERE `NodeAllowedContents`.`IdNodeAllowedContent` = 29;
 
 INSERT INTO `ProgrammingCommand` (`id`, `description`) VALUES ('var', 'Initialize a variable');
 INSERT INTO `ProgrammingCode` (`id`, `idLanguage`, `idCommand`, `code`) VALUES (NULL, 'php', 'var', '<?php $%s = \'%s\'; ?>');
