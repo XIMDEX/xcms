@@ -3699,7 +3699,7 @@ class Node extends NodesOrm
         }
         // There is no channel available for the target document
         $this->messages->add('The target document ' . $this->GetID() . ' has not any channel available', MSG_TYPE_WARNING);
-        return false;
+        return null;
     }
 
     /**

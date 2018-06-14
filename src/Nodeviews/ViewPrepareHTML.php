@@ -10,7 +10,7 @@ use Ximdex\Models\ProgrammingCode;
 
 class ViewPrepareHTML extends AbstractView implements IView
 {
-    const MACRO_CODE = "/@@@GMximdex\.exec\((.*?),(.*)\)@@@/";
+    const MACRO_CODE = '/@@@GMximdex.exec\(([a-zA-Z0-9_]+),?(.*)\)@@@/m';
 
     private $nodeID;
     private $channelID;
@@ -55,6 +55,7 @@ class ViewPrepareHTML extends AbstractView implements IView
                 $this,
                 'getCodeTranslation'
             ), $document);
+            $document = str_replace('<ximeol>', PHP_EOL, $document);
         }
 
         // Return the pointer to the transformed content
@@ -103,10 +104,12 @@ class ViewPrepareHTML extends AbstractView implements IView
         $programCode->setIdLanguage($channel->getIdLanguage());
         $programCode->setIdCommand($function);
         if (isset($matches[2]) and $matches[2]) {
-            if (is_array($matches[2])) {
-                $params = trim($matches[2]);
-            } else {
-                $params = array(trim($matches[2]));
+            $params = explode('ximparam=', $matches[2]);
+            if ($params and !trim($params[0])) {
+                unset($params[0]);
+            }
+            foreach ($params as & $param) {
+                $param = trim(trim($param), ',');
             }
         } else {
             $params = array();

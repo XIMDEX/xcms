@@ -77,7 +77,6 @@ class Action_expiredoc extends ActionAbstract
         // Loading resources for the action form
         $this->addJs('/actions/expiredoc/resources/js/expiredoc.js');
         $this->addCss('/actions/expiredoc/resources/css/style.css');
-        // $this->addCss('/assets/style/jquery/ximdex_theme/widgets/calendar/calendar.css');
         $this->render($values, NULL, 'default-3.0.tpl');
     }
 

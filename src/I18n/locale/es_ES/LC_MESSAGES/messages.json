@@ -1791,6 +1791,8 @@
     "Delete a ximSir relation": "Borrar una relaci&oacute;n de ximSir",
     "Replace file": "Sustituir archivo",
     "Replace a file": "Reemplazar un archivo",
+    "File to replace must be the same type": "El archivo a sustituir debe ser del mismo tipo",
+    "Select the new file to replace": "Seleccione un nuevo archivo para reemplazar",
     "Add images": "A&ntilde;adir im&aacute;genes",
     "Add an image set to the server": "A&ntilde;adir un conjunto de im&aacute;genes al servidor",
     "Add PTD templates": "A&ntilde;adir plantillas PTD",
@@ -2486,5 +2488,6 @@
     "Available project languages": "Idiomas disponibles en el proyecto",
     "There is not an URL for the HTML editor in the system configuration": "No hay una URL para el editor HTML en la configuraci&oacute;n del sistema",
     "The HTML editor is not enabled in the system configuration": "El editor HTML no está habilitado en la configuraci&oacute;n del sistema",
-    "The file has been published succesfuslly": "El archivo ha sido publicado correctamente"
+    "The file has been published succesfuslly": "El archivo ha sido publicado correctamente",
+    "Node name": "Nombre del nodo"
 }

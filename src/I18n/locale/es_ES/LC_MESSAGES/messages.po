@@ -6423,8 +6423,14 @@ msgstr "Eliminar una relación de ximSir"
 msgid "Replace file"
 msgstr "Sustituir archivo"
 
+msgid "File to replace must be the same type"
+msgstr "El archivo a sustituir debe ser del mismo tipo"
+
 msgid "Replace a file"
 msgstr "Reemplazar un archivo"
+
+msgid  "Select the new file to replace"
+msgstr "Seleccione un nuevo archivo para reemplazar"
 
 #: table Nodes
 msgid "Add images"
@@ -9037,3 +9043,7 @@ msgstr "El archivo ha sido publicado correctamente"
 
 msgid "Render type for Web servers"
 msgstr "Tipo de procesamiento para servidores Web"
+
+msgid "Node name"
+msgstr "Nombre del nodo"
+

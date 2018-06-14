@@ -9,8 +9,8 @@ X.actionLoaded(function(event, fn, params)
 	var languages = {
 		web: {
 			'static': ['html5'], 
-			'include': ['php'], 
-			'dynamic': ['jsp', 'ror', 'asp'], 
+			'include': ['php', 'jsp', 'ror', 'asp'], 
+			'dynamic': ['php', 'jsp', 'ror', 'asp'], 
 			'index': ['xif']
 		},
 		xml: {

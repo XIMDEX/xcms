@@ -205,7 +205,7 @@ class DexPumper
 		$targetFile = "{$initialDirectory}{$remotePath}/{$fileName}";
 		$removing = $this->taskDelete($targetFile);
 		if ($removing) {
-		    Logger::info('Successfusly removed file ' . $fileName . ' from server', true);
+		    Logger::info('Successfusly removed file ' . $fileName . ' (ID: ' . $this->serverFrame->get('NodeId') . ') from server', true);
 		}
 		$this->updateTask($removing, ServerFrame::OUT);
 	}
@@ -419,7 +419,7 @@ class DexPumper
 		    $this->error("Could not rename the target document: {$targetFile} -> {$targetFolder}{$newFile} ");
             return false;
 		}
-		Logger::info('The file has been published succesfuslly' . ': ' . $newFile . ' (' . $idSync . ')', true);
+		Logger::info('The file has been published succesfuslly' . ': ' . $newFile . ' (Sync: ' . $idSync . ')', true);
 		return true;
 	}
 

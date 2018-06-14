@@ -116,7 +116,8 @@ class PipeCache extends PipeCachesOrm
             
             // Generate the pointer file for the transition with the content given
             if (isset($_GET["nodeid"])) {
-                $pointer = XIMDEX_ROOT_PATH . TMP_FOLDER . "preview_" . $_GET["nodeid"] . "_" . FsUtils::getUniqueFile(XIMDEX_ROOT_PATH . TMP_FOLDER);
+                $pointer = XIMDEX_ROOT_PATH . TMP_FOLDER . "preview_" . $_GET["nodeid"] . "_" . FsUtils::getUniqueFile(XIMDEX_ROOT_PATH 
+                    . TMP_FOLDER);
             } else {
                 $pointer = XIMDEX_ROOT_PATH . TMP_FOLDER . FsUtils::getUniqueFile(XIMDEX_ROOT_PATH . TMP_FOLDER);
             }
@@ -136,7 +137,8 @@ class PipeCache extends PipeCachesOrm
                 return false;
             }
         }
-        Logger::info('PipeCache: Obtained file ' . $pointer . ' to generate the pipeline transition ' . $idTransition . ' for version ' . $idVersion);
+        Logger::info('PipeCache: Obtained file ' . $pointer . ' to generate the pipeline transition ' . $idTransition 
+            . ' for version ' . $idVersion);
         $res = $this->_transition->generate($idVersion, $pointer, $args);
         if (isset($tmpFileToRemove) and file_exists($tmpFileToRemove)) {
             @unlink($tmpFileToRemove);

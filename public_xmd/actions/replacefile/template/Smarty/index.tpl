@@ -10,7 +10,7 @@
                 <div class="input">
                     <fieldset>
                         <p>
-                            <label for="upload" class="aligned">{t}Select the new file to replace {/t} (Max {$maxSize}):</label>
+                            <label for="upload" class="aligned">{t}Select the new file to replace{/t} (Max {$maxSize}):</label>
                         </p>
                         <input type="file" name="upload" id="upload" class="cajaxg validable not_empty" />
                     </fieldset>
@@ -18,7 +18,7 @@
             </div>
            <div class="small-12 columns">
                 <fieldset class="buttons-form">
-                    <input class="btn" type="submit" value="Replace file" />
+                    <input class="btn" type="submit" value="{t}Replace file{/t}" />
                 </fieldset>
             </div>
         </div>

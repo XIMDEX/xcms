@@ -414,12 +414,12 @@ class FsUtils
      * 
      * @param string $url
      */
-    public static function get_url_path($url)
+    public static function get_url_path(string $url)
     {
         $data = @parse_url($url);
         if ($data === false)
         {
-            Logger::error('can not load URL path from: ' . $url);
+            Logger::error('Cannot load URL path from: ' . $url);
             return false;
         }
         $urlPath = $data['scheme'] . '://' . $data['host'];

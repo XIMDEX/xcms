@@ -244,14 +244,23 @@ class HTMLDocumentNode extends AbstractStructuredDocument
 
         if (strcmp($mode, static::MODE_DYNAMIC) == 0 || strcmp($mode, static::MODE_INDEX) == 0) {
             foreach ($docHTML as $node) {
+                $css = isset($node['css']) ? array_merge($css, $node['css']) : $css;
+                $js = isset($node['css']) ? array_merge($js, $node['js']) : $js;
                 if (isset($node['type']) && $node['type'] == static::CONTENT_DOCUMENT) {
                     $render .= static::START_XIMDEX_BODY_CONTENT;
                     $render .= !is_null($content) ? $content : $node['content'];
                     $render .= static::END_XIMDEX_BODY_CONTENT;
+                } elseif (strcmp($mode, static::MODE_DYNAMIC) == 0) {
+                    if (isset($node['id']) and $node['id']) {
+                        $render .= PHP_EOL . self::generateMacroExec('include', '@@@RMximdex.include(' . $node['id'] . ')@@@') . PHP_EOL;
+                    }
                 }
             }
             if (strcmp($mode, static::MODE_INDEX) == 0) {
                 $render = static::createXIF($docId, $render, $channel);
+            } elseif (strcmp($mode, static::MODE_DYNAMIC) == 0 && strpos($name, "_") !== 0) {
+                $info = static::getInfo($docId);
+                $render = static::createDynamic($info, $render, $css, $js);
             }
         } else if (strcmp($mode, static::MODE_INCLUDE) == 0) {
             $body = '';
@@ -266,7 +275,7 @@ class HTMLDocumentNode extends AbstractStructuredDocument
                     $name = $node['title'];
                 } else {
                     if (isset($node['id']) and $node['id']) {
-                        $body .= PHP_EOL . '@@@GMximdex.exec(include, @@@RMximdex.include(' . $node['id'] . ')@@@)@@@' . PHP_EOL;
+                        $body .= PHP_EOL . self::generateMacroExec('include', '@@@RMximdex.include(' . $node['id'] . ')@@@') . PHP_EOL;
                     }
                 }
             }
@@ -422,10 +431,33 @@ class HTMLDocumentNode extends AbstractStructuredDocument
             }
         }
         $html .= $header;
-        $html .= '</head>' . PHP_EOL;;
+        $html .= '</head>' . PHP_EOL;
         $html .= '<body>' . PHP_EOL;
         $html .= $body;
         return $html . '</body>' . PHP_EOL . '</html>';
+    }
+    
+    private static function createDynamic($info, $body, $css, $js)
+    {
+        $head = self::headTemplate($css, $js);        
+        $metadata = self::metadataTemplate($info['metadata']);
+        
+        $html =  self::generateMacroExec('var', 'xim_head', str_replace(PHP_EOL, "<ximeol>", $head));
+        $html .= self::generateMacroExec('var', 'xim_lang', $info['language']);
+        $html .= self::generateMacroExec('var', 'xim_metadata', $metadata);
+        $html .= self::generateMacroExec('var', 'xim_tpl', '<!DOCTYPE html><html lang="' . $info['language'] 
+            . '"><head>%s</head><body>%s</body></html>');
+        
+        $html .= self::generateMacroExec('obstart');
+        $html .= PHP_EOL . $body;
+        $html .= self::generateMacroExec('obgetclean', 'xim_content');
+        
+        // echo sprintf($tpl, sprintf($head, $metadata), $xim_content);
+        $html .= self::generateMacroExec('sprintf1', 'xim_head_metadata', 'xim_head', 'xim_metadata');
+        $html .= self::generateMacroExec('sprintf2', 'xim_document', 'xim_tpl', 'xim_head_metadata', 'xim_content');
+        $html .= self::generateMacroExec('echo', 'xim_document');
+        
+        return $html;
     }
 
     /**
@@ -515,6 +547,48 @@ class HTMLDocumentNode extends AbstractStructuredDocument
             }
         }
         return $nodeName;
+    }
+    
+    private static function headTemplate(array $css = [], array $js = []) : string
+    {
+        $tpl = '<meta charset="UTF-8" >' . PHP_EOL;
+        $tpl .= '<meta name="viewport" content="width=device-width, initial-scale=1.0" >' . PHP_EOL;
+        $tpl .= '<meta http-equiv="X-UA-Compatible" content="ie=edge" >' . PHP_EOL;
+        $tpl .= '<meta name="generator" content="Ximdex CMS, Semantic Headless CMS and DMS, http://www.ximdex.com" >' . PHP_EOL;
+        $tpl .= '<meta name="owner" content = "' . App::getValue("VersionName") . '" >' . PHP_EOL;
+        $tpl .= '%s' . PHP_EOL;
+        
+        foreach ($css as $file) {
+            $tpl .= '<link rel="stylesheet" type="text/css" href="@@@RMximdex.pathto('. $file. ')@@@" >' . PHP_EOL;
+        }
+        foreach ($js as $file) {
+            $tpl .= '<script type="text/javascript" src="@@@RMximdex.pathto(' . $file . ')@@@" ></script>' . PHP_EOL;
+        }
+        
+        return $tpl;
+    }
+    
+    private static function metadataTemplate(array $metadata) : string
+    {
+        $result = '';
+        foreach ($metadata as $meta => $value) {
+            if (!empty($value)) {
+                $result .= "<meta name=\"$meta\" content=\"$value\" ><ximeol>";
+            }
+        }
+        
+        return $result;
+    }
+    
+    private static function generateMacroExec(string $command, ...$vars) : string
+    {
+        $params = '';
+        $macro = '@@@GMximdex.exec(' . $command . '%s)@@@';
+        if (is_array($vars) && count($vars) > 0) {
+            $params = implode(', ximparam=', $vars);
+            $params = ', ximparam='.$params;
+        }
+        return sprintf($macro, $params) . PHP_EOL;
     }
 }
 

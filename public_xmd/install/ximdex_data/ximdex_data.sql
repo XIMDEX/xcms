@@ -171,7 +171,7 @@ VALUES
     (6031,5023,'Change name','renamenode','change_name_folder_common.png','Change name of selected folder',61,NULL,0,'',0),
     (6032,5025,'Change name','renamenode','change_name_folder_css.png','Change folder name',61,NULL,0,'',0),
     (6123,5014,'Associated groups','modifygroupsnode','groups_server.png','Manage associations of groups with this node',60,NULL,0,'',0),
-    (6064,5031,'Change name of XML document','renamenode','change_name_xml.png','Change the document name and all its language versions',25,NULL,0,'',0),
+    (6064,5031,'Change name','renamenode','change_name_xml.png','Change the document name and all its language versions',25,NULL,0,'',0),
     (6074,5015,'Associated groups','modifygroupsnode','groups_section.png','Manage associations of groups with this node',60,NULL,0,'',0),
     (6103,5028,'Change name','renamenode','change_name_file_css.png','Change file name on import folder',61,NULL,0,'',0),
     (6083,5041,'Change name','renamenode','change_name_file_txt_bin.png','Change name of selected file',60,NULL,0,'',0),
@@ -2770,7 +2770,7 @@ INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Des
     (7450, 5103, 'Add new language', 'addlangxmlcontainer', 'add_language_xml.png', 'Add a document with a different language', 10, NULL, 0, '', 0),
     (7451, 5103, 'Copy', 'copy', 'copiar_carpeta_ximdoc.png', 'Copy a document to another destination', 30, NULL, 0, '', 0),
     (7452, 5103, 'Move node', 'movenode', 'move_node.png', 'Move a node', 35, NULL, 0, '', 0),
-    (7453, 5103, 'Change name of HTML document', 'renamenode', 'change_name_xml.png', 'Change the document name and all its language versions'
+    (7453, 5103, 'Change name', 'renamenode', 'change_name_xml.png', 'Change the document name and all its language versions'
         , 25, NULL, 0, '', 0),
     (7454, 5103, 'Delete document', 'deletenode', 'delete_xml.png', 'Delete HTML document in all its languages', 90, NULL, 1, '', 0),
     (7455, 5103, 'Edit metadata', 'managemetadata', 'xix.png', 'Edit the metadata info', -20, NULL, 0, NULL, 0),

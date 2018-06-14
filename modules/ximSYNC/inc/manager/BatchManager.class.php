@@ -230,8 +230,8 @@ class BatchManager
         return $versions;
     }
 
-    function buildBatchs($nodeGenerator, $timeUp, $docsToPublish, $docsToUpVersion, $versions, $subversions, $server, $physicalServers, $priority
-        , $timeDown = null, $statStart = 0, $statTotal = 0, $idPortalVersion = 0, $userId = null, array $noCache = [])
+    function buildBatchs($nodeGenerator, $timeUp, $docsToPublish, $docsToUpVersion, $versions, $subversions, $server, $physicalServers
+        , $priority, $timeDown = null, $statStart = 0, $statTotal = 0, $idPortalVersion = 0, $userId = null, array $noCache = [])
     {
         /*
         If the server is publishing through a channell in which there is not existing documents
@@ -251,8 +251,8 @@ class BatchManager
             Logger::info('Creating up batch: ' . $timeUp);
             Logger::info(sprintf("[Generator %s]: Creating up batch with id %s", $nodeGenerator, $relBatchsServers[$serverId]));
         }
-        $frames = $this->buildFrames($timeUp, $timeDown, $docsToPublish, $docsToUpVersion, $versions, $subversions, $server, $relBatchsServers
-            , $statStart, $statTotal, $nodeGenerator, $noCache);
+        $frames = $this->buildFrames($timeUp, $timeDown, $docsToPublish, $docsToUpVersion, $versions, $subversions, $server
+            , $relBatchsServers, $statStart, $statTotal, $nodeGenerator, $noCache);
         return $frames;
     }
 

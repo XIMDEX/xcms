@@ -837,7 +837,7 @@ class NodeType extends NodeTypesOrm
             nt.Name as Name, nt.Description as Description, rntmt.extension as extension FROM
             NodeAllowedContents as nac INNER JOIN RelNodeTypeMimeType rntmt on
             nac.NodeType = rntmt.IdNodeType INNER JOIN NodeTypes nt on nac.NodeType = nt.IdNodeType
-            where nac.IdNodeType = %s and nt.IsFolder = 0', $this->get('IdNodeType'));
+            where nac.IdNodeType = %s and nt.IsFolder = 0', $this->GetID());
         $dbObj->Query($sql);
         $returnArray = array();
         while (!$dbObj->EOF) {

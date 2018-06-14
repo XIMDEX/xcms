@@ -860,7 +860,7 @@ class StructuredDocument extends StructuredDocumentsOrm
         }
 
         // Load parent nodes
-        $parents = FastTraverse::getParents($this->GetID(), 'IdNodeType');
+        $parents = FastTraverse::getParents($this->GetID(), 'IdNodeType', 'ft.IdNode');
         if ($parents === false) {
             Logger::error('An error ocurred getting the parent nodes for the document with node ID: ' . $this->GetID());
             return false;

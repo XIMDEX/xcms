@@ -41,7 +41,7 @@ class Action_replacefile extends ActionAbstract
         parent::__construct($_render);
     }
     
-    public function index()
+    public function index() : void
     {
         $idNode = (int) $this->request->getParam("nodeid");
         $actionID = (int) $this->request->getParam("actionid");
@@ -99,7 +99,8 @@ class Action_replacefile extends ActionAbstract
                 $this->sendResponse();
             }
             if (!in_array($extension, $allowedExtensions)) {
-                $this->messages->add(_('File to replace must be the same type (' . $node->nodeType->GetDescription() . ')'), MSG_TYPE_ERROR);
+                $this->messages->add(_('File to replace must be the same type') . ' (' . $node->nodeType->GetDescription() . ')'
+                    , MSG_TYPE_WARNING);
                 $this->sendResponse();
             }
         }

@@ -6053,6 +6053,12 @@ msgstr ""
 msgid "Replace a file"
 msgstr ""
 
+msgid "File to replace must be the same type"
+msgstr ""
+
+msgid "Select the new file to replace"
+msgstr ""
+
 # ++ table Nodes
 msgid "Add images"
 msgstr ""
@@ -8022,3 +8028,7 @@ msgstr ""
 
 msgid "The file has been published succesfuslly"
 msgstr ""
+
+msgid "Node name"
+msgstr ""
+

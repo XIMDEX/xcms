@@ -140,7 +140,7 @@ class ParsingPathTo
         }
         else {
             // Specified channel has not been given in function parameters
-            $this->channel = null;
+            $this->channel = $channel;
         }
         if ($nodeValue == 'THIS') {
             $nodeValue = $nodeId;
@@ -372,15 +372,20 @@ class ParsingPathTo
         Logger::debug('ParsingPathTo: Obtained node with ID: ' . $id . ' and name: ' . $node->GetNodeName());
         
         // Target channel
-        if (!$this->channel and $node->nodeType->GetIsStructuredDocument()) {
+        if ($node->nodeType->GetIsStructuredDocument()) {
             
             // The channel has not been passed in the pathTo expression
-            $channel = $node->getTargetChannel($channel);
+            $channel = $node->getTargetChannel($this->channel);
             if ($channel === false) {
                 $this->messages->mergeMessages($node->messages);
                 return false;
             }
-            $this->channel = $channel;
+            if ($channel) {
+                $this->channel = $channel;
+            }
+        }
+        else {
+            $this->channel = null;
         }
         $this->pathMethod = array('absolute' => false);
         $this->node = $node;

@@ -45,8 +45,6 @@ use Ximdex\Runtime\Session;
 use Ximdex\Properties\ChannelProperty;
 use Ximdex\Models\NodeProperty;
 use Ximdex\Models\SemanticNamespaces;
-use Ximdex\Models\Section;
-use Ximdex\Models\SectionType;
 
 define('DOCXAP_VIEW', 1);
 define('SOLR_VIEW', 2);
@@ -487,6 +485,7 @@ abstract class AbstractStructuredDocument extends FileNode
 
     /**
      * Return an array with all the channels ID for the current node
+     * 
      * @return array
      */
     public function GetChannels()
@@ -860,7 +859,7 @@ abstract class AbstractStructuredDocument extends FileNode
             $addNodeName = false;
         }
         $nodes = parent::GetPublishedPath($channelID, $addNodeName, true);
-        
+        /*
         // Load the section if there is one over the document node
         $sectionId = $this->parent->GetSection();
         $section = new Section($sectionId);
@@ -870,10 +869,16 @@ abstract class AbstractStructuredDocument extends FileNode
             $nodeName = array_pop($nodes);
             // $nodes[] = 'xotf';
             
-            // Node name without extension
+            // Node name without extension, not for index file
             $nodeInfo = pathinfo($nodeName);
-            $nodes[] = $nodeInfo['filename'];
+            if ($nodeInfo['filename'] == 'index') {
+                $nodes[] = $nodeName;
+            }
+            else {
+                $nodes[] = $nodeInfo['filename'];
+            }
         }
+        */
         $path = '/' . implode('/', $nodes);
         switch (App::getValue('PublishPathFormat')) {
             case App::PREFIX:

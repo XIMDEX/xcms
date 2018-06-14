@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -29,17 +30,19 @@ use Ximdex\Models\Node;
 use Ximdex\Models\Pipeline;
 use Ximdex\Models\PipeNodeTypes;
 use Ximdex\MVC\ActionAbstract;
+use Ximdex\NodeTypes\NodeTypeConstants;
 use Ximdex\Runtime\App;
-
+use Ximdex\NodeTypes\XsltNode;
 
 class Action_renamenode extends ActionAbstract
 {
-    // Main method: shows initial form
-    function index()
+    /**
+     * Main method: shows initial form
+     */
+    public function index()
     {
         $idNode = $this->request->getParam('nodeid');
         $node = new Node($idNode);
-
         $isSection = $node->nodeType->get('IsSection');
         $allLanguages = NULL;
         if ($isSection) {
@@ -51,61 +54,46 @@ class Action_renamenode extends ActionAbstract
                 }
             }
         }
-
         $isProject = $node->nodeType->get('Name') == 'Project' ? 1 : 0;
-
         $pipelineInfo = array();
         $idPipeline = NULL;
-
-        if ($node->nodeType->get('IsFolder') ||
-            $node->nodeType->get('IsSection') ||
-            $node->nodeType->get('IsVirtualFolder')
-        ) {
-
-            // master pipeline
+        if ($node->nodeType->get('IsFolder') || $node->nodeType->get('IsSection') || $node->nodeType->get('IsVirtualFolder')) {
+            
+            // Master pipeline
             $IdNodeForWorkflowMaster = App::getValue('IdDefaultWorkflow');
             $pipelineMaster = new Pipeline();
             $pipelineMaster->loadByIdNode($IdNodeForWorkflowMaster);
             $diffPipelines = array($pipelineMaster->get('id'));
 
-            // pipelines associated with nodetypes
+            // Pipelines associated with nodetypes
             $pipeNodeTypes = new PipeNodeTypes();
             $pipeNodeTypesList = $pipeNodeTypes->find('IdPipeline', '', NULL, MONO);
             if (!is_array($pipeNodeTypesList)) {
                 $pipeNodeTypesList = array();
             }
             $diffPipelines = array_merge($diffPipelines, $pipeNodeTypesList);
-
             $pipeline = new Pipeline();
             $pipelineList = $pipeline->find('id', 'IdNode > 0', NULL, MONO);
             $pipelineList = array_diff($pipelineList, $diffPipelines);
-
             $pipelineInfo = array();
             foreach ($pipelineList as $idPipeline) {
                 $pipeline = new Pipeline($idPipeline);
                 $pipelineInfo[$idPipeline] = $pipeline->get('Pipeline');
             }
-
             $idPipeline = $node->getProperty('Pipeline');
             if (count($idPipeline) > 0) {
                 $idPipeline = $idPipeline[0];
             }
         }
-
         $nt = $node->nodeType->get('IdNodeType');
-
         $schemaType = '';
-
         $schemaType = $node->getProperty('SchemaType');
         if (is_array($schemaType) && count($schemaType) == 1) {
             $schemaType = $schemaType[0];
         }
-
-
         $checkUrl = App::getUrl( '/public_xmd/?actionid='
             . $this->request->getParam('actionid') . '&nodeid=' . $this->request->getParam('nodeid')
             . '&id_pipeline=IDPIPELINE&method=checkNodeDependencies');
-
         $this->addJs('/actions/renamenode/resources/js/renamenode.js');
         $values = array('name' => $node->get('Name'),
             'is_section' => $isSection,
@@ -124,14 +112,11 @@ class Action_renamenode extends ActionAbstract
         $this->render($values, NULL, 'default-3.0.tpl');
     }
 
-
-    function update()
+    public function update()
     {
         $idNode = $this->request->getParam('id_node');
         $name = $this->request->getParam('name');
-
         $languages = $this->request->getParam('language');
-
         $node = new Node($idNode);
         if (!$node->get('IdNode') > 0) {
             $this->messages->add(_('Node could not be successfully loaded'), MSG_TYPE_ERROR);
@@ -139,8 +124,7 @@ class Action_renamenode extends ActionAbstract
         } else {
             $oldNode = clone $node;
             $result = $node->RenameNode($name);
-            if ($result)
-            {
+            if ($result) {
                 $node->deleteProperty('SchemaType');
                 $schemaType = $this->request->getParam('schema_type');
                 if (!empty($schemaType) && $schemaType != 'generic_schema') {
@@ -152,88 +136,75 @@ class Action_renamenode extends ActionAbstract
                 } else {
                     $this->messages->add(_('Node name could not be updated'), MSG_TYPE_ERROR);
                 }
-                
                 if ($node->nodeType->get('IsSection')) {
                     foreach ($languages as $idLanguage => $alias) {
                         if ($node->SetAliasForLang($idLanguage, $alias)) {
                             $language = new Language($idLanguage);
-                            $this->messages->add(sprintf(_('Alias for language %s has been successfully updated'), $language->get('Name')), MSG_TYPE_NOTICE);
+                            $this->messages->add(sprintf(_('Alias for language %s has been successfully updated'), $language->get('Name'))
+                                , MSG_TYPE_NOTICE);
                         }
                     }
                 }
                 
-                //update all the references in the templates includes of the old name of this node to the new one
-                if ($node->GetNodeType() ==\Ximdex\NodeTypes\NodeTypeConstants::PROJECT or $node->GetNodeType() ==\Ximdex\NodeTypes\NodeTypeConstants::SERVER
-                        or $node->GetNodeType() ==\Ximdex\NodeTypes\NodeTypeConstants::SECTION)
-                {
-                    $xsltNode = new \Ximdex\NodeTypes\XsltNode($node);
+                // Update all the references in the templates includes of the old name of this node to the new one
+                if ($node->GetNodeType() == NodeTypeConstants::PROJECT or $node->GetNodeType() == NodeTypeConstants::SERVER 
+                    or $node->GetNodeType() == NodeTypeConstants::SECTION) {
+                    $xsltNode = new XsltNode($node);
                     if (!$xsltNode->reload_templates_include(new Node($node->GetProject())))
                         $this->messages->mergeMessages($xsltNode->messages);
                 }
             }
-            else
-            {
+            else {
                 $this->messages->mergeMessages($node->messages);
             }
         }
-        if ($result)
-        {
+        if ($result) {
             $oldIdPipeline = $node->getProperty('Pipeline');
             $newIdPipeline = $this->request->getParam('id_pipeline');
-            if (!($newIdPipeline > 0)) {
+            if (!$newIdPipeline) {
                 $newIdPipeline = NULL;
             }
-    
             if (is_array($oldIdPipeline) and count($oldIdPipeline)) {
                 $oldIdPipeline = $oldIdPipeline[0];
             }
-    
             if ($oldIdPipeline != $newIdPipeline) {
                 $node->updateToNewPipeline($newIdPipeline);
                 $node->setProperty('Pipeline', $newIdPipeline);
             }
-    
             $this->messages->mergeMessages($node->messages);
         }
-        
         $values = array('messages' => $this->messages->messages, 'parentID' => $node->get('IdParent'));
         $this->sendJSON($values);
     }
 
-
-    function checkNodeDependencies()
+    public function checkNodeDependencies()
     {
         $idNode = $this->request->getParam('nodeid');
         $idPipeline = $this->request->getParam('id_pipeline');
-
         $node = new Node($idNode);
         $oldIdPipeline = $node->getProperty('Pipeline');
         if (is_array($oldIdPipeline)) {
             $oldIdPipeline = $oldIdPipeline[0];
         }
-
         if ($idPipeline != $oldIdPipeline) {
             $db = new \Ximdex\Runtime\Db();
             $query = sprintf("SELECT IdChild FROM FastTraverse WHERE IdNode = %s", $idNode);
             $db->Query($query);
-
             if ($db->numRows == 0 || $db->numRows == 1) {
                 $this->messages->add(_('Any node will change its workflow status'), MSG_TYPE_NOTICE);
             } else {
                 $this->messages->add(_('Nodes which are going to change their workflow status:'), MSG_TYPE_NOTICE);
             }
-
             while (!$db->EOF) {
                 $idNode = $db->GetValue('IdChild');
                 $node = new Node($idNode);
                 if ($node->get('IdState') > 0) {
-                    $this->messages->add(sprintf(_('If you perform this modification, workflow status of node <b>%s</b> will be modified.'), $node->GetPath()), MSG_TYPE_NOTICE);
+                    $this->messages->add(sprintf(_('If you perform this modification, workflow status of node <b>%s</b> will be modified.')
+                        , $node->GetPath()), MSG_TYPE_NOTICE);
                 }
                 $db->Next();
             }
         }
-
         $this->render(array('messages' => $this->messages->messages), NULL, 'messages.tpl');
     }
-
 }
