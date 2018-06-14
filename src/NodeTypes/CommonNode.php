@@ -27,7 +27,8 @@
 
 namespace Ximdex\NodeTypes;
 
-use Ximdex\Models\Node;
+use Ximdex\Properties\ChannelProperty;
+use Ximdex\Utils\FsUtils;
 
 /**
  * Class for NodeType common
@@ -39,36 +40,37 @@ class CommonNode extends FileNode
      * Use parent CreateNode method and generate a new metadata document for the new common node created.
      * @return boolean true.
      */
-    function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = 7, $sourcePath = "")
+    public function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = 7, $sourcePath = "")
     {
         parent::CreateNode($name, $parentID, $nodeTypeID, $stateID, $sourcePath);
-        /*
-        $mm = new \Ximdex\Metadata\MetadataManager($this->nodeID);
-        $mm->generateMetadata();
-        $mm->updateSystemMetadata();
-        */
     }
-
+    
     /**
-     * Delete the common file node and its metadata asociated.
+     * Return an array with all the channels ID for the current node
+     * 
+     * @return array
      */
-    function DeleteNode()
+    public function GetChannels() : ?array
     {
-        parent::DeleteNode();
-        $mm = new \Ximdex\Metadata\MetadataManager($this->nodeID);
-        $mm->deleteMetadata();
-    }
-
-    function RenameNode($name = null)
-    {
-        $mm = new \Ximdex\Metadata\MetadataManager($this->nodeID);
-        $mm->updateSystemMetadata();
-    }
-
-    function SetContent($content, $commitNode = NULL, Node $node = null)
-    {
-        parent::SetContent($content, $commitNode, $node);
-        $mm = new \Ximdex\Metadata\MetadataManager($this->nodeID);
-        $mm->updateSystemMetadata();
+        // Only binary file will be published with channel frame
+        if ($this->nodeType->GetID() != NodeTypeConstants::BINARY_FILE) {
+            return [];
+        }
+        
+        // Only PDF files will be published with channel frame
+        $extension = FsUtils::get_extension($this->parent->GetNodeName());
+        if (strtolower($extension) != 'pdf') {
+            return [];
+        }
+        $channelProperty = new ChannelProperty($this->nodeID);
+        $values = $channelProperty->getValues($this->nodeID, true);
+        if ($values === false) {
+            return null;
+        }
+        $res = [];
+        foreach ($values as $channel) {
+            $res[] = $channel['Id'];
+        }
+        return $res;
     }
 }

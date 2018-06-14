@@ -322,7 +322,7 @@ class ServerFrame extends ServerFrames_ORM
         $data['TRANSFORMER'] = $transformer[0];
         $data['NODEID'] = $idNode;
         $pipeMng = new PipelineManager();
-        if (! is_null($channelId)) {
+        if (! is_null($channelId) && $node->nodeType->GetIsStructuredDocument()) {
             if ($node->GetNodeType() == NodeTypeConstants::HTML_DOCUMENT) {
                 $process = 'HTMLToPublished';
             } else {
@@ -357,7 +357,6 @@ class ServerFrame extends ServerFrames_ORM
         } else {
             
             // Replaces macros
-            $node = new Node($idNode);
             if ($node->nodeType->get('Name') == 'XslTemplate') {
                 $data['REPLACEMACROS'] = 'yes';
             }
