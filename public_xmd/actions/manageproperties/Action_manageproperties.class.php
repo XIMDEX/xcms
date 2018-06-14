@@ -31,6 +31,7 @@ use Ximdex\Properties\InheritedPropertiesManager;
 use Ximdex\Runtime\App;
 use Ximdex\NodeTypes\NodeTypeConstants;
 use Ximdex\Models\NodeProperty;
+use Ximdex\Properties\InheritableProperty;
 
 /**
  * Manage properties action.
@@ -62,7 +63,13 @@ class Action_manageproperties extends ActionAbstract
         $node = new Node($nodeId);
         
         // Get Values for all the dependencies
-        $properties = InheritedPropertiesManager::getValues($nodeId);
+        if (in_array($node->GetNodeType(), [NodeTypeConstants::COMMON_ROOT_FOLDER, NodeTypeConstants::COMMON_FOLDER])) {
+            $propertiesToIgnore = [InheritableProperty::LANGUAGE];
+        }
+        else {
+            $propertiesToIgnore = [];
+        }
+        $properties = InheritedPropertiesManager::getValues($nodeId, false, $propertiesToIgnore);
         $values = array(
             'properties' => $properties,
             'go_method' => 'save_changes',
@@ -198,7 +205,14 @@ class Action_manageproperties extends ActionAbstract
                     $this->messages->add('Default server language has been saved', MSG_TYPE_NOTICE);
                 }
             }
-            $this->showResult($nodeId, $results, $applyResults, $confirmed);
+            // $this->showResult($nodeId, $results, $applyResults, $confirmed);
+            $this->messages->add('Properties have been apply successfully', MSG_TYPE_NOTICE);
+            $values = array(
+                'messages' => $this->messages->messages,
+                'goback' => true,
+                'history_value' => $confirmed ? 2 : 1
+            );
+            $this->sendJSON($values);
         }
     }
 
@@ -242,9 +256,10 @@ class Action_manageproperties extends ActionAbstract
                     switch ($prop) {
                         case 'Channel':
                             if ($affectedNodes !== false) {
-                                $totalNodes = count($affectedNodes['nodes']);
-                                $totalProps = count($affectedNodes['props']);
-                                $message[] = sprintf(_('A total of %s channels have been disassociated from %s nodes.'), $totalProps, $totalNodes);
+                                $totalNodes = is_array($affectedNodes['nodes']) ? count($affectedNodes['nodes']) : 0;
+                                $totalProps = is_array($affectedNodes['props']) ? count($affectedNodes['props']) : 0;
+                                $message[] = sprintf(_('A total of %s channels have been disassociated from %s nodes.')
+                                    , $totalProps, $totalNodes);
                             } else {
                                 if ($totalProps == 0) {
                                     $message[] = _('Channel values will be inherited.');
@@ -252,7 +267,8 @@ class Action_manageproperties extends ActionAbstract
                                     $message[] = sprintf(_('%s Channels have been successfully assigned.'), $totalProps);
                                 }
                             }
-                            if (isset($applyResults['Channel']) && $applyResults['Channel'] !== false && $applyResults['Channel']['nodes'] > 0) {
+                            if (isset($applyResults['Channel']) && $applyResults['Channel'] !== false 
+                                && $applyResults['Channel']['nodes'] > 0) {
                                 $message[] = sprintf(
                                     _('A total of %s channels have been recursively associated with %s documents.'),
                                     count($applyResults['Channel']['values']),
@@ -262,7 +278,7 @@ class Action_manageproperties extends ActionAbstract
                             break;
                         case 'Language':
                             if ($affectedNodes !== false) {
-                                $totalProps = count($affectedNodes['props']);
+                                $totalProps = is_array($affectedNodes['props']) ? count($affectedNodes['props']) : 0;
                                 $message[] = sprintf(_('A total of %s language versions have been deleted.'), $totalProps);
                             } else {
                                 if ($totalProps == 0) {
@@ -271,7 +287,8 @@ class Action_manageproperties extends ActionAbstract
                                     $message[] = sprintf(_('%s Languages have been successfully assigned.'), $totalProps);
                                 }
                             }
-                            if (isset($applyResults['Language']) && $applyResults['Language'] !== false && $applyResults['Language']['nodes'] > 0) {
+                            if (isset($applyResults['Language']) && $applyResults['Language'] !== false 
+                                && $applyResults['Language']['nodes'] > 0) {
                                 $message[] = sprintf(
                                     _('A total of %S language versions have been recursively created.'),
                                     count($applyResults['Language']['values'])

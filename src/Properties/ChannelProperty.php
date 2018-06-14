@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -28,13 +29,13 @@ namespace Ximdex\Properties;
 
 use Ximdex\Models\Channel;
 
-class ChannelProperty extends InheritableProperty {
-
+class ChannelProperty extends InheritableProperty
+{
     private $channel;
     
-	public function getPropertyName() {
-	    
-	    return self::CHANNEL;
+	public function getPropertyName()
+	{	    
+	    return strtolower(self::CHANNEL);
 	}
 	
 	/**
@@ -58,11 +59,12 @@ class ChannelProperty extends InheritableProperty {
     {
         if (!$this->channel)
             $this->channel = new Channel;
-        return $this->channel->find('IdChannel as Id, Name, Description', 'IdChannel in (%s)', array(implode(', ', $availableProperties)), MULTI, false);
+        return $this->channel->find('IdChannel as Id, Name, Description', 'IdChannel in (%s)', array(implode(', ', $availableProperties))
+            , MULTI, false);
     }
     
-    protected function updateAffectedNodes($values) {
-        
-        return false;
+    protected function updateAffectedNodes($values)
+    {
+        return true;
     }
 }

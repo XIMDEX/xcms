@@ -36,9 +36,12 @@
 			        <div class="manageproperties">
 			             {foreach from=$properties['Language'] item=language}
                             {if $language.Inherited}
-                                <input type="radio" name="default_server_language" value="{$language.Id}" id="default_server_language_{$language.Id}" 
-                                    {if ($DefaultServerLanguage == $language.Id)}checked="checked"{/if} />
-                                <label for="default_server_language_{$language.Id}">{$language.Name}</label>
+                                <div class="prop_default_server_language">
+	                                <input type="radio" name="default_server_language" value="{$language.Id}" 
+	                                    id="default_server_language_{$language.Id}" 
+	                                    {if ($DefaultServerLanguage == $language.Id)}checked="checked"{/if} />
+	                                <label for="default_server_language_{$language.Id}">{$language.Name}</label>
+                                </div>
                             {/if}
                         {/foreach}
 			        </div>
@@ -47,7 +50,8 @@
 		</fieldset>
 		<div class="small-12 columns">
 			<fieldset class="buttons-form">
-	            {button label="Modify properties" class="validate btn main_action" }{*message="Are you sure you want to change default properties?"*}
+	            {button label="Modify properties" class="validate btn main_action"}
+	            {*message="Are you sure you want to change default properties?"*}
 			</fieldset>
 		</div>
 	</div>

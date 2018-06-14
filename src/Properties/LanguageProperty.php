@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -28,13 +29,13 @@ namespace Ximdex\Properties;
 
 use Ximdex\Models\Language;
 
-class LanguageProperty extends InheritableProperty {
-
+class LanguageProperty extends InheritableProperty
+{
     private $language;
     
-	public function getPropertyName() {
-	    
-		return self::LANGUAGE;
+	public function getPropertyName()
+	{
+	    return strtolower(self::LANGUAGE);
 	}
 	
 	/**
@@ -64,7 +65,8 @@ class LanguageProperty extends InheritableProperty {
             , array(implode(', ', $availableProperties)), MULTI, false);
     }
     
-    protected function updateAffectedNodes($values) {
-        return false;
+    protected function updateAffectedNodes($values)
+    {
+        return true;
     }
 }

@@ -72,3 +72,9 @@ ul.inheritlist li
 	float: left;
     margin-right: 50pt;
 }
+
+.prop_default_server_language
+{
+	width: 20%;
+	float: left;
+}

@@ -36,26 +36,27 @@ class InheritedPropertiesManager
 {
 	/**
 	 * list of properties to manage
+	 * 
 	 * @var array
 	 */
-	static protected $properties = array('Channel', 'Language');
+    static protected $properties = array(InheritableProperty::CHANNEL, InheritableProperty::LANGUAGE);
 
 	/**
 	 * Returns the property values
 	 * 
-	 * @param int $nodeId
+	 * @param $nodeId
 	 * @param bool $onlyInherited
-	 * @return array Associative array $ret["property_name"] = array_values
-	 *
-	 * @uses ChannelProperty::getValues to get the specific values.
-	 * @uses LanguageProperty::getValues to get the specific values. 
-	 * 
+	 * @param array $propertiesToIgnore
+	 * @return array
 	 */
-	static public function getValues($nodeId, bool $onlyInherited = false)
+	static public function getValues($nodeId, bool $onlyInherited = false, array $propertiesToIgnore = []) : array
 	{
 		$factory = new \Ximdex\Utils\Factory(dirname(__FILE__), '');
 		$ret = array();
 		foreach (self::$properties as $prop) {
+		    if (in_array($prop, $propertiesToIgnore)) {
+		        continue;
+		    }
 		    $propManager = $factory->instantiate($prop . 'Property', $nodeId, '\Ximdex\Properties');
 		    if (!is_object($propManager)) {
 				Logger::error("Can not instantiate inheritable property: " . $prop);
@@ -110,7 +111,7 @@ class InheritedPropertiesManager
 	 */
 	static public function getAffectedNodes($nodeId, $properties)
 	{
-	    return false;
+	    return true;
 	}
 	
 	/**
@@ -124,12 +125,12 @@ class InheritedPropertiesManager
 	{   
 	    $factory = new \Ximdex\Utils\Factory(dirname(__FILE__), '');
 	    $ret = array();
-	    $p = $factory->instantiate($property . 'Property', $nodeId, '\Ximdex\Properties');
-	    if (!is_object($p)) {     
-		Logger::error("Inheritable property cannot be instantiate: " . $property);
+	    $propertyClass = $factory->instantiate($property . 'Property', $nodeId, '\Ximdex\Properties');
+	    if (!is_object($propertyClass)) {     
+            Logger::error("Inheritable property cannot be instantiate: " . $property);
 	        return $ret;
 	    }
-	    $ret[$property] = $p->applyPropertyRecursively($values);
+	    $ret[$property] = $propertyClass->applyPropertyRecursively($values);
 	    return $ret;
 	}
 }

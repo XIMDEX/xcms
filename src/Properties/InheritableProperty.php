@@ -70,8 +70,8 @@ abstract class InheritableProperty
     /*
      * Contanst for properties names
      */
-    const CHANNEL = 'channel';
-    const LANGUAGE = 'language';
+    const CHANNEL = 'Channel';
+    const LANGUAGE = 'Language';
 
     /**
      * Construct method.
@@ -338,7 +338,8 @@ abstract class InheritableProperty
                     NodeTypeConstants::SERVER,
                     NodeTypeConstants::SECTION,
                     NodeTypeConstants::XML_ROOT_FOLDER,
-                    NodeTypeConstants::XML_CONTAINER
+                    NodeTypeConstants::XML_CONTAINER,
+                    NodeTypeConstants::HTML_CONTAINER
                 )
             )
         ));
