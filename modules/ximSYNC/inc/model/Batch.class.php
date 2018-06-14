@@ -64,6 +64,7 @@ class Batch extends Batchs_ORM
      */
     function create($timeOn, $type, $idNodeGenerator, $priority, $idBatchDown = NULL, $idPortalVersion = 0, $userId = NULL)
     {
+        setlocale(LC_NUMERIC, 'C');
         $priority = (float) (MIN_TOTAL_PRIORITY * $priority);
         $this->set('TimeOn', $timeOn);
         $this->set('State', Batch::WAITING);
