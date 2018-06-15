@@ -413,20 +413,24 @@ class FsUtils
      * Return the complete URL path to the URL parameter given, ending in /
      * 
      * @param string $url
+     * @param bool $includeHost
      */
-    public static function get_url_path(string $url)
+    public static function get_url_path(string $url, bool $includeHost = true)
     {
         $data = @parse_url($url);
-        if ($data === false)
-        {
+        if ($data === false) {
             Logger::error('Cannot load URL path from: ' . $url);
             return false;
         }
-        $urlPath = $data['scheme'] . '://' . $data['host'];
-        if (isset($data['port']) and $data['port']) {
-            $urlPath .= ':' . $data['port'];
+        if ($includeHost) {
+            $urlPath = $data['scheme'] . '://' . $data['host'];
+            if (isset($data['port']) and $data['port']) {
+                $urlPath .= ':' . $data['port'];
+            }
+            $urlPath .= dirname($data['path']) . '/';
+        } else {
+            $urlPath = $data['path'];
         }
-        $urlPath .= dirname($data['path']) . '/';
         return $urlPath;
     }
     

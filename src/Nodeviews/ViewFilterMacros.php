@@ -40,6 +40,7 @@ use Ximdex\Sync\SynchroFacade;
 use Ximdex\Models\FastTraverse;
 use Ximdex\Parsers\ParsingPathTo;
 use Ximdex\NodeTypes\NodeTypeConstants;
+use Ximdex\Utils\FsUtils;
 
 \Ximdex\Modules\Manager::file('/inc/manager/NodeFrameManager.class.php', 'ximSYNC');
 
@@ -612,9 +613,14 @@ class ViewFilterMacros extends AbstractView implements IView
                 . '&idchannel=' . $idTargetChannel . '&idportal=' . $this->_serverNode->get('IdNode');
         }
         
-        // Get the server to publicate the node with the correspondant channel
-        $sync = new SynchroFacade();
-        $idTargetServer = $sync->getServer($targetNode->get('IdNode'), $idTargetChannel, $this->_server->get('IdServer'));
+        if ($targetNode->nodeType->GetIsSection()) {
+            $idTargetServer = $this->_server->get('IdServer');
+        } else {
+            
+            // Get the server to publicate the node with the correspondant channel
+            $sync = new SynchroFacade();
+            $idTargetServer = $sync->getServer($targetNode->get('IdNode'), $idTargetChannel, $this->_server->get('IdServer'));
+        }
         $targetServer = new server($idTargetServer);
         if (! $targetServer->get('IdServer')) {
             Logger::warning('Linking to 404 EmptyHrefCode');
@@ -630,7 +636,7 @@ class ViewFilterMacros extends AbstractView implements IView
             }
             return $src;
         }
-        $src = $this->getRelativePath($targetNode, $idTargetChannel);
+        $src = $this->getRelativePath($targetNode, $this->_server, $idTargetChannel);
         if ($parserPathTo->getAnchor()) {
             $src .= '#' . $parserPathTo->getAnchor();
         }
@@ -678,7 +684,7 @@ class ViewFilterMacros extends AbstractView implements IView
      * @param $idTargetChannel
      * @return mixed
      */
-    private function getRelativePath(Node $targetNode, $idTargetChannel)
+    private function getRelativePathWithDotdot(Node $targetNode, $idTargetChannel)
     {
         $deep = 2;
         if (!$this->preview and App::getValue("PublishPathFormat") == App::PREFIX) {
@@ -713,6 +719,24 @@ class ViewFilterMacros extends AbstractView implements IView
         $urlDotDot = $dotdot . $targetNode->GetPublishedPath($idTargetChannel, true);
         $urlDotDot = str_replace("//", "/", $urlDotDot);
         return $urlDotDot;
+    }
+    
+    /**
+     * Get relative path to target node
+     * 
+     * @param Node $targetNode
+     * @param Server $targetSever
+     * @param int $idTargetChannel
+     * @return string
+     */
+    private function getRelativePath(Node $targetNode, Server $targetServer = null, int $idTargetChannel = null) : string
+    {
+        if ($targetServer) {
+            $path = FsUtils::get_url_path($targetServer->get('Url'), false);
+        } else {
+            $path = '';
+        }
+        return $path . $targetNode->GetPublishedPath($idTargetChannel, true);
     }
 
     /**
