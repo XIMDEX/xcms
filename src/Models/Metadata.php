@@ -2,6 +2,7 @@
 
 namespace Ximdex\Models;
 
+use DateTime;
 use Ximdex\Data\GenericData;
 
 
@@ -110,7 +111,7 @@ class Metadata extends GenericData
             WHERE idNode=%s and idMetadataGroup=%s;", $idNode, $idGroup);
 
         $dbObj->Execute($query);
-        $valid  = $dbObj->EOF;
+        $valid = $dbObj->EOF;
 
         unset($dbObj);
 
@@ -140,6 +141,58 @@ class Metadata extends GenericData
             return false;
         }
         unset($dbObj);
+    }
+
+    /**
+     * Get metadata from node and group. Caution: If group is null, metadata name can be override.
+     *
+     * @param $idNode
+     * @param $idGroup
+     * @return array
+     */
+    public static function getByNodeAndGroup($idNode, $idGroup = null)
+    {
+        $metadata = [];
+
+        $dbObj = new \Ximdex\Runtime\Db();
+        $query = sprintf("SELECT Metadata.name as name, MetadataValue.value as value, Metadata.defaultValue
+                        as defaultValue, Metadata.type as type  FROM RelMetadataGroupMetadata JOIN  Metadata ON 
+                        RelMetadataGroupMetadata.idMetadata = Metadata.idMetadata  LEFT JOIN MetadataValue ON 
+                        MetadataValue.idRelMetadataGroupMetadata = RelMetadataGroupMetadata.idRelMetadataGroupMetadata 
+                        WHERE (RelMetadataGroupMetadata.required = TRUE OR (MetadataValue.value <> '' and idNode = %s))",
+            $idNode);
+
+        if (!is_null($idGroup)) {
+            $query .= sprintf(' and MetadataGroup.idMetadataGroup = %s ', $idGroup);
+        }
+
+        $dbObj->Query($query);
+        while (!$dbObj->EOF) {
+            $val = $dbObj->GetValue('value');
+            $val = !empty($val) ? $val : $dbObj->GetValue('defaultValue');
+            $metadata[$dbObj->GetValue('name')] = static::getMetadataValue($val, $dbObj->GetValue('type'));
+
+            $dbObj->Next();
+        }
+        unset($dbObj);
+
+        return $metadata;
+    }
+
+    private static function getMetadataValue(string $val, string $type)
+    {
+        $result = '';
+        if (strcmp('date', $type) == 0) {
+            $result = DateTime::createFromFormat('Y-m-d', $val);
+            if ($result == false) {
+                $result = date('Y-m-d');
+            } else {
+                $result = $result->format('Y-m-d');
+            }
+        } else {
+            $result = $val;
+        }
+        return $result;
     }
 
 
