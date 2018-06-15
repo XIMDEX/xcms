@@ -87,5 +87,5 @@ INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Des
   `Params`, `IsBulk`) VALUES (9510, 5041 ,'Manage metadata','metadata','add_xml.png', 'Manage metadata for node', 15,
   NULL, 0, '', 0);
 
-INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`)
-  VALUES  (2127,201,6211,8,1,3), (2128,201,6211,7,1,3);
+INSERT INTO `RelRolesActions` (`IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`)
+  VALUES  (201, 9510, 8, 1, 3), (201, 9510, 7, 1, 3);
