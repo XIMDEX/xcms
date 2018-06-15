@@ -32,7 +32,7 @@ use Ximdex\Models\Language;
 use Ximdex\Models\RelSemanticTagsNodes;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\Models\Section;
-use SimpleXMLElement;
+use Ximdex\Utils\SimpleXMLExtended;
 use Ximdex\Runtime\App;
 use Ximdex\Models\SectionType;
 
@@ -436,27 +436,27 @@ class HTMLDocumentNode extends AbstractStructuredDocument
         $html .= $body;
         return $html . '</body>' . PHP_EOL . '</html>';
     }
-    
+
     private static function createDynamic($info, $body, $css, $js)
     {
-        $head = self::headTemplate($css, $js);        
+        $head = self::headTemplate($css, $js);
         $metadata = self::metadataTemplate($info['metadata']);
-        
-        $html =  self::generateMacroExec('var', 'xim_head', str_replace(PHP_EOL, "<ximeol>", $head));
+
+        $html = self::generateMacroExec('var', 'xim_head', str_replace(PHP_EOL, "<ximeol>", $head));
         $html .= self::generateMacroExec('var', 'xim_lang', $info['language']);
         $html .= self::generateMacroExec('var', 'xim_metadata', $metadata);
-        $html .= self::generateMacroExec('var', 'xim_tpl', '<!DOCTYPE html><html lang="' . $info['language'] 
+        $html .= self::generateMacroExec('var', 'xim_tpl', '<!DOCTYPE html><html lang="' . $info['language']
             . '"><head>%s</head><body>%s</body></html>');
-        
+
         $html .= self::generateMacroExec('obstart');
         $html .= PHP_EOL . $body;
         $html .= self::generateMacroExec('obgetclean', 'xim_content');
-        
+
         // echo sprintf($tpl, sprintf($head, $metadata), $xim_content);
         $html .= self::generateMacroExec('sprintf1', 'xim_head_metadata', 'xim_head', 'xim_metadata');
         $html .= self::generateMacroExec('sprintf2', 'xim_document', 'xim_tpl', 'xim_head_metadata', 'xim_content');
         $html .= self::generateMacroExec('echo', 'xim_document');
-        
+
         return $html;
     }
 
@@ -548,8 +548,8 @@ class HTMLDocumentNode extends AbstractStructuredDocument
         }
         return $nodeName;
     }
-    
-    private static function headTemplate(array $css = [], array $js = []) : string
+
+    private static function headTemplate(array $css = [], array $js = []): string
     {
         $tpl = '<meta charset="UTF-8" >' . PHP_EOL;
         $tpl .= '<meta name="viewport" content="width=device-width, initial-scale=1.0" >' . PHP_EOL;
@@ -557,18 +557,18 @@ class HTMLDocumentNode extends AbstractStructuredDocument
         $tpl .= '<meta name="generator" content="Ximdex CMS, Semantic Headless CMS and DMS, http://www.ximdex.com" >' . PHP_EOL;
         $tpl .= '<meta name="owner" content = "' . App::getValue("VersionName") . '" >' . PHP_EOL;
         $tpl .= '%s' . PHP_EOL;
-        
+
         foreach ($css as $file) {
-            $tpl .= '<link rel="stylesheet" type="text/css" href="@@@RMximdex.pathto('. $file. ')@@@" >' . PHP_EOL;
+            $tpl .= '<link rel="stylesheet" type="text/css" href="@@@RMximdex.pathto(' . $file . ')@@@" >' . PHP_EOL;
         }
         foreach ($js as $file) {
             $tpl .= '<script type="text/javascript" src="@@@RMximdex.pathto(' . $file . ')@@@" ></script>' . PHP_EOL;
         }
-        
+
         return $tpl;
     }
-    
-    private static function metadataTemplate(array $metadata) : string
+
+    private static function metadataTemplate(array $metadata): string
     {
         $result = '';
         foreach ($metadata as $meta => $value) {
@@ -576,43 +576,18 @@ class HTMLDocumentNode extends AbstractStructuredDocument
                 $result .= "<meta name=\"$meta\" content=\"$value\" ><ximeol>";
             }
         }
-        
+
         return $result;
     }
-    
-    private static function generateMacroExec(string $command, ...$vars) : string
+
+    private static function generateMacroExec(string $command, ...$vars): string
     {
         $params = '';
         $macro = '@@@GMximdex.exec(' . $command . '%s)@@@';
         if (is_array($vars) && count($vars) > 0) {
             $params = implode(', ximparam=', $vars);
-            $params = ', ximparam='.$params;
+            $params = ', ximparam=' . $params;
         }
         return sprintf($macro, $params) . PHP_EOL;
-    }
-}
-
-class SimpleXMLExtended extends SimpleXMLElement
-{
-    /**
-     * @param string $cdata_text
-     */
-    public function addCData(string $cdata_text): void
-    {
-        $node = dom_import_simplexml($this);
-        $no = $node->ownerDocument;
-        $node->appendChild($no->createCDATASection($cdata_text));
-    }
-
-    /**
-     * Create a child with CDATA value
-     *
-     * @param string $name The name of the child element to add
-     * @param string $cdata_text The CDATA value of the child element
-     */
-    public function addChildCData(string $name, string $cdata_text): void
-    {
-        $child = $this->addChild($name);
-        $child->addCData($cdata_text);
     }
 }
