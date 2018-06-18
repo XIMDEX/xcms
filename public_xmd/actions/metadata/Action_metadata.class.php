@@ -33,7 +33,6 @@ class Action_metadata extends ActionAbstract
             );
             $this->sendJSON($values);
         }
-        $this->addJs('/actions/metadata/resources/js/index.js');
         $this->render($values, 'index.tpl', 'default-3.0.tpl');
     }
 
