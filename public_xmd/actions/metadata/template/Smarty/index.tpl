@@ -41,10 +41,12 @@
                                      ng-init="$parent.status.push(true)">
 
                         {foreach from=$metaSection['groups'] item=group}
-                            <h5 class="direction_header">{$group['name']}</h5>
-                            <hr/>
-                            <div id="metadataLoad">
-                                {include file="./metadata.tpl"}
+                            <div class="clearfix">
+                                <h5 class="direction_header">{$group['name']}</h5>
+                                <hr/>
+                                <div id="metadataLoad">
+                                    {include file="./metadata.tpl"}
+                                </div>
                             </div>
                         {/foreach}
 

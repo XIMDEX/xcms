@@ -66,7 +66,7 @@ class Metadata extends GenericData
 
 
         $dbObj = new \Ximdex\Runtime\Db();
-        $dbObj->Query(sprintf("SELECT Metadata.name, Metadata.type,
+        $dbObj->Query(sprintf("SELECT Metadata.name, Metadata.type, RelMetadataGroupMetadata.required,
                         RelMetadataGroupMetadata.idRelMetadataGroupMetadata, value
                         FROM RelMetadataGroupMetadata JOIN 
                         Metadata ON RelMetadataGroupMetadata.idMetadata =
@@ -82,6 +82,7 @@ class Metadata extends GenericData
                 'id' => $dbObj->GetValue('idRelMetadataGroupMetadata'),
                 'value' => $dbObj->GetValue('value'),
                 'type' => $dbObj->GetValue('type'),
+                'required' => $dbObj->GetValue('required'),
             ];
 
             $dbObj->Next();
