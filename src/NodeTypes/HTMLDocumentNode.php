@@ -426,7 +426,12 @@ class HTMLDocumentNode extends AbstractStructuredDocument
         $html .= '<meta name="generator" content = "Ximdex CMS, Semantic Headless CMS and DMS, http://www.ximdex.com" >' . PHP_EOL;
         $html .= '<meta name="owner" content = "' . App::getValue("VersionName") . '" >' . PHP_EOL;
         foreach ($info['metadata'] as $meta => $value) {
-            if (!empty($value)) {
+            if (empty($value)) {
+                continue;
+            }
+            if ($meta == 'title') {
+                $html .= "<title>{$value}</title>" . PHP_EOL;
+            } else {
                 $html .= "<meta name=\"$meta\" content=\"$value\" >" . PHP_EOL;
             }
         }
