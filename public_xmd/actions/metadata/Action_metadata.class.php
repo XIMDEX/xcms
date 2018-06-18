@@ -16,7 +16,7 @@ class Action_metadata extends ActionAbstract
 
         if ($node->GetID() != null) {
             $metadata = new Metadata();
-            $info= $metadata->getMetadataSectionAndGroupByNodeType($node->GetNodeType(), true);
+            $info= $metadata->getMetadataSectionAndGroupByNodeType($node->GetNodeType(), $idNode);
             $values = array(
                 'info' => $info,
                 'node_Type' => $node->nodeType->GetName(),
@@ -33,6 +33,8 @@ class Action_metadata extends ActionAbstract
             );
             $this->sendJSON($values);
         }
+
+
         $this->render($values, 'index.tpl', 'default-3.0.tpl');
     }
 

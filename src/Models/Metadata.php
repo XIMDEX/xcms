@@ -23,7 +23,7 @@ class Metadata extends GenericData
     var $Name = 0;
 
 
-    function getMetadataSectionAndGroupByNodeType(int $idNodeType, bool $withMetadata = false): array
+    function getMetadataSectionAndGroupByNodeType(int $idNodeType, int $nodeId = null): array
     {
         $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->Query(sprintf("SELECT MetadataGroup.idMetadataGroup, MetadataGroup.name as groupName,
@@ -46,12 +46,10 @@ class Metadata extends GenericData
                     'name' => $dbObj->GetValue('sectionName')
                 ];
             }
-            var_dump($group);
-            if ($withMetadata) {
-                $metadata = $this->getMetadataByMetagroup($group['id']);
+            if (!is_null($nodeId)) {
+                $metadata = $this->getMetadataByMetagroupAndNodeId($group['id'], $nodeId);
                 $group['metadata'] = $metadata;
             }
-
 
             array_push($returnArray[$idSection]['groups'], $group);
 
@@ -63,19 +61,18 @@ class Metadata extends GenericData
     }
 
 
-    function getMetadataByMetagroup(int $idGroup): array
+    function getMetadataByMetagroupAndNodeId(int $idGroup, int $nodeId): array
     {
 
 
         $dbObj = new \Ximdex\Runtime\Db();
-        $dbObj->Query(sprintf("SELECT Metadata.name, 
+        $dbObj->Query(sprintf("SELECT Metadata.name, Metadata.type,
                         RelMetadataGroupMetadata.idRelMetadataGroupMetadata, value
                         FROM RelMetadataGroupMetadata JOIN 
                         Metadata ON RelMetadataGroupMetadata.idMetadata =
                         Metadata.idMetadata 
-                        LEFT JOIN MetadataValue ON MetadataValue.idRelMetadataGroupMetadata = RelMetadataGroupMetadata                            .idRelMetadataGroupMetadata
-                        WHERE idMetadataGroup = %s ", $idGroup));
-        $returnArray = array();
+                        LEFT JOIN MetadataValue ON MetadataValue.idRelMetadataGroupMetadata = RelMetadataGroupMetadata                            .idRelMetadataGroupMetadata and MetadataValue.idNode = %s
+                        WHERE idMetadataGroup = %s", $nodeId, $idGroup));
 
         $returnArray = array();
 
@@ -84,6 +81,7 @@ class Metadata extends GenericData
                 'name' => $dbObj->GetValue('name'),
                 'id' => $dbObj->GetValue('idRelMetadataGroupMetadata'),
                 'value' => $dbObj->GetValue('value'),
+                'type' => $dbObj->GetValue('type'),
             ];
 
             $dbObj->Next();
@@ -165,6 +163,7 @@ class Metadata extends GenericData
      *
      * @param $idNode
      * @param $idGroup
+     *
      * @return array
      */
     public static function getByNodeAndGroup($idNode, $idGroup = null)

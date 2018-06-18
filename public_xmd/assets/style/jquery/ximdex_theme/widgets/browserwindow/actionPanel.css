@@ -300,7 +300,8 @@ a:hover {
 p {
     margin-bottom: 1em;
 }
-input[type="text"], input[type="password"], select, textarea {
+input[type="text"], input[type="password"], input[type="date"], select, textarea {
+    line-height: 25px;
     width: 100%;
     padding: .3em .3em;
     -webkit-border-radius: 3px;
