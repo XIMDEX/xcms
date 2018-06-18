@@ -35,6 +35,7 @@ use Ximdex\Models\Node;
 use Ximdex\Models\RelSemanticTagsNodes;
 use Ximdex\Models\Section;
 use Ximdex\Models\SectionType;
+use Ximdex\Models\Server;
 use Ximdex\Models\Version;
 use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
@@ -71,6 +72,7 @@ class ViewCommon extends AbstractView implements IView
         // Channel
         if (isset($args['CHANNEL']) and $args['CHANNEL'] && isset($args['NODEID'])) {
             $channel = new Channel($args['CHANNEL']);
+            $server = new Server($args['SERVER']);
             if (!$channel->GetID()) {
                 Logger::error('Channel not found for ID: ' . $args['CHANNEL']);
                 return false;
@@ -78,7 +80,7 @@ class ViewCommon extends AbstractView implements IView
             if ($channel->getRenderType() && $channel->getRenderType() == Channel::RENDERTYPE_INDEX) {
                 $node = new Node($args['NODEID']);
                 if (strcmp(FsUtils::get_extension($node->GetNodeName()), 'pdf') == 0) {
-                    $content = $this->createXIF($node->GetID(), $content, $channel->GetID());
+                    $content = $this->createXIF($node, $content, $channel, $server);
                 } else {
                     return false;
                 }
@@ -118,16 +120,15 @@ class ViewCommon extends AbstractView implements IView
      * @param $channel
      * @return mixed
      */
-    private static function createXIF($nodeID, $content, $channel)
+    private static function createXIF(Node $node, $content, Channel $channel, Server $server)
     {
-        $node = new Node($nodeID);
         $sectionId = $node->GetSection();
         $ximID = App::getValue('ximid');
         $version = $node->GetLastVersion() ?? [];
         $section = new Section($sectionId);
         $sectionNode = new Node($section->getIdNode());
         $sectionType = new SectionType($section->getIdSectionType());
-
+        $server->get('Url');
         $info = static::getInfo($node);
 
         // Create XML
@@ -137,7 +138,7 @@ class ViewCommon extends AbstractView implements IView
         $xml->addChild('file_version', $version["Version"] ?? '');
         $xml->addChild('id_ximdex', $ximID);
         $xml->addChild('filename', $node->GetNodeName());
-        $xml->addChild('slug', $node->GetNodeName());
+        $xml->addChild('slug', static::getAbsolutePath($node, $server, $channel->GetId()));
         $xml->addChild('creation_date', date('Y-m-d H:i:s', $node->get('CreationDate')));
         $xml->addChild('update_date', date('Y-m-d H:i:s', $node->get('ModificationDate')));
         $xml->addChild('section', $sectionNode->GetNodeName());
@@ -177,6 +178,18 @@ class ViewCommon extends AbstractView implements IView
     {
         $relSemanticTagsNodes = new RelSemanticTagsNodes();
         return $relSemanticTagsNodes->getTags($nodeId) ?? [];
+    }
+
+    /**
+     * @param $targetNode
+     * @param $targetServer
+     * @param $idTargetChannel
+     * @param bool $include
+     * @return string
+     */
+    private static function getAbsolutePath($targetNode, $targetServer, $idTargetChannel)
+    {
+        return $targetServer->get('Url') . $targetNode->GetPublishedPath($idTargetChannel, true);
     }
 
 }
