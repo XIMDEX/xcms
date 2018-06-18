@@ -1,5 +1,7 @@
-{section name=i loop=$metadata}
-    {include file="actions/components/form_input.tpl" divClass="small-6 "
-    title=$metadata[i]["name"] name="metadata[`$metadata[i]['id']`]" 
-    id="metadata[`$metadata[i]['id']`]" id_node="" value="{$metadata[i]['value']}"}
-{/section}
+{foreach from=$group['metadata'] key=i item=data}
+    {include file="actions/components/form_input.tpl"
+    divClass="small-4{if $i eq count($group['metadata']) - 1} end{/if}"
+    title=$data["name"] name="metadata[`$group['id']`][`$data['id']`]"
+    id="metadata[`$group['id']`][`$data['id']`]" id_node="" value="{$data['value']}"}
+{/foreach}
+

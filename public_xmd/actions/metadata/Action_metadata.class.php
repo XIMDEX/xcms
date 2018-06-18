@@ -16,10 +16,9 @@ class Action_metadata extends ActionAbstract
 
         if ($node->GetID() != null) {
             $metadata = new Metadata();
-            $metagroups = $metadata->getMetadataGroupByNodeType($node->GetNodeType());
+            $info= $metadata->getMetadataSectionAndGroupByNodeType($node->GetNodeType(), true);
             $values = array(
-                'metagroups' => $metagroups,
-                'metadata' => array(),
+                'info' => $info,
                 'node_Type' => $node->nodeType->GetName(),
                 'go_method' => 'saveMetadata',
                 'nodeid' => $idNode,
@@ -42,26 +41,27 @@ class Action_metadata extends ActionAbstract
     {
 
         $idNode = $this->request->getParam('nodeid');
-        $idGroup = $this->request->getParam('idGroup');
-        $metadataArray = $this->request->getParam('metadata');
-        $resultAdd = false;
+        $groups = $this->request->getParam('metadata');
+        $resultAdd = true;
 
         $node = new Node($idNode);
 
         if ($node->GetID() != null) {
 
             $metadata = new Metadata();
-            $groups = array_column($metadata->getMetadataGroupByNodeType($node->GetNodeType()), 'id');
+            //$groups = array_column($metadata->getMetadataByMetagroup($node->GetNodeType()), 'id');
 
-            if (in_array($idGroup, $groups)) {
-                $metadata->deleteMetadataValuesByNodeIdAndGroupId($idNode, $idGroup);
-                $resultAdd = $metadata->addMetadataValuesByNodeId($metadataArray, $idNode);
 
-                if ($resultAdd) {
-                    $this->messages->add(_('The metadata has been successfully added'), MSG_TYPE_NOTICE);
-
-                }
+            foreach ($groups as $group => $meta){
+                $metadata->deleteMetadataValuesByNodeIdAndGroupId($idNode, $group);
+                $resultAdd = $metadata->addMetadataValuesByNodeId($meta, $idNode) && $resultAdd;
             }
+            if ($resultAdd) {
+                $this->messages->add(_('The metadata has been successfully added'), MSG_TYPE_NOTICE);
+
+            }
+        }else{
+            $resultAdd = false;
         }
 
         if (!$resultAdd) {

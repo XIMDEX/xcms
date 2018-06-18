@@ -23,20 +23,37 @@ class Metadata extends GenericData
     var $Name = 0;
 
 
-    function getMetadataGroupByNodeType(int $idNodeType): array
+    function getMetadataSectionAndGroupByNodeType(int $idNodeType, bool $withMetadata = false): array
     {
         $dbObj = new \Ximdex\Runtime\Db();
-        $dbObj->Query(sprintf("SELECT MetadataGroup.idMetadataGroup, name FROM RelMetadataGroupNodeType 
-            JOIN MetadataGroup ON
-            RelMetadataGroupNodeType.idMetadataGroup = MetadataGroup.idMetadataGroup 
-            WHERE idNodeType = %s", $idNodeType));
+        $dbObj->Query(sprintf("SELECT MetadataGroup.idMetadataGroup, MetadataGroup.name as groupName,
+              MetadataSection.name as sectionName, MetadataSection.idMetadataSection FROM RelMetadataSectionNodeType 
+              JOIN MetadataSection ON MetadataSection.idMetadataSection = RelMetadataSectionNodeType.idMetadataSection 
+              JOIN MetadataGroup ON MetadataSection.idMetadataSection = MetadataGroup.idMetadataSection
+              WHERE idNodeType = %s", $idNodeType));
         $returnArray = array();
 
         while (!$dbObj->EOF) {
-            $returnArray[] = [
+            $idSection = $dbObj->GetValue('idMetadataSection');
+            $group = [
                 'id' => $dbObj->GetValue('idMetadataGroup'),
-                'name' => $dbObj->GetValue('name')
+                'name' => $dbObj->GetValue('groupName')
+
             ];
+            if (!isset($returnArray[$idSection])) {
+                $returnArray[$idSection] = [
+                    'groups' => [],
+                    'name' => $dbObj->GetValue('sectionName')
+                ];
+            }
+            var_dump($group);
+            if ($withMetadata) {
+                $metadata = $this->getMetadataByMetagroup($group['id']);
+                $group['metadata'] = $metadata;
+            }
+
+
+            array_push($returnArray[$idSection]['groups'], $group);
 
             $dbObj->Next();
         }
