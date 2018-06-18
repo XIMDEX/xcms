@@ -20,15 +20,28 @@ CREATE TABLE `Metadata`(
 -- UNIQUE
 ALTER TABLE `Metadata` ADD UNIQUE(`name`);
 
+/********** TABLE METADATASECTION ***********/
+CREATE TABLE `MetadataSection`(
+  `idMetadataSection` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  PRIMARY KEY(`idMetadataSection`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Available sections for metadata';
+
+-- UNIQUE
+ALTER TABLE `MetadataSection` ADD UNIQUE(`name`);
+
 /********** TABLE METADATAGROUP ***********/
 CREATE TABLE `MetadataGroup`(
   `idMetadataGroup` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `idMetadataSection` int(12) unsigned,
   `name` varchar(255) NOT NULL,
   PRIMARY KEY(`idMetadataGroup`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Available groups for metadata';
 
--- UNIQUE
-ALTER TABLE `MetadataGroup` ADD UNIQUE(`name`);
+
+-- FOREIGN KEY
+ALTER TABLE `MetadataGroup` ADD FOREIGN KEY (`idMetadataSection`) REFERENCES
+  `MetadataSection`(`idMetadataSection`) ON DELETE CASCADE ON UPDATE CASCADE ;
 
 /********** TABLE METADATAGROUP-METADATA ***********/
 CREATE TABLE `RelMetadataGroupMetadata`(
@@ -49,21 +62,19 @@ ALTER TABLE `RelMetadataGroupMetadata` ADD FOREIGN KEY (`idMetadata`) REFERENCES
   ON DELETE CASCADE ON UPDATE CASCADE ;
 
 /********** TABLE METADATAGROUP-NODETYPE ***********/
-CREATE TABLE `RelMetadataGroupNodeType`(
-  `idRelMetadataGroupNodeType` int(12) unsigned NOT NULL AUTO_INCREMENT,
-  `idMetadataGroup` int(12) unsigned NOT NULL,
-  `idNodeType` int(12) unsigned NOT NULL,
-  PRIMARY KEY(`idRelMetadataGroupNodeType`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Relation between group and nodetype';
+CREATE TABLE `RelMetadataSectionNodeType`(
+  `idMetadataSection` int(12) unsigned NOT NULL,
+  `idNodeType` int(12) unsigned NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Relation between section and nodetype';
 
 -- UNIQUE
-ALTER TABLE `RelMetadataGroupNodeType` ADD UNIQUE(`idMetadataGroup`, `idNodeType`);
+ALTER TABLE `RelMetadataSectionNodeType` ADD UNIQUE(`idMetadataSection`, `idNodeType`);
 
 -- FOREIGN KEY
-ALTER TABLE `RelMetadataGroupNodeType` ADD FOREIGN KEY (`idMetadataGroup`) REFERENCES `MetadataGroup`(`idMetadataGroup`)
-  ON DELETE CASCADE ON UPDATE CASCADE ;
-ALTER TABLE `RelMetadataGroupNodeType` ADD FOREIGN KEY (`idNodeType`) REFERENCES `NodeTypes`(`IdNodeType`)
-  ON DELETE CASCADE ON UPDATE CASCADE ;
+ALTER TABLE `RelMetadataSectionNodeType` ADD FOREIGN KEY (`idMetadataSection`) REFERENCES
+  `MetadataSection`(`idMetadataSection`) ON DELETE CASCADE ON UPDATE CASCADE ;
+ALTER TABLE `RelMetadataSectionNodeType` ADD FOREIGN KEY (`idNodeType`) REFERENCES `NodeTypes`(`IdNodeType`)
+  ON DELETE CASCADE ON UPDATE CASCADE;
 
 /********** TABLE METADATA VALUE ***********/
 CREATE TABLE `MetadataValue`(
@@ -89,3 +100,18 @@ INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Des
 
 INSERT INTO `RelRolesActions` (`IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`)
   VALUES  (201, 9510, 8, 1, 3), (201, 9510, 7, 1, 3);
+
+/************ INSERT METADATA ****************/
+
+
+INSERT INTO `MetadataSection` (`idMetadataSection`, `name`) VALUES (1, 'General');
+
+INSERT INTO `MetadataGroup` (`idMetadataGroup`,`idMetadataSection`,`name`) VALUES (1, 1,'General');
+
+INSERT INTO `Metadata` (`idMetadata`, `name`, `defaultValue`, `type`) VALUES
+  (1, 'date', 'now', 'date'), (2, 'author', 'No author', 'text'), (3, 'language', 'es', 'text');
+
+INSERT INTO `RelMetadataSectionNodeType` (`idMetadataSection`, `idNodeType`) VALUES ('1', '5041');
+
+INSERT INTO `RelMetadataGroupMetadata` (`idRelMetadataGroupMetadata`, `idMetadataGroup`, `idMetadata`, `required`)
+  VALUES (NULL, '1', '1', '1'), (NULL, '1', '2', '1'), (NULL, '1', '3', '1');
