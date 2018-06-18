@@ -527,11 +527,12 @@ class ServerFrame extends ServerFrames_ORM
      * Gets the ServerFrame with a time interval that includes the current time, who match the values of nodeId
      * and channelId, and whose State is in (in, due2in, pending, due2in_, due2pumped, pumped, replaced and removed)
      *
-     * @param int nodeID
-     * @param int channelID
+     * @param int $nodeID
+     * @param int $channelID
+     * @param int $idServer
      * @return int|null
      */
-    public function getCurrent($nodeID, $channelID = null)
+    public function getCurrent($nodeID, $channelID = null, int $idServer = null)
     {
         $now = time();
         if ($channelID) {
@@ -549,15 +550,19 @@ class ServerFrame extends ServerFrames_ORM
             Logger::error('Trying to publish a node that is not contained on a server ' . $nodeID);
             return NULL;
         }
-        $nodeServer = new Node($serverID);
-        if (App::getValue('PublishOnDisabledServers') == 1) {
-            $physicalServers = $nodeServer->class->GetPhysicalServerList(true);
+        if ($idServer) {
+            $physicalServers = [$idServer];
         } else {
-            $physicalServers = $nodeServer->class->GetPhysicalServerList(true, true);
-        }
-        if (count($physicalServers) == 0) {
-            Logger::info("[GETCURRENT]: No physical servers found. IdSync: none");
-            return NULL;
+            $nodeServer = new Node($serverID);
+            if (App::getValue('PublishOnDisabledServers') == 1) {
+                $physicalServers = $nodeServer->class->GetPhysicalServerList(true);
+            } else {
+                $physicalServers = $nodeServer->class->GetPhysicalServerList(true, true);
+            }
+            if (count($physicalServers) == 0) {
+                Logger::info("[GETCURRENT]: No physical servers found. IdSync: none");
+                return NULL;
+            }
         }
         $sql = sprintf("SELECT IdSync " . "FROM ServerFrames sf " . "INNER JOIN ChannelFrames c ON c.IdChannelFrame = sf.IdChannelFrame " 
             . "WHERE c.NodeId = " . $nodeID . " " . $channelClause . "AND sf.DateUp < %s AND (sf.DateDown > %s OR sf.DateDown IS NULL) " 
@@ -755,14 +760,19 @@ class ServerFrame extends ServerFrames_ORM
      * 
      * @param int $nodeId
      * @param int $time
+     * @param int $idServer
      * @return array|bool
      */
-    public function getFramesOnDate(int $nodeId, int $time)
+    public function getFramesOnDate(int $nodeId, int $time, int $idServer = null)
     {
         $sql = 'SELECT ServerFrames.IdSync FROM ServerFrames, NodeFrames ' . 
             'WHERE ServerFrames.IdNodeFrame = NodeFrames.IdNodeFrame AND NodeFrames.NodeId = ' . $nodeId . ' AND ' . 
 	        'ServerFrames.DateUp <= ' . $time . ' AND (ServerFrames.DateDown >= ' . $time . ' OR ServerFrames.DateDown IS NULL) ' . 
-	        'AND ServerFrames.State NOT IN (\'' . ServerFrame::CANCELLED . '\', \'' . ServerFrame::REMOVED . '\', \'' . ServerFrame::REPLACED . '\')';
+	        'AND ServerFrames.State NOT IN (\'' . ServerFrame::CANCELLED . '\', \'' . ServerFrame::REMOVED . 
+            '\', \'' . ServerFrame::REPLACED . '\')';
+        if ($idServer) {
+            $sql .= ' AND ServerFrames.IdServer = ' . $idServer;
+        }
         return $this->query($sql);
     }
     

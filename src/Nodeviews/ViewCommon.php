@@ -26,7 +26,6 @@
 
 namespace Ximdex\Nodeviews;
 
-use Codeception\Step\Meta;
 use Ximdex\Logger;
 use Ximdex\Deps\LinksManager;
 use Ximdex\Models\Channel;
@@ -141,8 +140,10 @@ class ViewCommon extends AbstractView implements IView
         $xml->addChild('slug', static::getAbsolutePath($node, $server, $channel->GetId()));
         $xml->addChild('creation_date', date('Y-m-d H:i:s', $node->get('CreationDate')));
         $xml->addChild('update_date', date('Y-m-d H:i:s', $node->get('ModificationDate')));
-        $xml->addChild('section', $sectionNode->GetNodeName());
-        $xml->addChild('id_section', $sectionNode->GetID());
+        if ($sectionNode->GetID()) {
+            $xml->addChild('section', $sectionNode->GetNodeName());
+            $xml->addChild('id_section', $sectionNode->GetID());
+        }
         $xml->addChild('state', "publish");
 
 

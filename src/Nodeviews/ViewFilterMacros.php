@@ -43,6 +43,7 @@ use Ximdex\NodeTypes\NodeTypeConstants;
 use Ximdex\Utils\FsUtils;
 
 \Ximdex\Modules\Manager::file('/inc/manager/NodeFrameManager.class.php', 'ximSYNC');
+\Ximdex\Modules\Manager::file('/inc/model/ServerFrame.class.php', 'ximSYNC');
 
 class ViewFilterMacros extends AbstractView implements IView
 {
@@ -768,24 +769,33 @@ class ViewFilterMacros extends AbstractView implements IView
             Logger::error('Could not load a node with ID ' . $nodeId);
             return false;
         }
-        
-        // Get the server to include the node with the correspondant channel
-        $sync = new SynchroFacade();
-        $idTargetServer = $sync->getServer($targetNode->GetID(), $this->_idChannel, $this->_server->get('IdServer'));
-        if (!$idTargetServer) {
-            $idTargetServer = $this->_server->get('IdServer');
-        }
-        $targetServer = new server($idTargetServer);
+        $targetServer = new server($this->_server->get('IdServer'));
         if (!$targetServer->get('IdServer')) {
             Logger::error('Cannot include the file in unknown server with node ID: ' . $nodeId);
-            $src = '';
+            return false;
         }
-        else {
-            $src = $targetServer->get('InitialDirectory');
+        
+        // Get the channel for the include link if it is not published in the origin document
+        $idChannel = $this->_idChannel;
+        if (!$targetNode->nodeType->GetIsFolder()) {
+            $targetFrame = new \ServerFrame();
+            $frameID = $targetFrame->getCurrent($targetNode->GetID(), $this->_idChannel, $targetServer->get('IdServer'));
+            if (!$frameID) {
+                
+                // No published in the current channel
+                $frames = $targetFrame->getFramesOnDate($targetNode->GetID(), mktime(), $targetServer->get('IdServer'));
+                if (!$frames) {
+                    Logger::error('Cannot include the document ' . $targetNode->GetNodeName() . ', not published yet');
+                    return false;
+                }
+                $sync = new SynchroFacade();
+                $idChannel = $sync->getFrameChannel($frames[0]['IdSync']);
+            }
         }
         
         // Get the path
-        $src .= $targetNode->GetPublishedPath($this->_idChannel, true);
+        $src = $targetServer->get('InitialDirectory');
+        $src .= $targetNode->GetPublishedPath($idChannel, true);
         return $src;
     }
 }

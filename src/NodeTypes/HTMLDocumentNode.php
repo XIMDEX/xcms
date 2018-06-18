@@ -494,7 +494,8 @@ class HTMLDocumentNode extends AbstractStructuredDocument
         $xml->addChild('id_ximdex', $ximID);
         $xml->addChild('name', $info['metadata']['title']);
         $xml->addChild('filename', $node->GetNodeName());
-        $xml->addChild('slug', $node->GetNodeName());
+        // $xml->addChild('slug', $node->GetNodeName());
+        $xml->addChild('slug', '@@@RMximdex.pathto(THIS)@@@');
         $xml->addChildCData('content_flat', html_entity_decode(preg_replace('/((\n)(\s{2,}))/', '', strip_tags($content))));
         $xml->addChildCData('content_render', $content);
         $xml->addChild('creation_date', date('Y-m-d H:i:s', $node->get('CreationDate')));
