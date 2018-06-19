@@ -744,7 +744,6 @@ class ViewFilterMacros extends AbstractView implements IView
      * @param $targetNode
      * @param $targetServer
      * @param $idTargetChannel
-     * @param bool $include
      * @return string
      */
     private function getAbsolutePath($targetNode, $targetServer, $idTargetChannel)
@@ -779,10 +778,10 @@ class ViewFilterMacros extends AbstractView implements IView
         $idChannel = $this->_idChannel;
         if (!$targetNode->nodeType->GetIsFolder()) {
             $targetFrame = new \ServerFrame();
-            $frameID = $targetFrame->getCurrent($targetNode->GetID(), $this->_idChannel, $targetServer->get('IdServer'));
+            $frameID = $targetFrame->getCurrent($targetNode->GetID(), $idChannel, $targetServer->get('IdServer'));
             if (!$frameID) {
                 
-                // No published in the current channel
+                // Not published in the current channel
                 $frames = $targetFrame->getFramesOnDate($targetNode->GetID(), mktime(), $targetServer->get('IdServer'));
                 if (!$frames) {
                     Logger::error('Cannot include the document ' . $targetNode->GetNodeName() . ', not published yet');
@@ -794,8 +793,7 @@ class ViewFilterMacros extends AbstractView implements IView
         }
         
         // Get the path
-        $src = $targetServer->get('InitialDirectory');
-        $src .= $targetNode->GetPublishedPath($idChannel, true);
+        $src = $targetServer->get('InitialDirectory') . $targetNode->GetPublishedPath($idChannel, true);
         return $src;
     }
 }

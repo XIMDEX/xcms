@@ -5,7 +5,7 @@ X.actionLoaded(function(event, fn, params)
 		web: {
 			'static': ['html5'], 
 			'include': ['php'], 
-			'dynamic': ['jsp', 'ror', 'asp'], 
+			'dynamic': ['jsp', 'ror', 'asp', 'php'], 
 			'index': ['xif']
 		},
 		xml: {
