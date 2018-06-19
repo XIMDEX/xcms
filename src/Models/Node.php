@@ -57,61 +57,58 @@ if (!defined('COUNT')) {
 }
 
 /**
- * Class Node
+ * Class which implements the specific methos for this nodetype
  *
  * @package Ximdex\Models
  */
 class Node extends NodesOrm
 {
     /**
+     * current node ID
+     * 
      * @var bool|string
      */
     var $nodeID;
-
-    // current node ID.
-
     /**
      * @var mixed
      */
     var $class;
-
-    // Class which implements the specific methos for this nodetype.
-
-    /* @var $nodeType \Ximdex\Models\NodeType */
+    
+    /**
+     * NodeType object
+     * 
+     * @var $nodeType \Ximdex\Models\NodeType
+     */
     var $nodeType;
 
-    // nodetype object.
-
-    /* @var $dbObj \Ximdex\Runtime\Db */
-    var $dbObj;
-
-    // DB object which will be used in the methods.
-
     /**
-     * @var
+     * DB object which will be used in the methods
+     * 
+     * @var $dbObj \Ximdex\Runtime\Db
+     */
+    var $dbObj;
+    
+    /**
+     * Error code
      */
     var $numErr;
 
-    // Error code.
-
     /**
-     * @var
+     * Error message
      */
     var $msgErr;
 
-    // Error message.
-
     /**
+     * Class error list
+     * 
      * @var array
      */
     var $errorList = array();
 
-    // Class error list.
-
     /**
-     * Node constructor.
+     * Node constructor
      *
-     * @param null $nodeID
+     * @param int $nodeID
      * @param bool $fullLoad
      */
     public function __construct($nodeID = null, $fullLoad = true)
@@ -328,7 +325,8 @@ class Node extends NodesOrm
             $className = WorkFlow::WORKFLOW_ACTIONS_NAMESPACE . $action[0];
             $class = new $className($this);
             $method = $action[1];
-            Logger::info('Calling method ' . $method . ' in ' . $action[0] . ' class before changing the status to ' . $workflowStatus->get('Name'));
+            Logger::info('Calling method ' . $method . ' in ' . $action[0] . ' class before changing the status to ' 
+                . $workflowStatus->get('Name'));
             if ($class->$method() === false) {
                 if ($class->_getError()) {
                     $error = $class->_getError();
@@ -447,7 +445,8 @@ class Node extends NodesOrm
             'DESC'
         );
         if (!empty($order) && is_array($order) && isset($order['FIELD'])) {
-            $where .= sprintf(" ORDER BY %s %s", $order['FIELD'], isset($order['DIR']) && in_array($order['DIR'], $validDirs) ? $order['DIR'] : '');
+            $where .= sprintf(" ORDER BY %s %s", $order['FIELD'], isset($order['DIR']) 
+                && in_array($order['DIR'], $validDirs) ? $order['DIR'] : '');
         }
         return $this->find('IdNode', $where, $params, MONO);
     }
@@ -474,7 +473,8 @@ class Node extends NodesOrm
                 $sql .= " AND IdNodeType = $idtype";
             }
             if (!empty($order) && is_array($order) && isset($order['FIELD'])) {
-                $sql .= sprintf(" ORDER BY %s %s", $order['FIELD'], isset($order['DIR']) && in_array($order['DIR'], $validDirs) ? $order['DIR'] : '');
+                $sql .= sprintf(" ORDER BY %s %s", $order['FIELD'], isset($order['DIR']) 
+                    && in_array($order['DIR'], $validDirs) ? $order['DIR'] : '');
             }
             $dbObj = new \Ximdex\Runtime\Db();
             $dbObj->Query($sql);
@@ -544,7 +544,7 @@ class Node extends NodesOrm
      * Looks for nodes by name
      *
      * @param string $name name, optional. If none is passed, considered name will be current node name
-     * @return int/false
+     * @return array|bool
      */
     function GetByName($name = NULL)
     {
@@ -554,8 +554,8 @@ class Node extends NodesOrm
         $this->ClearError();
         if (!empty($name)) {
             $dbObj = new \Ximdex\Runtime\Db();
-            $sql = sprintf("SELECT Nodes.IdNode, Nodes.Name, NodeTypes.Icon, Nodes.IdParent FROM Nodes, NodeTypes WHERE Nodes.IdNodeType = NodeTypes.IdNodeType AND Nodes.Name like %s"
-                , $dbObj->sqlEscapeString("%" . $name . "%"));
+            $sql = sprintf("SELECT Nodes.IdNode, Nodes.Name, NodeTypes.Icon, Nodes.IdParent FROM Nodes, NodeTypes " . 
+                "WHERE Nodes.IdNodeType = NodeTypes.IdNodeType AND Nodes.Name like %s", $dbObj->sqlEscapeString("%" . $name . "%"));
             $dbObj->Query($sql);
             if ($dbObj->numRows > 0) {
                 $result = array();
@@ -582,8 +582,8 @@ class Node extends NodesOrm
     }
 
     /**
-     * @param null $name
-     * @param null $path
+     * @param $name
+     * @param $path
      * @return array|bool
      */
     function GetByNameAndPath($name = NULL, $path = NULL)
@@ -701,18 +701,21 @@ class Node extends NodesOrm
                 if ($nodes) {
                     $path = '';
                     foreach ($nodes as $parentId => $name) {
-                        if ($nodeReplace and $parentId == $nodeReplace->GetID())
+                        if ($nodeReplace and $parentId == $nodeReplace->GetID()) {
                             $nodeName = $nodeReplace->GetNodeName();
-                        else
+                        } else {
                             $nodeName = $name;
+                        }
                         $path = '/' . $nodeName . $path;
-                        if ($parentId == $nodeID)
+                        if ($parentId == $nodeID) {
                             break;
+                        }
                     }
                     return $path;
                 }
-            } else
+            } else {
                 $this->SetError(1);
+            }
         }
         return null;
     }
@@ -815,7 +818,6 @@ class Node extends NodesOrm
         $query = sprintf("SELECT NodeType" . " FROM NodeAllowedContents" . " WHERE IdNodeType = %d", $this->nodeType->GetID());
         $allowedChildrens = array();
         $dbObj = new \Ximdex\Runtime\Db();
-
         $dbObj->Query($query);
         while (!$dbObj->EOF) {
             $allowedChildrens[] = $dbObj->GetValue('NodeType');
@@ -835,16 +837,18 @@ class Node extends NodesOrm
         if ($this->get('IdNode') > 0) {
             if ($this->nodeType->get('IsRenderizable')) {
                 if ($this->nodeType->get('HasFSEntity')) {
-                    if ($this->class->RenderizeNode() === false)
+                    if ($this->class->RenderizeNode() === false) {
                         return false;
+                    }
                 }
                 if ($recursive) {
                     $children = $this->GetChildren();
                     if (!empty($children)) {
                         foreach ($children as $childID) {
                             $child = new Node($childID);
-                            if ($child->RenderizeNode(true) === false)
+                            if ($child->RenderizeNode(true) === false) {
                                 return false;
+                            }
                         }
                     }
                 }
@@ -1261,7 +1265,7 @@ class Node extends NodesOrm
         $this->SetID($this->get('IdNode'));
 
         // Updating fastTraverse before the setcontent, because in the node cache this information is needed
-        $this->UpdateFastTraverse();
+        $this->updateFastTraverse();
 
         // All the args from this function call are passed to this nodetype create method.
         if (is_object($this->class)) {
@@ -1651,7 +1655,7 @@ class Node extends NodesOrm
 
                     // FastTraverse is updated for current node
                     $this->SetParent($targetNode);
-                    $this->UpdateFastTraverse();
+                    $this->updateFastTraverse();
 
                     // Retrieving all children from stored backup, identified by $backupID
                     $parentNode = new Node($this->get('IdParent'));
@@ -1802,8 +1806,7 @@ class Node extends NodesOrm
     /**
      * This function does not delete an user from Users table, this disassociated from the group
      *
-     * @param
-     *            $groupID
+     * @param $groupID
      */
     function DeleteGroup($groupID)
     {
@@ -1825,9 +1828,8 @@ class Node extends NodesOrm
     /**
      * Associated an user to a group with a concrete role
      *
-     * @param
-     *            $groupID
-     * @param null $roleID
+     * @param $groupID
+     * @param $roleID
      * @return bool
      */
     function AddGroupWithRole($groupID, $roleID = null)
@@ -1835,12 +1837,12 @@ class Node extends NodesOrm
         $this->ClearError();
         if (!is_null($groupID)) {
             if ($this->nodeType->get('CanAttachGroups')) {
-
-                $dbObj = new \Ximdex\Runtime\Db();
+                
                 /*
                  * Raise an error when creating a new project from a template, node-group can't be repeated
                  * To prevent this problem, we are going to make a query of this ocurrence
                  */
+                $dbObj = new \Ximdex\Runtime\Db();
                 $sql = 'select * from RelGroupsNodes where IdGroup = ' . $groupID . ' and IdNode = ' . $this->get('IdNode');
                 $res = $dbObj->query($sql);
                 if ($res === false or $dbObj->numErr) {
@@ -1848,10 +1850,12 @@ class Node extends NodesOrm
                     return false;
                 }
                 if ($dbObj->numRows) {
+                    
                     // the relation between this node and the given group is defined already
                     return true;
                 }
-                $query = sprintf("INSERT INTO RelGroupsNodes (IdGroup, IdNode, IdRole) VALUES (%d, %d, %d)", $groupID, $this->get('IdNode'), $roleID);
+                $query = sprintf("INSERT INTO RelGroupsNodes (IdGroup, IdNode, IdRole) VALUES (%d, %d, %d)", $groupID
+                    , $this->get('IdNode'), $roleID);
                 $dbObj->Execute($query);
                 if ($dbObj->numErr) {
 
@@ -1869,18 +1873,16 @@ class Node extends NodesOrm
     /**
      * It allows to change the role a user participates in a group with
      *
-     * @param
-     *            $groupID
-     * @param
-     *            $roleID
+     * @param $groupID
+     * @param $roleID
      */
     function ChangeGroupRole($groupID, $roleID)
     {
         $this->ClearError();
         if ($this->get('IdNode') > 0) {
             if ($this->nodeType->get('CanAttachGroups')) {
-                /** @var string $roleID */
-                $sql = sprintf("UPDATE RelGroupsNodes SET IdRole = %d WHERE IdNode = %d AND IdGroup = %d", $roleID, $this->get('IdNode'), $groupID);
+                $sql = sprintf("UPDATE RelGroupsNodes SET IdRole = %d WHERE IdNode = %d AND IdGroup = %d"
+                    , $roleID, $this->get('IdNode'), $groupID);
                 $dbObj = new \Ximdex\Runtime\Db();
                 $dbObj->Execute($sql);
                 if ($dbObj->numErr) {
@@ -1895,8 +1897,7 @@ class Node extends NodesOrm
     /**
      * Returns true if an user belongs to a group
      *
-     * @param
-     *            $groupID
+     * @param $groupID
      * @return int|null
      */
     function HasGroup($groupID)
@@ -1915,7 +1916,6 @@ class Node extends NodesOrm
     }
 
     /**
-     *
      * @return array|null
      */
     function GetAllGroups()
@@ -1931,8 +1931,9 @@ class Node extends NodesOrm
                     $dbObj->Next();
                 }
                 return $salida;
-            } else
+            } else {
                 $this->SetError(5);
+            }
         }
         return NULL;
     }
@@ -1940,8 +1941,7 @@ class Node extends NodesOrm
     /**
      * Function which makes a node to have a workflow as other node and depends on it
      *
-     * @param
-     *            $nodeID
+     * @param $nodeID
      */
     function SetWorkFlowMaster($nodeID)
     {
@@ -1976,19 +1976,16 @@ class Node extends NodesOrm
     /**
      * Function which makes the node to have a new independent workflow
      *
-     * @param null $id
+     * @param $id
      * @return array
      */
     function GetWorkFlowSlaves($id = null)
     {
         unset($id);
-        return $this->find('IdNode', 'SharedWorkflow = %s', array(
-            $this->get('IdNode')
-        ), MONO);
+        return $this->find('IdNode', 'SharedWorkflow = %s', array($this->get('IdNode')), MONO);
     }
 
     /**
-     *
      * @return bool|string
      */
     function IsWorkflowSlave()
@@ -1997,7 +1994,6 @@ class Node extends NodesOrm
     }
 
     /**
-     *
      * @return array|bool
      */
     function GetAllAlias()
@@ -2022,15 +2018,15 @@ class Node extends NodesOrm
     /**
      * Obtains the current node alias
      *
-     * @param
-     *            $langID
+     * @param $langID
      * @return null|String
      */
     function GetAliasForLang($langID)
     {
         $this->ClearError();
         if ($this->get('IdNode') > 0) {
-            $sql = sprintf("SELECT Name FROM NodeNameTranslations WHERE" . " IdNode= %d" . " AND IdLanguage = %d", $this->get('IdNode'), $langID);
+            $sql = sprintf("SELECT Name FROM NodeNameTranslations WHERE" . " IdNode= %d" . " AND IdLanguage = %d"
+                , $this->get('IdNode'), $langID);
             $dbObj = new \Ximdex\Runtime\Db();
             $dbObj->Query($sql);
             if ($dbObj->numErr) {
@@ -2048,23 +2044,21 @@ class Node extends NodesOrm
 
     /**
      * Controls if the current node has alias
-     */
-    /**
      *
-     * @param
-     *            $langID
+     * @param $langID
      * @return null|String
      */
     function HasAliasForLang($langID)
     {
         $this->ClearError();
         if ($this->get('IdNode') > 0) {
-            $sql = sprintf("SELECT IdNode FROM NodeNameTranslations WHERE" . " IdNode =  %d" . " AND IdLanguage = %d", $this->get('IdNode'), $langID);
+            $sql = sprintf("SELECT IdNode FROM NodeNameTranslations WHERE" . " IdNode =  %d" . " AND IdLanguage = %d"
+                , $this->get('IdNode'), $langID);
             $dbObj = new \Ximdex\Runtime\Db();
             $dbObj->Query($sql);
-            if ($dbObj->numErr)
+            if ($dbObj->numErr) {
                 $this->SetError(1);
-
+            }
             return $dbObj->GetValue("IdNode");
         }
         $this->SetError(1);
@@ -2072,9 +2066,7 @@ class Node extends NodesOrm
     }
 
     /**
-     *
-     * @param
-     *            $langID
+     * @param $langID
      * @return bool|null|String
      */
     function GetAliasForLangWithDefault($langID)
@@ -2082,27 +2074,29 @@ class Node extends NodesOrm
         $this->ClearError();
         if ($this->get('IdNode') > 0) {
             $this->ClearError();
-            $sql = sprintf("SELECT Name FROM NodeNameTranslations WHERE" . " IdNode = %d" . " AND IdLanguage = %d", $this->get('IdNode'), $langID);
+            $sql = sprintf("SELECT Name FROM NodeNameTranslations WHERE" . " IdNode = %d" . " AND IdLanguage = %d"
+                , $this->get('IdNode'), $langID);
             $dbObj = new \Ximdex\Runtime\Db();
             $dbObj->Query($sql);
             if ($dbObj->numRows > 0) {
-                // si encuentra el traducido lo devuelve
+                
+                // Si encuentra el traducido lo devuelve
                 return $dbObj->GetValue("Name");
             }
-
             $langDefault = App::getValue("DefaultLanguage");
             if (strlen($langDefault) != 0) {
                 $lang = new Language();
                 $lang->SetByIsoName($langDefault);
-                $sql = sprintf("SELECT Name FROM NodeNameTranslations WHERE" . " IdNode = %d" . " AND IdLanguage = %d", $this->get('IdNode'), $lang->get('IdLanguage'));
+                $sql = sprintf("SELECT Name FROM NodeNameTranslations WHERE" . " IdNode = %d" . " AND IdLanguage = %d"
+                    , $this->get('IdNode'), $lang->get('IdLanguage'));
                 $dbObj = new \Ximdex\Runtime\Db();
                 $dbObj->Query($sql);
                 if ($dbObj->numRows > 0) {
+                    
                     // Returns the default language
                     return $dbObj->GetValue("Name");
                 }
             }
-
             return $this->GetNodeName();
         }
         $this->SetError(1);
@@ -2110,12 +2104,10 @@ class Node extends NodesOrm
     }
 
     /**
-     * Setting a alias to current node.
+     * Setting a alias to current node
      *
-     * @param
-     *            $langID
-     * @param
-     *            $name
+     * @param $langID
+     * @param $name
      * @return bool
      */
     function SetAliasForLang($langID, $name)
@@ -2125,14 +2117,14 @@ class Node extends NodesOrm
             $query = sprintf("SELECT IdNode FROM NodeNameTranslations" . " WHERE IdNode = %d AND IdLanguage = %d", $this->get('IdNode'), $langID);
             $dbObj->Query($query);
             if ($dbObj->numRows > 0) {
-                $sql = sprintf("UPDATE NodeNameTranslations " . " SET Name = %s" . " WHERE IdNode = %d" . " AND IdLanguage = %d", $dbObj->sqlEscapeString($name), $this->get('IdNode'), $langID);
+                $sql = sprintf("UPDATE NodeNameTranslations " . " SET Name = %s" . " WHERE IdNode = %d" . " AND IdLanguage = %d"
+                    , $dbObj->sqlEscapeString($name), $this->get('IdNode'), $langID);
             } else {
-                $sql = sprintf("INSERT INTO NodeNameTranslations " . "(IdNode, IdLanguage, Name) " . "VALUES (%d, %d, %s)", $this->get('IdNode'), $langID, $dbObj->sqlEscapeString($name));
+                $sql = sprintf("INSERT INTO NodeNameTranslations " . "(IdNode, IdLanguage, Name) " . "VALUES (%d, %d, %s)"
+                    , $this->get('IdNode'), $langID, $dbObj->sqlEscapeString($name));
             }
-
             $dbObj = new \Ximdex\Runtime\Db();
             $dbObj->Execute($sql);
-
             if ($dbObj->numErr) {
                 $this->messages->add(_('Alias could not be updated, incorrect operation'), MSG_TYPE_ERROR);
                 Logger::error(sprintf("Error in query %s or %s", $query, $sql));
@@ -2140,17 +2132,15 @@ class Node extends NodesOrm
             }
             return true;
         }
-
         $this->messages->add(_('The node you want to operate with does not exist'), MSG_TYPE_WARNING);
         Logger::warning("Error: node" . "{$this->IdNode}" . " does not exist");
         return false;
     }
 
     /**
-     * Deletes a current node alias.
+     * Deletes a current node alias
      *
-     * @param
-     *            $langID
+     * @param $langID
      * @return bool
      */
     function DeleteAliasForLang($langID)
@@ -2280,7 +2270,8 @@ class Node extends NodesOrm
         if ($this->get('IdNodeType') == $type) {
             return $this->get('IdNode');
         }
-        $query = sprintf("SELECT ft.IdNode FROM `FastTraverse` ft" . " INNER JOIN Nodes n ON ft.IdNode = n.IdNode AND n.IdNodeType = %d" . " WHERE ft.IdChild = %d and ft.IdNode <> %d", $type, $this->get('IdNode'), $this->get('IdNode'));
+        $query = sprintf("SELECT ft.IdNode FROM `FastTraverse` ft" . " INNER JOIN Nodes n ON ft.IdNode = n.IdNode AND n.IdNodeType = %d" . 
+            " WHERE ft.IdChild = %d and ft.IdNode <> %d", $type, $this->get('IdNode'), $this->get('IdNode'));
         $db = new \Ximdex\Runtime\Db();
         $db->query($query);
         if ($db->numRows > 0) {
@@ -2289,63 +2280,32 @@ class Node extends NodesOrm
         Logger::warning(sprintf(_("The nodetype %s could not be obtained for node "), $type) . $this->get('IdNode'));
         return NULL;
     }
-
-    /**
-     * If it is depending on a project, its depth is returned
-     *
-     * @return int|null
-     */
-    function GetDepth()
-    {
-        if (!($this->get('IdNode') > 0)) {
-            return NULL;
-        }
-        if ($this->nodeType->get('Name') == "Server") {
-            return 1;
-        }
-        $idParent = $this->get('IdParent');
-
-        if (!$idParent) {
-            return null;
-        }
-        $parent = new Node($idParent);
-        $depth = $parent->GetDepth();
-        if ($depth) {
-            return NULL;
-        }
-        return ($depth + 1);
-    }
-
+    
     /**
      * If its pending on some project, its depth is returned
      * 
      * @return int|null
      */
-    function GetPublishedDepth()
+    public function GetPublishedDepth() : ?int
     {
-        if (!($this->get('IdNode') > 0)) {
-            return NULL;
+        if (!$this->GetID()) {
+            return null;
         }
-        if ($this->nodeType->get('Name') == "Server") {
+        if ($this->nodeType->GetID() == NodeTypeConstants::SERVER) {
             return 1;
         }
-        $idParent = $this->get('IdParent');
-        if (!$idParent) {
-            return NULL;
+        if (!$this->get('IdParent')) {
+            return null;
         }
-        $parent = new Node($idParent);
-        $depth = $parent->GetPublishedDepth();
-        if (!$depth) {
-            return NULL;
+        $parents = FastTraverse::getParents($this->GetID(), null, null, ['IsVirtualFolder' => false]);
+        if (!$parents) {
+            return null;
         }
-        if ($this->nodeType->get('IsVirtualFolder')) {
-            return $depth;
-        }
-        return ($depth + 1);
+        return count($parents) + 1;
     }
 
     /**
-     * Returns the list of nodes which depend on given one.
+     * Returns the list of nodes which depend on given one
      * If flag=3, returns just the ones associated with groups 'CanAttachGroups'
      * If flag=4, returns all the nodes which depend on the one in the object and its lists of dependencies.
      * If flag=5, returns all the nodes which depend on the one in the object which cannot be deleted.
@@ -2397,11 +2357,8 @@ class Node extends NodesOrm
         return $nodeList;
     }
 
-    /*
-     * Gets all ancestors of the node
-     *
-     */
     /**
+     * Gets all ancestors of the node
      *
      * @param null $fromNode
      * @return array
@@ -2412,22 +2369,17 @@ class Node extends NodesOrm
         $dbObj = new \Ximdex\Runtime\Db();
         $sql = sprintf("SELECT IdNode FROM FastTraverse WHERE IdChild= %d ORDER BY Depth DESC", $this->get('IdNode'), $this->get('IdNode'));
         $dbObj->Query($sql);
-
         $list = array();
-
         while (!$dbObj->EOF) {
             $list[] = $dbObj->GetValue('IdNode');
             $dbObj->Next();
         }
-
         return $list;
     }
 
     /**
      * Returns a list with the path from root (or the one in the param fromID if it is) until the nod ein the object
-     * Keeps the list of node ids ordered by depth, including the object.
-     */
-    /**
+     * Keeps the list of node ids ordered by depth, including the object
      *
      * @param int $minIdNode
      * @return array
@@ -2435,9 +2387,9 @@ class Node extends NodesOrm
     function TraverseToRoot($minIdNode = 10000)
     {
         $dbObj = new \Ximdex\Runtime\Db();
-        $sql = sprintf("SELECT IdNode FROM FastTraverse WHERE IdChild= %d AND IdNode >=%d ORDER BY Depth DESC", $this->get('IdNode'), $minIdNode);
+        $sql = sprintf("SELECT IdNode FROM FastTraverse WHERE IdChild= %d AND IdNode >=%d ORDER BY Depth DESC"
+            , $this->get('IdNode'), $minIdNode);
         $dbObj->Query($sql);
-
         $list = array();
         while (!$dbObj->EOF) {
             $list[] = $dbObj->GetValue('IdNode');
@@ -2447,9 +2399,7 @@ class Node extends NodesOrm
     }
 
     /**
-     *
-     * @param
-     *            $depth
+     * @param $depth
      * @param int $node_id
      * @return array
      */
@@ -2464,58 +2414,48 @@ class Node extends NodesOrm
             $list[] = $dbObj->getValue('IdChild');
             $dbObj->Next();
         }
-
         return $list;
     }
 
     /**
      * JAP 20040617, GetSections_ximTREE
-     */
-    /**
      *
-     * @param
-     *            $langID
-     * @param
-     *            $top
-     * @param
-     *            $bottom
+     * @param $langID
+     * @param $top
+     * @param $bottom
      * @return string
      */
     function GetSections_ximTREE($langID, $top, $bottom)
     {
-        // getting the nodetypes to select
+        // Getting the nodetypes to select
         $auxType = new NodeType();
         $auxType->SetByName("Section");
         $sectionTypeId = $auxType->get('IdNodeType');
-
-        $auxType = new NodeType();
+        // $auxType = new NodeType();
         $auxType->SetByName("Server");
         $serverTypeId = $auxType->get('IdNodeType');
 
-        // list of nodes of type 'section' until the server (inclusive)
+        // List of nodes of type 'section' until the server (inclusive)
         $sectionList = array();
 
-        // surfing the node tree, looking for the section which contain the current node
+        // Surfing the node tree, looking for the section which contain the current node
         $parentid = $this->GetSection();
-
         $profundidad = 0;
-
         while ($parentid) {
             $node = new Node($parentid);
             $nodetype = $node->get('IdNodeType');
-
             array_push($sectionList, $node->get('IdNode'));
 
-            // seguimos subiendo en el árbol
+            // Seguimos subiendo en el árbol
             if ($nodetype == $serverTypeId) {
-                $parentid = null; // we are in the server, exiting
+                $parentid = null;   // We are in the server, exiting
             } else {
-                $parentid = $node->GetParent(); // take the parent, it will include the server
+                $parentid = $node->GetParent(); // Take the parent, it will include the server
             }
             $profundidad++;
         }
 
-        // re-ordering the list to start from the tree top
+        // Re-ordering the list to start from the tree top
         $sectionList = array_reverse($sectionList);
 
         /*
@@ -2525,51 +2465,41 @@ class Node extends NodesOrm
          * ...
          */
 
-        // surfing through sections building the exchange XML
+        // Surfing through sections building the exchange XML
         $cad = "<ximTREE ximver='2.0' top='$top' bottom='$bottom'>";
-
         $startlevel = $profundidad - $top - 1; // start section
-        if ($startlevel < 0)
+        if ($startlevel < 0) {
             $startlevel = 0;
-
-        $endlevel = $profundidad + $bottom; // end section
-
-        if ($startlevel <= count($sectionList))
+        }
+        $endlevel = $profundidad + $bottom; // End section
+        if ($startlevel <= count($sectionList)) {
             $section = $sectionList[$startlevel];
-        else
+        } else {
             $section = null;
-
+        }
         $level = $startlevel + 1;
-
         $branch = null;
-        if ($level == count($sectionList))
+        if ($level == count($sectionList)) {
             $branch = 1;
-
+        }
+        
         // DEBUG
         // echo "SELECCIONADA SECCION $section PARA PROCESADO con TOP:$top y BOTTOM:$bottom START:$level END:$endlevel ...";
-
-        if ($section && $level <= $endlevel)
+        if ($section && $level <= $endlevel) {
             $cad .= $this->expandChildren_ximTREE($section, $sectionTypeId, $level, $langID, $sectionList, $endlevel, $branch);
-
+        }
         $cad = "$cad</ximTREE>";
         return $cad;
     }
 
     /**
-     *
-     * @param
-     *            $nodeID
-     * @param
-     *            $sectionTypeId
-     * @param
-     *            $level
-     * @param
-     *            $langID
-     * @param
-     *            $sectionList
-     * @param
-     *            $endlevel
-     * @param null $branch
+     * @param $nodeID
+     * @param $sectionTypeId
+     * @param $level
+     * @param $langID
+     * @param $sectionList
+     * @param $endlevel
+     * @param $branch
      * @return string
      */
     function expandChildren_ximTREE($nodeID, $sectionTypeId, $level, $langID, $sectionList, $endlevel, $branch = null)
@@ -2577,34 +2507,32 @@ class Node extends NodesOrm
         $node = new Node($nodeID);
         $nodoseleccionado = $sectionList[$level];
         $children = $node->GetChildren($sectionTypeId);
-
-        $cad2 = ""; // opening tag for children family "<ximCHILDREN>"
-
+        $cad2 = ""; // Opening tag for children family "<ximCHILDREN>"
         foreach ($children as $child) {
             if ($child and $level < $endlevel) {
                 $childnodeid = new Node($child);
                 $childname = $childnodeid->get('Name');
                 $childnamelang = $childnodeid->GetAliasForLangWithDefault($langID);
-
-                if ($child == $nodoseleccionado)
+                if ($child == $nodoseleccionado) {
                     $childseleccionado = 1;
-                else
+                } else {
                     $childseleccionado = 0;
-
+                }
                 $original_level = count($sectionList) - 1;
                 $distance = $level - $original_level;
-
                 $relationship = "relative";
-                if ($childseleccionado and $distance < 0)
+                if ($childseleccionado and $distance < 0) {
                     $relationship = "ascendant";
+                }
                 if ($childseleccionado and $distance == 0) {
                     $relationship = "me";
                     $branch = 1;
                 }
-                if ($branch and $distance > 0)
+                if ($branch and $distance > 0) {
                     $relationship = "descendant";
-
-                $cad2 .= "<ximNODE sectionid='$child' level='$level' distance='$distance' relationship='$relationship' onpath='$childseleccionado' type='section' name='$childname' langname='$childnamelang' langid='$langID'>";
+                }
+                $cad2 .= "<ximNODE sectionid='$child' level='$level' distance='$distance' relationship='$relationship' " . 
+                    "onpath='$childseleccionado' type='section' name='$childname' langname='$childnamelang' langid='$langID'>";
                 $cad2 .= $node->expandChildren_ximTREE($child, $sectionTypeId, $level + 1, $langID, $sectionList, $endlevel, $branch);
                 $cad2 .= "</ximNODE>";
             }
@@ -2617,10 +2545,10 @@ class Node extends NodesOrm
      * Updating the table FastTraverse
      * The parameter delete indicates if we want or not delete the node before
      *
-     * @param boolean $delete
-     * @return boolean
+     * @param bool $delete
+     * @return bool
      */
-    function UpdateFastTraverse($delete = true)
+    function updateFastTraverse(bool $delete = true) : bool
     {
         $this->ClearError();
         if ($this->get('IdNode') > 0) {
@@ -2638,11 +2566,9 @@ class Node extends NodesOrm
             do {
                 $sql = sprintf('INSERT INTO FastTraverse (IdNode, IdChild, Depth) VALUES (%d, %d, %d)', $parent, $this->get('IdNode'), $level);
                 $dbObj->Execute($sql);
-                // unset($dbObj);
                 $level++;
                 $node = new Node($parent);
                 $parent = $node->get('IdParent');
-                // unset($node);
             } while ($parent);
         } else {
             $this->SetError(1);
@@ -2652,7 +2578,6 @@ class Node extends NodesOrm
     }
 
     /**
-     *
      * @return array
      */
     function loadData($advanced = false)
@@ -2667,7 +2592,6 @@ class Node extends NodesOrm
         $ret['atime'] = $this->get('ModificationDate');
         $ret['desc'] = $this->get('Description');
         $ret['path'] = $this->getPath($advanced);
-
         $ret['typename'] = $this->nodeType->get('Name');
         $ret['class'] = $this->nodeType->get('Class');
         $ret['icon'] = $this->nodeType->get('Icon');
@@ -2677,7 +2601,6 @@ class Node extends NodesOrm
         $ret['isfs'] = $this->nodeType->get('HasFSEntity');
         $ret['issection'] = $this->nodeType->get('IsSection');
         $ret['isxml'] = $this->nodeType->get('IsStructuredDocument');
-
         $version = $this->GetLastVersion();
         if (!empty($version)) {
             $ret['version'] = $version["Version"];
@@ -2687,12 +2610,10 @@ class Node extends NodesOrm
             $ret['date'] = date('d/m/Y H:i', $version["Date"]);
             $ret['lastusername'] = $version["UserName"];
         }
-
         return $ret;
     }
 
     /**
-     *
      * @return array
      */
     function DatosNodo()
@@ -2702,12 +2623,9 @@ class Node extends NodesOrm
         $list['NodeName'] = $this->get('Name');
         $list['NodeType'] = $this->get('IdNodeType');
         $list['State'] = $this->get('IdState');
-
         return $list;
     }
 
-    /**
-     */
     function ClearError()
     {
         $this->numErr = null;
@@ -2715,9 +2633,7 @@ class Node extends NodesOrm
     }
 
     /**
-     *
-     * @param
-     *            $code
+     * @param $code
      */
     function SetError($code)
     {
@@ -2726,9 +2642,7 @@ class Node extends NodesOrm
     }
 
     /**
-     *
      * @return mixed
-     *
      */
     function HasError()
     {
@@ -2736,13 +2650,10 @@ class Node extends NodesOrm
     }
 
     /**
-     * Returns this node xml interpretation and its descendents.
-     */
-    /**
+     * Returns this node xml interpretation and its descendents
      *
      * @param int $depth
-     * @param
-     *            $files
+     * @param $files
      * @param null $recurrence
      * @return string
      */
@@ -2755,11 +2666,9 @@ class Node extends NodesOrm
             Logger::warning(sprintf(_("It is being tried to load the unexistent node %s"), $this->get('IdNode')));
             return false;
         }
-
         if (!is_array($files)) {
             $files = array();
         }
-
         $depth++;
         $indexTabs = str_repeat("\t", $depth);
         if ($this->get('IdState') > 0) {
@@ -2769,37 +2678,31 @@ class Node extends NodesOrm
             $statusName = $dbObj->GetValue('statusName');
             unset($dbObj);
         }
-
         $idNode = $this->get('IdNode');
         $nodeTypeName = $this->nodeType->get('Name');
         $nodeName = utf8_encode($this->get('Name'));
         $nodeParent = $this->get('IdParent');
         $nodeTypeClass = $this->nodeType->get('Class');
         $sharedWorkflow = $this->get('SharedWorkflow');
-
         $tail = '';
         if (!empty($sharedWorkflow)) {
             $tail .= sprintf(' SharedWorkflow="%s"', $sharedWorkflow);
         }
-
         $tail .= $this->class->getXmlTail();
-
         if (!empty($statusName)) {
             $tail .= sprintf(' state="%s"', utf8_encode($statusName));
         }
 
         // Getting node Properties
-
         $nodeProperty = new \Ximdex\Models\NodeProperty();
         $result = $nodeProperty->getPropertiesByNode($this->get('IdNode'));
-
         if (!is_null($result)) {
             foreach ($result as $resultData) {
                 $tail .= sprintf(' %s="%s"', $resultData['Property'], $resultData['Value']);
             }
         }
-
-        $xmlHeader = sprintf('<%s id="%d" name="%s" class="%s" nodetype="%d" parentid="%d"%s>', $nodeTypeName, $idNode, $nodeName, $nodeTypeClass, $this->nodeType->get('IdNodeType'), $nodeParent, $tail) . "\n";
+        $xmlHeader = sprintf('<%s id="%d" name="%s" class="%s" nodetype="%d" parentid="%d"%s>'
+            , $nodeTypeName, $idNode, $nodeName, $nodeTypeClass, $this->nodeType->get('IdNodeType'), $nodeParent, $tail) . "\n";
         if ($STOP_COUNT == COUNT) {
             $STOP_COUNT = NO_COUNT;
         } else {
@@ -2816,7 +2719,6 @@ class Node extends NodesOrm
          * This block of code makes if a xmlcontainer has not associated a visualtemplate,
          * it looks automatically if some child has associated a visualtemplate and associate it to the container
          */
-
         if (($this->nodeType->get('Class') == 'Xmlcontainernode') && (empty($idTemplate))) {
             $childrens = $this->GetChildren();
             if (!empty($childrens)) {
@@ -2824,16 +2726,17 @@ class Node extends NodesOrm
                 while (list (, $idChildrenNode) = each($childrens)) {
                     $children = new Node($idChildrenNode);
                     if (!($children->get('IdNode') > 0)) {
-                        Logger::warning(sprintf(_("It is being tried to load the node %s from the unexistent node %s"), $children->get('IdNode'), $this->get('IdNode')));
+                        Logger::warning(sprintf(_("It is being tried to load the node %s from the unexistent node %s")
+                            , $children->get('IdNode'), $this->get('IdNode')));
                         continue;
                     }
-
                     if ($children->nodeType->GetIsStructuredDocument()) {
                         $structuredDocument = new StructuredDocument($children->GetID());
                         $idTemplate = $structuredDocument->GetDocumentType();
                         $node = new Node($idTemplate);
                         if (!($node->get('IdNode') > 0)) {
-                            Logger::warning(sprintf(_("It is being tried to load the node %s from the unexistent node %s"), $node->get('IdNode'), $this->get('IdNode')));
+                            Logger::warning(sprintf(_("It is being tried to load the node %s from the unexistent node %s")
+                                , $node->get('IdNode'), $this->get('IdNode')));
                             continue;
                         }
                         if ($STOP_COUNT == COUNT) {
@@ -2853,7 +2756,6 @@ class Node extends NodesOrm
                 }
             }
         }
-
         if ($this->nodeType->get('IsStructuredDocument')) {
             $structuredDocument = new StructuredDocument($this->get('IdNode'));
             $idLanguage = $structuredDocument->GetLanguage();
@@ -2865,8 +2767,6 @@ class Node extends NodesOrm
                     $STOP_COUNT = NO_COUNT_NO_RETURN;
                 }
                 $xmlBody .= $node->toXml($depth, $files, $recurrence);
-                unset($node);
-
                 $idTemplate = $structuredDocument->GetDocumentType();
                 $node = new Node($idTemplate);
                 $xmlBody .= $node->ToXml($depth, $files, $recurrence);
@@ -2876,14 +2776,11 @@ class Node extends NodesOrm
                     $STOP_COUNT = NO_COUNT;
                 }
             }
-            unset($node);
         }
-
         $xmlFooter = sprintf('</%s>', $nodeTypeName) . "\n";
         if (!$STOP_COUNT && defined('COMMAND_MODE_XIMIO')) {
             global $PROCESSED_NODES, $LAST_REPORT, $TOTAL_NODES;
             $PROCESSED_NODES++;
-
             $processedNodes = $TOTAL_NODES > 0 ? (int)(($PROCESSED_NODES * 100) / $TOTAL_NODES) : 0;
             if ($processedNodes > $LAST_REPORT) {
                 echo sprintf(_("It has been processed a %s%% of the nodes"), $processedNodes);
@@ -2893,7 +2790,6 @@ class Node extends NodesOrm
                 $LAST_REPORT = $processedNodes;
             }
         }
-
         unset($nodeTypeName, $idNode, $nodeName, $nodeTypeClass, $statusName, $sharedWorkflow, $tail);
 
         // If a recursive importation was applied, here is where recurrence is performed
@@ -2904,7 +2800,8 @@ class Node extends NodesOrm
                 while (list (, $idChildren) = each($childrens)) {
                     $childrenNode = new Node($idChildren);
                     if (!($childrenNode->get('IdNode') > 0)) {
-                        Logger::warning(sprintf(_("It is being tried to load the node %s from the unexistent node %s"), $childrenNode->get('IdNode'), $this->get('IdNode')));
+                        Logger::warning(sprintf(_("It is being tried to load the node %s from the unexistent node %s")
+                            , $childrenNode->get('IdNode'), $this->get('IdNode')));
                         continue;
                     }
                     $xmlBody .= $childrenNode->toXml($depth, $files, $recurrence);
@@ -2919,8 +2816,7 @@ class Node extends NodesOrm
      * Function which determines if the name $name is valid for the nodetype $nodeTypeID,
      * nodetype is optional, if it is not passed, it is loaded from current node
      *
-     * @param
-     *            $name
+     * @param $name
      * @param int $idNodeType
      * @return bool
      */
@@ -2935,14 +2831,17 @@ class Node extends NodesOrm
         }
         $nodeType = new NodeType($idNodeType);
         $nodeTypeName = $nodeType->get('Name');
-        // the pattern and the string must be in the same encode
+        
+        // The pattern and the string must be in the same encode
         $pattern1 = Base::recodeSrc("/^[A-Za-z0-9\_\-\.\s]+$/", XML::UTF8);
         $pattern2 = Base::recodeSrc("/^[A-Za-z0-9\_\-\.\s\@\:\/\?\+\=\#\%\*\,]+$/", XML::UTF8);
         $pattern3 = Base::recodeSrc("/^[A-Za-z0-9\_\-\.]+$/", XML::UTF8);
         $pattern4 = Base::recodeSrc("/^[A-Za-z0-9\_\-\.\@]+$/", XML::UTF8);
         $name = Base::recodeSrc($name, XML::UTF8);
         unset($nodeType);
-        if (!strcasecmp($nodeTypeName, 'Action') || !strcasecmp($nodeTypeName, 'Group') || !strcasecmp($nodeTypeName, 'Language') || !strcasecmp($nodeTypeName, 'LinkFolder') || !strcasecmp($nodeTypeName, 'LinkManager') || !strcasecmp($nodeTypeName, 'Role') || !strcasecmp($nodeTypeName, 'WorkflowState')) {
+        if (!strcasecmp($nodeTypeName, 'Action') || !strcasecmp($nodeTypeName, 'Group') || !strcasecmp($nodeTypeName, 'Language') 
+            || !strcasecmp($nodeTypeName, 'LinkFolder') || !strcasecmp($nodeTypeName, 'LinkManager') || !strcasecmp($nodeTypeName, 'Role') 
+            || !strcasecmp($nodeTypeName, 'WorkflowState')) {
             return (preg_match($pattern1, $name) > 0);
         } elseif (!strcasecmp($nodeTypeName, 'Link')) {
             return (preg_match($pattern2, $name) > 0);
@@ -2954,9 +2853,7 @@ class Node extends NodesOrm
     }
 
     /**
-     *
-     * @param
-     *            $idNodeType
+     * @param $idNodeType
      * @param null $parent
      * @param bool $checkAmount
      * @return bool
@@ -2971,37 +2868,32 @@ class Node extends NodesOrm
             $parent = $this->get('IdParent');
         }
         $parentNode = new Node($parent);
-
         if (!$parentNode->GetID()) {
             Logger::error(_('Error checking if the node is allowed - parent does not exist [2]'));
             $this->messages->add(_('The specified parent node does not exist'), MSG_TYPE_ERROR);
             return false;
         }
-
         $nodeAllowedContents = $parentNode->GetCurrentAllowedChildren();
-
         if (!$nodeAllowedContents) {
             Logger::error(sprintf(_("The parent %s does not allow any nested node from him"), $parent));
             $this->messages->add(_('This node type is not allowed in this position'), MSG_TYPE_ERROR);
             return false;
         }
-
         $nodeType = new NodeType($idNodeType);
-
         if (!$nodeType->GetID()) {
             Logger::error(sprintf(_("The introduced nodetype %s does not exist"), $idNodeType));
             $this->messages->add(_('The specified nodetype does not exist'), MSG_TYPE_ERROR);
             return false;
         }
-
         if (!in_array($idNodeType, $nodeAllowedContents)) {
-            Logger::error("The nodetype $idNodeType is not allowed in the parent (idnode = " . $parent . ") - (idnodetype = " . $parentNode->get('IdNodeType') . ") which allowed nodetypes are: " . print_r($nodeAllowedContents, true));
+            Logger::error("The nodetype $idNodeType is not allowed in the parent (idnode = " . $parent . ") - (idnodetype = " 
+                . $parentNode->get('IdNodeType') . ") which allowed nodetypes are: " . print_r($nodeAllowedContents, true));
             $this->messages->add(_('This node type is not allowed in this position'), MSG_TYPE_ERROR);
             return false;
         }
-
         $dbObj = new \Ximdex\Runtime\Db();
-        $query = sprintf('SELECT Amount from NodeAllowedContents WHERE IdNodeType = %s AND NodeType = %s', $dbObj->sqlEscapeString($parentNode->nodeType->get('IdNodeType')), $dbObj->sqlEscapeString($idNodeType));
+        $query = sprintf('SELECT Amount from NodeAllowedContents WHERE IdNodeType = %s AND NodeType = %s', 
+            $dbObj->sqlEscapeString($parentNode->nodeType->get('IdNodeType')), $dbObj->sqlEscapeString($idNodeType));
         $dbObj->query($query);
         if (!$dbObj->numRows) {
             $this->messages->add(_('The node is not allowed inside this parent'), MSG_TYPE_ERROR);
@@ -3010,23 +2902,19 @@ class Node extends NodesOrm
         if (!$checkAmount) {
             return true;
         }
-
         $amount = $dbObj->getValue('Amount');
         if ($amount == 0) {
             return true;
         }
-
         $nodeTypesInParent = count($parentNode->GetChildren($idNodeType));
         if ($amount > $nodeTypesInParent) {
             return true;
         }
-
         $this->messages->add(_('No more nodes can be created in this folder type'), MSG_TYPE_ERROR);
         return false;
     }
 
     /**
-     *
      * @param int $detailLevel
      * @return string
      */
@@ -3034,29 +2922,23 @@ class Node extends NodesOrm
     {
         $details = sprintf("Nombre: %s\n", $this->get('Name'));
         $details .= sprintf("IdNodeType: %s\n", $this->get('IdNodeType'));
-
         if ($detailLevel <= DETAIL_LEVEL_LOW) {
             return $details;
         }
-
         $details .= sprintf("Description: %s\n", $this->get('Description'));
         if (is_object($this->class)) {
             $details .= sprintf("Type: %s\n", $this->nodeType->get('Name'));
         }
         $details .= sprintf("Path: %s\n", $this->GetPath());
         $details .= sprintf("Parent node: %s\n", $this->get('IdParent'));
-
         if ($detailLevel <= DETAIL_LEVEL_MEDIUM) {
             return $details;
         }
-
         return $details;
     }
 
     /**
-     *
-     * @param
-     *            $property
+     * @param $property
      * @param bool $withInheritance
      * @return bool|null|array
      */
@@ -3068,10 +2950,8 @@ class Node extends NodesOrm
         }
         if ($withInheritance) {
             $sql = "SELECT IdNode FROM FastTraverse WHERE IdChild = " . $this->get('IdNode') . " ORDER BY Depth ASC";
-
             $db = new \Ximdex\Runtime\Db();
             $db->Query($sql);
-
             while (!$db->EOF) {
 
                 // Getting property
@@ -3080,24 +2960,20 @@ class Node extends NodesOrm
                 }
                 $nodeProperty = new \Ximdex\Models\NodeProperty();
                 $propertyValue = $nodeProperty->getProperty($db->getValue('IdNode'), $property);
-
                 if (!is_null($propertyValue)) {
                     return $propertyValue;
                 }
-
                 $db->Next();
             }
         } else {
             $nodeProperty = new \Ximdex\Models\NodeProperty();
             return $nodeProperty->getProperty($this->get('IdNode'), $property);
         }
-
         Logger::warning(sprintf("Property %s not found for node %d", $property, $this->get('IdNode')));
         return null;
     }
 
     /**
-     *
      * @param bool $withInheritance
      * @return array|null
      */
@@ -3105,13 +2981,10 @@ class Node extends NodesOrm
     {
         $returnValue = array();
         $nodeProperty = new \Ximdex\Models\NodeProperty();
-
         if ($withInheritance) {
             $sql = "SELECT IdNode FROM FastTraverse WHERE IdChild = " . $this->get('IdNode') . " ORDER BY Depth ASC";
-
             $db = new \Ximdex\Runtime\Db();
             $db->Query($sql);
-
             while (!$db->EOF) {
 
                 // Getting property
@@ -3121,31 +2994,27 @@ class Node extends NodesOrm
                 $properties = $nodeProperty->find('Property, Value', 'IdNode = %s', array(
                     $db->getValue('IdNode')
                 ));
-
                 if (empty($properties)) {
                     $db->Next();
                     continue;
                 }
-
                 if (is_array($properties) && count($properties) > 0) {
                     foreach ($properties as $propertyInfo) {
-                        if (array_key_exists($propertyInfo['Property'], $returnValue))
+                        if (array_key_exists($propertyInfo['Property'], $returnValue)) {
                             continue;
+                        }
                         $returnValue[$propertyInfo['Property']][] = $propertyInfo['Value'];
                     }
                 }
-
                 $db->Next();
             }
         } else {
-
             $properties = $nodeProperty->find('Property, Value', 'IdNode = %s', array(
                 $this->get('IdNode')
             ));
             if (empty($properties)) {
                 return NULL;
             }
-
             foreach ($properties as $propertyInfo) {
                 $returnValue[$propertyInfo['Property']][] = $propertyInfo['Value'];
             }
@@ -3157,17 +3026,13 @@ class Node extends NodesOrm
                 $propertyInfo[$key] = $propertyInfo[0];
             }
         }
-
         return $returnValue;
     }
 
     /**
      * Returna boolean value for a property with 'true' or 'false'
-     */
-    /**
      *
-     * @param
-     *            $property
+     * @param $property
      * @param bool $withInheritance
      * @return bool
      */
@@ -3183,33 +3048,25 @@ class Node extends NodesOrm
     }
 
     /**
-     *
-     * @param
-     *            $property
-     * @param
-     *            $value
+     * @param $property
+     * @param $value
      */
     function setSingleProperty($property, $value)
     {
         $nodeProperty = new \Ximdex\Models\NodeProperty();
-
         $properties = $nodeProperty->find('IdNodeProperty', 'IdNode = %s AND Property = %s AND Value = %s', array(
             $this->get('IdNode'),
             $property,
             $value
         ));
         if (empty($properties)) {
-            /* $propertyValue = */
             $nodeProperty->create($this->get('IdNode'), $property, $value);
         }
     }
 
     /**
-     *
-     * @param
-     *            $property
-     * @param
-     *            $values
+     * @param $property
+     * @param $values
      */
     function setProperty($property, $values)
     {
@@ -3222,18 +3079,14 @@ class Node extends NodesOrm
         $nodeProperty->deleteByNodeProperty($this->get('IdNode'), $property);
 
         // Adding new values
-
         $n = count($values);
-
         for ($i = 0; $i < $n; $i++) {
             $this->setSingleProperty($property, $values[$i]);
         }
     }
 
     /**
-     *
-     * @param
-     *            $property
+     * @param $property
      * @return bool|true
      */
     function deleteProperty($property)
@@ -3247,11 +3100,8 @@ class Node extends NodesOrm
     }
 
     /**
-     *
-     * @param
-     *            $property
-     * @param
-     *            $value
+     * @param $property
+     * @param $value
      * @return bool
      */
     function deletePropertyValue($property, $value)
@@ -3260,15 +3110,12 @@ class Node extends NodesOrm
             $this->messages->add(_('The node over which property want to be deleted does not exist ') . $property, MSG_TYPE_WARNING);
             return false;
         }
-
         $nodeProperty = new \Ximdex\Models\NodeProperty();
         $properties = $nodeProperty->find('IdNodeProperty', 'IdNode = %s AND Property = %s AND Value = %s', array(
             $this->get('IdNode'),
             $property,
             $value
         ), MONO);
-
-        // debug::log($properties);
         foreach ($properties as $idNodeProperty) {
             $nodeProperty = new \Ximdex\Models\NodeProperty($idNodeProperty);
             $nodeProperty->delete();
@@ -3277,8 +3124,8 @@ class Node extends NodesOrm
     }
 
     /**
-     * This function overwrite the workflow_forward function.
-     * The action function is then deprecated.
+     * This function overwrite the workflow_forward function
+     * The action function is then deprecated
      *
      * @param int $idUser
      * @param int $idGroup
@@ -3289,26 +3136,19 @@ class Node extends NodesOrm
         if (!($this->get('IdNode') > 0)) {
             return NULL;
         }
-
         if (!($this->get('IdState') > 0)) {
             return NULL;
         }
-
         $user = new User($idUser);
         $idRole = $user->GetRoleOnNode($this->get('IdNode'), $idGroup);
-
         $role = new Role($idRole);
         $allowedStates = $role->GetAllowedStates();
-
         $idNextState = $this->get('IdState');
         if (is_array($allowedStates) && !empty($allowedStates)) {
-
             $workflow = new WorkFlow($this->get('IdNode'), $idNextState);
             $idNextState = null;
             do {
-
                 $idNextState = $workflow->GetNextState();
-
                 if (empty($idNextState)) {
                     return NULL;
                 } else if (in_array($idNextState, $allowedStates)) {
@@ -3317,14 +3157,11 @@ class Node extends NodesOrm
                 $workflow = new WorkFlow($this->get('IdNode'), $idNextState);
             } while (!$workflow->IsFinalState());
         }
-
         return NULL;
     }
 
     /**
      * Update node childs FastTraverse info
-     */
-    /**
      */
     function UpdateChildren()
     {
@@ -3332,29 +3169,22 @@ class Node extends NodesOrm
         if (!empty($arr_children)) {
             foreach ($arr_children as $child) {
                 $node_child = new Node($child);
-
-                $node_child->UpdateFastTraverse();
+                $node_child->updateFastTraverse();
                 $node_child->RenderizeNode();
-
                 $node_child->UpdateChildren();
             }
         }
     }
 
     /**
-     * *
-     *
-     * @param
-     *            $idPipeline
+     * @param $idPipeline
      */
     function updateToNewPipeline($idPipeline)
     {
         unset($idPipeline);
-
         $db = new \Ximdex\Runtime\Db();
         $query = sprintf("SELECT IdChild FROM FastTraverse WHERE IdNode = %d", $this->get('IdNode'));
         $db->Query($query);
-
         while (!$db->EOF) {
             $idNode = $db->GetValue('IdChild');
             $node = new Node($idNode);
@@ -3368,7 +3198,6 @@ class Node extends NodesOrm
     }
 
     /**
-     *
      * @return array
      */
     function GetLastVersion()
@@ -3380,13 +3209,13 @@ class Node extends NodesOrm
         $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->Query($sql);
         if ($dbObj->numRows > 0) {
-            if ($dbObj->GetValue("Version") == 0 && $dbObj->GetValue("SubVersion") == 0)
+            if ($dbObj->GetValue("Version") == 0 && $dbObj->GetValue("SubVersion") == 0) {
                 $state = 0;
-            elseif ($dbObj->GetValue("Version") != 0 && $dbObj->GetValue("SubVersion") == 0)
+            } elseif ($dbObj->GetValue("Version") != 0 && $dbObj->GetValue("SubVersion") == 0) {
                 $state = 1;
-            else
+            } else {
                 $state = 2;
-
+            }
             return array(
                 "IdVersion" => $dbObj->GetValue("IdVersion"),
                 "Version" => $dbObj->GetValue("Version"),
@@ -3406,7 +3235,7 @@ class Node extends NodesOrm
     /**
      * Return an array with all the layout schemas for the current node
      *
-     * @return boolean|array
+     * @return bool|array
      */
     public function getLayoutSchemas()
     {
@@ -3457,9 +3286,7 @@ class Node extends NodesOrm
     }
 
     /**
-     *
-     * @param
-     *            $type
+     * @param $type
      * @param int $schemaTypeID
      * @return NULL|array|bool
      */
@@ -3511,33 +3338,27 @@ class Node extends NodesOrm
     }
 
     /**
-     *
-     * @param
-     *            $destNodeId
+     * @param $destNodeId
      * @return array
      */
     function checkTarget($destNodeId)
     {
-        if (!$destNodeId)
+        if (!$destNodeId) {
             return null;
-
-        $changeName = 0; // assuming by default they're not the same
+        }
+        $changeName = 0;    // Assuming by default they're not the same
         $existing = 0;
         $amount = 0;
-        $insert = 0; // by default, dont insert.
-
-        // $actionNodeId = $this->GetID();
+        $insert = 0;    // By default, dont insert.
         $actionNodeType = $this->Get('IdNodeType');
-
         $destNode = new Node($destNodeId);
         $destNodeType = $destNode->Get('IdNodeType');
 
-        // parents data.
-        $parent = new Node($this->GetParent()); // parent node
-        // $parentname = $parent->Get('Name');
+        // Parents data
+        $parent = new Node($this->GetParent()); // Parent node
 
-        // query to NodeAllowedContents
-        $sql1 = "SELECT Amount FROM NodeAllowedContents WHERE IdNodeType=$destNodeType and NodeType=$actionNodeType";
+        // Query to NodeAllowedContents
+        $sql1 = "SELECT Amount FROM NodeAllowedContents WHERE IdNodeType = $destNodeType and NodeType = $actionNodeType";
         $db = new \Ximdex\Runtime\Db();
         $db->Query($sql1);
         while (!$db->EOF) {
@@ -3546,9 +3367,11 @@ class Node extends NodesOrm
         }
         if ($amount == NULL) {
             $amount = -1;
-        } // If there is not a relation allowed, abort the copy.
-        // query to FastTraverse
-        $sql2 = "SELECT count(Depth) FROM FastTraverse WHERE FastTraverse.IdNode=$destNodeId and IdChild in (SELECT IdNode FROM Nodes WHERE IdNodeType=$actionNodeType) and Depth=1";
+        } // If there is not a relation allowed, abort the copy
+        
+        // Query to FastTraverse
+        $sql2 = "SELECT count(Depth) FROM FastTraverse WHERE FastTraverse.IdNode = $destNodeId " . 
+            "and IdChild in (SELECT IdNode FROM Nodes WHERE IdNodeType = $actionNodeType) and Depth = 1";
         $db->Query($sql2);
         while (!$db->EOF) {
             $existing = $db->getValue('count(Depth)');
@@ -3556,27 +3379,27 @@ class Node extends NodesOrm
         }
         if ($existing == NULL) {
             $existing = 0;
-        } // dont exist a relation yet
-        // first check, insert allowed?
+        } // Dont exist a relation yet
+        
+        // First check, insert allowed?
         if ($amount == 0) {
             $insert = 1;
-        } // destination node allows an infinite number of copies.
+        } // Destination node allows an infinite number of copies
         else if ($amount == -1) {
             $insert = 0;
-        } // destination node does not allow this kind of content.
-        else { // limited capacity.
+        } // Destination node does not allow this kind of content
+        else { // Limited capacity
             if ($amount > $existing) {
                 $insert = 1;
-            } // there is place for another copy.
+            } // There is place for another copy
         }
 
-        // only if we can insert, we must check if the copy is going to be at the same level
+        // Only if we can insert, we must check if the copy is going to be at the same level
         if ($insert == 1) {
             if ($destNodeId == $parent->Get('IdNode')) {
                 $changeName = 1;
-            } // coinciden. Copiamos el nodo al mismo nivel y debemos renombrarlo.
+            } // Coinciden. Copiamos el nodo al mismo nivel y debemos renombrarlo
         }
-        // $data=array('NodoCopia Id'=>$actionNodeId,'NodoCopia Tipo'=>$actionNodeType,'NodoDest Id'=>$destNodeId,'NodoDest Tipo'=>$destNodeType,'changeName'=>$changeName,'existing'=>$existing,'amount'=>$amount,'insert'=>$insert,'sentencia'=>$sql2);
         return array(
             'NodoDest Id' => $destNodeId,
             'NodoDest Tipo' => $destNodeType,
@@ -3604,7 +3427,7 @@ class Node extends NodesOrm
      * Get the mime type of the node content
      *
      * @param Node $node
-     * @return boolean|string
+     * @return bool|string
      */
     public function getMimeType(string $content = null)
     {
@@ -3729,7 +3552,8 @@ class Node extends NodesOrm
             // Checks if node is a structured document
             $structuredDocument = new StructuredDocument($this->GetID());
             if (!$structuredDocument->get('IdDoc')) {
-                $this->messages->add(_('It is not possible to show preview.') . _(' Provided node is not a structured document.'), MSG_TYPE_NOTICE);
+                $this->messages->add(_('It is not possible to show preview.') . _(' Provided node is not a structured document.')
+                    , MSG_TYPE_NOTICE);
                 return false;
             }
 
@@ -3761,7 +3585,7 @@ class Node extends NodesOrm
             $nodeName = $this->get('Name');
             $depth = $this->GetPublishedDepth();
 
-            // Initializes variables:
+            // Initializes variables
             $args = array();
             $args['NODEID'] = $this->GetID();
             $args['MODE'] = $mode == 'dinamic' ? 'dinamic' : 'static';

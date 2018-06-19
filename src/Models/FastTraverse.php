@@ -142,6 +142,8 @@ class FastTraverse extends FastTraverseOrm
             }
             if (! $value) {
                 $value = 'ft.IdNode';
+            } elseif ($value == 'IdNodeType') {
+                $value = 'node.IdNodeType';
             }
             $sql = 'select ' . $value . ' as _value, ' . $index . ' as _index from FastTraverse ft';
             $sql .= ' inner join Nodes node on (node.IdNode = ft.IdNode)';
