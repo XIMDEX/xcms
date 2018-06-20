@@ -52,6 +52,7 @@ class BatchManager
     public $idBatchUp;
     public $idBatchDown;
     public $syncStatObj;
+    private $channels;
 
     /**
      * Public constructor
@@ -351,7 +352,10 @@ class BatchManager
                 $framesBatch = array();
 
                 // Creating channelFrames
-                $channel = new Channel($channelId);
+                if (!isset($this->channels[$channelId])) {
+                    $this->channels[$channelId] = new Channel($channelId);
+                }
+                $channel = $this->channels[$channelId];
                 $channelFrame = new ChannelFrame();
                 $channelFrameId = $channelFrame->create($channelId, $idNode);
                 if (is_null($channelFrameId)) {
@@ -376,23 +380,42 @@ class BatchManager
                     }
                     $serverChannels = $server->getChannels();
                     
-                    // Load the channels for the node to be publish
+                    // Load the inherited channels for the node to be publish
                     $properties = InheritedPropertiesManager::getValues($idNode, true);
                     if (!isset($properties['Channel'])) {
                         continue;
                     }
-                    $ok = false;
-                    foreach ($properties['Channel'] as $key => $prop) {
-                        if (isset($serverChannels[$key])) {
-                            $ok = true;
-                            break;
+                    
+                    // Check if inherited document channels are in any of server channels
+                    $serverHasChannel = false;
+                    foreach ($properties['Channel'] as $PropChannelId => $prop) {
+                        if (!isset($serverChannels[$PropChannelId])) {
+                            
+                            // Server channel not for this document
+                            continue;
                         }
+                        
+                        // If this document is common type (channelId = NULL) and server channel is type INDEX, avoid it
+                        if ($channelId == 'NULL') {
+                            if (!isset($this->channels[$PropChannelId])) {
+                                $this->channels[$PropChannelId] = new Channel($PropChannelId);
+                            }
+                            if ($this->channels[$PropChannelId]->getRenderType() == Channel::RENDERTYPE_INDEX) {
+                                continue;
+                            }
+                        }
+                        
+                        // Server has this document inherited channel
+                        $serverHasChannel = true;
+                        break;
                     }
-                    if (!$ok) {
+                    if (!$serverHasChannel) {
+                        
+                        // This server does not support this channel, server frame will not be created
                         continue;
                     }
                     $generatedNodes = array();
-                    if ($nodeServer->class->HasChannel($physicalServer, $channelId) || $channelId == 'NULL') {
+                    if ($channelId == 'NULL' or $nodeServer->class->HasChannel($physicalServer, $channelId)) {
                         
                         // Creating serverFrames
                         // Generating cache (only if is structured document)

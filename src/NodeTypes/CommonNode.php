@@ -29,6 +29,7 @@ namespace Ximdex\NodeTypes;
 
 use Ximdex\Properties\ChannelProperty;
 use Ximdex\Utils\FsUtils;
+use Ximdex\Models\Channel;
 
 /**
  * Class for NodeType common
@@ -36,9 +37,8 @@ use Ximdex\Utils\FsUtils;
 class CommonNode extends FileNode
 {
     /**
-     * Build a new common node file.
-     * Use parent CreateNode method and generate a new metadata document for the new common node created.
-     * @return boolean true.
+     * Build a new common node file
+     * Use parent CreateNode method and generate a new metadata document for the new common node created
      */
     public function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = 7, $sourcePath = "")
     {
@@ -48,7 +48,7 @@ class CommonNode extends FileNode
     /**
      * Return an array with all the channels ID for the current node
      * 
-     * @return array
+     * @return array|null
      */
     public function GetChannels() : ?array
     {
@@ -65,12 +65,26 @@ class CommonNode extends FileNode
         $channelProperty = new ChannelProperty($this->nodeID);
         $values = $channelProperty->getValues($this->nodeID, true);
         if ($values === false) {
+            
+            // Error
             return null;
         }
-        $res = [];
+        $channels = [];
         foreach ($values as $channel) {
-            $res[] = $channel['Id'];
+            $channel = new Channel($channel['Id']);
+            if (!$channel->GetID()) {
+                
+                // Error
+                return null;
+            }
+            
+            // Only channels with render type Index will be returned
+            if ($channel->getRenderType() == Channel::RENDERTYPE_INDEX) {
+                $channels[] = $channel->GetID();
+            } else {
+                $channels[] = 'NULL';
+            }
         }
-        return $res;
+        return $channels;
     }
 }
