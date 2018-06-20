@@ -64,12 +64,16 @@ class Action_manageproperties extends ActionAbstract
         
         // Get Values for all the dependencies
         if (in_array($node->GetNodeType(), [NodeTypeConstants::COMMON_ROOT_FOLDER, NodeTypeConstants::COMMON_FOLDER])) {
-            $propertiesToIgnore = [InheritableProperty::LANGUAGE];
+            
+            // Common folders only show channels properties
+            $propertiesToUse = [InheritableProperty::CHANNEL];
         }
         else {
-            $propertiesToIgnore = [];
+            
+            // Get all properties for this node
+            $propertiesToUse = null;
         }
-        $properties = InheritedPropertiesManager::getValues($nodeId, false, $propertiesToIgnore);
+        $properties = InheritedPropertiesManager::getValues($nodeId, false, $propertiesToUse);
         $values = array(
             'properties' => $properties,
             'go_method' => 'save_changes',

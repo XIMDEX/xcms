@@ -46,15 +46,15 @@ class InheritedPropertiesManager
 	 * 
 	 * @param $nodeId
 	 * @param bool $onlyInherited
-	 * @param array $propertiesToIgnore
+	 * @param array $propertiesToUse
 	 * @return array
 	 */
-	static public function getValues($nodeId, bool $onlyInherited = false, array $propertiesToIgnore = []) : array
+	static public function getValues($nodeId, bool $onlyInherited = false, array $propertiesToUse = null) : array
 	{
 		$factory = new \Ximdex\Utils\Factory(dirname(__FILE__), '');
 		$ret = array();
 		foreach (self::$properties as $prop) {
-		    if (in_array($prop, $propertiesToIgnore)) {
+		    if ($propertiesToUse and !in_array($prop, $propertiesToUse)) {
 		        continue;
 		    }
 		    $propManager = $factory->instantiate($prop . 'Property', $nodeId, '\Ximdex\Properties');
