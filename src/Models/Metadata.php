@@ -176,7 +176,7 @@ class Metadata extends GenericData
                         as defaultValue, Metadata.type as type  FROM RelMetadataGroupMetadata JOIN  Metadata ON 
                         RelMetadataGroupMetadata.idMetadata = Metadata.idMetadata  LEFT JOIN MetadataValue ON 
                         MetadataValue.idRelMetadataGroupMetadata = RelMetadataGroupMetadata.idRelMetadataGroupMetadata 
-                        WHERE (RelMetadataGroupMetadata.required = TRUE OR (MetadataValue.value <> '' and idNode = %s))",
+                        WHERE (RelMetadataGroupMetadata.required = TRUE OR MetadataValue.value <> '') and idNode = %s",
             $idNode);
 
         if (!is_null($idGroup)) {
