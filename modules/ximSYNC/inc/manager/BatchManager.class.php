@@ -542,8 +542,8 @@ class BatchManager
 			SUM(IF (ServerFrames.State IN ('" . ServerFrame::IN . "', '" . ServerFrame::CANCELLED . "', '" . ServerFrame::REMOVED . "', '" 
 			. ServerFrame::REPLACED . "', '" . ServerFrame::OUTDATED . "'), 1, 0)) AS Success, 
 			SUM(IF (ServerFrames.State IN ('Pumped'),1,0)) AS Pumpeds, 
-			COUNT(ServerFrames.IdSync) AS Total FROM ServerFrames, Batchs WHERE Batchs.State IN ('" . Batch::INTIME . "', 
-            '" . Batch::CLOSING . "') AND (Batchs.IdBatch = ServerFrames.IdBatchUp OR Batchs.IdBatch = ServerFrames.IdBatchDown) 
+			COUNT(ServerFrames.IdSync) AS Total FROM ServerFrames, Batchs WHERE Batchs.Type = '" . Batch::TYPE_UP . "' 
+            AND Batchs.State IN ('" . Batch::INTIME . "', '" . Batch::CLOSING . "') AND Batchs.IdBatch = ServerFrames.IdBatchUp 
             GROUP BY ServerFrames.IdBatchUp HAVING Total = Errors + Success + Pumpeds";
         if ($dbObj->Query($sql) === false) {
         	return false;
@@ -601,9 +601,9 @@ class BatchManager
                     Logger::info(sprintf("Batch %d type down without associated batch type up", $idBatch));
                     $sql = "SELECT SUM(IF (ServerFrames.State = '" . ServerFrame::DUE2OUTWITHERROR . "', 1, 0)) AS Errors, 
 						SUM(IF (ServerFrames.State IN ('" . ServerFrame::OUT . "', '" . ServerFrame::CANCELLED . "', 
-                        '" . ServerFrame::CANCELLED . "', '" . ServerFrame::REPLACED . "'), 1, 0)) AS Success, 
+                        '" . ServerFrame::REMOVED . "', '" . ServerFrame::REPLACED . "'), 1, 0)) AS Success, 
 						COUNT(ServerFrames.IdSync) AS Total FROM NodeFrames, ServerFrames WHERE 
-					    ServerFrames.IdNodeFrame = NodeFrames.IdNodeFrame and ServerFrames.IdBatchDown = $idBatch";
+						ServerFrames.IdNodeFrame = NodeFrames.IdNodeFrame and ServerFrames.IdBatchDown = $idBatch";
                     if ($dbObj->Query($sql) === false) {
                     	return false;
                     }

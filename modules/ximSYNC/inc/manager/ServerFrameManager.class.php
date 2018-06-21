@@ -126,7 +126,7 @@ class ServerFrameManager
                     __FILE__, __LINE__, "INFO", 8, _("Nothing to do with $serverFrameId starter $initialState"), true);
             }
         } elseif ($operation == 'Down') {
-            $states = array('Pending', 'Due2In', 'Due2In_');
+            $states = array('Pending', 'Due2In', 'Due2In_', ServerFrame::DUE2INWITHERROR);
             if (in_array($initialState, $states)) {
                 $finalState = 'Canceled';
                 $serverFrame->deleteSyncFile();

@@ -49,7 +49,9 @@ class ServerFrame extends ServerFrames_ORM
 {
     const PENDING = 'Pending';
     const DUE2IN = 'Due2In';
+    const DUE2IN_ = 'Due2In_';
     const DUE2OUT = 'Due2Out';
+    const DUE2OUT_ = 'Due2Out_';
     const PUMPED = 'Pumped';
     const OUT = 'Out';
     const CLOSING = 'Closing';
@@ -569,11 +571,11 @@ class ServerFrame extends ServerFrames_ORM
             . "AND sf.State IN ('" . ServerFrame::IN . "', 'Due2In_', 'Due2In', 'Due2Pumped', 'Pumped', 'Replaced', 'Removed') " 
             . "AND sf.IdServer IN (%s)", $now, $now, implode(', ', $physicalServers));
         $sql .= ' ORDER BY IdSync DESC LIMIT 1';
-        Logger::info("[GETCURRENT]: Getting current frame for node " . $nodeID);
+        Logger::debug("[GETCURRENT]: Getting current frame for node " . $nodeID);
         $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->Query($sql);
         $result = ($dbObj->EOF) ? 'IdSync: none' : 'IdSync: ' . $dbObj->GetValue("IdSync");
-        Logger::info("[GETCURRENT]: Result:  " . $result);
+        Logger::debug("[GETCURRENT]: Result:  " . $result);
         return ($dbObj->EOF) ? NULL : $dbObj->GetValue("IdSync");
     }
 
