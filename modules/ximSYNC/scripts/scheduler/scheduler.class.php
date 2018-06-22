@@ -168,12 +168,12 @@ class Scheduler
                     // ---------------------------------------------------------
                     // 1) Solving NodeFrames activity
                     // ---------------------------------------------------------
-                    $batchId = $batchProcess ['id'];
-                    $batchType = $batchProcess ['type'];
-                    $batchNodeGenerator = $batchProcess ['nodegenerator'];
-                    $minorCycle = $batchProcess ['minorcycle'];
-                    $majorCycle = $batchProcess ['majorcycle'];
-                    $totalServerFrames = $batchProcess ['totalserverframes'];
+                    $batchId = $batchProcess['id'];
+                    $batchType = $batchProcess['type'];
+                    $batchNodeGenerator = $batchProcess['nodegenerator'];
+                    $minorCycle = $batchProcess['minorcycle'];
+                    $majorCycle = $batchProcess['majorcycle'];
+                    $totalServerFrames = $batchProcess['totalserverframes'];
                     $msg = sprintf("Processing batch %s type %s", $batchId, $batchType) . ", true";
                     $syncStatObj->create(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "INFO", 8, $msg);
                     Logger::info($msg);

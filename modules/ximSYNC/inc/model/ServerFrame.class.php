@@ -32,6 +32,7 @@ use Ximdex\NodeTypes\NodeTypeConstants;
 use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
 use Ximdex\Utils\PipelineManager;
+use Ximdex\Runtime\Db;
 
 Ximdex\Modules\Manager::file('/inc/model/orm/ServerFrames_ORM.class.php', 'ximSYNC');
 Ximdex\Modules\Manager::file('/inc/model/ChannelFrame.class.php', 'ximSYNC');
@@ -70,6 +71,7 @@ class ServerFrame extends ServerFrames_ORM
     public $finalStatusLimbo;
     public $finalStatusFailed;
     public $syncStatObj;
+    private static $dbObj;
 
     public function __construct($id = 0)
     {
@@ -209,19 +211,21 @@ class ServerFrame extends ServerFrames_ORM
      */
     public function getServers($mode = "simple")
     {
-        $dbObj = new \Ximdex\Runtime\Db();
+        if (!self::$dbObj) {
+            self::$dbObj = new Db();
+        }
         $extraSql = ($mode == "simple") ? "" : ", Servers.Description, Servers.Url";
-        $dbObj->Query("SELECT DISTINCT(ServerFrames.IdServer)" . $extraSql . " FROM ServerFrames, Servers
+        self::$dbObj->Query("SELECT DISTINCT(ServerFrames.IdServer)" . $extraSql . " FROM ServerFrames, Servers
 				WHERE ServerFrames.IdServer = Servers.IdServer AND Servers.Enabled = 1");
         $servers = array();
-        while (! $dbObj->EOF) {
+        while (! self::$dbObj->EOF) {
             if ($mode == "simple") {
-                $servers[] = $dbObj->GetValue("IdServer");
+                $servers[] = self::$dbObj->GetValue("IdServer");
             } else {
-                $servers[$dbObj->GetValue("IdServer")]['Description'] = $dbObj->GetValue("Description");
-                $servers[$dbObj->GetValue("IdServer")]['Url'] = $dbObj->GetValue("Url");
+                $servers[self::$dbObj->GetValue("IdServer")]['Description'] = self::$dbObj->GetValue("Description");
+                $servers[self::$dbObj->GetValue("IdServer")]['Url'] = self::$dbObj->GetValue("Url");
             }
-            $dbObj->Next();
+            self::$dbObj->Next();
         }
         return $servers;
     }
@@ -235,13 +239,15 @@ class ServerFrame extends ServerFrames_ORM
      */
     public function getCurrentPublicatedFrame($nodeID, $serverID)
     {
-        $dbObj = new \Ximdex\Runtime\Db();
+        if (!self::$dbObj) {
+            self::$dbObj = new Db();
+        }
         $sql = "SELECT ServerFrames.IdSync FROM ServerFrames, NodeFrames WHERE ServerFrames.IdNodeFrame =
 			NodeFrames.IdNodeFrame AND NodeFrames.NodeId = $nodeID AND ServerFrames.IdServer = $serverID AND
 			(ServerFrames.State = '" . ServerFrame::IN . "' OR ServerFrames.State = 'Pumped')";
-        $dbObj->Query($sql);
-        if ($dbObj->numRows > 0) {
-            return $dbObj->GetValue("IdSync");
+        self::$dbObj->Query($sql);
+        if (self::$dbObj->numRows > 0) {
+            return self::$dbObj->GetValue("IdSync");
         }
         $this->ServerFrameToLog(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "ERROR", 8
             , "ERROR getting publicated serverFrame");
@@ -257,13 +263,15 @@ class ServerFrame extends ServerFrames_ORM
      */
     function getLastFrame($nodeID, $IdServer)
     {
-        $dbObj = new \Ximdex\Runtime\Db();
+        if (!self::$dbObj) {
+            self::$dbObj = new Db();
+        }
         if (! is_null($nodeID)) {
             $sql = "SELECT ServerFrames.IdSync FROM ServerFrames, NodeFrames WHERE
 					ServerFrames.IdNodeFrame = NodeFrames.IdNodeFrame AND NodeFrames.IdNode = $nodeID AND
 					ServerFrames.IdServer = $IdServer ORDER BY ServerFrames.DateUp DESC";
-            $dbObj->Query($sql);
-            return $dbObj->GetValue("IdSync");
+            self::$dbObj->Query($sql);
+            return self::$dbObj->GetValue("IdSync");
         }
         $this->ServerFrameToLog(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "ERROR", 8, "ERROR. Falta el NodeID");
     }
@@ -380,7 +388,8 @@ class ServerFrame extends ServerFrames_ORM
     public function deleteSyncFile()
     {
         if (! ($this->get('IdSync')) > 0) {
-            $this->ServerFrameToLog(null, null, null, $frameId, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "ERROR", 8, "Deleting Sync files");
+            $this->ServerFrameToLog(null, null, null, $frameId, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "ERROR", 8
+                , "Deleting Sync files");
             return false;
         }
         return FsUtils::delete(SERVERFRAMES_SYNC_PATH . '/' . $this->get('IdSync'));
@@ -398,13 +407,15 @@ class ServerFrame extends ServerFrames_ORM
      */
     public function getFramesOnBatch($batchId, $batchColumn, $mode = "simple", & $progress = array(), $limitCriteria = null)
     {
-        $dbObj = new \Ximdex\Runtime\Db();
+        if (!self::$dbObj) {
+            self::$dbObj = new Db();
+        }
         $sql = "SELECT ServerFrames.IdSync" . (($mode == 'simple') ? '' : ', ServerFrames.DateUp, ServerFrames.DateDown, ' 
             . 'ServerFrames.FileSize, ServerFrames.State, ServerFrames.FileName, ServerFrames.PumperId, ServerFrames.IdServer, '
             . 'ServerFrames.RemotePath') 
             . " FROM ServerFrames, Batchs "
             . "WHERE (ServerFrames.IdBatchUp = Batchs.IdBatch OR ServerFrames.IdBatchDown = Batchs.IdBatch) AND Batchs.$batchColumn = $batchId";
-        $dbObj->Query($sql);
+        self::$dbObj->Query($sql);
         $frames = array();
         $progress['total']['totalBatchSize'] = 0;
         $progress['total']['totalBatchSizeCompleted'] = 0;
@@ -418,23 +429,23 @@ class ServerFrame extends ServerFrames_ORM
         );
         $iCounter = 0;
         $pageCounter = 0;
-        while (! $dbObj->EOF) {
+        while (! self::$dbObj->EOF) {
             if ($mode == 'simple') {
-                $frames[] = $dbObj->GetValue("IdSync");
+                $frames[] = self::$dbObj->GetValue("IdSync");
             } else {
                 $iCounter ++;
-                $idSync = $dbObj->GetValue("IdSync");
-                $idServer = $dbObj->GetValue("IdServer");
-                $fileSize = round($dbObj->GetValue("FileSize") / 1024, 2);
+                $idSync = self::$dbObj->GetValue("IdSync");
+                $idServer = self::$dbObj->GetValue("IdServer");
+                $fileSize = round(self::$dbObj->GetValue("FileSize") / 1024, 2);
                 $serverIds[] = $idServer;
                 $pageCounter = ceil($iCounter / $limitCriteria);
-                $frames[$pageCounter][$idServer][$idSync]['DateUp'] = $dbObj->GetValue("DateUp");
-                $frames[$pageCounter][$idServer][$idSync]['DateDown'] = $dbObj->GetValue("DateDown");
-                $frames[$pageCounter][$idServer][$idSync]['State'] = $dbObj->GetValue("State");
-                $frames[$pageCounter][$idServer][$idSync]['FileName'] = $dbObj->GetValue("FileName");
-                $frames[$pageCounter][$idServer][$idSync]['PumperId'] = $dbObj->GetValue("PumperId");
+                $frames[$pageCounter][$idServer][$idSync]['DateUp'] = self::$dbObj->GetValue("DateUp");
+                $frames[$pageCounter][$idServer][$idSync]['DateDown'] = self::$dbObj->GetValue("DateDown");
+                $frames[$pageCounter][$idServer][$idSync]['State'] = self::$dbObj->GetValue("State");
+                $frames[$pageCounter][$idServer][$idSync]['FileName'] = self::$dbObj->GetValue("FileName");
+                $frames[$pageCounter][$idServer][$idSync]['PumperId'] = self::$dbObj->GetValue("PumperId");
                 $frames[$pageCounter][$idServer][$idSync]['FileSize'] = $fileSize;
-                $frames[$pageCounter][$idServer][$idSync]['RemotePath'] = $dbObj->GetValue("RemotePath");
+                $frames[$pageCounter][$idServer][$idSync]['RemotePath'] = self::$dbObj->GetValue("RemotePath");
                 if (! isset($progress[$idServer]['totalBatchSize'])) {
                     $progress[$idServer]['totalBatchSize'] = 0;
                 }
@@ -457,25 +468,27 @@ class ServerFrame extends ServerFrames_ORM
                     $progress[$idServer]['percentBatchCompleted'] = 0;
                 }
                 $progress['total']['totalBatchSize'] += $fileSize;
-                $progress['total']['totalBatchSizeCompleted'] += ($dbObj->GetValue("State") == ServerFrame::IN || $dbObj->GetValue("State") == 'Out' 
-                    || $dbObj->GetValue("State") == 'Removed' || $dbObj->GetValue("State") == 'Replaced' 
-                    || $dbObj->GetValue("State") == 'Pumped') ? $fileSize : 0;
-                $progress['total']['totalBatchCompleted'] += ($dbObj->GetValue("State") == ServerFrame::IN || $dbObj->GetValue("State") == 'Out' 
-                    || $dbObj->GetValue("State") == 'Removed' || $dbObj->GetValue("State") == 'Replaced' 
-                    || $dbObj->GetValue("State") == 'Pumped') ? 1 : 0;
+                $progress['total']['totalBatchSizeCompleted'] += (self::$dbObj->GetValue("State") == ServerFrame::IN 
+                    || self::$dbObj->GetValue("State") == 'Out' 
+                    || self::$dbObj->GetValue("State") == 'Removed' || self::$dbObj->GetValue("State") == 'Replaced' 
+                    || self::$dbObj->GetValue("State") == 'Pumped') ? $fileSize : 0;
+                $progress['total']['totalBatchCompleted'] += (self::$dbObj->GetValue("State") == ServerFrame::IN 
+                    || self::$dbObj->GetValue("State") == 'Out' 
+                    || self::$dbObj->GetValue("State") == 'Removed' || self::$dbObj->GetValue("State") == 'Replaced' 
+                    || self::$dbObj->GetValue("State") == 'Pumped') ? 1 : 0;
                 $progress['total']['totalBatch'] ++;
                 $progress[$idServer]['totalBatchSize'] += $fileSize;
-                $progress[$idServer]['totalBatchSizeCompleted'] += ($dbObj->GetValue("State") == ServerFrame::IN
-                    || $dbObj->GetValue("State") == 'Out' 
-                    || $dbObj->GetValue("State") == 'Removed' || $dbObj->GetValue("State") == 'Replaced' 
-                    || $dbObj->GetValue("State") == 'Pumped') ? $fileSize : 0;
-                $progress[$idServer]['totalBatchCompleted'] += ($dbObj->GetValue("State") == ServerFrame::IN 
-                    || $dbObj->GetValue("State") == 'Out' 
-                    || $dbObj->GetValue("State") == 'Removed' || $dbObj->GetValue("State") == 'Replaced' 
-                    || $dbObj->GetValue("State") == 'Pumped') ? 1 : 0;
+                $progress[$idServer]['totalBatchSizeCompleted'] += (self::$dbObj->GetValue("State") == ServerFrame::IN
+                    || self::$dbObj->GetValue("State") == 'Out' 
+                    || self::$dbObj->GetValue("State") == 'Removed' || self::$dbObj->GetValue("State") == 'Replaced' 
+                    || self::$dbObj->GetValue("State") == 'Pumped') ? $fileSize : 0;
+                $progress[$idServer]['totalBatchCompleted'] += (self::$dbObj->GetValue("State") == ServerFrame::IN 
+                    || self::$dbObj->GetValue("State") == 'Out' 
+                    || self::$dbObj->GetValue("State") == 'Removed' || self::$dbObj->GetValue("State") == 'Replaced' 
+                    || self::$dbObj->GetValue("State") == 'Pumped') ? 1 : 0;
                 $progress[$idServer]['totalBatch'] ++;
             }
-            $dbObj->Next();
+            self::$dbObj->Next();
         }
         if ($mode != 'simple' && is_array($frames) && $progress['total']['totalBatch'] > 0) {
             foreach ($serverIds as $serverId) {
@@ -500,34 +513,38 @@ class ServerFrame extends ServerFrames_ORM
      */
     public function getUncompletedTasks($pumperID, $activeAndEnabledServers)
     {
-        $dbObj = new \Ximdex\Runtime\Db();
+        if (!self::$dbObj) {
+            self::$dbObj = new Db();
+        }
         $servers = implode(',', $activeAndEnabledServers);
         $sql = "SELECT ServerFrames.IdSync FROM ServerFrames, Pumpers WHERE ServerFrames.PumperId = Pumpers.PumperId AND " 
             . "(ServerFrames.State = 'Due2In' OR ServerFrames.State = 'Due2Out') " 
             . "AND ServerFrames.PumperId = $pumperID AND Pumpers.IdServer IN ($servers)";
-        $dbObj->Query($sql);
-        $n = $dbObj->numRows;
+        self::$dbObj->Query($sql);
+        $n = self::$dbObj->numRows;
         $this->ServerFrameToLog(null, null, null, null, $pumperID, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "INFO", 8
             , "Bombeador $pumperID tiene $n tareas incompletas");
         return $n;
     }
 
     /**
-     * Sets the State field from ServerFrames table which matching the value of pumperId.
+     * Sets the State field from ServerFrames table which matching the value of pumperId
      * 
      * @param int pumperId
      */
     public function rescueErroneous($pumperId)
     {
         $sql = "UPDATE ServerFrames SET State = LEFT(State, LENGTH(State) - LENGTH('witherror'))
-				WHERE State IN ('Due2PumpedWithError', 'Due2OutWithError') AND PumperId = $pumperId";
-        $dbObj = new \Ximdex\Runtime\Db();
-        $dbObj->Execute($sql);
+				WHERE State IN ('" . ServerFrame::DUE2INWITHERROR . "', '" . ServerFrame::DUE2OUTWITHERROR . "') AND PumperId = $pumperId";
+        if (!self::$dbObj) {
+            self::$dbObj = new Db();
+        }
+        self::$dbObj->Execute($sql);
     }
 
     /**
      * Gets the ServerFrame with a time interval that includes the current time, who match the values of nodeId
-     * and channelId, and whose State is in (in, due2in, pending, due2in_, due2pumped, pumped, replaced and removed)
+     * and channelId, and whose State is in (pending, in, due2in, due2in_, pumped)
      *
      * @param int $nodeID
      * @param int $channelID
@@ -562,21 +579,23 @@ class ServerFrame extends ServerFrames_ORM
                 $physicalServers = $nodeServer->class->GetPhysicalServerList(true, true);
             }
             if (count($physicalServers) == 0) {
-                Logger::info("[GETCURRENT]: No physical servers found. IdSync: none");
+                Logger::warning("[GETCURRENT]: No physical servers found. IdSync: none");
                 return NULL;
             }
         }
         $sql = sprintf("SELECT IdSync " . "FROM ServerFrames sf " . "INNER JOIN ChannelFrames c ON c.IdChannelFrame = sf.IdChannelFrame " 
             . "WHERE c.NodeId = " . $nodeID . " " . $channelClause . "AND sf.DateUp < %s AND (sf.DateDown > %s OR sf.DateDown IS NULL) " 
-            . "AND sf.State IN ('" . ServerFrame::IN . "', 'Due2In_', 'Due2In', 'Due2Pumped', 'Pumped', 'Replaced', 'Removed') " 
-            . "AND sf.IdServer IN (%s)", $now, $now, implode(', ', $physicalServers));
-        $sql .= ' ORDER BY IdSync DESC LIMIT 1';
+            . "AND sf.State IN ('" . ServerFrame::PENDING . "', '" . ServerFrame::IN . "', '" . ServerFrame::DUE2IN . "', '" 
+            . ServerFrame::DUE2IN_ . "', '" . ServerFrame::PUMPED . "') " 
+            . "AND sf.IdServer IN (%s)", $now, $now, implode(', ', $physicalServers)) . ' ORDER BY IdSync DESC LIMIT 1';
         Logger::debug("[GETCURRENT]: Getting current frame for node " . $nodeID);
-        $dbObj = new \Ximdex\Runtime\Db();
-        $dbObj->Query($sql);
-        $result = ($dbObj->EOF) ? 'IdSync: none' : 'IdSync: ' . $dbObj->GetValue("IdSync");
+        if (!self::$dbObj) {
+            self::$dbObj = new Db();
+        }
+        self::$dbObj->Query($sql);
+        $result = (self::$dbObj->EOF) ? 'IdSync: none' : 'IdSync: ' . self::$dbObj->GetValue("IdSync");
         Logger::debug("[GETCURRENT]: Result:  " . $result);
-        return ($dbObj->EOF) ? NULL : $dbObj->GetValue("IdSync");
+        return (self::$dbObj->EOF) ? NULL : self::$dbObj->GetValue("IdSync");
     }
 
     /**
@@ -590,17 +609,19 @@ class ServerFrame extends ServerFrames_ORM
     {
         $extraCondition = "";
         if ($channelID != null) {
-            $extraCondition = " AND cf.channelid=$channelID";
+            $extraCondition = " AND cf.channelid = $channelID";
         }
         $sql = "SELECT distinct IdServer From ServerFrames sf inner join ChannelFrames cf on sf.idChannelFrame = cf.idChannelFrame";
         $sql .= " where cf.nodeid = $nodeId ";
         $sql .= $extraCondition;
-        $dbObj = new \Ximdex\Runtime\Db();
-        $dbObj->Query($sql);
+        if (!self::$dbObj) {
+            self::$dbObj = new Db();
+        }
+        self::$dbObj->Query($sql);
         $list = array();
-        while (! $dbObj->EOF) {
-            $list[] = $dbObj->GetValue("IdServer");
-            $dbObj->Next();
+        while (! self::$dbObj->EOF) {
+            $list[] = self::$dbObj->GetValue("IdServer");
+            self::$dbObj->Next();
         }
         return $list;
     }
@@ -621,10 +642,12 @@ class ServerFrame extends ServerFrames_ORM
         $sql .= " AND ServerFrames.IdServer = $serverID ";
         $sql .= " AND IdNodeFrame = $frameId ";
         $sql .= " AND (DateDown > $now OR DateDown IS NULL) AND State = '" . ServerFrame::IN . "'";
-        $dbObj = new \Ximdex\Runtime\Db();
-        $dbObj->Query($sql);
-        $path = $dbObj->GetValue("RemotePath");
-        $filename = $dbObj->GetValue("FileName");
+        if (!self::$dbObj) {
+            self::$dbObj = new Db();
+        }
+        self::$dbObj->Query($sql);
+        $path = self::$dbObj->GetValue("RemotePath");
+        $filename = self::$dbObj->GetValue("FileName");
         if ($filename) {
             return $path . "/" . $filename;
         }
@@ -715,27 +738,29 @@ class ServerFrame extends ServerFrames_ORM
 
     public function getPublicationQueue($idServer)
     {
-        $dbObj = new \Ximdex\Runtime\Db();
+        if (!self::$dbObj) {
+            self::$dbObj = new Db();
+        }
         $sql = "SELECT n.idnode, n.path,v.version, n.name, dateup, state, filesize,concat(v.`Version`,'.',v.`SubVersion`) ";
         $sql .= "FROM ServerFrames sf INNER JOIN NodeFrames nf using (idnodeframe) INNER JOIN Nodes n ON n.idnode=nf.nodeid ";
         $sql .= "INNER JOIN  Versions v ON v.Idnode=n.idnode INNER JOIN Servers s ON sf.IdServer=s.IdServer AND s.IdNode=$idServer ";
         $sql .= "where subversion=0  and state not in ('Removed','Replaced','Canceled') ";
         $sql .= "and Not exists (select idversion from Versions v2 where v2.idversion<> v.idversion and v.idnode=v2.idnode and v2.version>v.version) ";
         $sql .= "order by sf.idsync  DESC LIMIT 20";
-        $dbObj->Query($sql);
-        if ($dbObj->numRows > 0) {
+        self::$dbObj->Query($sql);
+        if (self::$dbObj->numRows > 0) {
             $publications = array();
-            while (! $dbObj->EOF) {
+            while (! self::$dbObj->EOF) {
                 $publication = array();
-                $publication['name'] = $dbObj->GetValue("name");
-                $publication['path'] = str_replace("/Ximdex/Projects", "", $dbObj->GetValue("path"));
-                $publication['filesize'] = $dbObj->GetValue("filesize");
-                $publication['date'] = $dbObj->GetValue("dateup");
-                $publication['id'] = $dbObj->GetValue("idnode");
-                $publication['state'] = $dbObj->GetValue("state");
-                $publication['version'] = $dbObj->GetValue("concat(v.`Version`,'.',v.`SubVersion`)");
+                $publication['name'] = self::$dbObj->GetValue("name");
+                $publication['path'] = str_replace("/Ximdex/Projects", "", self::$dbObj->GetValue("path"));
+                $publication['filesize'] = self::$dbObj->GetValue("filesize");
+                $publication['date'] = self::$dbObj->GetValue("dateup");
+                $publication['id'] = self::$dbObj->GetValue("idnode");
+                $publication['state'] = self::$dbObj->GetValue("state");
+                $publication['version'] = self::$dbObj->GetValue("concat(v.`Version`,'.',v.`SubVersion`)");
                 array_push($publications, $publication);
-                $dbObj->Next();
+                self::$dbObj->Next();
             }
             return $publications;
         }
@@ -790,7 +815,8 @@ class ServerFrame extends ServerFrames_ORM
         $sql = 'SELECT ServerFrames.IdSync FROM ServerFrames, NodeFrames ' .
             'WHERE ServerFrames.IdNodeFrame = NodeFrames.IdNodeFrame AND NodeFrames.NodeId = ' . $nodeId . ' AND ' .
             'ServerFrames.DateUp > ' . $time . ' ' . 
-            'AND ServerFrames.State NOT IN (\'' . ServerFrame::CANCELLED . '\', \'' . ServerFrame::REMOVED . '\', \'' . ServerFrame::REPLACED . '\')';
+            'AND ServerFrames.State NOT IN (\'' . ServerFrame::CANCELLED . '\', \'' . ServerFrame::REMOVED . '\', \'' . 
+            ServerFrame::REPLACED . '\')';
         return $this->query($sql);
     }
 }

@@ -74,12 +74,18 @@ class Action_managebatchs extends ActionAbstract
 				}
 			}
 		}
-		$frm_select_filter_node_gen = (isset($_POST['frm_select_filter_node_gen'])) ? $_POST['frm_select_filter_node_gen'] : "";
-		$frm_select_filter_state_batch = (isset($_POST['frm_select_filter_state_batch'])) ? $_POST['frm_select_filter_state_batch'] : "InTime";
-		$frm_select_filter_active_batch = (isset($_POST['frm_select_filter_active_batch'])) ? $_POST['frm_select_filter_active_batch'] : 'NULL';
-		$frm_select_filter_up_date = (isset($_POST['frm_filter_up_date']) && $_POST['frm_filter_up_date'] != 0) ? strtotime($_POST['frm_filter_up_date']) : 0;
-		$frm_select_filter_down_date = (isset($_POST['frm_filter_down_date']) && $_POST['frm_filter_down_date'] != 0) ? strtotime($_POST['frm_filter_down_date']) : 0;
-		$frm_filter_batch = (isset($_POST['frm_select_filter_state_batch'])) ? ((isset($_POST['frm_filter_batch'])) ? $_POST['frm_filter_batch'] : 'no') : 'yes';
+		$frm_select_filter_node_gen = (isset($_POST['frm_select_filter_node_gen'])) 
+            ? $_POST['frm_select_filter_node_gen'] : "";
+		$frm_select_filter_state_batch = (isset($_POST['frm_select_filter_state_batch'])) 
+            ? $_POST['frm_select_filter_state_batch'] : "InTime";
+		$frm_select_filter_active_batch = (isset($_POST['frm_select_filter_active_batch'])) 
+            ? $_POST['frm_select_filter_active_batch'] : 'NULL';
+		$frm_select_filter_up_date = (isset($_POST['frm_filter_up_date']) && $_POST['frm_filter_up_date'] != 0) 
+            ? strtotime($_POST['frm_filter_up_date']) : 0;
+		$frm_select_filter_down_date = (isset($_POST['frm_filter_down_date']) && $_POST['frm_filter_down_date'] != 0) 
+            ? strtotime($_POST['frm_filter_down_date']) : 0;
+		$frm_filter_batch = (isset($_POST['frm_select_filter_state_batch'])) ? ((isset($_POST['frm_filter_batch'])) 
+		    ? $_POST['frm_filter_batch'] : 'no') : 'yes';
 		$arrayDateValues = array();
 		$arrayDateValues['update'] = (isset($_POST['update'])) ? $_POST['update'] : _("Click here")."...";
 		$arrayDateValues['uphour'] = (isset($_POST['uphour'])) ? $_POST['uphour'] : "00";
@@ -106,17 +112,17 @@ class Action_managebatchs extends ActionAbstract
 			'ServerFrame' => array (
 				ServerFrame::PENDING => _('Pending'),
 			    ServerFrame::DUE2IN => _('Ready to publish'),
-				'Due2PumpedWithError' => _('With error'),
-				'Due2In_' => _('Being published'),
+				ServerFrame::DUE2INWITHERROR => _('With error'),
+				ServerFrame::DUE2IN_ => _('Being published'),
 			    ServerFrame::DUE2OUT => _('Ready to unpublish'),
 			    ServerFrame::DUE2OUTWITHERROR => _('With error'),
-				'Due2Out_' => _('Being unpublished'),
+				ServerFrame::DUE2OUT_ => _('Being unpublished'),
 			    ServerFrame::IN =>  _('Published'),
 			    ServerFrame::PUMPED => _('Pumped'),
 			    ServerFrame::OUT => _('Unpublished'),
 			    ServerFrame::REPLACED => _('Replaced'),
 			    ServerFrame::REMOVED => _('Deleted'),
-			    ServerFrame::CANCELED => _('Cancelled')
+			    ServerFrame::CANCELLED => _('Cancelled')
 			)
 		);
 		$activeServers = array();
@@ -131,9 +137,12 @@ class Action_managebatchs extends ActionAbstract
 		}
 		$doFilter = ($frm_filter_batch == "yes") ? true : false;
 		$stateCryteria = $frm_select_filter_state_batch;
-		$activeCryteria = (!isset($frm_select_filter_active_batch) || $frm_select_filter_active_batch == 'NULL') ? null : $frm_select_filter_active_batch;
+		$activeCryteria = (!isset($frm_select_filter_active_batch) || $frm_select_filter_active_batch == 'NULL') 
+            ? null : $frm_select_filter_active_batch;
 		$batchObj = new Batch();
-		$batchList = $batchObj->getAllBatchs($doFilter ? $stateCryteria : null, $doFilter ? $activeCryteria : null, 'Up', MANAGEBATCHS_BATCHS_PER_PAGE, $frm_select_filter_node_gen ? $frm_select_filter_node_gen : null, $frm_select_filter_up_date, $frm_select_filter_down_date);
+		$batchList = $batchObj->getAllBatchs($doFilter ? $stateCryteria : null, $doFilter 
+		    ? $activeCryteria : null, 'Up', MANAGEBATCHS_BATCHS_PER_PAGE, $frm_select_filter_node_gen 
+		    ? $frm_select_filter_node_gen : null, $frm_select_filter_up_date, $frm_select_filter_down_date);
 		$hasBatchs = (is_array($batchList) && count($batchList) > 0) ? true : false;
 		$distinctNodeGenerators = $batchObj->getNodeGeneratorsFromBatchs($frm_select_filter_state_batch);
 		if ($hasBatchs) {
