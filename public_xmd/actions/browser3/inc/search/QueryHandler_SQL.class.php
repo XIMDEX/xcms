@@ -237,7 +237,8 @@ class QueryHandler_SQL extends QueryHandler_Abstract
 					);
 					
 					// Si publicado
-					$conditions[] = sprintf("sf.State in ('" . ServerFrame::IN . "', 'Replaced', 'Removed')");
+					$conditions[] = sprintf("sf.State in ('" . ServerFrame::IN . "', '" . ServerFrame::REPLACED . "', '" 
+					    . ServerFrame::REMOVED . "')");
 					$conditions[] = sprintf(
 						'(%s)',
 						implode(' and ', $conditions)

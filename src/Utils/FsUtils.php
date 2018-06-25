@@ -268,7 +268,7 @@ class FsUtils
             return false;
         }
         if (!($handler = opendir($folder))) {
-            error_log(sprintf(_("It was not possible to open the folder %s %s, %s"), $folder, __FILE__, __LINE__));
+            Logger::error(sprintf(_("It was not possible to open the folder %s %s, %s"), $folder, __FILE__, __LINE__));
             return false;
         }
         while ($file = readdir($handler)) {
@@ -299,7 +299,7 @@ class FsUtils
     {
         if (!is_file($file)) {
             $backtrace = debug_backtrace();
-            Logger::debug(sprintf('It has been asked to delete a nonexistant file %s [inc/fsutils/FsUtils.class.php] script: %s file: %s line: %s',
+            Logger::warning(sprintf('It has been asked to delete a nonexistant file %s [inc/fsutils/FsUtils.class.php] script: %s file: %s line: %s',
                 $file,
                 $_SERVER['SCRIPT_FILENAME'],
                 $backtrace[0]['file'],
@@ -308,7 +308,7 @@ class FsUtils
         }
         if (!@unlink($file)) {
             $backtrace = debug_backtrace();
-            Logger::warning(sprintf('It has been asked to delete a file which could not be deleted %s [inc/fsutils/FsUtils.class.php] script: %s file: %s line: %s',
+            Logger::error(sprintf('It has been asked to delete a file which could not be deleted %s [inc/fsutils/FsUtils.class.php] script: %s file: %s line: %s',
                 $file,
                 $_SERVER['SCRIPT_FILENAME'],
                 $backtrace[0]['file'],

@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -168,13 +168,13 @@ class DexPumper
 			if ($state_task == ServerFrame::DUE2IN) {
 			    $this->connection->setIsFile(false);
 			    $this->uploadAsHiddenFile();
-			    $this->updateStats("DUE2IN");
+			    $this->updateStats('DUE2IN');
 			} elseif ($state_task == ServerFrame::DUE2OUT) {
-				$this->updateStats("DUE2OUT");
+				$this->updateStats('DUE2OUT');
 				$this->RemoveRemoteFile();
 			} elseif ($state_task == ServerFrame::PUMPED) {
 			    $this->connection->setIsFile(true);
-				$this->updateStats("PUMPED");
+				$this->updateStats('PUMPED');
 				$this->pumpFile();
 			}
 		} // End while(true)
@@ -228,10 +228,10 @@ class DexPumper
 
 	private function getFilesToRename($IdBatchUp, $IdServer)
 	{
-		$IdSync = (int)  $this->serverFrame->get('IdSync');
+		$IdSync = (int) $this->serverFrame->get('IdSync');
 		$this->info("ServerFrame $IdSync Rename hidden file to final file ");
 		$fields = 'IdSync, RemotePath, FileName';
-		$state_pumped = " state = 'Pumped' ";
+		$state_pumped = " state = '" . ServerFrame::PUMPED . "' ";
 		$conditions = "{$state_pumped} AND IdBatchUp = %s AND IdServer = %s ";
 		return $this->serverFrame->find($fields, $conditions,  array($IdBatchUp, $IdServer) , MULTI, false);
 	}
@@ -240,7 +240,7 @@ class DexPumper
 	{
 		$table = "ServerFrames";
 		$stateToIn = " state = '" . ServerFrame::IN . "' ";
-		$state_pumped = " state = 'Pumped' ";
+		$state_pumped = " state = '" . ServerFrame::PUMPED . "' ";
 		$conditions = "{$state_pumped} AND IdBatchUp = '{$IdBatchUp}' AND IdServer = '{$IdServer}'";
 		$this->info("UPDATE TO  {$stateToIn} : {$conditions} ");
 		$this->updateStats("IN");
@@ -491,7 +491,7 @@ class DexPumper
 			exit(0);
 		} else {
 			$processId = $this->pumper->get('ProcessId');
-            $this->pumper->set('State', 'Ended');
+			$this->pumper->set('State', Pumper::ENDED);
 			$this->pumper->set('ProcessId','xxxx');
             $this->pumper->set('CheckTime', time());
             $this->pumper->update();
@@ -502,7 +502,7 @@ class DexPumper
 	{
 		$pid =  getmypid();
 		$time = time();
-		$this->pumper->set('State', 'Started');
+		$this->pumper->set('State', Pumper::STARTED);
 		$this->pumper->set('ProcessId',$pid );
 		$this->pumper->set('CheckTime',$time );
 		$this->pumper->update();
@@ -524,7 +524,7 @@ class DexPumper
 		}
 		else {
 		    $progress = "Progress = '80' ";
-		    $idSync = " AND IdSync='$IdSync' ";
+		    $idSync = " AND IdSync = '$IdSync' ";
 		}
         $sqlReport = "UPDATE PublishingReport SET State = '{$state_pumper}', $progress  WHERE IdBatch = '" . $idBatchUp 
             . "' AND IdSyncServer = '" . $idServer . "' $idSync";

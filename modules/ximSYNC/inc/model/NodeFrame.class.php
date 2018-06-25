@@ -326,7 +326,7 @@ class NodeFrame extends NodeFrames_ORM
 			foreach ($result as $dataFrames) {
 				$idServerFrame = $dataFrames[0];
 				$serverFrame = new ServerFrame($idServerFrame);
-				$serverFrame->set('State', 'Canceled');
+				$serverFrame->set('State', ServerFrame::CANCELLED);
 				$serverFrame->update();
 			}
 		}

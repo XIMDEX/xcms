@@ -545,7 +545,7 @@ class BatchManager
         $sql = "SELECT ServerFrames.IdBatchUp, SUM(IF(ServerFrames.State = '" . ServerFrame::DUE2INWITHERROR . "', 1, 0)) AS Errors, 
 			SUM(IF (ServerFrames.State IN ('" . ServerFrame::IN . "', '" . ServerFrame::CANCELLED . "', '" . ServerFrame::REMOVED . "', '" 
 			. ServerFrame::REPLACED . "', '" . ServerFrame::OUTDATED . "'), 1, 0)) AS Success, 
-			SUM(IF (ServerFrames.State IN ('Pumped'), 1, 0)) AS Pumpeds, 
+			SUM(IF (ServerFrames.State IN ('" . ServerFrame::PUMPED . "'), 1, 0)) AS Pumpeds, 
 			COUNT(ServerFrames.IdSync) AS Total FROM ServerFrames, Batchs WHERE Batchs.Type = '" . Batch::TYPE_UP . "' 
             AND Batchs.State IN ('" . Batch::INTIME . "', '" . Batch::CLOSING . "') AND Batchs.IdBatch = ServerFrames.IdBatchUp 
             GROUP BY ServerFrames.IdBatchUp HAVING Total = Errors + Success + Pumpeds";
@@ -563,13 +563,13 @@ class BatchManager
             $batch->set('ServerFramesSucess', $success);
             $batch->set('ServerFramesError', $errors);
             if ($pumpeds > 0) {
-                $batch->set('State', 'Closing');
+                $batch->set('State', Batch::CLOSING);
                 $batch->BatchToLog($idBatch, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__,
                     __LINE__, "INFO", 8, sprintf(_("Setting 'Closing' state to %s batch %d UP"), $prevState, $idBatch));
             } else {
                 $batch->set('State', Batch::ENDED);
                 $batch->BatchToLog($idBatch, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__,
-                    __LINE__, "INFO", 8, sprintf(_("Ending %s  batch %d UP"), $prevState, $idBatch));
+                    __LINE__, "INFO", 8, sprintf(_("Ending %s batch %d UP"), $prevState, $idBatch));
                 Logger::info("Ending up batch with id " . $idBatch);
             }
             $batch->update();

@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -33,9 +33,9 @@ use Ximdex\MPM\MPMProcess;
 \Ximdex\Modules\Manager::file('/inc/model/ServerFrame.class.php', 'ximSYNC');
 
 /**
- * @brief Handles the life cycle of a ServerFrame.
+ * @brief Handles the life cycle of a ServerFrame
  *
- *    A ServerFrame is the representation of a ChannelFrame in a Server.
+ *    A ServerFrame is the representation of a ChannelFrame in a Server
  *    It can have these status:
  *    - Pending: not yet processed
  *    - Due2In / Due2In_: ready to send to Server
@@ -52,7 +52,7 @@ class ServerFrameManager
     const useMPMManager = false;
     
     /**
-     * Change the ServerFrame's state.
+     * Change the ServerFrame's state
      * 
      * @param int serverFrameId
      * @param string operation
@@ -76,7 +76,7 @@ class ServerFrameManager
         }
         $republishAncestors = false;
         if ($operation == 'Up') {
-            if ($initialState == 'Pending') {
+            if ($initialState == ServerFrame::PENDING) {
                 
                 // Set down overlaped serverFrames
                 $overlapeds = $this->getOverlaped($serverFrameId, $server, $nodeId, $channel);
@@ -85,25 +85,25 @@ class ServerFrameManager
                         $id = $overlapedData['id'];
                         $overlapedFrame = new ServerFrame($id);
                         $overlapedInitialState = $overlapedData['state'];
-                        if ($overlapedInitialState == ServerFrame::IN || $overlapedInitialState == 'Pumped') {
+                        if ($overlapedInitialState == ServerFrame::IN || $overlapedInitialState == ServerFrame::PUMPED) {
                             if (!is_null($delayed)) {
                                 
                                 // Para que resucite
-                                $overlapedFinalState = 'Delayed';
+                                $overlapedFinalState = ServerFrame::DELAYED;
                             } else {
                                 $overlapedName = $overlapedFrame->get('FileName');
                                 $name = $serverFrame->get('FileName');
                                 if ($overlapedName != $name) {
                                     
                                     // If name's changed must delete remote file
-                                    $overlapedFinalState = 'Due2Out';
+                                    $overlapedFinalState = ServerFrame::DUE2OUT;
                                 } else {
-                                    $overlapedFinalState = 'Replaced';
+                                    $overlapedFinalState = ServerFrame::REPLACED;
                                 }
                                 $overlapedFrame->deleteSyncFile();
                             }
                         } else {
-                            $overlapedFinalState = 'Removed';
+                            $overlapedFinalState = ServerFrame::REMOVED;
                             $overlapedFrame->deleteSyncFile();
                         }
                         $serverFrame->ServerFrameToLog(null, null, null, $id, null, __CLASS__, __FUNCTION__,
@@ -113,7 +113,7 @@ class ServerFrameManager
                         $overlapedFrame->update();
                     }
                 }
-                $finalState = 'Due2In_';
+                $finalState = ServerFrame::DUE2IN_;
 
                 // If is the first publication must republish the ancestors
                 $nodeFrame = new NodeFrame();
@@ -121,26 +121,26 @@ class ServerFrameManager
                     $republishAncestors = true;
                 }
             } else {
-                $finalState = 'Due2In_';
+                $finalState = ServerFrame::DUE2IN_;
                 $serverFrame->ServerFrameToLog(null, null, null, $serverFrameId, null, __CLASS__, __FUNCTION__,
                     __FILE__, __LINE__, "INFO", 8, _("Nothing to do with $serverFrameId starter $initialState"), true);
             }
         } elseif ($operation == 'Down') {
-            $states = array('Pending', 'Due2In', 'Due2In_', ServerFrame::DUE2INWITHERROR);
+            $states = array(ServerFrame::PENDING, ServerFrame::DUE2IN, ServerFrame::DUE2IN_, ServerFrame::DUE2INWITHERROR);
             if (in_array($initialState, $states)) {
-                $finalState = 'Canceled';
+                $finalState = ServerFrame::CANCELLED;
                 $serverFrame->deleteSyncFile();
-            } elseif ($initialState == ServerFrame::IN || $initialState == 'Pumped') {
-                $finalState = 'Replaced';
+            } elseif ($initialState == ServerFrame::IN || $initialState == ServerFrame::PUMPED) {
+                $finalState = ServerFrame::REPLACED;
                 $delayedId = $this->getDelayed($serverFrameId, $server, $nodeId, $channel);
                 if (!is_null($delayedId)) {
                     $canceledFrame = new ServerFrame($delayedId);
-                    $canceledFrame->set('State', 'Due2In_');
+                    $canceledFrame->set('State', ServerFrame::DUE2IN_);
                     $canceledFrame->update();
                     $serverFrame->ServerFrameToLog(null, null, null, $id, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__,
                         "INFO", 8, _("Setting frame from Delayed $delayedId to Due2In_"), true);
                 } else {
-                    $finalState = 'Due2Out_';
+                    $finalState = ServerFrame::DUE2OUT_;
                     $serverFrame->deleteSyncFile();
                     $republishAncestors = true;
                 }
@@ -172,7 +172,7 @@ class ServerFrameManager
     }
 
     /**
-     * Gets the ServerFrames whose State is Delayed.
+     * Gets the ServerFrames whose State is Delayed
      * 
      * @param int frameId
      * @param int server
@@ -192,19 +192,18 @@ class ServerFrameManager
             $sql .= " AND ChannelFrames.ChannelId = $channel";
         }
         else {
-            $sql .= " AND ChannelFrames.ChannelId is null";
+            $sql .= ' AND ChannelFrames.ChannelId IS NULL';
         }
-		$sql .= " AND ServerFrames.IdSync != $frameId AND ServerFrames.State = 'Delayed'";
+        $sql .= " AND ServerFrames.IdSync != $frameId AND ServerFrames.State = '" . ServerFrame::DELAYED . "'";
         $dbObj->Query($sql);
-        if ($dbObj->numRows != 0) {
-            $canceled = $dbObj->GetValue("IdSync");
-            return $canceled;
+        if ($dbObj->numRows) {
+            return $dbObj->GetValue('IdSync');
         }
         return NULL;
     }
 
     /**
-     * Gets the ServerFrames of the same Node, Channel and Server, and State in (in,due2in,due2in_,pumped,canceled).
+     * Gets the ServerFrames of the same Node, Channel and Server, and State in (in, due2in, due2in_, pumped, canceled)
      * 
      * @param int frameId
      * @param int server
@@ -229,8 +228,9 @@ class ServerFrameManager
 				AND NodeFrames.NodeId = $nodeId
 				AND ChannelFrames.ChannelId $channelCondition
 				AND ServerFrames.IdSync != $frameId
-				AND (ServerFrames.State = '" . ServerFrame::IN . "' OR ServerFrames.State = 'Due2In'
-					OR ServerFrames.State = 'Due2In_' OR ServerFrames.State = 'Canceled' OR ServerFrames.State = 'Pumped')";
+				AND (ServerFrames.State = '" . ServerFrame::IN . "' OR ServerFrames.State = '" . ServerFrame::DUE2IN . "' 
+		        OR ServerFrames.State = '" . ServerFrame::DUE2IN_ . "' OR ServerFrames.State = '" . ServerFrame::CANCELLED . "' 
+                OR ServerFrames.State = '" . ServerFrame::PUMPED . "')";
         $overlaped = array();
         $i = 0;
         $dbObj->Query($sql);
@@ -248,7 +248,7 @@ class ServerFrameManager
     }
 
     /**
-     * Sets a number of ServerFrames to states Due2In or Due2Out.
+     * Sets a number of ServerFrames to states Due2In or Due2Out
      * 
      * @param array pumpers
      * @param int chunk
@@ -263,7 +263,7 @@ class ServerFrameManager
             $numPendingTasks = $serverFrame->getUncompletedTasks($pumperId, $activeAndEnabledServers);
             $numTasksForPumping = $chunk - $numPendingTasks;
             if ($numTasksForPumping > 0) {
-                $sql = "SELECT ServerFrames.IdSync FROM ServerFrames, Pumpers WHERE RIGHT(ServerFrames.State,1) = '_'
+                $sql = "SELECT ServerFrames.IdSync FROM ServerFrames, Pumpers WHERE RIGHT(ServerFrames.State, 1) = '_'
 					AND ServerFrames.PumperId = $pumperId AND Pumpers.IdServer IN ($servers)
 					AND ServerFrames.PumperId = Pumpers.PumperId ORDER BY ServerFrames.ErrorLevel ASC,
 					ServerFrames.Retry ASC LIMIT $numTasksForPumping";
@@ -308,7 +308,7 @@ class ServerFrameManager
     }
 
     /**
-     * Gets the identifier of the Pumper responsible of upload (removes) a ServerFrame.
+     * Gets the identifier of the Pumper responsible of upload (removes) a ServerFrame
      * 
      * @param int serverFrameId
      * @return int
@@ -319,7 +319,7 @@ class ServerFrameManager
         $serverFrame = new ServerFrame($serverFrameId);
         $idServer = $serverFrame->get('IdServer');
         $dbObj = new \Ximdex\Runtime\Db();
-        $sql = "SELECT PumperId FROM Pumpers where IdServer = $idServer AND State != 'Ended'";
+        $sql = "SELECT PumperId FROM Pumpers where IdServer = $idServer AND State != '" . Pumper::ENDED . "'";
         $dbObj->Query($sql);
         if ($dbObj->numRows == 0) {
             
@@ -337,7 +337,7 @@ class ServerFrameManager
     }
 
     /**
-     * Gets all Pumpers which are currently working.
+     * Gets all Pumpers which are currently working
      * 
      * @param array activeAndEnabledServers
      * @return array|null
@@ -346,8 +346,9 @@ class ServerFrameManager
     {
         $dbObj = new \Ximdex\Runtime\Db();
         $servers = implode(',', $activeAndEnabledServers);
-        $query = "SELECT DISTINCT(PumperId) FROM ServerFrames WHERE 
-            State IN ('Due2In', 'Due2Out', 'Due2In_', 'Due2Out_', 'Pumped') AND IdServer IN ($servers)";
+        $query = "SELECT DISTINCT(PumperId) FROM ServerFrames WHERE State IN ('" . ServerFrame::DUE2IN . "', '" . 
+            ServerFrame::DUE2OUT . "', '" . ServerFrame::DUE2IN_ . "', '" . ServerFrame::DUE2OUT_ . "', '" . 
+            ServerFrame::PUMPED . "') AND IdServer IN ($servers)";
         $dbObj->Query($query);
         if ($dbObj->numErr) {
             return NULL;
@@ -386,7 +387,7 @@ class ServerFrameManager
         $newState = substr($state, -strlen($state), strlen($state) - 1);
 
         // Creates Sync file for pumping and updating state
-        if ($newState == 'Due2In') {
+        if ($newState == ServerFrame::DUE2IN) {
             $fileSize = $serverFrame->createSyncFile($task, $serverFrame->get('cache'));
             if ($fileSize === false) {
                 return false;
@@ -421,7 +422,7 @@ class ServerFrameManager
         } else{
             $status = implode(', ', [$strStatus]);
         }
-        $result = $serverFrame->query(sprintf("SELECT IdSync FROM ServerFrames WHERE State IN (%s)", $status));
+        $result = $serverFrame->query(sprintf('SELECT IdSync FROM ServerFrames WHERE State IN (%s)', $status));
         return count($result) == 0;
     }
 }

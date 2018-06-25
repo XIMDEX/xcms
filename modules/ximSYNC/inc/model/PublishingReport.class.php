@@ -52,21 +52,21 @@ class PublishingReport extends PublishingReport_ORM
      *  @param string filePath
      */
     public $progressTable = array(
-        'Pending' => '20',
-        'Due2In_' => '40',
-        'Due2In' => '60',
-        'Due2Out_' => '40',
-        'Due2Out' => '60',
-        'Pumped' => '80',
+        ServerFrame::PENDING => '20',
+        ServerFrame::DUE2IN_ => '40',
+        ServerFrame::DUE2IN => '60',
+        ServerFrame::DUE2OUT_ => '40',
+        ServerFrame::DUE2OUT => '60',
+        ServerFrame::PUMPED => '80',
         ServerFrame::IN => '100',
-        'Out' => '100',
-        'Canceled' => '100',
-        'Replaced' => '100',
-        'Removed' => '100',
+        ServerFrame::OUT => '100',
+        ServerFrame::CANCELLED => '100',
+        ServerFrame::REPLACED => '100',
+        ServerFrame::REMOVED => '100',
         'Error' => '100',
         'Warning' => '100',
-        'Due2InWithError' => '100',
-        'Due2OutWithError' => '100'
+        ServerFrame::DUE2INWITHERROR => '100',
+        ServerFrame::DUE2OUTWITHERROR => '100'
     );
 
     function create($idSection, $idNode, $idChannel, $idSyncServer, $idPortalVersion

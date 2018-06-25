@@ -77,7 +77,7 @@ class Action_managebatchs extends ActionAbstract
 		$frm_select_filter_node_gen = (isset($_POST['frm_select_filter_node_gen'])) 
             ? $_POST['frm_select_filter_node_gen'] : "";
 		$frm_select_filter_state_batch = (isset($_POST['frm_select_filter_state_batch'])) 
-            ? $_POST['frm_select_filter_state_batch'] : "InTime";
+            ? $_POST['frm_select_filter_state_batch'] : Batch::INTIME;
 		$frm_select_filter_active_batch = (isset($_POST['frm_select_filter_active_batch'])) 
             ? $_POST['frm_select_filter_active_batch'] : 'NULL';
 		$frm_select_filter_up_date = (isset($_POST['frm_filter_up_date']) && $_POST['frm_filter_up_date'] != 0) 

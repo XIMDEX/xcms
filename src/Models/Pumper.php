@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -39,16 +39,22 @@ use Ximdex\Runtime\App;
 \Ximdex\Modules\Manager::file('/conf/synchro_conf.php', 'ximSYNC');
 
 /**
- * @brief Handles operations with Pumpers.
+ * @brief Handles operations with Pumpers
  *
- * A Pumper is an instance of the dexPumper script, wich is responsible for sending the ServerFrames to Server (via ftp, ssh, etc).
- * This class includes the methods that interact with the Database.
+ * A Pumper is an instance of the dexPumper script, wich is responsible for sending the ServerFrames to Server (via ftp, ssh, etc)
+ * This class includes the methods that interact with the Database
  */
 class Pumper extends PumpersOrm
 {
     private $maxvoidcycles = 10;
     private $sleeptime = 2;
-    var $syncStatObj;
+    
+    public $syncStatObj;
+    
+    const NEW = 'New';
+    const STARTING = 'Starting';
+    const STARTED = 'Started';
+    const ENDED = 'Ended';
 
     /**
      * Sets the value of any variable
@@ -56,7 +62,7 @@ class Pumper extends PumpersOrm
      * @param string key
      * @param unknown value
      */
-    function setFlag($key, $value)
+    public function setFlag($key, $value)
     {
         $this->$key = $value;
     }
@@ -66,7 +72,7 @@ class Pumper extends PumpersOrm
      * 
      * @param string key
      */
-    function getFlag($key)
+    public function getFlag($key)
     {
         return $this->$key;
     }
@@ -77,11 +83,10 @@ class Pumper extends PumpersOrm
      * @param int idServer
      * @return int|null
      */
-
-    function create($idServer)
+    public function create($idServer)
     {
         $this->set('IdServer', $idServer);
-        $this->set('State', 'New');
+        $this->set('State', Pumper::NEW);
         $this->set('StartTime', time());
         $this->set('CheckTime', time());
         $this->set('ProcessId', 'xxxx');
@@ -102,9 +107,9 @@ class Pumper extends PumpersOrm
      * 
      * @return array|null
      */
-    function getPumpersInRegistry()
+    public function getPumpersInRegistry()
     {
-        $sql = "SELECT PumperId FROM Pumpers WHERE State != 'Ended'";
+        $sql = "SELECT PumperId FROM Pumpers WHERE State != '" . Pumper::ENDED . "'";
         $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->Query($sql);
         $pumpers = array();
@@ -122,12 +127,12 @@ class Pumper extends PumpersOrm
      * @param string modo
      * @return bool
      */
-    function startPumper($pumperId, $modo = "php")
+    public function startPumper($pumperId, $modo = "php")
     {
         $dbObj = new \Ximdex\Runtime\Db();
         
         // Initialize the pumper to Starting state
-        $this->set('State', 'Starting');
+        $this->set('State', Pumper::STARTING);
         $this->update();
         $startCommand =  "php ".XIMDEX_ROOT_PATH.'/bootstrap.php '.PUMPERPHP_PATH . "/dexpumper." . $modo 
             . " --pumperid=$pumperId --sleeptime=" . $this->sleeptime . " --maxvoidcycles=" . $this->maxvoidcycles 
@@ -178,8 +183,8 @@ class Pumper extends PumpersOrm
      * @param string comment
      * @param int doInsertSql
      */
-    function PumperToLog($batchId, $nodeFrameId, $channelFrameId, $serverFrameId, $pumperId,
-                         $class, $method, $file, $line, $type, $level, $comment, $doInsertSql = false)
+    public function PumperToLog($batchId, $nodeFrameId, $channelFrameId, $serverFrameId, $pumperId, $class, $method, $file
+        , $line, $type, $level, $comment, $doInsertSql = false)
     {
         if (strcmp(App::getValue("SyncStats"), "1") == 0) {
             if (!isset($this->syncStatObj)) {

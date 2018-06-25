@@ -66,7 +66,7 @@ class PumperManager
                 __LINE__, "INFO", 8, sprintf(_("Pumper %s at state %s"), $pumperId, $pumperState));
             Logger::info('Pumper with ID: ' . $pumperId . ' has state: ' . $pumperState);
             switch ($pumperState) {
-                case 'Started':
+                case Pumper::STARTED:
                     
                     // Checking if pumper is alive
                     $now = time();
@@ -83,7 +83,7 @@ class PumperManager
                         else {
                             Logger::warning('Pumper with ID: ' . $pumperId . ' has been restarted');
                         }
-                        $pumper->set('State', 'New');
+                        $pumper->set('State', Pumper::NEW);
                         $pumper->update();
                         $result = $pumper->startPumper($pumperId, $modo);
                         if ($result == false) {
@@ -91,7 +91,7 @@ class PumperManager
                         }
                     }
                     break;
-                case 'New':
+                case Pumper::NEW:
                     $result = $pumper->startPumper($pumperId, $modo);
                     if ($result == false) {
                         $pumpersWithError++;
@@ -101,10 +101,10 @@ class PumperManager
                     }
                     break;
 
-                case 'Ended':
+                case Pumper::ENDED:
                     
                     // Pumper ended but new tasks have been included
-                    $pumper->set('State', 'New');
+                    $pumper->set('State', Pumper::NEW);
                     $pumper->update();
                     $result = $pumper->startPumper($pumperId, $modo);
                     if ($result == false) {
@@ -115,7 +115,7 @@ class PumperManager
                     }
                     break;
                     
-                case 'Starting':
+                case Pumper::STARTING:
                     
                     // Pumper is starting...
                     Logger::info('Pumper with ID: ' . $pumperId . ' is starting. Aborting creation');

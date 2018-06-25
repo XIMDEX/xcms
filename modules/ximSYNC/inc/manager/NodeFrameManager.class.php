@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -367,7 +367,7 @@ class NodeFrameManager
 
 					// Changing ServerFrame State
 					$serverFrameMng->changeState($idServerFrame, 'Down', $nodeId);
-				} elseif(in_array($state, array('Due2Out', 'Due2Out_'))) {
+				} elseif(in_array($state, array(ServerFrame::DUE2OUT, ServerFrame::DUE2OUT_))) {
 					Logger::info("Do not delete serverFrame $idServerFrame - state $state");
 				} else {
 					$serverFrame->delete();

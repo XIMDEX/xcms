@@ -1,6 +1,7 @@
 <?php
+
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -24,33 +25,25 @@
  *  @version $Revision$
  */
 
-
-// for legacy compatibility
+// For legacy compatibility
 if (!defined('XIMDEX_ROOT_PATH')) {
     require_once dirname(__FILE__) . '/../../../bootstrap.php';
 }
 
-
-
-/*
-*	Purgue files from data/sync/serverframes directory
+/**
+* Purgue files from data/sync/serverframes directory
 *
-* 	Launch as follow: <ximDEX_HOME>$ php bootstrap.php modules/ximSYNC/scripts/purgueServerFrames.php
-*
+* Launch as follow: <ximDEX_HOME>$ php bootstrap.php modules/ximSYNC/scripts/purgueServerFrames.php
 */
 
-//
-\Ximdex\Modules\Manager::file('/inc/model/ServerFrame.class.php', 'ximSYNC');
+Ximdex\Modules\Manager::file('/inc/model/ServerFrame.class.php', 'ximSYNC');
 
 $serverFrame = new ServerFrame();
-
-$outdatedServerFrames = $serverFrame->find('IdSync', "State IN ('Canceled', 'Removed', 'Replaced', 'Out')", NULL, MONO);
-
-if (sizeof($outdatedServerFrames) > 0) {
+$outdatedServerFrames = $serverFrame->find('IdSync', "State IN ('" . ServerFrame::CANCELLED . "', '" . ServerFrame::REMOVED . "', '" 
+    . ServerFrame::REPLACED . "', '" . ServerFrame::OUT . "')", NULL, MONO);
+if ($outdatedServerFrames) {
 	foreach ($outdatedServerFrames as $serverFrameId) {
 		$serverFrame = new ServerFrame($serverFrameId);
 		$serverFrame->deleteSyncFile();
 	}
 }
-
-?>
