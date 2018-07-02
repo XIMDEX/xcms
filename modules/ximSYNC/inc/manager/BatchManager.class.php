@@ -596,7 +596,7 @@ class BatchManager
                     Logger::debug(sprintf("Batch %d type down without associated batch type up", $idBatch));
                     $sql = "SELECT SUM(IF (ServerFrames.State = '" . ServerFrame::DUE2OUTWITHERROR . "', 1, 0)) AS Errors, 
 						SUM(IF (ServerFrames.State IN ('" . ServerFrame::OUT . "', '" . ServerFrame::CANCELLED . "', 
-                        '" . ServerFrame::CANCELLED . "', '" . ServerFrame::REPLACED . "'), 1, 0)) AS Success, 
+                        '" . ServerFrame::REMOVED . "', '" . ServerFrame::REPLACED . "'), 1, 0)) AS Success, 
 						COUNT(ServerFrames.IdSync) AS Total FROM NodeFrames, ServerFrames WHERE 
 					    ServerFrames.IdNodeFrame = NodeFrames.IdNodeFrame and ServerFrames.IdBatchDown = $idBatch";
                     if ($dbObj->Query($sql) === false) {
