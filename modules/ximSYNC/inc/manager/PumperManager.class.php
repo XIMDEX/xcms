@@ -64,7 +64,7 @@ class PumperManager
             $pumperCheckTime = $pumper->get('CheckTime');
             $pumper->PumperToLog(null, null, null, null, $pumperId, __CLASS__, __FUNCTION__, __FILE__,
                 __LINE__, "INFO", 8, sprintf(_("Pumper %s at state %s"), $pumperId, $pumperState));
-            Logger::info('Pumper with ID: ' . $pumperId . ' has state: ' . $pumperState);
+            Logger::debug('Pumper with ID: ' . $pumperId . ' has state: ' . $pumperState);
             switch ($pumperState) {
                 case Pumper::STARTED:
                     
@@ -78,10 +78,10 @@ class PumperManager
                         $processId = $pumper->get('ProcessId');
                         if (!empty($processId)) {
                             system("kill -9 $processId", $var);
-                            Logger::warning('Pumper with ID: ' . $pumperId . ' has been restarted (process with pid ' . $processId . ' killed');
+                            Logger::debug('Pumper with ID: ' . $pumperId . ' has been restarted (process with pid ' . $processId . ' killed');
                         }
                         else {
-                            Logger::warning('Pumper with ID: ' . $pumperId . ' has been restarted');
+                            Logger::debug('Pumper with ID: ' . $pumperId . ' has been restarted');
                         }
                         $pumper->set('State', Pumper::NEW);
                         $pumper->update();
@@ -97,7 +97,7 @@ class PumperManager
                         $pumpersWithError++;
                     }
                     else {
-                        Logger::info('Pumper with ID: ' . $pumperId . ' has been started');
+                        Logger::debug('Pumper with ID: ' . $pumperId . ' has been started');
                     }
                     break;
 
@@ -111,14 +111,14 @@ class PumperManager
                         $pumpersWithError++;
                     }
                     else {
-                        Logger::info('Pumper with ID: ' . $pumperId . ' has been started from ended state');
+                        Logger::debug('Pumper with ID: ' . $pumperId . ' has been started from ended state');
                     }
                     break;
                     
                 case Pumper::STARTING:
                     
                     // Pumper is starting...
-                    Logger::info('Pumper with ID: ' . $pumperId . ' is starting. Aborting creation');
+                    Logger::debug('Pumper with ID: ' . $pumperId . ' is starting. Aborting creation');
                     usleep(100000);
                     break;
                 default:

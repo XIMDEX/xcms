@@ -151,7 +151,7 @@ class Scheduler
                     // This a full cycle...
                     $msg = "Cycle num" . " $cycles";
                     $syncStatObj->create(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "INFO", 8, $msg);
-                    Logger::info($msg);
+                    Logger::debug($msg);
                     if ($cycles >= MAX_NUM_CICLOS_SCHEDULER) {
                         
                         // Exceding max. cycles...
@@ -162,7 +162,7 @@ class Scheduler
                         $syncStatObj->create(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "[CACTI]SCHEDULER-INFO", 8, $msg);
                         Logger::info($msg);
                         $mutex->release();
-                        die ();
+                        die();
                     }
 
                     // ---------------------------------------------------------
@@ -176,7 +176,7 @@ class Scheduler
                     $totalServerFrames = $batchProcess['totalserverframes'];
                     $msg = sprintf("Processing batch %s type %s", $batchId, $batchType) . ", true";
                     $syncStatObj->create(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "INFO", 8, $msg);
-                    Logger::info($msg);
+                    Logger::debug($msg);
                     $schedulerChunk = (SCHEDULER_CHUNK > MAX_NUM_NODES_PER_BATCH) ? SCHEDULER_CHUNK : MAX_NUM_NODES_PER_BATCH;
                     $nodeFrames = $nodeFrameManager->getNotProcessNodeFrames($batchId, $schedulerChunk, $batchType);
                     if ($nodeFrames !== false) {
@@ -210,7 +210,7 @@ class Scheduler
                     $activeAndEnabledServers = $serverError->getServersForPumping();
                     $msg = print_r($activeAndEnabledServers, true);
                     $syncStatObj->create(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "INFO", 8, $msg);
-                    Logger::info($msg);
+                    Logger::debug($msg);
                     $batchProcess = $batchManager->getBatchToProcess();
                     $cycles++;
                 }

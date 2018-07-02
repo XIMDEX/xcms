@@ -97,6 +97,7 @@ class ServerFrameManager
                                     
                                     // If name's changed must delete remote file
                                     $overlapedFinalState = ServerFrame::DUE2OUT;
+                                    $overlapedFrame->set('DateDown', mktime());
                                 } else {
                                     $overlapedFinalState = ServerFrame::REPLACED;
                                 }
@@ -104,7 +105,9 @@ class ServerFrameManager
                             }
                         } else {
                             $overlapedFinalState = ServerFrame::REMOVED;
-                            $overlapedFrame->deleteSyncFile();
+                            if ($overlapedInitialState != ServerFrame::CANCELLED and $overlapedInitialState != ServerFrame::DUE2IN_) {
+                                $overlapedFrame->deleteSyncFile();
+                            }
                         }
                         $serverFrame->ServerFrameToLog(null, null, null, $id, null, __CLASS__, __FUNCTION__,
                             __FILE__, __LINE__, "INFO", 8, _("Setting $id as overlaped from $overlapedInitialState
@@ -121,9 +124,10 @@ class ServerFrameManager
                     $republishAncestors = true;
                 }
             } else {
-                $finalState = ServerFrame::DUE2IN_;
+                // $finalState = ServerFrame::DUE2IN_;
                 $serverFrame->ServerFrameToLog(null, null, null, $serverFrameId, null, __CLASS__, __FUNCTION__,
                     __FILE__, __LINE__, "INFO", 8, _("Nothing to do with $serverFrameId starter $initialState"), true);
+                return true;
             }
         } elseif ($operation == 'Down') {
             $states = array(ServerFrame::PENDING, ServerFrame::DUE2IN, ServerFrame::DUE2IN_, ServerFrame::DUE2INWITHERROR);

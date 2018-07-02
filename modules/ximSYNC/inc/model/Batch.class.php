@@ -50,7 +50,16 @@ class Batch extends Batchs_ORM
     const INTIME = 'InTime';
     const ENDED = 'Ended';
     const CLOSING = 'Closing';
+    const NOFRAMES = 'NoFrames';
 
+    public function set($attribute, $value)
+    {
+        if ($attribute == 'State') {
+            Logger::info('Changing state for batch: ' . $this->get('IdBatch') . ' from ' . $this->get('State') . ' to ' . $value);
+        }
+        parent::set($attribute, $value);
+    }
+    
     /**
      *  Adds a row to Batchs table
      *  

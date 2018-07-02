@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -54,29 +54,29 @@ class BatchManager
     public $idBatchDown;
     public $syncStatObj;
     private $channels;
-    private static $dbObj;
 
     /**
      * Public constructor
      */
-    function __construct()
+    public function __construct()
     {
         $this->setFlag('idBatchUp', NULL);
         $this->setFlag('idBatchDown', NULL);
     }
 
     /**
-     *  Sets the value of any variable.
-     * @param $key string
+     * Sets the value of any variable
+     * 
+     * @param string $key
      * @param $value
      */
-    function setFlag($key, $value)
+    public function setFlag($key, $value)
     {
         $this->$key = $value;
     }
 
     /**
-     * Creates the Batchs needed for the publication process.
+     * Creates the Batchs needed for the publication process
      * - Add a batch type Up for all processes
      * - Add a batch type Down only if publication end date is determined
      * 
@@ -89,16 +89,15 @@ class BatchManager
      * @param $physicalServers
      * @param $force
      * @param $userId
-     * @return array[]|number[]|bool
+     * @return array|bool
      */
-    function publicate($idNode, $docsToPublish, $docsToPublishVersion, $docsToPublishSubVersion, $up, $down, $physicalServers, array $force
-        , $userId = null)
+    public function publicate($idNode, $docsToPublish, $docsToPublishVersion, $docsToPublishSubVersion, $up, $down, $physicalServers
+        , array $force, $userId = null)
     {
         $timer = new \Ximdex\Utils\Timer();
         $timer->start();
         $node = new Node($idNode);
-        if (!$node->GetID())
-        {
+        if (!$node->GetID()) {
             Logger::error('Cannot load the node with ID: ' . $idNode . ' in order to create the publication batch');
             return false;
         }
@@ -107,25 +106,21 @@ class BatchManager
         $ancestors = array();
         $unchangedDocs = array();
         $docsToUpVersion = array();
-        foreach ($docsToPublish as $idDoc)
-        {
+        foreach ($docsToPublish as $idDoc) {
             $versionToPublish = $docsToPublishVersion[$idDoc];
             $subversionToPublish = $docsToPublishSubVersion[$idDoc];
             $docNode = new Node($idDoc);
-            if (!$docNode->get('IdNode'))
-            {
+            if (!$docNode->get('IdNode')) {
                 Logger::error("Not existing node " . " $idDoc");
                 continue;
             }
 
             // Updating the content of afected by enriching
-            if ($node->nodeType->get('IsEnriching') == '1')
-            {
+            if ($node->nodeType->get('IsEnriching') == '1') {
                 $content = $docNode->GetContent();
                 $docNode->SetContent($content);
             }
-            if (!$this->isPublishable($idDoc, $up, $down, $force[$idDoc]))
-            {
+            if (!$this->isPublishable($idDoc, $up, $down, $force[$idDoc])) {
                 $docsToPublish = array_diff($docsToPublish, array($idDoc));
                 $unchangedDocs[$idDoc][0][0] = 0;
                 continue;
@@ -133,9 +128,8 @@ class BatchManager
 
             // We up version if the current version to publish it is a draft or if the current version is 0.0 and the node is the generator node
             // Or is a image / binary file
-            if ($subversionToPublish != 0 || ($subversionToPublish == 0 && $versionToPublish == 0 && ($idDoc == $idNode or 
-                $docNode->GetNodeType() == NodeTypeConstants::IMAGE_FILE or $docNode->GetNodeType() == NodeTypeConstants::BINARY_FILE)))
-            {
+            if ($subversionToPublish != 0 || ($subversionToPublish == 0 && $versionToPublish == 0 && ($idDoc == $idNode 
+                or $docNode->GetNodeType() == NodeTypeConstants::IMAGE_FILE or $docNode->GetNodeType() == NodeTypeConstants::BINARY_FILE))) {
                 $docsToUpVersion[$idDoc] = $idDoc;
             }
         }
@@ -150,8 +144,7 @@ class BatchManager
         $iCount = 1;
         $iTotal = count($docsChunked);
         $noCache = [];
-        foreach ($docsChunked as $chunk)
-        {
+        foreach ($docsChunked as $chunk) {
             Logger::info(sprintf("[Generator %s]: Creating bach %s / %s", $idNode, $iCount, $iTotal));
             foreach ($chunk as $id) {
                 if ($force[$id]) {
@@ -172,7 +165,7 @@ class BatchManager
     }
 
     /**
-     * Checks whether the Node can be published.
+     * Checks whether the Node can be published
      *
      * @param int nodeId
      * @param int up
@@ -180,32 +173,28 @@ class BatchManager
      * @param bool forcePublication
      * @return bool
      */
-    function isPublishable($nodeId, $up, $down, $forcePublication = false)
+    private function isPublishable($nodeId, $up, $down, $forcePublication = false)
     {
         $node = new Node($nodeId);
-        if ($node->nodeType->get('IsPublishable') == 0)
-        {
+        if ($node->nodeType->get('IsPublishable') == 0) {
             Logger::info(sprintf("Node %s belongs to an unpublished nodetype", $nodeId));
             return false;
         }
-        if ($node->nodeType->get('IsFolder') == 1)
-        {
+        if ($node->nodeType->get('IsFolder') == 1) {
             return false;
         }
-        if ($forcePublication == true)
-        {
+        if ($forcePublication == true) {
             return true;
         }
         $nodeFrame = new NodeFrame();
-        if ($nodeFrame->existsNodeFrame($nodeId, $up, $down))
-        {
+        if ($nodeFrame->existsNodeFrame($nodeId, $up, $down)) {
             Logger::info(sprintf("Node %s already exists in a NodeFrame", $nodeId));
             return false;
         }
         return true;
     }
 
-    function _upVersion($docs, $generated)
+    private function _upVersion($docs, $generated)
     {
         // Increment version for documents batch finding if there are any otf docs
         if (!is_array($generated)) {
@@ -233,7 +222,7 @@ class BatchManager
         return $versions;
     }
 
-    function buildBatchs($nodeGenerator, $timeUp, $docsToPublish, $docsToUpVersion, $versions, $subversions, $server, $physicalServers
+    public function buildBatchs($nodeGenerator, $timeUp, $docsToPublish, $docsToUpVersion, $versions, $subversions, $server, $physicalServers
         , $priority, $timeDown = null, $statStart = 0, $statTotal = 0, $idPortalVersion = 0, $userId = null, array $noCache = [])
     {
         /*
@@ -259,8 +248,8 @@ class BatchManager
         return $frames;
     }
 
-    function buildFrames($up, $down, $docsToPublish, $docsToUpVersion, $versions, $subversions, $serverID, $relBatchsServers, $statStart = 0
-        , $statTotal = 0, $nodeGenerator, array $noCache = [])
+    private function buildFrames($up, $down, $docsToPublish, $docsToUpVersion, $versions, $subversions, $serverID, $relBatchsServers
+        , $statStart = 0, $statTotal = 0, $nodeGenerator, array $noCache = [])
     {
         $docsOk = array();
         $docsNotOk = array();
@@ -504,20 +493,20 @@ class BatchManager
     }
 
     /**
-     * Gets the value of any variable.
+     * Gets the value of any variable
      * 
      * @param string key
      */
-    function getFlag($key)
+    public function getFlag($key)
     {
         return $this->$key;
     }
 
-    function checkFramesIntegrity()
+    public function checkFramesIntegrity()
     {
         // NOTE: See setBatchsActiveOrEnded and getBatchToProcess
         // Ensure that batchs have frames or getBatchToProcess will return the same batch over and over
-        $sql = "update Batchs set State = 'NoFrames', Playing = false ";
+        $sql = "update Batchs set State = '" . Batch::NOFRAMES . "', Playing = false ";
         $sql .= 'where idbatch not in (select distinct IdBatchUp from ServerFrames) and idbatch not in (select distinct IdBatchDown ';
         $sql .= "from ServerFrames) and Batchs.State IN ('" . Batch::INTIME . "', '" . Batch::CLOSING . "')";
         $db = new \Ximdex\Runtime\Db();
@@ -530,16 +519,14 @@ class BatchManager
     }
 
     /**
-     * Starts (Ends) the activity of Batchs.
+     * Starts (Ends) the activity of Batchs
      * 
      * @param int testTime
      */
-    function setBatchsActiveOrEnded($testTime = NULL)
+    public function setBatchsActiveOrEnded($testTime = NULL)
     {
         $ended = array();
-        if (!self::$dbObj) {
-            self::$dbObj = new Db();
-        }
+        $dbObj = new Db();
         
         // Ending batchs type UP
         $sql = "SELECT ServerFrames.IdBatchUp, SUM(IF(ServerFrames.State = '" . ServerFrame::DUE2INWITHERROR . "', 1, 0)) AS Errors, 
@@ -549,23 +536,27 @@ class BatchManager
 			COUNT(ServerFrames.IdSync) AS Total FROM ServerFrames, Batchs WHERE Batchs.Type = '" . Batch::TYPE_UP . "' 
             AND Batchs.State IN ('" . Batch::INTIME . "', '" . Batch::CLOSING . "') AND Batchs.IdBatch = ServerFrames.IdBatchUp 
             GROUP BY ServerFrames.IdBatchUp HAVING Total = Errors + Success + Pumpeds";
-        if (self::$dbObj->Query($sql) === false) {
+        if ($dbObj->Query($sql) === false) {
         	return false;
         }
-        while (!self::$dbObj->EOF) {
-            $idBatch = self::$dbObj->GetValue("IdBatchUp");
-            $errors = self::$dbObj->GetValue("Errors");
-            $success = self::$dbObj->GetValue("Success");
-            $pumpeds = self::$dbObj->GetValue("Pumpeds");
-            $totals = self::$dbObj->GetValue("Total");
+        while (!$dbObj->EOF) {
+            $idBatch = $dbObj->GetValue("IdBatchUp");
+            $errors = $dbObj->GetValue("Errors");
+            $success = $dbObj->GetValue("Success");
+            $pumpeds = $dbObj->GetValue("Pumpeds");
+            $totals = $dbObj->GetValue("Total");
             $batch = new Batch($idBatch);
             $prevState = $batch->get('State');
             $batch->set('ServerFramesSucess', $success);
             $batch->set('ServerFramesError', $errors);
             if ($pumpeds > 0) {
-                $batch->set('State', Batch::CLOSING);
-                $batch->BatchToLog($idBatch, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__,
-                    __LINE__, "INFO", 8, sprintf(_("Setting 'Closing' state to %s batch %d UP"), $prevState, $idBatch));
+                
+                // Do not change to CLOSING state if this is the actual one in the batch
+                if ($batch->get('State') != Batch::CLOSING) {
+                    $batch->set('State', Batch::CLOSING);
+                    $batch->BatchToLog($idBatch, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__,
+                        __LINE__, "INFO", 8, sprintf(_("Setting 'Closing' state to %s batch %d UP"), $prevState, $idBatch));
+                }
             } else {
                 $batch->set('State', Batch::ENDED);
                 $batch->BatchToLog($idBatch, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__,
@@ -576,7 +567,7 @@ class BatchManager
             if ($batch->get('State') == Batch::ENDED) {
                 $this->setPortalRevision($idBatch);
             }
-            self::$dbObj->Next();
+            $dbObj->Next();
         }
 
         // Ending batchs type DOWN
@@ -585,31 +576,36 @@ class BatchManager
         if (sizeof($batchsDown) > 0) {
             foreach ($batchsDown as $idBatch) {
                 
-                // Load the batch information
+                // Search the batchs type Down with an associated batch type Up
+                $sql = "SELECT SUM(IF(ServerFrames.State = '" . ServerFrame::DUE2OUTWITHERROR . "', 1, 0)) AS Errors, 
+					SUM(IF (ServerFrames.State IN ('" . ServerFrame::OUT . "', '" . ServerFrame::CANCELLED . "', 
+                    '" . ServerFrame::REMOVED . "', '" . ServerFrame::REPLACED . "'), 1, 0)) AS Success, 
+					COUNT(ServerFrames.IdSync) AS Total FROM ServerFrames, Batchs WHERE
+					ServerFrames.IdBatchUp = Batchs.IdBatch AND Batchs.IdBatchDown = $idBatch";
+                if ($dbObj->Query($sql) === false) {
+                	return false;
+                }
+                $errors = $dbObj->GetValue("Errors");
+                $success = $dbObj->GetValue("Success");
+                $totals = $dbObj->GetValue("Total");
                 $batchDown = new Batch($idBatch);
-                
-                // Generate the common query
-                $sql = "SELECT SUM(IF(ServerFrames.State = '" . ServerFrame::DUE2OUTWITHERROR . "', 1, 0)) AS Errors"
-                    . ", SUM(IF (ServerFrames.State IN ('" . ServerFrame::OUT . "', '" . ServerFrame::CANCELLED . "'"
-                    . ", '" . ServerFrame::REMOVED . "', '" . ServerFrame::REPLACED . "'), 1, 0)) AS Success";
-                
-                // Search the batch type Down with an associated batch type Up
-                if ($batchDown->get('IdBatchUp')) {
-                    $sql .= ', COUNT(ServerFrames.IdSync) AS Total FROM ServerFrames, Batchs' 
-                        . " WHERE ServerFrames.IdBatchUp = Batchs.IdBatch AND Batchs.IdBatchDown = $idBatch";
-                } else {
-                    // Search the batch type Down without type Up
-                    Logger::info(sprintf('Batch %d type down without associated batch type up', $idBatch));
-                    $sql .= 'COUNT(ServerFrames.IdSync) AS Total FROM NodeFrames, ServerFrames'
-                        . " WHERE ServerFrames.IdNodeFrame = NodeFrames.IdNodeFrame and ServerFrames.IdBatchDown = $idBatch";
-                }
-                if (self::$dbObj->Query($sql) === false) {
-                    return false;
-                }
-                $errors = self::$dbObj->GetValue("Errors");
-                $success = self::$dbObj->GetValue("Success");
-                $totals = self::$dbObj->GetValue("Total");
                 $prevState = $batchDown->get('State');
+                if ($totals == 0) {
+                    
+                    // Search the batchs type Down without type Up
+                    Logger::debug(sprintf("Batch %d type down without associated batch type up", $idBatch));
+                    $sql = "SELECT SUM(IF (ServerFrames.State = '" . ServerFrame::DUE2OUTWITHERROR . "', 1, 0)) AS Errors, 
+						SUM(IF (ServerFrames.State IN ('" . ServerFrame::OUT . "', '" . ServerFrame::CANCELLED . "', 
+                        '" . ServerFrame::CANCELLED . "', '" . ServerFrame::REPLACED . "'), 1, 0)) AS Success, 
+						COUNT(ServerFrames.IdSync) AS Total FROM NodeFrames, ServerFrames WHERE 
+					    ServerFrames.IdNodeFrame = NodeFrames.IdNodeFrame and ServerFrames.IdBatchDown = $idBatch";
+                    if ($dbObj->Query($sql) === false) {
+                    	return false;
+                    }
+                    $errors = $dbObj->GetValue("Errors");
+                    $success = $dbObj->GetValue("Success");
+                    $totals = $dbObj->GetValue("Total");
+                }
                 $batchDown->set('ServerFramesSucess', $success);
                 $batchDown->set('ServerFramesError', $errors);
                 if ($totals == $errors + $success) {
@@ -632,13 +628,13 @@ class BatchManager
             $now = $testTime;
         }
         $query = "SELECT IdBatch FROM Batchs WHERE Playing = 1 AND State = '" . Batch::WAITING . "' AND TimeOn < $now";
-        if (self::$dbObj->Query($query) === false) {
+        if ($dbObj->Query($query) === false) {
         	return false;
         }
         $listBatchs = array();
-        while (!self::$dbObj->EOF) {
-            $listBatchs[] = self::$dbObj->GetValue("IdBatch");
-            self::$dbObj->Next();
+        while (!$dbObj->EOF) {
+            $listBatchs[] = $dbObj->GetValue("IdBatch");
+            $dbObj->Next();
         }
         foreach ($listBatchs as $batchId) {
             $batch = new Batch($batchId);
@@ -650,12 +646,12 @@ class BatchManager
     }
 
     /**
-     * Sets the field IdPortalVersion for a Batch.
+     * Sets the field IdPortalVersion for a Batch
      * 
      * @param int idBatch
      * @return bool
      */
-    function setPortalRevision($idBatch)
+    private function setPortalRevision($idBatch)
     {
         $batch = new Batch($idBatch);
         $idPortalVersion = $batch->get('IdPortalVersion');
@@ -714,38 +710,37 @@ class BatchManager
     }
 
     /**
-     * Gets the Batch that must be processed.
+     * Gets the Batch that must be processed
      */
-    function getBatchToProcess()
+    public function getBatchToProcess()
     {
-        if (!self::$dbObj) {
-            self::$dbObj = new Db();
-        }
+        $dbObj = new Db();
         $sql = "SELECT IdBatch, Type, IdNodeGenerator, MajorCycle, MinorCycle, ServerFramesTotal FROM Batchs
 				WHERE Playing = 1 AND State = '" . Batch::INTIME . "' AND ServerFramesTotal > 0
 				ORDER BY Priority DESC, MajorCycle DESC, MinorCycle DESC, Type = 'Down' DESC, IdBatch LIMIT 1";
-        if (self::$dbObj->Query($sql) === false) {
+        if ($dbObj->Query($sql) === false) {
         	return false;
         }
-        if (!self::$dbObj->numRows) {
+        if (!$dbObj->numRows) {
             return array();
         }
         $list = array();
-        $list['id'] = self::$dbObj->GetValue("IdBatch");
-        $list['type'] = self::$dbObj->GetValue("Type");
-        $list['nodegenerator'] = self::$dbObj->GetValue("IdNodeGenerator");
-        $list['majorcycle'] = self::$dbObj->GetValue("MajorCycle");
-        $list['minorcycle'] = self::$dbObj->GetValue("MinorCycle");
-        $list['totalserverframes'] = self::$dbObj->GetValue("ServerFramesTotal");
+        $list['id'] = $dbObj->GetValue("IdBatch");
+        $list['type'] = $dbObj->GetValue("Type");
+        $list['nodegenerator'] = $dbObj->GetValue("IdNodeGenerator");
+        $list['majorcycle'] = $dbObj->GetValue("MajorCycle");
+        $list['minorcycle'] = $dbObj->GetValue("MinorCycle");
+        $list['totalserverframes'] = $dbObj->GetValue("ServerFramesTotal");
         return $list;
     }
 
     /**
-     * Sets the number of Scheduler-Cycles consumed by the Batch and updates its priority.
+     * Sets the number of Scheduler-Cycles consumed by the Batch and updates its priority
+     * 
      * @param int idBatch
      * @return bool
      */
-    function setCyclesAndPriority($idBatch)
+    public function setCyclesAndPriority($idBatch)
     {
         if (is_null($idBatch)) {
             return false;
@@ -782,11 +777,6 @@ class BatchManager
                 __LINE__, "INFO", 8, sprintf(_("Up batch %d priority"), $idBatch));
         } else if ($porcentaje < 25) {
             $systemPriority = -MIN_SYSTEM_PRIORITY;
-            /*
-            if ($cycles[0] > MAX_NUM_CICLOS_BATCH) {
-                $systemPriority = $systemPriority - MIN_SYSTEM_PRIORITY;
-            }
-            */
             $batch->batchToLog(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__,
                 __LINE__, "INFO", 8, sprintf(_("Down batch %d priority"), $idBatch));
         } else {
@@ -814,93 +804,31 @@ class BatchManager
     }
 
     /**
-     * Checks if the Batch status is correct.
-     * 
-     * @param array activeAndEnabledServers
-     * @return bool
-     */
-    function checkBatchState($activeAndEnabledServers)
-    {
-        if (!self::$dbObj) {
-            self::$dbObj = new Db();
-        }
-        $batchType = $this->get('Type');
-        $totalServerFrames = $this->get('ServerFramesTotal');
-        $sucessServerFrames = $this->get('ServerFramesSucess');
-        $cycles = $this->get('MajorCycle');
-        if ($batchType == 'Up') {
-            $batchColumn = 'IdBatchUp';
-        } else if ($batchType == 'Down') {
-            $batchColumn = 'IdBatchDown';
-        } else {
-            Logger::info(sprintf("ERROR: %s rare type of batch", $batchType));
-            return false;
-        }
-        $inactives = implode(',', $activeAndEnabledServers);
-        $query = "SELECT IdSync FROM ServerFrames, Batchs, Pumpers " . 
-            "WHERE (ServerFrames.IdBatchUp = Batchs.IdBatch OR ServerFrames.IdBatchDown = Batchs.IdBatch) AND " .
-            "ServerFrames.PumperId = Pumpers.PumperId AND " .
-            "Batchs.$batchColumn = $batchId AND Pumpers.IdServer NOT IN ($inactives)";
-        if (self::$dbObj->Query($query) === false) {
-            return false;
-        }
-        $numServerFramesFromInactiveServers = self::$dbObj->numRows;
-        if ($totalServerFrames == $numServerFramesFromInactiveServers + $sucessServerFrames) {
-            Logger::info(sprintf("ERROR: %s rare type of batch", $batchType));
-            $this->set('State', Batch::ENDED);
-            $this->update();
-        }
-    }
-
-    /**
-     * Sets the field Playing for all Batchs.
+     * Sets the field Playing for all Batchs
      * 
      * @param int playingValue
      */
-    function setAllBatchsPlayingOrUnplaying($playingValue)
+    public function setAllBatchsPlayingOrUnplaying($playingValue)
     {
         $batch = new Batch();
-        if (!self::$dbObj) {
-            self::$dbObj = new Db();
-        }
+        $dbObj = new Db();
         $sql = "UPDATE Batchs set Playing = '$playingValue'";
-        self::$dbObj->Execute($sql);
-        if (self::$dbObj->numRows > 0) {
+        $dbObj->Execute($sql);
+        if ($dbObj->numRows > 0) {
             $batch->BatchToLog(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__,
                 __LINE__, "INFO", 8, $dbObj->numRows . " " . _("Setting batchs to") . ($playingValue == 1) ? " playing" : " unplaying");
         }
     }
 
     /**
-     * Gets the Batch asociated with an active NodeFrame.
-     * 
-     * @param int idNode
-     * @param int idServer
-     * @return int|null
-     */
-    function getPublicatedBatchForNode($idNode, $idServer)
-    {
-        $serverFrame = new ServerFrame();
-        $serverFrameId = $serverFrame->getCurrentPublicatedFrame($idNode, $idServer);
-        if (!is_null($serverFrameId)) {
-            $serverFrame = new ServerFrame($serverFrameId);
-            $idBatchUp = $serverFrame->get('IdBatchUp');
-            if ($idBatchUp > 0) {
-                return $idBatchUp;
-            }
-        }
-        return NULL;
-    }
-
-    /**
-     * Creates a Batch for remove documents of the publication server (Batch type Down).
+     * Creates a Batch for remove documents of the publication server (Batch type Down)
      * 
      * @param int idBatchUp
      * @param int nodeId
      * @param int serverFramesTotal
      * @return bool
      */
-    function buildBatchsFromDeleteNode($idBatchUp, $nodeId, $serverFramesTotal, $userId = null)
+    public function buildBatchsFromDeleteNode($idBatchUp, $nodeId, $serverFramesTotal, $userId = null)
     {
         $batch = new Batch();
         $batchDownArray = $batch->getDownBatch($idBatchUp);
@@ -945,61 +873,33 @@ class BatchManager
     }
 
     /**
-     * Starts the publication (again) of a Batch that is finished.
-     * @param int idBatchUp
-     * @param string frameState
-     * @return bool
-     */
-    function updateBatchFromRepublishAncestors($idBatchUp, $frameState)
-    {
-        $batch = new Batch($idBatchUp);
-        if (!($batch->get('IdBatch') > 0)) {
-            $batch->BatchToLog(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__,
-                __LINE__, "INFO", 8, sprintf(_("Batch %d does not exist"), $idBatchUp));
-            return null;
-        }
-        if ($batch->get('State') == Batch::ENDED) {
-            $batch->set('State', Batch::WAITING);
-        }
-        if (!strpos($frameState, 'ERROR')) {
-            $batch->set('ServerFramesSucess', $batch->get('ServerFramesSucess') - 1);
-        } else {
-            $batch->set('ServerFramesError', $batch->get('ServerFramesError') - 1);
-        }
-        $batch->update();
-        return null;
-    }
-
-    /**
-     * Gets all batchs that must be processed (used by MPM).
+     * Gets all batchs that must be processed (used by MPM)
      * 
      * @return array
      */
-    function getAllBatchToProcess()
+    public function getAllBatchToProcess()
     {
-        if (!self::dbObj) {
-            self::$dbObj = new Db();
-        }
+        $dbObj = new Db();
         $sql = "SELECT IdBatch, Type, IdNodeGenerator, MajorCycle, MinorCycle, ServerFramesTotal FROM Batchs
 				WHERE Playing = 1 AND State = '" . Batch::INTIME . "' AND ServerFramesTotal > 0
 				ORDER BY Priority DESC, MajorCycle DESC, MinorCycle DESC, Type = 'Down'";
-        if (self::$dbObj->Query($sql) === false) {
+        if ($dbObj->Query($sql) === false) {
             return false;
         }
-        if (self::$dbObj->numRows > 0) {
+        if ($dbObj->numRows > 0) {
             $batchs = array();
             $i = 0;
-            while (!self::$dbObj->EOF) {
+            while (!$dbObj->EOF) {
                 $list = array();
-                $list['id'] = self::$dbObj->GetValue("IdBatch");
-                $list['type'] = self::$dbObj->GetValue("Type");
-                $list['nodegenerator'] = self::$dbObj->GetValue("IdNodeGenerator");
-                $list['majorcycle'] = self::$dbObj->GetValue("MajorCycle");
-                $list['minorcycle'] = self::$dbObj->GetValue("MinorCycle");
-                $list['totalserverframes'] = self::$dbObj->GetValue("ServerFramesTotal");
+                $list['id'] = $dbObj->GetValue("IdBatch");
+                $list['type'] = $dbObj->GetValue("Type");
+                $list['nodegenerator'] = $dbObj->GetValue("IdNodeGenerator");
+                $list['majorcycle'] = $dbObj->GetValue("MajorCycle");
+                $list['minorcycle'] = $dbObj->GetValue("MinorCycle");
+                $list['totalserverframes'] = $dbObj->GetValue("ServerFramesTotal");
                 $batchs[$i] = $list;
                 $i++;
-                self::$dbObj->Next();
+                $dbObj->Next();
             }
         } else {
             return false;

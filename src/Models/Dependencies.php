@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -70,7 +70,7 @@ class Dependencies extends DependenciesOrm
      */
     private static function buildDepTypes()
     {
-        Logger::info("Building DepTypes array");
+        Logger::debug("Building DepTypes array");
         $dependenceTypes = new DependenceTypes();
         $result = $dependenceTypes->findAll();
         foreach ($result as $dependenceType) {
@@ -171,7 +171,7 @@ class Dependencies extends DependenciesOrm
     public function deleteDependentNode($nodeID)
     {
         // Deletes all the dependencies (ancestor) of this node ("free")
-        $this->deleteAll("IdNodeDependent= %s", array($nodeID));
+        $this->deleteAll("IdNodeDependent = %s", array($nodeID));
     }
 
     /**
@@ -180,57 +180,56 @@ class Dependencies extends DependenciesOrm
      * @param $nodeID
      * @param $type
      */
-    function deleteMasterNodeandType($nodeID, $type)
+    public function deleteMasterNodeandType($nodeID, $type)
     {
         $type = $this->getDepTypeId($type);
 
         // Deletes all the dependencies (ancestor) of this node ("free")
-        $this->deleteAll("IdNodeMaster=%s AND DepType=%s", array($nodeID, $type));
-    }
-
-
-    function deleteDependenciesByDependentAndVersion($nodeID, $version)
-    {
-        // Deletes all the dependencies (ancestor) of this node ("free")
-        // Last versions should be deleted
-        $this->deleteAll("IdNodeDependent = %s and version= %s", array($nodeID, $version));
+        $this->deleteAll("IdNodeMaster = %s AND DepType = %s", array($nodeID, $type));
     }
 
     /**
      * @param $nodeID
      * @param $version
      */
-    function deleteByMasterAndVersion($nodeID, $version)
+    public function deleteDependenciesByDependentAndVersion($nodeID, $version)
+    {
+        // Deletes all the dependencies (ancestor) of this node ("free")
+        // Last versions should be deleted
+        $this->deleteAll("IdNodeDependent = %s and version= %s", array($nodeID, $version));
+    }
+    
+    public function deleteByMasterAndVersion($nodeID, $version)
     {
         // Deletes all the dependencies (ancestor) of this node ("free")
         // Last versions should be deleted
         $this->deleteAll("IdNodeMaster = %s and version= %s", array($nodeID, $version));
     }
 
-    function deleteDependenciesByDependentAndType($nodeID, $type)
+    public function deleteDependenciesByDependentAndType($nodeID, $type)
     {
         $type = $this->getDepTypeId($type);
         $this->deleteAll("IdNodeDependent = %s and DepType= %s", array($nodeID, $type));
     }
 
-    function getDependenciesDependentNode($nodeID)
+    public function getDependenciesDependentNode($nodeID)
     {
         // Get all the nodes which are dependant of the current one
-        return $this->find("IdNodeMaster", "IdNodeDependent= %s", array($nodeID), MONO);
+        return $this->find("IdNodeMaster", "IdNodeDependent = %s", array($nodeID), MONO);
     }
 
-    function getDependenciesMasterNode($nodeID)
+    public function getDependenciesMasterNode($nodeID)
     {
         // Gets all the nodes which are pointing the the current one with dependencies of  kind $type
-        return $this->find("IdNodeMaster", "IdNodeMaster= %s", array($nodeID), MONO);
+        return $this->find("IdNodeMaster", "IdNodeMaster = %s", array($nodeID), MONO);
     }
 
-    function getDependenciesMasterByType($nodeID, $type, $version = null)
+    public function getDependenciesMasterByType($nodeID, $type, $version = null)
     {
         $type = $this->getDepTypeId($type);
         
         // Gets all the nodes which are pointing the the current one with dependencies of  kind $type
-        $condition = "IdNodeMaster = %s AND DepType=%s";
+        $condition = "IdNodeMaster = %s AND DepType = %s";
         $values = array($nodeID, $type);
         if (!is_null($version)) {
             $condition .= " AND version = %s";
@@ -240,10 +239,10 @@ class Dependencies extends DependenciesOrm
         return is_array($result) ? array_unique($result) : false;
     }
 
-    function getMastersByType($nodeID, $type, $version = null)
+    public function getMastersByType($nodeID, $type, $version = null)
     {
         $type = $this->getDepTypeId($type);
-        $condition = "IdNodeDependent = %s AND DepType=%s";
+        $condition = "IdNodeDependent = %s AND DepType = %s";
         $values = array($nodeID, $type);
         if (!is_null($version)) {
             $condition .= " AND version = %s";
@@ -253,7 +252,7 @@ class Dependencies extends DependenciesOrm
         return is_array($result) ? array_unique($result) : false;
     }
 
-    function existsDependence($master, $dependent, $type, $version)
+    public function existsDependence($master, $dependent, $type, $version)
     {
         $type = $this->getDepTypeId($type);
         
@@ -263,7 +262,7 @@ class Dependencies extends DependenciesOrm
         return $this->count($condition, $values);
     }
 
-    function deleteByMasterAndDependent($nodeMaster, $nodeDependent, $type)
+    public function deleteByMasterAndDependent($nodeMaster, $nodeDependent, $type)
     {
         $type = $this->getDepTypeId($type);
         if (is_null($nodeMaster) || is_null($nodeDependent) || is_null($type)) {

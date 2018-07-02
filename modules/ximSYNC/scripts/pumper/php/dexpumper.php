@@ -256,11 +256,11 @@ class DexPumper
 		$batch = new Batch($idBatchUp);
 		$batchId = (int) $batch->get('IdBatch');
 		$batchState = $batch->get('State');
-		if (!empty($batchId) && ServerFrame::CLOSING == $batchState) {
-			$filesToRename = $this->getFilesToRename($idBatchUp,$idServer);
+		if (!empty($batchId) && Batch::CLOSING == $batchState) {
+			$filesToRename = $this->getFilesToRename($idBatchUp, $idServer);
 			$totalToRename = count($filesToRename);
 			if (is_array($filesToRename) && $totalToRename > 0) {
-				$this->info("$totalToRename files to rename ");
+				$this->info("$totalToRename files to rename with batch: $batchId");
 				foreach ($filesToRename as $file) {
 					 $renameResult = $this->RenameFile($file);
 					 if ($renameResult) {
@@ -268,10 +268,8 @@ class DexPumper
 					 } elseif ($renameResult === false) {
 					     
                          // If this rename task does not work, generates a infinite loop
-                         $this->updateTask(false, ServerFrame::DUE2OUTWITHERROR);
+                         $this->updateTask(false, ServerFrame::DUE2INWITHERROR);
 					 } else {
-					     
-					     // If this rename task does not work, generates a infinite loop
 					     $this->updateTask(false, ServerFrame::IN);
 					 }
 				}
@@ -537,6 +535,7 @@ class DexPumper
 	    $this->msg_log("INFO PUMPER: $_msg");
 	    Logger::info($_msg);
 	}
+	
 	public function error($_msg = NULL)
 	{
 	    $this->msg_log("ERROR PUMPER: $_msg");
