@@ -499,7 +499,6 @@ class HTMLDocumentNode extends AbstractStructuredDocument
         $xml->addChild('id_ximdex', $ximID);
         $xml->addChild('name', $info['metadata']['title']);
         $xml->addChild('filename', $node->GetNodeName());
-        // $xml->addChild('slug', $node->GetNodeName());
         $xml->addChild('slug', '@@@RMximdex.pathto(THIS)@@@');
         $xml->addChildCData('content_flat', html_entity_decode(preg_replace('/((\n)(\s{2,}))/', '', strip_tags($content))));
         $xml->addChildCData('content_render', $content);
@@ -512,6 +511,8 @@ class HTMLDocumentNode extends AbstractStructuredDocument
         $content_payload->addChild('language', $info['language']);
         $content_payload->addChild('author', !empty($info['metadata']['author']) ?
             $info['metadata']['author'] : 'No author');
+        $content_payload->addChild('image', !empty($info['metadata']['image']) ?
+            "@@@RMximdex.pathto({$info['metadata']['image']})@@@" : '');
         $content_payload->addChild('date', !empty($info['metadata']['date']) ?
             date('Y-m-d H:i:s', strtotime($info['metadata']['date'])) : date('Y-m-d H:i:s'));
         $content_payload->addChild('type', $sectionType->get('sectionType'));
@@ -539,6 +540,7 @@ class HTMLDocumentNode extends AbstractStructuredDocument
         $info['metadata']['date'] = $metadata['Fecha'] ?? '';
         $info['metadata']['title'] = !empty($metadata['Título']) ? $metadata['Título'] : static::getCleanName($sd->GetName());
         $info['metadata']['author'] = $metadata['Autor'] ?? '';
+        $info['metadata']['image'] = $metadata['Imagen'] ?? '';
 
         return $info;
     }
