@@ -94,9 +94,9 @@ abstract class WidgetAbstract
 		$c = count($array);
 		$getTextJs = new ParsingJsGetText();
 		for ($i = 0; $i < $c; $i++) {
-            //$array[$i] =  preg_replace('#^' . App::getXimdexUrl('/'). '#', '',  $array[$i]) ;
-		    if (App::getValue('UrlRoot'))
-		        $array[$i] = '/' . ltrim($array[$i], App::getValue('UrlRoot'));
+		    if (App::getValue('UrlRoot')) {
+		        $array[$i] = str_replace('//', '/', str_replace_first(App::getValue('UrlRoot'), '', $array[$i]));
+		    }
 			$array[$i] = $getTextJs->getFile($array[$i]);
 		}
 		return $array;

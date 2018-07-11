@@ -32,6 +32,8 @@ use Ximdex\Models\Server;
 use Ximdex\Runtime\App;
 use Ximdex\Cli\CliParser;
 
+set_time_limit(0);
+
 // For legacy compatibility
 if (!defined('XIMDEX_ROOT_PATH')) {
     require_once dirname(__FILE__) . '/../../../../../bootstrap.php';
@@ -124,14 +126,14 @@ class DexPumper
 		while (true) {
 			if (!$cycle) {
 				$this->info("STARTING PUMPER CYCLE");
-			}else {
-				$this->debug("PUMPER CYCLE");
+			} else {
+				$this->info("PUMPER CYCLE");
 			}
 			$serverFrame = new ServerFrame();
 			$pumperID = $this->pumper->get('PumperId');
 			$serverFrameInfo = $serverFrame->getPublishableNodesForPumper($pumperID);
 			$countNodes = count($serverFrameInfo);
-			$this->debug("$countNodes nodes for pumping with PumperID: " . $pumperID);
+			$this->info("$countNodes nodes for pumping with PumperID: " . $pumperID);
 			
 			// Exit condition here when cycles reach max void cycles
 			if (empty($serverFrameInfo)) {
@@ -147,10 +149,10 @@ class DexPumper
 					    $this->unRegisterPumper();
 					    exit();
 					}
-					$this->debug("cycle $cycle without working. Sleeping.....");
+					$this->info("cycle $cycle without working. Sleeping.....");
 					continue;
 				} else {
-					$this->debug("Max Cycle $cycle. Bye!");
+					$this->info("Max Cycle $cycle. Bye!");
 					break;
 				}
 			}
@@ -294,14 +296,14 @@ class DexPumper
 		if (is_null($this->connection)) {
 			if (is_null($this->server)) {
 				$this->server = new Server($this->pumper->get('IdServer'));
-				$host = $this->server->get('Host');
-				$port = $this->server->get('Port');
-				$login = $this->server->get('Login');
-				$passwd =  $this->server->get('Password');
-				$idProtocol = $this->server->get('IdProtocol');
 			}
+			$idProtocol = $this->server->get('IdProtocol');
 			$this->connection = \Ximdex\IO\Connection\ConnectionManager::getConnection($idProtocol, $this->server);
 		}
+		$host = $this->server->get('Host');
+		$port = $this->server->get('Port');
+		$login = $this->server->get('Login');
+		$passwd =  $this->server->get('Password');
 		$res = true;
 		if (!$this->connection->isConnected()) {
 			if ($this->connection->connect($host, $port)) {
@@ -319,20 +321,18 @@ class DexPumper
 		}
 		if ($this->connection->getError()) {
 		    $this->error($this->connection->getError());
+		    $res = false;
 		}
-		if (!$this->connection->isConnected()) {
+		if (!$res or !$this->connection->isConnected()) {
 			$msg_error = sprintf('Fail to connect or wrong login credentials for server: %s:%s with user: %s',  $host, $port, $login);
 			$this->fatal($msg_error);
 			$this->updateTask(false);
 			$this->updateServerState('Failed to connect');
-			/*
 			$this->unRegisterPumper();
 			exit(200);
-			*/
-			$res = false;
 		}
 		$this->updateTimeInPumper();
-		return $res;
+		return true;
 	}
 
 	private function taskBasic($baseRemoteFolder, $relativeRemoteFolder)
@@ -501,8 +501,8 @@ class DexPumper
 		$pid =  getmypid();
 		$time = time();
 		$this->pumper->set('State', Pumper::STARTED);
-		$this->pumper->set('ProcessId',$pid );
-		$this->pumper->set('CheckTime',$time );
+		$this->pumper->set('ProcessId', $pid);
+		$this->pumper->set('CheckTime', $time);
 		$this->pumper->update();
 		$this->info("Start pumper demond $time");
 	}

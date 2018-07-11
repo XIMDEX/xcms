@@ -777,6 +777,11 @@ class BatchManager
                 __LINE__, "INFO", 8, sprintf(_("Up batch %d priority"), $idBatch));
         } else if ($porcentaje < 25) {
             $systemPriority = -MIN_SYSTEM_PRIORITY;
+            /*
+            if ($cycles[0] > MAX_NUM_CICLOS_BATCH) {
+                $systemPriority = $systemPriority - MIN_SYSTEM_PRIORITY;
+            }
+            */
             $batch->batchToLog(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__,
                 __LINE__, "INFO", 8, sprintf(_("Down batch %d priority"), $idBatch));
         } else {

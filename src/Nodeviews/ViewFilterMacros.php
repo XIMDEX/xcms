@@ -782,7 +782,7 @@ class ViewFilterMacros extends AbstractView implements IView
             if (!$frameID) {
                 
                 // Not published in the current channel
-                $frames = $targetFrame->getFramesOnDate($targetNode->GetID(), mktime(), $targetServer->get('IdServer'));
+                $frames = $targetFrame->getFramesOnDate($targetNode->GetID(), time(), $targetServer->get('IdServer'));
                 if (!$frames) {
                     Logger::error('Cannot include the document ' . $targetNode->GetNodeName() 
                         . ' (' . $targetNode->GetID() . '), not published yet');

@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -33,21 +33,21 @@ include_once(XIMDEX_ROOT_PATH . "/modules/ximSYNC/conf/synchro_conf.php");
 /**
  * @brief Handles the activity of Pumpers.
  *
- * A Pumper is an instance of the dexPumper script, wich is responsible for sending the ServerFrames to Server (via ftp, ssh, etc).
+ * A Pumper is an instance of the dexPumper script, wich is responsible for sending the ServerFrames to Server (via ftp, ssh, etc)
  */
 class PumperManager
 {
     /**
-     * Checks what Pumpers are running and decides whether start or stop them.
+     * Checks what Pumpers are running and decides whether start or stop them
      * 
      * @param array pumpersWithTasks
      * @param string modo
      * @return bool
      */
-    function checkAllPumpers($pumpersWithTasks, $modo = "pl")
+    public function checkAllPumpers($pumpersWithTasks, $modo = "pl")
     {
-        $pumper = new Pumper();
         if (is_null($pumpersWithTasks) || count($pumpersWithTasks) == 0) {
+            $pumper = new Pumper();
             $pumper->PumperToLog(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__,
                 __LINE__, "ERROR", 8, _("Not pumpers available"));
             return false;
@@ -64,24 +64,24 @@ class PumperManager
             $pumperCheckTime = $pumper->get('CheckTime');
             $pumper->PumperToLog(null, null, null, null, $pumperId, __CLASS__, __FUNCTION__, __FILE__,
                 __LINE__, "INFO", 8, sprintf(_("Pumper %s at state %s"), $pumperId, $pumperState));
-            Logger::debug('Pumper with ID: ' . $pumperId . ' has state: ' . $pumperState);
+            Logger::info('Pumper with ID: ' . $pumperId . ' has state: ' . $pumperState);
             switch ($pumperState) {
                 case Pumper::STARTED:
                     
                     // Checking if pumper is alive
-                    $now = time();
-                    if ($now - $pumperCheckTime > MAX_CHECK_TIME_FOR_PUMPER) {
+                   $now = time();
+                    if (!$this->isAlive($pumper) or ($now - $pumperCheckTime > MAX_CHECK_TIME_FOR_PUMPER)) {
                         $pumper->PumperToLog(null, null, null, null, $pumperId, __CLASS__, __FUNCTION__, __FILE__,
                             __LINE__, "INFO", 8, _("No checking time for Pumper") . " $pumperId", true);
                         
                         // Restart pumper
                         $processId = $pumper->get('ProcessId');
-                        if (!empty($processId)) {
+                        if (!empty($processId) and $this->isAlive($pumper)) {
                             system("kill -9 $processId", $var);
-                            Logger::debug('Pumper with ID: ' . $pumperId . ' has been restarted (process with pid ' . $processId . ' killed');
+                            Logger::warning('Pumper with ID: ' . $pumperId . ' has been restarted (process with pid ' . $processId . ' killed)');
                         }
                         else {
-                            Logger::debug('Pumper with ID: ' . $pumperId . ' has been restarted');
+                            Logger::warning('Pumper with ID: ' . $pumperId . ' has been restarted');
                         }
                         $pumper->set('State', Pumper::NEW);
                         $pumper->update();
@@ -97,7 +97,7 @@ class PumperManager
                         $pumpersWithError++;
                     }
                     else {
-                        Logger::debug('Pumper with ID: ' . $pumperId . ' has been started');
+                        Logger::info('Pumper with ID: ' . $pumperId . ' has been started');
                     }
                     break;
 
@@ -111,14 +111,14 @@ class PumperManager
                         $pumpersWithError++;
                     }
                     else {
-                        Logger::debug('Pumper with ID: ' . $pumperId . ' has been started from ended state');
+                        Logger::info('Pumper with ID: ' . $pumperId . ' has been started from ended state');
                     }
                     break;
                     
                 case Pumper::STARTING:
                     
                     // Pumper is starting...
-                    Logger::debug('Pumper with ID: ' . $pumperId . ' is starting. Aborting creation');
+                    Logger::info('Pumper with ID: ' . $pumperId . ' is starting. Aborting creation');
                     usleep(100000);
                     break;
                 default:
@@ -129,6 +129,7 @@ class PumperManager
         }
         $pumpersInRegistry = $pumper->getPumpersInRegistry();
         if ($pumpersWithError == count($pumpersInRegistry)) {
+            $pumper = New Pumper();
             $pumper->PumperToLog(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__,
                 __LINE__, "INFO", 8, _("Problems in all pumpers"));
             return false;
@@ -137,11 +138,11 @@ class PumperManager
     }
 
     /**
-     * For each Pumper gets the number of ServerFrames needed to complete the chunk and makes them available.
+     * For each Pumper gets the number of ServerFrames needed to complete the chunk and makes them available
      * 
      * @param array activeAndEnabledServers
      */
-    function callingPumpers($activeAndEnabledServers)
+    public function callingPumpers($activeAndEnabledServers)
     {
         $pumper = new Pumper();
         $pumper->PumperToLog(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__,
@@ -160,5 +161,17 @@ class PumperManager
         }
         $pumper->PumperToLog(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__,
             __LINE__, "INFO", 8, _("No pumpers to be called"));
+    }
+    
+    private function isAlive(Pumper $pumper) : bool
+    {
+        if (!$pumper->get('ProcessId')) {
+            Logger::error('Calling is alive with no pumper process ID');
+            return false;
+        }
+        if (file_exists('/proc/' . $pumper->get('ProcessId'))) {
+            return true;
+        }
+        return false;
     }
 }
