@@ -469,9 +469,8 @@ class DexPumper
 
 	public function registerPumper()
 	{
-		$state_pumper = $this->pumper->get('State');
-		if ('NEW' == $state_pumper) {
-			$msg = "No ha sido posible registrar el bombeador al tener estado de NEW";
+	    if (Pumper::NEW == $this->pumper->get('State')) {
+			$msg = 'No ha sido posible registrar el bombeador al tener estado de ' . Pumper::NEW;
 			$this->fatal($msg);
 			$this->unRegisterPumper();
 			exit(0);
@@ -482,13 +481,11 @@ class DexPumper
 
     private function unRegisterPumper()
     {
-		$state_pumper = $this->pumper->get('State');
-		if ('NEW' == $state_pumper) {
-			$msg = "No ha sido posible registrar el bombeador al tener estado de NEW";
+        if (Pumper::NEW == $this->pumper->get('State')) {
+			$msg = 'No ha sido posible registrar el bombeador al tener estado de ' . Pumper::NEW;
 			$this->fatal($msg);
 			exit(0);
 		} else {
-			$processId = $this->pumper->get('ProcessId');
 			$this->pumper->set('State', Pumper::ENDED);
 			$this->pumper->set('ProcessId','xxxx');
             $this->pumper->set('CheckTime', time());
@@ -498,10 +495,9 @@ class DexPumper
 
 	public function startPumper()
 	{
-		$pid =  getmypid();
 		$time = time();
 		$this->pumper->set('State', Pumper::STARTED);
-		$this->pumper->set('ProcessId', $pid);
+		$this->pumper->set('ProcessId', getmypid());
 		$this->pumper->set('CheckTime', $time);
 		$this->pumper->update();
 		$this->info("Start pumper demond $time");
@@ -512,7 +508,7 @@ class DexPumper
 	    if (!\Ximdex\Modules\Manager::isEnabled("wix")) {
 	        return false;
 	    }
-		$IdSync = (int)  $this->serverFrame->get('IdSync');
+		$IdSync = (int) $this->serverFrame->get('IdSync');
  	  	$idBatchUp = (int) $this->serverFrame->get('IdBatchUp');
  	  	$idServer = (int) $this->serverFrame->get('IdServer');
  		$time = time();

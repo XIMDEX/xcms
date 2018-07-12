@@ -28,7 +28,6 @@
 namespace Ximdex\Models;
 
 use ServerErrorByPumper;
-use ServerErrorManager;
 use SynchronizerStat;
 use Ximdex\Logger;
 use Ximdex\Models\ORM\PumpersOrm;
@@ -50,6 +49,7 @@ class Pumper extends PumpersOrm
     private $sleeptime = 2;
     
     public $syncStatObj;
+    public static $pumpers = array();
     
     const NEW = 'New';
     const STARTING = 'Starting';
@@ -129,41 +129,38 @@ class Pumper extends PumpersOrm
      */
     public function startPumper($pumperId, $modo = "php")
     {
-        $dbObj = new \Ximdex\Runtime\Db();
-        
+        if (self::isAlive($this)) {
+            Logger::warning('Pumper with ID: ' . $pumperId . ' is already running');
+            return true;
+        }
         // Initialize the pumper to Starting state
         $this->set('State', Pumper::STARTING);
         $this->update();
-        $startCommand =  "php ".XIMDEX_ROOT_PATH.'/bootstrap.php '.PUMPERPHP_PATH . "/dexpumper." . $modo 
-            . " --pumperid=$pumperId --sleeptime=" . $this->sleeptime . " --maxvoidcycles=" . $this->maxvoidcycles 
-            . " --localbasepath=" . SERVERFRAMES_SYNC_PATH . " > /dev/null 2>&1 &";
+        $startCommand = 'php ' . XIMDEX_ROOT_PATH . '/bootstrap.php ' . PUMPERPHP_PATH . '/dexpumper.' . $modo 
+            . " --pumperid=$pumperId --sleeptime=" . $this->sleeptime . ' --maxvoidcycles=' . $this->maxvoidcycles 
+            . ' --localbasepath=' . SERVERFRAMES_SYNC_PATH; // . " > /dev/null 2>&1 &";
         $this->PumperToLog(null, null, null, null, $pumperId, __CLASS__, __FUNCTION__, __FILE__,
-            __LINE__, "INFO", 8, "Pumper call: $startCommand");
-        $out = array();
-        system($startCommand, $var);
+            __LINE__, 'INFO', 8, "Pumper call: $startCommand");
+        $descriptorspec = array(
+            0 => array('pipe', 'r'),
+            1 => array('pipe', 'w'),
+            2 => array('file', XIMDEX_ROOT_PATH . '/logs/pumpers.log', 'a')
+        );
+        $process = proc_open($startCommand, $descriptorspec, $pipes);
         $this->PumperToLog(null, null, null, null, $pumperId, __CLASS__, __FUNCTION__, __FILE__,
             __LINE__, "INFO", 8, $startCommand, true);
-
-        // 0: OK, 200: connection problem, 255: unexistent server, 127:command not found
-        if ($var == 0) {
+        if ($process === false) {
+            $this->set('State', Pumper::ENDED);
+            $this->update();
             $this->PumperToLog(null, null, null, null, $pumperId, __CLASS__, __FUNCTION__, __FILE__,
-                __LINE__, "INFO", 8, "Pumper $pumperId started succefully", true);
-            return true;
-        } else if ($var == 200) {
-            $this->PumperToLog(null, null, null, null, $pumperId, __CLASS__, __FUNCTION__, __FILE__,
-                __LINE__, "ERROR", 8, "ERROR In server connection starting pumper $pumperId");
-            $serverMng = new ServerErrorManager();
-            $serverMng->disableServerByPumper($pumperId);
-            return false;
-        } else if ($var == 400) {
-            $this->PumperToLog(null, null, null, null, $pumperId, __CLASS__, __FUNCTION__, __FILE__,
-                __LINE__, "ERROR", 8, "ERROR registering pumper $pumperId.");
-            return false;
-        } else {
-            $this->PumperToLog(null, null, null, null, $pumperId, __CLASS__, __FUNCTION__, __FILE__,
-                __LINE__, "ERROR", 8, "ERROR Code $var starting pumper $pumperId");
+                __LINE__, "ERROR", 8, "ERROR registering pumper $pumperId");
+            Logger::error("Cannot run pumper with ID: $pumperId");
             return false;
         }
+        self::$pumpers[$pumperId] = $process;
+        $this->PumperToLog(null, null, null, null, $pumperId, __CLASS__, __FUNCTION__, __FILE__,
+            __LINE__, "INFO", 8, "Pumper $pumperId started successfully", true);
+        return true;
     }
 
     /**
@@ -196,5 +193,39 @@ class Pumper extends PumpersOrm
         Logger::debug('PumperToLog -> batchId:' . $batchId . ' nodeFrameId:' . $nodeFrameId . ' channelFrameId:' . $channelFrameId 
             . ' serverFrameId:' . $serverFrameId . ' pumperId:' . $pumperId . ' class:' . $class . ' method:' . $method . ' $file:' . $file
             . ' line:' . $line . ' type:' . $type . ' level:' . $level . ' comment:' . $comment . ' doInsertSql:' . $doInsertSql);
+    }
+    
+    public static function isAlive(Pumper $pumper) : bool
+    {
+        if (!$pumper->get('PumperId')) {
+            Logger::error('No ID was sent to checking pumper process status');
+            return false;
+        }
+        if (!isset(self::$pumpers[$pumper->get('PumperId')])) {
+            Logger::warning('Calling a non existant instance of pumper with ID: ' . $pumper->get('PumperId'));
+            return false;
+        }
+        $status = proc_get_status(self::$pumpers[$pumper->get('PumperId')]);
+        if (!$status) {
+            Logger::error('Cannot get status information from the pumper with ID: ' . $pumper->get('PumperId'));
+            return false;
+        }
+        if (isset($status['running']) and $status['running']) {
+            return true;
+        }
+        return false;
+    }
+    
+    public static function terminate(Pumper $pumper) : bool
+    {
+        if (!$pumper->get('PumperId')) {
+            Logger::error('No ID was sent to terminate pumper process');
+            return false;
+        }
+        if (!isset(self::$pumpers[$pumper->get('PumperId')])) {
+            Logger::warning('Calling a non existant instance of pumper with ID: ' . $pumper->get('PumperId'));
+            return false;
+        }
+        return proc_terminate(self::$pumpers[$pumperId]);
     }
 }

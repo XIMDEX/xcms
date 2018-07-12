@@ -69,16 +69,22 @@ class PumperManager
                 case Pumper::STARTED:
                     
                     // Checking if pumper is alive
-                   $now = time();
-                    if (!$this->isAlive($pumper) or ($now - $pumperCheckTime > MAX_CHECK_TIME_FOR_PUMPER)) {
+                    $now = time();
+                    if (!Pumper::isAlive($pumper) or ($now - $pumperCheckTime > MAX_CHECK_TIME_FOR_PUMPER)) {
                         $pumper->PumperToLog(null, null, null, null, $pumperId, __CLASS__, __FUNCTION__, __FILE__,
                             __LINE__, "INFO", 8, _("No checking time for Pumper") . " $pumperId", true);
                         
                         // Restart pumper
-                        $processId = $pumper->get('ProcessId');
-                        if (!empty($processId) and $this->isAlive($pumper)) {
-                            system("kill -9 $processId", $var);
-                            Logger::warning('Pumper with ID: ' . $pumperId . ' has been restarted (process with pid ' . $processId . ' killed)');
+                        if (Pumper::isAlive($pumper)) {
+                            
+                            // Terminate the pumper process
+                            if (Pumper::terminate($pumper)) {
+                                Logger::warning('Pumper with ID: ' . $pumperId . ' has been restarted (process with pid ' 
+                                    . $pumper->get('ProcessId') . ' terminated)');
+                            }
+                            else {
+                                Logger::error('Cannot terminate the process with pid ' . $pumper->get('ProcessId') . ' for pumper ' . $pumperId);
+                            }
                         }
                         else {
                             Logger::warning('Pumper with ID: ' . $pumperId . ' has been restarted');
@@ -161,17 +167,5 @@ class PumperManager
         }
         $pumper->PumperToLog(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__,
             __LINE__, "INFO", 8, _("No pumpers to be called"));
-    }
-    
-    private function isAlive(Pumper $pumper) : bool
-    {
-        if (!$pumper->get('ProcessId')) {
-            Logger::error('Calling is alive with no pumper process ID');
-            return false;
-        }
-        if (file_exists('/proc/' . $pumper->get('ProcessId'))) {
-            return true;
-        }
-        return false;
     }
 }
