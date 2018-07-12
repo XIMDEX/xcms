@@ -566,6 +566,6 @@ class DexPumper
 
 $parameterCollector = new DexPumperCli($argc, $argv);
 $dexPumper = new DexPumper($parameterCollector->getParametersArray());
-Logger::generate('PUBLICATION', 'publication');
-Logger::setActiveLog('publication');
+Logger::generate('PUMPERS', 'pumpers');
+Logger::setActiveLog('pumpers');
 $dexPumper->start();
