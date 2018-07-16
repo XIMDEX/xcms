@@ -64,7 +64,7 @@ class PumperManager
             $pumperCheckTime = $pumper->get('CheckTime');
             $pumper->PumperToLog(null, null, null, null, $pumperId, __CLASS__, __FUNCTION__, __FILE__,
                 __LINE__, "INFO", 8, sprintf(_("Pumper %s at state %s"), $pumperId, $pumperState));
-            Logger::info('Pumper with ID: ' . $pumperId . ' has state: ' . $pumperState);
+            Logger::debug('Pumper with ID: ' . $pumperId . ' has state: ' . $pumperState);
             switch ($pumperState) {
                 case Pumper::STARTED:
                     

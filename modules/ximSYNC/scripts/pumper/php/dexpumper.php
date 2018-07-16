@@ -224,7 +224,7 @@ class DexPumper
 		}
 		$originFile = "{$targetFolder}.{$IdSync}_{$fileName}";
 		$targetFile = $fileName;
-		$this->info("Renaming file: $originFile -> $targetFile");
+		$this->info("Renaming file: $originFile -> $targetFile (Sync: $IdSync)");
 		return $this->taskRename($originFile, $targetFolder,  $targetFile, $IdSync);
 	}
 
@@ -409,7 +409,7 @@ class DexPumper
 			return false;
 		}
 		if (!$this->connection->isFile($targetFile)) {
-		    $this->warning("Renaming file: $targetFile file not found");
+		    $this->warning("Renaming file: $targetFile file not found (Sync: $idSync)");
 		    return null;
 		}
 		if (!$this->connection->rename($targetFile, $targetFolder . $newFile))
@@ -417,7 +417,7 @@ class DexPumper
 		    $this->error("Could not rename the target document: {$targetFile} -> {$targetFolder}{$newFile} ");
             return false;
 		}
-		Logger::info('The file has been published succesfuslly' . ': ' . $newFile . ' (Sync: ' . $idSync . ')', true);
+		Logger::info('Published: ' . $targetFolder . $newFile . ' (Sync: ' . $idSync . ')', true);
 		return true;
 	}
 
@@ -446,6 +446,7 @@ class DexPumper
 		    $this->serverFrame->update();
 		}
 		$this->updateTimeInPumper();
+		return true;
 	}
     
     private function finishTask($idSync)
@@ -566,6 +567,6 @@ class DexPumper
 
 $parameterCollector = new DexPumperCli($argc, $argv);
 $dexPumper = new DexPumper($parameterCollector->getParametersArray());
-Logger::generate('PUMPERS', 'pumpers');
-Logger::setActiveLog('pumpers');
+Logger::generate('PUBLICATION', 'publication');
+Logger::setActiveLog('publication');
 $dexPumper->start();
