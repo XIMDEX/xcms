@@ -87,7 +87,7 @@ class PumperManager
                             }
                         }
                         else {
-                            Logger::warning('Pumper with ID: ' . $pumperId . ' has been restarted');
+                            Logger::warning('Pumper with ID: ' . $pumperId . ' will be restarted');
                         }
                         $pumper->set('State', Pumper::NEW);
                         $pumper->update();
@@ -124,7 +124,7 @@ class PumperManager
                 case Pumper::STARTING:
                     
                     // Pumper is starting...
-                    Logger::info('Pumper with ID: ' . $pumperId . ' is starting. Aborting creation');
+                    Logger::warning('Pumper with ID: ' . $pumperId . ' is starting. Aborting creation');
                     usleep(100000);
                     break;
                 default:

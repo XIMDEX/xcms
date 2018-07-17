@@ -118,11 +118,13 @@ Class Logger
         }
     }
 
-    public static function info($string, $success = null)
+    public static function info($string, bool $success = false, string $color = '')
     {
         try {
             if ($success) {
                 $string = self::$color->__invoke($string)->green()->bold();
+            }else if (!empty($color)) {
+                $string = self::$color->__invoke($string)->$color()->bold();
             }
             return self::get()->logger->addInfo($string);
         } catch (Exception $e) {

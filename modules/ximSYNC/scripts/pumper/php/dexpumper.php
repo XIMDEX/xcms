@@ -370,7 +370,7 @@ class DexPumper
 		    $this->warning("Uploading file: $fullPath file already exist");
 		    return null;
 		}
-		$this->info("Copying $localFile in $fullPath");
+		$this->info("Copying $localFile in $fullPath", 'magenta');
 		if (!$this->connection->put($localFile, $fullPath)) {
 		    $this->error(_('Could not upload the file').": $localFile -> $fullPath");
 		    if ($this->connection->getError()) {
@@ -527,10 +527,10 @@ class DexPumper
         $this->debug($sqlReport);
 	}
 
-	public function info($_msg = NULL)
+	public function info($_msg = NULL, string $color = '')
 	{
 	    $this->msg_log("INFO PUMPER: $_msg");
-	    Logger::info($_msg);
+	    Logger::info($_msg, false, $color);
 	}
 	
 	public function error($_msg = NULL)
