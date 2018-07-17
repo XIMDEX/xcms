@@ -29,7 +29,6 @@ namespace Ximdex\IO\Connection;
 
 use Ximdex\Logger;
 use phpseclib\Net\SFTP;
-use Ximdex\Utils\FsUtils;
 
 class ConnectionSsh extends Connector implements IConnector
 {
@@ -282,7 +281,8 @@ class ConnectionSsh extends Connector implements IConnector
         $size = (int) filesize($localFile);
         return $this->netSFTP->put($targetFile, $localFile, SFTP::SOURCE_LOCAL_FILE, -1, -1, function($sent) use ($targetFile, $size) {
             $sent = round($sent * 100 / $size);
-            Logger::info("Uploading file {$targetFile} progress: {$sent}% from {$size}bytes", false, 'magenta');
+            $size = round($size / 1024);
+            Logger::info("Uploading file {$targetFile} progress: {$sent}% from {$size} Kbytes", false, 'magenta');
         });
     }
 

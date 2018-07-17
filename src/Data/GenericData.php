@@ -409,7 +409,7 @@ class GenericData
                     break;
             }
         }
-        return (!($this->messages->count(MSG_TYPE_ERROR) > 0));
+        return (!$this->messages->count(MSG_TYPE_ERROR));
     }
 
     /**
@@ -640,6 +640,11 @@ class GenericData
                 return false;
             }
             $updatedRows = $dbObj->numRows;
+        } else {
+            Logger::error('Integrity errors found while executing an update SQL query (' . $query . ')');
+            foreach ($this->messages->messages as $message) {
+                Logger::error($message['message']);
+            }
         }
         $this->_applyFilter('afterUpdate');
         return $updatedRows ? $updatedRows : null;
