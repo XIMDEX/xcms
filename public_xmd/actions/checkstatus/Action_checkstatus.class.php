@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,18 +25,16 @@
  * @version $Revision$
  */
 
-
 use Ximdex\Models\Node;
 use Ximdex\Models\PipeStatus;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Workflow\WorkFlow;
 
-\Ximdex\Modules\Manager::file('/inc/nodetypes/statenode.php');
+\Ximdex\Modules\Manager::file('/src/nodetypes/statenode.php', 'XIMDEX');
 \Ximdex\Modules\Manager::file('/inc/model/ServerFrame.class.php', 'ximSYNC');
 
 class Action_checkstatus extends ActionAbstract
 {
-
     //Main method: shows initial form
     function index()
     {
@@ -112,5 +111,4 @@ class Action_checkstatus extends ActionAbstract
         $values['publications'] = $frames->getPublicationQueue($nodeid);
         $this->sendJSON_cached($values, $etag);
     }
-
 }
