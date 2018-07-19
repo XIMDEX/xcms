@@ -96,7 +96,10 @@ class ConnectionSsh extends Connector implements IConnector
      */
     public function pwd()
     {
-        return $this->netSFTP->pwd();
+        Logger::info('Call to pwd', false, 'magenta');
+        $res = $this->netSFTP->pwd();
+        Logger::info('Call to pwd returns: ' . $res, false, 'magenta');
+        return $res;
     }
 
     /**
@@ -173,7 +176,10 @@ class ConnectionSsh extends Connector implements IConnector
      */
     public function cd($dir)
     {
-        return $this->netSFTP->chdir($dir);
+        Logger::info('Call to cd: ' . $dir, false, 'magenta');
+        $res = $this->netSFTP->chdir($dir);
+        Logger::info('Call to cd returns: ' . $res, false, 'magenta');
+        return $res;
     }
 
     private function _mkdir($dir, $mode)
@@ -302,6 +308,7 @@ class ConnectionSsh extends Connector implements IConnector
         $isFile = false;
         $matches = array();
         preg_match('/(.*\/)([^\/]+)$/', $path, $matches);
+        Logger::info('isFile matches: ' . print_r($matches, true), false, 'magenta');
         if (count($matches) == 3) {
             $folder = $matches[1];
             $file = $matches[2];
@@ -349,6 +356,9 @@ class ConnectionSsh extends Connector implements IConnector
      */
     public function ls($dir, $mode = NULL)
     {
-        return $this->netSFTP->nlist($dir);
+        Logger::info('Call to ls: ' . $dir . ' (mode: ' . $mode . ')', false, 'magenta');
+        $res = $this->netSFTP->nlist($dir);
+        Logger::info('Call to ls returns: ' . $res, false, 'magenta');
+        return $res;
     }
 }

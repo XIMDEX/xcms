@@ -373,7 +373,7 @@ class DexPumper
 		    $fullPath .= '/';
 		}
 		$fullPath .= $remoteFile;
-		Logger::info('Cheking the file path ' . $fullPath, false, 'magenta');
+		Logger::info('Checking the file path ' . $fullPath, false, 'magenta');
 		if ($this->connection->isFile($fullPath)) {
 		    $this->warning("Uploading file: $fullPath file already exist, overwriting");
 		}
