@@ -318,8 +318,11 @@ class ConnectionSsh extends Connector implements IConnector
         if (empty($folder)) $folder = '/';
         if ($this->cd($folder)) {
             if ($this->pwd() == $folder || $this->pwd() . '/' == $folder) {
+                /*
                 $fileList = $this->ls($folder);
                 $isFile = (in_array($file, $fileList));
+                */
+                $isFile = $this->netSFTP->file_exists($file);
             }
         }
         Logger::info($file . (!$isFile ? ' not' : '') . ' exists', false, 'magenta');
