@@ -52,7 +52,10 @@ if (!defined('UNACTIVITY_CYCLES')) {
 	define('UNACTIVITY_CYCLES', 5);
 }
 if (!defined('MAX_CHECK_TIME_FOR_PUMPER')) {
-	define('MAX_CHECK_TIME_FOR_PUMPER', 1800); // max uploading time for a single file (30 minutes)
+	define('MAX_CHECK_TIME_FOR_PUMPER', 600); // max uploading time for a single file (10 minutes)
+}
+if (!defined('MAX_STARTING_TIME_FOR_PUMPER')) {
+    define('MAX_STARTING_TIME_FOR_PUMPER', 60); // max starting time for a pumper process in seconds
 }
 
 // Minimum batch system priority

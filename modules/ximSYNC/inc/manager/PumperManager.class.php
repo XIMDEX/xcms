@@ -75,20 +75,7 @@ class PumperManager
                             __LINE__, "INFO", 8, _("No checking time for Pumper") . " $pumperId", true);
                         
                         // Restart pumper
-                        if (Pumper::isAlive($pumper)) {
-                            
-                            // Terminate the pumper process
-                            if (Pumper::terminate($pumper)) {
-                                Logger::warning('Pumper with ID: ' . $pumperId . ' has been restarted (process with pid ' 
-                                    . $pumper->get('ProcessId') . ' terminated)');
-                            }
-                            else {
-                                Logger::error('Cannot terminate the process with pid ' . $pumper->get('ProcessId') . ' for pumper ' . $pumperId);
-                            }
-                        }
-                        else {
-                            Logger::warning('Pumper with ID: ' . $pumperId . ' will be restarted');
-                        }
+                        Logger::warning('Pumper with ID: ' . $pumperId . ' will be restarted');
                         $pumper->set('State', Pumper::NEW);
                         $pumper->update();
                         $result = $pumper->startPumper($pumperId, $modo);
@@ -124,8 +111,13 @@ class PumperManager
                 case Pumper::STARTING:
                     
                     // Pumper is starting...
-                    Logger::warning('Pumper with ID: ' . $pumperId . ' is starting. Aborting creation');
-                    usleep(100000);
+                    if (time() - $pumper->get('StartTime') > MAX_STARTING_TIME_FOR_PUMPER) {
+                        $result = $pumper->startPumper($pumperId, $modo);
+                    }
+                    else {
+                        Logger::warning('Pumper with ID: ' . $pumperId . ' is starting. Aborting creation');
+                        usleep(100000);
+                    }
                     break;
                 default:
                     $pumper->PumperToLog(null, null, null, null, $pumperId, __CLASS__, __FUNCTION__, __FILE__,

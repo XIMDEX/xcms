@@ -130,14 +130,17 @@ class Pumper extends PumpersOrm
     public function startPumper($pumperId, $modo = 'php')
     {
         $pumper = new Pumper($pumperId);
-        if ($pumper->get('State') == Pumper::STARTING) {
-            Logger::warning('Pumper with ID: ' . $pumperId . ' is already starting. Starting aborted');
-            return true;
+        if ($pumper->get('ProcessId') and Pumper::isAlive($pumper)) {
+            
+            // Terminate the previous pumper process
+            if (Pumper::terminate($pumper)) {
+                Logger::warning('Pumper with ID: ' . $pumperId . ' has been terminated (Process with PID: ' . $pumper->get('ProcessId'));
+            }
+            else {
+                Logger::error('Cannot terminate the process with pid ' . $pumper->get('ProcessId') . ' for pumper ' . $pumperId);
+            }
         }
-        if ($pumper->get('State') == Pumper::STARTED and self::isAlive($pumper)) {
-            Logger::error('Pumper with ID: ' . $pumperId . ' is already running. Starting aborted');
-            return true;
-        }
+        
         // Initialize the pumper to Starting state
         $this->set('State', Pumper::STARTING);
         $this->update();
@@ -211,7 +214,10 @@ class Pumper extends PumpersOrm
             Logger::error('No ID was sent to checking pumper process status');
             return false;
         }
-        if (!$pumper->get('ProcessId') or $pumper->get('ProcessId') == 'xxxx') {
+        if ($pumper->get('ProcessId') == 'xxxx') {
+            return false;
+        }
+        if (!$pumper->get('ProcessId')) {
             Logger::error('Pumper with ID: ' . $pumper->get('PumperId') . ' has not a process ID');
             return false;
         }
