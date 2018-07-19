@@ -296,6 +296,7 @@ class ConnectionSsh extends Connector implements IConnector
     public function isFile($path)
     {
         if ($this->isDir($path)) {
+            Logger::error('Resouce ' . $path . ' is a folder, not a file');
             return false;
         }
         $isFile = false;
@@ -314,6 +315,8 @@ class ConnectionSsh extends Connector implements IConnector
                 $isFile = (in_array($file, $fileList));
             }
         }
+        Logger::info($file . (!$isFile ? ' not' : '') . ' exists', false, 'magenta');
+        Logger::info('Moving to ' . $this->pwd(), false, 'magenta');
         $this->cd($this->pwd());
         return $isFile;
     }
