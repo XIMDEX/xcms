@@ -303,7 +303,6 @@ class DexPumper
 				$this->server = new Server($this->pumper->get('IdServer'));
 			}
 			$idProtocol = $this->server->get('IdProtocol');
-			Logger::info('Connecting to ' . $this->server->get('Host'), false, 'magenta');
 			$this->connection = \Ximdex\IO\Connection\ConnectionManager::getConnection($idProtocol, $this->server);
 		}
 		$host = $this->server->get('Host');
@@ -312,7 +311,9 @@ class DexPumper
 		$passwd =  $this->server->get('Password');
 		$res = true;
 		if (!$this->connection->isConnected()) {
+		    Logger::info('Connecting to ' . $this->server->get('Host'), false, 'magenta');
 			if ($this->connection->connect($host, $port)) {
+			    Logger::info('Logging to ' . $this->server->get('Host') . ' with user ' . $login, false, 'magenta');
 			    if (!$this->connection->login($login, $passwd)) {
 			        $this->error('Can\'t log the user into host: ' . $host);
 			        $res = false;
@@ -325,6 +326,7 @@ class DexPumper
 			}
 		}
 		if ($this->connection->getError()) {
+		    Logger::error('Problems with the connection: ' . $host);
 		    $this->error($this->connection->getError());
 		    $res = false;
 		}
@@ -344,12 +346,12 @@ class DexPumper
 	{
 		$msg_not_found_folder =  _('Could not find the base folder').": {$baseRemoteFolder}";
 		$msg_cant_create_folder = _('Could not find or create the destination folder')." {$baseRemoteFolder}{$relativeRemoteFolder}";
-		if (!$this->connection->cd($baseRemoteFolder))
-		{
+		Logger::info('Moving to remote folder ' . $baseRemoteFolder, false, 'magenta');
+		if (!$this->connection->cd($baseRemoteFolder)) {
 			$this->warning($msg_not_found_folder);
 		}
-		if (!$this->connection->mkdir($baseRemoteFolder . $relativeRemoteFolder, 0755, true))
-		{
+		Logger::info('Making remote folder ' . $baseRemoteFolder . $relativeRemoteFolder, false, 'magenta');
+		if (!$this->connection->mkdir($baseRemoteFolder . $relativeRemoteFolder, 0755, true)) {
 			$this->error($msg_cant_create_folder);
 			return false;
 		}
@@ -371,6 +373,7 @@ class DexPumper
 		    $fullPath .= '/';
 		}
 		$fullPath .= $remoteFile;
+		Logger::info('Cheking the file path ' . $fullPath, false, 'magenta');
 		if ($this->connection->isFile($fullPath)) {
 		    $this->warning("Uploading file: $fullPath file already exist, overwriting");
 		}
