@@ -240,10 +240,13 @@ ALTER TABLE `Servers` ADD `ActiveForPumping` tinyint(3) unsigned Default '1';
 -- Add tables restrictions
 
 ALTER TABLE `Batchs` CHANGE `Type` `Type` ENUM('Up','Down') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'Up';
-ALTER TABLE `Batchs` ADD FOREIGN KEY (`IdBatchDown`) REFERENCES `Batchs`(`IdBatch`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+ALTER TABLE `Batchs` ADD CONSTRAINT `Batchs_ibfk_1` FOREIGN KEY (`IdBatchDown`) 
+    REFERENCES `Batchs`(`IdBatch`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
-ALTER TABLE `ServerFrames` ADD FOREIGN KEY (`IdBatchUp`) REFERENCES `Batchs`(`IdBatch`) ON DELETE RESTRICT ON UPDATE RESTRICT;
-ALTER TABLE `ServerFrames` ADD FOREIGN KEY (`IdBatchDown`) REFERENCES `Batchs`(`IdBatch`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+ALTER TABLE `ServerFrames` ADD CONSTRAINT `ServerFrames_ibfk_1` FOREIGN KEY (`IdBatchUp`) 
+    REFERENCES `Batchs`(`IdBatch`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+ALTER TABLE `ServerFrames` ADD CONSTRAINT `ServerFrames_ibfk_2` FOREIGN KEY (`IdBatchDown`) 
+    REFERENCES `Batchs`(`IdBatch`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 
 -- Add RolesActions

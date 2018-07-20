@@ -247,6 +247,9 @@ class BatchManager
             , $relBatchsServers, $statStart, $statTotal, $nodeGenerator, $noCache);
         foreach ($relBatchsServers as $id) {
             $batch = new Batch($id);
+            if (!$batch->get('IdBatch')) {
+                continue;
+            }
             $batch->set('Playing', 1);
             $batch->update();
         }

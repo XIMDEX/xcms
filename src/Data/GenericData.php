@@ -810,10 +810,11 @@ class GenericData
      */
     public function exists($idName = 'id')
     {
-        reset($this->_metaData);
+        // reset($this->_metaData);
         $arrayFields = array();
         $arrayValues = array();
-        while (list($field, $descriptors) = each($this->_metaData)) {
+        // while (list($field, $descriptors) = each($this->_metaData)) {
+        foreach ($this->_metaData as $field => $descriptors) {
             if (isset($descriptors['auto_increment']) && ('true' == $descriptors['auto_increment'])) {
                 continue;
             }

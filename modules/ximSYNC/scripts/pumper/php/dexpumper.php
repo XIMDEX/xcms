@@ -32,6 +32,8 @@ use Ximdex\Models\Server;
 use Ximdex\Runtime\App;
 use Ximdex\Cli\CliParser;
 
+set_time_limit(0);
+
 // For legacy compatibility
 if (!defined('XIMDEX_ROOT_PATH')) {
     require_once dirname(__FILE__) . '/../../../../../bootstrap.php';
@@ -124,14 +126,14 @@ class DexPumper
 		while (true) {
 			if (!$cycle) {
 				$this->info("STARTING PUMPER CYCLE");
-			}else {
-				$this->debug("PUMPER CYCLE");
+			} else {
+				$this->info("PUMPER CYCLE");
 			}
 			$serverFrame = new ServerFrame();
 			$pumperID = $this->pumper->get('PumperId');
 			$serverFrameInfo = $serverFrame->getPublishableNodesForPumper($pumperID);
 			$countNodes = count($serverFrameInfo);
-			$this->debug("$countNodes nodes for pumping with PumperID: " . $pumperID);
+			$this->info("$countNodes nodes for pumping with PumperID: " . $pumperID);
 			
 			// Exit condition here when cycles reach max void cycles
 			if (empty($serverFrameInfo)) {
@@ -147,10 +149,10 @@ class DexPumper
 					    $this->unRegisterPumper();
 					    exit();
 					}
-					$this->debug("cycle $cycle without working. Sleeping.....");
+					$this->info("cycle $cycle without working. Sleeping.....");
 					continue;
 				} else {
-					$this->debug("Max Cycle $cycle. Bye!");
+					$this->info("Max Cycle $cycle. Bye!");
 					break;
 				}
 			}
@@ -163,7 +165,7 @@ class DexPumper
 			{
 			    $this->fatal("ServerFrame not found :". $task);
 			}
-			$this->info("ServerFrame $IdSync to proccess.");
+			$this->info("ServerFrame $IdSync to proccess");
 			$this->getHostConnection();
 			if ($state_task == ServerFrame::DUE2IN) {
 			    $this->connection->setIsFile(false);
@@ -222,7 +224,7 @@ class DexPumper
 		}
 		$originFile = "{$targetFolder}.{$IdSync}_{$fileName}";
 		$targetFile = $fileName;
-		$this->info("Renaming file: $originFile -> $targetFile");
+		$this->info("Renaming file: $originFile -> $targetFile (Sync: $IdSync)");
 		return $this->taskRename($originFile, $targetFolder,  $targetFile, $IdSync);
 	}
 
@@ -250,9 +252,9 @@ class DexPumper
 	private function pumpFile()
 	{
 		$idBatchUp = (int) $this->serverFrame->get('IdBatchUp');
-		$idServer =  (int) $this->serverFrame->get('IdServer');
-		$idSync =  (int) $this->serverFrame->get('IdSync');
-		$this->info("ServerFrame $idSync PUMPING ");
+		$idServer = (int) $this->serverFrame->get('IdServer');
+		$idSync = (int) $this->serverFrame->get('IdSync');
+		$this->info("ServerFrame $idSync PUMPING");
 		$batch = new Batch($idBatchUp);
 		$batchId = (int) $batch->get('IdBatch');
 		$batchState = $batch->get('State');
@@ -270,7 +272,7 @@ class DexPumper
                          // If this rename task does not work, generates a infinite loop
                          $this->updateTask(false, ServerFrame::DUE2INWITHERROR);
 					 } else {
-					     $this->updateTask(false, ServerFrame::IN);
+					     $this->finishTask($file["IdSync"]);
 					 }
 				}
 			}
@@ -279,6 +281,13 @@ class DexPumper
 
 	private function updateTimeInPumper()
 	{
+	    $pumper = new Pumper($this->pumper->get('PumperId'));
+	    if (is_numeric($pumper->get('ProcessId')) and $pumper->get('ProcessId') != getmypid() and Pumper::isAlive($pumper)) {
+	        
+	        // Another pumper with the same ID is running, shuting down this
+	        Logger::warning('Exiting the pumping process in order to running a newer process');
+	        exit();
+	    }
 		$this->pumper->set('CheckTime', time());
 		$this->pumper->update();
 	}
@@ -294,57 +303,57 @@ class DexPumper
 		if (is_null($this->connection)) {
 			if (is_null($this->server)) {
 				$this->server = new Server($this->pumper->get('IdServer'));
-				$host = $this->server->get('Host');
-				$port = $this->server->get('Port');
-				$login = $this->server->get('Login');
-				$passwd =  $this->server->get('Password');
-				$idProtocol = $this->server->get('IdProtocol');
 			}
+			$idProtocol = $this->server->get('IdProtocol');
 			$this->connection = \Ximdex\IO\Connection\ConnectionManager::getConnection($idProtocol, $this->server);
 		}
+		$host = $this->server->get('Host');
+		$port = $this->server->get('Port');
+		$login = $this->server->get('Login');
+		$passwd =  $this->server->get('Password');
 		$res = true;
 		if (!$this->connection->isConnected()) {
+		    Logger::info('Connecting to ' . $this->server->get('Host'), false, 'magenta');
 			if ($this->connection->connect($host, $port)) {
-			    if (!$this->connection->login($login, $passwd))
-			    {
+			    Logger::info('Logging to ' . $this->server->get('Host') . ' with user ' . $login, false, 'magenta');
+			    if (!$this->connection->login($login, $passwd)) {
 			        $this->error('Can\'t log the user into host: ' . $host);
 			        $res = false;
+			    } else {
+			        Logger::info('Connected to ' . $this->server->get('Host'), true);
 			    }
-			}
-			else
-			{
+			} else {
 			    $this->error('Can\'t connect to host: ' . $host);
 			    $res = false;
 			}
 		}
 		if ($this->connection->getError()) {
+		    Logger::error('Problems with the connection: ' . $host);
 		    $this->error($this->connection->getError());
+		    $res = false;
 		}
-		if (!$this->connection->isConnected()) {
+		if (!$res or !$this->connection->isConnected()) {
 			$msg_error = sprintf('Fail to connect or wrong login credentials for server: %s:%s with user: %s',  $host, $port, $login);
 			$this->fatal($msg_error);
 			$this->updateTask(false);
 			$this->updateServerState('Failed to connect');
-			/*
 			$this->unRegisterPumper();
 			exit(200);
-			*/
-			$res = false;
 		}
 		$this->updateTimeInPumper();
-		return $res;
+		return true;
 	}
 
 	private function taskBasic($baseRemoteFolder, $relativeRemoteFolder)
 	{
 		$msg_not_found_folder =  _('Could not find the base folder').": {$baseRemoteFolder}";
 		$msg_cant_create_folder = _('Could not find or create the destination folder')." {$baseRemoteFolder}{$relativeRemoteFolder}";
-		if (!$this->connection->cd($baseRemoteFolder))
-		{
+		Logger::debug('Moving to remote folder ' . $baseRemoteFolder);
+		if (!$this->connection->cd($baseRemoteFolder)) {
 			$this->warning($msg_not_found_folder);
 		}
-		if (!$this->connection->mkdir($baseRemoteFolder . $relativeRemoteFolder, 0755, true))
-		{
+		Logger::debug('Making remote folder ' . $baseRemoteFolder . $relativeRemoteFolder);
+		if (!$this->connection->mkdir($baseRemoteFolder . $relativeRemoteFolder, 0755, true)) {
 			$this->error($msg_cant_create_folder);
 			return false;
 		}
@@ -366,11 +375,11 @@ class DexPumper
 		    $fullPath .= '/';
 		}
 		$fullPath .= $remoteFile;
+		Logger::debug('Checking the file path ' . $fullPath);
 		if ($this->connection->isFile($fullPath)) {
-		    $this->warning("Uploading file: $fullPath file already exist");
-		    return null;
+		    $this->warning("Uploading file: $fullPath file already exist, overwriting");
 		}
-		$this->info("Copying $localFile in $fullPath");
+		$this->info("Copying $localFile in $fullPath", false, 'magenta');
 		if (!$this->connection->put($localFile, $fullPath)) {
 		    $this->error(_('Could not upload the file').": $localFile -> $fullPath");
 		    if ($this->connection->getError()) {
@@ -404,20 +413,17 @@ class DexPumper
 	private function taskRename($targetFile, $targetFolder, $newFile, $idSync = null)
 	{
         $this->getHostConnection();
-		if (!$this->taskBasic($targetFolder, ''))
-		{
+		if (!$this->taskBasic($targetFolder, '')) {
 			return false;
 		}
 		if (!$this->connection->isFile($targetFile)) {
-		    $this->warning("Renaming file: $targetFile file not found");
 		    return null;
 		}
-		if (!$this->connection->rename($targetFile, $targetFolder . $newFile))
-		{
+		if (!$this->connection->rename($targetFile, $targetFolder . $newFile)) {
 		    $this->error("Could not rename the target document: {$targetFile} -> {$targetFolder}{$newFile} ");
             return false;
 		}
-		Logger::info('The file has been published succesfuslly' . ': ' . $newFile . ' (Sync: ' . $idSync . ')', true);
+		Logger::info('Published: ' . $targetFolder . $newFile . ' (Sync: ' . $idSync . ')', true);
 		return true;
 	}
 
@@ -446,6 +452,7 @@ class DexPumper
 		    $this->serverFrame->update();
 		}
 		$this->updateTimeInPumper();
+		return true;
 	}
     
     private function finishTask($idSync)
@@ -467,11 +474,10 @@ class DexPumper
 		}
 	}
 
-	public function registerPumper()
+	private function registerPumper()
 	{
-		$state_pumper = $this->pumper->get('State');
-		if ('NEW' == $state_pumper) {
-			$msg = "No ha sido posible registrar el bombeador al tener estado de NEW";
+	    if (Pumper::NEW == $this->pumper->get('State')) {
+			$msg = 'No ha sido posible registrar el bombeador al tener estado de ' . Pumper::NEW;
 			$this->fatal($msg);
 			$this->unRegisterPumper();
 			exit(0);
@@ -482,13 +488,15 @@ class DexPumper
 
     private function unRegisterPumper()
     {
-		$state_pumper = $this->pumper->get('State');
-		if ('NEW' == $state_pumper) {
-			$msg = "No ha sido posible registrar el bombeador al tener estado de NEW";
+        if ($this->connection->isConnected() and $this->server) {
+            $this->connection->disconnect();
+            Logger::info('Disconnected from server ' . $this->server->get('Host'), false, 'magenta');
+        }
+        if (Pumper::NEW == $this->pumper->get('State')) {
+			$msg = 'No ha sido posible registrar el bombeador al tener estado de ' . Pumper::NEW;
 			$this->fatal($msg);
 			exit(0);
 		} else {
-			$processId = $this->pumper->get('ProcessId');
 			$this->pumper->set('State', Pumper::ENDED);
 			$this->pumper->set('ProcessId','xxxx');
             $this->pumper->set('CheckTime', time());
@@ -496,23 +504,22 @@ class DexPumper
 		}
 	}
 
-	public function startPumper()
+	private function startPumper()
 	{
-		$pid =  getmypid();
 		$time = time();
 		$this->pumper->set('State', Pumper::STARTED);
-		$this->pumper->set('ProcessId',$pid );
-		$this->pumper->set('CheckTime',$time );
+		$this->pumper->set('ProcessId', getmypid());
+		$this->pumper->set('CheckTime', $time);
 		$this->pumper->update();
 		$this->info("Start pumper demond $time");
 	}
 
-	public function updateStats($state_pumper)
+	private function updateStats($state_pumper)
 	{
 	    if (!\Ximdex\Modules\Manager::isEnabled("wix")) {
 	        return false;
 	    }
-		$IdSync = (int)  $this->serverFrame->get('IdSync');
+		$IdSync = (int) $this->serverFrame->get('IdSync');
  	  	$idBatchUp = (int) $this->serverFrame->get('IdBatchUp');
  	  	$idServer = (int) $this->serverFrame->get('IdServer');
  		$time = time();
@@ -530,37 +537,37 @@ class DexPumper
         $this->debug($sqlReport);
 	}
 
-	public function info($_msg = NULL)
+	private function info($_msg = NULL, string $color = '')
 	{
 	    $this->msg_log("INFO PUMPER: $_msg");
-	    Logger::info($_msg);
+	    Logger::info($_msg, false, $color);
 	}
 	
-	public function error($_msg = NULL)
+	private function error($_msg = NULL)
 	{
 	    $this->msg_log("ERROR PUMPER: $_msg");
 	    Logger::error($_msg);
 	}
 	
-	public function fatal($_msg = NULL)
+	private function fatal($_msg = NULL)
 	{
 	    $this->msg_log("FATAL PUMPER: $_msg");
 	    Logger::fatal($_msg);
 	}
 	
-	public function debug($_msg = NULL)
+	private function debug($_msg = NULL)
 	{
 	    $this->msg_log("DEBUG PUMPER: $_msg");
 	    Logger::debug($_msg);
 	}
 	
-	public function warning($_msg = NULL)
+	private function warning($_msg = NULL)
 	{
 	    $this->msg_log("WARNING PUMPER: $_msg");
 	    Logger::warning($_msg);
 	}
 
-	public function msg_log($_msg)
+	private function msg_log($_msg)
 	{
 		$pumperID = (int) $this->pumper->get('PumperId');
 		$_msg = "[PumperId: $pumperID] ".$_msg;

@@ -40,6 +40,8 @@ use Ximdex\Sync\SynchroFacade;
 include_once(XIMDEX_ROOT_PATH . '/modules/ximSYNC/inc/manager/BatchManager.class.php');
 include_once(XIMDEX_ROOT_PATH . '/modules/ximSYNC/inc/model/Batch.class.php');
 
+set_time_limit(0);
+
 function main($argc, $argv)
 {
     Logger::generate('PUBLICATION', 'publication');

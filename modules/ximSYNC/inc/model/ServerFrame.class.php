@@ -715,7 +715,7 @@ class ServerFrame extends ServerFrames_ORM
     {
         $query = "SELECT sf.* FROM ServerFrames sf, Batchs b WHERE (sf.IdBatchUp = b.IdBatch OR sf.IdBatchDown = b.IdBatch) AND (sf.State = '" 
             . ServerFrame::DUE2IN . "' OR " . "sf.State = '" . ServerFrame::DUE2OUT . "' OR (sf.State = '" . ServerFrame::PUMPED 
-            . "' AND b.State = '" . Batch::CLOSING . "')) " . "AND sf.PumperId = $idPumper LIMIT 1";
+            . "' AND b.State = '" . Batch::CLOSING . "')) " . "AND sf.PumperId = $idPumper ORDER BY sf.Retry LIMIT 1";
         return $this->query($query);
     }
 

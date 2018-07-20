@@ -127,16 +127,26 @@ class Pumper extends PumpersOrm
      * @param string modo
      * @return bool
      */
-    public function startPumper($pumperId, $modo = "php")
+    public function startPumper($pumperId, $modo = 'php')
     {
-        $dbObj = new \Ximdex\Runtime\Db();
+        $pumper = new Pumper($pumperId);
+        if ($pumper->get('ProcessId') and Pumper::isAlive($pumper)) {
+            
+            // Terminate the previous pumper process
+            if (Pumper::terminate($pumper)) {
+                Logger::warning('Pumper with ID: ' . $pumperId . ' has been terminated (Process with PID: ' . $pumper->get('ProcessId'));
+            }
+            else {
+                Logger::error('Cannot terminate the process with pid ' . $pumper->get('ProcessId') . ' for pumper ' . $pumperId);
+            }
+        }
         
         // Initialize the pumper to Starting state
         $this->set('State', Pumper::STARTING);
         $this->update();
-        $startCommand =  "php ".XIMDEX_ROOT_PATH.'/bootstrap.php '.PUMPERPHP_PATH . "/dexpumper." . $modo 
-            . " --pumperid=$pumperId --sleeptime=" . $this->sleeptime . " --maxvoidcycles=" . $this->maxvoidcycles 
-            . " --localbasepath=" . SERVERFRAMES_SYNC_PATH . " > /dev/null 2>&1 &";
+        $startCommand = 'php ' . XIMDEX_ROOT_PATH . '/bootstrap.php ' . PUMPERPHP_PATH . '/dexpumper.' . $modo 
+            . " --pumperid=$pumperId --sleeptime=" . $this->sleeptime . ' --maxvoidcycles=' . $this->maxvoidcycles 
+            . ' --localbasepath=' . SERVERFRAMES_SYNC_PATH . ' > /dev/null 2>&1 &';
         $this->PumperToLog(null, null, null, null, $pumperId, __CLASS__, __FUNCTION__, __FILE__,
             __LINE__, "INFO", 8, "Pumper call: $startCommand");
         $out = array();
@@ -196,5 +206,38 @@ class Pumper extends PumpersOrm
         Logger::debug('PumperToLog -> batchId:' . $batchId . ' nodeFrameId:' . $nodeFrameId . ' channelFrameId:' . $channelFrameId 
             . ' serverFrameId:' . $serverFrameId . ' pumperId:' . $pumperId . ' class:' . $class . ' method:' . $method . ' $file:' . $file
             . ' line:' . $line . ' type:' . $type . ' level:' . $level . ' comment:' . $comment . ' doInsertSql:' . $doInsertSql);
+    }
+    
+    public static function isAlive(Pumper $pumper) : bool
+    {
+        if (!$pumper->get('PumperId')) {
+            Logger::error('No ID was sent to checking pumper process status');
+            return false;
+        }
+        if ($pumper->get('ProcessId') == 'xxxx') {
+            return false;
+        }
+        if (!$pumper->get('ProcessId')) {
+            Logger::error('Pumper with ID: ' . $pumper->get('PumperId') . ' has not a process ID');
+            return false;
+        }
+        $running = posix_kill($pumper->get('ProcessId'), 0);
+        if (posix_get_last_error() == 1) {
+            $running = true;
+        }
+        return $running;
+    }
+    
+    public static function terminate(Pumper $pumper) : bool
+    {
+        if (!$pumper->get('PumperId')) {
+            Logger::error('No ID was sent to terminate pumper process');
+            return false;
+        }
+        if (!$pumper->get('ProcessId') or $pumper->get('ProcessId') == 'xxxx') {
+            Logger::error('Pumper with ID: ' . $pumper->get('PumperId') . ' has not a process ID');
+            return false;
+        }
+        return posix_kill($pumper->get('ProcessId'), 9);
     }
 }

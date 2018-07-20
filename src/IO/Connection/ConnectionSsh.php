@@ -96,7 +96,10 @@ class ConnectionSsh extends Connector implements IConnector
      */
     public function pwd()
     {
-        return $this->netSFTP->pwd();
+        Logger::debug('Call to pwd');
+        $res = $this->netSFTP->pwd();
+        Logger::debug('Call to pwd returns: ' . $res);
+        return $res;
     }
 
     /**
@@ -173,7 +176,10 @@ class ConnectionSsh extends Connector implements IConnector
      */
     public function cd($dir)
     {
-        return $this->netSFTP->chdir($dir);
+        Logger::debug('Call to cd: ' . $dir);
+        $res = $this->netSFTP->chdir($dir);
+        Logger::debug('Call to cd returns: ' . $res);
+        return $res;
     }
 
     private function _mkdir($dir, $mode)
@@ -278,7 +284,12 @@ class ConnectionSsh extends Connector implements IConnector
      */
     public function put($localFile, $targetFile, $mode = 0755)
     {
-        return $this->netSFTP->put($targetFile, $localFile, SFTP::SOURCE_LOCAL_FILE);
+        $size = (int) filesize($localFile);
+        return $this->netSFTP->put($targetFile, $localFile, SFTP::SOURCE_LOCAL_FILE, -1, -1, function($sent) use ($targetFile, $size) {
+            $sent = round($sent * 100 / $size);
+            $size = round($size / 1024);
+            Logger::info("Uploading file {$targetFile} progress: {$sent}% from {$size} Kbytes", false, 'magenta');
+        });
     }
 
     /**
@@ -291,11 +302,13 @@ class ConnectionSsh extends Connector implements IConnector
     public function isFile($path)
     {
         if ($this->isDir($path)) {
+            Logger::error('Resouce ' . $path . ' is a folder, not a file');
             return false;
         }
         $isFile = false;
         $matches = array();
         preg_match('/(.*\/)([^\/]+)$/', $path, $matches);
+        Logger::debug('isFile matches: ' . print_r($matches, true), false, 'magenta');
         if (count($matches) == 3) {
             $folder = $matches[1];
             $file = $matches[2];
@@ -305,10 +318,11 @@ class ConnectionSsh extends Connector implements IConnector
         if (empty($folder)) $folder = '/';
         if ($this->cd($folder)) {
             if ($this->pwd() == $folder || $this->pwd() . '/' == $folder) {
-                $fileList = $this->ls($folder);
-                $isFile = (in_array($file, $fileList));
+                $isFile = $this->netSFTP->file_exists($file);
             }
         }
+        Logger::debug($file . (!$isFile ? ' not' : '') . ' exists');
+        Logger::debug('Moving to ' . $this->pwd());
         $this->cd($this->pwd());
         return $isFile;
     }
@@ -341,6 +355,9 @@ class ConnectionSsh extends Connector implements IConnector
      */
     public function ls($dir, $mode = NULL)
     {
-        return $this->netSFTP->nlist($dir);
+        Logger::debug('Call to ls: ' . $dir . ' (mode: ' . $mode . ')');
+        $res = $this->netSFTP->nlist($dir);
+        Logger::debug('Call to ls returns: ' . $res);
+        return $res;
     }
 }

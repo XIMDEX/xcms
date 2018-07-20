@@ -636,8 +636,11 @@ abstract class AbstractStructuredDocument extends FileNode
             } else {
                 $outPut = 'channel="" ';
             }
+            /*
             reset($channelList);
             while (list(, $channelID) = each($channelList)) {
+            */
+            foreach ($channelList as $channelID) {
                 $channel = new Channel($channelID);
                 $channelNames[] = $channel->get('Name');
                 $channelDesc[] = $channel->get('Description');

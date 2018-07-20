@@ -543,8 +543,8 @@ class HTMLDocumentNode extends AbstractStructuredDocument
         $info['metadata']['date'] = $metadata['Fecha'] ?? '';
         $info['metadata']['title'] = !empty($metadata['Título']) ? $metadata['Título'] : static::getCleanName($sd->GetName());
         $info['metadata']['author'] = $metadata['Autor'] ?? '';
-        $info['metadata']['image'] = (isset($metadata['Imagen']) && $metadata['Imagen']) ? '@@@RMximdex.pathto(' . $metadata['Imagen'] . ')@@@' : '#';
-
+		$info['metadata']['image'] = (isset($metadata['Imagen']) && $metadata['Imagen']) ? '@@@RMximdex.pathto(' . $metadata['Imagen'] . ')@@@' : '#';
+	
         return $info;
     }
 

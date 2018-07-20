@@ -17,8 +17,7 @@ Class Logger
     public function __construct($logger)
     {
         $this->logger = $logger;
-        if (!self::$color)
-        {
+        if (!self::$color) {
             self::$color = new Color();
             self::$color->setForceStyle(true);
         }
@@ -34,10 +33,11 @@ Class Logger
     {
         $log = new \Monolog\Logger($id);
         $log->pushHandler(new StreamHandler(XIMDEX_ROOT_PATH . '/logs/' . $file . '.log', \Monolog\Logger::DEBUG, true, 0666));
-        if ($default)
+        if ($default) {
             self::addLog($log);
-        else
+        } else {
             self::addLog($log, $file);
+        }
     }
 
     /**
@@ -77,9 +77,13 @@ Class Logger
 
     public static function error($string, $object = array())
     {
-        try{
-            return self::get()->logger->addError(self::$color->__invoke($string)->red()->bold(), $object);
-        }catch (\Exception $e){
+        try {
+            $res = self::get()->logger->addError(self::$color->__invoke($string)->red()->bold(), $object);
+            if (CLI_MODE) {
+                sleep(5);
+            }
+            return $res;
+        } catch (\Exception $e) {
             error_log($e->getMessage());
         }
     }
@@ -91,11 +95,10 @@ Class Logger
 
     public static function debug($string)
     {
-        if (App::debug())
-        {
-            try{
+        if (App::debug()) {
+            try {
                 return self::get()->logger->addDebug(self::$color->__invoke($string)->white());
-            }catch (Exception $e){
+            } catch (Exception $e) {
                 error_log($e->getMessage());
             }
         }
@@ -103,25 +106,28 @@ Class Logger
 
     public static function fatal($string)
     {
-        try{
-            return self::get()->logger->addCritical(self::$color->__invoke($string)->red()->bold());
+        try {
+            $res = self::get()->logger->addCritical(self::$color->__invoke($string)->red()->bold());
+            if (CLI_MODE) {
+                sleep(5);
+            }
+            return $res;
         }
         catch (Exception $e) {
             error_log($e->getMessage());
         }
     }
 
-    public static function info($string, $success = null)
+    public static function info($string, bool $success = false, string $color = '')
     {
-        try
-        {
+        try {
             if ($success) {
                 $string = self::$color->__invoke($string)->green()->bold();
+            }else if (!empty($color)) {
+                $string = self::$color->__invoke($string)->$color()->bold();
             }
             return self::get()->logger->addInfo($string);
-        }
-        catch (Exception $e)
-        {
+        } catch (Exception $e) {
             error_log($e->getMessage());
         }
     }
@@ -131,7 +137,6 @@ Class Logger
         $trace = debug_backtrace(false);
         $t1 = $trace[1];
         $t2 = $trace[2];
-
         $trace = array(
             'file' => $t1['file'],
             'line' => $t1['line'],
@@ -143,8 +148,9 @@ Class Logger
     
     public static function get_active_instance()
     {
-        if (self::$active)
+        if (self::$active) {
             return self::$active;
+        }
         return 'default';
     }
 }

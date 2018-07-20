@@ -851,7 +851,8 @@ CREATE TABLE `Section` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 ALTER TABLE `Section` ADD PRIMARY KEY (`IdNode`);
 
-ALTER TABLE `Section` ADD FOREIGN KEY (`idSectionType`) REFERENCES `SectionTypes`(`idSectionType`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+ALTER TABLE `Section` ADD CONSTRAINT `Section_ibfk_1` FOREIGN KEY (`idSectionType`) 
+    REFERENCES `SectionTypes`(`idSectionType`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 
 -- SEMANTIC TAGS
@@ -883,8 +884,8 @@ CREATE TABLE `RelSemanticTagsDescriptions` (
 ALTER TABLE `RelSemanticTagsDescriptions` ADD CONSTRAINT `RelSemanticTagsDescriptions_ibfk_1` FOREIGN KEY (`Tag`) 
     REFERENCES `SemanticTags`(`IdTag`) ON DELETE CASCADE ON UPDATE CASCADE;
 
-ALTER TABLE `RelSemanticTagsNodes` ADD FOREIGN KEY (`TagDesc`) 
+ALTER TABLE `RelSemanticTagsNodes` ADD CONSTRAINT `RelSemanticTagsNodes_ibfk_1` FOREIGN KEY (`TagDesc`) 
     REFERENCES `RelSemanticTagsDescriptions`(`IdTagDescription`) ON DELETE CASCADE ON UPDATE CASCADE;
    
-ALTER TABLE `SemanticTags` ADD FOREIGN KEY (`IdNamespace`) REFERENCES `SemanticNamespaces`(`idNamespace`) 
-    ON DELETE RESTRICT ON UPDATE RESTRICT;
+ALTER TABLE `SemanticTags` ADD CONSTRAINT `SemanticTags_ibfk_1` FOREIGN KEY (`IdNamespace`) 
+    REFERENCES `SemanticNamespaces`(`idNamespace`) ON DELETE RESTRICT ON UPDATE RESTRICT;
