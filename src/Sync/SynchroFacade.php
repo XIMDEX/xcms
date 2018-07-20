@@ -556,7 +556,7 @@ class SynchroFacade
             
             // Create batch for down process per max nodes
             if ($createBatch) {
-                $batchId = $batch->create($down, Batch::TYPE_DOWN, $node->GetID(), 0.9, null, $idPortalVersion, Session::get('userID'));
+                $batchId = $batch->create($down, Batch::TYPE_DOWN, $node->GetID(), 0.9, null, $idPortalVersion, Session::get('userID'), 0);
                 if (!$batchId) {
                     Logger::error('Cannot create the down batch process');
                     return false;
@@ -577,6 +577,7 @@ class SynchroFacade
                 $numFrames++;
                 if ($numFrames == MAX_NUM_NODES_PER_BATCH) {
                     $batch->set('ServerFramesTotal', $numFrames);
+                    $batch->set('Playing', 1);
                     $batch->update();
                     $createBatch = true;
                 }
@@ -597,6 +598,7 @@ class SynchroFacade
             // Update the batch with the last generated frames 
             if ($numFrames and $numFrames < MAX_NUM_NODES_PER_BATCH) {
                 $batch->set('ServerFramesTotal', $numFrames);
+                $batch->set('Playing', 1);
                 $batch->update();
             }
             else {

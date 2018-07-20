@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,7 +25,6 @@
  * @version $Revision$
  */
 
-
 namespace Xmd\Widgets;
 
 use Ximdex\Parsers\ParsingJsGetText;
@@ -34,7 +34,6 @@ use Ximdex\Logger;
 
 abstract class WidgetAbstract
 {
-
 	protected $_enable = true;
 	protected $_wname = null;
 	protected $_widget_dir = null;
@@ -49,20 +48,15 @@ abstract class WidgetAbstract
 	public function __construct()
 	{
 		$this->_wname = str_replace('Widget_', '', get_class($this));
-
 		$this->_widget_dir = sprintf('%s/%s', APP_ROOT_PATH  . '/src/Widgets/' , $this->_wname);
-
 		$this->_widget_style_dir = sprintf(
 			'%s/assets/style/jquery/%s/widgets/%s',
 			APP_ROOT_PATH,
 			\Ximdex\Runtime\Session::get('activeTheme'),
 			$this->_wname
 		);
-
 		$this->_assets_url = App::getUrl('/src/Widgets/');
-
         $this->_template_dir = sprintf('%s/template/', $this->_widget_dir);
-
 		if ($this->_enable) {
 			$this->_js = WidgetDependencies::getDependencies($this->_wname);
 			$this->_js = $this->fixJsUrl($this->_js);
@@ -94,9 +88,9 @@ abstract class WidgetAbstract
 		$c = count($array);
 		$getTextJs = new ParsingJsGetText();
 		for ($i = 0; $i < $c; $i++) {
-            //$array[$i] =  preg_replace('#^' . App::getXimdexUrl('/'). '#', '',  $array[$i]) ;
-		    if (App::getValue('UrlRoot'))
-		        $array[$i] = '/' . ltrim($array[$i], App::getValue('UrlRoot'));
+		    if (App::getValue('UrlRoot')) {
+		        $array[$i] = str_replace('//', '/', str_replace_first(App::getValue('UrlRoot'), '', $array[$i]));
+		    }
 			$array[$i] = $getTextJs->getFile($array[$i]);
 		}
 		return $array;
@@ -106,7 +100,6 @@ abstract class WidgetAbstract
 	{
 		return $this->_wname;
 	}
-
 
 	/** ____TPl____ **/
 	public function setTemplate($_template)
@@ -120,19 +113,16 @@ abstract class WidgetAbstract
 		}
 	}
 
-
 	public function getTemplate()
 	{
 		return $this->_tpl;
 	}
-
 
 	/** ___Css___ **/
 	public function getCssFiles()
 	{
 		return $this->_css;
 	}
-
 
 	public function addCss($_css)
 	{
@@ -149,7 +139,6 @@ abstract class WidgetAbstract
 		return $this->_js;
 	}
 
-
 	public function addJs($_js)
 	{
 		if (empty($this->_js)) {
@@ -161,7 +150,7 @@ abstract class WidgetAbstract
 
 	public function includeWidgetLib($name)
 	{
-		$widget =& Widget::getWidget($name);
+		$widget = Widget::getWidget($name);
 		if ($widget) {
 			$this->_js = array_unique(array_merge((array)$widget->getJsFiles(), (array)$this->_js));
 			$this->_css = array_unique(array_merge((array)$widget->getCssFiles(), (array)$this->_css));
@@ -184,7 +173,6 @@ abstract class WidgetAbstract
 	 */
 	protected function parseWidgetAttributes($params)
 	{
-
 		$ret = array();
 		foreach ($params as $key => $value) {
 			switch ($key) {
@@ -198,11 +186,9 @@ abstract class WidgetAbstract
 					break;
 			}
 		}
-
 		if (!isset($ret['id'])) {
 			$ret['id'] = sprintf('%s_%s', $this->_wname, rand());
 		}
-
 		return $ret;
 	}
 
@@ -211,21 +197,17 @@ abstract class WidgetAbstract
 	 */
 	public function process($params)
 	{
-
 		//¿disabled?
 		if (empty($this->_tpl) || !$this->enable()) return null;
 		/** ********************** ADD TPL DEFAULT ************* */
 		$asInclude = isset($params['include']) && in_array(strtoupper($params['include']), array('YES', 'TRUE'))
 			? true
 			: false;
-
 		unset($params['include']);
-
-
 		$tpl = $asInclude
 			? ''
 			: FsUtils::file_get_contents($this->_tpl);
-
+		
 		/** ********************** ADD CSS DEFAULT ************* */
 		if (empty($this->_css) && !is_array($this->_css)) {
 			$this->_css = FsUtils::getFolderFilesByExtension($this->_widget_style_dir . "/", array("css"), false);
@@ -233,12 +215,9 @@ abstract class WidgetAbstract
 		if (!is_array($this->_css)) {
 			$this->_css = array();
 		}
-
 		$this->_css = $this->fixCssUrl($this->_css, $this->_wname);
 
-
 		/** ********************** JS TRANSFORM ************* */
-
 
 		// Make the attributes availables from Javascript codes
 		$attributes = $this->parseWidgetAttributes($params);
@@ -256,8 +235,6 @@ abstract class WidgetAbstract
 			'js_files' => $this->_js,
 			'css_files' => $this->_css
 		);
-
 		return $ret;
 	}
-
 }

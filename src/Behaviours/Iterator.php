@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -29,21 +30,24 @@ namespace Ximdex\Behaviours;
 define('ESCAPE', true);
 define('NO_ESCAPE', false);
 
-class Iterator {
-
+class Iterator
+{
     var $_objectName;
     var $_module = NULL;
     var $_objects;
     var $_current = 0;
 
-    public function __construct($condition, $args, $escape = ESCAPE) {
+    public function __construct($condition, $args, $escape = ESCAPE)
+    {
         $object = new $this->_objectName;
         $result = $object->find(ALL, $condition, $args, MULTI, $escape);
-
         $this->_objects = array();
         if (count($result) > 0) {
+            /*
             reset($result);
             while (list(, $element) = each($result)) {
+            */
+            foreach ($result as $element) {
                 $object = new $this->_objectName();
                 $object->_unserialize($element);
                 $this->_objects[] = $object;
@@ -51,24 +55,28 @@ class Iterator {
         }
     }
 
-    function reloadConstructors() {
+    function reloadConstructors()
+    {
         foreach($this->_objects as $key => $object) {
             $object->__construct($object->get($object->_idField));
         }
     }
 
-    function first() {
+    function first()
+    {
         return isset($this->_objects[0]) ? $this->_objects[0] : NULL;
     }
 
-    function current() {
+    function current()
+    {
         if (isset($this->_objects[$this->_current])) {
             return $this->_objects[$this->_current];
         }
         return NULL;
     }
 
-    function last() {
+    function last()
+    {
         $total = count($this->_objects);
         if ($total > 0) {
             return $this->_objects[$total - 1];
@@ -76,39 +84,43 @@ class Iterator {
         return NULL;
     }
 
-    function reset() {
+    function reset()
+    {
         $this->_current = 0;
     }
 
-    function key() {
+    function key()
+    {
         return $this->_current;
     }
 
-    function hasMore() {
+    function hasMore()
+    {
         return isset($this->_objects[$this->_current + 1]);
     }
 
-
     /**
-     * returns current and advance pointer
+     * Returns current and advance pointer
      *
      * @return boolean
      */
-    function next() {
+    function next()
+    {
         if (($this->key() + 1) > $this->count()) {
             return NULL;
         }
-
         $currentObject = $this->current();
         $this->_current += 1;
         return $currentObject;
     }
 
-    function count() {
+    function count()
+    {
         return count($this->_objects);
     }
 
-    function seek($n) {
+    function seek($n)
+    {
         $this->_current = $n;
     }
 }

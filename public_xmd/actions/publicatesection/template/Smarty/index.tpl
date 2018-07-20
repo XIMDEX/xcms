@@ -28,14 +28,14 @@
 	<input type="hidden" name="default_message" value="{$defaultMessage}">
 	<input type="hidden" name="groupid" value="" />
 	{include file="actions/components/title_Description.tpl"}
-	{if $hasDisabledFunctions}
+	{* if $hasDisabledFunctions}
 		<div class="message message-warning">
 			<p class="disable-functions-alert">
 				{t}<i>pcntl_fork</i> and <i>pcntl_waitpid</i> required functions are both disabled{/t}.
 				{t}This could cause a slow and unstable publishing. Please, check the <i>php.ini</i> configuration file or contact with your system administrator{/t}.
 			</p>
 		</div>
-	{/if}
+	{/if *}
 	{if isset($globalForcedEnabled) and $globalForcedEnabled}
 		<div class="message message-warning">
 			<p class="disable-functions-alert">

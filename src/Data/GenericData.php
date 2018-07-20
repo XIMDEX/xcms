@@ -167,8 +167,11 @@ class GenericData
      */
     public function _unserialize($values)
     {
+        /*
         reset($this->_metaData);
         while (list($key) = each($this->_metaData)) {
+        */
+        foreach ($this->_metaData as $key => $value) {
             if (isset($values[$key])) {
                 $this->$key = $values[$key];
             }
@@ -205,10 +208,11 @@ class GenericData
         if (!$this->_applyFilter('beforeAdd')) {
             return false;
         }
-        reset($this->_metaData);
+        // reset($this->_metaData);
         $arrayFields = array();
         $arrayValues = array();
-        while (list($field, $descriptors) = each($this->_metaData)) {
+        // while (list($field, $descriptors) = each($this->_metaData)) {
+        foreach ($this->_metaData as $field => $descriptors) {
             if (isset($descriptors['auto_increment']) && ('true' == $descriptors['auto_increment'])) {
                 continue;
             }
@@ -305,16 +309,17 @@ class GenericData
             '(varchar|tinyint|smallint|mediumint|int|bigint|year|char|tinyint|binary)\(([0-9]+)\)',
             '(decimal)\(([0-9]+),([0-9]+)\)',
             '(enum|set)\((.*)\)');
-        reset($this->_metaData);
-        while (list($key, $descriptor) = each($this->_metaData)) {
-            reset($_fieldTypes);
+        // reset($this->_metaData);
+        // while (list($key, $descriptor) = each($this->_metaData)) {
+        foreach ($this->_metaData as $key => $descriptor) {
+            // reset($_fieldTypes);
             $matches = array();
-            while (list(, $pattern) = each($_fieldTypes)) {
+            // while (list(, $pattern) = each($_fieldTypes)) {
+            foreach($_fieldTypes as $pattern) {
                 $matchesCount = preg_match("/$pattern/", $descriptor['type'], $matches);
                 if ($matchesCount > 0) {
                     break;
                 }
-
             }
             $fieldType = !empty($matches[1]) ? $matches[1] : '';
             if (empty($fieldType)) {
@@ -409,7 +414,7 @@ class GenericData
                     break;
             }
         }
-        return (!($this->messages->count(MSG_TYPE_ERROR) > 0));
+        return (!$this->messages->count(MSG_TYPE_ERROR));
     }
 
     /**
@@ -616,9 +621,10 @@ class GenericData
         if (!$this->_applyFilter('beforeUpdate')) {
             return false;
         }
-        reset($this->_metaData);
+        // reset($this->_metaData);
         $arraySets = array();
-        while (list($field, $descriptors) = each($this->_metaData)) {
+        // while (list($field, $descriptors) = each($this->_metaData)) {
+        foreach ($this->_metaData as $field => $descriptors) {
             $arraySets[] = sprintf("`%s` = %s",
                 $field,
                 $this->_convertToSql($this->$field, $descriptors));
@@ -640,6 +646,11 @@ class GenericData
                 return false;
             }
             $updatedRows = $dbObj->numRows;
+        } else {
+            Logger::error('Integrity errors found while executing an update SQL query (' . $query . ')');
+            foreach ($this->messages->messages as $message) {
+                Logger::error($message['message']);
+            }
         }
         $this->_applyFilter('afterUpdate');
         return $updatedRows ? $updatedRows : null;

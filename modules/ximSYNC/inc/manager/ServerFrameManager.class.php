@@ -207,7 +207,7 @@ class ServerFrameManager
     }
 
     /**
-     * Gets the ServerFrames of the same Node, Channel and Server, and State in (in, due2in, due2in_, pumped, canceled)
+     * Gets the ServerFrames of the same Node, Channel and Server, and State in (in, due2in, due2in_, pumped, canceled, due2inwitherror)
      * 
      * @param int frameId
      * @param int server
@@ -234,7 +234,7 @@ class ServerFrameManager
 				AND ServerFrames.IdSync != $frameId
 				AND (ServerFrames.State = '" . ServerFrame::IN . "' OR ServerFrames.State = '" . ServerFrame::DUE2IN . "' 
 		        OR ServerFrames.State = '" . ServerFrame::DUE2IN_ . "' OR ServerFrames.State = '" . ServerFrame::CANCELLED . "' 
-                OR ServerFrames.State = '" . ServerFrame::PUMPED . "')";
+                OR ServerFrames.State = '" . ServerFrame::PUMPED . "' OR ServerFrames.State = '" . ServerFrame::DUE2INWITHERROR . "')";
         $overlaped = array();
         $i = 0;
         $dbObj->Query($sql);

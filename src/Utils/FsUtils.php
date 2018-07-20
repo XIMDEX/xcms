@@ -550,4 +550,10 @@ class FsUtils
             return round($target / pow(1024, $diff), 2);
         }
     }
+    
+    public function str_replace_first(string $from, string $to, string $content) : string
+    {
+        $from = '/' . preg_quote($from, '/') . '/';
+        return preg_replace($from, $to, $content, 1);
+    }
 }

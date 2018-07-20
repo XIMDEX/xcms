@@ -239,12 +239,17 @@ class BatchManager
                 Logger::info(sprintf("[Generator %s]: Creating down batch with id %s", $nodeGenerator, $idBatchDown));
             }
             $batch = new Batch();
-            $relBatchsServers[$serverId] = $batch->create($timeUp, 'Up', $nodeGenerator, $priority, $idBatchDown, $idPortalVersion, $userId);
+            $relBatchsServers[$serverId] = $batch->create($timeUp, 'Up', $nodeGenerator, $priority, $idBatchDown, $idPortalVersion, $userId, 0);
             Logger::info('Creating up batch: ' . $timeUp);
             Logger::info(sprintf("[Generator %s]: Creating up batch with id %s", $nodeGenerator, $relBatchsServers[$serverId]));
         }
         $frames = $this->buildFrames($timeUp, $timeDown, $docsToPublish, $docsToUpVersion, $versions, $subversions, $server
             , $relBatchsServers, $statStart, $statTotal, $nodeGenerator, $noCache);
+        foreach ($relBatchsServers as $id) {
+            $batch = new Batch($id);
+            $batch->set('Playing', 1);
+            $batch->update();
+        }
         return $frames;
     }
 

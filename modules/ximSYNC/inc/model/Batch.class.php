@@ -43,7 +43,6 @@ Ximdex\Modules\Manager::file('/conf/synchro_conf.php', 'ximSYNC');
  */
 class Batch extends Batchs_ORM
 {
-    var $syncStatObj;
     const TYPE_UP = 'Up';
     const TYPE_DOWN = 'Down';
     const WAITING = 'Waiting';
@@ -51,6 +50,8 @@ class Batch extends Batchs_ORM
     const ENDED = 'Ended';
     const CLOSING = 'Closing';
     const NOFRAMES = 'NoFrames';
+    
+    private $syncStatObj;
 
     public function set($attribute, $value)
     {
@@ -69,15 +70,17 @@ class Batch extends Batchs_ORM
      *  @param int priority
      *  @param int idBatchDown
      *  @param int idPortalVersion
+     *  @param int $userId
+     *  @param int $playing
      *  @return int|null
      */
-    function create($timeOn, $type, $idNodeGenerator, $priority, $idBatchDown = NULL, $idPortalVersion = 0, $userId = NULL)
+    function create($timeOn, $type, $idNodeGenerator, $priority, $idBatchDown = NULL, $idPortalVersion = 0, $userId = NULL, int $playing = 1)
     {
         setlocale(LC_NUMERIC, 'C');
         $priority = (float) (MIN_TOTAL_PRIORITY * $priority);
         $this->set('TimeOn', $timeOn);
         $this->set('State', Batch::WAITING);
-        $this->set('Playing', 1);
+        $this->set('Playing', $playing);
         $this->set('Type', $type);
         $this->set('IdBatchDown', $idBatchDown);
         $this->set('IdNodeGenerator', $idNodeGenerator);
