@@ -51,11 +51,20 @@ if (!defined('SCHEDULER_CHUNK')) {
 if (!defined('UNACTIVITY_CYCLES')) {
 	define('UNACTIVITY_CYCLES', 5);
 }
+
+// Max uploading time for a single file (10 minutes)
 if (!defined('MAX_CHECK_TIME_FOR_PUMPER')) {
-	define('MAX_CHECK_TIME_FOR_PUMPER', 600); // max uploading time for a single file (10 minutes)
+	define('MAX_CHECK_TIME_FOR_PUMPER', 600);
 }
+
+// Max starting time for a pumper process in seconds
 if (!defined('MAX_STARTING_TIME_FOR_PUMPER')) {
-    define('MAX_STARTING_TIME_FOR_PUMPER', 60); // max starting time for a pumper process in seconds
+    define('MAX_STARTING_TIME_FOR_PUMPER', 60);
+}
+
+// Number of server frames to process per each running pumper. Cero value to unlimited task
+if (!defined('MAX_TASKS_PER_PUMPER')) {
+    define('MAX_TASKS_PER_PUMPER', 0);
 }
 
 // Minimum batch system priority

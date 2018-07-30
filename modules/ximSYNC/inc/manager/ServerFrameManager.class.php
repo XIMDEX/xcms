@@ -321,9 +321,18 @@ class ServerFrameManager
     {
         // At present, serverid is the criteria for pumperid
         $serverFrame = new ServerFrame($serverFrameId);
+        if ($serverFrame->get('PumperId')) {
+            return $serverFrame->get('PumperId');
+        }
         $idServer = $serverFrame->get('IdServer');
         $dbObj = new \Ximdex\Runtime\Db();
-        $sql = "SELECT PumperId FROM Pumpers where IdServer = $idServer AND State != '" . Pumper::ENDED . "'";
+        
+        // $sql = "SELECT PumperId FROM Pumpers where IdServer = $idServer AND State != '" . Pumper::ENDED . "'";
+        $sql = 'SELECT p.PumperId FROM Pumpers p WHERE p.IdServer = ' . $idServer . ' AND p.State != \'' . Pumper::ENDED . '\' ';
+        if (MAX_TASKS_PER_PUMPER > 0) {
+            $sql .= 'AND (SELECT COUNT(*) FROM ServerFrames sf WHERE sf.PumperId = p.PumperId) < ' . MAX_TASKS_PER_PUMPER . ' ';
+        }
+        $sql .= 'LIMIT 1';
         $dbObj->Query($sql);
         if ($dbObj->numRows == 0) {
             
@@ -352,7 +361,7 @@ class ServerFrameManager
         $servers = implode(',', $activeAndEnabledServers);
         $query = "SELECT DISTINCT(PumperId) FROM ServerFrames WHERE State IN ('" . ServerFrame::DUE2IN . "', '" . 
             ServerFrame::DUE2OUT . "', '" . ServerFrame::DUE2IN_ . "', '" . ServerFrame::DUE2OUT_ . "', '" . 
-            ServerFrame::PUMPED . "') AND IdServer IN ($servers)";
+            ServerFrame::PUMPED . "') AND IdServer IN ($servers) AND NOT PumperId IS NULL";
         $dbObj->Query($query);
         if ($dbObj->numErr) {
             return NULL;

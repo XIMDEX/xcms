@@ -150,7 +150,7 @@ class Action_modifyrole extends ActionAbstract
             }
         }
         $rolesActions = $this->request->getParam('action_workflow');
-        if (count($rolesActions) >= 1) {
+        if ($rolesActions and count($rolesActions) >= 1) {
             foreach ($rolesActions as $idAction => $workFlowStatus) {
                 foreach ($workFlowStatus as $idWorkflowStatus => $value) {
                     $role->AddAction($idAction, (int)$idWorkflowStatus, $idPipeline);
