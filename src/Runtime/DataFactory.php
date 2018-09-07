@@ -524,8 +524,6 @@ class DataFactory
             $this->updateCaches($oldIdVersion, $IdVersion);
         }
         Logger::debug('AddVersion for Node:' . $this->nodeID . ', Version: ' . $newVersion . '.' . $newSubVersion . ', File: ' . $uniqueName);
-        $mm = new \Ximdex\Metadata\MetadataManager($this->nodeID);
-        $mm->updateMetadataVersion();
         return $IdVersion;
     }
 

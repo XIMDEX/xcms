@@ -381,10 +381,6 @@ class ConnectionSolr extends Connector implements IConnector
             }
         }
         
-        // Add xml metadata fields if the file exists
-        $relNodeMetaData = new \Ximdex\Models\RelNodeMetadata();
-        $idMetadata = $relNodeMetaData->find('idMetadata', 'idNode = %s', array($result[0]), MONO);
-        
         // This executes the query and returns the result
         Logger::debug(print_r($doc->getFields(), true));
         $query->addParam('lowernames', 'false');

@@ -1355,13 +1355,6 @@ class Node extends NodesOrm
                 $this->messages->mergeMessages($xsltNode->messages);
                 return false;
             }
-        } elseif ($nodeTypeID == NodeTypeConstants::METADATA_SECTION) {
-            // if the node is a type of metadata section, generates the relation with the templates folder
-            $xsltNode = new \Ximdex\NodeTypes\XsltNode($node);
-            if ($xsltNode->rel_include_templates_to_metadata_section($node) === false) {
-                $this->messages->mergeMessages($xsltNode->messages);
-                return false;
-            }
         } elseif ($nodeTypeID == NodeTypeConstants::XIMLET_ROOT_FOLDER) {
             // if the node is a type of ximlets section, generates the relation with the templates folder
             $xsltNode = new \Ximdex\NodeTypes\XsltNode($node);
@@ -2236,9 +2229,6 @@ class Node extends NodesOrm
     function getServer()
     {
         $result = $this->_getParentByType(NodeTypeConstants::SERVER);
-        if (!$result) {
-            $result = $this->_getParentByType(NodeTypeConstants::METADATA_SECTION);
-        }
         return $result;
     }
 
@@ -2248,9 +2238,6 @@ class Node extends NodesOrm
     function getProject()
     {
         $result = $this->_getParentByType(NodeTypeConstants::PROJECT);
-        if (!($result > 0)) {
-            $result = $this->_getParentByType(NodeTypeConstants::METADATA_SECTION);
-        }
         if (!($result > 0)) {
             $result = $this->_getParentByType(NodeTypeConstants::XSIR_REPOSITORY);
         }

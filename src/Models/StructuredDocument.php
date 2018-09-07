@@ -299,17 +299,6 @@ class StructuredDocument extends StructuredDocumentsOrm
                 $node->RenderizeNode();
             }
         }
-        $node = new Node($this->get('IdDoc'));
-        if (\Ximdex\NodeTypes\NodeTypeConstants::METADATA_DOCUMENT == $node->GetNodeType()) {
-            $content = \Ximdex\Metadata\MetadataManager::addSystemMetadataToContent($node->nodeID, $content);
-            if ($content === false) {
-
-                // Invalid XML
-                $this->msgErr = 'Invalid XML document content';
-                Logger::error('Invalid XML for metadata node: ' . $node->GetDescription());
-                return false;
-            }
-        }
 
         // Refrescamos la fecha de Actualizacion del nodo
         $this->SetUpdateDate();

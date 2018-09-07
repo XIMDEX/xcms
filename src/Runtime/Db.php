@@ -360,9 +360,11 @@ class Db
     
     /**
      * Operations with some specified database errors
+     * 
      * @param Db $db
+     * @return bool
      */
-    private function database_reconnection(Db $db = null)
+    private function database_reconnection(Db $db = null) : bool
     {
     	if (!$db)
     	{
@@ -388,7 +390,8 @@ class Db
     
     /**
      * Return the database version
-     * @return string|boolean
+     * 
+     * @return string|bool
      */
     public function server_version()
     {
@@ -399,5 +402,15 @@ class Db
         }
         $version = $info[0] . '.' . $info[1];
         return $version;
+    }
+    
+    /**
+     * Return the database error description
+     * 
+     * @return string
+     */
+    public function getDesErr() : string
+    {
+        return (string) $this->desErr;
     }
 }

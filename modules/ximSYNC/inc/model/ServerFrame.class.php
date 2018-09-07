@@ -64,6 +64,9 @@ class ServerFrame extends ServerFrames_ORM
     const OUTDATED = 'Outdated';
     const DELAYED = 'Delayed';
     
+    // Group of status
+    const FINAL_STATUS = [self::IN, self::OUT, self::REMOVED, self::REPLACED, self::DUE2INWITHERROR, self::DUE2OUTWITHERROR];
+    
     public $initialStatus;
     public $errorStatus;
     public $finalStatus;
@@ -786,7 +789,7 @@ class ServerFrame extends ServerFrames_ORM
     }
     
     /**
-     * Get all frames that will be activated after a given timestamp and specified node ID 
+     * Get all server frames that will be activated after a given timestamp and specified node ID 
      * 
      * @param int $nodeId
      * @param int $time
@@ -800,5 +803,71 @@ class ServerFrame extends ServerFrames_ORM
             'AND ServerFrames.State NOT IN (\'' . ServerFrame::CANCELLED . '\', \'' . ServerFrame::REMOVED . '\', \'' . 
             ServerFrame::REPLACED . '\')';
         return $this->query($sql);
+    }
+    
+    /**
+     * Retrieve a list of servers keys in currently active server frames (no final states)
+     * 
+     * @throws \Exception
+     * @return array
+     */
+    public static function serversInActiveServerFrames() : array
+    {
+        $excludeStates = ServerFrame::FINAL_STATUS;
+        $sql = 'SELECT IdServer FROM ServerFrames WHERE State NOT IN (\'' . implode('\', \'', $excludeStates) . '\') GROUP BY IdServer';
+        $dbObj = new Db();
+        if ($dbObj->Query($sql) === false) {
+            throw new \Exception($dbObj->getDesErr());
+        }
+        $servers = [];
+        while (!$dbObj->EOF) {
+            $servers[] = $dbObj->GetValue('IdServer');
+            $dbObj->Next();
+        }
+        return $servers;
+    }
+    
+    /**
+     * Retrieve a total of server frames matching any criteria
+     * 
+     * @param array $includeStates
+     * @param array $excludeStates
+     * @param bool $active
+     * @param int $serverId
+     * @param int $channelId
+     * @throws \Exception
+     * @return int
+     */
+    public static function countServerFrames(array $includeStates = [], array $excludeStates = [], bool $active = true
+        , int $serverId = null, int $channelId = null) : int
+    {
+        $sql = 'SELECT COUNT(IdSync) AS total FROM ServerFrames WHERE TRUE';
+        if ($includeStates) {
+            $sql .= ' AND State IN (\'' . implode('\', \'', $includeStates) . '\')';
+        }
+        if ($excludeStates) {
+            $sql .= ' AND State NOT IN (\'' . implode('\', \'', $excludeStates) . '\')';
+        }
+        if ($active) {
+            $sql .= ' AND (DateUp <= UNIX_TIMESTAMP() OR DateDown <= UNIX_TIMESTAMP())';
+        }
+        if ($serverId) {
+            $sql .= ' AND IdServer = ' . $serverId;
+        }
+        if ($channelId) {
+            $sql .= ' AND ChannelId = ' . $channelId;
+        } elseif ($channelId === 0) {
+            
+            // This case specify a null channel ID in server frames
+            $sql .= ' AND ChannelId IS NULL';
+        }
+        $dbObj = new Db();
+        if ($dbObj->Query($sql) === false) {
+            throw new \Exception($dbObj->getDesErr());
+        }
+        if ($dbObj->numRows) {
+            return (int) $dbObj->GetValue('total');
+        }
+        return 0;
     }
 }

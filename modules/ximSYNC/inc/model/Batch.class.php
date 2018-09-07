@@ -27,6 +27,7 @@
 
 use Ximdex\Logger;
 use Ximdex\Models\Node;
+use Ximdex\Runtime\Db;
 
 Ximdex\Modules\Manager::file('/inc/model/orm/SynchronizerStats_ORM.class.php', 'ximSYNC');
 Ximdex\Modules\Manager::file('/inc/model/NodeFrame.class.php', 'ximSYNC');
@@ -362,5 +363,24 @@ class Batch extends Batchs_ORM
         } else {
             return false;
         }
+    }
+    
+    /**
+     * Retrieve a total of batchs in processing status
+     * 
+     * @param string $state
+     * @return int
+     */
+    public static function countBatchsInProcess(string $state = Batch::INTIME)
+    {
+        $sql = 'SELECT COUNT(IdBatch) AS total FROM Batchs WHERE Playing = 1 AND State = \'' . $state . '\' AND ServerFramesTotal > 0';
+        $dbObj = new Db();
+        $dbObj->Query($sql);
+        if ($dbObj->numRows) {
+            return $dbObj->GetValue('total');
+        } else {
+            return 0;
+        }
+        return $batchs;
     }
 }

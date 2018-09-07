@@ -33,6 +33,7 @@ use SynchronizerStat;
 use Ximdex\Logger;
 use Ximdex\Models\ORM\PumpersOrm;
 use Ximdex\Runtime\App;
+use Ximdex\Runtime\Db;
 
 \Ximdex\Modules\Manager::file('/inc/model/ServerErrorByPumper.class.php', 'ximSYNC');
 \Ximdex\Modules\Manager::file('/inc/manager/ServerErrorManager.class.php', 'ximSYNC');
@@ -239,5 +240,32 @@ class Pumper extends PumpersOrm
             return false;
         }
         return posix_kill($pumper->get('ProcessId'), 9);
+    }
+    
+    /**
+     * Retrieve a total of pumpers matching any criteria
+     * 
+     * @param bool $active
+     * @param int $serverId
+     * @throws \Exception
+     * @return int
+     */
+    public static function countPumpers(bool $active = true, int $serverId = null) : int
+    {
+        $sql = 'SELECT COUNT(PumperId) AS total FROM Pumpers WHERE TRUE';
+        if ($active) {
+            $sql .= ' AND State != \'' . self::ENDED . '\'';
+        }
+        if ($serverId) {
+            $sql .= ' AND IdServer = ' . $serverId;
+        }
+        $dbObj = new Db();
+        if ($dbObj->Query($sql) === false) {
+            throw new \Exception($dbObj->getDesErr());
+        }
+        if ($dbObj->numRows) {
+            return (int) $dbObj->GetValue('total');
+        }
+        return 0;
     }
 }

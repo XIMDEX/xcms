@@ -26,6 +26,9 @@
  */
 
 use Ximdex\Helpers\ServerConfig;
+use Ximdex\Models\Pumper;
+use Ximdex\Models\Server;
+use Ximdex\Models\Channel;
 use Ximdex\Runtime\App;
 use Ximdex\Sync\Mutex;
 use Ximdex\Logger;
@@ -103,8 +106,9 @@ class Scheduler
             $activeAndEnabledServers = $serverError->getServersForPumping();
             $msg = 'Active and enabled servers: ' . print_r($activeAndEnabledServers, true);
             $syncStatObj->create(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "INFO", 8, $msg);
-            Logger::info($msg);
+            Logger::debug($msg);
             $batchProcess = $batchManager->getBatchToProcess();
+
             if (!$activeAndEnabledServers || count($activeAndEnabledServers) == 0) {
                 
                 // There aren't Active & Enable servers...
@@ -197,12 +201,12 @@ class Scheduler
                     // 2) Pumping
                     // ---------------------------------------------------------
                     $pumperManager->callingPumpers($activeAndEnabledServers);
-
+                    
                     // ---------------------------------------------------------
                     // 3) Updating batch data
                     // ---------------------------------------------------------
                     $batchManager->setCyclesAndPriority($batchId);
-
+                    
                     // ---------------------------------------------------------
                     // 4) Again
                     // ---------------------------------------------------------
@@ -212,6 +216,15 @@ class Scheduler
                     $syncStatObj->create(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "INFO", 8, $msg);
                     Logger::debug($msg);
                     $batchProcess = $batchManager->getBatchToProcess();
+                    
+                    // Show publication status stats
+                    if ($cycles % CYCLES_BETWEEN_SHOW_STATS == 0) {
+                        try {
+                            self::log_status();
+                        } catch (Exception $e) {
+                            Logger::error($e->getMessage());
+                        }
+                    }
                     $cycles++;
                 }
                 if ($startStamp > 0) {
@@ -235,11 +248,81 @@ class Scheduler
                     return false;
                 }
             }
-
+            
+            // Show publication status stats
+            try {
+                self::log_status();
+            } catch (Exception $e) {
+                Logger::error($e->getMessage());
+            }
         } while (true);
         $msg = sprintf("max. cycles exceeded (%d > %d). Exit scheduler ", $cycles, MAX_NUM_CICLOS_VACIOS_SCHEDULER);
         $syncStatObj->create(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "INFO", 8, $msg);
         Logger::info($msg);
         $mutex->release();
+    }
+    
+    /**
+     * Print to log the publication stats
+     */
+    private static function log_status() : void
+    {
+        $pumpersTotal = 0;
+        $framesPendingTotal = 0;
+        $framesActiveTotal = 0;
+        
+        // Change to default log (xmd.log)
+        Logger::setActiveLog();
+        $batchs = Batch::countBatchsInProcess();
+        Logger::info('SCHEDULER STATS [' . $batchs . ' batchs in time]', false, 'white');
+        
+        // Obtain a list of servers with server frames active
+        $servers = ServerFrame::serversInActiveServerFrames();
+        foreach ($servers as $serverId) {
+            
+            // Stats information for each server
+            $server = new Server($serverId);
+            $pumpersCount = 0;
+            $framesPendingCount = 0;
+            $framesActiveCount = 0;
+            Logger::info('Server ' . $server->get('Description'));
+            
+            // Stats information for each channel in the current server
+            foreach ($server->getChannels() as $channelId) {
+                $channel = new Channel($channelId);
+                $framesPending = ServerFrame::countServerFrames([ServerFrame::PENDING], [], true, $serverId, $channelId);
+                $framesActive = ServerFrame::countServerFrames([], array_merge(ServerFrame::FINAL_STATUS, [ServerFrame::PENDING])
+                    , true, $serverId, $channelId);
+                if ($framesPending or $framesActive) {
+                    Logger::info(' - Channel ' . $channel->GetName() . ': ' . $framesPending . ' frames pending, ' . $framesActive .' frames active');
+                }
+            }
+            
+            // Stats without channel (ChannelId = null), sending a zero value
+            $framesPending = ServerFrame::countServerFrames([ServerFrame::PENDING], [], true, $serverId, 0);
+            $framesActive = ServerFrame::countServerFrames([], array_merge(ServerFrame::FINAL_STATUS, [ServerFrame::PENDING]), true, $serverId, 0);
+            if ($framesPending or $framesActive) {
+                Logger::info(' - No channel: ' . $framesPending . ' frames pending, ' . $framesActive .' frames active');
+            }
+            
+            // Stats information for each server
+            $pumpersCount += $pumpers = Pumper::countPumpers(true, $serverId);
+            $framesPendingCount += $serverFramesPending = ServerFrame::countServerFrames([ServerFrame::PENDING], [], true, $serverId);
+            $framesActiveCount += $serverFramesActive = ServerFrame::countServerFrames([]
+                , array_merge(ServerFrame::FINAL_STATUS, [ServerFrame::PENDING]), true, $serverId);
+            if ($serverFramesPending or $serverFramesActive or $pumpers) {
+                Logger::info(' Server total: ' . $framesPendingCount . ' frames pending, ' . $framesActiveCount .' frames active, ' 
+                    . $pumpersCount . ' pumpers');
+            }
+            $pumpersTotal += $pumpersCount;
+            $framesPendingTotal += $framesPendingCount;
+            $framesActiveTotal += $framesActiveCount;
+        }
+        
+        // Log for total resume
+        Logger::info('Total: ' . $framesPendingTotal . ' frames pending, ' . $framesActiveTotal .' frames active, ' . $pumpersTotal . ' pumpers');
+        
+        // Switch to scheduler log file
+        Logger::setActiveLog('scheduler');
     }
 }

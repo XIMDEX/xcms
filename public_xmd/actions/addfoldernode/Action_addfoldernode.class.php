@@ -343,9 +343,6 @@ class Action_addfoldernode extends ActionAbstract
             
         } elseif ($idFolder > 0 && $nodeTypeName == 'XSIRRepository') {
             $node = new Node();
-            $node->CreateNode("metadata", $idFolder, ServicesNodeType::METADATA_SECTION);
-
-            $node = new Node();
             $node->CreateNode("schemes", $idFolder, ServicesNodeType::TEMPLATE_VIEW_FOLDER);
 
             $node = new Node();

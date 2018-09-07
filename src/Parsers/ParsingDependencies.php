@@ -535,7 +535,6 @@ class ParsingDependencies
                     $type = Dependencies::XIMLET;
                     break;
                 case NodeTypeConstants::XML_DOCUMENT:
-                case NodeTypeConstants::METADATA_DOCUMENT:
                 case NodeTypeConstants::HTML_DOCUMENT:
                     $type = Dependencies::XML;
                     break;

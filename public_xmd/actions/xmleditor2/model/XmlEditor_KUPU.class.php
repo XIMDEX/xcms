@@ -694,40 +694,35 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
         $rngElements = $parser->getElements();
 
         // Obtaining array with templates referenced from templates_include.xsl
-        if ($this->node->GetNodeType() !=\Ximdex\NodeTypes\NodeTypeConstants::METADATA_DOCUMENT)
-        {
-            $docxapId = NULL;
-            $depsMngr = new DepsManager();
-            if ($templatesIds = $depsMngr->getBySource(DepsManager::STRDOC_TEMPLATE, $idNode)) {
-                foreach ($templatesIds as $templateId) {
-                    $templateNode = new Node($templateId);
-                    if ($templateNode->get('IdNode') > 0 && $templateNode->get('Name') == 'docxap.xsl')
-                        $docxapId = $templateId;
-                }
+        $docxapId = NULL;
+        $depsMngr = new DepsManager();
+        if ($templatesIds = $depsMngr->getBySource(DepsManager::STRDOC_TEMPLATE, $idNode)) {
+            foreach ($templatesIds as $templateId) {
+                $templateNode = new Node($templateId);
+                if ($templateNode->get('IdNode') > 0 && $templateNode->get('Name') == 'docxap.xsl')
+                    $docxapId = $templateId;
             }
-            if (is_null($docxapId)) {
-                Logger::error(_('docxap can not be found for node: ' . $this->node->GetNodeName()));
-                return false;
-            }
-            $xslParser = new ParsingXsl($docxapId, null, $idNode);
-            $templatesInclude = $xslParser->getIncludedElements('templates_include');
-            if (!$templatesInclude)
-            {
-                //invalid docxap content
-                Logger::error('docxap has not valid content for node: ' . $this->node->GetNodeName());
-                return false;
-            }
-            
-            $templatesIncludePath = str_replace(App::getValue('UrlHost') . App::getValue('UrlRoot'), XIMDEX_ROOT_PATH, $templatesInclude[0]);
-            
-            $xslParser = new ParsingXsl(NULL, $templatesIncludePath);
-            $templatesElements = $xslParser->getIncludedElements(NULL, true, true);
-                
-            // Obtaining no renderizable elements
-            $intersectionElements = array_intersect($rngElements, $templatesElements);
         }
-        else
-            $intersectionElements = array();
+        if (is_null($docxapId)) {
+            Logger::error(_('docxap can not be found for node: ' . $this->node->GetNodeName()));
+            return false;
+        }
+        $xslParser = new ParsingXsl($docxapId, null, $idNode);
+        $templatesInclude = $xslParser->getIncludedElements('templates_include');
+        if (!$templatesInclude)
+        {
+            //invalid docxap content
+            Logger::error('docxap has not valid content for node: ' . $this->node->GetNodeName());
+            return false;
+        }
+        
+        $templatesIncludePath = str_replace(App::getValue('UrlHost') . App::getValue('UrlRoot'), XIMDEX_ROOT_PATH, $templatesInclude[0]);
+        
+        $xslParser = new ParsingXsl(NULL, $templatesIncludePath);
+        $templatesElements = $xslParser->getIncludedElements(NULL, true, true);
+            
+        // Obtaining no renderizable elements
+        $intersectionElements = array_intersect($rngElements, $templatesElements);
         
         $norenderizableElements = array_diff($rngElements, $intersectionElements);
 

@@ -26,7 +26,6 @@
  */
 
 use Ximdex\Models\Node;
-use Ximdex\Models\RelNodeVersionMetadataVersion;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\DataFactory;
@@ -117,23 +116,6 @@ class Action_manageversions extends ActionAbstract
             // If it is a recovery of a version, first we recover it and then we show the form
             $data = new DataFactory($idNode);
             $ret = $data->RecoverVersion($version, $subVersion);
-            $mm = new \Ximdex\Metadata\MetadataManager($idNode);
-            $metadataNodes = $mm->getMetadataNodes();
-            if (count($metadataNodes) > 0) {
-                $v = new \Ximdex\Models\Version();
-                $idVersion = $v->getIdVersion($idNode, $version, $subVersion);
-                $rnvmv = new RelNodeVersionMetadataVersion();
-                $metadataVersionIds = $rnvmv->getMostRecentMetadataVersionsForANodeVersion($idVersion);
-                foreach($metadataVersionIds as $metadataVersionId) {
-                    $v = new \Ximdex\Models\Version($metadataVersionId);
-                    $metadataId = $v->get('IdNode');
-                    $versionNumber = $v->get('Version');
-                    $subVersionNumber = $v->get('SubVersion');
-                    $data = new DataFactory($metadataId);
-                    $ret2 = $data->RecoverVersion($versionNumber, $subVersionNumber);
-                    $ret = $ret && $ret2;
-                }
-            }
             if ($ret === false) {
                 $this->render(array(
                     'messages' => array(array(

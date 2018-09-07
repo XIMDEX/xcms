@@ -184,7 +184,6 @@ abstract class AbstractStructuredDocument extends FileNode
         if ($node) {
             switch ($node->getNodeType()) {
                 case \Ximdex\NodeTypes\NodeTypeConstants::XML_DOCUMENT:
-                case \Ximdex\NodeTypes\NodeTypeConstants::METADATA_DOCUMENT:
                 case \Ximdex\NodeTypes\NodeTypeConstants::XIMLET:
                     
                     // In this case we will format the XML content with correct indentation

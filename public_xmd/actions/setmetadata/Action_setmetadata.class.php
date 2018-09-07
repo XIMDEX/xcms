@@ -32,7 +32,6 @@ use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
 use Ximdex\Rest\Services\Xowl\OntologyService;
-use Ximdex\Metadata\MetadataManager;
 
 class Action_setmetadata extends ActionAbstract
 {
@@ -151,8 +150,6 @@ class Action_setmetadata extends ActionAbstract
         if (array_key_exists('tags', $data)) {
             $tags->saveAll($data->tags, $previous_tags);
         }
-        $mm = new MetadataManager($idNode);
-        $mm->updateSystemMetadata();
         $this->messages->add(_("All the tags have been properly associated."), MSG_TYPE_NOTICE);
         $values = array(
             'messages' => $this->messages->messages,

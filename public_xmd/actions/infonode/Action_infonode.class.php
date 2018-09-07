@@ -34,8 +34,6 @@ use Ximdex\Runtime\App;
 use Ximdex\Models\RelNode2Asset;
 use Ximdex\Models\RelXml2Xml;
 use Ximdex\Models\RelStrdocTemplate;
-use Ximdex\Models\RelNodeMetadata;
-use Ximdex\NodeTypes\NodeTypeConstants;
 
 Ximdex\Modules\Manager::file('/actions/manageversions/Action_manageversions.class.php');
 
@@ -116,17 +114,12 @@ class Action_infonode extends ActionAbstract
                 $depMasterList = array_merge($depMasterList, $res);
             }
         }
-        $relnodemetadata = new RelNodeMetadata();
-        $res = $relnodemetadata->find("IdMetadata", "IdNode=" . $idNode, null, MONO);
-        if ($res) {
-            $depMasterList = array_merge($depMasterList, $res);
-        }
         $data = array();
         $errors = array();
         $depMasterNameList = array();
         foreach ($depMasterList as $idDependentNode) {
             $node = new Node((int) $idDependentNode);
-            if ($node->GetID() and $node->GetID() != $idNode and $node->GetNodeType() != NodeTypeConstants::METADATA_DOCUMENT) {
+            if ($node->GetID() and $node->GetID() != $idNode) {
                 $obj = [];
                 $name = $node->GetNodeName() . ' (' . $node->GetID() . ')';
                 $obj["name"] = $name;

@@ -278,26 +278,6 @@ class XsltNode extends FileNode
         }
         return true;
     }
-    
-    /**
-     * Make the relations between a server templates section and the paralel metadata section, by the metadata document node given
-     * 
-     * @param Node $node
-     * @return boolean
-     */
-    public function rel_include_templates_to_metadata_section(Node $node)
-    {
-        Logger::info('Making a relation between metadata section and templates with node ' . $node->GetID());
-        $server = new Node($node->getServer());
-        $idTemplatesNode = $server->GetChildren(NodeTypeConstants::TEMPLATES_ROOT_FOLDER);
-        $depsMngr = new DepsManager();
-        if ($depsMngr->set(DepsManager::DOCFOLDER_TEMPLATESINC, $node->GetID(), $idTemplatesNode[0]) === false)
-        {
-            $this->messages->add('Cannot link templates node ' . $idTemplatesNode . ' with metadata section ' . $node->GetID(), MSG_TYPE_ERROR);
-            return false;
-        }
-        return true;
-    }
 
     /**
      * Rename a node
@@ -706,10 +686,6 @@ DOCXAP;
             if ($node->GetNodeType() == NodeTypeConstants::XML_DOCUMENT)
             {
                 $documentsFolderId = $node->_getParentByType(NodeTypeConstants::XML_ROOT_FOLDER);
-            }
-            elseif ($node->GetNodeType() == NodeTypeConstants::METADATA_DOCUMENT)
-            {
-                $documentsFolderId = $node->_getParentByType(NodeTypeConstants::METADATA_SECTION);
             }
             elseif ($node->GetNodeType() == NodeTypeConstants::XIMLET)
             {

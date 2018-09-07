@@ -90,9 +90,6 @@ class NodeTypeConstants
     const MODULES_FOLDER = 5080;
     const MODULE_INFO_CONTAINER = 5081;
     const ALLOWED_EXTENSIONS = 5082;
-    const METADATA_SECTION = 5083;
-    const METADATA_CONTAINER = 5084;
-    const METADATA_DOCUMENT = 5085;
     const XSIR_IMAGE_FOLDER = 9013;
     const XSIR_VIDEO_FOLDER = 9014;
     const XSIR_WIDGET_FOLDER = 9015;

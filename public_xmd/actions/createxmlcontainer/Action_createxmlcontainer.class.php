@@ -75,7 +75,7 @@ class Action_createxmlcontainer extends ActionAbstract
     		}
     		if ($schemes === null)
     		{
-    		    $schemes = ($nt == NodeTypeConstants::METADATA_SECTION) ? $node->getSchemas('metadata_schema') : $node->getSchemas();
+    		    $schemes = $node->getSchemas();
     		}
 		}
 		$schemaArray = array();

@@ -90,7 +90,6 @@ class XmlContainerNode extends FolderNode
             foreach ($aliasLangList as $idLanguage => $alias) {
                 $result = $this->addLanguageVersion($idLanguage, $alias, $channelList, $dataChildren);
             }
-            // $this->buildMetadata($nodeTypeID, $aliasLangList);
         }
         if (! $result) {
             return false;
@@ -103,17 +102,6 @@ class XmlContainerNode extends FolderNode
             $this->UpdatePath();
         }
         return true;
-    }
-
-    private function buildMetadata($idNodeType, $aliases)
-    {
-        $langs = array();
-        foreach ($aliases as $idLang => $alias) {
-            $langs[] = $idLang;
-        }
-        $mm = new \Ximdex\Metadata\MetadataManager($this->nodeID);
-        $mm->generateMetadata($langs);
-        $mm->updateSystemMetadata();
     }
 
     /**
@@ -191,8 +179,6 @@ class XmlContainerNode extends FolderNode
     {
         $templatecontainer = new \Ximdex\Models\RelTemplateContainer();
         $templatecontainer->deleteRel($this->nodeID);
-        $mm = new \Ximdex\Metadata\MetadataManager($this->nodeID);
-        $mm->deleteMetadata();
     }
 
     function RenameNode($name = null)
@@ -211,8 +197,6 @@ class XmlContainerNode extends FolderNode
             }
         }
         $this->updatePath();
-        $mm = new \Ximdex\Metadata\MetadataManager($this->nodeID);
-        $mm->updateSystemMetadata();
     }
 
     function GetLanguages()

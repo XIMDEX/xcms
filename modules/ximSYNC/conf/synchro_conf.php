@@ -126,3 +126,8 @@ if (!defined('DEEP_LEVEL')) {
 if (!defined('FORCE_PUBLICATION')) {
 	define('FORCE_PUBLICATION', false);
 }
+
+// Number of scheduler batch publication cycles to wait in order to print publish stats in log 
+if (!defined('CYCLES_BETWEEN_SHOW_STATS')) {
+    define('CYCLES_BETWEEN_SHOW_STATS', 50);
+}

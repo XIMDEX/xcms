@@ -639,16 +639,16 @@ class Action_workflow_forward extends ActionAbstract
             $this->render($values, 'show_results', 'default-3.0.tpl');
             return false;
         }
-        Logger::info("ADDSECTION sendToPublish pre render");
+        Logger::debug("ADDSECTION sendToPublish pre render");
         if (\Ximdex\Modules\Manager::isEnabled('ximSYNC')) {
-            Logger::info("ADDSECTION sendToPublish pre render if");
+            Logger::debug("ADDSECTION sendToPublish pre render if");
             $values = array(
                 'options' => $arrayOpciones,
                 'result' => $valuesToShow,
                 'messages' => $this->messages->messages,
                 'node_Type' => $node->nodeType->GetName()
             );
-            Logger::info("ADDSECTION sendToPublish pre render else value: " . print_r($values, true));
+            Logger::debug("ADDSECTION sendToPublish pre render else value: " . print_r($values, true));
             $this->render($values, 'show_results', 'default-3.0.tpl');
         } else {
             $values = array(

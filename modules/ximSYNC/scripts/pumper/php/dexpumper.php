@@ -125,15 +125,17 @@ class DexPumper
 		$this->registerPumper();
 		while (true) {
 			if (!$cycle) {
-				$this->info("STARTING PUMPER CYCLE");
+				$this->debug('STARTING PUMPER CYCLE');
 			} else {
-				$this->info("PUMPER CYCLE");
+				$this->debug('PUMPER CYCLE');
 			}
 			$serverFrame = new ServerFrame();
 			$pumperID = $this->pumper->get('PumperId');
 			$serverFrameInfo = $serverFrame->getPublishableNodesForPumper($pumperID);
 			$countNodes = count($serverFrameInfo);
-			$this->info("$countNodes nodes for pumping with PumperID: " . $pumperID);
+			if ($countNodes) {
+			    $this->info("$countNodes nodes for pumping with PumperID: " . $pumperID);
+			}
 			
 			// Exit condition here when cycles reach max void cycles
 			if (empty($serverFrameInfo)) {
@@ -149,10 +151,10 @@ class DexPumper
 					    $this->unRegisterPumper();
 					    exit();
 					}
-					$this->info("cycle $cycle without working. Sleeping.....");
+					$this->debug("cycle $cycle without working. Sleeping.....");
 					continue;
 				} else {
-					$this->info("Max Cycle $cycle. Bye!");
+				    $this->info("Max cycles $cycle for pumper with ID: $pumperID. Bye!");
 					break;
 				}
 			}
