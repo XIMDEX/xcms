@@ -282,41 +282,43 @@ class Scheduler
             
             // Stats information for each server
             $server = new Server($serverId);
-            $pumpersCount = 0;
-            $framesPendingCount = 0;
-            $framesActiveCount = 0;
+            $serverFramesPending = 0;
+            $serverFramesActive = 0;
             Logger::info('Server ' . $server->get('Description'));
             
             // Stats information for each channel in the current server
             foreach ($server->getChannels() as $channelId) {
                 $channel = new Channel($channelId);
-                $framesPending = ServerFrame::countServerFrames([ServerFrame::PENDING], [], true, $serverId, $channelId);
-                $framesActive = ServerFrame::countServerFrames([], array_merge(ServerFrame::FINAL_STATUS, [ServerFrame::PENDING])
-                    , true, $serverId, $channelId);
+                $serverFramesPending += $framesPending = ServerFrame::countServerFrames([ServerFrame::PENDING], [], true, $serverId, $channelId);
+                $serverFramesActive += $framesActive = ServerFrame::countServerFrames([], 
+                    array_merge(ServerFrame::FINAL_STATUS, [ServerFrame::PENDING]), true, $serverId, $channelId);
                 if ($framesPending or $framesActive) {
                     Logger::info(' - Channel ' . $channel->GetName() . ': ' . $framesPending . ' frames pending, ' . $framesActive .' frames active');
                 }
             }
             
             // Stats without channel (ChannelId = null), sending a zero value
-            $framesPending = ServerFrame::countServerFrames([ServerFrame::PENDING], [], true, $serverId, 0);
-            $framesActive = ServerFrame::countServerFrames([], array_merge(ServerFrame::FINAL_STATUS, [ServerFrame::PENDING]), true, $serverId, 0);
+            $serverFramesPending += $framesPending = ServerFrame::countServerFrames([ServerFrame::PENDING], [], true, $serverId, 0);
+            $serverFramesActive += $framesActive = ServerFrame::countServerFrames([], 
+                array_merge(ServerFrame::FINAL_STATUS, [ServerFrame::PENDING]), true, $serverId, 0);
             if ($framesPending or $framesActive) {
                 Logger::info(' - No channel: ' . $framesPending . ' frames pending, ' . $framesActive .' frames active');
             }
             
-            // Stats information for each server
-            $pumpersCount += $pumpers = Pumper::countPumpers(true, $serverId);
-            $framesPendingCount += $serverFramesPending = ServerFrame::countServerFrames([ServerFrame::PENDING], [], true, $serverId);
-            $framesActiveCount += $serverFramesActive = ServerFrame::countServerFrames([]
+            // Stats information for server
+            $serverPumpers = Pumper::countPumpers(true, $serverId);
+            /*
+            $serverFramesPending = ServerFrame::countServerFrames([ServerFrame::PENDING], [], true, $serverId);
+            $serverFramesActive = $serverFramesActive = ServerFrame::countServerFrames([]
                 , array_merge(ServerFrame::FINAL_STATUS, [ServerFrame::PENDING]), true, $serverId);
-            if ($serverFramesPending or $serverFramesActive or $pumpers) {
-                Logger::info(' Server total: ' . $framesPendingCount . ' frames pending, ' . $framesActiveCount .' frames active, ' 
-                    . $pumpersCount . ' pumpers');
-            }
-            $pumpersTotal += $pumpersCount;
-            $framesPendingTotal += $framesPendingCount;
-            $framesActiveTotal += $framesActiveCount;
+            */
+            Logger::info(' Server totals: ' . $serverFramesPending . ' frames pending, ' . $serverFramesActive .' frames active, ' 
+                . $serverPumpers . ' pumpers');
+            
+            // Sum totals
+            $framesPendingTotal += $serverFramesPending;
+            $framesActiveTotal += $serverFramesActive;
+            $pumpersTotal += $serverPumpers;
         }
         
         // Log for total resume

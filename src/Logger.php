@@ -3,12 +3,15 @@
 namespace Ximdex;
 
 use Colors\Color;
-use Monolog\Handler\StreamHandler;
+// use Monolog\Handler\StreamHandler;
 use Ximdex\Runtime\App;
 use Exception;
+use Monolog\Handler\RotatingFileHandler;
 
 Class Logger
 {
+    const MAX_FILES_TO_KEEP = 30;
+    
     private static $instances = array();
     private static $active = '';
     private $logger = null;
@@ -32,7 +35,9 @@ Class Logger
     public static function generate(string $id, string $file, bool $default = false)
     {
         $log = new \Monolog\Logger($id);
-        $log->pushHandler(new StreamHandler(XIMDEX_ROOT_PATH . '/logs/' . $file . '.log', \Monolog\Logger::DEBUG, true, 0666));
+        // $log->pushHandler(new StreamHandler(XIMDEX_ROOT_PATH . '/logs/' . $file . '.log', \Monolog\Logger::DEBUG, true, 0666));
+        $log->pushHandler(new RotatingFileHandler(XIMDEX_ROOT_PATH . '/logs/' . $file . '.log', self::MAX_FILES_TO_KEEP
+            , \Monolog\Logger::DEBUG, true, 0666));
         if ($default) {
             self::addLog($log);
         } else {

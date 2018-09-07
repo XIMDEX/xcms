@@ -559,7 +559,7 @@ class Action_workflow_forward extends ActionAbstract
         $idState = $this->request->getParam('stateid');
         $texttosend = $this->request->getParam('texttosend');
         $lastPublished = $this->request->getParam('latest') ? false : true;
-        Logger::info("ADDSECTION publicateNode PRE");
+        Logger::debug("ADDSECTION publicateNode PRE");
         $this->sendToPublish($idNode, $up, $down, $markEnd, $force, $structure, $deepLevel, $sendNotifications, $notificableUsers, $idState
             , $texttosend, $lastPublished);
     }
@@ -567,7 +567,7 @@ class Action_workflow_forward extends ActionAbstract
     private function sendToPublish($idNode, $up, $down, $markEnd, $force, $structure, $deepLevel, $sendNotifications, $notificableUsers
         , $idState, $texttosend, $lastPublished)
     {
-        Logger::info("ADDSECTION publicateNode sendToPublish parent");
+        Logger::debug("ADDSECTION publicateNode sendToPublish parent");
         $this->addJs('/actions/workflow_forward/resources/js/workflow_forward.js');
         
         // If send notifications
