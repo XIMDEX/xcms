@@ -70,8 +70,7 @@ class ServerFrameManager
         $chFr = new ChannelFrame($channelFrameId);
         $channel = $chFr->get('ChannelId');
         if (!$operation || !$serverFrameId) {
-            $serverFrame->ServerFrameToLog(null, null, null, $serverFrameId, null, __CLASS__, __FUNCTION__,
-                __FILE__, __LINE__, "ERROR", 8, _("ERROR Params needed"));
+            Logger::error('ERROR Params needed');
             return false;
         }
         $republishAncestors = false;
@@ -109,9 +108,7 @@ class ServerFrameManager
                                 $overlapedFrame->deleteSyncFile();
                             }
                         }
-                        $serverFrame->ServerFrameToLog(null, null, null, $id, null, __CLASS__, __FUNCTION__,
-                            __FILE__, __LINE__, "INFO", 8, _("Setting $id as overlaped from $overlapedInitialState
-								to $overlapedFinalState"), true);
+                        Logger::info("Setting $id as overlaped from $overlapedInitialState to $overlapedFinalState");
                         $overlapedFrame->set('State', $overlapedFinalState);
                         $overlapedFrame->update();
                     }
@@ -124,9 +121,7 @@ class ServerFrameManager
                     $republishAncestors = true;
                 }
             } else {
-                // $finalState = ServerFrame::DUE2IN_;
-                $serverFrame->ServerFrameToLog(null, null, null, $serverFrameId, null, __CLASS__, __FUNCTION__,
-                    __FILE__, __LINE__, "INFO", 8, _("Nothing to do with $serverFrameId starter $initialState"), true);
+                Logger::info("Nothing to do with $serverFrameId starter $initialState");
                 return true;
             }
         } elseif ($operation == 'Down') {
@@ -141,20 +136,17 @@ class ServerFrameManager
                     $canceledFrame = new ServerFrame($delayedId);
                     $canceledFrame->set('State', ServerFrame::DUE2IN_);
                     $canceledFrame->update();
-                    $serverFrame->ServerFrameToLog(null, null, null, $id, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__,
-                        "INFO", 8, _("Setting frame from Delayed $delayedId to Due2In_"), true);
+                    Logger::info("Setting frame from Delayed $delayedId to Due2In_");
                 } else {
                     $finalState = ServerFrame::DUE2OUT_;
                     $serverFrame->deleteSyncFile();
                     $republishAncestors = true;
                 }
             } else {
-                $serverFrame->ServerFrameToLog(null, null, null, $serverFrameId, null, __CLASS__, __FUNCTION__,
-                    __FILE__, __LINE__, "INFO", 8, _("Nothing to do for state $initialState"), true);
+                Logger::info("Nothing to do for state $initialState");
             }
         } else {
-            $serverFrame->ServerFrameToLog(null, null, null, $serverFrameId, null, __CLASS__, __FUNCTION__,
-                __FILE__, __LINE__, "ERROR", 8, _("ERROR: Incorrect operation $operation"));
+            Logger::error("Incorrect operation $operation");
         }
         $pumperId = $this->calcPumper($serverFrameId);
         $serverFrame->set('State', (isset($finalState)) ? $finalState : $initialState);
@@ -164,13 +156,11 @@ class ServerFrameManager
             $finalState = 'unknown final state';
         }
         if ($result === false) {
-            $serverFrame->ServerFrameToLog(null, null, null, $serverFrameId, null, __CLASS__, __FUNCTION__, __FILE__,
-                __LINE__, "ERROR", 8, _("ERROR Changing frame $serverFrameId to $finalState"));
+            Logger::error("Changing frame $serverFrameId to $finalState");
             return false;
         }
         if ($result) {
-            $serverFrame->ServerFrameToLog(null, null, null, $serverFrameId, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__,
-                "INFO", 8, _("Setting frame $serverFrameId from $initialState to $finalState"), true);
+            Logger::info("Setting frame $serverFrameId from $initialState to $finalState");
         }
         return true;
     }
@@ -281,9 +271,7 @@ class ServerFrameManager
                         $tasks[] = $dbObj->GetValue("IdSync");
                         $dbObj->Next();
                     }
-                    $serverFrame->ServerFrameToLog(null, null, null, null, $pumperId, __CLASS__, __FUNCTION__, __FILE__,
-                        __LINE__, "INFO", 8, _("Setting tasks $numTasksForPumping for pumper $pumperId"));
-                    
+                    Logger::info("Setting tasks $numTasksForPumping for pumper $pumperId");
                     if (self::useMPMManager) {
                         
                         // Process All Task with MPMManager
@@ -301,12 +289,10 @@ class ServerFrameManager
                     $timer->stop();
                     Logger::info('Set task for pumping ended; time: ' . $timer->display() . ' milliseconds');
                 } else {
-                    $serverFrame->ServerFrameToLog(null, null, null, null, $pumperId, __CLASS__, __FUNCTION__, __FILE__,
-                        __LINE__, "INFO", 8, _("All tasks pumped for pumper $pumperId"));
+                    Logger::info("All tasks pumped for pumper $pumperId");
                 }
             } else {
-                $serverFrame->ServerFrameToLog(null, null, null, null, $pumperId, __CLASS__, __FUNCTION__, __FILE__,
-                    __LINE__, "INFO", 8, _("Pumper $pumperId full"));
+                Logger::info("Pumper $pumperId full");
             }
         }
     }
@@ -345,8 +331,7 @@ class ServerFrameManager
         if ($pumperId > 0) {
             return $pumperId;
         }
-        $serverFrame->ServerFrameToLog($serverFrame->get('IdSync'), null, null, null, null, __CLASS__, __FUNCTION__,
-            __FILE__, __LINE__, "INFO", 8, _("Obtaining pumperId for task ") . $serverFrame->get('IdSync') . "");
+        Logger::info('Obtaining pumperId for task ' . $serverFrame->get('IdSync'));
     }
 
     /**

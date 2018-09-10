@@ -29,10 +29,8 @@ namespace Ximdex\Models;
 
 use ServerErrorByPumper;
 use ServerErrorManager;
-use SynchronizerStat;
 use Ximdex\Logger;
 use Ximdex\Models\ORM\PumpersOrm;
-use Ximdex\Runtime\App;
 use Ximdex\Runtime\Db;
 
 \Ximdex\Modules\Manager::file('/inc/model/ServerErrorByPumper.class.php', 'ximSYNC');
@@ -49,8 +47,6 @@ class Pumper extends PumpersOrm
 {
     private $maxvoidcycles = 10;
     private $sleeptime = 2;
-    
-    public $syncStatObj;
     
     const NEW = 'New';
     const STARTING = 'Starting';
@@ -98,8 +94,7 @@ class Pumper extends PumpersOrm
             $serverError->create($pumperID, $idServer);
             return $pumperID;
         }
-        $this->PumperToLog(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__,
-            __LINE__, "ERROR", 8, "ERROR Inserting pumper");
+        Logger::error('Inserting pumper');
         return null;
     }
 
@@ -148,65 +143,27 @@ class Pumper extends PumpersOrm
         $startCommand = 'php ' . XIMDEX_ROOT_PATH . '/bootstrap.php ' . PUMPERPHP_PATH . '/dexpumper.' . $modo 
             . " --pumperid=$pumperId --sleeptime=" . $this->sleeptime . ' --maxvoidcycles=' . $this->maxvoidcycles 
             . ' --localbasepath=' . SERVERFRAMES_SYNC_PATH . ' > /dev/null 2>&1 &';
-        $this->PumperToLog(null, null, null, null, $pumperId, __CLASS__, __FUNCTION__, __FILE__,
-            __LINE__, "INFO", 8, "Pumper call: $startCommand");
+        Logger::info("Pumper call: $startCommand");
         $out = array();
         system($startCommand, $var);
-        $this->PumperToLog(null, null, null, null, $pumperId, __CLASS__, __FUNCTION__, __FILE__,
-            __LINE__, "INFO", 8, $startCommand, true);
+        Logger::info($startCommand);
 
         // 0: OK, 200: connection problem, 255: unexistent server, 127:command not found
         if ($var == 0) {
-            $this->PumperToLog(null, null, null, null, $pumperId, __CLASS__, __FUNCTION__, __FILE__,
-                __LINE__, "INFO", 8, "Pumper $pumperId started succefully", true);
+            Logger::info("Pumper $pumperId started succefully");
             return true;
         } else if ($var == 200) {
-            $this->PumperToLog(null, null, null, null, $pumperId, __CLASS__, __FUNCTION__, __FILE__,
-                __LINE__, "ERROR", 8, "ERROR In server connection starting pumper $pumperId");
+            Logger::error("In server connection starting pumper $pumperId");
             $serverMng = new ServerErrorManager();
             $serverMng->disableServerByPumper($pumperId);
             return false;
         } else if ($var == 400) {
-            $this->PumperToLog(null, null, null, null, $pumperId, __CLASS__, __FUNCTION__, __FILE__,
-                __LINE__, "ERROR", 8, "ERROR registering pumper $pumperId.");
+            Logger::error("ERROR registering pumper $pumperId");
             return false;
         } else {
-            $this->PumperToLog(null, null, null, null, $pumperId, __CLASS__, __FUNCTION__, __FILE__,
-                __LINE__, "ERROR", 8, "ERROR Code $var starting pumper $pumperId");
+            Logger::error("ERROR Code $var starting pumper $pumperId");
             return false;
         }
-    }
-
-    /**
-     * Logs the activity of the Pumper
-     * 
-     * @param int batchId
-     * @param int nodeFrameId
-     * @param int channelFrameId
-     * @param int serverFrameId
-     * @param int pumperId
-     * @param string class
-     * @param string method
-     * @param string file
-     * @param int line
-     * @param string type
-     * @param int level
-     * @param string comment
-     * @param int doInsertSql
-     */
-    public function PumperToLog($batchId, $nodeFrameId, $channelFrameId, $serverFrameId, $pumperId, $class, $method, $file
-        , $line, $type, $level, $comment, $doInsertSql = false)
-    {
-        if (strcmp(App::getValue("SyncStats"), "1") == 0) {
-            if (!isset($this->syncStatObj)) {
-                $this->syncStatObj = new SynchronizerStat();
-            }
-            $this->syncStatObj->create($batchId, $nodeFrameId, $channelFrameId, $serverFrameId, $pumperId,
-                $class, $method, $file, $line, $type, $level, $comment, $doInsertSql);
-        }
-        Logger::debug('PumperToLog -> batchId:' . $batchId . ' nodeFrameId:' . $nodeFrameId . ' channelFrameId:' . $channelFrameId 
-            . ' serverFrameId:' . $serverFrameId . ' pumperId:' . $pumperId . ' class:' . $class . ' method:' . $method . ' $file:' . $file
-            . ' line:' . $line . ' type:' . $type . ' level:' . $level . ' comment:' . $comment . ' doInsertSql:' . $doInsertSql);
     }
     
     public static function isAlive(Pumper $pumper) : bool

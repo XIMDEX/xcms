@@ -289,9 +289,6 @@ class BatchManager
             $idVersion = $dataFactory->getVersionId($versions[$idNode], $subversions[$idNode]);
             if (is_null($idVersion))
             {
-                $batch = new Batch();
-                $batch->batchToLog(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__,
-                    __LINE__, "INFO", 8, _("No version for node") . " $idNode");
                 Logger::warning(sprintf("There is no version (%s.%s) publishable for the node %s", $versions[$idNode], $subversions[$idNode]
                         , $idNode));
                 continue;
@@ -562,13 +559,10 @@ class BatchManager
                 // Do not change to CLOSING state if this is the actual one in the batch
                 if ($batch->get('State') != Batch::CLOSING) {
                     $batch->set('State', Batch::CLOSING);
-                    $batch->BatchToLog($idBatch, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__,
-                        __LINE__, "INFO", 8, sprintf(_("Setting 'Closing' state to %s batch %d UP"), $prevState, $idBatch));
+                    Logger::info(sprintf(_("Setting 'Closing' state to %s batch %d UP"), $prevState, $idBatch));
                 }
             } else {
                 $batch->set('State', Batch::ENDED);
-                $batch->BatchToLog($idBatch, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__,
-                    __LINE__, "INFO", 8, sprintf(_("Ending %s batch %d UP"), $prevState, $idBatch));
                 Logger::info("Ending up batch with id " . $idBatch);
             }
             $batch->update();
@@ -618,8 +612,6 @@ class BatchManager
                 $batchDown->set('ServerFramesError', $errors);
                 if ($totals == $errors + $success) {
                     $batchDown->set('State', Batch::ENDED);
-                    $batchDown->BatchToLog($idBatch, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__,
-                        __LINE__, "INFO", 8, _("Ending " . $prevState . "for batch DOWN $idBatch"));
                     Logger::info("Ending down batch with id " . $idBatch);
                 }
                 $batchDown->update();
@@ -646,8 +638,7 @@ class BatchManager
         }
         foreach ($listBatchs as $batchId) {
             $batch = new Batch($batchId);
-            $batch->BatchToLog($batchId, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__,
-                __LINE__, "INFO", 8, _("Starting batch") . " $batchId");
+            Logger::info('Starting batch ' . $batchId);
             $batch->set('State', Batch::INTIME);
             $batch->update();
         }
@@ -762,8 +753,7 @@ class BatchManager
         if ($majorCycle > MAX_NUM_CICLOS_BATCH) {
             $batch->set('Playing', 0);
             $batch->update();
-            $batch->batchToLog(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__,
-                __LINE__, "INFO", 8, _("Unplaying batch") . " $idBatch");
+            Logger::info('Unplaying batch ' . $idBatch);
             return true;
         }
         $sucessFrames = $batch->get('ServerFramesSucess');
@@ -772,8 +762,7 @@ class BatchManager
         
         // Calc priority
         if ($allFrames == 0) {
-            $batch->batchToLog(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__,
-                __LINE__, "INFO", 8, _("Batch without ServerFrames"));
+            Logger::info('Batch without ServerFrames');
             $batch->set('Playing', 0);
             $batch->update();
             return false;
@@ -781,12 +770,10 @@ class BatchManager
         $porcentaje = 100 * $sucessFrames / $allFrames;
         if ($porcentaje > 25) {
             $systemPriority = MAX_SYSTEM_PRIORITY;
-            $batch->batchToLog(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__,
-                __LINE__, "INFO", 8, sprintf(_("Up batch %d priority"), $idBatch));
+            Logger::info('Up batch %d priority', $idBatch);
         } else if ($porcentaje < 25) {
             $systemPriority = -MIN_SYSTEM_PRIORITY;
-            $batch->batchToLog(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__,
-                __LINE__, "INFO", 8, sprintf(_("Down batch %d priority"), $idBatch));
+            Logger::info(sprintf('Down batch %d priority', $idBatch));
         } else {
             $systemPriority = 0;
         }
@@ -797,8 +784,7 @@ class BatchManager
             $priority = (float)MAX_TOTAL_PRIORITY;
         }
         if (is_null($cycles)) {
-            $batch->batchToLog(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__,
-                __LINE__, "ERROR", 8, _("ERROR Calc cycles"));
+            Logger::error('ERROR Calc cycles');
         } else {
             $batch->set('MajorCycle', $cycles[0]);
             $batch->set('MinorCycle', $cycles[1]);
@@ -823,8 +809,7 @@ class BatchManager
         $sql = "UPDATE Batchs set Playing = '$playingValue'";
         $dbObj->Execute($sql);
         if ($dbObj->numRows > 0) {
-            $batch->BatchToLog(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__,
-                __LINE__, "INFO", 8, $dbObj->numRows . " " . _("Setting batchs to") . ($playingValue == 1) ? " playing" : " unplaying");
+            Logger::info('Setting batchs to ' . ($playingValue == 1) ? 'playing' : 'unplaying');
         }
     }
 

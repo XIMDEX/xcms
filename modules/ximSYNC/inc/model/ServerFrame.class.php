@@ -73,7 +73,7 @@ class ServerFrame extends ServerFrames_ORM
     public $finalStatusOk;
     public $finalStatusLimbo;
     public $finalStatusFailed;
-    public $syncStatObj;
+    private $publishingReport;
 
     public function __construct($id = 0)
     {
@@ -200,8 +200,7 @@ class ServerFrame extends ServerFrames_ORM
             }
             return $idServerFrame;
         }
-        $this->ServerFrameToLog(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "ERROR", 8
-            , "Creando el serverFrame");
+        Logger::error('Creating server frame');
         return NULL;
     }
 
@@ -247,8 +246,7 @@ class ServerFrame extends ServerFrames_ORM
         if ($dbObj->numRows > 0) {
             return $dbObj->GetValue("IdSync");
         }
-        $this->ServerFrameToLog(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "ERROR", 8
-            , "ERROR getting publicated serverFrame");
+        Logger::error('Getting publicated serverFrame');
         return NULL;
     }
 
@@ -269,8 +267,7 @@ class ServerFrame extends ServerFrames_ORM
             $dbObj->Query($sql);
             return $dbObj->GetValue("IdSync");
         }
-        $this->ServerFrameToLog(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "ERROR", 8
-            , "ERROR. Falta el NodeID");
+        Logger::error('NodeID is needed');
     }
 
     /**
@@ -385,8 +382,6 @@ class ServerFrame extends ServerFrames_ORM
     public function deleteSyncFile()
     {
         if (! ($this->get('IdSync')) > 0) {
-            $this->ServerFrameToLog(null, null, null, $frameId, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "ERROR", 8
-                , "Deleting Sync files");
             return false;
         }
         return FsUtils::delete(SERVERFRAMES_SYNC_PATH . '/' . $this->get('IdSync'));
@@ -515,8 +510,7 @@ class ServerFrame extends ServerFrames_ORM
             "AND ServerFrames.PumperId = $pumperID AND Pumpers.IdServer IN ($servers)";
         $dbObj->Query($sql);
         $n = $dbObj->numRows;
-        $this->ServerFrameToLog(null, null, null, null, $pumperID, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "INFO", 8
-            , "Bombeador $pumperID tiene $n tareas incompletas");
+        Logger::info("Pumper $pumperID contain $n incomplete tasks");
         return $n;
     }
 
@@ -674,38 +668,6 @@ class ServerFrame extends ServerFrames_ORM
         
         // Deleting serverFrame
         parent::delete();
-    }
-
-    /**
-     * Logs the activity of the ServerFrame
-     * 
-     * @param int batchId
-     * @param int nodeFrameId
-     * @param int channelFrameId
-     * @param int serverFrameId
-     * @param int pumperId
-     * @param string class
-     * @param string method
-     * @param string file
-     * @param int line
-     * @param string type
-     * @param int level
-     * @param string comment
-     * @param int doInsertSql
-     */
-    public function ServerFrameToLog($batchId, $nodeFrameId, $channelFrameId, $serverFrameId, $pumperId, $class, $method, $file, $line
-        , $type, $level, $comment, $doInsertSql = false)
-    {
-        if (strcmp(App::getValue("SyncStats"), "1") == 0) {
-            if (! isset($this->syncStatObj)) {
-                $this->syncStatObj = new SynchronizerStat();
-            }
-            $this->syncStatObj->create($batchId, $nodeFrameId, $channelFrameId, $serverFrameId, $pumperId, $class, $method, $file
-                , $line, $type, $level, $comment, $doInsertSql);
-        }
-        Logger::debug('ServerFrameToLog -> batchId: ' . $batchId . ' nodeFrameId: ' . $nodeFrameId . ' channelFrameId: ' 
-            . $channelFrameId . ' serverFrameId:' . $serverFrameId . ' pumperId:' . $pumperId . ' method:' . $method . ' file:' . $file 
-            . ' line:' . $line . ' type:' . $type . ' level:' . $level . ' comment:' . $comment . ' doInsertSql:' . $doInsertSql);
     }
 
     /**

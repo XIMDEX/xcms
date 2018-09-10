@@ -29,7 +29,6 @@ use Ximdex\Logger;
 use Ximdex\Models\Node;
 use Ximdex\Runtime\Db;
 
-Ximdex\Modules\Manager::file('/inc/model/orm/SynchronizerStats_ORM.class.php', 'ximSYNC');
 Ximdex\Modules\Manager::file('/inc/model/NodeFrame.class.php', 'ximSYNC');
 Ximdex\Modules\Manager::file('/inc/model/ChannelFrame.class.php', 'ximSYNC');
 Ximdex\Modules\Manager::file('/inc/model/ServerFrame.class.php', 'ximSYNC');
@@ -51,8 +50,6 @@ class Batch extends Batchs_ORM
     const ENDED = 'Ended';
     const CLOSING = 'Closing';
     const NOFRAMES = 'NoFrames';
-    
-    private $syncStatObj;
 
     public function set($attribute, $value)
     {
@@ -126,46 +123,17 @@ class Batch extends Batchs_ORM
     function calcCycles($majorCycle, $minorCycle)
     {
         if (is_null($majorCycle) || is_null($minorCycle)) {
-            $this->BatchToLog(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "ERROR", 8
-                , _("ERROR Params $majorCycle - $minorCycle"));
+            Logger::error("ERROR Params $majorCycle - $minorCycle");
             return null;
         }
         if ($minorCycle > $majorCycle) {
             $majorCycle++;
             $minorCycle = 0;
-            $this->BatchToLog(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "INFO", 8
-                , _("Up to major cycle $majorCycle batch ") . $this->get('IdBatch') . "");
+            Logger::info("Up to major cycle $majorCycle batch " . $this->get('IdBatch'));
         } else {
             $minorCycle++;
         }
         return array($majorCycle, $minorCycle);
-    }
-
-    /**
-     *  Logs the activity of the Batch
-     *  
-     *  @param int batchId
-     *  @param int nodeFrameId
-     *  @param int channelFrameId
-     *  @param int serverFrameId
-     *  @param int pumperId
-     *  @param string class
-     *  @param string method
-     *  @param string file
-     *  @param int line
-     *  @param string type
-     *  @param int level
-     *  @param string comment
-     *  @param int doInsertSql
-     */
-    function BatchToLog($batchId, $nodeFrameId, $channelFrameId, $serverFrameId, $pumperId, $class, $method, $file
-        , $line, $type, $level, $comment, $doInsertSql = false)
-    {
-        if (!isset($this->syncStatObj)) {
-            $this->syncStatObj = new SynchronizerStat();
-        }
-        $this->syncStatObj->create($batchId, $nodeFrameId, $channelFrameId, $serverFrameId, $pumperId, $class, $method, $file
-            , $line, $type, $level, $comment, $doInsertSql);
     }
 
     /**
@@ -322,11 +290,10 @@ class Batch extends Batchs_ORM
         $this->set('Playing', $playingValue);
         $updatedRows = parent::update();
         if ($updatedRows == 1) {
-            $this->BatchToLog($idBatch, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "INFO", 8
-                , _("Setting playing Value = $playingValue for batch $idBatch"));
+            Logger::info("Setting playing Value = $playingValue for batch $idBatch");
             return true;
         } else {
-            Logger::info("Error en BD: " . $dbObj->desErr);
+            Logger::error("Error en BD: " . $dbObj->desErr);
         }
         return false;
     }
@@ -357,8 +324,7 @@ class Batch extends Batchs_ORM
         $this->set('Priority', $priority);
         $hasUpdated = parent::update();
         if ($hasUpdated) {
-            $this->BatchToLog($idBatch, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "INFO"
-                , 8, _("Setting priority Value = $playingValue for batch $idBatch"));
+            Logger::info("Setting priority Value = $playingValue for batch $idBatch");
             return true;
         } else {
             return false;

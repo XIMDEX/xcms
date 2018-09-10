@@ -1,1 +1,1 @@
-DROP TABLE `ximdex`.`ActionsStats`;
+DROP TABLE `ActionsStats`;

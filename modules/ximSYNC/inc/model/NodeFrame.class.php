@@ -35,7 +35,6 @@ Ximdex\Modules\Manager::file('/inc/model/orm/NodeFrames_ORM.class.php', 'ximSYNC
 Ximdex\Modules\Manager::file('/inc/model/ServerFrame.class.php', 'ximSYNC');
 Ximdex\Modules\Manager::file('/inc/model/ChannelFrame.class.php', 'ximSYNC');
 Ximdex\Modules\Manager::file('/inc/manager/ServerFrameManager.class.php', 'ximSYNC');
-Ximdex\Modules\Manager::file('/inc/model/SynchronizerStat.class.php', 'ximSYNC');
 
 /**
 *	@brief Handles operations with NodeFrames.
@@ -45,8 +44,6 @@ Ximdex\Modules\Manager::file('/inc/model/SynchronizerStat.class.php', 'ximSYNC')
 */
 class NodeFrame extends NodeFrames_ORM
 {
-	var $syncStatObj;
-
 	/**
 	*  Adds a row to NodeFrames table
 	*  
@@ -374,33 +371,6 @@ class NodeFrame extends NodeFrames_ORM
 		$params = array($idNode, $idNodeFrame);
 		$result = parent::find('IdNodeFrame', $condition, $params, MONO);
 		return count($result) > 0 ? $result[0] : NULL;
-	}
-
-	/**
-	*  Logs the activity of the NodeFrame
-	*  
-	*  @param int batchId
-	*  @param int nodeFrameId
-	*  @param int channelFrameId
-	*  @param int serverFrameId
-	*  @param int pumperId
-	*  @param string class
-	*  @param string method
-	*  @param string file
-	*  @param int line
-	*  @param string type
-	*  @param int level
-	*  @param string comment
-	*  @param int doInsertSql
-	*/
-    function NodeFrameToLog($batchId, $nodeFrameId, $channelFrameId, $serverFrameId, $pumperId, 
-        $class, $method, $file, $line, $type, $level, $comment, $doInsertSql = false)
-    {
-		if (!isset($this->syncStatObj)) {
-			$this->syncStatObj = new SynchronizerStat();
-		}
-		$this->syncStatObj->create($batchId, $nodeFrameId, $channelFrameId, $serverFrameId, $pumperId, 
-		    $class, $method, $file, $line, $type, $level, $comment, $doInsertSql);
 	}
 	
 	public function set($attribute, $value)

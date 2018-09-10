@@ -48,22 +48,19 @@ class PumperManager
     {
         if (is_null($pumpersWithTasks) || count($pumpersWithTasks) == 0) {
             $pumper = new Pumper();
-            $pumper->PumperToLog(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__,
-                __LINE__, "ERROR", 8, _("Not pumpers available"));
+            Logger::error('Not pumpers available');
             return false;
         }
         $pumpersWithError = 0;
         foreach ($pumpersWithTasks as $pumperId) {
             $pumper = new Pumper($pumperId);
             if (!($pumper->get('PumperId') > 0)) {
-                $pumper->PumperToLog(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__,
-                    __LINE__, "ERROR", 8, _("Non-existing pumper") . " $pumperId");
+                Logger::error('Non-existing pumper ' . $pumperId);
                 continue;
             }
             $pumperState = $pumper->get('State');
             $pumperCheckTime = $pumper->get('CheckTime');
-            $pumper->PumperToLog(null, null, null, null, $pumperId, __CLASS__, __FUNCTION__, __FILE__,
-                __LINE__, "INFO", 8, sprintf(_("Pumper %s at state %s"), $pumperId, $pumperState));
+            Logger::info(sprintf('Pumper %s at state %s', $pumperId, $pumperState));
             Logger::debug('Pumper with ID: ' . $pumperId . ' has state: ' . $pumperState);
             switch ($pumperState) {
                 case Pumper::STARTED:
@@ -71,8 +68,7 @@ class PumperManager
                     // Checking if pumper is alive
                     $now = time();
                     if (!Pumper::isAlive($pumper) or ($now - $pumperCheckTime > MAX_CHECK_TIME_FOR_PUMPER)) {
-                        $pumper->PumperToLog(null, null, null, null, $pumperId, __CLASS__, __FUNCTION__, __FILE__,
-                            __LINE__, "INFO", 8, _("No checking time for Pumper") . " $pumperId", true);
+                        Logger::info('No checking time for pumper ' . $pumperId);
                         
                         // Restart pumper
                         Logger::warning('Pumper with ID: ' . $pumperId . ' will be restarted');
@@ -120,16 +116,14 @@ class PumperManager
                     }
                     break;
                 default:
-                    $pumper->PumperToLog(null, null, null, null, $pumperId, __CLASS__, __FUNCTION__, __FILE__,
-                        __LINE__, "INFO", 8, "default: $pumperId - $pumperState");
+                    Logger::info("Default: $pumperId - $pumperState");
                     break;
             }
         }
         $pumpersInRegistry = $pumper->getPumpersInRegistry();
         if ($pumpersWithError == count($pumpersInRegistry)) {
             $pumper = New Pumper();
-            $pumper->PumperToLog(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__,
-                __LINE__, "INFO", 8, _("Problems in all pumpers"));
+            Logger::error('Problems in all pumpers');
             return false;
         }
         return true;
@@ -143,21 +137,17 @@ class PumperManager
     public function callingPumpers($activeAndEnabledServers)
     {
         $pumper = new Pumper();
-        $pumper->PumperToLog(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__,
-            __LINE__, "INFO", 8, _("Calling pumpers"));
+        Logger::info('Calling pumpers');
         $serverFrameManager = new ServerFrameManager();
         $pumpers = $serverFrameManager->getPumpersWithTasks($activeAndEnabledServers);
         if (!is_null($pumpers) && count($pumpers) > 0) {
-            $pumper->PumperToLog(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__,
-                __LINE__, "INFO", 8, _("There are tasks for pumping"));
+            Logger::info('There are tasks for pumping');
             $serverFrameManager->setTasksForPumping($pumpers, SCHEDULER_CHUNK, $activeAndEnabledServers);
             $result = $this->checkAllPumpers($pumpers, PUMPER_SCRIPT_MODE);
             if ($result == false) {
-                $pumper->PumperToLog(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__,
-                    __LINE__, "INFO", 8, _("All pumpers with errors"));
+                Logger::error('All pumpers with errors');
             }
         }
-        $pumper->PumperToLog(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__,
-            __LINE__, "INFO", 8, _("No pumpers to be called"));
+        Logger::info('No pumpers to be called');
     }
 }
