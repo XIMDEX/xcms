@@ -27,8 +27,8 @@
 use Ximdex\Models\Node;
 use Ximdex\Models\NodeType;
 use Ximdex\MVC\ActionAbstract;
-use Ximdex\Sync\SynchroFacade;
-use Ximdex\Sync\SyncManager;
+
+Ximdex\Modules\Manager::file('/inc/manager/SyncManager.class.php', 'ximSYNC');
 
 class Action_publicateximlet extends ActionAbstract {
 
@@ -70,33 +70,20 @@ class Action_publicateximlet extends ActionAbstract {
 		}
 
 		$this->render($values, NULL, 'default-3.0.tpl');
-    	}
+    }
 
-	function publicate_ximlet() {
-
+	function publicate_ximlet()
+	{
 		$idNode	= $this->request->getParam("nodeid");
 		$idAction = $this->request->getParam("actionid");
 		$upDate = time();
-
-		if (\Ximdex\Modules\Manager::isEnabled('ximSYNC')) {
-			\Ximdex\Modules\Manager::file('/inc/manager/SyncManager.class.php', 'ximSYNC');
-			$syncMngr = new SyncManager();
-			$syncMngr->setFlag('forcePublication', true);
-			$syncResult = $syncMngr->pushDocInPublishingPool($idNode, $upDate, NULL);
-
-		}else {
-			$flags = array('force' => true);
-				
-			$syncFacade = new SynchroFacade();
-			$syncResult = $syncFacade->pushDocInPublishingPool($idNode, $upDate, NULL, $flags);
-		}
-
+        $syncMngr = new SyncManager();
+        $syncMngr->setFlag('forcePublication', true);
+        $syncResult = $syncMngr->pushDocInPublishingPool($idNode, $upDate, NULL);
 		$this->messages->add(_("The node has been successfully sent to publish"), MSG_TYPE_NOTICE);
-
 		$values = array(
 			'messages' => $this->messages->messages,
 		);
-
 		$this->sendJSON($values);
 	}
 

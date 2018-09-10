@@ -268,7 +268,7 @@ class Action_expiredoc extends ActionAbstract
             'structural_publication' => $user->HasPermission('structural_publication') ? '1' : '0',
             'advanced_publication' => $user->HasPermission('advanced_publication') ? '1' : '0',
             'nodetypename' => $nodeTypeName,
-            'synchronizer_to_use' => \Ximdex\Modules\Manager::isEnabled('ximSYNC') ? 'ximSYNC' : 'default',
+            'synchronizer_to_use' => 'ximSYNC',
             'ximpublish_tools_enabled' => \Ximdex\Modules\Manager::isEnabled('ximPUBLISHtools'),
             'show_rep_option' => true
         );

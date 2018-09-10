@@ -53,7 +53,7 @@ class Action_publicatesection extends ActionAbstract
         $values = array(
             'go_method' => 'publicate_section',
             'publishabledtypes' => $publishabledNodeTypes,
-            'synchronizer_to_use' => \Ximdex\Modules\Manager::isEnabled('ximSYNC') ? 'ximSYNC' : 'default',
+            'synchronizer_to_use' => 'ximSYNC',
             'ximpublish_tools_enabled' => \Ximdex\Modules\Manager::isEnabled('ximPUBLISHtools'),
             'folderType' => $node->nodeType->getID() == NodeTypeConstants::SERVER ? 'server' : 'section',
             'name' => $node->GetNodeName(),

@@ -316,43 +316,41 @@ class DataFactory
     function _generateCaches($idVersion, bool $delete = false)
     {
         $res = true;
-        if (\Ximdex\Modules\Manager::isEnabled('ximSYNC')) {
-            $version = new Version($idVersion);
-            if (!($version->get('IdVersion') > 0)) {
-                return NULL;
-            }
-            $idNode = $version->get('IdNode');
-            $node = new Node($idNode);
-            if (!($node->get('IdNode') > 0)) {
-                return NULL;
-            }
-            if (!$node->nodeType->GetIsStructuredDocument()) {
-                return NULL;
-            }
+        $version = new Version($idVersion);
+        if (!($version->get('IdVersion') > 0)) {
+            return NULL;
+        }
+        $idNode = $version->get('IdNode');
+        $node = new Node($idNode);
+        if (!($node->get('IdNode') > 0)) {
+            return NULL;
+        }
+        if (!$node->nodeType->GetIsStructuredDocument()) {
+            return NULL;
+        }
 
-            // Delete cache if the parameter $delete is true
-            $pipelineManager = new PipelineManager();
-            if ($delete) {
-                $pipelineManager->deleteCache($idVersion);
-            }
-            $channels = $node->GetChannels();
-            if ($channels) {
-                foreach ($channels as $idChannel) {
-                    Logger::info("Generation cache for version $idVersion and the channel $idChannel");
-                    $data = array('CHANNEL' => $idChannel);
-                    $data['NODEID'] = $idNode;
-                    $data['DISABLE_CACHE'] = App::getValue("DisableCache");
-                    $transformer = $node->getProperty('Transformer');
-                    $data['TRANSFORMER'] = $transformer[0];
-                    if ($node->GetNodeType() == NodeTypeConstants::XML_DOCUMENT) {
-                        $process = 'StrDocToDexT';
-                    } elseif ($node->GetNodeType() == NodeTypeConstants::HTML_DOCUMENT) {
-                        $process = 'HTMLToPrepared';
-                    } else {
-                        return false;
-                    }
-                    $res = $pipelineManager->getCacheFromProcess($idVersion, $process, $data);
+        // Delete cache if the parameter $delete is true
+        $pipelineManager = new PipelineManager();
+        if ($delete) {
+            $pipelineManager->deleteCache($idVersion);
+        }
+        $channels = $node->GetChannels();
+        if ($channels) {
+            foreach ($channels as $idChannel) {
+                Logger::info("Generation cache for version $idVersion and the channel $idChannel");
+                $data = array('CHANNEL' => $idChannel);
+                $data['NODEID'] = $idNode;
+                $data['DISABLE_CACHE'] = App::getValue("DisableCache");
+                $transformer = $node->getProperty('Transformer');
+                $data['TRANSFORMER'] = $transformer[0];
+                if ($node->GetNodeType() == NodeTypeConstants::XML_DOCUMENT) {
+                    $process = 'StrDocToDexT';
+                } elseif ($node->GetNodeType() == NodeTypeConstants::HTML_DOCUMENT) {
+                    $process = 'HTMLToPrepared';
+                } else {
+                    return false;
                 }
+                $res = $pipelineManager->getCacheFromProcess($idVersion, $process, $data);
             }
         }
         return $res;

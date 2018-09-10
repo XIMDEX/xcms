@@ -46,11 +46,6 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 \Ximdex\Modules\Manager::file('/inc/model/Batch.class.php', 'ximSYNC');
 \Ximdex\Modules\Manager::file('/conf/synchro_conf.php', 'ximSYNC');
 
-
-if (!\Ximdex\Modules\Manager::isEnabled('XIMSYNC')) {
-    die(_("ximSYNC module is not active, you must run syncronizer module") . "\n");
-}
-
 GLOBAL $synchro_pid;
 $synchro_pid = posix_getpid();
 

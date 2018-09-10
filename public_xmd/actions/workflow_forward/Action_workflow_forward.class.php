@@ -417,7 +417,7 @@ class Action_workflow_forward extends ActionAbstract
             'structural_publication' => $user->HasPermission('structural_publication') ? '1' : '0',
             'advanced_publication' => $user->HasPermission('advanced_publication') ? '1' : '0',
             'nodetypename' => $nodeTypeName,
-            'synchronizer_to_use' => \Ximdex\Modules\Manager::isEnabled('ximSYNC') ? 'ximSYNC' : 'default',
+            'synchronizer_to_use' => 'ximSYNC',
             'ximpublish_tools_enabled' => \Ximdex\Modules\Manager::isEnabled('ximPUBLISHtools'),
             'show_rep_option' => true
         );
@@ -640,27 +640,14 @@ class Action_workflow_forward extends ActionAbstract
             return false;
         }
         Logger::debug("ADDSECTION sendToPublish pre render");
-        if (\Ximdex\Modules\Manager::isEnabled('ximSYNC')) {
-            Logger::debug("ADDSECTION sendToPublish pre render if");
-            $values = array(
-                'options' => $arrayOpciones,
-                'result' => $valuesToShow,
-                'messages' => $this->messages->messages,
-                'node_Type' => $node->nodeType->GetName()
-            );
-            Logger::debug("ADDSECTION sendToPublish pre render else value: " . print_r($values, true));
-            $this->render($values, 'show_results', 'default-3.0.tpl');
-        } else {
-            $values = array(
-                'node_name' => $node->get('Name'),
-                'messages' => $this->messages->messages,
-                'options' => $arrayOpciones,
-                'result' => $valuesToShow,
-                'synchronizer_to_use' => \Ximdex\Modules\Manager::isEnabled('ximSYNC') ? 'ximSYNC' : 'default',
-                'node_Type' => $node->nodeType->GetName()
-            );
-            $this->render($values, 'show_results', 'default-3.0.tpl');
-        }
+        $values = array(
+            'options' => $arrayOpciones,
+            'result' => $valuesToShow,
+            'messages' => $this->messages->messages,
+            'node_Type' => $node->nodeType->GetName()
+        );
+        Logger::debug("ADDSECTION sendToPublish pre render else value: " . print_r($values, true));
+        $this->render($values, 'show_results', 'default-3.0.tpl');
         return true;
     }
 

@@ -34,7 +34,8 @@ use Ximdex\Runtime\App;
 use Ximdex\Runtime\Constants;
 use Ximdex\Runtime\DataFactory;
 use Ximdex\Utils\Strings;
-use Ximdex\Sync\SyncManager;
+
+Ximdex\Modules\Manager::file('/inc/manager/SyncManager.class.php', 'ximSYNC');
 
 /**
  * Class Action_edittext
@@ -187,13 +188,7 @@ class Action_edittext extends ActionAbstract
      */
     public function publicateDocs()
     {
-        if (\Ximdex\Modules\Manager::isEnabled('ximSYNC'))
-        {
-            \Ximdex\Modules\Manager::file('/inc/manager/SyncManager.class.php', 'ximSYNC');
-        }
-
         $docs = explode('_', $this->request->getParam('docsList'));
-
         $syncMngr = new SyncManager();
         $syncMngr->setFlag('deleteOld', true);
         $syncMngr->setFlag('linked', false);

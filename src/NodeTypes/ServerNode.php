@@ -30,7 +30,6 @@ namespace Ximdex\NodeTypes;
 use Ximdex\Runtime\Db;
 use Ximdex\Models\NodeType;
 use Ximdex\Models\Server;
-use Ximdex\Sync\Synchronizer;
 use Ximdex\Models\Node;
 
 class ServerNode extends FolderNode
@@ -117,10 +116,6 @@ class ServerNode extends FolderNode
         $this->DeleteAllStates($physicalID);
         $sql = "DELETE FROM Servers WHERE IdServer='" . $physicalID . "' AND IdNode='" . $this->nodeID . "'";
         $this->dbObj->Execute($sql);
-        
-        // Deleting frames
-        $sync = new Synchronizer();
-        $sync->deleteByColumn($physicalID, 'IdServer');
     }
 
     function SetProtocol($physicalID, $protocolID)

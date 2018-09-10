@@ -42,10 +42,6 @@ use Ximdex\Logger;
 \Ximdex\Modules\Manager::file('/conf/synchro_conf.php', 'ximSYNC');
 \Ximdex\Modules\Manager::file('/inc/model/ServerFrame.class.php', 'ximSYNC');
 
-if (!\Ximdex\Modules\Manager::isEnabled('XIMSYNC')) {
-    Logger::error("ximSYNC module is not active, you must run syncronizer module" . "\n");
-    die();
-}
 $synchro_pid = null;
 
 class Scheduler
@@ -71,7 +67,7 @@ class Scheduler
             Logger::error("Closing scheduler. Disabled pcntl_fork and pcntl_waitpid functions are required. Please, check php.ini file." . "\r\n");
         }
         Logger::info('Starting Scheduler ' . $synchro_pid);
-        $mutex = new Mutex (XIMDEX_ROOT_PATH . App::getValue("TempRoot") . "/scheduler.lck");
+        $mutex = new Mutex(XIMDEX_ROOT_PATH . App::getValue("TempRoot") . "/scheduler.lck");
         if (!$mutex->acquire()) {
             Logger::info('Lock file existing');
             die();
@@ -255,7 +251,8 @@ class Scheduler
                 $serverFramesActive += $framesActive = ServerFrame::countServerFrames([], 
                     array_merge(ServerFrame::FINAL_STATUS, [ServerFrame::PENDING]), true, $serverId, $channelId);
                 if ($framesPending or $framesActive) {
-                    Logger::info(' - Channel ' . $channel->GetName() . ': ' . $framesPending . ' frames pending, ' . $framesActive .' frames active');
+                    Logger::info(' - Channel ' . $channel->GetName() . ': ' . $framesPending . ' frames pending, ' 
+                        . $framesActive . ' frames active');
                 }
             }
             
@@ -269,11 +266,6 @@ class Scheduler
             
             // Stats information for server
             $serverPumpers = Pumper::countPumpers(true, $serverId);
-            /*
-            $serverFramesPending = ServerFrame::countServerFrames([ServerFrame::PENDING], [], true, $serverId);
-            $serverFramesActive = $serverFramesActive = ServerFrame::countServerFrames([]
-                , array_merge(ServerFrame::FINAL_STATUS, [ServerFrame::PENDING]), true, $serverId);
-            */
             Logger::info(' Server totals: ' . $serverFramesPending . ' frames pending, ' . $serverFramesActive .' frames active, ' 
                 . $serverPumpers . ' pumpers');
             

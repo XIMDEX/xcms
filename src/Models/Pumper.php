@@ -143,7 +143,7 @@ class Pumper extends PumpersOrm
         $startCommand = 'php ' . XIMDEX_ROOT_PATH . '/bootstrap.php ' . PUMPERPHP_PATH . '/dexpumper.' . $modo 
             . " --pumperid=$pumperId --sleeptime=" . $this->sleeptime . ' --maxvoidcycles=' . $this->maxvoidcycles 
             . ' --localbasepath=' . SERVERFRAMES_SYNC_PATH . ' > /dev/null 2>&1 &';
-        Logger::info("Pumper call: $startCommand");
+        Logger::debug("Pumper call: $startCommand");
         $out = array();
         system($startCommand, $var);
         Logger::info($startCommand);

@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -38,70 +38,51 @@ use Ximdex\Logger;
 use Ximdex\Runtime\Session;
 use Ximdex\Models\PortalVersions;
 
-if (\Ximdex\Modules\Manager::isEnabled('ximSYNC')) {
-    \Ximdex\Modules\Manager::file('/inc/model/Batch.class.php', 'ximSYNC');
-    \Ximdex\Modules\Manager::file('/inc/model/ServerFrame.class.php', 'ximSYNC');
-    \Ximdex\Modules\Manager::file('/inc/manager/NodeFrameManager.class.php', 'ximSYNC');
-    \Ximdex\Modules\Manager::file('/inc/manager/SyncManager.class.php', 'ximSYNC');
-}
+\Ximdex\Modules\Manager::file('/inc/model/Batch.class.php', 'ximSYNC');
+\Ximdex\Modules\Manager::file('/inc/model/ServerFrame.class.php', 'ximSYNC');
+\Ximdex\Modules\Manager::file('/inc/manager/NodeFrameManager.class.php', 'ximSYNC');
+\Ximdex\Modules\Manager::file('/inc/manager/SyncManager.class.php', 'ximSYNC');
 
 class SynchroFacade
 {
     /**
      * Return the target server to publicate a specified node in one given channel
      * 
-     * @param $idTargetNode
-     * @param $idTargetChannel
-     * @param $idServer
-     * @return NULL|int
+     * @param int $idTargetNode
+     * @param int $idTargetChannel
+     * @param int $idServer
+     * @return null|int
      */
-    public function getServer($idTargetNode, $idTargetChannel, $idServer)
+    public function getServer(int $idTargetNode, ?int $idTargetChannel, int $idServer) : ?int
     {
         $targetNode = new Node(($idTargetNode));
         if (! ($targetNode->get('IdNode') > 0)) {
             Logger::error(_('No correct node received'));
-            return NULL;
+            return null;
         }
         $server = new Server($idServer);
         if (! ($server->get('IdServer') > 0)) {
             Logger::error(_('No correct server received'));
-            return NULL;
+            return null;
         }
-        if (\Ximdex\Modules\Manager::isEnabled('ximSYNC')) {
-            
-            // Looking for a possible frame for the destiny channel
-            $targetFrame = new ServerFrame();
-            $frameID = $targetFrame->getCurrent($idTargetNode, $idTargetChannel); // esto es un idSync
-            if (! ($frameID > 0)) {
-                Logger::warning(_("No target frame available") . " FACADE target node: $idTargetNode target channel: " 
-                    . (is_null($idTargetChannel) ? 'NULL' : $idTargetChannel) . " server: $idServer");
-                return NULL;
-            }
-            
-            // Calculating physical origin and destiny servers
-            $physicalTargetServers = $targetFrame->getCompleteServerList($idTargetNode, $idTargetChannel);
-            if (count($physicalTargetServers) == 0) {
-                Logger::error(_("No physical target server available"));
-                return NULL;
-            }
-            
-            // Gets only enabled servers
-            if (in_array($idServer, $physicalTargetServers)) {
-                return $idServer;
-            }
-            return $physicalTargetServers[rand(0, count($physicalTargetServers) - 1)];
+
+        // Looking for a possible frame for the destiny channel
+        $targetFrame = new ServerFrame();
+        $frameID = $targetFrame->getCurrent($idTargetNode, $idTargetChannel); // esto es un idSync
+        if (! ($frameID > 0)) {
+            Logger::warning(_("No target frame available") . " FACADE target node: $idTargetNode target channel: " 
+                . (is_null($idTargetChannel) ? 'NULL' : $idTargetChannel) . " server: $idServer");
+            return null;
         }
-        $syncro = new Synchronizer($idTargetNode);
-        $idFrame = $syncro->GetCurrentFrame($idTargetChannel);
-        if (! ($idFrame > 0)) {
-            Logger::error(_("Not target frame available") . " FACADE (2)");
-            return NULL;
-        }
-        $physicalTargetServers = $syncro->GetServerListOnFrame($idFrame, $idTargetChannel);
+        
+        // Calculating physical origin and destiny servers
+        $physicalTargetServers = $targetFrame->getCompleteServerList($idTargetNode, $idTargetChannel);
         if (count($physicalTargetServers) == 0) {
-            Logger::info(_("No physical target server available"));
-            return NULL;
+            Logger::error(_("No physical target server available"));
+            return null;
         }
+        
+        // Gets only enabled servers
         if (in_array($idServer, $physicalTargetServers)) {
             return $idServer;
         }
@@ -109,113 +90,79 @@ class SynchroFacade
     }
 
     /**
-     * Delete frames belongs to unexisting physical server
-     *
-     * @param $physicalServerID
-     */
-    function removeFromUnexistingServer($physicalServerID)
-    {
-        if (\Ximdex\Modules\Manager::isEnabled('ximSYNC')) {
-            $table = 'ServerFrames';
-        } else {
-            $table = 'Synchronizer';
-        }
-        $dbObj = new \Ximdex\Runtime\Db();
-        $sql = "DELETE FROM $table WHERE IdServer = $physicalServerID";
-        $dbObj->Execute($sql);
-        if ($dbObj->numRows > 0) {
-            Logger::info(sprinf(_("Deleting frames in table %s - server %s"), $table, $physicalServerID));
-        } else {
-            Logger::info(sprinft(_("No deletion in table %s - server %s"), $table, $physicalServerID));
-        }
-    }
-
-    /**
      * Return pending tasks for a given node
-     *
-     * @param $nodeID
+     * 
+     * @param int $nodeID
+     * @return null|array
      */
-    function getPendingTasksByNode($nodeID)
+    public function getPendingTasksByNode(?int $nodeID) : ?array
     {
         if (is_null($nodeID)) {
             Logger::info("Void node");
-            return NULL;
+            return null;
         }
-        if (\Ximdex\Modules\Manager::isEnabled('ximSYNC')) {
-            $nodeFramesMng = new NodeFrameManager();
-            $pendingTasks = $nodeFramesMng->getPendingNodeFrames($nodeID);
-        } else {
-            $sync = new Synchronizer();
-            $pendingTasks = $sync->getPendingFrames($nodeID);
-        }
+        $nodeFramesMng = new NodeFrameManager();
+        $pendingTasks = $nodeFramesMng->getPendingNodeFrames($nodeID);
         return $pendingTasks;
     }
 
     /**
      * Return if node is published
-     *
-     * @param $nodeID
+     * 
+     * @param int $nodeID
      * @return boolean
      */
-    function isNodePublished($nodeID)
+    public function isNodePublished(?int $nodeID) : bool
     {
         if (is_null($nodeID)) {
-            Logger::info("Void node");
+            Logger::info('Void node');
             return false;
         }
-        if (\Ximdex\Modules\Manager::isEnabled('ximSYNC')) {
-            $nodeFrame = new NodeFrame();
-            $result = $nodeFrame->getPublishedId($nodeID);
-        } else {
-            $sync = new Synchronizer($nodeID);
-            $result = $sync->IsPublished();
-        }
-        return (boolean) $result;
+        $nodeFrame = new NodeFrame();
+        $result = $nodeFrame->getPublishedId($nodeID);
+        return (bool) $result;
     }
     
     /**
      * Delete all tasks by node
      *
-     * @param $nodeID
+     * @param int $nodeID
      * @param boolean $unPublish --> don't delete task, set it to Due2Out state
+     * @return null|boolean
      */
-    function deleteAllTasksByNode($nodeID, $unPublish = false)
+    public function deleteAllTasksByNode(?int $nodeID, bool $unPublish = false) : ?bool
     {
         if (is_null($nodeID)) {
-            Logger::info(_("No existing node with id $nodeID"));
-            return NULL;
+            Logger::info("No existing node with id $nodeID");
+            return null;
         }
         if (! is_null($unPublish)) {
-            Logger::info(_("Unpublish documents before deleting node"));
+            Logger::info('Unpublish documents before deleting node');
         } else {
-            Logger::info(_("Delete node and keep documents published"));
+            Logger::info('Delete node and keep documents published');
         }
         $deleteIDs = self::getAllTaskByNode($nodeID);
         foreach ($deleteIDs as $id) {
-            if (\Ximdex\Modules\Manager::isEnabled('ximSYNC')) {
-                $nodeFrameMng = new NodeFrameManager();
-                $tasks = $nodeFrameMng->getByNode($id);
-                if (sizeof($tasks) > 0) {
-                    foreach ($tasks as $dataFrames) {
-                        $idNodeFrame = $dataFrames[0];
-                        $nodeFrameMng->delete($idNodeFrame, $unPublish);
-                    }
+            $nodeFrameMng = new NodeFrameManager();
+            $tasks = $nodeFrameMng->getByNode($id);
+            if (sizeof($tasks) > 0) {
+                foreach ($tasks as $dataFrames) {
+                    $idNodeFrame = $dataFrames[0];
+                    $nodeFrameMng->delete($idNodeFrame, $unPublish);
                 }
-            } else {
-                $sync = new Synchronizer();
-                $sync->deleteByColumn($id, 'IdNode', $unPublish);
             }
         }
         return true;
     }
 
     /**
-     * @param $nodeID
+     * @param int $nodeID
+     * @return array
      */
-    function getAllTaskByNode($nodeID)
+    public static function getAllTaskByNode(?int $nodeID) : array
     {
         if (is_null($nodeID)) {
-            Logger::info(_("No existing node with id $nodeID"));
+            Logger::info("No existing node with id $nodeID");
             return array();
         }
         $node = new Node($nodeID);
@@ -249,292 +196,85 @@ class SynchroFacade
         $deleteIDs = array_unique($deleteIDs);
         return $deleteIDs;
     }
-
-    /**
-     * Gets the State field of the frame
-     *
-     * @param int idFrame
-     * @return int|NULL
-     */
-    function getFrameState($idFrame)
-    {
-        if (is_null($idFrame)) {
-            Logger::error(_('Void param idFrame'));
-            return NULL;
-        }
-        if (\Ximdex\Modules\Manager::isEnabled('ximSYNC')) {
-            
-            $serverFrame = new ServerFrame($idFrame);
-            $state = $serverFrame->get('State');
-        } else {
-            
-            $sync = new Synchronizer();
-            $state = $sync->GetStateOfFrame($idFrame);
-        }
-        return $state;
-    }
-
-    /**
-     * Gets the RemotePath field of the frame
-     *
-     * @param int idFrame
-     * @return int|NULL
-     */
-    function getFramePath($idFrame)
-    {
-        if (is_null($idFrame)) {
-            Logger::error(_('Void param idFrame'));
-            return NULL;
-        }
-        if (\Ximdex\Modules\Manager::isEnabled('ximSYNC')) {
-            $serverFrame = new ServerFrame($idFrame);
-            $path = $serverFrame->get('RemotePath');
-        } else {
-            $sync = new Synchronizer();
-            $path = $sync->GetRemotePathOnFrame($idFrame);
-        }
-        return $path;
-    }
-
-    /**
-     * Gets the FileName field of the frame
-     *
-     * @param int idFrame
-     * @return int|NULL
-     */
-    function getFrameName($idFrame)
-    {
-        if (is_null($idFrame)) {
-            Logger::error(_('Void param idFrame'));
-            return NULL;
-        }
-        if (\Ximdex\Modules\Manager::isEnabled('ximSYNC')) {
-            $serverFrame = new ServerFrame($idFrame);
-            $name = $serverFrame->get('FileName');
-        } else {
-            $sync = new Synchronizer();
-            $name = $sync->GetFileNameOnFrame($idFrame);
-        }
-        return $name;
-    }
-
-    /**
-     * Gets the IdServer field of the frame
-     *
-     * @param int idFrame
-     * @return int|NULL
-     */
-    function getFrameServer($idFrame)
-    {
-        if (is_null($idFrame)) {
-            Logger::error(_('Void param idFrame'));
-            return NULL;
-        }
-        if (\Ximdex\Modules\Manager::isEnabled('ximSYNC')) {
-            $serverFrame = new ServerFrame($idFrame);
-            $server = $serverFrame->get('IdServer');
-        } else {
-            $sync = new Synchronizer();
-            $server = $sync->GetServerOnFrame($idFrame);
-        }
-        return $server;
-    }
-
+    
     /**
      * Gets the Channel associated to frame
      *
      * @param int idFrame
      * @return int|NULL
      */
-    function getFrameChannel($idFrame)
+    public function getFrameChannel(?int $idFrame) : ?int
     {
         if (is_null($idFrame)) {
-            Logger::error(_('Void param idFrame'));
-            return NULL;
+            Logger::error('Void param idFrame');
+            return null;
         }
-        if (\Ximdex\Modules\Manager::isEnabled('ximSYNC')) {
-            $serverFrame = new ServerFrame($idFrame);
-            $channelFrameId = $serverFrame->get('IdChannelFrame');
-            $channelFrame = new ChannelFrame($channelFrameId);
-            $channel = $channelFrame->get('ChannelId');
-        } else {
-            $sync = new Synchronizer();
-            $channel = $sync->GetChannelOnFrame($idFrame);
-        }
-        return $channel;
-    }
-
-    /**
-     * Return last Url
-     * 
-     * @param $nodeID
-     * @param $serverid
-     * @param $channel
-     * @return NULL|string
-     */
-    function getLastPublishedNews($nodeID, $serverid, $channel)
-    {
-        if (is_null($nodeID)) {
-            Logger::info(_("Void node"));
-            return NULL;
-        }
-        $channelID = null;
-        if (\Ximdex\Modules\Manager::isEnabled('ximSYNC')) {
-            $nodeFrame = new NodeFrame();
-            $id = $nodeFrame->getPublishedId($nodeID);
-            $channelFrame = new ChannelFrame();
-            $channelFrameId = $channelFrame->getLast($nodeID, $channelID);
-            if ($id && $channelFrameId[0]) {
-                $serverFrame = new ServerFrame();
-                $url = $serverFrame->getUrlLastPublicatedNews($id, $channelFrameId[0], $serverid);
-                if ($url != NULL) {
-                    $server = new Server($serverid);
-                    $url_server = $server->get('Url');
-                    if ($url_server)
-                        return $url_server . $url;
-                }
-            }
-        } else {
-            $sync = new Synchronizer($nodeID);
-            $result = $sync->IsPublished();
-            if ($result) {
-                $url = $sync->getUrlLastPublicatedNews($nodeID, $channel, $serverid);
-                if ($url != NULL) {
-                    $server = new Server($serverid);
-                    $url_server = $server->get('Url');
-                    if ($url_server)
-                        return $url_server . $url;
-                }
-            }
-        }
-        return null;
-    }
-
-    /**
-     * @param $idNode
-     * @return array|number|NULL
-     */
-    function getGaps($idNode)
-    {
-        if (\Ximdex\Modules\Manager::isEnabled('ximSYNC')) {
-            $nodefr = new NodeFrame();
-            $gaps = $nodefr->getGaps($idNode);
-        } else {
-            $synchronizer = new Synchronizer($idNode);
-            $lastFrame = $synchronizer->GetLastFrameBulletin();
-            $lastTime = $synchronizer->GetDateDownOnFrame($lastFrame);
-            if ($lastFrame && ! $lastTime) {
-                $gaps = $synchronizer->GetGapsBetweenDates(time(), $synchronizer->GetDateUpOnFrame($lastFrame));
-            } else {
-                $gaps = $synchronizer->GetGapsBetweenDates(time(), $lastTime);
-                if ($lastTime) {
-                    $lastGap = array(
-                        $lastTime,
-                        null,
-                        null
-                    );
-                } else {
-                    $lastGap = array(
-                        time(),
-                        null,
-                        null
-                    );
-                }
-                $gaps[] = $lastGap;
-            }
-        }
-        return $gaps;
+        $serverFrame = new ServerFrame($idFrame);
+        $channelFrameId = $serverFrame->get('IdChannelFrame');
+        $channelFrame = new ChannelFrame($channelFrameId);
+        $channel = $channelFrame->get('ChannelId');
+        return (int) $channel;
     }
 
     /**
      * PushDocInPublishingPool
      *
      * @param int $idNode
-     * @param $upDate --> date for publication document (timestamp type)
-     * @param $downDate --> date for unpublish the document (timestamp type)
+     * @param int $upDate --> date for publication document (timestamp type)
+     * @param int $downDate --> date for unpublish the document (timestamp type)
      * @param array $flagsArray
      *            forcePublication:
      *            --> if true --> publish the document although it is in the last version
      *            --> if false --> only publish the document if there is a new mayor version no publish
      *            forceDependencies: --> if true --> publish the dependencies although they are in the last version
-     * @param bool $recurrence
-     * @return array|bool
+     * @param boolean $recurrence
+     * @return array|null
      */
-    function pushDocInPublishingPool($idNode, $upDate, $downDate = NULL, $flagsArray = NULL, $recurrence = false)
+    function pushDocInPublishingPool(int $idNode, int $upDate, int $downDate = null, array $flagsArray = null, 
+        bool $recurrence = false) : ?array
     {
-        if (\Ximdex\Modules\Manager::isEnabled('ximSYNC')) {
-            $syncMngr = new \SyncManager();
-            $node = new Node($idNode);
-            
-            // Default values
-            $syncMngr->setFlag('recurrence', false);
-            if (! isset($flagsArray['force'])) {
-                $syncMngr->setFlag('force', false);
-            } else {
-                $syncMngr->setFlag('force', $flagsArray['force']);
-            }
-            if ($flagsArray) {
-                foreach ($flagsArray as $key => $value) {
-                    if ($key == 'force')
-                        continue;
-                    $syncMngr->setFlag($key, $value);
-                }
-            }
-            Logger::info("Stablishing PUSH");
-            $syncMngr->setFlag('deleteOld', true);
-            $result = $syncMngr->pushDocInPublishingPool($idNode, $upDate, $downDate);
-            return $result;
-        }
-        $syncMngr = new SyncManager();
+        $syncMngr = new \SyncManager();
+        $node = new Node($idNode);
         
         // Default values
-        $syncMngr->setFlag('workflow', true);
-        $syncMngr->setFlag('recurrence', $recurrence);
-        
-        // It's needs markend and linked
-        if (($flagsArray != null) && (is_array($flagsArray))) {
+        $syncMngr->setFlag('recurrence', false);
+        if (! isset($flagsArray['force'])) {
+            $syncMngr->setFlag('force', false);
+        } else {
+            $syncMngr->setFlag('force', $flagsArray['force']);
+        }
+        if ($flagsArray) {
             foreach ($flagsArray as $key => $value) {
+                if ($key == 'force')
+                    continue;
                 $syncMngr->setFlag($key, $value);
             }
         }
-        $workflow = isset($workflow) ? $workflow : true;
-        $forcePublication = isset($flagsArray['force']) && $flagsArray['force'] == 1 ? true : false;
+        Logger::info("Stablishing PUSH");
         $syncMngr->setFlag('deleteOld', true);
-        $syncMngr->setFlag('workflow', $workflow);
-        $node = new Node($idNode);
-        $result = array(
-            'ok' => array(),
-            'notok' => array(),
-            'unchanged' => array()
-        );
-        $nodeList = $node->class->getPublishabledDeps(array(
-            'recurrence' => $recurrence
-        ));
-        foreach ($nodeList as $nodeID) {
-            
-            // Push document in publishing pool
-            $syncMngr->pushDocInPublishingPool($nodeID, $upDate, $downDate, $forcePublication);
-            $publishedNode = new Node($nodeID);
-            if ($syncMngr->error()) {
-                $result['notok']["#" . $nodeID][0][0] = true;
-            } else {
-                $result['ok']["#" . $nodeID][0][0] = true;
-            }
-        }
+        $result = $syncMngr->pushDocInPublishingPool($idNode, $upDate, $downDate);
         return $result;
     }
 
     /**
-     * @param $idNode
+     * Function which looks for a frame remote path
+     * 
+     * @param int $idNode
      * @return boolean
      */
-    public static function HasUnlimitedLifeTime($idNode)
+    public static function HasUnlimitedLifeTime(int $idNode) : bool
     {
-        // Both calls are equivalent
-        $synchronizer = new Synchronizer($idNode);
-        return $synchronizer->HasUnlimitedLifeTime();
+        return false;
     }
     
+    /**
+     * Node expiration
+     * 
+     * @param Node $node
+     * @param int $down
+     * @param array $flagsExpiration
+     * @return bool
+     */
     public function expire(Node $node, int $down, array $flagsExpiration) : bool
     {
         // Get portal version

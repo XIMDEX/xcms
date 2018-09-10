@@ -41,7 +41,6 @@ use Ximdex\Runtime\DataFactory;
 use Ximdex\Utils\FsUtils;
 use Ximdex\Utils\PipelineManager;
 use Ximdex\Runtime\Session;
-use Ximdex\Sync\Synchronizer;
 use Ximdex\Workflow\WorkFlow;
 use Ximdex\XML\Base;
 use Ximdex\XML\XML;
@@ -1943,9 +1942,6 @@ class Node extends NodesOrm
             if ($nodeID != $this->get('IdNode')) {
                 $this->set('SharedWorkflow', $nodeID);
                 $this->update();
-
-                $synchro = new Synchronizer($this->get('IdNode'));
-                $synchro->CopyTimeLineFromNode($nodeID);
             }
         } else {
             $this->SetError(1);
