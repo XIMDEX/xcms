@@ -16,7 +16,7 @@ services:
       - 80:80
   
   db:
-    image: "mariadb:10.2"
+    image: "mariadb:10.3"
     
     # Path where MySQL data will be
     volumes:
