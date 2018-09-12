@@ -35,15 +35,15 @@ class RelFramesPortal extends \Ximdex\Data\GenericData
     var $_table = 'RelFramesPortal';
     var $_metaData = array(
         'id' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
-        'IdPortalVersion' => array('type' => "int(12)", 'not_null' => 'false'),
+        'IdPortalFrame' => array('type' => "int(12)", 'not_null' => 'false'),
         'IdFrame' => array('type' => "int(12)", 'not_null' => 'false')
     );
     var $_uniqueConstraints = array(
-        'PortalFrame' => array('IdPortalVersion', 'IdFrame')
+        'PortalFrame' => array('IdPortalFrame', 'IdFrame')
     );
     var $_indexes = array('id');
     var $id;
-    var $IdPortalVersion = 0;
+    var $IdPortalFrame = 0;
     var $IdFrame = 0;
 
 	function __construct($id = null)
@@ -51,9 +51,9 @@ class RelFramesPortal extends \Ximdex\Data\GenericData
 		parent::__construct($id);
 	}
 
-	function addVersion($idPortalVersion, $nodeFrameId)
+	function addVersion($idPortalFrame, $nodeFrameId)
 	{
-		$this->set('IdPortalVersion', $idPortalVersion);
+		$this->set('IdPortalFrame', $idPortalFrame);
 		$this->set('IdFrame', $nodeFrameId);
 
 		// Check for a duplicate of the relation to create
@@ -76,17 +76,17 @@ class RelFramesPortal extends \Ximdex\Data\GenericData
     /**
      * Returns de IdVersion for a node in a portal
      * 
-     * @param $idPortalVersion
+     * @param $idPortalFrame
      * @param $nodeId
      * @return NULL|string
      */
-	function getNodeVersion($idPortalVersion, $nodeId)
+	function getNodeVersion($idPortalFrame, $nodeId)
 	{
-		if (is_null($idPortalVersion) || is_null($nodeId)) {
+		if (is_null($idPortalFrame) || is_null($nodeId)) {
 			return NULL;
 		}
 		$db = new \Ximdex\Runtime\Db();
-		$db->Query("SELECT n.VersionId FROM NodeFrames n, RelFramesPortal r WHERE r.IdPortalVersion = $idPortalVersion
+		$db->Query("SELECT n.VersionId FROM NodeFrames n, RelFramesPortal r WHERE r.IdPortalFrame = $idPortalFrame
 			AND n.NodeId = $nodeId AND r.IdFrame = n.IdNodeFrame");
 		if ($db->numRows == 0) {
 			return NULL;

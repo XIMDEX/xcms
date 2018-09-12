@@ -35,7 +35,7 @@ use Ximdex\Models\ServerFrame;
 use Ximdex\Models\Node;
 use Ximdex\Logger;
 use Ximdex\Runtime\Session;
-use Ximdex\Models\PortalVersions;
+use Ximdex\Models\PortalFrames;
 
 class SynchroFacade
 {
@@ -272,9 +272,9 @@ class SynchroFacade
     public function expire(Node $node, int $down, array $flagsExpiration) : bool
     {
         // Get portal version
-        $portal = new PortalVersions();
-        $idPortalVersion = $portal->upPortalVersion($node->getServer());
-        if (!$idPortalVersion) {
+        $portal = new PortalFrames();
+        $idPortalFrame = $portal->upPortalFrameVersion($node->getServer());
+        if (!$idPortalFrame) {
             Logger::error('Cannot create the portal version for server: ' . $node->getServer());
             return false;
         }
@@ -290,7 +290,8 @@ class SynchroFacade
             
             // Create batch for down process per max nodes
             if ($createBatch) {
-                $batchId = $batch->create($down, Batch::TYPE_DOWN, $node->GetID(), 0.9, null, $idPortalVersion, Session::get('userID'), 0);
+                $batchId = $batch->create($down, Batch::TYPE_DOWN, $node->GetID(), 0.9, null, $idPortalFrame, 
+                    Session::get('userID'), 0);
                 if (!$batchId) {
                     Logger::error('Cannot create the down batch process');
                     return false;

@@ -47,7 +47,7 @@ class BatchsOrm extends GenericData
         'Priority' => array('type' => "float(3, 2)", 'not_null' => 'false'),
         'MajorCycle' => array('type' => "int(12)", 'not_null' => 'false'),
         'MinorCycle' => array('type' => "int(12)", 'not_null' => 'false'),
-        'IdPortalVersion' => array('type' => "int(12)", 'not_null' => 'true'),
+        'IdPortalFrame' => array('type' => "int(12)", 'not_null' => 'true'),
         'UserId' => array('type' => "int(12)", 'not_null' => 'false'),
     );
     var $_uniqueConstraints = array();
@@ -65,6 +65,6 @@ class BatchsOrm extends GenericData
     var $Priority = 0.00;
     var $MajorCycle = 0;
     var $MinorCycle = 0;
-    var $IdPortalVersion;
+    var $IdPortalFrame;
     var $UserId;
 }

@@ -47,8 +47,8 @@ if (\Ximdex\Runtime\Session::check()) {
 
 	$pull = new Pull();
 
-	$idPortalVersion = Request::get('idportalversion');
-	$args['idportalversion'] = empty($idPortalVersion) ? $pull->get_current_portal_version($args) : $idPortalVersion;
+	$idPortalFrame = Request::get('idportalframe');
+	$args['idportalframe'] = empty($idPortalFrame) ? $pull->get_current_portal_version($args) : $idPortalFrame;
 
 	echo $pull->$method($args);
 } else {

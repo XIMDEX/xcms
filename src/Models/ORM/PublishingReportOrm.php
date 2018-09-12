@@ -39,7 +39,7 @@ class PublishingReportOrm extends GenericData
         'IdNode' => array('type' => 'int(11)', 'not_null' => 'false'),
         'IdChannel' => array('type' => 'int(11)', 'not_null' => 'false'),
         'IdSyncServer' => array('type' => 'int(11)', 'not_null' => 'false'),
-        'IdPortalVersion' => array('type' => 'int(11)', 'not_null' => 'false'),
+        'IdPortalFrame' => array('type' => 'int(12)', 'not_null' => 'false'),
         'PubTime' => array('type' => 'int(11)', 'not_null' => 'true'),
         'State' => array('type' => 'varchar(255)', 'not_null' => 'false'),
         'Progress' => array('type' => 'varchar(255)', 'not_null' => 'false'),
@@ -54,7 +54,7 @@ class PublishingReportOrm extends GenericData
     var $IdNode;
     var $IdChannel;
     var $IdSyncServer;
-    var $IdPortalVersion;
+    var $IdPortalFrame;
     var $PubTime;
     var $State;
     var $Progress;

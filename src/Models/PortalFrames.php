@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -27,40 +27,52 @@
 
 namespace Ximdex\Models;
 
-use Ximdex\Models\ORM\PortalVersionsOrm;
+use Ximdex\Models\ORM\PortalFramesOrm;
+use Ximdex\Runtime\Session;
 
-class PortalVersions extends PortalVersionsOrm
+class PortalFrames extends PortalFramesOrm
 {
-    function upPortalVersion($portalId)
+    const TYPE_UP = 'Up';
+    const TYPE_DOWN = 'Down';
+    const STATUS_CREATED = 'Created';
+    const STATUS_ACTIVE = 'Active';
+    const STATUS_ENDED = 'Ended';
+    
+    public function upPortalFrameVersion(int $portalId, string $type = self::TYPE_UP) : int
     {
-        $portalVersion = $this->getLastVersion($portalId);
-        $portalVersion++;
+        $portalFrameVersion = $this->getLastVersion($portalId);
+        $portalFrameVersion++;
         $this->set('IdPortal', $portalId);
-        $this->set('Version', $portalVersion);
-        $this->set('TimeStamp', time());
-        $idPortalVersion = parent::add();
-        return ($idPortalVersion > 0) ? $idPortalVersion : 0;
+        $this->set('Version', $portalFrameVersion);
+        $this->set('CreationTime', time());
+        $this->set('PublishingType', $type);
+        $this->set('CreatedBy', Session::get('userID'));
+        $this->set('Status', self::STATUS_CREATED);
+        $this->set('StatusTime', time());
+        $idPortalFrameVersion = parent::add();
+        return ($idPortalFrameVersion > 0) ? (int) $idPortalFrameVersion : 0;
     }
 
-    function getLastVersion($portalId)
+    public function getLastVersion(int $portalId) : int
     {
         $result = parent::find('MAX(Version)', 'IdPortal = %s', array('IdPortal' => $portalId), MONO);
-        return (int)$result[0];
+        return (int) $result[0];
     }
 
-    function getId($portalId, $version)
+    public function getId(int $portalId, int $version) : int
     {
         $result = parent::find('id', 'IdPortal = %s AND Version = %s',
             array('IdPortal' => $portalId, 'Version' => $version), MONO);
-        return (int)$result[0];
+        return (int) $result[0];
     }
 
-    function getAllVersions($portalId)
+    public function getAllVersions(int $portalId) : array
     {
         $result = parent::find('id, Version', 'IdPortal = %s', array('IdPortal' => $portalId), MULTI);
+        $portalFrameVersions = [];
         foreach ($result as $resultData) {
-            $portalVersions[] = array('id' => $resultData['id'], 'version' => $resultData['Version']);
+            $portalFrameVersions[] = array('id' => $resultData['id'], 'version' => $resultData['Version']);
         }
-        return $portalVersions;
+        return $portalFrameVersions;
     }
 }

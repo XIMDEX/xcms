@@ -65,12 +65,12 @@ class Batch extends BatchsOrm
      *  @param int idNodeGenerator
      *  @param int priority
      *  @param int idBatchDown
-     *  @param int idPortalVersion
+     *  @param int idPortalFrame
      *  @param int $userId
      *  @param int $playing
      *  @return int|null
      */
-    public function create($timeOn, $type, $idNodeGenerator, $priority, $idBatchDown = NULL, $idPortalVersion = 0, $userId = NULL, 
+    public function create($timeOn, $type, $idNodeGenerator, $priority, $idBatchDown = NULL, $idPortalFrame = 0, $userId = NULL, 
         int $playing = 1)
     {
         setlocale(LC_NUMERIC, 'C');
@@ -82,7 +82,7 @@ class Batch extends BatchsOrm
         $this->set('IdBatchDown', $idBatchDown);
         $this->set('IdNodeGenerator', $idNodeGenerator);
         $this->set('Priority', $priority);
-        $this->set('IdPortalVersion', $idPortalVersion);
+        $this->set('IdPortalFrame', $idPortalFrame);
         $this->set('UserId', $userId);
         $idBatch = parent::add();
         if ($idBatch > 0) {

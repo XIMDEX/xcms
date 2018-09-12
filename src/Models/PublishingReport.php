@@ -37,19 +37,6 @@ use Ximdex\Models\ORM\PublishingReportOrm;
  */
 class PublishingReport extends PublishingReportOrm
 {
-    /**
-     *  Adds a row to PublishingReport table.
-     *  @param int idSection
-     *  @param int idNode
-     *  @param int idChannel
-     *  @param int idSyncServer
-     *  @param int idPortalVersion
-     *  @param int pubTime
-     *  @param string state
-     *  @param string progress
-     *  @param string fileName
-     *  @param string filePath
-     */
     public $progressTable = array(
         ServerFrame::PENDING => '20',
         ServerFrame::DUE2IN_ => '40',
@@ -68,7 +55,20 @@ class PublishingReport extends PublishingReportOrm
         ServerFrame::DUE2OUTWITHERROR => '100'
     );
 
-    public function create($idSection, $idNode, $idChannel, $idSyncServer, $idPortalVersion
+    /**
+     *  Adds a row to PublishingReport table.
+     *  @param int idSection
+     *  @param int idNode
+     *  @param int idChannel
+     *  @param int idSyncServer
+     *  @param int idPortalFrame
+     *  @param int pubTime
+     *  @param string state
+     *  @param string progress
+     *  @param string fileName
+     *  @param string filePath
+     */
+    public function create($idSection, $idNode, $idChannel, $idSyncServer, $idPortalFrame
         , $pubTime, $state, $progress, $fileName, $filePath, $idSync, $idBatch, $idParentServer)
     {
         if ($idSection != null && $idNode != null) {
@@ -85,7 +85,7 @@ class PublishingReport extends PublishingReportOrm
                     'IdSection' => $idSection,
                     'IdChannel' => empty($idChannel) ? NULL : $idChannel,
                     'IdSyncServer' => $idSyncServer,
-                    'IdPortalVersion' => $idPortalVersion,
+                    'IdPortalFrame' => $idPortalFrame,
                     'State' => $state,
                     'Progress' => $progress,
                     'FileName' => $fileName,
@@ -108,7 +108,7 @@ class PublishingReport extends PublishingReportOrm
         $this->set('IdNode', $idNode);
         $this->set('IdChannel', empty($idChannel) ? NULL : $idChannel);
         $this->set('IdSyncServer', $idSyncServer);
-        $this->set('IdPortalVersion', $idPortalVersion);
+        $this->set('IdPortalFrame', $idPortalFrame);
         $this->set('PubTime', time());
         $this->set('State', $state);
         $this->set('Progress', $progress);
@@ -188,7 +188,7 @@ class PublishingReport extends PublishingReportOrm
         while (!$dbObj->EOF) {
             $sectionNode = new Node($dbObj->GetValue("IdSection"));
             $batch = new Batch($dbObj->GetValue("IdBatch"));
-            $idportal = $dbObj->GetValue("IdPortalVersion");
+            $idportal = $dbObj->GetValue("IdPortalFrame");
             if (!isset($frames[$idportal])) {
                 $finished = !isset($frames[$idportal]["Finished"]) ? true : $frames[$idportal]["Finished"];
                 $frames[$idportal] = array(

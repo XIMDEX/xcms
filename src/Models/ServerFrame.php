@@ -189,10 +189,10 @@ class ServerFrame extends ServerFramesOrm
                 $idSection = $batch->get('IdNodeGenerator');
                 $sectionNode = new Node($idSection);
                 $idParentServer = $sectionNode->getServer();
-                $idPortalVersion = $batch->get('IdPortalVersion');
+                $idPortalFrame = $batch->get('IdPortalFrame');
                 $channelFrames = new ChannelFrame($idChannelFrame);
                 $idChannel = $channelFrames->get('ChannelId');
-                $this->publishingReport->create($idSection, $nodeId, empty($idChannel) ? NULL : $idChannel, $server, $idPortalVersion
+                $this->publishingReport->create($idSection, $nodeId, empty($idChannel) ? NULL : $idChannel, $server, $idPortalFrame
                     , time(), ServerFrame::PENDING, '20', $name, $path, $idServerFrame, $idBatchUp, $idParentServer);
             }
             return $idServerFrame;

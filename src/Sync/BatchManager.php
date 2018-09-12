@@ -29,7 +29,7 @@ namespace Ximdex\Sync;
 
 use Ximdex\Logger;
 use Ximdex\Models\NodesToPublish;
-use Ximdex\Models\PortalVersions;
+use Ximdex\Models\PortalFrames;
 use Ximdex\Models\Server;
 use Ximdex\NodeTypes\ServerNode;
 use Ximdex\Runtime\DataFactory;
@@ -138,8 +138,12 @@ class BatchManager
         }
 
         // Get portal version
-        $portal = new PortalVersions();
-        $idPortalVersion = $portal->upPortalVersion($idServer);
+        $portal = new PortalFrames();
+        $idPortalFrame = $portal->upPortalFrameVersion($idServer);
+        if (!$idPortalFrame) {
+            Logger::error('Cannot generate a new portal frame version');
+            return false;
+        }
 
         // Build batchs
         $docsChunked = array_chunk($docsToPublish, MAX_NUM_NODES_PER_BATCH, true);
@@ -154,8 +158,8 @@ class BatchManager
                     $noCache[$id] = true;
                 }
             }
-            $partialDocs = $this->buildBatchs($idNode, $up, $chunk, $docsToUpVersion, $docsToPublishVersion, $docsToPublishSubVersion, $idServer
-                , $physicalServers, 0.8, $down, $iCount, $iTotal, $idPortalVersion, $userId, $noCache);
+            $partialDocs = $this->buildBatchs($idNode, $up, $chunk, $docsToUpVersion, $docsToPublishVersion, $docsToPublishSubVersion
+                , $idServer, $physicalServers, 0.8, $down, $iCount, $iTotal, $idPortalFrame, $userId, $noCache);
             $docsBatch = array_merge($docsBatch, $partialDocs);
             $iCount++;
 
@@ -226,7 +230,7 @@ class BatchManager
     }
 
     public function buildBatchs($nodeGenerator, $timeUp, $docsToPublish, $docsToUpVersion, $versions, $subversions, $server, $physicalServers
-        , $priority, $timeDown = null, $statStart = 0, $statTotal = 0, $idPortalVersion = 0, $userId = null, array $noCache = [])
+        , $priority, $timeDown = null, $statStart = 0, $statTotal = 0, $idPortalFrame = null, $userId = null, array $noCache = [])
     {
         /*
         If the server is publishing through a channell in which there is not existing documents
@@ -237,12 +241,13 @@ class BatchManager
             $batch = new Batch();
             $idBatchDown = null;
             if ($timeDown != 0) {
-                $idBatchDown = $batch->create($timeDown, 'Down', $nodeGenerator, 1, null, $idPortalVersion, $userId);
+                $idBatchDown = $batch->create($timeDown, 'Down', $nodeGenerator, 1, null, $idPortalFrame, $userId);
                 Logger::info('Creating down batch: ' . $timeDown);
                 Logger::info(sprintf("[Generator %s]: Creating down batch with id %s", $nodeGenerator, $idBatchDown));
             }
             $batch = new Batch();
-            $relBatchsServers[$serverId] = $batch->create($timeUp, 'Up', $nodeGenerator, $priority, $idBatchDown, $idPortalVersion, $userId, 0);
+            $relBatchsServers[$serverId] = $batch->create($timeUp, 'Up', $nodeGenerator, $priority, $idBatchDown, 
+                $idPortalFrame, $userId, 0);
             Logger::info('Creating up batch: ' . $timeUp);
             Logger::info(sprintf("[Generator %s]: Creating up batch with id %s", $nodeGenerator, $relBatchsServers[$serverId]));
         }
@@ -463,6 +468,7 @@ class BatchManager
         $result = $serverFrame->find('IdBatchUp, count(IdSync)', "IdBatchUp in ($tt) group by IdBatchUp", NULL, MULTI, false);
         Logger::info(sprintf("The number of frames in %s batchs will be updated", count($result)));
         if (count($result) > 0) {
+            $ss = [];
             foreach ($result as $dataFrames) {
                 $id = $dataFrames[0];
                 $ss[] = $dataFrames[0];
@@ -648,7 +654,7 @@ class BatchManager
     }
 
     /**
-     * Sets the field IdPortalVersion for a Batch
+     * Sets the field IdPortalFrame for a Batch
      * 
      * @param int idBatch
      * @return bool
@@ -656,19 +662,19 @@ class BatchManager
     private function setPortalRevision($idBatch)
     {
         $batch = new Batch($idBatch);
-        $idPortalVersion = $batch->get('IdPortalVersion');
+        $idPortalFrame = $batch->get('IdPortalFrame');
         $batchType = $batch->get('Type');
-        $result = $batch->find('IdBatch', 'State != %s AND IdPortalVersion = %s AND IdBatch != %s AND Type = %s',
-            array('State' => Batch::ENDED, 'IdPortalVersion' => $idPortalVersion, 'IdBatch' => $idBatch, 'Type' => $batchType),
+        $result = $batch->find('IdBatch', 'State != %s AND IdPortalFrame = %s AND IdBatch != %s AND Type = %s',
+            array('State' => Batch::ENDED, 'IdPortalFrame' => $idPortalFrame, 'IdBatch' => $idBatch, 'Type' => $batchType),
             MONO);
 
         // There still are batchs in this portal version to close
         if (sizeof($result) != 0) {
             return true;
         }
-        $portal = new PortalVersions($idPortalVersion);
+        $portal = new PortalFrames($idPortalFrame);
         if (!$portal->get('id')) {
-            Logger::warning('There is not a portal version with ID: ' . $idPortalVersion);
+            Logger::warning('There is not a portal version with ID: ' . $idPortalFrame);
             return false;
         }
         $serverId = $portal->get('IdPortal');
@@ -677,19 +683,19 @@ class BatchManager
         if ($batchType == 'Down') {
 
             // Updates portal version for all batchs not ended
-            $portal = new PortalVersions();
-            $portal->upPortalVersion($serverId);
-            $result = $batch->find('IdPortalVersion', 'State != %s AND IdBatch > %s AND Type = %s ORDER BY IdBatch ASC',
+            $portal = new PortalFrames();
+            $portal->upPortalFrameVersion($serverId);
+            $result = $batch->find('IdPortalFrame', 'State != %s AND IdBatch > %s AND Type = %s ORDER BY IdBatch ASC',
                 array('State' => Batch::ENDED, 'IdBatch' => $idBatch, 'Type' => 'Up'), MONO);
             if (!$result) {
                 Logger::info('No portal version found for batch: ' . $idBatch);
                 return false;
             }
-            $idPortalVersion = $result[0];
-            $batch->set('IdPortalVersion', $idPortalVersion);
+            $idPortalFrame = $result[0];
+            $batch->set('IdPortalFrame', $idPortalFrame);
             $batch->update();
             $db = new \Ximdex\Runtime\Db();
-            $res = $db->execute("UPDATE Batchs SET IdPortalVersion = IdPortalVersion + 1 WHERE State != '" . Batch::ENDED . "' 
+            $res = $db->execute("UPDATE Batchs SET IdPortalFrame = IdPortalFrame + 1 WHERE State != '" . Batch::ENDED . "' 
 				AND IdBatch > $idBatch");
             if (!$res) {
             	return false;
@@ -703,7 +709,7 @@ class BatchManager
         if (($nodeFrames != null) && (is_array($nodeFrames))) {
             foreach ($nodeFrames as $nodeFrameId) {
                 $relFramePortal = new \Ximdex\Models\RelFramesPortal();
-                $relFramePortal->addVersion($idPortalVersion, $nodeFrameId);
+                $relFramePortal->addVersion($idPortalFrame, $nodeFrameId);
             }
         } else {
             Logger::info("Nodesframes to be added to the portal review do not exist");
@@ -846,23 +852,23 @@ class BatchManager
                 Logger::error('Unable to load the server with ID: ' . $serverID);
                 return false;
             }
-            $portal = new PortalVersions();
-            $idPortalVersion = $portal->upPortalVersion($serverID);
-            if (!$idPortalVersion) {
+            $portal = new PortalFrames();
+            $idPortalFrame = $portal->upPortalFrameVersion($serverID);
+            if (!$idPortalFrame) {
                 Logger::error('Unable to increase the portal version with ID: ' . $serverID);
                 return false;
             }
 
             // Creating Batch Type Down if not exist one
             $batchDown = new Batch();
-            $idBatchDown = $batchDown->create(time(), 'Down', $nodeId, 1, null, $idPortalVersion, $userId);
+            $idBatchDown = $batchDown->create(time(), 'Down', $nodeId, 1, null, $idPortalFrame, $userId);
 
             // Updating Serverframes info
             $batchDown = new Batch($idBatchDown);
             $batchDown->set('ServerFramesTotal', $serverFramesTotal);
             $batchDown->set('ServerFramesSucess', 0);
             $batchDown->set('ServerFramesError', 0);
-            $batchDown->set('IdPortalVersion', $idPortalVersion);
+            $batchDown->set('IdPortalFrame', $idPortalFrame);
             $batchDown->update();
         }
         return true;
