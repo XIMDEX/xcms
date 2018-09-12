@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -24,21 +24,22 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
+
 use Ximdex\Models\User;
+use Ximdex\Models\PublishingReport;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\App;
 use Ximdex\Utils\Serializer;
 use Ximdex\Runtime\Session;
 
-\Ximdex\Modules\Manager::file('/actions/FilterParameters.php', 'ximPUBLISHtools');
-\Ximdex\Modules\Manager::file('/inc/model/PublishingReport.class.php', 'ximSYNC');
+Ximdex\Modules\Manager::file('/actions/FilterParameters.php', 'ximPUBLISHtools');
 
-class Action_batchhistory extends ActionAbstract {
-
+class Action_batchhistory extends ActionAbstract
+{
     private $params = array();
 
-    private function filterParams() {
-        
+    private function filterParams()
+    {    
         $this->params['idNode'] = FilterParameters::filterInteger($this->request->getParam("nodeid"));
         $this->params['idBatch'] = FilterParameters::filterInteger($this->request->getParam("idBatch"));
         $this->params['dateFrom'] = FilterParameters::filterInteger($this->request->getParam("dateFrom"));
@@ -48,41 +49,35 @@ class Action_batchhistory extends ActionAbstract {
     }
 
     // Main method: shows initial form
-    function index() {
+    function index()
+    {
         $acceso = true;
         $userID = Session::get('userID');
-
         $user = new User();
         $user->SetID($userID);
-
         if (!$user->HasPermission("view_publication_resume")) {
             $acceso = false;
             $errorMsg = "You have not access to this report. Consult an administrator.";
         }
-
-
         $jsFiles = array(
             App::getValue('UrlRoot') . \Ximdex\Modules\Manager::path('ximPUBLISHtools') . '/actions/batchhistory/resources/js/index.js'
         );
-
         $cssFiles = array();
-
         $arrValores = array(
             'acceso' => $acceso,
             'errorBox' => $errorMsg,
             'js_files' => $jsFiles,
             'css_files' => $cssFiles
         );
-
         $this->render($arrValores, NULL, 'default-3.0.tpl');
     }
 
-    public function getFrameList() {
+    public function getFrameList()
+    {
         $this->filterParams();
         $pr = new PublishingReport();
         $frames = $pr->getReports($this->params);
         $json = Serializer::encode(SZR_JSON, $frames);
         $this->render(array('result' => $json), NULL, "only_template.tpl");
     }
-
 }

@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -27,15 +27,12 @@
 
 namespace Ximdex\Models;
 
-use ServerErrorByPumper;
-use ServerErrorManager;
 use Ximdex\Logger;
 use Ximdex\Models\ORM\PumpersOrm;
 use Ximdex\Runtime\Db;
+use Ximdex\Sync\ServerErrorManager;
 
-\Ximdex\Modules\Manager::file('/inc/model/ServerErrorByPumper.class.php', 'ximSYNC');
-\Ximdex\Modules\Manager::file('/inc/manager/ServerErrorManager.class.php', 'ximSYNC');
-\Ximdex\Modules\Manager::file('/conf/synchro_conf.php', 'ximSYNC');
+include_once XIMDEX_ROOT_PATH . '/src/Sync/conf/synchro_conf.php';
 
 /**
  * @brief Handles operations with Pumpers

@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -29,7 +29,7 @@
 namespace Ximdex\Nodeviews;
 
 use Ximdex\Logger;
-use NodeFrameManager;
+use Ximdex\Sync\NodeFrameManager;
 use Ximdex\Models\Node;
 use Ximdex\Runtime\App;
 use Ximdex\Models\Server;
@@ -38,12 +38,10 @@ use Ximdex\Models\Version;
 use Ximdex\Utils\Messages;
 use Ximdex\Sync\SynchroFacade;
 use Ximdex\Models\FastTraverse;
+use Ximdex\Models\ServerFrame;
 use Ximdex\Parsers\ParsingPathTo;
 use Ximdex\NodeTypes\NodeTypeConstants;
 use Ximdex\Utils\FsUtils;
-
-\Ximdex\Modules\Manager::file('/inc/manager/NodeFrameManager.class.php', 'ximSYNC');
-\Ximdex\Modules\Manager::file('/inc/model/ServerFrame.class.php', 'ximSYNC');
 
 class ViewFilterMacros extends AbstractView implements IView
 {
@@ -777,7 +775,7 @@ class ViewFilterMacros extends AbstractView implements IView
         // Get the channel for the include link if it is not published in the origin document
         $idChannel = $this->_idChannel;
         if (!$targetNode->nodeType->GetIsFolder()) {
-            $targetFrame = new \ServerFrame();
+            $targetFrame = new ServerFrame();
             $frameID = $targetFrame->getCurrent($targetNode->GetID(), $idChannel, $targetServer->get('IdServer'));
             if (!$frameID) {
                 

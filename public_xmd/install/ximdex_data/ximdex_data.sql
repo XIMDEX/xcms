@@ -3510,3 +3510,19 @@ INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Des
         , NULL, '0', NULL, '0');
 INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 7269, 7, 1, 3);
 INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL, 201, 7269, 8, 1, 3);
+
+
+-- Add batchs operations
+
+-- Action "Publish a server massively"
+INSERT INTO Actions (IdAction, IdNodeType, Name, Command, Icon, Description, Sort, Module, Multiple) VALUES (7228, 5014, 'Publish server'
+    , 'publicatesection', 'publicate_section.png', 'Publish a server massively', 100, NULL, 0);
+/*!40000 ALTER TABLE `Actions` ENABLE KEYS */;
+
+INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES(NULL, 202, 6376, 0, 1, 3);
+INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES(NULL, 204, 7228, 8, 1, 3);
+INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES(NULL, 204, 7228, 7, 1, 3);
+INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES(NULL, 203, 7228, 8, 1, 3);
+INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES(NULL, 203, 7228, 7, 1, 3);
+INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES(NULL, 201, 7228, 8, 1, 3);
+INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES(NULL, 201, 7228, 7, 1, 3);

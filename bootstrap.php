@@ -1,5 +1,30 @@
 <?php
 
+/**
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
+ */
+
 use Ximdex\Logger;
 use Ximdex\Runtime\App;
 
@@ -40,54 +65,46 @@ if (!defined('CLI_MODE')) {
 
 include_once XIMDEX_ROOT_PATH.XIMDEX_VENDORS . '/autoload.php';
 
-
 // Initialize XIMDEX_ROOT_PATH
 App::setValue('XIMDEX_ROOT_PATH', dirname(dirname(__FILE__)));
 
-
-// get Config from install file
+// Get Config from install file
 if ( file_exists( XIMDEX_ROOT_PATH . '/conf/install-params.conf.php' ) ) {
     $conf = require_once(XIMDEX_ROOT_PATH . '/conf/install-params.conf.php');
-
     foreach ($conf as $key => $value) {
         App::setValue($key, $value);
     }
 }
 
 // Initialize Modules Manager
-// set ximdex root path
+// Set ximdex root path
 Ximdex\Modules\Manager::file(\Ximdex\Modules\Manager::get_modules_install_params(), 'XIMDEX');
 
-
-// generate general purpose logs files
+// Generate general purpose logs files
 Logger::generate('XMD', 'xmd', true);
 Logger::generate('ACTIONS', 'actions');
 Logger::generate('PREVIEW', 'preview');
 
-// set default log (xmd.log)
+// Set default log (xmd.log)
 Logger::setActiveLog();
 
-// read install-modules.php
+// Read install-modules.php
 $modulesConfString = "";
 $installModulesPath = XIMDEX_ROOT_PATH . '/conf/install-modules.php';
 if( file_exists($installModulesPath) ){
     $modulesConfString = file_get_contents($installModulesPath);
 }
-
-
-
 $matches = array();
 preg_match_all('/define\(\'(.*)\',(.*)\);/iUs', $modulesConfString, $matches);
 foreach ($matches[1] as $key => $value) {
     App::setValue($value, str_replace('\'', '', $matches[2][$key]));
 }
 
-// use config values
+// Use config values
 define('DEFAULT_LOCALE', App::getValue('locale', 'ES_es'));
 date_default_timezone_set(App::getValue('timezone', 'Europe/Madrid'));
 
-
-// set DB Connection
+// Set DB Connection
 $dbConfig = App::getValue('db');
 if ( !empty( $dbConfig ) ) {
 	try
@@ -109,7 +126,7 @@ if ( !empty( $dbConfig ) ) {
     $dbConn->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_ASSOC);
     App::addDbConnection($dbConn);
 
-// get Persistent Config
+    // Get Persistent Config
     $stm = App::Db()->prepare('select * from Config');
     $stm->execute();
     foreach ($stm as $row) {
@@ -117,15 +134,12 @@ if ( !empty( $dbConfig ) ) {
     }
 }
 
-
-
 // special objects (pseudo-DI)
 class_alias('Ximdex\Utils\Messages', 'Messages');
 App::setValue( 'class::definition::DB', '/inc/db/DB.class.php' );
 
 // Extensions setup
 include_once( XIMDEX_ROOT_PATH . '/conf/extensions.conf.php');
-
 $mManager = new \Ximdex\Modules\Manager;
 
 /**
@@ -139,8 +153,6 @@ foreach(\Ximdex\Modules\Manager::getEnabledModules() as $module){
     }
 }
 
-
-
 // FROM MVC
 if (!defined('RENDERER_ROOT_PATH')) {
     define('RENDERER_ROOT_PATH', XIMDEX_ROOT_PATH . '/inc/mvc/renderers');
@@ -148,29 +160,22 @@ if (!defined('RENDERER_ROOT_PATH')) {
 if (!defined('SMARTY_TMP_PATH')) {
     define('SMARTY_TMP_PATH', XIMDEX_ROOT_PATH . App::getValue('TempRoot'));
 }
+if (XIMDEX_DIRECT && CLI_MODE && isset($argv[1])) {
 
-
-if(XIMDEX_DIRECT && CLI_MODE && isset($argv[1])) {
-
-    /* e.g:  $ /bootstrap.php modules/ximSYNC/scripts/scheduler/scheduler.php
+    /* e.g:  $ /bootstrap.php src/Sync/scripts/scheduler/scheduler.php
      *  $command = /bootstrap.php  => argv[0]
-     *  $script = modules/ximSYNC/scripts/scheduler/scheduler.php => new_command
+     *  $script = src/Sync/scripts/scheduler/scheduler.php => new_command
      *
      */
-
     $command = array_shift($argv);
     $argc--;
-
     $script =  parse_url ( $argv[0],  PHP_URL_PATH );
     $is_absolute_path = ( '/' == $script[0])?: false;
-
-    if( $is_absolute_path ) {
+    if ( $is_absolute_path ) {
         $external_script = $script;
-    }else {
+    } else {
         $external_script = XIMDEX_ROOT_PATH.'/'.$script;
     }
-
-
     $new_command = $argv[0] = $external_script;
     if (file_exists($new_command)) {
         require_once($new_command);

@@ -93,7 +93,7 @@ class InstallModulesManager extends InstallManager
         $str .= "/**
  * Paths and states constants for the Ximdex Modules, e.g.
  * The path is relative to ximdex folder.
- * define('MODULE_XIMSYNC_PATH','/modules/ximSYNC');
+ * define('MODULE_XBLOG_PATH','/modules/xBlog');
  */\n\n";
         foreach ($modules as $mod) {
             @unlink(XIMDEX_ROOT_PATH . "/data/." . $mod["name"]);

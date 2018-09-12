@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -34,8 +34,7 @@ use Ximdex\Sync\SynchroFacade;
 use Ximdex\Utils\Serializer;
 use Ximdex\NodeTypes\NodeTypeConstants;
 use Ximdex\Models\NodeType;
-
-Ximdex\Modules\Manager::file('/inc/model/NodesToPublish.class.php', 'ximSYNC');
+use Ximdex\Models\NodesToPublish;
 
 class Action_publicatesection extends ActionAbstract
 {
@@ -53,7 +52,6 @@ class Action_publicatesection extends ActionAbstract
         $values = array(
             'go_method' => 'publicate_section',
             'publishabledtypes' => $publishabledNodeTypes,
-            'synchronizer_to_use' => 'ximSYNC',
             'ximpublish_tools_enabled' => \Ximdex\Modules\Manager::isEnabled('ximPUBLISHtools'),
             'folderType' => $node->nodeType->getID() == NodeTypeConstants::SERVER ? 'server' : 'section',
             'name' => $node->GetNodeName(),

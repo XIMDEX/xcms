@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -27,20 +27,21 @@
 
 use Ximdex\Models\Node;
 use Ximdex\Models\PipeStatus;
+use Ximdex\Models\ServerFrame;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Workflow\WorkFlow;
 
-\Ximdex\Modules\Manager::file('/src/nodetypes/statenode.php', 'XIMDEX');
-\Ximdex\Modules\Manager::file('/inc/model/ServerFrame.class.php', 'ximSYNC');
-
 class Action_checkstatus extends ActionAbstract
 {
-    //Main method: shows initial form
+    /**
+     * Main method: shows initial form
+     * 
+     * @return boolean
+     */
     function index()
     {
         $idNode = $this->request->getParam('nodeid');
         $node = new Node($idNode);
-
         if (!$node->get('IdNode') > 0) {
             $this->messages->add(_('Node could not be found'), MSG_TYPE_ERROR);
             $values = array('messages' => $node->messages->messages);
@@ -48,18 +49,19 @@ class Action_checkstatus extends ActionAbstract
             return false;
         }
 
-        //we obtain the project and the server name to filter on the query.
+        // We obtain the project and the server name to filter on the query.
         $server = new Node($idNode);
         $serverName = $server->GetNodeName();
-
         $project = new Node($server->getProject());
         $projectName = $project->GetNodeName();
-
         $dbObj = new \Ximdex\Runtime\Db();
         $query = "SELECT n.IdState,n.IdNode,n.Path,n.Name,v1.Version, v1.SubVersion,v1.Date FROM Versions v1 INNER JOIN Nodes n USING (IdNode) WHERE n.IdNodetype in (" 
-                . \Ximdex\NodeTypes\NodeTypeConstants::XML_DOCUMENT . "," . \Ximdex\NodeTypes\NodeTypeConstants::TEXT_FILE . "," .\Ximdex\NodeTypes\NodeTypeConstants::IMAGE_FILE
-                . "," . \Ximdex\NodeTypes\NodeTypeConstants::BINARY_FILE . "," . \Ximdex\NodeTypes\NodeTypeConstants::CSS_FILE . "," . \Ximdex\NodeTypes\NodeTypeConstants::JS_FILE 
-                . ") AND n.Path like '%" . $projectName . "%" . $serverName . "%' AND NOT v1.SubVersion=0 AND NOT EXISTS (select Idnode from Versions v2 where v2.IdNOde=v1.IdNOde and (v2.Version>v1.Version OR (v1.Version=v2.Version AND v2.SubVersion>v1.Subversion))) ORDER BY n.IdNode";
+                . \Ximdex\NodeTypes\NodeTypeConstants::XML_DOCUMENT . "," . \Ximdex\NodeTypes\NodeTypeConstants::TEXT_FILE . "," 
+                .\Ximdex\NodeTypes\NodeTypeConstants::IMAGE_FILE
+                . "," . \Ximdex\NodeTypes\NodeTypeConstants::BINARY_FILE . "," . \Ximdex\NodeTypes\NodeTypeConstants::CSS_FILE . "," 
+                . \Ximdex\NodeTypes\NodeTypeConstants::JS_FILE 
+                . ") AND n.Path like '%" . $projectName . "%" . $serverName 
+                . "%' AND NOT v1.SubVersion=0 AND NOT EXISTS (select Idnode from Versions v2 where v2.IdNOde=v1.IdNOde and (v2.Version>v1.Version OR (v1.Version=v2.Version AND v2.SubVersion>v1.Subversion))) ORDER BY n.IdNode";
 
         $dbObj->query($query);
         $data = array();
@@ -74,11 +76,10 @@ class Action_checkstatus extends ActionAbstract
             $dbObj->Next();
         }
 
-        //creates abother array with all de states info.
+        // Creates abother array with all de states info
         $states = array();
         $wf = new WorkFlow($idNode);
         $states = $wf->GetAllStates();
-
         foreach ($states as $state) {
             $ps = new PipeStatus($state);
             $count = isset($data[$state]) ? count($data[$state]) : 0;
@@ -87,21 +88,18 @@ class Action_checkstatus extends ActionAbstract
                 'count' => $count
             );
         }
-
         $this->addJs('/actions/checkstatus/resources/js/index.js');
         $this->addCss('/actions/checkstatus/resources/css/index.css');
-
         $values = array('files' => $data,
             'statesFull' => $statesFull,
             'id_node' => $idNode,
             'actionid' => $this->request->getParam('actionid'),
             'name' => $node->GetNodeName()
         );
-
         $this->render($values, null, 'default-3.0.tpl');
     }
 
-    function getPublicationQueue()
+    public function getPublicationQueue()
     {
         $frames = new ServerFrame();
         $values = array();

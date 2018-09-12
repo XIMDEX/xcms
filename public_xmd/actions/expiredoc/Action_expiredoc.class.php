@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -31,13 +31,13 @@ use Ximdex\Models\Node;
 use Ximdex\Models\Role;
 use Ximdex\Models\Server;
 use Ximdex\Models\User;
+use Ximdex\Models\NodesToPublish;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Utils\Serializer;
 use Ximdex\Sync\SynchroFacade;
 use Ximdex\Workflow\WorkFlow;
 
-Ximdex\Modules\Manager::file('/inc/model/NodesToPublish.class.php', 'ximSYNC');
-Ximdex\Modules\Manager::file('/conf/synchro_conf.php', 'ximSYNC');
+include_once XIMDEX_ROOT_PATH . '/src/Sync/conf/synchro_conf.php';
 
 /**
  * Move a node to next state.
@@ -268,7 +268,6 @@ class Action_expiredoc extends ActionAbstract
             'structural_publication' => $user->HasPermission('structural_publication') ? '1' : '0',
             'advanced_publication' => $user->HasPermission('advanced_publication') ? '1' : '0',
             'nodetypename' => $nodeTypeName,
-            'synchronizer_to_use' => 'ximSYNC',
             'ximpublish_tools_enabled' => \Ximdex\Modules\Manager::isEnabled('ximPUBLISHtools'),
             'show_rep_option' => true
         );
@@ -450,5 +449,4 @@ class Action_expiredoc extends ActionAbstract
         }
         return true;
     }
-
 }

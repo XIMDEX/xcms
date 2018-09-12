@@ -107,7 +107,7 @@
 							</div>
 						{/if}
 						-->
-						{if $synchronizer_to_use eq 'ximSYNC' and $ximpublish_tools_enabled and isset($publishabledtypes)}
+						{if $ximpublish_tools_enabled and isset($publishabledtypes)}
 						    <div class="publication_option">
                                 <div class="option_checkbox option_publish_type">
                                     <input type="checkbox" name="publishType" id="publishType" value="1" />

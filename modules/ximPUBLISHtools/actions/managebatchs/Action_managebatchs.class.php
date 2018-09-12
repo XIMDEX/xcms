@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -32,16 +32,16 @@ use Ximdex\Runtime\App;
 use Ximdex\Utils\Serializer;
 use Ximdex\Runtime\Session;
 use Ximdex\Models\Node;
+use Ximdex\Models\PublishingReport;
+use Ximdex\Models\Batch;
+use Ximdex\Sync\BatchManager;
 
-\Ximdex\Modules\Manager::file('/actions/FilterParameters.php', 'ximPUBLISHtools');
-\Ximdex\Modules\Manager::file('/inc/model/PublishingReport.class.php', 'ximSYNC');
-\Ximdex\Modules\Manager::file('/inc/model/Batch.class.php', 'ximSYNC');
+Ximdex\Modules\Manager::file('/actions/FilterParameters.php', 'ximPUBLISHtools');
 
 class Action_managebatchs extends ActionAbstract
 {
     private $params = array();
     
-
     /**
      * Main method: shows initial form
      */
@@ -62,11 +62,14 @@ class Action_managebatchs extends ActionAbstract
             $errorMsg = '';
         }
         $jsFiles = array(
-            App::getValue('UrlRoot') . \Ximdex\Modules\Manager::path('ximPUBLISHtools') . '/actions/managebatchs/resources/js/index.js',
+            App::getValue('UrlRoot') . \Ximdex\Modules\Manager::path('ximPUBLISHtools') 
+                . '/actions/managebatchs/resources/js/index.js',
             App::getUrl('/assets/js/ximtimer.js')
         );
+        $this->addJs('/actions/managebatchs/resources/js/managebatchs.js');
         $cssFiles = array(
-            App::getValue('UrlRoot') . \Ximdex\Modules\Manager::path('ximPUBLISHtools') . '/actions/managebatchs/resources/css/index.css'
+            App::getValue('UrlRoot') . \Ximdex\Modules\Manager::path('ximPUBLISHtools') 
+                . '/actions/managebatchs/resources/css/index.css'
         );
         $arrValores = array(
             'acceso' => $acceso,

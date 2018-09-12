@@ -1,6 +1,7 @@
 <?php
+
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -27,36 +28,29 @@
 use Ximdex\Models\Node;
 use Ximdex\Models\NodeType;
 use Ximdex\MVC\ActionAbstract;
+use Ximdex\Sync\SyncManager;
 
-Ximdex\Modules\Manager::file('/inc/manager/SyncManager.class.php', 'ximSYNC');
-
-class Action_publicateximlet extends ActionAbstract {
-
-	function index() {
-		$docsToPublish=array();
-      		$idNode	= (int) $this->request->getParam("nodeid");
+class Action_publicateximlet extends ActionAbstract
+{
+	public function index()
+	{
+		$docsToPublish = array();
+        $idNode	= (int) $this->request->getParam("nodeid");
 		$params = $this->request->getParam("params");
-
 		$node = new Node($idNode);
 		$serverID = $node->getServer();
-
 		$nodeServer = new Node($serverID);
 		$nameServer = $nodeServer->get('Name');
 		$physicalServers = $nodeServer->class->GetPhysicalServerList(true);
-
 		if (!(sizeof($physicalServers) > 0)) {
 			$this->messages->add(sprintf(_("No physical server has been defined in '%s'"), $nameServer), MSG_TYPE_ERROR);
 			$this->render(array('messages' => $this->messages->messages));
 			return;
 		}
-
 		$docs = $this->_getRefererDocs($idNode);
-
 		$actionDescription = sprintf(_("Following documents and sections are going to be published:"), count($docsToPublish));
 		$alertDescription = sprintf(_("Are you sure you want to publish?"));
-
 		$this->addJs('/actions/publicateximlet/resources/js/handler.js');
-
 		$values = array(
 			'actionDescription' => $actionDescription,
 			'alertDescription' => $alertDescription,
@@ -64,15 +58,13 @@ class Action_publicateximlet extends ActionAbstract {
 			'params' => $params,
 			'go_method' => 'publicate_ximlet',
 		);
-
 		if (count($this->messages->messages) > 0) {
 			$values['messages'] = $this->messages->messages;
 		}
-
 		$this->render($values, NULL, 'default-3.0.tpl');
     }
 
-	function publicate_ximlet()
+	public function publicate_ximlet()
 	{
 		$idNode	= $this->request->getParam("nodeid");
 		$idAction = $this->request->getParam("actionid");
@@ -93,25 +85,20 @@ class Action_publicateximlet extends ActionAbstract {
 	 * @param int idNode
 	 * @return array / NULL
 	 */
-	 private function _getRefererDocs($ximletId) {
-
+	 private function _getRefererDocs($ximletId)
+	 {
 	 	$node = new Node($ximletId);
 		$params = array();
 		$params['forcePublication'] = 1;
-
 		$docsToPublish = $node->class->getPublishabledDeps($params);
-
-		if(sizeOf($docsToPublish) > 0 ) {
+		if (sizeOf($docsToPublish) > 0 ) {
 			$docsToPublish = array_unique(array_merge(array($ximletId), $docsToPublish));
-		}else {
+		} else {
 			$docsToPublish = array($ximletId);
 		}
-
-
 		$docs = array();
-		
 		foreach ($docsToPublish as $docID) {
-             		$docNode = new Node($docID);
+            $docNode = new Node($docID);
 		 	$docNodeType = new NodeType($docNode->get('IdNodeType'));
 		     	$docs[$docID] = array(
 				'type' => $docNodeType->get('Name'),
@@ -120,8 +107,6 @@ class Action_publicateximlet extends ActionAbstract {
 				'path' => $docNode->getPath()
 			);
 		}
-
 		return $docs;
 	 }
-
 }

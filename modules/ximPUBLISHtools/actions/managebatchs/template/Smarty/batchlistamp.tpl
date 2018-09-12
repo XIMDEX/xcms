@@ -23,8 +23,6 @@
  *  @version $Revision$
  *}
 
-<script type="text/javascript" language="JavaScript" src="..{$smarty.const.MODULE_XIMSYNC_PATH}/js/managebatchs.js"></script>
-
 <form name="frm_batchs" method="post">
 
 <input type="hidden" name="frm_id_batch" id="frm_id_batch" value="0">

@@ -35,7 +35,7 @@ class Manager
 {
     public $modules;
     public $caller;
-    private static $core_modules = array("ximIO", "ximSYNC");
+    private static $core_modules = array("ximIO");
     private static $deprecated_modules = array("ximTEST");
     public static $msg = null;
 

@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -230,8 +230,7 @@ class PipelineManager
         }
 
         // If the server is enabled and has the specific channel, generate the cache
-        reset($result);
-        while (list(, $serverInfo) = each($result)) {
+        foreach ($result as $serverInfo) {
             if (!$serverInfo['Enabled']) {
                 continue;
             }

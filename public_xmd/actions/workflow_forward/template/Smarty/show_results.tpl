@@ -31,7 +31,7 @@
             {if (count($node_info)) }
                 <caption>{t}The following nodes{/t} {$options[$option]}</caption>
                 <thead>
-                   {if ($option == "unchanged" || $synchronizer_to_use == "default")}
+                   {if ($option == "unchanged")}
                         <tr>
                             <th class=filaclara>{t}Node{/t}</th>
                         </tr>
@@ -46,7 +46,7 @@
                 </thead>
                 <tbody>
                     {foreach name=values from=$node_info key=id_value item=value_info}
-                        {if ($option == "unchanged" || $synchronizer_to_use == "default")}
+                        {if ($option == "unchanged")}
                             <tr>
                                 <td class='filaoscura' colspan="3">{$value_info.NODE}</td>
                             </tr>

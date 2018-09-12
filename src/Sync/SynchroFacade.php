@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -27,21 +27,15 @@
 
 namespace Ximdex\Sync;
 
-use Batch;
-use ChannelFrame;
-use NodeFrame;
-use NodeFrameManager;
+use Ximdex\Models\Batch;
+use Ximdex\Models\ChannelFrame;
+use Ximdex\Models\NodeFrame;
 use Ximdex\Models\Server;
-use ServerFrame;
+use Ximdex\Models\ServerFrame;
 use Ximdex\Models\Node;
 use Ximdex\Logger;
 use Ximdex\Runtime\Session;
 use Ximdex\Models\PortalVersions;
-
-\Ximdex\Modules\Manager::file('/inc/model/Batch.class.php', 'ximSYNC');
-\Ximdex\Modules\Manager::file('/inc/model/ServerFrame.class.php', 'ximSYNC');
-\Ximdex\Modules\Manager::file('/inc/manager/NodeFrameManager.class.php', 'ximSYNC');
-\Ximdex\Modules\Manager::file('/inc/manager/SyncManager.class.php', 'ximSYNC');
 
 class SynchroFacade
 {
@@ -233,7 +227,7 @@ class SynchroFacade
     function pushDocInPublishingPool(int $idNode, int $upDate, int $downDate = null, array $flagsArray = null, 
         bool $recurrence = false) : ?array
     {
-        $syncMngr = new \SyncManager();
+        $syncMngr = new SyncManager();
         $node = new Node($idNode);
         
         // Default values
@@ -286,7 +280,7 @@ class SynchroFacade
         }
         
         // Get the implicated nodes to will be expire
-        $syncMngr = new \SyncManager();
+        $syncMngr = new SyncManager();
         $syncMngr->setFlags($flagsExpiration);
         $nodes2expire = $syncMngr->getPublishableDocs($node, $down, $down);
         $batch = new Batch();
