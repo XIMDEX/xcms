@@ -31,6 +31,7 @@ use Ximdex\Logger;
 use Ximdex\Models\Pumper;
 use Ximdex\MPM\MPMManager;
 use Ximdex\MPM\MPMProcess;
+use Ximdex\Models\Batch;
 use Ximdex\Models\ServerFrame;
 use Ximdex\Models\ChannelFrame;
 use Ximdex\Models\NodeFrame;
@@ -77,7 +78,7 @@ class ServerFrameManager
             return false;
         }
         $republishAncestors = false;
-        if ($operation == 'Up') {
+        if ($operation == Batch::TYPE_UP) {
             if ($initialState == ServerFrame::PENDING) {
                 
                 // Set down overlaped serverFrames
@@ -127,7 +128,7 @@ class ServerFrameManager
                 Logger::info("Nothing to do with $serverFrameId starter $initialState");
                 return true;
             }
-        } elseif ($operation == 'Down') {
+        } elseif ($operation == Batch::TYPE_DOWN) {
             $states = array(ServerFrame::PENDING, ServerFrame::DUE2IN, ServerFrame::DUE2IN_, ServerFrame::DUE2INWITHERROR);
             if (in_array($initialState, $states)) {
                 $finalState = ServerFrame::CANCELLED;

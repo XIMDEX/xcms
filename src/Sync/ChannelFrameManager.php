@@ -30,6 +30,7 @@ namespace Ximdex\Sync;
 use Ximdex\Models\Channel;
 use Ximdex\Models\ServerFrame;
 use Ximdex\Models\ChannelFrame;
+use Ximdex\Models\Batch;
 
 /**
 * @brief Handles operations with ChannelFrames
@@ -54,7 +55,7 @@ class ChannelFrameManager
 		$channel = new Channel($channelFrame->get('ChannelId'));
 		$renderMode = $channel->get('RenderMode');
 		if ($renderMode == 'client'){
-			$operation = 'Up';
+			$operation = Batch::TYPE_UP;
 		}
 		
 		// TODO make foreach serverframes

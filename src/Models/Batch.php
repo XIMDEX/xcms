@@ -52,7 +52,14 @@ class Batch extends BatchsOrm
     public function set($attribute, $value)
     {
         if ($attribute == 'State') {
-            Logger::info('Changing state for batch: ' . $this->get('IdBatch') . ' from ' . $this->get('State') . ' to ' . $value);
+            if ($this->get('State') != $value) {
+                Logger::info('Changing state for batch: ' . $this->get('IdBatch') . ' from ' . $this->get('State') . ' to ' . $value);
+                try {
+                    PortalFrames::updatePortalFrames($this, $value);
+                } catch (\Exception $e) {
+                    Logger::error($e->getMessage());
+                }
+            }
         }
         parent::set($attribute, $value);
     }
@@ -102,7 +109,7 @@ class Batch extends BatchsOrm
     {
         $dbObj = new \Ximdex\Runtime\Db();
         $time = time();
-        $dbObj->Query("SELECT IdBatch FROM Batchs WHERE Type='Up' AND TimeOn > $time AND IdNodeGenerator = $nodeId
+        $dbObj->Query("SELECT IdBatch FROM Batchs WHERE Type = '" . Batch::TYPE_UP . "' AND TimeOn > $time AND IdNodeGenerator = $nodeId
 						ORDER BY TimeOn ASC");
         $arrayBatchs = array();
         while (!$dbObj->EOF) {
@@ -199,7 +206,7 @@ class Batch extends BatchsOrm
         }
         if ($downCriteria !== null) {
             if ($downCriteria != "Any") {
-                $where .= " AND Type = 'Up'";
+                $where .= " AND Type = '" . Batch::TYPE_UP . "'";
             }
         }
         if ($idNodeGenerator !== null) {

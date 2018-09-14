@@ -29,12 +29,14 @@ namespace Ximdex\Sync;
 
 use Ximdex\Helpers\ServerConfig;
 use Ximdex\Models\Batch;
+use Ximdex\Models\PortalFrames;
 use Ximdex\Models\Pumper;
 use Ximdex\Models\Server;
 use Ximdex\Models\Channel;
 use Ximdex\Models\ServerFrame;
 use Ximdex\Runtime\App;
 use Ximdex\Logger;
+use Ximdex\Utils\Date;
 
 include_once XIMDEX_ROOT_PATH . '/src/Sync/conf/synchro_conf.php';
 
@@ -222,12 +224,24 @@ class Scheduler
      */
     private static function log_status() : void
     {
+        // Change to default log (xmd.log)
+        Logger::setActiveLog();
+        
+        // General resume stats to log
+        self::general_stats();
+        
+        // Portal frames stats to log
+        self::portal_frames_stats();
+        
+        // Switch to scheduler log file
+        Logger::setActiveLog('scheduler');
+    }
+    
+    private static function general_stats() : void
+    {
         $pumpersTotal = 0;
         $framesPendingTotal = 0;
         $framesActiveTotal = 0;
-        
-        // Change to default log (xmd.log)
-        Logger::setActiveLog();
         $batchs = Batch::countBatchsInProcess();
         Logger::info('SCHEDULER STATS [' . $batchs . ' batchs in time]', false, 'white');
         
@@ -244,19 +258,20 @@ class Scheduler
             // Stats information for each channel in the current server
             foreach ($server->getChannels() as $channelId) {
                 $channel = new Channel($channelId);
-                $serverFramesPending += $framesPending = ServerFrame::countServerFrames([ServerFrame::PENDING], [], true, 
+                $serverFramesPending += $framesPending = ServerFrame::countServerFrames([ServerFrame::PENDING, ServerFrame::DUE2OUT], [], true,
                     $serverId, $channelId);
-                $serverFramesActive += $framesActive = ServerFrame::countServerFrames([], 
+                $serverFramesActive += $framesActive = ServerFrame::countServerFrames([],
                     array_merge(ServerFrame::FINAL_STATUS, [ServerFrame::PENDING]), true, $serverId, $channelId);
                 if ($framesPending or $framesActive) {
-                    Logger::info(' - Channel ' . $channel->GetName() . ': ' . $framesPending . ' frames pending, ' 
+                    Logger::info(' - Channel ' . $channel->GetName() . ': ' . $framesPending . ' frames pending, '
                         . $framesActive . ' frames active');
                 }
             }
             
             // Stats without channel (ChannelId = null), sending a zero value
-            $serverFramesPending += $framesPending = ServerFrame::countServerFrames([ServerFrame::PENDING], [], true, $serverId, 0);
-            $serverFramesActive += $framesActive = ServerFrame::countServerFrames([], 
+            $serverFramesPending += $framesPending = ServerFrame::countServerFrames([ServerFrame::PENDING, ServerFrame::DUE2OUT], [], true, 
+                $serverId, 0);
+            $serverFramesActive += $framesActive = ServerFrame::countServerFrames([],
                 array_merge(ServerFrame::FINAL_STATUS, [ServerFrame::PENDING]), true, $serverId, 0);
             if ($framesPending or $framesActive) {
                 Logger::info(' - No channel: ' . $framesPending . ' frames pending, ' . $framesActive .' frames active');
@@ -264,7 +279,7 @@ class Scheduler
             
             // Stats information for server
             $serverPumpers = Pumper::countPumpers(true, $serverId);
-            Logger::info(' Server totals: ' . $serverFramesPending . ' frames pending, ' . $serverFramesActive .' frames active, ' 
+            Logger::info(' Server totals: ' . $serverFramesPending . ' frames pending, ' . $serverFramesActive .' frames active, '
                 . $serverPumpers . ' pumpers');
             
             // Sum totals
@@ -274,10 +289,25 @@ class Scheduler
         }
         
         // Log for total resume
-        Logger::info('Total: ' . $framesPendingTotal . ' frames pending, ' . $framesActiveTotal .' frames active, ' 
+        Logger::info('Total: ' . $framesPendingTotal . ' frames pending, ' . $framesActiveTotal .' frames active, '
             . $pumpersTotal . ' pumpers');
-        
-        // Switch to scheduler log file
-        Logger::setActiveLog('scheduler');
+    }
+    
+    private static function portal_frames_stats() : void
+    {
+        $portals = PortalFrames::getByState(PortalFrames::STATUS_ACTIVE);
+        if (!$portals) {
+            return;
+        }
+        Logger::info('PORTAL FRAMES STATS', false, 'white');
+        $portals = PortalFrames::getByState(PortalFrames::STATUS_ACTIVE);
+        foreach ($portals as $portal) {
+            Logger::info('Portal frame ' . $portal->get('id') . ': Node generator ' . $portal->get('IdPortal') . 
+                ', version ' . $portal->get('Version') . ', type ' . $portal->get('PublishingType') . ', user ' . $portal->get('CreatedBy'));
+            Logger::info(' - Start time: ' . Date::formatTime($portal->get('StartTime')));
+            Logger::info(' - Status time: ' . Date::formatTime($portal->get('StatusTime')));
+            Logger::info(' - Server frames: ' . $portal->get('SFpending') . ' pending, ' . $portal->get('SFactive') . ' active, '. 
+                $portal->get('SFprocessed') . ' processed, ' . $portal->get('SFerrored') . ' errored');
+        }
     }
 }

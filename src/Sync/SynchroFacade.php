@@ -273,7 +273,7 @@ class SynchroFacade
     {
         // Get portal version
         $portal = new PortalFrames();
-        $idPortalFrame = $portal->upPortalFrameVersion($node->getServer());
+        $idPortalFrame = $portal->upPortalFrameVersion($node->getServer(), Session::get('userID'), PortalFrames::TYPE_DOWN);
         if (!$idPortalFrame) {
             Logger::error('Cannot create the portal version for server: ' . $node->getServer());
             return false;
@@ -303,11 +303,12 @@ class SynchroFacade
             // Obtain the server frames related to the nodes to expire
             $frames = $serverFrame->getFramesOnDate($id, $down);
             
-            // Set this the date to expire in these frames
+            // Set the date to expire in these frames
             foreach ($frames as $frame) {
                 $serverFrame->loader($frame['IdSync']);
                 $serverFrame->set('DateDown', $down);
                 $serverFrame->set('IdBatchDown', $batchId);
+                $serverFrame->set('IdPortalFrame', $idPortalFrame);
                 $serverFrame->update();
                 $numFrames++;
                 if ($numFrames == MAX_NUM_NODES_PER_BATCH) {
@@ -321,7 +322,7 @@ class SynchroFacade
             // Obtain the frames to be cancelled
             $frames = $serverFrame->getFutureFramesForDate($id, $down);
             
-            // Set this the date to expire in these frames
+            // Set the cancelled state in these frames
             foreach ($frames as $frame) {
                 $serverFrame->loader($frame['IdSync']);
                 $serverFrame->set('State', ServerFrame::CANCELLED);

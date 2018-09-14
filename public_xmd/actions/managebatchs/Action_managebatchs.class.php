@@ -144,7 +144,7 @@ class Action_managebatchs extends ActionAbstract
             ? null : $frm_select_filter_active_batch;
 		$batchObj = new Batch();
 		$batchList = $batchObj->getAllBatchs($doFilter ? $stateCryteria : null, $doFilter 
-		    ? $activeCryteria : null, 'Up', MANAGEBATCHS_BATCHS_PER_PAGE, $frm_select_filter_node_gen 
+		    ? $activeCryteria : null, Batch::TYPE_UP, MANAGEBATCHS_BATCHS_PER_PAGE, $frm_select_filter_node_gen 
 		    ? $frm_select_filter_node_gen : null, $frm_select_filter_up_date, $frm_select_filter_down_date);
 		$hasBatchs = (is_array($batchList) && count($batchList) > 0) ? true : false;
 		$distinctNodeGenerators = $batchObj->getNodeGeneratorsFromBatchs($frm_select_filter_state_batch);
@@ -154,7 +154,7 @@ class Action_managebatchs extends ActionAbstract
 			foreach ($batchList as $id => $batch) {
 				$progress = array();
 				$serverFrames = $serverFrameObj->getFramesOnBatch($batch['IdBatch'],
-								(($batch['Type'] == 'Up') ? 'IdBatch' : 'IdBatchDown'),
+								(($batch['Type'] == Batch::TYPE_UP) ? 'IdBatch' : 'IdBatchDown'),
 								"extended", $progress, MANAGEBATCHS_FRAMES_PER_PAGE);
 				$hasServerFrames = (is_array($serverFrames) && count($serverFrames) > 0) ? true : false;
 				if ($hasServerFrames) {

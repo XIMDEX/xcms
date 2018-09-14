@@ -255,12 +255,12 @@ class NodeFrameManager
 	*/
     function getNotProcessNodeFrames($batchId, $chunk, $batchType)
     {
-		if ($batchType == 'Up') {
+		if ($batchType == Batch::TYPE_UP) {
 			$sql = "SELECT NodeFrames.IdNodeFrame, NodeFrames.NodeId, NodeFrames.VersionId, NodeFrames.TimeUp, " .
 				"NodeFrames.TimeDown, NodeFrames.Active FROM NodeFrames, ServerFrames WHERE ServerFrames.IdBatchUp = " .
 				"$batchId AND ServerFrames.IdNodeFrame = NodeFrames.IdNodeFrame AND (NodeFrames.IsProcessUp = 0 "
 				."OR NodeFrames.IsProcessUp IS NULL) LIMIT $chunk";
-		} elseif ($batchType == 'Down') {
+		} elseif ($batchType == Batch::TYPE_DOWN) {
 				$batch = new Batch($batchId);
 				$batchUp = $batch->getUpBatch($batchId);
 				if ($batchUp) {
@@ -367,7 +367,7 @@ class NodeFrameManager
 					$arrayAffectedBatchs[$idBatchUp] = (!isset($arrayAffectedBatchs[$idBatchUp])) ? 1 : $arrayAffectedBatchs[$idBatchUp]++;
 
 					// Changing ServerFrame State
-					$serverFrameMng->changeState($idServerFrame, 'Down', $nodeId);
+					$serverFrameMng->changeState($idServerFrame, Batch::TYPE_DOWN, $nodeId);
 				} elseif(in_array($state, array(ServerFrame::DUE2OUT, ServerFrame::DUE2OUT_))) {
 					Logger::info("Do not delete serverFrame $idServerFrame - state $state");
 				} else {

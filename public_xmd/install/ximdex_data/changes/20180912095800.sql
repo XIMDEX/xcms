@@ -25,3 +25,10 @@ ALTER TABLE `PortalFrames` ADD INDEX(`CreatedBy`);
 
 ALTER TABLE `PortalFrames` ADD FOREIGN KEY (`CreatedBy`) REFERENCES `Users`(`IdUser`) ON DELETE SET NULL ON UPDATE CASCADE;
 ALTER TABLE `PortalFrames` ADD FOREIGN KEY (`IdPortal`) REFERENCES `Nodes`(`IdNode`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+ALTER TABLE `ServerFrames` ADD `IdPortalFrame` INT(12) UNSIGNED NOT NULL, ADD INDEX (`IdPortalFrame`);
+UPDATE `ServerFrames` sf SET sf.IdPortalFrame = (SELECT IdPortalFrame from Batchs ba WHERE ba.IdBatch = sf.IdBatchUp)
+WHERE sf.IdBatchDown IS NULL;
+UPDATE `ServerFrames` sf SET sf.IdPortalFrame = (SELECT IdPortalFrame from Batchs ba WHERE ba.IdBatch = sf.IdBatchDown)
+WHERE NOT sf.IdBatchDown IS NULL;
+ALTER TABLE `ServerFrames` ADD FOREIGN KEY (`IdPortalFrame`) REFERENCES `PortalFrames`(`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;

@@ -54,6 +54,7 @@ class ServerFramesOrm extends GenericData
         'NodeId' => array('type' => 'int(12)', 'not_null' => 'false'),
         'ChannelId' => array('type' => 'int(12)', 'not_null' => 'false'),
         'IdBatchDown' => array('type' => 'int(12)', 'not_null' => 'false'),
+        'IdPortalFrame' => array('type' => 'int(12)', 'not_null' => 'true')
     );
     var $IdSync;
     var $IdServer = 0;

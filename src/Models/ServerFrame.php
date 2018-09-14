@@ -160,7 +160,7 @@ class ServerFrame extends ServerFramesOrm
      * @return int|null
      */
     public function create($nodeId, $server, $dateUp, $path, $name, $publishLinked, $idNodeFrame, $idChannel, $idChannelFrame
-        , $idBatchUp, $dateDown = NULL, $size = 0, bool $cache = true)
+        , $idBatchUp, $idPortalFrame, $dateDown = NULL, $size = 0, bool $cache = true)
     {
         $this->set('IdServer', $server);
         $this->set('DateUp', $dateUp);
@@ -178,6 +178,7 @@ class ServerFrame extends ServerFramesOrm
         $this->set('IdChannelFrame', $idChannelFrame);
         $this->set('cache', (int) $cache);
         $this->set('NodeId', $nodeId);
+        $this->set('IdPortalFrame', $idPortalFrame);
         if ($idChannel) {
             $this->set('ChannelId', $idChannel);
         }

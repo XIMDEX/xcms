@@ -33,6 +33,7 @@ use Ximdex\Models\PortalFrames;
 use Ximdex\Models\Server;
 use Ximdex\NodeTypes\ServerNode;
 use Ximdex\Runtime\DataFactory;
+use Ximdex\Runtime\Session;
 use Ximdex\Models\Channel;
 use Ximdex\Models\Node;
 use Ximdex\Models\NodeFrame;
@@ -139,7 +140,7 @@ class BatchManager
 
         // Get portal version
         $portal = new PortalFrames();
-        $idPortalFrame = $portal->upPortalFrameVersion($idServer);
+        $idPortalFrame = $portal->upPortalFrameVersion($idServer, $userId);
         if (!$idPortalFrame) {
             Logger::error('Cannot generate a new portal frame version');
             return false;
@@ -241,18 +242,18 @@ class BatchManager
             $batch = new Batch();
             $idBatchDown = null;
             if ($timeDown != 0) {
-                $idBatchDown = $batch->create($timeDown, 'Down', $nodeGenerator, 1, null, $idPortalFrame, $userId);
+                $idBatchDown = $batch->create($timeDown, Batch::TYPE_DOWN, $nodeGenerator, 1, null, $idPortalFrame, $userId);
                 Logger::info('Creating down batch: ' . $timeDown);
                 Logger::info(sprintf("[Generator %s]: Creating down batch with id %s", $nodeGenerator, $idBatchDown));
             }
             $batch = new Batch();
-            $relBatchsServers[$serverId] = $batch->create($timeUp, 'Up', $nodeGenerator, $priority, $idBatchDown, 
+            $relBatchsServers[$serverId] = $batch->create($timeUp, Batch::TYPE_UP, $nodeGenerator, $priority, $idBatchDown, 
                 $idPortalFrame, $userId, 0);
             Logger::info('Creating up batch: ' . $timeUp);
             Logger::info(sprintf("[Generator %s]: Creating up batch with id %s", $nodeGenerator, $relBatchsServers[$serverId]));
         }
         $frames = $this->buildFrames($timeUp, $timeDown, $docsToPublish, $docsToUpVersion, $versions, $subversions, $server
-            , $relBatchsServers, $statStart, $statTotal, $nodeGenerator, $noCache);
+            , $relBatchsServers, $statStart, $statTotal, $nodeGenerator, $idPortalFrame, $noCache);
         foreach ($relBatchsServers as $id) {
             $batch = new Batch($id);
             if (!$batch->get('IdBatch')) {
@@ -265,7 +266,7 @@ class BatchManager
     }
 
     private function buildFrames($up, $down, $docsToPublish, $docsToUpVersion, $versions, $subversions, $serverID, $relBatchsServers
-        , $statStart = 0, $statTotal = 0, $nodeGenerator, array $noCache = [])
+        , $statStart = 0, $statTotal = 0, $nodeGenerator, int $idPortalFrame, array $noCache = [])
     {
         $docsOk = array();
         $docsNotOk = array();
@@ -427,7 +428,7 @@ class BatchManager
                         $path = $node->GetPublishedPath($channelId);
                         $publishLinked = 1;
                         $idFrame = $serverFrame->create($idNode, $physicalServer, $up, $path, $name, $publishLinked, $nodeFrameId
-                            , ($channelId === 'NULL') ? null : $channelId , $channelFrameId, $idBatch, $down, 0
+                            , ($channelId === 'NULL') ? null : $channelId , $channelFrameId, $idBatch, $idPortalFrame, $down, 0
                             , isset($noCache[$idNode]) ? false : true);
                     }
                     if (is_null($idFrame)) {
@@ -575,15 +576,17 @@ class BatchManager
                 Logger::info("Ending up batch with id " . $idBatch);
             }
             $batch->update();
+            /*
             if ($batch->get('State') == Batch::ENDED) {
                 $this->setPortalRevision($idBatch);
             }
+            */
             $dbObj->Next();
         }
 
         // Ending batchs type DOWN
         $batch = new Batch();
-        $batchsDown = $batch->find('IdBatch', "Type = 'Down' AND State = '" . Batch::INTIME . "' AND Playing = 1", NULL, MONO);
+        $batchsDown = $batch->find('IdBatch', "Type = '" . Batch::TYPE_DOWN . "' AND State = '" . Batch::INTIME . "'", NULL, MONO);
         if (sizeof($batchsDown) > 0) {
             foreach ($batchsDown as $idBatch) {
                 
@@ -624,9 +627,11 @@ class BatchManager
                     Logger::info("Ending down batch with id " . $idBatch);
                 }
                 $batchDown->update();
+                /*
                 if ($batchDown->get('State') == Batch::ENDED) {
                     $this->setPortalRevision($idBatch);
                 }
+                */
             }
         }
 
@@ -680,13 +685,13 @@ class BatchManager
         $serverId = $portal->get('IdPortal');
         $serverNode = new Node($serverId);
         $physicalServers = $serverNode->class->GetPhysicalServerList(true, ServerNode::ALL_SERVERS);
-        if ($batchType == 'Down') {
+        if ($batchType == Batch::TYPE_DOWN) {
 
             // Updates portal version for all batchs not ended
             $portal = new PortalFrames();
-            $portal->upPortalFrameVersion($serverId);
+            $portal->upPortalFrameVersion($serverId, Session::get('userID'), PortalFrames::TYPE_DOWN);
             $result = $batch->find('IdPortalFrame', 'State != %s AND IdBatch > %s AND Type = %s ORDER BY IdBatch ASC',
-                array('State' => Batch::ENDED, 'IdBatch' => $idBatch, 'Type' => 'Up'), MONO);
+                array('State' => Batch::ENDED, 'IdBatch' => $idBatch, 'Type' => Batch::TYPE_UP), MONO);
             if (!$result) {
                 Logger::info('No portal version found for batch: ' . $idBatch);
                 return false;
@@ -725,7 +730,7 @@ class BatchManager
         $dbObj = new Db();
         $sql = "SELECT IdBatch, Type, IdNodeGenerator, MajorCycle, MinorCycle, ServerFramesTotal FROM Batchs
 				WHERE Playing = 1 AND State = '" . Batch::INTIME . "' AND ServerFramesTotal > 0
-				ORDER BY Priority DESC, MajorCycle DESC, MinorCycle DESC, Type = 'Down' DESC, IdBatch LIMIT 1";
+				ORDER BY Priority DESC, MajorCycle DESC, MinorCycle DESC, Type = '" . Batch::TYPE_DOWN . "' DESC, IdBatch LIMIT 1";
         if ($dbObj->Query($sql) === false) {
         	return false;
         }
@@ -779,7 +784,7 @@ class BatchManager
         $porcentaje = 100 * $sucessFrames / $allFrames;
         if ($porcentaje > 25) {
             $systemPriority = MAX_SYSTEM_PRIORITY;
-            Logger::info('Up batch %d priority', $idBatch);
+            Logger::info(sprintf('Up batch %d priority', $idBatch));
         } else if ($porcentaje < 25) {
             $systemPriority = -MIN_SYSTEM_PRIORITY;
             Logger::info(sprintf('Down batch %d priority', $idBatch));
@@ -853,7 +858,7 @@ class BatchManager
                 return false;
             }
             $portal = new PortalFrames();
-            $idPortalFrame = $portal->upPortalFrameVersion($serverID);
+            $idPortalFrame = $portal->upPortalFrameVersion($serverID, Session::get('userID'), PortalFrames::TYPE_DOWN);
             if (!$idPortalFrame) {
                 Logger::error('Unable to increase the portal version with ID: ' . $serverID);
                 return false;
@@ -861,7 +866,7 @@ class BatchManager
 
             // Creating Batch Type Down if not exist one
             $batchDown = new Batch();
-            $idBatchDown = $batchDown->create(time(), 'Down', $nodeId, 1, null, $idPortalFrame, $userId);
+            $idBatchDown = $batchDown->create(time(), Batch::TYPE_DOWN, $nodeId, 1, null, $idPortalFrame, $userId);
 
             // Updating Serverframes info
             $batchDown = new Batch($idBatchDown);
@@ -884,7 +889,7 @@ class BatchManager
         $dbObj = new Db();
         $sql = "SELECT IdBatch, Type, IdNodeGenerator, MajorCycle, MinorCycle, ServerFramesTotal FROM Batchs
 				WHERE Playing = 1 AND State = '" . Batch::INTIME . "' AND ServerFramesTotal > 0
-				ORDER BY Priority DESC, MajorCycle DESC, MinorCycle DESC, Type = 'Down'";
+				ORDER BY Priority DESC, MajorCycle DESC, MinorCycle DESC, Type = '" . Batch::TYPE_DOWN . "'";
         if ($dbObj->Query($sql) === false) {
             return false;
         }

@@ -27,8 +27,8 @@
 
 namespace Ximdex\Models;
 
+use \Ximdex\Runtime\Db;
 use Ximdex\Models\ORM\PortalFramesOrm;
-use Ximdex\Runtime\Session;
 
 class PortalFrames extends PortalFramesOrm
 {
@@ -38,7 +38,7 @@ class PortalFrames extends PortalFramesOrm
     const STATUS_ACTIVE = 'Active';
     const STATUS_ENDED = 'Ended';
     
-    public function upPortalFrameVersion(int $portalId, string $type = self::TYPE_UP) : int
+    public function upPortalFrameVersion(int $portalId, int $idUser = null, string $type = self::TYPE_UP) : int
     {
         $portalFrameVersion = $this->getLastVersion($portalId);
         $portalFrameVersion++;
@@ -46,7 +46,7 @@ class PortalFrames extends PortalFramesOrm
         $this->set('Version', $portalFrameVersion);
         $this->set('CreationTime', time());
         $this->set('PublishingType', $type);
-        $this->set('CreatedBy', Session::get('userID'));
+        $this->set('CreatedBy', $idUser);
         $this->set('Status', self::STATUS_CREATED);
         $this->set('StatusTime', time());
         $idPortalFrameVersion = parent::add();
@@ -74,5 +74,90 @@ class PortalFrames extends PortalFramesOrm
             $portalFrameVersions[] = array('id' => $resultData['id'], 'version' => $resultData['Version']);
         }
         return $portalFrameVersions;
+    }
+    
+    /**
+     * Called only when a batch change its state to a new one
+     * 
+     * @param Batch $batch
+     * @param string $state
+     * @throws \Exception
+     */
+    public static function updatePortalFrames(Batch $batch, string $state = null) : void
+    {
+        if (!$batch->get('IdBatch')) {
+            return;
+        }
+        if (!$batch->get('IdPortalFrame')) {
+            throw new \Exception('There is not a portal frame for batch with ID: ' . $batch->get('IdBatch'));
+        }
+        $portalFrame = new static($batch->get('IdPortalFrame'));
+        if (!$portalFrame->get('id')) {
+            throw new \Exception('Cannot load a portal frame with ID: ' . $batch->get('IdPortalFrame'));
+        }
+        if (!$state) {
+            if (!$batch->get('State')) {
+                throw new \Exception('Unknown state for portal frame with ID: ' . $portalFrame->get('id'));
+            }
+            $state = $batch->get('State');
+        }
+        if ($state == Batch::INTIME) {
+            $portalFrame->set('StartTime', time());
+            $portalFrame->set('Status', self::STATUS_ACTIVE);
+            $portalFrame->set('SFpending', $portalFrame->get('SFpending') + $batch->get('ServerFramesTotal'));
+        }
+        elseif ($state == Batch::CLOSING) {
+            return;
+        }
+        elseif ($state == Batch::ENDED) {
+            $portalFrame->set('SFpending', $portalFrame->get('SFpending') - $batch->get('ServerFramesTotal'));
+            $portalFrame->set('SFprocessed', $portalFrame->get('SFprocessed') + $batch->get('ServerFramesSucess'));
+            $portalFrame->set('SFerrored', $portalFrame->get('SFerrored') + $batch->get('ServerFramesError'));
+            
+            // If all batchs minus one (current batch state is not saved) for this portal frame are ended, the status will change to Ended
+            if (self::num_batchs_in_pool($portalFrame->get('id')) == 1)
+            {
+                $portalFrame->set('Status', self::STATUS_ENDED);
+                $portalFrame->set('EndTime', time());
+            }
+        } else {
+            return;
+        }
+        $portalFrame->set('StatusTime', time());
+        if ($portalFrame->update() === false) {
+            throw new \Exception('Cannot update the portal frame with ID: ' . $portalFrame->get('id'));
+        }
+    }
+    
+    public static function getByState(string $state) : array
+    {
+        $db = new Db();
+        $res = $db->Query('SELECT id FROM PortalFrames WHERE Status = \'' . $state . '\'');
+        if ($res === false) {
+            throw new \Exception('Could not obtain a list of portal frames with ' . $state);
+        }
+        $portals = [];
+        while (!$db->EOF) {
+            $portals[] = new static($db->GetValue('id'));
+            $db->Next();
+        }
+        return $portals;
+    }
+    
+    /**
+     * Retrieve the total of batchs for a given portal frame without ended state
+     * 
+     * @param int $idPortalFrame
+     * @throws \Exception
+     * @return int
+     */
+    private static function num_batchs_in_pool(int $idPortalFrame) : int
+    {
+        $sql = 'SELECT COUNT(IdBatch) AS total FROM Batchs where IdPortalFrame = ' . $idPortalFrame . ' AND State != \'' . Batch::ENDED . '\'';
+        $db = new Db();
+        if ($db->Query($sql) === false) {
+            throw new \Exception('Could not obtain the number of batchs not ended for the portal frame ' . $idPortalFrame);
+        }
+        return (int) $db->getValue('total');
     }
 }

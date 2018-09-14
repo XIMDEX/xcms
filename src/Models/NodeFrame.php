@@ -80,7 +80,7 @@ class NodeFrame extends NodeFramesOrm
     public function getFrames($idNdFr, string $operation)
     {
         $sql = "SELECT IdSync FROM ServerFrames WHERE IdNodeFrame = $idNdFr";
-        if ($operation == 'Up' or $operation == 'Down') {
+        if ($operation == Batch::TYPE_UP or $operation == Batch::TYPE_DOWN) {
             $sql .= ' and State not in (\'' . ServerFrame::REMOVED . '\', \'' . ServerFrame::REPLACED . '\', \'' 
                 . ServerFrame::CANCELLED . '\'';
             $sql .= ', \'' . ServerFrame::OUT . '\')';
