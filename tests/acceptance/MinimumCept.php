@@ -39,7 +39,7 @@ $I->fillField('name', 'ximdex');
 
 $I->click('Create Database');
 
-$I->wait(20);
+$I->wait(15);
 
 $I->see('Set the password for this admin user');
 

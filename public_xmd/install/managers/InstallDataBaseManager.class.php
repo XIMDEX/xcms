@@ -105,11 +105,7 @@ class InstallDataBaseManager extends InstallManager
 
     public function selectDataBase($name)
     {
-        $res = $this->connect($this->host, $this->port, $this->user, $this->pass, $name, true);
-        if ($res === false) {
-        	return false;
-        }
-        return $this->dbConnection;
+        return $this->connect($this->host, $this->port, $this->user, $this->pass, $name, true);
     }
 
     public function getConnectionErrors()

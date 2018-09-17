@@ -108,58 +108,53 @@ class BuildDataBaseInstallStep extends GenericInstallStep
         if ($idbManager->connect($host, $port, $user, $pass) === false) {
             $values["failure"] = true;
             $values["errors"] = $idbManager->getErrors();
-        } else {
-            if ($idbManager->existDataBase($name)) {
-                $idbManager->deleteDataBase($name);
-            }
-            if ($idbManager->connect($host, $port, $user, $pass)) {
-                $result = $idbManager->createDataBase($name);
-                if (!$result)
-                {
-                	$values["failure"] = true;
-                	if ($idbManager->getErrors()) {
-                		$values["errors"] = $idbManager->getErrors();
-                	} else {
-                		$values["errors"] = 'Can\'t create database with the specified parameters';
-                	}
-                }
-                $result = $idbManager->connect($host, $port, $user, $pass, $name, true);
-                if ($result === false) {
-                    $values["failure"] = true;
-                    $values["errors"] = 'Cannot connect to database';
-                }
-                $result = $idbManager->loadData($host, $port, $user, $pass, $name);
-                if ($result === false) {
-                    $values["failure"] = true;
-                    $values["errors"] = 'Cannot generate the database schema and data';
-                } else {
-                    $result = $idbManager->checkDataBase($host, $port, $user, $pass, $name);
-                }
-                if ($result) {
-                    
-                    // If the app is working under a Docker instance, the new user creation will be omited
-                    if (isset($_SERVER['DOCKER_CONF_HOME'])) {
-                        $this->initParams($host, $port, $name, $user, $pass);
-                        $values['skipNewDBUser'] = true;
-                    } else {
-                        $values['skipNewDBUser'] = false;
-                    }
-                    $values["success"] = true;
-                }
-                else
-                {
-                    $values["failure"] = true;
-                    if ($idbManager->getErrors()) {
-                    	$values["errors"] = $idbManager->getErrors();
-                    } else {
-                   		$values["errors"] = 'Can\'t create database schema and content';
-                   	}
-                }
-            } else {
-                $values["failure"] = true;
-                $values["errors"] = $idbManager->getErrors();
-            }
+            $this->sendJSON($values);
         }
+        if ($idbManager->existDataBase($name)) {
+            $idbManager->deleteDataBase($name);
+        }
+        if (!$idbManager->connect($host, $port, $user, $pass)) {
+            $values["failure"] = true;
+            $values["errors"] = $idbManager->getErrors();
+            $this->sendJSON($values);
+        }
+        if (!$idbManager->createDataBase($name))
+        {
+        	$values["failure"] = true;
+        	if ($idbManager->getErrors()) {
+        		$values["errors"] = $idbManager->getErrors();
+        	} else {
+        		$values["errors"] = 'Can\'t create database with the specified parameters';
+        	}
+        	$this->sendJSON($values);
+        }
+        if (!$idbManager->connect($host, $port, $user, $pass, $name, true)) {
+            $values["failure"] = true;
+            $values["errors"] = 'Cannot connect to database';
+            $this->sendJSON($values);
+        }
+        if (!$idbManager->loadData($host, $port, $user, $pass, $name)) {
+            $values["failure"] = true;
+            $values["errors"] = 'Cannot generate the database schema and data';
+            $this->sendJSON($values);
+        }
+        if (!$idbManager->checkDataBase($host, $port, $user, $pass, $name)) {
+            $values["failure"] = true;
+            if ($idbManager->getErrors()) {
+            	$values["errors"] = $idbManager->getErrors();
+            } else {
+           		$values["errors"] = 'Can\'t create database schema and content';
+           	}
+           	$this->sendJSON($values);
+        }
+        // If the app is working under a Docker instance, the new user creation will be omited
+        if (isset($_SERVER['DOCKER_CONF_HOME'])) {
+            $this->initParams($host, $port, $name, $user, $pass);
+            $values['skipNewDBUser'] = true;
+        } else {
+            $values['skipNewDBUser'] = false;
+        }
+        $values["success"] = true;
         $this->sendJSON($values);
     }
 
