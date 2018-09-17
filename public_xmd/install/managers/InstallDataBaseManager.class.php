@@ -44,7 +44,12 @@ class InstallDataBaseManager extends InstallManager
     private $user;
     private $pass;
     private $name;
-    private $errors = array();
+    private $error = '';
+    
+    public function getError() : string
+    {
+        return $this->error;
+    }
 	
     /**
      * Return true if the connection to the database was correct, or false if not
@@ -190,18 +195,17 @@ class InstallDataBaseManager extends InstallManager
     public function loadData($host, $port, $user, $pass, $name)
     {
         $sqlFiles = array(self::SCHEMA_SCRIPT_FILE, self::DATA_SCRIPT_FILE);
-        $dir = opendir(APP_ROOT_PATH . self::DATA_PATH . self::CHANGES_PATH);
-        if ($dir === false) {
+        $files = scandir(APP_ROOT_PATH . self::DATA_PATH . self::CHANGES_PATH);
+        if ($files === false) {
             return false;
         }
-        while ($file = readdir($dir)) {
+        foreach ($files as $file) {
             $info = pathinfo($file);
             if ($info['extension'] != 'sql') {
                 continue;
             }
-            $sqlFiles[(int) $info['filename']] = self::CHANGES_PATH . $file;
+            $sqlFiles[] = self::CHANGES_PATH . $file;
         }
-        closedir($dir);
         foreach ($sqlFiles as $sqlFile) {
             $content = file_get_contents(APP_ROOT_PATH . self::DATA_PATH . $sqlFile);
             if ($content === false) {
@@ -210,12 +214,14 @@ class InstallDataBaseManager extends InstallManager
                 $statement = $this->dbConnection->prepare($content);
                 $res = $statement->execute();
             } catch (PDOException $e) {
-                Logger::error($e->getMessage() . ' (' . $sqlFile . ')');
+                $this->error = $e->getMessage() . ' (' . $sqlFile . ')';
+                Logger::error($this->error);
                 return false;
             }
             if ($res === false) {
                 $error = $statement->errorInfo();
-                Logger::error($error[2] . ' (' . $sqlFile . ')');
+                $this->error = $error[2] . ' (' . $sqlFile . ')';
+                Logger::error($this->error);
                 return false;
             }
         }
