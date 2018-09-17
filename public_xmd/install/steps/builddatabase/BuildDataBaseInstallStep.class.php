@@ -1,6 +1,7 @@
 <?php
+
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -24,9 +25,9 @@
  * @version $Revision$
  */
 
-require_once(APP_ROOT_PATH.'/install/steps/generic/GenericInstallStep.class.php');
-require_once(APP_ROOT_PATH.'/install/managers/InstallModulesManager.class.php');
-require_once(APP_ROOT_PATH.'/install/managers/InstallDataBaseManager.class.php');
+require_once APP_ROOT_PATH . '/install/steps/generic/GenericInstallStep.class.php';
+require_once APP_ROOT_PATH . '/install/managers/InstallModulesManager.class.php';
+require_once APP_ROOT_PATH . '/install/managers/InstallDataBaseManager.class.php';
 
 class BuildDataBaseInstallStep extends GenericInstallStep
 {
@@ -42,10 +43,11 @@ class BuildDataBaseInstallStep extends GenericInstallStep
         $this->addJs("InstallDatabaseController.js");
         $values = array();
         $values["ximdexName"] = basename(XIMDEX_ROOT_PATH);
-        if (isset($_SERVER['DOCKER_CONF_HOME']))
+        if (isset($_SERVER['DOCKER_CONF_HOME'])) {
             $values['ximdexDataBaseHostName'] = 'db';
-        else
+        } else {
             $values['ximdexDataBaseHostName'] = 'localhost';
+        }
         $this->render($values);
     }
     
@@ -64,7 +66,6 @@ class BuildDataBaseInstallStep extends GenericInstallStep
             $values["failure"] = true;
             $values["errors"] = $idbManager->getConnectionErrors();
         }
-
         $this->sendJson($values);
     }
 
@@ -77,19 +78,18 @@ class BuildDataBaseInstallStep extends GenericInstallStep
         $name = $this->request->getParam("name");
         $user = $this->request->getParam("user");
         $pass = $this->request->getParam("pass");
-        if ( is_null( $pass )) {
+        if (is_null($pass)) {
             $pass = '' ;
         }
         $values = array();
         $idbManager->connect($host, $port, $user, $pass);
         if ($idbManager->existDataBase($name)) {
         	
-        	//if the host specified is the db for docker, we don't need to show the database overwriting message 
+        	// If the host specified is the db for docker, we don't need to show the database overwriting message 
             if (isset($_SERVER['DOCKER_CONF_HOME']))
         		$values["success"] = true;
         	else
             	$values["failure"] = true;
-
         } else {
             $values["success"] = true;
         }
@@ -105,51 +105,43 @@ class BuildDataBaseInstallStep extends GenericInstallStep
         $user = $this->request->getParam("user");
         $pass = $this->request->getParam("pass");
         $values = array();
-        if ($idbManager->connect($host, $port, $user, $pass) === false)
-        {
+        if ($idbManager->connect($host, $port, $user, $pass) === false) {
             $values["failure"] = true;
             $values["errors"] = $idbManager->getErrors();
-        }
-        else
-        {
-            if ($idbManager->existDataBase($name))
-            {
+        } else {
+            if ($idbManager->existDataBase($name)) {
                 $idbManager->deleteDataBase($name);
             }
-            if ($idbManager->connect($host, $port, $user, $pass))
-            {
+            if ($idbManager->connect($host, $port, $user, $pass)) {
                 $result = $idbManager->createDataBase($name);
                 if (!$result)
                 {
                 	$values["failure"] = true;
-                	if ($idbManager->getErrors())
+                	if ($idbManager->getErrors()) {
                 		$values["errors"] = $idbManager->getErrors();
-                	else
+                	} else {
                 		$values["errors"] = 'Can\'t create database with the specified parameters';
+                	}
                 }
                 $result = $idbManager->connect($host, $port, $user, $pass, $name, true);
-                if ($result === false)
-                {
+                if ($result === false) {
                     $values["failure"] = true;
                     $values["errors"] = 'Cannot connect to database';
                 }
                 $result = $idbManager->loadData($host, $port, $user, $pass, $name);
-                if ($result === false)
-                {
+                if ($result === false) {
                     $values["failure"] = true;
                     $values["errors"] = 'Cannot generate the database schema and data';
+                } else {
+                    $result = $idbManager->checkDataBase($host, $port, $user, $pass, $name);
                 }
-                $result = $idbManager->checkDataBase($host, $port, $user, $pass, $name);
-                if ($result)
-                {
-                    // if the app is working under a Docker instance, the new user creation will be omited
-                    if (isset($_SERVER['DOCKER_CONF_HOME']))
-                    {
+                if ($result) {
+                    
+                    // If the app is working under a Docker instance, the new user creation will be omited
+                    if (isset($_SERVER['DOCKER_CONF_HOME'])) {
                         $this->initParams($host, $port, $name, $user, $pass);
                         $values['skipNewDBUser'] = true;
-                    }
-                    else
-                    {
+                    } else {
                         $values['skipNewDBUser'] = false;
                     }
                     $values["success"] = true;
@@ -157,18 +149,13 @@ class BuildDataBaseInstallStep extends GenericInstallStep
                 else
                 {
                     $values["failure"] = true;
-                    if ($idbManager->getErrors())
-                    {
+                    if ($idbManager->getErrors()) {
                     	$values["errors"] = $idbManager->getErrors();
-                    }
-                   	else
-                   	{
+                    } else {
                    		$values["errors"] = 'Can\'t create database schema and content';
                    	}
                 }
-            }
-            else
-            {
+            } else {
                 $values["failure"] = true;
                 $values["errors"] = $idbManager->getErrors();
             }
@@ -185,7 +172,7 @@ class BuildDataBaseInstallStep extends GenericInstallStep
         $name = $this->request->getParam("name");
         $root_user = $this->request->getParam("root_user");
         $root_pass = $this->request->getParam("root_pass");
-        if ( is_null( $root_pass )) {
+        if (is_null($root_pass)) {
             $root_pass = '' ;
         }
         $values = array();
@@ -197,31 +184,28 @@ class BuildDataBaseInstallStep extends GenericInstallStep
         $idbManager = new InstallDataBaseManager();
         $idbManager->connect($host, $port, $root_user, $root_pass, $name);
         
-        // check if the new user exists already
-        if ($userExists = $idbManager->userExist($user))
-        {
-            // the password must be the actual one for the existant user, trying a connection with him
+        // Check if the new user exists already
+        if ($userExists = $idbManager->userExist($user)) {
+            
+            // The password must be the actual one for the existant user, trying a connection with him
             $idbManagerAux = new InstallDataBaseManager();
-            if ($idbManagerAux->connect($host, $port, $user, $pass, false, true) === false)
-            {
+            if ($idbManagerAux->connect($host, $port, $user, $pass, false, true) === false) {
                 $values["failure"] = true;
                 $values["errors"] = 'This user exists already in the server, but the password is not correct';
                 $this->sendJson($values);
             }
             unset($idbManagerAux);
         }
-        // if (!$idbManager->changeUser($user, $pass, $name)) {
-        // add the new user and associate it with the database, or create the link with a old user 
-        if ($idbManager->addUser($user, $pass, $name, $userExists) === false)
-        {
+        
+        // Add the new user and associate it with the database, or create the link with a old user 
+        if ($idbManager->addUser($user, $pass, $name, $userExists) === false) {
             $values["failure"] = true;
-            if ($userExists)
+            if ($userExists) {
                 $values["errors"] = 'This user exists alredy, but the password must be the specefied user one';
-            else
+            } else {
                 $values["errors"] = 'The user cannot be created';
-        }
-        else
-        {
+            }
+        } else {
             $values["success"] = true;
             $this->initParams($host, $port, $name, $user, $pass);
         }
@@ -246,27 +230,26 @@ class BuildDataBaseInstallStep extends GenericInstallStep
         $user = $this->request->getParam('user');
         $pass = $this->request->getParam('pass');
         $values = array();
-        if ($idbManager->connect($host, $port, $user, $pass) === false)
-        {
+        if ($idbManager->connect($host, $port, $user, $pass) === false) {
             $values['failure'] = true;
-            $values['errors'] = $idbManager->getErrors();
-        }
-        else
-        {
+            $values['errors'] = $idbManager->getErrors(); 
+        } else {
             $serverInfo = $idbManager->server_version();
             $version = doubleval($serverInfo[1] . '.' . $serverInfo[2]);
-            if ($serverInfo[0] == 'mariadb')
+            if ($serverInfo[0] == 'mariadb') {
                 $minVersion = self::RECOMMENDED_MARIADB_VERSION;
-            else
+            } else {
                 $minVersion = self::RECOMMENDED_MYSQL_VERSION;
-            if ($version < $minVersion)
-            {
-                $values['failure'] = true;
-                $values['errors'] = 'The recommended database version is ' . $minVersion . ' or higher and the installed one is ' . $version 
-                        . ' (' . $serverInfo[0] . '). You can continue with the installation process, but stability is not secured';
             }
-            else
+            if ($version < $minVersion) {
+                $values['failure'] = true;
+                $values['errors'] = 'The recommended database version is ' . $minVersion 
+                    . ' or higher and the installed one is ' 
+                    . $version . ' (' . $serverInfo[0] 
+                    . '). You can continue with the installation process, but stability is not secured';
+            } else {
                 $values['success'] = true;
+            }
         }
         $this->sendJson($values);
     }

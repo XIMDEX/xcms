@@ -1,5 +1,4 @@
 ALTER TABLE `PortalVersions` ENGINE = InnoDB;
-ALTER TABLE `PortalVersions` ADD INDEX(`IdPortal`);
 
 ALTER TABLE `Users` ENGINE = InnoDB;
 

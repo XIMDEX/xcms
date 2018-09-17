@@ -48,7 +48,7 @@ $I->fillField('pass2', 'ximdex');
 
 $I->click('Save settings');
 
-$I->wait(3);
+$I->wait(5);
 
 $I->see('Installing Ximdex CMS\'s default modules');
 
