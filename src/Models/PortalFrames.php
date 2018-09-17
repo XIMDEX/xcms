@@ -115,8 +115,7 @@ class PortalFrames extends PortalFramesOrm
             $portalFrame->set('SFerrored', $portalFrame->get('SFerrored') + $batch->get('ServerFramesError'));
             
             // If all batchs minus one (current batch state is not saved) for this portal frame are ended, the status will change to Ended
-            if (self::num_batchs_in_pool($portalFrame->get('id')) == 1)
-            {
+            if (self::num_batchs_in_pool($portalFrame->get('id')) == 1) {
                 $portalFrame->set('Status', self::STATUS_ENDED);
                 $portalFrame->set('EndTime', time());
             }

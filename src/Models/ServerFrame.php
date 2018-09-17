@@ -62,7 +62,7 @@ class ServerFrame extends ServerFramesOrm
     const DELAYED = 'Delayed';
     
     // Group of status
-    const FINAL_STATUS = [self::IN, self::OUT, self::REMOVED, self::REPLACED, self::DUE2INWITHERROR, self::DUE2OUTWITHERROR];
+    const FINAL_STATUS = [self::IN, self::OUT, self::REMOVED, self::REPLACED, self::DUE2INWITHERROR, self::DUE2OUTWITHERROR, self::CANCELLED];
     
     public $initialStatus;
     public $errorStatus;
