@@ -31,9 +31,9 @@ use Ximdex\Data\GenericData;
 
 class ServerFramesOrm extends GenericData
 {
-    var $_idField = 'IdSync';
-    var $_table = 'ServerFrames';
-    var $_metaData = array(
+    public $_idField = 'IdSync';
+    public $_table = 'ServerFrames';
+    public $_metaData = array(
         'IdSync' => array('type' => 'int(12)', 'not_null' => 'true', 'auto_increment' => 'true'),
         'IdServer' => array('type' => 'int(12)', 'not_null' => 'true'),
         'DateUp' => array('type' => 'int(14)', 'not_null' => 'true'),
@@ -56,24 +56,25 @@ class ServerFramesOrm extends GenericData
         'IdBatchDown' => array('type' => 'int(12)', 'not_null' => 'false'),
         'IdPortalFrame' => array('type' => 'int(12)', 'not_null' => 'true')
     );
-    var $IdSync;
-    var $IdServer = 0;
-    var $DateUp = 0;
-    var $DateDown = 0;
-    var $State = 'DUE';
-    var $Error;
-    var $ErrorLevel = 0;
-    var $RemotePath;
-    var $FileName;
-    var $FileSize;
-    var $Retry = 0;
-    var $Linked = 1;
-    var $IdNodeFrame = 0;
-    var $IdBatchUp = 0;
-    var $IdChannelFrame = 0;
-    var $PumperId;
-    var $cache;
-    var $NodeId;
-    var $ChannelId;
-    var $IdBatchDown = null;
+    public $IdSync;
+    public $IdServer = 0;
+    public $DateUp = 0;
+    public $DateDown = 0;
+    public $State = 'DUE';
+    public $Error;
+    public $ErrorLevel = 0;
+    public $RemotePath;
+    public $FileName;
+    public $FileSize;
+    public $Retry = 0;
+    public $Linked = 1;
+    public $IdNodeFrame = 0;
+    public $IdBatchUp = 0;
+    public $IdChannelFrame = 0;
+    public $PumperId;
+    public $cache;
+    public $NodeId;
+    public $ChannelId;
+    public $IdBatchDown = null;
+    public $IdPortalFrame;
 }

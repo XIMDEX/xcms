@@ -271,48 +271,58 @@ class SynchroFacade
      */
     public function expire(Node $node, int $down, array $flagsExpiration) : bool
     {
-        // Get portal version
-        $portal = new PortalFrames();
-        $idPortalFrame = $portal->upPortalFrameVersion($node->getServer(), Session::get('userID'), PortalFrames::TYPE_DOWN);
-        if (!$idPortalFrame) {
-            Logger::error('Cannot create the portal version for server: ' . $node->getServer());
-            return false;
-        }
-        
         // Get the implicated nodes to will be expire
         $syncMngr = new SyncManager();
         $syncMngr->setFlags($flagsExpiration);
         $nodes2expire = $syncMngr->getPublishableDocs($node, $down, $down);
+        if (!$nodes2expire) {
+            return true;
+        }
+        
+        // Get portal version
+        $portal = new PortalFrames();
+        $idPortalFrame = $portal->upPortalFrameVersion($node->getID(), Session::get('userID'), PortalFrames::TYPE_DOWN);
+        if (!$idPortalFrame) {
+            Logger::error('Cannot create the portal version for server: ' . $node->getServer());
+            return false;
+        }
         $batch = new Batch();
         $serverFrame = new ServerFrame();
         $createBatch = true;
         foreach ($nodes2expire as $id) {
-            
-            // Create batch for down process per max nodes
-            if ($createBatch) {
-                $batchId = $batch->create($down, Batch::TYPE_DOWN, $node->GetID(), 0.9, null, $idPortalFrame, 
-                    Session::get('userID'), 0);
-                if (!$batchId) {
-                    Logger::error('Cannot create the down batch process');
-                    return false;
-                }
-                $createBatch = false;
-                $numFrames = 0;
-            }
             
             // Obtain the server frames related to the nodes to expire
             $frames = $serverFrame->getFramesOnDate($id, $down);
             
             // Set the date to expire in these frames
             foreach ($frames as $frame) {
-                $serverFrame->loader($frame['IdSync']);
+                
+                // Create a new batch type Down
+                if ($createBatch) {
+                    $batchId = $batch->create($down, Batch::TYPE_DOWN, $node->GetID(), 0.9, null, $idPortalFrame,
+                        Session::get('userID'), 0);
+                    if (!$batchId) {
+                        Logger::error('Cannot create the down batch process');
+                        return false;
+                    }
+                    $numFrames = 0;
+                    $createBatch = false;
+                }
+                $serverFrame = new ServerFrame($frame['IdSync']);
+                if (!$serverFrame->get('IdSync')) {
+                    Logger::error('Cannot load the server frame with ID: ' . $frame['IdSync']);
+                    continue;
+                }
                 $serverFrame->set('DateDown', $down);
                 $serverFrame->set('IdBatchDown', $batchId);
                 $serverFrame->set('IdPortalFrame', $idPortalFrame);
                 $serverFrame->update();
                 $numFrames++;
+                
+                // Update the batch with the results
                 if ($numFrames == MAX_NUM_NODES_PER_BATCH) {
                     $batch->set('ServerFramesTotal', $numFrames);
+                    $batch->set('ServerFramesPending', $numFrames);
                     $batch->set('Playing', 1);
                     $batch->update();
                     $createBatch = true;
@@ -324,24 +334,40 @@ class SynchroFacade
             
             // Set the cancelled state in these frames
             foreach ($frames as $frame) {
-                $serverFrame->loader($frame['IdSync']);
+                $serverFrame = new ServerFrame($frame['IdSync']);
+                if (!$serverFrame->get('IdSync')) {
+                    Logger::error('Cannot load the server frame with ID: ' . $frame['IdSync']);
+                    continue;
+                }
                 $serverFrame->set('State', ServerFrame::CANCELLED);
                 $serverFrame->update();
             }
         }
-        if (isset($batch)) {
+        if ($batch->get('IdBatch')) {
             
             // Update the batch with the last generated frames 
             if ($numFrames and $numFrames < MAX_NUM_NODES_PER_BATCH) {
                 $batch->set('ServerFramesTotal', $numFrames);
+                $batch->set('ServerFramesPending', $numFrames);
                 $batch->set('Playing', 1);
                 $batch->update();
             }
-            else {
+            elseif ($numFrames == 0) {
                 
                 // The batch has no frames, so it will be removed
                 $batch->delete();
             }
+            
+            // Update portal frame information
+            try {
+                PortalFrames::updatePortalFrames($batch);
+            } catch (\Exception $e) {
+                Logger::error($e->getMessage());
+            }
+        } else {
+            
+            // We have a portal type Down frame without batchs type Down
+            $portal->delete();
         }
         return true;
     }

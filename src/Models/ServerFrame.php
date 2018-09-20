@@ -62,7 +62,8 @@ class ServerFrame extends ServerFramesOrm
     const DELAYED = 'Delayed';
     
     // Group of status
-    const FINAL_STATUS = [self::IN, self::OUT, self::REMOVED, self::REPLACED, self::DUE2INWITHERROR, self::DUE2OUTWITHERROR, self::CANCELLED];
+    const FINAL_STATUS = [self::IN, self::OUT, self::REMOVED, self::REPLACED, self::DUE2INWITHERROR, self::DUE2OUTWITHERROR, 
+        self::CANCELLED, self::OUTDATED, self::DELAYED];
     
     public $initialStatus;
     public $errorStatus;
@@ -658,7 +659,7 @@ class ServerFrame extends ServerFramesOrm
         $batch = new Batch($idBatch);
         $batch->set('ServerFramesTotal', $batch->get('ServerFramesTotal') - 1);
         if (! strpos($state, 'ERROR')) {
-            $batch->set('ServerFramesSucess', $batch->get('ServerFramesSucess') - 1);
+            $batch->set('ServerFramesSuccess', $batch->get('ServerFramesSuccess') - 1);
         } else {
             $batch->set('ServerFramesError', $batch->get('ServerFramesError') - 1);
         }

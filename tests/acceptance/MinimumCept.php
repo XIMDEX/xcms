@@ -124,14 +124,14 @@ function fileExistAndIsNotEmpty($path)
 }
 
 $count = 0;
-while(!fileExistAndIsNotEmpty('data/previos/css/default.css') && $count < 45)
+while (!fileExistAndIsNotEmpty('data/previos/css/default.css') && $count < 45)
 {
     sleep(2);
     $count++;
 }
 $I->seeFileFound('default.css','data/previos/css');
 
-while(!fileExistAndIsNotEmpty('data/previos/picasso-iden-idHTML.html') && $count < 45)
+while (!fileExistAndIsNotEmpty('data/previos/picasso-iden-idHTML.html') && $count < 45)
 {
     sleep(2);
     $count++;

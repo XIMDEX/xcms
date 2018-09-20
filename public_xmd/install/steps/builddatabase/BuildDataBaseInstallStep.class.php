@@ -135,7 +135,7 @@ class BuildDataBaseInstallStep extends GenericInstallStep
         }
         if (!$idbManager->loadData($host, $port, $user, $pass, $name)) {
             $values["failure"] = true;
-            $values["errors"] = $idbManager->getError() . '. Cannot generate the database schema and data';
+            $values["errors"] = 'Cannot generate the database schema and data';
             $this->sendJSON($values);
         }
         if (!$idbManager->checkDataBase($host, $port, $user, $pass, $name)) {

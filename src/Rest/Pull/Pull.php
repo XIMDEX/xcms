@@ -144,7 +144,9 @@ class Pull
     private function getHome($idPortalFrame)
     {
         $portal = new PortalFrames($idPortalFrame);
-        $serverId = $portal->get('IdPortal');
+        $node = New Node($portal->get('IdNodeGenerator'));
+        $serverId = $node->getServer();
+        $node = null;
         $serverNode = new Node($serverId);
         $folderId = $serverNode->GetChildByName('documents');
         if (!($folderId > 0)) return NULL;

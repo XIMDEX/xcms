@@ -35,7 +35,7 @@ class PortalFramesOrm extends GenericData
     public $_table = 'PortalFrames';
     public $_metaData = array(
         'id' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
-        'IdPortal' => array('type' => 'int(12)', 'not_null' => 'false'),
+        'IdNodeGenerator' => array('type' => 'int(12)', 'not_null' => 'false'),
         'Version' => array('type' => 'int(12)', 'not_null' => 'true'),
         'CreationTime' => array('type' => 'int(12)', 'not_null' => 'true'),
         'PublishingType' => array('type' => 'varchar(255)', 'not_null' => 'true'),
@@ -44,15 +44,16 @@ class PortalFramesOrm extends GenericData
         'EndTime' => array('type' => 'int(12)', 'not_null' => 'false'),
         'Status' => array('type' => 'varchar(255)', 'not_null' => 'true'),
         'StatusTime' => array('type' => 'int(12)', 'not_null' => 'false'),
+        'SFtotal' => array('type' => 'int(12)', 'not_null' => 'true'),
         'SFactive' => array('type' => 'int(12)', 'not_null' => 'true'),
         'SFpending' => array('type' => 'int(12)', 'not_null' => 'true'),
-        'SFprocessed' => array('type' => 'int(12)', 'not_null' => 'true'),
+        'SFsuccess' => array('type' => 'int(12)', 'not_null' => 'true'),
         'SFerrored' => array('type' => 'int(12)', 'not_null' => 'true')
     );
     public $_uniqueConstraints = array();
     public $_indexes = array('id');
     public $id;
-    public $IdPortal = null;
+    public $IdNodeGenerator = null;
     public $Version = 0;
     public $CreationTime;
     public $CreatedBy = null;
@@ -60,8 +61,9 @@ class PortalFramesOrm extends GenericData
     public $EndTime = null;
     public $Status;
     public $StatusTime = null;
+    public $SFtotal = 0;
     public $SFactive = 0;
     public $SFpending = 0;
-    public $SFprocessed = 0;
+    public $SFsuccess = 0;
     public $SFerrored = 0;
 }

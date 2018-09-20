@@ -52,14 +52,7 @@ class Batch extends BatchsOrm
     public function set($attribute, $value)
     {
         if ($attribute == 'State') {
-            if ($this->get('State') != $value) {
-                Logger::info('Changing state for batch: ' . $this->get('IdBatch') . ' from ' . $this->get('State') . ' to ' . $value);
-                try {
-                    PortalFrames::updatePortalFrames($this, $value);
-                } catch (\Exception $e) {
-                    Logger::error($e->getMessage());
-                }
-            }
+            Logger::info('Changing state for batch: ' . $this->get('IdBatch') . ' from ' . $this->get('State') . ' to ' . $value);
         }
         parent::set($attribute, $value);
     }
@@ -299,7 +292,7 @@ class Batch extends BatchsOrm
             Logger::info("Setting playing Value = $playingValue for batch $idBatch");
             return true;
         } else {
-            Logger::error("Error en BD: " . $dbObj->desErr);
+            Logger::error($dbObj->desErr);
         }
         return false;
     }
@@ -345,7 +338,8 @@ class Batch extends BatchsOrm
      */
     public static function countBatchsInProcess(string $state = Batch::INTIME)
     {
-        $sql = 'SELECT COUNT(IdBatch) AS total FROM Batchs WHERE Playing = 1 AND State = \'' . $state . '\' AND ServerFramesTotal > 0';
+        $sql = 'SELECT COUNT(IdBatch) AS total FROM Batchs WHERE TimeOn < UNIX_TIMESTAMP() AND State = \'' . $state 
+            . '\' AND ServerFramesTotal > 0 AND Playing = 1';
         $dbObj = new Db();
         $dbObj->Query($sql);
         if ($dbObj->numRows) {

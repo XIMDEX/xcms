@@ -860,9 +860,4 @@ class GenericData
             return $this->call__($method, $params);
         }
     }
-    
-    public function loader(string $id) : void
-    {
-        $this->__construct($id);
-    }
 }

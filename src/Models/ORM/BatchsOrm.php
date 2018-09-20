@@ -37,9 +37,11 @@ class BatchsOrm extends GenericData
         'IdBatch' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
         'TimeOn' => array('type' => "int(12)", 'not_null' => 'true'),
         'State' => array('type' => "varchar(255)", 'not_null' => 'true'),
-        'ServerFramesTotal' => array('type' => "int(12)", 'not_null' => 'false'),
-        'ServerFramesSucess' => array('type' => "int(12)", 'not_null' => 'false'),
-        'ServerFramesError' => array('type' => "int(12)", 'not_null' => 'false'),
+        'ServerFramesTotal' => array('type' => "int(12)", 'not_null' => 'true'),
+        'ServerFramesPending' => array('type' => "int(12)", 'not_null' => 'true'),
+        'ServerFramesActive' => array('type' => "int(12)", 'not_null' => 'true'),
+        'ServerFramesSuccess' => array('type' => "int(12)", 'not_null' => 'true'),
+        'ServerFramesError' => array('type' => "int(12)", 'not_null' => 'true'),
         'Playing' => array('type' => "int(12)", 'not_null' => 'false'),
         'Type' => array('type' => "varchar(255)", 'not_null' => 'true'),
         'IdBatchDown' => array('type' => "int(12)", 'not_null' => 'false'),
@@ -56,7 +58,9 @@ class BatchsOrm extends GenericData
     var $TimeOn;
     var $State;
     var $ServerFramesTotal = 0;
-    var $ServerFramesSucess = 0;
+    var $ServerFramesPending = 0;
+    var $ServerFramesActive = 0;
+    var $ServerFramesSuccess = 0;
     var $ServerFramesError = 0;
     var $Playing;
     var $Type = 0;

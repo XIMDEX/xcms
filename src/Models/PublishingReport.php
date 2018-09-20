@@ -213,8 +213,8 @@ class PublishingReport extends PublishingReportOrm
                 } else {
                     $SECONDS_TO_PUBLISH = 1;
                     $serverFramesTotal = (int) $batch->get('ServerFramesTotal');
-                    $serverFramesSucess = (int) $batch->get('ServerFramesSucess');
-                    $total = ($serverFramesTotal - $serverFramesSucess) * $SECONDS_TO_PUBLISH;
+                    $serverFramesSuccess = (int) $batch->get('ServerFramesSuccess');
+                    $total = ($serverFramesTotal - $serverFramesSuccess) * $SECONDS_TO_PUBLISH;
                     $estimatedTime = $curTime + $total;
                 }
             }
@@ -246,7 +246,7 @@ class PublishingReport extends PublishingReportOrm
         }
         $res = [];
         foreach ($frames as $k => $frame) {
-            $frame["IdPortal"] = $k;
+            $frame["IdNodeGenerator"] = $k;
             $numSuccess = $numErrors = $numWarnings = 0;
             $numOfElements = count($frame['elements']);
             if ($numOfElements > 0) {

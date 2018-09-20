@@ -34,6 +34,8 @@ use Ximdex\Models\Pumper;
 use Ximdex\Models\Server;
 use Ximdex\Models\Channel;
 use Ximdex\Models\ServerFrame;
+use Ximdex\Models\Node;
+use Ximdex\Models\User;
 use Ximdex\Runtime\App;
 use Ximdex\Logger;
 use Ximdex\Utils\Date;
@@ -224,13 +226,13 @@ class Scheduler
      */
     private static function log_status() : void
     {
-        // Change to default log (xmd.log)
-        Logger::setActiveLog();
-        
         // General resume stats to log
+        Logger::generate('PUBLICATION', 'publication');
+        Logger::setActiveLog('publication');
         self::general_stats();
         
         // Portal frames stats to log
+        Logger::setActiveLog();
         self::portal_frames_stats();
         
         // Switch to scheduler log file
@@ -242,8 +244,9 @@ class Scheduler
         $pumpersTotal = 0;
         $framesPendingTotal = 0;
         $framesActiveTotal = 0;
-        $batchs = Batch::countBatchsInProcess();
-        Logger::info('SCHEDULER STATS [' . $batchs . ' batchs in time]', false, 'white');
+        $batchsInTime = Batch::countBatchsInProcess();
+        $batchsClosing = Batch::countBatchsInProcess(Batch::CLOSING);
+        Logger::info('SCHEDULER STATS [' . $batchsInTime . ' batchs in time, ' . $batchsClosing . ' batchs closing]', false, 'white');
         
         // Obtain a list of servers with server frames active
         $servers = ServerFrame::serversInActiveServerFrames();
@@ -296,18 +299,58 @@ class Scheduler
     private static function portal_frames_stats() : void
     {
         $portals = PortalFrames::getByState(PortalFrames::STATUS_ACTIVE);
-        if (!$portals) {
+        if ($portals) {
+            Logger::info('ACTIVE PORTAL FRAMES', false, 'white');
+            foreach ($portals as $portal) {
+                self::log_portal_frame($portal);
+            }
+        }
+        $portals = PortalFrames::getByState(PortalFrames::STATUS_ENDED, 3600);
+        if ($portals) {
+            Logger::info('ENDED PORTAL FRAMES (Last hour)', false, 'white');
+            foreach ($portals as $portal) {
+                self::log_portal_frame($portal);
+            }
+        }
+        Logger::info('PORTAL FRAMES SUMMARY', false, 'white');
+        $resume = PortalFrames::resume();
+        Logger::info('Total by status: ' . $resume['states'][PortalFrames::STATUS_CREATED] . ' created, '
+            . $resume['states'][PortalFrames::STATUS_ACTIVE] . ' active, '
+            . $resume['states'][PortalFrames::STATUS_ENDED] . ' ended');
+        Logger::info('Total by type: ' . $resume['types'][PortalFrames::TYPE_UP] . ' type Up, '
+            . $resume['types'][PortalFrames::TYPE_DOWN] . ' type down');
+    }
+    
+    private static function log_portal_frame(PortalFrames $portal) : void
+    {
+        if (!$portal->get('IdNodeGenerator')) {
+            Logger::warning('Portal frame with ID: ' . $portal->get('id') . ' has not a node generator');
             return;
         }
-        Logger::info('PORTAL FRAMES STATS', false, 'white');
-        $portals = PortalFrames::getByState(PortalFrames::STATUS_ACTIVE);
-        foreach ($portals as $portal) {
-            Logger::info('Portal frame ' . $portal->get('id') . ': Node generator ' . $portal->get('IdPortal') . 
-                ', version ' . $portal->get('Version') . ', type ' . $portal->get('PublishingType') . ', user ' . $portal->get('CreatedBy'));
-            Logger::info(' - Start time: ' . Date::formatTime($portal->get('StartTime')));
-            Logger::info(' - Status time: ' . Date::formatTime($portal->get('StatusTime')));
-            Logger::info(' - Server frames: ' . $portal->get('SFpending') . ' pending, ' . $portal->get('SFactive') . ' active, '. 
-                $portal->get('SFprocessed') . ' processed, ' . $portal->get('SFerrored') . ' errored');
+        $node = new Node($portal->get('IdNodeGenerator'));
+        if (!$node->GetID()) {
+            Logger::error('Cannot load in portal frames stats the node generator ' . $portal->get('IdNodeGenerator'));
+            return;
         }
+        if (!$portal->get('CreatedBy')) {
+            Logger::warning('Portal frame with ID: ' . $portal->get('id') . ' has not an user');
+            return;
+        }
+        $user = new User($portal->get('CreatedBy'));
+        if (!$user->get('IdUser')) {
+            Logger::error('Cannot load in portal frames stats the user ' . $portal->get('CreatedBy'));
+            return;
+        }
+        Logger::info('Portal frame ' . $portal->get('id') . ': Generator node ' . $portal->get('IdNodeGenerator')
+            . ' (' . $node->GetNodeName() . '), version ' . $portal->get('Version') . ', type ' . $portal->get('PublishingType')
+            . ', user ' . $portal->get('CreatedBy') . ' (' . $user->getLogin() . ')');
+        Logger::info(' - Start time: ' . Date::formatTime($portal->get('StartTime')));
+        if ($portal->get('EndTime')) {
+            Logger::info(' - End time: ' . Date::formatTime($portal->get('EndTime')));
+        } else {
+            Logger::info(' - Status time: ' . Date::formatTime($portal->get('StatusTime')));
+        }
+        Logger::info(' - Server frames: ' . $portal->get('SFtotal') . ' total, ' . $portal->get('SFpending') . ' pending, ' .
+            $portal->get('SFactive') . ' active, ' . $portal->get('SFsuccess') . ' success, ' . $portal->get('SFerrored') . ' errored');
     }
 }

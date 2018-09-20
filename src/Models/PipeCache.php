@@ -69,17 +69,17 @@ class PipeCache extends PipeCachesOrm
     function load($idVersion, $idTransition, $args = NULL, $depth = 0)
     {
         // Search in cache what we have
-        Logger::info("PipeCache: Searching for cache resources for version: $idVersion  and transition: $idTransition");
+        Logger::debug("PipeCache: Searching for cache resources for version: $idVersion  and transition: $idTransition");
         if (! isset($args['DISABLE_CACHE']) || ! $args['DISABLE_CACHE']) {
             $this->_args = $args;
             $results = $this->_getCache($idVersion, $idTransition);
             if ($results) {
-                Logger::info('PipeCache: Previous cache resource has been found');
+                Logger::debug('PipeCache: Previous cache resource has been found');
                 $idCache = $this->_checkPropertyValues($idTransition, $results);
                 if ($idCache) {
                     self::__construct($idCache);
                     if ($this->get('id') > 0) {
-                        Logger::info("PipeCache: Cache was correctly estimated for a previous version. Version: $idVersion Transition: $idTransition");
+                        Logger::debug("PipeCache: Cache was correctly estimated for a previous version. Version: $idVersion Transition: $idTransition");
                         return $this->_getPointer();
                     } else {
                         Logger::error("PipeCache: A cache was estimated but it doesn't exist. Version: $idVersion Transition: $idTransition");
@@ -89,17 +89,17 @@ class PipeCache extends PipeCachesOrm
                     Logger::warning('PipeCache: there is a problem with the cache properties');
                 }
             } else {
-                Logger::info("PipeCache: Previous cache not found for version $idVersion and transition $idTransition");
+                Logger::debug("PipeCache: Previous cache not found for version $idVersion and transition $idTransition");
             }
         } else {
-            Logger::info('PipeCache: DISABLE CACHE is ACTIVE. No cache will be loaded');
+            Logger::debug('PipeCache: DISABLE CACHE is ACTIVE. No cache will be loaded');
         }
         
         // Si llegamos a este punto hay que regenerar la cache
         $this->_transition = new PipeTransition($idTransition);
         $previousTransition = $this->_transition->getPreviousTransition();
         if ($previousTransition) {
-            Logger::info('PipeCache: Previous transition (' . $previousTransition . ') has been found for transition ' . $idTransition);
+            Logger::debug('PipeCache: Previous transition (' . $previousTransition . ') has been found for transition ' . $idTransition);
             $cache = new PipeCache();
             $pointer = $cache->load($idVersion, $previousTransition, $args, $depth + 1);
             if ($pointer) {
@@ -110,7 +110,7 @@ class PipeCache extends PipeCachesOrm
             Logger::warning('PipeCache: There is a problem to obtain the cache data for transition ' . $idTransition 
                     . '. Obtaining no cache data instead');
         } else {
-            Logger::info('PipeCache: There is no previous transition for transition ' . $idTransition . ' with version: ' . $idVersion);
+            Logger::debug('PipeCache: There is no previous transition for transition ' . $idTransition . ' with version: ' . $idVersion);
         }
         if (isset($args['CONTENT'])) {
             
@@ -129,7 +129,7 @@ class PipeCache extends PipeCachesOrm
         } else {
             
             // Obtain the data from the version with no cache
-            Logger::info('PipeCache: Getting data file for version ' . $idVersion);
+            Logger::debug('PipeCache: Getting data file for version ' . $idVersion);
             $version = new Version($idVersion);
             $pointer = XIMDEX_ROOT_PATH . DATA_FOLDER . $version->get('File');
             if (! $pointer) {
@@ -137,7 +137,7 @@ class PipeCache extends PipeCachesOrm
                 return false;
             }
         }
-        Logger::info('PipeCache: Obtained file ' . $pointer . ' to generate the pipeline transition ' . $idTransition 
+        Logger::debug('PipeCache: Obtained file ' . $pointer . ' to generate the pipeline transition ' . $idTransition 
             . ' for version ' . $idVersion);
         $res = $this->_transition->generate($idVersion, $pointer, $args);
         if (isset($tmpFileToRemove) and file_exists($tmpFileToRemove)) {
@@ -149,17 +149,17 @@ class PipeCache extends PipeCachesOrm
     private function _getCache($idVersion, $idTransition, $allCaches = false)
     {
         if ($allCaches) {
-            
-            Logger::info('PipeCache: Loading all caches for version: ' . $idVersion . ' and transition: ' . $idTransition);
-            $query = sprintf('Select pc.id' . ' FROM PipeCaches pc INNER JOIN PipeTransitions pt ON pc.IdPipeTransition = pt.id' . ' WHERE IdVersion = %s AND IdPipeTransition = %s', $idVersion, $idTransition);
+            Logger::debug('PipeCache: Loading all caches for version: ' . $idVersion . ' and transition: ' . $idTransition);
+            $query = sprintf('Select pc.id' . ' FROM PipeCaches pc INNER JOIN PipeTransitions pt ON pc.IdPipeTransition = pt.id' 
+                . ' WHERE IdVersion = %s AND IdPipeTransition = %s', $idVersion, $idTransition);
         } else {
-            
-            Logger::info('PipeCache: Loading cache for version: ' . $idVersion . ' and transition: ' . $idTransition);
-            $query = sprintf('Select pc.id' . ' FROM PipeCaches pc INNER JOIN PipeTransitions pt ON pc.IdPipeTransition = pt.id AND pt.Cacheable = 1' . ' WHERE IdVersion = %s AND IdPipeTransition = %s', $idVersion, $idTransition);
+            Logger::debug('PipeCache: Loading cache for version: ' . $idVersion . ' and transition: ' . $idTransition);
+            $query = sprintf('Select pc.id' . ' FROM PipeCaches pc INNER JOIN PipeTransitions pt ON pc.IdPipeTransition = pt.id'
+                . ' AND pt.Cacheable = 1' . ' WHERE IdVersion = %s AND IdPipeTransition = %s', $idVersion, $idTransition);
         }
         $result = $this->query($query, MONO, 'id');
         if (! $result) {
-            Logger::info('PipeCache: There is not cache for the specified version: ' . $idVersion . ' and transition: ' . $idTransition);
+            Logger::debug('PipeCache: There is not cache for the specified version: ' . $idVersion . ' and transition: ' . $idTransition);
         }
         return $result;
     }
@@ -172,7 +172,7 @@ class PipeCache extends PipeCachesOrm
      */
     function _checkPropertyValues($idTransition, $idCaches)
     {
-        Logger::info('PipeCache: Checking properties values for transition ' . $idTransition . ' and cache ' . print_r($idCaches, true));
+        Logger::debug('PipeCache: Checking properties values for transition ' . $idTransition . ' and cache ' . print_r($idCaches, true));
         
         // Primero comprobamos si tenemos todos los argumentos, si no los tenemos damos un fatal
         if (empty($this->_args))
@@ -181,7 +181,7 @@ class PipeCache extends PipeCachesOrm
         $propertiesIds = array();
         $this->_transition = new PipeTransition($idTransition);
         if ($this->_transition->properties->count() > 0) {
-            Logger::info('PipeCache: Properties values found');
+            Logger::debug('PipeCache: Properties values found');
             $this->_transition->properties->reset();
             while ($property = $this->_transition->properties->next()) {
                 if (! $this->_searchKeyInArgs($property->get('Name'), $this->_args))
@@ -190,9 +190,9 @@ class PipeCache extends PipeCachesOrm
                 $association[$property->get('id')] = $property->get('Name');
             }
         } else {
-            Logger::info('PipeCache: No properties values found');
+            Logger::debug('PipeCache: No properties values found');
             if (count($idCaches) == 1) {
-                Logger::info('PipeCache: Getting cache ' . $idCaches[0]);
+                Logger::debug('PipeCache: Getting cache ' . $idCaches[0]);
                 return $idCaches[0];
             } else {
                 Logger::fatal('PipeCache: last cache couldn\'t be estimated');
@@ -224,7 +224,7 @@ class PipeCache extends PipeCachesOrm
                 }
             }
             if (! $continue) {
-                Logger::info('PipeCache: Cache ' . $idCache . ' has been found for transition ' . $idTransition);
+                Logger::debug('PipeCache: Cache ' . $idCache . ' has been found for transition ' . $idTransition);
                 return $idCache;
             }
         }
@@ -264,8 +264,7 @@ class PipeCache extends PipeCachesOrm
      */
     public function store($idVersion, $idTransition, & $contentFile, $args)
     {
-        Logger::info("PipeCache: Storing cache for version $idVersion transition $idTransition args " . print_r($args, true));
-        
+        Logger::debug("PipeCache: Storing cache for version $idVersion transition $idTransition args " . print_r($args, true));
         $this->_transition = new PipeTransition($idTransition);
         if (! ($this->_transition->get('id') > 0)) {
             Logger::fatal('PipeCache: Error storing cache, could not estimate the transition to which to associate the cache: ' . $idTransition);
@@ -290,26 +289,27 @@ class PipeCache extends PipeCachesOrm
             }
         }
         if (empty($cacheFile)) {
-            Logger::info('PipeCache: Not found cache file');
+            Logger::debug('PipeCache: Not found cache file');
             $this->set('IdVersion', $idVersion);
             $this->set('IdPipeTransition', $idTransition);
             $cacheFile = FsUtils::getUniqueFile(XIMDEX_ROOT_PATH . CACHE_FOLDER);
             if (FsUtils::copy($contentFile, XIMDEX_ROOT_PATH . CACHE_FOLDER . $cacheFile, true)) {
-                Logger::info('PipeCache: Saved ' . $contentFile . ' in the cache resource ' . XIMDEX_ROOT_PATH . CACHE_FOLDER . $cacheFile);
+                Logger::debug('PipeCache: Saved ' . $contentFile . ' in the cache resource ' . XIMDEX_ROOT_PATH . CACHE_FOLDER . $cacheFile);
                 $this->set('File', $cacheFile);
             } else {
-                Logger::error('PipeCache: An error has ocurred while storing the cache file ' . $contentFile . ' in the target ' . XIMDEX_ROOT_PATH . CACHE_FOLDER . $cacheFile);
+                Logger::error('PipeCache: An error has ocurred while storing the cache file ' . $contentFile . ' in the target ' 
+                    . XIMDEX_ROOT_PATH . CACHE_FOLDER . $cacheFile);
                 return false;
             }
-            Logger::info('PipeCache: Saving cache information...');
+            Logger::debug('PipeCache: Saving cache information...');
             $idCache = $this->add();
             if (! $idCache > 0) {
                 Logger::error('PipeCache: An error has ocurred while storing the cache file information');
                 return false;
             }
-            Logger::info('PipeCache: Cache information was successfusly saved');
+            Logger::debug('PipeCache: Cache information was successfusly saved');
         } else {
-            Logger::info('PipeCache: Found cache file ' . $cacheFile . ' (Saving in ' . XIMDEX_ROOT_PATH . CACHE_FOLDER . $cacheFile . ')');
+            Logger::debug('PipeCache: Found cache file ' . $cacheFile . ' (Saving in ' . XIMDEX_ROOT_PATH . CACHE_FOLDER . $cacheFile . ')');
             if (! FsUtils::copy($contentFile, XIMDEX_ROOT_PATH . CACHE_FOLDER . $cacheFile, true)) {
                 Logger::error("PipeCache: There has been an error while replacing the cache file (Problem permissions on data/cache/pipelines)");
                 return false;
@@ -351,13 +351,13 @@ class PipeCache extends PipeCachesOrm
         $query = sprintf("DELETE FROM PipePropertyValues WHERE IdPipeCache = %s", $db->sqlEscapeString($this->get('id')));
         $db->execute($query);
         FsUtils::delete(XIMDEX_ROOT_PATH . '/data/cache/pipelines/' . $this->get('File'));
-        Logger::info('PipeCache: Deleted pipe property value with ID: ' . $db->sqlEscapeString($this->get('id')));
+        Logger::debug('PipeCache: Deleted pipe property value with ID: ' . $db->sqlEscapeString($this->get('id')));
         return parent::delete();
     }
 
     public function upgradeCaches($oldIdVersion, $idVersion)
     {
-        Logger::info('PipeCache: Upgrading pipeline cache from version ' . $oldIdVersion . ' to ' . $idVersion);
+        Logger::debug('PipeCache: Upgrading pipeline cache from version ' . $oldIdVersion . ' to ' . $idVersion);
         $idPipeCaches = $this->find("id", "IdVersion=%s", array(
             $oldIdVersion
         ), MONO);

@@ -362,7 +362,7 @@ class DexPumper
 	{
 	    if (!file_exists($localFile)) {
 	        $this->error('The sync file: ' . $localFile . ' does not exist');
-	        return false;
+	        return null;
 	    }
         $this->getHostConnection();
 		if (!$this->taskBasic($baseRemoteFolder, $relativeRemoteFolder)) {
@@ -393,13 +393,13 @@ class DexPumper
 	    if ($this->connection->getType() == Connector::TYPE_API) {
 	        if (!$this->serverFrame->get('IdNodeFrame')) {
 	            $this->error('Cannot load the node frame from the current server frame');
-	            return false;
+	            return null;
 	        }
 	        $nodeFrame = new NodeFrame($this->serverFrame->get('IdNodeFrame'));
 	        $id = $nodeFrame->get('NodeId');
 	        if (!$id) {
 	            $this->error('Cannot load the node ID from the current node frame');
-	            return false;
+	            return null;
 	        }
 	    }
 	    else {
@@ -431,7 +431,13 @@ class DexPumper
 		if (!$result) {
 			$retries = $this->serverFrame->get('Retry');
 			$this->serverFrame->set('Retry', $retries);
-			if ($retries >= self::RETRIES_TO_FATAL_ERROR) {
+			if ($result === null) {
+			    
+			    // The error is alocated in the local server, no more retries
+			    $this->fatal('Sync file problem with ID: ' . $this->serverFrame->IdSync . '. Server frame marked as errored');
+			    $this->serverFrame->set('State', ServerFrame::DUE2INWITHERROR);
+			}
+			elseif ($retries >= self::RETRIES_TO_FATAL_ERROR) {
 			    $this->error('Maximum of retries reached (' . self::RETRIES_TO_FATAL_ERROR . ') for server frame: ' 
 			        . $this->serverFrame->IdSync . '. Marked as errored');
 				$this->serverFrame->set('State', ServerFrame::DUE2INWITHERROR);

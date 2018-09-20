@@ -48,6 +48,8 @@ if (!defined('MANAGEBATCHS_FRAMES_PER_PAGE')) {
 if (!defined('SCHEDULER_CHUNK')) {
 	define('SCHEDULER_CHUNK', 10);
 }
+
+// Disable server for this number of cycles when an error is detected
 if (!defined('UNACTIVITY_CYCLES')) {
 	define('UNACTIVITY_CYCLES', 5);
 }
