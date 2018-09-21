@@ -51,7 +51,9 @@ class Action_fileupload_common_multiple extends ActionAbstract
         $this->chunksFolder = XIMDEX_ROOT_PATH . App::getValue( 'TempRoot') .'/'. App::getValue( 'ChunksFolder');
     }
 
-    // Main method: shows initial form
+    /**
+     * Main method: shows initial form
+     */
     public function index()
     {
         $is_structured = false;

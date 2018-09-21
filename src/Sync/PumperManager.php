@@ -62,7 +62,7 @@ class PumperManager
             }
             $pumperState = $pumper->get('State');
             $pumperCheckTime = $pumper->get('CheckTime');
-            Logger::info(sprintf('Pumper %s at state %s', $pumperId, $pumperState));
+            Logger::debug(sprintf('Pumper %s at state %s', $pumperId, $pumperState));
             Logger::debug('Pumper with ID: ' . $pumperId . ' has state: ' . $pumperState);
             switch ($pumperState) {
                 case Pumper::STARTED:
@@ -70,7 +70,7 @@ class PumperManager
                     // Checking if pumper is alive
                     $now = time();
                     if (!Pumper::isAlive($pumper) or ($now - $pumperCheckTime > MAX_CHECK_TIME_FOR_PUMPER)) {
-                        Logger::info('No checking time for pumper ' . $pumperId);
+                        Logger::debug('No checking time for pumper ' . $pumperId);
                         
                         // Restart pumper
                         Logger::warning('Pumper with ID: ' . $pumperId . ' will be restarted');
@@ -118,7 +118,7 @@ class PumperManager
                     }
                     break;
                 default:
-                    Logger::info("Default: $pumperId - $pumperState");
+                    Logger::debug("Default: $pumperId - $pumperState");
                     break;
             }
         }
@@ -139,17 +139,17 @@ class PumperManager
     public function callingPumpers($activeAndEnabledServers)
     {
         $pumper = new Pumper();
-        Logger::info('Calling pumpers');
+        Logger::debug('Calling pumpers');
         $serverFrameManager = new ServerFrameManager();
         $pumpers = $serverFrameManager->getPumpersWithTasks($activeAndEnabledServers);
         if (!is_null($pumpers) && count($pumpers) > 0) {
-            Logger::info('There are tasks for pumping');
+            Logger::debug('There are tasks for pumping');
             $serverFrameManager->setTasksForPumping($pumpers, SCHEDULER_CHUNK, $activeAndEnabledServers);
             $result = $this->checkAllPumpers($pumpers, PUMPER_SCRIPT_MODE);
             if ($result == false) {
                 Logger::error('All pumpers with errors');
             }
         }
-        Logger::info('No pumpers to be called');
+        Logger::debug('No pumpers to be called');
     }
 }

@@ -198,6 +198,9 @@ class ImportXml
 
     function _checkAssociations()
     {
+        if (!$this->file) {
+            return;
+        }
         $content = FsUtils::file_get_contents($this->file);
         reset($this->nodeAssociations);
         while (list($oldId, $newId) = each($this->nodeAssociations)) {

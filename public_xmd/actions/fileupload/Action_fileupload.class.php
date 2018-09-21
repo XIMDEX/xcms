@@ -1,6 +1,7 @@
 <?php
+
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -24,27 +25,23 @@
  *  @version $Revision$
  */
 
-
 use Ximdex\Models\Node;
 use Ximdex\Models\NodeAllowedContent;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
 
-
-
-class Action_fileupload extends ActionAbstract {
-
-    function index() {
+class Action_fileupload extends ActionAbstract
+{
+    function index()
+    {
 		$idNode = $this->request->getParam('nodeid');
 		$type = $this->request->getParam("type");
-
 		$node = new Node($idNode);
 		if (!($node->get('IdNode') > 0)) {
 			$this->messages->add(_('The folder where you want to upload the files does not exist'), MSG_TYPE_ERROR);
 			$this->renderMessages();
 		}
-
 		if ($node->nodeType->get('IsFolder')) {
 			$nodeTypeLookUp = $node->get('IdNode');
 			$lookUpType = 'FOLDER';
@@ -57,11 +54,10 @@ class Action_fileupload extends ActionAbstract {
 		$baseIoInferer = new \Ximdex\IO\BaseIOInferer();
 		$typeInfo = $baseIoInferer->infereType($lookUpType, $nodeTypeLookUp);
 		$nodeTypeName = $typeInfo["NODETYPENAME"];
-
 		if(empty($nodeTypeName)) {
-			$this->messages->add(_('A node type allowed in this folder could not be estimated, contact with your administrator.'), MSG_TYPE_ERROR);
+			$this->messages->add(_('A node type allowed in this folder could not be estimated, contact with your administrator.')
+			    , MSG_TYPE_ERROR);
 		}
-
 		$values = array(
 			'messages' => $this->messages->messages,
 			'id_node' => $idNode,
@@ -69,24 +65,20 @@ class Action_fileupload extends ActionAbstract {
 			'type' => $type,
 			'name' => $node->get('Name')
 		);
-
 		$template = $type == 'pvd' ? 'index_pvd.tpl' : 'index.tpl';
-
 		$this->render($values, $template, 'default-3.0.tpl');
     }
 
-    function fileupload() {
+    function fileupload()
+    {
 		$params = $this->request->getParam("type");
 		$idNode = $this->request->getParam('nodeid');
-
+		
 		//Pvd has it own upload manager system. Then if it not a pvd we use the generic
-
         $messages = $this->_uploadCommonFile($idNode);
-
 		if ($messages === false) {
 			return; // makes a redirect;
 		}
-
 		if (!($messages->count(MSG_TYPE_ERROR) > 0)) {
 			$node = new Node($idNode);
 			if ($node->nodeType->get('IsFolder')) {
@@ -100,34 +92,31 @@ class Action_fileupload extends ActionAbstract {
 		die();
     }
 
-    private function _uploadCommonFile($idNode) {
+    private function _uploadCommonFile($idNode)
+    {
    		$filePath = isset($_FILES['upload']) && isset($_FILES['upload']['tmp_name']) ? $_FILES['upload']['tmp_name'] : NULL;
 		$fileName = isset($_FILES['upload']) && isset($_FILES['upload']['name']) ? $_FILES['upload']['name'] : NULL;
-
 		$type = $this->request->getParam("type");
-
 		if (!is_file($filePath)) {
 			$this->messages->add(_('File could not be uploaded, contact with your administrator'), MSG_TYPE_ERROR);
 		}
 
-		//Searching parent node type (folder)
+		// Searching parent node type (folder)
 		$baseIoInferer = new \Ximdex\IO\BaseIOInferer();
+		
 		//Searching node type
 		$nodeTypeName = !empty($type) ? $baseIoInferer->infereFileType($_FILES['upload'], $type)
 			: $baseIoInferer->infereFileType($_FILES['upload']);
-
 		if (!$nodeTypeName) {
 			$this->messages->add(_('File type could not be estimated or it is an invalid type.'), MSG_TYPE_ERROR);
 			$node = new Node($idNode);
 			$parentNodeType = $node->get('IdNodeType');
-
 			$nac = new NodeAllowedContent();
 			$allowedNodeTypes = $nac->find('NodeType', 'IdNodeType = %s', array($parentNodeType), MONO);
 			$inSearch = implode("', '", $allowedNodeTypes);
 			if (!empty($inSearch)) {
 				$inSearch = sprintf("'%s'", $inSearch);
 			}
-
 			$rntmt = new \Ximdex\Models\RelNodeTypeMimeType();
 			$types = $rntmt->find('distinct extension', 'idNodeType in (%s)', array($inSearch), MONO, false);
 			if (empty($types)) {
@@ -145,15 +134,15 @@ class Action_fileupload extends ActionAbstract {
 						}
 					}
 				}
-				$this->messages->add(sprintf(_('List of allowed extension files is as follows: %s'), implode(', ', $allowedExtensions)), MSG_TYPE_ERROR);
+				$this->messages->add(sprintf(_('List of allowed extension files is as follows: %s'), implode(', ', $allowedExtensions))
+				    , MSG_TYPE_ERROR);
 			}
 		}
-
 		if ($this->messages->count(MSG_TYPE_ERROR) > 0) {
 			return $this->messages;
 		}
 
-		//File does not exist previously. It inserts it
+		// File does not exist previously. It inserts it
 		$node = new Node($idNode);
 		if ($node->nodeType->get('IsFolder')) {
 			$data = array(
@@ -180,7 +169,6 @@ class Action_fileupload extends ActionAbstract {
 		$tmpFolder = XIMDEX_ROOT_PATH . '/data/tmp/uploaded_files/';
 		$tmpFile = FsUtils::getUniqueFile($tmpFolder);
 		move_uploaded_file($filePath, $tmpFolder . $tmpFile);
-
 		$this->redirectTo('confirm', NULL,
 			array('tmp_file' => $tmpFile,
 					'tmp_name' => $fileName,
@@ -189,57 +177,52 @@ class Action_fileupload extends ActionAbstract {
 		return false;
     }
 
-    function confirm() {
+    function confirm()
+    {
     	$idNode = $this->request->getParam('id_node');
     	$tmpFile = $this->request->getParam('tmp_file');
     	$tmpName = $this->request->getParam('tmp_name');
     	$nodeTypeName = $this->request->getParam('node_type_name');
-
     	$node = new Node($idNode);
-	if(strcmp($nodeTypeName,"ImageFile")==0){
-    		$this->messages->add(sprintf(_('The Image file %s is going to be replaced with %s, but the name in the system will not change.'),
-    		$node->get('Name'), $tmpName), MSG_TYPE_WARNING);
-	}
-	else{
-    		$this->messages->add(sprintf(_('File content %s is going to be replaced with %s'),
-    		$node->get('Name'), $tmpName), MSG_TYPE_WARNING);
-	}
-
+    	if (strcmp($nodeTypeName,"ImageFile")==0){
+        		$this->messages->add(sprintf(_('The Image file %s is going to be replaced with %s, but the name in the system will not change.'),
+        		$node->get('Name'), $tmpName), MSG_TYPE_WARNING);
+    	} else {
+        		$this->messages->add(sprintf(_('File content %s is going to be replaced with %s'),
+        		$node->get('Name'), $tmpName), MSG_TYPE_WARNING);
+    	}
     	$queryManager = App::get('\Ximdex\Utils\QueryManager');
     	$action = $queryManager->getPage() . $queryManager->buildWith(array('method' => 'update'));
     	$values = array('messages' => $this->messages->messages,
-    					'action' => $action,
-    					'tmp_file' => $tmpFile,
-    					'tmp_name' => $tmpName,
-    					'id_node' => $idNode,
-    					'node_type_name' => $nodeTypeName);
+			'action' => $action,
+			'tmp_file' => $tmpFile,
+			'tmp_name' => $tmpName,
+			'id_node' => $idNode,
+			'node_type_name' => $nodeTypeName);
     	$this->render($values, null , 'default-3.0.tpl');
     }
 
-    function update() {
+    function update()
+    {
     	$idNode = $this->request->getParam('id_node');
     	$tmpFile = $this->request->getParam('tmp_file');
     	$nodeTypeName = $this->request->getParam('node_type_name');
     	$tmpFolder = XIMDEX_ROOT_PATH . '/data/tmp/uploaded_files/';
     	$data = array(
-					'NODETYPENAME' => $nodeTypeName,
-					'ID' => $idNode,
-					'CHILDRENS' => array (
-									array ('NODETYPENAME' => 'PATH', 'SRC' => $tmpFolder .$tmpFile)
-							)
-					);
-
-			$baseIO = new \Ximdex\IO\BaseIO();
-			$result = $baseIO->update($data);
-			if ($result > 0) {
-				$this->messages->add(_('Document has been successfully replaced'), MSG_TYPE_NOTICE);
-			} else {
-				$this->messages->add(_('An unexpected error has occurred while replacing the document'), MSG_TYPE_ERROR);
-				$this->messages->mergeMessages($baseIO->messages);
-			}
+			'NODETYPENAME' => $nodeTypeName,
+			'ID' => $idNode,
+			'CHILDRENS' => array (
+							array ('NODETYPENAME' => 'PATH', 'SRC' => $tmpFolder .$tmpFile)
+					)
+			);
+		$baseIO = new \Ximdex\IO\BaseIO();
+		$result = $baseIO->update($data);
+		if ($result > 0) {
+			$this->messages->add(_('Document has been successfully replaced'), MSG_TYPE_NOTICE);
+		} else {
+			$this->messages->add(_('An unexpected error has occurred while replacing the document'), MSG_TYPE_ERROR);
+			$this->messages->mergeMessages($baseIO->messages);
+		}
 		$this->render(array('messages' => $this->messages->messages));
     }
-
-
-
 }

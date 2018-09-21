@@ -163,7 +163,7 @@ class DexPumper
 			{
 			    $this->fatal("ServerFrame not found :". $task);
 			}
-			$this->info("ServerFrame $IdSync to proccess");
+			$this->info("ServerFrame $IdSync to process");
 			$this->getHostConnection();
 			if ($state_task == ServerFrame::DUE2IN) {
 			    $this->connection->setIsFile(false);

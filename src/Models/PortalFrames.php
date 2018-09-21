@@ -115,8 +115,13 @@ class PortalFrames extends PortalFramesOrm
         $portalFrame->set('SFerrored', (int) $db->getValue('errored'));
         
         // Check new batch status
-        if ($batch->get('State') == Batch::INTIME and !$portalFrame->get('StartTime')) {
-            $portalFrame->set('StartTime', time());
+        if ($batch->get('State') == Batch::INTIME) {
+            if (!$portalFrame->get('StartTime')) {
+                $portalFrame->set('StartTime', time());
+            }
+            $portalFrame->set('Status', self::STATUS_ACTIVE);
+        }
+        if ($batch->get('State') == Batch::CLOSING) {
             $portalFrame->set('Status', self::STATUS_ACTIVE);
         }
         elseif ($batch->get('State') == Batch::ENDED or $batch->get('State') == Batch::NOFRAMES) {

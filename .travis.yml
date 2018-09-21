@@ -11,7 +11,7 @@ services:
   - docker
 
 env:
-  - DB_SERVER=mysql:5.7
+  # - DB_SERVER=mysql:5.7
   - DB_SERVER=mariadb:10.3
 
 before_install:

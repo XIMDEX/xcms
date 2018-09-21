@@ -62,8 +62,9 @@ class ServerFrame extends ServerFramesOrm
     const DELAYED = 'Delayed';
     
     // Group of status
-    const FINAL_STATUS = [self::IN, self::OUT, self::REMOVED, self::REPLACED, self::DUE2INWITHERROR, self::DUE2OUTWITHERROR, 
-        self::CANCELLED, self::OUTDATED, self::DELAYED];
+    const FINAL_STATUS = [self::IN, self::OUT, self::REMOVED, self::REPLACED, self::CANCELLED, self::OUTDATED, self::DELAYED
+        , self::DUE2INWITHERROR, self::DUE2OUTWITHERROR];
+    const SUCCESS_STATUS = [self::IN, self::OUT, self::REMOVED, self::REPLACED, self::CANCELLED, self::OUTDATED, self::DELAYED];
     
     public $initialStatus;
     public $errorStatus;
@@ -509,7 +510,7 @@ class ServerFrame extends ServerFramesOrm
             "AND ServerFrames.PumperId = $pumperID AND Pumpers.IdServer IN ($servers)";
         $dbObj->Query($sql);
         $n = $dbObj->numRows;
-        Logger::info("Pumper $pumperID contain $n incomplete tasks");
+        Logger::debug("Pumper $pumperID contain $n incomplete tasks");
         return $n;
     }
 

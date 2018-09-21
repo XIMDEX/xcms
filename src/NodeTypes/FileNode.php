@@ -38,8 +38,6 @@ use Ximdex\Parsers\ParsingDependencies;
 use Ximdex\Utils\FsUtils;
 use Ximdex\Logger;
 
-\Ximdex\Modules\Manager::file('/actions/fileupload/baseIO.php');
-
 /**
  * @brief Handles files.
  *

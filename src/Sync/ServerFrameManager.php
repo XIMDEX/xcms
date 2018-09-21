@@ -268,35 +268,35 @@ class ServerFrameManager
                 $dbObj->Query($sql);
                 if ($dbObj->numRows > 0) {
                     $timer = new \Ximdex\Utils\Timer();
-                    Logger::info('Set task for pumping starting');
+                    Logger::debug('Set task for pumping starting');
                     $timer->start();
                     $tasks = array();
                     while (!$dbObj->EOF) {
                         $tasks[] = $dbObj->GetValue("IdSync");
                         $dbObj->Next();
                     }
-                    Logger::info("Setting tasks $numTasksForPumping for pumper $pumperId");
+                    Logger::debug("Setting tasks $numTasksForPumping for pumper $pumperId");
                     if (self::useMPMManager) {
                         
                         // Process All Task with MPMManager
                         $callback = array("/src/Sync/ServerFrameManager", "processTaskForServerFrame");
-                        Logger::info('Starting MPM Manager for Pumper ID: ' . $pumperId . ' -> Task: ' . print_r($tasks, true), true);
+                        Logger::debug('Starting MPM Manager for Pumper ID: ' . $pumperId . ' -> Task: ' . print_r($tasks, true), true);
                         $mpm = new MPMManager($callback, $tasks, MPMProcess::MPM_PROCESS_OUT_BOOL, 4, 2);
                         $mpm->run();
                     }
                     else {
                         foreach ($tasks as $task) {
-                            Logger::info('Running processTaskForServerFrame with task: ' . $task);
+                            Logger::debug('Running processTaskForServerFrame with task: ' . $task);
                             $this->processTaskForServerFrame($task);
                         }
                     }
                     $timer->stop();
-                    Logger::info('Set task for pumping ended; time: ' . $timer->display() . ' milliseconds');
+                    Logger::debug('Set task for pumping ended; time: ' . $timer->display() . ' milliseconds');
                 } else {
-                    Logger::info("All tasks pumped for pumper $pumperId");
+                    Logger::debug("All tasks pumped for pumper $pumperId");
                 }
             } else {
-                Logger::info("Pumper $pumperId full");
+                Logger::debug("Pumper $pumperId full");
             }
         }
     }

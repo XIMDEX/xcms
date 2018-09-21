@@ -1,6 +1,7 @@
 <?php
+
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -24,15 +25,12 @@
  * @version $Revision$
  */
 
-
 use Ximdex\Logger;
 use Ximdex\Models\Node;
 use Ximdex\Parsers\ParsingDependencies;
 use Ximdex\Runtime\Constants;
 use Ximdex\Utils\FsUtils;
 use Ximdex\Utils\TarArchiver;
-
-\Ximdex\Modules\Manager::file('/actions/workflow_forward/baseIO.php');
 
 class FileUpdater
 {
@@ -42,7 +40,6 @@ class FileUpdater
     {
         $this->revision = $revision;
     }
-
 
     function updateFiles($mode = true)
     {
@@ -54,8 +51,10 @@ class FileUpdater
         } else {
             $routeToBackupFolder = sprintf('%s/data/backup/%s_ximio', XIMDEX_ROOT_PATH, $this->revision);
             $routeToFiles = sprintf("%s/files", $routeToBackupFolder);
+            
             // TODO esto esta un poco cutre, hay que arreglar la extension doble
             $compressedFile = sprintf('%s/files.tar.', $routeToBackupFolder);
+            
             // Descomprimimos los archivos
             //TODO estas dos líneas van descomentadas (solo las comento para hacer pruebas rápidas)
             Logger::info("Starting the decompression of files for the package " . " {$this->revision}");
@@ -63,16 +62,16 @@ class FileUpdater
             $tarArchiver->unpack($routeToFiles);
             unset($compressedFile, $routeToBackupFolder);
         }
+        
         // Buscamos los archivos que hay que copiar/modificar
         $query = sprintf("SELECT xnt.IdNodeTranslation, xnt.IdImportationNode, xnt.path, xnt.status"
             . " FROM XimIONodeTranslations xnt"
-            . " INNER JOIN Nodes n ON xnt.path IS NOT NULL AND xnt.IdImportationNode = n.IdNode AND xnt.status >= %s AND (n.SharedWorkflow IS NULL OR n.SharedWorkflow = 0)"
+            . " INNER JOIN Nodes n ON xnt.path IS NOT NULL AND xnt.IdImportationNode = n.IdNode AND xnt.status >= %s"
+            . " AND (n.SharedWorkflow IS NULL OR n.SharedWorkflow = 0)"
             . " INNER JOIN XimIOExportations xe ON xe.idXimIOExportation = xnt.IdXimioExportation and xe.timeStamp = '%s'",
             Constants::IMPORTED_STATUS_OK,
             $this->revision);
-
         $dependencesGetter = new ParsingDependencies();
-
         $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->Query($query);
         while (!$dbObj->EOF) {
@@ -83,20 +82,18 @@ class FileUpdater
             $pathExploded = explode('/', $path);
             $fileName = $pathExploded[count($pathExploded) - 1];
             $filePath = sprintf('%s/%s', $routeToFiles, $fileName);
-
-
             if (!is_file($filePath)) {
                 Logger::info("Ignoring not existing file" . " $filePath");
                 $dbObj->Next();
                 continue;
             }
-
             if ($mode == Constants::IMPORT_FILES) {
                 $contents = FsUtils::file_get_contents($filePath);
             } elseif ($mode == Constants::UPDATE_LINKS) {
                 $node = new Node($idImportationNode);
                 if (!($node->GetID() > 0)) {
-                    Logger::info(sprintf("The document %s with id %s can not been imported because it can not be loaded", $filePath, $idImportationNode));
+                    Logger::info(sprintf("The document %s with id %s can not been imported because it can not be loaded", $filePath
+                        , $idImportationNode));
                     $dbObj->Next();
                     continue;
                 }
@@ -104,15 +101,15 @@ class FileUpdater
             } else {
                 die(_('Execution mode could not been estimated'));
             }
-
             if (empty($contents)) {
+                
                 //File without content, continue
                 Logger::info(sprintf("Content of document %s with filepath %s could not been obtained", $idImportationNode, $filePath));
                 $dbObj->Next();
                 continue;
             }
+            
             // Special case
-//				$linkMatches = $dependencesGetter->GetStructuredDocumentEnlace($contents);
             preg_match_all('/ a_enlaceid[_|\w|\d]*\s*=\s*[\'|"]([\d|\,]+)[\'|"]/i', $contents, $linkMatches);
             $totalMatches = count($linkMatches[0]);
             for ($i = 0; $i < $totalMatches; $i++) {
@@ -128,34 +125,21 @@ class FileUpdater
                 $line = str_replace($info, $nodeSubstitution, $string);
                 $contents = str_replace($string, $line, $contents);
             }
-//				$urlMatches = $dependencesGetter->GetStructuredDocumentUrl($contents);
             preg_match_all('/<url.*>\s*(\d+)\s*<\/url>/i', $contents, $urlMatches);
             $contents = $this->_replaceMatches($contents, $urlMatches);
-
-//				$importMatches = $dependencesGetter->GetStructuredDocumentImportLink($contents);
             preg_match_all('/ a_import_enlaceid[_|\w|\d]*\s*=\s*[\'|"](\d+)[\'|"]/i', $contents, $importMatches);
             $contents = $this->_replaceMatches($contents, $importMatches);
-
             $ximletMatches = $dependencesGetter->GetStructuredDocumentXimletsExtended($contents);
             $contents = $this->_replaceXimlet($contents, $ximletMatches, $idNodeTranslation);
-
             $idNode = $dbObj->GetValue('IdImportationNode');
             $node = new Node($idNode);
             $node->SetContent($contents);
-
-            // For the moment, we are not going to make any notification
-            if ($status == Constants::IMPORTED_STATUS_OK_TO_PUBLISH) {
-                baseIO_PublishDocument($idNode, time(), null);
-            }
-            //baseIO_CambiarEstado($idNode, $finalState);
-
             unset($node, $contents);
             $dbObj->Next();
         }
         if (strcmp($this->revision, Constants::REVISION_COPY)) {
             FsUtils::deltree($routeToFiles);
         }
-
     }
 
     function _getImportationNode($idNode)
@@ -190,15 +174,13 @@ class FileUpdater
             $totalMatches = count($matches[0]);
         }
         $updateToPending = false;
-
         for ($i = 0; $i < $totalMatches; $i++) {
             $originalString = $matches[0][$i];
             $dataToReplace = $matches[1][$i];
             $originalNode = $matches[2][$i];
             $node = $this->_getImportationNode($dataToReplace);
 
-
-            /**
+            /*
              * If importation node is not found, we set idexportation node as searched node id
              */
             if ((int)$node == (int)$dataToReplace) {
@@ -217,7 +199,6 @@ class FileUpdater
             }
             $contents = str_replace($originalString, $string, $contents);
         }
-
         if ($updateToPending) {
             $dbObj = new \Ximdex\Runtime\Db();
             $query = sprintf("UPDATE XimIONodeTranslations SET status = %d"
@@ -227,8 +208,6 @@ class FileUpdater
 
             $dbObj->Execute($query);
         }
-
         return $contents;
     }
-
 }

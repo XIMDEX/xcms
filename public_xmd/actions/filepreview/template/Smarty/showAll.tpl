@@ -1,5 +1,5 @@
 {**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -22,6 +22,7 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  *}
+
 {include file="actions/components/title_Description.tpl"}
 {if isset($mesg)}
 	<div class=''>{$mesg}</div>
@@ -29,7 +30,9 @@
 	<div>
     	<ul id='image_container' class='image_container'>
     	{foreach from=$imageNodes name=imagenodes item=imagenode}
-        	<li><img src='{$imagenode.src}' title='{$imagenode.name}' data-nodeid='{$imagenode.idnode}' data-width='{$imagenode.width}' data-height='{$imagenode.height}' data-dimensions='{$imagenode.dimensions}' data-original_path='{$imagenode.original_path}' data-mime='{$imagenode.mime}' data-size='{$imagenode.size}'/></li>
+        	<li><img src='{$imagenode.src}&rand={rand()}' title='{$imagenode.name}' data-nodeid='{$imagenode.idnode}' 
+        	   data-width='{$imagenode.width}' data-height='{$imagenode.height}' data-dimensions='{$imagenode.dimensions}' 
+        	   data-original_path='{$imagenode.original_path}' data-mime='{$imagenode.mime}' data-size='{$imagenode.size}'/></li>
     	{/foreach}
     	</ul>
     </div>

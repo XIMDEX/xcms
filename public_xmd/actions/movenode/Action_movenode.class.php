@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -30,13 +30,18 @@ use Ximdex\Models\NodeAllowedContent;
 use Ximdex\Runtime\App;
 use Ximdex\Sync\SynchroFacade;
 
-\Ximdex\Modules\Manager::file('/actions/movenode/baseIO.php');
-\Ximdex\Modules\Manager::file('/actions/copy/Action_copy.class.php');
+Ximdex\Modules\Manager::file('/actions/movenode/baseIO.php');
+Ximdex\Modules\Manager::file('/actions/copy/Action_copy.class.php');
 
 class Action_movenode extends Action_copy
 {
-   // Main method: shows initial form
-   public function index ()
+   /**
+    * Main method: shows initial form
+    * 
+    * {@inheritDoc}
+    * @see Action_copy::index()
+    */
+   public function index()
    {
         $idNode = (int) $this->request->getParam("nodeid");
         $node = new Node($idNode);
@@ -154,6 +159,7 @@ class Action_movenode extends Action_copy
 			$this->messages->add(_($err), MSG_TYPE_ERROR);
 			return false;
 		}
+		
 		// Update templates_includes files if node type is a XSL template
 		if ($node->GetNodeType() == \Ximdex\NodeTypes\NodeTypeConstants::XSL_TEMPLATE) {
             $xsltNode = new \Ximdex\NodeTypes\XsltNode($node);

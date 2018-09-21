@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -29,7 +29,7 @@ use Ximdex\Models\Node;
 use Ximdex\Models\NodeAllowedContent;
 use Ximdex\MVC\ActionAbstract;
 
-\Ximdex\Modules\Manager::file('/actions/copy/baseIO.php');
+Ximdex\Modules\Manager::file('/actions/copy/baseIO.php');
 
 class Action_copy extends ActionAbstract
 {

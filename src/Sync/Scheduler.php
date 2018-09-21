@@ -344,13 +344,18 @@ class Scheduler
         Logger::info('Portal frame ' . $portal->get('id') . ': Generator node ' . $portal->get('IdNodeGenerator')
             . ' (' . $node->GetNodeName() . '), version ' . $portal->get('Version') . ', type ' . $portal->get('PublishingType')
             . ', user ' . $portal->get('CreatedBy') . ' (' . $user->getLogin() . ')');
-        Logger::info(' - Start time: ' . Date::formatTime($portal->get('StartTime')));
+        Logger::info('  - Start time: ' . Date::formatTime($portal->get('StartTime')));
         if ($portal->get('EndTime')) {
-            Logger::info(' - End time: ' . Date::formatTime($portal->get('EndTime')));
+            Logger::info('  - End time: ' . Date::formatTime($portal->get('EndTime')));
         } else {
-            Logger::info(' - Status time: ' . Date::formatTime($portal->get('StatusTime')));
+            Logger::info('  - Status time: ' . Date::formatTime($portal->get('StatusTime')));
         }
-        Logger::info(' - Server frames: ' . $portal->get('SFtotal') . ' total, ' . $portal->get('SFpending') . ' pending, ' .
-            $portal->get('SFactive') . ' active, ' . $portal->get('SFsuccess') . ' success, ' . $portal->get('SFerrored') . ' errored');
+        $info = ' - Server frames: ' . $portal->get('SFtotal') . ' total, ' . $portal->get('SFpending') . ' pending, ' 
+            . $portal->get('SFactive') . ' active, ' . $portal->get('SFsuccess') . ' success, ' . $portal->get('SFerrored') . ' errored';
+        if ($portal->get('SFerrored')) {
+            Logger::error($info);
+        } else {
+            Logger::info(' ' . $info);
+        }
     }
 }

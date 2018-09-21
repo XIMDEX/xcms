@@ -196,7 +196,7 @@ class BatchManager
         }
         $nodeFrame = new NodeFrame();
         if ($nodeFrame->existsNodeFrame($nodeId, $up, $down)) {
-            Logger::info(sprintf("Node %s already exists in a NodeFrame", $nodeId));
+            Logger::debug(sprintf("Node %s already exists in a NodeFrame", $nodeId));
             return false;
         }
         return true;
@@ -262,7 +262,7 @@ class BatchManager
             $batch->set('Playing', 1);
             $batch->update();
         }
-        if ($batch) {
+        if (isset($batch) and $batch->get('IdBatch')) {
             
             // Update portal frame information
             try {
@@ -270,6 +270,11 @@ class BatchManager
             } catch (\Exception $e) {
                 Logger::error($e->getMessage());
             }
+        }
+        if (!$frames) {
+            $portal = new PortalFrames($idPortalFrame);
+            Logger::warning('Deleting portal frame without related batchs');
+            $portal->delete();
         }
         return $frames;
     }
@@ -567,7 +572,7 @@ class BatchManager
         
         // Ending batchs type UP
         $sql = "SELECT ServerFrames.IdBatchUp, SUM(IF(ServerFrames.State = '" . ServerFrame::DUE2INWITHERROR . "', 1, 0)) AS Errors, 
-			SUM(IF (ServerFrames.State IN ('" . ServerFrame::IN . "'), 1, 0)) AS Success, 
+			SUM(IF (ServerFrames.State IN ('" . implode('\', \'', ServerFrame::SUCCESS_STATUS) . "'), 1, 0)) AS Success, 
 			SUM(IF (ServerFrames.State IN ('" . ServerFrame::PUMPED . "'), 1, 0)) AS Pumpeds,
 			COUNT(ServerFrames.IdSync) AS Total,
             SUM(IF (ServerFrames.State NOT IN ('" . ServerFrame::PENDING . "', '" . implode('\', \'', ServerFrame::FINAL_STATUS) 
@@ -620,7 +625,7 @@ class BatchManager
                 
                 // Search the batch type Down without type Up
                 $sql = "SELECT SUM(IF (ServerFrames.State = '" . ServerFrame::DUE2OUTWITHERROR . "', 1, 0)) AS Errors,
-					SUM(IF (ServerFrames.State IN ('" . ServerFrame::OUT . "'), 1, 0)) AS Success,
+					SUM(IF (ServerFrames.State IN ('" . implode('\', \'', ServerFrame::SUCCESS_STATUS) . "'), 1, 0)) AS Success, 
 					COUNT(ServerFrames.IdSync) AS Total,
                     SUM(IF (ServerFrames.State IN ('" . ServerFrame::PENDING . "'), 1, 0)) AS Pending,
                     SUM(IF (ServerFrames.State NOT IN ('" . ServerFrame::PENDING . "', '" . implode('\', \'', ServerFrame::FINAL_STATUS)
@@ -633,7 +638,7 @@ class BatchManager
                     
                     // Search the batchs type Down with an associated batch type Up
                     $sql = "SELECT SUM(IF(ServerFrames.State = '" . ServerFrame::DUE2OUTWITHERROR . "', 1, 0)) AS Errors,
-		      			SUM(IF (ServerFrames.State IN ('" . ServerFrame::OUT . "'), 1, 0)) AS Success,
+		      			SUM(IF (ServerFrames.State IN ('" . implode('\', \'', ServerFrame::SUCCESS_STATUS) . "'), 1, 0)) AS Success, 
 				    	COUNT(ServerFrames.IdSync) AS Total,
                         SUM(IF (ServerFrames.State NOT IN ('" . ServerFrame::PENDING . "', '" . implode('\', \'', ServerFrame::FINAL_STATUS)
                         . "'), 1, 0)) AS Active,
