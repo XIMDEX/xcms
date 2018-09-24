@@ -80,22 +80,19 @@ if ($tableName == 'all' || $tableName == 'new_tables') {
     /* var $rs ADORecordset */
     $rs = $dbConnection->GetAll($query);
     $tables = array();
-    reset($rs);
-    while (list(, $table) = each($rs)) {
+    foreach ($rs as $table) {
         $tables[] = $table[0];
     }
 } else {
     $tables = array($tableName);
 }
-reset($tables);
-while (list(, $tableName) = each($tables)) {
+foreach ($tables as $tableName) {
 
     //TODO change to current DB class 
     $activeRecord = new ADODB_Active_Record($tableName, false, $dbConnection);
     $indexArray = $activeRecord->GetPrimaryKeys($dbConnection, $tableName);
     if (is_array($indexArray)) {
-        reset($indexArray);
-        while (list($key, $indexElement) = each($indexArray)) {
+        foreach ($indexArray as $key => $indexElement) {
             $indexArray[$key] = "'$indexElement'";
         }
         $indexes = implode(', ', $indexArray);
@@ -140,13 +137,10 @@ HEREDOC;
             continue;
         }
     }
-    reset($tableInfo->flds);
     $metaDataDescriptors = array();
     $varInitializators = array();
     $primaryKey = '';
-
-    while (list(, $fieldObject) = each($tableInfo->flds)) {
-
+    foreach ($tableInfo->flds as $fieldObject) {
         $primaryKeyString = '';
         if ($fieldObject->primary_key === true) {
             $primaryKey = $fieldObject->name;

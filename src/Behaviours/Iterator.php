@@ -43,10 +43,6 @@ class Iterator
         $result = $object->find(ALL, $condition, $args, MULTI, $escape);
         $this->_objects = array();
         if (count($result) > 0) {
-            /*
-            reset($result);
-            while (list(, $element) = each($result)) {
-            */
             foreach ($result as $element) {
                 $object = new $this->_objectName();
                 $object->_unserialize($element);

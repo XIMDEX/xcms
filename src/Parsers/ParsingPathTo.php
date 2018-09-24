@@ -247,7 +247,10 @@ class ParsingPathTo
                         array_shift($pathData);
                         
                         // Get the ID and type for the actual parent
-                        $parentNode = each($sectionParents);
+                        $parentNode = [];
+                        $parentNode['key'] = key($sectionParents);
+                        $parentNode['value'] = current($sectionParents);
+                        next($sectionParents);
                         if ($parentNode['value'] == NodeTypeConstants::SERVER)
                         {
                             // Server node has been reached

@@ -64,9 +64,7 @@ $neededResults[' = -3']= _("%d nodes has not been successfully imported due to i
 $neededResults[' = -4']= _("%d nodes has not been successfully imported due to they were not allowed in its father (NodeAllowedContents restriction)")."\n";
 
 
-
-reset($neededResults);
-while(list($condition, $message) = each($neededResults)) {
+foreach ($neededResults as $condition => $message) {
 	$dbObj = new \Ximdex\Runtime\Db();
 	$query = sprintf("SELECT count(*) as total FROM XimIONodeTranslations xnt"
 			. " INNER JOIN XimIOExportations xe ON xnt.IdXimioExportation = xe.IdXimioExportation AND xe.timeStamp = %s"

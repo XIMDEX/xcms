@@ -512,8 +512,7 @@ abstract class AbstractStructuredDocument extends FileNode
         $xmlBody = parent::ToXML($depth, $files, $recurrence);
         $channelList = $this->GetChannels();
         if (is_array($channelList)) {
-            reset($channelList);
-            while (list(, $idChannel) = each($channelList)) {
+            foreach ($channelList as $idChannel) {
                 $node = new Node($idChannel);
                 $xmlBody .= $node->ToXml($depth, $files, $recurrence);
                 unset($node);
@@ -590,16 +589,14 @@ abstract class AbstractStructuredDocument extends FileNode
         $node = new Node($this->parent->get('IdNode'));
         $idParent = $node->get('IdParent');
         $nodeParent = new Node($idParent);
-        $docList[] = $nodeParent->GetChildren();
+        $docList = $nodeParent->GetChildren();
         foreach ($docList as $docID) {
-            foreach ($docID as $docdocID) {
                 
-                // Getting the language
-                $strDoc = new StructuredDocument($docdocID);
-                $langID = $strDoc->GetLanguage();
-                $lang = new Language($langID);
-                $colectible .= $lang->GetIsoName() . ',';
-            }
+            // Getting the language
+            $strDoc = new StructuredDocument($docID);
+            $langID = $strDoc->GetLanguage();
+            $lang = new Language($langID);
+            $colectible .= $lang->GetIsoName() . ',';
         }
         $colectible = substr($colectible, 0, strlen($colectible) - 1);
         $outPut2 .= $colectible . '"';
@@ -635,14 +632,11 @@ abstract class AbstractStructuredDocument extends FileNode
             } else {
                 $outPut = 'channel="" ';
             }
-            /*
-            reset($channelList);
-            while (list(, $channelID) = each($channelList)) {
-            */
+            $channelNames = [];
             foreach ($channelList as $channelID) {
                 $channel = new Channel($channelID);
                 $channelNames[] = $channel->get('Name');
-                $channelDesc[] = $channel->get('Description');
+                // $channelDesc[] = $channel->get('Description');
             }
             $outPut .= ' channels="' . implode(",", $channelNames) . '"';
         }

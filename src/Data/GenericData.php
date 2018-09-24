@@ -137,8 +137,6 @@ class GenericData
         $id = (int) $id;
         $dbObj = new \Ximdex\Runtime\Db();
         $this->messages = new Messages();
-        $cache     = null;
-        $className = null;
         if ($id > 0) {
             $query = sprintf("SELECT * FROM {$this->_table} WHERE {$this->_idField} = %d LIMIT 1", $id);
             if ((DEBUG_LEVEL == LOG_LEVEL_ALL) || (DEBUG_LEVEL == LOG_LEVEL_QUERY)) {
@@ -167,10 +165,6 @@ class GenericData
      */
     public function _unserialize($values)
     {
-        /*
-        reset($this->_metaData);
-        while (list($key) = each($this->_metaData)) {
-        */
         foreach ($this->_metaData as $key => $value) {
             if (isset($values[$key])) {
                 $this->$key = $values[$key];
@@ -193,8 +187,7 @@ class GenericData
     public function _serialize()
     {
         $values = array();
-        reset($this->_metaData);
-        while (list($key) = each($this->_metaData)) {
+        foreach ($this->_metaData as $key => $value) {
             $values[$key] = $this->{$key};
         }
         return $values ? $values : false;
@@ -208,10 +201,8 @@ class GenericData
         if (!$this->_applyFilter('beforeAdd')) {
             return false;
         }
-        // reset($this->_metaData);
         $arrayFields = array();
         $arrayValues = array();
-        // while (list($field, $descriptors) = each($this->_metaData)) {
         foreach ($this->_metaData as $field => $descriptors) {
             if (isset($descriptors['auto_increment']) && ('true' == $descriptors['auto_increment'])) {
                 continue;
@@ -230,7 +221,6 @@ class GenericData
         }
         $insertedId = null;
         if ($this->_checkDataIntegrity()) {
-            $className = null;
             $dbObj = new \Ximdex\Runtime\Db();
             $dbObj->Execute($query);
             if ($dbObj->numErr > 0) {
@@ -302,19 +292,14 @@ class GenericData
         $dataTypeFloat  = array('float');
         $dataTypeDouble = array('double');
         $dataTypeText   = array('text', 'tinytext', 'mediumtext', 'mediumblob', 'varchar', 'char', 'longtext', 'blob', 'longblob');
-        // $dataTypeDate = array('date', 'datetime', 'timestamp', 'time', 'year');
         $dataTypeInt  = array('tinyint', 'smallint', 'mediumint', 'int', 'bigint');
         $dataTypeElse = array('binary', 'decimal', 'enum', 'set');
         $_fieldTypes = array('(text|date|float|double|datetime|timestamp|time|tinytext|blob|mediumblob|mediumtext|longblob|longtext)',
             '(varchar|tinyint|smallint|mediumint|int|bigint|year|char|tinyint|binary)\(([0-9]+)\)',
             '(decimal)\(([0-9]+),([0-9]+)\)',
             '(enum|set)\((.*)\)');
-        // reset($this->_metaData);
-        // while (list($key, $descriptor) = each($this->_metaData)) {
         foreach ($this->_metaData as $key => $descriptor) {
-            // reset($_fieldTypes);
             $matches = array();
-            // while (list(, $pattern) = each($_fieldTypes)) {
             foreach($_fieldTypes as $pattern) {
                 $matchesCount = preg_match("/$pattern/", $descriptor['type'], $matches);
                 if ($matchesCount > 0) {
@@ -621,9 +606,7 @@ class GenericData
         if (!$this->_applyFilter('beforeUpdate')) {
             return false;
         }
-        // reset($this->_metaData);
         $arraySets = array();
-        // while (list($field, $descriptors) = each($this->_metaData)) {
         foreach ($this->_metaData as $field => $descriptors) {
             $arraySets[] = sprintf("`%s` = %s",
                 $field,
@@ -673,8 +656,7 @@ class GenericData
             return $query;
         }
         $dbObj  = new \Ximdex\Runtime\Db();
-        $result = $dbObj->Execute($query);
-
+        $dbObj->Execute($query);
         $this->_applyFilter('afterDelete');
         return $dbObj->numRows;
     }
@@ -810,10 +792,8 @@ class GenericData
      */
     public function exists($idName = 'id')
     {
-        // reset($this->_metaData);
         $arrayFields = array();
         $arrayValues = array();
-        // while (list($field, $descriptors) = each($this->_metaData)) {
         foreach ($this->_metaData as $field => $descriptors) {
             if (isset($descriptors['auto_increment']) && ('true' == $descriptors['auto_increment'])) {
                 continue;

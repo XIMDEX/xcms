@@ -59,8 +59,7 @@ class ExportXml {
 			$nodeID = array($nodeID);
 		}
 
-		reset($nodeID);
-		while (list(, $idNode) = each($nodeID)) {
+		foreach ($nodeID as $idNode) {
 			$node = new Node($idNode);
 			if (!($node->GetID() > 0)) {
 				$this->messages->add(sprintf(_('The node %s does not exist'), $idNode), MSG_TYPE_ERROR);
@@ -115,14 +114,8 @@ class ExportXml {
 		return $xml;
 	}
 	
-	function writeData($xml, $files, $fileName = NULL) {
-/*		if (!is_null($fileName)) {
-			if (!(preg_match('/^[^\s\\\./\*\?\"<>\|]{1}[^\s\\/\*\?\"<>\|]{0,254}$/', $fileName, $matches) > 0)) {
-				var_dump($matches);
-				unset($fileName);
-			}
-		}*/
-		
+	function writeData($xml, $files, $fileName = NULL)
+	{
 		if (is_null($fileName)) {
 			$fileName = date("YmdHi");
 		}
@@ -156,8 +149,7 @@ class ExportXml {
 		global $TOTAL_NODES;
 		$db = new \Ximdex\Runtime\Db();
 		$files = array();
-		reset($this->_arrNodeId);
-		while (list(, $idNode) = each($this->_arrNodeId)) {
+		foreach ($this->_arrNodeId as $idNode) {
 			$node = new Node($idNode);
 			if (defined('COMMAND_MODE_XIMIO')) {
 				$query = sprintf('SELECT COUNT(DISTINCT(IdChild)) as total_nodes' . 

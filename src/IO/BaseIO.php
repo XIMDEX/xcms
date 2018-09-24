@@ -303,8 +303,7 @@ class BaseIO
                     , $data['SECTIONTYPE']);
                 if ($idNode > 0) {
                     $node = new Node($idNode);
-                    reset($data['CHILDRENS']);
-                    while (list (, $attrs) = each($data['CHILDRENS'])) {
+                    foreach ($data['CHILDRENS'] as $attrs) {
                         switch ($attrs['NODETYPENAME']) {
                             case 'RELGROUPSNODES':
                                 $idGroup = isset($attrs['IDGROUP']) && $attrs['IDGROUP'] > 0 ? (int)$attrs['IDGROUP'] : null;
@@ -506,8 +505,7 @@ class BaseIO
                 if ($idNode > 0) {
                     $node = new Node($idNode);
                     $parent = new Node($node->GetParent()); // The logic names are inserted in the father
-                    reset($data['CHILDRENS']);
-                    while (list (, $attrs) = each($data['CHILDRENS'])) {
+                    foreach ($data['CHILDRENS'] as $attrs) {
                         switch ($attrs['NODETYPENAME']) {
                             case 'NODENAMETRANSLATION':
                                 $idLanguage = isset($attrs['IDLANG']) && $attrs['IDLANG'] > 0 ? (int)$attrs['IDLANG'] : NULL;
@@ -528,8 +526,7 @@ class BaseIO
                 $node = new Node();
                 $result = $node->CreateNode($data['NAME'], $data['PARENTID'], 9000);
                 if (!($result > 0)) {
-                    reset($node->messages->messages);
-                    while (list (, $message) = each($node->messages->messages)) {
+                    foreach ($node->messages->messages as $message) {
                         Logger::error($message['message']);
                     }
                 }
@@ -550,8 +547,7 @@ class BaseIO
                 }
                 $result = $node->CreateNode($data['NAME'], $data['PARENTID'], $idNodeType, null, $data['PATH']);
                 if (!($result > 0)) {
-                    reset($node->messages->messages);
-                    while (list (, $message) = each($node->messages->messages)) {
+                    foreach ($node->messages->messages as $message) {
                         Logger::error($message['message']);
                     }
                 }
@@ -569,8 +565,7 @@ class BaseIO
                 $idNodeType = \Ximdex\NodeTypes\NodeTypeConstants::VIDEO_FILE;
                 $result = $node->CreateNode($data['NAME'], $data['PARENTID'], $idNodeType, null, $data['PATH']);
                 if (!($result > 0)) {
-                    reset($node->messages->messages);
-                    while (list (, $message) = each($node->messages->messages)) {
+                    foreach ($node->messages->messages as $message) {
                         Logger::error($message['message']);
                     }
                 }
@@ -636,9 +631,8 @@ class BaseIO
         if (empty($nodeTypeName)) {
             return false;
         }
-        reset($childrens);
         $idValues = array();
-        while (list (, $children) = each($childrens)) {
+        foreach ($childrens as $children) {
             if (!is_array($children)) {
                 continue;
             }
@@ -675,14 +669,12 @@ class BaseIO
         if (empty($nodeName)) {
             return false;
         }
-        reset($childrens);
         $attrValues = array();
-        while (list (, $children) = each($childrens)) {
+        foreach ($childrens as $children) {
             if (!is_array($children)) {
                 continue;
             }
-            reset($children);
-            while (list ($attrKey, $attrValue) = each($children)) {
+            foreach ($children as $attrKey => $attrValue) {
                 if (!strcmp($attrKey, $nodeName)) {
                     $attrValues[] = $attrValue;
                 }
@@ -705,13 +697,11 @@ class BaseIO
         if (empty($nodeKey)) {
             return false;
         }
-        reset($childrens);
-        while (list (, $children) = each($childrens)) {
+        foreach ($childrens as $children) {
             if (!is_array($children)) {
                 return false;
             }
-            reset($children);
-            while (list ($attrKey, $attrValue) = each($children)) {
+            foreach ($children as $attrKey => $attrValue) {
                 if ($mode == Constants::MODE_NODETYPE) {
                     if (!strcmp($attrValue, $nodeKey)) {
                         return true;
@@ -853,8 +843,7 @@ class BaseIO
                 if (isset($data['NAME'])) {
                     $node->set('Name', $data['NAME']);
                     $result = $node->update();
-                    reset($node->messages->messages);
-                    while (list (, $message) = each($node->messages->messages)) {
+                    foreach ($node->messages->messages as $message) {
                         $this->messages->messages[] = $message;
                     }
                     if ($result) {
@@ -981,8 +970,7 @@ class BaseIO
                     $updateNode = true;
                 }
                 $parent = new Node($xmlDocument->get('IdParent')); // Logic name are inserted in the parent
-                reset($data['CHILDRENS']);
-                while (list (, $attrs) = each($data['CHILDRENS'])) {
+                foreach ($data['CHILDRENS'] as $attrs) {
                     switch ($attrs['NODETYPENAME']) {
                         case 'NODENAMETRANSLATION':
                             $idLanguage = isset($attrs['IDLANG']) && $attrs['IDLANG'] > 0 ? (int)$attrs['IDLANG'] : NULL;
@@ -1006,6 +994,7 @@ class BaseIO
                     $structuredDocument->set('IdLanguage', $data['LANG']);
                     $updateStructuredDocument = true;
                 }
+                /*
                 $channels = array();
                 if (isset($data['CHILDRENS']) && is_array($data['CHILDRENS'])) {
                     foreach ($data['CHILDRENS'] as $children) {
@@ -1014,6 +1003,7 @@ class BaseIO
                         }
                     }
                 }
+                */
                 $paths = $this->_getValueFromChildren($data['CHILDRENS'], 'SRC');
                 if (count($paths) == 1) {
                     $content = FsUtils::file_get_contents($paths[0]);

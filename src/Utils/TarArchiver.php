@@ -101,8 +101,7 @@ class TarArchiver
             return;
         }
         $this->extension = 'tar';
-        reset($options);
-        while (list($type, $option) = each($options)) {
+        foreach ($options as $type => $option) {
             if ($type == TAR_COMPRESSION) {
                 if (in_array($option, $validCompressions)) {
                     $this->options[$type] = $option;
@@ -136,11 +135,13 @@ class TarArchiver
         if (!is_file($this->fileName . $this->extension)) {
             return array();
         }
-        $files = array();
+        $tarContents = null;
         exec(sprintf('tar -tf %s', $this->fileName . $this->extension), $tarContents);
-        reset($tarContents);
-        while (list(, $line) = each($tarContents)) {
-            if (!in_array($line, $files)) $files[] = $line;
+        $files = array();
+        foreach ($tarContents as $line) {
+            if (!in_array($line, $files)) {
+                $files[] = $line;
+            }
         }
         return $files;
     }
@@ -155,14 +156,14 @@ class TarArchiver
         if (!is_array($elements)) $elements = array($elements);
 
         // List of elements which are going to be aded to a tar (new or added)
-        reset($elements);
-        while (list(, $element) = each($elements)) {
+        foreach ($elements as $element) {
             if (in_array(TAR_TYPE_INCREMENTAL, $this->options)) {
                 if (is_dir($element)) {
                     $this->files[] = $element;
                 }
                 else {
-                    $this->messages->add(sprintf(_("In incremental copies just folders are allowed, the element %s will be ignored"), $element), MSG_TYPE_WARNING);
+                    $this->messages->add(sprintf(_("In incremental copies just folders are allowed, the element %s will be ignored"), $element)
+                        , MSG_TYPE_WARNING);
                 }
             }
             else {
@@ -186,6 +187,7 @@ class TarArchiver
             $command = sprintf("mkdir %s", $dirName);
             exec($command);
         }
+        $options = array();
         $mode = is_dir($dirName) ? COPY : NO_COPY;
         if ($mode == COPY) {
             if (!is_dir($dirName)) {
@@ -194,8 +196,7 @@ class TarArchiver
                     return false;
                 }
             }
-            reset($this->files);
-            while (list(, $file) = each($this->files)) {
+            foreach ($this->files as $file) {
                 
                 // It can be done through php copy
                 $command = sprintf("cp %s %s", $file, $dirName);
@@ -207,7 +208,6 @@ class TarArchiver
         elseif ($mode == NO_COPY) {
             $fileString = implode(' ', $this->files);
         }
-        $options = array();
         
         // If compression is incremental
         if (isset($this->options[TAR_TYPE]) && ($this->options[TAR_TYPE] == TAR_TYPE_INCREMENTAL)) {
@@ -240,6 +240,7 @@ class TarArchiver
         $options[] = sprintf('--file=%s', $completePath);
         $options = implode(' ', $options);
         $command = sprintf('tar %s %s', $options, $fileString);
+        $result = null;
         exec($command, $result);
         return $completePath;
     }

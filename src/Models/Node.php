@@ -733,7 +733,7 @@ class Node extends NodesOrm
             if ($nodes === false) {
                 return false;
             }
-            foreach ($nodes as $level => $parentId) {
+            foreach ($nodes as $parentId) {
                 if ($parentId == $nodeID) {
                     return true;
                 }
@@ -1312,8 +1312,7 @@ class Node extends NodesOrm
             // The first element of the list $grupos is always the general group
             // this insertion is not considered as it the relation by default
             if (is_array($grupos)) {
-                reset($grupos);
-                while (list (, $grupo) = each($grupos)) {
+                foreach ($grupos as $grupo) {
                     $this->AddGroupWithRole($grupo, $user->GetRoleOnGroup($grupo));
                 }
             }
@@ -1396,8 +1395,7 @@ class Node extends NodesOrm
         $IdChildrens = $this->GetChildren();
 
         if (!is_null($IdChildrens)) {
-            reset($IdChildrens);
-            while (list (, $IdChildren) = each($IdChildrens)) {
+            foreach ($IdChildrens as $IdChildren) {
                 $childrenNode = new Node($IdChildren);
                 if ($childrenNode->get('IdNode') > 0) {
                     $childrenNode->DeleteNode(false);
@@ -2702,11 +2700,10 @@ class Node extends NodesOrm
          * This block of code makes if a xmlcontainer has not associated a visualtemplate,
          * it looks automatically if some child has associated a visualtemplate and associate it to the container
          */
-        if (($this->nodeType->get('Class') == 'Xmlcontainernode') && (empty($idTemplate))) {
+        if (($this->nodeType->get('Class') == 'Xmlcontainernode')) {
             $childrens = $this->GetChildren();
             if (!empty($childrens)) {
-                reset($childrens);
-                while (list (, $idChildrenNode) = each($childrens)) {
+                foreach ($childrens as $idChildrenNode) {
                     $children = new Node($idChildrenNode);
                     if (!($children->get('IdNode') > 0)) {
                         Logger::warning(sprintf(_("It is being tried to load the node %s from the unexistent node %s")
@@ -2779,8 +2776,7 @@ class Node extends NodesOrm
         if (is_null($recurrence) || (!is_null($recurrence) && $depth <= $recurrence)) {
             $childrens = $this->GetChildren();
             if ($childrens) {
-                reset($childrens);
-                while (list (, $idChildren) = each($childrens)) {
+                foreach ($childrens as $idChildren) {
                     $childrenNode = new Node($idChildren);
                     if (!($childrenNode->get('IdNode') > 0)) {
                         Logger::warning(sprintf(_("It is being tried to load the node %s from the unexistent node %s")

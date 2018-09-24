@@ -92,8 +92,7 @@ function copyNode($source, $dest, $recurrence)
 	$importer = new ImportXml($dest, NULL, $nodeAssociations,  Constants::RUN_IMPORT_MODE, $recurrence, NULL, $processFirstNode);
 	$importer->mode = COPY_MODE;
 	$importer->copy($xml);
-	reset($importer->messages);
-	while(list(, $message) = each($importer->messages)) {
+	foreach ($importer->messages as $message) {
 		$messages->add($message, MSG_TYPE_WARNING);
 	}
 	

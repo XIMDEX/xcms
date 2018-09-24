@@ -71,9 +71,6 @@ class Shell
      */
     function exec_proc($cmd)
     {
-
-        $output = array();
-
         $proc = proc_open($cmd, $this->descriptors, $pipes);
 
 

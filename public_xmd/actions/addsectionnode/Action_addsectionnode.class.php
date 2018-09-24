@@ -64,7 +64,8 @@ class Action_addsectionnode extends ActionAbstract
         $sectionType = new SectionType();
         $sectionTypes = $sectionType->find(ALL);
         $ndc = new NodeDefaultContents();
-        while (list (, $sectionTypeInfo) = each($sectionTypes)) {
+        $sectionTypeOptions = [];
+        foreach ($sectionTypes as $sectionTypeInfo) {
             if (empty($sectionTypeInfo['module']) || \Ximdex\Modules\Manager::isEnabled($sectionTypeInfo['module'])) {
                 $subfolders = array();
                 $subfoldersAll = $ndc->getDefaultChilds($sectionTypeInfo['idNodeType']);

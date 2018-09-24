@@ -95,8 +95,7 @@ $incorrectNotReached = $importer->processedNodes['failed'][Constants::ERROR_NOT_
 $incorrectNotAllowed = $importer->processedNodes['failed'][Constants::ERROR_NOT_ALLOWED];
 
 $totalIncorrectNodes = 0;
-reset($importer->processedNodes['failed']);
-while (list(, $nodes) = each($importer->processedNodes['failed'])) {
+foreach ($importer->processedNodes['failed'] as $nodes) {
     $totalIncorrectNodes += $nodes;
 }
 
@@ -110,8 +109,7 @@ if (!empty($sugestedPackages)) {
 }
 
 if (count($importer->messages) > 0) {
-    reset($importer->messages);
-    while (list(, $message) = each($importer->messages)) {
+    foreach ($importer->messages as $message) {
         echo $message . "\n";
     }
 }

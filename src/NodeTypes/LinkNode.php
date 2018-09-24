@@ -93,8 +93,7 @@ class LinkNode extends Root
 		$result = $this->link->delete();
 		if (!$result) {
 			$this->parent->messages->add(_('No se ha podido eliminar el enlace'), MSG_TYPE_ERROR);
-			reset($this->link->messages->messages);
-			while (list(, $message) = each($this->link->messages->messages)) {
+			foreach ($this->link->messages->messages as $message) {
 				$this->parent->messages[] = $message;
 			}
 		} else {
@@ -130,8 +129,7 @@ class LinkNode extends Root
 			$result = $this->link->update();
 			if (!$result) {
 				$this->parent->messages->add(_('No se ha podido eliminar el enlace'), MSG_TYPE_ERROR);
-				reset($this->link->messages->messages);
-				while (list(, $message) = each($this->link->messages->messages)) {
+				foreach ($this->link->messages->messages as $message) {
 					$this->parent->messages[] = $message;
 				}
 			}

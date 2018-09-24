@@ -43,9 +43,6 @@ $targetNodeID = isset($_GET['targetid']) ? $_GET['targetid'] : NULL;
 $filterType = isset($_GET['filtertype']) ? $_GET['filtertype'] : NULL;
 $idNodeType = isset($_GET['nodetype']) ? $_GET['nodetype'] : NULL;
 
-$desde = isset($_GET['desde']) ? $_GET['desde'] : NULL;
-$hasta = isset($_GET['hasta']) ? $_GET['hasta'] : NULL;
-
 if(!$contentType && !$idNodeType) {
     $contentType = 'all';
 }
@@ -130,8 +127,7 @@ if($contentType) {
                 continue;
             }
             $tmpArray = getContainers($tmpArray);
-            reset($tmpArray);
-            while (list($key, $idNodeTypeKey) = each($tmpArray)) {
+            foreach ($tmpArray as $key => $idNodeTypeKey) {
                 if (in_array($idNodeTypeKey, $idTypeList)) {
                     unset($tmpArray[$key]);
                 }
@@ -153,9 +149,8 @@ function getContainers($idNodeTypeArray) {
     if(!is_array($idNodeTypeArray)) {
         return array();
     }
-    reset($idNodeTypeArray);
     $returnObject = array();
-    while (list (, $idNodeType) = each($idNodeTypeArray)) {
+    foreach ($idNodeTypeArray as $idNodeType) {
         $dbObj = new \Ximdex\Runtime\Db();
         $query = sprintf("SELECT IdNodeType FROM NodeAllowedContents WHERE NodeType = %d", $idNodeType);
         $dbObj->Query($query);
@@ -196,6 +191,12 @@ function PrintContent($nodeID, $contentType=null, $pathList=null, $targetNodeID=
     if(!$selectedNode->numErr) {
         $children = $selectedNode->GetChildren();
         $childNode = null;
+        $nodeName = [];
+        $systemType = [];
+        $nodeIcon = [];
+        $nodeTypeList = [];
+        $nodeState = [];
+        $nodeChannels = [];
         if ($children) {
             $i=0;
             foreach($children as $childID) {
@@ -297,6 +298,9 @@ function PrintContent($nodeID, $contentType=null, $pathList=null, $targetNodeID=
             }
 
             else {
+                $nodePath = [];
+                $nodeIsFolder = [];
+                $nodeChildCount = [];
                 foreach($childNode as $childID) {
                     $selectedNode->SetID($childID);
                     $nodePath[]		= $selectedNode->GetPath();
@@ -452,8 +456,7 @@ function nameToId($arrayNames){
     if(!is_array($arrayNames)) {
         return $returnArray;
     }
-    reset($arrayNames);
-    while(list(, $name) = each($arrayNames)) {
+    foreach ($arrayNames as $name) {
         $nodeType = new NodeType();
         $nodeType->SetByName($name);
         if ($nodeType->get('IdNodeType') > 0) {

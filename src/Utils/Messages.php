@@ -83,9 +83,7 @@ class Messages
             || (!is_null($type) && !in_array($type, $this->_validTypes))) {
             return count($this->messages);
         }
-        // reset($this->messages);
         $totalMessagesByType = 0;
-        // while(list(, $message) = each($this->messages)) {
         foreach ($this->messages as $message) {
             if ($message['type'] == $type) $totalMessagesByType++;
         }
@@ -100,10 +98,6 @@ class Messages
         if (!defined("CLI_MODE") || !CLI_MODE) {
             return;
         }
-        /*
-        reset($this->messages);
-        while(list(, $message) = each($this->messages)) {
-        */
         foreach ($this->messages as $message) {
             if ($type !== NULL) {
                 if ($message['type'] == $type) {
@@ -125,10 +119,6 @@ class Messages
     function getXml($status)
     {
         $messagesText = '';
-        /*
-        reset($this->messages);
-        while (list(, $message) = each ($this->messages)) {
-        */
         foreach ($this->messages as $message) {
             $messagesText .= sprintf('<message type="%s">%s</message>', $message['type'], utf8_encode($message['message'])) . "\n";
         }
@@ -143,12 +133,9 @@ class Messages
      * @param null $messageType
      * @return string
      */
-    function getRaw ($messageType = NULL) {
+    function getRaw ($messageType = NULL)
+    {
         $messageString = '';
-        /*
-        reset($this->messages);
-        while(list(, $message) = each($this->messages)) {
-        */
         foreach ($this->messages as $message) {
             if (!is_null($messageType)) {
                 if ($messageType == $message['type']) {
@@ -175,8 +162,7 @@ class Messages
             <td class='filaoscuranegritac'><?php echo htmlentities($header); ?>:</td>
         </tr>
 <?php
-        reset($this->messages);
-        while(list(, $message) = each($this->messages)) {
+        foreach ($this->messages as $message) {
             if (($type != 'ALL') && ($message['type'] != $type)) {
                 continue;
             }
@@ -203,10 +189,6 @@ class Messages
      */
     function _searchMessageText($messageText, $type)
     {
-        /*
-        reset($this->messages);
-        while (list(, $message) = each($this->messages)) {
-        */
         foreach ($this->messages as $message) {
             if (($message['message'] == $messageText) && ($message['type'] == $type)) {
                 return true;

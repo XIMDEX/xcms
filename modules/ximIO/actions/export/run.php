@@ -58,8 +58,7 @@ $fileName = $parameterCollector->getParameter('--file');
 if (is_array($nodes) && !empty($nodes)) {
 	echo _("Info about next nodes are going to be exported:")."\n\n";
 	
-	reset($nodes);
-	while(list(, $idNode) = each($nodes)) {
+	foreach ($nodes as $idNode) {
 		$node = new Node($idNode);
 		echo $node->toStr(DETAIL_LEVEL_MEDIUM);
 		echo "\n";
@@ -88,8 +87,7 @@ $xml = $export->getXml($recurrence, $files);
 echo _("Writting information of backup...")."\n";
 $backupName = $export->writeData($xml, $files, $fileName);
 
-reset($export->messages->messages);
-while(list(, $message) = each($export->messages->messages)) {
+foreach ($export->messages->messages as $message) {
 	echo $message['message'] . "\n";
 }
 

@@ -116,9 +116,8 @@ class FileUpdater
                 $string = $linkMatches[0][$i];
                 $info = $linkMatches[1][$i];
                 $infoExploded = explode(',', $info);
-                reset($infoExploded);
                 $nodes = array();
-                while (list(, $idNode) = each($infoExploded)) {
+                foreach ($infoExploded as $idNode) {
                     $nodes[] = $this->_getImportationNode($idNode);
                 }
                 $nodeSubstitution = implode(',', $nodes);

@@ -179,9 +179,7 @@ abstract class CliParser
         $this->messages->add(
             sprintf(_("Option: %s Allows to include params from a file"),
                 PARAM_FILE) . "\n", MSG_TYPE_NOTICE);
-
-        reset($this->_metadata);
-        while (list (, $token) = each($this->_metadata)) {
+        foreach ($this->_metadata as $token) {
             $mandatory = $token['mandatory'] ? _(' Obligatorio ') : ' ';
             $this->messages->add(
                 sprintf(_("Option: %s%s%s\n"), $token['name'], $mandatory,
@@ -191,8 +189,9 @@ abstract class CliParser
 
     function _parseParameters($params)
     {
-        reset($this->_metadata);
-        while (list (, $argument) = each($this->_metadata)) {
+        $processedKeys = [];
+        foreach ($this->_metadata as $argument) {
+            
             // Checking if name is coming, if not, it is not mandatory
             if (!in_array($argument['name'], $params) && $argument['mandatory']) {
                 continue;
@@ -227,8 +226,7 @@ abstract class CliParser
                     case TYPE_HASH :
                         $values = explode(',', $value);
                         $value = array();
-                        reset($values);
-                        while (list (, $pair) = each($values)) {
+                        foreach ($values as $pair) {
                             list ($key, $data) = explode('=', $pair);
                             $value[$key] = $data;
                         }

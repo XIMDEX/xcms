@@ -54,8 +54,7 @@ class Action_addlangxmlcontainer extends ActionAbstract {
 		$languageData = array();
 		if (is_array($languages)) {
 			$id = 0;
-			reset($languages);
-			while (list(,$language) = each($languages)) {
+			foreach ($languages as $language) {
 				$idLanguage = $language['IdLanguage'];
 				$languageData[$id] = $this->_hasLang($idNode, $idLanguage);
 				$languageData[$id]['idLanguage'] = $idLanguage;
@@ -86,7 +85,6 @@ class Action_addlangxmlcontainer extends ActionAbstract {
 	{
 		$nodeid = $this->request->getParam('nodeid');
 		$templateid = $this->request->getParam('templateid');
-		$name = $this->request->getParam('name');
 		$languages = $this->request->getParam('languages');
 		$aliases = $this->request->getParam('aliases');
 		if (empty($languages)) {
@@ -147,9 +145,9 @@ class Action_addlangxmlcontainer extends ActionAbstract {
 						$baseIO = new \Ximdex\IO\BaseIO();
 						$result = $baseIO->update($data);
 						if ($result <= 0) {
-							reset($baseIO->messages->messages);
-							while(list(, $message) = each($baseIO->messages->messages))
+						    foreach ($baseIO->messages->messages as $message) {
 								$this->messages->messages[] = $message;
+						    }
 							break;
 						}
 					} else {
@@ -162,9 +160,9 @@ class Action_addlangxmlcontainer extends ActionAbstract {
 						$baseIO = new \Ximdex\IO\BaseIO();
 						$result = $baseIO->delete($data);
 						if ($result <= 0) {
-							reset($baseIO->messages->messages);
-							while(list(, $message) = each($baseIO->messages->messages))
+						    foreach ($baseIO->messages->messages as $message) {
 								$this->messages->messages[] = $message;
+						    }
 							break;
 						}
 					}
@@ -191,9 +189,9 @@ class Action_addlangxmlcontainer extends ActionAbstract {
 						$baseIO = new \Ximdex\IO\BaseIO();
 						$result = $baseIO->build($data);
 						if ($result <= 0) {
-							reset($baseIO->messages->messages);
-							while(list(, $message) = each($baseIO->messages->messages))
+						    foreach ($baseIO->messages->messages as $message) {
 								$this->messages->messages[] = $message;
+						    }
 							break;
 					   }
 					}
@@ -248,7 +246,6 @@ class Action_addlangxmlcontainer extends ActionAbstract {
 
 	private function _getLanguages($nodeID)
 	{
-		$node = new Node($nodeID);
 		$language = new Language();
 		$languages = $language->getLanguagesForNode($nodeID);
 		if (empty($languages)) $languages = array();

@@ -175,11 +175,12 @@ class PipeCache extends PipeCachesOrm
         Logger::debug('PipeCache: Checking properties values for transition ' . $idTransition . ' and cache ' . print_r($idCaches, true));
         
         // Primero comprobamos si tenemos todos los argumentos, si no los tenemos damos un fatal
-        if (empty($this->_args))
+        if (empty($this->_args)) {
             $this->_args = array();
-        $keys = array_keys($this->_args);
+        }
         $propertiesIds = array();
         $this->_transition = new PipeTransition($idTransition);
+        $association = [];
         if ($this->_transition->properties->count() > 0) {
             Logger::debug('PipeCache: Properties values found');
             $this->_transition->properties->reset();
@@ -202,15 +203,17 @@ class PipeCache extends PipeCachesOrm
         
         // Ahora por cada cache buscamos si tenemos un conjunto de tuplas en propertyValues que satisfagan nuestras condiciones
         $countProperties = count($propertiesIds);
+        $queryWhere = [];
         for ($i = 0; $i < $countProperties; $i ++) {
             $queryWhere[] = 'IdPipeProperty = %s';
         }
+        $queryArray = [];
         if (isset($queryWhere)) {
             $queryArray[] = "(" . implode(' OR ', $queryWhere) . ")";
         }
         reset($idCaches);
         $queryArray[] = 'IdPipeCache = %s';
-        while (list (, $idCache) = each($idCaches)) {
+        foreach ($idCaches as $idCache) {
             $localQuery = implode(' AND ', $queryArray);
             $localArgs = array_merge($propertiesIds, array(
                 $idCache
@@ -234,8 +237,7 @@ class PipeCache extends PipeCachesOrm
     private function _searchKeyInArgs($key, $args)
     {
         if (is_array($args)) {
-            reset($args);
-            while (list ($index, $value) = each($args)) {
+            foreach ($args as $index => $value) {
                 if ($index == $key) {
                     return $value;
                 }

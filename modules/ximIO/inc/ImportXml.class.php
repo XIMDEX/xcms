@@ -202,8 +202,7 @@ class ImportXml
             return;
         }
         $content = FsUtils::file_get_contents($this->file);
-        reset($this->nodeAssociations);
-        while (list($oldId, $newId) = each($this->nodeAssociations)) {
+        foreach ($this->nodeAssociations as $oldId => $newId) {
             $node = new Node($newId);
             if (!($node->get('IdNode') > 0)) {
                 $this->messages[] = sprintf(_("The association %s=%s has been dismissed due to the node %s is not existing in the destiny ximdex"), $oldId, $newId, $newId);
@@ -246,10 +245,11 @@ class ImportXml
             array(& $this, '_endElement'));
         xml_set_character_data_handler($xml_parser, array(& $this, '_characterDataHandler'));
 
-        reset($xmlLines);
         $lines = count($xmlLines);
-//		while (($data = fgets($fp)) && !$this->abort) {
-        while ((list($key, $data) = each($xmlLines)) && !$this->abort) {
+        foreach ($xmlLines as $key => $data) {
+            if ($this->abort) {
+                break;
+            }
             if (!xml_parse($xml_parser, $data, ($key + 1) == $lines)) {
                 die(sprintf(_("XML error: %s at line %d"),
                     xml_error_string(xml_get_error_code($xml_parser)),
@@ -289,8 +289,7 @@ class ImportXml
             return false;
         }
 
-        reset($this->pendingRelations);
-        while (list(, $relation) = each($this->pendingRelations)) {
+        foreach ($this->pendingRelations as $relation) {
             foreach ($relation as $key => $value) {
                 if (in_array($key, $unsetArray)) {
                     unset($relation[$key]);
@@ -323,13 +322,13 @@ class ImportXml
         $retry = true;
         while ($retry) {
             $retry = false;
-            reset($this->pendingNodes);
-            while (list($pendingNode, $pendingNodeData) = each($this->pendingNodes)) {
+            foreach ($this->pendingNodes as $pendingNode => $pendingNodeData) {
                 foreach ($pendingNodeData as $id => $children) {
-                    // foreach a copy of the var has been made, so we delete it
+                    
+                    // Foreach a copy of the var has been made, so we delete it
                     unset($this->pendingNodes[$pendingNode][$id]);
-                    //Trying to resolve its nodes first
-
+                    
+                    // Trying to resolve its nodes first
                     if (!empty($children['CHILDRENS'])) {
                         foreach ($children['CHILDRENS'] as $childrenPosition => $childrenElement) {
                             $children['CHILDRENS'][$childrenPosition] = $this->_resolveNode($childrenElement, true);
@@ -340,8 +339,6 @@ class ImportXml
                         $retry = true;
                     }
                 }
-                // Once sons have been procesed, we delete this part from the array
-//				unset($this->pendingNodes[$elementToInsert['ID']]);
             }
         }
         return true;
@@ -448,8 +445,7 @@ class ImportXml
 
         // At this point, we have to finish the association resolutions brough in the array and not taken into account until now
         if (!empty($this->nodeAssociations)) {
-            reset($this->nodeAssociations);
-            while (list($key,) = each($this->nodeAssociations)) {
+            foreach ($this->nodeAssociations as $key => $value) {
                 $this->_bindControlElement(NULL, array('ID' => $key), false);
                 unset($this->nodeAssociations[$key]);
             }
@@ -712,8 +708,7 @@ class ImportXml
     {
         $localElement = array();
         $localElement['NODETYPENAME'] = $name;
-        reset($attrs);
-        while (list($key, $value) = each($attrs)) {
+        foreach ($attrs as $key => $value) {
             $localElement[$key] = $value;
         }
 
@@ -763,8 +758,7 @@ class ImportXml
             if ($idImportationNode < 0) {
                 Logger::error('Error inserting the node' . $elementToInsert['ID']);
             }
-            reset($baseIO->messages->messages);
-            while (list(, $message) = each($baseIO->messages->messages)) {
+            foreach ($baseIO->messages->messages as $message) {
                 Logger::debug($message['message']);
             }
         }
@@ -967,8 +961,7 @@ class ImportXml
                     $parentNode = $dbObj->GetValue('IdImportationNode');
                     $node = new Node($parentNode);
                     $childrens = $node->GetChildren();
-                    reset($childrens);
-                    while (list(, $children) = each($childrens)) {
+                    foreach ($childrens as $children) {
                         if (!strcmp($nodeName, $children->get('Name'))) {
                             return $children;
                         }
@@ -1211,15 +1204,18 @@ class ImportXml
      */
     function _getValueFromChildren($childrens, $nodeName)
     {
-        if (!is_array($childrens)) return false;
-        if (empty($nodeName)) return false;
-
-        reset($childrens);
+        if (!is_array($childrens)) {
+            return false;
+        }
+        if (empty($nodeName)) {
+            return false;
+        }
         $attrValues = array();
-        while (list(, $children) = each($childrens)) {
-            if (!is_array($children)) continue;
-            reset($children);
-            while (list($attrKey, $attrValue) = each($children)) {
+        foreach ($childrens as $children) {
+            if (!is_array($children)) {
+                continue;
+            }
+            foreach ($children as $attrKey => $attrValue) {
                 if (!strcmp($attrKey, $nodeName)) $attrValues[] = $attrValue;
             }
         }
