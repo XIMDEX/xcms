@@ -28,6 +28,13 @@
 use Ximdex\Logger;
 use Ximdex\Sync\Scheduler;
 
+// Check if the installation have been finished in order to run the process
+Ximdex\Modules\Manager::file('/install/InstallController.class.php');
+if (!InstallController::isInstalled()) {
+    Logger::warning('Cannot run the scheduler process until Ximdex core have been installed');
+    exit();
+}
+
 /*
  This global variable will indicate to database connections that we are in a batch process and do the reconnect
  method when it's necessary

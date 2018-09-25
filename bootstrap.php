@@ -31,8 +31,7 @@ use Ximdex\Runtime\App;
 // For legacy compatibility
 if (!defined('XIMDEX_ROOT_PATH')) {
     define('XIMDEX_ROOT_PATH', __DIR__);
-}
-else {
+} else {
     return false; //only once this file
 }
 if (!defined('APP_ROOT_PATH')) {
@@ -56,29 +55,24 @@ if (!defined('CLI_MODE')) {
     global $argv, $argc;
     if('cli' != php_sapi_name() || empty($argv) || 0 == $argc) {
         $cli_mode = false;
-    }
-    else {
+    } else {
         $cli_mode = true;
     }
     define('CLI_MODE', $cli_mode);
 }
 
-include_once XIMDEX_ROOT_PATH.XIMDEX_VENDORS . '/autoload.php';
+include_once XIMDEX_ROOT_PATH . XIMDEX_VENDORS . '/autoload.php';
 
 // Initialize XIMDEX_ROOT_PATH
 App::setValue('XIMDEX_ROOT_PATH', dirname(dirname(__FILE__)));
 
 // Get Config from install file
-if ( file_exists( XIMDEX_ROOT_PATH . '/conf/install-params.conf.php' ) ) {
+if (file_exists(XIMDEX_ROOT_PATH . '/conf/install-params.conf.php')) {
     $conf = require_once(XIMDEX_ROOT_PATH . '/conf/install-params.conf.php');
     foreach ($conf as $key => $value) {
         App::setValue($key, $value);
     }
 }
-
-// Initialize Modules Manager
-// Set ximdex root path
-Ximdex\Modules\Manager::file(\Ximdex\Modules\Manager::get_modules_install_params(), 'XIMDEX');
 
 // Generate general purpose logs files
 Logger::generate('XMD', 'xmd', true);
@@ -88,11 +82,23 @@ Logger::generate('PREVIEW', 'preview');
 // Set default log (xmd.log)
 Logger::setActiveLog();
 
+// Initialize Modules Manager
+$modulesFile = Ximdex\Modules\Manager::get_modules_install_params();
+if (file_exists(XIMDEX_ROOT_PATH . $modulesFile)) {
+    Ximdex\Modules\Manager::file($modulesFile, 'XIMDEX');
+} else {
+    Ximdex\Modules\Manager::file('/install/InstallController.class.php');
+    if (InstallController::isInstalled()) {
+        Logger::error('Cannot load the modules configuration file');
+    }
+}
+
 // Read install-modules.php
-$modulesConfString = "";
 $installModulesPath = XIMDEX_ROOT_PATH . '/conf/install-modules.php';
-if( file_exists($installModulesPath) ){
+if (file_exists($installModulesPath)) {
     $modulesConfString = file_get_contents($installModulesPath);
+} else {
+    $modulesConfString = '';
 }
 $matches = array();
 preg_match_all('/define\(\'(.*)\',(.*)\);/iUs', $modulesConfString, $matches);
@@ -106,18 +112,14 @@ date_default_timezone_set(App::getValue('timezone', 'Europe/Madrid'));
 
 // Set DB Connection
 $dbConfig = App::getValue('db');
-if ( !empty( $dbConfig ) ) {
-	try
-	{
+if (!empty($dbConfig)) {
+	try {
     	$dbConn = new \PDO("{$dbConfig['type']}:host={$dbConfig['host']};port={$dbConfig['port']};dbname={$dbConfig['db']};charset=utf8",
         		$dbConfig['user'], $dbConfig['password']);
-	}
-	catch (\PDOException $e)
-	{
+	} catch (\PDOException $e) {
 	    $error = 'Can\'t connect to database at ' . $dbConfig['host'] . ':' . $dbConfig['port'] . ' (' . $e->getMessage() . ')';
 	    Logger::error($error);
-	    if (CLI_MODE)
-	    {
+	    if (CLI_MODE) {
 	        $color = new Colors\Color();
 	        echo $color($error)->red()->bold() . PHP_EOL;
 	    }
@@ -140,12 +142,12 @@ App::setValue( 'class::definition::DB', '/inc/db/DB.class.php' );
 
 // Extensions setup
 include_once( XIMDEX_ROOT_PATH . '/conf/extensions.conf.php');
-$mManager = new \Ximdex\Modules\Manager;
+$mManager = new Ximdex\Modules\Manager;
 
 /**
  * Execute function init for each enabled module
  */
-foreach(\Ximdex\Modules\Manager::getEnabledModules() as $module){
+foreach(Ximdex\Modules\Manager::getEnabledModules() as $module) {
     $name = $module["name"];
     $moduleInstance = $mManager->instanceModule($name);
     if( method_exists( $moduleInstance, 'init' ) ){
@@ -165,16 +167,15 @@ if (XIMDEX_DIRECT && CLI_MODE && isset($argv[1])) {
     /* e.g:  $ /bootstrap.php src/Sync/scripts/scheduler/scheduler.php
      *  $command = /bootstrap.php  => argv[0]
      *  $script = src/Sync/scripts/scheduler/scheduler.php => new_command
-     *
      */
-    $command = array_shift($argv);
+    array_shift($argv);
     $argc--;
-    $script =  parse_url ( $argv[0],  PHP_URL_PATH );
-    $is_absolute_path = ( '/' == $script[0])?: false;
-    if ( $is_absolute_path ) {
+    $script = parse_url($argv[0], PHP_URL_PATH);
+    $is_absolute_path = ('/' == $script[0]) ? : false;
+    if ($is_absolute_path) {
         $external_script = $script;
     } else {
-        $external_script = XIMDEX_ROOT_PATH.'/'.$script;
+        $external_script = XIMDEX_ROOT_PATH . '/' . $script;
     }
     $new_command = $argv[0] = $external_script;
     if (file_exists($new_command)) {
