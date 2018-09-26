@@ -98,6 +98,7 @@ class State extends StatesOrm
 	function getSortedStatus()
 	{
 		$idState = $this->loadFirstState();
+		$allStatus = [];
 		$allStatus[] = $idState;
 		$status = new State($idState);
 		while (!$status->get('IsEnd')) {

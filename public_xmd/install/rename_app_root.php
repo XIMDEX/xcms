@@ -13,14 +13,12 @@ use Ximdex\Runtime\App;
 include 'bootstrap.php';
 
 $color = new Color();
-if (!isset($argv) or !$argv or $argc < 2)
-{
+if (!isset($argv) or !$argv or $argc < 2) {
     echo $color('ERROR: The parameter PATH has not been specified')->red()->bold() . PHP_EOL;
     exit();
 }
 $url = $argv[1];
-if (filter_var($url, FILTER_VALIDATE_URL) === false)
-{
+if (filter_var($url, FILTER_VALIDATE_URL) === false) {
     echo $color('ERROR: The parameter URL ' . $url . ' is not valid (ie. http://ximdex.com)')->red()->bold() . PHP_EOL;
     exit();
 }
@@ -29,22 +27,23 @@ if (filter_var($url, FILTER_VALIDATE_URL) === false)
 $data = parse_url($url);
 $values = [];
 $values['UrlHost'] = $data['scheme'] . '://' . $data['host'] . ((isset($data['port'])) ? ':' . $data['port'] : '');
-if (isset($data['path']))
+if (isset($data['path'])) {
     $values['UrlRoot'] = rtrim($data['path'], '/');
-else
+} else {
     $values['UrlRoot'] = '';
-if (isset($argv[2]))
+}
+if (isset($argv[2])) {
     $values['UrlFrontController'] = $argv[2];
-else
+} else {
     $values['UrlFrontController'] = '/public_xmd';
+}
 
-// change the database config values
-foreach ($values as $key => $value)
-{
+// Change the database config values
+foreach ($values as $key => $value) {
     $sql = 'update Config set ConfigValue = \'' . $value . '\' where ConfigKey = \'' . $key . '\'';
+    $dbConn = new \Ximdex\Runtime\Db();
     $res = $dbConn->exec($sql);
-    if ($res === false)
-    {
+    if ($res === false) {
         echo $color('ERROR: Cannot update Config data [' . $key . ']')->red()->bold();
         $errors = $dbConn->errorInfo();
         if (isset($errors[2]))
@@ -55,16 +54,16 @@ foreach ($values as $key => $value)
     echo 'Database value ' . $key . ' changed to ' . $value . PHP_EOL;
 }
 
-// reload the config values
-foreach ($values as $key => $value)
+// Reload the config values
+foreach ($values as $key => $value) {
     App::setValue($key, $value);
+}
 
-// regenerate the templates_include.xsl with the new URL
+// Regenerate the templates_include.xsl with the new URL
 $ximdex = new Node(10000);
 $xsltNode = new \Ximdex\NodeTypes\XsltNode($ximdex);
 $res = $xsltNode->reload_templates_include($ximdex);
-if (!$res)
-{
+if (!$res) {
     echo $color('ERROR: In reloading templares include files:')->red()->bold();
     foreach ($xsltNode->messages->messages as $error)
         echo PHP_EOL . $color($error['message'])->red();
@@ -73,31 +72,29 @@ if (!$res)
 }
 echo 'XSL templates content regenerated' . PHP_EOL;
 
-// restart the scheduler batch
+// Restart the scheduler batch
 echo 'Waiting to restart the scheduler daemon process...';
-if (!@touch(XIMDEX_ROOT_PATH . '/data/tmp/scheduler.stop'))
+if (!@touch(XIMDEX_ROOT_PATH . '/data/tmp/scheduler.stop')) {
     echo PHP_EOL . $color('WARNING: Cannot create the scheduler.stop file; please, restart process manually')->yellow() . PHP_EOL;
-else
-{
+} else {
     $cont = 1;
-    do
-    {
+    do {
         sleep(2);
-        if (!file_exists(XIMDEX_ROOT_PATH . '/data/tmp/scheduler.lck'))
-        {
+        if (!file_exists(XIMDEX_ROOT_PATH . '/data/tmp/scheduler.lck')) {
             echo PHP_EOL . 'Process stopped. It will restart soon';
             break;
         }
         $cont++;
         echo '.';
-    }
+    } 
     while($cont < 20);
     echo PHP_EOL;
-    if ($cont == 20)
+    if ($cont == 20) {
         echo $color('WARNING: Cannot stop the scheduler process. Please, restart it manually')->yellow() . PHP_EOL;
-    if (!@unlink(XIMDEX_ROOT_PATH . '/data/tmp/scheduler.stop'))
+    }
+    if (!@unlink(XIMDEX_ROOT_PATH . '/data/tmp/scheduler.stop')) {
         echo $color('WARNING: Cannot delete the scheduler.stop file; please, start process manually')->yellow() . PHP_EOL;
+    }
 }
-
 echo $color('Host configuration changed to ' . $values['UrlHost'] . $values['UrlRoot'] . ' sucessfully')->green() . PHP_EOL;
 echo $color('Remember to change the existing publication servers in each project and crontab schedulers')->yellow() . PHP_EOL;

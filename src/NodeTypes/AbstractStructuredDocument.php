@@ -653,6 +653,7 @@ abstract class AbstractStructuredDocument extends FileNode
         $node = new Node($nodeid);
         $dataFactory = new DataFactory($nodeid);
         $version = $dataFactory->GetLastVersionId();
+        $data = [];
         $data['CHANNEL'] = $channel;
         $transformer = $node->getProperty('Transformer');
         $data['TRANSFORMER'] = $transformer[0];
@@ -750,7 +751,7 @@ abstract class AbstractStructuredDocument extends FileNode
         $j = 0;
         for ($i = 1; $i < $length; $i++) {
             $ancestor = new Node($tree[$i]);
-            $alias = $node->GetAliasForLang($langID);
+            // $alias = $node->GetAliasForLang($langID);
             switch ($i) {
                 case 1:
                     $s .= ' project_name="' . $ancestor->get('Name') . '"';

@@ -77,6 +77,7 @@ class RelTemplateContainer extends GenericData
 				$dependencies->insertDependence($idTemplate,$child,'PVD',$version);
 			}
 		}
+		return $idRel;
 	}
 
     function deleteRel($idContainer)

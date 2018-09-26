@@ -17,6 +17,7 @@ services:
   
   db:
     image: "mariadb:10.3"
+    # image: "mysql:5.7"
     
     # Path where MySQL data will be
     volumes:

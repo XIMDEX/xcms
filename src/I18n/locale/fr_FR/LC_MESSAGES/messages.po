@@ -4220,7 +4220,6 @@ msgstr "Mettre a jour les attributs"
 #: public_xmd/actions/xmleditor2/js/toolboxes/AttributesToolBox.class.js:199
 #: public_xmd/actions/xmleditor2/js/toolboxes/AttributesToolBox.class.js:295
 #: public_xmd/src/Widgets/searchpanel/js/searchpanel.js:53
-#: modules/ximPUBLISHtools/actions/batchhistory/template/Smarty/index.tpl:49
 #: public_xmd/src/Widgets/spotlight/template/spotlight.tpl:27
 #: public_xmd/src/Widgets/spotlight/template/spotlight.tpl:28
 #: public_xmd/src/Widgets/searchpanel/template/searchpanel.tpl:66
@@ -5315,13 +5314,11 @@ msgstr "Publications planifiées"
 
 #: public_xmd/actions/workflow_forward/template/Smarty/index.tpl:160
 #: public_xmd/actions/workflow_forward/template/Smarty/index.tpl:128
-#: modules/ximPUBLISHtools/actions/batchhistory/template/Smarty/index.tpl:38
 msgid "From"
 msgstr "De"
 
 #: public_xmd/actions/workflow_forward/template/Smarty/index.tpl:164
 #: public_xmd/actions/workflow_forward/template/Smarty/index.tpl:132
-#: modules/ximPUBLISHtools/actions/batchhistory/template/Smarty/index.tpl:42
 msgid "To"
 msgstr "A"
 
@@ -6898,7 +6895,7 @@ msgid "Select user"
 msgstr "Sélectionner un utilisateur"
 
 #: public_xmd/actions/actionsstats/template/Smarty/index.tpl:38
-#: modules/ximPUBLISHtools/actions/managebatchs/template/Smarty/batchlistamp.tpl:174
+#: public_xmd/actions/managebatchs/template/Smarty/batchlistamp.tpl:174
 msgid "User:"
 msgstr "Utilisateur:"
 
@@ -7072,7 +7069,7 @@ msgstr "Il n'y a pas de template sélectionné"
 
 #: public_xmd/actions/deleteuser/template/Smarty/index.tpl:36
 #: public_xmd/actions/createchannel/template/Smarty/index.tpl:36
-#: modules/ximPUBLISHtools/actions/batchhistory/template/Smarty/index.tpl:34
+#: public_xmd/actions/batchhistory/template/Smarty/index.tpl:34
 msgid "Add channel"
 msgstr "Ajouter une chaine"
 
@@ -7346,95 +7343,95 @@ msgstr "Il n'y a pas encore de tags définis"
 msgid "Suggested tags from Ximdex CMS"
 msgstr "Balises suggérées du CMS Ximdex"
 
-#: modules/ximPUBLISHtools/actions/managebatchs/template/Smarty/index.tpl:27
+#: public_xmd/actions/managebatchs/template/Smarty/index.tpl:27
 msgid "Publishing report"
 msgstr "Publication du rapport"
 
-#: modules/ximPUBLISHtools/actions/managebatchs/template/Smarty/batchlist.tpl:30
+#: public_xmd/actions/managebatchs/template/Smarty/batchlist.tpl:30
 #: modules/ximSYNC/actions/managebatchs/template/Smarty/batchlist.tpl:54
 msgid "INFO"
 msgstr "INFO"
 
-#: modules/ximPUBLISHtools/actions/managebatchs/template/Smarty/batchlist.tpl:38
+#: public_xmd/actions/managebatchs/template/Smarty/batchlist.tpl:38
 msgid "Criterios"
 msgstr "Critères"
 
-#: modules/ximPUBLISHtools/actions/managebatchs/template/Smarty/batchlist.tpl:173
+#: public_xmd/actions/managebatchs/template/Smarty/batchlist.tpl:173
 msgid "Resultado"
 msgstr "Résultat"
 
-#: modules/ximPUBLISHtools/actions/managebatchs/template/Smarty/batchlistamp.tpl:45
+#: public_xmd/actions/managebatchs/template/Smarty/batchlistamp.tpl:45
 #: modules/ximSYNC/actions/managebatchs/template/Smarty/batchlistamp.tpl:45
 msgid "Close window"
 msgstr "Fermer la fenêtre"
 
-#: modules/ximPUBLISHtools/actions/managebatchs/template/Smarty/batchlistamp.tpl:79
+#: public_xmd/actions/managebatchs/template/Smarty/batchlistamp.tpl:79
 msgid "Any generator node"
 msgstr "Tout noeud de générateur"
 
-#: modules/ximPUBLISHtools/actions/managebatchs/template/Smarty/batchlistamp.tpl:94
+#: public_xmd/actions/managebatchs/template/Smarty/batchlistamp.tpl:94
 msgid "Any status"
 msgstr "Tout statut"
 
-#: modules/ximPUBLISHtools/actions/managebatchs/template/Smarty/batchlistamp.tpl:99
+#: public_xmd/actions/managebatchs/template/Smarty/batchlistamp.tpl:99
 msgid "Queued"
 msgstr "En attente"
 
-#: modules/ximPUBLISHtools/actions/managebatchs/template/Smarty/batchlistamp.tpl:104
+#: public_xmd/actions/managebatchs/template/Smarty/batchlistamp.tpl:104
 msgid "Running"
 msgstr "En cours"
 
-#: modules/ximPUBLISHtools/actions/managebatchs/template/Smarty/batchlistamp.tpl:109
+#: public_xmd/actions/managebatchs/template/Smarty/batchlistamp.tpl:109
 msgid "Finished"
 msgstr "Terminé"
 
-#: modules/ximPUBLISHtools/actions/managebatchs/template/Smarty/batchlistamp.tpl:117
+#: public_xmd/actions/managebatchs/template/Smarty/batchlistamp.tpl:117
 #: modules/ximSYNC/actions/managebatchs/template/Smarty/batchlist.tpl:115
 #: modules/ximSYNC/actions/managebatchs/template/Smarty/batchlistamp.tpl:117
 msgid "Any"
 msgstr "Tout"
 
-#: modules/ximPUBLISHtools/actions/managebatchs/template/Smarty/batchlistamp.tpl:122
-#: modules/ximPUBLISHtools/actions/managebatchs/template/Smarty/batchlistamp.tpl:207
+#: public_xmd/actions/managebatchs/template/Smarty/batchlistamp.tpl:122
+#: public_xmd/actions/managebatchs/template/Smarty/batchlistamp.tpl:207
 #: modules/ximSYNC/actions/managebatchs/template/Smarty/batchlist.tpl:120
 #: modules/ximSYNC/actions/managebatchs/template/Smarty/batchlistamp.tpl:122
 msgid "Active"
 msgstr "Actif"
 
-#: modules/ximPUBLISHtools/actions/managebatchs/template/Smarty/batchlistamp.tpl:127
-#: modules/ximPUBLISHtools/actions/managebatchs/template/Smarty/batchlistamp.tpl:209
+#: public_xmd/actions/managebatchs/template/Smarty/batchlistamp.tpl:127
+#: public_xmd/actions/managebatchs/template/Smarty/batchlistamp.tpl:209
 #: modules/ximSYNC/actions/managebatchs/template/Smarty/batchlist.tpl:125
 #: modules/ximSYNC/actions/managebatchs/template/Smarty/batchlistamp.tpl:209
 msgid "Inactive"
 msgstr "Inactif"
 
-#: modules/ximPUBLISHtools/actions/managebatchs/template/Smarty/batchlistamp.tpl:169
+#: public_xmd/actions/managebatchs/template/Smarty/batchlistamp.tpl:169
 msgid "Date:"
 msgstr "Date:"
 
-#: modules/ximPUBLISHtools/actions/managebatchs/template/Smarty/batchlistamp.tpl:176
+#: public_xmd/actions/managebatchs/template/Smarty/batchlistamp.tpl:176
 #: modules/ximSYNC/actions/managebatchs/template/Smarty/batchlistamp.tpl:176
 msgid "Publisher"
 msgstr "Publisher"
 
-#: modules/ximPUBLISHtools/actions/managebatchs/template/Smarty/batchlistamp.tpl:182
+#: public_xmd/actions/managebatchs/template/Smarty/batchlistamp.tpl:182
 #: modules/ximSYNC/actions/managebatchs/template/Smarty/batchlistamp.tpl:182
 msgid "Activation"
 msgstr "Activation"
 
-#: modules/ximPUBLISHtools/actions/batchhistory/template/Smarty/index.tpl:26
+#: public_xmd/actions/batchhistory/template/Smarty/index.tpl:26
 msgid "Publishing history"
 msgstr "Histoire de publication"
 
-#: modules/ximPUBLISHtools/actions/batchhistory/template/Smarty/index.tpl:45
+#: public_xmd/actions/batchhistory/template/Smarty/index.tpl:45
 msgid "Text to search"
 msgstr "Texte a rechercher"
 
-#: modules/ximPUBLISHtools/actions/batchhistory/template/Smarty/index.tpl:54
+#: public_xmd/actions/batchhistory/template/Smarty/index.tpl:54
 msgid "Document list"
 msgstr "Liste de documents"
 
-#: modules/ximPUBLISHtools/actions/batchhistory/template/Smarty/index.tpl:62
+#: public_xmd/actions/batchhistory/template/Smarty/index.tpl:62
 msgid "This publication"
 msgstr "Cette publication"
 
@@ -9477,8 +9474,8 @@ msgstr "Synchronisation FTP"
 msgid "SOLR synchronization"
 msgstr "Synchronisation SOLR"
 
-#: modules/ximPUBLISHtools/actions/batchhistory/template/Smarty/index.tpl:26
-#: modules/ximPUBLISHtools/actions/managebatchs/template/Smarty/index.tpl:27
+#: public_xmd/actions/batchhistory/template/Smarty/index.tpl:26
+#: public_xmd/actions/managebatchs/template/Smarty/index.tpl:27
 #: public_xmd/actions/addfoldernode/template/Smarty/addProject.tpl:30
 #: public_xmd/actions/addfoldernode/template/Smarty/index.tpl:28
 #: public_xmd/actions/addlangxmlcontainer/template/Smarty/index.tpl:30
@@ -9525,8 +9522,8 @@ msgstr "Synchronisation SOLR"
 msgid "Name Node:"
 msgstr "Nom du noeud:"
 
-#: modules/ximPUBLISHtools/actions/batchhistory/template/Smarty/index.tpl:27
-#: modules/ximPUBLISHtools/actions/managebatchs/template/Smarty/index.tpl:28
+#: public_xmd/actions/batchhistory/template/Smarty/index.tpl:27
+#: public_xmd/actions/managebatchs/template/Smarty/index.tpl:28
 #: public_xmd/actions/addfoldernode/template/Smarty/addProject.tpl:31
 #: public_xmd/actions/addfoldernode/template/Smarty/index.tpl:29
 #: public_xmd/actions/addlangxmlcontainer/template/Smarty/index.tpl:31

@@ -1,5 +1,5 @@
-﻿/**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+{**
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -21,10 +21,6 @@
  *
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
- */
+ *}
 
-
-        X.actionLoaded(function (event, fn, params) {
-            fn('div.ximPUBLISHtools').scope().init(params, false);
-        });
-        
+{$result}

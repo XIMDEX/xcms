@@ -178,7 +178,6 @@ class NodeFrame extends NodeFramesOrm
 				OR (TimeDown IS NULL AND TimeUp < $down)) AND NodeId = $nodeId AND TimeUp < $now
 				AND IdNodeFrame != $nodeFrId AND Active = 1";
 		}
-		$i = 0;
 		$dbObj->Query($sql);
 		if ($dbObj->numRows != 1) {
 			return NULL;

@@ -213,7 +213,7 @@ class SemanticTags extends SemanticTagsOrm
 	 * 
 	 * @param $_tags
 	 */
-	function removeAll($_tags = null)
+	function removeAll($tags = null)
 	{
 		if (!empty($tags)) {
 			foreach($tags as $_tag) {

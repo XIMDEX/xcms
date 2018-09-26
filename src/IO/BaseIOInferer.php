@@ -326,6 +326,7 @@ class BaseIOInferer
 			default:
 				return null;
 		}
+		$data = [];
 		$data['name'] = $newNodeTypeName;
 		$data['friendlyName'] = $friendlyName;
 		return $data;

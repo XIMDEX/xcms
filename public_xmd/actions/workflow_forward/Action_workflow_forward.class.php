@@ -103,7 +103,7 @@ class Action_workflow_forward extends ActionAbstract
         
         // Checking if the user has some role with permission to change to next State
         $allowed = FALSE;
-        foreach ($userRoles as $userRole => $myIdRole) {
+        foreach ($userRoles as $myIdRole) {
             $role = new Role($myIdRole);
             if ($role->HasState($nextState)) {
                 $allowed = TRUE;
@@ -127,12 +127,13 @@ class Action_workflow_forward extends ActionAbstract
         $nextStateName = $workflowNext->GetName();
         $AllStates = $workflow->GetAllStates();
         $find = false;
+        $AllowedStates = [];
         foreach ($AllStates as $state) {
             // If this state is after currentState, append the next state
             if ($find) {
                 // This is the next state.
                 $foundRol = false;
-                foreach ($userRoles as $userRole => $myIdRole) {
+                foreach ($userRoles as $myIdRole) {
                     $role = new Role($myIdRole);
                     if ($role->HasState($state)) {
                         $workflowAll = new WorkFlow($idNode, $state);
@@ -418,7 +419,6 @@ class Action_workflow_forward extends ActionAbstract
             'structural_publication' => $user->HasPermission('structural_publication') ? '1' : '0',
             'advanced_publication' => $user->HasPermission('advanced_publication') ? '1' : '0',
             'nodetypename' => $nodeTypeName,
-            'ximpublish_tools_enabled' => \Ximdex\Modules\Manager::isEnabled('ximPUBLISHtools'),
             'show_rep_option' => true
         );
     }
@@ -433,7 +433,6 @@ class Action_workflow_forward extends ActionAbstract
      */
     private function promoteNode($idNode, $idState) : bool
     {
-        $idUser = \Ximdex\Runtime\Session::get("userID");
         $node = new Node($idNode);
         $idActualState = $node->get('IdState');
         $actualWorkflowStatus = new WorkFlow($idNode, $idActualState);
@@ -485,16 +484,7 @@ class Action_workflow_forward extends ActionAbstract
         $idActualState = $node->get('IdState');
         $actualWorkflowStatus = new WorkFlow($idNode, $idActualState);
         $nextWorkflowStatus = new WorkFlow($idNode, $idState);
-        if (count($userList) > 0) {
-            $userNameList = array();
-            foreach ($userList as $id) {
-                $user = new User($id);
-                $userNameList[] = $user->get('Login');
-            }
-            $userNameString = implode(', ', $userNameList);
-        }
         $user = new User($idUser);
-        $from = $user->get('Login');
         $userName = $user->get('Name');
         $nodeName = $node->get('Name');
         $nodePath = $node->GetPath();
@@ -604,7 +594,8 @@ class Action_workflow_forward extends ActionAbstract
             'unchanged' => _(' were not published because they are already published in its latest version')
         );
         $valuesToShow = array();
-        foreach ($arrayOpciones as $idOpcion => $texto) {
+        $keysOpciones = array_keys($arrayOpciones);
+        foreach ($keysOpciones as $idOpcion) {
             if (array_key_exists($idOpcion, $result)) {
                 foreach ($result[$idOpcion] as $idNode => $physicalServer) {
                     if (gettype($idNode) == 'string') {

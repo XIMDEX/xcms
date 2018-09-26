@@ -11,10 +11,8 @@ class Action extends ActionsOrm
      */
     public function __construct($actionID = null)
     {
-        $this->flagErr = FALSE;
-        $this->autoCleanErr = TRUE;
-        $errorlist[1] = _('Database connection error');
-        $errorlist[2] = _('Action does not exist');   
+        $this->flagErr = false;
+        $this->autoCleanErr = true;
         parent::__construct($actionID);
     }
 

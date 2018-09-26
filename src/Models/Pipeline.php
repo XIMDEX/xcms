@@ -225,6 +225,7 @@ class Pipeline extends PipelinesOrm
         if ($pipelineChanged) {
             $oldNodeType = $result[0]['IdNodeType'];
             $node = new Node();
+            $strVals = [];
             if (isset($oldNodeType)) {
                 $strVals[] = $oldNodeType;
             }

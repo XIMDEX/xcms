@@ -162,6 +162,7 @@ class HTMLDocumentNode extends AbstractStructuredDocument
     {
         $properties = [];
         $properties['type'] = $isCurrentNode ? static::CONTENT_DOCUMENT : static::INCLUDE_DOCUMENT;
+        $extraData = [];
         $extraData['css'] = isset($layout['css']) ? $layout['css'] : [];
         $extraData['js'] = isset($layout['js']) ? $layout['js'] : [];
 

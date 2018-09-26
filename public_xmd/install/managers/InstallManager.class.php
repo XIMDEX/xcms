@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -212,6 +212,7 @@ class InstallManager
     {
         $result = array();
         $result["name"] = "OpenSSL";
+        $res = null;
         exec('openssl version', $res);
         if (count($res) > 0) {
             $result["state"] = "success";
@@ -268,6 +269,7 @@ class InstallManager
         if (!isset($_SERVER['DOCKER_CONF_HOME'])) {
             $recommendedModules[] = 'enchant';
         }
+        $result = [];
         $result["state"] = 'success';
         $result["name"] = 'PHP recommended extensions';
         foreach ($recommendedModules as $recommendedModule) {
@@ -283,6 +285,7 @@ class InstallManager
     private function checkDisabledFunctions()
     {
         // Checking pcntl_fork function is not disabled
+        $result = [];
         $result["state"] = 'success';
         $result["name"] = 'Disabled functions';
         
@@ -312,7 +315,7 @@ class InstallManager
         foreach ($filesToCheck as $file) {
             if (!file_exists(XIMDEX_ROOT_PATH . $file)) {
                 $result['state'] = "error";
-                $exception['messages'][] = "$file not found.";
+                $result['messages'][] = "$file not found.";
             } else if (!$this->isWritable(XIMDEX_ROOT_PATH . $file)) {
             	$result['state'] = "error";
             	$result['messages'][] = "Write permissions on $file directory required. Please, execute this command:";
@@ -350,6 +353,7 @@ class InstallManager
 
     public function checkGroup($file)
     {
+        $result = [];
         $result["state"] = "success";
         $result["name"] = "File permission";
         
@@ -436,6 +440,7 @@ class InstallManager
     public function setApiKey()
     {
         $random = md5(rand());
+        $res = null;
         exec('openssl enc -aes-128-cbc -k "' . $random . '" -P -md sha1', $res);
         $key = explode("=", $res[1])[1];
         $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length('AES-128-CBC'));

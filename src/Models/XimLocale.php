@@ -34,12 +34,7 @@ class XimLocale extends LocalesOrm
 	var $dbObj;
 	var $numErr;                // Error code
 	var $msgErr;                // Error message
-	var $errorList = array(    // Class error list
-		1 => 'Locale does not exist',
-		2 => 'A locale with this name already exists',
-		3 => 'Arguments missing',
-		4 => 'Error de conexion con la base de datos',
-	);
+	var $errorList;             // Class error list
 
 	// Constructor
 	function XimLocale($params = null)
@@ -48,7 +43,6 @@ class XimLocale extends LocalesOrm
 		$this->errorList[2] = _('A locale with this name already exists');
 		$this->errorList[3] = _('Arguments missing');
 		$this->errorList[3] = _('Database connection error');
-
 		parent::__construct($params);
 	}
 
@@ -78,6 +72,7 @@ class XimLocale extends LocalesOrm
 		}
 		$dbObj->Query($sql);
 		if (!$dbObj->numErr) {
+		    $salida = [];
 			while (!$dbObj->EOF) {
 				$salida[] = $dbObj->GetValue("ID");
 				$dbObj->Next();
@@ -161,7 +156,6 @@ class XimLocale extends LocalesOrm
 		return false;
 	}
 
-
 	function SetCode($code)
 	{
 		if (!($this->get('ID') > 0)) {
@@ -174,7 +168,6 @@ class XimLocale extends LocalesOrm
 		}
 		return false;
 	}
-
 
 	// Nos busca locale por su nombre
 	function SetByName($name)

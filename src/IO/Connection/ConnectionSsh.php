@@ -205,7 +205,7 @@ class ConnectionSsh extends Connector implements IConnector
         if ($recursive) {
             Logger::fatal('Not implemented yet Connection_Ssh::chmod with recursive true');
         }
-        return $this->netSFTP->chmod($mode, $filename);
+        return $this->netSFTP->chmod($mode, $target);
     }
 
     /**

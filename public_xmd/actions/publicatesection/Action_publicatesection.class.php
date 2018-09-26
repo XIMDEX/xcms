@@ -45,14 +45,12 @@ class Action_publicatesection extends ActionAbstract
     {
         $idNode = (int) $this->request->getParam("nodeid");
         $node = new Node($idNode);
-        $nodeTypeName = $node->nodeType->GetName();
         $nodeType = New NodeType();
         $publishabledNodeTypes = $nodeType->find('IdNodeType, Description', 'IsPublishable is true and IsFolder is false'
             , null, true, true, null, 'Description');
         $values = array(
             'go_method' => 'publicate_section',
             'publishabledtypes' => $publishabledNodeTypes,
-            'ximpublish_tools_enabled' => \Ximdex\Modules\Manager::isEnabled('ximPUBLISHtools'),
             'folderType' => $node->nodeType->getID() == NodeTypeConstants::SERVER ? 'server' : 'section',
             'name' => $node->GetNodeName(),
             'timestamp_from' => time(),

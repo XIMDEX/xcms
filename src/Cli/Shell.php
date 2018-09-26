@@ -71,14 +71,18 @@ class Shell
      */
     function exec_proc($cmd)
     {
+        $pipes = null;
         $proc = proc_open($cmd, $this->descriptors, $pipes);
 
 
         if (is_resource($proc)) {
+            /*
+            $output = [];
             while (!feof($pipes[1])) {
                 $line = fgets($pipes[1]);
                 $output[] = rtrim($line);
             }
+            */
         } else {
             $this->messages->add(_("Error of proc_open"), MSG_TYPE_ERROR);
             return false;

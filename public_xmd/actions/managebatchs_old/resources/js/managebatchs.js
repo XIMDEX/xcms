@@ -23,45 +23,45 @@
  *  @version $Revision$
  */
 
-function doPrioritizeSubmit(idBatch)
+function doPrioritizeSubmit (idBatch)
 {
-	setFilterValues();
+	setFilterValues ();
 	document.getElementById('frm_id_batch').value = idBatch;
 	document.getElementById('frm_prioritize_batch').value = 'yes';
 	document.frm_batchs.submit();
 }
 
-function doDeprioritizeSubmit(idBatch)
+function doDeprioritizeSubmit (idBatch)
 {
-	setFilterValues();
+	setFilterValues ();
 	document.getElementById('frm_id_batch').value = idBatch;
 	document.getElementById('frm_deprioritize_batch').value = 'yes';
 	document.frm_batchs.submit();
 }
 
-function doDeactivateSubmit(idBatch)
+function doDeactivateSubmit (idBatch)
 {
-	setFilterValues();
+	setFilterValues ();
 	document.getElementById('frm_id_batch').value = idBatch;
 	document.getElementById('frm_deactivate_batch').value = 'yes';
 	document.frm_batchs.submit();
 }
 
-function doActivateSubmit(idBatch)
+function doActivateSubmit (idBatch)
 {
-	setFilterValues();
+	setFilterValues ();
 	document.getElementById('frm_id_batch').value = idBatch;
 	document.getElementById('frm_activate_batch').value = 'yes';
 	document.frm_batchs.submit();
 }
 
-function doFilterSubmit()
+function doFilterSubmit ()
 {
-	setFilterValues();
+	setFilterValues ();
 	document.frm_batchs.submit();
 }
 
-function setFilterValues()
+function setFilterValues ()
 {
 	document.getElementById('frm_filter_state_batch').value = document.getElementById('frm_select_filter_state_batch').value;
 	document.getElementById('frm_filter_active_batch').value = document.getElementById('frm_select_filter_active_batch').value;
@@ -78,7 +78,7 @@ function setFilterValues()
 	document.getElementById('frm_filter_batch').value = 'yes';
 }
 
-function showOrHideContent(divId, name, extra)
+function showOrHideContent (divId, name, extra)
 {
 	if (isVisibleAnyContents(name) && extra == 'all') {
 		hideContent(name, divId);
@@ -95,7 +95,7 @@ function showOrHideContent(divId, name, extra)
 	}
 }
 
-function hideContent(divName, excluded)
+function hideContent (divName, excluded)
 {
 	var elements = document.getElementsByName(divName);
 	if (elements.length > 0) {
@@ -107,7 +107,7 @@ function hideContent(divName, excluded)
 	}
 }
 
-function isVisibleAnyContents(divName)
+function isVisibleAnyContents (divName)
 {
 	var elements = document.getElementsByName(divName);
 	if (elements.length > 0) {

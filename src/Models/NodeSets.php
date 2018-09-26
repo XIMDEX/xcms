@@ -73,7 +73,7 @@ class NodeSets extends NodeSetsOrm
     {
         $ns = new NodeSets();
         $ns->set('Name', $name);
-        $newId = $ns->add();
+        $ns->add();
         return $ns;
     }
 

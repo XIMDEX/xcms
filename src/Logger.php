@@ -3,7 +3,6 @@
 namespace Ximdex;
 
 use Colors\Color;
-// use Monolog\Handler\StreamHandler;
 use Ximdex\Runtime\App;
 use Exception;
 use Monolog\Handler\RotatingFileHandler;
@@ -35,7 +34,6 @@ Class Logger
     public static function generate(string $id, string $file, bool $default = false)
     {
         $log = new \Monolog\Logger($id);
-        // $log->pushHandler(new StreamHandler(XIMDEX_ROOT_PATH . '/logs/' . $file . '.log', \Monolog\Logger::DEBUG, true, 0666));
         $log->pushHandler(new RotatingFileHandler(XIMDEX_ROOT_PATH . '/logs/' . $file . '.log', self::MAX_FILES_TO_KEEP
             , \Monolog\Logger::DEBUG, true, 0666));
         if ($default) {
@@ -46,10 +44,10 @@ Class Logger
     }
 
     /**
-     * @param $logger
+     * @param \Monolog\Logger $logger
      * @param string $loggerInstance
      */
-    public static function addLog($logger, $loggerInstance = 'default')
+    public static function addLog(\Monolog\Logger $logger, string $loggerInstance = 'default')
     {
         self::$instances[$loggerInstance] = new Logger($logger);
         if (count(self::$instances) == 1) {
@@ -71,7 +69,7 @@ Class Logger
      * @return Logger
      * @throws
      */
-    public static function setActiveLog($loggerInstance = 'default')
+    public static function setActiveLog(string $loggerInstance = 'default')
     {
         if (!isset(self::$instances[$loggerInstance])) {
             throw new Exception('Logger Instance not found');
@@ -80,7 +78,7 @@ Class Logger
         return self::$instances[$loggerInstance];
     }
 
-    public static function error($string, $object = array())
+    public static function error(string $string, array $object = array())
     {
         try {
             $res = self::get()->logger->addError(self::$color->__invoke($string)->red()->bold(), $object);
@@ -93,12 +91,12 @@ Class Logger
         }
     }
 
-    public static function warning($string)
+    public static function warning(string $string)
     {
         return self::get()->logger->addWarning(self::$color->__invoke($string)->yellow());
     }
 
-    public static function debug($string)
+    public static function debug(string $string)
     {
         if (App::debug()) {
             try {
@@ -109,7 +107,7 @@ Class Logger
         }
     }
 
-    public static function fatal($string)
+    public static function fatal(string $string)
     {
         try {
             $res = self::get()->logger->addCritical(self::$color->__invoke($string)->red()->bold());
@@ -123,7 +121,7 @@ Class Logger
         }
     }
 
-    public static function info($string, bool $success = false, string $color = '')
+    public static function info(string $string, bool $success = false, string $color = '')
     {
         try {
             if ($success) {
@@ -137,7 +135,7 @@ Class Logger
         }
     }
 
-    public static function logTrace($string)
+    public static function logTrace(string $string)
     {
         $trace = debug_backtrace(false);
         $t1 = $trace[1];

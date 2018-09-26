@@ -1,6 +1,7 @@
 <?php
+
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -24,7 +25,6 @@
  *  @version $Revision$
  */
 
-
 use Ximdex\Models\Node;
 use Ximdex\Models\Version;
 use Ximdex\Runtime\App;
@@ -32,33 +32,26 @@ use Ximdex\Runtime\DataFactory;
 
 require_once(__DIR__ . '/QueryHandler_Abstract.class.php');
 
-class QueryHandler_SOLR extends QueryHandler_Abstract {
-
-	protected function recordsetToArray($data) {
-
+class QueryHandler_SOLR extends QueryHandler_Abstract
+{
+	protected function recordsetToArray($data)
+	{
 		$dom = new DOMDocument('1.0', App::getValue( 'workingEncoding'));
 		$dom->resolveExternals = true;
 		$dom->loadXML($data);
-
 		$xpath = new DOMXPath($dom);
 		$list = $xpath->query('/response/result/@numFound');
 		$records = $list->item(0)->value;
-
 		$rset = array();
 		$docs = $xpath->query('/response/result/doc');
-
 		foreach ($docs as $doc) {
 
 			// The easy way: get the NodeId and instantiate a Node...
 			$nodeId = $xpath->evaluate('string(int[@name="nodeid"])', $doc);
-
 			$node = new Node($nodeId);
-
 			if ($node->getID() !== null) {
-
 				$path  = pathinfo($node->GetPath());
 				$path =  (!empty($path['dirname']) ? $path['dirname'] : '') . (!empty($path['basename']) ? '/'.$path['basename'] : '');
-
 				$record = array();
 				$record['nodeid'] = $nodeId;
 				$record['parentid'] = $node->getParent();
@@ -80,7 +73,6 @@ class QueryHandler_SOLR extends QueryHandler_Abstract {
 				$record['versionnumber'] = null;
 				$record['versiondate'] = null;
 				$record['versiondateformated'] = null;
-
 				$datafactory = new DataFactory($nodeId);
 				$versionId = $datafactory->GetLastVersionId();
 				if ($versionId > 0) {
@@ -92,26 +84,22 @@ class QueryHandler_SOLR extends QueryHandler_Abstract {
 					$record['versiondate'] = $version->get('Date');
 					$record['versiondateformated'] = date('d/m/Y', $record['versiondate']);
 				}
-
 				$rset[] = $record;
 			}
 		}
-
 		return array(
 			'records' => $records,
 			'rset' => $rset
 		);
 	}
 
-	protected function doSearch($query, &$options) {
-
-
-		$solrOp = new SolrOp();
+	protected function doSearch($query, & $options)
+	{
+	    /*
+	    $solrOp = new SolrOp();
 		$rset = $solrOp->read($query);
 		$rset = $this->recordsetToArray($rset);
-
 		$pages = ceil($rset['records'] / $options['items']);
-
 		$result = array(
 			'records' => $rset['records'],
 			'items' => $options['items'],
@@ -119,35 +107,31 @@ class QueryHandler_SOLR extends QueryHandler_Abstract {
 			'pages' => $pages,
 			'data' => $rset['rset']
 		);
-
 		return $result;
+	    */
 	}
-
-	protected function createQuery(&$options) {
-
+	
+	protected function createQuery(&$options)
+	{
 		$this->select = array();
 		$this->joins = array();
 		$this->where = array();
 		$this->filters = array();
 		$this->order = array();
 		$this->limit = array();
-
 		$this->createFilters($options['filters']);
 		$this->createSorts($options['sorts']);
-
 		$this->select = array_unique($this->select);
 		$this->joins = array_unique($this->joins);
 		$this->where = array_unique($this->where);
 		$this->filters = array_unique($this->filters);
 		$this->order = array_unique($this->order);
 		$this->limit = array_unique($this->limit);
-
 		$options['items'] = isset($options['items']) ? $options['items'] : 50;
 		$options['items'] = $options['items'] >= 1 ? $options['items'] : 1;
 		$options['page'] = isset($options['page']) ? $options['page'] : 1;
 		$options['page'] = $options['page'] >= 1 ? $options['page'] : 1;
 		$offset = ($options['page'] - 1) * $options['items'];
-
 		$query = sprintf(
 			'%s %s',
 			implode(" {$options['condition']} ", $this->filters),
@@ -159,62 +143,50 @@ class QueryHandler_SOLR extends QueryHandler_Abstract {
 		$query = str_replace('[', '%5B', $query);
 		$query = str_replace(']', '%5D', $query);
 		$query = sprintf('q=%s&start=%s&rows=%s&fl=nodeid', $query, $offset, $options['items']);
-
 		return $query;
 	}
 
-	protected function createSorts($sorts) {
-
+	protected function createSorts($sorts)
+	{
 		foreach ($sorts as $sort) {
-
 			$sortField = null;
-
 			switch ($this->fieldMapper($sort['field'])) {
 				case 'nombre_documento':
 					$sortField = 'nombre_documento';
 					break;
 			}
-
 			if ($sortField !== null) $this->order[] = sprintf('%s %s', $sortField, strtolower($sort['order']));
 		}
 	}
 
-	protected function createFilters($filters) {
-
+	protected function createFilters($filters)
+	{
 		foreach ($filters as $filter) {
-
 			$field = $this->fieldMapper($filter['field']);
 			$comp = strtolower($filter['comparation']);
 			$cont = isset($filter['content']) ? $filter['content'] : null;
 			$cont = $cont === null ? (isset($filter['from']) ? $filter['from'] : null) : $cont;
-			$to = isset($filter['to']) ? $filter['to'] : null;
-
 			switch ($field) {
 				case 'nombre_documento':
 					$this->filters[] = sprintf('(nombre_documento:%s)', $this->createComparation($comp, array($cont)));
 					break;
-
 				case 'contenido':
 					$this->filters[] = sprintf('(contenido:%s)', $this->createComparation($comp, array($cont)));
 					break;
-
 				case 'nodetypeId':
 					$this->filters[] = sprintf('(nodetypeId%s)', $this->createComparation($comp, array($cont)));
 					break;
-
 				case '__CREATION_FIELD__':
-//					$this->filters[] = sprintf('(__CREATION_FIELD__%s)', $this->createComparation($comp, array($this->mktime($cont), $this->mktime($to))));
 					break;
 
 				case '__PUBLICATION_FIELD__':
-//					$this->filters[] = sprintf('(__PUBLICATION_FIELD__%s)', $this->createComparation($comp, array($this->mktime($cont), $this->mktime($to))));
 					break;
 			}
 		}
 	}
 
-	protected function createComparation($comp, $values=array()) {
-
+	protected function createComparation($comp, $values = array())
+	{
 		$str = '';
 
 		// Escape special chars... but use regexps please!
@@ -239,7 +211,6 @@ class QueryHandler_SOLR extends QueryHandler_Abstract {
 			$values[$i] = str_replace(':', '\:', $values[$i]);
 			$values[$i] = str_replace('\\', '\\\\', $values[$i]);
 		}
-
 		switch ($comp) {
 			case 'contains':
 			case 'equal':
@@ -261,36 +232,31 @@ class QueryHandler_SOLR extends QueryHandler_Abstract {
 				$str = sprintf('[%s TO %s]', $values[0], $values[1]);
 				break;
 		}
-
 		return $str;
 	}
 
-	protected function fieldMapper($field) {
+	protected function fieldMapper($field)
+	{
 		switch (strtolower($field)) {
 			case 'name':
 				$field = 'nombre_documento';
 				break;
-
 			case 'content':
 				$field = 'contenido';
 				break;
-
 			case 'nodetype':
 				$field = 'nodetypeId';
 				break;
-
 			case 'creation':
 				$field = '__CREATION_FIELD__';
 				break;
-
 			case 'publication':
 				$field = '__PUBLICATION_FIELD__';
 				break;
 		}
 		return $field;
 	}
+	
     public function count($query)
     {}
-
-
 }

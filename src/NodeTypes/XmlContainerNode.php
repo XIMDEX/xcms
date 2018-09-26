@@ -146,7 +146,7 @@ class XmlContainerNode extends FolderNode
         }
         $idSchema = $this->getIdSchema();
         $nameDoc = $this->parent->getNodeName() . "-id" . $lang->GetIsoName();
-        $idDoc = $xmldoc->CreateNode($nameDoc, $this->nodeID, $childrenNodeType->GetID(), $stateID = null, $idSchema, $idLang, $alias
+        $idDoc = $xmldoc->CreateNode($nameDoc, $this->nodeID, $childrenNodeType->GetID(), null, $idSchema, $idLang, $alias
             , $channelList, $data);
         if ($xmldoc->HasError()) {
             $this->parent->SetError(1);
@@ -207,6 +207,7 @@ class XmlContainerNode extends FolderNode
             $this->parent->SetError(1);
             return false;
         }
+        $langList = [];
         foreach ($docList as $docID) {
             $strDoc = new StructuredDocument($docID);
             if (!$strDoc->GetID()) {

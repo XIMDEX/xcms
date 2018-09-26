@@ -34,6 +34,7 @@ use Ximdex\Runtime\App;
 use Ximdex\Runtime\Constants;
 use Ximdex\Runtime\DataFactory;
 use Ximdex\Utils\Strings;
+use Ximdex\Sync\SyncManager;
 
 /**
  * Class Action_edittext
@@ -49,12 +50,9 @@ class Action_edittext extends ActionAbstract
         $this->addCss('/actions/edittext/resources/css/style.css');
         $this->addCss('/vendors/codemirror/Codemirror/lib/codemirror.css');
         $this->addCss('/vendors/codemirror/Codemirror/addon/fold/foldgutter.css');
-
         $idNode = $this->request->getParam('nodeid');
         $strDoc = new StructuredDocument($idNode);
-        
-        if ($strDoc->GetSymLink())
-        {
+        if ($strDoc->GetSymLink()) {
             $masterNode = new Node($strDoc->GetSymLink());
             $values = array(
                 'path_master' => $masterNode->GetPath()
@@ -64,37 +62,28 @@ class Action_edittext extends ActionAbstract
         }
         $node = new Node($idNode);
         $node_name = $node->GetNodeName();
-
         $idNodeType = $node->get('IdNodeType');
         $nodeType = new NodeType($idNodeType);
-        $nodeTypeName = $nodeType->get('Name');
-
         $fileName = $node->get('Name');
         $infoFile = pathinfo($fileName);
-        if (array_key_exists("extension", $infoFile))
-        {
+        if (array_key_exists("extension", $infoFile)) {
             $ext = $infoFile['extension'];
         }
-        elseif ($idNodeType == \Ximdex\NodeTypes\NodeTypeConstants::XML_DOCUMENT)
-        {
-            //for the documents
+        elseif ($idNodeType == \Ximdex\NodeTypes\NodeTypeConstants::XML_DOCUMENT) {
+            
+            // For the documents
             $ext = "xml";
         }
-        elseif ($idNodeType == \Ximdex\NodeTypes\NodeTypeConstants::HTML_DOCUMENT)
-        {
-            //for the documents
+        elseif ($idNodeType == \Ximdex\NodeTypes\NodeTypeConstants::HTML_DOCUMENT) {
+            
+            // For the documents
             $ext = "html";
-        }
-        else
-        {
+        } else {
             $ext = "txt";
         }
-
         $content = $node->GetContent();
         $content = htmlspecialchars($content);
-
-        switch ($ext)
-        {
+        switch ($ext) {
             case "java":
                 $this->addJs('/vendors/codemirror/Codemirror/addon/edit/closebrackets.js');
                 $this->addJs('/vendors/codemirror/Codemirror/addon/fold/brace-fold.js');
@@ -112,7 +101,6 @@ class Action_edittext extends ActionAbstract
                 $this->addJs('/vendors/codemirror/Codemirror/addon/fold/markdown-fold.js');
                 break;
         }
-
         $this->addJs('/vendors/codemirror/Codemirror/addon/fold/foldcode.js');
         $this->addJs('/vendors/codemirror/Codemirror/addon/fold/foldgutter.js');
         $this->addJs('/vendors/codemirror/Codemirror/addon/fold/comment-fold.js');
@@ -121,11 +109,9 @@ class Action_edittext extends ActionAbstract
         $this->addJs('/vendors/codemirror/Codemirror/mode/meta.js');
         $this->addJs('/actions/edittext/resources/js/init.js');
 
-        //if is not node state equals to edition, send a message.
+        // If is not node state equals to edition, send a message.
         $allowed = $node->GetState();
-
-        if ($nodeType->get('IsStructuredDocument') > 0 && $allowed != Constants::EDITION_STATUS_ID)
-        {
+        if ($nodeType->get('IsStructuredDocument') > 0 && $allowed != Constants::EDITION_STATUS_ID) {
             $this->messages->add(_('You can not edit the document.'), MSG_TYPE_WARNING);
             $values = array(
                 'messages' => $this->messages->messages
@@ -133,7 +119,6 @@ class Action_edittext extends ActionAbstract
             $this->renderMessages();
             return false;
         }
-
         $values = array('id_node' => $idNode,
             'codemirror_url' => App::getUrl('/vendors/codemirror/Codemirror'),
             'ext' => $ext,
@@ -145,7 +130,6 @@ class Action_edittext extends ActionAbstract
             'node_Type' => $node->nodeType->GetName(),
             'id_editor' => $idNode . uniqid()
         );
-
         $this->render($values, null, 'default-3.0.tpl');
         return true;
     }
@@ -156,24 +140,20 @@ class Action_edittext extends ActionAbstract
     public function publishForm()
     {
         $idNode = $this->request->getParam('nodeid');
-        
         $dataFactory = new DataFactory($idNode);
         $lastVersion = $dataFactory->GetLastVersionId();
         $prevVersion = $dataFactory->GetPreviousVersion($lastVersion);
-
         $cacheTemplate = new PipeCacheTemplates();
         $docs = $cacheTemplate->GetDocsContainTemplate($prevVersion);
-        if (is_null($docs))
-        {
+        if (is_null($docs)) {
             $this->redirectTo('index');
             return;
         }
         $numDocs = count($docs);
-        for ($i = 0; $i < $numDocs; $i++)
-        {
+        $docsList = [];
+        for ($i = 0; $i < $numDocs; $i++) {
             $docsList[] = $docs[$i]['NodeId'];
         }
-
         $values = array('numDocs' => $numDocs,
             'docsList' => implode('_', $docsList),
             'go_method' => 'publicateDocs',
@@ -190,20 +170,15 @@ class Action_edittext extends ActionAbstract
         $syncMngr = new SyncManager();
         $syncMngr->setFlag('deleteOld', true);
         $syncMngr->setFlag('linked', false);
-
-        foreach ($docs as $documentID)
-        {
+        foreach ($docs as $documentID) {
             $result = $syncMngr->pushDocInPublishingPool($documentID, time(), NULL, NULL);
         }
-
         $arrayOpciones = array('ok' => _(' have been successfully published'),
             'notok' => _(' have not been published, because of an error during process'),
             'unchanged' => _(' have not been published because they are already published on its most recent version'));
-
         $values = array('arrayOpciones' => $arrayOpciones,
             'arrayResult' => $result
         );
-
         $this->render($values, NULL, 'publicationResult.tpl');
     }
     
@@ -212,30 +187,26 @@ class Action_edittext extends ActionAbstract
         $idNode = $this->request->getParam('nodeid');
         $content = $this->request->getParam('editor');
 
-        //If content is empty, put a blank space in order to save a file with empty content
+        // If content is empty, put a blank space in order to save a file with empty content
         $content = empty($content) ? " " : $content;
-
         $node = new Node($idNode);
-        if ((!$node->get('IdNode') > 0))
-        {
+        if ((!$node->get('IdNode') > 0)) {
             $this->messages->add(_('The document which is trying to be edited does not exist'), MSG_TYPE_ERROR);
             $this->renderMessages();
         }
-        if ($node->SetContent(Strings::stripslashes($content), true) === false)
-        {
+        if ($node->SetContent(Strings::stripslashes($content), true) === false) {
             $this->messages->mergeMessages($node->messages);
             $this->sendJSON(array('messages' => $this->messages->messages, 'type' => MSG_TYPE_WARNING));
             return false;
         }
-        if (!$this->messages->count() and $node->messages->count())
+        if (!$this->messages->count() and $node->messages->count()) {
             $this->messages->messages[0] = $node->messages->messages[0];
-        if ($node->RenderizeNode() === false)
-        {
+        }
+        if ($node->RenderizeNode() === false) {
             $this->messages->mergeMessages($node->messages);
             $this->sendJSON(array('messages' => $this->messages->messages, 'type' => MSG_TYPE_WARNING));
             return false;
         }
-
         $this->messages->add('The document has been saved', MSG_TYPE_NOTICE);
         $this->sendJSON(
             array(

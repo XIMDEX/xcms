@@ -95,25 +95,6 @@ angular.module("ximdex.main.controller").controller("ximPUBLISHtools", [
         }
       });
     };
-
-    /*
-     * method used in history view
-    $scope.updateSearch = (searchObj) ->
-        $scope.urlParams.method = 'getFrameList'
-        $scope.urlParams.options = [{finished: '1'}]
-        url = xUrlHelper.getAction $scope.urlParams
-        $http({
-            method: 'POST',
-            url: url,
-            data: $.param(searchObj),
-            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-        })
-        .success((data) ->
-            $scope.json = data;
-            return
-        )
-        return
-     */
     $scope.timeFromNow = function(date) {
       var hours, min, thatDate, thisDate, timeDiffMSecs, timeDiffSecs, timeStr;
       if (date == null) {
@@ -129,14 +110,6 @@ angular.module("ximdex.main.controller").controller("ximPUBLISHtools", [
       timeDiffSecs = Math.floor(timeDiffSecs % 60);
       return timeStr = hours + 'H ' + min + 'm ' + timeDiffSecs + 's';
     };
-    /*
-    return;
-    return $scope.initShowing = function(idPortal) {
-      if ($scope.showing[idPortal] == null) {
-        return $scope.showing[idPortal] = false;
-      }
-    };
-    */
     return;
   }
 ]);

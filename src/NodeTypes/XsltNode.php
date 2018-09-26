@@ -322,9 +322,6 @@ class XsltNode extends FileNode
      */
     public function DeleteNode()
     {
-        // Deletes dependencies in rel tables
-        $nodeTypeId = $this->parent->get('IdNodeType');
-        $templateName = $this->parent->get('Name');
         Logger::info('Xslt dependencies deleted');
         return true;
     }
@@ -452,6 +449,7 @@ class XsltNode extends FileNode
         $nodevalue = $node->nodeValue;
 
         // Split CDATA sections if contains attributes references
+        $matches = [];
         $ret = preg_match_all('/"{@([^}]+)}"/', $nodevalue, $matches);
         if (!$ret)
         {

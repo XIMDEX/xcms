@@ -88,7 +88,7 @@ class PortalFrames extends PortalFramesOrm
             return;
         }
         if (!$batch->get('State')) {
-            throw new \Exception('Unknown state for portal frame with ID: ' . $portalFrame->get('id'));
+            throw new \Exception('Unknown state for batch with ID: ' . $batch->get('IdBatch'));
         }
         if (!$batch->get('IdPortalFrame')) {
             throw new \Exception('There is not a portal frame for batch with ID: ' . $batch->get('IdBatch'));

@@ -1,6 +1,7 @@
 <?php
+
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -24,22 +25,22 @@
  *  @version $Revision$
  */
 
-
 use Ximdex\MVC\FrontController;
 use Ximdex\Runtime\App;
 use Ximdex\XML\Base;
 
-\Ximdex\Modules\Manager::file('/actions/composer/Action_composer.class.php');
-\Ximdex\Modules\Manager::file('/actions/browser3/inc/search/QueryProcessor.class.php');
+Ximdex\Modules\Manager::file('/actions/composer/Action_composer.class.php');
+Ximdex\Modules\Manager::file('/actions/browser3/inc/search/QueryProcessor.class.php');
 
-
- // Standard data source.
-
-class Datasource_Composer extends AbstractDatasource implements IDatasource {
-
+/**
+ * Standard data source
+ */
+class Datasource_Composer extends AbstractDatasource implements IDatasource
+{
 	private $fc = null;
 
-	public function __construct($conf=array()) {
+	public function __construct($conf=array())
+	{
 		parent::__construct($conf);
 		$this->fc = new FrontController();
 	}
@@ -48,31 +49,18 @@ class Datasource_Composer extends AbstractDatasource implements IDatasource {
 	 * @param $request \Ximdex\Runtime\Request
 	 * @param $method
 	 */
-	protected function redirect($request, $method) {
-
-		/*$request->setParam('actionid', null);
-		$request->setParam('module', null);
-		$request->setParam('action', 'composer');
-		$request->setParam('actionName', 'composer');
-		$request->setParam('method', 'treedata');*/
-
+	protected function redirect($request, $method)
+	{
 		$request->setParam('action', null);
 		$request->setParam('actionid', null);
-
 		unset($_GET['action']);
 		unset($_GET['actionid']);
 		$_GET['method'] = $method;
-
 		unset($_REQUEST['action']);
 		unset($_REQUEST['actionid']);
 		$_REQUEST['method'] = $method;
-
 		$_GET["redirect_other_action"] = 1;
-
-
-//		$this->fc->setRequest($request);
 		$this->fc->dispatch();
-
 		die();
 	}
 
@@ -81,8 +69,8 @@ class Datasource_Composer extends AbstractDatasource implements IDatasource {
 	 * @param bool $recursive
 	 * @return mixed
 	 */
-	public function read($request, $recursive = true) {
-
+	public function read($request, $recursive = true)
+	{
 		$idNode = $request->getParam('nodeid');
 		$children = $request->getParam('children');
 		$from = $request->getParam('from');
@@ -92,12 +80,8 @@ class Datasource_Composer extends AbstractDatasource implements IDatasource {
 
 		// Should we consider the IdNode 10000 directly?
 		$idNode = $idNode == '/' ? 10000 : $idNode;
-
-		//$ret = $this->redirect($request, 'readTreedata');
-
 		$c = new Action_composer();
 		$ret = $c->readTreedata($idNode, $children, $from, $to, $items, $find);
-
 		$data = $this->normalizeNode($ret['node']);
 		if ($recursive) {
 			$data['collection'] = array();
@@ -113,7 +97,8 @@ class Datasource_Composer extends AbstractDatasource implements IDatasource {
 	 * @param bool $recursive
 	 * @return array
 	 */
-	public function quickRead($request, $recursive = true) {
+	public function quickRead($request, $recursive = true)
+	{
 		unset( $recursive ) ;
 		$idNode = $request->getParam('nodeid');
 		$items = $request->getParam('items');
@@ -122,10 +107,8 @@ class Datasource_Composer extends AbstractDatasource implements IDatasource {
 
 		// Should we consider the IdNode 10000 directly?
 		$idNode = $idNode == '/' ? 10000 : $idNode;
-
 		$c = new Action_composer();
 		$ret = $c->quickRead($idNode, $from, $to, $items);
-
 		return $ret;
 	}
 
@@ -134,10 +117,10 @@ class Datasource_Composer extends AbstractDatasource implements IDatasource {
 	 * @param bool $recursive
 	 * @return array
 	 */
-	public function readFiltered($request, $recursive = true) {
+	public function readFiltered($request, $recursive = true)
+	{
 		unset( $recursive ) ;
 		$idNode = $request->getParam('nodeid');
-		$children = $request->getParam('children');
 		$from = $request->getParam('from');
 		$to = $request->getParam('to');
 		$items = $request->getParam('items');
@@ -145,24 +128,13 @@ class Datasource_Composer extends AbstractDatasource implements IDatasource {
 
 		// Should we consider the IdNode 10000 directly?
 		$idNode = $idNode == '/' ? 10000 : $idNode;
-
 		$c = new Action_composer();
 		$ret = $c->readTreedataFiltered($idNode, $find, $from, $to, $items);
-
 		return $ret;
 	}
 
-	private function normalizeNode($node) {
-/*
-		$node['name'] = $node['text'];
-		unset($node['text']);
-		$node['idnode'] = $node['nodeid'];
-		unset($node['nodeid']);
-		$node['idnodetype'] = $node['nodetypeid'];
-		unset($node['nodetypeid']);
-		$node['idparent'] = $node['parentid'];
-		unset($node['parentid']);
-*/
+	private function normalizeNode($node)
+	{
 		return $node;
 	}
 

@@ -1,6 +1,7 @@
 <?php
+
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -28,8 +29,8 @@ use Ximdex\MVC\IController;
 use Ximdex\Runtime\Request;
 use Ximdex\Runtime\Response;
 
-require_once(APP_ROOT_PATH.'/install/InstallStepFactory.class.php');
-require_once(APP_ROOT_PATH.'/install/managers/InstallManager.class.php');
+require_once APP_ROOT_PATH . '/install/InstallStepFactory.class.php';
+require_once APP_ROOT_PATH . '/install/managers/InstallManager.class.php';
 
 /**
  * Controller for install steps.

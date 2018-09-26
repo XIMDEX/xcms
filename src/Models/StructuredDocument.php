@@ -70,6 +70,7 @@ class StructuredDocument extends StructuredDocumentsOrm
             $this->SetError(1);
             return null;
         }
+        $salida = [];
         while (!$dbObj->EOF) {
             $salida[] = $dbObj->row["idDoc"];
             $dbObj->Next();
@@ -415,7 +416,7 @@ class StructuredDocument extends StructuredDocumentsOrm
         $content = $schemaData['content'];
         $schema = FsUtils::file_get_contents(APP_ROOT_PATH . '/actions/xmleditor2/views/common/schema/relaxng-1.0.rng.xml');
         $rngValidator = new RNG();
-        $valid = $rngValidator->validate($schema, $content);
+        $rngValidator->validate($schema, $content);
         $errors = $rngValidator->getErrors();
         if ($errors) {
             foreach ($errors as $error) {
@@ -548,7 +549,7 @@ class StructuredDocument extends StructuredDocumentsOrm
         if ((int)$docID > 0) {
             $this->set('IdDoc', $docID);
         }
-        $result = parent::add();
+        parent::add();
         if ($this->get('IdDoc') > 0) {
 
             $this->ID = $docID;
@@ -601,6 +602,7 @@ class StructuredDocument extends StructuredDocumentsOrm
             $this->SetError(1);
         } else {
             $salida = NULL;
+            $links = [];
             while (!$dbObj->EOF) {
                 $links[] = $dbObj->GetValue("IdNodeDependent");
                 $dbObj->Next();

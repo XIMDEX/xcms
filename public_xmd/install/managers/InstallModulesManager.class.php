@@ -130,4 +130,9 @@ class InstallModulesManager extends InstallManager
         App::setValue('HTMLEditorEnabled', '1', true);
         return true;
     }
+    
+    public function installximTags()
+    {
+        return true;
+    }
 }

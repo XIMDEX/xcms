@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -24,30 +24,32 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
-class FilterParameters {
 
-    // TODO implement filterParameter service
-    public static function filterInteger($var) {
+namespace Ximdex\Utils;
+
+class FilterParameters
+{
+    public static function filterInteger(?string $var) : ?int
+    {
         if (preg_match('/^\d+$/', $var)) {
             return intval($var);
         }
         return null;
     }
 
-    public static function filterBool($var) {
+    public static function filterBool(?string $var) : ?bool
+    {
         if (preg_match('/^[0|1]?$/', $var)) {
             return (bool) $var;
         }
         return null;
     }
 
-    public static function filterText($var) {
+    public static function filterText(?string $var) : ?string
+    {
         if (preg_match('/^[\w|_]+$/', $var)) {
             return trim($var);
         }
         return null;
     }
-
 }
-
-?>

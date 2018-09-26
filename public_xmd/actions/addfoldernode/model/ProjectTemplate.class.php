@@ -1,7 +1,7 @@
 <?php
 
 /**
-*  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+*  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
 *
 *  Ximdex a Semantic Content Management System (CMS)
 *
@@ -27,47 +27,47 @@
 
 use Ximdex\Utils\FsUtils;
 
-\Ximdex\Modules\Manager::file('/actions/addfoldernode/model/BuildParser.class.php');
+Ximdex\Modules\Manager::file('/actions/addfoldernode/model/BuildParser.class.php');
 
 /**
  * Manage the ProjectTemplate. 
  */
-class ProjectTemplate{
-
-	private $name=null;
-    private $title=null;
-    private $description=null;
+class ProjectTemplate
+{
+	private $name = null;
+    private $title = null;
+    private $description = null;
 	private $project = null;
-    public $configurable=false;
+    public $configurable = false;
 
 	/**
-	*Constructor method
-	*@param string $name project name
-	*@param string $version version of project
+	* Constructor method
+	*
+	* @param string $name project name
+	* @param string $version version of project
 	*/
-	public function __construct($name) {
-		
-		$this->name = $name;		
-
+	public function __construct($name)
+	{	
+		$this->name = $name;
 		$b = new BuildParser($name);
-        //Init buildProject property
+		
+        // Init buildProject property
         $this->project = $b->getProject();
-        $this->title = $this->project->__get("title");
-        $this->description = $this->project->__get("description");
+        $this->title = $this->project->__get('title');
+        $this->description = $this->project->__get('description');
 	}
 
 	/**
-	*Get all templates for default and specific projects
-	*@return array Loader_ximfile .
+	* Get all templates for default and specific projects
+	* @return array Loader_ximfile
 	*/
-	public function getTemplates(){
-
+	public function getTemplates()
+	{
 		$result = array();
-
 		$templates = $this->project->getTemplates();
-        foreach ($templates as $template){
-            if ($template->__get("filename")){
-                $result[$template->__get("filename")] = $template;
+        foreach ($templates as $template) {
+            if ($template->__get('filename')) {
+                $result[$template->__get('filename')] = $template;
             }
         }
         return $result;
@@ -75,73 +75,75 @@ class ProjectTemplate{
 
 	/**
     * Get the match Servers from default and specific project
-    * Defaults are mandatory, but specific can overload it.
-    * @return array with all Loader_Server objects.
+    * Defaults are mandatory, but specific can overload it
+    * 
+    * @return array with all Loader_Server objects
     */
-    public function getServers(){
-
+    public function getServers()
+    {
         $result = array();
         $servers = $this->project->getServers();
         foreach ($servers as $server) {
-            if ($server->__get("name")){
-                $result[$server->__get("name")] = $server;
+            if ($server->__get('name')){
+                $result[$server->__get('name')] = $server;
             }
         }
-
         return $result;
     }
 
     /**
-    *Get the match Schemes from default and specific project
-    *Defaults are mandatory, but specific can overload it.
-    *@return array with all Loader_XimFile objects.
+    * Get the match Schemes from default and specific project
+    * Defaults are mandatory, but specific can overload it.
+    * @return array with all Loader_XimFile objects.
     */
-    public function getSchemes(){
+    public function getSchemes()
+    {
         $result = array();
-
         $schemes = $this->project->getSchemes();
-        foreach ($schemes as $scheme){
-            if ($scheme->__get("filename")){
-                $result[$scheme->__get("filename")] = $scheme;
+        foreach ($schemes as $scheme) {
+            if ($scheme->__get('filename')) {
+                $result[$scheme->__get('filename')] = $scheme;
             }
         }
-
         return $result;
     }
 
-    public function setProjectId($idProject){
-    	$this->project->$projectid=$idProject;
+    public function setProjectId($idProject)
+    {
+    	$this->project->projectid = $idProject;
     }
 
-    public function getBuildProject(){
+    public function getBuildProject()
+    {
         return $this->project;
     }
 
     /**
      * @return ProjectTemplate[]
      */
-	public static function getAllProjectTemplates(){
-		
-		//Returned array if everything is ok.
+	public static function getAllProjectTemplates()
+	{	
+		// Returned array if everything is ok.
 		$result = array();
+		$rootThemesFolder = XIMDEX_ROOT_PATH.THEMES_FOLDER;
 		
-		$rootThemesFolder =  XIMDEX_ROOT_PATH.THEMES_FOLDER;
-		//Getting all theme folders
+		// Getting all theme folders
 		$themesFolders = FsUtils::readFolder($rootThemesFolder,false);
 
-		  //For every project
-		foreach ($themesFolders as $themeFolder ) {
-
+		// For every project
+		foreach ($themesFolders as $themeFolder) {
 			$result[$themeFolder] = new ProjectTemplate($themeFolder);			
 		}
 		return $result;
 	}
 
-    public function __get($prop) {
+    public function __get($prop)
+    {
         return $this->$prop;
-        }
+    }
         
-    public function __set($prop, $val) {
+    public function __set($prop, $val)
+    {
         $this->$prop = $val;
-        }
+    }
 }

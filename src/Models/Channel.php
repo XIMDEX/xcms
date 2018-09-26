@@ -57,9 +57,6 @@ class Channel extends ChannelsOrm
      */
     function __construct($nodeID = null)
     {
-        $errorList[1] = _('Database connection error');
-        $errorList[2] = _('Channel does not exist');
-        $errorList[3] = _('Database inconsistency');
         parent::__construct($nodeID);
     }
 

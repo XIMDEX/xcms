@@ -107,7 +107,7 @@
 							</div>
 						{/if}
 						-->
-						{if $ximpublish_tools_enabled and isset($publishabledtypes)}
+						{if isset($publishabledtypes)}
 						    <div class="publication_option">
                                 <div class="option_checkbox option_publish_type">
                                     <input type="checkbox" name="publishType" id="publishType" value="1" />

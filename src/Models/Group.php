@@ -94,6 +94,7 @@ class Group extends GroupsOrm
 		$sql = 'SELECT IdGroup FROM Groups';
 		$dbObj->Query($sql);
 		if (!$dbObj->numErr) {
+		    $salida = [];
 			while (!$dbObj->EOF) {
 				$salida[] = $dbObj->GetValue("IdGroup");
 				$dbObj->Next();

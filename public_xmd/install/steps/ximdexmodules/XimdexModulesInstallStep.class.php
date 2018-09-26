@@ -43,6 +43,7 @@ class XimdexModulesInstallStep extends GenericInstallStep
         $imManager = new InstallModulesManager(InstallModulesManager::WEB_MODE);
         $result = $imManager->buildModulesFile();
         if (!$result) {
+            $error = [];
             $error["state"] = "error";
             $error["messages"][] = "Impossible to install modules. Do you have the proper permissions on install/install-modules.php file?";
             $this->exceptions[] = $error;

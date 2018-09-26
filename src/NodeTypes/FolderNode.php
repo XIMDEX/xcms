@@ -207,6 +207,7 @@ class FolderNode extends Root
         $dinamicTemplateList = $section->getProperty('dinamic_template_list');
         $dinamicTemplateList = $dinamicTemplateList[0];
         $dinamicTemplatePatterns = explode(', ', $dinamicTemplateList);
+        $templates = [];
         foreach ($dinamicTemplatePatterns as $key => $dinamicTemplatePattern)
         {
             $matches = array();

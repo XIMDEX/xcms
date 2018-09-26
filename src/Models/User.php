@@ -42,15 +42,7 @@ class User extends UsersOrm
     var $userID;
     var $numErr;    // Error code
     var $msgErr;    // Error message
-    var $errorList = array(
-        1 => 'User does not exist',
-        2 => 'An user with this login already exists',
-        3 => 'Arguments missing',
-        4 => 'Some of the connections with your groups could not be deleted',
-        5 => 'Database connection error',
-        6 => 'Error in associated object',
-        7 => 'Role for group missing'
-    ); // Class error list
+    var $errorList; // Error list
 
     function __construct($params = NULL)
     {
@@ -87,8 +79,9 @@ class User extends UsersOrm
                 return $salida;
             } else
                 SetError(5);
-        } else
+        } else {
             $this->SetError(1);
+        }
         return null;
     }
 
@@ -243,6 +236,7 @@ class User extends UsersOrm
         if ($this->get('IdUser') > 0) {
             $groupList = $this->GetGroupListOnNode($nodeID);
             if (!empty($groupList)) {
+                $roleList = [];
                 foreach ($groupList as $idGroup) {
                     $group = new Group($idGroup);
                     $role = $group->GetRoleOnNode($nodeID);
@@ -448,14 +442,15 @@ class User extends UsersOrm
         $this->ClearError();
         if ($this->get('IdUser') > 0) {
             $groupIDs = $this->GetGroupListOnNode($nodeID);
+            $salida = [];
             if (!$this->numErr) {
                 foreach ($groupIDs as $groupID) {
                     $salida[] = $this->GetToolbarOnNode($nodeID, $groupID);
                 }
             }
-
-            if (!$this->numErr)
+            if (!$this->numErr) {
                 return $salida;
+            }
         } else {
             $this->SetError(1);
         }
@@ -463,7 +458,8 @@ class User extends UsersOrm
 
     function add()
     {
-        $this->CreateNewUser($this->get('Name'), $this->get('Login'), $this->get('Pass'), $this->get('Name'), $this->get('Email'), $this->get('Locale'));
+        $this->CreateNewUser($this->get('Name'), $this->get('Login'), $this->get('Pass'), $this->get('Name'), $this->get('Email')
+            , $this->get('Locale'));
     }
 
     // Function which creates a new user if it does not exist in the system previously, and load the idUser
@@ -476,28 +472,23 @@ class User extends UsersOrm
 
     function createNewUser($realname, $login, $pass, $email, $locale, $roleID, $idUser)
     {
-
         if (is_null($idUser)) {
             Logger::error("The node must be previously created");
             return NULL;
         }
-
         $this->set('IdUser', $idUser);
         $this->set('Login', $login);
         $this->set('Pass', $pass);
         $this->set('Name', $realname);
         $this->set('Email', $email);
         $this->set('Locale', $locale);
-
         if (!parent::add()) {
             Logger::error("Error in User persistence for $idUser");
             return NULL;
         }
-
         $group = new Group();
         $group->SetGeneralGroup();
         $group->AddUserWithRole($idUser, $roleID);
-
         return $this->get('IdUser');
     }
 
@@ -638,7 +629,10 @@ class User extends UsersOrm
                 $command = $action->get("Command");
                 $aliasModule = $action->get("Module") ? $action->get("Module") : "nomodule";
                 $aliasParam = $action->get("Params") ? $action->get("Params") : "noparams";
-                if (isset($founded[$command][$aliasModule][$aliasParam]) && $founded[$command][$aliasModule][$aliasParam] == count($nodes) - 1)
+                $founded = [];
+                /*
+                if (isset($founded[$command][$aliasModule][$aliasParam]) 
+                    && $founded[$command][$aliasModule][$aliasParam] == count($nodes) - 1)
                 {
                     $result[] = $idAction;
                     continue;
@@ -648,6 +642,7 @@ class User extends UsersOrm
                     $founded[$command][$aliasModule][$aliasParam] = 1;
                 }
                 else
+                */
                 {
                     $founded[$command][$aliasModule][$aliasParam] = $founded[$command][$aliasModule][$aliasParam] + 1;
                 }
@@ -688,17 +683,13 @@ class User extends UsersOrm
      */
     function login($name, $password)
     {
-
         $this->setByLogin($name);
-
         if ($this->checkPassword($password)) {
 
             // Is a valid user !
             $user_id = $this->getID();
             $user = new user($user_id);
-
             $user_locale = $user->get('Locale');
-
             if (empty($user_locale))
                 $user_locale =  App::getValue('locale');
 
@@ -708,7 +699,6 @@ class User extends UsersOrm
                 // login closed
                 return false;
             }
-
             unset($user);
 
             // TODO: Add new session system.
@@ -723,51 +713,36 @@ class User extends UsersOrm
             $loginTimestamp = Session::get("loginTimestamp");
             setcookie("loginTimestamp", $loginTimestamp, 0,  '/' );
             setcookie("sessionLength", $session_duration , 0,  '/' );
-            /**/
-
-
             return true;
         }
         return false;
     }
 
-
-
     function logout()
     {
-
         // TODO: Add new session system.
         Session::destroy();
-
     }
 
-
     /**
-     *
      * @param $userId
      * @param $nodeId
      * @return bool
      */
     public function hasAccess($nodeId)
     {
-
         // TODO: define as global constans nodeid=10000 && nodeid=2
         if ($nodeId == 1 || $nodeId == 10000 || $nodeId == 2 || $this->getID() == 301) {
             return true;
         }
-
         $group = new Group();
-
         $userGroupList = $this->getGroupList();
         $generalGroup = array($group->getGeneralGroup());
         $user_groups = array_diff($userGroupList, $generalGroup);
-
         $node = new Node($nodeId);
         $nodeGroupList = $node->getGroupList();
         $node_groups = array_diff($nodeGroupList, $generalGroup);
-
         $rel_groups = array_intersect($user_groups, $node_groups);
-
         if ((count($rel_groups) > 0) || $this->isOnNode($nodeId, true)) {
             return true;
         } else {
@@ -775,28 +750,21 @@ class User extends UsersOrm
         }
     }
 
-
     /**
-     *
      * @param $userId
      * @param $params
      * @return boolean
      */
     public  function canRead($params)
     {
-
         $wfParams = $this->parseParams($params);
-
         $nodeId = $wfParams['node_id'];
-
         if ($this->hasPermission('view all nodes')) {
             return true;
         }
-
         if ($this->hasAccess($nodeId)) {
             return true;
         }
-
         return false;
     }
     
@@ -844,9 +812,7 @@ class User extends UsersOrm
         {
             return false;
         }
-
         $userRoles = array_unique($userRoles);
-        unset($user);
         $nodeType = new NodeType($nodeTypeId);
         $actionId = $nodeType->GetConstructor();
         unset($nodeType);
@@ -868,112 +834,75 @@ class User extends UsersOrm
         return false;
     }
 
-
     /**
-     *
      * @param $userId
      * @param $params
      * @return boolean
      */
     public function canDelete($params)
     {
-
         // TODO: extend relation table with delete actions/nodetypes mapping.
-
         $wfParams = $this->parseParams($params);
-
         if (!isset($wfParams['node_type'])) {
             return false;
         }
-
         $nodeTypeId = (int)$wfParams['node_type'];
-
         if ($this->checkContext($nodeTypeId, Constants::DELETE)) {
             return true;
         }
-
         return $this->canWrite($params);
     }
 
-
-
     /**
-     *
      * @param $userId
      * @param $params
      * @return boolean
      */
-    public  function canModify($params)
+    public function canModify($params)
     {
-
         // TODO: extend relation table with modify actions/nodetypes mapping.
-
         $wfParams = $this->parseParams($params);
-
         if (!isset($wfParams['node_type'])) {
             return false;
         }
-
         $nodeTypeId = (int)$wfParams['node_type'];
-
         if ($this->checkContext( $nodeTypeId, Constants::UPDATE)) {
             return true;
         }
-
         return $this->canWrite($params);
     }
 
-
-
     /**
-     *
      * @param $params
      * @return array
      */
     protected function parseParams($params)
     {
-
         $formedParams = array();
-
         if (is_array($params)) {
-
             if (isset($params['node_id']) && $params['node_id'] > 0) {
-
                 $nodeId = (int)$params['node_id'];
-
                 if (isset($params['node_type']) && $params['node_type'] > 0) {
-
                     $formedParams['node_id'] = $nodeId;
                     $formedParams['node_type'] = (int)$params['node_type'];
-
                 } else {
-
                     $node = new Node($nodeId);
                     $idNodeType = $node->GetNodeType();
-
                     $formedParams['node_id'] = $nodeId;
                     $formedParams['node_type'] = $idNodeType;
-
                     unset($node);
                 }
-
                 return $formedParams;
             }
-
             if (isset($params['node_type']) && $params['node_type'] > 0) {
-
                 $idNodeType = $params['node_type'];
 
                 // TODO: Check if is a valid nodetype.
-
                 $formedParams['node_type'] = $idNodeType;
-
                 return $formedParams;
             }
-
         }
         return null;
-
     }
 
     /**

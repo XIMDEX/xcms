@@ -93,7 +93,7 @@ class ConnectionLocal extends Connector implements IConnector
 			return false;
 		}
 		try {
-			$result = chdir($dir);
+			chdir($dir);
 		} catch (Exception $e) {
 			Logger::error($e->getMessage());
 			return false;

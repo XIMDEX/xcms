@@ -1,6 +1,7 @@
 <?php
+
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -24,48 +25,49 @@
  *  @version $Revision$
  */
 
-require_once(APP_ROOT_PATH.'/install/steps/generic/GenericInstallStep.class.php');
-require_once(APP_ROOT_PATH.'/install/managers/InstallModulesManager.class.php');
+use Ximdex\Logger;
 
-class WelcomeInstallStep extends GenericInstallStep {
+require_once APP_ROOT_PATH . '/install/steps/generic/GenericInstallStep.class.php';
+require_once APP_ROOT_PATH . '/install/managers/InstallModulesManager.class.php';
 
-	public function __construct(){
-		
+class WelcomeInstallStep extends GenericInstallStep
+{
+	public function __construct()
+	{	
 		$this->installManager = new installManager();
 		$this->steps = $this->installManager->getSteps();		
 	}
 
 	/**
-	 * Main function. Show the step	 
+	 * Main function. Show the step
 	 */
-	public function index(){
-
+	public function index()
+	{
+	    Logger::generate('XMD', 'xmd', true);
+	    Logger::setActiveLog();
+	    Logger::info('Welcome to Ximdex CMS');
 	    $this->initialize_values(false);
 		$this->addJs("WelcomeController.js");
 		$this->render();
 	}
 
-	public function continueInstallation(){
-	    
+	public function continueInstallation()
+	{
 		$this->loadNextAction();
 	}
 
-	public function hasErrors(){
-	    
+	public function hasErrors()
+	{   
 		$checks = $this->installManager->initialChecking();
 		$errors = array();
 		foreach ($checks as $check) {
-			if ($check["state"] == "error"){
-			    
+			if ($check["state"] == "error") {
 				$error = "1";
 			}
-			if 	($check["state"] != "success"){
-			    
-                if(is_array($check["messages"]) && count($check["messages"])>0){
-                    
+			if 	($check["state"] != "success") {
+                if (is_array($check["messages"]) && count($check["messages"]) > 0) {
                     $aux = array();
 				    foreach ($check["messages"] as $i => $message) {
-				        
 					    $aux["message"] = $message;
 					    $aux["help"] = $check["help"][$i];
 					    $aux["state"] = $check["state"] ;
@@ -74,13 +76,11 @@ class WelcomeInstallStep extends GenericInstallStep {
                 }
 			}
 		}
-
+		$values = [];
 		if (isset($error) && $error) {
-		    
             $values["failure"] = true;
             $values["errors"] = $errors;
-        }else {
-            
+        } else {
             $values["success"] = true;
             $values["errors"] = $errors;    // possible warning messages
         }

@@ -1,6 +1,4 @@
-<?php
-
-/**
+﻿/**
  *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
@@ -25,27 +23,6 @@
  *  @version $Revision$
  */
 
-use Ximdex\MVC\ActionAbstract;
-
-class Action_reportslist extends ActionAbstract
-{
-    public function index()
-    {
-        $reports = $this->getReports();
-        $values = array('reports' => $reports);
-
-        $this->render($values, null, 'only_template.tpl');
-    }
-
-    protected function getReports()
-    {
-        $reports = array(
-            array(
-                'name' => 'managebatchs',
-                'action' => 'managebatchs',
-                'method' => 'batchlist'
-            )
-        );
-        return $reports;
-    }
-}
+X.actionLoaded(function (event, fn, params) {
+    fn('div.ximPUBLISHtools').scope().init(params, true);
+});

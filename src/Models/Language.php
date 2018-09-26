@@ -78,6 +78,7 @@ class Language extends LanguagesOrm
 		}
 		$dbObj->Query($sql);
 		if (!$dbObj->numErr) {
+		    $salida = [];
 			while (!$dbObj->EOF) {
 				$salida[] = $dbObj->GetValue("IdLanguage");
 				$dbObj->Next();

@@ -446,7 +446,6 @@ class DataFactory
 
         // Si tiene versiones anteriores, calculamos cual es la siguiente
         if ($this->HasPreviousVersions()) {
-            $purgeAll = false;
             $curVersion = $this->GetLastVersion();
             if (is_null($curVersion)) {
                 Logger::warning('Unable to get the last version of the document');
@@ -456,10 +455,8 @@ class DataFactory
             if ($jumpNewVersion) {
 
                 // Si queremos saltar de version x.y -> x+1.0
-                $purgeAll = true;
                 $newVersion = $curVersion + 1;
                 $newSubVersion = '0';
-                // $updateCaches = true;
                 $oldIdVersion = $this->getVersionId($curVersion, $curSubVersion);
                 $oldVersion = new Version($oldIdVersion);
                 if (!$oldVersion->get('IdVersion')) {
@@ -518,9 +515,11 @@ class DataFactory
         $version->set('Date', time());
         $version->set('Comment', $comment);
         $IdVersion = $version->add();
+        /*
         if (isset($updateCaches) && $updateCaches) {
             $this->updateCaches($oldIdVersion, $IdVersion);
         }
+        */
         Logger::debug('AddVersion for Node:' . $this->nodeID . ', Version: ' . $newVersion . '.' . $newSubVersion . ', File: ' . $uniqueName);
         return $IdVersion;
     }
@@ -571,7 +570,6 @@ class DataFactory
             Logger::error('failed to set document content');
             $this->SetError(5);
         }
-        $dbObj = new \Ximdex\Runtime\Db();
 
         // Ejecutamos la insercion en la BD
         $version = new Version();
@@ -923,6 +921,7 @@ class DataFactory
             return 0;
         }
         if (!$dbObj->numErr) {
+            $array_files = [];
             while (!$dbObj->EOF) {
                 $array_files[] = $dbObj->GetValue("File");
                 $dbObj->Next();

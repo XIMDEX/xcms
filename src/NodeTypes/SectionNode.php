@@ -58,10 +58,12 @@ class SectionNode extends FolderNode
     function getPublishabledDeps($params)
     {
         $childList = $this->parent->GetChildren();
+        /*
         $node = new Node($this->parent->get('IdNode'));
         $idNodeType = $node->get('IdNodeType');
         $nodeType = new NodeType($idNodeType);
         $sectionId = null;
+        */
         $docsToPublish = array();
         foreach ($childList as $childID) {
             $childNode = new Node($childID);

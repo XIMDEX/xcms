@@ -270,7 +270,6 @@ class FileNode extends Root
             Logger::warning('It have requested to pass to an status, and that status is now the current one');
             return true;
         }
-        $actualState = new State($idActualState);
         baseIO_CambiarEstado($this->nodeID, $idState);
         $lastState = new State();
         $idLastState = $lastState->loadLastState();

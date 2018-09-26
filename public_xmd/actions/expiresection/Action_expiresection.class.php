@@ -45,14 +45,12 @@ class Action_expiresection extends ActionAbstract
     {
         $idNode = (int)$this->request->getParam("nodeid");
         $node = new Node($idNode);
-        $nodeTypeName = $node->nodeType->GetName();
         $nodeType = New NodeType();
         $publishabledNodeTypes = $nodeType->find('IdNodeType, Description', 'IsPublishable is true and IsFolder is false'
             , null, true, true, null, 'Description');
         $values = array(
             'go_method' => 'expire_section',
             'publishabledtypes' => $publishabledNodeTypes,
-            'ximpublish_tools_enabled' => \Ximdex\Modules\Manager::isEnabled('ximPUBLISHtools'),
             'folderType' => $node->nodeType->getID() == NodeTypeConstants::SERVER ? 'server' : 'section',
             'name' => $node->GetNodeName(),
             'timestamp_from' => time(),
@@ -83,7 +81,6 @@ class Action_expiresection extends ActionAbstract
         );
         $this->addJs('/actions/expiresection/resources/js/index.js');
         $this->addCss('/actions/expiresection/resources/css/style.css');
-        // $this->addCss('/assets/style/jquery/ximdex_theme/widgets/calendar/calendar.css');
         $this->render($values, NULL, 'default-3.0.tpl');
     }
 
@@ -301,16 +298,7 @@ class Action_expiresection extends ActionAbstract
         }
         $idUser = \Ximdex\Runtime\Session::get("userID");
         $node = new Node($idNode);
-        if (count($userList) > 0) {
-            $userNameList = array();
-            foreach ($userList as $id) {
-                $user = new User($id);
-                $userNameList[] = $user->get('Login');
-            }
-            $userNameString = implode(', ', $userNameList);
-        }
         $user = new User($idUser);
-        $from = $user->get('Login');
         $userName = $user->get('Name');
         $nodeName = $node->get('Name');
         $nodePath = $node->GetPath();

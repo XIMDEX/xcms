@@ -94,11 +94,11 @@ class ConnectionFtp extends Connector implements IConnector
             return false;
         }
         if (!$result) {
-            Logger::error("Disconnect from FTP server {$host}:{$port} failed");
+            Logger::error("Disconnect from FTP server {$this->host}:{$this->port} failed");
             return false;
         }
         $this->handler = NULL;
-        Logger::info("Disconnect from FTP server {$host}:{$port} correctly");
+        Logger::info("Disconnect from FTP server {$this->host}:{$this->port} correctly");
         return true;
     }
 
@@ -273,7 +273,7 @@ class ConnectionFtp extends Connector implements IConnector
     {
         if (!$recursive) {
             try {
-                $var =  ftp_site($this->handler, "CHMOD " . $mode . " " . $target);
+                ftp_site($this->handler, "CHMOD " . $mode . " " . $target);
             } catch (Exception $e) {
                 Logger::error($e->getMessage());
                 return false;

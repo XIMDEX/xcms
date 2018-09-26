@@ -37,11 +37,6 @@ use Ximdex\Models\NodeFrame;
 use Ximdex\Runtime\App;
 use Ximdex\Cli\CliParser;
 
-function showErrors($errno, $errstr, $errfile = NULL, $errline= NULL) {
-    $_msg = "FATAL ERROR:$errno, $errstr. $errfile : $errline. TRACE:  ".print_r(debug_backtrace(),true);
-}
-set_error_handler("showErrors");
-
 /**
  * Constants definition
  */
@@ -526,7 +521,6 @@ class DexPumper
 		$IdSync = (int) $this->serverFrame->get('IdSync');
  	  	$idBatchUp = (int) $this->serverFrame->get('IdBatchUp');
  	  	$idServer = (int) $this->serverFrame->get('IdServer');
- 		$time = time();
  		if ("IN" == $state_pumper) {
  		    $progress =  "Progress = '100' ";
  		    $idSync = ""; // All batchs

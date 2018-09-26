@@ -112,34 +112,31 @@ class ServerFrame extends ServerFramesOrm
 
     public function update()
     {
-        if (\Ximdex\Modules\Manager::isEnabled('ximPUBLISHtools')) {
-            if ($this->get('IdNodeFrame') > 0) {
-                $batch = new Batch($this->get('IdBatchUp'));
-                $nodeFrame = new NodeFrame($this->get('IdNodeFrame'));
-                $channelFrames = new ChannelFrame($this->get('IdChannelFrame'));
-                $idChannel = $channelFrames->get('ChannelId');
-                $searchFields = array(
-                    'IdNode' => $nodeFrame->get('NodeId'),
-                    'IdSyncServer' => $this->get('IdServer'),
-                    'IdChannel' => $idChannel
-                );
-                $updateFields = array(
-                    'State' => $this->get('State'),
-                    'Progress' => $this->publishingReport->progressTable[$this->get('State')]
-                );
-                if (($this->get('ErrorLevel') != '0')) {
-                    $updateFields['State'] = 'Error';
-                    $updateFields['Progress'] = '100';
-                } else if ($this->get('FileSize') == "0" && in_array($this->get('State'), [
-                    ServerFrame::DUE2IN,
-                    ServerFrame::PUMPED,
-                    ServerFrame::IN
-                ])) {
-                    $updateFields['State'] = 'Warning';
-                    $updateFields['Progress'] = '100';
-                }
-                $this->publishingReport->updateReportByField($updateFields, $searchFields);
+        if ($this->get('IdNodeFrame') > 0) {
+            $nodeFrame = new NodeFrame($this->get('IdNodeFrame'));
+            $channelFrames = new ChannelFrame($this->get('IdChannelFrame'));
+            $idChannel = $channelFrames->get('ChannelId');
+            $searchFields = array(
+                'IdNode' => $nodeFrame->get('NodeId'),
+                'IdSyncServer' => $this->get('IdServer'),
+                'IdChannel' => $idChannel
+            );
+            $updateFields = array(
+                'State' => $this->get('State'),
+                'Progress' => $this->publishingReport->progressTable[$this->get('State')]
+            );
+            if (($this->get('ErrorLevel') != '0')) {
+                $updateFields['State'] = 'Error';
+                $updateFields['Progress'] = '100';
+            } else if ($this->get('FileSize') == "0" && in_array($this->get('State'), [
+                ServerFrame::DUE2IN,
+                ServerFrame::PUMPED,
+                ServerFrame::IN
+            ])) {
+                $updateFields['State'] = 'Warning';
+                $updateFields['Progress'] = '100';
             }
+            $this->publishingReport->updateReportByField($updateFields, $searchFields);
         }
         return parent::update();
     }
@@ -187,17 +184,15 @@ class ServerFrame extends ServerFramesOrm
         parent::add();
         $idServerFrame = $this->get('IdSync');
         if ($idServerFrame > 0) {
-            if (\Ximdex\Modules\Manager::isEnabled('ximPUBLISHtools')) {
-                $batch = new Batch($idBatchUp);
-                $idSection = $batch->get('IdNodeGenerator');
-                $sectionNode = new Node($idSection);
-                $idParentServer = $sectionNode->getServer();
-                $idPortalFrame = $batch->get('IdPortalFrame');
-                $channelFrames = new ChannelFrame($idChannelFrame);
-                $idChannel = $channelFrames->get('ChannelId');
-                $this->publishingReport->create($idSection, $nodeId, empty($idChannel) ? NULL : $idChannel, $server, $idPortalFrame
-                    , time(), ServerFrame::PENDING, '20', $name, $path, $idServerFrame, $idBatchUp, $idParentServer);
-            }
+            $batch = new Batch($idBatchUp);
+            $idSection = $batch->get('IdNodeGenerator');
+            $sectionNode = new Node($idSection);
+            $idParentServer = $sectionNode->getServer();
+            $idPortalFrame = $batch->get('IdPortalFrame');
+            $channelFrames = new ChannelFrame($idChannelFrame);
+            $idChannel = $channelFrames->get('ChannelId');
+            $this->publishingReport->create($idSection, $nodeId, empty($idChannel) ? NULL : $idChannel, $server, $idPortalFrame
+                , time(), ServerFrame::PENDING, '20', $name, $path, $idServerFrame, $idBatchUp, $idParentServer);
             return $idServerFrame;
         }
         Logger::error('Creating server frame');
@@ -283,7 +278,6 @@ class ServerFrame extends ServerFramesOrm
         $channelFrameId = $this->get('IdChannelFrame');
         $nodeFrameId = $this->get('IdNodeFrame');
         $server = $this->get('IdServer');
-        $s = new Server($server);
         $channelFrame = new ChannelFrame($channelFrameId);
         if (!$channelFrame->get('IdChannelFrame')) {
             Logger::warning('Unable to load the channel frame with ID: ' . $channelFrameId . '. Using the frame field instead');
@@ -313,7 +307,7 @@ class ServerFrame extends ServerFramesOrm
         if (!$node->GetID()) {
             return false;
         }
-        $isHybrid = $node->getSimpleBooleanProperty('hybridColector');
+        $data = [];
         $data['CHANNEL'] = $channelId;
         $data['SERVER'] = $server;
         if (!$cache) {

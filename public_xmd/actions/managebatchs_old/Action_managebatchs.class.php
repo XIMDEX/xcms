@@ -29,14 +29,13 @@ use Ximdex\Logger;
 use Ximdex\Models\User;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\App;
+use Ximdex\Utils\FilterParameters;
 use Ximdex\Utils\Serializer;
 use Ximdex\Runtime\Session;
 use Ximdex\Models\Node;
 use Ximdex\Models\PublishingReport;
 use Ximdex\Models\Batch;
 use Ximdex\Sync\BatchManager;
-
-Ximdex\Modules\Manager::file('/actions/FilterParameters.php', 'ximPUBLISHtools');
 
 class Action_managebatchs extends ActionAbstract
 {
@@ -62,14 +61,12 @@ class Action_managebatchs extends ActionAbstract
             $errorMsg = '';
         }
         $jsFiles = array(
-            App::getValue('UrlRoot') . \Ximdex\Modules\Manager::path('ximPUBLISHtools') 
-                . '/actions/managebatchs/resources/js/index.js',
+            App::getUrl('/actions/managebatchs/resources/js/index.js'),
             App::getUrl('/assets/js/ximtimer.js')
         );
         $this->addJs('/actions/managebatchs/resources/js/managebatchs.js');
         $cssFiles = array(
-            App::getValue('UrlRoot') . \Ximdex\Modules\Manager::path('ximPUBLISHtools') 
-                . '/actions/managebatchs/resources/css/index.css'
+            App::getUrl('/actions/managebatchs/resources/css/index.css')
         );
         $arrValores = array(
             'acceso' => $acceso,
@@ -112,7 +109,7 @@ class Action_managebatchs extends ActionAbstract
     {
         $success = false;
         if (!$_POST['frm_deactivate_batch'] !== "yes") {
-            if (!$result = $this->doDeactivateBatch($_POST['frm_id_batch'])) {
+            if (!$this->doDeactivateBatch($_POST['frm_id_batch'])) {
                 $errorMsg = "An error occurred while deactivate batch.";
             } else {
                 $success = true;
@@ -131,13 +128,13 @@ class Action_managebatchs extends ActionAbstract
     public function startBatch()
     {
         if (!$_POST['frm_activate_batch'] !== "yes") {
-            if (!$result = $this->doActivateBatch($_POST['frm_id_batch'])) {
-                $errorMsg = "An error occurred while activating batch.";
+            if (!$this->doActivateBatch($_POST['frm_id_batch'])) {
+                Logger::error('An error occurred while activating batch ' . $_POST['frm_id_batch']);
             } else {
                 if ($_POST['frm_id_batch'] == "all") {
-                    $errorMsg = "All batches have been activated.";
+                    Logger::info('All batches have been activated');
                 } else {
-                    $errorMsg = "Batch #" . $_POST['frm_id_batch'] . " has been activated.";
+                    Logger::info('Batch #' . $_POST['frm_id_batch'] . ' has been activated');
                 }
             }
         }
@@ -154,10 +151,10 @@ class Action_managebatchs extends ActionAbstract
             Logger::info('PUBLISH pre doUnprioritizeBatch');
             $mode = 'down';
         }
-        if (!$result = $this->doPrioritizeBatch($_POST['frm_id_batch'], $mode)) {
-            Logger::error("An error occurred while changing batch priority ($mode).");
+        if (!$this->doPrioritizeBatch($_POST['frm_id_batch'], $mode)) {
+            Logger::error("An error occurred while changing batch priority ($mode)");
         } else {
-            Logger::info("Batch #" . $_POST['frm_id_batch'] . " priority has been changed ($mode).");
+            Logger::info("Batch #" . $_POST['frm_id_batch'] . " priority has been changed ($mode)");
         }
         $json = Serializer::encode(SZR_JSON, array('success' => true));
         $this->render(array('result' => $json), null, "only_template.tpl");
@@ -167,10 +164,10 @@ class Action_managebatchs extends ActionAbstract
     {
         if ($idBatch != "all") {
             $batchObj = new Batch();
-            return $batchObj->setBatchPlayingOrUnplaying($idBatch, $playingValue = 1);
+            return $batchObj->setBatchPlayingOrUnplaying($idBatch, 1);
         } else {
             $batchManagerObj = new BatchManager();
-            return $batchManagerObj->setAllBatchsPlayingOrUnplaying($playingValue = 1);
+            return $batchManagerObj->setAllBatchsPlayingOrUnplaying(1);
         }
     }
 
@@ -179,10 +176,10 @@ class Action_managebatchs extends ActionAbstract
         if ($idBatch !== "all") {
             $idBatch = (int) $idBatch;
             $batchObj = new Batch();
-            return $batchObj->setBatchPlayingOrUnplaying($idBatch, $playingValue = 0);
+            return $batchObj->setBatchPlayingOrUnplaying($idBatch, 0);
         } else {
             $batchManagerObj = new BatchManager();
-            return $batchManagerObj->setAllBatchsPlayingOrUnplaying($playingValue = 0);
+            return $batchManagerObj->setAllBatchsPlayingOrUnplaying(0);
         }
     }
 

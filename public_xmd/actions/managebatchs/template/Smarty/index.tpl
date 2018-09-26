@@ -1,5 +1,5 @@
 {**
-*  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+*  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
 *
 *  Ximdex a Semantic Content Management System (CMS)
 *
@@ -22,38 +22,49 @@
 *  @author Ximdex DevTeam <dev@ximdex.com>
 *  @version $Revision$
 *}
+
 {include file="actions/components/title_Description.tpl"}
 <div class="action_content ximPUBLISHtools" ng-controller="ximPUBLISHtools">
     <ul class="media-list">
         <li class="media" ng-repeat="portal in json | orderBy: '-PubTime' as filtered_json track by portal.IdBatch">
             <a class="pull-left" href="#">
                 <span class="icon-new color-trans #/portal.Finished ? 'finished-task' : 'unfinished-task'/#"
-                    ng-class="{literal}{'unfinished-task': !portal.Finished, 'finished-task': portal.Finished}{/literal}"></span>
+                        ng-class="{literal}{'unfinished-task': !portal.Finished, 'finished-task': portal.Finished}{/literal}"></span>
             </a>
-            <a class="pull-right" href="#" ng-hide="portal.Finished">
-                <p class="status-buttons">
+            <p class="status-buttons">
+                <a class="pull-right" href="#" ng-hide="portal.Finished">
                     <button type="button" class="increase-btn icon-new btn-unlabel-rounded" ng-click="incBatchPriority(portal.IdBatch)"></button>
                     <button type="button" class="decrease-btn icon-new btn-unlabel-rounded" ng-click="decBatchPriority(portal.IdBatch)"></button>
-                    <button type="button" class="pause-btn icon-new btn-unlabel-rounded" ng-click="stopBatch(portal.IdBatch)" ng-if="portal.BatchState"></button>
-                    <button type="button" class="resume-btn icon-new btn-unlabel-rounded" ng-click="startBatch(portal.IdBatch)" ng-if="!portal.BatchState"></button>
-                </p>
-            </a>
+                    <button type="button" class="pause-btn icon-new btn-unlabel-rounded" ng-click="stopBatch(portal.IdBatch)" 
+                            ng-if="portal.BatchState"></button>
+                    <button type="button" class="resume-btn icon-new btn-unlabel-rounded" ng-click="startBatch(portal.IdBatch)" 
+                            ng-if="!portal.BatchState"></button>
+                </a>
+            </p>
             <div class="media-body">
-                <h4 class="media-heading">#/portal.NodeName/# <small ng-if="!portal.Finished"><span class="icon clock"></span> #/timeFromNow(portal.EstimatedTime)/#</small><small ng-if="portal.Finished"><span class="icon clock"></span> Finished</small> <small ng-if="!portal.Finished"><span class="icon-new priority"></span> #/portal.BatchPriority/#</small></h4>
+                <h4 class="media-heading">#/portal.NodeName/# <small ng-if="!portal.Finished"><span 
+                        class="icon clock"></span> #/timeFromNow(portal.EstimatedTime)/#</small><small ng-if="portal.Finished"><span 
+                        class="icon clock"></span> Finished</small> <small ng-if="!portal.Finished"><span 
+                        class="icon-new priority"></span> #/portal.BatchPriority/#</small></h4>
                     <div class="progress">
-                        <div class="progress-bar progress-bar-striped" role="progressbar" style="width:#/portal.ProgressSuccess/#%" ng-class="{literal}{'active ximcolor': portal.Progress!=100, 'progress-bar-success': portal.Progress==100}{/literal}">
+                        <div class="progress-bar progress-bar-striped" role="progressbar" style="width:#/portal.ProgressSuccess/#%" 
+                                ng-class="{literal}{'active ximcolor': portal.Progress!=100, 'progress-bar-success': portal.Progress==100}{/literal}">
                             <span ng-if="portal.Progress!=100" class="sr-only">#/portal.NumSuccess/# in progress</span>
                             <span ng-if="portal.Progress==100" class="sr-only">#/portal.NumSuccess/# success</span>
                         </div>
-                              <div class="progress-bar progress-bar-striped progress-bar-warning" role="progressbar" style="width:#/portal.ProgressWarning/#%" ng-class="{literal}{'active': portal.Progress!=100}{/literal}">
+                              <div class="progress-bar progress-bar-striped progress-bar-warning" role="progressbar" 
+                                    style="width:#/portal.ProgressWarning/#%" ng-class="{literal}{'active': portal.Progress!=100}{/literal}">
                                 #/portal.NumWarnings/# with warnings
                               </div>
-                              <div class="progress-bar progress-bar-striped progress-bar-danger" role="progressbar" style="width:#/portal.ProgressError/#%" ng-class="{literal}{'active': portal.Progress!=100}{/literal}">
+                              <div class="progress-bar progress-bar-striped progress-bar-danger" role="progressbar" 
+                                    style="width:#/portal.ProgressError/#%" ng-class="{literal}{'active': portal.Progress!=100}{/literal}">
                                   #/portal.NumErrors/# with errors
                               </div>
                         </div>
-                <a class="aespecial" ng-if="!showing[portal.IdPortal]" href="#" role="button" ng-click="showing[portal.IdPortal] = !showing[portal.IdPortal]">Show details</a>
-                <a class="aespecial" ng-if="showing[portal.IdPortal]" href="#" role="button" ng-click="showing[portal.IdPortal] = !showing[portal.IdPortal]">Hide details</a>
+                <a class="aespecial" ng-if="!showing[portal.IdPortal]" href="#" role="button" 
+                        ng-click="showing[portal.IdPortal] = !showing[portal.IdPortal]">Show details</a>
+                <a class="aespecial" ng-if="showing[portal.IdPortal]" href="#" role="button" 
+                        ng-click="showing[portal.IdPortal] = !showing[portal.IdPortal]">Hide details</a>
                 <ul ng-init="initShowing(portal.IdPortal)" ng-show="showing[portal.IdPortal]" class="media-list">
                     <li class="media" ng-repeat="element in portal.elements track by element.IdReport">
                         <a class="pull-left" href="#">
@@ -62,21 +73,18 @@
                         <div class="media-body">
                             <h4 class="media-heading">#/element.FileName/# <small>#/element.IdNode/# #/element.ChannelName != '' ? ('/ ' + element.ChannelName) : ''/#</small></h4>
                             <div class="progress">
-                                <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="#/element.Progress/#" aria-valuemin="0" aria-valuemax="100" style="width: #/element.Progress/#%"
-                                ng-class="{literal}{'active ximcolor': element.Progress!=100, 'progress-bar-success': element.State!='Error' && element.State!='Warning' && element.Progress==100, 'progress-bar-danger': element.State=='Error', 'progress-bar-warning': element.State=='Warning' }{/literal}"
-                                >
+                                <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="#/element.Progress/#" 
+                                        aria-valuemin="0" aria-valuemax="100" style="width: #/element.Progress/#%"
+                                        ng-class="{literal}{'active ximcolor': element.Progress!=100, 'progress-bar-success': element.State!='Error' && element.State!='Warning' && element.Progress==100, 'progress-bar-danger': element.State=='Error', 'progress-bar-warning': element.State=='Warning' }{/literal}">
                                     <span ng-if="element.State!='Error' && element.State!='Warning'" class="sr-only">#/element.Progress/#% Complete</span>
                                     <span ng-if="element.State=='Warning'" class="sr-only">Finished with warnings</span>
                                     <span ng-if="element.State=='Error'" class="sr-only">An error found</span>
                                 </div>
                             </div>
                         </div>
-
                     </li>
                 </ul>
-
             </div>
         </li>
     </ul>
-
 </div>

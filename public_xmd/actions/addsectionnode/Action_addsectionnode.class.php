@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -32,8 +32,6 @@ use Ximdex\MVC\ActionAbstract;
 use Ximdex\Properties\InheritedPropertiesManager;
 use Ximdex\Models\NodeDefaultContents;
 
-// \Ximdex\Modules\Manager::file('/inc/io/XlyreBaseIO.class.php', 'xlyre');
-
 class Action_addsectionnode extends ActionAbstract
 {
     /**
@@ -56,11 +54,6 @@ class Action_addsectionnode extends ActionAbstract
     public function getSectionInfo()
     {
         $nodeID = $this->request->getParam("nodeid");
-        $nodetype_sec = $this->request->getParam("type_sec");   // never used !
-        $nt = array();
-        if (empty($nodetype_sec)) {
-            $nodetype_sec = 1;
-        }
         $sectionType = new SectionType();
         $sectionTypes = $sectionType->find(ALL);
         $ndc = new NodeDefaultContents();
@@ -82,7 +75,6 @@ class Action_addsectionnode extends ActionAbstract
                     'label' => $sectionTypeInfo['sectionType'],
                     'subfolders' => $subfolders
                 );
-                $nt[] = $sectionTypeInfo['idNodeType'];
             }
         }
         
@@ -117,14 +109,8 @@ class Action_addsectionnode extends ActionAbstract
             'FORCENEW' => true,
             'SECTIONTYPE' => $nodetype
         );
-        /*
-        if ($nodetype == 3) {
-            $id = $this->addcatalog($data);
-        } else {
-        */
-            $baseio = new \Ximdex\IO\BaseIO();
-            $id = $baseio->build($data);
-        // }
+        $baseio = new \Ximdex\IO\BaseIO();
+        $id = $baseio->build($data);
         if ($id > 0) {
             $section = new Node($id);
             
@@ -188,57 +174,4 @@ class Action_addsectionnode extends ActionAbstract
         }
         return $nt->GetDescription();
     }
-
-    /*
-    private function addcatalog($data)
-    {
-        $baseio = new XlyreBaseIO();
-        $id = $baseio->build($data);
-        if ($id > 0) {
-            
-            // Creating Licenses subfolder in links folder
-            $catalognode = new Node($id);
-            $projectnode = new Node($catalognode->getProject());
-            $folder = $projectnode->getChildren(NodeTypeConstants::LINK_MANAGER);
-            $this->_createLicenseLinksFolder($folder[0]);
-        }
-        return $id;
-    }
-
-    private function _createLicenseLinksFolder($links_id)
-    {
-        $nodeaux = new Node();
-        $linkfolder = $nodeaux->find('IdNode', "idnodetype = %s AND Name = 'Licenses'", array(
-            NodeTypeConstants::LINK_FOLDER
-        ), MONO);
-        if (! $linkfolder) {
-            $nodeType = new NodeType();
-            $nodeType->SetByName('LinkFolder');
-            $folder = new Node();
-            $idFolder = $folder->CreateNode('Licenses', $links_id, $nodeType->GetID(), null);
-            $this->_createLicenseLinks("ODbL", "http://opendatacommons.org/licenses/odbl/", "Open Data Commons Open Database License (ODbL)"
-                    , $idFolder);
-        }
-    }
-
-    private function _createLicenseLinks($link_name, $link_url, $link_description, $idFolder)
-    {
-        $data = array(
-            'NODETYPENAME' => 'LINK',
-            'NAME' => $link_name,
-            'PARENTID' => $idFolder,
-            'IDSTATE' => 0,
-            'CHILDRENS' => array(
-                array(
-                    'URL' => $link_url
-                ),
-                array(
-                    'DESCRIPTION' => $link_description
-                )
-            )
-        );
-        $bio = new \Ximdex\IO\BaseIO();
-        $bio->build($data);
-    }
-    */
 }

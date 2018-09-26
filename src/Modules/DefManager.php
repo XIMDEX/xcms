@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -38,7 +38,7 @@ class DefManager
     {
         $this->configFilename = $fileName;
 
-        // Check config presence.
+        // Check config presence
         if (!file_exists($this->configFilename)) {
             $this->createConfigFile();
         }
@@ -47,7 +47,7 @@ class DefManager
         if (is_readable($this->configFilename)) {
             $this->configData = file($this->configFilename);
             
-            // Clean data.
+            // Clean data
             foreach ($this->configData as $idx => $line) {
                 $line = rtrim($line);
                 $line = ltrim($line);
@@ -85,9 +85,9 @@ class DefManager
         $modMngr = new Manager();
         $consts = '';
         $modules = $modMngr->getModules();
-        foreach ($modules as $id => $module) {
-            $consts .= "define('" . Manager::get_pre_define_module() . strtoupper($module['name']) . Manager::get_post_path_define_module() 
-                . "', '" . $module["path"] . "');\n";
+        foreach ($modules as $module) {
+            $consts .= "define('" . Manager::get_pre_define_module() . strtoupper($module['name']) 
+                . Manager::get_post_path_define_module() . "', '" . $module["path"] . "');\n";
         }
         return $consts;
     }

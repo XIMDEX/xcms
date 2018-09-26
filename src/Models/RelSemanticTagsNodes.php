@@ -28,7 +28,6 @@
 namespace Ximdex\Models;
 
 use Ximdex\Logger;
-use Ximdex\Utils\ImageFile;
 use Ximdex\Models\ORM\RelSemanticTagsNodesOrm;
 
 class RelSemanticTagsNodes extends RelSemanticTagsNodesOrm
@@ -143,65 +142,6 @@ class RelSemanticTagsNodes extends RelSemanticTagsNodesOrm
             }
         }
 	    return true;
-	    
-	    
-	    
-		// Tags to remove
-		if (!empty($_previous_tags)) {
-			foreach ($_previous_tags as $_tag) {
-				if (!empty($_tag) && !empty($_id_node)) {
-				    
-					// Remove rel betweeen tag and node
-					$this->removeRel($_tag["iddesc"], $_id_node);
-					
-					// Remove tag
-					$tag = new SemanticTags($_tag["idtag"]);
-					$tag->remove();
-				}
-			}
-		}
-		$alltags = '';
-		if (!empty($_tags))
-		{
-			$i = 0;
-			foreach ($_tags as $_tag)
-			{
-				$rel = new RelSemanticTagsDescriptions();
-				$relinfo = $rel->getId($_tag->Name, $_tag->IdNamespace, '#');
-				$id = $relinfo["IdTagDescription"];
-				
-				// If not rel exits between description and tag, try create it
-				if (empty($id)) {
-				    
-					// Save tag
-					$id = $rel->save($_tag->Name, $_tag->IdNamespace,
-						!isset($_tag->Link) || empty($_tag->Link) ? '#' : $_tag->Link,
-						isset($_tag->Description) ? $_tag->Description : '');
-				} else {
-				    
-					// If already rel exits between description and node, try create tags and rel
-					if (!empty($_previous_tags) && isset($_previous_tags[$id])) {
-					    
-						// Quitamos el tags de lats_tags
-						unset($_previous_tags[$id]);
-					}
-				}
-				$this->createRel($id, $_id_node);
-				if ($i != 0) $alltags .= ",";
-
-				// Add tag to alltags
-				$alltags .= $_tag->Name;
-				$i++;
-			}
-		}
-
-		// Save in exif if nodetype is image
-		$node = new Node($_id_node);
-		$nodetype = new NodeType($node->GetNodeType());
-		if ('ImageFile' == $nodetype->GetName()) {
-			$image = new ImageFile($_id_node);
-			$image->saveTags($alltags);
-		}
 	}
 
 	/**

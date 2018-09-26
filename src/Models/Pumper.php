@@ -141,7 +141,7 @@ class Pumper extends PumpersOrm
             . " --pumperid=$pumperId --sleeptime=" . $this->sleeptime . ' --maxvoidcycles=' . $this->maxvoidcycles 
             . ' --localbasepath=' . SERVERFRAMES_SYNC_PATH . ' > /dev/null 2>&1 &';
         Logger::debug("Pumper call: $startCommand");
-        $out = array();
+        $var = 0;
         system($startCommand, $var);
         Logger::info($startCommand);
 

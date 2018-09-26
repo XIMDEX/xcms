@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -172,7 +172,7 @@ class Manager
         }
     }
 
-    private function parseMetaParent($constModule, &$metaParent)
+    private function parseMetaParent($constModule, & $metaParent)
     {
         $paths = FsUtils::readFolder($constModule, false);
         if ($paths) {
@@ -180,7 +180,7 @@ class Manager
                 $modulePath = $constModule . $moduleName;
                 if (is_dir($modulePath) && file_exists($modulePath . "/conf.ini")) {
                     $conf = parse_ini_file($modulePath . "/conf.ini");
-                    foreach ($conf['module'] as $id => $childrenModName)
+                    foreach ($conf['module'] as $childrenModName)
                         $metaParent[$childrenModName] = $moduleName;
                 }
             }
@@ -197,6 +197,7 @@ class Manager
 
     private function getMetaParent()
     {
+        $metaParent = null;
         self::parseMetaParent(self::get_modules_dir(), $metaParent);
         self::parseMetaParent(self::get_modules_pro_dir(), $metaParent);
         return $metaParent;

@@ -335,13 +335,14 @@ class ServerNode extends FolderNode
     {
         $servers = $this->GetPhysicalServerList();
         if (sizeof($servers) > 0) {
+            $retList = [];
             foreach ($servers as $idServer) {
                 if ($this->GetPreview($idServer) && $this->HasChannel($idServer, $idChannel)) {
                     $retList[] = $idServer;
                 }
             }
         }
-        return isset($retList) ? $retList[rand(0, count($retList) - 1)] : NULL;
+        return (isset($retList) and $retList) ? $retList[rand(0, count($retList) - 1)] : NULL;
     }
 
     function GetStates($physicalID)

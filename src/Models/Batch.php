@@ -242,7 +242,6 @@ class Batch extends BatchsOrm
     public function getDownBatch($batchId)
     {
         $dbObj = new \Ximdex\Runtime\Db();
-        $time = time();
         $query = "SELECT downBatchs.IdBatch, downBatchs.TimeOn FROM Batchs upBatchs, " .
                 "Batchs AS downBatchs WHERE downBatchs.IdBatch = upBatchs.IdBatchDown " .
                 "AND upBatchs.IdBatch = $batchId";
@@ -292,7 +291,7 @@ class Batch extends BatchsOrm
             Logger::info("Setting playing Value = $playingValue for batch $idBatch");
             return true;
         } else {
-            Logger::error($dbObj->desErr);
+            Logger::error('Cannot set playing value for batch' . $idBatch);
         }
         return false;
     }
@@ -323,7 +322,7 @@ class Batch extends BatchsOrm
         $this->set('Priority', $priority);
         $hasUpdated = parent::update();
         if ($hasUpdated) {
-            Logger::info("Setting priority Value = $playingValue for batch $idBatch");
+            Logger::info("Setting priority Value = $priority for batch $idBatch");
             return true;
         } else {
             return false;
@@ -344,9 +343,7 @@ class Batch extends BatchsOrm
         $dbObj->Query($sql);
         if ($dbObj->numRows) {
             return $dbObj->GetValue('total');
-        } else {
-            return 0;
         }
-        return $batchs;
+        return 0;
     }
 }

@@ -42,13 +42,11 @@ use Ximdex\Utils\Date;
 
 include_once XIMDEX_ROOT_PATH . '/src/Sync/conf/synchro_conf.php';
 
-$synchro_pid = null;
-
 class Scheduler
 {
     public static function start($global_execution = true)
     {
-        global $synchro_pid, $argv;
+        global $argv;
         $synchro_pid = posix_getpid();
         $startStamp = 0;
         $testTime = NULL;
@@ -57,7 +55,6 @@ class Scheduler
         }
         $pumperManager = new PumperManager();
         $nodeFrameManager = new NodeFrameManager();
-        $serverFrameManager = new ServerFrameManager();
         $batchManager = new BatchManager();
         $serverError = new ServerErrorManager();
         $ximdexServerConfig = new ServerConfig();
@@ -143,10 +140,6 @@ class Scheduler
                     // ---------------------------------------------------------
                     $batchId = $batchProcess['id'];
                     $batchType = $batchProcess['type'];
-                    $batchNodeGenerator = $batchProcess['nodegenerator'];
-                    $minorCycle = $batchProcess['minorcycle'];
-                    $majorCycle = $batchProcess['majorcycle'];
-                    $totalServerFrames = $batchProcess['totalserverframes'];
                     Logger::debug(sprintf("Processing batch %s type %s", $batchId, $batchType) . ", true");
                     $schedulerChunk = (SCHEDULER_CHUNK > MAX_NUM_NODES_PER_BATCH) ? SCHEDULER_CHUNK : MAX_NUM_NODES_PER_BATCH;
                     $nodeFrames = $nodeFrameManager->getNotProcessNodeFrames($batchId, $schedulerChunk, $batchType);
@@ -154,11 +147,10 @@ class Scheduler
                         foreach ($nodeFrames as $nodeFrameData) {
                             $nodeId = $nodeFrameData ['nodeId'];
                             $nodeFrameId = $nodeFrameData ['nodeFrId'];
-                            $version = $nodeFrameData ['version'];
                             $timeUp = $nodeFrameData ['up'];
                             $timeDown = $nodeFrameData ['down'];
                             Logger::info(sprintf('Checking activity, nodeframe %s for batch %s', $nodeFrameId, $batchId));
-                            $result = $nodeFrameManager->checkActivity($nodeFrameId, $nodeId, $timeUp, $timeDown, $batchType, $testTime);
+                            $nodeFrameManager->checkActivity($nodeFrameId, $nodeId, $timeUp, $timeDown, $batchType, $testTime);
                         }
                     }
 

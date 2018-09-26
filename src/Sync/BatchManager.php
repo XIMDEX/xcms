@@ -107,7 +107,6 @@ class BatchManager
         }
         $idServer = $node->GetServer();
         Logger::info("Publication starts for " . $node->GetPath() . " ($idNode)");
-        $ancestors = array();
         $unchangedDocs = array();
         $docsToUpVersion = array();
         foreach ($docsToPublish as $idDoc) {
@@ -368,13 +367,11 @@ class BatchManager
             foreach ($arrayChannels as $channelId) {
                 $numFrames = 0;
                 $idFrame = NULL;
-                $framesBatch = array();
 
                 // Creating channelFrames
                 if (!isset($this->channels[$channelId])) {
                     $this->channels[$channelId] = new Channel($channelId);
                 }
-                $channel = $this->channels[$channelId];
                 $channelFrame = new ChannelFrame();
                 $channelFrameId = $channelFrame->create($channelId, $idNode);
                 if (is_null($channelFrameId)) {
@@ -425,6 +422,7 @@ class BatchManager
                         }
                         
                         // Server has this document inherited channel
+                        Logger::debug('Inherited property ' . $prop . ' has given channel ' . $PropChannelId);
                         $serverHasChannel = true;
                         break;
                     }
@@ -433,7 +431,6 @@ class BatchManager
                         // This server does not support this channel, server frame will not be created
                         continue;
                     }
-                    $generatedNodes = array();
                     if ($channelId == 'NULL' or $nodeServer->class->HasChannel($physicalServer, $channelId)) {
                         
                         // Creating serverFrames
@@ -567,7 +564,6 @@ class BatchManager
      */
     public function setBatchsActiveOrEnded($testTime = NULL)
     {
-        $ended = array();
         $dbObj = new Db();
         
         // Ending batchs type UP
@@ -803,7 +799,6 @@ class BatchManager
      */
     public function setAllBatchsPlayingOrUnplaying($playingValue)
     {
-        $batch = new Batch();
         $dbObj = new Db();
         $sql = "UPDATE Batchs set Playing = '$playingValue'";
         $dbObj->Execute($sql);

@@ -64,7 +64,7 @@ class Permission extends PermissionsOrm
         $dbObj->Query($sql);
         if (!$dbObj->numErr) {
             while (!$dbObj->EOF) {
-                $salida[] = $dbObj->GetValue("IdPermission");
+                $result[] = $dbObj->GetValue("IdPermission");
                 $dbObj->Next();
             }
             return $result;

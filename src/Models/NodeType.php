@@ -666,6 +666,7 @@ class NodeType extends NodeTypesOrm
             $this->SetError(1);
             return null;
         }
+        $salida = [];
         while (!$dbObj->EOF) {
             $salida[] = array("nodetype" => $dbObj->row["NodeType"],
                 "name" => $dbObj->row["Name"]);
@@ -783,7 +784,7 @@ class NodeType extends NodeTypesOrm
             $firstNode = array($this->get('IdNodeType'));
             
             // El primer nivel va a ser la variable $selectableList, el resto va a ser $typeList
-            $idTypeList = $idSelectableList = $tmpArray = $this->getContainers($firstNode);
+            $idTypeList = $tmpArray = $this->getContainers($firstNode);
             do {
                 if (empty($tmpArray)) {
                     continue;
@@ -798,21 +799,18 @@ class NodeType extends NodeTypesOrm
                 $idTypeList = array_unique(array_merge($idTypeList, $tmpArray));
             } while (!empty($tmpArray));
             $typeList = ($idTypeList);
-            $selectableList = ($idSelectableList);
         } else {
             $typeList = NULL;
-            $selectableList = NULL;
         }
         return $typeList;
     }
 
     private function getContainers($nodeTypes)
     {
-        $nodeArray = array();
         if (is_numeric($nodeTypes)) {
-            $nodeArray[] = $nodeTypes;
+            // $nodeArray[] = $nodeTypes;
         } else if (is_array($nodeTypes)) {
-            $nodeArray = $nodeTypes;
+            // $nodeArray = $nodeTypes;
         } else {
             return array();
         }

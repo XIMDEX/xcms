@@ -1,6 +1,7 @@
 <?php
+
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -25,6 +26,7 @@
  */
 
 use Ximdex\Models\Node;
+use Ximdex\Models\ServerFrame;
 
 require_once(__DIR__ . '/QueryHandler_Abstract.class.php');
 
@@ -192,7 +194,8 @@ class QueryHandler_SQL extends QueryHandler_Abstract
 			$field = $filter['field'];
 			$comp = $filter['comparation'];
 			$cont = isset($filter['content']) ? $filter['content'] : null;
-			$cont = !empty($cont) ? $cont : (isset($filter['from']) ? $filter['from'] : (isset($filter['nodetype_content']) ? $filter['nodetype_content'] : null));
+			$cont = !empty($cont) ? $cont : (isset($filter['from']) ? $filter['from'] : (isset($filter['nodetype_content']) 
+			    ? $filter['nodetype_content'] : null));
 			$cont = (empty($filter['content']) && $field == 'url') ? null : $cont;
 			$to = isset($filter['to']) ? $filter['to'] : null;
 			switch ($field) {
@@ -244,10 +247,10 @@ class QueryHandler_SQL extends QueryHandler_Abstract
 						implode(' and ', $conditions)
 					);
 					break;
-
 				case 'categoria':
 					$conditions = array();
-					$this->joins[] = 'left join StructuredDocuments sd on sd.IdDoc = n.IdNode left join Nodes nsd on sd.IdTemplate = nsd.IdNode';
+					$this->joins[] = 'left join StructuredDocuments sd on sd.IdDoc = n.IdNode 
+                        left join Nodes nsd on sd.IdTemplate = nsd.IdNode';
 					$conditions[] = sprintf(
 						"nsd.Name %s",
 						$this->createComparation($comp, array($cont))
