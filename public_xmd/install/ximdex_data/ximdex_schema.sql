@@ -839,10 +839,10 @@ ALTER TABLE `ProgrammingLanguage` ADD PRIMARY KEY (`id`);
 ALTER TABLE `ProgrammingCode` MODIFY `id` int(4) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 
 ALTER TABLE `ProgrammingCode`
-  ADD CONSTRAINT `ProgrammingCode_ibfk_1` FOREIGN KEY (`idLanguage`) REFERENCES `ProgrammingLanguage` (`id`),
-  ADD CONSTRAINT `ProgrammingCode_ibfk_2` FOREIGN KEY (`idCommand`) REFERENCES `ProgrammingCommand` (`id`);
+  ADD CONSTRAINT `ProgrammingCode_ProgrammingLanguage` FOREIGN KEY (`idLanguage`) REFERENCES `ProgrammingLanguage` (`id`),
+  ADD CONSTRAINT `ProgrammingCode_ProgrammingCommand` FOREIGN KEY (`idCommand`) REFERENCES `ProgrammingCommand` (`id`);
 
-ALTER TABLE `Channels` ADD CONSTRAINT `idLanguage` FOREIGN KEY (`idLanguage`) REFERENCES `ProgrammingLanguage`(`id`) 
+ALTER TABLE `Channels` ADD CONSTRAINT `Channels_ProgrammingLanguage` FOREIGN KEY (`idLanguage`) REFERENCES `ProgrammingLanguage`(`id`) 
     ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 CREATE TABLE `Section` (
@@ -851,7 +851,7 @@ CREATE TABLE `Section` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 ALTER TABLE `Section` ADD PRIMARY KEY (`IdNode`);
 
-ALTER TABLE `Section` ADD CONSTRAINT `Section_ibfk_1` FOREIGN KEY (`idSectionType`) 
+ALTER TABLE `Section` ADD CONSTRAINT `Section_SectionTypes` FOREIGN KEY (`idSectionType`) 
     REFERENCES `SectionTypes`(`idSectionType`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 
@@ -881,13 +881,13 @@ CREATE TABLE `RelSemanticTagsDescriptions` (
 `Description` TEXT NULL
 ) ENGINE=InnoDB COMMENT = 'Descriptions and info for Tags';
 
-ALTER TABLE `RelSemanticTagsDescriptions` ADD CONSTRAINT `RelSemanticTagsDescriptions_ibfk_1` FOREIGN KEY (`Tag`) 
+ALTER TABLE `RelSemanticTagsDescriptions` ADD CONSTRAINT `RelSemanticTagsDescriptions_SemanticTags` FOREIGN KEY (`Tag`) 
     REFERENCES `SemanticTags`(`IdTag`) ON DELETE CASCADE ON UPDATE CASCADE;
 
-ALTER TABLE `RelSemanticTagsNodes` ADD CONSTRAINT `RelSemanticTagsNodes_ibfk_1` FOREIGN KEY (`TagDesc`) 
+ALTER TABLE `RelSemanticTagsNodes` ADD CONSTRAINT `RelSemanticTagsNodes_RelSemanticTagsDescriptions` FOREIGN KEY (`TagDesc`) 
     REFERENCES `RelSemanticTagsDescriptions`(`IdTagDescription`) ON DELETE CASCADE ON UPDATE CASCADE;
    
-ALTER TABLE `SemanticTags` ADD CONSTRAINT `SemanticTags_ibfk_1` FOREIGN KEY (`IdNamespace`) 
+ALTER TABLE `SemanticTags` ADD CONSTRAINT `SemanticTags_SemanticNamespaces` FOREIGN KEY (`IdNamespace`) 
     REFERENCES `SemanticNamespaces`(`idNamespace`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 
@@ -1104,10 +1104,10 @@ ALTER TABLE `Servers` ADD `ActiveForPumping` tinyint(3) unsigned Default '1';
 -- Add tables restrictions
 
 ALTER TABLE `Batchs` CHANGE `Type` `Type` ENUM('Up','Down') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'Up';
-ALTER TABLE `Batchs` ADD CONSTRAINT `Batchs_ibfk_1` FOREIGN KEY (`IdBatchDown`) 
+ALTER TABLE `Batchs` ADD CONSTRAINT `Batchs_Batchs` FOREIGN KEY (`IdBatchDown`) 
     REFERENCES `Batchs`(`IdBatch`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
-ALTER TABLE `ServerFrames` ADD CONSTRAINT `ServerFrames_ibfk_1` FOREIGN KEY (`IdBatchUp`) 
+ALTER TABLE `ServerFrames` ADD CONSTRAINT `ServerFrames_Batchs_up` FOREIGN KEY (`IdBatchUp`) 
     REFERENCES `Batchs`(`IdBatch`) ON DELETE RESTRICT ON UPDATE RESTRICT;
-ALTER TABLE `ServerFrames` ADD CONSTRAINT `ServerFrames_ibfk_2` FOREIGN KEY (`IdBatchDown`) 
+ALTER TABLE `ServerFrames` ADD CONSTRAINT `ServerFrames_Batchs_down` FOREIGN KEY (`IdBatchDown`) 
     REFERENCES `Batchs`(`IdBatch`) ON DELETE RESTRICT ON UPDATE RESTRICT;

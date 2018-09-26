@@ -3526,3 +3526,9 @@ INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdConte
 INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES(NULL, 203, 7228, 7, 1, 3);
 INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES(NULL, 201, 7228, 8, 1, 3);
 INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES(NULL, 201, 7228, 7, 1, 3);
+
+-- Publishing report
+INSERT INTO Actions (IdAction,IdNodeType,Name,Command,Icon,Description,Sort,Module,Multiple) 
+    VALUES (7500, 5014, 'Publishing report', 'managebatchs', 'publicate_section.png', 'View documents in publishing queue', 105, null,0);
+INSERT INTO RelRolesActions (IdRel,IdRol,IdAction,IdState,IdContext) VALUES (NULL, 201, 7500, 7, 1);
+INSERT INTO `Permissions` VALUES (1005, 'view_publication_resume', 'View publication report');

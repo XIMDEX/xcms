@@ -1,7 +1,7 @@
 ALTER TABLE Nodes ENGINE = InnoDB; -- SET ENGINE TO INNODB FOR NODES
 ALTER TABLE NodeTypes ENGINE = InnoDB; -- SET ENGINE TO INNODB FORT NODETYPES
 
-ALTER TABLE `Nodes` ADD FOREIGN KEY (`IdNodeType`) REFERENCES `NodeTypes`(`IdNodeType`)
+ALTER TABLE `Nodes` ADD CONSTRAINT `Nodes_NodeTypes` FOREIGN KEY (`IdNodeType`) REFERENCES `NodeTypes`(`IdNodeType`)
   ON DELETE RESTRICT ON UPDATE CASCADE ;
 
 /************************************************************************************
@@ -40,7 +40,7 @@ CREATE TABLE `MetadataGroup`(
 
 
 -- FOREIGN KEY
-ALTER TABLE `MetadataGroup` ADD FOREIGN KEY (`idMetadataSection`) REFERENCES
+ALTER TABLE `MetadataGroup` ADD CONSTRAINT `MetadataGroup_metadataSection` FOREIGN KEY (`idMetadataSection`) REFERENCES
   `MetadataSection`(`idMetadataSection`) ON DELETE CASCADE ON UPDATE CASCADE ;
 
 /********** TABLE METADATAGROUP-METADATA ***********/
@@ -56,10 +56,12 @@ CREATE TABLE `RelMetadataGroupMetadata`(
 ALTER TABLE `RelMetadataGroupMetadata` ADD UNIQUE(`idMetadataGroup`, `idMetadata`);
 
 -- FOREIGN KEY
-ALTER TABLE `RelMetadataGroupMetadata` ADD FOREIGN KEY (`idMetadataGroup`) REFERENCES `MetadataGroup`(`idMetadataGroup`)
-  ON DELETE CASCADE ON UPDATE CASCADE ;
-ALTER TABLE `RelMetadataGroupMetadata` ADD FOREIGN KEY (`idMetadata`) REFERENCES `Metadata`(`idMetadata`)
-  ON DELETE CASCADE ON UPDATE CASCADE ;
+ALTER TABLE `RelMetadataGroupMetadata` ADD CONSTRAINT `RelMetadataGroupMetadata_MetadataGroup` 
+  FOREIGN KEY (`idMetadataGroup`) REFERENCES `MetadataGroup`(`idMetadataGroup`) 
+  ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `RelMetadataGroupMetadata` ADD CONSTRAINT `RelMetadataGroupMetadata_Metadata` 
+  FOREIGN KEY (`idMetadata`) REFERENCES `Metadata`(`idMetadata`)
+  ON DELETE CASCADE ON UPDATE CASCADE;
 
 /********** TABLE METADATAGROUP-NODETYPE ***********/
 CREATE TABLE `RelMetadataSectionNodeType`(
@@ -71,9 +73,11 @@ CREATE TABLE `RelMetadataSectionNodeType`(
 ALTER TABLE `RelMetadataSectionNodeType` ADD UNIQUE(`idMetadataSection`, `idNodeType`);
 
 -- FOREIGN KEY
-ALTER TABLE `RelMetadataSectionNodeType` ADD FOREIGN KEY (`idMetadataSection`) REFERENCES
-  `MetadataSection`(`idMetadataSection`) ON DELETE CASCADE ON UPDATE CASCADE ;
-ALTER TABLE `RelMetadataSectionNodeType` ADD FOREIGN KEY (`idNodeType`) REFERENCES `NodeTypes`(`IdNodeType`)
+ALTER TABLE `RelMetadataSectionNodeType` ADD CONSTRAINT `RelMetadataSectionNodeType_MetadataSection` 
+  FOREIGN KEY (`idMetadataSection`) REFERENCES `MetadataSection`(`idMetadataSection`) 
+  ON DELETE CASCADE ON UPDATE CASCADE ;
+ALTER TABLE `RelMetadataSectionNodeType` ADD CONSTRAINT `RelMetadataSectionNodeType_NodeTypes` 
+  FOREIGN KEY (`idNodeType`) REFERENCES `NodeTypes`(`IdNodeType`)
   ON DELETE CASCADE ON UPDATE CASCADE;
 
 /********** TABLE METADATA VALUE ***********/
@@ -87,10 +91,11 @@ CREATE TABLE `MetadataValue`(
 ALTER TABLE `MetadataValue` ADD UNIQUE(`idNode`, `idRelMetadataGroupMetadata`);
 
 -- FOREIGN KEY
-ALTER TABLE `MetadataValue` ADD FOREIGN KEY (`idNode`) REFERENCES `Nodes`(`IdNode`)
+ALTER TABLE `MetadataValue` ADD CONSTRAINT `MetadataValue_Nodes` FOREIGN KEY (`idNode`) REFERENCES `Nodes`(`IdNode`)
   ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE `MetadataValue` ADD FOREIGN KEY (`idRelMetadataGroupMetadata`) REFERENCES `RelMetadataGroupMetadata`
-  (`idRelMetadataGroupMetadata`) ON DELETE CASCADE ON UPDATE CASCADE ;
+ALTER TABLE `MetadataValue` ADD CONSTRAINT `MetadataValue_RelMetadataGroupMetadata` 
+  FOREIGN KEY (`idRelMetadataGroupMetadata`) REFERENCES `RelMetadataGroupMetadata` (`idRelMetadataGroupMetadata`) 
+  ON DELETE CASCADE ON UPDATE CASCADE;
 
 
 /************ INSERT ACTIONS ****************/

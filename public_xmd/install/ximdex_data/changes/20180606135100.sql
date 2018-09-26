@@ -22,7 +22,7 @@ INSERT INTO `ProgrammingCode` (`idLanguage`, `idCommand`, `code`) VALUES ('php',
 INSERT INTO `ProgrammingCommand` (`id`, `description`) VALUES ('sprintf2', 'Return a formatted string with two parameters');
 INSERT INTO `ProgrammingCode` (`idLanguage`, `idCommand`, `code`) VALUES ('php', 'sprintf2', '<?php $%s = sprintf($%s, $%s, $%s); ?>');
 
-ALTER TABLE ximdex.RelSemanticTagsNodes DROP FOREIGN KEY `RelSemanticTagsNodes_ibfk_1`;
+ALTER TABLE RelSemanticTagsNodes DROP FOREIGN KEY `RelSemanticTagsNodes_ibfk_1`;
 
 INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`, `IsBulk`) 
     VALUES ('7312', '5022', 'Modify properties', 'manageproperties', 'xix.png', 'Modify properties of a common root folder', '60'
