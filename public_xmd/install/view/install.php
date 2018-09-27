@@ -26,6 +26,7 @@
  */
 
 use Ximdex\Runtime\App;
+
 ?>
 <!DOCTYPE html>
 <html>

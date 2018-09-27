@@ -1,6 +1,7 @@
 <?php
+
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -26,9 +27,8 @@
 
 use Ximdex\Runtime\App;
 
-require_once(APP_ROOT_PATH.'/install/steps/generic/GenericInstallStep.class.php');
-require_once(APP_ROOT_PATH.'/install/managers/InstallModulesManager.class.php');
-
+require_once APP_ROOT_PATH . '/install/steps/generic/GenericInstallStep.class.php';
+require_once APP_ROOT_PATH . '/install/managers/InstallModulesManager.class.php';
 
 class SettingsInstallStep extends GenericInstallStep
 {
@@ -42,23 +42,22 @@ class SettingsInstallStep extends GenericInstallStep
         $this->addJs("SettingController.js");
         $values = array("go_method" => "initializeSettings");
         $this->render($values);
-
     }
 
     public function setId()
     {
         if (strlen(App::getValue( "ximid")) > 2) {
-            $result["localhash"] = false;
+            $result = ['localhash' => false];
             $this->sendJSON($result);
             return;
         }
         try {
             $this->installManager->setXid();
-            $result["localhash"] = false;
+            $result = ['localhash' => false];
             $this->sendJSON($result);
         } catch (ErrorException $e) {
             $this->installManager->setLocalXid();
-            $result["localhash"] = true;
+            $result = ['localhash' => true];
             $this->sendJSON($result);
         }
     }
@@ -78,7 +77,7 @@ class SettingsInstallStep extends GenericInstallStep
         $this->installManager->insertXimdexUser($password);
         $this->installManager->setApiKey();
         $this->loadNextAction();
-        $result["success"] = true;
+        $result = ['success' => true];
         $this->sendJSON($result);
     }
 }

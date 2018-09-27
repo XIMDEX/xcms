@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -24,9 +24,10 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
+
 use Ximdex\Runtime\App;
 
-require_once(APP_ROOT_PATH.'/install/steps/welcome/WelcomeInstallStep.class.php');
+require_once APP_ROOT_PATH . '/install/steps/welcome/WelcomeInstallStep.class.php';
 
 class GenericInstallStep
 {
@@ -57,29 +58,29 @@ class GenericInstallStep
 		$this->render();		
 	}
 
-	protected function render($values=array(), $view=null, $layout="installer.tpl")
-	{	
-		// header('Content-type', "text/html; charset=utf-8");
+	protected function render($values = array(), $view = null, $layout = "installer.tpl")
+	{
 		foreach ($values as $name => $value) {
 			$$name = $value;			
 		}		
 		$js_files = $this->js_files;
 		$view = $view? $view : $this->request->getParam("method");
 		$goMethod = isset($values["go_method"])? $values["go_method"]: $view;
-		
 		$folderName = trim(strtolower($this->steps[$this->currentStep]["class-name"]));
-		if ($this->exceptions && is_array($this->exceptions) && count($this->exceptions)){
+		if ($this->exceptions && is_array($this->exceptions) && count($this->exceptions)) {
 			$exceptions = $this->exceptions;
 			$includeTemplateStep = APP_ROOT_PATH."/install/steps/generic/view/exception.php";
-		}else
+		} else {
 			$includeTemplateStep = APP_ROOT_PATH."/install/steps/{$folderName}/view/{$view}.php";
-		  	include(APP_ROOT_PATH."/install/view/install.php");
+		}
+		include(APP_ROOT_PATH."/install/view/install.php");
 		ob_end_flush();
-		exit;
+		exit();
 	}
 
 	/**
 	 * Sends a JSON string
+	 * 
 	 * @param $_msgs
 	 * @return string
 	 */
@@ -143,7 +144,6 @@ class GenericInstallStep
        // Relative URL ( do not save it if its value is only / )
        $pathInfo = pathinfo($_SERVER['SCRIPT_NAME'] ?? '/');
        $basepath = rtrim( $pathInfo['dirname'], '/');
-
        $subpath = '';
        if (defined('CORE_FRONTCONTROLLER')) {
            $subpath = '/'.basename(APP_ROOT_PATH);

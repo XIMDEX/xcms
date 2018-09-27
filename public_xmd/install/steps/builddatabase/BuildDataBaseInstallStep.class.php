@@ -221,7 +221,6 @@ class BuildDataBaseInstallStep extends GenericInstallStep
         $idbManager = new InstallDataBaseManager();
         $host = $this->request->getParam('host');
         $port = $this->request->getParam('port');
-        $name = $this->request->getParam('name');
         $user = $this->request->getParam('user');
         $pass = $this->request->getParam('pass');
         $values = array();

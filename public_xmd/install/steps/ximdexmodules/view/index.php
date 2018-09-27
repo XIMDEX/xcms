@@ -1,6 +1,7 @@
 <?php
+
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -37,5 +38,5 @@
 	    </li>		
 	</ul>
 	<button tabindex="1" ng-hide="isButtonHide()" ui-ladda="loading" class="launch_ximdex action_launcher ladda-button" 
-		data-style="slide-up" id="submitButton" xim-state="loading"><span class="ladda-label">Install modules</span></button>
+			data-style="slide-up" id="submitButton" xim-state="loading"><span class="ladda-label">Install modules</span></button>
 </form>
