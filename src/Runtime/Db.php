@@ -170,7 +170,7 @@ class Db
             Logger::error($this->desErr);
             return false;
         }
-        $this->sql = \Ximdex\XML\Base::recodeSrc($sql, self::$dbEncoding);;
+        $this->sql = \Ximdex\XML\Base::recodeSrc($sql, self::$dbEncoding);
         $this->rows = array();
         $this->EOF = true;
         $this->newID = null;

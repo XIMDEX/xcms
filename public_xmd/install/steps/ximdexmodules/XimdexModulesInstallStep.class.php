@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -26,8 +26,8 @@
  */
 
 require_once APP_ROOT_PATH . '/install/steps/generic/GenericInstallStep.class.php';
-require_once APP_ROOT_PATH . '/install/managers/FastTraverseManager.class.php';
 require_once APP_ROOT_PATH . '/install/managers/InstallModulesManager.class.php';
+require_once APP_ROOT_PATH . '/install/managers/FastTraverseManager.class.php';
 
 /**
  * Step class to install the modules. It will install the no core modules

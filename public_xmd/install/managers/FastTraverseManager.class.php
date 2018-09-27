@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -27,12 +27,15 @@
 
 use Ximdex\Models\Node;
 
-require_once(APP_ROOT_PATH.'/install/managers/InstallManager.class.php');
+require_once APP_ROOT_PATH . '/install/managers/InstallManager.class.php';
 
 class FastTraverseManager extends InstallManager
 {
 	/**
-	 * Build FastTraverse and full path to every node in Ximdex	 
+	 * Build FastTraverse and full path to every node in Ximdex
+	 * 
+	 * @throws Exception
+	 * @return boolean
 	 */
 	public function buildFastTraverse()
 	{
@@ -40,17 +43,18 @@ class FastTraverseManager extends InstallManager
 		$node = new Node();
 		$results = $node->find('IdNode', '', array(), MONO);
 		$dbUpdate = new \Ximdex\Runtime\Db();
-		foreach ($results as $i => $idNode)
-		{
+		foreach ($results as $i => $idNode) {
 			$node = new Node($idNode);
 			$node->updateFastTraverse(false);
 			$path = pathinfo($node->GetPath());
-			if (!isset($path['dirname']))
-			{
+			if (!isset($path['dirname'])) {
 				$path['dirname'] = '/' ;
 			}
 			$this->installMessages->printIteration($i);
-			$dbUpdate->execute(sprintf("update Nodes set Path = '%s' where idnode = %s", $path['dirname'], $idNode));
+			$res = $dbUpdate->execute(sprintf("update Nodes set Path = '%s' where idnode = %s", $path['dirname'], $idNode));
+			if ($res === false) {
+			    throw new Exception('Cannot generate the fast traverse data and nodes path');
+			}
 		}
         return true;
 	}

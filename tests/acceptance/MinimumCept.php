@@ -37,11 +37,11 @@ $I->fillField('pass', 'ximdex');
 $I->fillField('pass2', 'ximdex');
 $I->click('Save settings');
 
-$I->wait(5);
+$I->wait(20);
 $I->see('Installing Ximdex CMS\'s default modules');
 $I->click('Install modules');
 
-$I->waitForText('Xowl configuration (optional)', 10);
+$I->waitForText('Xowl configuration (optional)', 15);
 $I->click('Continue');
 
 $I->waitForText('Installation finished!', 3);
