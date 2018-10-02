@@ -1,6 +1,7 @@
 <?php
+
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -24,7 +25,6 @@
  * @version $Revision$
  */
 
-
 namespace Ximdex\Parsers;
 
 use DOMDocument;
@@ -33,13 +33,11 @@ use DOMXPath;
 use Ximdex\Models\Node;
 use Ximdex\Logger;
 
-
 class ParsingRng
 {
     const XMLNS_XIM = 'http://ximdex.com/schema/1.0';
-
-
     var $minimalXml = '';
+    
     /**
      * @var DOMXPath
      */
@@ -57,35 +55,28 @@ class ParsingRng
         }
     }
 
-    /*
+    /**
     * Gets the array needed for render a web form
+    * 
     * @param int $templateID
-    * @return array / NULL
+    * @return array | NULL
     */
-
     function getElementsForRender($templateID)
     {
-
         $this->buildDefaultContent($templateID);
-
-
         $elements = $this->elementsForRender;
-
         if (is_null($elements)) {
             Logger::error("Incorrect visual template $templateID for render a web form");
             return NULL;
         }
-
         return $elements;
     }
-
 
     /**
      * Build an associative array of form elements based on RNG
      *
      * @param int $templateID RNG identifier
      * @param string RNG element name from which parser starts building the form elements
-     *
      * @return array Associative array of form elements [ array of array('name' => 'Element name', 'type' => 'Element type') ]
      *
      */
@@ -114,9 +105,7 @@ class ParsingRng
      *
      * @param int $templateID RNG identifier
      * @param string RNG element name from which parser starts building the form elements
-     *
      * @return array Associative array of form elements [ array of array('name' => 'Element name', 'type' => 'Element type') ]
-     *
      */
     function buildFormElementsAssociative($templateID, $start = '')
     {
@@ -135,51 +124,37 @@ class ParsingRng
         return $form_elements;
     }
 
-
     /**
      * Build a minimal XML from a relax NG schema
      *
-     * @return string / NULL
+     * @return string | NULL
      */
-
     function buildDefaultContent($templateID)
     {
-
         $node = new Node($templateID);
         if (!($node->get('IdNode') > 0)) {
             return NULL;
         }
-
         $content = $node->GetContent();
-
-        /**
-         * @TODO: DOMDocument::loadXML(): Empty string supplied as input
-         */
-
         $domDoc = new DOMDocument();
         $domDoc->preserveWhiteSpace = false;
         $domDoc->validateOnParse = true;
         $domDoc->formatOutput = true;
         $domDoc->loadXML($content);
-
         $this->xpathObj = new DOMXPath($domDoc);
 
         // Gets the root element and starts parsing
-
         $nodeList0 = $this->xpathObj->query('//*[local-name(.)="element" and @name="docxap"]');
         
-        //check if the RNG template have the docxap item declared
-        if ($nodeList0->item(0))
-        {
+        // Check if the RNG template have the docxap item declared
+        if ($nodeList0->item(0)) {
         	$nodeList = $nodeList0->item(0)->childNodes;
         	if ($nodeList->length > 0) {
             	foreach ($nodeList as $domNode) {
-                	$nodeName = $domNode->nodeName;
                 	$this->processNode($domNode);
             	}
         	}
         }
-		
         return $this->minimalXml;
     }
 
@@ -188,33 +163,27 @@ class ParsingRng
      *
      * @param domNode $domNode
      */
-
     private function processNode($domNode)
     {
-
         $nodeName = $domNode->nodeName;
-
         switch ($nodeName) {
-
             case 'element':
                 $this->processElement($domNode);
                 break;
             case 'ref':
-
                 $name = $domNode->attributes->getNamedItem('name')->nodeValue;
                 /**
                  * @var $nodeList \DOMNodeList
                  */
                 $nodeList = $this->xpathObj->query('//*[local-name(.)="define" and @name="' . $name . '"]');
+                
                 // FirstChild is a tag 'element' (always?)
-                if ($nodeList->length > 0
+                if ($nodeList->length > 0 
                     && isset($nodeList->item(0)->firstChild->attributes->getNamedItem('name')->nodeValue)
-                    && !isset($this->nodesProcessed[$nodeList->item(0)->firstChild->attributes->getNamedItem('name')->nodeValue])
-                )
+                    && !isset($this->nodesProcessed[$nodeList->item(0)->firstChild->attributes->getNamedItem('name')->nodeValue])) {
                     $this->processElement($nodeList->item(0)->firstChild);
-
+                }
                 break;
-
             case 'optional':
             case 'zeroOrMore':
                 break;
@@ -227,21 +196,16 @@ class ParsingRng
                 } else {
                     $nodeList = $domNode->childNodes;
                 }
-
                 if ($nodeList->length > 0) {
                     foreach ($nodeList as $domNode) {
                         $this->processNode($domNode);
                     }
                 }
-
                 break;
-
             case 'xim:default_content':
                 $this->minimalXml .= $domNode->nodeValue;
                 break;
-
         }
-
     }
 
     /**
@@ -249,34 +213,24 @@ class ParsingRng
      *
      * @param domNode $domNode
      */
-
     private function processElement($domNode)
     {
-
         $name = $domNode->attributes->getNamedItem('name')->nodeValue;
         $this->nodesProcessed[$name] = true;
         $this->minimalXml .= '<' . $name;
-
         $nodeList = $domNode->childNodes;
 
         // Process children
-
         if ($nodeList->length > 0) {
             $this->processAttributes($nodeList, $domNode->getAttribute('name'));
-
             $this->minimalXml .= '>';
-
             foreach ($nodeList as $domNode) {
                 $this->processNode($domNode);
             }
-
             $this->minimalXml .= '</' . $name . '>';
-
         } else {
-
             $this->minimalXml .= '/>';
         }
-
     }
 
     /**
@@ -284,54 +238,41 @@ class ParsingRng
      *
      * @param array $childNode
      */
-
     private function processAttributes($childNodes, $parentName)
     {
-
         foreach ($childNodes as $domNode) {
             if ($domNode->nodeName == 'attribute') {
                 $name = $domNode->attributes->getNamedItem('name')->nodeValue;
                 $value = $domNode->attributes->getNamedItem('value');
-
                 if (is_null($value)) {
 
                     // Has a choice tag?
-
                     if ($domNode->hasChildNodes()) {
                         $childName = $domNode->childNodes->item(0)->nodeName;
-
                         if ($childName == 'choice') {
                             $choiceNode = $domNode->childNodes->item(0);
-
+                            
                             // Takes as attribute value the first 'value' tag
-
                             $value = $choiceNode->childNodes->item(0)->nodeValue;
                         }
-
                         if ($childName == 'xim:attribute') {
                             $this->processAttributeElement($domNode, $parentName);
                         }
                     }
-
                 }
-
                 if (in_array($name, array('type', 'label', 'id'))) {
                     $this->elementsForRender[$parentName][$name] = $value;
-
                     if ($name == 'id') {
                         $this->elementsForRender[$parentName]['name'] = $value;
                         $this->minimalXml .= " name=\"$value\"";
                     }
                 }
-
                 if ($name != 'uid') {
                     $this->minimalXml .= " $name=\"$value\"";
                 }
             }
         }
-
         $this->renderCount++;
-
     }
 
     /**
@@ -339,33 +280,27 @@ class ParsingRng
      *
      * @param domNode $domNode
      */
-
     private function processAttributeElement($domNode, $parentName)
     {
-
         $name = $domNode->attributes->getNamedItem('name')->nodeValue;
 
         // Is allways the first child?
 
         $renderElement = $domNode->childNodes->item(0)->attributes->getNamedItem('renderElement')->nodeValue;
-
         if (!is_null($renderElement)) {
             $renderLabel = $domNode->childNodes->item(0)->attributes->getNamedItem('renderLabel')->nodeValue;
-
-            $this->elementsForRender[$parentName] =
-                array('name' => $name, 'id' => $name, 'type' => $renderElement, 'label' => $renderLabel);
-
+            $this->elementsForRender[$parentName] = array('name' => $name, 'id' => $name, 'type' => $renderElement, 'label' => $renderLabel);
             $this->renderCount++;
         }
-
     }
 
     public function getElementsByType($type)
     {
         $elementsNames = array();
-        if (!$this->setXpathObj())
+        if (!$this->setXpathObj()) {
             return $elementsNames;
-
+        }
+        
         // Starts parsing
         $nodeList = $this->xpathObj->query('//*[local-name(.)="type"]');
         if ($nodeList->length > 0) {
@@ -375,16 +310,16 @@ class ParsingRng
                 }
             }
         }
-
         return $elementsNames;
     }
 
     public function getElements()
     {
         $elementsNames = array();
-        if (!$this->setXpathObj())
+        if (!$this->setXpathObj()) {
             return $elementsNames;
-
+        }
+        
         // Starts parsing
         $nodeList = $this->xpathObj->query('//*[local-name(.)="element"]');
         if ($nodeList->length > 0) {
@@ -394,24 +329,21 @@ class ParsingRng
                 }
             }
         }
-
         return $elementsNames;
     }
 
     private function setXpathObj()
     {
-        if (!$this->node || $this->node->nodeType->get('Name') != 'RngVisualTemplate')
+        if (!$this->node || $this->node->nodeType->get('Name') != 'RngVisualTemplate') {
             return false;
-
+        }
         $content = $this->node->GetContent();
         $domDoc = new DOMDocument();
         $domDoc->preserveWhiteSpace = false;
         $domDoc->validateOnParse = true;
         $domDoc->formatOutput = true;
         $domDoc->loadXML($content);
-
         $this->xpathObj = new DOMXPath($domDoc);
-
         return true;
     }
 }

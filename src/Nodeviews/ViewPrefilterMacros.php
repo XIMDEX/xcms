@@ -1,6 +1,7 @@
 <?php
+
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -30,37 +31,32 @@ use Ximdex\Models\Node;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\Runtime\App;
 
-class ViewPrefilterMacros extends AbstractView implements IView {
-	
-	public function transform($idVersion = NULL, $pointer = NULL, $args = NULL) {
-	    
+class ViewPrefilterMacros extends AbstractView implements IView
+{	
+	public function transform($idVersion = NULL, $pointer = NULL, $args = NULL)
+	{    
 		$content = $this->retrieveContent($pointer);
 		if (preg_match("/@@@GMximdex\.ximlet\(([0-9]+)\)@@@/", $content)) {
 			$content = preg_replace_callback("/@@@GMximdex\.ximlet\(([0-9]+)\)@@@/",  
 				array($this,'GetXimletContent'), $content);
-		}
-		
+		}	
 		if (preg_match("/@@@GMximdex\.sections\(([0-9]+)\)@@@/", $content)) {
 			$content = preg_replace_callback("/@@@GMximdex\.sections\(([0-9]+)\)@@@/",  
 				array($this, 'GetSections_ximTree'), $content);
 		}
-		
 		if (preg_match('/ a_import_enlaceid([A-Za-z0-9|\_]+)\s*=\s*\"([^\"]+)\"/i', $content)) {  
 			$content = preg_replace_callback('/ a_import_enlaceid([A-Za-z0-9|\_]+)\s*=\s*\"([^\"]+)\"/i' ,  
 				array($this, 'GetLocalPath'), $content);
 		}
-		
 		return $this->storeTmpContent($content);
 	}
 
-	private function GetXimletContent($matches) {
-	    
+	private function GetXimletContent($matches)
+	{    
 		$node = new Node($matches[1]);
-
 		if (!($node->get('IdNode') > 0)) {
 			return '';
 		}
-		
 		return $node->class->GetContent();
 	}
 	  
@@ -69,30 +65,27 @@ class ViewPrefilterMacros extends AbstractView implements IView {
 
 		$node = new Node($matches[1]);
 		$retorno = "";
-		$codigo = 10;
-
+		// $codigo = 10;
 		if ($node->nodeType->GetIsStructuredDocument()) {
 			$strdoc = new StructuredDocument($node->nodeID);
 			$langID	 = $strdoc->GetLanguage();
 			$retorno = $node->GetSections_ximTree($langID, 2, 1);
-			$codigo = 0;
+			// $codigo = 0;
 		} else {
-			$codigo = 15; // not structured document
+			// $codigo = 15; // not structured document
 		}
-
 		return $retorno;
  	}
 
-	private function GetLocalPath($matches) {
+	private function GetLocalPath($matches)
+	{
 		$node = new Node($matches[2]);
-
 		if ($node->numErr) {
 			$absPath = $matches[2];
 		} else {
 			$pathList = $node->class->GetPathList();			
-			$absPath = XIMDEX_ROOT_PATH . App::getValue( "NodeRoot") . $pathList;
+			$absPath = XIMDEX_ROOT_PATH . App::getValue('NodeRoot') . $pathList;
  		}
-			
 		return " a_import_enlaceid{$matches[1]}='$absPath'";
 	}
 }

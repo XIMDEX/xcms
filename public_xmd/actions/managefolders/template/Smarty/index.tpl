@@ -1,5 +1,5 @@
 {**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -24,35 +24,37 @@
  *}
 
 <form method="post" name="as_form" id="as_form" action="{$action_url}">
-	<input type="hidden" name="nodeid" value="{$nodeID}">
-	<input type="hidden" name="name" value="{$sectionName}">
-
+	<input type="hidden" name="nodeid" value="{$nodeID}" />
+	<input type="hidden" name="name" value="{$sectionName}" />
 	{include file="actions/components/title_Description.tpl"}
-
 	<div class="action_content section-properties">
 		<div class="row tarjeta">
 			<h2 class="h2_general">{t}Configure section{/t}</h2>
 			<div class="small-12 columns">
 				<div style="margin-bottom: 20px;" class="text-border folder-name folder-normal icon label_icon">
-				<span style="color:gray; font-family: 'Roboto'; text-transform: uppercase; font-size: 1.3rem;" class=" folder-type">{t}{$sectionType}{/t}: {$sectionName}</spanreadonly>
+				    <span style="color:gray; font-family: 'Roboto'; text-transform: uppercase; font-size: 1.3rem;" 
+				            class=" folder-type">{t}{$sectionType}{/t}: {$sectionName}</span>
+                </div>
 			</div>
-			</div>
-
-		<div class="subfolders-available">
-			<div class="small-12 columns">
-			<label class="label_title label_general">{t}Subfolders availables{/t}</label>
-			{foreach from=$subfolders key=nt item=foldername}
-				<div class="subfolder box-col1-1">
-					<input class="hidden-focus" id="{$nt}_{$nodeID}" name="folderlst[]" type="checkbox" value="{$nt}" {if $foldername[2]=='selected' } checked{/if} />
-					<label style="border-radius: 5px; padding-left:0!important;" class="icon" for="{$nt}_{$nodeID}"><strong class="icon {$foldername[0]}">{$foldername[0]}</strong></label>
-					<span class="info">{t}{$foldername[1]}{/t}</span>
-				</div>
-			{/foreach}
-			</div></div>
-		<div class="small-12 columns">
-		<fieldset class="buttons-form">
-            {button label="Save changes" class='validate btn main_action' message="Are you sure you want to proceed?"}
-		</fieldset>
-		</div>
-		</div></div>
+			<div class="subfolders-available">
+                <div class="small-12 columns">
+                    <label class="label_title label_general">{t}Subfolders availables{/t}</label>
+                    {foreach from=$subfolders key=nt item=foldername}
+                        <div class="subfolder box-col1-1">
+                            <input class="hidden-focus" id="{$nt}_{$nodeID}" name="folderlst[]" type="checkbox" 
+                                    value="{$nt}" {if $foldername[2]=='selected' } checked{/if} />
+                            <label style="border-radius: 5px; padding-left:0!important;" class="icon" for="{$nt}_{$nodeID}"><strong 
+                                    class="icon {$foldername[0]}">{$foldername[0]}</strong></label>
+                            <span class="info">{t}{$foldername[1]}{/t}</span>
+				        </div>
+			         {/foreach}
+			    </div>
+            </div>
+            <div class="small-12 columns">
+                <fieldset class="buttons-form">
+                    {button label="Save changes" class='validate btn main_action' message="Are you sure you want to proceed?"}
+                </fieldset>
+            </div>
+        </div>
+    </div>
 </form>

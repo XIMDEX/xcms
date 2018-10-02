@@ -1,10 +1,7 @@
 <?php
-namespace Ximdex\Utils;
-
-use Ximdex\Logger;
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -27,22 +24,21 @@ use Ximdex\Logger;
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
+
+namespace Ximdex\Utils;
+
+use Ximdex\Logger;
+
 class SerializerXMLRPC
 {
-
-    public function __construct()
-    {
-    }
-
     public function encode($data)
     {
-
         if (!is_array($data) || !isset($data['method']) || !isset($data['params'])) {
             Logger::error('Los parametros enviados no son validos: Serializer_XMLRPC::encode()');
         }
-
         $encoded = null;
         if (function_exists('xmlrpc_encode_request')) {
+            
             // NOTE: La extension XML-RPC es experimental y esta sujeta a cambios.
             // En PHP4 la extension esta habilitada por defecto
             $encoded = @xmlrpc_encode_request($data['method'], $data['params']);
@@ -56,13 +52,14 @@ class SerializerXMLRPC
     {
         $decoded = null;
         if (function_exists('xmlrpc_decode_request')) {
+            
             // NOTE: La extension XML-RPC es experimental y esta sujeta a cambios.
             // En PHP4 la extension esta habilitada por defecto
+            $method = null;
             $decoded = @xmlrpc_decode_request($xmlrpc, $method);
         } else {
             Logger::warning('Se esta intentando deserializar usando la funcion inexistente xmlrpc_decode()');
         }
         return $decoded;
     }
-
 }

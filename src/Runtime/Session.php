@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -31,10 +31,10 @@ namespace Ximdex\Runtime;
 define('DEFAULT_SESSION', 'SessionID');
 
 /** @const HTTP_SESSION_STARTED - The session was started with the current request */
-define("HTTP_SESSION_STARTED",      1);
+define('HTTP_SESSION_STARTED',      1);
 
 /** @const HTTP_SESSION_STARTED - No new session was started with the current request */
-define("HTTP_SESSION_CONTINUED",    2);
+define('HTTP_SESSION_CONTINUED',    2);
 
 
 class Session
@@ -83,12 +83,12 @@ class Session
             self::start();
         }
         session_regenerate_id();
-        setcookie(ini_get("session.name"),
-            session_id(), time() . ini_get("session.cookie_lifetime"),
-            ini_get("session.cookie_path"),
-            ini_get("session.cookie_domain"),
-            ini_get("session.cookie_secure"),
-            ini_get("session.cookie_httponly")
+        setcookie(ini_get('session.name'),
+            session_id(), time() . ini_get('session.cookie_lifetime'),
+            ini_get('session.cookie_path'),
+            ini_get('session.cookie_domain'),
+            ini_get('session.cookie_secure'),
+            ini_get('session.cookie_httponly')
         );
     }
 
@@ -134,7 +134,7 @@ class Session
 
     public static function serialize($key, & $var)
     {
-        $SESSION[$key] = serialize($var);
+        $_SESSION[$key] = serialize($var);
     }
 
     public static function & unserialize($key)
@@ -158,7 +158,9 @@ class Session
 
     function display()
     {
-        echo "<pre>"; print_r($_SESSION); echo "</pre>";
+        echo '<pre>';
+        print_r($_SESSION);
+        echo '</pre>';
     }
 
     function getDisplay()
@@ -169,14 +171,14 @@ class Session
     public static function check($redirect = true)
     {
         self::start();
-        if (!array_key_exists("action", $_GET) ) {
-            $_GET["action"] = null;
+        if (!array_key_exists('action', $_GET) ) {
+            $_GET['action'] = null;
         }
-        if (!self::exists('logged') && "installer" != $_GET["action"]) {
+        if (!self::exists('logged') && 'installer' != $_GET['action']) {
             if ($redirect) {
                 $response = new Response();
-                $response->sendStatus(sprintf("Location: %s/", App::getValue('UrlRoot')), true, 301);
-                setcookie("expired", "1", time() + 60);
+                $response->sendStatus(sprintf('Location: %s/', App::getValue('UrlRoot')), true, 301);
+                setcookie('expired', '1', time() + 60);
                 die();
             }
             return false;

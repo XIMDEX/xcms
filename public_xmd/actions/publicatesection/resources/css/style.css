@@ -137,12 +137,13 @@
 .option_checkbox
 {
 	float: left;
-	width: 40pt;
+	width: 5%;
 }
 
 .option_info
 {
 	float: left;
+	width: 95%;
 }
 
 .publication_option

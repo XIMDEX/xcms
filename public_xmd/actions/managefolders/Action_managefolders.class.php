@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -26,38 +26,35 @@
  */
 
 use Ximdex\Models\Node;
+use Ximdex\Models\NodeDefaultContents;
+use Ximdex\NodeTypes\NodeTypeConstants;
 use Ximdex\MVC\ActionAbstract;
 
 class Action_managefolders extends ActionAbstract
 {
 	/** 
-	* Main function 
-	*
-	* Load the manage folders form. 
-	*
-	* Request params: 
- 	*  
-	* * nodeid 
- 	*/ 
+	* Main function
+	* Load the manage folders form
+	* 
+	* Request params:
+	* * nodeid
+ 	*/
     function index()
     {
 		$this->addCss('/actions/addsectionnode/resources/css/style.css');
 		$nodeID = $this->request->getParam("nodeid");
 		$node = new Node($nodeID);
 		$selectedFolders = $this->_getChildrenNodeTypes($nodeID);		
-
-		$subfolders=$this->_getAvailableSubfolders($node->GetNodeType());
-
-		foreach($subfolders as $nt => $folder){
-			if(!empty($selectedFolders) && in_array($nt,$selectedFolders)){
-				$subfolders[$nt][]='selected';
-			}else{
-				$subfolders[$nt][]='unselected';
+		$subfolders = $this->_getAvailableSubfolders($node->GetNodeType());
+		$subfolders = array_keys($subfolders);
+		foreach ($subfolders as $nt){
+			if (!empty($selectedFolders) && in_array($nt, $selectedFolders)) {
+				$subfolders[$nt][] = 'selected';
+			} else {
+				$subfolders[$nt][] = 'unselected';
 			}
 		}
-		
 		$this->addJs('/actions/managefolders/resources/js/index.js');
-
         	$values = array('nodeID' => $nodeID,
 				'sectionName' => $node->get('Name'),
         	    'sectionType' => $node->nodeType->GetName(),
@@ -66,172 +63,166 @@ class Action_managefolders extends ActionAbstract
 				'go_method' => 'configure_section',
 				);
         $this->render($values, null, 'default-3.0.tpl');
-    	}
+    }
     
-	/** 
-        * Data processing function 
-        *
-        * Performs the actions depending on the users choices on the form. 
-        *
-        * Request params: 
-        *  
-        * * nodeid: section ID. 
-        * * folderlst: list of the selected folders by the user. 
-        * 
-        */
-    	function configure_section() {
-			$error=false;
-			$folderlst = $this->request->getParam('folderlst');
-		   	$nodeID = $this->request->getParam('nodeid');
-			$parent = new Node($nodeID);
-					
-			$existingChildren = $this->_getChildrenNodeTypes($nodeID);
-			$addfolders=false;
-			if(count($folderlst)>count($existingChildren)){
-				$addfolders=true;
-				//If the user wants to create all the containing folders.
-				if(empty($existingChildren)){
-					$existingChildren=$folderlst;
-				}else{
-					$folderlst=array_diff($folderlst,$existingChildren);
-				}
-			}
-			else{
-				//If the user wants to delete all the containing folders.
-				if(empty($folderlst)){
-					$folderlst=$existingChildren;
-				}else{
-					$folderlst=array_diff($existingChildren,$folderlst);		
-				}
-			}
-
-			//Only creating the new folders selected.
-			if($addfolders){
-				foreach($folderlst as $folderNt){
-					$folder = new Node();
-					$ndc = new \Ximdex\Models\NodeDefaultContents();
-					$name=$ndc->getDefaultName($folderNt);
-	        	        	$idFolder = $folder->CreateNode($name, $nodeID, $folderNt, null);
-					if(!$idFolder){
-						$error=true;
-						break;
-					}
-				}
-			}
-			else{
-				foreach($folderlst as $folderNt){
-                    $ndc = new \Ximdex\Models\NodeDefaultContents();
-                    $name=$ndc->getDefaultName($folderNt);
-
-					$nodeid = $parent->GetChildByName($name);
-					$deleteFolder = new Node($nodeid);
-
-					$res = $deleteFolder->DeleteNode();
-					if(!$res){
-						$error=true;
-						break;
-					}
-				}
-			}
+	/**
+    * Data processing function
+    * Performs the actions depending on the users choices on the form. 
+    *
+    * Request params: 
+    * * nodeid: section ID
+    * * folderlst: list of the selected folders by the user
+    */
+	function configure_section()
+	{
+		$error = false;
+		$folderlst = $this->request->getParam('folderlst');
+	   	$nodeID = $this->request->getParam('nodeid');
+		$parent = new Node($nodeID);
+		$existingChildren = $this->_getChildrenNodeTypes($nodeID);
+		$addfolders = false;
+		if (count($folderlst) > count($existingChildren)) {
+			$addfolders = true;
 			
-			if ($error) {
-				$this->messages->add(_('This operation could not be successfully completed.'), MSG_TYPE_ERROR);
-			}else{
-			    
-			    // get the project node for the current section
-			    $project = new Node($parent->getProject());
-			    
-			    // reload the templates include files for this new project
-			    $xsltNode = new \Ximdex\NodeTypes\XsltNode($parent);
-			    if ($xsltNode->reload_templates_include($project) === false)
-			        $this->messages->mergeMessages($xsltNode->messages);
-			            
-		        // reload the document folders and template folders relations
-		        if (!$xsltNode->rel_include_templates_to_documents_folders($project))
-		            $this->messages->mergeMessages($xsltNode->messages);
-			    
-				$this->messages->add(_('This section has been successfully configured.'), MSG_TYPE_NOTICE);
+			// If the user wants to create all the containing folders
+			if (empty($existingChildren)) {
+				$existingChildren = $folderlst;
+			} else {
+				$folderlst = array_diff($folderlst, $existingChildren);
 			}
-			
-			$values = array(
-				'action_with_no_return' => !$error,
-				'messages' => $this->messages->messages,
-				'nodeID' => $nodeID
-			);
-			
-			$this->sendJSON($values);
-    	}
-    
-	/** 
-        * Getting all the children folders. 
-        *
-        * Using the \Ximdex\Models\NodeDefaultContents of the data model, returns all the avaliable children folders
-	* with a description for a given nodetype. 
-        *
-        * Request params: 
-        *  
-        * * nodetype_sec: noderype ID for the containing folder. 
-        * 
-        */
-	private function _getAvailableSubfolders($nodetype_sec){
-		$subfolders=array();
-		$res=array();
-		$ndc = new \Ximdex\Models\NodeDefaultContents();
-
-		$subfolders=$ndc->getDefaultChilds($nodetype_sec);
-		foreach($subfolders as $subfolder){
-			$nt=$subfolder["NodeType"];
-			$res[$nt][0]=$subfolder["Name"];	
-			$res[$nt][1]=$this->_getDescription($nt);	
+		} else {
+		    
+			// If the user wants to delete all the containing folders
+			if (empty($folderlst)) {
+				$folderlst = $existingChildren;
+			} else {
+				$folderlst = array_diff($existingChildren, $folderlst);		
+			}
 		}
-		asort($res);	
+
+		// Only creating the new folders selected
+		if ($addfolders) {
+			foreach ($folderlst as $folderNt) {
+				$folder = new Node();
+				$ndc = new \Ximdex\Models\NodeDefaultContents();
+				$name = $ndc->getDefaultName($folderNt);
+        	    $idFolder = $folder->CreateNode($name, $nodeID, $folderNt, null);
+				if (!$idFolder) {
+					$error = true;
+					break;
+				}
+			}
+		} else {
+			foreach ($folderlst as $folderNt) {
+                $ndc = new \Ximdex\Models\NodeDefaultContents();
+                $name = $ndc->getDefaultName($folderNt);
+				$nodeid = $parent->GetChildByName($name);
+				$deleteFolder = new Node($nodeid);
+				$res = $deleteFolder->DeleteNode();
+				if (!$res) {
+					$error = true;
+					break;
+				}
+			}
+		}
+		if ($error) {
+			$this->messages->add(_('This operation could not be successfully completed.'), MSG_TYPE_ERROR);
+		} else {
+		    
+		    // Get the project node for the current section
+		    $project = new Node($parent->getProject());
+		    
+		    // Reload the templates include files for this new project
+		    $xsltNode = new \Ximdex\NodeTypes\XsltNode($parent);
+		    if ($xsltNode->reload_templates_include($project) === false) {
+		        $this->messages->mergeMessages($xsltNode->messages);
+		    }
+		            
+	        // Reload the document folders and template folders relations
+		    if (!$xsltNode->rel_include_templates_to_documents_folders($project)) {
+	            $this->messages->mergeMessages($xsltNode->messages);
+		    }
+			$this->messages->add(_('This section has been successfully configured.'), MSG_TYPE_NOTICE);
+		}
+		$values = array(
+			'action_with_no_return' => !$error,
+			'messages' => $this->messages->messages,
+			'nodeID' => $nodeID
+		);
+		$this->sendJSON($values);
+	}
+    
+	/** 
+    * Getting all the children folders
+    * Using the \Ximdex\Models\NodeDefaultContents of the data model, returns all the avaliable children folders
+	* with a description for a given nodetype
+    *
+    * Request params:  
+    * * nodetype_sec: noderype ID for the containing folder
+    */
+	private function _getAvailableSubfolders($nodetype_sec)
+	{
+		$subfolders = array();
+		$res = array();
+		$ndc = new NodeDefaultContents();
+		$subfolders = $ndc->getDefaultChilds($nodetype_sec);
+		foreach($subfolders as $subfolder){
+			$nt = $subfolder["NodeType"];
+			$res[$nt][0] = $subfolder["Name"];	
+			$res[$nt][1] = $this->_getDescription($nt);	
+		}
+		asort($res);
 		return $res;
 	}
 
 	/** 
-        * Human readable descriptions for subfolders
-        *
-        * Returns a proper description for the given nodetype, helping the user to decide if the folder is needed or not. 
-        *
-        * Request params: 
-        *  
-        * * nodetype: nodetype ID. 
-        * 
-        */
-	private function _getDescription($nodetype){
-		switch($nodetype){
-			case \Ximdex\NodeTypes\NodeTypeConstants::XML_ROOT_FOLDER: return "This is the main repository for all your XML contents. It's the most important folder in a section.";
-			case \Ximdex\NodeTypes\NodeTypeConstants::IMAGES_ROOT_FOLDER: return "Inside this folder you can store all the image files you need in several formats (gif, png,jpg, tiff,...)";
-			case \Ximdex\NodeTypes\NodeTypeConstants::IMPORT_ROOT_FOLDER: return "Into this folder you could store several HTML snippets that you can add directly into your XML documents";
-			case \Ximdex\NodeTypes\NodeTypeConstants::COMMON_ROOT_FOLDER: return "Use this folder if you need to store JavaScript scripts or text files like PDFs, MS Office documents, etc.";
-			case \Ximdex\NodeTypes\NodeTypeConstants::TEMPLATES_ROOT_FOLDER: return "Create here your own XSL Templates to redefine some particular appareance in your XML documents.";
-			case \Ximdex\NodeTypes\NodeTypeConstants::XIMLET_ROOT_FOLDER: return "Create XML snippets that you can import into your XML documents. Typical uses are menus, shared headers, shared footers between all your XML documents.";
-			case \Ximdex\NodeTypes\NodeTypeConstants::HTML_LAYOUT_FOLDER: return 'This folder will storage the layouts, components and HTML views for HTML documents';
-			default: "...";
+    * Human readable descriptions for subfolders
+    * Returns a proper description for the given nodetype, helping the user to decide if the folder is needed or not 
+    *
+    * Request params:
+    * * nodetype: nodetype ID
+    */
+	private function _getDescription($nodetype)
+	{
+		switch ($nodetype) {
+			case NodeTypeConstants::XML_ROOT_FOLDER:
+			    return 'This is the main repository for all your XML contents. It\'s the most important folder in a section.';
+			case NodeTypeConstants::IMAGES_ROOT_FOLDER:
+			    return 'Inside this folder you can store all the image files you need in several formats (gif, png,jpg, tiff,...)';
+			case NodeTypeConstants::IMPORT_ROOT_FOLDER:
+			    return 'Into this folder you could store several HTML snippets that you can add directly into your XML documents';
+			case NodeTypeConstants::COMMON_ROOT_FOLDER:
+			    return 'Use this folder if you need to store JavaScript scripts or text files like PDFs, MS Office documents, etc.';
+			case NodeTypeConstants::TEMPLATES_ROOT_FOLDER:
+			    return 'Create here your own XSL Templates to redefine some particular appareance in your XML documents.';
+			case NodeTypeConstants::XIMLET_ROOT_FOLDER:
+			    return 'Create XML snippets that you can import into your XML documents. Typical uses are menus, shared headers, shared footers between all your XML documents.';
+			case NodeTypeConstants::HTML_LAYOUT_FOLDER:
+			    return 'This folder will storage the layouts, components and HTML views for HTML documents';
+			default:
+			    return '...';
 		}
 	}
 
 	/** 
-        * Nodetypes for subfolders.
-        *       
-        * Returns an array of nodetype for all the children of the given parent node ID. 
-        *
-        * Request params: 
-        *  
-        * * idParent: Parent node ID. 
-        * 
-        */
-	private function _getChildrenNodeTypes($idParent){
-		$children_nt=array();
+    * Nodetypes for subfolders
+    * Returns an array of nodetype for all the children of the given parent node ID
+    *
+    * Request params:
+    * * idParent: Parent node ID
+    */
+	private function _getChildrenNodeTypes($idParent)
+	{
+		$children_nt = array();
 		$parentNode = new Node($idParent);
-		$children = $parentNode -> GetChildren();		
-
-		if(!empty($children)){
-			foreach($children as $child){
+		$children = $parentNode->GetChildren();
+		if (!empty($children)) {
+			foreach ($children as $child) {
 				$ch = new Node ($child);
 				$idNodeType = $ch->GetNodeType();
-				if (\Ximdex\NodeTypes\NodeTypeConstants::SECTION != $idNodeType)
-					$children_nt[]=$idNodeType;
+				if (NodeTypeConstants::SECTION != $idNodeType) {
+					$children_nt[] = $idNodeType;
+				}
 			}
 		}
 		return $children_nt;

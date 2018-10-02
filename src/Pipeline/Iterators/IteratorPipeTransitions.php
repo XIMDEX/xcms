@@ -1,6 +1,7 @@
 <?php
+
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -24,20 +25,20 @@
  *  @version $Revision$
  */
 
-
 namespace  Ximdex\Pipeline\Iterators;
 
+use Ximdex\Behaviours\Iterator;
 
-/**
- * 
+/** 
  * @brief Basic iterator for the PipeTransition class
  * 
  * Basic iterator for the PipeTransition class, this iterator behaves sorting 
  * the results in the sequence of the status stored in the database
- *
  */
-class IteratorPipeTransitions extends  \Ximdex\Behaviours\Iterator {
+class IteratorPipeTransitions extends Iterator
+{
 	var $_objectName = '\\Ximdex\\Models\\PipeTransition';
+	
 	/**
 	 * Carga el iterador de la condicion dada y lo ordena por sus transiciones
 	 *
@@ -45,13 +46,15 @@ class IteratorPipeTransitions extends  \Ximdex\Behaviours\Iterator {
 	 * @param array $args
 	 * @return \Ximdex\Pipeline\Iterators\IteratorPipeTransitions
 	 */
-	public function __construct($condition, $args) {
+	public function __construct($condition, $args)
+	{
 		parent::__construct($condition, $args);
 		$this->_initialize();
 		$this->_sort();
 	}
 	
-	private function _sort() {
+	private function _sort()
+	{
 		$totalElements = $this->count();
 		for ($key = 0; $key < $totalElements; $key++) {
 			do {
@@ -60,15 +63,18 @@ class IteratorPipeTransitions extends  \Ximdex\Behaviours\Iterator {
 		}
 	}
 	
-	private function _swap($value, $key) {
+	private function _swap($value, $key)
+	{
 		$this->seek($key + 1);
 		while($element = $this->next()) {
 			if ($element->get('IdStatusTo') == $value) {
-				// swap elements
+			    
+				// Swap elements
 				$tmp = $this->_objects[$key];
 				$this->_objects[$key] = $element;
 				$this->_objects[$this->key() -1] = $tmp;
-				// end elemetns swaping
+				
+				// End elemetns swaping
 				$this->reset();
 				return true;
 			}
@@ -83,13 +89,13 @@ class IteratorPipeTransitions extends  \Ximdex\Behaviours\Iterator {
 		if (!($this->count()) > 0) {
 			return;
 		}
-		
+		$statusFromArray = [];
+		$statusToArray = [];
 		while ($element = $this->next()) {
 			$statusFromArray[$index] = $element->get('IdStatusFrom'); 
 			$statusToArray[] = $element->get('IdStatusTo'); 
 			$index ++;
 		}
-		
 		foreach ($statusFromArray as $key => $idStatusFrom) {
 			if (in_array($idStatusFrom, $statusToArray)) {
 				continue; 
@@ -102,6 +108,5 @@ class IteratorPipeTransitions extends  \Ximdex\Behaviours\Iterator {
 			$this->_objects[0] = $tmpElement;
 			break;
 		}
-		
 	}
 }

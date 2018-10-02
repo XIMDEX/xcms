@@ -663,7 +663,7 @@ input:focus+ .label_title_up {
 }
 input[type="checkbox"] + label, input[type="radio"]+ label {
     display: inline;
-    padding-right: 8%;
+    padding-right: 4%;
 }
 
 /*label.label-checkbox {

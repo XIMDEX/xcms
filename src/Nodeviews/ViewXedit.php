@@ -1,6 +1,7 @@
 <?php
+
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -32,62 +33,65 @@ use Ximdex\Models\Version;
 use Ximdex\Parsers\ParsingRng;
 use Ximdex\Runtime\App;
 
-if(!defined('TREE_VIEW_DOCXAP_PATH'))
-    define('TREE_VIEW_DOCXAP_PATH', App::getValue('UrlHost') . App::getUrl('/actions/xmleditor2/views/editor/tree/templates/docxap.xsl') );
+if (!defined('TREE_VIEW_DOCXAP_PATH')) {
+    define('TREE_VIEW_DOCXAP_PATH', App::getValue('UrlHost') 
+        . App::getUrl('/actions/xmleditor2/views/editor/tree/templates/docxap.xsl'));
+}
+if (!defined('RNG_EDITION_DOCXAP_PATH')) {
+    define('RNG_EDITION_DOCXAP_PATH', App::getValue('UrlHost') 
+        . App::getUrl('/actions/xmleditor2/views/rngeditor/templates/docxap.xsl'));
+}
 
-if(!defined('RNG_EDITION_DOCXAP_PATH'))
-    define('RNG_EDITION_DOCXAP_PATH', App::getValue('UrlHost') .  App::getUrl('/actions/xmleditor2/views/rngeditor/templates/docxap.xsl' ));
-
-class ViewXedit extends AbstractView implements IView {
+class ViewXedit extends AbstractView implements IView
+{	
+	private $content = null;
+	private $domDocument = null;
+	private $node = null;
 	
-	private $content = NULL;
-	private $domDocument = NULL;
-	private $node = NULL;
-	
-	public function transform($idVersion = NULL, $pointer = NULL, $args = NULL) {
-		
+	public function transform($idVersion = null, $pointer = null, $args = null)
+	{	
 		$content = $this->retrieveContent($pointer);
-		if($content == '') {
+		if ($content == '') {
 			Logger::warning('VIEW XEDIT: empty content');
 			return $this->storeTmpContent($content);
+		}	
+		if (!$this->setNode($idVersion)) {
+			return null;
 		}
-		
-		if(!$this->setNode($idVersion))
-			return NULL;
-			
-		if(!$this->setView($args))
-			return NULL;
-		
-		if(!$this->setContent($content))
-			return NULL;
-		
-		if(!$this->setUids())
-			return NULL;
-			
-		if(!$this->setXimletIds())
-			return NULL;
-			
-		if(!$this->parametrizeDocxapByNodeType())
-			return NULL;
-
-		if(!$this->addXslReference())
+		if (!$this->setView($args)) {
+			return null;
+		}
+		if (!$this->setContent($content)) {
+			return null;
+		}
+		if (!$this->setUids()) {
+			return null;
+		}
+		if (!$this->setXimletIds()) {
+			return null;
+		}
+		if (!$this->parametrizeDocxapByNodeType()) {
+			return null;
+		}
+		if (!$this->addXslReference()) {
 			return $this->storeTmpContent($this->content);
-
+		}
 		return $this->storeTmpContent($this->content);
 	}
 	
-	private function setUids() {
+	private function setUids()
+	{
 		$xpath = new \DOMXPath($this->domDocument);
 		$nodeList = $xpath->query('//*');
 		$counter = 1;
 		foreach ($nodeList as $element) {
 			$element->setAttributeNode(new \DOMAttr('uid', $this->node->get('IdNode') . '.' . ($counter ++) ));
-		}
-		
+		}	
 		return $this->setContent($this->domDocument->saveXml());
 	}
 	
-	private function populateVoidNode () {
+	private function populateVoidNode()
+	{
 		$xpath = new \DOMXPath($this->domDocument);
 
 		// Check if there is no content
@@ -122,52 +126,50 @@ class ViewXedit extends AbstractView implements IView {
 		return true;
 	}
 	
-	private function setXimletIds() {
-
+	private function setXimletIds()
+	{
 		$idcontainer = $this->node->getParent();
 		$reltemplate = new \Ximdex\Models\RelTemplateContainer();
-		$idTemplate = $reltemplate->getTemplate($idcontainer);
-		
+		$idTemplate = $reltemplate->getTemplate($idcontainer);	
 		$parser = new ParsingRng($idTemplate);
 		$ximletTags = $parser->getElementsByType('ximlet');
-		
 		$idLanguage = $this->node->class->GetLanguage();
 		$linkedXimlets = $this->node->class->getLinkedximletS($idLanguage);
-
 		$xpath = new \DOMXPath($this->domDocument);
 		$nodeList = $xpath->query('//*');
+		$matches = [];
 		foreach ($nodeList as $element) {
-			if(in_array($element->nodeName, $ximletTags) && preg_match("/@@@GMximdex\.ximlet\(([0-9]+)\)@@@/", $element->textContent, $matches)) {
-					$element->setAttributeNode(new \DOMAttr('ximlet_id', $matches[1]));
-					if(in_array($matches[1], $linkedXimlets))
-						$element->setAttributeNode(new \DOMAttr('section_ximlet', 'yes'));
+			if(in_array($element->nodeName, $ximletTags) && preg_match("/@@@GMximdex\.ximlet\(([0-9]+)\)@@@/"
+			    , $element->textContent, $matches)) {
+			        $element->setAttributeNode(new \DOMAttr('ximlet_id', $matches[1]));
+			        if (in_array($matches[1], $linkedXimlets)) {
+			            $element->setAttributeNode(new \DOMAttr('section_ximlet', 'yes'));
+			        }
 			}
 		}
-		
 		$this->setContent($this->domDocument->saveXml());
 		return true;
 	}
 	
-	private function setNode ($idVersion = NULL) {
-		
-		if(!is_null($idVersion)) {
+	private function setNode ($idVersion = null)
+	{
+		if (!is_null($idVersion)) {
 			$version = new Version($idVersion);
 			if (!($version->get('IdVersion') > 0)) {
 				Logger::error('VIEW XEDIT: An incorrect version has been loaded (' . $idVersion . ')');
 				return false;
 			}
-			
 			$this->node = new Node($version->get('IdNode'));
 			if (!($this->node->get('IdNode') > 0)) {
 				Logger::error('VIEW XEDIT: The node it\'s trying to convert doesn\'t exists: ' . $version->get('IdNode'));
 				return false;
 			}
 		}
-		
 		return true;
 	}
 	
-	private function setView($args) {
+	private function setView($args)
+	{
 		if (!array_key_exists('XEDIT_VIEW', $args)) {
 			Logger::error('VIEW XEDIT: No se ha especificado la vista de XEDIT');
 			return false;
@@ -176,50 +178,49 @@ class ViewXedit extends AbstractView implements IView {
 		return true;
 	}
 	
-	private function parametrizeDocxapByNodeType() {
+	private function parametrizeDocxapByNodeType()
+	{
 		$nodeTypeName = $this->node->nodeType->GetName();
 		if ($nodeTypeName == 'RngVisualTemplate') {
-			$content = App::getValue( 'EncodingTag') . App::getValue( 'DoctypeTag') . '<docxap xmlns:xim="http://www.ximdex.com/">' . $this->content . '</docxap>';
+		    $content = App::getValue( 'EncodingTag') . App::getValue( 'DoctypeTag') 
+                . '<docxap xmlns:xim="http://www.ximdex.com/">' . $this->content . '</docxap>';
 		}
 		return isset($content) ? $this->setContent($content) : true;
 	}
 	
-	private function addXslReference () {
-		if(!$xslFile = $this->getXslPath())
+	private function addXslReference()
+	{
+	    if (!$xslFile = $this->getXslPath()) {
 			return false;
-
+	    }
 		$xslHeader = '<?xml-stylesheet type="text/xsl" href="' . $xslFile . '"?>';
 		$xmlHeader = App::getValue( 'EncodingTag');
 		$content = str_replace($xmlHeader, $xmlHeader . $xslHeader, $this->content);
-		
 		return $this->setContent($content);
 	}
 	
-	private function getXslPath() {
-		if($this->view == 'tree') {
+	private function getXslPath()
+	{
+		if ($this->view == 'tree') {
 			return TREE_VIEW_DOCXAP_PATH;
 		}
-
 		$nodeTypeName = $this->node->nodeType->GetName();
 		if ($nodeTypeName == 'RngVisualTemplate') {
 			return RNG_EDITION_DOCXAP_PATH;
 		}
-		
 		$tplFolder = App::getValue( "TemplatesDirName");
 		$section = new Node($this->node->GetSection());
 		$sectionPath = $section->class->GetNodePath();
 		$docxap = $sectionPath . '/' . $tplFolder . '/docxap.xsl';
-		if(is_readable($docxap))
+		if (is_readable($docxap)) {
 		    return str_replace(XIMDEX_ROOT_PATH, App::getValue('UrlHost') . App::getValue('UrlRoot'),  $docxap);
-
+		}
 		$project = new Node($this->node->GetProject());
 		$nodeProjectPath = $project->class->GetNodePath();
 		$docxap = $nodeProjectPath . '/' . $tplFolder . '/docxap.xsl';
-		
-		if(is_readable($docxap))
+		if (is_readable($docxap)) {
 		    return str_replace(XIMDEX_ROOT_PATH, App::getValue('UrlHost') . App::getValue('UrlRoot'),  $docxap);
-			
-		return NULL;
+		}
+		return null;
 	}
-	
 }

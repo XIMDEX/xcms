@@ -1,6 +1,7 @@
 <?php
+
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -24,14 +25,11 @@
  * @version $Revision$
  */
 
-
 namespace Ximdex\Nodeviews;
-
 
 use Ximdex\Logger;
 use Ximdex\Models\Node;
 use Ximdex\Models\Version;
-
 
 class ViewXimIO extends AbstractView implements IView
 {
@@ -39,7 +37,7 @@ class ViewXimIO extends AbstractView implements IView
 
     function transform($idVersion = NULL, $pointer = NULL, $args = NULL)
     {
-        $content = $this->retrieveContent($pointer);
+        // $content = $this->retrieveContent($pointer);
         $version = new Version($idVersion);
         if (!($version->get('IdVersion') > 0)) {
             Logger::error("No se ha encontrado la versión ($idVersion) solicitada");
@@ -51,7 +49,6 @@ class ViewXimIO extends AbstractView implements IView
             Logger::error("No se ha podido cargar el nodo ($idNode) solicitado");
             return NULL;
         }
-
         $this->files = array();
         return $this->storeTmpContent($node->ToXml(0, $this->files));
     }

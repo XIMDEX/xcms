@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -30,7 +30,7 @@ namespace Ximdex\MVC;
 use Ximdex\Runtime\App;
 use Ximdex\Runtime\Session;
 
-require_once(XIMDEX_ROOT_PATH . '/conf/stats.php');
+require_once XIMDEX_ROOT_PATH . '/conf/stats.php';
 
 /**
  * @brief Controller to execute and route actions
@@ -67,10 +67,8 @@ class ApplicationController extends IController
      */
     function _error_no_action()
     {
-        $action = $this->request->getParam("action");
-        $nodeid = $this->request->getParam("nodeid");
         $actionController = new Action();
-        $actionController->messages->add(_("Required action not found."), MSG_TYPE_ERROR);
+        $actionController->messages->add(_('Required action not found.'), MSG_TYPE_ERROR);
         $this->request->setParam('messages', $actionController->messages->messages);
         $actionController->render($this->request->getRequests());
         return $actionController;
@@ -82,17 +80,16 @@ class ApplicationController extends IController
     function actionsStatsStart()
     {
         $actionsStats = App::getValue('ActionsStats');
-        $action = $this->request->getParam("action");
-        $method = $this->request->getParam("method");
-        $nodeId = (int)$this->request->getParam("nodeid");
-        $userId = Session::get("userID");
+        $action = $this->request->getParam('action');
+        $method = $this->request->getParam('method');
+        $nodeId = (int) $this->request->getParam('nodeid');
         
         // Starts timer for use in action stats
         $stats = array();
-        if ($actionsStats == 1 && !is_null($action) && "index" == $method) {
+        if ($actionsStats == 1 && !is_null($action) && 'index' == $method) {
             $this->timer = new \Ximdex\Utils\Timer();
             $this->timer->start();
-            $stats = array("action" => $action, "nodeid" => $nodeId, "idStat" => 0);
+            $stats = array('action' => $action, 'nodeid' => $nodeId, 'idStat' => 0);
         }
         return $stats;
     }
@@ -107,7 +104,7 @@ class ApplicationController extends IController
         $actionsStats = App::getValue('ActionsStats');
         $action = $this->request->getParam("action");
         $method = $this->request->getParam("method");
-        if ($actionsStats == 1 && !is_null($action) && "index" == $method && $this->timer) {
+        if ($actionsStats == 1 && !is_null($action) && 'index' == $method && $this->timer) {
             $stats_time = $this->timer->mark('End action');
             $this->send_stats($stats, $method, $stats_time);
         }
@@ -126,20 +123,21 @@ class ApplicationController extends IController
                 )
             )
         );
-        if (strcmp($stats["action"], "browser3") == 0) {
-            $event = "login";
+        if (strcmp($stats['action'], 'browser3') == 0) {
+            $event = 'login';
         }
         else {
-            $event = "action";
+            $event = 'action';
         }
         $remote = ACTIONS_STATS;
         $ximid = App::getValue('ximid');
-        $userId = Session::get("userID");
-        if (strcmp($stats["nodeid"], '') != 0) {
-            $nodeid = (int) $stats["nodeid"];
-        } else
+        $userId = Session::get('userID');
+        if (strcmp($stats['nodeid'], '') != 0) {
+            $nodeid = (int) $stats['nodeid'];
+        } else {
             $nodeid = 0;
-        $code = $stats["action"] . "_" . $method;
+        }
+        $code = $stats['action'] . '_' . $method;
         $url = "$remote?eventid=$event&nodeId=$nodeid&userid=$userId&duration=$duration&ximid=$ximid&code=$code";
         @file_get_contents($url, 0, $ctx);
     }

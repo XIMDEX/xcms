@@ -542,6 +542,7 @@ class ViewFilterMacros extends AbstractView implements IView
             return $pathToParams;
         }
         $targetNode = $parserPathTo->getNode();
+        $res = [];
         $res["pathMethod"] = $parserPathTo->getPathMethod();
         $res["channel"] = $parserPathTo->getChannel();
         $idNode = $targetNode->GetID();
@@ -593,7 +594,8 @@ class ViewFilterMacros extends AbstractView implements IView
             }
 
             // Generate the URL to the rendernode action
-            $url = App::getValue('UrlRoot') . '/?expresion=' . (($idNode) ? $idNode : $pathToParams) . '&action=rendernode&token=' . uniqid();
+            $url = App::getValue('UrlRoot') . '/?expresion=' . (($idNode) ? $idNode : $pathToParams) 
+                . '&action=rendernode&token=' . uniqid();
             return $url;
         }
         if ($this->_isPreviewServer) {

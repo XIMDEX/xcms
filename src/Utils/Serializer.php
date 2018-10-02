@@ -1,6 +1,7 @@
 <?php
+
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -24,21 +25,21 @@
  * @version $Revision$
  */
 
-
 namespace Ximdex\Utils;
 
 use Ximdex\Logger;
 
-if (!defined('SZR_JSON')) define('SZR_JSON', 'json');
-if (!defined('SZR_XMLRPC')) define('SZR_XMLRPC', 'xmlrpc');
+if (!defined('SZR_JSON')) {
+    define('SZR_JSON', 'json');
+}
+if (!defined('SZR_XMLRPC')) {
+    define('SZR_XMLRPC', 'xmlrpc');
+}
 
 class Serializer
 {
 	static public function encode($mode, $var)
 	{
-		/**
-		 * @var $instance SerializerJSON|SerializerXMLRPC
-		 */
 		$instance = Serializer::_factory($mode);
 		$ret = $instance->encode($var);
 		return $ret;
@@ -46,9 +47,6 @@ class Serializer
 
 	static public function decode($mode, $var)
 	{
-		/**
-		 * @var $instance SerializerJSON|SerializerXMLRPC
-		 */
 		$instance = Serializer::_factory($mode);
 		$ret = $instance->decode($var);
 		return $ret;
@@ -56,17 +54,13 @@ class Serializer
 
 	static protected function _factory($mode)
 	{
-
-		// @todo Remove Namespace from class name
-		$class = '\\Ximdex\\Utils\\Serializer' . strtoupper($mode);
-
-		if ( class_exists( $class )) {
+		$class = '\Ximdex\Utils\Serializer' . strtoupper($mode);
+		if (class_exists($class)) {
 			$instance = new $class();
-		} else  {
+		} else {
 			Logger::error(sprintf("Serializer :: Class {%s} can not be instantiated.", $class));
-			die;
+			die();
 		}
 		return $instance;
 	}
-
 }

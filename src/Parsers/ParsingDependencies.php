@@ -1,6 +1,7 @@
 <?php
+
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -58,7 +59,7 @@ class ParsingDependencies
      */
     function GetStructuredDocumentXimletsExtended($content)
     {
-        $regExp = '';
+        $matches = [];
         if (preg_match_all('/<ximlet(\s*idExportationXimlet\="(\d*?)"\s*)?>@@@GMximdex.ximlet\((\d+)\)/i', $content, $matches) > 0) {
 
             // Looking for in all results in a iterative way
@@ -122,7 +123,6 @@ class ParsingDependencies
             case NodeTypeConstants::CSS_FILE:
                 $result = self::parseCssDependencies($node, $content, $idVersion);
                 break;
-            //TODO Parse js dependencies?
             default:
                 return true;
         }
@@ -431,7 +431,7 @@ class ParsingDependencies
      */
     private static function clearDependencies($node)
     {
-        // deletes old dependency (if exists)
+        // Deletes old dependency (if exists)
         $idNode = $node->get("IdNode");
         $nodeDependencies = new NodeDependencies();
         $nodeDependencies->deleteBySource($idNode);
@@ -550,6 +550,7 @@ class ParsingDependencies
 
     private static function getLinks($content, $nodeTypeName = NULL)
     {
+        $matches = [];
         preg_match_all('/ a_enlaceid[_|\w|\d]*\s*=\s*[\'|"](\d)(,\d)?[\'|"]/i', $content, $matches);
         $links = count($matches[1]) > 0 ? $matches[1] : array();
         preg_match_all('/ a_import_enlaceid[_|\w|\d]*\s*=\s*[\'|"](\d+)[\'|"]/i', $content, $matches);
@@ -559,6 +560,7 @@ class ParsingDependencies
 
     private static function getAssets($content, $nodeTypeName = NULL)
     {
+        $matches = [];
         preg_match_all('/<url.*>\s*(\d+)\s*<\/url>/i', $content, $matches);
         $assets = count($matches[1]) > 0 ? $matches[1] : array();
         return $assets;
@@ -566,6 +568,7 @@ class ParsingDependencies
 
     public static function getDotDot($content, $idServer)
     {
+        $matches = [];
         preg_match_all("/@@@RMximdex\.dotdot\((css|common)([^\)]*)\)@@@/", $content, $matches);
         $result = array();
         if (count($matches[1]) > 0) {
@@ -616,6 +619,7 @@ class ParsingDependencies
      */
     public static function getPathTo($content, $nodeId)
     {
+        $matches = [];
         preg_match_all("/@@@RMximdex\.pathto\(([^\)]*)\)@@@/", $content, $matches);
         $links = array();
         if (count($matches[1])) {
@@ -702,6 +706,7 @@ class ParsingDependencies
      */
     private static function getXimletsInContent($content)
     {
+        $matches = [];
         preg_match_all('/ximlet\((\d+)\)/i', $content, $matches);
         return count($matches[1]) > 0 ? $matches[1] : array();
     }

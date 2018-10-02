@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -95,10 +95,6 @@ class Action_modifyserver extends ActionAbstract
 			$server = array();
 		}
 
-		// Getting encodes
-		$encodes = $this->_getEncodes();
-		$numEncodes = count($encodes);
-
 		// Getting channels
 		$channels = $this->_getChannels($idNode, $serverID, $server);
 		$numChannels = count($channels);
@@ -129,8 +125,6 @@ class Action_modifyserver extends ActionAbstract
 	public function modify_server()
 	{
 		$idNode = (int) $this->request->getParam("nodeid");
-		$actionID = (int) $this->request->getParam("actionid");
-		$params = $this->request->getParam("params");
 		$nodeID	= $this->request->getParam('nodeid');
 		$serverID = $this->request->getParam('serverid');
 		$protocol = $this->request->getParam('protocol');
@@ -218,13 +212,6 @@ class Action_modifyserver extends ActionAbstract
 				}
 			}
 		}
-		$values = array(
-			'messages' => $this->messages->messages,
-			'goback' => true,
-			'id_node' => $idNode,
-			'params' => $params,
-			'nodeURL' => App::getUrl("?actionid=$actionID&nodeid={$idNode}"),
-		);
 		$this->index($action, $serverID);
 	}
 
@@ -235,7 +222,7 @@ class Action_modifyserver extends ActionAbstract
 	{
 		$validation = true;
 		if ($protocol == 'LOCAL') {
-			if ((!$initialDir) || ($initialDir=='')) {
+			if ((!$initialDir) || ($initialDir == '')) {
 			    
 				$this->messages->add(_("A local directory is required"), MSG_TYPE_ERROR);
 				$validation=false;
@@ -250,7 +237,7 @@ class Action_modifyserver extends ActionAbstract
 				$this->messages->add(_("A password is required"), MSG_TYPE_ERROR);
 				$validation=false;
 			}
-			if ((!$initialDir) || ($initialDir=='')) {
+			if ((!$initialDir) || ($initialDir == '')) {
 				$this->messages->add(_("A remote directory is required"), MSG_TYPE_ERROR);
 				$validation=false;
 			}

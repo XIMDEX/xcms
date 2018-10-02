@@ -82,7 +82,7 @@
 								<label for="{$_protocol.Id}">
 									<input type="radio" name="protocol" id="{$_protocol.Id}" value='{$_protocol.Id}' 
 											{if ($server.protocol eq $_protocol.Id)}checked="checked"{/if} />
-		                           	{$_protocol.Id|gettext}
+		                           	{$_protocol.Id|gettext} &nbsp;
 		                        </label>
 		                   {/foreach}
 					</div>

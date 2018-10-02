@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -40,7 +40,7 @@ class FsUtils
         if (!is_file($file)) {
             return NULL;
         }
-        $command = "file -b --mime-type " . escapeshellarg($file);
+        $command = 'file -b --mime-type ' . escapeshellarg($file);
         $result = exec($command);
         return str_replace('\012- ', '', $result);
     }
@@ -51,6 +51,7 @@ class FsUtils
      */
     static public function getFolderFromFile($file)
     {
+        $matches = [];
         if (preg_match('/(.*)\/[^\/]+/', $file, $matches)) {
             if (is_dir($matches[1])) {
                 return $matches[1];
@@ -85,7 +86,7 @@ class FsUtils
             return false;
         }
         if (!function_exists('file_put_contents')) {
-            $hnd = fopen($filename, "w");
+            $hnd = fopen($filename, 'w');
             if ($hnd) {
                 $result = fwrite($hnd, $data);
                 fclose($hnd);
@@ -108,7 +109,7 @@ class FsUtils
         }
         if ($result === false) {
             $backtrace = debug_backtrace();
-            Logger::error(sprintf("Error writing in file [inc/fsutils/FsUtils.class.php] script: %s file: %s line: %s file: %s",
+            Logger::error(sprintf('Error writing in file [inc/fsutils/FsUtils.class.php] script: %s file: %s line: %s file: %s',
                 $_SERVER['SCRIPT_FILENAME'],
                 $backtrace[0]['file'],
                 $backtrace[0]['line'],
@@ -136,8 +137,11 @@ class FsUtils
             if (dirname($path) == $path) {
                 return true;
             }
+            $matches = [];
             preg_match('/(.*)\/(.*)\/?$/', $path, $matches);
-            if (empty($matches[1])) { // We got the beginning, we go out
+            if (empty($matches[1])) {
+                
+                // We got the beginning, we go out
                 return true;
             }
             return FsUtils::mkdir($matches[1], $mode, true) && mkdir($path, $mode);
@@ -155,7 +159,8 @@ class FsUtils
     {
         if (!is_file($filename)) {            
             $backtrace = debug_backtrace();
-            Logger::error(sprintf('Trying to obtain the content for a nonexistant file [lib/Ximdex/Utils/FsUtils.php] script: %s file: %s line: %s nonexistant_file: %s',
+            Logger::error(sprintf('Trying to obtain the content for a nonexistant file [lib/Ximdex/Utils/FsUtils.php]'
+                . ' script: %s file: %s line: %s nonexistant_file: %s',
                 $_SERVER['SCRIPT_FILENAME'],
                 $backtrace[0]['file'],
                 $backtrace[0]['line'],
@@ -189,6 +194,7 @@ class FsUtils
         if (empty($file)) {
             return false;
         }
+        $matches = [];
         if (!(preg_match('/\.([^\.]*)$/', $file, $matches) > 0)) {
             return false;
         }
@@ -209,7 +215,7 @@ class FsUtils
             return false;
         }
         while ($file = readdir($dh)) {
-            if ("." == $file || ".." == $file) {
+            if ('.' == $file || '..' == $file) {
                 continue;
             }
             call_user_func($callback, "{$path}/{$file}", $args);
@@ -258,24 +264,25 @@ class FsUtils
     static public function deltree($folder)
     {
         $backtrace = debug_backtrace();
-        Logger::debug(sprintf('It has been asked to delete recursively a folder [inc/fsutils/FsUtils.class.php] script: %s file: %s line: %s folder: %s',
+        Logger::debug(sprintf('It has been asked to delete recursively a folder [inc/fsutils/FsUtils.class.php]'
+            . ' script: %s file: %s line: %s folder: %s',
             $_SERVER['SCRIPT_FILENAME'],
             $backtrace[0]['file'],
             $backtrace[0]['line'],
             $folder));
         if (!is_dir($folder)) {
-            Logger::error(sprintf("Error estimating folder %s"), $folder);
+            Logger::error(sprintf('Error estimating folder %s'), $folder);
             return false;
         }
         if (!($handler = opendir($folder))) {
-            Logger::error(sprintf(_("It was not possible to open the folder %s %s, %s"), $folder, __FILE__, __LINE__));
+            Logger::error(sprintf('It was not possible to open the folder %s %s, %s', $folder, __FILE__, __LINE__));
             return false;
         }
         while ($file = readdir($handler)) {
             if ($file == '.' || $file == '..') {
                 continue;
             }
-            $pathToElement = sprintf("%s/%s", $folder, $file);
+            $pathToElement = sprintf('%s/%s', $folder, $file);
             if (is_dir($pathToElement)) {
                 if (!FsUtils::deltree($pathToElement)) {
                     return false;
@@ -299,7 +306,8 @@ class FsUtils
     {
         if (!is_file($file)) {
             $backtrace = debug_backtrace();
-            Logger::warning(sprintf('It has been asked to delete a nonexistant file %s [inc/fsutils/FsUtils.class.php] script: %s file: %s line: %s',
+            Logger::warning(sprintf('It has been asked to delete a nonexistant file %s [inc/fsutils/FsUtils.class.php]'
+                . ' script: %s file: %s line: %s',
                 $file,
                 $_SERVER['SCRIPT_FILENAME'],
                 $backtrace[0]['file'],
@@ -328,7 +336,7 @@ class FsUtils
     {
         do {
             $fileName = Strings::generateUniqueID();
-            $tmpFile = sprintf("%s/%s%s%s", $containerFolder, $prefix, $fileName, $sufix);
+            $tmpFile = sprintf('%s/%s%s%s', $containerFolder, $prefix, $fileName, $sufix);
         } while (is_file($tmpFile));
         Logger::debug("getUniqueFile: return: $fileName | container: $containerFolder");
         return $fileName;
@@ -343,7 +351,7 @@ class FsUtils
     static public function getUniqueFolder($containerFolder, $sufix = '', $prefix = '')
     {
         do {
-            $tmpFolder = sprintf("%s/%s%s%s/", $containerFolder, $prefix,  Strings::generateRandomChars(8), $sufix);
+            $tmpFolder = sprintf('%s/%s%s%s/', $containerFolder, $prefix,  Strings::generateRandomChars(8), $sufix);
         } while (is_dir($tmpFolder));
         return $tmpFolder;
     }
@@ -361,13 +369,11 @@ class FsUtils
     {
         if (!empty($sourceFile) && !empty($destFile)) {     
             $result = copy($sourceFile, $destFile);
-            if ($move)
-            {
+            if ($move) {
                 if (!@unlink($sourceFile))
                     Logger::warning('Cannot delete the source file: ' . $sourceFile);
             }
-        }
-        else {
+        } else {
             $result = false;
         }
         if (!$result) {
@@ -377,7 +383,7 @@ class FsUtils
     }
 
     /**
-     * Get the files in the folder (and descendant) with an extension.
+     * Get the files in the folder (and descendant) with an extension
      * 
      * @param $path string Folder to read
      * @param $extensions array Extension to file
@@ -393,7 +399,7 @@ class FsUtils
         $files = scandir($path);
         $files = array_values(array_diff($files, $excluded));
         foreach ($files as $key => $file) {
-            $dotPos = strrpos($file, ".");
+            $dotPos = strrpos($file, '.');
             $fileExtension = substr($file, $dotPos + 1);
             if (!in_array($fileExtension, $extensions)) {
                 unset($files[$key]);
@@ -495,11 +501,12 @@ class FsUtils
      * @param string $unit
      * @return bool|float|int
      */
-    static public function transform($target = null, $unit = "B")
+    static public function transform($target = null, $unit = 'B')
     {
         if (empty($target)) {
             return 0;
         }
+        $out = [];
         preg_match('/(\d*)(\w*)/', $target, $out);
         return self::transformToUnits($out[1], $out[2], $unit);
     }

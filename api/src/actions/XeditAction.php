@@ -1,5 +1,30 @@
 <?php
 
+/**
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
+ */
+
 namespace XimdexApi\actions;
 
 use Ximdex\Models\FastTraverse;
@@ -17,21 +42,17 @@ class XeditAction extends Action
     const PATTERN_PATHTO = "/[[:word:]]+=[\"']@@@RMximdex\.pathto\(([,-_#%=\.\w\s]+)\)@@@[\"']/";
     const PATTERN_XE_LINK = "/<([a-zA-Z]+)([^>]*?(?=xe_link))xe_link\=[\"']([^\"]*)[\"']([^>]*)>/";
     const PREFIX = 'xedit';
-
     const CONTENT_DOCUMENT = 'content';
-
     const ROUTE_GET = '\d+/get';
     const ROUTE_SET = 'set';
     const ROUTE_FILE = 'file';
     const ROUTE_GET_TREE_INFO = 'get_tree_info';
-
     protected const ROUTES = [
         self::ROUTE_GET => 'get',
         self::ROUTE_SET => 'set',
         self::ROUTE_FILE => 'file',
         self::ROUTE_GET_TREE_INFO => 'getTreeInfo'
     ];
-
     const LINK_TYPES = [
         'a' => 'href',
         'applet' => 'codebase',
@@ -59,9 +80,7 @@ class XeditAction extends Action
         'track' => 'src',
         'video' => 'src'
     ];
-
-    protected const PUBLIC = [
-    ];
+    protected const PUBLIC = [];
 
     /********************************************* API METHODS *********************************************/
 
@@ -75,12 +94,10 @@ class XeditAction extends Action
         $nodeId = $pathElements[1];
         $response = '';
         $name = '';
-
         $nodes = HTMLDocumentNode::getNodesHTMLDocument($nodeId);
-
         $metadata = [];
-
         if ($nodes) {
+            
             // Transform data to Xedit editor
             foreach ($nodes as &$node) {
                 if (isset($node['id'])) {
@@ -91,17 +108,13 @@ class XeditAction extends Action
                     foreach ($schemas as $key => $value) {
                         $schemas[$key]['view'] = static::transformContentToXedit($value['view']);
                     }
-
                     if (strcmp($node['type'], HTMLDocumentNode::CONTENT_DOCUMENT) == 0) {
                         $metadata = $node['metadata'];
                     }
-
                     $node['schema'] = $schemas;
                 }
             }
         }
-
-
         if ($nodes === false) {
             $w->setMessage('Document not found')->setStatus(1);
         } else {
@@ -113,7 +126,6 @@ class XeditAction extends Action
                         'treeInfo' => $action . XeditAction::getPath(XeditAction::ROUTE_GET_TREE_INFO) .
                             "&id=:id&type=:type",
                         'set' => $action . XeditAction::getPath(XeditAction::ROUTE_SET),
-
                         'infonode' => $action . NodeAction::getPath(NodeAction::ROUTE_GET) . "&id=:id",
                         'resource' => $action . XeditAction::getPath(XeditAction::ROUTE_FILE) . "&id=:id"
                     ]
@@ -123,11 +135,9 @@ class XeditAction extends Action
                 'nodes' => $nodes
             ];
         }
-
         $w->setResponse($response);
         $w->send();
     }
-
 
     /**
      * @param Request $r
@@ -147,7 +157,6 @@ class XeditAction extends Action
                 }
                 $metadata = json_encode($metadata, JSON_PRETTY_PRINT);
             }
-
             $nodes = $data['nodes'];
             foreach ($nodes as $nodeId => $value) {
                 if (isset($value['editable']) && $value['editable']) {
@@ -203,30 +212,25 @@ class XeditAction extends Action
                 NodeTypeConstants::IMAGE_FILE, NodeTypeConstants::XML_DOCUMENT],
             'video' => [NodeTypeConstants::VIDEO_FILE]
         ];
-
         $nodeId = isset($_GET['id']) ? $_GET['id'] : null;
         $type = isset($_GET['type']) ? $_GET['type'] : null;
         $type = isset($types[$type]) ? $types[$type] : false;
         $level = isset($_GET['level']) && ctype_digit($_GET['level']) ? (int)$_GET['level'] : 1;
-
         if ($types !== null and ctype_digit($nodeId)) {
             $filters = null;
             if ($type) {
                 $filters = ["include" => ["nt.IdNodeType" => $type]];
             }
-
             $children = FastTraverse::getChildren($nodeId, ['node' => ['Name', 'idParent'], 'nodeType' =>
                 ['isFolder', 'isVirtualFolder', 'IdNodeType']], null, $filters, ['IsRenderizable' => true,
                 'IsHidden' => false]);
             $result = static::buildCompleteTree($children, $type);
-
             $count = count($result) - 1;
-
+            $tree = [];
             if ($level !== null && $count > $level) {
                 $tree["l{$level}"] = $result["l{$level}"];
                 $result = $tree;
             }
-
             $w->setResponse($result);
         } else {
             $w->setStatus(1)->setMessage('Id and type are required');
@@ -245,7 +249,6 @@ class XeditAction extends Action
             XeditAction::class,
             'transformPathtoToXeLink'
         ), $content);
-
         return $content;
     }
 
@@ -259,10 +262,8 @@ class XeditAction extends Action
             XeditAction::class,
             'transformXeLinkToPathto'
         ], $content);
-
         return $content;
     }
-
 
     /**
      * @param $matches
@@ -306,28 +307,23 @@ class XeditAction extends Action
      */
     protected function checkNodeAction(&$nodes)
     {
-        //Todo Copiado de la clase Action_browser3 (Sacar en común)
+        //TODO Copiado de la clase Action_browser3 (Sacar en común)
         $db = new \Ximdex\Runtime\Db();
         $sql = 'select count(1) as total from Actions a left join Nodes n using(IdNodeType) where IdNode = %s and a . Sort > 0';
-        $sql2 = $sql . " AND a.Command='fileupload_common_multiple' ";
-
+        $sql2 = $sql . ' AND a.Command=\'fileupload_common_multiple\'';
         if (!empty($nodes)) {
-            foreach ($nodes as &$node) {
+            foreach ($nodes as & $node) {
                 $nodeid = $node['nodeid'];
                 $_sql = sprintf($sql, $nodeid);
-
                 $db->query($_sql);
                 $total = $db->getValue('total');
                 $node['hasActions'] = $total;
-
-
-                $db = new \Ximdex\Runtime\Db();
+                // $db = new \Ximdex\Runtime\Db();
                 $sql2 = sprintf($sql2, $nodeid);
                 $db->query($sql2);
                 $total = $db->getValue('total');
                 $node['canUploadFiles'] = $total;
             }
-
             return $nodes;
         } else {
             Logger::info('Empty nodes in checkNodeAction [browser3]');
@@ -340,7 +336,8 @@ class XeditAction extends Action
         $tree = [];
         $processedNodes = [];
         foreach ($nodes as $level => $children) {
-            foreach ($children as $nodeId => $info) {
+            $keys = array_keys($children);
+            foreach ($keys as $nodeId) {
                 list($tree, $processedNodes) = static::buildBranch($tree, $processedNodes, $nodeId, $level, $types);
             }
         }
@@ -351,7 +348,8 @@ class XeditAction extends Action
     private static function buildBranch($tree, $processedNodes, $nodeId, $level, $types)
     {
         $node = new Node($nodeId);
-        //Create node in tree
+        
+        // Create node in tree
         $sheet = static::createSheet(
             $node->GetNodeName(),
             $node->nodeType->GetID(),
@@ -368,9 +366,7 @@ class XeditAction extends Action
             }
             $tree["l$level"]['nodes'][$nodeId] = $sheet;
         }
-
         $processedNodes[] = $nodeId;
-
         $idParent = $node->GetParent();
         if ($level > 0 && $idParent && !in_array((int)$idParent, $processedNodes)) {
             list($tree, $processedNodes) = static::buildBranch($tree, $processedNodes, $idParent, $level - 1, $types);

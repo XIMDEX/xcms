@@ -177,8 +177,6 @@ class NodeFrameManager
 				__LINE__, "ERROR", 8, _("ERROR empty IdNodeFrame")." - setActivity");
 			return false;
 		}
-		$isActive = $nodeFrame->get('Active');
-		$idUnactive = $nodeFrame->get('GetActivityFrom');
 		$nodeFrame->set('Active',$activity);
 		$cancelled = NULL;
 		if ( !is_null($replacedBy) ) {

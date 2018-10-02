@@ -26,30 +26,36 @@
 .status-buttons {
 	margin-top: 2em;
 }
+
 .file-icon {
 	font-size: 32px;
 	position: relative;
 	top: .1em;
 	color: #166565;
 }
+
 .unfinished-task {
 	color: #800000;
 	font-size: 23px;
 	top: .85em;
 	position: relative;
 }
+
 .finished-task {
 	color: #43a1a2;
 	font-size: 23px;
 	top: .85em;
 	position: relative;
 }
+
 .resume-btn {
 	background-color: #22B8C1 !important;
 }
+
 .pause-btn {
 	background-color: #D1AC2A !important;
 }
+
 .color-trans{
 	-webkit-transition: color 2s;
 	-moz-transition: color 2s;
@@ -57,12 +63,26 @@
 	-o-transition: color 2s;
 	transition: color 2s;
 }
-.progress-bar.ximcolor {
+.progress-bar {
 	background-color: #1D8687;
 }
-.progress-bar-success.ximcolor{
+
+.progress-bar-pending {
+    background-color: #045FB4;
+}
+
+.progress-bar-active {
+    background-color: #FFBF00;
+}
+
+.progress-bar-success {
 	background-color: #75CD9D;
 }
+
+.progress-bar-errored {
+    background-color: #B40404;
+}
+
 .media .clock::before{
 	padding: 0px;
 	font-size: 1.3em;

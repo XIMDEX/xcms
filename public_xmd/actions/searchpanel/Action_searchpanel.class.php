@@ -102,7 +102,6 @@ class Action_searchpanel extends ActionAbstract {
 		$tpl = '<searchpanel />';
 		$ret = Widget::process($tpl, array());
 		$tpl = preg_replace('/<div style="display: none;" class="widget_includes">(.*?)<\/div>/s', '', $ret['tpl']);
-		//error_log(print_r($ret['tpl'], true));
 		printf($tpl);
 	}
 

@@ -1,5 +1,5 @@
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -22,48 +22,50 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
+
 .xim-calendar-interval .calendar_item:first-child {
-  margin-right: 7em; }
+    margin-right: 2em; }
 
 .calendar_item {
-  margin-bottom: 1em;
-  display: inline-block;
-  vertical-align: top;
-  position: relative;
-  width: 20rem; }
-  .calendar_item .row-item {
-    padding: 1em 1em .5em;
-    display: block;
-    cursor: pointer;
-    margin: 0;
+    margin-bottom: 1em;
+    display: inline-block;
+    vertical-align: top;
     position: relative;
-    -webkit-transition: all .1s;
-    -moz-transition: all .1s;
-    -ms-transition: all .1s;
-    -o-transition: all .1s;
-    transition: all .1s;
-    padding-bottom: 1em;
-    border-radius: 0 0 5px 5px;
-    background: #eee;
-  }
-    .calendar_item .row-item::before, .calendar_item .row-item::after {
-      position: absolute;
-      right: 1.2em;
-      top: 1.15em;
-      font-size: 1.2em;
-      left: auto;
-      color: white;
-    }
-    .calendar_item .row-item::before {
-      content: "";
-      width: 1.5em;
-      height: 1.5em;
-      background: #43a1a2;
-      -webkit-border-radius: 50%;
-      -moz-border-radius: 50%;
-      border-radius: 50%;
-      right: .95em;
-      top: .9em; }
+    width: 20rem; }
+
+.calendar_item .row-item {
+  padding: 1em 1em .5em;
+  display: block;
+  cursor: pointer;
+  margin: 0;
+  position: relative;
+  -webkit-transition: all .1s;
+  -moz-transition: all .1s;
+  -ms-transition: all .1s;
+  -o-transition: all .1s;
+  transition: all .1s;
+  padding-bottom: 1em;
+  border-radius: 0 0 5px 5px;
+  background: #eee; }
+
+.calendar_item .row-item::before, .calendar_item .row-item::after {
+  position: absolute;
+  right: 1.2em;
+  top: 1.15em;
+  font-size: 1.2em;
+  left: auto;
+  color: white; }
+
+.calendar_item .row-item::before {
+  content: "";
+  width: 1.5em;
+  height: 1.5em;
+  background: #43a1a2;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%;
+  right: .95em;
+  top: .9em; }
 
 .date_interval {
   display: block;
@@ -73,8 +75,7 @@
   padding-top: .5em;
   font-weight: bold;
   background: #43a1a2;
-  border-radius: 5px 5px 0 0;
-}
+  border-radius: 5px 5px 0 0; }
 
 .date_picker {
   opacity: 0;
@@ -90,10 +91,7 @@
   display: block;
   line-height: 1.4;
   padding-bottom: .2em; }
-
-/**************
-// DATAPICKER
-***************/
+ 
 .ui-datepicker {
   border: none;
   background: #4c4c4c;
@@ -105,34 +103,42 @@
   padding: 0;
   line-height: 1;
   z-index: 2 !important; }
-  .ui-datepicker .ui-state-default, .ui-datepicker .ui-widget-content .ui-state-default {
+
+.ui-datepicker .ui-state-default, .ui-datepicker .ui-widget-content .ui-state-default {
+  border: none;
+  background: none;
+  color: #fff;
+  padding: .5em;
+  font-size: 1.1em; }
+
+.ui-datepicker .ui-state-default:hover, .ui-datepicker .ui-widget-content .ui-state-default:hover {
     border: none;
-    background: none;
-    color: #fff;
-    padding: .5em;
-    font-size: 1.1em; }
-    .ui-datepicker .ui-state-default:hover, .ui-datepicker .ui-widget-content .ui-state-default:hover {
-      border: none;
-      background: rgba(255, 255, 255, 0.2); }
-  .ui-datepicker .ui-state-disabled .ui-state-default {
-    text-decoration: line-through; }
-    .ui-datepicker .ui-state-disabled .ui-state-default:hover {
-      background: none; }
-  .ui-datepicker .ui-datepicker-current-day .ui-state-active {
-    background: #444444;
-    color: #7bcabf;
-    font-weight: bold;
-    line-height: 1; }
-    .ui-datepicker .ui-datepicker-current-day .ui-state-active:hover {
-      background: #444444; }
-  .ui-datepicker .ui-state-active {
-    background: #7bcabf; }
-  .ui-datepicker .ui-datepicker-buttonpane {
-    overflow: hidden;
-    width: 200%;
-    background: #4c4c4c;
-    position: relative;
-    z-index: 2; }
+    background: rgba(255, 255, 255, 0.2); }
+
+.ui-datepicker .ui-state-disabled .ui-state-default {
+  text-decoration: line-through; }
+
+.ui-datepicker .ui-state-disabled .ui-state-default:hover {
+    background: none; }
+
+.ui-datepicker .ui-datepicker-current-day .ui-state-active {
+  background: #444444;
+  color: #7bcabf;
+  font-weight: bold;
+  line-height: 1; }
+
+.ui-datepicker .ui-datepicker-current-day .ui-state-active:hover {
+    background: #444444; }
+
+.ui-datepicker .ui-state-active {
+  background: #7bcabf; }
+  
+.ui-datepicker .ui-datepicker-buttonpane {
+  overflow: hidden;
+  width: 200%;
+  background: #4c4c4c;
+  position: relative;
+  z-index: 2; }
 
 .ui-widget-header, .ui-datepicker table th {
   background: none;
@@ -141,20 +147,20 @@
   border-bottom: 1px solid #666666;
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
-  border-radius: 0;
-}
+  border-radius: 0; }
 
 .ui-datepicker .ui-datepicker-header {
   padding: .5em 0; }
 
 .ui-widget-header .ui-icon {
   background: none; }
-  .ui-widget-header .ui-icon::before {
-    position: absolute;
-    text-indent: 0;
-    color: #fff;
-    display: block;
-    font-size: 1.3em; }
+  
+.ui-widget-header .ui-icon::before {
+  position: absolute;
+  text-indent: 0;
+  color: #fff;
+  display: block;
+  font-size: 1.3em; }
 
 .ui-datepicker .ui-datepicker-prev, .ui-datepicker .ui-datepicker-next {
   top: .5em; }
@@ -176,10 +182,10 @@
   width: 100%;
   height: 100%;
   border-left: 1px solid #e3e7e9; }
-  .ui-timepicker-div dt, .ui-timepicker-div dd {
+
+.ui-timepicker-div dt, .ui-timepicker-div dd {
     font-size: 1em;
-    text-transform: uppercase;
-  }
+    text-transform: uppercase; }
 
 .ui_tpicker_time_label, .ui-datepicker .ui-datepicker-header {
   background: #7bcabf;
@@ -223,5 +229,6 @@
   font-size: .9em !important;
   height: 1em;
   width: 1em; }
-  .ui-widget-content .ui-slider-handle:hover {
-    background: #8dd1c8; }
+
+.ui-widget-content .ui-slider-handle:hover {
+  background: #8dd1c8; }

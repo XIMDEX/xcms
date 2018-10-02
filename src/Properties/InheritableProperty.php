@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -35,7 +35,7 @@ use Ximdex\NodeTypes\NodeTypeConstants;
 use Ximdex\Models\NodeProperty;
 
 /**
- * Abstract inheritable property class.
+ * Abstract inheritable property class
  */
 abstract class InheritableProperty
 {
@@ -75,7 +75,7 @@ abstract class InheritableProperty
 
     /**
      * Construct method.
-     * Load the properties of the class.
+     * Load the properties of the class
      *
      * @param int $nodeid : Node identificator
      */
@@ -355,7 +355,8 @@ abstract class InheritableProperty
             foreach ($level as $child => $type) {
                 if ($nodeProperty->getProperty($child, $this->getPropertyName())) {
                     if ($nodeProperty->deleteByNodeProperty($child, $this->getPropertyName()) === false) {
-                        Logger::error('Cannot apply recursively deleting the property ' . $this->getPropertyName() . ' in the node ' . $child);
+                        Logger::error('Cannot apply recursively deleting the property ' . $this->getPropertyName() 
+                            . ' in the node ' . $child . ' with node type ' . $type);
                         return false;
                     }
                     $nodes ++;

@@ -25,15 +25,17 @@
  *  @version $Revision$
  */
 
-exec ("ps aux", $out, $var);
+global $out, $var;
+exec('ps aux', $out, $var);
 $pumpStr = '';
 $scheStr = '';
 $str = '';
+$regs = [];
 foreach ($out as $data) {
-	if ( preg_match('/ ([\d]{1,2}\.\d)(\s*)([\d]{1,2}\.\d)([\w|\W]+)--pumperid (\d*) --/i', $data, $regs) ){
+	if (preg_match('/ ([\d]{1,2}\.\d)(\s*)([\d]{1,2}\.\d)([\w|\W]+)--pumperid (\d*) --/i', $data, $regs)){
 		$cpu = $regs[1];
 		$mem = $regs[3];
-		$pumperId = $regs[5];
+		// $pumperId = $regs[5];
 		$pumpStr .= "pumper_cpu:$cpu pumper_mem:$mem ";
 	}
 	if ( preg_match('/ ([\d]{1,2}\.\d)(\s*)([\d]{1,2}\.\d)([\w|\W]+)scheduler/i', $data, $regs) ) {
@@ -43,12 +45,12 @@ foreach ($out as $data) {
 	}
 }
 if ($scheStr == '') {
-	$str .= "scheduler_cpu:0.0 scheduler_mem:0.0 ";
+	$str .= 'scheduler_cpu:0.0 scheduler_mem:0.0 ';
 } else {
 	$str .= $scheStr;
 }
 if ($pumpStr == '') {
-	$str .= "pumper_cpu:0.0 pumper_mem:0.0 ";
+	$str .= 'pumper_cpu:0.0 pumper_mem:0.0 ';
 } else {
 	$str .= $pumpStr;
 }

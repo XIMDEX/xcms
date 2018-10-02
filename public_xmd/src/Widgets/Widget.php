@@ -1,6 +1,7 @@
 <?php
+
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -24,13 +25,10 @@
  * @version $Revision$
  */
 
-
 namespace Xmd\Widgets;
-
 
 use Ximdex\MVC\Render\SmartyTextRenderer;
 use Ximdex\Utils\FsUtils;
-
 
 class Widget
 {
@@ -40,8 +38,10 @@ class Widget
 
 	// Widgets instances
 	static protected $_instances = null;
+	
 	// Registered widgets
 	static protected $_widgets = null;
+	
 	// Search regexps
 	static protected $_widgetsRegexps = null;
 
@@ -50,8 +50,9 @@ class Widget
 	 */
 	static public function availableWidgets()
 	{
-		if (is_array(self::$_widgets)) return self::$_widgets;
-
+	    if (is_array(self::$_widgets)) {
+	        return self::$_widgets;
+	    }
 		self::$_widgets = FsUtils::readFolder( APP_ROOT_PATH  . '/src/Widgets/' , false, 'common');
 		return self::$_widgets;
 	}
@@ -84,14 +85,13 @@ class Widget
 
 	static public function & getWidget($name)
 	{
-
-		if (!is_array(self::$_instances)) self::$_instances = array();
-
+	    if (!is_array(self::$_instances)) {
+	        self::$_instances = array();
+	    }
 		$dir_widget = APP_ROOT_PATH  . '/src/Widgets/';
 		if (file_exists($dir_widget . "/" . $name)) {
 			$dir_widget = $dir_widget . "/" . $name;
 		}
-
 		$factory = new \Ximdex\Utils\Factory($dir_widget, 'Widget_');
 		$widget = $factory->instantiate($name);
 		self::$_instances[$name] =& $widget;
@@ -103,36 +103,32 @@ class Widget
 	 */
 	static protected function _process($source, $options)
 	{
-
 		$options['js_files'] = isset($options['js_files']) ? $options['js_files'] : array();
 		$options['css_files'] = isset($options['css_files']) ? $options['css_files'] : array();
 
 		// Common resources
 		$f = false;
-		$widget =& self::getWidget('common');
+		$widget = self::getWidget('common');
 		$cret = $widget->process(null);
-
 		$js_files = self::merge_arrays($options['js_files'], $cret['js_files']);
 		$css_files = self::merge_arrays($options['css_files'], $cret['css_files']);
 
 		// $search is an array of regexps used for extract widgets tags
 		$search = self::getWidgetsRegexps();
-
+		$matches = [];
+		$attributes = [];
 		foreach ($search as $pattern) {
-
 			$ret = preg_match_all($pattern, $source, $matches, PREG_SET_ORDER);
 			if ($ret) {
 
 				// Iterate for each matched widget tag
 				foreach ($matches as $match) {
-
 					$tag = $match[0];
 					$widget_name = $match[1];
-
-					if ("img" == $widget_name) continue;
-
-					$widget =& self::getWidget($widget_name);
-
+					if ('img' == $widget_name) {
+					    continue;
+					}
+					$widget = self::getWidget($widget_name);
 					if ($widget !== null && $widget->enable()) {
 
 						// $widget is now an instance of some particular widget class
@@ -151,7 +147,6 @@ class Widget
 						$params = array();
 						$params["wtype"] = $widget_name;
 						$ret = preg_match_all('|(?:(\w+)="([^"]*)")|', $match[2], $attributes, PREG_SET_ORDER);
-
 						if ($ret) {
 							foreach ($attributes as $attr) {
 								$params[$attr[1]] = $attr[2];
@@ -161,11 +156,8 @@ class Widget
 						// process() method will return an array of dependencies (js, css, ...)
 						// and the widget template
 						$params["_enviroment"] = $options;
-
 						$ret = $widget->process($params);
-
 						if (is_array($ret)) {
-
 							$css_files = self::merge_arrays($css_files, $ret['css_files']);
 							$js_files = self::merge_arrays($js_files, $ret['js_files']);
 
@@ -181,16 +173,13 @@ class Widget
 							$pattern = sprintf('|%s[^%s]+%s|', self::START_TAG, self::END_TAG, self::END_TAG);
 							$ret['tpl'] = preg_replace($pattern, '', $ret['tpl']);
 
-
 							// Need to escape special chars on regexps...
 							$tag = str_replace(
 								array('$', '*', '?', '+', '^', '[', '('),
 								array('\$', '\*', '\?', '\+', '\^', '\[', '\('),
 								$tag
 							);
-
 							$a = self::_process($ret['tpl'], $options);
-
 							if (is_array($a)) {
 								$ret['tpl'] = $a['tpl'];
 								$ret['tpl'] = SmartyTextRenderer::render($a['tpl'], $a["attributes"]);
@@ -199,20 +188,15 @@ class Widget
 							} else {
 								$ret['tpl'] = SmartyTextRenderer::render($ret['tpl'], $ret["attributes"]);
 							}
-
 							$source = preg_replace("|$tag|", $ret['tpl'], $source, 1);
 						}
 					}
 				}
 			}
 		}
-
-		if (!$f) return null;
-
-//		$css_files = array_unique($css_files);
-//		$js_files = array_unique($js_files);
-//		$source = self::includeAssets($source, $js_files, $css_files);
-
+		if (!$f) {
+		    return null;
+		}
 		$ret = array(
 			'tpl' => $source,
 			'attributes' => $params,
@@ -229,37 +213,26 @@ class Widget
 	{
 		$ret = self::_process($source, $options);
 		if ($ret === null) return null;
-
 		$source = self::includeAssets($ret);
-
-//debug::log($source);
 		$ret['tpl'] = $source;
-
 		return $ret;
 	}
 
 	static protected function includeAssets($data)
 	{
-
 		$source = $data['tpl'];
 		$css_files = is_array($data['css_files']) ? $data['css_files'] : array();
 		$css_files = array_unique($css_files);
 		$js_files = is_array($data['js_files']) ? $data['js_files'] : array();
 		$js_files = array_unique($js_files);
-
 		$cssTag = sprintf('|%scss_widgets%s|', self::START_TAG, self::END_TAG);
 		$jsTag = sprintf('|%sjs_widgets%s|', self::START_TAG, self::END_TAG);
-
 		$include11 = preg_match($jsTag, $source);
 		$include12 = preg_match($cssTag, $source);
 		$include1 = $include11 || $include12;
 		$include21 = preg_match('|class="js_to_include"|', $source);
 		$include22 = preg_match('|class="css_to_include"|', $source);
-
-
-//		debug::log($include12, $include1);
 		$include2 = $include21 || $include22;
-//		debug::log($include22, $include2);
 
 		// 1. If we found widgets tags for include assets... do it, but skip li_for_js
 		if ($include1) {
@@ -276,16 +249,13 @@ class Widget
 			}
 			$value = implode("\n", $assets);
 			$source = preg_replace($jsTag, $value, $source);
-
 			return $source;
 		}
-
 		$assets = array();
 		foreach ($css_files as $css) {
 			$assets[] = sprintf('<li>%s</li>', $css);
 		}
 		$css_assets = implode("\n", $assets);
-
 		$assets = array();
 		foreach ($js_files as $js) {
 			$assets[] = sprintf('<li>%s</li>', $js);
@@ -298,7 +268,6 @@ class Widget
 			// 2.a. We found li_for_js, so prepend our assets to that list.
 			$source = preg_replace('|<ul class="css_to_include">|', '<ul class="css_to_include">' . $css_assets, $source);
 			$source = preg_replace('|<ul class="js_to_include">|', '<ul class="js_to_include">' . $js_assets, $source);
-
 			return $source;
 		}
 
@@ -306,13 +275,12 @@ class Widget
 		$css_assets = '<ul class="css_to_include">' . $css_assets . '</ul>';
 		$js_assets = '<ul class="js_to_include">' . $js_assets . '</ul>';
 		$source .= sprintf('<div style="display: none;" class="widget_includes">%s%s</div>', $css_assets, $js_assets);
-
-//		debug::log($source);
 		return $source;
 	}
 
 	/**
 	 * Returns a widget config file
+	 * 
 	 * @param string wn Widget name
 	 * @param string wi Widget ID
 	 * @param string a Action name
@@ -320,64 +288,44 @@ class Widget
 	 */
 	static public function getWidgetConf($wn, $wi, $a, $m)
 	{
-
 		$defaultConf = sprintf('%s/src/Widgets/%s/js/%s.conf.js', APP_ROOT_PATH   , $wn, $wn);
-
 		$fileName = sprintf('%s_%s.conf.js', $wn, $wi);
 		if (empty($wi)) {
 			$fileName = sprintf('%s.conf.js', $wn);
 		}
-
 		$filePath = sprintf('%s/conf/',  XIMDEX_ROOT_PATH);
-
 		if (!empty($a)) {
 			$filePath = sprintf('%s/actions/%s/conf/',  APP_ROOT_PATH, $a);
 		}
-
 		if (!empty($m) && !empty($a)) {
 			$filePath = sprintf('%s%s/actions/%s/conf/',  APP_ROOT_PATH, \Ximdex\Modules\Manager::path($m), $a);
 		}
-
-		/*if (!empty($m) && empty($a)) {
-            $filePath = sprintf('%s/modules/%s/conf/', \XIMDEX_ROOT_PATH, $m);
-        }*/
-
 		$filePath = sprintf('%s%s', $filePath, $fileName);
 		if (!file_exists($filePath)) {
 			$filePath = $defaultConf;
 		}
-
 		$content = FsUtils::file_get_contents($filePath);
-//		debug::log($filePath, $content);
 		return $content;
 	}
 
 	public function create($_wid, $vars = array())
 	{
-		$params = "";
-		if (array_key_exists("params", $vars) && !empty($vars["params"])) {
-			foreach ($vars["params"] as $key => $value) {
+		$params = '';
+		if (array_key_exists('params', $vars) && !empty($vars['params'])) {
+			foreach ($vars['params'] as $key => $value) {
 				$params .= " $key=\"$value\" ";
-
 			}
 		}
-
 		$source = "<{$_wid} $params />";
-
 		$content = self::process($source, $vars);
-
-		return $content["tpl"];
+		return $content['tpl'];
 	}
-
 
 	/**
 	 * update state of widgets
+	 * 
 	 * @param array params
 	 */
 	public function update($params)
-	{
-	}
-
+	{}
 }
-
-?>

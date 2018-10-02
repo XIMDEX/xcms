@@ -177,11 +177,8 @@ class SynchroFacade
             if (sizeof($childList) > 0) {
                 foreach ($childList as $nodeID) {
                     $pendingTasks = array_merge($pendingTasks, self::getPendingTasksByNode($nodeID));
-                    if ($result = self::isNodePublished($nodeID)) {
+                    if (self::isNodePublished($nodeID)) {
                         $publishedTasks[] = $nodeID;
-                    }
-                    if ($result == true) {
-                        $isPublished = true;
                     }
                 }
             }
@@ -228,7 +225,6 @@ class SynchroFacade
         bool $recurrence = false) : ?array
     {
         $syncMngr = new SyncManager();
-        $node = new Node($idNode);
         
         // Default values
         $syncMngr->setFlag('recurrence', false);

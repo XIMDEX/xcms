@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -113,7 +113,7 @@ class AnnotationSearcherStrategy extends AbstractSearcherStrategy
         $result['orgs'] = array();
         $result['creativework'] = array();
         $result['others'] = array();
-        foreach ($data["semantic"] as $key => $value) {
+        foreach ($data["semantic"] as $value) {
             if (!empty($value['dc:type'])) {
                 switch ($value['dc:type']) {
                     case "dbp-ont:Person":
@@ -176,24 +176,4 @@ class AnnotationSearcherStrategy extends AbstractSearcherStrategy
         }
         return $result;
     }
-
-    /**
-     * UNUSED!
-     * Returns the short  type (places, people or organisations)
-     * @param $tipo
-     */
-
-    private function getTipo($tipo)
-    {
-        $place = "http://dbpedia.org/ontology/Place";
-        $person = "http://dbpedia.org/ontology/Person";
-        $organisation = "http://dbpedia.org/ontology/Organisation";
-
-        $tipos[$place] = "places";
-        $tipos[$person] = "people";
-        $tipos[$organisation] = "organisations";
-
-        return $tipos[$tipo];
-    }
-
 }

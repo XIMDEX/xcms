@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -41,12 +41,10 @@ use Ximdex\Utils\QueryManager;
 use Ximdex\Runtime\Session;
 
 /**
- *
- * @brief Base abstract class for Actions
+ *  @brief Base abstract class for Actions
  *
  *  Base abstract class for Actions who provides basic funcionality like rendering
  *  css/js inclusion and redirection
- *
  */
 abstract class ActionAbstract extends IController
 {
@@ -64,6 +62,7 @@ abstract class ActionAbstract extends IController
 
     /**
      * keeps the css to use
+     * 
      * @var array
      */
     private $_css = array();
@@ -82,14 +81,14 @@ abstract class ActionAbstract extends IController
 
     /**
      * Action renderer
-     */
-    /**
+     * 
      * @var mixed
      */
     public $renderer;
 
     /**
      * Action command
+     * 
      * @var String
      */
     public $actionCommand;
@@ -99,7 +98,7 @@ abstract class ActionAbstract extends IController
     protected $endActionLogged = false;
 
     /**
-     * ActionAbstract constructor.
+     * ActionAbstract constructor
      * 
      * @param null $_render
      */
@@ -151,8 +150,6 @@ abstract class ActionAbstract extends IController
     function execute($request)
     {
         // Setting path or subset which current action belongs to
-        $nodeid = $request->getParam("nodeid");
-        $actionid = $request->getParam("actionid");
         $method = ($var = $request->getParam("method")) ? $var : 'index';
         $this->request = $request;
         $actionInfo = $this->getActionInfo(
@@ -172,7 +169,7 @@ abstract class ActionAbstract extends IController
         if (method_exists($this, $method)) {
             $this->actionMethod = $method;
             $this->logInitAction();
-            $res = $this->$method();
+            $this->$method();
             //TODO $this->logEndAction(true, 'Ended with: ' . $res);
         } else {
             Logger::debug("MVC::ActionAbstract Method {$method} not found");

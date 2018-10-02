@@ -37,7 +37,7 @@ use Ximdex\Models\PublishingReport;
 use Ximdex\Models\Batch;
 use Ximdex\Sync\BatchManager;
 
-class Action_managebatchs extends ActionAbstract
+class Action_managebatchs_old extends ActionAbstract
 {
     private $params = array();
     

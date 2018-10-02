@@ -68,7 +68,7 @@ class DexPumperCli extends CliParser
                         'message' => 'Identifier of server to be tested',
                         'type' => TYPE_INT, 'group' => array('name' => 'operation', 'value' => 2)));
 
-    public function __construct ($paramsCount, $params)
+    public function __construct($paramsCount, $params)
     {
         $this->_metadata[0]['message'] = _('Username (or identifier)');
         $this->_metadata[1]['message'] = _('Indicates the verbosity level of the log');
@@ -573,6 +573,7 @@ class DexPumper
 	}
 }
 
+global $argc, $argv;
 $parameterCollector = new DexPumperCli($argc, $argv);
 $dexPumper = new DexPumper($parameterCollector->getParametersArray());
 Logger::generate('PUBLICATION', 'publication');

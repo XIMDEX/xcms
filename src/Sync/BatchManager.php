@@ -709,7 +709,7 @@ class BatchManager
         $dbObj = new Db();
         $sql = "SELECT IdBatch, Type, IdNodeGenerator, MajorCycle, MinorCycle, ServerFramesTotal FROM Batchs
 				WHERE Playing = 1 AND State = '" . Batch::INTIME . "' AND ServerFramesTotal > 0
-				ORDER BY Priority DESC, MajorCycle DESC, MinorCycle DESC, Type = '" . Batch::TYPE_DOWN . "' DESC, IdBatch LIMIT 1";
+				ORDER BY Priority DESC, MajorCycle, MinorCycle, Type = '" . Batch::TYPE_DOWN . "' DESC, IdBatch LIMIT 1";
         if ($dbObj->Query($sql) === false) {
         	return false;
         }
@@ -754,7 +754,6 @@ class BatchManager
         $batchPriority = $batch->get('Priority');
         $cycles = $batch->calcCycles($majorCycle, $minorCycle);
         /*
-        // Calc priority
         if ($allFrames == 0) {
             Logger::info('Batch without ServerFrames');
             $batch->set('Playing', 0);
@@ -762,21 +761,23 @@ class BatchManager
             return false;
         }
         */
+        
+        // Calc priority
         $porcentaje = 100 * $sucessFrames / $allFrames;
         if ($porcentaje > 25) {
             $systemPriority = MAX_SYSTEM_PRIORITY;
-            Logger::info(sprintf('Up batch %d priority', $idBatch));
+            Logger::info(sprintf('Increasing priority for batch %d to $d', $idBatch, $systemPriority));
         } else if ($porcentaje < 25) {
             $systemPriority = -MIN_SYSTEM_PRIORITY;
-            Logger::info(sprintf('Down batch %d priority', $idBatch));
+            Logger::info(sprintf('Decreasing priority for batch %d to %d', $idBatch, $systemPriority));
         } else {
             $systemPriority = 0;
         }
         $priority = $batchPriority + $systemPriority;
         if ($priority < MIN_TOTAL_PRIORITY) {
-            $priority = (float)MIN_TOTAL_PRIORITY;
+            $priority = (float) MIN_TOTAL_PRIORITY;
         } else if ($priority > MAX_TOTAL_PRIORITY) {
-            $priority = (float)MAX_TOTAL_PRIORITY;
+            $priority = (float) MAX_TOTAL_PRIORITY;
         }
         if (is_null($cycles)) {
             Logger::error('ERROR Calc cycles');
@@ -855,40 +856,5 @@ class BatchManager
             $batchDown->update();
         }
         return true;
-    }
-
-    /**
-     * Gets all batchs that must be processed (used by MPM)
-     * 
-     * @return array
-     */
-    public function getAllBatchToProcess()
-    {
-        $dbObj = new Db();
-        $sql = "SELECT IdBatch, Type, IdNodeGenerator, MajorCycle, MinorCycle, ServerFramesTotal FROM Batchs
-				WHERE Playing = 1 AND State = '" . Batch::INTIME . "' AND ServerFramesTotal > 0
-				ORDER BY Priority DESC, MajorCycle DESC, MinorCycle DESC, Type = '" . Batch::TYPE_DOWN . "'";
-        if ($dbObj->Query($sql) === false) {
-            return false;
-        }
-        if ($dbObj->numRows > 0) {
-            $batchs = array();
-            $i = 0;
-            while (!$dbObj->EOF) {
-                $list = array();
-                $list['id'] = $dbObj->GetValue("IdBatch");
-                $list['type'] = $dbObj->GetValue("Type");
-                $list['nodegenerator'] = $dbObj->GetValue("IdNodeGenerator");
-                $list['majorcycle'] = $dbObj->GetValue("MajorCycle");
-                $list['minorcycle'] = $dbObj->GetValue("MinorCycle");
-                $list['totalserverframes'] = $dbObj->GetValue("ServerFramesTotal");
-                $batchs[$i] = $list;
-                $i++;
-                $dbObj->Next();
-            }
-        } else {
-            return false;
-        }
-        return $batchs;
     }
 }

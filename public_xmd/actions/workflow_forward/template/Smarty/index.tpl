@@ -33,7 +33,8 @@
 	{* if $hasDisabledFunctions}
 		<div class="message message-warning">
 			<p class="disable-functions-alert">
-				{t}<i>pcntl_fork</i> and <i>pcntl_waitpid</i> required functions are both disabled{/t}.{t}This could cause a slow and unstable publishing. Please, check the <i>php.ini</i> configuration file or contact with your system administrator{/t}.
+				{t}<i>pcntl_fork</i> and <i>pcntl_waitpid</i> required functions are both disabled{/t}.
+				{t}This could cause a slow and unstable publishing. Please, check the <i>php.ini</i> configuration file or contact with your system administrator{/t}.
 			</p>
 		</div>
 	{/if *}
@@ -50,22 +51,9 @@
 		</p>
 		<fieldset class="publish_date">
 			<div class="xim_calendar_container">
-				<calendar
-						timestamp="{$timestamp_from}"
-						date_field_name="date"
-						hour_field_name="hour"
-						min_field_name="min"
-						sec_field_name="sec"
-						format="d-m-Y H:i:s"
-						cname="dateUp"
-						type="interval"
-						first_date_label="{t}from{/t}"
-						last_date_label="{t}to{/t}"
-						first_date_function=""
-						last_date_function=""
-						first_date_name="dateUp"
-						last_date_name="dateDown"
-						/>
+				<calendar timestamp="{$timestamp_from}" date_field_name="date" hour_field_name="hour" min_field_name="min" sec_field_name="sec" 
+				        format="d-m-Y H:i:s" cname="dateUp" type="interval" first_date_label="{t}from{/t}" last_date_label="{t}to{/t}"
+						first_date_function="" last_date_function="" first_date_name="dateUp" last_date_name="dateDown" />
 				{if $show_rep_option and ($nodetypename eq 'XmlDocument' or $nodetypename eq 'HtmlDocument')}
 					<div class="row tarjeta propertyform">
 						<h2 class="h2_general">{t}Publication options{/t}</h2>

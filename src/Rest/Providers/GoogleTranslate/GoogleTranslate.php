@@ -1,6 +1,6 @@
 <?php
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -24,17 +24,13 @@
  * @version $Revision$
  */
 
-
 namespace Ximdex\Rest\Providers\GoogleTranslate;
-
 
 use Ximdex\Logger;
 use Ximdex\Utils\Serializer;
 
-
 class GoogleTranslate extends \Ximdex\Rest\RESTProvider
 {
-
     const ENCODING = "UTF-8";
     const MAXCHARS = '5000';
     const URL_STRING = "http://ajax.googleapis.com/ajax/services/language/translate?v=1.0";
@@ -49,15 +45,12 @@ class GoogleTranslate extends \Ximdex\Rest\RESTProvider
         $textToTranslate = '';
 
         // gets only text nodes
-
         $domDoc = new \DOMDocument();
         $domDoc->validateOnParse = true;
         $domDoc->preserveWhiteSpace = false;
         $domDoc->loadXML(\Ximdex\XML\Base::recodeSrc($text, \Ximdex\XML\XML::UTF8));
-        $textNodes= [];
-
+        $textNodes = [];
         $xpath = new \DOMXPath($domDoc);
-
         $nodeList = $xpath->query('//text()');
         if ($nodeList->length > 0) {
             foreach ($nodeList as $element) {
@@ -71,68 +64,53 @@ class GoogleTranslate extends \Ximdex\Rest\RESTProvider
         }
 
         // split text and request translation for chunks
-
+        $chunks = [];
         while (strlen($textToTranslate) > self::MAXCHARS) {
             $rest = substr($textToTranslate, 0, self::MAXCHARS);
             $end = strrpos($rest, '|');
-
             $chunks[] = substr($textToTranslate, 0, $end);
             $textToTranslate = substr($textToTranslate, $end);
         }
-
         $chunks[] = $textToTranslate;
-
         $translatedText = '';
-
         foreach ($chunks as $textChunk) {
             $translatedText .= $this->retrieveTranslation($textChunk, $from, $to);
         }
-
         $translatedNodes = explode('|', $translatedText);
-
         foreach ($textNodes as $n => $dataNode) {
             $dataNode['element']->nodeValue = $translatedNodes[$n];
         }
-
         return $domDoc->saveXML();
     }
 
     private function retrieveTranslation($text, $from, $to)
     {
-
         if (!Languages::isValidLanguage($from) || !Languages::isValidLanguage($to) || $to == Languages::AUTO_DETECT) {
+            
             // Exception
             return "dude, thats language is not valid\n";
         }
 
         // Check and encoding $text using ximdex class.
-
         $args = array(
             'langpair' => \Ximdex\XML\Base::recodeSrc($from . '|' . $to, \Ximdex\XML\XML::UTF8),
             'q' => \Ximdex\XML\Base::recodeSrc($text, \Ximdex\XML\XML::UTF8)
         );
-
-        $data = "";
+        $data = '';
         foreach ($args as $key => $value) {
             $data .= ($data != "") ? "&" : "";
             $data .= urlencode($key) . "=" . urlencode($value);
         }
-
         $response = $this->http_provider->post(self::URL_STRING, $data);
-
         $result = Serializer::decode(SZR_JSON, $response['data']);
-
         if (is_null($result)) {
             Logger::error("Lost in translation: error code {$response['http_code']}");
             return "{$response['data']}\n";
         }
-
         if ($result->responseStatus != 200) {
             Logger::error("Lost in translation: error {$result->responseDetails}");
             return "Error: {$result->responseDetails}\n";
         }
-
         return urldecode($result->responseData->translatedText);
     }
-
 }

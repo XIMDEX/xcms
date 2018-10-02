@@ -1,6 +1,7 @@
 <?php
+
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -35,36 +36,33 @@ use Ximdex\Utils\FsUtils;
 
 class ViewPreviewInServer extends AbstractView implements IView
 {
-    private $_node = NULL;
-    private $_serverNode = NULL;
+    private $_node = null;
+    private $_serverNode = null;
     private $_idChannel;
 
-    public function transform($idVersion = NULL, $pointer = NULL, $args = NULL)
+    public function transform($idVersion = null, $pointer = null, $args = null)
     {
         $content = $pointer;
         $content = $this->retrieveContent($pointer);
-        if (!$this->_setNode($idVersion))
-            return NULL;
-
-        if (!$this->_setIdChannel($args))
-            return NULL;
-
-        if (!$this->_setServerNode($args))
-            return NULL;
-
+        if (!$this->_setNode($idVersion)) {
+            return null;
+        }
+        if (!$this->_setIdChannel($args)) {
+            return null;
+        }
+        if (!$this->_setServerNode($args)) {
+            return null;
+        }
         if (App::getValue('PreviewInServer') == 0) {
             Logger::error('PreviewInServer mode is disabled');
             return NULL;
         }
-
         $content = htmlspecialchars_decode(\Ximdex\Utils\Strings::stripslashes($content));
         $previewServer = $this->_serverNode->class->GetPreviewServersForChannel($this->_idChannel);
-
         if (!$previewServer) {
             Logger::error('No Preview Servers for this channel');
-            return NULL;
+            return null;
         }
-
         $commandParams = array();
         $commandParams['publishedName'] = $this->_node->GetPublishedNodeName($this->_idChannel);
         $commandParams['publishedPath'] = $this->_node->GetPublishedPath();
@@ -72,13 +70,11 @@ class ViewPreviewInServer extends AbstractView implements IView
         $commandParams['publishedURL'] = $commandParams['publishedBaseURL'] . $commandParams['publishedPath']
             . "/" . $commandParams['publishedName'];
         $commandParams['tmpPath'] = XIMDEX_ROOT_PATH . App::getValue("TempRoot");
-        $commandParams['tmpfile'] = tempnam($commandParams['tmpPath'], $prefix = null);
+        $commandParams['tmpfile'] = tempnam($commandParams['tmpPath'], null);
         $commandParams['tmpfileName'] = basename($commandParams['tmpfile']);
-
         if (!FsUtils::file_put_contents($commandParams['tmpfile'], $content)) {
             return false;
         }
-        
         $command = XIMDEX_ROOT_PATH . App::getValue("SynchronizerCommand") .
             " --verbose 10 --direct --hostid " . $previewServer . " " .
             " --localbasepath " . $commandParams['tmpPath'] . " --dcommand up --dlfile " .
@@ -88,6 +84,7 @@ class ViewPreviewInServer extends AbstractView implements IView
         $outPut = array();
         exec($command, $outPut, $returnValue);
         switch ($returnValue) {
+            
             // TODO: manage fetching errors
             case 0:
                 $curl = new Curl();
@@ -108,62 +105,54 @@ class ViewPreviewInServer extends AbstractView implements IView
                 $content = '';
                 break;
         }
-
         return $this->storeTmpContent($content);
     }
 
     private function _setNode($idVersion = NULL)
     {
-
         if (!is_null($idVersion)) {
             $version = new Version($idVersion);
             if (!($version->get('IdVersion') > 0)) {
                 Logger::error('VIEW FILTERMACROSPREVIEW: Se ha cargado una versión incorrecta (' . $idVersion . ')');
-                return NULL;
+                return null;
             }
-
             $this->_node = new Node($version->get('IdNode'));
             if (!($this->_node->get('IdNode') > 0)) {
-                Logger::error('VIEW FILTERMACROSPREVIEW: El nodo que se está intentando convertir no existe: ' . $version->get('IdNode'));
-                return NULL;
+                Logger::error('VIEW FILTERMACROSPREVIEW: El nodo que se está intentando convertir no existe: ' 
+                    . $version->get('IdNode'));
+                return null;
             }
         }
-
         return true;
     }
 
     private function _setIdChannel($args = array())
     {
-
         if (array_key_exists('CHANNEL', $args)) {
             $this->_idChannel = $args['CHANNEL'];
         }
 
-        // Check Params:
+        // Check Params
         if (!isset($this->_idChannel) || !($this->_idChannel > 0)) {
             Logger::error('VIEW FILTERMACROSPREVIEW: Channel not specified for node ' . $args['SERVERNODE']);
             return NULL;
         }
-
         return true;
     }
 
     private function _setServerNode($args = array())
     {
-
         if ($this->_node) {
             $this->_serverNode = new Node($this->_node->getServer());
         } elseif (array_key_exists('SERVERNODE', $args)) {
             $this->_serverNode = new Node($args['SERVERNODE']);
         }
 
-        // Check Params:
+        // Check Params
         if (!($this->_serverNode) || !is_object($this->_serverNode)) {
             Logger::error('VIEW FILTERMACROSPREVIEW: There is no server linked to the node ' . $args['NODENAME']);
             return NULL;
         }
-
         return true;
     }
-
 }

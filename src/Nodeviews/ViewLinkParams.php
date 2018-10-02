@@ -1,6 +1,7 @@
 <?php
+
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -29,64 +30,44 @@ namespace Ximdex\Nodeviews;
 use Ximdex\Logger;
 use Ximdex\Deps\LinksManager;
 use Ximdex\Models\Node;
-use Ximdex\Models\NodeType;
 use Ximdex\Models\Version;
 
-class ViewLinkParams extends AbstractView implements IView {
-
-	function transform($idVersion = NULL, $pointer = NULL, $args = NULL) {
-
+class ViewLinkParams extends AbstractView implements IView
+{
+	function transform($idVersion = NULL, $pointer = NULL, $args = NULL)
+	{
 		$content = $this->retrieveContent($pointer);
 		$version = new Version($idVersion);
-
-		if (!($version->get('IdVersion') > 0)) {
-		    
+		if (!($version->get('IdVersion') > 0)) {   
 			Logger::error("Incorrect version $idVersion");
-			return NULL;
+			return null;
 		}
-
 		$node = new Node($version->get('IdNode'));
-		$nodeType = new NodeType($node->get('IdNodeType'));
 		$nodeId = $node->get('IdNode');
-		$nodeTypeName = $nodeType->get('Name');
-
 		if (!($nodeId > 0)) {
-		    
-			Logger::error("Unexisting node: " . $version->get('IdNode'));
-			return NULL;
+			Logger::error('Unexisting node: ' . $version->get('IdNode'));
+			return null;
 		}
-
 		$domDoc = new \DOMDocument();
 		$domDoc->formatOutput = true;
 		$domDoc->preserveWhiteSpace = false;
 		$domDoc->loadXML(\Ximdex\XML\Base::recodeSrc($content, \Ximdex\XML\XML::UTF8));
-
 		$xpath = new \DOMXPath($domDoc);
 		$nodeList = $xpath->query('/docxap//@*[starts-with(local-name(.), "a_enlaceid")]');
-
 		if ($nodeList->length > 0) {
-
 			foreach ($nodeList as $domNode) {
-
 				$linksManager = new LinksManager();
 				$domNode->nodeValue = $linksManager->aenlaceid($domNode->nodeValue);
 			}
-
 		}
-
 		$nodeList = $xpath->query('/docxap//*[starts-with(local-name(.), "url")]');
 		if ($nodeList->length > 0) {
-
 			foreach ($nodeList as $domNode) {
-
 				$linksManager = new LinksManager();
 				$domNode->nodeValue = $linksManager->url($domNode->nodeValue);
 			}
-
 		}
-
 		$content = $domDoc->saveXML();
-
 		return $this->storeTmpContent($content);
 	}
 }

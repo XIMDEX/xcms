@@ -1,6 +1,7 @@
 <?php
+
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -24,29 +25,24 @@
  * @version $Revision$
  */
 
-
 namespace Ximdex\MVC;
 
-
 /**
- *
  * @brief FrontController for the cli interface
  *
  * FrontController for the cli interface, provide specific methods to read
  * the parameters from cli and launches the ApplicationController to compose
  * the cli interface
- *
  */
 class FrontControllerCLI extends FrontController
 {
-
-
-    function dispatch()
+    public function dispatch()
     {
         // Comprueba si la URL de acceso coincide con UrlRoot
-        if ($this->_parseParams()) {
+        if ($this->parseParams()) {
+            
             // Llama al ApplicationController
-            $appController = new ApplicationController;
+            $appController = new ApplicationController();
             $appController->setRequest($this->request);
             $appController->compose();
             $this->hasError = $appController->hasError();
@@ -54,31 +50,32 @@ class FrontControllerCLI extends FrontController
         }
     }
 
-    function _parseParams()
+    private function parseParams()
     {
-        $parameterCollector = new ParamsCLI ($_SERVER["argc"], $_SERVER["argv"]);
+        $parameterCollector = new ParamsCLI($_SERVER['argc'], $_SERVER['argv']);
         if ($parameterCollector->messages->count(MSG_TYPE_ERROR) > 0) {
             $parameterCollector->messages->displayRaw();
             return false;
         } else {
+            
             // Sanitize Params
+            $sanitized_array = [];
             foreach ($parameterCollector->getParametersArray() as $idx => $data) {
                 $sanitized_idx = str_replace('--', '', $idx);
                 $sanitized_array[$sanitized_idx] = $data;
             }
+            
             // Copia los parámetros a $this->request
             $this->copyRequest($sanitized_array);
             return true;
         }
     }
 
-
-    function copyRequest($array)
+    private function copyRequest($array)
     {
         foreach ($array as $key => $value) {
             $this->request->setParam($key, $value);
         }
-
         $this->normalizeNodesParam();
     }
 }

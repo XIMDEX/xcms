@@ -1,5 +1,5 @@
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -28,12 +28,12 @@ var XimTimer = function(interval) {
 	this.timeHandler = null;
 	this.observers = null;
 	this.interval = null;
-
+	
 	this._init = function(interval) {
 		this.observers = [];
 		this.interval = interval || 20;
 	};
-
+	
 	this.getObserver = function(observer) {
 		var index = isNaN(observer) ? null : observer;
 		var i = 0;
@@ -47,7 +47,7 @@ var XimTimer = function(interval) {
 		// return index or null
 		return index;
 	};
-
+	
 	this.addObserver = function(observer, interval) {
 		if (!interval) return null;
 		var index = this.getObserver(observer);
@@ -100,7 +100,6 @@ var XimTimer = function(interval) {
 
 	this._init(interval);
 };
-
 
 XimTimer.instance = null;
 

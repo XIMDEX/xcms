@@ -41,7 +41,7 @@ include_once XIMDEX_ROOT_PATH . '/src/Sync/conf/synchro_conf.php';
  */
 class SyncManager
 {
-    // State flags.
+    // State flags
     public $workflow;
     public $deleteOld;
     public $markEnd;
@@ -58,7 +58,7 @@ class SyncManager
 
     function __construct()
     {
-        // Default values for state flags.
+        // Default values for state flags
         $this->setFlag('workflow', true);
         $this->setFlag('deleteOld', false);
         $this->setFlag('markEnd', false);
@@ -71,7 +71,7 @@ class SyncManager
     }
 
     /**
-     * Sets the value of any variable.
+     * Sets the value of any variable
      *  
      * @param string key
      * @param unknown value
@@ -82,7 +82,7 @@ class SyncManager
     }
 
     /**
-     * Gets the value of any variable.
+     * Gets the value of any variable
      * 
      * @param string key
      */
@@ -244,19 +244,19 @@ class SyncManager
 
             // Dependencies won't be expired
             if ($this->getFlag('publicateSection') or $idNode == $idDoc) {
-                $ntp = NodesToPublish::create($idDoc, $idNode, $up, $down, $userID, $force, $this->getFlag('lastPublished'), $deepLevel);
+                NodesToPublish::create($idDoc, $idNode, $up, $down, $userID, $force, $this->getFlag('lastPublished'), $deepLevel);
             }
             else {
-                $ntp = NodesToPublish::create($idDoc, $idNode, $up, null, $userID, $force, $this->getFlag('lastPublished'), $deepLevel);
+                NodesToPublish::create($idDoc, $idNode, $up, null, $userID, $force, $this->getFlag('lastPublished'), $deepLevel);
             }
         }
         if ($this->getFlag('mail')) {
-            $this->sendMail($idNode, $type, $up, $down);
+            $this->sendMail($idNode, null, $up, $down);
         }
 
         // Exec batchmanagerdaemon in background and get its pid (in case we needed in the future)
         $cmd = 'php ' . XIMDEX_ROOT_PATH . '/bootstrap.php  src/Sync/scripts/batch/batchManagerDaemon.php';
-        $pid = shell_exec(sprintf("%s > /dev/null & echo $!", $cmd));
+        shell_exec(sprintf("%s > /dev/null & echo $!", $cmd));
         return $docsToPublish;
     }
 
@@ -287,7 +287,7 @@ class SyncManager
         else {
             $idDoc = $pending[0];
             while($idDoc == $nodeId){
-                $res = array_shift($pending);
+                array_shift($pending);
                 if (!empty($pending)) {
                     $idDoc = $pending[0];
                 }

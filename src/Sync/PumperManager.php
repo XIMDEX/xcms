@@ -138,7 +138,6 @@ class PumperManager
      */
     public function callingPumpers($activeAndEnabledServers)
     {
-        $pumper = new Pumper();
         Logger::debug('Calling pumpers');
         $serverFrameManager = new ServerFrameManager();
         $pumpers = $serverFrameManager->getPumpersWithTasks($activeAndEnabledServers);

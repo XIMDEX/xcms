@@ -29,12 +29,10 @@ namespace Ximdex\Sync;
 
 use Ximdex\Logger;
 use Ximdex\Models\Pumper;
-use Ximdex\MPM\MPMManager;
-use Ximdex\MPM\MPMProcess;
 use Ximdex\Models\Batch;
 use Ximdex\Models\ServerFrame;
 use Ximdex\Models\ChannelFrame;
-use Ximdex\Models\NodeFrame;
+// use Ximdex\Models\NodeFrame;
 
 /**
  * @brief Handles the life cycle of a ServerFrame
@@ -52,9 +50,7 @@ use Ximdex\Models\NodeFrame;
  *    - Out: removed from server
  */
 class ServerFrameManager
-{
-    const useMPMManager = false;
-    
+{   
     /**
      * Change the ServerFrame's state
      * 
@@ -70,21 +66,21 @@ class ServerFrameManager
         $initialState = $serverFrame->get('State');
         $server = $serverFrame->get('IdServer');
         $channelFrameId = $serverFrame->get('IdChannelFrame');
-        $idNodeFrame = $serverFrame->get('IdNodeFrame');
+        // $idNodeFrame = $serverFrame->get('IdNodeFrame');
         $chFr = new ChannelFrame($channelFrameId);
         $channel = $chFr->get('ChannelId');
         if (!$operation || !$serverFrameId) {
             Logger::error('ERROR Params needed');
             return false;
         }
-        $republishAncestors = false;
+        // $republishAncestors = false;
         if ($operation == Batch::TYPE_UP) {
             if ($initialState == ServerFrame::PENDING) {
                 
                 // Set down overlaped serverFrames
                 $overlapeds = $this->getOverlaped($serverFrameId, $server, $nodeId, $channel);
                 if (is_array($overlapeds) and sizeof($overlapeds) > 0) {
-                    foreach ($overlapeds as $n => $overlapedData) {
+                    foreach ($overlapeds as $overlapedData) {
                         $id = $overlapedData['id'];
                         $overlapedFrame = new ServerFrame($id);
                         $overlapedInitialState = $overlapedData['state'];
@@ -118,12 +114,13 @@ class ServerFrameManager
                     }
                 }
                 $finalState = ServerFrame::DUE2IN_;
-
+                /*
                 // If is the first publication must republish the ancestors
                 $nodeFrame = new NodeFrame();
                 if (is_null($nodeFrame->getPrevious($nodeId, $idNodeFrame))) {
                     $republishAncestors = true;
                 }
+                */
             } else {
                 Logger::info("Nothing to do with $serverFrameId starter $initialState");
                 return true;
@@ -144,7 +141,7 @@ class ServerFrameManager
                 } else {
                     $finalState = ServerFrame::DUE2OUT_;
                     $serverFrame->deleteSyncFile();
-                    $republishAncestors = true;
+                    // $republishAncestors = true;
                 }
             } else {
                 Logger::info("Nothing to do for state $initialState");
@@ -276,19 +273,9 @@ class ServerFrameManager
                         $dbObj->Next();
                     }
                     Logger::debug("Setting tasks $numTasksForPumping for pumper $pumperId");
-                    if (self::useMPMManager) {
-                        
-                        // Process All Task with MPMManager
-                        $callback = array("/src/Sync/ServerFrameManager", "processTaskForServerFrame");
-                        Logger::debug('Starting MPM Manager for Pumper ID: ' . $pumperId . ' -> Task: ' . print_r($tasks, true), true);
-                        $mpm = new MPMManager($callback, $tasks, MPMProcess::MPM_PROCESS_OUT_BOOL, 4, 2);
-                        $mpm->run();
-                    }
-                    else {
-                        foreach ($tasks as $task) {
-                            Logger::debug('Running processTaskForServerFrame with task: ' . $task);
-                            $this->processTaskForServerFrame($task);
-                        }
+                    foreach ($tasks as $task) {
+                        Logger::debug('Running processTaskForServerFrame with task: ' . $task);
+                        $this->processTaskForServerFrame($task);
                     }
                     $timer->stop();
                     Logger::debug('Set task for pumping ended; time: ' . $timer->display() . ' milliseconds');

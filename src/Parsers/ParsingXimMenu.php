@@ -1,13 +1,7 @@
 <?php
-namespace Ximdex\Parsers;
-
-use DOMDocument;
-use DOMXPath;
-use Ximdex\Models\Role;
-use Ximdex\Models\User;
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -30,9 +24,16 @@ use Ximdex\Models\User;
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
+
+namespace Ximdex\Parsers;
+
+use DOMDocument;
+use DOMXPath;
+use Ximdex\Models\Role;
+use Ximdex\Models\User;
+
 class ParsingXimMenu
 {
-
     protected $_menu = null;
     protected $_xpath = null;
     protected $_filters = array(
@@ -47,16 +48,14 @@ class ParsingXimMenu
      */
     public function __construct($menu)
     {
-
         if (is_object($menu) && $menu instanceof DOMDocument) {
             $this->_menu = $menu;
         } else if (is_string($menu)) {
             $this->_menu = new DOMDocument();
-
             if (file_exists($menu)) {
-                $doc->load($menu);
+                $this->_menu->load($menu);
             } else {
-                $doc->loadXML($menu);
+                $this->_menu->loadXML($menu);
             }
         }
         $this->_menu->formatOutput = true;
@@ -65,7 +64,6 @@ class ParsingXimMenu
 
     public function processMenu($asString = false)
     {
-
         foreach ($this->_filters as $filter) {
             $method = "filter_$filter";
             if (method_exists($this, $method)) {
@@ -75,13 +73,13 @@ class ParsingXimMenu
                     if (!$this->$method($node)) {
                         $node->parentNode->removeChild($node);
                     } else {
+                        
                         // Remove hasPermission attribute, don't show permissions names to the users
                         $node->removeAttribute($filter);
                     }
                 }
             }
         }
-
         $ret = $asString ? $this->_menu->saveXML() : $this->_menu;
         return $ret;
     }
@@ -106,15 +104,12 @@ class ParsingXimMenu
      */
     protected function filter_allowedRoles(&$node)
     {
-
         $userid = \Ximdex\Runtime\Session::get('userID');
         $user = new User($userid);
         $assignedRoles = $user->GetRoles();
-
         $roles = $node->getAttribute('allowedRoles');
         $roles = explode(',', $roles);
         $allowed = false;
-
         foreach ($roles as $role) {
             $role = trim($role);
             if (is_numeric($role)) {
@@ -130,7 +125,6 @@ class ParsingXimMenu
                 }
             }
         }
-
         return $allowed;
     }
 
@@ -139,16 +133,13 @@ class ParsingXimMenu
      */
     protected function filter_allowedUsers(&$node)
     {
-
         $userid = \Ximdex\Runtime\Session::get('userID');
         $user = new User($userid);
         $login = strtoupper($user->GetLogin());
         $allUsers = $user->GetAllUsers();
-
         $users = $node->getAttribute('allowedUsers');
         $users = explode(',', $users);
         $allowed = false;
-
         foreach ($users as $usr) {
             $usr = trim($usr);
             if (is_numeric($usr)) {
@@ -165,7 +156,6 @@ class ParsingXimMenu
                 }
             }
         }
-
         return $allowed;
     }
 
@@ -174,7 +164,4 @@ class ParsingXimMenu
         $module = $node->getAttribute('ifModule');
         return defined(strtoupper("MODULE_{$module}_ENABLED"));
     }
-
 }
-
-?>

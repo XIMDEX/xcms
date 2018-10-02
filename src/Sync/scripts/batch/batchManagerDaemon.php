@@ -29,12 +29,12 @@ set_time_limit(0);
 
 use Ximdex\Logger;
 use Ximdex\Models\Node;
-use Ximdex\Models\NodeType;
 use Ximdex\Models\NodesToPublish;
 use Ximdex\Runtime\App;
 use Ximdex\Runtime\DataFactory;
 use Ximdex\Sync\SynchroFacade;
 use Ximdex\Sync\BatchManager;
+use Ximdex\Workflow\WorkFlow;
 
 function main($argc, $argv)
 {
@@ -43,7 +43,7 @@ function main($argc, $argv)
 
     // Command line mode call
     if ($argv != null && isset($argv[1]) && is_numeric($argv[1])) {
-        Logger::logTrace("IdNode passed: " . $argv[1]);
+        Logger::logTrace('IdNode passed: ' . $argv[1]);
         
         // Add node to publishing pool and exit (SyncManager will call this daemon again when inserting node job is done)
         $syncFac = new SynchroFacade();
@@ -55,7 +55,7 @@ function main($argc, $argv)
     // Every node in the block shares same dateup
     $nodesToPublish = NodesToPublish::getNext();
     while ($nodesToPublish != null) {
-        Logger::info("Publication cycle triggered by " . $nodesToPublish['idNodeGenerator']);
+        Logger::info('Publication cycle triggered by ' . $nodesToPublish['idNodeGenerator']);
         createBatchsForBlock($nodesToPublish);
 
         // Gext next block (if any) of nodes to publish
@@ -70,7 +70,7 @@ function createBatchsForBlock($nodesToPublish)
     // If the node which trigger publication do not exists anymore return null and cancel.
     $node = new Node($idNodeGenerator);
     if (!($node->get('IdNode') > 0)) {
-        Logger::error("Required node does not exist " . $idNodeGenerator);
+        Logger::error('Required node does not exist ' . $idNodeGenerator);
         return NULL;
     }
 
@@ -78,7 +78,7 @@ function createBatchsForBlock($nodesToPublish)
     $idServer = $node->GetServer();
     $nodeServer = new Node($idServer);
     if (App::getValue('PublishOnDisabledServers') == 1) {
-        Logger::info("PublishOnDisabledServers is true");
+        Logger::info('PublishOnDisabledServers is true');
         $physicalServers = $nodeServer->class->GetPhysicalServerList(true);
     } else {
         $physicalServers = $nodeServer->class->GetPhysicalServerList(true, true);
@@ -104,25 +104,21 @@ function createBatchsForBlock($nodesToPublish)
 
     // Clean up caches, tmp files, etc...
     if (is_null($docsPublicated)) {        
-        Logger::error("PUSHDOCINPOOL - docsPublicated null");
+        Logger::error('PUSHDOCINPOOL - docsPublicated null');
         return null;
     }
-    $unchanged = array('unchanged' => $docsPublicated[1]);
-    $result = array_merge($docsPublicated[0], $docsPublicated[1]);
 
     // Purge subversions in docs publicated successfully
     if (sizeof($docsPublicated[1]) > 0) {
         if (array_key_exists('ok', $docsPublicated[1])) {
-            foreach ($docsPublicated[1]['ok'] as $id => $dataResult) {
+            $keys = array_keys($docsPublicated[1]['ok']);
+            foreach ($keys as $id) {
                 $node = new Node($id);
-                $nodeTypeID = $node->get('IdNodeType');
-                $nodeType = new NodeType($nodeTypeID);
-                $nodeTypeName = $nodeType->get('Name');
-                Logger::info("Purging subversions for node " . $id);
+                Logger::info('Purging subversions for node ' . $id);
                 $data = new DataFactory($id);
                 $curVersion = $data->getLastVersion(true);
                 $prevVersion = $curVersion - 1;
-                if (App::getValue("PurgeSubversionsOnNewVersion")) {
+                if (App::getValue('PurgeSubversionsOnNewVersion')) {
                     $data->purgeSubVersions($prevVersion, true);
                 }
             }
@@ -130,11 +126,12 @@ function createBatchsForBlock($nodesToPublish)
 
         // Delete major version in docs with error
         if (array_key_exists('notok', $docsPublicated[1])) {
-            foreach ($docsPublicated[1]['notok'] as $id => $dataResult) {
+            $keys = array_keys($docsPublicated[1]['notok']);
+            foreach ($keys as $id) {
                 $data = new DataFactory($id);
                 $curVersion = $data->getLastVersion(true);
                 Logger::info("Publication error: deleting version $curVersion for node $id");
-                if (App::getValue("PurgeSubversionsOnNewVersion")) {
+                if (App::getValue('PurgeSubversionsOnNewVersion')) {
                     $data->deleteVersion($curVersion);
                 }
             }
@@ -144,10 +141,11 @@ function createBatchsForBlock($nodesToPublish)
     // Back node to initial state
     $node = new Node($idNodeGenerator);
     if ($node->get('IdState') > 0) {
-        $workflow = new \Ximdex\Workflow\WorkFlow($idNodeGenerator);
+        $workflow = new WorkFlow($idNodeGenerator);
         $firstState = $workflow->GetInitialState();
         $node->SetState($firstState);
     }
 }
 
+global $argc, $argv;
 main($argc, $argv);

@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -77,7 +77,7 @@ class ImageFile
 	
 	private function write_exif($_field, $_value)
 	{
-		$image = getimagesize($this->file, $info);
+		// $image = getimagesize($this->file, $info);
 		$utf8seq = chr(0x1b) . chr(0x25) . chr(0x47);
 		$length = strlen($utf8seq);
 		$data = chr(0x1C) . chr(1) . chr('090') . chr($length >> 8) . chr($length & 0xFF) . $utf8seq;

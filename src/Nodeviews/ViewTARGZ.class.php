@@ -1,6 +1,7 @@
 <?php
+
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -28,7 +29,6 @@ namespace Ximdex\Nodeviews;
 
 use Ximdex\Logger;
 use Ximdex\Models\Node;
-use Ximdex\Models\NodeType;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\Models\Version;
 use Ximdex\Runtime\App;
@@ -37,47 +37,42 @@ use Ximdex\Utils\TarArchiver;
 
 class ViewTARGZ extends AbstractView implements IView
 {
-    function transform($idVersion = NULL, $pointer = NULL, $args = NULL)
+    function transform($idVersion = null, $pointer = null, $args = NULL)
     {
-        $content = $this->retrieveData($content);
-        //VALIDATING DATA
+        $content = $this->retrieveContent($pointer);
+        
+        // Validating data
         $version = new Version($idVersion);
         if (!($version->get('IdVersion') > 0)) {
             Logger::error("Se ha cargado una versión incorrecta ($idVersion)");
-            return NULL;
+            return null;
         }
         $node = new Node($version->get('IdNode'));
-        $nodeType = new NodeType($node->get('IdNodeType'));
         $nodeId = $node->get('IdNode');
-        $nodeTypeName = $nodeType->get('Name');
-        $dataEncoding = App::getValue('dataEncoding');
-
         if (!($nodeId > 0)) {
-            Logger::error("El nodo que se está intentando convertir no existe: " . $version->get('IdNode'));
+            Logger::error('El nodo que se está intentando convertir no existe: ' . $version->get('IdNode'));
             return NULL;
         }
         if (!array_key_exists('PATH', $args) && !array_key_exists('NODENAME', $args)) {
             Logger::error('Path and nodename arguments are mandatory');
             return NULL;
         }
-
         $tarFile = $args['PATH'];
         $tmpFolder = XIMDEX_ROOT_PATH . App::getValue('TempRoot');
 
-        //Sets content on SQL and XML files
+        // Sets content on SQL and XML files
         $arrayContent = explode('<sql_content>', $content);
         $tmpDocFile = $tmpFolder . '/' . $args['NODENAME'] . '.xml';
         $tmpSqlFile = $tmpFolder . '/' . $args['NODENAME'] . '.sql';
         $xmlContent = $arrayContent[0];
         $sqlContent = substr(trim($arrayContent[1]), 0, -14);
 
-        //Encode the content to ISO, now OTF only work in ISO mode, because the jsp files are in ISO too
+        // Encode the content to ISO, now OTF only work in ISO mode, because the jsp files are in ISO too
         $xmlContent = \Ximdex\XML\Base::recodeSrc($xmlContent, \Ximdex\XML\XML::ISO88591);
         if (!FsUtils::file_put_contents($tmpDocFile, $xmlContent)) {
             return false;
         }
-
-        $sqlContaent = \Ximdex\XML\Base::recodeSrc($sqlContent, \Ximdex\XML\XML::ISO88591);
+        $sqlContent = \Ximdex\XML\Base::recodeSrc($sqlContent, \Ximdex\XML\XML::ISO88591);
         if (!FsUtils::file_put_contents($tmpSqlFile, $sqlContent)) {
             return false;
         }
@@ -87,14 +82,10 @@ class ViewTARGZ extends AbstractView implements IView
         $tarArchiver->addEntity($tmpDocFile);
         $tarArchiver->addEntity($tmpSqlFile);
 
-
         // Removing tar extension
         rename($tarFile . '.tar', $tarFile);
-
         return $this->storeTmpContent($arrayContent[0]);
     }
-
-
 
     /**
      * Return the file name about the params
@@ -107,26 +98,20 @@ class ViewTARGZ extends AbstractView implements IView
      */
     function getFile($tableName, $field, $condition, $params)
     {
-
-        $factory = new \Ximdex\Utils\Factory(XIMDEX_ROOT_PATH . "/src/Models/", $tableName);
+        $factory = new \Ximdex\Utils\Factory(XIMDEX_ROOT_PATH . '/src/Models/', $tableName);
         $object = $factory->instantiate(null, null, '\Ximdex\Models');
-
         if (!is_object($object)) {
             Logger::info("Error, la clase $tableName de orm especificada no existe");
-            return NULL;
+            return null;
         }
-
         $result = $object->find($field, $condition, $params, MULTI);
-
         if (!is_null($result)) {
             reset($result);
             $fileName = $result[0][0];
             return $fileName;
         }
-
         Logger::info("Additional file for $tableName not found");
-
-        return NULL;
+        return null;
     }
 
     /**
@@ -138,64 +123,60 @@ class ViewTARGZ extends AbstractView implements IView
      */
     function generateDocXapForBulletin($node, $idVersion)
     {
+        // Docxap for return it
+        $docxapout = '';
+        $channels = '';
+        $language = '';
 
-        //docxap for return it
-        $docxapout = "";
-        $channels = "";
-        $channel;
-        $language = "";
-
-        //check that the Version is ok
+        // Check that the Version is ok
         if (!is_null($idVersion)) {
             $version = new Version($idVersion);
             if (!($version->get('IdVersion') > 0)) {
                 Logger::error('VIEW TARGZ: Se ha cargado una versión incorrecta (' . $idVersion . ')');
-                return "";
+                return '';
             }
             $structuredDocument = new StructuredDocument($version->get('IdNode'));
             $channels = $structuredDocument->GetChannels();
             $language = $structuredDocument->GetLanguage();
-
             if (!($structuredDocument->get('IdDoc') > 0)) {
                 Logger::error('VIEW TARGZ: El structured document especificado no existe: ' . $structuredDocument->get('IdDoc'));
-                return "";
+                return '';
             }
-            //If it is all ok
-            if ((is_array($channels)) && (!is_null($node)) && (!is_null($structuredDocument)) && (array_key_exists(0, $channels)) && (!is_null($language))) {
-                //Select, for example, the first channel, it's the same because otf will renderize the
-                //xml with a channel selected by the user
+            
+            // If it is all ok
+            if ((is_array($channels)) && (!is_null($node)) && (!is_null($structuredDocument)) && (array_key_exists(0, $channels)) 
+                && (!is_null($language))) {
+                
+                // Select, for example, the first channel, it's the same because otf will renderize the
+                // xml with a channel selected by the user
                 $channel = reset($channels);
                 $documentType = $structuredDocument->GetDocumentType();
                 $docxapout = $node->class->getDocHeader($channel, $language, $documentType);
 
-                // Check out:
-                if (!isset($docxapout) || $docxapout == "") {
-                    Logger::error('VIEW TARGZ: No se ha especificado la cabecera docxap del nodo ' . $node->GetNodeName() . ' que quiere renderizar');
-                    return "";
+                // Check out
+                if (!isset($docxapout) || $docxapout == '') {
+                    Logger::error('VIEW TARGZ: No se ha especificado la cabecera docxap del nodo ' . $node->GetNodeName() 
+                        . ' que quiere renderizar');
+                    return '';
                 }
             } else {
-                Logger::error("VIEW TARGZ:No se ha podido generar la etiqueta doxcap para el boletin, renderizado para OTF");
+                Logger::error('VIEW TARGZ:No se ha podido generar la etiqueta doxcap para el boletin, renderizado para OTF');
             }
-
             return $docxapout;
-
         } else {
-            Logger::error("VIEW TARGZ:No se ha podido generar la etiqueta doxcap para el boletin, renderizado para OTF");
+            Logger::error('VIEW TARGZ:No se ha podido generar la etiqueta doxcap para el boletin, renderizado para OTF');
         }
     }
 
     private function getLastVersion($idNode)
     {
         $sql = "select IdVersion from Versions where IdNode = $idNode order by Version desc limit 1;";
-
         $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->Query($sql);
         while (!$dbObj->EOF) {
-            $idVersion = $dbObj->GetValue("IdVersion");
+            $idVersion = $dbObj->GetValue('IdVersion');
             $dbObj->Next();
         }
         return $idVersion;
     }
-
-
 }

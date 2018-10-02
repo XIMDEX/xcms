@@ -51,7 +51,7 @@ class ServerErrorManager
    public static function getServersForPumping()
    {
 		$dbObj = new \Ximdex\Runtime\Db();
-		$sql = "SELECT ErrorId, UnactivityCycles FROM ServerErrorByPumper WHERE WithError = 1";
+		$sql = 'SELECT ErrorId, UnactivityCycles FROM ServerErrorByPumper WHERE WithError = 1';
 		$dbObj->Query($sql);
 		if($dbObj->numRows > 0){
 			while(!$dbObj->EOF) {
@@ -63,8 +63,8 @@ class ServerErrorManager
 				if ($cycles > UNACTIVITY_CYCLES) {
 					$idServer = $error->get('ServerId');
 					$idPumper = $error->get('PumperId');
-					$error->set('WithError',0);
-					$error->set('UnactivityCycles',0);
+					$error->set('WithError', 0);
+					$error->set('UnactivityCycles', 0);
 					$error->update();
 					self::enableServer($idServer, $idPumper);
 				} else {
@@ -89,11 +89,11 @@ class ServerErrorManager
 		$serverError = new ServerErrorByPumper();
 		$serverError->loadByPumper($pumperId);
 		$idServer = $serverError->get('ServerId');
-		$serverError->set('WithError',1);
+		$serverError->set('WithError', 1);
 		$serverError->update();
-		Logger::info("Disabling server ". $idServer);
+		Logger::info('Disabling server ' . $idServer);
 		$serverNode = new Server($idServer);
-		$serverNode->set('ActiveForPumping',0);
+		$serverNode->set('ActiveForPumping', 0);
 		$serverNode->update();
     }
 
@@ -105,13 +105,13 @@ class ServerErrorManager
 	*/
 	static public function enableServer($idServer, $idPumper)
 	{
-		Logger::info("Enabling server ". $idServer);
+		Logger::info('Enabling server ' . $idServer);
 		$serverNode = new Server($idServer);
-		$serverNode->set('ActiveForPumping',1);
+		$serverNode->set('ActiveForPumping', 1);
 		$serverNode->update();
 
 		// Set serverframes to Due2In/Out for retry pumping
-		Logger::info("Setting ServerFrames to Due2In/Out to retry pumping");
+		Logger::info('Setting ServerFrames to Due2In/Out to retry pumping');
 		$serverFrame = new ServerFrame();
 		$serverFrame->rescueErroneous($idPumper);
 	}

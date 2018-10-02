@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -32,9 +32,6 @@ use Ximdex\Behaviours\Collection;
 use Ximdex\Runtime\Db;
 use Ximdex\Utils\Messages;
 
-/**
- * TODO Remove this defines
- */
 if (!defined('MULTI')) {
     define('LOG_LEVEL_NONE', 0);
     define('LOG_LEVEL_ALL', 1);
@@ -45,7 +42,7 @@ if (!defined('MULTI')) {
     define('MULTI', true);
 }
 if (!defined('DEBUG_LEVEL')) {
-    define('DEBUG_LEVEL', LOG_LEVEL_NONE); //Only for debugging purposes
+    define('DEBUG_LEVEL', LOG_LEVEL_NONE); // Only for debugging purposes
 }
 
 class GenericData
@@ -57,31 +54,26 @@ class GenericData
     const MAX_BIGINT    = '18446744073709551615';
     
     /**
-     *
      * @var string
      */
     const REGEXP_DATETIME = '\d{4}[-|\/]\d{1,2}[-|\/]\d{1,2}\s\d{1,2}:\d{1,2}:\d{1,2}';
     
     /**
-     *
      * @var String
      */
     const REGEXP_DATE = '\d{4}[-|\/]\d{1,2}[-|\/]\d{1,2}';
     
     /**
-     *
      * @var String
      */
     const REGEXP_TIMESTAMP = '\d{4}[-|\/]\d{1,2}[-|\/]\d{1,2}\s\d{1,2}:\d{1,2}:\d{1,2}';
     
     /**
-     *
      * @var String
      */
     const REGEXP_TIME = '\d{1,2}:\d{1,2}:\d{1,2}';
     
     /**
-     *
      * @var String
      */
     const REGEXP_YEAR = '\d{4}';
@@ -150,7 +142,8 @@ class GenericData
                         $this->{$key} = $dbObj->GetValue($key);
                     } else {
                         $backtrace = debug_backtrace();
-                        Logger::warning(sprintf('[CONSTRUCTOR] Inconsistency between the model and the database [inc/helper/GenericData.class.php] script: %s file: %s line: %s table: %s field: %s'
+                        Logger::warning(sprintf('[CONSTRUCTOR] Inconsistency between the model and the database'
+                            . ' [inc/helper/GenericData.class.php] script: %s file: %s line: %s table: %s field: %s'
                             , $_SERVER['SCRIPT_FILENAME'], $backtrace[0]['file'], $backtrace[0]['line'], $this->_table, $key));
                         $this->modelInError = true;
                     }
@@ -165,7 +158,8 @@ class GenericData
      */
     public function _unserialize($values)
     {
-        foreach ($this->_metaData as $key => $value) {
+        $keys = array_keys($this->_metaData);
+        foreach ($keys as $key) {
             if (isset($values[$key])) {
                 $this->$key = $values[$key];
             }
@@ -187,7 +181,8 @@ class GenericData
     public function _serialize()
     {
         $values = array();
-        foreach ($this->_metaData as $key => $value) {
+        $keys = array_keys($this->_metaData);
+        foreach ($keys as $key) {
             $values[$key] = $this->{$key};
         }
         return $values ? $values : false;
@@ -276,13 +271,13 @@ class GenericData
 
     /**
      * Validación/conversión por tipo de campo
+     * 
      * @param $fieldValue
      * @param $fieldTypeMatches
      * @return string
      */
     public function _convertToSql($fieldValue, $fieldTypeMatches)
     {
-        // TODO remove unused params
         unset($fieldTypeMatches);
         return Db::sqlEscapeString($fieldValue);
     }
@@ -554,10 +549,7 @@ class GenericData
         }
         return $this->$attribute;
     }
-
-    /**
-     * @return bool
-     */
+    
     public function beforeAdd()
     {
         return true;
@@ -613,8 +605,7 @@ class GenericData
                 $this->_convertToSql($this->$field, $descriptors));
         }
         $sets  = implode(', ', $arraySets);
-        $query = sprintf('UPDATE %s SET %s WHERE %s = %d', $this->_table, $sets, $this->_idField,
-            $this->{$this->_idField});
+        $query = sprintf('UPDATE %s SET %s WHERE %s = %d', $this->_table, $sets, $this->_idField, $this->{$this->_idField});
         if ((DEBUG_LEVEL == LOG_LEVEL_ALL) || (DEBUG_LEVEL == LOG_LEVEL_EXECUTE)) {
             $this->_logQuery($query);
         }
@@ -732,8 +723,8 @@ class GenericData
     }
 
     /**
-     * <p>Get all rows for the current table.</p>
-     * <p>This is a facade method and it just call find method without parameters.</p>
+     * Get all rows for the current table
+     * This is a facade method and it just call find method without parameters
      * 
      * @return array
      */
