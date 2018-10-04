@@ -36,10 +36,10 @@ use Ximdex\Logger;
 include_once XIMDEX_ROOT_PATH . '/src/Sync/conf/synchro_conf.php';
 
 /**
-* @brief Manages the errors found during the sending of ServerFrames to Server.
+* @brief Manages the errors found during the sending of ServerFrames to Server
 *
 * The activity of Pumpers is checked Periodically and if any error is detected the Pumper it's stopped and its ServerFrames 
-* changed to Status WithError.   After an inactivity period, if the error doesn't exists the pumper restart its activity.
+* changed to Status WithError.   After an inactivity period, if the error doesn't exists the pumper restart its activity
 */
 class ServerErrorManager
 {

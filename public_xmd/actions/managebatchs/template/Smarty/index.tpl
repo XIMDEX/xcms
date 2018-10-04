@@ -26,16 +26,18 @@
 {include file="actions/components/title_Description.tpl"}
 <div class="action_content ximPUBLISHtools" ng-controller="ximPUBLISHtools">
     <ul class="media-list">
-        <li class="media" ng-repeat="portal in json | orderBy: '-creationTime' as filtered_json track by portal.idNodeGenerator">
+        <li class="media" ng-repeat="portal in json | orderBy: '-creationTime' as filtered_json track by portal.idPortal">
             <a class="pull-left" href="#">
                 <span class="icon-new color-trans #/portal.endTime ? 'finished-task' : 'unfinished-task'/#"
-                        ng-class="{literal}{'unfinished-task': !portal.Finished, 'finished-task': portal.Finished}{/literal}"></span>
+                        ng-class="{literal}{'unfinished-task': !portal.endTime, 'finished-task': portal.endTime}{/literal}"></span>
             </a>
             <!--
             <p class="status-buttons">
                 <a class="pull-right" href="#" ng-hide="portal.Finished">
-                    <button type="button" class="increase-btn icon-new btn-unlabel-rounded" ng-click="incBatchPriority(portal.IdBatch)"></button>
-                    <button type="button" class="decrease-btn icon-new btn-unlabel-rounded" ng-click="decBatchPriority(portal.IdBatch)"></button>
+                    <button type="button" class="increase-btn icon-new btn-unlabel-rounded" 
+                            ng-click="incBatchPriority(portal.IdBatch)"></button>
+                    <button type="button" class="decrease-btn icon-new btn-unlabel-rounded" 
+                            ng-click="decBatchPriority(portal.IdBatch)"></button>
                     <button type="button" class="pause-btn icon-new btn-unlabel-rounded" ng-click="stopBatch(portal.IdBatch)" 
                             ng-if="portal.BatchState"></button>
                     <button type="button" class="resume-btn icon-new btn-unlabel-rounded" ng-click="startBatch(portal.IdBatch)" 

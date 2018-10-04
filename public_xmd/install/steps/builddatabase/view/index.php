@@ -24,6 +24,8 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
+
+global $ximdexName, $ximdexDataBaseHostName, $goMethod;
 ?>
 
 <form method="post"  ng-controller="InstallDatabaseController" ng-cloak name="formDataBase" ui-keypress="{13:'sendForm($event)'}" 

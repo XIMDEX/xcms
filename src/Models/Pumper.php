@@ -30,7 +30,7 @@ namespace Ximdex\Models;
 use Ximdex\Logger;
 use Ximdex\Models\ORM\PumpersOrm;
 use Ximdex\Runtime\Db;
-use Ximdex\Sync\ServerErrorManager;
+// use Ximdex\Sync\ServerErrorManager;
 
 include_once XIMDEX_ROOT_PATH . '/src/Sync/conf/synchro_conf.php';
 
@@ -147,12 +147,16 @@ class Pumper extends PumpersOrm
 
         // 0: OK, 200: connection problem, 255: unexistent server, 127:command not found
         if ($var == 0) {
-            Logger::info("Pumper $pumperId started succefully");
+            Logger::info("Pumper $pumperId started successfully");
             return true;
         } else if ($var == 200) {
             Logger::error("In server connection starting pumper $pumperId");
+            
+            //TODO To recover the pumper tasks with errors
+            /*
             $serverMng = new ServerErrorManager();
             $serverMng->disableServerByPumper($pumperId);
+            */
             return false;
         } else if ($var == 400) {
             Logger::error("ERROR registering pumper $pumperId");

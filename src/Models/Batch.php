@@ -74,7 +74,6 @@ class Batch extends BatchsOrm
         int $playing = 1)
     {
         setlocale(LC_NUMERIC, 'C');
-        $priority = (float) (MIN_TOTAL_PRIORITY * $priority);
         $this->set('TimeOn', $timeOn);
         $this->set('State', Batch::WAITING);
         $this->set('Playing', $playing);
@@ -305,18 +304,19 @@ class Batch extends BatchsOrm
      */
     public function prioritizeBatch($idBatch, $mode = 'up')
     {
-        setlocale (LC_NUMERIC, 'C'); //Hack: fix bad compose of float field in sql update
+        //Hack: fix bad compose of float field in SQL update
+        setlocale (LC_NUMERIC, 'C');
         parent::__construct($idBatch);
-        $priority = (float) $this->get('Priority');   
+        $priority = (float) $this->get('Priority'); 
         if ($mode === 'up') {
             $priority += 0.3;
-            if ($priority > MAX_TOTAL_PRIORITY) {
-                $priority = MAX_TOTAL_PRIORITY;
+            if ($priority > 1) {
+                $priority = 1;
             }
         } else {
             $priority -= 0.3;
-            if ($priority < MIN_TOTAL_PRIORITY) {
-                $priority = MIN_TOTAL_PRIORITY;
+            if ($priority < 0) {
+                $priority = 0;
             }
         }
         $this->set('Priority', $priority);

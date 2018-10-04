@@ -24,7 +24,10 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
+
+global $goMethod;
 ?>
+
 <form method="post" ng-controller="InstallModulesController" name="installModulesForm" ng-submit="processForm()" ng-cloak>
     <input type="hidden" name="method" value="<?php echo $goMethod ?>" />
 	<h2>Installing Ximdex CMS's default modules</h2>

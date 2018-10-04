@@ -27,6 +27,7 @@
 
 use Ximdex\Runtime\App;
 
+global $js_files, $this, $includeTemplateStep;
 ?>
 <!DOCTYPE html>
 <html>

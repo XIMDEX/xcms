@@ -1,6 +1,7 @@
 <?php
+
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -25,46 +26,47 @@
  */
 
 /**
- * Factory class to instance every step object.
+ * Factory class to instance every step object
  */
-class InstallStepFactory {
-
-	/*Constant*/
-	const STEP_PATH = "/install/steps"; //Where the step class are defined
+class InstallStepFactory
+{
+	// Where the step class are defined
+	const STEP_PATH = '/install/steps';
 	
 	/**
 	 * Build an instance for the current step.
 	 * The default step class is GenericInstallStep.
 	 * All the class name are like {$step}InstallStep
-	 * @param  array $steps        All the steps defined in install.xml
-	 * @param  string $currentState state for the current state
-	 * @return object               Step object
+	 * 
+	 * @param  array $steps All the steps defined in install.xml
+	 * @param  string $currentState State for the current state
+	 * @return object Step object
 	 */
-	public static function getStep ($steps, $currentState) {
-		
+	public static function getStep ($steps, $currentState)
+	{	
 		$currentStep = null;
 		$posStep = 0;
-		//Searching the current step
+		
+		// Searching the current step
 		foreach ($steps as $step) {
-			if ($step["state"] == strtolower($currentState)){
+			if ($step['state'] == strtolower($currentState)){
 				$currentStep = $step;				
 				break;
 			}
 			$posStep++;
 		}
 		
-		//The default class is generic
-		$className = "Generic";		
-		
-		if ($currentStep && $currentStep["class-name"]){
-			$className = $currentStep["class-name"];			
+		// The default class is generic
+		$className = 'Generic';
+		if ($currentStep && $currentStep['class-name']) {
+			$className = $currentStep['class-name'];			
 		}
 		$currentState = strtolower($className);
-		$stepPath = APP_ROOT_PATH.self::STEP_PATH."/".$currentState;
+		$stepPath = APP_ROOT_PATH . self::STEP_PATH . '/' . $currentState;
 
-		//Build the object and set the index for the current step
-		$factory = new \Ximdex\Utils\Factory($stepPath, $className);
-		$stepObject = $factory->instantiate("InstallStep");
+		// Build the object and set the index for the current step
+		$factory = new Ximdex\Utils\Factory($stepPath, $className);
+		$stepObject = $factory->instantiate('InstallStep');
 		$stepObject->setCurrentStep($posStep);
 		return $stepObject;
 	}

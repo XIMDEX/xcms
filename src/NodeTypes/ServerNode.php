@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -189,7 +189,8 @@ class ServerNode extends FolderNode
     function SetOverrideLocalPaths($physicalID, $overrideLocalPaths)
     {
         $overrideLocalPaths = ($overrideLocalPaths) ? 'true' : 'false';
-        $sql = "UPDATE Servers SET OverrideLocalPaths= " . $overrideLocalPaths . " WHERE IdNode=" . $this->nodeID . " AND IdServer=" . $physicalID;
+        $sql = "UPDATE Servers SET OverrideLocalPaths= " . $overrideLocalPaths . " WHERE IdNode=" . $this->nodeID 
+            . " AND IdServer=" . $physicalID;
         $this->dbObj->Execute($sql);
     }
 
@@ -327,7 +328,8 @@ class ServerNode extends FolderNode
 
     function AddChannel($physicalID, $channelID)
     {
-        $sql = "INSERT INTO RelServersChannels (IdRel, IdServer, IdChannel) VALUES (NULL, " . DB::sqlEscapeString($physicalID) . ", " . DB::sqlEscapeString($channelID) . ")";
+        $sql = "INSERT INTO RelServersChannels (IdRel, IdServer, IdChannel) VALUES (NULL, " . DB::sqlEscapeString($physicalID) 
+            . ", " . DB::sqlEscapeString($channelID) . ")";
         $this->dbObj->Execute($sql);
     }
 

@@ -1,6 +1,7 @@
 <?php
+
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -24,22 +25,17 @@
  * @version $Revision$
  */
 
-
 use Ximdex\NodeTypes\NodeTypeConstants;
 use Ximdex\Runtime\App;
 
 include_once '../../../bootstrap.php';
 
-
-\Ximdex\Runtime\Session::check();
-
+Ximdex\Runtime\Session::check();
 $locale = \Ximdex\Runtime\Session::get('locale');
+
 // Check coherence with HTTP_ACCEPT_LANGUAGE
-\Ximdex\I18n\I18N::setup($locale);
-$userID = \Ximdex\Runtime\Session::get('userID');
-
+Ximdex\I18n\I18N::setup($locale);
 header('Content-type: application/javascript');
-
 echo "renderer = '" . \Ximdex\Runtime\Session::get("renderer") . "';";
 echo "\nurl_host = '" . App::getValue('UrlHost') . "';";
 echo "\nurl_root = '" . App::getUrl('/') . "';";

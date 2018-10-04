@@ -25,6 +25,7 @@
  *  @version $Revision$
  */
 
+use Ximdex\Logger;
 use Ximdex\Runtime\App;
 
 require_once APP_ROOT_PATH . '/install/steps/welcome/WelcomeInstallStep.class.php';
@@ -39,7 +40,7 @@ class GenericInstallStep
 	protected $installManager;
 	protected $js_files;
 	protected $exceptions;
-	const STATUSFILE = "/conf/_STATUSFILE";
+	const STATUSFILE = '/conf/_STATUSFILE';
 
 	public function __construct()
 	{
@@ -54,26 +55,30 @@ class GenericInstallStep
 	    $this->initialize_values(false);
 		$this->installManager->prevStep();
 		$this->currentStep = 0;
-        $this->addJs("WelcomeController.js");
+        $this->addJs('WelcomeController.js');
 		$this->render();		
 	}
 
-	protected function render($values = array(), $view = null, $layout = "installer.tpl")
+	protected function render($values = array(), $view = null, $layout = 'installer.tpl')
 	{
 		foreach ($values as $name => $value) {
 			$$name = $value;			
-		}		
+		}
 		$js_files = $this->js_files;
-		$view = $view? $view : $this->request->getParam("method");
-		$goMethod = isset($values["go_method"])? $values["go_method"]: $view;
-		$folderName = trim(strtolower($this->steps[$this->currentStep]["class-name"]));
+		$view = $view? $view : $this->request->getParam('method');
+		$goMethod = isset($values['go_method'])? $values['go_method']: $view;
+		$folderName = trim(strtolower($this->steps[$this->currentStep]['class-name']));
 		if ($this->exceptions && is_array($this->exceptions) && count($this->exceptions)) {
 			$exceptions = $this->exceptions;
-			$includeTemplateStep = APP_ROOT_PATH."/install/steps/generic/view/exception.php";
+			$includeTemplateStep = APP_ROOT_PATH . '/install/steps/generic/view/exception.php';
 		} else {
-			$includeTemplateStep = APP_ROOT_PATH."/install/steps/{$folderName}/view/{$view}.php";
+			$includeTemplateStep = APP_ROOT_PATH . "/install/steps/{$folderName}/view/{$view}.php";
 		}
-		include(APP_ROOT_PATH."/install/view/install.php");
+		Logger::debug('Go method: ' . $goMethod);
+		Logger::debug('JS files: ' . print_r($js_files, true));
+		Logger::debug('Exceptions: ' . print_r($exceptions, true));
+		Logger::debug('Include template step: ' . $includeTemplateStep);
+		include APP_ROOT_PATH . '/install/view/install.php';
 		ob_end_flush();
 		exit();
 	}
@@ -109,7 +114,7 @@ class GenericInstallStep
 
     protected function addJs($jsPath)
     {
-   		$folderName = trim(strtolower($this->steps[$this->currentStep]["class-name"]));
+   		$folderName = trim(strtolower($this->steps[$this->currentStep]['class-name']));
     	$this->js_files[] = "install/steps/{$folderName}/js/{$jsPath}";
     }
 
@@ -126,11 +131,11 @@ class GenericInstallStep
     protected function checkPermissions()
     {    
         $checkGroup = $this->installManager->checkInstanceGroup();
-        if ($checkGroup["state"] != "success") {
+        if ($checkGroup['state'] != 'success') {
             $this->exceptions[] = $checkGroup;
         }
     	$checkPermissions = $this->installManager->checkFilePermissions();
-    	if ($checkPermissions["state"]!= "success") {
+    	if ($checkPermissions['state']!= 'success') {
     		$this->exceptions[] = $checkPermissions;
     	}
    }

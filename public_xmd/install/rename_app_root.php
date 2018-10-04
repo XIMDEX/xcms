@@ -12,6 +12,8 @@ use Ximdex\Runtime\App;
 
 include 'bootstrap.php';
 
+global $argc, $argv;
+
 $color = new Color();
 if (!isset($argv) or !$argv or $argc < 2) {
     echo $color('ERROR: The parameter PATH has not been specified')->red()->bold() . PHP_EOL;

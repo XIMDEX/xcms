@@ -23,6 +23,8 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
+
+global $goMethod;
 ?>
 
 <form method="post" action="">

@@ -329,7 +329,10 @@ class DexPumper
 			$msg_error = sprintf('Fail to connect or wrong login credentials for server: %s:%s with user: %s',  $host, $port, $login);
 			$this->fatal($msg_error);
 			$this->updateTask(false);
-			$this->updateServerState('Failed to connect');
+			
+			// TODO ajlucena
+			// $this->updateServerState('Failed to connect');
+			
 			$this->unRegisterPumper();
 			exit(200);
 		}
@@ -436,11 +439,12 @@ class DexPumper
 			    $this->error('Maximum of retries reached (' . self::RETRIES_TO_FATAL_ERROR . ') for server frame: ' 
 			        . $this->serverFrame->IdSync . '. Marked as errored');
 				$this->serverFrame->set('State', ServerFrame::DUE2INWITHERROR);
+				$this->serverFrame->set('ErrorLevel', ServerFrame::ERROR_LEVEL_HARD);
 			}
 			else {
 			    $retries++;
 			    $this->serverFrame->set('Retry', $retries);
-			    $this->serverFrame->set('ErrorLevel', 1);
+			    $this->serverFrame->set('ErrorLevel', ServerFrame::ERROR_LEVEL_SOFT);
 			}
 			$this->serverFrame->update();
 			return false;
@@ -535,31 +539,31 @@ class DexPumper
         $this->debug($sqlReport);
 	}
 
-	private function info($_msg = NULL, string $color = '')
+	private function info($_msg = null, string $color = '')
 	{
 	    $this->msg_log("INFO PUMPER: $_msg");
 	    Logger::info($_msg, false, $color);
 	}
 	
-	private function error($_msg = NULL)
+	private function error($_msg = null)
 	{
 	    $this->msg_log("ERROR PUMPER: $_msg");
 	    Logger::error($_msg);
 	}
 	
-	private function fatal($_msg = NULL)
+	private function fatal($_msg = null)
 	{
 	    $this->msg_log("FATAL PUMPER: $_msg");
 	    Logger::fatal($_msg);
 	}
 	
-	private function debug($_msg = NULL)
+	private function debug($_msg = null)
 	{
 	    $this->msg_log("DEBUG PUMPER: $_msg");
 	    Logger::debug($_msg);
 	}
 	
-	private function warning($_msg = NULL)
+	private function warning($_msg = null)
 	{
 	    $this->msg_log("WARNING PUMPER: $_msg");
 	    Logger::warning($_msg);

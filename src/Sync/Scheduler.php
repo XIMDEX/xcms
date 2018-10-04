@@ -143,7 +143,7 @@ class Scheduler
                     Logger::debug(sprintf("Processing batch %s type %s", $batchId, $batchType) . ", true");
                     $schedulerChunk = (SCHEDULER_CHUNK > MAX_NUM_NODES_PER_BATCH) ? SCHEDULER_CHUNK : MAX_NUM_NODES_PER_BATCH;
                     $nodeFrames = $nodeFrameManager->getNotProcessNodeFrames($batchId, $schedulerChunk, $batchType);
-                    if ($nodeFrames !== false) {
+                    if ($nodeFrames) {
                         foreach ($nodeFrames as $nodeFrameData) {
                             $nodeId = $nodeFrameData ['nodeId'];
                             $nodeFrameId = $nodeFrameData ['nodeFrId'];
@@ -345,7 +345,7 @@ class Scheduler
         $info = ' - Server frames: ' . $portal->get('SFtotal') . ' total, ' . $portal->get('SFpending') . ' pending, ' 
             . $portal->get('SFactive') . ' active, ' . $portal->get('SFsuccess') . ' success, ' . $portal->get('SFerrored') . ' errored';
         if ($portal->get('SFerrored')) {
-            Logger::error($info);
+            Logger::warning($info);
         } else {
             Logger::info(' ' . $info);
         }

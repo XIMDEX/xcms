@@ -61,6 +61,10 @@ class ServerFrame extends ServerFramesOrm
     const OUTDATED = 'Outdated';
     const DELAYED = 'Delayed';
     
+    // Error levels
+    const ERROR_LEVEL_SOFT = 1;
+    const ERROR_LEVEL_HARD = 2;
+    
     // Group of status
     const FINAL_STATUS = [self::IN, self::OUT, self::REMOVED, self::REPLACED, self::CANCELLED, self::OUTDATED, self::DELAYED
         , self::DUE2INWITHERROR, self::DUE2OUTWITHERROR];
@@ -104,7 +108,7 @@ class ServerFrame extends ServerFramesOrm
     
     public function set($attribute, $value)
     {
-        if ($attribute == 'State') {
+        if ($attribute == 'State' and $this->State != $value) {
             Logger::info('Changing state for server frame: ' . $this->get('IdSync') . ' from ' . $this->get('State') . ' to ' . $value);
         }
         parent::set($attribute, $value);
@@ -125,7 +129,7 @@ class ServerFrame extends ServerFramesOrm
                 'State' => $this->get('State'),
                 'Progress' => $this->publishingReport->progressTable[$this->get('State')]
             );
-            if (($this->get('ErrorLevel') != '0')) {
+            if ($this->get('ErrorLevel')) {
                 $updateFields['State'] = 'Error';
                 $updateFields['Progress'] = '100';
             } else if ($this->get('FileSize') == "0" && in_array($this->get('State'), [
@@ -159,14 +163,14 @@ class ServerFrame extends ServerFramesOrm
      * @return int|null
      */
     public function create($nodeId, $server, $dateUp, $path, $name, $publishLinked, $idNodeFrame, $idChannel, $idChannelFrame
-        , $idBatchUp, $idPortalFrame, $dateDown = NULL, $size = 0, bool $cache = true)
+        , $idBatchUp, $idPortalFrame, $dateDown = null, $size = 0, bool $cache = true)
     {
         $this->set('IdServer', $server);
         $this->set('DateUp', $dateUp);
         $this->set('DateDown', $dateDown);
         $this->set('State', ServerFrame::PENDING);
-        $this->set('Error', NULL);
-        $this->set('ErrorLevel', 0);
+        $this->set('Error', null);
+        $this->set('ErrorLevel', null);
         $this->set('RemotePath', $path);
         $this->set('FileName', $name);
         $this->set('FileSize', $size);
@@ -191,12 +195,12 @@ class ServerFrame extends ServerFramesOrm
             $idPortalFrame = $batch->get('IdPortalFrame');
             $channelFrames = new ChannelFrame($idChannelFrame);
             $idChannel = $channelFrames->get('ChannelId');
-            $this->publishingReport->create($idSection, $nodeId, empty($idChannel) ? NULL : $idChannel, $server, $idPortalFrame
+            $this->publishingReport->create($idSection, $nodeId, empty($idChannel) ? null : $idChannel, $server, $idPortalFrame
                 , time(), ServerFrame::PENDING, '20', $name, $path, $idServerFrame, $idBatchUp, $idParentServer);
             return $idServerFrame;
         }
         Logger::error('Creating server frame');
-        return NULL;
+        return null;
     }
 
     /**
@@ -242,7 +246,7 @@ class ServerFrame extends ServerFramesOrm
             return $dbObj->GetValue("IdSync");
         }
         Logger::error('Getting publicated serverFrame');
-        return NULL;
+        return null;
     }
 
     /**
@@ -270,7 +274,7 @@ class ServerFrame extends ServerFramesOrm
      * 
      * @param $frameID
      * @param bool $cache
-     * @return boolean|NULL|int
+     * @return boolean|null|int
      */
     public function createSyncFile($frameID, bool $cache = true)
     {
@@ -547,7 +551,7 @@ class ServerFrame extends ServerFramesOrm
         $serverID = $node->GetServer();
         if (! ($serverID > 0)) {
             Logger::error('Trying to publish a node that is not contained on a server ' . $nodeID);
-            return NULL;
+            return null;
         }
         if ($idServer) {
             $physicalServers = [$idServer];
@@ -560,7 +564,7 @@ class ServerFrame extends ServerFramesOrm
             }
             if (count($physicalServers) == 0) {
                 Logger::warning("[GETCURRENT]: No physical servers found. IdSync: none");
-                return NULL;
+                return null;
             }
         }
         $sql = sprintf("SELECT IdSync " . "FROM ServerFrames sf " . "INNER JOIN ChannelFrames c ON c.IdChannelFrame = sf.IdChannelFrame " 
@@ -573,7 +577,7 @@ class ServerFrame extends ServerFramesOrm
         $dbObj->Query($sql);
         $result = ($dbObj->EOF) ? 'IdSync: none' : 'IdSync: ' . $dbObj->GetValue("IdSync");
         Logger::debug("[GETCURRENT]: Result:  " . $result);
-        return ($dbObj->EOF) ? NULL : $dbObj->GetValue("IdSync");
+        return ($dbObj->EOF) ? null : $dbObj->GetValue("IdSync");
     }
 
     /**
@@ -581,7 +585,7 @@ class ServerFrame extends ServerFramesOrm
      * 
      * @param $nodeId
      * @param $channelID
-     * @return NULL|string[]
+     * @return null|string[]
      */
     public function getCompleteServerList($nodeId, $channelID = null)
     {
@@ -638,7 +642,7 @@ class ServerFrame extends ServerFramesOrm
     {
         $result = $this->find('IdServer', 'IdNodeFrame = ' . $idNodeFrame, array(), MONO);
         if (! (sizeof($result) > 0)) {
-            return NULL;
+            return null;
         }
         return $result;
     }
@@ -705,11 +709,11 @@ class ServerFrame extends ServerFramesOrm
             }
             return $publications;
         }
-        return NULL;
+        return null;
     }
     
     /**
-     * @return int|NULL
+     * @return int|null
      */
     public function getNodeID() : ?int
     {

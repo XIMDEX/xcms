@@ -82,9 +82,11 @@ Class Logger
     {
         try {
             $res = self::get()->logger->addError(self::$color->__invoke($string)->red()->bold(), $object);
+            /*
             if (CLI_MODE) {
                 sleep(5);
             }
+            */
             return $res;
         } catch (\Exception $e) {
             error_log($e->getMessage());
@@ -111,9 +113,11 @@ Class Logger
     {
         try {
             $res = self::get()->logger->addCritical(self::$color->__invoke($string)->red()->bold());
+            /*
             if (CLI_MODE) {
                 sleep(5);
             }
+            */
             return $res;
         }
         catch (Exception $e) {

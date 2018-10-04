@@ -1,14 +1,39 @@
 <?php
 
+/**
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
+ */
+
 namespace Ximdex\Models\ORM;
 
 use Ximdex\Data\GenericData;
 
 class ServersOrm extends GenericData
 {
-    var $_idField = 'IdServer';
-    var $_table = 'Servers';
-    var $_metaData = array(
+    public $_idField = 'IdServer';
+    public $_table = 'Servers';
+    public $_metaData = array(
         'IdServer' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
         'IdNode' => array('type' => "int(12)", 'not_null' => 'true'),
         'IdProtocol' => array('type' => "varchar(255)", 'not_null' => 'false'),
@@ -23,25 +48,27 @@ class ServersOrm extends GenericData
         'Previsual' => array('type' => "int(1)", 'not_null' => 'false'),
         'Description' => array('type' => "varchar(255)", 'not_null' => 'false'),
         'idEncode' => array('type' => "varchar(255)", 'not_null' => 'false'),
-        'ActiveForPumping' => array('type' => "tinyint(3)", 'not_null' => 'false'),
+        'ActiveForPumping' => array('type' => "int(1)", 'not_null' => 'false'),
+        'DelayTimeToEnableForPumping' => array('type' => "timestamp", 'not_null' => 'false'),
         'Token' => array('type' => "varchar(255)", 'not_null' => 'false')
     );
-    var $_uniqueConstraints = array();
-    var $_indexes = array('IdServer');
-    var $IdServer;
-    var $IdNode = 0;
-    var $IdProtocol;
-    var $Login;
-    var $Password;
-    var $Host;
-    var $Port;
-    var $Url;
-    var $InitialDirectory;
-    var $OverrideLocalPaths = 0;
-    var $Enabled = 1;
-    var $Previsual = 0;
-    var $Description;
-    var $idEncode;
-    var $ActiveForPumping = 1;
-    var $Token;
+    public $_uniqueConstraints = array();
+    public $_indexes = array('IdServer');
+    public $IdServer;
+    public $IdNode = 0;
+    public $IdProtocol;
+    public $Login;
+    public $Password;
+    public $Host;
+    public $Port;
+    public $Url;
+    public $InitialDirectory;
+    public $OverrideLocalPaths = 0;
+    public $Enabled = 1;
+    public $Previsual = 0;
+    public $Description;
+    public $idEncode;
+    public $ActiveForPumping = 1;
+    public $DelayTimeToEnableForPumping;
+    public $Token;
 }

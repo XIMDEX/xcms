@@ -1,6 +1,7 @@
 <?php
+
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -24,17 +25,20 @@
  *  @version $Revision$
  */
 ?>
+
 <h2>Installing Ximdex</h2>	
 <?php
-	foreach ($exceptions as $key => $exception) {
+    global $exceptions;
+	foreach ($exceptions as $exception) {
 		foreach ($exception["messages"] as $i => $message) {			
 		?>
-		<p class="error"><?php echo $message;?></p>			
-		<?php
-		if ($exception["help"])
-			?>
-		<pre><?php echo $exception["help"][$i];?></pre>
-		<?php
+			<p class="error"><?php echo $message;?></p>			
+			<?php
+		        if ($exception["help"]) {
+		    ?>
+				<pre><?php echo $exception["help"][$i];?></pre>
+			<?php
+		    }
 		}
 	}
 ?>

@@ -24,6 +24,8 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
+
+global $goMethod;
 ?>
 
 <form method="post" ng-controller="XowlConfigurationController" name="form" ng-submit="processForm()" ng-cloak>

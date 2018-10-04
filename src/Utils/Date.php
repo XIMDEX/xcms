@@ -34,6 +34,6 @@ class Date
         if ($timestamp === null) {
             return '';
         }
-        return date('d/m/Y H:i:s', $timestamp);
+        return date('d/m/Y H:i', $timestamp);
     }
 }

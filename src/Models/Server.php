@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -42,7 +42,7 @@ class Server extends ServersOrm
         }
     }
     
-    public function setServerNode($id)
+    public function setServerNode(int $id)
     {
         $this->serverNode = new ServerNode($id);
     }
@@ -53,5 +53,19 @@ class Server extends ServersOrm
             $this->setServerNode($this->get('IdServer'));
         }
         return $this->serverNode->GetChannels($this->get('IdServer'));
+    }
+    
+    public function enableForPumping()
+    {
+        $this->ActiveForPumping = 1;
+        $this->DelayTimeToEnableForPumping = null;
+        return $this->update();
+    }
+    
+    public function disableForPumping()
+    {
+        $this->ActiveForPumping = 0;
+        $this->DelayTimeToEnableForPumping = time() + 15;
+        return $this->update();
     }
 }

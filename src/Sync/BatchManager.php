@@ -43,7 +43,6 @@ use Ximdex\Properties\InheritedPropertiesManager;
 use Ximdex\NodeTypes\NodeTypeConstants;
 use Ximdex\Runtime\Db;
 
-
 include_once XIMDEX_ROOT_PATH . '/src/Sync/conf/synchro_conf.php';
 
 /**
@@ -106,7 +105,7 @@ class BatchManager
             return false;
         }
         $idServer = $node->GetServer();
-        Logger::info("Publication starts for " . $node->GetPath() . " ($idNode)");
+        Logger::info('Publication starts for ' . $node->GetPath() . " ($idNode)");
         $unchangedDocs = array();
         $docsToUpVersion = array();
         foreach ($docsToPublish as $idDoc) {
@@ -114,7 +113,7 @@ class BatchManager
             $subversionToPublish = $docsToPublishSubVersion[$idDoc];
             $docNode = new Node($idDoc);
             if (!$docNode->get('IdNode')) {
-                Logger::error("Not existing node " . " $idDoc");
+                Logger::error('Not existing node ' . $idDoc);
                 continue;
             }
 
@@ -152,14 +151,14 @@ class BatchManager
         $iTotal = count($docsChunked);
         $noCache = [];
         foreach ($docsChunked as $chunk) {
-            Logger::info(sprintf("[Generator %s]: Creating bach %s / %s", $idNode, $iCount, $iTotal));
+            Logger::info(sprintf('[Generator %s]: Creating bach %s / %s', $idNode, $iCount, $iTotal));
             foreach ($chunk as $id) {
                 if ($force[$id]) {
                     $noCache[$id] = true;
                 }
             }
             $partialDocs = $this->buildBatchs($idNode, $up, $chunk, $docsToUpVersion, $docsToPublishVersion, $docsToPublishSubVersion
-                , $idServer, $physicalServers, 0.8, $down, $iCount, $iTotal, $idPortalFrame, $userId, $noCache);
+                , $idServer, $physicalServers, DEFAULT_BATCH_PRIORITY, $down, $iCount, $iTotal, $idPortalFrame, $userId, $noCache);
             $docsBatch = array_merge($docsBatch, $partialDocs);
             $iCount++;
 
@@ -167,7 +166,7 @@ class BatchManager
             NodesToPublish::setProcessed($chunk, $up);
         }
         $timer->stop();
-        Logger::info("Publication ended; time for publication " . " = " . $timer->display('s') . " seconds");
+        Logger::info('Publication ended; time for publication = ' . $timer->display('s') . ' seconds');
         return array($docsBatch, $unchangedDocs);
     }
 
@@ -184,7 +183,7 @@ class BatchManager
     {
         $node = new Node($nodeId);
         if ($node->nodeType->get('IsPublishable') == 0) {
-            Logger::info(sprintf("Node %s belongs to an unpublished nodetype", $nodeId));
+            Logger::info(sprintf('Node %s belongs to an unpublished nodetype', $nodeId));
             return false;
         }
         if ($node->nodeType->get('IsFolder') == 1) {
@@ -241,7 +240,7 @@ class BatchManager
             $batch = new Batch();
             $idBatchDown = null;
             if ($timeDown != 0) {
-                $idBatchDown = $batch->create($timeDown, Batch::TYPE_DOWN, $nodeGenerator, 1, null, $idPortalFrame, $userId);
+                $idBatchDown = $batch->create($timeDown, Batch::TYPE_DOWN, $nodeGenerator, $priority, null, $idPortalFrame, $userId);
                 Logger::info('Creating down batch: ' . $timeDown);
                 Logger::info(sprintf("[Generator %s]: Creating down batch with id %s", $nodeGenerator, $idBatchDown));
             }
@@ -566,7 +565,7 @@ class BatchManager
     {
         $dbObj = new Db();
         
-        // Ending batchs type UP
+        // Updating batchs type UP
         $sql = "SELECT ServerFrames.IdBatchUp, SUM(IF(ServerFrames.State = '" . ServerFrame::DUE2INWITHERROR . "', 1, 0)) AS Errors, 
 			SUM(IF (ServerFrames.State IN ('" . implode('\', \'', ServerFrame::SUCCESS_STATUS) . "'), 1, 0)) AS Success, 
 			SUM(IF (ServerFrames.State IN ('" . ServerFrame::PUMPED . "'), 1, 0)) AS Pumpeds,
@@ -576,7 +575,10 @@ class BatchManager
             SUM(IF (ServerFrames.State IN ('" . ServerFrame::PENDING . "'), 1, 0)) AS Pending 
             FROM ServerFrames, Batchs WHERE Batchs.Type = '" . Batch::TYPE_UP . "' 
             AND Batchs.State IN ('" . Batch::INTIME . "', '" . Batch::CLOSING . "') AND Batchs.IdBatch = ServerFrames.IdBatchUp 
-            GROUP BY ServerFrames.IdBatchUp HAVING Total = Errors + Success + Pumpeds";
+            GROUP BY ServerFrames.IdBatchUp 
+            HAVING (Errors + Success + Pumpeds + Active) > 0 
+            ORDER BY ServerFrames.IdBatchUp";
+            // HAVING Total = Errors + Success + Pumpeds";
         if ($dbObj->Query($sql) === false) {
         	return false;
         }
@@ -593,16 +595,18 @@ class BatchManager
             $batch->set('ServerFramesError', $errors);
             $batch->set('ServerFramesActive', $active);
             $batch->set('ServerFramesPending', $pending);
-            if ($pumpeds > 0) {
-                
-                // Do not change to CLOSING state if this is the actual one in the batch
-                if ($batch->get('State') != Batch::CLOSING) {
-                    $batch->set('State', Batch::CLOSING);
-                    Logger::info(sprintf("Setting 'Closing' state batch %d UP", $idBatch));
+            if ($totals == $errors + $success + $pumpeds) {
+                if ($pumpeds > 0) {
+                    
+                    // Do not change to CLOSING state if this is the actual one in the batch
+                    if ($batch->get('State') != Batch::CLOSING) {
+                        $batch->set('State', Batch::CLOSING);
+                        Logger::info(sprintf("Setting 'Closing' state batch %d UP", $idBatch));
+                    }
+                } else {
+                    $batch->set('State', Batch::ENDED);
+                    Logger::info("Ending up batch with id " . $idBatch);
                 }
-            } else {
-                $batch->set('State', Batch::ENDED);
-                Logger::info("Ending up batch with id " . $idBatch);
             }
             $batch->update();
             try {
@@ -613,7 +617,7 @@ class BatchManager
             $dbObj->Next();
         }
 
-        // Ending batchs type DOWN
+        // Updating batchs type DOWN
         $batch = new Batch();
         $batchsDown = $batch->find('IdBatch', "Type = '" . Batch::TYPE_DOWN . "' AND State = '" . Batch::INTIME . "'", NULL, MONO);
         if (sizeof($batchsDown) > 0) {
@@ -717,12 +721,12 @@ class BatchManager
             return array();
         }
         $list = array();
-        $list['id'] = $dbObj->GetValue("IdBatch");
-        $list['type'] = $dbObj->GetValue("Type");
-        $list['nodegenerator'] = $dbObj->GetValue("IdNodeGenerator");
-        $list['majorcycle'] = $dbObj->GetValue("MajorCycle");
-        $list['minorcycle'] = $dbObj->GetValue("MinorCycle");
-        $list['totalserverframes'] = $dbObj->GetValue("ServerFramesTotal");
+        $list['id'] = $dbObj->GetValue('IdBatch');
+        $list['type'] = $dbObj->GetValue('Type');
+        $list['nodegenerator'] = $dbObj->GetValue('IdNodeGenerator');
+        $list['majorcycle'] = $dbObj->GetValue('MajorCycle');
+        $list['minorcycle'] = $dbObj->GetValue('MinorCycle');
+        $list['totalserverframes'] = $dbObj->GetValue('ServerFramesTotal');
         return $list;
     }
 
@@ -738,9 +742,18 @@ class BatchManager
             return false;
         }
         $batch = new Batch($idBatch);
+        $update = false;
+        /*
+        $allFrames = (int) $batch->get('ServerFramesTotal');
+        if ($allFrames == 0) {
+            Logger::info('Batch without ServerFrames');
+            $batch->set('Playing', 0);
+            $batch->update();
+            return false;
+        }
+        */
         $majorCycle = $batch->get('MajorCycle');
         $minorCycle = $batch->get('MinorCycle');
-        $allFrames = $batch->get('ServerFramesTotal');
         /*
         // Unplaying batchs that exceed max num cycles
         if ($majorCycle > MAX_NUM_CICLOS_BATCH) {
@@ -750,44 +763,29 @@ class BatchManager
             return true;
         }
         */
-        $sucessFrames = $batch->get('ServerFramesSuccess');
-        $batchPriority = $batch->get('Priority');
         $cycles = $batch->calcCycles($majorCycle, $minorCycle);
-        /*
-        if ($allFrames == 0) {
-            Logger::info('Batch without ServerFrames');
-            $batch->set('Playing', 0);
-            $batch->update();
-            return false;
-        }
-        */
-        
-        // Calc priority
-        $porcentaje = 100 * $sucessFrames / $allFrames;
-        if ($porcentaje > 25) {
-            $systemPriority = MAX_SYSTEM_PRIORITY;
-            Logger::info(sprintf('Increasing priority for batch %d to $d', $idBatch, $systemPriority));
-        } else if ($porcentaje < 25) {
-            $systemPriority = -MIN_SYSTEM_PRIORITY;
-            Logger::info(sprintf('Decreasing priority for batch %d to %d', $idBatch, $systemPriority));
-        } else {
-            $systemPriority = 0;
-        }
-        $priority = $batchPriority + $systemPriority;
-        if ($priority < MIN_TOTAL_PRIORITY) {
-            $priority = (float) MIN_TOTAL_PRIORITY;
-        } else if ($priority > MAX_TOTAL_PRIORITY) {
-            $priority = (float) MAX_TOTAL_PRIORITY;
-        }
         if (is_null($cycles)) {
             Logger::error('ERROR Calc cycles');
         } else {
             $batch->set('MajorCycle', $cycles[0]);
             $batch->set('MinorCycle', $cycles[1]);
+            $update = true;
         }
-        $batch->set('Priority', $priority);
-        $result = $batch->update();
-        if (!($result > 0)) {
+        
+        // Calculate batch priority
+        $sucessFrames = (int) $batch->get('ServerFramesSuccess');
+        $errorFrames = (int) $batch->get('ServerFramesError');
+        $processedFrames = $sucessFrames + $errorFrames;
+        if ($processedFrames) {
+            $priority = round($sucessFrames / $processedFrames, 2);
+            Logger::info('Set priority to ' . $priority . ' for batch ' . $idBatch);
+            $batch->set('Priority', $priority);
+            $update = true;
+        }
+        if (!$update) {
+            return true;
+        }
+        if ($batch->update() === false) {
             return false;
         }
         return true;
@@ -843,7 +841,7 @@ class BatchManager
 
             // Creating Batch Type Down if not exist one
             $batchDown = new Batch();
-            $idBatchDown = $batchDown->create(time(), Batch::TYPE_DOWN, $nodeId, 1, null, $idPortalFrame, $userId);
+            $idBatchDown = $batchDown->create(time(), Batch::TYPE_DOWN, $nodeId, DEFAULT_BATCH_PRIORITY, null, $idPortalFrame, $userId);
 
             // Updating Serverframes info
             $batchDown = new Batch($idBatchDown);

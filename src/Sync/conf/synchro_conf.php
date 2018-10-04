@@ -69,24 +69,9 @@ if (!defined('MAX_TASKS_PER_PUMPER')) {
     define('MAX_TASKS_PER_PUMPER', 0);
 }
 
-// Minimum batch system priority
-if (!defined('MIN_SYSTEM_PRIORITY')) {
-	define('MIN_SYSTEM_PRIORITY', 0.2);
-}
-
-// Maximum batch system priority
-if (!defined('MAX_SYSTEM_PRIORITY')) {
-	define('MAX_SYSTEM_PRIORITY', 0.5);
-}
-
-// Minimum batch total priority
-if (!defined('MIN_TOTAL_PRIORITY')) {
-	define('MIN_TOTAL_PRIORITY', 0.1);
-}
-
-// Maximum batch total priority
-if (!defined('MAX_TOTAL_PRIORITY')) {
-	define('MAX_TOTAL_PRIORITY', 1);
+// Default batch priority
+if (!defined('DEFAULT_BATCH_PRIORITY')) {
+    define('DEFAULT_BATCH_PRIORITY', 0.5);
 }
 
 // Maximum number of scheduler cycles
