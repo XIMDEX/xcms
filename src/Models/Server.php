@@ -27,12 +27,16 @@
 
 namespace Ximdex\Models;
 
+use Ximdex\Logger;
 use Ximdex\Models\ORM\ServersOrm;
 use Ximdex\NodeTypes\ServerNode;
+use Ximdex\Utils\Date;
 
 class Server extends ServersOrm
 {
     private $serverNode;
+    const MAX_CYCLES_TO_RETRY_PUMPING = 10;
+    const SECONDS_TO_WAIT_FOR_RETRY_PUMPING = 60;
     
     public function __construct(int $id = null)
     {
@@ -55,17 +59,57 @@ class Server extends ServersOrm
         return $this->serverNode->GetChannels($this->get('IdServer'));
     }
     
+    public function resetForPumping()
+    {
+        Logger::debug('Reseting the server ' . $this->Description . ' for pumping');
+        $this->ActiveForPumping = 1;
+        $this->DelayTimeToEnableForPumping = null;
+        $this->CyclesToRetryPumping = 0;
+        return $this->update();
+    }
+    
     public function enableForPumping()
     {
+        Logger::info('Enabling the server ' . $this->Description . ' for pumping', true);
         $this->ActiveForPumping = 1;
         $this->DelayTimeToEnableForPumping = null;
         return $this->update();
     }
     
-    public function disableForPumping()
+    public function disableForPumping(bool $delay = false)
     {
+        if (! $this->ActiveForPumping) {
+            return true;
+        }
         $this->ActiveForPumping = 0;
-        $this->DelayTimeToEnableForPumping = time() + 15;
+        $this->CyclesToRetryPumping = $this->CyclesToRetryPumping + 1;
+        // $users = User;
+        if (!$delay or (self::MAX_CYCLES_TO_RETRY_PUMPING and $this->CyclesToRetryPumping > self::MAX_CYCLES_TO_RETRY_PUMPING)) {
+                
+            // Disable the server permanently
+            $this->DelayTimeToEnableForPumping = null;
+            $message = 'Disabling the server ' . $this->Description . ' (' . $this->IdServer . ') for pumping permanently';
+            Logger::warning($message);
+            
+            // Send email
+            // mail($user->getEmail(), 'Server ' . $this->Description . ' has been disabled permanently', $message);
+        } else {
+            
+            // Disable the server temporally
+            $delayTime = pow($this->CyclesToRetryPumping, 3) * self::SECONDS_TO_WAIT_FOR_RETRY_PUMPING;
+            if ($delayTime > 86400) {
+                
+                // Max time to retry 24 hours
+                $delayTime = 86400;
+            }
+            $this->DelayTimeToEnableForPumping = time() + $delayTime;
+            $message = 'Disabling the server ' . $this->Description . ' (' . $this->IdServer . ') temporally for pumping after cycle '
+                . $this->CyclesToRetryPumping . ' (Will be restarted at ' . Date::formatTime($this->get('DelayTimeToEnableForPumping')) . ')';
+            Logger::warning($message);
+            
+            // Send email
+            // mail($user->getEmail(), 'Server ' . $this->Description . ' has been disabled temporally', $message);
+        }
         return $this->update();
     }
 }

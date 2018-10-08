@@ -267,6 +267,8 @@ class SynchroFacade
      */
     public function expire(Node $node, int $down, array $flagsExpiration) : bool
     {
+        set_time_limit(0);
+        
         // Get the implicated nodes to will be expire
         $syncMngr = new SyncManager();
         $syncMngr->setFlags($flagsExpiration);
@@ -282,31 +284,71 @@ class SynchroFacade
             Logger::error('Cannot create the portal version for server: ' . $node->getServer());
             return false;
         }
-        $batch = new Batch();
+        
+        // Generate a list with server frames per server
         $serverFrame = new ServerFrame();
-        $createBatch = true;
+        $servers = [];
         foreach ($nodes2expire as $id) {
             
             // Obtain the server frames related to the nodes to expire
             $frames = $serverFrame->getFramesOnDate($id, $down);
-            
-            // Set the date to expire in these frames
+            if ($frames === false) {
+                return false;
+            }
             foreach ($frames as $frame) {
+                $servers[$frame['IdServer']][] = $frame['IdSync'];
+            }
+            
+            // Obtain the frames to be cancelled
+            $frames = $serverFrame->getFutureFramesForDate($id, $down);
+            if ($frames === false) {
+                return false;
+            }
+            
+            // Set the cancelled state in these frames
+            foreach ($frames as $frame) {
+                $serverFrame = new ServerFrame($frame['IdSync']);
+                if (! $serverFrame->get('IdSync')) {
+                    Logger::error('Cannot load the server frame with ID: ' . $frame['IdSync']);
+                    continue;
+                }
+                $serverFrame->set('State', ServerFrame::CANCELLED);
+                $serverFrame->update();
+            }
+        }
+        
+        // Processing each server
+        $batch = new Batch();
+        $batchId = null;
+        $numFrames = 0;
+        foreach ($servers as $serverId => & $frames) {
+            
+            // Set the date to expire for each server frames
+            $createBatch = true;
+            foreach ($frames as $idSync) {
                 
-                // Create a new batch type Down
+                // If must be created a new batch on max number
                 if ($createBatch) {
-                    $batchId = $batch->create($down, Batch::TYPE_DOWN, $node->GetID(), 0.9, null, $idPortalFrame,
-                        Session::get('userID'), 0);
-                    if (!$batchId) {
+                    
+                    // Close and save previous server batch
+                    if ($batchId) {
+                        if ($this->closeBatch($batch, $numFrames) === false) {
+                            return false;
+                        }
+                    }
+                    
+                    // Create a new batch type Down
+                    $batchId = $batch->create($down, Batch::TYPE_DOWN, $node->GetID(), Batch::PRIORITY_TYPE_DOWN, $serverId, null
+                        , $idPortalFrame, Session::get('userID'), 0);
+                    if (! $batchId) {
                         Logger::error('Cannot create the down batch process');
                         return false;
                     }
-                    $numFrames = 0;
                     $createBatch = false;
                 }
-                $serverFrame = new ServerFrame($frame['IdSync']);
+                $serverFrame = new ServerFrame($idSync);
                 if (!$serverFrame->get('IdSync')) {
-                    Logger::error('Cannot load the server frame with ID: ' . $frame['IdSync']);
+                    Logger::error('Cannot load the server frame with ID: ' . $idSync);
                     continue;
                 }
                 $serverFrame->set('DateDown', $down);
@@ -317,36 +359,21 @@ class SynchroFacade
                 
                 // Update the batch with the results
                 if ($numFrames == MAX_NUM_NODES_PER_BATCH) {
-                    $batch->set('ServerFramesTotal', $numFrames);
-                    $batch->set('ServerFramesPending', $numFrames);
-                    $batch->set('Playing', 1);
-                    $batch->update();
+                    if ($this->closeBatch($batch, $numFrames) === false) {
+                        return false;
+                    }
+                    $batchId = null;
                     $createBatch = true;
                 }
-            }
-            
-            // Obtain the frames to be cancelled
-            $frames = $serverFrame->getFutureFramesForDate($id, $down);
-            
-            // Set the cancelled state in these frames
-            foreach ($frames as $frame) {
-                $serverFrame = new ServerFrame($frame['IdSync']);
-                if (!$serverFrame->get('IdSync')) {
-                    Logger::error('Cannot load the server frame with ID: ' . $frame['IdSync']);
-                    continue;
-                }
-                $serverFrame->set('State', ServerFrame::CANCELLED);
-                $serverFrame->update();
             }
         }
         if ($batch->get('IdBatch')) {
             
             // Update the batch with the last generated frames 
             if ($numFrames and $numFrames < MAX_NUM_NODES_PER_BATCH) {
-                $batch->set('ServerFramesTotal', $numFrames);
-                $batch->set('ServerFramesPending', $numFrames);
-                $batch->set('Playing', 1);
-                $batch->update();
+                if ($this->closeBatch($batch, $numFrames) === false) {
+                    return false;
+                }
             }
             elseif ($numFrames == 0) {
                 
@@ -366,5 +393,14 @@ class SynchroFacade
             $portal->delete();
         }
         return true;
+    }
+    
+    private function closeBatch(Batch $batch, int & $numFrames)
+    {
+        $batch->set('ServerFramesTotal', $numFrames);
+        $batch->set('ServerFramesPending', $numFrames);
+        $batch->set('Playing', 1);
+        $numFrames = 0;
+        return $batch->update();
     }
 }

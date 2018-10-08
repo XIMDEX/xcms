@@ -195,7 +195,7 @@ export unique = (xs) ->
 export sort = (xs) ->
   xs.concat!sort (x, y) ->
     | x > y =>  1
-    | x < y => -1
+    | x &lt; y => -1
     | _     =>  0
 
 export sortBy = (f, xs) -->
@@ -234,7 +234,7 @@ export listToObj = (xs) ->
 
 export maximum = (xs) -> fold1 (>?), xs
 
-export minimum = (xs) -> fold1 (<?), xs
+export minimum = (xs) -> fold1 (&lt;?), xs
 
 export scan = export scanl = (f, memo, xs) -->
   last = memo
@@ -355,7 +355,7 @@ export unwords = (strs) -> strs * ' '
 
 export max = (>?)
 
-export min = (<?)
+export min = (&lt;?)
 
 export negate = (x) -> -x
 

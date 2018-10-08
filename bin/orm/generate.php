@@ -28,6 +28,7 @@ require_once dirname(__DIR__, 2) . '/bootstrap.php';
 
 
 // TODO: Eliminar HEREDOC y usar buffer ob o similar...
+use Ximdex\Runtime\Db;
 use Ximdex\Utils\FsUtils;
 
 
@@ -57,7 +58,7 @@ HEREDOC;
 
 //$tableName = 'Prueba';
 
-$dbConnection = &DB::_getInstance();
+$dbConnection = Db::_getInstance();
 $dbConnection->debug = false;
 if (isset($DBHOST) && isset($DBUSER) && isset($DBPASSWD) && isset($DBNAME)) {
     $dbConnection->Connect($DBHOST, $DBUSER, $DBPASSWD, $DBNAME, true);
@@ -88,8 +89,7 @@ if ($tableName == 'all' || $tableName == 'new_tables') {
 }
 foreach ($tables as $tableName) {
 
-    //TODO change to current DB class 
-    $activeRecord = new ADODB_Active_Record($tableName, false, $dbConnection);
+    //TODO change to current DB class $activeRecord = new ADODB_Active_Record($tableName, false, $dbConnection);
     $indexArray = $activeRecord->GetPrimaryKeys($dbConnection, $tableName);
     if (is_array($indexArray)) {
         foreach ($indexArray as $key => $indexElement) {

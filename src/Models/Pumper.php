@@ -30,7 +30,6 @@ namespace Ximdex\Models;
 use Ximdex\Logger;
 use Ximdex\Models\ORM\PumpersOrm;
 use Ximdex\Runtime\Db;
-// use Ximdex\Sync\ServerErrorManager;
 
 include_once XIMDEX_ROOT_PATH . '/src/Sync/conf/synchro_conf.php';
 
@@ -87,8 +86,6 @@ class Pumper extends PumpersOrm
         parent::add();
         $pumperID = $this->get('PumperId');
         if ($pumperID > 0) {
-            $serverError = new ServerErrorByPumper();
-            $serverError->create($pumperID, $idServer);
             return $pumperID;
         }
         Logger::error('Inserting pumper');
@@ -107,7 +104,7 @@ class Pumper extends PumpersOrm
         $dbObj->Query($sql);
         $pumpers = array();
         while (!$dbObj->EOF) {
-            $pumpers[] = $dbObj->GetValue("PumperId");
+            $pumpers[] = $dbObj->GetValue('PumperId');
             $dbObj->Next();
         }
         return $pumpers;
@@ -143,26 +140,21 @@ class Pumper extends PumpersOrm
         Logger::debug("Pumper call: $startCommand");
         $var = 0;
         system($startCommand, $var);
-        Logger::info($startCommand);
+        Logger::debug($startCommand);
 
-        // 0: OK, 200: connection problem, 255: unexistent server, 127:command not found
+        // This code return always 0 in $var when the command is started in background with ending &
+        // 0: OK, 200: connection problem, 400: pumper registering
         if ($var == 0) {
             Logger::info("Pumper $pumperId started successfully");
             return true;
         } else if ($var == 200) {
             Logger::error("In server connection starting pumper $pumperId");
-            
-            //TODO To recover the pumper tasks with errors
-            /*
-            $serverMng = new ServerErrorManager();
-            $serverMng->disableServerByPumper($pumperId);
-            */
             return false;
         } else if ($var == 400) {
-            Logger::error("ERROR registering pumper $pumperId");
+            Logger::error("Registering pumper $pumperId");
             return false;
         } else {
-            Logger::error("ERROR Code $var starting pumper $pumperId");
+            Logger::error("Code $var starting pumper $pumperId");
             return false;
         }
     }

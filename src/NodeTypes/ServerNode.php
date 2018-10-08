@@ -43,7 +43,7 @@ class ServerNode extends FolderNode
      * @param bool $enabled
      * @return array $list
      */
-    function GetPhysicalServerList($hidePrevisual = NULL, bool $enabled = false)
+    function GetPhysicalServerList($hidePrevisual = null, bool $enabled = false)
     {
         $where = '';
         if (! is_null($hidePrevisual)) {
@@ -60,17 +60,31 @@ class ServerNode extends FolderNode
     public static function getServersForPumping()
     {
         $dbObj = new \Ximdex\Runtime\Db();
-        $sql = "SELECT IdServer FROM Servers WHERE Enabled = 1 AND ActiveForPumping = 1";
+        
+        // Find and enable servers disabled for pumping with delay time
+        $sql = 'SELECT IdServer FROM Servers WHERE ActiveForPumping = 0' 
+            . ' AND NOT(DelayTimeToEnableForPumping IS NULL) AND DelayTimeToEnableForPumping <= ' . time();
+        if ($dbObj->Query($sql) === false) {
+            return false;
+        }
+        while (! $dbObj->EOF) {
+            $server = new Server($dbObj->GetValue('IdServer'));
+            $server->enableForPumping();
+            $dbObj->Next();
+        }
+        
+        // Get servers enabled and active for pumping operations
+        $sql = 'SELECT IdServer FROM Servers WHERE Enabled = 1 AND ActiveForPumping = 1';
         $dbObj->Query($sql);
         $enabledServers = array();
         while (! $dbObj->EOF) {
-            $enabledServers[] = $dbObj->GetValue("IdServer");
+            $enabledServers[] = $dbObj->GetValue('IdServer');
             $dbObj->Next();
         }
         return $enabledServers;
     }
 
-    function CreateNode($name = NULL, $parentID = NULL, $nodeTypeID = NULL)
+    function CreateNode($name = null, $parentID = null, $nodeTypeID = null)
     {
         $this->updatePath();
     }
@@ -97,15 +111,15 @@ class ServerNode extends FolderNode
         if (! ($previsual)) {
             $previsual = 0;
         }
-        $sql = "INSERT INTO Servers ";
-        $sql .= "(IdServer, IdNode, IdProtocol, Login, Password, Host,";
-        $sql .= " Port, Url, InitialDirectory, OverrideLocalPaths, Enabled, Previsual, Description, Token) ";
-        $sql .= "VALUES ";
-        $sql .= "(NULL, " . DB::sqlEscapeString($this->parent->get('IdNode')) . ", " . DB::sqlEscapeString($protocolID) . ", " 
-            . DB::sqlEscapeString($login) . ", " . DB::sqlEscapeString($password) . ", " . DB::sqlEscapeString($host) . ",";
-        $sql .= " " . DB::sqlEscapeString($port) . ", " . DB::sqlEscapeString($url) . ", " . DB::sqlEscapeString($initialDirectory) . ", ";
-        $sql .= DB::sqlEscapeString($overrideLocalPaths) . ", " . DB::sqlEscapeString($enabled) . ", " . DB::sqlEscapeString($previsual) . ", " 
-            . DB::sqlEscapeString($description) . ', ' . DB::sqlEscapeString($token) . ")";
+        $sql = 'INSERT INTO Servers ';
+        $sql .= '(IdServer, IdNode, IdProtocol, Login, Password, Host,';
+        $sql .= ' Port, Url, InitialDirectory, OverrideLocalPaths, Enabled, Previsual, Description, Token) ';
+        $sql .= 'VALUES ';
+        $sql .= '(NULL, ' . DB::sqlEscapeString($this->parent->get('IdNode')) . ', ' . DB::sqlEscapeString($protocolID) . ', ' 
+            . DB::sqlEscapeString($login) . ', ' . DB::sqlEscapeString($password) . ', ' . DB::sqlEscapeString($host) . ',';
+        $sql .= ' ' . DB::sqlEscapeString($port) . ', ' . DB::sqlEscapeString($url) . ', ' . DB::sqlEscapeString($initialDirectory) . ', ';
+        $sql .= DB::sqlEscapeString($overrideLocalPaths) . ', ' . DB::sqlEscapeString($enabled) . ', ' . DB::sqlEscapeString($previsual) . ', ' 
+            . DB::sqlEscapeString($description) . ', ' . DB::sqlEscapeString($token) . ')';
         $this->dbObj->Execute($sql);
         return $this->dbObj->newID;
     }
@@ -114,148 +128,145 @@ class ServerNode extends FolderNode
     {
         $this->DeleteAllChannels($physicalID);
         $this->DeleteAllStates($physicalID);
-        $sql = "DELETE FROM Servers WHERE IdServer='" . $physicalID . "' AND IdNode='" . $this->nodeID . "'";
+        $sql = 'DELETE FROM Servers WHERE IdServer = \'' . $physicalID . '\' AND IdNode = \'' . $this->nodeID . '\'';
         $this->dbObj->Execute($sql);
     }
 
     function SetProtocol($physicalID, $protocolID)
     {
-        $sql = "UPDATE Servers SET IdProtocol= '" . $protocolID . "' WHERE IdNode=" . $this->nodeID . " AND IdServer=" . $physicalID;
+        $sql = 'UPDATE Servers SET IdProtocol = \'' . $protocolID . '\' WHERE IdNode = ' . $this->nodeID . ' AND IdServer = ' . $physicalID;
         $this->dbObj->Execute($sql);
     }
 
     function SetEncode($physicalID, $encodeID)
     {
-        $sql = "UPDATE Servers SET IdEncode= '" . $encodeID . "' WHERE IdNode=" . $this->nodeID . " AND IdServer=" . $physicalID;
+        $sql = 'UPDATE Servers SET IdEncode = \'' . $encodeID . '\' WHERE IdNode = ' . $this->nodeID . ' AND IdServer = ' . $physicalID;
         $this->dbObj->Execute($sql);
     }
 
     function SetPassword($physicalID, $pass)
     {
-        $sql = "UPDATE Servers SET Password= " . DB::sqlEscapeString($pass) . " WHERE IdNode=" . $this->nodeID . " AND IdServer=" . $physicalID;
+        $sql = 'UPDATE Servers SET Password = ' . DB::sqlEscapeString($pass) . ' WHERE IdNode = ' . $this->nodeID 
+            . ' AND IdServer = ' . $physicalID;
         $this->dbObj->Execute($sql);
     }
 
     function SetLogin($physicalID, $login)
     {
-        $sql = "UPDATE Servers SET Login= " . DB::sqlEscapeString($login) . " WHERE IdNode=" . $this->nodeID . " AND IdServer=" . $physicalID;
+        $sql = 'UPDATE Servers SET Login = ' . DB::sqlEscapeString($login) . ' WHERE IdNode = ' . $this->nodeID 
+            . ' AND IdServer = ' . $physicalID;
         $this->dbObj->Execute($sql);
     }
 
     function SetHost($physicalID, $host)
     {
-        $sql = "UPDATE Servers SET Host= " . DB::sqlEscapeString($host) . " WHERE IdNode=" . $this->nodeID . " AND IdServer=" . $physicalID;
+        $sql = 'UPDATE Servers SET Host = ' . DB::sqlEscapeString($host) . ' WHERE IdNode = ' . $this->nodeID 
+            . ' AND IdServer = ' . $physicalID;
         $this->dbObj->Execute($sql);
     }
 
     function SetPort($physicalID, $port)
     {
-        $sql = "UPDATE Servers SET Port=" . DB::sqlEscapeString($port) . " WHERE IdNode=" . $this->nodeID . " AND IdServer=" . $physicalID;
+        $sql = 'UPDATE Servers SET Port = ' . DB::sqlEscapeString($port) . ' WHERE IdNode = ' . $this->nodeID 
+            . ' AND IdServer = ' . $physicalID;
         $this->dbObj->Execute($sql);
     }
 
     function SetInitialDirectory($physicalID, $dir)
     {
-        $sql = "UPDATE Servers SET InitialDirectory= '" . $dir . "' WHERE IdNode=" . $this->nodeID . " AND IdServer=" . $physicalID;
+        $sql = 'UPDATE Servers SET InitialDirectory = \'' . $dir . '\' WHERE IdNode = ' . $this->nodeID . ' AND IdServer = ' . $physicalID;
         $this->dbObj->Execute($sql);
     }
 
     function SetURL($physicalID, $url)
     {
-        $sql = "UPDATE Servers SET Url= '" . $url . "' WHERE IdNode=" . $this->nodeID . " AND IdServer=" . $physicalID;
+        $sql = 'UPDATE Servers SET Url = \'' . $url . '\' WHERE IdNode = ' . $this->nodeID . ' AND IdServer = ' . $physicalID;
         $this->dbObj->Execute($sql);
     }
 
     function SetEnabled($physicalID, $enable)
     {
         $enable = ($enable) ? 'true' : 'false';
-        $sql = "UPDATE Servers SET Enabled = " . $enable . " WHERE IdNode = " . $this->nodeID . " AND IdServer = " . $physicalID;
+        $sql = 'UPDATE Servers SET Enabled = ' . $enable . ' WHERE IdNode = ' . $this->nodeID . ' AND IdServer = ' . $physicalID;
         $this->dbObj->Execute($sql);
     }
 
     function SetPreview($physicalID, $preview)
     {
         $preview = ($preview) ? 'true' : 'false';
-        $sql = "UPDATE Servers SET Previsual = " . $preview . " WHERE IdNode = " . $this->nodeID . " AND IdServer = " . $physicalID;
+        $sql = 'UPDATE Servers SET Previsual = ' . $preview . ' WHERE IdNode = ' . $this->nodeID . ' AND IdServer = ' . $physicalID;
         $this->dbObj->Execute($sql);
     }
 
     function SetDescription($physicalID, $description)
     {
-        $sql = "UPDATE Servers SET Description= '" . $description . "' WHERE IdNode=" . $this->nodeID . " AND IdServer=" . $physicalID;
+        $sql = 'UPDATE Servers SET Description = \'' . $description . '\' WHERE IdNode = ' . $this->nodeID . ' AND IdServer = ' . $physicalID;
         $this->dbObj->Execute($sql);
     }
 
     function SetOverrideLocalPaths($physicalID, $overrideLocalPaths)
     {
         $overrideLocalPaths = ($overrideLocalPaths) ? 'true' : 'false';
-        $sql = "UPDATE Servers SET OverrideLocalPaths= " . $overrideLocalPaths . " WHERE IdNode=" . $this->nodeID 
-            . " AND IdServer=" . $physicalID;
+        $sql = 'UPDATE Servers SET OverrideLocalPaths = ' . $overrideLocalPaths . ' WHERE IdNode = ' . $this->nodeID 
+            . ' AND IdServer =' . $physicalID;
         $this->dbObj->Execute($sql);
     }
 
     function GetProtocol($physicalID)
     {
-        $sql = "SELECT IdProtocol FROM Servers WHERE IdNode=" . $this->nodeID . " AND IdServer=" . $physicalID;
+        $sql = 'SELECT IdProtocol FROM Servers WHERE IdNode = ' . $this->nodeID . ' AND IdServer = ' . $physicalID;
         $this->dbObj->Query($sql);
-        
-        return ($this->dbObj->numRows > 0) ? $this->dbObj->GetValue("IdProtocol") : NULL;
+        return ($this->dbObj->numRows > 0) ? $this->dbObj->GetValue('IdProtocol') : null;
     }
 
     function GetEncode($physicalID)
     {
-        $sql = "SELECT idEncode FROM Servers WHERE IdNode=" . $this->nodeID . " AND IdServer=" . $physicalID;
+        $sql = 'SELECT idEncode FROM Servers WHERE IdNode = ' . $this->nodeID . ' AND IdServer = ' . $physicalID;
         $this->dbObj->Query($sql);
-        
-        return ($this->dbObj->numRows > 0) ? $this->dbObj->GetValue("idEncode") : NULL;
+        return ($this->dbObj->numRows > 0) ? $this->dbObj->GetValue('idEncode') : null;
     }
 
     function GetPassword($physicalID)
     {
-        $sql = "SELECT Password FROM Servers WHERE IdNode=" . $this->nodeID . " AND IdServer=" . $physicalID;
+        $sql = 'SELECT Password FROM Servers WHERE IdNode = ' . $this->nodeID . ' AND IdServer = ' . $physicalID;
         $this->dbObj->Query($sql);
-        
-        return ($this->dbObj->numRows > 0) ? $this->dbObj->GetValue("Password") : "";
+        return ($this->dbObj->numRows > 0) ? $this->dbObj->GetValue('Password') : '';
     }
 
     function GetLogin($physicalID)
     {
-        $sql = "SELECT Login FROM Servers WHERE IdNode=" . $this->nodeID . " AND IdServer=" . $physicalID;
+        $sql = 'SELECT Login FROM Servers WHERE IdNode = ' . $this->nodeID . ' AND IdServer = ' . $physicalID;
         $this->dbObj->Query($sql);
-        
-        return ($this->dbObj->numRows > 0) ? $this->dbObj->GetValue("Login") : "";
+        return ($this->dbObj->numRows > 0) ? $this->dbObj->GetValue('Login') : '';
     }
 
     function GetHost($physicalID)
     {
-        $sql = "SELECT Host FROM Servers WHERE IdNode=" . $this->nodeID . " AND IdServer=" . $physicalID;
+        $sql = 'SELECT Host FROM Servers WHERE IdNode = ' . $this->nodeID . ' AND IdServer = ' . $physicalID;
         $this->dbObj->Query($sql);
-        
-        return ($this->dbObj->numRows > 0) ? $this->dbObj->GetValue("Host") : "";
+        return ($this->dbObj->numRows > 0) ? $this->dbObj->GetValue('Host') : '';
     }
 
     function GetPort($physicalID)
     {
-        $sql = "SELECT Port FROM Servers WHERE IdNode=" . $this->nodeID . " AND IdServer=" . $physicalID;
+        $sql = 'SELECT Port FROM Servers WHERE IdNode = ' . $this->nodeID . ' AND IdServer = ' . $physicalID;
         $this->dbObj->Query($sql);
-        
-        return ($this->dbObj->numRows > 0) ? $this->dbObj->GetValue("Port") : "";
+        return ($this->dbObj->numRows > 0) ? $this->dbObj->GetValue('Port') : '';
     }
 
     function GetInitialDirectory($physicalID)
     {
-        $sql = "SELECT InitialDirectory FROM Servers WHERE IdNode=" . $this->nodeID . " AND IdServer=" . $physicalID;
+        $sql = 'SELECT InitialDirectory FROM Servers WHERE IdNode = ' . $this->nodeID . ' AND IdServer = ' . $physicalID;
         $this->dbObj->Query($sql);
-        
-        return ($this->dbObj->numRows > 0) ? $this->dbObj->GetValue("InitialDirectory") : "";
+        return ($this->dbObj->numRows > 0) ? $this->dbObj->GetValue('InitialDirectory') : '';
     }
 
     function GetURL($physicalID)
     {
-        $sql = "SELECT Url FROM Servers WHERE IdNode=" . $this->nodeID . " AND IdServer=" . $physicalID;
+        $sql = 'SELECT Url FROM Servers WHERE IdNode = ' . $this->nodeID . ' AND IdServer = ' . $physicalID;
         $this->dbObj->Query($sql);
-        $uri = ($this->dbObj->numRows > 0) ? $this->dbObj->GetValue("Url") : "";
-        if (strlen($uri) >= 0 && isset($uri[strlen($uri) - 1]) && $uri[strlen($uri) - 1] == "/") {
+        $uri = ($this->dbObj->numRows > 0) ? $this->dbObj->GetValue('Url') : '';
+        if (strlen($uri) >= 0 && isset($uri[strlen($uri) - 1]) && $uri[strlen($uri) - 1] == '/') {
             $uri = substr("$uri", 0, - 1);
         }
         return $uri;
@@ -263,36 +274,36 @@ class ServerNode extends FolderNode
 
     function GetEnabled($physicalID)
     {
-        $sql = "SELECT Enabled FROM Servers WHERE IdNode=" . $this->nodeID . " AND IdServer=" . $physicalID;
+        $sql = 'SELECT Enabled FROM Servers WHERE IdNode = ' . $this->nodeID . ' AND IdServer = ' . $physicalID;
         $this->dbObj->Query($sql);
-        return ($this->dbObj->numRows > 0) ? $this->dbObj->GetValue("Enabled") : 0;
+        return ($this->dbObj->numRows > 0) ? $this->dbObj->GetValue('Enabled') : 0;
     }
 
     function GetPreview($physicalID)
     {
-        $sql = "SELECT Previsual FROM Servers WHERE IdNode=" . $this->nodeID . " AND IdServer=" . $physicalID;
+        $sql = 'SELECT Previsual FROM Servers WHERE IdNode = ' . $this->nodeID . ' AND IdServer = ' . $physicalID;
         $this->dbObj->Query($sql);
-        return ($this->dbObj->numRows > 0) ? $this->dbObj->GetValue("Previsual") : 0;
+        return ($this->dbObj->numRows > 0) ? $this->dbObj->GetValue('Previsual') : 0;
     }
 
     function GetDescription($physicalID)
     {
-        $sql = "SELECT Description FROM Servers WHERE IdNode=" . $this->nodeID . " AND IdServer=" . $physicalID;
+        $sql = 'SELECT Description FROM Servers WHERE IdNode = ' . $this->nodeID . ' AND IdServer = ' . $physicalID;
         $this->dbObj->Query($sql);
-        return ($this->dbObj->numRows > 0) ? $this->dbObj->GetValue("Description") : "";
+        return ($this->dbObj->numRows > 0) ? $this->dbObj->GetValue('Description') : '';
     }
 
     function GetOverrideLocalPaths($physicalID)
     {
-        $sql = "SELECT OverrideLocalPaths FROM Servers WHERE IdNode=" . $this->nodeID . " AND IdServer=" . $physicalID;
+        $sql = 'SELECT OverrideLocalPaths FROM Servers WHERE IdNode = ' . $this->nodeID . ' AND IdServer = ' . $physicalID;
         $this->dbObj->Query($sql);
-        return ($this->dbObj->numRows > 0) ? $this->dbObj->GetValue("OverrideLocalPaths") : 0;
+        return ($this->dbObj->numRows > 0) ? $this->dbObj->GetValue('OverrideLocalPaths') : 0;
     }
 
-    function GetChannels($physicalID = NULL)
+    function GetChannels($physicalID = null)
     {
         $sql = 'SELECT IdChannel FROM RelServersChannels';
-        if ($physicalID != NULL) {
+        if ($physicalID != null) {
             $sql .= ' WHERE IdServer=' . $physicalID;
         }
         $this->dbObj->Query($sql);
@@ -316,20 +327,20 @@ class ServerNode extends FolderNode
 
     function DeleteAllChannels($physicalID)
     {
-        $sql = "DELETE FROM RelServersChannels WHERE IdServer='" . $physicalID . "'";
+        $sql = 'DELETE FROM RelServersChannels WHERE IdServer = \'' . $physicalID . '\'';
         $this->dbObj->Execute($sql);
     }
 
     function DeleteChannel($physicalID, $channelID)
     {
-        $sql = "DELETE FROM RelServersChannels WHERE IdServer='" . $physicalID . "' AND IdChannel='" . $channelID . "'";
+        $sql = 'DELETE FROM RelServersChannels WHERE IdServer = \'' . $physicalID . '\' AND IdChannel = \'' . $channelID . '\'';
         $this->dbObj->Execute($sql);
     }
 
     function AddChannel($physicalID, $channelID)
     {
-        $sql = "INSERT INTO RelServersChannels (IdRel, IdServer, IdChannel) VALUES (NULL, " . DB::sqlEscapeString($physicalID) 
-            . ", " . DB::sqlEscapeString($channelID) . ")";
+        $sql = 'INSERT INTO RelServersChannels (IdRel, IdServer, IdChannel) VALUES (NULL, ' . DB::sqlEscapeString($physicalID) 
+            . ', ' . DB::sqlEscapeString($channelID) . ')';
         $this->dbObj->Execute($sql);
     }
 
@@ -344,16 +355,16 @@ class ServerNode extends FolderNode
                 }
             }
         }
-        return (isset($retList) and $retList) ? $retList[rand(0, count($retList) - 1)] : NULL;
+        return (isset($retList) and $retList) ? $retList[rand(0, count($retList) - 1)] : null;
     }
 
     function GetStates($physicalID)
     {
-        $sql = "SELECT IdState FROM RelServersStates WHERE IdServer=" . $physicalID;
+        $sql = 'SELECT IdState FROM RelServersStates WHERE IdServer = ' . $physicalID;
         $this->dbObj->Query($sql);
         $list = array();
         while (! $this->dbObj->EOF) {
-            $list[] = $this->dbObj->GetValue("IdState");
+            $list[] = $this->dbObj->GetValue('IdState');
             $this->dbObj->Next();
         }
         return $list;
@@ -370,30 +381,30 @@ class ServerNode extends FolderNode
 
     function DeleteAllStates($physicalID)
     {
-        $sql = "DELETE FROM RelServersStates WHERE IdServer='" . $physicalID . "'";
+        $sql = 'DELETE FROM RelServersStates WHERE IdServer = \'' . $physicalID . '\'';
         $this->dbObj->Execute($sql);
     }
 
     function DeleteState($physicalID, $stateID)
     {
-        $sql = "DELETE FROM RelServersStates WHERE IdServer='" . $physicalID . "' AND IdState='" . $stateID . "'";
+        $sql = 'DELETE FROM RelServersStates WHERE IdServer = \'' . $physicalID . '\' AND IdState = \'' . $stateID . '\'';
         $this->dbObj->Execute($sql);
     }
 
     function AddState($physicalID, $stateID)
     {
-        $sql = "INSERT INTO RelServersStates (IdRel, IdServer, IdState) VALUES (NULL, " . DB::sqlEscapeString($physicalID) . ", " 
-            . DB::sqlEscapeString($stateID) . ")";
+        $sql = 'INSERT INTO RelServersStates (IdRel, IdServer, IdState) VALUES (NULL, ' . DB::sqlEscapeString($physicalID) . ', ' 
+            . DB::sqlEscapeString($stateID) . ')';
         $this->dbObj->Execute($sql);
     }
 
     function GetAllAvailableProtocols()
     {
-        $sql = "SELECT IdProtocol FROM Protocols";
+        $sql = 'SELECT IdProtocol FROM Protocols';
         $this->dbObj->Query($sql);
         $list = array();
         while (! $this->dbObj->EOF) {
-            $list[] = $this->dbObj->GetValue("IdProtocol");
+            $list[] = $this->dbObj->GetValue('IdProtocol');
             $this->dbObj->Next();
         }
         return $list;
@@ -430,7 +441,7 @@ class ServerNode extends FolderNode
              * 1 1 1 => 1x = 1
              */
             if (! (! isset($params['recurrence']) && $childNodeType->get('IsSection'))) {
-                $condition = (empty($params['childtype'])) ? NULL : " AND n.IdNodeType = '{$params['childtype']}'";
+                $condition = (empty($params['childtype'])) ? null : " AND n.IdNodeType = '{$params['childtype']}'";
                 $docsToPublish = array_merge($docsToPublish, $childNode->TraverseTree(6, true, $condition));
                 continue;
             }

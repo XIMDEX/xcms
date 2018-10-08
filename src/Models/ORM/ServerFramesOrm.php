@@ -39,7 +39,6 @@ class ServerFramesOrm extends GenericData
         'DateUp' => array('type' => 'int(14)', 'not_null' => 'true'),
         'DateDown' => array('type' => 'int(14)', 'not_null' => 'false'),
         'State' => array('type' => 'varchar(255)', 'not_null' => 'false'),
-        'Error' => array('type' => 'varchar(255)', 'not_null' => 'false'),
         'ErrorLevel' => array('type' => 'varchar(3)', 'not_null' => 'false'),
         'RemotePath' => array('type' => 'blob', 'not_null' => 'false'),
         'FileName' => array('type' => 'varchar(255)', 'not_null' => 'true'),
@@ -61,7 +60,6 @@ class ServerFramesOrm extends GenericData
     public $DateUp = 0;
     public $DateDown = 0;
     public $State = 'DUE';
-    public $Error;
     public $ErrorLevel =  null;
     public $RemotePath;
     public $FileName;

@@ -60,7 +60,7 @@ class Action_expiredoc extends ActionAbstract
         $node = new Node($idNode);
         
         // Loading Notifications default values
-        $conf = \Ximdex\Modules\Manager::file('/conf/notifications.php', 'XIMDEX');
+        $conf = Ximdex\Modules\Manager::file('/conf/notifications.php', 'XIMDEX');
         $values = array(
             'group_state_info' => Group::getSelectableGroupsInfo($idNode),
             'required' => $conf['required'] === true ? 1 : 0,
@@ -296,11 +296,12 @@ class Action_expiredoc extends ActionAbstract
         if (! $send) {
             return false;
         }
-        $idUser = \Ximdex\Runtime\Session::get("userID");
+        $idUser = Ximdex\Runtime\Session::get("userID");
         $node = new Node($idNode);
         $idActualState = $node->get('IdState');
         $actualWorkflowStatus = new WorkFlow($idNode, $idActualState);
         $nextWorkflowStatus = new WorkFlow($idNode, $idState);
+        /*
         if (count($userList) > 0) {
             $userNameList = array();
             foreach ($userList as $id) {
@@ -309,8 +310,9 @@ class Action_expiredoc extends ActionAbstract
             }
             $userNameString = implode(', ', $userNameList);
         }
+        */
         $user = new User($idUser);
-        $from = $user->get('Login');
+        // $from = $user->get('Login');
         $userName = $user->get('Name');
         $nodeName = $node->get('Name');
         $nodePath = $node->GetPath();

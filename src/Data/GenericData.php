@@ -426,7 +426,7 @@ class GenericData
         if ($order) {
             $query .= ' ORDER BY ' . $order;
         }
-        return $this->query($query, $returnType, $fields, $index);
+        return $this->query($query, $returnType, $index);
     }
 
     /**
@@ -460,11 +460,11 @@ class GenericData
     /**
      * @param string $query
      * @param string $returnType
-     * @param string $fields
      * @param string $indexField
+     * @param bool $onlyAssoc
      * @return boolean|array
      */
-    public function query($query, $returnType = MULTI, $fields = '', string $indexField = null)
+    public function query($query, $returnType = MULTI, string $indexField = null, bool $onlyAssoc = false)
     {
         $this->_applyFilter('beforeFind');
         $dbObj = new \Ximdex\Runtime\Db();
@@ -480,9 +480,11 @@ class GenericData
                 $subResult = array();
                 $index = 0;
                 foreach ($dbObj->row as $key => $value) {
-                    $subResult[$index] = $this->_getValueForFind($key, $value);
+                    if (!$onlyAssoc) {
+                        $subResult[$index] = $this->_getValueForFind($key, $value);
+                        $index++;
+                    }
                     $subResult[$key] = $this->_getValueForFind($key, $value);
-                    $index++;
                 }
                 $result[] = $subResult;
             } elseif (MONO == $returnType) {

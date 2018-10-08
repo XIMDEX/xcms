@@ -34,23 +34,24 @@ class ServersOrm extends GenericData
     public $_idField = 'IdServer';
     public $_table = 'Servers';
     public $_metaData = array(
-        'IdServer' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
-        'IdNode' => array('type' => "int(12)", 'not_null' => 'true'),
-        'IdProtocol' => array('type' => "varchar(255)", 'not_null' => 'false'),
-        'Login' => array('type' => "varchar(255)", 'not_null' => 'false'),
-        'Password' => array('type' => "varchar(255)", 'not_null' => 'false'),
-        'Host' => array('type' => "varchar(255)", 'not_null' => 'false'),
-        'Port' => array('type' => "int(12)", 'not_null' => 'false'),
-        'Url' => array('type' => "blob", 'not_null' => 'false'),
-        'InitialDirectory' => array('type' => "blob", 'not_null' => 'false'),
-        'OverrideLocalPaths' => array('type' => "int(1)", 'not_null' => 'false'),
-        'Enabled' => array('type' => "int(1)", 'not_null' => 'false'),
-        'Previsual' => array('type' => "int(1)", 'not_null' => 'false'),
-        'Description' => array('type' => "varchar(255)", 'not_null' => 'false'),
-        'idEncode' => array('type' => "varchar(255)", 'not_null' => 'false'),
-        'ActiveForPumping' => array('type' => "int(1)", 'not_null' => 'false'),
-        'DelayTimeToEnableForPumping' => array('type' => "timestamp", 'not_null' => 'false'),
-        'Token' => array('type' => "varchar(255)", 'not_null' => 'false')
+        'IdServer' => array('type' => 'int(12)', 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
+        'IdNode' => array('type' => 'int(12)', 'not_null' => 'true'),
+        'IdProtocol' => array('type' => 'varchar(255)', 'not_null' => 'false'),
+        'Login' => array('type' => 'varchar(255)', 'not_null' => 'false'),
+        'Password' => array('type' => 'varchar(255)', 'not_null' => 'false'),
+        'Host' => array('type' => 'varchar(255)', 'not_null' => 'false'),
+        'Port' => array('type' => 'int(12)', 'not_null' => 'false'),
+        'Url' => array('type' => 'blob', 'not_null' => 'false'),
+        'InitialDirectory' => array('type' => 'blob', 'not_null' => 'false'),
+        'OverrideLocalPaths' => array('type' => 'int(1)', 'not_null' => 'false'),
+        'Enabled' => array('type' => 'int(1)', 'not_null' => 'false'),
+        'Previsual' => array('type' => 'int(1)', 'not_null' => 'false'),
+        'Description' => array('type' => 'varchar(255)', 'not_null' => 'false'),
+        'idEncode' => array('type' => 'varchar(255)', 'not_null' => 'false'),
+        'ActiveForPumping' => array('type' => 'int(1)', 'not_null' => 'false'),
+        'DelayTimeToEnableForPumping' => array('type' => 'int(12)', 'not_null' => 'false'),
+        'CyclesToRetryPumping' => array('type' => 'int(12)', 'not_null' => 'true'),
+        'Token' => array('type' => 'varchar(255)', 'not_null' => 'false')
     );
     public $_uniqueConstraints = array();
     public $_indexes = array('IdServer');
@@ -69,6 +70,7 @@ class ServersOrm extends GenericData
     public $Description;
     public $idEncode;
     public $ActiveForPumping = 1;
-    public $DelayTimeToEnableForPumping;
+    public $DelayTimeToEnableForPumping = null;
+    public $CyclesToRetryPumping = 0;
     public $Token;
 }

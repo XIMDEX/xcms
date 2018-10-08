@@ -61,7 +61,7 @@ CHUNKSIZE:50000000 / used in fs2 (modified .Q.fs)
 k)nameltrim:{$[~@x;.z.s'x;~(*x)in aA:.Q.a,.Q.A;(+/&\~x in aA)_x;x]}
 k)fs2:{[f;s]((-7!s)>){[f;s;x]i:1+last@&0xa=r:1:(s;x;CHUNKSIZE);f@`\:i#r;x+i}[f;s]/0j}
 cleanhdrs:{{$[ZAPHDRS;lower x except"_";x]}x where x in DELIM,.Q.an}
-cancast:{nw:x$"";if[not x in"BXCS";nw:(min 0#;max 0#;::)@\:nw];$[not any nw in x$(11&count y)#y;$[11<count y;not any nw in x$y;1b];0b]}
+cancast:{nw:x$"";if[not x in"BXCS";nw:(min 0#;max 0#;::)@\:nw];$[not any nw in x$(11&count y)#y;$[11< count y;not any nw in x$y;1b];0b]}
 
 read:{[file]data[file;info[file]]}  
 read10:{[file]data10[file;info[file]]}  
@@ -99,8 +99,8 @@ info0:{[file;onlycols]
 	info:update t:"E",rule:100,maybe:1b from info where t="F",mw<9;
 	info:update t:"M",rule:110,maybe:1b from info where t in"nIHEF",mdot<2,mw within 4 7,.csv.cancast["M"]peach sdv; 
 	info:update t:"D",rule:120,maybe:1b from info where t in"nI",mdot in 0 2,mw within 6 11,.csv.cancast["D"]peach sdv; 
-	info:update t:"V",rule:130,maybe:1b from info where t="I",mw in 5 6,7<count each dchar,{all x like"*[0-9][0-5][0-9][0-5][0-9]"}peach sdv,.csv.cancast["V"]peach sdv; / 235959 12345        
-	info:update t:"U",rule:140,maybe:1b from info where t="H",mw in 3 4,7<count each dchar,{all x like"*[0-9][0-5][0-9]"}peach sdv,.csv.cancast["U"]peach sdv; /2359
+	info:update t:"V",rule:130,maybe:1b from info where t="I",mw in 5 6,7< count each dchar,{all x like"*[0-9][0-5][0-9][0-5][0-9]"}peach sdv,.csv.cancast["V"]peach sdv; / 235959 12345        
+	info:update t:"U",rule:140,maybe:1b from info where t="H",mw in 3 4,7< count each dchar,{all x like"*[0-9][0-5][0-9]"}peach sdv,.csv.cancast["U"]peach sdv; /2359
 	info:update t:"U",rule:150,maybe:0b from info where t="n",mw in 4 5,mdot=0,{all x like"*[0-9]:[0-5][0-9]"}peach sdv,.csv.cancast["U"]peach sdv;
 	info:update t:"T",rule:160,maybe:0b from info where t="n",mw within 7 12,mdot<2,{all x like"*[0-9]:[0-5][0-9]:[0-5][0-9]*"}peach sdv,.csv.cancast["T"]peach sdv;
 	info:update t:"V",rule:170,maybe:0b from info where t="T",mw in 7 8,mdot=0,.csv.cancast["V"]peach sdv;

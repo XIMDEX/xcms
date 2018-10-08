@@ -169,7 +169,6 @@ class ServerFrame extends ServerFramesOrm
         $this->set('DateUp', $dateUp);
         $this->set('DateDown', $dateDown);
         $this->set('State', ServerFrame::PENDING);
-        $this->set('Error', null);
         $this->set('ErrorLevel', null);
         $this->set('RemotePath', $path);
         $this->set('FileName', $name);
@@ -737,15 +736,17 @@ class ServerFrame extends ServerFramesOrm
      */
     public function getFramesOnDate(int $nodeId, int $time, int $idServer = null)
     {
-        $sql = 'SELECT ServerFrames.IdSync FROM ServerFrames, NodeFrames ' . 
+        $sql = 'SELECT ServerFrames.IdSync, ServerFrames.IdServer FROM ServerFrames, NodeFrames ' . 
             'WHERE ServerFrames.IdNodeFrame = NodeFrames.IdNodeFrame AND NodeFrames.NodeId = ' . $nodeId . ' AND ' . 
 	        'ServerFrames.DateUp <= ' . $time . ' AND (ServerFrames.DateDown >= ' . $time . ' OR ServerFrames.DateDown IS NULL) ' . 
 	        'AND ServerFrames.State NOT IN (\'' . ServerFrame::CANCELLED . '\', \'' . ServerFrame::REMOVED . 
             '\', \'' . ServerFrame::REPLACED . '\')';
         if ($idServer) {
             $sql .= ' AND ServerFrames.IdServer = ' . $idServer;
+        } else {
+            $sql .= ' ORDER BY ServerFrames.IdServer';
         }
-        return $this->query($sql);
+        return $this->query($sql, MULTI, null, true);
     }
     
     /**
@@ -762,7 +763,7 @@ class ServerFrame extends ServerFramesOrm
             'ServerFrames.DateUp > ' . $time . ' ' . 
             'AND ServerFrames.State NOT IN (\'' . ServerFrame::CANCELLED . '\', \'' . ServerFrame::REMOVED . '\', \'' . 
             ServerFrame::REPLACED . '\')';
-        return $this->query($sql);
+        return $this->query($sql, MULTI, null, true);
     }
     
     /**

@@ -934,4 +934,15 @@ class User extends UsersOrm
         $relations = $relUserGroup->find('IdRel', 'IdUser = %s AND IdRole = %s', array($this->getID(), $idRol), MONO);
         return (count($relations) > 0);
     }
+    
+    /**
+     * Return current logged user object
+     * 
+     * @return User
+     */
+    public static function getMe() : User
+    {
+        $userId = (int) Session::get('userID');
+        return new static($userId);
+    }
 }

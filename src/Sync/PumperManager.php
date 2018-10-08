@@ -29,6 +29,7 @@ namespace Ximdex\Sync;
 
 use Ximdex\Logger;
 use Ximdex\Models\Pumper;
+use Ximdex\NodeTypes\ServerNode;
 
 include_once XIMDEX_ROOT_PATH . '/src/Sync/conf/synchro_conf.php';
 
@@ -136,8 +137,17 @@ class PumperManager
      * 
      * @param array activeAndEnabledServers
      */
-    public function callingPumpers($activeAndEnabledServers)
+    public function callingPumpers(array $activeAndEnabledServers = null)
     {
+        if (! $activeAndEnabledServers) {
+            $activeAndEnabledServers = ServerNode::getServersForPumping();
+        }
+        if ($activeAndEnabledServers === false) {
+            return false;
+        }
+        if (! $activeAndEnabledServers) {
+            return [];
+        }
         Logger::debug('Calling pumpers');
         $serverFrameManager = new ServerFrameManager();
         $pumpers = $serverFrameManager->getPumpersWithTasks($activeAndEnabledServers);

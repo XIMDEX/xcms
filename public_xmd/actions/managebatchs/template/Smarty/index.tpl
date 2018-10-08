@@ -48,6 +48,7 @@
             <div class="media-body">
                 <h4 class="media-heading">
                     #/portal.nodeName/# (#/portal.idNodeGenerator/#)
+                    <small>Type: #/portal.publishingType/#</small>
                     <small><span class="icon clock"></span> Creation time: #/portal.creationTime/#</small> 
                     <small ng-if="portal.startTime"><span class="icon clock"></span> Start time: #/portal.startTime/#</small>
                     <small ng-if="portal.endTime"><span class="icon clock"></span> End time: #/portal.endTime/#</small>
@@ -71,10 +72,12 @@
                         #/portal.sfErrored/# errors
                     </div>
                 </div>
-                <a class="aespecial" ng-if="!showing[portal.IdPortal]" href="#" role="button" 
-                        ng-click="showing[portal.IdPortal] = !showing[portal.IdPortal]">Show servers details</a>
-                <a class="aespecial" ng-if="showing[portal.IdPortal]" href="#" role="button" 
-                        ng-click="showing[portal.IdPortal] = !showing[portal.IdPortal]">Hide servers details</a>
+                <small>
+                    <a class="aespecial" ng-if="!showing[portal.IdPortal]" href="#" role="button" 
+                            ng-click="showing[portal.IdPortal] = !showing[portal.IdPortal]">Show servers details</a>
+                    <a class="aespecial" ng-if="showing[portal.IdPortal]" href="#" role="button" 
+                            ng-click="showing[portal.IdPortal] = !showing[portal.IdPortal]">Hide servers details</a>
+                </small>
                 <ul ng-init="initShowing(portal.IdPortal)" ng-show="showing[portal.IdPortal]" class="media-list">
                     <li class="media" ng-repeat="element in portal.elements track by element.IdReport">
                         <a class="pull-left" href="#">
@@ -89,8 +92,8 @@
                                 <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="#/element.Progress/#" 
                                         aria-valuemin="0" aria-valuemax="100" style="width: #/element.Progress/#%"
                                         ng-class="{literal}{'active ximcolor': element.Progress!=100
-                                            , 'progress-bar-success': element.State!='Error' && element.State!='Warning' && element.Progress==100
-                                            , 'progress-bar-danger': element.State=='Error'
+                                            , 'progress-bar-success': element.State!='Error' && element.State!='Warning' 
+                                            && element.Progress==100, 'progress-bar-danger': element.State=='Error'
                                             , 'progress-bar-warning': element.State=='Warning' }{/literal}">
                                     <span ng-if="element.State!='Error' && element.State!='Warning'" 
                                             class="sr-only">#/element.Progress/#% Complete</span>

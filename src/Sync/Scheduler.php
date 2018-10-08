@@ -39,6 +39,7 @@ use Ximdex\Models\User;
 use Ximdex\Runtime\App;
 use Ximdex\Logger;
 use Ximdex\Utils\Date;
+use Ximdex\NodeTypes\ServerNode;
 
 include_once XIMDEX_ROOT_PATH . '/src/Sync/conf/synchro_conf.php';
 
@@ -49,23 +50,22 @@ class Scheduler
         global $argv;
         $synchro_pid = posix_getpid();
         $startStamp = 0;
-        $testTime = NULL;
-        if (isset ($argv [1])) {
-            $testTime = $argv [1];
+        $testTime = null;
+        if (isset ($argv[1])) {
+            $testTime = $argv[1];
         }
         $pumperManager = new PumperManager();
         $nodeFrameManager = new NodeFrameManager();
         $batchManager = new BatchManager();
-        $serverError = new ServerErrorManager();
         $ximdexServerConfig = new ServerConfig();
         
         // Checking pcntl_fork function is not disabled
         if ($ximdexServerConfig->hasDisabledFunctions()) {
-            Logger::error("Closing scheduler. Disabled pcntl_fork and pcntl_waitpid functions are required. Please, check php.ini file." 
+            Logger::error('Closing scheduler. Disabled pcntl_fork and pcntl_waitpid functions are required. Please, check php.ini file.' 
                 . "\r\n");
         }
         Logger::info('Starting Scheduler ' . $synchro_pid);
-        $mutex = new Mutex(XIMDEX_ROOT_PATH . App::getValue("TempRoot") . "/scheduler.lck");
+        $mutex = new Mutex(XIMDEX_ROOT_PATH . App::getValue('TempRoot') . '/scheduler.lck');
         if (!$mutex->acquire()) {
             Logger::info('Lock file existing');
             die();
@@ -79,7 +79,7 @@ class Scheduler
         do {
             
             // STOPPER
-            $stopper_file_path = XIMDEX_ROOT_PATH . App::getValue("TempRoot") . "/scheduler.stop";
+            $stopper_file_path = XIMDEX_ROOT_PATH . App::getValue('TempRoot') . '/scheduler.stop';
             if (file_exists($stopper_file_path)) {
                 $mutex->release();
                 Logger::warning('STOP: Detected file ' . $stopper_file_path 
@@ -87,14 +87,12 @@ class Scheduler
                 @unlink(XIMDEX_ROOT_PATH . App::getValue('TempRoot') . '/scheduler.lck');
                 die();
             }
-            $batchManager->setBatchsActiveOrEnded($testTime);
-            $activeAndEnabledServers = $serverError->getServersForPumping();
+            $activeAndEnabledServers = ServerNode::getServersForPumping();
             Logger::debug('Active and enabled servers: ' . print_r($activeAndEnabledServers, true));
-            $batchProcess = $batchManager->getBatchToProcess();
             if (!$activeAndEnabledServers || count($activeAndEnabledServers) == 0) {
                 
                 // There aren't Active & Enable servers...
-                Logger::error('No active server');
+                Logger::warning('No active server');
 
                 // This is a void cycle...
                 $voidCycles++;
@@ -102,13 +100,16 @@ class Scheduler
                 // Sleeping...
                 Logger::info('Sleeping...');
                 sleep(SCHEDULER_SLEEPING_TIME_BY_VOID_CYCLE);
-
-            } elseif (!$batchProcess) {
+            } elseif (! $batchProcess = $batchManager->getBatchToProcess()) {
 
                 // No processable Batchs found...
+                Logger::info('No processable batchs found');
+                
+                // Set current batchs to a new state and update frames stats
+                $batchManager->setBatchsActiveOrEnded($testTime, $activeAndEnabledServers);
+                
                 // Calling Pumpers...
                 $pumperManager->callingPumpers($activeAndEnabledServers);
-                Logger::info('No processable batchs found');
 
                 // This is a void cycle...
                 $voidCycles++;
@@ -116,7 +117,6 @@ class Scheduler
                 // Sleeping...
                 Logger::info('Sleeping...');
                 sleep(SCHEDULER_SLEEPING_TIME_BY_VOID_CYCLE);
-
             } else {
 
                 // Some processable Batchs found...
@@ -140,7 +140,7 @@ class Scheduler
                     // ---------------------------------------------------------
                     $batchId = $batchProcess['id'];
                     $batchType = $batchProcess['type'];
-                    Logger::debug(sprintf("Processing batch %s type %s", $batchId, $batchType) . ", true");
+                    Logger::debug(sprintf('Processing batch %s type %s', $batchId, $batchType) . ', true');
                     $schedulerChunk = (SCHEDULER_CHUNK > MAX_NUM_NODES_PER_BATCH) ? SCHEDULER_CHUNK : MAX_NUM_NODES_PER_BATCH;
                     $nodeFrames = $nodeFrameManager->getNotProcessNodeFrames($batchId, $schedulerChunk, $batchType);
                     if ($nodeFrames) {
@@ -157,19 +157,17 @@ class Scheduler
                     // ---------------------------------------------------------
                     // 2) Pumping
                     // ---------------------------------------------------------
+                    $activeAndEnabledServers = ServerNode::getServersForPumping();
                     $pumperManager->callingPumpers($activeAndEnabledServers);
-                    
+
                     // ---------------------------------------------------------
-                    // 3) Updating batch data
+                    // 3) Set batchs to a new state and update frames stats
                     // ---------------------------------------------------------
-                    $batchManager->setCyclesAndPriority($batchId);
+                    $batchManager->setBatchsActiveOrEnded($testTime, $activeAndEnabledServers);
                     
                     // ---------------------------------------------------------
                     // 4) Again
                     // ---------------------------------------------------------
-                    $batchManager->setBatchsActiveOrEnded($testTime);
-                    $activeAndEnabledServers = $serverError->getServersForPumping();
-                    Logger::debug(print_r($activeAndEnabledServers, true));
                     $batchProcess = $batchManager->getBatchToProcess();
                     
                     // Show publication status stats
@@ -188,7 +186,7 @@ class Scheduler
             }
             if ($global_execution) {
                 if ($voidCycles > MAX_NUM_CICLOS_VACIOS_SCHEDULER) {
-                    Logger::info(sprintf("max. cycles exceeded (%d > %d). Exit scheduler ", $voidCycles, MAX_NUM_CICLOS_VACIOS_SCHEDULER));
+                    Logger::info(sprintf('max. cycles exceeded (%d > %d). Exit scheduler ', $voidCycles, MAX_NUM_CICLOS_VACIOS_SCHEDULER));
                     break;
                 }
             } else {
@@ -209,7 +207,7 @@ class Scheduler
                 Logger::error($e->getMessage());
             }
         } while (true);
-        Logger::info(sprintf("max. cycles exceeded (%d > %d). Exit scheduler ", $cycles, MAX_NUM_CICLOS_VACIOS_SCHEDULER));
+        Logger::info(sprintf('max. cycles exceeded (%d > %d). Exit scheduler ', $cycles, MAX_NUM_CICLOS_VACIOS_SCHEDULER));
         $mutex->release();
     }
     
@@ -226,6 +224,9 @@ class Scheduler
         // Portal frames stats to log
         Logger::setActiveLog();
         self::portal_frames_stats();
+        
+        // Servers inactive for pumping
+        self::servers_stats();
         
         // Switch to scheduler log file
         Logger::setActiveLog('scheduler');
@@ -276,6 +277,13 @@ class Scheduler
             $serverPumpers = Pumper::countPumpers(true, $serverId);
             Logger::info(' Server totals: ' . $serverFramesPending . ' frames pending, ' . $serverFramesActive .' frames active, '
                 . $serverPumpers . ' pumpers');
+            if (! $server->get('ActiveForPumping')) {
+                if ($server->get('DelayTimeToEnableForPumping')) {
+                    Logger::warning('This server has been disabled for pumping temporally');
+                } else {
+                    Logger::error('This server has been disabled for pumping');
+                }
+            }
             
             // Sum totals
             $framesPendingTotal += $serverFramesPending;
@@ -306,7 +314,7 @@ class Scheduler
         }
         Logger::info('PORTAL FRAMES SUMMARY', false, 'white');
         $resume = PortalFrames::resume();
-        Logger::info('Total by status: ' . $resume['states'][PortalFrames::STATUS_CREATED] . ' created, '
+        Logger::info('Total by status: ' . $resume['states'][PortalFrames::STATUS_CREATED] . ' pending, '
             . $resume['states'][PortalFrames::STATUS_ACTIVE] . ' active, '
             . $resume['states'][PortalFrames::STATUS_ENDED] . ' ended');
         Logger::info('Total by type: ' . $resume['types'][PortalFrames::TYPE_UP] . ' type Up, '
@@ -348,6 +356,25 @@ class Scheduler
             Logger::warning($info);
         } else {
             Logger::info(' ' . $info);
+        }
+    }
+    
+    private static function servers_stats() : void
+    {
+        $server = new Server();
+        $servers = $server->find('IdServer', 'ActiveForPumping = 0', null, MONO, true, null, 'DelayTimeToEnableForPumping DESC');
+        foreach ($servers as $id) {
+            $server = new Server($id);
+            if ($server->get('DelayTimeToEnableForPumping')) {
+                
+                // Show delayed server
+                Logger::warning('Server ' . $server->get('Description') . ' (' . $id . ') has been delayed for pumping to restart at ' 
+                    . Date::formatTime($server->get('DelayTimeToEnableForPumping')) . ' with cycle ' . $server->get('CyclesToRetryPumping'));
+            } else {
+                
+                // Show stopped servers
+                Logger::error('Server ' . $server->get('Description') . ' (' . $id . ') has been stopped for pumping');
+            }
         }
     }
 }

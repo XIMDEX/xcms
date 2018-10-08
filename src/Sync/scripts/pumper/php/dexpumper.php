@@ -106,15 +106,16 @@ class DexPumper
 		if (!($this->pumper->get('PumperId') > 0)) {
 			$this->fatal('Pumper Id NOT found for id: ' . $params['--pumperid']);
 		}
-		$this->debug("NEW PUMPER:: ".print_r($params,true));
+		$this->debug("NEW PUMPER:: " . print_r($params,true));
 		$this->localBasePath = trim($params['--localbasepath']);
 	}
-
+	
 	public function start()
 	{
 		$cycle = 0;
 		$this->registerPumper();
 		while (true) {
+		    $this->checkServer();
 			if (!$cycle) {
 				$this->debug('STARTING PUMPER CYCLE');
 			} else {
@@ -130,15 +131,16 @@ class DexPumper
 			
 			// Exit condition here when cycles reach max void cycles
 			if (empty($serverFrameInfo)) {
-				$cycle ++;
+                $this->checkServer();
+				$cycle++;
 				if ($cycle <= $this->maxVoidCycles) {
 					$this->updateTimeInPumper();
 					$this->activeWaiting();
 					
 					// Manual stop for pumpers in sleeping mode
-					$stopper_file_path = XIMDEX_ROOT_PATH . App::getValue("TempRoot") . "/pumpers.stop";
+					$stopper_file_path = XIMDEX_ROOT_PATH . App::getValue('TempRoot') . '/pumpers.stop';
 					if (file_exists($stopper_file_path)) {
-					    Logger::warning('[PUMPERS] ' . "STOP: Detected file" . " $stopper_file_path");
+					    Logger::warning('[PUMPERS] ' . 'STOP: Detected file' . " $stopper_file_path");
 					    $this->unRegisterPumper();
 					    exit();
 					}
@@ -154,9 +156,8 @@ class DexPumper
 			$state_task = $serverFrameInfo['State'];
 			$this->serverFrame = new ServerFrame($task);
 			$IdSync = $this->serverFrame->get('IdSync');
-			if (empty($IdSync))
-			{
-			    $this->fatal("ServerFrame not found :". $task);
+			if (empty($IdSync)) {
+			    $this->fatal('ServerFrame not found: ' . $task);
 			}
 			$this->info("ServerFrame $IdSync to process");
 			$this->getHostConnection();
@@ -178,7 +179,7 @@ class DexPumper
 
 	private function uploadAsHiddenFile()
 	{
-		$localPath = $this->localBasePath."/";
+		$localPath = $this->localBasePath . '/';
 		$initialDirectory = $this->server->get('InitialDirectory');
 		$IdSync = (int)  $this->serverFrame->get('IdSync');
 		$remotePath = $this->serverFrame->get('RemotePath');
@@ -233,12 +234,12 @@ class DexPumper
 
 	private function updateStateFiles($IdBatchUp, $IdServer)
 	{
-		$table = "ServerFrames";
+		$table = 'ServerFrames';
 		$stateToIn = " state = '" . ServerFrame::IN . "' ";
 		$state_pumped = " state = '" . ServerFrame::PUMPED . "' ";
 		$conditions = "{$state_pumped} AND IdBatchUp = '{$IdBatchUp}' AND IdServer = '{$IdServer}'";
 		$this->info("UPDATE TO  {$stateToIn} : {$conditions} ");
-		$this->updateStats("IN");
+		$this->updateStats('IN');
 		return $this->serverFrame->execute("UPDATE {$table} SET {$stateToIn} WHERE {$conditions}");
 	}
 
@@ -259,13 +260,13 @@ class DexPumper
 				foreach ($filesToRename as $file) {
 					 $renameResult = $this->RenameFile($file);
 					 if ($renameResult) {
-                         $this->finishTask($file["IdSync"]);
+                         $this->finishTask($file['IdSync']);
 					 } elseif ($renameResult === false) {
 					     
                          // If this rename task does not work, generates a infinite loop
                          $this->updateTask(false, ServerFrame::DUE2INWITHERROR);
 					 } else {
-					     $this->finishTask($file["IdSync"]);
+					     $this->finishTask($file['IdSync']);
 					 }
 				}
 			}
@@ -329,11 +330,11 @@ class DexPumper
 			$msg_error = sprintf('Fail to connect or wrong login credentials for server: %s:%s with user: %s',  $host, $port, $login);
 			$this->fatal($msg_error);
 			$this->updateTask(false);
-			
-			// TODO ajlucena
-			// $this->updateServerState('Failed to connect');
-			
 			$this->unRegisterPumper();
+			
+			// To recover the pumper tasks with errors
+			$server = new Server($this->pumper->get('IdServer'));
+			$server->disableForPumping(true);
 			exit(200);
 		}
 		$this->updateTimeInPumper();
@@ -342,8 +343,8 @@ class DexPumper
 
 	private function taskBasic($baseRemoteFolder, $relativeRemoteFolder)
 	{
-		$msg_not_found_folder =  _('Could not find the base folder').": {$baseRemoteFolder}";
-		$msg_cant_create_folder = _('Could not find or create the destination folder')." {$baseRemoteFolder}{$relativeRemoteFolder}";
+		$msg_not_found_folder =  _('Could not find the base folder') . ": {$baseRemoteFolder}";
+		$msg_cant_create_folder = _('Could not find or create the destination folder') . " {$baseRemoteFolder}{$relativeRemoteFolder}";
 		Logger::debug('Moving to remote folder ' . $baseRemoteFolder);
 		if (!$this->connection->cd($baseRemoteFolder)) {
 			$this->warning($msg_not_found_folder);
@@ -377,7 +378,7 @@ class DexPumper
 		}
 		$this->info("Copying $localFile in $fullPath", false, 'magenta');
 		if (!$this->connection->put($localFile, $fullPath)) {
-		    $this->error(_('Could not upload the file').": $localFile -> $fullPath");
+		    $this->error(_('Could not upload the file') . ": $localFile -> $fullPath");
 		    if ($this->connection->getError()) {
 		        $this->error($this->connection->getError());
 		    }
@@ -453,6 +454,8 @@ class DexPumper
 		    $this->serverFrame->set('State', $status);
 		    $this->serverFrame->set('Linked', 0);
 		    $this->serverFrame->update();
+		    $server = new Server($this->pumper->get('IdServer'));
+		    $server->resetForPumping();
 		}
 		$this->updateTimeInPumper();
 		return true;
@@ -465,17 +468,6 @@ class DexPumper
         $serverFrame->update();
         $this->updateTimeInPumper();
     }
-
-	private function updateServerState($status)
-	{
-		if (!empty($status)) {
-		    $sql = 'UPDATE ServerErrorByPumper SET WithError = 1, Error = \'' . $status . '\' WHERE ServerId = ' 
-		        . $this->server->get('IdServer');
-		    $this->server->query($sql);
-			$this->server->set('ActiveForPumping', 1);
-			$this->server->update();
-		}
-	}
 
 	private function registerPumper()
 	{
@@ -519,15 +511,15 @@ class DexPumper
 
 	private function updateStats($state_pumper)
 	{
-	    if (!\Ximdex\Modules\Manager::isEnabled("wix")) {
+	    if (!\Ximdex\Modules\Manager::isEnabled('wix')) {
 	        return false;
 	    }
 		$IdSync = (int) $this->serverFrame->get('IdSync');
  	  	$idBatchUp = (int) $this->serverFrame->get('IdBatchUp');
  	  	$idServer = (int) $this->serverFrame->get('IdServer');
- 		if ("IN" == $state_pumper) {
+ 		if ('IN' == $state_pumper) {
  		    $progress =  "Progress = '100' ";
- 		    $idSync = ""; // All batchs
+ 		    $idSync = ''; // All batchs
 		}
 		else {
 		    $progress = "Progress = '80' ";
@@ -572,8 +564,20 @@ class DexPumper
 	private function msg_log($_msg)
 	{
 		$pumperID = (int) $this->pumper->get('PumperId');
-		$_msg = "[PumperId: $pumperID] ".$_msg;
+		$_msg = "[PumperId: $pumperID] " . $_msg;
 		error_log($_msg);
+	}
+	
+	private function checkServer() : void
+	{
+	    // Check if server state is active for pumping for each pumper operation
+	    $server = new Server($this->pumper->get('IdServer'));
+	    if (!$server->get('ActiveForPumping')) {
+	        Logger::warning('The server ' . $server->get('Description') . ' has been disabled for pumping. Aborting pumper '
+	            . $this->pumper->get('PumperId'));
+	        $this->unRegisterPumper();
+	        exit();
+	    }
 	}
 }
 

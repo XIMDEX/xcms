@@ -196,12 +196,16 @@ class PortalFrames extends PortalFramesOrm
     /**
      * Retrieve a list of portal frames ID without any batch associated
      * 
+     * @param int $time
      * @throws \Exception
      * @return array
      */
-    public static function getVoidPortalFrames() : array
+    public static function getVoidPortalFrames(int $time = null) : array
     {
         $query = 'SELECT id FROM PortalFrames pf LEFT JOIN Batchs b ON b.IdPortalFrame = pf.id WHERE b.IdBatch IS NULL';
+        if ($time) {
+            $query .= ' AND CreationTime < ' . (time() - $time);
+        }
         $db = new Db();
         if ($db->Query($query) === false) {
             throw new \Exception('Could not obtain the void portal frame');

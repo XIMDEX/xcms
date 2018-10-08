@@ -31,9 +31,9 @@ use Ximdex\Data\GenericData;
 
 class BatchsOrm extends GenericData
 {
-    var $_idField = 'IdBatch';
-    var $_table = 'Batchs';
-    var $_metaData = array(
+    public $_idField = 'IdBatch';
+    public $_table = 'Batchs';
+    public $_metaData = array(
         'IdBatch' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
         'TimeOn' => array('type' => "int(12)", 'not_null' => 'true'),
         'State' => array('type' => "varchar(255)", 'not_null' => 'true'),
@@ -51,24 +51,26 @@ class BatchsOrm extends GenericData
         'MinorCycle' => array('type' => "int(12)", 'not_null' => 'false'),
         'IdPortalFrame' => array('type' => "int(12)", 'not_null' => 'true'),
         'UserId' => array('type' => "int(12)", 'not_null' => 'false'),
+        'ServerId' => array('type' => "int(12)", 'not_null' => 'true')
     );
-    var $_uniqueConstraints = array();
-    var $_indexes = array('IdBatch');
-    var $IdBatch;
-    var $TimeOn;
-    var $State;
-    var $ServerFramesTotal = 0;
-    var $ServerFramesPending = 0;
-    var $ServerFramesActive = 0;
-    var $ServerFramesSuccess = 0;
-    var $ServerFramesError = 0;
-    var $Playing;
-    var $Type = 0;
-    var $IdBatchDown;
-    var $IdNodeGenerator;
-    var $Priority = 0.00;
-    var $MajorCycle = 0;
-    var $MinorCycle = 0;
-    var $IdPortalFrame;
-    var $UserId;
+    public $_uniqueConstraints = array();
+    public $_indexes = array('IdBatch');
+    public $IdBatch;
+    public $TimeOn;
+    public $State;
+    public $ServerFramesTotal = 0;
+    public $ServerFramesPending = 0;
+    public $ServerFramesActive = 0;
+    public $ServerFramesSuccess = 0;
+    public $ServerFramesError = 0;
+    public $Playing;
+    public $Type = 0;
+    public $IdBatchDown;
+    public $IdNodeGenerator;
+    public $Priority = 0.00;
+    public $MajorCycle = 0;
+    public $MinorCycle = 0;
+    public $IdPortalFrame;
+    public $UserId;
+    public $ServerId;
 }

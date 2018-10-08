@@ -69,7 +69,7 @@ class Action_publicatesection extends ActionAbstract
         $values['hasDisabledFunctions'] = $serverConfig->hasDisabledFunctions();
         
         // Loading Notifications default values
-        $conf = \Ximdex\Modules\Manager::file('/conf/notifications.php', 'XIMDEX');
+        $conf = Ximdex\Modules\Manager::file('/conf/notifications.php', 'XIMDEX');
         $defaultMessage = $this->buildMessage($conf["defaultSectionMessage"], $node->get('Name'));
         $values = $values + array(
             'group_state_info' => Group::getSelectableGroupsInfo($idNode),
@@ -166,7 +166,7 @@ class Action_publicatesection extends ActionAbstract
             'nodeType' => $type
         );
         $syncFac = new SynchroFacade();
-        $result = $syncFac->pushDocInPublishingPool($idNode, $up, $down, $flagsPublication, $recurrence);
+        $syncFac->pushDocInPublishingPool($idNode, $up, $down, $flagsPublication, $recurrence);
         $this->messages->add(sprintf(_("%s %s has been successfully sent to publish"), ucfirst($folderType), $nodename), MSG_TYPE_NOTICE);
         $values = array('messages' => $this->messages->messages);
         $this->sendJSON($values);
@@ -305,6 +305,7 @@ class Action_publicatesection extends ActionAbstract
         }
         $idUser = \Ximdex\Runtime\Session::get("userID");
         $node = new Node($idNode);
+        /*
         if (count($userList) > 0) {
             $userNameList = array();
             foreach ($userList as $id) {
@@ -313,8 +314,9 @@ class Action_publicatesection extends ActionAbstract
             }
             $userNameString = implode(', ', $userNameList);
         }
+        */
         $user = new User($idUser);
-        $from = $user->get('Login');
+        // $from = $user->get('Login');
         $userName = $user->get('Name');
         $nodeName = $node->get('Name');
         $nodePath = $node->GetPath();

@@ -48,11 +48,17 @@ class Batch extends BatchsOrm
     const ENDED = 'Ended';
     const CLOSING = 'Closing';
     const NOFRAMES = 'NoFrames';
+    const PRIORITY_TYPE_DOWN = 0.9;
 
     public function set($attribute, $value)
     {
         if ($attribute == 'State') {
-            Logger::info('Changing state for batch: ' . $this->get('IdBatch') . ' from ' . $this->get('State') . ' to ' . $value);
+            if ($this->get('IdBatch')) {
+                $from = $this->get('IdBatch');
+            } else {
+                $from = '- Nothing -';
+            }
+            Logger::info('Changing state for batch: ' . $this->IdBatch . ' from ' . $from . ' to ' . $value);
         }
         parent::set($attribute, $value);
     }
@@ -70,8 +76,8 @@ class Batch extends BatchsOrm
      *  @param int $playing
      *  @return int|null
      */
-    public function create($timeOn, $type, $idNodeGenerator, $priority, $idBatchDown = NULL, $idPortalFrame = 0, $userId = NULL, 
-        int $playing = 1)
+    public function create($timeOn, $type, $idNodeGenerator, $priority, $serverId, $idBatchDown = null, $idPortalFrame = null
+        , $userId = null, int $playing = 1)
     {
         setlocale(LC_NUMERIC, 'C');
         $this->set('TimeOn', $timeOn);
@@ -83,6 +89,7 @@ class Batch extends BatchsOrm
         $this->set('Priority', $priority);
         $this->set('IdPortalFrame', $idPortalFrame);
         $this->set('UserId', $userId);
+        $this->set('ServerId', $serverId);
         $idBatch = parent::add();
         if ($idBatch > 0) {
             return $idBatch;

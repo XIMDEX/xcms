@@ -157,7 +157,7 @@ class PipeCache extends PipeCachesOrm
             $query = sprintf('Select pc.id' . ' FROM PipeCaches pc INNER JOIN PipeTransitions pt ON pc.IdPipeTransition = pt.id'
                 . ' AND pt.Cacheable = 1' . ' WHERE IdVersion = %s AND IdPipeTransition = %s', $idVersion, $idTransition);
         }
-        $result = $this->query($query, MONO, 'id');
+        $result = $this->query($query, MONO);
         if (! $result) {
             Logger::debug('PipeCache: There is not cache for the specified version: ' . $idVersion . ' and transition: ' . $idTransition);
         }

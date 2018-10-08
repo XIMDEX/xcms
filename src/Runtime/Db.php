@@ -1,5 +1,30 @@
 <?php
 
+/**
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
+ */
+
 namespace Ximdex\Runtime;
 
 use Ximdex\Logger;
@@ -28,7 +53,12 @@ class Db
      * @var \PDOStatement
      */
     private $stm = null;
-    private $TIME_TO_RECONNECT = 10;	//sleeping time to reconnect to the database in seconds
+    
+    /**
+     * Sleeping time to reconnect to the database in seconds
+     * @var integer
+     */
+    const TIME_TO_RECONNECT = 10;
 
     /**
      * @param string $conf
@@ -62,15 +92,12 @@ class Db
     public function reconectDataBase()
     {
          $dbConfig = App::getInstance()->getValue('db', 'db');
-         if (!empty($dbConfig))
-         {
-         	try
-         	{
-         	    $dbConn = new \PDO("{$dbConfig['type']}:host={$dbConfig['host']};port={$dbConfig['port']};dbname={$dbConfig['db']};charset=utf8"
-         	        , $dbConfig['user'], $dbConfig['password']);
+         if (!empty($dbConfig)) {
+         	try {
+         	    $dbConn = new \PDO("{$dbConfig['type']}:host={$dbConfig['host']};port={$dbConfig['port']};"
+         	        . "dbname={$dbConfig['db']};charset=utf8", $dbConfig['user'], $dbConfig['password']);
          	}
-         	catch (\PDOException $e)
-         	{
+         	catch (\PDOException $e) {
          		Logger::error('Can\'t reconnect to database at ' . $dbConfig['host'] . ':' . $dbConfig['port']);
          		return false;
          	}
@@ -80,9 +107,7 @@ class Db
             App::addDbConnection($dbConn, $idconfig);
             self::$defaultConf = $idconfig;
             Logger::info('Reconnection to database at ' . $dbConfig['host'] . ':' . $dbConfig['port'] . ' has been stablished correctly');
-         }
-         else
-         {
+         } else {
              Logger::fatal('Database configuration is empty when reconnecting to database server');
              return false;
          }
@@ -91,36 +116,29 @@ class Db
 
     public function Query($sql, $cache = false)
     {
-        // todo remove cache parameter
         unset($cache);
-        if (!$this->_getEncodings())
-        {
+        if (!$this->_getEncodings()) {
             Logger::error($this->desErr);
             return false;
         }
         $this->sql = \Ximdex\XML\Base::recodeSrc($sql, self::$dbEncoding);
         $this->rows = array();
-        try
-        {
+        try {
             $this->stm = $this->db->query($this->sql, \PDO::FETCH_ASSOC);
-        }
-        catch (\PDOException $e)
-        {
+        } catch (\PDOException $e) {
             if (isset($GLOBALS['InBatchProcess']) and $GLOBALS['InBatchProcess']) {
                 echo $e->getMessage() . PHP_EOL;
             }
             $this->stm = false;
         }
-        if ($this->stm === false)
-        {
+        if ($this->stm === false) {
             if (isset($GLOBALS['InBatchProcess']) and $GLOBALS['InBatchProcess'])
             {
                 // If the database server has gone away, try a new connection
                 $res = $this->database_reconnection();
                 
                 // Trying the method call again if the reconnection process works right
-                if ($res)
-                {
+                if ($res) {
                     $res = $this->Query($sql);
                     return $res;
                 }
@@ -128,26 +146,19 @@ class Db
             $error = $this->error();
             $this->desErr = $error[2];
             Logger::error('Query error: ' . $error[2] . '. (SQL: ' . $this->sql . ')');
-            if ($this->db->errorCode() == \PDO::ERR_NONE)
-            {
+            if ($this->db->errorCode() == \PDO::ERR_NONE) {
                 $this->numErr = null;
-            }
-            else
-            {
+            } else {
                 $this->numErr = $this->db->errorCode();
             }
             return false;
         }
-        foreach ($this->stm as $row)
-        {
+        foreach ($this->stm as $row) {
             $this->rows[] = $row;
         }
-        if (count($this->rows) == 0)
-        {
+        if (count($this->rows) == 0) {
             $this->EOF = true;
-        }
-        else
-        {
+        } else {
             $this->index = 0;
             $this->EOF = false;
             $this->numRows = count($this->rows);
@@ -164,9 +175,8 @@ class Db
      */
     function Execute($sql)
     {
-        //Encode to dbConfig value in table config
-        if (!$this->_getEncodings())
-        {
+        // Encode to dbConfig value in table config
+        if (!$this->_getEncodings()) {
             Logger::error($this->desErr);
             return false;
         }
@@ -176,41 +186,33 @@ class Db
         $this->newID = null;
 
         // Change to prepare to obtain num rows
-        try
-        {
+        try {
             $res = $this->db->exec($this->sql);
-        }
-        catch (\PDOException $e)
-        {
+        } catch (\PDOException $e) {
             if (isset($GLOBALS['InBatchProcess']) and $GLOBALS['InBatchProcess']) {
                 echo $e->getMessage() . PHP_EOL;
             }
             $res = false;
         }
-        if ($res !== false)
-        {
+        if ($res !== false) {
             $this->newID = $this->db->lastInsertId();
             $this->numRows = $res;
             return true;
         }
-        if (isset($GLOBALS['InBatchProcess']) and $GLOBALS['InBatchProcess'])
-        {
+        if (isset($GLOBALS['InBatchProcess']) and $GLOBALS['InBatchProcess']) {
+            
             // If the database server has gone away, try a new connection
             $res = $this->database_reconnection();
             
             // Trying the method call again if the reconnection process works right
-            if ($res)
-            {
+            if ($res) {
                 $res = $this->Execute($sql);
                 return $res;
             }
         }
-        if ($this->db->errorCode() == \PDO::ERR_NONE)
-        {
+        if ($this->db->errorCode() == \PDO::ERR_NONE) {
             $this->numErr = null;
-        }
-        else
-        {
+        } else {
             $this->numErr = $this->db->errorCode();
         }
         $error = $this->error();
@@ -232,7 +234,7 @@ class Db
         try {
             $statement = $this->db->prepare($sql);
             $statement->execute();
-            while ($statement->nextRowset()) {/* https://bugs.php.net/bug.php?id=61613 */};
+            while ($statement->nextRowset()) { /* https://bugs.php.net/bug.php?id=61613 */ };
         } catch (\PDOException $e) {
             $result = false;
             Logger::error($e->errorInfo[2]);
@@ -277,28 +279,23 @@ class Db
         if ((self::$dbEncoding == '') && (self::$workingEncoding == '')) {
             $sql = "select ConfigKey,ConfigValue from Config where ConfigKey='workingEncoding' or ConfigKey='dbEncoding'";
             $this->sql = $sql;
-            try
-            {
+            try {
                 $stm = $this->db->query($this->sql, \PDO::FETCH_ASSOC);
-            }
-            catch (\PDOException $e)
-            {
+            } catch (\PDOException $e) {
                 Logger::error('Can\'t get encondings types (' . $e->getMessage() . ')');
                 return false;
             }
-            if ($stm === false)
-            {
-            	if (isset($GLOBALS['InBatchProcess']) and $GLOBALS['InBatchProcess'])
-            	{
-            	   // If the database server has gone away, try a new connection
-            	   $res = $this->database_reconnection();
-            	   
-            	   // Trying the method call again if the reconnection process works right
-            	   if ($res)
-            	   {
+            if ($stm === false) {
+            	if (isset($GLOBALS['InBatchProcess']) and $GLOBALS['InBatchProcess']) {
+                    
+                    // If the database server has gone away, try a new connection
+                    $res = $this->database_reconnection();
+                    
+                    // Trying the method call again if the reconnection process works right
+                    if ($res) {
             	       $res = $this->_getEncodings();
             	       return $res;
-            	   }
+                    }
             	}
             	$error = $this->error();
             	Logger::error('Can\'t get encondings types (' . $error[2] . ')');
@@ -309,7 +306,7 @@ class Db
                 $configValue = $row['ConfigValue'];
                 if ($configKey == 'dbEncoding') {
                     self::$dbEncoding = $configValue;
-                } else if ($configKey == 'workingEncoding') {
+                } elseif ($configKey == 'workingEncoding') {
                     self::$workingEncoding = $configValue;
                 }
             }
@@ -324,10 +321,8 @@ class Db
      */
     function GetValue($col)
     {
-        if (isset($col, $this->row[$col]))
-        {
-            if (!$this->_getEncodings())
-            {
+        if (isset($col, $this->row[$col])) {
+            if (!$this->_getEncodings()) {
                 Logger::error($this->desErr);
                 return false;
             }
@@ -366,20 +361,19 @@ class Db
      */
     private function database_reconnection(Db $db = null) : bool
     {
-    	if (!$db)
-    	{
+    	if (!$db) {
     		$db = $this->db;
     	}
     	$error = $db->errorInfo();
-    	if ($error[0] == 'HY000' and $error[1] == 2006)
-    	{
+    	if ($error[0] == 'HY000' and $error[1] == 2006) {
+    		
     		// MySQL server has gone away error; we will sleep for a few seconds and try again a new connection later
-    		do
-    		{
+    		do {
+    		    
     			// We will do a loop until the connection has been stablished
-    			Logger::warning('Connection to database has been lost. Trying to reconnect in ' . $this->TIME_TO_RECONNECT . ' seconds');
+    			Logger::warning('Connection to database has been lost. Trying to reconnect in ' . self::TIME_TO_RECONNECT . ' seconds');
     			$res = $this->reconectDataBase();
-    			sleep($this->TIME_TO_RECONNECT);
+    			sleep(self::TIME_TO_RECONNECT);
     		}
     		while (!$res);
     		Logger::info('Reconnecting to database has been executed successfully');
