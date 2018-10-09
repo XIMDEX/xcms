@@ -1,6 +1,7 @@
 <?php
+
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -24,27 +25,21 @@
  * @version $Revision$
  */
 
-
 use Ximdex\Cli\CliReader;
 use Ximdex\Utils\FsUtils;
 
-//
-\Ximdex\Modules\Manager::file('/actions/remove/inc/RemoveCli.class.php', 'ximIO');
+Ximdex\Modules\Manager::file('/actions/remove/inc/RemoveCli.class.php', 'ximIO');
 
-
+global $argc, $argv;
 $parameterCollector = new RemoveCli($argc, $argv);
-
-
 $file = $parameterCollector->getParameter('--file');
 $delete = $parameterCollector->getParameter('--delete');
 $messages = new \Ximdex\Utils\Messages();
+
 // First, checking if the package exists and giving some information about it
-
 echo "\n" . _("Analysing data:") . "\n";
-
 if ($delete != 'ONLY_DB') {
     echo _("Checking if the importation folder exists") . "\n";
-
     $folder = sprintf(XIMDEX_ROOT_PATH . '/data/backup/%s_ximio', $file);
     if (is_dir($folder)) {
         $messages->add(sprintf(_("The data of the package %s are going to be deleted"), $file), MSG_TYPE_NOTICE);
@@ -53,10 +48,8 @@ if ($delete != 'ONLY_DB') {
         $messages->add(sprintf(_("The package %s has been deleted from the folder") . " \$XIMDEX/data/backup", $file), MSG_TYPE_WARNING);
     }
 }
-
 if ($delete != 'ONLY_FILES') {
     echo _("Checking package in database...") . "\n";
-
     $dbObj = new \Ximdex\Runtime\Db();
     $query = sprintf("SELECT idXimIOExportation FROM XimIOExportations where timeStamp = %s", $dbObj->sqlEscapeString($file));
     $dbObj->Query($query);
@@ -69,23 +62,18 @@ if ($delete != 'ONLY_FILES') {
         $messages->add(_("Unexpected error occured, several packages with same name were found"), MSG_TYPE_ERROR);
     }
 }
-
 if ($messages->count(MSG_TYPE_ERROR) > 0) {
     echo _("Errors:") . "\n";
     $messages->displayRaw(MSG_TYPE_ERROR);
 }
-
 if ($messages->count(MSG_TYPE_WARNING) > 0) {
     echo _("Warnings:") . "\n";
     $messages->displayRaw(MSG_TYPE_WARNING);
 }
-
 if ($messages->count(MSG_TYPE_NOTICE) > 0) {
     echo _("Information:") . "\n";
     $messages->displayRaw(MSG_TYPE_NOTICE);
 }
-
-
 if ($messages->count(MSG_TYPE_WARNING) > 0 || $messages->count(MSG_TYPE_ERROR) > 0) {
     $continueOptions = array('y', 'Y', 's', 'S');
     $abortOptions = array('n', 'N');
@@ -96,8 +84,7 @@ if ($messages->count(MSG_TYPE_WARNING) > 0 || $messages->count(MSG_TYPE_ERROR) >
     }
 }
 
-
-// TODO re-make using fsutils::deltree
+// TODO Re-make using fsutils::deltree
 $messages = new \Ximdex\Utils\Messages();
 function removeFolder($dir, $DeleteMe)
 {
@@ -121,31 +108,25 @@ function removeFolder($dir, $DeleteMe)
         }
     }
 }
-
 echo _("Deleting information about the package ") . "$file\n";
-
 if (isset($folder)) {
     removeFolder($folder, true);
     echo "Carpeta eliminada\n";
 } else {
     $messages->add(_('Folder information will not be deleted'), MSG_TYPE_NOTICE);
 }
-
 if (isset($idXimioExportation)) {
     $dbObj = new \Ximdex\Runtime\Db();
     $query = "DELETE FROM XimIOExportations WHERE idXimIOExportation = " . $dbObj->sqlEscapeString($idXimioExportation);
     $dbObj->Execute($query);
-
     if ($dbObj->numRows > 0) {
         $messages->add(_('Data successfully deleted from XimIOExportations'), MSG_TYPE_NOTICE);
     } else {
         $messages->add(_('Importation data could not been deleted from XimIOExportations'), MSG_TYPE_NOTICE);
     }
-
     $dbObj = new \Ximdex\Runtime\Db();
     $query = "DELETE FROM XimIONodeTranslations WHERE IdXimioExportation = " . $dbObj->sqlEscapeString($idXimioExportation);
     $dbObj->Execute($query);
-
     if ($dbObj->numRows > 0) {
         $messages->add(sprintf(_('%s associations successfully deleted from XimIONodeTranslations'), $dbObj->numRows), MSG_TYPE_NOTICE);
     } else {
@@ -154,7 +135,4 @@ if (isset($idXimioExportation)) {
 } else {
     $messages->add(_('Importation information will not be deleted'), MSG_TYPE_NOTICE);
 }
-
 $messages->displayRaw();
-
-?>

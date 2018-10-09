@@ -41,8 +41,9 @@ class BatchsOrm extends GenericData
         'ServerFramesPending' => array('type' => "int(12)", 'not_null' => 'true'),
         'ServerFramesActive' => array('type' => "int(12)", 'not_null' => 'true'),
         'ServerFramesSuccess' => array('type' => "int(12)", 'not_null' => 'true'),
-        'ServerFramesError' => array('type' => "int(12)", 'not_null' => 'true'),
-        'Playing' => array('type' => "int(12)", 'not_null' => 'false'),
+        'ServerFramesFatalError' => array('type' => "int(12)", 'not_null' => 'true'),
+        'ServerFramesTemporalError' => array('type' => "int(12)", 'not_null' => 'true'),
+        'Playing' => array('type' => "int(12)", 'not_null' => 'true'),
         'Type' => array('type' => "varchar(255)", 'not_null' => 'true'),
         'IdBatchDown' => array('type' => "int(12)", 'not_null' => 'false'),
         'IdNodeGenerator' => array('type' => "int(12)", 'not_null' => 'false'),
@@ -62,7 +63,8 @@ class BatchsOrm extends GenericData
     public $ServerFramesPending = 0;
     public $ServerFramesActive = 0;
     public $ServerFramesSuccess = 0;
-    public $ServerFramesError = 0;
+    public $ServerFramesFatalError = 0;
+    public $ServerFramesTemporalError = 0;
     public $Playing;
     public $Type = 0;
     public $IdBatchDown;

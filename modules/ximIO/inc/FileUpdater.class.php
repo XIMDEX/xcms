@@ -78,7 +78,7 @@ class FileUpdater
             $idImportationNode = $dbObj->GetValue('IdImportationNode');
             $idNodeTranslation = $dbObj->GetValue('IdNodeTranslation');
             $path = $dbObj->GetValue('path');
-            $status = $dbObj->GetValue('status');
+            // $status = $dbObj->GetValue('status');
             $pathExploded = explode('/', $path);
             $fileName = $pathExploded[count($pathExploded) - 1];
             $filePath = sprintf('%s/%s', $routeToFiles, $fileName);
@@ -110,6 +110,7 @@ class FileUpdater
             }
             
             // Special case
+            $linkMatches = null;
             preg_match_all('/ a_enlaceid[_|\w|\d]*\s*=\s*[\'|"]([\d|\,]+)[\'|"]/i', $contents, $linkMatches);
             $totalMatches = count($linkMatches[0]);
             for ($i = 0; $i < $totalMatches; $i++) {
@@ -124,8 +125,10 @@ class FileUpdater
                 $line = str_replace($info, $nodeSubstitution, $string);
                 $contents = str_replace($string, $line, $contents);
             }
+            $urlMatches = null;
             preg_match_all('/<url.*>\s*(\d+)\s*<\/url>/i', $contents, $urlMatches);
             $contents = $this->_replaceMatches($contents, $urlMatches);
+            $importMatches = null;
             preg_match_all('/ a_import_enlaceid[_|\w|\d]*\s*=\s*[\'|"](\d+)[\'|"]/i', $contents, $importMatches);
             $contents = $this->_replaceMatches($contents, $importMatches);
             $ximletMatches = $dependencesGetter->GetStructuredDocumentXimletsExtended($contents);

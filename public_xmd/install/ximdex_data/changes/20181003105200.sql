@@ -47,3 +47,8 @@ ALTER TABLE `RelUsersGroups` ADD CONSTRAINT `RelUsersGroups_Roles` FOREIGN KEY (
     REFERENCES `Roles`(`IdRole`) ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE `RelUsersGroups` ADD CONSTRAINT `RelUsersGroups_User` FOREIGN KEY (`IdUser`) 
     REFERENCES `Users`(`IdUser`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `Batchs` CHANGE `ServerFramesError` `ServerFramesFatalError` INT(12) UNSIGNED NOT NULL DEFAULT '0';
+ALTER TABLE `Batchs` ADD `ServerFramesTemporalError` INT(12) UNSIGNED NOT NULL DEFAULT '0' AFTER `ServerFramesFatalError`;
+ALTER TABLE `Batchs` CHANGE `Playing` `Playing` INT(12) UNSIGNED NOT NULL DEFAULT '0';
+ALTER TABLE `Batchs` CHANGE `Priority` `Priority` FLOAT(3,2) UNSIGNED NULL DEFAULT '0.5';

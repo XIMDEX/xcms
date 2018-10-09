@@ -1,6 +1,7 @@
 <?php
+
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -24,80 +25,59 @@
  *  @version $Revision$
  */
 
-
-// for legacy compatibility
-if (!defined('XIMDEX_ROOT_PATH')) {
-    require_once dirname(__FILE__) . '/../../../../bootstrap.php';
-}
-
-
-//
-
 // We're not using the orm, bacuse this code has to be also compatible with v2.5 
- \Ximdex\Modules\Manager::file('/actions/report/inc/ReportCli.class.php', 'ximIO');
+Ximdex\Modules\Manager::file('/actions/report/inc/ReportCli.class.php', 'ximIO');
 
+global $argc, $argv;
 $parameterCollector = new ReportCli($argc, $argv);
-
 $file = $parameterCollector->getParameter('--file');
 $nodeList = $parameterCollector->getParameter('--nodeList');
 $filterByStatus = $parameterCollector->getParameter('--filterByStatus');
-
-$dbObj = new \Ximdex\Runtime\Db();
-$query = sprintf("SELECT idXimIOExportation FROM XimIOExportations"
-		. " WHERE timeStamp = '%s'",
-		mysqli_real_escape_string($file));
+$dbObj = new Ximdex\Runtime\Db();
+$query = sprintf("SELECT idXimIOExportation FROM XimIOExportations" . " WHERE timeStamp = '%s'", mysqli_real_escape_string($file));
 $dbObj->Query($query);
 if (!$dbObj->numRows > 0) {
 	die (sprintf(_("The  package %s has not been imported with ximIO")."\n", $file));
 }
-unset($dbObj);
 $neededResults = array(' > 0' => "%d nodes has been successfully imported\n",
 		' = -1' => "%d nodes has not been successfully imported due to a lack of permits\n",
 		' = -2' => "%d nodes has not been successfully imported due to a lack of information in the XML\n",
 		' = -3' => "%d nodes has not been successfully imported due to its father was not inserted\n",
 		' = -4' => "%d nodes has not been successfully imported due to they were not allowed in its father (NodeAllowedContents restriction)\n"
 		);
-$neededResults[' > 0']= _("%d nodes has been successfully imported")."\n";
-$neededResults[' = -1']= _("%d nodes has not been successfully imported due to a lack of permits")."\n";
-$neededResults[' = -2']= _("%d nodes has not been successfully imported due to a lack of information in the XML")."\n";
-$neededResults[' = -3']= _("%d nodes has not been successfully imported due to its father was not inserted")."\n";
-$neededResults[' = -4']= _("%d nodes has not been successfully imported due to they were not allowed in its father (NodeAllowedContents restriction)")."\n";
-
-
+$neededResults[' > 0'] =  _("%d nodes has been successfully imported") . "\n";
+$neededResults[' = -1'] = _("%d nodes has not been successfully imported due to a lack of permits") . "\n";
+$neededResults[' = -2'] = _("%d nodes has not been successfully imported due to a lack of information in the XML") . "\n";
+$neededResults[' = -3'] = _("%d nodes has not been successfully imported due to its father was not inserted") . "\n";
+$neededResults[' = -4'] = _("%d nodes has not been successfully imported due to they were not allowed in its father (NodeAllowedContents restriction)") . "\n";
 foreach ($neededResults as $condition => $message) {
-	$dbObj = new \Ximdex\Runtime\Db();
-	$query = sprintf("SELECT count(*) as total FROM XimIONodeTranslations xnt"
-			. " INNER JOIN XimIOExportations xe ON xnt.IdXimioExportation = xe.IdXimioExportation AND xe.timeStamp = %s"
-			. " WHERE xnt.status %s",
-			$dbObj->sqlEscapeString($file),
-			$condition);
-
+	$query = sprintf("SELECT count(*) as total FROM XimIONodeTranslations xnt" 
+	    . " INNER JOIN XimIOExportations xe ON xnt.IdXimioExportation = xe.IdXimioExportation AND xe.timeStamp = %s" 
+	    . " WHERE xnt.status %s"
+	    , $dbObj->sqlEscapeString($file)
+	    , $condition);
 	$dbObj->Query($query);
 	$totalResults = $dbObj->GetValue('total');
-	if ((int)$totalResults > 0) {
+	if ($totalResults > 0) {
 		echo sprintf($message, $totalResults);
 	}
 	unset($dbObj);
 }
 if ($nodeList == '1') {
-	$dbObj = new \Ximdex\Runtime\Db();
-	$query = sprintf("SELECT IdExportationNode, status FROM XimIONodeTranslations xnt"
-			. " INNER JOIN XimIOExportations xe ON xnt.IdXimioExportation = xe.IdXimioExportation AND xe.timeStamp = %s", 
-			$dbObj->sqlEscapeString($file));
+	$query = sprintf("SELECT IdExportationNode, status FROM XimIONodeTranslations xnt" 
+	    . " INNER JOIN XimIOExportations xe ON xnt.IdXimioExportation = xe.IdXimioExportation AND xe.timeStamp = %s"
+	    , $dbObj->sqlEscapeString($file));
 	$validFilters = array('-1', '-2', '-3', '-4', '0');
-	
 	if (in_array($filterByStatus, $validFilters)) {
 		if ($filterByStatus == '0') {
 			$filterByStatus = '> 0';
 		}
 		$query .= sprintf(" WHERE xnt.status = %s", $dbObj->sqlEscapeString($filterByStatus));
 	}
-	
 	$dbObj->Query($query);
-	echo _("Node, Status")."\n";
+	echo _("Node, Status") . "\n";
 	while(!$dbObj->EOF) {
 		echo sprintf("%s, %s\n", $dbObj->GetValue('IdExportationNode'), $dbObj->GetValue('status'));
 		$dbObj->Next();
 	}
 }
-?>

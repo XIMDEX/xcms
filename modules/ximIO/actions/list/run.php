@@ -1,6 +1,7 @@
 <?php
+
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -24,24 +25,15 @@
  *  @version $Revision$
  */
 
-
-
-// for legacy compatibility
-if (!defined('XIMDEX_ROOT_PATH')) {
-    require_once dirname(__FILE__) . '/../../../../bootstrap.php';
-}
-
-	echo "\n"._("List of available packages:")."\n";
-	
-	$backupFolder = XIMDEX_ROOT_PATH . '/data/backup/';
-	$handler = opendir($backupFolder);
-	while (false !== ($file = readdir($handler))) {
-		if ($file == '.' || $file == '..') {
-			continue;
-		}
-		if (is_dir($backupFolder . $file) && (preg_match('/(.*)_ximio$/', $file, $matches) == 1)) {
-			echo "\t{$matches[1]}\n";
-		}
+echo "\n"._("List of available packages:") . "\n";
+$backupFolder = XIMDEX_ROOT_PATH . '/data/backup/';
+$handler = opendir($backupFolder);
+$matches = null;
+while (false !== ($file = readdir($handler))) {
+	if ($file == '.' || $file == '..') {
+		continue;
 	}
-	
-?>
+	if (is_dir($backupFolder . $file) && (preg_match('/(.*)_ximio$/', $file, $matches) == 1)) {
+		echo "\t{$matches[1]}\n";
+	}
+}

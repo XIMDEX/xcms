@@ -659,7 +659,11 @@ class ServerFrame extends ServerFramesOrm
         if (! strpos($state, 'ERROR')) {
             $batch->set('ServerFramesSuccess', $batch->get('ServerFramesSuccess') - 1);
         } else {
-            $batch->set('ServerFramesError', $batch->get('ServerFramesError') - 1);
+            if ($this->get('ErrorLevel') == self::ERROR_LEVEL_HARD) {
+                $batch->set('ServerFramesFatalError', $batch->get('ServerFramesFatalError') - 1);
+            } else {
+                $batch->set('ServerFramesTemporalError', $batch->get('ServerFramesTemporalError') - 1);
+            }
         }
         $batch->update();
         
@@ -799,8 +803,8 @@ class ServerFrame extends ServerFramesOrm
      * @throws \Exception
      * @return int
      */
-    public static function countServerFrames(array $includeStates = [], array $excludeStates = [], bool $active = true
-        , int $serverId = null, int $channelId = null) : int
+    public static function countServerFrames(array $includeStates = [], array $excludeStates = [], int $errorType = null
+        , bool $active = true, int $serverId = null, int $channelId = null) : int
     {
         $sql = 'SELECT COUNT(IdSync) AS total FROM ServerFrames WHERE TRUE';
         if ($includeStates) {
@@ -808,6 +812,9 @@ class ServerFrame extends ServerFramesOrm
         }
         if ($excludeStates) {
             $sql .= ' AND State NOT IN (\'' . implode('\', \'', $excludeStates) . '\')';
+        }
+        if ($errorType) {
+            $sql .= ' AND ErrorLevel = ' . $errorType;
         }
         if ($active) {
             $sql .= ' AND (DateUp <= UNIX_TIMESTAMP() OR DateDown <= UNIX_TIMESTAMP())';

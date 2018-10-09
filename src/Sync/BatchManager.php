@@ -579,7 +579,9 @@ class BatchManager
         $dbObj = new Db();
         
         // Updating batchs type UP
-        $sql = "SELECT ServerFrames.IdBatchUp, SUM(IF(ServerFrames.State = '" . ServerFrame::DUE2INWITHERROR . "', 1, 0)) AS Errors, 
+        $sql = "SELECT ServerFrames.IdBatchUp, 
+            SUM(IF (ServerFrames.ErrorLevel = " . ServerFrame::ERROR_LEVEL_HARD . ", 1, 0)) AS FatalErrors, 
+            SUM(IF (ServerFrames.ErrorLevel = " . ServerFrame::ERROR_LEVEL_SOFT . ", 1, 0)) AS TemporalErrors,
 			SUM(IF (ServerFrames.State IN ('" . implode('\', \'', ServerFrame::SUCCESS_STATUS) . "'), 1, 0)) AS Success, 
 			SUM(IF (ServerFrames.State IN ('" . ServerFrame::PUMPED . "'), 1, 0)) AS Pumpeds,
 			COUNT(ServerFrames.IdSync) AS Total,
@@ -590,7 +592,7 @@ class BatchManager
             AND Batchs.State IN ('" . Batch::INTIME . "', '" . Batch::CLOSING . "') AND Batchs.IdBatch = ServerFrames.IdBatchUp
             AND Batchs.ServerId IN (" . implode(',', $servers) . ") 
             GROUP BY ServerFrames.IdBatchUp 
-            HAVING (Errors + Success + Pumpeds + Active) > 0 
+            HAVING (FatalErrors + Success + Pumpeds + Active) > 0 
             ORDER BY ServerFrames.IdBatchUp";
             // HAVING Total = Errors + Success + Pumpeds";
         if ($dbObj->Query($sql) === false) {
@@ -598,7 +600,8 @@ class BatchManager
         }
         while (!$dbObj->EOF) {
             $idBatch = $dbObj->GetValue('IdBatchUp');
-            $errors = (int) $dbObj->GetValue('Errors');
+            $fatalErrors = (int) $dbObj->GetValue('FatalErrors');
+            $temporalErrors = (int) $dbObj->GetValue('TemporalErrors');
             $success = (int) $dbObj->GetValue('Success');
             $pumpeds = (int) $dbObj->GetValue('Pumpeds');
             $totals = (int) $dbObj->GetValue('Total');
@@ -606,10 +609,11 @@ class BatchManager
             $pending = (int) $dbObj->GetValue('Pending');
             $batch = new Batch($idBatch);
             $batch->set('ServerFramesSuccess', $success);
-            $batch->set('ServerFramesError', $errors);
+            $batch->set('ServerFramesFatalError', $fatalErrors);
+            $batch->set('ServerFramesTemporalError', $temporalErrors);
             $batch->set('ServerFramesActive', $active);
             $batch->set('ServerFramesPending', $pending);
-            if ($totals == $errors + $success + $pumpeds) {
+            if ($totals == $fatalErrors + $success + $pumpeds) {
                 if ($pumpeds > 0) {
                     
                     // Do not change to CLOSING state if this is the actual one in the batch
@@ -641,7 +645,8 @@ class BatchManager
             foreach ($batchsDown as $idBatch) {
                 
                 // Search the batch type Down without type Up
-                $sql = "SELECT SUM(IF (State = '" . ServerFrame::DUE2OUTWITHERROR . "', 1, 0)) AS Errors,
+                $sql = "SELECT SUM(IF (ErrorLevel = " .ServerFrame::ERROR_LEVEL_HARD . ", 1, 0)) AS FatalErrors, 
+                    SUM(IF (ErrorLevel = " .ServerFrame::ERROR_LEVEL_SOFT . ", 1, 0)) AS TemporalErrors, 
 					SUM(IF (State IN ('" . implode('\', \'', ServerFrame::SUCCESS_STATUS) . "'), 1, 0)) AS Success, 
 					COUNT(IdSync) AS Total, SUM(IF (State IN ('" . ServerFrame::PENDING . "'), 1, 0)) AS Pending,
                     SUM(IF (State NOT IN ('" . ServerFrame::PENDING . "', '" . implode('\', \'', ServerFrame::FINAL_STATUS) . "'), 1, 0)) AS Active
@@ -652,7 +657,8 @@ class BatchManager
                 if ($dbObj->GetValue('Total') == 0) {
                     
                     // Search the batchs type Down with an associated batch type Up
-                    $sql = "SELECT SUM(IF(ServerFrames.State = '" . ServerFrame::DUE2OUTWITHERROR . "', 1, 0)) AS Errors,
+                    $sql = "SELECT SUM(IF(ServerFrames.ErrorLevel = " . ServerFrame::ERROR_LEVEL_HARD . ", 1, 0)) AS FatalErrors, 
+                        SUM(IF (ServerFrames.ErrorLevel = " .ServerFrame::ERROR_LEVEL_SOFT . ", 1, 0)) AS TemporalErrors, 
 		      			SUM(IF (ServerFrames.State IN ('" . implode('\', \'', ServerFrame::SUCCESS_STATUS) . "'), 1, 0)) AS Success, 
 				    	COUNT(ServerFrames.IdSync) AS Total,
                         SUM(IF (ServerFrames.State NOT IN ('" . ServerFrame::PENDING . "', '" . implode('\', \'', ServerFrame::FINAL_STATUS)
@@ -669,15 +675,17 @@ class BatchManager
                     // Update the batch with the current server frame states
                     $pending = (int) $dbObj->GetValue('Pending');
                     $active = (int) $dbObj->GetValue('Active');
-                    $errors = (int) $dbObj->GetValue('Errors');
+                    $fatalErrors = (int) $dbObj->GetValue('FatalErrors');
+                    $temporalErrors = (int) $dbObj->GetValue('TemporalErrors');
                     $success = (int) $dbObj->GetValue('Success');
                     $totals = (int) $dbObj->GetValue('Total');
                     $batch = new Batch($idBatch);
                     $batch->set('ServerFramesPending', $pending);
                     $batch->set('ServerFramesActive', $active);
                     $batch->set('ServerFramesSuccess', $success);
-                    $batch->set('ServerFramesError', $errors);
-                    if ($totals == $errors + $success) {
+                    $batch->set('ServerFramesFatalError', $fatalErrors);
+                    $batch->set('ServerFramesTemporalError', $temporalErrors);
+                    if ($totals == $fatalErrors + $success) {
                         $batch->set('State', Batch::ENDED);
                         Logger::info('Ending batch type Down with ID ' . $idBatch);
                     }
@@ -800,8 +808,9 @@ class BatchManager
         
         // Calculate batch priority
         $sucessFrames = (int) $batch->get('ServerFramesSuccess');
-        $errorFrames = (int) $batch->get('ServerFramesError');
-        $processedFrames = $sucessFrames + $errorFrames;
+        $fatalErrorFrames = (int) $batch->get('ServerFramesFatalError');
+        $temporalErrorFrames = (int) $batch->get('ServerFramesTemporalError');
+        $processedFrames = $sucessFrames + $fatalErrorFrames + $temporalErrorFrames;
         if ($processedFrames) {
             $priority = round($sucessFrames / $processedFrames, 2);
             Logger::info('Set priority to ' . $priority . ' for batch ' . $idBatch);
@@ -847,9 +856,6 @@ class BatchManager
             $batchDown->set('State', Batch::WAITING);
             $batchDown->set('ServerFramesTotal', $serverFramesTotal);
             $batchDown->set('ServerFramesPending', $serverFramesTotal);
-            $batchDown->set('ServerFramesSuccess', 0);
-            $batchDown->set('ServerFramesError', 0);
-            $batchDown->set('ServerFramesActive', 0);
             $batchDown->update();
         } else {
 
@@ -869,9 +875,6 @@ class BatchManager
             $batchDown = new Batch($idBatchDown);
             $batchDown->set('ServerFramesTotal', $serverFramesTotal);
             $batchDown->set('ServerFramesPending', $serverFramesTotal);
-            $batchDown->set('ServerFramesActive', 0);
-            $batchDown->set('ServerFramesSuccess', 0);
-            $batchDown->set('ServerFramesError', 0);
             $batchDown->set('IdPortalFrame', $idPortalFrame);
             $batchDown->update();
         }

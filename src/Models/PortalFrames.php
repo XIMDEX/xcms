@@ -100,10 +100,9 @@ class PortalFrames extends PortalFramesOrm
         
         // Calculate stats from portal frame batchs
         $sql = 'SELECT SUM(ServerFramesTotal) as total, SUM(ServerFramesPending) as pending, SUM(ServerFramesActive) as active, ';
-        $sql .= 'SUM(ServerFramesSuccess) as success, SUM(ServerFramesError) as errored ';
+        $sql .= 'SUM(ServerFramesSuccess) as success, SUM(ServerFramesFatalError) as fatalError, SUM(ServerFramesTemporalError) as temporalError ';
         $sql .= 'FROM Batchs ';
         $sql .= 'WHERE IdPortalFrame = ' . $portalFrame->get('id') . ' ';
-        // $sql .= 'GROUP BY IdPortalFrame';
         $db = new Db();
         if ($db->Query($sql) === false) {
             throw new \Exception('Could not obtain the batchs stats for the portal frame ' . $portalFrame->get('id'));
@@ -112,7 +111,7 @@ class PortalFrames extends PortalFramesOrm
         $portalFrame->set('SFpending', (int) $db->getValue('pending'));
         $portalFrame->set('SFactive', (int) $db->getValue('active'));
         $portalFrame->set('SFsuccess', (int) $db->getValue('success'));
-        $portalFrame->set('SFerrored', (int) $db->getValue('errored'));
+        $portalFrame->set('SFerrored', (int) $db->getValue('fatalError'));
         
         // Check new batch status
         if ($batch->get('State') == Batch::INTIME) {

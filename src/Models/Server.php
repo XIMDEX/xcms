@@ -61,22 +61,26 @@ class Server extends ServersOrm
     
     public function resetForPumping()
     {
-        Logger::debug('Reseting the server ' . $this->Description . ' for pumping');
+        Logger::debug('Server ' . $this->Description . ' is now able for pumping (connection successful)', true);
         $this->ActiveForPumping = 1;
         $this->DelayTimeToEnableForPumping = null;
         $this->CyclesToRetryPumping = 0;
         return $this->update();
     }
     
-    public function enableForPumping()
+    public function enableForPumping() : bool
     {
-        Logger::info('Enabling the server ' . $this->Description . ' for pumping', true);
+        Logger::info('Enabling the server ' . $this->Description . ' for pumping');
         $this->ActiveForPumping = 1;
         $this->DelayTimeToEnableForPumping = null;
-        return $this->update();
+        $res = $this->update();
+        if ($res === false) {
+            return false;
+        }
+        return true;
     }
     
-    public function disableForPumping(bool $delay = false)
+    public function disableForPumping(bool $delay = false) : bool
     {
         if (! $this->ActiveForPumping) {
             return true;
@@ -91,7 +95,7 @@ class Server extends ServersOrm
             $message = 'Disabling the server ' . $this->Description . ' (' . $this->IdServer . ') for pumping permanently';
             Logger::warning($message);
             
-            // Send email
+            // TODO ajlucena Send email
             // mail($user->getEmail(), 'Server ' . $this->Description . ' has been disabled permanently', $message);
         } else {
             
@@ -107,9 +111,13 @@ class Server extends ServersOrm
                 . $this->CyclesToRetryPumping . ' (Will be restarted at ' . Date::formatTime($this->get('DelayTimeToEnableForPumping')) . ')';
             Logger::warning($message);
             
-            // Send email
+            // TODO ajlucena Send email
             // mail($user->getEmail(), 'Server ' . $this->Description . ' has been disabled temporally', $message);
         }
-        return $this->update();
+        $res = $this->update();
+        if ($res === false) {
+            return false;
+        }
+        return true;
     }
 }

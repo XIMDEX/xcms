@@ -125,7 +125,7 @@ class Scheduler
                 while ($batchProcess) {
 
                     // This a full cycle...
-                    Logger::debug('Cycle num ' . $cycles);
+                    Logger::debug('Scheduler cycle number ' . $cycles);
                     if ($cycles >= MAX_NUM_CICLOS_SCHEDULER) {
                         
                         // Exceding max. cycles...
@@ -134,10 +134,8 @@ class Scheduler
                         $mutex->release();
                         die();
                     }
-
-                    // ---------------------------------------------------------
-                    // 1) Solving NodeFrames activity
-                    // ---------------------------------------------------------
+                    
+                    // Solving NodeFrames activity
                     $batchId = $batchProcess['id'];
                     $batchType = $batchProcess['type'];
                     Logger::debug(sprintf('Processing batch %s type %s', $batchId, $batchType) . ', true');
@@ -154,20 +152,13 @@ class Scheduler
                         }
                     }
 
-                    // ---------------------------------------------------------
-                    // 2) Pumping
-                    // ---------------------------------------------------------
-                    $activeAndEnabledServers = ServerNode::getServersForPumping();
-                    $pumperManager->callingPumpers($activeAndEnabledServers);
+                    // Pumping
+                    $pumperManager->callingPumpers();
 
-                    // ---------------------------------------------------------
-                    // 3) Set batchs to a new state and update frames stats
-                    // ---------------------------------------------------------
-                    $batchManager->setBatchsActiveOrEnded($testTime, $activeAndEnabledServers);
+                    // Set batchs to a new state and update frames stats
+                    $batchManager->setBatchsActiveOrEnded($testTime);
                     
-                    // ---------------------------------------------------------
-                    // 4) Again
-                    // ---------------------------------------------------------
+                    // Again
                     $batchProcess = $batchManager->getBatchToProcess();
                     
                     // Show publication status stats
@@ -207,7 +198,7 @@ class Scheduler
                 Logger::error($e->getMessage());
             }
         } while (true);
-        Logger::info(sprintf('max. cycles exceeded (%d > %d). Exit scheduler ', $cycles, MAX_NUM_CICLOS_VACIOS_SCHEDULER));
+        Logger::info(sprintf('Max. cycles exceeded (%d > %d). Exit scheduler ', $cycles, MAX_NUM_CICLOS_VACIOS_SCHEDULER));
         $mutex->release();
     }
     
@@ -237,46 +228,28 @@ class Scheduler
         $pumpersTotal = 0;
         $framesPendingTotal = 0;
         $framesActiveTotal = 0;
+        $framesFatalErrorTotal = 0;
+        $framesSoftErrorTotal = 0;
+        
+        // Get in time batchs information
         $batchsInTime = Batch::countBatchsInProcess();
         $batchsClosing = Batch::countBatchsInProcess(Batch::CLOSING);
         Logger::info('SCHEDULER STATS [' . $batchsInTime . ' batchs in time, ' . $batchsClosing . ' batchs closing]', false, 'white');
         
         // Obtain a list of servers with server frames active
         $servers = ServerFrame::serversInActiveServerFrames();
+        $excludeStates = array_merge(ServerFrame::FINAL_STATUS, [ServerFrame::PENDING]);
         foreach ($servers as $serverId) {
             
             // Stats information for each server
             $server = new Server($serverId);
             $serverFramesPending = 0;
             $serverFramesActive = 0;
+            $serverFramesFatalError = 0;
+            $serverFramesSoftError = 0;
             Logger::info('Server ' . $server->get('Description'));
             
-            // Stats information for each channel in the current server
-            foreach ($server->getChannels() as $channelId) {
-                $channel = new Channel($channelId);
-                $serverFramesPending += $framesPending = ServerFrame::countServerFrames([ServerFrame::PENDING, ServerFrame::DUE2OUT], [], true,
-                    $serverId, $channelId);
-                $serverFramesActive += $framesActive = ServerFrame::countServerFrames([],
-                    array_merge(ServerFrame::FINAL_STATUS, [ServerFrame::PENDING]), true, $serverId, $channelId);
-                if ($framesPending or $framesActive) {
-                    Logger::info(' - Channel ' . $channel->GetName() . ': ' . $framesPending . ' frames pending, '
-                        . $framesActive . ' frames active');
-                }
-            }
-            
-            // Stats without channel (ChannelId = null), sending a zero value
-            $serverFramesPending += $framesPending = ServerFrame::countServerFrames([ServerFrame::PENDING, ServerFrame::DUE2OUT], [], true, 
-                $serverId, 0);
-            $serverFramesActive += $framesActive = ServerFrame::countServerFrames([],
-                array_merge(ServerFrame::FINAL_STATUS, [ServerFrame::PENDING]), true, $serverId, 0);
-            if ($framesPending or $framesActive) {
-                Logger::info(' - No channel: ' . $framesPending . ' frames pending, ' . $framesActive .' frames active');
-            }
-            
-            // Stats information for server
-            $serverPumpers = Pumper::countPumpers(true, $serverId);
-            Logger::info(' Server totals: ' . $serverFramesPending . ' frames pending, ' . $serverFramesActive .' frames active, '
-                . $serverPumpers . ' pumpers');
+            // Show possible delayed status
             if (! $server->get('ActiveForPumping')) {
                 if ($server->get('DelayTimeToEnableForPumping')) {
                     Logger::warning('This server has been disabled for pumping temporally');
@@ -285,15 +258,70 @@ class Scheduler
                 }
             }
             
+            // Stats information for each channel in the current server
+            $channels = $server->getChannels();
+            $channels[] = 0;
+            foreach ($channels as $channelId) {
+                if ($channelId) {
+                    $channel = new Channel($channelId);
+                    $channelName = 'Channel ' . $channel->GetName();
+                    unset($channel);
+                } else {
+                    $channelName = 'No channel';
+                }
+                $serverFramesPending += $framesPending = ServerFrame::countServerFrames([ServerFrame::PENDING, ServerFrame::DUE2OUT], [], null
+                    , true, $serverId, $channelId);
+                $serverFramesActive += $framesActive = ServerFrame::countServerFrames([], $excludeStates, null, true, $serverId, $channelId);
+                $serverFramesFatalError += $framesFatalError = ServerFrame::countServerFrames([], $excludeStates, ServerFrame::ERROR_LEVEL_HARD
+                    , true, $serverId, $channelId);
+                $serverFramesSoftError += $framesSoftError = ServerFrame::countServerFrames([], $excludeStates, ServerFrame::ERROR_LEVEL_SOFT
+                    , true, $serverId, $channelId);
+                if ($framesPending or $framesActive or $framesFatalError or $framesSoftError) {
+                    $info = '  - ' . $channelName . ': ' . $framesPending . ' frames pending, ' . $framesActive . ' frames active';
+                    if ($framesFatalError) {
+                        $info .= ', ' . $framesFatalError . ' frames with fatal error';
+                    }
+                    if ($framesSoftError) {
+                        $info .= ', ' . $framesSoftError . ' frames with soft error';
+                    }
+                    if ($framesFatalError) {
+                        Logger::error($info);
+                    } elseif ($framesSoftError) {
+                        Logger::warning($info);
+                    } else {
+                        Logger::info($info);
+                    }
+                }
+            }
+            
+            // Stats information for server
+            $serverPumpers = Pumper::countPumpers(true, $serverId);
+            Logger::info('  Server totals: ' . $serverFramesPending . ' frames pending, ' . $serverFramesActive .' frames active, '
+                . $serverPumpers . ' pumpers');
+            
             // Sum totals
             $framesPendingTotal += $serverFramesPending;
             $framesActiveTotal += $serverFramesActive;
+            $framesFatalErrorTotal += $serverFramesFatalError;
+            $framesSoftErrorTotal += $serverFramesSoftError;
             $pumpersTotal += $serverPumpers;
         }
         
         // Log for total resume
-        Logger::info('Total: ' . $framesPendingTotal . ' frames pending, ' . $framesActiveTotal .' frames active, '
-            . $pumpersTotal . ' pumpers');
+        $info = 'Total: ' . $framesPendingTotal . ' frames pending, ' . $framesActiveTotal .' frames active, ' . $pumpersTotal . ' pumpers';
+        if ($framesSoftErrorTotal) {
+            $info .= ', ' . $framesSoftErrorTotal . ' frames with soft error';
+        }
+        if ($framesFatalErrorTotal) {
+            $info .= ', ' . $framesFatalErrorTotal . ' frames with fatal error';
+        }
+        if ($framesFatalErrorTotal) {
+            Logger::error($info);
+        } elseif ($framesSoftErrorTotal) {
+            Logger::warning($info);
+        } else {
+            Logger::info($info);
+        }
     }
     
     private static function portal_frames_stats() : void
@@ -350,8 +378,19 @@ class Scheduler
         } else {
             Logger::info('  - Status time: ' . Date::formatTime($portal->get('StatusTime')));
         }
-        $info = ' - Server frames: ' . $portal->get('SFtotal') . ' total, ' . $portal->get('SFpending') . ' pending, ' 
-            . $portal->get('SFactive') . ' active, ' . $portal->get('SFsuccess') . ' success, ' . $portal->get('SFerrored') . ' errored';
+        $info = ' - Server frames: ' . $portal->get('SFtotal') . ' total';
+        if ($portal->get('SFpending')) {
+            $info .= ', ' . $portal->get('SFpending') . ' pending'; 
+        }
+        if ($portal->get('SFactive')) {
+            $info .= ', ' . $portal->get('SFactive') . ' active';
+        }
+        if ($portal->get('SFsuccess')) {
+            $info .= ', ' . $portal->get('SFsuccess') . ' success';
+        }
+        if ($portal->get('SFerrored')) {
+            $info .= ', ' . $portal->get('SFerrored') . ' errored';
+        }
         if ($portal->get('SFerrored')) {
             Logger::warning($info);
         } else {
@@ -363,17 +402,20 @@ class Scheduler
     {
         $server = new Server();
         $servers = $server->find('IdServer', 'ActiveForPumping = 0', null, MONO, true, null, 'DelayTimeToEnableForPumping DESC');
-        foreach ($servers as $id) {
-            $server = new Server($id);
-            if ($server->get('DelayTimeToEnableForPumping')) {
-                
-                // Show delayed server
-                Logger::warning('Server ' . $server->get('Description') . ' (' . $id . ') has been delayed for pumping to restart at ' 
-                    . Date::formatTime($server->get('DelayTimeToEnableForPumping')) . ' with cycle ' . $server->get('CyclesToRetryPumping'));
-            } else {
-                
-                // Show stopped servers
-                Logger::error('Server ' . $server->get('Description') . ' (' . $id . ') has been stopped for pumping');
+        if ($servers) {
+            Logger::info('DELAYED SERVERS STATUS', false, 'white');
+            foreach ($servers as $id) {
+                $server = new Server($id);
+                if ($server->get('DelayTimeToEnableForPumping')) {
+                    
+                    // Show delayed server
+                    Logger::warning('Server ' . $server->get('Description') . ' (' . $id . ') has been delayed for pumping to restart at ' 
+                        . Date::formatTime($server->get('DelayTimeToEnableForPumping')) . ' with cycle ' . $server->get('CyclesToRetryPumping'));
+                } else {
+                    
+                    // Show stopped servers
+                    Logger::error('Server ' . $server->get('Description') . ' (' . $id . ') has been stopped for pumping');
+                }
             }
         }
     }

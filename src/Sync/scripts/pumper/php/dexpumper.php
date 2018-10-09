@@ -330,11 +330,11 @@ class DexPumper
 			$msg_error = sprintf('Fail to connect or wrong login credentials for server: %s:%s with user: %s',  $host, $port, $login);
 			$this->fatal($msg_error);
 			$this->updateTask(false);
-			$this->unRegisterPumper();
 			
 			// To recover the pumper tasks with errors
 			$server = new Server($this->pumper->get('IdServer'));
 			$server->disableForPumping(true);
+			$this->unRegisterPumper();
 			exit(200);
 		}
 		$this->updateTimeInPumper();
@@ -453,6 +453,8 @@ class DexPumper
 		if ($status !== null) {
 		    $this->serverFrame->set('State', $status);
 		    $this->serverFrame->set('Linked', 0);
+		    $this->serverFrame->set('ErrorLevel', null);
+		    $this->serverFrame->set('Retry', 0);
 		    $this->serverFrame->update();
 		    $server = new Server($this->pumper->get('IdServer'));
 		    $server->resetForPumping();
@@ -493,7 +495,7 @@ class DexPumper
 			exit(0);
 		} else {
 			$this->pumper->set('State', Pumper::ENDED);
-			$this->pumper->set('ProcessId','xxxx');
+			$this->pumper->set('ProcessId', 'xxxx');
             $this->pumper->set('CheckTime', time());
             $this->pumper->update();
 		}
@@ -511,7 +513,7 @@ class DexPumper
 
 	private function updateStats($state_pumper)
 	{
-	    if (!\Ximdex\Modules\Manager::isEnabled('wix')) {
+	    if (!Ximdex\Modules\Manager::isEnabled('wix')) {
 	        return false;
 	    }
 		$IdSync = (int) $this->serverFrame->get('IdSync');

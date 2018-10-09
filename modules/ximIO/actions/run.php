@@ -1,6 +1,7 @@
 <?php
+
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -24,45 +25,44 @@
  *  @version $Revision$
  */
 
-
 use Ximdex\Cli\CliParser;
 
-
-class RunnerCli extends CliParser  {
-	var $_metadata = array(
-		array (	'name' => '--mode',
-				'mandatory' => false,
-				'message' => 'Available command to execute, to see a list, type --mode without command',
-				'type' => TYPE_STRING)
+class RunnerCli extends CliParser
+{
+	public $_metadata = array(
+		array('name' => '--mode'
+		    , 'mandatory' => false
+		    , 'message' => 'Available command to execute, to see a list, type --mode without command'
+		    , 'type' => TYPE_STRING)
 	);
-
-	function __construct ($params) {
-		$this->_metadata[0]["message"] = _('Available command to execute, to see a list, type --mode without command');
 	
+	function __construct ($params)
+	{
+		$this->_metadata[0]["message"] = _('Available command to execute, to see a list, type --mode without command');
 		parent::__construct($params);
 	}
 }
 
-	
-	$parameterCollector = new RunnerCli($argc, $argv, false);
-	
-	$mode = $parameterCollector->getParameter('--mode');
-	if (empty($mode) || !is_dir(XIMDEX_ROOT_PATH .\Ximdex\Modules\Manager::path('ximIO'). '/actions/' . $mode)) {
-		echo _("The param --mode is obligatory")."\n";
-		echo _("Available modes are:")."\n";
-		$handler = opendir(XIMDEX_ROOT_PATH .\Ximdex\Modules\Manager::path('ximIO').'/actions/');
-		while (false !== ($file = readdir($handler))) {
-			if ($file == '.' || $file == '..') {
-				continue;
-			}
-			// This is going to cause that in a dev environment folder .svn could be seen, and in a production environment folders without command were also seen. It will be treated in the future 
-			if (is_dir($file)) {
-				echo "\t$file\n";
-			}
+global $argc, $argv;
+$parameterCollector = new RunnerCli($argc, $argv, false);
+$mode = $parameterCollector->getParameter('--mode');
+if (empty($mode) || !is_dir(XIMDEX_ROOT_PATH . Ximdex\Modules\Manager::path('ximIO') . '/actions/' . $mode)) {
+	echo _("The param --mode is obligatory") . "\n";
+	echo _("Available modes are:") . "\n";
+	$handler = opendir(XIMDEX_ROOT_PATH . Ximdex\Modules\Manager::path('ximIO') . '/actions/');
+	while (false !== ($file = readdir($handler))) {
+		if ($file == '.' || $file == '..') {
+			continue;
 		}
-		die();
+		
+		/*
+		This is going to cause that in a dev environment folder .svn could be seen, and in a production environment 
+		folders without command were also seen. It will be treated in the future  
+		*/
+		if (is_dir($file)) {
+			echo "\t$file\n";
+		}
 	}
-	
-	include "$mode/run.php";
-
-?>
+	die();
+}
+include "$mode/run.php";
