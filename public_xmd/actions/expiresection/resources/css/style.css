@@ -1,5 +1,5 @@
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -22,29 +22,35 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
+ 
 .programed_publication {
   display: inline-block;
   vertical-align: top;
-  width: calc(33% - 1em); }
+  width: calc(33% - 1em);
+}
 
 .xim_calendar_container {
   display: inline-block;
   vertical-align: top;
-  width: calc(66% - 1em); }
+  width: calc(66% - 1em);
+}
 
 .start_publication, .end_publication {
   display: inline-block;
   vertical-align: top;
-  width: calc(50% - 1em); }
+  width: calc(50% - 1em);
+}
   
 .nodes_for_publication {
   display: inline-block;
   vertical-align: top;
-  width: calc(100% - 2em); }
+  width: calc(100% - 2em);
+}
 
 .date_interval {
   margin-top: .5em;
-  padding-bottom: .5em; }
+  padding-bottom: .5em;
+}
 
 /**************
 // PROGRAM PUBLICATIONS
@@ -54,17 +60,18 @@
   padding: 0;
   font-size: .9em;
   float: right;
-  counter-reset: publications; }
-  .programed_publication h2 {
-    font-family: $t_text;
+  counter-reset: publications;
+}
 
-    text-transform: uppercase;
-    padding: 1em .5em .9em;
-    font-weight: bold;
-    font-size: 1.4rem;
-    background: #43a1a2;
-    border-radius: 5px 5px 0 0;
-  }
+.programed_publication h2 {
+  font-family: $t_text;
+  text-transform: uppercase;
+  padding: 1em .5em .9em;
+  font-weight: bold;
+  font-size: 1.4rem;
+  background: #43a1a2;
+  border-radius: 5px 5px 0 0;
+}
 
 .publication {
   text-transform: uppercase;
@@ -72,46 +79,56 @@
   padding: 1em 1em 1em 3.5em;
   border-bottom: 1px solid #d8d8d8;
   counter-increment: publications;
-  position: relative; }
-  .publication::before {
-    content: counter(publications);
-    position: absolute;
-    height: 100%;
-    width: 1.8em;
-    text-align: center;
-    line-height: 2.1;
-    background: #acafbb;
-    left: 0;
-    top: 0;
-    color: #fff;
-    font-size: 1.4em; }
+  position: relative;
+}
+
+.publication::before {
+  content: counter(publications);
+  position: absolute;
+  height: 100%;
+  width: 1.8em;
+  text-align: center;
+  line-height: 2.1;
+  background: #acafbb;
+  left: 0;
+  top: 0;
+  color: #fff;
+  font-size: 1.4em;
+}
 
 .publication:last-child {
-    border-bottom: none; }
+    border-bottom: none;
+}
 
 .start_publication .publication_date, .end_publication .publication_date, .nodes_for_publication .publication_nodes {
   display: block;
   font-weight: bold;
   color: #4c4c4c;
   padding: .5em 0 .2em;
-  font-size: 1.08em; }
+  font-size: 1.08em;
+}
 
 .start_publication .publication_time, .end_publication .publication_time {
-  font-weight: normal; }
+  font-weight: normal;
+}
 
 .end_publication {
-  margin-left: 5%; }
+  margin-left: 5%;
+}
 
 .xim_calendar_container {
-  float: left; }
+  float: left;
+}
 
 .clock::before {
   font-size: 1.4em;
   padding-right: .5em;
-  line-height: .9; }
+  line-height: .9;
+}
 
 .notifications {
-  margin-top: 3em; }
+  margin-top: 3em;
+}
 
 .not_programed {
   font-size: 1.2em;
@@ -125,47 +142,41 @@
 }
 
 .comments {
-  width: 100%; }
+  width: 100%;
+}
   
-.publication_options
-{
+.publication_options {
 	padding-left: 15pt;
 	padding-right: 15pt;
 	padding-bottom: 5pt;
 }
 
-.option_checkbox
-{
+.option_checkbox {
 	float: left;
-	width: 40pt;
+	width: 10%;
 }
 
-.option_info
-{
+.option_info {
 	float: left;
+	width: 90%;
 }
 
-.publication_option
-{
+.publication_option {
 	margin-top: 10pt;
 }
 
-.options_separator
-{
+.options_separator {
 	clear: both;
 }
 
-hr
-{
+hr {
 	margin-top: 10pt;
 }
 
-#types
-{
+#types {
     width: auto !important;
 }
 
-.option_publish_type
-{
+.option_publish_type {
 	margin-top: 5pt;
 }

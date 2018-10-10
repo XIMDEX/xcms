@@ -60,7 +60,7 @@
 	<!-- js widgets -->
 	%=js_widgets%
 
-	<script language="javascript" type="text/javascript">
+	<script type="text/javascript">
 
 		{literal}
 		window.kupu = null;

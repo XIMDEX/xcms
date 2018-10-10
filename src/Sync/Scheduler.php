@@ -279,10 +279,10 @@ class Scheduler
                 if ($framesPending or $framesActive or $framesFatalError or $framesSoftError) {
                     $info = '  - ' . $channelName . ': ' . $framesPending . ' frames pending, ' . $framesActive . ' frames active';
                     if ($framesFatalError) {
-                        $info .= ', ' . $framesFatalError . ' frames with fatal error';
+                        $info .= ', ' . $framesFatalError . ' frames fatal error';
                     }
                     if ($framesSoftError) {
-                        $info .= ', ' . $framesSoftError . ' frames with soft error';
+                        $info .= ', ' . $framesSoftError . ' frames soft error';
                     }
                     if ($framesFatalError) {
                         Logger::error($info);
@@ -310,10 +310,10 @@ class Scheduler
         // Log for total resume
         $info = 'Total: ' . $framesPendingTotal . ' frames pending, ' . $framesActiveTotal .' frames active, ' . $pumpersTotal . ' pumpers';
         if ($framesSoftErrorTotal) {
-            $info .= ', ' . $framesSoftErrorTotal . ' frames with soft error';
+            $info .= ', ' . $framesSoftErrorTotal . ' frames soft error';
         }
         if ($framesFatalErrorTotal) {
-            $info .= ', ' . $framesFatalErrorTotal . ' frames with fatal error';
+            $info .= ', ' . $framesFatalErrorTotal . ' frames fatal error';
         }
         if ($framesFatalErrorTotal) {
             Logger::error($info);
@@ -388,10 +388,12 @@ class Scheduler
         if ($portal->get('SFsuccess')) {
             $info .= ', ' . $portal->get('SFsuccess') . ' success';
         }
-        if ($portal->get('SFerrored')) {
-            $info .= ', ' . $portal->get('SFerrored') . ' errored';
+        if ($portal->get('SFfatalError')) {
+            $info .= ', ' . $portal->get('SFfatalError') . ' fatal error';
         }
-        if ($portal->get('SFerrored')) {
+        if ($portal->get('SFfatalError')) {
+            Logger::error($info);
+        } elseif ($portal->get('SFsoftError')) {
             Logger::warning($info);
         } else {
             Logger::info(' ' . $info);

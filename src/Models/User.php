@@ -39,10 +39,12 @@ use Ximdex\Workflow\WorkFlow;
 
 class User extends UsersOrm
 {
-    var $userID;
-    var $numErr;    // Error code
-    var $msgErr;    // Error message
-    var $errorList; // Error list
+    const ROLE_ADMINISTRATOR = 201;
+    
+    public $userID;
+    public $numErr;    // Error code
+    public $msgErr;    // Error message
+    public $errorList; // Error list
 
     function __construct($params = NULL)
     {
@@ -944,5 +946,45 @@ class User extends UsersOrm
     {
         $userId = (int) Session::get('userID');
         return new static($userId);
+    }
+    
+    public static function getUsersByRole(int $idRol) : array
+    {
+        $dbObj = new \Ximdex\Runtime\Db();
+        $sql = 'SELECT DISTINCT IdUser FROM RelUsersGroups WHERE IdRole = ' . $idRol;
+        $dbObj->Query($sql);
+        if ($dbObj->getDesErr()) {
+            throw new \Exception($dbObj->getDesErr());
+        }
+        $res = [];
+        while (!$dbObj->EOF) {
+            $res[] = $dbObj->GetValue('IdUser');
+            $dbObj->Next();
+        }
+        return $res;
+    }
+    
+    /**
+     * Send email notifications to all administrator users
+     *
+     * @param string $subject
+     * @param string $message
+     * @return bool
+     */
+    public static function sendNotifications(string $subject, string $message) : bool
+    {
+        try {
+            $administrators = self::getUsersByRole(User::ROLE_ADMINISTRATOR);
+        } catch (\Exception $e) {
+            Logger::error($e->getMessage());
+            return false;
+        }
+        foreach ($administrators as $id) {
+            $user = new static($id);
+            if (!mail($user->getEmail(), $subject, $message)) {
+                Logger::warning('Cannot send an email notification to ' . $user->getEmail());
+            }
+        }
+        return true;
     }
 }

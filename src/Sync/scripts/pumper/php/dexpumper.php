@@ -36,6 +36,7 @@ use Ximdex\Models\ServerFrame;
 use Ximdex\Models\NodeFrame;
 use Ximdex\Runtime\App;
 use Ximdex\Cli\CliParser;
+use Ximdex\Sync\BatchManager;
 
 /**
  * Constants definition
@@ -334,6 +335,8 @@ class DexPumper
 			// To recover the pumper tasks with errors
 			$server = new Server($this->pumper->get('IdServer'));
 			$server->disableForPumping(true);
+			
+			// Ending pumper
 			$this->unRegisterPumper();
 			exit(200);
 		}
@@ -448,6 +451,8 @@ class DexPumper
 			    $this->serverFrame->set('ErrorLevel', ServerFrame::ERROR_LEVEL_SOFT);
 			}
 			$this->serverFrame->update();
+			$batchManager = new BatchManager();
+			$batchManager->setBatchsActiveOrEnded();
 			return false;
 		}
 		if ($status !== null) {
@@ -474,8 +479,7 @@ class DexPumper
 	private function registerPumper()
 	{
 	    if (Pumper::NEW == $this->pumper->get('State')) {
-			$msg = 'No ha sido posible registrar el bombeador al tener estado de ' . Pumper::NEW;
-			$this->fatal($msg);
+	        $this->fatal('It has not been possible to register the pump when it has been ' . Pumper::NEW);
 			$this->unRegisterPumper();
 			exit(0);
 		} else {
@@ -490,8 +494,7 @@ class DexPumper
             Logger::info('Disconnected from server ' . $this->server->get('Host'), false, 'magenta');
         }
         if (Pumper::NEW == $this->pumper->get('State')) {
-			$msg = 'No ha sido posible registrar el bombeador al tener estado de ' . Pumper::NEW;
-			$this->fatal($msg);
+            $this->fatal('It has not been possible to register the pump when it has been ' . Pumper::NEW);
 			exit(0);
 		} else {
 			$this->pumper->set('State', Pumper::ENDED);
@@ -570,9 +573,11 @@ class DexPumper
 		error_log($_msg);
 	}
 	
+	/**
+	 * Check if server state is active for pumping for each pumper operation
+	 */
 	private function checkServer() : void
 	{
-	    // Check if server state is active for pumping for each pumper operation
 	    $server = new Server($this->pumper->get('IdServer'));
 	    if (!$server->get('ActiveForPumping')) {
 	        Logger::warning('The server ' . $server->get('Description') . ' has been disabled for pumping. Aborting pumper '

@@ -719,7 +719,7 @@ input[type="checkbox"] + label, input[type="radio"]+ label {
 
 .input-slide:not(:checked) + .label-slide, .input-slide:checked + .label-slide{
     color: gray;
-    padding-left: 70px!important;
+    padding-left: 60px !important;
 }
 
 .input-slide:not(:checked) + .label-slide::after {

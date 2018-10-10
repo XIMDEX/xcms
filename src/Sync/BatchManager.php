@@ -270,7 +270,7 @@ class BatchManager
                 Logger::error($e->getMessage());
             }
         }
-        if (!$frames) {
+        if (!$frames and $idPortalFrame) {
             $portal = new PortalFrames($idPortalFrame);
             Logger::warning('Deleting portal frame without related batchs');
             $portal->delete();
@@ -545,9 +545,9 @@ class BatchManager
             Logger::warning(sprintf('Found %s Batchs without Frames, were marked as NoFrames', $db->numRows));
         }
         
-        // Remove portal frames without batchs and created time more than 10 minutes
+        // Remove portal frames without batchs and created time more than 1 minute
         try {
-            $voidPortalFrames = PortalFrames::getVoidPortalFrames(600);
+            $voidPortalFrames = PortalFrames::getVoidPortalFrames(60);
         } catch (\Exception $e) {
             Logger::error($e->getMessage());
         }

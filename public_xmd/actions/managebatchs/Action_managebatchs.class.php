@@ -221,10 +221,11 @@ class Action_managebatchs extends ActionAbstract
             'startTime' => Date::formatTime($portal->get('StartTime')),
             'endTime' => Date::formatTime($portal->get('EndTime')),
             'sfTotal' => $portal->get('SFtotal'),
-            'sfActive' => $portal->get('SFactive'),
+            'sfActive' => (string) ($portal->get('SFactive') - $portal->get('SFsoftError')),
             'sfPending' => $portal->get('SFpending'),
             'sfSuccess' => $portal->get('SFsuccess'),
-            'sfErrored' => $portal->get('SFerrored')
+            'sfFatalError' => $portal->get('SFfatalError'),
+            'sfSoftError' => $portal->get('SFsoftError')
         ];
         return $report;
     }

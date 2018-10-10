@@ -63,13 +63,17 @@
                             style="width: #/ portal.sfActive * 100 / portal.sfTotal /#%">
                         #/portal.sfActive/# active
                     </div>
+                    <div ng-if="portal.sfSoftError > 0" class="progress-bar progress-bar-striped progress-bar-errored-soft active" 
+                            role="progressbar" style="width: #/ portal.sfSoftError * 100 / portal.sfTotal /#%">
+                        #/portal.sfSoftError/# soft errors
+                    </div>
+                    <div ng-if="portal.sfFatalError > 0" class="progress-bar progress-bar-striped progress-bar-errored-fatal" role="progressbar" 
+                            style="width: #/ portal.sfFatalError * 100 / portal.sfTotal /#%">
+                        #/portal.sfFatalError/# fatal errors
+                    </div>
                     <div ng-if="portal.sfSuccess > 0" class="progress-bar progress-bar-striped progress-bar-success" role="progressbar" 
                             style="width: #/ portal.sfSuccess * 100 / portal.sfTotal /#%">
                         #/portal.sfSuccess/# success
-                    </div>
-                    <div ng-if="portal.sfErrored > 0" class="progress-bar progress-bar-striped progress-bar-errored" role="progressbar" 
-                            style="width: #/ portal.sfErrored * 100 / portal.sfTotal /#%">
-                        #/portal.sfErrored/# errors
                     </div>
                 </div>
                 <small>

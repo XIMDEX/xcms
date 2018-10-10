@@ -87,16 +87,18 @@ class Server extends ServersOrm
         }
         $this->ActiveForPumping = 0;
         $this->CyclesToRetryPumping = $this->CyclesToRetryPumping + 1;
-        // $users = User;
         if (!$delay or (self::MAX_CYCLES_TO_RETRY_PUMPING and $this->CyclesToRetryPumping > self::MAX_CYCLES_TO_RETRY_PUMPING)) {
                 
             // Disable the server permanently
             $this->DelayTimeToEnableForPumping = null;
+            if ($this->update() === false) {
+                return false;
+            }
             $message = 'Disabling the server ' . $this->Description . ' (' . $this->IdServer . ') for pumping permanently';
             Logger::warning($message);
             
-            // TODO ajlucena Send email
-            // mail($user->getEmail(), 'Server ' . $this->Description . ' has been disabled permanently', $message);
+            // Send emails
+            User::sendNotifications('Server ' . $this->Description . ' has been disabled permanently', $message);
         } else {
             
             // Disable the server temporally
@@ -107,16 +109,15 @@ class Server extends ServersOrm
                 $delayTime = 86400;
             }
             $this->DelayTimeToEnableForPumping = time() + $delayTime;
-            $message = 'Disabling the server ' . $this->Description . ' (' . $this->IdServer . ') temporally for pumping after cycle '
+            if ($this->update() === false) {
+                return false;
+            }
+            $message = 'Server ' . $this->Description . ' (' . $this->IdServer . ') have been temporally for pumping after cycle '
                 . $this->CyclesToRetryPumping . ' (Will be restarted at ' . Date::formatTime($this->get('DelayTimeToEnableForPumping')) . ')';
             Logger::warning($message);
             
-            // TODO ajlucena Send email
-            // mail($user->getEmail(), 'Server ' . $this->Description . ' has been disabled temporally', $message);
-        }
-        $res = $this->update();
-        if ($res === false) {
-            return false;
+            // Send emails
+            User::sendNotifications('Server ' . $this->Description . ' has been disabled temporally', $message);
         }
         return true;
     }

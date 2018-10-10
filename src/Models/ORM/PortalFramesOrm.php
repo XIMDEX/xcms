@@ -48,7 +48,8 @@ class PortalFramesOrm extends GenericData
         'SFactive' => array('type' => 'int(12)', 'not_null' => 'true'),
         'SFpending' => array('type' => 'int(12)', 'not_null' => 'true'),
         'SFsuccess' => array('type' => 'int(12)', 'not_null' => 'true'),
-        'SFerrored' => array('type' => 'int(12)', 'not_null' => 'true')
+        'SFfatalError' => array('type' => 'int(12)', 'not_null' => 'true'),
+        'SFsoftError' => array('type' => 'int(12)', 'not_null' => 'true')
     );
     public $_uniqueConstraints = array();
     public $_indexes = array('id');
@@ -65,5 +66,6 @@ class PortalFramesOrm extends GenericData
     public $SFactive = 0;
     public $SFpending = 0;
     public $SFsuccess = 0;
-    public $SFerrored = 0;
+    public $SFfatalError = 0;
+    public $SFsoftError = 0;
 }

@@ -52,3 +52,6 @@ ALTER TABLE `Batchs` CHANGE `ServerFramesError` `ServerFramesFatalError` INT(12)
 ALTER TABLE `Batchs` ADD `ServerFramesTemporalError` INT(12) UNSIGNED NOT NULL DEFAULT '0' AFTER `ServerFramesFatalError`;
 ALTER TABLE `Batchs` CHANGE `Playing` `Playing` INT(12) UNSIGNED NOT NULL DEFAULT '0';
 ALTER TABLE `Batchs` CHANGE `Priority` `Priority` FLOAT(3,2) UNSIGNED NULL DEFAULT '0.5';
+
+ALTER TABLE `PortalFrames` CHANGE `SFerrored` `SFfatalError` INT(12) UNSIGNED NOT NULL DEFAULT '0';
+ALTER TABLE `PortalFrames` ADD `SFsoftError` INT(12) UNSIGNED NOT NULL DEFAULT '0' AFTER `SFfatalError`;

@@ -80,6 +80,7 @@ class Action_checkstatus extends ActionAbstract
         $states = array();
         $wf = new WorkFlow($idNode);
         $states = $wf->GetAllStates();
+        $statesFull = [];
         foreach ($states as $state) {
             $ps = new PipeStatus($state);
             $count = isset($data[$state]) ? count($data[$state]) : 0;

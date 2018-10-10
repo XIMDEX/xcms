@@ -79,8 +79,12 @@
 	background-color: #75CD9D;
 }
 
-.progress-bar-errored {
+.progress-bar-errored-fatal {
     background-color: #B40404;
+}
+
+.progress-bar-errored-soft {
+    background-color: #DF0174;
 }
 
 .media .clock::before{
