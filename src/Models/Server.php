@@ -59,13 +59,21 @@ class Server extends ServersOrm
         return $this->serverNode->GetChannels($this->get('IdServer'));
     }
     
-    public function resetForPumping()
+    public function resetForPumping() : bool
     {
-        Logger::debug('Server ' . $this->Description . ' is now able for pumping (connection successful)', true);
+        if (!$this->CyclesToRetryPumping) {
+            return true;
+        }
         $this->ActiveForPumping = 1;
         $this->DelayTimeToEnableForPumping = null;
         $this->CyclesToRetryPumping = 0;
-        return $this->update();
+        if ($this->update() === false) {
+            return false;
+        }
+        $message = 'Server ' . $this->Description . ' (' . $this->IdServer . ') is now able for pumping (connection successful)';
+        Logger::info($message, true);
+        User::sendNotifications('Server ' . $this->Description . ' has been activated', $message);
+        return true;
     }
     
     public function enableForPumping() : bool
@@ -73,8 +81,7 @@ class Server extends ServersOrm
         Logger::info('Enabling the server ' . $this->Description . ' for pumping');
         $this->ActiveForPumping = 1;
         $this->DelayTimeToEnableForPumping = null;
-        $res = $this->update();
-        if ($res === false) {
+        if ($this->update() === false) {
             return false;
         }
         return true;
@@ -95,9 +102,7 @@ class Server extends ServersOrm
                 return false;
             }
             $message = 'Disabling the server ' . $this->Description . ' (' . $this->IdServer . ') for pumping permanently';
-            Logger::warning($message);
-            
-            // Send emails
+            Logger::error($message);
             User::sendNotifications('Server ' . $this->Description . ' has been disabled permanently', $message);
         } else {
             
@@ -112,11 +117,9 @@ class Server extends ServersOrm
             if ($this->update() === false) {
                 return false;
             }
-            $message = 'Server ' . $this->Description . ' (' . $this->IdServer . ') have been temporally for pumping after cycle '
+            $message = 'Server ' . $this->Description . ' (' . $this->IdServer . ') have been delayed temporally for pumping after cycle '
                 . $this->CyclesToRetryPumping . ' (Will be restarted at ' . Date::formatTime($this->get('DelayTimeToEnableForPumping')) . ')';
             Logger::warning($message);
-            
-            // Send emails
             User::sendNotifications('Server ' . $this->Description . ' has been disabled temporally', $message);
         }
         return true;

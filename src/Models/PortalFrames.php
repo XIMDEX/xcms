@@ -150,7 +150,7 @@ class PortalFrames extends PortalFramesOrm
      */
     public static function getByState(string $state, int $endTime = null, int $idNodeGenerator = null) : array
     {
-        $query = 'SELECT id FROM PortalFrames WHERE Status = \'' . $state . '\'';
+        $query = 'SELECT id FROM PortalFrames WHERE Status = \'' . $state . '\' AND SFtotal > 0';
         if ($endTime) {
             
             // Maximum time in seconds to get ended portal frames
