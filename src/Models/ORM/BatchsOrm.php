@@ -47,9 +47,8 @@ class BatchsOrm extends GenericData
         'Type' => array('type' => "varchar(255)", 'not_null' => 'true'),
         'IdBatchDown' => array('type' => "int(12)", 'not_null' => 'false'),
         'IdNodeGenerator' => array('type' => "int(12)", 'not_null' => 'false'),
-        'Priority' => array('type' => "float(3, 2)", 'not_null' => 'false'),
-        'MajorCycle' => array('type' => "int(12)", 'not_null' => 'false'),
-        'MinorCycle' => array('type' => "int(12)", 'not_null' => 'false'),
+        'Priority' => array('type' => "float(3, 2)", 'not_null' => 'true'),
+        'Cycles' => array('type' => "int(12)", 'not_null' => 'true'),
         'IdPortalFrame' => array('type' => "int(12)", 'not_null' => 'true'),
         'UserId' => array('type' => "int(12)", 'not_null' => 'false'),
         'ServerId' => array('type' => "int(12)", 'not_null' => 'true')
@@ -69,9 +68,8 @@ class BatchsOrm extends GenericData
     public $Type = 0;
     public $IdBatchDown;
     public $IdNodeGenerator;
-    public $Priority = 0.00;
-    public $MajorCycle = 0;
-    public $MinorCycle = 0;
+    public $Priority = 0.50;
+    public $Cycles = 0;
     public $IdPortalFrame;
     public $UserId;
     public $ServerId;

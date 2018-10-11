@@ -34,9 +34,10 @@ use Ximdex\Utils\Date;
 
 class Server extends ServersOrm
 {
-    private $serverNode;
-    const MAX_CYCLES_TO_RETRY_PUMPING = 10;
+    const MAX_CYCLES_TO_RETRY_PUMPING = 0;
     const SECONDS_TO_WAIT_FOR_RETRY_PUMPING = 60;
+    
+    private $serverNode;
     
     public function __construct(int $id = null)
     {

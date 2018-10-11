@@ -48,6 +48,7 @@ class Batch extends BatchsOrm
     const ENDED = 'Ended';
     const CLOSING = 'Closing';
     const NOFRAMES = 'NoFrames';
+    const STOPPED = 'Stopped';
     const PRIORITY_TYPE_DOWN = 0.9;
 
     public function set($attribute, $value)
@@ -121,24 +122,27 @@ class Batch extends BatchsOrm
     /**
      *  Increases the number of cycles of a Batch
      *  
-     *  @param int majorCycle
-     *  @param int minorCycle
-     *  @return array
+     *  @return bool
      */
-    public function calcCycles($majorCycle, $minorCycle)
+    public function calcCycles() : bool
     {
-        if (is_null($majorCycle) || is_null($minorCycle)) {
-            Logger::error("ERROR Params $majorCycle - $minorCycle");
-            return null;
+        $cycles = (int) $this->get('Cycles') + 1;
+        $this->set('Cycles', $cycles);
+        return true;
+    }
+    
+    public function calcPriority() : bool
+    {
+        $sucessFrames = (int) $this->get('ServerFramesSuccess');
+        $fatalErrorFrames = (int) $this->get('ServerFramesFatalError');
+        $temporalErrorFrames = (int) $this->get('ServerFramesTemporalError');
+        $processedFrames = $sucessFrames + $fatalErrorFrames + $temporalErrorFrames;
+        if ($processedFrames) {
+            $priority = round($sucessFrames / $processedFrames, 2);
+            Logger::info('Set priority to ' . $priority . ' for batch ' . $this->IdBatch);
+            $this->set('Priority', $priority);
         }
-        if ($minorCycle > $majorCycle) {
-            $majorCycle++;
-            $minorCycle = 0;
-            Logger::info("Up to major cycle $majorCycle batch " . $this->get('IdBatch'));
-        } else {
-            $minorCycle++;
-        }
-        return array($majorCycle, $minorCycle);
+        return true;
     }
 
     /**

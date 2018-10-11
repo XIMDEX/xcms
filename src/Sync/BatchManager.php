@@ -743,12 +743,12 @@ class BatchManager
             return [];
         }
         $dbObj = new Db();
-        $sql = 'SELECT IdBatch, Type, IdNodeGenerator, MajorCycle, MinorCycle, ServerFramesTotal FROM Batchs' 
+        $sql = 'SELECT IdBatch, Type, IdNodeGenerator, Cycles, ServerFramesTotal FROM Batchs' 
             . ' WHERE Playing = 1 AND State = \'' . Batch::INTIME . '\' AND ServerFramesTotal > 0';
         if ($serversEnabled) {
             $sql .= ' AND ServerId IN (' . implode(', ', $serversEnabled) . ')';
         }
-        $sql .= ' ORDER BY Priority DESC, MajorCycle, MinorCycle, Type = \'' . Batch::TYPE_DOWN . '\' DESC, IdBatch LIMIT 1';
+        $sql .= ' ORDER BY Priority DESC, Cycles, Type = \'' . Batch::TYPE_DOWN . '\' DESC, IdBatch LIMIT 1';
         if ($dbObj->Query($sql) === false) {
         	return false;
         }
@@ -759,8 +759,7 @@ class BatchManager
         $list['id'] = $dbObj->GetValue('IdBatch');
         $list['type'] = $dbObj->GetValue('Type');
         $list['nodegenerator'] = $dbObj->GetValue('IdNodeGenerator');
-        $list['majorcycle'] = $dbObj->GetValue('MajorCycle');
-        $list['minorcycle'] = $dbObj->GetValue('MinorCycle');
+        $list['cycles'] = $dbObj->GetValue('Cycles');
         $list['totalserverframes'] = $dbObj->GetValue('ServerFramesTotal');
         return $list;
     }
@@ -778,43 +777,25 @@ class BatchManager
             return false;
         }
         $batch = new Batch($idBatch);
-        /*
-        $allFrames = (int) $batch->get('ServerFramesTotal');
-        if ($allFrames == 0) {
-            Logger::info('Batch without ServerFrames');
-            $batch->set('Playing', 0);
-            $batch->update();
+        if (! $batch->calcCycles()) {
+            Logger::error('Calculating cycles for batch ' . $idBatch);
             return false;
         }
-        */
-        $majorCycle = $batch->get('MajorCycle');
-        $minorCycle = $batch->get('MinorCycle');
-        /*
-        // Unplaying batchs that exceed max num cycles
-        if ($majorCycle > MAX_NUM_CICLOS_BATCH) {
-            $batch->set('Playing', 0);
-            $batch->update();
-            Logger::info('Unplaying batch ' . $idBatch);
-            return true;
+        
+        // Stopping batch that exceed max num cycles
+        if ($batch->get('ServerFramesTotal')) {
+            $maxCycles = (int) MAX_NUM_CICLOS_BATCH * $batch->get('ServerFramesTotal');
+            if ($batch->get('Cycles') > $maxCycles) {
+                $batch->set('State', Batch::STOPPED);
+                $batch->set('Cycles', $maxCycles);
+                Logger::info('Stopping batch ' . $idBatch . ' after ' . $batch->get('Cycles') . ' cycles');
+            }
         }
-        */
-        $cycles = $batch->calcCycles($majorCycle, $minorCycle);
-        if (is_null($cycles)) {
-            Logger::error('ERROR Calc cycles');
-            return false;
-        }
-        $batch->set('MajorCycle', $cycles[0]);
-        $batch->set('MinorCycle', $cycles[1]);
         
         // Calculate batch priority
-        $sucessFrames = (int) $batch->get('ServerFramesSuccess');
-        $fatalErrorFrames = (int) $batch->get('ServerFramesFatalError');
-        $temporalErrorFrames = (int) $batch->get('ServerFramesTemporalError');
-        $processedFrames = $sucessFrames + $fatalErrorFrames + $temporalErrorFrames;
-        if ($processedFrames) {
-            $priority = round($sucessFrames / $processedFrames, 2);
-            Logger::info('Set priority to ' . $priority . ' for batch ' . $idBatch);
-            $batch->set('Priority', $priority);
+        if (! $batch->calcPriority()) {
+            Logger::error('Calculating priority for batch ' . $idBatch);
+            return false;
         }
         if ($batch->update() === false) {
             return false;

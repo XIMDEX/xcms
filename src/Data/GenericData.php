@@ -310,7 +310,8 @@ class GenericData
                 continue;
             }
             if (('true' == $descriptor['not_null']) && !isset($descriptor['auto_increment'])) {
-                if (empty($value) && !in_array($fieldType, $dataTypeInt)) {
+                if (empty($value) && !in_array($fieldType, $dataTypeInt) && !in_array($fieldType, $dataTypeFloat) 
+                    && !in_array($fieldType, $dataTypeDouble)) {
                     $this->messages->add(sprintf(_("You must set the field %s"), $key), MSG_TYPE_ERROR);
                 }
             }
