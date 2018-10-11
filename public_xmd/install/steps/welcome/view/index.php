@@ -1,6 +1,7 @@
 <?php
+
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -24,12 +25,12 @@
  *  @version $Revision$
  */
 ?>
-
 <form method="post" ng-controller="WelcomeController" ng-cloak>
     <h2 ng-hide="checked">Welcome to Ximdex CMS's web installer!</h2>
     <h2 ng-show="checked">System Requirements</h2>
-    <p ng-hide="checked">Build flexible, scalable and secure Web Portals with the Semantic CMS XIMDEX and its modules: Xowl, to automatically enhance your content; Xlyre for linked open data; Xfind, 
-    	to index and retrieve information, Xhawk to check content integrity, etc. </p>
+    <p ng-hide="checked">Build flexible, scalable and secure Web Portals with the Semantic CMS XIMDEX and its modules: Xowl
+    	, to automatically enhance your content; Xlyre for linked open data; Xfind
+    	, to index and retrieve information, Xhawk to check content integrity, etc.</p>
    	<p ng-show="checked">
    		All mandatory requirements are checked. Now your system is able to install CMS XIMDEX propertly.
    	</p>

@@ -24,10 +24,7 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
-
-global $ximdexName, $ximdexDataBaseHostName, $goMethod;
 ?>
-
 <form method="post"  ng-controller="InstallDatabaseController" ng-cloak name="formDataBase" ui-keypress="{13:'sendForm($event)'}" 
 		xim-install-instance-name="<?php echo $ximdexName; ?>" xim-data-base-host-Name="<?php echo $ximdexDataBaseHostName; ?>">
     <input type="hidden" name="method" value="<?php echo $goMethod ?>" />    

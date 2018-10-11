@@ -38,15 +38,23 @@ require_once APP_ROOT_PATH . '/install/managers/InstallManager.class.php';
  */
 class InstallController extends IController
 {
-    /*Properties*/
-    private $steps = array(); //Defined steps in installl.xml
-    private $currentState = null; //Name of the current state.
-    private $installManager = null; //Install manager object
-
-    /*Methods*/
-
     /**
-     * Constructor. Init the class properties.
+     * Defined steps in installl.xml
+     */
+    private $steps = array();
+    
+    /**
+     * Name of the current state
+     */
+    private $currentState = null;
+    
+    /**
+     * Install manager object
+     */
+    private $installManager = null;
+    
+    /**
+     * Constructor. Init the class properties
      */
     public function __construct()
     {
@@ -62,7 +70,8 @@ class InstallController extends IController
     }
 
     /**
-     * Indicate if Ximdex is installed.
+     * Indicate if Ximdex is installed
+     * 
      * @return boolean True if installed, false otherwise
      */
     public static function isInstalled()
@@ -72,19 +81,17 @@ class InstallController extends IController
     }
 
     /**
-     * Run the selected method for the current step.
+     * Run the selected method for the current step
      */
     public function dispatch()
     {
-        //Set request with $_FILES, $_POST and $_GET arrays
+        // Set request with $_FILES, $_POST and $_GET arrays
         $this->setToRequest();
 
-        //Instancing the step object,
-        //setting step properties
-        //and get the method to run
+        // Instancing the step object, setting step properties and get the method to run
         $installStep = $this->compose();
-        $method = (null !== $this->request->getParam('method')) ? $this->request->getParam('method') : "index";
-        $this->request->setParam("method", $method);
+        $method = (null !== $this->request->getParam('method')) ? $this->request->getParam('method') : 'index';
+        $this->request->setParam('method', $method);
         $installStep->setRequest($this->request);
         $installStep->setResponse($this->response);
         if ($installStep) {
@@ -109,6 +116,7 @@ class InstallController extends IController
 
     /**
      * Instance an object for the current step
+     * 
      * @return object Step Object
      */
     public function compose()

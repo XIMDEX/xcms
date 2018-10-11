@@ -25,10 +25,8 @@
  *  @version $Revision$
  */
 ?>
-
 <h2>Installing Ximdex</h2>	
 <?php
-    global $exceptions;
 	foreach ($exceptions as $exception) {
 		foreach ($exception["messages"] as $i => $message) {			
 		?>

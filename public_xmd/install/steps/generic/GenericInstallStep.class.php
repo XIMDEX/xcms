@@ -65,7 +65,7 @@ class GenericInstallStep
 			$$name = $value;			
 		}
 		$js_files = $this->js_files;
-		$view = $view? $view : $this->request->getParam('method');
+		$view = $view ? $view : $this->request->getParam('method');
 		$goMethod = isset($values['go_method'])? $values['go_method']: $view;
 		$folderName = trim(strtolower($this->steps[$this->currentStep]['class-name']));
 		if ($this->exceptions && is_array($this->exceptions) && count($this->exceptions)) {
@@ -73,6 +73,7 @@ class GenericInstallStep
 			$includeTemplateStep = APP_ROOT_PATH . '/install/steps/generic/view/exception.php';
 		} else {
 			$includeTemplateStep = APP_ROOT_PATH . "/install/steps/{$folderName}/view/{$view}.php";
+			$exceptions = [];
 		}
 		Logger::debug('Go method: ' . $goMethod);
 		Logger::debug('JS files: ' . print_r($js_files, true));

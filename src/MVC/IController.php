@@ -1,6 +1,7 @@
 <?php
+
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -24,7 +25,6 @@
  * @version $Revision$
  */
 
-
 namespace Ximdex\MVC;
 
 use Ximdex\Logger;
@@ -33,41 +33,24 @@ use Ximdex\Runtime\Response;
 use Ximdex\Utils\Messages;
 
 /**
- *
  * @brief Controller pseudo abstract class for Actions, Applications and Controllers
  *
  * Pseudo abstract class who serves as base for Actions, Applications and Controllers, provide
  * methods to manage the request object and errors
- *
  */
 class IController
 {
     /**
      * Objeto Request para almacenar parámetros de petición
      */
-    /**
-     * @var Request
-     */
     var $request;
-    /**
-     * @var Response
-     */
     var $response;
-    /**
-     * @var bool
-     */
     var $hasError;
-    /**
-     * @var
-     */
     var $msgError;
-    /**
-     * @var Messages
-     */
     var $messages;
 
     /**
-     * IController constructor.
+     * IController constructor
      */
     public function __construct()
     {
@@ -86,20 +69,15 @@ class IController
     }
 
     /**
-     * TODO: Cambiar toda la gestión de errores en base a variable booleana + array simple por el objeto messages
-     * Getter
+     * TODO Cambiar toda la gestión de errores en base a variable booleana + array simple por el objeto messages Getter
      */
-        /**
-         *
-         */
     function hasError()
     {
-         if (isset ($this->hasError)) return $this->hasError;
+        if (isset ($this->hasError)) {
+            return $this->hasError;
+        }
     }
 
-    /**
-     *
-     */
     function getMsgError()
     {
         if (isset ($this->msgError)) {
@@ -116,6 +94,7 @@ class IController
         unset( $module ) ;
         $this->hasError = true;
         $this->msgError = $msg;
+        
         // Registra un apunte en el log
         Logger::error($msg);
     }

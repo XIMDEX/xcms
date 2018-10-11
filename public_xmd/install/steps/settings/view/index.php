@@ -1,6 +1,7 @@
 <?php
+
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -23,10 +24,7 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
-
-global $goMethod;
 ?>
-
 <form method="post" name="settingForm" ng-controller="SettingController" ng-submit="checkForm()" ng-cloak>
 	<input type="text" name="user" value="ximdex" style="display: none;" />
     <input type="hidden" name="method" value="<?php echo $goMethod ?>">
