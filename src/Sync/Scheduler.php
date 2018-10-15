@@ -88,7 +88,6 @@ class Scheduler
                 die();
             }
             $activeAndEnabledServers = ServerNode::getServersForPumping();
-            Logger::debug('Active and enabled servers: ' . print_r($activeAndEnabledServers, true));
             if (!$activeAndEnabledServers || count($activeAndEnabledServers) == 0) {
                 
                 // There aren't Active & Enable servers...
@@ -106,7 +105,7 @@ class Scheduler
                 Logger::info('No processable batchs found');
                 
                 // Set current batchs to a new state and update frames stats
-                $batchManager->setBatchsActiveOrEnded($testTime, $activeAndEnabledServers);
+                $batchManager->setBatchsActiveOrEnded($testTime, $activeAndEnabledServers, false);
                 
                 // Calling Pumpers...
                 $pumperManager->callingPumpers($activeAndEnabledServers);

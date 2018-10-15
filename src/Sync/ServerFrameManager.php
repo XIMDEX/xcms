@@ -272,7 +272,7 @@ class ServerFrameManager
                         $tasks[] = $dbObj->GetValue("IdSync");
                         $dbObj->Next();
                     }
-                    Logger::debug("Setting tasks $numTasksForPumping for pumper $pumperId");
+                    Logger::info("Setting tasks $numTasksForPumping for pumper $pumperId");
                     foreach ($tasks as $task) {
                         Logger::debug('Running processTaskForServerFrame with task: ' . $task);
                         $this->processTaskForServerFrame($task);
@@ -283,7 +283,7 @@ class ServerFrameManager
                     Logger::debug("All tasks pumped for pumper $pumperId");
                 }
             } else {
-                Logger::debug("Pumper $pumperId full");
+                Logger::warning("Pumper $pumperId full");
             }
         }
     }

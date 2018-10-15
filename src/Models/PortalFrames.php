@@ -159,6 +159,7 @@ class PortalFrames extends PortalFramesOrm
         if ($idNodeGenerator) {
             $query .= ' AND IdNodeGenerator = ' . $idNodeGenerator;
         }
+        $query .= ' ORDER BY SFsoftError, id DESC';
         $db = new Db();
         if ($db->Query($query) === false) {
             throw new \Exception('Could not obtain a list of portal frames with ' . $state);

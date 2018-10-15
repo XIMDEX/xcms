@@ -36,7 +36,6 @@ use Ximdex\Models\ServerFrame;
 use Ximdex\Models\NodeFrame;
 use Ximdex\Runtime\App;
 use Ximdex\Cli\CliParser;
-use Ximdex\Sync\BatchManager;
 
 /**
  * Constants definition
@@ -438,6 +437,7 @@ class DexPumper
 			    // The error is alocated in the local server, no more retries
 			    $this->fatal('Sync file problem with ID: ' . $this->serverFrame->IdSync . '. Server frame marked as errored');
 			    $this->serverFrame->set('State', ServerFrame::DUE2INWITHERROR);
+			    $this->serverFrame->set('ErrorLevel', ServerFrame::ERROR_LEVEL_HARD);
 			}
 			elseif ($retries >= self::RETRIES_TO_FATAL_ERROR) {
 			    $this->error('Maximum of retries reached (' . self::RETRIES_TO_FATAL_ERROR . ') for server frame: ' 
@@ -451,8 +451,6 @@ class DexPumper
 			    $this->serverFrame->set('ErrorLevel', ServerFrame::ERROR_LEVEL_SOFT);
 			}
 			$this->serverFrame->update();
-			$batchManager = new BatchManager();
-			$batchManager->setBatchsActiveOrEnded();
 			return false;
 		}
 		if ($status !== null) {

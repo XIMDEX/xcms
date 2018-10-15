@@ -94,20 +94,18 @@ class Action_managebatchs extends ActionAbstract
         $this->filterParams();
         $report = [];
         try {
-            $portals = PortalFrames::getByState(PortalFrames::STATUS_CREATED);
-            foreach ($portals as $portal) {
-                // $report['portals']['created'][] = self::portalInfo($portal);
-                $report[] = self::portalInfo($portal);
-            }
+            $order = 1;
             $portals = PortalFrames::getByState(PortalFrames::STATUS_ACTIVE);
             foreach ($portals as $portal) {
-                // $report['portals']['active'][] = self::portalInfo($portal);
-                $report[] = self::portalInfo($portal);
+                $report[] = self::portalInfo($portal, $order);
             }
             $portals = PortalFrames::getByState(PortalFrames::STATUS_ENDED, 3600);
             foreach ($portals as $portal) {
-                // $report['portals']['ended'][] = self::portalInfo($portal);
-                $report[] = self::portalInfo($portal);
+                $report[] = self::portalInfo($portal, $order);
+            }
+            $portals = PortalFrames::getByState(PortalFrames::STATUS_CREATED);
+            foreach ($portals as $portal) {
+                $report[] = self::portalInfo($portal, $order);
             }
         } catch (Exception $e) {
             $this->sendJSON(['error' => $e->getMessage()]);
@@ -200,7 +198,7 @@ class Action_managebatchs extends ActionAbstract
         return $hasChanged;
     }
     
-    private static function portalInfo(PortalFrames $portal) : array
+    private static function portalInfo(PortalFrames $portal, int & $order) : array
     {
         $node = new Node($portal->get('IdNodeGenerator'));
         if (!$portal->get('CreatedBy')) {
@@ -225,7 +223,8 @@ class Action_managebatchs extends ActionAbstract
             'sfPending' => $portal->get('SFpending'),
             'sfSuccess' => $portal->get('SFsuccess'),
             'sfFatalError' => $portal->get('SFfatalError'),
-            'sfSoftError' => $portal->get('SFsoftError')
+            'sfSoftError' => $portal->get('SFsoftError'),
+            'order' => $order++
         ];
         return $report;
     }

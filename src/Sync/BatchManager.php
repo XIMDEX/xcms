@@ -532,7 +532,6 @@ class BatchManager
 
     public function checkFramesIntegrity()
     {
-        // NOTE: See setBatchsActiveOrEnded and getBatchToProcess
         // Ensure that batchs have frames or getBatchToProcess will return the same batch over and over
         $sql = "update Batchs set State = '" . Batch::NOFRAMES . "' ";
         $sql .= 'where idbatch not in (select distinct IdBatchUp from ServerFrames) and idbatch not in (select distinct IdBatchDown ';
@@ -560,10 +559,12 @@ class BatchManager
     /**
      * Starts (Ends) the activity of Batchs
      * 
-     * @param int testTime
+     * @param int $testTime
+     * @param array $servers
+     * @param bool $updateCycles
      * @return bool
      */
-    public function setBatchsActiveOrEnded($testTime = null, array $servers = null) : bool
+    public function setBatchsActiveOrEnded(int $testTime = null, array $servers = null, bool $updateCycles = true) : bool
     {
         if (! $servers) {
             
@@ -627,8 +628,10 @@ class BatchManager
                 }
             }
             $batch->update();
-            if (! BatchManager::setCyclesAndPriority($idBatch)) {
-                return false;
+            if ($updateCycles) {
+                if (! BatchManager::setCyclesAndPriority($idBatch)) {
+                    return false;
+                }
             }
             try {
                 PortalFrames::updatePortalFrames($batch);
@@ -690,8 +693,10 @@ class BatchManager
                         Logger::info('Ending batch type Down with ID ' . $idBatch);
                     }
                     $batch->update();
-                    if (! BatchManager::setCyclesAndPriority($idBatch)) {
-                        return false;
+                    if ($updateCycles) {
+                        if (! BatchManager::setCyclesAndPriority($idBatch)) {
+                            return false;
+                        }
                     }
                     try {
                         PortalFrames::updatePortalFrames($batch);
@@ -743,12 +748,15 @@ class BatchManager
             return [];
         }
         $dbObj = new Db();
-        $sql = 'SELECT IdBatch, Type, IdNodeGenerator, Cycles, ServerFramesTotal FROM Batchs' 
-            . ' WHERE Playing = 1 AND State = \'' . Batch::INTIME . '\' AND ServerFramesTotal > 0';
+        $sql = 'SELECT b.IdBatch, b.Type, b.IdNodeGenerator, b.Cycles, b.ServerFramesTotal FROM Batchs b';
+        $sql .= ' INNER JOIN ServerFrames sf ON ((sf.IdBatchUp = b.IdBatch AND sf.State IN (\'' . ServerFrame::PENDING . '\', \'' 
+            . ServerFrame::DUE2IN_ . '\')) OR (sf.IdBatchDown = b.IdBatch AND sf.State IN (\'' . ServerFrame::PENDING . '\', \'' 
+            . ServerFrame::DUE2OUT_ . '\')))';
+        $sql .= ' WHERE b.Playing = 1 AND b.State = \'' . Batch::INTIME . '\' AND b.ServerFramesTotal > 0';
         if ($serversEnabled) {
-            $sql .= ' AND ServerId IN (' . implode(', ', $serversEnabled) . ')';
+            $sql .= ' AND b.ServerId IN (' . implode(', ', $serversEnabled) . ')';
         }
-        $sql .= ' ORDER BY Priority DESC, Cycles, Type = \'' . Batch::TYPE_DOWN . '\' DESC, IdBatch LIMIT 1';
+        $sql .= ' ORDER BY b.Priority DESC, b.Cycles, b.Type = \'' . Batch::TYPE_DOWN . '\' DESC, b.IdBatch LIMIT 1';
         if ($dbObj->Query($sql) === false) {
         	return false;
         }
@@ -788,7 +796,7 @@ class BatchManager
             if ($batch->get('Cycles') > $maxCycles) {
                 $batch->set('State', Batch::STOPPED);
                 $batch->set('Cycles', $maxCycles);
-                Logger::info('Stopping batch ' . $idBatch . ' after ' . $batch->get('Cycles') . ' cycles');
+                Logger::warning('Stopping batch ' . $idBatch . ' after ' . $batch->get('Cycles') . ' cycles');
             }
         }
         
