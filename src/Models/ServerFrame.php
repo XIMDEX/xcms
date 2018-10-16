@@ -503,7 +503,7 @@ class ServerFrame extends ServerFramesOrm
         $dbObj = new Db();
         $servers = implode(',', $activeAndEnabledServers);
         $sql = "SELECT ServerFrames.IdSync FROM ServerFrames, Pumpers WHERE ServerFrames.PumperId = Pumpers.PumperId AND " . 
-            "(ServerFrames.State = '" . ServerFrame::DUE2IN_ . "' OR ServerFrames.State = '" . ServerFrame::DUE2OUT_ . "') " . 
+            "(ServerFrames.State = '" . ServerFrame::DUE2IN . "' OR ServerFrames.State = '" . ServerFrame::DUE2OUT . "') " . 
             "AND ServerFrames.PumperId = $pumperID AND Pumpers.IdServer IN ($servers)";
         $dbObj->Query($sql);
         $n = $dbObj->numRows;

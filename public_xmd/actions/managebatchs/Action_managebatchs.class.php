@@ -89,6 +89,9 @@ class Action_managebatchs extends ActionAbstract
         $this->params['searchText'] = FilterParameters::filterText($this->request->getParam('searchText'));
     }
 
+    /**
+     * Return a JSON code with a list of portal frames with its servers
+     */
     public function getFrameList()
     {
         $this->filterParams();
@@ -99,11 +102,11 @@ class Action_managebatchs extends ActionAbstract
             foreach ($portals as $portal) {
                 $report[] = self::portalInfo($portal, $order);
             }
-            $portals = PortalFrames::getByState(PortalFrames::STATUS_ENDED, 3600);
+            $portals = PortalFrames::getByState(PortalFrames::STATUS_CREATED);
             foreach ($portals as $portal) {
                 $report[] = self::portalInfo($portal, $order);
             }
-            $portals = PortalFrames::getByState(PortalFrames::STATUS_CREATED);
+            $portals = PortalFrames::getByState(PortalFrames::STATUS_ENDED, 3600);
             foreach ($portals as $portal) {
                 $report[] = self::portalInfo($portal, $order);
             }

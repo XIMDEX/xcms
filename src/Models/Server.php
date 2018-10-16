@@ -88,7 +88,7 @@ class Server extends ServersOrm
         return true;
     }
     
-    public function disableForPumping(bool $delay = false) : bool
+    public function disableForPumping(bool $delay = false, int $delayTime = null) : bool
     {
         if (! $this->ActiveForPumping) {
             return true;
@@ -108,7 +108,9 @@ class Server extends ServersOrm
         } else {
             
             // Disable the server temporally
-            $delayTime = pow($this->CyclesToRetryPumping, 3) * self::SECONDS_TO_WAIT_FOR_RETRY_PUMPING;
+            if (!$delayTime) {
+                $delayTime = pow($this->CyclesToRetryPumping, 3) * self::SECONDS_TO_WAIT_FOR_RETRY_PUMPING;
+            }
             if ($delayTime > 86400) {
                 
                 // Max time to retry 24 hours

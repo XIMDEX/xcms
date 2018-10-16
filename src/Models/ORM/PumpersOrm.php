@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -31,20 +31,26 @@ use Ximdex\Data\GenericData;
 
 class PumpersOrm extends GenericData
 {
-    var $_idField = 'PumperId';
-    var $_table = 'Pumpers';
-    var $_metaData = array(
+    public $_idField = 'PumperId';
+    public $_table = 'Pumpers';
+    public $_metaData = array(
         'PumperId' => array('type' => 'int(12)', 'not_null' => 'true', 'auto_increment' => 'true'),
         'IdServer' => array('type' => 'int(12)', 'not_null' => 'true'),
         'State' => array('type' => 'varchar(255)', 'not_null' => 'true'),
         'StartTime' => array('type' => 'int(12)', 'not_null' => 'false'),
         'CheckTime' => array('type' => 'int(12)', 'not_null' => 'false'),
-        'ProcessId' => array('type' => 'varchar(255)', 'not_null' => 'true')
+        'ProcessId' => array('type' => 'varchar(255)', 'not_null' => 'true'),
+        'VacancyLevel' => array('type' => 'int(12)', 'not_null' => 'false'),
+        'Pace' => array('type' => 'double', 'not_null' => 'false'),
+        'ProcessedTasks' => array('type' => 'int(12)', 'not_null' => 'true')
     );
-    var $PumperId;
-    var $IdServer;
-    var $State;
-    var $StartTime = 0;
-    var $CheckTime = 0;
-    var $ProcessId;
-} 
+    public $PumperId;
+    public $IdServer;
+    public $State;
+    public $StartTime = 0;
+    public $CheckTime = 0;
+    public $ProcessId;
+    public $VacancyLevel;
+    public $Pace;
+    public $ProcessedTasks = 0;
+}

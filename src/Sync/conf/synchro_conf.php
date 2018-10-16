@@ -38,6 +38,11 @@ if (! defined('SCHEDULER_CHUNK')) {
 	define('SCHEDULER_CHUNK', 10);
 }
 
+// Max time to wait while a pumper is fully loaded
+if (! defined('SLEEPING_TIME_IN_FULL_PUMPER')) {
+    define('SLEEPING_TIME_IN_FULL_PUMPER', 10);
+}
+
 // Max uploading time for a single file (10 minutes)
 if (! defined('MAX_CHECK_TIME_FOR_PUMPER')) {
 	define('MAX_CHECK_TIME_FOR_PUMPER', 600);

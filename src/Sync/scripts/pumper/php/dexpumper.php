@@ -28,6 +28,7 @@
 set_time_limit(0);
 
 use Ximdex\Logger;
+use Ximdex\IO\Connection\ConnectionManager;
 use Ximdex\IO\Connection\Connector;
 use Ximdex\Models\Batch;
 use Ximdex\Models\Pumper;
@@ -259,14 +260,12 @@ class DexPumper
 				$this->info("$totalToRename files to rename with batch: $batchId");
 				foreach ($filesToRename as $file) {
 					 $renameResult = $this->RenameFile($file);
-					 if ($renameResult) {
-                         $this->finishTask($file['IdSync']);
-					 } elseif ($renameResult === false) {
+					 if ($renameResult or $renameResult !== false) {
+                         $this->updateTask(true, ServerFrame::IN);
+					 } else {
 					     
                          // If this rename task does not work, generates a infinite loop
                          $this->updateTask(false, ServerFrame::DUE2INWITHERROR);
-					 } else {
-					     $this->finishTask($file['IdSync']);
 					 }
 				}
 			}
@@ -299,7 +298,7 @@ class DexPumper
 				$this->server = new Server($this->pumper->get('IdServer'));
 			}
 			$idProtocol = $this->server->get('IdProtocol');
-			$this->connection = \Ximdex\IO\Connection\ConnectionManager::getConnection($idProtocol, $this->server);
+			$this->connection = ConnectionManager::getConnection($idProtocol, $this->server);
 		}
 		$host = $this->server->get('Host');
 		$port = $this->server->get('Port');
@@ -461,18 +460,14 @@ class DexPumper
 		    $this->serverFrame->update();
 		    $server = new Server($this->pumper->get('IdServer'));
 		    $server->resetForPumping();
+		    $this->pumper->set('ProcessedTasks', $this->pumper->get('ProcessedTasks') + 1);
+		    $diffTime = $this->pumper->get('CheckTime') - $this->pumper->get('StartTime') + 1e-11;
+		    $pace = round($this->pumper->get('ProcessedTasks') / $diffTime, 10);
+		    $this->pumper->set('Pace', $pace);
 		}
 		$this->updateTimeInPumper();
 		return true;
 	}
-    
-    private function finishTask($idSync)
-    {
-        $serverFrame = new ServerFrame($idSync);
-        $serverFrame->set('State', ServerFrame::IN);
-        $serverFrame->update();
-        $this->updateTimeInPumper();
-    }
 
 	private function registerPumper()
 	{

@@ -158,7 +158,8 @@ class PumperManager
             if ($result == false) {
                 Logger::error('All pumpers with errors');
             }
+        } else {
+            Logger::debug('No pumpers to be called');
         }
-        Logger::debug('No pumpers to be called');
     }
 }

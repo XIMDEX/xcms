@@ -32,6 +32,7 @@ use Ximdex\Models\Pumper;
 use Ximdex\Models\Batch;
 use Ximdex\Models\ServerFrame;
 use Ximdex\Models\ChannelFrame;
+// use Ximdex\Models\Server;
 // use Ximdex\Models\NodeFrame;
 
 /**
@@ -254,9 +255,18 @@ class ServerFrameManager
         $dbObj = new \Ximdex\Runtime\Db();
         $serverFrame = new ServerFrame();
         $servers = implode(',', $activeAndEnabledServers);
+        Logger::info('ACTIVE PUMPERS STATS', false, 'white');
         foreach ($pumpers as $pumperId) {
             $numPendingTasks = $serverFrame->getUncompletedTasks($pumperId, $activeAndEnabledServers);
             $numTasksForPumping = $chunk - $numPendingTasks;
+            
+            // Pumper pace calculation
+            $pumper = new Pumper($pumperId);
+            $vacancyLevel = round($numTasksForPumping / $chunk * 100);
+            $pumper->set('VacancyLevel', $vacancyLevel);
+            $pumper->update();
+            Logger::info('Pumper ' . $pumperId . ': Vacancy level: ' . $vacancyLevel . '%. Pace = ' . $pumper->get('Pace') 
+                . '. Task for pumping: ' . $numTasksForPumping . ' of ' . $chunk . '');
             if ($numTasksForPumping > 0) {
                 $sql = "SELECT ServerFrames.IdSync FROM ServerFrames, Pumpers WHERE RIGHT(ServerFrames.State, 1) = '_'
 					AND ServerFrames.PumperId = $pumperId AND Pumpers.IdServer IN ($servers)
