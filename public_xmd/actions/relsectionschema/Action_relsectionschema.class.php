@@ -1,11 +1,7 @@
 <?php
-use Ximdex\Models\Node;
-use Ximdex\Models\NodeType;
-use Ximdex\MVC\ActionAbstract;
-use Ximdex\Runtime\App;
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -29,34 +25,37 @@ use Ximdex\Runtime\App;
  *  @version $Revision$
  */
 
-class Action_relsectionschema extends ActionAbstract {
+use Ximdex\Models\Node;
+use Ximdex\Models\NodeType;
+use Ximdex\MVC\ActionAbstract;
+use Ximdex\NodeTypes\NodeTypeConstants;
+use Ximdex\Runtime\App;
 
-	function index() {
-      		$idNode	= (int) $this->request->getParam("nodeid");
-		$actionID= (int) $this->request->getParam("actionid");
-
+class Action_relsectionschema extends ActionAbstract
+{
+	public function index()
+	{
+        $idNode	= (int) $this->request->getParam('nodeid');
+		$actionID= (int) $this->request->getParam('actionid');
 		$templates = array('VisualTemplate', 'RngVisualTemplate');
 		$nodeType = new NodeType();
-
+		$list = [];
 		foreach ($templates as $templateName) {
 			$nodeType->SetByName($templateName);
 			$idNodeType = $nodeType->get('IdNodeType');
-
 			if ($idNodeType > 0) {
 				$list[] = array('id' => $idNodeType, 'name' => $templateName);
 			}
 		}
 		$list[] = array('id' => 'all', 'name' => 'VisualTemplate y RngVisualTemplate');
-
 		$node = new Node($idNode);
-		($idNode==$node->getProject())?$type="p":$type="s";
+		($idNode == $node->getProject())?$type='p':$type='s';
 		$defaultSchema = $node->getProperty('DefaultSchema');
 		if (count($defaultSchema) > 1) {
 			$defaultSchema = 'all';
 		} else {
 			$defaultSchema = $defaultSchema[0]; 
 		}
-		
 		$values = array(
 			'title' => _('Asociar schema a section'),
 			'label' => _('Tipo de plantilla'),
@@ -67,38 +66,31 @@ class Action_relsectionschema extends ActionAbstract {
 			'list' => $list,
 			'default_schema' => $defaultSchema
 		);
-
 		$this->render($values, '', 'default-3.0.tpl');
 	}
 
-	function set_property() {
-      	$idNode		= (int) $this->request->getParam('nodeid');
+	public function set_property()
+	{
+      	$idNode = (int) $this->request->getParam('nodeid');
       	$idAction = $this->request->getParam('actionid');
 		$selected = $this->request->getParam('schema');
-
 		if ($selected == 'all') {
-		    $selected = array(\Ximdex\NodeTypes\NodeTypeConstants::VISUAL_TEMPLATE, \Ximdex\NodeTypes\NodeTypeConstants::RNG_VISUAL_TEMPLATE);
+		    $selected = array(NodeTypeConstants::VISUAL_TEMPLATE, NodeTypeConstants::RNG_VISUAL_TEMPLATE);
 		}
 		$node = new Node($idNode);
 		$node->deleteProperty('DefaultSchema');
-		
 		$result = $node->setProperty('DefaultSchema', $selected);
-
 		if (!$result) {
-			$this->messages->add(_("Association has been successfully performed."), MSG_TYPE_NOTICE);
+			$this->messages->add(_('Association has been successfully performed.'), MSG_TYPE_NOTICE);
 		} else {
-			$this->messages->add(_("Error while associating."), MSG_TYPE_NOTICE);
+			$this->messages->add(_('Error while associating.'), MSG_TYPE_NOTICE);
 			$this->messages->mergeMessages($node->messages);
 		}
-
 		$values = array(
-				'messages' => $this->messages->messages,
-				'id_node' => $idNode,
-				"nodeURL" => App::getUrl("/?actionid=$idAction&nodeid={$idNode}"),
-				);
-
+			'messages' => $this->messages->messages,
+			'id_node' => $idNode,
+			'nodeURL' => App::getUrl("/?actionid=$idAction&nodeid={$idNode}"),
+			);
 		$this->render($values);
-
 	}
-
 }

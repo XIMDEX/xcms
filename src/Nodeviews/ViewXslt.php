@@ -134,10 +134,10 @@ class ViewXslt extends AbstractView
         if (App::debug())
         {
             # DEBUG
-            @file_put_contents(XIMDEX_ROOT_PATH . '/data/tmp/docxap-pre.xsl', $docxap);
-            @file_put_contents(XIMDEX_ROOT_PATH . '/data/tmp/docxap-post.xsl', $docxapContent);
-            @file_put_contents(XIMDEX_ROOT_PATH . '/data/tmp/pointer.xml', $pointer);
-            @file_put_contents(XIMDEX_ROOT_PATH . '/data/tmp/content-pre.xml', $content);
+            @file_put_contents(XIMDEX_ROOT_PATH . App::getValue('TempRoot') . '/docxap-pre.xsl', $docxap);
+            @file_put_contents(XIMDEX_ROOT_PATH . App::getValue('TempRoot') . '/docxap-post.xsl', $docxapContent);
+            @file_put_contents(XIMDEX_ROOT_PATH . App::getValue('TempRoot') . '/pointer.xml', $pointer);
+            @file_put_contents(XIMDEX_ROOT_PATH . App::getValue('TempRoot') . '/content-pre.xml', $content);
             # END DEBUG
         }
         foreach ($params as $param => $value) {
@@ -147,7 +147,7 @@ class ViewXslt extends AbstractView
         if (App::debug())
         {
             # DEBUG
-            @file_put_contents(XIMDEX_ROOT_PATH . '/data/tmp/content-post.xml', $content);
+            @file_put_contents(XIMDEX_ROOT_PATH . App::getValue('TempRoot') . '/content-post.xml', $content);
             # END DEBUG
         }
         if ($content === false or $content === null)
@@ -178,7 +178,7 @@ class ViewXslt extends AbstractView
                     if (App::debug())
                     {
                         # DEBUG
-                        @file_put_contents(XIMDEX_ROOT_PATH . '/data/tmp/content-post.xml', $content);
+                        @file_put_contents(XIMDEX_ROOT_PATH . App::getValue('TempRoot') . '/content-post.xml', $content);
                         # END DEBUG
                     }
                 }

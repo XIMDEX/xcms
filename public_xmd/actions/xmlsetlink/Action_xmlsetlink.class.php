@@ -1,6 +1,7 @@
 <?php
+
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -24,41 +25,35 @@
  *  @version $Revision$
  */
 
-
 use Ximdex\Models\Language;
 use Ximdex\Models\Node;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\MVC\ActionAbstract;
 
-
-class Action_xmlsetlink extends ActionAbstract {
-
-   //Main method: shows the initial form
-    function index () {
-
+class Action_xmlsetlink extends ActionAbstract
+{
+    /**
+     * Main method: shows the initial form
+     */
+    function index()
+    {
 		$idNode = $this->request->getParam('nodeid');
 		$node = new Node($idNode);
-
 		$sharewf = $node->get('SharedWorkflow');
 		$sharewf = empty($sharewf) ? 0 : 1;
-
 		if (!($node->get('IdNode') > 0)) {
 			$this->messages->add(_('Node could not be found'), MSG_TYPE_ERROR);
 			$this->render(array('messages' => $this->messages->messages), NULL, 'messages.tpl');
 			return ;
 		}
-
 		$structuredDocument = new StructuredDocument($idNode);
 		$idTarget = $structuredDocument->get('TargetLink');
-
 		$targetNode = new Node($idTarget);
 	    $targetNodes = $this->getTargetNodes($node->GetID());
-
 		$type = $node->get('IdNodeType');
 		$this->addJs('/actions/xmlsetlink/resources/js/xmlsetlink.js');
 		$this->addJs('/actions/xmlsetlink/resources/js/setinfo.js');
 		$this->addCss('/actions/copy/resources/css/style.css');
-
 		$values = array(
 			'id_node' => $idNode,
 			'id_target' => $idTarget,
@@ -68,116 +63,88 @@ class Action_xmlsetlink extends ActionAbstract {
 		    'go_method' => empty($idTarget) ? 'setlink' : 'unlink',
 			'sharewf' => $sharewf
 		);
-
 		$this->render($values, NULL, 'default-3.0.tpl');
     }
 
 	/**
 	 * @return bool
 	 */
-	function setlink() {
-
+	function setlink()
+	{
 		$idNode = $this->request->getParam('nodeid');
 		$idTarget = $this->request->getParam('targetid');
-
 		$structuredDocument = new StructuredDocument($idNode);
-		$idNodeTemplate = $structuredDocument->get('IdTemplate');
-
+		// $idNodeTemplate = $structuredDocument->get('IdTemplate');
 		$targetStructuredDocument = new StructuredDocument($idTarget);
-		$idTargetTemplate = $targetStructuredDocument->get('IdTemplate');
-
-        $targetOfTarget=$targetStructuredDocument->get('TargetLink');
-
-        if($targetOfTarget==$idNode){
+		// $idTargetTemplate = $targetStructuredDocument->get('IdTemplate');
+        $targetOfTarget = $targetStructuredDocument->get('TargetLink');
+        if($targetOfTarget == $idNode) {
             $this->messages->add(_('This document is already the master document of ').$targetStructuredDocument->GetName(), MSG_TYPE_ERROR);
             $values = array('messages' => $this->messages->messages);
             $this->sendJSON($values);
             return false;
         }
-
-
 		$node = new Node($idNode);
-
 		$node->ClearWorkFlowMaster();
 		if ($this->request->getParam('sharewf')) {
 			$node->SetWorkFlowMaster($idTarget);
 		}
-
 		$structuredDocument->ClearSymLink();
 		$structuredDocument->SetSymLink($idTarget);
 		$this->messages->add(_('The link has been modified successfully'), MSG_TYPE_NOTICE);
-
 		$messages = new \Ximdex\Utils\Messages();
 		$messages->mergeMessages($node->messages);
 		$messages->mergeMessages($structuredDocument->messages);
-
         $values = array('messages' => $this->messages->messages, "parentID"=> $node->get('IdParent'));
         $this->sendJSON($values);
 		return true ;
 	}
 
-/*
-*	Removes the symbolic link of document
-*/
-
-	function unlink() {
-
+	/**
+	 * Removes the symbolic link of document
+	 */
+	function unlink()
+	{
 		$idNode = $this->request->getParam('nodeid');
-
 		$structuredDocument = new StructuredDocument($idNode);
-
 		$content = ($this->request->getParam('keepcontent') || $this->request->getParam('delete_method') == 'unlink')
 			? $structuredDocument->GetContent() : $this->request->getParam('editor');
-
 		$structuredDocument->SetContent($content);
-
 		$node = new Node($idNode);
 		$idParent = $node->get('IdParent');
 		$node->ClearWorkFlowMaster();
 		$structuredDocument->ClearSymLink();
-
 		$this->messages->add(_('The link has been deleted successfully'), MSG_TYPE_NOTICE);
-
         $values = array('messages' => $this->messages->messages, "parentID"=> $idParent);
         $this->sendJSON($values);
 	}
 
-
-/*
-*	Shows the form with the document content translated by Google Translate
-*	@param
-*	@return
-*/
-
-	function show_translation() {
+	/**
+	 * Shows the form with the document content translated by Google Translate
+	 */
+	function show_translation()
+	{
 		$values = array('go_method' => 'unlink');
 		$this->addJs('/actions/xmlsetlink/resources/js/show_translation.js');
 		$this->render($values, 'show_translation', 'default-3.0.tpl');
 	}
-
-/*
-*	Calls Google Translate service
-*	@param
-*	@return string
-*/
-
-	function translate() {
+	
+	/**
+	 * Calls Google Translate service
+	 */
+	function translate()
+	{
 		$idNode = $this->request->getParam('nodeid');
-
 		$strDoc = new StructuredDocument($idNode);
 		$content = $strDoc->GetContent();
 		$langId = $strDoc->get('IdLanguage');
 		$masterId = $strDoc->get('TargetLink');
-
 		$lang = new Language($langId);
 		$langTo = $lang->get('IsoName');
-
 		$masterDoc = new StructuredDocument($masterId);
 		$masterLang = $masterDoc->get('IdLanguage');
-
 		$lang = new Language($masterLang);
 		$langFrom = $lang->get('IsoName');
-
 		$googleTrans = new  \Ximdex\Rest\Providers\GoogleTranslate\GoogleTranslate();
 		$translation = $googleTrans->translate($content, $langFrom, $langTo);
 		echo $translation;
@@ -187,8 +154,9 @@ class Action_xmlsetlink extends ActionAbstract {
 	* @param int $idNode current Idnode
 	* @return array Siblings for the current Node
 	*/
-	private function getTargetNodes($idNode){
-		//Creating nodeservice in no-lazy mode
+	private function getTargetNodes($idNode)
+	{
+		// Creating nodeservice in no-lazy mode
 		$nodeService = new \Ximdex\NodeTypes\Node($idNode,false);
 		$siblings = $nodeService->getSiblings();
 		$targetNodes = array();
@@ -198,8 +166,6 @@ class Action_xmlsetlink extends ActionAbstract {
             $arrayAux["idnode"] = $sibling->GetID();
             $targetNodes[] = $arrayAux;
         }
-
         return $targetNodes;
 	}
-
 }

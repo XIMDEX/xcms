@@ -29,60 +29,53 @@ use Ximdex\Models\Role;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\App;
 
-class Action_modifyrolesstate extends ActionAbstract {
-   // Main method: shows initial form
-    function index () {
-
+class Action_modifyrolesstate extends ActionAbstract
+{
+    /**
+     * Main method: shows initial form
+     */
+    function index()
+    {
     	$idNode = $this->request->getParam('state');
-
     	$query = sprintf("SELECT r.IdRole, r.Name"
     			. " FROM Roles r"
     			. " INNER JOIN RelRolesStates rrs ON r.IdRole = rrs.IdRole AND rrs.IdState = %d", $idNode);
-
     	$dbObj = new \Ximdex\Runtime\Db();
     	$dbObj->query($query);
     	$rolesStates = array();
-	$asociatedRoles=array();
-
+	    $asociatedRoles = array();
         $query = App::get('\Ximdex\Utils\QueryManager');
         $action = $query->getPage();
         $actionAdd = $action . $query->buildWith(array('method' => 'addrolestate'));
         $actionDelete = $action . $query->buildWith(array('method' => 'deleterolestate'));
-
     	while (!$dbObj->EOF) {
-    		$rolesStates[] = array(	'Name' => $dbObj->getValue('Name'),
-					'IdRole' => $dbObj->getValue('IdRole'));
-
+    		$rolesStates[] = array(	'Name' => $dbObj->getValue('Name'), 'IdRole' => $dbObj->getValue('IdRole'));
     		$asociatedRoles[] = $dbObj->getValue('IdRole');
     		$dbObj->next();
     	}
-
     	$role = new Role();
     	$allRoles = $role->find('IdRole, Name');
-
     	foreach ($allRoles as $key => $roleInfo) {
-		if($asociatedRoles) {
+		if ($asociatedRoles) {
     			if (in_array($roleInfo['IdRole'], $asociatedRoles)) {
     				unset($allRoles[$key]);
     			}
-		}
+		    }
     	}
-
-	$values = array(
+	    $values = array(
 			'id_node' => $idNode,
 			'applied_roles' => $rolesStates,
 			'all_roles' => $allRoles,
 			'action_add' => $actionAdd,
 			'action_delete' => $actionDelete,
 			);
-
-	$this->render($values, null, 'default-3.0.tpl');
+	    $this->render($values, null, 'default-3.0.tpl');
     }
 
-    function addrolestate() {
+    function addrolestate()
+    {
     	$idNode = $this->request->getParam('state');
     	$idRole = $this->request->getParam('id_role');
-
 		$role = new Role($idRole);
 		if (!$role->get('IdRole') > 0) {
 			$this->messages->add(_('Error: Role which you want to associate with workflow status could not be found'), MSG_TYPE_ERROR);
@@ -94,17 +87,16 @@ class Action_modifyrolesstate extends ActionAbstract {
 		$this->render(array('messages' => $this->messages->messages), '', 'messages.tpl');
     }
 
-    function deleterolestate() {
+    function deleterolestate()
+    {
     	$idNode = $this->request->getParam('state');
     	$rolesToDelete = $this->request->getParam('roles_to_delete');
-
     	if (!(is_array($rolesToDelete) || !empty($rolesToDelete))) {
     		$this->messages->add(_('Any role has been selected to be deleted'), MSG_TYPE_WARNING);
     		$this->render(array('messages' => $this->messages->messages), '', 'messages.tpl');
     		return ;
     	}
-
-    	foreach ($rolesToDelete as $idRole => $value) {
+    	foreach (array_keys($rolesToDelete) as $idRole) {
     		$role = new Role($idRole);
     		$role->DeleteState($idNode);
     	}

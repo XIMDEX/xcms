@@ -31,6 +31,7 @@ use Ximdex\Logger;
 use Ximdex\Models\ORM\ServersOrm;
 use Ximdex\NodeTypes\ServerNode;
 use Ximdex\Utils\Date;
+use Ximdex\Runtime\Db;
 
 class Server extends ServersOrm
 {
@@ -126,5 +127,33 @@ class Server extends ServersOrm
             User::sendNotifications('Server ' . $this->Description . ' has been disabled temporally', $message);
         }
         return true;
+    }
+    
+    public function stats(int $portalId = null) : array
+    {
+        if (!$this->IdServer) {
+            throw new \Exception('No server selected');
+        }
+        $sql = 'SELECT SUM(ServerFramesTotal) AS total, SUM(ServerFramesPending) AS pending, SUM(ServerFramesActive) AS active';
+        $sql .= ', SUM(ServerFramesSuccess) AS success, SUM(ServerFramesFatalError) AS fatal, SUM(ServerFramesTemporalError) AS soft';
+        $sql .= ' FROM Batchs WHERE ServerId = ' . $this->IdServer;
+        if ($portalId) {
+            $sql .= ' AND IdPortalFrame = ' . $portalId;
+        }
+        $dbObj = new Db();
+        if ($dbObj->Query($sql) === false) {
+            throw new \Exception('SQL error');
+        }
+        $stats = [];
+        if (!$dbObj->numRows) {
+            throw new \Exception('There is not stats information for the server');
+        }
+        $stats['total'] = (int) $dbObj->GetValue('total');
+        $stats['pending'] = (int) $dbObj->GetValue('pending');
+        $stats['active'] = (int) $dbObj->GetValue('active');
+        $stats['success'] = (int) $dbObj->GetValue('success');
+        $stats['fatal'] = (int) $dbObj->GetValue('fatal');
+        $stats['soft'] = (int) $dbObj->GetValue('soft');
+        return $stats;
     }
 }

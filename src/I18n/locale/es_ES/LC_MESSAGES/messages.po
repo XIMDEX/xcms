@@ -3433,13 +3433,13 @@ msgstr "Ejecuta la acción '<em>Añadir nuevo documento</em>' para crear nuevos 
 msgid "Learn how to"
 msgstr "Aprende cómo"
 
-msgid "Create a new Server & publish data"
+msgid "Create a new Server and publish data"
 msgstr "Crear nuevos servidores y publicar"
 
 msgid "Ximdex CMS, the basics"
 msgstr "Ximdex CMS, conceptos básicos"
 
-msgid "RNG schemes & XSL templates"
+msgid "RNG schemes and XSL templates"
 msgstr "Esquemas RNG y plantillas XSL"
 
 msgid "Contact us"

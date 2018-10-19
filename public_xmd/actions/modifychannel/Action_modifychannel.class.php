@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -56,13 +56,12 @@ class Action_modifychannel extends ActionAbstract
         $renderTypeCheck = Channel::RENDER_TYPES;
 		$channel = new Channel($idNode);
 		$renderCheck[$channel->get('RenderMode')] = 'checked';
-        $outputCheck[$channel->get("OutputType")] = 'checked';
+        $outputCheck[$channel->get('OutputType')] = 'checked';
         if ($channel->get('RenderType')) {
             $renderTypeCheck[$channel->get('RenderType')] = 'checked';
         }
-        $ext = $channel->get('DefaultExtension') == NULL ? "(empty)": $channel->get('DefaultExtension');
-        $desc = $channel->get('Description') == NULL ? "(empty)": $channel->get('Description');
-        
+        $ext = $channel->get('DefaultExtension') == NULL ? '(empty)' : $channel->get('DefaultExtension');
+        $desc = $channel->get('Description') == NULL ? '(empty)' : $channel->get('Description');
         $progLanguage = new ProgrammingLanguage();
         $codeLanguages = $progLanguage->find();
         $this->addJs('/actions/modifychannel/resources/js/index.js');
@@ -119,7 +118,6 @@ class Action_modifychannel extends ActionAbstract
             $this->sendJSON($values);
             return false;
         }
-        $defaultChannel = $this->request->getParam('Default_Channel');
         $channel = new Channel($idNode);
         $channel->SetDescription($this->request->getParam('Description'));
         $channel->set('RenderMode', $this->request->getParam('renderMode'));
@@ -131,7 +129,7 @@ class Action_modifychannel extends ActionAbstract
 			case 0:
 				$channel->messages->add(_('Not any change has been performed'), MSG_TYPE_WARNING);
 				break;
-			case "NULL":
+			case 'NULL':
 				$channel->messages->add(_('An error occurred while modifying channel'), MSG_TYPE_ERROR);
 				break;
 			default:

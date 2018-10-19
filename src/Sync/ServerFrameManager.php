@@ -32,8 +32,6 @@ use Ximdex\Models\Pumper;
 use Ximdex\Models\Batch;
 use Ximdex\Models\ServerFrame;
 use Ximdex\Models\ChannelFrame;
-// use Ximdex\Models\Server;
-// use Ximdex\Models\NodeFrame;
 
 /**
  * @brief Handles the life cycle of a ServerFrame
@@ -42,7 +40,8 @@ use Ximdex\Models\ChannelFrame;
  *    It can have these status:
  *    - Pending: not yet processed
  *    - Due2In / Due2In_: ready to send to Server
- *    - Pumped: the serverFrame have been sended to the Server but it stays hidden, waiting the sending of the rest of ServerFrame of the same Batch
+ *    - Pumped: the serverFrame have been sended to the Server but it stays hidden, waiting the sending of the rest of ServerFrame 
+ *      of the same Batch
  *    - In: all ServerFrames of the same Batch are in the Server. Publication completed.
  *    - Replaced: the ServerFrame has been replaced by another ServerFrame (with the same name) in the Server
  *    - Removed: the ServerFrame has been replaced by another ServerFrame (with different name) in the Server
@@ -61,7 +60,7 @@ class ServerFrameManager
      * @param int delayed
      * @return bool
      */
-    public function changeState($serverFrameId, $operation, $nodeId, $delayed = NULL)
+    public function changeState($serverFrameId, $operation, $nodeId, $delayed = null)
     {
         $serverFrame = new ServerFrame($serverFrameId);
         $initialState = $serverFrame->get('State');
@@ -195,7 +194,7 @@ class ServerFrameManager
         if ($dbObj->numRows) {
             return $dbObj->GetValue('IdSync');
         }
-        return NULL;
+        return null;
     }
 
     /**
@@ -240,7 +239,7 @@ class ServerFrameManager
             }
             return $overlaped;
         }
-        return NULL;
+        return null;
     }
 
     /**
@@ -350,7 +349,7 @@ class ServerFrameManager
             ServerFrame::PUMPED . "') AND IdServer IN ($servers) AND NOT PumperId IS NULL";
         $dbObj->Query($query);
         if ($dbObj->numErr) {
-            return NULL;
+            return null;
         }
         $pumpers = array();
         while (!$dbObj->EOF) {

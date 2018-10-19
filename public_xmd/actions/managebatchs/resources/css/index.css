@@ -63,6 +63,11 @@
 	-o-transition: color 2s;
 	transition: color 2s;
 }
+
+.media.progress {
+	margin-bottom: 5pt;
+}
+
 .progress-bar {
 	background-color: #1D8687;
 }
@@ -87,7 +92,34 @@
     background-color: #DF0174;
 }
 
-.media .clock::before{
+.media .clock::before {
 	padding: 0px;
 	font-size: 1.3em;
+}
+
+.media .type-icon {
+	width: 40pt;
+	margin-top: 10pt;
+}
+
+.media .servers {
+	margin-top: 15pt;
+	margin-botom : 25pt;
+	width: 95%;
+}
+
+.media .server {
+	margin-bottom: 0;
+}
+
+.media .server-disabled-by-user {
+	color: orange;
+	float: right;
+	margin-top: 3pt;
+}
+
+.media .server-disabled {
+    color: red;
+    float: right;
+    margin-top: 3pt;
 }

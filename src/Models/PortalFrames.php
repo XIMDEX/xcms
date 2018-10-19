@@ -48,7 +48,7 @@ class PortalFrames extends PortalFramesOrm
         $this->set('PublishingType', $type);
         $this->set('CreatedBy', $idUser);
         $this->set('Status', self::STATUS_CREATED);
-        $this->set('StatusTime', time());
+        // $this->set('StatusTime', time());
         $idPortalFrameVersion = parent::add();
         return ($idPortalFrameVersion > 0) ? (int) $idPortalFrameVersion : 0;
     }
@@ -218,6 +218,22 @@ class PortalFrames extends PortalFramesOrm
             $db->Next();
         }
         return $portals;
+    }
+    
+    public function getServers() : array
+    {
+        $query = 'SELECT s.IdServer as id, s.Description as name FROM Servers s';
+        $query .= ' INNER JOIN Batchs b ON (b.IdPortalFrame = ' . $this->id . ' AND b.ServerId = s.IdServer)';
+        $db = new Db();
+        if ($db->Query($query) === false) {
+            throw new \Exception('Could not obtain the void portal frame');
+        }
+        $servers = [];
+        while (!$db->EOF) {
+            $servers[(string) $db->GetValue('id')] = $db->GetValue('name');
+            $db->Next();
+        }
+        return $servers;
     }
     
     /**

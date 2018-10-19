@@ -35,8 +35,8 @@ class Action_publicateximlet extends ActionAbstract
 	public function index()
 	{
 		$docsToPublish = array();
-        $idNode	= (int) $this->request->getParam("nodeid");
-		$params = $this->request->getParam("params");
+        $idNode	= (int) $this->request->getParam('nodeid');
+		$params = $this->request->getParam('params');
 		$node = new Node($idNode);
 		$serverID = $node->getServer();
 		$nodeServer = new Node($serverID);
@@ -48,8 +48,8 @@ class Action_publicateximlet extends ActionAbstract
 			return;
 		}
 		$docs = $this->_getRefererDocs($idNode);
-		$actionDescription = sprintf(_("Following documents and sections are going to be published:"), count($docsToPublish));
-		$alertDescription = sprintf(_("Are you sure you want to publish?"));
+		$actionDescription = sprintf(_('Following documents and sections are going to be published:'), count($docsToPublish));
+		$alertDescription = sprintf(_('Are you sure you want to publish?'));
 		$this->addJs('/actions/publicateximlet/resources/js/handler.js');
 		$values = array(
 			'actionDescription' => $actionDescription,
@@ -61,18 +61,18 @@ class Action_publicateximlet extends ActionAbstract
 		if (count($this->messages->messages) > 0) {
 			$values['messages'] = $this->messages->messages;
 		}
-		$this->render($values, NULL, 'default-3.0.tpl');
+		$this->render($values, null, 'default-3.0.tpl');
     }
 
 	public function publicate_ximlet()
 	{
-		$idNode	= $this->request->getParam("nodeid");
-		$idAction = $this->request->getParam("actionid");
+		$idNode	= $this->request->getParam('nodeid');
+		// $idAction = $this->request->getParam('actionid');
 		$upDate = time();
         $syncMngr = new SyncManager();
         $syncMngr->setFlag('forcePublication', true);
-        $syncResult = $syncMngr->pushDocInPublishingPool($idNode, $upDate, NULL);
-		$this->messages->add(_("The node has been successfully sent to publish"), MSG_TYPE_NOTICE);
+        $syncMngr->pushDocInPublishingPool($idNode, $upDate, NULL);
+		$this->messages->add(_('The node has been successfully sent to publish'), MSG_TYPE_NOTICE);
 		$values = array(
 			'messages' => $this->messages->messages,
 		);
@@ -82,8 +82,8 @@ class Action_publicateximlet extends ActionAbstract
 	/**
 	 * Returns all documents and sections associateds to ximlet
 	 *
-	 * @param int idNode
-	 * @return array / NULL
+	 * @param int $ximletId
+	 * @return array | null
 	 */
 	 private function _getRefererDocs($ximletId)
 	 {

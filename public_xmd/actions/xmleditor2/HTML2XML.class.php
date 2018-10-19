@@ -1,6 +1,7 @@
 <?php
+
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -24,62 +25,63 @@
  *  @version $Revision$
  */
 
-
-
 use Ximdex\Logger;
 
-
-class HTML2XML {
-
+class HTML2XML
+{
 	private $_domXml = null;
 	private $_xpath = null;
 	private $_domHtml = null;
 	private $_ximNode = null;
 	private $_uidMap = array();
 	private $_uidMapHtml = array();
-
 	private $_tagCounter = 0;
 	private $_maxTagCounter = 0;
 	private $_xmlContent = '';
 
 	/**
 	 * Function which returns the DOMDocument object corresponding to the XML
+	 * 
 	 * @return object
 	 */
-	public function getXML() {
-
+	public function getXML()
+	{
 		return $this->_domXml;
 	}
 
 	/**
 	 * Function which returns the XML content
+	 * 
 	 * @return object
 	 */
-	public function getXmlContent() {
-
+	public function getXmlContent()
+	{
 		return $this->_xmlContent;
 	}
 
 	/**
 	 * Function which returns the DOMDocument object corresponding to the HTML
+	 * 
 	 * @return object
 	 */
-	public function getHTML() {
-
+	public function getHTML()
+	{
 		return $this->_domHtml;
 	}
 
 	/**
 	 * Function which loads the DOMDocument object corresponding to the XML
+	 * 
 	 * @return object
 	 */
-	public function loadXML($domXml) {
-
+	public function loadXML($domXml)
+	{
 		$this->_domXml = $domXml;
 	}
 
 	/**
 	 * Function which loads the DOMDocument object corresponding to the XML
+	 * 
 	 * @return object
 	 */
 	public function loadHTML($domHtml) {
@@ -89,19 +91,21 @@ class HTML2XML {
 
 	/**
 	 * Function which stablishes the referenced node (ximdex)
+	 * 
 	 * @return object
 	 */
-	public function setXimNode($idNode) {
-
+	public function setXimNode($idNode)
+	{
 		$this->_ximNode = $idNode;
 	}
 
 	/**
 	 * Function which performs the HTML transformation
+	 * 
 	 * @return boolean
 	 */
-	public function transform() {
-
+	public function transform()
+	{
 		// Assinging Uid to XML
 		$this->assignUidToXml();
 
@@ -123,17 +127,15 @@ class HTML2XML {
 				$this->_xmlContent .= $this->_domXml->saveXML($child) . "\n";
 			}
 		}
-
 		return true;
 	}
     
-	private function assignUidToXml() {
-
+	private function assignUidToXml()
+	{
 		$this->_xpath = new DOMXPath($this->getXML());
 		$nodeList = $this->_xpath->query('//*');
-
 		$this->_tagCounter = 0;
-
+		
 		// Adding attribute uid to each node.
 		foreach ($nodeList as $child) {
 			if ($child && $child->nodeType == 1) {
@@ -141,23 +143,21 @@ class HTML2XML {
 				$this->_uidMap[$this->_ximNode . "." . $this->_tagCounter] = $child;
 			}
 		}
-
 		$this->_maxTagCounter = $this->_tagCounter;
 		unset($this->_xpath);
 	}
 
-	private function assignUidToBody() {
-
+	private function assignUidToBody()
+	{
 		// For now, atribute uid=1 will be set up for the body. As soon as kupu would be touched, it will add it.
 		$this->_xpath = new DOMXPath($this->_domHtml);
 		$nodeList = $this->_xpath->query('//body');
 		$nodeList->item(0)->setAttribute('uid', $this->_ximNode . ".1");
-
 		unset($this->_xpath);
 	}
 
-	private function getTextContent ($node = null) {
-
+	private function getTextContent($node = null)
+	{
 		if ($cn = $node->firstChild) {
 			while ($cn) {
 				if ($cn->nodeType == XML_TEXT_NODE) {
@@ -166,12 +166,11 @@ class HTML2XML {
 				$cn = $cn->nextSibling;
 			}
 		}
-
 		return false;
 	}
 
-	private function setTextContent ($node = null, $content = '') {
-
+	private function setTextContent($node = null, $content = '')
+	{
 		if ($cn = $node->firstChild) {
 			while ($cn) {
 				if ($cn->nodeType == XML_TEXT_NODE) {
@@ -181,29 +180,27 @@ class HTML2XML {
 				$cn = $cn->nextSibling;
 			}
 		}
-
 		$node->appendChild(new DOMText($content));
 		return true;
 	}
 
-	private function getParentNodeWithUid ($node, &$parentNode) {
-
+	private function getParentNodeWithUid($node, & $parentNode)
+	{
 		// Retrieving parent Node with set uid
 		Logger::info(_('Getting parent node with set uid...'));
 		$parentUid = null;
-		while($parentNode = $node->parentNode) {
-			if(get_class($parentNode) == "DOMElement" && $parentUid = $parentNode->getAttribute('uid')) {
+		while ($parentNode = $node->parentNode) {
+			if (get_class($parentNode) == "DOMElement" && $parentUid = $parentNode->getAttribute('uid')) {
 				Logger::info(_('Parent Node retrieved').' (' . $parentNode->nodeName . ')  '._('with uid = ' ). $parentUid);
 				break;
 			}
 			$node = $parentNode;
 		}
-
 		return $parentUid;
 	}
     
-	private function applyChanges() {
-
+	private function applyChanges()
+	{
 		$this->_xpath = new DOMXPath($this->_domHtml);
 		$nodeList = $this->_xpath->query('//*');
 		$tagCounter = 0;
@@ -211,20 +208,18 @@ class HTML2XML {
 
 		// Searching for edited nodes (uid set) and new nodes (uidtype) in html
 		Logger::info(_('Searching for edited nodes (uid set) and new nodes (uidtype) in html'));
-		foreach ($nodeList as $idChild => $child) {
-
+		foreach ($nodeList as $child) {
 			if ($child && $child->nodeType == 1) {
 
 				// Getting uid
 				$tagCounter = $child->getAttribute('uid');
-
 				Logger::info(_('Node').': ' . $child->nodeName);
 				if (in_array($tagCounter, array_keys($this->_uidMap))) {
 
 					// Uid exists. Editting content in XML
 					Logger::info('uid (' . $tagCounter . ') '._('exists. Editing content...'));
 					$newChild = $this->_uidMap[$tagCounter];
-					if($textContent = $this->getTextContent($child)) {
+					if ($textContent = $this->getTextContent($child)) {
 						$this->setTextContent($newChild, $textContent);
 					}
 					$lastUid = $tagCounter;
@@ -236,7 +231,7 @@ class HTML2XML {
 					// Non-existing uid. Getting Type
 					Logger::info(_('Non-existing uid. Getting type...'));
 					$type = $child->getAttribute('uidtype');
-					if($type) {
+					if ($type) {
 						Logger::info(_('Type retrieved: ') . $type);
 					} else {
 						Logger::info(_('Type retrieved: none :: No translation applied'));
@@ -245,14 +240,14 @@ class HTML2XML {
 
 					// Retrieving parent Node with set uid
 					$parentNode = null;
-					if($parentUid = $this->getParentNodeWithUid($child, $parentNode)) {
-
+					if ($parentUid = $this->getParentNodeWithUid($child, $parentNode)) {
 						Logger::info(_('Parent node retrieved: ') . $parentNode->nodeName);
 						Logger::info(_('Parent Uid retrieved: ') . $parentUid);
 						Logger::info(_('Appending new child to parent node in XML document...'));
 
 						// Appending new child to parent Node in XML document
 						$parent = $this->_uidMap[$parentNode->getAttribute('uid')];
+						
 						// Creating, adding text content and appending new node to xml document
 						$newChild = $this->_domXml->createElement($type);
 						if($textContent = $this->getTextContent($child)) {
@@ -292,54 +287,52 @@ class HTML2XML {
 
 	}
 
-	private function incrementUidFrom($from) {
-
+	private function incrementUidFrom($from)
+	{
 		// Incrementing uid from $from to last element with defined uid
 		$auxMap = $this->_uidMap;
 		$xpath = new DOMXPath($this->_domHtml);
 		$nodeList = $xpath->query('//*[@uid]');
-		foreach ($nodeList as $idChild => $child) {
+		foreach ($nodeList as $child) {
 			$uidValue = $this->getUidValueFromAttribute($child->getAttribute('uid'));
-			if($uidValue >= $from) {
+			if ($uidValue >= $from) {
 				$child->setAttribute('uid', $this->_ximNode . "." . ($uidValue + 1));
 				$this->_uidMap[$this->_ximNode . "." . ($uidValue + 1)] = $auxMap[$this->_ximNode . "." . $uidValue];
 			}
 		}
 	}
 
-	private function getUidValueFromAttribute($attributeContent) {
-
+	private function getUidValueFromAttribute($attributeContent)
+	{
 		$value = intval(str_replace($this->_ximNode . ".", "", $attributeContent));
 		return (is_int($value)) ? $value : null;
 	}
 
-	private function deleteXmlElements() {
-
-		foreach($this->_uidMap as $uid => $node) {
-			if(!in_array($uid, $this->_uidMapHtml)) {
+	private function deleteXmlElements()
+	{
+		foreach ($this->_uidMap as $uid => $node) {
+			if (!in_array($uid, $this->_uidMapHtml)) {
 				Logger::info(_('Deleting element with uid ') . $uid);
 				$node->parentNode->removeChild($node);
 				unset($this->_uidMap[$uid]);
 			}
 		}
-
 		return true;
 	}
 
-	private function getNextSiblingUid ($node) {
-
-		while($node = $node->nextSibling) {
-			if($node->nodeType == 1) {
+	private function getNextSiblingUid($node)
+	{
+		while ($node = $node->nextSibling) {
+			if ($node->nodeType == 1) {
 				return $node->getAttribute('uid');
 			}
 		}
-
 		return null;
 	}
 
-	public function getNodeWithUID($uid) {
+	public function getNodeWithUID($uid)
+	{
 		$node = isset($this->_uidMap[$uid]) ? $this->_uidMap[$uid] : null;
 		return $node;
 	}
-
 }

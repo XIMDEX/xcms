@@ -115,7 +115,7 @@ class ExportXml
 			$fileName = date("YmdHi");
 		}
 		$backupLocation = sprintf("%s/data/backup/%s_ximio",XIMDEX_ROOT_PATH, $fileName);
-		$tmpFolder = sprintf('%s/data/tmp/%s', XIMDEX_ROOT_PATH, $fileName);
+		$tmpFolder = sprintf('%s/' . App::getValue('TempRoot') . '/%s', XIMDEX_ROOT_PATH, $fileName);
 		if (! mkdir($backupLocation, 0775)) {
 			error_log(_('Error creating the backup folder, check data folder permits and user&#39;s ones configured in Apache server are compatible.'));
 		}

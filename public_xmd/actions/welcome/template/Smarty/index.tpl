@@ -1,5 +1,5 @@
 {* *
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -40,14 +40,6 @@
 				    	<div class="project_actions hidden">
 						    <button class="config_button icon">{t}Details{/t}</button>
 					    </div>
-                        {*TODO: get more info for a project*}
-                        {*<div class="details">
-                            <span class="tooltip">
-                            <p>Servers defined: 3</p>
-                            <p>XML Documents: 6</p>
-                            <p>External links: 19</p>
-                            </span>
-                        </div>*}
 				    </div>
                     {/foreach}
                 {else}
@@ -55,57 +47,59 @@
 					    {t}Seems you don't have any projects yet. Let's start now!{/t}
     				</div>
                 {/if}
-				<button {if $permissionsToCreateProject == false} disabled="disabled" {/if}  class="new_item project_new">{t}Create a new project{/t}</button>			
+				<button {if $permissionsToCreateProject == false} disabled="disabled" {/if} 
+				        class="new_item project_new">{t}Create a new project{/t}</button>			
 			</div>
-					
 			<div class="ximdex_documents">
 				<label style="margin-bottom: 10px;" class="label_general label_title">{t}Your latest documents{/t}</label>
 			    {if is_array($docs) and $docs|@count gt 0}	
-                    {foreach from=$docs key=index item=d }
-				<div class="document_item">
-                    <span class="icon document">{$d.name} 
-                    	<span class="document-version">({$d.Version}.{$d.Subversion})</span>
-                    </span>
-                   
-                    <span class="document-path" data-xtooltip="{$d.path}">{$d.path}</span>
-                    <span class="nodeid hidden">{$d.IdNode}</span>
-					<div class="document_actions">
-                    {if $d.IdNodeType eq 5040}
-						<button class="preview icon">{t}Preview Image{/t}</button>
-                    {elseif $d.IdNodeType eq 5032}
-						<button class="edit icon xmltext">{t}Edit in XML mode{/t}</button>
-                    {elseif $d.IdNodeType eq 5028 || $d.IdNodeType eq 5077 || $d.IdNodeType eq 5078}
-						<button class="edit icon plaintext">{t}Edit in text mode{/t}</button>
-                    {/if}
-					</div>
-				</div>
+                    {foreach from=$docs key=index item=d}
+				        <div class="document_item">
+                            <span class="icon document">{$d.name} 
+                    	        <span class="document-version">({$d.Version}.{$d.Subversion})</span>
+                            </span>
+                            <span class="document-path" data-xtooltip="{$d.path}">{$d.path}</span>
+                            <span class="nodeid hidden">{$d.IdNode}</span>
+					        <div class="document_actions">
+                                {if $d.IdNodeType eq 5040}
+                                    <button class="preview icon">{t}Preview Image{/t}</button>
+                                {elseif $d.IdNodeType eq 5032}
+						            <button class="edit icon xmltext">{t}Edit in XML mode{/t}</button>
+                                {elseif $d.IdNodeType eq 5028 || $d.IdNodeType eq 5077 || $d.IdNodeType eq 5078}
+						            <button class="edit icon plaintext">{t}Edit in text mode{/t}</button>
+                                {/if}
+					       </div>
+				        </div>
                     {/foreach}
                 {else}
-				<div class="empty_state document_empty">
-					<ol>
-		                <li class="step_document created_project icon">{t}Create a new project from treeview or by clicking on the button above {/t}</li>
-						<li class="step_document">{t}Select the '<em>documents folder</em>' in the treeview on the left panel{/t}</li>
-						<li class="step_document">{t}Perform the '<em>Add new document</em>' action to create new documents{/t}</li>
-					</ol>
-				</div>
+				    <div class="empty_state document_empty">
+					   <ol>
+		                   <li class="step_document created_project icon">
+		                      {t}Create a new project from treeview or by clicking on the button above {/t}
+		                   </li>
+						   <li class="step_document">{t}Select the '<em>documents folder</em>' in the treeview on the left panel{/t}</li>
+						   <li class="step_document">{t}Perform the '<em>Add new document</em>' action to create new documents{/t}</li>
+					   </ol>
+				    </div>
                 {/if}
 			</div>
-			
 		</div>
 		<div class="sidebar">
 			<h2 class="h2_general">{t}Learn how to{/t}...</h2>
 			<ul>
 				<li>
-					<a href="https://github.com/XIMDEX/ximdex/wiki/Recipes#create-a-new-project-easy" target="_blank">{t}Create a new project{/t}</a>
+					<a href="https://github.com/XIMDEX/ximdex/wiki/Recipes#create-a-new-project-easy" 
+					       target="_blank">{t}Create a new project{/t}</a>
 				</li>
 				<li>
-					<a href="https://github.com/XIMDEX/ximdex/wiki/Recipes#create-a-new-server-medium" target="_blank">{t}Create a new Server & publish data{/t}</a>
+					<a href="https://github.com/XIMDEX/ximdex/wiki/Recipes#create-a-new-server-medium" 
+					       target="_blank">{t}Create a new Server and publish data{/t}</a>
 				</li>
 				<li>					
 					<a href="https://github.com/ximdex/ximdex/wiki/Ximdex-Basics" target="_blank">{t}Ximdex CMS, the basics{/t}</a>
 				</li>
 				<li>					
-					<a href="https://github.com/ximdex/ximdex/wiki/Recipes" target="_blank">{t}RNG schemes & XSL templates{/t}</a>
+					<a href="https://github.com/ximdex/ximdex/wiki/Recipes" target="_blank">{t}RNG schemes and XSL templates{/t}</a>
 				</li>
 				<li>					
 					<a href="https://github.com/XIMDEX/ximdex/wiki/Faqs" target="_blank">{t}FAQs{/t}</a>
@@ -114,9 +108,6 @@
 					<a href="mailto:help@ximdex.org">{t}Contact us{/t}</a>
 				</li>
 			</ul>
-
-		
 		</div>
 	</div>
-
-
+</div>

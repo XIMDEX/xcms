@@ -411,7 +411,8 @@ class Scheduler
                     
                     // Show delayed server
                     Logger::warning('Server ' . $server->get('Description') . ' (' . $id . ') has been delayed for pumping to restart at ' 
-                        . Date::formatTime($server->get('DelayTimeToEnableForPumping')) . ' with cycle ' . $server->get('CyclesToRetryPumping'));
+                        . Date::formatTime($server->get('DelayTimeToEnableForPumping')) . ' with cycle ' 
+                        . $server->get('CyclesToRetryPumping'));
                 } else {
                     
                     // Show stopped servers

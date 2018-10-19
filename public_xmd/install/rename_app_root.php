@@ -76,13 +76,13 @@ echo 'XSL templates content regenerated' . PHP_EOL;
 
 // Restart the scheduler batch
 echo 'Waiting to restart the scheduler daemon process...';
-if (!@touch(XIMDEX_ROOT_PATH . '/data/tmp/scheduler.stop')) {
+if (!@touch(XIMDEX_ROOT_PATH . App::getValue('TempRoot') . '/scheduler.stop')) {
     echo PHP_EOL . $color('WARNING: Cannot create the scheduler.stop file; please, restart process manually')->yellow() . PHP_EOL;
 } else {
     $cont = 1;
     do {
         sleep(2);
-        if (!file_exists(XIMDEX_ROOT_PATH . '/data/tmp/scheduler.lck')) {
+        if (!file_exists(XIMDEX_ROOT_PATH . App::getValue('TempRoot') . '/scheduler.lck')) {
             echo PHP_EOL . 'Process stopped. It will restart soon';
             break;
         }
@@ -94,7 +94,7 @@ if (!@touch(XIMDEX_ROOT_PATH . '/data/tmp/scheduler.stop')) {
     if ($cont == 20) {
         echo $color('WARNING: Cannot stop the scheduler process. Please, restart it manually')->yellow() . PHP_EOL;
     }
-    if (!@unlink(XIMDEX_ROOT_PATH . '/data/tmp/scheduler.stop')) {
+    if (!@unlink(XIMDEX_ROOT_PATH . App::getValue('TempRoot') . '/scheduler.stop')) {
         echo $color('WARNING: Cannot delete the scheduler.stop file; please, start process manually')->yellow() . PHP_EOL;
     }
 }

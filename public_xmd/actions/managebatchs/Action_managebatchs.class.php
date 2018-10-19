@@ -35,6 +35,7 @@ use Ximdex\Utils\Serializer;
 use Ximdex\Runtime\Session;
 use Ximdex\Models\Node;
 use Ximdex\Models\Batch;
+use Ximdex\Models\Server;
 use Ximdex\Sync\BatchManager;
 use Ximdex\Models\PortalFrames;
 
@@ -201,6 +202,13 @@ class Action_managebatchs extends ActionAbstract
         return $hasChanged;
     }
     
+    /**
+     * Return a list of portal information including a list of servers affected
+     * 
+     * @param PortalFrames $portal
+     * @param int $order
+     * @return array
+     */
     private static function portalInfo(PortalFrames $portal, int & $order) : array
     {
         $node = new Node($portal->get('IdNodeGenerator'));
@@ -217,18 +225,35 @@ class Action_managebatchs extends ActionAbstract
             'userName' => $userName,
             'version' => $portal->get('Version'),
             'creationTime' => Date::formatTime($portal->get('CreationTime')),
-            'publishingType' => $portal->get('PublishingType'),
+            'type' => $portal->get('PublishingType'),
             'statusTime' => Date::formatTime($portal->get('StatusTime')),
             'startTime' => Date::formatTime($portal->get('StartTime')),
             'endTime' => Date::formatTime($portal->get('EndTime')),
-            'sfTotal' => $portal->get('SFtotal'),
-            'sfActive' => (string) ($portal->get('SFactive') - $portal->get('SFsoftError')),
-            'sfPending' => $portal->get('SFpending'),
-            'sfSuccess' => $portal->get('SFsuccess'),
-            'sfFatalError' => $portal->get('SFfatalError'),
-            'sfSoftError' => $portal->get('SFsoftError'),
+            'total' => $portal->get('SFtotal'),
+            'active' => (string) ($portal->get('SFactive') - $portal->get('SFsoftError')),
+            'pending' => $portal->get('SFpending'),
+            'success' => $portal->get('SFsuccess'),
+            'fatal' => $portal->get('SFfatalError'),
+            'soft' => $portal->get('SFsoftError'),
             'order' => $order++
         ];
+        foreach ($portal->getServers() as $id => $name) {
+            $server = new Server($id);
+            $stats = $server->stats($portal->get('id'));
+            $report['servers'][] = [
+                'id' => $id, 
+                'name' => $name,
+                'total' => $stats['total'],
+                'active' => $stats['active'] - $stats['soft'],
+                'pending' => $stats['pending'],
+                'success' => $stats['success'],
+                'fatal' => $stats['fatal'],
+                'soft' => $stats['soft'],
+                'activeForPumping' => (int) $server->get('ActiveForPumping'),
+                'delayedTime' => Date::formatTime($server->get('DelayTimeToEnableForPumping')),
+                'enabled' => (int) $server->get('Enabled')
+            ];
+        }
         return $report;
     }
 }

@@ -1,5 +1,5 @@
 {**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -24,102 +24,101 @@
  *}
 
 <html>
-<head>
-	%=js_widgets%
-	%=css_widgets%
-	<title>{t}Pool Preview{/t}</title>
-		{literal}
-	<script type="text/javascript">	
-		$(document).ready(function(){
-			initPoolPreview();
-		});
-	</script>
-</script> 
-	{/literal}
-</head>
-<body>
-	<div class="leftPanels">
-		<input type="button" value="expandir todo" onclick="tooglePanels('true')">
-		<input type="button" value="colapsar todo" onclick="tooglePanels('false')">
-		<div class="previewActual panel">
-			<h3>Information</h3>
-			<div class="panelContentPoolPreview">
-				<input type="hidden" name="idnodePreview">
-				<input type="hidden" name="idversionPreview">
-				<input type="hidden" name="idsubversionPreview">
-				<div class="infoPreview">
+	<head>
+		%=js_widgets%
+		%=css_widgets%
+		<title>{t}Pool Preview{/t}</title>
+	    {literal}
+            <script type="text/javascript">	
+                $(document).ready(function(){
+            	    initPoolPreview();
+			    });
+            </script> 
+		{/literal}
+	</head>
+	<body>
+		<div class="leftPanels">
+			<input type="button" value="expandir todo" onclick="tooglePanels('true')">
+			<input type="button" value="colapsar todo" onclick="tooglePanels('false')">
+			<div class="previewActual panel">
+				<h3>Information</h3>
+				<div class="panelContentPoolPreview">
+					<input type="hidden" name="idnodePreview">
+					<input type="hidden" name="idversionPreview">
+					<input type="hidden" name="idsubversionPreview">
+					<div class="infoPreview">
+					</div>
+				</div>
+			</div>
+			<div class="navigate panel">
+				<h3>Navigate</h3>
+				<div class="panelContentPoolPreview">
+					<div class="mysuggester">
+						<suggester handler="my_suggester" label="Seleccione nodo"/>
+					</div>
+					<div class="mytree">
+						<treeview handler="my_treeview" />
+					</div>
 				</div>
 			</div>
 		</div>
-		<div class="navigate panel">
-			<h3>Navigate</h3>
-			<div class="panelContentPoolPreview">
-				<div class="mysuggester">
-					<suggester handler="my_suggester" label="Seleccione nodo"/>
+		<div class="poolPreviewContent">
+			<div class="headerPoolPreview">
+				<div class="headerChannels">
+					<label class="aligned">Channels</label>
+					<select name="channel" class="channel">
+						{foreach from=$channels key=id_channel item=channel_name}
+				    		<option value="{$id_channel}">{$channel_name}</option>
+						{/foreach}
+					</select>
 				</div>
-				<div class="mytree">
-					<treeview handler="my_treeview" />
+				<div class="headerLabels">
+					<label>Labels</label>
+					<select class="labelsDropDown"></select>
 				</div>
 			</div>
-		</div>
-	</div>
-	<div class="poolPreviewContent">
-		<div class="headerPoolPreview">
-			<div class="headerChannels">
-				<label class="aligned">Channels</label>
-				<select name="channel" class="channel">
-					{foreach from=$channels key=id_channel item=channel_name}
-					<option value="{$id_channel}">{$channel_name}</option>
-					{/foreach}
-				</select>
+			<div>
+				<div class="poolPreview">
+					<iframe class="preview_loader"></iframe>
+				</div>
 			</div>
-			<div class="headerLabels">
-				<label>Labels</label>
-				<select class="labelsDropDown"></select>
-			</div>
-		</div>
-		<div>
-			<div class="poolPreview">
-				<iframe class="preview_loader"></iframe>
-			</div>
-		</div>
-		<div class="footerPoolPreview">
-			<div class="version-slider"></div>
+			<div class="footerPoolPreview">
+				<div class="version-slider"></div>
 				<div class="version-scroll">
-				  <div class="version-holder"></div>
-				</div>
-		</div>
-	</div>	
-	<div class="rightPanels" align="right">
-		<div class="linksBy panel">
-			<h3>Linked by</h3>
-			<div class="panelContentPoolPreview">
-				<div class="ul-linksBy"></div>
-			</div>
-		</div>
-		<div class="linksTo panel">
-			<h3>Links To</h3>
-			<div class="panelContentPoolPreview">
-				<div class="ul-linksTo"></div>
-			</div>
-		</div>
-		<div class="documentsByTags panel">
-			<h3>Navigate by tags</h3>
-			<div class="panelContentPoolPreview">
-				<div>
-					{* div init in poolPreview, load a select with all the labels *}
-					<div class="labelsForPoolPreview"></div>
-					{* div init in poolPreview.js when the user select a label*}
-					<div class="ul-DocumentsBylabels"></div>
+				    <div class="version-holder"></div>
 				</div>
 			</div>
 		</div>
-	</div>
-	<div id="actionManagerList" style="display:none">
-		<p>hello</p>
-	</div>
-	<div id="testtt" style="display:none">
-		<p>test</p>
-	</div>
-</body>
+		<div class="rightPanels" align="right">
+			<div class="linksBy panel">
+				<h3>Linked by</h3>
+				<div class="panelContentPoolPreview">
+					<div class="ul-linksBy"></div>
+				</div>
+			</div>
+			<div class="linksTo panel">
+				<h3>Links To</h3>
+				<div class="panelContentPoolPreview">
+					<div class="ul-linksTo"></div>
+				</div>
+			</div>
+			<div class="documentsByTags panel">
+				<h3>Navigate by tags</h3>
+				<div class="panelContentPoolPreview">
+					<div>
+						{* div init in poolPreview, load a select with all the labels *}
+						<div class="labelsForPoolPreview"></div>
+						{* div init in poolPreview.js when the user select a label*}
+						<div class="ul-DocumentsBylabels"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="actionManagerList" style="display:none">
+			<p>hello</p>
+		</div>
+		<div id="testtt" style="display:none">
+			<p>test</p>
+		</div>
+	</body>
 </html>

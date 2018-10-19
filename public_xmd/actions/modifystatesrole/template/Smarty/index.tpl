@@ -1,5 +1,5 @@
 {**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -28,7 +28,6 @@
     <div ng-view ng-show="thereAreMessages" class="slide-item #/messageClass/# message">
         <p>#/message/#</p>
     </div>
-
     <div class="action_content" ng-init='idRole={$idRole}; all_states={$all_states};'>
         <div class="row tarjeta">
             <div class="small-12 columns title_tarjeta">
@@ -37,29 +36,22 @@
             <div class="small-12 columns">
         <label class="label_title label_general">{t}Select the status asociated with the role{/t}</label>
         <fieldset>
-
-                <p ng-repeat="state in all_states">
-                    <span>
-                        <input type="checkbox" class="hidden-focus" id="#/state.name/#_#/idRole/#"
-                               ng-model="state.asociated"/>
-                        <label for="#/state.name/#_#/idRole/#"
-                               class="checkbox-label icon">#/state.name/#</label>
-                    </span>
-                </p>
-
+            <p ng-repeat="state in all_states">
+                <span>
+                    <input type="checkbox" class="hidden-focus" id="#/state.name/#_#/idRole/#"
+                           ng-model="state.asociated"/>
+                    <label for="#/state.name/#_#/idRole/#"
+                           class="checkbox-label icon">#/state.name/#</label>
+                </span>
+            </p>
         </fieldset>
-            </div>
+      </div>
             <div class="small-12 columns">
                 <fieldset ng-init="label='{t}Save changes{/t}'; loading=false;" class="buttons-form">
-                    <button class="btn main_action"
-                            xim-button
-                            xim-loading="loading"
-                            xim-label="label"
-                            xim-progress=""
-                            xim-disabled=""
-                            ng-click="saveChanges();">
-                </fieldset></div>
-        </div></div>
+                    <button class="btn main_action" xim-button xim-loading="loading" xim-label="label" xim-progress="" xim-disabled=""
+                            ng-click="saveChanges();"></button>
+                </fieldset>
+            </div>
+        </div>
+    </div>
 </form>
-
-

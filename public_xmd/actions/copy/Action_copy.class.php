@@ -68,12 +68,14 @@ class Action_copy extends ActionAbstract
     {
         // Extracts info of actual node which the action is executed
         $nodeID = $this->request->getParam("nodeid");
-        $node = new Node($nodeID);
+        // $node = new Node($nodeID);
         $destIdNode = $this->request->getParam('targetid');
+        /*
         $target = new Node($destIdNode);
         $nodename = $node->Get('Name');
         $idnode = $node->Get('IdNode');
         $idnodetype = $node->nodeType->get('IdNodeType');
+        */
         $recursive = $this->request->getParam('recursive');
         $recursive = $recursive == 'on' ? true : false;
         if ($nodeID == $destIdNode) {
@@ -83,7 +85,7 @@ class Action_copy extends ActionAbstract
         }
         $this->messages = copyNode($nodeID, $destIdNode, $recursive);
         $values = array('messages' => $this->messages->messages,
-            "parentID"=> $destIdNode,
+            "parentID" => $destIdNode,
             'action_with_no_return' => true);
         $this->sendJSON($values);
     }
@@ -108,6 +110,7 @@ class Action_copy extends ActionAbstract
             }
         }
         $targetNodes = array();
+        $arrayAux = [];
         foreach ($idTargetNodes as $idTargetNode) {
             $targetNode =  new Node($idTargetNode);
             $arrayAux["path"] = str_replace("/Ximdex/Projects/","", $targetNode->GetPath());
@@ -134,8 +137,8 @@ class Action_copy extends ActionAbstract
 
     function checkNodeName()
     {
-        $actionNodeId = $this->request->getParam("nodeid"); //node to copy
-        $destNodeId = $this->request->getParam('targetid'); //destination node
+        $actionNodeId = $this->request->getParam("nodeid"); // Node to copy
+        $destNodeId = $this->request->getParam('targetid'); // Destination node
         $actionNode = new Node($actionNodeId);
         $data = $actionNode->checkTarget($destNodeId);
         $this->sendJSON($data);

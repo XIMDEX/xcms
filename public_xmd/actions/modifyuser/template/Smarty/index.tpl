@@ -1,5 +1,5 @@
 {**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -25,7 +25,6 @@
 
 <form method="post" id="mu_action" action="{$action_url}">
 	{include file="actions/components/title_Description.tpl"}
-
 	<div class="action_content">
 		<div class="row tarjeta">
 			<div class="small-12 columns title_tarjeta">
@@ -34,49 +33,58 @@
 			<div class="small-12 columns">
 				<div class="input">
 					<label for="name" class="label_title label_general">{t}First and last names{/t}</label>
-					<input type="text" name="name" id="name" value="{$name}" class='full_size validable not_empty input_general' placeholder="{t}First and last names{/t}"  tabindex="1">
-				</div></div>
+					<input type="text" name="name" id="name" value="{$name}" class='full_size validable not_empty input_general' 
+					       placeholder="{t}First and last names{/t}"  tabindex="1">
+				</div>
+	        </div>
 			<div class="small-12 columns">
 				<div class="input">
 					<label for="email" class="label_title label_general">{t}Email{/t}</label>
-					<input type="text" name="email" id="email" value="{$email}" class='full_size validable not_empty is_email input_general' placeholder="{t}Email{/t}"  tabindex="2">
+					<input type="text" name="email" id="email" value="{$email}" class='full_size validable not_empty is_email input_general' 
+					       placeholder="{t}Email{/t}"  tabindex="2">
 				</div></div>
 				<div class="small-6 columns">
 					<div class="input">
-					<label for="password_" class="label_title label_general">{t}Modify password{/t}</label>
-					<input type="password" name='password_' id="password_" class='input_general full_size caja validable field_equals__password_repeated' placeholder="{t}Modify password{/t}"  tabindex="3">
-					</div></div>
+					   <label for="password_" class="label_title label_general">{t}Modify password{/t}</label>
+					   <input type="password" name='password_' id="password_" 
+                             class='input_general full_size caja validable field_equals__password_repeated' 
+                             placeholder="{t}Modify password{/t}"  tabindex="3">
+					   </div>
+				</div>
 				<div class="small-6 columns">
 					<div class="input">
-					<label for="password_repeated" class="label_title label_general">{t}Repeat password{/t}</label>
-					<input type="password" name='password_repeated' id="password_repeated" class='input_general full_size' placeholder="{t}Repeat password{/t}"  tabindex="4">
-					</div></div>
-			<div class="small-6 columns">
-				<div class="input-select" style="margin-bottom:15px!important;">
-					<label for="generalrole" class="label_title label_general" for="generalrole">{t}Role in general group{/t}</label>
-					<select {if !$canModifyUserGroup} disabled {/if} name="generalrole" id="generalrole" class="full_size"  tabindex="5">
-					{foreach from=$roles item=role}
-						<option value="{$role.IdRole}" {if ($role.IdRole == $general_role)} selected{/if} >{$role.Name}</option>
-					{/foreach}
-					</select>
-				</div></div>
-			<div class="small-6 columns">
-				<div class="input-select" style="margin-bottom:15px!important;">
-					<label for="locale" class="label_title label_general">{t}Language{/t}</label>
-					<select name="locale" id="locale" class="full_size"  tabindex="6">
-					{section name=i loop=$locales}
-						<option value="{$locales[i].Code}" {if ($locales[i].Code == $user_locale || ( $user_locale == null && $locales[i].Code == $smarty.const.DEFAULT_LOCALE))} selected{/if}>{$locales[i].Name|gettext} ({$locales[i].Lang})</option>
-					{/section}
-					</select>
-				</div></div>
+                        <label for="password_repeated" class="label_title label_general">{t}Repeat password{/t}</label>
+					    <input type="password" name='password_repeated' id="password_repeated" class='input_general full_size' 
+					        placeholder="{t}Repeat password{/t}"  tabindex="4">
+					</div>
+			    </div>
+			    <div class="small-6 columns">
+				    <div class="input-select" style="margin-bottom:15px!important;">
+					    <label for="generalrole" class="label_title label_general" for="generalrole">{t}Role in general group{/t}</label>
+					    <select {if !$canModifyUserGroup} disabled {/if} name="generalrole" id="generalrole" class="full_size" tabindex="5">
+					       {foreach from=$roles item=role}
+                                <option value="{$role.IdRole}" {if ($role.IdRole == $general_role)} selected{/if} >{$role.Name}</option>
+                            {/foreach}
+					    </select>
+				    </div>
+				</div>
+			    <div class="small-6 columns">
+				    <div class="input-select" style="margin-bottom:15px!important;">
+					   <label for="locale" class="label_title label_general">{t}Language{/t}</label>
+					   <select name="locale" id="locale" class="full_size"  tabindex="6">
+					        {section name=i loop=$locales}
+						        <option value="{$locales[i].Code}" {if ($locales[i].Code == $user_locale || ( $user_locale == null 
+                                    && $locales[i].Code == $smarty.const.DEFAULT_LOCALE))} selected{/if}>{$locales[i].Name|gettext} 
+                                    ({$locales[i].Lang})</option>
+					        {/section}
+					   </select>
+				    </div>
+				</div>
 			<div class="small-12 columns">
 				<fieldset class="buttons-form">
                     {button label="Modify user" class='validate btn main_action' tabindex="7" }
 				</fieldset>
 			</div>
+		</div>
 	</div>
-
 </form>
-
-
-<h2>{t}{/t}</h2>

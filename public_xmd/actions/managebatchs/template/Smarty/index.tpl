@@ -26,71 +26,62 @@
 {include file="actions/components/title_Description.tpl"}
 <div class="action_content ximPUBLISHtools" ng-controller="ximPUBLISHtools">
     <ul class="media-list">
-        <li class="media" ng-repeat="portal in json | orderBy: 'order' as filtered_json track by portal.idPortal">
+        <li class="media" ng-repeat="frames in json | orderBy: 'order' as filtered_json track by frames.idPortal">
             <span class="pull-left">
-                <span class="icon-new color-trans #/portal.endTime ? 'finished-task' : 'unfinished-task'/#"
-                        ng-class="{literal}{'unfinished-task': !portal.endTime, 'finished-task': portal.endTime}{/literal}"></span>
+                <img src="actions/managebatchs/resources/icons/#/ frames.type == 'Up' ? 'upload' : 'download' /#.png" 
+                        title="Publishing type: #/ frames.type /#" class="type-icon" />
             </span>
             <!--
             <p class="status-buttons">
-                <a class="pull-right" href="#" ng-hide="portal.Finished">
+                <a class="pull-right" href="#" ng-hide="frames.Finished">
                     <button type="button" class="increase-btn icon-new btn-unlabel-rounded" 
-                            ng-click="incBatchPriority(portal.IdBatch)"></button>
+                            ng-click="incBatchPriority(frames.IdBatch)"></button>
                     <button type="button" class="decrease-btn icon-new btn-unlabel-rounded" 
-                            ng-click="decBatchPriority(portal.IdBatch)"></button>
-                    <button type="button" class="pause-btn icon-new btn-unlabel-rounded" ng-click="stopBatch(portal.IdBatch)" 
-                            ng-if="!portal.BatchState"></button>
-                    <button type="button" class="resume-btn icon-new btn-unlabel-rounded" ng-click="startBatch(portal.IdBatch)" 
-                            ng-if="!portal.BatchState"></button>
+                            ng-click="decBatchPriority(frames.IdBatch)"></button>
+                    <button type="button" class="pause-btn icon-new btn-unlabel-rounded" ng-click="stopBatch(frames.IdBatch)" 
+                            ng-if="!frames.BatchState"></button>
+                    <button type="button" class="resume-btn icon-new btn-unlabel-rounded" ng-click="startBatch(frames.IdBatch)" 
+                            ng-if="!frames.BatchState"></button>
                 </a>
             </p>
             -->
             <div class="media-body">
                 <h4 class="media-heading">
-                    <span title="Node ID: #/portal.idNodeGenerator/#
-                        &#013;User: #/portal.userName/#
-                        &#013;Created at: #/portal.creationTime/#
-                        &#013;Started at: #/portal.startTime/#
-                        &#013;Status time: #/portal.statusTime/#
-                        &#013;Ended at: #/portal.endTime/#">#/portal.nodeName/#</span>
-                    <small>Type: #/portal.publishingType/#</small>
-                    <small ng-if="!portal.startTime"><span class="icon clock"></span> Created at: #/portal.creationTime/#</small>
-                    <small ng-if="portal.startTime && !portal.statusTime"><span class="icon clock"></span> Started at: #/portal.startTime/#</small>
-                    <small ng-if="!portal.endTime"><span class="icon clock"></span> Status time: #/portal.statusTime/#</small>
-                    <small ng-if="portal.endTime"><span class="icon clock"></span> Ended at: #/portal.endTime/#</small>
+                    <span title="Node ID: #/frames.idNodeGenerator/#
+                        &#013;User: #/frames.userName/#
+                        &#013;Created at: #/frames.creationTime/#
+                        &#013;Started at: #/frames.startTime/#
+                        &#013;Status time: #/frames.statusTime/#
+                        &#013;Ended at: #/frames.endTime/#">#/frames.nodeName/#</span>
+                    <small ng-if="!frames.startTime"><span class="icon clock"></span> Created at: #/frames.creationTime/#</small>
+                    <small ng-if="frames.startTime && !frames.statusTime">
+                        <span class="icon clock"></span> Started at: #/frames.startTime/#
+                    </small>
+                    <small ng-if="!frames.endTime"><span class="icon clock"></span> Status time: #/frames.statusTime/#</small>
+                    <small ng-if="frames.endTime"><span class="icon clock"></span> Ended at: #/frames.endTime/#</small>
                 </h4>
                 <div class="progress">
-                    <div ng-if="portal.sfSuccess > 0" class="progress-bar progress-bar-striped progress-bar-success" role="progressbar" 
-                            style="width: #/ portal.sfSuccess * 100 / portal.sfTotal /#%" title="#/portal.sfSuccess/# success">
-                        #/portal.sfSuccess/# success
-                    </div>
-                    <div ng-if="portal.sfSoftError > 0" class="progress-bar progress-bar-striped progress-bar-errored-soft active" 
-                            role="progressbar" style="width: #/ portal.sfSoftError * 100 / portal.sfTotal /#%" 
-                            title="#/portal.sfSoftError/# soft errors">
-                        #/portal.sfSoftError/# soft errors
-                    </div>
-                    <div ng-if="portal.sfFatalError > 0" class="progress-bar progress-bar-striped progress-bar-errored-fatal" role="progressbar" 
-                            style="width: #/ portal.sfFatalError * 100 / portal.sfTotal /#%" title="#/portal.sfFatalError/# fatal errors">
-                        #/portal.sfFatalError/# fatal errors
-                    </div>
-                    <div ng-if="portal.sfActive > 0" class="progress-bar progress-bar-striped progress-bar-active active" role="progressbar" 
-                            style="width: #/ portal.sfActive * 100 / portal.sfTotal /#%" title="#/portal.sfActive/# active">
-                        #/portal.sfActive/# active
-                    </div>
-                    <div ng-if="portal.sfPending > 0" class="progress-bar progress-bar-striped progress-bar-pending active" role="progressbar" 
-                            style="width: #/ portal.sfPending * 100 / portal.sfTotal /#%" title="#/portal.sfPending/# pending">
-                        #/portal.sfPending/# pending
-                    </div>
+                    {include file="actions/managebatchs/template/Smarty/framesProgressBar.tpl"}
                 </div>
                 <small>
-                    <a class="aespecial" ng-if="!showing[portal.idPortal]" href="#" role="button" 
-                            ng-click="showing[portal.idPortal] = !showing[portal.idPortal]">Show servers details</a>
-                    <a class="aespecial" ng-if="showing[portal.idPortal]" href="#" role="button" 
-                            ng-click="showing[portal.idPortal] = !showing[portal.idPortal]">Hide servers details</a>
+                    <a class="aespecial" ng-if="!showing[frames.idPortal]" href="#" role="button" 
+                            ng-click="showing[frames.idPortal] = !showing[frames.idPortal]">Show servers details</a>
+                    <a class="aespecial" ng-if="showing[frames.idPortal]" href="#" role="button" 
+                            ng-click="showing[frames.idPortal] = !showing[frames.idPortal]">Hide servers details</a>
                 </small>
-                <ul ng-init="initShowing(portal.idPortal)" ng-show="showing[portal.idPortal]" class="media-list">
-                    <li class="media" ng-repeat="server in portal.servers | orderBy: 'serverId' as filtered_json track by server.serverId">
-                        Server: #/server.name/#
+                <ul ng-init="initShowing(frames.idPortal)" ng-show="showing[frames.idPortal]" class="media-list servers">
+                    <li class="media" ng-repeat="frames in frames.servers | orderBy: 'name' as filtered_json track by frames.id">
+                        <h4 class="media-heading">
+                            Server #/frames.name/# 
+                            <small ng-if="!frames.enabled" class="server-disabled-by-user">Disabled by user</small>
+                            <small ng-if="frames.enabled && !frames.activeForPumping" class="server-disabled">
+                                Disabled
+                                <span ng-if="frames.delayedTime"> (Restart at #/frames.delayedTime/#)</span>
+                            </small>
+                        </h4>
+                        <div class="progress server">
+                            {include file="actions/managebatchs/template/Smarty/framesProgressBar.tpl"}
+                        </div>
                     </li>
                 </ul>
             </div>

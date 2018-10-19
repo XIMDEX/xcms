@@ -68,7 +68,8 @@ class ServerFrame extends ServerFramesOrm
     // Group of status
     const FINAL_STATUS = [self::IN, self::OUT, self::REMOVED, self::REPLACED, self::CANCELLED, self::OUTDATED, self::DELAYED
         , self::DUE2INWITHERROR, self::DUE2OUTWITHERROR];
-    const SUCCESS_STATUS = [self::IN, self::OUT, self::REMOVED, self::REPLACED, self::CANCELLED, self::OUTDATED, self::DELAYED];
+    const SUCCESS_STATUS_IN = [self::IN, self::REMOVED, self::REPLACED, self::CANCELLED, self::OUTDATED, self::DELAYED];
+    const SUCCESS_STATUS_OUT = [self::OUT, self::REMOVED, self::REPLACED, self::CANCELLED, self::OUTDATED, self::DELAYED];
     
     public $initialStatus;
     public $errorStatus;

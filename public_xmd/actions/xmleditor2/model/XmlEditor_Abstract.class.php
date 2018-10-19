@@ -1,6 +1,7 @@
 <?php
+
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -32,14 +33,11 @@ use Ximdex\Runtime\DataFactory;
 use Ximdex\Utils\FsUtils;
 use Ximdex\Logger;
 
-
 abstract class XmlEditor_Abstract
 {
     protected $_editorName = '';
     protected $_base_url = null;
     protected $rel_path_docxap = null;
-
-
 
     abstract public function getEditorName();
 
@@ -57,16 +55,15 @@ abstract class XmlEditor_Abstract
 
     abstract public function getAnnotationFile($idnode, $content);
 
-    abstract public function getPreviewInServerFile ($idNode, $content, $idChannel);
+    abstract public function getPreviewInServerFile($idNode, $content, $idChannel);
 
-    abstract public function getNoRenderizableElements ($idNode);
+    abstract public function getNoRenderizableElements($idNode);
 
     public function getXmlFile($idnode)
     {
         $node = new Node($idnode);
         if (!($node->get('IdNode') > 0)) {
-            Logger::error(_("A non-existing node cannot be obtained: ") . $node->get('IdNode'));
-
+            Logger::error(_('A non-existing node cannot be obtained: ') . $node->get('IdNode'));
             return null;
         }
 
@@ -77,8 +74,6 @@ abstract class XmlEditor_Abstract
 
         // Channel IDs are returned, but XSLT needs the name
         $channels = $node->getChannels();
-
-        $max = count($channels);
         $defaultChannel = null;
         foreach ($channels as $channelID) {
             $channel = new Channel($channelID);
@@ -89,12 +84,9 @@ abstract class XmlEditor_Abstract
                 break;
             }
         }
-
-        // ---------------------------------------------------------------------------------------------
-
+        
         // Document content is returned with the corresponding docxap labels
-        $content = $node->class->GetRenderizedContent($defaultChannel /*, $content=null, $onlyDocXap=null*/);
-
+        $content = $node->class->GetRenderizedContent($defaultChannel);
         return $content;
     }
 
@@ -102,20 +94,19 @@ abstract class XmlEditor_Abstract
     {
         $content = '';
         $docxap = $this->getXslPath($idnode, false, $view);
-
         if ($docxap !== null) {
             $pathDocxap = str_replace(App::getValue('UrlHost') . App::getValue('UrlRoot'), XIMDEX_ROOT_PATH, $docxap);
             $pos = strrpos($pathDocxap, '/');
             $pathToFileRel = substr($pathDocxap,0, $pos);
-            $this->rel_path_docxap=$pathToFileRel."/";
+            $this->rel_path_docxap=$pathToFileRel.'/';
             $content = FsUtils::file_get_contents($pathDocxap);
-            // include the correspondant includes_template.xsl for the current document
+            
+            // Include the correspondant includes_template.xsl for the current document
             \Ximdex\NodeTypes\XsltNode::replace_path_to_local_templatesInclude($content, $idnode);
         } else {
             $msg = "docxap.xsl was not found for node $idnode";
             Logger::error($msg);
         }
-
         return $content;
     }
 
@@ -123,23 +114,20 @@ abstract class XmlEditor_Abstract
     {
         $node = new Node($idnode);
         if (!($node->get('IdNode') > 0)) {
-            Logger::error(_("A non-existing node cannot be obtained: " ) . "$idnode");
-
+            Logger::error(_('A non-existing node cannot be obtained: ') . $idnode);
             return null;
         }
-
-                if ($view == "form") {
-                    return $this->getFormViewXsl($idnode);
-                } elseif ($view == 'tree') {
-                    return App::getValue( 'UrlHost') . App::getUrl('/actions/xmleditor2/views/editor/tree/templates/docxap.xsl' );
+        if ($view == 'form') {
+            return $this->getFormViewXsl($idnode);
+        } elseif ($view == 'tree') {
+            return App::getValue( 'UrlHost') . App::getUrl('/actions/xmleditor2/views/editor/tree/templates/docxap.xsl' );
         }
-
         $nodeTypeName = $node->nodeType->GetName();
         if ($nodeTypeName == 'RngVisualTemplate') {
             return App::getValue( 'UrlHost') .  App::getUrl('/actions/xmleditor2/views/rngeditor/templates/docxap.xsl');
         }
 
-        // return full project docxap path
+        // Return full project docxap path
         $project = new Node($node->getProject());
         if (!$project->GetID())
         {
@@ -148,50 +136,38 @@ abstract class XmlEditor_Abstract
         }
         $docxap = XIMDEX_ROOT_PATH . App::getValue('NodeRoot') . '/' . $project->GetNodeName() . '/' . App::getValue('TemplatesDirName')
                 . '/docxap.xsl';
-
         if ($docxap && $asURL) {
             $docxap = str_replace(XIMDEX_ROOT_PATH, App::getValue('UrlHost') . App::getValue('UrlRoot'),  $docxap);
         }
-
         return $docxap;
     }
 
     public function getSchemaNode($idnode)
     {
         $node = new Node($idnode);
-
         $nodeTypeName = $node->nodeType->GetName();
         if ($nodeTypeName == 'RngVisualTemplate') {
             $rngPath = APP_ROOT_PATH . '/actions/xmleditor2/views/rngeditor/schema/rng-schema.xml';
-
             return trim(FsUtils::file_get_contents($rngPath));
         }
-
         $idcontainer = $node->getParent();
         $reltemplate = new \Ximdex\Models\RelTemplateContainer();
         $idTemplate = $reltemplate->getTemplate($idcontainer);
-
         $templateNode = new Node($idTemplate);
-
         return $templateNode;
     }
 
     protected function getSchemaData($idnode)
     {
         $schemaData = array('id' => null, 'content' => '');
-        $node = new Node($idnode);
-
         if (!is_object($templateNode = $this->getSchemaNode($idnode))) {
             return array('id' => 0, 'content' => $templateNode);
         }
         $schemaId = $templateNode->getID();
-
         $rngTemplate = new Node($schemaId);
         $content = $rngTemplate->GetContent();
-
         $schemaData['id'] = $schemaId;
         $schemaData['content'] = $content;
-
         return $schemaData;
     }
 
@@ -204,17 +180,15 @@ abstract class XmlEditor_Abstract
     {
         $schemaData = $this->getSchemaData($idnode);
         $content = $schemaData['content'];
-
         $schema = FsUtils::file_get_contents(APP_ROOT_PATH . '/actions/xmleditor2/views/common/schema/relaxng-1.0.rng.xml');
         $rngvalidator = new \Ximdex\XML\Validators\RNG();
-        $valid = $rngvalidator->validate($schema, $content);
-
+        $rngvalidator->validate($schema, $content);
         $errors = $rngvalidator->getErrors();
-        if (count($errors) > 0)
+        if (count($errors) > 0) {
             $content = array('error' => $errors);
-        else
+        } else {
             $content = preg_replace('/xmlns:xim="([^"]*)"/', sprintf('xmlns:xim="%s"', ParsingRng::XMLNS_XIM),  $content);
-
+        }
         return $content;
     }
 
@@ -228,14 +202,9 @@ abstract class XmlEditor_Abstract
     {
         $xmldoc = '<?xml version="1.0" encoding="UTF-8"?>' . \Ximdex\Utils\Strings::stripslashes( $xmldoc);
         $schema = $this->getSchemaFile($idnode);
-
         $rngvalidator = new \Ximdex\XML\Validators\RNG();
         $valid = $rngvalidator->validate($schema, $xmldoc);
-
-        $response = array('valid' => $valid,
-                        'errors' => $rngvalidator->getErrors()
-                        );
-
+        $response = array('valid' => $valid, 'errors' => $rngvalidator->getErrors());
         return $response;
     }
 
@@ -255,14 +224,11 @@ abstract class XmlEditor_Abstract
         $htmlTransformer->loadHTML($docHtml);
         $htmlTransformer->loadXML($docXmlOrigen);
         $htmlTransformer->setXimNode($idnode);
-
-        $xmldoc = null;
+        // $xmldoc = null;
         if ($htmlTransformer->transform()) {
-            $xmldoc = $htmlTransformer->getXmlContent();
+            // $xmldoc = $htmlTransformer->getXmlContent();
         }
-
         $node = $htmlTransformer->getNodeWithUID($uid);
-
         return $node->tagName;
     }
     
@@ -278,13 +244,10 @@ abstract class XmlEditor_Abstract
         $doc->preserveWhiteSpace = false;
         $doc->loadXML($xmldoc);
         $docxap = $doc->firstChild;
-
         $this->_deleteUIDAttributes($docxap);
-        
         if ($deleteDocxap) {
             $childrens = $docxap->childNodes;
             $l = $childrens->length;
-
             $xmldoc = '';
             for ($i=0; $i<$l; $i++) {
                 $child = $childrens->item($i);
@@ -295,7 +258,6 @@ abstract class XmlEditor_Abstract
         } else {
             $xmldoc = $doc->saveXML($docxap);
         }
-
         return $xmldoc;
     }
 
@@ -305,7 +267,9 @@ abstract class XmlEditor_Abstract
 	 */
     protected function _deleteUIDAttributes($node)
     {
-        if ($node->nodeType != 1) return;
+        if ($node->nodeType != 1) {
+            return;
+        }
         if ($node->hasAttribute('uid')) {
             $node->removeAttribute('uid');
         }
@@ -323,116 +287,118 @@ abstract class XmlEditor_Abstract
     {
         $xsl = new DOMDocument();
         $xsl->loadXML($content);
-        //Get template-include tag and is source
-
-        //Get template include path
-        $arrayTags = $xsl->getElementsByTagName("include");
-        //We supposed just 1 include in docxap file (template_includes)
+        
+        // Get template-include tag and is source
+        
+        // Get template include path
+        $arrayTags = $xsl->getElementsByTagName('include');
+        
+        // We supposed just 1 include in docxap file (template_includes)
         if ($arrayTags->item(0) != null) {
-        $templateIncludeTag = $arrayTags->item(0);
-        //this href is a complete url path
-        $templateIncludePath = $templateIncludeTag->getAttribute("href");
-        $folderPath = $templateIncludePath;
-        $xslTemplateInclude = new DOMDocument();
-        $xslTemplateInclude->load($this->rel_path_docxap .$folderPath);
-        $arrayFinalTags = $xslTemplateInclude->getElementsByTagName("include");
-
-        $auxContent="";
-        //for each include in template_includes
-        foreach ($arrayFinalTags as $domElement) {
-
-            $auxPath = $domElement->getAttribute("href");
-            $auxXsl = new DOMDocument();
-            $auxXsl->formatOutput = true;
-            $auxXsl->preserveWhiteSpace = false;
-            $auxXsl->load($this->rel_path_docxap .$auxPath);
-            $temporalContent = $auxXsl->saveXML();
-            $temporalContent = preg_replace("/\<\/*xsl:stylesheet.*\>/", "", $temporalContent);
-            $temporalContent = preg_replace("/\<\?xml version.*\>/", "", $temporalContent);
-            $auxContent .= $temporalContent;
-        }
-        $content = preg_replace("/\<xsl:include.*href=\".*templates_include.xsl\".*\>/",$auxContent,$content);
+            $templateIncludeTag = $arrayTags->item(0);
+            
+            // This href is a complete url path
+            $templateIncludePath = $templateIncludeTag->getAttribute('href');
+            $folderPath = $templateIncludePath;
+            $xslTemplateInclude = new DOMDocument();
+            $xslTemplateInclude->load($this->rel_path_docxap .$folderPath);
+            $arrayFinalTags = $xslTemplateInclude->getElementsByTagName('include');
+            $auxContent = '';
+            
+            // For each include in template_includes
+            foreach ($arrayFinalTags as $domElement) {
+                $auxPath = $domElement->getAttribute('href');
+                $auxXsl = new DOMDocument();
+                $auxXsl->formatOutput = true;
+                $auxXsl->preserveWhiteSpace = false;
+                $auxXsl->load($this->rel_path_docxap .$auxPath);
+                $temporalContent = $auxXsl->saveXML();
+                $temporalContent = preg_replace('/\<\/*xsl:stylesheet.*\>/', '', $temporalContent);
+                $temporalContent = preg_replace('/\<\?xml version.*\>/', '', $temporalContent);
+                $auxContent .= $temporalContent;
+            }
+            $content = preg_replace("/\<xsl:include.*href=\'.*templates_include.xsl\".*\>/", $auxContent, $content);
         }
     }
 
     /**
-     * Get the form view xsl for the current node.
-     * If exist an updated xsl, it will return that.
-     * Otherwise will generate a new one.
+     * Get the form view xsl for the current node
+     * If exist an updated xsl, it will return that
+     * Otherwise will generate a new one
+     * 
      * @param  int    $idnode
      * @return string pointer to the xsl file.
      */
     private function getFormViewXsl($idnode)
-        {
-            $node = new Node($idnode);
-            $idSchema = $node->class->getTemplate();
-            $schemaNode = new Node($idSchema);
-            $schemaName = $schemaNode->GetNodeName();
-            $dataFactory = new DataFactory($idSchema);
-            $maxIdVersion = $dataFactory->GetLastVersionId();
-            $formXslFile = XIMDEX_ROOT_PATH.App::getValue( 'FileRoot')."/xslformview_{$schemaName}_{$maxIdVersion}.xsl";
-            if (file_exists($formXslFile)) {
-                return $formXslFile;
-            } else {
-                 array_map('unlink', glob(XIMDEX_ROOT_PATH.App::getValue( 'FileRoot')."/xslformview_{$schemaName}*"));
-                return $this->buildFormXsl($idSchema, $maxIdVersion);
-            }
-
+    {
+        $node = new Node($idnode);
+        $idSchema = $node->class->getTemplate();
+        $schemaNode = new Node($idSchema);
+        $schemaName = $schemaNode->GetNodeName();
+        $dataFactory = new DataFactory($idSchema);
+        $maxIdVersion = $dataFactory->GetLastVersionId();
+        $formXslFile = XIMDEX_ROOT_PATH.App::getValue( 'FileRoot')."/xslformview_{$schemaName}_{$maxIdVersion}.xsl";
+        if (file_exists($formXslFile)) {
+            return $formXslFile;
+        } else {
+             array_map('unlink', glob(XIMDEX_ROOT_PATH.App::getValue( 'FileRoot')."/xslformview_{$schemaName}*"));
+            return $this->buildFormXsl($idSchema, $maxIdVersion);
         }
+
+    }
 
     /**
      * Generate a xsl file from schema and the template
+     * 
      * @param  int    $idSchema     associated to the current node.
      * @param  integer   $maxIdVersion Schema idversion.
      * @return string pointer to the new generated xsl file.
      */
     private function buildFormXsl($idSchema, $maxIdVersion)
     {
-        $warnings = "";
+        $warnings = '';
         $xslTemplateContent = FsUtils::file_get_contents(APP_ROOT_PATH . '/actions/xmleditor2/views/editor/form/templates/docxap.xsl');
         $rngXpathObj = $this->getXPathFromSchema($idSchema);
-
         $textElements = $this->getTextElements($rngXpathObj);
-        $dateElements = $this->getElementsByType($rngXpathObj,"date");
-        $elements = $rngXpathObj->query("//element");
-
+        $dateElements = $this->getElementsByType($rngXpathObj, 'date');
+        $elements = $rngXpathObj->query('//element');
         $applyElements = $this->getApplyElements($rngXpathObj);
-
-        $boldElements = $this->getElementsByType($rngXpathObj,"bold");
-        $italicElements = $this->getElementsByType($rngXpathObj,"italic");
-        $linkElements = $this->getElementsByType($rngXpathObj,"link");
-
-        $imageElements = $this->getElementsByType($rngXpathObj,"image");
-        $listElements = $this->getElementsByType($rngXpathObj,"list");
-        $itemElements = $this->getElementsByType($rngXpathObj,"item");
-        $textAreaElements = $this->getElementsByType($rngXpathObj,"textarea");
+        $boldElements = $this->getElementsByType($rngXpathObj,'bold');
+        $italicElements = $this->getElementsByType($rngXpathObj,'italic');
+        $linkElements = $this->getElementsByType($rngXpathObj,'link');
+        $imageElements = $this->getElementsByType($rngXpathObj,'image');
+        $listElements = $this->getElementsByType($rngXpathObj,'list');
+        $itemElements = $this->getElementsByType($rngXpathObj,'item');
+        $textAreaElements = $this->getElementsByType($rngXpathObj,'textarea');
 
         /*
          * For every element, if isn't a docxap element, an apply element or an
          * explicit textarea element, infer if is textarea, input or container.
          */
+        $inputTextElements = [];
+        $containerElements = [];
         foreach ($elements as $element) {
-            $tagName = $element->getAttribute("name");
-            if ($tagName == "docxap") {
+            $tagName = $element->getAttribute('name');
+            if ($tagName == 'docxap') {
                 continue;
             }
-
             $toLowerTagName = strtolower($tagName);
-            //apply elements are italic, bold, underlink or link
+            
+            // Apply elements are italic, bold, underlink or link
             if (in_array($toLowerTagName, $applyElements)) {
                 continue;
             }
-
             if (in_array($toLowerTagName, $textAreaElements)) {
                 continue;
             }
-
             if (in_array($tagName, $textElements)) {
-                /*A textarea element if it can have child elements defined by
-                 * reference or inside of current element.
+                
+                /* 
+                 * A textarea element if it can have child elements defined by
+                 * reference or inside of current element
                  */
-                $resultLength = $rngXpathObj->query(".//element", $element)->length +
-                $rngXpathObj->query(".//ref", $element)->length;
+                $resultLength = $rngXpathObj->query('.//element', $element)->length +
+                $rngXpathObj->query('.//ref', $element)->length;
                 if ($resultLength) {
                     $textAreaElements[] = $tagName;
                     $textAreaElements[] = $toLowerTagName;
@@ -444,9 +410,7 @@ abstract class XmlEditor_Abstract
                 $containerElements[] = $tagName;
                 $containerElements[] = $toLowerTagName;
             }
-
         }
-
         $allApplyElements = array_values(array_unique(array_diff($applyElements, $boldElements, $italicElements, $linkElements)));
         $containerElements = array_values(array_unique(array_diff($containerElements, $imageElements, $listElements)));
         $textAreaElements = array_values(array_unique(array_diff($textAreaElements, $itemElements)));
@@ -457,51 +421,49 @@ abstract class XmlEditor_Abstract
         * Nesting every array in other one. The keys for this array are
         * element macros.
         */
-        $groupedElements["##APPLY_ELEMENTS##"] = $allApplyElements;
-        $groupedElements["##CONTAINER_ELEMENTS##"] = $containerElements;
-        $groupedElements["##INPUT_TEXT_ELEMENTS##"] = $inputTextElements;
-        $groupedElements["##TEXTAREA_ELEMENTS##"] = $textAreaElements;
-        $groupedElements["##BOLD_ELEMENTS##"] = $boldElements;
-        $groupedElements["##ITALIC_ELEMENTS##"] = $italicElements;
-        $groupedElements["##LINK_ELEMENTS##"] = $linkElements;
-        $groupedElements["##BLOCK_EDITION_ELEMENTS##"] = $blockEditionElements;
-        $groupedElements["##IMAGE_ELEMENTS##"] = $imageElements;
-        $groupedElements["##LIST_ELEMENTS##"] = $listElements;
-        $groupedElements["##ITEM_ELEMENTS##"] = $itemElements;
-        $groupedElements["##DATE_ELEMENTS##"] = $dateElements;
-
+        $groupedElements = [];
+        $groupedElements['##APPLY_ELEMENTS##'] = $allApplyElements;
+        $groupedElements['##CONTAINER_ELEMENTS##'] = $containerElements;
+        $groupedElements['##INPUT_TEXT_ELEMENTS##'] = $inputTextElements;
+        $groupedElements['##TEXTAREA_ELEMENTS##'] = $textAreaElements;
+        $groupedElements['##BOLD_ELEMENTS##'] = $boldElements;
+        $groupedElements['##ITALIC_ELEMENTS##'] = $italicElements;
+        $groupedElements['##LINK_ELEMENTS##'] = $linkElements;
+        $groupedElements['##BLOCK_EDITION_ELEMENTS##'] = $blockEditionElements;
+        $groupedElements['##IMAGE_ELEMENTS##'] = $imageElements;
+        $groupedElements['##LIST_ELEMENTS##'] = $listElements;
+        $groupedElements['##ITEM_ELEMENTS##'] = $itemElements;
+        $groupedElements['##DATE_ELEMENTS##'] = $dateElements;
         foreach ($groupedElements as $macro => $elements) {
             if (count($elements)){
-                $implodedElements = implode(" | ", $elements);
+                $implodedElements = implode(' | ', $elements);
                 $xslTemplateContent = str_replace($macro, $implodedElements, $xslTemplateContent);
-            }else{ 
+            } else { 
                 $matches = array();
-                preg_match("/##(\w+)_ELEMENTS##/", $macro, $matches);
+                preg_match('/##(\w+)_ELEMENTS##/', $macro, $matches);
                 if (count($matches)>1){
                     $elementName = $matches[1];
                     $xslTemplateContent = str_replace($macro, "{$elementName}_undefined", $xslTemplateContent);
-                    if ($elementName != "BLOCK_EDITION"){                        
+                    if ($elementName != 'BLOCK_EDITION'){                        
                         $warnings .= "<p>Doesn't found any $elementName element</p>";
                         $warningElements .= "$elementName ";
                     }
                 }            
             }
         }
-        $xslTemplateContent = str_replace("##WARNING_ELEMENTS##", $warningElements, $xslTemplateContent);
-        $xslTemplateContent = str_replace("##WARNINGS##", $warnings, $xslTemplateContent);
-        $xslTemplateContent = str_replace("@@URL_PATH@@", App::getValue('UrlHost') . App::getValue('UrlRoot'), $xslTemplateContent);
-
+        $xslTemplateContent = str_replace('##WARNING_ELEMENTS##', $warningElements, $xslTemplateContent);
+        $xslTemplateContent = str_replace('##WARNINGS##', $warnings, $xslTemplateContent);
+        $xslTemplateContent = str_replace('@@URL_PATH@@', App::getValue('UrlHost') . App::getValue('UrlRoot'), $xslTemplateContent);
         $schemaNode = new Node ($idSchema);
         $schemaName = $schemaNode->GetNodeName();
         $formViewFile = XIMDEX_ROOT_PATH.App::getValue('FileRoot')."/xslformview_{$schemaName}_{$maxIdVersion}.xsl";
         FsUtils::file_put_contents($formViewFile, $xslTemplateContent);
-
         return $formViewFile;
-
     }
 
     /**
-     * Clean namespaces and get XPath object for a Relax-NG schema.
+     * Clean namespaces and get XPath object for a Relax-NG schema
+     * 
      * @param  int       $idSchema
      * @return \DOMXPath Path to root element in Relax-NG.
      */
@@ -510,19 +472,19 @@ abstract class XmlEditor_Abstract
         $schemaNode = new Node($idSchema);
         $schemaContent = $schemaNode->GetContent();
         $docRNG = new DOMDocument();
-        $docRNG->validateOnParse=true;
-        //Removing namespaces declaration.
-        $schemaContent = preg_replace('/<grammar[^>]*>/', "<grammar>", $schemaContent,1);
+        $docRNG->validateOnParse = true;
+        
+        // Removing namespaces declaration.
+        $schemaContent = preg_replace('/<grammar[^>]*>/', '<grammar>', $schemaContent,1);
         $docRNG->loadXML($schemaContent,LIBXML_NOERROR);
-
         $xpathObj = new DOMXPath($docRNG);
         $xpathObj->registerNameSpace('xim', 'http://www.ximdex.com');
-
         return $xpathObj;
     }
 
     /**
      * Get elements typed like apply and $elementType
+     * 
      * @param DomXPath  $xpathObj    pointer to the current element in Relax-NG.
      * @param  string $elementType searched type.
      * @return array  Names for found elements.
@@ -532,74 +494,71 @@ abstract class XmlEditor_Abstract
         $result = array();
         $applytags = $xpathObj->query("//type[contains(text(),'$elementType')]");
         foreach ($applytags as $applyTag) {
-            if (strpos($applyTag->nodeValue, "apply")!==FALSE) {
+            if (strpos($applyTag->nodeValue, 'apply')!==FALSE) {
                 $elementTag = $applyTag->parentNode;
-                $elementName = $elementTag->getAttribute("name");
+                $elementName = $elementTag->getAttribute('name');
                 $result[] = strtolower($elementName);
             }
         }
-
         return $result;
     }
 
     /**
      * Get applies elements
+     * 
      * @param  DomXPath $xpathObj pointer to the current element in Relax-NG.
      * @return array Names for found elements.
      */
-    private function getApplyElements(&$xpathObj)
+    private function getApplyElements(& $xpathObj)
     {
         $result = array();
         $applytags = $xpathObj->query("//*[name()='xim:type']");
         foreach ($applytags as $applyTag) {
-            if (strpos($applyTag->nodeValue, "apply")!==FALSE) {
+            if (strpos($applyTag->nodeValue, 'apply')!==FALSE) {
                 $elementTag = $applyTag->parentNode;
-                $elementName = $elementTag->getAttribute("name");
+                $elementName = $elementTag->getAttribute('name');
                 $result[] = strtolower($elementName);
             }
         }
-
         return $result;
     }
 
     /**
-     * Get an array for elements with type $elementType.
+     * Get an array for elements with type $elementType
+     * 
      * @param DomXPath $xpathObj
      * @param string $elementType Searching type.
      * @return array with element names.
      */
-    private function getElementsByType(&$xpathObj,$elementType)
+    private function getElementsByType(& $xpathObj, $elementType)
     {
         $result = array();
         $applytags = $xpathObj->query("//*[name()='xim:type']");
-
         foreach ($applytags as $applyTag) {
             error_log($applyTag->nodeValue.", $elementType");
             if (strpos($applyTag->nodeValue, $elementType)!==FALSE) {
                 $elementTag = $applyTag->parentNode;
-                $elementName = $elementTag->getAttribute("name");
+                $elementName = $elementTag->getAttribute('name');
                 $result[] = strtolower($elementName);
             }
         }
-
         return $result;
     }
 
     /**
-     * Get elements with a text tag inside.
+     * Get elements with a text tag inside
+     * 
      * @param DomXPath $xpathObj Relax-NG XPath
      * @return array Name of all elements with a text tag.
      */
-    private function getTextElements(&$xpathObj)
+    private function getTextElements(& $xpathObj)
     {
         $result = array();
-        $elementsTag = $xpathObj->query("//text/ancestor::element");
+        $elementsTag = $xpathObj->query('//text/ancestor::element');
         foreach ($elementsTag as $elementTag) {
-                $elementName = $elementTag->getAttribute("name");
+                $elementName = $elementTag->getAttribute('name');
                 $result[] = $elementName;
         }
-
         return $result;
     }
-
 }

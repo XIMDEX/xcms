@@ -1,6 +1,7 @@
 <?php
+
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -28,29 +29,25 @@ use Ximdex\Logger;
 use Ximdex\Deps\DepsManager;
 use Ximdex\Models\Node;
 use Ximdex\MVC\ActionAbstract;
+use Ximdex\NodeTypes\NodeTypeConstants;
 use Ximdex\Runtime\App;
 
-class Action_showassocnodes extends ActionAbstract {
-
+class Action_showassocnodes extends ActionAbstract
+{
 	// Server, Section
-	const SEARCHED_NODETYPE = \Ximdex\NodeTypes\NodeTypeConstants::SERVER . ',' . \Ximdex\NodeTypes\NodeTypeConstants::SECTION;
+	const SEARCHED_NODETYPE = NodeTypeConstants::SERVER . ',' . NodeTypeConstants::SECTION;
 
 	// Tree root
 	const TREE_ROOT = 10000;
 
-
-	public function index() {
-
+	public function index()
+	{
       	$ximletId = (int) $this->request->getParam("nodeid");
-
 		$this->addCss('/actions/showassocnodes/resources/css/index.css');
-
 		$sections = $this->getReferencedSections($ximletId);
-
 		$query = App::get('\Ximdex\Utils\QueryManager');
         $actionDelete = $query->getPage() . $query->buildWith(array('method' => 'deleterel'));
         $actionCreate = $query->getPage() . $query->buildWith(array('method' => 'createrel'));
-
 		$values = array(
 			'ximletid' => $ximletId,
 			'sections' => $sections,
@@ -59,16 +56,13 @@ class Action_showassocnodes extends ActionAbstract {
 			'action_create' => $actionCreate,
 			'action_delete' => $actionDelete
 		);
-
 		$this->render($values, null, 'default-3.0.tpl');
 	}
 
-
-	protected function getReferencedSections($idNode) {
-
+	protected function getReferencedSections($idNode)
+	{
     	$node = new Node($idNode);
     	$idContainer = $node->getParent();
-
 		$sections = array();
 		$depsMngr = new DepsManager();
 		$sections1 = $depsMngr->getByTarget(DepsManager::STRDOC_XIMLET, $idNode);
@@ -77,11 +71,8 @@ class Action_showassocnodes extends ActionAbstract {
 		$sections2 = !is_array($sections2) ? array() : $sections2;
 		$sections3 = $depsMngr->getByTarget(DepsManager::SECTION_XIMLET, $idNode);
 		$sections3 = !is_array($sections3) ? array() : $sections3;
-
 		$sections = array_merge($sections1, $sections2, $sections3);
-
 		$ret = array();
-
     	if (is_array($sections) && count($sections) > 0) {
     		foreach ($sections as $idsection) {
     			$section = new Node($idsection);
@@ -93,178 +84,140 @@ class Action_showassocnodes extends ActionAbstract {
     			$ret[$idsection]['idsection'] = $idsection;
     		}
     	}
-
     	return $ret;
 	}
 
-
-	public function treecontainer() {
-
+	public function treecontainer()
+	{
+	    global $actionID, $idNode;
 		$values = array(
-			'composer_index' =>  App::getUrl("/?actionid=$actionID&nodeid=$idNode" ),
-			"debug" => $this->_checkDebug(),
+			'composer_index' =>  App::getUrl("/?actionid=$actionID&nodeid=$idNode"),
+			"debug" => $this->_checkDebug()
 		);
-
 		$this->render($values, "treecontainer", "only_template.tpl");
 	}
 
-	public function tree() {
-
+	public function tree()
+	{
+	    global $actionID, $idNode;
 		$rootNode = new Node();
 		$rootID = $rootNode->GetRoot();
 		$rootNode->SetID($rootID);
-
 		$values = array(
 			'composer_index' =>  App::getUrl("/?actionid=$actionID&nodeid=$idNode" ),
 			'nodeName' => $rootNode->GetNodeName(),
 			'nodeid' =>  $rootNode->GetID(),
 			'nodeicon' => $rootNode->nodeType->GetIcon(),
 		);
-
 		$this->render($values, "tree", "only_template.tpl");
 	}
 
 	/**
 	 * Find all children of a specified nodetype
 	 */
-	protected function getAllowedTargets($parentId) {
-
-		$query = sprintf(
-			"select n.IdNode from FastTraverse ft inner join Nodes n on ft.idchild = n.idnode " .
-			"where ft.idnode = %s and n.idnodetype in (%s) order by depth",
-			$parentId,
-			self::SEARCHED_NODETYPE
-		);
+	protected function getAllowedTargets($parentId)
+	{
+		$query = sprintf("select n.IdNode from FastTraverse ft inner join Nodes n on ft.idchild = n.idnode " 
+		    . "where ft.idnode = %s and n.idnodetype in (%s) order by depth", $parentId, self::SEARCHED_NODETYPE);
 		$db = new \Ximdex\Runtime\Db();
 		$db->query($query);
 		$targets = array();
-
 		while (!$db->EOF) {
 			$targets[] = $db->getValue('IdNode');
 			$db->next();
 		}
-
 		return $targets;
 	}
 
 	/**
 	 * Only traverse sections
 	 */
-	function treedata() {
+	public function treedata()
+	{
 		$this->response->set('Expires', 'Mon, 26 Jul 1997 05:00:00 GMT');
 		$this->response->set('Last-Modified', gmdate("D, d M Y H:i:s") . " GMT");
 		$this->response->set('Cache-Control', array('no-store, no-cache, must-revalidate', 'post-check=0, pre-check=0'));
 		$this->response->set('Pragma', 'no-cache');
 		$this->response->set('Content-type', 'text/xml');
 		$this->response->sendHeaders();
-
 		echo '<?xml version="1.0" encoding="ISO-8859-1"?>';
-
 		$selectedNodeID = $this->request->getParam('nodeid');
 		$ximletId = $this->request->getParam('ximletid');
 		$actionId = $this->request->getParam('actionid');
-		$action = $this->request->getParam('action');
 		$allow_nodetypes = explode(",",self::SEARCHED_NODETYPE);
 		$selecteds = $this->getReferencedSections($ximletId);
-
-
 		$src = App::getUrl("?actionid=$actionId&amp;ximletid=$ximletId&amp;method=treedata");
-
 		$ximlet = new Node($ximletId);
 		$idproject = $ximlet->getProject();
-
 		$sections = $this->getAllowedTargets($idproject);
 
 		// Drawing the tree
-
 		echo '<tree>';
-
 		if (count($sections) > 0) {
-
 			$ancestors = array();
-
 			foreach ($sections as $idSection) {
 				$refDoc = new Node($idSection);
 				$ancestors = array_merge($ancestors, $refDoc->getAncestors($idSection));
 			}
-
 			$ancestors = array_unique($ancestors);
-
 			foreach ($ancestors as $childId) {
-
 				$child = new Node($childId);
 				$name = $child->get('Name');
 				$isdir = $child->nodeType->isFolder();
 				$icon = $child->nodeType->get('Icon');
-				$nodeTypeName = $child->nodeType->get('Name');
 				$idnodetype = $child->nodeType->get('IdNodeType');
 				$path = $child->getPathList();
 				$canSelected = (int) in_array($idnodetype, $allow_nodetypes);
-				$already_selected = (isset($selecteds[$childId]) ) ? 1 : 0;
-
+				$already_selected = (isset($selecteds[$childId])) ? 1 : 0;
 				$num = count($child->getChildren());
-
 				$showMenu = "showMenu='0'";
-
 				if ($child->get('IdParent') == $selectedNodeID) {
-
 					if (in_array($childId, $sections)) {
 						$num = 0;
 						$showMenu = "showMenu='1'";
 					}
-
 					echo "<tree action='showassocnodes' idaction='$actionId' text='$name' node='$childId' padre='1' nodeid='$childId'
 							icon='$icon' idximlet='$ximletId' isdir='$isdir'
 							openIcon='$icon' children='$num' src='$src&amp;nodeid=$childId' $showMenu
 							nodetypeid='$idnodetype' path='$path' canSelected='$canSelected' already_selected='$already_selected' />";
 				}
 			}
-
 		}
-
 		echo '</tree>';
 	}
 
-	function createrel() {
-
+	public function createrel()
+	{
 		$idXimlet = $this->request->getParam('ximletid');
 		$idTarget = $this->request->getParam('targetid');
 		$recursive = $this->request->getParam('recursive');
 		$sections = array($idTarget);
-
 		if ($recursive == 1) {
 			$children = $this->getAllowedTargets($idTarget);
 			if (count($children) > 0) {
 				$sections = array_unique(array_merge($sections, $children));
 			}
 		}
-
 		$ximlet = new Node($idXimlet);
 		$ximletName = $ximlet->get('Name');
 		$deps = new DepsManager();
-
 		foreach ($sections as $idSection) {
-
 			$section = new Node($idSection);
-			if (!($section->get('IdNode') > 0)) continue;
-
+			if (!($section->get('IdNode') > 0)) {
+			    continue;
+			}
 			$idnodetype = $section->get('IdNodeType');
 			$rel = null;
-
 			switch ($idnodetype) {
-			    case \Ximdex\NodeTypes\NodeTypeConstants::SERVER:
-			    case \Ximdex\NodeTypes\NodeTypeConstants::SECTION:
+			    case NodeTypeConstants::SERVER:
+			    case NodeTypeConstants::SECTION:
 					$rel = DepsManager::SECTION_XIMLET;
 					break;
 			}
-
 			if ($rel === null) {
-				// TODO: show error
 				continue;
 			}
-
 			$result = $deps->set($rel, $idSection, $idXimlet);
-
 			$sectionName = $section->get('Name');
 			if ($result) {
 				$this->messages->add(_("Ximlet") . $ximletName . _("has been associated with section") . $sectionName,
@@ -274,21 +227,18 @@ class Action_showassocnodes extends ActionAbstract {
 					MSG_TYPE_NOTICE);
 			}
 		}
-
 		$values = array(
 			'nodeid' => $idXimlet,
 			'goback' => true,
 			'messages' => $this->messages->messages
 		);
-
 		$this->render($values);
 	}
 
-	function deleterel() {
-
+	public function deleterel()
+	{
 		$idXimlet = $this->request->getParam('ximletid');
 		$sections = $this->request->getParam('sections');
-
 		if (!is_array($sections) || count($sections) == 0) {
 			$this->messages->add(_('No sections have been selected to be dissasociated.'), MSG_TYPE_NOTICE);
 			$values = array(
@@ -298,31 +248,25 @@ class Action_showassocnodes extends ActionAbstract {
 			$this->render($values);
 			return;
 		}
-
 		$ximlet = new Node($idXimlet);
 		$ximletName = $ximlet->get('Name');
 		$depsMngr = new DepsManager();
-
 		foreach ($sections as $idSection) {
-
 			$section = new Node($idSection);
-			if (!($section->get('IdNode') > 0)) continue;
-
+			if (!($section->get('IdNode') > 0)) {
+			    continue;
+			}
 			$idnodetype = $section->get('IdNodeType');
 			$rel = null;
-
 			switch ($idnodetype) {
-			    case \Ximdex\NodeTypes\NodeTypeConstants::SERVER:
-			    case \Ximdex\NodeTypes\NodeTypeConstants::SECTION:
+			    case NodeTypeConstants::SERVER:
+			    case NodeTypeConstants::SECTION:
 					$rel = DepsManager::SECTION_XIMLET;
 					break;
 			}
-
 			if ($rel === null) {
-				// TODO: show error
 				continue;
 			}
-
 			$result = $depsMngr->delete($rel, $idSection, $idXimlet);
 			$sectionName = $section->get('Name');
 			if ($result) {
@@ -333,13 +277,10 @@ class Action_showassocnodes extends ActionAbstract {
 					MSG_TYPE_NOTICE);
 			}
 		}
-
 		$values = array(
 			'messages' => $this->messages->messages,
 			'goback' => true
 		);
-
 		$this->render($values);
 	}
-
 }

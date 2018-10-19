@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -31,8 +31,10 @@ use Ximdex\MVC\ActionAbstract;
 
 class Action_createlink extends ActionAbstract
 {
-    // Main method: shows initial form
-    function index()
+    /**
+     * Main method: shows initial form
+     */
+    public function index()
     {
         $idNode = $this->request->getParam('nodeid');
         $node = new Node($idNode);
@@ -43,13 +45,14 @@ class Action_createlink extends ActionAbstract
         $this->render($values, null, 'default-3.0.tpl');
     }
 
-    function createlink()
+    public function createlink()
     {
         $name = $this->request->getParam('name');
         $idParent = $this->request->getParam('id_node');
         $url = $this->request->getParam('url');
         $description = $this->request->getParam('description');
-        $messages = $this->createNodeLink($name, $url, $description, $idParent);
+        $this->createNodeLink($name, $url, $description, $idParent);
+        $values = [];
         $values["messages"] = $this->messages->messages;
         $values["parentID"] = $idParent;
         $this->sendJSON($values);
@@ -75,7 +78,7 @@ class Action_createlink extends ActionAbstract
             $link = new Link($result);
             $link->set('ErrorString', 'not_checked');
             $link->set('CheckTime', time());
-            $linkResult = $link->update();
+            $link->update();
             $this->messages->add(_('Link has been successfully added'), MSG_TYPE_NOTICE);
         }
         return $result;

@@ -1,5 +1,5 @@
 {**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -23,12 +23,8 @@
  *  @version $Revision$
  *}
 
-<form action="{$actionUrlShowPost}" method="POST" ng-controller="XTagsCtrl"
-xim-document-tags='{$tags}'
-	xim-namespaces='{$namespaces}'
-	xim-node-id='{$nodeid}'
-	xim-is-editor="1">
-
+<form action="{$actionUrlShowPost}" method="POST" ng-controller="XTagsCtrl" xim-document-tags='{$tags}' xim-namespaces='{$namespaces}'
+	   xim-node-id='{$nodeid}' xim-is-editor="1">
 	<div class="kupu-fulleditor">
 		<ontologyBrowser editor="1" />
 		<div class="kupu-ximparams" style="display: none;">
@@ -43,26 +39,21 @@ xim-document-tags='{$tags}'
 		{include file="./ximimagedrawer.tpl"}
 		{include file="./tabledrawer.tpl"}
 		{include file="./toolboxes.tpl"}
-        	<div class="kupu-editorframe">
-                		{include file="./tagnavbar.tpl"}
-			<div class="iwrapper">{*Added for autoscrolling*}
-				<div class="scrollup autoscroll"><span>{t}Scroll up{/t}</span></div>
-				<iframe id="kupu-editor" class="kupu-editor-iframe" frameborder="0" src="{url}/actions/xmleditor2/index.html{/url}" scrolling="auto">
-				</iframe>
-				<div class="scrolldown autoscroll"><span>{t}Scroll down{/t}</span></div>
-			</div>
-			<div class="kupu-toolboxes-container">
-
-				<div class="kupu-toolboxes-collapser"></div>
-				<div class="kupu-toolboxes-container-container">
-					<tagsinput editor="true" initialize="true" />
-				</div>
-			</div>
-
-			<textarea class="kupu-editor-textarea" id="kupu-editor-textarea"> </textarea>
-		</div>
-
-
+       	<div class="kupu-editorframe">
+            {include file="./tagnavbar.tpl"}
+		    <div class="iwrapper">{*Added for autoscrolling*}
+                <div class="scrollup autoscroll"><span>{t}Scroll up{/t}</span></div>
+                <iframe id="kupu-editor" class="kupu-editor-iframe" style="border: 0; scroll: auto;" 
+                        src="{url}/actions/xmleditor2/index.html{/url}"></iframe>
+                <div class="scrolldown autoscroll"><span>{t}Scroll down{/t}</span></div>
+            </div>
+            <div class="kupu-toolboxes-container">
+                <div class="kupu-toolboxes-collapser"></div>
+                <div class="kupu-toolboxes-container-container">
+                    <tagsinput editor="true" initialize="true" />
+                </div>
+            </div>
+            <textarea class="kupu-editor-textarea" id="kupu-editor-textarea"> </textarea>
+	    </div>
 	</div>
-
 </form>

@@ -5508,7 +5508,7 @@ msgid "Learn how to"
 msgstr "Apprendre a"
 
 #: public_xmd/actions/welcome/template/Smarty/index.tpl:102
-msgid "Create a new Server & publish data"
+msgid "Create a new Server and publish data"
 msgstr "Créer un nouveau serveur et publier des données"
 
 #: public_xmd/actions/welcome/template/Smarty/index.tpl:105
@@ -5516,7 +5516,7 @@ msgid "Ximdex CMS, the basics"
 msgstr "Ximdex CMS, les bases"
 
 #: public_xmd/actions/welcome/template/Smarty/index.tpl:108
-msgid "RNG schemes & XSL templates"
+msgid "RNG schemes and XSL templates"
 msgstr "Schémas RNG et modèles XSL"
 
 #: public_xmd/actions/welcome/template/Smarty/index.tpl:111

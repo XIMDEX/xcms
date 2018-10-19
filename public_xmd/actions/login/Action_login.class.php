@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -31,11 +31,10 @@ use Ximdex\Runtime\App;
 use Ximdex\Runtime\Request;
 use Ximdex\I18n\I18N;
 
-require_once(XIMDEX_ROOT_PATH . '/conf/stats.php');
+require_once XIMDEX_ROOT_PATH . '/conf/stats.php';
 
 class Action_login extends ActionAbstract
 {
-
     function index()
     {
         if (isset($_COOKIE['expired'])) {
@@ -50,61 +49,49 @@ class Action_login extends ActionAbstract
     {
         $values = $this->getDefaultVars();
         $this->addJs("/assets/js/browser_checker.js");
-
-        if (!empty($msg))
+        if (!empty($msg)) {
             $values["message"] = _($msg);
-        else
+        } else {
             $values["message"] = NULL;
-
+        }
         $this->render($values, 'index', 'only_template.tpl');
-
         die();
     }
 
     function getDefaultVars()
     {
         $values = array();
-
         I18N::setup();
         $values["ximid"] = App::getValue("ximid");
         $values["versionname"] = App::getValue("VersionName");
         $values["news_content"] = $this->get_news();
         $values["title"] = sprintf(_("Access to %s"), App::getValue("VersionName"));
-
         return $values;
     }
 
     function get_news()
     {
         $lang = strtolower(DEFAULT_LOCALE);
-
         $REMOTE_NEWS = STATS_SERVER . "/stats/getnews.php";
-
         $ctx = stream_context_create(array(
                 'http' => array(
                     'timeout' => 3
                 )
             )
         );
-
-        //$url = $REMOTE_NEWS . "?lang=" . strtolower(DEFAULT_LOCALE) . "&ximid=" . App::getValue('ximid');
         $url = $REMOTE_NEWS . "?lang=" . $lang;
 
-        //get remote content
-       $news_content = @file_get_contents($url, 0, $ctx);
-
-
+        // Get remote content
+        $news_content = @file_get_contents($url, 0, $ctx);
         if (empty($news_content)) {
             $file = "index_" . $lang . ".html";
             $news_path = APP_ROOT_PATH . "/assets/news/";
-
             if (file_exists($news_path . $file)) {
                 return file_get_contents($news_path . $file);
-            }else{
+            } else {
                 return file_get_contents($news_path . "index.html");
             }
         }
-
         return $news_content;
     }
 
@@ -114,11 +101,9 @@ class Action_login extends ActionAbstract
         $user_lower = strtolower(Request::post('user'));
         $user = Request::post('user');
         $password = Request::post('password');
-        $formsent = Request::post('login');
-
+        // $formsent = Request::post('login');
         $this->check_disk_space();
         setcookie("expired", "", time() - 3600);
-
         if (empty($user) && empty($password)) {
             $this->showLogin('You should write a username and password.');
         } elseif (empty($user)) {
@@ -126,30 +111,23 @@ class Action_login extends ActionAbstract
         } elseif (empty($password)) {
             $this->showLogin('You should write a password.');
         }
-
-
         if ('ximdex' != $user_lower && $stopper) {
             $this->showLogin('Access blocked. At this moment maintenance tasks are being performed. Sorry for the inconveniences.');
         }
-
         $_user = new User();
         $success = $_user->login($user, $password);
-
         if ($success) {
             $userObject = new User();
             $userObject->setByLogin($user);
             $userObject->afterLogin();
             \Ximdex\Runtime\Session::set('context', 'ximdex');
             $this->logSuccessAction();
-
             if (Request::get('backto')) {
                 header(sprintf('Location: %s', base64_decode(Request::get('backto'))));
             } else {
                 header(sprintf("Location: %s", App::getUrl('/')));
             }
-
             die();
-
         } else {
             $this->logUnsuccessAction();
             $this->showLogin('Username or password are incorrect. Please, try again.');
@@ -158,7 +136,6 @@ class Action_login extends ActionAbstract
 
     function check_disk_space()
     {
-       return true ;
-
+       return true;
     }
 }

@@ -40,8 +40,8 @@ class PumpersOrm extends GenericData
         'StartTime' => array('type' => 'int(12)', 'not_null' => 'false'),
         'CheckTime' => array('type' => 'int(12)', 'not_null' => 'false'),
         'ProcessId' => array('type' => 'varchar(255)', 'not_null' => 'true'),
-        'VacancyLevel' => array('type' => 'int(12)', 'not_null' => 'false'),
-        'Pace' => array('type' => 'double', 'not_null' => 'false'),
+        'VacancyLevel' => array('type' => 'int(12)', 'not_null' => 'true'),
+        'Pace' => array('type' => 'double', 'not_null' => 'true'),
         'ProcessedTasks' => array('type' => 'int(12)', 'not_null' => 'true')
     );
     public $PumperId;
@@ -50,7 +50,7 @@ class PumpersOrm extends GenericData
     public $StartTime = 0;
     public $CheckTime = 0;
     public $ProcessId;
-    public $VacancyLevel;
-    public $Pace;
+    public $VacancyLevel = 0;
+    public $Pace = 0;
     public $ProcessedTasks = 0;
 }

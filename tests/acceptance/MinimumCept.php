@@ -55,8 +55,6 @@ $I->click('Sign in');
 
 $I->waitForText('WELCOME TO XIMDEX CMS, XIMDEX!', 3);
 $I->wantTo('Ensure that publish works');
-$I->waitForText('Hello ximdex, first time here?', 3, '#tourcontrols');
-$I->click('#canceltour');
 
 open_picasso_menu($I);
 
@@ -123,6 +121,8 @@ function fileExistAndIsNotEmpty($path)
 
 function open_picasso_menu(AcceptanceTester $I)
 {
+    $I->waitForText('Hello ximdex, first time here?', 3, '#tourcontrols');
+    $I->click('#canceltour');
 	$I->click('//span[contains(text(),\'Picasso\')]', '#angular-tree');
 	reload($I);
 	$I->waitForText('Picasso_Server', 3, '#angular-tree');

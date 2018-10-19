@@ -1,6 +1,7 @@
 <?php
+
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -24,15 +25,16 @@
  *  @version $Revision$
  */
 
-
 use Ximdex\Models\Node;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\Request;
 
-
-class Action_updatefile extends ActionAbstract {
-   // Main method: shows initial form
-    function index () {
+class Action_updatefile extends ActionAbstract
+{
+    /**
+     * Main method: shows initial form
+     */
+    public function index() {
 
 		$idNode = $this->request->getParam('nodeid');
 		$values = array(
@@ -42,61 +44,50 @@ class Action_updatefile extends ActionAbstract {
 		$this->render($values, NULL, 'default-3.0.tpl');
     }
 
-    function updatefile() {
+    public function updatefile()
+    {
 		$idNode = Request::request('nodeid');
 		$node = new Node($idNode);
 		if (!($node->get('IdNode') > 0)) {
 			$this->messages->add(_('The node you are trying to update does not exist'), MSG_TYPE_ERROR);
 		}
-
 		$filePath = isset($_FILES['upload']) && isset($_FILES['upload']['tmp_name']) ? $_FILES['upload']['tmp_name'] : NULL;
 		$fileName = isset($_FILES['upload']) && isset($_FILES['upload']['name']) ? $_FILES['upload']['name'] : NULL;
-
 		if (!is_file($filePath)) {
 			$this->messages->add(_('File could not be uploaded, contact with your administrator'), MSG_TYPE_ERROR);
 		}
-
 		$baseIoInferer = new \Ximdex\IO\BaseIOInferer();
 		$idParent = $node->get('IdParent');
 		$types = $baseIoInferer->infereType('FILE', $idParent, $filePath);
 		if (!count($types) > 0) {
 			$this->messages->add(_('File time could not be estimated, contact with your administrator'), MSG_TYPE_ERROR);
 		}
-
 		if ($this->messages->count(MSG_TYPE_ERROR) > 0) {
 			$values = array('messages' => $this->messages->messages);
 			$this->render($values, NULL, 'messages.tpl');
 			return false;
 		}
-
 		$nodeTypeName = $types['NODETYPENAME'];
-
-		$name = preg_match('/.*\/(.*)$/', $filePath, $matches);
-
+		$matches = [];
+		preg_match('/.*\/(.*)$/', $filePath, $matches);
 		$data = array(
-				'ID' => $idNode,
-                'NODETYPENAME' => $nodeTypeName,
-                'NAME' => $fileName,
-                'CHILDRENS' => array (
-                                array ('NODETYPENAME' => 'PATH', 'SRC' => $filePath)
-                        )
-                );
-
-
+			'ID' => $idNode,
+            'NODETYPENAME' => $nodeTypeName,
+            'NAME' => $fileName,
+            'CHILDRENS' => array (
+                            array ('NODETYPENAME' => 'PATH', 'SRC' => $filePath)
+                    )
+            );
 		$baseIO = new \Ximdex\IO\BaseIO();
 		$result = $baseIO->update($data);
-
 		if ($result > 0) {
 			$baseIO->messages->add(sprintf(_('File %s has been successfully updated'), $fileName), MSG_TYPE_NOTICE);
 		} else {
 			$baseIO->messages->add(_('Check that any file with same name does not exist'), MSG_TYPE_WARNING);
 			$baseIO->messages->add(_('Check that path and file name are corrects'), MSG_TYPE_WARNING);
 		}
-
 		$this->reloadNode($idParent);
-
-		$values = array( 'messages' => $baseIO->messages->messages );
-
+		$values = array( 'messages' => $baseIO->messages->messages);
 		$this->render($values, NULL, 'messages.tpl');
     }
 }

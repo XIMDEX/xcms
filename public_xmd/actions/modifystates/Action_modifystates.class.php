@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -40,7 +40,9 @@ define('NODETYPE_WORKFLOW_STATE', NodeTypeConstants::WORKFLOW_STATE);
 
 class Action_modifystates extends ActionAbstract
 {
-    // Main method: shows initial form
+    /**
+     * Main method: shows initial form
+     */
     public function index()
     {
         $idNode = $this->request->getParam('nodeid');
@@ -68,8 +70,7 @@ class Action_modifystates extends ActionAbstract
             }
             if (!isset($nextStatus)) {
                 $allStatusInfo = [];
-            }
-            else {
+            } else {
                 $allStatusInfo[] =
                     array('id' => $nextStatus->get('id'),
                         'name' => $nextStatus->get('Name'),
@@ -83,14 +84,14 @@ class Action_modifystates extends ActionAbstract
         $this->addCss('/actions/modifystates/resources/css/default.css');
         $nodeType = new NodeType();
         $allNodeTypes = $nodeType->find('IdNodeType, Name', 'IsPublishable = 1', array());
+        $nodeTypeValues = [];
         foreach ($allNodeTypes as $nodeTypeInfo) {
             if ($nodeTypeInfo['IdNodeType'] == NodeTypeConstants::XML_DOCUMENT ||
                 $nodeTypeInfo['IdNodeType'] == NodeTypeConstants::TEXT_FILE ||
                 $nodeTypeInfo['IdNodeType'] == NodeTypeConstants::IMAGE_FILE ||
                 $nodeTypeInfo['IdNodeType'] == NodeTypeConstants::BINARY_FILE
             ) {
-                $nodeTypeValues[] = array("id" => $nodeTypeInfo['IdNodeType'],
-                    "name" => $nodeTypeInfo['Name']);
+                $nodeTypeValues[] = array("id" => $nodeTypeInfo['IdNodeType'], "name" => $nodeTypeInfo['Name']);
             }
         }
         $checkUrl = App::getUrl( '?actionid=' . $this->request->getParam('actionid') . '&nodeid=' . $this->request->getParam('nodeid')

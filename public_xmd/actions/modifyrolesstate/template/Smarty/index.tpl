@@ -1,5 +1,5 @@
 {**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -24,43 +24,42 @@
  *}
 
 {if ($all_roles)}
-<h2>{t}Associate roles{/t}</h2>
-<form method="post" name="add_form" id="cu_form" action="{$action_add}">
-	<input type="hidden" name="id_node" VALUE="{$id_node}">
-	<fieldset>
-		<ol>
-			<li>
-				<label for="id_role" class="aligned">{t}Existing roles{/t}</label>
-				<select name="id_role" id="id_role" class="cajag">
-					{foreach from=$all_roles item=role_info}
-				     	<option value="{$role_info.IdRole}">{$role_info.Name}</option>
-				     {/foreach}
-				</select>
-			</li>
-		 </ol>
-	</fieldset>
-	<fieldset class="buttons-form">{button label="Associate role" title="Associate role" class="validate btn main_action"}</fieldset>
-</form>
+	<h2>{t}Associate roles{/t}</h2>
+	<form method="post" name="add_form" id="cu_form" action="{$action_add}">
+		<input type="hidden" name="id_node" VALUE="{$id_node}">
+		<fieldset>
+			<ol>
+				<li>
+					<label for="id_role" class="aligned">{t}Existing roles{/t}</label>
+					<select name="id_role" id="id_role" class="cajag">
+						{foreach from=$all_roles item=role_info}
+					     	<option value="{$role_info.IdRole}">{$role_info.Name}</option>
+					     {/foreach}
+					</select>
+				</li>
+			 </ol>
+		</fieldset>
+		<fieldset class="buttons-form">{button label="Associate role" title="Associate role" class="validate btn main_action"}</fieldset>
+	</form>
 {/if}
-
 {if ($applied_roles)}
-<h2>{t}Dissociate roles{/t}</h2>
-<form method="post" name="delete_form" id="cu_form" action="{$action_delete}">
-	<input type="hidden" name="id_node" VALUE="{$id_node}">
-	<fieldset>
-		<ol>
-			<li>
-				<label for="delete_role" class="aligned">{t}Existing roles{/t}</label>
-				<div class="right-block">
-				<ol>
-				{foreach from=$applied_roles item=role_info}
-						<li><input name='roles_to_delete[{$role_info.IdRole}]' type='checkbox'>
-			  			{$role_info.Name}</li>
-				{/foreach}
-				</ol>
-			</li>
-		 </ol>
-	</fieldset>
-<fieldset class="buttons-form">{button label="Dissociate role" title="Dissociate role" class="validate  btn main_action"}</fieldset>
-</form>
+	<h2>{t}Dissociate roles{/t}</h2>
+	<form method="post" name="delete_form" id="cu_form" action="{$action_delete}">
+		<input type="hidden" name="id_node" VALUE="{$id_node}">
+		<fieldset>
+			<ol>
+				<li>
+					<label for="delete_role" class="aligned">{t}Existing roles{/t}</label>
+					<ol>
+						{foreach from=$applied_roles item=role_info}
+							<li>
+							    <input name='roles_to_delete[{$role_info.IdRole}]' type='checkbox'>{$role_info.Name}
+							</li>
+						{/foreach}
+					</ol>
+				</li>
+			 </ol>
+		</fieldset>
+	    <fieldset class="buttons-form">{button label="Dissociate role" title="Dissociate role" class="validate  btn main_action"}</fieldset>
+	</form>
 {/if}

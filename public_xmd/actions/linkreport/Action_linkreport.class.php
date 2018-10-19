@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -32,7 +32,6 @@ use Ximdex\Models\Role;
 use Ximdex\Models\User;
 use Ximdex\MVC\ActionAbstract;
 
-
 class Action_linkreport extends ActionAbstract
 {
     function index()
@@ -40,9 +39,7 @@ class Action_linkreport extends ActionAbstract
         $idNode = $this->request->getParam("nodeid");
         $actionID = $this->request->getParam("actionid");
         $node = new Node($idNode);
-
         $this->addCss('/actions/linkreport/resources/css/linkreport.css');
-
         $values = array(
             'id_node' => $idNode,
             'id_action' => $actionID,
@@ -64,29 +61,22 @@ class Action_linkreport extends ActionAbstract
         $criteria = $this->request->getParam("criteria");
         $stringsearch = $this->request->getParam("stringsearch");
         $rec = $this->request->getParam('rec');
-
         $criteria = $criteria == 'undefined' ? NULL : $criteria;
         $field = $field == 'undefined' ? NULL : $field;
-
         $userID = \Ximdex\Runtime\Session::get("userID");
         $node = new Node($idNode);
 
-        // get link folders
+        // Get link folders
         $folderList = empty($rec) ? array($idNode) : self::folderNodes($idNode);
 
-        // get links
+        // Get links
         $ximLinks = array();
-
         $nodeType = new NodeType();
         $nodeType->setByName('Link');
         $idNodeType = $nodeType->get('IdNodeType');
-
         $nodesTableCondition = 'IdNodeType = %s';
-
         $linksTableCondition = "";
         $linksCond = "";
-
-
         if (!empty($stringsearch)) {
             if ($stringsearch != "*") {
                 switch ($criteria) {
@@ -120,18 +110,15 @@ class Action_linkreport extends ActionAbstract
             }
             $nodesTableCondition .= $field != 'Url' ? $linksCond : '';
         }
-
         $links = array();
         foreach ($folderList as $idFolder) {
             $findInNodes = $node->find('IdNode', $nodesTableCondition . ' AND IdParent = %s', array($idNodeType, $idFolder), MONO);
-
             $link = new Link();
             if ($field == 'Url') {
                 $finds = $link->find('IdLink', 'IdLink in (' . implode(',', $findInNodes) . ') ' . $linksCond, NULL, MONO);
             } elseif ($field == 'all') {
                 $finds = $link->find('IdLink', 'Url ' . $linksTableCondition, NULL, MONO);
             }
-
             if (!empty($findInNodes) && count($findInNodes) > 0) {
                 if ($field == 'Url') {
                     $links = $finds;
@@ -145,36 +132,32 @@ class Action_linkreport extends ActionAbstract
         }
         $links = array_unique($links);
         $this->addJs('/actions/linkreport/resources/js/index.js');
-
         $records = count($links);
         if ($records > 0) {
             foreach ($links as $idLink) {
                 $link = new Link($idLink);
                 $state = $link->get('ErrorString');
                 $type = "email";
+                $res = [];
                 preg_match('/^http(s)?:\/\//', $link->get('Url'), $res);
                 if (count($res) > 0) {
                     $type = "web";
                 }
-
                 $user = new User($userID);
                 $arr_roles = $user->GetRolesOnNode($idNode);
                 $n_roles = count($arr_roles);
                 $r = 0;
                 $has = false;
-
                 while (($r < $n_roles) && !$has) {
                     $role = new Role($arr_roles[$r]);
                     $has = $role->HasAction(6073);
                     $r++;
                 }
-
                 $linkNode = new Node($idLink);
-
                 $ximLinks[] = array('nodeid' => $idLink, 'name' => $linkNode->get('Name'),
                     'modifiable' => $has, 'desc' => $linkNode->get('Description'),
                     'url' => $link->get('Url'), 'status' => $state, 'type' => $type, 'lastcheck' => $link->get('CheckTime'));
-            }//end foreach $pages
+            } // End foreach $pages
         }
         $values = array(
             'links' => $ximLinks,
@@ -183,13 +166,17 @@ class Action_linkreport extends ActionAbstract
         $this->render($values, 'searchresult', 'default-3.0.tpl');
     }
 
-    //for recursive search
+    /**
+     * For recursive search
+     * 
+     * @param $idNode
+     * @return array
+     */
     private function folderNodes($idNode)
     {
         $node = new Node($idNode);
         $childList = $node->GetChildren();
         $nodeList = array($idNode);
-
         if (count($childList) > 0) {
             foreach ($childList as $idChild) {
                 $childNode = new Node($idChild);
@@ -203,9 +190,8 @@ class Action_linkreport extends ActionAbstract
 
     public function checkLink()
     {
-        $linkUrl = $this->request->getParam('linkurl');
+        // $linkUrl = $this->request->getParam('linkurl');
         $nodeid = $this->request->getParam('nodeid');
-
         $link = new Link($nodeid);
         $st = Link::LINK_FAIL;
         if ($link->get("IdLink")) {
@@ -214,11 +200,11 @@ class Action_linkreport extends ActionAbstract
             $link->set('CheckTime', time());
             $link->update();
         }
-        $cmd = 'php ' . XIMDEX_ROOT_PATH . '/bootstrap.php '.APP_ROOT_PATH.'/actions/linkreport/resources/scripts/links_checker.php ' . $nodeid;
-        $pid = shell_exec(sprintf("%s > /dev/null & echo $!", $cmd));
+        $cmd = 'php ' . XIMDEX_ROOT_PATH . '/bootstrap.php '.APP_ROOT_PATH.'/actions/linkreport/resources/scripts/links_checker.php ' 
+            . $nodeid;
+        shell_exec(sprintf("%s > /dev/null & echo $!", $cmd));
         echo json_encode(array('state' => $st, 'date' => date('d/m/Y H:i', time())));
         die();
-
     }
 
     public function readLinkState()
@@ -231,6 +217,5 @@ class Action_linkreport extends ActionAbstract
         }
         echo json_encode(array('state' => $st, 'date' => date('d/m/Y H:i', $time)));
         die();
-
     }
 }

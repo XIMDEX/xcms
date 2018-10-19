@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -122,7 +122,6 @@ class Action_renamenode extends ActionAbstract
             $this->messages->add(_('Node could not be successfully loaded'), MSG_TYPE_ERROR);
             $result = false;
         } else {
-            $oldNode = clone $node;
             $result = $node->RenameNode($name);
             if ($result) {
                 $node->deleteProperty('SchemaType');
@@ -188,7 +187,7 @@ class Action_renamenode extends ActionAbstract
         }
         if ($idPipeline != $oldIdPipeline) {
             $db = new \Ximdex\Runtime\Db();
-            $query = sprintf("SELECT IdChild FROM FastTraverse WHERE IdNode = %s", $idNode);
+            $query = sprintf('SELECT IdChild FROM FastTraverse WHERE IdNode = %s', $idNode);
             $db->Query($query);
             if ($db->numRows == 0 || $db->numRows == 1) {
                 $this->messages->add(_('Any node will change its workflow status'), MSG_TYPE_NOTICE);

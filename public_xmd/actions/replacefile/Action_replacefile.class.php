@@ -44,7 +44,7 @@ class Action_replacefile extends ActionAbstract
     public function index() : void
     {
         $idNode = (int) $this->request->getParam("nodeid");
-        $actionID = (int) $this->request->getParam("actionid");
+        // $actionID = (int) $this->request->getParam("actionid");
         $type = $this->request->getParam('type');
         $node = new Node($idNode);
         if (!$node->GetID()) {
@@ -81,8 +81,8 @@ class Action_replacefile extends ActionAbstract
             $this->messages->add(_('Cannot load a node with ID ' . $idNode), MSG_TYPE_ERROR);
             $this->sendResponse();
         }
-        $fileName = isset($_FILES['upload']) && isset($_FILES['upload']['name']) ? $_FILES['upload']['name'] : NULL;
-        $filePath = isset($_FILES['upload']) && isset($_FILES['upload']['tmp_name']) ? $_FILES['upload']['tmp_name'] : NULL;
+        $fileName = isset($_FILES['upload']) && isset($_FILES['upload']['name']) ? $_FILES['upload']['name'] : null;
+        $filePath = isset($_FILES['upload']) && isset($_FILES['upload']['tmp_name']) ? $_FILES['upload']['tmp_name'] : null;
         if (!is_file($filePath) or !$fileName) {
             $this->messages->add(_('File could not be uploaded, contact with your administrator'), MSG_TYPE_ERROR);
             $this->sendResponse();

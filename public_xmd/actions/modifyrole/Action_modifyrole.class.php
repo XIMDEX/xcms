@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -39,22 +39,25 @@ use Ximdex\Models\Node;
 class Action_modifyrole extends ActionAbstract
 {
     /**
-     * Main method. Shows initial form.
+     * Main method. Shows initial form
      */
     public function index()
     {
         $idNode = $this->request->getParam('nodeid');
         $role = new Role($idNode);
-        // Getting permisions for current role.
+        
+        // Getting permisions for current role
         $permission = new Permission();
         $allPermissionData = $permission->find();
         foreach ($allPermissionData as $key => $permissionData) {
             $allPermissionData[$key]['HasPermission'] = $role->HasPermission($permissionData['IdPermission']);
         }
 
-        // Gets all the states for the default workflow.
-        // The selected pipeline to show the states will be the default workflow.
-        // Usually it is the Workflow master.
+        /*
+         * Gets all the states for the default workflow
+         * The selected pipeline to show the states will be the default workflow
+         * Usually it is the Workflow master
+         */
         $selectedPipeline = $this->request->getParam('id_pipeline');
         if (!($selectedPipeline > 0)) {
             $selectedPipeline = App::getValue('IdDefaultWorkflow');
@@ -92,9 +95,11 @@ class Action_modifyrole extends ActionAbstract
 
     protected function getAllNodeTypes($allStates, $role, $selectedPipeline)
     {
+        /*
         for ($i = \Ximdex\NodeTypes\NodeTypeConstants::USER_MANAGER; $i < \Ximdex\NodeTypes\NodeTypeConstants::PROJECTS; $i++) {
             $groupeds[$i] = _("Control center permissions");
         }
+        */
         $nodeType = new NodeType();
         $allNodeTypes = $nodeType->find('IdNodeType, Description, IsPublishable, Module');
         reset($allNodeTypes);
@@ -106,8 +111,7 @@ class Action_modifyrole extends ActionAbstract
                 continue;
             }
             $action = new Action();
-            $nodeType['actions'] = $action->find('IdAction, Name, Module, Command',
-                'IdNodeType = %s', array($nodeType['IdNodeType']));
+            $nodeType['actions'] = $action->find('IdAction, Name, Module, Command', 'IdNodeType = %s', array($nodeType['IdNodeType']));
             if (is_array($nodeType['actions'])) {
                 foreach ($nodeType['actions'] as $actionKey => $actionInfo) {
                     if (!empty($actionInfo['Module']) && !\Ximdex\Modules\Manager::isEnabled($actionInfo['Module'])) {
@@ -145,15 +149,15 @@ class Action_modifyrole extends ActionAbstract
         $role->deleteAllRolesActions($idPipeline);
         $permissions = $this->request->getParam('permissions');
         if ($permissions) {
-            foreach ($permissions as $idPermission => $value) {
+            foreach (array_keys($permissions) as $idPermission) {
                 $role->AddPermission($idPermission);
             }
         }
         $rolesActions = $this->request->getParam('action_workflow');
         if ($rolesActions and count($rolesActions) >= 1) {
             foreach ($rolesActions as $idAction => $workFlowStatus) {
-                foreach ($workFlowStatus as $idWorkflowStatus => $value) {
-                    $role->AddAction($idAction, (int)$idWorkflowStatus, $idPipeline);
+                foreach (array_keys($workFlowStatus) as $idWorkflowStatus) {
+                    $role->AddAction($idAction, (int) $idWorkflowStatus, $idPipeline);
                 }
             }
         }

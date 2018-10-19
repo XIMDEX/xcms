@@ -1,12 +1,7 @@
 <?php
-use Ximdex\Models\Group;
-use Ximdex\Models\Node;
-use Ximdex\Models\Role;
-use Ximdex\Models\User;
-use Ximdex\MVC\ActionAbstract;
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -29,29 +24,33 @@ use Ximdex\MVC\ActionAbstract;
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
+
+use Ximdex\Models\Group;
+use Ximdex\Models\Node;
+use Ximdex\Models\Role;
+use Ximdex\Models\User;
+use Ximdex\MVC\ActionAbstract;
+
 class Action_modifygroupusers extends ActionAbstract
 {
-    // Main method: shows initial form
+    /**
+     * Main method: shows initial form
+     */
     function index()
     {
-
         $idNode = $this->request->getParam('nodeid');
         $node = new Node($idNode);
-
         $user = new User();
         $userList = $user->GetAllUsers();
         $group = new Group($idNode);
         $groupUsers = $group->GetUserList();
-
         $role = new Role();
         $roles = $role->find('IdRole, Name', '1 ORDER BY Name', NULL);
         $rolesToSend = array();
         foreach($roles as $r){
             $rolesToSend[$r['IdRole']] = $r['Name'];
         }
-
         $userRoleInfo = $group->getUserRoleInfo();
-
         $userRI = array();
         if (is_array($userRoleInfo)) {
             foreach ($userRoleInfo as $key => $info) {
@@ -64,19 +63,17 @@ class Action_modifygroupusers extends ActionAbstract
                 }
             }
         }
-
         $users = array();
         foreach ($userList as $idUser) {
             if (!in_array($idUser, $groupUsers)) {
                 $user = new User($idUser);
+                $u = [];
                 $u["id"] = $idUser;
                 $u["name"] = $user->get('Login');
                 $users[] = $u;
             }
         }
-
         $this->addJs('/actions/modifygroupusers/resources/js/helper.js');
-
         $values = array('name' => $node->get('Name'),
             'users_not_associated' => json_encode($users),
             'idnode' => $idNode,
@@ -84,7 +81,6 @@ class Action_modifygroupusers extends ActionAbstract
             'node_Type' => $node->nodeType->GetName(),
             'users_associated' => json_encode($userRI)
         );
-
         $this->render($values, null, 'default-3.0.tpl');
     }
 
@@ -95,22 +91,17 @@ class Action_modifygroupusers extends ActionAbstract
         $idRole = $this->request->getParam('id_role');
         $group = new Group($idNode);
         $group->AddUserWithRole($idUser, $idRole);
-
         $values = array("result" => "ok");
-
         $this->sendJSON($values);
     }
 
     function editgroupuser()
     {
-
         $idNode = $this->request->getParam('nodeid');
         $user = $this->request->getParam('user');
         $role = $this->request->getParam('role');
-
         $group = new Group($idNode);
         $group->ChangeUserRole($user, $role);
-
         $values = array("result" => "ok");
         $this->sendJSON($values);
     }
@@ -119,10 +110,8 @@ class Action_modifygroupusers extends ActionAbstract
     {
         $idNode = $this->request->getParam('nodeid');
         $user = $this->request->getParam('user');
-
         $group = new Group($idNode);
         $group->DeleteUser($user);
-
         $values = array("result" => "ok");
         $this->sendJSON($values);
     }

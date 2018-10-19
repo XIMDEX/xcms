@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -33,193 +33,185 @@ use Ximdex\Models\NodeType;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\NodeTypes\NodeTypeConstants;
+use Ximdex\IO\BaseIOInferer;
 
 class Action_createxmlcontainer extends ActionAbstract
 {
-	// Main method: shows initial form
-	public function index()
-	{
-		$idNode = $this->request->getParam('nodeid');
-		$type = $this->request->getParam('type');
-		$node = new Node($idNode);
-		if (empty($node->get('IdNode')))
-		{
-			die(_('Error with parameters'));
-		}
-		$nt = $node->GetNodeType();
-		$nodeType = new NodeType($nt);
-		if (!$nodeType->GetID())
-		{
-		    Logger::error('Cannot load the node type with ID: ' . $nt);
-		    die();
-		}
-		
-		// If node type is HTML then obtain JSON schemas, otherwise the schemas will be the RNG ones
-		if ($type == 'HTML')
-		{
-		    $schemes = $node->getLayoutSchemas();
-		}
-		else
-		{
-    		// Gets default schema for XML documents through propInheritance
-    		$schemes = null;
-    		$section = $node->getSection();
-    		if ($section)
-    		{
-    			$section = new Node($section);
-    			$hasTheme = (bool) count((array) $section->getProperty('theme'));
-    			if ($hasTheme)
-    			{
-    				$schemes = $section->getProperty('theme_visualtemplates');
-    			}
-    		}
-    		if ($schemes === null)
-    		{
-    		    $schemes = $node->getSchemas();
-    		}
-		}
-		$schemaArray = array();
-		if (!is_null($schemes))
-		{
-			foreach ($schemes as $idSchema)
-			{
-                $np = new \Ximdex\Models\NodeProperty();
-                $res = $np->find('IdNodeProperty', 'IdNode = %s AND Property = %s AND Value = %s', array($idSchema, 'SchemaType', 'metadata_schema'));
-                if (!$res)
-                {
-				    $sch = new Node($idSchema);
-				    $schemaArray[] = array('idSchema' => $idSchema, 'Name' => $sch->get('Name'));
-                }
-			}
-		}
-	
-		// Getting languages
-		$language = new Language();
-		$languages = $language->getLanguagesForNode($idNode);
+    /**
+     * Main method: shows initial form
+     */
+    public function index()
+    {
+        $idNode = $this->request->getParam('nodeid');
+        $type = $this->request->getParam('type');
+        $node = new Node($idNode);
+        if (empty($node->get('IdNode'))) {
+            die(_('Error with parameters'));
+        }
+        $nt = $node->GetNodeType();
+        $nodeType = new NodeType($nt);
+        if (! $nodeType->GetID()) {
+            Logger::error('Cannot load the node type with ID: ' . $nt);
+            die();
+        }
 
-		// if no templates, show to user a new template with info
-		if (isset($_REQUEST['reload_tree']) && $_REQUEST['reload_tree'])
-		{
-			$reloadTree = true;
-		}
-		else
-		{
-		    $reloadTree = false;
-		}
-		$values = array(
-			'idNode' => $idNode,
-			'nodeName' => htmlentities($node->get('Name')),
-			'schemes' => $schemaArray,
-			'languages' => $languages,
-			'go_method' => 'createxmlcontainer',
-			'reload_tree' => $reloadTree,
-		    'nodeTypeName' => $nodeType->GetDescription(),
-		    'node_Type' => $node->nodeType->GetName(),
-		    'type' => $type
-		);
-		$this->render($values, null, 'default-3.0.tpl');
+        // If node type is HTML then obtain JSON schemas, otherwise the schemas will be the RNG ones
+        if ($type == 'HTML') {
+            $schemes = $node->getLayoutSchemas();
+        } else {
+            
+            // Gets default schema for XML documents through propInheritance
+            $schemes = null;
+            $section = $node->getSection();
+            if ($section) {
+                $section = new Node($section);
+                $hasTheme = (bool) count((array) $section->getProperty('theme'));
+                if ($hasTheme) {
+                    $schemes = $section->getProperty('theme_visualtemplates');
+                }
+            }
+            if ($schemes === null) {
+                $schemes = $node->getSchemas();
+            }
+        }
+        $schemaArray = array();
+        if (! is_null($schemes)) {
+            foreach ($schemes as $idSchema) {
+                $np = new \Ximdex\Models\NodeProperty();
+                $res = $np->find('IdNodeProperty', 'IdNode = %s AND Property = %s AND Value = %s', array(
+                    $idSchema,
+                    'SchemaType',
+                    'metadata_schema'
+                ));
+                if (! $res) {
+                    $sch = new Node($idSchema);
+                    $schemaArray[] = array(
+                        'idSchema' => $idSchema,
+                        'Name' => $sch->get('Name')
+                    );
+                }
+            }
+        }
+
+        // Getting languages
+        $language = new Language();
+        $languages = $language->getLanguagesForNode($idNode);
+
+        // If no templates, show to user a new template with info
+        if (isset($_REQUEST['reload_tree']) && $_REQUEST['reload_tree']) {
+            $reloadTree = true;
+        } else {
+            $reloadTree = false;
+        }
+        $values = array(
+            'idNode' => $idNode,
+            'nodeName' => htmlentities($node->get('Name')),
+            'schemes' => $schemaArray,
+            'languages' => $languages,
+            'go_method' => 'createxmlcontainer',
+            'reload_tree' => $reloadTree,
+            'nodeTypeName' => $nodeType->GetDescription(),
+            'node_Type' => $node->nodeType->GetName(),
+            'type' => $type
+        );
+        $this->render($values, null, 'default-3.0.tpl');
     }
 
     /**
-     * Method called from View. Create a new HTML5 container. Get the params and check them.     
+     * Method called from View
+     * Create a new HTML5 container.
+     * Get the params and check them
      */
     public function createxmlcontainer()
     {
-		$idNodeMaster = null ;
-    	$idNode = $this->request->getParam('nodeid');
-		$aliases = $this->request->getParam('aliases');
-		$name = $this->request->getParam('name');
-		$idSchema = $this->request->getParam('id_schema');
-		$languages = $this->request->getParam('languages');
-		$master = $this->request->getParam('master');
-		$type = $this->request->getParam('type');
-		if (!$languages)
-		{
-		    $this->messages->add(_('You must select alt least one language'), MSG_TYPE_WARNING);
-		    $values = array('aliases' => $aliases, 'name' => $name, 'idSchema' => $idSchema, 'messages' => $this->messages->messages);
-		    $this->sendJSON($values);
-		}
-		$node = new Node($idNode);
-    	$idNode = $node->get('IdNode');
-    	if (!($idNode > 0))
-    	{
-    		$this->messages->add(_('An error ocurred estimating parent node,')
-    		      ._(' operation will be aborted, contact with your administrator'), MSG_TYPE_ERROR);
-    		$values = array('name' => 'Desconocido','messages' => $this->messages->messages);
-    		$this->sendJSON($values);
-    	}
-    	if ($type == 'HTML')
-    	{
-    	    $nodeTypeID = NodeTypeConstants::HTML_CONTAINER;
-    	}
-    	else
-    	{
-    	    $nodeTypeID = null;
-    	}
-    	$idContainer = $this->buildXMLContainer($idNode, $aliases, $name, $idSchema, $languages, $master, $nodeTypeID);
-    	if (!($idContainer > 0))
-    	{
-    		$this->messages->add(_('An error ocurred creating the container node'), MSG_TYPE_ERROR);
-    		$values = array(
-			 'idNode' => $idNode,
-			 'nodeName' => $name,
-			 'messages' => $this->messages->messages,
-    		);
-    		$this->sendJSON($values);
+        $idNodeMaster = null;
+        $idNode = $this->request->getParam('nodeid');
+        $aliases = $this->request->getParam('aliases');
+        $name = $this->request->getParam('name');
+        $idSchema = $this->request->getParam('id_schema');
+        $languages = $this->request->getParam('languages');
+        $master = $this->request->getParam('master');
+        $type = $this->request->getParam('type');
+        if (! $languages) {
+            $this->messages->add(_('You must select alt least one language'), MSG_TYPE_WARNING);
+            $values = array(
+                'aliases' => $aliases,
+                'name' => $name,
+                'idSchema' => $idSchema,
+                'messages' => $this->messages->messages
+            );
+            $this->sendJSON($values);
         }
-        else
-        {
+        $node = new Node($idNode);
+        $idNode = $node->get('IdNode');
+        if (! ($idNode > 0)) {
+            $this->messages->add(_('An error ocurred estimating parent node,') 
+                . _(' operation will be aborted, contact with your administrator'), MSG_TYPE_ERROR);
+            $values = array(
+                'name' => 'Desconocido',
+                'messages' => $this->messages->messages
+            );
+            $this->sendJSON($values);
+        }
+        if ($type == 'HTML') {
+            $nodeTypeID = NodeTypeConstants::HTML_CONTAINER;
+        } else {
+            $nodeTypeID = null;
+        }
+        $idContainer = $this->buildXMLContainer($idNode, $aliases, $name, $idSchema, $languages, $master, $nodeTypeID);
+        if (! ($idContainer > 0)) {
+            $this->messages->add(_('An error ocurred creating the container node'), MSG_TYPE_ERROR);
+            $values = array(
+                'idNode' => $idNode,
+                'nodeName' => $name,
+                'messages' => $this->messages->messages
+            );
+            $this->sendJSON($values);
+        } else {
             $this->messages->add(sprintf(_('Container %s has been successfully created'), $name), MSG_TYPE_NOTICE);
         }
-		if (isset($result) && $result && is_array($languages))
-		{
-    		$baseIoInferer = new \Ximdex\IO\BaseIOInferer();
-    		$inferedNodeType = $baseIoInferer->infereType('FILE', $idContainer);
-    		$nodeType = new NodeType();
-    		$nodeType->SetByName($inferedNodeType['NODETYPENAME']);
-    		if (!($nodeType->get('IdNodeType') > 0))
-    		{
-    			$this->messages->add(_('A nodetype could not be estimated to create the document,')
-    			     . _(' operation will be aborted, contact with your administrator'), MSG_TYPE_ERROR);
-    			// aborts language insertation 
-    			$languages = array();
-    		}
-            
-			// structured document inserts content document
-			$setSymLinks = array();
-			$master = $this->request->getParam('master');
-			foreach ($languages as $idLanguage)
-			{
-				$result = $this->_insertLanguage($idLanguage, $nodeType->get('Name'), $name, $idContainer, $idSchema, $aliases);
-				if ($master > 0)
-				{
-					if ($master != $idLanguage)
-					{
-						$setSymLinks[] = $result;
-					}
-					else
-					{
-						$idNodeMaster = $result;
-					}
-				}
-			}
-			foreach ($setSymLinks as $idNodeToLink)
-			{
-				$structuredDocument = new StructuredDocument($idNodeToLink);
-				$structuredDocument->SetSymLink($idNodeMaster);
-				$slaveNode = new Node($idNodeToLink);
-				$slaveNode->set('SharedWorkflow', $idNodeMaster);
-				$slaveNode->update();
-			}
-		}
-		$values = array(
-			'messages' => $this->messages->messages,
-			'parentID' => $idNode,
-			'nodeID' => $idContainer
-		);
-		$this->sendJSON($values);
+        if (is_array($languages)) {
+            $baseIoInferer = new BaseIOInferer();
+            $inferedNodeType = $baseIoInferer->infereType('FILE', $idContainer);
+            $nodeType = new NodeType();
+            $nodeType->SetByName($inferedNodeType['NODETYPENAME']);
+            if (! ($nodeType->get('IdNodeType') > 0)) {
+                $this->messages->add(_('A nodetype could not be estimated to create the document,') 
+                    . _(' operation will be aborted, contact with your administrator'), MSG_TYPE_ERROR);
+                
+                // Aborts language insertation
+                $languages = array();
+            }
+
+            // Structured document inserts content document
+            $setSymLinks = array();
+            $master = $this->request->getParam('master');
+            foreach ($languages as $idLanguage) {
+                $result = $this->_insertLanguage($idLanguage, $nodeType->get('Name'), $name, $idContainer, $idSchema, $aliases);
+                if ($master > 0) {
+                    if ($master != $idLanguage) {
+                        $setSymLinks[] = $result;
+                    } else {
+                        $idNodeMaster = $result;
+                    }
+                }
+            }
+            foreach ($setSymLinks as $idNodeToLink) {
+                $structuredDocument = new StructuredDocument($idNodeToLink);
+                $structuredDocument->SetSymLink($idNodeMaster);
+                $slaveNode = new Node($idNodeToLink);
+                $slaveNode->set('SharedWorkflow', $idNodeMaster);
+                $slaveNode->update();
+            }
+        }
+        $values = array(
+            'messages' => $this->messages->messages,
+            'parentID' => $idNode,
+            'nodeID' => $idContainer
+        );
+        $this->sendJSON($values);
     }
-    
+
     /**
      * @param int $idNode
      * @param array $aliases
@@ -230,62 +222,61 @@ class Action_createxmlcontainer extends ActionAbstract
      * @param $type
      * @return boolean|number|NULL|string
      */
-    private function buildXMLContainer(int $idNode, array $aliases, string $name, int $idSchema, array $languages, int $master = null, $nodeTypeID = null)
+    private function buildXMLContainer(int $idNode, array $aliases, string $name, int $idSchema, array $languages, int $master = null
+        , $nodeTypeID = null)
     {
-        if ($nodeTypeID)
-        {
+        if ($nodeTypeID) {
             $nodeType = new NodeType($nodeTypeID);
-            if (!$nodeType->GetID())
-            {
+            if (! $nodeType->GetID()) {
                 $this->messages->add(_('Cannot load the node type for ' . $nodeTypeID), MSG_TYPE_ERROR);
                 return false;
             }
+        } else {
+            
+            // Creating container
+            $baseIoInferer = new \Ximdex\IO\BaseIOInferer();
+            $inferedNodeType = $baseIoInferer->infereType('FOLDER', $idNode);
+            $nodeType = new NodeType();
+            $nodeType->SetByName($inferedNodeType['NODETYPENAME']);
+            if (! $nodeType->get('IdNodeType')) {
+                $this->messages->add(_('A nodetype could not be estimated to create the container folder,') 
+                    . _(' operation will be aborted, contact with your administrator'), MSG_TYPE_ERROR);
+                return false;
+            }
         }
-        else
-        {
-        	// Creating container
-    		$baseIoInferer = new \Ximdex\IO\BaseIOInferer();
-    		$inferedNodeType = $baseIoInferer->infereType('FOLDER', $idNode);
-    		$nodeType = new NodeType();
-    		$nodeType->SetByName($inferedNodeType['NODETYPENAME']);
-    		if (!$nodeType->get('IdNodeType'))
-    		{
-    			$this->messages->add(_('A nodetype could not be estimated to create the container folder,')
-    			     . _(' operation will be aborted, contact with your administrator'), MSG_TYPE_ERROR);
-    			return false;
-    		}
+
+        // Just the selected checks will be created.
+        $selectedAlias = array();
+        foreach ($languages as $idLang) {
+            $selectedAlias[$idLang] = $aliases[$idLang];
         }
-        
-		//Just the selected checks will be created.
-		$selectedAlias = array();
-		foreach ($languages as $idLang)
-		{
-			$selectedAlias[$idLang] = $aliases[$idLang];
-		}
-    	$data = array(
-	        'NODETYPENAME' => $nodeType->get('Name'),
-	        'NAME' => $name,
-	        'PARENTID' => $idNode,
-	        'FORCENEW' => true,
-	        'CHILDRENS' => array(array('NODETYPENAME' => 'VISUALTEMPLATE', 'ID' => $idSchema)),
-	        "LANGUAGES" => $languages,
-	        "ALIASES" => $selectedAlias,
-	        "MASTER" => $master,
-    	    'NODETYPE' => $nodeType->getID()
-    	);
-    	$baseIO = new BaseIO();
-    	$res = $baseIO->build($data);
-    	if ($res <= 0)
-    	{
-    	    foreach ($baseIO->messages->messages as $error)
-    	    {
-    	        Logger::warning($error['message']);
-    	        $this->messages->add($error, MSG_TYPE_WARNING);
-    	    }
-    	}
-    	return $res;
+        $data = array(
+            'NODETYPENAME' => $nodeType->get('Name'),
+            'NAME' => $name,
+            'PARENTID' => $idNode,
+            'FORCENEW' => true,
+            'CHILDRENS' => array(
+                array(
+                    'NODETYPENAME' => 'VISUALTEMPLATE',
+                    'ID' => $idSchema
+                )
+            ),
+            "LANGUAGES" => $languages,
+            "ALIASES" => $selectedAlias,
+            "MASTER" => $master,
+            'NODETYPE' => $nodeType->getID()
+        );
+        $baseIO = new BaseIO();
+        $res = $baseIO->build($data);
+        if ($res <= 0) {
+            foreach ($baseIO->messages->messages as $error) {
+                Logger::warning($error['message']);
+                $this->messages->add($error, MSG_TYPE_WARNING);
+            }
+        }
+        return $res;
     }
-    
+
     /**
      * @param int $idNode
      * @param array $aliases
@@ -297,34 +288,32 @@ class Action_createxmlcontainer extends ActionAbstract
      */
     private function buildHTMLContainer(int $idNode, array $aliases, string $name, int $idSchema, array $languages, int $master = null)
     {
-        
-        
-        //Just the selected checks will be created.
+        // Just the selected checks will be created
         $selectedAlias = array();
-        foreach ($languages as $idLang)
-        {
+        foreach ($languages as $idLang) {
             $selectedAlias[$idLang] = $aliases[$idLang];
         }
-        
+        $node = new Node($idNode);
         $data = array(
-            'NODETYPENAME' => $nodeType->get('Name'),
+            'NODETYPENAME' => $node->nodeType->get('Name'),
             'NAME' => $name,
             'PARENTID' => $idNode,
             'FORCENEW' => true,
             'CHILDRENS' => array(
-                array('NODETYPENAME' => 'VISUALTEMPLATE', 'ID' => $idSchema)
+                array(
+                    'NODETYPENAME' => 'VISUALTEMPLATE',
+                    'ID' => $idSchema
+                )
             ),
             "LANGUAGES" => $languages,
             "ALIASES" => $selectedAlias,
             "MASTER" => $master,
-            'NODETYPE' => $nodeType->getID()
+            'NODETYPE' => $node->nodeType->getID()
         );
         $baseIO = new BaseIO();
         $res = $baseIO->build($data);
-        if ($res <= 0)
-        {
-            foreach ($baseIO->messages->messages as $error)
-            {
+        if ($res <= 0) {
+            foreach ($baseIO->messages->messages as $error) {
                 Logger::error($error);
             }
         }

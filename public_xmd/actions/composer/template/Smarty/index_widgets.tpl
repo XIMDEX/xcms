@@ -54,8 +54,8 @@
 			<div id="actions">
 				<buttonbar id="action_buttons" />
 				<div id="action_info">
-					<label for="action_name">{t}Action{/t}: </label><input type="text" readonly="true" id="action_name" />
-					<label for="node_path">{t}Selection{/t}: </label><input type="text" readonly="true" id="node_path" />
+					<label for="action_name">{t}Action{/t}: </label><input type="text" readonly="readonly" id="action_name" />
+					<label for="node_path">{t}Selection{/t}: </label><input type="text" readonly="readonly" id="node_path" />
 					<label for="theme_selector">{t}Theme selector{/t}</label>
 					<select id="theme_selector" onchange="change_theme(this)">
 						<option value="custom_theme"{if ($theme == 'custom_theme')} selected="selected"{/if}>{t}Relaxing blue{/t}</option>

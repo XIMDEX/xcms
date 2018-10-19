@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -34,45 +34,47 @@ use Ximdex\Workflow\WorkFlow;
 
 class Action_modifystatesrole extends ActionAbstract
 {
-    function index()
+    public function index()
     {
         $idNode = $this->request->getParam('nodeid');
         $role = new Role($idNode);
         $idRoleStates = $role->GetAllStates();
         $workflow = new WorkFlow(NULL, NULL, App::getValue('IdDefaultWorkflow'));
         $idAllStates = $workflow->GetAllStates();
+        $states = [];
         foreach ($idAllStates as $idStatus) {
             $pipeStatus = new PipeStatus($idStatus);
-            $states[] = array("id" => $idStatus, "name" => $pipeStatus->get('Name'));
+            $states[] = array('id' => $idStatus, 'name' => $pipeStatus->get('Name'));
         }
         foreach ($states as $i => $state) {
-            if ($state["id"] != null && is_array($idRoleStates) && in_array($state["id"], $idRoleStates)) {
-                $states[$i]["asociated"] = true;
+            if ($state['id'] != null && is_array($idRoleStates) && in_array($state['id'], $idRoleStates)) {
+                $states[$i]['asociated'] = true;
             } else {
-                $states[$i]["asociated"] = false;
+                $states[$i]['asociated'] = false;
             }
         }
         $node = new Node($idNode);
-        $values = array('all_states' => json_encode($states),
+        $values = array(
+            'all_states' => json_encode($states),
             'node_Type' => $node->nodeType->GetName(),
             'idRole' => $idNode);
         $this->render($values, null, 'default-3.0.tpl');
     }
 
-    function update_states()
+    public function update_states()
     {   
         $post = file_get_contents('php://input');
         $request = json_decode($post, true);
-        $states = $request["states"];
-        $idRole = $request["idRole"];
+        $states = $request['states'];
+        $idRole = $request['idRole'];
         $role = new Role($idRole);
-        foreach ($states as $i => $state) {
-            if ($state["asociated"] && $role->HasState($state["id"]) == 0) {
-                $role->AddState($state["id"]);
-            } elseif (!$state["asociated"] && $role->HasState($state["id"]) > 0) {
-                $role->DeleteState($state["id"]);
+        foreach ($states as $state) {
+            if ($state['asociated'] && $role->HasState($state['id']) == 0) {
+                $role->AddState($state['id']);
+            } elseif (!$state['asociated'] && $role->HasState($state['id']) > 0) {
+                $role->DeleteState($state['id']);
             }
         }
-        $this->sendJSON(array("result" => "ok", "message" => _("The rol has been successfully updated")));
+        $this->sendJSON(array('result' => 'ok', 'message' => _('The rol has been successfully updated')));
     }
 }

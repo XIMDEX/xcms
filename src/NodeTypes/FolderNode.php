@@ -284,7 +284,8 @@ class FolderNode extends Root
         }
         else
         {
-            $file = XIMDEX_ROOT_PATH . '/data/tmp/' . FsUtils::getUniqueFile(XIMDEX_ROOT_PATH . '/data/tmp/');
+            $file = XIMDEX_ROOT_PATH . App::getValue('TempRoot') . '/' . FsUtils::getUniqueFile(XIMDEX_ROOT_PATH 
+                . App::getValue('TempRoot') . '/');
             FsUtils::file_put_contents($file, $xslChoose);
             $data = array(
                 'NODETYPENAME' => 'XslTemplate',

@@ -162,12 +162,13 @@ class ParsingJsGetText
         // Opening the destiny file to start to create it
         $file_out = @fopen(XIMDEX_ROOT_PATH . $this->PATH_CACHE . $this->_lang . "/" . $this->_file, "w");
         if (!$file_out) {
-            Logger::error('You have not permits, or the language directory is not existing. Review permits in \'data/tmp/js\'. Error opening the file '
+            Logger::error('You have not permits, or the language directory is not existing. Review permits in \'' 
+                . App::getValue('TempRoot') . '/js\'. Error opening the file '
                 . XIMDEX_ROOT_PATH . $this->PATH_CACHE . $this->_lang . "/" . $this->_file);
             return null;
         }
-        Logger::debug("Caching: " . XIMDEX_ROOT_PATH . $this->_file_orig . " --> " . XIMDEX_ROOT_PATH . $this->PATH_CACHE . $this->_lang . "/" 
-                . $this->_file);
+        Logger::debug("Caching: " . XIMDEX_ROOT_PATH . $this->_file_orig . " --> " . XIMDEX_ROOT_PATH . $this->PATH_CACHE 
+            . $this->_lang . "/" . $this->_file);
         if ($file_in && $file_out) {
             while (!feof($file_in)) {
                 $content = fgets($file_in);

@@ -1,5 +1,6 @@
 #!/usr/bin/env php
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -25,12 +26,12 @@
  *  @version $Revision$
  */
 
-
 use Ximdex\Models\Link;
 
 include_once dirname(__FILE__) . '/../../../../bootstrap.php';
 
-function main ($argc, $argv){
+function main ($argc, $argv)
+{
     // Command line mode call
 	if ($argv != null && isset($argv[1]) && is_numeric($argv[1])) {
             $idlink = $argv[1];
@@ -39,11 +40,10 @@ function main ($argc, $argv){
                 $checkResult = checkLink($link->get("Url"), $idlink)? Link::LINK_OK: Link::LINK_FAIL;;
                 updateLinkState($idlink, $checkResult);
             }
-        }else{
+        } else {
             $dbObj = new \Ximdex\Runtime\Db();
             $sql = "SELECT IdLink,Url FROM Links";
             $dbObj->Query($sql);
-
             while (!$dbObj->EOF) {
                 $idlink = $dbObj->GetValue('IdLink');
                 $url = $dbObj->GetValue('Url');
@@ -55,32 +55,33 @@ function main ($argc, $argv){
         die();
 }
 
-function checkLink($url,$idLink){
+function checkLink($url,$idLink)
+{
     $result = false;
     $link = new Link($idLink);
     if ($link->get("IdLink")){
         $url = $link->get("Url");
         echo "\n\n[".date("H:i:s d/m/y")."] (Id: ".$idLink.") -> ".$url;
-    }
-    
-    $headers=get_headers($url,1);
-    if($headers[0]!=""){
+    }   
+    $headers = get_headers($url,1);
+    if ($headers[0]!="") {
             echo "\nStatus:".$headers[0];
             $pos1 = strpos($headers[0], '200');
             $pos2 = strpos($headers[0], '301');
             $pos3 = strpos($headers[0], '302');
-            if(($pos1!==false)||($pos2!==false)||($pos3!==false)){
+            if (($pos1!==false) || ($pos2!==false) || ($pos3!==false)) {
                 $result = true;
             }
     }
     return $result;
 }
 
-function updateLinkState($idLink, $errorString){
+function updateLinkState($idLink, $errorString)
+{
     $dbObj = new \Ximdex\Runtime\Db();
-    $sql = "UPDATE Links SET ErrorString='$errorString',CheckTime=".time()." WHERE IdLink=$idLink";
+    $sql = "UPDATE Links SET ErrorString = '$errorString', CheckTime = ".time()." WHERE IdLink = $idLink";
     $dbObj->Execute($sql);
 }
 
+global $argc, $argv;
 main($argc, $argv);
-?>

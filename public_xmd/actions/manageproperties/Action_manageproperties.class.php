@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -42,11 +42,9 @@ class Action_manageproperties extends ActionAbstract
 {
     /**
      * Main function
-     *
-     * Load the manage properties form.
+     * Load the manage properties form
      *
      * Request params:
-     *
      * * nodeid
      *
      * @uses InheritedProperties::getValues Get array with inherited properties from ancestor nodes
@@ -162,9 +160,9 @@ class Action_manageproperties extends ActionAbstract
         
         // This part don't show the confirm step (wait for JSON response)
         if ($confirm) {
-            $this->showConfirmation($nodeId, $properties, $affected);
+            $this->showConfirmation($nodeId, $properties);
         } else {
-            $results = InheritedPropertiesManager::setValues($nodeId, $properties);
+            InheritedPropertiesManager::setValues($nodeId, $properties);
             $applyResults = array();
             if ($channel_recursive) {
                 $applyResults = array_merge($applyResults, $this->_applyPropertyRecursively('Channel', $nodeId, $channel_recursive));
@@ -209,7 +207,6 @@ class Action_manageproperties extends ActionAbstract
                     $this->messages->add('Default server language has been saved', MSG_TYPE_NOTICE);
                 }
             }
-            // $this->showResult($nodeId, $results, $applyResults, $confirmed);
             $this->messages->add('Properties have been apply successfully', MSG_TYPE_NOTICE);
             $values = array(
                 'messages' => $this->messages->messages,
@@ -220,7 +217,7 @@ class Action_manageproperties extends ActionAbstract
         }
     }
 
-    private function showConfirmation($nodeId, $properties, $affected)
+    private function showConfirmation($nodeId, $properties, $affected = [])
     {
         $this->addJs('/actions/manageproperties/resources/js/dialog.js');
         $this->addJs('/actions/manageproperties/resources/js/confirm.js');
