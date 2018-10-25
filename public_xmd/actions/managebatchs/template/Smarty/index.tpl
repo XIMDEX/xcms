@@ -27,10 +27,6 @@
 <div class="action_content ximPUBLISHtools" ng-controller="ximPUBLISHtools">
     <ul class="media-list">
         <li class="media" ng-repeat="frames in json | orderBy: 'order' as filtered_json track by frames.idPortal">
-            <span class="pull-left">
-                <img src="actions/managebatchs/resources/icons/#/ frames.type == 'Up' ? 'upload' : 'download' /#.png" 
-                        title="Publishing type: #/ frames.type /#" class="type-icon" />
-            </span>
             <!--
             <p class="status-buttons">
                 <a class="pull-right" href="#" ng-hide="frames.Finished">
@@ -47,36 +43,47 @@
             -->
             <div class="media-body">
                 <h4 class="media-heading">
-                    <span title="Node ID: #/frames.idNodeGenerator/#
-                        &#013;User: #/frames.userName/#
-                        &#013;Created at: #/frames.creationTime/#
-                        &#013;Started at: #/frames.startTime/#
-                        &#013;Status time: #/frames.statusTime/#
-                        &#013;Ended at: #/frames.endTime/#">#/frames.nodeName/#</span>
-                    <small ng-if="!frames.startTime"><span class="icon clock"></span> Created at: #/frames.creationTime/#</small>
+                    <span>
+                        <img src="actions/managebatchs/resources/icons/#/ frames.type == 'Up' ? 'upload' : 'download' /#.png" 
+                                title="Publishing type: #/ frames.type /#" class="type-icon" />
+                    </span>
+                    <span title="Node ID: #/ frames.idNodeGenerator /#
+                        &#013;User: #/ frames.userName /#
+                        &#013;Created at: #/ frames.creationTime /#
+                        &#013;Started at: #/ frames.startTime /#
+                        &#013;Status time: #/ frames.statusTime /#
+                        &#013;Ended at: #/ frames.endTime /#"><strong>#/ frames.nodeName /#</strong>
+                    </span>
+                    <small> (#/ frames.total /# documents)</small>
+                    <small ng-if="!frames.startTime"><span class="icon clock"></span> Created at: #/ frames.creationTime /#</small>
                     <small ng-if="frames.startTime && !frames.statusTime">
-                        <span class="icon clock"></span> Started at: #/frames.startTime/#
+                        <span class="icon clock"></span> Started at: #/ frames.startTime /#
                     </small>
-                    <small ng-if="!frames.endTime"><span class="icon clock"></span> Status time: #/frames.statusTime/#</small>
-                    <small ng-if="frames.endTime"><span class="icon clock"></span> Ended at: #/frames.endTime/#</small>
+                    <small ng-if="!frames.endTime"><span class="icon clock"></span> Status time: #/ frames.statusTime /#</small>
+                    <small ng-if="frames.endTime"><span class="icon clock"></span> Ended at: #/ frames.endTime /#</small>
                 </h4>
                 <div class="progress">
                     {include file="actions/managebatchs/template/Smarty/framesProgressBar.tpl"}
                 </div>
-                <small>
+                <div class="server-details-link">
                     <a class="aespecial" ng-if="!showing[frames.idPortal]" href="#" role="button" 
-                            ng-click="showing[frames.idPortal] = !showing[frames.idPortal]">Show servers details</a>
+                            ng-click="showing[frames.idPortal] = !showing[frames.idPortal]">[+] Show servers details</a>
                     <a class="aespecial" ng-if="showing[frames.idPortal]" href="#" role="button" 
-                            ng-click="showing[frames.idPortal] = !showing[frames.idPortal]">Hide servers details</a>
-                </small>
+                            ng-click="showing[frames.idPortal] = !showing[frames.idPortal]">[-] Hide servers details</a>
+                </div>
                 <ul ng-init="initShowing(frames.idPortal)" ng-show="showing[frames.idPortal]" class="media-list servers">
-                    <li class="media" ng-repeat="frames in frames.servers | orderBy: 'name' as filtered_json track by frames.id">
-                        <h4 class="media-heading">
-                            Server #/frames.name/# 
+                    <li ng-if="frames.total > 0" class="media server-detail" 
+                            ng-repeat="frames in frames.servers | orderBy: 'name' as filtered_json track by frames.id">
+                        <h4 class="media-heading portal-server-info">
+                            Server #/ frames.name /# <small>(#/ frames.total /# documents)</small> 
+                            <small ng-if="frames.stopped > 0" title="This server has some stopped batchs" class="server-disabled">
+                                ( ! ) Batchs stopped</small>
                             <small ng-if="!frames.enabled" class="server-disabled-by-user">Disabled by user</small>
                             <small ng-if="frames.enabled && !frames.activeForPumping" class="server-disabled">
-                                Disabled
-                                <span ng-if="frames.delayedTime"> (Restart at #/frames.delayedTime/#)</span>
+                                <span ng-if="!frames.delayedTime" title="Server disabled permanently due to connection errors">
+                                    ( ! ) Disabled</span>
+                                <span ng-if="frames.delayedTime" title="Server delayed to restart later due to connection errors">
+                                    ( ! ) Delayed until #/ frames.delayedTime /#</span>
                             </small>
                         </h4>
                         <div class="progress server">
@@ -84,6 +91,18 @@
                         </div>
                     </li>
                 </ul>
+                <ul ng-init="initShowing(frames.idPortal)" ng-show="showing[frames.idPortal]" class="media-list servers">
+                    <li class="media">
+                        <h4 class="media-heading batch-info">
+                            BATCHS LIST
+                            <small> (#/ frames.totalBatchs /#  batchs)</small>
+                        </h4>
+                        <div class="progress server">
+                            {include file="actions/managebatchs/template/Smarty/batchsProgressBar.tpl"}
+                        </div>
+                    </li>
+                </ul>
+                <hr class="server-sep" ng-init="initShowing(frames.idPortal)" ng-show="showing[frames.idPortal]" />
             </div>
         </li>
     </ul>

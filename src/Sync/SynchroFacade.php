@@ -279,7 +279,7 @@ class SynchroFacade
         
         // Get portal version
         $portal = new PortalFrames();
-        $idPortalFrame = $portal->upPortalFrameVersion($node->getID(), Session::get('userID'), PortalFrames::TYPE_DOWN);
+        $idPortalFrame = $portal->upPortalFrameVersion($node->getID(), $down, Session::get('userID'), PortalFrames::TYPE_DOWN);
         if (!$idPortalFrame) {
             Logger::error('Cannot create the portal version for server: ' . $node->getServer());
             return false;
@@ -313,6 +313,7 @@ class SynchroFacade
                     continue;
                 }
                 $serverFrame->set('State', ServerFrame::CANCELLED);
+                $serverFrame->set('ErrorLevel', null);
                 $serverFrame->update();
             }
         }

@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -47,7 +47,7 @@ class ConnectionSolr extends Connector implements IConnector
      * @param port int
      * @return boolean
      */
-    public function connect($host = NULL, $port = NULL)
+    public function connect($host = null, $port = null)
     {
         Logger::debug("CONNECT $host $port");
         $this->config = array(
@@ -184,7 +184,7 @@ class ConnectionSolr extends Connector implements IConnector
      * @param mode int
      * @return mixed
      */
-    public function ls($dir, $mode = NULL)
+    public function ls($dir, $mode = null)
     {
         return array();
     }

@@ -74,7 +74,7 @@ class Server extends ServersOrm
         }
         $message = 'Server ' . $this->Description . ' (' . $this->IdServer . ') is now able for pumping (connection successful)';
         Logger::info($message, true);
-        User::sendNotifications('Server ' . $this->Description . ' has been activated', $message);
+        User::sendNotifications('Server ' . $this->Description . ' has been reactivated', $message);
         return true;
     }
     
@@ -134,26 +134,52 @@ class Server extends ServersOrm
         if (!$this->IdServer) {
             throw new \Exception('No server selected');
         }
-        $sql = 'SELECT SUM(ServerFramesTotal) AS total, SUM(ServerFramesPending) AS pending, SUM(ServerFramesActive) AS active';
+        $sql = 'SELECT SUM(ServerFramesTotal) AS total, SUM(IF (`State` != \'' . Batch::STOPPED . '\', ServerFramesPending, 0)) AS pending';
+        $sql .= ', SUM(IF (`State` != \'' . Batch::STOPPED . '\', ServerFramesActive, 0)) AS active';
+        $sql .= ', SUM(IF (`State` = \'' . Batch::STOPPED . '\', ServerFramesActive + ServerFramesPending, 0)) AS stopped';
         $sql .= ', SUM(ServerFramesSuccess) AS success, SUM(ServerFramesFatalError) AS fatal, SUM(ServerFramesTemporalError) AS soft';
         $sql .= ' FROM Batchs WHERE ServerId = ' . $this->IdServer;
         if ($portalId) {
             $sql .= ' AND IdPortalFrame = ' . $portalId;
         }
-        $dbObj = new Db();
-        if ($dbObj->Query($sql) === false) {
+        $sql .= ' GROUP BY ServerId';
+        $db = new Db();
+        if ($db->Query($sql) === false) {
             throw new \Exception('SQL error');
         }
         $stats = [];
-        if (!$dbObj->numRows) {
+        if (!$db->numRows) {
             throw new \Exception('There is not stats information for the server');
         }
-        $stats['total'] = (int) $dbObj->GetValue('total');
-        $stats['pending'] = (int) $dbObj->GetValue('pending');
-        $stats['active'] = (int) $dbObj->GetValue('active');
-        $stats['success'] = (int) $dbObj->GetValue('success');
-        $stats['fatal'] = (int) $dbObj->GetValue('fatal');
-        $stats['soft'] = (int) $dbObj->GetValue('soft');
+        $stats['total'] = (int) $db->GetValue('total');
+        $stats['pending'] = $this->get('ActiveForPumping') ? (int) $db->GetValue('pending') : 0;
+        $stats['active'] = $this->get('ActiveForPumping') ? (int) $db->GetValue('active') : 0;
+        $stats['success'] = (int) $db->GetValue('success');
+        $stats['fatal'] = (int) $db->GetValue('fatal');
+        $stats['soft'] = (int) $db->GetValue('soft');
+        $stats['stopped'] = (int) $db->GetValue('stopped');
+        $stats['delayed'] = !$this->get('ActiveForPumping') ? $db->GetValue('pending') + $db->GetValue('active') : 0;
         return $stats;
+    }
+    
+    /**
+     * Returns a list of servers delayed by error
+     * 
+     * @throws \Exception
+     * @return array
+     */
+    public static function getDelayed() : array
+    {
+        $sql = 'SELECT IdServer, Description FROM Servers WHERE ActiveForPumping = 0';
+        $db = new Db();
+        if ($db->Query($sql) === false) {
+            throw new \Exception('SQL error in delayed servers retrieve');
+        }
+        $servers = [];
+        while (! $db->EOF) {
+            $servers[$db->GetValue('IdServer')] = $db->GetValue('Description');
+            $db->Next();
+        }
+        return $servers;
     }
 }

@@ -319,4 +319,47 @@ class Action_createxmlcontainer extends ActionAbstract
         }
         return $res;
     }
+    
+    private function _insertLanguage($idLanguage, $nodeTypeName, $name, $idContainer, $idTemplate, $aliases, $formChannels = null)
+    {
+        $language = new Language($idLanguage);
+        if (! $language->get('IdLanguage')) {
+            $this->messages->add(sprintf(_("Language %s insertion has been aborted because it was not found"),  $idLanguage), MSG_TYPE_WARNING);
+            return NULL;
+        }
+        $data = array(
+            'NODETYPENAME' => $nodeTypeName,
+            'NAME' => $name,
+            'PARENTID' => $idContainer,
+            'ALIASNAME' => $aliases[$idLanguage],
+            "CHILDRENS" => array (
+                array ("NODETYPENAME" => "VISUALTEMPLATE", "ID" => $idTemplate),
+                array ("NODETYPENAME" => "LANGUAGE", "ID" => $idLanguage)
+            )
+        );
+        if(! empty($formChannels)) {
+            foreach ($formChannels as $channel) {
+                $data['CHILDRENS'][] = $channel;
+            }
+        }
+        if (isset($aliases[$idLanguage])) {
+            $data['CHILDRENS'][] = array(
+                'NODETYPENAME' => 'NODENAMETRANSLATION',
+                'IDLANG' => $idLanguage,
+                'DESCRIPTION' => $aliases[$idLanguage]);
+        }
+        $baseIO = new baseIO();
+        $result = $baseIO->build($data);
+        if ($result > 0) {
+            $insertedNode = new Node($result);
+            $this->messages->add(sprintf(_('Document %s has been successfully inserted'), $insertedNode->get('Name')), MSG_TYPE_NOTICE);
+        } else {
+            $this->messages->add(sprintf(_('Insertion of document %s with language %s has failed'),
+                $name, $language->get('Name')), MSG_TYPE_ERROR);
+            foreach ($baseIO->messages->messages as $message) {
+                $this->messages->messages[] = $message;
+            }
+        }
+        return $result;   
+    }
 }

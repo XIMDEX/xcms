@@ -129,8 +129,10 @@ class BatchManager
                 continue;
             }
 
-            // We up version if the current version to publish it is a draft or if the current version is 0.0 and the node is the generator node
-            // Or is a image / binary file
+            /*
+            We up version if the current version to publish it is a draft or if the current version is 0.0 
+            and the node is the generator node. Or is a image / binary file
+            */
             if ($subversionToPublish != 0 || ($subversionToPublish == 0 && $versionToPublish == 0 && ($idDoc == $idNode 
                 or $docNode->GetNodeType() == NodeTypeConstants::IMAGE_FILE or $docNode->GetNodeType() == NodeTypeConstants::BINARY_FILE))) {
                 $docsToUpVersion[$idDoc] = $idDoc;
@@ -139,7 +141,7 @@ class BatchManager
 
         // Get portal version
         $portal = new PortalFrames();
-        $idPortalFrame = $portal->upPortalFrameVersion($idNode, $userId);
+        $idPortalFrame = $portal->upPortalFrameVersion($idNode, $up, $userId);
         if (!$idPortalFrame) {
             Logger::error('Cannot generate a new portal frame version');
             return false;
@@ -557,14 +559,16 @@ class BatchManager
     }
 
     /**
-     * Starts (Ends) the activity of Batchs
+     * Starts (Close and Ends) the activity of Batchs and update its stats
      * 
      * @param int $testTime
      * @param array $servers
      * @param bool $updateCycles
+     * @param int $idBatchToUpdate
      * @return bool
      */
-    public function setBatchsActiveOrEnded(int $testTime = null, array $servers = null, bool $updateCycles = true) : bool
+    public function setBatchsActiveOrEnded(int $testTime = null, array $servers = null, bool $updateCycles = true
+        , int $idBatchToUpdate = null) : bool
     {
         if (! $servers) {
             
@@ -580,21 +584,24 @@ class BatchManager
         $dbObj = new Db();
         
         // Updating batchs type UP
-        $sql = "SELECT ServerFrames.IdBatchUp, 
-            SUM(IF (ServerFrames.ErrorLevel = " . ServerFrame::ERROR_LEVEL_HARD . ", 1, 0)) AS FatalErrors, 
-            SUM(IF (ServerFrames.ErrorLevel = " . ServerFrame::ERROR_LEVEL_SOFT . ", 1, 0)) AS TemporalErrors,
-			SUM(IF (ServerFrames.State IN ('" . implode('\', \'', ServerFrame::SUCCESS_STATUS_IN) . "'), 1, 0)) AS Success, 
-			SUM(IF (ServerFrames.State IN ('" . ServerFrame::PUMPED . "'), 1, 0)) AS Pumpeds,
+        $sql = 'SELECT ServerFrames.IdBatchUp, 
+            SUM(IF (ServerFrames.ErrorLevel = ' . ServerFrame::ERROR_LEVEL_HARD . ', 1, 0)) AS FatalErrors, 
+            SUM(IF (ServerFrames.ErrorLevel = ' . ServerFrame::ERROR_LEVEL_SOFT . ', 1, 0)) AS TemporalErrors,
+			SUM(IF (ServerFrames.State IN (\'' . implode('\', \'', ServerFrame::SUCCESS_STATUS_IN) . '\'), 1, 0)) AS Success, 
+			SUM(IF (ServerFrames.State IN (\'' . ServerFrame::PUMPED . '\'), 1, 0)) AS Pumpeds,
 			COUNT(ServerFrames.IdSync) AS Total,
-            SUM(IF (ServerFrames.State NOT IN ('" . ServerFrame::PENDING . "', '" . implode('\', \'', ServerFrame::FINAL_STATUS) 
-                . "', '" . ServerFrame::DUE2IN_ . "'), 1, 0)) AS Active, 
-            SUM(IF (ServerFrames.State IN ('" . ServerFrame::PENDING . "', '" . ServerFrame::DUE2IN_ . "'), 1, 0)) AS Pending 
-            FROM ServerFrames, Batchs WHERE Batchs.Type = '" . Batch::TYPE_UP . "' 
-            AND Batchs.State IN ('" . Batch::INTIME . "', '" . Batch::CLOSING . "') AND Batchs.IdBatch = ServerFrames.IdBatchUp
-            AND Batchs.ServerId IN (" . implode(',', $servers) . ") 
-            GROUP BY ServerFrames.IdBatchUp 
-            HAVING (FatalErrors + Success + Pumpeds + Active) > 0 
-            ORDER BY ServerFrames.IdBatchUp";
+            SUM(IF (ServerFrames.State NOT IN (\'' . ServerFrame::PENDING . '\', \'' . implode('\', \'', ServerFrame::FINAL_STATUS) 
+                . '\', \'' . ServerFrame::DUE2IN_ . '\') AND ServerFrames.ErrorLevel IS NULL, 1, 0)) AS Active, 
+            SUM(IF (ServerFrames.State IN (\'' . ServerFrame::PENDING . '\', \'' . ServerFrame::DUE2IN_ . '\'), 1, 0)) AS Pending 
+            FROM ServerFrames, Batchs WHERE Batchs.Type = \'' . Batch::TYPE_UP . '\' 
+            AND Batchs.State IN (\'' . Batch::INTIME . '\', \'' . Batch::CLOSING . '\') AND Batchs.IdBatch = ServerFrames.IdBatchUp
+            AND Batchs.ServerId IN (' . implode(', ', $servers) . ') ';
+        if ($idBatchToUpdate) {
+            $sql .= 'AND Batchs.IdBatch = ' . $idBatchToUpdate . ' ';
+        }
+        $sql .= 'GROUP BY ServerFrames.IdBatchUp 
+            HAVING (TemporalErrors + FatalErrors + Success + Pumpeds + Active) > 0 
+            ORDER BY ServerFrames.IdBatchUp';
         if ($dbObj->Query($sql) === false) {
         	return false;
         }
@@ -619,7 +626,7 @@ class BatchManager
                     // Do not change to CLOSING state if this is the actual one in the batch
                     if ($batch->get('State') != Batch::CLOSING) {
                         $batch->set('State', Batch::CLOSING);
-                        Logger::info(sprintf("Setting 'Closing' state batch %d UP", $idBatch));
+                        Logger::info(sprintf('Setting \'Closing\' state batch %d UP', $idBatch));
                     }
                 } else {
                     $batch->set('State', Batch::ENDED);
@@ -641,35 +648,40 @@ class BatchManager
         }
 
         // Updating batchs type DOWN
+        if ($idBatchToUpdate) {
+            $criteria = 'IdBatch = ' . $idBatchToUpdate;
+        } else {
+            $criteria = 'Type = \'' . Batch::TYPE_DOWN . '\' AND State = \'' . Batch::INTIME . '\'';
+        }
         $batch = new Batch();
-        $batchsDown = $batch->find('IdBatch', "Type = '" . Batch::TYPE_DOWN . "' AND State = '" . Batch::INTIME . "'", null, MONO);
+        $batchsDown = $batch->find('IdBatch', $criteria, null, MONO);
         if (sizeof($batchsDown) > 0) {
             foreach ($batchsDown as $idBatch) {
                 
                 // Search the batch type Down without type Up
-                $sql = "SELECT SUM(IF (ErrorLevel = " .ServerFrame::ERROR_LEVEL_HARD . ", 1, 0)) AS FatalErrors, 
-                    SUM(IF (ErrorLevel = " .ServerFrame::ERROR_LEVEL_SOFT . ", 1, 0)) AS TemporalErrors, 
-					SUM(IF (State IN ('" . implode('\', \'', ServerFrame::SUCCESS_STATUS_OUT) . "'), 1, 0)) AS Success, 
-					COUNT(IdSync) AS Total, SUM(IF (State IN ('" . ServerFrame::PENDING . "', '" . ServerFrame::IN 
-					   . "', '" . ServerFrame::DUE2OUT_ . "'), 1, 0)) AS Pending,
-                    SUM(IF (State NOT IN ('" . ServerFrame::PENDING . "', '" . ServerFrame::DUE2OUT_ . "', '" 
-                        . implode('\', \'', ServerFrame::FINAL_STATUS) . "'), 1, 0)) AS Active 
-                    FROM ServerFrames WHERE IdBatchDown = $idBatch AND IdServer IN (" . implode(', ', $servers) . ')';
+                $sql = 'SELECT SUM(IF (ErrorLevel = ' . ServerFrame::ERROR_LEVEL_HARD . ', 1, 0)) AS FatalErrors, 
+                    SUM(IF (ErrorLevel = ' . ServerFrame::ERROR_LEVEL_SOFT . ', 1, 0)) AS TemporalErrors, 
+					SUM(IF (State IN (\'' . implode('\', \'', ServerFrame::SUCCESS_STATUS_OUT) . '\'), 1, 0)) AS Success, 
+					COUNT(IdSync) AS Total, SUM(IF (State IN (\'' . ServerFrame::PENDING . '\', \'' . ServerFrame::IN 
+					   . '\', \'' . ServerFrame::DUE2OUT_ . '\'), 1, 0)) AS Pending,
+                    SUM(IF (State NOT IN (\'' . ServerFrame::PENDING . '\', \'' . ServerFrame::DUE2OUT_ . '\', \'' 
+                        . implode('\', \'', ServerFrame::FINAL_STATUS) . '\') AND ErrorLevel IS NULL, 1, 0)) AS Active 
+                    FROM ServerFrames WHERE IdBatchDown = ' . $idBatch . ' AND IdServer IN (' . implode(', ', $servers) . ')';
                 if ($dbObj->Query($sql) === false) {
                 	return false;
                 }
                 if ($dbObj->GetValue('Total') == 0) {
                     
                     // Search the batchs type Down with an associated batch type Up
-                    $sql = "SELECT SUM(IF(ServerFrames.ErrorLevel = " . ServerFrame::ERROR_LEVEL_HARD . ", 1, 0)) AS FatalErrors, 
-                        SUM(IF (ServerFrames.ErrorLevel = " .ServerFrame::ERROR_LEVEL_SOFT . ", 1, 0)) AS TemporalErrors, 
-		      			SUM(IF (ServerFrames.State IN ('" . implode('\', \'', ServerFrame::SUCCESS_STATUS_OUT) . "'), 1, 0)) AS Success, 
+                    $sql = 'SELECT SUM(IF(ServerFrames.ErrorLevel = ' . ServerFrame::ERROR_LEVEL_HARD . ', 1, 0)) AS FatalErrors, 
+                        SUM(IF (ServerFrames.ErrorLevel = ' .ServerFrame::ERROR_LEVEL_SOFT . ', 1, 0)) AS TemporalErrors, 
+		      			SUM(IF (ServerFrames.State IN (\'' . implode('\', \'', ServerFrame::SUCCESS_STATUS_OUT) . '\'), 1, 0)) AS Success, 
 				    	COUNT(ServerFrames.IdSync) AS Total,
-                        SUM(IF (ServerFrames.State NOT IN ('" . ServerFrame::PENDING . "', '" . implode('\', \'', ServerFrame::FINAL_STATUS)
-                            . "'), 1, 0)) AS Active,
-                        SUM(IF (ServerFrames.State IN ('" . ServerFrame::PENDING . "'), 1, 0)) AS Pending
-                        FROM ServerFrames, Batchs WHERE ServerFrames.IdBatchUp = Batchs.IdBatch AND Batchs.IdBatchDown = $idBatch 
-                        AND Batchs.ServerId IN (" . implode(',', $servers) . ')';
+                        SUM(IF (ServerFrames.State NOT IN (\'' . ServerFrame::PENDING . '\', \'' . implode('\', \'', ServerFrame::FINAL_STATUS)
+                            . '\' AND ErrorLevel IS NULL), 1, 0)) AS Active,
+                        SUM(IF (ServerFrames.State IN (\'' . ServerFrame::PENDING . '\'), 1, 0)) AS Pending
+                        FROM ServerFrames, Batchs WHERE ServerFrames.IdBatchUp = Batchs.IdBatch AND Batchs.IdBatchDown = ' . $idBatch . '  
+                        AND Batchs.ServerId IN (' . implode(', ', $servers) . ')';
                     if ($dbObj->Query($sql) === false) {
                         return false;
                     }
@@ -850,8 +862,9 @@ class BatchManager
         } else {
 
             // Gets portal version
+            $time = time();
             $portal = new PortalFrames();
-            $idPortalFrame = $portal->upPortalFrameVersion($nodeId, Session::get('userID'), PortalFrames::TYPE_DOWN);
+            $idPortalFrame = $portal->upPortalFrameVersion($nodeId, $time, Session::get('userID'), PortalFrames::TYPE_DOWN);
             if (!$idPortalFrame) {
                 Logger::error('Unable to increase the portal version with ID: ' . $nodeId);
                 return false;
@@ -859,7 +872,7 @@ class BatchManager
 
             // Creating Batch Type Down if not exist one
             $batchDown = new Batch();
-            $idBatchDown = $batchDown->create(time(), Batch::TYPE_DOWN, $nodeId, DEFAULT_BATCH_PRIORITY, null, $idPortalFrame, $userId);
+            $idBatchDown = $batchDown->create($time, Batch::TYPE_DOWN, $nodeId, DEFAULT_BATCH_PRIORITY, null, $idPortalFrame, $userId);
 
             // Updating Serverframes info
             $batchDown = new Batch($idBatchDown);

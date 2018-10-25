@@ -64,8 +64,9 @@
 	transition: color 2s;
 }
 
-.media.progress {
+.media .progress {
 	margin-bottom: 5pt;
+	width: 100%;
 }
 
 .progress-bar {
@@ -73,23 +74,36 @@
 }
 
 .progress-bar-pending {
-    background-color: #045FB4;
+    background-color: #0B0B61; /* #045FB4; */
 }
 
 .progress-bar-active {
-    background-color: #FFBF00;
+    background-color: #0174DF;  /* #DF0174; */
 }
 
 .progress-bar-success {
-	background-color: #75CD9D;
+	background-color: #0B615E !important;  /* #75CD9D; */
 }
 
 .progress-bar-errored-fatal {
-    background-color: #B40404;
+    background-color: #610B0B;  /* #B40404; */
 }
 
 .progress-bar-errored-soft {
-    background-color: #DF0174;
+    background-color: #B43104; /* #8A4B08; */
+}
+
+.progress-bar-closing {
+    background-color: #8000FF;
+}
+
+.progress-bar-delayed {
+    background-color: #FFBF00;
+    color: black;
+}
+
+.progress-bar-stopped {
+    background-color: #848484;  /* #8A0808; */
 }
 
 .media .clock::before {
@@ -98,14 +112,16 @@
 }
 
 .media .type-icon {
-	width: 40pt;
-	margin-top: 10pt;
+	width: 14pt;
+	margin-right: 2pt;
+	vertical-align: middle;
 }
 
 .media .servers {
 	margin-top: 15pt;
 	margin-botom : 25pt;
-	width: 95%;
+	width: 100%;
+	padding: 0;
 }
 
 .media .server {
@@ -113,7 +129,7 @@
 }
 
 .media .server-disabled-by-user {
-	color: orange;
+	color: #8A2908;
 	float: right;
 	margin-top: 3pt;
 }
@@ -122,4 +138,27 @@
     color: red;
     float: right;
     margin-top: 3pt;
+    font-size: 9pt;
+}
+
+.media .server-details-link {
+	color: #666;
+	font-size: 11pt;
+}
+
+.media .server-detail {
+	font-size: 10pt;
+}
+
+.media .portal-server-info {
+	margin-bottom: 2pt;
+}
+
+.media .server-sep {
+	margin-top: 20pt;
+	width: 40%;
+}
+
+.media .batch-info {
+    font-size: 10pt;
 }

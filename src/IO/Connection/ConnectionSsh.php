@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -37,7 +37,7 @@ class ConnectionSsh extends Connector implements IConnector
     private $port;
     private $username;
     private $password;
-    private $netSFTP = NULL;
+    private $netSFTP = null;
 
     /**
      * Connect to server
@@ -47,7 +47,7 @@ class ConnectionSsh extends Connector implements IConnector
      * @param port int
      * @return boolean
      */
-    public function connect($host = NULL, $port = NULL)
+    public function connect($host = null, $port = null)
     {
         if (empty($port)) {
             $port = 22;
@@ -353,7 +353,7 @@ class ConnectionSsh extends Connector implements IConnector
      * @param mode int
      * @return mixed
      */
-    public function ls($dir, $mode = NULL)
+    public function ls($dir, $mode = null)
     {
         Logger::debug('Call to ls: ' . $dir . ' (mode: ' . $mode . ')');
         $res = $this->netSFTP->nlist($dir);

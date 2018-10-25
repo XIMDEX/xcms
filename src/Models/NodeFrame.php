@@ -322,6 +322,7 @@ class NodeFrame extends NodeFramesOrm
 				$idServerFrame = $dataFrames[0];
 				$serverFrame = new ServerFrame($idServerFrame);
 				$serverFrame->set('State', ServerFrame::CANCELLED);
+				$serverFrame->set('ErrorLevel', null);
 				$serverFrame->update();
 			}
 		}

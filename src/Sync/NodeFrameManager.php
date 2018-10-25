@@ -104,7 +104,7 @@ class NodeFrameManager
 				}
 				$nodeFrame->update();
 			}
-			if ($nodeFramesInTime[0]['Active'] == 0){
+			if (isset($nodeFramesInTime[0]) and $nodeFramesInTime[0]['Active'] == 0){
 				$processUp = 1;
 				$replacedBy = NULL;
 				$activity = 1;
@@ -129,7 +129,11 @@ class NodeFrameManager
 				$processUp = 1;
 				$replacedBy = NULL;
 				$activity = 1;
-				$idToActive = $nodeFramesInTime[0]['Id'];
+				if (isset($nodeFramesInTime[0])) {
+				    $idToActive = $nodeFramesInTime[0]['Id'];
+				} else {
+				    $idToActive = null;
+				}
 			} else {
 				if ($active == 1) {
 					$nodeFrame->NodeFrameToLog(null, $nodeFrameId, null, null, null, __CLASS__, __FUNCTION__, __FILE__,

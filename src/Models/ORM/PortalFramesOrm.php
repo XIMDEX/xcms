@@ -40,6 +40,7 @@ class PortalFramesOrm extends GenericData
         'CreationTime' => array('type' => 'int(12)', 'not_null' => 'true'),
         'PublishingType' => array('type' => 'varchar(255)', 'not_null' => 'true'),
         'CreatedBy' => array('type' => 'int(12)', 'not_null' => 'false'),
+        'ScheduledTime' => array('type' => 'int(12)', 'not_null' => 'true'),
         'StartTime' => array('type' => 'int(12)', 'not_null' => 'false'),
         'EndTime' => array('type' => 'int(12)', 'not_null' => 'false'),
         'Status' => array('type' => 'varchar(255)', 'not_null' => 'true'),
@@ -49,7 +50,9 @@ class PortalFramesOrm extends GenericData
         'SFpending' => array('type' => 'int(12)', 'not_null' => 'true'),
         'SFsuccess' => array('type' => 'int(12)', 'not_null' => 'true'),
         'SFfatalError' => array('type' => 'int(12)', 'not_null' => 'true'),
-        'SFsoftError' => array('type' => 'int(12)', 'not_null' => 'true')
+        'SFsoftError' => array('type' => 'int(12)', 'not_null' => 'true'),
+        'SFdelayed' => array('type' => 'int(12)', 'not_null' => 'true'),
+        'SFstopped' => array('type' => 'int(12)', 'not_null' => 'true')
     );
     public $_uniqueConstraints = array();
     public $_indexes = array('id');
@@ -58,6 +61,7 @@ class PortalFramesOrm extends GenericData
     public $Version = 0;
     public $CreationTime;
     public $CreatedBy = null;
+    public $ScheduledTime;
     public $StartTime = null;
     public $EndTime = null;
     public $Status;
@@ -68,4 +72,6 @@ class PortalFramesOrm extends GenericData
     public $SFsuccess = 0;
     public $SFfatalError = 0;
     public $SFsoftError = 0;
+    public $SFdelayed = 0;
+    public $SFstopped = 0;
 }

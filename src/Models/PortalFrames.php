@@ -27,6 +27,7 @@
 
 namespace Ximdex\Models;
 
+use Ximdex\Logger;
 use \Ximdex\Runtime\Db;
 use Ximdex\Models\ORM\PortalFramesOrm;
 
@@ -38,17 +39,21 @@ class PortalFrames extends PortalFramesOrm
     const STATUS_ACTIVE = 'Active';
     const STATUS_ENDED = 'Ended';
     
-    public function upPortalFrameVersion(int $nodeId, int $idUser = null, string $type = self::TYPE_UP) : int
+    public function upPortalFrameVersion(int $nodeId, int $scheduledTime, int $idUser = null, string $type = self::TYPE_UP) : int
     {
+        if (!$nodeId or !$scheduledTime) {
+            Logger::error('Cannot generate a portal version without a node or scheduled time');
+            return false;
+        }
         $portalFrameVersion = $this->getLastVersion($nodeId);
         $portalFrameVersion++;
         $this->set('IdNodeGenerator', $nodeId);
+        $this->set('ScheduledTime', $scheduledTime);
         $this->set('Version', $portalFrameVersion);
         $this->set('CreationTime', time());
         $this->set('PublishingType', $type);
         $this->set('CreatedBy', $idUser);
         $this->set('Status', self::STATUS_CREATED);
-        // $this->set('StatusTime', time());
         $idPortalFrameVersion = parent::add();
         return ($idPortalFrameVersion > 0) ? (int) $idPortalFrameVersion : 0;
     }
@@ -77,66 +82,113 @@ class PortalFrames extends PortalFramesOrm
     }
     
     /**
-     * Calculate the stats from batchs related to a given portal frame
+     * Calculate the stats from batchs related to a given portal frame, or everything active
      * 
      * @param Batch $batch
      * @throws \Exception
      */
-    public static function updatePortalFrames(Batch $batch) : void
+    public static function updatePortalFrames(Batch $batch = null, Server $server = null) : void
     {
-        if (!$batch->get('IdBatch')) {
-            return;
-        }
-        if (!$batch->get('State')) {
-            throw new \Exception('Unknown state for batch with ID: ' . $batch->get('IdBatch'));
-        }
-        if (!$batch->get('IdPortalFrame')) {
-            throw new \Exception('There is not a portal frame for batch with ID: ' . $batch->get('IdBatch'));
-        }
-        $portalFrame = new static($batch->get('IdPortalFrame'));
-        if (!$portalFrame->get('id')) {
-            throw new \Exception('Cannot load a portal frame with ID: ' . $batch->get('IdPortalFrame'));
+        if ($batch) {
+            if (! $batch->get('IdBatch')) {
+                throw new \Exception('Batch is not loaded to update portal frames');
+            }
+            if (! $batch->get('State')) {
+                throw new \Exception('Unknown state for batch with ID: ' . $batch->get('IdBatch'));
+            }
+            if (! $batch->get('IdPortalFrame')) {
+                throw new \Exception('There is not a portal frame for batch with ID: ' . $batch->get('IdBatch'));
+            }
+        } elseif ($server) {
+            if (! $server->get('IdServer')) {
+                throw new \Exception('Server is not loaded to update portal frames');
+            }
         }
         
-        // Calculate stats from portal frame batchs
-        $sql = 'SELECT SUM(ServerFramesTotal) as total, SUM(ServerFramesPending) as pending, SUM(ServerFramesActive) as active, ';
-        $sql .= 'SUM(ServerFramesSuccess) as success, SUM(ServerFramesFatalError) as fatalError, ';
-        $sql .= 'SUM(ServerFramesTemporalError) as temporalError ';
-        $sql .= 'FROM Batchs ';
-        $sql .= 'WHERE IdPortalFrame = ' . $portalFrame->get('id') . ' ';
+        // Get affected portal frames by function criteria
+        $sql = 'SELECT DISTINCT pf.id FROM PortalFrames pf ';
+        if ($server) {
+            
+            // Update only the portal frames running with a given server
+            $sql .= 'INNER JOIN Batchs b ON (b.IdPortalFrame = pf.id AND b.ServerId = ' . $server->get('IdServer') . ') ';
+        }
+        elseif ($batch) {
+            
+            // Update an only portal frame with a given batch
+            $sql .= 'WHERE pf.id = ' . $batch->get('IdPortalFrame') . ' ';
+        } else {
+            
+            // Update all portal frames active
+            $sql .= 'WHERE pf.Status = \'' . PortalFrames::STATUS_ACTIVE . '\' ';
+        }
+        $sql .= 'GROUP BY pf.id';
         $db = new Db();
         if ($db->Query($sql) === false) {
-            throw new \Exception('Could not obtain the batchs stats for the portal frame ' . $portalFrame->get('id'));
+            throw new \Exception('Could not obtain the portal frames in order to update the frames stats');
         }
-        $portalFrame->set('SFtotal', (int) $db->getValue('total'));
-        $portalFrame->set('SFpending', (int) $db->getValue('pending'));
-        $portalFrame->set('SFactive', (int) $db->getValue('active'));
-        $portalFrame->set('SFsuccess', (int) $db->getValue('success'));
-        $portalFrame->set('SFfatalError', (int) $db->getValue('fatalError'));
-        $portalFrame->set('SFsoftError', (int) $db->getValue('temporalError'));
+        $db2 = new Db();
+        while (! $db->EOF) {
         
-        // Check new batch status
-        if ($batch->get('State') == Batch::INTIME) {
-            if (!$portalFrame->get('StartTime')) {
-                $portalFrame->set('StartTime', time());
+            // Calculate stats from portal frame batchs
+            $sql = 'SELECT b.IdPortalFrame, SUM(b.ServerFramesTotal) AS total, ';
+            $sql .= 'SUM(IF (b.State != \'' . Batch::STOPPED . '\' AND s.ActiveForPumping = 1, b.ServerFramesPending, 0)) AS pending, ';
+            $sql .= 'SUM(IF (b.State != \'' . Batch::STOPPED . '\' AND s.ActiveForPumping = 1, b.ServerFramesActive, 0)) AS active, ';
+            $sql .= 'SUM(IF (b.State != \'' . Batch::STOPPED . '\' AND s.ActiveForPumping = 0, b.ServerFramesActive + b.ServerFramesPending, 0))';
+            $sql .= ' AS sfdelayed, ';
+            $sql .= 'SUM(IF (b.State = \'' . Batch::STOPPED . '\', b.ServerFramesPending + b.ServerFramesActive, 0)) AS stopped, ';
+            $sql .= 'SUM(b.ServerFramesSuccess) as success, SUM(b.ServerFramesFatalError) AS fatalError, ';
+            $sql .= 'SUM(b.ServerFramesTemporalError) AS temporalError ';
+            $sql .= 'FROM Batchs b INNER JOIN Servers s ON (s.IdServer = b.ServerId) ';
+            $sql .= 'WHERE b.IdPortalFrame = ' . $db->GetValue('id') . ' ';
+            $sql .= 'GROUP BY b.IdPortalFrame';
+            if ($db2->Query($sql) === false) {
+                throw new \Exception('Could not obtain the portal frames in order to update the frames stats');
             }
-            $portalFrame->set('Status', self::STATUS_ACTIVE);
-        }
-        if ($batch->get('State') == Batch::CLOSING) {
-            $portalFrame->set('Status', self::STATUS_ACTIVE);
-        }
-        elseif ($batch->get('State') == Batch::ENDED or $batch->get('State') == Batch::NOFRAMES) {
             
-            // If all batchs minus one (current batch state is not saved) for this portal frame are ended, the status will change to Ended
-            if (self::num_batchs_in_pool($portalFrame->get('id')) == 0) {
-                $portalFrame->set('Status', self::STATUS_ENDED);
-                $portalFrame->set('EndTime', time());
+            // For each portal frame, update it stats and status
+            $portalFrame = new static((int) $db->getValue('id'));
+            if (!$portalFrame->get('id')) {
+                throw new \Exception('Cannot load a portal frame with ID: ' . $db->getValue('id'));
             }
+            $portalFrame->set('SFtotal', (int) $db2->getValue('total'));
+            $portalFrame->set('SFpending', (int) $db2->getValue('pending'));
+            $portalFrame->set('SFactive', (int) $db2->getValue('active'));
+            $portalFrame->set('SFsuccess', (int) $db2->getValue('success'));
+            $portalFrame->set('SFfatalError', (int) $db2->getValue('fatalError'));
+            $portalFrame->set('SFsoftError', (int) $db2->getValue('temporalError'));
+            $portalFrame->set('SFstopped', (int) $db2->getValue('stopped'));
+            $portalFrame->set('SFdelayed', (int) $db2->getValue('sfdelayed'));
+            
+            // Check new batch status
+            if ($batch) {
+                if ($batch->get('State') == Batch::INTIME) {
+                    if (!$portalFrame->get('StartTime')) {
+                        $portalFrame->set('StartTime', time());
+                    }
+                    $portalFrame->set('Status', self::STATUS_ACTIVE);
+                }
+                if ($batch->get('State') == Batch::CLOSING) {
+                    $portalFrame->set('Status', self::STATUS_ACTIVE);
+                }
+                elseif ($batch->get('State') == Batch::ENDED or $batch->get('State') == Batch::NOFRAMES) {
+                    
+                    /*
+                    If all batchs minus one (current batch state is not saved) for this portal frame are ended, the status 
+                    will change to Ended
+                    */
+                    if (self::num_batchs_in_pool($portalFrame->get('id')) == 0) {
+                        $portalFrame->set('Status', self::STATUS_ENDED);
+                        $portalFrame->set('EndTime', time());
+                    }
+                }
+                $portalFrame->set('StatusTime', time());
+            }
+            if ($portalFrame->update() === false) {
+                throw new \Exception('Cannot update the portal frame with ID: ' . $portalFrame->get('id'));
+            }
+            $db->Next();
         }
-        $portalFrame->set('StatusTime', time());
-        if ($portalFrame->update() === false) {
-            throw new \Exception('Cannot update the portal frame with ID: ' . $portalFrame->get('id'));
-        }
+        // Logger::debug('Call to update portal frames');
     }
     
     /**
@@ -159,7 +211,7 @@ class PortalFrames extends PortalFramesOrm
         if ($idNodeGenerator) {
             $query .= ' AND IdNodeGenerator = ' . $idNodeGenerator;
         }
-        $query .= ' ORDER BY SFsoftError, id DESC';
+        $query .= ' ORDER BY ScheduledTime, StartTime, id';
         $db = new Db();
         if ($db->Query($query) === false) {
             throw new \Exception('Could not obtain a list of portal frames with ' . $state);
@@ -234,6 +286,30 @@ class PortalFrames extends PortalFramesOrm
             $db->Next();
         }
         return $servers;
+    }
+    
+    public function getBatchs() : array
+    {
+        $sql = 'SELECT IdBatch, State, ServerId FROM Batchs';
+        $sql .= ' WHERE IdPortalFrame = ' . $this->id . ' AND ServerFramesTotal > 0';
+        $sql .= ' ORDER BY Priority DESC, Cycles, Type = \'' . Batch::TYPE_DOWN . '\' DESC, IdBatch';
+        $db = new Db();
+        if ($db->Query($sql) === false) {
+            throw new \Exception('Could not obtain the batchs for the portal frame ' . $this->id);
+        }
+        $batchs = [];
+        $delayedServers = Server::getDelayed();
+        while (! $db->EOF) {
+            if (isset($delayedServers[$db->GetValue('ServerId')]) and ($db->GetValue('State') == Batch::INTIME 
+                    or $db->GetValue('State') == Batch::CLOSING)) {
+                $state = Batch::DELAYED;
+            } else {
+                $state = $db->GetValue('State');
+            }
+            $batchs[$db->GetValue('IdBatch')] = $state;
+            $db->Next();
+        }
+        return $batchs;
     }
     
     /**

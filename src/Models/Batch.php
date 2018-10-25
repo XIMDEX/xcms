@@ -49,13 +49,14 @@ class Batch extends BatchsOrm
     const CLOSING = 'Closing';
     const NOFRAMES = 'NoFrames';
     const STOPPED = 'Stopped';
+    const DELAYED = 'Delayed';
     const PRIORITY_TYPE_DOWN = 0.9;
 
     public function set($attribute, $value)
     {
         if ($attribute == 'State') {
-            if ($this->get('IdBatch')) {
-                $from = $this->get('IdBatch');
+            if ($this->get('State')) {
+                $from = $this->get('State');
             } else {
                 $from = '- Nothing -';
             }

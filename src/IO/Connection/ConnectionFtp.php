@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -48,7 +48,7 @@ class ConnectionFtp extends Connector implements IConnector
      * @param port int
      * @return boolean
      */
-    public function connect($host = NULL, $port = NULL)
+    public function connect($host = null, $port = null)
     {
         if (empty($port)) {
             $port = $this->defaultPort;
@@ -97,7 +97,7 @@ class ConnectionFtp extends Connector implements IConnector
             Logger::error("Disconnect from FTP server {$this->host}:{$this->port} failed");
             return false;
         }
-        $this->handler = NULL;
+        $this->handler = null;
         Logger::info("Disconnect from FTP server {$this->host}:{$this->port} correctly");
         return true;
     }
@@ -123,7 +123,7 @@ class ConnectionFtp extends Connector implements IConnector
      */
     public function login($username = null, $password = null)
     {
-        if ($this->handler === NULL) { // False in handler means connection error
+        if ($this->handler === null) { // False in handler means connection error
             if (!$this->connect()) {
                 return false;
             }
@@ -294,9 +294,9 @@ class ConnectionFtp extends Connector implements IConnector
     public function rename($renameFrom, $renameTo)
     {
         try {
-            $renameFrom=str_replace('//','/',$renameFrom);
-            $renameTo=str_replace('//','/',$renameTo);
-            if($this->isFile($renameTo)){
+            $renameFrom = str_replace('//', '/', $renameFrom);
+            $renameTo = str_replace('//', '/', $renameTo);
+            if ($this->isFile($renameTo)){
                 ftp_delete($this->handler, $renameTo);
             }
             return ftp_rename($this->handler, $renameFrom, $renameTo);
@@ -331,7 +331,7 @@ class ConnectionFtp extends Connector implements IConnector
      * @param mode int
      * @return mixed
      */
-    public function ls($dir, $mode = NULL)
+    public function ls($dir, $mode = null)
     {
         return ftp_nlist($this->handler, $dir);
     }

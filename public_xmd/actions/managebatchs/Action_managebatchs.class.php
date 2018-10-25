@@ -212,48 +212,74 @@ class Action_managebatchs extends ActionAbstract
     private static function portalInfo(PortalFrames $portal, int & $order) : array
     {
         $node = new Node($portal->get('IdNodeGenerator'));
+        
+        // User name
         if (!$portal->get('CreatedBy')) {
             $userName = 'Unknown';
         } else {
             $user = new User($portal->get('CreatedBy'));
             $userName = $user->getRealName() . ' (' . $user->getLogin() . ')';
         }
-        $report = [
-            'idPortal' => $portal->get('id'),
-            'idNodeGenerator' => $node->GetID(),
-            'nodeName' => $node->GetNodeName(),
-            'userName' => $userName,
-            'version' => $portal->get('Version'),
-            'creationTime' => Date::formatTime($portal->get('CreationTime')),
-            'type' => $portal->get('PublishingType'),
-            'statusTime' => Date::formatTime($portal->get('StatusTime')),
-            'startTime' => Date::formatTime($portal->get('StartTime')),
-            'endTime' => Date::formatTime($portal->get('EndTime')),
-            'total' => $portal->get('SFtotal'),
-            'active' => (string) ($portal->get('SFactive') - $portal->get('SFsoftError')),
-            'pending' => $portal->get('SFpending'),
-            'success' => $portal->get('SFsuccess'),
-            'fatal' => $portal->get('SFfatalError'),
-            'soft' => $portal->get('SFsoftError'),
-            'order' => $order++
-        ];
+        
+        // Servers stats
+        $servers = [];
+        $total = $pending = $active = $delayed = $success = $fatal = $soft = $stopped = 0;
         foreach ($portal->getServers() as $id => $name) {
             $server = new Server($id);
             $stats = $server->stats($portal->get('id'));
-            $report['servers'][] = [
+            $servers[] = [
                 'id' => $id, 
                 'name' => $name,
                 'total' => $stats['total'],
-                'active' => $stats['active'] - $stats['soft'],
+                'active' => $stats['active'],
+                'delayed' => $stats['delayed'],
                 'pending' => $stats['pending'],
                 'success' => $stats['success'],
                 'fatal' => $stats['fatal'],
                 'soft' => $stats['soft'],
+                'stopped' => $stats['stopped'],
                 'activeForPumping' => (int) $server->get('ActiveForPumping'),
                 'delayedTime' => Date::formatTime($server->get('DelayTimeToEnableForPumping')),
                 'enabled' => (int) $server->get('Enabled')
             ];
+            $total += $stats['total'];
+            $pending += $stats['pending'];
+            $active += $stats['active'];
+            $delayed += $stats['delayed'];
+            $success += $stats['success'];
+            $fatal += $stats['fatal'];
+            $soft += $stats['soft'];
+            $stopped += $stats['stopped'];
         }
+        
+        // Portal frames information
+        $report = [
+            'idPortal' => (int) $portal->get('id'),
+            'idNodeGenerator' => (int) $node->GetID(),
+            'nodeName' => $node->GetNodeName(),
+            'userName' => $userName,
+            'version' => (int) $portal->get('Version'),
+            'creationTime' => Date::formatTime($portal->get('CreationTime')),
+            'type' => $portal->get('PublishingType'),
+            'scheduledTime' => Date::formatTime($portal->get('ScheduledTime')),
+            'statusTime' => Date::formatTime($portal->get('StatusTime')),
+            'startTime' => Date::formatTime($portal->get('StartTime')),
+            'endTime' => Date::formatTime($portal->get('EndTime')),
+            'total' => $total,
+            'active' => $active,
+            'delayed' => $delayed,
+            'pending' => $pending,
+            'success' => $success,
+            'fatal' => $fatal,
+            'soft' => $soft,
+            'stopped' => $stopped,
+            'order' => (int) $order++
+        ];
+        $report['servers'] = $servers;
+        
+        // Batchs list
+        $report['batchs'] = $portal->getBatchs();
+        $report['totalBatchs'] = count($report['batchs']);
         return $report;
     }
 }

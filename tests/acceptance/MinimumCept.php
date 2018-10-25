@@ -11,9 +11,9 @@ if (file_exists('data/previos/css/default.css'))
     $I->deleteFile('data/previos/css/default.css');
     $I->deleteDir('data/previos/css');
 }
-if (file_exists('data/previos/picasso-iden-idHTML.html'))
+if (file_exists('data/previos/en/picasso.html'))
 {
-    $I->deleteFile('data/previos/picasso-iden-idHTML.html');
+    $I->deleteFile('data/previos/en/picasso.html');
 }
 
 $I->wantTo('Ensure that installation works');
@@ -31,7 +31,7 @@ $I->fillField('root_pass', 'ximdex');
 $I->fillField('name', 'ximdex');
 $I->click('Create Database');
 
-$I->wait(25);
+$I->wait(30);
 $I->see('Set the password for this admin user');
 $I->fillField('pass', 'ximdex');
 $I->fillField('pass2', 'ximdex');
@@ -71,15 +71,15 @@ while (!fileExistAndIsNotEmpty('data/previos/css/default.css') && $count < 45)
     $count++;
 }
 $I->seeFileFound('default.css','data/previos/css');
-while (!fileExistAndIsNotEmpty('data/previos/picasso-iden-idHTML.html') && $count < 45)
+while (!fileExistAndIsNotEmpty('data/previos/en/picasso.html') && $count < 45)
 {
     sleep(2);
     $count++;
 }
-$I->seeFileFound('picasso-iden-idHTML.html','data/previos');
+$I->seeFileFound('picasso.html','data/previos/en');
 
 // Check HTML content from published file
-$I->amOnPage('/data/previos/picasso-iden-idHTML.html');
+$I->amOnPage('/data/previos/en/picasso.html');
 $I->see('Picasso', '.header');
 $I->see('Cubism', '.header');
 
@@ -96,15 +96,15 @@ $I->click('#all_levels');
 $I->click('Expire', '#angular-content');
 $I->waitForText('successfully sent to expire', 3, '#angular-content');
 $count = 0;
-while (fileExistAndIsNotEmpty('data/previos/picasso-iden-idHTML.html') && $count < 45)
+while (fileExistAndIsNotEmpty('data/previos/en/picasso.html') && $count < 45)
 {
     sleep(2);
     $count++;
 }
-$I->dontSeeFileFound('picasso-iden-idHTML.html','data/previos');
+$I->dontSeeFileFound('picasso.html','data/previos/en');
 
 // Load the XML editor
-$I->amOnPage('?action=xmleditor2&method=load&nodeid=10094');
+$I->amOnPage('?action=xmleditor2&method=load&nodeid=10095');
 $I->wait(3);
 $I->switchToIframe('kupu-editor');
 $I->see('Early periods');
@@ -123,19 +123,19 @@ function open_picasso_menu(AcceptanceTester $I)
 {
     $I->waitForText('Hello ximdex, first time here?', 3, '#tourcontrols');
     $I->click('#canceltour');
-	$I->click('//span[contains(text(),\'Picasso\')]', '#angular-tree');
-	reload($I);
-	$I->waitForText('Picasso_Server', 3, '#angular-tree');
-	$I->click('//span[contains(text(),\'Picasso_Server\')]', '#angular-tree');
-	reload($I);
-	$I->waitForText('documents', 3, '#angular-tree');
-	$I->click('//span[contains(text(),\'documents\')]', '#angular-tree');
-	reload($I);
-	$I->waitForText('picasso', 3, '#angular-tree');
-	$I->click('//span[contains(text(),\'picasso\')]', '#angular-tree');
-	reload($I);
-	$I->waitForText('picasso-iden', 3, '#angular-tree');
-
-	// Open picasso-iden menu
-	$I->click('//*[@id="angular-tree"]/div[1]/div[2]/div/div[1]/div[2]/xim-tree/div/div[2]/ul/li/tree-node/span/ul/li/span/ul/li[5]/span/ul/li[3]/span/ul/li[1]/span/ul/li/span/div/span[2]');
+    $I->click('//span[contains(text(),\'Picasso\')]', '#angular-tree');
+    reload($I);
+    $I->waitForText('Picasso_Server', 3, '#angular-tree');
+    $I->click('//span[contains(text(),\'Picasso_Server\')]', '#angular-tree');
+    reload($I);
+    $I->waitForText('documents', 3, '#angular-tree');
+    $I->click('//span[contains(text(),\'documents\')]', '#angular-tree');
+    reload($I);
+    $I->waitForText('picasso', 3, '#angular-tree');
+    $I->click('//span[contains(text(),\'picasso\')]', '#angular-tree');
+    reload($I);
+    $I->waitForText('picasso-iden', 3, '#angular-tree');
+    
+    // Open picasso-iden menu
+    $I->click('//*[@id="angular-tree"]/div[1]/div[2]/div/div[1]/div[2]/xim-tree/div/div[2]/ul/li/tree-node/span/ul/li/span/ul/li[5]/span/ul/li[3]/span/ul/li[1]/span/ul/li/span/div/span[2]');
 }
