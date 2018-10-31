@@ -199,7 +199,8 @@ class DexPumper
 		$fileName = $this->serverFrame->get('FileName');
 		$remotePath = $this->serverFrame->get('RemotePath');
 		$this->info('ServerFrame ' . $IdSync . ' DUE2OUT: Delete file from server');
-		$targetFile = $initialDirectory . $remotePath . '/' . $fileName;
+		$targetFolder = $initialDirectory . $remotePath;
+		$targetFile = $targetFolder . '/' . $fileName;
 		if (! $this->connection->isFile($targetFile)) {
 		    
 		    // If the file has been deleted, does not nothing and return a soft ok
@@ -207,7 +208,9 @@ class DexPumper
 		} else {
     		$removing = $this->taskDelete($targetFile);
     		if ($removing) {
-    		    Logger::info('Successfusly removed file ' . $fileName . ' (ID: ' . $this->serverFrame->get('NodeId') . ') from server', true);
+    		    Logger::info('Successfusly removed file ' . $fileName . ' (ID: ' . $this->serverFrame->get('NodeId') 
+    		        . ') from server ' . $this->connection->getServer()->get('Description'), true);
+    		    // TODO ajlucena $this->connection->rm($targetFolder);
     		}
 		}
 		$this->updateTask($removing, ServerFrame::OUT);

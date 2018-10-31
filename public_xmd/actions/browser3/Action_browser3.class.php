@@ -186,6 +186,9 @@ class Action_browser3 extends ActionAbstract
         $this->addJs('/assets/js/angular/directives/ximAssocNodes.js');
         $this->addActionJs('XMainCtrl.js');
         $this->addActionJs('controller.js');
+        
+        // fontawesome.com
+        $this->addCss('/assets/style/fontawesome/css/all.min.css');
 
         // Splash
         define("REMOTE_WELCOME", STATS_SERVER . "/stats/getsplash.php");

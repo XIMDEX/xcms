@@ -26,10 +26,14 @@
 angular.module("ximdex.main.controller").controller("ximPUBLISHtools", [
 	'$scope', '$http', '$interval', 'xUrlHelper', function($scope, $http, $interval, xUrlHelper) {
     
+	var MAX_INTERVAL = 90000;	// 90 seconds to refresh report
+    var INCREMENT_INTERVAL = 1.1;
+    var INIT_INTERVAL = 5000;
+    
 	$scope.json = [];
-    $scope.searchObj = {};
     $scope.urlParams = {};
     $scope.showing = [];
+    var interval = null;
     
     $scope.init = function(params, initLoop) {
       $scope.urlParams = {
@@ -46,7 +50,22 @@ angular.module("ximdex.main.controller").controller("ximPUBLISHtools", [
     
     $scope.getFrameListLoop = function() {
       $scope.requestFrameList();
-      $scope.getFrameListInterval = $interval($scope.requestFrameList, 5000);
+      if (!interval) {
+    	  
+    	  // Initial interval value
+    	  interval = INIT_INTERVAL;
+      } else {
+    	  
+    	  // Increment
+    	  $interval *= INCREMENT_INTERVAL;
+      }
+      if (interval > MAX_INTERVAL) {
+    	  interval = MAX_INTERVAL;
+      }
+      
+      console.log('Interval: ' + interval);
+      
+      $scope.getFrameListInterval = $interval($scope.requestFrameList, interval);
     };
     
     $scope.requestFrameList = function() {
@@ -62,89 +81,55 @@ angular.module("ximdex.main.controller").controller("ximPUBLISHtools", [
       $interval.cancel($scope.getFrameListInterval);
     });
     
-    $scope.stopBatch = function(batchId) {
-      var url;
-      $scope.urlParams.method = 'stopBatch';
-      url = xUrlHelper.getAction($scope.urlParams);
-      $http({
-        method: 'POST',
-        url: url,
-        data: $.param({
-          frm_deactivate_batch: 'yes',
-          frm_id_batch: batchId
-        }),
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }
-      });
+    // Portal play
+    $scope.playPortal = function(portalId) {
+    	var params = $.param({
+            	id: portalId
+            });
+    	callMethod('playPortal', params);
+    	interval = null;
     };
     
-    $scope.startBatch = function(batchId) {
-      var url;
-      $scope.urlParams.method = 'startBatch';
-      url = xUrlHelper.getAction($scope.urlParams);
-      $http({
-        method: 'POST',
-        url: url,
-        data: $.param({
-          frm_activate_batch: 'yes',
-          frm_id_batch: batchId
-        }),
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }
-      });
+    // Portal pause
+    $scope.pausePortal = function(portalId) {
+    	var params = $.param({
+            	id: portalId
+            });
+    	callMethod('pausePortal', params);
+    	interval = null;
     };
     
-    $scope.incBatchPriority = function(batchId) {
-      var url;
-      $scope.urlParams.method = 'changeBatchPriority';
-      url = xUrlHelper.getAction($scope.urlParams);
-      $http({
-        method: 'POST',
-        url: url,
-        data: $.param({
-          frm_increase: 'yes',
-          frm_id_batch: batchId
-        }),
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }
-      });
+    // Servers restart
+    $scope.restartServer = function(serverId) {
+    	var params = $.param({
+            	id: serverId
+            });
+    	callMethod('restartServer', params);
+    	interval = null;
     };
     
-    $scope.decBatchPriority = function(batchId) {
-      var url;
-      $scope.urlParams.method = 'changeBatchPriority';
-      url = xUrlHelper.getAction($scope.urlParams);
-      $http({
-        method: 'POST',
-        url: url,
-        data: $.param({
-          frm_decrease: 'yes',
-          frm_id_batch: batchId
-        }),
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }
-      });
+    // Batchs restart
+    $scope.restartBatchs = function(portalId) {
+    	var params = $.param({
+            	id: portalId
+            });
+    	callMethod('restartBatchs', params);
+    	interval = null;
     };
     
-    $scope.timeFromNow = function(date) {
-      var hours, min, thatDate, thisDate, timeDiffMSecs, timeDiffSecs, timeStr;
-      if (date == null) {
-        return;
-      }
-      thatDate = new Date(parseInt(date) * 1000);
-      thisDate = new Date();
-      timeDiffMSecs = Math.abs(thatDate.getTime() - thisDate.getTime());
-      timeDiffSecs = timeDiffMSecs / 1000;
-      hours = Math.floor(timeDiffSecs / 3600);
-      timeDiffSecs = timeDiffSecs % 3600;
-      min = Math.floor(timeDiffSecs / 60);
-      timeDiffSecs = Math.floor(timeDiffSecs % 60);
-      return timeStr = hours + 'H ' + min + 'm ' + timeDiffSecs + 's';
-    };
-    return;
+    function callMethod(method, params)
+    {
+    	var url;
+        $scope.urlParams.method = method;
+        url = xUrlHelper.getAction($scope.urlParams);
+        $http({
+          method: 'POST',
+          url: url,
+          data: params,
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          }
+        });
+    }
   }
 ]);

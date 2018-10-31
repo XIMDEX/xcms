@@ -23,61 +23,6 @@
  *  @version $Revision$
  */
 
-function doPrioritizeSubmit(idBatch)
-{
-	setFilterValues();
-	document.getElementById('frm_id_batch').value = idBatch;
-	document.getElementById('frm_prioritize_batch').value = 'yes';
-	document.frm_batchs.submit();
-}
-
-function doDeprioritizeSubmit(idBatch)
-{
-	setFilterValues();
-	document.getElementById('frm_id_batch').value = idBatch;
-	document.getElementById('frm_deprioritize_batch').value = 'yes';
-	document.frm_batchs.submit();
-}
-
-function doDeactivateSubmit(idBatch)
-{
-	setFilterValues();
-	document.getElementById('frm_id_batch').value = idBatch;
-	document.getElementById('frm_deactivate_batch').value = 'yes';
-	document.frm_batchs.submit();
-}
-
-function doActivateSubmit(idBatch)
-{
-	setFilterValues();
-	document.getElementById('frm_id_batch').value = idBatch;
-	document.getElementById('frm_activate_batch').value = 'yes';
-	document.frm_batchs.submit();
-}
-
-function doFilterSubmit()
-{
-	setFilterValues();
-	document.frm_batchs.submit();
-}
-
-function setFilterValues()
-{
-	document.getElementById('frm_filter_state_batch').value = document.getElementById('frm_select_filter_state_batch').value;
-	document.getElementById('frm_filter_active_batch').value = document.getElementById('frm_select_filter_active_batch').value;
-	if (document.getElementById('update').value != 'Click Aqui...') {
-		document.getElementById('frm_filter_up_date').value = document.getElementById('update').value + ' '
-			+ document.getElementById('uphour').value + ':'
-			+ document.getElementById('upmin').value;
-	}
-	if (document.getElementById('downdate').value != 'Click Aqui...') {
-		document.getElementById('frm_filter_down_date').value = document.getElementById('downdate').value + ' '
-			+ document.getElementById('downhour').value + ':'
-			+ document.getElementById('downmin').value;
-	}
-	document.getElementById('frm_filter_batch').value = 'yes';
-}
-
 function showOrHideContent(divId, name, extra)
 {
 	if (isVisibleAnyContents(name) && extra == 'all') {

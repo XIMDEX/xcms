@@ -114,51 +114,155 @@
 .media .type-icon {
 	width: 14pt;
 	margin-right: 2pt;
-	vertical-align: middle;
+	font-size: 10pt;
+}
+
+.media .Up-icon {
+	color: #045FB4;
+}
+
+.media .Down-icon {
+    color: #B40431;
 }
 
 .media .servers {
-	margin-top: 15pt;
-	margin-botom : 25pt;
-	width: 100%;
+	margin-top: 5pt;
 	padding: 0;
+	width: 97%;
+    float: right;
+}
+
+.media .batchs {
+	margin-top: 2pt;
+    padding: 0;
+    width: 97%;
+    float: right;
 }
 
 .media .server {
 	margin-bottom: 0;
 }
 
+.media .portal-disabled {
+    color: red;
+    float: right;
+    margin-top: 5pt;
+    font-size: 9pt;
+}
+
 .media .server-disabled-by-user {
 	color: #8A2908;
 	float: right;
-	margin-top: 3pt;
+	margin-top: 2pt;
+	font-size: 8pt;
 }
 
 .media .server-disabled {
     color: red;
     float: right;
-    margin-top: 3pt;
-    font-size: 9pt;
+    margin-top: 2pt;
+    margin-right: 20pt;
+    font-size: 8pt;
 }
 
 .media .server-details-link {
-	color: #666;
-	font-size: 11pt;
+	color: #045FB4;
+	font-size: 9pt;
 }
 
 .media .server-detail {
-	font-size: 10pt;
+	font-size: 9pt;
+	margin-top: 1pt;
 }
 
 .media .portal-server-info {
-	margin-bottom: 2pt;
+	margin-bottom: 1pt;
+	font-size: 9pt;
 }
 
-.media .server-sep {
-	margin-top: 20pt;
-	width: 40%;
+.media .portal-frames-sep {
+	clear: left;
 }
 
 .media .batch-info {
-    font-size: 10pt;
+	margin-bottom: 1pt;
+    font-size: 9pt;
+}
+
+.media .portal-detail {
+    width: calc(100% - 20pt);
+    float: left;
+}
+
+.media .portal-buttons {
+    width: 14pt;
+    float: right;
+    text-align: right;
+}
+
+.media .portal-server-detail {
+	width: calc(100% - 20pt);
+    float: left;
+}
+
+.media .portal-server-progress {
+    height: 15px;
+}
+
+.media .portal-batchs-detail {
+    width: calc(100% - 20pt);
+    float: left;
+}
+
+.media .portal-batchs-progress {
+    height: 15px;
+}
+
+.media .portal-server-buttons {
+	width: 20pt;
+	float: right;
+	text-align: right;
+}
+
+.media .portal-batchs-buttons {
+    width: 20pt;
+    float: right;
+    text-align: right;
+}
+
+.media .server-progress-bar {
+	line-height: 15px;
+	font-size: 8pt;
+}
+
+.media .batch-progress-bar {
+    line-height: 15px;
+    font-size: 8pt;
+}
+
+.media .play {
+	color: #088A29;
+    cursor: pointer;
+}
+
+.media .reload {
+    color: #084B8A;
+    cursor: pointer;
+}
+
+.media .pause {
+    color: #DF7401;
+    cursor: pointer;
+}
+
+.media .portal-button {
+    font-size: 13pt; 
+}
+
+.media .server-button {
+    font-size: 10pt; 
+}
+
+.media .batchs-button {
+    font-size: 10pt; 
 }

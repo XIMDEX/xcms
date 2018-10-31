@@ -77,7 +77,6 @@ class ServerFrame extends ServerFramesOrm
     public $finalStatusOk;
     public $finalStatusLimbo;
     public $finalStatusFailed;
-    private $publishingReport;
 
     public function __construct($id = 0)
     {
@@ -103,7 +102,6 @@ class ServerFrame extends ServerFramesOrm
             ServerFrame::CANCELLED
         );
         $this->finalStatus = array_merge($this->finalStatusOk, $this->finalStatusLimbo, $this->finalStatusFailed);
-        $this->publishingReport = new PublishingReport();
         parent::__construct($id);
     }
     
@@ -113,37 +111,6 @@ class ServerFrame extends ServerFramesOrm
             Logger::info('Changing state for server frame: ' . $this->get('IdSync') . ' from ' . $this->get('State') . ' to ' . $value);
         }
         parent::set($attribute, $value);
-    }
-
-    public function update()
-    {
-        if ($this->get('IdNodeFrame') > 0) {
-            $nodeFrame = new NodeFrame($this->get('IdNodeFrame'));
-            $channelFrames = new ChannelFrame($this->get('IdChannelFrame'));
-            $idChannel = $channelFrames->get('ChannelId');
-            $searchFields = array(
-                'IdNode' => $nodeFrame->get('NodeId'),
-                'IdSyncServer' => $this->get('IdServer'),
-                'IdChannel' => $idChannel
-            );
-            $updateFields = array(
-                'State' => $this->get('State'),
-                'Progress' => $this->publishingReport->progressTable[$this->get('State')]
-            );
-            if ($this->get('ErrorLevel')) {
-                $updateFields['State'] = 'Error';
-                $updateFields['Progress'] = '100';
-            } else if ($this->get('FileSize') == "0" && in_array($this->get('State'), [
-                ServerFrame::DUE2IN,
-                ServerFrame::PUMPED,
-                ServerFrame::IN
-            ])) {
-                $updateFields['State'] = 'Warning';
-                $updateFields['Progress'] = '100';
-            }
-            $this->publishingReport->updateReportByField($updateFields, $searchFields);
-        }
-        return parent::update();
     }
 
     /**
@@ -188,15 +155,6 @@ class ServerFrame extends ServerFramesOrm
         parent::add();
         $idServerFrame = $this->get('IdSync');
         if ($idServerFrame > 0) {
-            $batch = new Batch($idBatchUp);
-            $idSection = $batch->get('IdNodeGenerator');
-            $sectionNode = new Node($idSection);
-            $idParentServer = $sectionNode->getServer();
-            $idPortalFrame = $batch->get('IdPortalFrame');
-            $channelFrames = new ChannelFrame($idChannelFrame);
-            $idChannel = $channelFrames->get('ChannelId');
-            $this->publishingReport->create($idSection, $nodeId, empty($idChannel) ? null : $idChannel, $server, $idPortalFrame
-                , time(), ServerFrame::PENDING, '20', $name, $path, $idServerFrame, $idBatchUp, $idParentServer);
             return $idServerFrame;
         }
         Logger::error('Creating server frame');

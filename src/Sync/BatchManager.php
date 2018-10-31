@@ -249,20 +249,12 @@ class BatchManager
             }
             $batch = new Batch();
             $relBatchsServers[$serverId] = $batch->create($timeUp, Batch::TYPE_UP, $nodeGenerator, $priority, $serverId, $idBatchDown, 
-                $idPortalFrame, $userId, 0);
+                $idPortalFrame, $userId);
             Logger::info('Creating up batch: ' . $timeUp);
             Logger::info(sprintf('[Generator %s]: Creating up batch with id %s', $nodeGenerator, $relBatchsServers[$serverId]));
         }
         $frames = $this->buildFrames($timeUp, $timeDown, $docsToPublish, $docsToUpVersion, $versions, $subversions, $server
             , $relBatchsServers, $statStart, $statTotal, $nodeGenerator, $idPortalFrame, $noCache);
-        foreach ($relBatchsServers as $id) {
-            $batch = new Batch($id);
-            if (!$batch->get('IdBatch')) {
-                continue;
-            }
-            $batch->set('Playing', 1);
-            $batch->update();
-        }
         if (isset($batch) and $batch->get('IdBatch')) {
             
             // Update portal frame information
@@ -272,10 +264,17 @@ class BatchManager
                 Logger::error($e->getMessage());
             }
         }
+        
+        // Remove poral frames if there is not frames generated
+        $portal = new PortalFrames($idPortalFrame);
         if (!$frames and $idPortalFrame) {
-            $portal = new PortalFrames($idPortalFrame);
             Logger::warning('Deleting portal frame without related batchs');
             $portal->delete();
+        } else {
+        
+            // Play related portal frames
+            $portal->set('Playing', true);
+            $portal->update();
         }
         return $frames;
     }
@@ -728,8 +727,8 @@ class BatchManager
         } else {
             $now = $testTime;
         }
-        $query = "SELECT IdBatch FROM Batchs WHERE Playing = 1 AND State = '" . Batch::WAITING 
-            . "' AND TimeOn < $now AND ServerId IN (" . implode(',', $servers) . ')';
+        $query = 'SELECT b.IdBatch FROM Batchs b INNER JOIN PortalFrames pf ON pf.id = b.IdPortalFrame AND pf.Playing IS TRUE' 
+            . ' WHERE b.State = \'' . Batch::WAITING . '\' AND b.TimeOn < ' . $now . ' AND b.ServerId IN (' . implode(',', $servers) . ')';
         if ($dbObj->Query($query) === false) {
         	return false;
         }
@@ -762,10 +761,11 @@ class BatchManager
         }
         $dbObj = new Db();
         $sql = 'SELECT b.IdBatch, b.Type, b.IdNodeGenerator, b.Cycles, b.ServerFramesTotal FROM Batchs b';
+        $sql .= ' INNER JOIN PortalFrames pf ON pf.id = b.IdPortalFrame AND pf.Playing IS TRUE';
         $sql .= ' INNER JOIN ServerFrames sf ON ((sf.IdBatchUp = b.IdBatch AND sf.State IN (\'' . ServerFrame::PENDING . '\'
             , \'' . ServerFrame::DUE2IN_ . '\')) OR (sf.IdBatchDown = b.IdBatch AND sf.State IN (\'' . ServerFrame::PENDING . '\'
             , \'' . ServerFrame::DUE2OUT_ . '\', \'' . ServerFrame::IN . '\')))';
-        $sql .= ' WHERE b.Playing = 1 AND b.State = \'' . Batch::INTIME . '\' AND b.ServerFramesTotal > 0';
+        $sql .= ' WHERE b.State = \'' . Batch::INTIME . '\' AND b.ServerFramesTotal > 0';
         if ($serversEnabled) {
             $sql .= ' AND b.ServerId IN (' . implode(', ', $serversEnabled) . ')';
         }
@@ -822,21 +822,6 @@ class BatchManager
             return false;
         }
         return true;
-    }
-
-    /**
-     * Sets the field Playing for all Batchs
-     * 
-     * @param int playingValue
-     */
-    public function setAllBatchsPlayingOrUnplaying($playingValue)
-    {
-        $dbObj = new Db();
-        $sql = "UPDATE Batchs set Playing = '$playingValue'";
-        $dbObj->Execute($sql);
-        if ($dbObj->numRows > 0) {
-            Logger::info('Setting batchs to ' . ($playingValue == 1) ? 'playing' : 'unplaying');
-        }
     }
 
     /**

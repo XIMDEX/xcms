@@ -388,6 +388,10 @@ class SynchroFacade
             } catch (\Exception $e) {
                 Logger::error($e->getMessage());
             }
+            
+            // Play the portal
+            $portal->set('Playing', true);
+            $portal->update();
         } else {
             
             // We have a portal type Down frame without batchs type Down
@@ -400,7 +404,6 @@ class SynchroFacade
     {
         $batch->set('ServerFramesTotal', $numFrames);
         $batch->set('ServerFramesPending', $numFrames);
-        $batch->set('Playing', 1);
         $numFrames = 0;
         return $batch->update();
     }

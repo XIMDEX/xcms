@@ -27,83 +27,110 @@
 <div class="action_content ximPUBLISHtools" ng-controller="ximPUBLISHtools">
     <ul class="media-list">
         <li class="media" ng-repeat="frames in json | orderBy: 'order' as filtered_json track by frames.idPortal">
-            <!--
-            <p class="status-buttons">
-                <a class="pull-right" href="#" ng-hide="frames.Finished">
-                    <button type="button" class="increase-btn icon-new btn-unlabel-rounded" 
-                            ng-click="incBatchPriority(frames.IdBatch)"></button>
-                    <button type="button" class="decrease-btn icon-new btn-unlabel-rounded" 
-                            ng-click="decBatchPriority(frames.IdBatch)"></button>
-                    <button type="button" class="pause-btn icon-new btn-unlabel-rounded" ng-click="stopBatch(frames.IdBatch)" 
-                            ng-if="!frames.BatchState"></button>
-                    <button type="button" class="resume-btn icon-new btn-unlabel-rounded" ng-click="startBatch(frames.IdBatch)" 
-                            ng-if="!frames.BatchState"></button>
-                </a>
-            </p>
-            -->
             <div class="media-body">
                 <h4 class="media-heading">
-                    <span>
+                    <span class="type-icon">
+                        <i class="fas fa-cloud-#/ frames.type == 'Up' ? 'upload' : 'download' /#-alt #/ frames.type /#-icon" 
+                                title="Publishing type: #/ frames.type /#"></i>
+                        <!--
                         <img src="actions/managebatchs/resources/icons/#/ frames.type == 'Up' ? 'upload' : 'download' /#.png" 
                                 title="Publishing type: #/ frames.type /#" class="type-icon" />
+                        -->
                     </span>
-                    <span title="Node ID: #/ frames.idNodeGenerator /#
-                        &#013;User: #/ frames.userName /#
-                        &#013;Created at: #/ frames.creationTime /#
-                        &#013;Started at: #/ frames.startTime /#
-                        &#013;Status time: #/ frames.statusTime /#
-                        &#013;Ended at: #/ frames.endTime /#"><strong>#/ frames.nodeName /#</strong>
+                    <span title="Node ID: #/ frames.idNodeGenerator /# 
+                        &#013;User: #/ frames.userName /# 
+                        &#013;Created: #/ frames.creationTime /#
+                        &#013;Active: #/ frames.publishingTime /# 
+                        &#013;Started: #/ frames.startTime /# 
+                        &#013;Visited: #/ frames.statusTime /# 
+                        &#013;Ended: #/ frames.endTime /#"><strong>#/ frames.nodeName /#</strong>
                     </span>
                     <small> (#/ frames.total /# documents)</small>
-                    <small ng-if="!frames.startTime"><span class="icon clock"></span> Created at: #/ frames.creationTime /#</small>
+                    <small ng-if="!frames.startTime"><span class="icon clock"></span> Active: #/ frames.publishingTime /#</small>
                     <small ng-if="frames.startTime && !frames.statusTime">
-                        <span class="icon clock"></span> Started at: #/ frames.startTime /#
+                        <span class="icon clock"></span> Started: #/ frames.startTime /#
                     </small>
-                    <small ng-if="!frames.endTime"><span class="icon clock"></span> Status time: #/ frames.statusTime /#</small>
-                    <small ng-if="frames.endTime"><span class="icon clock"></span> Ended at: #/ frames.endTime /#</small>
+                    <small ng-if="!frames.endTime"><span class="icon clock"></span> Visited: #/ frames.statusTime /#</small>
+                    <small ng-if="frames.endTime"><span class="icon clock"></span> Ended: #/ frames.endTime /#</small>
+                    <small ng-if="frames.delayed > 0" 
+                            title="This portal frames has some servers delayed. Clic on show server details for more information about it" 
+                            class="portal-disabled">&nbsp; Servers delayed !</small>
+                    <small ng-if="frames.stopped > 0" 
+                            title="This portal frames has some stopped batchs. Clic on show server details for more information about it" 
+                            class="portal-disabled">&nbsp; Batchs stopped !</small>
                 </h4>
-                <div class="progress">
-                    {include file="actions/managebatchs/template/Smarty/framesProgressBar.tpl"}
+	            <div class="portal-detail">
+	                <div class="progress">
+	                    {assign var="progress_bar_class" value=""}
+	                    {include file="actions/managebatchs/template/Smarty/framesProgressBar.tpl"}
+	                </div>
+	            </div>
+                <div class="portal-buttons">
+                    <span class="portal-button play" ng-click="playPortal(frames.idPortal)" ng-if="!frames.playing && !frames.endTime" 
+                            title="Play this portal frames"><i class="far fa-play-circle"></i></span>
+                    <span class="portal-button pause" ng-click="pausePortal(frames.idPortal)" ng-if="frames.playing && !frames.endTime" 
+                            title="Pause this portal frames"><i class="far fa-pause-circle"></i></span>
                 </div>
+                <div class="portal-frames-sep"></div>
                 <div class="server-details-link">
                     <a class="aespecial" ng-if="!showing[frames.idPortal]" href="#" role="button" 
-                            ng-click="showing[frames.idPortal] = !showing[frames.idPortal]">[+] Show servers details</a>
+                            ng-click="showing[frames.idPortal] = !showing[frames.idPortal]">Show servers details</a>
                     <a class="aespecial" ng-if="showing[frames.idPortal]" href="#" role="button" 
-                            ng-click="showing[frames.idPortal] = !showing[frames.idPortal]">[-] Hide servers details</a>
+                            ng-click="showing[frames.idPortal] = !showing[frames.idPortal]">Hide servers details</a>
                 </div>
+                
+                <!-- Servers -->
                 <ul ng-init="initShowing(frames.idPortal)" ng-show="showing[frames.idPortal]" class="media-list servers">
                     <li ng-if="frames.total > 0" class="media server-detail" 
                             ng-repeat="frames in frames.servers | orderBy: 'name' as filtered_json track by frames.id">
                         <h4 class="media-heading portal-server-info">
                             Server #/ frames.name /# <small>(#/ frames.total /# documents)</small> 
-                            <small ng-if="frames.stopped > 0" title="This server has some stopped batchs" class="server-disabled">
-                                ( ! ) Batchs stopped</small>
                             <small ng-if="!frames.enabled" class="server-disabled-by-user">Disabled by user</small>
                             <small ng-if="frames.enabled && !frames.activeForPumping" class="server-disabled">
                                 <span ng-if="!frames.delayedTime" title="Server disabled permanently due to connection errors">
-                                    ( ! ) Disabled</span>
+                                    Disabled !</span>
                                 <span ng-if="frames.delayedTime" title="Server delayed to restart later due to connection errors">
-                                    ( ! ) Delayed until #/ frames.delayedTime /#</span>
+                                    Delayed until #/ frames.delayedTime /# !</span>
                             </small>
                         </h4>
-                        <div class="progress server">
-                            {include file="actions/managebatchs/template/Smarty/framesProgressBar.tpl"}
+                        <div class="portal-server-detail">
+	                        <div class="progress server portal-server-progress">
+	                            {assign var="progress_bar_class" value="server-progress-bar"}
+	                            {include file="actions/managebatchs/template/Smarty/framesProgressBar.tpl"}
+	                        </div>
+                        </div>
+                        <div class="portal-server-buttons">
+                            <span class="server-button reload" ng-click="restartServer(frames.id)" ng-if="frames.delayed > 0" 
+                                    title="Restart all delayed batches for server #/ frames.name /#"><i class="fas fa-sync-alt"></i></span>
                         </div>
                     </li>
                 </ul>
-                <ul ng-init="initShowing(frames.idPortal)" ng-show="showing[frames.idPortal]" class="media-list servers">
+                
+                <!--  Batchs -->
+                <ul ng-init="initShowing(frames.idPortal)" ng-show="showing[frames.idPortal]" class="media-list batchs">
                     <li class="media">
                         <h4 class="media-heading batch-info">
                             BATCHS LIST
                             <small> (#/ frames.totalBatchs /#  batchs)</small>
+                            <small ng-if="frames.stopped > 0" title="This portal frames has some stopped batchs" 
+                                    class="server-disabled">Batchs stopped !</small>
                         </h4>
-                        <div class="progress server">
-                            {include file="actions/managebatchs/template/Smarty/batchsProgressBar.tpl"}
+                        <div class="portal-batchs-detail">
+	                        <div class="progress server portal-batchs-progress">
+	                            {include file="actions/managebatchs/template/Smarty/batchsProgressBar.tpl"}
+	                        </div>
+                        </div>
+                        <div class="portal-batchs-buttons">
+                            <span class="batchs-button reload" ng-click="restartBatchs(frames.idPortal)" ng-if="frames.stopped > 0" 
+                                    title="Restart all stopped batches for #/ frames.name /# portal"><i class="fas fa-sync-alt"></i></span>
                         </div>
                     </li>
                 </ul>
-                <hr class="server-sep" ng-init="initShowing(frames.idPortal)" ng-show="showing[frames.idPortal]" />
+                <div class="portal-frames-sep" ng-init="initShowing(frames.idPortal)" ng-show="showing[frames.idPortal]"></div>
             </div>
         </li>
     </ul>
 </div>
+<form name="frm_batchs" method="post" action="#">
+    <input type="hidden" name="id" id="frm" value="" />
+</form>

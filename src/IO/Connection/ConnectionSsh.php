@@ -73,7 +73,7 @@ class ConnectionSsh extends Connector implements IConnector
      */
     public function disconnect()
     {
-        return (boolean)$this->netSFTP->disconnect();
+        return (bool) $this->netSFTP->disconnect();
     }
 
     /**

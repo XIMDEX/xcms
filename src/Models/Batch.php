@@ -75,16 +75,13 @@ class Batch extends BatchsOrm
      *  @param int idBatchDown
      *  @param int idPortalFrame
      *  @param int $userId
-     *  @param int $playing
      *  @return int|null
      */
-    public function create($timeOn, $type, $idNodeGenerator, $priority, $serverId, $idBatchDown = null, $idPortalFrame = null
-        , $userId = null, int $playing = 1)
+    public function create($timeOn, $type, $idNodeGenerator, $priority, $serverId, $idBatchDown = null, $idPortalFrame = null, $userId = null)
     {
         setlocale(LC_NUMERIC, 'C');
         $this->set('TimeOn', $timeOn);
         $this->set('State', Batch::WAITING);
-        $this->set('Playing', $playing);
         $this->set('Type', $type);
         $this->set('IdBatchDown', $idBatchDown);
         $this->set('IdNodeGenerator', $idNodeGenerator);
@@ -98,26 +95,6 @@ class Batch extends BatchsOrm
         }
         Logger::error("Batch type $type for node $idNodeGenerator");
         return null;
-    }
-
-    /**
-     *  Gets the field IdBatch from Batchs table which matching the value of nodeId
-     *  
-     *  @param int nodeId
-     *  @return array
-     */
-    public function getAllBatchsFromNode($nodeId)
-    {
-        $dbObj = new \Ximdex\Runtime\Db();
-        $time = time();
-        $dbObj->Query("SELECT IdBatch FROM Batchs WHERE Type = '" . Batch::TYPE_UP . "' AND TimeOn > $time AND IdNodeGenerator = $nodeId
-						ORDER BY TimeOn ASC");
-        $arrayBatchs = array();
-        while (!$dbObj->EOF) {
-            $arrayBatchs[] = $dbObj->GetValue("IdBatch");
-            $dbObj->Next();
-        }
-        return $arrayBatchs;
     }
 
     /**
@@ -182,69 +159,6 @@ class Batch extends BatchsOrm
     }
 
     /**
-     *  Gets the Batchs which matching some criteria
-     *  
-     *  @param string stateCriteria
-     *  @param int activeCriteria
-     *  @param int downCriteria
-     *  @param int limitCriteria
-     *  @param int idNodeGenerator
-     *  @param int dateUpCriteria
-     *  @param int dateDownCriteria
-     *  @return array|false
-     */
-    public function getAllBatchs($stateCriteria = null, $activeCriteria = null, $downCriteria = null, $limitCriteria = null
-        , $idNodeGenerator = null, $dateUpCriteria = 0, $dateDownCriteria = 0)
-    {
-        $dbObj = new \Ximdex\Runtime\Db();
-        $where = " WHERE 1 ";
-        if ($stateCriteria) {
-            if ($stateCriteria != "Any") {
-                $where .= " AND State = '" . $stateCriteria . "'";
-            }
-        }
-        if ($activeCriteria !== null) {
-            if ($activeCriteria != "Any") {
-                $where .= " AND Playing = '" . $activeCriteria . "'";
-            }
-        }
-        if ($downCriteria !== null) {
-            if ($downCriteria != "Any") {
-                $where .= " AND Type = '" . Batch::TYPE_UP . "'";
-            }
-        }
-        if ($idNodeGenerator !== null) {
-            $where .= " AND IdNodeGenerator = " . $idNodeGenerator;
-        }
-        if ($dateUpCriteria != 0) {
-            $where .= " AND TimeOn >= " . $dateUpCriteria;
-        }
-        if ($dateDownCriteria != 0) {
-            $where .= " AND TimeOn <= " . $dateDownCriteria;
-        }
-        if ($limitCriteria !== null) {
-            $limit = " LIMIT 0," . $limitCriteria;
-        }
-        $query = "SELECT IdBatch, TimeOn, State, Playing, Type, IdBatchDown, " .
-                "IdNodeGenerator FROM Batchs" . $where . " ORDER BY Priority DESC, TimeOn DESC" .
-                $limit;
-        $dbObj->Query($query);
-        if (!$dbObj->numErr) {
-            if ($dbObj->numRows > 0) {
-                $arrayBatchs = array();
-                while (!$dbObj->EOF) {
-                    $arrayBatchs[] = $dbObj->row;
-                    $dbObj->Next();
-                }
-                return $arrayBatchs;
-            }
-        } else {
-            Logger::info("Error en BD: " . $dbObj->desErr);
-        }
-        return false;
-    }
-
-    /**
      *  Gets the Batch of type Down associated to a Batch of type Up
      *  
      *  @param int batchId
@@ -281,30 +195,6 @@ class Batch extends BatchsOrm
             return null;
         }
         return $result;
-    }
-
-    /**
-     *  Sets the field Playing for a Batch
-     *  
-     *  @param int idBatch
-     *  @param int playingValue
-     *  return bool
-     */
-    public function setBatchPlayingOrUnplaying($idBatch, $playingValue = 1)
-    {
-        if ($playingValue == 2) {
-            $playingValue = ($this->get('Playing') == 0) ? 1 : 0;
-        }
-        parent::__construct($idBatch);
-        $this->set('Playing', $playingValue);
-        $updatedRows = parent::update();
-        if ($updatedRows == 1) {
-            Logger::info("Setting playing Value = $playingValue for batch $idBatch");
-            return true;
-        } else {
-            Logger::error('Cannot set playing value for batch' . $idBatch);
-        }
-        return false;
     }
 
     /**
@@ -347,15 +237,31 @@ class Batch extends BatchsOrm
      * @param string $state
      * @return int
      */
-    public static function countBatchsInProcess(string $state = Batch::INTIME)
+    public static function countBatchsInProcess(string $state = Batch::INTIME) : int
     {
-        $sql = 'SELECT COUNT(IdBatch) AS total FROM Batchs WHERE TimeOn < UNIX_TIMESTAMP() AND State = \'' . $state 
-            . '\' AND ServerFramesTotal > 0 AND Playing = 1';
+        $sql = 'SELECT COUNT(b.IdBatch) AS total FROM Batchs b INNER JOIN PortalFrames pf ON pf.id = b.IdPortalFrame AND pf.Playing IS TRUE'
+            . ' WHERE b.TimeOn < UNIX_TIMESTAMP() AND b.State = \'' . $state . '\' AND b.ServerFramesTotal > 0';
         $dbObj = new Db();
         $dbObj->Query($sql);
         if ($dbObj->numRows) {
-            return $dbObj->GetValue('total');
+            return (int) $dbObj->GetValue('total');
         }
         return 0;
+    }
+    
+    /**
+     * Update all batchs for a given portal frame to intime status and zero cycles
+     * 
+     * @param int $portalId
+     * @return boolean
+     */
+    public static function restart(int $portalId) : ?bool 
+    {
+        if (!$portalId) {
+            return null;
+        }
+        $sql = 'UPDATE `Batchs` SET State = \'' . Batch::INTIME . '\', Cycles = 0 WHERE State = \'Stopped\' AND IdPortalFrame = ' . $portalId;
+        $db = new Db();
+        return $db->Execute($sql);
     }
 }

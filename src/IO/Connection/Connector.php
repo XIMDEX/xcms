@@ -76,4 +76,9 @@ class Connector
     {
         $this->isFile = $isFile;
     }
+    
+    public function getServer() : ?Server
+    {
+        return $this->server;
+    }
 }

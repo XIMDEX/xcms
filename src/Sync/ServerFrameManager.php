@@ -276,8 +276,8 @@ class ServerFrameManager
                 $sql = 'SELECT ServerFrames.IdSync, ServerFrames.IdBatchUp, ServerFrames.IdBatchDown 
                     FROM ServerFrames, Pumpers WHERE RIGHT(ServerFrames.State, 1) = \'_\'
 					AND ServerFrames.PumperId = ' . $pumperId . ' AND Pumpers.IdServer IN (' . $servers . ')
-					AND ServerFrames.PumperId = Pumpers.PumperId ORDER BY ServerFrames.ErrorLevel ASC,
-					ServerFrames.Retry ASC LIMIT ' . $numTasksForPumping;
+					AND ServerFrames.PumperId = Pumpers.PumperId ORDER BY ServerFrames.ErrorLevel,
+					ServerFrames.Retry LIMIT ' . $numTasksForPumping;
                 $dbObj->Query($sql);
                 if ($dbObj->numRows > 0) {
                     $timer = new \Ximdex\Utils\Timer();
@@ -365,9 +365,11 @@ class ServerFrameManager
     {
         $dbObj = new \Ximdex\Runtime\Db();
         $servers = implode(',', $activeAndEnabledServers);
-        $query = 'SELECT DISTINCT(PumperId) FROM ServerFrames WHERE State IN (\'' . ServerFrame::DUE2IN . '\', \'' . 
+        $query = 'SELECT DISTINCT(sf.PumperId) FROM ServerFrames sf INNER JOIN PortalFrames pf ON pf.id = sf.IdPortalFrame 
+            AND pf.Playing IS TRUE 
+            WHERE sf.State IN (\'' . ServerFrame::DUE2IN . '\', \'' . 
             ServerFrame::DUE2OUT . '\', \'' . ServerFrame::DUE2IN_ . '\', \'' . ServerFrame::DUE2OUT_ . '\', \'' . 
-            ServerFrame::PUMPED . '\') AND IdServer IN (' . $servers . ') AND NOT PumperId IS NULL';
+            ServerFrame::PUMPED . '\') AND sf.IdServer IN (' . $servers . ') AND NOT sf.PumperId IS NULL';
         $dbObj->Query($query);
         if ($dbObj->numErr) {
             return null;

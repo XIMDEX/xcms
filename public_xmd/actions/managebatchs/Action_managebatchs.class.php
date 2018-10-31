@@ -25,24 +25,18 @@
  *  @version $Revision$
  */
 
-use Ximdex\Logger;
 use Ximdex\Models\User;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\App;
 use Ximdex\Utils\Date;
-use Ximdex\Utils\FilterParameters;
-use Ximdex\Utils\Serializer;
 use Ximdex\Runtime\Session;
-use Ximdex\Models\Node;
 use Ximdex\Models\Batch;
+use Ximdex\Models\Node;
 use Ximdex\Models\Server;
-use Ximdex\Sync\BatchManager;
 use Ximdex\Models\PortalFrames;
 
 class Action_managebatchs extends ActionAbstract
-{
-    private $params = array();
-    
+{   
     /**
      * Main method: shows initial form
      */
@@ -80,22 +74,11 @@ class Action_managebatchs extends ActionAbstract
         $this->render($arrValores, null, 'default-3.0.tpl');
     }
 
-    private function filterParams()
-    {
-        $this->params['idNode'] = FilterParameters::filterInteger($this->request->getParam('nodeid'));
-        $this->params['idBatch'] = FilterParameters::filterInteger($this->request->getParam('idBatch'));
-        $this->params['dateFrom'] = FilterParameters::filterInteger($this->request->getParam('dateFrom'));
-        $this->params['dateTo'] = FilterParameters::filterInteger($this->request->getParam('dateTo'));
-        $this->params['finished'] = FilterParameters::filterBool($this->request->getParam('finished'));
-        $this->params['searchText'] = FilterParameters::filterText($this->request->getParam('searchText'));
-    }
-
     /**
      * Return a JSON code with a list of portal frames with its servers
      */
     public function getFrameList()
     {
-        $this->filterParams();
         $report = [];
         try {
             $order = 1;
@@ -116,90 +99,75 @@ class Action_managebatchs extends ActionAbstract
         }
         $this->sendJSON($report);
     }
-
-    public function stopBatch()
+    
+    public function pausePortal()
     {
-        $success = false;
-        if (!$_POST['frm_deactivate_batch'] !== 'yes') {
-            if (!$this->doDeactivateBatch($_POST['frm_id_batch'])) {
-                $errorMsg = 'An error occurred while deactivate batch.';
-            } else {
-                $success = true;
-                if ($_POST['frm_id_batch'] == 'all') {
-                    $errorMsg = 'All batches have been deactivated.';
-                } else {
-                    $errorMsg = 'Batch #' . $_POST['frm_id_batch'] . ' has been deactivated.';
-                }
-            }
-            Logger::info("PUBLISH results: $errorMsg");
+        $id = $this->request->getParam('id');
+        if (! $id) {
+            $this->sendJSON(['success' => false, 'error' => 'No portal frame ID given']);
         }
-        $json = Serializer::encode(SZR_JSON, array('success' => $success));
-        $this->render(array('result' => $json), null, 'only_template.tpl');
-    }
-
-    public function startBatch()
-    {
-        if (!$_POST['frm_activate_batch'] !== 'yes') {
-            if (!$this->doActivateBatch($_POST['frm_id_batch'])) {
-                Logger::error('An error occurred while activating batch ' . $_POST['frm_id_batch']);
-            } else {
-                if ($_POST['frm_id_batch'] == 'all') {
-                    Logger::info('All batches have been activated');
-                } else {
-                    Logger::info('Batch #' . $_POST['frm_id_batch'] . ' has been activated');
-                }
+        $portal = new PortalFrames($id);
+        if (!$portal->get('id')) {
+            $this->sendJSON(['success' => false, 'error' => 'Portal frame with ID ' . $id . ' does not exist']);
+        }
+        if ($portal->get('Playing')) {
+            $portal->set('Playing', 0);
+            if ($portal->update() === false) {
+                $this->sendJSON(['success' => false, 'error' => 'Cannot pause the portal frame']);
             }
         }
-        $json = Serializer::encode(SZR_JSON, array('success' => true));
-        $this->render(array('result' => $json), null, 'only_template.tpl');
+        $this->sendJSON(['success' => true]);
     }
-
-    public function changeBatchPriority()
+    
+    public function playPortal()
     {
-        $mode = 'up';
-        if (isset($_POST['frm_increase']) && $_POST['frm_increase'] == 'yes') {
-            Logger::info('PUBLISH pre doPrioritizeBatch');
-        } elseif (isset($_POST['frm_decrease']) && $_POST['frm_decrease'] == 'yes') {
-            Logger::info('PUBLISH pre doUnprioritizeBatch');
-            $mode = 'down';
+        $id = $this->request->getParam('id');
+        if (! $id) {
+            $this->sendJSON(['success' => false, 'error' => 'No portal frame ID given']);
         }
-        if (!$this->doPrioritizeBatch($_POST['frm_id_batch'], $mode)) {
-            Logger::error("An error occurred while changing batch priority ($mode)");
-        } else {
-            Logger::info('Batch #' . $_POST['frm_id_batch'] . " priority has been changed ($mode)");
+        $portal = new PortalFrames($id);
+        if (!$portal->get('id')) {
+            $this->sendJSON(['success' => false, 'error' => 'Portal frame with ID ' . $id . ' does not exist']);
         }
-        $json = Serializer::encode(SZR_JSON, array('success' => true));
-        $this->render(array('result' => $json), null, 'only_template.tpl');
+        if (! $portal->get('Playing')) {
+            $portal->set('Playing', 1);
+            if ($portal->update() === false) {
+                $this->sendJSON(['success' => false, 'error' => 'Cannot play the portal frame']);
+            }
+        }
+        $this->sendJSON(['success' => true]);
     }
-
-    private function doActivateBatch($idBatch)
+    
+    public function restartBatchs()
     {
-        if ($idBatch != 'all') {
-            $batchObj = new Batch();
-            return $batchObj->setBatchPlayingOrUnplaying($idBatch, 1);
-        } else {
-            $batchManagerObj = new BatchManager();
-            return $batchManagerObj->setAllBatchsPlayingOrUnplaying(1);
+        $id = $this->request->getParam('id');
+        if (! $id) {
+            $this->sendJSON(['success' => false, 'error' => 'No portal frame ID given']);
         }
-    }
-
-    private function doDeactivateBatch($idBatch)
-    {
-        if ($idBatch !== 'all') {
-            $idBatch = (int) $idBatch;
-            $batchObj = new Batch();
-            return $batchObj->setBatchPlayingOrUnplaying($idBatch, 0);
-        } else {
-            $batchManagerObj = new BatchManager();
-            return $batchManagerObj->setAllBatchsPlayingOrUnplaying(0);
+        $portal = new PortalFrames($id);
+        if (!$portal->get('id')) {
+            $this->sendJSON(['success' => false, 'error' => 'Portal frame with ID ' . $id . ' does not exist']);
         }
+        if (Batch::restart($id) === false) {
+            $this->sendJSON(['success' => false, 'error' => 'Error restarting portal batchs']);
+        }
+        $this->sendJSON(['success' => true]);
     }
-
-    private function doPrioritizeBatch($idBatch, $mode = 'up')
+    
+    public function restartServer()
     {
-        $batch = new Batch();
-        $hasChanged = $batch->prioritizeBatch($idBatch, $mode);
-        return $hasChanged;
+        $id = $this->request->getParam('id');
+        if (! $id) {
+            $this->sendJSON(['success' => false, 'error' => 'No server ID given']);
+        }
+        $server = new Server($id);
+        if (!$server->get('IdServer')) {
+            $this->sendJSON(['success' => false, 'error' => 'Server with ID ' . $id . ' does not exist']);
+        }
+        if ($server->enableForPumping() === false) {
+            $this->sendJSON(['success' => false, 'error' => 'Error restarting the server ' . $server->get('Description')]);
+        }
+        $this->sendJSON(['success' => true]);
     }
     
     /**
@@ -273,6 +241,7 @@ class Action_managebatchs extends ActionAbstract
             'fatal' => $fatal,
             'soft' => $soft,
             'stopped' => $stopped,
+            'playing' => (int) $portal->get('Playing'),
             'order' => (int) $order++
         ];
         $report['servers'] = $servers;

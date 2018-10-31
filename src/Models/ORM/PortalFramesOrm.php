@@ -52,7 +52,8 @@ class PortalFramesOrm extends GenericData
         'SFfatalError' => array('type' => 'int(12)', 'not_null' => 'true'),
         'SFsoftError' => array('type' => 'int(12)', 'not_null' => 'true'),
         'SFdelayed' => array('type' => 'int(12)', 'not_null' => 'true'),
-        'SFstopped' => array('type' => 'int(12)', 'not_null' => 'true')
+        'SFstopped' => array('type' => 'int(12)', 'not_null' => 'true'),
+        'Playing' => array('type' => 'tinyint(1)', 'not_null' => 'true'),
     );
     public $_uniqueConstraints = array();
     public $_indexes = array('id');
@@ -74,4 +75,5 @@ class PortalFramesOrm extends GenericData
     public $SFsoftError = 0;
     public $SFdelayed = 0;
     public $SFstopped = 0;
+    public $Playing = 0;
 }
