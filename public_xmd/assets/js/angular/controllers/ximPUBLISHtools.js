@@ -26,98 +26,106 @@
 angular.module("ximdex.main.controller").controller("ximPUBLISHtools", [
 	'$scope', '$http', '$interval', 'xUrlHelper', function($scope, $http, $interval, xUrlHelper) {
     
-	var MAX_INTERVAL = 90000;	// 90 seconds to refresh report
+    // 90 seconds maximum to refresh report
+	var MAX_INTERVAL = 90000;
+	
+	// 5 seconds for interval of refresh data
+    var INIT_INTERVAL = 2000;
     var INCREMENT_INTERVAL = 1.1;
-    var INIT_INTERVAL = 5000;
     
 	$scope.json = [];
     $scope.urlParams = {};
     $scope.showing = [];
-    var interval = null;
-    
-    $scope.init = function(params, initLoop) {
-      $scope.urlParams = {
-        action: params.action.command,
-        id: params.nodes[0],
-        module: params.action.module
-      };
-      if (initLoop) {
-        $scope.getFrameListLoop();
-      }
-    };
-    
+    $scope.interval = null;
     $scope.getFrameListInterval = null;
     
-    $scope.getFrameListLoop = function() {
-      $scope.requestFrameList();
-      if (!interval) {
-    	  
-    	  // Initial interval value
-    	  interval = INIT_INTERVAL;
-      } else {
-    	  
-    	  // Increment
-    	  $interval *= INCREMENT_INTERVAL;
-      }
-      if (interval > MAX_INTERVAL) {
-    	  interval = MAX_INTERVAL;
-      }
-      
-      console.log('Interval: ' + interval);
-      
-      $scope.getFrameListInterval = $interval($scope.requestFrameList, interval);
+    $scope.init = function(params, initLoop)
+    {
+    	$scope.urlParams = {
+    			action: params.action.command,
+    			id: params.nodes[0],
+    			module: params.action.module
+    	};
+    	if (initLoop) {
+    		$scope.getFrameListLoop();
+    	}
     };
     
-    $scope.requestFrameList = function() {
-      var url;
-      $scope.urlParams.method = 'getFrameList';
-      url = xUrlHelper.getAction($scope.urlParams);
-      $http.get(url).success(function(data) {
-        $scope.json = data;
-      });
+    $scope.getFrameListLoop = function()
+    {
+    	$scope.interval = null;
+    	$scope.requestFrameList();
     };
     
-    $scope.$on("$destroy", function() {
-      $interval.cancel($scope.getFrameListInterval);
+    $scope.requestFrameList = function()
+    {
+    	$scope.urlParams.method = 'getFrameList';
+    	var url = xUrlHelper.getAction($scope.urlParams);
+    	$http.get(url).success(function(data) {
+    		$scope.json = data;
+    	});
+    	
+    	// Increment interval
+    	if (! $scope.interval) {
+    		
+    		// Reset interval
+    		$scope.interval = INIT_INTERVAL;
+    	} else {
+	    	$scope.interval = Math.round($scope.interval * INCREMENT_INTERVAL);
+			if ($scope.interval > MAX_INTERVAL) {
+				$scope.interval = MAX_INTERVAL;
+			}
+    	}
+    	$interval.cancel($scope.getFrameListInterval);
+    	$scope.getFrameListInterval = $interval($scope.requestFrameList, $scope.interval);
+    };
+    
+    $scope.$on("$destroy", function()
+    {
+    	$interval.cancel($scope.getFrameListInterval);
     });
     
     // Portal play
-    $scope.playPortal = function(portalId) {
+    $scope.playPortal = function(portalId)
+    {
     	var params = $.param({
             	id: portalId
             });
-    	callMethod('playPortal', params);
-    	interval = null;
+    	$scope.callMethod('playPortal', params);
+    	$scope.getFrameListLoop();
     };
     
     // Portal pause
-    $scope.pausePortal = function(portalId) {
+    $scope.pausePortal = function(portalId)
+    {
     	var params = $.param({
             	id: portalId
             });
-    	callMethod('pausePortal', params);
-    	interval = null;
+    	$scope.callMethod('pausePortal', params);
+    	$scope.getFrameListLoop();
     };
     
     // Servers restart
-    $scope.restartServer = function(serverId) {
+    $scope.restartServer = function(serverId)
+    {
     	var params = $.param({
             	id: serverId
             });
-    	callMethod('restartServer', params);
-    	interval = null;
+    	$scope.callMethod('restartServer', params);
+    	$scope.getFrameListLoop();
     };
     
     // Batchs restart
-    $scope.restartBatchs = function(portalId) {
+    $scope.restartBatchs = function(portalId)
+    {
     	var params = $.param({
             	id: portalId
             });
-    	callMethod('restartBatchs', params);
-    	interval = null;
+    	$scope.callMethod('restartBatchs', params);
+    	$scope.getFrameListLoop();
     };
     
-    function callMethod(method, params)
+    $scope.callMethod = function(method, params)
     {
     	var url;
         $scope.urlParams.method = method;

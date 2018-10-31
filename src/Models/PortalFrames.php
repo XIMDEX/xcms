@@ -211,7 +211,7 @@ class PortalFrames extends PortalFramesOrm
         if ($idNodeGenerator) {
             $query .= ' AND IdNodeGenerator = ' . $idNodeGenerator;
         }
-        $query .= ' ORDER BY ScheduledTime, StartTime, id';
+        $query .= ' ORDER BY ScheduledTime DESC, StartTime DESC, id';
         $db = new Db();
         if ($db->Query($query) === false) {
             throw new \Exception('Could not obtain a list of portal frames with ' . $state);

@@ -195,7 +195,7 @@
 }
 
 .media .portal-buttons {
-    width: 14pt;
+    width: 20pt;
     float: right;
     text-align: right;
 }
@@ -256,7 +256,7 @@
 }
 
 .media .portal-button {
-    font-size: 13pt; 
+    font-size: 14pt; 
 }
 
 .media .server-button {
@@ -265,4 +265,12 @@
 
 .media .batchs-button {
     font-size: 10pt; 
+}
+
+.media .check-icon {
+	color: #0B615E;
+}
+
+.media .exclamation-icon {
+    color: #610B0B;
 }

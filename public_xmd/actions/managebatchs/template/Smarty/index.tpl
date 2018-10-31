@@ -30,7 +30,7 @@
             <div class="media-body">
                 <h4 class="media-heading">
                     <span class="type-icon">
-                        <i class="fas fa-cloud-#/ frames.type == 'Up' ? 'upload' : 'download' /#-alt #/ frames.type /#-icon" 
+                        <i class="fas fa-#/ frames.type == 'Up' ? 'upload' : 'download' /# #/ frames.type /#-icon" 
                                 title="Publishing type: #/ frames.type /#"></i>
                         <!--
                         <img src="actions/managebatchs/resources/icons/#/ frames.type == 'Up' ? 'upload' : 'download' /#.png" 
@@ -70,6 +70,10 @@
                             title="Play this portal frames"><i class="far fa-play-circle"></i></span>
                     <span class="portal-button pause" ng-click="pausePortal(frames.idPortal)" ng-if="frames.playing && !frames.endTime" 
                             title="Pause this portal frames"><i class="far fa-pause-circle"></i></span>
+                    <span class="portal-button" ng-if="frames.endTime">
+                        <span class="exclamation-icon" ng-if="frames.fatal > 0"><i class="fas fa-exclamation-circle"></i></span>
+                        <span class="check-icon" ng-if="!frames.fatal"><i class="fas fa-check-circle"></i></span>
+                    </span>
                 </div>
                 <div class="portal-frames-sep"></div>
                 <div class="server-details-link">
@@ -131,6 +135,6 @@
         </li>
     </ul>
 </div>
-<form name="frm_batchs" method="post" action="#">
+<form name="frm_batchs" method="post" action="">
     <input type="hidden" name="id" id="frm" value="" />
 </form>
