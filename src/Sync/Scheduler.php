@@ -153,7 +153,7 @@ class Scheduler
 
                     // Pumping
                     $pumperManager->callingPumpers();
-
+                    
                     // Set batchs to a new state and update frames stats
                     $batchManager->setBatchsActiveOrEnded($testTime);
                     

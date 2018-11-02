@@ -262,8 +262,14 @@ class ParsingJsGetText
     public static function parseContent($content)
     {
         $patron = '/_\(\s*([\'"])(.*)(?<!\\\\)\1\s*(\\/[*](.*)[*]\\/)?\s*\)/Usi';
-        $content = preg_replace_callback($patron,
-            create_function('$coincidencias', '$_out = null; eval(\'$_out = \'.$coincidencias[0].";"); return \'"\'.$_out.\'"\';'),
+        $content = preg_replace_callback(
+            $patron,
+            // create_function('$coincidencias', '$_out = null; eval(\'$_out = \'.$coincidencias[0].";"); return \'"\'.$_out.\'"\';'),
+            function ($coincidencias)
+            {
+                $_out = $coincidencias[0];
+                return $_out;
+            },
             $content);
         return $content;
     }

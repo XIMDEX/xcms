@@ -57,6 +57,14 @@ class Connector
     }
     
     /**
+     * @param string $error
+     */
+    public function setError(?string $error) : void
+    {
+        $this->error = $error;
+    }
+    
+    /**
      * @return string
      */
     public function getType() : string

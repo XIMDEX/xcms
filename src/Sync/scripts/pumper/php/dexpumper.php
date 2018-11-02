@@ -166,12 +166,12 @@ class DexPumper
 			$this->info('ServerFrame ' . $IdSync . ' to process');
 			$this->getHostConnection();
 			if ($state_task == ServerFrame::DUE2IN) {
-			    $this->connection->setIsFile(false);
+			    // $this->connection->setIsFile(false);
 			    $this->uploadAsHiddenFile();
 			} elseif ($state_task == ServerFrame::DUE2OUT) {
 				$this->RemoveRemoteFile();
 			} elseif ($state_task == ServerFrame::PUMPED) {
-			    $this->connection->setIsFile(true);
+			    // $this->connection->setIsFile(true);
 				$this->pumpFile();
 			}
 		} // End while(true)
@@ -201,7 +201,7 @@ class DexPumper
 		$this->info('ServerFrame ' . $IdSync . ' DUE2OUT: Delete file from server');
 		$targetFolder = $initialDirectory . $remotePath;
 		$targetFile = $targetFolder . '/' . $fileName;
-		if (! $this->connection->isFile($targetFile)) {
+		if ($this->connection->getType() != Connector::TYPE_API and ! $this->connection->isFile($targetFile)) {
 		    
 		    // If the file has been deleted, does not nothing and return a soft ok
 		    $removing = true;
@@ -290,6 +290,9 @@ class DexPumper
 
 	private function getHostConnection($retry = 0)
 	{
+	    if ($this->connection) {
+	       $this->connection->setError(null);
+	    }
 		$this->updateTimeInPumper();
 		if (is_null($this->connection)) {
 			if (is_null($this->server)) {
@@ -319,7 +322,6 @@ class DexPumper
 			}
 		}
 		if ($this->connection->getError()) {
-		    Logger::error('Problems with the connection: ' . $host);
 		    $this->error($this->connection->getError());
 		    $res = false;
 		}
@@ -340,7 +342,7 @@ class DexPumper
     			    $batchManager = new BatchManager();
 	   		        $batchManager->setBatchsActiveOrEnded(null, null, true, $idBatch);
 			    } else {
-			        Logger::error('Server frame ' . $this->serverFrame->get('IdSync') . ' without batch associated');
+			        $this->error('Server frame ' . $this->serverFrame->get('IdSync') . ' without batch associated');
 			    }
 			}
 			
@@ -442,7 +444,8 @@ class DexPumper
 		    $this->error('Could not rename the target document: ' . $targetFile . ' -> ' . $targetFolder . $newFile);
             return false;
 		}
-		Logger::info('Published: ' . $targetFolder . $newFile . ' (Sync: ' . $idSync . ')', true);
+		Logger::info('Published: ' . $targetFolder . $newFile . ' into server ' . $this->connection->getServer()->get('Description') 
+		    . ' (Sync: ' . $idSync . ')', true);
 		return true;
 	}
 

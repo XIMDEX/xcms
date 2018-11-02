@@ -487,7 +487,7 @@ class HTMLDocumentNode extends AbstractStructuredDocument
 
         $info = static::getInfo($nodeID);
 
-        $hDoc = new HTMLDocumentNode($nodeID);
+        $hDoc = new static($nodeID);
         $docxif = $hDoc->getDocHeader($channel, $info['language'], $info['type'], static::DOCXIF);
 
         // Create XML

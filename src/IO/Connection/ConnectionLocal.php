@@ -270,7 +270,6 @@ class ConnectionLocal extends Connector implements IConnector
 		return $this->copy($localFile, $targetFile, $mode);
 	}
 	
-	//TODO check space
 	private function copy($sourceFile, $targetFile, $mode)
 	{
 		$result = false;
@@ -297,15 +296,12 @@ class ConnectionLocal extends Connector implements IConnector
 		return is_dir($path);
 	}
 	
-	/**
-	 * Checks if the especified path is a file
-	 * 
-	 * @access public 
-	 * @param path string
-	 * @return boolean
-	 */
+    /**
+     * {@inheritDoc}
+     * @see \Ximdex\IO\Connection\IConnector::isFile()
+     */
 	public function isFile($path)
 	{
 		return is_file($path);
-	}	
+	}
 }

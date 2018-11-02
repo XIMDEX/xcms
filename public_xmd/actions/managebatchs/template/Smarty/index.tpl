@@ -40,13 +40,13 @@
                     <span title="Node ID: #/ frames.idNodeGenerator /# 
                         &#013;User: #/ frames.userName /# 
                         &#013;Created: #/ frames.creationTime /#
-                        &#013;Active: #/ frames.publishingTime /# 
+                        &#013;Scheduled: #/ frames.scheduledTime /# 
                         &#013;Started: #/ frames.startTime /# 
                         &#013;Visited: #/ frames.statusTime /# 
                         &#013;Ended: #/ frames.endTime /#"><strong>#/ frames.nodeName /#</strong>
                     </span>
                     <small> (#/ frames.total /# documents)</small>
-                    <small ng-if="!frames.startTime"><span class="icon clock"></span> Active: #/ frames.publishingTime /#</small>
+                    <small ng-if="!frames.startTime"><span class="icon clock"></span> Scheduled: #/ frames.scheduledTime /#</small>
                     <small ng-if="frames.startTime && !frames.statusTime">
                         <span class="icon clock"></span> Started: #/ frames.startTime /#
                     </small>
@@ -82,6 +82,13 @@
                     <a class="aespecial" ng-if="showing[frames.idPortal]" href="#" role="button" 
                             ng-click="showing[frames.idPortal] = !showing[frames.idPortal]">Hide servers details</a>
                 </div>
+                <div class="boost-buttons">
+                    Cycles: #/ frames.visits /# | Success rate: #/ frames.successRate * 100 | number:0 /#% 
+                    <i class="fas fa-rocket boost-icon"></i> x1
+                    <i class="fas fa-rocket boost-icon"></i> x2
+                    <i class="fas fa-rocket boost-icon"></i> x4
+                </div>
+                <div class="portal-frames-sep"></div>
                 
                 <!-- Servers -->
                 <ul ng-init="initShowing(frames.idPortal)" ng-show="showing[frames.idPortal]" class="media-list servers">

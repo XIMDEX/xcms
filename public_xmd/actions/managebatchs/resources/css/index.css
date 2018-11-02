@@ -166,8 +166,17 @@
 }
 
 .media .server-details-link {
-	color: #045FB4;
+	color: #CCC;
 	font-size: 9pt;
+	float: left;
+}
+
+.media .boost-buttons {
+    color: #666;
+    font-size: 9pt;
+    float: right;
+    text-align: right;
+    margin-right: 20pt;
 }
 
 .media .server-detail {
@@ -273,4 +282,8 @@
 
 .media .exclamation-icon {
     color: #610B0B;
+}
+
+.media .boost-icon {
+    margin-left: 5pt;
 }

@@ -745,8 +745,14 @@ class Action_composer extends ActionAbstract
         $m = $this->request->getParam('m');
         $data = Widget::getWidgetconf($wn, $wi, $a, $m);
         $patron = '/_\(\s*([\'"])(.*)(?<!\\\\)\1\s*(\\/[*](.*)[*]\\/)?\s*\)/Usi';
-        $data = preg_replace_callback($patron,
-            create_function('$coincidencias', '$_out = null; eval(\'$_out = \'.$coincidencias[0].";"); return \'"\'.$_out.\'"\';'),
+        $data = preg_replace_callback(
+            $patron,
+            // create_function('$coincidencias', '$_out = null; eval(\'$_out = \'.$coincidencias[0].";"); return \'"\'.$_out.\'"\';'),
+            function ($coincidencias)
+            {
+                $_out = $coincidencias[0];
+                return $_out;
+            },
             $data);
         header('Content-type: text/javascript');
         print($data);

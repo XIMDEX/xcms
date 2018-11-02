@@ -376,11 +376,8 @@ class ConnectionFtp extends Connector implements IConnector
     }
 
     /**
-     * Checks if the especified path is a file
-     *
-     * @access private
-     * @param path string
-     * @return boolean
+     * {@inheritDoc}
+     * @see \Ximdex\IO\Connection\IConnector::isFile()
      */
     public function isFile($path)
     {
@@ -401,8 +398,8 @@ class ConnectionFtp extends Connector implements IConnector
             $folder = '/';
         }
         if ($this->cd($folder)) {
-            $folder=str_replace('//','/',$folder);
-            $file=str_replace('//','/',$file);
+            $folder = str_replace('//','/',$folder);
+            $file = str_replace('//','/',$file);
             if ($this->pwd() == $folder || $this->pwd() . '/' == $folder) {
                 $fileList = ftp_nlist($this->handler, $folder);
                 $isFile = in_array($folder.$file, $fileList);

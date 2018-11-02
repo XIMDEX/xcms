@@ -242,6 +242,8 @@ class Action_managebatchs extends ActionAbstract
             'soft' => $soft,
             'stopped' => $stopped,
             'playing' => (int) $portal->get('Playing'),
+            'successRate' => round($portal->get('SuccessRate'), 2),
+            'visits' => (int) $portal->get('Visits'),
             'order' => (int) $order++
         ];
         $report['servers'] = $servers;

@@ -202,11 +202,8 @@ class ConnectionSolr extends Connector implements IConnector
     }
 
     /**
-     * Checks if the especified path is a file. UNUSED.
-     *
-     * @access public
-     * @param path string
-     * @return boolean
+     * {@inheritDoc}
+     * @see \Ximdex\IO\Connection\IConnector::isFile()
      */
     public function isFile($path)
     {

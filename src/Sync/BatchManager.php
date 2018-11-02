@@ -31,6 +31,7 @@ use Ximdex\Logger;
 use Ximdex\Models\NodesToPublish;
 use Ximdex\Models\PortalFrames;
 use Ximdex\Models\Server;
+use Ximdex\Runtime\App;
 use Ximdex\Runtime\DataFactory;
 use Ximdex\Runtime\Session;
 use Ximdex\Models\Channel;
@@ -760,7 +761,7 @@ class BatchManager
             return [];
         }
         $dbObj = new Db();
-        $sql = 'SELECT b.IdBatch, b.Type, b.IdNodeGenerator, b.Cycles, b.ServerFramesTotal FROM Batchs b';
+        $sql = 'SELECT b.IdBatch, b.Type, b.IdNodeGenerator, b.Cycles, b.ServerFramesTotal, b.IdPortalFrame FROM Batchs b';
         $sql .= ' INNER JOIN PortalFrames pf ON pf.id = b.IdPortalFrame AND pf.Playing IS TRUE';
         $sql .= ' INNER JOIN ServerFrames sf ON ((sf.IdBatchUp = b.IdBatch AND sf.State IN (\'' . ServerFrame::PENDING . '\'
             , \'' . ServerFrame::DUE2IN_ . '\')) OR (sf.IdBatchDown = b.IdBatch AND sf.State IN (\'' . ServerFrame::PENDING . '\'
@@ -769,7 +770,11 @@ class BatchManager
         if ($serversEnabled) {
             $sql .= ' AND b.ServerId IN (' . implode(', ', $serversEnabled) . ')';
         }
-        $sql .= ' ORDER BY b.Priority DESC, b.Cycles, b.Type = \'' . Batch::TYPE_DOWN . '\' DESC, b.IdBatch LIMIT 1';
+        if (App::getValue('SchedulerPriority') == 'portal') {
+            $sql .= ' ORDER BY pf.Cycles, b.Type = \'' . Batch::TYPE_DOWN . '\' DESC, b.IdBatch LIMIT 1';
+        } else {
+            $sql .= ' ORDER BY b.Priority DESC, b.Cycles, b.Type = \'' . Batch::TYPE_DOWN . '\' DESC, b.IdBatch LIMIT 1';
+        }
         if ($dbObj->Query($sql) === false) {
         	return false;
         }
@@ -782,6 +787,10 @@ class BatchManager
         $list['nodegenerator'] = $dbObj->GetValue('IdNodeGenerator');
         $list['cycles'] = $dbObj->GetValue('Cycles');
         $list['totalserverframes'] = $dbObj->GetValue('ServerFramesTotal');
+
+        // Update portal frames cycles
+        $sql = 'UPDATE PortalFrames SET Visits = Visits + 1, Cycles = Cycles + (1 / Boost) WHERE id = ' . $dbObj->GetValue('IdPortalFrame');
+        $dbObj->Execute($sql);
         return $list;
     }
 

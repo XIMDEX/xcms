@@ -150,14 +150,27 @@ class PortalFrames extends PortalFramesOrm
             if (!$portalFrame->get('id')) {
                 throw new \Exception('Cannot load a portal frame with ID: ' . $db->getValue('id'));
             }
+            $sucessFrames = (int) $db2->getValue('success');
+            $fatalErrorFrames = (int) $db2->getValue('fatalError');
+            $temporalErrorFrames = (int) $db2->getValue('temporalError');
+            $stoppedFrames = (int) $db2->getValue('stopped');
+            $delayedFrames = (int) $db2->getValue('sfdelayed');
             $portalFrame->set('SFtotal', (int) $db2->getValue('total'));
             $portalFrame->set('SFpending', (int) $db2->getValue('pending'));
             $portalFrame->set('SFactive', (int) $db2->getValue('active'));
-            $portalFrame->set('SFsuccess', (int) $db2->getValue('success'));
-            $portalFrame->set('SFfatalError', (int) $db2->getValue('fatalError'));
-            $portalFrame->set('SFsoftError', (int) $db2->getValue('temporalError'));
-            $portalFrame->set('SFstopped', (int) $db2->getValue('stopped'));
-            $portalFrame->set('SFdelayed', (int) $db2->getValue('sfdelayed'));
+            $portalFrame->set('SFsuccess', $sucessFrames);
+            $portalFrame->set('SFfatalError', $fatalErrorFrames);
+            $portalFrame->set('SFsoftError', $temporalErrorFrames);
+            $portalFrame->set('SFstopped', $stoppedFrames);
+            $portalFrame->set('SFdelayed', $delayedFrames);
+            
+            // Update success rate
+            $processedFrames = $sucessFrames + $fatalErrorFrames + $temporalErrorFrames + $stoppedFrames + $delayedFrames;
+            if ($processedFrames) {
+                $successRate = round($sucessFrames / $processedFrames, 2);
+                Logger::info('Set priority to ' . $successRate . ' for portal frame ' . $portalFrame->get('id'));
+                $portalFrame->set('SuccessRate', $successRate);
+            }
             
             // Check new batch status
             if ($batch) {

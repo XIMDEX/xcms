@@ -175,7 +175,7 @@ interface IConnector
 	public function isDir($path);
 	
 	/**
-	 * Checks if the especified path is a file
+	 * Checks if the especified path is a file and is exists
 	 * 
 	 * @access public 
 	 * @param path string
