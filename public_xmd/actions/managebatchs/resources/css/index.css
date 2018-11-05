@@ -286,4 +286,16 @@
 
 .media .boost-icon {
     margin-left: 5pt;
+    cursor: pointer;
+}
+
+.media .boost-icon-1x-selected {
+    color: #088A68;
+}
+
+.media .boost-icon-2x-selected {
+    color: #DF7401;
+}
+.media .boost-icon-4x-selected {
+    color: #B40404;
 }

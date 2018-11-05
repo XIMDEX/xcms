@@ -83,10 +83,10 @@
                             ng-click="showing[frames.idPortal] = !showing[frames.idPortal]">Hide servers details</a>
                 </div>
                 <div class="boost-buttons">
-                    Cycles: #/ frames.visits /# | Success rate: #/ frames.successRate * 100 | number:0 /#% 
-                    <i class="fas fa-rocket boost-icon"></i> x1
-                    <i class="fas fa-rocket boost-icon"></i> x2
-                    <i class="fas fa-rocket boost-icon"></i> x4
+                    Cycles: #/ frames.visits /# · Success rate: #/ frames.successRate * 100 | number:0 /#%
+                    <span data-ng-repeat="boost in [1, 2, 4]" class="boost-icon" 
+                            ng-class="{literal}{'boost-icon-#/ boost /#x-selected': frames.boost == boost}{/literal}" 
+                            ng-click="boostPortal(frames.idPortal, boost);"><i class="fas fa-rocket"></i> x#/ boost /#</span>
                 </div>
                 <div class="portal-frames-sep"></div>
                 
@@ -143,5 +143,6 @@
     </ul>
 </div>
 <form name="frm_batchs" method="post" action="">
-    <input type="hidden" name="id" id="frm" value="" />
+    <input type="hidden" name="id" id="id" value="" />
+    <input type="hidden" name="value=" id="value" value="" />
 </form>

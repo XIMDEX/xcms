@@ -66,7 +66,7 @@ angular.module("ximdex.main.controller").controller("ximPUBLISHtools", [
     	});
     	
     	// Increment interval
-    	console.log('Interval: ' + $scope.interval);
+    	// console.log('Interval: ' + $scope.interval);
     	if (! $scope.interval) {
     		
     		// Reset interval
@@ -123,6 +123,16 @@ angular.module("ximdex.main.controller").controller("ximPUBLISHtools", [
             	id: portalId
             });
     	$scope.callMethod('restartBatchs', params);
+    	$scope.getFrameListLoop();
+    };
+    
+    $scope.boostPortal = function(portalId, value)
+    {
+    	var params = $.param({
+            	id: portalId,
+            	value: value
+            });
+    	$scope.callMethod('boostPortal', params);
     	$scope.getFrameListLoop();
     };
     

@@ -105,14 +105,13 @@ When Apache2 and PHP are running with the requested packages, download Ximdex CM
         ```
         sudo apt-get install php
         ```
-    * PHP modules: php-xml, php-cli, php-curl, php-gd, php-mysql, php-mcrypt, php-pear:
+    * PHP modules: php-xml, php-cli, php-curl, php-gd, php-mysql, php-pear:
         ```
         sudo apt-get install php-xml
         sudo apt-get install php-cli
         sudo apt-get install php-curl
         sudo apt-get install php-gd
         sudo apt-get install php-mysql
-        sudo apt-get install php-mcrypt
         sudo apt-get install php-pear
         ```
     *  To use the spelling checker in Xedit (our wysiwyg XML editor), install php-enchant module:

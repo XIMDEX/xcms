@@ -170,6 +170,24 @@ class Action_managebatchs extends ActionAbstract
         $this->sendJSON(['success' => true]);
     }
     
+    public function boostPortal()
+    {
+        $id = $this->request->getParam('id');
+        $value = $this->request->getParam('value');
+        if (!$id or !$value) {
+            $this->sendJSON(['success' => false, 'error' => 'No portal frame ID or boost value given']);
+        }
+        $portal = new PortalFrames($id);
+        if (!$portal->get('id')) {
+            $this->sendJSON(['success' => false, 'error' => 'Portal frame with ID ' . $id . ' does not exist']);
+        }
+        $portal->set('Boost', $value);
+        if (! $portal->update()) {
+            $this->sendJSON(['success' => false, 'error' => 'Error estabishing boost to portal frame']);
+        }
+        $this->sendJSON(['success' => true]);
+    }
+    
     /**
      * Return a list of portal information including a list of servers affected
      * 
@@ -244,6 +262,7 @@ class Action_managebatchs extends ActionAbstract
             'playing' => (int) $portal->get('Playing'),
             'successRate' => round($portal->get('SuccessRate'), 2),
             'visits' => (int) $portal->get('Visits'),
+            'boost' => (int) $portal->get('Boost'),
             'order' => (int) $order++
         ];
         $report['servers'] = $servers;
