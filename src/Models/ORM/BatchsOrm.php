@@ -63,7 +63,7 @@ class BatchsOrm extends GenericData
     public $ServerFramesSuccess = 0;
     public $ServerFramesFatalError = 0;
     public $ServerFramesTemporalError = 0;
-    public $Type = 0;
+    public $Type;
     public $IdBatchDown;
     public $IdNodeGenerator;
     public $Priority = 0.50;

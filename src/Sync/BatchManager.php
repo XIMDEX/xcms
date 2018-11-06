@@ -716,8 +716,6 @@ class BatchManager
                     } catch (\Exception $e) {
                         Logger::error($e->getMessage());
                     }
-                } else {
-                    Logger::warning('No server frames related with batch ' . $idBatch);
                 }
             }
         }
@@ -735,13 +733,15 @@ class BatchManager
         }
         while (!$dbObj->EOF) {
             $batch = new Batch($dbObj->GetValue('IdBatch'));
-            Logger::info('Starting batch ' . $dbObj->GetValue('IdBatch'));
-            $batch->set('State', Batch::INTIME);
-            $batch->update();
-            try {
-                PortalFrames::updatePortalFrames($batch);
-            } catch (\Exception $e) {
-                Logger::error($e->getMessage());
+            if ($batch->get('IdBatch')) {
+                Logger::info('Starting batch ' . $dbObj->GetValue('IdBatch'));
+                $batch->set('State', Batch::INTIME);
+                $batch->update();
+                try {
+                    PortalFrames::updatePortalFrames($batch);
+                } catch (\Exception $e) {
+                    Logger::error($e->getMessage());
+                }
             }
             $dbObj->Next();
         }
@@ -770,11 +770,13 @@ class BatchManager
         if ($serversEnabled) {
             $sql .= ' AND b.ServerId IN (' . implode(', ', $serversEnabled) . ')';
         }
+        $sql .= ' ORDER BY';
         if (App::getValue('SchedulerPriority') == 'portal') {
-            $sql .= ' ORDER BY pf.Cycles, b.Type = \'' . Batch::TYPE_DOWN . '\' DESC, b.IdBatch LIMIT 1';
+            $sql .= ' pf.BoostCycles';
         } else {
-            $sql .= ' ORDER BY b.Priority DESC, b.Cycles, b.Type = \'' . Batch::TYPE_DOWN . '\' DESC, b.IdBatch LIMIT 1';
+            $sql .= ' b.Priority DESC, b.Cycles';
         }
+        $sql .= ', b.Type = \'' . Batch::TYPE_DOWN . '\' DESC, b.IdBatch LIMIT 1';
         if ($dbObj->Query($sql) === false) {
         	return false;
         }
@@ -789,7 +791,8 @@ class BatchManager
         $list['totalserverframes'] = $dbObj->GetValue('ServerFramesTotal');
 
         // Update portal frames cycles
-        $sql = 'UPDATE PortalFrames SET Visits = Visits + 1, Cycles = Cycles + (1 / Boost) WHERE id = ' . $dbObj->GetValue('IdPortalFrame');
+        $sql = 'UPDATE PortalFrames SET Cycles = Cycles + 1, BoostCycles = BoostCycles + (1 / Boost) WHERE id = ' 
+            . $dbObj->GetValue('IdPortalFrame');
         $dbObj->Execute($sql);
         return $list;
     }

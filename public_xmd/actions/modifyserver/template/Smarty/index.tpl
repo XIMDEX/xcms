@@ -63,17 +63,21 @@
 								class='server-title cajaxg validable not_empty js_val_alphanumeric js_val_unique_name full-size' 
 								placeholder="{t}New server name{/t}" />
 					</div>
-					<span>
-						<input type="checkbox" id='enabled_{$id_node}' name='enabled' {if ($server.enabled)}checked="checked"{/if} 
-								class="input-slide"/>
-						<label for='enabled_{$id_node}' class="label-slide"> {t}Enabled{/t}</label>
+					<div class="server-option">
+					   <input type="checkbox" id='enabled_{$id_node}' name='enabled' {if ($server.enabled)}checked="checked"{/if} 
+					           class="input-slide"/>
+					   <label for='enabled_{$id_node}' class="label-slide"> {t}Enabled{/t}</label>
+					</div>
+					<div class="server-option">
 						<input type="checkbox" id='preview_{$id_node}' name='preview' {if ($server.preview)}checked="checked"{/if} 
 								class="input-slide">
 						<label for='preview_{$id_node}' class="label-slide">{t}Preview server{/t}</label>
+	               </div>
+	               <div class="server-option">
                         <input type="checkbox" id='override_{$id_node}' name='overridelocalpaths' 
                                 {if ($server.overridelocalpaths)}checked="checked"{/if} class="input-slide"/>
                         <label for='override_{$id_node}' class="label-slide">{t}Absolute URLs{/t}</label>
-					</span>
+					</div>
 				</div>
 				<div style="margin-top: 100px!important;" class="content_server">
 					<div name='protocol' id='protocol'>
@@ -111,7 +115,7 @@
 						<label for='password' class="aligned label_general">
 							{t}Password{/t}
 							{if {$server.password}}
-								{t}Only to change the actual one{/t}
+							    <span class="change-pass">{t}Only to change actual one{/t}</span>
 							{/if}
 						</label>
 						<input type="password" id='password' name='password' class='cajag' />

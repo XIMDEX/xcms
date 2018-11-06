@@ -28,6 +28,7 @@
 namespace Ximdex\Models;
 
 use Ximdex\Logger;
+use Ximdex\Runtime\App;
 use \Ximdex\Runtime\Db;
 use Ximdex\Models\ORM\PortalFramesOrm;
 
@@ -79,15 +80,6 @@ class PortalFrames extends PortalFramesOrm
             $portalFrameVersions[] = array('id' => $resultData['id'], 'version' => $resultData['Version']);
         }
         return $portalFrameVersions;
-    }
-    
-    private static function resetBoostCycles() : void
-    {
-        $sql = 'UPDATE PortalFrames SET Cycles = 0 WHERE Status = \'' . self::STATUS_ACTIVE . '\'';
-        $db = new Db();
-        if ($db->Execute($sql) === false) {
-            throw new \Exception('Could not reset portal frames boost cycles');
-        }
     }
     
     /**
@@ -313,9 +305,18 @@ class PortalFrames extends PortalFramesOrm
     
     public function getBatchs() : array
     {
-        $sql = 'SELECT IdBatch, State, ServerId FROM Batchs';
-        $sql .= ' WHERE IdPortalFrame = ' . $this->id . ' AND ServerFramesTotal > 0';
-        $sql .= ' ORDER BY Priority DESC, Cycles, Type = \'' . Batch::TYPE_DOWN . '\' DESC, IdBatch';
+        $sql = 'SELECT b.IdBatch, b.State, b.ServerId FROM Batchs b';
+        if (App::getValue('SchedulerPriority') == 'portal') {
+            $sql .= ' INNER JOIN PortalFrames pf ON pf.id = b.IdPortalFrame';
+        }
+        $sql .= ' WHERE b.IdPortalFrame = ' . $this->id . ' AND b.ServerFramesTotal > 0';
+        $sql .= ' ORDER BY';
+        if (App::getValue('SchedulerPriority') == 'portal') {
+            $sql .= ' pf.BoostCycles';
+        } else {
+            $sql .= ' b.Priority DESC, b.Cycles';
+        }
+        $sql .= ', b.Type = \'' . Batch::TYPE_DOWN . '\' DESC, b.IdBatch';
         $db = new Db();
         if ($db->Query($sql) === false) {
             throw new \Exception('Could not obtain the batchs for the portal frame ' . $this->id);
@@ -333,6 +334,20 @@ class PortalFrames extends PortalFramesOrm
             $db->Next();
         }
         return $batchs;
+    }
+    
+    /**
+     * Reset all the active portal frames to zero boost cycles
+     *
+     * @throws \Exception
+     */
+    public static function resetBoostCycles() : void
+    {
+        $sql = 'UPDATE PortalFrames SET BoostCycles = 0 WHERE Status = \'' . self::STATUS_ACTIVE . '\'';
+        $db = new Db();
+        if ($db->Execute($sql) === false) {
+            throw new \Exception('Could not reset portal frames boost cycles');
+        }
     }
     
     /**

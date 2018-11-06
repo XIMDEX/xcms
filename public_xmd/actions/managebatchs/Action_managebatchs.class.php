@@ -182,8 +182,13 @@ class Action_managebatchs extends ActionAbstract
             $this->sendJSON(['success' => false, 'error' => 'Portal frame with ID ' . $id . ' does not exist']);
         }
         $portal->set('Boost', $value);
-        if (! $portal->update()) {
+        if ($portal->update() === false) {
             $this->sendJSON(['success' => false, 'error' => 'Error estabishing boost to portal frame']);
+        }
+        try {
+            PortalFrames::resetBoostCycles();
+        } catch (Exception $e) {
+            $this->sendJSON(['success' => false, 'error' => $e->getMessage()]);
         }
         $this->sendJSON(['success' => true]);
     }
@@ -261,7 +266,7 @@ class Action_managebatchs extends ActionAbstract
             'stopped' => $stopped,
             'playing' => (int) $portal->get('Playing'),
             'successRate' => round($portal->get('SuccessRate'), 2),
-            'visits' => (int) $portal->get('Visits'),
+            'cycles' => (int) $portal->get('Cycles'),
             'boost' => (int) $portal->get('Boost'),
             'order' => (int) $order++
         ];

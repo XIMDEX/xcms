@@ -27,11 +27,11 @@ angular.module("ximdex.main.controller").controller("ximPUBLISHtools", [
 	'$scope', '$http', '$interval', 'xUrlHelper', function($scope, $http, $interval, xUrlHelper) {
     
     // 90 seconds maximum to refresh report
-	var MAX_INTERVAL = 2000;	// 90000;
+	var MAX_INTERVAL = 90000;
 	
 	// 5 seconds for interval of refresh data
     var INIT_INTERVAL = 2000;
-    var INCREMENT_INTERVAL = 1.1;
+    var INCREMENT_INTERVAL = 1.01;
     
 	$scope.json = [];
     $scope.urlParams = {};

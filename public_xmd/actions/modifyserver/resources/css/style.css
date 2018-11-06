@@ -1,5 +1,5 @@
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -22,7 +22,9 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
+
 /* NO Extends because they are inserted at the beggining of each CSS file */
+
 .row_item_selectable {
   background: #fff;
   border: 1px solid #dedede;
@@ -76,21 +78,6 @@
   -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
   -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2); }
-
-.server-name
-{
-	width: 25%;
-	/* margin-right: 5%; */
-	padding: 1rem 0; 
-	float: left;
-}
-
-.server-info
-{
- 	width: 74%;
-	padding: 1rem 0;
-	float: right; 
-}
 
 .server-name div {
   padding: 1em; }
@@ -194,19 +181,40 @@ fieldset.mdfsv_errors {
 
 .remote_url label, .remote_folder label, .port label, .host label, .login label, .password label {
   display: block; }
-  
-.update-server
-{
+
+.server-name {
+    width: 25%;
+    /* margin-right: 5%; */
+    padding: 1rem 0; 
+    float: left;
+}
+
+.server-info {
+    width: 74%;
+    padding: 1rem 0;
+    float: right; 
+}
+
+.update-server {
 	margin: 0 0 0 10pt !important;
 }
 
-.channelms
-{
+.channelms {
 	float:left;
+	margin-bottom: 5pt;
+	width: 120pt;
+}
+
+.token {
+	width: 98% !important;
+}
+
+.server-info .server-option {
+	float: left;
+	width: 140pt;
 	margin-bottom: 5pt;
 }
 
-.token
-{
-	width: 98% !important;
+.server-info .change-pass {
+	font-size: 9pt;
 }

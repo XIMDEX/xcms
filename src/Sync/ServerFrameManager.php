@@ -305,8 +305,11 @@ class ServerFrameManager
                     }
                     Logger::info('Setting tasks ' . $numTasksForPumping . ' for pumper ' . $pumperId);
                     foreach ($tasks as $task) {
-                        Logger::debug('Running processTaskForServerFrame with task: ' . $task['id']);
-                        $this->processTaskForServerFrame($task['id']);
+                        
+                        // Processing the server frame task
+                        if (!$this->processTaskForServerFrame($task['id'])) {
+                            continue;
+                        }
                         
                         // Update related batch
                         if ($task['up']) {
@@ -408,14 +411,18 @@ class ServerFrameManager
     }
 
     /**
-     *  Sets the ServerFrame ready for upload (remove) to publication Server.
-     *  
-     * @param int task
+     * Sets the ServerFrame ready for upload (remove) to publication Server
+     * 
+     * @param int $task
+     * @return bool|NULL
      */
-    public function processTaskForServerFrame($task)
+    public function processTaskForServerFrame(int $task) : ?bool
     {
         $serverFrame = new ServerFrame($task);
         $state = $serverFrame->get('State');
+        if ($state != ServerFrame::DUE2IN_ and $state != ServerFrame::DUE2OUT_) {
+            return null;
+        }
         $newState = substr($state, -strlen($state), strlen($state) - 1);
 
         // Creates Sync file for pumping and updating state
