@@ -81,6 +81,15 @@ class PortalFrames extends PortalFramesOrm
         return $portalFrameVersions;
     }
     
+    private static function resetBoostCycles() : void
+    {
+        $sql = 'UPDATE PortalFrames SET Cycles = 0 WHERE Status = \'' . self::STATUS_ACTIVE . '\'';
+        $db = new Db();
+        if ($db->Execute($sql) === false) {
+            throw new \Exception('Could not reset portal frames boost cycles');
+        }
+    }
+    
     /**
      * Calculate the stats from batchs related to a given portal frame, or everything active
      * 
@@ -177,6 +186,7 @@ class PortalFrames extends PortalFramesOrm
                 if ($batch->get('State') == Batch::INTIME) {
                     if (!$portalFrame->get('StartTime')) {
                         $portalFrame->set('StartTime', time());
+                        self::resetBoostCycles();
                     }
                     $portalFrame->set('Status', self::STATUS_ACTIVE);
                 }

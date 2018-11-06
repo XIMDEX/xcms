@@ -116,7 +116,8 @@ class Batch extends BatchsOrm
         $temporalErrorFrames = (int) $this->get('ServerFramesTemporalError');
         $processedFrames = $sucessFrames + $fatalErrorFrames + $temporalErrorFrames;
         if ($processedFrames) {
-            $priority = round($sucessFrames / $processedFrames, 2);
+            $portal = new PortalFrames($this->get('IdPortalFrame'));
+            $priority = round($sucessFrames / $processedFrames * $portal->get('Boost'), 2);
             Logger::info('Set priority to ' . $priority . ' for batch ' . $this->IdBatch);
             $this->set('Priority', $priority);
         }

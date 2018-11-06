@@ -32,6 +32,7 @@ use Ximdex\Models\Pumper;
 use Ximdex\Models\Batch;
 use Ximdex\Models\ServerFrame;
 use Ximdex\Models\ChannelFrame;
+use Ximdex\Runtime\App;
 
 /**
  * @brief Handles the life cycle of a ServerFrame
@@ -273,11 +274,21 @@ class ServerFrameManager
             Logger::info('Pumper ' . $pumperId . ': Vacancy level: ' . $vacancyLevel . '%. Pace = ' . $pumper->get('Pace') 
                 . '. Task for pumping: ' . $numTasksForPumping . ' of ' . $chunk . '');
             if ($numTasksForPumping > 0) {
-                $sql = 'SELECT ServerFrames.IdSync, ServerFrames.IdBatchUp, ServerFrames.IdBatchDown 
-                    FROM ServerFrames, Pumpers WHERE RIGHT(ServerFrames.State, 1) = \'_\'
-					AND ServerFrames.PumperId = ' . $pumperId . ' AND Pumpers.IdServer IN (' . $servers . ')
-					AND ServerFrames.PumperId = Pumpers.PumperId ORDER BY ServerFrames.ErrorLevel,
-					ServerFrames.Retry LIMIT ' . $numTasksForPumping;
+                $sql = 'SELECT ServerFrames.IdSync, ServerFrames.IdBatchUp, ServerFrames.IdBatchDown FROM ServerFrames';
+                if (App::getValue('SchedulerPriority') == 'portal') {
+                    $sql .= ' INNER JOIN PortalFrames pf ON pf.id = ServerFrames.IdPortalFrame';
+                } else {
+                    $sql .= ' INNER JOIN Batchs b ON (b.IdBatch = ServerFrames.IdBatchUp OR b.IdBatch = ServerFrames.IdBatchDown)';
+                }
+                $sql .= ' WHERE RIGHT(ServerFrames.State, 1) = \'_\' AND ServerFrames.PumperId = ' . $pumperId . ' 
+                        AND ServerFrames.IdServer IN (' . $servers . ')'; 
+                $sql .= ' ORDER BY';
+                if (App::getValue('SchedulerPriority') == 'portal') {
+                    $sql .= ' pf.Cycles,';
+                } else {
+                    $sql .= ' b.Priority DESC, b.Cycles, b.Type = \'' . Batch::TYPE_DOWN . '\' DESC, b.IdBatch,';
+                }
+                $sql .= ' ServerFrames.ErrorLevel, ServerFrames.Retry LIMIT ' . $numTasksForPumping;
                 $dbObj->Query($sql);
                 if ($dbObj->numRows > 0) {
                     $timer = new \Ximdex\Utils\Timer();

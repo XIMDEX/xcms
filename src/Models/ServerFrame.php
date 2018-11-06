@@ -461,6 +461,8 @@ class ServerFrame extends ServerFramesOrm
     {
         $dbObj = new Db();
         $servers = implode(',', $activeAndEnabledServers);
+        
+        //TODO ajlucena use count and delete Pumpers table
         $sql = "SELECT ServerFrames.IdSync FROM ServerFrames, Pumpers WHERE ServerFrames.PumperId = Pumpers.PumperId AND " . 
             "(ServerFrames.State = '" . ServerFrame::DUE2IN . "' OR ServerFrames.State = '" . ServerFrame::DUE2OUT . "') " . 
             "AND ServerFrames.PumperId = $pumperID AND Pumpers.IdServer IN ($servers)";
