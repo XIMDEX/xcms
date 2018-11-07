@@ -97,7 +97,7 @@ class ServerFrameManager
                                     
                                     // If name's changed must delete remote file
                                     $overlapedFinalState = ServerFrame::DUE2OUT;
-                                    $overlapedFrame->set('DateDown', mktime());
+                                    $overlapedFrame->set('DateDown', time());
                                 } else {
                                     $overlapedFinalState = ServerFrame::REPLACED;
                                 }

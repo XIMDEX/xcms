@@ -103,7 +103,7 @@ class NodesToPublish extends NodesToPublishOrm
 		$dateDown = $db->getValue("DateDown");
 
 		// 2. Mark every node with previous dateUp as locked (state=1) to start working on it.
-		// (This prevent collisions if multiple batchManagerDaemons are working at the same time)
+		// (This prevent collisions if multiple batch Manager Daemons are working at the same time)
 		$sql_update ="update NodesToPublish set State = 1 where DateUp = ".$dateUp." and State = 0";
 		if (!empty($dateDown)) {
 			$sql_update .= " and DateDown = ".$dateDown;

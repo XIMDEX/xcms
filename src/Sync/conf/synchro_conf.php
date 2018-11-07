@@ -60,7 +60,7 @@ if (! defined('MAX_TASKS_PER_PUMPER')) {
 
 // Delay time in seconds for server with pumper task soft errors
 if (! defined('SERVER_DELAY_TIME_PUMPER_IN_SOFT_ERROR')) {
-    define('SCHEDULER_CHUNK', 10);
+    define('SERVER_DELAY_TIME_PUMPER_IN_SOFT_ERROR', 10);
 }
 
 // Default batch priority

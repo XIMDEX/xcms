@@ -152,13 +152,12 @@ class ServerFrame extends ServerFramesOrm
         if ($idChannel) {
             $this->set('ChannelId', $idChannel);
         }
-        parent::add();
-        $idServerFrame = $this->get('IdSync');
-        if ($idServerFrame > 0) {
-            return $idServerFrame;
+        $id = parent::add();
+        if (! $id) {
+            Logger::error('Creating server frame');
+            return null;
         }
-        Logger::error('Creating server frame');
-        return null;
+        return $id;
     }
 
     /**
@@ -344,113 +343,6 @@ class ServerFrame extends ServerFramesOrm
     }
 
     /**
-     * Gets all ServerFrames from a Batch
-     * 
-     * @param int batchId
-     * @param string batchColumn
-     * @param string mode
-     * @param array progress
-     * @param int limitCriteria
-     * @return array
-     */
-    public function getFramesOnBatch($batchId, $batchColumn, $mode = "simple", & $progress = array(), $limitCriteria = null)
-    {
-        $dbObj = new Db();
-        $sql = "SELECT ServerFrames.IdSync" . (($mode == 'simple') ? '' : ', ServerFrames.DateUp, ServerFrames.DateDown, ' 
-            . 'ServerFrames.FileSize, ServerFrames.State, ServerFrames.FileName, ServerFrames.PumperId, ServerFrames.IdServer, '
-            . 'ServerFrames.RemotePath') 
-            . " FROM ServerFrames, Batchs WHERE (ServerFrames.IdBatchUp = Batchs.IdBatch "
-            . "OR ServerFrames.IdBatchDown = Batchs.IdBatch) AND Batchs.$batchColumn = $batchId";
-        $dbObj->Query($sql);
-        $frames = array();
-        $progress['total']['totalBatchSize'] = 0;
-        $progress['total']['totalBatchSizeCompleted'] = 0;
-        $progress['total']['totalBatchCompleted'] = 0;
-        $progress['total']['avgBatchSize'] = 0;
-        $progress['total']['percentBatchSizeCompleted'] = 0;
-        $progress['total']['percentBatchCompleted'] = 0;
-        $progress['total']['totalBatch'] = 0;
-        $serverIds = array(
-            'total'
-        );
-        $iCounter = 0;
-        $pageCounter = 0;
-        while (! $dbObj->EOF) {
-            if ($mode == 'simple') {
-                $frames[] = $dbObj->GetValue("IdSync");
-            } else {
-                $iCounter ++;
-                $idSync = $dbObj->GetValue("IdSync");
-                $idServer = $dbObj->GetValue("IdServer");
-                $fileSize = round($dbObj->GetValue("FileSize") / 1024, 2);
-                $serverIds[] = $idServer;
-                $pageCounter = ceil($iCounter / $limitCriteria);
-                $frames[$pageCounter][$idServer][$idSync]['DateUp'] = $dbObj->GetValue("DateUp");
-                $frames[$pageCounter][$idServer][$idSync]['DateDown'] = $dbObj->GetValue("DateDown");
-                $frames[$pageCounter][$idServer][$idSync]['State'] = $dbObj->GetValue("State");
-                $frames[$pageCounter][$idServer][$idSync]['FileName'] = $dbObj->GetValue("FileName");
-                $frames[$pageCounter][$idServer][$idSync]['PumperId'] = $dbObj->GetValue("PumperId");
-                $frames[$pageCounter][$idServer][$idSync]['FileSize'] = $fileSize;
-                $frames[$pageCounter][$idServer][$idSync]['RemotePath'] = $dbObj->GetValue("RemotePath");
-                if (! isset($progress[$idServer]['totalBatchSize'])) {
-                    $progress[$idServer]['totalBatchSize'] = 0;
-                }
-                if (! isset($progress[$idServer]['totalBatchSizeCompleted'])) {
-                    $progress[$idServer]['totalBatchSizeCompleted'] = 0;
-                }
-                if (! isset($progress[$idServer]['totalBatchCompleted'])) {
-                    $progress[$idServer]['totalBatchCompleted'] = 0;
-                }
-                if (! isset($progress[$idServer]['totalBatch'])) {
-                    $progress[$idServer]['totalBatch'] = 0;
-                }
-                if (! isset($progress[$idServer]['avgBatchSize'])) {
-                    $progress[$idServer]['avgBatchSize'] = 0;
-                }
-                if (! isset($progress[$idServer]['percentBatchSizeCompleted'])) {
-                    $progress[$idServer]['percentBatchSizeCompleted'] = 0;
-                }
-                if (! isset($progress[$idServer]['percentBatchCompleted'])) {
-                    $progress[$idServer]['percentBatchCompleted'] = 0;
-                }
-                $progress['total']['totalBatchSize'] += $fileSize;
-                $progress['total']['totalBatchSizeCompleted'] += ($dbObj->GetValue("State") == ServerFrame::IN 
-                    || $dbObj->GetValue("State") == ServerFrame::OUT
-                    || $dbObj->GetValue("State") == ServerFrame::REMOVED || $dbObj->GetValue("State") == ServerFrame::REPLACED 
-                    || $dbObj->GetValue("State") == ServerFrame::PUMPED) ? $fileSize : 0;
-                $progress['total']['totalBatchCompleted'] += ($dbObj->GetValue("State") == ServerFrame::IN 
-                    || $dbObj->GetValue("State") == ServerFrame::OUT
-                    || $dbObj->GetValue("State") == ServerFrame::REMOVED || $dbObj->GetValue("State") == ServerFrame::REPLACED 
-                    || $dbObj->GetValue("State") == ServerFrame::PUMPED) ? 1 : 0;
-                $progress['total']['totalBatch'] ++;
-                $progress[$idServer]['totalBatchSize'] += $fileSize;
-                $progress[$idServer]['totalBatchSizeCompleted'] += ($dbObj->GetValue("State") == ServerFrame::IN
-                    || $dbObj->GetValue("State") == ServerFrame::OUT
-                    || $dbObj->GetValue("State") == ServerFrame::REMOVED || $dbObj->GetValue("State") == ServerFrame::REPLACED 
-                    || $dbObj->GetValue("State") == ServerFrame::PUMPED) ? $fileSize : 0;
-                $progress[$idServer]['totalBatchCompleted'] += ($dbObj->GetValue("State") == ServerFrame::IN 
-                    || $dbObj->GetValue("State") == ServerFrame::OUT
-                    || $dbObj->GetValue("State") == ServerFrame::REMOVED || $dbObj->GetValue("State") == ServerFrame::REPLACED 
-                    || $dbObj->GetValue("State") == ServerFrame::PUMPED) ? 1 : 0;
-                $progress[$idServer]['totalBatch'] ++;
-            }
-            $dbObj->Next();
-        }
-        if ($mode != 'simple' && is_array($frames) && $progress['total']['totalBatch'] > 0) {
-            foreach ($serverIds as $serverId) {
-                $progress[$serverId]['avgBatchSize'] = round($progress[$serverId]['totalBatchSize'] / $progress[$serverId]['totalBatch'], 2);
-                $progress[$serverId]['percentBatchCompleted'] = round(($progress[$serverId]['totalBatchCompleted'] * 100) 
-                    / $progress[$serverId]['totalBatch'], 2);
-                if ($progress[$serverId]['totalBatchSize'] > 0) {
-                    $progress[$serverId]['percentBatchSizeCompleted'] = round(($progress[$serverId]['totalBatchSizeCompleted'] * 100) 
-                        / $progress[$serverId]['totalBatchSize'], 2);
-                }
-            }
-        }
-        return $frames;
-    }
-
-    /**
      * Gets the number of ServerFrames which matching the value of pumperId and belong to a list of Servers
      * 
      * @param int nodeId
@@ -459,16 +351,16 @@ class ServerFrame extends ServerFramesOrm
      */
     public function getUncompletedTasks($pumperID, $activeAndEnabledServers)
     {
-        $dbObj = new Db();
         $servers = implode(',', $activeAndEnabledServers);
         
-        //TODO ajlucena use count and delete Pumpers table
-        $sql = "SELECT ServerFrames.IdSync FROM ServerFrames, Pumpers WHERE ServerFrames.PumperId = Pumpers.PumperId AND " . 
-            "(ServerFrames.State = '" . ServerFrame::DUE2IN . "' OR ServerFrames.State = '" . ServerFrame::DUE2OUT . "') " . 
-            "AND ServerFrames.PumperId = $pumperID AND Pumpers.IdServer IN ($servers)";
+        // Use count and delete Pumpers table
+        $sql = 'SELECT count(ServerFrames.IdSync) as total FROM ServerFrames '
+            . 'WHERE (ServerFrames.State = \'' . ServerFrame::DUE2IN . '\' OR ServerFrames.State = \'' . ServerFrame::DUE2OUT . '\') ' 
+            . 'AND ServerFrames.PumperId = ' . $pumperID . ' AND ServerFrames.IdServer IN (' . $servers . ')';
+        $dbObj = new Db();
         $dbObj->Query($sql);
-        $n = $dbObj->numRows;
-        Logger::debug("Pumper $pumperID contain $n incomplete tasks");
+        $n = (int) $dbObj->GetValue('total');
+        Logger::debug('Pumper ' . $pumperID . ' contain ' . $n . ' incomplete tasks');
         return $n;
     }
 

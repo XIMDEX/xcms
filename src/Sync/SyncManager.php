@@ -254,7 +254,7 @@ class SyncManager
             $this->sendMail($idNode, null, $up, $down);
         }
 
-        // Exec batchmanagerdaemon in background and get its pid (in case we needed in the future)
+        // Exec batchManagerDaemon in background
         $cmd = 'php ' . XIMDEX_ROOT_PATH . '/bootstrap.php  src/Sync/scripts/batch/batchManagerDaemon.php';
         shell_exec(sprintf("%s > /dev/null & echo $!", $cmd));
         return $docsToPublish;

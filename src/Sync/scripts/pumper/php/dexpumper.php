@@ -210,7 +210,7 @@ class DexPumper
     		if ($removing) {
     		    Logger::info('Successfusly removed file ' . $fileName . ' (ID: ' . $this->serverFrame->get('NodeId') 
     		        . ') from server ' . $this->connection->getServer()->get('Description'), true);
-    		    // TODO ajlucena $this->connection->rm($targetFolder);
+    		    //TODO ajlucena $this->connection->rm($targetFolder);
     		}
 		}
 		$this->updateTask($removing, ServerFrame::OUT);

@@ -44,12 +44,12 @@ class InheritedPropertiesManager
 	/**
 	 * Returns the property values
 	 * 
-	 * @param $nodeId
+	 * @param int $nodeId
 	 * @param bool $onlyInherited
 	 * @param array $propertiesToUse
 	 * @return array
 	 */
-	static public function getValues($nodeId, bool $onlyInherited = false, array $propertiesToUse = null) : array
+	static public function getValues(int $nodeId, bool $onlyInherited = false, array $propertiesToUse = null) : array
 	{
 		$factory = new \Ximdex\Utils\Factory(dirname(__FILE__), '');
 		$ret = array();

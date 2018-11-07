@@ -508,7 +508,7 @@ class StructuredDocument extends StructuredDocumentsOrm
     public function GetChannels()
     {
         $channelProperty = new ChannelProperty($this->get('IdDoc'));
-        $values = $channelProperty->getValues($this->get('IdDoc'), true);
+        $values = $channelProperty->getValues(true);
         if ($values === false) {
             return false;
         }

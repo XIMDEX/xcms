@@ -40,6 +40,7 @@ use Ximdex\Models\NodeFrame;
 use Ximdex\Models\Batch;
 use Ximdex\Models\ServerFrame;
 use Ximdex\Models\ChannelFrame;
+use Ximdex\Models\User;
 use Ximdex\Properties\InheritedPropertiesManager;
 use Ximdex\NodeTypes\NodeTypeConstants;
 use Ximdex\NodeTypes\ServerNode;
@@ -287,10 +288,12 @@ class BatchManager
         $docsNotOk = array();
         $nodeServer = new Node($serverID);
         $totalDocs = count($docsToPublish);
-        $mod = (int)($totalDocs / 10);
+        $mod = (int) $totalDocs / 10;
         $j = 0;
 
         // Creating the frames for each idNode
+        $nf = new NodeFrame();
+        $channelFrame = new ChannelFrame();
         $serverFrame = new ServerFrame();
         $servers = [];
         foreach ($docsToPublish as $idNode) {
@@ -298,96 +301,63 @@ class BatchManager
                 Logger::error('There is not any version for node: ' . $idNode);
                 continue;
             }
-            if (($totalDocs > 20) && ($j % $mod == 0))
-            {
+            if (($totalDocs > 20) && ($j % $mod == 0)) {
                 Logger::info((int)($j / $totalDocs * 100) . '% completed', 1);
             }
             $j++;
             $node = new Node($idNode);
             $versionZero = (0 == $versions[$idNode] && 0 == $subversions[$idNode]);
-            if ($versionZero && $node->nodeType->get('IsStructuredDocument') && $idNode != $nodeGenerator)
-            {
+            if ($versionZero && $node->nodeType->get('IsStructuredDocument') && $idNode != $nodeGenerator) {
                 Logger::warning(sprintf('Detected 0.0 version for Linked Structured Document: %s to be published', $idNode));
             }
             $dataFactory = new DataFactory($idNode);
             $idVersion = $dataFactory->getVersionId($versions[$idNode], $subversions[$idNode]);
-            if (is_null($idVersion))
-            {
+            if (is_null($idVersion)) {
                 Logger::warning(sprintf('There is no version (%s.%s) publishable for the node %s', $versions[$idNode], $subversions[$idNode]
-                        , $idNode));
+                    , $idNode));
                 continue;
             }
-
-            // Boolean for if any serverframe is created for this nodeframe
-            $isServerCreated = false;
             $nodeName = $node->GetNodeName();
 
             // Blocking node
             $userID = \Ximdex\Runtime\Session::get('userID');
             if (is_null($userID)) {
-                $userID = 301;
+                $userID = User::XIMDEX_ID;
             }
             $node->Block($userID);
 
             // Upgrade document and caches version to the published one
-            if (isset($docsToUpVersion[$idNode]) and $docsToUpVersion[$idNode])
-            {
-                if ($version = $this->_upVersion(array($docsToUpVersion[$idNode]), null))
-                {
+            if (isset($docsToUpVersion[$idNode]) and $docsToUpVersion[$idNode]) {
+                if ($version = $this->_upVersion(array($docsToUpVersion[$idNode]), null)) {
+                    
                     // Now $idVersion will be upgraded one 
                     $idVersion = $version[0];
                 }
             }
             
-            // Creating nodeFrames
-            $nf = new NodeFrame();
-            $nodeFrames = $nf->find('IdNodeFrame', 'NodeId = %s AND VersionId = %s', array($idNode, $idVersion), MONO);
-            if (empty($nodeFrames)) {
-                $nodeFrameId = $nf->create($idNode, $nodeName, $idVersion, $up, $down);
-            } else {
-                $nodeFrameId = $nodeFrames[0];
-                $nfr = new NodeFrame($nodeFrameId);
-                $nfr->set('IsProcessUp', 0);
-                $nfr->set('IsProcessDown', 0);
-                $nfr->set('Active', 0);
-                $nfr->set('TimeUp', $up);
-                $nfr->set('TimeDown', $down);
-                $nfr->update();
-            }
-            if (is_null($nodeFrameId)) {
-                $node->unBlock();
-                Logger::warning(sprintf('A NodeFrame could not be obtained for node %s', $idNode));
-                continue;
-            }
+            // get specific node channels
             $arrayChannels = array();
             if (method_exists($node->class, 'GetChannels')) {
                 $arrayChannels = $node->class->GetChannels();
             }
-            if (!(count($arrayChannels)) > 0) {
+            if (!$arrayChannels) {
                 $arrayChannels[] = 'NULL';
             }
+            $nodeFrameId = null;
             foreach ($arrayChannels as $channelId) {
                 $numFrames = 0;
-                $idFrame = null;
-
-                // Creating channelFrames
-                if (!isset($this->channels[$channelId])) {
+                if ($channelId != 'NULL' and !isset($this->channels[$channelId])) {
                     $this->channels[$channelId] = new Channel($channelId);
                 }
-                $channelFrame = new ChannelFrame();
-                $channelFrameId = $channelFrame->create($channelId, $idNode);
-                if (is_null($channelFrameId)) {
-                    $node->unBlock();
-                    
-                    // Deleting nodeFrame previously created
-                    $nodeFrame = new NodeFrame($nodeFrameId);
-                    $nodeFrame->delete();
-                    Logger::warning(sprintf('A ChannelFrame could not be obtained for node %s and channel %s', $idNode, $channelId));
-                    Logger::warning(sprintf('Deleting Nodeframe for node %s', $idNode));
-                    continue;
-                }
+                $channelFrameId = null;
                 foreach ($relBatchsServers as $physicalServer => $idBatch) {
                     $idFrame = null;
+                    
+                    // Load the inherited channels for the node to be publish
+                    $properties = InheritedPropertiesManager::getValues($idNode, true);
+                    if (!isset($properties['Channel'])) {
+                        continue;
+                    }
                     
                     // Load the physical server for the current batch
                     if (!isset($servers[$physicalServer])) {
@@ -398,15 +368,11 @@ class BatchManager
                     }
                     $serverChannels = $server->getChannels();
                     
-                    // Load the inherited channels for the node to be publish
-                    $properties = InheritedPropertiesManager::getValues($idNode, true);
-                    if (!isset($properties['Channel'])) {
-                        continue;
-                    }
-                    
                     // Check if inherited document channels are in any of server channels
                     $serverHasChannel = false;
-                    foreach ($properties['Channel'] as $PropChannelId => $prop) {
+                    foreach (array_keys($properties['Channel']) as $PropChannelId) {
+                        
+                        // Check if the server has the document channel
                         if (!isset($serverChannels[$PropChannelId])) {
                             
                             // Server channel not for this document
@@ -424,7 +390,6 @@ class BatchManager
                         }
                         
                         // Server has this document inherited channel
-                        Logger::debug('Inherited property ' . $prop . ' has given channel ' . $PropChannelId);
                         $serverHasChannel = true;
                         break;
                     }
@@ -435,41 +400,55 @@ class BatchManager
                     }
                     if ($channelId == 'NULL' or $nodeServer->class->HasChannel($physicalServer, $channelId)) {
                         
-                        // Creating serverFrames
-                        // Generating cache (only if is structured document)
-                        $name = $node->GetPublishedNodeName($channelId, true);
+                        // Creating nodeFrame first time
+                        if (! $nodeFrameId) {
+                            $nodeFrames = $nf->find('IdNodeFrame', 'NodeId = %s AND VersionId = %s', array($idNode, $idVersion), MONO);
+                            if (empty($nodeFrames)) {
+                                $nodeFrameId = $nf->create($idNode, $nodeName, $idVersion, $up, $down);
+                            } else {
+                                $nodeFrameId = $nodeFrames[0];
+                                $nfr = new NodeFrame($nodeFrameId);
+                                $nfr->set('IsProcessUp', 0);
+                                $nfr->set('IsProcessDown', 0);
+                                $nfr->set('Active', 0);
+                                $nfr->set('TimeUp', $up);
+                                $nfr->set('TimeDown', $down);
+                                $nfr->update();
+                            }
+                            if (is_null($nodeFrameId)) {
+                                $node->unBlock();
+                                Logger::warning(sprintf('A NodeFrame could not be obtained for node %s', $idNode));
+                                continue;
+                            }
+                        }
+                        
+                        // Creating channelFrame first time
+                        if (! $channelFrameId) {
+                            $channelFrameId = $channelFrame->create($channelId, $idNode);
+                            if (is_null($channelFrameId)) {
+                                $node->unBlock();
+                                Logger::warning(sprintf('A ChannelFrame could not be obtained for node %s and channel %s', $idNode, $channelId));
+                                continue;
+                            }
+                        }
+                        
+                        // Creating server frame
+                        $name = $node->GetPublishedNodeName($channelId);
                         $path = $node->GetPublishedPath($channelId);
                         $publishLinked = 1;
                         $idFrame = $serverFrame->create($idNode, $physicalServer, $up, $path, $name, $publishLinked, $nodeFrameId
                             , ($channelId === 'NULL') ? null : $channelId , $channelFrameId, $idBatch, $idPortalFrame, $down, 0
                             , isset($noCache[$idNode]) ? false : true);
                         if (is_null($idFrame)) {
-                            Logger::error(sprintf('Creation of ServerFrame could not be done: node %s, channel %s, batch %s', $idNode
-                                , $channelId, $physicalServer, $idBatch));
+                            Logger::error(sprintf('Creation of ServerFrame could not be done: node %s (%s), channel %s, batch %s', $idNode
+                                , $nodeName, $channelId, $physicalServer, $idBatch));
                             $docsNotOk[$idNode][$physicalServer][$channelId] = $idFrame;
                         } else {
-                            $isServerCreated = true;
                             $numFrames++;
                             $docsOk[$idNode][$physicalServer][$channelId] = $idFrame;
                         }
                     }
                 }
-                if ($numFrames <= 0) {
-                    Logger::error(sprintf('Creation of ServerFrame could not be done: node %s, channel %s', $idNode, $channelId));
-                    Logger::warning(sprintf('ChannelFrame %s will be removed', $channelFrameId));
-                    
-                    // Deleting the channelFrame previosly created
-                    $channelFrame = new ChannelFrame($channelFrameId);
-                    $channelFrame->delete();
-                }
-            }
-            if (!$isServerCreated) {
-                Logger::error(sprintf('Creation of ServerFrame could not be done: node %s', $idNode));
-                Logger::warning(sprintf('NodeFrame %s will be eliminated', $nodeFrameId));
-                
-                // Deleting nodeFrame previously created
-                $nodeFrame = new NodeFrame($nodeFrameId);
-                $nodeFrame->delete();
             }
             
             // Unblocking node
@@ -509,7 +488,7 @@ class BatchManager
         // Batchs without serverFrames will be deleted
         if (sizeof($voidBatchs) > 0) {
             foreach ($voidBatchs as $idBatch) {
-                Logger::info(sprintf('Batchs %s will be removed because they are empty', $idBatch));
+                Logger::info(sprintf('Batch %s will be removed because it is empty', $idBatch));
                 $batch = new Batch($idBatch);
                 $batch->delete();
                 $idBatchDown = $batch->get('IdBatchDown');

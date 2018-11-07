@@ -63,7 +63,7 @@ class CommonNode extends FileNode
             return [];
         }
         $channelProperty = new ChannelProperty($this->nodeID);
-        $values = $channelProperty->getValues($this->nodeID, true);
+        $values = $channelProperty->getValues(true);
         if ($values === false) {
             
             // Error

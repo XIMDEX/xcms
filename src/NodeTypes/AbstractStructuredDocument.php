@@ -490,7 +490,7 @@ abstract class AbstractStructuredDocument extends FileNode
     public function GetChannels()
     {
         $channelProperty = new ChannelProperty($this->nodeID);
-        $values = $channelProperty->getValues($this->nodeID, true);
+        $values = $channelProperty->getValues(true);
         if ($values === false) {
             return false;
         }
