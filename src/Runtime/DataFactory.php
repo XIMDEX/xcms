@@ -245,8 +245,9 @@ class DataFactory
      * @name        GetContent
      * @author    Jose I. Villar
      * @version    1.0
-     * @param    int $versionID = null    : Si se omite este parametro y el siguiente, se tomara la ultima version del nodo en el objeto
-     * @param    int $subVersion = null    : Si se omite este parametro, el anterior es el identificador unico de version, en otro caso, es el numero de Version
+     * @param    int $versionID = null     : Si se omite este parametro y el siguiente, se tomara la ultima version del nodo en el objeto
+     * @param    int $subVersion = null    : Si se omite este parametro, el anterior es el identificador unico de version, en otro caso, es 
+     *                                       el numero de Version
      * @return    string $content
      */
     function GetContent($versionID = null, $subVersion = null, $isMetadata = false)
@@ -363,8 +364,9 @@ class DataFactory
      * @author    Jose I. Villar
      * @version    1.0
      * @param    string $content
-     * @param    int $versionID = null    : Si se omite este parametro y el siguiente, se tomara la ultima version del nodo en el objeto
-     * @param    int $subVersion = null    : Si se omite este parametro, el anterior es el identificador unico de version, en otro caso, es el numero de Version
+     * @param    int $versionID = null      : Si se omite este parametro y el siguiente, se tomara la ultima version del nodo en el objeto
+     * @param    int $subVersion = null     : Si se omite este parametro, el anterior es el identificador unico de version, en otro caso, es el 
+     *                                        numero de Version
      */
     function SetContent($content, $versionID = NULL, $subVersion = NULL, $commitNode = NULL, $metadata = null)
     {
@@ -707,7 +709,8 @@ class DataFactory
 
     /**
      * Elimina las subVersiones de una determinada version que ya nos sirven. Tiene dos casos de uso, dependiendo del parametro all.
-     * 1) $all = false => Elimina todas las subVersiones de la Version dada menos la primera, las X ultimas segun la tabla de configuracion (X >= 1).
+     * 1) $all = false => Elimina todas las subVersiones de la Version dada menos la primera, las X ultimas segun la tabla 
+     *    de configuracion (X >= 1).
      * 2) $all = true  =>  Elimina todas las subVersiones de la Version dada menos la primera.
      * 
      * @param int $version
@@ -775,7 +778,8 @@ class DataFactory
     * @name		GetTmpFile
     * @author 	Jose I. Villar
     * @version	1.0
-    * @param	int $versionID	: Si se omite el siguiente parametro, este es el identificador unico de version, en otro caso, es el numero de version
+    * @param	int $versionID	: Si se omite el siguiente parametro, este es el identificador unico de version, en otro caso, es 
+    *                             el numero de version
     * @param	int $subVersion = null
     **/
     function GetTmpFile($versionID, $subVersion = null)
@@ -814,7 +818,8 @@ class DataFactory
     * @name		GetComment
     * @author 	Jose I. Villar
     * @version	1.0
-    * @param	int $versionID	: Si se omite el siguiente parametro, este es el identificador unico de version, en otro caso, es el numero de version
+    * @param	int $versionID	: Si se omite el siguiente parametro, este es el identificador unico de version, en otro caso, es 
+    *                             el numero de version
     * @param	int $subVersion = null
     **/
     function GetComment($versionID, $subVersion = null)
@@ -842,7 +847,8 @@ class DataFactory
      * @name        GetDate
      * @author    Jose I. Villar
      * @version    1.0
-     * @param    int $versionID : Si se omite el siguiente parametro, este es el identificador unico de version, en otro caso, es el numero de version
+     * @param    int $versionID : Si se omite el siguiente parametro, este es el identificador unico de version, en otro caso, es 
+     *                            el numero de version
      * @param    int $subVersion = null
      **/
     function GetDate($versionID, $subVersion = null)
@@ -870,7 +876,8 @@ class DataFactory
     * @name		GetUserID
     * @author 	Jose I. Villar
     * @version	1.0
-    * @param	int $versionID	: Si se omite el siguiente parametro, este es el identificador unico de version, en otro caso, es el numero de version
+    * @param	int $versionID	: Si se omite el siguiente parametro, este es el identificador unico de version, en otro caso, es 
+    *                             el numero de version
     * @param	int $subVersion = null
     **/
     function GetUserID($versionID, $subVersion = null)

@@ -579,7 +579,7 @@ class BatchManager
             return false;
         }
         if (! $servers) {
-            return [];
+            return true;
         }
         $dbObj = new Db();
         

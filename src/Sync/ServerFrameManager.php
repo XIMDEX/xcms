@@ -251,17 +251,19 @@ class ServerFrameManager
     /**
      * Sets a number of ServerFrames to states Due2In or Due2Out
      * 
-     * @param array pumpers
-     * @param int chunk
-     * @param array activeAndEnabledServers
+     * @param $pumpers
+     * @param $chunk
+     * @param $activeAndEnabledServers
+     * @return int
      */
-    public function setTasksForPumping($pumpers, $chunk, $activeAndEnabledServers)
+    public function setTasksForPumping($pumpers, $chunk, $activeAndEnabledServers) : int
     {
         $dbObj = new \Ximdex\Runtime\Db();
         $serverFrame = new ServerFrame();
         $batchManager = new BatchManager();
         $servers = implode(',', $activeAndEnabledServers);
         Logger::info('ACTIVE PUMPERS STATS', false, 'white');
+        $totalTasks = 0;
         foreach ($pumpers as $pumperId) {
             $numPendingTasks = $serverFrame->getUncompletedTasks($pumperId, $activeAndEnabledServers);
             $numTasksForPumping = $chunk - $numPendingTasks;
@@ -274,6 +276,7 @@ class ServerFrameManager
             Logger::info('Pumper ' . $pumperId . ': Vacancy level: ' . $vacancyLevel . '%. Pace = ' . $pumper->get('Pace') 
                 . '. Task for pumping: ' . $numTasksForPumping . ' of ' . $chunk . '');
             if ($numTasksForPumping > 0) {
+                $totalTasks += $numTasksForPumping;
                 $sql = 'SELECT ServerFrames.IdSync, ServerFrames.IdBatchUp, ServerFrames.IdBatchDown FROM ServerFrames';
                 if (App::getValue('SchedulerPriority') == 'portal') {
                     $sql .= ' INNER JOIN PortalFrames pf ON pf.id = ServerFrames.IdPortalFrame';
@@ -332,6 +335,7 @@ class ServerFrameManager
                 Logger::warning('Pumper ' . $pumperId . ' full');
             }
         }
+        return $totalTasks;
     }
 
     /**

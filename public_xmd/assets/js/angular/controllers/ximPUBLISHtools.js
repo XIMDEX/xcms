@@ -31,7 +31,7 @@ angular.module("ximdex.main.controller").controller("ximPUBLISHtools", [
 	
 	// 5 seconds for interval of refresh data
     var INIT_INTERVAL = 2000;
-    var INCREMENT_INTERVAL = 1.01;
+    var INCREMENT_INTERVAL = 1.001;
     
 	$scope.json = [];
     $scope.urlParams = {};
@@ -42,9 +42,9 @@ angular.module("ximdex.main.controller").controller("ximPUBLISHtools", [
     $scope.init = function(params, initLoop)
     {
     	$scope.urlParams = {
-    			action: params.action.command,
-    			id: params.nodes[0],
-    			module: params.action.module
+			action: params.action.command,
+			id: params.nodes[0],
+			module: params.action.module
     	};
     	if (initLoop) {
     		$scope.getFrameListLoop();
@@ -66,7 +66,7 @@ angular.module("ximdex.main.controller").controller("ximPUBLISHtools", [
     	});
     	
     	// Increment interval
-    	// console.log('Interval: ' + $scope.interval);
+    	console.log('Interval: ' + $scope.interval);
     	if (! $scope.interval) {
     		
     		// Reset interval

@@ -152,7 +152,9 @@ class Scheduler
                     }
 
                     // Pumping
-                    $pumperManager->callingPumpers();
+                    if (!$pumperManager->callingPumpers()) {
+                        sleep(SCHEDULER_SLEEPING_TIME_IN_FULL_PUMPERS);
+                    }
                     
                     // Set batchs to a new state and update frames stats
                     $batchManager->setBatchsActiveOrEnded($testTime);

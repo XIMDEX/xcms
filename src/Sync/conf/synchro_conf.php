@@ -58,6 +58,11 @@ if (! defined('MAX_TASKS_PER_PUMPER')) {
     define('MAX_TASKS_PER_PUMPER', 0);
 }
 
+// Delay time in seconds for server with pumper task soft errors
+if (! defined('SERVER_DELAY_TIME_PUMPER_IN_SOFT_ERROR')) {
+    define('SCHEDULER_CHUNK', 10);
+}
+
 // Default batch priority
 if (! defined('DEFAULT_BATCH_PRIORITY')) {
     define('DEFAULT_BATCH_PRIORITY', 0.5);
@@ -76,6 +81,11 @@ if (! defined('MAX_NUM_CICLOS_VACIOS_SCHEDULER')) {
 // Time in second that scheduler sleeps for each empty cycle
 if (! defined('SCHEDULER_SLEEPING_TIME_BY_VOID_CYCLE')) {
 	define('SCHEDULER_SLEEPING_TIME_BY_VOID_CYCLE', 15);
+}
+
+// Time in seconds that scheduler sleeps in full pumpers
+if (! defined('SCHEDULER_SLEEPING_TIME_IN_FULL_PUMPERS')) {
+    define('SCHEDULER_SLEEPING_TIME_IN_FULL_PUMPERS', 1);
 }
 
 // Maximum number of batch cycles multiplicator

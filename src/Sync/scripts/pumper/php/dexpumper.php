@@ -472,6 +472,9 @@ class DexPumper
 			    $retries++;
 			    $this->serverFrame->set('Retry', $retries);
 			    $this->serverFrame->set('ErrorLevel', ServerFrame::ERROR_LEVEL_SOFT);
+			    if ($this->connection->getType() == Connector::TYPE_API) {
+			        $this->server->disableForPumping(true, SERVER_DELAY_TIME_PUMPER_IN_SOFT_ERROR, false);
+			    }
 			}
 			$this->serverFrame->update();
 			return false;

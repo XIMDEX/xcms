@@ -135,31 +135,34 @@ class PumperManager
     /**
      * For each Pumper gets the number of ServerFrames needed to complete the chunk and makes them available
      * 
-     * @param array activeAndEnabledServers
+     * @param array $activeAndEnabledServers
+     * @return int|NULL
      */
-    public function callingPumpers(array $activeAndEnabledServers = null)
+    public function callingPumpers(array $activeAndEnabledServers = null) : ?int
     {
         if (! $activeAndEnabledServers) {
             $activeAndEnabledServers = ServerNode::getServersForPumping();
         }
         if ($activeAndEnabledServers === false) {
-            return false;
+            return null;
         }
         if (! $activeAndEnabledServers) {
-            return [];
+            return 0;
         }
         Logger::debug('Calling pumpers');
         $serverFrameManager = new ServerFrameManager();
         $pumpers = $serverFrameManager->getPumpersWithTasks($activeAndEnabledServers);
         if (!is_null($pumpers) && count($pumpers) > 0) {
             Logger::debug('There are tasks for pumping');
-            $serverFrameManager->setTasksForPumping($pumpers, SCHEDULER_CHUNK, $activeAndEnabledServers);
+            $tasks = $serverFrameManager->setTasksForPumping($pumpers, SCHEDULER_CHUNK, $activeAndEnabledServers);
             $result = $this->checkAllPumpers($pumpers, PUMPER_SCRIPT_MODE);
             if ($result == false) {
                 Logger::error('All pumpers with errors');
             }
         } else {
             Logger::debug('No pumpers to be called');
+            $tasks = 0;
         }
+        return $tasks;
     }
 }

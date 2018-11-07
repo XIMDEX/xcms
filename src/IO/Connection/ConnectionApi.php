@@ -173,6 +173,9 @@ class ConnectionApi extends Connector implements IConnector
 	{
 	    try {
 	        $res = $this->client->request('DELETE', $this->host . '/' . App::getValue('ximid') . ':' . $id);
+	        
+	        // Delay time between delete call
+	        // usleep(300000);
 	    }
 	    catch (\Exception $e) {
 	        $this->error = $e->getMessage();
@@ -211,6 +214,9 @@ class ConnectionApi extends Connector implements IConnector
 	    }
 	    try {
 	       $res = $this->client->request('PUT', $this->host, ['body' => $content, 'headers' => ['Content-Type' => 'application/xml']]);
+	       
+	       // Delay time between put call
+	       // usleep(300000);
 	    }
 	    catch (\Exception $e) {
 	        $this->error = $e->getMessage();
