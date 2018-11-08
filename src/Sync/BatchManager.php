@@ -770,7 +770,7 @@ class BatchManager
         $list['totalserverframes'] = $dbObj->GetValue('ServerFramesTotal');
 
         // Update portal frames cycles
-        $sql = 'UPDATE PortalFrames SET Cycles = Cycles + 1, BoostCycles = BoostCycles + (1 / Boost) WHERE id = ' 
+        $sql = 'UPDATE PortalFrames SET CyclesTotal = CyclesTotal + 1, BoostCycles = BoostCycles + (1 / Boost) WHERE id = ' 
             . $dbObj->GetValue('IdPortalFrame');
         $dbObj->Execute($sql);
         return $list;

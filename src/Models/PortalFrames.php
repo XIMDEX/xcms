@@ -126,6 +126,7 @@ class PortalFrames extends PortalFramesOrm
         if ($db->Query($sql) === false) {
             throw new \Exception('Could not obtain the portal frames in order to update the frames stats');
         }
+        // $reset = false;
         $db2 = new Db();
         while (! $db->EOF) {
         
@@ -197,12 +198,19 @@ class PortalFrames extends PortalFramesOrm
                 }
                 $portalFrame->set('StatusTime', time());
             }
+            /*
+            // Reset boost cycles parameter in any cycles
+            if (!$reset and $portalFrame->get('BoostCycles') > (3 * $portalFrame->get('CyclesTotal'))) {
+                self::resetBoostCycles();
+                $reset = true;
+            }
+            */
+            // Update whole modified fields
             if ($portalFrame->update() === false) {
                 throw new \Exception('Cannot update the portal frame with ID: ' . $portalFrame->get('id'));
             }
             $db->Next();
         }
-        // Logger::debug('Call to update portal frames');
     }
     
     /**

@@ -287,7 +287,7 @@ class ServerFrameManager
                         AND ServerFrames.IdServer IN (' . $servers . ')'; 
                 $sql .= ' ORDER BY';
                 if (App::getValue('SchedulerPriority') == 'portal') {
-                    $sql .= ' pf.Cycles,';
+                    $sql .= ' pf.CyclesTotal,';
                 } else {
                     $sql .= ' b.Priority DESC, b.Cycles, b.Type = \'' . Batch::TYPE_DOWN . '\' DESC, b.IdBatch,';
                 }

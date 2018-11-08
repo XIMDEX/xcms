@@ -57,7 +57,7 @@ class PortalFramesOrm extends GenericData
         'SuccessRate' => array('type' => 'float', 'not_null' => 'true'),
         'Boost' => array('type' => 'varchar(1)', 'not_null' => 'true'),
         'BoostCycles' => array('type' => 'float', 'not_null' => 'true'),
-        'Cycles' => array('type' => 'int(12)', 'not_null' => 'true')
+        'CyclesTotal' => array('type' => 'int(12)', 'not_null' => 'true')
     );
     public $_uniqueConstraints = array();
     public $_indexes = array('id');
@@ -83,5 +83,5 @@ class PortalFramesOrm extends GenericData
     public $SuccessRate = 0;
     public $Boost = 1;
     public $BoostCycles = 0;
-    public $Cycles = 0;
+    public $CyclesTotal = 0;
 }

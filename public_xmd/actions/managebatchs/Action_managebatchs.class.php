@@ -266,7 +266,7 @@ class Action_managebatchs extends ActionAbstract
             'stopped' => $stopped,
             'playing' => (int) $portal->get('Playing'),
             'successRate' => round($portal->get('SuccessRate'), 2),
-            'cycles' => (int) $portal->get('Cycles'),
+            'cycles' => (int) $portal->get('CyclesTotal'),
             'boost' => (int) $portal->get('Boost'),
             'order' => (int) $order++
         ];
