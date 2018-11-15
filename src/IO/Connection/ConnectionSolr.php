@@ -471,4 +471,13 @@ class ConnectionSolr extends Connector implements IConnector
         $trueName = implode("", $fullNameParts);
         return $trueName;
     }
+    
+    /**
+     * {@inheritDoc}
+     * @see \Ximdex\IO\Connection\IConnector::dirIsEmpty()
+     */
+    public function dirIsEmpty(string $path): bool
+    {
+        return false;
+    }
 }

@@ -245,5 +245,14 @@ class ConnectionApi extends Connector implements IConnector
 	public function isFile($path)
 	{
 		return $this->isFile;
-	}	
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 * @see \Ximdex\IO\Connection\IConnector::dirIsEmpty()
+	 */
+    public function dirIsEmpty(string $path): bool
+    {
+        return false;
+    }
 }

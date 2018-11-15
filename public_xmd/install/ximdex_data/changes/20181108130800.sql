@@ -1,0 +1,1 @@
+ALTER TABLE `Batchs` CHANGE `Priority` `Priority` FLOAT(3,2) UNSIGNED NOT NULL DEFAULT '1.0';

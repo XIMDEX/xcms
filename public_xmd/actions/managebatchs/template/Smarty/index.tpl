@@ -38,6 +38,7 @@
                         -->
                     </span>
                     <span title="Node ID: #/ frames.idNodeGenerator /# 
+                        &#013;Portal ID: #/ frames.idPortal /#
                         &#013;User: #/ frames.userName /# 
                         &#013;Created: #/ frames.creationTime /#
                         &#013;Scheduled: #/ frames.scheduledTime /# 
@@ -84,7 +85,7 @@
                 </div>
                 <div class="boost-buttons">
                     Cycles: #/ frames.cycles /# · Success rate: #/ frames.successRate * 100 | number:0 /#%
-                    <span ng-if="frames.startTime && !frames.endTime">
+                    <span ng-if="!frames.endTime" title="Boost this portal to #/ boost /#x speed">
                         <span data-ng-repeat="boost in [1, 2, 4]" class="boost-icon" 
                                 ng-class="{literal}{'boost-icon-#/ boost /#x-selected': frames.boost == boost}{/literal}" 
                                 ng-click="boostPortal(frames.idPortal, boost);"><i class="fas fa-rocket"></i> x#/ boost /#</span>

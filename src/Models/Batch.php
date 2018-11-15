@@ -50,7 +50,7 @@ class Batch extends BatchsOrm
     const NOFRAMES = 'NoFrames';
     const STOPPED = 'Stopped';
     const DELAYED = 'Delayed';
-    const PRIORITY_TYPE_DOWN = 0.9;
+    const PRIORITY_TYPE_DOWN = 1.1;
 
     public function set($attribute, $value)
     {
@@ -115,48 +115,17 @@ class Batch extends BatchsOrm
         $fatalErrorFrames = (int) $this->get('ServerFramesFatalError');
         $temporalErrorFrames = (int) $this->get('ServerFramesTemporalError');
         $processedFrames = $sucessFrames + $fatalErrorFrames + $temporalErrorFrames;
+        $portal = new PortalFrames($this->get('IdPortalFrame'));
         if ($processedFrames) {
-            $portal = new PortalFrames($this->get('IdPortalFrame'));
             $priority = round($sucessFrames / $processedFrames * $portal->get('Boost'), 2);
+        } else {
+            $priority = 1.0 * $portal->get('Boost');
+        }
+        if ($priority) {
             Logger::info('Set priority to ' . $priority . ' for batch ' . $this->IdBatch);
             $this->set('Priority', $priority);
         }
         return true;
-    }
-
-    /**
-     *  Gets the field IdBatch from Batchs join Nodes which matching the value of State
-     *  
-     *  @param string stateCryteria
-     *  @return array|false
-     */
-    public function getNodeGeneratorsFromBatchs($stateCryteria = null)
-    {
-        $dbObj = new \Ximdex\Runtime\Db();
-        $where = "";
-        if ($stateCryteria) {
-            if ($stateCryteria != "Any") {
-                $where .= " AND Batchs.State = '" . $stateCryteria . "'";
-            }
-        }
-        $query = "SELECT Batchs.IdNodeGenerator, Nodes.Name FROM Batchs, Nodes where Batchs.IdNodeGenerator = Nodes.IdNode " 
-            . $where . " group by Batchs.IdNodeGenerator";
-        $dbObj->Query($query);
-        if (!$dbObj->numErr) {
-            if ($dbObj->numRows > 0) {
-                $arrayNodes = array();
-                while (!$dbObj->EOF) {
-                    $arrayNodes[$dbObj->row['IdNodeGenerator']]['Name'] = $dbObj->row['Name'];
-                    $nodeGeneratorObj = new Node($dbObj->row['IdNodeGenerator']);
-                    $arrayNodes[$dbObj->row['IdNodeGenerator']]['Path'] = $nodeGeneratorObj->getPath();
-                    $dbObj->Next();
-                }
-                return $arrayNodes;
-            }
-        } else {
-            Logger::info("Error in DB: " . $dbObj->desErr);
-        }
-        return false;
     }
 
     /**
@@ -197,40 +166,6 @@ class Batch extends BatchsOrm
         }
         return $result;
     }
-
-    /**
-     *  Sets the field Priority for a Batch
-     *  
-     *  @param int idBatch
-     *  @param string mode
-     *  return bool
-     */
-    public function prioritizeBatch($idBatch, $mode = 'up')
-    {
-        //Hack: fix bad compose of float field in SQL update
-        setlocale (LC_NUMERIC, 'C');
-        parent::__construct($idBatch);
-        $priority = (float) $this->get('Priority'); 
-        if ($mode === 'up') {
-            $priority += 0.3;
-            if ($priority > 1) {
-                $priority = 1;
-            }
-        } else {
-            $priority -= 0.3;
-            if ($priority < 0) {
-                $priority = 0;
-            }
-        }
-        $this->set('Priority', $priority);
-        $hasUpdated = parent::update();
-        if ($hasUpdated) {
-            Logger::info("Setting priority Value = $priority for batch $idBatch");
-            return true;
-        } else {
-            return false;
-        }
-    }
     
     /**
      * Retrieve a total of batchs in processing status
@@ -256,10 +191,10 @@ class Batch extends BatchsOrm
      * @param int $portalId
      * @return boolean
      */
-    public static function restart(int $portalId) : ?bool 
+    public static function restart(int $portalId) : bool 
     {
         if (!$portalId) {
-            return null;
+            return false;
         }
         $sql = 'UPDATE `Batchs` SET State = \'' . Batch::INTIME . '\', Cycles = 0 WHERE State = \'Stopped\' AND IdPortalFrame = ' . $portalId;
         $db = new Db();

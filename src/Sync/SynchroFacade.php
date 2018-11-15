@@ -286,35 +286,44 @@ class SynchroFacade
         }
         
         // Generate a list with server frames per server
-        $serverFrame = new ServerFrame();
+        $nodeFrame = new NodeFrame();
         $servers = [];
         foreach ($nodes2expire as $id) {
             
-            // Obtain the server frames related to the nodes to expire
-            $frames = $serverFrame->getFramesOnDate($id, $down);
-            if ($frames === false) {
+            // Obtain the node frames related to the nodes to expire
+            $nodeFrames = $nodeFrame->getNodeFramesOnDate($id, $down);
+            if ($nodeFrames === false) {
                 return false;
             }
-            foreach ($frames as $frame) {
-                $servers[$frame['IdServer']][] = $frame['IdSync'];
+            foreach ($nodeFrames as $nodeFrameId) {
+                $nodeFrame = new NodeFrame($nodeFrameId);
+                $nodeFrame->set('TimeDown', $down);
+                $nodeFrame->update();
+                
+                // Update server frames list with server organization
+                foreach ($nodeFrame->getFrames() as $idSync) {
+                    $serverFrame = new ServerFrame($idSync);
+                    if (in_array($serverFrame->get('State'), ServerFrame::PUBLISHING_STATUS)) {
+                        $servers[$serverFrame->get('IdServer')][] = $idSync;
+                    }
+                }
             }
             
             // Obtain the frames to be cancelled
-            $frames = $serverFrame->getFutureFramesForDate($id, $down);
-            if ($frames === false) {
+            $nodeFrames = $nodeFrame->getFutureNodeFramesForDate($id, $down);
+            if ($nodeFrames === false) {
                 return false;
             }
             
             // Set the cancelled state in these frames
-            foreach ($frames as $frame) {
-                $serverFrame = new ServerFrame($frame['IdSync']);
-                if (! $serverFrame->get('IdSync')) {
-                    Logger::error('Cannot load the server frame with ID: ' . $frame['IdSync']);
-                    continue;
-                }
-                $serverFrame->set('State', ServerFrame::CANCELLED);
-                $serverFrame->set('ErrorLevel', null);
-                $serverFrame->update();
+            foreach ($nodeFrames as $nodeFrameId) {
+                $nodeFrame = new NodeFrame($nodeFrameId);
+                
+                // Cancel server frames for this node frame
+                $nodeFrame->set('IsProcessUp', 1);
+                $nodeFrame->set('IsProcessDown', 1);
+                $nodeFrame->update();
+                $nodeFrame->cancelServerFrames();
             }
         }
         

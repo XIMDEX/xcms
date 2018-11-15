@@ -61,7 +61,7 @@ class ServerFrameManager
      * @param int delayed
      * @return bool
      */
-    public function changeState($serverFrameId, $operation, $nodeId, $delayed = null)
+    public function changeState(int $serverFrameId, string $operation, int $nodeId, int $delayed = null)
     {
         $serverFrame = new ServerFrame($serverFrameId);
         $initialState = $serverFrame->get('State');
@@ -115,7 +115,11 @@ class ServerFrameManager
                         $overlapedFrame->update();
                     }
                 }
-                $finalState = ServerFrame::DUE2IN_;
+                if ($serverFrame->get('DateDown') and $serverFrame->get('DateDown') < time()) {
+                    $finalState = ServerFrame::DUE2OUT_;
+                } else {
+                    $finalState = ServerFrame::DUE2IN_;
+                }
                 /*
                 // If is the first publication must republish the ancestors
                 $nodeFrame = new NodeFrame();
@@ -152,9 +156,11 @@ class ServerFrameManager
         } else {
             Logger::error('Incorrect operation ' . $operation);
         }
-        $pumperId = $this->calcPumper($serverFrameId);
+        if (!$serverFrame->get('PumperId')) {
+            $pumperId = $this->calcPumper($serverFrameId);
+            $serverFrame->set('PumperId', $pumperId);
+        }
         $serverFrame->set('State', (isset($finalState)) ? $finalState : $initialState);
-        $serverFrame->set('PumperId', $pumperId);
         if (isset($finalState)) {
             $serverFrame->set('ErrorLevel', null);
         }
@@ -260,7 +266,7 @@ class ServerFrameManager
     {
         $dbObj = new \Ximdex\Runtime\Db();
         $serverFrame = new ServerFrame();
-        $batchManager = new BatchManager();
+        // $batchManager = new BatchManager();
         $servers = implode(',', $activeAndEnabledServers);
         Logger::info('ACTIVE PUMPERS STATS', false, 'white');
         $totalTasks = 0;
@@ -281,10 +287,11 @@ class ServerFrameManager
                 if (App::getValue('SchedulerPriority') == 'portal') {
                     $sql .= ' INNER JOIN PortalFrames pf ON pf.id = ServerFrames.IdPortalFrame';
                 } else {
-                    $sql .= ' INNER JOIN Batchs b ON (b.IdBatch = ServerFrames.IdBatchUp OR b.IdBatch = ServerFrames.IdBatchDown)';
+                    $sql .= ' INNER JOIN Batchs b ON b.IdBatch = ServerFrames.IdBatchUp OR b.IdBatch = ServerFrames.IdBatchDown';
                 }
-                $sql .= ' WHERE RIGHT(ServerFrames.State, 1) = \'_\' AND ServerFrames.PumperId = ' . $pumperId . ' 
-                        AND ServerFrames.IdServer IN (' . $servers . ')'; 
+                $sql .= ' WHERE ((ServerFrames.State = \'' . ServerFrame::DUE2IN_ . '\') ';
+                $sql .= ' OR ServerFrames.State = \'' . ServerFrame::DUE2OUT_ . '\')';
+                $sql .= ' AND ServerFrames.PumperId = ' . $pumperId . ' AND ServerFrames.IdServer IN (' . $servers . ')';
                 $sql .= ' ORDER BY';
                 if (App::getValue('SchedulerPriority') == 'portal') {
                     $sql .= ' pf.CyclesTotal,';
@@ -313,7 +320,7 @@ class ServerFrameManager
                         if (!$this->processTaskForServerFrame($task['id'])) {
                             continue;
                         }
-                        
+                        /*
                         // Update related batch
                         if ($task['up']) {
                             $idBatch = $task['up'];
@@ -325,6 +332,7 @@ class ServerFrameManager
                         } else {
                             Logger::error('Server frame ' . $task['id'] . ' without batch associated');
                         }
+                        */
                     }
                     $timer->stop();
                     Logger::debug('Set task for pumping ended; time: ' . $timer->display() . ' milliseconds');

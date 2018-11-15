@@ -314,7 +314,7 @@ class ConnectionSsh extends Connector implements IConnector
         }
         if (empty($folder)) $folder = '/';
         if ($this->cd($folder)) {
-            if ($this->pwd() == $folder || $this->pwd() . '/' == $folder) {
+            if (rtrim($this->pwd(), '/') == rtrim($folder, '/')) {
                 $isFile = $this->netSFTP->file_exists($file);
             }
         }
@@ -356,5 +356,15 @@ class ConnectionSsh extends Connector implements IConnector
         $res = $this->netSFTP->nlist($dir);
         Logger::debug('Call to ls returns: ' . $res);
         return $res;
+    }
+    
+    /**
+     * {@inheritDoc}
+     * @see \Ximdex\IO\Connection\IConnector::dirIsEmpty()
+     */
+    public function dirIsEmpty(string $path): bool
+    {
+        $content = $this->netSFTP->exec('ls -1a ' . $path . ' | wc -l');
+        return (bool) $content - 2;
     }
 }

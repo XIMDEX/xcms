@@ -77,9 +77,12 @@ class NodeFrame extends NodeFramesOrm
 	*   @param string operation
 	*	@return array
 	*/
-    public function getFrames($idNdFr, string $operation)
+    public function getFrames(int $idNdFr = null, string $operation = null)
     {
-        $sql = "SELECT IdSync FROM ServerFrames WHERE IdNodeFrame = $idNdFr";
+        if (!$idNdFr) {
+            $idNdFr = $this->IdNodeFrame;
+        }
+        $sql = 'SELECT IdSync FROM ServerFrames WHERE IdNodeFrame = ' . $idNdFr;
         if ($operation == Batch::TYPE_UP or $operation == Batch::TYPE_DOWN) {
             $sql .= ' and State not in (\'' . ServerFrame::REMOVED . '\', \'' . ServerFrame::REPLACED . '\', \'' 
                 . ServerFrame::CANCELLED . '\'';
@@ -93,99 +96,6 @@ class NodeFrame extends NodeFramesOrm
 			$dbObj->Next();
 		}
 		return $frames;
-    }
-
-	/**
-	*   Gets the time intervals without NodeFrames for a given Node
-	*   
-	*	@param int nodeId
-	*	@return array
-	*/
-    public function getGaps($nodeId)
-    {
-		$dbObj = new \Ximdex\Runtime\Db();
-		$arrayDates = array();
-		$gaps = array();
-		$now = time();
-		$infinite = mktime(0,0,0,12,12,2099);
-		$j = 0;
-		$sql = "SELECT TimeUp, TimeDown FROM NodeFrames WHERE NodeId = $nodeId 
-            AND (TimeDown > $now OR TimeDown IS NULL) ORDER BY TimeUp ASC";
-		$dbObj->Query($sql);
-		while (!$dbObj->EOF) {
-			$timeUp = $dbObj->GetValue("TimeUp");
-			$timeDown = $dbObj->GetValue("TimeDown");
-			$arrayDates[$j]['up'] = $timeUp;
-			if (!$timeDown) {
-			    $arrayDates[$j]['down'] = $infinite;
-			}
-			else {
-			    $arrayDates[$j]['down'] = $timeDown;
-			}
-			$j++;
-			$dbObj->Next();
-		}
-		if ($dbObj->numRows == 0) {
-			$gaps[$j]['start'] = $now;
-			$gaps[$j]['end'] = $infinite;
-			return $gaps;
-		}
-		$arrayDates[$j]['up'] = $infinite;
-		$arrayDates[$j]['down'] = 0;
-		$j = 0;
-		$size = count($arrayDates);
-		if ($arrayDates[0]['up'] > $now) {
-			$gaps[$j]['start'] = $now;
-			$gaps[$j]['end'] = $arrayDates[0]['up'];
-			$j++;
-		}
-		for($i=1;$i<$size;$i++) {
-			$tmp = $arrayDates[$i]['up'] - $arrayDates[$i-1]['down'];
-			if ($tmp > 0) {
-				$gaps[$j]['start'] = $arrayDates[$i-1]['down'];
-				$gaps[$j]['end'] = $arrayDates[$i]['up'];
-				$j++;
-			}
-		}
-		return $gaps;
-    }
-
-	/**
-    *	Gets the NodeFrame active
-    *
-	*	@param int nodeId
-	*	@param int nodeFrId
-	*	@param int up
-	*	@param int down
-	*	@param int testTime
-	*	@return array / NULL
-	*/
-    public function getActiveNodeFrame($nodeId, $nodeFrId, $up, $down=null, $testTime = NULL)
-    {
-		$dbObj = new \Ximdex\Runtime\Db();
-		if (!$testTime) {
-			$now = time();
-		} else {
-			$now = $testTime;
-		}
-		if (!$down) {
-			$sql = "SELECT IdNodeFrame, TimeDown, VersionId FROM NodeFrames WHERE ((TimeDown IS NOT NULL
-				AND $up < TimeDown) OR (TimeDown IS NULL)) AND NodeId = $nodeId AND TimeUp < $now
-				AND IdNodeFrame != $nodeFrId AND Active = 1";
-		} else {
-			$sql = "SELECT IdNodeFrame, TimeDown, VersionId FROM NodeFrames WHERE ((TimeDown IS NOT NULL
-				AND ((TimeUp < $up AND $up  <TimeDown) OR (TimeUp < $down AND $down < TimeDown)))
-				OR (TimeDown IS NULL AND TimeUp < $down)) AND NodeId = $nodeId AND TimeUp < $now
-				AND IdNodeFrame != $nodeFrId AND Active = 1";
-		}
-		$dbObj->Query($sql);
-		if ($dbObj->numRows != 1) {
-			return NULL;
-		}
-		$idNodeFr = $dbObj->GetValue("IdNodeFrame");
-		$version = $dbObj->GetValue("VersionId");
-		$timeDown = $dbObj->GetValue("TimeDown");
-		return array($idNodeFr,$version,$timeDown);
     }
 
 	/**
@@ -248,98 +158,32 @@ class NodeFrame extends NodeFramesOrm
     }
 
 	/**
-	*  Gets the field IdNodeFrame from NodeFrames table which matching the value of nodeId
-	*  
-	*  @param int nodeId
-	*  @return int|null
-	*/
-    public function getNodeFrameByNode($nodeId)
-    {
-		$dataFactory = new DataFactory($nodeId);
-		$idVersion = $dataFactory->GetLastVersionId();
-		$condition = 'NodeId = %s AND VersionId = %s';
-		$params = array('NodeId' => $nodeId, 'VersionId' => $idVersion);
-		$result = parent::find('IdNodeFrame', $condition, $params, MONO);
-		if (!$result || is_null($result)) {
-			return null;
-		}
-		return $result[0];
-    }
-
-	/**
-    *	Checks whether the NodeFrame has been renamed
-    *
-	*	@param int nodeId
-	*	@return boolean
-	*/
-	public function isTainted($nodeId)
+	 * Calls for cancel the ServerFrames which matching the value of nodeId
+	 * Can ignore down server frames (DateDown field is not null)
+	 * 
+	 * @param int $idNodeFrame
+	 * @param bool $ignoreDownFrames
+	 */
+	public function cancelServerFrames(int $idNodeFrame = null, bool $ignoreDownFrames = false)
 	{
-		$condition = 'NodeId = %s ORDER BY IdNodeFrame DESC LIMIT 1';
-		$params = array('NodeId' => $nodeId);
-		$result = parent::find('IdNodeFrame, Name', $condition, $params, MULTI);
-		if (is_null($result)) {
-			return true;
-		}
-		if (isset($result[0]))
-		{
-		    $idNodeFrame = $result[0]['IdNodeFrame'];
-		    $name = $result[0]['Name'];
-		}
-		else
-		{
-		    $idNodeFrame = null;
-		    $name = null;
-		}
-		$node = new Node($nodeId);
-		if ($node->get('Name') != $name) {
-			Logger::info("Document's name changed: rep. ancestors");
-			return true;
-		}
-		$serverFrame = new ServerFrame();
-		$condition = 'IdNodeFrame = %s ORDER BY IdSync DESC LIMIT 1';
-		$result = $serverFrame->find('RemotePath', $condition, array('IdNodeFrame' => $idNodeFrame), MONO);
-		$path = $result[0];
-		if ($path != $node->GetPublishedPath()) {
-			Logger::info("Document's path changed: rep. ancestors");
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	*  Calls for cancel the ServerFrames which matching the value of nodeId
-	*  
-	*  @param int idNodeFrame
-	*/
-	public function cancelServerFrames($idNodeFrame)
-	{
+	    if (!$idNodeFrame) {
+	        $idNodeFrame = $this->IdNodeFrame;
+	    }
 		$condition = 'IdNodeFrame = %s';
-		$params = array('IdNodeFrame' => $idNodeFrame);
+		if ($ignoreDownFrames) {
+		    $condition .= ' AND DateDown IS NULL';
+		}
+		$params = ['IdNodeFrame' => $idNodeFrame];
 		$serverFrame = new ServerFrame();
 		$result = $serverFrame->find('IdSync', $condition, $params, MULTI);
-		if (sizeof($result) > 0) {
+		if ($result) {
 			foreach ($result as $dataFrames) {
-				$idServerFrame = $dataFrames[0];
-				$serverFrame = new ServerFrame($idServerFrame);
+			    $serverFrame = new ServerFrame($dataFrames[0]);
 				$serverFrame->set('State', ServerFrame::CANCELLED);
 				$serverFrame->set('ErrorLevel', null);
 				$serverFrame->update();
 			}
 		}
-	}
-
-	/**
-	*  Gets the field VersionId from NodeFrames table which matching the value of nodeId
-	*  
-	*  @param int nodeId
-	*  @return int|null
-	*/
-	public function getPublishedVersion($nodeId)
-	{
-		$condition = 'NodeId = %s AND Active = 1';
-		$params = array('NodeId' => $nodeId);
-		$result = parent::find('VersionId', $condition, $params, MONO);
-		return count($result) > 0 ? $result[0] : NULL;
 	}
 
 	/**
@@ -371,16 +215,44 @@ class NodeFrame extends NodeFramesOrm
 		return count($result) > 0 ? $result[0] : NULL;
 	}
 	
-	public function set($attribute, $value)
+	/**
+	 * Get all node frames whose publication period is active in a given timestamp for a specified node ID
+	 *
+	 * @param int $nodeId
+	 * @param int $time
+	 * @return array
+	 */
+	public function getNodeFramesOnDate(int $nodeId, int $time) : array
 	{
-	    if ($attribute == 'IsProcessDown') {
-	        if (!$this->TimeDown and $value) {
-	           $this->TimeDown = time();
-	        }
-	        elseif ($this->TimeDown and !$value) {
-	            $this->TimeDown = null;
-	        }
+	    $sql = 'SELECT IdNodeFrame FROM NodeFrames'
+	        . ' WHERE NodeId = ' . $nodeId . ' AND TimeUp <= ' . $time;    // AND (TimeDown >= ' . $time . ' OR TimeDown IS NULL)';
+	    $dbObj = new \Ximdex\Runtime\Db();
+	    $dbObj->Query($sql);
+	    $frames = [];
+	    while (!$dbObj->EOF) {
+	        $frames[] = $dbObj->GetValue('IdNodeFrame');
+	        $dbObj->Next();
 	    }
-	    return parent::set($attribute, $value);
+	    return $frames;
+	}
+	
+	/**
+	 * Get all node frames that will be activated after a given timestamp and specified node ID
+	 *
+	 * @param int $nodeId
+	 * @param int $time
+	 * @return array
+	 */
+	public function getFutureNodeFramesForDate(int $nodeId, int $time) : array
+	{
+	    $sql = 'SELECT IdNodeFrame FROM NodeFrames WHERE NodeId = ' . $nodeId . ' AND TimeUp > ' . $time . ' AND TimeDown IS NULL';
+	    $dbObj = new \Ximdex\Runtime\Db();
+	    $dbObj->Query($sql);
+	    $frames = [];
+	    while (!$dbObj->EOF) {
+	        $frames[] = $dbObj->GetValue('IdNodeFrame');
+	        $dbObj->Next();
+	    }
+	    return $frames;
 	}
 }

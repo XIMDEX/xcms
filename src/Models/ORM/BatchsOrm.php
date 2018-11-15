@@ -66,7 +66,7 @@ class BatchsOrm extends GenericData
     public $Type;
     public $IdBatchDown;
     public $IdNodeGenerator;
-    public $Priority = 0.50;
+    public $Priority = 1.0;
     public $Cycles = 0;
     public $IdPortalFrame;
     public $UserId;

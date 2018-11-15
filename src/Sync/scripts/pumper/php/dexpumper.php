@@ -166,15 +166,13 @@ class DexPumper
 			$this->info('ServerFrame ' . $IdSync . ' to process');
 			$this->getHostConnection();
 			if ($state_task == ServerFrame::DUE2IN) {
-			    // $this->connection->setIsFile(false);
 			    $this->uploadAsHiddenFile();
 			} elseif ($state_task == ServerFrame::DUE2OUT) {
 				$this->RemoveRemoteFile();
 			} elseif ($state_task == ServerFrame::PUMPED) {
-			    // $this->connection->setIsFile(true);
 				$this->pumpFile();
 			}
-		} // End while(true)
+		}
 		$this->unRegisterPumper();
 	}
 
@@ -201,7 +199,7 @@ class DexPumper
 		$this->info('ServerFrame ' . $IdSync . ' DUE2OUT: Delete file from server');
 		$targetFolder = $initialDirectory . $remotePath;
 		$targetFile = $targetFolder . '/' . $fileName;
-		if ($this->connection->getType() != Connector::TYPE_API and ! $this->connection->isFile($targetFile)) {
+		if ($this->connection->getType() != Connector::TYPE_API and !$this->connection->isFile($targetFile)) {
 		    
 		    // If the file has been deleted, does not nothing and return a soft ok
 		    $removing = true;
@@ -210,7 +208,15 @@ class DexPumper
     		if ($removing) {
     		    Logger::info('Successfusly removed file ' . $fileName . ' (ID: ' . $this->serverFrame->get('NodeId') 
     		        . ') from server ' . $this->connection->getServer()->get('Description'), true);
-    		    //TODO ajlucena $this->connection->rm($targetFolder);
+    		    /*
+    		    if ($this->connection->dirIsEmpty($targetFolder)) {
+    		        
+    		        // Remove the target folder if it is empty
+        		    if ($this->connection->rm($targetFolder)) {
+        		        Logger::error('Could not delete the path foder ' . $targetFolder);
+    	   	       }
+    		    }
+    		    */
     		}
 		}
 		$this->updateTask($removing, ServerFrame::OUT);
@@ -329,7 +335,6 @@ class DexPumper
 			$msg_error = sprintf('Fail to connect or wrong login credentials for server: %s:%s with user: %s',  $host, $port, $login);
 			$this->fatal($msg_error);
 			$this->updateTask(false);
-			
 			
 			// Update batch for pumper server frame
 			if ($this->serverFrame) {

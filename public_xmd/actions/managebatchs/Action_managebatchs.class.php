@@ -186,7 +186,22 @@ class Action_managebatchs extends ActionAbstract
             $this->sendJSON(['success' => false, 'error' => 'Error estabishing boost to portal frame']);
         }
         try {
-            PortalFrames::resetBoostCycles();
+            if (App::getValue('SchedulerPriority') == 'portal') {
+                
+                // Priority by portal boost cycles
+                PortalFrames::resetBoostCycles();
+            } else {
+                
+                // Priority by batchs boost
+                $batchs = $portal->getBatchs();
+                foreach ($batchs as $id => $state) {
+                    if ($state != Batch::ENDED) {
+                        $batch = new Batch($id);
+                        $batch->calcPriority();
+                        $batch->update();
+                    }
+                }
+            }
         } catch (Exception $e) {
             $this->sendJSON(['success' => false, 'error' => $e->getMessage()]);
         }

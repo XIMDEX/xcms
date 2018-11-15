@@ -563,4 +563,21 @@ class FsUtils
         $from = '/' . preg_quote($from, '/') . '/';
         return preg_replace($from, $to, $content, 1);
     }
+    
+    /**
+     * Check if a given directory path is empty
+     * 
+     * @param string $dir
+     * @return bool
+     */
+    public function dir_is_empty(string $dir) : bool
+    {
+        $handle = opendir($dir);
+        while (false !== ($entry = readdir($handle))) {
+            if ($entry != '.' && $entry != '..') {
+                return false;
+            }
+        }
+        return true;
+    }
 }

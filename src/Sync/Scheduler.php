@@ -75,7 +75,6 @@ class Scheduler
         $cycles = 0;
 
         // Main loop
-        $batchManager->checkFramesIntegrity();
         do {
             
             // STOPPER
@@ -95,6 +94,7 @@ class Scheduler
 
                 // This is a void cycle...
                 $voidCycles++;
+                $batchManager->checkFramesIntegrity();
 
                 // Sleeping...
                 Logger::info('Sleeping...');
@@ -112,6 +112,7 @@ class Scheduler
                 
                 // This is a void cycle...
                 $voidCycles++;
+                $batchManager->checkFramesIntegrity();
 
                 // Sleeping...
                 Logger::info('Sleeping...');
@@ -139,7 +140,7 @@ class Scheduler
                     $batchType = $batchProcess['type'];
                     Logger::debug(sprintf('Processing batch %s type %s', $batchId, $batchType) . ', true');
                     $schedulerChunk = (SCHEDULER_CHUNK > MAX_NUM_NODES_PER_BATCH) ? SCHEDULER_CHUNK : MAX_NUM_NODES_PER_BATCH;
-                    $nodeFrames = $nodeFrameManager->getNotProcessNodeFrames($batchId, $schedulerChunk, $batchType);
+                    $nodeFrames = $nodeFrameManager->getNodeFramesToProcess($batchId, $schedulerChunk, $batchType);
                     if ($nodeFrames) {
                         foreach ($nodeFrames as $nodeFrameData) {
                             $nodeId = $nodeFrameData ['nodeId'];
@@ -147,7 +148,7 @@ class Scheduler
                             $timeUp = $nodeFrameData ['up'];
                             $timeDown = $nodeFrameData ['down'];
                             Logger::info(sprintf('Checking activity, nodeframe %s for batch %s', $nodeFrameId, $batchId));
-                            $nodeFrameManager->checkActivity($nodeFrameId, $nodeId, $timeUp, $timeDown, $batchType, $testTime);
+                            $nodeFrameManager->updateActivity($nodeFrameId, $nodeId, $timeUp, $timeDown, $batchType, $testTime);
                         }
                     }
 

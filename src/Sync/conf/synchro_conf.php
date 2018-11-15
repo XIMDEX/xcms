@@ -65,7 +65,7 @@ if (! defined('SERVER_DELAY_TIME_PUMPER_IN_SOFT_ERROR')) {
 
 // Default batch priority
 if (! defined('DEFAULT_BATCH_PRIORITY')) {
-    define('DEFAULT_BATCH_PRIORITY', 0.5);
+    define('DEFAULT_BATCH_PRIORITY', 1.0);
 }
 
 // Maximum number of scheduler cycles

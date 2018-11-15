@@ -525,9 +525,9 @@ class BatchManager
             Logger::warning(sprintf('Found %s Batchs without Frames, were marked as NoFrames', $db->numRows));
         }
         
-        // Remove portal frames without batchs and created time more than 1 minute
+        // Remove portal frames without batchs and created time more than 10 minute
         try {
-            $voidPortalFrames = PortalFrames::getVoidPortalFrames(60);
+            $voidPortalFrames = PortalFrames::getVoidPortalFrames(600);
         } catch (\Exception $e) {
             Logger::error($e->getMessage());
         }
@@ -566,7 +566,7 @@ class BatchManager
         $sql = 'SELECT ServerFrames.IdBatchUp, 
             SUM(IF (ServerFrames.ErrorLevel = ' . ServerFrame::ERROR_LEVEL_HARD . ', 1, 0)) AS FatalErrors, 
             SUM(IF (ServerFrames.ErrorLevel = ' . ServerFrame::ERROR_LEVEL_SOFT . ', 1, 0)) AS TemporalErrors,
-			SUM(IF (ServerFrames.State IN (\'' . implode('\', \'', ServerFrame::SUCCESS_STATUS_IN) . '\'), 1, 0)) AS Success, 
+			SUM(IF (ServerFrames.State IN (\'' . implode('\', \'', ServerFrame::FINAL_STATUS) . '\'), 1, 0)) AS Success, 
 			SUM(IF (ServerFrames.State IN (\'' . ServerFrame::PUMPED . '\'), 1, 0)) AS Pumpeds,
 			COUNT(ServerFrames.IdSync) AS Total,
             SUM(IF (ServerFrames.State NOT IN (\'' . ServerFrame::PENDING . '\', \'' . implode('\', \'', ServerFrame::FINAL_STATUS) 
@@ -578,6 +578,7 @@ class BatchManager
         if ($idBatchToUpdate) {
             $sql .= 'AND Batchs.IdBatch = ' . $idBatchToUpdate . ' ';
         }
+        // $sql .= 'AND ServerFrames.DateDown IS NULL ';
         $sql .= 'GROUP BY ServerFrames.IdBatchUp 
             HAVING (TemporalErrors + FatalErrors + Success + Pumpeds + Active) > 0 
             ORDER BY ServerFrames.IdBatchUp';
@@ -640,9 +641,9 @@ class BatchManager
                 // Search the batch type Down without type Up
                 $sql = 'SELECT SUM(IF (ErrorLevel = ' . ServerFrame::ERROR_LEVEL_HARD . ', 1, 0)) AS FatalErrors, 
                     SUM(IF (ErrorLevel = ' . ServerFrame::ERROR_LEVEL_SOFT . ', 1, 0)) AS TemporalErrors, 
-					SUM(IF (State IN (\'' . implode('\', \'', ServerFrame::SUCCESS_STATUS_OUT) . '\'), 1, 0)) AS Success, 
-					COUNT(IdSync) AS Total, SUM(IF (State IN (\'' . ServerFrame::PENDING . '\', \'' . ServerFrame::IN 
-					   . '\', \'' . ServerFrame::DUE2OUT_ . '\'), 1, 0)) AS Pending,
+					SUM(IF (State IN (\'' . implode('\', \'', ServerFrame::FINAL_STATUS) . '\'), 1, 0)) AS Success, 
+					COUNT(IdSync) AS Total, 
+                    SUM(IF (State IN (\'' . ServerFrame::PENDING . '\', \'' . ServerFrame::DUE2OUT_ . '\'), 1, 0)) AS Pending,
                     SUM(IF (State NOT IN (\'' . ServerFrame::PENDING . '\', \'' . ServerFrame::DUE2OUT_ . '\', \'' 
                         . implode('\', \'', ServerFrame::FINAL_STATUS) . '\') AND ErrorLevel IS NULL, 1, 0)) AS Active 
                     FROM ServerFrames WHERE IdBatchDown = ' . $idBatch . ' AND IdServer IN (' . implode(', ', $servers) . ')';
@@ -654,11 +655,11 @@ class BatchManager
                     // Search the batchs type Down with an associated batch type Up
                     $sql = 'SELECT SUM(IF(ServerFrames.ErrorLevel = ' . ServerFrame::ERROR_LEVEL_HARD . ', 1, 0)) AS FatalErrors, 
                         SUM(IF (ServerFrames.ErrorLevel = ' .ServerFrame::ERROR_LEVEL_SOFT . ', 1, 0)) AS TemporalErrors, 
-		      			SUM(IF (ServerFrames.State IN (\'' . implode('\', \'', ServerFrame::SUCCESS_STATUS_OUT) . '\'), 1, 0)) AS Success, 
+		      			SUM(IF (ServerFrames.State IN (\'' . implode('\', \'', ServerFrame::FINAL_STATUS) . '\'), 1, 0)) AS Success, 
 				    	COUNT(ServerFrames.IdSync) AS Total,
-                        SUM(IF (ServerFrames.State NOT IN (\'' . ServerFrame::PENDING . '\', \'' . implode('\', \'', ServerFrame::FINAL_STATUS)
-                            . '\' AND ErrorLevel IS NULL), 1, 0)) AS Active,
-                        SUM(IF (ServerFrames.State IN (\'' . ServerFrame::PENDING . '\'), 1, 0)) AS Pending
+                        SUM(IF (ServerFrames.State NOT IN (\'' . ServerFrame::PENDING . '\', \'' . ServerFrame::DUE2OUT_ . '\', \'' 
+                        . implode('\', \'', ServerFrame::FINAL_STATUS) . '\') AND ErrorLevel IS NULL, 1, 0)) AS Active 
+                        SUM(IF (ServerFrames.State IN (\'' . ServerFrame::PENDING . '\', \'' . ServerFrame::DUE2OUT_ . '\'), 1, 0)) AS Pending,
                         FROM ServerFrames, Batchs WHERE ServerFrames.IdBatchUp = Batchs.IdBatch AND Batchs.IdBatchDown = ' . $idBatch . '  
                         AND Batchs.ServerId IN (' . implode(', ', $servers) . ')';
                     if ($dbObj->Query($sql) === false) {
@@ -742,9 +743,10 @@ class BatchManager
         $dbObj = new Db();
         $sql = 'SELECT b.IdBatch, b.Type, b.IdNodeGenerator, b.Cycles, b.ServerFramesTotal, b.IdPortalFrame FROM Batchs b';
         $sql .= ' INNER JOIN PortalFrames pf ON pf.id = b.IdPortalFrame AND pf.Playing IS TRUE';
-        $sql .= ' INNER JOIN ServerFrames sf ON ((sf.IdBatchUp = b.IdBatch AND sf.State IN (\'' . ServerFrame::PENDING . '\'
-            , \'' . ServerFrame::DUE2IN_ . '\')) OR (sf.IdBatchDown = b.IdBatch AND sf.State IN (\'' . ServerFrame::PENDING . '\'
-            , \'' . ServerFrame::DUE2OUT_ . '\', \'' . ServerFrame::IN . '\')))';
+        $sql .= ' INNER JOIN ServerFrames sf ON (sf.IdBatchUp = b.IdBatch AND sf.State IN (\'' . ServerFrame::PENDING . '\'
+            , \'' . ServerFrame::DUE2IN_ . '\') 
+            OR (sf.IdBatchDown = b.IdBatch AND sf.State IN (\'' . ServerFrame::PENDING . '\', \'' . ServerFrame::DUE2OUT_ . '\'
+            , \'' . ServerFrame::IN . '\')))';
         $sql .= ' WHERE b.State = \'' . Batch::INTIME . '\' AND b.ServerFramesTotal > 0';
         if ($serversEnabled) {
             $sql .= ' AND b.ServerId IN (' . implode(', ', $serversEnabled) . ')';

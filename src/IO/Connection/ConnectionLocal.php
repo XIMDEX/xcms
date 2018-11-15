@@ -29,6 +29,7 @@ namespace Ximdex\IO\Connection;
 
 use Ximdex\Logger;
 use Exception;
+use Ximdex\Utils\FsUtils;
 
 class ConnectionLocal extends Connector implements IConnector
 {	
@@ -303,5 +304,14 @@ class ConnectionLocal extends Connector implements IConnector
 	public function isFile($path)
 	{
 		return is_file($path);
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 * @see \Ximdex\IO\Connection\IConnector::dirIsEmpty()
+	 */
+	public function dirIsEmpty(string $path): bool
+	{
+	    return FsUtils::dir_is_empty($path);
 	}
 }

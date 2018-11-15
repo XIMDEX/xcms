@@ -68,8 +68,8 @@ class ServerFrame extends ServerFramesOrm
     // Group of status
     const FINAL_STATUS = [self::IN, self::OUT, self::REMOVED, self::REPLACED, self::CANCELLED, self::OUTDATED, self::DELAYED
         , self::DUE2INWITHERROR, self::DUE2OUTWITHERROR];
-    const SUCCESS_STATUS_IN = [self::IN, self::REMOVED, self::REPLACED, self::CANCELLED, self::OUTDATED, self::DELAYED];
-    const SUCCESS_STATUS_OUT = [self::OUT, self::REMOVED, self::REPLACED, self::CANCELLED, self::OUTDATED, self::DELAYED];
+    const PUBLISHING_STATUS = [self::PENDING, self::DUE2IN_, self::DUE2IN, self::PUMPED, self::IN, self::DELAYED, self::DUE2INWITHERROR
+        , self::DUE2OUTWITHERROR];
     
     public $initialStatus;
     public $errorStatus;
@@ -615,11 +615,8 @@ class ServerFrame extends ServerFramesOrm
      */
     public function getFutureFramesForDate(int $nodeId, int $time)
     {
-        $sql = 'SELECT ServerFrames.IdSync FROM ServerFrames, NodeFrames ' .
-            'WHERE ServerFrames.IdNodeFrame = NodeFrames.IdNodeFrame AND NodeFrames.NodeId = ' . $nodeId . ' AND ' .
-            'ServerFrames.DateUp > ' . $time . ' ' . 
-            'AND ServerFrames.State NOT IN (\'' . ServerFrame::CANCELLED . '\', \'' . ServerFrame::REMOVED . '\', \'' . 
-            ServerFrame::REPLACED . '\')';
+        $sql = 'SELECT IdSync FROM ServerFrames WHERE NodeId = ' . $nodeId . ' AND DateUp > ' . $time . ' '
+            . 'AND State NOT IN (\'' . ServerFrame::CANCELLED . '\', \'' . ServerFrame::REMOVED . '\', \'' . ServerFrame::REPLACED . '\')';
         return $this->query($sql, MULTI, null, true);
     }
     

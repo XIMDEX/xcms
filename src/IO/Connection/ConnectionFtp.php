@@ -448,4 +448,13 @@ class ConnectionFtp extends Connector implements IConnector
         }
         return false;
     }
+    
+    /**
+     * {@inheritDoc}
+     * @see \Ximdex\IO\Connection\IConnector::dirIsEmpty()
+     */
+    public function dirIsEmpty(string $path): bool
+    {
+        return false;
+    }
 }

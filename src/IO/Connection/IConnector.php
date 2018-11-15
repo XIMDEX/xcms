@@ -136,7 +136,6 @@ interface IConnector
 	 * 
 	 * @access public
 	 * @param string path
-	 * @param int id
 	 * @return boolean
 	 */
 	public function rm($path, int $id = null);
@@ -182,4 +181,12 @@ interface IConnector
 	 * @return boolean
 	 */
 	public function isFile($path);
+	
+	/**
+	 * Check if the specified folder path is empty
+	 * 
+	 * @param string $path
+	 * @return bool
+	 */
+	public function dirIsEmpty(string $path): bool;
 }
