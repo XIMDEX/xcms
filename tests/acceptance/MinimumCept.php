@@ -101,7 +101,8 @@ while (fileExistAndIsNotEmpty('data/previos/en/picasso.html') && $count < 45)
     sleep(2);
     $count++;
 }
-$I->dontSeeFileFound('picasso.html','data/previos/en');
+// $I->dontSeeFileFound('picasso.html','data/previos/en');
+$I->dontSeeFileFound('en','data/previos');
 
 // Load the XML editor
 $I->amOnPage('?action=xmleditor2&method=load&nodeid=10095');
