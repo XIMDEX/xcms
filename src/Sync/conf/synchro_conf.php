@@ -63,6 +63,11 @@ if (! defined('SERVER_DELAY_TIME_PUMPER_IN_SOFT_ERROR')) {
     define('SERVER_DELAY_TIME_PUMPER_IN_SOFT_ERROR', 10);
 }
 
+// Use of hidden files to upload content to servers
+if (! defined('UPLOAD_FILE_AS_HIDDEN_WHILE_PUMPING')) {
+    define('UPLOAD_FILE_AS_HIDDEN_WHILE_PUMPING', false);
+}
+
 // Default batch priority
 if (! defined('DEFAULT_BATCH_PRIORITY')) {
     define('DEFAULT_BATCH_PRIORITY', 1.0);

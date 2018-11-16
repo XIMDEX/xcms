@@ -455,7 +455,7 @@ class ConnectionFtp extends Connector implements IConnector
      */
     public function dirIsEmpty(string $path): bool
     {
-        $content = ftp_exec($this->handler, 'ls -1a ' . $path . ' | wc -l');
+        $content = ftp_exec($this->handler, 'ls -a ' . $path . ' | head -n 1  | wc -l');
         if ($content === false) {
             Logger::error('Cannot obtain the files count in order to know is a folder is empty: ' . $path);
             return false;

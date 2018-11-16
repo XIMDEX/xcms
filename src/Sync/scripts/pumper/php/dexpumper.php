@@ -166,17 +166,17 @@ class DexPumper
 			$this->info('ServerFrame ' . $IdSync . ' to process');
 			$this->getHostConnection();
 			if ($state_task == ServerFrame::DUE2IN) {
-			    $this->uploadAsHiddenFile();
+			    $this->uploadFile(UPLOAD_FILE_AS_HIDDEN_WHILE_PUMPING);
 			} elseif ($state_task == ServerFrame::DUE2OUT) {
 				$this->RemoveRemoteFile();
 			} elseif ($state_task == ServerFrame::PUMPED) {
-				$this->pumpFile();
+				$this->renamePumpedFiles();
 			}
 		}
 		$this->unRegisterPumper();
 	}
 
-	private function uploadAsHiddenFile()
+	private function uploadFile(bool $asHidden = false)
 	{
 		$localPath = $this->localBasePath . '/';
 		$initialDirectory = $this->server->get('InitialDirectory');
@@ -185,9 +185,15 @@ class DexPumper
 		$fileName = $this->serverFrame->get('FileName');
 		$this->info('ServerFrame ' . $IdSync . ' DUE2IN: upload as hidden file');
 		$originFile = $localPath . $IdSync;
-		$targetFile = '.' . $IdSync . '_' . $fileName;
+		if ($asHidden) {
+		    $state = ServerFrame::PUMPED;
+		    $targetFile = '.' . $IdSync . '_' . $fileName;
+		} else {
+		    $state = ServerFrame::IN;
+		    $targetFile = $fileName;
+		}
 		$uploading = $this->taskUpload($originFile, $initialDirectory, $remotePath, $targetFile);
-		$this->updateTask($uploading, ServerFrame::PUMPED);
+		$this->updateTask($uploading, $state);
 	}
 
 	private function RemoveRemoteFile()
@@ -246,7 +252,7 @@ class DexPumper
 		return $this->serverFrame->find($fields, $conditions,  array($IdBatchUp, $IdServer) , MULTI, false);
 	}
 
-	private function pumpFile()
+	private function renamePumpedFiles()
 	{
 		$idBatchUp = (int) $this->serverFrame->get('IdBatchUp');
 		$idServer = (int) $this->serverFrame->get('IdServer');
@@ -265,8 +271,6 @@ class DexPumper
 					 if ($renameResult or $renameResult !== false) {
                          $this->updateTask(true, ServerFrame::IN);
 					 } else {
-					     
-                         // If this rename task does not work, generates a infinite loop
                          $this->updateTask(false, ServerFrame::DUE2INWITHERROR);
 					 }
 				}
