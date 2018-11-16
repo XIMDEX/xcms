@@ -126,7 +126,6 @@ class PortalFrames extends PortalFramesOrm
         if ($db->Query($sql) === false) {
             throw new \Exception('Could not obtain the portal frames in order to update the frames stats');
         }
-        // $reset = false;
         $db2 = new Db();
         while (! $db->EOF) {
         
@@ -137,7 +136,8 @@ class PortalFrames extends PortalFramesOrm
             $sql .= 'SUM(IF (b.State != \'' . Batch::STOPPED . '\' AND s.ActiveForPumping = 0, b.ServerFramesActive + b.ServerFramesPending, 0))';
             $sql .= ' AS sfdelayed, ';
             $sql .= 'SUM(IF (b.State = \'' . Batch::STOPPED . '\', b.ServerFramesPending + b.ServerFramesActive, 0)) AS stopped, ';
-            $sql .= 'SUM(b.ServerFramesSuccess) as success, SUM(b.ServerFramesFatalError) AS fatalError, ';
+            $sql .= 'SUM(b.ServerFramesSuccess) as success, ';
+            $sql .= 'SUM(b.ServerFramesFatalError) AS fatalError, ';
             $sql .= 'SUM(b.ServerFramesTemporalError) AS temporalError ';
             $sql .= 'FROM Batchs b INNER JOIN Servers s ON (s.IdServer = b.ServerId) ';
             $sql .= 'WHERE b.IdPortalFrame = ' . $db->GetValue('id') . ' ';
@@ -198,13 +198,7 @@ class PortalFrames extends PortalFramesOrm
                 }
                 $portalFrame->set('StatusTime', time());
             }
-            /*
-            // Reset boost cycles parameter in any cycles
-            if (!$reset and $portalFrame->get('BoostCycles') > (3 * $portalFrame->get('CyclesTotal'))) {
-                self::resetBoostCycles();
-                $reset = true;
-            }
-            */
+            
             // Update whole modified fields
             if ($portalFrame->update() === false) {
                 throw new \Exception('Cannot update the portal frame with ID: ' . $portalFrame->get('id'));

@@ -385,11 +385,10 @@ class SynchroFacade
                     return false;
                 }
             }
-            elseif ($numFrames == 0) {
-                
-                // The batch has no frames, so it will be removed
-                $batch->delete();
-            }
+            
+            // Play the portal
+            $portal->set('Playing', true);
+            $portal->update();
             
             // Update portal frame information
             try {
@@ -397,10 +396,6 @@ class SynchroFacade
             } catch (\Exception $e) {
                 Logger::error($e->getMessage());
             }
-            
-            // Play the portal
-            $portal->set('Playing', true);
-            $portal->update();
         } else {
             
             // We have a portal type Down frame without batchs type Down

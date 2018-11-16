@@ -108,7 +108,7 @@ class Scheduler
                 $batchManager->setBatchsActiveOrEnded($testTime, $activeAndEnabledServers, false);
                 
                 // Calling Pumpers...
-                $pumperManager->callingPumpers($activeAndEnabledServers);
+                $tasks = $pumperManager->callingPumpers($activeAndEnabledServers);
                 
                 // This is a void cycle...
                 $voidCycles++;

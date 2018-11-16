@@ -68,9 +68,12 @@ class ServerFrame extends ServerFramesOrm
     // Group of status
     const FINAL_STATUS = [self::IN, self::OUT, self::REMOVED, self::REPLACED, self::CANCELLED, self::OUTDATED, self::DELAYED
         , self::DUE2INWITHERROR, self::DUE2OUTWITHERROR];
+    const FINAL_STATUS_OUT = [self::OUT, self::REMOVED, self::REPLACED, self::CANCELLED, self::OUTDATED, self::DELAYED];
+    const FINAL_STATUS_IN = [self::IN, self::REMOVED, self::REPLACED, self::CANCELLED, self::OUTDATED, self::DELAYED];
     const PUBLISHING_STATUS = [self::PENDING, self::DUE2IN_, self::DUE2IN, self::PUMPED, self::IN, self::DELAYED, self::DUE2INWITHERROR
         , self::DUE2OUTWITHERROR];
     
+    //TODO ajlucena: remove this properties
     public $initialStatus;
     public $errorStatus;
     public $finalStatus;

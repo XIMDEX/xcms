@@ -365,6 +365,10 @@ class ConnectionSsh extends Connector implements IConnector
     public function dirIsEmpty(string $path): bool
     {
         $content = $this->netSFTP->exec('ls -1a ' . $path . ' | wc -l');
-        return (bool) $content - 2;
+        if ($content === false) {
+            Logger::error('Cannot obtain the files count in order to know is a folder is empty: ' . $path);
+            return false;
+        }
+        return ($content - 2) == 0;
     }
 }
