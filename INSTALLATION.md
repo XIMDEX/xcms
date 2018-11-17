@@ -191,7 +191,7 @@ When Apache2 and PHP are running with the requested packages, download Ximdex CM
 5. **Create a new database and a new user**:
     ```
     CREATE DATABASE `ximdex-db`;
-    CREATE USER 'ximdex-user'@'localhost' IDENTIFIED BY 'ximdex-pass';
+    CREATE USER `ximdex-user`@`localhost` IDENTIFIED BY `ximdex-pass`;
     GRANT ALL PRIVILEGES ON `ximdex-db`.* TO 'ximdex-user'@'localhost' WITH GRANT OPTION;
     ```
     > This information will be requested in the following step.
