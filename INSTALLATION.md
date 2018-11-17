@@ -122,6 +122,12 @@ When Apache2 and PHP are running with the requested packages, download Ximdex CM
         ```
         sudo apt-get install wget
         ```
+    *  PHP Composer (ubuntu 18.04):
+        ```
+        Visit https://www.digitalocean.com/community/tutorials/how-to-install-and-use-composer-on-ubuntu-18-04
+        sudo apt-get install php-mbstring (you may have to add universe to your sources of apt-get as described in https://askubuntu.com/questions/1064634/unable-to-install-php-mbstring
+        ```
+        
         
 *  A **modern web browser** (with javascript and cookies enabled): Firefox, Google Chrome, Safari, Opera, Microsoft Edge, etc.
 
