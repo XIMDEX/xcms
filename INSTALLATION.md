@@ -197,6 +197,9 @@ When Apache2 and PHP are running with the requested packages, download Ximdex CM
     > This information will be requested in the following step.
 
 5. **Point your web browser** to your just installed Ximdex CMS instance URL (i.e.: http://YOURHOST/myximdex or http://localhost/myximdex) to run the configuration tool that will load the database, create users and install Ximdex's modules.
+    ```
+    If a blank page is shown instead the Installer, try reloading apache2 service and check apache and php log files.
+    ```
 
 **Thank you for installing Ximdex CMS**. Please, contact us at help@ximdex.org if you need further assistance.
 
