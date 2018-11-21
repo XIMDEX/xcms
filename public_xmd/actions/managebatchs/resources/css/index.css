@@ -266,7 +266,7 @@
 }
 
 .media .portal-button {
-    font-size: 14pt; 
+    font-size: 14pt;
 }
 
 .media .server-button {
@@ -299,4 +299,13 @@
 }
 .media .boost-icon-4x-selected {
     color: #B40404;
+}
+
+.media .cancel-portal-button {
+	color: #B40431;
+	cursor: pointer;
+	float: right;
+	font-size: 9pt;
+	margin-right: 20pt;
+	margin-top: 4pt;
 }

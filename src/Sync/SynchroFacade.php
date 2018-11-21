@@ -273,14 +273,14 @@ class SynchroFacade
         $syncMngr = new SyncManager();
         $syncMngr->setFlags($flagsExpiration);
         $nodes2expire = $syncMngr->getPublishableDocs($node, $down, $down);
-        if (!$nodes2expire) {
+        if (! $nodes2expire) {
             return true;
         }
         
         // Get portal version
         $portal = new PortalFrames();
         $idPortalFrame = $portal->upPortalFrameVersion($node->getID(), $down, Session::get('userID'), PortalFrames::TYPE_DOWN);
-        if (!$idPortalFrame) {
+        if (! $idPortalFrame) {
             Logger::error('Cannot create the portal version for server: ' . $node->getServer());
             return false;
         }
@@ -298,10 +298,11 @@ class SynchroFacade
             foreach ($nodeFrames as $nodeFrameId) {
                 $nodeFrame = new NodeFrame($nodeFrameId);
                 $nodeFrame->set('TimeDown', $down);
+                $nodeFrame->set('IdPortalFrame', $idPortalFrame);
                 $nodeFrame->update();
                 
                 // Update server frames list with server organization
-                foreach ($nodeFrame->getFrames() as $idSync) {
+                foreach ($nodeFrame->getFrames(null, Batch::TYPE_DOWN) as $idSync) {
                     $serverFrame = new ServerFrame($idSync);
                     if (in_array($serverFrame->get('State'), ServerFrame::PUBLISHING_STATUS)) {
                         $servers[$serverFrame->get('IdServer')][] = $idSync;
@@ -318,12 +319,7 @@ class SynchroFacade
             // Set the cancelled state in these frames
             foreach ($nodeFrames as $nodeFrameId) {
                 $nodeFrame = new NodeFrame($nodeFrameId);
-                
-                // Cancel server frames for this node frame
-                $nodeFrame->set('IsProcessUp', 1);
-                $nodeFrame->set('IsProcessDown', 1);
-                $nodeFrame->update();
-                $nodeFrame->cancelServerFrames();
+                $nodeFrame->cancel();
             }
         }
         

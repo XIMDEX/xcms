@@ -32,10 +32,6 @@
                     <span class="type-icon">
                         <i class="fas fa-#/ frames.type == 'Up' ? 'upload' : 'download' /# #/ frames.type /#-icon" 
                                 title="Publishing type: #/ frames.type /#"></i>
-                        <!--
-                        <img src="actions/managebatchs/resources/icons/#/ frames.type == 'Up' ? 'upload' : 'download' /#.png" 
-                                title="Publishing type: #/ frames.type /#" class="type-icon" />
-                        -->
                     </span>
                     <span title="Node ID: #/ frames.idNodeGenerator /# 
                         &#013;Portal ID: #/ frames.idPortal /#
@@ -51,7 +47,7 @@
                     <small ng-if="frames.startTime && !frames.statusTime">
                         <span class="icon clock"></span> Started: #/ frames.startTime /#
                     </small>
-                    <small ng-if="!frames.endTime"><span class="icon clock"></span> Visited: #/ frames.statusTime /#</small>
+                    <small ng-if="frames.statusTime && !frames.endTime"><span class="icon clock"></span> Visited: #/ frames.statusTime /#</small>
                     <small ng-if="frames.endTime"><span class="icon clock"></span> Ended: #/ frames.endTime /#</small>
                     <small ng-if="frames.delayed > 0" 
                             title="This portal frames has some servers delayed. Clic on show server details for more information about it" 
@@ -59,6 +55,8 @@
                     <small ng-if="frames.stopped > 0" 
                             title="This portal frames has some stopped batchs. Clic on show server details for more information about it" 
                             class="portal-disabled">&nbsp; Batchs stopped !</small>
+                    <span class="cancel-portal-button" ng-click="cancelPortal(frames.idPortal)" ng-if="!frames.endTime && frames.type == 'Up'" 
+                            title="Cancel this portal frames"><i class="fas fa-trash"></i> Cancel</span>
                 </h4>
 	            <div class="portal-detail">
 	                <div class="progress">
@@ -84,7 +82,7 @@
                             ng-click="showing[frames.idPortal] = !showing[frames.idPortal]">Hide servers details</a>
                 </div>
                 <div class="boost-buttons">
-                    Cycles: #/ frames.cycles /# · Success rate: #/ frames.successRate * 100 | number:0 /#%
+                    Cycles: #/ frames.cycles /# · Processing rate: #/ frames.successRate * 100 | number:0 /#%
                     <span ng-if="!frames.endTime" title="Boost this portal to #/ boost /#x speed">
                         <span data-ng-repeat="boost in [1, 2, 4]" class="boost-icon" 
                                 ng-class="{literal}{'boost-icon-#/ boost /#x-selected': frames.boost == boost}{/literal}" 

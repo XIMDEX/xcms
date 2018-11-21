@@ -71,10 +71,7 @@ class NodeFrameManager
 			if ($timeDown != 0 && $timeDown < $now) {
 				$nodeFrame = new NodeFrame($nodeFrameId);
 				Logger::info('NodeFrame will never be active: ' . $nodeFrameId);
-				$nodeFrame->set('IsProcessUp', 1);
-				$nodeFrame->set('IsProcessDown', 1);
-				$nodeFrame->update();
-				$nodeFrame->cancelServerFrames($nodeFrameId);
+				$nodeFrame->cancel();
 				return true;
 			}
 			$nodeFramesInTime = $this->getNodeFramesInTime($nodeId, $timeUp, $now);
@@ -92,10 +89,7 @@ class NodeFrameManager
 					$nodeFrame->update();
 				} else {
 					Logger::info('NodeFrame never will be active: ' . $id);
-					$nodeFrame->set('IsProcessUp', 1);
-					$nodeFrame->set('IsProcessDown', 1);
-					$nodeFrame->update();
-					$nodeFrame->cancelServerFrames($id);
+					$nodeFrame->cancel();
 				}
 			}
 			if (isset($nodeFramesInTime[0]) and $nodeFramesInTime[0]['Active'] == 0) {
@@ -163,11 +157,11 @@ class NodeFrameManager
 	 */
     private function setActivity(int $activity, int $nodeFrId, int $nodeId, int $up, int $replacedBy = null)
     {
+        if (is_null($nodeFrId)) {
+            Logger::error('Empty IdNodeFrame - setActivity');
+            return false;
+        }
 		$nodeFrame = new NodeFrame($nodeFrId);
-		if (is_null($nodeFrId)) {
-			Logger::error('Empty IdNodeFrame - setActivity');
-			return false;
-		}
 		$nodeFrame->set('Active', $activity);
 		$cancelled = null;
 		if ( !is_null($replacedBy) ) {

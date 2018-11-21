@@ -119,22 +119,26 @@ class ServerFrame extends ServerFramesOrm
     /**
      * Adds a row to ServerFrames table
      * 
-     * @param int nodeId
-     * @param int server
-     * @param int dateUp
-     * @param string path
-     * @param string name
-     * @param int publishLinked
-     * @param int idNodeFrame
-     * @param int idChannelFrame
-     * @param int idServerFrame
-     * @param int idBatchUp
-     * @param int dateDown
-     * @param int size
-     * @return int|null
+     * @param int $nodeId
+     * @param int $server
+     * @param int $dateUp
+     * @param string $path
+     * @param string $name
+     * @param int $publishLinked
+     * @param int $idNodeFrame
+     * @param string $idChannel
+     * @param int $idChannelFrame
+     * @param int $idBatchUp
+     * @param int $idPortalFrame
+     * @param int $dateDown
+     * @param int $size
+     * @param bool $cache
+     * @param int $idbatchDown
+     * @return int|null|bool
      */
-    public function create($nodeId, $server, $dateUp, $path, $name, $publishLinked, $idNodeFrame, $idChannel, $idChannelFrame
-        , $idBatchUp, $idPortalFrame, $dateDown = null, $size = 0, bool $cache = true)
+    public function create(int $nodeId, int $server, int $dateUp, string $path, string $name, int $publishLinked, int $idNodeFrame
+        , ?int $idChannel, int $idChannelFrame, int $idBatchUp, int $idPortalFrame, int $dateDown = null, int $size = 0, bool $cache = true
+        , int $idbatchDown = null)
     {
         $this->set('IdServer', $server);
         $this->set('DateUp', $dateUp);
@@ -155,6 +159,7 @@ class ServerFrame extends ServerFramesOrm
         if ($idChannel) {
             $this->set('ChannelId', $idChannel);
         }
+        $this->set('IdBatchDown', $idbatchDown);
         $id = parent::add();
         if (! $id) {
             Logger::error('Creating server frame');
@@ -339,8 +344,11 @@ class ServerFrame extends ServerFramesOrm
      */
     public function deleteSyncFile()
     {
-        if (! ($this->get('IdSync')) > 0) {
+        if (! $this->get('IdSync')) {
             return false;
+        }
+        if (! FsUtils::file_exists(SERVERFRAMES_SYNC_PATH . '/' . $this->get('IdSync'))) {
+            return null;
         }
         return FsUtils::delete(SERVERFRAMES_SYNC_PATH . '/' . $this->get('IdSync'));
     }
@@ -690,5 +698,39 @@ class ServerFrame extends ServerFramesOrm
             return (int) $dbObj->GetValue('total');
         }
         return 0;
+    }
+    
+    /**
+     * Cancel the server frame with force option (all states)
+     * 
+     * @param bool $force
+     * @throws \Exception
+     */
+    public function cancel(bool $force = true) : void
+    {
+        if (!$this->IdSync) {
+            throw new \Exception('No IdSync value sent to cancel the server frame');
+        }
+        if ($this->State == ServerFrame::CANCELLED) {
+            return;
+        }
+        if (!$force) {
+            if (!in_array($this->State, [ServerFrame::PENDING, ServerFrame::DUE2IN_, ServerFrame::DUE2OUT])) {
+                
+                // Not in pending state
+                return;
+            }
+            if ($this->State == ServerFrame::IN and $this->DateDown) {
+                
+                // Not in expiration state
+                return;
+            }
+        }
+        $this->set('State', ServerFrame::CANCELLED);
+        $this->set('ErrorLevel', null);
+        if ($this->update() === false) {
+            throw new \Exception('Cannot cancel the server frame ' . $this->IdSync);
+        }
+        $this->deleteSyncFile();
     }
 }

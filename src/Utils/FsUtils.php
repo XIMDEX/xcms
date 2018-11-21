@@ -580,4 +580,15 @@ class FsUtils
         }
         return true;
     }
+    
+    /**
+     * Return true if a given file path exists
+     * 
+     * @param string $file
+     * @return bool
+     */
+    public static function file_exists(string $file) : bool
+    {
+        return file_exists($file);
+    }
 }

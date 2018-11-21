@@ -163,6 +163,7 @@ class Server extends ServersOrm
         $stats['soft'] = (int) $db->GetValue('soft');
         $stats['stopped'] = (int) $db->GetValue('stopped');
         $stats['delayed'] = !$this->get('ActiveForPumping') ? $db->GetValue('pending') + $db->GetValue('active') : 0;
+        $stats['cancelled'] = (int) $db->GetValue('cancelled');
         return $stats;
     }
     

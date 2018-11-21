@@ -168,7 +168,7 @@ class DexPumper
 			if ($state_task == ServerFrame::DUE2IN) {
 			    $this->uploadFile(UPLOAD_FILE_AS_HIDDEN_WHILE_PUMPING);
 			} elseif ($state_task == ServerFrame::DUE2OUT) {
-				$this->RemoveRemoteFile();
+				$this->removeRemoteFile();
 			} elseif ($state_task == ServerFrame::PUMPED) {
 				$this->renamePumpedFiles();
 			}
@@ -180,7 +180,7 @@ class DexPumper
 	{
 		$localPath = $this->localBasePath . '/';
 		$initialDirectory = $this->server->get('InitialDirectory');
-		$IdSync = (int)  $this->serverFrame->get('IdSync');
+		$IdSync = (int) $this->serverFrame->get('IdSync');
 		$remotePath = $this->serverFrame->get('RemotePath');
 		$fileName = $this->serverFrame->get('FileName');
 		$this->info('ServerFrame ' . $IdSync . ' DUE2IN: upload as hidden file');
@@ -193,10 +193,14 @@ class DexPumper
 		    $targetFile = $fileName;
 		}
 		$uploading = $this->taskUpload($originFile, $initialDirectory, $remotePath, $targetFile);
+		if (!$asHidden) {
+		    Logger::info('Published: ' . $remotePath . $targetFile . ' into server ' . $this->connection->getServer()->get('Description')
+                . ' (Sync: ' . $IdSync . ')', true);
+		}
 		$this->updateTask($uploading, $state);
 	}
 
-	private function RemoveRemoteFile()
+	private function removeRemoteFile()
 	{
 		$IdSync = (int) $this->serverFrame->get('IdSync');
 		$initialDirectory = $this->server->get('InitialDirectory');
@@ -404,12 +408,12 @@ class DexPumper
 		}
 		$fullPath .= $remoteFile;
 		Logger::debug('Checking the file path ' . $fullPath);
-		if ($this->connection->isFile($fullPath)) {
+		if (UPLOAD_FILE_AS_HIDDEN_WHILE_PUMPING and $this->connection->isFile($fullPath)) {
 		    $this->warning('Uploading file ' . $fullPath . ' file already exist, overwriting');
 		}
 		$this->info('Copying ' . $localFile . ' in ' . $fullPath, false, 'magenta');
 		if (! $this->connection->put($localFile, $fullPath)) {
-		    $this->error(_('Could not upload the file') . ': ' . $localFile . ' -> ' . $fullPath);
+		    $this->error('Could not upload the file' . ': ' . $localFile . ' -> ' . $fullPath);
 		    if ($this->connection->getError()) {
 		        $this->error($this->connection->getError());
 		    }

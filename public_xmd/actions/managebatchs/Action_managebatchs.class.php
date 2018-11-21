@@ -25,6 +25,7 @@
  *  @version $Revision$
  */
 
+use Ximdex\Logger;
 use Ximdex\Models\User;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\App;
@@ -34,6 +35,7 @@ use Ximdex\Models\Batch;
 use Ximdex\Models\Node;
 use Ximdex\Models\Server;
 use Ximdex\Models\PortalFrames;
+use Ximdex\Sync\BatchManager;
 
 class Action_managebatchs extends ActionAbstract
 {   
@@ -209,6 +211,30 @@ class Action_managebatchs extends ActionAbstract
     }
     
     /**
+     * Cancel all the pending server frames for this portal and update the portal stats
+     */
+    public function cancelPortal() : void
+    {
+        $id = $this->request->getParam('id');
+        if (! $id) {
+            $this->sendJSON(['success' => false, 'error' => 'No portal frame ID given']);
+        }
+        $portal = new PortalFrames($id);
+        if (! $portal->get('id')) {
+            $this->sendJSON(['success' => false, 'error' => 'Portal frame with ID ' . $id . ' does not exist']);
+        }
+        try {
+            $portal->cancel();
+        } catch (Exception $e) {
+            Logger::error($e->getMessage());
+            $this->sendJSON(['success' => false, 'error' => 'Cannot cancel this portal']);
+        }
+        $batchMng = new BatchManager();
+        $batchMng->setBatchsActiveOrEnded();
+        $this->sendJSON(['success' => true]);
+    }
+    
+    /**
      * Return a list of portal information including a list of servers affected
      * 
      * @param PortalFrames $portal
@@ -229,7 +255,7 @@ class Action_managebatchs extends ActionAbstract
         
         // Servers stats
         $servers = [];
-        $total = $pending = $active = $delayed = $success = $fatal = $soft = $stopped = 0;
+        $total = $pending = $active = $delayed = $success = $fatal = $soft = $stopped = $cancelled = 0;
         foreach ($portal->getServers() as $id => $name) {
             $server = new Server($id);
             $stats = $server->stats($portal->get('id'));
@@ -244,6 +270,7 @@ class Action_managebatchs extends ActionAbstract
                 'fatal' => $stats['fatal'],
                 'soft' => $stats['soft'],
                 'stopped' => $stats['stopped'],
+                'cancelled' => $stats['cancelled'],
                 'activeForPumping' => (int) $server->get('ActiveForPumping'),
                 'delayedTime' => Date::formatTime($server->get('DelayTimeToEnableForPumping')),
                 'enabled' => (int) $server->get('Enabled')
@@ -256,6 +283,7 @@ class Action_managebatchs extends ActionAbstract
             $fatal += $stats['fatal'];
             $soft += $stats['soft'];
             $stopped += $stats['stopped'];
+            $cancelled += $stats['cancelled'];
         }
         
         // Portal frames information
@@ -279,6 +307,7 @@ class Action_managebatchs extends ActionAbstract
             'fatal' => $fatal,
             'soft' => $soft,
             'stopped' => $stopped,
+            'cancelled' => $cancelled,
             'playing' => (int) $portal->get('Playing'),
             'successRate' => round($portal->get('SuccessRate'), 2),
             'cycles' => (int) $portal->get('CyclesTotal'),

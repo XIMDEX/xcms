@@ -109,7 +109,7 @@ function createBatchsForBlock($nodesToPublish)
     }
 
     // Purge subversions in docs publicated successfully
-    if (sizeof($docsPublicated[1]) > 0) {
+    if (isset($docsPublicated[1]) and $docsPublicated[1]) {
         if (array_key_exists('ok', $docsPublicated[1])) {
             $keys = array_keys($docsPublicated[1]['ok']);
             foreach ($keys as $id) {

@@ -105,18 +105,20 @@ class Scheduler
                 Logger::info('No processable batchs found');
                 
                 // Set current batchs to a new state and update frames stats
-                $batchManager->setBatchsActiveOrEnded($testTime, $activeAndEnabledServers, false);
-                
-                // Calling Pumpers...
-                $tasks = $pumperManager->callingPumpers($activeAndEnabledServers);
-                
-                // This is a void cycle...
-                $voidCycles++;
-                $batchManager->checkFramesIntegrity();
-
-                // Sleeping...
-                Logger::info('Sleeping...');
-                sleep(SCHEDULER_SLEEPING_TIME_BY_VOID_CYCLE);
+                $res = $batchManager->setBatchsActiveOrEnded($testTime, $activeAndEnabledServers, false);
+                if (!$res) {
+                    
+                    // Calling Pumpers...
+                    $tasks = $pumperManager->callingPumpers($activeAndEnabledServers);
+                    
+                    // This is a void cycle...
+                    $voidCycles++;
+                    $batchManager->checkFramesIntegrity();
+    
+                    // Sleeping...
+                    Logger::info('Sleeping...');
+                    sleep(SCHEDULER_SLEEPING_TIME_BY_VOID_CYCLE);
+                }
             } else {
 
                 // Some processable Batchs found...

@@ -1,7 +1,7 @@
 {* Frames progress bar *}
 <div ng-if="frames.success > 0" class="{$progress_bar_class} progress-bar progress-bar-striped progress-bar-success" role="progressbar" 
         style="width: #/ frames.success * 100 / frames.total | number:6 /#%;" title="#/ frames.success /# documents success">
-        #/ frames.success /# success
+        #/ frames.success /# processed
 </div>
 <div ng-if="frames.fatal > 0" class="{$progress_bar_class} progress-bar progress-bar-striped progress-bar-errored-fatal" 
         role="progressbar" style="width: #/ frames.fatal * 100 / frames.total | number:6 /#%;" 

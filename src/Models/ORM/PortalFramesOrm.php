@@ -65,6 +65,7 @@ class PortalFramesOrm extends GenericData
     public $IdNodeGenerator = null;
     public $Version = 0;
     public $CreationTime;
+    public $PublishingType;
     public $CreatedBy = null;
     public $ScheduledTime;
     public $StartTime = null;

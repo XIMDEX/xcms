@@ -50,7 +50,7 @@ class NodeFrame extends NodeFramesOrm
 	*  @param int down
 	*  @return int|null
 	*/
-    public function create($nodeId, $name, $version, $up, $down = NULL)
+    public function create($nodeId, $name, $version, $up, $idPortal, $down = null)
     {
 		$this->set('NodeId', $nodeId);
 		$this->set('VersionId', $version);
@@ -61,6 +61,7 @@ class NodeFrame extends NodeFramesOrm
 		$this->set('IsProcessUp', 0);
 		$this->set('IsProcessDown', 0);
 		$this->set('Name', $name);
+		$this->set('IdPortalFrame', $idPortal);
 		parent::add();
 		$idNodeFrame = $this->get('IdNodeFrame');
 		if ($idNodeFrame > 0) {
@@ -85,8 +86,7 @@ class NodeFrame extends NodeFramesOrm
         $sql = 'SELECT IdSync FROM ServerFrames WHERE IdNodeFrame = ' . $idNdFr;
         if ($operation == Batch::TYPE_UP or $operation == Batch::TYPE_DOWN) {
             $sql .= ' and State not in (\'' . ServerFrame::REMOVED . '\', \'' . ServerFrame::REPLACED . '\', \'' 
-                . ServerFrame::CANCELLED . '\'';
-            $sql .= ', \'' . ServerFrame::OUT . '\')';
+                . ServerFrame::CANCELLED . '\', \'' . ServerFrame::OUT . '\')';
         }
 		$dbObj = new \Ximdex\Runtime\Db();
 		$dbObj->Query($sql);
@@ -110,11 +110,12 @@ class NodeFrame extends NodeFramesOrm
     {    
 		$dataFactory = new DataFactory($nodeId);
 		$idVersion = $dataFactory->GetLastVersionId();
+		$condition = 'NodeId = %s AND VersionId = %s AND TimeUp <= %s AND IsProcessDown = 0';
 		if (is_null($down)) {
-			$condition = 'NodeId = %s AND VersionId = %s AND TimeUp <= %s AND TimeDown IS NULL';
+			$condition .= ' AND TimeDown IS NULL';
 			$params = array($nodeId, $idVersion, $up);
 		} else {
-			$condition = 'NodeId = %s AND VersionId = %s AND TimeUp <= %s AND (TimeDown IS NULL OR TimeDown = %s)';
+			$condition .= ' AND (TimeDown IS NULL OR TimeDown >= %s)';
 			$params = array($nodeId, $idVersion, $up, $down);
 		}
 		$result = $this->find('IdNodeFrame', $condition, $params, MONO);
@@ -137,7 +138,7 @@ class NodeFrame extends NodeFramesOrm
 				}
 			}
 			
-			// check if the channels from document properties are in the server frame channels list
+			// Check if the channels from document properties are in the server frame channels list
 			$properties = InheritedPropertiesManager::getValues($nodeId, true);
 			if (isset($properties['Channel']))
 			{
@@ -150,38 +151,57 @@ class NodeFrame extends NodeFramesOrm
 			}
 			else
 			{
-			    // there is no channels assigned to this document
+			    // There is no channels assigned to this document
 			    return false;
 			}
 		}
 		return true;
     }
 
+    /**
+     * Cancel server frames for this node frame
+     * 
+     * @param bool $force
+     * @throws \Exception
+     */
+    public function cancel(bool $force = true) : void
+    {
+        if (! $this->IdNodeFrame) {
+            throw new \Exception('No node frame ID given in order to cancel it');
+        }
+        $this->set('IsProcessUp', 1);
+        $this->set('IsProcessDown', 1);
+        $this->update();
+        $this->cancelServerFrames(false, $force);
+    }
+    
 	/**
 	 * Calls for cancel the ServerFrames which matching the value of nodeId
 	 * Can ignore down server frames (DateDown field is not null)
 	 * 
-	 * @param int $idNodeFrame
 	 * @param bool $ignoreDownFrames
+	 * @param bool $force
 	 */
-	public function cancelServerFrames(int $idNodeFrame = null, bool $ignoreDownFrames = false)
+	private function cancelServerFrames(bool $ignoreDownFrames = false, bool $force = true) : void
 	{
-	    if (!$idNodeFrame) {
-	        $idNodeFrame = $this->IdNodeFrame;
-	    }
 		$condition = 'IdNodeFrame = %s';
 		if ($ignoreDownFrames) {
 		    $condition .= ' AND DateDown IS NULL';
 		}
-		$params = ['IdNodeFrame' => $idNodeFrame];
+		$params = ['IdNodeFrame' => $this->IdNodeFrame];
 		$serverFrame = new ServerFrame();
 		$result = $serverFrame->find('IdSync', $condition, $params, MULTI);
 		if ($result) {
 			foreach ($result as $dataFrames) {
 			    $serverFrame = new ServerFrame($dataFrames[0]);
-				$serverFrame->set('State', ServerFrame::CANCELLED);
-				$serverFrame->set('ErrorLevel', null);
-				$serverFrame->update();
+			    if ($serverFrame->get('State') == ServerFrame::CANCELLED) {
+			        continue;
+			    }
+			    try {
+                    $serverFrame->cancel($force);
+			    } catch (\Exception $e) {
+			        Logger::error($e->getMessage());
+			    }
 			}
 		}
 	}
@@ -224,8 +244,8 @@ class NodeFrame extends NodeFramesOrm
 	 */
 	public function getNodeFramesOnDate(int $nodeId, int $time) : array
 	{
-	    $sql = 'SELECT IdNodeFrame FROM NodeFrames'
-	        . ' WHERE NodeId = ' . $nodeId . ' AND TimeUp <= ' . $time;    // AND (TimeDown >= ' . $time . ' OR TimeDown IS NULL)';
+	    $sql = 'SELECT IdNodeFrame FROM NodeFrames' . ' WHERE NodeId = ' . $nodeId . ' AND TimeUp <= ' . $time . ' AND IsProcessDown = 0';
+	    // AND (TimeDown >= ' . $time . ' OR TimeDown IS NULL)';
 	    $dbObj = new \Ximdex\Runtime\Db();
 	    $dbObj->Query($sql);
 	    $frames = [];
@@ -246,6 +266,7 @@ class NodeFrame extends NodeFramesOrm
 	public function getFutureNodeFramesForDate(int $nodeId, int $time) : array
 	{
 	    $sql = 'SELECT IdNodeFrame FROM NodeFrames WHERE NodeId = ' . $nodeId . ' AND TimeUp > ' . $time . ' AND TimeDown IS NULL';
+	    $sql .= ' AND IsProcessDown = 0';
 	    $dbObj = new \Ximdex\Runtime\Db();
 	    $dbObj->Query($sql);
 	    $frames = [];

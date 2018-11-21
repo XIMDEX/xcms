@@ -35,24 +35,27 @@ class NodeFramesOrm extends GenericData
     var $_table = 'NodeFrames';
     var $_metaData = array(
         'IdNodeFrame' => array('type' => 'int(12)', 'not_null' => 'true', 'auto_increment' => 'true'),
-        'NodeId' => array('type' => 'int(12)', 'not_null' => 'false'),
-        'VersionId' => array('type' => 'int(12)', 'not_null' => 'false'),
+        'NodeId' => array('type' => 'int(12)', 'not_null' => 'true'),
+        'VersionId' => array('type' => 'int(12)', 'not_null' => 'true'),
         'TimeUp' => array('type' => 'int(12)', 'not_null' => 'false'),
         'TimeDown' => array('type' => 'int(12)', 'not_null' => 'false'),
-        'Active' => array('type' => 'int(12)', 'not_null' => 'false'),
-        'GetActivityFrom' => array('type' => 'int(12)', 'not_null' => 'false'),
-        'IsProcessUp' => array('type' => 'int(12)', 'not_null' => 'false'),
-        'IsProcessDown' => array('type' => 'int(12)', 'not_null' => 'false'),
-        'Name' => array('type' => 'varchar(255)', 'not_null' => 'false')
+        'Active' => array('type' => 'int(12)', 'not_null' => 'true'),
+        'GetActivityFrom' => array('type' => 'int(12)', 'not_null' => 'true'),
+        'IsProcessUp' => array('type' => 'int(12)', 'not_null' => 'true'),
+        'IsProcessDown' => array('type' => 'int(12)', 'not_null' => 'true'),
+        'Name' => array('type' => 'varchar(255)', 'not_null' => 'true'),
+        'IdPortalFrame' => array('type' => 'int(12)', 'not_null' => 'true')
+        
     );
     var $IdNodeFrame;
     var $NodeId = 0;
     var $VersionId = 0;
-    var $TimeUp = 0;
-    var $TimeDown;
+    var $TimeUp = null;
+    var $TimeDown = null;
     var $Active = 0;
     var $GetActivityFrom = 0;
     var $IsProcessUp = 0;
     var $IsProcessDown = 0;
     var $Name;
+    var $IdPortalFrame;
 }

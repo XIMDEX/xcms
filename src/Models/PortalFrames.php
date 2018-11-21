@@ -28,7 +28,7 @@
 namespace Ximdex\Models;
 
 use Ximdex\Logger;
-use \Ximdex\Runtime\Db;
+use Ximdex\Runtime\Db;
 use Ximdex\Models\ORM\PortalFramesOrm;
 
 class PortalFrames extends PortalFramesOrm
@@ -85,9 +85,11 @@ class PortalFrames extends PortalFramesOrm
      * Calculate the stats from batchs related to a given portal frame, or everything active
      * 
      * @param Batch $batch
+     * @param Server $server
+     * @param int $id
      * @throws \Exception
      */
-    public static function updatePortalFrames(Batch $batch = null, Server $server = null) : void
+    public static function updatePortalFrames(Batch $batch = null, Server $server = null, int $id = null) : void
     {
         if ($batch) {
             if (! $batch->get('IdBatch')) {
@@ -116,6 +118,11 @@ class PortalFrames extends PortalFramesOrm
             
             // Update an only portal frame with a given batch
             $sql .= 'WHERE pf.id = ' . $batch->get('IdPortalFrame') . ' ';
+        }
+        elseif ($id) {
+            
+            // Update an only portal frame with a given batch
+            $sql .= 'WHERE pf.id = ' . $id . ' ';
         } else {
             
             // Update all portal frames active
@@ -330,6 +337,34 @@ class PortalFrames extends PortalFramesOrm
     }
     
     /**
+     * Retrieve a list of node frames identificators related to this portal
+     * 
+     * @param string $operation
+     * @throws \Exception
+     * @return array
+     */
+    public function getNodeFrames(string $operation = null) : array
+    {
+        $nodeFrame = new NodeFrame();
+        $condition = 'IdPortalFrame = ' . $this->id;
+        if ($operation) {
+            switch ($operation) {
+                case PortalFrames::TYPE_UP:
+                    $condition .= ' AND IsProcessUp = 0';
+                    break;
+                case PortalFrames::TYPE_DOWN:
+                    $condition .= ' AND IsProcessDown = 0';
+                    break;
+            }
+        }
+        $frames = $nodeFrame->find('IdNodeFrame', $condition, null, MONO);
+        if ($frames === false) {
+            throw new \Exception('Could not obtain the node frames for the portal frame ' . $this->id);
+        }
+        return $frames;
+    }
+    
+    /**
      * Reset all the active portal frames to zero boost cycles
      *
      * @throws \Exception
@@ -340,6 +375,28 @@ class PortalFrames extends PortalFramesOrm
         $db = new Db();
         if ($db->Execute($sql) === false) {
             throw new \Exception('Could not reset portal frames boost cycles');
+        }
+    }
+    
+    /**
+     * Cancel all node frames belong to this portal in a 'pending to do something' state
+     * 
+     * @throws \Exception
+     */
+    public function cancel() : void
+    {
+        if (!$this->id) {
+            throw new \Exception('Cannot cancel a portal without ID');
+        }
+        if ($this->PublishingType != self::TYPE_UP) {
+            
+            // For now only support cancellation for publishing type Up
+            return;
+        }
+        $frames = $this->getNodeFrames($this->PublishingType);
+        foreach ($frames as $id) {
+            $frame = new NodeFrame($id);
+            $frame->cancel(false);
         }
     }
     

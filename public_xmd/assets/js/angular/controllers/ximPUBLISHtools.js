@@ -126,6 +126,20 @@ angular.module("ximdex.main.controller").controller("ximPUBLISHtools", [
     	$scope.getFrameListLoop();
     };
     
+    // Portal cancellation
+    $scope.cancelPortal = function(portalId)
+    {
+    	if (! window.confirm('Do you want to cancel this portal?')) {
+    		return;
+    	}
+    	var params = $.param({
+            	id: portalId
+            });
+    	$scope.callMethod('cancelPortal', params);
+    	$scope.getFrameListLoop();
+    };
+    
+    // Apply boost to a portal
     $scope.boostPortal = function(portalId, value)
     {
     	var params = $.param({
