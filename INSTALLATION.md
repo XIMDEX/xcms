@@ -90,31 +90,31 @@ In this example, our root is located at **www** and our instance is renamed **my
 
 We need to set file owners and permissions adequated to our web server. So, if apache runs as 'www-data:www-data' we can run:
 
-   ```shell
-   cd /var/www/
-   sudo chown -R www-data:www-data myximdex
-   cd myximdex
-   sudo chmod -R ug+rw data
-   sudo chmod -R ug+rw logs
-   sudo chmod -R ug+rw conf
-   ```
+      ```shell
+      cd /var/www/
+      sudo chown -R www-data:www-data myximdex
+      cd myximdex
+      sudo chmod -R ug+rw data
+      sudo chmod -R ug+rw logs
+      sudo chmod -R ug+rw conf
+      ```
 
-Also, optionally:
+Optionally, if the owner is not the apache unix user, you have to set the sticky bit to assign the right group owner to new files:
 
-   ```shell
-   sudo chmod -R g+s data
-   sudo chmod g+s logs
-   sudo chmod g+s conf
-   ```
+      ```shell
+      sudo chmod -R g+s data
+      sudo chmod g+s logs
+      sudo chmod g+s conf
+      ```
 
 ##### 4. Install third-party needed repositories with **composer**
 
 Move to the XCMS root folder (**myximdex** in this case) and run **composer** to configure additional packages:
 
-   ```shell
-   cd /var/www/myximdex
-   composer install --no-dev
-   ```
+      ```shell
+      cd /var/www/myximdex
+      composer install --no-dev
+      ```
 
 ##### 5. Create your XCMS Database
 
@@ -122,16 +122,16 @@ Open a connection to your DDBB engine and type the following SQL commands:
 
 * To create the DB for XCMS:
 
-   ```sql
-   CREATE DATABASE `ximdex_db`;
-   ```
+      ```sql
+      CREATE DATABASE `ximdex_db`;
+      ```
 
 * Create a specific db user for XCMS:
 
-   ```sql
-   CREATE USER 'ximdex-user'@'localhost' IDENTIFIED BY 'ximdex-pass';
-   GRANT ALL PRIVILEGES ON 'ximdex_db'.* TO 'ximdex-user'@'localhost' WITH GRANT OPTION;
-   ```
+      ```sql
+      CREATE USER 'ximdex-user'@'localhost' IDENTIFIED BY 'ximdex-pass';
+      GRANT ALL PRIVILEGES ON 'ximdex_db'.* TO 'ximdex-user'@'localhost' WITH GRANT OPTION;
+      ```
 
 ##### 6. XCMS configuration
 
