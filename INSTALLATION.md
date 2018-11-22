@@ -2,37 +2,41 @@
 
 
 # Installing XCMS v.4
+--
 
-## Requirements
+## Server Requirements
 
-To use **XCMS** you need an updated web browser as Firefox, Google Chrome, Safari, Opera, Microsoft Edge,... with Javascript and cookies enabled.
+To use **XCMS** you need an updated web browser as Firefox, Google Chrome, ... with Javascript and cookies enabled.
 
-To install **Ximdex CMS** you need a Linux server with:
+To install **XCMS** you need a Linux server with:
 
-### A Relational Database Management System as
+### 1. A Relational Database Management System as
 
-#### Either MySQL
+##### MySQL
 
 * Recommended version: **5.7** (or greater)
 * Linux install: `sudo apt-get install mysql-server`
 
-#### or MariaDB
+##### or MariaDB
 
 * Recommended version: **10.2** (or greater)
 * Alternative versions: prior versions, like **10.1**, reported some errors.
 * Linux install: `sudo apt-get install mariadb-server`
 
-### PHP
-
-* Recommended version: **7.2** (or greater)
-
-* Alternative versions: version **7.1** can be used, but not lower.
+### 2. A web server as Apache with PHP 7.2 or greater
 
 * Install on Linux:
 
-  1. Main package: `sudo apt-get install php`
+  1. Apache web server:   
+  ```shell
+  sudo apt-get install apache2
+  sudo apt-get install libapache2-mod-php
+  sudo apt-get install libapache2-mpm-itk
+  ```
+  
+  1. Main PHP package: `sudo apt-get install php`
 
-  2. Modules:
+  2. PHP Modules:
      ```shell
      sudo apt-get install php-xml
      sudo apt-get install php-cli
@@ -43,9 +47,8 @@ To install **Ximdex CMS** you need a Linux server with:
      sudo apt-get install php-mbstring
      ```
 
-  3. Grammar corrector for XEdit **(Optional)**: `sudo apt-get install php-enchant`
+  3. (Optional) Grammar corrector for XEDIT: `sudo apt-get install php-enchant`
 
-  4. Other packages **(Optional)**: `sudo apt-get install wget`
 
 ### Email notifications
 
@@ -70,6 +73,8 @@ wget --no-check-certificate https://github.com/XIMDEX/ximdex/archive/develop.zip
 ```shell
 curl -L https://github.com/XIMDEX/ximdex/archive/develop.zip > develop.zip
 ```
+
+(Install wget with ```sudo apt-get install wget```)
 
 Unpack the package (Manually or using unzip):
 
