@@ -1,48 +1,36 @@
-![](https://raw.githubusercontent.com/XIMDEX/resources/master/img/XCMS-install/ximdex.png)
 
 ---
 
-# 					Ximdex CMS 4.0	
-
-## 		 				Install and deployment guide
+# 					Installing XCMS v.4
 
 ---
 
 # Requirements
 
-For a correct **Ximdex CMS** instalation and deploy there are some previous server level requirements and dependencies that must be met .
+To use **XCMS** you need an updated web browser as Firefox, Google Chrome, Safari, Opera, Microsoft Edge,... with Javascript and cookies enabled.
 
-## Database Management System
+To install **Ximdex CMS** you need a Linux server with:
 
-At the moment Ximdex support two differents DBMSs, **MySQL** and **MariaDB**, with some additional restrictions detailed next.
+## A Relational Database Management System as
 
-### MySQL
+### Either MySQL
 
-* Recommended version: **5.7**.
-* Alternative versions: Higher versions had not being tested, however, they should work with any issues, because of a existent retrocompatibility.
+* Recommended version: **5.7** (or greater)
 * Linux install: `sudo apt-get install mysql-server`
 
-### MariaDB
+### or MariaDB
 
-* Recommended version: **10.2**.
-* Alternative versions: Instance with prior versions, like **10.1**, have been reported some errors, however  like with MySQL, higher versions should work without any issue.
+* Recommended version: **10.2** (or greater)
+* Alternative versions: prior versions, like **10.1**, reported some errors.
 * Linux install: `sudo apt-get install mariadb-server`
 
-### Other DBMS
+## PHP
 
-Ximdex doesn't support any other DBMS at the moment.
+* Recommended version: **7.2** (or greater)
 
-## Other requirements
+* Alternative versions: version **7.1** can be used, but not lower.
 
-Additionally this CMS needs to satisfy the following dependencies for a succesful deployment.
-
-### PHP
-
-* Recommended version: **7.2**.
-
-* Alternative versions: Alternatively version **7.1** can be used, but not lower, because of some PHP dependencies that needs that version or higher.
-
-* Linux install:
+* Install on Linux:
 
   1. Main package: `sudo apt-get install php`
 
@@ -61,53 +49,49 @@ Additionally this CMS needs to satisfy the following dependencies for a succesfu
 
   4. Other packages **(Optional)**: `sudo apt-get install wget`
 
-### Email
+## Email notifications
 
-To enjoy the Ximdex email notification feature **Postfix** is needed. You can install it using `sudo apt-get install postfix`. 
+To use email notifications **Postfix** or **Sendmail** are needed. You can install postfix with `sudo apt-get install postfix` and **Sendmail** with `sudo apt-get install sendmail`.
 
-Additionally you can use **Sendmail** instead installing it with `sudo apt-get install sendmail`.
-
-### A modern web browser
-
-Firefox, Google Chrome, Safari, Opera, Microsoft Edge...etc with Javascript and cookies enabled.
-
-### Composer
+## Composer
 
 To install composer please visit this [link](https://getcomposer.org/doc/00-intro.md#installation-linux-unix-macos) and follow the instructions.
 
-# Instance installation
+# XCMS v4 installation
 
-Once we have met the previous requirements needed by the CMS we can proceed to the installation in our chosen machine.
+To install XCMS:
 
-## 1. Package download
+## 1. Download XCMS
 
-Before installation we need to download the Ximdex 4.0 Github package, currently available in the **develop** branch. For this end we can use the github interface at https://github.com/XIMDEX/ximdex/tree/develop or use **wget**:
+Download it from github (develop branch) at https://github.com/XIMDEX/ximdex/tree/develop or use **curl** or **wget**:
 
 ```shell
 wget --no-check-certificate https://github.com/XIMDEX/ximdex/archive/develop.zip
 ```
 
-Or **curl**:
-
 ```shell
 curl -L https://github.com/XIMDEX/ximdex/archive/develop.zip > develop.zip
 ```
 
-Then we unpack the package (Manually or using unzip):
+Unpack the package (Manually or using unzip):
+
+```shell
+unzip develop.zip
+```
 
 ![](https://raw.githubusercontent.com/XIMDEX/resources/master/img/XCMS-install/Selección_020.png)
 
-## 2. Moving to the server root
+## 2. Move it to the server root
 
-Once we have extracted our files we need to move the **ximdex-develop** folder, that is inside our extracted folder, to the server documents root, changing the name to the one we want for our instance. You can use `mv ximdex-develop /YOUR/ROOT/ADDRESS/myximdex` to move it.
+You need to move the **ximdex-develop** folder to the server documents root. You can use `mv ximdex-develop /YOUR/ROOT/ADDRESS/myximdex` to move it and rename the instance from 'ximdex-develop' to 'myximdex'.
 
 ![](https://raw.githubusercontent.com/XIMDEX/resources/master/img/XCMS-install/Selección_021.png)
 
-In this case our root is located at **www** and our instance is named **myximdex**.
+In this example, our root is located at **www** and our instance is renamed **myximdex**.
 
-## 3. Users and permissions
+## 3. Set File Owners and Permissions
 
-To ensure a correct CMS install we need to grant the required permissions to the user used by the web server, for example, when using Apache we need to grant permissions to **www-data**:
+We need to set file owners and permissions adequated to our web server. So, if apache runs as 'www-data:www-data' we can run:
 
 ```shell
 cd /var/www/
@@ -121,73 +105,74 @@ sudo chmod -R ug+rw conf
 Also, optionally:
 
 ```shell
-sudo chmod -R g+s data (optional)
-sudo chmod g+s logs (optional)
-sudo chmod g+s conf (optional)
+sudo chmod -R g+s data
+sudo chmod g+s logs
+sudo chmod g+s conf
 ```
 
-## 4. Extensions install
+## 4. Install third-party needed repositories with **composer**
 
-Now we move to the CMS root folder (**myximdex** in this case) and we proceed to install using **composer** the third party repositories Ximdex needs:
+Move to the XCMS root folder (**myximdex** in this case) and run **composer** to configure additional packages:
 
 ```shell
 cd /var/www/myximdex
 composer install --no-dev
 ```
 
-## 5. Database creation
+## 5. Create your XCMS Database
 
-We open now the connection to the chosen BDMS (MySQL or MariaDB) and insert the next SQL commands.
+Open a connection to your DDBB engine and type the following SQL commands:
 
-* We create the DB used across the CMS:
+* To create the DB for XCMS:
 
   ```sql
   CREATE DATABASE `ximdex_db`;
   ```
 
-* We create the assigned DB user and we give him all the required DB permissions:
+* Create a specific db user for XCMS:
 
   ```sql
   CREATE USER 'ximdex-user'@'localhost' IDENTIFIED BY 'ximdex-pass';
-  GRANT ALL PRIVILEGES ON `ximdex_db`.* TO 'ximdex-user'@'localhost' WITH GRANT OPTION;
+  GRANT ALL PRIVILEGES ON 'ximdex_db'.* TO 'ximdex-user'@'localhost' WITH GRANT OPTION;
   ```
 
-# Web configuration
+# XCMS configuration
 
-Once we finished instalation we can access the CMS through any browser at <http://YOURHOST/myximdex> (In this case <http://localhost/myximdex>) and execute the configuration tool that will load the DB, create users and install all required modules.
+Once XCMS is installed at the Web Server, point your browser to <http://YOURHOST/myximdex> (In this case <http://localhost/myximdex>) and follow the suggested steps to load the DataBase, create the XCMS admin user and install additional XCMS modules.
 
-The landing page will greet us with a button to check if all requirements had been satisfied:
+The landing page will greet us with a button to check if all requirements have been satisfied:
 
 ![](https://raw.githubusercontent.com/XIMDEX/resources/master/img/XCMS-install/023.png)
 
-Once clicked if all the requirements are fullfiled with any problems the browser will show a success notification:
+Once clicked, if all the requirements are fullfiled, the browser will show a success notification:
 
 ![](https://raw.githubusercontent.com/XIMDEX/resources/master/img/XCMS-install/Selección_024.png)
 
-The "start installation" button will move to the DB configuration screen where we will be prompted for a user and pass for the database, here we must provide the ones used for the admin user of the previously created database. We press the button and select "yes" if shows a overwrite warning:
+The "start installation" button will launch the DB configuration screen where we will be prompted for a user and pass for the database (we must provide the previously created ones)
+
+Press the **create database** button (select "yes" if it shows a overwrite warning)
 
 ![](https://raw.githubusercontent.com/XIMDEX/resources/master/img/XCMS-install/026.png)
 
-Once finished we will be offered the option of creating a **unprivileged user**, for safety reasons it is highly recommended to create it and not skip this step, however you can skip it if you wish. In this case we will create one called **ximdex_user** with password **ximdex_user**:
+In the following step, an **unprivileged user** to access the DataBase from XCMS can be created. It is highly recommended to create it and do not skip this step. In this case, we will create one called **ximdex_user** with password **ximdex_user**:
 
 ![](https://raw.githubusercontent.com/XIMDEX/resources/master/img/XCMS-install/Selección_027.png)
 
-Later we will be asked the desired password for the **administrator user** of the Ximdex CMS, we can use any, but it is recommended that it be safe given the level of privileges of that user:
+In the following screen, we assign the password for **XCMS superuser** (the priviledged user is called "ximdex").
 
 ![](https://raw.githubusercontent.com/XIMDEX/resources/master/img/XCMS-install/028.png)
 
-Next we will go to the installation screen of the Ximdex modules, where simply, once loaded, we have to press the button to install these modules:
+Next, additional components (as XML editors, publishing reports, semantic tag management, ...) will be installed when pressing the **install modules** button:
 
 ![](https://raw.githubusercontent.com/XIMDEX/resources/master/img/XCMS-install/029.png)
 
-Finally we will arrive at the XOwl configuration screen, where we will be asked to enter or previously generate a key for the API, this step is not currently necessary, so we can simply click on the "continue" option:
+The last screen configures the semantic service to enrich your content and data automatically. If you click **continue**, a  default key will be in use. Visit my.ximdex.net to generate your private key.
 
 ![](https://raw.githubusercontent.com/XIMDEX/resources/master/img/XCMS-install/031.png)
 
-Once finished it will be recommended to add a line to the crontab, in this case:
-
+Remember that XCMS is an omnichannel headless CMS that transform and publish your documents in remote locations. To do it, add the following crontab job to your server.:
 ```
 * * * * * php /var/www/html/myximdex/bootstrap.php src/Sync/scripts/scheduler/scheduler.php
 ```
 
-This step is necessary if we want the publications that we send to be published will publish correctly, otherwise Ximdex will not be able to do them, although it will still correctly work locally.
+Thank you for installing **Ximdex CMS**. Please, contact us at **help@ximdex.org** if you need further assistance.
