@@ -194,7 +194,7 @@ class DexPumper
 		}
 		$uploading = $this->taskUpload($originFile, $initialDirectory, $remotePath, $targetFile);
 		if (!$asHidden) {
-		    Logger::info('Published: ' . $remotePath . $targetFile . ' into server ' . $this->connection->getServer()->get('Description')
+		    Logger::info('Published: ' . $remotePath . '/' . $targetFile . ' into server ' . $this->connection->getServer()->get('Description')
                 . ' (Sync: ' . $IdSync . ')', true);
 		}
 		$this->updateTask($uploading, $state);
@@ -216,14 +216,14 @@ class DexPumper
 		} else {
     		$removing = $this->taskDelete($targetFile);
     		if ($removing) {
-    		    Logger::info('Successfusly removed file ' . $remotePath . ' (ID: ' . $this->serverFrame->get('NodeId') 
+    		    Logger::info('Successfusly removed file ' . $remotePath . '/' . $fileName . ' (ID: ' . $this->serverFrame->get('NodeId') 
     		        . ') from server ' . $this->connection->getServer()->get('Description'), true);
     		    if (rtrim($targetFolder, '/') != rtrim($initialDirectory, '/') and $this->connection->dirIsEmpty($targetFolder)) {
     		        
     		        // Remove the target folder if it is empty
-        		    if ($this->connection->rm($targetFolder)) {
+        		    if (! $this->connection->rm($targetFolder)) {
         		        Logger::warning('Could not delete the path folder ' . $targetFolder);
-    	   	       }
+        		    }
     		    }
     		}
 		}

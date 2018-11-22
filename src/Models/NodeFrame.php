@@ -115,7 +115,7 @@ class NodeFrame extends NodeFramesOrm
 			$condition .= ' AND TimeDown IS NULL';
 			$params = array($nodeId, $idVersion, $up);
 		} else {
-			$condition .= ' AND (TimeDown IS NULL OR TimeDown >= %s)';
+			$condition .= ' AND TimeDown = %s';
 			$params = array($nodeId, $idVersion, $up, $down);
 		}
 		$result = $this->find('IdNodeFrame', $condition, $params, MONO);

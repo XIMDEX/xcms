@@ -72,8 +72,7 @@ class ServerFrame extends ServerFramesOrm
     const FINAL_STATUS_IN = [self::IN, self::REMOVED, self::REPLACED, self::CANCELLED, self::OUTDATED, self::DELAYED];
     const PUBLISHING_STATUS = [self::PENDING, self::DUE2IN_, self::DUE2IN, self::PUMPED, self::IN, self::DELAYED, self::DUE2INWITHERROR
         , self::DUE2OUTWITHERROR];
-    
-    //TODO ajlucena: remove this properties
+
     public $initialStatus;
     public $errorStatus;
     public $finalStatus;
