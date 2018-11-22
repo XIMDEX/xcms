@@ -133,9 +133,11 @@ Open a connection to your DDBB engine and type the following SQL commands:
    GRANT ALL PRIVILEGES ON 'ximdex_db'.* TO 'ximdex-user'@'localhost' WITH GRANT OPTION;
    ```
 
+
+
 ---
 
-#### XCMS configuration
+#### Configure Ximdex CMS v4
 
 Once XCMS is installed at the Web Server, point your browser to <http://YOURHOST/myximdex> (In this case <http://localhost/myximdex>) and follow the suggested steps to load the DataBase, create the XCMS admin user and install additional XCMS modules.
 
