@@ -169,8 +169,9 @@ The last screen configures the semantic service to enrich your content and data 
 
 ![](https://raw.githubusercontent.com/XIMDEX/resources/master/img/XCMS-install/031.png)
 
+---
 
-#### 7. Run Automatically the Transforming and Publishing System
+#### Run Automatically the Transforming and Publishing System
 
 Remember that XCMS is an omnichannel headless CMS that transform and publish your documents in remote locations. To do it, add the following crontab job to your root user:
    ```
@@ -179,4 +180,3 @@ Remember that XCMS is an omnichannel headless CMS that transform and publish you
 
 ---
 Thank you for installing **Ximdex CMS**. Please, contact us at **help@ximdex.org** if you need further assistance.
----
