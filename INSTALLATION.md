@@ -90,14 +90,14 @@ In this example, our root is located at **www** and our instance is renamed **my
 
 We need to set file owners and permissions adequated to our web server. So, if apache runs as 'www-data:www-data' we can run:
 
-      ```shell
-      cd /var/www/
-      sudo chown -R www-data:www-data myximdex
-      cd myximdex
-      sudo chmod -R ug+rw data
-      sudo chmod -R ug+rw logs
-      sudo chmod -R ug+rw conf
-      ```
+   ```shell
+   cd /var/www/
+   sudo chown -R www-data:www-data myximdex
+   cd myximdex
+   sudo chmod -R ug+rw data
+   sudo chmod -R ug+rw logs
+   sudo chmod -R ug+rw conf
+   ```
 
 Optionally, if the owner is not the apache unix user, you have to set the sticky bit to assign the right group owner to new files:
 
