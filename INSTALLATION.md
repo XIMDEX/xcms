@@ -133,7 +133,9 @@ Open a connection to your DDBB engine and type the following SQL commands:
    GRANT ALL PRIVILEGES ON 'ximdex_db'.* TO 'ximdex-user'@'localhost' WITH GRANT OPTION;
    ```
 
-##### 6. XCMS configuration
+---
+
+#### XCMS configuration
 
 Once XCMS is installed at the Web Server, point your browser to <http://YOURHOST/myximdex> (In this case <http://localhost/myximdex>) and follow the suggested steps to load the DataBase, create the XCMS admin user and install additional XCMS modules.
 
@@ -167,12 +169,14 @@ The last screen configures the semantic service to enrich your content and data 
 
 ![](https://raw.githubusercontent.com/XIMDEX/resources/master/img/XCMS-install/031.png)
 
-##### 7. Run Automatically the Transforming and Publishing System
+
+#### 7. Run Automatically the Transforming and Publishing System
 
 Remember that XCMS is an omnichannel headless CMS that transform and publish your documents in remote locations. To do it, add the following crontab job to your root user:
    ```
    * * * * * php /var/www/html/myximdex/bootstrap.php src/Sync/scripts/scheduler/scheduler.php
    ```
---
+
+---
 Thank you for installing **Ximdex CMS**. Please, contact us at **help@ximdex.org** if you need further assistance.
---
+---
