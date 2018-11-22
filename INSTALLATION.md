@@ -2,15 +2,14 @@
 
 
 # Installing XCMS v.4
----
 
-## Server Requirements
+### Server Requirements
 
 To use **XCMS** you need an updated web browser as Firefox, Google Chrome, ... with Javascript and cookies enabled.
 
 To install **XCMS** you need a Linux server with:
 
-### 1. A Relational Database Management System as
+#### 1. A Relational Database Management System as
 
 ##### MySQL
 
@@ -23,20 +22,15 @@ To install **XCMS** you need a Linux server with:
 * Alternative versions: prior versions, like **10.1**, reported some errors.
 * Linux install: `sudo apt-get install mariadb-server`
 
-### 2. A web server as Apache with PHP 7.2 or greater
+#### 2. A web server as Apache with PHP 7.2 or greater
 
-* Install on Linux:
-
-  1. Apache web server:   
+  * Apache web server and PHP:   
   ```shell
   sudo apt-get install apache2
-  sudo apt-get install libapache2-mod-php
-  sudo apt-get install libapache2-mpm-itk
+  sudo apt-get install php
   ```
   
-  1. Main PHP package: `sudo apt-get install php`
-
-  2. PHP Modules:
+  * PHP Modules:
      ```shell
      sudo apt-get install php-xml
      sudo apt-get install php-cli
@@ -47,22 +41,24 @@ To install **XCMS** you need a Linux server with:
      sudo apt-get install php-mbstring
      ```
 
-  3. (Optional) Grammar corrector for XEDIT: `sudo apt-get install php-enchant`
+  * (Optional) Grammar corrector for XEDIT: `sudo apt-get install php-enchant`
 
 
-### Email notifications
+#### Email notifications
 
 To use email notifications **Postfix** or **Sendmail** are needed. You can install postfix with `sudo apt-get install postfix` and **Sendmail** with `sudo apt-get install sendmail`.
 
-### Composer
+#### Composer
 
 To install composer please visit this [link](https://getcomposer.org/doc/00-intro.md#installation-linux-unix-macos) and follow the instructions.
 
-## XCMS v4 installation
+---
+
+### XCMS v4 installation
 
 To install XCMS:
 
-### 1. Download XCMS
+##### 1. Download XCMS
 
 Download it from github (develop branch) at https://github.com/XIMDEX/ximdex/tree/develop or use **curl** or **wget**:
 
@@ -84,7 +80,7 @@ unzip develop.zip
 
 ![](https://raw.githubusercontent.com/XIMDEX/resources/master/img/XCMS-install/Selección_020.png)
 
-### 2. Move it to the server root
+##### 2. Move it to the server root
 
 You need to move the **ximdex-develop** folder to the server documents root. You can use `mv ximdex-develop /YOUR/ROOT/ADDRESS/myximdex` to move it and rename the instance from 'ximdex-develop' to 'myximdex'.
 
@@ -92,7 +88,7 @@ You need to move the **ximdex-develop** folder to the server documents root. You
 
 In this example, our root is located at **www** and our instance is renamed **myximdex**.
 
-### 3. Set File Owners and Permissions
+##### 3. Set File Owners and Permissions
 
 We need to set file owners and permissions adequated to our web server. So, if apache runs as 'www-data:www-data' we can run:
 
@@ -113,7 +109,7 @@ sudo chmod g+s logs
 sudo chmod g+s conf
 ```
 
-### 4. Install third-party needed repositories with **composer**
+##### 4. Install third-party needed repositories with **composer**
 
 Move to the XCMS root folder (**myximdex** in this case) and run **composer** to configure additional packages:
 
@@ -122,7 +118,7 @@ cd /var/www/myximdex
 composer install --no-dev
 ```
 
-### 5. Create your XCMS Database
+##### 5. Create your XCMS Database
 
 Open a connection to your DDBB engine and type the following SQL commands:
 
@@ -139,7 +135,7 @@ Open a connection to your DDBB engine and type the following SQL commands:
   GRANT ALL PRIVILEGES ON 'ximdex_db'.* TO 'ximdex-user'@'localhost' WITH GRANT OPTION;
   ```
 
-### 6. XCMS configuration
+##### 6. XCMS configuration
 
 Once XCMS is installed at the Web Server, point your browser to <http://YOURHOST/myximdex> (In this case <http://localhost/myximdex>) and follow the suggested steps to load the DataBase, create the XCMS admin user and install additional XCMS modules.
 
@@ -173,7 +169,7 @@ The last screen configures the semantic service to enrich your content and data 
 
 ![](https://raw.githubusercontent.com/XIMDEX/resources/master/img/XCMS-install/031.png)
 
-### 7. Run Automatically the Transforming and Publishing System
+##### 7. Run Automatically the Transforming and Publishing System
 
 Remember that XCMS is an omnichannel headless CMS that transform and publish your documents in remote locations. To do it, add the following crontab job to your root user:
 ```
