@@ -52,7 +52,7 @@ To install composer please visit this [link](https://getcomposer.org/doc/00-intr
 
 ---
 
-### XCMS v4 installation
+## XCMS v4 installation
 
 To install XCMS:
 
@@ -137,7 +137,7 @@ Open a connection to your DDBB engine and type the following SQL commands:
 
 ---
 
-#### Configure Ximdex CMS v4
+## Configure Ximdex CMS v4
 
 Once XCMS is installed at the Web Server, point your browser to <http://YOURHOST/myximdex> (In this case <http://localhost/myximdex>) and follow the suggested steps to load the DataBase, create the XCMS admin user and install additional XCMS modules.
 
@@ -173,7 +173,7 @@ The last screen configures the semantic service to enrich your content and data 
 
 ---
 
-#### Run Automatically the Transforming and Publishing System
+### Run Automatically the Transforming and Publishing System
 
 Remember that XCMS is an omnichannel headless CMS that transform and publish your documents in remote locations. To do it, add the following crontab job to your root user:
    ```
