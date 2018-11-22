@@ -110,7 +110,7 @@ class Action_replacefile extends ActionAbstract
             $this->sendResponse();
         }
         if ($tmpFile) {
-            $res = $this->update($idNode, $tmpFile, $node->nodeType->GetName(), $fileName);
+            $res = $this->update($idNode, $tmpFile, $node->nodeType->GetName(), null);
             if ($res) {
                 $this->reloadNode($node->get('IdParent'));
             }
@@ -118,7 +118,7 @@ class Action_replacefile extends ActionAbstract
         $this->sendResponse();
     }
 
-    private function update(int $idNode, string $tmpFile, string $nodeTypeName, string $nodeName) : bool
+    private function update(int $idNode, string $tmpFile, string $nodeTypeName, string $nodeName = null) : bool
     {
     	$data = array(
     	    'NAME' => $nodeName,

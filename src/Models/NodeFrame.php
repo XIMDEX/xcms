@@ -106,10 +106,10 @@ class NodeFrame extends NodeFramesOrm
 	*	@param int down
 	*	@return boolean
 	*/
-    public function existsNodeFrame($nodeId, $up, $down = NULL)
-    {    
+    public function existsNodeFrame($nodeId, $up, $down = null)
+    {
 		$dataFactory = new DataFactory($nodeId);
-		$idVersion = $dataFactory->GetLastVersionId();
+		$idVersion = $dataFactory->GetPublishedIdVersion();
 		$condition = 'NodeId = %s AND VersionId = %s AND TimeUp <= %s AND IsProcessDown = 0';
 		if (is_null($down)) {
 			$condition .= ' AND TimeDown IS NULL';

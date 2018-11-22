@@ -91,7 +91,7 @@
 								<input type="checkbox" name="latest" id="last_edited" value="1" />
 							</div>
 							<div class="option_info">
-								<label for="last_edited">{t}Use drafts for linked documents instead of already published versions.{/t}</label>
+								<label for="last_edited">{t}Use drafts instead of already published versions.{/t}</label>
 							</div>
 							<div class="options_separator"></div>
 						</div>

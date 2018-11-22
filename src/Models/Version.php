@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -31,25 +31,25 @@ use Ximdex\Models\ORM\VersionsOrm;
 
 class Version extends VersionsOrm
 {
-    public function getLastestDocsByUser($idUser)
+    public function getLastestDocsByUser(int $idUser) : array
     {
-        $query = "select n.IdNode,n.name,n.IdNodeType,n.path,Version,Subversion,max(Date) from
+        $query = 'select n.IdNode,n.name,n.IdNodeType,n.path,Version,Subversion,max(Date) from
                         (select * from
                         (select IdVersion, IdNode, Version, Subversion, File, IdUser, Date from Versions order by Date desc) x
                         group by x.IdNode) 
-                v inner join Nodes n on n.Idnode=v.Idnode where IdUser=$idUser and n.name not like'%templates_include%'
-                group by n.IdNode Order by IdVersion desc, path desc, Subversion desc, max(Date)  LIMIT 10";
+                v inner join Nodes n on n.Idnode = v.Idnode where IdUser = ' . $idUser  . ' and n.name not like \'%templates_include%\' 
+                group by n.IdNode Order by IdVersion desc, path desc, Subversion desc, max(Date)  LIMIT 10';
         $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->Query($query);
         $i = 0;
-        $res = array();
+        $res = [];
         while (!$dbObj->EOF) {
-            $res[$i]["IdNode"] = $dbObj->GetValue("IdNode");
-            $res[$i]["IdNodeType"] = $dbObj->GetValue("IdNodeType");
-            $res[$i]["name"] = $dbObj->GetValue("name");
-            $res[$i]["Version"] = $dbObj->GetValue("Version");
-            $res[$i]["Subversion"] = $dbObj->GetValue("Subversion");
-            $res[$i]["path"] = str_replace("/Ximdex/Projects", "", $dbObj->GetValue("path"));
+            $res[$i]['IdNode'] = $dbObj->GetValue('IdNode');
+            $res[$i]['IdNodeType'] = $dbObj->GetValue('IdNodeType');
+            $res[$i]['name'] = $dbObj->GetValue('name');
+            $res[$i]['Version'] = $dbObj->GetValue('Version');
+            $res[$i]['Subversion'] = $dbObj->GetValue('Subversion');
+            $res[$i]['path'] = str_replace('/Ximdex/Projects', '', $dbObj->GetValue('path'));
             $dbObj->Next();
             $i++;
         }
@@ -58,16 +58,16 @@ class Version extends VersionsOrm
 
     /**
      * Returns the idVersion for a idNode, version and subversion
-     *
-     * @param $idNode
-     * @param $version
-     * @param $subVersion
-     * @return null | string
+     * 
+     * @param int $idNode
+     * @param int $version
+     * @param int $subVersion
+     * @return int|NULL
      */
-    public function getIdVersion($idNode, $version, $subVersion)
+    public function getIdVersion(int $idNode, int $version, int $subVersion) : ?int
     {
         $res = $this->find('IdVersion', 'IdNode = %s and Version = %s and SubVersion = %s', [$idNode, $version, $subVersion]);
-        if( count($res) == 1 ){
+        if ($res and count($res) == 1){
             return $res[0]['IdVersion'];
         }
         return null;

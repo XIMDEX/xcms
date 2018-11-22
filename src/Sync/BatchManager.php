@@ -45,6 +45,7 @@ use Ximdex\Properties\InheritedPropertiesManager;
 use Ximdex\NodeTypes\NodeTypeConstants;
 use Ximdex\NodeTypes\ServerNode;
 use Ximdex\Runtime\Db;
+use Ximdex\Utils\Timer;
 
 include_once XIMDEX_ROOT_PATH . '/src/Sync/conf/synchro_conf.php';
 
@@ -100,10 +101,10 @@ class BatchManager
     public function publicate($idNode, $docsToPublish, $docsToPublishVersion, $docsToPublishSubVersion, $up, $down, $physicalServers
         , array $force, $userId = null)
     {
-        $timer = new \Ximdex\Utils\Timer();
+        $timer = new Timer();
         $timer->start();
         $node = new Node($idNode);
-        if (!$node->GetID()) {
+        if (! $node->GetID()) {
             Logger::error('Cannot load the node with ID: ' . $idNode . ' in order to create the publication batch');
             return false;
         }
@@ -113,7 +114,7 @@ class BatchManager
         $docsToUpVersion = array();
         foreach ($docsToPublish as $idDoc) {
             $docNode = new Node($idDoc);
-            if (!$docNode->get('IdNode')) {
+            if (! $docNode->get('IdNode')) {
                 Logger::error('Not existing node ' . $idDoc);
                 continue;
             }
@@ -123,24 +124,26 @@ class BatchManager
                 $content = $docNode->GetContent();
                 $docNode->SetContent($content);
             }
-            if (!$this->isPublishable($idDoc, $up, $down, $force[$idDoc])) {
+            
+            /*
+             We up version if the current version to publish it is a draft or if the current version is 0.0
+             and the node is the generator node. Or is a image / binary file
+             */
+            $versionToPublish = $docsToPublishVersion[$idDoc];
+            $subversionToPublish = $docsToPublishSubVersion[$idDoc];
+            if ($subversionToPublish != 0 || ($subversionToPublish == 0 && $versionToPublish == 0 && ($idDoc == $idNode
+                or $docNode->GetNodeType() == NodeTypeConstants::IMAGE_FILE
+                or $docNode->GetNodeType() == NodeTypeConstants::BINARY_FILE))) {
+                    $docsToUpVersion[$idDoc] = $idDoc;
+                    continue;
+            }
+            if (! $this->isPublishable($idDoc, $up, $down, $force[$idDoc])) {
                 $docsToPublish = array_diff($docsToPublish, array($idDoc));
                 $unchangedDocs[$idDoc][0][0] = 0;
                 continue;
             }
-
-            /*
-            We up version if the current version to publish it is a draft or if the current version is 0.0 
-            and the node is the generator node. Or is a image / binary file
-            */
-            $versionToPublish = $docsToPublishVersion[$idDoc];
-            $subversionToPublish = $docsToPublishSubVersion[$idDoc];
-            if ($subversionToPublish != 0 || ($subversionToPublish == 0 && $versionToPublish == 0 && ($idDoc == $idNode 
-                or $docNode->GetNodeType() == NodeTypeConstants::IMAGE_FILE or $docNode->GetNodeType() == NodeTypeConstants::BINARY_FILE))) {
-                $docsToUpVersion[$idDoc] = $idDoc;
-            }
         }
-        if (!$docsToPublish) {
+        if (! $docsToPublish) {
             return true;
         }
         
@@ -158,10 +161,12 @@ class BatchManager
             
             // Generate a new portal frame for future Down operation
             $idPortalFrameDown = $portal->upPortalFrameVersion($idNode, $down, $userId, PortalFrames::TYPE_DOWN);
-            if (!$idPortalFrameDown) {
+            if (! $idPortalFrameDown) {
                 Logger::error('Cannot generate a new portal frame type down');
                 return false;
             }
+        } else {
+            $idPortalFrameDown = null;
         }
 
         // Build batchs
@@ -193,14 +198,14 @@ class BatchManager
 
     /**
      * Checks whether the Node can be published
-     *
-     * @param int nodeId
-     * @param int up
-     * @param int down
-     * @param bool forcePublication
+     * 
+     * @param int $nodeId
+     * @param int $up
+     * @param int $down
+     * @param bool $forcePublication
      * @return bool
      */
-    private function isPublishable($nodeId, $up, $down, $forcePublication = false)
+    private function isPublishable(int $nodeId, int $up, ?int $down, bool $forcePublication = false) : bool
     {
         $node = new Node($nodeId);
         if ($node->nodeType->get('IsPublishable') == 0) {

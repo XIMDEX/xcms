@@ -988,7 +988,7 @@ class DataFactory
     {
         $dbObj = new \Ximdex\Runtime\Db();
         $this->ClearError();
-        if ((int)$this->nodeID > 0) {
+        if ((int) $this->nodeID > 0) {
             $query = sprintf("SELECT MAX(IdVersion) AS max_version FROM Versions WHERE SubVersion = 0 AND IdNode = %d", $this->nodeID);
             $dbObj->Query($query);
             $idVersion = $dbObj->GetValue('max_version');
@@ -996,7 +996,8 @@ class DataFactory
             if (($version->get('IdVersion') > 0)
                 && ($version->get('Version') > 0)
             ) {
-                if (SynchroFacade::isNodePublished($this->nodeID)) {
+                $sync = new SynchroFacade();
+                if ($sync->isNodePublished($this->nodeID)) {
                     return $version->get('IdVersion');
                 }
             }
