@@ -24,11 +24,11 @@ To install **XCMS** you need a Linux server with:
 
 #### 2. A web server as Apache with PHP 7.2 or greater
 
-  * Apache web server and PHP:   
-  ```shell
-  sudo apt-get install apache2
-  sudo apt-get install php
-  ```
+  * Install Apache web server and PHP:   
+     ```shell
+     sudo apt-get install apache2
+     sudo apt-get install php
+     ```
   
   * PHP Modules:
      ```shell
@@ -39,16 +39,14 @@ To install **XCMS** you need a Linux server with:
      sudo apt-get install php-mysql
      sudo apt-get install php-pear
      sudo apt-get install php-mbstring
+     sudo apt-get install php-enchant
      ```
-
-  * (Optional) Grammar corrector for XEDIT: `sudo apt-get install php-enchant`
-
 
 #### Email notifications
 
 To use email notifications **Postfix** or **Sendmail** are needed. You can install postfix with `sudo apt-get install postfix` and **Sendmail** with `sudo apt-get install sendmail`.
 
-#### Composer
+#### Install PHP Composer
 
 To install composer please visit this [link](https://getcomposer.org/doc/00-intro.md#installation-linux-unix-macos) and follow the instructions.
 
@@ -62,21 +60,21 @@ To install XCMS:
 
 Download it from github (develop branch) at https://github.com/XIMDEX/ximdex/tree/develop or use **curl** or **wget**:
 
-```shell
-wget --no-check-certificate https://github.com/XIMDEX/ximdex/archive/develop.zip
-```
+   ```shell
+   wget --no-check-certificate https://github.com/XIMDEX/ximdex/archive/develop.zip
+   ```
 
-```shell
-curl -L https://github.com/XIMDEX/ximdex/archive/develop.zip > develop.zip
-```
+   ```shell
+   curl -L https://github.com/XIMDEX/ximdex/archive/develop.zip > develop.zip
+   ```
 
 (Install wget with ```sudo apt-get install wget```)
 
 Unpack the package (Manually or using unzip):
 
-```shell
-unzip develop.zip
-```
+   ```shell
+   unzip develop.zip
+   ```
 
 ![](https://raw.githubusercontent.com/XIMDEX/resources/master/img/XCMS-install/Selección_020.png)
 
@@ -92,31 +90,31 @@ In this example, our root is located at **www** and our instance is renamed **my
 
 We need to set file owners and permissions adequated to our web server. So, if apache runs as 'www-data:www-data' we can run:
 
-```shell
-cd /var/www/
-sudo chown -R www-data:www-data myximdex
-cd myximdex
-sudo chmod -R ug+rw data
-sudo chmod -R ug+rw logs
-sudo chmod -R ug+rw conf
-```
+   ```shell
+   cd /var/www/
+   sudo chown -R www-data:www-data myximdex
+   cd myximdex
+   sudo chmod -R ug+rw data
+   sudo chmod -R ug+rw logs
+   sudo chmod -R ug+rw conf
+   ```
 
 Also, optionally:
 
-```shell
-sudo chmod -R g+s data
-sudo chmod g+s logs
-sudo chmod g+s conf
-```
+   ```shell
+   sudo chmod -R g+s data
+   sudo chmod g+s logs
+   sudo chmod g+s conf
+   ```
 
 ##### 4. Install third-party needed repositories with **composer**
 
 Move to the XCMS root folder (**myximdex** in this case) and run **composer** to configure additional packages:
 
-```shell
-cd /var/www/myximdex
-composer install --no-dev
-```
+   ```shell
+   cd /var/www/myximdex
+   composer install --no-dev
+   ```
 
 ##### 5. Create your XCMS Database
 
@@ -124,16 +122,16 @@ Open a connection to your DDBB engine and type the following SQL commands:
 
 * To create the DB for XCMS:
 
-  ```sql
-  CREATE DATABASE `ximdex_db`;
-  ```
+   ```sql
+   CREATE DATABASE `ximdex_db`;
+   ```
 
 * Create a specific db user for XCMS:
 
-  ```sql
-  CREATE USER 'ximdex-user'@'localhost' IDENTIFIED BY 'ximdex-pass';
-  GRANT ALL PRIVILEGES ON 'ximdex_db'.* TO 'ximdex-user'@'localhost' WITH GRANT OPTION;
-  ```
+   ```sql
+   CREATE USER 'ximdex-user'@'localhost' IDENTIFIED BY 'ximdex-pass';
+   GRANT ALL PRIVILEGES ON 'ximdex_db'.* TO 'ximdex-user'@'localhost' WITH GRANT OPTION;
+   ```
 
 ##### 6. XCMS configuration
 
@@ -172,9 +170,9 @@ The last screen configures the semantic service to enrich your content and data 
 ##### 7. Run Automatically the Transforming and Publishing System
 
 Remember that XCMS is an omnichannel headless CMS that transform and publish your documents in remote locations. To do it, add the following crontab job to your root user:
-```
-* * * * * php /var/www/html/myximdex/bootstrap.php src/Sync/scripts/scheduler/scheduler.php
-```
+   ```
+   * * * * * php /var/www/html/myximdex/bootstrap.php src/Sync/scripts/scheduler/scheduler.php
+   ```
 --
 Thank you for installing **Ximdex CMS**. Please, contact us at **help@ximdex.org** if you need further assistance.
 --
