@@ -3,6 +3,11 @@
 
 # Installing XCMS v.4
 
+Ximdex CMS requires a Linux host, a Database server (MySQL or MariaDB) and the Apache Web Server with PHP or NGINX with PHP-fpm.
+
+Install XCMS as a docker container (see docker_deployment.md) or using the web installer on your server following this guide...
+
+
 ### Server Requirements
 
 To use **XCMS** you need an updated web browser as Firefox, Google Chrome, ... with Javascript and cookies enabled.
