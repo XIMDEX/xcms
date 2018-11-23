@@ -123,6 +123,7 @@ class Db
         }
         $this->sql = \Ximdex\XML\Base::recodeSrc($sql, self::$dbEncoding);
         $this->rows = array();
+        $this->numRows = 0;
         try {
             $this->stm = $this->db->query($this->sql, \PDO::FETCH_ASSOC);
         } catch (\PDOException $e) {
@@ -182,6 +183,7 @@ class Db
         }
         $this->sql = \Ximdex\XML\Base::recodeSrc($sql, self::$dbEncoding);
         $this->rows = array();
+        $this->numRows = 0;
         $this->EOF = true;
         $this->newID = null;
 

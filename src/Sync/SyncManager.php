@@ -256,7 +256,7 @@ class SyncManager
 
         // Exec batchManagerDaemon in background
         $cmd = 'php ' . XIMDEX_ROOT_PATH . '/bootstrap.php  src/Sync/scripts/batch/batchManagerDaemon.php';
-        shell_exec(sprintf("%s > /dev/null & echo $!", $cmd));
+        shell_exec(sprintf('%s > /dev/null & echo $!', $cmd));
         return $docsToPublish;
     }
 

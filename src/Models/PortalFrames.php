@@ -220,10 +220,11 @@ class PortalFrames extends PortalFramesOrm
      * @param string $state
      * @param int $endTime
      * @param int $idNodeGenerator
+     * @param string $type
      * @throws \Exception
      * @return array
      */
-    public static function getByState(string $state, int $endTime = null, int $idNodeGenerator = null) : array
+    public static function getByState(string $state, int $endTime = null, int $idNodeGenerator = null, string $type = null) : array
     {
         $query = 'SELECT id FROM PortalFrames WHERE Status = \'' . $state . '\' AND SFtotal > 0';
         if ($endTime) {
@@ -234,7 +235,10 @@ class PortalFrames extends PortalFramesOrm
         if ($idNodeGenerator) {
             $query .= ' AND IdNodeGenerator = ' . $idNodeGenerator;
         }
-        $query .= ' ORDER BY ScheduledTime DESC, StartTime DESC, id';
+        if ($type) {
+            $query .= ' AND PublishingType = \'' . $type . '\'';
+        }
+        $query .= ' ORDER BY ScheduledTime, StartTime, id';
         $db = new Db();
         if ($db->Query($query) === false) {
             throw new \Exception('Could not obtain a list of portal frames with ' . $state);
@@ -343,7 +347,7 @@ class PortalFrames extends PortalFramesOrm
      * @throws \Exception
      * @return array
      */
-    public function getNodeFrames(string $operation = null) : array
+    public function getNodeFrames(string $operation = null, bool $withLostActivity = false) : array
     {
         $nodeFrame = new NodeFrame();
         $condition = 'IdPortalFrame = ' . $this->id;
@@ -356,6 +360,9 @@ class PortalFrames extends PortalFramesOrm
                     $condition .= ' AND IsProcessDown = 0';
                     break;
             }
+        }
+        if ($withLostActivity) {
+            $condition .= ' AND Active = 0 AND IsProcessUp = 1';
         }
         $frames = $nodeFrame->find('IdNodeFrame', $condition, null, MONO);
         if ($frames === false) {

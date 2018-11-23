@@ -285,6 +285,22 @@ class BatchManager
         $frames = $this->buildFrames($timeUp, $timeDown, $docsToPublish, $docsToUpVersion, $versions, $subversions, $server
             , $relBatchsServers, $relBatchsDown, $statStart, $statTotal, $nodeGenerator, $idPortalFrame, $noCache);
         
+        // Set batchs state to waiting
+        foreach ($relBatchsServers as $idBatch) {
+            $batch = new Batch($idBatch);
+            if ($batch->get('IdBatch')) {
+                $batch->set('State', Batch::WAITING);
+                $batch->update();
+            }
+        }
+        foreach ($relBatchsDown as $idBatch) {
+            $batch = new Batch($idBatch);
+            if ($batch->get('IdBatch')) {
+                $batch->set('State', Batch::WAITING);
+                $batch->update();
+            }
+        }
+        
         // Update portals frames information
         try {
             PortalFrames::updatePortalFrames(null, null, $idPortalFrame);
@@ -305,7 +321,7 @@ class BatchManager
                 $portal->delete();
             }
         } else {
-        
+            
             // Play related portal frames
             $portal->set('Playing', 1);
             $portal->update();
@@ -439,10 +455,16 @@ class BatchManager
                         
                         // Creating nodeFrame first time
                         if (! $nodeFrameId) {
+                            /*
                             $nodeFrames = $nf->find('IdNodeFrame', 'NodeId = %s AND VersionId = %s', array($idNode, $idVersion), MONO);
-                            if (empty($nodeFrames)) {
+                            if (empty($nodeFrames))
+                            */
+                            {
                                 $nodeFrameId = $nf->create($idNode, $nodeName, $idVersion, $up, $idPortalFrame, $down);
-                            } else {
+                            }
+                            /*
+                            else
+                            {
                                 $nodeFrameId = $nodeFrames[0];
                                 $nfr = new NodeFrame($nodeFrameId);
                                 $nfr->set('IsProcessUp', 0);
@@ -453,6 +475,7 @@ class BatchManager
                                 $nfr->set('IdPortalFrame', $idPortalFrame);
                                 $nfr->update();
                             }
+                            */
                             if (is_null($nodeFrameId)) {
                                 $node->unBlock();
                                 Logger::warning(sprintf('A NodeFrame could not be obtained for node %s', $idNode));
@@ -562,15 +585,28 @@ class BatchManager
         if ($db->numRows > 0) {
             Logger::warning(sprintf('Found %s Batchs without Frames, were marked as NoFrames', $db->numRows));
         }
-        
+        /*
+        try {
+            $downPortals = PortalFrames::getByState(PortalFrames::STATUS_CREATED, null, null, PortalFrames::TYPE_DOWN);
+            foreach ($downPortals as $portalFrame) {
+                $nodeFrames = $portalFrame->getNodeFrames(null, true);
+                foreach ($nodeFrames as $nodeFrameId) {
+                    $nodeFrame = new NodeFrame($nodeFrameId);
+                    $nodeFrame->cancel();
+                }
+            }
+        } catch (\Exception $e) {
+            Logger::error($e->getMessage());
+        }
+        */
         // Remove portal frames without batchs and created time more than 10 minute
         try {
             $voidPortalFrames = PortalFrames::getVoidPortalFrames(600);
         } catch (\Exception $e) {
             Logger::error($e->getMessage());
         }
-        foreach ($voidPortalFrames as $idPortalFrame) {
-            $portalFrame = new PortalFrames($idPortalFrame);
+        foreach ($voidPortalFrames as $portalFrameId) {
+            $portalFrame = new PortalFrames($portalFrameId);
             $portalFrame->delete();
         }
     }
@@ -612,7 +648,8 @@ class BatchManager
                 . '\', \'' . ServerFrame::DUE2IN_ . '\') AND ServerFrames.ErrorLevel IS NULL, 1, 0)) AS Active, 
             SUM(IF (ServerFrames.State IN (\'' . ServerFrame::PENDING . '\', \'' . ServerFrame::DUE2IN_ . '\'), 1, 0)) AS Pending 
             FROM ServerFrames, Batchs WHERE Batchs.Type = \'' . Batch::TYPE_UP . '\' 
-            AND Batchs.State IN (\'' . Batch::INTIME . '\', \'' . Batch::CLOSING . '\') AND Batchs.IdBatch = ServerFrames.IdBatchUp
+            AND Batchs.State IN (\'' . Batch::INTIME . '\', \'' . Batch::CLOSING . '\', \'' . Batch::WAITING . '\') 
+            AND Batchs.IdBatch = ServerFrames.IdBatchUp
             AND Batchs.ServerId IN (' . implode(', ', $servers) . ') ';
         if ($idBatchToUpdate) {
             $sql .= 'AND Batchs.IdBatch = ' . $idBatchToUpdate . ' ';
@@ -638,7 +675,7 @@ class BatchManager
             $batch->set('ServerFramesTemporalError', $temporalErrors);
             $batch->set('ServerFramesActive', $active);
             $batch->set('ServerFramesPending', $pending);
-            if ($totals == $fatalErrors + $success + $pumpeds) {
+            if ($totals and $totals == $fatalErrors + $success + $pumpeds) {
                 if ($pumpeds > 0) {
                     
                     // Do not change to CLOSING state if this is the actual one in the batch
@@ -669,7 +706,7 @@ class BatchManager
         if ($idBatchToUpdate) {
             $criteria = 'IdBatch = ' . $idBatchToUpdate;
         } else {
-            $criteria = 'Type = \'' . Batch::TYPE_DOWN . '\' AND State = \'' . Batch::INTIME . '\'';
+            $criteria = 'Type = \'' . Batch::TYPE_DOWN . '\' AND State IN (\'' . Batch::WAITING . '\', \'' . Batch::INTIME . '\')';
         }
         $batch = new Batch();
         $batchsDown = $batch->find('IdBatch', $criteria, null, MONO);
@@ -714,7 +751,7 @@ class BatchManager
                     $batch->set('ServerFramesSuccess', $success);
                     $batch->set('ServerFramesFatalError', $fatalErrors);
                     $batch->set('ServerFramesTemporalError', $temporalErrors);
-                    if ($totals == $fatalErrors + $success) {
+                    if ($totals and $totals == $fatalErrors + $success) {
                         $batch->set('State', Batch::ENDED);
                         Logger::info('Ending batch type Down with ID ' . $idBatch);
                     }
@@ -890,6 +927,7 @@ class BatchManager
             $batchDown->set('ServerFramesTotal', $serverFramesTotal);
             $batchDown->set('ServerFramesPending', $serverFramesTotal);
             $batchDown->set('IdPortalFrame', $idPortalFrame);
+            $batchDown->set('State', Batch::WAITING);
             $batchDown->update();
         }
         return true;

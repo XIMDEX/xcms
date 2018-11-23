@@ -338,7 +338,7 @@ class SynchroFacade
                     
                     // Close and save previous server batch
                     if ($batchId) {
-                        if ($this->closeBatch($batch, $numFrames) === false) {
+                        if ($this->setBatchToWaiting($batch, $numFrames) === false) {
                             return false;
                         }
                     }
@@ -365,7 +365,7 @@ class SynchroFacade
                 
                 // Update the batch with the results
                 if ($numFrames == MAX_NUM_NODES_PER_BATCH) {
-                    if ($this->closeBatch($batch, $numFrames) === false) {
+                    if ($this->setBatchToWaiting($batch, $numFrames) === false) {
                         return false;
                     }
                     $batchId = null;
@@ -377,7 +377,7 @@ class SynchroFacade
             
             // Update the batch with the last generated frames 
             if ($numFrames and $numFrames < MAX_NUM_NODES_PER_BATCH) {
-                if ($this->closeBatch($batch, $numFrames) === false) {
+                if ($this->setBatchToWaiting($batch, $numFrames) === false) {
                     return false;
                 }
             }
@@ -400,10 +400,11 @@ class SynchroFacade
         return true;
     }
     
-    private function closeBatch(Batch $batch, int & $numFrames)
+    private function setBatchToWaiting(Batch $batch, int & $numFrames)
     {
         $batch->set('ServerFramesTotal', $numFrames);
         $batch->set('ServerFramesPending', $numFrames);
+        $batch->set('State', Batch::WAITING);
         $numFrames = 0;
         return $batch->update();
     }

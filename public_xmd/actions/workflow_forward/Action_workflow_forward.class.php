@@ -525,6 +525,11 @@ class Action_workflow_forward extends ActionAbstract
         $dateDown = $this->request->getParam('dateDown_timestamp');
         $up = (! is_null($dateUp) && $dateUp != "") ? $dateUp / 1000 : time();
         $down = (! is_null($dateDown) && $dateDown != "") ? $dateDown / 1000 : null;
+        if ($down and $down <= ($up + 58)) {
+            $this->messages->add('Expiration date has to be later than beginning one', MSG_TYPE_ERROR);
+            $values = array('messages' => $this->messages->messages);
+            $this->sendJSON($values);
+        }
         $markEnd = $this->request->getParam('markend') ? true : false;
         $structure = $this->request->getParam('no_structure') ? false : true;
         $levels = $this->request->getParam('levels');

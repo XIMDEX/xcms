@@ -41,8 +41,12 @@ include_once XIMDEX_ROOT_PATH . '/src/Sync/conf/synchro_conf.php';
  */
 class Batch extends BatchsOrm
 {
+    
+    // Publishing types
     const TYPE_UP = 'Up';
     const TYPE_DOWN = 'Down';
+    
+    // Status
     const WAITING = 'Waiting';
     const INTIME = 'InTime';
     const ENDED = 'Ended';
@@ -50,6 +54,9 @@ class Batch extends BatchsOrm
     const NOFRAMES = 'NoFrames';
     const STOPPED = 'Stopped';
     const DELAYED = 'Delayed';
+    const CREATING = 'Creating';
+    
+    // Priorities
     const PRIORITY_TYPE_DOWN = 1.1;
 
     public function set($attribute, $value)
@@ -81,7 +88,7 @@ class Batch extends BatchsOrm
     {
         setlocale(LC_NUMERIC, 'C');
         $this->set('TimeOn', $timeOn);
-        $this->set('State', Batch::WAITING);
+        $this->set('State', Batch::CREATING);
         $this->set('Type', $type);
         $this->set('IdBatchDown', $idBatchDown);
         $this->set('IdNodeGenerator', $idNodeGenerator);
