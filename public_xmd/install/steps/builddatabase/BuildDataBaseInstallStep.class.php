@@ -240,7 +240,7 @@ class BuildDataBaseInstallStep extends GenericInstallStep
                 $values['errors'] = 'The recommended database version is ' . $minVersion 
                     . ' or higher and the installed one is ' 
                     . $version . ' (' . $serverInfo[0] 
-                    . '). You can continue with the installation process, but stability is not secured';
+                    . '). You can continue with the installation process, but stability is not assured';
             } else {
                 $values['success'] = true;
             }

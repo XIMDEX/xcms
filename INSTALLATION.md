@@ -136,8 +136,8 @@ Open a connection to your DDBB engine and type the following SQL commands:
 * Create a specific db user for XCMS:
 
    ```sql
-   CREATE USER 'ximdex-user'@'localhost' IDENTIFIED BY 'ximdex-pass';
-   GRANT ALL PRIVILEGES ON 'ximdex_db'.* TO 'ximdex-user'@'localhost' WITH GRANT OPTION;
+   CREATE USER `ximdex-user`@`localhost` IDENTIFIED BY `ximdex-pass`;
+   GRANT ALL PRIVILEGES ON `ximdex_db`.* TO `ximdex-user`@`localhost` WITH GRANT OPTION;
    ```
 
 
