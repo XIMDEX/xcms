@@ -15,7 +15,7 @@ To use **XCMS** you need an updated web browser as Firefox, Google Chrome, ... w
 
 To install **XCMS** you need a Linux server with:
 
-#### 1. A Relational Database Management System as
+#### 1.- A Relational Database Management System as
 
 ##### MySQL
 
@@ -28,7 +28,7 @@ To install **XCMS** you need a Linux server with:
 * Alternative versions: prior versions, like **10.1**, reported some errors.
 * Linux install: `sudo apt-get install mariadb-server`
 
-#### 2. A web server as Apache with PHP 7.2 or greater
+#### 2.- A web server as Apache with PHP 7.2 or greater
 
   * Install Apache web server and PHP:   
      ```shell
@@ -48,13 +48,14 @@ To install **XCMS** you need a Linux server with:
      sudo apt-get install php-enchant
      ```
 
-#### Email notifications
+#### 3.- Install PHP Composer
+
+To install composer please visit this [link](https://getcomposer.org/doc/00-intro.md#installation-linux-unix-macos) and follow the instructions.
+
+#### 4.- Email notifications
 
 To use email notifications **Postfix** or **Sendmail** are needed. You can install postfix with `sudo apt-get install postfix` and **Sendmail** with `sudo apt-get install sendmail`.
 
-#### Install PHP Composer
-
-To install composer please visit this [link](https://getcomposer.org/doc/00-intro.md#installation-linux-unix-macos) and follow the instructions.
 
 ---
 
