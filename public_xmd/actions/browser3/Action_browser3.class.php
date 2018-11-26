@@ -26,17 +26,17 @@
  */
 
 use Ximdex\Logger;
-use Ximdex\Models\Action;
 use Ximdex\Models\Node;
-use Ximdex\Models\NodeSets;
-use Ximdex\Models\SearchFilters;
 use Ximdex\Models\User;
-use Ximdex\Models\XimLocale;
-use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\App;
+use Ximdex\Models\Action;
+use Ximdex\Models\NodeSets;
 use Ximdex\Runtime\Request;
-use Ximdex\Utils\Serializer;
 use Ximdex\Runtime\Session;
+use Ximdex\Models\XimLocale;
+use Ximdex\Utils\Serializer;
+use Ximdex\MVC\ActionAbstract;
+use Ximdex\Models\SearchFilters;
 
 Ximdex\Modules\Manager::file('/actions/browser3/inc/search/QueryProcessor.class.php');
 Ximdex\Modules\Manager::file('/actions/browser3/inc/GenericDatasource.class.php');
@@ -52,7 +52,7 @@ class Action_browser3 extends ActionAbstract
 
     public function index()
     {
-        if (!is_string( Session::get('activeTheme'))) {
+        if (!is_string(Session::get('activeTheme'))) {
             Session::set('activeTheme', 'ximdex_theme');
         }
         $params = $this->request->getParam('params');
@@ -100,6 +100,7 @@ class Action_browser3 extends ActionAbstract
         $this->addJs(Extensions::JQUERY);
         $this->addJs(Extensions::JQUERY_UI);
         $this->addJs('/assets/js/i18n.js');
+        $this->addJs('/../src/I18n/locale/' . $user_locale['Code'] . '/LC_MESSAGES/strings.js');
         $this->addJs('/vendors/hammerjs/hammer.js/hammer.js');
         $this->addJs('/vendors/angular/angular.min.js');
         $this->addJs('/vendors/react/react-with-addons.min.js');
@@ -192,7 +193,8 @@ class Action_browser3 extends ActionAbstract
 
         // Splash
         define("REMOTE_WELCOME", STATS_SERVER . "/stats/getsplash.php");
-        $ctx = stream_context_create(array(
+        $ctx = stream_context_create(
+            array(
                 'http' => array(
                     'timeout' => 2
                 )
@@ -279,7 +281,7 @@ class Action_browser3 extends ActionAbstract
 
     /**
      * Check if the nodes have associated actions
-     * 
+     *
      * @param array $nodes
      * @return array|NULL
      */
@@ -345,7 +347,7 @@ class Action_browser3 extends ActionAbstract
      * Instantiates a QueryHandler based on the "handler" parameter and does
      * a search with the "query" parameter options.
      * The "query" parameter could be a XML or JSON string
-     * 
+     *
      * @param $handler
      * @param $output
      * @param $query
@@ -502,8 +504,11 @@ class Action_browser3 extends ActionAbstract
         }
         $sessionUser = \Ximdex\Runtime\Session::get('userID');
         $errors = array_merge(
-            $errors, $this->addUserToSet(
-            $set->getId(), $sessionUser, RelNodeSetsUsers::OWNER_YES
+            $errors,
+            $this->addUserToSet(
+            $set->getId(),
+                $sessionUser,
+                RelNodeSetsUsers::OWNER_YES
             )
         );
         if ($set->getId() > 0 && $users) {
@@ -525,7 +530,7 @@ class Action_browser3 extends ActionAbstract
     /**
      * Adds multiple nodes to a specific node set
      * The nodes parameter must by an array of node ids
-     * 
+     *
      * @param null $idSet
      * @param null $nodes
      * @return array
@@ -548,12 +553,14 @@ class Action_browser3 extends ActionAbstract
         $set = new NodeSets($idSet);
         foreach ($nodes as $idNode) {
             $rel = $set->addNode($idNode);
-            if ($rel->getId() > 0)
+            if ($rel->getId() > 0) {
                 $addedNodes++;
+            }
             $errors = array_merge($errors, $rel->messages->messages);
         }
         $errors = array_merge(
-            array(array('type' => MSG_TYPE_NOTICE, 'message' => _("Nodes has been added correctly.") . $addedNodes)), $errors
+            array(array('type' => MSG_TYPE_NOTICE, 'message' => _("Nodes has been added correctly.") . $addedNodes)),
+            $errors
         );
         if ($returnJSON) {
             $this->sendJSON($errors);
@@ -566,7 +573,7 @@ class Action_browser3 extends ActionAbstract
     /**
      * Adds multiple users to a specific node set
      * The users parameter must by an array of user ids
-     * 
+     *
      * @param null $idSet
      * @param null $users
      * @param int $owner
@@ -590,13 +597,15 @@ class Action_browser3 extends ActionAbstract
         foreach ($users as $idUser) {
             if (!empty($idUser) && $idUser > 0) {
                 $rel = $set->addUser($idUser, $owner);
-                if ($rel->getId() > 0)
+                if ($rel->getId() > 0) {
                     $addedUsers++;
+                }
                 $errors = array_merge($errors, $rel->messages->messages);
             }
         }
         $errors = array_merge(
-            array(array('type' => MSG_TYPE_NOTICE, 'message' => _("Users have been added correctly.") . $addedUsers)), $errors
+            array(array('type' => MSG_TYPE_NOTICE, 'message' => _("Users have been added correctly.") . $addedUsers)),
+            $errors
         );
         if ($returnJSON) {
             $this->sendJSON($errors);
@@ -654,12 +663,14 @@ class Action_browser3 extends ActionAbstract
         $set = new NodeSets($setid);
         foreach ($nodes as $idNode) {
             $rel = $set->deleteNode($idNode);
-            if (count($rel->messages->messages) == 0)
+            if (count($rel->messages->messages) == 0) {
                 $deletedNodes++;
+            }
             $errors = array_merge($errors, $rel->messages->messages);
         }
         $errors = array_merge(
-            array(array('type' => MSG_TYPE_NOTICE, 'message' => _("Nodes have been deleted successfully.") . $deletedNodes)), $errors
+            array(array('type' => MSG_TYPE_NOTICE, 'message' => _("Nodes have been deleted successfully.") . $deletedNodes)),
+            $errors
         );
         $this->sendJSON($errors);
     }
@@ -697,7 +708,8 @@ class Action_browser3 extends ActionAbstract
             }
         }
         $errors = array_merge(
-            array(array('type' => MSG_TYPE_NOTICE, 'message' => _("Users have been deleted successfully.") . $deletedUsers)), $errors
+            array(array('type' => MSG_TYPE_NOTICE, 'message' => _("Users have been deleted successfully.") . $deletedUsers)),
+            $errors
         );
         $this->sendJSON($errors);
     }
@@ -895,7 +907,7 @@ class Action_browser3 extends ActionAbstract
     /**
      * Calculates the posible actions for a group of nodes
      * It depends on roles, states and nodetypes of nodes
-     * 
+     *
      * @param int $idUser Current user.
      * @param array $nodes IdNodes array.
      * @return array IdActions array.
@@ -920,7 +932,7 @@ class Action_browser3 extends ActionAbstract
 
     /**
      * Create contextual menu options for delete nodes from sets
-     * 
+     *
      * @param null $nodes
      * @return array
      */
@@ -963,8 +975,7 @@ class Action_browser3 extends ActionAbstract
         $arrayActionsParams = array();
         
         // For every action, build the params for json response
-        foreach ($actions as $idAction)
-        {
+        foreach ($actions as $idAction) {
             $actionsParamsAux = array();
             $action = new Action($idAction);
             $name = $action->get("Name");
@@ -1011,7 +1022,7 @@ class Action_browser3 extends ActionAbstract
     /**
      * Disables the tour pop-up
      */
-    function disableTour()
+    public function disableTour()
     {
         $numRep = $this->request->getParam('numRep');
         App::setValue('ximTourRep', $numRep, true);
@@ -1022,12 +1033,12 @@ class Action_browser3 extends ActionAbstract
     /**
      * Return preferences like MaxItemsPerGroup as JSON
      */
-    function getPreferences()
+    public function getPreferences()
     {
         $res = ['preferences' => array("MaxItemsPerGroup" => App::getValue("MaxItemsPerGroup"))];
         $this->sendJSON($res);
     }
-	
+    
     protected function actionIsExcluded($idAction, $idNode)
     {
         $node = new Node($idNode);

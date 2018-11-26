@@ -49,8 +49,7 @@
     {foreach from=$js_files key=id item=src}
         <script type="text/javascript" src="{$src}"></script>
     {/foreach}
-    <script type="text/javascript" src="{ximdex}/src/I18n/locale/{$user_locale.Code}/LC_MESSAGES/strings.js{/ximdex}"
-            charset="UTF-8"></script>
+    
     <!-- js widgets -->
     %=js_widgets%
 </head>
