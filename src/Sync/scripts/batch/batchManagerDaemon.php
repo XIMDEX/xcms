@@ -103,11 +103,11 @@ function createBatchsForBlock($nodesToPublish)
     );
 
     // Clean up caches, tmp files, etc...
-    if (is_null($docsPublicated)) {        
+    if (is_null($docsPublicated)) {
         Logger::error('PUSHDOCINPOOL - docsPublicated null');
         return null;
     }
-
+    /*
     // Purge subversions in docs publicated successfully
     if (isset($docsPublicated[1]) and $docsPublicated[1]) {
         if (array_key_exists('ok', $docsPublicated[1])) {
@@ -137,7 +137,7 @@ function createBatchsForBlock($nodesToPublish)
             }
         }
     }
-
+    */
     // Back node to initial state
     $node = new Node($idNodeGenerator);
     if ($node->get('IdState') > 0) {

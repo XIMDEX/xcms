@@ -42,7 +42,6 @@ use Ximdex\Models\ServerFrame;
 use Ximdex\Models\ChannelFrame;
 use Ximdex\Models\User;
 use Ximdex\Properties\InheritedPropertiesManager;
-use Ximdex\NodeTypes\NodeTypeConstants;
 use Ximdex\NodeTypes\ServerNode;
 use Ximdex\Runtime\Db;
 use Ximdex\Utils\Timer;
@@ -125,22 +124,22 @@ class BatchManager
                 $docNode->SetContent($content);
             }
             
+            if (! $this->isPublishable($idDoc, $up, $down, $force[$idDoc])) {
+                $docsToPublish = array_diff($docsToPublish, array($idDoc));
+                $unchangedDocs[$idDoc][0][0] = 0;
+                continue;
+            }
+            
             /*
              We up version if the current version to publish it is a draft or if the current version is 0.0
              and the node is the generator node. Or is a image / binary file
              */
             $versionToPublish = $docsToPublishVersion[$idDoc];
             $subversionToPublish = $docsToPublishSubVersion[$idDoc];
-            if ($subversionToPublish != 0 || ($subversionToPublish == 0 && $versionToPublish == 0 && ($idDoc == $idNode
-                or $docNode->GetNodeType() == NodeTypeConstants::IMAGE_FILE
-                or $docNode->GetNodeType() == NodeTypeConstants::BINARY_FILE))) {
+            if ($subversionToPublish != 0 || ($subversionToPublish == 0 && $versionToPublish == 0 
+                && ($idDoc == $idNode or ! $docNode->nodeType->get('IsStructuredDocument')) )) {
                     $docsToUpVersion[$idDoc] = $idDoc;
                     continue;
-            }
-            if (! $this->isPublishable($idDoc, $up, $down, $force[$idDoc])) {
-                $docsToPublish = array_diff($docsToPublish, array($idDoc));
-                $unchangedDocs[$idDoc][0][0] = 0;
-                continue;
             }
         }
         if (! $docsToPublish) {
@@ -220,7 +219,7 @@ class BatchManager
         }
         $nodeFrame = new NodeFrame();
         if ($nodeFrame->existsNodeFrame($nodeId, $up, $down)) {
-            Logger::info(sprintf('Node %s already exists in a NodeFrame', $nodeId));
+            Logger::debug(sprintf('Node %s already exists in a NodeFrame', $nodeId));
             return false;
         }
         return true;
@@ -266,7 +265,7 @@ class BatchManager
         $relBatchsDown = [];
         $batch = new Batch();
         foreach ($physicalServers as $serverId) {
-            if ($timeDown != 0) {
+            if ($timeDown) {
                 $idBatchDown = $batch->create($timeDown, Batch::TYPE_DOWN, $nodeGenerator, $priority, $serverId, null, $idPortalFrameDown
                     , $userId);
                 Logger::info('Creating down batch: ' . $timeDown);

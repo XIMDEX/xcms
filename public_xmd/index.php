@@ -32,7 +32,7 @@ include_once dirname(__DIR__) . '/bootstrap.php';
 
 include_once __DIR__ . '/src/autoload.php';
 
-//General class
+// General class
 Ximdex\Modules\Manager::file('/install/InstallController.class.php');
 
 // FROM MVC
@@ -43,7 +43,7 @@ if (!defined('SMARTY_TMP_PATH')) {
     define('SMARTY_TMP_PATH', XIMDEX_ROOT_PATH . App::getValue('TempRoot'));
 }
 
-//Main thread
+// Main thread
 if (!InstallController::isInstalled()) {
     if (strpos($_SERVER['REQUEST_URI'], 'public_xmd') !== false) {
         

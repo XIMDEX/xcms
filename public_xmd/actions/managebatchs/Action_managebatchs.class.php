@@ -298,6 +298,7 @@ class Action_managebatchs extends ActionAbstract
             'scheduledTime' => Date::formatTime($portal->get('ScheduledTime')),
             'statusTime' => Date::formatTime($portal->get('StatusTime')),
             'startTime' => Date::formatTime($portal->get('StartTime')),
+            'elapsedTime' => $portal->get('StartTime') ? $portal->get('StatusTime') - $portal->get('StartTime') : 0,
             'endTime' => Date::formatTime($portal->get('EndTime')),
             'total' => $total,
             'active' => $active,

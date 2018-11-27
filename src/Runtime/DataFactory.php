@@ -81,12 +81,8 @@ class DataFactory
 
     /**
      * Constructor de la clase
-     *
-     * @name        DataFactory
-     * @author    Jose I. Villar
-     * @version    1.0
-     * @param    int $nodeID =null (opcional) Identificador del Nodo cargado en el objeto
-     * @return    $this
+     * 
+     * @param $nodeID
      */
     public function __construct($nodeID = null)
     {
@@ -96,11 +92,8 @@ class DataFactory
 
     /**
      * Devuelve el identificador del Nodo cargado en el objeto
-     *
-     * @name        GetID
-     * @author    Jose I. Villar
-     * @version    1.0
-     * @return    $nodeID
+     * 
+     * @return number|boolean
      */
     function GetID()
     {
@@ -114,11 +107,9 @@ class DataFactory
 
     /**
      * Devuelve la lista de versiones distintas para el nodo cargado en el objeto
-     *
-     * @name        GetVersionList
-     * @author    Jose I. Villar
-     * @version    1.0
-     * @return    array $versions
+     * 
+     * @param string $order
+     * @return boolean|array
      */
     function GetVersionList($order = 'asc')
     {
@@ -133,12 +124,9 @@ class DataFactory
 
     /**
      * Devuelve la lista de subversiones de una version concreta para el nodo cargado en el objeto
-     *
-     * @name        GetSubVersionList
-     * @author    Jose I. Villar
-     * @version    1.0
-     * @param    int $version
-     * @return    array $versions
+     * 
+     * @param $version
+     * @return boolean|array
      */
     function GetSubVersionList($version)
     {
@@ -154,11 +142,8 @@ class DataFactory
 
     /**
      * Devuelve la ultima version del nodo que hay en el objeto
-     *
-     * @name        GetVersionList
-     * @author    Jose I. Villar
-     * @version    1.0
-     * @return    int $version
+     * 
+     * @return NULL|int
      */
     function GetLastVersion()
     {
@@ -177,12 +162,9 @@ class DataFactory
 
     /**
      * Devuelve la ultima SubVersion del la version dada
-     *
-     * @name        GetSubVersionList
-     * @author    Jose I. Villar
-     * @version    1.0
-     * @param    int $version
-     * @return    array $subVersions
+     * 
+     * @param $version
+     * @return NULL|int
      */
     function GetLastSubVersion($version)
     {
@@ -217,11 +199,8 @@ class DataFactory
 
     /**
      * Devuelve si ya hay almacenada alguna version del nodo que hay en el objeto
-     *
-     * @name        HasPreviousVersions
-     * @author    Jose I. Villar
-     * @version    1.0
-     * @return    int $version
+     * 
+     * @return boolean|NULL
      */
     function HasPreviousVersions()
     {
@@ -240,13 +219,10 @@ class DataFactory
     }
 
     /**
-     * Devuelve el contenido de una version.
+     * Devuelve el contenido de una version
      *
-     * @name        GetContent
-     * @author    Jose I. Villar
-     * @version    1.0
      * @param    int $versionID = null     : Si se omite este parametro y el siguiente, se tomara la ultima version del nodo en el objeto
-     * @param    int $subVersion = null    : Si se omite este parametro, el anterior es el identificador unico de version, en otro caso, es 
+     * @param    int $subVersion = null    : Si se omite este parametro, el anterior es el identificador unico de version, en otro caso, es
      *                                       el numero de Version
      * @return    string $content
      */
@@ -358,15 +334,15 @@ class DataFactory
     }
 
     /**
-     * Cambia el contenido de una version.
-     *
-     * @name        SetContent
-     * @author    Jose I. Villar
-     * @version    1.0
+     * Cambia el contenido de una version
+     * 
      * @param    string $content
      * @param    int $versionID = null      : Si se omite este parametro y el siguiente, se tomara la ultima version del nodo en el objeto
      * @param    int $subVersion = null     : Si se omite este parametro, el anterior es el identificador unico de version, en otro caso, es el 
      *                                        numero de Version
+     * @param $commitNode
+     * @param $metadata
+     * @return boolean|NULL|string
      */
     function SetContent($content, $versionID = NULL, $subVersion = NULL, $commitNode = NULL, $metadata = null)
     {
@@ -604,13 +580,10 @@ class DataFactory
     }
 
     /**
-    * Elimina todas las Versiones del Nodo
-    *
-    * @name		DeleteAllVersions
-    * @author 	Jose I. Villar
-    * @version	1.0
-    * @param	int $version
-    **/
+     * Elimina todas las Versiones del Nodo
+     * 
+     * @return boolean
+     */
     function DeleteAllVersions()
     {
         $this->ClearError();
@@ -773,15 +746,13 @@ class DataFactory
     }
 
     /**
-    * Devuelve el nombre del archivo temporal en el que se guarda el contenido de una SubVersion
-    *
-    * @name		GetTmpFile
-    * @author 	Jose I. Villar
-    * @version	1.0
-    * @param	int $versionID	: Si se omite el siguiente parametro, este es el identificador unico de version, en otro caso, es 
-    *                             el numero de version
-    * @param	int $subVersion = null
-    **/
+     * Devuelve el nombre del archivo temporal en el que se guarda el contenido de una SubVersion
+     * 
+     * @param	int $versionID	: Si se omite el siguiente parametro, este es el identificador unico de version, en otro caso, es 
+     *                             el numero de version
+     * @param	int $subVersion = null
+     * @return boolean|NULL|string
+     */
     function GetTmpFile($versionID, $subVersion = null)
     {
         $this->ClearError();
@@ -813,15 +784,15 @@ class DataFactory
     }
 
     /**
-    * Devuelve el comentario de una SubVersion
-    *
-    * @name		GetComment
-    * @author 	Jose I. Villar
-    * @version	1.0
-    * @param	int $versionID	: Si se omite el siguiente parametro, este es el identificador unico de version, en otro caso, es 
-    *                             el numero de version
-    * @param	int $subVersion = null
-    **/
+     * Devuelve el comentario de una SubVersion
+     * 
+     * @param	int $versionID	: Si se omite el siguiente parametro, este es el identificador unico de version, en otro caso, es 
+     *                             el numero de version
+     * @param	int $subVersion = null
+     * @param $versionID
+     * @param $subVersion
+     * @return NULL|string
+     */
     function GetComment($versionID, $subVersion = null)
     {
         $this->ClearError();
@@ -841,16 +812,16 @@ class DataFactory
         return $dbObj->GetValue('Comment');
     }
 
-    /**
-     * Devuelve el la fecha de almacenamiento de una SubVersion
-     *
-     * @name        GetDate
-     * @author    Jose I. Villar
-     * @version    1.0
-     * @param    int $versionID : Si se omite el siguiente parametro, este es el identificador unico de version, en otro caso, es 
-     *                            el numero de version
-     * @param    int $subVersion = null
-     **/
+     /**
+      * Devuelve el la fecha de almacenamiento de una SubVersion
+      * 
+      * @param int $versionID : Si se omite el siguiente parametro, este es el identificador unico de version, en otro caso, es 
+      *                         el numero de version
+      * @param int $subVersion = null
+      * @param $versionID
+      * @param $subVersion
+      * @return NULL|NULL|string
+      */
     function GetDate($versionID, $subVersion = null)
     {
         $this->ClearError();
@@ -871,15 +842,13 @@ class DataFactory
     }
 
     /**
-    * Devuelve el id del usuario que gestiono la version.
-    *
-    * @name		GetUserID
-    * @author 	Jose I. Villar
-    * @version	1.0
-    * @param	int $versionID	: Si se omite el siguiente parametro, este es el identificador unico de version, en otro caso, es 
-    *                             el numero de version
-    * @param	int $subVersion = null
-    **/
+     * Devuelve el id del usuario que gestiono la version
+     * 
+     * @param	int $versionID	: Si se omite el siguiente parametro, este es el identificador unico de version, en otro caso, es 
+     *                             el numero de version
+     * @param	int $subVersion = null
+     * @return NULL|string
+     */
     function GetUserID($versionID, $subVersion = null)
     {
         $this->ClearError();
@@ -940,12 +909,8 @@ class DataFactory
     }
 
     /**
-    * Resetea el flag de ocurrencia de error
-    *
-    * @name		ClearError
-    * @author 	Jose I. Villar
-    * @version	1.0
-    **/
+     * Resetea el flag de ocurrencia de error
+     */
     function ClearError()
     {
         $this->numErr = null;
@@ -953,13 +918,10 @@ class DataFactory
     }
 
     /**
-    * Carga en el objeto el codigo del ultimo error ocurrido
-    *
-    * @name		SetError
-    * @author 	Jose I. Villar
-    * @version	1.0
-    * @param	int $code
-    **/
+     * Carga en el objeto el codigo del ultimo error ocurrido
+     * 
+     * @param $code
+     */
     function SetError($code)
     {
         $this->numErr = $code;
@@ -967,13 +929,10 @@ class DataFactory
     }
 
     /**
-    * Devuelve un booleano que indica si hubo algun error
-    *
-    * @name		HasError
-    * @author 	Jose I. Villar
-    * @version	1.0
-    * @return	bool $hasError
-    **/
+     * Devuelve un booleano que indica si hubo algun error
+     * 
+     * @return NULL|int
+     */
     function HasError()
     {
         return $this->numErr;
@@ -993,9 +952,7 @@ class DataFactory
             $dbObj->Query($query);
             $idVersion = $dbObj->GetValue('max_version');
             $version = new Version($idVersion);
-            if (($version->get('IdVersion') > 0)
-                && ($version->get('Version') > 0)
-            ) {
+            if (($version->get('IdVersion') > 0) && ($version->get('Version') > 0)) {
                 $sync = new SynchroFacade();
                 if ($sync->isNodePublished($this->nodeID)) {
                     return $version->get('IdVersion');

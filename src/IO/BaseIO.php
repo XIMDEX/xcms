@@ -489,11 +489,13 @@ class BaseIO
                 $nodeType = new NodeType();
                 $nodeType->SetByName($data['NODETYPENAME']);
                 $xmlDocument = new Node();
-                $xmlDocument->CreateNode($documentName, $data['PARENTID'], $nodeType->get('IdNodeType'), $data['STATE']
+                $idNode = $xmlDocument->CreateNode($documentName, $data['PARENTID'], $nodeType->get('IdNodeType'), $data['STATE']
                     , $data['TEMPLATE'], $data['LANG'], $data['ALIASNAME'], $data['CHANNELS']);
+                if (!($idNode > 0)) {
+                    return Constants::ERROR_INCORRECT_DATA;
+                }
                 
                 //Creating a symbolic link with the master and stablishing its workflow
-                $idNode = $xmlDocument->get('IdNode');
                 $strDoc = new StructuredDocument($xmlDocument->get('IdNode'));
                 if (array_key_exists('NEWTARGETLINK', $data)) {
                     $xmlDocument->SetWorkflowMaster($data['NEWTARGETLINK']);
@@ -516,9 +518,6 @@ class BaseIO
                         }
                     }
                     unset($node);
-                }
-                if (!($idNode > 0)) {
-                    return Constants::ERROR_INCORRECT_DATA;
                 }
                 return $idNode;
                 

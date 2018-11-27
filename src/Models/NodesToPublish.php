@@ -53,27 +53,22 @@ class NodesToPublish extends NodesToPublishOrm
 		$node->set('DeepLevel', $deepLevel);
 		$dataFactory = new DataFactory($idNode);
 		$idVersion = $dataFactory->GetLastVersion();
-		if ($idNode != $idNodeGenerator && $lastPublishedVersion)
-		{
+		if ($idNode != $idNodeGenerator && $lastPublishedVersion) {
 			$idSubversion = 0;
-		}
-		else
-		{
+		} else {
 			$idSubversion = $dataFactory->GetLastSubVersion($idVersion);
 		}
 		$node->set('Version', $idVersion);
 		$node->set('Subversion', $idSubversion);
-		$versionZero = !$idVersion && !$idSubversion;
-		if ($versionZero && $idNode != $idNodeGenerator)
-		{
+		$versionZero = ! $idVersion && ! $idSubversion;
+		if ($versionZero && $idNode != $idNodeGenerator) {
 		    $myNode = new Node($idNode);
-		    if ($myNode->nodeType->get('IsStructuredDocument'))
-		    {
-		        Logger::warning(sprintf("Skipping 0.0 version for Linked Structured Document: %s", $idNode));
+		    if ($myNode->nodeType->get('IsStructuredDocument')) {
+		        Logger::warning(sprintf('Skipping 0.0 version for linked structured document: %s (%s)', $myNode->GetNodeName(), $idNode));
 		        return null;
 		    }
 		}
-		if (!$node->add()) {
+		if (! $node->add()) {
 		    return false;
 		}
 		return true;
@@ -92,51 +87,50 @@ class NodesToPublish extends NodesToPublishOrm
 		$db = new \Ximdex\Runtime\Db();
 
 		// 1. Get older dateup in table
-		$sql_dateup = "select distinct DateUp, DateDown from NodesToPublish where State = 0 order by DateUp ASC limit 1";
+		$sql_dateup = 'select distinct DateUp, DateDown from NodesToPublish where State = 0 order by DateUp ASC limit 1';
 		$db->Query($sql_dateup);
 		if ($db->EOF) {
 			// No nodes to publish
-			Logger::info("No more documents to publish found. Returning null");
+			Logger::info('No more documents to publish found. Returning null');
 			return $result;
 		}
-		$dateUp = $db->getValue("DateUp");
-		$dateDown = $db->getValue("DateDown");
+		$dateUp = $db->getValue('DateUp');
+		$dateDown = $db->getValue('DateDown');
 
 		// 2. Mark every node with previous dateUp as locked (state=1) to start working on it.
 		// (This prevent collisions if multiple batch Manager Daemons are working at the same time)
-		$sql_update ="update NodesToPublish set State = 1 where DateUp = ".$dateUp." and State = 0";
-		if (!empty($dateDown)) {
-			$sql_update .= " and DateDown = ".$dateDown;
+		$sql_update ='update NodesToPublish set State = 1 where DateUp = ' . $dateUp . ' and State = 0';
+		if (! empty($dateDown)) {
+			$sql_update .= ' and DateDown = ' . $dateDown;
 		}
 		else {
-			$sql_update .= " and DateDown is NULL";
+			$sql_update .= ' and DateDown is NULL';
 		}
 		$db->Query($sql_update);
 
 		// 3. Build and array with locked nodes and their common attributes: dateUp, dateDown, forcePublication and idNodeGenerator
-		$sql_nodes ="select IdNode,IdNodeGenerator,ForcePublication,DateDown,UserId, Version, SubVersion from NodesToPublish where DateUp = " 
-		      . $dateUp . " and State = 1";
-		if (!empty($dateDown)) {
-			$sql_nodes .= " and DateDown = ".$dateDown;
+		$sql_nodes ='select IdNode, IdNodeGenerator, ForcePublication, DateDown, UserId, Version, SubVersion from NodesToPublish where DateUp = ' 
+		      . $dateUp . ' and State = 1';
+		if (! empty($dateDown)) {
+			$sql_nodes .= ' and DateDown = ' . $dateDown;
 		}
 		else {
-			$sql_nodes .= " and DateDown is NULL";
+			$sql_nodes .= ' and DateDown is NULL';
 		}
-		$sql_nodes .= " order by deepLevel DESC";
+		$sql_nodes .= ' order by deepLevel DESC';
 		$db->Query($sql_nodes);
 		$force = [];
 		$idNodeGenerator = null;
 		$userId = null;
-		while (!$db->EOF)
-		{
+		while (! $db->EOF) {
 			array_push($docsToPublish, $db->getValue('IdNode'));
 			$docsToPublishVersion[$db->getValue('IdNode')] = $db->getValue('Version');
 			$docsToPublishSubVersion[$db->getValue('IdNode')] = $db->getValue('SubVersion');
-			if (!$idNodeGenerator) {
+			if (! $idNodeGenerator) {
 			    $idNodeGenerator = $db->getValue('IdNodeGenerator');
 			}
 			$force[$db->getValue('IdNode')] = $db->getValue('ForcePublication');
-			if (!$userId) {
+			if (! $userId) {
 			    $userId = $db->getValue('UserId');
 			}
 			$db->Next();
@@ -159,8 +153,8 @@ class NodesToPublish extends NodesToPublishOrm
 	 */
 	static public function setProcessed($chunk, $dateUp)
 	{
-		$strNodes = implode (",", $chunk);
-		$sql = sprintf("Update NodesToPublish set State = 2 where IdNode in (%s) and DateUp = %s", $strNodes, $dateUp);
+		$strNodes = implode (',', $chunk);
+		$sql = sprintf('Update NodesToPublish set State = 2 where IdNode in (%s) and DateUp = %s', $strNodes, $dateUp);
 		$db = new \Ximdex\Runtime\Db();
 		$db->Query($sql);
 	}
@@ -195,8 +189,8 @@ class NodesToPublish extends NodesToPublishOrm
 			return array();
 		}
 		foreach ($results as $row) {
-			$arrayDates[$j]['start'] = $row["DateUp"];
-			$arrayDates[$j]['end'] = ($row["DateDown"]) ? $row["DateDown"] : null;
+			$arrayDates[$j]['start'] = $row['DateUp'];
+			$arrayDates[$j]['end'] = ($row['DateDown']) ? $row['DateDown'] : null;
 			if ($idNodeGenerator) {
 			    $arrayDates[$j]['nodes'] = $row['nodes'];
 			}

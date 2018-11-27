@@ -2101,13 +2101,13 @@ class Node extends NodesOrm
     {
         if ($this->get('IdNode') > 0) {
             $dbObj = new \Ximdex\Runtime\Db();
-            $query = sprintf("SELECT IdNode FROM NodeNameTranslations" . " WHERE IdNode = %d AND IdLanguage = %d", $this->get('IdNode'), $langID);
+            $query = sprintf("SELECT IdNode FROM NodeNameTranslations WHERE IdNode = %d AND IdLanguage = %d", $this->get('IdNode'), $langID);
             $dbObj->Query($query);
             if ($dbObj->numRows > 0) {
-                $sql = sprintf("UPDATE NodeNameTranslations " . " SET Name = %s" . " WHERE IdNode = %d" . " AND IdLanguage = %d"
+                $sql = sprintf("UPDATE NodeNameTranslations SET Name = %s WHERE IdNode = %d AND IdLanguage = %d"
                     , $dbObj->sqlEscapeString($name), $this->get('IdNode'), $langID);
             } else {
-                $sql = sprintf("INSERT INTO NodeNameTranslations " . "(IdNode, IdLanguage, Name) " . "VALUES (%d, %d, %s)"
+                $sql = sprintf("INSERT INTO NodeNameTranslations (IdNode, IdLanguage, Name) VALUES (%d, %d, %s)"
                     , $this->get('IdNode'), $langID, $dbObj->sqlEscapeString($name));
             }
             $dbObj = new \Ximdex\Runtime\Db();

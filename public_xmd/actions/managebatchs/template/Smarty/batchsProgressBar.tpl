@@ -9,7 +9,7 @@
         'progress-bar-delayed': batch == 'Delayed'
     }{/literal}"
     ng-repeat="batch in frames.batchs" 
-    style="width: #/ 100 / frames.totalBatchs | number:8 /#%;"
+    style="width: #/ 100 / frames.totalBatchs | number:10 /#%;"
     title="#/ batch /#">
     ·
 </div>

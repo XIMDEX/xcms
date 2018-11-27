@@ -259,13 +259,13 @@ class DexPumper
 	private function renamePumpedFiles()
 	{
 		$idBatchUp = (int) $this->serverFrame->get('IdBatchUp');
-		$idServer = (int) $this->serverFrame->get('IdServer');
-		$idSync = (int) $this->serverFrame->get('IdSync');
-		$this->info('ServerFrame ' . $idSync . ' pumping');
 		$batch = new Batch($idBatchUp);
 		$batchId = (int) $batch->get('IdBatch');
 		$batchState = $batch->get('State');
 		if (! empty($batchId) && Batch::CLOSING == $batchState) {
+		    $idSync = (int) $this->serverFrame->get('IdSync');
+		    $this->info('ServerFrame ' . $idSync . ' pumping');
+		    $idServer = (int) $this->serverFrame->get('IdServer');
 			$filesToRename = $this->getFilesToRename($idBatchUp, $idServer);
 			$totalToRename = count($filesToRename);
 			if (is_array($filesToRename) && $totalToRename > 0) {
@@ -273,9 +273,9 @@ class DexPumper
 				foreach ($filesToRename as $file) {
 					 $renameResult = $this->RenameFile($file);
 					 if ($renameResult or $renameResult !== false) {
-                         $this->updateTask(true, ServerFrame::IN);
+					     $this->updateTask(true, ServerFrame::IN, $file['IdSync']);
 					 } else {
-                         $this->updateTask(false, ServerFrame::DUE2INWITHERROR);
+					     $this->updateTask(false, ServerFrame::DUE2INWITHERROR, $file['IdSync']);
 					 }
 				}
 			}
@@ -449,6 +449,7 @@ class DexPumper
 			return false;
 		}
 		if (! $this->connection->isFile($targetFile)) {
+		    $this->warning('File ' . $targetFile . ' to rename does not exist');
 		    return null;
 		}
 		if (! $this->connection->rename($targetFile, $targetFolder . $newFile)) {
@@ -460,42 +461,51 @@ class DexPumper
 		return true;
 	}
 
-	private function updateTask($result, $status = null)
+	private function updateTask(?bool $result, string $status = null, int $idSync = null)
 	{
+	    if (! $idSync) {
+	        $serverFrame = $this->serverFrame;
+	    } else {
+	        $serverFrame = new ServerFrame($idSync);
+	        if (! $serverFrame->get('IdSync')) {
+	            $this->error('Cannot load the server frame ' . $idSync);
+	            return false;
+	        }
+	    }
 		$this->info('Processing ' . $this->serverFrame->get('IdSync'));
 		if (! $result) {
-			$retries = $this->serverFrame->get('Retry');
-			$this->serverFrame->set('Retry', $retries);
+			$retries = $serverFrame->get('Retry');
+			$serverFrame->set('Retry', $retries);
 			if ($result === null) {
 			    
 			    // The error is alocated in the local server, no more retries
-			    $this->fatal('Sync file problem with ID: ' . $this->serverFrame->IdSync . '. Server frame marked as errored');
-			    $this->serverFrame->set('State', ServerFrame::DUE2INWITHERROR);
-			    $this->serverFrame->set('ErrorLevel', ServerFrame::ERROR_LEVEL_HARD);
+			    $this->fatal('Sync file problem with ID: ' . $serverFrame->IdSync . '. Server frame marked as errored');
+			    $serverFrame->set('State', ServerFrame::DUE2INWITHERROR);
+			    $serverFrame->set('ErrorLevel', ServerFrame::ERROR_LEVEL_HARD);
 			}
 			elseif ($retries >= self::RETRIES_TO_FATAL_ERROR) {
 			    $this->error('Maximum of retries reached (' . self::RETRIES_TO_FATAL_ERROR . ') for server frame: ' 
-			        . $this->serverFrame->IdSync . '. Marked as errored');
-				$this->serverFrame->set('State', ServerFrame::DUE2INWITHERROR);
-				$this->serverFrame->set('ErrorLevel', ServerFrame::ERROR_LEVEL_HARD);
+			        . $serverFrame->IdSync . '. Marked as errored');
+				$serverFrame->set('State', ServerFrame::DUE2INWITHERROR);
+				$serverFrame->set('ErrorLevel', ServerFrame::ERROR_LEVEL_HARD);
 			}
 			else {
 			    $retries++;
-			    $this->serverFrame->set('Retry', $retries);
-			    $this->serverFrame->set('ErrorLevel', ServerFrame::ERROR_LEVEL_SOFT);
+			    $serverFrame->set('Retry', $retries);
+			    $serverFrame->set('ErrorLevel', ServerFrame::ERROR_LEVEL_SOFT);
 			    if ($this->connection->getType() == Connector::TYPE_API) {
 			        $this->server->disableForPumping(true, SERVER_DELAY_TIME_PUMPER_IN_SOFT_ERROR, false);
 			    }
 			}
-			$this->serverFrame->update();
+			$serverFrame->update();
 			return false;
 		}
 		if ($status !== null) {
-		    $this->serverFrame->set('State', $status);
-		    $this->serverFrame->set('Linked', 0);
-		    $this->serverFrame->set('ErrorLevel', null);
-		    $this->serverFrame->set('Retry', 0);
-		    $this->serverFrame->update();
+		    $serverFrame->set('State', $status);
+		    $serverFrame->set('Linked', 0);
+		    $serverFrame->set('ErrorLevel', null);
+		    $serverFrame->set('Retry', 0);
+		    $serverFrame->update();
 		    $server = new Server($this->pumper->get('IdServer'));
 		    $server->resetForPumping();
 		    $this->pumper->set('ProcessedTasks', $this->pumper->get('ProcessedTasks') + 1);

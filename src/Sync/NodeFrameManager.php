@@ -68,7 +68,7 @@ class NodeFrameManager
 		if ($batchType == 'Up') {
 
 			// I'll never be active
-			if ($timeDown != 0 && $timeDown < $now) {
+			if ($timeDown && $timeDown < $now) {
 				$nodeFrame = new NodeFrame($nodeFrameId);
 				Logger::info('NodeFrame will never be active: ' . $nodeFrameId);
 				$nodeFrame->cancel();
@@ -214,7 +214,7 @@ class NodeFrameManager
 		$dbObj = new \Ximdex\Runtime\Db();
 		$sql = 'SELECT IdNodeFrame, Active, if(TimeDown IS NULL, 1988146800, TimeDown) as TimeDown2 FROM NodeFrames 
 			WHERE TimeUp < ' . $now . ' AND (TimeDown > ' . $now . ' OR TimeDown IS NULL) AND (IsProcessUp = 0 OR Active = 1) 
-			AND NodeId = ' . $nodeId . ' ORDER BY VersionId DESC, TimeDown2 DESC';
+			AND NodeId = ' . $nodeId . ' ORDER BY VersionId DESC, TimeDown2 DESC, IdNodeFrame DESC';
 		$dbObj->Query($sql);
 		$nodeFrames = array();
 		$i = 0;

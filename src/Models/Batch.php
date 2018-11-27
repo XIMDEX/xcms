@@ -67,7 +67,7 @@ class Batch extends BatchsOrm
             } else {
                 $from = '- Nothing -';
             }
-            Logger::info('Changing state for batch: ' . $this->IdBatch . ' from ' . $from . ' to ' . $value);
+            Logger::debug('Changing state for batch: ' . $this->IdBatch . ' from ' . $from . ' to ' . $value);
         }
         parent::set($attribute, $value);
     }
@@ -129,7 +129,7 @@ class Batch extends BatchsOrm
             $priority = 1.0 * $portal->get('Boost');
         }
         if ($priority) {
-            Logger::info('Set priority to ' . $priority . ' for batch ' . $this->IdBatch);
+            Logger::debug('Set priority to ' . $priority . ' for batch ' . $this->IdBatch);
             $this->set('Priority', $priority);
         }
         return true;

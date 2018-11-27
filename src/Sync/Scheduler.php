@@ -61,8 +61,7 @@ class Scheduler
         
         // Checking pcntl_fork function is not disabled
         if ($ximdexServerConfig->hasDisabledFunctions()) {
-            Logger::error('Closing scheduler. Disabled pcntl_fork and pcntl_waitpid functions are required. Please, check php.ini file.' 
-                . "\r\n");
+            Logger::error('Closing scheduler. Disabled pcntl_fork and pcntl_waitpid functions are required. Please, check php.ini file.' . PHP_EOL);
         }
         Logger::info('Starting Scheduler ' . $synchro_pid);
         $mutex = new Mutex(XIMDEX_ROOT_PATH . App::getValue('TempRoot') . '/scheduler.lck');
@@ -87,7 +86,7 @@ class Scheduler
                 die();
             }
             $activeAndEnabledServers = ServerNode::getServersForPumping();
-            if (!$activeAndEnabledServers || count($activeAndEnabledServers) == 0) {
+            if (! $activeAndEnabledServers || count($activeAndEnabledServers) == 0) {
                 
                 // There aren't Active & Enable servers...
                 Logger::warning('No active server');
@@ -105,15 +104,16 @@ class Scheduler
                 Logger::info('No processable batchs found');
                 
                 // Set current batchs to a new state and update frames stats
-                $res = $batchManager->setBatchsActiveOrEnded($testTime, $activeAndEnabledServers, false);
-                if (!$res) {
+                if (! $batchManager->setBatchsActiveOrEnded($testTime, $activeAndEnabledServers, false)) {
                     
                     // Calling Pumpers...
                     $tasks = $pumperManager->callingPumpers($activeAndEnabledServers);
                     
                     // This is a void cycle...
                     $voidCycles++;
-                    $batchManager->checkFramesIntegrity();
+                    if (! $tasks) {
+                        $batchManager->checkFramesIntegrity();
+                    }
     
                     // Sleeping...
                     Logger::info('Sleeping...');
@@ -123,7 +123,7 @@ class Scheduler
 
                 // Some processable Batchs found...
                 $startStamp = time();
-                Logger::info("[Id: $startStamp] STARTING BATCH PROCESSING");
+                Logger::info('[Id: ' . $startStamp . '] STARTING BATCH PROCESSING');
                 while ($batchProcess) {
 
                     // This a full cycle...
@@ -132,7 +132,7 @@ class Scheduler
                         
                         // Exceding max. cycles...
                         Logger::info(sprintf('Max. cycles exceeded (%d > %d). Exiting scheduler', $cycles, MAX_NUM_CICLOS_SCHEDULER));
-                        Logger::info("[Id: $startStamp] STOPPING BATCH PROCESSING");
+                        Logger::info('[Id: ' . $startStamp . '] STOPPING BATCH PROCESSING');
                         $mutex->release();
                         die();
                     }
@@ -176,7 +176,7 @@ class Scheduler
                     $cycles++;
                 }
                 if ($startStamp > 0) {
-                    Logger::info("[Id: $startStamp] STOPPING BATCH PROCESSING");
+                    Logger::info('[Id: ' . $startStamp . '] STOPPING BATCH PROCESSING');
                 }
             }
             if ($global_execution) {

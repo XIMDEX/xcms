@@ -176,7 +176,7 @@ class PortalFrames extends PortalFramesOrm
             $processedFrames = $sucessFrames + $fatalErrorFrames + $temporalErrorFrames + $stoppedFrames + $delayedFrames;
             if ($processedFrames) {
                 $successRate = round($sucessFrames / $processedFrames, 2);
-                Logger::info('Set priority to ' . $successRate . ' for portal frame ' . $portalFrame->get('id'));
+                Logger::debug('Set priority to ' . $successRate . ' for portal frame ' . $portalFrame->get('id'));
                 $portalFrame->set('SuccessRate', $successRate);
             }
             

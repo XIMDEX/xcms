@@ -116,6 +116,13 @@ class GenericData
     
     /* @var $behaviors array Lista de behavious instanciados */
     public $behaviors = null;
+    
+    /**
+     * Last query executed
+     * 
+     * @var string
+     */
+    protected $query = '';
 
     /**
      * @param int $id
@@ -152,6 +159,11 @@ class GenericData
         }
     }
 
+    public function getQuery() : string
+    {
+        return $this->query;
+    }
+    
     /**
      * @param $values
      * @return bool
@@ -415,7 +427,7 @@ class GenericData
         , string $order = null, string $groupBy = null)
     {
         $condition = $this->_getCondition($condition, $params, $escape);
-        $query     = sprintf(
+        $query = sprintf(
             'SELECT %s FROM %s WHERE %s',
             $fields,
             $this->_table,
@@ -427,6 +439,7 @@ class GenericData
         if ($order) {
             $query .= ' ORDER BY ' . $order;
         }
+        $this->query = $query;
         return $this->query($query, $returnType, $index);
     }
 

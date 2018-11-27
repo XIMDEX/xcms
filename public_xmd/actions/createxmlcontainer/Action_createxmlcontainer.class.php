@@ -184,24 +184,26 @@ class Action_createxmlcontainer extends ActionAbstract
             }
 
             // Structured document inserts content document
-            $setSymLinks = array();
             $master = $this->request->getParam('master');
-            foreach ($languages as $idLanguage) {
-                $result = $this->_insertLanguage($idLanguage, $nodeType->get('Name'), $name, $idContainer, $idSchema, $aliases);
-                if ($master > 0) {
-                    if ($master != $idLanguage) {
-                        $setSymLinks[] = $result;
-                    } else {
-                        $idNodeMaster = $result;
+            if ($master) {
+                $setSymLinks = array();
+                foreach ($languages as $idLanguage) {
+                    $result = $this->_insertLanguage($idLanguage, $nodeType->get('Name'), $name, $idContainer, $idSchema, $aliases);
+                    if ($master > 0) {
+                        if ($master != $idLanguage) {
+                            $setSymLinks[] = $result;
+                        } else {
+                            $idNodeMaster = $result;
+                        }
                     }
                 }
-            }
-            foreach ($setSymLinks as $idNodeToLink) {
-                $structuredDocument = new StructuredDocument($idNodeToLink);
-                $structuredDocument->SetSymLink($idNodeMaster);
-                $slaveNode = new Node($idNodeToLink);
-                $slaveNode->set('SharedWorkflow', $idNodeMaster);
-                $slaveNode->update();
+                foreach ($setSymLinks as $idNodeToLink) {
+                    $structuredDocument = new StructuredDocument($idNodeToLink);
+                    $structuredDocument->SetSymLink($idNodeMaster);
+                    $slaveNode = new Node($idNodeToLink);
+                    $slaveNode->set('SharedWorkflow', $idNodeMaster);
+                    $slaveNode->update();
+                }
             }
         }
         $values = array(
