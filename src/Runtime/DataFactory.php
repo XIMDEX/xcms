@@ -511,7 +511,7 @@ class DataFactory
     * Recupera una antigua Version y la coloca como nueva
     *
     * @name		RecoverVersion
-    * @author 	Jose Luis Fernandez
+    * @author 	Ximdex DevTeam <dev@ximdex.com>
     * @version	1.0
     * @param	int $version not null
     * @param	int $subversion not null
