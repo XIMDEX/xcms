@@ -124,14 +124,13 @@ class Action_createxmlcontainer extends ActionAbstract
      */
     public function createxmlcontainer()
     {
-        $idNodeMaster = null;
         $idNode = $this->request->getParam('nodeid');
         $aliases = $this->request->getParam('aliases');
         $name = $this->request->getParam('name');
         $idSchema = $this->request->getParam('id_schema');
         $languages = $this->request->getParam('languages');
-        $master = $this->request->getParam('master');
         $type = $this->request->getParam('type');
+        $master = $this->request->getParam('master');
         if (! $languages) {
             $this->messages->add(_('You must select alt least one language'), MSG_TYPE_WARNING);
             $values = array(
@@ -170,7 +169,7 @@ class Action_createxmlcontainer extends ActionAbstract
         } else {
             $this->messages->add(sprintf(_('Container %s has been successfully created'), $name), MSG_TYPE_NOTICE);
         }
-        if (is_array($languages)) {
+        if ($master and is_array($languages)) {
             $baseIoInferer = new BaseIOInferer();
             $inferedNodeType = $baseIoInferer->infereType('FILE', $idContainer);
             $nodeType = new NodeType();
@@ -184,26 +183,24 @@ class Action_createxmlcontainer extends ActionAbstract
             }
 
             // Structured document inserts content document
-            $master = $this->request->getParam('master');
-            if ($master) {
-                $setSymLinks = array();
-                foreach ($languages as $idLanguage) {
-                    $result = $this->_insertLanguage($idLanguage, $nodeType->get('Name'), $name, $idContainer, $idSchema, $aliases);
-                    if ($master > 0) {
-                        if ($master != $idLanguage) {
-                            $setSymLinks[] = $result;
-                        } else {
-                            $idNodeMaster = $result;
-                        }
+            $setSymLinks = array();
+            $idNodeMaster = null;
+            foreach ($languages as $idLanguage) {
+                $result = $this->_insertLanguage($idLanguage, $nodeType->get('Name'), $name, $idContainer, $idSchema, $aliases);
+                if ($master > 0) {
+                    if ($master != $idLanguage) {
+                        $setSymLinks[] = $result;
+                    } else {
+                        $idNodeMaster = $result;
                     }
                 }
-                foreach ($setSymLinks as $idNodeToLink) {
-                    $structuredDocument = new StructuredDocument($idNodeToLink);
-                    $structuredDocument->SetSymLink($idNodeMaster);
-                    $slaveNode = new Node($idNodeToLink);
-                    $slaveNode->set('SharedWorkflow', $idNodeMaster);
-                    $slaveNode->update();
-                }
+            }
+            foreach ($setSymLinks as $idNodeToLink) {
+                $structuredDocument = new StructuredDocument($idNodeToLink);
+                $structuredDocument->SetSymLink($idNodeMaster);
+                $slaveNode = new Node($idNodeToLink);
+                $slaveNode->set('SharedWorkflow', $idNodeMaster);
+                $slaveNode->update();
             }
         }
         $values = array(

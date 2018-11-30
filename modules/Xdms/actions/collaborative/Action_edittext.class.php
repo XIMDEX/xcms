@@ -26,12 +26,12 @@
  */
 
 use Ximdex\Models\Node;
-use Ximdex\Models\NodeType;
 use Ximdex\Models\PipeCacheTemplates;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\App;
 use Ximdex\Runtime\DataFactory;
+use Ximdex\Sync\SyncManager;
 
 class Action_edittext extends ActionAbstract
 {
@@ -58,8 +58,6 @@ class Action_edittext extends ActionAbstract
         $node = new Node($idNode);
         $node_name = $node->GetName();
         $idNodeType = $node->get('IdNodeType');
-        $nodeType = new NodeType($idNodeType);
-        $nodeTypeName = $nodeType->get('Name');
         $fileName = $node->get('Name');
         $infoFile = pathinfo($fileName);
         if (array_key_exists("extension", $infoFile)) {
@@ -138,6 +136,7 @@ class Action_edittext extends ActionAbstract
             return;
         }
         $numDocs = count($docs);
+        $docsList = [];
         for ($i = 0; $i < $numDocs; $i++) {
             $docsList[] = $docs[$i]['NodeId'];
         }

@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -43,8 +43,8 @@ class DependenciesOrm extends  GenericData
 	var $_uniqueConstraints = array();
 	var $_indexes = array('IdDep');
 	var $IdDep;
-	var $IdNodeMaster = 0;
-	var $IdNodeDependent = 0;
-	var $DepType = 0;
+	var $IdNodeMaster;
+	var $IdNodeDependent;
+	var $DepType;
 	var $version = 0;
 }

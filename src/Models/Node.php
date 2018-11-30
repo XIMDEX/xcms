@@ -68,6 +68,7 @@ class Node extends NodesOrm
      * @var bool|string
      */
     var $nodeID;
+    
     /**
      * @var mixed
      */
@@ -1953,7 +1954,7 @@ class Node extends NodesOrm
     {
         $this->ClearError();
         if ($this->get('IdNode') > 0) {
-            $this->set('SharedWorkflow', '');
+            $this->set('SharedWorkflow', null);
             $this->update();
         } else {
             $this->SetError(1);

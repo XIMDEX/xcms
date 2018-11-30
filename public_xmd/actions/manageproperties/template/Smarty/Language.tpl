@@ -36,12 +36,12 @@
 					<ul class="inheritlist">
 						{foreach from=$languages item=language}
 							{if $language.Inherited}
-								<li>{$language.Name}</li>
+								<li class="inherit_list_element">{$language.Name}</li>
 							{/if}
 						{/foreach}
 					</ul>
 				</div>
-				<div>
+				<div class="sep">
 					<input type="radio" name="inherited_languages" class="languages_overwritten" value="overwrite" id="languages_overwritten" 
 							{if $Language_inherited == 'overwrite'}checked="checked"{/if} />
 					<label for="languages_overwritten">{t}Overwrite inherited languages{/t}:</label>

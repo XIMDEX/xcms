@@ -35,20 +35,28 @@ class Action_xmlsetlink extends ActionAbstract
     /**
      * Main method: shows the initial form
      */
-    function index()
+    public function index()
     {
 		$idNode = $this->request->getParam('nodeid');
 		$node = new Node($idNode);
+		if (! $node->get('IdNode')) {
+		    $this->error('Node could not be found');
+		    return;
+		}
 		$sharewf = $node->get('SharedWorkflow');
 		$sharewf = empty($sharewf) ? 0 : 1;
-		if (!($node->get('IdNode') > 0)) {
-			$this->messages->add(_('Node could not be found'), MSG_TYPE_ERROR);
-			$this->render(array('messages' => $this->messages->messages), NULL, 'messages.tpl');
-			return ;
-		}
 		$structuredDocument = new StructuredDocument($idNode);
 		$idTarget = $structuredDocument->get('TargetLink');
-		$targetNode = new Node($idTarget);
+		if ($idTarget) {
+            $targetNode = new Node($idTarget);
+		} else {
+		    try {
+		        $targetNode = $structuredDocument->getDefaultLanguageDocument();
+		    } catch (Exception $e) {
+		        $this->error($e->getMessage());
+		        return;
+		    }
+		}
 	    $targetNodes = $this->getTargetNodes($node->GetID());
 		$type = $node->get('IdNodeType');
 		$this->addJs('/actions/xmlsetlink/resources/js/xmlsetlink.js');
@@ -57,32 +65,40 @@ class Action_xmlsetlink extends ActionAbstract
 		$values = array(
 			'id_node' => $idNode,
 			'id_target' => $idTarget,
-            'name_target' => $targetNode->GetNodeName(),
+		    'name_target' => $targetNode ? $targetNode->GetNodeName() : null,
 			'type' => $type,
 			'targetNodes' => $targetNodes,
 		    'go_method' => empty($idTarget) ? 'setlink' : 'unlink',
-			'sharewf' => $sharewf
+			'sharewf' => $sharewf,
+		    'name' => $node->GetNodeName(),
+		    'node_Type' => $node->nodeType->GetName()
 		);
 		$this->render($values, NULL, 'default-3.0.tpl');
     }
 
-	/**
-	 * @return bool
-	 */
-	function setlink()
+	public function setlink()
 	{
 		$idNode = $this->request->getParam('nodeid');
 		$idTarget = $this->request->getParam('targetid');
 		$structuredDocument = new StructuredDocument($idNode);
-		// $idNodeTemplate = $structuredDocument->get('IdTemplate');
+		if (! $idTarget) {
+		    
+		    // If there is no target specified, try to set to the document in default language
+		    try {
+		        $targetNode = $structuredDocument->getDefaultLanguageDocument();
+		        $idTarget = $targetNode->GetID();
+		    } catch (Exception $e) {
+		        $this->error($e->getMessage());
+		        return;
+		    }
+		}
 		$targetStructuredDocument = new StructuredDocument($idTarget);
-		// $idTargetTemplate = $targetStructuredDocument->get('IdTemplate');
         $targetOfTarget = $targetStructuredDocument->get('TargetLink');
-        if($targetOfTarget == $idNode) {
-            $this->messages->add(_('This document is already the master document of ').$targetStructuredDocument->GetName(), MSG_TYPE_ERROR);
+        if ($targetOfTarget == $idNode) {
+            $this->messages->add(_('This document is already the master language document of ') . $targetStructuredDocument->GetName()
+                , MSG_TYPE_ERROR);
             $values = array('messages' => $this->messages->messages);
             $this->sendJSON($values);
-            return false;
         }
 		$node = new Node($idNode);
 		$node->ClearWorkFlowMaster();
@@ -95,34 +111,34 @@ class Action_xmlsetlink extends ActionAbstract
 		$messages = new \Ximdex\Utils\Messages();
 		$messages->mergeMessages($node->messages);
 		$messages->mergeMessages($structuredDocument->messages);
-        $values = array('messages' => $this->messages->messages, "parentID"=> $node->get('IdParent'));
+        $values = array('messages' => $this->messages->messages, 'parentID' => $node->get('IdParent'));
         $this->sendJSON($values);
-		return true ;
 	}
 
 	/**
 	 * Removes the symbolic link of document
 	 */
-	function unlink()
+	public function unlink()
 	{
 		$idNode = $this->request->getParam('nodeid');
 		$structuredDocument = new StructuredDocument($idNode);
+		/*
 		$content = ($this->request->getParam('keepcontent') || $this->request->getParam('delete_method') == 'unlink')
 			? $structuredDocument->GetContent() : $this->request->getParam('editor');
 		$structuredDocument->SetContent($content);
+		*/
 		$node = new Node($idNode);
-		$idParent = $node->get('IdParent');
 		$node->ClearWorkFlowMaster();
 		$structuredDocument->ClearSymLink();
 		$this->messages->add(_('The link has been deleted successfully'), MSG_TYPE_NOTICE);
-        $values = array('messages' => $this->messages->messages, "parentID"=> $idParent);
+		$values = array('messages' => $this->messages->messages, 'parentID' => $node->get('IdParent'));
         $this->sendJSON($values);
 	}
 
 	/**
 	 * Shows the form with the document content translated by Google Translate
 	 */
-	function show_translation()
+	public function show_translation()
 	{
 		$values = array('go_method' => 'unlink');
 		$this->addJs('/actions/xmlsetlink/resources/js/show_translation.js');
@@ -132,7 +148,7 @@ class Action_xmlsetlink extends ActionAbstract
 	/**
 	 * Calls Google Translate service
 	 */
-	function translate()
+	public function translate()
 	{
 		$idNode = $this->request->getParam('nodeid');
 		$strDoc = new StructuredDocument($idNode);
@@ -154,7 +170,7 @@ class Action_xmlsetlink extends ActionAbstract
 	* @param int $idNode current Idnode
 	* @return array Siblings for the current Node
 	*/
-	private function getTargetNodes($idNode)
+	private function getTargetNodes(int $idNode) : array
 	{
 		// Creating nodeservice in no-lazy mode
 		$nodeService = new \Ximdex\NodeTypes\Node($idNode,false);
@@ -162,10 +178,16 @@ class Action_xmlsetlink extends ActionAbstract
 		$targetNodes = array();
 		foreach ($siblings as $sibling) {
 			$arrayAux = array();
-            $arrayAux["path"] = str_replace("/Ximdex/Projects/","", $sibling->GetPath());
-            $arrayAux["idnode"] = $sibling->GetID();
+            $arrayAux['path'] = str_replace('/Ximdex/Projects/', '', $sibling->GetPath());
+            $arrayAux['idnode'] = $sibling->GetID();
             $targetNodes[] = $arrayAux;
         }
         return $targetNodes;
+	}
+	
+	private function error(string $error)
+	{
+	    $this->messages->add(_($error), MSG_TYPE_ERROR);
+	    $this->render(array('messages' => $this->messages->messages), NULL, 'messages.tpl');
 	}
 }

@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -32,46 +32,43 @@ use Ximdex\Logger;
 
 class XimletNode extends AbstractStructuredDocument
 {
-    function getRefererDocs()
+    public function getRefererDocs()
     {
-        $query = sprintf("SELECT Distinct(idNodeDependent) FROM Dependencies WHERE DepType ='XIMLET' AND idNodeMaster = %d",
-            $this->nodeID);
-
+        $query = sprintf("SELECT Distinct(idNodeDependent) FROM Dependencies WHERE DepType ='XIMLET' AND idNodeMaster = %d", $this->nodeID);
         $this->dbObj->Query($query);
         $docsToPublish = array();
-
         while (!$this->dbObj->EOF) {
             $docsToPublish[] = $this->dbObj->GetValue("idNodeDependent");
             $this->dbObj->Next();
         }
-
         return $docsToPublish;
     }
 
     /**
      * Gets the ximlet dependencies
-     * @param int documentId
-     * @return true / false
+     * 
+     * {@inheritDoc}
+     * @see \Ximdex\NodeTypes\AbstractStructuredDocument::GetDependencies()
      */
-
-    function GetDependencies()
+    public function GetDependencies()
     {
         $depsMngr = new DepsManager();
-
         $deps = array();
-
         if ($sections = $depsMngr->getByTarget(DepsManager::SECTION_XIMLET, $this->parent->get('IdNode')))
             $deps = array_merge($deps, $sections);
-
         if ($strDocs = $depsMngr->getByTarget(DepsManager::STRDOC_XIMLET, $this->parent->get('IdNode')))
             $deps = array_merge($deps, $strDocs);
-
         return $deps;
     }
 
-    function DeleteNode()
+    /**
+     * Deletes dependencies in rel tables
+     * 
+     * {@inheritDoc}
+     * @see \Ximdex\NodeTypes\AbstractStructuredDocument::DeleteNode()
+     */
+    public function DeleteNode()
     {
-        // Deletes dependencies in rel tables
         $depsMngr = new DepsManager();
         $depsMngr->deleteByTarget(DepsManager::SECTION_XIMLET, $this->parent->get('IdNode'));
         $depsMngr->deleteByTarget(DepsManager::STRDOC_XIMLET, $this->parent->get('IdNode'));
@@ -81,7 +78,8 @@ class XimletNode extends AbstractStructuredDocument
     }
 
     /**
-     *    Get the documents that must be publicated when the ximlet is published
+     * Get the documents that must be publicated when the ximlet is published
+     * 
      * @param array $params
      * @return array
      */
@@ -91,10 +89,14 @@ class XimletNode extends AbstractStructuredDocument
         return $depsMngr->getByTarget(DepsManager::STRDOC_XIMLET, $this->parent->get('IdNode'));
     }
 
-    // The intended use for this method is just generate a colector, is not related with xmldocument
-    function generator()
+    /**
+     * The intended use for this method is just generate a colector, is not related with xmldocument
+     * 
+     * @return boolean
+     */
+    public function generator()
     {
-            Logger::fatal('Se ha estimado un tipo de nodo incorrecto');
-            return false; // xmd::fatal must kill the process anyway, so dont wait any further trace
+        Logger::fatal('Se ha estimado un tipo de nodo incorrecto');
+        return false; // xmd::fatal must kill the process anyway, so dont wait any further trace
     }
 }

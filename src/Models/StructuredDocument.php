@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -40,11 +40,11 @@ use Ximdex\NodeTypes\XmlContainerNode;
 
 class StructuredDocument extends StructuredDocumentsOrm
 {
-    var $ID;
-    var $flagErr;
-    var $numErr;
-    var $msgErr;
-    var $errorList = array(
+    public $ID;
+    public $flagErr;
+    public $numErr;
+    public $msgErr;
+    public $errorList = array(
         1 => 'Error while connecting with the database',
         2 => 'The structured document does not exist',
         3 => 'Not implemented yet',
@@ -59,9 +59,12 @@ class StructuredDocument extends StructuredDocumentsOrm
         parent::__construct($id);
     }
 
-    // Devuelve un array con los ids de todos los structured documents del sistema.
-    // return array of idDoc
-    function GetAllStructuredDocuments()
+    /**
+     * Devuelve un array con los ids de todos los structured documents del sistema
+     * 
+     * @return NULL|array
+     */
+    public function GetAllStructuredDocuments()
     {
         $sql = "SELECT idDoc FROM StructuredDocuments";
         $dbObj = new \Ximdex\Runtime\Db();
@@ -71,22 +74,30 @@ class StructuredDocument extends StructuredDocumentsOrm
             return null;
         }
         $salida = [];
-        while (!$dbObj->EOF) {
+        while (! $dbObj->EOF) {
             $salida[] = $dbObj->row["idDoc"];
             $dbObj->Next();
         }
         return $salida;
     }
 
-    // Devuelve el id del structure document actual.
-    function GetID()
+    /**
+     * Devuelve el id del structure document actual
+     * 
+     * @return boolean|string
+     */
+    public function GetID()
     {
         return $this->get('IdDoc');
     }
 
-    // Cambia el id del structure document actual.
-    // return int (status)
-    function SetID($docID)
+    /**
+     * Cambia el id del structure document actual
+     * 
+     * @param int $docID
+     * @return NULL|boolean|string
+     */
+    public function SetID(int $docID)
     {
         self::__construct($docID);
         if (!($this->get('IdDoc') > 0)) {
@@ -98,14 +109,14 @@ class StructuredDocument extends StructuredDocumentsOrm
 
     // Devuelve el nombre del structure document actual.
     // return string(name)
-    function GetName()
+    public function GetName()
     {
         return $this->get("Name");
     }
 
     // Cambia el nombre del structure document actual.
     // return int (status)
-    function SetName($name)
+    public function SetName($name)
     {
         if (!($this->get('IdDoc') > 0)) {
             $this->SetError(2);
@@ -120,14 +131,14 @@ class StructuredDocument extends StructuredDocumentsOrm
 
     // Devuelve el creador del structure document actual.
     // return string (idcreator)
-    function GetCreator()
+    public function GetCreator()
     {
         return $this->get("IdCreator");
     }
 
     // Cambia el creador del structure document actual.
     // return int (status)
-    function SetCreator($IdCreator)
+    public function SetCreator($IdCreator)
     {
         if (!($this->get('IdDoc') > 0)) {
             $this->SetError(2);
@@ -142,14 +153,14 @@ class StructuredDocument extends StructuredDocumentsOrm
 
     // Devuelve el lenguaje del structure document actual.
     // return int (IdLanguage)
-    function GetLanguage()
+    public function GetLanguage()
     {
         return $this->get("IdLanguage");
     }
 
     // Cambia el lenguaje del structure document actual.
     // return int (status)
-    function SetLanguage($IdLanguage)
+    public function SetLanguage($IdLanguage)
     {
         if (!($this->get('IdDoc') > 0)) {
             $this->SetError(2);
@@ -162,12 +173,12 @@ class StructuredDocument extends StructuredDocumentsOrm
         return false;
     }
 
-    function GetDocumentType()
+    public function GetDocumentType()
     {
         return $this->get("IdTemplate");
     }
 
-    function SetDocumentType($templateID)
+    public function SetDocumentType($templateID)
     {
         if (!($this->get('IdDoc') > 0)) {
             $this->SetError(2);
@@ -180,12 +191,12 @@ class StructuredDocument extends StructuredDocumentsOrm
         return false;
     }
 
-    function GetSymLink()
+    public function GetSymLink()
     {
         return $this->get("TargetLink");
     }
 
-    function SetSymLink($docID)
+    public function SetSymLink($docID)
     {
         if (!($this->get('IdDoc') >= 0)) {
             $this->SetError(2);
@@ -204,7 +215,7 @@ class StructuredDocument extends StructuredDocumentsOrm
         return false;
     }
 
-    function ClearSymLink()
+    public function ClearSymLink()
     {
         if (!($this->get('IdDoc') > 0)) {
             $this->SetError(2);
@@ -225,7 +236,7 @@ class StructuredDocument extends StructuredDocumentsOrm
 
     // Devuelve el contenido xml del structure document actual.
     // return string (Content)
-    function GetContent($version = null, $subversion = null)
+    public function GetContent($version = null, $subversion = null)
     {
         $targetLink = $this->GetSymLink();
         if ($targetLink) {
@@ -244,7 +255,7 @@ class StructuredDocument extends StructuredDocumentsOrm
 
     // Devuelve el contenido metadata del structure document actual.
     // return string (Metadata)
-    function GetMetadata($version = null, $subversion = null)
+    public function GetMetadata($version = null, $subversion = null)
     {
         $targetLink = $this->GetSymLink();
         if ($targetLink) {
@@ -257,7 +268,7 @@ class StructuredDocument extends StructuredDocumentsOrm
         return $content;
     }
 
-    function UpdateLinkParseLink($sourceLang, $linkID)
+    public function UpdateLinkParseLink($sourceLang, $linkID)
     {
         $pos = strpos($linkID, ",");
         if ($pos != FALSE) {
@@ -284,10 +295,12 @@ class StructuredDocument extends StructuredDocumentsOrm
     }
 
     /**
-     * @param string $content
-     * @param boolean $commitNode
+     * @param $content
+     * @param $commitNode
+     * @param $metadata
+     * @return boolean
      */
-    function SetContent($content, $commitNode = NULL, $metadata = null)
+    public function SetContent($content, $commitNode = NULL, $metadata = null)
     {
         $symLinks = $this->find('IdDoc', 'TargetLink = %s', array(
             $this->get('IdDoc')
@@ -455,21 +468,21 @@ class StructuredDocument extends StructuredDocumentsOrm
 
     // Devuelve el timestamp de creacion del structure document actual.
     // return string (CreationDate)
-    function GetCreationDate()
+    public function GetCreationDate()
     {
         return $this->get("CreationDate");
     }
 
     // Devuelve el timestamp de modificacion del structure document actual.
     // return string (UpdateDate)
-    function GetUpdateDate()
+    public function GetUpdateDate()
     {
         return $this->get("UpdateDate");
     }
 
     // Cambia el UpdateDate del structure document actual.
     // return int (status)
-    function SetUpdateDate()
+    public function SetUpdateDate()
     {
         if (!($this->get('IdDoc') > 0)) {
             $this->SetError(2);
@@ -519,7 +532,7 @@ class StructuredDocument extends StructuredDocumentsOrm
         return $res;
     }
 
-    function add()
+    public function add()
     {
         $this->CreateNewStrDoc($this->get('IdDoc'), $this->get('Name'), $this->get('IdCreator'), $this->get('CreationDate')
             , $this->get('UpdateDate'), $this->get('IdLanguage'), $this->get('IdTemplate'));
@@ -561,7 +574,7 @@ class StructuredDocument extends StructuredDocumentsOrm
         }
     }
 
-    function delete()
+    public function delete()
     {
         $this->DeleteStrDoc();
     }
@@ -575,7 +588,7 @@ class StructuredDocument extends StructuredDocumentsOrm
         $this->ID = null;
     }
 
-    function GetLastVersion()
+    public function GetLastVersion()
     {
         $sql = sprintf("select max(Version) as UltimaVersion from Versions where IdNode=%d", $this->get('IdDoc'));
         $dbObj = new \Ximdex\Runtime\Db();
@@ -593,7 +606,7 @@ class StructuredDocument extends StructuredDocumentsOrm
         return NULL;
     }
 
-    function isximletlink()
+    public function isximletlink()
     {
         $sql = sprintf("select IdNodeDependent from Dependencies WHERE IdNodeMaster = %d and DepType='LINK'", $this->get('IdDoc'));
         $dbObj = new \Ximdex\Runtime\Db();
@@ -622,9 +635,10 @@ class StructuredDocument extends StructuredDocumentsOrm
         return NULL;
     }
 
-    function ximletLinks($ximletID, $nodeID)
+    public function ximletLinks($ximletID, $nodeID)
     {
-        $sql = sprintf("SELECT IdNodeMaster FROM Dependencies" . " WHERE IdNodeDependent= %d AND DepType='LINK' AND IdNodeMaster!= %d", $ximletID, $nodeID);
+        $sql = sprintf("SELECT IdNodeMaster FROM Dependencies" . " WHERE IdNodeDependent= %d AND DepType='LINK' AND IdNodeMaster!= %d"
+            , $ximletID, $nodeID);
         $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->Query($sql);
         if ($dbObj->numErr != 0) {
@@ -641,23 +655,23 @@ class StructuredDocument extends StructuredDocumentsOrm
     }
 
     // limpia el ultimo error
-    function ClearError()
+    public function ClearError()
     {
         $this->flagErr = FALSE;
     }
 
-    function SetAutoCleanOn()
+    public function SetAutoCleanOn()
     {
         $this->autoCleanErr = TRUE;
     }
 
-    function SetAutoCleanOff()
+    public function SetAutoCleanOff()
     {
         $this->autoCleanErr = FALSE;
     }
 
     // Carga un error en la clase
-    function SetError($code)
+    public function SetError($code)
     {
         $this->flagErr = TRUE;
         $this->numErr = $code;
@@ -665,7 +679,7 @@ class StructuredDocument extends StructuredDocumentsOrm
     }
 
     // devuelve true si en la clase se ha producido un error
-    function HasError()
+    public function HasError()
     {
         $aux = $this->flagErr;
         if ($this->autoCleanErr)
@@ -673,12 +687,12 @@ class StructuredDocument extends StructuredDocumentsOrm
         return $aux;
     }
 
-    function GetXsltErrors()
+    public function GetXsltErrors()
     {
         return $this->get('XsltErrors');
     }
 
-    function SetXsltErrors($xsltErrors)
+    public function SetXsltErrors($xsltErrors)
     {
         if (!$this->get('IdDoc')) {
             $this->SetError(2);
@@ -746,7 +760,8 @@ class StructuredDocument extends StructuredDocumentsOrm
                     }
                     $includeDoc = new StructuredDocument($includeDocId);
                     if (!$includeDoc->GetID()) {
-                        $this->messages->add('Cannot load the include document for ID: ' . $includeDocId . ' (name: ' . $include . ')', MSG_TYPE_ERROR);
+                        $this->messages->add('Cannot load the include document for ID: ' . $includeDocId . ' (name: ' . $include . ')'
+                            , MSG_TYPE_ERROR);
                         return false;
                     }
                     return $includeDoc;
@@ -878,7 +893,8 @@ class StructuredDocument extends StructuredDocumentsOrm
                     // Load the components folder
                     $viewsFolder = new Node($layoutsFolder->GetChildByType(NodeTypeConstants::HTML_VIEWS_FOLDER));
                     if (!$viewsFolder->GetID()) {
-                        $this->messages->add('Cannot load the views folder for the layout folder with ID: ' . $layoutsFolder->GetID(), MSG_TYPE_ERROR);
+                        $this->messages->add('Cannot load the views folder for the layout folder with ID: ' . $layoutsFolder->GetID()
+                            , MSG_TYPE_ERROR);
                         return false;
                     }
 
@@ -892,5 +908,34 @@ class StructuredDocument extends StructuredDocumentsOrm
         }
         $this->messages->add('Cannot load the view with name: ' . $view . '.view', MSG_TYPE_ERROR);
         return false;
+    }
+    
+    /**
+     * Returns the node in the same container with the default server language
+     * 
+     * @throws \Exception
+     * @return Node
+     */
+    public function getDefaultLanguageDocument() : Node
+    {
+        // Search a target node in this document with default server language
+        $node = new Node($this->IdDoc);
+        $nodeProperty = new NodeProperty();
+        $property = $nodeProperty->getProperty($node->getServer(), NodeProperty::DEFAULTSERVERLANGUAGE);
+        if (empty($property[0])) {
+            throw new \Exception('There is not a default server language defined');
+        }
+        $xmlContainer = new XmlContainerNode($node->GetParent());
+        $defaultLangDocId = $xmlContainer->GetChildByLang($property[0]);
+        $targetNode = new Node($defaultLangDocId);
+        if (! $targetNode->GetID()) {
+            throw new \Exception('A document in default server language could not be found. Define it in server properties');
+        }
+        
+        // Document in master language for its server cannot be linked
+        if ($property[0] == $this->GetLanguage()) {
+            throw new \Exception('This document is the master language');
+        }
+        return $targetNode;
     }
 }

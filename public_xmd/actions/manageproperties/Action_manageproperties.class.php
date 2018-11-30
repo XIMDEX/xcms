@@ -65,8 +65,7 @@ class Action_manageproperties extends ActionAbstract
             
             // Common folders only show channels properties
             $propertiesToUse = [InheritableProperty::CHANNEL];
-        }
-        else {
+        } else {
             
             // Get all properties for this node
             $propertiesToUse = null;
@@ -104,8 +103,7 @@ class Action_manageproperties extends ActionAbstract
             $property = $nodeProperty->getProperty($node->GetID(), NodeProperty::DEFAULTSERVERLANGUAGE);
             if ($property) {
                 $values[NodeProperty::DEFAULTSERVERLANGUAGE] = $property[0];
-            }
-            else {
+            } else {
                 $values[NodeProperty::DEFAULTSERVERLANGUAGE] = 0;
             }
         }

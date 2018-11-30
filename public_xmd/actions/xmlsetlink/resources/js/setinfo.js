@@ -1,5 +1,5 @@
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -23,18 +23,15 @@
  *  @version $Revision$
  */
 
-
-X.actionLoaded(function (event, fn, params) {
-
+X.actionLoaded(function(event, fn, params) {
 	var btn = fn('.submit-button').get(0);
 	btn.beforeSubmit.add(function(event, button) {
-
-		var delete_link = fn('input[name=delete_link]').attr('checked');
-		if (!delete_link) {
+		var break_link_operation = fn('input[name=break_link_operation]');
+		if (! break_link_operation.val()) {
 			return false;
 		}
-
-		if (fn('input.delete_method:checked').length == 0) {
+		var delete_link = fn('input[name=delete_link]').attr('checked');
+		if (! delete_link) {
 			var div_dialog = $("<div/>").attr('id', 'dialog').appendTo(btn);
 			div_dialog.html("You must select an option before you delete the link");
 			div_dialog.dialog({
@@ -47,14 +44,13 @@ X.actionLoaded(function (event, fn, params) {
 			});
 			return true;
 		}
-
+		/*
 		var method = 'method=' + fn('input.delete_method:checked').attr('value');
 		var action = fn('.sl_form').attr('action').replace(/method=setlink/, method);
 		fn('.sl_form').attr('action', action);
+		*/
 	});
-
 	var sharewf_flag = fn('input[name=sharewf]').attr('checked');
-
 	fn('input[name=delete_link]').change(function(event) {
 		fn('div.translation_box').toggle();
 		if (fn(this).attr('checked')) {
@@ -67,13 +63,13 @@ X.actionLoaded(function (event, fn, params) {
 			}
 		}
 	});
-
 	fn('input[name=sharewf]').change(function(event) {
 		sharewf_flag = fn(this).attr('checked');
 		if (sharewf_flag) {
 			var div_dialog = $("<div/>").attr('id', 'dialog').appendTo(this);
-			div_dialog.html("Intervals are erased publication of this node from the moment of the sending, and will be published the same intervals that the master node");
+			div_dialog.html("New scheduled publishing will be synchronized with the selected master document.");
 			div_dialog.dialog({
+				title: "Publishing options",
 				modal: true,
 				buttons: {
 					"Accept" : function() {
@@ -83,5 +79,4 @@ X.actionLoaded(function (event, fn, params) {
 			});
 		}
 	});
-
 });

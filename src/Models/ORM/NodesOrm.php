@@ -31,14 +31,14 @@ class NodesOrm extends GenericData
     );
     var $_indexes = array('IdNode');
     var $IdNode;
-    var $IdParent = 0;
-    var $IdNodeType = 0;
-    var $Name = 0;
-    var $IdState = 0;
-    var $BlockTime = 0;
-    var $BlockUser;
-    var $CreationDate = 0;
-    var $ModificationDate = 0;
-    var $Description;
-    var $SharedWorkflow;
+    var $IdParent = null;
+    var $IdNodeType;
+    var $Name;
+    var $IdState = null;
+    var $BlockTime = null;
+    var $BlockUser = null;
+    var $CreationDate = null;
+    var $ModificationDate = null;
+    var $Description = null;
+    var $SharedWorkflow = null;
 }

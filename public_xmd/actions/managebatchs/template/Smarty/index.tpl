@@ -42,7 +42,7 @@
                         &#013;Visited: #/ frames.statusTime /# 
                         &#013;Ended: #/ frames.endTime /#
                         &#013;Elapsed: #/ frames.elapsedTime /# seconds
-                        &#013;Timing: #/ frames.total / frames.elapsedTime | number:2 /#"><strong>#/ frames.nodeName /#</strong>
+                        &#013;Files per time: #/ frames.total / frames.elapsedTime | number:2 /#"><strong>#/ frames.nodeName /#</strong>
                     </span>
                     <small> (#/ frames.total /# documents)</small>
                     <small><span class="icon clock"></span> Scheduled: #/ frames.scheduledTime /#</small>

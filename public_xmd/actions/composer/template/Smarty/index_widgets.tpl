@@ -72,6 +72,6 @@
 		<div id="footer">
 			<statusbar id="status_bar" />
 		</div>
-		<div id="dialog"></div>
+		<div id="dialog" title="Notice"></div>
 	</body>
 </html>

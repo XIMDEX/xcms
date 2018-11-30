@@ -699,7 +699,7 @@ class Action_workflow_forward extends ActionAbstract
         
         // If the workflow is dependant on other node.
         $idWorkFlowSlave = $node->get('SharedWorkflow');
-        if ($idWorkFlowSlave > 0) {
+        if ($idWorkFlowSlave) {
             $masterNode = new Node($idWorkFlowSlave);
             $values = array(
                 'path_master' => $masterNode->GetPath()

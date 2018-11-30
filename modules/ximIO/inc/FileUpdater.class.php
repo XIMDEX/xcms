@@ -67,7 +67,7 @@ class FileUpdater
         $query = sprintf("SELECT xnt.IdNodeTranslation, xnt.IdImportationNode, xnt.path, xnt.status"
             . " FROM XimIONodeTranslations xnt"
             . " INNER JOIN Nodes n ON xnt.path IS NOT NULL AND xnt.IdImportationNode = n.IdNode AND xnt.status >= %s"
-            . " AND (n.SharedWorkflow IS NULL OR n.SharedWorkflow = 0)"
+            . " AND n.SharedWorkflow IS NULL"
             . " INNER JOIN XimIOExportations xe ON xe.idXimIOExportation = xnt.IdXimioExportation and xe.timeStamp = '%s'",
             Constants::IMPORTED_STATUS_OK,
             $this->revision);

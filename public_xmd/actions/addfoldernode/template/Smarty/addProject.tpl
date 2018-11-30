@@ -77,7 +77,7 @@
             	<div class="sep"></div>
             </div>
             
-           	<label class="label_title label_general">{t}Avaliable themes{/t}</label>
+           	<label class="label_title label_general">{t}Available themes{/t}</label>
             <div class="row themes">
             	{$i = 0}
                 {foreach from=$themes key=index item=theme}

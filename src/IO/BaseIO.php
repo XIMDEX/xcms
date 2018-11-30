@@ -457,7 +457,6 @@ class BaseIO
                     $this->messages->add(_('It was not specified a template for the node ') . $data['NAME'], MSG_TYPE_WARNING);
                     return Constants::ERROR_INCORRECT_DATA;
                 }
-                
                 /*
                 $data['CHANNELS'] = $this->_getChannelFromChildrens($data['CHILDRENS']);
                 if (empty($data['CHANNELS'])) {
@@ -465,7 +464,6 @@ class BaseIO
                     return Constants::ERROR_INCORRECT_DATA;
                 }
                 */
-                
                 $data['CHANNELS'] = [];
                 $data['LANG'] = $this->_getLanguageFromChildrens($data['CHILDRENS']);
                 if (empty($data['LANG'])) {
@@ -485,7 +483,7 @@ class BaseIO
                 $documentName = sprintf("%s%s", $documentName, $sufix);
                 $idNode = NULL;
 
-                //XMLDOCUMENT
+                // XMLDOCUMENT
                 $nodeType = new NodeType();
                 $nodeType->SetByName($data['NODETYPENAME']);
                 $xmlDocument = new Node();
@@ -495,7 +493,7 @@ class BaseIO
                     return Constants::ERROR_INCORRECT_DATA;
                 }
                 
-                //Creating a symbolic link with the master and stablishing its workflow
+                // Creating a symbolic link with the master and stablishing its workflow
                 $strDoc = new StructuredDocument($xmlDocument->get('IdNode'));
                 if (array_key_exists('NEWTARGETLINK', $data)) {
                     $xmlDocument->SetWorkflowMaster($data['NEWTARGETLINK']);

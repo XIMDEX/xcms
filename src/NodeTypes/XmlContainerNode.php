@@ -175,13 +175,13 @@ class XmlContainerNode extends FolderNode
         }
     }
 
-    function DeleteNode()
+    public function DeleteNode()
     {
         $templatecontainer = new \Ximdex\Models\RelTemplateContainer();
         $templatecontainer->deleteRel($this->nodeID);
     }
 
-    function RenameNode($name = null)
+    public function RenameNode($name = null)
     {
         if (! $name)
             return false;
@@ -198,8 +198,8 @@ class XmlContainerNode extends FolderNode
         }
         $this->updatePath();
     }
-
-    function GetLanguages()
+    
+    public function GetLanguages()
     {
         $node = new Node($this->nodeID);
         $docList = $node->GetChildren();
@@ -240,7 +240,7 @@ class XmlContainerNode extends FolderNode
         return null;
     }
 
-    function ToXml($depth, & $files, $recurrence)
+    public function ToXml($depth, & $files, $recurrence)
     {
         $xml = '';
         $query = sprintf("SELECT IdTemplate FROM `RelTemplateContainer` WHERE IdContainer = %d", $this->parent->nodeID);

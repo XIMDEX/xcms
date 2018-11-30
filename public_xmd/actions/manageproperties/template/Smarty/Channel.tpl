@@ -41,7 +41,7 @@
 						{/foreach}
 					</ul>
 				</div>
-				<div>
+				<div class="sep">
 					<input type="radio" name="inherited_channels" class="channels_overwritten" value="overwrite" id="channels_overwritten"
 							{if $Channel_inherited == 'overwrite'}checked="checked"{/if} />
 					<label for="channels_overwritten">{t}Overwrite inherited channels{/t}:</label>
@@ -50,7 +50,7 @@
 				<input type="hidden" name="inherited_channels" value="overwrite" />
 				<label for="channels_inherited">{t}Available project channels{/t}:</label>
 			{/if}
-				{if ($channels)}
+            {if ($channels)}
 				<div class="overwrited_properties">
 					{foreach from=$channels item=channel}
 						<span name="check_channels" class="slide-element channelsmp{if $Channel_inherited == 'inherited'} disabled{/if}">

@@ -100,10 +100,10 @@ padding:0!important;
 }
 
 .tarjeta {
-
     background:#eee;
     padding-bottom:1em;
     border-radius: 0 0 5px 5px;
+    margin-bottom: 10pt;
 }
 
 .tarjeta hr
@@ -414,6 +414,7 @@ fieldset {
     max-width: 100%;
     position: relative;
     background:#f9f9f9;
+    width: 100%;
 }
 .action_content.fullwidth {
     padding: 0;
@@ -3123,4 +3124,9 @@ input[type="checkbox"] {
     50% {
         opacity: 0;
     }
+}
+
+.tarjeta_content {
+    padding-right: 10pt;
+    padding-left: 10pt;
 }

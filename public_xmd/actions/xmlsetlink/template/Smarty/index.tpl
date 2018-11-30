@@ -1,5 +1,5 @@
 {**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -23,61 +23,56 @@
  *  @version $Revision$
  *}
 
-
 <form method="post" name="sl_form" class="sl_form" id="sl_form" action="{$action_url}">
-	<input type="hidden" name="id_node" value="{$id_node}" class="id_node" />
-	<div class="action_header">
-        {if $id_target > 0}
-            <h2>{t}Break the link with master document{/t}</h2>
-        {else}
-            <h2>{t}Select master document{/t}</h2>
-        {/if}
-        {if {count($targetNodes)}}
-        <fieldset class="buttons-form">
-				{button class="validate btn main_action" onclick="" label="Save changes" }{*message="Are you sure you want to performe the changes?"*}
-		</fieldset>
-        {/if}
-	</div>
-    {if {!count($targetNodes)}}
+    <input type="hidden" name="id_node" value="{$id_node}" class="id_node" />
+    {include file="actions/components/title_Description.tpl"}
+    <fieldset>
+        
+    </fieldset>
+    {if {! count($targetNodes)}}
         <div class="message-warning message">
             <p>{t}There aren't any possible master document{/t}.</p>
         </div>
     {/if}
 	<div class="action_content">
 		<fieldset>
+		    <input type="hidden" name="break_link_operation" value="{$id_target}" />
             {if $id_target > 0}
-                <span class="recursive_control">
-                    <input type="checkbox" id="{$id_node}_delete_link" name="delete_link" value="true" class="normal input-slide" />
-                    <label class="label-slide" for="{$id_node}_delete_link">{t}Do you want to break the link with the following document?{/t}: {$name_target}</label>
-                </span>
-
-                <div class="translation_box hidden">
-                    <br/>
-                    <input type="checkbox" id="{$id_node}_delete_method" name="delete_method" value="unlink" class="normal input-slide delete_method" />
-                    <label class="label-slide" for="{$id_node}_delete_method">{t}Do you want to copy the master document content when a link would be deleted?{/t}</label>
+                <div class="row tarjeta card_content">
+	                <h2 class="h2_general">{t}Break the link with master document{/t}</h2>
+	                <div class="tarjeta_content">
+	                    <input type="checkbox" id="{$id_node}_delete_link" name="delete_link" value="true" class="normal input-slide" />
+	                    <label class="label-slide" for="{$id_node}_delete_link">
+	                        {t}Do you want to break the link with the following document?{/t}: <strong>{$name_target}</strong></label>
+	                </div>
                 </div>
             {else}
-                {if {count($targetNodes)}}
-                    <label for="id_node" class="label_title">{t}This document can be linked to one of the following documents{/t}:</label>
-                        <div class="copy_options" tabindex="1">
-                            {foreach from=$targetNodes key=index item=targetNode}
-                                <div>
-                                    <input id="{$id_node}_{$targetNode.idnode}" type="radio" name="targetid" value="{$targetNode.idnode}" {if $targetNode.idnode == $id_target}checked{/if}   />
-                                    <label for="{$id_node}_{$targetNode.idnode}" class="icon folder">{$targetNode.path}</label>
-                                </div>
-                            {/foreach}
-                        </div>
-
-                <span class="recursive_control">
-                    <br />
-                    <input type="checkbox" id="{$id_node}_sharewf" name="sharewf" value="true" class="normal input-slide" {if $sharewf == 1}checked{/if} />
-                    <label class="label-slide" for="{$id_node}_sharewf">{t}Do you want to share the master document workflow?{/t}</label>
-                </span>
+                {if {count($targetNodes) > 0}}
+                    <div class="row tarjeta">
+	                    <h2 class="h2_general">{t}Master document{/t}</h2>
+	                    <div class="tarjeta_content">
+		                    {t}This document will be linked to the following master language document{/t}: <strong>{$name_target}</strong>
+		                </div>
+	                </div>
+                    <div class="row tarjeta card_content">
+                        <h2 class="h2_general">{t}Publishing options{/t}</h2>
+                        <div class="tarjeta_content" style="padding-bottom: 5pt;">
+		                    <input type="checkbox" id="{$id_node}_sharewf" name="sharewf" value="true" class="normal input-slide" 
+		                       {if $sharewf == 1}checked{/if} />
+		                    <label class="label-slide" for="{$id_node}_sharewf">
+	                               {t}Share the master document workflow{/t}</label>
+			            </div>
+	                </div>
                 {/if}
             {/if}
-			
-				
 		</fieldset>
+		{if {count($targetNodes)}}
+	        <fieldset class="buttons-form">
+	            <div class="small-12 columns">
+	                {button class="validate btn main_action" onclick="" label="Save changes"}
+	                {* message="Are you sure you want to performe the changes?" *}
+	            </div>
+	        </fieldset>
+        {/if}
 	</div>
-
 </form>
