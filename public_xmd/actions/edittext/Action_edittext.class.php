@@ -187,19 +187,28 @@ class Action_edittext extends ActionAbstract
         $idNode = $this->request->getParam('nodeid');
         $content = $this->request->getParam('editor');
 
+        // Symbolic link cannot be edited
+        $strDoc = new StructuredDocument($idNode);
+        if ($strDoc->GetSymLink()) {
+            $this->messages->add(_('The document which is trying to be edited is a symbolic link'), MSG_TYPE_ERROR);
+            $this->renderMessages();
+            return false;
+        }
+        
         // If content is empty, put a blank space in order to save a file with empty content
         $content = empty($content) ? " " : $content;
         $node = new Node($idNode);
-        if ((!$node->get('IdNode') > 0)) {
+        if (! $node->get('IdNode')) {
             $this->messages->add(_('The document which is trying to be edited does not exist'), MSG_TYPE_ERROR);
             $this->renderMessages();
+            return false;
         }
         if ($node->SetContent(Strings::stripslashes($content), true) === false) {
             $this->messages->mergeMessages($node->messages);
             $this->sendJSON(array('messages' => $this->messages->messages, 'type' => MSG_TYPE_WARNING));
             return false;
         }
-        if (!$this->messages->count() and $node->messages->count()) {
+        if (! $this->messages->count() and $node->messages->count()) {
             $this->messages->messages[0] = $node->messages->messages[0];
         }
         if ($node->RenderizeNode() === false) {

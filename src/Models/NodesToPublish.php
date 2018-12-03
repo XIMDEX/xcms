@@ -36,21 +36,9 @@ class NodesToPublish extends NodesToPublishOrm
 	/**
 	 * Static method that creates a new NodeSet and returns the related object
 	 */
-	static public function create($idNode, $idNodeGenerator, $dateUp, $dateDown, $userId, $force, $lastPublishedVersion, $deepLevel)
+	public function create(int $idNode, int $idNodeGenerator, int $dateUp, int $dateDown = null, int $userId = null, bool $force = false
+	    , bool $lastPublishedVersion = false, int $deepLevel = 0) : ?bool
 	{    
-		$node = new NodesToPublish();
-		$node->set('IdNode', $idNode);
-		$node->set('IdNodeGenerator', $idNodeGenerator);
-		$node->set('DateUp', $dateUp);
-		$node->set('DateDown', $dateDown);
-		$node->set('State', 0); //Pending
-		$node->set('UserId', $userId);
-		if ($idNode == $idNodeGenerator) {
-		    $force = true;
-		    $lastPublishedVersion = true;
-		}
-		$node->set('ForcePublication', $force ? 1 : 0);
-		$node->set('DeepLevel', $deepLevel);
 		$dataFactory = new DataFactory($idNode);
 		$idVersion = $dataFactory->GetLastVersion();
 		if ($idNode != $idNodeGenerator && $lastPublishedVersion) {
@@ -58,8 +46,6 @@ class NodesToPublish extends NodesToPublishOrm
 		} else {
 			$idSubversion = $dataFactory->GetLastSubVersion($idVersion);
 		}
-		$node->set('Version', $idVersion);
-		$node->set('Subversion', $idSubversion);
 		$versionZero = ! $idVersion && ! $idSubversion;
 		if ($versionZero && $idNode != $idNodeGenerator) {
 		    $myNode = new Node($idNode);
@@ -68,7 +54,20 @@ class NodesToPublish extends NodesToPublishOrm
 		        return null;
 		    }
 		}
-		if (! $node->add()) {
+		$this->set('IdNode', $idNode);
+		$this->set('IdNodeGenerator', $idNodeGenerator);
+		$this->set('DateUp', $dateUp);
+		$this->set('DateDown', $dateDown);
+		$this->set('State', 0); //Pending
+		$this->set('UserId', $userId);
+		if ($idNode == $idNodeGenerator) {
+		    $force = true;
+		}
+		$this->set('ForcePublication', $force ? 1 : 0);
+		$this->set('DeepLevel', $deepLevel);
+		$this->set('Version', $idVersion);
+		$this->set('Subversion', $idSubversion);
+		if (! $this->add()) {
 		    return false;
 		}
 		return true;

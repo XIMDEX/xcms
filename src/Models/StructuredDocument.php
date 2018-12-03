@@ -294,26 +294,8 @@ class StructuredDocument extends StructuredDocumentsOrm
         }
     }
 
-    /**
-     * @param $content
-     * @param $commitNode
-     * @param $metadata
-     * @return boolean
-     */
-    public function SetContent($content, $commitNode = NULL, $metadata = null)
+    public function SetContent(string $content, bool $commitNode = false, string $metadata = null)
     {
-        $symLinks = $this->find('IdDoc', 'TargetLink = %s', array(
-            $this->get('IdDoc')
-        ), MONO);
-
-        // Repetimos para todos los nodos que son enlaces simbolicos a este
-        if (!empty($symLinks)) {
-            foreach ($symLinks as $link) {
-                $node = new Node($link);
-                $node->RenderizeNode();
-            }
-        }
-
         // Refrescamos la fecha de Actualizacion del nodo
         $this->SetUpdateDate();
         $data = new DataFactory($this->get('IdDoc'));
@@ -357,7 +339,17 @@ class StructuredDocument extends StructuredDocumentsOrm
             $this->messages->mergeMessages($node->messages);
             return false;
         }
-
+        
+        // Set content for each document related to this by a symbolic link
+        if ($symLinks = $this->find('IdDoc', 'TargetLink = %s', [$this->get('IdDoc')], MONO)) {
+            foreach ($symLinks as $link) {
+                $node = new Node($link);
+                if (! $node->SetContent($content, $commitNode)) {
+                    $this->messages->mergeMessages($node->messages);
+                    return false;
+                }
+            }
+        }
         return true;
     }
 

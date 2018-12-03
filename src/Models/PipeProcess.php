@@ -234,7 +234,9 @@ class PipeProcess extends PipeProcessOrm
         $this->transitions->reset();
         while ($transition = $this->transitions->next()) {
             $pipeStatus = new PipeStatus($transition->get('IdStatusFrom'));
-            $allStatus[] = $pipeStatus->get('id');
+            if ($pipeStatus->get('id')) {
+                $allStatus[] = $pipeStatus->get('id');
+            }
             $lastTransition = $transition;
         }
         $pipeStatus = new PipeStatus($lastTransition->get('IdStatusTo'));

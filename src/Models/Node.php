@@ -304,12 +304,12 @@ class Node extends NodesOrm
      */
     function SetState(int $stateID): bool
     {
-        if (!$this->GetID()) {
+        if (! $this->GetID()) {
             $this->messages->add(_('The node ID is mandatory in order to change the state'), MSG_TYPE_ERROR);
             return false;
         }
         $workflowStatus = new PipeStatus($stateID);
-        if (!$workflowStatus->get('id')) {
+        if (! $workflowStatus->get('id')) {
             $this->messages->add(sprintf(_('The state %s does not exist'), $stateID), MSG_TYPE_ERROR);
             return false;
         }
@@ -339,15 +339,33 @@ class Node extends NodesOrm
             }
             Logger::info('Method ' . $method . ' (' . $className . ') for node ' . $this->GetID() . ' executed', true);
         }
+        /*
         $dbObj = new \Ximdex\Runtime\Db();
-        $sql = sprintf("UPDATE Nodes SET IdState= %d WHERE IdNode=%d OR SharedWorkflow = %d"
+        $sql = sprintf("UPDATE Nodes SET IdState = %d WHERE IdNode = %d OR SharedWorkflow = %d"
             , $stateID, $this->get('IdNode'), $this->get('IdNode'));
         $result = $dbObj->Execute($sql);
-        if ($result) {
-            return true;
+        */
+        $this->set('IdState', $stateID);
+        $result = $this->update();
+        if (! $result) {
+            $this->messages->add(sprintf(_('The node could not be moved to state %s'), $stateID), MSG_TYPE_ERROR);
+            return false;
         }
-        $this->messages->add(sprintf(_('The node could not be moved to state %s'), $stateID), MSG_TYPE_ERROR);
-        return false;
+        
+        // Update new state in shared worflow nodes
+        $slaves = $this->GetWorkFlowSlaves();
+        if ($slaves === false) {
+            $this->messages->add(sprintf(_('Could not retrieve the workflow slaves for node %s'), $this->GetID()), MSG_TYPE_ERROR);
+            return false;
+        }
+        foreach ($slaves as $id) {
+            $slave = new Node($id);
+            if (! $slave->SetState($stateID)) {
+                $this->messages->mergeMessages($slave->messages);
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -878,10 +896,10 @@ class Node extends NodesOrm
      * Set a node content
      *
      * @param string $content
-     * @param string $commitNode
-     * @return boolean
+     * @param bool $commitNode
+     * @return bool
      */
-    function SetContent($content, $commitNode = NULL)
+    function SetContent(string $content, bool $commitNode = false) : bool
     {
         $this->ClearError();
         if ($this->getID()) {
@@ -1964,12 +1982,10 @@ class Node extends NodesOrm
     /**
      * Function which makes the node to have a new independent workflow
      *
-     * @param $id
      * @return array
      */
-    function GetWorkFlowSlaves($id = null)
+    function GetWorkFlowSlaves()
     {
-        unset($id);
         return $this->find('IdNode', 'SharedWorkflow = %s', array($this->get('IdNode')), MONO);
     }
 

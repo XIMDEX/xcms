@@ -157,12 +157,8 @@ abstract class AbstractStructuredDocument extends FileNode
         $idDepXimlets = [$dependencies->getDepTypeId(Dependencies::XIMLET)];
         $depsMngr = new DepsManager();
         $structure = $depsMngr->getBySource(DepsManager::XML2XML, $idDoc, $idDepXimlets);
-        $asset = empty($params['withstructure']) ? array() :
-        $depsMngr->getBySource(DepsManager::NODE2ASSET, $idDoc);
-        $node = new Node($idDoc);
-        $tmpWorkFlowSlaves = $node->GetWorkFlowSlaves();
-        $workFlowSlaves = is_null($tmpWorkFlowSlaves) ? array() : $tmpWorkFlowSlaves;
-        return array_merge($workFlowSlaves, $asset, $structure);
+        $asset = empty($params['withstructure']) ? array() : $depsMngr->getBySource(DepsManager::NODE2ASSET, $idDoc);
+        return array_merge($asset, $structure);
     }
 
     /**
@@ -192,7 +188,7 @@ abstract class AbstractStructuredDocument extends FileNode
                     $domDoc->preserveWhiteSpaces = false;
                     $res = @$domDoc->loadXML($content);
                     $domDoc->encoding = 'UTF-8';
-                    $domDoc->version = '1.0';
+                    // $domDoc->version = '1.0';
                     if ($res) {
                         $content = $domDoc->saveXML();
                         $content = str_replace('<?xml version="1.0" encoding="UTF-8"?>', '', $content);
@@ -217,11 +213,17 @@ abstract class AbstractStructuredDocument extends FileNode
         if ($res === false) {
             return false;
         }
-        $wfSlaves = $this->parent->GetWorkflowSlaves();
-        if (!is_null($wfSlaves)) {
+        
+        // Update workflow slaves for this node
+        // $wfSlaves = $this->parent->GetWorkflowSlaves();
+        if (! $node) {
+            $node = new Node($this->nodeID);
+        }
+        $wfSlaves = $node->GetWorkflowSlaves();
+        if ($wfSlaves) {
             foreach ($wfSlaves as $docID) {
-                $strDoc = new StructuredDocument($docID);
-                $strDoc->SetContent($content, $commitNode);
+                $strDocSlave = new StructuredDocument($docID);
+                $strDocSlave->SetContent($content, $commitNode);
             }
         }
         return true;

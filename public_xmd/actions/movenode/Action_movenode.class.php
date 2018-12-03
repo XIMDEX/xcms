@@ -118,7 +118,6 @@ class Action_movenode extends Action_copy
 	{
 		$idNode = (int) $this->request->getParam("nodeid");
 		$targetParentID = $this->request->getParam("targetid");
-		// $unpublishDoc = ($this->request->getParam("unpublishdoc") == 1) ? true : false;
 		$node = new Node($idNode);
 		$checks = $node->checkTarget($targetParentID);
 		$smarty = null;
@@ -148,7 +147,6 @@ class Action_movenode extends Action_copy
     private function _move($idNode, $targetParentID,  $unpublishDoc)
     {
 		$node = new Node($idNode);
-		// $oldParentId = $node->GetParent();
 		$err = baseIO_MoveNode($idNode, $targetParentID);
 		if (!$err) {
 			$this->messages->add(sprintf(_("Node %s has been successfully moved"), $node->GetNodeName()), MSG_TYPE_NOTICE);

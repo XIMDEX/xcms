@@ -31,7 +31,6 @@ use Ximdex\Logger;
 use Ximdex\Models\Node;
 use Ximdex\Models\NodesToPublish;
 use Ximdex\Runtime\App;
-use Ximdex\Runtime\DataFactory;
 use Ximdex\Sync\SynchroFacade;
 use Ximdex\Sync\BatchManager;
 use Ximdex\Workflow\WorkFlow;

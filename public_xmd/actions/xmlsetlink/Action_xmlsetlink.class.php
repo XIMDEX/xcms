@@ -40,8 +40,8 @@ class Action_xmlsetlink extends ActionAbstract
 		$idNode = $this->request->getParam('nodeid');
 		$node = new Node($idNode);
 		if (! $node->get('IdNode')) {
-		    $this->error('Node could not be found');
-		    return;
+		    $this->error(_('Node could not be found'));
+		    return false;
 		}
 		$sharewf = $node->get('SharedWorkflow');
 		$sharewf = empty($sharewf) ? 0 : 1;
@@ -53,8 +53,8 @@ class Action_xmlsetlink extends ActionAbstract
 		    try {
 		        $targetNode = $structuredDocument->getDefaultLanguageDocument();
 		    } catch (Exception $e) {
-		        $this->error($e->getMessage());
-		        return;
+		        $this->error(_($e->getMessage()));
+		        return false;
 		    }
 		}
 	    $targetNodes = $this->getTargetNodes($node->GetID());
@@ -88,17 +88,14 @@ class Action_xmlsetlink extends ActionAbstract
 		        $targetNode = $structuredDocument->getDefaultLanguageDocument();
 		        $idTarget = $targetNode->GetID();
 		    } catch (Exception $e) {
-		        $this->error($e->getMessage());
+		        $this->error(_($e->getMessage()), true);
 		        return;
 		    }
 		}
 		$targetStructuredDocument = new StructuredDocument($idTarget);
         $targetOfTarget = $targetStructuredDocument->get('TargetLink');
         if ($targetOfTarget == $idNode) {
-            $this->messages->add(_('This document is already the master language document of ') . $targetStructuredDocument->GetName()
-                , MSG_TYPE_ERROR);
-            $values = array('messages' => $this->messages->messages);
-            $this->sendJSON($values);
+            $this->error(_('This document is already the master language document of ') . $targetStructuredDocument->GetName(), true);
         }
 		$node = new Node($idNode);
 		$node->ClearWorkFlowMaster();
@@ -107,6 +104,14 @@ class Action_xmlsetlink extends ActionAbstract
 		}
 		$structuredDocument->ClearSymLink();
 		$structuredDocument->SetSymLink($idTarget);
+		
+		// Copy content from target document
+		$content = $node->GetContent();
+		if (! $node->SetContent($content, true)) {
+		    $this->error(_('Cannot copy the content of target document'), true);
+		    return false;
+		}
+		
 		$this->messages->add(_('The link has been modified successfully'), MSG_TYPE_NOTICE);
 		$messages = new \Ximdex\Utils\Messages();
 		$messages->mergeMessages($node->messages);
@@ -185,9 +190,14 @@ class Action_xmlsetlink extends ActionAbstract
         return $targetNodes;
 	}
 	
-	private function error(string $error)
+	private function error(string $error, bool $jsonOutput = false)
 	{
-	    $this->messages->add(_($error), MSG_TYPE_ERROR);
-	    $this->render(array('messages' => $this->messages->messages), NULL, 'messages.tpl');
+	    $this->messages->add($error, MSG_TYPE_ERROR);
+	    $values = ['messages' => $this->messages->messages];
+	    if ($jsonOutput) {
+	        $this->sendJSON($values);
+	    } else {
+	       $this->render($values, NULL, 'messages.tpl');
+	    }
 	}
 }

@@ -41,7 +41,6 @@ include_once XIMDEX_ROOT_PATH . '/src/Sync/conf/synchro_conf.php';
  */
 class SyncManager
 {
-    // State flags
     public $workflow;
     public $deleteOld;
     public $markEnd;
@@ -52,9 +51,10 @@ class SyncManager
     private $publicateSection;
     private $level;
     private $nodeType;
-    private $docsToPublishByLevel = array();
-    private $computedDocsToPublish = array();
-    private $pendingDocsToPublish = array();
+    private $docsToPublishByLevel = [];
+    private $computedDocsToPublish = [];
+    private $pendingDocsToPublish = [];
+    private $generatorNodes = [];
 
     function __construct()
     {
@@ -101,11 +101,24 @@ class SyncManager
         }
     }
 
-    private function buildPublishingDependencies($idNode, $params)
+    private function buildPublishingDependencies(Node $node, array $params) : array
     {
-        $this->pendingDocsToPublish = $this->computedDocsToPublish = array();
-        $this->pendingDocsToPublish[] = $idNode;
-        $this->docsToPublishByLevel["$idNode"] = 0;
+        if (! $node->GetID()) {
+            throw new \Exception('Cannot build publishing dependencies in a node with a void ID');
+        }
+        $this->generatorNodes = [$node->GetID()];
+        $this->pendingDocsToPublish = [$node->GetID()];
+        $this->docsToPublishByLevel = [(string) $node->GetID() => 0];
+        $workFlowSlaves = $node->GetWorkFlowSlaves();
+        if ($workFlowSlaves === false) {
+            throw new \Exception('Cannot get the workflow slave documents');
+        }
+        foreach ($workFlowSlaves as $slave) {
+            $this->generatorNodes[] = $slave;
+            $this->pendingDocsToPublish[] = $slave;
+            $this->docsToPublishByLevel[(string) $slave] = 0;
+        }
+        $this->computedDocsToPublish = [];
         while (!empty($this->pendingDocsToPublish)) {
             $nodeId = array_shift($this->pendingDocsToPublish);
             if ($this->hasDependences($nodeId, $params)) {
@@ -186,7 +199,7 @@ class SyncManager
             
             // Obtain all the whole children above the given section
             $docsToPublish = [];
-            if (!$this->buildPublishingSection($node, $docsToPublish, $this->getFlag('level'), $this->getFlag('nodeType'))) {
+            if (! $this->buildPublishingSection($node, $docsToPublish, $this->getFlag('level'), $this->getFlag('nodeType'))) {
                 return null;
             }
         }
@@ -196,7 +209,7 @@ class SyncManager
             $params = [];
             $params['withstructure'] = ($this->getFlag('structure') === false) ? false : true;
             $params['deeplevel'] = $this->getFlag('deeplevel');
-            $docsToPublish = $this->buildPublishingDependencies($node->GetID(), $params);
+            $docsToPublish = $this->buildPublishingDependencies($node, $params);
         }
         if ($node->nodeType->get('IsPublishable') == '1') {
             if (sizeof($docsToPublish) > 0) {
@@ -224,31 +237,35 @@ class SyncManager
      */
     function pushDocInPublishingPool(int $idNode, int $up, int $down = null)
     {
-        if (!$idNode) {
+        if (! $idNode) {
             Logger::error("Pushdocinpool - Empty IdNode");
             return NULL;
         }
         $node = new Node($idNode);
-        if (!$node->GetID()) {
+        if (! $node->GetID()) {
             Logger::error(sprintf("Node %s does not exist", $idNode));
             return NULL;
         }
         $docsToPublish = $this->getPublishableDocs($node, $up, $down);
         $userID = \Ximdex\Runtime\Session::get('userID');
         $force = $this->getFlag('globalForcePublication') ? true : $this->getFlag("force");
+        $nodesToPublish = new NodesToPublish();
         foreach ($docsToPublish as $idDoc) {
-            if (!array_key_exists($idDoc, $this->docsToPublishByLevel)) {
+            if (! array_key_exists($idDoc, $this->docsToPublishByLevel)) {
                 continue;
             }
-            $deepLevel = $this->docsToPublishByLevel[$idDoc];
-
-            // Dependencies won't be expired
-            if ($this->getFlag('publicateSection') or $idNode == $idDoc) {
-                NodesToPublish::create($idDoc, $idNode, $up, $down, $userID, $force, $this->getFlag('lastPublished'), $deepLevel);
+            // if ($this->getFlag('publicateSection') or $idNode == $idDoc) {
+            if (in_array($idDoc, $this->generatorNodes)) {
+                $expire = $down;
+                $idGeneratorNode = $idDoc;
+            } else {
+                
+                // Dependencies won't be expired
+                $expire = null;
+                $idGeneratorNode = $idNode;
             }
-            else {
-                NodesToPublish::create($idDoc, $idNode, $up, null, $userID, $force, $this->getFlag('lastPublished'), $deepLevel);
-            }
+            $nodesToPublish->create($idDoc, $idGeneratorNode, $up, $expire, $userID, $force, $this->getFlag('lastPublished')
+                , $this->docsToPublishByLevel[$idDoc]);
         }
         if ($this->getFlag('mail')) {
             $this->sendMail($idNode, null, $up, $down);

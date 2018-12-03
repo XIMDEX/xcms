@@ -194,7 +194,7 @@ class DexPumper
 		}
 		$uploading = $this->taskUpload($originFile, $initialDirectory, $remotePath, $targetFile);
 		if (!$asHidden) {
-		    Logger::info('Published: ' . $remotePath . '/' . $targetFile . ' into server ' . $this->connection->getServer()->get('Description')
+		    Logger::info('Published: ' . $remotePath . $targetFile . ' into server ' . $this->connection->getServer()->get('Description')
                 . ' (Sync: ' . $IdSync . ')', true);
 		}
 		$this->updateTask($uploading, $state);

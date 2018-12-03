@@ -129,9 +129,11 @@ class Action_workflow_forward extends ActionAbstract
         $find = false;
         $AllowedStates = [];
         foreach ($AllStates as $state) {
+            
             // If this state is after currentState, append the next state
             if ($find) {
-                // This is the next state.
+                
+                // This is the next state
                 $foundRol = false;
                 foreach ($userRoles as $myIdRole) {
                     $role = new Role($myIdRole);
@@ -142,17 +144,18 @@ class Action_workflow_forward extends ActionAbstract
                         break;
                     }
                 }
+                
                 // If we havent got permission for this workflow, we dont append nothing more
                 if (! $foundRol)
                     break;
             }
+            
             // If found the current state, we activate the flag
             if ($state == $node->GetState())
                 $find = true;
         }
         
         // Getting next state
-        // $nextState = $workflow->GetNextState();
         $workflowNext = new WorkFlow($idNode, $nextState);
         $nextStateName = $workflowNext->GetName();
         
@@ -446,7 +449,7 @@ class Action_workflow_forward extends ActionAbstract
             $transformedContent = $transition->generate($idVersion, $node->GetContent(), array());
             $node->SetContent($transformedContent);
         }
-        $result = $node->setState($idState);
+        $result = $node->SetState($idState);
         if ($result) {
             $this->messages->add(_('State has been successfully changed'), MSG_TYPE_NOTICE);
             return true;
@@ -626,7 +629,7 @@ class Action_workflow_forward extends ActionAbstract
         $node = new Node($idNode);
         $workflow = new WorkFlow($idNode);
         $firstState = $workflow->GetInitialState();
-        if ($node->setState($firstState) === false) {
+        if ($node->SetState($firstState) === false) {
             $values = array(
                 'goback' => true,
                 'messages' => $node->messages->messages,
@@ -697,7 +700,7 @@ class Action_workflow_forward extends ActionAbstract
             return false;
         }
         
-        // If the workflow is dependant on other node.
+        // If the workflow is dependant on other node
         $idWorkFlowSlave = $node->get('SharedWorkflow');
         if ($idWorkFlowSlave) {
             $masterNode = new Node($idWorkFlowSlave);
