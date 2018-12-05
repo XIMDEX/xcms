@@ -27,16 +27,16 @@
 
 namespace Ximdex\Models;
 
-use Ximdex\Runtime\DataFactory;
-use Ximdex\Utils\FsUtils;
-use Ximdex\XML\Validators\RNG;
 use Ximdex\Logger;
-use Ximdex\Models\ORM\StructuredDocumentsOrm;
-use Ximdex\Parsers\ParsingDependencies;
+use Ximdex\Utils\FsUtils;
 use Ximdex\Parsers\ParsingRng;
+use Ximdex\XML\Validators\RNG;
+use Ximdex\Runtime\DataFactory;
+use Ximdex\NodeTypes\XmlContainerNode;
 use Ximdex\Properties\ChannelProperty;
 use Ximdex\NodeTypes\NodeTypeConstants;
-use Ximdex\NodeTypes\XmlContainerNode;
+use Ximdex\Parsers\ParsingDependencies;
+use Ximdex\Models\ORM\StructuredDocumentsOrm;
 
 class StructuredDocument extends StructuredDocumentsOrm
 {
@@ -54,14 +54,14 @@ class StructuredDocument extends StructuredDocumentsOrm
     public function __construct($id = null)
     {
         $this->ID = $id;
-        $this->flagErr = FALSE;
-        $this->autoCleanErr = TRUE;
+        $this->flagErr = false;
+        $this->autoCleanErr = true;
         parent::__construct($id);
     }
 
     /**
      * Devuelve un array con los ids de todos los structured documents del sistema
-     * 
+     *
      * @return NULL|array
      */
     public function GetAllStructuredDocuments()
@@ -83,7 +83,7 @@ class StructuredDocument extends StructuredDocumentsOrm
 
     /**
      * Devuelve el id del structure document actual
-     * 
+     *
      * @return boolean|string
      */
     public function GetID()
@@ -93,7 +93,7 @@ class StructuredDocument extends StructuredDocumentsOrm
 
     /**
      * Cambia el id del structure document actual
-     * 
+     *
      * @param int $docID
      * @return NULL|boolean|string
      */
@@ -253,25 +253,30 @@ class StructuredDocument extends StructuredDocumentsOrm
         return $content;
     }
 
-    // Devuelve el contenido metadata del structure document actual.
-    // return string (Metadata)
-    public function GetMetadata($version = null, $subversion = null)
+    /**
+     * Return the content of metadata from current structure document
+     *
+     * @return array
+     */
+    public function getMetadata() : array
     {
+        /*
         $targetLink = $this->GetSymLink();
         if ($targetLink) {
             $target = new StructuredDocument($targetLink);
             $targetContent = $target->GetMetadata();
             return $targetContent;
         }
-        $data = new DataFactory($this->get('IdDoc'));
-        $content = $data->GetMetadata($version, $subversion);
-        return $content;
+        */
+        $node = new Node($this->GetId());
+        $metadata = (new Metadata)->getMetadataSectionAndGroupByNodeType($node->GetNodeType(), $this->GetId());
+        return $metadata;
     }
 
     public function UpdateLinkParseLink($sourceLang, $linkID)
     {
         $pos = strpos($linkID, ",");
-        if ($pos != FALSE) {
+        if ($pos != false) {
             $linkID = substr($linkID, 0, $pos);
         }
         $node = new Node($linkID);
@@ -304,7 +309,7 @@ class StructuredDocument extends StructuredDocumentsOrm
             $info = $node->GetLastVersion();
             $res = $data->SetContent($content, $info['Version'], $info['SubVersion'], $commitNode, $metadata);
         } else {
-            $res = $data->SetContent($content, NULL, NULL, $commitNode, $metadata);
+            $res = $data->SetContent($content, null, null, $commitNode, $metadata);
         }
 
         // The document will be validate against the associated RNG schema with XML documents
@@ -329,8 +334,9 @@ class StructuredDocument extends StructuredDocumentsOrm
         // Set dependencies
         $dependeciesParser = new ParsingDependencies();
         if ($dependeciesParser->parseAllDependencies($this->get('IdDoc'), $content) === false) {
-            if (!$this->messages->count())
+            if (!$this->messages->count()) {
                 $this->messages->mergeMessages($dependeciesParser->messages);
+            }
         }
 
         // Renderizamos el nodo para reflejar los cambios
@@ -338,17 +344,6 @@ class StructuredDocument extends StructuredDocumentsOrm
         if ($node->RenderizeNode() === false) {
             $this->messages->mergeMessages($node->messages);
             return false;
-        }
-        
-        // Set content for each document related to this by a symbolic link
-        if ($symLinks = $this->find('IdDoc', 'TargetLink = %s', [$this->get('IdDoc')], MONO)) {
-            foreach ($symLinks as $link) {
-                $node = new Node($link);
-                if (! $node->SetContent($content, $commitNode)) {
-                    $this->messages->mergeMessages($node->messages);
-                    return false;
-                }
-            }
         }
         return true;
     }
@@ -363,7 +358,6 @@ class StructuredDocument extends StructuredDocumentsOrm
     {
         $nodeTypeName = $node->nodeType->GetName();
         if ($nodeTypeName == 'RngVisualTemplate') {
-
             $rngPath = APP_ROOT_PATH . '/actions/xmleditor2/views/rngeditor/schema/rng-schema.xml';
             return trim(FsUtils::file_get_contents($rngPath));
         }
@@ -526,8 +520,7 @@ class StructuredDocument extends StructuredDocumentsOrm
 
     public function add()
     {
-        $this->CreateNewStrDoc($this->get('IdDoc'), $this->get('Name'), $this->get('IdCreator'), $this->get('CreationDate')
-            , $this->get('UpdateDate'), $this->get('IdLanguage'), $this->get('IdTemplate'));
+        $this->CreateNewStrDoc($this->get('IdDoc'), $this->get('Name'), $this->get('IdCreator'), $this->get('CreationDate'), $this->get('UpdateDate'), $this->get('IdLanguage'), $this->get('IdTemplate'));
     }
 
     /**
@@ -556,7 +549,6 @@ class StructuredDocument extends StructuredDocumentsOrm
         }
         parent::add();
         if ($this->get('IdDoc') > 0) {
-
             $this->ID = $docID;
 
             // Guardamos su contenido
@@ -588,14 +580,14 @@ class StructuredDocument extends StructuredDocumentsOrm
         if ($dbObj->numErr != 0) {
             $this->SetError(1);
         } else {
-            $salida = NULL;
+            $salida = null;
             while (!$dbObj->EOF) {
                 $salida = $dbObj->GetValue("UltimaVersion");
                 $dbObj->Next();
             }
             return $salida;
         }
-        return NULL;
+        return null;
     }
 
     public function isximletlink()
@@ -606,7 +598,7 @@ class StructuredDocument extends StructuredDocumentsOrm
         if ($dbObj->numErr != 0) {
             $this->SetError(1);
         } else {
-            $salida = NULL;
+            $salida = null;
             $links = [];
             while (!$dbObj->EOF) {
                 $links[] = $dbObj->GetValue("IdNodeDependent");
@@ -624,48 +616,47 @@ class StructuredDocument extends StructuredDocumentsOrm
             }
             return $salida;
         }
-        return NULL;
+        return null;
     }
 
     public function ximletLinks($ximletID, $nodeID)
     {
-        $sql = sprintf("SELECT IdNodeMaster FROM Dependencies" . " WHERE IdNodeDependent= %d AND DepType='LINK' AND IdNodeMaster!= %d"
-            , $ximletID, $nodeID);
+        $sql = sprintf("SELECT IdNodeMaster FROM Dependencies WHERE IdNodeDependent= %d AND DepType='LINK' AND IdNodeMaster!= %d", $ximletID, $nodeID);
         $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->Query($sql);
         if ($dbObj->numErr != 0) {
             $this->SetError(1);
         } else {
-            $link = NULL;
+            $link = null;
             while (!$dbObj->EOF) {
                 $link[] = $dbObj->GetValue("IdNodeMaster");
                 $dbObj->Next();
             }
             return $link;
         }
-        return NULL;
+        return null;
     }
 
     // limpia el ultimo error
     public function ClearError()
     {
-        $this->flagErr = FALSE;
+        $this->flagErr = false;
     }
 
     public function SetAutoCleanOn()
     {
-        $this->autoCleanErr = TRUE;
+        $this->autoCleanErr = true;
     }
 
     public function SetAutoCleanOff()
     {
-        $this->autoCleanErr = FALSE;
+        $this->autoCleanErr = false;
     }
 
     // Carga un error en la clase
     public function SetError($code)
     {
-        $this->flagErr = TRUE;
+        $this->flagErr = true;
         $this->numErr = $code;
         $this->msgErr = $this->errorList[$code];
     }
@@ -674,8 +665,9 @@ class StructuredDocument extends StructuredDocumentsOrm
     public function HasError()
     {
         $aux = $this->flagErr;
-        if ($this->autoCleanErr)
+        if ($this->autoCleanErr) {
             $this->ClearError();
+        }
         return $aux;
     }
 
@@ -752,8 +744,7 @@ class StructuredDocument extends StructuredDocumentsOrm
                     }
                     $includeDoc = new StructuredDocument($includeDocId);
                     if (!$includeDoc->GetID()) {
-                        $this->messages->add('Cannot load the include document for ID: ' . $includeDocId . ' (name: ' . $include . ')'
-                            , MSG_TYPE_ERROR);
+                        $this->messages->add('Cannot load the include document for ID: ' . $includeDocId . ' (name: ' . $include . ')', MSG_TYPE_ERROR);
                         return false;
                     }
                     return $includeDoc;
@@ -885,8 +876,7 @@ class StructuredDocument extends StructuredDocumentsOrm
                     // Load the components folder
                     $viewsFolder = new Node($layoutsFolder->GetChildByType(NodeTypeConstants::HTML_VIEWS_FOLDER));
                     if (!$viewsFolder->GetID()) {
-                        $this->messages->add('Cannot load the views folder for the layout folder with ID: ' . $layoutsFolder->GetID()
-                            , MSG_TYPE_ERROR);
+                        $this->messages->add('Cannot load the views folder for the layout folder with ID: ' . $layoutsFolder->GetID(), MSG_TYPE_ERROR);
                         return false;
                     }
 
@@ -904,7 +894,7 @@ class StructuredDocument extends StructuredDocumentsOrm
     
     /**
      * Returns the node in the same container with the default server language
-     * 
+     *
      * @throws \Exception
      * @return Node
      */

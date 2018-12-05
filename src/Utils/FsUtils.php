@@ -78,7 +78,7 @@ class FsUtils
      * @param null $context
      * @return bool
      */
-    static public function file_put_contents($filename, $data, $flags = NULL, $context = NULL)
+    static public function file_put_contents($filename, $data, $flags = null, $context = null) : bool
     {
         $result = false;
         $error = null;
@@ -153,7 +153,7 @@ class FsUtils
      * @param $filename
      * @param bool $use_include_path
      * @param null $context
-     * @return null|string
+     * @return bool|string
      */
     static public function file_get_contents($filename, $use_include_path = false, $context = NULL)
     {
@@ -332,7 +332,7 @@ class FsUtils
      * @param string $prefix
      * @return string
      */
-    static public function getUniqueFile($containerFolder, $sufix = '', $prefix = '')
+    static public function getUniqueFile(string $containerFolder, string $sufix = '', string $prefix = '') : string
     {
         do {
             $fileName = Strings::generateUniqueID();

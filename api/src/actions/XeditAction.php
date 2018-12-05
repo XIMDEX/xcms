@@ -27,15 +27,15 @@
 
 namespace XimdexApi\actions;
 
-use Ximdex\Models\FastTraverse;
+use Ximdex\Logger;
 use Ximdex\Models\Node;
+use Ximdex\Runtime\App;
+use XimdexApi\core\Request;
+use XimdexApi\core\Response;
+use Ximdex\Models\FastTraverse;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\NodeTypes\HTMLDocumentNode;
 use Ximdex\NodeTypes\NodeTypeConstants;
-use Ximdex\Runtime\App;
-use Ximdex\Logger;
-use XimdexApi\core\Request;
-use XimdexApi\core\Response;
 
 class XeditAction extends Action
 {
@@ -96,43 +96,96 @@ class XeditAction extends Action
         $name = '';
         $nodes = HTMLDocumentNode::getNodesHTMLDocument($nodeId);
         $metadata = [];
-        if ($nodes) {
-            
+        
+        if ($nodes === false) {
+            $w->setMessage('Document not found')->setStatus(1);
+        } else {
             // Transform data to Xedit editor
-            foreach ($nodes as &$node) {
+            foreach ($nodes as $key => &$node) {
                 if (isset($node['id'])) {
                     $node['editable'] = strcmp($node['type'], HTMLDocumentNode::CONTENT_DOCUMENT) == 0 ? true : false;
                     $name = strcmp($node['type'], HTMLDocumentNode::CONTENT_DOCUMENT) == 0 ? $node['title'] : $name;
                     $node['content'] = static::transformContentToXedit($node['content']);
                     $schemas = $node['schema'];
-                    foreach ($schemas as $key => $value) {
-                        $schemas[$key]['view'] = static::transformContentToXedit($value['view']);
+                    foreach ($schemas as $_key => $value) {
+                        $schemas[$_key]['view'] = static::transformContentToXedit($value['view']);
                     }
                     if (strcmp($node['type'], HTMLDocumentNode::CONTENT_DOCUMENT) == 0) {
-                        $metadata = $node['metadata'];
+                        $metadata = static::getMetadata($nodeId);
                     }
                     $node['schema'] = $schemas;
+                } elseif (strpos($key, 'not_found') === 0) {
+                    $node['content'] = '<div>No encontrado</div>';
                 }
             }
-        }
-        if ($nodes === false) {
-            $w->setMessage('Document not found')->setStatus(1);
-        } else {
-            $action = '_action=/';
+            $action = '_action';
             $response = [
-                'baseUrl' => App::get('UrlHost') . App::get('UrlRoot') . '/api/',
-                'routerMapper' => [
-                    'routes' => [
-                        'treeInfo' => $action . XeditAction::getPath(XeditAction::ROUTE_GET_TREE_INFO) .
-                            "&id=:id&type=:type",
-                        'set' => $action . XeditAction::getPath(XeditAction::ROUTE_SET),
-                        'infonode' => $action . NodeAction::getPath(NodeAction::ROUTE_GET) . "&id=:id",
-                        'resource' => $action . XeditAction::getPath(XeditAction::ROUTE_FILE) . "&id=:id"
+                'name' => $name,
+                'document' => [
+                    'id' => $nodeId,
+                ],
+                'router' => [
+                    'token' => [
+                        'type' => 'url',
+                        'field' => 'token',
+                        'value' => static::getUserToken(),
+                    ],
+                    'baseUrl' => App::get('UrlHost') . App::get('UrlRoot') . '/api',
+                    'attrs' => [
+                        'token' => static::getUserToken(),
+                        'id' => $nodeId,
+                    ],
+                    'endpoints' => [
+                        'documents' => [
+                            'get' => [
+                                'method' => 'get',
+                                'path' => '',
+                                'params' => [
+                                    $action => str_replace('\d+', $nodeId, XeditAction::getPath(XeditAction::ROUTE_GET))
+                                ]
+                            ],
+                            'save' => [
+                                'method' => 'post',
+                                'path' => '',
+                                'params' => [
+                                    $action => XeditAction::getPath(XeditAction::ROUTE_SET),
+                                    'id' => $nodeId
+                                ]
+                            ]
+                        ],
+                        'resources' => [
+                            'tree' => [
+                                'method' => 'get',
+                                'path' => '',
+                                'params' => [
+                                    $action => XeditAction::getPath(XeditAction::ROUTE_GET_TREE_INFO),
+                                    'id' => $nodeId,
+                                    'type' => '{type}',
+                                ]
+                            ],
+                            'get' => [
+                                'method' => 'get',
+                                'path' => '',
+                                'params' => [
+                                    $action => NodeAction::getPath(NodeAction::ROUTE_GET),
+                                    'id' => $nodeId,
+                                    'token' => static::getUserToken()
+                                ]
+                            ],
+                            'image' => [
+                                'method' => 'get',
+                                'path' => '',
+                                'params' => [
+                                    $action => XeditAction::getPath(XeditAction::ROUTE_FILE),
+                                    'id' => $nodeId,
+                                    'token' => static::getUserToken()
+                                ]
+                            ]
+                        ]
                     ]
                 ],
-                'name' => $name,
                 'metas' => $metadata,
-                'nodes' => $nodes
+                'nodes' => $nodes,
             ];
         }
         $w->setResponse($response);
@@ -222,14 +275,14 @@ class XeditAction extends Action
                 $filters = ["include" => ["nt.IdNodeType" => $type]];
             }
             $children = FastTraverse::getChildren($nodeId, ['node' => ['Name', 'idParent'], 'nodeType' =>
-                ['isFolder', 'isVirtualFolder', 'IdNodeType']], null, $filters, ['IsRenderizable' => true,
+                ['isFolder', 'isVirtualFolder', 'IdNodeType', 'icon']], null, $filters, ['IsRenderizable' => true,
                 'IsHidden' => false]);
             $result = static::buildCompleteTree($children, $type);
             $count = count($result) - 1;
-            $tree = [];
+            
             if ($level !== null && $count > $level) {
-                $tree["l{$level}"] = $result["l{$level}"];
-                $result = $tree;
+                $result["l{$level}"]['resources_count'] = count(reset($children));
+                $result = array_intersect_key($result, array_flip(["l{$level}"]));
             }
             $w->setResponse($result);
         } else {
@@ -300,12 +353,25 @@ class XeditAction extends Action
     }
 
     /**
+     * Get metadata from node
+     *
+     * @param int $nodeId
+     * @return array
+     */
+    public static function getMetadata(int $nodeId) : array
+    {
+        $node = new StructuredDocument($nodeId);
+        $metadata = $node->getMetadata();
+        return $metadata;
+    }
+
+    /**
      * Check if the nodes have associated actions
      *
      * @param $nodes
      * @return null
      */
-    protected function checkNodeAction(&$nodes)
+    protected function checkNodeAction(& $nodes)
     {
         //TODO Copiado de la clase Action_browser3 (Sacar en común)
         $db = new \Ximdex\Runtime\Db();
@@ -357,6 +423,9 @@ class XeditAction extends Action
             $node->nodeType->get('IsVirtualFolder'),
             $types
         );
+
+        $sheet['icon'] = $node->nodeType->GetIcon();
+
         if ($sheet) {
             if (!isset($tree["l$level"])) {
                 $tree["l$level"] = [
@@ -364,13 +433,16 @@ class XeditAction extends Action
                     'nodes' => []
                 ];
             }
-            $tree["l$level"]['nodes'][$nodeId] = $sheet;
+            $tree["l{$level}"]['nodes'][$nodeId] = $sheet;
         }
+
         $processedNodes[] = $nodeId;
         $idParent = $node->GetParent();
+        
         if ($level > 0 && $idParent && !in_array((int)$idParent, $processedNodes)) {
             list($tree, $processedNodes) = static::buildBranch($tree, $processedNodes, $idParent, $level - 1, $types);
         }
+
         return [$tree, $processedNodes];
     }
 

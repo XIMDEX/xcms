@@ -346,7 +346,7 @@ class ParsingPathTo
             $docContainer = new XmlContainerNode($id);
             $id = $docContainer->GetChildByLang($language);
             if (!$id) {
-                Logger::warning('Cannot load the document for container: ' . $nodeId . ' and language: ' . $language
+                Logger::info('Cannot load the document for container: ' . $nodeId . ' and language: ' . $language
                     . '. Using default server one instead');
                 
                 // Load the default server language instead

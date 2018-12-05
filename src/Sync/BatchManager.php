@@ -349,7 +349,7 @@ class BatchManager
         $serverFrame = new ServerFrame();
         $servers = [];
         foreach ($docsToPublish as $idNode) {
-            if (!isset($versions[$idNode]) or $versions[$idNode] === null) {
+            if (! isset($versions[$idNode]) or $versions[$idNode] === null) {
                 Logger::error('There is not any version for node: ' . $idNode);
                 continue;
             }

@@ -1,0 +1,2 @@
+ALTER TABLE `Nodes` ADD CONSTRAINT `Nodes_SharedWorkflow` FOREIGN KEY (`SharedWorkflow`) REFERENCES `Nodes`(`IdNode`) 
+    ON DELETE SET NULL ON UPDATE CASCADE;

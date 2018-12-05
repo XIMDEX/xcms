@@ -5,25 +5,23 @@ namespace Ximdex\Models;
 use DateTime;
 use Ximdex\Data\GenericData;
 
-
 class Metadata extends GenericData
 {
-
-    var $_idField = 'IdMetadata';
-    var $_table = 'Metadata';
-    var $_metaData = array(
+    public $_idField = 'IdMetadata';
+    public $_table = 'Metadata';
+    public $_metaData = array(
         'IdMetadata' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
         'name' => array('type' => "varchar(255)", 'not_null' => 'true')
     );
-    var $_uniqueConstraints = array(
+    public $_uniqueConstraints = array(
         'Name' => array('name'),
     );
-    var $_indexes = array('IdMetadata');
-    var $IdMetadata;
-    var $Name = 0;
+    public $_indexes = array('IdMetadata');
+    public $IdMetadata;
+    public $Name = 0;
 
 
-    function getMetadataSectionAndGroupByNodeType(int $idNodeType, int $nodeId = null): array
+    public function getMetadataSectionAndGroupByNodeType(int $idNodeType, int $nodeId = null): array
     {
         $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->Query(sprintf("SELECT MetadataGroup.idMetadataGroup, MetadataGroup.name as groupName,
@@ -32,46 +30,40 @@ class Metadata extends GenericData
               JOIN MetadataGroup ON MetadataSection.idMetadataSection = MetadataGroup.idMetadataSection
               WHERE idNodeType = %s", $idNodeType));
         $returnArray = array();
-
-        while (!$dbObj->EOF) {
+        while (! $dbObj->EOF) {
             $idSection = $dbObj->GetValue('idMetadataSection');
             $group = [
                 'id' => $dbObj->GetValue('idMetadataGroup'),
                 'name' => $dbObj->GetValue('groupName')
-
             ];
-            if (!isset($returnArray[$idSection])) {
+            if (! isset($returnArray[$idSection])) {
                 $returnArray[$idSection] = [
                     'groups' => [],
                     'name' => $dbObj->GetValue('sectionName')
                 ];
             }
-            if (!is_null($nodeId)) {
+            if (! is_null($nodeId)) {
                 $metadata = $this->getMetadataByMetagroupAndNodeId($group['id'], $nodeId);
                 $group['metadata'] = $metadata;
             }
-
             array_push($returnArray[$idSection]['groups'], $group);
-
             $dbObj->Next();
         }
         unset($dbObj);
-
         return $returnArray;
     }
 
 
-    function getMetadataByMetagroupAndNodeId(int $idGroup, int $nodeId): array
+    public function getMetadataByMetagroupAndNodeId(int $idGroup, int $nodeId): array
     {
-
-
         $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->Query(sprintf("SELECT Metadata.name, Metadata.type, RelMetadataGroupMetadata.required,
                         RelMetadataGroupMetadata.idRelMetadataGroupMetadata, value
                         FROM RelMetadataGroupMetadata JOIN 
                         Metadata ON RelMetadataGroupMetadata.idMetadata =
                         Metadata.idMetadata 
-                        LEFT JOIN MetadataValue ON MetadataValue.idRelMetadataGroupMetadata = RelMetadataGroupMetadata                            .idRelMetadataGroupMetadata and MetadataValue.idNode = %s
+                        LEFT JOIN MetadataValue ON MetadataValue.idRelMetadataGroupMetadata = RelMetadataGroupMetadata.idRelMetadataGroupMetadata 
+                        and MetadataValue.idNode = %s
                         WHERE idMetadataGroup = %s", $nodeId, $idGroup));
 
         $returnArray = array();
@@ -92,7 +84,7 @@ class Metadata extends GenericData
         return $returnArray;
     }
 
-    function insertMetadata(int $idGroup, array $metadata): array
+    public function insertMetadata(int $idGroup, array $metadata): array
     {
         $dbObj = new \Ximdex\Runtime\Db();
 
@@ -118,7 +110,7 @@ class Metadata extends GenericData
     }
 
 
-    function deleteMetadataValuesByNodeIdAndGroupId(int $idNode, int $idGroup)
+    public function deleteMetadataValuesByNodeIdAndGroupId(int $idNode, int $idGroup)
     {
         $dbObj = new \Ximdex\Runtime\Db();
 
@@ -134,19 +126,16 @@ class Metadata extends GenericData
         return $valid;
     }
 
-    function addMetadataValuesByNodeId(array $metadataArray, int $idNode)
+    public function addMetadataValuesByNodeId(array $metadataArray, int $idNode)
     {
         $dbObj = new \Ximdex\Runtime\Db();
 
 
         foreach ($metadataArray as $key => $value) {
-
             if (!empty($value)) {
-
                 $query = sprintf("INSERT INTO MetadataValue(idNode,idRelMetadataGroupMetadata, value)
                          VALUES (%s, %s, \"%s\")", $idNode, $key, $value);
                 $dbObj->Execute($query);
-
             }
         }
         if ($dbObj->EOF) {
@@ -172,12 +161,14 @@ class Metadata extends GenericData
         $metadata = [];
 
         $dbObj = new \Ximdex\Runtime\Db();
-        $query = sprintf("SELECT Metadata.name as name, MetadataValue.value as value, Metadata.defaultValue
+        $query = sprintf(
+            "SELECT Metadata.name as name, MetadataValue.value as value, Metadata.defaultValue
                         as defaultValue, Metadata.type as type  FROM RelMetadataGroupMetadata JOIN  Metadata ON 
                         RelMetadataGroupMetadata.idMetadata = Metadata.idMetadata  LEFT JOIN MetadataValue ON 
                         MetadataValue.idRelMetadataGroupMetadata = RelMetadataGroupMetadata.idRelMetadataGroupMetadata 
                         WHERE (RelMetadataGroupMetadata.required = TRUE OR MetadataValue.value <> '') and idNode = %s",
-            $idNode);
+            $idNode
+        );
 
         if (!is_null($idGroup)) {
             $query .= sprintf(' and MetadataGroup.idMetadataGroup = %s ', $idGroup);
@@ -211,6 +202,4 @@ class Metadata extends GenericData
         }
         return $result;
     }
-
-
 }

@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -31,28 +31,28 @@ use Ximdex\Data\GenericData;
 
 class VersionsOrm extends GenericData
 {
-    var $_idField = 'IdVersion';
-    var $_table = 'Versions';
-    var $_metaData = array(
-        'IdVersion' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
-        'IdNode' => array('type' => "int(12)", 'not_null' => 'true'),
-        'Version' => array('type' => "int(12)", 'not_null' => 'true'),
-        'SubVersion' => array('type' => "int(12)", 'not_null' => 'true'),
-        'File' => array('type' => "varchar(255)", 'not_null' => 'true'),
-        'IdUser' => array('type' => "int(12)", 'not_null' => 'false'),
-        'Date' => array('type' => "int(14)", 'not_null' => 'false'),
-        'Comment' => array('type' => "blob", 'not_null' => 'false'),
-        'IdSync' => array('type' => "int(12)", 'not_null' => 'false'),
+    public $_idField = 'IdVersion';
+    public $_table = 'Versions';
+    public $_metaData = array(
+        'IdVersion' => array('type' => 'int(12)', 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
+        'IdNode' => array('type' => 'int(12)', 'not_null' => 'true'),
+        'Version' => array('type' => 'int(12)', 'not_null' => 'true'),
+        'SubVersion' => array('type' => 'int(12)', 'not_null' => 'true'),
+        'File' => array('type' => 'varchar(255)', 'not_null' => 'false'),
+        'IdUser' => array('type' => 'int(12)', 'not_null' => 'false'),
+        'Date' => array('type' => 'int(14)', 'not_null' => 'false'),
+        'Comment' => array('type' => 'text', 'not_null' => 'false'),
+        'IdSync' => array('type' => 'int(12)', 'not_null' => 'false'),
     );
-    var $_uniqueConstraints = array();
-    var $_indexes = array('IdVersion');
-    var $IdVersion;
-    var $IdNode = 0;
-    var $Version = 0;
-    var $SubVersion = 0;
-    var $File;
-    var $IdUser = 0;
-    var $Date = 0;
-    var $Comment;
-    var $IdSync;
+    public $_uniqueConstraints = array();
+    public $_indexes = array('IdVersion');
+    public $IdVersion;
+    public $IdNode;
+    public $Version = 0;
+    public $SubVersion = 0;
+    public $File = null;
+    public $IdUser = null;
+    public $Date = null;
+    public $Comment = null;
+    public $IdSync = null;
 }

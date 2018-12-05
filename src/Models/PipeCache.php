@@ -343,7 +343,8 @@ class PipeCache extends PipeCachesOrm
     }
 
     /**
-     * @see inc/helper/GenericData#delete()
+     * {@inheritDoc}
+     * @see \Ximdex\Data\GenericData::delete()
      */
     public function delete()
     {
