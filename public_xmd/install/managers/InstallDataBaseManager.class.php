@@ -195,7 +195,7 @@ class InstallDataBaseManager extends InstallManager
     public function loadData($host, $port, $user, $pass, $name)
     {
         $sqlFiles = array(self::SCHEMA_SCRIPT_FILE, self::DATA_SCRIPT_FILE);
-        $files = scandir(APP_ROOT_PATH . self::DATA_PATH . self::CHANGES_PATH);
+        $files = scandir(APP_ROOT_PATH . self::DATA_PATH . self::CHANGES_PATH, SCANDIR_SORT_ASCENDING);
         if ($files === false) {
             return false;
         }
@@ -204,13 +204,20 @@ class InstallDataBaseManager extends InstallManager
             if ($info['extension'] != 'sql') {
                 continue;
             }
-            $sqlFiles[] = self::CHANGES_PATH . $file;
+            $sqlFiles[(string) $info['basename']] = self::CHANGES_PATH . $file;
         }
         foreach ($sqlFiles as $sqlFile) {
+            /*
+            if ($sqlFile == 'changes/20181119130300.sql') {
+                exit();
+            }
+            */
             $content = file_get_contents(APP_ROOT_PATH . self::DATA_PATH . $sqlFile);
             if ($content === false) {
                 return false;
-            } try {
+            }
+            try {
+                Logger::info('Executing SQL file: ' . $sqlFile);
                 $statement = $this->dbConnection->prepare($content);
                 $res = $statement->execute();
             } catch (PDOException $e) {

@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -32,37 +32,32 @@ use Ximdex\Runtime\DataFactory;
 use Ximdex\Parsers\ParsingRng;
 use Ximdex\Utils\FsUtils;
 
-
 /**
- * @brief Handles RNG templates.
+ * @brief Handles RNG templates
  */
 class rngvisualtemplatenode extends FileNode
 {
-
-	var $minimalXml = '';
-	var $xpathObj;
-	var $relaxSource;
-	var $elementsForRender;
-	var $renderCount = 0;
+	public $minimalXml = '';
+	public $xpathObj;
+	public $relaxSource;
+	public $elementsForRender;
+	public $renderCount = 0;
 
 	/**
-	 *  Creates the file in data/files directory.
+	 * Creates the file in data/files directory
+	 * 
 	 * @param string name
 	 * @param int parentID
 	 * @param int nodeTypeID
 	 * @param int stateID
 	 * @param string sourcePath
 	 */
-
 	function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $sourcePath = null)
 	{
-		if ($sourcePath)
-		{
+		if ($sourcePath) {
 			$content = FsUtils::file_get_contents($sourcePath);
-		}
-		else
-		{
-			$content = null;
+		} else {
+			$content = '';
 		}
 		$data = new DataFactory($this->parent->get('IdNode'));
 		$this->updatePath();
@@ -70,17 +65,14 @@ class rngvisualtemplatenode extends FileNode
 	}
 
 	/**
-	 *  Gets the minimal content of a document created by a template.
+	 * Gets the minimal content of a document created by a template
+	 * 
 	 * @return string
 	 */
-
 	function buildDefaultContent()
 	{
-
 		$rngParser = new ParsingRng();
 		$content = $rngParser->buildDefaultContent($this->nodeID);
-
 		return $content;
 	}
-
 }
