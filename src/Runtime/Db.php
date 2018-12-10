@@ -114,9 +114,8 @@ class Db
          return true;
      }
 
-    public function Query($sql, $cache = false)
+    public function Query(string $sql, bool $cache = false) : bool
     {
-        unset($cache);
         if (!$this->_getEncodings()) {
             Logger::error($this->desErr);
             return false;
@@ -140,8 +139,7 @@ class Db
                 
                 // Trying the method call again if the reconnection process works right
                 if ($res) {
-                    $res = $this->Query($sql);
-                    return $res;
+                    return $this->Query($sql);
                 }
             }
             $error = $this->error();
@@ -174,10 +172,10 @@ class Db
      * @param $sql
      * @return bool
      */
-    function Execute($sql)
+    function execute(string $sql) : bool
     {
         // Encode to dbConfig value in table config
-        if (!$this->_getEncodings()) {
+        if (! $this->_getEncodings()) {
             Logger::error($this->desErr);
             return false;
         }
@@ -208,8 +206,7 @@ class Db
             
             // Trying the method call again if the reconnection process works right
             if ($res) {
-                $res = $this->Execute($sql);
-                return $res;
+                return $this->execute($sql);
             }
         }
         if ($this->db->errorCode() == \PDO::ERR_NONE) {

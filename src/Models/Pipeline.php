@@ -150,7 +150,7 @@ class Pipeline extends PipelinesOrm
         $pipeTransition->set('Name', sprintf('%s_to_%s',
         App::getValue('DefaultInitialStatus'),
         App::getValue('DefaultFinalStatus')));
-        $pipeTransition->set('Callback', '-');
+        $pipeTransition->set('Callback', null);
         $idPipeTransition = $pipeTransition->add();
         $pipeProcess->set('IdTransitionTo', $idPipeTransition);
         return $pipeProcess->update();

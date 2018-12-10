@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -37,7 +37,7 @@ class NodeDependencies
     var $dbObj;
 
     /**
-     * NodeDependencies constructor.
+     * NodeDependencies constructor
      */
     public function __construct()
     {
@@ -45,24 +45,26 @@ class NodeDependencies
     }
 
     /**
-     * @param $idSource
-     * @param $idTarget
-     * @param $idChannel
+     * @param int $idSource
+     * @param int $idTarget
+     * @param int $idChannel
      * @return bool
      */
-    public function set($idSource, $idTarget, $idChannel)
+    public function set(int $idSource, int $idTarget, int $idChannel = null) : bool
     {
-        //check before if there is already a same dependence
-        $res = $this->dbObj->Query("SELECT * FROM NodeDependencies WHERE IdNode = '$idSource' and IdResource = '$idTarget' and IdChannel = '$idChannel'");
-        if ($res === false)
+        // Check before if there is already a same dependence
+        $res = $this->dbObj->Query('SELECT * FROM NodeDependencies WHERE IdNode = ' . $idSource . ' and IdResource = ' . $idTarget 
+            . ' and IdChannel = ' . $idChannel);
+        if ($res === false) {
             return false;
-        if ($this->dbObj->numRows)
-        {
-            //dependency already exists
+        }
+        if ($this->dbObj->numRows) {
+            
+            // Dependency already exists
             return true;
         }
-        return $this->dbObj->Execute("INSERT INTO NodeDependencies (IdNode, IdResource, IdChannel) VALUES ('$idSource', '$idTarget', " 
-            . (empty($idChannel)? 'null' : "'$idChannel'") . ")");
+        return $this->dbObj->Execute('INSERT INTO NodeDependencies (IdNode, IdResource, IdChannel) VALUES (' . $idSource . ', ' 
+            . $idTarget . ', ' . (empty($idChannel)? 'NULL' : $idChannel) . ')');
     }
 
     /**
@@ -74,7 +76,6 @@ class NodeDependencies
         $this->dbObj->Query("SELECT DISTINCT IdNode FROM NodeDependencies WHERE IdResource = $idTarget");
         $deps = array();
         while (!$this->dbObj->EOF) {
-            
             $deps[] = $this->dbObj->GetValue("IdNode");
             $this->dbObj->Next();
         }

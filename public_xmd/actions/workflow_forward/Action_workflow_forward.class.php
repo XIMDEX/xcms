@@ -144,10 +144,8 @@ class Action_workflow_forward extends ActionAbstract
                         break;
                     }
                 }
-                
-                // If we havent got permission for this workflow, we dont append nothing more
                 if (! $foundRol)
-                    break;
+                    continue;
             }
             
             // If found the current state, we activate the flag

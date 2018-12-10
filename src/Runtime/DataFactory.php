@@ -312,33 +312,19 @@ class DataFactory
         return $content;
     }
 
-    /**
-     * Devuelve el contenido metadata del structure document actual
-     *
-     * @deprecated
-     * @param $version
-     * @param $subversion
-     * @return string
-     */
-    function GetMetadata($version = null, $subversion = null)
+    private function generateCaches(int $idVersion, bool $delete = false) : bool
     {
-        return $this->GetContent($version, $subversion, true);
-    }
-
-    public function _generateCaches(int $idVersion, bool $delete = false)
-    {
-        $res = true;
         $version = new Version($idVersion);
         if (! $version->get('IdVersion')) {
-            return NULL;
+            return false;
         }
         $idNode = $version->get('IdNode');
         $node = new Node($idNode);
         if (! $node->get('IdNode')) {
-            return NULL;
+            return false;
         }
         if (! $node->nodeType->GetIsStructuredDocument()) {
-            return NULL;
+            return true;
         }
 
         // Delete cache if the parameter $delete is true
@@ -346,17 +332,16 @@ class DataFactory
         if ($delete) {
             $pipelineManager->deleteCache($idVersion);
         }
+        $data = [];
+        $data['NODEID'] = $idNode;
+        $data['DISABLE_CACHE'] = App::getValue('DisableCache');
+        $transformer = $node->getProperty('Transformer');
+        $data['TRANSFORMER'] = $transformer[0];
         $channels = $node->GetChannels();
         if ($channels) {
             foreach ($channels as $idChannel) {
                 Logger::info('Generation cache for version ' . $idVersion . ' and the channel ' . $idChannel);
-                $data = array(
-                    'CHANNEL' => $idChannel
-                );
-                $data['NODEID'] = $idNode;
-                $data['DISABLE_CACHE'] = App::getValue('DisableCache');
-                $transformer = $node->getProperty('Transformer');
-                $data['TRANSFORMER'] = $transformer[0];
+                $data['CHANNEL'] = $idChannel;
                 if ($node->GetNodeType() == NodeTypeConstants::XML_DOCUMENT) {
                     $process = 'StrDocToDexT';
                 } elseif ($node->GetNodeType() == NodeTypeConstants::HTML_DOCUMENT) {
@@ -364,10 +349,14 @@ class DataFactory
                 } else {
                     return false;
                 }
-                $res = $pipelineManager->getCacheFromProcess($idVersion, $process, $data);
+                
+                //TODO ajlucena
+                if ($pipelineManager->getCacheFromProcess($idVersion, $process, $data) === false) {
+                    return false;
+                }
             }
         }
-        return $res;
+        return true;
     }
 
     /**
@@ -379,7 +368,7 @@ class DataFactory
      * @param boolean $commitNode
      * @return boolean|NULL|string
      */
-    function SetContent(string $content, int $versionID = null, int $subVersion = null, bool $commitNode = null)
+    public function SetContent(string $content, int $versionID = null, int $subVersion = null, bool $commitNode = null)
     {
         $node = new Node($this->nodeID);
         $isPlainFile = @$node->nodeType->get('IsPlainFile');
@@ -400,7 +389,7 @@ class DataFactory
         // (1) No se pasa version determinada, se incrementa la version con el contenido nuevo
         if (is_null($versionID) && is_null($subVersion)) {
             $idVersion = $this->AddVersion(NULL, NULL, $content, $commitNode);
-            $this->_generateCaches($idVersion);
+            $this->generateCaches($idVersion);
             return $idVersion;
         }
 
@@ -420,7 +409,7 @@ class DataFactory
             if ($result && \Ximdex\Modules\Manager::isEnabled('ximRAM')) {
                 $this->indexNode($idVersion, $commitNode);
             }
-            $this->_generateCaches($idVersion, true);
+            $this->generateCaches($idVersion, true);
             return $result;
         }
         return false;

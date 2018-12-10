@@ -221,10 +221,10 @@ class StructuredDocument extends StructuredDocumentsOrm
             $this->SetError(2);
             return false;
         }
-        $result = $this->set('TargetLink', '');
+        $result = $this->set('TargetLink', null);
         if ($result) {
             $result = $this->update();
-            $this->SetContent($this->GetContent());
+            // $this->SetContent($this->GetContent());
 
             // Elimina la dependencia
             $dependencies = new Dependencies();
@@ -260,14 +260,6 @@ class StructuredDocument extends StructuredDocumentsOrm
      */
     public function getMetadata() : array
     {
-        /*
-        $targetLink = $this->GetSymLink();
-        if ($targetLink) {
-            $target = new StructuredDocument($targetLink);
-            $targetContent = $target->GetMetadata();
-            return $targetContent;
-        }
-        */
         $node = new Node($this->GetId());
         $metadata = (new Metadata)->getMetadataSectionAndGroupByNodeType($node->GetNodeType(), $this->GetId());
         return $metadata;
@@ -323,7 +315,7 @@ class StructuredDocument extends StructuredDocumentsOrm
                 $this->messages->add($data->msgErr, MSG_TYPE_ERROR);
                 return false;
             }
-            if (!$this->messages->count()) {
+            if (! $this->messages->count()) {
                 if (isset($GLOBALS['errorsInXslTransformation']) and $GLOBALS['errorsInXslTransformation']) {
                     $this->messages->add($GLOBALS['errorsInXslTransformation'][0], MSG_TYPE_WARNING);
                     $GLOBALS['errorsInXslTransformation'] = null;
@@ -334,7 +326,7 @@ class StructuredDocument extends StructuredDocumentsOrm
         // Set dependencies
         $dependeciesParser = new ParsingDependencies();
         if ($dependeciesParser->parseAllDependencies($this->get('IdDoc'), $content) === false) {
-            if (!$this->messages->count()) {
+            if ($dependeciesParser->messages) {
                 $this->messages->mergeMessages($dependeciesParser->messages);
             }
         }

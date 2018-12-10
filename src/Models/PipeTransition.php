@@ -92,7 +92,7 @@ class PipeTransition extends PipeTransitionsOrm
 		$pipeTransition->set('Name', sprintf('%s_to_%s', $pipeStatus->get('Name'), $finalStatus->get('Name')));
 		$pipeTransition->set('IdPipeProcess', $this->get('IdPipeProcess'));
 		$pipeTransition->set('Cacheable', 0);
-		$pipeTransition->set('Callback', '-');
+		$pipeTransition->set('Callback', null);
 		$idNewTransition = $pipeTransition->add();
 		if (!($idNewTransition > 0))
 		{   
@@ -101,7 +101,7 @@ class PipeTransition extends PipeTransitionsOrm
 			return NULL;
 		}
 		$this->set('IdStatusTo', $idStatus);
-		$this->set('Callback', '-');
+		$this->set('Callback', null);
 		$this->update();
 		return $idStatus;
 	}

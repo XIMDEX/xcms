@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -31,24 +31,24 @@ use Ximdex\Data\GenericData;
 
 class PipeTransitionsOrm extends GenericData
 {
-    var $_idField = 'id';
-    var $_table = 'PipeTransitions';
-    var $_metaData = array(
+    public $_idField = 'id';
+    public $_table = 'PipeTransitions';
+    public $_metaData = array(
         'id' => array('type' => "int(11)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
         'IdStatusFrom' => array('type' => "int(11)", 'not_null' => 'false'),
         'IdStatusTo' => array('type' => "int(11)", 'not_null' => 'true'),
-        'IdPipeProcess' => array('type' => "int(11)", 'not_null' => 'false'),
+        'IdPipeProcess' => array('type' => "int(11)", 'not_null' => 'true'),
         'Cacheable' => array('type' => "tinyint(1)", 'not_null' => 'true'),
         'Name' => array('type' => "varchar(255)", 'not_null' => 'true'),
-        'Callback' => array('type' => "varchar(255)", 'not_null' => 'true')
+        'Callback' => array('type' => "varchar(255)", 'not_null' => 'false')
     );
-    var $_uniqueConstraints = array();
-    var $_indexes = array('id');
-    var $id;
-    var $IdStatusFrom;
-    var $IdStatusTo;
-    var $IdPipeProcess;
-    var $Cacheable;
-    var $Name;
-    var $Callback;
+    public $_uniqueConstraints = array();
+    public $_indexes = array('id');
+    public $id;
+    public $IdStatusFrom = null;
+    public $IdStatusTo;
+    public $IdPipeProcess = null;
+    public $Cacheable;
+    public $Name;
+    public $Callback = null;
 }

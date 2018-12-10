@@ -310,9 +310,9 @@ class ParsingDependencies
     private static function buildDependenciesWithAssetsAndLinks($node, $content, $idVersion)
     {
         $dotDots = $pathTos = array();
-        $idNode = $node->get("IdNode");
+        $idNode = $node->get('IdNode');
         $idServer = $node->getServer();
-        $strDoc = new StructuredDocument($node->get("IdNode"));
+        $strDoc = new StructuredDocument($idNode);
         $channels = $strDoc->GetChannels();
         $transformer = $node->getProperty('Transformer');
         $assets = self::getAssets($content, $node->nodeType->get('Name'));

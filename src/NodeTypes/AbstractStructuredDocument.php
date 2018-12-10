@@ -453,6 +453,7 @@ abstract class AbstractStructuredDocument extends FileNode
     }
 
     /**
+     * @deprecated
      * @return array
      */
     function GetAllGenerations()
@@ -646,6 +647,7 @@ abstract class AbstractStructuredDocument extends FileNode
     }
 
     /**
+     * @deprecated
      * @param $channel
      * @return null|string
      */

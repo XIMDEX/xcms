@@ -247,7 +247,7 @@ class ServerFrame extends ServerFramesOrm
         $nodeFrameId = $this->get('IdNodeFrame');
         $server = $this->get('IdServer');
         $channelFrame = new ChannelFrame($channelFrameId);
-        if (!$channelFrame->get('IdChannelFrame')) {
+        if (! $channelFrame->get('IdChannelFrame')) {
             Logger::warning('Unable to load the channel frame with ID: ' . $channelFrameId . '. Using the frame field instead');
             if ($this->get('IdSync')) {
                 $channelId = $this->get('ChannelId');
@@ -267,7 +267,7 @@ class ServerFrame extends ServerFramesOrm
         $nodeFrame = new NodeFrame($nodeFrameId);
         $idVersion = $nodeFrame->get('VersionId');
         $idNode = $nodeFrame->get('NodeId');
-        if (! ($idNode > 0)) {
+        if (! $idNode) {
             Logger::error("Unexisting node for serverframe $frameID");
             return false;
         }
@@ -278,11 +278,11 @@ class ServerFrame extends ServerFramesOrm
         $data = [];
         $data['CHANNEL'] = $channelId;
         $data['SERVER'] = $server;
-        if (!$cache) {
+        if (! $cache) {
             $data['DISABLE_CACHE'] = true;
         }
         else {
-            $data['DISABLE_CACHE'] = App::getValue("DisableCache");
+            $data['DISABLE_CACHE'] = App::getValue('DisableCache');
         }
         $transformer = $node->getProperty('Transformer');
         $data['TRANSFORMER'] = $transformer[0];

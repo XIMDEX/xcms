@@ -142,7 +142,7 @@ class GenericData
                 $this->_logQuery($query);
             }
             $dbObj->Query($query, $this->_cache);
-            if (!$dbObj->EOF) {
+            if (! $dbObj->EOF) {
                 reset($this->_metaData);
                 foreach (array_keys($this->_metaData) as $key) {
                     if (array_key_exists($key, $dbObj->row)) {

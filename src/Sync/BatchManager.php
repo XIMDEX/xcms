@@ -176,11 +176,14 @@ class BatchManager
         $noCache = [];
         foreach ($docsChunked as $chunk) {
             Logger::info(sprintf('[Generator %s]: Creating bach %s / %s', $idNode, $iCount, $iTotal));
+            //TODO ajlucena
+            /*
             foreach ($chunk as $id) {
                 if ($force[$id]) {
                     $noCache[$id] = true;
                 }
             }
+            */
             $partialDocs = $this->buildBatchs($idNode, $up, $chunk, $docsToUpVersion, $docsToPublishVersion, $docsToPublishSubVersion
                 , $idServer, $physicalServers, DEFAULT_BATCH_PRIORITY, $down, $iCount, $iTotal, $idPortalFrame, $idPortalFrameDown, $userId
                 , $noCache);
@@ -454,27 +457,7 @@ class BatchManager
                         
                         // Creating nodeFrame first time
                         if (! $nodeFrameId) {
-                            /*
-                            $nodeFrames = $nf->find('IdNodeFrame', 'NodeId = %s AND VersionId = %s', array($idNode, $idVersion), MONO);
-                            if (empty($nodeFrames))
-                            */
-                            {
-                                $nodeFrameId = $nf->create($idNode, $nodeName, $idVersion, $up, $idPortalFrame, $down);
-                            }
-                            /*
-                            else
-                            {
-                                $nodeFrameId = $nodeFrames[0];
-                                $nfr = new NodeFrame($nodeFrameId);
-                                $nfr->set('IsProcessUp', 0);
-                                $nfr->set('IsProcessDown', 0);
-                                $nfr->set('Active', 0);
-                                $nfr->set('TimeUp', $up);
-                                $nfr->set('TimeDown', $down);
-                                $nfr->set('IdPortalFrame', $idPortalFrame);
-                                $nfr->update();
-                            }
-                            */
+                            $nodeFrameId = $nf->create($idNode, $nodeName, $idVersion, $up, $idPortalFrame, $down);
                             if (is_null($nodeFrameId)) {
                                 $node->unBlock();
                                 Logger::warning(sprintf('A NodeFrame could not be obtained for node %s', $idNode));

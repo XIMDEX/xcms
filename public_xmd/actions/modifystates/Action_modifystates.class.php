@@ -169,7 +169,7 @@ class Action_modifystates extends ActionAbstract
                 $pipeTransition->set('Name', sprintf('%s_to_%s', $all_status[$i - 1]["name"], $all_status[$i]["name"]));
                 $pipeTransition->set('IdPipeProcess', $pipeProcess->id);
                 $pipeTransition->set('Cacheable', 0);
-                $pipeTransition->set('Callback', '-');
+                $pipeTransition->set('Callback', null);
                 $idNewTransition = $pipeTransition->add();
                 if ($idNewTransition < 0) {
                     $this->sendJSON(array("result" => "fail",

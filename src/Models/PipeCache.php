@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -45,13 +45,13 @@ define('TMP_FOLDER', App::getValue('TempRoot') . '/');
  */
 class PipeCache extends PipeCachesOrm
 {
-    private $_args = NULL;
-    private $_transition = NULL;
+    private $_args = null;
+    private $_transition = null;
 
     /**
      * @param $id
      */
-    public function __construct($id = NULL)
+    public function __construct($id = null)
     {
         parent::__construct($id);
         if ($this->get('id') > 0) {
@@ -66,13 +66,13 @@ class PipeCache extends PipeCachesOrm
      * @param number $depth
      * @return boolean|string|NULL
      */
-    function load($idVersion, $idTransition, $args = NULL, $depth = 0)
+    public function load(int $idVersion, int $idTransition, array $args = null, int $depth = 0)
     {
         // Search in cache what we have
         Logger::debug("PipeCache: Searching for cache resources for version: $idVersion  and transition: $idTransition");
         if (! isset($args['DISABLE_CACHE']) || ! $args['DISABLE_CACHE']) {
             $this->_args = $args;
-            $results = $this->_getCache($idVersion, $idTransition);
+            $results = $this->getCache($idVersion, $idTransition);
             if ($results) {
                 Logger::debug('PipeCache: Previous cache resource has been found');
                 $idCache = $this->_checkPropertyValues($idTransition, $results);
@@ -146,7 +146,7 @@ class PipeCache extends PipeCachesOrm
         return $res;
     }
 
-    private function _getCache($idVersion, $idTransition, $allCaches = false)
+    private function getCache($idVersion, $idTransition, $allCaches = false)
     {
         if ($allCaches) {
             Logger::debug('PipeCache: Loading all caches for version: ' . $idVersion . ' and transition: ' . $idTransition);
@@ -231,7 +231,7 @@ class PipeCache extends PipeCachesOrm
                 return $idCache;
             }
         }
-        return NULL;
+        return null;
     }
 
     private function _searchKeyInArgs($key, $args)
@@ -243,7 +243,7 @@ class PipeCache extends PipeCachesOrm
                 }
             }
         }
-        return NULL;
+        return null;
     }
 
     private function _getPointer()
@@ -272,7 +272,7 @@ class PipeCache extends PipeCachesOrm
             Logger::fatal('PipeCache: Error storing cache, could not estimate the transition to which to associate the cache: ' . $idTransition);
             return false;
         }
-        $caches = $this->_getCache($idVersion, $idTransition, true);
+        $caches = $this->getCache($idVersion, $idTransition, true);
         $cacheFile = '';
         if (! empty($caches)) {
             if (count($caches) > 1) {

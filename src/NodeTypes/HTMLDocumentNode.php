@@ -204,7 +204,7 @@ class HTMLDocumentNode extends AbstractStructuredDocument
         if ($mode === null) {
             $mode = HTMLDocumentNode::MODE_STATIC;
         }
-        if ($docId == null || !in_array($mode, [
+        if ($docId == null || ! in_array($mode, [
                 static::MODE_DYNAMIC,
                 static::MODE_INCLUDE,
                 static::MODE_STATIC,
@@ -222,7 +222,7 @@ class HTMLDocumentNode extends AbstractStructuredDocument
                 $js = isset($node['css']) ? array_merge($js, $node['js']) : $js;
                 if (isset($node['type']) && $node['type'] == static::CONTENT_DOCUMENT) {
                     $render .= static::START_XIMDEX_BODY_CONTENT;
-                    $render .= !is_null($content) ? $content : $node['content'];
+                    $render .= ! is_null($content) ? $content : $node['content'];
                     $render .= static::END_XIMDEX_BODY_CONTENT;
                 } elseif (strcmp($mode, static::MODE_DYNAMIC) == 0) {
                     if (isset($node['id']) and $node['id']) {
@@ -244,7 +244,7 @@ class HTMLDocumentNode extends AbstractStructuredDocument
                 $js = isset($node['css']) ? array_merge($js, $node['js']) : $js;
                 if (isset($node['type']) and $node['type'] == static::CONTENT_DOCUMENT) {
                     $body .= static::START_XIMDEX_BODY_CONTENT;
-                    $body .= !is_null($content) ? $content : $node['content'];
+                    $body .= ! is_null($content) ? $content : $node['content'];
                     $body .= static::END_XIMDEX_BODY_CONTENT;
                     $name = $node['title'];
                 } else {
@@ -256,7 +256,7 @@ class HTMLDocumentNode extends AbstractStructuredDocument
             $render = $body;
 
             // TODO
-            $pos = strpos($name, "_");
+            $pos = strpos($name, '_');
             if ($pos !== 0) {
                 $info = static::getInfo($docId);
                 $render = static::createBasicHTMLTemplate($info, $body, $css, $js);
@@ -268,7 +268,7 @@ class HTMLDocumentNode extends AbstractStructuredDocument
                 $js = isset($node['css']) ? array_merge($js, $node['js']) : $js;
                 if (isset($node['type']) && $node['type'] == static::CONTENT_DOCUMENT) {
                     $body .= static::START_XIMDEX_BODY_CONTENT;
-                    $body .= !is_null($content) ? $content : $node['content'];
+                    $body .= ! is_null($content) ? $content : $node['content'];
                     $body .= static::END_XIMDEX_BODY_CONTENT;
                     $name = $node['title'];
 
@@ -277,7 +277,7 @@ class HTMLDocumentNode extends AbstractStructuredDocument
                 }
             }
             $render = $body;
-            $pos = strpos($name, "_");
+            $pos = strpos($name, '_');
             if ($pos !== 0) {
                 $tags = implode(",", array_map(function ($tag) {
                     return $tag['Name'];
@@ -343,18 +343,15 @@ class HTMLDocumentNode extends AbstractStructuredDocument
         $schema = null;
         $comp = $doc->getComponent($compName);
         if ($comp && $comp->GetContent()) {
-
             $jsonComp = json_decode($comp->GetContent(), true);
             $schema = array_merge($jsonComp['schema'], $data);
             $schema['name'] = $compName;
             $view = $doc->getView($jsonComp['schema']['view']);
-
             if ($view && $view->GetContent()) {
                 $schema['view'] = $view->GetContent();
             } else {
                 $schema['view'] = '';
             }
-
             $extraData['css'] = isset($jsonComp['css']) ? array_merge($extraData['css'], $jsonComp['css']) : $extraData['css'];
             $extraData['js'] = isset($jsonComp['js']) ? array_merge($extraData['js'], $jsonComp['js']) : $extraData['js'];
         }
