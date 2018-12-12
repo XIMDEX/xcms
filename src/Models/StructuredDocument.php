@@ -224,7 +224,6 @@ class StructuredDocument extends StructuredDocumentsOrm
         $result = $this->set('TargetLink', null);
         if ($result) {
             $result = $this->update();
-            // $this->SetContent($this->GetContent());
 
             // Elimina la dependencia
             $dependencies = new Dependencies();
@@ -265,6 +264,23 @@ class StructuredDocument extends StructuredDocumentsOrm
         return $metadata;
     }
 
+    public function setMetadata(array $metadata) : array
+    {
+        $result = [];
+        $metadataClass = new Metadata();
+
+        foreach ($metadata as $group => $meta) {
+            $metadataClass->deleteMetadataValuesByNodeIdAndGroupId($this->GetId(), $group);
+            $val = $metadataClass->addMetadataValuesByNodeId($meta, $this->GetId());
+
+            if ($val) {
+                $result[$group] = $meta;
+            }
+        }
+
+        return $result;
+    }
+
     public function UpdateLinkParseLink($sourceLang, $linkID)
     {
         $pos = strpos($linkID, ",");
@@ -297,11 +313,15 @@ class StructuredDocument extends StructuredDocumentsOrm
         $this->SetUpdateDate();
         $data = new DataFactory($this->get('IdDoc'));
         $node = new Node($this->get('IdDoc'));
-        if ($commitNode == false) {
+        $version = $subversion = null;
+        if (! $commitNode) {
             $info = $node->GetLastVersion();
-            $res = $data->SetContent($content, $info['Version'], $info['SubVersion'], $commitNode, $metadata);
-        } else {
-            $res = $data->SetContent($content, null, null, $commitNode, $metadata);
+            $version = $info['Version'];
+            $subversion = $info['SubVersion'];
+        }
+        $res = $data->SetContent($content, $version, $subversion, $commitNode);
+        if ($res && is_array($metadata) && count($metadata) > 0) {
+            $result = $this->setMetadata($metadata);
         }
 
         // The document will be validate against the associated RNG schema with XML documents

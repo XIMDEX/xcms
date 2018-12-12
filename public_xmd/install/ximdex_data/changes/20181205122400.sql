@@ -27,9 +27,9 @@ ALTER TABLE `PipeTransitions` ADD UNIQUE(`Name`);
 ALTER TABLE `PipeTransitions` CHANGE `Callback` `Callback` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;
 UPDATE `PipeTransitions` SET Callback = NULL WHERE Callback = '-';
 ALTER TABLE `PipeTransitions` CHANGE `IdPipeProcess` `IdPipeProcess` INT(11) UNSIGNED NOT NULL;
+ALTER TABLE `PipeTransitions` CHANGE `Cacheable` `Cacheable` TINYINT(1) NOT NULL DEFAULT '0';
 
 ALTER TABLE `PipeCaches` ENGINE = InnoDB;
-ALTER TABLE `PipeCaches` ADD UNIQUE(`File`);
 ALTER TABLE `PipeCaches` CHANGE `id` `id` INT(12) UNSIGNED NOT NULL AUTO_INCREMENT, CHANGE `IdVersion` `IdVersion` INT(12) UNSIGNED NOT NULL;
 ALTER TABLE `PipeCaches` ADD CONSTRAINT `PipeCaches_Versions` FOREIGN KEY (`IdVersion`) REFERENCES `Versions`(`IdVersion`) 
     ON DELETE RESTRICT ON UPDATE RESTRICT;
@@ -73,3 +73,11 @@ ALTER TABLE `PipeProperties` CHANGE `id` `id` INT(11) UNSIGNED NOT NULL AUTO_INC
 ALTER TABLE `PipeProperties` ENGINE = InnoDB;
 ALTER TABLE `PipeProperties` ADD CONSTRAINT `PipeProperties_PipeTransitions` FOREIGN KEY (`IdPipeTransition`) REFERENCES `PipeTransitions`(`id`) 
     ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+INSERT INTO `PipeProcess` (`id`, `IdTransitionFrom`, `IdTransitionTo`, `IdPipeline`, `Name`) VALUES ('8', '10', '6', '5', 'HTMLToSolar');
+INSERT INTO `PipeTransitions` (`id`, `IdStatusFrom`, `IdStatusTo`, `IdPipeProcess`, `Cacheable`, `Name`, `Callback`) 
+    VALUES ('12', NULL, '3', '8', '1', 'PrepareSolar', NULL);
+UPDATE `PipeProcess` SET `IdTransitionTo` = '12' WHERE `PipeProcess`.`id` = 8;
+INSERT INTO `PipeProcess` (`id`, `IdTransitionFrom`, `IdTransitionTo`, `IdPipeline`, `Name`) VALUES (9, 12, 11, 5, 'SolarToPublished');
+INSERT INTO `PipeTransitions` (`id`, `IdStatusFrom`, `IdStatusTo`, `IdPipeProcess`, `Cacheable`, `Name`, `Callback`) 
+    VALUES ('13', '3', '6', '9', '0', 'PublishSolar', 'FilterMacros');

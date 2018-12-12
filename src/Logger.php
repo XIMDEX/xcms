@@ -58,7 +58,7 @@ Class Logger
     public static function get()
     {
         $loggerInstance = self::$active;
-        if (!isset(self::$instances[$loggerInstance]) || !self::$instances[$loggerInstance] instanceof self) {
+        if (! isset(self::$instances[$loggerInstance]) || !self::$instances[$loggerInstance] instanceof self) {
             throw new Exception('Logger need to be initilized');
         }
         return self::$instances[$loggerInstance];
@@ -71,7 +71,7 @@ Class Logger
      */
     public static function setActiveLog(string $loggerInstance = 'default')
     {
-        if (!isset(self::$instances[$loggerInstance])) {
+        if (! isset(self::$instances[$loggerInstance])) {
             throw new Exception('Logger Instance not found');
         }
         self::$active = $loggerInstance;

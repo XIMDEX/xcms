@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -34,33 +34,30 @@ use Ximdex\Runtime\App;
 define('CALLBACK_FOLDER', XIMDEX_ROOT_PATH . '/src/Nodeviews/');
 
 /**
- *
  * @brief Describes a Transition in the pipeline
  *
  * Describes a transition in the pipeline, a pipeline is formed by one or more Processes,
  * each process contains one or more transitions, and one transition contains exactly two
  * status, so this class describes the transition between two status and the transformation
  * who is called in the process
- *
  */
 class PipeTransition extends PipeTransitionsOrm
 {
 	/**
 	 * @var \Ximdex\Pipeline\Iterators\IteratorPipeProperties|null
      */
-	var $properties = NULL;
+	public $properties = null;
 
 	/**
 	 * Constructor
 	 * @param $id
 	 *
 	 */
-	public function __construct($id = NULL)
+	public function __construct(int $id = null)
 	{
 		parent::__construct($id);
 		$id = $this->get('id');
-		if (!($id > 0))
-		{
+		if (! $id) {
 			return;
 		}
 		$this->properties = new \Ximdex\Pipeline\Iterators\IteratorPipeProperties('IdPipeTransition = %s', array($id));
@@ -68,19 +65,18 @@ class PipeTransition extends PipeTransitionsOrm
 
 	/**
 	 * Add a status to this transition, primaly used for workflow pipelines
-	 *
-	 * @param $name
-	 * @param $description
-	 * @return integer
+	 * 
+	 * @param string $name
+	 * @param string $description
+	 * @return NULL|bool|string
 	 */
-	public function addStatus($name, $description)
+	public function addStatus(string $name, string $description = null)
 	{
 		$pipeStatus = new PipeStatus();
 		$pipeStatus->set('Name', $name);
 		$pipeStatus->set('Description', $description);
 		$idStatus = $pipeStatus->add();
-		if (!($idStatus > 0))
-		{    
+		if (! $idStatus) {
 			$this->messages->add(_('Ha ocurrido un error insertando el estado, consulte con su administrador'), MSG_TYPE_ERROR);
 			$this->messages->mergeMessages($this->messages);
 			return NULL;
@@ -94,8 +90,7 @@ class PipeTransition extends PipeTransitionsOrm
 		$pipeTransition->set('Cacheable', 0);
 		$pipeTransition->set('Callback', null);
 		$idNewTransition = $pipeTransition->add();
-		if (!($idNewTransition > 0))
-		{   
+		if (! $idNewTransition) {
 			$this->messages->add(_('No se ha podido generar la nueva transición'), MSG_TYPE_ERROR);
 			$this->messages->mergeMessages($pipeTransition->messages);
 			return NULL;
@@ -108,7 +103,8 @@ class PipeTransition extends PipeTransitionsOrm
 
 	/**
 	 * Return the previous transition in the pipeline
-	 * @return integer
+	 * 
+	 * @return int|NULL|bool
 	 */
 	public function getPreviousTransition()
 	{
@@ -118,13 +114,11 @@ class PipeTransition extends PipeTransitionsOrm
 		$resultsCount = count($result);
 		
 		// Si son muchas error (No previsto, creo que ni siquiera lo soporta el modelo)
-		if ($resultsCount > 1)
-		{   
+		if ($resultsCount > 1) {
 			Logger::fatal('No se ha podido determinar la transicion anterior a una dada');
 			return false;
 		}
-		if ($resultsCount == 1)
-		{    
+		if ($resultsCount == 1) {
 			return $result[0];
 		}
 		
@@ -132,15 +126,13 @@ class PipeTransition extends PipeTransitionsOrm
 		$id = $this->get('IdPipeProcess');
 		$process = new PipeProcess($id);
 		$idProcess = $process->getPreviousProcess();
-		if (!$idProcess > 0)
-		{    
-			return NULL;
+		if (! $idProcess) {
+			return null;
 		}
 		$process = new PipeProcess($idProcess);
 		$transition = $process->transitions->last();
-		if (is_null($transition))
-		{    
-			return NULL;
+		if (is_null($transition)) {
+			return null;
 		}
 		return $transition->get('id');
 	}
@@ -148,12 +140,12 @@ class PipeTransition extends PipeTransitionsOrm
 	/**
 	 * Transform the given content with the transition asociated callback
 	 * 
-	 * @param $idVersion
-	 * @param $content
-	 * @param $args
-	 * @return mixed
+	 * @param int $idVersion
+	 * @param string $content
+	 * @param array $args
+	 * @return mixed|bool
 	 */
-	public function generate($idVersion, $content, $args)
+	public function generate(int $idVersion, string $content, array $args)
 	{
 	    Logger::info('Transforming ' . $content . ' with the version ' . $idVersion);
 		$file = $this->callback($idVersion, $content, $args, 'transform');
@@ -163,26 +155,26 @@ class PipeTransition extends PipeTransitionsOrm
 	/**
 	 * Reverse a transformation
 	 * 
-	 * @param $idVersion
-	 * @param $content
-	 * @param $args
-	 * @return mixed
+	 * @param int $idVersion
+	 * @param string $content
+	 * @param array $args
+	 * @return mixed|bool
 	 */
-	public function reverse($idVersion, $content, $args)
+	public function reverse(int $idVersion, string $content, array $args)
 	{
 		return $this->callback($idVersion, $content, $args, 'reverse');
 	}
 
 	/**
 	 * Method who contains the generate and reverse implementations, should be private
-	 *
-	 * @param $idVersion
-	 * @param $pointer
-	 * @param $args
-	 * @param $function
-	 * @return mixed
+	 * 
+	 * @param int $idVersion
+	 * @param string $pointer
+	 * @param array $args
+	 * @param string $function
+	 * @return bool|string
 	 */
-	private function callback($idVersion, $pointer, $args, $function)
+	private function callback(int $idVersion, string $pointer, array $args, string $function)
 	{
 		$factory = new \Ximdex\Utils\Factory(CALLBACK_FOLDER, 'View');
 		$callback = $this->get('Callback');
@@ -190,9 +182,8 @@ class PipeTransition extends PipeTransitionsOrm
 		$object = $factory->instantiate($callback, null, 'Ximdex\Nodeviews');
 		$timer = new \Ximdex\Utils\Timer();
 		$timer->start();
-		if (method_exists($object, $function))
-		{
-		    $msg = "TRANSITION START: Calling method: $function to process version: $idVersion";
+		if (method_exists($object, $function)) {
+		    $msg = 'TRANSITION START: Calling method: ' . $function . ' to process version: ' . $idVersion;
 		    if (isset($args['NODENAME'])) {
 		        $msg .= ' of document: ' . $args['NODENAME'];
 		    }
@@ -201,34 +192,25 @@ class PipeTransition extends PipeTransitionsOrm
 			if (strpos($pointer, App::getValue('TempRoot')) and file_exists($pointer)) {
 			    @unlink($pointer);
 			}
-			if ($transformedPointer === false or $transformedPointer === null)
-			{
+			if ($transformedPointer === false or $transformedPointer === null) {
 			    $timer->stop();
 			    return false;
 			}
-		}
-		else
-		{
+		} else {
 			$idTransition = $this->get('id');
-			Logger::error("Method $function not found when calling to the view: IdVersion $idVersion, Transition $idTransition");
+			Logger::error('Method $function not found when calling to the view (IdVersion: ' . $idVersion . ', Transition: ' . $idTransition . ')');
 			$transformedPointer = $pointer;
 		}
 		$timer->stop();
-		Logger::info("PIPETRANSITION: View_$callback time: " . $timer->display());
-		if ((isset($args['DISABLE_CACHE']) && $args['DISABLE_CACHE']) or !$this->Cacheable)
-		{
-			Logger::info("DISABLE_CACHE active or NON_CACHEABLE transition. The cache won't be stored");
-		}
-		else
-		{
+		Logger::info('PIPETRANSITION: View_' . $callback . ' time: ' . $timer->display());
+		if ((isset($args['DISABLE_CACHE']) && $args['DISABLE_CACHE']) or ! $this->Cacheable) {
+			Logger::info('DISABLE_CACHE active or NON_CACHEABLE transition. The cache won\'t be stored');
+		} else {
  			$cache = new PipeCache();
-			if (!$cache->store($idVersion, $this->get('id'), $transformedPointer, $args))
-			{
+			if (! $cache->store($idVersion, $this->get('id'), $transformedPointer, $args)) {
 				Logger::error('Could not store the cache for transition with version ' . $idVersion);
 				return false;
-			}
-			else
-			{
+			} else {
 			    Logger::info('Cache was generated/reversed successfusly for version: ' . $idVersion);
 			}
 		}
@@ -248,12 +230,9 @@ class PipeTransition extends PipeTransitionsOrm
 		if (isset($args['NODENAME'])) {
 		    $msg .= ' and name: ' . $args['NODENAME'];
 		}
-		if ($transformedPointer)
-		{
+		if ($transformedPointer) {
 		    Logger::info('TRANSITION END: Pipeline Transition has been successfusly processed' . $msg);
-		}
-		else
-		{
+		} else {
 		    Logger::error('TRANSITION END: Pipeline Transition has not been processed' . $msg);
 		}
 		return $transformedPointer;

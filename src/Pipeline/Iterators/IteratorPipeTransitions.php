@@ -74,7 +74,7 @@ class IteratorPipeTransitions extends Iterator
 				$this->_objects[$key] = $element;
 				$this->_objects[$this->key() -1] = $tmp;
 				
-				// End elemetns swaping
+				// End elements swaping
 				$this->reset();
 				return true;
 			}

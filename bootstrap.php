@@ -29,15 +29,15 @@ use Ximdex\Logger;
 use Ximdex\Runtime\App;
 
 // For legacy compatibility
-if (!defined('XIMDEX_ROOT_PATH')) {
+if (! defined('XIMDEX_ROOT_PATH')) {
     define('XIMDEX_ROOT_PATH', __DIR__);
 } else {
     return false; //only once this file
 }
-if (!defined('APP_ROOT_PATH')) {
+if (! defined('APP_ROOT_PATH')) {
     define('APP_ROOT_PATH', XIMDEX_ROOT_PATH.'/public_xmd');
 }
-if (!defined('XIMDEX_VENDORS')) {
+if (! defined('XIMDEX_VENDORS')) {
     define('XIMDEX_VENDORS', '/vendors');
 }
 
@@ -45,13 +45,13 @@ if (!defined('XIMDEX_VENDORS')) {
  * XIMDEX_DIRECT is true when bootstrap is called directly
  * XIMDEX_DIRECT is false when bootstrap is called from other php
  */
-if (!defined('XIMDEX_DIRECT')) {   
+if (! defined('XIMDEX_DIRECT')) {   
     $included_files = get_included_files();
     define('XIMDEX_DIRECT', !isset($included_files[1]));
 }
 
 // Checking cli mode
-if (!defined('CLI_MODE')) {
+if (! defined('CLI_MODE')) {
     global $argv, $argc;
     if('cli' != php_sapi_name() || empty($argv) || 0 == $argc) {
         $cli_mode = false;
@@ -112,7 +112,7 @@ date_default_timezone_set(App::getValue('timezone', 'Europe/Madrid'));
 
 // Set DB Connection
 $dbConfig = App::getValue('db');
-if (!empty($dbConfig)) {
+if (! empty($dbConfig)) {
 	try {
     	$dbConn = new \PDO("{$dbConfig['type']}:host={$dbConfig['host']};port={$dbConfig['port']};dbname={$dbConfig['db']};charset=utf8",
         		$dbConfig['user'], $dbConfig['password']);
@@ -138,28 +138,28 @@ if (!empty($dbConfig)) {
 
 // special objects (pseudo-DI)
 class_alias('Ximdex\Utils\Messages', 'Messages');
-App::setValue( 'class::definition::DB', '/inc/db/DB.class.php' );
+App::setValue('class::definition::DB', '/inc/db/DB.class.php');
 
 // Extensions setup
-include_once( XIMDEX_ROOT_PATH . '/conf/extensions.conf.php');
+include_once XIMDEX_ROOT_PATH . '/conf/extensions.conf.php';
 $mManager = new Ximdex\Modules\Manager;
 
 /**
  * Execute function init for each enabled module
  */
-foreach(Ximdex\Modules\Manager::getEnabledModules() as $module) {
+foreach (Ximdex\Modules\Manager::getEnabledModules() as $module) {
     $name = $module["name"];
     $moduleInstance = $mManager->instanceModule($name);
-    if( method_exists( $moduleInstance, 'init' ) ){
+    if (method_exists($moduleInstance, 'init')) {
         $moduleInstance->init();
     }
 }
 
 // FROM MVC
-if (!defined('RENDERER_ROOT_PATH')) {
+if (! defined('RENDERER_ROOT_PATH')) {
     define('RENDERER_ROOT_PATH', XIMDEX_ROOT_PATH . '/inc/mvc/renderers');
 }
-if (!defined('SMARTY_TMP_PATH')) {
+if (! defined('SMARTY_TMP_PATH')) {
     define('SMARTY_TMP_PATH', XIMDEX_ROOT_PATH . App::getValue('TempRoot'));
 }
 if (XIMDEX_DIRECT && CLI_MODE && isset($argv[1])) {

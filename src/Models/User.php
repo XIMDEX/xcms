@@ -28,14 +28,15 @@
 namespace Ximdex\Models;
 
 use Ximdex\Logger;
-use Ximdex\Models\ORM\UsersOrm;
 use Ximdex\Runtime\App;
+use XimdexApi\core\Token;
 use Ximdex\Runtime\Session;
-use Ximdex\Models\ORM\ContextsOrm;
-use Ximdex\Models\ORM\RelRolesActionsOrm;
-use Ximdex\Models\ORM\RelUsersGroupsOrm;
 use Ximdex\Runtime\Constants;
 use Ximdex\Workflow\WorkFlow;
+use Ximdex\Models\ORM\UsersOrm;
+use Ximdex\Models\ORM\ContextsOrm;
+use Ximdex\Models\ORM\RelUsersGroupsOrm;
+use Ximdex\Models\ORM\RelRolesActionsOrm;
 
 class User extends UsersOrm
 {
@@ -641,10 +642,10 @@ class User extends UsersOrm
     /**
      * Check if the user can run the action for a node
      * 
+     * @since Ximdex 3.6
      * @param int $idNode
      * @param int $idAction
      * @return boolean True if the action is allowed. Otherwise false.
-     * @since Ximdex 3.6
      */
     public function isAllowedAction($idNode, $idAction)
     {
@@ -662,7 +663,7 @@ class User extends UsersOrm
      * @param $password
      * @return boolean
      */
-    function login($name, $password)
+    public function login($name, $password)
     {
         $this->setByLogin($name);
         if ($this->checkPassword($password)) {
@@ -700,7 +701,7 @@ class User extends UsersOrm
         return false;
     }
 
-    function logout()
+    public function logout()
     {
         Session::destroy();
     }
@@ -954,5 +955,25 @@ class User extends UsersOrm
             }
         }
         return true;
+    }
+
+    /**
+     * Find user by given token
+     *
+     * @param string $token
+     * @return User
+     */
+    public static function getByToken(string $token) : User
+    {
+        $dbObj = new \Ximdex\Runtime\Db();
+        $data = Token::decryptToken($token)['user'];
+        $sql = "SELECT IdNode FROM Nodes WHERE Nodes.IdNodeType = 5009 AND Nodes.Name = '{$data}'";
+        $dbObj->Query($sql);
+
+        if ($dbObj->getDesErr()) {
+            throw new \Exception($dbObj->getDesErr());
+        }
+
+        return new static($dbObj->getValue('IdNode'));
     }
 }

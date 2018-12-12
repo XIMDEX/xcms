@@ -29,6 +29,7 @@ namespace Ximdex\Models;
 
 use Ximdex\Logger;
 use Ximdex\Models\ORM\ServerFramesOrm;
+use Ximdex\NodeTypes\HTMLDocumentNode;
 use Ximdex\NodeTypes\NodeTypeConstants;
 use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
@@ -290,7 +291,12 @@ class ServerFrame extends ServerFramesOrm
         $pipeMng = new PipelineManager();
         if (! is_null($channelId) && $node->nodeType->GetIsStructuredDocument()) {
             if ($node->GetNodeType() == NodeTypeConstants::HTML_DOCUMENT) {
-                $process = 'HTMLToPublished';
+                $channel = new Channel($channelId);
+                if ($channel->getRenderType() == HTMLDocumentNode::MODE_INDEX) {
+                    $process = 'SolarToPublished';
+                } else {
+                    $process = 'HTMLToPublished';
+                }
             } else {
                 $process = 'StrDocFromDexTToFinal';
             }

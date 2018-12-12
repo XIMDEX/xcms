@@ -176,7 +176,6 @@ class BatchManager
         $noCache = [];
         foreach ($docsChunked as $chunk) {
             Logger::info(sprintf('[Generator %s]: Creating bach %s / %s', $idNode, $iCount, $iTotal));
-            //TODO ajlucena
             /*
             foreach ($chunk as $id) {
                 if ($force[$id]) {

@@ -49,7 +49,7 @@ define('DETAIL_LEVEL_LOW', 0);
 define('DETAIL_LEVEL_MEDIUM', 1);
 define('DETAIL_LEVEL_HIGH', 2);
 
-if (!defined('COUNT')) {
+if (! defined('COUNT')) {
     define('COUNT', 0);
     define('NO_COUNT', 1);
     define('NO_COUNT_NO_RETURN', 2);
@@ -144,7 +144,7 @@ class Node extends NodesOrm
                 $nodeTypeClass = $this->nodeType->get('Class');
                 $nodeTypeModule = $this->nodeType->get('Module');
                 $this->class = \Ximdex\NodeTypes\Factory::getNodeTypeByName($nodeTypeClass, $this, $nodeTypeModule);
-                if (!$fullLoad) {
+                if (! $fullLoad) {
                     return;
                 }
             }
@@ -200,7 +200,7 @@ class Node extends NodesOrm
     function GetPublishedNodeName($channel = null)
     {
         $this->ClearError();
-        if (!($this->get('IdNode') > 0)) {
+        if (! $this->get('IdNode')) {
             $this->SetError(1);
             return NULL;
         }
@@ -245,7 +245,7 @@ class Node extends NodesOrm
      */
     function SetNodeType($nodeTypeID)
     {
-        if (!($this->get('IdNode') > 0)) {
+        if (! $this->get('IdNode')) {
             $this->SetError(2);
             return false;
         }
@@ -274,7 +274,7 @@ class Node extends NodesOrm
      */
     function SetDescription($description)
     {
-        if (!($this->get('IdNode') > 0)) {
+        if (! $this->get('IdNode')) {
             $this->SetError(2);
             return false;
         }
@@ -423,13 +423,13 @@ class Node extends NodesOrm
         $this->ClearError();
         if ($this->get('IdNode') > 0) {
             $children = $this->GetChildByName($this->get('Name'));
-            if (!empty($children)) {
+            if (! empty($children)) {
                 $this->SetError(8);
                 return false;
             }
             $this->set('IdParent', $parentID);
             $result = $this->update();
-            if (!$result) {
+            if (! $result) {
                 $this->messages->add(_('Node could not be moved'), MSG_TYPE_ERROR);
             }
             $this->msgErr = _('Node could not be moved');
@@ -447,14 +447,14 @@ class Node extends NodesOrm
      */
     function GetChildren($idtype = null, $order = null)
     {
-        if (!$this->get('IdNode')) {
+        if (! $this->get('IdNode')) {
             return array();
         }
         $where = 'IdParent = %s';
         $params = array(
             $this->get('IdNode')
         );
-        if (!empty($idtype)) {
+        if (! empty($idtype)) {
             $where .= ' AND IdNodeType = %s';
             $params[] = $idtype;
         }
@@ -462,7 +462,7 @@ class Node extends NodesOrm
             'ASC',
             'DESC'
         );
-        if (!empty($order) && is_array($order) && isset($order['FIELD'])) {
+        if (! empty($order) && is_array($order) && isset($order['FIELD'])) {
             $where .= sprintf(" ORDER BY %s %s", $order['FIELD'], isset($order['DIR']) 
                 && in_array($order['DIR'], $validDirs) ? $order['DIR'] : '');
         }
@@ -490,14 +490,14 @@ class Node extends NodesOrm
             if ($idtype) {
                 $sql .= " AND IdNodeType = $idtype";
             }
-            if (!empty($order) && is_array($order) && isset($order['FIELD'])) {
+            if (! empty($order) && is_array($order) && isset($order['FIELD'])) {
                 $sql .= sprintf(" ORDER BY %s %s", $order['FIELD'], isset($order['DIR']) 
                     && in_array($order['DIR'], $validDirs) ? $order['DIR'] : '');
             }
             $dbObj = new \Ximdex\Runtime\Db();
             $dbObj->Query($sql);
             $i = 0;
-            while (!$dbObj->EOF) {
+            while (! $dbObj->EOF) {
                 $childrenList[$i]['id'] = $dbObj->GetValue('IdNode');
                 $childrenList[$i]['name'] = $dbObj->GetValue('name');
                 $childrenList[$i]['system'] = $dbObj->GetValue('System');
@@ -3626,7 +3626,7 @@ class Node extends NodesOrm
                         $errors = str_replace("\n", "\n<br />\n", $errors);
                     }
                 }
-                if (!isset($errors)) {
+                if (! isset($errors)) {
                     $errors = 'The preview cannot be processed due to an unknown error';
                 }
                 $this->messages->add($errors, MSG_TYPE_WARNING);
@@ -3694,7 +3694,7 @@ class Node extends NodesOrm
     public function hasLangPath()
     {
         $structuredDocument = new StructuredDocument($this->GetID());
-        if (!$structuredDocument->get('IdLanguage')) {
+        if (! $structuredDocument->get('IdLanguage')) {
             $error = 'Language has not been specified for document: ' . $this->GetNodeName();
             $this->messages->add($error, MSG_TYPE_ERROR);
             Logger::error($error);

@@ -8,17 +8,13 @@ class Response
      * @var \Ximdex\Behaviours\AssociativeArray
      */
     private $_headers;
-    /**
-     * @var
-     */
     private $_content;
 
     /**
-     * Response constructor.
+     * Response constructor
      */
     function __construct()
     {
-
         $this->_headers = new \Ximdex\Behaviours\AssociativeArray();
         ob_start();
         foreach ($_SERVER as $key => $value) {
@@ -30,21 +26,14 @@ class Response
         }
     }
 
-    /**
-     * @param $key
-     * @param $value
-     */
     public function set($key, $value)
     {
         $this->_headers->set($key, $value);
     }
 
-    /**
-     *
-     */
     public function sendHeaders()
     {
-        echo ob_get_clean(); // asegura que no ha habido escritura antes de enviar las cabeceras
+        echo trim(ob_get_clean()); // asegura que no ha habido escritura antes de enviar las cabeceras
         $keys = $this->_headers->getKeys();
         foreach ($keys as $key) {
             $values = $this->get($key);
@@ -58,10 +47,6 @@ class Response
         }
     }
 
-    /**
-     * @param $key
-     * @return mixed
-     */
     public function get($key)
     {
         return $this->_headers->get($key);
@@ -70,16 +55,11 @@ class Response
     public function sendStatus($string, $replace, $status)
     {
         echo ob_get_clean(); // asegura que no ha habido escritura antes de enviar las cabeceras
-
         if (is_numeric($status)) {
             header($string, $replace, $status);
-//			die();
         }
     }
 
-    /**
-     * @return mixed
-     */
     public function getContent()
     {
         return $this->_content;
@@ -94,16 +74,13 @@ class Response
     }
 
     /**
-     * <p>Sends the header with the specified status code</p>
-     * @staticvar string $status_codes Keeps the status codes
-     */
-    /**
+     * Sends the header with the specified status code
+     * 
      * @param $statusCode
      */
     public function header_status($statusCode)
     {
         static $status_codes = null;
-
         if ($status_codes === null) {
             $status_codes = array(
                 100 => 'Continue',
@@ -158,11 +135,9 @@ class Response
                 510 => 'Not Extended'
             );
         }
-
         if ($status_codes[$statusCode] !== null) {
             $status_string = $statusCode . ' ' . $status_codes[$statusCode];
             header($_SERVER['SERVER_PROTOCOL'] . ' ' . $status_string, true, $statusCode);
         }
     }
-
 }

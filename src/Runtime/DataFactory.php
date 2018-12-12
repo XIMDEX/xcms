@@ -31,10 +31,12 @@ use Ximdex\Models\Node;
 use Ximdex\Models\PipeCache;
 use Ximdex\Models\User;
 use Ximdex\Models\Version;
+use Ximdex\Models\Channel;
 use Ximdex\Utils\FsUtils;
 use Ximdex\Utils\PipelineManager;
 use Ximdex\Sync\SynchroFacade;
 use Ximdex\Logger;
+use Ximdex\NodeTypes\HTMLDocumentNode;
 use Ximdex\NodeTypes\NodeTypeConstants;
 
 /**
@@ -64,6 +66,7 @@ use Ximdex\NodeTypes\NodeTypeConstants;
  * unicamente guardara la primera subversion, y las N ultimas, donde N viene
  * definido por este parametro.
  */
+
 class DataFactory
 {
     /**
@@ -191,7 +194,7 @@ class DataFactory
     }
 
     /**
-     * Devuelve la ultima SubVersion del la version dada
+     * Devuelve la ultima SubVersion de la version dada
      * 
      * @param int $version
      * @return boolean|NULL|int
@@ -214,12 +217,6 @@ class DataFactory
         return $result[0];
     }
 
-    /**
-     * 
-     * @param int $version
-     * @param int $subversion
-     * @return boolean|NULL|int
-     */
     public function getVersionId(int $version, int $subversion)
     {
         if (! $this->nodeID) {
@@ -241,7 +238,7 @@ class DataFactory
     /**
      * Devuelve si ya hay almacenada alguna version del nodo que hay en el objeto
      *
-     * @return boolean|NULL|int
+     * @return bool|NULL|int
      */
     function HasPreviousVersions()
     {
@@ -345,12 +342,15 @@ class DataFactory
                 if ($node->GetNodeType() == NodeTypeConstants::XML_DOCUMENT) {
                     $process = 'StrDocToDexT';
                 } elseif ($node->GetNodeType() == NodeTypeConstants::HTML_DOCUMENT) {
-                    $process = 'HTMLToPrepared';
+                    $channel = new Channel($idChannel);
+                    if ($channel->getRenderType() == HTMLDocumentNode::MODE_INDEX) {
+                        $process = 'HTMLToSolar';
+                    } else {
+                        $process = 'HTMLToPrepared';
+                    }
                 } else {
                     return false;
                 }
-                
-                //TODO ajlucena
                 if ($pipelineManager->getCacheFromProcess($idVersion, $process, $data) === false) {
                     return false;
                 }

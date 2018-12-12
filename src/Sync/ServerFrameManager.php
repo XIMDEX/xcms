@@ -320,19 +320,6 @@ class ServerFrameManager
                         if (!$this->processTaskForServerFrame($task['id'])) {
                             continue;
                         }
-                        /*
-                        // Update related batch
-                        if ($task['up']) {
-                            $idBatch = $task['up'];
-                        } elseif ($task['down']) {
-                            $idBatch = $task['down'];
-                        }
-                        if (isset($idBatch)) {
-                            $batchManager->setBatchsActiveOrEnded(null, $activeAndEnabledServers, false, $idBatch);
-                        } else {
-                            Logger::error('Server frame ' . $task['id'] . ' without batch associated');
-                        }
-                        */
                     }
                     $timer->stop();
                     Logger::debug('Set task for pumping ended; time: ' . $timer->display() . ' milliseconds');

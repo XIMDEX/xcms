@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -29,11 +29,8 @@ use Ximdex\Models\User;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\App;
 
-
-
 class Action_logout extends ActionAbstract
 {
-
     function index()
     {
         $userID = (int)\Ximdex\Runtime\Session::get('userID');
@@ -44,5 +41,4 @@ class Action_logout extends ActionAbstract
         header(sprintf("Location: %s/", App::getValue('UrlRoot')));
         die();
     }
-
 }

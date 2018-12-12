@@ -122,6 +122,10 @@ class PipelineManager
             Logger::fatal("[PipelineManager:getCacheFromProcess] The loaded process doesn't have any transition: " . $processName);
         }
         $lastTransition = $process->transitions->last();
+        if (! $lastTransition) {
+            Logger::error('Cannot load the last transition for process: ' . $processName);
+            return false;
+        }
         $idLastTransition = $lastTransition->get('id');
         return $this->getCacheFromTransition($idVersion, $idLastTransition, $args);
     }

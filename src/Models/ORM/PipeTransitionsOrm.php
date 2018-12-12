@@ -48,7 +48,7 @@ class PipeTransitionsOrm extends GenericData
     public $IdStatusFrom = null;
     public $IdStatusTo;
     public $IdPipeProcess = null;
-    public $Cacheable;
+    public $Cacheable = 0;
     public $Name;
     public $Callback = null;
 }

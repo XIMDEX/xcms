@@ -30,6 +30,7 @@ namespace XimdexApi\actions;
 use Ximdex\Logger;
 use Ximdex\Models\Node;
 use Ximdex\Runtime\App;
+use Ximdex\Models\Metadata;
 use XimdexApi\core\Request;
 use XimdexApi\core\Response;
 use Ximdex\Models\FastTraverse;
@@ -201,14 +202,8 @@ class XeditAction extends Action
         $data = json_decode(file_get_contents('php://input'), true);
         if (isset($data['nodes'])) {
             $metadata = null;
-            if (isset($data['metas'])) {
-                $metadata = [];
-                foreach ($data['metas'] as $meta) {
-                    if (isset($meta['value']) && isset($meta['name'])) {
-                        $metadata[$meta['name']] = static::transformContentToXimdex($meta['value']);
-                    }
-                }
-                $metadata = json_encode($metadata, JSON_PRETTY_PRINT);
+            if (isset($data['metadata'])) {
+                $metadata = $data['metadata'];
             }
             $nodes = $data['nodes'];
             foreach ($nodes as $nodeId => $value) {
@@ -361,10 +356,29 @@ class XeditAction extends Action
     public static function getMetadata(int $nodeId) : array
     {
         $node = new StructuredDocument($nodeId);
-        $metadata = $node->getMetadata();
+        $metadata = static::prepareMetadata($node->getMetadata());
         return $metadata;
     }
 
+    private static function prepareMetadata(array $metadata) : array
+    {
+        foreach ($metadata as $key => $meta) {
+            if (key_exists('groups', $meta) || key_exists('metadata', $meta)) {
+                $_key = (array_key_exists('groups', $meta)) ? 'groups' : 'metadata';
+                $metadata[$key][$_key] = static::prepareMetadata($meta['groups'] ?? $meta['metadata'] ?? []);
+                continue;
+            }
+            if (!$meta['value']) {
+                continue;
+            }
+            if (in_array($meta['type'], Metadata::META_FILES)) {
+                $value = trim(static::transformContentToXedit("src=\"{$meta['value']}\""));
+                $metadata[$key]['value'] = str_replace('"', '', preg_replace('/((xe_link|src)=)/m', '', $value));
+            }
+        }
+        return $metadata;
+    }
+    
     /**
      * Check if the nodes have associated actions
      *
@@ -384,7 +398,6 @@ class XeditAction extends Action
                 $db->query($_sql);
                 $total = $db->getValue('total');
                 $node['hasActions'] = $total;
-                // $db = new \Ximdex\Runtime\Db();
                 $sql2 = sprintf($sql2, $nodeid);
                 $db->query($sql2);
                 $total = $db->getValue('total');
@@ -448,7 +461,7 @@ class XeditAction extends Action
 
     private static function createSheet($name, $idNodeType, $isFolder, $isVirtualFolder, $types)
     {
-        if (in_array($idNodeType, array_values($types)) || $isFolder || $isVirtualFolder) {
+        if (! $types || in_array($idNodeType, array_values($types)) || $isFolder || $isVirtualFolder) {
             $ele = ($isFolder || $isVirtualFolder) &&
             !in_array($idNodeType, [NodeTypeConstants::XML_CONTAINER, NodeTypeConstants::HTML_CONTAINER])
                 ? 'folder' : 'item';

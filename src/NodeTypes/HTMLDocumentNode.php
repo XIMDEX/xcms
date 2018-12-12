@@ -28,13 +28,13 @@
 namespace Ximdex\NodeTypes;
 
 use Ximdex\Logger;
-use Ximdex\Models\Language;
-use Ximdex\Models\RelSemanticTagsNodes;
-use Ximdex\Models\StructuredDocument;
-use Ximdex\Models\Section;
-use Ximdex\Utils\SimpleXMLExtended;
 use Ximdex\Runtime\App;
+use Ximdex\Models\Section;
+use Ximdex\Models\Language;
 use Ximdex\Models\SectionType;
+use Ximdex\Utils\SimpleXMLExtended;
+use Ximdex\Models\StructuredDocument;
+use Ximdex\Models\RelSemanticTagsNodes;
 
 class HTMLDocumentNode extends AbstractStructuredDocument
 {
@@ -154,6 +154,7 @@ class HTMLDocumentNode extends AbstractStructuredDocument
         $extraData['js'] = isset($layout['js']) ? $layout['js'] : [];
         $schemas = [];
         $content = '';
+        $metadata = [];
 
         // First get all main schemas
         foreach ($sections as $section => $data) {
@@ -164,7 +165,9 @@ class HTMLDocumentNode extends AbstractStructuredDocument
                 $content .= '<div></div>';
             }
         }
-        $metadata = $doc->GetMetadata();
+        if ($isCurrentNode) {
+            $metadata = $doc->GetMetadata();
+        }
 
         // Last get dependent schemas
         foreach ($schemas as $section => $data) {
@@ -236,7 +239,7 @@ class HTMLDocumentNode extends AbstractStructuredDocument
                 $info = static::getInfo($docId);
                 $render = static::createDynamic($info, $render, $css, $js);
             }
-        } else if (strcmp($mode, static::MODE_INCLUDE) == 0) {
+        } elseif (strcmp($mode, static::MODE_INCLUDE) == 0) {
             $body = '';
             $name = '';
             foreach ($docHTML as $node) {
@@ -283,8 +286,9 @@ class HTMLDocumentNode extends AbstractStructuredDocument
                     return $tag['Name'];
                 }, static::getTags($docId)));
                 $info = static::getInfo($docId);
-                if (!empty($tags))
+                if (!empty($tags)) {
                     $info['metadata']['keywords'] = $tags;
+                }
                 $render = static::createBasicHTMLTemplate($info, $body, $css, $js);
             }
         }
@@ -383,17 +387,17 @@ class HTMLDocumentNode extends AbstractStructuredDocument
         $html .= '<meta name="generator" content = "Ximdex CMS, Semantic Headless CMS and DMS, http://www.ximdex.com" >' . PHP_EOL;
         $html .= '<meta name="owner" content = "' . App::getValue("VersionName") . '" >' . PHP_EOL;
         if (isset($info['metadata'])) {
-			foreach ($info['metadata'] as $meta => $value) {
-            	if (empty($value)) {
-                	continue;
-	            }
-    	        if ($meta == 'title') {
-        	        $html .= "<title>{$value}</title>" . PHP_EOL;
-            	} else {
-                	$html .= "<meta name=\"$meta\" content=\"$value\" >" . PHP_EOL;
-	            }
-    	    }
-		}
+            foreach ($info['metadata'] as $meta => $value) {
+                if (empty($value)) {
+                    continue;
+                }
+                if ($meta == 'title') {
+                    $html .= "<title>{$value}</title>" . PHP_EOL;
+                } else {
+                    $html .= "<meta name=\"$meta\" content=\"$value\" >" . PHP_EOL;
+                }
+            }
+        }
         $html .= $header;
         $html .= '</head>' . PHP_EOL;
         $html .= '<body>' . PHP_EOL;
@@ -461,11 +465,11 @@ class HTMLDocumentNode extends AbstractStructuredDocument
         $xml->addChild('state', "publish");
         $content_payload = $xml->addChild('content-payload');
         $content_payload->addChild('language', $info['language']);
-        $content_payload->addChild('image', !empty($info['metadata']['image']) ?
-        	$info['metadata']['image'] : '');
-    	$content_payload->addChild('author', !empty($info['metadata']['author']) ?
+        $content_payload->addChild('image', ! empty($info['metadata']['image']) ?
+            $info['metadata']['image'] : '');
+        $content_payload->addChild('author', ! empty($info['metadata']['author']) ?
             $info['metadata']['author'] : 'No author');
-        $content_payload->addChild('date', !empty($info['metadata']['date']) ?
+        $content_payload->addChild('date', ! empty($info['metadata']['date']) ?
             date('Y-m-d H:i:s', strtotime($info['metadata']['date'])) : date('Y-m-d H:i:s'));
         $content_payload->addChild('type', $sectionType->get('sectionType'));
         return $xml->asXML();
@@ -484,16 +488,28 @@ class HTMLDocumentNode extends AbstractStructuredDocument
         $lang = new Language($sd->GetLanguage());
         $info['language'] = $lang->GetIsoName();
         $info['type'] = $sd->GetDocumentType();
-        $metadata = $sd->GetMetadata();
-        $info['metadata']['language'] = $info['language'];
-        
-        // TODO Get dynamically
-        $info['metadata']['date'] = $metadata['Fecha'] ?? '';
-        $info['metadata']['title'] = !empty($metadata['Título']) ? $metadata['Título'] : static::getCleanName($sd->GetName());
-        $info['metadata']['author'] = $metadata['Autor'] ?? '';
-		$info['metadata']['image'] = (isset($metadata['Imagen']) && $metadata['Imagen']) ? '@@@RMximdex.pathto(' 
-		    . $metadata['Imagen'] . ')@@@' : '#';
+        $info['metadata'] = static::prepareMetadata($sd->GetMetadata());
         return $info;
+    }
+
+    private static function prepareMetadata(array $metadata)
+    {
+        $result = [];
+
+        foreach ($metadata as $meta) {
+            if (key_exists('groups', $meta) || key_exists('metadata', $meta)) {
+                $result = array_merge($result, static::prepareMetadata($meta['groups'] ?? $meta['metadata'] ?? []));
+                continue;
+            }
+
+            if (!$meta['value']) {
+                continue;
+            }
+
+            $result[$meta['name']] = $meta['value'];
+        }
+
+        return $result;
     }
 
     private static function getCleanName($nodeName)

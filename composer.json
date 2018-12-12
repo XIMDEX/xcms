@@ -22,7 +22,7 @@
         "kevinlebrun/colors.php": "1.*",
         "ximdex/plata": "1.*",
         "guzzlehttp/guzzle": ">=4.1.4 <7.0",
-        "ximdex/xedit": "1.0"
+        "ximdex/xedit": "dev-feature_metadata"
     },
     "require-dev": {
         "mockery/mockery": "0.9.*",

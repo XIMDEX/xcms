@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -47,7 +47,6 @@ class Factory
     
     /**
      * Return an instance of $type Class or null if:
-     *
      *  - the file is not found
      *  - the file don't contains the class $type
      *
@@ -59,12 +58,12 @@ class Factory
     {
         $classname = ltrim($this->_root_name,'\\');
         $namespace = trim($namespace,'\\');
-        if (!is_null($type)) {
+        if (! is_null($type)) {
             $classname .= $type;
         }
         $class =  '\\'. $classname;
-        if (!empty($namespace)) {
-            $nsClass =  '\\'.$namespace  .$class;
+        if (! empty($namespace)) {
+            $nsClass =  '\\'.$namespace  . $class;
             if (class_exists($nsClass)) {
                 return new $nsClass($args) ;
             }
@@ -77,23 +76,23 @@ class Factory
             } else if (file_exists($class_path) && is_readable($class_path)) {
                 require_once($class_path);
             } else {
-                $this->_setError("Factory::instantiate(): Unable to read $class_path ");
-                Logger::error("Factory::instantiate(): Unable to read $class_path ");
-                return NULL;
+                $this->_setError("Factory::instantiate(): Unable to read {$class_path}");
+                Logger::error("Factory::instantiate(): Unable to read {$class_path}");
+                return null;
             }
         }
-        if (!class_exists($class)) {
-            $this->_setError("Factory::instantiate(): '$class' class not found in file $class_path");
-            return NULL;
+        if (! class_exists($class)) {
+            $this->_setError("Factory::instantiate(): '{$class}' class not found in file {$class_path}");
+            return null;
         }
         if (is_null($args)) {
             $obj = new $class();
         } else {
             $obj = new $class($args);
         }
-        if (!is_object($obj)) {
-            Logger::fatal("Could'nt instanciate the class $class");
-            return null ;
+        if (! is_object($obj)) {
+            Logger::fatal("Could'nt instanciate the class {$class}");
+            return null;
         }
         return $obj;
     }

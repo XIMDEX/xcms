@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,47 +25,35 @@
  * @version $Revision$
  */
 
-
-//
-
 namespace Ximdex\MVC;
 
 use Ximdex\Logger;
 
-
 /**
- *
  * @brief Factory class to instantiate Actions
  *
  * Factory class to instantiate Actions, compose a path using the request info
  * and uses the Factory class to do the dirty job
- *
  */
 class ActionFactory
 {
-
-
     /**
      * @param $request
+     * 
      * @return mixed|null
      */
     public static function getAction($request)
     {
-
-
         $actionRootName = "Action_";
 
         // Cogemos los datos de la accion
         $actionPath = $request->getParam("action_path");
         $action = $request->getParam("action");
         $module = $request->getParam("module");
-
         $absolut_actionPath = XIMDEX_ROOT_PATH . $actionPath;
-
-        if (!file_exists($absolut_actionPath)) {
+        if (! file_exists($absolut_actionPath)) {
             $actionController = NULL;
         } else {
-
             if (empty($module)) {
                 $actionPath = XIMDEX_ROOT_PATH .
                     DIRECTORY_SEPARATOR .trim($actionPath, '/').
@@ -79,11 +68,9 @@ class ActionFactory
                     DIRECTORY_SEPARATOR,
                     $action);
             }
-
             $factory = new \Ximdex\Utils\Factory($actionPath, $actionRootName);
             $actionController = $factory->instantiate($action);
         }
-
         return $actionController;
     }
 
@@ -106,11 +93,11 @@ class ActionFactory
         $action = $request->getParam("action");
         $actionPath = $this->request->getParam("action_path") . $action;
         $actionClass = "/Action_" . $action . ".class.php";
-        //Sino es el composer visualizamos los logs para que no se nos llenen
-        if ($action != "composer")
+        
+        // Si no es el composer, visualizamos los logs para que no se nos llenen
+        if ($action != "composer") {
             Logger::debug("MVC::ActionFactory Executing class Action: $actionClass | path Action: $actionPath | Method Action: " . $request->getParam("method"));
-
+        }
         return array($actionPath, $actionClass);
     }
-
 }

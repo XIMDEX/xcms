@@ -71,8 +71,7 @@ class PipeProcess extends PipeProcessOrm
     public function __construct($id = NULL)
     {
         parent::__construct($id);
-        if ($this->get('id') > 0) {
-            
+        if ($this->get('id')) {          
             $this->transitions = new \Ximdex\Pipeline\Iterators\IteratorPipeTransitions('IdPipeProcess = %s', array($id));
         }
     }

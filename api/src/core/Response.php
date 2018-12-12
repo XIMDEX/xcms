@@ -71,6 +71,7 @@ class Response
 
     /**
      * Sends reponse and exists
+	 *
      * @param array $headers
      * @return string
      */
