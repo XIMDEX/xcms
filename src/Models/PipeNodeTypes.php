@@ -30,6 +30,7 @@ namespace Ximdex\Models;
 use Ximdex\Models\ORM\PipeNodeTypesOrm;
 
 /**
+ * @deprecated
  * @brief Describes the relation between pipelines and nodetypes
  *
  * Describes the relation between pipelines and nodetypes, actually is not being used

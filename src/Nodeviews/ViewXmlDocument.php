@@ -27,33 +27,17 @@
 
 namespace Ximdex\Nodeviews;
 
-use Ximdex\Logger;
 use Ximdex\Models\Node;
 use Ximdex\NodeTypes\NodeTypeConstants;
 
-class ViewXmlDocument extends AbstractView implements IView
+class ViewXmlDocument extends AbstractView
 {
-    /**
-     * @param int $idVersion
-     * @param string $pointer
-     * @param mixed $args
-     * @return string
-     */
-    public function transform($idVersion = NULL, $pointer = NULL, $args = NULL)
+    public function transform(int $idVersion = null, string $pointer = null, array $args = null)
     {
-        if (!isset($args['NODEID']) || empty($args['NODEID'])) {
-            Logger::error('Argument nodeId not found in ViewXmlDocument');
-            return false;
-        }
-        $idNode = $args['NODEID'];
+        parent::transform($idVersion, $pointer, $args);
         $content = $this->retrieveContent($pointer);
-        $node = new Node($idNode);
-        if (!($node->get('IdNode') > 0)) {
-        	Logger::error("The node that is trying to destroy does not exist: $idNode");
-            return false;
-        }
-        $name = $node->get('Name');
-        $nodeType = $node->getNodeType();
+        $name = $this->node->get('Name');
+        $nodeType = $this->node->getNodeType();
         if ($nodeType != NodeTypeConstants::XML_DOCUMENT && $name != 'docxap.xsl') {
             return false;
         }
@@ -61,7 +45,7 @@ class ViewXmlDocument extends AbstractView implements IView
             
             // Si $content == null se insertan las etiquetas docxap, en caso contrario se eliminan
             if (is_null($content)) {
-                $content = $this->addDocxap($node);
+                $content = $this->addDocxap($this->node);
             } else {
                 $content = $this->delDocxap($content);
             }
@@ -69,7 +53,7 @@ class ViewXmlDocument extends AbstractView implements IView
             
             // Si $content == null se insertan las css, en caso contrario se eliminan
             if (is_null($content)) {
-                $content = $this->insertStylesheet($node);
+                $content = $this->insertStylesheet($this->node);
             } else {
                 $content = $this->removeStylesheet($content);
             }
@@ -77,7 +61,7 @@ class ViewXmlDocument extends AbstractView implements IView
         return $this->storeTmpContent($content);
     }
 
-    private function addDocxap($node)
+    private function addDocxap(Node $node)
     {
         $content = $node->class->getRenderizedContent();
         $xslPath = $this->getXslPath($node);
@@ -89,7 +73,7 @@ class ViewXmlDocument extends AbstractView implements IView
         return $content;
     }
 
-    private function delDocxap($content)
+    private function delDocxap(string $content)
     {
         $doc = new \DOMDocument();
         $doc->formatOutput = true;
@@ -112,12 +96,11 @@ class ViewXmlDocument extends AbstractView implements IView
         return $xmlContent;
     }
 
-    private function getXslPath($node)
+    private function getXslPath(Node $node)
     {
         $docxap = null;
         $xslPath = null;
         while (null !== ($idparent = $node->getParent()) && $docxap === null) {
-            unset($node);
             $node = new Node($idparent);
             $xslFolder = $node->GetChildByName('templates');
             if ($xslFolder !== false) {
@@ -135,7 +118,7 @@ class ViewXmlDocument extends AbstractView implements IView
         return $xslPath;
     }
 
-    private function insertStylesheet($node)
+    private function insertStylesheet(Node $node)
     {
         $css = $this->getStylesheets($node);
         $css = "<style id=\"docxap_stylesheet\" type=\"text/css\">\n" . $css . "\n</style>\n</head>\n";
@@ -144,26 +127,25 @@ class ViewXmlDocument extends AbstractView implements IView
         return $content;
     }
 
-    private function removeStylesheet($content)
+    private function removeStylesheet(string $content)
     {
         $regexp = '#(<style id="docxap_stylesheet"(?:.*)</style>)#is';
         $content = preg_replace($regexp, '', $content);
         return $content;
     }
 
-    private function getStylesheets($node)
+    private function getStylesheets(Node $node)
     {
         $last = null;
         $content = '';
         while (null !== ($idsection = $node->getSection())) {
             if ($idsection != $last) {
                 $last = $idsection;
-                unset($node);
                 $node = new Node($idsection);
                 $cssFolder = $node->GetChildByName('css');
                 if ($cssFolder !== false) {
                     $cssFolder = new Node($cssFolder);
-                    $cssList = $cssFolder->GetChildren(\Ximdex\NodeTypes\NodeTypeConstants::CSS_FILE);
+                    $cssList = $cssFolder->GetChildren(NodeTypeConstants::CSS_FILE);
                     foreach ($cssList as $css) {
                         $css = new Node($css);
                         $content .= $css->getContent() . "\n";
@@ -173,7 +155,6 @@ class ViewXmlDocument extends AbstractView implements IView
                 }
             }
             $idparent = $node->getParent();
-            unset($node);
             $node = new Node($idparent);
         }
         return $content;

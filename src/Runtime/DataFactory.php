@@ -344,7 +344,7 @@ class DataFactory
                 } elseif ($node->GetNodeType() == NodeTypeConstants::HTML_DOCUMENT) {
                     $channel = new Channel($idChannel);
                     if ($channel->getRenderType() == HTMLDocumentNode::MODE_INDEX) {
-                        $process = 'HTMLToSolar';
+                        $process = 'HTMLToXIF';
                     } else {
                         $process = 'HTMLToPrepared';
                     }

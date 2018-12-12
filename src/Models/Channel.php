@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -49,16 +49,6 @@ class Channel extends ChannelsOrm
     const RENDER_TYPES = [self::RENDERTYPE_STATIC => 'Static', self::RENDERTYPE_INCLUDE => 'Include', self::RENDERTYPE_DYNAMIC => 'Dynamic'
         , self::RENDERTYPE_INDEX => 'Ximdex Index Format'];
     const JSON_CHANNEL = 10010;
-
-    /**
-     * Channel constructor
-     * 
-     * @param null $nodeID
-     */
-    function __construct($nodeID = null)
-    {
-        parent::__construct($nodeID);
-    }
 
     /**
      * @param $idNode

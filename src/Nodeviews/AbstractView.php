@@ -30,15 +30,45 @@ namespace Ximdex\Nodeviews;
 use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
 use Ximdex\Logger;
+use Ximdex\Models\Channel;
+use Ximdex\Models\Node;
 
-abstract class AbstractView
-{   
-    public function transform()
+abstract class AbstractView implements IView
+{
+    protected $node;
+    protected $channel;
+    
+    public function transform(int $idVersion = null, string $pointer = null, array $args = null)
     {
         Logger::info('Transforming with ' . class_basename($this));
+     
+        // Base node
+        if (! isset($args['NODEID']) || empty($args['NODEID'])) {
+            Logger::error('Argument nodeId not found in ViewPrepareHTML');
+            return null;
+        }
+        $node = new Node($args['NODEID']);
+        if (! $node->GetID()) {
+            Logger::error('Node not found for ID: ' . $args['NODEID']);
+            return null;
+        }
+        $this->node = $node;
+        
+        // Channel
+        if (isset($args['CHANNEL']) and $args['CHANNEL']) {
+            $channel = new Channel($args['CHANNEL']);
+            if (! $channel->GetID()) {
+                Logger::error('Channel not found for ID: ' . $args['CHANNEL']);
+                return null;
+            }
+            $this->channel = $channel;
+        } else {
+            $this->channel = null;
+        }
+        return '';
     }
     
-    public function storeTmpContent($content)
+    public function storeTmpContent(string $content) : ?string
     {
         // Si el contenido es una variable que contiene false ha ocurrido un error
         if ($content !== false)
@@ -62,10 +92,10 @@ abstract class AbstractView
         else {
             Logger::error('An error has happened with content to save (previous error)');
         }
-        return NULL;
+        return null;
     }
 
-    public function retrieveContent($pointer)
+    public function retrieveContent(string $pointer)
     {
         return FsUtils::file_get_contents($pointer);
     }

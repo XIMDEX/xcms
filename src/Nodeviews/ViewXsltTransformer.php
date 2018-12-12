@@ -29,44 +29,39 @@ namespace Ximdex\Nodeviews;
 use Ximdex\Logger;
 use Ximdex\Runtime\App;
 
-class ViewXsltTransformer extends AbstractView implements IView {
-	
-	function transform($idVersion = NULL, $pointer = NULL, $args = NULL) {
-	    
+class ViewXsltTransformer extends AbstractView implements IView
+{	
+    public function transform(int $idVersion = null, string $pointer = null, array $args = null)
+    {
 		$xsltFile = '';	
-		if (array_key_exists('XSLT', $args))
+		if (array_key_exists('XSLT', $args)) {
         	$xsltFile = $args['XSLT'];
-		
-		if (!is_file(XIMDEX_ROOT_PATH . $xsltFile)) {
-		    
+		}
+		if (! is_file(XIMDEX_ROOT_PATH . $xsltFile)) {
 			Logger::error('No se ha encontrado la xslt solicitada ' . $xsltFile);
 			return $pointer;
 		}
-		
 		$xsltTransformer = new \Ximdex\XML\XSLT();
 		$xsltTransformer->setXML($pointer);
 		$xsltTransformer->setXSL(XIMDEX_ROOT_PATH . $xsltFile);
 		$transformedContent = $xsltTransformer->process();
-		$transformedContent = $this->_fixDocumentEncoding($transformedContent);
-
+		$transformedContent = $this->fixDocumentEncoding($transformedContent);
 		return $this->storeTmpContent($transformedContent);
 	}
 	
-	function _fixDocumentEncoding($content) {
-		
+	private function fixDocumentEncoding(string $content)
+	{	
 		$doc = new \DOMDocument();
 		$doc->formatOutput = true;
 		$doc->preserveWhiteSpace = false;
 		$doc->loadXML($content);
 		
 		// In this case the XSLT template does not provide an encoding
-		if (empty($doc->encoding)) {
-		    
+		if (empty($doc->encoding)) {	    
 			$encoding = App::getValue( 'displayEncoding');
 			$doc->encoding = $encoding;
 			$content = $doc->saveXML();
 		}
-		
 		return $content;
 	}
 }

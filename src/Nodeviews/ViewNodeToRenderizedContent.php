@@ -1,6 +1,7 @@
 <?php
+
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -34,7 +35,7 @@ use Ximdex\NodeTypes\XmlDocumentNode;
 use Ximdex\Runtime\App;
 use Ximdex\Logger;
 
-class ViewNodeToRenderizedContent extends AbstractView implements IView
+class ViewNodeToRenderizedContent extends AbstractView
 {
     private $_node = null;
     private $_structuredDocument = null;
@@ -44,70 +45,64 @@ class ViewNodeToRenderizedContent extends AbstractView implements IView
     private $_linkedXimlets = "";
     private $_content = "";
 
-    public function transform($idVersion = NULL, $pointer = NULL, $args = NULL)
+    public function transform(int $idVersion = null, string $pointer = null, array $args = null)
     {
         $content = $this->retrieveContent($pointer);
-        if (!$this->_setNode($idVersion))
-            return NULL;
-
-        if (!$this->_setStructuredDocument($idVersion))
-            return NULL;
-
-        if (!$this->_setIdChannel($args))
-            return NULL;
-
-        if (!$this->_setIdLanguage($args))
-            return NULL;
-
-        if (!$this->_setDocxapHeader($args))
-            return NULL;
-
-        if (!$this->_setIdSection($args))
-            return NULL;
-
-        if (!$this->_setLinkedXimlets($args))
-            return NULL;
-
-        if (!$this->_setContent($content))
-            return NULL;
-
+        if (! $this->_setNode($idVersion)) {
+            return null;
+        }
+        if (! $this->_setStructuredDocument($idVersion)) {
+            return null;
+        }
+        if (! $this->_setIdChannel($args)) {
+            return null;
+        }
+        if (! $this->_setIdLanguage($args)) {
+            return null;
+        }
+        if (! $this->_setDocxapHeader($args)) {
+            return null;
+        }
+        if (! $this->_setIdSection($args)) {
+            return null;
+        }
+        if (! $this->_setLinkedXimlets($args)) {
+            return null;
+        }
+        if (! $this->_setContent($content)) {
+            return null;
+        }
         $doctypeTag = App::getValue("DoctypeTag");
         $encodingTag = App::getValue("EncodingTag");
 
-        //if the docxap tag is given in the XML document, is necessary to remove to don generate problems with the new docxap header tag
+        // If the docxap tag is given in the XML document, is necessary to remove to don generate problems with the new docxap header tag
         $this->_content = str_ireplace('<docxap>', '', $this->_content);
         $this->_content = str_ireplace('</docxap>', '', $this->_content);
-        
         $transformedContent = $encodingTag . "\n";
         $transformedContent .= $doctypeTag . "\n\n";
         $transformedContent .= $this->_docXapHeader;
-        if ($this->_linkedXimlets != "")
+        if ($this->_linkedXimlets != "") {
             $transformedContent .= $this->_linkedXimlets . "\n";
+        }
         $transformedContent .= $this->_content . "\n";
         $transformedContent .= "</docxap>\n";
-
         return $this->storeTmpContent($transformedContent);
     }
 
-    private function _setNode($idVersion = NULL)
+    private function _setNode($idVersion = null)
     {
-        if (!is_null($idVersion)) {
-            
+        if (! is_null($idVersion)) {
             $version = new Version($idVersion);
-            if (!($version->get('IdVersion') > 0)) {
-                
+            if (! $version->get('IdVersion')) {
                 Logger::error('VIEW NODETORENDERIZEDCONTENT: Incorrect version has been loaded (' . $idVersion . ')');
                 return false;
             }
-
             $this->_node = new Node($version->get('IdNode'));
-            if (!($this->_node->get('IdNode') > 0)) {
-                
+            if (! $this->_node->get('IdNode')) {
                 Logger::error('VIEW NODETORENDERIZEDCONTENT: The node you are trying to convert does not exists: ' . $version->get('IdNode'));
                 return false;
             }
         }
-
         return true;
     }
 
@@ -118,94 +113,76 @@ class ViewNodeToRenderizedContent extends AbstractView implements IView
             // Return BD content if no content param.
             $this->_content = $this->_structuredDocument->GetContent();
         } else {
-            
             $this->_content = $content;
         }
-
         return true;
     }
 
     private function _setLinkedXimlets($args = array())
     {
-
-        if ($this->_node) {
-            
+        if ($this->_node) {       
             if (array_key_exists('CALLER', $args) && $args['CALLER'] == 'xEDIT') {
-                
                 $nodeTypeName = $this->_node->nodeType->GetName();
                 if ($nodeTypeName == 'Ximlet') {
-                    
                     return true;
                 }
             }
             $this->_linkedXimlets = $this->_node->class->InsertLinkedximletS($this->_idLanguage);
         } else {
-            
             $xmlDocumentNode = new XmlDocumentNode();
             $this->_linkedXimlets = $xmlDocumentNode->InsertLinkedximletS($this->_idLanguage, $this->_idSection);
         }
-
         return true;
     }
 
-    private function _setStructuredDocument($idVersion = NULL)
+    private function _setStructuredDocument($idVersion = null)
     {
         if (!is_null($idVersion)) {
-            
             $version = new Version($idVersion);
-            if (!($version->get('IdVersion') > 0)) {
-                
+            if (! $version->get('IdVersion')) {
                 Logger::error('VIEW NODETORENDERIZEDCONTENT: Incorrect version has been loaded (' . $idVersion . ')');
                 return false;
             }
-
             $this->_structuredDocument = new StructuredDocument($version->get('IdNode'));
-            if (!($this->_structuredDocument->get('IdDoc') > 0)) {
-                
-                Logger::error('VIEW NODETORENDERIZEDCONTENT: The specified structured document does not exists: ' . $this->_structuredDocument->get('IdDoc'));
+            if (! $this->_structuredDocument->get('IdDoc')) {
+                Logger::error('VIEW NODETORENDERIZEDCONTENT: The specified structured document does not exists: ' 
+                    . $this->_structuredDocument->get('IdDoc'));
                 return false;
             }
         }
-
         return true;
     }
 
     private function _setIdChannel($args = array())
     {
-
         if (array_key_exists('CHANNEL', $args)) {
             $idChannel = $args['CHANNEL'];
         }
 
-        // Check Params:
-        if (!isset($idChannel) || !($idChannel > 0)) {
+        // Check Params
+        if (! isset($idChannel) || ! $idChannel) {
             Logger::error('VIEW NODETORENDERIZEDCONTENT: Channel not specified for node ' . $args['NODENAME']);
             return false;
         }
-
         $channel = new Channel($idChannel);
         $this->_idChannel = $channel->get('IdChannel');
-
         return true;
     }
 
     private function _setIdSection($args = array())
     {
-        if (!$this->_node) {
-            
+        if (! $this->_node) {
             if (array_key_exists('SECTION', $args)) {
-                
                 $this->_idSection = $args['SECTION'];
             }
 
-            // Check Params:
-            if (!isset($this->_idSection) || !($this->_idSection > 0)) {
-                
-                Logger::error('VIEW NODETORENDERIZEDCONTENT: Node section has not been specified ' . $args['NODENAME'] . ' that you want to renderize');
+            // Check Params
+            if (! $this->_idSection) {
+                Logger::error('VIEW NODETORENDERIZEDCONTENT: Node section has not been specified ' . $args['NODENAME'] 
+                    . ' that you want to renderize');
                 return false;
             }
         }
-
         return true;
     }
 
@@ -214,17 +191,15 @@ class ViewNodeToRenderizedContent extends AbstractView implements IView
         if ($this->_node && $this->_structuredDocument) {
             $this->_idLanguage = $this->_structuredDocument->getLanguage();
         }
-
         if (array_key_exists('LANGUAGE', $args)) {
             $this->_idLanguage = $args['LANGUAGE'];
         }
 
-        // Check Params:
-        if (!isset($this->_idLanguage) || !($this->_idLanguage > 0)) {
+        // Check Params
+        if (! $this->_idLanguage) {
             Logger::error("VIEW NODETORENDERIZEDCONTENT: Node's language not specified " . $args['NODENAME'] . " that you want to renderize");
             return false;
         }
-
         return true;
     }
 
@@ -234,17 +209,16 @@ class ViewNodeToRenderizedContent extends AbstractView implements IView
             $documentType = $this->_structuredDocument->GetDocumentType();
             $this->_docXapHeader = $this->_node->class->getDocHeader($this->_idChannel, $this->_idLanguage, $documentType);
         }
-
         if (array_key_exists('DOCXAPHEADER', $args)) {
             $this->_docXapHeader = $args['DOCXAPHEADER'];
         }
 
-        // Check Params:
-        if (!isset($this->_docXapHeader) || $this->_docXapHeader == "") {
-            Logger::error('VIEW NODETORENDERIZEDCONTENT: docxap header not specified of the node ' . $args['NODENAME'] . ' that you want to renderize');
+        // Check Params
+        if (! isset($this->_docXapHeader) || $this->_docXapHeader == "") {
+            Logger::error('VIEW NODETORENDERIZEDCONTENT: docxap header not specified of the node ' . $args['NODENAME'] 
+                . ' that you want to renderize');
             return false;
         }
-
         return true;
     }
 }

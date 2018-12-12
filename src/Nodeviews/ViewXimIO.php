@@ -31,21 +31,20 @@ use Ximdex\Logger;
 use Ximdex\Models\Node;
 use Ximdex\Models\Version;
 
-class ViewXimIO extends AbstractView implements IView
+class ViewXimIO extends AbstractView
 {
     var $files;
 
-    function transform($idVersion = NULL, $pointer = NULL, $args = NULL)
+    public function transform(int $idVersion = null, string $pointer = null, array $args = null)
     {
-        // $content = $this->retrieveContent($pointer);
         $version = new Version($idVersion);
-        if (!($version->get('IdVersion') > 0)) {
+        if (! $version->get('IdVersion')) {
             Logger::error("No se ha encontrado la versión ($idVersion) solicitada");
             return NULL;
         }
         $idNode = $version->get('IdNode');
         $node = new Node($idNode);
-        if (!($node->get('IdNode') > 0)) {
+        if (! $node->get('IdNode')) {
             Logger::error("No se ha podido cargar el nodo ($idNode) solicitado");
             return NULL;
         }

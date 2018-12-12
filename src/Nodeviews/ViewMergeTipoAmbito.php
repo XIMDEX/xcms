@@ -26,7 +26,7 @@
 
 namespace Ximdex\Nodeviews;
 
-class ViewMergeTipoAmbito extends ViewMergeTags implements IView
+class ViewMergeTipoAmbito extends ViewMergeTags
 {
     protected $query1 = '//tipodoc';
     protected $query2 = '//ambitodoc';

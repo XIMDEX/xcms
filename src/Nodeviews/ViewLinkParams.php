@@ -32,9 +32,9 @@ use Ximdex\Deps\LinksManager;
 use Ximdex\Models\Node;
 use Ximdex\Models\Version;
 
-class ViewLinkParams extends AbstractView implements IView
+class ViewLinkParams extends AbstractView
 {
-	function transform($idVersion = NULL, $pointer = NULL, $args = NULL)
+    public function transform(int $idVersion = null, string $pointer = null, array $args = null)
 	{
 		$content = $this->retrieveContent($pointer);
 		$version = new Version($idVersion);

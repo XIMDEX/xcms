@@ -1,6 +1,7 @@
 <?php
+
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -30,9 +31,9 @@ use Ximdex\Models\Node;
 use Ximdex\Models\Version;
 use Ximdex\Logger;
 
-class ViewTransformer extends AbstractView implements IView
+class ViewTransformer extends AbstractView
 {
-	public function transform($idVersion = NULL, $pointer = NULL, $args = NULL)
+    public function transform(int $idVersion = null, string $pointer = null, array $args = null)
 	{
 		if (! array_key_exists('TRANSFORMER', $args) || empty($args['TRANSFORMER'])) {
 			$version = new Version($idVersion);
@@ -44,8 +45,9 @@ class ViewTransformer extends AbstractView implements IView
 			}
 		}
 		$transformer = str_replace('_', '', ucfirst($args['TRANSFORMER']) );
-		if ("Xlst" == $transformer)
+		if ("Xlst" == $transformer) {
 			$transformer = "Xslt";   // ???
+		}
 		$factory = new \Ximdex\Utils\Factory(__DIR__ , 'View');
 		$instanceOfView = $factory->instantiate($transformer, null, 'Ximdex\Nodeviews');
 		$res = $instanceOfView->transform($idVersion, $pointer, $args);

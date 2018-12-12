@@ -3536,7 +3536,7 @@ class Node extends NodesOrm
         , string $version = null, string $subversion = null, string $mode = null)
     {
         // Checks node existence
-        if (!$this->GetID()) {
+        if (! $this->GetID()) {
             $this->messages->add(_('It is not possible to show preview.') . _(' The node you are trying to preview does not exist.')
                 , MSG_TYPE_NOTICE);
             return false;

@@ -40,13 +40,12 @@ use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
 use Ximdex\Utils\SimpleXMLExtended;
 
-class ViewCommon extends AbstractView implements IView
+class ViewCommon extends AbstractView
 {
     const DOCXIF = 'docxif';
-
     private $_filePath;
 
-    function transform($idVersion = NULL, $pointer = NULL, $args = NULL)
+    public function transform(int $idVersion = null, string $pointer = null, array $args = null)
     {
         if (!$this->_setFilePath($idVersion, $args))
             return NULL;
@@ -102,7 +101,8 @@ class ViewCommon extends AbstractView implements IView
             }
             // Check Params:
             if (!isset($this->_filePath) || $this->_filePath == "") {
-                Logger::error('VIEW COMMON: No se ha especificado la version ni el path del fichero correspondiente al nodo ' . $args['NODENAME'] . ' que quiere renderizar');
+                Logger::error('VIEW COMMON: No se ha especificado la version ni el path del fichero correspondiente al nodo ' 
+                    . $args['NODENAME'] . ' que quiere renderizar');
                 return NULL;
             }
         }
@@ -145,18 +145,14 @@ class ViewCommon extends AbstractView implements IView
             $xml->addChild('id_section', $sectionNode->GetID());
         }
         $xml->addChild('state', "publish");
-
-
         foreach ($info['tags'] as $tag) {
             $xml->addChild('tag', $tag['Name']);
         }
-
         $content_payload = $xml->addChild('content-payload');
         foreach ($info['metadata'] as $key => $value) {
             $content_payload->addChild($key, $value);
         }
         $content_payload->addChild('type', $sectionType->get('sectionType'));
-
         return $xml->asXML();
     }
 
@@ -171,7 +167,6 @@ class ViewCommon extends AbstractView implements IView
         // Get metadata
         $metadata = Metadata::getByNodeAndGroup($node->GetID()) ?? []; //TODO Select group
         $info['metadata'] = $metadata;
-
         return $info;
     }
 
@@ -192,5 +187,4 @@ class ViewCommon extends AbstractView implements IView
     {
         return $targetServer->get('Url') . $targetNode->GetPublishedPath($idTargetChannel, true);
     }
-
 }

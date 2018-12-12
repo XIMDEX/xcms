@@ -37,21 +37,17 @@ use Ximdex\Models\Version;
 use Ximdex\Runtime\App;
 
 /**
+ * @deprecated
  * @brief Manager for the pipeline's system
  *
  * Manager for the pipeline's system, support actions like get caches and delete caches
  */
 class PipelineManager
 {
-    /**
-     * @var Messages
-     */
     public $messages;
 
     /**
      * Constructor, initialize the graphs
-     *
-     * @return void
      */
     public function __construct()
     {
@@ -66,7 +62,7 @@ class PipelineManager
      * @param $args
      * @return boolean|string|NULL
      */
-    private function getCacheFromTransition($idVersion, $idTransition, $args)
+    private function getCacheFromTransition(?int $idVersion, int $idTransition, array $args)
     {
         if (! isset($args['DISABLE_CACHE']) || ! $args['DISABLE_CACHE']) {
             if (! $idVersion) {
@@ -114,12 +110,15 @@ class PipelineManager
         if (! $process->loadByName($processName)) {
             $this->messages->add(_('[PipelineManager:getCacheFromProcess] Process not found: ' . $processName), MSG_TYPE_ERROR);
             Logger::fatal('[PipelineManager:getCacheFromProcess] Process not found: ' . $processName);
+            return error();
         }
         if (! $process->get('id') > 0) {
             Logger::fatal('[PipelineManager:getCacheFromProcess] Process not found with the given name: ' . $processName);
+            return false;
         }
         if (! $process->transitions) {
             Logger::fatal("[PipelineManager:getCacheFromProcess] The loaded process doesn't have any transition: " . $processName);
+            return false;
         }
         $lastTransition = $process->transitions->last();
         if (! $lastTransition) {

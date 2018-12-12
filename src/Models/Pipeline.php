@@ -32,6 +32,7 @@ use Ximdex\Models\ORM\PipelinesOrm;
 use Ximdex\Runtime\App;
 
 /**
+ * @deprecated
  * @brief Orm extension for the pipeline table
  *
  * Extends the functionality for the Pipeline table, restricts the functionality and provides methods to load

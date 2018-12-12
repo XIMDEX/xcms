@@ -29,14 +29,14 @@ namespace Ximdex\Nodeviews;
 use Ximdex\Logger;
 use Ximdex\Utils\FsUtils;
 
-class ViewMergeTags extends AbstractView implements IView {
-    
+class ViewMergeTags extends AbstractView
+{    
 	protected $query1 = '';
 	protected $query2 = '';
 	protected $merge = '';	
 	
-	function transform($idVersion = NULL, $pointer = NULL, $args = NULL) {
-
+	public function transform(int $idVersion = null, string $pointer = null, array $args = null)
+	{
 		$domDocument = new \DOMDocument();
 		$domDocument->preserveWhiteSpace = false;
 		$domDocument->validateOnParse = true;

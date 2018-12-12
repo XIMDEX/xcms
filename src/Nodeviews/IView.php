@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -29,5 +29,5 @@ namespace Ximdex\Nodeviews;
 
 interface IView
 {
-    public function transform($idVersion = NULL, $pointer = NULL, $args = NULL);
+    public function transform(int $idVersion = null, string $pointer = null, array $args = null);
 }

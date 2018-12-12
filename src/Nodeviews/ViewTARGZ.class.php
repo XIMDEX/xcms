@@ -35,27 +35,27 @@ use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
 use Ximdex\Utils\TarArchiver;
 
-class ViewTARGZ extends AbstractView implements IView
+class ViewTARGZ extends AbstractView
 {
-    function transform($idVersion = null, $pointer = null, $args = NULL)
+    public function transform(int $idVersion = null, string $pointer = null, array $args = null)
     {
         $content = $this->retrieveContent($pointer);
         
         // Validating data
         $version = new Version($idVersion);
-        if (!($version->get('IdVersion') > 0)) {
+        if (! $version->get('IdVersion')) {
             Logger::error("Se ha cargado una versión incorrecta ($idVersion)");
             return null;
         }
         $node = new Node($version->get('IdNode'));
         $nodeId = $node->get('IdNode');
-        if (!($nodeId > 0)) {
+        if (! $nodeId) {
             Logger::error('El nodo que se está intentando convertir no existe: ' . $version->get('IdNode'));
-            return NULL;
+            return null;
         }
-        if (!array_key_exists('PATH', $args) && !array_key_exists('NODENAME', $args)) {
+        if (! array_key_exists('PATH', $args) && ! array_key_exists('NODENAME', $args)) {
             Logger::error('Path and nodename arguments are mandatory');
-            return NULL;
+            return null;
         }
         $tarFile = $args['PATH'];
         $tmpFolder = XIMDEX_ROOT_PATH . App::getValue('TempRoot');
@@ -69,11 +69,11 @@ class ViewTARGZ extends AbstractView implements IView
 
         // Encode the content to ISO, now OTF only work in ISO mode, because the jsp files are in ISO too
         $xmlContent = \Ximdex\XML\Base::recodeSrc($xmlContent, \Ximdex\XML\XML::ISO88591);
-        if (!FsUtils::file_put_contents($tmpDocFile, $xmlContent)) {
+        if (! FsUtils::file_put_contents($tmpDocFile, $xmlContent)) {
             return false;
         }
         $sqlContent = \Ximdex\XML\Base::recodeSrc($sqlContent, \Ximdex\XML\XML::ISO88591);
-        if (!FsUtils::file_put_contents($tmpSqlFile, $sqlContent)) {
+        if (! FsUtils::file_put_contents($tmpSqlFile, $sqlContent)) {
             return false;
         }
 
@@ -100,12 +100,12 @@ class ViewTARGZ extends AbstractView implements IView
     {
         $factory = new \Ximdex\Utils\Factory(XIMDEX_ROOT_PATH . '/src/Models/', $tableName);
         $object = $factory->instantiate(null, null, '\Ximdex\Models');
-        if (!is_object($object)) {
+        if (! is_object($object)) {
             Logger::info("Error, la clase $tableName de orm especificada no existe");
             return null;
         }
         $result = $object->find($field, $condition, $params, MULTI);
-        if (!is_null($result)) {
+        if (! is_null($result)) {
             reset($result);
             $fileName = $result[0][0];
             return $fileName;
@@ -129,23 +129,23 @@ class ViewTARGZ extends AbstractView implements IView
         $language = '';
 
         // Check that the Version is ok
-        if (!is_null($idVersion)) {
+        if (! is_null($idVersion)) {
             $version = new Version($idVersion);
-            if (!($version->get('IdVersion') > 0)) {
+            if (! $version->get('IdVersion')) {
                 Logger::error('VIEW TARGZ: Se ha cargado una versión incorrecta (' . $idVersion . ')');
                 return '';
             }
             $structuredDocument = new StructuredDocument($version->get('IdNode'));
             $channels = $structuredDocument->GetChannels();
             $language = $structuredDocument->GetLanguage();
-            if (!($structuredDocument->get('IdDoc') > 0)) {
+            if (! $structuredDocument->get('IdDoc')) {
                 Logger::error('VIEW TARGZ: El structured document especificado no existe: ' . $structuredDocument->get('IdDoc'));
                 return '';
             }
             
             // If it is all ok
-            if ((is_array($channels)) && (!is_null($node)) && (!is_null($structuredDocument)) && (array_key_exists(0, $channels)) 
-                && (!is_null($language))) {
+            if ((is_array($channels)) && (! is_null($node)) && (! is_null($structuredDocument)) && (array_key_exists(0, $channels)) 
+                && (! is_null($language))) {
                 
                 // Select, for example, the first channel, it's the same because otf will renderize the
                 // xml with a channel selected by the user
@@ -154,7 +154,7 @@ class ViewTARGZ extends AbstractView implements IView
                 $docxapout = $node->class->getDocHeader($channel, $language, $documentType);
 
                 // Check out
-                if (!isset($docxapout) || $docxapout == '') {
+                if (! isset($docxapout) || $docxapout == '') {
                     Logger::error('VIEW TARGZ: No se ha especificado la cabecera docxap del nodo ' . $node->GetNodeName() 
                         . ' que quiere renderizar');
                     return '';
@@ -173,7 +173,7 @@ class ViewTARGZ extends AbstractView implements IView
         $sql = "select IdVersion from Versions where IdNode = $idNode order by Version desc limit 1;";
         $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->Query($sql);
-        while (!$dbObj->EOF) {
+        while (! $dbObj->EOF) {
             $idVersion = $dbObj->GetValue('IdVersion');
             $dbObj->Next();
         }

@@ -43,7 +43,7 @@ use Ximdex\Parsers\ParsingPathTo;
 use Ximdex\NodeTypes\NodeTypeConstants;
 use Ximdex\Utils\FsUtils;
 
-class ViewFilterMacros extends AbstractView implements IView
+class ViewFilterMacros extends AbstractView
 {
     private $_node;
     private $_server;
@@ -91,15 +91,12 @@ class ViewFilterMacros extends AbstractView implements IView
      * @param int $idVersion Node version
      * @param string $pointer File name with the content to transform
      * @param array $args Params about the current node
-     * @param int $idVersion Node version
-     * @param string $pointer file name with the content to transform
-     * @param array $args Params about the current node
      * @return string file name with the transformed content
      */
-    public function transform($idVersion = null, $pointer = null, $args = null)
+    public function transform(int $idVersion = null, string $pointer = null, array $args = null)
     {
         // Check the conditions
-        if (!$this->initializeParams($args, $idVersion)) {
+        if (! $this->initializeParams($args, $idVersion)) {
             return false;
         }
 

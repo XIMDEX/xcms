@@ -27,7 +27,7 @@
 
 namespace Ximdex\Nodeviews;
 
-class ViewPublishHTML extends AbstractView
+class ViewPrepareXIF extends AbstractView
 {
     /**
      * {@inheritDoc}
@@ -35,9 +35,14 @@ class ViewPublishHTML extends AbstractView
      */
     public function transform(int $idVersion = null, string $pointer = null, array $args = null)
     {
+        parent::transform($idVersion, $pointer, $args);
+        
         // Get the content
         $content = $this->retrieveContent($pointer);
         
+        // Generate the XIF xml content
+        $content = $this->node->class::createXIF($this->node->GetID(), $content, $this->channel->GetID());
+
         // Return the pointer to the transformed content
         return $this->storeTmpContent($content);
     }

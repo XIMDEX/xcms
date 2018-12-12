@@ -33,46 +33,33 @@ use Ximdex\Properties\InheritedPropertiesManager;
 use Ximdex\Models\Channel;
 use Ximdex\Models\ProgrammingCode;
 
-class ViewPrepareHTML extends AbstractView implements IView
+class ViewPrepareHTML extends AbstractView
 {
     const MACRO_CODE = '/@@@GMximdex.exec\(([a-zA-Z0-9_]+),?(.*)\)@@@/m';
-
-    private $nodeID;
-    private $channelID;
 
     /**
      * {@inheritdoc}
      * @see \Ximdex\Nodeviews\AbstractView::transform()
      */
-    public function transform($idVersion = null, $pointer = null, $args = null)
+    public function transform(int $idVersion = null, string $pointer = null, array $args = null)
     {
-        if (! isset($args['NODEID']) || empty($args['NODEID'])) {
-            Logger::error('Argument nodeId not found in ViewPrepareHTML');
-            return false;
-        }
-        $this->nodeID = $args['NODEID'];
-
+        parent::transform($idVersion, $pointer, $args);
+        
         // Channel
-        if (isset($args['CHANNEL']) and $args['CHANNEL']) {
-            $channel = new Channel($args['CHANNEL']);
-            if (! $channel->GetID()) {
-                Logger::error('Channel not found for ID: ' . $args['CHANNEL']);
-                return false;
-            }
-            $this->channelID = $args['CHANNEL'];
-            if ($channel->getRenderType()) {
-                $mode = $channel->getRenderType();
+        if ($this->channel) {
+            if ($this->channel->getRenderType()) {
+                $mode = $this->channel->getRenderType();
             } else {
                 $mode = HTMLDocumentNode::MODE_STATIC;
             }
         } else {
-            $this->channelID = null;
             $mode = HTMLDocumentNode::MODE_STATIC;
         }
 
         // Get the content
         $content = $this->retrieveContent($pointer);
-        $document = ($content !== false) ? HTMLDocumentNode::renderHTMLDocument($this->nodeID, $content, $this->channelID, $mode) : false;
+        $document = ($content !== false) ? HTMLDocumentNode::renderHTMLDocument($this->node->GetID(), $content
+            , $this->channel->GetID(), $mode) : false;
 
         // Process macros
         if ($document !== false) {

@@ -293,7 +293,7 @@ class ServerFrame extends ServerFramesOrm
             if ($node->GetNodeType() == NodeTypeConstants::HTML_DOCUMENT) {
                 $channel = new Channel($channelId);
                 if ($channel->getRenderType() == HTMLDocumentNode::MODE_INDEX) {
-                    $process = 'SolarToPublished';
+                    $process = 'XIFToPublished';
                 } else {
                     $process = 'HTMLToPublished';
                 }

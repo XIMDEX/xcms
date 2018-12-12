@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -37,42 +37,34 @@ use Ximdex\Models\ORM\PipeStatusOrm;
  */
 class PipeStatus extends PipeStatusOrm
 {
-	public function getIdStatus($name)
+	public function getIdStatus(string $name)
 	{
-		$id = $this->find('id', 'Name = %s ', array($name), MONO);
-		if ((count($id) == 1) && ($id [0] > 0)) {
-			return $id [0];
+		$status = $this->find('id', 'Name = %s ', array($name), MONO);
+		if ($status and count($status) == 1 && $status[0] > 0) {
+			return $status[0];
 		}
 		return false;
 	}
 
-	/**
-	 * @param $idNode
-	 * @return bool|null|string
-	 */
-	public function loadByIdNode($idNode)
+	public function loadByIdNode(int $idNode)
 	{
 		$nodes = $this->find('id', 'id = %s', array($idNode), MONO);
 		if (count($nodes) != 1) {
 			$this->messages->add(_('No se ha podido cargar el estado por su id de nodo'), MSG_TYPE_ERROR);
-			Logger::error(sprintf("No se ha podido cargar el estado por su id de nodo, se solicitó el idNode %s", print_r($idNode, true)));
-			return NULL;
+			Logger::error(sprintf('No se ha podido cargar el estado por su id de nodo, se solicitó el idNode %s', print_r($idNode, true)));
+			return null;
 		}
 		parent::__construct($nodes[0]);
 		return $this->get('id');
 	}
 
-	/**
-	 * @param $name
-	 * @return bool|null|string
-	 */
-	public function loadByName($name)
+	public function loadByName(string $name)
 	{
 		$nodes = $this->find('id', 'Name = %s', array($name), MONO);
-		if (count($nodes) != 1) {
+		if (! $nodes or count($nodes) != 1) {
 			$this->messages->add(_('No se ha podido cargar el estado por su nombre de nodo'), MSG_TYPE_ERROR);
 			Logger::error('No se ha podido cargar el estado por su nombre de nodo');
-			return NULL;
+			return null;
 		}
 		parent::__construct($nodes[0]);
 		return $this->get('id');

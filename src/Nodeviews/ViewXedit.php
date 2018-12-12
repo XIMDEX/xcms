@@ -42,38 +42,38 @@ if (!defined('RNG_EDITION_DOCXAP_PATH')) {
         . App::getUrl('/actions/xmleditor2/views/rngeditor/templates/docxap.xsl'));
 }
 
-class ViewXedit extends AbstractView implements IView
+class ViewXedit extends AbstractView
 {	
 	private $content = null;
 	private $domDocument = null;
 	private $node = null;
 	
-	public function transform($idVersion = null, $pointer = null, $args = null)
+	public function transform(int $idVersion = null, string $pointer = null, array $args = null)
 	{	
 		$content = $this->retrieveContent($pointer);
 		if ($content == '') {
 			Logger::warning('VIEW XEDIT: empty content');
 			return $this->storeTmpContent($content);
 		}	
-		if (!$this->setNode($idVersion)) {
+		if (! $this->setNode($idVersion)) {
 			return null;
 		}
-		if (!$this->setView($args)) {
+		if (! $this->setView($args)) {
 			return null;
 		}
-		if (!$this->setContent($content)) {
+		if (! $this->setContent($content)) {
 			return null;
 		}
-		if (!$this->setUids()) {
+		if (! $this->setUids()) {
 			return null;
 		}
-		if (!$this->setXimletIds()) {
+		if (! $this->setXimletIds()) {
 			return null;
 		}
-		if (!$this->parametrizeDocxapByNodeType()) {
+		if (! $this->parametrizeDocxapByNodeType()) {
 			return null;
 		}
-		if (!$this->addXslReference()) {
+		if (! $this->addXslReference()) {
 			return $this->storeTmpContent($this->content);
 		}
 		return $this->storeTmpContent($this->content);
@@ -102,23 +102,23 @@ class ViewXedit extends AbstractView implements IView
 			$parser = new ParsingRng();
 			$content = $parser->buildDefaultContent($schemaData['id']);
 		}
-		
 		return $this->setContent($content);
 	}
 	
-	private function setContent($content) {
+	private function setContent($content)
+	{
 		$this->content = $content;
 		return $this->setDomDocument();
 	}
 	
-	private function setDomDocument() {
-		if(!$this->domDocument)
+	private function setDomDocument()
+	{
+		if (! $this->domDocument)
 		{
 			$this->domDocument = new \DOMDocument();
 			$this->domDocument->formatOutput = true;
 			$this->domDocument->preserveWhiteSpace = false;
 		}
-
 		if (!$this->domDocument->loadXML($this->content)) {
 			Logger::error('VIEW XEDIT: Invalid XML (' . $this->content . ')');
 			return false;
@@ -153,14 +153,14 @@ class ViewXedit extends AbstractView implements IView
 	
 	private function setNode ($idVersion = null)
 	{
-		if (!is_null($idVersion)) {
+		if (! is_null($idVersion)) {
 			$version = new Version($idVersion);
 			if (!($version->get('IdVersion') > 0)) {
 				Logger::error('VIEW XEDIT: An incorrect version has been loaded (' . $idVersion . ')');
 				return false;
 			}
 			$this->node = new Node($version->get('IdNode'));
-			if (!($this->node->get('IdNode') > 0)) {
+			if (! $this->node->get('IdNode')) {
 				Logger::error('VIEW XEDIT: The node it\'s trying to convert doesn\'t exists: ' . $version->get('IdNode'));
 				return false;
 			}
@@ -170,7 +170,7 @@ class ViewXedit extends AbstractView implements IView
 	
 	private function setView($args)
 	{
-		if (!array_key_exists('XEDIT_VIEW', $args)) {
+		if (! array_key_exists('XEDIT_VIEW', $args)) {
 			Logger::error('VIEW XEDIT: No se ha especificado la vista de XEDIT');
 			return false;
 		}
@@ -190,7 +190,7 @@ class ViewXedit extends AbstractView implements IView
 	
 	private function addXslReference()
 	{
-	    if (!$xslFile = $this->getXslPath()) {
+	    if (! $xslFile = $this->getXslPath()) {
 			return false;
 	    }
 		$xslHeader = '<?xml-stylesheet type="text/xsl" href="' . $xslFile . '"?>';

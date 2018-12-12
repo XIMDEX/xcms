@@ -29,6 +29,7 @@ namespace Ximdex\NodeTypes;
 
 use Ximdex\Logger;
 use Ximdex\Runtime\App;
+use Ximdex\Models\Channel;
 use Ximdex\Models\Section;
 use Ximdex\Models\Language;
 use Ximdex\Models\SectionType;
@@ -425,23 +426,33 @@ class HTMLDocumentNode extends AbstractStructuredDocument
 
     /**
      * Create XIF format from HTML DOCUMENT NODE
-     *
-     * @param $content
-     * @return mixed
      */
-    private static function createXIF($nodeID, $content, $channel)
+    public static function createXIF(Node $node, string $content, Channel $channel)
     {
-        $node = new \Ximdex\Models\Node($nodeID);
-        $tags = static::getTags($nodeID);
+        /*
+        $docHTML = static::getNodesHTMLDocument($nodeID);
+        if ($docHTML === false) {
+            return false;
+        }
+        $render = '';
+        foreach ($docHTML as $node) {
+            if (isset($node['type']) && $node['type'] == static::CONTENT_DOCUMENT) {
+                $render .= static::START_XIMDEX_BODY_CONTENT;
+                $render .= ! is_null($content) ? $content : $node['content'];
+                $render .= static::END_XIMDEX_BODY_CONTENT;
+            }
+        }
+        */
+        $tags = static::getTags($node->GetID());
         $sectionId = $node->GetSection();
         $ximID = App::getValue('ximid');
         $version = $node->GetLastVersion() ?? [];
         $section = new Section($sectionId);
         $sectionNode = new \Ximdex\Models\Node($section->getIdNode());
         $sectionType = new SectionType($section->getIdSectionType());
-        $info = static::getInfo($nodeID);
-        $hDoc = new static($nodeID);
-        $docxif = $hDoc->getDocHeader($channel, $info['language'], $info['type'], static::DOCXIF);
+        $info = static::getInfo($node->getID());
+        $hDoc = new static($node->GetID());
+        $docxif = $hDoc->getDocHeader($channel->GetID(), $info['language'], $info['type'], static::DOCXIF);
 
         // Create XML
         $xml = new SimpleXMLExtended("$docxif</" . static::DOCXIF . '>');

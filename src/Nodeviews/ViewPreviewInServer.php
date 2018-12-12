@@ -34,23 +34,22 @@ use Ximdex\Runtime\App;
 use Ximdex\Utils\Curl;
 use Ximdex\Utils\FsUtils;
 
-class ViewPreviewInServer extends AbstractView implements IView
+class ViewPreviewInServer extends AbstractView
 {
     private $_node = null;
     private $_serverNode = null;
     private $_idChannel;
 
-    public function transform($idVersion = null, $pointer = null, $args = null)
+    public function transform(int $idVersion = null, string $pointer = null, array $args = null)
     {
-        $content = $pointer;
         $content = $this->retrieveContent($pointer);
-        if (!$this->_setNode($idVersion)) {
+        if (! $this->_setNode($idVersion)) {
             return null;
         }
-        if (!$this->_setIdChannel($args)) {
+        if (! $this->_setIdChannel($args)) {
             return null;
         }
-        if (!$this->_setServerNode($args)) {
+        if (! $this->_setServerNode($args)) {
             return null;
         }
         if (App::getValue('PreviewInServer') == 0) {
@@ -59,7 +58,7 @@ class ViewPreviewInServer extends AbstractView implements IView
         }
         $content = htmlspecialchars_decode(\Ximdex\Utils\Strings::stripslashes($content));
         $previewServer = $this->_serverNode->class->GetPreviewServersForChannel($this->_idChannel);
-        if (!$previewServer) {
+        if (! $previewServer) {
             Logger::error('No Preview Servers for this channel');
             return null;
         }
@@ -72,7 +71,7 @@ class ViewPreviewInServer extends AbstractView implements IView
         $commandParams['tmpPath'] = XIMDEX_ROOT_PATH . App::getValue("TempRoot");
         $commandParams['tmpfile'] = tempnam($commandParams['tmpPath'], null);
         $commandParams['tmpfileName'] = basename($commandParams['tmpfile']);
-        if (!FsUtils::file_put_contents($commandParams['tmpfile'], $content)) {
+        if (! FsUtils::file_put_contents($commandParams['tmpfile'], $content)) {
             return false;
         }
         $command = XIMDEX_ROOT_PATH . App::getValue("SynchronizerCommand") .
@@ -108,16 +107,16 @@ class ViewPreviewInServer extends AbstractView implements IView
         return $this->storeTmpContent($content);
     }
 
-    private function _setNode($idVersion = NULL)
+    private function _setNode($idVersion = null)
     {
-        if (!is_null($idVersion)) {
+        if (! is_null($idVersion)) {
             $version = new Version($idVersion);
-            if (!($version->get('IdVersion') > 0)) {
+            if (! $version->get('IdVersion')) {
                 Logger::error('VIEW FILTERMACROSPREVIEW: Se ha cargado una versión incorrecta (' . $idVersion . ')');
                 return null;
             }
             $this->_node = new Node($version->get('IdNode'));
-            if (!($this->_node->get('IdNode') > 0)) {
+            if (! $this->_node->get('IdNode')) {
                 Logger::error('VIEW FILTERMACROSPREVIEW: El nodo que se está intentando convertir no existe: ' 
                     . $version->get('IdNode'));
                 return null;
@@ -133,9 +132,9 @@ class ViewPreviewInServer extends AbstractView implements IView
         }
 
         // Check Params
-        if (!isset($this->_idChannel) || !($this->_idChannel > 0)) {
+        if (! $this->_idChannel > 0) {
             Logger::error('VIEW FILTERMACROSPREVIEW: Channel not specified for node ' . $args['SERVERNODE']);
-            return NULL;
+            return null;
         }
         return true;
     }
@@ -149,9 +148,9 @@ class ViewPreviewInServer extends AbstractView implements IView
         }
 
         // Check Params
-        if (!($this->_serverNode) || !is_object($this->_serverNode)) {
+        if (! $this->_serverNode || ! is_object($this->_serverNode)) {
             Logger::error('VIEW FILTERMACROSPREVIEW: There is no server linked to the node ' . $args['NODENAME']);
-            return NULL;
+            return null;
         }
         return true;
     }

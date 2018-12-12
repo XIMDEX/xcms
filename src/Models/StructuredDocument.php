@@ -321,7 +321,7 @@ class StructuredDocument extends StructuredDocumentsOrm
         }
         $res = $data->SetContent($content, $version, $subversion, $commitNode);
         if ($res && is_array($metadata) && count($metadata) > 0) {
-            $result = $this->setMetadata($metadata);
+            $this->setMetadata($metadata);
         }
 
         // The document will be validate against the associated RNG schema with XML documents

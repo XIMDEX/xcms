@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,16 +25,14 @@
  * @version $Revision$
  */
 
-
 namespace Ximdex\Pipeline;
 
 /**
- *
+ * @deprecated
  * @brief Stores the triplet property, value, cache
  *
  * Stores the triplet property, value, cache, this information is used when trying to
  * recover a cache, in that moment if this info matchs the cache is returned
- *
  */
 class PipePropertyValue extends \Ximdex\Data\GenericData
 {

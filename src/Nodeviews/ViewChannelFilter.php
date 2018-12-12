@@ -29,12 +29,10 @@ namespace Ximdex\Nodeviews;
 use Ximdex\Logger;
 use Ximdex\Models\Channel;
 
-class ViewChannelFilter extends AbstractView implements IView {
-	
-	private $_idChannel;
-	
-	public function transform($idVersion = NULL, $pointer = NULL, $args = NULL) {
-		
+class ViewChannelFilter extends AbstractView
+{
+    public function transform(int $idVersion = null, string $pointer = null, array $args = null)
+	{
 		if (array_key_exists('CHANNEL', $args)) {
 		    
 			$channel = new Channel($args['CHANNEL']);

@@ -30,6 +30,7 @@ namespace Ximdex\Models;
 use Ximdex\Models\ORM\PipePropertiesOrm;
 
 /**
+ * @deprecated
  * @brief Describes the relation between one property and one transition
  *
  * Describes the relation between one property and one transition, one transition

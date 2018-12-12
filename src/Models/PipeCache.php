@@ -67,7 +67,7 @@ class PipeCache extends PipeCachesOrm
      * @param number $depth
      * @return boolean|string|NULL
      */
-    public function load(int $idVersion, int $idTransition, array $args = [], int $depth = 0)
+    public function load(?int $idVersion, int $idTransition, array $args = [], int $depth = 0)
     {
         // Search in cache what we have
         Logger::debug('PipeCache: Searching for cache resources for version: ' . $idVersion . ' and transition: ' . $idTransition);

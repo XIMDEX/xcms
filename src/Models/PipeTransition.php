@@ -145,7 +145,7 @@ class PipeTransition extends PipeTransitionsOrm
 	 * @param array $args
 	 * @return mixed|bool
 	 */
-	public function generate(int $idVersion, string $content, array $args)
+	public function generate(?int $idVersion, string $content, array $args)
 	{
 	    Logger::info('Transforming ' . $content . ' with the version ' . $idVersion);
 		$file = $this->callback($idVersion, $content, $args, 'transform');
@@ -174,11 +174,11 @@ class PipeTransition extends PipeTransitionsOrm
 	 * @param string $function
 	 * @return bool|string
 	 */
-	private function callback(int $idVersion, string $pointer, array $args, string $function)
+	private function callback(?int $idVersion, string $pointer, array $args, string $function)
 	{
 		$factory = new \Ximdex\Utils\Factory(CALLBACK_FOLDER, 'View');
 		$callback = $this->get('Callback');
-        $callback = str_replace('_', '', ucfirst($callback) );
+        $callback = str_replace('_', '', ucfirst($callback));
 		$object = $factory->instantiate($callback, null, 'Ximdex\Nodeviews');
 		$timer = new \Ximdex\Utils\Timer();
 		$timer->start();

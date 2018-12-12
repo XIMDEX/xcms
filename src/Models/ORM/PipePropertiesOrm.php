@@ -29,6 +29,9 @@ namespace Ximdex\Models\ORM;
 
 use Ximdex\Data\GenericData;
 
+/**
+ * @deprecated
+ */
 class PipePropertiesOrm extends GenericData
 {
     var $_idField = 'id';

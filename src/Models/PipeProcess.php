@@ -31,6 +31,7 @@ use Ximdex\Logger;
 use Ximdex\Models\ORM\PipeProcessOrm;
 
 /**
+ * @deprecated
  * @brief Describes one Pipeline process
  *
  * Describes one Pipeline process, one pipeline is actually formed by various
@@ -71,7 +72,7 @@ class PipeProcess extends PipeProcessOrm
     public function __construct($id = NULL)
     {
         parent::__construct($id);
-        if ($this->get('id')) {          
+        if ($this->get('id')) {
             $this->transitions = new \Ximdex\Pipeline\Iterators\IteratorPipeTransitions('IdPipeProcess = %s', array($id));
         }
     }

@@ -31,10 +31,10 @@ use Ximdex\Models\Node;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\Runtime\App;
 
-class ViewPrefilterMacros extends AbstractView implements IView
+class ViewPrefilterMacros extends AbstractView
 {	
-	public function transform($idVersion = NULL, $pointer = NULL, $args = NULL)
-	{    
+    public function transform(int $idVersion = null, string $pointer = null, array $args = null)
+	{
 		$content = $this->retrieveContent($pointer);
 		if (preg_match("/@@@GMximdex\.ximlet\(([0-9]+)\)@@@/", $content)) {
 			$content = preg_replace_callback("/@@@GMximdex\.ximlet\(([0-9]+)\)@@@/",  
@@ -51,33 +51,28 @@ class ViewPrefilterMacros extends AbstractView implements IView
 		return $this->storeTmpContent($content);
 	}
 
-	private function GetXimletContent($matches)
-	{    
+	private function GetXimletContent(array $matches) : string
+	{
 		$node = new Node($matches[1]);
-		if (!($node->get('IdNode') > 0)) {
+		if (! $node->get('IdNode')) {
 			return '';
 		}
 		return $node->class->GetContent();
 	}
-	  
 
-	private function GetSections_ximTree($matches) {
-
+	private function GetSections_ximTree(array $matches) : string
+	{
 		$node = new Node($matches[1]);
 		$retorno = "";
-		// $codigo = 10;
 		if ($node->nodeType->GetIsStructuredDocument()) {
 			$strdoc = new StructuredDocument($node->nodeID);
 			$langID	 = $strdoc->GetLanguage();
 			$retorno = $node->GetSections_ximTree($langID, 2, 1);
-			// $codigo = 0;
-		} else {
-			// $codigo = 15; // not structured document
 		}
 		return $retorno;
  	}
 
-	private function GetLocalPath($matches)
+	private function GetLocalPath(array $matches) : string
 	{
 		$node = new Node($matches[2]);
 		if ($node->numErr) {
