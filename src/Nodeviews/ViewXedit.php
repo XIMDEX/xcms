@@ -46,7 +46,6 @@ class ViewXedit extends AbstractView
 {	
 	private $content = null;
 	private $domDocument = null;
-	private $node = null;
 	
 	public function transform(int $idVersion = null, string $pointer = null, array $args = null)
 	{	
