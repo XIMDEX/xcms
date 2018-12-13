@@ -41,7 +41,7 @@ class ViewPrepareXIF extends AbstractView
         $content = $this->retrieveContent($pointer);
         
         // Generate the XIF xml content
-        $content = $this->node->class::createXIF($this->node->GetID(), $content, $this->channel->GetID());
+        $content = $this->node->class::createXIF($this->node, $content, $this->channel);
 
         // Return the pointer to the transformed content
         return $this->storeTmpContent($content);

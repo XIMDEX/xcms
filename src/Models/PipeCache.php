@@ -314,8 +314,8 @@ class PipeCache extends PipeCachesOrm
                 }
                 $previousVersion = new Version($previousVersionId);
                 $previousCache = new static();
-                if ($previousCache->load($previousVersion->get('IdVersion'), $idTransition, $args)) {
-                    $cacheFile = $previousCache->get('File');
+                if ($pointer = $previousCache->load($previousVersion->get('IdVersion'), $idTransition, $args)) {
+                    $cacheFile = basename($pointer);
                 }
             }
             if (! $cacheFile) {

@@ -110,7 +110,7 @@ class ViewCommon extends AbstractView
         return true;
     }
 
-
+    // TODO ajlucena adaptar a la llamada de ViewPrepareXIF
     /**
      * Create XIF format from HTML DOCUMENT NODE
      *

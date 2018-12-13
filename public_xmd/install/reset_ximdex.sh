@@ -2,7 +2,7 @@ rm ./conf/_STATUSFILE
 rm ./conf/install-params.conf.php
 rm ./conf/install-modules.php
 
-rm ./logs/*.log
+# rm ./logs/*.log
 
 rm -rf ./data/cache/pipelines/*
 rm -rf ./data/files/*
