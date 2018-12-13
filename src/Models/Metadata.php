@@ -28,7 +28,6 @@
 namespace Ximdex\Models;
 
 use DateTime;
-use Ximdex\Models\User;
 use Ximdex\Runtime\App;
 use Ximdex\Data\GenericData;
 

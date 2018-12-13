@@ -26,7 +26,6 @@
  */
 
 use Ximdex\Models\Node;
-use Ximdex\Models\PipeCacheTemplates;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\App;
@@ -118,55 +117,6 @@ class Action_edittext extends ActionAbstract
             'id_editor' => $idNode . uniqid()
         );
         $this->render($values, null, 'default-3.0.tpl');
-    }
-
-    /**
-     * If nodeType is a template display documents affected by change
-     */
-    public function publishForm()
-    {
-        $idNode = $this->request->getParam('nodeid');
-        $dataFactory = new DataFactory($idNode);
-        $lastVersion = $dataFactory->GetLastVersionId();
-        $prevVersion = $dataFactory->GetPreviousVersion($lastVersion);
-        $cacheTemplate = new PipeCacheTemplates();
-        $docs = $cacheTemplate->GetDocsContainTemplate($prevVersion);
-        if (is_null($docs)) {
-            $this->redirectTo('index');
-            return;
-        }
-        $numDocs = count($docs);
-        $docsList = [];
-        for ($i = 0; $i < $numDocs; $i++) {
-            $docsList[] = $docs[$i]['NodeId'];
-        }
-        $values = array('numDocs' => $numDocs,
-            'docsList' => implode('_', $docsList),
-            'go_method' => 'publicateDocs',
-        );
-        $this->render($values);
-
-    }
-
-    /**
-     * Publicate documents from publishForm method (above)
-     */
-    public function publicateDocs()
-    {
-        $docs = explode('_', $this->request->getParam('docsList'));
-        $syncMngr = new SyncManager();
-        $syncMngr->setFlag('deleteOld', true);
-        $syncMngr->setFlag('linked', false);
-        foreach ($docs as $documentID) {
-            $result = $syncMngr->pushDocInPublishingPool($documentID, time());
-        }
-        $arrayOpciones = array('ok' => _(' have been successfully published'),
-            'notok' => _(' have not been published, because of an error during process'),
-            'unchanged' => _(' have not been published because they are already published on its most recent version'));
-        $values = array('arrayOpciones' => $arrayOpciones,
-            'arrayResult' => $result
-        );
-        $this->render($values, NULL, 'publicationResult.tpl');
     }
 
     public function edittext()

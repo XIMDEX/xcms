@@ -38,6 +38,7 @@ define('DATA_FOLDER', App::getValue('FileRoot') . '/');
 define('TMP_FOLDER', App::getValue('TempRoot') . '/');
 
 /**
+ * @deprecated
  * @brief Support the Cache system for the pipelines
  *
  * Supports the actions load cache and delete cache, the load cache make calls to

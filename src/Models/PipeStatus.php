@@ -31,6 +31,7 @@ use Ximdex\Logger;
 use Ximdex\Models\ORM\PipeStatusOrm;
 
 /**
+ * @deprecated
  * @brief Stores the single status for a PipeTransition
  *
  * Stores the single status for a PipeTransition, this class provides just a description for the status

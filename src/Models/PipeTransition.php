@@ -34,6 +34,7 @@ use Ximdex\Runtime\App;
 define('CALLBACK_FOLDER', XIMDEX_ROOT_PATH . '/src/Nodeviews/');
 
 /**
+ * @deprecated
  * @brief Describes a Transition in the pipeline
  *
  * Describes a transition in the pipeline, a pipeline is formed by one or more Processes,
