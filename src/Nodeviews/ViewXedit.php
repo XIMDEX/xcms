@@ -49,10 +49,10 @@ class ViewXedit extends AbstractView
 	
 	public function transform(int $idVersion = null, string $pointer = null, array $args = null)
 	{	
-		$content = $this->retrieveContent($pointer);
+	    $content = self::retrieveContent($pointer);
 		if ($content == '') {
 			Logger::warning('VIEW XEDIT: empty content');
-			return $this->storeTmpContent($content);
+			return self::storeTmpContent($content);
 		}	
 		if (! $this->setNode($idVersion)) {
 			return null;
@@ -73,9 +73,9 @@ class ViewXedit extends AbstractView
 			return null;
 		}
 		if (! $this->addXslReference()) {
-			return $this->storeTmpContent($this->content);
+		    return null;
 		}
-		return $this->storeTmpContent($this->content);
+		return self::storeTmpContent($this->content);
 	}
 	
 	private function setUids()

@@ -37,7 +37,7 @@ if (isset($data['path'])) {
 if (isset($argv[2])) {
     $values['UrlFrontController'] = $argv[2];
 } else {
-    $values['UrlFrontController'] = '/public_xmd';
+    $values['UrlFrontController'] = App::getValue('UrlFrontController');
 }
 
 // Change the database config values

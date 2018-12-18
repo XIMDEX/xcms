@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -39,20 +39,19 @@ class ActionFactory
 {
     /**
      * @param $request
-     * 
      * @return mixed|null
      */
     public static function getAction($request)
     {
-        $actionRootName = "Action_";
+        $actionRootName = 'Action_';
 
         // Cogemos los datos de la accion
-        $actionPath = $request->getParam("action_path");
-        $action = $request->getParam("action");
-        $module = $request->getParam("module");
+        $actionPath = $request->getParam('action_path');
+        $action = $request->getParam('action');
+        $module = $request->getParam('module');
         $absolut_actionPath = XIMDEX_ROOT_PATH . $actionPath;
         if (! file_exists($absolut_actionPath)) {
-            $actionController = NULL;
+            $actionController = null;
         } else {
             if (empty($module)) {
                 $actionPath = XIMDEX_ROOT_PATH .
@@ -90,13 +89,14 @@ class ActionFactory
      */
     function _buildPath($request)
     {
-        $action = $request->getParam("action");
-        $actionPath = $this->request->getParam("action_path") . $action;
-        $actionClass = "/Action_" . $action . ".class.php";
+        $action = $request->getParam('action');
+        $actionPath = $this->request->getParam('action_path') . $action;
+        $actionClass = '/Action_' . $action . '.class.php';
         
         // Si no es el composer, visualizamos los logs para que no se nos llenen
-        if ($action != "composer") {
-            Logger::debug("MVC::ActionFactory Executing class Action: $actionClass | path Action: $actionPath | Method Action: " . $request->getParam("method"));
+        if ($action != 'composer') {
+            Logger::debug('MVC::ActionFactory Executing class Action: ' . $actionClass . ' | path Action: ' . $actionPath . ' | Method Action: ' 
+                . $request->getParam('method'));
         }
         return array($actionPath, $actionClass);
     }

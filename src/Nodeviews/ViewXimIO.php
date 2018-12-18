@@ -49,6 +49,6 @@ class ViewXimIO extends AbstractView
             return NULL;
         }
         $this->files = array();
-        return $this->storeTmpContent($node->ToXml(0, $this->files));
+        return self::storeTmpContent($node->ToXml(0, $this->files));
     }
 }

@@ -28,7 +28,6 @@
 use Ximdex\Models\Language;
 use Ximdex\Models\Node;
 use Ximdex\Models\Pipeline;
-use Ximdex\Models\PipeNodeTypes;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\NodeTypes\NodeTypeConstants;
 use Ximdex\Runtime\App;
@@ -48,7 +47,7 @@ class Action_renamenode extends ActionAbstract
         if ($isSection) {
             $language = new Language();
             $allLanguages = $language->find('IdLanguage, Name');
-            if (!empty($allLanguages)) {
+            if (! empty($allLanguages)) {
                 foreach ($allLanguages as $key => $languageInfo) {
                     $allLanguages[$key]['alias'] = $node->GetAliasForLang($languageInfo['IdLanguage']);
                 }
@@ -64,14 +63,6 @@ class Action_renamenode extends ActionAbstract
             $pipelineMaster = new Pipeline();
             $pipelineMaster->loadByIdNode($IdNodeForWorkflowMaster);
             $diffPipelines = array($pipelineMaster->get('id'));
-
-            // Pipelines associated with nodetypes
-            $pipeNodeTypes = new PipeNodeTypes();
-            $pipeNodeTypesList = $pipeNodeTypes->find('IdPipeline', '', NULL, MONO);
-            if (!is_array($pipeNodeTypesList)) {
-                $pipeNodeTypesList = array();
-            }
-            $diffPipelines = array_merge($diffPipelines, $pipeNodeTypesList);
             $pipeline = new Pipeline();
             $pipelineList = $pipeline->find('id', 'IdNode > 0', NULL, MONO);
             $pipelineList = array_diff($pipelineList, $diffPipelines);
@@ -91,7 +82,7 @@ class Action_renamenode extends ActionAbstract
         if (is_array($schemaType) && count($schemaType) == 1) {
             $schemaType = $schemaType[0];
         }
-        $checkUrl = App::getUrl( '/public_xmd/?actionid='
+        $checkUrl = App::getUrl('/?actionid='
             . $this->request->getParam('actionid') . '&nodeid=' . $this->request->getParam('nodeid')
             . '&id_pipeline=IDPIPELINE&method=checkNodeDependencies');
         $this->addJs('/actions/renamenode/resources/js/renamenode.js');
@@ -118,7 +109,7 @@ class Action_renamenode extends ActionAbstract
         $name = $this->request->getParam('name');
         $languages = $this->request->getParam('language');
         $node = new Node($idNode);
-        if (!$node->get('IdNode') > 0) {
+        if (! $node->get('IdNode') > 0) {
             $this->messages->add(_('Node could not be successfully loaded'), MSG_TYPE_ERROR);
             $result = false;
         } else {
@@ -126,7 +117,7 @@ class Action_renamenode extends ActionAbstract
             if ($result) {
                 $node->deleteProperty('SchemaType');
                 $schemaType = $this->request->getParam('schema_type');
-                if (!empty($schemaType) && $schemaType != 'generic_schema') {
+                if (! empty($schemaType) && $schemaType != 'generic_schema') {
                     $node->setProperty('SchemaType', $schemaType);
                 }
                 $result = $node->update();
@@ -160,7 +151,7 @@ class Action_renamenode extends ActionAbstract
         if ($result) {
             $oldIdPipeline = $node->getProperty('Pipeline');
             $newIdPipeline = $this->request->getParam('id_pipeline');
-            if (!$newIdPipeline) {
+            if (! $newIdPipeline) {
                 $newIdPipeline = NULL;
             }
             if (is_array($oldIdPipeline) and count($oldIdPipeline)) {

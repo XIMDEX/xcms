@@ -514,7 +514,7 @@ class StructuredDocument extends StructuredDocumentsOrm
     /**
      * Return an array with all the channels ID for the current node
      *
-     * @return array
+     * @return array|bool
      */
     public function GetChannels()
     {

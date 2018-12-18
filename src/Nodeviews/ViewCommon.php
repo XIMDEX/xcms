@@ -1,6 +1,7 @@
 <?php
+
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -47,79 +48,77 @@ class ViewCommon extends AbstractView
 
     public function transform(int $idVersion = null, string $pointer = null, array $args = null)
     {
-        if (!$this->_setFilePath($idVersion, $args))
-            return NULL;
-
-        if (!is_file($this->_filePath)) {
-            Logger::error('VIEW COMMON: Se ha solicitado cargar un archivo inexistente. FilePath: ' . $this->_filePath);
-            return NULL;
+        if (parent::transform($idVersion, $pointer, $args) === null) {
+            return false;
         }
-
-
-        if (!(isset($args['CHANNEL']) and $args['CHANNEL'] && isset($args['NODEID'])) && !array_key_exists('REPLACEMACROS', $args)) {
+        if (! $this->_setFilePath($idVersion, $args)) {
+            return null;
+        }
+        if (! is_file($this->_filePath)) {
+            Logger::error('VIEW COMMON: Se ha solicitado cargar un archivo inexistente. FilePath: ' . $this->_filePath);
+            return null;
+        }
+        if (! (isset($args['CHANNEL']) and $args['CHANNEL'] && isset($args['NODEID'])) && !array_key_exists('REPLACEMACROS', $args)) {
             return $pointer;
         }
-
+        $content = self::retrieveContent($this->_filePath);
+        
         // Replaces macros in content
-        $content = $this->retrieveContent($this->_filePath);
-
         $linksManager = new LinksManager();
         $content = $linksManager->removeDotDot($content);
         $content = $linksManager->removePathTo($content);
 
         // Channel
         if (isset($args['CHANNEL']) and $args['CHANNEL'] && isset($args['NODEID'])) {
-            $channel = new Channel($args['CHANNEL']);
             $server = new Server($args['SERVER']);
-            if (!$channel->GetID()) {
+            if (! $this->channel->GetID()) {
                 Logger::error('Channel not found for ID: ' . $args['CHANNEL']);
                 return false;
             }
-            if ($channel->getRenderType() && $channel->getRenderType() == Channel::RENDERTYPE_INDEX) {
-                $node = new Node($args['NODEID']);
-                if (strcmp(FsUtils::get_extension($node->GetNodeName()), 'pdf') == 0) {
-                    $content = $this->createXIF($node, $content, $channel, $server);
+            if ($this->channel->getRenderType() && $this->channel->getRenderType() == Channel::RENDERTYPE_INDEX) {
+                if (strcmp(FsUtils::get_extension($this->node->GetNodeName()), 'pdf') == 0) {
+                    $content = $this->createXIF($this->node, $content, $this->channel, $server);
                 } else {
                     return false;
                 }
             }
         }
-
-        return $this->storeTmpContent($content);
+        return self::storeTmpContent($content);
     }
 
     private function _setFilePath($idVersion = NULL, $args = array())
     {
-        if (!is_null($idVersion)) {
+        if (! is_null($idVersion)) {
             $version = new Version($idVersion);
             $file = $version->get('File');
             $this->_filePath = XIMDEX_ROOT_PATH . App::getValue('FileRoot') . '/' . $file;
         } else {
-            // Retrieves Params:
+            
+            // Retrieves Params
             if (array_key_exists('FILEPATH', $args)) {
                 $this->_filePath = $args['FILEPATH'];
             }
-            // Check Params:
-            if (!isset($this->_filePath) || $this->_filePath == "") {
+            
+            // Check Params
+            if (! isset($this->_filePath) || $this->_filePath == "") {
                 Logger::error('VIEW COMMON: No se ha especificado la version ni el path del fichero correspondiente al nodo ' 
                     . $args['NODENAME'] . ' que quiere renderizar');
-                return NULL;
+                return null;
             }
         }
-
         return true;
     }
 
-    // TODO ajlucena adaptar a la llamada de ViewPrepareXIF
     /**
      * Create XIF format from HTML DOCUMENT NODE
-     *
-     * @param $nodeID
-     * @param $content
-     * @param $channel
+     * 
+     * @param Node $node
+     * @param string $content
+     * @param Channel $channel
+     * @param Server $server
      * @return mixed
      */
-    private static function createXIF(Node $node, $content, Channel $channel, Server $server)
+    private static function createXIF(Node $node, string $content, Channel $channel, Server $server)
     {
         $sectionId = $node->GetSection();
         $ximID = App::getValue('ximid');

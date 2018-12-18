@@ -342,9 +342,6 @@ class BaseIO
                 $idNodeType = $nodeType->GetID();
                 $node = new Node();
                 $idNode = $node->CreateNode($data['NAME'], $data['PARENTID'], $idNodeType, null, $data['PATH']);
-                if (!empty($data['STATE'])) {
-                    $node->class->promoteToWorkFlowState($data['STATE']);
-                }
                 $this->_dumpMessages($node->messages);
                 if (!($idNode > 0)) {
                     return Constants::ERROR_INCORRECT_DATA;
@@ -474,20 +471,18 @@ class BaseIO
                 if (count($paths) == 1) {
                     $data['CONTENT'] = FsUtils::file_get_contents($paths[0]);
                 }
-                $data['STATE'] = NULL;
                 $language = new Language($data['LANG']);
                 $sufix = sprintf('-id%s', $language->IsoName);
                 
                 // Deleting sufix repeted, over al then the source was ximIO
                 $documentName = str_replace($sufix, '', $data['NAME']);
                 $documentName = sprintf("%s%s", $documentName, $sufix);
-                $idNode = NULL;
 
                 // XMLDOCUMENT
                 $nodeType = new NodeType();
                 $nodeType->SetByName($data['NODETYPENAME']);
                 $xmlDocument = new Node();
-                $idNode = $xmlDocument->CreateNode($documentName, $data['PARENTID'], $nodeType->get('IdNodeType'), $data['STATE']
+                $idNode = $xmlDocument->CreateNode($documentName, $data['PARENTID'], $nodeType->get('IdNodeType'), null
                     , $data['TEMPLATE'], $data['LANG'], $data['ALIASNAME'], $data['CHANNELS']);
                 if (!($idNode > 0)) {
                     return Constants::ERROR_INCORRECT_DATA;
@@ -581,9 +576,6 @@ class BaseIO
                 $idNodeType = $nodeType->GetID();
                 $node = new Node();
                 $idNode = $node->CreateNode($data['NAME'], $data['PARENTID'], $idNodeType, null, $data['PATH']);
-                if (!empty($data['STATE'])) {
-                    $node->class->promoteToWorkFlowState($data['STATE']);
-                }
                 $this->_dumpMessages($node->messages);
                 if (!($idNode > 0)) {
                     return Constants::ERROR_INCORRECT_DATA;
@@ -591,8 +583,6 @@ class BaseIO
                 return $idNode;
 
             default:
-                
-                // TODO: trigger error
                 $this->messages->add(_('An error occurred trying to insert the node'), MSG_TYPE_ERROR);
                 Logger::fatal(sprintf("Class %s does not exist in BaseIO", $nodeTypeName));
                 return Constants::ERROR_INCORRECT_DATA;
@@ -872,9 +862,6 @@ class BaseIO
                     if ($result > 0) {
                         return $result;
                     }
-                }
-                if (!empty($data['STATE'])) {
-                    $node->class->promoteToWorkFlowState($data['STATE']);
                 }
                 return $data['ID'];
 

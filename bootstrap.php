@@ -34,9 +34,6 @@ if (! defined('XIMDEX_ROOT_PATH')) {
 } else {
     return false; //only once this file
 }
-if (! defined('APP_ROOT_PATH')) {
-    define('APP_ROOT_PATH', XIMDEX_ROOT_PATH.'/public_xmd');
-}
 if (! defined('XIMDEX_VENDORS')) {
     define('XIMDEX_VENDORS', '/vendors');
 }
@@ -82,6 +79,47 @@ Logger::generate('PREVIEW', 'preview');
 // Set default log (xmd.log)
 Logger::setActiveLog();
 
+// Use config values
+define('DEFAULT_LOCALE', App::getValue('locale', 'ES_es'));
+date_default_timezone_set(App::getValue('timezone', 'Europe/Madrid'));
+
+// Set DB Connection
+$dbConfig = App::getValue('db');
+if (! empty($dbConfig)) {
+    try {
+        $dbConn = new \PDO("{$dbConfig['type']}:host={$dbConfig['host']};port={$dbConfig['port']};dbname={$dbConfig['db']};charset=utf8",
+        $dbConfig['user'], $dbConfig['password']);
+    } catch (\PDOException $e) {
+        $error = 'Can\'t connect to database at ' . $dbConfig['host'] . ':' . $dbConfig['port'] . ' (' . $e->getMessage() . ')';
+        Logger::error($error);
+        if (CLI_MODE) {
+            $color = new Colors\Color();
+            echo $color($error)->red()->bold() . PHP_EOL;
+        }
+        die();
+    }
+    $dbConn->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_ASSOC);
+    App::addDbConnection($dbConn);
+    
+    // Get Persistent Config
+    $stm = App::Db()->prepare('select * from Config');
+    $stm->execute();
+    foreach ($stm as $row) {
+        App::setValue($row['ConfigKey'], $row['ConfigValue']);
+    }
+}
+
+// From MVC
+if (! defined('RENDERER_ROOT_PATH')) {
+    define('RENDERER_ROOT_PATH', XIMDEX_ROOT_PATH . '/inc/mvc/renderers');
+}
+if (! defined('SMARTY_TMP_PATH')) {
+    define('SMARTY_TMP_PATH', XIMDEX_ROOT_PATH . App::getValue('TempRoot'));
+}
+if (! defined('APP_ROOT_PATH')) {
+    define('APP_ROOT_PATH', XIMDEX_ROOT_PATH . App::getValue('UrlFrontController'));
+}
+
 // Initialize Modules Manager
 $modulesFile = Ximdex\Modules\Manager::get_modules_install_params();
 if (file_exists(XIMDEX_ROOT_PATH . $modulesFile)) {
@@ -106,36 +144,6 @@ foreach ($matches[1] as $key => $value) {
     App::setValue($value, str_replace('\'', '', $matches[2][$key]));
 }
 
-// Use config values
-define('DEFAULT_LOCALE', App::getValue('locale', 'ES_es'));
-date_default_timezone_set(App::getValue('timezone', 'Europe/Madrid'));
-
-// Set DB Connection
-$dbConfig = App::getValue('db');
-if (! empty($dbConfig)) {
-	try {
-    	$dbConn = new \PDO("{$dbConfig['type']}:host={$dbConfig['host']};port={$dbConfig['port']};dbname={$dbConfig['db']};charset=utf8",
-        		$dbConfig['user'], $dbConfig['password']);
-	} catch (\PDOException $e) {
-	    $error = 'Can\'t connect to database at ' . $dbConfig['host'] . ':' . $dbConfig['port'] . ' (' . $e->getMessage() . ')';
-	    Logger::error($error);
-	    if (CLI_MODE) {
-	        $color = new Colors\Color();
-	        echo $color($error)->red()->bold() . PHP_EOL;
-	    }
-		die();
-	}
-    $dbConn->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_ASSOC);
-    App::addDbConnection($dbConn);
-
-    // Get Persistent Config
-    $stm = App::Db()->prepare('select * from Config');
-    $stm->execute();
-    foreach ($stm as $row) {
-        App::setValue($row['ConfigKey'], $row['ConfigValue']);
-    }
-}
-
 // special objects (pseudo-DI)
 class_alias('Ximdex\Utils\Messages', 'Messages');
 App::setValue('class::definition::DB', '/inc/db/DB.class.php');
@@ -155,13 +163,7 @@ foreach (Ximdex\Modules\Manager::getEnabledModules() as $module) {
     }
 }
 
-// FROM MVC
-if (! defined('RENDERER_ROOT_PATH')) {
-    define('RENDERER_ROOT_PATH', XIMDEX_ROOT_PATH . '/inc/mvc/renderers');
-}
-if (! defined('SMARTY_TMP_PATH')) {
-    define('SMARTY_TMP_PATH', XIMDEX_ROOT_PATH . App::getValue('TempRoot'));
-}
+// CLI load
 if (XIMDEX_DIRECT && CLI_MODE && isset($argv[1])) {
 
     /* e.g:  $ /bootstrap.php src/Sync/scripts/scheduler/scheduler.php

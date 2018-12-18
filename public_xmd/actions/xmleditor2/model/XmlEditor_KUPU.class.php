@@ -31,13 +31,13 @@ use Ximdex\Models\Language;
 use Ximdex\Models\Node;
 use Ximdex\Models\RelSemanticTagsNodes;
 use Ximdex\Models\User;
+use Ximdex\Models\Transition;
 use Ximdex\Parsers\ParsingJsGetText;
 use Ximdex\Parsers\ParsingRng;
 use Ximdex\Parsers\ParsingXsl;
 use Ximdex\Runtime\App;
 use Ximdex\Runtime\DataFactory;
 use Ximdex\Utils\FsUtils;
-use Ximdex\Utils\PipelineManager;
 use Ximdex\Logger;
 use Ximdex\Sync\SynchroFacade;
 use Ximdex\Nodeviews\ViewPreviewInServer;
@@ -471,7 +471,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
     public function getXmlFile($idNode, $view = null, $content = null)
     {
         if (!$this->setNode($idNode)) {
-            Logger::error(_("A non-existing node content cannot be obtained: ") . $idNode);
+            Logger::error('A non-existing node content cannot be obtained: ' . $idNode);
             return false;
         }
 
@@ -497,9 +497,14 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
         }
         $args['CONTENT'] = $content;
         $args['CALLER'] = 'xEDIT';
-        $pipelineManager = new PipelineManager();
-        $content = $pipelineManager->getCacheFromProcessAsContent($lastVersion, 'StrDocToXedit', $args);
-        exec(sprintf('rm -f %s%s/preview_%s_*', XIMDEX_ROOT_PATH, App::getValue('TempRoot'), $_GET["nodeid"]));
+        $transition = new Transition();
+        try {
+            $file = $transition->process('FromXeditToPreFilter', $args, $lastVersion);
+        } catch (Exception $e) {
+            Logger::error($e->getMessage());
+            return false;
+        }
+        $content = FsUtils::file_get_contents($file);
         return $content;
     }
 

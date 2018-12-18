@@ -45,12 +45,12 @@ abstract class AbstractView implements IView
         // Base node
         if (! isset($args['NODEID']) || empty($args['NODEID'])) {
             Logger::error('Argument nodeId not found in ViewPrepareHTML');
-            return null;
+            return false;
         }
         $node = new Node($args['NODEID']);
         if (! $node->GetID()) {
             Logger::error('Node not found for ID: ' . $args['NODEID']);
-            return null;
+            return false;
         }
         $this->node = $node;
         
@@ -59,16 +59,16 @@ abstract class AbstractView implements IView
             $channel = new Channel($args['CHANNEL']);
             if (! $channel->GetID()) {
                 Logger::error('Channel not found for ID: ' . $args['CHANNEL']);
-                return null;
+                return false;
             }
             $this->channel = $channel;
         } else {
             $this->channel = null;
         }
-        return '';
+        return true;
     }
     
-    public function storeTmpContent(string $content) : ?string
+    public static function storeTmpContent(string $content) : ?string
     {
         // Si el contenido es una variable que contiene false ha ocurrido un error
         if ($content !== false)
@@ -82,7 +82,7 @@ abstract class AbstractView implements IView
             }
             Logger::debug('Storing temporal file in ' . $file);
             if (FsUtils::file_put_contents($file, $content)) {
-                Logger::info($file . ' has been saved');
+                Logger::debug($file . ' has been saved');
                 return $file;
             }
         }
@@ -95,7 +95,7 @@ abstract class AbstractView implements IView
         return null;
     }
 
-    public function retrieveContent(string $pointer)
+    public static function retrieveContent(string $pointer)
     {
         return FsUtils::file_get_contents($pointer);
     }

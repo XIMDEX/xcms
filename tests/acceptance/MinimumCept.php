@@ -84,7 +84,7 @@ $I->see('Picasso', '.header');
 $I->see('Cubism', '.header');
 
 // Expiration text
-$I->amOnPage('/public_xmd');
+$I->amOnPage(App::getValue('UrlFrontController'));
 $I->wait(3);
 
 open_picasso_menu($I);

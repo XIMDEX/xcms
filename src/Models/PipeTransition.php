@@ -199,7 +199,8 @@ class PipeTransition extends PipeTransitionsOrm
 			}
 		} else {
 			$idTransition = $this->get('id');
-			Logger::error('Method $function not found when calling to the view (IdVersion: ' . $idVersion . ', Transition: ' . $idTransition . ')');
+			Logger::error('Method $function not found when calling to the view (IdVersion: ' . $idVersion . ', Transition: ' 
+			    . $idTransition . ')');
 			$transformedPointer = $pointer;
 		}
 		$timer->stop();

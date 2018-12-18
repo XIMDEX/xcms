@@ -461,7 +461,7 @@ class HTMLDocumentNode extends AbstractStructuredDocument
         $content_payload = $xml->addChild('content-payload');
         $content_payload->addChild('language', $info['language']);
         $content_payload->addChild('image', ! empty($info['metadata']['image']) ?
-            $info['metadata']['image'] : '');
+            $info['metadata']['image'] : 'null');
         $content_payload->addChild('author', ! empty($info['metadata']['author']) ?
             $info['metadata']['author'] : 'No author');
         $content_payload->addChild('date', ! empty($info['metadata']['date']) ?

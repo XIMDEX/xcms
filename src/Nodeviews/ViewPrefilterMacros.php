@@ -35,7 +35,10 @@ class ViewPrefilterMacros extends AbstractView
 {	
     public function transform(int $idVersion = null, string $pointer = null, array $args = null)
 	{
-		$content = $this->retrieveContent($pointer);
+	    $content = self::retrieveContent($pointer);
+		if ($content === false) {
+		    return false;
+		}
 		if (preg_match("/@@@GMximdex\.ximlet\(([0-9]+)\)@@@/", $content)) {
 			$content = preg_replace_callback("/@@@GMximdex\.ximlet\(([0-9]+)\)@@@/",  
 				array($this,'GetXimletContent'), $content);
@@ -48,7 +51,7 @@ class ViewPrefilterMacros extends AbstractView
 			$content = preg_replace_callback('/ a_import_enlaceid([A-Za-z0-9|\_]+)\s*=\s*\"([^\"]+)\"/i' ,  
 				array($this, 'GetLocalPath'), $content);
 		}
-		return $this->storeTmpContent($content);
+		return self::storeTmpContent($content);
 	}
 
 	private function GetXimletContent(array $matches) : string

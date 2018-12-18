@@ -36,9 +36,9 @@ class ViewPublishHTML extends AbstractView
     public function transform(int $idVersion = null, string $pointer = null, array $args = null)
     {
         // Get the content
-        $content = $this->retrieveContent($pointer);
+        $content = self::retrieveContent($pointer);
         
         // Return the pointer to the transformed content
-        return $this->storeTmpContent($content);
+        return self::storeTmpContent($content);
     }
 }

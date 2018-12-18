@@ -47,7 +47,7 @@ class ViewNodeToRenderizedContent extends AbstractView
 
     public function transform(int $idVersion = null, string $pointer = null, array $args = null)
     {
-        $content = $this->retrieveContent($pointer);
+        $content = self::retrieveContent($pointer);
         if (! $this->_setNode($idVersion)) {
             return null;
         }
@@ -86,7 +86,7 @@ class ViewNodeToRenderizedContent extends AbstractView
         }
         $transformedContent .= $this->_content . "\n";
         $transformedContent .= "</docxap>\n";
-        return $this->storeTmpContent($transformedContent);
+        return self::storeTmpContent($transformedContent);
     }
 
     private function _setNode($idVersion = null)
@@ -110,7 +110,7 @@ class ViewNodeToRenderizedContent extends AbstractView
     {
         if ($this->_structuredDocument && empty($content)) {
             
-            // Return BD content if no content param.
+            // Return BD content if no content param
             $this->_content = $this->_structuredDocument->GetContent();
         } else {
             $this->_content = $content;

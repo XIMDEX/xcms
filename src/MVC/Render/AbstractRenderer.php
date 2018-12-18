@@ -211,7 +211,7 @@ class AbstractRenderer
             $this->set("base_module", XIMDEX_ROOT_PATH . \Ximdex\Modules\Manager::path($module) . "/");
             $this->set("module", $module);
         } else {
-            $base_action = "/public_xmd/actions/" . $action_command . "/";
+            $base_action = App::getValue('UrlFrontController') . "/actions/" . $action_command . "/";
         }
         return $base_action;
     }

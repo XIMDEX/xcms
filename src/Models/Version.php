@@ -72,4 +72,21 @@ class Version extends VersionsOrm
         }
         return null;
     }
+    
+    /**
+     * Remove all cache generated for the current version
+     * @throws \Exception
+     */
+    public function deleteCache()
+    {
+        if (! $this->IdVersion) {
+            throw new \Exception('No version specified to delete cache');
+        }
+        $cache = new TransitionCache();
+        $cache = $cache->find('id', 'versionId = ' . $this->IdVersion, null, MONO);
+        foreach ($cache as $id) {
+            $cache = new TransitionCache($id);
+            $cache->delete();
+        }
+    }
 }

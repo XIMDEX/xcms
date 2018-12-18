@@ -59,7 +59,7 @@ class Action_modifyrole extends ActionAbstract
          * Usually it is the Workflow master
          */
         $selectedPipeline = $this->request->getParam('id_pipeline');
-        if (!($selectedPipeline > 0)) {
+        if (! $selectedPipeline) {
             $selectedPipeline = App::getValue('IdDefaultWorkflow');
             $pipeline = new Pipeline();
             $pipeline->loadByIdNode($selectedPipeline);
@@ -95,18 +95,13 @@ class Action_modifyrole extends ActionAbstract
 
     protected function getAllNodeTypes($allStates, $role, $selectedPipeline)
     {
-        /*
-        for ($i = \Ximdex\NodeTypes\NodeTypeConstants::USER_MANAGER; $i < \Ximdex\NodeTypes\NodeTypeConstants::PROJECTS; $i++) {
-            $groupeds[$i] = _("Control center permissions");
-        }
-        */
         $nodeType = new NodeType();
         $allNodeTypes = $nodeType->find('IdNodeType, Description, IsPublishable, Module');
         reset($allNodeTypes);
         $respAllNodeTypes = [];
         foreach($allNodeTypes as $i => $nodeType){
 
-            // Skipping permissions for actions in disabled modules.
+            // Skipping permissions for actions in disabled modules
             if (!empty($nodeType['Module']) && !\Ximdex\Modules\Manager::isEnabled($allNodeTypes[$i]['Module'])) {
                 continue;
             }

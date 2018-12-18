@@ -29,17 +29,17 @@ use Ximdex\Logger;
 use Ximdex\Helpers\ServerConfig;
 use Ximdex\Models\Group;
 use Ximdex\Models\Node;
-use Ximdex\Models\PipeTransition;
 use Ximdex\Models\Role;
 use Ximdex\Models\Server;
 use Ximdex\Models\User;
 use Ximdex\Models\NodesToPublish;
 use Ximdex\MVC\ActionAbstract;
-use Ximdex\Runtime\DataFactory;
 use Ximdex\Utils\Serializer;
 use Ximdex\Sync\SynchroFacade;
 use Ximdex\Workflow\WorkFlow;
 use Ximdex\Runtime\Constants;
+use Ximdex\Models\PipeTransition;
+use Ximdex\Runtime\DataFactory;
 
 Ximdex\Modules\Manager::file('/actions/browser3/inc/GenericDatasource.class.php');
 
@@ -432,7 +432,7 @@ class Action_workflow_forward extends ActionAbstract
      * @param int $idState : target state to promote the node
      * @return bool
      */
-    private function promoteNode($idNode, $idState) : bool
+    private function promoteNode(int $idNode, int $idState) : bool
     {
         $node = new Node($idNode);
         $idActualState = $node->get('IdState');

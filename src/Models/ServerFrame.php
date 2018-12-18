@@ -33,7 +33,6 @@ use Ximdex\NodeTypes\HTMLDocumentNode;
 use Ximdex\NodeTypes\NodeTypeConstants;
 use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
-use Ximdex\Utils\PipelineManager;
 use Ximdex\Runtime\Db;
 
 include_once XIMDEX_ROOT_PATH . '/src/Sync/conf/synchro_conf.php';
@@ -288,34 +287,36 @@ class ServerFrame extends ServerFramesOrm
         $transformer = $node->getProperty('Transformer');
         $data['TRANSFORMER'] = $transformer[0];
         $data['NODEID'] = $idNode;
-        $pipeMng = new PipelineManager();
+        $transition = new Transition();
         if (! is_null($channelId) && $node->nodeType->GetIsStructuredDocument()) {
             if ($node->GetNodeType() == NodeTypeConstants::HTML_DOCUMENT) {
                 $channel = new Channel($channelId);
                 if ($channel->getRenderType() == HTMLDocumentNode::MODE_INDEX) {
-                    $process = 'XIFToPublished';
+                    $process = 'PublishXIF';
                 } else {
-                    $process = 'HTMLToPublished';
+                    $process = 'PublishHTML';
                 }
             } else {
-                $process = 'StrDocFromDexTToFinal';
+                $process = 'PublishXML';
             }
-            $content = $pipeMng->getCacheFromProcessAsContent($idVersion, $process, $data);
-            if ($content === false) {
-                Logger::error('Cannot load the cache or actual version content for version: ' . $idVersion);
+            try {
+                $file = $transition->process($process, $data, $idVersion);
+            } catch (\Exception $e) {
+                Logger::error($e->getMessage());
                 return false;
             }
-            if ($content === null) {
+            if ($file === null) {
                 return null;
             }
-            $nodeTypeContent = $node->nodeType->get('Name');
+            $content = FsUtils::file_get_contents($file);
             
-            // Only encoding the content if the node is not one of this 3.
-            if (! (($nodeTypeContent == 'ImageFile') || ($nodeTypeContent == 'BinaryFile'))) {
+            // Only encoding the content if the node is not one of this 3
+            $nodeTypeContent = $node->nodeType->get('Name');
+            if ($nodeTypeContent != 'ImageFile' and $nodeTypeContent != 'BinaryFile') {
                 
                 // Looking for idEncode for this server
                 $db = new \Ximdex\Runtime\Db();
-                $sql = "SELECT idEncode FROM Servers WHERE IdServer=" . $server;
+                $sql = 'SELECT idEncode FROM Servers WHERE IdServer = ' . $server;
                 $db->Query($sql);
                 $encodingServer = $db->GetValue("idEncode");
                 Logger::info("Encoding content to " . $encodingServer . ' with server: ' . $server);
@@ -332,7 +333,13 @@ class ServerFrame extends ServerFramesOrm
             if ($node->nodeType->get('Name') == 'XslTemplate') {
                 $data['REPLACEMACROS'] = 'yes';
             }
-            $file = $pipeMng->getCacheFromProcess($idVersion, 'NotStrDocToFinal', $data);
+            // $file = $pipeMng->getCacheFromProcess($idVersion, 'NotStrDocToFinal', $data);
+            try {
+                $file = $transition->process('ToFinal', $data, $idVersion);
+            } catch (\Exception $e) {
+                Logger::error($e->getMessage());
+                return false;
+            }
             FsUtils::copy($file, $path);
         }
         clearstatcache();

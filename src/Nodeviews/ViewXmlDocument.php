@@ -34,8 +34,10 @@ class ViewXmlDocument extends AbstractView
 {
     public function transform(int $idVersion = null, string $pointer = null, array $args = null)
     {
-        parent::transform($idVersion, $pointer, $args);
-        $content = $this->retrieveContent($pointer);
+        if (parent::transform($idVersion, $pointer, $args) === null) {
+            return false;
+        }
+        $content = self::retrieveContent($pointer);
         $name = $this->node->get('Name');
         $nodeType = $this->node->getNodeType();
         if ($nodeType != NodeTypeConstants::XML_DOCUMENT && $name != 'docxap.xsl') {
@@ -58,7 +60,7 @@ class ViewXmlDocument extends AbstractView
                 $content = $this->removeStylesheet($content);
             }
         }
-        return $this->storeTmpContent($content);
+        return self::storeTmpContent($content);
     }
 
     private function addDocxap(Node $node)

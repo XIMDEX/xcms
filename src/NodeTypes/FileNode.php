@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -31,7 +31,6 @@ use Ximdex\Runtime\DataFactory;
 use DOMDocument;
 use Ximdex\Deps\DepsManager;
 use Ximdex\Models\NodeDependencies;
-use Ximdex\Models\State;
 use Ximdex\Models\Version;
 use Ximdex\Models\Node;
 use Ximdex\Parsers\ParsingDependencies;
@@ -253,31 +252,6 @@ class FileNode extends Root
     function RenameNode($name = null)
     {
         $this->updatePath();
-    }
-
-    /**
-     * Promotes the File to the next workflow state.
-     * 
-     * @param string newState
-     * @return bool
-     */
-    public function promoteToWorkFlowState($newState)
-    {
-        $state = new State();
-        $idState = $state->loadByName($newState);
-        $idActualState = $this->parent->GetState();
-        if ($idState == $idActualState) {
-            Logger::warning('It have requested to pass to an status, and that status is now the current one');
-            return true;
-        }
-        baseIO_CambiarEstado($this->nodeID, $idState);
-        $lastState = new State();
-        $idLastState = $lastState->loadLastState();
-        if ($idState == $idLastState) {
-            $up = time();
-            $down = $up + 36000000; // unpublish date = dateup + 1year
-            baseIO_PublishDocument($this->nodeID, $up, $down, null);
-        }
     }
     
     /**

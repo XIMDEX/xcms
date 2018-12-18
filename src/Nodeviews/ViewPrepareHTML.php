@@ -43,7 +43,9 @@ class ViewPrepareHTML extends AbstractView
      */
     public function transform(int $idVersion = null, string $pointer = null, array $args = null)
     {
-        parent::transform($idVersion, $pointer, $args);
+        if (parent::transform($idVersion, $pointer, $args) === null) {
+            return false;
+        }
         
         // Channel
         if ($this->channel) {
@@ -57,7 +59,7 @@ class ViewPrepareHTML extends AbstractView
         }
 
         // Get the content
-        $content = $this->retrieveContent($pointer);
+        $content = self::retrieveContent($pointer);
         $document = ($content !== false) ? HTMLDocumentNode::renderHTMLDocument($this->node->GetID(), $content
             , $this->channel->GetID(), $mode) : false;
 
@@ -71,7 +73,7 @@ class ViewPrepareHTML extends AbstractView
         }
 
         // Return the pointer to the transformed content
-        return $this->storeTmpContent($document);
+        return self::storeTmpContent($document);
     }
 
     /**
@@ -80,7 +82,7 @@ class ViewPrepareHTML extends AbstractView
      */
     private function getCodeTranslation(array $matches): string
     {
-        if (! $this->channelID) {
+        if (! $this->channel) {
 
             // Get channel if there is not one specified
             $properties = InheritedPropertiesManager::getValues($this->nodeID, true);
@@ -90,10 +92,10 @@ class ViewPrepareHTML extends AbstractView
             }
             $channelProp = current($properties['Channel']);
             $channelID = $channelProp['Id'];
+            $channel = new Channel($channelID);
         } else {
-            $channelID = $this->channelID;
+            $channel = $this->channel;
         }
-        $channel = new Channel($channelID);
         if (! $channel->GetID()) {
             Logger::error('Cannot load the channel with ID: ' . $channelID);
             return '';

@@ -63,7 +63,7 @@ class Server extends ServersOrm
     
     public function resetForPumping() : bool
     {
-        if (!$this->CyclesToRetryPumping) {
+        if (! $this->CyclesToRetryPumping) {
             return true;
         }
         $this->ActiveForPumping = 1;
@@ -96,7 +96,7 @@ class Server extends ServersOrm
         }
         $this->ActiveForPumping = 0;
         $this->CyclesToRetryPumping = $this->CyclesToRetryPumping + 1;
-        if (!$nonStopServer or (self::MAX_CYCLES_TO_RETRY_PUMPING and $this->CyclesToRetryPumping > self::MAX_CYCLES_TO_RETRY_PUMPING)) {
+        if (! $nonStopServer or (self::MAX_CYCLES_TO_RETRY_PUMPING and $this->CyclesToRetryPumping > self::MAX_CYCLES_TO_RETRY_PUMPING)) {
                 
             // Disable the server permanently
             $this->DelayTimeToEnableForPumping = null;
@@ -111,7 +111,7 @@ class Server extends ServersOrm
         } else {
             
             // Disable the server temporally
-            if (!$delayTime) {
+            if (! $delayTime) {
                 $delayTime = pow($this->CyclesToRetryPumping, 3) * self::SECONDS_TO_WAIT_FOR_RETRY_PUMPING;
             }
             if ($delayTime > 86400) {
@@ -135,12 +135,13 @@ class Server extends ServersOrm
     
     public function stats(int $portalId = null) : array
     {
-        if (!$this->IdServer) {
+        if (! $this->IdServer) {
             throw new \Exception('No server selected');
         }
         $sql = 'SELECT SUM(ServerFramesTotal) AS total, SUM(IF (`State` != \'' . Batch::STOPPED . '\', ServerFramesPending, 0)) AS pending';
         $sql .= ', SUM(IF (`State` != \'' . Batch::STOPPED . '\', ServerFramesActive, 0)) AS active';
-        $sql .= ', SUM(IF (`State` = \'' . Batch::STOPPED . '\', ServerFramesActive + ServerFramesPending, 0)) AS stopped';
+        $sql .= ', SUM(IF (`State` = \'' . Batch::STOPPED 
+            . '\', ServerFramesActive + ServerFramesPending + ServerFramesTemporalError, 0)) AS stopped';
         $sql .= ', SUM(ServerFramesSuccess) AS success, SUM(ServerFramesFatalError) AS fatal, SUM(ServerFramesTemporalError) AS soft';
         $sql .= ' FROM Batchs WHERE ServerId = ' . $this->IdServer;
         if ($portalId) {
@@ -152,7 +153,7 @@ class Server extends ServersOrm
             throw new \Exception('SQL error');
         }
         $stats = [];
-        if (!$db->numRows) {
+        if (! $db->numRows) {
             throw new \Exception('There is not stats information for the server');
         }
         $stats['total'] = (int) $db->GetValue('total');

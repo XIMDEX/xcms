@@ -31,7 +31,7 @@ class ViewDependencies extends AbstractView
 {
     public function transform(int $idVersion = null, string $pointer = null, array $args = null)
     {
-        $content = $this->retrieveContent($pointer);
-        return $this->storeTmpContent($content);
+        $content = self::retrieveContent($pointer);
+        return self::storeTmpContent($content);
     }
 }

@@ -39,7 +39,7 @@ class ViewTARGZ extends AbstractView
 {
     public function transform(int $idVersion = null, string $pointer = null, array $args = null)
     {
-        $content = $this->retrieveContent($pointer);
+        $content = self::retrieveContent($pointer);
         
         // Validating data
         $version = new Version($idVersion);
@@ -84,7 +84,7 @@ class ViewTARGZ extends AbstractView
 
         // Removing tar extension
         rename($tarFile . '.tar', $tarFile);
-        return $this->storeTmpContent($arrayContent[0]);
+        return self::storeTmpContent($arrayContent[0]);
     }
 
     /**

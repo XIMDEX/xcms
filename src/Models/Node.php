@@ -39,7 +39,6 @@ use Ximdex\Properties\InheritedPropertiesManager;
 use Ximdex\Runtime\App;
 use Ximdex\Runtime\DataFactory;
 use Ximdex\Utils\FsUtils;
-use Ximdex\Utils\PipelineManager;
 use Ximdex\Runtime\Session;
 use Ximdex\Workflow\WorkFlow;
 use Ximdex\XML\Base;
@@ -1155,7 +1154,7 @@ class Node extends NodesOrm
      * @param null $idNodeType
      * @return bool|null|string
      */
-    function getFirstStatus($idParent = NULL, $idNodeType = NULL)
+    function getFirstStatus($idParent = null, $idNodeType = null)
     {
         if (empty($idParent)) {
             $idParent = $this->get('IdNode');
@@ -1163,40 +1162,24 @@ class Node extends NodesOrm
         if (empty($idNodeType)) {
             $idNodeType = $this->get('IdNodeType');
         }
-
         $nodeType = new NodeType($idNodeType);
-        if (!($nodeType->get('IsPublishable') > 0)) {
-            return NULL;
+        if (! $nodeType->get('IsPublishable')) {
+            return null;
         }
-
         $node = new Node($idParent);
 
-        // first, I try to get it from the inherits properties
+        // First, I try to get it from the inherits properties
         $pipelines = $node->getProperty('Pipeline');
         if (count($pipelines) > 0) {
             $idPipeline = $pipelines[0];
-            $workflow = new WorkFlow(NULL, NULL, $idPipeline);
+            $workflow = new WorkFlow(null, null, $idPipeline);
             $idStatus = $workflow->GetInitialState();
             if ($idStatus > 0) {
                 return $idStatus;
             }
         }
 
-        // if i cant find it, i try to get it from the nodetypes
-        $pipeNodeTypes = new PipeNodeTypes();
-        $result = $pipeNodeTypes->find('IdPipeline', 'IdNodeType = %s', array(
-            $idNodeType
-        ), MONO);
-        if (count($result) > 0) {
-            $idPipeline = $result[0];
-            $workflow = new WorkFlow(NULL, NULL, $idPipeline);
-            $idStatus = $workflow->GetInitialState();
-            if ($idStatus > 0) {
-                return $idStatus;
-            }
-        }
-
-        // finally, i get it from the default value
+        // Finally, i get it from the default value
         $idPipeline = App::getValue('IdDefaultWorkflow');
         $workflow = new WorkFlow(NULL, NULL, $idPipeline);
         return $workflow->GetInitialState();
@@ -2954,7 +2937,7 @@ class Node extends NodesOrm
                 if ($db->getValue('IdNode') < 1) {
                     break;
                 }
-                $nodeProperty = new \Ximdex\Models\NodeProperty();
+                $nodeProperty = new NodeProperty();
                 $propertyValue = $nodeProperty->getProperty($db->getValue('IdNode'), $property);
                 if (!is_null($propertyValue)) {
                     return $propertyValue;
@@ -2962,7 +2945,7 @@ class Node extends NodesOrm
                 $db->Next();
             }
         } else {
-            $nodeProperty = new \Ximdex\Models\NodeProperty();
+            $nodeProperty = new NodeProperty();
             return $nodeProperty->getProperty($this->get('IdNode'), $property);
         }
         Logger::warning(sprintf("Property %s not found for node %d", $property, $this->get('IdNode')));
@@ -3567,7 +3550,7 @@ class Node extends NodesOrm
                 return false;
             }
 
-            // Populates variables and view/pipelines args
+            // Populates variables and view args
             $idSection = $this->GetSection();
             $idProject = $this->GetProject();
             $idServerNode = $this->getServer();
@@ -3608,13 +3591,14 @@ class Node extends NodesOrm
             }
             $args['TRANSFORMER'] = $transformer[0];
             if ($this->GetNodeType() == NodeTypeConstants::HTML_DOCUMENT) {
-                $process = 'HTMLToPrepared';
+                $process = 'PrepareHTML';
             } else {
-                $process = 'StrDocToDexT';
+                $process = 'FromPreFilterToDexT';
             }
-            $pipelineManager = new PipelineManager();
-            $file = $pipelineManager->getCacheFromProcess(NULL, $process, $args);
-            if ($file === false) {
+            $transition = new Transition();
+            try {
+                $file = $transition->process($process, $args);
+            } catch (\Exception $e) {
 
                 // The transformation process did not work !
                 if ($this->GetNodeType() == NodeTypeConstants::XML_DOCUMENT) {

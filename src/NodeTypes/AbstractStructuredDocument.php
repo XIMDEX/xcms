@@ -31,7 +31,6 @@ use Ximdex\Runtime\App;
 use Ximdex\Runtime\DataFactory;
 use Ximdex\Deps\DepsManager;
 use Ximdex\Models\NodeType;
-use Ximdex\Utils\PipelineManager;
 use Ximdex\Models\Dependencies;
 use Ximdex\Models\RelSemanticTagsNodes;
 use Ximdex\Models\Channel;
@@ -45,6 +44,7 @@ use Ximdex\Runtime\Session;
 use Ximdex\Properties\ChannelProperty;
 use Ximdex\Models\NodeProperty;
 use Ximdex\Models\SemanticNamespaces;
+use Ximdex\Models\Transition;
 
 define('DOCXAP_VIEW', 1);
 define('SOLR_VIEW', 2);
@@ -453,22 +453,6 @@ abstract class AbstractStructuredDocument extends FileNode
     }
 
     /**
-     * @deprecated
-     * @return array
-     */
-    function GetAllGenerations()
-    {
-        $result = array();
-        $chanList = $this->GetChannels();
-        if ($chanList) {
-            foreach ($chanList as $chanID) {
-                $result[] = array('channel' => $chanID, 'content' => $this->Generate($chanID));
-            }
-        }
-        return $result;
-    }
-
-    /**
      * Return true if the specified channel ID is in the node's properties
      * @param $channelID
      * @return bool
@@ -653,23 +637,29 @@ abstract class AbstractStructuredDocument extends FileNode
      */
     private function Generate($channel)
     {
-        $nodeid = $this->nodeID;
-        $node = new Node($nodeid);
-        $dataFactory = new DataFactory($nodeid);
+        $nodeId = $this->nodeID;
+        $node = new Node($nodeId);
+        $dataFactory = new DataFactory($nodeId);
         $version = $dataFactory->GetLastVersionId();
         $data = [];
         $data['CHANNEL'] = $channel;
         $transformer = $node->getProperty('Transformer');
         $data['TRANSFORMER'] = $transformer[0];
         $data['DISABLE_CACHE'] = App::getValue("DisableCache");
-        $data['NODEID'] = $nodeid;
+        $data['NODEID'] = $nodeId;
         if ($node->GetNodeType() == NodeTypeConstants::HTML_DOCUMENT) {
-            $process = 'HTMLToPrepared';
+            $process = 'PrepareHTML';
         } else {
-            $process = 'StrDocToDexT';
+            $process = 'FromPreFilterToDexT';
         }
-        $pipeMng = new PipelineManager();
-        $content = $pipeMng->getCacheFromProcessAsContent($version, $process, $data);
+        $transition = new Transition();
+        try {
+            $file = $transition->process($process, $data, $version);
+        } catch (\Exception $e) {
+            Logger::error($e->getMessage());
+            return false;
+        }
+        $content = FsUtils::file_get_contents($file);
         return $content;
     }
 

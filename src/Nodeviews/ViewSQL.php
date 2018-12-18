@@ -37,7 +37,7 @@ class ViewSQL extends AbstractView
 {    
     public function transform(int $idVersion = null, string $pointer = null, array $args = null)
     {
-		$content = $this->retrieveContent($pointer);
+        $content = self::retrieveContent($pointer);
 		$version = new Version($idVersion);
 		if (! $version->get('IdVersion')) {
 			Logger::error("Se ha cargado una versión incorrecta ($idVersion)");
@@ -49,7 +49,7 @@ class ViewSQL extends AbstractView
 			return null;
 		}
 		$content = $content . '<sql_content>' . $this->getSQLContent($node->get('IdNode'), $args) . '</sql_content>';
-		return $this->storeTmpContent($content);
+		return self::storeTmpContent($content);
 	}
 
 	private function getSQLContent($nodeId, $args)

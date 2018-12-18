@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -28,18 +28,19 @@
 namespace Ximdex\Workflow;
 
 use Ximdex\Models\Pipeline;
-use Ximdex\Models\PipeNodeTypes;
 use Ximdex\Models\PipeProcess;
 use Ximdex\Models\PipeStatus;
 use Ximdex\Models\Role;
 use Ximdex\Models\Node;
-use Ximdex\Logger;
 use Ximdex\Runtime\App;
 
 define('WORKFLOW_PROCESS_NAME', 'workflow');
 
 class WorkFlow
 {
+    const WORKFLOW_ACTIONS_DIR = 'src/Workflow/Actions';
+    const WORKFLOW_ACTIONS_NAMESPACE = 'Ximdex\\Workflow\\Actions\\';
+    
     /**
      * @var $pipeStatus PipeStatus
      */
@@ -54,36 +55,25 @@ class WorkFlow
      * @var $pipeline Pipeline
      */
     var $pipeline;
-    
-    const WORKFLOW_ACTIONS_DIR = 'src/Workflow/Actions';
-    const WORKFLOW_ACTIONS_NAMESPACE = 'Ximdex\\Workflow\\Actions\\';
 
-    public function __construct($idNode, $idStatus = NULL, $idPipelineNode = NULL)
+    public function __construct($idNode, $idStatus = null, $idPipelineNode = null)
     {
-        if (!($idPipelineNode > 0)) {
-            if ($idNode)
-            {
+        if (! $idPipelineNode) {
+            if ($idNode) {
                 $node = new Node($idNode);
                 $propertyPipeline = $node->getProperty('Pipeline');
                 $propertyPipeline = $propertyPipeline[0];
                 if ($propertyPipeline > 0) {
                     $idPipelineNode = $propertyPipeline;
-                } else {
-                    $idNodeType = $node->get('IdNodeType');
-                    $pipeNodetype = new PipeNodeTypes();
-                    $result = $pipeNodetype->find('IdPipeline', 'IdNodeType = %s', array($idNodeType), MONO);
-                    if (count($result) === 1) {
-                        $idPipelineNode = $result[0];
-                    }
                 }
             }
-            if (!$idNode or $idPipelineNode == NULL) {
+            if (! $idNode or $idPipelineNode == null) {
                 $idPipelineNode =  App::getValue('IdDefaultWorkflow');
             }
         }
         $this->pipeStatus = new PipeStatus($idStatus);
         $this->pipeline = new Pipeline($idPipelineNode);
-        if (!$this->pipeline->get('id') > 0) {
+        if (! $this->pipeline->get('id')) {
             $this->pipeline->loadByIdNode($idPipelineNode);
         }
         $this->pipeProcess = new PipeProcess($this->pipeline->processes->first()->id);
@@ -165,7 +155,7 @@ class WorkFlow
      */
     function GetInitialState()
     {
-        if  (!is_object( $this->pipeProcess)) {
+        if (! is_object( $this->pipeProcess)) {
             return null ;
         }
         $idStatus = $this->pipeProcess->getFirstStatus();
@@ -244,12 +234,6 @@ class WorkFlow
      */
     function setNodeType($idNodeType)
     {
-        $pipeNodeTypes = new PipeNodeTypes();
-        $result = $pipeNodeTypes->find('id, IdPipeline', 'IdNodeType = %s', array($idNodeType));
-        if (count($result) > 0) {
-            Logger::warning('The nodetype ' . $idNodeType . ' is already associated to another workflow');
-            return false;
-        }
         $this->pipeline->set('IdNodeType', $idNodeType);
         $this->pipeline->update();
         return true;
@@ -276,7 +260,7 @@ class WorkFlow
                     continue;
                 }
                 $info = pathinfo($file);
-                if (!isset($info['extension']) or $info['extension'] != 'php') {
+                if (! isset($info['extension']) or $info['extension'] != 'php') {
                     continue;
                 }
                 $className = $info['filename'];
@@ -284,7 +268,7 @@ class WorkFlow
                     continue;
                 }
                 $class = self::WORKFLOW_ACTIONS_NAMESPACE . $className;
-                if (!class_exists($class)) {
+                if (! class_exists($class)) {
                     continue;
                 }
                 $methods = get_class_methods($class);

@@ -8,20 +8,25 @@ Defines in this file
 - PROJECT_CONFIG_FILENAME: File with info about the project to build
 */
 
+use Ximdex\Runtime\App;
+
 // themes folder
-if (!defined('THEMES_FOLDER'))
-    define('THEMES_FOLDER', "/public_xmd/actions/addfoldernode/themes");
-
-if (!defined('SCHEMES_FOLDER'))
-    define('SCHEMES_FOLDER', "/schemes");
-
-if (!defined('TEMPLATES_FOLDER'))
-    define('TEMPLATES_FOLDER', "/templates");
+if (! defined('THEMES_FOLDER')) {
+    define('THEMES_FOLDER', App::getValue('UrlFrontController') . '/actions/addfoldernode/themes');
+}
+if (! defined('SCHEMES_FOLDER')) {
+    define('SCHEMES_FOLDER', '/schemes');
+}
+if (! defined('TEMPLATES_FOLDER')) {
+    define('TEMPLATES_FOLDER', '/templates');
+}
 
 // Default project
-if (!defined('DEFAULT_PROJECT'))
-    define('DEFAULT_PROJECT', "default");
+if (! defined('DEFAULT_PROJECT')) {
+    define('DEFAULT_PROJECT', 'default');
+}
 
 // Project config filename
-if (!defined('PROJECT_CONFIG_FILENAME'))
-    define('PROJECT_CONFIG_FILENAME', "build.xml");
+if (! defined('PROJECT_CONFIG_FILENAME')) {
+    define('PROJECT_CONFIG_FILENAME', 'build.xml');
+}

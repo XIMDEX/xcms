@@ -35,11 +35,12 @@ use DOMDocument;
 use DOMXPath;
 use Ximdex\Models\NodeDependencies;
 use Ximdex\Models\NodeType;
-use Ximdex\Utils\PipelineManager;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\Models\Node;
 use Ximdex\NodeTypes\NodeTypeConstants;
 use Ximdex\Utils\Messages;
+use Ximdex\Models\Transition;
+use Ximdex\Utils\FsUtils;
 
 class ParsingDependencies
 {
@@ -314,29 +315,39 @@ class ParsingDependencies
         $idServer = $node->getServer();
         $strDoc = new StructuredDocument($idNode);
         $channels = $strDoc->GetChannels();
+        if ($channels === false) {
+            Logger::error();
+        }
         $transformer = $node->getProperty('Transformer');
         $assets = self::getAssets($content, $node->nodeType->get('Name'));
         $links = self::getLinks($content, $node->nodeType->get('Name'));
-        $pipelineManager = new PipelineManager();
         $pathToByChannel = array();
         if ($node->GetNodeType() == NodeTypeConstants::HTML_DOCUMENT) {
-            $process = 'HTMLToPrepared';
+            $process = 'PrepareHTML';
         } else {
-            $process = 'StrDocToDexT';
+            $process = 'FromPreFilterToDexT';
         }
 
         // Transforming the content for each defined channel
+        $data = array(
+            'TRANSFORMER' => $transformer[0],
+            'DISABLE_CACHE' => true,
+            'CONTENT' => $content,
+            'NODEID' => $idNode
+        );
+        $transition = new Transition();
         if ($channels) {
             foreach ($channels as $idChannel) {
 
                 // Transforming with the given content and no cache
-                $postContent = $pipelineManager->getCacheFromProcessAsContent($idVersion, $process, array(
-                    'CHANNEL' => $idChannel,
-                    'TRANSFORMER' => $transformer[0],
-                    'DISABLE_CACHE' => true,
-                    'CONTENT' => $content,
-                    'NODEID' => $idNode
-                ));
+                $data['CHANNEL'] = $idChannel;
+                try {
+                    $file = $transition->process($process, $data, $idVersion);
+                } catch (\Exception $e) {
+                    Logger::error($e->getMessage());
+                    return false;
+                }
+                $postContent = FsUtils::file_get_contents($file);
 
                 // Post-transformation dependencies
                 $pathToByChannel[$idChannel] = self::getPathTo($postContent, $idNode);

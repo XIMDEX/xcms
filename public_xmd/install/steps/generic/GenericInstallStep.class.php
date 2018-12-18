@@ -156,7 +156,7 @@ class GenericInstallStep
        } else {
            
             // No access to /public_xmd directly without own domain
-            if ($basepath == '/'.basename(APP_ROOT_PATH)) {
+            if ($basepath == '/' . basename(APP_ROOT_PATH)) {
                 header('Location: /');
                 die();
            }

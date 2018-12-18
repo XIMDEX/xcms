@@ -37,7 +37,7 @@ class FsUtils
      */
     static public function get_mime_type($file)
     {
-        if (!is_file($file)) {
+        if (! is_file($file)) {
             return NULL;
         }
         $command = 'file -b --mime-type ' . escapeshellarg($file);
@@ -82,17 +82,17 @@ class FsUtils
     {
         $result = false;
         $error = null;
-        if (!self::notifyDiskspace($filename)) {
+        if (! self::notifyDiskspace($filename)) {
             return false;
         }
-        if (!function_exists('file_put_contents')) {
+        if (! function_exists('file_put_contents')) {
             $hnd = fopen($filename, 'w');
             if ($hnd) {
                 $result = fwrite($hnd, $data);
                 fclose($hnd);
             }
         } else {
-            if (!empty($filename) && !is_dir($filename) && is_writable(dirname($filename))) {
+            if (! empty($filename) && ! is_dir($filename) && is_writable(dirname($filename))) {
                 $result = file_put_contents($filename, $data, $flags, $context);
             } else {
                 $result = false;
@@ -102,7 +102,7 @@ class FsUtils
                 elseif (is_dir($filename)) {
                     $error = $filename . ' is a directory';
                 }
-                elseif (!is_writable(dirname($filename))) {
+                elseif (! is_writable(dirname($filename))) {
                     $error = 'Directory ' . dirname($filename) . ' is not writable';
                 }
             }
@@ -157,7 +157,7 @@ class FsUtils
      */
     static public function file_get_contents($filename, $use_include_path = false, $context = NULL)
     {
-        if (!is_file($filename)) {            
+        if (! is_file($filename)) {            
             $backtrace = debug_backtrace();
             Logger::error(sprintf('Trying to obtain the content for a nonexistant file [lib/Ximdex/Utils/FsUtils.php]'
                 . ' script: %s file: %s line: %s nonexistant_file: %s',
@@ -270,11 +270,11 @@ class FsUtils
             $backtrace[0]['file'],
             $backtrace[0]['line'],
             $folder));
-        if (!is_dir($folder)) {
+        if (! is_dir($folder)) {
             Logger::error(sprintf('Error estimating folder %s'), $folder);
             return false;
         }
-        if (!($handler = opendir($folder))) {
+        if (! ($handler = opendir($folder))) {
             Logger::error(sprintf('It was not possible to open the folder %s %s, %s', $folder, __FILE__, __LINE__));
             return false;
         }
@@ -299,12 +299,12 @@ class FsUtils
     }
 
     /**
-     * @param $file
+     * @param string $file
      * @return bool
      */
-    static public function delete($file)
+    static public function delete(string $file) : bool
     {
-        if (!is_file($file)) {
+        if (! is_file($file)) {
             $backtrace = debug_backtrace();
             Logger::warning(sprintf('It has been asked to delete a nonexistant file %s [inc/fsutils/FsUtils.class.php]'
                 . ' script: %s file: %s line: %s',
@@ -314,7 +314,7 @@ class FsUtils
                 $backtrace[0]['line']));
             return false;
         }
-        if (!@unlink($file)) {
+        if (! @unlink($file)) {
             $backtrace = debug_backtrace();
             Logger::error(sprintf('It has been asked to delete a file which could not be deleted %s [inc/fsutils/FsUtils.class.php] script: %s file: %s line: %s',
                 $file,

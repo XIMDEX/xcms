@@ -242,7 +242,7 @@ class ServerFrameManager
         $i = 0;
         $dbObj->Query($sql);
         if ($dbObj->numRows != 0) {
-            while (!$dbObj->EOF) {
+            while (! $dbObj->EOF) {
                 $overlaped[$i]['id'] = $dbObj->GetValue('IdSync');
                 $overlaped[$i]['state'] = $dbObj->GetValue('State');
                 $overlaped[$i]['file'] = $dbObj->GetValue('RemotePath') . '/' . $dbObj->GetValue('FileName');
@@ -279,7 +279,7 @@ class ServerFrameManager
             $vacancyLevel = round($numTasksForPumping / $chunk * 100);
             $pumper->set('VacancyLevel', $vacancyLevel);
             $pumper->update();
-            Logger::info('Pumper ' . $pumperId . ': Vacancy level: ' . $vacancyLevel . '%. Pace = ' . $pumper->get('Pace') 
+            Logger::debug('Pumper ' . $pumperId . ': Vacancy level: ' . $vacancyLevel . '%. Pace = ' . $pumper->get('Pace') 
                 . '. Task for pumping: ' . $numTasksForPumping . ' of ' . $chunk . '');
             if ($numTasksForPumping > 0) {
                 $totalTasks += $numTasksForPumping;
@@ -306,7 +306,7 @@ class ServerFrameManager
                     $timer->start();
                     $tasks = array();
                     $task = [];
-                    while (!$dbObj->EOF) {
+                    while (! $dbObj->EOF) {
                         $task['id'] = $dbObj->GetValue('IdSync');
                         $task['up'] = $dbObj->GetValue('IdBatchUp');
                         $task['down'] = $dbObj->GetValue('IdBatchDown');
@@ -317,7 +317,7 @@ class ServerFrameManager
                     foreach ($tasks as $task) {
                         
                         // Processing the server frame task
-                        if (!$this->processTaskForServerFrame($task['id'])) {
+                        if (! $this->processTaskForServerFrame($task['id'])) {
                             continue;
                         }
                     }

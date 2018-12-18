@@ -36,20 +36,20 @@ include_once __DIR__ . '/src/autoload.php';
 Ximdex\Modules\Manager::file('/install/InstallController.class.php');
 
 // FROM MVC
-if (!defined('RENDERER_ROOT_PATH')) {
+if (! defined('RENDERER_ROOT_PATH')) {
     define('RENDERER_ROOT_PATH', XIMDEX_ROOT_PATH . '/inc/mvc/renderers');
 }
-if (!defined('SMARTY_TMP_PATH')) {
+if (! defined('SMARTY_TMP_PATH')) {
     define('SMARTY_TMP_PATH', XIMDEX_ROOT_PATH . App::getValue('TempRoot'));
 }
 
 // Main thread
 if (!InstallController::isInstalled()) {
-    if (strpos($_SERVER['REQUEST_URI'], 'public_xmd') !== false) {
+    if (strpos($_SERVER['REQUEST_URI'], trim(App::getValue('UrlFrontController'), '/')) !== false) {
         
         // The folder public_xmd is not a good place to run the installer
         require_once APP_ROOT_PATH . '/install/steps/generic/GenericInstallStep.class.php';
-        header('Location:' . rtrim(str_replace('public_xmd', '', $_SERVER['REQUEST_URI']), '/'));
+        header('Location:' . rtrim(str_replace(APP_ROOT_PATH, '/', $_SERVER['REQUEST_URI']), '/'));
     } else {
         $installController = new InstallController();
         $installController->dispatch();

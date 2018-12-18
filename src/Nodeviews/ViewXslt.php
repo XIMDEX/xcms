@@ -37,7 +37,6 @@ use Ximdex\Runtime\App;
 
 class ViewXslt extends AbstractView
 {
-    //TODO ajlucena quitar node y channel y usar los de la clase padre
     private $_node;
     private $_idSection;
     private $_idChannel;
@@ -45,7 +44,7 @@ class ViewXslt extends AbstractView
     
     public function transform(int $idVersion = null, string $pointer = null, array $args = null)
     {
-        $content = $this->retrieveContent($pointer);
+        $content = self::retrieveContent($pointer);
         if (! $this->_setNode($idVersion, $args)) {
             return null;
         }
@@ -85,7 +84,6 @@ class ViewXslt extends AbstractView
         }
 
         // XSLT Transformation
-        //TODO change the global variable to a function parameter
         if (! isset($GLOBALS['errorsInXslTransformation'])) {
             $GLOBALS['errorsInXslTransformation'] = array();
         }
@@ -223,7 +221,7 @@ class ViewXslt extends AbstractView
             }
         } else {
             Logger::setActiveLog($defaultLog);
-            return $this->storeTmpContent($content);
+            return self::storeTmpContent($content);
         }
         $xpath = new \DOMXPath($domDoc);
         $nodeList = $xpath->query('/html/body//*[string(text())]');
@@ -251,7 +249,7 @@ class ViewXslt extends AbstractView
         $logMessage .= ' with channel: ' . $channel->GetName();
         Logger::info($logMessage);
         Logger::setActiveLog($defaultLog);
-        return $this->storeTmpContent($content);
+        return self::storeTmpContent($content);
     }
     
     /**

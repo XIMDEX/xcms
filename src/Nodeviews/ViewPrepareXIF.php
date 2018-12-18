@@ -35,15 +35,17 @@ class ViewPrepareXIF extends AbstractView
      */
     public function transform(int $idVersion = null, string $pointer = null, array $args = null)
     {
-        parent::transform($idVersion, $pointer, $args);
+        if (parent::transform($idVersion, $pointer, $args) === null) {
+            return false;
+        }
         
         // Get the content
-        $content = $this->retrieveContent($pointer);
+        $content = self::retrieveContent($pointer);
         
         // Generate the XIF xml content
         $content = $this->node->class::createXIF($this->node, $content, $this->channel);
 
         // Return the pointer to the transformed content
-        return $this->storeTmpContent($content);
+        return self::storeTmpContent($content);
     }
 }

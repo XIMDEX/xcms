@@ -245,12 +245,12 @@ class FrontControllerHTTP extends FrontController
         return null;
     }
 
-    function getActionPath($module = NULL)
+    function getActionPath($module = null)
     {
-        if (!empty($module)) {
+        if (! empty($module)) {
             return \Ximdex\Modules\Manager::path($module) . '/actions/';
         }
-        return '/public_xmd/actions/';
+        return App::getValue('UrlFrontController') . '/actions/';
     }
 
     function getMethod()
@@ -292,7 +292,7 @@ class FrontControllerHTTP extends FrontController
 
     function setXsessionParams($renderer, $_action_path)
     {
-        /** Guardado de datos persistente */
+        // Guardado de datos persistente
         \Ximdex\Runtime\Session::set('renderer', $renderer);
         \Ximdex\Runtime\Session::set('actionPath', $_action_path);
     }

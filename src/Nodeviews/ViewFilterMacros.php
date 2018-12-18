@@ -104,7 +104,7 @@ class ViewFilterMacros extends AbstractView
         $content = $this->transformFromPointer($pointer);
 
         // Return the pointer to the transformed content
-        return $this->storeTmpContent($content);
+        return self::storeTmpContent($content);
     }
 
     /**
@@ -339,7 +339,7 @@ class ViewFilterMacros extends AbstractView
     private function transformFromPointer($pointer)
     {
         // Get the content
-        $content = $this->retrieveContent($pointer);
+        $content = self::retrieveContent($pointer);
 
         /**
          * Available macros:

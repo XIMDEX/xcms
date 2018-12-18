@@ -46,7 +46,7 @@ class ViewXsltTransformer extends AbstractView implements IView
 		$xsltTransformer->setXSL(XIMDEX_ROOT_PATH . $xsltFile);
 		$transformedContent = $xsltTransformer->process();
 		$transformedContent = $this->fixDocumentEncoding($transformedContent);
-		return $this->storeTmpContent($transformedContent);
+		return self::storeTmpContent($transformedContent);
 	}
 	
 	private function fixDocumentEncoding(string $content)

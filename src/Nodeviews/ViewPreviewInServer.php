@@ -42,7 +42,7 @@ class ViewPreviewInServer extends AbstractView
 
     public function transform(int $idVersion = null, string $pointer = null, array $args = null)
     {
-        $content = $this->retrieveContent($pointer);
+        $content = self::retrieveContent($pointer);
         if (! $this->_setNode($idVersion)) {
             return null;
         }
@@ -104,7 +104,7 @@ class ViewPreviewInServer extends AbstractView
                 $content = '';
                 break;
         }
-        return $this->storeTmpContent($content);
+        return self::storeTmpContent($content);
     }
 
     private function _setNode($idVersion = null)

@@ -49,7 +49,7 @@ class ApplicationController extends IController
         $actionController = ActionFactory::getAction($this->request);
 
         // Si no existe la accion, mostramos error
-        if ($actionController == NULL) {
+        if (! $actionController) {
             $actionController = $this->_error_no_action();
         } else {
             $stats = $this->actionsStatsStart();
@@ -125,8 +125,7 @@ class ApplicationController extends IController
         );
         if (strcmp($stats['action'], 'browser3') == 0) {
             $event = 'login';
-        }
-        else {
+        } else {
             $event = 'action';
         }
         $remote = ACTIONS_STATS;

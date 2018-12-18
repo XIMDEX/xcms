@@ -36,7 +36,7 @@ class ViewLinkParams extends AbstractView
 {
     public function transform(int $idVersion = null, string $pointer = null, array $args = null)
 	{
-		$content = $this->retrieveContent($pointer);
+	    $content = self::retrieveContent($pointer);
 		$version = new Version($idVersion);
 		if (!($version->get('IdVersion') > 0)) {   
 			Logger::error("Incorrect version $idVersion");
@@ -68,6 +68,6 @@ class ViewLinkParams extends AbstractView
 			}
 		}
 		$content = $domDoc->saveXML();
-		return $this->storeTmpContent($content);
+		return self::storeTmpContent($content);
 	}
 }

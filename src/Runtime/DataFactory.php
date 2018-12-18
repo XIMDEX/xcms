@@ -28,12 +28,11 @@
 namespace Ximdex\Runtime;
 
 use Ximdex\Models\Node;
-use Ximdex\Models\PipeCache;
 use Ximdex\Models\User;
 use Ximdex\Models\Version;
 use Ximdex\Models\Channel;
+use Ximdex\Models\Transition;
 use Ximdex\Utils\FsUtils;
-use Ximdex\Utils\PipelineManager;
 use Ximdex\Sync\SynchroFacade;
 use Ximdex\Logger;
 use Ximdex\NodeTypes\HTMLDocumentNode;
@@ -325,9 +324,12 @@ class DataFactory
         }
 
         // Delete cache if the parameter $delete is true
-        $pipelineManager = new PipelineManager();
         if ($delete) {
-            $pipelineManager->deleteCache($idVersion);
+            try {
+                $version->deleteCache();
+            } catch (\Exception $e) {
+                Logger::error($e->getMessage());
+            }
         }
         $data = [];
         $data['NODEID'] = $idNode;
@@ -340,18 +342,25 @@ class DataFactory
                 Logger::info('Generation cache for version ' . $idVersion . ' and the channel ' . $idChannel);
                 $data['CHANNEL'] = $idChannel;
                 if ($node->GetNodeType() == NodeTypeConstants::XML_DOCUMENT) {
-                    $process = 'StrDocToDexT';
+                    // $process = 'StrDocToDexT';
+                    $process = 'FromPreFilterToDexT';
                 } elseif ($node->GetNodeType() == NodeTypeConstants::HTML_DOCUMENT) {
                     $channel = new Channel($idChannel);
                     if ($channel->getRenderType() == HTMLDocumentNode::MODE_INDEX) {
-                        $process = 'HTMLToXIF';
+                        // $process = 'HTMLToXIF';
+                        $process = 'PrepareXIF';
                     } else {
-                        $process = 'HTMLToPrepared';
+                        // $process = 'HTMLToPrepared';
+                        $process = 'PrepareHTML';
                     }
                 } else {
                     return false;
                 }
-                if ($pipelineManager->getCacheFromProcess($idVersion, $process, $data) === false) {
+                $transition = new Transition();
+                try {
+                    $transition->process($process, $data, $idVersion);
+                } catch (\Exception $e) {
+                    Logger::error($e->getMessage());
                     return false;
                 }
             }
@@ -678,8 +687,12 @@ class DataFactory
 
         // Deleting cache
         Logger::info('Deleting cache from versionId ' . $versionToDelete);
-        $pipeline = new PipelineManager();
-        $pipeline->deleteCache($versionToDelete);
+        $version = new Version($versionToDelete);
+        try {
+            $version->deleteCache();
+        } catch (\Exception $e) {
+            Logger::error($e->getMessage());
+        }
         $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->Execute($query);
         Logger::info('DeleteVersion for Node:' . $this->nodeID . ', Version: ' . $versionID . '.' . $subVersion . ', File: .' . $uniqueName);
@@ -1010,14 +1023,6 @@ class DataFactory
         $usePool = (bool) App::getValue('AddVersionUsesPool');
         if (! $usePool) {
             $this->conector->indexNode($idVersion, $commitNode);
-        }
-    }
-
-    private function updateCaches(int $oldIdVersion, int $idVersion)
-    {
-        if (! App::getValue('DisableCache')) {
-            $pipeCache = new PipeCache();
-            return $pipeCache->upgradeCaches($oldIdVersion, $idVersion);
         }
     }
 }

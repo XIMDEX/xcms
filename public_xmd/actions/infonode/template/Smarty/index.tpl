@@ -108,7 +108,7 @@
                                 <div class="version-info version-info-node-info row-item">
                                     <span class="version">
                                         <strong>{$version}.{$subVersionList.SubVersion}</strong>
-                                        <strong> {if ($version == 0 && $subVersionList.SubVersion == 0)}{t}New{/t} 
+                                        <strong> {if ($version == 0 and $subVersionList.SubVersion == 0)}{t}New{/t} 
                                             {elseif ($subVersionList.SubVersion == 0)}{t}Published{/t}
                                             {else} {t}Draft{/t} {/if}</strong>
 			                        </span>

@@ -193,9 +193,9 @@ class DexPumper
 		    $targetFile = $fileName;
 		}
 		$uploading = $this->taskUpload($originFile, $initialDirectory, $remotePath, $targetFile);
-		if (!$asHidden) {
-		    Logger::info('Published: ' . $remotePath . $targetFile . ' into server ' . $this->connection->getServer()->get('Description')
-                . ' (Sync: ' . $IdSync . ')', true);
+		if (! $asHidden and $uploading) {
+		    Logger::info('Published: ' . rtrim($remotePath, '/') . '/' . $targetFile . ' into server ' 
+		        . $this->connection->getServer()->get('Description') . ' (Sync: ' . $IdSync . ')', true);
 		}
 		$this->updateTask($uploading, $state);
 	}
@@ -413,7 +413,7 @@ class DexPumper
 		}
 		$this->info('Copying ' . $localFile . ' in ' . $fullPath, false, 'magenta');
 		if (! $this->connection->put($localFile, $fullPath)) {
-		    $this->error('Could not upload the file' . ': ' . $localFile . ' -> ' . $fullPath);
+		    $this->error('Could not upload the file: ' . $localFile . ' -> ' . $fullPath);
 		    if ($this->connection->getError()) {
 		        $this->error($this->connection->getError());
 		    }
@@ -456,8 +456,8 @@ class DexPumper
 		    $this->error('Could not rename the target document: ' . $targetFile . ' -> ' . $targetFolder . $newFile);
             return false;
 		}
-		Logger::info('Published: ' . $targetFolder . $newFile . ' into server ' . $this->connection->getServer()->get('Description') 
-		    . ' (Sync: ' . $idSync . ')', true);
+		Logger::info('Published: ' . rtrim($targetFolder, '/') . '/' . $newFile . ' into server ' 
+		    . $this->connection->getServer()->get('Description') . ' (Sync: ' . $idSync . ')', true);
 		return true;
 	}
 

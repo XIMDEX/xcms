@@ -1,6 +1,7 @@
 <?php
+
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -41,45 +42,33 @@ class ViewMergeTags extends AbstractView
 		$domDocument->preserveWhiteSpace = false;
 		$domDocument->validateOnParse = true;
 		$domDocument->loadXML(FsUtils::file_get_contents($pointer));
-		
 		if (!$domDocument) {
 			return false;
 		}
-		
 		$xpathExp = new \DOMXPath($domDocument);
-		
 		if ($xpathExp) {
-		    
 	 		$query1Result = $xpathExp->query($this->query1);
 	 		$query2Result = $xpathExp->query($this->query2);
-	 		
 	 		$mergeResult = $query1Result->item(0)->nodeValue . ',' . $query2Result->item(0)->nodeValue; 
 	 		$mergeItem = $xpathExp->query($this->merge);
-			
 	 		$mergeLength = $mergeItem->length;
 	 		if ($mergeLength != 1) {
-	 		    
 	 			Logger::error('Wrong count of items detected, returning unmodified document');
 	 			return $pointer;
 	 		}
-	 		
  			$element = $mergeItem->item(0);
 			$childNodes = $element->childNodes;
 			$childNodesLength = $childNodes->length;
 			for ($j = 0; $j < $childNodesLength; $j++) {
-			    
 				$item = $childNodes->item($j);
 				if (strtolower(get_class($item)) == 'domtext') {
-				    
 					$element->removeChild($item);
 				}
 			}
-			
 			$textNode = $domDocument->createTextNode($mergeResult);
 			$element->appendChild($textNode);
 		}
-		
 		$content = $domDocument->saveXML();
-		return $this->storeTmpContent($content);
+		return self::storeTmpContent($content);
 	}
 }
