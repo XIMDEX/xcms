@@ -390,7 +390,7 @@ class Manager
             $path = APP_ROOT_PATH;
         } else {
             $dir = self::path($_module);
-            $path = XIMDEX_ROOT_PATH.$dir;
+            $path = XIMDEX_ROOT_PATH . $dir;
         }
         if (file_exists("{$path}{$_file}")){
             if (('XIMDEX' == $_module || 'APP' == $_module || self::isEnabled($_module))) {

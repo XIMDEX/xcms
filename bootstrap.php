@@ -109,28 +109,6 @@ if (! empty($dbConfig)) {
     }
 }
 
-// From MVC
-if (! defined('RENDERER_ROOT_PATH')) {
-    define('RENDERER_ROOT_PATH', XIMDEX_ROOT_PATH . '/inc/mvc/renderers');
-}
-if (! defined('SMARTY_TMP_PATH')) {
-    define('SMARTY_TMP_PATH', XIMDEX_ROOT_PATH . App::getValue('TempRoot'));
-}
-if (! defined('APP_ROOT_PATH')) {
-    define('APP_ROOT_PATH', XIMDEX_ROOT_PATH . App::getValue('UrlFrontController'));
-}
-
-// Initialize Modules Manager
-$modulesFile = Ximdex\Modules\Manager::get_modules_install_params();
-if (file_exists(XIMDEX_ROOT_PATH . $modulesFile)) {
-    Ximdex\Modules\Manager::file($modulesFile, 'XIMDEX');
-} else {
-    Ximdex\Modules\Manager::file('/install/InstallController.class.php');
-    if (InstallController::isInstalled()) {
-        Logger::error('Cannot load the modules configuration file');
-    }
-}
-
 // Read install-modules.php
 $installModulesPath = XIMDEX_ROOT_PATH . '/conf/install-modules.php';
 if (file_exists($installModulesPath)) {
@@ -142,6 +120,28 @@ $matches = array();
 preg_match_all('/define\(\'(.*)\',(.*)\);/iUs', $modulesConfString, $matches);
 foreach ($matches[1] as $key => $value) {
     App::setValue($value, str_replace('\'', '', $matches[2][$key]));
+}
+
+// From MVC
+if (! defined('RENDERER_ROOT_PATH')) {
+    define('RENDERER_ROOT_PATH', XIMDEX_ROOT_PATH . '/inc/mvc/renderers');
+}
+if (! defined('SMARTY_TMP_PATH')) {
+    define('SMARTY_TMP_PATH', XIMDEX_ROOT_PATH . App::getValue('TempRoot'));
+}
+if (! defined('APP_ROOT_PATH')) {
+    define('APP_ROOT_PATH', XIMDEX_ROOT_PATH . (App::getValue('UrlFrontController') ?? '/public_xmd'));
+}
+
+// Initialize Modules Manager
+$modulesFile = Ximdex\Modules\Manager::get_modules_install_params();
+if (file_exists(XIMDEX_ROOT_PATH . $modulesFile)) {
+    Ximdex\Modules\Manager::file($modulesFile, 'XIMDEX');
+} else {
+    Ximdex\Modules\Manager::file('/install/InstallController.class.php');
+    if (InstallController::isInstalled()) {
+        Logger::error('Cannot load the modules configuration file');
+    }
 }
 
 // special objects (pseudo-DI)

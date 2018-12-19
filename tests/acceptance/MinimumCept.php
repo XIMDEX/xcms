@@ -1,5 +1,7 @@
 <?php
 
+use Ximdex\Runtime\App;
+
 $I = new AcceptanceTester($scenario);
 
 if (file_exists('conf/_STATUSFILE'))
@@ -15,64 +17,61 @@ if (file_exists('data/previos/en/picasso.html'))
 {
     $I->deleteFile('data/previos/en/picasso.html');
 }
-
 $I->wantTo('Ensure that installation works');
 $I->amOnPage('/');
 $I->see('Welcome to Ximdex CMS');
 $I->click('Check configuration');
-
 $I->wait(3);
-$I->click('Start installation');
 
+$I->click('Start installation');
 $I->waitForText('Installing Database', 3);
+
 $I->fillField('host', 'db');
 $I->fillField('root_user', 'ximdex');
 $I->fillField('root_pass', 'ximdex');
 $I->fillField('name', 'ximdex');
 $I->click('Create Database');
+$I->wait(40);
 
-$I->wait(35);
 $I->see('Set the password for this admin user');
 $I->fillField('pass', 'ximdex');
 $I->fillField('pass2', 'ximdex');
 $I->click('Save settings');
-
 $I->wait(20);
+
 $I->see('Installing Ximdex CMS\'s default modules');
 $I->click('Install modules');
-
 $I->waitForText('Xowl configuration (optional)', 15);
+
 $I->click('Continue');
-
 $I->waitForText('Installation finished!', 3);
-$I->click('Get started');
 
+$I->click('Get started');
 $I->see('User');
 $I->see('Password');
 $I->fillField('user', 'ximdex');
 $I->fillField('password', 'ximdex');
 $I->click('Sign in');
-
 $I->waitForText('WELCOME TO XIMDEX CMS, XIMDEX!', 3);
+
 $I->wantTo('Ensure that publish works');
-
 open_picasso_menu($I);
-
 $I->waitForText('Publish', 3, 'body > div.xim-actions-menu.destroy-on-click.noselect.xim-actions-menu-list');
+
 $I->click('body > div.xim-actions-menu.destroy-on-click.noselect.xim-actions-menu-list > div.button-container-list.icon.workflow_forward');
 $I->wait(3);
+
 $I->click('#all_levels');
 $I->click('Publish', '#angular-content');
 $I->waitForText('State has been successfully changed', 3, '#angular-content');
+
 $count = 0;
-while (!fileExistAndIsNotEmpty('data/previos/css/default.css') && $count < 45)
-{
+while (! fileExistAndIsNotEmpty('data/previos/css/default.css') && $count < 45) {
     sleep(2);
     $count++;
 }
 $I->seeFileFound('default.css','data/previos/css');
-while (!fileExistAndIsNotEmpty('data/previos/en/picasso.html') && $count < 45)
-{
+while (! fileExistAndIsNotEmpty('data/previos/en/picasso.html') && $count < 45) {
     sleep(2);
     $count++;
 }
@@ -88,16 +87,17 @@ $I->amOnPage(App::getValue('UrlFrontController'));
 $I->wait(3);
 
 open_picasso_menu($I);
-
 $I->waitForText('Expire', 3, 'body > div.xim-actions-menu.destroy-on-click.noselect.xim-actions-menu-list');
+
 $I->click('body > div.xim-actions-menu.destroy-on-click.noselect.xim-actions-menu-list > div.button-container-list.icon.expiredoc');
 $I->wait(3);
+
 $I->click('#all_levels');
 $I->click('Expire', '#angular-content');
 $I->waitForText('successfully sent to expire', 3, '#angular-content');
+
 $count = 0;
-while (fileExistAndIsNotEmpty('data/previos/en/picasso.html') && $count < 45)
-{
+while (fileExistAndIsNotEmpty('data/previos/en/picasso.html') && $count < 45) {
     sleep(2);
     $count++;
 }
@@ -107,6 +107,7 @@ $I->dontSeeFileFound('en','data/previos');
 // Load the XML editor
 $I->amOnPage('?action=xmleditor2&method=load&nodeid=10095');
 $I->wait(3);
+
 $I->switchToIframe('kupu-editor');
 $I->see('Early periods');
 

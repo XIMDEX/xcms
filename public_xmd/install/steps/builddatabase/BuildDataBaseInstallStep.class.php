@@ -113,12 +113,12 @@ class BuildDataBaseInstallStep extends GenericInstallStep
         if ($idbManager->existDataBase($name)) {
             $idbManager->deleteDataBase($name);
         }
-        if (!$idbManager->connect($host, $port, $user, $pass)) {
+        if (! $idbManager->connect($host, $port, $user, $pass)) {
             $values["failure"] = true;
             $values["errors"] = $idbManager->getErrors();
             $this->sendJSON($values);
         }
-        if (!$idbManager->createDataBase($name))
+        if (! $idbManager->createDataBase($name))
         {
         	$values["failure"] = true;
         	if ($idbManager->getErrors()) {
@@ -128,17 +128,17 @@ class BuildDataBaseInstallStep extends GenericInstallStep
         	}
         	$this->sendJSON($values);
         }
-        if (!$idbManager->connect($host, $port, $user, $pass, $name, true)) {
+        if (! $idbManager->connect($host, $port, $user, $pass, $name, true)) {
             $values["failure"] = true;
             $values["errors"] = 'Cannot connect to database';
             $this->sendJSON($values);
         }
-        if (!$idbManager->loadData($host, $port, $user, $pass, $name)) {
+        if (! $idbManager->loadData($host, $port, $user, $pass, $name)) {
             $values["failure"] = true;
             $values["errors"] = 'Cannot generate the database schema and data';
             $this->sendJSON($values);
         }
-        if (!$idbManager->checkDataBase($host, $port, $user, $pass, $name)) {
+        if (! $idbManager->checkDataBase($host, $port, $user, $pass, $name)) {
             $values["failure"] = true;
             if ($idbManager->getErrors()) {
             	$values["errors"] = $idbManager->getErrors();
@@ -147,6 +147,7 @@ class BuildDataBaseInstallStep extends GenericInstallStep
            	}
            	$this->sendJSON($values);
         }
+        
         // If the app is working under a Docker instance, the new user creation will be omited
         if (isset($_SERVER['DOCKER_CONF_HOME'])) {
             $this->initParams($host, $port, $name, $user, $pass);
@@ -207,12 +208,6 @@ class BuildDataBaseInstallStep extends GenericInstallStep
         $this->sendJson($values);
     }
 
-    public function initParams($host, $port, $bdName, $user, $pass)
-    {
-        $this->installManager->setInstallParams($host, $port, $bdName, $user, $pass);
-        $this->loadNextAction();
-    }
-
     /**
      * check the database server version to notice older versions
      */
@@ -226,7 +221,7 @@ class BuildDataBaseInstallStep extends GenericInstallStep
         $values = array();
         if ($idbManager->connect($host, $port, $user, $pass) === false) {
             $values['failure'] = true;
-            $values['errors'] = $idbManager->getErrors(); 
+            $values['errors'] = $idbManager->getErrors();
         } else {
             $serverInfo = $idbManager->server_version();
             $version = doubleval($serverInfo[1] . '.' . $serverInfo[2]);
@@ -237,14 +232,20 @@ class BuildDataBaseInstallStep extends GenericInstallStep
             }
             if ($version < $minVersion) {
                 $values['failure'] = true;
-                $values['errors'] = 'The recommended database version is ' . $minVersion 
-                    . ' or higher and the installed one is ' 
-                    . $version . ' (' . $serverInfo[0] 
+                $values['errors'] = 'The recommended database version is ' . $minVersion
+                . ' or higher and the installed one is '
+                    . $version . ' (' . $serverInfo[0]
                     . '). You can continue with the installation process, but stability is not assured';
             } else {
                 $values['success'] = true;
             }
         }
         $this->sendJson($values);
+    }
+    
+    private function initParams(string $host, int $port, string $bdName, string $user, string $pass)
+    {
+        $this->installManager->setInstallParams($host, $port, $bdName, $user, $pass);
+        $this->loadNextAction();
     }
 }

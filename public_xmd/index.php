@@ -44,8 +44,8 @@ if (! defined('SMARTY_TMP_PATH')) {
 }
 
 // Main thread
-if (!InstallController::isInstalled()) {
-    if (strpos($_SERVER['REQUEST_URI'], trim(App::getValue('UrlFrontController'), '/')) !== false) {
+if (! InstallController::isInstalled()) {
+    if (strpos($_SERVER['REQUEST_URI'], trim(APP_ROOT_PATH, '/')) !== false) {
         
         // The folder public_xmd is not a good place to run the installer
         require_once APP_ROOT_PATH . '/install/steps/generic/GenericInstallStep.class.php';

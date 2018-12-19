@@ -62,14 +62,14 @@ class InstallDataBaseManager extends InstallManager
      * @param boolean $newConn
      * @return boolean
      */
-    public function connect($host, $port, $user, $pass = NULL, $name = false, $newConn = false)
+    public function connect(string $host, int $port, string $user, string $pass = null, string $name = null, bool $newConn = false)
     {
         $myPid = "install";
         $result = false;
-        if (!isset($GLOBALS[self::DB_ARRAY_KEY][$myPid])) {
+        if (! isset($GLOBALS[self::DB_ARRAY_KEY][$myPid])) {
             $GLOBALS[self::DB_ARRAY_KEY][$myPid] = null;
         }
-        if ($GLOBALS[self::DB_ARRAY_KEY][$myPid] and !$newConn) {
+        if ($GLOBALS[self::DB_ARRAY_KEY][$myPid] and ! $newConn) {
             $this->dbConnection = $GLOBALS[self::DB_ARRAY_KEY][$myPid];
             $result = true;
         } else {
@@ -108,7 +108,7 @@ class InstallDataBaseManager extends InstallManager
         return $result;
     }
 
-    public function selectDataBase($name)
+    public function selectDataBase(string $name)
     {
         return $this->connect($this->host, $this->port, $this->user, $this->pass, $name, true);
     }
@@ -144,7 +144,7 @@ class InstallDataBaseManager extends InstallManager
         $GLOBALS[self::DB_ARRAY_KEY]["install"] = null;
     }
     
-    public function createUser($user, $pass)
+    public function createUser(string $user, string $pass)
     {
         $sql = "GRANT ALL PRIVILEGES  ON $$this->name.* TO '$user'@'%' IDENTIFIED BY '$pass'";
         $result = $this->dbConnection->exec($this->dbConnection, $sql);
@@ -156,7 +156,7 @@ class InstallDataBaseManager extends InstallManager
         return $result;
     }
 
-    public function createDataBase($name)
+    public function createDataBase(string $name)
     {
         if (isset($_SERVER['DOCKER_CONF_HOME'])) {
             return true;
@@ -174,7 +174,7 @@ class InstallDataBaseManager extends InstallManager
         return $result;
     }
 
-    public function deleteDataBase($name)
+    public function deleteDataBase(string $name)
     {
         if (isset($_SERVER['DOCKER_CONF_HOME'])) {
             return true;
@@ -192,7 +192,7 @@ class InstallDataBaseManager extends InstallManager
         return $result;
     }
 
-    public function loadData($host, $port, $user, $pass, $name)
+    public function loadData(string $host, int $port, string $user, string $pass, string $name)
     {
         $sqlFiles = array(self::SCHEMA_SCRIPT_FILE, self::DATA_SCRIPT_FILE);
         $files = scandir(APP_ROOT_PATH . self::DATA_PATH . self::CHANGES_PATH, SCANDIR_SORT_ASCENDING);
@@ -208,7 +208,7 @@ class InstallDataBaseManager extends InstallManager
         }
         foreach ($sqlFiles as $sqlFile) {
             /*
-            if ($sqlFile == 'changes/20181119130300.sql') {
+            if ($sqlFile == 'changes/20181213115900.sql') {
                 exit();
             }
             */
@@ -235,7 +235,7 @@ class InstallDataBaseManager extends InstallManager
     	return true;
     }
 
-    public function existDataBase($name)
+    public function existDataBase(string $name)
     {
         $result = false;
         if ($this->dbConnection) {
@@ -245,7 +245,7 @@ class InstallDataBaseManager extends InstallManager
         return $result && $result->rowCount();
     }
 
-    public function checkDataBase($host, $port, $user, $pass, $name)
+    public function checkDataBase(string $host, string $port, string $user, string $pass, string $name)
     {
         $result = $this->selectDataBase($name);
         if ($result) {
@@ -256,7 +256,7 @@ class InstallDataBaseManager extends InstallManager
 
     }
 
-    public function userExist($userName)
+    public function userExist(string $userName)
     {
         $result = false;
         if ($this->dbConnection) {
@@ -266,23 +266,20 @@ class InstallDataBaseManager extends InstallManager
             }
             $host = $host[0];
             if ($host == 'localhost' and !isset($_SERVER['DOCKER_CONF_HOME'])) {
-                $query = " SELECT user FROM mysql.user where user = '$userName' and host = 'localhost'";
+                $query = "SELECT user FROM mysql.user where user = '$userName' and host = 'localhost'";
             } else {
-                $query = " SELECT user FROM mysql.user where user = '$userName' and host = '%'";
+                $query = "SELECT user FROM mysql.user where user = '$userName' and host = '%'";
             }
             $result = $this->dbConnection->query($query);
         }
         return $result && $result->rowCount();
     }
 
-    public function addUser($userName, $pass, $name, $userExists = false)
+    public function addUser(string $userName, string $pass, string $name, bool $userExists = false)
     {
         if ($this->dbConnection) {
             
-            /*
-            If the database server is installed in localhost, only the local user can access it, otherwise any remote 
-            connection be able
-            */
+            // If the database server is installed in localhost, only the local user can access it, otherwise any remote connection be able
             $host = explode(';', $this->host);
             if (!$host) {
                 return false;
@@ -290,7 +287,7 @@ class InstallDataBaseManager extends InstallManager
             $host = $host[0];
             try {
                 if ($host == 'localhost' and !isset($_SERVER['DOCKER_CONF_HOME'])) {
-                    if (!$userExists) {
+                    if (! $userExists) {
                         Logger::info("Creating user '$userName'@'localhost'");
                         $sql = "CREATE USER '$userName'@'localhost' IDENTIFIED BY '$pass'";
                         $result = $this->dbConnection->exec($sql);
@@ -305,7 +302,7 @@ class InstallDataBaseManager extends InstallManager
                         Logger::info("User '$userName'@'localhost' created / associated to database");
                     }
                 } else {
-                    if (!$userExists) {
+                    if (! $userExists) {
                         Logger::info("Creating user '$userName'@'%'");
                         $sql = "CREATE USER '$userName'@'%' IDENTIFIED BY '$pass'";
                         $result = $this->dbConnection->exec($sql);
@@ -336,7 +333,7 @@ class InstallDataBaseManager extends InstallManager
         return $result;
     }
 
-    public function addPrivileges($userName, $name)
+    public function addPrivileges(string $userName, string $name)
     {
         $result = false;
         if ($this->dbConnection) {
@@ -350,7 +347,7 @@ class InstallDataBaseManager extends InstallManager
         return $result;
     }
 
-    public function changeUser($user, $pass, $name)
+    public function changeUser(string $user, string $pass, string $name)
     {
         $result = false;
         if ($this->dbConnection) {
@@ -368,7 +365,7 @@ class InstallDataBaseManager extends InstallManager
     {
         if ($this->dbConnection) {
             $res = $this->dbConnection->query('select version() as dbversion');
-            if (!$res) {
+            if (! $res) {
                 return false;
             }
             $version = $res->fetch(PDO::FETCH_ASSOC);

@@ -1,26 +1,9 @@
 DROP TABLE `PipeCacheTemplates`;
 
-ALTER TABLE `PipePropertyValues` CHANGE `id` `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT, 
-    CHANGE `IdPipeProperty` `IdPipeProperty` INT(11) UNSIGNED NOT NULL, CHANGE `IdPipeCache` `IdPipeCache` INT(11) UNSIGNED NOT NULL;
-
-ALTER TABLE `PipePropertyValues` ENGINE = InnoDB;
-
-ALTER TABLE `PipePropertyValues` ADD CONSTRAINT `PipePropertyValues_PipeCache` FOREIGN KEY (`IdPipeCache`) REFERENCES `PipeCaches`(`id`) 
-    ON DELETE CASCADE ON UPDATE CASCADE;
-
-ALTER TABLE `PipePropertyValues` ADD CONSTRAINT `PipePropertyValues_PipeProperties` FOREIGN KEY (`IdPipeProperty`) 
-    REFERENCES `PipeProperties`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
 ALTER TABLE `PipeNodeTypes` ENGINE = InnoDB;
 
 ALTER TABLE `PipeNodeTypes` CHANGE `id` `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT, 
     CHANGE `IdPipeline` `IdPipeline` INT(11) UNSIGNED NOT NULL, CHANGE `IdNodeType` `IdNodeType` INT(11) UNSIGNED NOT NULL;
-
-ALTER TABLE `PipeNodeTypes` ADD CONSTRAINT `PipeNodeTypes_NodeTypes` FOREIGN KEY (`IdNodeType`) REFERENCES `NodeTypes`(`IdNodeType`) 
-    ON DELETE CASCADE ON UPDATE CASCADE;
-
-ALTER TABLE `PipeNodeTypes` ADD CONSTRAINT `PipeNodeTypes_Pipelines` FOREIGN KEY (`IdPipeline`) REFERENCES `Pipelines`(`id`) 
-    ON DELETE CASCADE ON UPDATE CASCADE;
 
 CREATE TABLE `Transitions` (
   `id` int(12) UNSIGNED NOT NULL,
@@ -71,8 +54,6 @@ ALTER TABLE `TransitionsCache` MODIFY `id` int(12) UNSIGNED NOT NULL AUTO_INCREM
 ALTER TABLE `TransitionsCache`
     ADD CONSTRAINT `TransitionsCache_Transitions` FOREIGN KEY (`transitionId`) REFERENCES `Transitions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
     ADD CONSTRAINT `TransitionsCache_Versions` FOREIGN KEY (`versionId`) REFERENCES `Versions` (`IdVersion`) ON DELETE CASCADE ON UPDATE CASCADE;
-
-ALTER TABLE PipePropertyValues DROP FOREIGN KEY PipePropertyValues_PipeCache;
 
 DROP TABLE `PipeCaches`;
 
