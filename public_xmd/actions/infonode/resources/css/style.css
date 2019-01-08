@@ -1,5 +1,5 @@
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -32,18 +32,15 @@
   padding: 1em;
   margin-bottom: 1em;
   word-wrap: break-word;
-  min-height: 150px;
+  min-height: 130pt;
 }
 
 .info--node .green {
   background: #7bcabf;
 }
 
-
-.info--node h3{
-    
+.info--node h3{    
     display: flex;
-    
 }
 
 .info--node h3::before {
@@ -55,7 +52,6 @@
  	flex-grow: 1;
  	max-width: 15px;
  	min-width: 15px;
- 	
 }
 
 .info--node h3::after {
@@ -64,10 +60,8 @@
     border-top: 3px solid #ccc;
     font-style: normal;
     margin: auto 0 auto 15px;
- 	flex-grow: 1;
- 	
+ 	flex-grow: 1; 	
 }
-	
 
 .info--node strong {
   display: block;
@@ -76,4 +70,3 @@
   color: #464646;
   text-shadow: none;
 }
-

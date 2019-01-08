@@ -28,17 +28,21 @@
 namespace Ximdex\Nodeviews;
 
 use Ximdex\Logger;
-use Ximdex\Models\Channel;
 
 class ViewChannelFilter extends AbstractView
 {
     public function transform(int $idVersion = null, string $pointer = null, array $args = null)
 	{
+	    if (! parent::transform($idVersion, $pointer, $args)) {
+	        return null;
+	    }
+        /*
 		if (array_key_exists('CHANNEL', $args)) {
 			$channel = new Channel($args['CHANNEL']);
 			$this->_idChannel = $channel->get('IdChannel');
 		}
-		if (! $this->_idChannel) {   
+		*/
+		if (! $this->channel) {   
 			Logger::error('VIEW CHANNELFILTER: Channel not specified for node');
 			return null;
 		}

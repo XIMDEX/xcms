@@ -40,7 +40,6 @@ use Ximdex\Runtime\App;
 use Ximdex\Runtime\DataFactory;
 use Ximdex\Utils\FsUtils;
 use Ximdex\Runtime\Session;
-use Ximdex\Workflow\WorkFlow;
 use Ximdex\XML\Base;
 use Ximdex\XML\XML;
 
@@ -301,31 +300,31 @@ class Node extends NodesOrm
      * @param int $stateID
      * @return boolean
      */
-    function SetState(int $stateID): bool
+    public function SetState(int $stateID): bool
     {
         if (! $this->GetID()) {
             $this->messages->add(_('The node ID is mandatory in order to change the state'), MSG_TYPE_ERROR);
             return false;
         }
-        $workflowStatus = new PipeStatus($stateID);
+        $workflowStatus = new WorkflowStatus($stateID);
         if (! $workflowStatus->get('id')) {
             $this->messages->add(sprintf(_('The state %s does not exist'), $stateID), MSG_TYPE_ERROR);
             return false;
         }
-        if ($workflowStatus->get('Action')) {
+        if ($workflowStatus->get('action')) {
 
             // Call a specified action in this transition to the new state
             $actions = WorkFlow::getActions();
-            if (!isset($actions[$workflowStatus->get('Action')])) {
-                $this->messages->add(sprintf(_('The action %s does not exist'), $workflowStatus->get('Action')), MSG_TYPE_ERROR);
+            if (!isset($actions[$workflowStatus->get('action')])) {
+                $this->messages->add(sprintf(_('The action %s does not exist'), $workflowStatus->get('action')), MSG_TYPE_ERROR);
                 return false;
             }
-            $action = explode('@', $workflowStatus->get('Action'));
+            $action = explode('@', $workflowStatus->get('action'));
             $className = WorkFlow::WORKFLOW_ACTIONS_NAMESPACE . $action[0];
             $class = new $className($this);
             $method = $action[1];
             Logger::info('Calling method ' . $method . ' in ' . $action[0] . ' class before changing the status to ' 
-                . $workflowStatus->get('Name'));
+                . $workflowStatus->get('name'));
             if ($class->$method() === false) {
                 if ($class->_getError()) {
                     $error = $class->_getError();
@@ -338,12 +337,6 @@ class Node extends NodesOrm
             }
             Logger::info('Method ' . $method . ' (' . $className . ') for node ' . $this->GetID() . ' executed', true);
         }
-        /*
-        $dbObj = new \Ximdex\Runtime\Db();
-        $sql = sprintf("UPDATE Nodes SET IdState = %d WHERE IdNode = %d OR SharedWorkflow = %d"
-            , $stateID, $this->get('IdNode'), $this->get('IdNode'));
-        $result = $dbObj->Execute($sql);
-        */
         $this->set('IdState', $stateID);
         $result = $this->update();
         if (! $result) {
@@ -1148,13 +1141,7 @@ class Node extends NodesOrm
         return parent::update();
     }
 
-    /**
-     *
-     * @param null $idParent
-     * @param null $idNodeType
-     * @return bool|null|string
-     */
-    function getFirstStatus($idParent = null, $idNodeType = null)
+    function getFirstStatus(int $idParent = null, int $idNodeType = null)
     {
         if (empty($idParent)) {
             $idParent = $this->get('IdNode');
@@ -1162,6 +1149,7 @@ class Node extends NodesOrm
         if (empty($idNodeType)) {
             $idNodeType = $this->get('IdNodeType');
         }
+        /*
         $nodeType = new NodeType($idNodeType);
         if (! $nodeType->get('IsPublishable')) {
             return null;
@@ -1183,6 +1171,18 @@ class Node extends NodesOrm
         $idPipeline = App::getValue('IdDefaultWorkflow');
         $workflow = new WorkFlow(NULL, NULL, $idPipeline);
         return $workflow->GetInitialState();
+        */
+        $workflow = new Workflow($nodeType->getWorkflow());
+        if ($workflow->get('id')) {
+            $idStatus = $workflow->getInitialState();
+            if ($idStatus > 0) {
+                return $idStatus;
+            }
+        }
+        
+        // Finally, I get it from the default value
+        $workflow->loadMaster();
+        return $workflow->GetInitialState();
     }
 
     /**
@@ -1195,70 +1195,78 @@ class Node extends NodesOrm
      * @param array $subfolders
      * @return bool|string
      */
-    function CreateNode($name, $parentID, $nodeTypeID, $stateID = null, $subfolders = array())
+    public function createNode($name, $parentID, $nodeTypeID, $stateID = null, $subfolders = array())
     {
-        $this->set('IdParent', (int)$parentID);
-        $this->set('IdNodeType', (int)$nodeTypeID);
+        $this->set('IdParent', (int) $parentID);
+        $this->set('IdNodeType', (int) $nodeTypeID);
         $this->set('Name', $name);
         $this->set('CreationDate', time());
         $this->set('ModificationDate', time());
         $nodeType = new NodeType($nodeTypeID);
         $parentNode = new Node($this->get('IdParent'));
 
-        // Set IdState
-        if ($nodeType->get('IsPublishable')) {
-            $this->set('IdState', $this->getFirstStatus($parentID, $nodeTypeID));
+        // Set workflow state
+        if ($nodeType->get('workflowId')) {
+            if (! $stateID) {
+                $stateID = $this->getFirstStatus($parentID, $nodeTypeID);
+                if (! $stateID) {
+                    $this->messages->add(_('Cannot load the fisrt state in create node'), MSG_TYPE_ERROR);
+                    return false;
+                }
+            }
+            $this->set('IdState', $stateID);
         } else {
-            $this->set('IdState', NULL);
+            $this->set('IdState', null);
         }
 
         // check name, parentID and nodeTypeID
-        if (!($name || $parentID || $nodeTypeID)) {
+        if (! $name or ! $parentID or ! $nodeTypeID) {
             $this->SetError(3);
             $this->messages->add(_('The name, parent or nodetype is missing'), MSG_TYPE_ERROR);
             return false;
         }
 
         // If nodetype is not existing, we are done
-        if (!($nodeType->get('IdNodeType')) > 0) {
+        if (! $nodeType->get('IdNodeType')) {
             $this->messages->add(_('The specified nodetype does not exist'), MSG_TYPE_ERROR);
             $this->SetError(11);
             return false;
         }
 
         // Checking for correct name format
-        if (!$this->IsValidName($this->get('Name'), $this->get('IdNodeType'))) {
+        if (! $this->IsValidName($this->get('Name'), $this->get('IdNodeType'))) {
             $this->messages->add(_('Node name is not valid'), MSG_TYPE_ERROR);
             $this->SetError(9);
             return false;
         }
 
         // If parent does not exist, we are done
-        if (!($parentNode->get('IdNode') > 0)) {
+        if (! $parentNode->get('IdNode')) {
             $this->messages->add(_('Parent node does not exist'), MSG_TYPE_ERROR);
             $this->SetError(10);
             return false;
         }
 
-        // check if already exist a node with the same name under the current parent
-        if (!($parentNode->GetChildByName($this->get('Name')) === false)) {
+        // Check if already exist a node with the same name under the current parent
+        if (! $parentNode->GetChildByName($this->get('Name')) === false) {
             $this->messages->add(_('There is already a node with this name under this parent'), MSG_TYPE_ERROR);
             $this->SetError(8);
             return false;
         }
 
-        // node is not allowed to live there
-        if (!$this->checkAllowedContent($nodeTypeID, $parentID)) {
+        // Node is not allowed to live there
+        if (! $this->checkAllowedContent($nodeTypeID, $parentID)) {
             $this->messages->add(_('This node is not allowed under this parent'), MSG_TYPE_ERROR);
             $this->SetError(17);
             return false;
         }
 
+        // TODO ajlucena id para rangos
         // Inserts the node in the Nodes table
         if (parent::add() === false)
             return false;
 
-        if (!($this->get('IdNode') > 0)) {
+        if (! $this->get('IdNode')) {
             $this->messages->add(_('Error creating the node'), MSG_TYPE_ERROR);
             $this->SetError(5);
             return false;
@@ -1279,7 +1287,6 @@ class Node extends NodesOrm
                 $this->messages->mergeMessages($this->class->messages);
             }
         }
-
         if ($this->messages->count(MSG_TYPE_ERROR) > 0) {
             if ($this->get('IdNode') > 0) {
                 $this->delete();
@@ -1320,43 +1327,43 @@ class Node extends NodesOrm
             }
         }
 
-        // / Updating the hierarchy index for this node.
+        // Updating the hierarchy index for this node
         $this->RenderizeNode();
-
         Logger::debug("Model::Node::CreateNode: Creating node id(" . $this->nodeID . "), name(" . $name . "), parent(" . $parentID . ").");
 
-        // / Once created, its content by default is added.
+        // Once created, its content by default is added
         $dbObj = new \Ximdex\Runtime\Db();
-
-        if (!empty($subfolders) && is_array($subfolders)) {
+        if (! empty($subfolders) and is_array($subfolders)) {
             $subfolders_str = implode(",", $subfolders);
-            $query = sprintf("SELECT NodeType, Name, State, Params FROM NodeDefaultContents WHERE IdNodeType = %d AND NodeType in (%s)", $this->get('IdNodeType'), $subfolders_str);
+            $query = sprintf("SELECT NodeType, Name, State, Params FROM NodeDefaultContents WHERE IdNodeType = %d AND NodeType in (%s)"
+                , $this->get('IdNodeType'), $subfolders_str);
         } else {
             $query = sprintf("SELECT NodeType, Name, State, Params FROM NodeDefaultContents WHERE IdNodeType = %d", $this->get('IdNodeType'));
         }
         $dbObj->Query($query);
-
-        while (!$dbObj->EOF) {
+        while (! $dbObj->EOF) {
             $childNode = new Node();
             Logger::debug("Model::Node::CreateNode: Creating child name(" . $this->get('Name') . "), type(" . $this->get('IdNodeType') . ").");
-            $res = $childNode->CreateNode($dbObj->GetValue('Name'), $this->get('IdNode'), $dbObj->GetValue('NodeType'), $dbObj->GetVAlue('State'));
+            $res = $childNode->CreateNode($dbObj->GetValue('Name'), $this->get('IdNode'), $dbObj->GetValue('NodeType')
+                , $dbObj->GetVAlue('State'));
             if ($res === false) {
                 $this->messages->mergeMessages($childNode->messages);
                 return false;
             }
             $dbObj->Next();
         }
-
         $node = new Node($this->get('IdNode'));
         if ($nodeTypeID == NodeTypeConstants::TEMPLATES_ROOT_FOLDER) {
-            // if the node is a type of templates folder or ximlets section, generates the templates_include.xsl inside
+            
+            // If the node is a type of templates folder or ximlets section, generates the templates_include.xsl inside
             $xsltNode = new \Ximdex\NodeTypes\XsltNode($node);
             if ($xsltNode->create_templates_include($node->GetID()) === false) {
                 $this->messages->mergeMessages($xsltNode->messages);
                 return false;
             }
         } elseif ($nodeTypeID == NodeTypeConstants::XIMLET_ROOT_FOLDER) {
-            // if the node is a type of ximlets section, generates the relation with the templates folder
+            
+            // If the node is a type of ximlets section, generates the relation with the templates folder
             $xsltNode = new \Ximdex\NodeTypes\XsltNode($node);
             if ($xsltNode->rel_include_templates_to_documents_folders($parentNode) === false) {
                 $this->messages->mergeMessages($xsltNode->messages);
@@ -2558,10 +2565,7 @@ class Node extends NodesOrm
         return true;
     }
 
-    /**
-     * @return array
-     */
-    function loadData($advanced = false)
+    public function loadData(bool $advanced = false)
     {
         $ret = array();
         $ret['nodeid'] = $this->get('IdNode');
@@ -2574,6 +2578,7 @@ class Node extends NodesOrm
         $ret['desc'] = $this->get('Description');
         $ret['path'] = $this->getPath($advanced);
         $ret['typename'] = $this->nodeType->get('Name');
+        $ret['typedescription'] = $this->nodeType->get('Description');
         $ret['class'] = $this->nodeType->get('Class');
         $ret['icon'] = $this->nodeType->get('Icon');
         $ret['isdir'] = $this->nodeType->get('IsFolder');
@@ -2583,7 +2588,7 @@ class Node extends NodesOrm
         $ret['issection'] = $this->nodeType->get('IsSection');
         $ret['isxml'] = $this->nodeType->get('IsStructuredDocument');
         $version = $this->GetLastVersion();
-        if (!empty($version)) {
+        if (! empty($version)) {
             $ret['version'] = $version["Version"];
             $ret['subversion'] = $version["SubVersion"];
             $ret['published'] = $version["Published"];
@@ -3112,29 +3117,29 @@ class Node extends NodesOrm
      */
     function GetNextAllowedState($idUser, $idGroup)
     {
-        if (!($this->get('IdNode') > 0)) {
-            return NULL;
+        if (! $this->get('IdNode')) {
+            return null;
         }
-        if (!($this->get('IdState') > 0)) {
-            return NULL;
+        if (! $this->get('IdState')) {
+            return null;
         }
         $user = new User($idUser);
         $idRole = $user->GetRoleOnNode($this->get('IdNode'), $idGroup);
         $role = new Role($idRole);
         $allowedStates = $role->GetAllowedStates();
         $idNextState = $this->get('IdState');
-        if (is_array($allowedStates) && !empty($allowedStates)) {
-            $workflow = new WorkFlow($this->get('IdNode'), $idNextState);
+        if (is_array($allowedStates) && ! empty($allowedStates)) {
+            $workflow = new Workflow($this->nodeType->getWorkflow(), $idNextState);
             $idNextState = null;
             do {
-                $idNextState = $workflow->GetNextState();
+                $idNextState = $workflow->getNextState();
                 if (empty($idNextState)) {
-                    return NULL;
+                    return null;
                 } else if (in_array($idNextState, $allowedStates)) {
                     return $idNextState;
                 }
-                $workflow = new WorkFlow($this->get('IdNode'), $idNextState);
-            } while (!$workflow->IsFinalState());
+                $workflow = new Workflow($this->nodeType->getWorkflow(), $idNextState);
+            } while (! $workflow->isFinalState());
         }
         return NULL;
     }
@@ -3145,7 +3150,7 @@ class Node extends NodesOrm
     function UpdateChildren()
     {
         $arr_children = $this->GetChildren();
-        if (!empty($arr_children)) {
+        if (! empty($arr_children)) {
             foreach ($arr_children as $child) {
                 $node_child = new Node($child);
                 $node_child->updateFastTraverse();

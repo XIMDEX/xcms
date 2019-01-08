@@ -30,12 +30,15 @@ set_time_limit(0);
 use Ximdex\Logger;
 use Ximdex\Models\Node;
 use Ximdex\Models\NodesToPublish;
+use Ximdex\Models\Workflow;
 use Ximdex\Runtime\App;
 use Ximdex\Sync\SynchroFacade;
 use Ximdex\Sync\BatchManager;
-use Ximdex\Workflow\WorkFlow;
 
-function main($argc, $argv)
+global $argc, $argv;
+main($argc, $argv);
+
+function main(int $argc = 0, array $argv = null)
 {
     Logger::generate('PUBLICATION', 'publication');
     Logger::setActiveLog('publication');
@@ -106,45 +109,12 @@ function createBatchsForBlock($nodesToPublish)
         Logger::error('PUSHDOCINPOOL - docsPublicated null');
         return null;
     }
-    /*
-    // Purge subversions in docs publicated successfully
-    if (isset($docsPublicated[1]) and $docsPublicated[1]) {
-        if (array_key_exists('ok', $docsPublicated[1])) {
-            $keys = array_keys($docsPublicated[1]['ok']);
-            foreach ($keys as $id) {
-                $node = new Node($id);
-                Logger::info('Purging subversions for node ' . $id);
-                $data = new DataFactory($id);
-                $curVersion = $data->getLastVersion(true);
-                $prevVersion = $curVersion - 1;
-                if (App::getValue('PurgeSubversionsOnNewVersion')) {
-                    $data->purgeSubVersions($prevVersion, true);
-                }
-            }
-        }
 
-        // Delete major version in docs with error
-        if (array_key_exists('notok', $docsPublicated[1])) {
-            $keys = array_keys($docsPublicated[1]['notok']);
-            foreach ($keys as $id) {
-                $data = new DataFactory($id);
-                $curVersion = $data->getLastVersion(true);
-                Logger::info("Publication error: deleting version $curVersion for node $id");
-                if (App::getValue('PurgeSubversionsOnNewVersion')) {
-                    $data->deleteVersion($curVersion);
-                }
-            }
-        }
-    }
-    */
     // Back node to initial state
     $node = new Node($idNodeGenerator);
     if ($node->get('IdState') > 0) {
-        $workflow = new WorkFlow($idNodeGenerator);
-        $firstState = $workflow->GetInitialState();
+        $workflow = new Workflow($node->nodeType->getWorkflow());
+        $firstState = $workflow->getInitialState();
         $node->SetState($firstState);
     }
 }
-
-global $argc, $argv;
-main($argc, $argv);

@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -31,47 +31,60 @@ use Ximdex\Models\ORM\PermissionsOrm;
 
 class Permission extends PermissionsOrm
 {
-    var $permissionID;
-    var $dbObj;
-    var $numErr;                // Error code
-    var $msgErr;                // Error message
-    var $errorList = array(     // Class error list
-        1 => 'Database connection error',
-        2 => 'Permit does not exist',
-        3 => 'Not initialized object'
-    );
-    var $_fieldsToTraduce = array('Description');
+    public $permissionID;
+    
+    /**
+     * Error code
+     * 
+     * @var int
+     */
+    public $numErr;
+    
+    /**
+     * Error message
+     * 
+     * @var string
+     */
+    public $msgErr;
+    
+    /**
+     * Class error list
+     * 
+     * @var array
+     */
+    public $errorList = array();
+    
+    public $_fieldsToTraduce = array('Description');
 
     /**
      * Constructor
      * 
-     * @param $_params
+     * @param int $_params
      */
-    function __construct($_params = null)
+    function __construct(int $params = null)
     {
         $this->errorList[1] = _('Database connection error');
         $this->errorList[2] = _('Permit does not exist');
         $this->errorList[3] = _('Not initialized object');
-        parent::__construct($_params);
+        parent::__construct($params);
     }
 
-    function GetAllPermissions()
+    public function getAllPermissions()
     {
-        $this->ClearError();
-        $result = array();
-        $sql = "SELECT IdPermission FROM Permissions";
+        $this->clearError();
+        $sql = 'SELECT IdPermission FROM Permissions';
         $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->Query($sql);
-        if (!$dbObj->numErr) {
+        if (! $dbObj->numErr) {
+            $result = array();
             while (!$dbObj->EOF) {
-                $result[] = $dbObj->GetValue("IdPermission");
+                $result[] = $dbObj->GetValue('IdPermission');
                 $dbObj->Next();
             }
             return $result;
-        } else {
-            $this->SetError(1);
         }
-        return $result;
+        $this->SetError(1);
+        return false;
     }
 
     /**
@@ -79,7 +92,7 @@ class Permission extends PermissionsOrm
      * 
      * @return int
      */
-    function GetID()
+    public function getID()
     {
         return $this->get('IdPermission');
     }
@@ -87,27 +100,27 @@ class Permission extends PermissionsOrm
     /**
      * Allows as to change the object idPermission. This avoid the have to destroy and re-create
      * 
-     * @param $id
+     * @param int $id
      * @return NULL|boolean|string
      */
-    function SetID($id = null)
+    public function setID(int $id = null)
     {
         $this->ClearError();
         parent::__construct($id);
-        if (!($this->get('IdPermission') > 0)) {
+        if (! $this->get('IdPermission')) {
             $this->SetError(2);
             return null;
         }
         return $this->get('IdPermission');
     }
 
-    function SetByName($name)
+    public function setByName(string $name)
     {
         $this->ClearError();
         $dbObj = new \Ximdex\Runtime\Db();
-        $dbObj->Query(sprintf("SELECT IdPermission FROM Permissions WHERE Name = %s", $dbObj->sqlEscapeString($name)));
+        $dbObj->Query(sprintf('SELECT IdPermission FROM Permissions WHERE Name = %s', $dbObj->sqlEscapeString($name)));
         if ($dbObj->numRows) {
-            $this->SetID($dbObj->GetValue("IdPermission"));
+            $this->SetID($dbObj->GetValue('IdPermission'));
         } else {
             $this->permissionID = null;
             $this->SetError(2);
@@ -119,21 +132,21 @@ class Permission extends PermissionsOrm
      * 
      * @return boolean|string
      */
-    function GetName()
+    public function getName()
     {
-        return $this->get("Name");
+        return $this->get('Name');
     }
 
     /**
      * Updates the database with the new permit name
      * 
-     * @param $name
-     * @return boolean|boolean|number|NULL|string
+     * @param string $name
+     * @return boolean|number|NULL|string
      */
-    function SetName($name)
+    public function SetName(string $name)
     {
-        $this->ClearError();
-        if (!($this->get('IdPermission') > 0)) {
+        $this->clearError();
+        if (! $this->get('IdPermission')) {
             $this->SetError(2);
             return false;
         }
@@ -144,15 +157,15 @@ class Permission extends PermissionsOrm
         return false;
     }
 
-    function GetDescription()
+    public function getDescription()
     {
-        return $this->get("Description");
+        return $this->get('Description');
     }
 
-    function SetDescription($description)
+    public function setDescription(string $description)
     {
-        $this->ClearError();
-        if (!($this->get('IdPermission') > 0)) {
+        $this->clearError();
+        if (! $this->get('IdPermission')) {
             $this->SetError(2);
             return false;
         }
@@ -163,24 +176,29 @@ class Permission extends PermissionsOrm
         return false;
     }
 
-    function add()
+    /**
+     * {@inheritDoc}
+     * @see \Ximdex\Data\GenericData::add()
+     */
+    public function add()
     {
         $this->CreateNewPermission($this->get('Name'));
     }
 
     /**
      * Creates a new permit if this not exist in the database and loads its idPermission
-     * @param $name
-     * @param $pID
+     * 
+     * @param string $name
+     * @param int $pID
      * @return int|bool
      */
-    function CreateNewPermission($name, $pID = NULL)
+    public function createNewPermission(string $name, int $pID = null)
     {
         $dbObj = new \Ximdex\Runtime\Db();
-        $dbObj->Query("SELECT IdPermission FROM Permissions WHERE Name = %s", $dbObj->sqlEscapeString($name));
-        if (!$dbObj->numRows) {
+        $dbObj->Query('SELECT IdPermission FROM Permissions WHERE Name = %s', $dbObj->sqlEscapeString($name));
+        if (! $dbObj->numRows) {
             $this->set('Name', $name);
-            if (!empty($pID)) {
+            if (! empty($pID)) {
                 $this->set('IdPermission', $pID);
             }
             parent::add();
@@ -189,40 +207,40 @@ class Permission extends PermissionsOrm
         return false;
     }
 
-    function delete()
+    public function delete()
     {
-        $this->DeletePermission();
+        $this->deletePermission();
     }
 
     /**
      * Deletes the current permit
      */
-    function DeletePermission()
+    public function deletePermission()
     {
-        $this->ClearError();
-        if ($this->get('IdPermission') > 0) {
+        $this->clearError();
+        if ($this->get('IdPermission')) {
             parent::delete();
         } else {
             $this->SetError(3);
         }
     }
 
-    function AddRole($rID)
+    public function addRole(int $rID)
     {
         $myrole = new Role($rID);
-        $myrole->AddPermission($this->get('IdPermission'));
+        $myrole->addPermission($this->get('IdPermission'));
     }
 
-    function DeleteRole($rID)
+    public function deleteRole(int $rID)
     {
         $myrole = new Role($rID);
-        $myrole->DeletePermission($this->get('IdPermission'));
+        $myrole->deletePermission($this->get('IdPermission'));
     }
 
     /**
      * Cleans the class errors
      */
-    function ClearError()
+    public function clearError()
     {
         $this->numErr = null;
         $this->msgErr = null;
@@ -231,9 +249,9 @@ class Permission extends PermissionsOrm
     /**
      * Loads the class error
      * 
-     * @param $code
+     * @param int $code
      */
-    function SetError($code)
+    public function setError(int $code)
     {
         $this->numErr = $code;
         $this->msgErr = $this->errorList[$code];
@@ -244,7 +262,7 @@ class Permission extends PermissionsOrm
      * 
      * @return boolean
      */
-    function HasError()
+    public function hasError() : bool
     {
         return ($this->numErr != null);
     }

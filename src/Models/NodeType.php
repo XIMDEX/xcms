@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -28,35 +28,64 @@
 namespace Ximdex\Models;
 
 use Ximdex\Models\ORM\NodeTypesOrm;
+use Ximdex\NodeTypes\NodeTypeConstants;
 
-define('NODETYPE_SECTION', \Ximdex\NodeTypes\NodeTypeConstants::SECTION);
+define('NODETYPE_SECTION', NodeTypeConstants::SECTION);
 
 class NodeType extends NodeTypesOrm
 {
-    var $ID;            //Current node id
-    var $dbObj;            // DB object used in methods
-    var $flagErr;                // shows if there was an error
-    var $numErr;                // Error code
-    var $msgErr;                // Error message
-    var $errorList = array(        // Class error list
-        1 => 'Database connection error',
-        2 => 'Nodetype does not exist'
-    );
-    var $_cache = 0;
-    var $_useMemCache = 0;
-    var $_fieldsToTraduce = array('Description');
-    var $autoCleanErr ;
+    /**
+     * Current node id
+     * 
+     * @var int
+     */
+    public $ID;
     
     /**
-     * NodeType constructor.
-     * @param null $nodeTypeID
+     * DB object used in methods
+     * 
+     * @var \Ximdex\Runtime\Db
      */
+    public $dbObj;
+    
+    /**
+     * Shows if there was an error
+     * 
+     * @var bool
+     */
+    public $flagErr;
+    
+    /**
+     * Error code
+     * 
+     * @var int
+     */
+    public $numErr;
+    
+    /**
+     * Error message
+     * 
+     * @var string
+     */
+    public $msgErr;
+    
+    /**
+     * Class error list
+     * @var array
+     */
+    public $errorList = [];
+    
+    public $_cache = 0;
+    public $_useMemCache = 0;
+    public $_fieldsToTraduce = array('Description');
+    public $autoCleanErr = true;
+    
     function __construct($nodeTypeID = null)
     {
         $this->errorList[1] = _('Database connection error');
         $this->errorList[2] = _('Nodetype does not exist');
-        $this->flagErr = FALSE;
-        $this->autoCleanErr = TRUE;
+        $this->flagErr = false;
+        $this->autoCleanErr = true;
         $this->ID = $nodeTypeID;
         parent::__construct($nodeTypeID);
     }
@@ -66,10 +95,12 @@ class NodeType extends NodeTypesOrm
      */
     function GetConstructor()
     {
-        $query = sprintf("SELECT IdAction FROM NodeConstructors WHERE IdNodeType = %d", $this->get('IdNodeType'));
+        $query = sprintf('SELECT IdAction FROM NodeConstructors WHERE IdNodeType = %d', $this->get('IdNodeType'));
         $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->Query($query);
-        if ($dbObj->numRows == 1) return $dbObj->GetValue('IdAction');
+        if ($dbObj->numRows == 1) {
+            return $dbObj->GetValue('IdAction');
+        }
         return 0;
     }
 
@@ -87,7 +118,8 @@ class NodeType extends NodeTypesOrm
      * @param null $nodeTypeID
      * @return bool|null|string
      */
-    function CreateNewNodeType($name, $icon, $isRenderizable, $hasFSEntity, $canAttachGroups, $isContentNode, $description, $class, $nodeTypeID = null)
+    function CreateNewNodeType($name, $icon, $isRenderizable, $hasFSEntity, $canAttachGroups, $isContentNode, $description
+        , $class, $nodeTypeID = null)
     {
         $this->set('Name', $name);
         $this->set('Icon', $icon);
@@ -103,32 +135,29 @@ class NodeType extends NodeTypesOrm
 
     /**
      * Returns an array with the ids of all existing nodetypes
+     * 
      * @return array of idNodeType
-     */
-    /**
-     * @return array|null
      */
     function GetAllNodeTypes()
     {
         $salida = null;
-        $sql = "SELECT idNodeType FROM NodeTypes";
+        $sql = 'SELECT idNodeType FROM NodeTypes';
         $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->Query($sql);
         if ($dbObj->numErr != 0) {
             $this->SetError(1);
             return null;
         }
-        while (!$dbObj->EOF) {
-            $salida[] = $dbObj->getValue("idNodeType");
+        while (! $dbObj->EOF) {
+            $salida[] = $dbObj->getValue('idNodeType');
             $dbObj->Next();
         }
-        return $salida ? $salida : NULL;
+        return $salida ? $salida : null;
     }
 
     /**
-     *  Returns the current nodetype id
-     */
-    /**
+     * Returns the current nodetype id
+     * 
      * @return bool|string
      */
     function GetID()
@@ -138,13 +167,14 @@ class NodeType extends NodeTypesOrm
 
     /**
      * Changes the curent node type
+     * 
      * @param $nodeTypeID
      * @return int (status)
      */
     function SetID($nodeTypeID)
     {
         parent::__construct($nodeTypeID);
-        if (!($this->get('IdNodeType') > 0)) {
+        if (! $this->get('IdNodeType')) {
             $this->SetError(1);
             return null;
         }
@@ -159,31 +189,32 @@ class NodeType extends NodeTypesOrm
     function SetByName($name)
     {
         $dbObj = new \Ximdex\Runtime\Db();
-        $query = sprintf("SELECT IdNodeType FROM NodeTypes WHERE Name LIKE %s", $dbObj->sqlEscapeString($name));
+        $query = sprintf('SELECT IdNodeType FROM NodeTypes WHERE Name LIKE %s', $dbObj->sqlEscapeString($name));
         $dbObj->Query($query);
-        if (!($dbObj->numRows > 0)) {
+        if (! $dbObj->numRows) {
             $backtrace = debug_backtrace();
-            error_log(sprintf("Se ha intentado cargar obtener un tipo de nodo por el nombre %s"
-                . " y no se ha encontrado [src/Models/nodetype.php] script: %s file: %s line: %s",
+            error_log(sprintf('Se ha intentado cargar obtener un tipo de nodo por el nombre %s'
+                . ' y no se ha encontrado [src/Models/nodetype.php] script: %s file: %s line: %s',
                 $name,
                 $_SERVER['SCRIPT_FILENAME'],
                 $backtrace[0]['file'],
                 $backtrace[0]['line']));
             return false;
         }
-        if (($dbObj->GetValue("IdNodeType") > 0)) {
-            return $this->SetID($dbObj->GetValue("IdNodeType"));
+        if ($dbObj->GetValue('IdNodeType')) {
+            return $this->SetID($dbObj->GetValue('IdNodeType'));
         }
         return false;
     }
 
     /**
      * Returns the current node type name
+     * 
      * @return string(name)
      */
     function GetName()
     {
-        return $this->get("Name");
+        return $this->get('Name');
     }
 
     /**
@@ -195,22 +226,22 @@ class NodeType extends NodeTypesOrm
     function IsNodeType($name)
     {
         $dbObj = new \Ximdex\Runtime\Db();
-        $dbObj->Query("SELECT IdNodeType FROM NodeTypes WHERE Name = %s", $dbObj->sqlEscapeString($name));
+        $dbObj->Query('SELECT IdNodeType FROM NodeTypes WHERE Name = %s', $dbObj->sqlEscapeString($name));
         if ($dbObj->numRows == 0) {
             return false;
-        } else {
-            return true;
         }
+        return true;
     }
 
     /**
      * Changes the current node type name
+     * 
      * @param $name
      * @return int (status)
      */
     function SetName($name)
     {
-        if (!($this->get('IdNodeType') > 0)) {
+        if (! $this->get('IdNodeType')) {
             $this->SetError(1);
             return false;
         }
@@ -223,21 +254,23 @@ class NodeType extends NodeTypesOrm
 
     /**
      * Return the class of the current nodetype
+     * 
      * @return string (description)
      */
     function GetClass()
     {
-        return $this->get("Class");
+        return $this->get('Class');
     }
 
     /**
      * Changes the current node type class
+     * 
      * @param $class
-     * @return int (status)
+     * @return int (status) | bool
      */
     function SetClass($class)
     {
-        if (!($this->get('IdNodeType') > 0)) {
+        if (! $this->get('IdNodeType')) {
             $this->SetError(1);
             return false;
         }
@@ -250,21 +283,23 @@ class NodeType extends NodeTypesOrm
 
     /**
      * Returns the current node type description
+     * 
      * @return string (description)
      */
     function GetDescription()
     {
-        return $this->get("Description");
+        return $this->get('Description');
     }
 
     /**
      * Change the current node type description
+     * 
      * @param $description
-     * @return int (status)
+     * @return int (status) | bool
      */
     function SetDescription($description)
     {
-        if (!($this->get('IdNodeType') > 0)) {
+        if (! $this->get('IdNodeType')) {
             $this->SetError(1);
             return false;
         }
@@ -277,21 +312,23 @@ class NodeType extends NodeTypesOrm
 
     /**
      * Returns if the node type is renderizable or not
+     * 
      * @return boolean (isrenderizable)
      */
     function GetIsRenderizable()
     {
-        return $this->get("IsRenderizable");
+        return $this->get('IsRenderizable');
     }
 
     /**
      * Change the property of being renderizable or not for a nodetype
+     * 
      * @param $isRenderizable
-     * @return int (status)
+     * @return int (status) | bool
      */
     function SetIsRenderizable($isRenderizable)
     {
-        if (!($this->get('IdNodeType') > 0)) {
+        if (! $this->get('IdNodeType')) {
             $this->SetError(1);
             return false;
         }
@@ -304,21 +341,23 @@ class NodeType extends NodeTypesOrm
 
     /**
      * Returns if the current nodetype will have an entity in the file system
+     * 
      * @return boolean (hasfsntity)
      */
     function GetHasFSEntity()
     {
-        return $this->get("HasFSEntity");
+        return $this->get('HasFSEntity');
     }
 
     /**
      * Change if the current nodetype will have an entity in the file system or not
+     * 
      * @param $hasFSEntity
      * @return int (status)
      */
     function SetHasFSEntity($hasFSEntity)
     {
-        if (!($this->get('IdNodeType') > 0)) {
+        if (! $this->get('IdNodeType')) {
             $this->SetError(1);
             return false;
         }
@@ -338,11 +377,11 @@ class NodeType extends NodeTypesOrm
     }
 
     /**
-     * @return bool|string
+     * @return bool
      */
     function GetIsFolder()
     {
-        return $this->get("IsFolder");
+        return $this->get('IsFolder');
     }
 
     /**
@@ -351,7 +390,7 @@ class NodeType extends NodeTypesOrm
      */
     function SetIsFolder($value)
     {
-        if (!($this->get('IdNodeType') > 0)) {
+        if (! $this->get('IdNodeType')) {
             $this->SetError(1);
             return false;
         }
@@ -367,7 +406,7 @@ class NodeType extends NodeTypesOrm
      */
     function GetIsPlainFile()
     {
-        return $this->get("IsPlainFile");
+        return $this->get('IsPlainFile');
     }
 
     /**
@@ -376,7 +415,7 @@ class NodeType extends NodeTypesOrm
      */
     function SetIsPlainFile($value)
     {
-        if (!($this->get('IdNodeType') > 0)) {
+        if (! $this->get('IdNodeType')) {
             $this->SetError(1);
             return false;
         }
@@ -392,7 +431,7 @@ class NodeType extends NodeTypesOrm
      */
     function GetIsVirtualFolder()
     {
-        return $this->get("IsVirtualFolder");
+        return $this->get('IsVirtualFolder');
     }
 
     /**
@@ -401,7 +440,7 @@ class NodeType extends NodeTypesOrm
      */
     function SetIsVirtualFolder($value)
     {
-        if (!($this->get('IdNodeType') > 0)) {
+        if (! $this->get('IdNodeType')) {
             $this->SetError(1);
             return false;
         }
@@ -414,16 +453,12 @@ class NodeType extends NodeTypesOrm
 
     function GetIsStructuredDocument()
     {
-        return $this->get("IsStructuredDocument");
+        return $this->get('IsStructuredDocument');
     }
 
-    /**
-     *
-     * @param $value
-     */
     function SetIsStructuredDocument($value)
     {
-        if (!($this->get('IdNodeType') > 0)) {
+        if (! $this->get('IdNodeType')) {
             $this->SetError(1);
             return false;
         }
@@ -436,16 +471,12 @@ class NodeType extends NodeTypesOrm
 
     function GetIsSection()
     {
-        return $this->get("IsSection");
+        return $this->get('IsSection');
     }
 
-    /**
-     *
-     * @param $value
-     */
     function SetIsSection($value)
     {
-        if (!($this->get('IdNodeType') > 0)) {
+        if (! $this->get('IdNodeType')) {
             $this->SetError(1);
             return false;
         }
@@ -458,21 +489,23 @@ class NodeType extends NodeTypesOrm
 
     /**
      * Returns if the current nodetype can be associated to groups
+     * 
      * @return boolean (canattachgroups)
      */
     function GetCanAttachGroups()
     {
-        return $this->get["CanAttachGroups"];
+        return $this->get('CanAttachGroups');
     }
 
     /**
      * Changes if the nodes can abort its deletion with an specific method
+     * 
      * @param $canDenyDeletion
      * @return int (status)
      */
     function SetCanDenyDeletion($canDenyDeletion)
     {
-        if (!($this->get('IdNodeType') > 0)) {
+        if (! $this->get('IdNodeType')) {
             $this->SetError(1);
             return false;
         }
@@ -488,17 +521,18 @@ class NodeType extends NodeTypesOrm
      */
     function GetCanDenyDeletion()
     {
-        return $this->get("CanDenyDeletion");
+        return $this->get('CanDenyDeletion');
     }
 
     /**
      * Change if the current node type can be associated to groups or not
+     * 
      * @param $canAttachGroups
-     * @return  int (status)
+     * @return  int (status) | bool
      */
     function SetCanAttachGroups($canAttachGroups)
     {
-        if (!($this->get('IdNodeType') > 0)) {
+        if (! $this->get('IdNodeType')) {
             $this->SetError(1);
             return false;
         }
@@ -511,13 +545,12 @@ class NodeType extends NodeTypesOrm
 
     /**
      * Returns the current node type icon
-     */
-    /**
-     * @return bool|string
+     * 
+     * @return string
      */
     function GetIcon()
     {
-        return $this->get("Icon");
+        return $this->get('Icon');
     }
 
     /**
@@ -527,7 +560,7 @@ class NodeType extends NodeTypesOrm
      */
     function SetIcon($icon)
     {
-        if (!($this->get('IdNodeType') > 0)) {
+        if (! $this->get('IdNodeType')) {
             $this->SetError(1);
             return false;
         }
@@ -540,23 +573,24 @@ class NodeType extends NodeTypesOrm
 
     /**
      * Add an allowed nodetype as child of the current one
+     * 
      * @param $nodeType
      * @param $amount
      * @return int (status)
      */
     function AddAllowedNodeType($nodeType, $amount)
     {
-        $query = sprintf("SELECT COUNT(*) AS total FROM NodeAllowedContents"
-            . " WHERE IdNodeType = %d AND NodeType = %d", $this->get('IdNodeType'), $nodeType);
+        $query = sprintf('SELECT COUNT(*) AS total FROM NodeAllowedContents'
+            . ' WHERE IdNodeType = %d AND NodeType = %d', $this->get('IdNodeType'), $nodeType);
         $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->Query($query);
         if ($dbObj->GetValue('total') > 0) {
-            $sql = sprintf("UPDATE NodeAllowedContents SET Amount = %d"
-                . " WHERE IdNodeType = %d"
-                . " AND NodeType = %d", $amount, $this->get('IdNodeType'), $nodeType);
+            $sql = sprintf('UPDATE NodeAllowedContents SET Amount = %d'
+                . ' WHERE IdNodeType = %d'
+                . ' AND NodeType = %d', $amount, $this->get('IdNodeType'), $nodeType);
         } else {
-            $sql = sprintf("INSERT INTO NodeAllowedContents (IdNodeType,NodeType,Amount)"
-                . " VALUES (%d, %d, %d)", $this->get('IdNodeType'), $nodeType, $amount);
+            $sql = sprintf('INSERT INTO NodeAllowedContents (IdNodeType, NodeType, Amount)'
+                . ' VALUES (%d, %d, %d)', $this->get('IdNodeType'), $nodeType, $amount);
         }
         $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->Execute($sql);
@@ -568,31 +602,14 @@ class NodeType extends NodeTypesOrm
     }
 
     /**
-     * Delete an allowed nodetype
-     * @param $nodeType
-     * @return int (status)
-     */
-    function DeleteAllowedNodeType($nodeType)
-    {
-        $sql = sprintf("DELETE FROM NodeAllowedContents "
-            . " WHERE IdNodeType = "
-            . " AND NodeType = ", $this->get('IdNodeType'), $nodeType);
-        $dbObj = new \Ximdex\Runtime\Db();
-        $dbObj->Execute($sql);
-        if ($dbObj->numErr != 0) {
-            $this->SetError(1);
-        }
-    }
-
-    /**
-     * Replace a set of data of the AllowedContents by the pram.
+     * Replace a set of data of the AllowedContents by the pram
      * The param array of associative arrays of two fields: 'nodetype' and 'amount' means 'node type allowed' and 'allowed quantity'
+     * 
      * @param $arrayAllowed
      */
     function ReplaceAllowedNodeTypeList($arrayAllowed)
     {
-        $sql = sprintf("DELETE FROM NodeAllowedContents "
-            . " WHERE IdNodeType = " . $this->get('IdNodeType'));
+        $sql = sprintf('DELETE FROM NodeAllowedContents WHERE IdNodeType = ' . $this->get('IdNodeType'));
         $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->Execute($sql);
         $sal = $dbObj->numErr;
@@ -601,34 +618,35 @@ class NodeType extends NodeTypesOrm
             return null;
         }
         for ($i = 0; $i < count($arrayAllowed); $i++) {
-            $sal = $sal + $this->addAllowedNodeType($arrayAllowed[$i]["nodetype"],
-                    $arrayAllowed[$i]["amount"]);
+            $sal = $sal + $this->addAllowedNodeType($arrayAllowed[$i]['nodetype'],
+                    $arrayAllowed[$i]['amount']);
         }
         return $sal;
     }
 
     /**
      * Returns an array of associative arrays of two fields:  'nodetype' and 'amount' means 'node type allowed' and 'allowed quantity'
-     * @return array
+     * 
+     * @return array|null
      */
     function GetAllowedNodeTypes()
     {
         $allowedNodetypes = new NodeAllowedContent();
         $results = $allowedNodetypes->find('NodeType as nodetype, Amount as amount', 'idNodetype = %s', array($this->get('IdNodeType')));
-        return $results ? $results : NULL;
+        return $results ? $results : null;
     }
 
     /**
      * Adds a content by default
+     * 
      * @param $nodeType
      * @param $name
-     * @return int (status)
      */
     function AddADefaultContent($nodeType, $name)
     {
         $dbObj = new \Ximdex\Runtime\Db();
-        $sql = sprintf("INSERT INTO NodeDefaultContents (IdNodeType,NodeType,Name)" .
-            " VALUES (%d, %d, %s)", $this->get('IdNodeType'), $nodeType, $dbObj->sqlEscapeString($name));
+        $sql = sprintf('INSERT INTO NodeDefaultContents (IdNodeType, NodeType, Name)' .
+            ' VALUES (%d, %d, %s)', $this->get('IdNodeType'), $nodeType, $dbObj->sqlEscapeString($name));
         $dbObj->Execute($sql);
         if ($dbObj->numErr != 0) {
             $this->SetError(1);
@@ -637,14 +655,14 @@ class NodeType extends NodeTypesOrm
 
     /**
      * Delete a content by default
+     * 
      * @param $nodeType
-     * @return int (status)
      */
     function DeleteADefaultContent($nodeType)
     {
-        $sql = sprintf("DELETE FROM NodeDefaultContents "
-            . " WHERE IdNodeType = %d"
-            . " AND NodeType = %d", $this->get('IdNodeType'), $nodeType);
+        $sql = sprintf('DELETE FROM NodeDefaultContents '
+            . ' WHERE IdNodeType = %d'
+            . ' AND NodeType = %d', $this->get('IdNodeType'), $nodeType);
         $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->Execute($sql);
         if ($dbObj->numErr != 0) {
@@ -654,12 +672,12 @@ class NodeType extends NodeTypesOrm
 
     /**
      * Returns an array of associative arrays of two fields: 'nodetype' and 'name', as 'allowed node type' and 'node type name'
-     * @return array
+     * 
+     * @return array|null
      */
     function GetDefaultContents()
     {
-        $sql = sprintf("SELECT NodeType,Name FROM NodeDefaultContents" .
-            " WHERE idNodeType = %d", $this->get('IdNodeType'));
+        $sql = sprintf('SELECT NodeType,Name FROM NodeDefaultContents WHERE idNodeType = %d', $this->get('IdNodeType'));
         $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->Query($sql);
         if ($dbObj->numErr != 0) {
@@ -668,8 +686,8 @@ class NodeType extends NodeTypesOrm
         }
         $salida = [];
         while (!$dbObj->EOF) {
-            $salida[] = array("nodetype" => $dbObj->row["NodeType"],
-                "name" => $dbObj->row["Name"]);
+            $salida[] = array('nodetype' => $dbObj->row['NodeType'],
+                'name' => $dbObj->row['Name']);
             $dbObj->Next();
         }
         return $salida;
@@ -678,12 +696,12 @@ class NodeType extends NodeTypesOrm
     /**
      * Replace the whole set of data of DefaultContents by the param.
      * Param is an array of associative arrays with two fields: 'nodetype' and 'name', as 'allowed node type' and 'node type name'
+     * 
      * @param $arrayDefault
      */
     function ReplaceDefaultContentsList($arrayDefault)
     {
-        $sql = sprintf("DELETE FROM NodeDefaultContents " .
-            " WHERE IdNodeType = %d", $this->get('IdNodeType'));
+        $sql = sprintf('DELETE FROM NodeDefaultContents WHERE IdNodeType = %d', $this->get('IdNodeType'));
         $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->Execute($sql);
         if ($dbObj->numErr != 0) {
@@ -692,8 +710,8 @@ class NodeType extends NodeTypesOrm
         }
         $sal = $dbObj->numErr;
         for ($i = 0; $i < count($arrayDefault); $i++) {
-            $sal = $sal + $this->addADefaultContent($arrayDefault[$i]["nodetype"],
-                    $arrayDefault[$i]["name"]);
+            $sal = $sal + $this->addADefaultContent($arrayDefault[$i]['nodetype'],
+                    $arrayDefault[$i]['name']);
             if ($dbObj->numErr != 0) {
                 $this->SetError(1);
                 return null;
@@ -704,11 +722,12 @@ class NodeType extends NodeTypesOrm
 
     /**
      * Deletes the current node type
-     * @return int (status)
+     * 
+     * @return int (status) | null
      */
     function DeleteNodeType()
     {
-        $sql = sprintf("DELETE FROM NodeAllowedContents WHERE idNodeType = %d", $this->get('IdNodeType'));
+        $sql = sprintf('DELETE FROM NodeAllowedContents WHERE idNodeType = %d', $this->get('IdNodeType'));
         $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->Execute($sql);
         $salida = $dbObj->numErr;
@@ -717,7 +736,7 @@ class NodeType extends NodeTypesOrm
             return null;
         }
         if ($salida != 0) return $salida;
-        $sql = sprintf("DELETE FROM NodeDefaultContents WHERE idNodeType = %d", $this->get('IdNodeType'));
+        $sql = sprintf('DELETE FROM NodeDefaultContents WHERE idNodeType = %d', $this->get('IdNodeType'));
         $dbObj->Execute($sql);
         $salida = $dbObj->numErr;
         if ($dbObj->numErr != 0) {
@@ -725,7 +744,7 @@ class NodeType extends NodeTypesOrm
             return null;
         }
         if ($salida != 0) return $salida;
-        $sql = sprintf("DELETE FROM NodeTypes WHERE idNodeType = %d", $this->get('IdNodeType'));
+        $sql = sprintf('DELETE FROM NodeTypes WHERE idNodeType = %d', $this->get('IdNodeType'));
         $dbObj->Execute($sql);
         $salida = $dbObj->numErr;
         if ($dbObj->numErr != 0) {
@@ -742,26 +761,27 @@ class NodeType extends NodeTypesOrm
      */
     function ClearError()
     {
-        $this->flagErr = FALSE;
+        $this->flagErr = false;
     }
 
     function SetAutoCleanOn()
     {
-        $this->autoCleanErr = TRUE;
+        $this->autoCleanErr = true;
     }
 
     function SetAutoCleanOff()
     {
-        $this->autoCleanErr = FALSE;
+        $this->autoCleanErr = false;
     }
 
     /**
      * Carga un error en la clase
+     * 
      * @param $code
      */
     function SetError($code)
     {
-        $this->flagErr = TRUE;
+        $this->flagErr = true;
         $this->numErr = $code;
         $this->msgErr = $this->errorList[$code];
     }
@@ -790,17 +810,16 @@ class NodeType extends NodeTypesOrm
                     continue;
                 }
                 $tmpArray = $this->getContainers($tmpArray);
-
                 foreach ($tmpArray as $key => $idNodeTypeKey) {
                     if (in_array($idNodeTypeKey, $idTypeList)) {
                         unset($tmpArray[$key]);
                     }
                 }
                 $idTypeList = array_unique(array_merge($idTypeList, $tmpArray));
-            } while (!empty($tmpArray));
+            } while (! empty($tmpArray));
             $typeList = ($idTypeList);
         } else {
-            $typeList = NULL;
+            $typeList = null;
         }
         return $typeList;
     }
@@ -814,16 +833,15 @@ class NodeType extends NodeTypesOrm
         } else {
             return array();
         }
+        $dbObj = new \Ximdex\Runtime\Db();
         $returnObject = array();
         foreach ($nodeTypes as $idNodeType) {
-            $dbObj = new \Ximdex\Runtime\Db();
-            $query = sprintf("SELECT IdNodeType FROM NodeAllowedContents WHERE NodeType = %d", $idNodeType);
+            $query = sprintf('SELECT IdNodeType FROM NodeAllowedContents WHERE NodeType = %d', $idNodeType);
             $dbObj->Query($query);
-            while (!$dbObj->EOF) {
+            while (! $dbObj->EOF) {
                 $returnObject[] = $dbObj->GetValue('IdNodeType');
                 $dbObj->Next();
             }
-            unset($dbObj);
         }
         return $returnObject;
     }
@@ -838,21 +856,25 @@ class NodeType extends NodeTypesOrm
             where nac.IdNodeType = %s and nt.IsFolder = 0', $this->GetID());
         $dbObj->Query($sql);
         $returnArray = array();
-        while (!$dbObj->EOF) {
+        while (! $dbObj->EOF) {
             if ($onlyExtensions) {
                 $returnArray = array_merge($returnArray, explode(';', trim($dbObj->GetValue('extension'), ';'))); 
             }
             else {
                 $returnElement = array();
-                $returnElement["id"] = $dbObj->GetValue('idRelNodeTypeMimeType');
-                $returnElement["description"] = _($dbObj->GetValue('Description'));
-                $returnElement["extension"] = implode(",",
-                    preg_split("/;/", $dbObj->GetValue('extension'), 0, PREG_SPLIT_NO_EMPTY));
+                $returnElement['id'] = $dbObj->GetValue('idRelNodeTypeMimeType');
+                $returnElement['description'] = _($dbObj->GetValue('Description'));
+                $returnElement['extension'] = implode(',',
+                    preg_split('/;/', $dbObj->GetValue('extension'), 0, PREG_SPLIT_NO_EMPTY));
                 $returnArray[] = $returnElement;
             }
             $dbObj->Next();
         }
-        unset($dbObj);
         return $returnArray;
+    }
+    
+    public function getWorkflow() : ?int
+    {
+        return $this->get('workflowId');
     }
 }

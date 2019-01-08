@@ -216,7 +216,7 @@ class DexPumper
 		} else {
     		$removing = $this->taskDelete($targetFile);
     		if ($removing) {
-    		    Logger::info('Successfusly removed file ' . $remotePath . '/' . $fileName . ' (ID: ' . $this->serverFrame->get('NodeId') 
+    		    Logger::info('Successfusly removed file ' . rtrim($remotePath, '/') . '/' . $fileName . ' (ID: ' . $this->serverFrame->get('NodeId') 
     		        . ') from server ' . $this->connection->getServer()->get('Description'), true);
     		    if (rtrim($targetFolder, '/') != rtrim($initialDirectory, '/') and $this->connection->dirIsEmpty($targetFolder)) {
     		        

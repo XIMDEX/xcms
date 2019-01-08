@@ -107,12 +107,12 @@ class ServerFrame extends ServerFramesOrm
         parent::__construct($id);
     }
     
-    public function set($attribute, $value)
+    public function set(string $attribute, string $value = null) : bool
     {
         if ($attribute == 'State' and $this->State != $value) {
             Logger::debug('Changing state for server frame: ' . $this->get('IdSync') . ' from ' . $this->get('State') . ' to ' . $value);
         }
-        parent::set($attribute, $value);
+        return parent::set($attribute, $value);
     }
 
     /**

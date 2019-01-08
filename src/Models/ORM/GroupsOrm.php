@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -31,16 +31,16 @@ use \Ximdex\Data\GenericData;
 
 class GroupsOrm extends GenericData
 {
-    var $_idField = 'IdGroup';
-    var $_table = 'Groups';
-    var $_metaData = array(
-        'IdGroup' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
+    public $_idField = 'IdGroup';
+    public $_table = 'Groups';
+    public $_metaData = array(
+        'IdGroup' => array('type' => "int(12)", 'not_null' => 'true', 'primary_key' => true),
         'Name' => array('type' => "varchar(255)", 'not_null' => 'true')
     );
-    var $_uniqueConstraints = array(
+    public $_uniqueConstraints = array(
         'Name' => array('Name')
     );
-    var $_indexes = array('IdGroup');
-    var $IdGroup;
-    var $Name = 0;
+    public $_indexes = array('IdGroup');
+    public $IdGroup;
+    public $Name;
 }

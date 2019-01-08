@@ -70,7 +70,7 @@ class ServerFrameManager
         // $idNodeFrame = $serverFrame->get('IdNodeFrame');
         $chFr = new ChannelFrame($channelFrameId);
         $channel = $chFr->get('ChannelId');
-        if (!$operation || !$serverFrameId) {
+        if (! $operation || ! $serverFrameId) {
             Logger::error('ERROR Params needed');
             return false;
         }
@@ -86,7 +86,7 @@ class ServerFrameManager
                         $overlapedFrame = new ServerFrame($id);
                         $overlapedInitialState = $overlapedData['state'];
                         if ($overlapedInitialState == ServerFrame::IN || $overlapedInitialState == ServerFrame::PUMPED) {
-                            if (!is_null($delayed)) {
+                            if (! is_null($delayed)) {
                                 
                                 // Para que resucite
                                 $overlapedFinalState = ServerFrame::DELAYED;
@@ -139,7 +139,7 @@ class ServerFrameManager
             } elseif ($initialState == ServerFrame::IN || $initialState == ServerFrame::PUMPED) {
                 $finalState = ServerFrame::REPLACED;
                 $delayedId = $this->getDelayed($serverFrameId, $server, $nodeId, $channel);
-                if (!is_null($delayedId)) {
+                if (! is_null($delayedId)) {
                     $canceledFrame = new ServerFrame($delayedId);
                     $canceledFrame->set('State', ServerFrame::DUE2IN_);
                     $canceledFrame->set('ErrorLevel', null);
@@ -156,7 +156,7 @@ class ServerFrameManager
         } else {
             Logger::error('Incorrect operation ' . $operation);
         }
-        if (!$serverFrame->get('PumperId')) {
+        if (! $serverFrame->get('PumperId')) {
             $pumperId = $this->calcPumper($serverFrameId);
             $serverFrame->set('PumperId', $pumperId);
         }

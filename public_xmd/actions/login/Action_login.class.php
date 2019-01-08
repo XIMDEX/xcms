@@ -120,7 +120,6 @@ class Action_login extends ActionAbstract
             $userObject = new User();
             $userObject->setByLogin($user);
             $userObject->afterLogin();
-            \Ximdex\Runtime\Session::set('context', 'ximdex');
             $this->logSuccessAction();
             if (Request::get('backto')) {
                 header(sprintf('Location: %s', base64_decode(Request::get('backto'))));

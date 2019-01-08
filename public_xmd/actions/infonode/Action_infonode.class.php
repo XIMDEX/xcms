@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -28,7 +28,7 @@
 use Ximdex\Logger;
 use Ximdex\Models\Channel;
 use Ximdex\Models\Node;
-use Ximdex\Models\PipeStatus;
+use Ximdex\Models\WorkflowStatus;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\App;
 use Ximdex\Models\RelNode2Asset;
@@ -54,13 +54,10 @@ class Action_infonode extends ActionAbstract
 
         // Obtain name of current status
         if (isset($info['state'])) {
-            $pipeStatus = new PipeStatus();
-            $params = array('id' => $info['state']);
-            $condition = 'id = %s';
-            $pipeStatusInfo = $pipeStatus->find('Name', $condition, $params, MONO);
-        }
-        else {
-            $pipeStatusInfo = array(null);
+            $wfStatus = new WorkflowStatus($info['state']);
+            $statusInfo = $wfStatus->get('name');
+        } else {
+            $statusInfo = null;
         }
         
         // Channels
@@ -70,7 +67,7 @@ class Action_infonode extends ActionAbstract
         // Languages
         $nodeLanguages = $node->getProperty('language', true);
         $languages = array();
-        if (!empty($nodeLanguages)) {
+        if (! empty($nodeLanguages)) {
             $i = 0;
             foreach ($nodeLanguages as $_lang) {
                 $_node = new Node($_lang);
@@ -79,7 +76,7 @@ class Action_infonode extends ActionAbstract
                 $i++;
             }
         }
-        $jsonUrl = App::getUrl( '/?action=infonode&method=getDependencies&nodeid=' . $idNode );
+        $jsonUrl = App::getUrl('/?action=infonode&method=getDependencies&nodeid=' . $idNode);
         $manageVersions = new Action_manageversions();
         $valuesManageVersion = $manageVersions->values($idNode, self::MAX_VERSIONS);
         $this->addJs('/actions/manageversions/resources/js/index.js');
@@ -87,7 +84,7 @@ class Action_infonode extends ActionAbstract
         $values = array(
             'id_node' => $idNode,
             'info' => $info,
-            'statusInfo' => $pipeStatusInfo[0],
+            'statusInfo' => $statusInfo,
             'channels' => $channels,
             'languages' => $languages,
             'jsonUrl' => $jsonUrl,
@@ -100,7 +97,7 @@ class Action_infonode extends ActionAbstract
 
     public function getDependencies()
     {
-        $idNode = (int) $this->request->getParam("nodeid");
+        $idNode = (int) $this->request->getParam('nodeid');
         $masterNode = new Node($idNode);
         if (!$masterNode->GetID()) {
             Logger::error('Cannot load the node with ID: ' . $idNode);
@@ -109,7 +106,7 @@ class Action_infonode extends ActionAbstract
         $depMasterList = array();
         $classes = array(new RelNode2Asset(), new RelXml2Xml(), new RelStrdocTemplate());
         foreach ($classes as $c) {
-            $res = $c->find("target", "source=" . $idNode, null, MONO);
+            $res = $c->find('target', 'source=' . $idNode, null, MONO);
             if (count($res) > 0) {
                 $depMasterList = array_merge($depMasterList, $res);
             }
@@ -122,20 +119,20 @@ class Action_infonode extends ActionAbstract
             if ($node->GetID() and $node->GetID() != $idNode) {
                 $obj = [];
                 $name = $node->GetNodeName() . ' (' . $node->GetID() . ')';
-                $obj["name"] = $name;
-                $obj["type"] = $node->GetTypeName();
-                $obj["depends"] = array();
-                $obj["position"] = "master";
+                $obj['name'] = $name;
+                $obj['type'] = $node->GetTypeName();
+                $obj['depends'] = array();
+                $obj['position'] = 'master';
                 $obj['dependedOnBy'] = [$name];
                 $data[$name] = $obj;
                 $depMasterNameList[] = $name;
             }
         }
         $data[$masterNode->GetNodeName()] = array(
-            "name" => $masterNode->GetNodeName(),
-            "type" => $masterNode->GetTypeName(),
-            "depends" => $depMasterNameList,
-            "position" => "center",
+            'name' => $masterNode->GetNodeName(),
+            'type' => $masterNode->GetTypeName(),
+            'depends' => $depMasterNameList,
+            'position' => 'center',
             'dependedOnBy' => []
         );
         $this->sendJSON(array(

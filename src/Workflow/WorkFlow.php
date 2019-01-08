@@ -34,24 +34,25 @@ use Ximdex\Models\Role;
 use Ximdex\Models\Node;
 use Ximdex\Runtime\App;
 
-define('WORKFLOW_PROCESS_NAME', 'workflow');
-
+/**
+ * @deprecated
+ */
 class WorkFlow
 {
-    const WORKFLOW_ACTIONS_DIR = 'src/Workflow/Actions';
-    const WORKFLOW_ACTIONS_NAMESPACE = 'Ximdex\\Workflow\\Actions\\';
-    
     /**
+     * @deprecated
      * @var $pipeStatus PipeStatus
      */
     var $pipeStatus;
     
     /**
+     * @deprecated
      * @var $pipeProcess PipeProcess
      */
     var $pipeProcess;
     
     /**
+     * @deprecated
      * @var $pipeline Pipeline
      */
     var $pipeline;

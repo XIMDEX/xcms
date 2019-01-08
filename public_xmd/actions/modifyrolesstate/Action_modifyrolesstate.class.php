@@ -98,7 +98,7 @@ class Action_modifyrolesstate extends ActionAbstract
     	}
     	foreach (array_keys($rolesToDelete) as $idRole) {
     		$role = new Role($idRole);
-    		$role->DeleteState($idNode);
+    		$role->deleteState($idNode);
     	}
     	$this->redirectTo('index');
     }

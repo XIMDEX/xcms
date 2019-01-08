@@ -1,5 +1,5 @@
 {**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -42,9 +42,12 @@
                 <div class="row">
                     <div class="small-12 columns">
                         <div class="box-content green">
-                            <strong>{t}NodeType{/t}</strong> {$info.typename}<span 
-                                class="nodetype"> ({$info.type}) </span><span 
-                                class="path">{$info.path|replace:"/Ximdex/Projects":""}</span>
+                            <strong>{t}NodeType{/t}</strong>
+                            {$info.typename}<span class="nodetype"> ({$info.type})</span>
+                            <br />
+                            {$info.typedescription}
+                            <br />
+                            <span class="path">{$info.path|replace:"/Ximdex/Projects":""}</span>
                         </div>
                     </div>
                 </div>

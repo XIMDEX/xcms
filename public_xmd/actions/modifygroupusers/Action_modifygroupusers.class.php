@@ -36,7 +36,7 @@ class Action_modifygroupusers extends ActionAbstract
     /**
      * Main method: shows initial form
      */
-    function index()
+    public function index()
     {
         $idNode = $this->request->getParam('nodeid');
         $node = new Node($idNode);
@@ -47,7 +47,7 @@ class Action_modifygroupusers extends ActionAbstract
         $role = new Role();
         $roles = $role->find('IdRole, Name', '1 ORDER BY Name', NULL);
         $rolesToSend = array();
-        foreach($roles as $r){
+        foreach ($roles as $r) {
             $rolesToSend[$r['IdRole']] = $r['Name'];
         }
         $userRoleInfo = $group->getUserRoleInfo();
@@ -58,18 +58,18 @@ class Action_modifygroupusers extends ActionAbstract
                 $userRoleInfo[$key]['UserName'] = $user->get('Login');
                 $userRoleInfo[$key]['dirty'] = false;
                 $userRI[] = $userRoleInfo[$key];
-                if($k=array_search($info["IdUser"],$userList)){
-                    array_splice($userList,$k,1);
+                if ($k = array_search($info['IdUser'], $userList)) {
+                    array_splice($userList, $k, 1);
                 }
             }
         }
         $users = array();
         foreach ($userList as $idUser) {
-            if (!in_array($idUser, $groupUsers)) {
+            if (! in_array($idUser, $groupUsers)) {
                 $user = new User($idUser);
                 $u = [];
-                $u["id"] = $idUser;
-                $u["name"] = $user->get('Login');
+                $u['id'] = $idUser;
+                $u['name'] = $user->get('Login');
                 $users[] = $u;
             }
         }
@@ -84,35 +84,56 @@ class Action_modifygroupusers extends ActionAbstract
         $this->render($values, null, 'default-3.0.tpl');
     }
 
-    function addgroupuser()
+    public function addGroupUser()
     {
         $idNode = $this->request->getParam('nodeid');
         $idUser = $this->request->getParam('id_user');
         $idRole = $this->request->getParam('id_role');
         $group = new Group($idNode);
-        $group->AddUserWithRole($idUser, $idRole);
-        $values = array("result" => "ok");
+        if (! $group->getID()) {
+            $values = array('result' => 'notok');
+            $this->sendJSON($values);
+        }
+        if (! $group->addUserWithRole($idUser, $idRole)) {
+            $values = array('result' => 'notok');
+            $this->sendJSON($values);
+        }
+        $values = array('result' => 'ok');
         $this->sendJSON($values);
     }
 
-    function editgroupuser()
+    public function editGroupUser()
     {
         $idNode = $this->request->getParam('nodeid');
         $user = $this->request->getParam('user');
         $role = $this->request->getParam('role');
         $group = new Group($idNode);
-        $group->ChangeUserRole($user, $role);
-        $values = array("result" => "ok");
+        if (! $group->getID()) {
+            $values = array('result' => 'notok');
+            $this->sendJSON($values);
+        }
+        if (! $group->changeUserRole($user, $role)) {
+            $values = array('result' => 'notok');
+            $this->sendJSON($values);
+        }
+        $values = array('result' => 'ok');
         $this->sendJSON($values);
     }
 
-    function deletegroupuser()
+    public function deleteGroupUser()
     {
         $idNode = $this->request->getParam('nodeid');
         $user = $this->request->getParam('user');
         $group = new Group($idNode);
-        $group->DeleteUser($user);
-        $values = array("result" => "ok");
+        if (! $group->getID()) {
+            $values = array('result' => 'notok');
+            $this->sendJSON($values);
+        }
+        if (! $group->deleteUser($user)) {
+            $values = array('result' => 'notok');
+            $this->sendJSON($values);
+        }
+        $values = array('result' => 'ok');
         $this->sendJSON($values);
     }
 }

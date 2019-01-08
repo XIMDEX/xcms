@@ -30,7 +30,8 @@
         <fieldset class="">
             <ol>
                 <li>
-                    <span>{t}Do you want to move this file{/t} {t}from the state{/t} <strong>{$currentStateName}</strong> {t}to the state{/t}: </span>
+                    <span>{t}Do you want to move this file{/t} {t}from the state{/t} <strong>{$currentStateName}</strong> 
+                    {t}to the state{/t}: </span>
                     <select name="nextstate" style="width: auto;">
                         {foreach from=$allowedstates key=state item=stateName}
                             <option value="{$state}">{$stateName}</option>
@@ -58,23 +59,25 @@
                         {/foreach}
                     </select>
                 </li>
-                <li class="conditioned {if $required != 1}hidden{/if}">
-                    <label class="label_title">{t}Users{/t}</label>
-                    <div class="user-list-container">
-                        <ol class="user-list">
-                            {counter assign=index start=1}
-                            {foreach from=$notificableUsers item=notificable_user_info}
-                                <li class="user-info">
-                                    <input type="checkbox" name="users[]" class="validable notificable check_group__notificable" 
-                                            id="user_{$notificable_user_info.idUser}" value="{$notificable_user_info.idUser}" 
-                                            {if $index == 1}checked="checked"{/if} />
-                                    <label for="user_{$notificable_user_info.idUser}">{$notificable_user_info.userName}</label>
-                                </li>
-                                {counter assign=index}
-                            {/foreach}
-                        </ol>
-                    </div>
-                </li>
+                {if (isset($notificableUsers))}
+	                <li class="conditioned {if $required != 1}hidden{/if}">
+	                    <label class="label_title">{t}Users{/t}</label>
+	                    <div class="user-list-container">
+	                        <ol class="user-list">
+	                            {counter assign=index start=1}
+	                            {foreach from=$notificableUsers item=notificable_user_info}
+	                                <li class="user-info">
+	                                    <input type="checkbox" name="users[]" class="validable notificable check_group__notificable" 
+	                                            id="user_{$notificable_user_info.idUser}" value="{$notificable_user_info.idUser}" 
+	                                            {if $index == 1}checked="checked"{/if} />
+	                                    <label for="user_{$notificable_user_info.idUser}">{$notificable_user_info.userName}</label>
+	                                </li>
+	                                {counter assign=index}
+	                            {/foreach}
+	                        </ol>
+	                    </div>
+	                </li>
+                {/if}
                 <li class="conditioned {if $required != 1}hidden{/if}">
                     <label for="texttosend" class="label_title">{t}Comments{/t}:</label>
                     <textarea class="validable not_empty comments" name="texttosend" id="texttosend" rows="4" wrap="soft" 

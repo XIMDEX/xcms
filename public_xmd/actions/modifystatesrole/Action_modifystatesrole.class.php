@@ -25,12 +25,12 @@
  * @version $Revision$
  */
 
-use Ximdex\Models\PipeStatus;
+use Ximdex\Logger;
+use Ximdex\Models\WorkflowStatus;
 use Ximdex\Models\Role;
 use Ximdex\Models\Node;
+use Ximdex\Models\Workflow;
 use Ximdex\MVC\ActionAbstract;
-use Ximdex\Runtime\App;
-use Ximdex\Workflow\WorkFlow;
 
 class Action_modifystatesrole extends ActionAbstract
 {
@@ -39,12 +39,18 @@ class Action_modifystatesrole extends ActionAbstract
         $idNode = $this->request->getParam('nodeid');
         $role = new Role($idNode);
         $idRoleStates = $role->GetAllStates();
-        $workflow = new WorkFlow(NULL, NULL, App::getValue('IdDefaultWorkflow'));
+        $workflow = new Workflow();
+        try {
+            $workflow->loadMaster();
+        } catch (Exception $e) {
+            Logger::error($e->getMessage());
+            return false;
+        }
         $idAllStates = $workflow->GetAllStates();
         $states = [];
         foreach ($idAllStates as $idStatus) {
-            $pipeStatus = new PipeStatus($idStatus);
-            $states[] = array('id' => $idStatus, 'name' => $pipeStatus->get('Name'));
+            $wStatus = new WorkflowStatus($idStatus);
+            $states[] = array('id' => $idStatus, 'name' => $wStatus->get('name'));
         }
         foreach ($states as $i => $state) {
             if ($state['id'] != null && is_array($idRoleStates) && in_array($state['id'], $idRoleStates)) {
@@ -69,10 +75,10 @@ class Action_modifystatesrole extends ActionAbstract
         $idRole = $request['idRole'];
         $role = new Role($idRole);
         foreach ($states as $state) {
-            if ($state['asociated'] && $role->HasState($state['id']) == 0) {
+            if ($state['asociated'] && $role->hasState($state['id']) == 0) {
                 $role->AddState($state['id']);
-            } elseif (!$state['asociated'] && $role->HasState($state['id']) > 0) {
-                $role->DeleteState($state['id']);
+            } elseif (!$state['asociated'] && $role->hasState($state['id']) > 0) {
+                $role->deleteState($state['id']);
             }
         }
         $this->sendJSON(array('result' => 'ok', 'message' => _('The rol has been successfully updated')));

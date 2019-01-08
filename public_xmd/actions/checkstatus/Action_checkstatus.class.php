@@ -26,10 +26,11 @@
  */
 
 use Ximdex\Models\Node;
-use Ximdex\Models\PipeStatus;
+use Ximdex\Models\WorkflowStatus;
+use Ximdex\Models\Workflow;
 use Ximdex\Models\ServerFrame;
 use Ximdex\MVC\ActionAbstract;
-use Ximdex\Workflow\WorkFlow;
+use Ximdex\NodeTypes\NodeTypeConstants;
 
 class Action_checkstatus extends ActionAbstract
 {
@@ -55,17 +56,17 @@ class Action_checkstatus extends ActionAbstract
         $project = new Node($server->getProject());
         $projectName = $project->GetNodeName();
         $dbObj = new \Ximdex\Runtime\Db();
-        $query = "SELECT n.IdState,n.IdNode,n.Path,n.Name,v1.Version, v1.SubVersion,v1.Date FROM Versions v1 INNER JOIN Nodes n USING (IdNode) WHERE n.IdNodetype in (" 
-                . \Ximdex\NodeTypes\NodeTypeConstants::XML_DOCUMENT . "," . \Ximdex\NodeTypes\NodeTypeConstants::TEXT_FILE . "," 
-                .\Ximdex\NodeTypes\NodeTypeConstants::IMAGE_FILE
-                . "," . \Ximdex\NodeTypes\NodeTypeConstants::BINARY_FILE . "," . \Ximdex\NodeTypes\NodeTypeConstants::CSS_FILE . "," 
-                . \Ximdex\NodeTypes\NodeTypeConstants::JS_FILE 
+        $query = "SELECT n.IdState,n.IdNode,n.Path,n.Name,v1.Version, v1.SubVersion,v1.Date 
+                  FROM Versions v1 INNER JOIN Nodes n USING (IdNode) WHERE n.IdNodetype in (" 
+                . NodeTypeConstants::XML_DOCUMENT . "," . NodeTypeConstants::TEXT_FILE . "," . NodeTypeConstants::IMAGE_FILE
+                . "," . NodeTypeConstants::BINARY_FILE . "," . NodeTypeConstants::CSS_FILE . "," . NodeTypeConstants::JS_FILE 
                 . ") AND n.Path like '%" . $projectName . "%" . $serverName 
-                . "%' AND NOT v1.SubVersion=0 AND NOT EXISTS (select Idnode from Versions v2 where v2.IdNOde=v1.IdNOde and (v2.Version>v1.Version OR (v1.Version=v2.Version AND v2.SubVersion>v1.Subversion))) ORDER BY n.IdNode";
+                . "%' AND NOT v1.SubVersion=0 AND NOT EXISTS (select Idnode from Versions v2 where v2.IdNOde=v1.IdNOde 
+                and (v2.Version>v1.Version OR (v1.Version=v2.Version AND v2.SubVersion>v1.Subversion))) ORDER BY n.IdNode";
 
         $dbObj->query($query);
         $data = array();
-        while (!$dbObj->EOF) {
+        while (! $dbObj->EOF) {
             $data[$dbObj->getValue('IdState')][] = array(
                 'Version' => $dbObj->getValue('Version'),
                 'SubVersion' => $dbObj->getValue('SubVersion'),
@@ -76,16 +77,16 @@ class Action_checkstatus extends ActionAbstract
             $dbObj->Next();
         }
 
-        // Creates abother array with all de states info
+        // Creates another array with all the states info
         $states = array();
-        $wf = new WorkFlow($idNode);
-        $states = $wf->GetAllStates();
+        $wf = new Workflow($node->nodeType->getWorkflow());
+        $states = $wf->getAllStates();
         $statesFull = [];
         foreach ($states as $state) {
-            $ps = new PipeStatus($state);
+            $ws = new WorkflowStatus($state);
             $count = isset($data[$state]) ? count($data[$state]) : 0;
             $statesFull[$state] = array(
-                'stateName' => $ps->get('Name'),
+                'stateName' => $ws->get('name'),
                 'count' => $count
             );
         }

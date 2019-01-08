@@ -29,23 +29,20 @@ namespace Ximdex\Models\ORM;
 
 use Ximdex\Data\GenericData;
 
-/**
- * @deprecated
- */
 class PipelinesOrm extends GenericData
 {
-    var $_idField = 'id';
-    var $_table = 'Pipelines';
-    var $_metaData = array(
-        'id' => array('type' => "int(11)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
+    public $_idField = 'id';
+    public $_table = 'Pipelines';
+    public $_metaData = array(
+        'id' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
         'Pipeline' => array('type' => "varchar(255)", 'not_null' => 'true'),
-        'IdNode' => array('type' => "int(11)", 'not_null' => 'false')
+        'IdNode' => array('type' => "int(12)", 'not_null' => 'false')
     );
-    var $_uniqueConstraints = array(
+    public $_uniqueConstraints = array(
         'IdNode' => array('IdNode')
     );
-    var $_indexes = array('id');
-    var $id;
-    var $Pipeline;
-    var $IdNode;
+    public $_indexes = array('id');
+    public $id;
+    public $Pipeline;
+    public $IdNode;
 }

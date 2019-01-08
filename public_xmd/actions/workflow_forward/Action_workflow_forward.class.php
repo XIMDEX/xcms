@@ -33,27 +33,24 @@ use Ximdex\Models\Role;
 use Ximdex\Models\Server;
 use Ximdex\Models\User;
 use Ximdex\Models\NodesToPublish;
+use Ximdex\Models\Workflow;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Utils\Serializer;
 use Ximdex\Sync\SynchroFacade;
-use Ximdex\Workflow\WorkFlow;
-use Ximdex\Runtime\Constants;
-use Ximdex\Models\PipeTransition;
-use Ximdex\Runtime\DataFactory;
 
 Ximdex\Modules\Manager::file('/actions/browser3/inc/GenericDatasource.class.php');
 
 include_once XIMDEX_ROOT_PATH . '/src/Sync/conf/synchro_conf.php';
 
 /**
- * Move a node to next state.
- * If the node is not a structured document the next state will be publication.
+ * Move a node to next state
+ * If the node is not a structured document the next state will be publication
  */
 class Action_workflow_forward extends ActionAbstract
 {
     /**
      * Default method.
-     * Generate the next action form.
+     * Generate the next action form
      *
      * Request params:
      *
@@ -64,7 +61,7 @@ class Action_workflow_forward extends ActionAbstract
      */
     public function index()
     {
-        // Get nodeid or first in nodes if nodeid doesn't exist.
+        // Get nodeid or first in nodes if nodeid doesn't exist
         $idNode = $this->request->getParam('nodeid');
         $node = new Node($idNode);
         if (empty($idNode)) {
@@ -80,7 +77,7 @@ class Action_workflow_forward extends ActionAbstract
         $this->addCss('/actions/workflow_forward/resources/css/style.css');
         $this->addCss('/assets/style/jquery/ximdex_theme/widgets/calendar/calendar.css');
         
-        // Get the current user to check his permissions.
+        // Get the current user to check his permissions
         $idUser = \Ximdex\Runtime\Session::get('userID');
         $user = new User($idUser);
         
@@ -89,57 +86,38 @@ class Action_workflow_forward extends ActionAbstract
         
         // Getting current state
         $node = new Node($idNode);
-        $workflow = new WorkFlow($idNode, $node->GetState());
+        $workflow = new Workflow($node->nodeType->getWorkflow(), $node->GetState());
         
         // Getting next state
-        if ($node->nodeType->GetIsStructuredDocument()) {
-            $nextState = $workflow->GetNextState();
-        }
-        else {
-            
-            // If the node is type of non structured document, then the next status is the publication
-            $nextState = Constants::PUBLICATION_STATUS_ID;
-        }
-        
-        // Checking if the user has some role with permission to change to next State
-        $allowed = FALSE;
-        foreach ($userRoles as $myIdRole) {
-            $role = new Role($myIdRole);
-            if ($role->HasState($nextState)) {
-                $allowed = TRUE;
-                break;
-            }
-        }
-        
-        // If is not allowed, send a message and the method finish
-        if (! $allowed) {
-            $this->messages->add(_('You have not privileges to move forward the node to next status.'), MSG_TYPE_WARNING);
-            $this->messages->add(_('You have not assigned a role with privileges to modify workflow status on any of groups associated with the node or the section which contains it.'), MSG_TYPE_WARNING);
+        $nextState = $workflow->getNextState();
+        if (! $nextState) {
+            $this->messages->add(_('This node is already in final publication state.'), MSG_TYPE_WARNING);
             $values = array(
-                'messages' => $this->messages->messages
+                'messages' => $this->messages->messages,
+                'node_Type' => $node->nodeType->GetName()
             );
             $this->render($values, 'show_results', 'default-3.0.tpl');
             return;
         }
         
         // If node in final state show the latest form
-        $workflowNext = new WorkFlow($idNode, $nextState);
-        $nextStateName = $workflowNext->GetName();
-        $AllStates = $workflow->GetAllStates();
+        $workflowNext = new Workflow($node->nodeType->getWorkflow(), $nextState);
+        $nextStateName = $workflowNext->getStatusName();
+        $AllStates = $workflow->getAllStates();
         $find = false;
         $AllowedStates = [];
+        $foundRol = false;
         foreach ($AllStates as $state) {
             
             // If this state is after currentState, append the next state
             if ($find) {
                 
                 // This is the next state
-                $foundRol = false;
                 foreach ($userRoles as $myIdRole) {
                     $role = new Role($myIdRole);
-                    if ($role->HasState($state)) {
-                        $workflowAll = new WorkFlow($idNode, $state);
-                        $AllowedStates[$state] = $workflowAll->GetName();
+                    if ($role->hasState($state)) {
+                        $workflowAll = new Workflow($node->nodeType->getWorkflow(), $state);
+                        $AllowedStates[$state] = $workflowAll->getStatusName();
                         $foundRol = true;
                         break;
                     }
@@ -153,9 +131,22 @@ class Action_workflow_forward extends ActionAbstract
                 $find = true;
         }
         
+        // If is not allowed, send a message and the method finish
+        if (! $foundRol) {
+            $this->messages->add(_('You have not privileges to move forward the node to next status.'), MSG_TYPE_WARNING);
+            $this->messages->add(_('You have not assigned a role with privileges to modify workflow status on any of groups associated with the node or the section which contains it.')
+                , MSG_TYPE_WARNING);
+            $values = array(
+                'messages' => $this->messages->messages,
+                'node_Type' => $node->nodeType->GetName()
+            );
+            $this->render($values, 'show_results', 'default-3.0.tpl');
+            return;
+        }
+        
         // Getting next state
-        $workflowNext = new WorkFlow($idNode, $nextState);
-        $nextStateName = $workflowNext->GetName();
+        $workflowNext = new Workflow($node->nodeType->getWorkflow(), $nextState);
+        $nextStateName = $workflowNext->getStatusName();
         
         // Loading Notifications default values
         $conf = \Ximdex\Modules\Manager::file('/conf/notifications.php', 'XIMDEX');
@@ -174,7 +165,7 @@ class Action_workflow_forward extends ActionAbstract
         // Only for Strdocs, goes to next state
         if ($node->nodeType->GetID() == \Ximdex\NodeTypes\NodeTypeConstants::XML_DOCUMENT 
                 or $node->nodeType->GetID() == \Ximdex\NodeTypes\NodeTypeConstants::HTML_DOCUMENT) {
-            if ($workflowNext->IsFinalState()) {
+            if ($workflowNext->isFinalState()) {
                 $values['go_method'] = 'publicateNode';
                 $values['hasDisabledFunctions'] = $this->hasDisabledFunctions();
                 $values['globalForcedEnabled'] = FORCE_PUBLICATION;
@@ -182,25 +173,23 @@ class Action_workflow_forward extends ActionAbstract
                 $this->render($values, NULL, 'default-3.0.tpl');
             } else {
                 $defaultMessage = $this->buildMessage($conf["defaultMessage"], _('next'), $node->get('Name'));
+                
                 // Set default Message
                 $values['defaultMessage'] = $defaultMessage;
                 $values2 = array(
                     'go_method' => 'publicateForm',
                     'allowedstates' => $AllowedStates,
                     'nextStateName' => $nextStateName,
-                    'currentStateName' => $workflow->GetName()
+                    'currentStateName' => $workflow->getStatusName()
                 );
                 $values = array_merge($values2, $values);
                 $this->render($values, 'next_state.tpl', 'default-3.0.tpl');
             }
-        }
-        
-        // Rest of nodetypes just will be published
-        else {
+        } else {
             
-            // Show the publication form
-            $workflowPub = new WorkFlow($idNode, $workflow->GetFinalState());
-            $pubStateName = $workflowPub->GetName();
+            // Rest of nodetypes just will be published
+            $workflowPub = new Workflow($node->nodeType->getWorkflow(), $workflow->getFinalState());
+            $pubStateName = $workflowPub->getStatusName();
             $values['hasDisabledFunctions'] = $this->hasDisabledFunctions();
             $values['go_method'] = 'publicateNode';
             $values['state'] = $pubStateName;
@@ -208,6 +197,8 @@ class Action_workflow_forward extends ActionAbstract
             $values['defaultMessage'] = $defaultMessage;
             $values['idNode'] = $idNode;
             $values = array_merge($values, $this->buildExtraValues($idNode));
+            
+            // Show the publication form
             $this->render($values, NULL, 'default-3.0.tpl');
         }
     }
@@ -250,14 +241,14 @@ class Action_workflow_forward extends ActionAbstract
         $nextState = $this->request->getParam('nextstate');
         $conf = \Ximdex\Modules\Manager::file('/conf/notifications.php', 'XIMDEX');
         $node = new Node($idNode);
-        $workflow = new WorkFlow($idNode, $nextState);
+        $workflow = new Workflow($node->nodeType->getWorkflow(), $nextState);
         $sendNotifications = $this->request->getParam('sendNotifications');
         $notificableUsers = $this->request->getParam('users');
         $idState = $this->request->getParam('nextstate');
         $texttosend = $this->request->getParam('texttosend');
         
         // If must send notifications
-        if ((boolean) $sendNotifications) {
+        if ((bool) $sendNotifications) {
             $sent = $this->sendNotification($idNode, $idState, $notificableUsers, $texttosend);
             if (! $sent) {
                 $values = array(
@@ -271,13 +262,13 @@ class Action_workflow_forward extends ActionAbstract
         }
         
         // If the next state is final state, it must be publication, so we move to publicateForm
-        if ($workflow->IsFinalState()) {
+        if ($workflow->isFinalState()) {
             $this->addJs('/actions/workflow_forward/resources/js/workflow_forward.js');
-            $defaultMessage = $this->buildMessage($conf["defaultMessage"], $workflow->pipeStatus->get("Name"), $node->GetNodeName());
+            $defaultMessage = $this->buildMessage($conf["defaultMessage"], $workflow->getStatusName(), $node->GetNodeName());
             $values = array(
                 'group_state_info' => Group::getSelectableGroupsInfo($idNode),
                 'go_method' => 'publicateNode',
-                'state' => $workflow->GetName(),
+                'state' => $workflow->getStatusName(),
                 'required' => $conf['required'] === true ? 1 : 0,
                 'defaultMessage' => $defaultMessage,
                 'hasDisabledFunctions' => $this->hasDisabledFunctions(),
@@ -298,8 +289,7 @@ class Action_workflow_forward extends ActionAbstract
                     'node_Type' => $node->nodeType->GetName()
                 );
                 $this->render($values, 'show_results', 'default-3.0.tpl');
-            }
-            else {
+            } else {
                 $values = array(
                     'go_method' => 'publicateForm',
                     'nextState' => $nextState,
@@ -313,8 +303,8 @@ class Action_workflow_forward extends ActionAbstract
     }
 
     /**
-     * Print a JSON object with users of the selected group.
-     * Called from an ajax request.
+     * Print a JSON object with users of the selected group
+     * Called from an ajax request
      * 
      * @return void
      */
@@ -323,13 +313,18 @@ class Action_workflow_forward extends ActionAbstract
         $idGroup = $this->request->getParam('groupid');
         $idState = $this->request->getParam('stateid');
         $idNode = $this->request->getParam('nodeid');
-        $group = new Group($idGroup);
-        $workflow = new WorkFlow($idNode, $idState);
+        if ($idNode) {
+            $node = new Node($idNode);
+            $workflow = new Workflow($node->nodeType->getWorkflow(), $idState);
+        } else {
+            $workflow = new Workflow();
+        }
         $values = array(
             'messages' => array(
                 _('You do not belong to any group with publication privileges')
             )
         );
+        $group = new Group($idGroup);
         $validateInGroup = $this->validateInSelectedGroup($group, $workflow, $idState, $idGroup);
         if ($validateInGroup === false) {
             return false;
@@ -356,7 +351,7 @@ class Action_workflow_forward extends ActionAbstract
                 'group' => $idGroup,
                 'groupName' => $group->get('Name'),
                 'state' => $idState,
-                'stateName' => $workflow->pipeStatus->get('Name'),
+                'stateName' => $workflow->getStatusName(),
                 'notificableUsers' => $notificableUsers
             );
         }
@@ -380,7 +375,7 @@ class Action_workflow_forward extends ActionAbstract
     }
 
     /**
-     * Format the date intevals array.
+     * Format the date intevals array
      *
      * @param int $idNode
      * @return array With info about the available gaps
@@ -400,10 +395,10 @@ class Action_workflow_forward extends ActionAbstract
     }
 
     /**
-     * Build params for the value array.
+     * Build params for the value array
      * 
      * @param int $idNode : the current Node
-     * @return array.
+     * @return array
      */
     private function buildExtraValues($idNode)
     {
@@ -435,8 +430,9 @@ class Action_workflow_forward extends ActionAbstract
     private function promoteNode(int $idNode, int $idState) : bool
     {
         $node = new Node($idNode);
+        /*
         $idActualState = $node->get('IdState');
-        $actualWorkflowStatus = new WorkFlow($idNode, $idActualState);
+        $actualWorkflowStatus = new WorkFlow($node->nodeType->getWorkflow(), $idActualState);
         $idTransition = $actualWorkflowStatus->pipeProcess->getTransition($idActualState);
         $transition = new PipeTransition($idTransition);
         $callback = $transition->get('Callback');
@@ -447,6 +443,7 @@ class Action_workflow_forward extends ActionAbstract
             $transformedContent = $transition->generate($idVersion, $node->GetContent(), array());
             $node->SetContent($transformedContent);
         }
+        */
         $result = $node->SetState($idState);
         if ($result) {
             $this->messages->add(_('State has been successfully changed'), MSG_TYPE_NOTICE);
@@ -461,10 +458,10 @@ class Action_workflow_forward extends ActionAbstract
      * Called from publicateNode
      *
      * @param int $idNode : Node id
-     * @param int $idState : Target state in workflow.
-     * @param array<int> $userList : Array with id of users to notificate.
-     * @param string $texttosend : Text to send in notification mail.    
-     * @return boolean true if the notification is sended.
+     * @param int $idState : Target state in workflow
+     * @param array<int> $userList : Array with id of users to notificate
+     * @param string $texttosend : Text to send in notification mail
+     * @return boolean true if the notification is sended
      */
     private function sendNotification($idNode, $idState, $userList, $texttosend = "")
     {
@@ -483,14 +480,14 @@ class Action_workflow_forward extends ActionAbstract
         $idUser = \Ximdex\Runtime\Session::get("userID");
         $node = new Node($idNode);
         $idActualState = $node->get('IdState');
-        $actualWorkflowStatus = new WorkFlow($idNode, $idActualState);
-        $nextWorkflowStatus = new WorkFlow($idNode, $idState);
+        $actualWorkflowStatus = new Workflow($node->nodeType->getWorkflow(), $idActualState);
+        $nextWorkflowStatus = new Workflow($node->nodeType->getWorkflow(), $idState);
         $user = new User($idUser);
         $userName = $user->get('Name');
         $nodeName = $node->get('Name');
         $nodePath = $node->GetPath();
-        $nextStateName = $nextWorkflowStatus->pipeStatus->get('Name');
-        $actualStateName = $actualWorkflowStatus->pipeStatus->get('Name');
+        $nextStateName = $nextWorkflowStatus->getStatusName();
+        $actualStateName = $actualWorkflowStatus->getStatusName();
         $subject = _("Ximdex CMS: new state for document:") . " " . $nodeName;
         $content = _("State forward notification.") . "\n" . "\n" . _("The user") . " " . $userName . " " . _("has changed the state of") 
             . " " . $nodeName . "\n" . "\n" . _("Full Ximdex path") . " --> " . $nodePath . "\n" . "\n" . _("Initial state") . " --> " 
@@ -580,7 +577,7 @@ class Action_workflow_forward extends ActionAbstract
         }
         
         // Move the node to next state
-        if (!$this->promoteNode($idNode, $idState)) {
+        if (! $this->promoteNode($idNode, $idState)) {
             $values = array(
                 'goback' => true,
                 'messages' => $this->messages->messages
@@ -625,8 +622,8 @@ class Action_workflow_forward extends ActionAbstract
             }
         }
         $node = new Node($idNode);
-        $workflow = new WorkFlow($idNode);
-        $firstState = $workflow->GetInitialState();
+        $workflow = new Workflow($node->nodeType->getWorkflow());
+        $firstState = $workflow->getInitialState();
         if ($node->SetState($firstState) === false) {
             $values = array(
                 'goback' => true,
@@ -711,12 +708,12 @@ class Action_workflow_forward extends ActionAbstract
         return true;
     }
 
-    private function validateInSelectedGroup($group, $workflow, $idState, $idGroup)
+    private function validateInSelectedGroup($group, Workflow $workflow, $idState, $idGroup)
     {
-        if (! $group->get('IdGroup') > 0) {
+        if (! $group->get('IdGroup')) {
             $this->messages->add(sprintf(_('No information about the selected group (%s) could be obtained'), $idGroup), MSG_TYPE_ERROR);
         }
-        if (! $workflow->pipeStatus->get('id') > 0) {
+        if (! $workflow->getStatusID()) {
             $this->messages->add(sprintf(_('No information about the selected workflow state (%s) could be obtained'), $idState), MSG_TYPE_ERROR);
         }
         if ($this->messages->count(MSG_TYPE_ERROR) > 0) {

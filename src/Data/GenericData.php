@@ -32,7 +32,7 @@ use Ximdex\Behaviours\Collection;
 use Ximdex\Runtime\Db;
 use Ximdex\Utils\Messages;
 
-if (!defined('MULTI')) {
+if (! defined('MULTI')) {
     define('LOG_LEVEL_NONE', 0);
     define('LOG_LEVEL_ALL', 1);
     define('LOG_LEVEL_QUERY', 2);
@@ -41,7 +41,7 @@ if (!defined('MULTI')) {
     define('MONO', false);
     define('MULTI', true);
 }
-if (!defined('DEBUG_LEVEL')) {
+if (! defined('DEBUG_LEVEL')) {
     define('DEBUG_LEVEL', LOG_LEVEL_NONE); // Only for debugging purposes
 }
 
@@ -205,7 +205,7 @@ class GenericData
      */
     public function add()
     {
-        if (!$this->_applyFilter('beforeAdd')) {
+        if (! $this->_applyFilter('beforeAdd')) {
             return false;
         }
         $arrayFields = array();
@@ -220,7 +220,7 @@ class GenericData
         $fields = implode(', ', $arrayFields);
         $values = implode(', ', $arrayValues);
         $query = "INSERT INTO {$this->_table} ($fields) VALUES ($values)";
-        if ((DEBUG_LEVEL == LOG_LEVEL_ALL) || (DEBUG_LEVEL == LOG_LEVEL_EXECUTE)) {
+        if (DEBUG_LEVEL == LOG_LEVEL_ALL || DEBUG_LEVEL == LOG_LEVEL_EXECUTE) {
             $this->_logQuery($query);
         }
         if ($this->returnQuery) {
@@ -489,12 +489,12 @@ class GenericData
             return false;
         }
         $result = array();
-        while (!$dbObj->EOF) {
+        while (! $dbObj->EOF) {
             if (MULTI == $returnType) {
                 $subResult = array();
                 $index = 0;
                 foreach ($dbObj->row as $key => $value) {
-                    if (!$onlyAssoc) {
+                    if (! $onlyAssoc) {
                         $subResult[$index] = $this->_getValueForFind($key, $value);
                         $index++;
                     }
@@ -507,12 +507,12 @@ class GenericData
                     $subResult = $this->_getValueForFind($key, $value);
                 }
                 if ($indexField) {
-                    if (!isset($dbObj->row[$indexField])) {
+                    if (! isset($dbObj->row[$indexField])) {
                         Logger::error('Field ' . $indexField . ' does not exist in query: ' . $query);
                         return false;
                     }
                     $result[$dbObj->row[$indexField]] = $subResult;
-                }else{
+                } else {
                     $result[] = $subResult;
                 }
             }
@@ -543,12 +543,12 @@ class GenericData
      * @param $attribute
      * @return bool|string
      */
-    public function get($attribute)
+    public function get(string $attribute)
     {
         if (empty($attribute)) {
             return false;
         }
-        if (!array_key_exists($attribute, $this->_metaData)) {
+        if (! array_key_exists($attribute, $this->_metaData)) {
             $backtrace = debug_backtrace();
             Logger::error(sprintf('[GET] Trying to get a property that does not exist'
                 . ' [inc/helper/GenericData.class.php] script: %s file: %s line: %s table: %s key: %s',
@@ -560,7 +560,7 @@ class GenericData
             $this->modelInError = true;
             return false;
         }
-        if (!empty($this->_fieldsToTraduce) && in_array($attribute, $this->_fieldsToTraduce)) {
+        if (! empty($this->_fieldsToTraduce) && in_array($attribute, $this->_fieldsToTraduce)) {
             return _($this->$attribute);
         }
         return $this->$attribute;
@@ -611,7 +611,7 @@ class GenericData
      */
     public function update()
     {
-        if (!$this->_applyFilter('beforeUpdate')) {
+        if (! $this->_applyFilter('beforeUpdate')) {
             return false;
         }
         $arraySets = array();
@@ -647,25 +647,26 @@ class GenericData
     }
 
     /**
-     * @return bool|int|string
+     * @return bool|int
      */
     public function delete()
     {
-        if (!$this->_applyFilter('beforeDelete')) {
+        if (! $this->_applyFilter('beforeDelete')) {
             return false;
         }
-        $query = sprintf("DELETE FROM {$this->_table} WHERE {$this->_idField} = %d",
-            $this->{$this->_idField});
+        $query = sprintf("DELETE FROM {$this->_table} WHERE {$this->_idField} = %d", $this->{$this->_idField});
         if ((DEBUG_LEVEL == LOG_LEVEL_ALL) || (DEBUG_LEVEL == LOG_LEVEL_EXECUTE)) {
             $this->_logQuery($query);
         }
         if ($this->returnQuery) {
             return $query;
         }
-        $dbObj  = new \Ximdex\Runtime\Db();
-        $dbObj->Execute($query);
+        $dbObj = new \Ximdex\Runtime\Db();
+        if ($dbObj->Execute($query) === false) {
+            return false;
+        }
         $this->_applyFilter('afterDelete');
-        return $dbObj->numRows;
+        return (int) $dbObj->numRows;
     }
 
     /**
@@ -712,11 +713,11 @@ class GenericData
     }
 
     /**
-     * @param $attribute
-     * @param $value
+     * @param string $attribute
+     * @param string $value
      * @return bool
      */
-    public function set($attribute, $value)
+    public function set(string $attribute, string $value = null) : bool
     {
         if (empty($attribute)) {
             return false;
@@ -822,7 +823,7 @@ class GenericData
             }
             $i++;
         }
-        if (!$this->_checkDataIntegrity()) {
+        if (! $this->_checkDataIntegrity()) {
             Logger::error('Integrity errors found while executing a SQL query (' . $query . ')');
             foreach ($this->messages->messages as $message) {
                 Logger::error($message['message']);
@@ -841,7 +842,7 @@ class GenericData
 
     public function __call($method, $params = array())
     {
-        if (!method_exists($this, 'call__')) {
+        if (! method_exists($this, 'call__')) {
             trigger_error(sprintf( __('Magic method handler call__ not defined in %s', true), get_class($this)), E_USER_ERROR);
         } else {
             return $this->call__($method, $params);

@@ -28,13 +28,12 @@
 use Ximdex\Models\Action;
 use Ximdex\Models\NodeType;
 use Ximdex\Models\Permission;
-use Ximdex\Models\Pipeline;
-use Ximdex\Models\PipeStatus;
 use Ximdex\Models\Role;
-use Ximdex\MVC\ActionAbstract;
-use Ximdex\Runtime\App;
-use Ximdex\Workflow\WorkFlow;
 use Ximdex\Models\Node;
+use Ximdex\Models\Workflow;
+use Ximdex\MVC\ActionAbstract;
+use Ximdex\Modules\Manager;
+use Ximdex\Models\WorkflowStatus;
 
 class Action_modifyrole extends ActionAbstract
 {
@@ -52,107 +51,95 @@ class Action_modifyrole extends ActionAbstract
         foreach ($allPermissionData as $key => $permissionData) {
             $allPermissionData[$key]['HasPermission'] = $role->HasPermission($permissionData['IdPermission']);
         }
-
         /*
-         * Gets all the states for the default workflow
-         * The selected pipeline to show the states will be the default workflow
-         * Usually it is the Workflow master
-         */
-        $selectedPipeline = $this->request->getParam('id_pipeline');
-        if (! $selectedPipeline) {
-            $selectedPipeline = App::getValue('IdDefaultWorkflow');
-            $pipeline = new Pipeline();
-            $pipeline->loadByIdNode($selectedPipeline);
-            $selectedPipeline = $pipeline->get('id');
+         * Gets all the states for the selected workflow to show the states
+         * Usually it is the Workflow master (the default workflow)
+         *
+        $selectedWorkflow = $this->request->getParam('id_pipeline');
+        if (! $selectedWorkflow) {
+            $workflow = new Workflow();
+            try {
+                $workflow->loadMaster();
+                $selectedWorkflow = $workflow->get('id');
+            } catch (Exception $e) {
+                Logger::error($e->getMessage());
+                return false;
+            }
+        } else {
+            $workflow = new Workflow($selectedWorkflow);
         }
-        $workflow = new WorkFlow(NULL, NULL, $selectedPipeline);
-        $pipeProcess = $workflow->pipeProcess;
-        $allIdNodeStates = $pipeProcess->getAllStatus();
-        $allStates = array();
-        foreach ($allIdNodeStates as $idPipeStatus) {
-            $pipeStatus = new PipeStatus($idPipeStatus);
-            $allStates[] = array('IdState' => $idPipeStatus, 'Name' => $pipeStatus->get('Name'));
+        $allStates = [];
+        foreach ($workflow->getAllStates() as $id) {
+            $state = new WorkflowStatus($id);
+            $allStates[] = array('IdState' => $state->get('id'), 'Name' => $state->get('name'), 'workflow' => $state->get('workflowId'));
         }
-        $sql = 'select id, Pipeline from Pipelines where IdNode > 0 order by id asc limit 1';
-        $db = new \Ximdex\Runtime\Db();
-        $db->query($sql);
-        $pipelines = array($db->getValue('id') => $db->getValue('Pipeline'));
-        $node = new Node ($idNode);
+        $workflows = [$workflow->get('id') => $workflow->get('name')];
+        */
+        $node = new Node($idNode);
+        $allStates = [];
         $this->addJs('/actions/modifyrole/js/modifyrole.js');
         $this->addCss('/actions/modifyrole/css/modifyrole.css');
         $values = array('name' => $role->get('Name'),
             'description' => $role->get('Description'),
             'permissions' => $allPermissionData,
-            'nodetypes' => $this->getAllNodeTypes($allStates, $role, $selectedPipeline),
+            // 'nodetypes' => $this->getAllNodeTypes($allStates, $role, $selectedWorkflow),
+            'nodetypes' => $this->getAllNodeTypes($role, $allStates),
             'workflow_states' => $allStates,
-            'pipelines' => $pipelines,
-            'selected_pipeline' => $selectedPipeline,
+            // 'pipelines' => $workflows,
+            // 'selected_pipeline' => $selectedWorkflow,
             'node_Type' => $node->nodeType->GetName(),
             'go_method' => 'modifyrole'
         );
         $this->render($values, null, 'default-3.0.tpl');
     }
 
-    protected function getAllNodeTypes($allStates, $role, $selectedPipeline)
-    {
-        $nodeType = new NodeType();
-        $allNodeTypes = $nodeType->find('IdNodeType, Description, IsPublishable, Module');
-        reset($allNodeTypes);
-        $respAllNodeTypes = [];
-        foreach($allNodeTypes as $i => $nodeType){
-
-            // Skipping permissions for actions in disabled modules
-            if (!empty($nodeType['Module']) && !\Ximdex\Modules\Manager::isEnabled($allNodeTypes[$i]['Module'])) {
-                continue;
-            }
-            $action = new Action();
-            $nodeType['actions'] = $action->find('IdAction, Name, Module, Command', 'IdNodeType = %s', array($nodeType['IdNodeType']));
-            if (is_array($nodeType['actions'])) {
-                foreach ($nodeType['actions'] as $actionKey => $actionInfo) {
-                    if (!empty($actionInfo['Module']) && !\Ximdex\Modules\Manager::isEnabled($actionInfo['Module'])) {
-                        unset($nodeType['actions'][$actionKey]);
-                        continue;
-                    }
-                    if ($nodeType['IsPublishable'] > 0) {
-                        foreach ($allStates as $stateInfo) {
-                            $nodeType['actions'][$actionKey]['states'][$stateInfo['IdState']] = $role->HasAction(
-                                $actionInfo['IdAction'], $stateInfo['IdState'], $selectedPipeline
-                            );
-                        }
-                    } else {
-                        $nodeType['actions'][$actionKey]['state'] = $role->HasAction($actionInfo['IdAction'], NULL, $selectedPipeline);
-                    }
-                }
-            }
-            $respAllNodeTypes[] = $nodeType;
-        }
-        return $respAllNodeTypes;
-    }
-
     /**
      * Gets the permissions of each nodetype
      */
-    function modifyrole()
+    public function modifyrole()
     {
-        ini_set('max_input_vars', 2000);
+        // ini_set('max_input_vars', 2000);
         $idNode = $this->request->getParam('nodeid');
-        $idPipeline = $this->request->getParam('id_pipeline');
         $role = new Role($idNode);
         $role->set('Description', $this->request->getParam('description'));
         $role->update();
-        $role->DeleteAllPermissions();
-        $role->deleteAllRolesActions($idPipeline);
+        if (! $role->deleteAllPermissions()) {
+            $this->messages->add(_('Cannot delete old role permissions'), MSG_TYPE_ERROR);
+            $values = array(
+                'messages' => $this->messages->messages
+            );
+            $this->sendJSON($values);
+        }
+        if (! $role->deleteAllRolesActions()) {
+            $this->messages->add(_('Cannot delete old role actions'), MSG_TYPE_ERROR);
+            $values = array(
+                'messages' => $this->messages->messages
+            );
+            $this->sendJSON($values);
+        }
         $permissions = $this->request->getParam('permissions');
         if ($permissions) {
             foreach (array_keys($permissions) as $idPermission) {
-                $role->AddPermission($idPermission);
+                if ($role->addPermission($idPermission) === false) {
+                    $this->messages->add(_('Cannot create a role permission'), MSG_TYPE_ERROR);
+                    $values = array(
+                        'messages' => $this->messages->messages
+                    );
+                    $this->sendJSON($values);
+                }
             }
         }
         $rolesActions = $this->request->getParam('action_workflow');
-        if ($rolesActions and count($rolesActions) >= 1) {
+        if ($rolesActions) {
             foreach ($rolesActions as $idAction => $workFlowStatus) {
-                foreach (array_keys($workFlowStatus) as $idWorkflowStatus) {
-                    $role->AddAction($idAction, (int) $idWorkflowStatus, $idPipeline);
+                foreach (array_keys($workFlowStatus) as $workflowStatusId) {
+                    if ($role->addAction($idAction, ($workflowStatusId == 'NO_STATE') ? null : $workflowStatusId) === false) {
+                        $this->messages->add(_('Cannot create a role action'), MSG_TYPE_ERROR);
+                        $values = array(
+                            'messages' => $this->messages->messages
+                        );
+                        $this->sendJSON($values);
+                    }
                 }
             }
         }
@@ -162,5 +149,53 @@ class Action_modifyrole extends ActionAbstract
             'messages' => $this->messages->messages
         );
         $this->sendJSON($values);
+    }
+    
+    private function getAllNodeTypes(Role $role, array & $allStates) : array
+    {
+        $nodeType = new NodeType();
+        $allNodeTypes = $nodeType->find('IdNodeType, Description, IsPublishable, Module, workflowId', null, null, MULTI, true, null
+            , 'Description');
+        $respAllNodeTypes = [];
+        $action = new Action();
+        foreach ($allNodeTypes as $nodeType) {
+            
+            // Skipping permissions for actions in disabled modules
+            if (! empty($nodeType['Module']) && ! Manager::isEnabled($nodeType['Module'])) {
+                continue;
+            }
+            
+            // Getting actions for current node type
+            $nodeType['actions'] = $action->find('IdAction, Name, Module, Command', 'IdNodeType = %s AND Sort >= 0'
+                , array($nodeType['IdNodeType']), MULTI, true, null, 'Sort');
+            if ($nodeType['actions'] === false) {
+                throw new Exception('Error loading node type actions');
+            }
+            foreach ($nodeType['actions'] as & $actionInfo) {
+                
+                // Skipping states for a disabled module action
+                if (! empty($actionInfo['Module']) && ! Manager::isEnabled($actionInfo['Module'])) {
+                    continue;
+                }
+                if ($nodeType['workflowId']) {
+                    
+                    // This node type works with a workflow
+                    if (! isset($allStates[$nodeType['workflowId']])) {
+                        $workflow = new Workflow($nodeType['workflowId']);
+                        foreach ($workflow->getAllStates() as $id) {
+                            $state = new WorkflowStatus($id);
+                            $allStates[$nodeType['workflowId']][] = ['id' => $id, 'name' => $state->get('name')];
+                        }
+                    }
+                    foreach ($allStates[$nodeType['workflowId']] as $state) {
+                        $actionInfo['states'][$state['id']] = $role->hasAction($actionInfo['IdAction'], $state['id'], $workflow->get('id'));
+                    }
+                } else {
+                    $actionInfo['state'] = $role->hasAction($actionInfo['IdAction']);
+                }
+            }
+            $respAllNodeTypes[] = $nodeType;
+        }
+        return $respAllNodeTypes;
     }
 }

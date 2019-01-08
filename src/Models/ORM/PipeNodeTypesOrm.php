@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -29,21 +29,18 @@ namespace Ximdex\Models\ORM;
 
 use Ximdex\Data\GenericData;
 
-/**
- * @deprecated
- */
 class PipeNodeTypesOrm extends GenericData
 {
-    var $_idField = 'id';
-    var $_table = 'PipeNodeTypes';
-    var $_metaData = array(
-        'id' => array('type' => "int(11)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
-        'IdPipeline' => array('type' => "int(11)", 'not_null' => 'true'),
-        'IdNodeType' => array('type' => "int(11)", 'not_null' => 'true')
+    public $_idField = 'id';
+    public $_table = 'PipeNodeTypes';
+    public $_metaData = array(
+        'id' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
+        'IdPipeline' => array('type' => "int(12)", 'not_null' => 'true'),
+        'IdNodeType' => array('type' => "int(12)", 'not_null' => 'true')
     );
-    var $_uniqueConstraints = array();
-    var $_indexes = array('id');
-    var $id;
-    var $IdPipeline;
-    var $IdNodeType;
+    public $_uniqueConstraints = array();
+    public $_indexes = array('id');
+    public $id;
+    public $IdPipeline;
+    public $IdNodeType;
 }

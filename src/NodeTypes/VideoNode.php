@@ -40,7 +40,7 @@ class VideoNode extends FileNode
      * 
      * @return bool
      */
-    function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = Constants::EDITION_STATUS_ID, $sourcePath = "")
+    function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $sourcePath = "")
     {
         parent::CreateNode($name, $parentID, $nodeTypeID, $stateID, $sourcePath);
     }

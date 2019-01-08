@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -30,21 +30,24 @@ namespace Ximdex\NodeTypes;
 use Ximdex\Models\Role;
 
 /**
- * @brief Handles roles.
+ * @brief Handles roles
  */
 class RoleNode extends Root
 {
 	/**
-	 *  Does nothing.
-	 * @return null
+	 * Does nothing
+	 * 
+	 * {@inheritDoc}
+	 * @see \Ximdex\NodeTypes\Root::RenderizeNode()
 	 */
-	function RenderizeNode()
+	public function renderizeNode()
 	{
 		return null;
 	}
 
 	/**
-	 *  Calls to method for adding a row to Roles table.
+	 * Calls to method for adding a row to Roles table
+	 * 
 	 * @param string name
 	 * @param int parentID
 	 * @param int nodeTypeID
@@ -52,7 +55,7 @@ class RoleNode extends Root
 	 * @param string icon
 	 * @param string description
 	 */
-	function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $icon = null, $description = null)
+	public function createNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $icon = null, $description = null)
 	{
 		$role = new Role();
 		$role->CreateNewRole($name, $icon, $description, $this->parent->get('IdNode'));
@@ -60,22 +63,22 @@ class RoleNode extends Root
 	}
 
 	/**
-	 *  Calls to method for deleting the Role from database.
+	 * Calls to method for deleting the Role from database
 	 */
-	function DeleteNode()
+	function deleteNode()
 	{
-		//Before delete delGroupRol
+		// Before delete delGroupRol
 		$role = new Role($this->parent->get('IdNode'));
-		$role->DeleteRole();
+		$role->delete();
 	}
 
 	/**
-	 *  Users and Groups arent dependecies,they are associations;
+	 * Users and Groups arent dependecies,they are associations
+	 * 
 	 * @return array
 	 */
-	function GetDependencies()
+	public function getDependencies()
 	{
-		$deps = array();
-		return $deps;
+		return array();
 	}
 }

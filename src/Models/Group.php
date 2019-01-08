@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -27,28 +27,35 @@
 
 namespace Ximdex\Models;
 
-use Ximdex\Workflow\WorkFlow;
 use Ximdex\Models\ORM\GroupsOrm;
 use Ximdex\Runtime\App;
 
 class Group extends GroupsOrm
 {
-	var $groupID;
-	var $numErr;                // Error code
-	var $msgErr;                // Error message
-	var $errorList = array(    // Class error list
-		1 => 'Group does not exist',
-		2 => 'A group with this name already exists',
-		3 => 'Arguments missing',
-		4 => 'Some of the node links could not be deleted',
-		5 => 'Database connection error',
-		6 => 'General group could not be obtained',
-		7 => 'Some of the node links could not be deleted',
-		8 => 'Specified relation already exists',
-		9 => 'General group cant be removed'
-	);
+	public $groupID;
+	
+	/**
+	 * Error code
+	 * 
+	 * @var int
+	 */
+	public $numErr;
+	
+	/**
+	 * Error message
+	 * 
+	 * @var string
+	 */
+	public $msgErr;
+	
+	/**
+	 * Class error list
+	 * 
+	 * @var array
+	 */
+	public $errorList = array();
 
-	public function __construct($id = null)
+	public function __construct(int $id = null)
 	{
 		$this->errorList[1] = _('Group does not exist');
 		$this->errorList[2] = _('A group with this name already exists');
@@ -59,15 +66,18 @@ class Group extends GroupsOrm
 		$this->errorList[7] = _('Some of the node links could not be deleted');
 		$this->errorList[8] = _('Specified relation already exists');
 		$this->errorList[9] = _('General group cant be removed');
-		$id = (int) $id;
 		parent::__construct($id);
 		if ($this->get('IdGroup')) {
 			$this->groupID = $this->get('IdGroup');
 		}
 	}
 
-	/// Returns the "General" group
-	function GetGeneralGroup()
+	/**
+	 * Returns the "General" group
+	 * 
+	 * @return string
+	 */
+	public function getGeneralGroup()
 	{
 		$generalGroup = App::getValue('GeneralGroup', null);
 		if (is_null($generalGroup)) {
@@ -76,8 +86,12 @@ class Group extends GroupsOrm
 		return $generalGroup;
 	}
 
-	// Loads the General group
-	function SetGeneralGroup()
+	/**
+	 * Loads the General group
+	 * 
+	 * @return boolean|string
+	 */
+	public function setGeneralGroup()
 	{
 		$generalGroup = $this->GetGeneralGroup();
 		if ($generalGroup) {
@@ -86,16 +100,20 @@ class Group extends GroupsOrm
 		}
 	}
 
-	// Returns a list of existing idGroups
-	function GetAllGroups()
+	/**
+	 * Returns a list of existing idGroups
+	 * 
+	 * @return array
+	 */
+	public function setAllGroups()
 	{
-		$this->ClearError();
+		$this->clearError();
 		$dbObj = new \Ximdex\Runtime\Db();
 		$sql = 'SELECT IdGroup FROM Groups';
 		$dbObj->Query($sql);
-		if (!$dbObj->numErr) {
+		if (! $dbObj->numErr) {
 		    $salida = [];
-			while (!$dbObj->EOF) {
+			while (! $dbObj->EOF) {
 				$salida[] = $dbObj->GetValue("IdGroup");
 				$dbObj->Next();
 			}
@@ -104,16 +122,20 @@ class Group extends GroupsOrm
         $this->SetError(5);
 	}
 
-	// Obtains a list of userId associated with this group
-	function GetUserList()
+	/**
+	 * Obtains a list of userId associated with this group
+	 * 
+	 * @return array
+	 */
+	public function getUserList()
 	{
-		$this->ClearError();
+		$this->clearError();
 		$dbObj = new \Ximdex\Runtime\Db();
-		if (!is_null($this->get('IdGroup'))) {
+		if (! is_null($this->get('IdGroup'))) {
 			$sql = sprintf("SELECT IdUser FROM RelUsersGroups WHERE IdGroup = %d", $this->get('IdGroup'));
 			$dbObj->Query($sql);
 			$salida = array();
-			if (!$dbObj->numErr) {
+			if (! $dbObj->numErr) {
 				while (!$dbObj->EOF) {
 					$salida[] = $dbObj->GetValue("IdUser");
 					$dbObj->Next();
@@ -127,17 +149,21 @@ class Group extends GroupsOrm
 		}
 	}
 
-	// Returns a list of nodes associated to a group
-	function GetNodeList()
+	/**
+	 * Returns a list of nodes associated to a group
+	 * 
+	 * @return array
+	 */
+	public function getNodeList()
 	{
-		$this->ClearError();
+		$this->clearError();
 		$dbObj = new \Ximdex\Runtime\Db();
 		$salida = array();
 		if ($this->get('IdGroup') > 0) {
 			$sql = sprintf("SELECT IdNode FROM RelGroupsNodes WHERE IdGroup = %d", $this->groupID);
 			$dbObj->Query($sql);
-			if (!$dbObj->numErr) {
-				while (!$dbObj->EOF) {
+			if (! $dbObj->numErr) {
+				while (! $dbObj->EOF) {
 					$salida[] = $dbObj->GetValue("IdNode");
 					$dbObj->Next();
 				}
@@ -149,18 +175,26 @@ class Group extends GroupsOrm
 		}
 	}
 
-	// Returns the groupID (class attribute)
-	function GetID()
+	/**
+	 * Returns the groupID (class attribute)
+	 * 
+	 * @return boolean|string
+	 */
+	public function getID()
 	{
 		return $this->get('IdGroup');
 	}
 
-	// Allows to change the groupID without destroying and re-creating the object
-	function SetID($id)
+	/**
+	 * Allows to change the groupID without destroying and re-creating the object
+	 * 
+	 * @param int $id
+	 */
+	public function setID(int $id)
 	{
-		$this->ClearError();
+		$this->clearError();
 		parent::__construct($id);
-		if (!($this->get('IdGroup') > 0)) {
+		if (! $this->get('IdGroup')) {
 			$this->groupID = null;
 			$this->SetError(1);
 		} else {
@@ -168,16 +202,25 @@ class Group extends GroupsOrm
 		}
 	}
 
-	// Devuelve el nombre del grupo correspondiente
-	function GetGroupName()
+	/**
+	 * Devuelve el nombre del grupo correspondiente
+	 * 
+	 * @return boolean|string
+	 */
+	public function getGroupName()
 	{
 		return $this->get('Name');
 	}
 
-	// Nos permite cambiar el nombre a un grupo
-	function SetGroupName($name)
+	/**
+	 * Nos permite cambiar el nombre a un grupo
+	 * 
+	 * @param string $name
+	 * @return boolean|int
+	 */
+	public function setGroupName(string $name)
 	{
-		if (!($this->get('IdGroup') > 0)) {
+		if (! $this->get('IdGroup')) {
 			$this->SetError(1);
 			return false;
 		}
@@ -188,26 +231,34 @@ class Group extends GroupsOrm
 		return false;
 	}
 
-	// Creates a new group in database and loads the corresponding ID.
-	function CreateNewGroup($name, $gID = NULL)
+	/**
+	 * Creates a new group in database and loads the corresponding ID
+	 * 
+	 * @param string $name
+	 * @param int $gID
+	 */
+	public function createNewGroup(string $name, int $gID = null)
 	{
-		if (!is_null($gID)) {
+		if (! is_null($gID)) {
 			$this->set('IdGroup', $gID);
 		}
 		$this->set('Name', $name);
 		$this->add();
 	}
 
-
-	// Deleting a group, deleting first its subscriptions
-	function DeleteGroup()
+	/**
+	 * Deleting a group, deleting first its subscriptions
+	 * 
+	 * @return void|boolean
+	 */
+	public function deleteGroup()
 	{
-		$this->ClearError();
+		$this->clearError();
 		if ($this->GetGeneralGroup() == $this->get('IdGroup')) {
 			$this->SetError(9);
 			return false;
 		}
-		if (!is_null($this->get('IdGroup'))) {
+		if (! is_null($this->get('IdGroup'))) {
 		    
 			// Deleting subscription of all groups
 			$users = $this->GetUserList();
@@ -235,29 +286,43 @@ class Group extends GroupsOrm
 		}
 	}
 
-	// This function is not deleting an user from Users table, it is disassociate him from the group
-	// It should be called desuscribeUser or something similar
-	function DeleteUser($userID)
+	/**
+	 * This function is not deleting an user from Users table, it is disassociate him from the group
+	 * It should be called desuscribeUser or something similar
+	 * 
+	 * @param int $userID
+	 * @return bool
+	 */
+	public function deleteUser(int $userID) : bool
 	{
-		$this->ClearError();
+		$this->clearError();
 		if ($this->get('IdGroup') > 0) {
 			$dbObj = new \Ximdex\Runtime\Db();
 			$dbObj->Execute(sprintf("DELETE FROM RelUsersGroups WHERE IdGroup= %d AND IdUser = %d", $this->get('IdGroup'), $userID));
-			if ($dbObj->numErr)
+			if ($dbObj->numErr) {
 				$this->SetError(5);
+				return false;
+			}
 		} else {
 			$this->SetError(1);
+			return false;
 		}
+		return true;
 	}
 
-	// Associating an existing user to a group with a concrete role
-	function AddUserWithRole($userID, $roleID)
+	/**
+	 * Associating an existing user to a group with a concrete role
+	 * 
+	 * @param int $userID
+	 * @param int $roleID
+	 * @return boolean
+	 */
+	public function addUserWithRole(int $userID, int $roleID) : bool
 	{
-		$this->ClearError();
-		if ($this->get('IdGroup') > 0) {
+		$this->clearError();
+		if ($this->get('IdGroup')) {
 			$dbObj = new \Ximdex\Runtime\Db();
-			$query = sprintf("SELECT IdRel FROM RelUsersGroups"
-				. " WHERE IdUser = %d AND IdGroup = %d AND IdRole = %d",
+			$query = sprintf("SELECT IdRel FROM RelUsersGroups WHERE IdUser = %d AND IdGroup = %d AND IdRole = %d",
 				$userID, $this->get('IdGroup'), $roleID);
 			$dbObj->query($query);
 			if ($dbObj->numRows > 0) {
@@ -269,45 +334,53 @@ class Group extends GroupsOrm
 			$dbObj->Execute($query);
 			if ($dbObj->numErr) {
 				$this->SetError(5);
+				return false;
 			}
 		} else {
 			$this->SetError(1);
+			return false;
 		}
+		return true;
 	}
 
 	/**
 	 * Allows to change the role used by an user in a group
 	 * 
-	 * @param $userID
-	 * @param $roleID
+	 * @param int $userID
+	 * @param int $roleID
+	 * @return bool
 	 */
-	function ChangeUserRole($userID, $roleID)
+	public function changeUserRole(int $userID, int $roleID) : bool
 	{
-		$this->ClearError();
+		$this->clearError();
 		if ($this->get('IdGroup') > 0) {
 			$dbObj = new \Ximdex\Runtime\Db();
 			$query = sprintf("UPDATE RelUsersGroups SET IdRole = %d WHERE IdGroup= %d AND IdUser= %d", $roleID, $this->get('IdGroup'), $userID);
 			$dbObj->Execute($query);
-			if ($dbObj->numErr)
+			if ($dbObj->numErr) {
 				$this->SetError(5);
+			    return false;
+			}
 		} else {
 			$this->SetError(1);
+			return false;
 		}
+		return true;
 	}
 
 	/**
 	 * Returns true if the user belongs to a group
 	 * 
-	 * @param $userID
+	 * @param int $userID
 	 */
-	function HasUser($userID)
+	public function hasUser(int $userID)
 	{
-		$this->ClearError();
+		$this->clearError();
 		if ($this->get('IdGroup') > 0) {
 			$dbObj = new \Ximdex\Runtime\Db();
 			$query = sprintf("SELECT IdUser FROM RelUsersGroups WHERE IdGroup = %d AND IdUser = %d", $this->get('IdGroup'), $userID);
 			$dbObj->Query($query);
-			if (!$dbObj->numErr) {
+			if (! $dbObj->numErr) {
 				if ($dbObj->numRows) {
 					return true;
 				}
@@ -319,16 +392,12 @@ class Group extends GroupsOrm
 		}
 	}
 
-	/**
-	 * @param $nodeID
-	 * @return null|String
-	 */
-	function GetRoleOnNode($nodeID)
+	public function getRoleOnNode(int $nodeID)
 	{
-		$this->ClearError();
+		$this->clearError();
 		if ($this->get('IdGroup') > 0) {
 			$node = new Node($nodeID);
-			if (!$node->numErr) {
+			if (! $node->numErr) {
 				return $node->GetRoleOfGroup($this->get('IdGroup'));
 			}
 		} else {
@@ -336,15 +405,12 @@ class Group extends GroupsOrm
 		}
 	}
 
-	/**
-	 * @param $nodeID
-	 */
-	function IsOnNode($nodeID)
+	public function isOnNode(int $nodeID)
 	{
-		$this->ClearError();
+		$this->clearError();
 		if ($this->get('IdGroup') > 0) {
 			$node = new Node($nodeID);
-			if (!$node->numErr) {
+			if (! $node->numErr) {
 				$groupList = $node->GetGroupList();
 				if (in_array($this->GetID(), $groupList)) {
 					return true;
@@ -359,7 +425,7 @@ class Group extends GroupsOrm
 	/**
 	 * Cleans class errors
 	 */
-	function ClearError()
+	public function clearError()
 	{
 		$this->numErr = null;
 		$this->msgErr = null;
@@ -368,9 +434,9 @@ class Group extends GroupsOrm
 	/**
 	 * Loads class error
 	 * 
-	 * @param $code
+	 * @param int $code
 	 */
-	function SetError($code)
+	public function setError(int $code)
 	{
 		$this->numErr = $code;
 		$this->msgErr = $this->errorList[$code];
@@ -378,44 +444,43 @@ class Group extends GroupsOrm
 
 	/**
 	 * Returns true if there was an error in the class
+	 * 
+	 * @return boolean
 	 */
-	function HasError()
+	public function hasError()
 	{
 		return ($this->numErr != null);
 	}
     
-	function getUserRoleInfo()
+	public function getUserRoleInfo()
 	{
 		$dbObj = new \Ximdex\Runtime\Db();
-		$query = sprintf('SELECT IdRel, IdUser, IdRole'
-			. ' FROM RelUsersGroups'
-			. ' WHERE IdGroup = %s',
-			$dbObj->sqlEscapeString($this->IdGroup));
+		$query = sprintf('SELECT IdRel, IdUser, IdRole FROM RelUsersGroups WHERE IdGroup = %s'
+		    , $dbObj->sqlEscapeString($this->IdGroup));
 		$dbObj->Query($query);
-		if (!($dbObj->numRows > 0)) {
-			return NULL;
+		if (! $dbObj->numRows) {
+			return null;
 		}
 		$result = array();
-		while (!$dbObj->EOF) {
-			$result[$dbObj->getValue('IdRel')] = array('IdUser' => $dbObj->getValue('IdUser'),
-				'IdRole' => $dbObj->getValue('IdRole'));
+		while (! $dbObj->EOF) {
+			$result[$dbObj->getValue('IdRel')] = array('IdUser' => $dbObj->getValue('IdUser'), 'IdRole' => $dbObj->getValue('IdRole'));
 			$dbObj->next();
 		}
 		return $result;
 	}
 
-	public static function getSelectableGroupsInfo($idNode)
+	public static function getSelectableGroupsInfo(int $idNode)
 	{
 		$groupStateInfo = array();
 		$group = new Group();
 		$groupList = $group->find('IdGroup', NULL, NULL, MONO);
 		$node = new Node($idNode);
 		$groupState = array();
-		if (is_array($groupList) && !empty($groupList)) {
+		if (is_array($groupList) && ! empty($groupList)) {
 			foreach ($groupList as $idGroup) {
 				$group = new Group($idGroup);
 				$users = $group->GetUserList();
-				if (is_array($users) && !empty($users)) {
+				if (is_array($users) && ! empty($users)) {
 					foreach ($users as $idUser) {
 						$nextState = $node->GetNextAllowedState($idUser, $idGroup);
 						if ($nextState > 0) {
@@ -425,14 +490,12 @@ class Group extends GroupsOrm
 				}
 			}
 		}
-
 		foreach ($groupState as $idGroup => $idState) {
 			$group = new Node($idGroup);
-			$workflow = new WorkFlow($idNode, $idState);
-			$idS = $workflow->pipeStatus->get('id');
+			$workflow = new Workflow($node->nodeType->getWorkflow(), $idState);
+			$idS = $workflow->getStatusID();
 			$idG = $group->get('Name');
-			$sN = $workflow->pipeStatus->get('Name');
-
+			$sN = $workflow->getStatusName();
 			$groupStateInfo[] = array(
 				'IdGroup' => $group->get('IdNode'),
 				'groupName' => $idG,

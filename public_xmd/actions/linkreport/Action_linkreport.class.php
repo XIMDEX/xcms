@@ -150,7 +150,7 @@ class Action_linkreport extends ActionAbstract
                 $has = false;
                 while (($r < $n_roles) && !$has) {
                     $role = new Role($arr_roles[$r]);
-                    $has = $role->HasAction(6073);
+                    $has = $role->hasAction(6073);
                     $r++;
                 }
                 $linkNode = new Node($idLink);

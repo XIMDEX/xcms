@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -31,22 +31,18 @@ use Ximdex\Data\GenericData;
 
 class RelRolesActionsOrm extends GenericData
 {
-    var $_idField = 'IdRel';
-    var $_table = 'RelRolesActions';
-    var $_metaData = array(
+    public $_idField = 'IdRel';
+    public $_table = 'RelRolesActions';
+    public $_metaData = array(
         'IdRel' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
         'IdRol' => array('type' => "int(12)", 'not_null' => 'true'),
         'IdAction' => array('type' => "int(12)", 'not_null' => 'true'),
-        'IdState' => array('type' => "int(12)", 'not_null' => 'false'),
-        'IdContext' => array('type' => "int(12)", 'not_null' => 'true'),
-        'IdPipeline' => array('type' => "int(11)", 'not_null' => 'false')
+        'IdState' => array('type' => "int(12)", 'not_null' => 'false')
     );
-    var $_uniqueConstraints = array();
-    var $_indexes = array('IdRel');
-    var $IdRel;
-    var $IdRol = 0;
-    var $IdAction = 0;
-    var $IdState;
-    var $IdContext = 1;
-    var $IdPipeline;
+    public $_uniqueConstraints = array();
+    public $_indexes = array('IdRel', 'IdRol', 'IdAction', 'RelRolesActions_Status');
+    public $IdRel;
+    public $IdRol;
+    public $IdAction;
+    public $IdState;
 }

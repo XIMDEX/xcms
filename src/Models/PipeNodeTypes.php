@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -30,7 +30,6 @@ namespace Ximdex\Models;
 use Ximdex\Models\ORM\PipeNodeTypesOrm;
 
 /**
- * @deprecated
  * @brief Describes the relation between pipelines and nodetypes
  *
  * Describes the relation between pipelines and nodetypes, actually is not being used

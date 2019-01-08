@@ -1,6 +1,7 @@
 <?php
+
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -28,12 +29,10 @@
 namespace  Ximdex\Pipeline\Iterators;
 
 /**
- * 
+ * @deprecated
  * @brief Basic iterator for the PipeProcess class
- * 
- * Basic iterator for the PipeProcess class
- *
  */
-class IteratorPipeProcesses extends  \Ximdex\Behaviours\Iterator {
+class IteratorPipeProcesses extends  \Ximdex\Behaviours\Iterator
+{
 	var $_objectName = '\\Ximdex\\Models\\PipeProcess';
 }

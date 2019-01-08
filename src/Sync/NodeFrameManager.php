@@ -241,8 +241,7 @@ class NodeFrameManager
             . 'NodeFrames.TimeDown, NodeFrames.Active FROM NodeFrames, ServerFrames';
 		if ($batchType == Batch::TYPE_UP) {
 			$sql .= ' WHERE ServerFrames.IdBatchUp = ' . $batchId 
-			    . ' AND ServerFrames.IdNodeFrame = NodeFrames.IdNodeFrame AND (NodeFrames.IsProcessUp = 0 '
-				. 'OR NodeFrames.IsProcessUp IS NULL) LIMIT ' . $chunk;
+			    . ' AND ServerFrames.IdNodeFrame = NodeFrames.IdNodeFrame AND NodeFrames.IsProcessUp = 0 LIMIT ' . $chunk;
 		} elseif ($batchType == Batch::TYPE_DOWN) {
 				$batch = new Batch($batchId);
 				$batchUp = $batch->getUpBatch($batchId);
@@ -250,13 +249,12 @@ class NodeFrameManager
 				    
 				    // Batch type Down with a type Up linked
 					$sql .= ' WHERE ServerFrames.IdBatchUp = ' . $batchUp[0] 
-					   . ' AND ServerFrames.IdNodeFrame = NodeFrames.IdNodeFrame AND (NodeFrames.IsProcessDown = 0 '
-					   . 'OR NodeFrames.IsProcessDown IS NULL) LIMIT ' . $chunk;
+					   . ' AND ServerFrames.IdNodeFrame = NodeFrames.IdNodeFrame AND NodeFrames.IsProcessDown = 0 LIMIT ' . $chunk;
 				} else {
 				    
 				    // No batch type Up associated
 				    $sql .= ' WHERE ServerFrames.IdBatchDown = ' . $batchId . ' AND ServerFrames.IdNodeFrame = NodeFrames.IdNodeFrame AND ' 
-				        . '(NodeFrames.IsProcessDown = 0 OR NodeFrames.IsProcessDown IS NULL) LIMIT ' . $chunk;
+				        . 'NodeFrames.IsProcessDown = 0 LIMIT ' . $chunk;
 				}
 		} else {
 			Logger::error(sprintf('Batch %s is a non-existent type of batch %s', $batchId, $batchType));

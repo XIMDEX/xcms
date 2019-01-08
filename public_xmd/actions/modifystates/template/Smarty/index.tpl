@@ -61,6 +61,7 @@
                     </div>
                 </li>
             </ul>
+            <!--
             <br>
             <div class=" {if $is_workflow_master == true}disabled{/if}">
                 <div class="small-2 columns">
@@ -81,11 +82,12 @@
                 <div class="small-12 columns">
                     <div class="input">
                         <input class="hidden-focus" type="checkbox" name="is_workflow_master" id="is_workflow_master" 
-                            {if $is_workflow_master== true}checked="checked" disabled="disabled" {/if}/> <label 
+                            {if $is_workflow_master == true}checked="checked" disabled="disabled" {/if}/> <label 
                             class="icon checkbox-label">{t}This workflow will behave as default item{/t}</label>
                     </div>
                 </div>
             </div>
+            -->
             <div class="small-12 columns">
                 <fieldset ng-init="loading=false; label='{t}Save changes{/t}';" class="buttons-form">
                     <button class="button_main_action" xim-button xim-loading="loading" xim-label="label" xim-progress="" xim-disabled="" 

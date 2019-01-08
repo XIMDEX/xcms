@@ -32,9 +32,7 @@ use Ximdex\Runtime\App;
 use XimdexApi\core\Token;
 use Ximdex\Runtime\Session;
 use Ximdex\Runtime\Constants;
-use Ximdex\Workflow\WorkFlow;
 use Ximdex\Models\ORM\UsersOrm;
-use Ximdex\Models\ORM\ContextsOrm;
 use Ximdex\Models\ORM\RelUsersGroupsOrm;
 use Ximdex\Models\ORM\RelRolesActionsOrm;
 
@@ -460,20 +458,35 @@ class User extends UsersOrm
         }
     }
 
+    /**
+     * {@inheritDoc}
+     * @see \Ximdex\Data\GenericData::add()
+     */
     function add()
     {
         $this->CreateNewUser($this->get('Name'), $this->get('Login'), $this->get('Pass'), $this->get('Name'), $this->get('Email')
             , $this->get('Locale'));
     }
 
-    // Function which creates a new user if it does not exist in the system previously, and load the idUser
-    function set($attrib, $value)
+    public function set(string $attrib, string $value = null) : bool
     {
         if ($attrib == 'Pass')
             $value = md5($value);
         return parent::set($attrib, $value);
     }
 
+    /**
+     * Function which creates a new user if it does not exist in the system previously, and load the idUser
+     * 
+     * @param $realname
+     * @param $login
+     * @param $pass
+     * @param $email
+     * @param $locale
+     * @param $roleID
+     * @param $idUser
+     * @return NULL|boolean|string
+     */
     function createNewUser($realname, $login, $pass, $email, $locale, $roleID, $idUser)
     {
         if (is_null($idUser)) {
@@ -583,7 +596,7 @@ class User extends UsersOrm
             }
         }
         $arrayRoles = array_unique($arrayRoles);
-        if (!empty($arrayRoles)) {
+        if (! empty($arrayRoles)) {
             
             // Getting actions for every rol
             foreach ($arrayRoles as $idRol) {
@@ -759,23 +772,26 @@ class User extends UsersOrm
     public function canWrite($params)
     {
         $wfParams = $this->parseParams($params);
-        $idPipeline = NULL;
+        // $idPipeline = null;
+        $workFlowId = null;
         if (isset($wfParams['node_id'])) {
-            $nodeId = (int)$wfParams['node_id'];
+            $nodeId = (int) $wfParams['node_id'];
 
             // Usuario ximdex
             if ($this->getID() == self::XIMDEX_ID) {
                 return true;
             }
-            if (!$this->hasAccess($nodeId)) {
+            if (! $this->hasAccess($nodeId)) {
                 return false;
             }
-            $workflow = new WorkFlow($nodeId);
-            $idPipeline = $workflow->pipeline->get('id');
+            $node = new Node($nodeId);
+            $workflow = new Workflow($node->nodeType->getWorkflow());
+            // $idPipeline = $workflow->pipeline->get('id');
+            $workFlowId = $workflow->get('id');
         }
 
         // Should be always set
-        if (!isset($wfParams['node_type'])) {
+        if (! isset($wfParams['node_type'])) {
             return false;
         }
         $nodeTypeId = (int)$wfParams['node_type'];
@@ -785,20 +801,19 @@ class User extends UsersOrm
 
         // Check groups&roles and defined actions...
         $userRoles = $this->GetRoles();
-        if (!is_array($userRoles)) {
+        if (! is_array($userRoles)) {
             return false;
         }
         $userRoles = array_unique($userRoles);
         $nodeType = new NodeType($nodeTypeId);
         $actionId = $nodeType->GetConstructor();
-        unset($nodeType);
-        if (!$actionId) {
+        if (! $actionId) {
             Logger::warning(sprintf('The nodetype %d has no create action associated', $nodeTypeId));
             return false;
         }
         foreach ($userRoles as $userRole) {
             $role = new Role($userRole);
-            if ($role->HasAction($actionId, $idPipeline)) {
+            if ($role->hasAction($actionId, null, $workFlowId)) {
                 return true;
             }
         }
@@ -878,27 +893,17 @@ class User extends UsersOrm
         return null;
     }
 
-    /**
-     * @param $idUser
-     * @param $idNodeType
-     * @param $mode
-     * @return boolean
-     */
     protected function checkContext($idNodeType, $mode)
     {
         $nodeTypeMode = new NodetypeMode();
         $idAction = $nodeTypeMode->getActionForOperation($idNodeType, $mode);
-        if (!$idAction) {
+        if (! $idAction) {
             return false;
         }
-        $context = Session::get('context');
-        $contextsObject = new ContextsOrm();
-        $result = $contextsObject->find('id', 'Context = %s', array($context), MONO);
-        $idContext = count($result) == 1 ? $result[0] : '1';
         $relRolesActions = new RelRolesActionsOrm();
-        $result = $relRolesActions->find('IdRol', 'IdAction = %s AND IdContext = %s', array($idAction, $idContext), MONO);
+        $result = $relRolesActions->find('IdRol', 'IdAction = %s', array($idAction), MONO);
         $idRol = count($result) == 1 ? $result[0] : NULL;
-        if (!$idRol) {
+        if (! $idRol) {
             return false;
         }
         $relUserGroup = new RelUsersGroupsOrm();

@@ -59,7 +59,7 @@ class Batch extends BatchsOrm
     // Priorities
     const PRIORITY_TYPE_DOWN = 1.1;
 
-    public function set($attribute, $value)
+    public function set(string $attribute, string $value = null) : bool
     {
         if ($attribute == 'State') {
             if ($this->get('State')) {
@@ -69,7 +69,7 @@ class Batch extends BatchsOrm
             }
             Logger::debug('Changing state for batch: ' . $this->IdBatch . ' from ' . $from . ' to ' . $value);
         }
-        parent::set($attribute, $value);
+        return parent::set($attribute, $value);
     }
     
     /**

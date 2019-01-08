@@ -32,10 +32,10 @@ use Ximdex\Models\Role;
 use Ximdex\Models\Server;
 use Ximdex\Models\User;
 use Ximdex\Models\NodesToPublish;
+use Ximdex\Models\Workflow;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Utils\Serializer;
 use Ximdex\Sync\SynchroFacade;
-use Ximdex\Workflow\WorkFlow;
 
 include_once XIMDEX_ROOT_PATH . '/src/Sync/conf/synchro_conf.php';
 
@@ -172,7 +172,8 @@ class Action_expiredoc extends ActionAbstract
         $idState = $this->request->getParam('stateid');
         $idNode = $this->request->getParam('nodeid');
         $group = new Group($idGroup);
-        $workflow = new WorkFlow($idNode, $idState);
+        $node = new Node($idNode);
+        $workflow = new Workflow($node->nodeType->getWorkflow(), $idState);
         $values = array(
             'messages' => array(
                 _('You do not belong to any group with publication privileges')
@@ -204,7 +205,7 @@ class Action_expiredoc extends ActionAbstract
                 'group' => $idGroup,
                 'groupName' => $group->get('Name'),
                 'state' => $idState,
-                'stateName' => $workflow->pipeStatus->get('Name'),
+                'stateName' => $workflow->getStatusName(),
                 'notificableUsers' => $notificableUsers
             );
         }
@@ -299,20 +300,9 @@ class Action_expiredoc extends ActionAbstract
         $idUser = Ximdex\Runtime\Session::get("userID");
         $node = new Node($idNode);
         $idActualState = $node->get('IdState');
-        $actualWorkflowStatus = new WorkFlow($idNode, $idActualState);
-        $nextWorkflowStatus = new WorkFlow($idNode, $idState);
-        /*
-        if (count($userList) > 0) {
-            $userNameList = array();
-            foreach ($userList as $id) {
-                $user = new User($id);
-                $userNameList[] = $user->get('Login');
-            }
-            $userNameString = implode(', ', $userNameList);
-        }
-        */
+        $actualWorkflowStatus = new Workflow($node->nodeType->getWorkflow(), $idActualState);
+        $nextWorkflowStatus = new Workflow($node->nodeType->getWorkflow(), $idState);
         $user = new User($idUser);
-        // $from = $user->get('Login');
         $userName = $user->get('Name');
         $nodeName = $node->get('Name');
         $nodePath = $node->GetPath();
@@ -434,12 +424,13 @@ class Action_expiredoc extends ActionAbstract
         return true;
     }
     
-    private function validateInSelectedGroup($group, $workflow, $idState, $idGroup)
+    private function validateInSelectedGroup($group, Workflow $workflow, $idState, $idGroup)
     {
         if (! $group->get('IdGroup') > 0) {
             $this->messages->add(sprintf(_('No information about the selected group (%s) could be obtained'), $idGroup), MSG_TYPE_ERROR);
         }
-        if (! $workflow->pipeStatus->get('id') > 0) {
+        // if (! $workflow->pipeStatus->get('id') > 0) {
+        if (! $workflow->getStatusID() > 0) {
             $this->messages->add(sprintf(_('No information about the selected workflow state (%s) could be obtained'), $idState), MSG_TYPE_ERROR);
         }
         if ($this->messages->count(MSG_TYPE_ERROR) > 0) {

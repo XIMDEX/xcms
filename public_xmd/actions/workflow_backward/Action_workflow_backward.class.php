@@ -29,17 +29,17 @@ use Ximdex\Models\Group;
 use Ximdex\Models\Node;
 use Ximdex\Models\Role;
 use Ximdex\Models\User;
+use Ximdex\Models\Workflow;
 use Ximdex\MVC\ActionAbstract;
-use Ximdex\Workflow\WorkFlow;
 
 class Action_workflow_backward extends ActionAbstract
 {
 	/**
 	 * Main method: shows the initial form
 	 */
-	function index()
+	public function index()
 	{
- 		$idNode = (int) $this->request->getParam("nodeid");
+ 		$idNode = (int) $this->request->getParam('nodeid');
         $this->addJs('/actions/workflow_forward/resources/js/workflow_forward.js');
 		$idUser = \Ximdex\Runtime\Session::get('userID');
         $user = new User($idUser);
@@ -47,42 +47,51 @@ class Action_workflow_backward extends ActionAbstract
 		// Getting user roles on current node
         $userRoles = $user->GetRolesOnNode($idNode);
 		$node = new Node($idNode);
-		$workflow = new WorkFlow($idNode, $node->GetState());
+		$workflow = new Workflow($node->nodeType->getWorkflow(), $node->GetState());
 
         // Getting previous state
-        $prevState = $workflow->GetPreviousState();
-		$workflowPrev = new WorkFlow($idNode,$prevState);
-		$prevStateName=$workflowPrev->GetName(); 
+        $prevState = $workflow->getPreviousState();
+        if (! $prevState) {
+            $prevState = $workflow->getInitialState();
+        }
+        if ($prevState) {
+            $workflowPrev = new Workflow($node->nodeType->getWorkflow(), $prevState);
+            $prevStateName = $workflowPrev->getStatusName();
+        } else {
+            $prevStateName = null;
+        }
 
 		// Checking if the user has some role with permission to change to next State
         $allowed = false;
         foreach($userRoles as $myIdRole) {
             $role = new Role($myIdRole);
-            if ($role->HasState($prevState)) {
-                $allowed = TRUE;
+            if ($role->hasState($prevState)) {
+                $allowed = true;
                 break;
             }
         }
-        if (!$allowed) {
+        if (! $allowed) {
             $this->messages->add(_('You have not privileges to move forward the node to next status.'), MSG_TYPE_WARNING);
-            $this->messages->add(_('You have not assigned a role with privileges to modify workflow status on any of groups associated with the node or the section which contains it.'), MSG_TYPE_WARNING);
+            $this->messages->add(_('You have not assigned a role with privileges to modify workflow status on any of groups associated with the node or the section which contains it.')
+                , MSG_TYPE_WARNING);
             $values = array(
-                'messages' => $this->messages->messages
+                'messages' => $this->messages->messages,
+                'node_Type' => $node->nodeType->GetName()
             );
             $this->render($values, 'show_results', 'default-3.0.tpl');
-            return ;
+            return;
         }
         $conf = Ximdex\Modules\Manager::file('/conf/notifications.php', 'XIMDEX');
-        $defaultMessage = $this->buildMessage($conf["defaultMessage"], $prevStateName,$node->GetNodeName());
+        $defaultMessage = $this->buildMessage($conf['defaultMessage'], $prevStateName, $node->GetNodeName());
 		$values = array(
             'idnode' => $idNode,
             'go_method' => 'workflow_backward',
-            "defaultMessage" => $defaultMessage,
-            "group_state_info" => Group::getSelectableGroupsInfo($idNode),
+            'defaultMessage' => $defaultMessage,
+            'group_state_info' => Group::getSelectableGroupsInfo($idNode),
     		'prevStateName' => $prevStateName,
-    		'currentStateName' => $workflow->GetName()
+    		'currentStateName' => $workflow->getStatusName()
         );
-		if ($workflow->IsInitialState()) {
+		if ($workflow->isInitialState()) {
 			$this->messages->add(_('The document is already in its initial state. A previous state cannot be stablished.'), MSG_TYPE_ERROR);
 			$values['messages'] = $this->messages->messages;
 			$this->render($values, null);
@@ -91,20 +100,20 @@ class Action_workflow_backward extends ActionAbstract
 		}
 	}
 
-	function workflow_backward()
+	public function workflow_backward()
 	{
 		$idNode = $this->request->getParam('nodeid');
         $node = new Node($idNode);
-        $workflow = new WorkFlow($idNode, $node->GetState());
-        $prevState = $workflow->GetPreviousState();
+        $workflow = new Workflow($node->nodeType->getWorkflow(), $node->GetState());
+        $prevState = $workflow->getPreviousState();
         $notificableUsers = $this->request->getParam('users');
         $texttosend = $this->request->getParam('texttosend');
         $sendNotifications = $this->request->getParam('sendNotifications');
         
         // If must send notifications
-        if ((boolean)$sendNotifications) {
+        if ((bool) $sendNotifications) {
             $sent = $this->sendNotification($idNode, $prevState, $notificableUsers, $texttosend);
-            if (!$sent) {
+            if (! $sent) {
                 $values = array(
                     'goback' => true,
                     'messages' => $this->messages->messages
@@ -123,14 +132,14 @@ class Action_workflow_backward extends ActionAbstract
      * 
      * @param int $idNode Node id
      * @param int $idState Target state in workflow
-     * @param array<int> $userList Array with id of users to notificate
+     * @param array <int> $userList Array with id of users to notificate
      * @param string $texttosend Texto to send in notification mail
      * @return boolean true if the notification is sended
      */
-    private function sendNotification($idNode, $idState, $userList, $texttosend) {
-
+    private function sendNotification(int $idNode, int $idState, array $userList, string $texttosend)
+    {
         $send = true;
-        $idUser = Ximdex\Runtime\Session::get("userID");
+        $idUser = Ximdex\Runtime\Session::get('userID');
         if (count($userList) == 0) {
             $this->messages->add(_('Users to notify has not been selected.'), MSG_TYPE_WARNING);
             $send = false;
@@ -139,59 +148,51 @@ class Action_workflow_backward extends ActionAbstract
             $this->messages->add(_('No message specified.'), MSG_TYPE_WARNING);
             $send = false;
         }
-        if (!$send) {
+        if (! $send) {
             return false;
         }
         $node = new Node($idNode);
         $idActualState = $node->get('IdState');
-        $actualWorkflowStatus = new WorkFlow($idNode, $idActualState);
-        $nextWorkflowStatus = new WorkFlow($idNode, $idState);
-        /*
-        if (count($userList) > 0) {
-            $userNameList = array();
-            foreach ($userList as $id) {
-                $user = new User($id);
-                $userNameList[] = $user->get('Login');
-            }
-            $userNameString = implode(', ', $userNameList);
-        }
-        */
+        $actualWorkflowStatus = new Workflow($node->nodeType->getWorkflow(), $idActualState);
+        $nextWorkflowStatus = new Workflow($node->nodeType->getWorkflow(), $idState);
         $user = new User($idUser);
-        // $from = $user->get('Login');
         $userName = $user->get('Name');
         $nodeName = $node->get('Name');
         $nodePath = $node->GetPath();
-        $nextStateName = $nextWorkflowStatus->pipeStatus->get('Name');
-        $actualStateName = $actualWorkflowStatus->pipeStatus->get('Name');
-        $subject = _("Ximdex CMS: new state for document:")." ".$nodeName;
+        $nextStateName = $nextWorkflowStatus->getStatusName();
+        $actualStateName = $actualWorkflowStatus->getStatusName();
+        $subject = _('Ximdex CMS: new state for document:') . ' ' . $nodeName;
         $content  =
-            _("State backward notification.") . "\n"
+            _('State backward notification.') . "\n"
             . "\n"
-            . _("The user")." ".$userName." "._("has changed the state of")." ".$nodeName."\n"
+            . _('The user') . ' ' . $userName . ' ' . _('has changed the state of') . ' ' . $nodeName . "\n"
             . "\n"
-            . _("Full Ximdex path")." --> ".$nodePath."\n"
+            . _('Full Ximdex path') . ' --> ' . $nodePath . "\n"
             . "\n"
-            . _("Initial state")." --> ".$actualStateName."\n"
-            . _("Final state")." --> ".$nextStateName."\n"
+            . _('Initial state') . ' --> ' . $actualStateName . "\n"
+            . _('Final state') . ' --> ' . $nextStateName . "\n"
             . "\n"
             . "\n"
-            . _("Comment").":"."\n"
-            . $texttosend."\n"
+            . _('Comment') . ':' . "\n"
+            . $texttosend . "\n"
             . "\n";
         parent::sendNotifications($subject, $content, $userList);
         return true;
     }
 
     /**
-    * Replace %doc and %state macros in default Message
-    * The message is getted from conf/notifications.php
-    *
-    * @return string with the text replaced.
-    */
-    private function buildMessage($message, $stateName,$nodeName)
+     * Replace %doc and %state macros in default Message
+     * The message is getted from conf/notifications.php
+     * 
+     * @param string $message
+     * @param string $stateName
+     * @param string $nodeName
+     * @return string with the text replaced
+     */
+    private function buildMessage(string $message, string $stateName, string $nodeName)
     {
         $mesg = preg_replace('/%doc/', $nodeName, $message);
-        $mesg = preg_replace('/%state/', $stateName,$mesg);
+        $mesg = preg_replace('/%state/', $stateName, $mesg);
         return $mesg;
     }
 }

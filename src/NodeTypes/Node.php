@@ -124,6 +124,7 @@ class Node
      *  </ul>
      * </p>
      *
+     * @deprecated
      * @param string $nodeid the node id to get the information
      * @return array containing the node information
      */
