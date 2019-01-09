@@ -105,7 +105,7 @@ class Group extends GroupsOrm
 	 * 
 	 * @return array
 	 */
-	public function setAllGroups()
+	public function getAllGroups() : array
 	{
 		$this->clearError();
 		$dbObj = new \Ximdex\Runtime\Db();

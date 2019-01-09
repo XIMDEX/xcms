@@ -124,6 +124,7 @@ class Action_edittext extends ActionAbstract
             'on_load_functions' => 'resize_caja()',
             'on_resize_functions' => 'resize_caja()',
             'node_name' => $node_name,
+            'nodeTypeID' => $node->nodeType->getID(),
             'node_Type' => $node->nodeType->GetName(),
             'id_editor' => $idNode . uniqid()
         );

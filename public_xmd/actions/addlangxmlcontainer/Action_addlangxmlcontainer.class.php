@@ -75,6 +75,7 @@ class Action_addlangxmlcontainer extends ActionAbstract {
 			'templateName' => htmlentities($template->get('Name')),
 			'languages' => $languageData,
 			'numlanguages' => $numLanguages,
+		    'nodeTypeID' => $node->nodeType->getID(),
 		    'node_Type' => $node->nodeType->GetName(),
 			'reload_tree' => $reloadTree,
 		);

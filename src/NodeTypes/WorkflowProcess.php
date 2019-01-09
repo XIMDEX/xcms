@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -27,80 +27,26 @@
 
 namespace Ximdex\NodeTypes;
 
-use Ximdex\Models\Pipeline;
-use Ximdex\Models\Node;
-
-
-
 class WorkflowProcess extends Root
 {
-
-	function CreateNode($name = null, $parentID = null, $nodeTypeID = null)
+	public function createNode($name = null, $parentID = null, $nodeTypeID = null)
 	{
-		$pipeline = new Pipeline();
-		$pipeline->set('Pipeline', $name);
-		$pipeline->set('IdNode', $this->parent->get('IdNode'));
-		$pipeline->add();
-
-		$pipeline->initialize();
-
-		if ($pipeline->messages->count() > 0) {
-			$this->parent->messages->mergeMessages($pipeline->messages->messages);
-		}
-
-		$this->UpdatePath();
+		$this->updatePath();
 	}
 
-	function DeleteNode()
+	public function deleteNode()
 	{
-		$pipeline = new Pipeline();
-		$result = $pipeline->loadByIdNode($this->parent->get('IdNode'));
-		if (!$result) {
-			$this->parent->messages->mergeMessages($pipeline->messages->messages);
-			return false;
-		}
-
-		return $pipeline->delete();
+	    return true;
 	}
 
-	function RenameNode($name = null)
+	public function renameNode($name = null)
 	{
-		$pipeline = new Pipeline();
-		$result = $pipeline->loadByIdNode($this->parent->get('IdNode'));
-		if (!$result) {
-			$this->parent->messages->mergeMessages($pipeline->messages->messages);
-		}
-
-		$pipeline->set('Name', $name);
-		$ret = $pipeline->update();
-		$this->UpdatePath();
-
-		return $ret;
+	    $this->updatePath();
+	    return true;
 	}
 
-	function GetDependencies()
+	public function getDependencies()
 	{
-		$pipeline = new Pipeline();
-		$result = $pipeline->loadByIdNode($this->parent->get('IdNode'));
-		if (!$result) {
-			$this->parent->messages->mergeMessages($pipeline->messages->messages);
-		}
-
-		$allStatus = array();
-		while ($process = $pipeline->processes->next()) {
-			while ($transition = $process->transitions->next()) {
-				$allStatus[] = $transition->get('IdStatusFrom');
-				$allStatus[] = $transition->get('IdStatusTo');
-			}
-		}
-
-		$node = new Node();
-		$dependencies = array();
-		foreach ($allStatus as $idStatus) {
-			$result = $node->find('IdNode', 'IdStatus = %s', array($idStatus));
-			array_merge($dependencies, $result);
-		}
-
-		return $dependencies;
+		return array();
 	}
 }

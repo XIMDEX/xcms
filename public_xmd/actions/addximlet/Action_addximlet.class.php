@@ -33,7 +33,7 @@ use Ximdex\Models\StructuredDocument;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\App;
 
-Ximdex\Modules\Manager::file('/actions/browser3/inc/GenericDatasource.class.php');
+// Ximdex\Modules\Manager::file('/actions/browser3/inc/GenericDatasource.class.php');
 
 /**
  * @brief This class implements the action of add a ximlet in a Node
@@ -64,6 +64,7 @@ class Action_addximlet extends ActionAbstract
             'linkable_ximlets' => $linkable_ximlets,
             'action_delete' => $actionDelete,
             'action_create' => $actionCreate,
+            'nodeTypeID' => $node->nodeType->getID(),
             'node_Type' => $node->nodeType->GetName(),
             'name' => $node->get('Name')
         );

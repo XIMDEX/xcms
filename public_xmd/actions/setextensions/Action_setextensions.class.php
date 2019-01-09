@@ -87,6 +87,7 @@ class Action_setextensions extends ActionAbstract
         $node = new Node($idNode);
         $values = array(
             'result' => 'ok',
+            'nodeTypeID' => $node->nodeType->getID(),
             'node_Type' => $node->nodeType->GetName(),
             'message' => _('The extensions have been updated')
         );

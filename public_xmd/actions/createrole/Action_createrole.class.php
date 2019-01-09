@@ -1,6 +1,7 @@
 <?php
+
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -24,11 +25,9 @@
  * @version $Revision$
  */
 
-
 use Ximdex\Models\Node;
 use Ximdex\Models\NodeType;
 use Ximdex\MVC\ActionAbstract;
-
 
 class Action_createrole extends ActionAbstract
 {
@@ -37,8 +36,8 @@ class Action_createrole extends ActionAbstract
     {
         $idNode = $this->request->getParam('nodeid');
         $node = new Node($idNode);
-
         $values = array('go_method' => 'createrole',
+            'nodeTypeID' => $node->nodeType->getID(),
             'node_Type' => $node->nodeType->GetName()
         );
         $this->render($values, null, 'default-3.0.tpl');
@@ -49,19 +48,14 @@ class Action_createrole extends ActionAbstract
         $idNode = $this->request->getParam('id_node');
         $name = $this->request->getParam('name');
         $description = $this->request->getParam('description');
-
         $nodeType = new NodeType();
         $nodeType->SetByName('Role');
-
         $rol = new Node();
         $result = $rol->CreateNode($name, $idNode, $nodeType->get('IdNodeType'), null, null, $description);
         if ($result > 0) {
             $rol->messages->add(_('Role has been successfully added'), MSG_TYPE_NOTICE);
         }
-
         $values = array('messages' => $rol->messages->messages, "parentID" => $idNode);
-
         $this->sendJSON($values);
-
     }
 }

@@ -5,7 +5,9 @@
       var a, j, len;
       for (j = 0, len = arr.length; j < len; j++) {
         a = arr[j];
-        if (((a.nodeFrom == null) && (a.nodeTo == null) && (input.nodeFrom == null) && (input.nodeTo == null) && a.nodeid === input.nodeid) | ((a.nodeFrom != null) && (a.nodeTo != null) && (input.nodeFrom != null) && (input.nodeTo != null) && a.nodeFrom === input.nodeFrom && a.nodeTo === input.nodeTo)) {
+        if (((a.nodeFrom == null) && (a.nodeTo == null) && (input.nodeFrom == null) && (input.nodeTo == null) && a.nodeid === input.nodeid) 
+        		| ((a.nodeFrom != null) && (a.nodeTo != null) && (input.nodeFrom != null) && (input.nodeTo != null) 
+        		&& a.nodeFrom === input.nodeFrom && a.nodeTo === input.nodeTo)) {
           return true;
         }
       }
@@ -14,7 +16,8 @@
   });
 
   angular.module("ximdex.common.directive").directive("ximBrowser", [
-    "xTranslate", "$window", "$http", "xUrlHelper", "xMenu", "$document", "$timeout", "$q", "xTabs", "$rootScope", function(xTranslate, $window, $http, xUrlHelper, xMenu, $document, $timeout, $q, xTabs, $rootScope) {
+    "xTranslate", "$window", "$http", "xUrlHelper", "xMenu", "$document", "$timeout", "$q", "xTabs", "$rootScope", function(xTranslate, $window
+    		, $http, xUrlHelper, xMenu, $document, $timeout, $q, xTabs, $rootScope) {
       var base_url;
       base_url = $window.X.baseUrl;
       return {
@@ -27,7 +30,8 @@
         },
         controller: [
           "$scope", function($scope) {
-            var actualFilter, allowedHotkey, canceler, dragStartPosition, findNodeById, firstHide, getFolderPath, isPanelHide, listenHidePanel, loadAction, postLoadActions, postLoadNodeChildren, postNavigateToNodeId, postShowHidePanel, prepareBreadcrumbs, size;
+            var actualFilter, allowedHotkey, canceler, dragStartPosition, findNodeById, firstHide, getFolderPath, isPanelHide, listenHidePanel
+            	, loadAction, postLoadActions, postLoadNodeChildren, postNavigateToNodeId, postShowHidePanel, prepareBreadcrumbs, size;
             if ($scope.mode === "sidebar") {
               delete Hammer.defaults.cssProps.userSelect;
               Hammer.defaults.touchAction = "pan-y";
@@ -86,12 +90,15 @@
                 }
                 data = null;
               });
+              
               $scope.loadActions = function(node, event) {
                 var data, j, len, n, nodeToSearch, ref;
                 $scope.select(node, event);
-                if (($scope.selectedNodes[0].nodeid == null) | ($scope.selectedNodes[0].nodetypeid == null) | $scope.selectedNodes[0].nodeid === "0") {
+                if (($scope.selectedNodes[0].nodeid == null) | ($scope.selectedNodes[0].nodetypeid == null) 
+                		| $scope.selectedNodes[0].nodeid === "0") {
                   return;
                 }
+                /*
                 nodeToSearch = $scope.selectedNodes[0].nodeid;
                 if ($scope.selectedNodes.length > 1) {
                   ref = $scope.selectedNodes.slice(1);
@@ -101,22 +108,26 @@
                   }
                 }
                 if ($window.com.ximdex.nodeActions[nodeToSearch] == null) {
+                */
                   $http.get(xUrlHelper.getAction({
                     action: "browser3",
                     method: "cmenu",
                     nodes: $scope.selectedNodes
                   })).success(function(data) {
                     if (data) {
-                      $window.com.ximdex.nodeActions[nodeToSearch] = data;
+                      // $window.com.ximdex.nodeActions[nodeToSearch] = data;
                       postLoadActions(data, event, $scope.selectedNodes);
                     }
                   });
+                /*
                 } else {
                   data = $window.com.ximdex.nodeActions[nodeToSearch];
                   postLoadActions(data, event, $scope.selectedNodes);
                 }
+                */
                 return false;
               };
+              
               postLoadActions = function(data, event, selectedNodes) {
                 if (data.length === 0) {
                   return;
@@ -132,12 +143,14 @@
                 xMenu.open(data, selectedNodes, loadAction);
                 data = null;
               };
+              
               $scope.dragStart = function(event) {
                 if ($scope.expanded && !isPanelHide) {
                   dragStartPosition = angular.element('#angular-tree').width();
                   angular.element('body').addClass('noselect');
                 }
               };
+              
               $scope.drag = function(e, width) {
                 var x;
                 if ($scope.expanded && !isPanelHide) {
@@ -160,6 +173,7 @@
                   x = null;
                 }
               };
+              
               $scope.dragEnd = function() {
                 if ($scope.expanded && !isPanelHide) {
                   angular.element('body').removeClass('noselect');
@@ -175,6 +189,7 @@
                   $rootScope.$broadcast('updateTabsPosition');
                 }
               };
+              
               $scope.toggleTree = function() {
                 var button;
                 if ($scope.expanded) {
@@ -186,10 +201,12 @@
                 button.toggleClass("tie");
                 $scope.expanded = !$scope.expanded;
               };
+              
               postShowHidePanel = function() {
                 listenHidePanel = !listenHidePanel;
                 return $rootScope.$broadcast('updateTabsPosition');
               };
+              
               firstHide = true;
               isPanelHide = false;
               $scope.hideTree = function() {
@@ -220,6 +237,7 @@
                   }
                 }
               };
+              
               $scope.showTree = function() {
                 var button;
                 if (!listenHidePanel) {
@@ -240,6 +258,7 @@
                   }, 500);
                 }
               };
+              
               $scope.openModuleAction = function(node) {
                 var action, nodes;
                 action = {
@@ -259,6 +278,7 @@
                 ];
                 xTabs.pushTab(action, nodes);
               };
+              
               allowedHotkey = true;
               $scope.$parent.keydown = function(event) {
                 var action, j, len, n, ref;
@@ -283,6 +303,7 @@
                   event.preventDefault();
                 }
               };
+              
               $scope.$parent.keyup = function(event) {
                 if (!allowedHotkey) {
                   allowedHotkey = true;
@@ -303,28 +324,13 @@
                 };
                 loadAction(action, [node]);
                 return;
-
-                /*if not $window.com.ximdex.nodeActions[node.nodeid]?
-                    $http.get(xUrlHelper.getAction(
-                        action: "browser3"
-                        method: "cmenu"
-                        nodes: $scope.selectedNodes
-                    )).success (data) ->
-                        if data
-                            $window.com.ximdex.nodeActions[node.nodeid] = data
-                            loadAction data[0], [node]
-                        return
-                else
-                    data = $window.com.ximdex.nodeActions[node.nodeid]
-                    loadAction data[0], [node]
-                return
-                 */
               }
               node.showNodes = !node.showNodes;
               if (node.showNodes && !node.collection) {
                 $scope.loadNodeChildren(node);
               }
             };
+            
             postLoadNodeChildren = function(data, callback, node) {
               var cancel;
               node.loading = false;
@@ -345,6 +351,7 @@
               data = null;
               cancel = null;
             };
+            
             $scope.loadNodeChildren = function(node, callback) {
               var fromTo, idToSend, maxItemsPerGroup, url;
               if (node.loading | node.isdir === "0") {
@@ -400,6 +407,7 @@
                 maxItemsPerGroup = null;
               }
             };
+            
             $scope.select = function(node, event) {
               var ctrl, k, n, pushed, ref, ref1;
               ctrl = event.srcEvent != null ? event.srcEvent.ctrlKey : event.ctrlKey;
@@ -407,7 +415,9 @@
                 ref = $scope.selectedNodes;
                 for (k in ref) {
                   n = ref[k];
-                  if (((n.nodeFrom == null) && (node.nodeFrom == null) && (n.nodeTo == null) && (node.nodeTo == null) && n.nodeid === node.nodeid) | ((n.nodeFrom != null) && (node.nodeFrom != null) && (n.nodeTo != null) && (node.nodeTo != null) && n.nodeFrom === node.nodeFrom && n.nodeTo === node.nodeTo)) {
+                  if (((n.nodeFrom == null) && (node.nodeFrom == null) && (n.nodeTo == null) && (node.nodeTo == null) 
+                		  && n.nodeid === node.nodeid) | ((n.nodeFrom != null) && (node.nodeFrom != null) 
+                		  && (n.nodeTo != null) && (node.nodeTo != null) && n.nodeFrom === node.nodeFrom && n.nodeTo === node.nodeTo)) {
                     if (((event.button != null) && event.button === 0) || ((event.srcEvent != null) && event.srcEvent.button === 0)) {
                       $scope.selectedNodes.splice(k, 1);
                     }
@@ -432,6 +442,7 @@
               }
               ctrl = null;
             };
+            
             $scope.reloadNode = function(nodeId, callback) {
               var action, n;
               if (nodeId != null) {
@@ -455,28 +466,12 @@
                 };
                 loadAction(action, [n]);
                 return;
-
-                /* Open the first action in menu
-                if not $window.com.ximdex.nodeActions[n.nodeid]?
-                    $http.get(xUrlHelper.getAction(
-                        action: "browser3"
-                        method: "cmenu"
-                        nodes: $scope.selectedNodes
-                    )).success (data) ->
-                        if data
-                            $window.com.ximdex.nodeActions[n.nodeid] = data
-                            loadAction data[0], [n]
-                        return
-                else
-                    data = $window.com.ximdex.nodeActions[n.nodeid]
-                    loadAction data[0], [n]
-                return
-                 */
               }
               n.showNodes = true;
               n.collection = [];
               return $scope.loadNodeChildren(n, callback);
             };
+            
             $scope.navigateToNodeId = function(nodeId) {
               if (nodeId == null) {
                 return;
@@ -493,6 +488,7 @@
                 return postNavigateToNodeId(data);
               });
             };
+            
             postNavigateToNodeId = function(data) {
               var n, nodeList, shifted;
               nodeList = data['nodes'];
@@ -512,6 +508,7 @@
               data = null;
               return nodeList = null;
             };
+            
             $scope.doFilter = function() {
               if ($scope.filter.length > 2 && $scope.filter.match(/^[\d\w_\.-]+$/i)) {
                 actualFilter = $scope.filter;
@@ -528,12 +525,14 @@
               }
               $scope.selectedNodes = [];
             };
+            
             $scope.clearFilter = function() {
               if ($scope.filter !== '') {
                 $scope.filter = '';
                 $scope.doFilter();
               }
             };
+            
             $scope.toggleView = function() {
               $scope.treeMode = !$scope.treeMode;
               if ($scope.treeMode === false && $scope.selectedTab === 1) {
@@ -544,6 +543,7 @@
                 }
               }
             };
+            
             $scope.goBreadcrums = function(index) {
               var actualNode, i, j, len, n, nodeFound, pathToNode, ref;
               pathToNode = $scope.breadcrumbs.slice(1, index + 1);
@@ -567,6 +567,7 @@
               }
               $scope.loadNodeChildren(actualNode);
             };
+            
             prepareBreadcrumbs = function() {
               var b, path;
               if ($scope.initialNodeList.nodeid === "0") {
@@ -587,6 +588,7 @@
                 $scope.goBreadcrums(b.length - 2);
               }
             };
+            
             getFolderPath = function(path) {
               var n;
               n = path.lastIndexOf("/");
@@ -595,6 +597,7 @@
               }
               return path;
             };
+            
             findNodeById = function(nodeId, source) {
               var i, item, j, len, queue, ref;
               queue = [source];
@@ -614,6 +617,7 @@
               }
               return null;
             };
+            
             return $scope.$on('nodemodified', function(event, nodeId) {
               var node;
               node = findNodeById(nodeId, $scope.projects);
@@ -638,5 +642,3 @@
   ]);
 
 }).call(this);
-
-//# sourceMappingURL=ximBrowser.js.map

@@ -38,7 +38,7 @@ use Ximdex\MVC\ActionAbstract;
 use Ximdex\Utils\Serializer;
 use Ximdex\Sync\SynchroFacade;
 
-Ximdex\Modules\Manager::file('/actions/browser3/inc/GenericDatasource.class.php');
+// Ximdex\Modules\Manager::file('/actions/browser3/inc/GenericDatasource.class.php');
 
 include_once XIMDEX_ROOT_PATH . '/src/Sync/conf/synchro_conf.php';
 
@@ -94,6 +94,7 @@ class Action_workflow_forward extends ActionAbstract
             $this->messages->add(_('This node is already in final publication state.'), MSG_TYPE_WARNING);
             $values = array(
                 'messages' => $this->messages->messages,
+                'nodeTypeID' => $node->nodeType->getID(),
                 'node_Type' => $node->nodeType->GetName()
             );
             $this->render($values, 'show_results', 'default-3.0.tpl');
@@ -138,6 +139,7 @@ class Action_workflow_forward extends ActionAbstract
                 , MSG_TYPE_WARNING);
             $values = array(
                 'messages' => $this->messages->messages,
+                'nodeTypeID' => $node->nodeType->getID(),
                 'node_Type' => $node->nodeType->GetName()
             );
             $this->render($values, 'show_results', 'default-3.0.tpl');
@@ -158,6 +160,7 @@ class Action_workflow_forward extends ActionAbstract
             'required' => $conf['required'] === true ? 1 : 0,
             'defaultMessage' => $defaultMessage,
             'idNode' => $idNode,
+            'nodeTypeID' => $node->nodeType->getID(),
             'node_Type' => $node->nodeType->GetName(),
             'name' => $node->GetNodeName()
         );
@@ -254,6 +257,7 @@ class Action_workflow_forward extends ActionAbstract
                 $values = array(
                     'goback' => true,
                     'messages' => $this->messages->messages,
+                    'nodeTypeID' => $node->nodeType->getID(),
                     'node_Type' => $node->nodeType->GetName()
                 );
                 $this->render($values, 'show_results', 'default-3.0.tpl');
@@ -275,6 +279,7 @@ class Action_workflow_forward extends ActionAbstract
                 'stateid' => $idState,
                 'globalForcedEnabled' => FORCE_PUBLICATION,
                 'name' => $node->GetNodeName(),
+                'nodeTypeID' => $node->nodeType->getID(),
                 'node_Type' => $node->nodeType->GetName()
             );
             $values = array_merge($values, $this->buildExtraValues($idNode));
@@ -286,6 +291,7 @@ class Action_workflow_forward extends ActionAbstract
                 $values = array(
                     'goback' => true,
                     'messages' => $node->messages->messages,
+                    'nodeTypeID' => $node->nodeType->getID(),
                     'node_Type' => $node->nodeType->GetName()
                 );
                 $this->render($values, 'show_results', 'default-3.0.tpl');
@@ -294,6 +300,7 @@ class Action_workflow_forward extends ActionAbstract
                     'go_method' => 'publicateForm',
                     'nextState' => $nextState,
                     'currentState' => $node->GetState(),
+                    'nodeTypeID' => $node->nodeType->getID(),
                     'node_Type' => $node->nodeType->GetName()
                 );
                 $this->addCss('/actions/workflow_forward/resources/css/style.css');
@@ -430,20 +437,6 @@ class Action_workflow_forward extends ActionAbstract
     private function promoteNode(int $idNode, int $idState) : bool
     {
         $node = new Node($idNode);
-        /*
-        $idActualState = $node->get('IdState');
-        $actualWorkflowStatus = new WorkFlow($node->nodeType->getWorkflow(), $idActualState);
-        $idTransition = $actualWorkflowStatus->pipeProcess->getTransition($idActualState);
-        $transition = new PipeTransition($idTransition);
-        $callback = $transition->get('Callback');
-        $callback = str_replace('_', '', ucfirst($callback));
-        if (! empty($callback) && is_file(XIMDEX_ROOT_PATH . sprintf('/src/Nodeviews/View%.php', $callback))) {
-            $dataFactory = new DataFactory();
-            $idVersion = $dataFactory->GetLastVersionId();
-            $transformedContent = $transition->generate($idVersion, $node->GetContent(), array());
-            $node->SetContent($transformedContent);
-        }
-        */
         $result = $node->SetState($idState);
         if ($result) {
             $this->messages->add(_('State has been successfully changed'), MSG_TYPE_NOTICE);
@@ -463,7 +456,7 @@ class Action_workflow_forward extends ActionAbstract
      * @param string $texttosend : Text to send in notification mail
      * @return boolean true if the notification is sended
      */
-    private function sendNotification($idNode, $idState, $userList, $texttosend = "")
+    private function sendNotification($idNode, $idState, $userList, $texttosend = '')
     {
         $send = true;
         if (count($userList) == 0) {
@@ -477,7 +470,7 @@ class Action_workflow_forward extends ActionAbstract
         if (! $send) {
             return false;
         }
-        $idUser = \Ximdex\Runtime\Session::get("userID");
+        $idUser = \Ximdex\Runtime\Session::get('userID');
         $node = new Node($idNode);
         $idActualState = $node->get('IdState');
         $actualWorkflowStatus = new Workflow($node->nodeType->getWorkflow(), $idActualState);
@@ -488,11 +481,11 @@ class Action_workflow_forward extends ActionAbstract
         $nodePath = $node->GetPath();
         $nextStateName = $nextWorkflowStatus->getStatusName();
         $actualStateName = $actualWorkflowStatus->getStatusName();
-        $subject = _("Ximdex CMS: new state for document:") . " " . $nodeName;
-        $content = _("State forward notification.") . "\n" . "\n" . _("The user") . " " . $userName . " " . _("has changed the state of") 
-            . " " . $nodeName . "\n" . "\n" . _("Full Ximdex path") . " --> " . $nodePath . "\n" . "\n" . _("Initial state") . " --> " 
-            . $actualStateName . "\n" . _("Final state") . " --> " . $nextStateName . "\n" . "\n" . "\n" . _("Comment") . ":" . "\n" 
-            . $texttosend . "\n" . "\n";
+        $subject = _('Ximdex CMS: new state for document:') . ' ' . $nodeName;
+        $content = _('State forward notification.') . "\n\n" . _('The user') . ' ' . $userName . ' ' . _('has changed the state of') 
+            . ' ' . $nodeName . "\n\n" . _('Full Ximdex path') . ' --> ' . $nodePath . "\n\n" . _('Initial state') . ' --> ' 
+            . $actualStateName . "\n" . _('Final state') . ' --> ' . $nextStateName . "\n\n\n" . _('Comment') . ':' . "\n" 
+            . $texttosend . "\n\n";
         parent::sendNotifications($subject, $content, $userList);
         return true;
     }
@@ -628,6 +621,7 @@ class Action_workflow_forward extends ActionAbstract
             $values = array(
                 'goback' => true,
                 'messages' => $node->messages->messages,
+                'nodeTypeID' => $node->nodeType->getID(),
                 'node_Type' => $node->nodeType->GetName()
             );
             $this->render($values, 'show_results', 'default-3.0.tpl');
@@ -638,6 +632,7 @@ class Action_workflow_forward extends ActionAbstract
             'options' => $arrayOpciones,
             'result' => $valuesToShow,
             'messages' => $this->messages->messages,
+            'nodeTypeID' => $node->nodeType->getID(),
             'node_Type' => $node->nodeType->GetName()
         );
         Logger::debug("ADDSECTION sendToPublish pre render else value: " . print_r($values, true));

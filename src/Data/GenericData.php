@@ -201,6 +201,8 @@ class GenericData
     }
     
     /**
+     * Added support for given value in auto increment fields
+     * 
      * @return bool|null|string
      */
     public function add()
@@ -211,7 +213,7 @@ class GenericData
         $arrayFields = array();
         $arrayValues = array();
         foreach ($this->_metaData as $field => $descriptors) {
-            if (isset($descriptors['auto_increment']) && ('true' == $descriptors['auto_increment'])) {
+            if (! $this->$field and isset($descriptors['auto_increment']) and 'true' == $descriptors['auto_increment']) {
                 continue;
             }
             $arrayFields[] = sprintf('`%s`', $field);

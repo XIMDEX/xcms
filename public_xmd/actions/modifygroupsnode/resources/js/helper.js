@@ -1,5 +1,5 @@
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -23,29 +23,26 @@
  *  @version $Revision$
  */
 
-
 $(document).ready(function() {
 	comprobar_vacio();
 });
 
-
-function comprobar_vacio() {
-	if($("#id_group").selectedIndex == 0) {
+function comprobar_vacio()
+{
+	if ($("#id_group").selectedIndex == 0) {
 		$("#boton_add").display = "hidden";
 	} else {
 		$("#boton_add").display = "";
 	}
 }
 
-function call_submit(method) {
+function call_submit(method)
+{
 	url = $('#groups_form').attr('action');
-	//Reset to default
-	url = url.replace(/method=deletegroupnode/i, "method=modifygroup");
-	url = url.replace(/method=updategroupnode/i, "method=modifygroup");
-	//Select method choice
-	url = url.replace(/method=modifygroup/i, "method="+method);
-		
+	
+	// Select method choice
+	url = url.replace(/method=deletegroupnode/i, "method=" + method);
+	url = url.replace(/method=addgroupnode/i, "method=" + method);
 	$('#groups_form').attr('action', url);
 	return true;
 }
-

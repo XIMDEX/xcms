@@ -1,9 +1,7 @@
 <?php
-use Ximdex\Models\Node;
-use Ximdex\MVC\ActionAbstract;
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -27,6 +25,9 @@ use Ximdex\MVC\ActionAbstract;
  *  @version $Revision$
  */
 
+use Ximdex\Models\Node;
+use Ximdex\MVC\ActionAbstract;
+
 class Action_filedownload extends ActionAbstract
 {
     public function index()
@@ -34,13 +35,10 @@ class Action_filedownload extends ActionAbstract
         $idNode = $this->request->getParam("nodeid");
         $node = new Node ($idNode);
         $values = array('node_name' => $node->get('Name'),
-                        'node_Type' => $node->nodeType->GetName(),
-                        
-                          
-                        'id_node' => $node->get('IdNode'));
-
+            'nodeTypeID' => $node->nodeType->getID(),
+            'node_Type' => $node->nodeType->GetName(),
+            'id_node' => $node->get('IdNode'));
         $this->addJs('/actions/filedownload/resources/js/index.js');
-
         $this->render($values, '', 'default-3.0.tpl');
     }
 
@@ -62,8 +60,7 @@ class Action_filedownload extends ActionAbstract
         /// Expiration headers
         $this->response->set('Expires', 'Mon, 26 Jul 1997 05:00:00 GMT');
         $this->response->set('Last-Modified', $gmDate . " GMT");
-        $this->response->set('Cache-Control',
-            array('no-store, no-cache, must-revalidate', 'post-check=0, pre-check=0'));
+        $this->response->set('Cache-Control',array('no-store, no-cache, must-revalidate', 'post-check=0, pre-check=0'));
         $this->response->set('Pragma', 'no-cache');
         $this->response->set('ETag', md5($idNode.$gmDate));
         $this->response->set('Content-transfer-encoding', 'binary');

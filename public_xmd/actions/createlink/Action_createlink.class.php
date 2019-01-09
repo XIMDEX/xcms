@@ -40,6 +40,7 @@ class Action_createlink extends ActionAbstract
         $node = new Node($idNode);
         $this->addJs('/actions/createlink/resources/js/index.js');
         $values = array('go_method' => 'createlink',
+            'nodeTypeID' => $node->nodeType->getID(),
             'node_Type' => $node->nodeType->GetName(),
             'name' => $node->GetNodeName());
         $this->render($values, null, 'default-3.0.tpl');

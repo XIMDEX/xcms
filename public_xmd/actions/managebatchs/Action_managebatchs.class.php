@@ -70,6 +70,7 @@ class Action_managebatchs extends ActionAbstract
             'acceso' => $acceso,
             'errorBox' => $errorMsg,
             'js_files' => $jsFiles,
+            'nodeTypeID' => $node->nodeType->getID(),
             'node_Type' => $node->nodeType->GetName(),
             'css_files' => $cssFiles
         );

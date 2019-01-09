@@ -87,6 +87,7 @@ class Action_modifyserver extends ActionAbstract
 				'enabled' => $servers->class->GetEnabled($serverID),
 				'preview' => $servers->class->GetPreview($serverID),
 			    'token' => $servers->class->GetToken($serverID),
+			    'nodeTypeID' => $servers->nodeType->getID(),
 			    'node_Type' => $servers->nodeType->GetName(),
 				'overridelocalpaths' => $servers->class->GetOverrideLocalPaths($serverID)
 			);
@@ -117,6 +118,7 @@ class Action_modifyserver extends ActionAbstract
 			'numchannels' => $numChannels,
 			'id_server' => (int) $serverID,
 			'messages' => $this->messages->messages,
+			'nodeTypeID' => $servers->nodeType->getID(),
 			'node_Type' => $servers->nodeType->GetName()
 		);
 		$this->render($values, "index", 'default-3.0.tpl');

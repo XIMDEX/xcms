@@ -51,30 +51,6 @@ class Action_modifyrole extends ActionAbstract
         foreach ($allPermissionData as $key => $permissionData) {
             $allPermissionData[$key]['HasPermission'] = $role->HasPermission($permissionData['IdPermission']);
         }
-        /*
-         * Gets all the states for the selected workflow to show the states
-         * Usually it is the Workflow master (the default workflow)
-         *
-        $selectedWorkflow = $this->request->getParam('id_pipeline');
-        if (! $selectedWorkflow) {
-            $workflow = new Workflow();
-            try {
-                $workflow->loadMaster();
-                $selectedWorkflow = $workflow->get('id');
-            } catch (Exception $e) {
-                Logger::error($e->getMessage());
-                return false;
-            }
-        } else {
-            $workflow = new Workflow($selectedWorkflow);
-        }
-        $allStates = [];
-        foreach ($workflow->getAllStates() as $id) {
-            $state = new WorkflowStatus($id);
-            $allStates[] = array('IdState' => $state->get('id'), 'Name' => $state->get('name'), 'workflow' => $state->get('workflowId'));
-        }
-        $workflows = [$workflow->get('id') => $workflow->get('name')];
-        */
         $node = new Node($idNode);
         $allStates = [];
         $this->addJs('/actions/modifyrole/js/modifyrole.js');
@@ -82,11 +58,9 @@ class Action_modifyrole extends ActionAbstract
         $values = array('name' => $role->get('Name'),
             'description' => $role->get('Description'),
             'permissions' => $allPermissionData,
-            // 'nodetypes' => $this->getAllNodeTypes($allStates, $role, $selectedWorkflow),
             'nodetypes' => $this->getAllNodeTypes($role, $allStates),
             'workflow_states' => $allStates,
-            // 'pipelines' => $workflows,
-            // 'selected_pipeline' => $selectedWorkflow,
+            'nodeTypeID' => $node->nodeType->getID(),
             'node_Type' => $node->nodeType->GetName(),
             'go_method' => 'modifyrole'
         );

@@ -1,6 +1,7 @@
 <?php
+
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -30,7 +31,7 @@ use Ximdex\Models\Role;
 use Ximdex\Models\XimLocale;
 use Ximdex\MVC\ActionAbstract;
 
-\Ximdex\Modules\Manager::file('/conf/install-params.conf.php', 'XIMDEX');
+Ximdex\Modules\Manager::file('/conf/install-params.conf.php', 'XIMDEX');
 
 class Action_createuser extends ActionAbstract
 {
@@ -43,19 +44,19 @@ class Action_createuser extends ActionAbstract
         $roles = $role->find('IdRole, Name');
         $locale = new XimLocale();
         $locales = $locale->GetEnabledLocales();
-
         $values = array(
             'id_node' => $idNode,
             'go_method' => 'createuser',
             'roles' => $roles,
+            'nodeTypeID' => $node->nodeType->getID(),
             'node_Type' => $node->nodeType->GetName(),
             'locales' => $locales
         );
-
         $this->render($values, null, 'default-3.0.tpl');
     }
 
-    function createuser($idNode = NULL, $name = NULL, $login = NULL, $pass = NULL, $confirmPass = NULL, $email = NULL, $locale = NULL, $generalrole = NULL, $render = true)
+    function createuser($idNode = NULL, $name = NULL, $login = NULL, $pass = NULL, $confirmPass = NULL, $email = NULL, $locale = NULL
+        , $generalrole = NULL, $render = true)
     {
         $result = null ;
         if (empty($idNode)) {
@@ -79,36 +80,28 @@ class Action_createuser extends ActionAbstract
         if (empty($generalrole)) {
             $generalrole = $this->request->getParam('generalrole');
         }
-
         if (empty($locale) || !@file_exists(XIMDEX_ROOT_PATH . '/inc/i18n/locale/' . $locale)) {
             $locale = $this->request->getParam('locale');
             if (null == $locale || !@file_exists(XIMDEX_ROOT_PATH . '/inc/i18n/locale/' . $locale)) {
                 $locale = DEFAULT_LOCALE;
             }
         }
-
         $nodeType = new NodeType();
         $nodeType->SetByName('User');
-
         $user = new Node();
-
         if (strcmp($pass, $confirmPass)) {
             $user->messages->add(_('Inserted passwords do not match, the user could not be created'), MSG_TYPE_ERROR);
         }
-
         if (!($user->messages->count(MSG_TYPE_ERROR) > 0)) {
             $result = $user->CreateNode($login, $idNode, $nodeType->get('IdNodeType'), null, $name, $pass, $email, $locale, $generalrole);
         }
-
         if ($result > 0) {
             $user->messages->add(_('User has been successfully inserted'), MSG_TYPE_NOTICE);
         }
-
         if ($render) {
             $values = array('messages' => $user->messages->messages, "parentID" => $idNode);
             $this->sendJSON($values);
         }
-
         return $result;
     }
 }

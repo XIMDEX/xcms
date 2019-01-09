@@ -190,6 +190,7 @@ angular.module('ximdex.common.directive').directive('ximGrid', [
             if ($scope.selected[0].nodeid === null | $scope.selected[0].nodetypeid === null | $scope.selected[0].nodeid === '0') {
               return;
             }
+            /*
             nodeToSearch = $scope.selected[0].nodeid;
             if ($scope.selected.length > 1) {
               ref = $scope.selected.slice(1);
@@ -202,6 +203,7 @@ angular.module('ximdex.common.directive').directive('ximGrid', [
               }
             }
             if ($window.com.ximdex.nodeActions[nodeToSearch] == null) {
+            */
               $http.get(xUrlHelper.getAction({
                 action: 'browser3',
                 method: 'cmenu',
@@ -212,10 +214,12 @@ angular.module('ximdex.common.directive').directive('ximGrid', [
                   postLoadActions(data, event, $scope.selected);
                 }
               });
+            /*
             } else {
               data = $window.com.ximdex.nodeActions[nodeToSearch];
               postLoadActions(data, event, $scope.selected);
             }
+            */
             return false;
           };
           return postLoadActions = function(data, event, selectedNodes) {

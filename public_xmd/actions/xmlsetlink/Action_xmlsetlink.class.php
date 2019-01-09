@@ -71,6 +71,7 @@ class Action_xmlsetlink extends ActionAbstract
 		    'go_method' => empty($idTarget) ? 'setlink' : 'unlink',
 			'sharewf' => $sharewf,
 		    'name' => $node->GetNodeName(),
+		    'nodeTypeID' => $node->nodeType->getID(),
 		    'node_Type' => $node->nodeType->GetName()
 		);
 		$this->render($values, NULL, 'default-3.0.tpl');

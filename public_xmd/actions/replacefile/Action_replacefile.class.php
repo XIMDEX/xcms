@@ -67,6 +67,7 @@ class Action_replacefile extends ActionAbstract
             'go_method' => 'replace',
             'type' => $type,
             'name' => $node->GetNodeName(),
+            'nodeTypeID' => $node->nodeType->getID(),
             'node_Type' => $node->nodeType->GetName(),
             'maxSize' => ini_get('upload_max_filesize')
         );

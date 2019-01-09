@@ -48,6 +48,7 @@ class Action_deletetemplates extends ActionAbstract {
  		$values = array(
 			'id_node' => $idNode,
 			'templates' => $templates,
+ 		    'nodeTypeID' => $folder->nodeType->getID(),
  		    'node_Type' => $folder->nodeType->GetName(),
 			'go_method' => 'delete'
 		);

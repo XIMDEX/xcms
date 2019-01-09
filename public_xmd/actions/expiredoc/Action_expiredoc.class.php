@@ -65,6 +65,7 @@ class Action_expiredoc extends ActionAbstract
             'group_state_info' => Group::getSelectableGroupsInfo($idNode),
             'required' => $conf['required'] === true ? 1 : 0,
             'idNode' => $idNode,
+            'nodeTypeID' => $node->nodeType->getID(),
             'node_Type' => $node->nodeType->GetName(),
             'name' => $node->GetNodeName()
         );
@@ -306,8 +307,8 @@ class Action_expiredoc extends ActionAbstract
         $userName = $user->get('Name');
         $nodeName = $node->get('Name');
         $nodePath = $node->GetPath();
-        $nextStateName = $nextWorkflowStatus->pipeStatus->get('Name');
-        $actualStateName = $actualWorkflowStatus->pipeStatus->get('Name');
+        $nextStateName = $nextWorkflowStatus->getStatusName();
+        $actualStateName = $actualWorkflowStatus->getStatusName();
         $subject = _("Ximdex CMS: new state for document:") . " " . $nodeName;
         $content = _("State forward notification.") . "\n" . "\n" . _("The user") . " " . $userName . " " . _("has changed the state of") 
             . " " . $nodeName . "\n" . "\n" . _("Full Ximdex path") . " --> " . $nodePath . "\n" . "\n" . _("Initial state") . " --> " 
@@ -429,7 +430,6 @@ class Action_expiredoc extends ActionAbstract
         if (! $group->get('IdGroup') > 0) {
             $this->messages->add(sprintf(_('No information about the selected group (%s) could be obtained'), $idGroup), MSG_TYPE_ERROR);
         }
-        // if (! $workflow->pipeStatus->get('id') > 0) {
         if (! $workflow->getStatusID() > 0) {
             $this->messages->add(sprintf(_('No information about the selected workflow state (%s) could be obtained'), $idState), MSG_TYPE_ERROR);
         }

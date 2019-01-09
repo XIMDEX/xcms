@@ -46,6 +46,7 @@ class Action_deleteuser extends ActionAbstract {
 			'login' => $user->get('Login'),
 			'realname' => $user->get('Name'),
 			'email' => $user->get('Email'),
+		    'nodeTypeID' => $user->nodeType->getID(),
 		    'node_Type' => $user->nodeType->GetName(),
 			'messages' => $this->messages->messages);
 

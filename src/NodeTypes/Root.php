@@ -270,14 +270,16 @@ class Root
         return array();
     }
 
-    function UpdatePath()
+    /**
+     * Think in root node as a file for performance purposes
+     * This method is overwritten in FileNode and FolderNode
+     */
+    public function updatePath()
     {
-        // Think in root node as a file for performance purposes.
-        // This method is overwritten in FileNode and FolderNode.
         $node = new Node($this->nodeID);
         $path = pathinfo($node->GetPath());
         $db = new \Ximdex\Runtime\Db();
-        $db->execute(sprintf("update Nodes set Path = '%s' where IdNode = %s", $path['dirname'], $this->nodeID));
+        $db->execute(sprintf('update Nodes set Path = \'%s\' where IdNode = %s', $path['dirname'], $this->nodeID));
     }
 
     /**

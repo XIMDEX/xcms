@@ -1,5 +1,5 @@
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -23,16 +23,13 @@
  *  @version $Revision$
  */
 
-//com.ximdex.widgets.include('browserwindow');
-
-//com.ximdex.widgets.ready(function() {
-$(document).ready(function() {
+$(document).ready(function()
+{
 	var selectors = {
 		spotlight: '.mini-spotlight',
 		searchpanel: 'div.advanced-search'
 	};
-
-
+	
 	Object.getWidgetConf({
 		wn: 'spotlight',
 		a: 'browser3',
@@ -52,16 +49,13 @@ $(document).ready(function() {
 					}, [0]);
 				}
 			});
-
 			$(selectors.spotlight)
 				.miniSpotlight(data)
 				.bind('searchpanel-open', function() {
 					sp.searchpanel('open');
 				});
-
 		}.bind(this)
 	});
-
 
 	var sp = $('<div></div>').addClass('advanced-search').appendTo('body');
 	var spOptions = {
@@ -75,19 +69,11 @@ $(document).ready(function() {
 		selectButtonLabel: _('Select nodes')
 	};
 	sp.searchpanel(spOptions);
-
-	/*$(selectors.browserWindow).bind('searchpanel-open', function() {
-		sp.searchpanel('option', spOptions).searchpanel('open');
-	});*/
 	
 	/* Control of expiration session and inactivity period*/
 	var sessionLength = parseInt(X.session.get("sessionLength"));
 
 	// Refresh session 5 seconds before the session expires. 30 minutes of inactivity
 	var options = {'sessionLength': sessionLength, 'gapToRefresh': 5, 'inactivityLength': 30*60}; //30 minutes of inactivity
-	
 	var sessionTimer = new X.SessionTimer(options);
-	
-	
-	
 });

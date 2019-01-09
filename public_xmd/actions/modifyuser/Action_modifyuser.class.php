@@ -62,6 +62,7 @@ class Action_modifyuser extends ActionAbstract
 			'user_locale' => $user->get('Locale'),
 			'locales' => $locales,
 			'messages' => $this->messages->messages,
+		    'nodeTypeID' => $folder->nodeType->getID(),
 		    'node_Type' => $folder->nodeType->GetName(),
             'canModifyUserGroup' => $canModifyUserGroup
             );

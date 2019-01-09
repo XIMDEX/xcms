@@ -49,6 +49,7 @@ class Action_modifylanguage extends ActionAbstract {
 					'name' => $language->get('Name'),
 					'enabled' => $language->get('Enabled'),
 					'description' => $node->get('Description'),
+		            'nodeTypeID' => $node->nodeType->getID(),
 		            'node_Type' => $node->nodeType->GetName(),
 					'go_method' => 'modifylanguage',
 				);

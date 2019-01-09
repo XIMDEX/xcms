@@ -48,6 +48,7 @@ class Action_linkreport extends ActionAbstract
             'criteria' => $this->request->getParam("criteria"),
             'stringsearch' => $this->request->getParam("stringsearch"),
             'rec' => ($this->request->getParam('rec') != 'on' ? NULL : 1),
+            'nodeTypeID' => $node->nodeType->getID(),
             'node_Type' => $node->nodeType->GetName(),
             'go_method' => 'get_links'
         );

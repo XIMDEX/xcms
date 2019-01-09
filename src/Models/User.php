@@ -769,10 +769,9 @@ class User extends UsersOrm
      * @param array $params array asociativo que debe contener las claves node_id o node_type
      * @return bool (true, si puede escribir, false en caso contrario)
      */
-    public function canWrite($params)
+    public function canWrite($params) : bool
     {
         $wfParams = $this->parseParams($params);
-        // $idPipeline = null;
         $workFlowId = null;
         if (isset($wfParams['node_id'])) {
             $nodeId = (int) $wfParams['node_id'];
@@ -786,7 +785,6 @@ class User extends UsersOrm
             }
             $node = new Node($nodeId);
             $workflow = new Workflow($node->nodeType->getWorkflow());
-            // $idPipeline = $workflow->pipeline->get('id');
             $workFlowId = $workflow->get('id');
         }
 

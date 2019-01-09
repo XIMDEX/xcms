@@ -82,6 +82,7 @@ class Action_movenode extends Action_copy
 			'target_file' => null,
 			'node_path' => $node->GetPath(),
 			'isPublished' => $isPublished,
+		    'nodeTypeID' => $node->nodeType->getID(),
 		    'node_Type' => $node->nodeType->GetName(),
 			"go_method" => "move_node"
 		);

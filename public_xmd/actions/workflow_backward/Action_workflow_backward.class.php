@@ -76,6 +76,7 @@ class Action_workflow_backward extends ActionAbstract
                 , MSG_TYPE_WARNING);
             $values = array(
                 'messages' => $this->messages->messages,
+                'nodeTypeID' => $node->nodeType->getID(),
                 'node_Type' => $node->nodeType->GetName()
             );
             $this->render($values, 'show_results', 'default-3.0.tpl');

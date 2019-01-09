@@ -333,7 +333,6 @@ class ServerFrame extends ServerFramesOrm
             if ($node->nodeType->get('Name') == 'XslTemplate') {
                 $data['REPLACEMACROS'] = 'yes';
             }
-            // $file = $pipeMng->getCacheFromProcess($idVersion, 'NotStrDocToFinal', $data);
             try {
                 $file = $transition->process('ToFinal', $data, $idVersion);
             } catch (\Exception $e) {

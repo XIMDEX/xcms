@@ -77,6 +77,7 @@ class Action_modifychannel extends ActionAbstract
 		    'render_type' => $renderTypeCheck,
 		    'code_languages' => $codeLanguages,
 		    'language' => $channel->getIdLanguage(),
+		    'nodeTypeID' => $node->nodeType->getID(),
 		    'node_Type' => $node->nodeType->GetName()
     	);
     	$this->render($values, null, 'default-3.0.tpl');

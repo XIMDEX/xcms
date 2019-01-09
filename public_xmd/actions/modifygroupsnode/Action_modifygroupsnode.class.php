@@ -1,12 +1,7 @@
 <?php
-use Ximdex\Models\Group;
-use Ximdex\Models\Node;
-use Ximdex\Models\Role;
-use Ximdex\MVC\ActionAbstract;
-use Ximdex\Runtime\App;
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -29,21 +24,29 @@ use Ximdex\Runtime\App;
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
+
+use Ximdex\Models\Group;
+use Ximdex\Models\Node;
+use Ximdex\Models\Role;
+use Ximdex\MVC\ActionAbstract;
+use Ximdex\Runtime\App;
+
 class Action_modifygroupsnode extends ActionAbstract
 {
-    // Main method: shows initial form
-    function index()
+    /**
+     * Main method: shows initial form
+     */
+    public function index()
     {
         $idNode = $this->request->getParam('nodeid');
         $node = new Node($idNode);
-        if (!($node->get('IdNode') > 0)) {
+        if (! $node->get('IdNode')) {
             $this->messages->add(_('Node could not be found'), MSG_TYPE_ERROR);
             $this->render(array($this->messages), NULL, 'messages.tpl');
-            die();
+            return;
         }
-
         $group = new Group();
-        $allGroups = $group->GetAllGroups();
+        $allGroups = $group->getAllGroups();
         $nodeGroups = $node->GetGroupList();
         $groupsToShow = array_diff($allGroups, $nodeGroups);
         $newGroups = array();
@@ -53,25 +56,19 @@ class Action_modifygroupsnode extends ActionAbstract
                 $newGroups[$group->get('IdGroup')] = $group->get('Name');
             }
         }
-
         $rol = new Role();
         $roles = $rol->find('IdRole, Name');
-
         $groupList = $node->GetGroupList();
         $strGroupList = implode(', ', $groupList);
         $group = new Group();
-        $allGroups = $group->find('IdGroup, Name',
-            'IdGroup in (%s) AND IdGroup <> %s',
-            array($strGroupList, App::getValue('GeneralGroup')),
-            MULTI, false);
-
+        $allGroups = $group->find('IdGroup, Name', 'IdGroup in (%s) AND IdGroup <> %s', array($strGroupList, App::getValue('GeneralGroup'))
+            , MULTI, false);
         if (is_array($allGroups)) {
             foreach ($allGroups as $key => $groupInfo) {
                 $grupo = new Group($groupInfo['IdGroup']);
                 $allGroups[$key]['IdRoleOnNode'] = $grupo->GetRoleOnNode($idNode);
             }
         }
-
         $this->addJs('/actions/modifygroupsnode/resources/js/helper.js');
         $values = array(
             'id_node' => $idNode,
@@ -79,24 +76,22 @@ class Action_modifygroupsnode extends ActionAbstract
             'new_groups' => $newGroups,
             'all_groups' => $allGroups,
             'roles' => $roles,
-            'go_method' => 'modifygroup',
+            'go_method' => 'addgroupnode',
+            'nodeTypeID' => $node->nodeType->getID(),
             'node_Type' => $node->nodeType->GetName(),
             'name' => $node->GetNodeName()
         );
-
         $this->render($values, null, 'default-3.0.tpl');
     }
 
-    function addgroupnode()
+    public function addgroupnode()
     {
         $idNode = $this->request->getParam('id_node');
         $idGroup = $this->request->getParam('id_group');
         $idRole = $this->request->getParam('id_role');
         $isRecursive = $this->request->getParam('is_recursive');
-
         $node = new Node($idNode);
         $node->AddGroupWithRole($idGroup, $idRole);
-
         if ($isRecursive) {
             $sectionList = $node->TraverseTree(3);
             foreach ($sectionList as $idSection) {
@@ -111,56 +106,12 @@ class Action_modifygroupsnode extends ActionAbstract
         $this->redirectTo('index');
     }
 
-    function updategroupnode()
-    {
-        $idNode = $this->request->getParam('id_node');
-        $idGroups = $this->request->getParam('idGroups');
-        $recursive = $this->request->getParam('recursive');
-        $idRoleOld = $this->request->getParam('IdRoleOld');
-        $idRole = $this->request->getParam('idRole');
-
-        $node = new Node($idNode);
-        $recursiveGroups = array();
-        $recursiveRoles = array();
-
-        if (is_array($idGroups)) {
-            foreach ($idGroups as $id => $idGroup) {
-                if (is_array($recursive) && in_array($idGroup, $recursive)) {
-                    $recursiveGroups[] = $idGroup;
-                    $recursiveRoles[] = $idRole[$id];
-                }
-                if ($idRole[$id] != $idRoleOld[$id]) {
-                    if ($node->HasGroup($idGroup)) {
-                        $node->ChangeGroupRole($idGroup, $idRole[$id]);
-                    } else {
-                        $node->AddGroupWithRole($idGroup, $idRole[$id]);
-                    }
-                }
-            }
-        }
-        if (count($recursiveGroups) > 0) {
-            $sectionList = $node->TraverseTree(3);
-            foreach ($sectionList as $idSection) {
-                $node = new Node($idSection);
-                foreach ($recursiveGroups as $id => $idGroup) {
-                    if ($node->HasGroup($idGroup)) {
-                        $node->ChangeGroupRole($idGroup, $recursiveRoles[$id]);
-                    } else {
-                        $node->AddGroupWithRole($idGroup, $recursiveRoles[$id]);
-                    }
-                }
-            }
-        }
-        $this->redirectTo('index');
-    }
-
-    function deletegroupnode()
+    public function deletegroupnode()
     {
         $idNode = $this->request->getParam('id_node');
         $idGroups = $this->request->getParam('idGroups');
         $idGroupChecked = $this->request->getParam('id_group_checked');
         $recursive = $this->request->getParam('recursive');
-
         $node = new Node($idNode);
         $recursiveGroups = array();
         foreach ($idGroups as $idGroup) {
@@ -171,7 +122,6 @@ class Action_modifygroupsnode extends ActionAbstract
                 $node->DeleteGroup($idGroup);
             }
         }
-
         if (count($recursiveGroups) > 0) {
             $sectionList = $node->TraverseTree(3);
             foreach ($sectionList as $idSection) {

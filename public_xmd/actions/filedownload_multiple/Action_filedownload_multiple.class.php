@@ -69,6 +69,7 @@ class Action_filedownload_multiple extends ActionAbstract
             'nodeName' => basename($tarFile),
             'tarFile' => $tarFile,
             'numChildren' => $numChildren,
+            'nodeTypeID' => $nod->nodeType->getID(),
             'node_Type' => $nod->nodeType->GetName(),
             'name' => $nodName
         );

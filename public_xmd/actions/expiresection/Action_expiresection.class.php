@@ -77,6 +77,7 @@ class Action_expiresection extends ActionAbstract
             'defaultMessage' => $defaultMessage,
             'idNode' => $idNode,
             'name' => $node->GetNodeName(),
+            'nodeTypeID' => $node->nodeType->getID(),
             'node_Type' => $node->nodeType->GetName()
         );
         $this->addJs('/actions/expiresection/resources/js/index.js');

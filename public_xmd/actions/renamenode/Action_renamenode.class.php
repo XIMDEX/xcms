@@ -27,7 +27,6 @@
 
 use Ximdex\Models\Language;
 use Ximdex\Models\Node;
-use Ximdex\Models\Pipeline;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\NodeTypes\NodeTypeConstants;
 use Ximdex\Runtime\App;
@@ -53,38 +52,13 @@ class Action_renamenode extends ActionAbstract
                 }
             }
         }
-        $isProject = $node->nodeType->get('Name') == 'Project' ? 1 : 0;
-        $pipelineInfo = array();
-        $idPipeline = NULL;
-        if ($node->nodeType->get('IsFolder') || $node->nodeType->get('IsSection') || $node->nodeType->get('IsVirtualFolder')) {
-            
-            // Master pipeline
-            $IdNodeForWorkflowMaster = App::getValue('IdDefaultWorkflow');
-            $pipelineMaster = new Pipeline();
-            $pipelineMaster->loadByIdNode($IdNodeForWorkflowMaster);
-            $diffPipelines = array($pipelineMaster->get('id'));
-            $pipeline = new Pipeline();
-            $pipelineList = $pipeline->find('id', 'IdNode > 0', NULL, MONO);
-            $pipelineList = array_diff($pipelineList, $diffPipelines);
-            $pipelineInfo = array();
-            foreach ($pipelineList as $idPipeline) {
-                $pipeline = new Pipeline($idPipeline);
-                $pipelineInfo[$idPipeline] = $pipeline->get('Pipeline');
-            }
-            $idPipeline = $node->getProperty('Pipeline');
-            if (count($idPipeline) > 0) {
-                $idPipeline = $idPipeline[0];
-            }
-        }
-        $nt = $node->nodeType->get('IdNodeType');
-        $schemaType = '';
+        $isProject = $node->GetNodeType() == NodeTypeConstants::PROJECT;
         $schemaType = $node->getProperty('SchemaType');
         if (is_array($schemaType) && count($schemaType) == 1) {
             $schemaType = $schemaType[0];
         }
-        $checkUrl = App::getUrl('/?actionid='
-            . $this->request->getParam('actionid') . '&nodeid=' . $this->request->getParam('nodeid')
-            . '&id_pipeline=IDPIPELINE&method=checkNodeDependencies');
+        $checkUrl = App::getUrl('/?actionid=' . $this->request->getParam('actionid') . '&nodeid=' . $this->request->getParam('nodeid') 
+            . '&method=checkNodeDependencies');
         $this->addJs('/actions/renamenode/resources/js/renamenode.js');
         $values = array('name' => $node->get('Name'),
             'is_section' => $isSection,
@@ -92,11 +66,10 @@ class Action_renamenode extends ActionAbstract
             'all_languages' => $allLanguages,
             'schema_type' => $schemaType,
             'go_method' => 'update',
-            'valid_pipelines' => $pipelineInfo,
-            'selected_pipeline' => $idPipeline,
             'check_url' => $checkUrl,
             'id_node' => $idNode,
-            'id_nodetype' => $nt,
+            'id_nodetype' => $node->nodeType->get('IdNodeType'),
+            'nodeTypeID' => $node->nodeType->getID(),
             'node_Type' => $node->nodeType->GetName(),
             'name' => $node->GetNodeName()
         );
@@ -148,53 +121,12 @@ class Action_renamenode extends ActionAbstract
                 $this->messages->mergeMessages($node->messages);
             }
         }
-        if ($result) {
-            $oldIdPipeline = $node->getProperty('Pipeline');
-            $newIdPipeline = $this->request->getParam('id_pipeline');
-            if (! $newIdPipeline) {
-                $newIdPipeline = NULL;
-            }
-            if (is_array($oldIdPipeline) and count($oldIdPipeline)) {
-                $oldIdPipeline = $oldIdPipeline[0];
-            }
-            if ($oldIdPipeline != $newIdPipeline) {
-                $node->updateToNewPipeline($newIdPipeline);
-                $node->setProperty('Pipeline', $newIdPipeline);
-            }
-            $this->messages->mergeMessages($node->messages);
-        }
         $values = array('messages' => $this->messages->messages, 'parentID' => $node->get('IdParent'));
         $this->sendJSON($values);
     }
 
     public function checkNodeDependencies()
     {
-        $idNode = $this->request->getParam('nodeid');
-        $idPipeline = $this->request->getParam('id_pipeline');
-        $node = new Node($idNode);
-        $oldIdPipeline = $node->getProperty('Pipeline');
-        if (is_array($oldIdPipeline)) {
-            $oldIdPipeline = $oldIdPipeline[0];
-        }
-        if ($idPipeline != $oldIdPipeline) {
-            $db = new \Ximdex\Runtime\Db();
-            $query = sprintf('SELECT IdChild FROM FastTraverse WHERE IdNode = %s', $idNode);
-            $db->Query($query);
-            if ($db->numRows == 0 || $db->numRows == 1) {
-                $this->messages->add(_('Any node will change its workflow status'), MSG_TYPE_NOTICE);
-            } else {
-                $this->messages->add(_('Nodes which are going to change their workflow status:'), MSG_TYPE_NOTICE);
-            }
-            while (!$db->EOF) {
-                $idNode = $db->GetValue('IdChild');
-                $node = new Node($idNode);
-                if ($node->get('IdState') > 0) {
-                    $this->messages->add(sprintf(_('If you perform this modification, workflow status of node <b>%s</b> will be modified.')
-                        , $node->GetPath()), MSG_TYPE_NOTICE);
-                }
-                $db->Next();
-            }
-        }
         $this->render(array('messages' => $this->messages->messages), NULL, 'messages.tpl');
     }
 }

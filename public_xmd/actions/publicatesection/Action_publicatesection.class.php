@@ -77,6 +77,7 @@ class Action_publicatesection extends ActionAbstract
             'defaultMessage' => $defaultMessage,
             'idNode' => $idNode,
             'name' => $node->GetNodeName(),
+            'nodeTypeID' => $node->nodeType->getID(),
             'node_Type' => $node->nodeType->GetName()
         );
         $this->addJs('/actions/publicatesection/resources/js/index.js');

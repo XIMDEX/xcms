@@ -88,6 +88,7 @@ class Action_infonode extends ActionAbstract
             'channels' => $channels,
             'languages' => $languages,
             'jsonUrl' => $jsonUrl,
+            'nodeTypeID' => $node->nodeType->getID(),
             'node_Type' => $node->nodeType->GetName(),
             'valuesManageVersion' => $valuesManageVersion,
             'maxVersions' => self::MAX_VERSIONS

@@ -53,6 +53,7 @@ class Action_modifylink extends ActionAbstract
 					'name' => $node->get('Name'),
 					'url' => $link->get('Url'),
 					'description' => $node->get('Description'),
+		            'nodeTypeID' => $node->nodeType->getID(),
 		            'node_Type' => $node->nodeType->GetName(),
 					'go_method' => 'modifylink');
 		$this->render($values, null, 'default-3.0.tpl');

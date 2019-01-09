@@ -37,6 +37,7 @@ class Action_creategroup extends ActionAbstract {
         
 		$values = array(
 			'id_node' => $idNode,
+		    'nodeTypeID' => $folder->nodeType->getID(),
 		    'node_Type' => $folder->nodeType->GetName(),
 			'go_method' => 'creategroup');
 

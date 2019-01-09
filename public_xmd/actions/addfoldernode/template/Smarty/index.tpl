@@ -29,22 +29,25 @@
 		<div class="row tarjeta">
 		<h2 class="h2_general">{t}Add{/t} {$friendlyName|gettext}</h2>
 			<div class="small-12 columns">
-		<div class="input">
-			<label for="name" class="label_title label_general">{t}Name{/t} *</label>
-		<p class="icon icon-positioned server input">
-			<input type="text" name="name" id="foldername" class="input_general cajaxg validable js_val_alphanumeric not_empty full-size {$friendlyName|replace:" ":"_"}_icon" placeholder="{t}{$friendlyName} name{/t}">
-		</p></div></div>
-
-		<!-- show disclaimer if node CanAttachGroups -->
-		{if ($CanAttachGroups)}
-            <p class="herachy-disclaimer">
-				<strong>* {t}Warning{/t}:</strong> {t}Folder permissions is going to inherit from the parent{/t}.
-			</p>
-        {/if}
-
-	<div class="small-12 columns">
-	<fieldset class="buttons-form">
-	    {button label="Create" class='validate btn main_action'}
-	</fieldset></div></div></div>
+                <div class="input">
+                    <label for="name" class="label_title label_general">{t}Name{/t} *</label>
+		            <p class="icon icon-positioned server input">
+                        <input type="text" name="name" id="foldername" class="input_general cajaxg validable js_val_alphanumeric not_empty 
+                                full-size {$friendlyName|replace:" ":"_"}_icon" placeholder="{t}{$friendlyName} name{/t}">
+		            </p>
+                </div>
+            </div>
+		    <!-- show disclaimer if node CanAttachGroups -->
+		    {if ($CanAttachGroups)}
+                <p class="herachy-disclaimer">
+				    <strong>* {t}Warning{/t}:</strong> {t}Folder permissions is going to inherit from the parent{/t}.
+			    </p>
+            {/if}
+	        <div class="small-12 columns">
+	           <fieldset class="buttons-form">
+	               {button label="Create" class='validate btn main_action'}
+	           </fieldset>
+            </div>
+        </div>
+    </div>
 </form>
-

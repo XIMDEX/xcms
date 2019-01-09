@@ -293,6 +293,7 @@ angular.module('ximdex.main.controller').controller('AdvancedSearchModalCtrl', [
       if ($scope.selected[0].nodeid === null | $scope.selected[0].nodetypeid === null | $scope.selected[0].nodeid === '0') {
         return;
       }
+      /*
       nodeToSearch = $scope.selected[0].nodeid;
       if ($scope.selected.length > 1) {
         ref = $scope.selected.slice(1);
@@ -305,20 +306,23 @@ angular.module('ximdex.main.controller').controller('AdvancedSearchModalCtrl', [
         }
       }
       if ($window.com.ximdex.nodeActions[nodeToSearch] == null) {
+      */
         $http.get(xUrlHelper.getAction({
           action: 'browser3',
           method: 'cmenu',
           nodes: $scope.selected
         })).success(function(data) {
           if (data) {
-            $window.com.ximdex.nodeActions[nodeToSearch] = data;
+            // $window.com.ximdex.nodeActions[nodeToSearch] = data;
             postLoadActions(data, event, $scope.selected);
           }
         });
+      /*
       } else {
         data = $window.com.ximdex.nodeActions[nodeToSearch];
         postLoadActions(data, event, $scope.selected);
       }
+      */
       return false;
     };
     postLoadActions = function(data, event, selectedNodes) {

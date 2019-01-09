@@ -78,7 +78,6 @@ class Action_checkstatus extends ActionAbstract
         }
 
         // Creates another array with all the states info
-        $states = array();
         $wf = new Workflow($node->nodeType->getWorkflow());
         $states = $wf->getAllStates();
         $statesFull = [];

@@ -133,6 +133,7 @@ class Action_deletenode extends ActionAbstract
 			'nameNode' => $node->get('Name'),
 			'formType' => $formType,
 			'texto' => $texto,
+		    'nodeTypeID' => $node->nodeType->getID(),
 		    'node_Type' => $node->nodeType->GetName(),
 			"go_method" => "delete_node",
 		);

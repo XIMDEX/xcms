@@ -43,6 +43,7 @@ class Action_modifygroup extends ActionAbstract {
     	$values = array(
     			'id_node' => $idNode,
     			'name' => $node->get('Name'),
+    	        'nodeTypeID' => $node->nodeType->getID(),
     	        'node_Type' => $node->nodeType->GetName(),
     			'go_method' => 'modifygroup'
     	);

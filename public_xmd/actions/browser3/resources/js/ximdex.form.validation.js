@@ -1,5 +1,5 @@
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -23,8 +23,9 @@
  *  @version $Revision$
  */
 
-(function() {
-	//All the customized validations
+(function()
+{
+	// All the customized validations
 	$.validator.addMethod("alphanumeric", function(value, element, params){
 		return this.optional(element) || /^[\w-]+$/.test(value);
 	}, _("Invalid string. Expecting an alphanumeric value without whitespaces."));

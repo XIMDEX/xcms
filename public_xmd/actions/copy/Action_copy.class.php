@@ -56,6 +56,7 @@ class Action_copy extends ActionAbstract
                 'targetNodes' => $targetNodes,
                 'node_path' => $node->GetPath(),
                 'go_method' => 'copyNodes',
+                'nodeTypeID' => $node->nodeType->getID(),
                 'node_Type' => $node->nodeType->GetName(),
                 'name' => $node->GetNodeName()
             );

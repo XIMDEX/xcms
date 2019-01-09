@@ -62,6 +62,7 @@ class Action_modifystatesrole extends ActionAbstract
         $node = new Node($idNode);
         $values = array(
             'all_states' => json_encode($states),
+            'nodeTypeID' => $node->nodeType->getID(),
             'node_Type' => $node->nodeType->GetName(),
             'idRole' => $idNode);
         $this->render($values, null, 'default-3.0.tpl');

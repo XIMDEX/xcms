@@ -38,22 +38,6 @@
           loadAction(action, [node]);
           return;
         }
-
-        /*if not $window.com.ximdex.nodeActions[node.nodeid]?
-            $http.get(xUrlHelper.getAction(
-                action: "browser3"
-                method: "cmenu"
-                nodes: $scope.selectedNodes
-            )).success (data) ->
-                if data
-                    $window.com.ximdex.nodeActions[node.nodeid] = data
-                    loadAction data[0], [node]
-                return
-        else
-            data = $window.com.ximdex.nodeActions[node.nodeid]
-            loadAction data[0], [node]
-        return
-         */
         node.showNodes = !node.showNodes;
         if (node.showNodes && !node.collection) {
           $scope.loadNodeChildren(node);
@@ -202,23 +186,6 @@
           loadAction(action, [n]);
           return;
         }
-
-        /* Open the first action in menu
-        if not $window.com.ximdex.nodeActions[n.nodeid]?
-            $http.get(xUrlHelper.getAction(
-                action: "browser3"
-                method: "cmenu"
-                nodes: $scope.selectedNodes
-            )).success (data) ->
-                if data
-                    $window.com.ximdex.nodeActions[n.nodeid] = data
-                    loadAction data[0], [n]
-                return
-        else
-            data = $window.com.ximdex.nodeActions[n.nodeid]
-            loadAction data[0], [n]
-        return
-         */
         n.showNodes = true;
         n.collection = [];
         return $scope.loadNodeChildren(n, callback);

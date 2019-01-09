@@ -819,8 +819,6 @@ class Node extends NodesOrm
     /**
      * Returns a list of allowed nodetypes
      *
-     * TODO - Take into account amount to returns the ones really allowed
-     *
      * @return array
      */
     function GetCurrentAllowedChildren()
@@ -901,8 +899,6 @@ class Node extends NodesOrm
                 $res = true;
                 if ($this->GetNodeType() == NodeTypeConstants::XSL_TEMPLATE or $this->GetNodeType() == NodeTypeConstants::XML_DOCUMENT
                     or $this->getNodeType() == NodeTypeConstants::RNG_VISUAL_TEMPLATE) {
-
-                    //TODO change global variable to another entity
                     $GLOBALS['errorsInXslTransformation'] = array();
 
                     // Check the valid XML
@@ -1141,41 +1137,20 @@ class Node extends NodesOrm
         return parent::update();
     }
 
-    function getFirstStatus(int $idParent = null, int $idNodeType = null)
+    public function getFirstStatus(int $idParent = null, int $idNodeType = null)
     {
         if (empty($idParent)) {
             $idParent = $this->get('IdNode');
         }
         if (empty($idNodeType)) {
-            $idNodeType = $this->get('IdNodeType');
+            $nodeType = $this->nodeType;
+        } else {
+            $nodeType = new NodeType($idNodeType);
         }
-        /*
-        $nodeType = new NodeType($idNodeType);
-        if (! $nodeType->get('IsPublishable')) {
-            return null;
-        }
-        $node = new Node($idParent);
-
-        // First, I try to get it from the inherits properties
-        $pipelines = $node->getProperty('Pipeline');
-        if (count($pipelines) > 0) {
-            $idPipeline = $pipelines[0];
-            $workflow = new WorkFlow(null, null, $idPipeline);
-            $idStatus = $workflow->GetInitialState();
-            if ($idStatus > 0) {
-                return $idStatus;
-            }
-        }
-
-        // Finally, i get it from the default value
-        $idPipeline = App::getValue('IdDefaultWorkflow');
-        $workflow = new WorkFlow(NULL, NULL, $idPipeline);
-        return $workflow->GetInitialState();
-        */
         $workflow = new Workflow($nodeType->getWorkflow());
         if ($workflow->get('id')) {
             $idStatus = $workflow->getInitialState();
-            if ($idStatus > 0) {
+            if ($idStatus) {
                 return $idStatus;
             }
         }
@@ -1261,11 +1236,20 @@ class Node extends NodesOrm
             return false;
         }
 
-        // TODO ajlucena id para rangos
-        // Inserts the node in the Nodes table
-        if (parent::add() === false)
+        // Generate the node ID in a range with specified node types
+        try {
+            $this->generateIdForRange();
+        } catch (\Exception $e) {
+            Logger::error($e->getMessage());
+            $this->messages->add(_('Error generating the node ID'), MSG_TYPE_ERROR);
+            $this->SetError(5);
             return false;
-
+        }
+        
+        // Inserts the node in the Nodes table
+        if (parent::add() === false) {
+            return false;
+        }
         if (! $this->get('IdNode')) {
             $this->messages->add(_('Error creating the node'), MSG_TYPE_ERROR);
             $this->SetError(5);
@@ -1300,7 +1284,7 @@ class Node extends NodesOrm
         $group = new Group();
         $this->AddGroupWithRole($group->GetGeneralGroup());
 
-        // get associated groups from the parent/s
+        // Get associated groups from the parent/s
         if ($nodeType->get('CanAttachGroups')) {
             $nearestId = $this->GetNearest($parentNode);
             $nearest = new Node($nearestId);
@@ -1312,7 +1296,7 @@ class Node extends NodesOrm
             }
         }
 
-        // if the create node type is Section (section inside a server)
+        // If the create node type is Section (section inside a server)
         // it is checked if the user who created it belongs to some group
         // to include the relation between nodes and groups
         if ($this->nodeType->get('Name') == 'Section') {
@@ -2646,9 +2630,7 @@ class Node extends NodesOrm
     function ToXml($depth = 0, & $files, $recurrence = NULL)
     {
         global $STOP_COUNT;
-
-        // TODO check if current user has permits to read this node, and if he does not, returns an empty string.
-        if (!($this->get('IdNode') > 0)) {
+        if (! $this->get('IdNode')) {
             Logger::warning(sprintf(_("It is being tried to load the unexistent node %s"), $this->get('IdNode')));
             return false;
         }
@@ -2671,18 +2653,18 @@ class Node extends NodesOrm
         $nodeTypeClass = $this->nodeType->get('Class');
         $sharedWorkflow = $this->get('SharedWorkflow');
         $tail = '';
-        if (!empty($sharedWorkflow)) {
+        if (! empty($sharedWorkflow)) {
             $tail .= sprintf(' SharedWorkflow="%s"', $sharedWorkflow);
         }
         $tail .= $this->class->getXmlTail();
-        if (!empty($statusName)) {
+        if (! empty($statusName)) {
             $tail .= sprintf(' state="%s"', utf8_encode($statusName));
         }
 
         // Getting node Properties
         $nodeProperty = new \Ximdex\Models\NodeProperty();
         $result = $nodeProperty->getPropertiesByNode($this->get('IdNode'));
-        if (!is_null($result)) {
+        if (! is_null($result)) {
             foreach ($result as $resultData) {
                 $tail .= sprintf(' %s="%s"', $resultData['Property'], $resultData['Value']);
             }
@@ -2710,8 +2692,8 @@ class Node extends NodesOrm
             if (!empty($childrens)) {
                 foreach ($childrens as $idChildrenNode) {
                     $children = new Node($idChildrenNode);
-                    if (!($children->get('IdNode') > 0)) {
-                        Logger::warning(sprintf(_("It is being tried to load the node %s from the unexistent node %s")
+                    if (! $children->get('IdNode')) {
+                        Logger::warning(sprintf('It is being tried to load the node %s from the unexistent node %s'
                             , $children->get('IdNode'), $this->get('IdNode')));
                         continue;
                     }
@@ -2719,8 +2701,8 @@ class Node extends NodesOrm
                         $structuredDocument = new StructuredDocument($children->GetID());
                         $idTemplate = $structuredDocument->GetDocumentType();
                         $node = new Node($idTemplate);
-                        if (!($node->get('IdNode') > 0)) {
-                            Logger::warning(sprintf(_("It is being tried to load the node %s from the unexistent node %s")
+                        if (! $node->get('IdNode')) {
+                            Logger::warning(sprintf('It is being tried to load the node %s from the unexistent node %s'
                                 , $node->get('IdNode'), $this->get('IdNode')));
                             continue;
                         }
@@ -3161,27 +3143,6 @@ class Node extends NodesOrm
     }
 
     /**
-     * @param $idPipeline
-     */
-    function updateToNewPipeline($idPipeline)
-    {
-        unset($idPipeline);
-        $db = new \Ximdex\Runtime\Db();
-        $query = sprintf("SELECT IdChild FROM FastTraverse WHERE IdNode = %d", $this->get('IdNode'));
-        $db->Query($query);
-        while (!$db->EOF) {
-            $idNode = $db->GetValue('IdChild');
-            $node = new Node($idNode);
-            $idStatus = $node->getFirstStatus();
-            if ($idStatus > 0) {
-                $node->set('IdState', $idStatus);
-                $node->update();
-            }
-            $db->Next();
-        }
-    }
-
-    /**
      * @return array
      */
     function GetLastVersion()
@@ -3449,7 +3410,7 @@ class Node extends NodesOrm
                 $versionID = $version['IdVersion'];
                 $version = new Version($versionID);
                 $file = XIMDEX_ROOT_PATH . App::getValue('FileRoot') . '/' . $version->get('File');
-                if (!file_exists($file)) {
+                if (! file_exists($file)) {
                     Logger::error('Cannot load the file: ' . $file . ' for version: ' . $versionID);
                     return false;
                 }
@@ -3459,7 +3420,7 @@ class Node extends NodesOrm
         if ($content) {
             @unlink($file);
         }
-        if (!$mimeType) {
+        if (! $mimeType) {
             Logger::error('Cannot load the mime type for the file: ' . $file);
             return false;
         }
@@ -3475,13 +3436,13 @@ class Node extends NodesOrm
      */
     public function getTargetChannel(int $channel = null)
     {
-        if (!$this->GetID()) {
+        if (! $this->IdNode) {
             $this->messages->add('The node has not the ID value', MSG_TYPE_ERROR);
             return false;
         }
         if ($channel) {
             $strDoc = new StructuredDocument($this->GetID());
-            if (!$strDoc->GetID()) {
+            if (! $strDoc->GetID()) {
                 $this->messages->add('Cannot load the structured document with ID: ' . $this->GetID(), MSG_TYPE_WARNING);
                 return false;
             }
@@ -3493,9 +3454,8 @@ class Node extends NodesOrm
         }
 
         // The channel will be the first one available in the inherited properties
-        //TODO define master channel and try to use the same server
         $properties = InheritedPropertiesManager::getValues($this->GetID(), true);
-        if (!$properties['Channel']) {
+        if (! $properties['Channel']) {
             Logger::error('The document with ID: ' . $this->GetID() . ' has no channel');
             return false;
         }
@@ -3699,5 +3659,54 @@ class Node extends NodesOrm
             }
         }
         return null;
+    }
+    
+    /**
+     * Used for new node ID in an interval for special node types
+     * 
+     * @throws \Exception
+     */
+    private function generateIdForRange()
+    {
+        if ($this->IdNode) {
+            return;
+        }
+        switch ($this->IdNodeType) {
+            case NodeTypeConstants::GROUP:
+                $range = [100, 199];
+                break;
+            case NodeTypeConstants::ROLE:
+                $range = [200, 299];
+                break;
+            case NodeTypeConstants::USER:
+                $range = [300, 399];
+                break;
+            case NodeTypeConstants::WORKFLOW:
+                $range = [400, 499];
+                break;
+            case NodeTypeConstants::PERMISSION:
+                $range = [1000, 1999];
+                break;
+            case NodeTypeConstants::NODE_TYPE:
+                $range = [5000, 5999];
+                break;
+            case NodeTypeConstants::ACTION:
+                $range = [6000, 9999];
+                break;
+        }
+        if (isset($range) and is_array($range) and count($range) == 2) {
+            $res = $this->find('max(IdNode)', 'IdNode >= ' . $range[0] . ' AND IdNode <= ' . $range[1], null, MONO);
+            if ($res === false) {
+                throw new \Exception('SQL problem');
+            }
+            if (! $res or ! $res[0]) {
+                $this->IdNode = $range[0];
+                return;
+            }
+            if ($res[0] >= $range[1]) {
+                throw new \Exception('Maximun range reached for this node type: ' . $this->IdNodeType);
+            }
+            $this->IdNode = $res[0] + 1;
+        }
     }
 }

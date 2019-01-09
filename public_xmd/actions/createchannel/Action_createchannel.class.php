@@ -46,6 +46,7 @@ class Action_createchannel extends ActionAbstract
         $values = array(
             'id_node' => $idNode,
             'code_languages' => $codeLanguages,
+            'nodeTypeID' => $node->nodeType->getID(),
             'node_Type' => $node->nodeType->GetName(),
             'go_method' => 'createchannel');
         $this->render($values, null, 'default-3.0.tpl');

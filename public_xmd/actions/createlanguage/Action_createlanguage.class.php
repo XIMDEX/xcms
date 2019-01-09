@@ -62,6 +62,7 @@ class Action_createlanguage extends ActionAbstract
         $values = array(
             'id_node' => $idNode,
             'go_method' => 'createlanguage',
+            'nodeTypeID' => $folder->nodeType->getID(),
             'node_Type' => $folder->nodeType->GetName(),
             'languages' => $langs);
         $this->render($values, null, 'default-3.0.tpl');

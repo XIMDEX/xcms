@@ -27,50 +27,32 @@
 
 namespace Ximdex\NodeTypes;
 
-use Ximdex\Models\PipeProcess;
-use Ximdex\Models\PipeStatus;
-use Ximdex\Models\PipeTransition;
 use Ximdex\Logger;
+use Ximdex\Models\Workflow;
 
 class StateNode extends Root
 {
-    public function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $description = '', $idTransition = null)
+    public function createNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $description = '', $idTransition = null)
     {
-        $currentTransition = new PipeTransition($idTransition);
-        if (! $currentTransition->get('id') > 0) {
-            $this->messages->add(_('No se ha podido encontrar la transacción, consulte con su administrador'), MSG_TYPE_ERROR);
-            $this->messages->mergeMessages($currentTransition->messages);
-            return NULL;
-        }
-        $this->UpdatePath();
+        $this->updatePath();
+        return true;
     }
 
-    public function DeleteNode()
+    public function deleteNode()
     {
-        $pipeStatus = new PipeStatus();
-        $pipeStatus->loadByIdNode($this->nodeID);
-        $pipeProcess = new PipeProcess();
-        $pipeProcess->loadByName('workflow');
-        $pipeProcess->removeStatus($pipeStatus->get('id'));
+        return true;
     }
 
-    public function RenameNode($name)
+    public function renameNode(string $name)
     {
-        $pipeStatus = new PipeStatus();
-        $pipeStatus->loadByIdNode($this->nodeID);
-        $pipeStatus->set('Name', $name);
-        $pipeStatus->update();
-        $this->UpdatePath();
+        $this->updatePath();
+        return true;
     }
 
     public function CanDenyDeletion()
     {
-        $pipeStatus = new PipeStatus();
-        $pipeStatus->loadByIdNode($this->nodeID);
-        $pipeProcess = new PipeProcess();
-        $pipeProcess->loadByName('workflow');
-        $idStatus = $pipeStatus->get('id');
-        if ($pipeProcess->isStatusFirst($idStatus) || $pipeProcess->isStatusLast($idStatus)) {
+        $workflow = new Workflow(null, $this->nodeID);
+        if ($workflow->isInitialState() or $workflow->isFinalState()) {
             $this->messages->add(_('No se pueden eliminar los estados primero y último del workflow'), MSG_TYPE_ERROR);
             Logger::warning('Imposible eliminar estado primero y último de workflow');
             return true;
@@ -78,13 +60,13 @@ class StateNode extends Root
         return false;
     }
 
-    public function GetDependencies()
+    public function getDependencies()
     {
-        $sql = "SELECT DISTINCT IdNode FROM Nodes WHERE IdState='" . $this->nodeID . "'";
+        $sql = 'SELECT DISTINCT IdNode FROM Nodes WHERE IdState = \'' . $this->nodeID . '\'';
         $this->dbObj->Query($sql);
         $deps = array();
         while (! $this->dbObj->EOF) {
-            $deps[] = $this->dbObj->row["IdNode"];
+            $deps[] = $this->dbObj->row['IdNode'];
             $this->dbObj->Next();
         }
         return $deps;

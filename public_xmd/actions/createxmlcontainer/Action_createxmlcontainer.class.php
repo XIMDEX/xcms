@@ -111,6 +111,7 @@ class Action_createxmlcontainer extends ActionAbstract
             'go_method' => 'createxmlcontainer',
             'reload_tree' => $reloadTree,
             'nodeTypeName' => $nodeType->GetDescription(),
+            'nodeTypeID' => $node->nodeType->getID(),
             'node_Type' => $node->nodeType->GetName(),
             'type' => $type
         );

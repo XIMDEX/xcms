@@ -62,6 +62,7 @@ class Action_filepreview extends ActionAbstract
             'path' => App::getValue('UrlRoot') . '/?action=rendernode&nodeid=' . $node->GetID() . '&version=' . $version 
                 . '&sub_version=' . $subVersion,
             'Name' => $node->get('Name'),
+            'nodeTypeID' => $node->nodeType->getID(),
             'node_Type' => $node->nodeType->GetName(),
             'type' => $nodetype->GetName()
         );
@@ -124,6 +125,7 @@ class Action_filepreview extends ActionAbstract
                 'imageNodes' => $imageNodes,
                 'serverName' => $parentNode->get('Name'),
                 'folderName' => $node->get('Name'),
+                'nodeTypeID' => $node->nodeType->getID(),
                 'node_Type' => $node->nodeType->GetName()
             );
             $this->render($values, null, 'default-3.0.tpl');

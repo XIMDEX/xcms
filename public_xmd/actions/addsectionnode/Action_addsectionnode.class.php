@@ -43,6 +43,7 @@ class Action_addsectionnode extends ActionAbstract
         $node = new Node($nodeID);
         $values = array(
             'name' => $node->GetNodeName(),
+            'nodeTypeID' => $node->nodeType->getID(),
             'node_Type' => $node->nodeType->GetName()
         );
         $this->addCss('/actions/addsectionnode/resources/css/style.css');

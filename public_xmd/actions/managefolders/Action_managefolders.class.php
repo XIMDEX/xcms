@@ -59,6 +59,7 @@ class Action_managefolders extends ActionAbstract
 				'sectionName' => $node->get('Name'),
         	    'sectionType' => $node->nodeType->GetName(),
 				'subfolders' => $subfolders,
+        	    'nodeTypeID' => $node->nodeType->getID(),
         	    'node_Type' => $node->nodeType->GetName(),
 				'go_method' => 'configure_section',
 				);

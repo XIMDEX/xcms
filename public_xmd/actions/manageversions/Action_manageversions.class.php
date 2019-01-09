@@ -100,6 +100,7 @@ class Action_manageversions extends ActionAbstract
             'node_type_name' => $node->nodeType->get('Name'),
             'channels' => $channels,
             'actionid' => $this->request->getParam('actionid'),
+            'nodeTypeID' => $node->nodeType->getID(),
             'node_Type' => $node->nodeType->GetName(),
             'name' => $node->GetNodeName()
         );

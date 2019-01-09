@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -27,8 +27,6 @@
 
 namespace Ximdex\NodeTypes;
 
-use Ximdex\Runtime\Constants;
-
 /***
  * Class for NodeType Video
  */
@@ -40,8 +38,8 @@ class VideoNode extends FileNode
      * 
      * @return bool
      */
-    function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $sourcePath = "")
+    public function createNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $sourcePath = null)
     {
-        parent::CreateNode($name, $parentID, $nodeTypeID, $stateID, $sourcePath);
+        parent::createNode($name, $parentID, $nodeTypeID, $stateID, $sourcePath);
     }
 }

@@ -81,6 +81,7 @@ class Action_addfoldernode extends ActionAbstract
         $values = array(
             'go_method' => 'addNode',
             'nodeID' => $nodeID,
+            'nodeTypeID' => $node->nodeType->getID(),
             'node_Type' => $node->nodeType->GetName(),
             'name' => $node->GetNodeName()
         );

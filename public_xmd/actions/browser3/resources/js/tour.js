@@ -1,5 +1,5 @@
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -23,7 +23,8 @@
  *  @version $Revision$
  */
 
-X.actionLoaded(function(event, fn, params) {
+X.actionLoaded(function(event, fn, params)
+{
 	/*
 	the json config obj.
 	name: the class given to the element where you want the tooltip to appear
@@ -45,7 +46,6 @@ X.actionLoaded(function(event, fn, params) {
 		B   bottom
 		L   left
 	 */
-
 	var config_action = [
 		{
 			"name" 		: ".hbox-panel-container-0 > div.hbox-panel",
@@ -103,9 +103,7 @@ X.actionLoaded(function(event, fn, params) {
 			"position"	: "L",
 			"time" 		: 5000
 		}
-
 	];
-
 	config_action[0]["text"]=_('This is the navigation area. Here, different views can be chosen');
 	config_action[1]["text"]=_('Clicking this tab, Project view is activated');
 	config_action[2]["text"]=_('Clicking this tab, Control center view is activated');
@@ -113,7 +111,5 @@ X.actionLoaded(function(event, fn, params) {
 	config_action[4]["text"]=_('In Project view, it can be chosen between Tree view...');
 	config_action[5]["text"]=_('... Table view...');
 	config_action[6]["text"]=_('... or List view...');
-		
 	X.getTourInstance().start(config_action);
-	
 });

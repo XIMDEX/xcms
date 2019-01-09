@@ -40,6 +40,7 @@ class Action_metadata extends ActionAbstract
             $info= $metadata->getMetadataSectionAndGroupByNodeType($node->GetNodeType(), $idNode);
             $values = array(
                 'info' => $info,
+                'nodeTypeID' => $node->nodeType->getID(),
                 'node_Type' => $node->nodeType->GetName(),
                 'go_method' => 'saveMetadata',
                 'nodeid' => $idNode,
