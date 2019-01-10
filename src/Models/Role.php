@@ -233,7 +233,7 @@ class Role extends RolesOrm
      * {@inheritDoc}
      * @see \Ximdex\Data\GenericData::add()
      */
-    public function add()
+    public function add(bool $useAutoIncrement = true)
     {
         return $this->createNewRole($this->get('Name'), $this->get('Icon'), $this->get('Description'), $this->get('IdRole'));
     }

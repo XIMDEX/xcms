@@ -530,9 +530,14 @@ class StructuredDocument extends StructuredDocumentsOrm
         return $res;
     }
 
-    public function add()
+    /**
+     * {@inheritDoc}
+     * @see \Ximdex\Data\GenericData::add()
+     */
+    public function add(bool $useAutoIncrement = true)
     {
-        $this->CreateNewStrDoc($this->get('IdDoc'), $this->get('Name'), $this->get('IdCreator'), $this->get('CreationDate'), $this->get('UpdateDate'), $this->get('IdLanguage'), $this->get('IdTemplate'));
+        $this->CreateNewStrDoc($this->get('IdDoc'), $this->get('Name'), $this->get('IdCreator'), $this->get('CreationDate')
+            , $this->get('UpdateDate'), $this->get('IdLanguage'), $this->get('IdTemplate'));
     }
 
     /**

@@ -53,8 +53,8 @@ class Action_manageList extends ActionAbstract {
 	/**
 	 * function ready to be called and return json result
 	 */
-	public function add() {
-		
+	public function add(bool $useAutoIncrement = true)
+	{
 		$name = $this->request->getParam('name');
 		$description = $this->request->getParam('description');
 		$type = $this->request->getParam('type');

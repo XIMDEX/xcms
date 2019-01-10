@@ -180,7 +180,7 @@ class Permission extends PermissionsOrm
      * {@inheritDoc}
      * @see \Ximdex\Data\GenericData::add()
      */
-    public function add()
+    public function add(bool $useAutoIncrement = true)
     {
         $this->CreateNewPermission($this->get('Name'));
     }

@@ -1122,7 +1122,11 @@ class Node extends NodesOrm
         return false;
     }
 
-    function add()
+    /**
+     * {@inheritDoc}
+     * @see \Ximdex\Data\GenericData::add()
+     */
+    public function add(bool $useAutoIncrement = true)
     {
         die(_('This call should be done through CreateNode'));
     }
@@ -1237,8 +1241,11 @@ class Node extends NodesOrm
         }
 
         // Generate the node ID in a range with specified node types
+        $useAutoincrement = true;
         try {
-            $this->generateIdForRange();
+            if ($this->generateIdForRange()) {
+                $useAutoincrement = false;
+            }
         } catch (\Exception $e) {
             Logger::error($e->getMessage());
             $this->messages->add(_('Error generating the node ID'), MSG_TYPE_ERROR);
@@ -1247,7 +1254,7 @@ class Node extends NodesOrm
         }
         
         // Inserts the node in the Nodes table
-        if (parent::add() === false) {
+        if (parent::add($useAutoincrement) === false) {
             return false;
         }
         if (! $this->get('IdNode')) {
@@ -3668,9 +3675,6 @@ class Node extends NodesOrm
      */
     private function generateIdForRange()
     {
-        if ($this->IdNode) {
-            return;
-        }
         switch ($this->IdNodeType) {
             case NodeTypeConstants::GROUP:
                 $range = [100, 199];
@@ -3701,12 +3705,14 @@ class Node extends NodesOrm
             }
             if (! $res or ! $res[0]) {
                 $this->IdNode = $range[0];
-                return;
+                return true;
             }
             if ($res[0] >= $range[1]) {
                 throw new \Exception('Maximun range reached for this node type: ' . $this->IdNodeType);
             }
             $this->IdNode = $res[0] + 1;
+            return true;
         }
+        return false;
     }
 }

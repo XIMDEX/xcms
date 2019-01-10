@@ -205,7 +205,7 @@ class GenericData
      * 
      * @return bool|null|string
      */
-    public function add()
+    public function add(bool $useAutoIncrement = true)
     {
         if (! $this->_applyFilter('beforeAdd')) {
             return false;
@@ -213,7 +213,7 @@ class GenericData
         $arrayFields = array();
         $arrayValues = array();
         foreach ($this->_metaData as $field => $descriptors) {
-            if (! $this->$field and isset($descriptors['auto_increment']) and 'true' == $descriptors['auto_increment']) {
+            if ($useAutoIncrement and isset($descriptors['auto_increment']) and 'true' == $descriptors['auto_increment']) {
                 continue;
             }
             $arrayFields[] = sprintf('`%s`', $field);
@@ -233,7 +233,7 @@ class GenericData
             $dbObj = new \Ximdex\Runtime\Db();
             $dbObj->Execute($query);
             if ($dbObj->numErr > 0) {
-                $this->messages->add($dbObj->desErr[2], MSG_TYPE_ERROR);
+                $this->messages->add($dbObj->desErr, MSG_TYPE_ERROR);
                 return false;
             } else {
                 $isAutoField = isset($this->_metaData[$this->_idField])
@@ -409,7 +409,7 @@ class GenericData
                     break;
             }
         }
-        return (!$this->messages->count(MSG_TYPE_ERROR));
+        return (! $this->messages->count(MSG_TYPE_ERROR));
     }
 
     /**

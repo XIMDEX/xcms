@@ -462,7 +462,7 @@ class User extends UsersOrm
      * {@inheritDoc}
      * @see \Ximdex\Data\GenericData::add()
      */
-    function add()
+    public function add(bool $useAutoIncrement = true)
     {
         $this->CreateNewUser($this->get('Name'), $this->get('Login'), $this->get('Pass'), $this->get('Name'), $this->get('Email')
             , $this->get('Locale'));
