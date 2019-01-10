@@ -1,4 +1,30 @@
-DROP TABLE `Pipelines`, `PipeNodeTypes`, `PipeProcess`, `PipeProperties`, `PipePropertyValues`, `PipeStatus`, `PipeTransitions`;
+DROP TABLE `PipeNodeTypes`;
+
+DROP TABLE `PipePropertyValues`;
+
+DROP TABLE `PipeProperties`;
+
+DROP TABLE `PipeNodeTypes`;
+
+ALTER TABLE PipeTransitions DROP FOREIGN KEY PipeTransitions_PipeProcess;
+
+ALTER TABLE PipeTransitions DROP FOREIGN KEY PipeTransitions_PipeStatus_From;
+
+ALTER TABLE PipeTransitions DROP FOREIGN KEY PipeTransitions_PipeStatus_To;
+
+ALTER TABLE PipeProcess DROP FOREIGN KEY PipeProcess_PipeTransitions_From;
+
+ALTER TABLE PipeProcess DROP FOREIGN KEY PipeProcess_PipeTransitions_To;
+
+ALTER TABLE PipeProcess DROP FOREIGN KEY PipeProcess_Pipelines;
+
+DROP TABLE `PipeProcess`;
+
+DROP TABLE `PipeStatus`;
+
+DROP TABLE `PipeTransitions`;
+
+DROP TABLE `Pipelines`;
 
 UPDATE `Nodes` SET BlockTime = NULL WHERE BlockTime = 0;
 
@@ -91,4 +117,24 @@ INSERT INTO `Nodes` (`IdNode`, `IdParent`, `IdNodeType`, `Name`, `IdState`, `Blo
 ('5110', NULL, '5007', 'XOTFFolder', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 ALTER TABLE `NodeTypes` ADD CONSTRAINT `NodeTypes_Nodes` FOREIGN KEY (`IdNodeType`) REFERENCES `Nodes`(`IdNode`) 
+ON DELETE CASCADE ON UPDATE CASCADE;
+
+DROP TABLE `RelBulletinXimlet`;
+
+ALTER TABLE `RelGroupsNodes` CHANGE `IdGroup` `IdGroup` INT(12) UNSIGNED NOT NULL, CHANGE `IdNode` `IdNode` INT(12) UNSIGNED NOT NULL;
+
+UPDATE `RelGroupsNodes` set IdRole = NULL WHERE IdRole = 0;
+
+ALTER TABLE `RelGroupsNodes` DROP INDEX `uniq`, ADD UNIQUE `uniq` (`IdNode`, `IdGroup`, `IdRole`) USING BTREE;
+
+ALTER TABLE `RelUsersGroups` CHANGE `IdUser` `IdUser` INT(12) UNSIGNED NOT NULL, CHANGE `IdGroup` `IdGroup` INT(12) UNSIGNED NOT NULL, 
+CHANGE `IdRole` `IdRole` INT(12) UNSIGNED NOT NULL;
+
+ALTER TABLE `RelGroupsNodes` ADD CONSTRAINT `RelGroupsNodes_Group` FOREIGN KEY (`IdGroup`) REFERENCES `Groups`(`IdGroup`) 
+ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `RelGroupsNodes` ADD CONSTRAINT `RelGroupsNodes_Nodes` FOREIGN KEY (`IdNode`) REFERENCES `Nodes`(`IdNode`) 
+ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `RelGroupsNodes` ADD CONSTRAINT `RelGroupsNodes_Roles` FOREIGN KEY (`IdRole`) REFERENCES `Roles`(`IdRole`) 
 ON DELETE CASCADE ON UPDATE CASCADE;

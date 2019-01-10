@@ -214,7 +214,7 @@ class XeditAction extends Action
                 }
             }
         } else {
-            $w->setMessage("Nodes not found")->setStatus(0);
+            $w->setMessage("Nodes not found")->setStatus(1);
         }
         $w->setResponse('Saved');
         $w->send();

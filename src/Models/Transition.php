@@ -99,6 +99,8 @@ class Transition extends GenericData
                     Logger::warning('Transition cache with non-existant file in system storage with code: ' . $cache->get('id') 
                         . '. Ignoring it');
                 } else {
+                    Logger::info('Cache file ' . $cache->get('file') . ' was found for version ' . $versionId . ' in ' 
+                        . $transition . ' transition', false, 'magenta');
                     return XIMDEX_CACHE_PATH . '/' . $cache->get('file');
                 }
             }

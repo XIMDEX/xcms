@@ -338,7 +338,7 @@ class User extends UsersOrm
     function getRoleOnGroup($groupid)
     {
         $this->ClearError();
-        if (!is_null($groupid)) {
+        if (! is_null($groupid)) {
             $dbObj = new \Ximdex\Runtime\Db();
             $query = sprintf('SELECT IdRole FROM RelUsersGroups WHERE IdUser = %d AND IdGroup = %d', $this->get('IdUser'), $groupid);
             $dbObj->Query($query);
@@ -352,11 +352,11 @@ class User extends UsersOrm
     function getRoles()
     {
         $this->ClearError();
-        $query = sprintf('SELECT IdRole FROM RelUsersGroups WHERE IdUser = %d group by IdRole', $this->get('IdUser'));
+        $query = sprintf('SELECT DISTINCT IdRole FROM RelUsersGroups WHERE IdUser = %d group by IdRole', $this->get('IdUser'));
         $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->Query($query);
         $roles = array();
-        while (!$dbObj->EOF) {
+        while (! $dbObj->EOF) {
             $roles[] = $dbObj->GetValue('IdRole');
             $dbObj->Next();
         }
@@ -584,24 +584,23 @@ class User extends UsersOrm
 
         // Getting groups for the user for $idNode
         $arrayGroups = $this->GetGroupListOnNode($idNode);
-        $arrayRoles = array();
         $arrayActions = array();
-        if (!empty($arrayGroups)) {
+        if (! empty($arrayGroups)) {
             
             // Getting roles for the user for every group
+            $arrayRoles = array();
             foreach ($arrayGroups as $idGroup) {
                 $aux = array();
                 $aux[] = $this->GetRoleOnGroup($idGroup);
                 $arrayRoles = array_merge($arrayRoles, $aux);
             }
-        }
-        $arrayRoles = array_unique($arrayRoles);
-        if (! empty($arrayRoles)) {
-            
-            // Getting actions for every rol
-            foreach ($arrayRoles as $idRol) {
-                $role = new Role($idRol);
-                $arrayActions = array_merge($arrayActions, $role->GetActionsOnNode($idNode, $includeActionsWithNegativeSort));
+            if (! empty($arrayRoles)) {
+                
+                // Getting actions for every rol
+                foreach (array_unique($arrayRoles) as $idRol) {
+                    $role = new Role($idRol);
+                    $arrayActions = array_merge($arrayActions, $role->GetActionsOnNode($idNode, $includeActionsWithNegativeSort));
+                }
             }
         }
         $arrayActions = array_unique($arrayActions);
@@ -730,15 +729,15 @@ class User extends UsersOrm
         if ($nodeId == 1 || $nodeId == 10000 || $nodeId == 2 || $this->getID() == self::XIMDEX_ID) {
             return true;
         }
+        $user_groups = $this->getGroupList();
         $group = new Group();
-        $userGroupList = $this->getGroupList();
         $generalGroup = array($group->getGeneralGroup());
-        $user_groups = array_diff($userGroupList, $generalGroup);
+        $user_groups = array_diff($user_groups, $generalGroup);
         $node = new Node($nodeId);
-        $nodeGroupList = $node->getGroupList();
-        $node_groups = array_diff($nodeGroupList, $generalGroup);
+        $node_groups = $node->getGroupList();
+        $node_groups = array_diff($node_groups, $generalGroup);
         $rel_groups = array_intersect($user_groups, $node_groups);
-        if ((count($rel_groups) > 0) || $this->isOnNode($nodeId, true)) {
+        if (count($rel_groups) > 0 || $this->isOnNode($nodeId, true)) {
             return true;
         }
         return false;
@@ -786,13 +785,16 @@ class User extends UsersOrm
             $node = new Node($nodeId);
             $workflow = new Workflow($node->nodeType->getWorkflow());
             $workFlowId = $workflow->get('id');
-        }
-
-        // Should be always set
-        if (! isset($wfParams['node_type'])) {
+        } else {
+            Logger::error('No node ID given in canWrite method');
             return false;
         }
-        $nodeTypeId = (int)$wfParams['node_type'];
+        if (! isset($wfParams['node_type'])) {
+            // return false;
+            $nodeTypeId = $node->GetNodeType();
+        } else {
+            $nodeTypeId = (int) $wfParams['node_type'];
+        }
         if ($this->checkContext($nodeTypeId, Constants::CREATE)) {
             return true;
         }
@@ -802,7 +804,7 @@ class User extends UsersOrm
         if (! is_array($userRoles)) {
             return false;
         }
-        $userRoles = array_unique($userRoles);
+        // $userRoles = array_unique($userRoles);
         $nodeType = new NodeType($nodeTypeId);
         $actionId = $nodeType->GetConstructor();
         if (! $actionId) {
@@ -811,7 +813,7 @@ class User extends UsersOrm
         }
         foreach ($userRoles as $userRole) {
             $role = new Role($userRole);
-            if ($role->hasAction($actionId, null, $workFlowId)) {
+            if ($role->hasAction($actionId, $node->GetState(), $workFlowId)) {
                 return true;
             }
         }
@@ -929,7 +931,7 @@ class User extends UsersOrm
             throw new \Exception($dbObj->getDesErr());
         }
         $res = [];
-        while (!$dbObj->EOF) {
+        while (! $dbObj->EOF) {
             $res[] = $dbObj->GetValue('IdUser');
             $dbObj->Next();
         }
@@ -953,7 +955,7 @@ class User extends UsersOrm
         }
         foreach ($administrators as $id) {
             $user = new static($id);
-            if (!mail($user->getEmail(), $subject, $message)) {
+            if (! mail($user->getEmail(), $subject, $message)) {
                 Logger::warning('Cannot send an email notification to ' . $user->getEmail());
             }
         }
@@ -972,11 +974,9 @@ class User extends UsersOrm
         $data = Token::decryptToken($token)['user'];
         $sql = "SELECT IdNode FROM Nodes WHERE Nodes.IdNodeType = 5009 AND Nodes.Name = '{$data}'";
         $dbObj->Query($sql);
-
         if ($dbObj->getDesErr()) {
             throw new \Exception($dbObj->getDesErr());
         }
-
         return new static($dbObj->getValue('IdNode'));
     }
 }

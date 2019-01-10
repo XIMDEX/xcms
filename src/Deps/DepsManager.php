@@ -34,7 +34,6 @@ class DepsManager
 {
     const SECTION_XIMLET = 'RelSectionXimlet';
     const STRDOC_XIMLET = 'RelStrdocXimlet';
-    const BULLETIN_XIMLET = 'RelBulletinXimlet';
     const STRDOC_TEMPLATE = 'RelStrdocTemplate';
     const NODE2ASSET = 'RelNode2Asset';
     const XML2XML = 'RelXml2Xml';

@@ -128,11 +128,6 @@ class Action_xmlsetlink extends ActionAbstract
 	{
 		$idNode = $this->request->getParam('nodeid');
 		$structuredDocument = new StructuredDocument($idNode);
-		/*
-		$content = ($this->request->getParam('keepcontent') || $this->request->getParam('delete_method') == 'unlink')
-			? $structuredDocument->GetContent() : $this->request->getParam('editor');
-		$structuredDocument->SetContent($content);
-		*/
 		$node = new Node($idNode);
 		$node->ClearWorkFlowMaster();
 		$structuredDocument->ClearSymLink();

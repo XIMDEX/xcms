@@ -47,7 +47,7 @@ class Action_Xedit extends ActionAbstract
         $userID = (int) Session::get('userID');
         $user = new User($userID);
         $node = new Node($id);
-        if (!$node->GetID()) {
+        if (! $node->GetID()) {
             $this->messages->add(_('Requested document does not exist') . ' (ID: ' . $id . ')', MSG_TYPE_ERROR);
             $this->renderMessages();
             return false;

@@ -21,6 +21,6 @@ use Ximdex\Data\GenericData;
     var $_uniqueConstraints = array();
     var $_indexes = array('IdRel');
     var $IdRel;
-    var $IdRole = 0;
-    var $IdPermission = 0;
+    var $IdRole;
+    var $IdPermission;
 }

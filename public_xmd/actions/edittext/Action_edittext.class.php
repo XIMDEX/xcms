@@ -26,11 +26,9 @@
  */
 
 use Ximdex\Models\Node;
-use Ximdex\Models\NodeType;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\App;
-use Ximdex\Runtime\Constants;
 use Ximdex\Utils\Strings;
 
 /**
@@ -60,7 +58,6 @@ class Action_edittext extends ActionAbstract
         $node = new Node($idNode);
         $node_name = $node->GetNodeName();
         $idNodeType = $node->get('IdNodeType');
-        $nodeType = new NodeType($idNodeType);
         $fileName = $node->get('Name');
         $infoFile = pathinfo($fileName);
         if (array_key_exists("extension", $infoFile)) {
@@ -105,17 +102,6 @@ class Action_edittext extends ActionAbstract
         $this->addJs('/vendors/codemirror/Codemirror/addon/mode/loadmode.js');
         $this->addJs('/vendors/codemirror/Codemirror/mode/meta.js');
         $this->addJs('/actions/edittext/resources/js/init.js');
-
-        // If is not node state equals to edition, send a message.
-        $allowed = $node->GetState();
-        if ($nodeType->get('IsStructuredDocument') > 0 && $allowed != Constants::EDITION_STATUS_ID) {
-            $this->messages->add(_('You can not edit the document.'), MSG_TYPE_WARNING);
-            $values = array(
-                'messages' => $this->messages->messages
-            );
-            $this->renderMessages();
-            return false;
-        }
         $values = array('id_node' => $idNode,
             'codemirror_url' => App::getUrl('/vendors/codemirror/Codemirror'),
             'ext' => $ext,

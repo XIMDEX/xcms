@@ -31,7 +31,6 @@ use Ximdex\Models\User;
 use Ximdex\Models\XimLocale;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\App;
-use Ximdex\Runtime\Constants;
 use Ximdex\Runtime\Request;
 use Ximdex\Utils\Serializer;
 use Ximdex\Logger;
@@ -46,7 +45,6 @@ class Action_xmleditor2 extends ActionAbstract
     public function index()
     {
         $idnode = $this->request->getParam('nodeid');
-        // $view = $this->request->getParam('view');
         $strDoc = new StructuredDocument($idnode);
         if ($strDoc->GetSymLink()) {
             $masterNode = new Node($strDoc->GetSymLink());
@@ -59,18 +57,6 @@ class Action_xmleditor2 extends ActionAbstract
         $queryManager = App::get('\Ximdex\Utils\QueryManager');
         $locale = new XimLocale();
         $user_locale = $locale->GetLocaleByCode(\Ximdex\Runtime\Session::get('locale'));
-        // $locales = $locale->GetEnabledLocales();
-        $node = new Node($idnode);
-        
-        // If is not node state equals to edition, send a message.
-        $allowed = $node->GetState();
-        if ($allowed != Constants::EDITION_STATUS_ID) {
-            $this->messages->add(_('You can not edit the document.'), MSG_TYPE_WARNING);
-            $values = array(
-                'messages' => $this->messages->messages
-            );
-            $this->renderMessages();
-        }
         $action = $queryManager->getPage() . $queryManager->buildWith(array(
             'method' => 'load',
             'on_resize_functions' => '',

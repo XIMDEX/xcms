@@ -29,7 +29,6 @@ namespace Ximdex\Nodeviews;
 
 use Ximdex\Logger;
 use Ximdex\Models\Node;
-use Ximdex\Models\StructuredDocument;
 use Ximdex\Models\Version;
 use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
@@ -112,60 +111,6 @@ class ViewTARGZ extends AbstractView
         }
         Logger::info("Additional file for $tableName not found");
         return null;
-    }
-
-    /**
-     * Generate the bulletin docxap for OTF
-     *
-     * @param Node $node
-     * @param Int $idVersion
-     * @return String
-     */
-    function generateDocXapForBulletin($node, $idVersion)
-    {
-        // Docxap for return it
-        $docxapout = '';
-        $channels = '';
-        $language = '';
-
-        // Check that the Version is ok
-        if (! is_null($idVersion)) {
-            $version = new Version($idVersion);
-            if (! $version->get('IdVersion')) {
-                Logger::error('VIEW TARGZ: Se ha cargado una versión incorrecta (' . $idVersion . ')');
-                return '';
-            }
-            $structuredDocument = new StructuredDocument($version->get('IdNode'));
-            $channels = $structuredDocument->GetChannels();
-            $language = $structuredDocument->GetLanguage();
-            if (! $structuredDocument->get('IdDoc')) {
-                Logger::error('VIEW TARGZ: El structured document especificado no existe: ' . $structuredDocument->get('IdDoc'));
-                return '';
-            }
-            
-            // If it is all ok
-            if ((is_array($channels)) && (! is_null($node)) && (! is_null($structuredDocument)) && (array_key_exists(0, $channels)) 
-                && (! is_null($language))) {
-                
-                // Select, for example, the first channel, it's the same because otf will renderize the
-                // xml with a channel selected by the user
-                $channel = reset($channels);
-                $documentType = $structuredDocument->GetDocumentType();
-                $docxapout = $node->class->getDocHeader($channel, $language, $documentType);
-
-                // Check out
-                if (! isset($docxapout) || $docxapout == '') {
-                    Logger::error('VIEW TARGZ: No se ha especificado la cabecera docxap del nodo ' . $node->GetNodeName() 
-                        . ' que quiere renderizar');
-                    return '';
-                }
-            } else {
-                Logger::error('VIEW TARGZ:No se ha podido generar la etiqueta doxcap para el boletin, renderizado para OTF');
-            }
-            return $docxapout;
-        } else {
-            Logger::error('VIEW TARGZ:No se ha podido generar la etiqueta doxcap para el boletin, renderizado para OTF');
-        }
     }
 
     private function getLastVersion($idNode)
