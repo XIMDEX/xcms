@@ -1,11 +1,3 @@
-DROP TABLE `PipeNodeTypes`;
-
-DROP TABLE `PipePropertyValues`;
-
-DROP TABLE `PipeProperties`;
-
-DROP TABLE `PipeNodeTypes`;
-
 ALTER TABLE PipeTransitions DROP FOREIGN KEY PipeTransitions_PipeProcess;
 
 ALTER TABLE PipeTransitions DROP FOREIGN KEY PipeTransitions_PipeStatus_From;
@@ -14,13 +6,13 @@ ALTER TABLE PipeTransitions DROP FOREIGN KEY PipeTransitions_PipeStatus_To;
 
 ALTER TABLE PipeProcess DROP FOREIGN KEY PipeProcess_PipeTransitions_From;
 
-ALTER TABLE PipeProcess DROP FOREIGN KEY PipeProcess_PipeTransitions_To;
-
 ALTER TABLE PipeProcess DROP FOREIGN KEY PipeProcess_Pipelines;
 
 DROP TABLE `PipeProcess`;
 
 DROP TABLE `PipeStatus`;
+
+DROP TABLE `PipeProperties`;
 
 DROP TABLE `PipeTransitions`;
 
@@ -130,6 +122,8 @@ ALTER TABLE `RelGroupsNodes` DROP INDEX `uniq`, ADD UNIQUE `uniq` (`IdNode`, `Id
 ALTER TABLE `RelUsersGroups` CHANGE `IdUser` `IdUser` INT(12) UNSIGNED NOT NULL, CHANGE `IdGroup` `IdGroup` INT(12) UNSIGNED NOT NULL, 
 CHANGE `IdRole` `IdRole` INT(12) UNSIGNED NOT NULL;
 
+ALTER TABLE `RelGroupsNodes` ENGINE = InnoDB;
+
 ALTER TABLE `RelGroupsNodes` ADD CONSTRAINT `RelGroupsNodes_Group` FOREIGN KEY (`IdGroup`) REFERENCES `Groups`(`IdGroup`) 
 ON DELETE CASCADE ON UPDATE CASCADE;
 
@@ -138,3 +132,9 @@ ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE `RelGroupsNodes` ADD CONSTRAINT `RelGroupsNodes_Roles` FOREIGN KEY (`IdRole`) REFERENCES `Roles`(`IdRole`) 
 ON DELETE CASCADE ON UPDATE CASCADE;
+
+DROP TABLE `PipeNodeTypes`;
+
+DROP TABLE `PipePropertyValues`;
+
+UPDATE `Workflow` SET `master` = '1' WHERE `Workflow`.`id` = 403;

@@ -786,7 +786,7 @@ class User extends UsersOrm
             $workflow = new Workflow($node->nodeType->getWorkflow());
             $workFlowId = $workflow->get('id');
         } else {
-            Logger::error('No node ID given in canWrite method');
+            // Logger::warning('No node ID given in canWrite method');
             return false;
         }
         if (! isset($wfParams['node_type'])) {

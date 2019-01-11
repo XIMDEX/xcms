@@ -208,7 +208,8 @@ class InstallDataBaseManager extends InstallManager
         }
         foreach ($sqlFiles as $sqlFile) {
             /*
-            if ($sqlFile == 'changes/20181213115900.sql') {
+            if ($sqlFile == 'changes/20190108110000.sql') {
+                Logger::warning('Manual stop in SQL importation');
                 exit();
             }
             */

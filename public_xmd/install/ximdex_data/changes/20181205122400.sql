@@ -60,10 +60,10 @@ ALTER TABLE `PipeProcess` ADD CONSTRAINT `PipeProcess_Pipelines` FOREIGN KEY (`I
 ALTER TABLE `PipeProcess` ADD CONSTRAINT `PipeProcess_PipeTransitions_From` FOREIGN KEY (`IdTransitionFrom`) REFERENCES `PipeTransitions`(`id`) 
     ON DELETE RESTRICT ON UPDATE RESTRICT;
 
-INSERT INTO `PipeTransitions` (`id`, `IdStatusFrom`, `IdStatusTo`, `IdPipeProcess`, `Cacheable`, `Name`, `Callback`) 
-    VALUES ('6', '7', '8', '4', '0', 'EditionToPublication', NULL);
-ALTER TABLE `PipeTransitions` ADD CONSTRAINT `PipeTransitions_PipeProcess` FOREIGN KEY (`IdPipeProcess`) REFERENCES `PipeProcess`(`id`) 
-    ON DELETE RESTRICT ON UPDATE RESTRICT;
+-- INSERT INTO `PipeTransitions` (`id`, `IdStatusFrom`, `IdStatusTo`, `IdPipeProcess`, `Cacheable`, `Name`, `Callback`) 
+--     VALUES ('6', '7', '8', '4', '0', 'EditionToPublication', NULL);
+-- ALTER TABLE `PipeTransitions` ADD CONSTRAINT `PipeTransitions_PipeProcess` FOREIGN KEY (`IdPipeProcess`) REFERENCES `PipeProcess`(`id`) 
+--     ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 ALTER TABLE `PipeProcess` ADD CONSTRAINT `PipeProcess_PipeTransitions_To` FOREIGN KEY (`IdTransitionTo`) REFERENCES `PipeTransitions`(`id`) 
     ON DELETE RESTRICT ON UPDATE RESTRICT;

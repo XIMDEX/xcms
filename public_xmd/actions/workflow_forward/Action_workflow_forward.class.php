@@ -38,8 +38,6 @@ use Ximdex\MVC\ActionAbstract;
 use Ximdex\Utils\Serializer;
 use Ximdex\Sync\SynchroFacade;
 
-// Ximdex\Modules\Manager::file('/actions/browser3/inc/GenericDatasource.class.php');
-
 include_once XIMDEX_ROOT_PATH . '/src/Sync/conf/synchro_conf.php';
 
 /**
@@ -168,11 +166,12 @@ class Action_workflow_forward extends ActionAbstract
         // Only for Strdocs, goes to next state
         if ($node->nodeType->GetID() == \Ximdex\NodeTypes\NodeTypeConstants::XML_DOCUMENT 
                 or $node->nodeType->GetID() == \Ximdex\NodeTypes\NodeTypeConstants::HTML_DOCUMENT) {
-            if ($workflowNext->isFinalState()) {
+            if (count($AllowedStates) == 1 or $workflowNext->isFinalState()) {
                 $values['go_method'] = 'publicateNode';
                 $values['hasDisabledFunctions'] = $this->hasDisabledFunctions();
                 $values['globalForcedEnabled'] = FORCE_PUBLICATION;
                 $values = array_merge($values, $this->buildExtraValues($idNode));
+                $values['stateid'] = $workflowNext->getFinalState();
                 $this->render($values, NULL, 'default-3.0.tpl');
             } else {
                 $defaultMessage = $this->buildMessage($conf["defaultMessage"], _('next'), $node->get('Name'));

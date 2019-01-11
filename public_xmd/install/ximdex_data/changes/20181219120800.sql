@@ -20,10 +20,10 @@ CREATE TABLE `WorkflowStatus` (
 INSERT INTO `WorkflowStatus` (`id`, `name`, `description`, `action`, `sort`, `workflowId`) VALUES
 (7, 'Edition', 'The document is in the development phase', NULL, 0, NULL),
 (8, 'Publication', 'The document is waiting to be published', NULL, 100, NULL),
-(10, 'Translation', 'Send the document to translate system', 'Translator@sendTranslation', 1, 404),
-(11, 'Review translation', 'State defined to check if translations are right', NULL, 2, 404);
+(10, 'Translation', 'Send the document to translate system', 'Translator@sendTranslation', 1, 403),
+(11, 'Review translation', 'State defined to check if translations are right', NULL, 2, 403);
 
-ALTER TABLE `WorkflowStatus` ADD PRIMARY KEY (`id`) ADD KEY `WorkflowStatus_Workflow` (`workflowId`);
+ALTER TABLE `WorkflowStatus` ADD PRIMARY KEY (`id`), ADD KEY `WorkflowStatus_Workflow` (`workflowId`);
 
 ALTER TABLE `WorkflowStatus` MODIFY `id` int(12) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
@@ -108,10 +108,13 @@ ALTER TABLE `RelRolesActions` DROP `IdPipeline`;
 
 DELETE FROM `RelRolesActions` WHERE `RelRolesActions`.`IdRel` = 8203;
 
+DELETE FROM `RelRolesActions` WHERE `RelRolesActions`.`IdRel` = 1351;
+DELETE FROM `RelRolesActions` WHERE `RelRolesActions`.`IdRel` = 1352;
+
 ALTER TABLE `RelRolesActions` ADD UNIQUE (`IdRol`, `IdAction`, `IdState`);
 
-UPDATE Nodes node SET node.IdState = NULL 
-WHERE (SELECT nodetype.workflowId FROM NodeTypes nodetype WHERE node.IdNodeType = nodetype.IdNodeType) IS NULL
+UPDATE Nodes node SET node.IdState = NULL WHERE (SELECT nodetype.workflowId FROM NodeTypes nodetype 
+WHERE node.IdNodeType = nodetype.IdNodeType) IS NULL;
 
 ALTER TABLE RelUsersGroups DROP FOREIGN KEY RelUsersGroups_Groups;
 

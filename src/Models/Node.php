@@ -314,13 +314,13 @@ class Node extends NodesOrm
         if ($workflowStatus->get('action')) {
 
             // Call a specified action in this transition to the new state
-            $actions = WorkFlow::getActions();
+            $actions = Workflow::getActions();
             if (!isset($actions[$workflowStatus->get('action')])) {
                 $this->messages->add(sprintf(_('The action %s does not exist'), $workflowStatus->get('action')), MSG_TYPE_ERROR);
                 return false;
             }
             $action = explode('@', $workflowStatus->get('action'));
-            $className = WorkFlow::WORKFLOW_ACTIONS_NAMESPACE . $action[0];
+            $className = Workflow::WORKFLOW_ACTIONS_NAMESPACE . $action[0];
             $class = new $className($this);
             $method = $action[1];
             Logger::info('Calling method ' . $method . ' in ' . $action[0] . ' class before changing the status to ' 
@@ -895,7 +895,7 @@ class Node extends NodesOrm
         if ($this->getID()) {
 
             // Validate HTML or XML valid contents (including XSL schemas)
-            if ($this->GetNodeType()) {
+            if ($this->GetNodeType() and $content) {
                 $res = true;
                 if ($this->GetNodeType() == NodeTypeConstants::XSL_TEMPLATE or $this->GetNodeType() == NodeTypeConstants::XML_DOCUMENT
                     or $this->getNodeType() == NodeTypeConstants::RNG_VISUAL_TEMPLATE) {
@@ -1844,11 +1844,13 @@ class Node extends NodesOrm
                     // the relation between this node and the given group is defined already
                     return true;
                 }
-                $query = sprintf("INSERT INTO RelGroupsNodes (IdGroup, IdNode, IdRole) VALUES (%d, %d, %d)", $groupID
-                    , $this->get('IdNode'), $roleID);
+                if (! $roleID) {
+                    $roleID = 'NULL';
+                }
+                $query = 'INSERT INTO RelGroupsNodes (IdGroup, IdNode, IdRole) VALUES (' . $groupID . ', ' . $this->get('IdNode') 
+                    . ', ' . $roleID . ')';
                 $dbObj->Execute($query);
                 if ($dbObj->numErr) {
-
                     $this->SetError(5);
                     return false;
                 }
