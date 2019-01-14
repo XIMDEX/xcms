@@ -1,4 +1,4 @@
-<?php
+    <?php
 
 /**
  *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
@@ -162,46 +162,31 @@ class Action_workflow_forward extends ActionAbstract
             'node_Type' => $node->nodeType->GetName(),
             'name' => $node->GetNodeName()
         );
-        
-        // Only for Strdocs, goes to next state
-        if ($node->nodeType->GetID() == \Ximdex\NodeTypes\NodeTypeConstants::XML_DOCUMENT 
-                or $node->nodeType->GetID() == \Ximdex\NodeTypes\NodeTypeConstants::HTML_DOCUMENT) {
-            if (count($AllowedStates) == 1 or $workflowNext->isFinalState()) {
-                $values['go_method'] = 'publicateNode';
-                $values['hasDisabledFunctions'] = $this->hasDisabledFunctions();
-                $values['globalForcedEnabled'] = FORCE_PUBLICATION;
-                $values = array_merge($values, $this->buildExtraValues($idNode));
-                $values['stateid'] = $workflowNext->getFinalState();
-                $this->render($values, NULL, 'default-3.0.tpl');
-            } else {
-                $defaultMessage = $this->buildMessage($conf["defaultMessage"], _('next'), $node->get('Name'));
-                
-                // Set default Message
-                $values['defaultMessage'] = $defaultMessage;
-                $values2 = array(
-                    'go_method' => 'publicateForm',
-                    'allowedstates' => $AllowedStates,
-                    'nextStateName' => $nextStateName,
-                    'currentStateName' => $workflow->getStatusName()
-                );
-                $values = array_merge($values2, $values);
-                $this->render($values, 'next_state.tpl', 'default-3.0.tpl');
-            }
-        } else {
-            
-            // Rest of nodetypes just will be published
-            $workflowPub = new Workflow($node->nodeType->getWorkflow(), $workflow->getFinalState());
-            $pubStateName = $workflowPub->getStatusName();
-            $values['hasDisabledFunctions'] = $this->hasDisabledFunctions();
-            $values['go_method'] = 'publicateNode';
-            $values['state'] = $pubStateName;
-            $defaultMessage = $this->buildMessage($conf["defaultMessage"], $pubStateName, $node->get('Name'));
-            $values['defaultMessage'] = $defaultMessage;
-            $values['idNode'] = $idNode;
+        if ($workflowNext->isFinalState()) {
+            $values = array(
+                'go_method' => 'publicateNode',
+                'hasDisabledFunctions' => $this->hasDisabledFunctions(),
+                'globalForcedEnabled' => FORCE_PUBLICATION,
+                'stateid' => $workflowNext->getFinalState(),
+                'nodeTypeID' => $node->nodeType->getID(),
+                'node_Type' => $node->nodeType->GetName()
+            );
             $values = array_merge($values, $this->buildExtraValues($idNode));
+            $this->render($values, null, 'default-3.0.tpl');
+        } else {
+            $defaultMessage = $this->buildMessage($conf["defaultMessage"], _('next'), $node->get('Name'));
             
-            // Show the publication form
-            $this->render($values, NULL, 'default-3.0.tpl');
+            // Set default Message
+            $values = array(
+                'go_method' => 'publicateForm',
+                'allowedstates' => $AllowedStates,
+                'nextStateName' => $nextStateName,
+                'currentStateName' => $workflow->getStatusName(),
+                'defaultMessage' => $defaultMessage,
+                'nodeTypeID' => $node->nodeType->getID(),
+                'node_Type' => $node->nodeType->GetName()
+            );
+            $this->render($values, 'next_state.tpl', 'default-3.0.tpl');
         }
     }
 
@@ -306,6 +291,66 @@ class Action_workflow_forward extends ActionAbstract
                 $this->render($values, 'success.tpl', 'default-3.0.tpl');
             }
         }
+    }
+    
+    /**
+     * Publicate the node
+     *
+     * Request params
+     *
+     * * nodeid
+     * * dateUp
+     * * dateDown
+     * * markend
+     * * republish
+     * * no_structure
+     * * all_levels
+     * * sendNotifications
+     * * users
+     * * stateid
+     * * texttosend
+     */
+    public function publicateNode()
+    {
+        $idNode = $this->request->getParam('nodeid');
+        
+        // The publication times are in milliseconds
+        $dateUp = $this->request->getParam('dateUp_timestamp');
+        $dateDown = $this->request->getParam('dateDown_timestamp');
+        $up = (! is_null($dateUp) && $dateUp != "") ? $dateUp / 1000 : time();
+        $down = (! is_null($dateDown) && $dateDown != "") ? $dateDown / 1000 : null;
+        if ($down and $down <= ($up + 58)) {
+            $this->messages->add('Expiration date has to be later than beginning one', MSG_TYPE_ERROR);
+            $values = array('messages' => $this->messages->messages);
+            $this->sendJSON($values);
+        }
+        $markEnd = $this->request->getParam('markend') ? true : false;
+        $structure = $this->request->getParam('no_structure') ? false : true;
+        $levels = $this->request->getParam('levels');
+        if ($levels == 'all') {
+            
+            // All linked elements
+            $deepLevel = -1;
+        }
+        elseif ($levels == 'deep') {
+            
+            // N levels of depth
+            $deepLevel = abs($this->request->getParam('deeplevel'));
+        }
+        else {
+            
+            // Zero levels, only the given node
+            $deepLevel = 0;
+        }
+        $force = $this->request->getParam('force') ? true : false;
+        $sendNotifications = $this->request->getParam('sendNotifications');
+        $notificableUsers = $this->request->getParam('users');
+        $idState = $this->request->getParam('stateid');
+        $texttosend = $this->request->getParam('texttosend');
+        $lastPublished = $this->request->getParam('latest') ? false : true;
+        Logger::debug("ADDSECTION publicateNode PRE");
+        $this->sendToPublish($idNode, $up, $down, $markEnd, $force, $structure, $deepLevel, $sendNotifications, $notificableUsers, $idState
+            , $texttosend, $lastPublished);
     }
 
     /**
@@ -487,66 +532,6 @@ class Action_workflow_forward extends ActionAbstract
             . $texttosend . "\n\n";
         parent::sendNotifications($subject, $content, $userList);
         return true;
-    }
-
-    /**
-     * Publicate the node
-     *
-     * Request params
-     *
-     * * nodeid
-     * * dateUp
-     * * dateDown
-     * * markend
-     * * republish
-     * * no_structure
-     * * all_levels
-     * * sendNotifications
-     * * users
-     * * stateid
-     * * texttosend
-     */
-    public function publicateNode()
-    {
-        $idNode = $this->request->getParam('nodeid');
-        
-        // The publication times are in milliseconds
-        $dateUp = $this->request->getParam('dateUp_timestamp');
-        $dateDown = $this->request->getParam('dateDown_timestamp');
-        $up = (! is_null($dateUp) && $dateUp != "") ? $dateUp / 1000 : time();
-        $down = (! is_null($dateDown) && $dateDown != "") ? $dateDown / 1000 : null;
-        if ($down and $down <= ($up + 58)) {
-            $this->messages->add('Expiration date has to be later than beginning one', MSG_TYPE_ERROR);
-            $values = array('messages' => $this->messages->messages);
-            $this->sendJSON($values);
-        }
-        $markEnd = $this->request->getParam('markend') ? true : false;
-        $structure = $this->request->getParam('no_structure') ? false : true;
-        $levels = $this->request->getParam('levels');
-        if ($levels == 'all') {
-            
-            // All linked elements
-            $deepLevel = -1;
-        }
-        elseif ($levels == 'deep') {
-            
-            // N levels of depth
-            $deepLevel = abs($this->request->getParam('deeplevel'));
-        }
-        else {
-            
-            // Zero levels, only the given node
-            $deepLevel = 0;
-        }
-        $force = $this->request->getParam('force') ? true : false;
-        $sendNotifications = $this->request->getParam('sendNotifications');
-        $notificableUsers = $this->request->getParam('users');
-        $idState = $this->request->getParam('stateid');
-        $texttosend = $this->request->getParam('texttosend');
-        $lastPublished = $this->request->getParam('latest') ? false : true;
-        Logger::debug("ADDSECTION publicateNode PRE");
-        $this->sendToPublish($idNode, $up, $down, $markEnd, $force, $structure, $deepLevel, $sendNotifications, $notificableUsers, $idState
-            , $texttosend, $lastPublished);
     }
 
     private function sendToPublish($idNode, $up, $down, $markEnd, $force, $structure, $deepLevel, $sendNotifications, $notificableUsers

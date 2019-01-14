@@ -86,9 +86,12 @@ class Workflow extends GenericData
         $this->__construct($id);
     }
     
-    public function getAllStates()
+    public function getAllStates(bool $common = true)
     {
-        $condition = 'workflowId IS NULL';
+        $condition = 'FALSE';
+        if ($common) {
+            $condition .= ' OR workflowId IS NULL';
+        }
         if ($this->id) {
             $condition .= ' OR workflowId = ' . $this->id;
         }

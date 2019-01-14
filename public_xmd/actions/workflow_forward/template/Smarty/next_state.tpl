@@ -44,7 +44,7 @@
         <fieldset class="notifications">
             <span class="">
                 <input type="checkbox" name="sendNotifications" id="sendNotifications" class="send-notifications hidden-focus" 
-                        value="1" {if $required eq 1}checked="checked"{/if} />
+                        value="1" {if isset($required) and $required eq 1}checked="checked"{/if} />
                 <label for="sendNotifications" class="checkbox-label icon">{t}Send notifications{/t}</label>
             </span>
             <ol>

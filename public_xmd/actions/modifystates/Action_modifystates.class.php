@@ -25,7 +25,6 @@
  * @version $Revision$
  */
 
-use Ximdex\Models\Action;
 use Ximdex\Models\Node;
 use Ximdex\Models\NodeType;
 use Ximdex\Models\Workflow;
@@ -71,8 +70,8 @@ class Action_modifystates extends ActionAbstract
         }
         $checkUrl = App::getUrl( '?actionid=' . $this->request->getParam('actionid') . '&nodeid=' . $this->request->getParam('nodeid')
             . '&id_nodetype=IDNODETYPE&is_workflow_master=ISWORKFLOWMASTER&method=checkNodeDependencies');
-        $values = array('all_status_info' => json_encode($allStatusInfo),
-            // 'status_transitions' => json_encode($statusTransitions),
+        $values = array(
+            'all_status_info' => json_encode($allStatusInfo),
             'nodetype_list' => json_encode($nodeTypeValues),
             'selectedNodetype' => $node->GetNodeType(),
             'is_workflow_master' => $workflow->get('master'),
@@ -81,7 +80,7 @@ class Action_modifystates extends ActionAbstract
             'idNode' => $idNode,
             'actions' => json_encode(array('' =>  null) + Workflow::getActions()),
             'nodeTypeID' => $node->nodeType->getID(),
-            'node_Type' => $node->nodeType->GetName(),
+            'node_Type' => $node->nodeType->GetName()
         );
         $this->render($values, null, 'default-3.0.tpl');
     }
@@ -138,34 +137,6 @@ class Action_modifystates extends ActionAbstract
                 }
             }
         }
-        $action = new Action();
-        if (count($all_status) > 2) {
-            $actions = $action->find(ALL, 'Command = %s AND Name = %s', array('workflow_forward', 'Publish'));
-            foreach ($actions as $a) {
-                $act = new Action($a['IdAction']);
-                $act->set('Name', 'Move to next state');
-                $act->update();
-            }
-            $actions = $action->find(ALL, 'Command = %s', array('workflow_backward'));
-            foreach ($actions as $a) {
-                $act = new Action($a['IdAction']);
-                $act->set('Sort', 73);
-                $act->update();
-            }
-        } else {
-            $actions = $action->find(ALL, 'Command = %s AND Name = %s', array('workflow_forward', 'Move to next state'));
-            foreach ($actions as $a) {
-                $act = new Action($a['IdAction']);
-                $act->set('Name', 'Publish');
-                $act->update();
-            }
-            $actions = $action->find(ALL, 'Command = %s', array('workflow_backward'));
-            foreach ($actions as $a) {
-                $act = new Action($a['IdAction']);
-                $act->set('Sort', -10);
-                $act->update();
-            }
-        }
         $this->sendJSON(array(
             'result' => 'ok',
             'all_status_info' => json_encode($all_status),
@@ -206,7 +177,7 @@ class Action_modifystates extends ActionAbstract
         if (empty($allNodes)) {
             $this->messages->add(_('Any node will change of workflow state'), MSG_TYPE_NOTICE);
         }
-        if (!empty($allNodes)) {
+        if (! empty($allNodes)) {
             $this->messages->add(_('Nodes which will change workflow state'), MSG_TYPE_NOTICE);
             foreach ($allNodes as $idNode) {
                 $node = new Node($idNode);

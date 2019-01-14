@@ -19,9 +19,9 @@ CREATE TABLE `WorkflowStatus` (
 
 INSERT INTO `WorkflowStatus` (`id`, `name`, `description`, `action`, `sort`, `workflowId`) VALUES
 (7, 'Edition', 'The document is in the development phase', NULL, 0, NULL),
-(8, 'Publication', 'The document is waiting to be published', NULL, 100, NULL),
-(10, 'Translation', 'Send the document to translate system', 'Translator@sendTranslation', 1, 403),
-(11, 'Review translation', 'State defined to check if translations are right', NULL, 2, 403);
+(8, 'Publication', 'The document is waiting to be published', NULL, 100, NULL);
+-- (10, 'Translation', 'Send the document to translate system', 'Translator@sendTranslation', 1, 403),
+-- (11, 'Review translation', 'State defined to check if translations are right', NULL, 2, 403);
 
 ALTER TABLE `WorkflowStatus` ADD PRIMARY KEY (`id`), ADD KEY `WorkflowStatus_Workflow` (`workflowId`);
 

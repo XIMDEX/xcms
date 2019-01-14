@@ -25,7 +25,6 @@
  * @version $Revision$
  */
 
-use Ximdex\Logger;
 use Ximdex\Models\WorkflowStatus;
 use Ximdex\Models\Role;
 use Ximdex\Models\Node;
@@ -40,28 +39,26 @@ class Action_modifystatesrole extends ActionAbstract
         $role = new Role($idNode);
         $idRoleStates = $role->GetAllStates();
         $workflow = new Workflow();
-        try {
-            $workflow->loadMaster();
-        } catch (Exception $e) {
-            Logger::error($e->getMessage());
-            return false;
-        }
-        $idAllStates = $workflow->GetAllStates();
-        $states = [];
-        foreach ($idAllStates as $idStatus) {
-            $wStatus = new WorkflowStatus($idStatus);
-            $states[] = array('id' => $idStatus, 'name' => $wStatus->get('name'));
-        }
-        foreach ($states as $i => $state) {
-            if ($state['id'] != null && is_array($idRoleStates) && in_array($state['id'], $idRoleStates)) {
-                $states[$i]['asociated'] = true;
-            } else {
-                $states[$i]['asociated'] = false;
+        $workflows = $workflow->findAll();
+        $workflows[] = ['id' => null, 'description' => 'Common states'];
+        foreach ($workflows as & $wfData) {
+            $workflow = new Workflow($wfData['id']);
+            $idAllStates = $workflow->GetAllStates(! $wfData['id']);
+            $states = [];
+            foreach ($idAllStates as $idStatus) {
+                $wStatus = new WorkflowStatus($idStatus);
+                if (is_array($idRoleStates) && in_array($idStatus, $idRoleStates)) {
+                    $asociated = true;
+                } else {
+                    $asociated = false;
+                }
+                $states[] = array('id' => $idStatus, 'name' => $wStatus->get('name'), 'asociated' => $asociated);
             }
+            $wfData['states'] = $states;
         }
         $node = new Node($idNode);
         $values = array(
-            'all_states' => json_encode($states),
+            'workflows' => json_encode($workflows),
             'nodeTypeID' => $node->nodeType->getID(),
             'node_Type' => $node->nodeType->GetName(),
             'idRole' => $idNode);
@@ -72,14 +69,16 @@ class Action_modifystatesrole extends ActionAbstract
     {   
         $post = file_get_contents('php://input');
         $request = json_decode($post, true);
-        $states = $request['states'];
+        $workflows = $request['workflows'];
         $idRole = $request['idRole'];
         $role = new Role($idRole);
-        foreach ($states as $state) {
-            if ($state['asociated'] && $role->hasState($state['id']) == 0) {
-                $role->AddState($state['id']);
-            } elseif (!$state['asociated'] && $role->hasState($state['id']) > 0) {
-                $role->deleteState($state['id']);
+        foreach ($workflows as $workflow) {
+            foreach ($workflow['states'] as $state) {
+                if ($state['asociated'] && ! $role->hasState($state['id'])) {
+                    $role->addState($state['id']);
+                } elseif (! $state['asociated'] && $role->hasState($state['id'])) {
+                    $role->deleteState($state['id']);
+                }
             }
         }
         $this->sendJSON(array('result' => 'ok', 'message' => _('The rol has been successfully updated')));

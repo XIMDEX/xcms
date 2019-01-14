@@ -24,8 +24,6 @@ class Constants
     const IMPORTED_STATUS_OK = 1;
     const IMPORTED_STATUS_OK_TO_PUBLISH = 2;
     const IMPORTED_STATUS_PENDING_LINKS = 3;
-    const EDITION_STATUS_ID = 7;
-    const PUBLICATION_STATUS_ID = 8;
     
     // Metatype of nodetypes
     static $METATYPES_ARRAY = array(

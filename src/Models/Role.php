@@ -523,7 +523,6 @@ class Role extends RolesOrm
      */
     public function getAllStates()
     {
-        $salida = null;
         $sql = sprintf('SELECT IdState FROM RelRolesStates WHERE IdRole = %d', $this->get('IdRole'));
         $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->Query($sql);
@@ -531,6 +530,7 @@ class Role extends RolesOrm
             $this->SetError(1);
             return null;
         }
+        $salida = [];
         while (! $dbObj->EOF) {
             $salida[] = $dbObj->row['IdState'];
             $dbObj->Next();
