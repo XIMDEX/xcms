@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -31,18 +31,18 @@ use Ximdex\MVC\ActionAbstract;
 use Ximdex\NodeTypes\NodeTypeConstants;
 use Ximdex\Sync\SynchroFacade;
 
-\Ximdex\Modules\Manager::file('/actions/browser3/inc/GenericDatasource.class.php');
+Ximdex\Modules\Manager::file('/actions/browser3/inc/GenericDatasource.class.php');
 
 class Action_deletenode extends ActionAbstract
 {
-	function index()
+	public function index()
 	{
-		$formType = "simple";
-		$nodes = $this->request->getParam("nodes");
+		$formType = 'simple';
+		$nodes = $this->request->getParam('nodes');
 		$nodes = GenericDatasource::normalizeEntities($nodes);
-		$params = $this->request->getParam("params");
+		$params = $this->request->getParam('params');
 		$userID = \Ximdex\Runtime\Session::get('userID');
-		$texto = "";
+		$texto = '';
 		if (count($nodes) == 1) {
 			$idNode = $this->request->getParam('nodeid');
 		}
@@ -50,11 +50,11 @@ class Action_deletenode extends ActionAbstract
 		$children = $node->GetChildren();
 		if ($node->GetNodeType() == \Ximdex\NodeTypes\NodeTypeConstants::XML_DOCUMENT) {
             $dbObj = new \Ximdex\Runtime\Db();
-            $query = "select IdDoc from StructuredDocuments where TargetLink=".$idNode;
+            $query = 'select IdDoc from StructuredDocuments where TargetLink=' . $idNode;
             $dbObj->Query($query);
             $symbolics = array();
-            while(!$dbObj->EOF) {
-                $n = new Node($dbObj->GetValue("IdDoc"));
+            while(! $dbObj->EOF) {
+                $n = new Node($dbObj->GetValue('IdDoc'));
                 $symbolics[] = $n->GetPath();
                 $dbObj->Next();
             }
@@ -68,9 +68,9 @@ class Action_deletenode extends ActionAbstract
         }
 		$user = new User($userID);
 		$depList = array();
-		if ($user->HasPermission("delete on cascade")) {
+		if ($user->hasPermission('delete on cascade')) {
 			$undeletableChildren = array();
-			if ($node->nodeType->get('Name') != "XmlContainer") {
+			if ($node->nodeType->get('Name') != 'XmlContainer') {
 				if ($node->nodeType->get('Name') != 'Channel') {
 					$depList = $node->GetDependencies();
 				}
@@ -89,41 +89,39 @@ class Action_deletenode extends ActionAbstract
 					$undeletableChildren = array_unique(array_merge($undeletableChildren, $depNode->TraverseTree(5)));
 				}
 			}
-			if (!empty($undeletableChildren)) {
-				$texto = _("Because of system restrictions, the following nodes cannot be deleted: ");
+			if (! empty($undeletableChildren)) {
+				$texto = _('Because of system restrictions, the following nodes cannot be deleted: ');
 				foreach( $undeletableChildren as $_undelete) {
 					$node_t = new Node($_undelete);
 					$name_t = $node_t->GetNodeName();
 					$texto .= " $name_t($_undelete), ";
 				}
 			} else {
-				$formType = "dependencies";
+				$formType = 'dependencies';
 			}
 		} else {
 			if (sizeof($children) && count($depList)) {
-				$texto = $node->nodeType->get('Name') != "XmlContainer" ?
-					_("Selected document or folder is not empty. It also have external dependencies with other system documents and it cannot be deleted using your role. Please, undo dependencies or use a user with suitable permissions.") : _("Your role cannot delete the selected container because of it has language versions depending on it.");
-				$formType = "no_permisos";
+				$texto = $node->nodeType->get('Name') != 'XmlContainer' ?
+					_('Selected document or folder is not empty. It also have external dependencies with other system documents and it cannot be deleted using your role. Please, undo dependencies or use a user with suitable permissions.') : _('Your role cannot delete the selected container because of it has language versions depending on it.');
+				$formType = 'no_permisos';
 			}
 
 			// Error: if it has not permits to cascade deletion and node has children but has dependencies
-			if (sizeof($children) && !sizeof($depList)) {
-
-				$texto = _("Selected document or folder is not empty and it cannot be deleted using your role. Please, undo dependencies or use a user with suitable permissions.");
-
-				$formType = "no_permisos";
+			if (sizeof($children) && ! sizeof($depList)) {
+				$texto = _('Selected document or folder is not empty and it cannot be deleted using your role. Please, undo dependencies or use a user with suitable permissions.');
+				$formType = 'no_permisos';
 			}
 
 			// Error: if it has not permits to cascade deletion and node has not children but has dependencies
-			if (!sizeof($children) && count($depList)) {
-				$texto = _("Selected file has dependencies with other system documents and it cannot be deleted using your role. Please, undo dependencies or use a user with suitable permissions.");
-				$formType = "no_permisos";
+			if (! sizeof($children) && count($depList)) {
+				$texto = _('Selected file has dependencies with other system documents and it cannot be deleted using your role. Please, undo dependencies or use a user with suitable permissions.');
+				$formType = 'no_permisos';
 			}
 
 			// If it has not permits to cascade deletion and node has not children and has not dependencies
 			// Here it is allowed atomic deletion
-			if (!sizeof($children) && !sizeof($depList)) {
-				$formType = "simple";
+			if (! sizeof($children) && ! sizeof($depList)) {
+				$formType = 'simple';
 			}
 		}
 		$this->addCss('/actions/deletenode/resources/css/style.css');
@@ -135,19 +133,19 @@ class Action_deletenode extends ActionAbstract
 			'texto' => $texto,
 		    'nodeTypeID' => $node->nodeType->getID(),
 		    'node_Type' => $node->nodeType->GetName(),
-			"go_method" => "delete_node",
+			'go_method' => 'delete_node',
 		);
-		$depListTmp=array();
+		$depListTmp = array();
 		if (sizeof($depList) > 0) {
 			foreach($depList as $idDep) {
 				$depNode = new Node($idDep);
-				$depListTmp[$idDep]["name"] = $depNode->GetNodeName();
-				$depListTmp[$idDep]["path"] = substr($depNode->GetPath(),16);
+				$depListTmp[$idDep]['name'] = $depNode->GetNodeName();
+				$depListTmp[$idDep]['path'] = substr($depNode->GetPath(),16);
 			}
 		}
 		if ($formType == 'no_permisos') {
-			$values['titulo'] = $node->nodeType->get('Name') != "XmlContainer" ?  _("List of pending documents")
-				: _("To be able to delete this node, you should first delete the following language versions");
+			$values['titulo'] = $node->nodeType->get('Name') != 'XmlContainer' ?  _('List of pending documents')
+				: _('To be able to delete this node, you should first delete the following language versions');
 		} else if ($formType == 'dependencies') {
 
 			// Looking for publication (pending and in) tasks for node
@@ -167,17 +165,17 @@ class Action_deletenode extends ActionAbstract
 					}
 				}
 			}
-			$values["depList"] = $depListTmp;
-			$values["pendingTasks"] = count($pendingTasks);
-			$values["isPublished"] = $isPublished;
+			$values['depList'] = $depListTmp;
+			$values['pendingTasks'] = count($pendingTasks);
+			$values['isPublished'] = $isPublished;
 		}
 		$this->addJs('/actions/deletenode/resources/js/deletenode.js');
 		$this->render($values, null, 'default-3.0.tpl');
 	}
 
-	function delete_node()
+	public function delete_node()
 	{
-		$idNode	= $this->request->getParam("nodeid");
+		$idNode	= $this->request->getParam('nodeid');
 		$node = new Node($idNode);
 		
 		// Get the project node
@@ -192,23 +190,23 @@ class Action_deletenode extends ActionAbstract
 	        return false;
 		}
 		$depList = array();
-		$deleteDep = $this->request->getParam("unpublishnode");
+		$deleteDep = $this->request->getParam('unpublishnode');
 		$userID = \Ximdex\Runtime\Session::get('userID');
-		$unpublishDoc = ($this->request->getParam("unpublishdoc") == 1) ? true : false;
+		$unpublishDoc = ($this->request->getParam('unpublishdoc') == 1) ? true : false;
 
 		// Deleting publication tasks
 		$sync = new SynchroFacade();
 		$sync->deleteAllTasksByNode($idNode, $unpublishDoc);
 		$parentID = $node->get('IdParent');
 		$user = new User($userID);
-		$canDeleteOnCascade = $user->HasPermission("delete on cascade");
+		$canDeleteOnCascade = $user->hasPermission('delete on cascade');
         $children = $node->GetChildren();
 		if ($canDeleteOnCascade && $deleteDep) {
 			if ($node->nodeType->get('Name') != 'Channel') {
 				$depList = $node->GetDependencies();
 			}
 			$undeletableChildren = $node->TraverseTree(5);
-			if ($node->nodeType->get('Name') == "XmlContainer") {
+			if ($node->nodeType->get('Name') == 'XmlContainer') {
 				foreach($children as $child) {
 					$childNode = new Node($child);
 					$depList = array_merge($depList, $childNode->GetDependencies());
@@ -227,24 +225,24 @@ class Action_deletenode extends ActionAbstract
 			$node->delete();
 			$err = NULL;
 			if ($node->numErr) {
-				$err = _("An error occurred while deleting:");
-				$err .= '<br>' . $node->get('IdNode') . " " . $node->GetPath() . '<br>' . _("Error message: ") . $node->msgErr . "<br><br>";
+				$err = _('An error occurred while deleting:');
+				$err .= '<br>' . $node->get('IdNode') . ' ' . $node->GetPath() . '<br>' . _('Error message: ') . $node->msgErr . '<br><br>';
 			}
 			if (is_array($depList)) {
 				foreach($depList as $depID) {
 					$depNode = new Node($depID);
 					$depNode->delete();
 					if ($depNode->numErr) {
-						if(!strlen($err))
-						$err = _("An error occurred while deleting dependencies: ");
-						$err .= '<br>'.$depNode->get('IdNode'). " ".$depNode->GetPath().'<br>'. _("Error message: ") .
-							$depNode->msgErr . "<br><br>";
+						if(! strlen($err))
+						$err = _('An error occurred while deleting dependencies: ');
+						$err .= '<br>' . $depNode->get('IdNode'). ' ' . $depNode->GetPath() . '<br>' . _('Error message: ') .
+							$depNode->msgErr . '<br><br>';
 					}
 				}
 				if (strlen($err)) {
 					$this->messages->add($err, MSG_TYPE_ERROR);
 				} else {
-					$this->messages->add(_("All nodes were successfully deleted"), MSG_TYPE_NOTICE);
+					$this->messages->add(_('All nodes were successfully deleted'), MSG_TYPE_NOTICE);
 				}
 			}
 			
@@ -262,24 +260,24 @@ class Action_deletenode extends ActionAbstract
 		    
 			// Error: if it has not permit to cascade deletion and node has children and dependencies
 		    if (sizeof($children) && count($depList)) {
-                $this->messages->add(_("Node is not empty and it has external dependencies."), MSG_TYPE_ERROR);
+                $this->messages->add(_('Node is not empty and it has external dependencies.'), MSG_TYPE_ERROR);
 		    }
-		    elseif (sizeof($children) && !sizeof($depList)) {
+		    elseif (sizeof($children) && ! sizeof($depList)) {
 		        
 		        // Error: if it has not permit to cascade deletion and node has children but dependencies
-			    $this->messages->add(_("Node is not empty."), MSG_TYPE_ERROR);
+			    $this->messages->add(_('Node is not empty.'), MSG_TYPE_ERROR);
 		    }
-		    elseif (!sizeof($children) && count($depList)) {
+		    elseif (! sizeof($children) && count($depList)) {
 		        
 		        // Error: If it has not permit to cascade deletion and node has not children but has dependencies
-		        $this->messages->add(_("It has external dependencies."), MSG_TYPE_ERROR);
+		        $this->messages->add(_('It has external dependencies.'), MSG_TYPE_ERROR);
 		    }
-			elseif (!sizeof($children) && !sizeof($depList)) {
+			elseif (! sizeof($children) && ! sizeof($depList)) {
 			    
 			    // If it has not permit to cascade deletion and node has not children and has not dependencies
 			    // Here it is allowed atomic deletion
 				$node->delete();
-				$this->messages->add(_("Action successfully performed."), MSG_TYPE_NOTICE);
+				$this->messages->add(_('Action successfully performed.'), MSG_TYPE_NOTICE);
 			}
 		}
 		$values = array(

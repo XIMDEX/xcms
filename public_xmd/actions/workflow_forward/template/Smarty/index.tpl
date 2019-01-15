@@ -129,7 +129,8 @@
 				<fieldset class="notifications">
 					<span class="">
 		    			<input type="checkbox" name="sendNotifications" id="sendNotifications_forward_{$idNode}" 
-		    					class="send-notifications hidden-focus" value="1" {if $required eq 1}checked="checked"{/if} />
+		    					class="send-notifications hidden-focus" 
+		    					value="1" {if $required eq 1}checked="checked"{/if} />
 						<label for="sendNotifications_forward_{$idNode}" class="checkbox-label icon">{t}Send notifications{/t}</label>
 					</span>
 					<ol>

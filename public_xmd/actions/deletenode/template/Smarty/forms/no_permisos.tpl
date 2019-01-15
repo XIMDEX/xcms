@@ -24,18 +24,16 @@
  *}
 
 <form method="post" name="formulario" id='formulario' action='{$action_url}'>
-	<input type="hidden" name="nodeid" value="{$id_node}">
-
-	<ul><li><span>{$texto}</span></li>
-
-		{if ($depList)}
-					<li><span><em>{$titulo}:</em></span></li>
-		{/if}
-
-		{foreach from=$depList item=dep}
-			<li nowrap class="deletenodes"><span>{$dep}</span></li>
-		{foreachelse}
-			<li nowrap><span>{t}No dependencies were found{/t}</span></li>
-		{/foreach}
-		</ul>
+	<input type="hidden" name="nodeid" value="{$id_node}" />
+	<ul>
+	   <li><span>{$texto}</span></li>
+		{if (isset($depList) and $depList)}
+            <li><span><em>{$titulo}:</em></span></li>
+            {foreach from=$depList item=dep}
+                <li nowrap class="deletenodes"><span>{$dep}</span></li>
+            {foreachelse}
+                <li nowrap><span>{t}No dependencies were found{/t}</span></li>
+            {/foreach}
+        {/if}
+	</ul>
 </form>

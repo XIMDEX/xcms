@@ -392,7 +392,7 @@ class PortalFrames extends PortalFramesOrm
      */
     public function cancel() : void
     {
-        if (!$this->id) {
+        if (! $this->id) {
             throw new \Exception('Cannot cancel a portal without ID');
         }
         if ($this->PublishingType != self::TYPE_UP) {

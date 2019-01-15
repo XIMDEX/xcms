@@ -49,15 +49,20 @@ class Action_expiredoc extends ActionAbstract
     {
         // Get nodeid or first in nodes if nodeid doesn't exist.
         $idNode = $this->request->getParam('nodeid');
-        $node = new Node($idNode);
         if (empty($idNode)) {
             $nodes = $this->request->getParam('nodes');
             $idNode = $nodes[0];
         }
+        $node = new Node($idNode);
+        $user = new User(Ximdex\Runtime\Session::get('userID'));
+        if (! $user->hasPermission('structural_publication') and $node->nodeType->getIsStructuredDocument()) {
+            $this->messages->add(_('You can not expire a structured document'), MSG_TYPE_WARNING);
+            $this->render(array('messages' => $this->messages->messages), NULL, 'messages.tpl');
+            return;
+        }
         if (! $this->validateInIndex($idNode)) {
             $this->renderMessages();
         }
-        $node = new Node($idNode);
         
         // Loading Notifications default values
         $conf = Ximdex\Modules\Manager::file('/conf/notifications.php', 'XIMDEX');
@@ -97,6 +102,13 @@ class Action_expiredoc extends ActionAbstract
     public function expireNode()
     {
         $idNode = (int) $this->request->getParam('nodeid');
+        $node = new Node($idNode);
+        $user = new User(Ximdex\Runtime\Session::get('userID'));
+        if (! $user->hasPermission('structural_publication') and $node->nodeType->getIsStructuredDocument()) {
+            $this->messages->add(_('You can not expire a structured document'), MSG_TYPE_WARNING);
+            $this->render(array('messages' => $this->messages->messages), NULL, 'messages.tpl');
+            return;
+        }
         $dateDown = $this->request->getParam('dateDown_timestamp');
         $markEnd = $this->request->getParam('markend') ? true : false;
         $structure = $this->request->getParam('no_structure') ? false : true;
@@ -116,7 +128,6 @@ class Action_expiredoc extends ActionAbstract
             // Zero levels, only the given node
             $deepLevel = 0;
         }
-        $node = new Node($idNode);
         $nodename = $node->get('Name');
         
         // The expiration times are in milliseconds
@@ -267,7 +278,6 @@ class Action_expiredoc extends ActionAbstract
             'gap_info' => $gapInfo,
             'has_unlimited_life_time' => SynchroFacade::HasUnlimitedLifeTime($idNode),
             'timestamp_from' => time(),
-            'structural_publication' => $user->HasPermission('structural_publication') ? '1' : '0',
             'advanced_publication' => $user->HasPermission('advanced_publication') ? '1' : '0',
             'nodetypename' => $nodeTypeName,
             'show_rep_option' => true

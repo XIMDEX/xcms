@@ -49,7 +49,7 @@ class Action_modifyrole extends ActionAbstract
         $permission = new Permission();
         $allPermissionData = $permission->find();
         foreach ($allPermissionData as $key => $permissionData) {
-            $allPermissionData[$key]['HasPermission'] = $role->HasPermission($permissionData['IdPermission']);
+            $allPermissionData[$key]['HasPermission'] = $role->hasPermission($permissionData['IdPermission']);
         }
         $node = new Node($idNode);
         $allStates = [];

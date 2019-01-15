@@ -1,6 +1,6 @@
 <?php
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -27,12 +27,11 @@
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\App;
 
-
-class Action_createxhtml5container extends ActionAbstract {
-
+class Action_createxhtml5container extends ActionAbstract
+{
 	// Main method: shows initial form
-	function index () {
-		$idnode = $this->request->getParam('nodeid');
+	function index ()
+	{
 		$action = App::getValue('UrlRoot') . "/modules/xBlog/api/public/new";
 		$this->render(array('action' => $action), NULL, 'iframe.tpl');
     }

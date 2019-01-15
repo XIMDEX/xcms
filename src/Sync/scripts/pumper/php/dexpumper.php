@@ -319,14 +319,14 @@ class DexPumper
 		$passwd =  $this->server->get('Password');
 		$res = true;
 		if (! $this->connection->isConnected()) {
-		    Logger::info('Connecting to ' . $this->server->get('Host'), false, 'magenta');
+		    Logger::info('Connecting to ' . $this->server->get('Host'));
 			if ($this->connection->connect($host, $port)) {
-			    Logger::info('Logging to ' . $this->server->get('Host') . ' with user ' . $login, false, 'magenta');
+			    Logger::info('Logging to ' . $this->server->get('Host') . ' with user ' . $login);
 			    if (! $this->connection->login($login, $passwd)) {
 			        $this->error('Can\'t log the user into host: ' . $host);
 			        $res = false;
 			    } else {
-			        Logger::info('Connected to ' . $this->server->get('Host'), true);
+			        Logger::info('Connected to ' . $this->server->get('Host'), false, 'magenta');
 			    }
 			} else {
 			    $this->error('Can\'t connect to host: ' . $host);

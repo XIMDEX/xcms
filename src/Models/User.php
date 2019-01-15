@@ -297,7 +297,7 @@ class User extends UsersOrm
     function hasPermission($pName)
     {
         $groupID = App::getValue('GeneralGroup');
-        return $this->HasPermissionOnGroup($groupID, $pName);
+        return $this->hasPermissionOnGroup($groupID, $pName);
     }
 
     // Check perms with name $pname in all user groups of $nodeID

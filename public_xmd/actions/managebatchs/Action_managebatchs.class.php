@@ -44,7 +44,6 @@ class Action_managebatchs extends ActionAbstract
      */
     public function index()
     {
-        $acceso = true;
         $idNode = $this->request->getParam('nodeid');
         $node = new Node($idNode);
         
@@ -52,11 +51,10 @@ class Action_managebatchs extends ActionAbstract
         $userID = Session::get('userID');
         $user = new User();
         $user->SetID($userID);
-        if (!$user->HasPermission('view_publication_resume')) {
-            $acceso = false;
-            $errorMsg = 'You have not access to this report. Consult an administrator.';
-        } else {
-            $errorMsg = '';
+        if (! $user->HasPermission('view_publication_resume')) {
+            $this->messages->add(_('You have not access to this report. Consult an administrator'), MSG_TYPE_WARNING);
+            $this->render(array('messages' => $this->messages->messages), NULL, 'messages.tpl');
+            return;
         }
         $jsFiles = array(
             App::getUrl('/actions/managebatchs/resources/js/index.js'),
@@ -67,8 +65,6 @@ class Action_managebatchs extends ActionAbstract
             App::getUrl('/actions/managebatchs/resources/css/index.css')
         );
         $arrValores = array(
-            'acceso' => $acceso,
-            'errorBox' => $errorMsg,
             'js_files' => $jsFiles,
             'nodeTypeID' => $node->nodeType->getID(),
             'node_Type' => $node->nodeType->GetName(),

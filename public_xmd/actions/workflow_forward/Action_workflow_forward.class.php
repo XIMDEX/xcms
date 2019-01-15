@@ -1,4 +1,4 @@
-    <?php
+<?php
 
 /**
  *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
@@ -61,11 +61,11 @@ class Action_workflow_forward extends ActionAbstract
     {
         // Get nodeid or first in nodes if nodeid doesn't exist
         $idNode = $this->request->getParam('nodeid');
-        $node = new Node($idNode);
         if (empty($idNode)) {
             $nodes = $this->request->getParam('nodes');
             $idNode = $nodes[0];
         }
+        $node = new Node($idNode);
         if (! $this->validateInIndex($idNode)) {
             $this->renderMessages();
         }
@@ -163,29 +163,32 @@ class Action_workflow_forward extends ActionAbstract
             'name' => $node->GetNodeName()
         );
         if ($workflowNext->isFinalState()) {
-            $values = array(
+            $user = new User(Ximdex\Runtime\Session::get('userID'));
+            if (! $user->hasPermission('structural_publication') and $node->nodeType->getIsStructuredDocument()) {
+                $this->messages->add(_('You can not publish a structured document'), MSG_TYPE_WARNING);
+                $this->render(array('messages' => $this->messages->messages), NULL, 'messages.tpl');
+                return;
+            }
+            $values = array_merge(array(
                 'go_method' => 'publicateNode',
                 'hasDisabledFunctions' => $this->hasDisabledFunctions(),
                 'globalForcedEnabled' => FORCE_PUBLICATION,
-                'stateid' => $workflowNext->getFinalState(),
                 'nodeTypeID' => $node->nodeType->getID(),
                 'node_Type' => $node->nodeType->GetName()
-            );
+            ), $values);
             $values = array_merge($values, $this->buildExtraValues($idNode));
             $this->render($values, null, 'default-3.0.tpl');
         } else {
             $defaultMessage = $this->buildMessage($conf["defaultMessage"], _('next'), $node->get('Name'));
             
             // Set default Message
-            $values = array(
+            $values = array_merge(array(
                 'go_method' => 'publicateForm',
                 'allowedstates' => $AllowedStates,
                 'nextStateName' => $nextStateName,
                 'currentStateName' => $workflow->getStatusName(),
-                'defaultMessage' => $defaultMessage,
-                'nodeTypeID' => $node->nodeType->getID(),
-                'node_Type' => $node->nodeType->GetName()
-            );
+                'defaultMessage' => $defaultMessage
+            ), $values);
             $this->render($values, 'next_state.tpl', 'default-3.0.tpl');
         }
     }
@@ -225,9 +228,16 @@ class Action_workflow_forward extends ActionAbstract
     {
         // Loading request params
         $idNode = $this->request->getParam('nodeid');
+        $node = new Node($idNode);
+        $user = new User(Ximdex\Runtime\Session::get('userID'));
+        if (! $user->hasPermission('structural_publication') and $node->nodeType->getIsStructuredDocument()) {
+            $this->messages->add(_('You can not publish a structured document'), MSG_TYPE_WARNING);
+            $this->render(array('messages' => $this->messages->messages), NULL, 'messages.tpl');
+            return;
+        }
         $nextState = $this->request->getParam('nextstate');
         $conf = \Ximdex\Modules\Manager::file('/conf/notifications.php', 'XIMDEX');
-        $node = new Node($idNode);
+        
         $workflow = new Workflow($node->nodeType->getWorkflow(), $nextState);
         $sendNotifications = $this->request->getParam('sendNotifications');
         $notificableUsers = $this->request->getParam('users');
@@ -313,6 +323,14 @@ class Action_workflow_forward extends ActionAbstract
     public function publicateNode()
     {
         $idNode = $this->request->getParam('nodeid');
+        $structure = $this->request->getParam('no_structure') ? false : true;
+        $node = new Node($idNode);
+        $user = new User(Ximdex\Runtime\Session::get('userID'));
+        if (! $user->hasPermission('structural_publication') and $node->nodeType->getIsStructuredDocument()) {
+            $this->messages->add(_('You can not publish a structured document'), MSG_TYPE_WARNING);
+            $this->render(array('messages' => $this->messages->messages), NULL, 'messages.tpl');
+            return;
+        }
         
         // The publication times are in milliseconds
         $dateUp = $this->request->getParam('dateUp_timestamp');
@@ -325,7 +343,6 @@ class Action_workflow_forward extends ActionAbstract
             $this->sendJSON($values);
         }
         $markEnd = $this->request->getParam('markend') ? true : false;
-        $structure = $this->request->getParam('no_structure') ? false : true;
         $levels = $this->request->getParam('levels');
         if ($levels == 'all') {
             
@@ -463,8 +480,7 @@ class Action_workflow_forward extends ActionAbstract
             'gap_info' => $gapInfo,
             'has_unlimited_life_time' => SynchroFacade::HasUnlimitedLifeTime($idNode),
             'timestamp_from' => time(),
-            'structural_publication' => $user->HasPermission('structural_publication') ? '1' : '0',
-            'advanced_publication' => $user->HasPermission('advanced_publication') ? '1' : '0',
+            'advanced_publication' => $user->hasPermission('advanced_publication') ? '1' : '0',
             'nodetypename' => $nodeTypeName,
             'show_rep_option' => true
         );

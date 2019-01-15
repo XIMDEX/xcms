@@ -654,7 +654,7 @@ class Action_composer extends ActionAbstract
                     $numArchivos = $numArchivos + $nelementos;
                 }
             } else {
-                $user_perm_van = $user->HasPermission('view all nodes');
+                $user_perm_van = $user->hasPermission('view all nodes');
                 if (($desde !== null) && ($hasta !== null)) {
                     $nodeList = \Ximdex\Runtime\Session::get('nodelist');
                     $endFor = $hasta - $desde + 1;
