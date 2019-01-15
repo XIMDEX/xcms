@@ -93,27 +93,27 @@ class Action_modifychannel extends ActionAbstract
         	return false;
     	}
     	$outputType = $this->request->getParam('output_type_' . $idNode);
-        if (!$outputType) {
+        if (! $outputType) {
             $this->messages->add('No output type selected', MSG_TYPE_WARNING);
             $values = array('messages' => $this->messages->messages, 'idNode' => $idNode);
             $this->sendJSON($values);
             return false;
         }
         $renderType = $this->request->getParam('render_type_' . $idNode);
-        if (!$renderType) {
+        if (! $renderType) {
             $this->messages->add('No render type selected', MSG_TYPE_WARNING);
             $values = array('messages' => $this->messages->messages, 'idNode' => $idNode);
             $this->sendJSON($values);
             return false;
         }
-        if (!isset(Channel::RENDER_TYPES[$renderType])) {
+        if (! isset(Channel::RENDER_TYPES[$renderType])) {
             $this->messages->add('There is not a render type for ' . $renderType, MSG_TYPE_WARNING);
             $values = array('messages' => $this->messages->messages, 'idNode' => $idNode);
             $this->sendJSON($values);
             return false;
         }
         $codeLanguage = $this->request->getParam('language');
-        if (!$codeLanguage) {
+        if (! $codeLanguage) {
             $this->messages->add('No code language selected', MSG_TYPE_WARNING);
             $values = array('messages' => $this->messages->messages, 'idNode' => $idNode);
             $this->sendJSON($values);

@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -31,20 +31,20 @@ use Ximdex\Data\GenericData;
 
 class SearchFiltersOrm extends GenericData
 {
-    var $_idField = 'Id';
-    var $_table = 'SearchFilters';
-    var $_metaData = array(
+    public $_idField = 'Id';
+    public $_table = 'SearchFilters';
+    public $_metaData = array(
         'Id' => array('type' => "int(10)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
         'Name' => array('type' => "varchar(100)", 'not_null' => 'false'),
         'Handler' => array('type' => "varchar(5)", 'not_null' => 'true'),
         'Filter' => array('type' => "text", 'not_null' => 'true')
     );
-    var $_uniqueConstraints = array(
+    public $_uniqueConstraints = array(
         'U_FILTER' => array('Name')
     );
-    var $_indexes = array('Id');
-    var $Id;
-    var $Name;
-    var $Handler;
-    var $Filter;
+    public $_indexes = array('Id');
+    public $Id;
+    public $Name;
+    public $Handler;
+    public $Filter;
 }

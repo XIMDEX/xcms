@@ -117,11 +117,20 @@
 											<input type="checkbox" name="force" id="force" value="1" />
 										</div>
 										<div class="option_info">
-											<label for="force">{t}Force republish{/t}</label>
+											<label for="force">{t}Force republish{/t}.</label>
 										</div>
 										<div class="options_separator"></div>
 									</div>
 								{/if}
+								<div class="publication_option" id="use_cache_option">
+                                    <div class="option_checkbox">
+                                        <input type="checkbox" name="use_cache" id="use_cache" value="1" checked="checked" />
+                                    </div>
+                                    <div class="option_info">
+                                        <label for="use_cache">{t}Use cache for structured documents{/t}.</label>
+                                    </div>
+                                    <div class="options_separator"></div>
+                                </div>
 							{/if}
 						</div>
 					</div>

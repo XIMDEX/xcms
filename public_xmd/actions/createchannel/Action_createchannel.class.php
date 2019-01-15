@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -56,27 +56,27 @@ class Action_createchannel extends ActionAbstract
     {
         $idNode = $this->request->getParam('id_node');
         $outputType = $this->request->getParam('output_type');
-        if (!$outputType) {
+        if (! $outputType) {
             $this->messages->add('No output type selected', MSG_TYPE_WARNING);
             $values = array('messages' => $this->messages->messages, 'idNode' => $idNode);
             $this->sendJSON($values);
             return false;
         }
         $renderType = $this->request->getParam('render_type');
-        if (!$renderType) {
+        if (! $renderType) {
             $this->messages->add('No render type selected', MSG_TYPE_WARNING);
             $values = array('messages' => $this->messages->messages, 'idNode' => $idNode);
             $this->sendJSON($values);
             return false;
         }
-        if (!isset(Channel::RENDER_TYPES[$renderType])) {
+        if (! isset(Channel::RENDER_TYPES[$renderType])) {
             $this->messages->add('There is not a render type for ' . $renderType, MSG_TYPE_WARNING);
             $values = array('messages' => $this->messages->messages, 'idNode' => $idNode);
             $this->sendJSON($values);
             return false;
         }
         $codeLanguage = $this->request->getParam('language');
-        if (!$codeLanguage) {
+        if (! $codeLanguage) {
             $this->messages->add('No code language selected', MSG_TYPE_WARNING);
             $values = array('messages' => $this->messages->messages, 'idNode' => $idNode);
             $this->sendJSON($values);
@@ -88,7 +88,6 @@ class Action_createchannel extends ActionAbstract
         $renderMode = $this->request->getParam('rendermode');
         $nodeType = new NodeType();
         $nodeType->SetByName('Channel');
-        // $complexName = sprintf("%s.%s", $name, $extension);
 
         // Control uniqueness of tupla, channel, format
         $node = new Node();

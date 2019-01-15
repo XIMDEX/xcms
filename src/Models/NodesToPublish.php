@@ -37,7 +37,7 @@ class NodesToPublish extends NodesToPublishOrm
 	 * Static method that creates a new NodeSet and returns the related object
 	 */
 	public function create(int $idNode, int $idNodeGenerator, int $dateUp, int $dateDown = null, int $userId = null, bool $force = false
-	    , bool $lastPublishedVersion = false, int $deepLevel = 0) : ?bool
+	    , bool $lastPublishedVersion = false, int $deepLevel = 0, bool $useCache = true) : ?bool
 	{    
 		$dataFactory = new DataFactory($idNode);
 		$idVersion = $dataFactory->GetLastVersion();
@@ -67,6 +67,7 @@ class NodesToPublish extends NodesToPublishOrm
 		$this->set('DeepLevel', $deepLevel);
 		$this->set('Version', $idVersion);
 		$this->set('Subversion', $idSubversion);
+		$this->set('UseCache', $useCache ? 1 : 0);
 		if (! $this->add()) {
 		    return false;
 		}
@@ -108,8 +109,8 @@ class NodesToPublish extends NodesToPublishOrm
 		$db->Query($sql_update);
 
 		// 3. Build and array with locked nodes and their common attributes: dateUp, dateDown, forcePublication and idNodeGenerator
-		$sql_nodes ='select IdNode, IdNodeGenerator, ForcePublication, DateDown, UserId, Version, SubVersion from NodesToPublish where DateUp = ' 
-		      . $dateUp . ' and State = 1';
+		$sql_nodes ='select IdNode, IdNodeGenerator, ForcePublication, DateDown, UserId, Version, SubVersion, UseCache'
+		    . ' from NodesToPublish where DateUp = ' . $dateUp . ' and State = 1';
 		if (! empty($dateDown)) {
 			$sql_nodes .= ' and DateDown = ' . $dateDown;
 		}
@@ -121,6 +122,7 @@ class NodesToPublish extends NodesToPublishOrm
 		$force = [];
 		$idNodeGenerator = null;
 		$userId = null;
+		$noCache = [];
 		while (! $db->EOF) {
 			array_push($docsToPublish, $db->getValue('IdNode'));
 			$docsToPublishVersion[$db->getValue('IdNode')] = $db->getValue('Version');
@@ -132,6 +134,9 @@ class NodesToPublish extends NodesToPublishOrm
 			if (! $userId) {
 			    $userId = $db->getValue('UserId');
 			}
+			if (! $db->getValue('UseCache')) {
+                $noCache[$db->getValue('IdNode')] = true;
+			}
 			$db->Next();
 		}
 		$result = array (
@@ -142,7 +147,8 @@ class NodesToPublish extends NodesToPublishOrm
 			'forcePublication' => $force,
 			'userId' => $userId,
 			'docsToPublishVersion' => $docsToPublishVersion,
-			'docsToPublishSubVersion' => $docsToPublishSubVersion
+			'docsToPublishSubVersion' => $docsToPublishSubVersion,
+		    'noCache' => $noCache
 		);
 		return $result;
 	}

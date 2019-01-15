@@ -323,7 +323,6 @@ class Action_workflow_forward extends ActionAbstract
     public function publicateNode()
     {
         $idNode = $this->request->getParam('nodeid');
-        $structure = $this->request->getParam('no_structure') ? false : true;
         $node = new Node($idNode);
         $user = new User(Ximdex\Runtime\Session::get('userID'));
         if (! $user->hasPermission('structural_publication') and $node->nodeType->getIsStructuredDocument()) {
@@ -331,6 +330,8 @@ class Action_workflow_forward extends ActionAbstract
             $this->render(array('messages' => $this->messages->messages), NULL, 'messages.tpl');
             return;
         }
+        $structure = $this->request->getParam('no_structure') ? false : true;
+        $useCache = $this->request->getParam('use_cache') ? true : false;
         
         // The publication times are in milliseconds
         $dateUp = $this->request->getParam('dateUp_timestamp');
@@ -367,7 +368,7 @@ class Action_workflow_forward extends ActionAbstract
         $lastPublished = $this->request->getParam('latest') ? false : true;
         Logger::debug("ADDSECTION publicateNode PRE");
         $this->sendToPublish($idNode, $up, $down, $markEnd, $force, $structure, $deepLevel, $sendNotifications, $notificableUsers, $idState
-            , $texttosend, $lastPublished);
+            , $texttosend, $lastPublished, $useCache);
     }
 
     /**
@@ -551,7 +552,7 @@ class Action_workflow_forward extends ActionAbstract
     }
 
     private function sendToPublish($idNode, $up, $down, $markEnd, $force, $structure, $deepLevel, $sendNotifications, $notificableUsers
-        , $idState, $texttosend, $lastPublished)
+        , $idState, $texttosend, $lastPublished, bool $useCache = true)
     {
         Logger::debug("ADDSECTION publicateNode sendToPublish parent");
         $this->addJs('/actions/workflow_forward/resources/js/workflow_forward.js');
@@ -579,7 +580,7 @@ class Action_workflow_forward extends ActionAbstract
             return false;
         }
         $node = new Node($idNode);
-        $flagsPublication = $this->buildFlagsPublication($markEnd, $structure, $deepLevel, $force, $lastPublished);
+        $flagsPublication = $this->buildFlagsPublication($markEnd, $structure, $deepLevel, $force, $lastPublished, $useCache);
         
         // Adding node to NodesToPublish
         $syncFac = new SynchroFacade();
@@ -640,7 +641,7 @@ class Action_workflow_forward extends ActionAbstract
         return true;
     }
 
-    private function buildFlagsPublication($markEnd, $structure = 1, $deepLevel = 1, $force = false, $lastPublished = 0)
+    private function buildFlagsPublication($markEnd, $structure = 1, $deepLevel = 1, $force = false, $lastPublished = 0, bool $useCache = true)
     {
         // Creating flags to publicate
         $flagsPublication = array(
@@ -650,7 +651,8 @@ class Action_workflow_forward extends ActionAbstract
             'force' => $force,
             'recurrence' => false,
             'workflow' => true,
-            'lastPublished' => $lastPublished
+            'lastPublished' => $lastPublished,
+            'useCache' => $useCache
         );
         return $flagsPublication;
     }

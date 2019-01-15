@@ -55,6 +55,7 @@ class SyncManager
     private $computedDocsToPublish = [];
     private $pendingDocsToPublish = [];
     private $generatorNodes = [];
+    private $useCache;
 
     function __construct()
     {
@@ -68,6 +69,7 @@ class SyncManager
         $this->setFlag('mail', false);
         $this->setFlag('deeplevel', DEEP_LEVEL < 0 ? 1 : DEEP_LEVEL);
         $this->setFlag('globalForcePublication', FORCE_PUBLICATION);
+        $this->setFlag('usecache', true);
     }
 
     /**
@@ -265,7 +267,7 @@ class SyncManager
                 $idGeneratorNode = $idNode;
             }
             $nodesToPublish->create($idDoc, $idGeneratorNode, $up, $expire, $userID, $force, $this->getFlag('lastPublished')
-                , $this->docsToPublishByLevel[$idDoc]);
+                , $this->docsToPublishByLevel[$idDoc], $this->getFlag('useCache'));
         }
         if ($this->getFlag('mail')) {
             $this->sendMail($idNode, null, $up, $down);

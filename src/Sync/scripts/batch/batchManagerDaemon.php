@@ -101,7 +101,8 @@ function createBatchsForBlock($nodesToPublish)
         $nodesToPublish['dateDown'],
         $physicalServers,
         $nodesToPublish['forcePublication'],
-        $nodesToPublish['userId']
+        $nodesToPublish['userId'],
+        $nodesToPublish['noCache']
     );
 
     // Clean up caches, tmp files, etc...

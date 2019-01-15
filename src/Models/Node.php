@@ -905,7 +905,7 @@ class Node extends NodesOrm
                     $domDoc = new DOMDocument();
                     $res = @$domDoc->loadXML($content);
                     if ($res === false) {
-                        Logger::error('Invalid XML for IdNode: ' . $this->GetID() . ' (' . $this->GetDescription() . ')');
+                        Logger::warning('Invalid XML for IdNode: ' . $this->GetID() . ' (' . $this->GetDescription() . ')');
                         $error = \Ximdex\Utils\Messages::error_message('DOMDocument::loadXML(): ');
                         if ($error) {
                             $error = 'Invalid XML content for node: ' . $this->GetID() . ' (' . $error . ')';

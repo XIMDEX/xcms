@@ -72,7 +72,7 @@ class CommonNode extends FileNode
         $channels = [];
         foreach ($values as $channel) {
             $channel = new Channel($channel['Id']);
-            if (!$channel->GetID()) {
+            if (! $channel->GetID()) {
                 
                 // Error
                 return null;

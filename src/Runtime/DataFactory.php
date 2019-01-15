@@ -342,15 +342,12 @@ class DataFactory
                 Logger::info('Generation cache for version ' . $idVersion . ' and the channel ' . $idChannel);
                 $data['CHANNEL'] = $idChannel;
                 if ($node->GetNodeType() == NodeTypeConstants::XML_DOCUMENT) {
-                    // $process = 'StrDocToDexT';
                     $process = 'FromPreFilterToDexT';
                 } elseif ($node->GetNodeType() == NodeTypeConstants::HTML_DOCUMENT) {
                     $channel = new Channel($idChannel);
                     if ($channel->getRenderType() == HTMLDocumentNode::MODE_INDEX) {
-                        // $process = 'HTMLToXIF';
                         $process = 'PrepareXIF';
                     } else {
-                        // $process = 'HTMLToPrepared';
                         $process = 'PrepareHTML';
                     }
                 } else {

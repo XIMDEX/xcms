@@ -57,7 +57,7 @@ class ViewXslt extends AbstractView
         if (! $this->_setIdProject($args)) {
             return null;
         }
-        $ptdFolder = App::getValue("TemplatesDirName");
+        $ptdFolder = App::getValue('TemplatesDirName');
         
         // Creates the XSLT log if there is not one yet
         $defaultLog = Logger::get_active_instance();
@@ -199,7 +199,7 @@ class ViewXslt extends AbstractView
         // Tags counter
         $counter = 1;
         $domDoc->validateOnParse = true;
-        if ($channel->get("OutputType") == "xml") {
+        if ($channel->get('OutputType') == 'xml') {
             if (! @$domDoc->loadXML($content)) {
                 Logger::error('XML invalid: ' . $content);
                 $GLOBALS['errorsInXslTransformation'][] = 'Invalid XML source: ' . $content;
@@ -209,7 +209,7 @@ class ViewXslt extends AbstractView
                 Logger::setActiveLog($defaultLog);
                 return false;
             }
-        } else if ($channel->get("OutputType") == "web") {
+        } else if ($channel->get('OutputType') == 'web') {
             if (! @$domDoc->loadHTML($content)) {
                 Logger::error('HTML invalid: ' . $content);
                 $GLOBALS['errorsInXslTransformation'][] = 'Invalid HTML or XHTML source: ' . $content;
@@ -228,12 +228,12 @@ class ViewXslt extends AbstractView
 
         // In non-node transform we've not got a nodeid, and it's not necessary for tag counting.
         foreach ($nodeList as $element) {
-            $element->setAttributeNode(new \DOMAttr('uid', (($this->_node) ? $this->_node->get('IdNode') : '00000') . ".$counter"));
+            $element->setAttributeNode(new \DOMAttr('uid', (($this->_node) ? $this->_node->get('IdNode') : '00000') . '.' . $counter));
             $counter++;
         }
-        if ($channel->get("OutputType") == "xml") {
+        if ($channel->get('OutputType') == 'xml') {
             $content = $domDoc->saveXML();
-        } else if ($channel->get("OutputType") == "web") {
+        } else if ($channel->get('OutputType') == 'web') {
             $content = $domDoc->saveHTML();
         }
         
@@ -310,7 +310,7 @@ class ViewXslt extends AbstractView
         } elseif (isset($args['NODEID']) and $args['NODEID']) {
             $id = $args['NODEID'];
         } else {
-            Logger::info("VIEW XSLT: xslt view is instantiate without 'idVersion'");
+            Logger::info('VIEW XSLT: xslt view is instantiate without \'idVersion\'');
             return true;
         }
         $this->_node = new Node($id);

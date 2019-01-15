@@ -31,10 +31,10 @@ use Ximdex\Models\ORM\ChannelsOrm;
 
 class Channel extends ChannelsOrm
 {
-    var $nodeID;
-    var $autoCleanErr;
-    var $msgErr;
-    var $errorList = array(
+    public $nodeID;
+    public $autoCleanErr;
+    public $msgErr;
+    public $errorList = array(
         1 => 'Database connection error',
         2 => 'Channel does not exist',
         3 => 'Database inconsistency'
@@ -50,16 +50,11 @@ class Channel extends ChannelsOrm
         , self::RENDERTYPE_INDEX => 'Ximdex Index Format'];
     const JSON_CHANNEL = 10010;
 
-    /**
-     * @param $idNode
-     * @return array|null
-     */
     function getChannelsForNode($idNode)
     {
         $node = new Node($idNode);
-        $channels = array();
         $channs = $node->getProperty('channel');
-        if (!is_array($channs)) {
+        if (! is_array($channs)) {
             
             // Inherits the system properties
             $channs = array();
@@ -68,6 +63,7 @@ class Channel extends ChannelsOrm
                 $channs[] = $channel['IdChannel'];
             }
         }
+        $channels = array();
         if (count($channs) > 0) {
             foreach ($channs as $channelId) {
                 $channel = new Channel($channelId);
@@ -81,17 +77,12 @@ class Channel extends ChannelsOrm
         return count($channels) > 0 ? $channels : null;
     }
 
-    /**
-     * @param null $order
-     * @return array|null
-     */
-    function GetAllChannels($order = NULL)
+    function GetAllChannels($order = null)
     {
-        $salida = null;
         $validDirs = array('ASC', 'DESC');
-        $sql = "SELECT IdChannel FROM Channels";
-        if (!empty($order) && is_array($order) && isset($order['FIELD'])) {
-            $sql .= sprintf(" ORDER BY %s %s", $order['FIELD'],
+        $sql = 'SELECT IdChannel FROM Channels';
+        if (! empty($order) && is_array($order) && isset($order['FIELD'])) {
+            $sql .= sprintf(' ORDER BY %s %s', $order['FIELD'],
                 isset($order['DIR']) && in_array($order['DIR'], $validDirs) ? $order['DIR'] : '');
         }
         $dbObj = new \Ximdex\Runtime\Db();
@@ -100,8 +91,9 @@ class Channel extends ChannelsOrm
             $this->SetError(1);
             return null;
         }
+        $salida = [];
         while (!$dbObj->EOF) {
-            $salida[] = $dbObj->GetValue("IdChannel");
+            $salida[] = $dbObj->GetValue('IdChannel');
             $dbObj->Next();
         }
         return $salida ? $salida : NULL;
@@ -112,7 +104,7 @@ class Channel extends ChannelsOrm
      */
     function GetID()
     {
-        if ($this->get('IdChannel') > 0) {
+        if ($this->get('IdChannel')) {
             return $this->get('IdChannel');
         } else {
             $this->SetError(2);
@@ -129,7 +121,7 @@ class Channel extends ChannelsOrm
     function SetID($nodeID)
     {
         parent::__construct($nodeID);
-        if (!($this->IdChannel > 0)) {
+        if (! $this->IdChannel) {
             $this->SetError(2);
             return null;
         }
@@ -145,18 +137,15 @@ class Channel extends ChannelsOrm
     function SetByName($name)
     {
         $dbObj = new \Ximdex\Runtime\Db();
-        $dbObj->Query(sprintf("SELECT IdChannel FROM Channels WHERE Name='%s'", $dbObj->sqlEscapeString($name)));
+        $dbObj->Query(sprintf('SELECT IdChannel FROM Channels WHERE Name = \'%s\'', $dbObj->sqlEscapeString($name)));
         parent::__construct($dbObj->GetValue('IdChannel'));
-        if (!($this->IdChannel > 0)) {
+        if (! $this->IdChannel) {
             $this->SetError(2);
             return null;
         }
         return $this->IdChannel;
     }
 
-    /**
-     * @return bool|string
-     */
     function GetName()
     {
         return $this->get('Name');
@@ -170,7 +159,7 @@ class Channel extends ChannelsOrm
      */
     function SetName($name)
     {
-        if (!($this->get('IdChannel') > 0)) {
+        if (! $this->get('IdChannel')) {
             $this->SetError(2);
             return false;
         }
@@ -198,7 +187,7 @@ class Channel extends ChannelsOrm
      */
     function SetDescription($description)
     {
-        if (!($this->get('IdChannel') > 0)) {
+        if (! $this->get('IdChannel')) {
             $this->SetError(2);
             return false;
         }
@@ -227,7 +216,7 @@ class Channel extends ChannelsOrm
      */
     function SetExtension($ext)
     {
-        if (!($this->get('IdChannel') > 0)) {
+        if (! $this->get('IdChannel')) {
             $this->SetError(2);
             return false;
         }
@@ -238,9 +227,6 @@ class Channel extends ChannelsOrm
         return false;
     }
 
-    /**
-     * @return bool|string
-     */
     function GetFormat()
     {
         return $this->get('Format');
@@ -254,7 +240,7 @@ class Channel extends ChannelsOrm
      */
     function SetFormat($format)
     {
-        if (!($this->get('IdChannel') > 0)) {
+        if (! $this->get('IdChannel')) {
             $this->SetError(2);
             return false;
         }
@@ -279,7 +265,7 @@ class Channel extends ChannelsOrm
      * @param string $renderType
      * @return bool|string
      */
-    function CreateNewChannel($name, $defaultExtension, $format, $description, $idChannel, $filter = "", $renderMode = "", $outputType = ""
+    function CreateNewChannel($name, $defaultExtension, $format, $description, $idChannel, $filter = '', $renderMode = '', $outputType = ''
             , $renderType = null, $language = null)
     {
         $this->set('IdChannel', (int) $idChannel);
@@ -306,28 +292,21 @@ class Channel extends ChannelsOrm
      */
     function DeleteChannel()
     {
-        if (!($this->get('IdChannel') > 0)) {
+        if (! $this->get('IdChannel')) {
             $this->SetError(2);
             return false;
         }
         return $this->delete();
     }
 
-    /**
-     * @return bool|string
-     */
     function GetFilter()
     {
         return $this->get('Filter');
     }
 
-    /**
-     * @param $filter
-     * @return bool|int|null|string
-     */
     function SetFilter($filter)
     {
-        if (!($this->get('IdChannel') > 0)) {
+        if (! $this->get('IdChannel')) {
             $this->SetError(2);
             return false;
         }
@@ -343,9 +322,6 @@ class Channel extends ChannelsOrm
         $this->flagErr = FALSE;
     }
 
-    /**
-     * @param $code
-     */
     function SetError($code)
     {
         $this->flagErr = TRUE;
@@ -353,9 +329,6 @@ class Channel extends ChannelsOrm
         $this->msgErr = $this->errorList[$code];
     }
 
-    /**
-     * @return mixed
-     */
     function HasError()
     {
         $aux = $this->flagErr;
@@ -374,7 +347,7 @@ class Channel extends ChannelsOrm
     function setDefaultChannelToZero($idchannel)
     {
         $dbObj = new \Ximdex\Runtime\Db();
-        return $dbObj->Execute(sprintf("UPDATE Channels SET Default_Channel=0 WHERE IdChannel<>%s;", $idchannel));
+        return $dbObj->Execute(sprintf('UPDATE Channels SET Default_Channel = 0 WHERE IdChannel <> %s', $idchannel));
     }
     
     public function getRenderType() : string

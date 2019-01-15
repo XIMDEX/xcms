@@ -44,10 +44,7 @@ class ViewTransformer extends AbstractView
 				Logger::fatal('The transformer has not been specified in the table Config');
 			}
 		}
-		$transformer = str_replace('_', '', ucfirst($args['TRANSFORMER']) );
-		if ("Xlst" == $transformer) {
-			$transformer = "Xslt";   // ???
-		}
+		$transformer = str_replace('_', '', ucfirst($args['TRANSFORMER']));
 		$factory = new \Ximdex\Utils\Factory(__DIR__ , 'View');
 		$instanceOfView = $factory->instantiate($transformer, null, 'Ximdex\Nodeviews');
 		$res = $instanceOfView->transform($idVersion, $pointer, $args);

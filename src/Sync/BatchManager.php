@@ -98,7 +98,7 @@ class BatchManager
      * @return array|bool
      */
     public function publicate($idNode, $docsToPublish, $docsToPublishVersion, $docsToPublishSubVersion, $up, $down, $physicalServers
-        , array $force, $userId = null)
+        , array $force, $userId = null, array $noCache = [])
     {
         $timer = new Timer();
         $timer->start();
@@ -173,16 +173,8 @@ class BatchManager
         $docsBatch = array();
         $iCount = 1;
         $iTotal = count($docsChunked);
-        $noCache = [];
         foreach ($docsChunked as $chunk) {
             Logger::info(sprintf('[Generator %s]: Creating bach %s / %s', $idNode, $iCount, $iTotal));
-            /*
-            foreach ($chunk as $id) {
-                if ($force[$id]) {
-                    $noCache[$id] = true;
-                }
-            }
-            */
             $partialDocs = $this->buildBatchs($idNode, $up, $chunk, $docsToUpVersion, $docsToPublishVersion, $docsToPublishSubVersion
                 , $idServer, $physicalServers, DEFAULT_BATCH_PRIORITY, $down, $iCount, $iTotal, $idPortalFrame, $idPortalFrameDown, $userId
                 , $noCache);

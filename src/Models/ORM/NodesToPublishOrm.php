@@ -31,9 +31,9 @@ use Ximdex\Data\GenericData;
 
 class NodesToPublishOrm extends GenericData
 {
-    var $_idField = 'Id';
-    var $_table = 'NodesToPublish';
-    var $_metaData = array(
+    public $_idField = 'Id';
+    public $_table = 'NodesToPublish';
+    public $_metaData = array(
         'Id' => array('type' => "int(10)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
         'IdNode' => array('type' => "int(11)", 'not_null' => 'true'),
         'IdNodeGenerator' => array('type' => "int(11)", 'not_null' => 'true'),
@@ -45,18 +45,20 @@ class NodesToPublishOrm extends GenericData
         'UserId' => array('type' => "int(12)", 'not_null' => 'false'),
         'ForcePublication' => array('type' => "tinyint(1)", 'not_null' => 'true'),
         'DeepLevel' => array('type' => "int(12)", 'not_null' => 'false'),
+        'UseCache' => array('type' => "tinyint(1)", 'not_null' => 'true'),
     );
-    var $_uniqueConstraints = array();
-    var $_indexes = array('Id');
-    var $Id;
-    var $IdNode;
-    var $IdNodeGenerator;
-    var $Version;
-    var $Subversion;
-    var $DateUp;
-    var $DateDown;
-    var $State; // 0: Pending, 1: Locked, 2: Processed
-    var $UserId;
-    var $Force;
-    var $DeepLevel;
+    public $_uniqueConstraints = array();
+    public $_indexes = array('Id');
+    public $Id;
+    public $IdNode;
+    public $IdNodeGenerator;
+    public $Version;
+    public $Subversion;
+    public $DateUp;
+    public $DateDown;
+    public $State; // 0: Pending, 1: Locked, 2: Processed
+    public $UserId;
+    public $Force;
+    public $DeepLevel;
+    public $UseCache = true;
 }

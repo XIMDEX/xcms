@@ -57,8 +57,6 @@ class ChannelFrameManager
 		if ($renderMode == 'client'){
 			$operation = Batch::TYPE_UP;
 		}
-		
-		// TODO make foreach serverframes
 		$serverFrameManager = new ServerFrameManager();
 		$result = $serverFrameManager->changeState($serverFrameId, $operation, $nodeId, $canceled);
 		return $result;

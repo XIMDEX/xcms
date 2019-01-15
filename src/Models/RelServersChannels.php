@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -27,24 +27,7 @@
 
 namespace Ximdex\Models;
 
-use Ximdex\Logger;
 use Ximdex\Models\ORM\RelServersChannelsOrm;
 
 class RelServersChannels extends RelServersChannelsOrm
-{
-	function hasOtfChannel($serverId)
-	{
-		$channels = $this->find('IdChannel', 'IdServer = %s', array('IdServer' => $serverId), MONO);
-		if (!(sizeof($channels) > 0)) {
-			Logger::info('Server without associated channels');
-			return false;
-		}
-		foreach ($channels as $channelId) {
-			$channel = new Channel($channelId);
-			if ($channel->get('RenderMode') != 'ximdex') {
-				return true;
-			}
-		}
-		return false;
-	}
-}
+{}

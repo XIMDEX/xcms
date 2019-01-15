@@ -67,7 +67,6 @@ class ServerFrameManager
         $initialState = $serverFrame->get('State');
         $server = $serverFrame->get('IdServer');
         $channelFrameId = $serverFrame->get('IdChannelFrame');
-        // $idNodeFrame = $serverFrame->get('IdNodeFrame');
         $chFr = new ChannelFrame($channelFrameId);
         $channel = $chFr->get('ChannelId');
         if (! $operation || ! $serverFrameId) {
