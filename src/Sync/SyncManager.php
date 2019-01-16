@@ -93,7 +93,7 @@ class SyncManager
         if (isset($this->$key)) {
             return $this->$key;
         }
-        return NULL;
+        return null;
     }
     
     public function setFlags(array $flags) : void

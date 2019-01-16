@@ -61,7 +61,7 @@ class Action_publicatesection extends ActionAbstract
         $nodeServer = new Node($serverID);
         $nameServer = $nodeServer->get('Name');
         $physicalServers = $nodeServer->class->GetPhysicalServerList(true);
-        if (!(sizeof($physicalServers) > 0)) {
+        if (! sizeof($physicalServers)) {
             $this->messages->add(sprintf(_("There is not any defined physical server in: '%s'"), $nameServer), MSG_TYPE_ERROR);
             $values['messages'] = $this->messages->messages;
         }
@@ -118,6 +118,7 @@ class Action_publicatesection extends ActionAbstract
             $type = null;
         }
         $noUseDrafts = $this->request->getParam('latest') ? false : true;
+        $useCache = $this->request->getParam('use_cache') ? true : false;
         $node = new Node($idNode);
         $nodename = $node->get('Name');
         $folderType = $node->nodeType->getID() == NodeTypeConstants::SERVER ? 'server' : 'section';
@@ -163,7 +164,8 @@ class Action_publicatesection extends ActionAbstract
             'publicateSection' => true,
             'level' => $level,
             'structure' => $structure,
-            'nodeType' => $type
+            'nodeType' => $type,
+            'useCache' => $useCache
         );
         $syncFac = new SynchroFacade();
         $syncFac->pushDocInPublishingPool($idNode, $up, $down, $flagsPublication, $recurrence);

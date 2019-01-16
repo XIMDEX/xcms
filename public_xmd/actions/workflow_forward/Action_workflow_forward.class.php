@@ -331,7 +331,6 @@ class Action_workflow_forward extends ActionAbstract
             return;
         }
         $structure = $this->request->getParam('no_structure') ? false : true;
-        $useCache = $this->request->getParam('use_cache') ? true : false;
         
         // The publication times are in milliseconds
         $dateUp = $this->request->getParam('dateUp_timestamp');
@@ -366,6 +365,7 @@ class Action_workflow_forward extends ActionAbstract
         $idState = $this->request->getParam('stateid');
         $texttosend = $this->request->getParam('texttosend');
         $lastPublished = $this->request->getParam('latest') ? false : true;
+        $useCache = $this->request->getParam('use_cache') ? true : false;
         Logger::debug("ADDSECTION publicateNode PRE");
         $this->sendToPublish($idNode, $up, $down, $markEnd, $force, $structure, $deepLevel, $sendNotifications, $notificableUsers, $idState
             , $texttosend, $lastPublished, $useCache);

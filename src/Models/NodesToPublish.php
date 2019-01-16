@@ -156,9 +156,9 @@ class NodesToPublish extends NodesToPublishOrm
 	/**
 	 * Mark a chunk of nodes as processed (2) in database.
 	 */
-	static public function setProcessed($chunk, $dateUp)
+	static public function setProcessed(array $chunk, int $dateUp)
 	{
-		$strNodes = implode (',', $chunk);
+		$strNodes = implode(',', $chunk);
 		$sql = sprintf('Update NodesToPublish set State = 2 where IdNode in (%s) and DateUp = %s', $strNodes, $dateUp);
 		$db = new \Ximdex\Runtime\Db();
 		$db->Query($sql);
@@ -169,7 +169,7 @@ class NodesToPublish extends NodesToPublishOrm
 	 * @param int $idNodeGenerator
 	 * @return array
 	 */
-	public function getIntervals($idNode, int $idNodeGenerator = null)
+	public function getIntervals(int $idNode, int $idNodeGenerator = null)
 	{
 		$arrayDates = array();
 		$now = time();
