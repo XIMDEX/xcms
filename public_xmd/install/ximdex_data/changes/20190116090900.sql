@@ -19,8 +19,8 @@ CHANGE `SF_IN` `SF_IN` INT(4) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Number of s
 -- CHANGE `SF_OUT` `SF_OUT` INT(4) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Number of server frames in OUT state related to this node frame';
 
 ALTER TABLE `NodeFrames` CHANGE `TimeStampState` `TimeStampState` INT(12) UNSIGNED NULL DEFAULT NULL 
-COMMENT 'Time when first server frame change its status to IN or OUT', 
+COMMENT 'Time when first server frame change its status due to transformation process', 
 CHANGE `TimeStampProccesed` `TimeStampProccesed` INT(12) UNSIGNED NULL DEFAULT NULL 
-COMMENT 'Time when first server frame was processed from previous state';
+COMMENT 'Time when last server frame was processed';
 
 ALTER TABLE `ServerFrames` CHANGE `IdNodeFrame` `IdNodeFrame` INT(12) UNSIGNED NOT NULL, CHANGE `NodeId` `NodeId` INT(12) UNSIGNED NOT NULL;

@@ -719,14 +719,14 @@ class ServerFrame extends ServerFramesOrm
      */
     public function cancel(bool $force = true) : void
     {
-        if (!$this->IdSync) {
+        if (! $this->IdSync) {
             throw new \Exception('No IdSync value sent to cancel the server frame');
         }
         if ($this->State == ServerFrame::CANCELLED) {
             return;
         }
         if (! $force) {
-            if (!in_array($this->State, [ServerFrame::PENDING, ServerFrame::DUE2IN_, ServerFrame::DUE2OUT])) {
+            if (! in_array($this->State, [ServerFrame::PENDING, ServerFrame::DUE2IN_, ServerFrame::DUE2OUT])) {
                 
                 // Not in pending state
                 return;
@@ -751,11 +751,23 @@ class ServerFrame extends ServerFramesOrm
      */
     public function afterUpdate()
     {
-        if (isset($this->updatedFields['State']) and $this->State == self::IN and $this->IdNodeFrame) {
+        if (isset($this->updatedFields['State'])) {
             
-            // Update the related node frame stats for IN state
+            // Update the related node frame stats
             $nodeFrame = new NodeFrame($this->IdNodeFrame);
-            $nodeFrame->increaseServerFrameIN();
+            if ($this->IdNodeFrame) {
+                if ($this->State == self::IN) {
+                    $nodeFrame->set('TimeStampProccesed', time());
+                    $nodeFrame->update();
+                    $nodeFrame->increaseServerFrameIN();
+                } elseif ($this->State == self::OUT) {
+                    $nodeFrame->set('TimeStampProccesed', time());
+                    $nodeFrame->update();
+                } elseif ($this->State == self::DUE2IN_ and ! $nodeFrame->get('TimeStampState')) {
+                    $nodeFrame->set('TimeStampState', time());
+                    $nodeFrame->update();
+                }
+            }
         }
         return true;
     }
