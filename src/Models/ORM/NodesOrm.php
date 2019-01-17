@@ -11,9 +11,9 @@ use Ximdex\Data\GenericData;
  */
 class NodesOrm extends GenericData
 {
-    var $_idField = 'IdNode';
-    var $_table = 'Nodes';
-    var $_metaData = array(
+    public $_idField = 'IdNode';
+    public $_table = 'Nodes';
+    public $_metaData = array(
         'IdNode' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
         'IdParent' => array('type' => "int(12)", 'not_null' => 'false'),
         'IdNodeType' => array('type' => "int(12)", 'not_null' => 'true'),
@@ -24,21 +24,23 @@ class NodesOrm extends GenericData
         'CreationDate' => array('type' => "int(12)", 'not_null' => 'false'),
         'ModificationDate' => array('type' => "int(12)", 'not_null' => 'false'),
         'Description' => array('type' => "varchar(255)", 'not_null' => 'false'),
-        'SharedWorkflow' => array('type' => "int(12)", 'not_null' => 'false')
+        'SharedWorkflow' => array('type' => "int(12)", 'not_null' => 'false'),
+        'ActiveNF' => array('type' => "int(12)", 'not_null' => 'false')
     );
-    var $_uniqueConstraints = array(
+    public $_uniqueConstraints = array(
         'IdNode' => array('IdNode', 'IdParent')
     );
-    var $_indexes = array('IdNode');
-    var $IdNode;
-    var $IdParent = null;
-    var $IdNodeType;
-    var $Name;
-    var $IdState = null;
-    var $BlockTime = null;
-    var $BlockUser = null;
-    var $CreationDate = null;
-    var $ModificationDate = null;
-    var $Description = null;
-    var $SharedWorkflow = null;
+    public $_indexes = array('IdNode');
+    public $IdNode;
+    public $IdParent = null;
+    public $IdNodeType;
+    public $Name;
+    public $IdState = null;
+    public $BlockTime = null;
+    public $BlockUser = null;
+    public $CreationDate = null;
+    public $ModificationDate = null;
+    public $Description = null;
+    public $SharedWorkflow = null;
+    public $ActiveNF = null;
 }

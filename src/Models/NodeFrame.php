@@ -50,7 +50,7 @@ class NodeFrame extends NodeFramesOrm
 	*  @param int down
 	*  @return int|null
 	*/
-    public function create($nodeId, $name, $version, $up, $idPortal, $down = null)
+    public function create(int $nodeId, string $name, int $version, int $up, int $idPortal, int $down = null)
     {
 		$this->set('NodeId', $nodeId);
 		$this->set('VersionId', $version);
@@ -63,12 +63,11 @@ class NodeFrame extends NodeFramesOrm
 		$this->set('Name', $name);
 		$this->set('IdPortalFrame', $idPortal);
 		parent::add();
-		$idNodeFrame = $this->get('IdNodeFrame');
-		if ($idNodeFrame > 0) {
+		if ($idNodeFrame = $this->get('IdNodeFrame')) {
 			return $idNodeFrame;
 		}
-		Logger::info("ERROR: Creating nodeframe");
-		return NULL;
+		Logger::error('Creating nodeframe');
+		return null;
     }
 
 	/**
@@ -80,7 +79,7 @@ class NodeFrame extends NodeFramesOrm
 	*/
     public function getFrames(int $idNdFr = null, string $operation = null)
     {
-        if (!$idNdFr) {
+        if (! $idNdFr) {
             $idNdFr = $this->IdNodeFrame;
         }
         $sql = 'SELECT IdSync FROM ServerFrames WHERE IdNodeFrame = ' . $idNdFr;
@@ -91,8 +90,8 @@ class NodeFrame extends NodeFramesOrm
 		$dbObj = new \Ximdex\Runtime\Db();
 		$dbObj->Query($sql);
 		$frames = array();
-		while (!$dbObj->EOF) {
-			$frames[] = $dbObj->GetValue("IdSync");
+		while (! $dbObj->EOF) {
+			$frames[] = $dbObj->GetValue('IdSync');
 			$dbObj->Next();
 		}
 		return $frames;
@@ -106,7 +105,7 @@ class NodeFrame extends NodeFramesOrm
 	*	@param int down
 	*	@return boolean
 	*/
-    public function existsNodeFrame($nodeId, $up, $down = null)
+    public function existsNodeFrame(int $nodeId, int $up, int $down = null)
     {
 		$dataFactory = new DataFactory($nodeId);
 		$idVersion = $dataFactory->GetPublishedIdVersion();
@@ -144,7 +143,7 @@ class NodeFrame extends NodeFramesOrm
 			{
 			    $strDoc = new StructuredDocument($nodeId);
 			    foreach ($channelList as $channelID) {
-			        if (!$strDoc->HasChannel($channelID)) {
+			        if (! $strDoc->HasChannel($channelID)) {
 			            return false;
 			        }
 			    }
@@ -174,37 +173,6 @@ class NodeFrame extends NodeFramesOrm
         $this->update();
         $this->cancelServerFrames(false, $force);
     }
-    
-	/**
-	 * Calls for cancel the ServerFrames which matching the value of nodeId
-	 * Can ignore down server frames (DateDown field is not null)
-	 * 
-	 * @param bool $ignoreDownFrames
-	 * @param bool $force
-	 */
-	private function cancelServerFrames(bool $ignoreDownFrames = false, bool $force = true) : void
-	{
-		$condition = 'IdNodeFrame = %s';
-		if ($ignoreDownFrames) {
-		    $condition .= ' AND DateDown IS NULL';
-		}
-		$params = ['IdNodeFrame' => $this->IdNodeFrame];
-		$serverFrame = new ServerFrame();
-		$result = $serverFrame->find('IdSync', $condition, $params, MULTI);
-		if ($result) {
-			foreach ($result as $dataFrames) {
-			    $serverFrame = new ServerFrame($dataFrames[0]);
-			    if ($serverFrame->get('State') == ServerFrame::CANCELLED) {
-			        continue;
-			    }
-			    try {
-                    $serverFrame->cancel($force);
-			    } catch (\Exception $e) {
-			        Logger::error($e->getMessage());
-			    }
-			}
-		}
-	}
 
 	/**
 	*  Gets the field IdNodeFrame from NodeFrames table which matching the value of nodeId and is active
@@ -212,12 +180,12 @@ class NodeFrame extends NodeFramesOrm
 	*  @param int nodeId
 	*  @return int|null
 	*/
-	public function getPublishedId($nodeId)
+	public function getPublishedId(int $nodeId)
 	{
 		$condition = 'NodeId = %s AND Active = 1';
 		$params = array('NodeId' => $nodeId);
 		$result = parent::find('IdNodeFrame', $condition, $params, MONO);
-		return count($result) > 0 ? $result[0] : NULL;
+		return count($result) > 0 ? $result[0] : null;
 	}
 
  	/**
@@ -227,12 +195,12 @@ class NodeFrame extends NodeFramesOrm
 	*	@param int idNodeFrame
 	*	@return int|null
  	*/
- 	public function getPrevious($idNode, $idNodeFrame)
+ 	public function getPrevious(int $idNode, int $idNodeFrame)
  	{
 		$condition = 'NodeId = %s AND IdNodeFrame < %s ORDER BY IdNodeFrame DESC';
 		$params = array($idNode, $idNodeFrame);
 		$result = parent::find('IdNodeFrame', $condition, $params, MONO);
-		return count($result) > 0 ? $result[0] : NULL;
+		return count($result) > 0 ? $result[0] : null;
 	}
 	
 	/**
@@ -245,11 +213,10 @@ class NodeFrame extends NodeFramesOrm
 	public function getNodeFramesOnDate(int $nodeId, int $time) : array
 	{
 	    $sql = 'SELECT IdNodeFrame FROM NodeFrames' . ' WHERE NodeId = ' . $nodeId . ' AND TimeUp <= ' . $time . ' AND IsProcessDown = 0';
-	    // AND (TimeDown >= ' . $time . ' OR TimeDown IS NULL)';
 	    $dbObj = new \Ximdex\Runtime\Db();
 	    $dbObj->Query($sql);
 	    $frames = [];
-	    while (!$dbObj->EOF) {
+	    while (! $dbObj->EOF) {
 	        $frames[] = $dbObj->GetValue('IdNodeFrame');
 	        $dbObj->Next();
 	    }
@@ -270,10 +237,121 @@ class NodeFrame extends NodeFramesOrm
 	    $dbObj = new \Ximdex\Runtime\Db();
 	    $dbObj->Query($sql);
 	    $frames = [];
-	    while (!$dbObj->EOF) {
+	    while (! $dbObj->EOF) {
 	        $frames[] = $dbObj->GetValue('IdNodeFrame');
 	        $dbObj->Next();
 	    }
 	    return $frames;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 * @see \Ximdex\Data\GenericData::update()
+	 */
+	public function update()
+	{
+	    $updatedFields = $this->updatedFields;
+	    if ($res = parent::update()) {
+	        if (isset($updatedFields['Active'])) {
+	            
+	            // Update the active node
+	            try {
+                    $this->updateActiveNode();
+	            } catch (\Exception $e) {
+	                Logger::error($e->getMessage());
+	                return false;
+	            }
+	        }
+	    }
+	    return $res;
+	}
+	
+	/**
+	 * Increase the total of server frames in IN state for this node frame ( +1 )
+	 * 
+	 * @return bool
+	 */
+	public function increaseServerFrameIN() : bool
+	{
+	    $sql = 'UPDATE NodeFrames SET SF_IN = SF_IN + 1 WHERE IdNodeFrame = ' . $this->IdNodeFrame;
+	    $dbObj = new \Ximdex\Runtime\Db();
+	    return (bool) $dbObj->execute($sql);
+	}
+	
+	/**
+	 * Increase the total of server frames in OUT state for this node frame ( +1 )
+	 * 
+	 * @return bool
+	 */
+	public function increaseServerFrameOUT() : bool
+	{
+	    $sql = 'UPDATE NodeFrames SET SF_OUT = SF_OUT + 1 WHERE IdNodeFrame = ' . $this->IdNodeFrame;
+	    $dbObj = new \Ximdex\Runtime\Db();
+	    return (bool) $dbObj->execute($sql);
+	}
+	
+	/**
+	 * Calls for cancel the ServerFrames which matching the value of nodeId
+	 * Can ignore down server frames (DateDown field is not null)
+	 *
+	 * @param bool $ignoreDownFrames
+	 * @param bool $force
+	 */
+	private function cancelServerFrames(bool $ignoreDownFrames = false, bool $force = true) : void
+	{
+	    $condition = 'IdNodeFrame = %s';
+	    if ($ignoreDownFrames) {
+	        $condition .= ' AND DateDown IS NULL';
+	    }
+	    $params = ['IdNodeFrame' => $this->IdNodeFrame];
+	    $serverFrame = new ServerFrame();
+	    $result = $serverFrame->find('IdSync', $condition, $params, MULTI);
+	    if ($result) {
+	        foreach ($result as $dataFrames) {
+	            $serverFrame = new ServerFrame($dataFrames[0]);
+	            if ($serverFrame->get('State') == ServerFrame::CANCELLED) {
+	                continue;
+	            }
+	            try {
+	                $serverFrame->cancel($force);
+	            } catch (\Exception $e) {
+	                Logger::error($e->getMessage());
+	            }
+	        }
+	    }
+	}
+	
+	private function updateActiveNode()
+	{
+	    if (! $this->IdNodeFrame) {
+	        throw new \Exception('No given ID for node frame in order to update the active node');
+	    }
+	    $node = new Node($this->NodeId);
+	    if (! $node->GetID()) {
+	        throw new \Exception('No given ID for node in order to update the active node frame');
+	    }
+	    if ($this->Active) {
+	        
+	        // Activate the node
+	        if ($node->ActiveNF == $this->IdNodeFrame) {
+	            
+	            // Node frame is already the active in the related node
+	            return;
+	        }
+	        $nodeFrameActive = $this->IdNodeFrame;
+	    } else {
+	        
+	        // Deactivate the node
+	        if ($node->ActiveNF != $this->IdNodeFrame) {
+	            
+	            // Node frame is not the active in the related node
+	            return;
+	        }
+	        $nodeFrameActive = null;
+	    }
+	    $node->set('ActiveNF', $nodeFrameActive);
+	    if ($node->update() === false) {
+	        throw new \Exception('Cannot update the active node frame in node with ID: ' . $node->GetID());
+	    }
 	}
 }

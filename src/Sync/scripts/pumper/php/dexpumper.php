@@ -216,8 +216,8 @@ class DexPumper
 		} else {
     		$removing = $this->taskDelete($targetFile);
     		if ($removing) {
-    		    Logger::info('Successfusly removed file ' . rtrim($remotePath, '/') . '/' . $fileName . ' (ID: ' . $this->serverFrame->get('NodeId') 
-    		        . ') from server ' . $this->connection->getServer()->get('Description'), true);
+    		    Logger::info('Successfusly removed file ' . rtrim($remotePath, '/') . '/' . $fileName . ' (ID: ' 
+    		        . $this->serverFrame->get('NodeId') . ') from server ' . $this->connection->getServer()->get('Description'), true);
     		    if (rtrim($targetFolder, '/') != rtrim($initialDirectory, '/') and $this->connection->dirIsEmpty($targetFolder)) {
     		        
     		        // Remove the target folder if it is empty
@@ -337,7 +337,7 @@ class DexPumper
 		    $this->error($this->connection->getError());
 		    $res = false;
 		}
-		if (! $res or !$this->connection->isConnected()) {
+		if (! $res or ! $this->connection->isConnected()) {
 			$msg_error = sprintf('Fail to connect or wrong login credentials for server: %s:%s with user: %s',  $host, $port, $login);
 			$this->fatal($msg_error);
 			$this->updateTask(false);

@@ -725,7 +725,7 @@ class ServerFrame extends ServerFramesOrm
         if ($this->State == ServerFrame::CANCELLED) {
             return;
         }
-        if (!$force) {
+        if (! $force) {
             if (!in_array($this->State, [ServerFrame::PENDING, ServerFrame::DUE2IN_, ServerFrame::DUE2OUT])) {
                 
                 // Not in pending state
@@ -743,5 +743,36 @@ class ServerFrame extends ServerFramesOrm
             throw new \Exception('Cannot cancel the server frame ' . $this->IdSync);
         }
         $this->deleteSyncFile();
+    }
+    
+    /**
+     * {@inheritDoc}
+     * @see \Ximdex\Data\GenericData::afterUpdate()
+     */
+    public function afterUpdate()
+    {
+        if (isset($this->updatedFields['State']) and $this->State == self::IN and $this->IdNodeFrame) {
+            
+            // Update the related node frame stats for IN state
+            $nodeFrame = new NodeFrame($this->IdNodeFrame);
+            $nodeFrame->increaseServerFrameIN();
+        }
+        return true;
+    }
+    
+    /**
+     * {@inheritDoc}
+     * @see \Ximdex\Data\GenericData::afterAdd()
+     */
+    public function afterAdd()
+    {
+        if ($this->IdNodeFrame) {
+            
+            // Increase the server frames total in its related node frame
+            $nodeFrame = new NodeFrame($this->IdNodeFrame);
+            $nodeFrame->set('SF_Total', $nodeFrame->get('SF_Total') + 1);
+            $nodeFrame->update();
+        }
+        return true;
     }
 }

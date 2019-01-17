@@ -31,9 +31,9 @@ use Ximdex\Data\GenericData;
 
 class NodeFramesOrm extends GenericData
 {
-    var $_idField = 'IdNodeFrame';
-    var $_table = 'NodeFrames';
-    var $_metaData = array(
+    public $_idField = 'IdNodeFrame';
+    public $_table = 'NodeFrames';
+    public $_metaData = array(
         'IdNodeFrame' => array('type' => 'int(12)', 'not_null' => 'true', 'auto_increment' => 'true'),
         'NodeId' => array('type' => 'int(12)', 'not_null' => 'true'),
         'VersionId' => array('type' => 'int(12)', 'not_null' => 'true'),
@@ -44,18 +44,25 @@ class NodeFramesOrm extends GenericData
         'IsProcessUp' => array('type' => 'int(12)', 'not_null' => 'true'),
         'IsProcessDown' => array('type' => 'int(12)', 'not_null' => 'true'),
         'Name' => array('type' => 'varchar(255)', 'not_null' => 'true'),
-        'IdPortalFrame' => array('type' => 'int(12)', 'not_null' => 'true')
-        
+        'IdPortalFrame' => array('type' => 'int(12)', 'not_null' => 'true'),
+        'TimeStampState' => array('type' => 'int(12)', 'not_null' => 'false'),
+        'TimeStampProccesed' => array('type' => 'int(12)', 'not_null' => 'false'),
+        'SF_Total' => array('type' => 'int(4)', 'not_null' => 'false'),
+        'SF_IN' => array('type' => 'int(4)', 'not_null' => 'false')
     );
-    var $IdNodeFrame;
-    var $NodeId = 0;
-    var $VersionId = 0;
-    var $TimeUp = null;
-    var $TimeDown = null;
-    var $Active = 0;
-    var $GetActivityFrom = 0;
-    var $IsProcessUp = 0;
-    var $IsProcessDown = 0;
-    var $Name;
-    var $IdPortalFrame;
+    public $IdNodeFrame;
+    public $NodeId = 0;
+    public $VersionId = 0;
+    public $TimeUp;
+    public $TimeDown;
+    public $Active = 0;
+    public $GetActivityFrom = 0;
+    public $IsProcessUp = 0;
+    public $IsProcessDown = 0;
+    public $Name;
+    public $IdPortalFrame;
+    public $TimeStampState;
+    public $TimeStampProccesed;
+    public $SF_Total = 0;
+    public $SF_IN = 0;
 }

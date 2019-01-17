@@ -58,7 +58,7 @@ class NodesToPublishOrm extends GenericData
     public $DateDown;
     public $State; // 0: Pending, 1: Locked, 2: Processed
     public $UserId;
-    public $Force;
+    public $ForcePublication = false;
     public $DeepLevel;
     public $UseCache = true;
 }

@@ -45,34 +45,34 @@ class ServerFramesOrm extends GenericData
         'FileSize' => array('type' => 'int(11)', 'not_null' => 'true'),
         'Retry' => array('type' => 'int(12)', 'not_null' => 'false'),
         'Linked' => array('type' => 'tinyint(3)', 'not_null' => 'true'),
-        'IdNodeFrame' => array('type' => 'int(12)', 'not_null' => 'false'),
+        'IdNodeFrame' => array('type' => 'int(12)', 'not_null' => 'true'),
         'IdBatchUp' => array('type' => 'int(12)', 'not_null' => 'false'),
         'IdChannelFrame' => array('type' => 'int(12)', 'not_null' => 'false'),
         'PumperId' => array('type' => 'int(12)', 'not_null' => 'false'),
         'cache' => array('type' => 'tinyint(1)', 'not_null' => 'true'),
-        'NodeId' => array('type' => 'int(12)', 'not_null' => 'false'),
+        'NodeId' => array('type' => 'int(12)', 'not_null' => 'true'),
         'ChannelId' => array('type' => 'int(12)', 'not_null' => 'false'),
         'IdBatchDown' => array('type' => 'int(12)', 'not_null' => 'false'),
         'IdPortalFrame' => array('type' => 'int(12)', 'not_null' => 'true')
     );
     public $IdSync;
-    public $IdServer = 0;
-    public $DateUp = 0;
-    public $DateDown = 0;
+    public $IdServer;
+    public $DateUp;
+    public $DateDown;
     public $State = 'DUE';
-    public $ErrorLevel =  null;
+    public $ErrorLevel;
     public $RemotePath;
     public $FileName;
     public $FileSize;
     public $Retry = 0;
     public $Linked = 1;
-    public $IdNodeFrame = 0;
-    public $IdBatchUp = 0;
-    public $IdChannelFrame = 0;
+    public $IdNodeFrame;
+    public $IdBatchUp;
+    public $IdChannelFrame;
     public $PumperId;
     public $cache;
     public $NodeId;
     public $ChannelId;
-    public $IdBatchDown = null;
+    public $IdBatchDown;
     public $IdPortalFrame;
 }

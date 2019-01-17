@@ -1079,7 +1079,7 @@ class Node extends NodesOrm
         $this->ClearError();
 
         if ($this->get('IdNode') > 0) {
-            $this->set('BlockTime', 0);
+            $this->set('BlockTime', null);
             $this->set('BlockUser', '');
             $this->update();
         } else {

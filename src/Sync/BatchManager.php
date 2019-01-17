@@ -306,7 +306,7 @@ class BatchManager
         
         // Remove poral frames if there is not frames generated
         $portal = new PortalFrames($idPortalFrame);
-        if (!$frames) {
+        if (! $frames) {
             Logger::warning('Deleting portals frames without related batchs');
             $portal->delete();
             if ($idPortalFrameDown) {
@@ -386,13 +386,13 @@ class BatchManager
             if (method_exists($node->class, 'GetChannels')) {
                 $arrayChannels = $node->class->GetChannels();
             }
-            if (!$arrayChannels) {
+            if (! $arrayChannels) {
                 $arrayChannels[] = 'NULL';
             }
             $nodeFrameId = null;
             foreach ($arrayChannels as $channelId) {
                 $numFrames = 0;
-                if ($channelId != 'NULL' and !isset($this->channels[$channelId])) {
+                if ($channelId != 'NULL' and ! isset($this->channels[$channelId])) {
                     $this->channels[$channelId] = new Channel($channelId);
                 }
                 $channelFrameId = null;
@@ -401,12 +401,12 @@ class BatchManager
                     
                     // Load the inherited channels for the node to be publish
                     $properties = InheritedPropertiesManager::getValues($idNode, true);
-                    if (!isset($properties['Channel'])) {
+                    if (! isset($properties['Channel'])) {
                         continue;
                     }
                     
                     // Load the physical server for the current batch
-                    if (!isset($servers[$physicalServer])) {
+                    if (! isset($servers[$physicalServer])) {
                         $servers[$physicalServer] = $server = new Server($physicalServer);
                     }
                     else {
@@ -419,7 +419,7 @@ class BatchManager
                     foreach (array_keys($properties['Channel']) as $PropChannelId) {
                         
                         // Check if the server has the document channel
-                        if (!isset($serverChannels[$PropChannelId])) {
+                        if (! isset($serverChannels[$PropChannelId])) {
                             
                             // Server channel not for this document
                             continue;
@@ -427,7 +427,7 @@ class BatchManager
                         
                         // If this document is common type (channelId = NULL) and server channel is type INDEX, avoid it
                         if ($channelId == 'NULL') {
-                            if (!isset($this->channels[$PropChannelId])) {
+                            if (! isset($this->channels[$PropChannelId])) {
                                 $this->channels[$PropChannelId] = new Channel($PropChannelId);
                             }
                             if ($this->channels[$PropChannelId]->getRenderType() == Channel::RENDERTYPE_INDEX) {
@@ -439,7 +439,7 @@ class BatchManager
                         $serverHasChannel = true;
                         break;
                     }
-                    if (!$serverHasChannel) {
+                    if (! $serverHasChannel) {
                         
                         // This server does not support this channel, server frame will not be created
                         continue;

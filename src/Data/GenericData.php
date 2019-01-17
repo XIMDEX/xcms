@@ -123,6 +123,13 @@ class GenericData
      * @var string
      */
     protected $query = '';
+    
+    /**
+     * List of fields changed by the set method (with previous value)
+     * 
+     * @var array
+     */
+    protected $updatedFields = array();
 
     /**
      * @param int $id
@@ -157,6 +164,7 @@ class GenericData
                 }
             }
         }
+        $this->updatedFields = [];
     }
 
     public function getQuery() : string
@@ -258,8 +266,10 @@ class GenericData
             foreach ($this->messages->messages as $message) {
                 Logger::error($message['message']);
             }
+            return false;
         }
         $this->_applyFilter('afterAdd');
+        $this->updatedFields = [];
         return $insertedId ? $insertedId : false;
     }
 
@@ -643,8 +653,10 @@ class GenericData
             foreach ($this->messages->messages as $message) {
                 Logger::error($message['message']);
             }
+            return false;
         }
         $this->_applyFilter('afterUpdate');
+        $this->updatedFields = [];
         return $updatedRows ? $updatedRows : null;
     }
 
@@ -724,7 +736,7 @@ class GenericData
         if (empty($attribute)) {
             return false;
         }
-        if (!array_key_exists($attribute, $this->_metaData)) {
+        if (! array_key_exists($attribute, $this->_metaData)) {
             $backtrace = debug_backtrace();
             Logger::error(sprintf('[SET] Trying to set a property that does not exist'
                 . ' [inc/helper/GenericData.class.php] script: %s file: %s line: %s table: %s key: %s value: %s',
@@ -736,7 +748,8 @@ class GenericData
                 $value));
             $this->modelInError = true;
             return false;
-        }
+        }        
+        $this->updatedFields[$attribute] = $this->$attribute;
         $this->$attribute = $value;
         return true;
     }

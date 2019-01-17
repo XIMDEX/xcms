@@ -164,7 +164,7 @@ class NodeFrameManager
 		$nodeFrame = new NodeFrame($nodeFrId);
 		$nodeFrame->set('Active', $activity);
 		$cancelled = null;
-		if ( !is_null($replacedBy) ) {
+		if (! is_null($replacedBy) ) {
 			$nodeFrame->set('GetActivityFrom', $replacedBy);
 			$cancelled = 1;
 		}
@@ -174,7 +174,7 @@ class NodeFrameManager
 			$nodeFrame->set('IsProcessDown', 1);
 		}
 		$result = $nodeFrame->update();
-		if (!$result) {
+		if (! $result) {
 			Logger::error(sprintf('Setting NodeFrame %s activity to %s', $nodeFrId, $activity));
 			return false;
 		}
@@ -218,7 +218,7 @@ class NodeFrameManager
 		$dbObj->Query($sql);
 		$nodeFrames = array();
 		$i = 0;
-		while(!$dbObj->EOF) {
+		while(! $dbObj->EOF) {
 			$nodeFrames[$i]['Id'] = $dbObj->GetValue('IdNodeFrame');
 			$nodeFrames[$i]['Active'] = $dbObj->GetValue('Active');
 			$i++;

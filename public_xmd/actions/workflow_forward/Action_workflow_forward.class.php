@@ -89,7 +89,7 @@ class Action_workflow_forward extends ActionAbstract
         // Getting next state
         $nextState = $workflow->getNextState();
         if (! $nextState) {
-            $this->messages->add(_('This node is already in final publication state.'), MSG_TYPE_WARNING);
+            $this->messages->add(_('This node is already in final state.'), MSG_TYPE_WARNING);
             $values = array(
                 'messages' => $this->messages->messages,
                 'nodeTypeID' => $node->nodeType->getID(),

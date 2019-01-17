@@ -165,11 +165,11 @@ class NodesToPublish extends NodesToPublishOrm
 	}
 
 	/**
-	 * @param $idNode
+	 * @param int $idNode
 	 * @param int $idNodeGenerator
 	 * @return array
 	 */
-	public function getIntervals(int $idNode, int $idNodeGenerator = null)
+	public function getIntervals(int $idNode = null, int $idNodeGenerator = null)
 	{
 		$arrayDates = array();
 		$now = time();
