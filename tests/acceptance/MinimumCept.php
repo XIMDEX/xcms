@@ -56,7 +56,7 @@ $I->waitForText('WELCOME TO XIMDEX CMS, XIMDEX!', 3);
 
 $I->wantTo('Ensure that publish works');
 open_picasso_menu($I);
-$I->waitForText('Publish', 3, 'body > div.xim-actions-menu.destroy-on-click.noselect.xim-actions-menu-list');
+$I->waitForText('Move to next state', 3, 'body > div.xim-actions-menu.destroy-on-click.noselect.xim-actions-menu-list');
 
 $I->click('body > div.xim-actions-menu.destroy-on-click.noselect.xim-actions-menu-list > div.button-container-list.icon.workflow_forward');
 $I->wait(3);
