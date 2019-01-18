@@ -1,0 +1,2759 @@
+msgid ""
+msgstr "Content-Type: text/plain; charset=UTF-8\n"
+
+#: /public_xmd/actions/linkreport/template/Smarty/searchresult.tpl:30
+msgid "Search results"
+msgstr ""
+
+#: /public_xmd/actions/linkreport/template/Smarty/searchresult.tpl:33
+msgid "External links found"
+msgstr ""
+
+#: /public_xmd/actions/linkreport/template/Smarty/searchresult.tpl:44
+#: /public_xmd/actions/linkreport/template/Smarty/index.tpl:40
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolboxes.tpl:87
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolboxes.tpl:100
+#: /public_xmd/actions/modifylanguage/template/Smarty/index.tpl:41
+#: /public_xmd/actions/createlanguage/template/Smarty/index.tpl:63
+#: /public_xmd/actions/modifyrole/template/Smarty/index.tpl:49
+#: /public_xmd/actions/createlink/template/Smarty/index.tpl:62
+#: /public_xmd/actions/createrole/template/Smarty/index.tpl:42
+#: /public_xmd/actions/createchannel/template/Smarty/index.tpl:46
+#: /public_xmd/actions/modifystates/template/Smarty/index.tpl:49
+#: /public_xmd/actions/modifylink/template/Smarty/index.tpl:59
+#: /public_xmd/actions/commons/layouts/progress_action_template.tpl:40
+#: /public_xmd/actions/commons/layouts/default.tpl:30
+#: /public_xmd/actions/commons/layouts/default_no_table.tpl:32
+#: /public_xmd/actions/commons/layouts/default-3.0.tpl:41
+#: /public_xmd/actions/modifychannel/template/Smarty/index.tpl:46
+#: /public_xmd/actions/manageList/template/Smarty/index.tpl:31
+#: /public_xmd/actions/manageList/template/Smarty/index.tpl:52
+msgid "Description"
+msgstr ""
+
+#: /public_xmd/actions/linkreport/template/Smarty/searchresult.tpl:54
+msgid "Created"
+msgstr ""
+
+#: /public_xmd/actions/linkreport/template/Smarty/searchresult.tpl:56
+msgid "Last check"
+msgstr ""
+
+#: /public_xmd/actions/linkreport/template/Smarty/searchresult.tpl:61
+msgid "Uncheckable"
+msgstr ""
+
+#: /public_xmd/actions/linkreport/template/Smarty/searchresult.tpl:68
+msgid ""
+"There aren't any links matching with the current search. Please, try again "
+"with another search string"
+msgstr ""
+
+#: /public_xmd/actions/linkreport/template/Smarty/index.tpl:32
+msgid "Select search criteria"
+msgstr ""
+
+#: /public_xmd/actions/linkreport/template/Smarty/index.tpl:38
+msgid "All fields"
+msgstr ""
+
+#: /public_xmd/actions/linkreport/template/Smarty/index.tpl:39
+#: /public_xmd/actions/xmleditor2/template/Smarty/ximlinkdrawer.tpl:60
+#: /public_xmd/actions/modifygroup/template/Smarty/index.tpl:36
+#: /public_xmd/actions/addsectionnode/template/Smarty/index.tpl:33
+#: /public_xmd/actions/createlanguage/template/Smarty/index.tpl:39
+#: /public_xmd/actions/renamenode/template/Smarty/index.tpl:41
+#: /public_xmd/actions/addfoldernode/template/Smarty/addProject.tpl:43
+#: /public_xmd/actions/addfoldernode/template/Smarty/index.tpl:33
+#: /public_xmd/actions/modifyrole/template/Smarty/index.tpl:45
+#: /public_xmd/actions/createlink/template/Smarty/index.tpl:36
+#: /public_xmd/actions/newemptynode/template/Smarty/addNode.tpl:38
+#: /public_xmd/actions/createrole/template/Smarty/index.tpl:37
+#: /public_xmd/actions/creategroup/template/Smarty/index.tpl:37
+#: /public_xmd/actions/createchannel/template/Smarty/index.tpl:34
+#: /public_xmd/actions/modifyusergroups/template/Smarty/index.tpl:39
+#: /public_xmd/actions/modifylink/template/Smarty/index.tpl:35
+#: /public_xmd/actions/modifygroupusers/template/Smarty/index.tpl:37
+#: /public_xmd/actions/modifychannel/template/Smarty/index.tpl:34
+#: /public_xmd/actions/createxmlcontainer/template/Smarty/index.tpl:42
+#: /public_xmd/actions/manageList/template/Smarty/index.tpl:30
+#: /public_xmd/actions/manageList/template/Smarty/index.tpl:48
+#: /public_xmd/src/Widgets/searchpanel/template/searchpanel.tpl:40
+msgid "Name"
+msgstr ""
+
+#: /public_xmd/actions/linkreport/template/Smarty/index.tpl:41
+#: /public_xmd/actions/createlink/template/Smarty/index.tpl:55
+#: /public_xmd/actions/modifylink/template/Smarty/index.tpl:53
+msgid "URL"
+msgstr ""
+
+#: /public_xmd/actions/linkreport/template/Smarty/index.tpl:49
+#: /public_xmd/src/Widgets/searchpanel/template/searchpanel.tpl:49
+msgid "contains"
+msgstr ""
+
+#: /public_xmd/actions/linkreport/template/Smarty/index.tpl:50
+#: /public_xmd/src/Widgets/searchpanel/template/searchpanel.tpl:50
+msgid "does not contain"
+msgstr ""
+
+#: /public_xmd/actions/linkreport/template/Smarty/index.tpl:51
+#: /public_xmd/src/Widgets/searchpanel/template/searchpanel.tpl:51
+#: /public_xmd/src/Widgets/searchpanel/template/searchpanel.tpl:60
+msgid "equal to"
+msgstr ""
+
+#: /public_xmd/actions/linkreport/template/Smarty/index.tpl:52
+#: /public_xmd/src/Widgets/searchpanel/template/searchpanel.tpl:52
+msgid "not equal to"
+msgstr ""
+
+#: /public_xmd/actions/linkreport/template/Smarty/index.tpl:53
+#: /public_xmd/src/Widgets/searchpanel/template/searchpanel.tpl:53
+msgid "begins with"
+msgstr ""
+
+#: /public_xmd/actions/linkreport/template/Smarty/index.tpl:54
+#: /public_xmd/src/Widgets/searchpanel/template/searchpanel.tpl:54
+msgid "ends with"
+msgstr ""
+
+#: /public_xmd/actions/linkreport/template/Smarty/index.tpl:69
+msgid "Search in subfolders"
+msgstr ""
+
+#: /public_xmd/actions/linkreport/template/Smarty/index.tpl:72
+msgid "Use the asterisk '*' to obtain all the links of the current folder"
+msgstr ""
+
+#: /public_xmd/actions/linkreport/template/Smarty/index.tpl:72
+msgid ""
+"Find your links and check if they are currently alive by clicking on the "
+"icon on the right"
+msgstr ""
+
+#: /public_xmd/actions/addximlet/template/Smarty/index.tpl:31
+msgid ""
+"The associated ximlets will appear in every single XML document of this "
+"section"
+msgstr ""
+
+#: /public_xmd/actions/addximlet/template/Smarty/index.tpl:36
+msgid "Ximlets already associated"
+msgstr ""
+
+#: /public_xmd/actions/addximlet/template/Smarty/index.tpl:50
+msgid "Disassociate recursively"
+msgstr ""
+
+#: /public_xmd/actions/addximlet/template/Smarty/index.tpl:51
+msgid ""
+"If the current section/server has subfolders, the association will be "
+"deleted for them too"
+msgstr ""
+
+#: /public_xmd/actions/addximlet/template/Smarty/index.tpl:65
+msgid "Available Ximlets"
+msgstr ""
+
+#: /public_xmd/actions/addximlet/template/Smarty/index.tpl:79
+#: /public_xmd/actions/showassocnodes/template/Smarty/index.tpl:86
+msgid "Associate recursively"
+msgstr ""
+
+#: /public_xmd/actions/addximlet/template/Smarty/index.tpl:80
+msgid ""
+"If the current section/server has subfolders, the association will be "
+"created for them too"
+msgstr ""
+
+#: /public_xmd/actions/addximlet/template/Smarty/index.tpl:88
+msgid "There aren't any ximlets to associate"
+msgstr ""
+
+#: /public_xmd/actions/infonode/template/Smarty/index.tpl:31
+msgid "General info"
+msgstr ""
+
+#: /public_xmd/actions/infonode/template/Smarty/index.tpl:36
+msgid "NodeId"
+msgstr ""
+
+#: /public_xmd/actions/infonode/template/Smarty/index.tpl:39
+msgid "Parent node"
+msgstr ""
+
+#: /public_xmd/actions/infonode/template/Smarty/index.tpl:45
+msgid "NodeType"
+msgstr ""
+
+#: /public_xmd/actions/infonode/template/Smarty/index.tpl:59
+#: /public_xmd/actions/manageproperties/template/Smarty/Language.tpl:29
+#: /public_xmd/actions/createxmlcontainer/template/Smarty/_ximdoc_languages.tpl:31
+#: /modules/xBlog/actions/createxhtml5container/template/Smarty/_ximdoc_languages.tpl:54
+msgid "Languages"
+msgstr ""
+
+#: /public_xmd/actions/infonode/template/Smarty/index.tpl:68
+msgid "Not found"
+msgstr ""
+
+#: /public_xmd/actions/infonode/template/Smarty/index.tpl:72
+#: /public_xmd/actions/manageproperties/template/Smarty/Channel.tpl:29
+#: /public_xmd/actions/modifyserver/template/Smarty/index.tpl:137
+#: /modules/xBlog/actions/createxhtml5container/template/Smarty/_ximdoc_languages.tpl:38
+msgid "Channels"
+msgstr ""
+
+#: /public_xmd/actions/infonode/template/Smarty/index.tpl:84
+msgid "Properties info"
+msgstr ""
+
+#: /public_xmd/actions/infonode/template/Smarty/index.tpl:87
+msgid "State"
+msgstr ""
+
+#: /public_xmd/actions/infonode/template/Smarty/index.tpl:88
+#: /public_xmd/actions/infonode/template/Smarty/index.tpl:115
+#: /public_xmd/actions/manageversions/template/Smarty/index.tpl:38
+#: /modules/xBlog/actions/listposts/template/Smarty/index.tpl:59
+msgid "Published"
+msgstr ""
+
+#: /public_xmd/actions/infonode/template/Smarty/index.tpl:88
+msgid "Not published"
+msgstr ""
+
+#: /public_xmd/actions/infonode/template/Smarty/index.tpl:93
+msgid "Last version"
+msgstr ""
+
+#: /public_xmd/actions/infonode/template/Smarty/index.tpl:99
+msgid "Last modified"
+msgstr ""
+
+#: /public_xmd/actions/infonode/template/Smarty/index.tpl:108
+msgid "Version manager"
+msgstr ""
+
+#: /public_xmd/actions/infonode/template/Smarty/index.tpl:108
+msgid "Limited to last"
+msgstr ""
+
+#: /public_xmd/actions/infonode/template/Smarty/index.tpl:114
+#: /public_xmd/actions/manageversions/template/Smarty/index.tpl:38
+msgid "New"
+msgstr ""
+
+#: /public_xmd/actions/infonode/template/Smarty/index.tpl:116
+#: /public_xmd/actions/manageversions/template/Smarty/index.tpl:38
+msgid "Draft"
+msgstr ""
+
+#: /public_xmd/actions/infonode/template/Smarty/index.tpl:130
+msgid "Dependencies"
+msgstr ""
+
+#: /public_xmd/actions/checkstatus/template/Smarty/index.tpl:27
+msgid "Status Report"
+msgstr ""
+
+#: /public_xmd/actions/checkstatus/template/Smarty/index.tpl:30
+msgid "Modified documents"
+msgstr ""
+
+#: /public_xmd/actions/checkstatus/template/Smarty/index.tpl:32
+msgid "There aren't any edited files yet"
+msgstr ""
+
+#: /public_xmd/actions/checkstatus/template/Smarty/index.tpl:35
+msgid ""
+"Below are listed all the relevant documents in your system, grouped by "
+"state. Only are shown the files that are modified in comparation with its "
+"last published version."
+msgstr ""
+
+#: /public_xmd/actions/checkstatus/template/Smarty/index.tpl:39
+msgid "Documents in"
+msgstr ""
+
+#: /public_xmd/actions/checkstatus/template/Smarty/index.tpl:56
+#: /public_xmd/actions/checkstatus/template/Smarty/index.tpl:94
+msgid "Published documents"
+msgstr ""
+
+#: /public_xmd/actions/checkstatus/template/Smarty/index.tpl:57
+msgid "There aren't any published files yet"
+msgstr ""
+
+#: /public_xmd/actions/checkstatus/template/Smarty/index.tpl:60
+msgid "Below are listed all the documents that have been sent to publish"
+msgstr ""
+
+#: /public_xmd/actions/checkstatus/template/Smarty/index.tpl:106
+msgid "Documents in publication queue"
+msgstr ""
+
+#: /public_xmd/actions/checkstatus/template/Smarty/index.tpl:117
+msgid ""
+"If you want to have a deeper look into the Ximdex CMS publication process, "
+"upgrade this status report with <strong>XPublishTools</strong> module"
+msgstr ""
+
+#: /public_xmd/actions/xedit/template/Smarty/linked_document.tpl:2
+#: /public_xmd/actions/xmleditor2/template/Smarty/linked_document.tpl:2
+#: /public_xmd/actions/edittext/template/Smarty/linked_document.tpl:2
+#: /modules/Xdms/actions/collaborative/template/Smarty/linked_document.tpl:2
+msgid "Edition"
+msgstr ""
+
+#: /public_xmd/actions/xedit/template/Smarty/linked_document.tpl:8
+#: /public_xmd/actions/xmleditor2/template/Smarty/linked_document.tpl:8
+#: /public_xmd/actions/edittext/template/Smarty/linked_document.tpl:8
+#: /modules/Xdms/actions/collaborative/template/Smarty/linked_document.tpl:8
+msgid "It is a symbolic link"
+msgstr ""
+
+#: /public_xmd/actions/xedit/template/Smarty/linked_document.tpl:11
+#: /public_xmd/actions/xmleditor2/template/Smarty/linked_document.tpl:11
+#: /public_xmd/actions/edittext/template/Smarty/linked_document.tpl:11
+#: /public_xmd/actions/workflow_forward/template/Smarty/linked_document.tpl:11
+#: /modules/Xdms/actions/collaborative/template/Smarty/linked_document.tpl:11
+msgid ""
+"The publication cycle of the selected document is currently linked to the "
+"document"
+msgstr ""
+
+#: /public_xmd/actions/xedit/template/Smarty/index.tpl:7
+msgid "There is not a URL for the HTML editor in the system configuration"
+msgstr ""
+
+#: /public_xmd/actions/xedit/template/Smarty/index.tpl:10
+msgid "The HTML editor is not enabled in the system configuration"
+msgstr ""
+
+#: /public_xmd/actions/modifyuser/template/Smarty/index.tpl:31
+msgid "Modify user"
+msgstr ""
+
+#: /public_xmd/actions/modifyuser/template/Smarty/index.tpl:35
+#: /public_xmd/actions/modifyuser/template/Smarty/index.tpl:37
+msgid "First and last names"
+msgstr ""
+
+#: /public_xmd/actions/modifyuser/template/Smarty/index.tpl:42
+#: /public_xmd/actions/modifyuser/template/Smarty/index.tpl:44
+msgid "Email"
+msgstr ""
+
+#: /public_xmd/actions/modifyuser/template/Smarty/index.tpl:48
+#: /public_xmd/actions/modifyuser/template/Smarty/index.tpl:51
+msgid "Modify password"
+msgstr ""
+
+#: /public_xmd/actions/modifyuser/template/Smarty/index.tpl:56
+#: /public_xmd/actions/modifyuser/template/Smarty/index.tpl:58
+#: /public_xmd/actions/createuser/template/Smarty/index.tpl:45
+msgid "Repeat password"
+msgstr ""
+
+#: /public_xmd/actions/modifyuser/template/Smarty/index.tpl:63
+#: /public_xmd/actions/createuser/template/Smarty/index.tpl:60
+msgid "Role in general group"
+msgstr ""
+
+#: /public_xmd/actions/modifyuser/template/Smarty/index.tpl:73
+#: /public_xmd/actions/browser3/template/Smarty/index.tpl:78
+#: /public_xmd/actions/renamenode/template/Smarty/index.tpl:71
+msgid "Language"
+msgstr ""
+
+#: /public_xmd/actions/modifyrolesstate/template/Smarty/index.tpl:27
+msgid "Associate roles"
+msgstr ""
+
+#: /public_xmd/actions/modifyrolesstate/template/Smarty/index.tpl:33
+#: /public_xmd/actions/modifyrolesstate/template/Smarty/index.tpl:52
+msgid "Existing roles"
+msgstr ""
+
+#: /public_xmd/actions/modifyrolesstate/template/Smarty/index.tpl:46
+msgid "Dissociate roles"
+msgstr ""
+
+#: /public_xmd/actions/addworkflow/template/Smarty/index.tpl:34
+msgid "Add workflow"
+msgstr ""
+
+#: /public_xmd/actions/addworkflow/template/Smarty/index.tpl:44
+#: /public_xmd/actions/addworkflow/template/Smarty/index.tpl:45
+msgid "Name of the new workflow"
+msgstr ""
+
+#: /public_xmd/actions/modifystatesrole/template/Smarty/index.tpl:35
+msgid "#/workflow.description/#"
+msgstr ""
+
+#: /public_xmd/actions/modifystatesrole/template/Smarty/index.tpl:38
+msgid "Select the status asociated with the role"
+msgstr ""
+
+#: /public_xmd/actions/modifystatesrole/template/Smarty/index.tpl:54
+#: /public_xmd/actions/setextensions/template/Smarty/index.tpl:22
+#: /public_xmd/actions/modifystates/template/Smarty/index.tpl:92
+msgid "Save changes"
+msgstr ""
+
+#: /public_xmd/actions/fileupload/template/Smarty/index_pvd.tpl:29
+#: /public_xmd/actions/fileupload/template/Smarty/index.tpl:31
+#: /public_xmd/actions/updatefile/template/Smarty/index.tpl:28
+msgid "Upload file"
+msgstr ""
+
+#: /public_xmd/actions/fileupload/template/Smarty/index_pvd.tpl:39
+msgid "Template view"
+msgstr ""
+
+#: /public_xmd/actions/fileupload/template/Smarty/index_pvd.tpl:43
+msgid "Default view"
+msgstr ""
+
+#: /public_xmd/actions/fileupload/template/Smarty/confirm.tpl:31
+msgid "Messages"
+msgstr ""
+
+#: /public_xmd/actions/fileupload/template/Smarty/index.tpl:41
+#: /public_xmd/actions/updatefile/template/Smarty/index.tpl:34
+msgid "File"
+msgstr ""
+
+#: /public_xmd/actions/deletetemplates/template/Smarty/result.tpl:2
+msgid "Removed templates"
+msgstr ""
+
+#: /public_xmd/actions/deletetemplates/template/Smarty/result.tpl:6
+#: /public_xmd/src/Widgets/searchpanel/template/searchpanel.tpl:112
+msgid "Results"
+msgstr ""
+
+#: /public_xmd/actions/deletetemplates/template/Smarty/result.tpl:10
+msgid "ok"
+msgstr ""
+
+#: /public_xmd/actions/deletetemplates/template/Smarty/result.tpl:10
+msgid "fail"
+msgstr ""
+
+#: /public_xmd/actions/deletetemplates/template/Smarty/result.tpl:15
+msgid "There aren't any selected template"
+msgstr ""
+
+#: /public_xmd/actions/deletetemplates/template/Smarty/index.tpl:29
+#: /public_xmd/actions/deletenode/template/Smarty/forms/simple.tpl:40
+#: /public_xmd/actions/deletenode/template/Smarty/forms/dependencies.tpl:32
+msgid "This action cannot be undone"
+msgstr ""
+
+#: /public_xmd/actions/deletetemplates/template/Smarty/index.tpl:53
+msgid "Templates not found"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolbar.tpl:31
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolbar.tpl:33
+#: /public_xmd/src/Widgets/searchpanel/template/searchpanel.tpl:30
+msgid "Save"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolbar.tpl:44
+msgid "Publicate"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolbar.tpl:46
+#: /public_xmd/actions/publicatesection/template/Smarty/index.tpl:72
+#: /modules/xBlog/actions/listposts/template/Smarty/index.tpl:68
+msgid "Publish"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolbar.tpl:52
+msgid "Tree"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolbar.tpl:54
+#: /public_xmd/src/Widgets/ontologyBrowser/template/ontologyBrowser.tpl:28
+msgid "Tree view"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolbar.tpl:57
+msgid "Design"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolbar.tpl:59
+msgid "Design view"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolbar.tpl:62
+msgid "Form"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolbar.tpl:64
+msgid "Form view"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolbar.tpl:68
+msgid "Remote"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolbar.tpl:70
+msgid "Remote view"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolbar.tpl:78
+msgid "Cut"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolbar.tpl:80
+msgid "Cut selected element"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolbar.tpl:82
+msgid "Copy"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolbar.tpl:84
+msgid "Copy selected element"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolbar.tpl:86
+msgid "Paste"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolbar.tpl:88
+msgid "Paste element"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolbar.tpl:91
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolbar.tpl:93
+msgid "Delete selected element"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolbar.tpl:95
+#: /public_xmd/actions/xmleditor2/template/Smarty/loadEditor_KUPU.tpl:45
+msgid "Scroll up"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolbar.tpl:97
+msgid "Put element up"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolbar.tpl:99
+#: /public_xmd/actions/xmleditor2/template/Smarty/loadEditor_KUPU.tpl:48
+msgid "Scroll down"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolbar.tpl:101
+msgid "Put element down"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolbar.tpl:105
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolbar.tpl:107
+msgid "Undo"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolbar.tpl:109
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolbar.tpl:111
+msgid "Redo"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolbar.tpl:115
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolbar.tpl:117
+#: /public_xmd/actions/xmleditor2/template/Smarty/ximletdrawer.tpl:27
+msgid "Ximlet manager"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolbar.tpl:123
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolbar.tpl:125
+msgid "Validate schema"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolbar.tpl:127
+msgid "Spell Check"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolbar.tpl:129
+msgid "Spell checker"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolbar.tpl:138
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolbar.tpl:140
+msgid "Open in a new window"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolbar.tpl:145
+msgid "Show/hide options"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolbar.tpl:149
+msgid "Show/hide channels"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolbar.tpl:152
+msgid "Show/hide attributes"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolbar.tpl:155
+msgid "Show/hide annotations"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolbar.tpl:158
+msgid "Show/hide debug log"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolbar.tpl:161
+msgid "Show/hide change history"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolbar.tpl:164
+msgid "Show/hide available elements"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolbar.tpl:167
+msgid "Show/hide information"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/ximlinkdrawer.tpl:30
+msgid "Link manager"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/ximlinkdrawer.tpl:31
+msgid "Add a new link"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/ximlinkdrawer.tpl:37
+msgid "Search existing links"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/ximlinkdrawer.tpl:42
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolboxes.tpl:49
+msgid "Links"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/ximlinkdrawer.tpl:46
+msgid "Available descriptions for the selected link"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/ximlinkdrawer.tpl:51
+#: /public_xmd/actions/xmleditor2/template/Smarty/ximletdrawer.tpl:34
+#: /public_xmd/actions/xmleditor2/template/Smarty/ximimagedrawer.tpl:41
+#: /public_xmd/actions/xmleditor2/template/Smarty/datedrawer.tpl:39
+msgid "Accept"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/ximlinkdrawer.tpl:52
+#: /public_xmd/actions/xmleditor2/template/Smarty/ximlinkdrawer.tpl:81
+#: /public_xmd/actions/xmleditor2/template/Smarty/ximletdrawer.tpl:35
+#: /public_xmd/actions/xmleditor2/template/Smarty/ximimagedrawer.tpl:42
+#: /public_xmd/actions/xmleditor2/template/Smarty/datedrawer.tpl:41
+msgid "Cancel"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/ximlinkdrawer.tpl:64
+msgid "Url"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/ximlinkdrawer.tpl:68
+#: /public_xmd/actions/modifylink/template/Smarty/show.tpl:39
+msgid "Descripción"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/ximlinkdrawer.tpl:72
+msgid "Folder"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/ximlinkdrawer.tpl:79
+msgid "Create"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/ximletdrawer.tpl:30
+msgid "Associate selected ximlet with the following node ID:"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/tabledrawer.tpl:28
+msgid "Tables"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/tabledrawer.tpl:40
+msgid "Rows"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/tabledrawer.tpl:52
+msgid "Cols"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/tabledrawer.tpl:77
+msgid "Table class"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/tabledrawer.tpl:85
+msgid "Plain"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/tabledrawer.tpl:89
+msgid "List"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/tabledrawer.tpl:93
+msgid "Grid"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/tabledrawer.tpl:97
+msgid "Data"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/tabledrawer.tpl:106
+msgid "Current column align"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/tabledrawer.tpl:115
+msgid "Left"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/tabledrawer.tpl:120
+msgid "Center"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/tabledrawer.tpl:124
+msgid "Right"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/tabledrawer.tpl:133
+msgid "Col"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/tabledrawer.tpl:140
+#: /public_xmd/actions/xmleditor2/template/Smarty/tabledrawer.tpl:161
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolboxes.tpl:65
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolboxes.tpl:67
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolboxes.tpl:107
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolboxes.tpl:109
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolboxes.tpl:129
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolboxes.tpl:131
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolboxes.tpl:151
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolboxes.tpl:153
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolboxes.tpl:173
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolboxes.tpl:175
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolboxes.tpl:195
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolboxes.tpl:197
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolboxes.tpl:217
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolboxes.tpl:219
+#: /public_xmd/actions/addfoldernode/template/Smarty/index.tpl:30
+#: /public_xmd/actions/addfoldernode/template/Smarty/addSectionNode.tpl:26
+#: /public_xmd/actions/setmetadata/template/Smarty/index.tpl:47
+#: /public_xmd/actions/modifyusergroups/template/Smarty/index.tpl:62
+#: /public_xmd/actions/modifygroupusers/template/Smarty/index.tpl:56
+#: /public_xmd/src/Widgets/tagsinput/template/tagsinput.tpl:31
+#: /public_xmd/src/Widgets/tagsinput/template/tagsinput_editor.tpl:50
+#: /public_xmd/src/Widgets/uploader/template/uploader_html5.tpl:50
+#: /modules/Xdms/actions/configure/template/Smarty/index.tpl:53
+msgid "Add"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/tabledrawer.tpl:146
+#: /public_xmd/actions/xmleditor2/template/Smarty/tabledrawer.tpl:167
+msgid "Remove"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/tabledrawer.tpl:154
+msgid "Row"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/tabledrawer.tpl:181
+msgid "Add table"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/tabledrawer.tpl:188
+msgid "Close"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/ximimagedrawer.tpl:28
+msgid "Image attributes"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/ximimagedrawer.tpl:33
+msgid "Search existing images"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolboxes.tpl:30
+msgid "Information"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolboxes.tpl:38
+msgid "Annotation"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolboxes.tpl:42
+msgid "Annotations"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolboxes.tpl:44
+msgid "Load"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolboxes.tpl:55
+msgid "Link header"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolboxes.tpl:59
+msgid "Link Source"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolboxes.tpl:61
+msgid "Visitar"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolboxes.tpl:63
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolboxes.tpl:103
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolboxes.tpl:105
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolboxes.tpl:125
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolboxes.tpl:127
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolboxes.tpl:147
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolboxes.tpl:149
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolboxes.tpl:169
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolboxes.tpl:171
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolboxes.tpl:191
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolboxes.tpl:193
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolboxes.tpl:213
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolboxes.tpl:215
+#: /public_xmd/actions/login/template/Smarty/index.tpl:71
+msgid "Visit"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolboxes.tpl:74
+msgid "Images"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolboxes.tpl:81
+msgid "Previous"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolboxes.tpl:82
+msgid "Next"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolboxes.tpl:88
+msgid "License"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolboxes.tpl:95
+msgid "Articles"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolboxes.tpl:117
+msgid "People"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolboxes.tpl:122
+msgid "Person"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolboxes.tpl:139
+msgid "Organizations"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolboxes.tpl:144
+msgid "Organization"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolboxes.tpl:161
+msgid "Places"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolboxes.tpl:166
+msgid "Place"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolboxes.tpl:183
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolboxes.tpl:188
+msgid "Creative Work"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolboxes.tpl:205
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolboxes.tpl:210
+msgid "Others"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolboxes.tpl:230
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolboxes.tpl:251
+msgid "Rdfa annotations"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolboxes.tpl:235
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolboxes.tpl:256
+msgid "Friend of a friend"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolboxes.tpl:240
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolboxes.tpl:261
+msgid "Geospatial"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolboxes.tpl:271
+msgid "Attributes"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolboxes.tpl:280
+#: /public_xmd/actions/modifyusergroups/template/Smarty/index.tpl:85
+#: /public_xmd/actions/modifygroupusers/template/Smarty/index.tpl:78
+msgid "Update"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolboxes.tpl:288
+msgid "Document properties"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolboxes.tpl:306
+msgid "History"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/toolboxes.tpl:315
+msgid "Debug log"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/datedrawer.tpl:29
+msgid "Seleccione fecha"
+msgstr ""
+
+#: /public_xmd/actions/xmleditor2/template/Smarty/datedrawer.tpl:33
+msgid "Date"
+msgstr ""
+
+#: /public_xmd/actions/modifygroup/template/Smarty/index.tpl:31
+msgid "Modify group"
+msgstr ""
+
+#: /public_xmd/actions/addsectionnode/template/Smarty/index.tpl:30
+msgid "Add section"
+msgstr ""
+
+#: /public_xmd/actions/addsectionnode/template/Smarty/index.tpl:36
+msgid "Name of your section"
+msgstr ""
+
+#: /public_xmd/actions/addsectionnode/template/Smarty/index.tpl:39
+#: /public_xmd/actions/createlink/template/Smarty/index.tpl:46
+#: /public_xmd/actions/components/title_Description.tpl:28
+#: /public_xmd/actions/modifylink/template/Smarty/index.tpl:44
+msgid "Type"
+msgstr ""
+
+#: /public_xmd/actions/addsectionnode/template/Smarty/index.tpl:45
+#: /public_xmd/actions/managefolders/template/Smarty/index.tpl:41
+msgid "Subfolders availables"
+msgstr ""
+
+#: /public_xmd/actions/addsectionnode/template/Smarty/index.tpl:57
+#: /public_xmd/actions/addlangxmlcontainer/template/Smarty/index.tpl:49
+msgid "Languages availables"
+msgstr ""
+
+#: /public_xmd/actions/addsectionnode/template/Smarty/index.tpl:60
+msgid "#/lang.Name/#"
+msgstr ""
+
+#: /public_xmd/actions/addsectionnode/template/Smarty/index.tpl:61
+#: /public_xmd/actions/addlangxmlcontainer/template/Smarty/index.tpl:61
+#: /public_xmd/actions/createxmlcontainer/template/Smarty/_ximdoc_languages.tpl:39
+#: /modules/xBlog/actions/createxhtml5container/template/Smarty/_ximdoc_languages.tpl:64
+msgid "Alternative name for paths &amp; breadcrumbs"
+msgstr ""
+
+#: /public_xmd/actions/modifylanguage/template/Smarty/index.tpl:32
+msgid "Modify language"
+msgstr ""
+
+#: /public_xmd/actions/modifylanguage/template/Smarty/index.tpl:36
+msgid "Language name"
+msgstr ""
+
+#: /public_xmd/actions/modifylanguage/template/Smarty/index.tpl:46
+msgid "ISO code"
+msgstr ""
+
+#: /public_xmd/actions/modifylanguage/template/Smarty/index.tpl:49
+#: /public_xmd/actions/createlanguage/template/Smarty/index.tpl:54
+msgid "Activated"
+msgstr ""
+
+#: /public_xmd/actions/deletenode/template/Smarty/forms/simple.tpl:30
+msgid "Delete element"
+msgstr ""
+
+#: /public_xmd/actions/deletenode/template/Smarty/forms/simple.tpl:39
+msgid "Would you like to delete"
+msgstr ""
+
+#: /public_xmd/actions/deletenode/template/Smarty/forms/no_permisos.tpl:35
+#: /public_xmd/actions/deletenode/template/Smarty/forms/dependencies.tpl:50
+msgid "No dependencies were found"
+msgstr ""
+
+#: /public_xmd/actions/deletenode/template/Smarty/forms/dependencies.tpl:34
+msgid "This action does not carry on expiration of nodes"
+msgstr ""
+
+#: /public_xmd/actions/deletenode/template/Smarty/forms/dependencies.tpl:41
+#: /public_xmd/actions/modifygroupsnode/template/Smarty/index.tpl:94
+#: /public_xmd/actions/modifyusergroups/template/Smarty/index.tpl:90
+#: /public_xmd/actions/modifygroupusers/template/Smarty/index.tpl:84
+msgid "Delete"
+msgstr ""
+
+#: /public_xmd/actions/deletenode/template/Smarty/forms/dependencies.tpl:44
+msgid "The following nodes will be deleted on cascade"
+msgstr ""
+
+#: /public_xmd/actions/deletenode/template/Smarty/forms/dependencies.tpl:44
+msgid "Deleting this node all its children will be deleted too"
+msgstr ""
+
+#: /public_xmd/actions/deletenode/template/Smarty/forms/dependencies.tpl:56
+msgid "Tick to delete all dependencies"
+msgstr ""
+
+#: /public_xmd/actions/deletenode/template/Smarty/forms/dependencies.tpl:63
+msgid "This node has not dependecies at the moment"
+msgstr ""
+
+#: /public_xmd/actions/deletenode/template/Smarty/forms/dependencies.tpl:70
+msgid ""
+"This node or its children have pending task to publish, if you continue "
+"these tasks will be interrupted"
+msgstr ""
+
+#: /public_xmd/actions/deletenode/template/Smarty/forms/dependencies.tpl:78
+#: /public_xmd/actions/movenode/template/Smarty/confirm.tpl:47
+#: /public_xmd/actions/movenode/template/Smarty/index.tpl:57
+msgid "This node, or one or more of its children, are published"
+msgstr ""
+
+#: /public_xmd/actions/deletenode/template/Smarty/forms/dependencies.tpl:78
+msgid "If you do not want to keep your nodes published"
+msgstr ""
+
+#: /public_xmd/actions/deletenode/template/Smarty/forms/dependencies.tpl:80
+msgid "Edit publication life of your nodes previously deletion."
+msgstr ""
+
+#: /public_xmd/actions/deletenode/template/Smarty/forms/dependencies.tpl:81
+#: /public_xmd/actions/movenode/template/Smarty/confirm.tpl:50
+#: /public_xmd/actions/movenode/template/Smarty/index.tpl:61
+msgid ""
+"Or if you prefer, delete your nodes by hand later in the publication zone"
+msgstr ""
+
+#: /public_xmd/actions/deletenode/template/Smarty/forms/dependencies.tpl:87
+msgid ""
+"If a long time is elapsed before action is executed, list of dependencies "
+"and children of node may change"
+msgstr ""
+
+#: /public_xmd/actions/deletenode/template/Smarty/linked_document.tpl:2
+msgid "You can't delete the node"
+msgstr ""
+
+#: /public_xmd/actions/deletenode/template/Smarty/linked_document.tpl:8
+msgid "This document has a symbolic link"
+msgstr ""
+
+#: /public_xmd/actions/deletenode/template/Smarty/linked_document.tpl:11
+msgid ""
+"To delete this node you have to break the link with the following node(s)"
+msgstr ""
+
+#: /public_xmd/actions/installer/template/Smarty/index.tpl:2
+msgid ""
+"Please, check your database configuration in the /conf/install_params.conf."
+"php file."
+msgstr ""
+
+#: /public_xmd/actions/installer/template/Smarty/index.tpl:4
+msgid "ERROR: Ximdex is not configured. Please run installer."
+msgstr ""
+
+#: /public_xmd/actions/htmleditor/template/Smarty/index.tpl:28
+msgid "Edit HTML"
+msgstr ""
+
+#: /public_xmd/actions/poolPreview/template/Smarty/index.tpl:30
+msgid "Pool Preview"
+msgstr ""
+
+#: /public_xmd/actions/workflow_backward/template/Smarty/success.tpl:27
+#: /public_xmd/actions/workflow_backward/template/Smarty/index.tpl:28
+#: /public_xmd/actions/workflow_backward/template/Smarty/show_results.tpl:27
+msgid "Previous state"
+msgstr ""
+
+#: /public_xmd/actions/workflow_backward/template/Smarty/success.tpl:37
+msgid "The document has been moved to the previous state."
+msgstr ""
+
+#: /public_xmd/actions/workflow_backward/template/Smarty/index.tpl:38
+#: /public_xmd/actions/workflow_forward/template/Smarty/next_state.tpl:33
+msgid "Do you want to move this file"
+msgstr ""
+
+#: /public_xmd/actions/workflow_backward/template/Smarty/index.tpl:38
+#: /public_xmd/actions/workflow_forward/template/Smarty/next_state.tpl:33
+msgid "from the state"
+msgstr ""
+
+#: /public_xmd/actions/workflow_backward/template/Smarty/index.tpl:38
+#: /public_xmd/actions/workflow_forward/template/Smarty/next_state.tpl:34
+msgid "to the state"
+msgstr ""
+
+#: /public_xmd/actions/workflow_backward/template/Smarty/index.tpl:45
+#: /public_xmd/actions/workflow_forward/template/Smarty/next_state.tpl:48
+#: /public_xmd/actions/workflow_forward/template/Smarty/index.tpl:143
+#: /public_xmd/actions/expiresection/template/Smarty/index.tpl:133
+#: /public_xmd/actions/expiredoc/template/Smarty/index.tpl:97
+#: /public_xmd/actions/publicatesection/template/Smarty/index.tpl:152
+msgid "Send notifications"
+msgstr ""
+
+#: /public_xmd/actions/workflow_backward/template/Smarty/index.tpl:49
+#: /public_xmd/actions/workflow_forward/template/Smarty/next_state.tpl:52
+#: /public_xmd/actions/workflow_forward/template/Smarty/index.tpl:147
+#: /public_xmd/actions/modifygroupsnode/template/Smarty/index.tpl:95
+#: /public_xmd/actions/expiresection/template/Smarty/index.tpl:137
+#: /public_xmd/actions/expiredoc/template/Smarty/index.tpl:101
+#: /public_xmd/actions/publicatesection/template/Smarty/index.tpl:156
+msgid "Group"
+msgstr ""
+
+#: /public_xmd/actions/workflow_backward/template/Smarty/index.tpl:60
+#: /public_xmd/actions/workflow_forward/template/Smarty/next_state.tpl:64
+#: /public_xmd/actions/workflow_forward/template/Smarty/index.tpl:160
+#: /public_xmd/actions/expiresection/template/Smarty/index.tpl:151
+#: /public_xmd/actions/expiredoc/template/Smarty/index.tpl:114
+#: /public_xmd/actions/publicatesection/template/Smarty/index.tpl:170
+msgid "Users"
+msgstr ""
+
+#: /public_xmd/actions/workflow_backward/template/Smarty/index.tpl:76
+#: /public_xmd/actions/workflow_forward/template/Smarty/next_state.tpl:82
+#: /public_xmd/actions/workflow_forward/template/Smarty/index.tpl:179
+#: /public_xmd/actions/expiresection/template/Smarty/index.tpl:170
+#: /public_xmd/actions/expiredoc/template/Smarty/index.tpl:133
+#: /public_xmd/actions/publicatesection/template/Smarty/index.tpl:189
+msgid "Comments"
+msgstr ""
+
+#: /public_xmd/actions/copy/template/Smarty/index.tpl:29
+msgid "This operation is not allowed on the selected destination"
+msgstr ""
+
+#: /public_xmd/actions/copy/template/Smarty/index.tpl:30
+msgid "Please, select another destination"
+msgstr ""
+
+#: /public_xmd/actions/copy/template/Smarty/index.tpl:34
+#: /public_xmd/actions/movenode/template/Smarty/index.tpl:35
+msgid "There aren't any available destination"
+msgstr ""
+
+#: /public_xmd/actions/copy/template/Smarty/index.tpl:47
+msgid "Choose a destination"
+msgstr ""
+
+#: /public_xmd/actions/copy/template/Smarty/index.tpl:61
+msgid "Execute this action for all files and subfolders"
+msgstr ""
+
+#: /public_xmd/actions/browser3/template/Smarty/splash/index.tpl:26
+msgid "Ximdex, making content management easy"
+msgstr ""
+
+#: /public_xmd/actions/browser3/template/Smarty/splash/index.tpl:29
+msgid "Faster"
+msgstr ""
+
+#: /public_xmd/actions/browser3/template/Smarty/splash/index.tpl:30
+msgid ""
+"Drag&amp;Drop functionality to add and move elements, the new publication "
+"module ximPUBLISH 2.0, and more to make Ximdex faster!"
+msgstr ""
+
+#: /public_xmd/actions/browser3/template/Smarty/splash/index.tpl:33
+msgid "Powerful"
+msgstr ""
+
+#: /public_xmd/actions/browser3/template/Smarty/splash/index.tpl:34
+msgid ""
+"New node dependency manager, and projects and users predefined and "
+"preinstalled to start using Ximdex in a few clicks."
+msgstr ""
+
+#: /public_xmd/actions/browser3/template/Smarty/splash/index.tpl:37
+msgid "Easy"
+msgstr ""
+
+#: /public_xmd/actions/browser3/template/Smarty/splash/index.tpl:38
+msgid ""
+"Easy XML edition with the WYSIWYG editor and easy semantic document tagging. "
+"Xedit and Xowl module rock!"
+msgstr ""
+
+#: /public_xmd/actions/browser3/template/Smarty/splash/index.tpl:42
+msgid "Learn more"
+msgstr ""
+
+#: /public_xmd/actions/browser3/template/Smarty/index.tpl:55
+msgid "Loading..."
+msgstr ""
+
+#: /public_xmd/actions/browser3/template/Smarty/index.tpl:68
+msgid "Ximdex logotype"
+msgstr ""
+
+#: /public_xmd/actions/browser3/template/Smarty/index.tpl:69
+msgid "Semantic content management with Ximdex"
+msgstr ""
+
+#: /public_xmd/actions/browser3/template/Smarty/index.tpl:94
+msgid "Logout"
+msgstr ""
+
+#: /public_xmd/actions/createlanguage/template/Smarty/index.tpl:34
+#: /public_xmd/actions/addlangxmlcontainer/template/Smarty/index.tpl:33
+msgid "Add language"
+msgstr ""
+
+#: /public_xmd/actions/createlanguage/template/Smarty/index.tpl:40
+msgid "Name for the new language"
+msgstr ""
+
+#: /public_xmd/actions/createlanguage/template/Smarty/index.tpl:45
+msgid "ISO name"
+msgstr ""
+
+#: /public_xmd/actions/createlanguage/template/Smarty/index.tpl:47
+msgid "Select an ISO code"
+msgstr ""
+
+#: /public_xmd/actions/createlanguage/template/Smarty/index.tpl:64
+msgid "Description for the new language"
+msgstr ""
+
+#: /public_xmd/actions/renamenode/template/Smarty/index.tpl:34
+msgid "Change name"
+msgstr ""
+
+#: /public_xmd/actions/renamenode/template/Smarty/index.tpl:52
+msgid "Generic schema"
+msgstr ""
+
+#: /public_xmd/actions/renamenode/template/Smarty/index.tpl:57
+msgid "Metadata schema"
+msgstr ""
+
+#: /public_xmd/actions/renamenode/template/Smarty/index.tpl:61
+msgid "Associated workflow"
+msgstr ""
+
+#: /public_xmd/actions/renamenode/template/Smarty/index.tpl:63
+msgid "Select a workflow"
+msgstr ""
+
+#: /public_xmd/actions/edittext/template/Smarty/publishForm.tpl:26
+#: /modules/Xdms/actions/collaborative/template/Smarty/publishForm.tpl:26
+msgid ""
+"Modification of this template has affected to %1 documents. Would you like "
+"to republish them?"
+msgstr ""
+
+#: /public_xmd/actions/edittext/template/Smarty/index.tpl:29
+#: /modules/Xdms/actions/collaborative/template/Smarty/index.tpl:31
+msgid "Are you sure you want to save the changes?"
+msgstr ""
+
+#: /public_xmd/actions/addfoldernode/template/Smarty/addProject.tpl:32
+msgid "There aren't any created languages. You should create a new one"
+msgstr ""
+
+#: /public_xmd/actions/addfoldernode/template/Smarty/addProject.tpl:39
+msgid "Add project"
+msgstr ""
+
+#: /public_xmd/actions/addfoldernode/template/Smarty/addProject.tpl:47
+msgid "Project name"
+msgstr ""
+
+#: /public_xmd/actions/addfoldernode/template/Smarty/addProject.tpl:53
+msgid "Available channels"
+msgstr ""
+
+#: /public_xmd/actions/addfoldernode/template/Smarty/addProject.tpl:61
+msgid "There are no channels created in the system"
+msgstr ""
+
+#: /public_xmd/actions/addfoldernode/template/Smarty/addProject.tpl:67
+msgid "Available languages"
+msgstr ""
+
+#: /public_xmd/actions/addfoldernode/template/Smarty/addProject.tpl:75
+msgid "There are no languages created in the system"
+msgstr ""
+
+#: /public_xmd/actions/addfoldernode/template/Smarty/addProject.tpl:80
+msgid "Available themes"
+msgstr ""
+
+#: /public_xmd/actions/addfoldernode/template/Smarty/addProject.tpl:107
+msgid "Create project"
+msgstr ""
+
+#: /public_xmd/actions/addfoldernode/template/Smarty/index.tpl:43
+msgid "Warning"
+msgstr ""
+
+#: /public_xmd/actions/addfoldernode/template/Smarty/index.tpl:43
+msgid "Folder permissions is going to inherit from the parent"
+msgstr ""
+
+#: /public_xmd/actions/addfoldernode/template/Smarty/addSectionNode.tpl:32
+msgid "<strong>%1</strong> has been successfully created"
+msgstr ""
+
+#: /public_xmd/actions/addfoldernode/template/Smarty/addSectionNode.tpl:34
+msgid "The operation has failed"
+msgstr ""
+
+#: /public_xmd/actions/setmetadata/template/Smarty/index.tpl:42
+#: /public_xmd/src/Widgets/tagsinput/template/tagsinput.tpl:29
+#: /public_xmd/src/Widgets/tagsinput/template/tagsinput_editor.tpl:49
+#: /modules/Xdms/actions/configure/template/Smarty/index.tpl:52
+msgid "Create new tags here"
+msgstr ""
+
+#: /public_xmd/actions/setmetadata/template/Smarty/index.tpl:59
+#: /public_xmd/src/Widgets/tagsinput/template/tagsinput.tpl:36
+#: /modules/Xdms/actions/configure/template/Smarty/index.tpl:57
+msgid "Document tags"
+msgstr ""
+
+#: /public_xmd/actions/setmetadata/template/Smarty/index.tpl:94
+#: /public_xmd/src/Widgets/tagsinput/template/tagsinput.tpl:53
+#: /modules/Xdms/actions/configure/template/Smarty/index.tpl:80
+msgid "There aren't any tags defined yet"
+msgstr ""
+
+#: /public_xmd/actions/setmetadata/template/Smarty/index.tpl:107
+#: /modules/Xdms/actions/configure/template/Smarty/index.tpl:89
+msgid "Suggested tags from Ximdex CMS"
+msgstr ""
+
+#: /public_xmd/actions/modifyrole/template/Smarty/index.tpl:33
+msgid "Toggle all"
+msgstr ""
+
+#: /public_xmd/actions/modifyrole/template/Smarty/index.tpl:37
+msgid "Modify"
+msgstr ""
+
+#: /public_xmd/actions/modifyrole/template/Smarty/index.tpl:42
+msgid "General data"
+msgstr ""
+
+#: /public_xmd/actions/modifyrole/template/Smarty/index.tpl:56
+msgid "Generic permits"
+msgstr ""
+
+#: /public_xmd/actions/modifyrole/template/Smarty/index.tpl:82
+msgid "Without state"
+msgstr ""
+
+#: /public_xmd/actions/createlink/template/Smarty/index.tpl:32
+msgid "Create link"
+msgstr ""
+
+#: /public_xmd/actions/createlink/template/Smarty/index.tpl:40
+msgid "Link name"
+msgstr ""
+
+#: /public_xmd/actions/filedownload/template/Smarty/index.tpl:31
+msgid "Download file"
+msgstr ""
+
+#: /public_xmd/actions/filedownload/template/Smarty/index.tpl:35
+msgid "File download will start immediately. If it does not start, click on:"
+msgstr ""
+
+#: /public_xmd/actions/filedownload/template/Smarty/index.tpl:36
+msgid "Descargar %1"
+msgstr ""
+
+#: /public_xmd/actions/workflow_forward/template/Smarty/success.tpl:28
+#: /public_xmd/actions/expiredoc/template/Smarty/success.tpl:28
+msgid "The document has been moved to the next state."
+msgstr ""
+
+#: /public_xmd/actions/workflow_forward/template/Smarty/linked_document.tpl:2
+msgid "Publication"
+msgstr ""
+
+#: /public_xmd/actions/workflow_forward/template/Smarty/linked_document.tpl:8
+msgid "The linked file should be selected in order to publicate the file"
+msgstr ""
+
+#: /public_xmd/actions/workflow_forward/template/Smarty/index.tpl:36
+#: /public_xmd/actions/publicatesection/template/Smarty/index.tpl:34
+msgid ""
+"<i>pcntl_fork</i> and <i>pcntl_waitpid</i> required functions are both "
+"disabled"
+msgstr ""
+
+#: /public_xmd/actions/workflow_forward/template/Smarty/index.tpl:37
+#: /public_xmd/actions/publicatesection/template/Smarty/index.tpl:35
+msgid ""
+"This could cause a slow and unstable publishing. Please, check the <i>php."
+"ini</i> configuration file or contact with your system administrator"
+msgstr ""
+
+#: /public_xmd/actions/workflow_forward/template/Smarty/index.tpl:44
+#: /public_xmd/actions/publicatesection/template/Smarty/index.tpl:42
+msgid ""
+"Force publication is enabled in global config. This could cause slow "
+"publication. Please check synchro.conf file"
+msgstr ""
+
+#: /public_xmd/actions/workflow_forward/template/Smarty/index.tpl:50
+msgid "Next state"
+msgstr ""
+
+#: /public_xmd/actions/workflow_forward/template/Smarty/index.tpl:55
+#: /public_xmd/actions/expiresection/template/Smarty/index.tpl:39
+#: /public_xmd/actions/expiredoc/template/Smarty/index.tpl:39
+#: /public_xmd/actions/publicatesection/template/Smarty/index.tpl:53
+msgid "from"
+msgstr ""
+
+#: /public_xmd/actions/workflow_forward/template/Smarty/index.tpl:55
+#: /public_xmd/actions/expiresection/template/Smarty/index.tpl:40
+#: /public_xmd/actions/expiredoc/template/Smarty/index.tpl:39
+#: /public_xmd/actions/publicatesection/template/Smarty/index.tpl:53
+msgid "to"
+msgstr ""
+
+#: /public_xmd/actions/workflow_forward/template/Smarty/index.tpl:59
+#: /public_xmd/actions/publicatesection/template/Smarty/index.tpl:56
+msgid "Publication options"
+msgstr ""
+
+#: /public_xmd/actions/workflow_forward/template/Smarty/index.tpl:66
+msgid "Publish only the current file."
+msgstr ""
+
+#: /public_xmd/actions/workflow_forward/template/Smarty/index.tpl:75
+msgid "Publish all linked files."
+msgstr ""
+
+#: /public_xmd/actions/workflow_forward/template/Smarty/index.tpl:84
+#: /public_xmd/actions/publicatesection/template/Smarty/index.tpl:81
+msgid "Publish until a certain depth level"
+msgstr ""
+
+#: /public_xmd/actions/workflow_forward/template/Smarty/index.tpl:100
+#: /public_xmd/actions/expiresection/template/Smarty/index.tpl:84
+#: /public_xmd/actions/expiredoc/template/Smarty/index.tpl:85
+#: /public_xmd/actions/publicatesection/template/Smarty/index.tpl:96
+msgid "Ignore structure: css, images, scripts, pdf, ..."
+msgstr ""
+
+#: /public_xmd/actions/workflow_forward/template/Smarty/index.tpl:109
+msgid ""
+"Use drafts for linked documents instead of already published \n"
+"\t\t\t\t\t\t\t\t\t\t\t\tversions."
+msgstr ""
+
+#: /public_xmd/actions/workflow_forward/template/Smarty/index.tpl:120
+msgid "Force republish"
+msgstr ""
+
+#: /public_xmd/actions/workflow_forward/template/Smarty/index.tpl:130
+#: /public_xmd/actions/publicatesection/template/Smarty/index.tpl:142
+msgid "Use cache for structured documents"
+msgstr ""
+
+#: /public_xmd/actions/workflow_forward/template/Smarty/index.tpl:187
+#: /public_xmd/actions/expiresection/template/Smarty/index.tpl:178
+#: /public_xmd/actions/expiredoc/template/Smarty/index.tpl:141
+#: /public_xmd/actions/publicatesection/template/Smarty/index.tpl:197
+msgid "Scheduled publications"
+msgstr ""
+
+#: /public_xmd/actions/workflow_forward/template/Smarty/index.tpl:191
+#: /public_xmd/actions/expiresection/template/Smarty/index.tpl:182
+#: /public_xmd/actions/expiredoc/template/Smarty/index.tpl:145
+#: /public_xmd/actions/publicatesection/template/Smarty/index.tpl:201
+msgid "From"
+msgstr ""
+
+#: /public_xmd/actions/workflow_forward/template/Smarty/index.tpl:195
+#: /public_xmd/actions/expiresection/template/Smarty/index.tpl:185
+#: /public_xmd/actions/expiredoc/template/Smarty/index.tpl:149
+#: /public_xmd/actions/publicatesection/template/Smarty/index.tpl:204
+msgid "To"
+msgstr ""
+
+#: /public_xmd/actions/workflow_forward/template/Smarty/index.tpl:200
+#: /public_xmd/actions/expiresection/template/Smarty/index.tpl:189
+#: /public_xmd/actions/expiredoc/template/Smarty/index.tpl:154
+#: /public_xmd/actions/publicatesection/template/Smarty/index.tpl:208
+msgid "No Expire"
+msgstr ""
+
+#: /public_xmd/actions/workflow_forward/template/Smarty/index.tpl:206
+#: /public_xmd/actions/expiresection/template/Smarty/index.tpl:197
+#: /public_xmd/actions/expiredoc/template/Smarty/index.tpl:160
+#: /public_xmd/actions/publicatesection/template/Smarty/index.tpl:216
+msgid "You don't have scheduled publications yet"
+msgstr ""
+
+#: /public_xmd/actions/workflow_forward/template/Smarty/index.tpl:210
+#: /public_xmd/actions/expiresection/template/Smarty/index.tpl:201
+#: /public_xmd/actions/expiredoc/template/Smarty/index.tpl:164
+#: /public_xmd/actions/publicatesection/template/Smarty/index.tpl:220
+msgid "Warning: The last publication window has not defined any end-date"
+msgstr ""
+
+#: /public_xmd/actions/workflow_forward/template/Smarty/index.tpl:212
+#: /public_xmd/actions/expiresection/template/Smarty/index.tpl:203
+#: /public_xmd/actions/expiredoc/template/Smarty/index.tpl:166
+#: /public_xmd/actions/publicatesection/template/Smarty/index.tpl:222
+msgid ""
+"Do you want to set the begin-date of the new window as the end-date of the "
+"previous window?"
+msgstr ""
+
+#: /public_xmd/actions/workflow_forward/template/Smarty/show_results.tpl:32
+msgid "The following nodes"
+msgstr ""
+
+#: /public_xmd/actions/workflow_forward/template/Smarty/show_results.tpl:36
+#: /public_xmd/actions/workflow_forward/template/Smarty/show_results.tpl:40
+#: /public_xmd/actions/movenode/template/Smarty/confirm.tpl:38
+#: /public_xmd/actions/xmlsetlink/template/Smarty/show_translation.tpl:25
+#: /public_xmd/actions/commons/layouts/progress_action_template.tpl:41
+#: /public_xmd/actions/commons/layouts/publicationResult.tpl:63
+#: /public_xmd/actions/commons/layouts/default.tpl:39
+#: /public_xmd/actions/commons/layouts/default_no_table.tpl:33
+#: /public_xmd/actions/commons/layouts/default-3.0.tpl:36
+msgid "Node"
+msgstr ""
+
+#: /public_xmd/actions/workflow_forward/template/Smarty/show_results.tpl:41
+msgid "Path"
+msgstr ""
+
+#: /public_xmd/actions/workflow_forward/template/Smarty/show_results.tpl:42
+#: /public_xmd/actions/commons/layouts/publicationResult.tpl:64
+msgid "Server"
+msgstr ""
+
+#: /public_xmd/actions/workflow_forward/template/Smarty/show_results.tpl:43
+#: /public_xmd/actions/preview/template/Smarty/index.tpl:31
+#: /public_xmd/actions/commons/layouts/publicationResult.tpl:65
+msgid "Channel"
+msgstr ""
+
+#: /public_xmd/actions/components/title_Description.tpl:27
+msgid "Node name"
+msgstr ""
+
+#: /public_xmd/actions/movenode/template/Smarty/confirm.tpl:30
+#: /public_xmd/actions/movenode/template/Smarty/index.tpl:75
+msgid "Move node"
+msgstr ""
+
+#: /public_xmd/actions/movenode/template/Smarty/confirm.tpl:38
+msgid "is going to be moved"
+msgstr ""
+
+#: /public_xmd/actions/movenode/template/Smarty/confirm.tpl:40
+msgid "Source"
+msgstr ""
+
+#: /public_xmd/actions/movenode/template/Smarty/confirm.tpl:41
+msgid "Target"
+msgstr ""
+
+#: /public_xmd/actions/movenode/template/Smarty/confirm.tpl:46
+#: /public_xmd/actions/movenode/template/Smarty/index.tpl:55
+msgid "Warning about publication"
+msgstr ""
+
+#: /public_xmd/actions/movenode/template/Smarty/confirm.tpl:47
+#: /public_xmd/actions/movenode/template/Smarty/index.tpl:57
+msgid "If you do not want to keep your nodes published on current location"
+msgstr ""
+
+#: /public_xmd/actions/movenode/template/Smarty/confirm.tpl:49
+#: /public_xmd/actions/movenode/template/Smarty/index.tpl:60
+msgid "Edit publication life of your nodes previously of node movement."
+msgstr ""
+
+#: /public_xmd/actions/movenode/template/Smarty/index.tpl:41
+msgid "Select new node destination"
+msgstr ""
+
+#: /public_xmd/actions/composer/template/Smarty/index_widgets.tpl:57
+#: /public_xmd/actions/modifystates/template/Smarty/index.tpl:51
+msgid "Action"
+msgstr ""
+
+#: /public_xmd/actions/composer/template/Smarty/index_widgets.tpl:58
+msgid "Selection"
+msgstr ""
+
+#: /public_xmd/actions/composer/template/Smarty/index_widgets.tpl:59
+msgid "Theme selector"
+msgstr ""
+
+#: /public_xmd/actions/composer/template/Smarty/index_widgets.tpl:61
+msgid "Relaxing blue"
+msgstr ""
+
+#: /public_xmd/actions/composer/template/Smarty/index_widgets.tpl:62
+#: /public_xmd/actions/createchannel/template/Smarty/index.tpl:112
+#: /public_xmd/actions/modifychannel/template/Smarty/index.tpl:128
+msgid "Ximdex"
+msgstr ""
+
+#: /public_xmd/actions/composer/template/Smarty/index_widgets.tpl:63
+msgid "Smooth"
+msgstr ""
+
+#: /public_xmd/actions/preview/template/Smarty/index.tpl:26
+msgid "Document preview"
+msgstr ""
+
+#: /public_xmd/actions/preview/template/Smarty/index.tpl:40
+msgid "View in a new window"
+msgstr ""
+
+#: /public_xmd/actions/modifygroupsnode/template/Smarty/index.tpl:32
+msgid "Add group to section"
+msgstr ""
+
+#: /public_xmd/actions/modifygroupsnode/template/Smarty/index.tpl:37
+msgid "No groups to add have been found"
+msgstr ""
+
+#: /public_xmd/actions/modifygroupsnode/template/Smarty/index.tpl:44
+#: /public_xmd/actions/modifyusergroups/template/Smarty/index.tpl:34
+msgid "Available groups"
+msgstr ""
+
+#: /public_xmd/actions/modifygroupsnode/template/Smarty/index.tpl:47
+msgid "Select group"
+msgstr ""
+
+#: /public_xmd/actions/modifygroupsnode/template/Smarty/index.tpl:58
+#: /public_xmd/actions/modifygroupsnode/template/Smarty/index.tpl:97
+msgid "Recursive"
+msgstr ""
+
+#: /public_xmd/actions/modifygroupsnode/template/Smarty/index.tpl:62
+#: /public_xmd/actions/modifygroupsnode/template/Smarty/index.tpl:96
+msgid "Force role"
+msgstr ""
+
+#: /public_xmd/actions/modifygroupsnode/template/Smarty/index.tpl:64
+#: /public_xmd/actions/modifygroupsnode/template/Smarty/index.tpl:109
+msgid "None"
+msgstr ""
+
+#: /public_xmd/actions/modifygroupsnode/template/Smarty/index.tpl:83
+msgid "Delete group of a section"
+msgstr ""
+
+#: /public_xmd/actions/modifygroupsnode/template/Smarty/index.tpl:88
+msgid "No associated groups have been found"
+msgstr ""
+
+#: /public_xmd/actions/setextensions/template/Smarty/index.tpl:8
+msgid "Set the extensions for the next Nodetypes"
+msgstr ""
+
+#: /public_xmd/actions/setextensions/template/Smarty/index.tpl:17
+msgid "Info:"
+msgstr ""
+
+#: /public_xmd/actions/setextensions/template/Smarty/index.tpl:18
+msgid ""
+"the * value means any extension, empty value means none extension. You can't "
+"put ambiguous values."
+msgstr ""
+
+#: /public_xmd/actions/newemptynode/template/Smarty/addNode.tpl:29
+msgid "<p>The <strong>file extension</strong> is not needed.</p>"
+msgstr ""
+
+#: /public_xmd/actions/newemptynode/template/Smarty/addNode.tpl:34
+msgid "Create a new file"
+msgstr ""
+
+#: /public_xmd/actions/newemptynode/template/Smarty/addNode.tpl:41
+msgid "File name"
+msgstr ""
+
+#: /public_xmd/actions/newemptynode/template/Smarty/addNode.tpl:47
+msgid "HTML File"
+msgstr ""
+
+#: /public_xmd/actions/manageproperties/template/Smarty/Language.tpl:35
+msgid "Use inherited languages"
+msgstr ""
+
+#: /public_xmd/actions/manageproperties/template/Smarty/Language.tpl:47
+msgid "Overwrite inherited languages"
+msgstr ""
+
+#: /public_xmd/actions/manageproperties/template/Smarty/Language.tpl:51
+msgid "Available project languages"
+msgstr ""
+
+#: /public_xmd/actions/manageproperties/template/Smarty/Language.tpl:67
+msgid "Associate languages recursively"
+msgstr ""
+
+#: /public_xmd/actions/manageproperties/template/Smarty/Channel.tpl:35
+msgid "Use inherited channels"
+msgstr ""
+
+#: /public_xmd/actions/manageproperties/template/Smarty/Channel.tpl:47
+msgid "Overwrite inherited channels"
+msgstr ""
+
+#: /public_xmd/actions/manageproperties/template/Smarty/Channel.tpl:51
+msgid "Available project channels"
+msgstr ""
+
+#: /public_xmd/actions/manageproperties/template/Smarty/Channel.tpl:67
+msgid "Associate channels recursively"
+msgstr ""
+
+#: /public_xmd/actions/manageproperties/template/Smarty/confirm.tpl:25
+msgid "Edit properties"
+msgstr ""
+
+#: /public_xmd/actions/manageproperties/template/Smarty/confirm.tpl:58
+msgid "Changes will not be undone."
+msgstr ""
+
+#: /public_xmd/actions/manageproperties/template/Smarty/confirm.tpl:63
+msgid "Would you like to continue with the changes?"
+msgstr ""
+
+#: /public_xmd/actions/manageproperties/template/Smarty/index.tpl:35
+msgid "Default server language"
+msgstr ""
+
+#: /public_xmd/actions/createrole/template/Smarty/index.tpl:33
+msgid "Add role"
+msgstr ""
+
+#: /public_xmd/actions/createrole/template/Smarty/index.tpl:38
+msgid "New role name"
+msgstr ""
+
+#: /public_xmd/actions/createrole/template/Smarty/index.tpl:43
+msgid "New role description"
+msgstr ""
+
+#: /public_xmd/actions/modifyserver/template/Smarty/index.tpl:35
+msgid "Manage servers"
+msgstr ""
+
+#: /public_xmd/actions/modifyserver/template/Smarty/index.tpl:50
+msgid "Create new server"
+msgstr ""
+
+#: /public_xmd/actions/modifyserver/template/Smarty/index.tpl:64
+msgid "New server name"
+msgstr ""
+
+#: /public_xmd/actions/modifyserver/template/Smarty/index.tpl:69
+msgid "Enabled"
+msgstr ""
+
+#: /public_xmd/actions/modifyserver/template/Smarty/index.tpl:74
+msgid "Preview server"
+msgstr ""
+
+#: /public_xmd/actions/modifyserver/template/Smarty/index.tpl:79
+msgid "Absolute URLs"
+msgstr ""
+
+#: /public_xmd/actions/modifyserver/template/Smarty/index.tpl:84
+msgid "Connection"
+msgstr ""
+
+#: /public_xmd/actions/modifyserver/template/Smarty/index.tpl:94
+msgid "URL or IP"
+msgstr ""
+
+#: /public_xmd/actions/modifyserver/template/Smarty/index.tpl:98
+msgid "Remote directory"
+msgstr ""
+
+#: /public_xmd/actions/modifyserver/template/Smarty/index.tpl:103
+msgid "Port"
+msgstr ""
+
+#: /public_xmd/actions/modifyserver/template/Smarty/index.tpl:107
+msgid "Web URL"
+msgstr ""
+
+#: /public_xmd/actions/modifyserver/template/Smarty/index.tpl:111
+#: /public_xmd/actions/login/template/Smarty/index.tpl:39
+msgid "User"
+msgstr ""
+
+#: /public_xmd/actions/modifyserver/template/Smarty/index.tpl:116
+#: /public_xmd/actions/createuser/template/Smarty/index.tpl:41
+#: /public_xmd/actions/createuser/template/Smarty/index.tpl:42
+#: /public_xmd/actions/createuser/template/Smarty/index.tpl:46
+#: /public_xmd/actions/login/template/Smarty/index.tpl:45
+msgid "Password"
+msgstr ""
+
+#: /public_xmd/actions/modifyserver/template/Smarty/index.tpl:118
+msgid "Only to change actual one"
+msgstr ""
+
+#: /public_xmd/actions/modifyserver/template/Smarty/index.tpl:124
+msgid "Token"
+msgstr ""
+
+#: /public_xmd/actions/modifyserver/template/Smarty/index.tpl:128
+msgid "Encoding"
+msgstr ""
+
+#: /public_xmd/actions/modifyserver/template/Smarty/index.tpl:150
+#: /modules/xBlog/actions/createxhtml5container/template/Smarty/_ximdoc_languages.tpl:49
+msgid "There are no channels associated to this project"
+msgstr ""
+
+#: /public_xmd/actions/creategroup/template/Smarty/index.tpl:33
+msgid "Add group"
+msgstr ""
+
+#: /public_xmd/actions/creategroup/template/Smarty/index.tpl:38
+msgid "Group's name"
+msgstr ""
+
+#: /public_xmd/actions/relsectionschema/template/Smarty/index.tpl:32
+#: /public_xmd/actions/createxmlcontainer/template/Smarty/index.tpl:51
+msgid "Schema"
+msgstr ""
+
+#: /public_xmd/actions/relsectionschema/template/Smarty/index.tpl:34
+#: /public_xmd/actions/createxmlcontainer/template/Smarty/index.tpl:54
+msgid "Select schema"
+msgstr ""
+
+#: /public_xmd/actions/createchannel/template/Smarty/index.tpl:31
+msgid "Add channel"
+msgstr ""
+
+#: /public_xmd/actions/createchannel/template/Smarty/index.tpl:40
+#: /public_xmd/actions/modifychannel/template/Smarty/index.tpl:40
+msgid "File extension"
+msgstr ""
+
+#: /public_xmd/actions/createchannel/template/Smarty/index.tpl:51
+#: /public_xmd/actions/modifychannel/template/Smarty/index.tpl:53
+msgid "Output"
+msgstr ""
+
+#: /public_xmd/actions/createchannel/template/Smarty/index.tpl:55
+#: /public_xmd/actions/modifychannel/template/Smarty/index.tpl:57
+msgid "Web"
+msgstr ""
+
+#: /public_xmd/actions/createchannel/template/Smarty/index.tpl:60
+#: /public_xmd/actions/modifychannel/template/Smarty/index.tpl:62
+msgid "Xml"
+msgstr ""
+
+#: /public_xmd/actions/createchannel/template/Smarty/index.tpl:66
+#: /public_xmd/actions/modifychannel/template/Smarty/index.tpl:68
+msgid "Other"
+msgstr ""
+
+#: /public_xmd/actions/createchannel/template/Smarty/index.tpl:72
+#: /public_xmd/actions/modifychannel/template/Smarty/index.tpl:74
+msgid "Render type for selected output"
+msgstr ""
+
+#: /public_xmd/actions/createchannel/template/Smarty/index.tpl:98
+#: /public_xmd/actions/modifychannel/template/Smarty/index.tpl:104
+msgid "Code language for selected render type"
+msgstr ""
+
+#: /public_xmd/actions/createchannel/template/Smarty/index.tpl:108
+#: /public_xmd/actions/modifychannel/template/Smarty/index.tpl:124
+msgid "Rendering XSLT in"
+msgstr ""
+
+#: /public_xmd/actions/createchannel/template/Smarty/index.tpl:117
+#: /public_xmd/actions/modifychannel/template/Smarty/index.tpl:133
+msgid "Client"
+msgstr ""
+
+#: /public_xmd/actions/createchannel/template/Smarty/index.tpl:124
+msgid ""
+"Ximdex renderizes documents at the <i>Ximdex</i> local server by default. If "
+"your website it's going to be dynamic, then select the <i>Client</i> "
+"rederized mode"
+msgstr ""
+
+#: /public_xmd/actions/expiresection/template/Smarty/index.tpl:32
+#: /public_xmd/actions/expiredoc/template/Smarty/index.tpl:32
+#: /public_xmd/actions/publicatesection/template/Smarty/index.tpl:47
+msgid "Scheduled publications for these files will be cancelled."
+msgstr ""
+
+#: /public_xmd/actions/expiresection/template/Smarty/index.tpl:44
+#: /public_xmd/actions/expiredoc/template/Smarty/index.tpl:44
+msgid "Expiration options"
+msgstr ""
+
+#: /public_xmd/actions/expiresection/template/Smarty/index.tpl:51
+msgid "Expire just"
+msgstr ""
+
+#: /public_xmd/actions/expiresection/template/Smarty/index.tpl:60
+#: /modules/xBlog/actions/listposts/template/Smarty/index.tpl:67
+msgid "Expire"
+msgstr ""
+
+#: /public_xmd/actions/expiresection/template/Smarty/index.tpl:60
+#: /public_xmd/actions/publicatesection/template/Smarty/index.tpl:72
+msgid "and its subsections"
+msgstr ""
+
+#: /public_xmd/actions/expiresection/template/Smarty/index.tpl:69
+#: /public_xmd/actions/expiredoc/template/Smarty/index.tpl:69
+msgid "Expire until a certain depth level"
+msgstr ""
+
+#: /public_xmd/actions/expiresection/template/Smarty/index.tpl:94
+#: /public_xmd/actions/publicatesection/template/Smarty/index.tpl:105
+msgid "Use drafts instead of already published versions."
+msgstr ""
+
+#: /public_xmd/actions/expiresection/template/Smarty/index.tpl:104
+msgid "Force expiration."
+msgstr ""
+
+#: /public_xmd/actions/expiresection/template/Smarty/index.tpl:116
+msgid "Node type to expire"
+msgstr ""
+
+#: /public_xmd/actions/expiresection/template/Smarty/index.tpl:118
+#: /public_xmd/actions/publicatesection/template/Smarty/index.tpl:128
+msgid "All"
+msgstr ""
+
+#: /public_xmd/actions/expiresection/template/Smarty/index.tpl:192
+#: /public_xmd/actions/publicatesection/template/Smarty/index.tpl:211
+msgid "Total"
+msgstr ""
+
+#: /public_xmd/actions/expiresection/template/Smarty/index.tpl:192
+#: /public_xmd/actions/publicatesection/template/Smarty/index.tpl:211
+msgid "nodes to publish"
+msgstr ""
+
+#: /public_xmd/actions/moduleslist/template/Smarty/modules/Xowl.tpl:3
+msgid ""
+"allow the user to find and retrieve external references to resources on the "
+"web and recognition of places, people and organizations based on his "
+"document's content"
+msgstr ""
+
+#: /public_xmd/actions/moduleslist/template/Smarty/modules/Xowl.tpl:5
+msgid ""
+"Ximdex CMS offers this module in a SaaS mode, so you need a proper key to "
+"enable it"
+msgstr ""
+
+#: /public_xmd/actions/moduleslist/template/Smarty/modules/ximTOUR.tpl:3
+msgid ""
+"enables a small tour through Ximdex CMS interface every time that a user "
+"perform a login. This tour could be disable in any moment"
+msgstr ""
+
+#: /public_xmd/actions/moduleslist/template/Smarty/modules/ximTOUR.tpl:5
+msgid ""
+"It's one of the suggested modules during the installation process and it's "
+"based on the Picasso Demo Project to make the tour, so it will install it by "
+"default"
+msgstr ""
+
+#: /public_xmd/actions/moduleslist/template/Smarty/modules/footer.tpl:4
+msgid "Actived"
+msgstr ""
+
+#: /public_xmd/actions/moduleslist/template/Smarty/modules/footer.tpl:6
+msgid "Installed"
+msgstr ""
+
+#: /public_xmd/actions/moduleslist/template/Smarty/modules/ximTAGS.tpl:3
+msgid ""
+"allows the user to tag his documents on Ximdex CMS. It's fully integrated "
+"with our visual XML editor, Xedit. The tags could be semantic or external "
+"references to another resources on the Web"
+msgstr ""
+
+#: /public_xmd/actions/moduleslist/template/Smarty/modules/ximTAGS.tpl:5
+#: /public_xmd/actions/moduleslist/template/Smarty/modules/ximIO.tpl:5
+msgid "It's one of the suggested modules during the installation process"
+msgstr ""
+
+#: /public_xmd/actions/moduleslist/template/Smarty/modules/ximSYNC.tpl:3
+msgid ""
+"manages all the publication processes and file transfers of Ximdex CMS. It's "
+"based on a crontab file installed into your operative system"
+msgstr ""
+
+#: /public_xmd/actions/moduleslist/template/Smarty/modules/ximSYNC.tpl:5
+msgid ""
+"This module is now part of the Ximdex CMS's core. So you can't disable or "
+"uninstall it"
+msgstr ""
+
+#: /public_xmd/actions/moduleslist/template/Smarty/modules/ximIO.tpl:3
+msgid ""
+"helps Ximdex CMS to export/import data serializing nodes into a single "
+"transaction"
+msgstr ""
+
+#: /public_xmd/actions/xmlsetlink/template/Smarty/show_translation.tpl:36
+msgid "Keep original content?"
+msgstr ""
+
+#: /public_xmd/actions/xmlsetlink/template/Smarty/index.tpl:34
+msgid "There aren't any possible master document"
+msgstr ""
+
+#: /public_xmd/actions/xmlsetlink/template/Smarty/index.tpl:42
+msgid "Break the link with master document"
+msgstr ""
+
+#: /public_xmd/actions/xmlsetlink/template/Smarty/index.tpl:46
+msgid "Do you want to break the link with the following document?"
+msgstr ""
+
+#: /public_xmd/actions/xmlsetlink/template/Smarty/index.tpl:52
+msgid "Master document"
+msgstr ""
+
+#: /public_xmd/actions/xmlsetlink/template/Smarty/index.tpl:54
+msgid "This document will be linked to the following master language document"
+msgstr ""
+
+#: /public_xmd/actions/xmlsetlink/template/Smarty/index.tpl:58
+msgid "Publishing options"
+msgstr ""
+
+#: /public_xmd/actions/xmlsetlink/template/Smarty/index.tpl:63
+msgid "Share the master document workflow"
+msgstr ""
+
+#: /public_xmd/actions/addlangxmlcontainer/template/Smarty/index.tpl:39
+msgid "Used schema"
+msgstr ""
+
+#: /public_xmd/actions/addlangxmlcontainer/template/Smarty/index.tpl:67
+#: /public_xmd/actions/createxmlcontainer/template/Smarty/_ximdoc_languages.tpl:43
+#: /modules/xBlog/actions/createxhtml5container/template/Smarty/_ximdoc_languages.tpl:78
+msgid "There are no languages associated to this project"
+msgstr ""
+
+#: /public_xmd/actions/modifystates/template/Smarty/index.tpl:39
+msgid "Existing status"
+msgstr ""
+
+#: /public_xmd/actions/modifystates/template/Smarty/index.tpl:46
+msgid "Status"
+msgstr ""
+
+#: /public_xmd/actions/modifystates/template/Smarty/index.tpl:47
+msgid "Status name"
+msgstr ""
+
+#: /public_xmd/actions/modifystates/template/Smarty/index.tpl:56
+msgid "Flecha"
+msgstr ""
+
+#: /public_xmd/actions/modifystates/template/Smarty/index.tpl:68
+msgid "Node type (optional)"
+msgstr ""
+
+#: /public_xmd/actions/modifystates/template/Smarty/index.tpl:74
+msgid "Select a node type"
+msgstr ""
+
+#: /public_xmd/actions/modifystates/template/Smarty/index.tpl:86
+msgid "This workflow will behave as default item"
+msgstr ""
+
+#: /public_xmd/actions/modifyusergroups/template/Smarty/index.tpl:45
+#: /public_xmd/actions/modifygroupusers/template/Smarty/index.tpl:43
+msgid "Rol"
+msgstr ""
+
+#: /public_xmd/actions/modifyusergroups/template/Smarty/index.tpl:54
+#: /public_xmd/actions/modifygroupusers/template/Smarty/index.tpl:49
+msgid "There are not"
+msgstr ""
+
+#: /public_xmd/actions/modifyusergroups/template/Smarty/index.tpl:54
+#: /public_xmd/actions/modifygroupusers/template/Smarty/index.tpl:49
+msgid "more"
+msgstr ""
+
+#: /public_xmd/actions/modifyusergroups/template/Smarty/index.tpl:55
+msgid "available groups to be associated with the user"
+msgstr ""
+
+#: /public_xmd/actions/modifyusergroups/template/Smarty/index.tpl:69
+msgid "belongs to the next groups"
+msgstr ""
+
+#: /public_xmd/actions/modifyusergroups/template/Smarty/index.tpl:99
+msgid "There are no groups associated with user yet"
+msgstr ""
+
+#: /public_xmd/actions/filedownload_multiple/template/Smarty/index.tpl:31
+msgid "Download files"
+msgstr ""
+
+#: /public_xmd/actions/filedownload_multiple/template/Smarty/index.tpl:36
+msgid " The download will start immediately. If not, click here"
+msgstr ""
+
+#: /public_xmd/actions/filedownload_multiple/template/Smarty/index.tpl:41
+msgid " There aren't any files to download"
+msgstr ""
+
+#: /public_xmd/actions/filedownload_multiple/template/Smarty/index.tpl:47
+msgid "Download"
+msgstr ""
+
+#: /public_xmd/actions/createuser/template/Smarty/index.tpl:32
+msgid "Add User"
+msgstr ""
+
+#: /public_xmd/actions/createuser/template/Smarty/index.tpl:36
+msgid "Username"
+msgstr ""
+
+#: /public_xmd/actions/createuser/template/Smarty/index.tpl:37
+msgid "Username in Ximdex CMS"
+msgstr ""
+
+#: /public_xmd/actions/createuser/template/Smarty/index.tpl:50
+#: /public_xmd/actions/createuser/template/Smarty/index.tpl:51
+msgid "Name and surname"
+msgstr ""
+
+#: /public_xmd/actions/createuser/template/Smarty/index.tpl:55
+#: /public_xmd/actions/createuser/template/Smarty/index.tpl:56
+msgid "E-mail"
+msgstr ""
+
+#: /public_xmd/actions/createuser/template/Smarty/index.tpl:69
+msgid "Interface language"
+msgstr ""
+
+#: /public_xmd/actions/createuser/template/Smarty/index.tpl:78
+msgid ""
+"Users registered without their consent may violate the rules of your country"
+msgstr ""
+
+#: /public_xmd/actions/modifylink/template/Smarty/show.tpl:26
+msgid "Enlaces encontrados que apuntan a la misma url"
+msgstr ""
+
+#: /public_xmd/actions/modifylink/template/Smarty/show.tpl:38
+msgid "Nombre"
+msgstr ""
+
+#: /public_xmd/actions/modifylink/template/Smarty/index.tpl:31
+msgid "Modify link"
+msgstr ""
+
+#: /public_xmd/actions/commons/layouts/publicationResult.tpl:62
+msgid "Los The following nodes"
+msgstr ""
+
+#: /public_xmd/actions/commons/layouts/default.tpl:33
+#: /public_xmd/actions/commons/layouts/default-3.0.tpl:30
+msgid "Executing the action on the nodes"
+msgstr ""
+
+#: /public_xmd/actions/commons/layouts/default.tpl:45
+#: /public_xmd/actions/commons/layouts/default_no_table.tpl:41
+#: /public_xmd/src/Widgets/ontologyBrowser/template/ontologyBrowser.tpl:47
+#: /public_xmd/src/Widgets/ontologyBrowser/template/ontologyBrowser.tpl:49
+#: /public_xmd/src/Widgets/ontologyBrowser/template/ontologyBrowser_editor.tpl:43
+#: /public_xmd/src/Widgets/ontologyBrowser/template/ontologyBrowser_editor.tpl:45
+msgid "close"
+msgstr ""
+
+#: /public_xmd/actions/commons/views/helper/messages.tpl:49
+msgid "No messages found"
+msgstr ""
+
+#: /public_xmd/actions/searchpanel/template/Smarty/results.tpl:27
+msgid "Search results for: "
+msgstr ""
+
+#: /public_xmd/actions/searchpanel/template/Smarty/results.tpl:28
+msgid "Page"
+msgstr ""
+
+#: /public_xmd/actions/searchpanel/template/Smarty/results.tpl:28
+msgid "of"
+msgstr ""
+
+#: /public_xmd/actions/expiredoc/template/Smarty/index.tpl:51
+msgid "Expire only the current file."
+msgstr ""
+
+#: /public_xmd/actions/expiredoc/template/Smarty/index.tpl:60
+msgid "Expire all linked files."
+msgstr ""
+
+#: /public_xmd/actions/showassocnodes/template/Smarty/index.tpl:31
+msgid "Delete selected associations"
+msgstr ""
+
+#: /public_xmd/actions/showassocnodes/template/Smarty/index.tpl:63
+msgid "Associate ximlet with section"
+msgstr ""
+
+#: /public_xmd/actions/showassocnodes/template/Smarty/index.tpl:67
+msgid "Select node to associate"
+msgstr ""
+
+#: /public_xmd/actions/showassocnodes/template/Smarty/index.tpl:80
+msgid "The following ximLet is going to be associated"
+msgstr ""
+
+#: /public_xmd/actions/showassocnodes/template/Smarty/index.tpl:93
+msgid "The current operation is not allowed on the selected destination"
+msgstr ""
+
+#: /public_xmd/actions/showassocnodes/template/Smarty/index.tpl:96
+msgid "This ximlet already is assigned to that target"
+msgstr ""
+
+#: /public_xmd/actions/showassocnodes/template/Smarty/index.tpl:103
+msgid "Please, select another destination."
+msgstr ""
+
+#: /public_xmd/actions/deleteuser/template/Smarty/index.tpl:31
+msgid "Delete user"
+msgstr ""
+
+#: /public_xmd/actions/deleteuser/template/Smarty/index.tpl:35
+msgid "The user"
+msgstr ""
+
+#: /public_xmd/actions/deleteuser/template/Smarty/index.tpl:35
+msgid "is going to be deleted"
+msgstr ""
+
+#: /public_xmd/actions/modifygroupusers/template/Smarty/index.tpl:33
+msgid "Available users"
+msgstr ""
+
+#: /public_xmd/actions/modifygroupusers/template/Smarty/index.tpl:50
+msgid "available users to be associated with the group"
+msgstr ""
+
+#: /public_xmd/actions/modifygroupusers/template/Smarty/index.tpl:62
+msgid "The next users belongs to the group"
+msgstr ""
+
+#: /public_xmd/actions/modifygroupusers/template/Smarty/index.tpl:93
+msgid "There are no users associated with this group yet"
+msgstr ""
+
+#: /public_xmd/actions/welcome/template/Smarty/index.tpl:28
+#: /modules/xBlog/actions/listposts/template/Smarty/index.tpl:28
+msgid "Welcome to Ximdex CMS"
+msgstr ""
+
+#: /public_xmd/actions/welcome/template/Smarty/index.tpl:34
+msgid "Existing projects"
+msgstr ""
+
+#: /public_xmd/actions/welcome/template/Smarty/index.tpl:41
+msgid "Details"
+msgstr ""
+
+#: /public_xmd/actions/welcome/template/Smarty/index.tpl:47
+msgid "Seems you don't have any projects yet. Let's start now!"
+msgstr ""
+
+#: /public_xmd/actions/welcome/template/Smarty/index.tpl:51
+#: /public_xmd/actions/welcome/template/Smarty/index.tpl:92
+msgid "Create a new project"
+msgstr ""
+
+#: /public_xmd/actions/welcome/template/Smarty/index.tpl:54
+msgid "Your latest documents"
+msgstr ""
+
+#: /public_xmd/actions/welcome/template/Smarty/index.tpl:65
+msgid "Preview Image"
+msgstr ""
+
+#: /public_xmd/actions/welcome/template/Smarty/index.tpl:67
+msgid "Edit in XML mode"
+msgstr ""
+
+#: /public_xmd/actions/welcome/template/Smarty/index.tpl:69
+msgid "Edit in text mode"
+msgstr ""
+
+#: /public_xmd/actions/welcome/template/Smarty/index.tpl:78
+msgid "Create a new project from treeview or by clicking on the button above "
+msgstr ""
+
+#: /public_xmd/actions/welcome/template/Smarty/index.tpl:80
+msgid ""
+"Select the '<em>documents folder</em>' in the treeview on the left panel"
+msgstr ""
+
+#: /public_xmd/actions/welcome/template/Smarty/index.tpl:81
+msgid "Perform the '<em>Add new document</em>' action to create new documents"
+msgstr ""
+
+#: /public_xmd/actions/welcome/template/Smarty/index.tpl:88
+msgid "Learn how to"
+msgstr ""
+
+#: /public_xmd/actions/welcome/template/Smarty/index.tpl:96
+msgid "Create a new Server and publish data"
+msgstr ""
+
+#: /public_xmd/actions/welcome/template/Smarty/index.tpl:99
+msgid "Ximdex CMS, the basics"
+msgstr ""
+
+#: /public_xmd/actions/welcome/template/Smarty/index.tpl:102
+msgid "RNG schemes and XSL templates"
+msgstr ""
+
+#: /public_xmd/actions/welcome/template/Smarty/index.tpl:105
+msgid "FAQs"
+msgstr ""
+
+#: /public_xmd/actions/welcome/template/Smarty/index.tpl:108
+#: /public_xmd/src/Widgets/contextmenu/template/mainmenu.tpl:41
+msgid "Contact us"
+msgstr ""
+
+#: /public_xmd/actions/managefolders/template/Smarty/index.tpl:32
+msgid "Configure section"
+msgstr ""
+
+#: /public_xmd/actions/publicateximlet/template/Smarty/publicate_ximlet.tpl:25
+msgid "Publication result"
+msgstr ""
+
+#: /public_xmd/actions/publicateximlet/template/Smarty/publicate_ximlet.tpl:28
+msgid "Your documents have entered successfully in publication process"
+msgstr ""
+
+#: /public_xmd/actions/publicateximlet/template/Smarty/index.tpl:29
+msgid "Publish ximlet"
+msgstr ""
+
+#: /public_xmd/actions/publicateximlet/template/Smarty/index.tpl:47
+msgid "Show paths"
+msgstr ""
+
+#: /public_xmd/actions/modifychannel/template/Smarty/index.tpl:31
+msgid "Modify channel"
+msgstr ""
+
+#: /public_xmd/actions/modifychannel/template/Smarty/index.tpl:119
+msgid "Default channel"
+msgstr ""
+
+#: /public_xmd/actions/replacefile/template/Smarty/index.tpl:7
+#: /public_xmd/actions/replacefile/template/Smarty/index.tpl:21
+msgid "Replace file"
+msgstr ""
+
+#: /public_xmd/actions/replacefile/template/Smarty/index.tpl:13
+msgid "Select the new file to replace"
+msgstr ""
+
+#: /public_xmd/actions/publicatesection/template/Smarty/index.tpl:63
+msgid "Publish just"
+msgstr ""
+
+#: /public_xmd/actions/publicatesection/template/Smarty/index.tpl:115
+msgid "Force republish."
+msgstr ""
+
+#: /public_xmd/actions/publicatesection/template/Smarty/index.tpl:126
+msgid "Node type to publish"
+msgstr ""
+
+#: /public_xmd/actions/createxmlcontainer/template/Smarty/index.tpl:34
+msgid "Add new HTML document"
+msgstr ""
+
+#: /public_xmd/actions/createxmlcontainer/template/Smarty/index.tpl:36
+msgid "Add new XML document"
+msgstr ""
+
+#: /public_xmd/actions/createxmlcontainer/template/Smarty/index.tpl:45
+msgid "Obligatory field"
+msgstr ""
+
+#: /public_xmd/actions/createxmlcontainer/template/Smarty/index.tpl:65
+msgid "No schemes found"
+msgstr ""
+
+#: /public_xmd/actions/createxmlcontainer/template/Smarty/index.tpl:68
+msgid ""
+"You must create one in project <em>layout folder</em> or upload a new one"
+msgstr ""
+
+#: /public_xmd/actions/createxmlcontainer/template/Smarty/index.tpl:71
+msgid ""
+"Maybe you need to set properly the type of your RNG schemes (performing the "
+"<em>Modify properties</em> action on them) or create/upload a new one"
+msgstr ""
+
+#: /public_xmd/actions/manageList/template/Smarty/index.tpl:32
+msgid "Operactions"
+msgstr ""
+
+#: /public_xmd/actions/login/template/Smarty/index.tpl:51
+#: /public_xmd/actions/login/template/Smarty/index.tpl:60
+msgid "Sign in"
+msgstr ""
+
+#: /public_xmd/actions/login/template/Smarty/index.tpl:55
+#: /public_xmd/actions/login/template/Smarty/index.tpl:61
+msgid "Recommended browsers"
+msgstr ""
+
+#: /public_xmd/actions/login/template/Smarty/index.tpl:68
+msgid "Join our community"
+msgstr ""
+
+#: /public_xmd/actions/login/template/Smarty/index.tpl:71
+msgid "our website"
+msgstr ""
+
+#: /public_xmd/actions/login/template/Smarty/index.tpl:72
+msgid "to learn more about the advantages of managing your projects with"
+msgstr ""
+
+#: /public_xmd/actions/login/template/Smarty/index.tpl:74
+msgid "Follow us"
+msgstr ""
+
+#: /public_xmd/actions/login/template/Smarty/index.tpl:75
+msgid "Visit Ximdex on Twitter"
+msgstr ""
+
+#: /public_xmd/actions/login/template/Smarty/index.tpl:77
+msgid "Visit Ximdex on Facebook"
+msgstr ""
+
+#: /public_xmd/actions/login/template/Smarty/index.tpl:79
+msgid "Visit Ximdex on LinkedIn"
+msgstr ""
+
+#: /public_xmd/src/Widgets/tagsinput/template/tagsinput.tpl:61
+msgid "Suggested Semantic Tags"
+msgstr ""
+
+#: /public_xmd/src/Widgets/uploader/template/uploader_html5.tpl:40
+msgid "Drag your files here or add them using the 'Add' button below"
+msgstr ""
+
+#: /public_xmd/src/Widgets/contextmenu/template/mainmenu.tpl:42
+msgid "Modify your user"
+msgstr ""
+
+#: /public_xmd/src/Widgets/contextmenu/template/mainmenu.tpl:43
+msgid "Change your Language"
+msgstr ""
+
+#: /public_xmd/src/Widgets/contextmenu/template/mainmenu.tpl:50
+msgid "Help"
+msgstr ""
+
+#: /public_xmd/src/Widgets/contextmenu/template/mainmenu.tpl:51
+msgid "About Ximdex"
+msgstr ""
+
+#: /public_xmd/src/Widgets/ontologyBrowser/template/ontologyBrowser.tpl:27
+msgid "Ontology Browser"
+msgstr ""
+
+#: /public_xmd/src/Widgets/ontologyBrowser/template/ontologyBrowser.tpl:29
+msgid "Text view"
+msgstr ""
+
+#: /public_xmd/src/Widgets/ontologyBrowser/template/ontologyBrowser.tpl:32
+#: /public_xmd/src/Widgets/ontologyBrowser/template/ontologyBrowser_editor.tpl:28
+msgid "Tree view ontology browser"
+msgstr ""
+
+#: /public_xmd/src/Widgets/ontologyBrowser/template/ontologyBrowser.tpl:38
+#: /public_xmd/src/Widgets/ontologyBrowser/template/ontologyBrowser_editor.tpl:34
+msgid "Text view ontology browser"
+msgstr ""
+
+#: /public_xmd/src/Widgets/searchpanel/template/searchpanel.tpl:32
+msgid "Advanced search"
+msgstr ""
+
+#: /public_xmd/src/Widgets/searchpanel/template/searchpanel.tpl:41
+msgid "content"
+msgstr ""
+
+#: /public_xmd/src/Widgets/searchpanel/template/searchpanel.tpl:43
+msgid "Creation date"
+msgstr ""
+
+#: /public_xmd/src/Widgets/searchpanel/template/searchpanel.tpl:44
+msgid "Publication date"
+msgstr ""
+
+#: /public_xmd/src/Widgets/searchpanel/template/searchpanel.tpl:45
+msgid "ximLINK Url"
+msgstr ""
+
+#: /public_xmd/src/Widgets/searchpanel/template/searchpanel.tpl:46
+msgid "ximLINK Description"
+msgstr ""
+
+#: /public_xmd/src/Widgets/searchpanel/template/searchpanel.tpl:57
+msgid "is"
+msgstr ""
+
+#: /public_xmd/src/Widgets/searchpanel/template/searchpanel.tpl:61
+msgid "before than"
+msgstr ""
+
+#: /public_xmd/src/Widgets/searchpanel/template/searchpanel.tpl:62
+msgid "after than"
+msgstr ""
+
+#: /public_xmd/src/Widgets/searchpanel/template/searchpanel.tpl:63
+msgid "in the range"
+msgstr ""
+
+#: /public_xmd/src/Widgets/searchpanel/template/searchpanel.tpl:66
+#: /public_xmd/src/Widgets/searchpanel/template/searchpanel.tpl:86
+#: /public_xmd/src/Widgets/spotlight/template/spotlight.tpl:27
+#: /public_xmd/src/Widgets/spotlight/template/spotlight.tpl:28
+msgid "Search"
+msgstr ""
+
+#: /public_xmd/src/Widgets/searchpanel/template/searchpanel.tpl:76
+msgid "Must be satisfied"
+msgstr ""
+
+#: /public_xmd/src/Widgets/searchpanel/template/searchpanel.tpl:80
+msgid "All rules"
+msgstr ""
+
+#: /public_xmd/src/Widgets/searchpanel/template/searchpanel.tpl:82
+msgid "Any rules"
+msgstr ""
+
+#: /public_xmd/src/Widgets/searchpanel/template/searchpanel.tpl:91
+msgid "Saved searches"
+msgstr ""
+
+#: /public_xmd/src/Widgets/searchpanel/template/searchpanel.tpl:98
+msgid "Last searches"
+msgstr ""
+
+#: /public_xmd/src/Widgets/searchpanel/template/searchpanel.tpl:118
+msgid "Create set"
+msgstr ""
+
+#: /public_xmd/src/Widgets/searchpanel/template/searchpanel.tpl:119
+msgid "Add to set"
+msgstr ""
+
+#: /public_xmd/src/Widgets/searchpanel/template/searchpanel.tpl:121
+msgid "Select nodes"
+msgstr ""
+
+#: /public_xmd/src/Widgets/spotlight/template/spotlight.tpl:29
+msgid "Advanced"
+msgstr ""
+
+#: /modules/xBlog/actions/createxhtml5container/template/Smarty/_ximdoc_languages.tpl:71
+msgid "Select master language"
+msgstr ""
+
+#: /modules/xBlog/actions/createxhtml5container/template/Smarty/index.tpl:30
+msgid "Add new xHTML"
+msgstr ""
+
+#: /modules/xBlog/actions/createxhtml5container/template/Smarty/index.tpl:37
+msgid "Name of your document"
+msgstr ""
+
+#: /modules/xBlog/actions/listposts/template/Smarty/index.tpl:30
+msgid "Add new post"
+msgstr ""
+
+#: /modules/xBlog/actions/listposts/template/Smarty/index.tpl:34
+msgid "Your latest posts"
+msgstr ""
+
+#: /modules/xBlog/actions/listposts/template/Smarty/index.tpl:36
+msgid "Enter a query"
+msgstr ""
+
+#: /modules/xBlog/actions/listposts/template/Smarty/index.tpl:57
+msgid "Modified"
+msgstr ""
+
+#: /modules/xBlog/actions/listposts/template/Smarty/index.tpl:64
+msgid "Edit"
+msgstr ""
+
+#: /modules/xBlog/actions/listposts/template/Smarty/index.tpl:65
+msgid "Tag it"
+msgstr ""
+
+#: /modules/xBlog/actions/listposts/template/Smarty/index.tpl:66
+msgid "Preview"
+msgstr ""
+
+#: /modules/ximIO/actions/console_wrapper/template/Smarty/import.tpl:34
+msgid "Select an import file"
+msgstr ""
+
+#: /modules/ximIO/actions/console_wrapper/template/Smarty/import.tpl:36
+msgid "Select one of available exports"
+msgstr ""
+
+#: /modules/ximIO/actions/console_wrapper/template/Smarty/getImportValues.tpl:35
+msgid "User to export:"
+msgstr ""
+
+#: /modules/ximIO/actions/console_wrapper/template/Smarty/getImportValues.tpl:37
+msgid "Password:"
+msgstr ""
+
+#: /modules/ximIO/actions/console_wrapper/template/Smarty/getImportValues.tpl:42
+msgid "Insert node ID on which you want to import:"
+msgstr ""
+
+#: /modules/ximIO/actions/console_wrapper/template/Smarty/getImportValues.tpl:48
+msgid "Indicate if first node should be generated or not."
+msgstr ""
+
+#: /modules/ximIO/actions/console_wrapper/template/Smarty/getImportValues.tpl:50
+msgid "Explanation:"
+msgstr ""
+
+#: /modules/ximIO/actions/console_wrapper/template/Smarty/getImportValues.tpl:50
+msgid ""
+"If we copy a ximdoc folder, destination node should be a ximdoc folder, and "
+"in this case we should not indicate than first node was generated."
+msgstr ""
+
+#: /modules/ximIO/actions/console_wrapper/template/Smarty/getImportValues.tpl:56
+msgid "Tick if source and destination ximdex are same"
+msgstr ""
+
+#: /modules/ximIO/actions/console_wrapper/template/Smarty/getImportValues.tpl:60
+msgid "Association of source channels with destination channels"
+msgstr ""
+
+#: /modules/ximIO/actions/console_wrapper/template/Smarty/getImportValues.tpl:63
+#: /modules/ximIO/actions/console_wrapper/template/Smarty/getImportValues.tpl:80
+#: /modules/ximIO/actions/console_wrapper/template/Smarty/getImportValues.tpl:97
+msgid "Source identifier"
+msgstr ""
+
+#: /modules/ximIO/actions/console_wrapper/template/Smarty/getImportValues.tpl:64
+#: /modules/ximIO/actions/console_wrapper/template/Smarty/getImportValues.tpl:81
+#: /modules/ximIO/actions/console_wrapper/template/Smarty/getImportValues.tpl:98
+msgid "Source name"
+msgstr ""
+
+#: /modules/ximIO/actions/console_wrapper/template/Smarty/getImportValues.tpl:65
+#: /modules/ximIO/actions/console_wrapper/template/Smarty/getImportValues.tpl:82
+#: /modules/ximIO/actions/console_wrapper/template/Smarty/getImportValues.tpl:99
+msgid "Associated with"
+msgstr ""
+
+#: /modules/ximIO/actions/console_wrapper/template/Smarty/getImportValues.tpl:77
+msgid "Association of source languages with destination languages"
+msgstr ""
+
+#: /modules/ximIO/actions/console_wrapper/template/Smarty/getImportValues.tpl:94
+msgid "Association of source groups with destination groups"
+msgstr ""
+
+#: /modules/ximIO/actions/console_wrapper/template/Smarty/export.tpl:34
+msgid "Introduce the first node identifier:"
+msgstr ""
+
+#: /modules/ximIO/actions/console_wrapper/template/Smarty/export.tpl:39
+msgid ""
+"Introduce the exportation name, if you keep it empty, current timestamp will "
+"be used:"
+msgstr ""
+
+#: /modules/ximIO/actions/console_wrapper/template/Smarty/index.tpl:32
+msgid "Select operation mode"
+msgstr ""
+
+#: /modules/ximIO/actions/console_wrapper/template/Smarty/index.tpl:34
+msgid "Export a new package"
+msgstr ""
+
+#: /modules/ximIO/actions/console_wrapper/template/Smarty/index.tpl:35
+msgid "Import a package in current instance"
+msgstr ""
+
+#: /modules/ximIO/actions/console_wrapper/template/Smarty/index.tpl:36
+msgid "Consolidate previous imports"
+msgstr ""
+
+#: /modules/Xdms/actions/configure/template/Smarty/index.tpl:34
+msgid "Tag this node"
+msgstr ""
+
+#: /modules/Xdms/actions/collaborative/template/Smarty/index.tpl:28
+msgid "Editing file"
+msgstr ""

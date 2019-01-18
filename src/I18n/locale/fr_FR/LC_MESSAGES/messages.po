@@ -1,25 +1,48 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
+# *
+# *  Ximdex a Semantic Content Management System (CMS)
+# *
+# *  This program is free software: you can redistribute it and/or modify
+# *  it under the terms of the GNU Affero General Public License as published
+# *  by the Free Software Foundation, either version 3 of the License, or
+# *  (at your option) any later version.
+# *
+# *  This program is distributed in the hope that it will be useful,
+# *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+# *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# *  GNU Affero General Public License for more details.
+# *
+# *  See the Affero GNU General Public License for more details.
+# *  You should have received a copy of the Affero GNU General Public License
+# *  version 3 along with Ximdex (see LICENSE file).
+# *
+# *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+# *
+# *  @author Ximdex DevTeam <dev@ximdex.com>
+# *  @version $Revision$
 msgid ""
 msgstr ""
-"Project-Id-Version: Ximdex 4\n"
-"Report-Msgid-Bugs-To: dev@ximdex.com\n"
-"PO-Revision-Date: 2018-03-12 13:30+0100\n"
-"Last-Translator: Ximdex Development Team <dev@ximdex.com>\n"
-"Language-Team: Ximdex Team <dev@ximdex.com>\n"
+"Project-Id-Version: Ximdex 4.0\n"
+"POT-Creation-Date: 2019-01-18 10:43+0100\n"
+"PO-Revision-Date: 2019-01-18 13:39+0100\n"
+"Last-Translator: \n"
+"Language-Team: ajlucena@ximdex.com\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-SourceCharset: iso-8859-15\n"
-"X-Poedit-Basepath: .\n"
-"X-Poedit-KeywordsList: traduction French de ximdex\n"
-"POT-Creation-Date: 2018-03-01\n"
-"Language: fr_FR\n"
-"X-Generator: Poedit 1.8.11\n"
-"X-Poedit-SearchPath-0: .\n"
+"X-Generator: Poedit 2.2.1\n"
+"X-Poedit-Basepath: ../../../../..\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: fr\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"X-Poedit-SearchPath-0: api\n"
+"X-Poedit-SearchPath-1: conf\n"
+"X-Poedit-SearchPath-2: bin\n"
+"X-Poedit-SearchPath-3: modules\n"
+"X-Poedit-SearchPath-4: public_xmd\n"
+"X-Poedit-SearchPath-5: src\n"
+"X-Poedit-SearchPathExcluded-0: public_xmd/vendors\n"
 
 #: src/Data/GenericData.php:339
 #, php-format
@@ -36,16 +59,14 @@ msgstr "Vous devez définir le champ %s"
 msgid "The field %s has an invalid format"
 msgstr "Le format du champ %s est invalide"
 
-#: src/Data/GenericData.php:375 src/Data/GenericData.php:381
-#: src/Data/GenericData.php:387 src/Data/GenericData.php:393
-#: src/Data/GenericData.php:399
+#: src/Data/GenericData.php:375 src/Data/GenericData.php:381 src/Data/GenericData.php:387
+#: src/Data/GenericData.php:393 src/Data/GenericData.php:399
 #, php-format
 msgid "The field %s has not the correct format"
 msgstr "Le format du champ %s est incorrect"
 
-#: src/Data/GenericData.php:410 src/Data/GenericData.php:416
-#: src/Data/GenericData.php:422 src/Data/GenericData.php:428
-#: src/Data/GenericData.php:434
+#: src/Data/GenericData.php:410 src/Data/GenericData.php:416 src/Data/GenericData.php:422
+#: src/Data/GenericData.php:428 src/Data/GenericData.php:434
 #, php-format
 msgid "The field %s has exceded the maximum size of %d with the value %s"
 msgstr "Le champ %s a dépassé la taille maximale de %d avec la valeur %s"
@@ -188,8 +209,7 @@ msgstr "Noeud vide dans baseIO"
 msgid "Empty nodetype"
 msgstr "Noeud vide"
 
-#: src/IO/BaseIO.php:92 src/IO/BaseIO.php:93 src/IO/BaseIO.php:821
-#: src/IO/BaseIO.php:822
+#: src/IO/BaseIO.php:92 src/IO/BaseIO.php:93 src/IO/BaseIO.php:821 src/IO/BaseIO.php:822
 msgid "Nodetype could not be infered"
 msgstr "Le noeud n'a pas pu être déduit"
 
@@ -316,10 +336,9 @@ msgstr "* ERREUR: Destructeur SQL non chargé"
 msgid "The node does not exist"
 msgstr "Le noeud n'existe pas"
 
-#: src/Sync/Synchronizer.php:79 src/Models/NodeType.php:60
-#: src/Models/Language.php:50 src/Models/Channel.php:56 src/Models/Node.php:117
-#: src/Models/XimLocale.php:52 src/Models/Role.php:58 src/Models/User.php:63
-#: src/Models/Group.php:60 src/Models/Action.php:466
+#: src/Sync/Synchronizer.php:79 src/Models/NodeType.php:60 src/Models/Language.php:50
+#: src/Models/Channel.php:56 src/Models/Node.php:117 src/Models/XimLocale.php:52
+#: src/Models/Role.php:58 src/Models/User.php:63 src/Models/Group.php:60 src/Models/Action.php:466
 #: src/Models/Permission.php:50
 msgid "Database connection error"
 msgstr "Erreur de connection a la base de données"
@@ -415,9 +434,8 @@ msgstr "Annuler la publication des documents avant la suppression du noeud"
 msgid "Delete node and keep documents published"
 msgstr "Supprimer le noeud et conserver les documents publiés"
 
-#: src/Sync/SynchroFacade.php:327 src/Sync/SynchroFacade.php:356
-#: src/Sync/SynchroFacade.php:385 src/Sync/SynchroFacade.php:414
-#: src/Sync/SynchroFacade.php:443
+#: src/Sync/SynchroFacade.php:327 src/Sync/SynchroFacade.php:356 src/Sync/SynchroFacade.php:385
+#: src/Sync/SynchroFacade.php:414 src/Sync/SynchroFacade.php:443
 msgid "Void param idFrame"
 msgstr "Parametre idFrame vide"
 
@@ -428,17 +446,27 @@ msgstr "[PipelineManager:getCacheFromProcess] Processus non trouvé: "
 #: src/Utils/FsUtils.php:128
 #, php-format
 msgid "Error writing in file [inc/fsutils/FsUtils.class.php] script: %s file: %s line: %s file: %s"
-msgstr "Erreur d'écriture dans le fichier [inc/fsutils/FsUtils.class.php] script: %s file: %s Ligne: %s fichier: %s"
+msgstr ""
+"Erreur d'écriture dans le fichier [inc/fsutils/FsUtils.class.php] script: %s file: %s Ligne: %s "
+"fichier: %s"
 
 #: src/Utils/FsUtils.php:180
 #, php-format
-msgid "Trying to obtaing the content of a nonexistent file [lib/Ximdex/Utils/FsUtils.php] script: %s file: %s line: %s nonexistent_file: %s"
-msgstr "Tentative d'accés au contenu d'un fichier inexistant [lib/Ximdex/Utils/FsUtils.php] script: %s fichier: %s ligne: %s fichier_inexistant: %s"
+msgid ""
+"Trying to obtaing the content of a nonexistent file [lib/Ximdex/Utils/FsUtils.php] script: %s "
+"file: %s line: %s nonexistent_file: %s"
+msgstr ""
+"Tentative d'accés au contenu d'un fichier inexistant [lib/Ximdex/Utils/FsUtils.php] script: %s "
+"fichier: %s ligne: %s fichier_inexistant: %s"
 
 #: src/Utils/FsUtils.php:301
 #, php-format
-msgid "It has been applied to delete recursively a folder [inc/fsutils/FsUtils.class.php] script: %s file: %s line: %s folder: %s"
-msgstr "La suppression récursive d'un dossier [inc/fsutils/FsUtils.class.php] a été appliqué script: %s fichier: %s ligne: %s dossier: %s"
+msgid ""
+"It has been applied to delete recursively a folder [inc/fsutils/FsUtils.class.php] script: %s "
+"file: %s line: %s folder: %s"
+msgstr ""
+"La suppression récursive d'un dossier [inc/fsutils/FsUtils.class.php] a été appliqué script: %s "
+"fichier: %s ligne: %s dossier: %s"
 
 #: src/Utils/FsUtils.php:308
 #, php-format
@@ -452,13 +480,21 @@ msgstr "Impossible d'ouvrir le dossier %s %s, %s"
 
 #: src/Utils/FsUtils.php:347
 #, php-format
-msgid "It has been applied to delete a nonexistent file %s [inc/fsutils/FsUtils.class.php] script: %s file: %s line: %s"
-msgstr "La suppression d'un fichier inexistant %s [inc/fsutils/FsUtils.class.php] a été appliquée script: %s fichier: %s ligne: %s"
+msgid ""
+"It has been applied to delete a nonexistent file %s [inc/fsutils/FsUtils.class.php] script: %s "
+"file: %s line: %s"
+msgstr ""
+"La suppression d'un fichier inexistant %s [inc/fsutils/FsUtils.class.php] a été appliquée script: "
+"%s fichier: %s ligne: %s"
 
 #: src/Utils/FsUtils.php:356
 #, php-format
-msgid "It has been applied to delete a file which could not been deleted %s [inc/fsutils/FsUtils.class.php] script: %s file: %s line: %s"
-msgstr "La suppression d'un fichier qui ne peut pas être supprimé %s [inc/fsutils/FsUtils.class.php] a été appliquée script: %s fichier: %s ligne: %s"
+msgid ""
+"It has been applied to delete a file which could not been deleted %s [inc/fsutils/FsUtils.class."
+"php] script: %s file: %s line: %s"
+msgstr ""
+"La suppression d'un fichier qui ne peut pas être supprimé %s [inc/fsutils/FsUtils.class.php] a "
+"été appliquée script: %s fichier: %s ligne: %s"
 
 #: src/Utils/Serializer.php:70
 #, php-format
@@ -478,7 +514,8 @@ msgstr "Le type du fichier %s n'est pas valide, une copie complete sera utilisé
 #: src/Utils/TarArchiver.class.php:166
 #, php-format
 msgid "In incremental copies just folders are allowed, the element %s will be ignored"
-msgstr "Dans les copies incrémentielles, seuls les dossiers sont autorisés, l'élément %s sera ignoré"
+msgstr ""
+"Dans les copies incrémentielles, seuls les dossiers sont autorisés, l'élément %s sera ignoré"
 
 #: src/Utils/TarArchiver.class.php:197
 #, php-format
@@ -497,8 +534,8 @@ msgstr "La langue n'existe pas"
 msgid "A language with this name already exists"
 msgstr "Une langue avec ce nom existe déjà"
 
-#: src/Models/Language.php:49 src/Models/XimLocale.php:51
-#: src/Models/User.php:61 src/Models/Group.php:58
+#: src/Models/Language.php:49 src/Models/XimLocale.php:51 src/Models/User.php:61
+#: src/Models/Group.php:58
 msgid "Arguments missing"
 msgstr "Arguments manquants"
 
@@ -726,12 +763,20 @@ msgid "Role does not exist"
 msgstr "Le rôle n'existe pas"
 
 #: src/Models/PipeProcess.php:120
-msgid "Ha ocurrido un error no recuperable durante la gestión de estados de workflow, consulte con su administrador"
-msgstr "Une erreur irrécupérable s'est produite pendant la gestion de l'état du flux, vérifiez auprès de votre administrateur"
+msgid ""
+"Ha ocurrido un error no recuperable durante la gestión de estados de workflow, consulte con su "
+"administrador"
+msgstr ""
+"Une erreur irrécupérable s'est produite pendant la gestion de l'état du flux, vérifiez auprès de "
+"votre administrateur"
 
 #: src/Models/PipeProcess.php:139
-msgid "No se han podido determinar las transiciones de un estado para su eliminación, esto es normal si el estado es estado inicial o final"
-msgstr "Il n'a pas été possible de déterminer les transitions d'un état pour son élimination, c'est normal si l'état est un état initial ou final"
+msgid ""
+"No se han podido determinar las transiciones de un estado para su eliminación, esto es normal si "
+"el estado es estado inicial o final"
+msgstr ""
+"Il n'a pas été possible de déterminer les transitions d'un état pour son élimination, c'est "
+"normal si l'état est un état initial ou final"
 
 #: src/Models/User.php:59
 msgid "User does not exist"
@@ -764,12 +809,15 @@ msgstr "Le type de nœud %d n'a aucune action de création associée"
 
 #: src/Models/Pipeline.php:93
 msgid "An error has occurred while the document's transformation and the process cannot continue"
-msgstr "Une erreur s'est produite pendant la transformation du document et le processus ne peut pas continuer"
+msgstr ""
+"Une erreur s'est produite pendant la transformation du document et le processus ne peut pas "
+"continuer"
 
 #: src/Models/Pipeline.php:103
 #, php-format
 msgid "Ha ocurrido un error inesperado al intentar transformar el nodeType %s"
-msgstr "Une erreur inattendue s'est produite lors de la tentative de transformation du nœud de type %s"
+msgstr ""
+"Une erreur inattendue s'est produite lors de la tentative de transformation du nœud de type %s"
 
 #: src/Models/PipeTransition.php:90
 msgid "Ha ocurrido un error insertando el estado, consulte con su administrador"
@@ -803,9 +851,8 @@ msgstr "La relation spécifiée existe déjà"
 msgid "General group cant be removed"
 msgstr "Le groupe général ne peut pas être supprimé"
 
-#: src/Models/Action.php:222 src/Models/Action.php:250
-#: src/Models/Action.php:278 src/Models/Action.php:310
-#: src/Models/Action.php:467
+#: src/Models/Action.php:222 src/Models/Action.php:250 src/Models/Action.php:278
+#: src/Models/Action.php:310 src/Models/Action.php:467
 msgid "Action does not exist"
 msgstr "L'action n'existe pas"
 
@@ -851,7 +898,6 @@ msgstr "Paramètres de commande:"
 
 #: src/Cli/CliParser.php:176
 msgid "\n"
-""
 msgstr ""
 
 #: src/Cli/CliParser.php:177
@@ -871,9 +917,7 @@ msgstr "Obligatoire "
 #: src/Cli/CliParser.php:187
 #, php-format
 msgid "Option: %s%s%s\n"
-""
 msgstr "Option: %s%s%s\n"
-""
 
 #: src/Cli/CliParser.php:208
 #, php-format
@@ -1130,8 +1174,12 @@ msgstr "Vous n'avez pas les privilèges pour avancer le nœud au statut suivant.
 
 #: public_xmd/actions/workflow_backward/Action_workflow_backward.class.php:69
 #: public_xmd/actions/workflow_forward/Action_workflow_forward.class.php:109
-msgid "You have not assigned a role with privileges to modify workflow status on any of groups associated with the node or the section which contains it."
-msgstr "Vous n'avez pas affecté de rôle avec des privilèges pour modifier l'état du flux de travail sur l'un des groupes associés au noeud ou a la section qui le contient."
+msgid ""
+"You have not assigned a role with privileges to modify workflow status on any of groups "
+"associated with the node or the section which contains it."
+msgstr ""
+"Vous n'avez pas affecté de rôle avec des privilèges pour modifier l'état du flux de travail sur "
+"l'un des groupes associés au noeud ou a la section qui le contient."
 
 #: public_xmd/actions/workflow_backward/Action_workflow_backward.class.php:94
 msgid "The document is already in its initial state. A previous state cannot be stablished."
@@ -1190,7 +1238,9 @@ msgstr "Commentaire"
 #: public_xmd/actions/changelang/Action_changelang.class.php:45
 #, php-format
 msgid "Ximdex Language changed to %s. The changes will take effect once you restart Ximdex."
-msgstr "La langue de Ximdex a changé en %s. Les modifications prendront effet une fois que vous aurez redémarré Ximdex."
+msgstr ""
+"La langue de Ximdex a changé en %s. Les modifications prendront effet une fois que vous aurez "
+"redémarré Ximdex."
 
 #: public_xmd/actions/changelang/Action_changelang.class.php:62
 #: public_xmd/actions/deleteuser/Action_deleteuser.class.php:39
@@ -1261,8 +1311,7 @@ msgstr "Les extensions ont été mises a jour"
 
 #: public_xmd/actions/createxmlcontainer/Action_createxmlcontainer.class.php:47
 #: public_xmd/actions/addlangxmlcontainer/Action_addlangxmlcontainer.class.php:44
-#: public_xmd/actions/preview/versionmapper.php:62
-#: public_xmd/actions/copy/Action_copy.class.php:43
+#: public_xmd/actions/preview/versionmapper.php:62 public_xmd/actions/copy/Action_copy.class.php:43
 msgid "Error with parameters"
 msgstr "Erreur avec les paramètres"
 
@@ -1367,8 +1416,7 @@ msgstr "Le déplacement du nœud vers la destination sélectionnée n'est pas au
 msgid "Node %s has been successfully moved"
 msgstr "Le nœud %s a été déplacé avec succès"
 
-#: public_xmd/actions/movenode/baseIO.php:40
-#: public_xmd/actions/movenode/baseIO.php:45
+#: public_xmd/actions/movenode/baseIO.php:40 public_xmd/actions/movenode/baseIO.php:45
 #: public_xmd/actions/copy/baseIO.php:45
 msgid "Source node does not exist"
 msgstr "Le nœud source n'existe pas"
@@ -1436,8 +1484,15 @@ msgstr "La valeur de configuration Xowl_token n'a pas été définie"
 
 #: public_xmd/actions/xmleditor2/model/XmlEditor_KUPU.class.php:652
 #, php-format
-msgid "Xowl module has not been installed.<br/><br/> If you want to realize the noticeable improvements that you will obtain with Xowl, a demonstrative video is shown below (%s)<br/><br/>Also, you can test it at <a target='_blank' href='http:/demo.ximdex.com'>demo.ximdex.com</a><br/><br/>"
-msgstr "Le module Xowl n'a pas été installé. <br/><br/> Si vous voulez réaliser les améliorations notables que vous obtiendrez avec Xowl, une vidéo démonstrative est montrée ci-dessous(%s) <br/><br/> vous pouvez le tester sur <a target='_blank'href='http:/demo.ximdex.com'>demo.ximdex.com</a><br/><br/>"
+msgid ""
+"Xowl module has not been installed.<br/><br/> If you want to realize the noticeable improvements "
+"that you will obtain with Xowl, a demonstrative video is shown below (%s)<br/><br/>Also, you can "
+"test it at <a target='_blank' href='http:/demo.ximdex.com'>demo.ximdex.com</a><br/><br/>"
+msgstr ""
+"Le module Xowl n'a pas été installé. <br/><br/> Si vous voulez réaliser les améliorations "
+"notables que vous obtiendrez avec Xowl, une vidéo démonstrative est montrée ci-dessous(%s) <br/"
+"><br/> vous pouvez le tester sur <a target='_blank'href='http:/demo.ximdex.com'>demo.ximdex.com</"
+"a><br/><br/>"
 
 #: public_xmd/actions/xmleditor2/model/XmlEditor_KUPU.class.php:655
 msgid "Xowl module has not been installed. It is included in the advanced package WIX."
@@ -1457,7 +1512,9 @@ msgstr "Erreur lors de l'enrichissement du schéma, une étiquette de grammaire 
 
 #: public_xmd/actions/xmleditor2/model/XmlEditor_Enricher.class.php:126
 msgid "Error while enriching the scheme, a 'define' was not found in the configuration file"
-msgstr "Erreur lors de l'enrichissement du schéma, un 'define' n'a pas été trouvé dans le fichier de configuration"
+msgstr ""
+"Erreur lors de l'enrichissement du schéma, un 'define' n'a pas été trouvé dans le fichier de "
+"configuration"
 
 #: public_xmd/actions/xmleditor2/Action_xmleditor2.class.php:72
 #: public_xmd/actions/edittext/Action_edittext.class.php:121
@@ -1498,7 +1555,6 @@ msgstr "Recherche de nœuds édités (uid set) et de nouveaux nœuds (uidtype) e
 #: public_xmd/actions/workflow_forward/template/Smarty/show_results.tpl:42
 #: public_xmd/actions/xmlsetlink/template/Smarty/show_translation.tpl:25
 #: public_xmd/actions/movenode/template/Smarty/confirm.tpl:38
-#: public_xmd/actions/workflow_forward/template/Smarty/show_results.tpl:42
 #: public_xmd/actions/workflow_forward/template/Smarty/show_results.tpl:46
 #: public_xmd/actions/commons/layouts/default.tpl:39
 #: public_xmd/actions/commons/layouts/publicationResult.tpl:63
@@ -1665,20 +1721,40 @@ msgid "Because of system restrictions, the following nodes cannot be deleted: "
 msgstr "En raison des restrictions système, les nœuds suivants ne peuvent pas être supprimés: "
 
 #: public_xmd/actions/deletenode/Action_deletenode.class.php:126
-msgid "Selected document or folder is not empty. It also have external dependencies with other system documents and it cannot be deleted using your role. Please, undo dependencies or use a user with suitable permissions."
-msgstr "Le document ou le dossier sélectionné n'est pas vide. Il a également des dépendances externes avec d'autres documents système et il ne peut pas être supprimé en utilisant votre rôle. Veuillez annuler les dépendances ou utiliser un utilisateur disposant des autorisations appropriées."
+msgid ""
+"Selected document or folder is not empty. It also have external dependencies with other system "
+"documents and it cannot be deleted using your role. Please, undo dependencies or use a user with "
+"suitable permissions."
+msgstr ""
+"Le document ou le dossier sélectionné n'est pas vide. Il a également des dépendances externes "
+"avec d'autres documents système et il ne peut pas être supprimé en utilisant votre rôle. Veuillez "
+"annuler les dépendances ou utiliser un utilisateur disposant des autorisations appropriées."
 
 #: public_xmd/actions/deletenode/Action_deletenode.class.php:126
-msgid "Your role cannot delete the selected container because of it has language versions depending on it."
-msgstr "Votre rôle ne peut pas supprimer le conteneur sélectionné en raison des versions linguistiques qui en dépendent."
+msgid ""
+"Your role cannot delete the selected container because of it has language versions depending on "
+"it."
+msgstr ""
+"Votre rôle ne peut pas supprimer le conteneur sélectionné en raison des versions linguistiques "
+"qui en dépendent."
 
 #: public_xmd/actions/deletenode/Action_deletenode.class.php:134
-msgid "Selected document or folder is not empty and it cannot be deleted using your role. Please, undo dependencies or use a user with suitable permissions."
-msgstr "Le document ou le dossier sélectionné n'est pas vide et il ne peut pas être supprimé en utilisant votre rôle. Veuillez annuler les dépendances ou utiliser un utilisateurdisposant des autorisations appropriées."
+msgid ""
+"Selected document or folder is not empty and it cannot be deleted using your role. Please, undo "
+"dependencies or use a user with suitable permissions."
+msgstr ""
+"Le document ou le dossier sélectionné n'est pas vide et il ne peut pas être supprimé en utilisant "
+"votre rôle. Veuillez annuler les dépendances ou utiliser un utilisateurdisposant des "
+"autorisations appropriées."
 
 #: public_xmd/actions/deletenode/Action_deletenode.class.php:141
-msgid "Selected file has dependencies with other system documents and it cannot be deleted using your role. Please, undo dependencies or use a user with suitable permissions."
-msgstr "Le fichier sélectionné possède des dépendances avec d'autres documents système et il ne peut pas être supprimé a l'aide de votre rôle. Veuillez annuler les dépendances ouutiliser un utilisateur disposant des autorisations appropriées."
+msgid ""
+"Selected file has dependencies with other system documents and it cannot be deleted using your "
+"role. Please, undo dependencies or use a user with suitable permissions."
+msgstr ""
+"Le fichier sélectionné possède des dépendances avec d'autres documents système et il ne peut pas "
+"être supprimé a l'aide de votre rôle. Veuillez annuler les dépendances ouutiliser un utilisateur "
+"disposant des autorisations appropriées."
 
 #: public_xmd/actions/deletenode/Action_deletenode.class.php:173
 msgid "List of pending documents"
@@ -1686,7 +1762,8 @@ msgstr "Liste des documents en attente"
 
 #: public_xmd/actions/deletenode/Action_deletenode.class.php:174
 msgid "To be able to delete this node, you should first delete the following language versions"
-msgstr "Pour pouvoir supprimer ce nœud, vous devez d'abord supprimer les versions linguistiques suivantes"
+msgstr ""
+"Pour pouvoir supprimer ce nœud, vous devez d'abord supprimer les versions linguistiques suivantes"
 
 #: public_xmd/actions/deletenode/Action_deletenode.class.php:275
 msgid "An error occurred while deleting:"
@@ -1733,15 +1810,20 @@ msgstr "Le dossier dans lequel vous voulez télécharger les fichiers n'existe p
 
 #: public_xmd/actions/fileupload/Action_fileupload.class.php:62
 msgid "A node type allowed in this folder could not be estimated, contact with your administrator."
-msgstr "Un type de nœud autorisé dans ce dossier n'a pas pu être estimé, contactez votre administrateur."
+msgstr ""
+"Un type de nœud autorisé dans ce dossier n'a pas pu être estimé, contactez votre administrateur."
 
 #: public_xmd/actions/fileupload/Action_fileupload.class.php:120
 msgid "File type could not be estimated or it is an invalid type."
 msgstr "Le type de fichier n'a pas pu être estimé ou il s'agit d'un type non valide."
 
 #: public_xmd/actions/fileupload/Action_fileupload.class.php:134
-msgid "No type of file which can be inserted in this folder has been found, contact with your administrator"
-msgstr "Aucun type de fichier pouvant être inséré dans ce dossier n'a été trouvé, contactez votre administrateur"
+msgid ""
+"No type of file which can be inserted in this folder has been found, contact with your "
+"administrator"
+msgstr ""
+"Aucun type de fichier pouvant être inséré dans ce dossier n'a été trouvé, contactez votre "
+"administrateur"
 
 #: public_xmd/actions/fileupload/Action_fileupload.class.php:148
 #, php-format
@@ -1763,7 +1845,8 @@ msgstr "Merci de vérifier si le chemin et le nom sont corrects"
 
 #: public_xmd/actions/fileupload/Action_fileupload.class.php:200
 #, php-format
-msgid "The Image file %s is going to be replaced with %s, but the name in the system will not change."
+msgid ""
+"The Image file %s is going to be replaced with %s, but the name in the system will not change."
 msgstr "Le fichier Image %s va être remplacé par %s, mais le nom dans le système ne changera pas."
 
 #: public_xmd/actions/fileupload/Action_fileupload.class.php:204
@@ -1831,13 +1914,20 @@ msgid "The selected node was not found:"
 msgstr "Le noeud sélectionné n'a pas été trouvé:"
 
 #: public_xmd/actions/addlangxmlcontainer/Action_addlangxmlcontainer.class.php:116
-msgid "More than one allowed nodetype has been found for this folder, it is recovered returning to the first"
-msgstr "Plus d'un nodetype autorisé a été trouvé pour ce dossier, il est récupéré en retournant au premier"
+msgid ""
+"More than one allowed nodetype has been found for this folder, it is recovered returning to the "
+"first"
+msgstr ""
+"Plus d'un nodetype autorisé a été trouvé pour ce dossier, il est récupéré en retournant au premier"
 
 #: public_xmd/actions/addlangxmlcontainer/Action_addlangxmlcontainer.class.php:121
 #, php-format
-msgid "The node with id %d has not any nodeAllowedContent with necessary features to store a language list"
-msgstr "Le noeud avec l'ID %d n'a aucun noeudAllowedContent avec les fonctionnalités nécessaires pour stocker une liste de langues"
+msgid ""
+"The node with id %d has not any nodeAllowedContent with necessary features to store a language "
+"list"
+msgstr ""
+"Le noeud avec l'ID %d n'a aucun noeudAllowedContent avec les fonctionnalités nécessaires pour "
+"stocker une liste de langues"
 
 #: public_xmd/actions/addlangxmlcontainer/Action_addlangxmlcontainer.class.php:134
 msgid "No language has been found"
@@ -2077,7 +2167,9 @@ msgstr "Vous ne pouvez pas faire une copie des noeuds entre différents projets"
 
 #: public_xmd/actions/copy/baseIO.php:135
 msgid "An error occurred during copy process, information about process could be obtained"
-msgstr "Une erreur est survenue pendant le processus de copie, des informations sur le processus ont pu être obtenues"
+msgstr ""
+"Une erreur est survenue pendant le processus de copie, des informations sur le processus ont pu "
+"être obtenues"
 
 #: public_xmd/actions/copy/baseIO.php:140
 #, php-format
@@ -2142,8 +2234,7 @@ msgstr "Moyenne (ms)"
 #: modules/xBlog/api/lib/ContentTools/src/scripts/ui/dialogs/properties.js:398
 #: modules/xBlog/api/lib/ContentTools/build/content-tools.js:6992
 #: modules/xBlog/api/lib/ContentTools/build/content-tools.min.js:5
-#: modules/xBlog/api/public/js/main.js:24417
-#: modules/xBlog/api/public/js/main.min.js:16
+#: modules/xBlog/api/public/js/main.js:24417 modules/xBlog/api/public/js/main.min.js:16
 #: public_xmd/actions/createrole/template/Smarty/index.tpl:41
 #: public_xmd/actions/createxmlcontainer/template/Smarty/index.tpl:41
 #: public_xmd/actions/manageList/template/Smarty/index.tpl:30
@@ -2376,7 +2467,8 @@ msgstr "Le noeud a été envoyé avec succès pour publier"
 
 #: public_xmd/actions/modifyrolesstate/Action_modifyrolesstate.class.php:88
 msgid "Error: Role which you want to associate with workflow status could not be found"
-msgstr "Erreur: Le rôle que vous souhaitez associer au statut du flux de travail n'a pas pu être trouvé"
+msgstr ""
+"Erreur: Le rôle que vous souhaitez associer au statut du flux de travail n'a pas pu être trouvé"
 
 #: public_xmd/actions/modifyrolesstate/Action_modifyrolesstate.class.php:89
 msgid "IdRole has not been found in action modifyrolestate"
@@ -2418,7 +2510,8 @@ msgstr "Les nœuds qui vont changer leur statut de flux:"
 #: public_xmd/actions/renamenode/Action_renamenode.class.php:229
 #, php-format
 msgid "If you perform this modification, workflow status of node <b>%s</b> will be modified."
-msgstr "Si vous effectuez cette modification, l'état du flux de travail du noeud <b>%s</b> sera modifié."
+msgstr ""
+"Si vous effectuez cette modification, l'état du flux de travail du noeud <b>%s</b> sera modifié."
 
 #: public_xmd/actions/modifyrole/Action_modifyrole.class.php:102
 msgid "Control center permissions"
@@ -2579,20 +2672,34 @@ msgid "Maximun level of recurrence you would like to import"
 msgstr "Niveau de récurrence maximal que vous souhaitez importer"
 
 #: modules/ximIO/actions/import/inc/ImportCli.class.php:89
-msgid "Association of channels, languages and groups that are going to be made when importing (format: idSourceNode1=idDestinyNode1, idSourceNode2=idDestinyNode2, ...)"
-msgstr "Association des canaux, langages et groupes qui vont être créés lors de l'importation (format: idSourceNode1 = idDestinyNode1, idSourceNode2 = idDestinyNode2, ...)"
+msgid ""
+"Association of channels, languages and groups that are going to be made when importing (format: "
+"idSourceNode1=idDestinyNode1, idSourceNode2=idDestinyNode2, ...)"
+msgstr ""
+"Association des canaux, langages et groupes qui vont être créés lors de l'importation (format: "
+"idSourceNode1 = idDestinyNode1, idSourceNode2 = idDestinyNode2, ...)"
 
 #: modules/ximIO/actions/import/inc/ImportCli.class.php:90
 msgid "Node of exportation package from which you would like to start the importation"
 msgstr "Noeud d'exportation a partir duquel vous souhaitez commencer l'importation"
 
 #: modules/ximIO/actions/import/inc/ImportCli.class.php:91
-msgid "If it is accompained of value 1 (--processFirstNode 1) it will be tried to insert the first node, otherwise, it will just checked if it is compatible with the first exportation node"
-msgstr "S'il est accompagné de la valeur 1 (--processFirstNode 1) on essayera d'insérer le premier noeud, sinon, il faudra simplement vérifier s'il est compatible avec le premier noeud d'exportation"
+msgid ""
+"If it is accompained of value 1 (--processFirstNode 1) it will be tried to insert the first node, "
+"otherwise, it will just checked if it is compatible with the first exportation node"
+msgstr ""
+"S'il est accompagné de la valeur 1 (--processFirstNode 1) on essayera d'insérer le premier noeud, "
+"sinon, il faudra simplement vérifier s'il est compatible avec le premier noeud d'exportation"
 
 #: modules/ximIO/actions/import/inc/ImportCli.class.php:92
-msgid "(--copyMode 1) It indicates if available nodes in ximdex are going to be used when dependencies could not been resolved, in the case of not resolved links the node will be resolved with an -3 error"
-msgstr "(--copyMode 1) Il indique si les nœuds disponibles dans ximdex vont être utilisés lorsque les dépendances n'ont pas pu être résolues, dans le cas de liens non résolus, le nœud sera résolu avec une erreur -3"
+msgid ""
+"(--copyMode 1) It indicates if available nodes in ximdex are going to be used when dependencies "
+"could not been resolved, in the case of not resolved links the node will be resolved with an -3 "
+"error"
+msgstr ""
+"(--copyMode 1) Il indique si les nœuds disponibles dans ximdex vont être utilisés lorsque les "
+"dépendances n'ont pas pu être résolues, dans le cas de liens non résolus, le nœud sera résolu "
+"avec une erreur -3"
 
 #: modules/ximIO/actions/import/run.php:55
 #: modules/ximIO/actions/console_wrapper/template/Smarty/getImportValues.tpl:37
@@ -2611,8 +2718,7 @@ msgstr "Informations sur le noeud racine:"
 msgid "Do you want to continue with process? (Y/n)"
 msgstr "Voulez-vous continuer avec le processus? (O / n)"
 
-#: modules/ximIO/actions/import/run.php:74
-#: modules/ximIO/actions/export/run.php:76
+#: modules/ximIO/actions/import/run.php:74 modules/ximIO/actions/export/run.php:76
 msgid "Import process has been avoided due to user request"
 msgstr "Le processus d'importation a été évité en raison de la demande de l'utilisateur"
 
@@ -2661,8 +2767,12 @@ msgid "Node where export is starting"
 msgstr "Noeud où l'exportation commence"
 
 #: modules/ximIO/actions/export/inc/ExportCli.class.php:58
-msgid "If this param is not indicated, the recursivity level is infinite, if a recursivity value is specified, this will be the limit"
-msgstr "Si ce param n'est pas indiqué, le niveau de récursivité est infini, si une valeur de récursivité est spécifiée, ce sera la limite"
+msgid ""
+"If this param is not indicated, the recursivity level is infinite, if a recursivity value is "
+"specified, this will be the limit"
+msgstr ""
+"Si ce param n'est pas indiqué, le niveau de récursivité est infini, si une valeur de récursivité "
+"est spécifiée, ce sera la limite"
 
 #: modules/ximIO/actions/export/inc/ExportCli.class.php:59
 msgid "Package name, if it is not specified, a timestamp will be used"
@@ -2708,11 +2818,19 @@ msgstr "Nom du paquet d'où obtenir des informations"
 
 #: modules/ximIO/actions/report/inc/ReportCli.class.php:48
 msgid "Showing a list of package nodes with the format IdNode, State (usage --nodeList 1)"
-msgstr "Affichage d'une liste de noeuds de package au format IdNode, State (utilisation --nodeList 1)"
+msgstr ""
+"Affichage d'une liste de noeuds de package au format IdNode, State (utilisation --nodeList 1)"
 
 #: modules/ximIO/actions/report/inc/ReportCli.class.php:49
-msgid "This param should be used with the param --nodeList, and it shows just the nodes which are in a determined state (-1, -2, -3, -4). -1 Not inserted due to a lack of permits, -2 General error, -3 Father node not resolved, -4 Node destiny not allowed, 0 Node successfully inserted"
-msgstr "Ce param doit être utilisé avec la liste param --nodeList, et il montre uniquement les nœuds qui sont dans un état déterminé (-1, -2, -3, -4). -1 Non inséré en raison d'un manque de permis, -2 Erreur générale, -3 Noeud père non résolu, -4 Noeud destin non autorisé, 0 Noeud inséré avec succès"
+msgid ""
+"This param should be used with the param --nodeList, and it shows just the nodes which are in a "
+"determined state (-1, -2, -3, -4). -1 Not inserted due to a lack of permits, -2 General error, -3 "
+"Father node not resolved, -4 Node destiny not allowed, 0 Node successfully inserted"
+msgstr ""
+"Ce param doit être utilisé avec la liste param --nodeList, et il montre uniquement les nœuds qui "
+"sont dans un état déterminé (-1, -2, -3, -4). -1 Non inséré en raison d'un manque de permis, -2 "
+"Erreur générale, -3 Noeud père non résolu, -4 Noeud destin non autorisé, 0 Noeud inséré avec "
+"succès"
 
 #: modules/ximIO/actions/report/run.php:51
 #, php-format
@@ -2741,8 +2859,12 @@ msgstr "%d nœuds n'a pas été importé avec succès car son père n'a pas ét�
 
 #: modules/ximIO/actions/report/run.php:64
 #, php-format
-msgid "%d nodes has not been successfully imported due to they were not allowed in its father (NodeAllowedContents restriction)"
-msgstr "%d nœuds n'a pas été importé avec succès car ils n'étaient pas autorisés dans son père (restriction NodeAllowedContents)"
+msgid ""
+"%d nodes has not been successfully imported due to they were not allowed in its father "
+"(NodeAllowedContents restriction)"
+msgstr ""
+"%d nœuds n'a pas été importé avec succès car ils n'étaient pas autorisés dans son père "
+"(restriction NodeAllowedContents)"
 
 #: modules/ximIO/actions/report/run.php:99
 msgid "Node, Status"
@@ -2753,8 +2875,12 @@ msgid "The name of the package to update should be introduced"
 msgstr "Le nom du paquet a mettre a jour devrait être introduit"
 
 #: modules/ximIO/actions/file_import/inc/FileUpdaterCli.class.php:45
-msgid "It indicates if the package will be auto-deleted or not once consolidation is finished, by default is 1"
-msgstr "Il indique si le paquet sera supprimé automatiquement ou non une fois la consolidation terminée, par défaut c'est 1"
+msgid ""
+"It indicates if the package will be auto-deleted or not once consolidation is finished, by "
+"default is 1"
+msgstr ""
+"Il indique si le paquet sera supprimé automatiquement ou non une fois la consolidation terminée, "
+"par défaut c'est 1"
 
 #: modules/ximIO/actions/file_import/run.php:50
 msgid "It is going to proceed the content importation of nodes for package "
@@ -2804,8 +2930,13 @@ msgid "Name of package to delete"
 msgstr "Nom du package a supprimer"
 
 #: modules/ximIO/actions/remove/inc/RemoveCli.class.php:45
-msgid "Element to delete, possible values are ONLY_FILES, which deletes the importation package only from the hard disk, ONLY_DB, which deletes just the importation associations from the database"
-msgstr "Élément a supprimer, les valeurs possibles sont ONLY_FILES, ce qui supprime le package d'importation uniquement du disque dur, ONLY_DB, qui supprime uniquement les associations d'importation de la base de données."
+msgid ""
+"Element to delete, possible values are ONLY_FILES, which deletes the importation package only "
+"from the hard disk, ONLY_DB, which deletes just the importation associations from the database"
+msgstr ""
+"Élément a supprimer, les valeurs possibles sont ONLY_FILES, ce qui supprime le package "
+"d'importation uniquement du disque dur, ONLY_DB, qui supprime uniquement les associations "
+"d'importation de la base de données."
 
 #: modules/ximIO/actions/remove/run.php:43
 msgid "Analysing data:"
@@ -2856,7 +2987,8 @@ msgstr "Information:"
 
 #: modules/ximIO/actions/remove/run.php:92
 msgid "Errors and Warnings occured, do you want to continue with the process? (Y/n)"
-msgstr "Des erreurs et des avertissements sont survenus, voulez-vous continuer le processus? (O / n)"
+msgstr ""
+"Des erreurs et des avertissements sont survenus, voulez-vous continuer le processus? (O / n)"
 
 #: modules/ximIO/actions/remove/run.php:93
 msgid "Aborting process due to user request."
@@ -2925,16 +3057,20 @@ msgstr "Le contenu du document %s avec filepath %s n'a pas pu être obtenu"
 
 #: modules/ximIO/inc/ImportXml.class.php:206
 #, php-format
-msgid "The association %s=%s has been dismissed due to the node %s is not existing in the destiny ximdex"
+msgid ""
+"The association %s=%s has been dismissed due to the node %s is not existing in the destiny ximdex"
 msgstr "L'association %s=%s a été rejetée car le noeud %s n'existe pas dans le destin ximdex"
 
 #: modules/ximIO/inc/ImportXml.class.php:224
 #, php-format
-msgid "The association %s=%s has been dismissed due to the source node %s is not of the same type than the destiny one or type could not been estimated"
-msgstr "L'association %s=%s a été rejetée car le noeud source %s n'est pas du même type que le destin ou le type n'a pas pu être estimé"
+msgid ""
+"The association %s=%s has been dismissed due to the source node %s is not of the same type than "
+"the destiny one or type could not been estimated"
+msgstr ""
+"L'association %s=%s a été rejetée car le noeud source %s n'est pas du même type que le destin ou "
+"le type n'a pas pu être estimé"
 
-#: modules/ximIO/inc/ImportXml.class.php:251
-#: modules/ximIO/inc/ImportXml.class.php:368
+#: modules/ximIO/inc/ImportXml.class.php:251 modules/ximIO/inc/ImportXml.class.php:368
 #, php-format
 msgid "XML error: %s at line %d"
 msgstr "Erreur XML: %s a la ligne %d"
@@ -2949,8 +3085,12 @@ msgid "%s_copy_%d%s"
 msgstr "%s_copie_%d%s"
 
 #: modules/ximIO/inc/ImportXml.class.php:510
-msgid "The init nodes of exportation and importation are not compatible, check if using the param --processFirstNode 1 is needed"
-msgstr "Les noeuds init de l'export et de l'import ne sont pas compatibles, vérifiez si vous utilisez le param --processFirstNode 1"
+msgid ""
+"The init nodes of exportation and importation are not compatible, check if using the param --"
+"processFirstNode 1 is needed"
+msgstr ""
+"Les noeuds init de l'export et de l'import ne sont pas compatibles, vérifiez si vous utilisez le "
+"param --processFirstNode 1"
 
 #: modules/ximIO/inc/ImportXml.class.php:518
 msgid "Incomplete information about root node has been provided"
@@ -2973,8 +3113,12 @@ msgid "No pvd could be successfully estimated for the node "
 msgstr "Aucun pvd n'a pu être estimé avec succès pour le noeud "
 
 #: modules/ximIO/inc/ImportXml.class.php:1198
-msgid "An inconsistency was found in database, there are several UUID in NodeProperties table with same value"
-msgstr "Une incohérence a été trouvée dans la base de données, il y a plusieurs UUID dans la table NodeProperties avec la même valeur"
+msgid ""
+"An inconsistency was found in database, there are several UUID in NodeProperties table with same "
+"value"
+msgstr ""
+"Une incohérence a été trouvée dans la base de données, il y a plusieurs UUID dans la table "
+"NodeProperties avec la même valeur"
 
 #: modules/ximIO/inc/ExportXml.class.php:66
 #, php-format
@@ -2987,8 +3131,12 @@ msgid "The node %s does not exists or is not included inside of %s"
 msgstr "Le noeud %s n'existe pas ou n'est pas inclus dans %s"
 
 #: modules/ximIO/inc/ExportXml.class.php:133
-msgid "Error creating the backup folder, check data folder permits and user&#39;s ones configured in Apache server are compatible."
-msgstr "Erreur lors de la création du dossier de sauvegarde, vérifiez les autorisations du dossier de données et celles de l'utilisateur configurées dans le serveur Apache sontcompatibles."
+msgid ""
+"Error creating the backup folder, check data folder permits and user&#39;s ones configured in "
+"Apache server are compatible."
+msgstr ""
+"Erreur lors de la création du dossier de sauvegarde, vérifiez les autorisations du dossier de "
+"données et celles de l'utilisateur configurées dans le serveur Apache sontcompatibles."
 
 #: modules/ximIO/inc/ExportXml.class.php:167
 #, php-format
@@ -3598,8 +3746,12 @@ msgid "STOPPING BATCH PROCESSING"
 msgstr "ARRÊT DU TRAITEMENT DES LOTS"
 
 #: modules/ximSYNC/scripts/scheduler/scheduler.class.php:79
-msgid "Closing scheduler. Disabled pcntl_fork and pcntl_waitpid functions are required. Please, check php.ini file."
-msgstr "Fermeture du planificateur. Les fonctions pcntl_fork et pcntl_waitpid désactivées sont requises. S'il vous plaît, vérifiez le fichier php.ini."
+msgid ""
+"Closing scheduler. Disabled pcntl_fork and pcntl_waitpid functions are required. Please, check "
+"php.ini file."
+msgstr ""
+"Fermeture du planificateur. Les fonctions pcntl_fork et pcntl_waitpid désactivées sont requises. "
+"S'il vous plaît, vérifiez le fichier php.ini."
 
 #: modules/ximSYNC/scripts/scheduler/scheduler.class.php:185
 msgid "Cycle num"
@@ -3724,16 +3876,27 @@ msgid "%s language versions have been created."
 msgstr "Les versions de langue en %s ont été créées."
 
 #: public_xmd/actions/modifyserver/resources/js/tour.js:61
-msgid "This action allows to define in which servers your documents are going to be published and which protocol will be used."
-msgstr "Cette action permet de définir dans quels serveurs vos documents vont être publiés et quel protocole sera utilisé."
+msgid ""
+"This action allows to define in which servers your documents are going to be published and which "
+"protocol will be used."
+msgstr ""
+"Cette action permet de définir dans quels serveurs vos documents vont être publiés et quel "
+"protocole sera utilisé."
 
 #: public_xmd/actions/modifyserver/resources/js/tour.js:62
-msgid "Create a new server where publishing your documents or choose an already configured one to edit its properties"
-msgstr "Créer un nouveau serveur où publier vos documents ou en choisir un déjà configuré pour éditer ses propriétés"
+msgid ""
+"Create a new server where publishing your documents or choose an already configured one to edit "
+"its properties"
+msgstr ""
+"Créer un nouveau serveur où publier vos documents ou en choisir un déjà configuré pour éditer ses "
+"propriétés"
 
 #: public_xmd/actions/modifyserver/resources/js/tour.js:63
-msgid "Specify the way in which your documents are going to be copied to the server chosen in the previous step"
-msgstr "Précisez la manière dont vos documents vont être copiés sur le serveur choisi a l'étape précédente"
+msgid ""
+"Specify the way in which your documents are going to be copied to the server chosen in the "
+"previous step"
+msgstr ""
+"Précisez la manière dont vos documents vont être copiés sur le serveur choisi a l'étape précédente"
 
 #: public_xmd/actions/modifyserver/resources/js/validate.js:57
 msgid "Are you sure you want to remove this server?"
@@ -3800,10 +3963,8 @@ msgstr "Accepter"
 #: modules/xBlog/api/lib/ContentTools/src/scripts/ui/dialogs/image.js:80
 #: modules/xBlog/api/lib/ContentTools/build/content-tools.js:6225
 #: modules/xBlog/api/lib/ContentTools/build/content-tools.min.js:5
-#: modules/xBlog/api/public/js/main.js:23643
-#: modules/xBlog/api/public/js/main.js:27103
-#: modules/xBlog/api/public/js/main.min.js:16
-#: modules/xBlog/api/public/js/main.min.js:18
+#: modules/xBlog/api/public/js/main.js:23643 modules/xBlog/api/public/js/main.js:27103
+#: modules/xBlog/api/public/js/main.min.js:16 modules/xBlog/api/public/js/main.min.js:18
 #: modules/xBlog/api/coffee/cropdialog.js:73
 #: public_xmd/actions/xmleditor2/template/Smarty/ximimagedrawer.tpl:42
 #: public_xmd/actions/xmleditor2/template/Smarty/ximletdrawer.tpl:35
@@ -3844,15 +4005,20 @@ msgstr "Modifier le fichier XML"
 
 #: public_xmd/actions/welcome/resources/js/tour.js:188
 msgid "Welcome to Ximdex!<br/>In a few steps you will discover the basic features of Ximdex CMS."
-msgstr "Bienvenue dans Ximdex!<br/>En quelques étapes, vous découvrirez les fonctionnalités de base de Ximdex CMS."
+msgstr ""
+"Bienvenue dans Ximdex!<br/>En quelques étapes, vous découvrirez les fonctionnalités de base de "
+"Ximdex CMS."
 
 #: public_xmd/actions/welcome/resources/js/tour.js:189
 msgid "Ximdex Demo Tour."
 msgstr "Ximdex Demo Tour."
 
 #: public_xmd/actions/welcome/resources/js/tour.js:193
-msgid "In the left panel you will find the tree with all your documents, images, links and other files."
-msgstr "Dans le panneau de gauche, vous trouverez l'arbre avec tous vos documents, images, liens et autres fichiers."
+msgid ""
+"In the left panel you will find the tree with all your documents, images, links and other files."
+msgstr ""
+"Dans le panneau de gauche, vous trouverez l'arbre avec tous vos documents, images, liens et "
+"autres fichiers."
 
 #: public_xmd/actions/welcome/resources/js/tour.js:196
 msgid "Use Xedit, the XML editor,<br/> to edit your document in a WYSIWYG way."
@@ -3863,44 +4029,74 @@ msgid "Click here to hide the left panel."
 msgstr "Cliquez ici pour masquer le panneau de gauche."
 
 #: public_xmd/actions/welcome/resources/js/tour.js:200
-msgid "This is the document area.<br/>It looks like a HTML document. Actually it's a XML file with a semantic layer."
-msgstr "C'est la zone du document.<br/>Cela ressemble a un document HTML. En fait, c'est un fichier XML avec une couche sémantique."
+msgid ""
+"This is the document area.<br/>It looks like a HTML document. Actually it's a XML file with a "
+"semantic layer."
+msgstr ""
+"C'est la zone du document.<br/>Cela ressemble a un document HTML. En fait, c'est un fichier XML "
+"avec une couche sémantique."
 
 #: public_xmd/actions/welcome/resources/js/tour.js:202
 msgid "Press the Tree View button to change to XML view for your structured document."
-msgstr "Appuyez sur le bouton Vue arborescente pour passer en affichage XML pour votre document structuré."
+msgstr ""
+"Appuyez sur le bouton Vue arborescente pour passer en affichage XML pour votre document structuré."
 
 #: public_xmd/actions/welcome/resources/js/tour.js:204
 msgid "Press the Design View button in order to return to WYSIWYG view."
 msgstr "Appuyez sur le bouton Design View pour revenir a la vue WYSIWYG."
 
 #: public_xmd/actions/welcome/resources/js/tour.js:206
-msgid "We've been editing a XML file. <br/><br/>The preview button allows you to see it in the final format for your web portal (HTML5, php, jsp, RoR, ...) or for other platform (digital TV, smartphone apps, etc.)<br/><br/>It's really easy to extend it with templates for oncoming technologies."
-msgstr "Nous avons modifié un fichier XML.<br/><br/>Le bouton de prévisualisation vous permet de le voir dans le format final de votre portail Web (HTML5, php, jsp, RoR, ...) ou pour d'autres plateformes (TV numérique, applications pour smartphones, etc.) )<br/><br/>Il est vraiment facile de l'étendre avec des modèles pour les technologies venant en sens inverse."
+msgid ""
+"We've been editing a XML file. <br/><br/>The preview button allows you to see it in the final "
+"format for your web portal (HTML5, php, jsp, RoR, ...) or for other platform (digital TV, "
+"smartphone apps, etc.)<br/><br/>It's really easy to extend it with templates for oncoming "
+"technologies."
+msgstr ""
+"Nous avons modifié un fichier XML.<br/><br/>Le bouton de prévisualisation vous permet de le voir "
+"dans le format final de votre portail Web (HTML5, php, jsp, RoR, ...) ou pour d'autres "
+"plateformes (TV numérique, applications pour smartphones, etc.) )<br/><br/>Il est vraiment facile "
+"de l'étendre avec des modèles pour les technologies venant en sens inverse."
 
 #: public_xmd/actions/welcome/resources/js/tour.js:208
-msgid "With Xowl module you will get automagically links (to images, maps, videos, references, ...) and semantic tags from sources like DBpedia."
-msgstr "Avec le module Xowl, vous obtiendrez des liens automatiquement (images, cartes, vidéos, références, ...) et des tags sémantiques de sources comme DBpedia."
+msgid ""
+"With Xowl module you will get automagically links (to images, maps, videos, references, ...) and "
+"semantic tags from sources like DBpedia."
+msgstr ""
+"Avec le module Xowl, vous obtiendrez des liens automatiquement (images, cartes, vidéos, "
+"références, ...) et des tags sémantiques de sources comme DBpedia."
 
 #: public_xmd/actions/welcome/resources/js/tour.js:212
 msgid "You can easily add your own custom tags or use an ontology to select semantic tags..."
-msgstr "Vous pouvez facilement ajouter vos propres balises personnalisées ou utiliser une ontologie pour sélectionner des balises sémantiques ..."
+msgstr ""
+"Vous pouvez facilement ajouter vos propres balises personnalisées ou utiliser une ontologie pour "
+"sélectionner des balises sémantiques ..."
 
 #: public_xmd/actions/welcome/resources/js/tour.js:228
 msgid "Edit metadata"
 msgstr "Éditer les métadonnées"
 
 #: public_xmd/actions/welcome/resources/js/tour.js:244
-msgid "Ximdex CMS can automatically suggest tags based on your written text.<br/>Let's select a couple of tags from these suggestions."
-msgstr "Ximdex CMS peut automatiquement suggérer des tags en fonction de votre texte écrit.<br/>Sélectionnons quelques tags parmi ces suggestions."
+msgid ""
+"Ximdex CMS can automatically suggest tags based on your written text.<br/>Let's select a couple "
+"of tags from these suggestions."
+msgstr ""
+"Ximdex CMS peut automatiquement suggérer des tags en fonction de votre texte écrit.<br/"
+">Sélectionnons quelques tags parmi ces suggestions."
 
 #: public_xmd/actions/welcome/resources/js/tour.js:262
-msgid "You can also create your own custom tags or browse tag sets to choose the best one for your content."
-msgstr "Vous pouvez également créer vos propres balises personnalisées ou parcourir les ensembles de balises pour choisir le meilleur pour votre contenu."
+msgid ""
+"You can also create your own custom tags or browse tag sets to choose the best one for your "
+"content."
+msgstr ""
+"Vous pouvez également créer vos propres balises personnalisées ou parcourir les ensembles de "
+"balises pour choisir le meilleur pour votre contenu."
 
 #: public_xmd/actions/welcome/resources/js/tour.js:275
-msgid "With the Ontology Browser you can navigate through vocabularies and ontologies as schema.org, etc."
-msgstr "Avec le Navigateur d'Ontologies, vous pouvez parcourir des vocabulaires et des ontologies tels que schema.org, etc."
+msgid ""
+"With the Ontology Browser you can navigate through vocabularies and ontologies as schema.org, etc."
+msgstr ""
+"Avec le Navigateur d'Ontologies, vous pouvez parcourir des vocabulaires et des ontologies tels "
+"que schema.org, etc."
 
 #: public_xmd/actions/welcome/resources/js/tour.js:287
 msgid "Tag 'Painting' from schema.org has been associated to your document."
@@ -3946,10 +4142,12 @@ msgstr "Le document a été enregistré et envoyé pour être publié."
 
 #: public_xmd/actions/xmleditor2/js/editor/kupu_form.js:71
 #: public_xmd/actions/xmleditor2/js/editor/kupu_form.js:74
-msgid "An error occurred while saving and/or sending the document to publish.\n"
+msgid ""
+"An error occurred while saving and/or sending the document to publish.\n"
 "\n"
 "State: "
-msgstr "Une erreur s'est produite lors de l'enregistrement et/ou de l'envoi du document a publier.\n"
+msgstr ""
+"Une erreur s'est produite lors de l'enregistrement et/ou de l'envoi du document a publier.\n"
 "\n"
 "État: "
 
@@ -3959,18 +4157,22 @@ msgid "The document has been successfully saved."
 msgstr "Le document a été enregistré avec succès."
 
 #: public_xmd/actions/xmleditor2/js/editor/kupu_form.js:91
-msgid "An error occurred while saving the document.\n"
+msgid ""
+"An error occurred while saving the document.\n"
 "\n"
 "State: "
-msgstr "Une erreur s'est produite lors de la sauvegarde du document.\n"
+msgstr ""
+"Une erreur s'est produite lors de la sauvegarde du document.\n"
 "\n"
 "État: "
 
 #: public_xmd/actions/xmleditor2/js/editor/kupu_form.js:94
-msgid "An error occurred while saving the document\n"
+msgid ""
+"An error occurred while saving the document\n"
 "\n"
 "State: "
-msgstr "Une erreur s'est produite lors de la sauvegarde du document.\n"
+msgstr ""
+"Une erreur s'est produite lors de la sauvegarde du document.\n"
 "\n"
 "État: "
 
@@ -4009,8 +4211,12 @@ msgid "Error removing temporal file"
 msgstr "Erreur lors de la suppression du fichier temporaire"
 
 #: public_xmd/actions/xmleditor2/js/editor/ximdexeditor.js:436
-msgid "It is available a temporal version of the document with saving date more recent than the last one you saved. Do you want to recover it?"
-msgstr "Il est disponible une version temporelle du document avec une date d'enregistrement plus récente que la dernière que vous avez enregistrée. Voulez-vous le récupérer?"
+msgid ""
+"It is available a temporal version of the document with saving date more recent than the last one "
+"you saved. Do you want to recover it?"
+msgstr ""
+"Il est disponible une version temporelle du document avec une date d'enregistrement plus récente "
+"que la dernière que vous avez enregistrée. Voulez-vous le récupérer?"
 
 #: public_xmd/actions/xmleditor2/js/editor/ximdexeditor.js:450
 msgid "No element found in the configuration"
@@ -4055,8 +4261,12 @@ msgid "Found no renderizable elements: "
 msgstr "Aucun élément renderizable trouvé: "
 
 #: public_xmd/actions/xmleditor2/js/editor/initKupuTools.js:265
-msgid "You have applied to open the editor in a new window. Changes not saved will be lost. Do you want to continue?"
-msgstr "Vous avez demandé a ouvrir l'éditeur dans une nouvelle fenêtre. Les modifications non enregistrées seront perdues. Voulez-vous continuer?"
+msgid ""
+"You have applied to open the editor in a new window. Changes not saved will be lost. Do you want "
+"to continue?"
+msgstr ""
+"Vous avez demandé a ouvrir l'éditeur dans une nouvelle fenêtre. Les modifications non "
+"enregistrées seront perdues. Voulez-vous continuer?"
 
 #: public_xmd/actions/xmleditor2/js/rng/RngDocument.class.js:101
 #: public_xmd/actions/actionsstats/template/Smarty/index.tpl:43
@@ -4199,8 +4409,7 @@ msgstr "Mettre a jour"
 #: modules/xBlog/api/lib/ContentTools/src/scripts/ui/dialogs/properties.js:132
 #: modules/xBlog/api/lib/ContentTools/build/content-tools.js:6726
 #: modules/xBlog/api/lib/ContentTools/build/content-tools.min.js:5
-#: modules/xBlog/api/public/js/main.js:24151
-#: modules/xBlog/api/public/js/main.min.js:16
+#: modules/xBlog/api/public/js/main.js:24151 modules/xBlog/api/public/js/main.min.js:16
 #: public_xmd/actions/xmleditor2/template/Smarty/toolboxes.tpl:271
 msgid "Attributes"
 msgstr "Attributs"
@@ -4363,7 +4572,8 @@ msgstr "Erreur lors de l'obtention du fichier de vérification orthographique."
 
 #: public_xmd/actions/xmleditor2/js/tools/XimdocSpellCheckerTool.class.js:117
 msgid "Maybe your text is too long and/or there are so much words to correct in your document."
-msgstr "Votre texte est peut-être trop long et/ou il y a tellement de mots a corriger dans votre document."
+msgstr ""
+"Votre texte est peut-être trop long et/ou il y a tellement de mots a corriger dans votre document."
 
 #: public_xmd/actions/xmleditor2/js/tools/XimdocSpellCheckerTool.class.js:117
 msgid "Be sure that your content and the base language of your document are the same."
@@ -4378,10 +4588,12 @@ msgid "ERROR while finding Ximlets. "
 msgstr "ERREUR lors de la recherche de Ximlets. "
 
 #: public_xmd/actions/xmleditor2/js/tools/ximletTool.class.js:252
-msgid "WARNING: You are going to edit a ximlet which is linked to a section.\n"
+msgid ""
+"WARNING: You are going to edit a ximlet which is linked to a section.\n"
 "\n"
 " This action will affect to all the section documents. Are you sure you want to continue?"
-msgstr "ATTENTION: Vous allez éditer un ximlet lié a une section.\n"
+msgstr ""
+"ATTENTION: Vous allez éditer un ximlet lié a une section.\n"
 "\n"
 " Cette action affectera a tous les documents de section. Es-tu sur de vouloir continuer?"
 
@@ -4497,8 +4709,7 @@ msgstr "Annoter le mot "
 #: modules/xBlog/api/lib/ContentTools/src/scripts/ui/dialogs/properties.js:141
 #: modules/xBlog/api/lib/ContentTools/build/content-tools.js:6735
 #: modules/xBlog/api/lib/ContentTools/build/content-tools.min.js:5
-#: modules/xBlog/api/public/js/main.js:24160
-#: modules/xBlog/api/public/js/main.min.js:16
+#: modules/xBlog/api/public/js/main.js:24160 modules/xBlog/api/public/js/main.min.js:16
 #: public_xmd/actions/xmleditor2/template/Smarty/tabledrawer.tpl:146
 #: public_xmd/actions/xmleditor2/template/Smarty/tabledrawer.tpl:167
 msgid "Remove"
@@ -4602,8 +4813,12 @@ msgid "You are going to delete a node. Would you like to continue?"
 msgstr "Vous allez supprimer un noeud. Voulez-vous continuer?"
 
 #: public_xmd/actions/managefolders/resources/js/index.js:34
-msgid "Attention! If you uncheck any folder, Ximdex CMS would delete all the contained files of that folder."
-msgstr "Attention! Si vous décochez un dossier, Ximdex CMS supprimera tous les fichiers contenus de ce dossier."
+msgid ""
+"Attention! If you uncheck any folder, Ximdex CMS would delete all the contained files of that "
+"folder."
+msgstr ""
+"Attention! Si vous décochez un dossier, Ximdex CMS supprimera tous les fichiers contenus de ce "
+"dossier."
 
 #: public_xmd/actions/browser3/resources/js/controller.js:49
 #: public_xmd/actions/linkreport/template/Smarty/searchresult.tpl:34
@@ -4688,8 +4903,12 @@ msgstr "Sélectionnez un conteneur"
 
 #: public_xmd/actions/edittext/resources/js/init.js:77
 #: modules/Xdms/actions/collaborative/resources/js/init.js:73
-msgid "You are going to clear the current content. It won't be removed until you save the data. Are you sure?"
-msgstr "Vous allez effacer le contenu actuel. Il ne sera pas supprimé tant que vous n'aurez pas sauvegardé les données. Êtes-vous sûr?"
+msgid ""
+"You are going to clear the current content. It won't be removed until you save the data. Are you "
+"sure?"
+msgstr ""
+"Vous allez effacer le contenu actuel. Il ne sera pas supprimé tant que vous n'aurez pas "
+"sauvegardé les données. Êtes-vous sûr?"
 
 #: public_xmd/actions/poolPreview/resources/js/poolPreview.js:375
 msgid "<option>Select a label</option>"
@@ -4835,20 +5054,28 @@ msgid "Inactivity period reached"
 msgstr "Période d'inactivité atteinte"
 
 #: public_xmd/assets/js/sess.js:140
-msgid "You have reached the limit of inactivity period. Please, re-authenticate again in order to continue working."
-msgstr "Vous avez atteint la limite de la période d'inactivité. Merci de vous ré-authentifier a nouveau afin de continuer a travailler."
+msgid ""
+"You have reached the limit of inactivity period. Please, re-authenticate again in order to "
+"continue working."
+msgstr ""
+"Vous avez atteint la limite de la période d'inactivité. Merci de vous ré-authentifier a nouveau "
+"afin de continuer a travailler."
 
 #: public_xmd/assets/js/browser_checker.js:53
-msgid "We have noticed some compatibility issues with your current browser. For now, some features just work fully fine in Firefox 4 or higher.<br/>Please, log in with Mozilla Firefox Browser."
-msgstr "Nous avons remarqué quelques problèmes de compatibilité avec votre navigateur actuel. Pour l'instant, certaines fonctionnalités fonctionnent parfaitement dans Firefox 4 ou supérieur.<br/>Connectez-vous avec Mozilla Firefox Browser."
+msgid ""
+"We have noticed some compatibility issues with your current browser. For now, some features just "
+"work fully fine in Firefox 4 or higher.<br/>Please, log in with Mozilla Firefox Browser."
+msgstr ""
+"Nous avons remarqué quelques problèmes de compatibilité avec votre navigateur actuel. Pour "
+"l'instant, certaines fonctionnalités fonctionnent parfaitement dans Firefox 4 ou supérieur.<br/"
+">Connectez-vous avec Mozilla Firefox Browser."
 
 #: modules/xBlog/api/lib/ContentTools/src/scripts/ui/dialogs/image.js:56
 #: modules/xBlog/api/lib/ContentTools/src/scripts/ui/dialogs/image.js:58
 #: modules/xBlog/api/lib/ContentTools/build/content-tools.js:6201
 #: modules/xBlog/api/lib/ContentTools/build/content-tools.js:6203
 #: modules/xBlog/api/lib/ContentTools/build/content-tools.min.js:5
-#: modules/xBlog/api/public/js/main.js:23619
-#: modules/xBlog/api/public/js/main.js:23621
+#: modules/xBlog/api/public/js/main.js:23619 modules/xBlog/api/public/js/main.js:23621
 #: modules/xBlog/api/public/js/main.min.js:16
 msgid "Rotate"
 msgstr "Tourner"
@@ -4856,18 +5083,15 @@ msgstr "Tourner"
 #: modules/xBlog/api/lib/ContentTools/src/scripts/ui/dialogs/image.js:60
 #: modules/xBlog/api/lib/ContentTools/build/content-tools.js:6205
 #: modules/xBlog/api/lib/ContentTools/build/content-tools.min.js:5
-#: modules/xBlog/api/public/js/main.js:23623
-#: modules/xBlog/api/public/js/main.min.js:16
+#: modules/xBlog/api/public/js/main.js:23623 modules/xBlog/api/public/js/main.min.js:16
 msgid "Crop marks"
 msgstr "Marques de culture"
 
 #: modules/xBlog/api/lib/ContentTools/src/scripts/ui/dialogs/image.js:62
 #: modules/xBlog/api/lib/ContentTools/build/content-tools.js:6207
 #: modules/xBlog/api/lib/ContentTools/build/content-tools.min.js:5
-#: modules/xBlog/api/public/js/main.js:23625
-#: modules/xBlog/api/public/js/main.js:27091
-#: modules/xBlog/api/public/js/main.min.js:16
-#: modules/xBlog/api/public/js/main.min.js:18
+#: modules/xBlog/api/public/js/main.js:23625 modules/xBlog/api/public/js/main.js:27091
+#: modules/xBlog/api/public/js/main.min.js:16 modules/xBlog/api/public/js/main.min.js:18
 #: modules/xBlog/api/coffee/cropdialog.js:61
 msgid "An error was found, please try again."
 msgstr "Une erreur a été trouvée, veuillez réessayer."
@@ -4875,18 +5099,15 @@ msgstr "Une erreur a été trouvée, veuillez réessayer."
 #: modules/xBlog/api/lib/ContentTools/src/scripts/ui/dialogs/image.js:71
 #: modules/xBlog/api/lib/ContentTools/build/content-tools.js:6216
 #: modules/xBlog/api/lib/ContentTools/build/content-tools.min.js:5
-#: modules/xBlog/api/public/js/main.js:23634
-#: modules/xBlog/api/public/js/main.min.js:16
+#: modules/xBlog/api/public/js/main.js:23634 modules/xBlog/api/public/js/main.min.js:16
 msgid "Upload"
 msgstr "Uploader"
 
 #: modules/xBlog/api/lib/ContentTools/src/scripts/ui/dialogs/image.js:83
 #: modules/xBlog/api/lib/ContentTools/build/content-tools.js:6228
 #: modules/xBlog/api/lib/ContentTools/build/content-tools.min.js:5
-#: modules/xBlog/api/public/js/main.js:23646
-#: modules/xBlog/api/public/js/main.js:27106
-#: modules/xBlog/api/public/js/main.min.js:16
-#: modules/xBlog/api/public/js/main.min.js:18
+#: modules/xBlog/api/public/js/main.js:23646 modules/xBlog/api/public/js/main.js:27106
+#: modules/xBlog/api/public/js/main.min.js:16 modules/xBlog/api/public/js/main.min.js:18
 #: modules/xBlog/api/coffee/cropdialog.js:76
 msgid "Clear"
 msgstr "Effacer"
@@ -4896,82 +5117,71 @@ msgstr "Effacer"
 #: modules/xBlog/api/lib/ContentTools/build/content-tools.js:7247
 #: modules/xBlog/api/lib/ContentTools/build/content-tools.min.js:5
 #: modules/xBlog/api/lib/ContentTools/build/content-tools.min.js:6
-#: modules/xBlog/api/public/js/main.js:23649
-#: modules/xBlog/api/public/js/main.js:24678
-#: modules/xBlog/api/public/js/main.min.js:16
-#: modules/xBlog/api/public/js/main.min.js:17
+#: modules/xBlog/api/public/js/main.js:23649 modules/xBlog/api/public/js/main.js:24678
+#: modules/xBlog/api/public/js/main.min.js:16 modules/xBlog/api/public/js/main.min.js:17
 msgid "Insert"
 msgstr "Inserer"
 
 #: modules/xBlog/api/lib/ContentTools/src/scripts/ui/dialogs/link.js:29
 #: modules/xBlog/api/lib/ContentTools/build/content-tools.js:6524
 #: modules/xBlog/api/lib/ContentTools/build/content-tools.min.js:5
-#: modules/xBlog/api/public/js/main.js:23945
-#: modules/xBlog/api/public/js/main.min.js:16
+#: modules/xBlog/api/public/js/main.js:23945 modules/xBlog/api/public/js/main.min.js:16
 msgid "Enter a link"
 msgstr "Entrer un lien"
 
 #: modules/xBlog/api/lib/ContentTools/src/scripts/ui/dialogs/table.js:41
 #: modules/xBlog/api/lib/ContentTools/build/content-tools.js:7114
 #: modules/xBlog/api/lib/ContentTools/build/content-tools.min.js:5
-#: modules/xBlog/api/public/js/main.js:24542
-#: modules/xBlog/api/public/js/main.min.js:16
+#: modules/xBlog/api/public/js/main.js:24542 modules/xBlog/api/public/js/main.min.js:16
 msgid "Table head"
 msgstr "Tête de la table"
 
 #: modules/xBlog/api/lib/ContentTools/src/scripts/ui/dialogs/table.js:48
 #: modules/xBlog/api/lib/ContentTools/build/content-tools.js:7121
 #: modules/xBlog/api/lib/ContentTools/build/content-tools.min.js:5
-#: modules/xBlog/api/public/js/main.js:24549
-#: modules/xBlog/api/public/js/main.min.js:16
+#: modules/xBlog/api/public/js/main.js:24549 modules/xBlog/api/public/js/main.min.js:16
 msgid "Table body (columns)"
 msgstr "Corps de la table"
 
 #: modules/xBlog/api/lib/ContentTools/src/scripts/ui/dialogs/table.js:64
 #: modules/xBlog/api/lib/ContentTools/build/content-tools.js:7137
 #: modules/xBlog/api/lib/ContentTools/build/content-tools.min.js:5
-#: modules/xBlog/api/public/js/main.js:24565
-#: modules/xBlog/api/public/js/main.min.js:17
+#: modules/xBlog/api/public/js/main.js:24565 modules/xBlog/api/public/js/main.min.js:17
 msgid "Table foot"
 msgstr "Pied de la table"
 
 #: modules/xBlog/api/lib/ContentTools/src/scripts/ui/dialogs/properties.js:91
 #: modules/xBlog/api/lib/ContentTools/build/content-tools.js:6685
 #: modules/xBlog/api/lib/ContentTools/build/content-tools.min.js:5
-#: modules/xBlog/api/public/js/main.js:24110
-#: modules/xBlog/api/public/js/main.min.js:16
+#: modules/xBlog/api/public/js/main.js:24110 modules/xBlog/api/public/js/main.min.js:16
 msgid "No styles available for this tag"
 msgstr "Aucun style disponible pour ce tag"
 
 #: modules/xBlog/api/lib/ContentTools/src/scripts/ui/dialogs/properties.js:129
 #: modules/xBlog/api/lib/ContentTools/build/content-tools.js:6723
 #: modules/xBlog/api/lib/ContentTools/build/content-tools.min.js:5
-#: modules/xBlog/api/public/js/main.js:24148
-#: modules/xBlog/api/public/js/main.min.js:16
+#: modules/xBlog/api/public/js/main.js:24148 modules/xBlog/api/public/js/main.min.js:16
 msgid "Styles"
 msgstr "Styles"
 
 #: modules/xBlog/api/lib/ContentTools/src/scripts/ui/dialogs/properties.js:135
 #: modules/xBlog/api/lib/ContentTools/build/content-tools.js:6729
 #: modules/xBlog/api/lib/ContentTools/build/content-tools.min.js:5
-#: modules/xBlog/api/public/js/main.js:24154
-#: modules/xBlog/api/public/js/main.min.js:16
+#: modules/xBlog/api/public/js/main.js:24154 modules/xBlog/api/public/js/main.min.js:16
 msgid "Code"
 msgstr "Code"
 
 #: modules/xBlog/api/lib/ContentTools/src/scripts/ui/dialogs/properties.js:146
 #: modules/xBlog/api/lib/ContentTools/build/content-tools.js:6740
 #: modules/xBlog/api/lib/ContentTools/build/content-tools.min.js:5
-#: modules/xBlog/api/public/js/main.js:24165
-#: modules/xBlog/api/public/js/main.min.js:16
+#: modules/xBlog/api/public/js/main.js:24165 modules/xBlog/api/public/js/main.min.js:16
 msgid "Apply"
 msgstr "Appliquer"
 
 #: modules/xBlog/api/lib/ContentTools/src/scripts/ui/dialogs/properties.js:405
 #: modules/xBlog/api/lib/ContentTools/build/content-tools.js:6999
 #: modules/xBlog/api/lib/ContentTools/build/content-tools.min.js:5
-#: modules/xBlog/api/public/js/main.js:24424
-#: modules/xBlog/api/public/js/main.min.js:16
+#: modules/xBlog/api/public/js/main.js:24424 modules/xBlog/api/public/js/main.min.js:16
 msgid "Value"
 msgstr "Valeur"
 
@@ -4980,16 +5190,14 @@ msgstr "Valeur"
 #: modules/xBlog/api/lib/ContentTools/build/content-tools.js:7640
 #: modules/xBlog/api/lib/ContentTools/build/content-tools.js:7819
 #: modules/xBlog/api/lib/ContentTools/build/content-tools.min.js:6
-#: modules/xBlog/api/public/js/main.js:25076
-#: modules/xBlog/api/public/js/main.js:25255
+#: modules/xBlog/api/public/js/main.js:25076 modules/xBlog/api/public/js/main.js:25255
 #: modules/xBlog/api/public/js/main.min.js:17
 msgid "Your changes have not been saved, do you really want to lose them?"
 msgstr "Vos modifications n'ont pas été enregistrées, voulez-vous vraiment les perdre?"
 
 #: modules/xBlog/api/lib/ContentTools/build/content-tools.js:7243
 #: modules/xBlog/api/lib/ContentTools/build/content-tools.min.js:6
-#: modules/xBlog/api/public/js/main.js:24674
-#: modules/xBlog/api/public/js/main.min.js:17
+#: modules/xBlog/api/public/js/main.js:24674 modules/xBlog/api/public/js/main.min.js:17
 msgid "Paste YouTube or Vimeo URL"
 msgstr "Coller l'URL YouTube ou Vimeo"
 
@@ -5015,34 +5223,28 @@ msgstr "soustraire"
 msgid "add"
 msgstr "ajouter"
 
-#: modules/xBlog/api/public/js/main.js:26755
-#: modules/xBlog/api/public/js/main.js:26831
-#: modules/xBlog/api/public/js/main.min.js:18
-#: modules/xBlog/api/coffee/imagePickerDialog.js:106
+#: modules/xBlog/api/public/js/main.js:26755 modules/xBlog/api/public/js/main.js:26831
+#: modules/xBlog/api/public/js/main.min.js:18 modules/xBlog/api/coffee/imagePickerDialog.js:106
 #: modules/xBlog/api/coffee/confirmPublishDialog.js:29
 msgid "Cancelar"
 msgstr "Annuler"
 
-#: modules/xBlog/api/public/js/main.js:26758
-#: modules/xBlog/api/public/js/main.min.js:18
+#: modules/xBlog/api/public/js/main.js:26758 modules/xBlog/api/public/js/main.min.js:18
 #: modules/xBlog/api/coffee/imagePickerDialog.js:109
 msgid "Aceptar"
 msgstr "Accepter"
 
-#: modules/xBlog/api/public/js/main.js:26823
-#: modules/xBlog/api/public/js/main.min.js:18
+#: modules/xBlog/api/public/js/main.js:26823 modules/xBlog/api/public/js/main.min.js:18
 #: modules/xBlog/api/coffee/confirmPublishDialog.js:21
 msgid "¿Desea continuar?"
 msgstr "Voulez-vous continuer?"
 
-#: modules/xBlog/api/public/js/main.js:26828
-#: modules/xBlog/api/public/js/main.min.js:18
+#: modules/xBlog/api/public/js/main.js:26828 modules/xBlog/api/public/js/main.min.js:18
 #: modules/xBlog/api/coffee/confirmPublishDialog.js:26
 msgid "Continuar"
 msgstr "Continuer"
 
-#: modules/xBlog/api/public/js/main.js:27100
-#: modules/xBlog/api/public/js/main.min.js:18
+#: modules/xBlog/api/public/js/main.js:27100 modules/xBlog/api/public/js/main.min.js:18
 #: modules/xBlog/api/coffee/cropdialog.js:70
 msgid "Subir"
 msgstr "Importer"
@@ -5053,7 +5255,8 @@ msgstr "Etape"
 
 #: modules/ximTOUR/resources/js/tour.js:434
 msgid "We're going to show you in a few steps the basic features of Ximdex. Let's go!"
-msgstr "Nous allons vous montrer en quelques étapes les fonctionnalités de base de Ximdex. Allons-y!"
+msgstr ""
+"Nous allons vous montrer en quelques étapes les fonctionnalités de base de Ximdex. Allons-y!"
 
 #: modules/ximTOUR/resources/js/tour.js:436
 msgid "Hello"
@@ -5218,13 +5421,10 @@ msgstr "Il n'y a pas de chaînes associées a ce projet"
 #: public_xmd/actions/workflow_forward/template/Smarty/success.tpl:27
 #: public_xmd/actions/workflow_forward/template/Smarty/index.tpl:75
 #: public_xmd/actions/workflow_forward/template/Smarty/next_state.tpl:28
-#: public_xmd/actions/workflow_forward/template/Smarty/success.tpl:27
 #: public_xmd/actions/workflow_forward/template/Smarty/index.tpl:76
-#: public_xmd/actions/workflow_forward/template/Smarty/next_state.tpl:28
 msgid "Next state"
 msgstr "Etat suivant"
 
-#: public_xmd/actions/workflow_forward/template/Smarty/success.tpl:37
 #: public_xmd/actions/workflow_forward/template/Smarty/success.tpl:37
 msgid "The document has been moved to the next state."
 msgstr "Le document a été déplacé vers l'état suivant."
@@ -5236,13 +5436,21 @@ msgstr "Les fonctions obligatoires <i>pcntl_fork</i> et <i>pcntl_waitpid</i> son
 
 #: public_xmd/actions/workflow_forward/template/Smarty/index.tpl:41
 #: public_xmd/actions/workflow_forward/template/Smarty/index.tpl:42
-msgid "This could cause a slow and unstable publishing. Please, check the <i>php.ini</i> configuration file or contact with your system administrator"
-msgstr "Cela pourrait provoquer une publication lente et instable. Vérifiez le fichier de configuration <i>php.ini</i> ou contactez votre administrateur système"
+msgid ""
+"This could cause a slow and unstable publishing. Please, check the <i>php.ini</i> configuration "
+"file or contact with your system administrator"
+msgstr ""
+"Cela pourrait provoquer une publication lente et instable. Vérifiez le fichier de configuration "
+"<i>php.ini</i> ou contactez votre administrateur système"
 
 #: public_xmd/actions/workflow_forward/template/Smarty/index.tpl:49
 #: public_xmd/actions/workflow_forward/template/Smarty/index.tpl:50
-msgid "Force publication is enabled in global config. This could cause slow publication. Please check synchro.conf file"
-msgstr "La publication forcée est activée dans la configuration globale. Cela pourrait entraîner une publication lente. Veuillez vérifier le fichier synchro.conf"
+msgid ""
+"Force publication is enabled in global config. This could cause slow publication. Please check "
+"synchro.conf file"
+msgstr ""
+"La publication forcée est activée dans la configuration globale. Cela pourrait entraîner une "
+"publication lente. Veuillez vérifier le fichier synchro.conf"
 
 #: public_xmd/actions/workflow_forward/template/Smarty/index.tpl:66
 #: public_xmd/actions/workflow_forward/template/Smarty/index.tpl:67
@@ -5278,7 +5486,6 @@ msgstr "Forcer la republication"
 #: public_xmd/actions/workflow_forward/template/Smarty/next_state.tpl:54
 #: public_xmd/actions/workflow_backward/template/Smarty/index.tpl:45
 #: public_xmd/actions/workflow_forward/template/Smarty/index.tpl:82
-#: public_xmd/actions/workflow_forward/template/Smarty/next_state.tpl:54
 msgid "Send notifications"
 msgstr "Envoyer des notifications"
 
@@ -5287,7 +5494,6 @@ msgstr "Envoyer des notifications"
 #: public_xmd/actions/workflow_backward/template/Smarty/index.tpl:49
 #: public_xmd/actions/modifygroupsnode/template/Smarty/index.tpl:105
 #: public_xmd/actions/workflow_forward/template/Smarty/index.tpl:86
-#: public_xmd/actions/workflow_forward/template/Smarty/next_state.tpl:58
 msgid "Group"
 msgstr "Groupe"
 
@@ -5295,7 +5501,6 @@ msgstr "Groupe"
 #: public_xmd/actions/workflow_forward/template/Smarty/next_state.tpl:69
 #: public_xmd/actions/workflow_backward/template/Smarty/index.tpl:60
 #: public_xmd/actions/workflow_forward/template/Smarty/index.tpl:98
-#: public_xmd/actions/workflow_forward/template/Smarty/next_state.tpl:69
 msgid "Users"
 msgstr "Utilisateurs"
 
@@ -5303,7 +5508,6 @@ msgstr "Utilisateurs"
 #: public_xmd/actions/workflow_forward/template/Smarty/next_state.tpl:85
 #: public_xmd/actions/workflow_backward/template/Smarty/index.tpl:76
 #: public_xmd/actions/workflow_forward/template/Smarty/index.tpl:116
-#: public_xmd/actions/workflow_forward/template/Smarty/next_state.tpl:85
 msgid "Comments"
 msgstr "Commentaires"
 
@@ -5335,9 +5539,10 @@ msgstr "Attention: La dernière fenêtre de publication n'a défini aucune date 
 #: public_xmd/actions/workflow_forward/template/Smarty/index.tpl:177
 #: public_xmd/actions/workflow_forward/template/Smarty/index.tpl:145
 msgid "Do you want to set the begin-date of the new window as the end-date of the previous window?"
-msgstr "Voulez-vous définir la date de début de la nouvelle fenêtre comme la date de fin de la fenêtre précédente?"
+msgstr ""
+"Voulez-vous définir la date de début de la nouvelle fenêtre comme la date de fin de la fenêtre "
+"précédente?"
 
-#: public_xmd/actions/workflow_forward/template/Smarty/linked_document.tpl:2
 #: public_xmd/actions/workflow_forward/template/Smarty/linked_document.tpl:2
 #: modules/ximSYNC/actions/managebatchs/template/Smarty/batchlist.tpl:254
 #: modules/ximSYNC/actions/managebatchs/template/Smarty/batchlistamp.tpl:202
@@ -5346,13 +5551,11 @@ msgid "Publication"
 msgstr "Publication"
 
 #: public_xmd/actions/workflow_forward/template/Smarty/linked_document.tpl:8
-#: public_xmd/actions/workflow_forward/template/Smarty/linked_document.tpl:8
 msgid "The linked file should be selected in order to publicate the file"
 msgstr "Le fichier lié doit être sélectionné afin de publier le fichier"
 
 #: public_xmd/actions/workflow_forward/template/Smarty/linked_document.tpl:11
 #: public_xmd/actions/xmleditor2/template/Smarty/linked_document.tpl:11
-#: public_xmd/actions/workflow_forward/template/Smarty/linked_document.tpl:11
 #: public_xmd/actions/edittext/template/Smarty/linked_document.tpl:11
 #: modules/Xdms/actions/collaborative/template/Smarty/linked_document.tpl:11
 msgid "The publication cycle of the selected document is currently linked to the document"
@@ -5360,19 +5563,16 @@ msgstr "Le cycle de publication du document sélectionné est actuellement lié 
 
 #: public_xmd/actions/workflow_forward/template/Smarty/next_state.tpl:38
 #: public_xmd/actions/workflow_backward/template/Smarty/index.tpl:38
-#: public_xmd/actions/workflow_forward/template/Smarty/next_state.tpl:38
 msgid "Do you want to move this file"
 msgstr "Voulez-vous déplacer ce fichier"
 
 #: public_xmd/actions/workflow_forward/template/Smarty/next_state.tpl:38
 #: public_xmd/actions/workflow_backward/template/Smarty/index.tpl:38
-#: public_xmd/actions/workflow_forward/template/Smarty/next_state.tpl:38
 msgid "from the state"
 msgstr "de l'état"
 
 #: public_xmd/actions/workflow_forward/template/Smarty/next_state.tpl:38
 #: public_xmd/actions/workflow_backward/template/Smarty/index.tpl:38
-#: public_xmd/actions/workflow_forward/template/Smarty/next_state.tpl:38
 msgid "to the state"
 msgstr "a l'état"
 
@@ -5731,8 +5931,11 @@ msgid "Info:"
 msgstr "Info:"
 
 #: public_xmd/actions/setextensions/template/Smarty/index.tpl:26
-msgid "the * value means any extension, empty value means none extension. You can't put ambiguous values."
-msgstr "la valeur * signifie toute extension, la valeur vide signifie aucune extension. Vous ne pouvez pas mettre des valeurs ambiguës."
+msgid ""
+"the * value means any extension, empty value means none extension. You can't put ambiguous values."
+msgstr ""
+"la valeur * signifie toute extension, la valeur vide signifie aucune extension. Vous ne pouvez "
+"pas mettre des valeurs ambiguës."
 
 #: public_xmd/actions/createxmlcontainer/template/Smarty/index.tpl:37
 msgid "Add new XML"
@@ -5747,8 +5950,12 @@ msgid "No schemes found"
 msgstr "Aucun schéma trouvé"
 
 #: public_xmd/actions/createxmlcontainer/template/Smarty/index.tpl:58
-msgid "Maybe you need to set properly the type of your RNG schemes (performing the <em>Modify properties</em> action on them) or create/upload a new one"
-msgstr "Peut-être avez-vous besoin de définir correctement le type de vos schémas RNG (en exécutant l'action <em>Modifier les propriétés</em> sur eux) ou en créer / en télécharger unnouveau"
+msgid ""
+"Maybe you need to set properly the type of your RNG schemes (performing the <em>Modify "
+"properties</em> action on them) or create/upload a new one"
+msgstr ""
+"Peut-être avez-vous besoin de définir correctement le type de vos schémas RNG (en exécutant "
+"l'action <em>Modifier les propriétés</em> sur eux) ou en créer / en télécharger unnouveau"
 
 #: public_xmd/actions/createxmlcontainer/template/Smarty/_ximdoc_languages.tpl:43
 #: public_xmd/actions/addsectionnode/template/Smarty/index.tpl:69
@@ -6283,8 +6490,12 @@ msgid "Uncheckable"
 msgstr "impossible a vérifier"
 
 #: public_xmd/actions/linkreport/template/Smarty/searchresult.tpl:72
-msgid "There aren't any links matching with the current search. Please, try again with another search string"
-msgstr "Il n'y a pas de liens correspondant a la recherche en cours. Veuillez réessayer avec une autre chaîne de recherche"
+msgid ""
+"There aren't any links matching with the current search. Please, try again with another search "
+"string"
+msgstr ""
+"Il n'y a pas de liens correspondant a la recherche en cours. Veuillez réessayer avec une autre "
+"chaîne de recherche"
 
 #: public_xmd/actions/linkreport/template/Smarty/searchresult.tpl:81
 msgid "Check all"
@@ -6429,8 +6640,12 @@ msgid "This node has not dependecies at the moment"
 msgstr "Ce noeud n'a pas de dépendances pour le moment"
 
 #: public_xmd/actions/deletenode/template/Smarty/forms/dependencies.tpl:74
-msgid "This node or its children have pending task to publish, if you continue these tasks will be interrupted"
-msgstr "Ce noeud ou ses enfants ont une tâche en attente a publier, si vous continuez, ces tâches seront interrompues"
+msgid ""
+"This node or its children have pending task to publish, if you continue these tasks will be "
+"interrupted"
+msgstr ""
+"Ce noeud ou ses enfants ont une tâche en attente a publier, si vous continuez, ces tâches seront "
+"interrompues"
 
 #: public_xmd/actions/deletenode/template/Smarty/forms/dependencies.tpl:82
 msgid "If you do not want to keep your nodes published"
@@ -6441,8 +6656,12 @@ msgid "Edit publication life of your nodes previously deletion."
 msgstr "Modifiez la durée de publication de vos noeuds avant la suppression."
 
 #: public_xmd/actions/deletenode/template/Smarty/forms/dependencies.tpl:91
-msgid "If a long time is elapsed before action is executed, list of dependencies and children of node may change"
-msgstr "Si une longue période s'est écoulée avant l'exécution de l'action, la liste des dépendances et des enfants du noeud peut changer"
+msgid ""
+"If a long time is elapsed before action is executed, list of dependencies and children of node "
+"may change"
+msgstr ""
+"Si une longue période s'est écoulée avant l'exécution de l'action, la liste des dépendances et "
+"des enfants du noeud peut changer"
 
 #: public_xmd/actions/deletenode/template/Smarty/forms/simple.tpl:30
 msgid "Delete element"
@@ -6468,7 +6687,8 @@ msgstr "Vous avez choisi d'expirer le contenu de la section: "
 
 #: public_xmd/actions/expiresection/template/Smarty/index.tpl:44
 msgid "Would you like to expire just this folder or all subsections included in it too?"
-msgstr "Souhaitez-vous expirer uniquement ce dossier ou toutes les sous-sections qui y sont incluses?"
+msgstr ""
+"Souhaitez-vous expirer uniquement ce dossier ou toutes les sous-sections qui y sont incluses?"
 
 #: public_xmd/actions/expiresection/template/Smarty/index.tpl:49
 msgid "Expire just this section"
@@ -6586,7 +6806,9 @@ msgstr "Dissocier récursivement"
 
 #: public_xmd/actions/addximlet/template/Smarty/index.tpl:53
 msgid "If the current section/server has subfolders, the association will be deleted for them too"
-msgstr "Si la section/le serveur actuel a des sous-dossiers, l'association sera également supprimée pour eux"
+msgstr ""
+"Si la section/le serveur actuel a des sous-dossiers, l'association sera également supprimée pour "
+"eux"
 
 #: public_xmd/actions/addximlet/template/Smarty/index.tpl:67
 msgid "Available Ximlets"
@@ -6599,7 +6821,8 @@ msgstr "Associer récursivement"
 
 #: public_xmd/actions/addximlet/template/Smarty/index.tpl:82
 msgid "If the current section/server has subfolders, the association will be created for them too"
-msgstr "Si la section/le serveur actuel a des sous-dossiers, l'association sera également crée pour eux"
+msgstr ""
+"Si la section/le serveur actuel a des sous-dossiers, l'association sera également crée pour eux"
 
 #: public_xmd/actions/addximlet/template/Smarty/index.tpl:90
 msgid "There aren't any ximlets to associate"
@@ -6721,24 +6944,36 @@ msgid "Faster"
 msgstr "Rapide"
 
 #: public_xmd/actions/browser3/template/Smarty/splash/index.tpl:4
-msgid "Drag&amp;Drop functionality to add and move elements, the new publication module ximPUBLISH 2.0, and more to make Ximdex faster!"
-msgstr "Faites glisser et déposez la fonctionnalité pour ajouter et déplacer des éléments, le nouveau module de publication ximPUBLISH 2.0, et plus pour rendre Ximdex plus rapide!"
+msgid ""
+"Drag&amp;Drop functionality to add and move elements, the new publication module ximPUBLISH 2.0, "
+"and more to make Ximdex faster!"
+msgstr ""
+"Faites glisser et déposez la fonctionnalité pour ajouter et déplacer des éléments, le nouveau "
+"module de publication ximPUBLISH 2.0, et plus pour rendre Ximdex plus rapide!"
 
 #: public_xmd/actions/browser3/template/Smarty/splash/index.tpl:6
 msgid "Powerful"
 msgstr "Puissant"
 
 #: public_xmd/actions/browser3/template/Smarty/splash/index.tpl:7
-msgid "New node dependency manager, and projects and users predefined and preinstalled to start using Ximdex in a few clicks."
-msgstr "Nouveau gestionnaire de dépendance de noeud, et projets et utilisateurs prédéfinis et préinstallés pour commencer a utiliser Ximdex en quelques clics."
+msgid ""
+"New node dependency manager, and projects and users predefined and preinstalled to start using "
+"Ximdex in a few clicks."
+msgstr ""
+"Nouveau gestionnaire de dépendance de noeud, et projets et utilisateurs prédéfinis et "
+"préinstallés pour commencer a utiliser Ximdex en quelques clics."
 
 #: public_xmd/actions/browser3/template/Smarty/splash/index.tpl:9
 msgid "Easy"
 msgstr "Facile"
 
 #: public_xmd/actions/browser3/template/Smarty/splash/index.tpl:10
-msgid "Easy XML edition with the WYSIWYG editor and easy semantic document tagging. Xedit and Xowl module rock!"
-msgstr "Edition XML facile avec l'éditeur WYSIWYG et étiquetage facile des documents sémantiques. Xedit et le module Xowl rock!"
+msgid ""
+"Easy XML edition with the WYSIWYG editor and easy semantic document tagging. Xedit and Xowl "
+"module rock!"
+msgstr ""
+"Edition XML facile avec l'éditeur WYSIWYG et étiquetage facile des documents sémantiques. Xedit "
+"et le module Xowl rock!"
 
 #: public_xmd/actions/browser3/template/Smarty/splash/index.tpl:13
 msgid "Learn more"
@@ -6795,24 +7030,43 @@ msgid "Installed"
 msgstr "Installé"
 
 #: public_xmd/actions/moduleslist/template/Smarty/modules/ximSYNC.tpl:3
-msgid "manages all the publication processes and file transfers of Ximdex CMS. It's based on a crontab file installed into your operative system"
-msgstr "gère tous les processus de publication et les transferts de fichiers de Ximdex CMS. Il est basé sur un fichier crontab installé dans votre système d'exploitation"
+msgid ""
+"manages all the publication processes and file transfers of Ximdex CMS. It's based on a crontab "
+"file installed into your operative system"
+msgstr ""
+"gère tous les processus de publication et les transferts de fichiers de Ximdex CMS. Il est basé "
+"sur un fichier crontab installé dans votre système d'exploitation"
 
 #: public_xmd/actions/moduleslist/template/Smarty/modules/ximSYNC.tpl:5
 msgid "This module is now part of the Ximdex CMS's core. So you can't disable or uninstall it"
-msgstr "Ce module fait maintenant partie du noyau du CMS Ximdex. Vous ne pouvez donc pas le désactiver ou le désinstaller"
+msgstr ""
+"Ce module fait maintenant partie du noyau du CMS Ximdex. Vous ne pouvez donc pas le désactiver ou "
+"le désinstaller"
 
 #: public_xmd/actions/moduleslist/template/Smarty/modules/ximTOUR.tpl:3
-msgid "enables a small tour through Ximdex CMS interface every time that a user perform a login. This tour could be disable in any moment"
-msgstr "permet un petit tour a travers l'interface Ximdex CMS chaque fois qu'un utilisateur effectue une connexion. Cette visite pourrait être désactivée a tout moment"
+msgid ""
+"enables a small tour through Ximdex CMS interface every time that a user perform a login. This "
+"tour could be disable in any moment"
+msgstr ""
+"permet un petit tour a travers l'interface Ximdex CMS chaque fois qu'un utilisateur effectue une "
+"connexion. Cette visite pourrait être désactivée a tout moment"
 
 #: public_xmd/actions/moduleslist/template/Smarty/modules/ximTOUR.tpl:5
-msgid "It's one of the suggested modules during the installation process and it's based on the Picasso Demo Project to make the tour, so it will install it by default"
-msgstr "C'est l'un des modules suggérés pendant le processus d'installation et il est basé sur le projet de démonstration Picasso pour faire le tour, donc il va l'installer par défaut"
+msgid ""
+"It's one of the suggested modules during the installation process and it's based on the Picasso "
+"Demo Project to make the tour, so it will install it by default"
+msgstr ""
+"C'est l'un des modules suggérés pendant le processus d'installation et il est basé sur le projet "
+"de démonstration Picasso pour faire le tour, donc il va l'installer par défaut"
 
 #: public_xmd/actions/moduleslist/template/Smarty/modules/ximTAGS.tpl:3
-msgid "allows the user to tag his documents on Ximdex CMS. It's fully integrated with our visual XML editor, Xedit. The tags could be semantic or external references to another resources on the Web"
-msgstr "permet a l'utilisateur de marquer ses documents sur Ximdex CMS. Il est entièrement intégré a notre éditeur XML visuel, Xedit. Les tags peuvent être des références sémantiques ou externes a d'autres ressources sur le Web"
+msgid ""
+"allows the user to tag his documents on Ximdex CMS. It's fully integrated with our visual XML "
+"editor, Xedit. The tags could be semantic or external references to another resources on the Web"
+msgstr ""
+"permet a l'utilisateur de marquer ses documents sur Ximdex CMS. Il est entièrement intégré a "
+"notre éditeur XML visuel, Xedit. Les tags peuvent être des références sémantiques ou externes a "
+"d'autres ressources sur le Web"
 
 #: public_xmd/actions/moduleslist/template/Smarty/modules/ximTAGS.tpl:5
 #: public_xmd/actions/moduleslist/template/Smarty/modules/ximIO.tpl:5
@@ -6820,16 +7074,26 @@ msgid "It's one of the suggested modules during the installation process"
 msgstr "C'est l'un des modules suggérés lors du processus d'installation"
 
 #: public_xmd/actions/moduleslist/template/Smarty/modules/Xowl.tpl:3
-msgid "allow the user to find and retrieve external references to resources on the web and recognition of places, people and organizations based on his document's content. It's closely related to ximTAGS module"
-msgstr "permettre a l'utilisateur de trouver et de récupérer des références externes a des ressources sur le Web et de reconnaître des lieux, des personnes et des organisations en fonction du contenu de son document. C'est étroitement lié au module ximTAGS"
+msgid ""
+"allow the user to find and retrieve external references to resources on the web and recognition "
+"of places, people and organizations based on his document's content. It's closely related to "
+"ximTAGS module"
+msgstr ""
+"permettre a l'utilisateur de trouver et de récupérer des références externes a des ressources sur "
+"le Web et de reconnaître des lieux, des personnes et des organisations en fonction du contenu de "
+"son document. C'est étroitement lié au module ximTAGS"
 
 #: public_xmd/actions/moduleslist/template/Smarty/modules/Xowl.tpl:5
 msgid "Ximdex CMS offers this module in a SaaS mode, so you need a proper key to enable it"
-msgstr "Ximdex CMS propose ce module en mode SaaS, vous avez donc besoin d'une clé appropriée pour l'activer"
+msgstr ""
+"Ximdex CMS propose ce module en mode SaaS, vous avez donc besoin d'une clé appropriée pour "
+"l'activer"
 
 #: public_xmd/actions/moduleslist/template/Smarty/modules/ximIO.tpl:3
 msgid "helps Ximdex CMS to export/import data serializing nodes into a single transaction"
-msgstr "aide Ximdex CMS a exporter / importer des données en sérialisant des nœuds en une seule transaction"
+msgstr ""
+"aide Ximdex CMS a exporter / importer des données en sérialisant des nœuds en une seule "
+"transaction"
 
 #: public_xmd/actions/copy/template/Smarty/index.tpl:35
 msgid "This operation is not allowed on the selected destination"
@@ -6960,8 +7224,12 @@ msgid "There aren't any edited files yet"
 msgstr "Il n'y a pas encore de fichiers édités"
 
 #: public_xmd/actions/checkstatus/template/Smarty/index.tpl:35
-msgid "Below are listed all the relevant documents in your system, grouped by state. Only are shown the files that are modified in comparation with its last published version."
-msgstr "Ci-dessous sont répertoriés tous les documents pertinents dans votre système, regroupés par état. Seuls sont affichés les fichiers qui sont modifiés en comparaison avec sadernière version publiée."
+msgid ""
+"Below are listed all the relevant documents in your system, grouped by state. Only are shown the "
+"files that are modified in comparation with its last published version."
+msgstr ""
+"Ci-dessous sont répertoriés tous les documents pertinents dans votre système, regroupés par état. "
+"Seuls sont affichés les fichiers qui sont modifiés en comparaison avec sadernière version publiée."
 
 #: public_xmd/actions/checkstatus/template/Smarty/index.tpl:39
 msgid "Documents in"
@@ -6985,8 +7253,12 @@ msgid "Documents in publication queue"
 msgstr "Documents dans la file d'attente de publication"
 
 #: public_xmd/actions/checkstatus/template/Smarty/index.tpl:117
-msgid "If you want to have a deeper look into the Ximdex CMS publication process, upgrade this status report with <strong>XPublishTools</strong> module"
-msgstr "Si vous voulez approfondir le processus de publication du CMS Ximdex, mettez a niveau ce rapport d'état avec le module <strong>XPublishTools</strong>"
+msgid ""
+"If you want to have a deeper look into the Ximdex CMS publication process, upgrade this status "
+"report with <strong>XPublishTools</strong> module"
+msgstr ""
+"Si vous voulez approfondir le processus de publication du CMS Ximdex, mettez a niveau ce rapport "
+"d'état avec le module <strong>XPublishTools</strong>"
 
 #: public_xmd/actions/createlink/template/Smarty/index.tpl:37
 msgid "Create link"
@@ -7084,7 +7356,8 @@ msgstr "Êtes-vous sûr de vouloir enregistrer les modifications?"
 
 #: public_xmd/actions/edittext/template/Smarty/publishForm.tpl:26
 #: modules/Xdms/actions/collaborative/template/Smarty/publishForm.tpl:26
-msgid "Modification of this template has affected to %1 documents. Would you like to republish them?"
+msgid ""
+"Modification of this template has affected to %1 documents. Would you like to republish them?"
 msgstr "La modification de ce modèle a affecté les documents %1. Aimeriez-vous les republier?"
 
 #: public_xmd/actions/expiredoc/template/Smarty/index.tpl:27
@@ -7109,7 +7382,9 @@ msgstr "Télécharger %1"
 
 #: public_xmd/actions/installer/template/Smarty/index.tpl:2
 msgid "Please, check your database configuration in the /conf/install_params.conf.php file."
-msgstr "Veuillez vérifier la configuration de votre base de données dans le fichier /conf/install_params.conf.php."
+msgstr ""
+"Veuillez vérifier la configuration de votre base de données dans le fichier /conf/install_params."
+"conf.php."
 
 #: public_xmd/actions/installer/template/Smarty/index.tpl:4
 msgid "ERROR: Ximdex is not configured. Please run installer."
@@ -7273,8 +7548,12 @@ msgid "Channel manager"
 msgstr "Gestionnaire de chaine"
 
 #: public_xmd/actions/createchannel/template/Smarty/index.tpl:98
-msgid "Ximdex renderizes documents at the <i>Ximdex</i> local server by default. If your website it's going to be dynamic, then select the <i>Client</i> rederized mode"
-msgstr "Ximdex rend les documents sur le serveur local <i>Ximdex</i> par défaut. Si votre site Web est dynamique, sélectionnez le mode rederisé <i>Client</i>"
+msgid ""
+"Ximdex renderizes documents at the <i>Ximdex</i> local server by default. If your website it's "
+"going to be dynamic, then select the <i>Client</i> rederized mode"
+msgstr ""
+"Ximdex rend les documents sur le serveur local <i>Ximdex</i> par défaut. Si votre site Web est "
+"dynamique, sélectionnez le mode rederisé <i>Client</i>"
 
 #: modules/xBlog/actions/listposts/template/Smarty/index.tpl:30
 msgid "Add new post"
@@ -7457,7 +7736,8 @@ msgstr "Introduire le premier identifiant de noeud:"
 
 #: modules/ximIO/actions/console_wrapper/template/Smarty/export.tpl:39
 msgid "Introduce the exportation name, if you keep it empty, current timestamp will be used:"
-msgstr "Introduisez le nom d'exportation, si vous le laissez vide, l'horodatage actuel sera utilisé:"
+msgstr ""
+"Introduisez le nom d'exportation, si vous le laissez vide, l'horodatage actuel sera utilisé:"
 
 #: modules/ximIO/actions/console_wrapper/template/Smarty/import.tpl:34
 msgid "Select an import file"
@@ -7484,8 +7764,12 @@ msgid "Explanation:"
 msgstr "Explication:"
 
 #: modules/ximIO/actions/console_wrapper/template/Smarty/getImportValues.tpl:50
-msgid "If we copy a ximdoc folder, destination node should be a ximdoc folder, and in this case we should not indicate than first node was generated."
-msgstr "Si nous copions un dossier ximdoc, le noeud de destination doit être un dossier ximdoc, et dans ce cas nous ne devrions pas indiquer que le premier noeud a été généré."
+msgid ""
+"If we copy a ximdoc folder, destination node should be a ximdoc folder, and in this case we "
+"should not indicate than first node was generated."
+msgstr ""
+"Si nous copions un dossier ximdoc, le noeud de destination doit être un dossier ximdoc, et dans "
+"ce cas nous ne devrions pas indiquer que le premier noeud a été généré."
 
 #: modules/ximIO/actions/console_wrapper/template/Smarty/getImportValues.tpl:56
 msgid "Tick if source and destination ximdex are same"
@@ -9004,9 +9288,6 @@ msgstr "Dictionnaire"
 msgid "DicValue"
 msgstr "Valeur du dictionnaire"
 
-msgid "Dependencies"
-msgstr "dépendances"
-
 msgid "Document"
 msgstr "Document"
 
@@ -9572,3 +9853,324 @@ msgstr "ID du noeud:"
 
 msgid "Render type for Web servers"
 msgstr "Type de rendu pour les serveurs Web"
+
+#: conf/notifications.php:35
+#, php-format
+msgid "The section %doc is going to be published."
+msgstr ""
+
+#: public_xmd/actions/createxmlcontainer/Action_createxmlcontainer.class.php:136
+msgid "You must select alt least one language"
+msgstr ""
+
+#: public_xmd/actions/createxmlcontainer/Action_createxmlcontainer.class.php:231
+msgid "Cannot load the node type for "
+msgstr ""
+
+#: public_xmd/actions/edittext/Action_edittext.class.php:129
+msgid "The document which is trying to be edited is a symbolic link"
+msgstr ""
+
+#: public_xmd/actions/expiredoc/Action_expiredoc.class.php:59
+#: public_xmd/actions/expiredoc/Action_expiredoc.class.php:108
+msgid "You can not expire a structured document"
+msgstr ""
+
+#: public_xmd/actions/expiredoc/Action_expiredoc.class.php:167
+#, php-format
+msgid "%s could not sent to expire"
+msgstr ""
+
+#: public_xmd/actions/expiredoc/Action_expiredoc.class.php:169
+#, php-format
+msgid "%s has been successfully sent to expire"
+msgstr ""
+
+#: public_xmd/actions/expiresection/Action_expiresection.class.php:161
+#, php-format
+msgid "%s %s could not sent to expire"
+msgstr ""
+
+#: public_xmd/actions/expiresection/Action_expiresection.class.php:163
+#, php-format
+msgid "%s %s has been successfully sent to expire"
+msgstr ""
+
+#: public_xmd/actions/expiresection/Action_expiresection.class.php:306
+#: public_xmd/actions/publicatesection/Action_publicatesection.class.php:325
+msgid "Ximdex CMS: Published section:"
+msgstr ""
+
+#: public_xmd/actions/expiresection/Action_expiresection.class.php:307
+#: public_xmd/actions/publicatesection/Action_publicatesection.class.php:326
+msgid "has published the section"
+msgstr ""
+
+#: public_xmd/actions/managebatchs/Action_managebatchs.class.php:55
+msgid "You have not access to this report. Consult an administrator"
+msgstr ""
+
+#: public_xmd/actions/metadata/Action_metadata.class.php:73 src/Models/Metadata.php:180
+msgid "The metadata has been successfully added"
+msgstr ""
+
+#: public_xmd/actions/modifyrole/Action_modifyrole.class.php:81
+msgid "Cannot delete old role permissions"
+msgstr ""
+
+#: public_xmd/actions/modifyrole/Action_modifyrole.class.php:88
+msgid "Cannot delete old role actions"
+msgstr ""
+
+#: public_xmd/actions/modifyrole/Action_modifyrole.class.php:98
+msgid "Cannot create a role permission"
+msgstr ""
+
+#: public_xmd/actions/modifyrole/Action_modifyrole.class.php:111
+msgid "Cannot create a role action"
+msgstr ""
+
+#: public_xmd/actions/modifyserver/resources/js/validate.js:172
+msgid "Endpoint"
+msgstr ""
+
+#: public_xmd/actions/replacefile/Action_replacefile.class.php:51
+#: public_xmd/actions/replacefile/Action_replacefile.class.php:82
+msgid "Cannot load a node with ID "
+msgstr ""
+
+#: public_xmd/actions/replacefile/Action_replacefile.class.php:99
+msgid "Cannot replace a file without extension"
+msgstr ""
+
+#: public_xmd/actions/replacefile/Action_replacefile.class.php:103
+msgid "File to replace must be the same type"
+msgstr ""
+
+#: public_xmd/actions/workflow_forward/Action_workflow_forward.class.php:92
+msgid "This node is already in final state."
+msgstr ""
+
+#: public_xmd/actions/workflow_forward/Action_workflow_forward.class.php:168
+#: public_xmd/actions/workflow_forward/Action_workflow_forward.class.php:234
+#: public_xmd/actions/workflow_forward/Action_workflow_forward.class.php:329
+msgid "You can not publish a structured document"
+msgstr ""
+
+#: public_xmd/actions/xmleditor2/model/XmlEditor_KUPU.class.php:584
+#, php-format
+msgid ""
+"Xowl module has not been installed.<br/><br/> If you want to realize the noticeable improvements "
+"that you will obtain with Xowl, a demonstrative video is shown below (%s)<br/><br/>Also, you can "
+"test it at <a target='_blank' href='http://demo.ximdex.com'>demo.ximdex.com</a><br/><br/>"
+msgstr ""
+
+#: public_xmd/actions/xmlsetlink/Action_xmlsetlink.class.php:99
+msgid "This document is already the master language document of "
+msgstr ""
+
+#: public_xmd/actions/xmlsetlink/Action_xmlsetlink.class.php:112
+msgid "Cannot copy the content of target document"
+msgstr ""
+
+#: src/IO/BaseIOInferer.php:288 src/IO/BaseIOInferer.php:293
+msgid "Link category"
+msgstr ""
+
+#: src/IO/BaseIOInferer.php:318
+msgid "HTML layout"
+msgstr ""
+
+#: src/IO/BaseIOInferer.php:323
+msgid "HTML layouts folder"
+msgstr ""
+
+#: src/Models/Node.php:306
+msgid "The node ID is mandatory in order to change the state"
+msgstr ""
+
+#: src/Models/Node.php:311
+#, php-format
+msgid "The state %s does not exist"
+msgstr ""
+
+#: src/Models/Node.php:319
+#, php-format
+msgid "The action %s does not exist"
+msgstr ""
+
+#: src/Models/Node.php:350
+#, php-format
+msgid "Could not retrieve the workflow slaves for node %s"
+msgstr ""
+
+#: src/Models/Node.php:1192
+msgid "Cannot load the fisrt state in create node"
+msgstr ""
+
+#: src/Models/Node.php:1251
+msgid "Error generating the node ID"
+msgstr ""
+
+#: /public_xmd/actions/infonode/template/Smarty/index.tpl:31
+msgid "General info"
+msgstr ""
+
+#: /public_xmd/actions/infonode/template/Smarty/index.tpl:84
+msgid "Properties info"
+msgstr ""
+
+#: /public_xmd/actions/infonode/template/Smarty/index.tpl:108
+msgid "Limited to last"
+msgstr ""
+
+#: /public_xmd/actions/xedit/template/Smarty/index.tpl:7
+msgid "There is not a URL for the HTML editor in the system configuration"
+msgstr ""
+
+#: /public_xmd/actions/xedit/template/Smarty/index.tpl:10
+msgid "The HTML editor is not enabled in the system configuration"
+msgstr ""
+
+#: /public_xmd/actions/modifystatesrole/template/Smarty/index.tpl:35
+msgid "#/workflow.description/#"
+msgstr ""
+
+#: /public_xmd/actions/addfoldernode/template/Smarty/addProject.tpl:80
+msgid "Available themes"
+msgstr ""
+
+#: /public_xmd/actions/workflow_forward/template/Smarty/index.tpl:109
+msgid ""
+"Use drafts for linked documents instead of already published \n"
+"\t\t\t\t\t\t\t\t\t\t\t\tversions."
+msgstr ""
+
+#: /public_xmd/actions/workflow_forward/template/Smarty/index.tpl:130
+#: /public_xmd/actions/publicatesection/template/Smarty/index.tpl:142
+msgid "Use cache for structured documents"
+msgstr ""
+
+#: /public_xmd/actions/workflow_forward/template/Smarty/index.tpl:200
+#: /public_xmd/actions/expiresection/template/Smarty/index.tpl:189
+#: /public_xmd/actions/expiredoc/template/Smarty/index.tpl:154
+#: /public_xmd/actions/publicatesection/template/Smarty/index.tpl:208
+msgid "No Expire"
+msgstr ""
+
+#: /public_xmd/actions/components/title_Description.tpl:27
+msgid "Node name"
+msgstr ""
+
+#: /public_xmd/actions/manageproperties/template/Smarty/index.tpl:35
+msgid "Default server language"
+msgstr ""
+
+#: /public_xmd/actions/modifyserver/template/Smarty/index.tpl:118
+msgid "Only to change actual one"
+msgstr ""
+
+#: /public_xmd/actions/modifyserver/template/Smarty/index.tpl:124
+msgid "Token"
+msgstr ""
+
+#: /public_xmd/actions/createchannel/template/Smarty/index.tpl:55
+#: /public_xmd/actions/modifychannel/template/Smarty/index.tpl:57
+msgid "Web"
+msgstr ""
+
+#: /public_xmd/actions/createchannel/template/Smarty/index.tpl:72
+#: /public_xmd/actions/modifychannel/template/Smarty/index.tpl:74
+msgid "Render type for selected output"
+msgstr ""
+
+#: /public_xmd/actions/createchannel/template/Smarty/index.tpl:98
+#: /public_xmd/actions/modifychannel/template/Smarty/index.tpl:104
+msgid "Code language for selected render type"
+msgstr ""
+
+#: /public_xmd/actions/expiresection/template/Smarty/index.tpl:44
+#: /public_xmd/actions/expiredoc/template/Smarty/index.tpl:44
+msgid "Expiration options"
+msgstr ""
+
+#: /public_xmd/actions/expiresection/template/Smarty/index.tpl:51
+msgid "Expire just"
+msgstr ""
+
+#: /public_xmd/actions/expiresection/template/Smarty/index.tpl:69
+#: /public_xmd/actions/expiredoc/template/Smarty/index.tpl:69
+msgid "Expire until a certain depth level"
+msgstr ""
+
+#: /public_xmd/actions/expiresection/template/Smarty/index.tpl:94
+#: /public_xmd/actions/publicatesection/template/Smarty/index.tpl:105
+msgid "Use drafts instead of already published versions."
+msgstr ""
+
+#: /public_xmd/actions/expiresection/template/Smarty/index.tpl:104
+msgid "Force expiration."
+msgstr ""
+
+#: /public_xmd/actions/expiresection/template/Smarty/index.tpl:116
+msgid "Node type to expire"
+msgstr ""
+
+#: /public_xmd/actions/expiresection/template/Smarty/index.tpl:192
+#: /public_xmd/actions/publicatesection/template/Smarty/index.tpl:211
+msgid "nodes to publish"
+msgstr ""
+
+#: /public_xmd/actions/moduleslist/template/Smarty/modules/Xowl.tpl:3
+msgid ""
+"allow the user to find and retrieve external references to resources on the web and recognition "
+"of places, people and organizations based on his document's content"
+msgstr ""
+
+#: /public_xmd/actions/xmlsetlink/template/Smarty/index.tpl:52
+msgid "Master document"
+msgstr ""
+
+#: /public_xmd/actions/xmlsetlink/template/Smarty/index.tpl:54
+msgid "This document will be linked to the following master language document"
+msgstr ""
+
+#: /public_xmd/actions/xmlsetlink/template/Smarty/index.tpl:58
+msgid "Publishing options"
+msgstr ""
+
+#: /public_xmd/actions/xmlsetlink/template/Smarty/index.tpl:63
+msgid "Share the master document workflow"
+msgstr ""
+
+#: /public_xmd/actions/modifystates/template/Smarty/index.tpl:56
+msgid "Flecha"
+msgstr ""
+
+#: /public_xmd/actions/expiredoc/template/Smarty/index.tpl:51
+msgid "Expire only the current file."
+msgstr ""
+
+#: /public_xmd/actions/expiredoc/template/Smarty/index.tpl:60
+msgid "Expire all linked files."
+msgstr ""
+
+#: /public_xmd/actions/replacefile/template/Smarty/index.tpl:13
+msgid "Select the new file to replace"
+msgstr ""
+
+#: /public_xmd/actions/publicatesection/template/Smarty/index.tpl:115
+msgid "Force republish."
+msgstr ""
+
+#: /public_xmd/actions/publicatesection/template/Smarty/index.tpl:126
+msgid "Node type to publish"
+msgstr ""
+
+#: /public_xmd/actions/createxmlcontainer/template/Smarty/index.tpl:68
+msgid "You must create one in project <em>layout folder</em> or upload a new one"
+msgstr ""
+
+#: /public_xmd/src/Widgets/tagsinput/template/tagsinput.tpl:61
+msgid "Suggested Semantic Tags"
+msgstr ""

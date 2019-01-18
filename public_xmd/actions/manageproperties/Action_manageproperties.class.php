@@ -290,7 +290,7 @@ class Action_manageproperties extends ActionAbstract
                             if (isset($applyResults['Language']) && $applyResults['Language'] !== false 
                                 && $applyResults['Language']['nodes'] > 0) {
                                 $message[] = sprintf(
-                                    _('A total of %S language versions have been recursively created.'),
+                                    _('A total of %s language versions have been recursively created.'),
                                     count($applyResults['Language']['values'])
                                 );
                             }
