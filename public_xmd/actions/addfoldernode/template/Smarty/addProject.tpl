@@ -1,5 +1,5 @@
 {**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -25,14 +25,12 @@
 
 <form method="post" id="print_form" action="{$action_url}">
     <input name="theme" type="hidden" />
-
-   {include file="actions/components/title_Description.tpl"}
+    {include file="actions/components/title_Description.tpl"}
     {if {empty($langs)}}
         <div class="message-warning message">
             <p>{t}There aren't any created languages. You should create a new one{/t}.</p>
         </div>
     {/if}
-
     <div class="action_content">
         <div class="row tarjeta">
             <div class="small-12 columns title_tarjeta">
@@ -48,7 +46,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="small-12 columns">
                 <label class="label_title label_general">{t}Available channels{/t} *</label>
                 {foreach from=$channels key=index item=channelData}
@@ -62,7 +59,6 @@
             	{/foreach}
             	<div class="sep"></div>
             </div>
-            
             <div class="small-12 columns">
                 <label class="label_title label_general">{t}Available languages{/t} *</label>
                 {foreach from=$langs key=index item=languageData}
@@ -76,7 +72,6 @@
             	{/foreach}
             	<div class="sep"></div>
             </div>
-            
            	<label class="label_title label_general">{t}Available themes{/t}</label>
             <div class="row themes">
             	{$i = 0}
@@ -94,20 +89,18 @@
                                 </div>
                             </div>
 
-                            <p class="title">{$theme.title}</p>
-                            <p class="type">{$theme.description}</p>
+                            <p class="title">{t}{$theme.title}{/t}</p>
+                            <p class="type">{t}{$theme.description}{/t}</p>
                         </div>
                     </div>
                     {$i = $i + 1}
                 {/foreach}
             </div>
-            
             <div class="small-12 columns">
                 <fieldset class="buttons-form ">
-                    {button label="{t}Create project{/t}" class='validate btn main_action' }
+                    {button label="{t}Create project{/t}" class='validate btn main_action'}
                 </fieldset>
             </div>
 		</div>
     </div>
-
 </form>

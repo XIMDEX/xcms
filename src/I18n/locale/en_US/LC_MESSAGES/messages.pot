@@ -25,8 +25,8 @@ msgid ""
 msgstr ""
 
 "Project-Id-Version: Ximdex 4.0\n"
-"POT-Creation-Date: 2019-01-18 10:43+0100\n"
-"PO-Revision-Date: 2019-01-18 09:11+0100\n"
+"POT-Creation-Date: 2019-01-21 11:36+0100\n"
+"PO-Revision-Date: 2019-01-21 11:36+0100\n"
 "Last-Translator: \n"
 "Language-Team: ajlucena@ximdex.com\n"
 "MIME-Version: 1.0\n"
@@ -37,6 +37,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "Language: en\n"
 "X-Poedit-SourceCharset: UTF-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "X-Poedit-SearchPath-0: api\n"
 "X-Poedit-SearchPath-1: conf\n"
 "X-Poedit-SearchPath-2: bin\n"
@@ -44,7 +45,6 @@ msgstr ""
 "X-Poedit-SearchPath-4: public_xmd\n"
 "X-Poedit-SearchPath-5: src\n"
 "X-Poedit-SearchPathExcluded-0: public_xmd/vendors\n"
-"Content-Type: text/plain; charset=UTF-8\n"
 
 #: conf/notifications.php:34
 #, php-format
@@ -2214,7 +2214,6 @@ msgstr ""
 msgid "Cannot replace a file without extension"
 msgstr ""
 
-#: public_xmd/actions/replacefile/Action_replacefile.class.php:103
 msgid "File to replace must be the same type"
 msgstr ""
 
@@ -2460,7 +2459,6 @@ msgstr ""
 msgid "Edit file with Xedit"
 msgstr ""
 
-#: public_xmd/actions/welcome/resources/js/tour.js:87
 msgid "Edit XML document"
 msgstr ""
 
@@ -3470,10 +3468,6 @@ msgid ""
 "again in order to continue working."
 msgstr ""
 
-#: public_xmd/src/Widgets/browserwindow/js/controlcenter.js:42
-#: public_xmd/src/Widgets/browserwindow/js/controlcenter.js:49
-#: public_xmd/src/Widgets/browserwindow/js/controlcenter.js:56
-#: public_xmd/src/Widgets/browserwindow/js/controlcenter.js:61
 msgid "Control center"
 msgstr ""
 
@@ -3624,8 +3618,6 @@ msgstr ""
 msgid "Move node"
 msgstr ""
 
-#: public_xmd/src/Widgets/treeview/js/treeview.js:338
-#: public_xmd/src/Widgets/treeview/js/treeview.js:339
 msgid "Add files"
 msgstr ""
 
@@ -4473,7 +4465,6 @@ msgstr ""
 msgid "Properties info"
 msgstr ""
 
-#: /public_xmd/actions/infonode/template/Smarty/index.tpl:108
 msgid "Version manager"
 msgstr ""
 
@@ -4541,10 +4532,7 @@ msgid ""
 "upgrade this status report with <strong>XPublishTools</strong> module"
 msgstr ""
 
-#: /public_xmd/actions/xedit/template/Smarty/linked_document.tpl:2
-#: /public_xmd/actions/xmleditor2/template/Smarty/linked_document.tpl:2
-#: /public_xmd/actions/edittext/template/Smarty/linked_document.tpl:2
-#: /modules/Xdms/actions/collaborative/template/Smarty/linked_document.tpl:2
+#: States table
 msgid "Edition"
 msgstr ""
 
@@ -4603,9 +4591,6 @@ msgstr ""
 msgid "Role in general group"
 msgstr ""
 
-#: /public_xmd/actions/modifyuser/template/Smarty/index.tpl:73
-#: /public_xmd/actions/browser3/template/Smarty/index.tpl:78
-#: /public_xmd/actions/renamenode/template/Smarty/index.tpl:71
 msgid "Language"
 msgstr ""
 
@@ -5421,7 +5406,6 @@ msgstr ""
 msgid "There aren't any created languages. You should create a new one"
 msgstr ""
 
-#: /public_xmd/actions/addfoldernode/template/Smarty/addProject.tpl:39
 msgid "Add project"
 msgstr ""
 
@@ -5534,7 +5518,6 @@ msgstr ""
 msgid "The document has been moved to the next state."
 msgstr ""
 
-#: /public_xmd/actions/workflow_forward/template/Smarty/linked_document.tpl:2
 msgid "Publication"
 msgstr ""
 
@@ -5873,7 +5856,6 @@ msgstr ""
 msgid "New role description"
 msgstr ""
 
-#: /public_xmd/actions/modifyserver/template/Smarty/index.tpl:35
 msgid "Manage servers"
 msgstr ""
 
@@ -6418,7 +6400,6 @@ msgstr ""
 msgid "Edit in XML mode"
 msgstr ""
 
-#: /public_xmd/actions/welcome/template/Smarty/index.tpl:69
 msgid "Edit in text mode"
 msgstr ""
 
@@ -6460,7 +6441,6 @@ msgstr ""
 msgid "Contact us"
 msgstr ""
 
-#: /public_xmd/actions/managefolders/template/Smarty/index.tpl:32
 msgid "Configure section"
 msgstr ""
 
@@ -6488,12 +6468,9 @@ msgstr ""
 msgid "Default channel"
 msgstr ""
 
-#: /public_xmd/actions/replacefile/template/Smarty/index.tpl:7
-#: /public_xmd/actions/replacefile/template/Smarty/index.tpl:21
 msgid "Replace file"
 msgstr ""
 
-#: /public_xmd/actions/replacefile/template/Smarty/index.tpl:13
 msgid "Select the new file to replace"
 msgstr ""
 
@@ -6513,7 +6490,6 @@ msgstr ""
 msgid "Add new HTML document"
 msgstr ""
 
-#: /public_xmd/actions/createxmlcontainer/template/Smarty/index.tpl:36
 msgid "Add new XML document"
 msgstr ""
 
@@ -6688,7 +6664,6 @@ msgstr ""
 msgid "Enter a query"
 msgstr ""
 
-#: /modules/xBlog/actions/listposts/template/Smarty/index.tpl:64
 msgid "Edit"
 msgstr ""
 
@@ -6796,4 +6771,1461 @@ msgstr ""
 
 #: /modules/Xdms/actions/collaborative/template/Smarty/index.tpl:28
 msgid "Editing file"
+msgstr ""
+
+#: Actions table
+msgid "New file"
+msgstr ""
+
+msgid "Add empty file"
+msgstr ""
+
+msgid "Add empty stylesheet"
+msgstr ""
+
+msgid "Add empty XSL template"
+msgstr ""
+
+msgid "Add a new empty schema"
+msgstr ""
+
+msgid "Create a new empty file"
+msgstr ""
+
+msgid "Modify user data"
+msgstr ""
+
+msgid "Add new XML"
+msgstr ""
+
+msgid "Expire section"
+msgstr ""
+
+msgid "Delete server"
+msgstr ""
+
+msgid "Publish section"
+msgstr ""
+
+msgid "Delete link"
+msgstr ""
+
+msgid "Add new action"
+msgstr ""
+
+msgid "Add new user"
+msgstr ""
+
+msgid "Create a new Ximdex user"
+msgstr ""
+
+msgid "Add new PTD template"
+msgstr ""
+
+msgid "Change user data"
+msgstr ""
+
+msgid "Remove user"
+msgstr ""
+
+msgid "Remove an user from system"
+msgstr ""
+
+msgid "Manage groups"
+msgstr ""
+
+msgid ""
+"Enroll, disenroll, and change user role in groups where he/she belongs to"
+msgstr ""
+
+msgid "Modify role"
+msgstr ""
+
+msgid "Manage role attributions"
+msgstr ""
+
+msgid "Add new group"
+msgstr ""
+
+msgid "Create a new group"
+msgstr ""
+
+msgid "Modify node type"
+msgstr ""
+
+msgid "Modify a node type"
+msgstr ""
+
+msgid "Add node type"
+msgstr ""
+
+msgid "Add a node type"
+msgstr ""
+
+msgid "Add new role"
+msgstr ""
+
+msgid "Create a new role"
+msgstr ""
+
+msgid "Add new project"
+msgstr ""
+
+msgid "Create a new node with project type"
+msgstr ""
+
+msgid "Add new server"
+msgstr ""
+
+msgid "Create a new server"
+msgstr ""
+
+msgid "Add new section"
+msgstr ""
+
+msgid "Create a new section"
+msgstr ""
+
+msgid "Add new image folder"
+msgstr ""
+
+msgid "Create a new image folder"
+msgstr ""
+
+msgid "Section properties"
+msgstr ""
+
+msgid "Modify folder names"
+msgstr ""
+
+msgid "Add XML folder"
+msgstr ""
+
+msgid "Create a new XML folder"
+msgstr ""
+
+msgid "Add ximclude folder"
+msgstr ""
+
+msgid "Create a new import folder"
+msgstr ""
+
+msgid "Add common folder"
+msgstr ""
+
+msgid "Create a new common folder"
+msgstr ""
+
+msgid "Add CSS folder"
+msgstr ""
+
+msgid "Create a new CSS folder"
+msgstr ""
+
+msgid "Add JS folder"
+msgstr ""
+
+msgid "Create a new JS folder"
+msgstr ""
+
+msgid "Add template folder"
+msgstr ""
+
+msgid "Create a new template folder"
+msgstr ""
+
+msgid "Change section name"
+msgstr ""
+
+msgid "Change a section name"
+msgstr ""
+
+msgid "Change project name"
+msgstr ""
+
+msgid "Change a project name"
+msgstr ""
+
+msgid "Change server name"
+msgstr ""
+
+msgid "Change a server name"
+msgstr ""
+
+msgid "Change node name"
+msgstr ""
+
+msgid "Change name of selected folder"
+msgstr ""
+
+msgid "Change folder name"
+msgstr ""
+
+msgid "Delete project"
+msgstr ""
+
+msgid "Delete a project"
+msgstr ""
+
+msgid "Delete a server"
+msgstr ""
+
+msgid "Delete section"
+msgstr ""
+
+msgid "Delete folder"
+msgstr ""
+
+msgid "Delete selected folder"
+msgstr ""
+
+msgid "Delete a node"
+msgstr ""
+
+msgid "Add new HTML5 document"
+msgstr ""
+
+msgid "Create a new structured document in several languages"
+msgstr ""
+
+msgid "Delete group"
+msgstr ""
+
+msgid "Delete selected group"
+msgstr ""
+
+msgid "Add new language"
+msgstr ""
+
+msgid "Add a new language"
+msgstr ""
+
+msgid "Add a document with different language"
+msgstr ""
+
+msgid "Manage workflow"
+msgstr ""
+
+msgid "Add a new status to the workflow"
+msgstr ""
+
+msgid "Add new channel"
+msgstr ""
+
+msgid "Add a new channel to Ximdex"
+msgstr ""
+
+msgid "Associated groups"
+msgstr ""
+
+msgid "Manage associations of groups with this node"
+msgstr ""
+
+msgid "Download selected file"
+msgstr ""
+
+msgid "Download image"
+msgstr ""
+
+msgid "Download an image to a local hard disk"
+msgstr ""
+
+msgid "Download the file to a local hard disk"
+msgstr ""
+
+msgid "Image preview"
+msgstr ""
+
+msgid "Preview an image"
+msgstr ""
+
+msgid "Add new style sheet"
+msgstr ""
+
+msgid "Add a new style sheet to the server"
+msgstr ""
+
+msgid "Add new image"
+msgstr ""
+
+msgid "Add a new image to the server"
+msgstr ""
+
+msgid "Add text file"
+msgstr ""
+
+msgid "Add a new text file to import"
+msgstr ""
+
+msgid "Add a new HTML file"
+msgstr ""
+
+msgid "Add a HTML file"
+msgstr ""
+
+msgid "Change name of XML document"
+msgstr ""
+
+msgid "Change the document name and all its language versions"
+msgstr ""
+
+msgid "Add new file"
+msgstr ""
+
+msgid "Add a new text file to common"
+msgstr ""
+
+msgid "Add new text file"
+msgstr ""
+
+msgid "Add a new text file to server"
+msgstr ""
+
+msgid "Delete XML container"
+msgstr ""
+
+msgid "Edit content of XML document"
+msgstr ""
+
+msgid "Delete XML document in all its languages"
+msgstr ""
+
+msgid "Change file name on import folder"
+msgstr ""
+
+msgid "Delete action"
+msgstr ""
+
+msgid "Delete the action"
+msgstr ""
+
+msgid "And new PTD template"
+msgstr ""
+
+msgid "Add a new transformation template to the directory"
+msgstr ""
+
+msgid "Add new editor template"
+msgstr ""
+
+msgid "Add a new view template and its default view"
+msgstr ""
+
+msgid "Delete template"
+msgstr ""
+
+msgid "Delete templates"
+msgstr ""
+
+msgid "Delete selected template"
+msgstr ""
+
+msgid "Delete selected templates"
+msgstr ""
+
+msgid "Modify workflow states"
+msgstr ""
+
+msgid "Modify associated status with this role"
+msgstr ""
+
+msgid "Modify associated roles"
+msgstr ""
+
+msgid "Modify associated roles with this status"
+msgstr ""
+
+msgid "Add new template image"
+msgstr ""
+
+msgid "Add an image for ED templates"
+msgstr ""
+
+msgid "Change name of selected file"
+msgstr ""
+
+msgid "Change image name"
+msgstr ""
+
+msgid "Change file name"
+msgstr ""
+
+msgid "Delete image"
+msgstr ""
+
+msgid "Delete an image"
+msgstr ""
+
+msgid "Delete file of import folder"
+msgstr ""
+
+msgid "Delete a section"
+msgstr ""
+
+msgid "Permits"
+msgstr ""
+
+msgid "Translate name"
+msgstr ""
+
+msgid "Change translations of name"
+msgstr ""
+
+msgid "Add new link subfolder"
+msgstr ""
+
+msgid "Create a new link subfolder"
+msgstr ""
+
+msgid "Add new external link"
+msgstr ""
+
+msgid "Create a new external link"
+msgstr ""
+
+msgid "Edit file"
+msgstr ""
+
+msgid "Edit content of text document"
+msgstr ""
+
+msgid "Channel properties"
+msgstr ""
+
+msgid "Modify channel properties"
+msgstr ""
+
+msgid "Group properties"
+msgstr ""
+
+msgid "Modify group properties"
+msgstr ""
+
+msgid "Modify data of a language"
+msgstr ""
+
+msgid "Move to next state"
+msgstr ""
+
+msgid "Move to the next state"
+msgstr ""
+
+msgid "Move to previous state"
+msgstr ""
+
+msgid "Move to the previous state"
+msgstr ""
+
+msgid "Version repository"
+msgstr ""
+
+msgid "Change users"
+msgstr ""
+
+msgid "Modify list of users that integrate this group"
+msgstr ""
+
+msgid "Delete channel"
+msgstr ""
+
+msgid "Delete a channel if it has not associated documents"
+msgstr ""
+
+msgid "Delete a language from the system"
+msgstr ""
+
+msgid "Modify properties of external link"
+msgstr ""
+
+msgid "Modify properties"
+msgstr ""
+
+msgid "Delete role"
+msgstr ""
+
+msgid "Delete a selected role if it is not in use"
+msgstr ""
+
+msgid ""
+"Delete a state if it is not an initial or final one and it is not in use"
+msgstr ""
+
+msgid "Change template name"
+msgstr ""
+
+msgid "Download template"
+msgstr ""
+
+msgid "Download a template"
+msgstr ""
+
+msgid "Edit template"
+msgstr ""
+
+msgid "Edit a template"
+msgstr ""
+
+msgid "Download selected template"
+msgstr ""
+
+msgid "Delete selected link"
+msgstr ""
+
+msgid "Modify view template"
+msgstr ""
+
+msgid "Modify template for all documents of the directory"
+msgstr ""
+
+msgid "Modify connection data with the production environment"
+msgstr ""
+
+msgid "Move a text document to the next state"
+msgstr ""
+
+msgid "Move a text document to the previous state"
+msgstr ""
+
+msgid "Delete document"
+msgstr ""
+
+msgid "Delete selected XML document"
+msgstr ""
+
+msgid "Symbolic link"
+msgstr ""
+
+msgid "Modify document which borrows the content"
+msgstr ""
+
+msgid "Edit content of a structured document at a low-level"
+msgstr ""
+
+msgid "Add new ximlet folder"
+msgstr ""
+
+msgid "Create a new ximlet folder"
+msgstr ""
+
+msgid "Add new ximlet"
+msgstr ""
+
+msgid "Manage version repository"
+msgstr ""
+
+msgid "Add a new language to ximlet"
+msgstr ""
+
+msgid "Delete ximlet"
+msgstr ""
+
+msgid "Delete a ximlet permanently from system"
+msgstr ""
+
+msgid "Change ximlet name"
+msgstr ""
+
+msgid "Edit ximlet"
+msgstr ""
+
+msgid "Modify content of a ximlet"
+msgstr ""
+
+msgid "Delete a ximlet and all its dependencies"
+msgstr ""
+
+msgid "Modify the ximlet which borrows the content"
+msgstr ""
+
+msgid "Edit ximlet in text mode"
+msgstr ""
+
+msgid "Replace image"
+msgstr ""
+
+msgid "Replace an existing image updating version history"
+msgstr ""
+
+msgid "Move a node"
+msgstr ""
+
+msgid "Associate a ximlet with a section"
+msgstr ""
+
+msgid "Delete relation"
+msgstr ""
+
+msgid "Delete a ximSir relation"
+msgstr ""
+
+msgid "Replace a file"
+msgstr ""
+
+msgid "Add images"
+msgstr ""
+
+msgid "Add an image set to the server"
+msgstr ""
+
+msgid "Add PTD templates"
+msgstr ""
+
+msgid "Add a set of PTD templates to the server"
+msgstr ""
+
+msgid "Add a set of files to the server"
+msgstr ""
+
+msgid "Add style sheets"
+msgstr ""
+
+msgid "Add a set of style sheets to the server"
+msgstr ""
+
+msgid "Add new text files"
+msgstr ""
+
+msgid "Add a set of text files to import"
+msgstr ""
+
+msgid "Associate ximlet with server"
+msgstr ""
+
+msgid "Associate a ximlet with a server"
+msgstr ""
+
+msgid "Publish a section massively"
+msgstr ""
+
+msgid "Expire session"
+msgstr ""
+
+msgid "Expire a session"
+msgstr ""
+
+msgid "Delete HTML file"
+msgstr ""
+
+msgid "Move file"
+msgstr ""
+
+msgid "Add HTML file"
+msgstr ""
+
+msgid "Add HTML files"
+msgstr ""
+
+msgid "Add multiple HTML files"
+msgstr ""
+
+msgid "Export"
+msgstr ""
+
+msgid "Import"
+msgstr ""
+
+msgid "Export all projects"
+msgstr ""
+
+msgid "Export a complete project"
+msgstr ""
+
+msgid "Export a ximlink"
+msgstr ""
+
+msgid "Export a link folder"
+msgstr ""
+
+msgid "Export a complete common folder"
+msgstr ""
+
+msgid "Export a common subfolder"
+msgstr ""
+
+msgid "Export a complete CSS folder"
+msgstr ""
+
+msgid "Export a CSS subfolder"
+msgstr ""
+
+msgid "Export a complete JS folder"
+msgstr ""
+
+msgid "Export a JS subfolder"
+msgstr ""
+
+msgid "Export a complete image folder"
+msgstr ""
+
+msgid "Export an image subfolder"
+msgstr ""
+
+msgid "Export a complete ximclude folder"
+msgstr ""
+
+msgid "Export a ximclude subfolder"
+msgstr ""
+
+msgid "Export a complete ximdoc folder"
+msgstr ""
+
+msgid "Export a XML container"
+msgstr ""
+
+msgid "Export a complete ximlet folder"
+msgstr ""
+
+msgid "Export a ximlet subfolder"
+msgstr ""
+
+msgid "Export a ximlet container"
+msgstr ""
+
+msgid "Export a complete server"
+msgstr ""
+
+msgid "Export a complete section"
+msgstr ""
+
+msgid "Export a complete ximpvd"
+msgstr ""
+
+msgid "Export a complete ximptd"
+msgstr ""
+
+msgid "Export a template subfolder"
+msgstr ""
+
+msgid "Import all projects"
+msgstr ""
+
+msgid "Import a complete project"
+msgstr ""
+
+msgid "Import a ximlink"
+msgstr ""
+
+msgid "Import a link folder"
+msgstr ""
+
+msgid "Import a complete common folder"
+msgstr ""
+
+msgid "Import a common subfolder"
+msgstr ""
+
+msgid "Import a complete CSS folder"
+msgstr ""
+
+msgid "Import a CSS subfolder"
+msgstr ""
+
+msgid "Import a complete JS folder"
+msgstr ""
+
+msgid "Import a JS subfolder"
+msgstr ""
+
+msgid "Import a complete image folder"
+msgstr ""
+
+msgid "Import an image subfolder"
+msgstr ""
+
+msgid "Import a complete ximclude folder"
+msgstr ""
+
+msgid "Import a ximclude subfolder"
+msgstr ""
+
+msgid "Import a complete ximdoc folder"
+msgstr ""
+
+msgid "Import a XML container"
+msgstr ""
+
+msgid "Import a complete ximlet folder"
+msgstr ""
+
+msgid "Import a ximlet subfolder"
+msgstr ""
+
+msgid "Import a ximlet container"
+msgstr ""
+
+msgid "Import a complete server"
+msgstr ""
+
+msgid "Import a complete section"
+msgstr ""
+
+msgid "Import a complete ximpvd"
+msgstr ""
+
+msgid "Import a complete ximptd"
+msgstr ""
+
+msgid "Import a template subfolder"
+msgstr ""
+
+msgid "Copy a complete project"
+msgstr ""
+
+msgid "Copy a ximlink"
+msgstr ""
+
+msgid "Copy a link folder"
+msgstr ""
+
+msgid "Copy a complete common folder"
+msgstr ""
+
+msgid "Copy a common subfolder"
+msgstr ""
+
+msgid "Copy a complete CSS folder"
+msgstr ""
+
+msgid "Copy a CSS subfolder"
+msgstr ""
+
+msgid "Copy a complete JS folder"
+msgstr ""
+
+msgid "Copy a JS subfolder"
+msgstr ""
+
+msgid "Copy a complete image folder"
+msgstr ""
+
+msgid "Copy a image folder"
+msgstr ""
+
+msgid "Copy a complete ximclude folder"
+msgstr ""
+
+msgid "Copy a ximclude subfolder"
+msgstr ""
+
+msgid "Copy a complete ximdoc folder"
+msgstr ""
+
+msgid "Copy a XML container"
+msgstr ""
+
+msgid "Copy a complete ximlet folder"
+msgstr ""
+
+msgid "Copy a ximlet subfolder"
+msgstr ""
+
+msgid "Copy a ximlet container"
+msgstr ""
+
+msgid "Copy a link"
+msgstr ""
+
+msgid "Copy a ximlet"
+msgstr ""
+
+msgid "Copy a XML"
+msgstr ""
+
+msgid "Copy a complete server"
+msgstr ""
+
+msgid "Copy a complete section"
+msgstr ""
+
+msgid "Copy a complete ximpvd"
+msgstr ""
+
+msgid "Copy a complete ximptd"
+msgstr ""
+
+msgid "Copy a template subfolder"
+msgstr ""
+
+msgid "Copy a template"
+msgstr ""
+
+msgid "Copy a view template"
+msgstr ""
+
+msgid "Copy a style sheet"
+msgstr ""
+
+msgid "Copy a text file"
+msgstr ""
+
+msgid "Copy a image file"
+msgstr ""
+
+msgid "Copy a binary file"
+msgstr ""
+
+msgid "Publish documents associated with a ximlet"
+msgstr ""
+
+msgid "Preview of the document"
+msgstr ""
+
+msgid "Copy a image to another destination"
+msgstr ""
+
+msgid "Copy a image subfolder to another destination"
+msgstr ""
+
+msgid "Copy a image folder to another destination"
+msgstr ""
+
+msgid "Copy a server to another destination"
+msgstr ""
+
+msgid "Copy a ximdoc folder to another destination"
+msgstr ""
+
+msgid "Copy a ximclude folder to another destination"
+msgstr ""
+
+msgid "Copy a ximclude subfolder to another destination"
+msgstr ""
+
+msgid "Copy a common folder to another destination"
+msgstr ""
+
+msgid "Copy a common subfolder to another destination"
+msgstr ""
+
+msgid "Copy a CSS folder to another destination"
+msgstr ""
+
+msgid "Copy a CSS subfolder to another destination"
+msgstr ""
+
+msgid "Copy a JS folder to another destination"
+msgstr ""
+
+msgid "Copy a JS subfolder to another destination"
+msgstr ""
+
+msgid "Copy a ximptd folder to another destination"
+msgstr ""
+
+msgid "Copy a CSS document to another destination"
+msgstr ""
+
+msgid "Copy a document container to another destination"
+msgstr ""
+
+msgid "Copy a XML document to another destination"
+msgstr ""
+
+msgid "Copy a text document to another destination"
+msgstr ""
+
+msgid "Copy a binary document to another destination"
+msgstr ""
+
+msgid "Copy a link subfolder to another destination"
+msgstr ""
+
+msgid "Copy a link to another destination"
+msgstr ""
+
+msgid "Copy a ximlink folder to another destination"
+msgstr ""
+
+msgid "Copy a ximlet folder to another destination"
+msgstr ""
+
+msgid "Copy a ximlet subfolder to another destination"
+msgstr ""
+
+msgid "Copy a container of ximlet documents to another destination"
+msgstr ""
+
+msgid "Copy a ximlet document to another destination"
+msgstr ""
+
+msgid "Copy a HTML document to another destination"
+msgstr ""
+
+msgid "Copy a section to another destination"
+msgstr ""
+
+msgid "Copy a ximpvd folder to another destination"
+msgstr ""
+
+msgid "Copy a PVD template to another destination"
+msgstr ""
+
+msgid "Ximsearch"
+msgstr ""
+
+msgid "Edit with Xedit"
+msgstr ""
+
+msgid "Edit content of XML document with Xedit"
+msgstr ""
+
+msgid "Manage associations"
+msgstr ""
+
+msgid "Manage node associations with a ximlet"
+msgstr ""
+
+msgid "Associate view templates with a section"
+msgstr ""
+
+msgid "Associate schema with a section"
+msgstr ""
+
+msgid "Associate schema with a project"
+msgstr ""
+
+msgid "Associate view templates with a project"
+msgstr ""
+
+msgid "Action report"
+msgstr ""
+
+msgid "Show a report of actions"
+msgstr ""
+
+msgid "Add a new workflow"
+msgstr ""
+
+msgid "Edit RNG"
+msgstr ""
+
+msgid "Edit RNG schema"
+msgstr ""
+
+msgid "Edit RNG visually"
+msgstr ""
+
+msgid "Edit content of RNG template visually"
+msgstr ""
+
+msgid "Delete XSL template"
+msgstr ""
+
+msgid "Delete a XSL template"
+msgstr ""
+
+msgid "Edit XSL template"
+msgstr ""
+
+msgid "Edit a XSL template"
+msgstr ""
+
+msgid "Modify heritable properties"
+msgstr ""
+
+msgid "Modify heritable properties of a project"
+msgstr ""
+
+msgid "Modify heritable properties of a server"
+msgstr ""
+
+msgid "Modify heritable properties of a section"
+msgstr ""
+
+msgid "Modify heritable properties of a ximdoc folder"
+msgstr ""
+
+msgid "Modify heritable properties of a document"
+msgstr ""
+
+msgid "Modify global properties"
+msgstr ""
+
+msgid "Edit RNG template"
+msgstr ""
+
+msgid "Edit a RNG template"
+msgstr ""
+
+msgid "Delete RNG template"
+msgstr ""
+
+msgid "Delete a RNG template"
+msgstr ""
+
+msgid "Properties of RNG template"
+msgstr ""
+
+msgid "Modify properties of a RNG"
+msgstr ""
+
+msgid "Check links"
+msgstr ""
+
+msgid "Check broken links"
+msgstr ""
+
+msgid "Download all images"
+msgstr ""
+
+msgid "Download all style sheets"
+msgstr ""
+
+msgid "Download all templates"
+msgstr ""
+
+msgid "Download all files"
+msgstr ""
+
+msgid "Add PVD templates"
+msgstr ""
+
+msgid "Add a set of PVD templates to the server"
+msgstr ""
+
+msgid "Owner"
+msgstr ""
+
+msgid "Add action"
+msgstr ""
+
+msgid "Add server"
+msgstr ""
+
+msgid "Add image folder"
+msgstr ""
+
+msgid "Add import folder"
+msgstr ""
+
+msgid "Manage status"
+msgstr ""
+
+msgid "Add style sheet"
+msgstr ""
+
+msgid "Add image"
+msgstr ""
+
+msgid "Add file"
+msgstr ""
+
+msgid "Change XML name"
+msgstr ""
+
+msgid "Edit XML"
+msgstr ""
+
+msgid "Add template image"
+msgstr ""
+
+#: Locales table
+msgid "Spanish"
+msgstr ""
+
+msgid "English"
+msgstr ""
+
+msgid "German"
+msgstr ""
+
+msgid "Portuguese"
+msgstr ""
+
+msgid "French"
+msgstr ""
+
+#: Channels table
+msgid "Html channel"
+msgstr ""
+
+#: IsoCodes table
+msgid "Italian"
+msgstr ""
+
+msgid "Galician"
+msgstr ""
+
+msgid "Catalan"
+msgstr ""
+
+msgid "Euskera"
+msgstr ""
+
+#: NodeTypes table
+msgid "Root node of Ximdex"
+msgstr ""
+
+msgid "Ximdex control center"
+msgstr ""
+
+msgid "User manager"
+msgstr ""
+
+msgid "Group manager"
+msgstr ""
+
+msgid "Role manager"
+msgstr ""
+
+msgid "Type of node manager"
+msgstr ""
+
+msgid "Definition of node type of Ximdex"
+msgstr ""
+
+msgid "Action run on node type of Ximdex"
+msgstr ""
+
+msgid "Ximdex user"
+msgstr ""
+
+msgid "Role on user group of Ximdex"
+msgstr ""
+
+msgid "User group of Ximdex"
+msgstr ""
+
+msgid "Ximdex project"
+msgstr ""
+
+msgid "Root of Ximdex projects"
+msgstr ""
+
+msgid "XML document"
+msgstr ""
+
+msgid "Content server of Ximdex"
+msgstr ""
+
+msgid "Ximdex section"
+msgstr ""
+
+msgid "Root of image folder"
+msgstr ""
+
+msgid "Root of documents folder"
+msgstr ""
+
+msgid "Root of import folder"
+msgstr ""
+
+msgid "Import folder"
+msgstr ""
+
+msgid "Root of common folder"
+msgstr ""
+
+msgid "Root of CSS folder"
+msgstr ""
+
+msgid "Root of JS folder"
+msgstr ""
+
+msgid "Root of template folder"
+msgstr ""
+
+msgid "Container of XML docs"
+msgstr ""
+
+msgid "Channel manager"
+msgstr ""
+
+msgid "Language manager"
+msgstr ""
+
+msgid "Workflow manager"
+msgstr ""
+
+msgid "Workflow status"
+msgstr ""
+
+msgid "Permit manager"
+msgstr ""
+
+msgid "Permit"
+msgstr ""
+
+msgid "Text file"
+msgstr ""
+
+msgid "Image file"
+msgstr ""
+
+msgid "Binary file"
+msgstr ""
+
+msgid "Output error folder"
+msgstr ""
+
+msgid "Transformation template of Ximdex"
+msgstr ""
+
+msgid "Edition template of Ximdex"
+msgstr ""
+
+msgid "Root of link manager"
+msgstr ""
+
+msgid "Category of link manager"
+msgstr ""
+
+msgid "Style sheet"
+msgstr ""
+
+msgid "Ximdex link"
+msgstr ""
+
+msgid "Folder of view templates"
+msgstr ""
+
+msgid "Root folder of ximlets in sections"
+msgstr ""
+
+msgid "Ximlet container"
+msgstr ""
+
+msgid "Property manager"
+msgstr ""
+
+msgid "Property"
+msgstr ""
+
+msgid "Folder of project properties"
+msgstr ""
+
+msgid "System properties"
+msgstr ""
+
+msgid "Folder of project dictionary"
+msgstr ""
+
+msgid "Dictionary"
+msgstr ""
+
+msgid "Value of a dictionary"
+msgstr ""
+
+msgid "Folder of dictionary values"
+msgstr ""
+
+msgid "Folder of ximPORTA links"
+msgstr ""
+
+msgid "Folder of property set"
+msgstr ""
+
+msgid "Html node"
+msgstr ""
+
+msgid "Template of XSLT transformation"
+msgstr ""
+
+msgid "Template of RNG edition of Ximdex"
+msgstr ""
+
+msgid "Workflow for documents"
+msgstr ""
+
+msgid "Container of module settings"
+msgstr ""
+
+msgid "Container of a module settings"
+msgstr ""
+
+msgid "Heritable properties"
+msgstr ""
+
+msgid "General"
+msgstr ""
+
+msgid "Configuration manager"
+msgstr ""
+
+msgid "Workflow master"
+msgstr ""
+
+#: Roles table
+msgid "Administrator"
+msgstr ""
+
+msgid "Editor"
+msgstr ""
+
+msgid "Publisher"
+msgstr ""
+
+msgid "Expert"
+msgstr ""
+
+msgid "Main administrator"
+msgstr ""
+
+msgid "Editor user"
+msgstr ""
+
+msgid "Publisher user"
+msgstr ""
+
+msgid "Expert user"
+msgstr ""
+
+#: Permissions table
+msgid "View all nodes"
+msgstr ""
+
+msgid "Delete on cascade"
+msgstr ""
+
+msgid "Receive integrity checks"
+msgstr ""
+
+msgid "View all the nodes"
+msgstr ""
+
+msgid "Multi-section deletion"
+msgstr ""
+
+msgid "Receive the integrity checks"
+msgstr ""
+
+msgid "Delete publication windows"
+msgstr ""
+
+msgid "Expert mode edition"
+msgstr ""
+
+msgid "Ximdex controlled closing"
+msgstr ""
+
+msgid "Publication without structure"
+msgstr ""
+
+msgid "Advanced publication"
+msgstr ""
+
+msgid "Publication from editor"
+msgstr ""
+
+msgid "View publication report"
+msgstr ""
+
+#: Protocols table
+msgid "Secure transfer protocol"
+msgstr ""
+
+msgid "Local synchronization"
+msgstr ""
+
+msgid "FTP synchronization"
+msgstr ""
+
+msgid "Document is under development"
+msgstr ""
+
+msgid "Document is waiting for being published"
+msgstr ""
+
+#: Users table
+msgid "Ximdex Administrator"
 msgstr ""
