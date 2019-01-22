@@ -68,7 +68,7 @@ class LinkNode extends Root
 		$result = $this->parent->SetDescription($description);
 		$insertedId = $link->add();
 		if (!$insertedId || !$result) {
-			$this->messages->add(_('No se ha podido insertar el enlace'), MSG_TYPE_ERROR);
+			$this->messages->add(_('The link could not be inserted'), MSG_TYPE_ERROR);
 			$this->messages->mergeMessages($link->messages);
 		}
 		$this->link = new Link($link->get('IdLink'));
@@ -92,7 +92,7 @@ class LinkNode extends Root
 		}
 		$result = $this->link->delete();
 		if (!$result) {
-			$this->parent->messages->add(_('No se ha podido eliminar el enlace'), MSG_TYPE_ERROR);
+			$this->parent->messages->add(_('Unable to remove link'), MSG_TYPE_ERROR);
 			foreach ($this->link->messages->messages as $message) {
 				$this->parent->messages[] = $message;
 			}
@@ -128,7 +128,7 @@ class LinkNode extends Root
 		if ($commit) {
 			$result = $this->link->update();
 			if (!$result) {
-				$this->parent->messages->add(_('No se ha podido eliminar el enlace'), MSG_TYPE_ERROR);
+				$this->parent->messages->add(_('Unable to remove link'), MSG_TYPE_ERROR);
 				foreach ($this->link->messages->messages as $message) {
 					$this->parent->messages[] = $message;
 				}

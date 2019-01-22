@@ -173,7 +173,7 @@ abstract class CliParser
 
     function _printHelp()
     {
-        $this->messages->add(_("\n" . _("Command params:") . "\n"), MSG_TYPE_NOTICE);
+        $this->messages->add("\n" . _("Command params:") . "\n", MSG_TYPE_NOTICE);
         $this->messages->add(sprintf(_("Option: %s Shows this help"), PARAM_HELP) . "\n",
             MSG_TYPE_NOTICE);
         $this->messages->add(
@@ -324,7 +324,7 @@ abstract class CliParser
                                     implode(')(', $messageKeys)), MSG_TYPE_ERROR);
                         }
                     } else {
-                        $this->messages->add(sprintf(_('[%s]: (Mandatory) %s'), $argument['name'],
+                        $this->messages->add(sprintf('[%s]: (' . _('Mandatory') . ') %s', $argument['name'],
                             $argument['message']), MSG_TYPE_ERROR);
                     }
                 } else {
@@ -337,7 +337,7 @@ abstract class CliParser
                 $parameterValue, $argument['validValues'])
         ) {
             $this->messages->add(
-                sprintf(_('[%s]: (Not allowed value) %s'), $argument['name'],
+                sprintf('[%s]: (' . _('Not allowed value') . ') %s', $argument['name'],
                     $argument['message']), MSG_TYPE_ERROR);
         }
     }

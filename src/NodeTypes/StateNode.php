@@ -53,7 +53,7 @@ class StateNode extends Root
     {
         $workflow = new Workflow(null, $this->nodeID);
         if ($workflow->isInitialState() or $workflow->isFinalState()) {
-            $this->messages->add(_('No se pueden eliminar los estados primero y último del workflow'), MSG_TYPE_ERROR);
+            $this->messages->add(_('Unable to delete the first and last states of the workflow'), MSG_TYPE_ERROR);
             Logger::warning('Imposible eliminar estado primero y último de workflow');
             return true;
         }

@@ -3222,8 +3222,8 @@ msgid "Correct association"
 msgstr "Asociación correcta"
 
 #: /actions/poolPreview/resources/js/pooPreview.js
-msgid "<option>Select a label</option>"
-msgstr "<option>Seleccione una etiqueta</option>"
+msgid "Select a label"
+msgstr "Seleccione una etiqueta"
 
 #: /actions/poolPreview/template/Smarty/index.tpl
 msgid "Pool Preview"
@@ -5343,11 +5343,11 @@ msgstr "No se ha especificado el tipo del parámetro %s"
 msgid "(Mandatory some of the following set of values) (%s)"
 msgstr "(Obligatorio alguno de los siguientes conjuntos de valores) (%s)"
 
-msgid "[%s]: (Mandatory) %s"
-msgstr "[%s]: (Obligatorio) %s"
+msgid "Mandatory"
+msgstr "Obligatorio"
 
-msgid "[%s]: (Not allowed value) %s"
-msgstr "[%s]: (Valor no permitido) %s"
+msgid "Not allowed value"
+msgstr "Valor no permitido"
 
 #: /inc/db/DB_orm.class.php /inc/db/DB_zero.class.php
 msgid ""
@@ -8177,26 +8177,6 @@ msgstr "Nombre del nodo"
 msgid "The section %doc is going to be published."
 msgstr ""
 
-#: modules/xBlog/api/coffee/confirmPublishDialog.js:21
-#: modules/xBlog/api/public/js/main.js:26823
-#: modules/xBlog/api/public/js/main.min.js:18
-msgid "¿Desea continuar?"
-msgstr ""
-
-#: modules/xBlog/api/coffee/confirmPublishDialog.js:26
-#: modules/xBlog/api/public/js/main.js:26828
-#: modules/xBlog/api/public/js/main.min.js:18
-msgid "Continuar"
-msgstr "Continuar"
-
-#: modules/xBlog/api/coffee/confirmPublishDialog.js:29
-#: modules/xBlog/api/coffee/imagePickerDialog.js:106
-#: modules/xBlog/api/public/js/main.js:26755
-#: modules/xBlog/api/public/js/main.js:26831
-#: modules/xBlog/api/public/js/main.min.js:18
-msgid "Cancelar"
-msgstr ""
-
 #: modules/xBlog/api/coffee/cropdialog.js:61
 #: modules/xBlog/api/lib/ContentTools/build/content-tools.js:6207
 #: modules/xBlog/api/lib/ContentTools/build/content-tools.min.js:5
@@ -8206,18 +8186,6 @@ msgstr ""
 #: modules/xBlog/api/public/js/main.min.js:16
 #: modules/xBlog/api/public/js/main.min.js:18
 msgid "An error was found, please try again."
-msgstr ""
-
-#: modules/xBlog/api/coffee/cropdialog.js:70
-#: modules/xBlog/api/public/js/main.js:27100
-#: modules/xBlog/api/public/js/main.min.js:18
-msgid "Subir"
-msgstr ""
-
-#: modules/xBlog/api/coffee/imagePickerDialog.js:109
-#: modules/xBlog/api/public/js/main.js:26758
-#: modules/xBlog/api/public/js/main.min.js:18
-msgid "Aceptar"
 msgstr ""
 
 #: modules/xBlog/api/lib/ContentEdit/spec/content-edit-spec.js:25
@@ -8568,7 +8536,7 @@ msgid "Select a language"
 msgstr ""
 
 #: public_xmd/actions/manageList/resources/js/common.js:80
-msgid "<h1> Please wait...</h1>"
+msgid "Please wait..."
 msgstr ""
 
 #: public_xmd/actions/managebatchs/Action_managebatchs.class.php:55
@@ -8670,12 +8638,12 @@ msgid "The file has been successfully deleted."
 msgstr ""
 
 #: public_xmd/actions/relsectionschema/Action_relsectionschema.class.php:60
-msgid "Asociar schema a section"
-msgstr ""
+msgid "Associate schema to section"
+msgstr "Asociar esquema a sección"
 
 #: public_xmd/actions/relsectionschema/Action_relsectionschema.class.php:61
-msgid "Tipo de plantilla"
-msgstr ""
+msgid "Template type"
+msgstr "Tipo de plantilla"
 
 #: public_xmd/actions/replacefile/Action_replacefile.class.php:51
 #: public_xmd/actions/replacefile/Action_replacefile.class.php:82
@@ -8755,8 +8723,7 @@ msgid "Elements not found in Relax-ng schema: "
 msgstr ""
 
 #: public_xmd/actions/xmleditor2/js/dom/XimDocument.class.js:738
-msgid ""
-"<h2>Document cannot be validated! It contains the following errors:</h2>"
+msgid "Document cannot be validated! It contains the following errors"
 msgstr ""
 
 #: public_xmd/actions/xmleditor2/js/dom/XimDocument.class.js:756
@@ -8865,28 +8832,6 @@ msgstr ""
 msgid "Exception while processing updateState on ${id}: ${msg}"
 msgstr ""
 
-#: public_xmd/actions/xmleditor2/js/tools/StructuredListTool.class.js:376
-#: public_xmd/actions/xmleditor2/js/tools/StructuredListTool.class.js:379
-#: public_xmd/actions/xmleditor2/js/tools/StructuredListTool.class.js:390
-#: public_xmd/actions/xmleditor2/js/tools/StructuredListTool.class.js:555
-#: public_xmd/actions/xmleditor2/js/tools/StructuredListTool.class.js:559
-#: public_xmd/actions/xmleditor2/js/tools/StructuredListTool.class.js:570
-#: public_xmd/actions/xmleditor2/js/tools/XimdocContextMenuTool.class.js:134
-#: public_xmd/actions/xmleditor2/js/tools/XimdocContextMenuTool.class.js:207
-#: public_xmd/actions/xmleditor2/js/tools/XimdocContextMenuTool.class.js:214
-#: public_xmd/actions/xmleditor2/js/tools/XimdocContextMenuTool.class.js:225
-#: public_xmd/actions/xmleditor2/js/tools/XimdocContextMenuTool.class.js:241
-#: public_xmd/actions/xmleditor2/js/tools/XimdocContextMenuTool.class.js:257
-msgid "-----"
-msgstr ""
-
-#: public_xmd/actions/xmleditor2/js/tools/XimdocContextMenuTool.class.js:151
-#: public_xmd/actions/xmleditor2/js/tools/XimdocContextMenuTool.class.js:153
-#: public_xmd/actions/xmleditor2/js/tools/XimdocContextMenuTool.class.js:183
-#: public_xmd/actions/xmleditor2/js/tools/XimdocContextMenuTool.class.js:185
-msgid "--------------"
-msgstr ""
-
 #: public_xmd/actions/xmleditor2/js/tools/XimdocContextMenuTool.class.js:258
 msgid "ximlet"
 msgstr ""
@@ -8974,10 +8919,6 @@ msgstr ""
 
 #: public_xmd/src/Widgets/calendar/Widget_calendar.class.php:112
 msgid "No expire"
-msgstr ""
-
-#: src/Cli/CliParser.php:176
-msgid "\n"
 msgstr ""
 
 #: src/Cli/CliParser.php:183
@@ -9139,16 +9080,16 @@ msgid "The ISO code entered is already assigned to another language"
 msgstr ""
 
 #: src/NodeTypes/LinkNode.php:71
-msgid "No se ha podido insertar el enlace"
-msgstr ""
+msgid "The link could not be inserted"
+msgstr "No se ha podido insertar el enlace"
 
 #: src/NodeTypes/LinkNode.php:95 src/NodeTypes/LinkNode.php:131
-msgid "No se ha podido eliminar el enlace"
-msgstr ""
+msgid "Unable to remove link"
+msgstr "No se ha podido eliminar el enlace"
 
 #: src/NodeTypes/StateNode.php:56
-msgid "No se pueden eliminar los estados primero y último del workflow"
-msgstr ""
+msgid "Unable to delete the first and last states of the workflow"
+msgstr "No se pueden eliminar los estados primero y último del workflow"
 
 #: /public_xmd/actions/infonode/template/Smarty/index.tpl:108
 msgid "Limited to last"
@@ -9323,8 +9264,8 @@ msgid "General data"
 msgstr ""
 
 #: /public_xmd/actions/filedownload/template/Smarty/index.tpl:36
-msgid "Descargar %1"
-msgstr ""
+msgid "Download %1"
+msgstr "Descargar %1"
 
 #: /public_xmd/actions/workflow_forward/template/Smarty/index.tpl:44
 #: /public_xmd/actions/publicatesection/template/Smarty/index.tpl:42
@@ -9484,8 +9425,8 @@ msgid "Share the master document workflow"
 msgstr ""
 
 #: /public_xmd/actions/modifystates/template/Smarty/index.tpl:56
-msgid "Flecha"
-msgstr ""
+msgid "Arrow"
+msgstr "Flecha"
 
 #: /public_xmd/actions/modifyusergroups/template/Smarty/index.tpl:45
 #: /public_xmd/actions/modifygroupusers/template/Smarty/index.tpl:43
@@ -9505,12 +9446,8 @@ msgid "Add User"
 msgstr ""
 
 #: /public_xmd/actions/modifylink/template/Smarty/show.tpl:26
-msgid "Enlaces encontrados que apuntan a la misma url"
-msgstr ""
-
-#: /public_xmd/actions/modifylink/template/Smarty/show.tpl:38
-msgid "Nombre"
-msgstr ""
+msgid "Links found that point to the same url"
+msgstr "Enlaces encontrados que apuntan a la misma url"
 
 #: /public_xmd/actions/modifylink/template/Smarty/index.tpl:31
 msgid "Modify link"

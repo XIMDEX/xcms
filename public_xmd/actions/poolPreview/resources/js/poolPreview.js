@@ -372,7 +372,7 @@ function insertLabelsHtml(labels){
 
 
 	var html = "<div class='labelsForPoolPreview'><select name='labelPoolPreview' onchange='getVersionsByLabel($(this).val())' class='labelPoolPreview'>";
-	html += _("<option>Select a label</option>");
+	html += "<option>" + _("Select a label") + "</option>";
 	var htmlForDropDown = "<select class='labelsDropDown'>";
 
 	$.each(labels, function(keyLabel, valueLabel){

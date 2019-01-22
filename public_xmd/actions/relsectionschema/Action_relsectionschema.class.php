@@ -57,8 +57,8 @@ class Action_relsectionschema extends ActionAbstract
 			$defaultSchema = $defaultSchema[0]; 
 		}
 		$values = array(
-			'title' => _('Asociar schema a section'),
-			'label' => _('Tipo de plantilla'),
+			'title' => _('Associate schema to section'),
+			'label' => _('Template type'),
 			'type' => $type,
 			'id_node' => $idNode,
 			'nodeURL' => App::getUrl("/?actionid=$actionID&nodeid={$idNode}"),

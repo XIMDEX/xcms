@@ -735,7 +735,7 @@ XimDocument = function(editorConfig) {
 			onComplete: function(req, json) {
 				var msg = null;
 				if (!json.valid) {
-					msg = _("<h2>Document cannot be validated! It contains the following errors:</h2>");
+					msg = "<h2>" + _("Document cannot be validated! It contains the following errors") + "</h2>";
                     $('#kupu-schemavalidator-button').removeClass('kupu-schemavalidator-valid');
                     $('#kupu-schemavalidator-button').addClass('kupu-schemavalidator-notvalid');
 					if (json.errors) {

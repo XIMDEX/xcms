@@ -77,7 +77,7 @@
 			this.hide_properties_list();
 
 			var url = window.url_root;
-			$.blockUI({ message: _('<h1> Please wait...</h1>') });
+			$.blockUI({ message: '<h1> ' + _('Please wait...') + ' </h1>'});
 			$.getJSON(
 					url,
 					{
@@ -117,7 +117,7 @@
 		},
 		remove: function(id, element) {
 			var url = window.url_root;
-			$.blockUI({ message: '<h1> Please wait...</h1>' });
+			$.blockUI({ message: '<h1> ' + _('Please wait...') + ' </h1>' });
 			$.getJSON(
 					url,
 					{

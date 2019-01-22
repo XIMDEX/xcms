@@ -373,10 +373,10 @@ function TableManagerTool() {
 		if (!this._current_rngModel || !ximNode['structuredParent']) return [];
 
 		var cm = [];
-		cm.push(new ContextMenuElement(_('-----'), function(){}, this));
+		cm.push(new ContextMenuElement('-----', function(){}, this));
 		cm.push(new ContextMenuElement(_('Remove table'), function() {this.removeTable(ximNode);}, this));
 		cm.push(new ContextMenuElement(_('Table properties'), this._showPropertiesHandler(ximNode), this));
-		cm.push(new ContextMenuElement(_('-----'), function(){}, this));
+		cm.push(new ContextMenuElement('-----', function(){}, this));
 
 		var elements = this.elementsForInsert(ximNode.tagName);
 		var l = elements.length;
@@ -387,7 +387,7 @@ function TableManagerTool() {
 			cm.push(new ContextMenuElement(_('Properties of ') +name, this._showPropertiesHandler(ximNode), this));
 		}
 
-		cm.push(new ContextMenuElement(_('-----'), function(){}, this));
+		cm.push(new ContextMenuElement('-----', function(){}, this));
 
 		elements = this.elementsForRemove(ximNode.tagName);
 		l = elements.length;
@@ -552,11 +552,11 @@ function ListManagerTool() {
 		if (!this._current_rngModel || !ximNode['structuredParent']) return [];
 
 		var cm = [];
-		cm.push(new ContextMenuElement(_('-----'), function(){}, this));
+		cm.push(new ContextMenuElement('-----', function(){}, this));
 		//cm.push(new ContextMenuElement(_('Remove List'), this._removeChildHandler(this._current_rngModel.tagName, ximNode), this));
 		cm.push(new ContextMenuElement(_('Remove list'), function() {this.removeList(ximNode);}, this));
 		cm.push(new ContextMenuElement(_('List properties'), this._showPropertiesHandler(ximNode), this));
-		cm.push(new ContextMenuElement(_('-----'), function(){}, this));
+		cm.push(new ContextMenuElement('-----', function(){}, this));
 
 		var elements = this.elementsForInsert(ximNode.tagName);
 		var l = elements.length;
@@ -567,7 +567,7 @@ function ListManagerTool() {
 			cm.push(new ContextMenuElement(_('Properties of ') + name, this._showPropertiesHandler(ximNode), this));
 		}
 
-		cm.push(new ContextMenuElement(_('-----'), function(){}, this));
+		cm.push(new ContextMenuElement('-----', function(){}, this));
 
 		elements = this.elementsForRemove(ximNode.tagName);
 		l = elements.length;

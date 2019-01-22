@@ -53,7 +53,7 @@
                         <option ng-repeat="action in actions">#/action/#</option>
                     </select>
                     {*<img src="{url}/assets/images/show.png{/url}" 
-                            class="modifyrolesstate" />*} <img ng-if="!$first && !$last" alt="{t}Flecha{/t}" title="Cambiar orden" 
+                            class="modifyrolesstate" />*} <img ng-if="!$first && !$last" alt="{t}Arrow{/t}" title="Cambiar orden" 
                             src="{url}/assets/images/action/move.png{/url}" class="sortable_element" />
                     <button ng-if="$middle" type="button" class="delete-btn icon btn-unlabel-rounded" ng-click="deleteStatus($index)"></button>
                     <div ng-click="addStatus($index)" ng-if="$first || $middle" class="separator">

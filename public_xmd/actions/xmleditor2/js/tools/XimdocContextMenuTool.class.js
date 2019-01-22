@@ -131,7 +131,7 @@ function XimdocContextMenuTool() {
 		var i = 0;
 		var count = rngElement.childNodes.length;
 		while (i < count) {
-			if (i == 0) menu.push(new ContextMenuElement(_('-----'), function(){}, this));
+			if (i == 0) menu.push(new ContextMenuElement('-----', function(){}, this));
 			childElement = rngElement.childNodes[i];
 			if (childElement.type.contains('apply')) {
 				childName = childElement.tagName;
@@ -148,9 +148,9 @@ function XimdocContextMenuTool() {
 		var clickedNodeParentText = clickedNodeParent.innerHTML;
 		var owner = clickedNode.getAttribute('owner');
 		if (owner == 'spellchecker') {
-			menu.push(new ContextMenuElement(_('--------------'), function(){}, this));
+			menu.push(new ContextMenuElement('--------------', function(){}, this));
 			menu.push(new ContextMenuElement(_('Spell checking'), function(){}, this));
-			menu.push(new ContextMenuElement(_('--------------'), function(){}, this));
+			menu.push(new ContextMenuElement('--------------', function(){}, this));
 
 			var word = clickedNode.textContent;
 			count = this.editor.tools.ximdocspellcheckertool._spellCheckWordsArray.length;
@@ -180,9 +180,9 @@ function XimdocContextMenuTool() {
 		var clickedNodeParentText = clickedNodeParent.innerHTML;
 		var owner = clickedNode.getAttribute('owner');
 		if (owner == 'annotator') {
-			menu.push(new ContextMenuElement(_('--------------'), function(){}, this));
+			menu.push(new ContextMenuElement('--------------', function(){}, this));
 			menu.push(new ContextMenuElement(_('ANNOTATION MENU'), function(){}, this));
-			menu.push(new ContextMenuElement(_('--------------'), function(){}, this));
+			menu.push(new ContextMenuElement('--------------', function(){}, this));
 
 			var word = clickedNode.textContent;
 			count = this.editor.tools.ximdocannotationtool._annotationWordsArray.length;
@@ -204,14 +204,14 @@ function XimdocContextMenuTool() {
 	// Create 'Remove' context menu element.
     	this.createRemoveItems = function(menu, rngElement, rngParent) {
     		if (this.editor.ximElement.isRoot || !this.editor.ximElement.isRemovable()) return;
-		menu.push(new ContextMenuElement(_('-----'), function(){}, this));
+		menu.push(new ContextMenuElement('-----', function(){}, this));
 		menu.push(new ContextMenuElement(_('Remove') + ': ' + this.editor.ximElement.tagName, this.removeElementWrapper(this.editor.ximElement), this));
     	};
 
 	// Create 'Dis-Apply' context menu element.
     	this.createDisapplyItems = function(menu, rngElement, rngParent) {
     		if (this.editor.ximElement.isRoot || !this.editor.ximElement.isApplyable()) return;
-		menu.push(new ContextMenuElement(_('-----'), function(){}, this));
+		menu.push(new ContextMenuElement('-----', function(){}, this));
 		menu.push(new ContextMenuElement(_('Do not apply:') + ' ' + this.editor.ximElement.tagName, this.disApplyElementWrapper(this.editor.ximElement), this));
     	};
 
@@ -222,7 +222,7 @@ function XimdocContextMenuTool() {
 		var count = rngParent.childNodes.length;
 		if(count == 0)
 			return;
-		menu.push(new ContextMenuElement(_('-----'), function(){}, this));
+		menu.push(new ContextMenuElement('-----', function(){}, this));
 		while (i < count) {
 			var childElement = rngParent.childNodes[i];
 			var childName = childElement.tagName;
@@ -238,7 +238,7 @@ function XimdocContextMenuTool() {
 		var count = rngElement.childNodes.length;
 		if(count == 0)
 			return;
-		menu.push(new ContextMenuElement(_('-----'), function(){}, this));
+		menu.push(new ContextMenuElement('-----', function(){}, this));
 		while (i < count) {
 			childElement = rngElement.childNodes[i];
 			childName = childElement.tagName;
@@ -254,7 +254,7 @@ function XimdocContextMenuTool() {
 			return;
 		var ximElement = this.editor.getXimDocument().getElement(uid);
 		//var button = this.editor.tools['ximletdrawerbutton'];
-		menu.push(new ContextMenuElement(_('-----'), function(){}, this));
+		menu.push(new ContextMenuElement('-----', function(){}, this));
 		menu.push(new ContextMenuElement(_('Toggle') + ' ' + _('ximlet'), this.editor.tools['ximlettool'].toggleXimlet(uid)));
 		//menu.push(new ContextMenuElement(_('Edit') + ' ' + _('ximlet') + ' ' + _('content'), this.editor.tools['ximlettool'].openEditWindow(ximElement)));
 		menu.push(new ContextMenuElement(_('Edit ximlet content'), this.editor.tools['ximlettool'].openEditWindow(ximElement)));
