@@ -1,9 +1,7 @@
 <?php
-use Ximdex\Models\Node;
-use Ximdex\MVC\ActionAbstract;
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -27,43 +25,48 @@ use Ximdex\MVC\ActionAbstract;
  *  @version $Revision$
  */
 
+use Ximdex\Models\Node;
+use Ximdex\MVC\ActionAbstract;
 
-
-class Action_modifygroup extends ActionAbstract {
-   // Main method: shows initial form
-    function index () {
+class Action_modifygroup extends ActionAbstract
+{
+    /**
+     * Main method: shows initial form
+     */
+    public function index()
+    {
     	$idNode = $this->request->getParam('nodeid');
     	$node = new Node($idNode);
-    	if (!($node->get('IdNode') > 0)) {
+    	if (! $node->get('IdNode')) {
     		$this->messages->add(_('Node could not be found'), MSG_TYPE_ERROR);
     		$this->render(array($this->messages), NULL, 'messages.tpl');
-    		die();
+    		return;
     	}
-
     	$values = array(
-    			'id_node' => $idNode,
-    			'name' => $node->get('Name'),
-    	        'nodeTypeID' => $node->nodeType->getID(),
-    	        'node_Type' => $node->nodeType->GetName(),
-    			'go_method' => 'modifygroup'
+			'id_node' => $idNode,
+			'name' => $node->get('Name'),
+	        'nodeTypeID' => $node->nodeType->getID(),
+	        'node_Type' => $node->nodeType->GetName(),
+			'go_method' => 'modifygroup'
     	);
-
     	$this->render($values, null, 'default-3.0.tpl');
     }
 
-    function modifygroup() {
+    public function modifygroup()
+    {
     	$idNode = $this->request->getParam('nodeid');
     	$node = new Node($idNode);
 		$result = $node->renameNode($this->request->getParam('name'));
-
-		if ($result > 0) {
+		if ($result) {
 			$node->messages->add(_('Group has been successfully modified'), MSG_TYPE_NOTICE);
 		} else {
-			$node->messages->add(_('An error occurred while modifying group'), MSG_TYPE_ERROR);
+		    if ($node->msgErr) {
+		        $node->messages->add($node->msgErr, MSG_TYPE_WARNING);
+		    } else {
+                $node->messages->add(_('An error occurred while modifying group'), MSG_TYPE_ERROR);
+		    }
 		}
-
 		$values = array('messages' => $node->messages->messages , "parentID" => $node->get('IdParent'));
-
         $this->sendJSON($values);
     }
 }

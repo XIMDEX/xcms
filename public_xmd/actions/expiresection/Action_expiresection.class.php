@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -43,7 +43,7 @@ class Action_expiresection extends ActionAbstract
      */
     public function index()
     {
-        $idNode = (int)$this->request->getParam("nodeid");
+        $idNode = (int) $this->request->getParam('nodeid');
         $node = new Node($idNode);
         $nodeType = New NodeType();
         $publishabledNodeTypes = $nodeType->find('IdNodeType, Description', 'IsPublishable is true and IsFolder is false'
@@ -70,7 +70,7 @@ class Action_expiresection extends ActionAbstract
         
         // Loading Notifications default values
         $conf = \Ximdex\Modules\Manager::file('/conf/notifications.php', 'XIMDEX');
-        $defaultMessage = $this->buildMessage($conf["defaultSectionMessage"], $node->get('Name'));
+        $defaultMessage = $this->buildMessage($conf['defaultSectionMessage'], $node->get('Name'));
         $values = $values + array(
             'group_state_info' => Group::getSelectableGroupsInfo($idNode),
             'required' => $conf['required'] === true ? 1 : 0,
@@ -123,7 +123,7 @@ class Action_expiresection extends ActionAbstract
         $folderType = $node->nodeType->getID() == NodeTypeConstants::SERVER ? 'server' : 'section';
         
         // The publication times are in milliseconds
-        $down = (! is_null($dateDown) && $dateDown != "") ? $dateDown / 1000 : time();
+        $down = (! is_null($dateDown) && $dateDown != '') ? $dateDown / 1000 : time();
         
         // If send notifications
         $sendNotifications = $this->request->getParam('sendNotifications');
@@ -248,8 +248,8 @@ class Action_expiresection extends ActionAbstract
         if (count($gaps) > 0) {
             foreach ($gaps as $gap) {
                 $gapInfo[] = array(
-                    'BEGIN_DATE' => strftime("%d/%m/%Y %H:%M:%S", $gap['start']),
-                    'END_DATE' => isset($gap['end']) ? strftime("%d/%m/%Y %H:%M:%S", $gap['end']) : null,
+                    'BEGIN_DATE' => strftime('%d/%m/%Y %H:%M:%S', $gap['start']),
+                    'END_DATE' => isset($gap['end']) ? strftime('%d/%m/%Y %H:%M:%S', $gap['end']) : null,
                     'NODES' => isset($gap['nodes']) ? $gap['nodes'] : null
                 );
             }
@@ -283,7 +283,7 @@ class Action_expiresection extends ActionAbstract
      * @param string $texttosend : Text to send in notification mail.
      * @return boolean true if the notification is sended.
      */
-    private function sendNotification($idNode, $userList, $texttosend = "")
+    private function sendNotification($idNode, $userList, $texttosend = '')
     {
         $send = true;
         if (count($userList) == 0) {
@@ -297,16 +297,16 @@ class Action_expiresection extends ActionAbstract
         if (! $send) {
             return false;
         }
-        $idUser = \Ximdex\Runtime\Session::get("userID");
+        $idUser = \Ximdex\Runtime\Session::get('userID');
         $node = new Node($idNode);
         $user = new User($idUser);
         $userName = $user->get('Name');
         $nodeName = $node->get('Name');
         $nodePath = $node->GetPath();
-        $subject = _("Ximdex CMS: Published section:") . " " . $nodeName;
-        $content = _("The user") . " " . $userName . " " . _("has published the section")
-            . " " . $nodeName . "\n" . "\n" . _("Full Ximdex path") . " --> " . $nodePath . "\n" . "\n" . _("Comment") . ":" 
-            . "\n". $texttosend . "\n" . "\n";
+        $subject = _('Ximdex CMS: Published section:') . ' ' . $nodeName;
+        $content = _('The user') . ' ' . $userName . ' ' . _('has published the section')
+            . ' ' . $nodeName . "\n\n" . _('Full Ximdex path') . ' --> ' . $nodePath . "\n\n" . _('Comment') . ':' 
+            . "\n". $texttosend . "\n\n";
         parent::sendNotifications($subject, $content, $userList);
         return true;
     }

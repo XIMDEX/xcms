@@ -1,6 +1,7 @@
 <?php
+
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -24,23 +25,21 @@
  *  @version $Revision$
  */
 
-
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Parsers\ParsingJsGetText;
 use Ximdex\Utils\FsUtils;
 use Xmd\Widgets\Widget;
 
-
-class Action_searchpanel extends ActionAbstract {
-
-	public function index() {
-	}
+class Action_searchpanel extends ActionAbstract
+{
+	public function index()
+	{}
 
 	/**
 	 * Simple search results interface
 	 */
-	public function showResults() {
-
+	public function showResults()
+	{
 		$this->addJs('/actions/searchpanel/resources/js/results.js');
 		$this->addCSS('/actions/searchpanel/resources/css/searchpanel.css');
 		$fields = array(
@@ -98,7 +97,8 @@ class Action_searchpanel extends ActionAbstract {
 	/**
 	 * Used from advanced search panel
 	 */
-	public function template() {
+	public function template()
+	{
 		$tpl = '<searchpanel />';
 		$ret = Widget::process($tpl, array());
 		$tpl = preg_replace('/<div style="display: none;" class="widget_includes">(.*?)<\/div>/s', '', $ret['tpl']);
@@ -108,44 +108,36 @@ class Action_searchpanel extends ActionAbstract {
 	/**
 	 * Used from advanced search panel
 	 */
-	public function filters() {
-
+	public function filters()
+	{
 		$filters = $this->request->getParam('filters');
 		if (empty($filters)) {
 			$filters = 'Ximdex';
 		}
-
 		$filters = ucfirst(strtolower($filters));
-
 		$factory = new \Ximdex\Utils\Factory(dirname(__FILE__) . '/inc', 'Filters_');
 		$filter = $factory->instantiate('Ximdex');
-
 		$data = array();
-
 		if (is_object($filter)) {
 			$data = $filter->getFilters();
 		}
-
 		$this->sendJSON($data);
 	}
 
 	/**
 	 * Used from advanced search panel
 	 */
-	public function datastores() {
-
+	public function datastores()
+	{
 		$datastore = $this->request->getParam('datastore');
-
-		if ($datastore === null) $datastore = 'ximdex';
-
+		if ($datastore === null) {
+		    $datastore = 'ximdex';
+		}
 		$dsPath = sprintf('%s/actions/searchpanel/resources/js/searchpanel.%s.conf.js', APP_ROOT_PATH, $datastore);
 		$content = FsUtils::file_get_contents($dsPath);
-
 		$content = ParsingJsGetText::parseContent($content);
-
 		header('Content-type: text/javascript');
 		printf($content);
 		die();
 	}
-
 }

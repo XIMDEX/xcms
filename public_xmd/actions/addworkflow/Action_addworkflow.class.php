@@ -1,6 +1,7 @@
 <?php
+
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -24,36 +25,34 @@
  *  @version $Revision$
  */
 
-/*
-	DEPRECATED
-*/
-
+/**
+ * @deprecated
+ */
 use Ximdex\Models\Node;
 use Ximdex\Models\NodeType;
 use Ximdex\MVC\ActionAbstract;
 
-class Action_addworkflow extends ActionAbstract {
-    function index () {
+class Action_addworkflow extends ActionAbstract
+{
+    public function index()
+    {
     	$values = array(
     		'id_node' => $this->request->getParam('nodeid'),
     		'go_method' => 'add_workflow'
     	);
-
     	$this->render($values, null,'default-3.0.tpl');
     }
 
-    function add_workflow() {
+    public function add_workflow()
+    {
     	$idNode = $this->request->getParam('nodeid');
     	$workflowName = $this->request->getParam('workflow');
-
     	$nodeType = new NodeType();
     	$nodeType->SetByName('Workflow');
-
     	$node = new Node();
-    	$result = $node->CreateNode($workflowName, $idNode, $nodeType->get('IdNodeType'));
-
     	$this->reloadNode($idNode);
-    	if (!$result) {
+    	$result = $node->CreateNode($workflowName, $idNode, $nodeType->get('IdNodeType'));
+    	if (! $result) {
     		$this->messages->add(_('Workflow could not be successfully inserted'), MSG_TYPE_ERROR);
     		$this->messages->mergeMessages($node->messages);
     	} else {

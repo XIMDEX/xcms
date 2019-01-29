@@ -1,6 +1,7 @@
 <?php
+
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -28,37 +29,34 @@ use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\App;
 use Xmd\Widgets\Widget;
 
-class Action_widgets extends ActionAbstract {
-
-  function index() {
-		$widget = strtolower($this->request->getParam("widget"));
-		$wmethod = ($this->request->getParam("wmethod"))? $this->request->getParam("wmethod") : "update";
-		$wpath = App::getPath("/src/Widgets/");
-
+/**
+ * @deprecated
+ */
+class Action_widgets extends ActionAbstract
+{
+    public function index()
+    {
+		$widget = strtolower($this->request->getParam('widget'));
+		$wmethod = ($this->request->getParam('wmethod'))? $this->request->getParam('wmethod') : 'update';
+		$wpath = App::getPath('/src/Widgets/');
 		$class = "Widget_{$widget}";
-
-		if(file_exists("{$wpath}{$class}.class.php") ) {
+		if (file_exists("{$wpath}{$class}.class.php")) {
 			require_once("{$wpath}{$class}.class.php");
-
-			if(method_exists($class, $wmethod) ) {
+			if (method_exists($class, $wmethod)) {
 				$class::$wmethod($this->request->getRequests());
-			}else {
+			} else {
 				$class::update($this->request->getRequests());
 			}
 
 		}
-
-		die();
+        // die();
 	}
 
-	function get_widget() {
-		$widget = strtolower($this->request->getParam("widget"));
+	public function get_widget()
+	{
+		$widget = strtolower($this->request->getParam('widget'));
 		$params = $this->request->getRequests();
-
-
-		echo  Widget::create($widget, $params);
-
-		die();
+		echo Widget::create($widget, $params);
+		// die();
 	}
-
 }

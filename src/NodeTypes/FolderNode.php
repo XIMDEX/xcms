@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -35,42 +35,49 @@ use Ximdex\Logger;
 /**
  * @brief Handles directories
  *
- * Directories are located in data/nodes directory
+ * Directories are located in data / nodes directory
  */
 class FolderNode extends Root
 {
     /**
-     * Creates the folder in data/nodes directory
      * {@inheritDoc}
-     * @see \Ximdex\NodeTypes\Root::RenderizeNode()
+     * @see \Ximdex\NodeTypes\Root::renderizeNode()
      */
-    function RenderizeNode()
+    public function renderizeNode() : bool
     {
-        $parentID = $this->parent->GetParent();
-        $parent = new Node($parentID);
-        if (!$parent->IsRenderized())
-        {
-            $parent->RenderizeNode();
+        if (App::getValue('RenderizeAll') or in_array($this->nodeType->getID(), [
+            NodeTypeConstants::TEMPLATES_ROOT_FOLDER,
+            NodeTypeConstants::SECTION,
+            NodeTypeConstants::SERVER,
+            NodeTypeConstants::PROJECT
+        ])) {
+            $parentID = $this->parent->GetParent();
+            $parent = new Node($parentID);
+            if (! $parent->isRenderized()) {
+                $parent->renderizeNode();
+            }
+            $folder = $this->GetChildrenPath();
+            $folder = XIMDEX_ROOT_PATH . App::getValue("NodeRoot") . $folder;
+            if (file_exists($folder)) {
+                // FsUtils::deltree($folder);
+                return true;
+            }
+            if (! @mkdir($folder, 0777)) {
+                $this->parent->SetError(7);
+                Logger::error('Cannot create the folder: ' . $folder);
+                return false;
+            }
         }
-        $folder = $this->GetChildrenPath();
-        $folder = XIMDEX_ROOT_PATH . App::getValue("NodeRoot") . $folder;
-        if (file_exists($folder))
-        {
-            FsUtils::deltree($folder);
-        }
-        if (!mkdir($folder, 0777))
-        {
-            $this->parent->SetError(7);
-        }
-        chmod($folder, 0777);
+        return true;
     }
 
     /**
      * Get the documents that must be publicated together with the folder
+     * 
      * @param array params
      * @return array
      */
-    public function getPublishabledDeps($params)
+    public function getPublishabledDeps(array $params = []) : ?array
     {
         $idNode = $this->parent->get('IdNode');
         $node = new Node($idNode);
@@ -79,86 +86,81 @@ class FolderNode extends Root
     }
 
     /**
-     *  Gets the XML documents that belong to the Section.
+     * Gets the XML documents that belong to the Section
+     * 
      * @return array|null
      */
-    function getXmlDocuments()
+    public function getXmlDocuments() : ?array
     {
         $folderType = 'documents';
         $xmlFolderId = $this->parent->GetChildByName($folderType);
-        if (!($xmlFolderId > 0))
-        {
+        if (! $xmlFolderId) {
             Logger::error('xml folder not found');
-            return NULL;
+            return null;
         }
         $xmlFolder = new Node($xmlFolderId);
         $descendants = $xmlFolder->TraverseTree();
-        if (sizeof($descendants) > 0)
-        {
+        if (sizeof($descendants) > 0) {
             $xmlDocs = array();
-            foreach ($descendants as $id)
-            {
+            foreach ($descendants as $id) {
                 $doc = new Node($id);
-                if ($doc->nodeType->get('IsStructuredDocument') == 1)
-                {
+                if ($doc->nodeType->get('IsStructuredDocument')) {
                     $xmlDocs[] = $id;
                 }
             }
             return $xmlDocs;
         }
-        return NULL;
+        return null;
     }
-    
-    function CreateNode($name = null, $parentID = null, $nodeTypeID = null)
+
+    public function createNode(string $name = null, int $parentID = null, int $nodeTypeID = null)
     {
-        //By default, when a schemes folder is created, we insert the default RNGs for metadata
-        if ($nodeTypeID == \Ximdex\NodeTypes\NodeTypeConstants::TEMPLATE_VIEW_FOLDER)
-        {
-            $this->_createDefaultRNGs();
+        // By default, when a schemes folder is created, we insert the default RNGs for metadata
+        if ($nodeTypeID == NodeTypeConstants::TEMPLATE_VIEW_FOLDER) {
+            $this->createDefaultRNGs();
         }
         $this->updatePath();
+        return true;
     }
 
-    /**
-     *  Does nothing.
-     */
-    function DeleteNode()
-    {}
+    public function cloneNode(string $target)
+    {
+        return;
+    }
 
-    function CloneNode($target)
-    {}
-
-    function UpdatePath()
+    public function updatePath()
     {
         $node = new Node($this->nodeID);
         $path = pathinfo($node->GetPath());
-        if(isset($path['dirname']))
-        {
+        if (isset($path['dirname'])) {
             $db = new \Ximdex\Runtime\Db();
             $db->execute(sprintf("update Nodes set Path = '%s' where IdNode = %s", $path['dirname'], $this->nodeID));
         }
         $children = $node->getChildren();
         $children = is_array($children) ? $children : array();
-        foreach ($children as $childId)
-        {
+        foreach ($children as $childId) {
             $child = new Node($childId);
             $child->class->UpdatePath();
         }
         return true;
     }
 
-    function RenameNode($name = null)
+    /**
+     * {@inheritDoc}
+     * @see \Ximdex\NodeTypes\Root::renameNode()
+     */
+    public function renameNode(string $name) : bool
     {
-        return $this->updatePath();
+        $this->updatePath();
+        return true;
     }
 
-    function GetDependencies()
+    public function getDependencies() : array
     {
         $query = sprintf("SELECT DISTINCT IdNode FROM Nodes WHERE IdParent = %d", $this->nodeID);
         $this->dbObj->Query($query);
         $deps = array();
-        while (!$this->dbObj->EOF)
-        {
+        while (! $this->dbObj->EOF) {
             $deps[] = $this->dbObj->GetValue("IdNode");
             $this->dbObj->Next();
         }
@@ -166,13 +168,20 @@ class FolderNode extends Root
     }
 
     /**
-     * Does nothing.
+     * Does nothing
+     * 
      * @param string target
      */
-    function MoveNode($target = null)
-    {}
+    public function moveNode(string $target = null)
+    {
+        return;
+    }
 
-    function ToXml($depth, & $files, $recurrence)
+    /**
+     * {@inheritDoc}
+     * @see \Ximdex\NodeTypes\Root::ToXml()
+     */
+    public function toXml(int $depth, array & $files, bool $recurrence = false)
     {
         $query = sprintf("SELECT IdGroup, IdRole FROM RelGroupsNodes WHERE IdNode = %d", $this->nodeID);
         $this->dbObj->Query($query);
@@ -201,15 +210,14 @@ class FolderNode extends Root
         return $xml;
     }
 
-    function updateChooseTemplates()
+    public function updateChooseTemplates()
     {
         $section = $this->parent;
         $dinamicTemplateList = $section->getProperty('dinamic_template_list');
         $dinamicTemplateList = $dinamicTemplateList[0];
         $dinamicTemplatePatterns = explode(', ', $dinamicTemplateList);
         $templates = [];
-        foreach ($dinamicTemplatePatterns as $key => $dinamicTemplatePattern)
-        {
+        foreach ($dinamicTemplatePatterns as $key => $dinamicTemplatePattern) {
             $matches = array();
             preg_match_all('/%%%([^%]+)%%%/', $dinamicTemplatePattern, $matches);
             $templates[] = array(
@@ -222,25 +230,21 @@ class FolderNode extends Root
         // For controlling the file creation
         $createFile = true;
         $childrens = $section->GetChildren(\Ximdex\NodeTypes\NodeTypeConstants::XSL_TEMPLATE);
-        foreach ($childrens as $idChildren)
-        {
+        foreach ($childrens as $idChildren) {
             $children = new Node($idChildren);
-            if ($children->get('Name') == 'templates_choose.xsl')
-            {
+            if ($children->get('Name') == 'templates_choose.xsl') {
                 $createFile = false;
                 $chooseNodeId = $idChildren;
             }
-            foreach ($templates as $template)
-            {
+            foreach ($templates as $template) {
                 $matches = array();
-                if (preg_match("/^" . $template['TEMPLATE'] . "\.xsl$/", $children->get('Name'), $matches) > 0)
-                {
-                    if (count($matches) - 1 == count($template['VALUES']))
-                    {
+                if (preg_match("/^" . $template['TEMPLATE'] . "\.xsl$/", $children->get('Name'), $matches) > 0) {
+                    if (count($matches) - 1 == count($template['VALUES'])) {
                         $dinamicCallerStructure[str_replace('%%%', '_', $template['ORIGINAL_TEMPLATE'])][] = array(
                             'KEYS' => $template['VALUES'],
                             'VALUES' => $matches,
-                            'FILE' => $children->get('Name'));
+                            'FILE' => $children->get('Name')
+                        );
                     }
                     break;
                 }
@@ -251,25 +255,22 @@ class FolderNode extends Root
             . '	<xsl:template name="dinamic_caller">' . "\r\n"
             . '		<xsl:param name="template_name" />' . "\r\n"
             . "		<xsl:choose>\r\n";
-        foreach ($dinamicCallerStructure as $key => $dinamicCaller)
-        {
+        foreach ($dinamicCallerStructure as $key => $dinamicCaller) {
             $xslChoose .= sprintf("			<xsl:when test=\"\$template_name = '%s'\">\r\n"
                 . "				<xsl:choose>\r\n", $key);
-            foreach ($dinamicCaller as $dinamicCallerInfo)
-            {
+            foreach ($dinamicCaller as $dinamicCallerInfo) {
                 $condition = array();
-                foreach ($dinamicCallerInfo['KEYS'] as $key => $xpathKey)
-                {
+                foreach ($dinamicCallerInfo['KEYS'] as $key => $xpathKey) {
                     $xpathValue = $dinamicCallerInfo['VALUES'][$key + 1];
-                    if ($xpathKey == 'schema')
-                    {
+                    if ($xpathKey == 'schema') {
                         $xpathValue = $xpathValue . '.xml';
                     }
                     $condition[] = sprintf("/docxap/@%s = '%s'", $xpathKey, $xpathValue);
                 }
                 $condition = implode(' and ', $condition);
                 $xslChoose .= sprintf('					<xsl:when test="%s">', $condition) . "\r\n";
-                $xslChoose .= sprintf('						<xsl:call-template name="%s" />', str_replace('.xsl', '', $dinamicCallerInfo['FILE'])) . "\r\n";
+                $xslChoose .= sprintf('						<xsl:call-template name="%s" />', str_replace('.xsl', ''
+                    , $dinamicCallerInfo['FILE'])) . "\r\n";
                 $xslChoose .= "					</xsl:when>\r\n";
             }
             $xslChoose .= sprintf("				</xsl:choose>\r\n			</xsl:when>\r\n");
@@ -277,13 +278,10 @@ class FolderNode extends Root
         $xslChoose .= "		</xsl:choose>\r\n	</xsl:template>\r\n</xsl:stylesheet>";
 
         // Updates template_choose content (or creates the node)
-        if (!$createFile)
-        {
+        if (! $createFile) {
             $chooseNode = new Node($chooseNodeId);
             $chooseNode->SetContent($xslChoose);
-        }
-        else
-        {
+        } else {
             $file = XIMDEX_ROOT_PATH . App::getValue('TempRoot') . '/' . FsUtils::getUniqueFile(XIMDEX_ROOT_PATH 
                 . App::getValue('TempRoot') . '/');
             FsUtils::file_put_contents($file, $xslChoose);
@@ -300,39 +298,46 @@ class FolderNode extends Root
         }
     }
 
-    function getIndex()
+    /**
+     * {@inheritDoc}
+     * @see \Ximdex\NodeTypes\Root::getIndex()
+     */
+    public function getIndex()
     {
         $result = $this->parent->query(sprintf("SELECT ft.IdChild"
             . " FROM FastTraverse ft INNER JOIN Nodes n on n.IdNode = ft.IdChild"
             . " INNER JOIN NodeProperties np on np.IdNode = n.IdNode and Property = 'is_section_index'"
             . " Where ft.IdNode = %d order by ft.Depth ASC LIMIT 1", $this->parent->get('IdNode'), 'ft.IdChild'), MONO);
-        if (!(count($result) > 0))
-        {
-            return NULL;
+        if (! count($result)) {
+            return null;
         }
         return $result[0];
     }
 
-    function CanDenyDeletion()
-    {}
+    /**
+     * 
+     * {@inheritDoc}
+     * @see \Ximdex\NodeTypes\Root::canDenyDeletion()
+     */
+    public function canDenyDeletion()
+    {
+        return false;
+    }
 
-    private function _createDefaultRNGs()
+    private function createDefaultRNGs()
     {
         $defaultRNGs_folder = "/src/Metadata/schemes/";
         $idparent = $this->parent->GetID();
         $this->buildDefaultRngFromPath($idparent, $defaultRNGs_folder);
     }
 
-    protected function buildDefaultRngFromPath($idParent, $path)
+    protected function buildDefaultRngFromPath(int $idParent, string $path)
     {
-        if ($handle = opendir(XIMDEX_ROOT_PATH . $path))
-        {
+        if ($handle = opendir(XIMDEX_ROOT_PATH . $path)) {
             $entry = readdir($handle);
-            while (false !== $entry)
-            {
+            while (false !== $entry) {
                 $data = array();
-                if (!($entry == '.' || $entry == '..'))
-                {
+                if (! ($entry == '.' || $entry == '..')) {
                     $data = array(
                         'NODETYPENAME' => "RNGVISUALTEMPLATE",
                         'NAME' => $entry,
@@ -343,29 +348,23 @@ class FolderNode extends Root
                     );
                     $baseIO = new \Ximdex\IO\BaseIO();
                     $rngId = $baseIO->build($data);
-
-                    if (!$rngId > 0)
-                    {
+                    if (! $rngId > 0) {
                         error_log("Fail! Default metadata RNG " . $entry . " was not created!");
-                    }
-                    else
-                    {
+                    } else {
                         $newRngNode = new Node($rngId);
                         $rngContent = file_get_contents(XIMDEX_ROOT_PATH . $path . $entry, FILE_USE_INCLUDE_PATH);
                         $newRngNode->SetContent($rngContent);
 
-                        //setting the type of schema
+                        // Setting the type of schema
                         $sql = "INSERT INTO NodeProperties VALUES (NULL,$rngId,'SchemaType','metadata_schema')";
                         $dbObj = new \Ximdex\Runtime\Db();
-                        if (!$dbObj->Execute($sql))
-                        {
+                        if (! $dbObj->Execute($sql)) {
                             error_log("Fail! Default metadata RNG " . $entry . " couldn't be modified!");
                         }
-                        //forbidding rng deletion
+                        // Forbidding rng deletion
                         $sql = "INSERT INTO NoActionsInNode VALUES ($rngId,7318)";
                         $dbObj = new \Ximdex\Runtime\Db();
-                        if (!$dbObj->Execute($sql))
-                        {
+                        if (! $dbObj->Execute($sql)) {
                             error_log("Fail! Default metadata RNG " . $entry . " could be deleted!");
                         }
                     }

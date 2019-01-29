@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -36,7 +36,7 @@ class Action_createlanguage extends ActionAbstract
     /**
      * Main method: shows initial form
      */
-    function index()
+    public function index()
     {
         $idNode = $this->request->getParam('nodeid');
         $folder = new Node($idNode);
@@ -44,17 +44,17 @@ class Action_createlanguage extends ActionAbstract
         $language = new Language();
         $languages = $language->find('IsoName', '', NULL, MONO);
         $isoCode = new IsoCode();
-        $isoCodes = $isoCode->find('Iso2', "1=1 order by IdIsoCode asc", NULL, MONO);
-        $isoNames = $isoCode->find('Name', "1=1 order by IdIsoCode asc", NULL, MONO);
-        if (!is_array($languages)) {
+        $isoCodes = $isoCode->find('Iso2', '1=1 order by IdIsoCode asc', NULL, MONO);
+        $isoNames = $isoCode->find('Name', '1=1 order by IdIsoCode asc', NULL, MONO);
+        if (! is_array($languages)) {
             $languages = (array)$languages;
         }
         $langs = array();
-        if (!empty($isoCodes)) {
+        if (! empty($isoCodes)) {
             $i = 0;
             foreach ($isoCodes as $isoCode) {
                 if (!in_array($isoCode, $languages)) {
-                    $langs[$i] = array("code" => $isoCodes[$i], "name" => $isoNames[$i]);
+                    $langs[$i] = array('code' => $isoCodes[$i], 'name' => $isoNames[$i]);
                 }
                 $i++;
             }
@@ -68,7 +68,7 @@ class Action_createlanguage extends ActionAbstract
         $this->render($values, null, 'default-3.0.tpl');
     }
 
-    function createlanguage()
+    public function createlanguage()
     {
         $idNode = $this->request->getParam('nodeid');
         $name = $this->request->getParam('langname');
@@ -82,7 +82,7 @@ class Action_createlanguage extends ActionAbstract
         if ($result > 0) {
             $this->messages->add(_('Language has been succesfully added'), MSG_TYPE_NOTICE);
         } else {
-            $this->messages->add(_("Language ") . \Ximdex\XML\Base::recodeSrc($name, $this->displayEncoding) . _(" could not be ") 
+            $this->messages->add(_('Language ') . \Ximdex\XML\Base::recodeSrc($name, $this->displayEncoding) . _(' could not be ') 
                 . \Ximdex\XML\Base::recodeSrc(_('added'), $this->displayEncoding), MSG_TYPE_ERROR);
         }
         $values = array('messages' => $this->messages->messages, 'idNode' => $idNode);

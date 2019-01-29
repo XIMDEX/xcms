@@ -136,6 +136,7 @@
 .option_info
 {
 	float: left;
+	width: auto !important;
 }
 
 .publication_option

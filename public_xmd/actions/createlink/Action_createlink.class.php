@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -54,15 +54,15 @@ class Action_createlink extends ActionAbstract
         $description = $this->request->getParam('description');
         $this->createNodeLink($name, $url, $description, $idParent);
         $values = [];
-        $values["messages"] = $this->messages->messages;
-        $values["parentID"] = $idParent;
+        $values['messages'] = $this->messages->messages;
+        $values['parentID'] = $idParent;
         $this->sendJSON($values);
     }
 
-    public function createNodeLink($name, $url, $description, $idParent)
+    public function createNodeLink(string $name, string $url, string $description, int $idParent)
     {
         if (empty($description)) {
-            $description = " ";
+            $description = ' ';
         }
         $data = array('NODETYPENAME' => 'LINK',
             'NAME' => $name,

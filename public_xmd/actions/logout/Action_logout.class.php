@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -26,19 +26,19 @@
  */
 
 use Ximdex\Models\User;
+use \Ximdex\Models\NodeEdition;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\App;
 
 class Action_logout extends ActionAbstract
 {
-    function index()
+    public function index()
     {
-        $userID = (int)\Ximdex\Runtime\Session::get('userID');
-        $nodeEdition = new \Ximdex\Models\NodeEdition();
+        $userID = (int) Ximdex\Runtime\Session::get('userID');
+        $nodeEdition = new NodeEdition();
         $nodeEdition->deleteByUser($userID);
         $user = new User();
         $user->logout();
-        header(sprintf("Location: %s/", App::getValue('UrlRoot')));
-        die();
+        header(sprintf('Location: %s/', App::getValue('UrlRoot')));
     }
 }

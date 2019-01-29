@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -24,19 +24,20 @@
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
+
+
 namespace Ximdex\NodeTypes;
 
 use Ximdex\Models\Action;
 
-
 /**
- * @brief Handles the Ximdex actions.
+ * @brief Handles the Ximdex actions
  */
 class ActionNode extends Root
 {
-
     /**
-     *  Calls to method for adding a row to Actions table.
+     * Calls to method for adding a row to Actions table
+     * 
      * @param string name
      * @param int parentID
      * @param int nodeTypeID
@@ -45,48 +46,35 @@ class ActionNode extends Root
      * @param string icon
      * @param string description
      */
-
-    function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $command = null, $icon = null, $description = null)
+    public function createNode(string $name = null, int $parentID = null, int $nodeTypeID = null, int $stateID = null, string $command = null
+        , string $icon = null, string $description = null)
     {
-
         $action = new Action();
         $action->CreateNewAction($this->parent->get('IdNode'), $parentID, $name, $command, $icon, $description, $stateID);
-        $this->UpdatePath();
+        $this->updatePath();
+        return true;
     }
 
     /**
-     *  Does nothing.
-     * @return null
+     * {@inheritDoc}
+     * @see \Ximdex\NodeTypes\Root::renameNode()
      */
-
-    function RenderizeNode()
+    public function renameNode(string $name) : bool
     {
-
-        return null;
-    }
-
-    /**
-     *  Calls to method for updating the Name on the database.
-     * @param string name
-     */
-
-    function RenameNode($name = null)
-    {
-
         $action = new Action($this->nodeID);
         $action->SetName($name);
         $this->UpdatePath();
+        return true;
     }
 
     /**
-     *  Calls to method for deleting.
+     *  Calls to method for deleting
      */
-
-    function DeleteNode()
+    public function deleteNode() : bool
     {
-
         $action = new Action($this->nodeID);
-        $action->DeleteAction();
+        $action->deleteAction();
+        return true;
     }
 }
 

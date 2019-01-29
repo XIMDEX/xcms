@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -34,30 +34,27 @@ class Action_modifylink extends ActionAbstract
 {
     /**
      * Main method: shows initial form
-     * 
-     * @return boolean
      */
     public function index()
     {
     	$idNode = $this->request->getParam('nodeid');	
 		$link = new Link($idNode);
 		$node = new Node($idNode);
-		if (!(($link->get('IdLink') > 0) && ($node->get('IdNode') > 0))) {
+		if (! (($link->get('IdLink') > 0) && ($node->get('IdNode') > 0))) {
 			$this->messages->add(_('Link could not be successfully loaded, contact with your administrator'), MSG_TYPE_ERROR);
-			Logger::error("Error while loading link: " . $idNode);
+			Logger::error('Error while loading link: ' . $idNode);
 			$this->render(array('messages' => $this->messages->messages), NULL, 'messages.tpl');
-			return false;
+			return;
 		}
 		$this->addJs('/actions/createlink/resources/js/index.js');
 		$values = array(
-					'name' => $node->get('Name'),
-					'url' => $link->get('Url'),
-					'description' => $node->get('Description'),
-		            'nodeTypeID' => $node->nodeType->getID(),
-		            'node_Type' => $node->nodeType->GetName(),
-					'go_method' => 'modifylink');
+    		'name' => $node->get('Name'),
+    		'url' => $link->get('Url'),
+    		'description' => $node->get('Description'),
+            'nodeTypeID' => $node->nodeType->getID(),
+            'node_Type' => $node->nodeType->GetName(),
+    		'go_method' => 'modifylink');
 		$this->render($values, null, 'default-3.0.tpl');
-		return true ;
     }
 
 	public function modifylink()
@@ -97,7 +94,7 @@ class Action_modifylink extends ActionAbstract
     	foreach ($node->messages->messages as $messageInfo) {
     		$this->messages->messages[] = $messageInfo;
     	}
-		$values = array('messages' => $this->messages->messages, "parentID" =>$node->get('IdParent') );
+		$values = array('messages' => $this->messages->messages, 'parentID' => $node->get('IdParent') );
 		$this->sendJSON($values);
     }
     
@@ -108,9 +105,9 @@ class Action_modifylink extends ActionAbstract
     	$url = $this->request->getParam('Url');
     	$description = $this->request->getParam('Description');    	
     	$link = new Link();
-    	$links = $link->query(sprintf("Select Node.name, Node.description, Link.Url"
-    		. " FROM Nodes Node"
-    		. " INNER JOIN Links Link on Node.IdNode = Link.IdLink AND Link.Url = '%s' AND Node.IdNode <> %s", $url, $idNode));
+    	$links = $link->query(sprintf('Select Node.name, Node.description, Link.Url'
+    		. ' FROM Nodes Node'
+    		. ' INNER JOIN Links Link on Node.IdNode = Link.IdLink AND Link.Url like \'%s\' AND Node.IdNode <> %s', $url, $idNode));
     	$this->render(array(
     			'id_node' => $idNode,
     			'name' => $name,

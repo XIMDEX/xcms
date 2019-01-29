@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -31,8 +31,10 @@ use Ximdex\MVC\ActionAbstract;
 
 class Action_createrole extends ActionAbstract
 {
-    // Main method: shows initial form
-    function index()
+    /**
+     * Main method: shows initial form
+     */
+    public function index()
     {
         $idNode = $this->request->getParam('nodeid');
         $node = new Node($idNode);
@@ -43,7 +45,7 @@ class Action_createrole extends ActionAbstract
         $this->render($values, null, 'default-3.0.tpl');
     }
 
-    function createrole()
+    public function createrole()
     {
         $idNode = $this->request->getParam('id_node');
         $name = $this->request->getParam('name');
@@ -55,7 +57,7 @@ class Action_createrole extends ActionAbstract
         if ($result > 0) {
             $rol->messages->add(_('Role has been successfully added'), MSG_TYPE_NOTICE);
         }
-        $values = array('messages' => $rol->messages->messages, "parentID" => $idNode);
+        $values = array('messages' => $rol->messages->messages, 'parentID' => $idNode);
         $this->sendJSON($values);
     }
 }

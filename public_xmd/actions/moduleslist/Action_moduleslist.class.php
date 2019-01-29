@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -26,13 +26,14 @@
  */
 
 use Ximdex\Models\Node;
+use Ximdex\Modules\Manager;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\NodeTypes\NodeTypeConstants;
 use Ximdex\Runtime\App;
 
 class Action_moduleslist extends ActionAbstract
 {
-    public static $new_modules = array("Xowl", "Xlyre");
+    public static $new_modules = array('Xowl', 'Xlyre');
 
     public function index()
     {}
@@ -41,15 +42,15 @@ class Action_moduleslist extends ActionAbstract
     {
         $modules = array();
         $node = new Node();
-        $mods = $node->find(ALL, "IdNodeType=" . NodeTypeConstants::MODULE_INFO_CONTAINER, NULL, MULTI);
-        if (!is_array($mods)) {
+        $mods = $node->find(ALL, 'IdNodeType=' . NodeTypeConstants::MODULE_INFO_CONTAINER, null, MULTI);
+        if (! is_array($mods)) {
             $mods = array();
         }
         foreach ($mods as $mod) {
-            $moduleName = $mod["Name"];
+            $moduleName = $mod['Name'];
             $isEnabled = $this->isEnabled($moduleName);
             $modules[] = array(
-                'id' => $mod["IdNode"],
+                'id' => $mod['IdNode'],
                 'name' => $moduleName,
                 'enabled' => $isEnabled,
             );
@@ -59,7 +60,7 @@ class Action_moduleslist extends ActionAbstract
 
     protected static function isEnabled($name)
     {
-        $str = "MODULE_" . strtoupper($name) . "_ENABLED";
+        $str = 'MODULE_' . strtoupper($name) . '_ENABLED';
         if (App::getValue($str)) {
             return true;
         } else {
@@ -69,39 +70,39 @@ class Action_moduleslist extends ActionAbstract
 
     private function moduleNotFound()
     {
-        $this->messages->add(_("Module not found"), MSG_TYPE_ERROR);
-        return $this->render(array('messages' => $this->messages->messages), NULL, 'messages.tpl');
+        $this->messages->add(_('Module not found'), MSG_TYPE_ERROR);
+        return $this->render(array('messages' => $this->messages->messages), null, 'messages.tpl');
     }
 
     public function opentab()
     {
         $this->addJs('/actions/moduleslist/resources/js/validate.js');
         $this->addCss('/actions/moduleslist/resources/css/moduleslist.css');
-        $lang = strtolower(\Ximdex\Runtime\Session::get("locale"));
-        $base = APP_ROOT_PATH . "/actions/moduleslist/template/Smarty/modules";
-        $userId = \Ximdex\Runtime\Session::get('userID');
+        $lang = strtolower(Ximdex\Runtime\Session::get('locale'));
+        $base = APP_ROOT_PATH . '/actions/moduleslist/template/Smarty/modules';
+        $userId = Ximdex\Runtime\Session::get('userID');
 
         $module_name = $this->request->getParam('modsel');
-        $module_exists = \Ximdex\Modules\Manager::moduleExists($module_name);
+        $module_exists = Manager::moduleExists($module_name);
         if (!$module_exists) {
             return $this->moduleNotFound();
         }
-        $module_actived = \Ximdex\Modules\Manager::isEnabled($module_name);
-        $module_state = \Ximdex\Modules\Manager::checkModule($module_name);
-        $module_installed = (\Ximdex\Modules\Manager::get_module_state_installed() == $module_state);
-        $core_module = in_array($module_name, \Ximdex\Modules\Manager::getCoreModules());
+        $module_actived = Manager::isEnabled($module_name);
+        $module_state = (new Manager())->checkModule($module_name);
+        $module_installed = (Manager::get_module_state_installed() == $module_state);
+        $core_module = in_array($module_name, Manager::getCoreModules());
         $values = array(
-            "module_name" => $module_name,
-            "module_exists" => $module_exists,
-            "module_actived" => $module_actived,
-            "module_installed" => $module_installed,
-            "core_module" => $core_module,
-            "lang" => $lang,
-            "userId" => $userId
+            'module_name' => $module_name,
+            'module_exists' => $module_exists,
+            'module_actived' => $module_actived,
+            'module_installed' => $module_installed,
+            'core_module' => $core_module,
+            'lang' => $lang,
+            'userId' => $userId
         );
-        $file = "{$module_name}.tpl";
-        if (file_exists("{$base}/{$file}")) {
-            $this->render($values, "modules/{$file}", 'default-3.0.tpl');
+        $file = $module_name . '.tpl';
+        if (file_exists($base . '/' . $file)) {
+            $this->render($values, 'modules/' . $file, 'default-3.0.tpl');
         } else {
             return $this->moduleNotFound();
         }
@@ -111,17 +112,17 @@ class Action_moduleslist extends ActionAbstract
     public function changeState()
     {
         $module_name = $this->request->getParam('modsel');
-        $module_exists = \Ximdex\Modules\Manager::moduleExists($module_name);
-        $module_active = (int)$this->request->getParam('module_active');
-        $module_install = (int)$this->request->getParam('module_install');
-        if (!$module_exists) {
+        $module_exists = Manager::moduleExists($module_name);
+        $module_active = (int) $this->request->getParam('module_active');
+        $module_install = (int) $this->request->getParam('module_install');
+        if (! $module_exists) {
             return $this->moduleNotFound();
         }
-        $state_now = \Ximdex\Modules\Manager::isEnabled($module_name);
-        $module_state = \Ximdex\Modules\Manager::checkModule($module_name);
-        $install_now = (\Ximdex\Modules\Manager::get_module_state_installed() == $module_state);
-        $core_module = in_array($module_name, \Ximdex\Modules\Manager::getCoreModules());
-        if ($state_now != $module_active && !$core_module) {
+        $state_now = Manager::isEnabled($module_name);
+        $module_state = (new Manager())->checkModule($module_name);
+        $install_now = (Manager::get_module_state_installed() == $module_state);
+        $core_module = in_array($module_name, Manager::getCoreModules());
+        if ($state_now != $module_active && ! $core_module) {
             if ($module_active) {
                 
                 // Before active, we check if install it
@@ -138,14 +139,14 @@ class Action_moduleslist extends ActionAbstract
                 }
             }
         } else {
-            if ($module_install != $install_now && !$core_module) {
+            if ($module_install != $install_now && ! $core_module) {
                 if ($module_install) {
                     $this->installModule($module_name);
                 } else {
                     $this->uninstallModule($module_name);
                 }
             } else {
-                $this->messages->add(_("Module not changed"), MSG_TYPE_ERROR);
+                $this->messages->add(_('Module not changed'), MSG_TYPE_ERROR);
             }
         }
         echo json_encode(array('messages' => $this->messages->messages));
@@ -154,49 +155,49 @@ class Action_moduleslist extends ActionAbstract
 
     public function installModule($module_name)
     {
-        \Ximdex\Modules\Manager::$msg = null;
-        \Ximdex\Modules\Manager::installModule($module_name);
-        if (\Ximdex\Modules\Manager::$msg != null) {
-            $this->messages->add(\Ximdex\Modules\Manager::$msg, MSG_TYPE_NOTICE);
-            \Ximdex\Modules\Manager::$msg = null;
+        Manager::$msg = null;
+        Manager::installModule($module_name);
+        if (Manager::$msg != null) {
+            $this->messages->add(Manager::$msg, MSG_TYPE_NOTICE);
+            Manager::$msg = null;
         } else {
-            $this->messages->add(_("Module installed"), MSG_TYPE_NOTICE);
+            $this->messages->add(_('Module installed'), MSG_TYPE_NOTICE);
         }
     }
 
     public function enableModule($module_name)
     {
-        \Ximdex\Modules\Manager::$msg = null;
-        \Ximdex\Modules\Manager::enableModule($module_name);
-        if (\Ximdex\Modules\Manager::$msg != null) {
-            $this->messages->add(\Ximdex\Modules\Manager::$msg, MSG_TYPE_NOTICE);
-            \Ximdex\Modules\Manager::$msg = null;
+        Manager::$msg = null;
+        Manager::enableModule($module_name);
+        if (Manager::$msg != null) {
+            $this->messages->add(Manager::$msg, MSG_TYPE_NOTICE);
+            Manager::$msg = null;
         } else {
-            $this->messages->add(_("Module actived"), MSG_TYPE_NOTICE);
+            $this->messages->add(_('Module actived'), MSG_TYPE_NOTICE);
         }
     }
 
     public function uninstallModule($module_name)
     {
-        \Ximdex\Modules\Manager::uninstallModule($module_name);
-        if (\Ximdex\Modules\Manager::$msg != null) {
-            $this->messages->add(\Ximdex\Modules\Manager::$msg, MSG_TYPE_NOTICE);
-            \Ximdex\Modules\Manager::$msg = null;
+        Manager::uninstallModule($module_name);
+        if (Manager::$msg != null) {
+            $this->messages->add(Manager::$msg, MSG_TYPE_NOTICE);
+            Manager::$msg = null;
         } else {
-            $this->messages->add(_("Module uninstalled"), MSG_TYPE_NOTICE);
+            $this->messages->add(_('Module uninstalled'), MSG_TYPE_NOTICE);
         }
     }
 
     public function disableModule($module_name)
     {
-        \Ximdex\Modules\Manager::$msg = null;
-        $this->messages->add(_("Module disabled"), MSG_TYPE_NOTICE);
-        \Ximdex\Modules\Manager::disableModule($module_name);
-        if (\Ximdex\Modules\Manager::$msg != null) {
-            $this->messages->add(\Ximdex\Modules\Manager::$msg, MSG_TYPE_NOTICE);
-            \Ximdex\Modules\Manager::$msg = null;
+        Manager::$msg = null;
+        $this->messages->add(_('Module disabled'), MSG_TYPE_NOTICE);
+        Manager::disableModule($module_name);
+        if (Manager::$msg != null) {
+            $this->messages->add(Manager::$msg, MSG_TYPE_NOTICE);
+            Manager::$msg = null;
         } else {
-            $this->messages->add(_("Module disabled"), MSG_TYPE_NOTICE);
+            $this->messages->add(_('Module disabled'), MSG_TYPE_NOTICE);
         }
     }
 }

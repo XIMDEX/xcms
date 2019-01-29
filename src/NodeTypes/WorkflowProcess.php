@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -29,23 +29,27 @@ namespace Ximdex\NodeTypes;
 
 class WorkflowProcess extends Root
 {
-	public function createNode($name = null, $parentID = null, $nodeTypeID = null)
+    /**
+     * {@inheritDoc}
+     * @see \Ximdex\NodeTypes\Root::createNode()
+     */
+	public function createNode(string $name = null, int $parentID = null, int $nodeTypeID = null)
 	{
 		$this->updatePath();
+		return true;
 	}
 
-	public function deleteNode()
-	{
-	    return true;
-	}
-
-	public function renameNode($name = null)
+	/**
+	 * {@inheritDoc}
+	 * @see \Ximdex\NodeTypes\Root::renameNode()
+	 */
+	public function renameNode(string $name) : bool
 	{
 	    $this->updatePath();
 	    return true;
 	}
 
-	public function getDependencies()
+	public function getDependencies() : array
 	{
 		return array();
 	}

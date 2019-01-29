@@ -59,17 +59,11 @@ abstract class AbstractStructuredDocument extends FileNode
     /**
      * Creates a new structured node
      * 
-     * @param null $name
-     * @param null $parentID
-     * @param null $nodeTypeID
-     * @param null $stateID
-     * @param null $templateID
-     * @param null $IdLanguage
-     * @param string $aliasName
-     * @param null $channelList
+     * {@inheritDoc}
+     * @see \Ximdex\NodeTypes\FileNode::createNode()
      */
-    function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $templateID = null, $IdLanguage = null
-        , $aliasName = '', $channelList = null)
+    public function createNode(string $name = null, int $parentID = null, int $nodeTypeID = null, int $stateID = null, $templateID = null
+        , int $IdLanguage = null, string $aliasName = '', array $channelList = null)
     {
         $loginID = Session::get("userID");
         $templateNode = new Node($templateID);
@@ -99,6 +93,7 @@ abstract class AbstractStructuredDocument extends FileNode
             $this->parent->SetError(5);
         }
         $this->updatePath();
+        return true;
     }
 
     /**
@@ -148,7 +143,7 @@ abstract class AbstractStructuredDocument extends FileNode
      * @param array $params
      * @return array
      */
-    public function getPublishabledDeps($params)
+    public function getPublishabledDeps(array $params = []) : ?array
     {
         $idDoc = $this->parent->get('IdNode');
 
@@ -174,7 +169,7 @@ abstract class AbstractStructuredDocument extends FileNode
      * @param $content
      * @param null $commitNode
      */
-    public function SetContent($content, $commitNode = NULL, Node $node = null)
+    public function setContent(string $content, bool $commitNode = false, Node $node = null)
     {
         // Checking the valid XML of the given content, if it is necessary
         if ($node) {
@@ -297,38 +292,34 @@ abstract class AbstractStructuredDocument extends FileNode
         }
         return NULL;
     }
-
-    /**
-     * Renderiza el nodo en el sistema de archivos
-     * @param null $channel
-     * @param null $content
-     * @return bool
-     */
-    function RenderizeNode($channel = null, $content = null)
+    
+    /*
+    function renderizeNode(int $channel = null, string $content = null) : bool
     {
         // Se obtiene el id del nodo padre (ya que parent contiene una instancia del node actual)
         // y creamos un objeto nodo con ese id
         $parentID = $this->parent->GetParent();
         $parent = new Node($parentID);
 
-        // Renderizamos hacia arriba toda la jerarqu\EDa
-        if (!$parent->IsRenderized()) {
-            if ($parent->RenderizeNode() === false)
+        // Renderizamos hacia arriba toda la jerarquía
+        if (! $parent->isRenderized()) {
+            if ($parent->renderizeNode() === false)
                 return false;
         }
 
         // Conseguimos el path del archivo de destino
-        $fileName = $this->GetNodePath();
-        $fileContent = $this->GetRenderizedContent($channel, $content);
+        $fileName = $this->getNodePath();
+        $fileContent = $this->getRenderizedContent($channel, $content);
 
         // Lo guardamos en el sistema de archivos
-        if (!FsUtils::file_put_contents($fileName, $fileContent)) {
+        if (! FsUtils::file_put_contents($fileName, $fileContent)) {
             $this->parent->SetError(7);
             $this->parent->messages->add(_('An error occured while trying to save the document'), MSG_TYPE_ERROR);
             return false;
         }
         return true;
     }
+    */
 
     /**
      * Builds the docxap header for a structured document
@@ -386,7 +377,7 @@ abstract class AbstractStructuredDocument extends FileNode
      * @param null $onlyDocXap
      * @return null|string
      */
-    function GetRenderizedContent($channel = null, $content = null, $onlyDocXap = null)
+    function getRenderizedContent($channel = null, $content = null, $onlyDocXap = null)
     {
         $strDoc = new StructuredDocument($this->nodeID);
         if (!($strDoc->get('IdDoc') > 0)) {
@@ -414,7 +405,7 @@ abstract class AbstractStructuredDocument extends FileNode
         return $this->InsertLinkedximletS($idLanguage) . "\n" . $content;
     }
 
-    function DeleteNode()
+    public function deleteNode() : bool
     {
         $parent = new Node($this->parent->get('IdParent'));
         $st = new StructuredDocument($this->parent->get('IdNode'));
@@ -427,11 +418,12 @@ abstract class AbstractStructuredDocument extends FileNode
         $doc->SetID($this->nodeID);
         if ($doc->HasError()) {
             $this->parent->SetError(5);
-            return;
+            return false;
         }
         $doc->DeleteStrDoc();
         if ($doc->HasError()) {
             $this->parent->SetError(5);
+            return false;
         }
 
         // Deletes dependencies in rel tables
@@ -440,16 +432,19 @@ abstract class AbstractStructuredDocument extends FileNode
         $depsMngr->deleteBySource(DepsManager::XML2XML, $this->parent->get('IdNode'));
         $depsMngr->deleteBySource(DepsManager::NODE2ASSET, $this->parent->get('IdNode'));
         Logger::info('StrDoc dependencies deleted');
+        return true;
     }
 
     /**
-     * @param null $name
+     * {@inheritDoc}
+     * @see \Ximdex\NodeTypes\FileNode::renameNode()
      */
-    function RenameNode($name = null)
+    public function renameNode(string $name) : bool
     {
         $doc = new StructuredDocument($this->nodeID);
         $doc->SetName($name);
         $this->updatePath();
+        return true;
     }
 
     /**
@@ -489,12 +484,10 @@ abstract class AbstractStructuredDocument extends FileNode
     }
 
     /**
-     * @param $depth
-     * @param $files
-     * @param $recurrence
-     * @return string
+     * {@inheritDoc}
+     * @see \Ximdex\NodeTypes\FileNode::ToXml()
      */
-    function ToXml($depth, & $files, $recurrence)
+    public function toXml(int $depth, array & $files, bool $recurrence = false)
     {
         $xmlBody = parent::ToXML($depth, $files, $recurrence);
         $channelList = $this->GetChannels();
@@ -765,10 +758,7 @@ abstract class AbstractStructuredDocument extends FileNode
         return $s;
     }
 
-    /**
-     * @return array
-     */
-    function GetDependencies()
+    public function getDependencies() : array
     {
         $nodeDependencies = new NodeDependencies();
         return $nodeDependencies->getByTarget($this->nodeID);

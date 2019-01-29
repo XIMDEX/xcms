@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -31,15 +31,4 @@ namespace Ximdex\NodeTypes;
  * Class for NodeType Image
  */
 class ImageNode extends FileNode
-{
-    /**
-     * Build a new image node file
-     * Use parent CreateNode method and generate a new metadata document for the new image node created
-     * 
-     * @return bool
-     */
-    function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = 7, $sourcePath = "")
-    {
-        parent::CreateNode($name, $parentID, $nodeTypeID, $stateID, $sourcePath);
-    }
-}
+{}

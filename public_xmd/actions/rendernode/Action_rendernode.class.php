@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -41,30 +41,29 @@ class Action_rendernode extends ActionAbstract
     {
         // Change the logs output to preview file
         Logger::setActiveLog('preview');
-        if ($this->request->getParam("nodeid")) {
+        if ($this->request->getParam('nodeid')) {
             
             // Receives request node param
-            $idNode = $this->request->getParam("nodeid");
+            $idNode = $this->request->getParam('nodeid');
             
             // Checks node existence
             $node = new Node($idNode);
-            if (! ($node->get('IdNode') > 0)) {
+            if (! $node->get('IdNode')) {
                 $this->messages->add(_('It is not possible to show preview.') . _(' The node you are trying to preview does not exist.')
                     , MSG_TYPE_NOTICE);
                 $this->render(array('messages' => $this->messages->messages), null, 'messages.tpl');
                 return false;
             }
             Logger::info('Call to rendernode from given ID: ' . $idNode);
-        }
-        elseif ($this->request->getParam('expresion')) {
+        } elseif ($this->request->getParam('expresion')) {
             
             // Receives an expression param containing a nodeID or a path
-            $expression = $this->request->getParam("expresion");
+            $expression = $this->request->getParam('expresion');
             Logger::info('Call to rendernode from expresion: ' . $expression);
             
             // Generate the node ID using pathTo parser
             $parserPathTo = new ParsingPathTo();
-            if (!$parserPathTo->parsePathTo($expression)) {
+            if (! $parserPathTo->parsePathTo($expression)) {
                 $this->messages->mergeMessages($parserPathTo->messages());
             }
             if ($parserPathTo->getNode() === null) {
@@ -78,17 +77,16 @@ class Action_rendernode extends ActionAbstract
         if ($node->nodeType->GetIsStructuredDocument()) {
             
             // Receives request params for structured documents
-            $idChannel = $this->request->getParam("channelid");
+            $idChannel = $this->request->getParam('channelid');
             if (empty($idChannel)) {
-                $idChannel = $this->request->getParam("channel");
+                $idChannel = $this->request->getParam('channel');
             }
-            $showprev = $this->request->getParam("showprev");
-            $content = stripslashes($this->request->getParam("content"));
+            $showprev = $this->request->getParam('showprev');
+            $content = stripslashes($this->request->getParam('content'));
             $version = $this->request->getParam('version');
             $subversion = $this->request->getParam('sub_version');
             $mode = $this->request->getParam('mode');
-        }
-        else {
+        } else {
             $idChannel = null;
             $showprev = null;
             $content = null;

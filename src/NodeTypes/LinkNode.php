@@ -60,7 +60,8 @@ class LinkNode extends Root
 	 * @param string url
 	 * @param string description
 	 */
-	function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $url = null, $description = null)
+	public function createNode(string $name = null, int $parentID = null, int $nodeTypeID = null, int $stateID = null, string $url = null
+	    , string $description = null)
 	{
 		$link = new Link();
 		$link->set('IdLink', $this->nodeID);
@@ -85,13 +86,13 @@ class LinkNode extends Root
 	/**
 	 * Deletes the information of link in the database
 	 */
-	function DeleteNode()
+	public function deleteNode() : bool
 	{
-		if (!($this->link->get('IdLink') > 0)) {
+		if (! $this->link->get('IdLink')) {
 			Logger::error("Se ha solicitado eliminar el nodo {$this->nodeID} que actualmente no existe");
 		}
 		$result = $this->link->delete();
-		if (!$result) {
+		if (! $result) {
 			$this->parent->messages->add(_('Unable to remove link'), MSG_TYPE_ERROR);
 			foreach ($this->link->messages->messages as $message) {
 				$this->parent->messages[] = $message;
@@ -99,12 +100,13 @@ class LinkNode extends Root
 		} else {
 			$it = new IteratorLinkDescriptions('IdLink = %s', array($this->link->get('IdLink')));
 			while ($rel = $it->next()) {
-				if (!$rel->delete()) {
-					Logger::warning(sprintf('No se ha podido eliminar la descripcion con id %s para el enlace %s.', $rel->getIdRel(), $this->link->get('IdLink')));
+				if (! $rel->delete()) {
+					Logger::warning(sprintf('No se ha podido eliminar la descripcion con id %s para el enlace %s.', $rel->getIdRel()
+					    , $this->link->get('IdLink')));
 				}
 			}
 		}
-		return $result;
+		return (bool) $result;
 	}
 
 	/**
@@ -143,7 +145,7 @@ class LinkNode extends Root
 	 * 
 	 * @return array
 	 */
-	function GetDependencies()
+	public function getDependencies() : array
 	{
 		$nodeDependencies = new NodeDependencies();
 		return $nodeDependencies->getByTarget($this->nodeID);
@@ -157,7 +159,7 @@ class LinkNode extends Root
 	 * @param bool recurrence
 	 * @return string
 	 */
-	function ToXml($depth, & $files, $recurrence)
+	public function toXml(int $depth, array & $files, bool $recurrence = false)
 	{
 		$indexTabs = str_repeat("\t", $depth + 1);
 		return sprintf("%s<LinkInfo Url=\"%s\">\n"

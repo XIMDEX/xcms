@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -27,13 +27,15 @@
 
 use Ximdex\MVC\ActionAbstract;
 
+/**
+ * @deprecated
+ */
 class Action_reportslist extends ActionAbstract
 {
     public function index()
     {
         $reports = $this->getReports();
         $values = array('reports' => $reports);
-
         $this->render($values, null, 'only_template.tpl');
     }
 

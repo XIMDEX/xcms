@@ -62,31 +62,23 @@ class XSLT
     public function setXSL($xsl_file, $content = null)
     {
         // Warnings when $xsl_file doesn't exist
-        if ($xsl_file)
-        {
-            if (file_exists($xsl_file))
-            {
-                if (@$this->xsl->load($xsl_file) === false)
-                {
+        if ($xsl_file) {
+            if (file_exists($xsl_file)) {
+                if (@$this->xsl->load($xsl_file) === false) {
                     $error = 'Error loading file ' . $xsl_file . ' (' . \Ximdex\Utils\Messages::error_message('DOMDocument::loadXML(): ') . ')';
                     Logger::error($error);
                     $GLOBALS['errorsInXslTransformation'][] = $error;
                     return false;
                 }
             }
-        }
-        elseif ($content)
-        {
-            if (@$this->xsl->loadXML($content) === false)
-            {
+        } elseif ($content) {
+            if (@$this->xsl->loadXML($content) === false) {
                 $error = 'Loading XSL content (' . \Ximdex\Utils\Messages::error_message('DOMDocument::loadXML(): ') . ')';
                 Logger::error($error);
                 $GLOBALS['errorsInXslTransformation'][] = $error;
                 return false;
             }
-        }
-        else
-        {
+        } else {
             $error = 'Empty values for XSL file and XSL content in setXSL method';
             Logger::error($error);
             $GLOBALS['errorsInXslTransformation'][] = $error;

@@ -29,6 +29,7 @@ namespace Ximdex\Nodeviews;
 
 use Ximdex\Models\Node;
 use Ximdex\NodeTypes\NodeTypeConstants;
+use Ximdex\Runtime\App;
 
 class ViewXmlDocument extends AbstractView
 {
@@ -115,7 +116,7 @@ class ViewXmlDocument extends AbstractView
             }
         }
         if ($docxap !== null) {
-            $xslPath = str_replace(XIMDEX_ROOT_PATH . '/data/nodes', '', $docxap);
+            $xslPath = str_replace(XIMDEX_ROOT_PATH . App::getValue('NodeRoot'), '', $docxap);
         }
         return $xslPath;
     }

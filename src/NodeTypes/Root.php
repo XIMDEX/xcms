@@ -120,15 +120,15 @@ class Root
      * 
      * @return string
      */
-    function GetPathList()
+    public function GetPathList()
     {
         $idParentNode = $this->parent->get('IdParent');
         $parentNode = new Node($idParentNode);
-        if (!($parentNode->get('IdNode') > 0)) {
+        if (! $parentNode->get('IdNode')) {
             return "";
         }
         $parentPath = $parentNode->class->getPathList();
-        if (!$this->nodeType->GetIsRenderizable()) {
+        if (! $this->nodeType->GetIsRenderizable()) {
             Logger::warning('Se ha solicitado el path de un nodo no renderizable con id ' . $this->parent->get('IdNode'));
             return $parentPath;
         }
@@ -147,16 +147,6 @@ class Root
     function GetChildrenPath()
     {
         return $this->GetPathList();
-    }
-
-    /**
-     * Creates the Node in the data/nodes directory.
-     * 
-     * @return null
-     */
-    function RenderizeNode()
-    {
-        return null;
     }
 
     /**
@@ -194,9 +184,9 @@ class Root
      * @param bool - recurrence
      * @return string
      */
-    function ToXml($depth, & $files, $recurrence)
+    public function toXml(int $depth, array & $files, bool $recurrence = false)
     {
-        return "";
+        return '';
     }
 
     /**
@@ -219,7 +209,8 @@ class Root
     }
 
     /**
-     * Gets the content of the Node.
+     * Gets the content of the Node
+     * 
      * @return string
      */
     function GetContent()
@@ -227,29 +218,18 @@ class Root
         return '';
     }
 
-    /**
-     * @param $content
-     * @param $commitNode
-     * @return boolean
-     */
-    function SetContent($content, $commitNode)
+    public function setContent(string $content, bool $commitNode = false)
     {
         return true;
     }
 
-    /**
-     * @param $name
-     * @param $parentID
-     * @param $nodeTypeID
-     * @return boolean
-     */
-    function CreateNode($name = null, $parentID = null, $nodeTypeID = null)
+    public function createNode(string $name = null, int $parentID = null, int $nodeTypeID = null)
     {
-        $this->UpdatePath();
+        $this->updatePath();
         return true;
     }
     
-    function DeleteNode()
+    public function deleteNode() : bool
     {
         return true;
     }
@@ -257,15 +237,12 @@ class Root
     /**
      * @return bool|string
      */
-    function CanDenyDeletion()
+    public function canDenyDeletion()
     {
         return $this->parent->nodeType->get('CanDenyDeletion');
     }
 
-    /**
-     * @return array
-     */
-    function GetDependencies()
+    public function getDependencies() : array
     {
         return array();
     }
@@ -279,31 +256,29 @@ class Root
         $node = new Node($this->nodeID);
         $path = pathinfo($node->GetPath());
         $db = new \Ximdex\Runtime\Db();
-        $db->execute(sprintf('update Nodes set Path = \'%s\' where IdNode = %s', $path['dirname'], $this->nodeID));
+        return $db->execute(sprintf('update Nodes set Path = \'%s\' where IdNode = %s', $path['dirname'], $this->nodeID));
     }
 
     /**
-     * Changes the name of the Node.
+     * Changes the name of the Node
      * 
      * @param string name
      * @return boolean
      */
-    function RenameNode($name = null)
+    public function renameNode(string $name) : bool
     {
-        $this->UpdatePath();
+        $this->updatePath();
         return true;
     }
 
     /**
-     * Gets the Url of the Node.
+     * Gets the Url of the Node
      * 
      * @return string
      */
-    function GetNodeURL()
+    public function getNodeURL()
     {
-        $pathList = $this->GetPathList();
-        $relativePath = $pathList;
-        return App::getValue('UrlRoot') . App::getValue("NodeRoot") . $relativePath;
+        return App::getValue('UrlRoot') . App::getValue("NodeRoot") . $this->GetPathList();
     }
 
     /**
@@ -335,11 +310,11 @@ class Root
     }
 
     /**
-     * Gets the path of the Node in the data/nodes directory.
+     * Gets the path of the Node in the data / nodes directory
      * 
      * @return string
      */
-    function GetNodePath()
+    public function getNodePath()
     {
         $pathList = $this->GetPathList();
         $relativePath = $pathList;

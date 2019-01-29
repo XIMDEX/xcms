@@ -267,7 +267,7 @@ class Group extends GroupsOrm
 					$this->DeleteUser($uid);
 					if ($this->numErr) {
 						$this->SetError(7);
-						return;
+						return false;
 					}
 				}
 			}
@@ -277,13 +277,16 @@ class Group extends GroupsOrm
 			$dbObj->Execute(sprintf("DELETE FROM RelGroupsNodes WHERE IdGroup = %d", $this->get('IdGroup')));
 			if ($dbObj->numErr) {
 				$this->SetError(5);
+				return false;
 			}
 
 			// Deleting form DB
 			$this->delete();
 		} else {
 			$this->SetError(1);
+			return false;
 		}
+		return true;
 	}
 
 	/**

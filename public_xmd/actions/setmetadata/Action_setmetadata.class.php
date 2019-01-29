@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -33,17 +33,20 @@ use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
 use Ximdex\Rest\Services\Xowl\OntologyService;
 
+/**
+ * Class for semantic tags
+ */
 class Action_setmetadata extends ActionAbstract
 {
-    function index()
+    public function index()
     {
         $this->addCss('/assets/style/jquery/ximdex_theme/widgets/tagsinput/tagsinput.css');
         $this->addCss('/src/Widgets/select/css/ximdex.select.css');
         $this->addJs('/src/Widgets/select/js/ximdex.select.js');
         $this->addJs('/actions/setmetadata/resources/js/setmetadata.js');
         $this->addCss('/actions/setmetadata/resources/css/setmetadata.css');
-        $idNode = (int)$this->request->getParam("nodeid");
-        $actionID = (int)$this->request->getParam("actionid");
+        $idNode = (int)$this->request->getParam('nodeid');
+        $actionID = (int)$this->request->getParam('actionid');
         $tags = new SemanticTags();
         $max = $tags->getMaxValue();
         $cTags = $tags->getTags();
@@ -68,32 +71,10 @@ class Action_setmetadata extends ActionAbstract
         // Get the actual tags of the document
         $relTags = new RelSemanticTagsNodes();
         $tags = $relTags->getTags($idNode);
-        $values["tags"] = str_replace("'", '&#39;', json_encode($tags, JSON_UNESCAPED_UNICODE));
+        $values['tags'] = str_replace("'", '&#39;', json_encode($tags, JSON_UNESCAPED_UNICODE));
         $node = new Node($idNode);
-        $values["isStructuredDocument"] = $node->nodeType->get('IsStructuredDocument');
+        $values['isStructuredDocument'] = $node->nodeType->get('IsStructuredDocument');
         $this->render($values, 'index', 'default-3.0.tpl');
-    }
-
-    private function getAllNamespaces()
-    {
-        $result = array();
-        
-        // Load from Xowl Service
-        $namespacesArray = OntologyService::getAllNamespaces();
-        
-        // For every namespace build an array. This will be a json object
-        foreach ($namespacesArray as $namespace) {
-            $array = array(
-                "id" => $namespace->get("idNamespace"),
-                "type" => $namespace->get("type"),
-                "isSemantic" => $namespace->get("isSemantic"),
-                "nemo" => $namespace->get("nemo"),
-                "category" => $namespace->get("category"),
-                "uri" => $namespace->get("uri")
-            );
-            $result[] = $array;
-        }
-        return $result;
     }
 
     /**
@@ -101,7 +82,7 @@ class Action_setmetadata extends ActionAbstract
      */
     public function getRelatedTagsFromContent()
     {
-        $idNode = (int) $this->request->getParam("nodeid");
+        $idNode = (int) $this->request->getParam('nodeid');
         $node = new Node($idNode);
         $result = array();
         if ($node->nodeType->get('IsStructuredDocument')) {
@@ -109,18 +90,6 @@ class Action_setmetadata extends ActionAbstract
             $result = $this->getRelatedTags($content);
         }
         $this->sendJson($result);
-    }
-
-    /**
-     * Get a json string with related terms from $content param
-     * 
-     * @param string $content string with text to search terms.
-     * @return false if error, a json string otherwise.
-     */
-    private function getRelatedTags(string $content)
-    {
-        $ontologyService = new OntologyService("semantic");
-        return $ontologyService->suggest($content);
     }
 
     /**
@@ -142,16 +111,16 @@ class Action_setmetadata extends ActionAbstract
 
     public function save_metadata()
     {
-        $idNode = (int) $this->request->getParam("nodeid");
+        $idNode = (int) $this->request->getParam('nodeid');
         $tags = new RelSemanticTagsNodes();
         $tags->set('Node', $idNode);
         $previous_tags = $tags->getTags($idNode, true);
-        $request_content = file_get_contents("php://input");
+        $request_content = file_get_contents('php://input');
         $data = json_decode($request_content);
         if (array_key_exists('tags', $data)) {
             $tags->saveAll($data->tags, $previous_tags);
         }
-        $this->messages->add(_("All the tags have been properly associated."), MSG_TYPE_NOTICE);
+        $this->messages->add(_('All the tags have been properly associated.'), MSG_TYPE_NOTICE);
         $values = array(
             'messages' => $this->messages->messages,
         );
@@ -160,18 +129,52 @@ class Action_setmetadata extends ActionAbstract
 
     public function getLocalOntology()
     {
-        $ontologyName = $this->request->getParam("ontologyName");
-        $format = $this->request->getParam("inputFormat");
-        if (!$format) {
-            $format = "json";
+        $ontologyName = $this->request->getParam('ontologyName');
+        $format = $this->request->getParam('inputFormat');
+        if (! $format) {
+            $format = 'json';
         }
         $ontologyPath = XIMDEX_ROOT_PATH . "/src/SemanticTags/ontologies/{$format}/{$ontologyName}";
-        $content = "";
+        $content = '';
         if (file_exists($ontologyPath)) {
             $content = FsUtils::file_get_contents($ontologyPath);
         }
         header('Content-type: application/json');
         print($content);
         exit();
+    }
+    
+    private function getAllNamespaces()
+    {
+        $result = array();
+        
+        // Load from Xowl Service
+        $namespacesArray = OntologyService::getAllNamespaces();
+        
+        // For every namespace build an array. This will be a json object
+        foreach ($namespacesArray as $namespace) {
+            $array = array(
+                'id' => $namespace->get('idNamespace'),
+                'type' => $namespace->get('type'),
+                'isSemantic' => $namespace->get('isSemantic'),
+                'nemo' => $namespace->get('nemo'),
+                'category' => $namespace->get('category'),
+                'uri' => $namespace->get('uri')
+            );
+            $result[] = $array;
+        }
+        return $result;
+    }
+    
+    /**
+     * Get a json string with related terms from $content param
+     *
+     * @param string $content string with text to search terms.
+     * @return false if error, a json string otherwise.
+     */
+    private function getRelatedTags(string $content)
+    {
+        $ontologyService = new OntologyService('semantic');
+        return $ontologyService->suggest($content);
     }
 }

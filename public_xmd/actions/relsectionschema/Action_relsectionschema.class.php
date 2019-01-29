@@ -31,6 +31,9 @@ use Ximdex\MVC\ActionAbstract;
 use Ximdex\NodeTypes\NodeTypeConstants;
 use Ximdex\Runtime\App;
 
+/**
+ * @deprecated
+ */
 class Action_relsectionschema extends ActionAbstract
 {
 	public function index()

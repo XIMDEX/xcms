@@ -330,7 +330,6 @@ class Manager
         }
         $className = "\\Ximdex\\Modules\\" . $name . "\\Manager";
         if (class_exists($className)) {
-
             return new $className;
         }
         

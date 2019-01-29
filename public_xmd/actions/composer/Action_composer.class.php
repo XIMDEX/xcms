@@ -46,28 +46,6 @@ class Action_composer extends ActionAbstract
     {
         header('Location:' . App::getUrl('/'));
         exit();
-        /*
-        Session::check();
-        $ximid = App::getValue('ximid');
-        $versionname = App::getValue('VersionName');
-        $userID = Session::get('userID');
-        $theme = $this->request->getParam('theme');
-        $theme = $theme ? $theme : 'ximdex_theme';
-        $locale = new XimLocale();
-        $user_locale = $locale->GetLocaleByCode(Session::get('locale'));
-
-        // Stopping any active debug_render
-        Session::set('debug_render', null);
-        Session::set('activeTheme', $theme);
-        $values = array('composer_index' => App::getUrl('/'),
-            'ximid' => $ximid,
-            'versionname' => $versionname,
-            'userID' => $userID,
-            'debug' => \Ximdex\Runtime\Session::checkUserID(),
-            'theme' => $theme,
-            'user_locale' => $user_locale);
-        $this->render($values, 'index_widgets', 'only_template.tpl');
-        */
     }
 
     public function changeTheme()
@@ -105,7 +83,7 @@ class Action_composer extends ActionAbstract
             )
             ORDER BY NT.System DESC, N.Name ASC';
         $sql = sprintf($sql, $idNode, $userID, $userID);
-        $partial = !is_null($from) && !is_null($to);
+        $partial = ! is_null($from) && ! is_null($to);
         if ($partial) {
             $sql .= sprintf(' LIMIT %d OFFSET %d', $to - $from + 1, $from);
         }
@@ -158,7 +136,7 @@ class Action_composer extends ActionAbstract
             }
 
         } else {
-            while (!$db->EOF) {
+            while (! $db->EOF) {
                 $ret['collection'][] = array(
                     'name' => $db->getValue('Name'),
                     'nodeid' => $db->getValue('IdNode'),
@@ -215,7 +193,7 @@ class Action_composer extends ActionAbstract
             and rug.idrole in (select idrole from RelRolesPermissions where IdPermission = 1001))
             ) ORDER BY NT.System DESC, N.Name ASC';
         $sql = sprintf($sql, $idNodetype, $idNode, $idNodetype, $userID);
-        $partial = !is_null($offset) && !is_null($size);
+        $partial = ! is_null($offset) && ! is_null($size);
         if ($partial) {
             $sql .= sprintf(' LIMIT %d OFFSET %d', $size, $offset);
         }
@@ -354,12 +332,12 @@ class Action_composer extends ActionAbstract
         $times--;
         Session::check();
         $userID = Session::get('userID');
-        $sql = "select nodes.IdNode, nodes.Name, nodes.IdNodeType, nodes.IdParent, nt1.Icon, nodes.IdState
+        $sql = 'select nodes.IdNode, nodes.Name, nodes.IdNodeType, nodes.IdParent, nt1.Icon, nodes.IdState
             , (nt1.IsFolder or nt1.IsVirtualFolder) as IsDir, nodes.Path, nt1.System,
             (select count(*) from FastTraverse ft3 where ft3.IdNode = nodes.IdNode and ft3.Depth = 1) as children,
 		    (SELECT count(*) FROM FastTraverse f4, Nodes n4, NodeTypes nt4 where
-			n4.IdNode=f4.IdChild and f4.IdNode = nodes.IdNode and not n4.IdNode=nodes.IdNode
-			and n4.name like '%s' and nt4.IdNodeType = n4.IdNodeType
+			n4.IdNode = f4.IdChild and f4.IdNode = nodes.IdNode and not n4.IdNode=nodes.IdNode
+			and n4.name like \'%s\' and nt4.IdNodeType = n4.IdNodeType
 			and NOT(nt4.IsHidden)) as results
             from Nodes nodes inner join NodeTypes nt1 on nodes.IdNodeType = nt1.IdNodeType
             and NOT(nt1.IsHidden) where nodes.idnode in
@@ -367,8 +345,8 @@ class Action_composer extends ActionAbstract
 			(
 			select ft2.IdNode FROM FastTraverse ft2 where ft2.idchild in
 			(SELECT n.idnode FROM FastTraverse f
-			INNER JOIN Nodes n on n.IdNode=f.IdChild and f.IdNode = %d
-				and not n.IdNode=%d and n.name like '%s'
+			INNER JOIN Nodes n on n.IdNode = f.IdChild and f.IdNode = %d
+				and not n.IdNode = %d and n.name like \'%s\'
 			inner join NodeTypes nt on nt.IdNodeType = n.IdNodeType
 				and NOT(nt.IsHidden))
 			))
@@ -383,9 +361,9 @@ class Action_composer extends ActionAbstract
             rgn.IdGroup = rug.IdGroup where rug.iduser = %d
             and rug.idrole in (select idrole from RelRolesPermissions where IdPermission = 1001))
             )
-            ORDER BY nt1.System DESC, nodes.Name ASC";
+            ORDER BY nt1.System DESC, nodes.Name ASC';
         $sql = sprintf($sql, '%' . $find . '%', $idNode, $idNode, $idNode, '%' . $find . '%', $userID, $userID);
-        $partial = !is_null($from) && !is_null($to);
+        $partial = ! is_null($from) && ! is_null($to);
         if ($partial) {
             $sql .= sprintf(' LIMIT %d OFFSET %d', $to - $from + 1, $from);
         }
@@ -438,9 +416,8 @@ class Action_composer extends ActionAbstract
                 );
                 $numArchivos = $numArchivos + $items;
             }
-
         } else {
-            while (!$db->EOF) {
+            while (! $db->EOF) {
                 $name = preg_replace($queryToMatch, '<span class="filter-word-span">$0</span>', $db->getValue('Name'));
                 $results = intval($db->getValue('results'));
                 $children = intval($db->getValue('children'));
@@ -477,7 +454,7 @@ class Action_composer extends ActionAbstract
         return $ret;
     }
 
-    function treedata()
+    public function treedata()
     {
         // Getting the request
         $idNode = $this->request->getParam('nodeid');
@@ -544,7 +521,7 @@ class Action_composer extends ActionAbstract
         }
         $user = new User($userID);
         $group = new Group();
-        if (!\Ximdex\Runtime\Session::get('nodelist')) {
+        if (! Ximdex\Runtime\Session::get('nodelist')) {
             $groupList = $user->GetGroupList();
             
             // Removing general group
@@ -582,7 +559,7 @@ class Action_composer extends ActionAbstract
         } else {
             $nodeList = \Ximdex\Runtime\Session::get('nodelist');
         }
-        if (!$selectedNode->numErr) {
+        if (! $selectedNode->numErr) {
 
             // Getting childrens
             $children = $selectedNode->GetChildrenInfoForTree();
@@ -693,14 +670,14 @@ class Action_composer extends ActionAbstract
         if (empty($jsFile)) {
             $jsFile = 'widgetsVars';
         }
-        $jsFile = "actions/commons/views/helper/{$jsFile}.tpl";
+        $jsFile = 'actions/commons/views/helper/' . $jsFile . '.tpl';
 
         // The class AssociativeArray does not return an array, then it obtains _GET value
         $params = isset($_GET['xparams']) ? $_GET['xparams'] : (isset($_GET['amp;xparams']) ? $_GET['amp;xparams'] : null);
         $values = array();
         if (is_array($params)) {
             foreach ($params as $key => $value) {
-                if (!is_array($value)) $value = array($value);
+                if (! is_array($value)) $value = array($value);
                 $aux = array();
                 foreach ($value as $k => $v) {
                     $aux[$k] = Serializer::encode(SZR_JSON, $v);
@@ -747,7 +724,6 @@ class Action_composer extends ActionAbstract
         $patron = '/_\(\s*([\'"])(.*)(?<!\\\\)\1\s*(\\/[*](.*)[*]\\/)?\s*\)/Usi';
         $data = preg_replace_callback(
             $patron,
-            // create_function('$coincidencias', '$_out = null; eval(\'$_out = \'.$coincidencias[0].";"); return \'"\'.$_out.\'"\';'),
             function ($coincidencias)
             {
                 $_out = $coincidencias[0];
@@ -867,7 +843,7 @@ class Action_composer extends ActionAbstract
         echo $data;
     }
 
-    function getPath()
+    public function getPath()
     {
         $idNode = $this->request->getParam('id_node');
         $idNodeType = $this->request->getParam('nodetype');
@@ -884,21 +860,21 @@ class Action_composer extends ActionAbstract
         $this->render(array('node' => $node->getPath()));
     }
 
-    function getTraverseForNode()
+    public function getTraverseForNode()
     {
         $idNode = $this->request->getParam('id_node');
         $node = new Node($idNode);
         $this->render(array('nodes' => $node->TraverseToRoot()));
     }
 
-    function getUserName()
+    public function getUserName()
     {
         $id = \Ximdex\Runtime\Session::get('userID');
         $user = new User($id);
         $this->render(array('username' => $user->GetLogin()));
     }
 
-    function getDefaultNode()
+    public function getDefaultNode()
     {
         $defaultNodeName = App::getValue('DefaultInitNodeName');
         $defaultNodePath = App::getValue('DefaultInitNodePath');
@@ -913,7 +889,7 @@ class Action_composer extends ActionAbstract
         $this->render(array('nodes' => $nodes));
     }
 
-    function getTraverseForPath()
+    public function getTraverseForPath()
     {
         $path = $this->request->getParam('nodeid');
         $entities = array();
@@ -942,7 +918,6 @@ class Action_composer extends ActionAbstract
                 'nodeid' => $entities[$i]['nodeid']
             );
         }
-        // $data = Serializer::encode(SZR_JSON, array('nodes' => $reversedEntities));
         $this->render(array('nodes' => $reversedEntities));
     }
 }

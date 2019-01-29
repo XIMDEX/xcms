@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -27,6 +27,7 @@
 
 use Ximdex\Models\Node;
 use Ximdex\Models\NodeDefaultContents;
+use Ximdex\NodeTypes\XsltNode;
 use Ximdex\NodeTypes\NodeTypeConstants;
 use Ximdex\MVC\ActionAbstract;
 
@@ -39,30 +40,31 @@ class Action_managefolders extends ActionAbstract
 	* Request params:
 	* * nodeid
  	*/
-    function index()
+    public function index()
     {
 		$this->addCss('/actions/addsectionnode/resources/css/style.css');
-		$nodeID = $this->request->getParam("nodeid");
+		$nodeID = $this->request->getParam('nodeid');
 		$node = new Node($nodeID);
-		$selectedFolders = $this->_getChildrenNodeTypes($nodeID);		
-		$subfolders = $this->_getAvailableSubfolders($node->GetNodeType());
-		$subfolders = array_keys($subfolders);
-		foreach ($subfolders as $nt){
-			if (!empty($selectedFolders) && in_array($nt, $selectedFolders)) {
-				$subfolders[$nt][] = 'selected';
+		$selectedFolders = $this->getChildrenNodeTypes($nodeID);		
+		$subfolders = $this->getAvailableSubfolders($node->GetNodeType());
+		foreach ($subfolders as $id => & $subfolder) {
+			if (! empty($selectedFolders) && in_array($id, $selectedFolders)) {
+				$subfolder['selected'] = true;
 			} else {
-				$subfolders[$nt][] = 'unselected';
+				$subfolder['selected'] = false;
 			}
 		}
 		$this->addJs('/actions/managefolders/resources/js/index.js');
-        	$values = array('nodeID' => $nodeID,
-				'sectionName' => $node->get('Name'),
-        	    'sectionType' => $node->nodeType->GetName(),
-				'subfolders' => $subfolders,
-        	    'nodeTypeID' => $node->nodeType->getID(),
-        	    'node_Type' => $node->nodeType->GetName(),
-				'go_method' => 'configure_section',
-				);
+    	$values = array(
+    	    'nodeID' => $nodeID,
+    	    'subfolder' => $subfolder,
+			'sectionName' => $node->get('Name'),
+    	    'sectionType' => $node->nodeType->GetName(),
+			'subfolders' => $subfolders,
+    	    'nodeTypeID' => $node->nodeType->getID(),
+    	    'node_Type' => $node->nodeType->GetName(),
+			'go_method' => 'configure_section'
+    	);
         $this->render($values, null, 'default-3.0.tpl');
     }
     
@@ -74,13 +76,17 @@ class Action_managefolders extends ActionAbstract
     * * nodeid: section ID
     * * folderlst: list of the selected folders by the user
     */
-	function configure_section()
+	public function configure_section()
 	{
 		$error = false;
 		$folderlst = $this->request->getParam('folderlst');
+		if (! $folderlst) {
+		    $this->messages->add(_('At least one section subfolder is required'), MSG_TYPE_WARNING);
+		    $this->sendJSON(['messages' => $this->messages->messages]);
+		}
 	   	$nodeID = $this->request->getParam('nodeid');
 		$parent = new Node($nodeID);
-		$existingChildren = $this->_getChildrenNodeTypes($nodeID);
+		$existingChildren = $this->getChildrenNodeTypes($nodeID);
 		$addfolders = false;
 		if (count($folderlst) > count($existingChildren)) {
 			$addfolders = true;
@@ -105,22 +111,22 @@ class Action_managefolders extends ActionAbstract
 		if ($addfolders) {
 			foreach ($folderlst as $folderNt) {
 				$folder = new Node();
-				$ndc = new \Ximdex\Models\NodeDefaultContents();
+				$ndc = new NodeDefaultContents();
 				$name = $ndc->getDefaultName($folderNt);
         	    $idFolder = $folder->CreateNode($name, $nodeID, $folderNt, null);
-				if (!$idFolder) {
+				if (! $idFolder) {
 					$error = true;
 					break;
 				}
 			}
 		} else {
 			foreach ($folderlst as $folderNt) {
-                $ndc = new \Ximdex\Models\NodeDefaultContents();
+                $ndc = new NodeDefaultContents();
                 $name = $ndc->getDefaultName($folderNt);
 				$nodeid = $parent->GetChildByName($name);
 				$deleteFolder = new Node($nodeid);
 				$res = $deleteFolder->DeleteNode();
-				if (!$res) {
+				if (! $res) {
 					$error = true;
 					break;
 				}
@@ -134,19 +140,19 @@ class Action_managefolders extends ActionAbstract
 		    $project = new Node($parent->getProject());
 		    
 		    // Reload the templates include files for this new project
-		    $xsltNode = new \Ximdex\NodeTypes\XsltNode($parent);
+		    $xsltNode = new XsltNode($parent);
 		    if ($xsltNode->reload_templates_include($project) === false) {
 		        $this->messages->mergeMessages($xsltNode->messages);
 		    }
 		            
 	        // Reload the document folders and template folders relations
-		    if (!$xsltNode->rel_include_templates_to_documents_folders($project)) {
+		    if (! $xsltNode->rel_include_templates_to_documents_folders($project)) {
 	            $this->messages->mergeMessages($xsltNode->messages);
 		    }
 			$this->messages->add(_('This section has been successfully configured.'), MSG_TYPE_NOTICE);
 		}
 		$values = array(
-			'action_with_no_return' => !$error,
+			'action_with_no_return' => ! $error,
 			'messages' => $this->messages->messages,
 			'nodeID' => $nodeID
 		);
@@ -155,35 +161,34 @@ class Action_managefolders extends ActionAbstract
     
 	/** 
     * Getting all the children folders
-    * Using the \Ximdex\Models\NodeDefaultContents of the data model, returns all the avaliable children folders
+    * Using the Ximdex\Models\NodeDefaultContents of the data model, returns all the avaliable children folders
 	* with a description for a given nodetype
     *
     * Request params:  
-    * * nodetype_sec: noderype ID for the containing folder
+    * * nodetype_sec: nodetype ID for the containing folder
     */
-	private function _getAvailableSubfolders($nodetype_sec)
+	private function getAvailableSubfolders(int $nodetype_sec) : array
 	{
 		$subfolders = array();
 		$res = array();
 		$ndc = new NodeDefaultContents();
 		$subfolders = $ndc->getDefaultChilds($nodetype_sec);
-		foreach($subfolders as $subfolder){
-			$nt = $subfolder["NodeType"];
-			$res[$nt][0] = $subfolder["Name"];	
-			$res[$nt][1] = $this->_getDescription($nt);	
+		foreach ($subfolders as $subfolder){
+			$nt = $subfolder['NodeType'];
+			$res[$nt]['name'] = $subfolder['Name'];	
+			$res[$nt]['description'] = $this->getDescription($nt);	
 		}
-		asort($res);
 		return $res;
 	}
 
-	/** 
-    * Human readable descriptions for subfolders
-    * Returns a proper description for the given nodetype, helping the user to decide if the folder is needed or not 
-    *
-    * Request params:
-    * * nodetype: nodetype ID
-    */
-	private function _getDescription($nodetype)
+	/**
+	 * Human readable descriptions for subfolders.
+     * Returns a proper description for the given nodetype, helping the user to decide if the folder is needed or not.
+     * 
+	 * @param int $nodetype
+	 * @return string
+	 */
+	private function getDescription(int $nodetype) : string
 	{
 		switch ($nodetype) {
 			case NodeTypeConstants::XML_ROOT_FOLDER:
@@ -212,12 +217,12 @@ class Action_managefolders extends ActionAbstract
     * Request params:
     * * idParent: Parent node ID
     */
-	private function _getChildrenNodeTypes($idParent)
+	private function getChildrenNodeTypes(int $idParent)
 	{
 		$children_nt = array();
 		$parentNode = new Node($idParent);
 		$children = $parentNode->GetChildren();
-		if (!empty($children)) {
+		if (! empty($children)) {
 			foreach ($children as $child) {
 				$ch = new Node ($child);
 				$idNodeType = $ch->GetNodeType();

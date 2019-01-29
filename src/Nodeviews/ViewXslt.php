@@ -67,7 +67,7 @@ class ViewXslt extends AbstractView
         // Get always the project docxap file
         $projectId = $this->_idProject;
         $project = new Node($projectId);
-        $docxap = $project->class->GetNodePath() . '/' . $ptdFolder . '/docxap.xsl';
+        $docxap = $project->class->getNodePath() . '/' . $ptdFolder . '/docxap.xsl';
 
         // Only make transformation if channel's render mode is ximdex (or null)
         if ($this->_idChannel) {

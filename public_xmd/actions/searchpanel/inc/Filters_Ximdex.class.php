@@ -1,6 +1,7 @@
 <?php
+
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -24,11 +25,12 @@
  *  @version $Revision$
  */
 
-\Ximdex\Modules\Manager::file("/actions/searchpanel/inc/Searchpanel_Filters.class.php");
+Ximdex\Modules\Manager::file("/actions/searchpanel/inc/Searchpanel_Filters.class.php");
 
-class Filters_Ximdex {
-
-	public function getFilters() {
+class Filters_Ximdex
+{
+	public function getFilters()
+	{
 		$filters = array(
 			'field' => array(
 				array('key' => 'name', 'value' => 'Name', 'comparation' => 'comparation'),
@@ -61,7 +63,7 @@ class Filters_Ximdex {
 			)
 		);
 
-		//Including translations
+		// Including translations
 		$filters['field'][0]['value']=_('Name');
 		$filters['field'][1]['value']=_('Path');
 		$filters['field'][2]['value']=_('Content');
@@ -70,23 +72,18 @@ class Filters_Ximdex {
 		$filters['field'][5]['value']=_('Version date');
 		$filters['field'][6]['value']=_('Publication date');
 		$filters['field'][7]['value']=_('Tag');
-		
 		$filters['comparation'][0]['value']=_('contains');
 		$filters['comparation'][1]['value']=_('does not contain');
 		$filters['comparation'][2]['value']=_('equal to');
 		$filters['comparation'][3]['value']=_('not equal to');
 		$filters['comparation'][4]['value']=_('begins with');
 		$filters['comparation'][5]['value']=_('ends with');
-		
 		$filters['nodetype-comparation'][0]['vale']=_('is');
-		
 		$filters['date-comparation'][0]['value']=_('is');
 		$filters['date-comparation'][1]['value']=_('before than');
 		$filters['date-comparation'][2]['value']=_('after than');
 		$filters['date-comparation'][3]['value']=_('in the range');
-
 		array_pop($filters['field']);
-		
 		return $filters;
 	}
 }

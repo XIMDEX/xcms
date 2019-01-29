@@ -292,7 +292,7 @@ class PortalFrames extends PortalFramesOrm
             throw new \Exception('Could not obtain the void portal frame');
         }
         $portals = [];
-        while (!$db->EOF) {
+        while (! $db->EOF) {
             $portals[] = $db->GetValue('id');
             $db->Next();
         }
@@ -308,7 +308,7 @@ class PortalFrames extends PortalFramesOrm
             throw new \Exception('Could not obtain the void portal frame');
         }
         $servers = [];
-        while (!$db->EOF) {
+        while (! $db->EOF) {
             $servers[(string) $db->GetValue('id')] = $db->GetValue('name');
             $db->Next();
         }

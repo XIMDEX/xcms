@@ -32,18 +32,22 @@ use Ximdex\Models\Workflow;
 
 class StateNode extends Root
 {
-    public function createNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $description = '', $idTransition = null)
+    /**
+     * {@inheritDoc}
+     * @see \Ximdex\NodeTypes\Root::createNode()
+     */
+    public function createNode(string $name = null, int $parentID = null, int $nodeTypeID = null, int $stateID = null, string $description = ''
+        , int $idTransition = null)
     {
         $this->updatePath();
         return true;
     }
 
-    public function deleteNode()
-    {
-        return true;
-    }
-
-    public function renameNode(string $name)
+    /**
+     * {@inheritDoc}
+     * @see \Ximdex\NodeTypes\Root::renameNode()
+     */
+    public function renameNode(string $name) : bool
     {
         $this->updatePath();
         return true;
@@ -60,7 +64,7 @@ class StateNode extends Root
         return false;
     }
 
-    public function getDependencies()
+    public function getDependencies() : array
     {
         $sql = 'SELECT DISTINCT IdNode FROM Nodes WHERE IdState = \'' . $this->nodeID . '\'';
         $this->dbObj->Query($sql);

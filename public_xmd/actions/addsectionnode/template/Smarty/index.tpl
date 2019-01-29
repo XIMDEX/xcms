@@ -42,7 +42,7 @@
             	</div>
             </div>
         	<div class="subfolders-available small-8 columns">
-            	<label  class="label_title label_general" style="margin-top: 20px;">{t}Subfolders availables{/t}</label>
+            	<label  class="label_title label_general" style="margin-top: 20px;">{t}Subfolders availables{/t} *</label>
 				<div ng-repeat="folder in subfoldersSelected" class="subfolder box-col1-1">
                 	<input id="#/$parent.$parent.tab.id + '_' + folder.NodeType/#" class="hidden-focus" type="checkbox" value="#/folder.NodeType/#" 
                 	       name="folderlst[]">
@@ -54,7 +54,7 @@
             	</div>
         	</div>
             <div class="languages-available small-4 columns">
-                <label  class="label_title label_general" style="margin-top: 20px;">{t}Languages availables{/t}</label>
+                <label  class="label_title label_general" style="margin-top: 20px;">{t}Languages availables{/t} *</label>
                 <div class="language-section" ng-repeat="lang in languageOptions">
                     <input id="#/lang.Id/#" class="hidden-focus" type="checkbox" value="#/lang.Id/#" name="langidlst[]">
                     <label class="icon checkbox-label" for="#/lang.Id/#">{t}#/lang.Name/#{/t}</label>
@@ -64,7 +64,7 @@
             </div>
             <div class="small-12 columns">
         		<fieldset class="buttons-form ">
-            		{button label="Create section" class='validate btn main_action' }{*message="Would you like to add this section?"*}
+            		{button label="Create section" class='validate btn main_action'}
         		</fieldset>
             </div>
 		</div>

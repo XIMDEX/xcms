@@ -67,7 +67,6 @@ class Action_publicateximlet extends ActionAbstract
 	public function publicate_ximlet()
 	{
 		$idNode	= $this->request->getParam('nodeid');
-		// $idAction = $this->request->getParam('actionid');
 		$upDate = time();
         $syncMngr = new SyncManager();
         $syncMngr->setFlag('forcePublication', true);

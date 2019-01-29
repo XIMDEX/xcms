@@ -1,10 +1,7 @@
 <?php
-use Ximdex\Models\Node;
-use Ximdex\Models\NodeType;
-use Ximdex\MVC\ActionAbstract;
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -28,35 +25,38 @@ use Ximdex\MVC\ActionAbstract;
  *  @version $Revision$
  */
 
+use Ximdex\Models\Node;
+use Ximdex\Models\NodeType;
+use Ximdex\MVC\ActionAbstract;
 
-class Action_creategroup extends ActionAbstract {
-   // Main method: shows initial form
-    function index() {
+class Action_creategroup extends ActionAbstract
+{
+    /**
+     * Main method: shows initial form
+     */
+    public function index()
+    {
 		$idNode = $this->request->getParam('nodeid');
 		$folder = new Node($idNode);
-        
 		$values = array(
 			'id_node' => $idNode,
 		    'nodeTypeID' => $folder->nodeType->getID(),
 		    'node_Type' => $folder->nodeType->GetName(),
 			'go_method' => 'creategroup');
-
 		$this->render($values, null, 'default-3.0.tpl');
     }
     
-    function creategroup() {
+    public function creategroup()
+    {
     	$idNode = $this->request->getParam('id_node');
     	$name = $this->request->getParam('name');
-    	
 		$nodeType = new NodeType();
 		$nodeType->SetByName('Group');
-	
 	    $grupo = new Node();
-		$result = $grupo->CreateNode($name, $idNode, $nodeType->get('IdNodeType'), null);
+		$result = $grupo->createNode($name, $idNode, $nodeType->get('IdNodeType'), null);
 		if ($result) {
 			$grupo->messages->add(_('Group has been successfully inserted'), MSG_TYPE_NOTICE);
 		}
-
 		$values = array('messages' => $grupo->messages->messages,"parentID" => $grupo->GetParent());
 		$this->sendJSON($values);
     }

@@ -32,6 +32,7 @@ use Ximdex\Models\User;
 use Ximdex\Models\Version;
 use Ximdex\Models\Channel;
 use Ximdex\Models\Transition;
+use Ximdex\Models\NodeType;
 use Ximdex\Utils\FsUtils;
 use Ximdex\Sync\SynchroFacade;
 use Ximdex\Logger;
@@ -374,7 +375,7 @@ class DataFactory
      * @param boolean $commitNode
      * @return boolean|NULL|string
      */
-    public function SetContent(string $content, int $versionID = null, int $subVersion = null, bool $commitNode = null)
+    public function setContent(string $content, int $versionID = null, int $subVersion = null, bool $commitNode = null)
     {
         $node = new Node($this->nodeID);
         $isPlainFile = @$node->nodeType->get('IsPlainFile');
@@ -563,9 +564,9 @@ class DataFactory
         $version->set('Date', time());
         $version->set('Comment', $comment);
         $IdVersion = $version->add();
-        $fileName = $node->class->GetNodePath();
-        $fileContent = $node->class->GetRenderizedContent();
-        $nodetype = new \Ximdex\Models\NodeType($node->GetNodeType());
+        $fileName = $node->class->getNodePath();
+        $fileContent = $node->class->getRenderizedContent();
+        $nodetype = new NodeType($node->GetNodeType());
         
         // Se guarda en un archivo de id unico
         $uniqueName = $this->getUniqueFileName($version);

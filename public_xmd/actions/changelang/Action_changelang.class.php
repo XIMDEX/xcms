@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -34,7 +34,7 @@ class Action_changelang extends ActionAbstract
     /**
      * Main mathod: it shows the init form
      */
-    function index()
+    public function index()
     {
         $locale = new XimLocale();
         $code = $this->request->getParam('code');
@@ -42,7 +42,7 @@ class Action_changelang extends ActionAbstract
         $error = true;
         if (! empty($locale_selected)) {
             $user = new User(\Ximdex\Runtime\Session::get('userID'));
-            if ($user->SetLocale($locale_selected["Code"])) {
+            if ($user->SetLocale($locale_selected['Code'])) {
                 $this->messages->add(sprintf(_('Ximdex Language changed to %s. The changes will take effect once you restart Ximdex.'), 
                     _($locale_selected['Name'])), MSG_TYPE_NOTICE);
                 $error = false;

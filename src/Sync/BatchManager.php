@@ -548,9 +548,10 @@ class BatchManager
     public function checkFramesIntegrity()
     {
         // Ensure that batchs have frames or getBatchToProcess will return the same batch over and over
-        $sql = "update Batchs set State = '" . Batch::NOFRAMES . "' ";
-        $sql .= 'where idbatch not in (select distinct IdBatchUp from ServerFrames) and idbatch not in (select distinct IdBatchDown ';
-        $sql .= "from ServerFrames) and Batchs.State IN ('" . Batch::INTIME . "', '" . Batch::CLOSING . "')";
+        $sql = 'update Batchs set `State` = \'' . Batch::NOFRAMES . '\'';
+        $sql .= ' where IdBatch not in (select distinct IdBatchUp from ServerFrames where IdBatchUp is not null)';
+        $sql .= ' and IdBatch not in (select distinct IdBatchDown from ServerFrames where IdBatchDown is not null)';
+        $sql .= ' and `State` IN (\'' . Batch::INTIME . '\', \'' . Batch::CLOSING . '\')';
         $db = new \Ximdex\Runtime\Db();
         if ($db->execute($sql) === false) {
         	return false;
@@ -558,20 +559,7 @@ class BatchManager
         if ($db->numRows > 0) {
             Logger::warning(sprintf('Found %s Batchs without Frames, were marked as NoFrames', $db->numRows));
         }
-        /*
-        try {
-            $downPortals = PortalFrames::getByState(PortalFrames::STATUS_CREATED, null, null, PortalFrames::TYPE_DOWN);
-            foreach ($downPortals as $portalFrame) {
-                $nodeFrames = $portalFrame->getNodeFrames(null, true);
-                foreach ($nodeFrames as $nodeFrameId) {
-                    $nodeFrame = new NodeFrame($nodeFrameId);
-                    $nodeFrame->cancel();
-                }
-            }
-        } catch (\Exception $e) {
-            Logger::error($e->getMessage());
-        }
-        */
+        
         // Remove portal frames without batchs and created time more than 10 minute
         try {
             $voidPortalFrames = PortalFrames::getVoidPortalFrames(600);

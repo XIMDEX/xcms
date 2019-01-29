@@ -35,17 +35,6 @@ use Ximdex\Models\Role;
 class RoleNode extends Root
 {
 	/**
-	 * Does nothing
-	 * 
-	 * {@inheritDoc}
-	 * @see \Ximdex\NodeTypes\Root::RenderizeNode()
-	 */
-	public function renderizeNode()
-	{
-		return null;
-	}
-
-	/**
 	 * Calls to method for adding a row to Roles table
 	 * 
 	 * @param string name
@@ -55,21 +44,23 @@ class RoleNode extends Root
 	 * @param string icon
 	 * @param string description
 	 */
-	public function createNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $icon = null, $description = null)
+	public function createNode(string $name = null, int $parentID = null, int $nodeTypeID = null, int $stateID = null, string $icon = null
+	    , string $description = null)
 	{
 		$role = new Role();
 		$role->CreateNewRole($name, $icon, $description, $this->parent->get('IdNode'));
 		$this->UpdatePath();
+		return true;
 	}
 
 	/**
 	 * Calls to method for deleting the Role from database
 	 */
-	function deleteNode()
+	public function deleteNode() : bool
 	{
 		// Before delete delGroupRol
 		$role = new Role($this->parent->get('IdNode'));
-		$role->delete();
+		return $role->delete();
 	}
 
 	/**
@@ -77,7 +68,7 @@ class RoleNode extends Root
 	 * 
 	 * @return array
 	 */
-	public function getDependencies()
+	public function getDependencies() : array
 	{
 		return array();
 	}

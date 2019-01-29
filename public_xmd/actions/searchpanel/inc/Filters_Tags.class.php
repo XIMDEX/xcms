@@ -1,6 +1,7 @@
 <?php
+
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -24,12 +25,13 @@
  *  @version $Revision$
  */
 
-\Ximdex\Modules\Manager::file("/actions/searchpanel/inc/Searchpanel_Filters.class.php");
+Ximdex\Modules\Manager::file("/actions/searchpanel/inc/Searchpanel_Filters.class.php");
 
-class Filters_Tags {
-
-	public function getFilters() {
-		$filtersTags= array(
+class Filters_Tags
+{
+	public function getFilters()
+	{
+		$filtersTags = array(
 			'field' => array(
 				array('key' => 'Descripcion', 'value' => 'Text', 'comparation' => 'comparation'),
 				array('key' => 'materiaid', 'value' => 'Theme', 'comparation' => 'comparation'),
@@ -44,18 +46,17 @@ class Filters_Tags {
 				array('key' => 'endswith', 'value' => 'ends with', 'content' => 'content')
 			)
 		);
-		//Including translations
+		
+		// Including translations
 		$filtersTags['field'][0]['value']=_('Text');
 		$filtersTags['field'][1]['value']=_('Theme');
 		$filtersTags['field'][1]['value']=_('CatID');
-		
 		$filtersTags['comparation'][0]['value']=_('contains');
 		$filtersTags['comparation'][1]['value']=_('does not contain');
 		$filtersTags['comparation'][2]['value']=_('equal to');
 		$filtersTags['comparation'][3]['value']=_('not equal to');
 		$filtersTags['comparation'][4]['value']=_('begins with');
 		$filtersTags['comparation'][5]['value']=_('ends with');
-		
 		return $filtersTags;
 	}
 }

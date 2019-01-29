@@ -86,7 +86,7 @@ abstract class XmlEditor_Abstract
         }
         
         // Document content is returned with the corresponding docxap labels
-        $content = $node->class->GetRenderizedContent($defaultChannel);
+        $content = $node->class->getRenderizedContent($defaultChannel);
         return $content;
     }
 
@@ -113,7 +113,7 @@ abstract class XmlEditor_Abstract
     public function getXslPath($idnode, $asURL = false, $view)
     {
         $node = new Node($idnode);
-        if (!($node->get('IdNode') > 0)) {
+        if (! $node->get('IdNode')) {
             Logger::error(_('A non-existing node cannot be obtained: ') . $idnode);
             return null;
         }
@@ -129,8 +129,7 @@ abstract class XmlEditor_Abstract
 
         // Return full project docxap path
         $project = new Node($node->getProject());
-        if (!$project->GetID())
-        {
+        if (! $project->GetID()) {
             Logger::error('A non-existing project cannot be obtained from node: ' . $idnode);
             return false;
         }
@@ -211,7 +210,7 @@ abstract class XmlEditor_Abstract
     public function getAllowedChildrens($idnode, $uid, $htmldoc)
     {
         $node = new Node($idnode);
-        $xmlOrigenContent = $node->class->GetRenderizedContent();
+        $xmlOrigenContent = $node->class->getRenderizedContent();
 
         // Loading XML & HTML content into respective DOM Documents
         $docXmlOrigen = new DOMDocument();

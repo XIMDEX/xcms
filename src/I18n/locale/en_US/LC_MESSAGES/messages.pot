@@ -20,9 +20,10 @@
 # *
 # *  @author Ximdex DevTeam <dev@ximdex.com>
 # *  @version $Revision$
-#, fuzzy
+
 msgid ""
 msgstr ""
+
 "Project-Id-Version: Ximdex 4.0\n"
 "POT-Creation-Date: 2019-01-21 13:20+0100\n"
 "PO-Revision-Date: 2019-01-21 11:36+0100\n"
@@ -6213,7 +6214,7 @@ msgid "Modify link"
 msgstr ""
 
 #: /public_xmd/actions/commons/layouts/publicationResult.tpl:62
-msgid "Los The following nodes"
+msgid "The following nodes"
 msgstr ""
 
 #: /public_xmd/actions/commons/layouts/default.tpl:33

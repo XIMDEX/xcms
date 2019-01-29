@@ -30,6 +30,9 @@ use Ximdex\Models\Role;
 use Ximdex\Models\User;
 use Ximdex\MVC\ActionAbstract;
 
+/**
+ * @deprecated
+ */
 class Action_modifyusergroups extends ActionAbstract
 {
     /**

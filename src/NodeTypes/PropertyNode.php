@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -31,14 +31,4 @@ namespace Ximdex\NodeTypes;
  * @brief Handles Properties as ximDEX Nodes.
  */
 class PropertyNode extends Root
-{
-
-	/**
-	 *  Does nothing.
-	 * @return null
-	 */
-	function RenderizeNode()
-	{
-		return null;
-	}
-}
+{}

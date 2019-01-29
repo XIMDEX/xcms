@@ -1,6 +1,7 @@
 <?php
+
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -24,21 +25,20 @@
  *  @version $Revision$
  */
 
-
 use Ximdex\MVC\ActionAbstract;
 
-
-class Action_manageList extends ActionAbstract {
-
-	
-	public function index() {
+/**
+ * @deprecated
+ */
+class Action_manageList extends ActionAbstract
+{
+	public function index()
+	{
 		$params = $this->request->getParam('params');
 		$mode = $this->request->getParam('mode');
-		$type = isset($params['type']) ? $params['type'] : NULL;
-		
+		$type = isset($params['type']) ? $params['type'] : NULL;	
 		$list = $this->getObjectInstance($type);
 		$all = $list->find('id, Name, Description');
-		
 		$this->addJs(Extensions::JQUERY_PATH.'/plugins/jquery.blockUI.js');
 		$this->addJs('/actions/manageList/resources/js/common.js');
 		$this->addCss('/actions/manageList/resources/css/common.css');
@@ -51,37 +51,37 @@ class Action_manageList extends ActionAbstract {
 	}
 	
 	/**
-	 * function ready to be called and return json result
+	 * Function ready to be called and return json result
+	 * 
+	 * @param bool $useAutoIncrement
 	 */
 	public function add(bool $useAutoIncrement = true)
 	{
 		$name = $this->request->getParam('name');
 		$description = $this->request->getParam('description');
 		$type = $this->request->getParam('type');
-		
 		$element = $this->getObjectInstance($type);
 		$element->set('IdList', 0);
 		$element->set('Name', $name);
 		$element->set('Description', $description);
 		$result = $element->add();
-		
 		$this->render(array('result' => $result));
 	}
 	
 	/**
-	 * function ready to be called and return json result
+	 * Function ready to be called and return json result
 	 */
-	public function update() {
+	public function update()
+	{
 		$id = $this->request->getParam('id');
 		$name = $this->request->getParam('name');
 		$description = $this->request->getParam('description');
 		$type = $this->request->getParam('type');
-		
 		$element = $this->getObjectInstance($type, $id);
-		if (!($element->get('id') > 0)) {
+		if (! $element->get('id')) {
 			$this->render(array('result' => -1));
+			return;
 		}
-		
 		$element->set('Name', $name);
 		$element->set('Description', $description);
 		$result = $element->update();
@@ -89,33 +89,32 @@ class Action_manageList extends ActionAbstract {
 	}
 	
 	/**
-	 * function ready to be called and return json result
+	 * Function ready to be called and return json result
 	 */
-	public function remove() {
+	public function remove()
+	{
 		$id = $this->request->getParam('id');
-		$type = $this->request->getParam('type');
-		
+		$type = $this->request->getParam('type');	
 		$element = $this->getObjectInstance($type, $id);
-		if (!($element->get('id') > 0)) {
+		if (! $element->get('id')) {
 			$this->render(array('result' => -1));
+			return;
 		}
-		
 		$result = $element->delete();
 		$this->render(array('result' => $result));
 	}
 	
-	public function loadElement() {
+	public function loadElement()
+	{
 		$id = $this->request->getParam('id');
 		$name = $this->request->getParam('name');
 		$description = $this->request->getParam('description');
-		
-		$listInfo = array('id' => $id, 'Name' => $name, 'Description' => $description);
-		
-		$this->render(array(
-			'listInfo' => $listInfo
-		), '_element', 'only_template.tpl');
+		$listInfo = array('id' => $id, 'Name' => $name, 'Description' => $description);	
+		$this->render(array('listInfo' => $listInfo), '_element', 'only_template.tpl');
 	}
-	private function getObjectInstance($type, $arg = NULL) {
+	
+	private function getObjectInstance($type, $arg = NULL)
+	{
 		$rootName = 'List';
 		$factory = new \Ximdex\Utils\Factory(XIMDEX_ROOT_PATH . '/src/Models/', $rootName);
 		return $factory->instantiate($type, $arg);

@@ -37,8 +37,13 @@ class Action_setextensions extends ActionAbstract
     {
         $commonFolderNodeType = new NodeType(NodeTypeConstants::COMMON_ROOT_FOLDER);
         $commonAllowedExtensions = $commonFolderNodeType->getAllowedExtensions();
-        $this->addCss('/actions/setextensions/resources/css/style.css');
         $values = array('commonAllowedExtensions' => json_encode($commonAllowedExtensions));
+        $idNode = (int) $this->request->getParam('nodeid');
+        $values['nodeid'] = $idNode;
+        $node = new Node($idNode);
+        $values['name'] = $node->GetNodeName();
+        $values['nodeTypeID'] = $node->nodeType->getID();
+        $values['node_Type'] = $node->nodeType->GetName();
         $this->render($values, null, 'default-3.0.tpl');
     }
 
@@ -83,12 +88,8 @@ class Action_setextensions extends ActionAbstract
             }
             $e->update();
         }
-        $idNode = $this->request->getParam('nodeid');
-        $node = new Node($idNode);
         $values = array(
             'result' => 'ok',
-            'nodeTypeID' => $node->nodeType->getID(),
-            'node_Type' => $node->nodeType->GetName(),
             'message' => _('The extensions have been updated')
         );
         $this->sendJSON($values);

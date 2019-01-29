@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -33,11 +33,11 @@ class Action_metadata extends ActionAbstract
 {
     public function index()
     {
-        $idNode = $this->request->getParam('nodes')[0];
+        $idNode = $this->request->getParam('nodeid');
         $node = new Node($idNode);
         if ($node->GetID() != null) {
             $metadata = new Metadata();
-            $info= $metadata->getMetadataSectionAndGroupByNodeType($node->GetNodeType(), $idNode);
+            $info = $metadata->getMetadataSectionAndGroupByNodeType($node->GetNodeType(), $idNode);
             $values = array(
                 'info' => $info,
                 'nodeTypeID' => $node->nodeType->getID(),
@@ -53,6 +53,8 @@ class Action_metadata extends ActionAbstract
             );
             $this->sendJSON($values);
         }
+        $this->addJs('/actions/modifyrole/js/modifyrole.js');
+        $this->addCss('/actions/modifyrole/css/modifyrole.css');
         $this->render($values, 'index.tpl', 'default-3.0.tpl');
     }
 
@@ -64,7 +66,6 @@ class Action_metadata extends ActionAbstract
         $node = new Node($idNode);
         if ($node->GetID() != null) {
             $metadata = new Metadata();
-            // $groups = array_column($metadata->getMetadataByMetagroup($node->GetNodeType()), 'id');
             foreach ($groups as $group => $meta){
                 $metadata->deleteMetadataValuesByNodeIdAndGroupId($idNode, $group);
                 $resultAdd = $metadata->addMetadataValuesByNodeId($meta, $idNode) && $resultAdd;
@@ -75,7 +76,7 @@ class Action_metadata extends ActionAbstract
         } else {
             $resultAdd = false;
         }
-        if (!$resultAdd) {
+        if (! $resultAdd) {
             $this->messages->add(_('The operation has failed'), MSG_TYPE_ERROR);
         }
         $values = array(

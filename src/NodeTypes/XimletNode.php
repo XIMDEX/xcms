@@ -50,14 +50,16 @@ class XimletNode extends AbstractStructuredDocument
      * {@inheritDoc}
      * @see \Ximdex\NodeTypes\AbstractStructuredDocument::GetDependencies()
      */
-    public function GetDependencies()
+    public function getDependencies() : array
     {
         $depsMngr = new DepsManager();
         $deps = array();
-        if ($sections = $depsMngr->getByTarget(DepsManager::SECTION_XIMLET, $this->parent->get('IdNode')))
+        if ($sections = $depsMngr->getByTarget(DepsManager::SECTION_XIMLET, $this->parent->get('IdNode'))) {
             $deps = array_merge($deps, $sections);
-        if ($strDocs = $depsMngr->getByTarget(DepsManager::STRDOC_XIMLET, $this->parent->get('IdNode')))
+        }
+        if ($strDocs = $depsMngr->getByTarget(DepsManager::STRDOC_XIMLET, $this->parent->get('IdNode'))) {
             $deps = array_merge($deps, $strDocs);
+        }
         return $deps;
     }
 
@@ -67,13 +69,14 @@ class XimletNode extends AbstractStructuredDocument
      * {@inheritDoc}
      * @see \Ximdex\NodeTypes\AbstractStructuredDocument::DeleteNode()
      */
-    public function DeleteNode()
+    public function deleteNode() : bool
     {
         $depsMngr = new DepsManager();
         $depsMngr->deleteByTarget(DepsManager::SECTION_XIMLET, $this->parent->get('IdNode'));
         $depsMngr->deleteByTarget(DepsManager::STRDOC_XIMLET, $this->parent->get('IdNode'));
         $depsMngr->deleteBySource(DepsManager::STRDOC_TEMPLATE, $this->parent->get('IdNode'));
         Logger::info('Ximlet dependencies deleted');
+        return true;
     }
 
     /**
@@ -82,7 +85,7 @@ class XimletNode extends AbstractStructuredDocument
      * @param array $params
      * @return array
      */
-    public function getPublishabledDeps($params)
+    public function getPublishabledDeps(array $params = []) : ?array
     {
         $depsMngr = new DepsManager();
         return $depsMngr->getByTarget(DepsManager::STRDOC_XIMLET, $this->parent->get('IdNode'));

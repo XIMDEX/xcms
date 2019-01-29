@@ -1,6 +1,7 @@
 <?php
+
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -23,50 +24,46 @@
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
-use Ximdex\Models\Action ;
+
+use Ximdex\Models\Action;
 use Ximdex\Models\User;
+use Ximdex\Modules\Manager;
 use Ximdex\MVC\ActionAbstract;
+use Ximdex\NodeTypes\Projects;
 
-
-\Ximdex\Modules\Manager::file("/actions/browser3/Action_browser3.class.php");
-
+Manager::file('/actions/browser3/Action_browser3.class.php');
 
 class Action_welcome extends ActionAbstract
 {
-    // Main method: shows the initial form
-    function index()
+    /**
+     * Main method: shows the initial form
+     */
+    public function index()
     {
-
-
-        $values = array();
-        if ( !isset($_REQUEST['actionReload']) || $_REQUEST['actionReload'] != 'true') {
-            if ($this->tourEnabled(\Ximdex\Runtime\Session::get("userID"), "welcome")) {
+        $values = [];
+        if (! isset($_REQUEST['actionReload']) || $_REQUEST['actionReload'] != 'true') {
+            if ($this->tourEnabled(Ximdex\Runtime\Session::get('userID'), 'welcome')) {
                 $values[] = $this->addJs('/resources/js/start_tour.js', 'ximTOUR');
             }
-            if (\Ximdex\Modules\Manager::isEnabled('ximTOUR')) {
+            if (Manager::isEnabled('ximTOUR')) {
                 $values[] = $this->addJs('/actions/welcome/resources/js/tour.js');
                 $values[] = $this->addJs('/resources/js/tour.js', 'ximTOUR');
             }
             $this->addCss('/actions/welcome/resources/css/welcome.css');
         }
-
         $this->addJs('/actions/welcome/resources/js/index.js');
 
-        //Getting idaction to check Create new project permissions for user
-        $user = new User(\Ximdex\Runtime\Session::get("userID"));
+        // Getting idaction to check Create new project permissions for user
+        $user = new User(\Ximdex\Runtime\Session::get('userID'));
         $idNodeRoot = 10000;
         $action = new Action();
-        $action->setByCommandAndModule("addfoldernode", $idNodeRoot);
-        $permissionsToCreateProject = $user->isAllowedAction($idNodeRoot, $action->get("IdAction"));
-
-        $values["permissionsToCreateProject"] = $permissionsToCreateProject;
-        $projectsInfo = \Ximdex\NodeTypes\Projects::getProjectsInfo();
-        $values["projects_info"] = $projectsInfo ? $projectsInfo : array();
-        $values["user"] = \Ximdex\Runtime\Session::get("user_name");
-        $values["docs"] = $user->getLastestDocs();
-
-
-        $this->render($values, "index.tpl", 'default-3.0.tpl');
+        $action->setByCommandAndModule('addfoldernode', $idNodeRoot);
+        $permissionsToCreateProject = $user->isAllowedAction($idNodeRoot, $action->get('IdAction'));
+        $values['permissionsToCreateProject'] = $permissionsToCreateProject;
+        $projectsInfo = Projects::getProjectsInfo();
+        $values['projects_info'] = $projectsInfo ? $projectsInfo : array();
+        $values['user'] = \Ximdex\Runtime\Session::get('user_name');
+        $values['docs'] = $user->getLastestDocs();
+        $this->render($values, 'index.tpl', 'default-3.0.tpl');
     }
 }
-

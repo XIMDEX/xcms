@@ -31,6 +31,9 @@ use Ximdex\Models\Version;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\DataFactory;
 
+/**
+ * @deprecated
+ */
 class Action_poolPreview extends ActionAbstract
 {
 	/**

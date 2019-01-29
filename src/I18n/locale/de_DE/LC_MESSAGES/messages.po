@@ -24,7 +24,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Ximdex 4.0\n"
 "POT-Creation-Date: 2019-01-18 10:43+0100\n"
-"PO-Revision-Date: 2019-01-21 11:40+0100\n"
+"PO-Revision-Date: 2019-01-22 10:18+0100\n"
 "Last-Translator: \n"
 "Language-Team: ajlucena@ximdex.com\n"
 "MIME-Version: 1.0\n"
@@ -49,9 +49,7 @@ msgid "Access to %s"
 msgstr "Zugriff auf %s"
 
 msgid "Without space in hard disk. Available only %sMB when it's need %sMB"
-msgstr ""
-"Kein Platz auf der Festplatte. Nur %MB verf&uuml;gbar, aber %MB ben&ouml;"
-"tigt."
+msgstr "Kein Platz auf der Festplatte. Nur %MB verf&uuml;gbar, aber %MB ben&ouml;tigt."
 
 #: /actions/deletetemplates/templates/Smarty/result.tpl
 msgid "Removed templates"
@@ -61,11 +59,8 @@ msgid "Templates not found"
 msgstr "Vorlagen nicht gefunden"
 
 #: /actions/installer/Action_installer.class.php
-msgid ""
-"Please, check database configuration in your /conf/install_params.conf.php"
-msgstr ""
-"Bitte &uuml;berpr&uuml;fen Sie die Konfiguration der Datenbank in Ihrer /"
-"conf/install_params.conf.php"
+msgid "Please, check database configuration in your /conf/install_params.conf.php"
+msgstr "Bitte &uuml;berpr&uuml;fen Sie die Konfiguration der Datenbank in Ihrer /conf/install_params.conf.php"
 
 #: /actions/actionsstats/template/Smarty/index.tpl
 msgid "Filter by user:"
@@ -334,19 +329,11 @@ msgstr "Keine Kan&auml;le angegeben"
 msgid "The selected node was not found:"
 msgstr "Der gew&auml;hlte Knoten wurde nicht gefunden"
 
-msgid ""
-"More than one allowed nodetype has been found for this folder, it is "
-"recovered returning to the first"
-msgstr ""
-"In diesem Ordner wurde mehr als ein erlaubter Knotentyp gefunden, dieser "
-"wird durch zur&uuml;ckkehren zum ersten wiederhergestellt."
+msgid "More than one allowed nodetype has been found for this folder, it is recovered returning to the first"
+msgstr "In diesem Ordner wurde mehr als ein erlaubter Knotentyp gefunden, dieser wird durch zur&uuml;ckkehren zum ersten wiederhergestellt."
 
-msgid ""
-"The node with id %d has not any nodeAllowedContent with necessary features "
-"to store a language list"
-msgstr ""
-" Mit dem Knoten ist kein nodeAllowedContent mit den n&ouml;tigen Features "
-"verbunden um eine Sprachenliste zu speichern"
+msgid "The node with id %d has not any nodeAllowedContent with necessary features to store a language list"
+msgstr " Mit dem Knoten ist kein nodeAllowedContent mit den n&ouml;tigen Features verbunden um eine Sprachenliste zu speichern"
 
 msgid "No language has been found"
 msgstr "Keine Sprache gefunden"
@@ -355,12 +342,8 @@ msgid "Changes have been successfully done"
 msgstr "&Auml;nderungen wurden erfolgreich durchgef&uuml;hrt"
 
 #: /actions/changelang/Action_changelang.class.php
-msgid ""
-"Ximdex Language changed to %s. The changes will take effect once you restart "
-"Ximdex."
-msgstr ""
-"Ximdex Sprache auf %s ge&auml;ndert. Diese &Auml;nderungen werden &uuml;"
-"bernommen bei Neustart von Ximdex."
+msgid "Ximdex Language changed to %s. The changes will take effect once you restart Ximdex."
+msgstr "Ximdex Sprache auf %s ge&auml;ndert. Diese &Auml;nderungen werden &uuml;bernommen bei Neustart von Ximdex."
 
 #: /actions/changelang/Action_changelang.class.php
 msgid "User could not be found."
@@ -571,9 +554,7 @@ msgstr "Logout"
 
 #: actions/browser3/resources/js/tour.js
 msgid "This is the navigation area. Here, different views can be chosen"
-msgstr ""
-"Das ist der Navigationsbereich. Hier k&ouml;nnen verschiedene Ansichten "
-"ausgew&auml;hlt werden"
+msgstr "Das ist der Navigationsbereich. Hier k&ouml;nnen verschiedene Ansichten ausgew&auml;hlt werden"
 
 msgid "Clicking this tab, Project view is activated"
 msgstr "Beim anklicken dieses Tabs wird die Projektansicht aktiviert"
@@ -1082,8 +1063,7 @@ msgstr "Pager"
 
 #: /actions/copy/Action_copy.class.php
 msgid "The ximIO module should be activated to allow copy of nodes."
-msgstr ""
-"Das ximIO Modul muss aktiviert werden um Knoten kopieren zu k&ouml;nnen."
+msgstr "Das ximIO Modul muss aktiviert werden um Knoten kopieren zu k&ouml;nnen."
 
 # msgid "Action cannot be executed because there are pending ximIO packages, if you need to execute the action consult with your administrator"
 # msgstr "Aktion kann nicht durchgef&uuml;hrt werden weil ximIO Pakete ausstehen, wenn Sie die Aktion durchf&uuml;hren m&ouml;chten wenden Sie sich an Ihren Administrator"
@@ -1101,16 +1081,10 @@ msgid "Destination node does not exist"
 msgstr "Zielknoten existiert nicht"
 
 msgid "You cannot make a copy of nodes between differents projects"
-msgstr ""
-"Es kann keine Kopie von Knoten zwischen verschiedenen Projekten gemacht "
-"werden"
+msgstr "Es kann keine Kopie von Knoten zwischen verschiedenen Projekten gemacht werden"
 
-msgid ""
-"An error occurred during copy process, information about process could be "
-"obtained"
-msgstr ""
-"Beim Kopiervorgang ist ein Fehler aufgetreten, Information &uuml;ber den "
-"Prozess konnte angefordert werden"
+msgid "An error occurred during copy process, information about process could be obtained"
+msgstr "Beim Kopiervorgang ist ein Fehler aufgetreten, Information &uuml;ber den Prozess konnte angefordert werden"
 
 msgid "%d nodes have been successfully copied"
 msgstr "%d Knoten wurden erfolgreich kopiert"
@@ -1121,17 +1095,11 @@ msgstr "%d Knoten wurden nicht kopiert weil Berechtigungen fehlen"
 msgid "%d nodes have not been copied because of lack of XML info"
 msgstr "%d Knoten wurden nicht kopiert weil die XML Info fehlt"
 
-msgid ""
-"%d nodes have not been copied because its parents have not been imported"
-msgstr ""
-"%d Knoten wurden nicht kopiert weil Mutterknoten nicht importiert wurden"
+msgid "%d nodes have not been copied because its parents have not been imported"
+msgstr "%d Knoten wurden nicht kopiert weil Mutterknoten nicht importiert wurden"
 
-msgid ""
-"%d nodes have not been copied because they are not allowed into the "
-"requested parent"
-msgstr ""
-"%d Knoten wurden nicht kopiert weil sie innerhalb des angeforderten "
-"Mutterknotens nicht erlaubt sind"
+msgid "%d nodes have not been copied because they are not allowed into the requested parent"
+msgstr "%d Knoten wurden nicht kopiert weil sie innerhalb des angeforderten Mutterknotens nicht erlaubt sind"
 
 msgid "Here should be the action name"
 msgstr "Hier den Aktionsnamen eingeben"
@@ -1173,11 +1141,8 @@ msgid "File extension"
 msgstr "Dateierweiterung"
 
 #: /actions/createuser/template/Smarty/index.tpl
-msgid ""
-"Users registered without their consent may violate the rules of your country"
-msgstr ""
-"Die Registrierung von Nutzern ohne deren Zustimmung kann die Bestimmungen "
-"Ihres Landes verletzen"
+msgid "Users registered without their consent may violate the rules of your country"
+msgstr "Die Registrierung von Nutzern ohne deren Zustimmung kann die Bestimmungen Ihres Landes verletzen"
 
 #: /actions/createchannel/template/Smarty/index.tpl
 #: /actions/createlanguage/template/Smarty/index.tpl
@@ -1299,9 +1264,7 @@ msgid "Username should be formed by 3 uppercase letters"
 msgstr "Benutzername sollte aus 3 Grossbuchstaben bestehen"
 
 msgid "Inserted passwords do not match, the user could not be created"
-msgstr ""
-"Eingegebene Passw&ouml;rter stimmen nicht &uuml;berein, Benutzer konnte "
-"nicht erstellt werden"
+msgstr "Eingegebene Passw&ouml;rter stimmen nicht &uuml;berein, Benutzer konnte nicht erstellt werden"
 
 msgid "User has been successfully inserted"
 msgstr "Benutzer wurde erfolgreich hinzugef&uuml;gt"
@@ -1353,8 +1316,7 @@ msgid " operation will be aborted, contact with your administrator"
 msgstr " vorgang wird abgebrochen, wenden Sie sich an Ihren Administrator"
 
 msgid "A nodetype could not be estimated to create the container folder,"
-msgstr ""
-"Ein Knotentyp konnte nicht gesch&auml;tzt werden um den Ordner zu erstellen,"
+msgstr "Ein Knotentyp konnte nicht gesch&auml;tzt werden um den Ordner zu erstellen,"
 
 msgid "An error occurred creating the container node"
 msgstr "Beim Erstellen des Knotens ist ein Fehler aufgetreten"
@@ -1363,8 +1325,7 @@ msgid "Container %s has been successfully created"
 msgstr "Ordner %s wurde erfolgreich erstellt"
 
 msgid "A nodetype could not be estimated to create the document,"
-msgstr ""
-"Knotentyp konnte nicht gesch&auml;tzt werden um das Dokument zu erstellen,"
+msgstr "Knotentyp konnte nicht gesch&auml;tzt werden um das Dokument zu erstellen,"
 
 msgid "Language %s insertion has been aborted because it was not found"
 msgstr "Spracheingabe %s wurde abgebrochen weil sie nicht gefunden wurde"
@@ -1403,55 +1364,25 @@ msgstr "Keine/r"
 
 #: /actions/deletenode/Action_deletenode.class.php
 msgid "Because of system restrictions, the following nodes cannot be deleted: "
-msgstr ""
-"Aufgrund von Systembeschr&auml;nkungen k&ouml;nnen folgende Knoten nicht "
-"gel&ouml;scht werden: "
+msgstr "Aufgrund von Systembeschr&auml;nkungen k&ouml;nnen folgende Knoten nicht gel&ouml;scht werden: "
 
-msgid ""
-"Selected document or folder is not empty. It also have dependencies with "
-"other system documents and it cannot be deleted using your role. Please, "
-"undo dependencies or use a user with suitable permissions."
-msgstr ""
-"Ausgew&auml;hltes Dokument oder Ordner ist nicht leer. Er h&auml;ngt "
-"ausserdem mit anderen Systemdokumenten zusammen und kann nicht gel&ouml;scht "
-"werden mit Ihrer Rolle. Bitte entfernen Sie die Abh&auml;ngigkeiten oder "
-"verwenden Sie einen Benutzer mit der n&ouml;tigen Berechtigung."
+msgid "Selected document or folder is not empty. It also have dependencies with other system documents and it cannot be deleted using your role. Please, undo dependencies or use a user with suitable permissions."
+msgstr "Ausgew&auml;hltes Dokument oder Ordner ist nicht leer. Er h&auml;ngt ausserdem mit anderen Systemdokumenten zusammen und kann nicht gel&ouml;scht werden mit Ihrer Rolle. Bitte entfernen Sie die Abh&auml;ngigkeiten oder verwenden Sie einen Benutzer mit der n&ouml;tigen Berechtigung."
 
-msgid ""
-"Your role cannot delete the selected container because of it has language "
-"versions depending on it."
-msgstr ""
-"Ihre Rolle kann den ausgew&auml;hlten Ordner nicht l&ouml;schen weil "
-"idiomatische Versionen davon abh&auml;ngen."
+msgid "Your role cannot delete the selected container because of it has language versions depending on it."
+msgstr "Ihre Rolle kann den ausgew&auml;hlten Ordner nicht l&ouml;schen weil idiomatische Versionen davon abh&auml;ngen."
 
-msgid ""
-"Selected document or folder is not empty and it cannot be deleted using your "
-"role. Please, undo dependencies or use a user with suitable permissions."
-msgstr ""
-"Ausgew&auml;hltes Dokument oder Ordner ist nicht leer und kann nicht "
-"gel&ouml;scht werden mit Ihrer Rolle. Bitte entfernen Sie die Abh&auml;"
-"ngigkeiten oder verwenden Sie einen Benutzer mit der n&ouml;tigen "
-"Berechtigung."
+msgid "Selected document or folder is not empty and it cannot be deleted using your role. Please, undo dependencies or use a user with suitable permissions."
+msgstr "Ausgew&auml;hltes Dokument oder Ordner ist nicht leer und kann nicht gel&ouml;scht werden mit Ihrer Rolle. Bitte entfernen Sie die Abh&auml;ngigkeiten oder verwenden Sie einen Benutzer mit der n&ouml;tigen Berechtigung."
 
-msgid ""
-"Selected file has dependencies with other system documents and it cannot be "
-"deleted using your role. Please, undo dependencies or use a user with "
-"suitable permissions."
-msgstr ""
-"Ausgew&auml;hlte Datei h&auml;ngt mit anderen Systemdokumenten zusammen und "
-"kann nicht gel&ouml;scht werden mit Ihrer Rolle. Bitte entfernen Sie die "
-"Abh&auml;ngigkeiten oder verwenden Sie einen Benutzer mit der n&ouml;tigen "
-"Berechtigung."
+msgid "Selected file has dependencies with other system documents and it cannot be deleted using your role. Please, undo dependencies or use a user with suitable permissions."
+msgstr "Ausgew&auml;hlte Datei h&auml;ngt mit anderen Systemdokumenten zusammen und kann nicht gel&ouml;scht werden mit Ihrer Rolle. Bitte entfernen Sie die Abh&auml;ngigkeiten oder verwenden Sie einen Benutzer mit der n&ouml;tigen Berechtigung."
 
 msgid "List of pending documents"
 msgstr "Liste ausstehender Dokumente"
 
-msgid ""
-"To be able to delete this node, you should first delete the following "
-"language versions"
-msgstr ""
-"Um diesen Knoten l&ouml;schen zu k&ouml;nnen, m&uuml;ssen Sie zuerst "
-"folgende idiomatische Versionen l&ouml;schen"
+msgid "To be able to delete this node, you should first delete the following language versions"
+msgstr "Um diesen Knoten l&ouml;schen zu k&ouml;nnen, m&uuml;ssen Sie zuerst folgende idiomatische Versionen l&ouml;schen"
 
 msgid "Node does not exist. Update XimSearch."
 msgstr "Knoten existiert nicht. XimSearch aktualisieren."
@@ -1497,18 +1428,10 @@ msgstr "Aktion erfolgreich durchgef&uuml;hrt."
 
 #: /actions/deletenode/resources/js/deletenode.js
 msgid "You are going to delete a node. Would you like to continue?"
-msgstr ""
-"Sie sind dabei einen Knoten zu l&ouml;schen. M&ouml;chten Sie fortfahren?"
+msgstr "Sie sind dabei einen Knoten zu l&ouml;schen. M&ouml;chten Sie fortfahren?"
 
-msgid ""
-"The node cannot be deleted without deleting its dependencies.<br/><br/>If "
-"you want to delete this node your should delete its dependencies or tick the "
-"dependence deletion box"
-msgstr ""
-"Der Knoten kann nicht gel&ouml;scht werden ohne dessen Abh&auml;ngigkeiten "
-"zu l&ouml;schen.<br/><br/>Wenn Sie diesen Knoten l&ouml;schen m&ouml;chten "
-"m&uuml;ssen Sie dessen Abh&auml;ngigkeiten l&ouml;schen oder das K&auml;"
-"stchen zum l&ouml;schen der Abh&auml;ngigkeiten markieren"
+msgid "The node cannot be deleted without deleting its dependencies.<br/><br/>If you want to delete this node your should delete its dependencies or tick the dependence deletion box"
+msgstr "Der Knoten kann nicht gel&ouml;scht werden ohne dessen Abh&auml;ngigkeiten zu l&ouml;schen.<br/><br/>Wenn Sie diesen Knoten l&ouml;schen m&ouml;chten m&uuml;ssen Sie dessen Abh&auml;ngigkeiten l&ouml;schen oder das K&auml;stchen zum l&ouml;schen der Abh&auml;ngigkeiten markieren"
 
 #: /actions/deletenode/template/Smarty/forms/dependencies.tpl
 #: /actions/deletenode/template/Smarty/forms/simple.tpl
@@ -1517,8 +1440,7 @@ msgstr "M&ouml;chten Sie l&ouml;schen"
 
 #: /actions/deletenode/template/Smarty/forms/simple.tpl
 msgid "You are going to delete system nodes. Would you like to continue?"
-msgstr ""
-"Sie sind dabei Systemknoten zu l&ouml;schen. M&ouml;chten Sie fortfahren?"
+msgstr "Sie sind dabei Systemknoten zu l&ouml;schen. M&ouml;chten Sie fortfahren?"
 
 #: /actions/deletenode/template/Smarty/forms/dependencies.tpl
 #: /actions/deletenode/template/Smarty/forms/simple.tpl
@@ -1528,18 +1450,11 @@ msgid "This action cannot be undone"
 msgstr "Diese Aktion kann nicht r&uuml;ckg&auml;ngig gemacht werden"
 
 #: /actions/deletenode/template/Smarty/forms/dependencies.tpl
-msgid ""
-"If a long time is elapsed before action is executed, list of dependencies "
-"and children of node may change"
-msgstr ""
-"Verstreicht ein langer Zeitraum bis die Aktion ausgef&uuml;hrt wird, k&ouml;"
-"nnen sich die Liste der Abh&auml;ngigkeiten und untergeordnete Knoten &auml;"
-"ndern"
+msgid "If a long time is elapsed before action is executed, list of dependencies and children of node may change"
+msgstr "Verstreicht ein langer Zeitraum bis die Aktion ausgef&uuml;hrt wird, k&ouml;nnen sich die Liste der Abh&auml;ngigkeiten und untergeordnete Knoten &auml;ndern"
 
 msgid "Deleting this node all its children will be deleted too"
-msgstr ""
-"Beim L&ouml;schen dieses Knotens werden auch alle untergeordneten Knoten "
-"gel&ouml;scht"
+msgstr "Beim L&ouml;schen dieses Knotens werden auch alle untergeordneten Knoten gel&ouml;scht"
 
 msgid "This action does not carry on expiration of nodes"
 msgstr "Diese Aktion f&uuml;hrt nicht zum Ablaufen der Knoten"
@@ -1559,37 +1474,25 @@ msgstr "Markieren um alle Abh&auml;ngigkeiten zu l&ouml;schen"
 msgid "This node has not dependecies at the moment"
 msgstr "Dieser Knoten hat momentan keine Abh&auml;ngigkeiten"
 
-msgid ""
-"This node or its children have pending task to publish, if you continue "
-"these tasks will be interrupted"
-msgstr ""
-"F&uuml;r diesen Knoten oder seine untergeordneten Knoten stehen noch "
-"Aufgaben zum ver&ouml;ffentlichen aus, wenn Sie fortfahren werden die "
-"Aufgaben unterbrochen"
+msgid "This node or its children have pending task to publish, if you continue these tasks will be interrupted"
+msgstr "F&uuml;r diesen Knoten oder seine untergeordneten Knoten stehen noch Aufgaben zum ver&ouml;ffentlichen aus, wenn Sie fortfahren werden die Aufgaben unterbrochen"
 
 #: /actions/deletenode/template/Smarty/forms/dependencies.tpl
 #: /actions/movenode/template/Smarty/index.tpl
 msgid "This node, or one or more of its children, are published"
-msgstr ""
-"Dieser Knoten, einer oder mehrer seiner untergeordnete Knoten werden "
-"ver&ouml;ffentlicht"
+msgstr "Dieser Knoten, einer oder mehrer seiner untergeordnete Knoten werden ver&ouml;ffentlicht"
 
 #: /actions/deletenode/template/Smarty/forms/dependencies.tpl
 msgid "If you do not want to keep your nodes published"
 msgstr "Wenn Sie nicht m&ouml;chten, dass Ihre Knoten &ouml;ffentlich bleiben"
 
 msgid "Edit publication life of your nodes previously deletion."
-msgstr ""
-"Bearbeiten Sie die G&uuml;ltigkeit der Publikation Ihrer Knoten vor dem "
-"L&ouml;schvorgang."
+msgstr "Bearbeiten Sie die G&uuml;ltigkeit der Publikation Ihrer Knoten vor dem L&ouml;schvorgang."
 
 #: /actions/deletenode/template/Smarty/forms/dependencies.tpl
 #: /actions/movenode/template/Smarty/index.tpl
-msgid ""
-"Or if you prefer, delete your nodes by hand later in the publication zone"
-msgstr ""
-"In der Ver&ouml;ffentlichungszone k&ouml;nnen Sie Ihre Knoten sp&auml;ter "
-"per Hand l&ouml;schen, sollten Sie das bevorzugen"
+msgid "Or if you prefer, delete your nodes by hand later in the publication zone"
+msgstr "In der Ver&ouml;ffentlichungszone k&ouml;nnen Sie Ihre Knoten sp&auml;ter per Hand l&ouml;schen, sollten Sie das bevorzugen"
 
 #: /actions/deleteuser/Action_deleteuser.class.php
 msgid "User could not be found"
@@ -1627,43 +1530,27 @@ msgid " have been successfully published"
 msgstr " wurde erfolgreich ver&ouml;ffentlicht"
 
 msgid " have not been published, because of an error during process"
-msgstr ""
-" wurde nicht ver&ouml;ffentlicht, aufgrund eines Fehlers w&auml;hrend des "
-"Prozesses"
+msgstr " wurde nicht ver&ouml;ffentlicht, aufgrund eines Fehlers w&auml;hrend des Prozesses"
 
-msgid ""
-" have not been published because they are already published on its most "
-"recent version"
-msgstr ""
-" wurde nicht ver&ouml;ffentlicht, weil diese bereits bei der letzten Version "
-"ver&ouml;ffentlicht wurden"
+msgid " have not been published because they are already published on its most recent version"
+msgstr " wurde nicht ver&ouml;ffentlicht, weil diese bereits bei der letzten Version ver&ouml;ffentlicht wurden"
 
 msgid "The document which is trying to be edited does not exist"
 msgstr "Das Dokument, das Sie bearbeiten m&ouml;chten existiert nicht"
 
-msgid ""
-"It has tried to call a non-existing method for this node: $node->class-"
-">updateNew for nodeid:"
-msgstr ""
-"Es wurde versucht eine nicht existierende Methode f&uuml;r diesen Knoten "
-"aufzurufen: $node->class->updateNew f&uuml;r nodeid:"
+msgid "It has tried to call a non-existing method for this node: $node->class->updateNew for nodeid:"
+msgstr "Es wurde versucht eine nicht existierende Methode f&uuml;r diesen Knoten aufzurufen: $node->class->updateNew f&uuml;r nodeid:"
 
 msgid "Editing file"
 msgstr "Datei wird bearbeitet"
 
 #: /actions/edittext/template/Smarty/publishForm.tlp
-msgid ""
-"Modification of this template has affected to %1 documents. Would you like "
-"to republish them?"
-msgstr ""
-"Die &Auml;nderung dieses Vorlagen hat %1 der Dokumente beeinflusst. M&ouml;"
-"chten Sie diese nochmal ver&ouml;ffentlichen?"
+msgid "Modification of this template has affected to %1 documents. Would you like to republish them?"
+msgstr "Die &Auml;nderung dieses Vorlagen hat %1 der Dokumente beeinflusst. M&ouml;chten Sie diese nochmal ver&ouml;ffentlichen?"
 
 #: /actions/edittext/javascript/tour.js
 msgid "This action allows to edit in a text window the document code.<br/>"
-msgstr ""
-"Diese Aktion erm&ouml;glicht Ihnen den Dokumentencode in einem Textfenster "
-"zu bearbeiten.<br/>"
+msgstr "Diese Aktion erm&ouml;glicht Ihnen den Dokumentencode in einem Textfenster zu bearbeiten.<br/>"
 
 msgid "Edit the document code in the text box"
 msgstr "Bearbeiten des Dokumentencodes in der Textbox"
@@ -1708,8 +1595,7 @@ msgstr " Sind die gelesenen Parameter korrekt?"
 #: /actions/expiresection/expiresection_IO.php
 #: /actions/publicatesection/publicatesection_IO.php
 msgid "To confirm press uppercase 'A' and then press 'Intro'."
-msgstr ""
-"Zum best&auml;tigen dr&uuml;cken Sie Grossbuchstabe 'A' und dann 'Intro'."
+msgstr "Zum best&auml;tigen dr&uuml;cken Sie Grossbuchstabe 'A' und dann 'Intro'."
 
 msgid " Press Ctrl+C to exit."
 msgstr " Dr&uuml;cken Sie Ctrl+C zum verlassen."
@@ -1723,20 +1609,14 @@ msgstr "Sektion beenden"
 #: /actions/expiresection/templates/Smarty/index.tpl
 #: /actions/publicatesection/template/Smarty/index.tpl
 msgid "Publication windows configured for these files will be cancelled."
-msgstr ""
-"Konfiguration der Publikationsfenster f&uuml;r diese Dateien wird "
-"abgebrochen."
+msgstr "Konfiguration der Publikationsfenster f&uuml;r diese Dateien wird abgebrochen."
 
 #: /actions/expiresection/templates/Smarty/index.tpl
 msgid "You have selected to expire the contents of section: "
 msgstr "Sie haben die Beendigung der Inhalte der Sektion ausgew&auml;hlt: "
 
-msgid ""
-"Would you like to expire just this folder or all subsections included in it "
-"too?"
-msgstr ""
-"M&ouml;chten Sie nur diesen Ordner l&ouml;schen oder auch alle darin "
-"untergeordneten Sektionen?"
+msgid "Would you like to expire just this folder or all subsections included in it too?"
+msgstr "M&ouml;chten Sie nur diesen Ordner l&ouml;schen oder auch alle darin untergeordneten Sektionen?"
 
 msgid "Expire just this section"
 msgstr "Nur diese Sektion beenden"
@@ -1756,9 +1636,7 @@ msgstr "Datei herunterladen"
 
 #: /actions/filedownload/template/Smarty/index.tpl
 msgid "File download will start immediately. If it does not start, click on:"
-msgstr ""
-"Herunterladen der Datei startet automatisch. Wenn der Vorgang nicht "
-"automatisch startet, klicken Sie auf:"
+msgstr "Herunterladen der Datei startet automatisch. Wenn der Vorgang nicht automatisch startet, klicken Sie auf:"
 
 #: /actions/filedownload/template/Smarty/index.tpl
 #: /actions/filedownload_multiple/template/Smarty/index.tpl
@@ -1777,34 +1655,22 @@ msgstr "Verzeichnis konnte nicht gel&ouml;scht werden "
 
 #: /actions/fileupload/Action_fileupload.class.php
 msgid "The folder where you want to upload the files does not exist"
-msgstr ""
-"Der Ordner in dem Sie die Dateien hochladen m&ouml;chten existiert nicht"
+msgstr "Der Ordner in dem Sie die Dateien hochladen m&ouml;chten existiert nicht"
 
-msgid ""
-"A node type allowed in this folder could not be estimated, contact with your "
-"administrator."
-msgstr ""
-"Ein in diesem Ordner erlaubter Knotentyp konnte nicht gesch&auml;tzt werden, "
-"wenden Sie sich an Ihren Administrator."
+msgid "A node type allowed in this folder could not be estimated, contact with your administrator."
+msgstr "Ein in diesem Ordner erlaubter Knotentyp konnte nicht gesch&auml;tzt werden, wenden Sie sich an Ihren Administrator."
 
 #: /actions/fileupload/Action_fileupload.class.php
 #: /actions/updatefile/Action_updatefile.class.php
 msgid "File could not be uploaded, contact with your administrator"
-msgstr ""
-"Datei konnte nicht hochgeladen werden, wenden Sie sich an Ihren Administrator"
+msgstr "Datei konnte nicht hochgeladen werden, wenden Sie sich an Ihren Administrator"
 
 #: /actions/fileupload/Action_fileupload.class.php
 msgid "File type could not be estimated or it is an invalid type."
-msgstr ""
-"Dateityp konnte nicht gesch&auml;tzt werden oder es ist ein ung&uuml;ltiger "
-"Dateityp."
+msgstr "Dateityp konnte nicht gesch&auml;tzt werden oder es ist ein ung&uuml;ltiger Dateityp."
 
-msgid ""
-"No type of file which can be inserted in this folder has been found, contact "
-"with your administrator"
-msgstr ""
-"Es wurde keine Datei gefunden die in diesen Ordner eingef&uuml;gt werden "
-"kann, wenden Sie sich an Ihren Administrator"
+msgid "No type of file which can be inserted in this folder has been found, contact with your administrator"
+msgstr "Es wurde keine Datei gefunden die in diesen Ordner eingef&uuml;gt werden kann, wenden Sie sich an Ihren Administrator"
 
 msgid "List of allowed extension files is as follows: %s"
 msgstr "Liste der erlaubten Erweiterungsdateien ist wie folgt: %s"
@@ -1813,9 +1679,7 @@ msgid "File %s has been successfully inserted"
 msgstr "Datei %s wurde erfolgreich eingef&uuml;gt"
 
 msgid "Please, check if there is any file with same name"
-msgstr ""
-"Bitte &uuml;berpr&uuml;fen Sie ob bereits eine Datei mit dem gleichen Namen "
-"existiert"
+msgstr "Bitte &uuml;berpr&uuml;fen Sie ob bereits eine Datei mit dem gleichen Namen existiert"
 
 msgid "Please, check if path and name are correct"
 msgstr "Bitte &uuml;berpr&uuml;fen ob der Pfad und der Name korrekt sind"
@@ -1835,12 +1699,8 @@ msgstr "Dokument konnte nicht analysiert werden"
 msgid "'%s' template has been successfully saved"
 msgstr "'%s' Vorlage wurde erfolgreich gespeichert"
 
-msgid ""
-"Error while saving template. The operation has not been successfully "
-"performed: {$node->msgErr}"
-msgstr ""
-"Fehler beim Speichern der Vorlage. Der Vorgang wurde nicht erfolgreich "
-"durchgef&uuml;hrt: {$node->msgErr}"
+msgid "Error while saving template. The operation has not been successfully performed: {$node->msgErr}"
+msgstr "Fehler beim Speichern der Vorlage. Der Vorgang wurde nicht erfolgreich durchgef&uuml;hrt: {$node->msgErr}"
 
 #: /actions/fileupload/template/Smarty/confirm.tpl
 #: /xmd/template/Smarty/layouts/messages.tpl
@@ -1876,8 +1736,7 @@ msgid "NodeType is empty"
 msgstr "Knotentyp ist leer"
 
 msgid "Files cannot be added because of lack of permits"
-msgstr ""
-"Dateien k&ouml;nnen nicht hinzugef&uuml;gt werden weil Berechtigungen fehlen"
+msgstr "Dateien k&ouml;nnen nicht hinzugef&uuml;gt werden weil Berechtigungen fehlen"
 
 msgid " Add style sheets"
 msgstr " Stylesheet hinzuf&uuml;gen"
@@ -1953,21 +1812,14 @@ msgstr "Die Vorgangsart wurde nicht gew&auml;hlt"
 msgid "Folder to unzip data could not be created"
 msgstr "Ordner zum Entpacken der Daten konnte nicht erstellt werden"
 
-msgid ""
-"Package with file which you want to import has not been specified or it does "
-"not exist"
-msgstr ""
-"Das Paket mit der zu importierenden Datei wurde nicht gefunden oder "
-"existiert nicht"
+msgid "Package with file which you want to import has not been specified or it does not exist"
+msgstr "Das Paket mit der zu importierenden Datei wurde nicht gefunden oder existiert nicht"
 
 msgid "Package to import has not been found into zip file"
-msgstr ""
-"In der komprimierten Datei wurde das zu importierende Paket nicht gefunden"
+msgstr "In der komprimierten Datei wurde das zu importierende Paket nicht gefunden"
 
 msgid "Identification of package has not been found into zip file"
-msgstr ""
-"In der komprimierten Datei konnte die Indentifikation des Pakets nicht "
-"gefunden werden"
+msgstr "In der komprimierten Datei konnte die Indentifikation des Pakets nicht gefunden werden"
 
 msgid "Error while parsing crendential file"
 msgstr "Fehler beim analysieren der Anmeldedatei"
@@ -1988,9 +1840,7 @@ msgid "Node which you want to operate has not been specified"
 msgstr "Durchzuf&uuml;hrender Knoten wurde nicht spezifiziert"
 
 msgid "Package has no references about path of file to import"
-msgstr ""
-"Das Paket enth&auml;lt keine Referenz bez&uuml;glich des Pfads der zu "
-"importierenden Datei"
+msgstr "Das Paket enth&auml;lt keine Referenz bez&uuml;glich des Pfads der zu importierenden Datei"
 
 msgid "Operation has been successfully performed"
 msgstr "Vorgang wurde erfolgreich durchgef&uuml;hrt"
@@ -2004,9 +1854,7 @@ msgstr "Suchkriterien ausw&auml;hlen"
 
 #: /actions/linkreport/resources/js/listHandler.js
 msgid "No found broken links with your search criteria"
-msgstr ""
-"Mit diesen Suchkriterien konnten keine besch&auml;digten Links gefunden "
-"werden."
+msgstr "Mit diesen Suchkriterien konnten keine besch&auml;digten Links gefunden werden."
 
 #: /actions/linkreport/template/Smarty/index.tpl
 #: /inc/widgets/jquery/searchpanel/template/searchpanel.tpl
@@ -2190,9 +2038,7 @@ msgstr "Gesamt"
 #: /modules/ximSYNC/actions/managebatchs/template/Smarty/batchlistamp.tpl
 #: /modules/ximSYNC/actions/managebatchs/forms.php
 msgid "There are no batches matching with the indicated criteria."
-msgstr ""
-"Keine Stapel vorhanden die mit den eingegebenen Kriterien &uuml;"
-"bereinstimmen."
+msgstr "Keine Stapel vorhanden die mit den eingegebenen Kriterien &uuml;bereinstimmen."
 
 msgid "See frames"
 msgstr "Rahmen ansehen"
@@ -2268,10 +2114,8 @@ msgstr "Kanalwerte werden weitergegeben."
 msgid "%s Channels have been successfully assigned."
 msgstr "%s Kan&auml;le wurden erfolgreich hinzugef&uuml;gt."
 
-msgid ""
-"A total of %s channels have been recursively associated with %s documents."
-msgstr ""
-"Insgesamt %s Kan&auml;le wurden rekursiv hinzugef&uuml;gt zu %s Dokumenten."
+msgid "A total of %s channels have been recursively associated with %s documents."
+msgstr "Insgesamt %s Kan&auml;le wurden rekursiv hinzugef&uuml;gt zu %s Dokumenten."
 
 msgid "A total of %s language versions have been deleted."
 msgstr "Insgesamt %s idiomatische Versionen wurden gel&ouml;scht."
@@ -2309,8 +2153,7 @@ msgstr "M&ouml;chten Sie mit den &Auml;nderungen fortfahren?"
 
 #: /actions/manageproperties/resources/js/index.js
 msgid "A value should be selected for <b>%s</b> property.<br />"
-msgstr ""
-"Ein Wert sollte ausgew&auml;hlt werden f&uuml;r <b>%s</b> property.<br />"
+msgstr "Ein Wert sollte ausgew&auml;hlt werden f&uuml;r <b>%s</b> property.<br />"
 
 msgid "Otherwise inherited values will be used."
 msgstr "Andernfalls werden vererbbare Werte benutzt."
@@ -2483,23 +2326,15 @@ msgstr "Verbindungen aktualisieren"
 msgid "There are no groups associated with user yet"
 msgstr "Keine Gruppe zum Benutzer hinzugef&uuml;gt"
 
-msgid ""
-"If some subscription is selected it will be deleted. Are you sure you want "
-"to continue?"
-msgstr ""
-"Ausgew&auml;hlt Subskription wird gel&ouml;scht. Sind Sie sicher, dass Sie "
-"fortfahren m&ouml;chten?"
+msgid "If some subscription is selected it will be deleted. Are you sure you want to continue?"
+msgstr "Ausgew&auml;hlt Subskription wird gel&ouml;scht. Sind Sie sicher, dass Sie fortfahren m&ouml;chten?"
 
 msgid "Subscriptions to groups will be updated. Would you like to continue?"
-msgstr ""
-"Subskriptionen zu Gruppen werden aktualisiert. M&ouml;chten Sie fortfahren?"
+msgstr "Subskriptionen zu Gruppen werden aktualisiert. M&ouml;chten Sie fortfahren?"
 
 #: /actions/modifylanguage/Action_modifylanguage.class.php
-msgid ""
-"Language could not be successfully loaded, contact with your administrator"
-msgstr ""
-"Sprache konnte nicht erfolgreich geladen werden, wenden Sie sich an Ihren "
-"Administrator"
+msgid "Language could not be successfully loaded, contact with your administrator"
+msgstr "Sprache konnte nicht erfolgreich geladen werden, wenden Sie sich an Ihren Administrator"
 
 msgid "Error while loading language"
 msgstr "Fehler beim Laden der Sprache"
@@ -2519,9 +2354,7 @@ msgstr "Name der Sprache"
 
 #: /actions/modifylink/Action_modifylink.class.php
 msgid "Link could not be successfully loaded, contact with your administrator"
-msgstr ""
-"Link konnte nicht erfolgreich geladen werden, wenden Sie sich an Ihren "
-"Administrator"
+msgstr "Link konnte nicht erfolgreich geladen werden, wenden Sie sich an Ihren Administrator"
 
 msgid "Error while loading link"
 msgstr "Fehler beim Laden des Links"
@@ -2573,12 +2406,8 @@ msgstr "Ohne Status"
 msgid "IdRole has not been found in action modifyrolestate"
 msgstr "IdRole wurden nicht gefunden in Aktion modifyrolestate"
 
-msgid ""
-"Error: Role which you want to associate with workflow status could not be "
-"found"
-msgstr ""
-"Fehler: Rolle die Sie mit dem Workflowstatus verbinden wollte wurde nicht "
-"gefunden"
+msgid "Error: Role which you want to associate with workflow status could not be found"
+msgstr "Fehler: Rolle die Sie mit dem Workflowstatus verbinden wollte wurde nicht gefunden"
 
 msgid "Role has been successfully associated with workflow status"
 msgstr "Rolle wurde erfolgreich mit dem Workflowstatus verbunden"
@@ -2626,12 +2455,8 @@ msgstr "Fehler beim Erstellen des Servers"
 msgid "Not allowed protocol"
 msgstr "Protokoll nicht erlaubt"
 
-msgid ""
-"Not allowed protocol for demo user. Get Ximdex open source to get full "
-"functionality."
-msgstr ""
-"Protokoll nicht erlaubt f&uuml;r Demobenutzer. Installieren Sie Ximdex Open "
-"Source f&uuml;r volle Funktionalit&auml;t."
+msgid "Not allowed protocol for demo user. Get Ximdex open source to get full functionality."
+msgstr "Protokoll nicht erlaubt f&uuml;r Demobenutzer. Installieren Sie Ximdex Open Source f&uuml;r volle Funktionalit&auml;t."
 
 msgid "A local directory is required"
 msgstr "Lokales Verzeichnis erforderlich"
@@ -2680,8 +2505,7 @@ msgid "It is necessary to specify a remote url for this server."
 msgstr "Es muss eine Remote URL f&uuml;r diesen Server spezifiziert werden."
 
 msgid "It is necessary to specify a connection port for this server."
-msgstr ""
-"Es muss ein Verbindungsport f&uuml;r diesen Server spezifiziert werden."
+msgstr "Es muss ein Verbindungsport f&uuml;r diesen Server spezifiziert werden."
 
 msgid "It is necessary to specify a remote address for this server."
 msgstr "Es muss eine Remoteadresse f&uuml;r diesen Server spezifiziert werden"
@@ -2696,32 +2520,17 @@ msgid "Are you sure you want to modify these properties?"
 msgstr "Sind Sie sicher, dass Sie diese Eigenschaften bearbeiten m&ouml;chten"
 
 msgid "Server is not enabled. Documents will not be published on this server."
-msgstr ""
-"Server ist nicht aktiv. Dokumente werden auf diesem Server nicht ver&ouml;"
-"ffentlicht."
+msgstr "Server ist nicht aktiv. Dokumente werden auf diesem Server nicht ver&ouml;ffentlicht."
 
 #: /actions/modifyserver/resources/js/tour.js
-msgid ""
-"This action allows to define in which servers your documents are going to be "
-"published and which protocol will be used."
-msgstr ""
-"Mit dieser Aktion k&ouml;nnen Sie definieren auf welchen Servern Ihre "
-"Dokumente ver&ouml;ffentlicht werden und welches Protokoll benutzt wird."
+msgid "This action allows to define in which servers your documents are going to be published and which protocol will be used."
+msgstr "Mit dieser Aktion k&ouml;nnen Sie definieren auf welchen Servern Ihre Dokumente ver&ouml;ffentlicht werden und welches Protokoll benutzt wird."
 
-msgid ""
-"Create a new server where publishing your documents or choose an already "
-"configured one to edit its properties"
-msgstr ""
-"Erstellen Sie einen neuen Server um Ihre Dokumente zu ver&ouml;ffentlichen "
-"oder w&auml;hlen Sie einen bereits konfigurierten aus und bearbeiten Sie "
-"dessen Eigenschaften"
+msgid "Create a new server where publishing your documents or choose an already configured one to edit its properties"
+msgstr "Erstellen Sie einen neuen Server um Ihre Dokumente zu ver&ouml;ffentlichen oder w&auml;hlen Sie einen bereits konfigurierten aus und bearbeiten Sie dessen Eigenschaften"
 
-msgid ""
-"Specify the way in which your documents are going to be copied to the server "
-"chosen in the previous step"
-msgstr ""
-"Spezifizieren Sie wie Ihre Dokumente auf den zuvor ausgew&auml;hlten Server "
-"kopiert werden sollen"
+msgid "Specify the way in which your documents are going to be copied to the server chosen in the previous step"
+msgstr "Spezifizieren Sie wie Ihre Dokumente auf den zuvor ausgew&auml;hlten Server kopiert werden sollen"
 
 #: /actions/modifyserver/template/resources/index.tpl
 msgid "Error messages"
@@ -2793,11 +2602,8 @@ msgstr "Kein Knoten wird den Status des Workflows &auml;ndern"
 msgid "Nodes which will change workflow state"
 msgstr "Knoten die den Status des Workflows &auml;ndern"
 
-msgid ""
-"If you perform this modification, the node workflow state %s will be modified"
-msgstr ""
-"Bei Durchf&uuml;hrung dieser Ver&auml;nderung wird der Status des "
-"Workflowknotens %s ge&auml;ndert "
+msgid "If you perform this modification, the node workflow state %s will be modified"
+msgstr "Bei Durchf&uuml;hrung dieser Ver&auml;nderung wird der Status des Workflowknotens %s ge&auml;ndert "
 
 #: /actions/modifystates/template/Smarty/index.tpl
 #: /actions/modifystatesrole/template/Smarty/index.tpl
@@ -2886,15 +2692,11 @@ msgstr "Verbindungen speichern"
 msgid "Delete selected associations"
 msgstr "Ausgew&auml;hlte Verbindungen l&ouml;schen"
 
-msgid ""
-"Subscriptions of group are going to be updated, would you like to continue?"
-msgstr ""
-"Subskriptionen der Gruppe werden aktualisiert, m&ouml;chten Sie fortfahren?"
+msgid "Subscriptions of group are going to be updated, would you like to continue?"
+msgstr "Subskriptionen der Gruppe werden aktualisiert, m&ouml;chten Sie fortfahren?"
 
 msgid "Selected associations will be deleted. Would you like to continue?"
-msgstr ""
-"Ausgew&auml;hlte Verbindungen werden gel&ouml;scht. M&ouml;chten Sie "
-"fortfahren?"
+msgstr "Ausgew&auml;hlte Verbindungen werden gel&ouml;scht. M&ouml;chten Sie fortfahren?"
 
 #: /actions/movenode/Action_movenode.class.php
 msgid "Moving node to selected destination is not allowed"
@@ -2914,12 +2716,8 @@ msgstr "Knoten verschieben"
 msgid "Select new node destination"
 msgstr "Neues Knotenziel ausw&auml;hlen"
 
-msgid ""
-"A node with same name already exists on selected destination. Please, insert "
-"a new name:"
-msgstr ""
-"Im ausgew&auml;hlten Ziel existiert bereits ein Knoten mit dem selben Namen. "
-"Bitte w&auml;hlen Sie einen neuen Namen:"
+msgid "A node with same name already exists on selected destination. Please, insert a new name:"
+msgstr "Im ausgew&auml;hlten Ziel existiert bereits ein Knoten mit dem selben Namen. Bitte w&auml;hlen Sie einen neuen Namen:"
 
 #: /actions/movenode/template/Smarty/index.tpl
 #: /public_xmd/actions/movenode/template/Smarty/confirm.tpl:40
@@ -2950,13 +2748,10 @@ msgid "Warning about publication"
 msgstr "Benachrichtigung der Ver&ouml;ffentlichung"
 
 msgid "If you do not want to keep your nodes published on current location"
-msgstr ""
-"Wenn Sie Ihre Knoten nicht an der aktuellen Stelle ver&ouml;ffentlicht "
-"lassen m&ouml;chten."
+msgstr "Wenn Sie Ihre Knoten nicht an der aktuellen Stelle ver&ouml;ffentlicht lassen m&ouml;chten."
 
 msgid "Edit publication life of your nodes previously of node movement."
-msgstr ""
-"&Auml;ndern Sie die Publikationsdauer Ihrer Knoten bevor Sie diese bewegen."
+msgstr "&Auml;ndern Sie die Publikationsdauer Ihrer Knoten bevor Sie diese bewegen."
 
 #: /actions/poolPreview/Actions_poolPreview.class.php
 msgid "Idnode does not arrive"
@@ -2971,10 +2766,8 @@ msgstr "Das Etikett kann nicht mit der Version verbunden werden, leerer idnode"
 msgid "Wrong label value"
 msgstr "Etikettenwert inkorrekt"
 
-msgid ""
-"Id version has not been found in the association of labels with versions"
-msgstr ""
-"Id Version wurde nicht gefunden in der Etikettenverbindung mit den Versionen"
+msgid "Id version has not been found in the association of labels with versions"
+msgstr "Id Version wurde nicht gefunden in der Etikettenverbindung mit den Versionen"
 
 msgid "Labels are going to be associated with version"
 msgstr "Etiketten werden mit der Version verbunden"
@@ -3025,8 +2818,7 @@ msgid " Provided node is not a structured document."
 msgstr " Vorhandener Knoten ist kein strukturiertes Dokument."
 
 msgid "It is not possible show preview. There is not any defined channel."
-msgstr ""
-"Es ist nicht m&ouml;glich eine Vorschau zu zeigen. Kein Kanal ist definiert."
+msgstr "Es ist nicht m&ouml;glich eine Vorschau zu zeigen. Kein Kanal ist definiert."
 
 msgid " Preview"
 msgstr " Vorschau"
@@ -3049,9 +2841,7 @@ msgid "New window"
 msgstr "Neues Fenster"
 
 msgid "As long as this box is ticked, preview will be opened in new windows."
-msgstr ""
-"Solang diese Box markiert ist, wird die Vorschau in einem neuen Fenster "
-"ge&ouml;ffnet."
+msgstr "Solang diese Box markiert ist, wird die Vorschau in einem neuen Fenster ge&ouml;ffnet."
 
 #: /actions/publicatesection/Action_publicatesection.class.php
 msgid "There is not any defined physical server in: '%s'"
@@ -3074,11 +2864,8 @@ msgstr "Benutzung des Befehls:"
 msgid " Are read parameters corrects?"
 msgstr " Sind die Leseparameter richtig?"
 
-msgid ""
-"Aborting publication, it is just allowed to publish over sections and servers"
-msgstr ""
-"Wenn die Ver&ouml;ffentlichung abgebrochen wird, ist ausschliesslich die "
-"Ver&ouml;ffentlichung &uuml;ber Sektionen und Server erlaubt"
+msgid "Aborting publication, it is just allowed to publish over sections and servers"
+msgstr "Wenn die Ver&ouml;ffentlichung abgebrochen wird, ist ausschliesslich die Ver&ouml;ffentlichung &uuml;ber Sektionen und Server erlaubt"
 
 # install/ximdex_data/ximdex.sql table Actions
 # install/ximdex_data/ximdex.sql table Nodes
@@ -3151,9 +2938,7 @@ msgstr "Ergebnis der Ver&ouml;ffentlichung"
 
 #: /actions/publicateximlet/template/Smarty/index.tpl
 msgid "Your documents have entered successfully in publication process"
-msgstr ""
-"Ihre Dokumente wurden erfolgreich in der Ver&ouml;ffentlichungsprozess "
-"aufgenommen"
+msgstr "Ihre Dokumente wurden erfolgreich in der Ver&ouml;ffentlichungsprozess aufgenommen"
 
 msgid "No documents to publish have been found."
 msgstr "Keine zu ver&ouml;ffentlichenden Dokumente gefunden."
@@ -3183,11 +2968,8 @@ msgstr "Kein Knoten &auml;ndert seinen Workflowstatus"
 msgid "Nodes which are going to change their workflow status"
 msgstr "Knoten die ihren Workflowstatus &auml;ndern werden"
 
-msgid ""
-"If you perform this modification, workflow status of node %s will be modified"
-msgstr ""
-"Wenn Sie diese &Auml;nderung durchf&uuml;hren wird der Workflowstatus des "
-"Knotens %s ver&auml;ndert"
+msgid "If you perform this modification, workflow status of node %s will be modified"
+msgstr "Wenn Sie diese &Auml;nderung durchf&uuml;hren wird der Workflowstatus des Knotens %s ver&auml;ndert"
 
 #: /actions/remanenode/template/Smarty/index.tpl
 #: /install/ximdex_data/ximdex.sql table Actions Nodes
@@ -3248,17 +3030,13 @@ msgid "Document template could not be obtained"
 msgstr "Dokumentenvorlage konnte nicht geladen werden"
 
 msgid "Document template cannot be obtained, consult with your administrator"
-msgstr ""
-"Dokumentenvorlage konnte nicht gefunden werden, wenden Sie sich an Ihren "
-"Administrator"
+msgstr "Dokumentenvorlage konnte nicht gefunden werden, wenden Sie sich an Ihren Administrator"
 
 msgid "Rng could not be loaded"
 msgstr "Rng konnte nicht geladen werden"
 
 msgid "Requested information to create form could not be extracted"
-msgstr ""
-"Gesuchte Information zur Erstellung des Formulars konnte nicht gefunden "
-"werden"
+msgstr "Gesuchte Information zur Erstellung des Formulars konnte nicht gefunden werden"
 
 msgid "Form information could not be recovered"
 msgstr "Formularinformation konnte nicht wiederhergestellt werden"
@@ -3270,8 +3048,7 @@ msgid "Content has been successfully saved"
 msgstr "Inhalt wurde erfolgreich gespeichert"
 
 msgid "Active version has been published with its dependencies."
-msgstr ""
-"Aktive Version wurde mit ihren Abh&auml;ngigkeiten ver&ouml;ffentlicht."
+msgstr "Aktive Version wurde mit ihren Abh&auml;ngigkeiten ver&ouml;ffentlicht."
 
 msgid "It has been tried to obtain a node which does not exist:"
 msgstr "Es wurde versucht einen nicht existierenden Knoten zu laden:"
@@ -3290,15 +3067,13 @@ msgid "The node you are trying to update does not exist"
 msgstr "Der Knoten den Sie aktualisieren m&ouml;chten exisitiert nicht"
 
 msgid "File time could not be estimated, contact with your administrator"
-msgstr ""
-"Dateityp konnte nicht bestimmen werden, wenden Sie sich an Ihre Administrator"
+msgstr "Dateityp konnte nicht bestimmen werden, wenden Sie sich an Ihre Administrator"
 
 msgid "File %s has been successfully updated"
 msgstr "Datei %s wurde erfolgreich aktualisiert"
 
 msgid "Check that any file with same name does not exist"
-msgstr ""
-"&Uuml;berpr&uuml;fen Sie dass keine Datei mit dem gleichen Namen existiert"
+msgstr "&Uuml;berpr&uuml;fen Sie dass keine Datei mit dem gleichen Namen existiert"
 
 msgid "Check that path and file name are corrects"
 msgstr "&Uuml;berpr&uuml;fen Sie dass der Pfad- und der Dateiname korrekt sind"
@@ -3311,69 +3086,38 @@ msgstr "Schneller, einfacher, st&auml;rker"
 msgid "Welcome to new Ximdex 3.5!"
 msgstr "Wilkommen zum neuen Ximdex 3.5!"
 
-msgid ""
-"With the new version of Ximdex content manager you will enjoy a product more "
-"powerful, faster and easier than previous versions. You could manage your "
-"documents in a easy and usable way."
-msgstr ""
-"Mit der neuen Version des Ximdex-Inhaltsmanagers werden Sie ein st&auml;"
-"rkeres, schnelleres und intuitiveres Produkt geniessen als bei den "
-"vorherigen Versionen. Sie k&ouml;nnen Ihre Dokumente auf einfache und n&uuml;"
-"tzliche Weise verwalten."
+msgid "With the new version of Ximdex content manager you will enjoy a product more powerful, faster and easier than previous versions. You could manage your documents in a easy and usable way."
+msgstr "Mit der neuen Version des Ximdex-Inhaltsmanagers werden Sie ein st&auml;rkeres, schnelleres und intuitiveres Produkt geniessen als bei den vorherigen Versionen. Sie k&ouml;nnen Ihre Dokumente auf einfache und n&uuml;tzliche Weise verwalten."
 
 msgid "Start to use new Ximdex 3.5 and discover its advantages."
-msgstr ""
-"Beginnen Sie mit der Nutzung des neuen Ximdex 3.5 und entdecken Sie seine "
-"Vorteile."
+msgstr "Beginnen Sie mit der Nutzung des neuen Ximdex 3.5 und entdecken Sie seine Vorteile."
 
 msgid "Faster"
 msgstr "Schneller"
 
-msgid ""
-"Thanks to ximPUBLISH 2.0 module you will be able to publish your contents in "
-"a much faster way and will be able to profit from publication reports of "
-"WIX. Furthermore you will be able to import documents to your projects just "
-"drawing nodes to node tree!"
-msgstr ""
-"Dank dem ximPUBLISH 2.0 Modul k&ouml;nnen Sie Ihre Inhalte viel schneller "
-"ver&ouml;ffentlichen und profitieren dabei von den Ver&ouml;"
-"ffentlichungsberichten von WIX. Ausserdem k&ouml;nnen Sie Dokumente in Ihre "
-"Projekte importieren durch ein simples Ziehen der Knoten auf den Knotenbaum!"
+msgid "Thanks to ximPUBLISH 2.0 module you will be able to publish your contents in a much faster way and will be able to profit from publication reports of WIX. Furthermore you will be able to import documents to your projects just drawing nodes to node tree!"
+msgstr "Dank dem ximPUBLISH 2.0 Modul k&ouml;nnen Sie Ihre Inhalte viel schneller ver&ouml;ffentlichen und profitieren dabei von den Ver&ouml;ffentlichungsberichten von WIX. Ausserdem k&ouml;nnen Sie Dokumente in Ihre Projekte importieren durch ein simples Ziehen der Knoten auf den Knotenbaum!"
 
 msgid "More powerful"
 msgstr "St&auml;rker"
 
-msgid ""
-"Start to test Ximdex thanks to preinstalled projects and defined users by "
-"default. You will be able to test the power of new node dependency manager."
-msgstr ""
-"Beginnen Sie mit dem Testen von Ximdex dank vorinstallierter Projekte und "
-"vorab definierter Benutzer. Sie k&ouml;nnen die Power des neuen "
-"Knotenabh&auml;ngigkeitsmanagers testen."
+msgid "Start to test Ximdex thanks to preinstalled projects and defined users by default. You will be able to test the power of new node dependency manager."
+msgstr "Beginnen Sie mit dem Testen von Ximdex dank vorinstallierter Projekte und vorab definierter Benutzer. Sie k&ouml;nnen die Power des neuen Knotenabh&auml;ngigkeitsmanagers testen."
 
 msgid "Easier"
 msgstr "Einfacher"
 
-msgid ""
-"We have new interface! And we also have a great editor WYSIWYG that allows "
-"you to modify your XML visually and without complications. And enrich your "
-"contents just with few clicks!"
-msgstr ""
-"Wir haben ein neues Interface! Zudem haben wir einen grossartigen Editor "
-"WYSIWYG der es Ihnen erm&ouml;glicht Ihr XML optisch und ohne Probleme zu "
-"ver&auml;ndern. Erweitern Sie Ihre Inhalte mit nur wenigen Klicks!"
+msgid "We have new interface! And we also have a great editor WYSIWYG that allows you to modify your XML visually and without complications. And enrich your contents just with few clicks!"
+msgstr "Wir haben ein neues Interface! Zudem haben wir einen grossartigen Editor WYSIWYG der es Ihnen erm&ouml;glicht Ihr XML optisch und ohne Probleme zu ver&auml;ndern. Erweitern Sie Ihre Inhalte mit nur wenigen Klicks!"
 
 msgid "Do you want to know more about Ximdex?"
 msgstr "M&ouml;chten Sie mehr &uuml;ber Ximdex wissen?"
 
-msgid ""
-"You can find Guides, Videotutorials, FAQ's and other support material in"
-msgstr ""
-"Sie k&ouml;nnen Guides, Videotutorials, FAQ's und andere Hilfen finden unter"
+msgid "You can find Guides, Videotutorials, FAQ's and other support material in"
+msgstr "Sie k&ouml;nnen Guides, Videotutorials, FAQ's und andere Hilfen finden unter"
 
 msgid "Be aware of news or make suggestions on our channel of"
-msgstr ""
-"Lesen Sie Neuigkeiten und schreiben Sie uns Anregungen in unserem Kanal von"
+msgstr "Lesen Sie Neuigkeiten und schreiben Sie uns Anregungen in unserem Kanal von"
 
 msgid "Join us on our channel of:"
 msgstr "Kommen Sie zu unserem Kanal von:"
@@ -3383,9 +3127,7 @@ msgstr "und stellen Sie uns problemlos Fragen"
 
 #: /actions/browser3/template/Smarty/splash/index.tpl
 #: /public_xmd/actions/browser3/template/Smarty/splash/index.tpl:30
-msgid ""
-"Drag&amp;Drop functionality to add and move elements, the new publication "
-"module ximPUBLISH 2.0, and more to make Ximdex faster!"
+msgid "Drag&amp;Drop functionality to add and move elements, the new publication module ximPUBLISH 2.0, and more to make Ximdex faster!"
 msgstr ""
 
 #: /public_xmd/actions/browser3/template/Smarty/splash/index.tpl:33
@@ -3393,9 +3135,7 @@ msgid "Powerful"
 msgstr ""
 
 #: /public_xmd/actions/browser3/template/Smarty/splash/index.tpl:34
-msgid ""
-"New node dependency manager, and projects and users predefined and "
-"preinstalled to start using Ximdex in a few clicks."
+msgid "New node dependency manager, and projects and users predefined and preinstalled to start using Ximdex in a few clicks."
 msgstr ""
 
 #: /public_xmd/actions/browser3/template/Smarty/splash/index.tpl:37
@@ -3403,9 +3143,7 @@ msgid "Easy"
 msgstr ""
 
 #: /public_xmd/actions/browser3/template/Smarty/splash/index.tpl:38
-msgid ""
-"Easy XML edition with the WYSIWYG editor and easy semantic document tagging. "
-"Xedit and Xowl module rock!"
+msgid "Easy XML edition with the WYSIWYG editor and easy semantic document tagging. Xedit and Xowl module rock!"
 msgstr ""
 
 #: /public_xmd/actions/browser3/template/Smarty/splash/index.tpl:42
@@ -3413,20 +3151,14 @@ msgid "Learn more"
 msgstr ""
 
 #: /actions/workflow_backward/Action_workflow_backward.class.php
-msgid ""
-"The document is already in its initial state. A previous state cannot be "
-"stablished."
-msgstr ""
-"Das Dokument befindet sich bereits in seinem Anfangszustand. Zur&uuml;"
-"ckkehren zum vorherigen Zustand nicht m&ouml;glich."
+msgid "The document is already in its initial state. A previous state cannot be stablished."
+msgstr "Das Dokument befindet sich bereits in seinem Anfangszustand. Zur&uuml;ckkehren zum vorherigen Zustand nicht m&ouml;glich."
 
 msgid "At least one user to notify should be selected."
-msgstr ""
-"Sie m&uuml;ssen mindestens einen Nutzer zum Benachrichtigen ausw&auml;hlen."
+msgstr "Sie m&uuml;ssen mindestens einen Nutzer zum Benachrichtigen ausw&auml;hlen."
 
 msgid "Backward state notification."
-msgstr ""
-"Benachrichtigung &uuml;ber die Wiederherstellung des vorherigen Zustands."
+msgstr "Benachrichtigung &uuml;ber die Wiederherstellung des vorherigen Zustands."
 
 #: /actions/workflow_backward/Action_workflow_backward.class.php
 #: /actions/workflow_forward/Action_workflow_forward.class.php
@@ -3538,24 +3270,17 @@ msgstr "W&auml;hlen Sie die zu benutzende Gruppe aus"
 msgid "Warning"
 msgstr "Warnung"
 
-msgid ""
-"In your work groups there is not any user which could attend to your request."
-msgstr ""
-"In Ihren Arbeitgruppen gibt es keinen Benutzer der Ihre Anfrage bearbeiten "
-"k&ouml;nnte."
+msgid "In your work groups there is not any user which could attend to your request."
+msgstr "In Ihren Arbeitgruppen gibt es keinen Benutzer der Ihre Anfrage bearbeiten k&ouml;nnte."
 
 msgid "Other work groups with permissions to attent to it will be shown below."
-msgstr ""
-"Im Folgenden werden andere Arbeitsgruppen gezeigt die Ihre Anfrage "
-"bearbeiten k&ouml;nnen."
+msgstr "Im Folgenden werden andere Arbeitsgruppen gezeigt die Ihre Anfrage bearbeiten k&ouml;nnen."
 
 msgid "Previous state"
 msgstr "Vorheriger Zustand"
 
 msgid "There is not any group to notify which could attend to your request."
-msgstr ""
-"Es gibt keine zu benachrichtigenden Gruppen die Ihre Anfrage bearbeiten "
-"k&ouml;nnten."
+msgstr "Es gibt keine zu benachrichtigenden Gruppen die Ihre Anfrage bearbeiten k&ouml;nnten."
 
 msgid "Please contact your administrator."
 msgstr "Bitte setzen Sie sich mit Ihren Administator in Verbindung."
@@ -3564,17 +3289,11 @@ msgstr "Bitte setzen Sie sich mit Ihren Administator in Verbindung."
 msgid "Get previous state"
 msgstr "Zur&uuml;ck zum vorherigen Zustand"
 
-msgid ""
-"The publication cycle of the selected document is currently linked to the "
-"document "
-msgstr ""
-"Der Publikationszyklus des ausgew&auml;hlten Dokuments ist momentan mit dem "
-"Dokument verlinkt "
+msgid "The publication cycle of the selected document is currently linked to the document "
+msgstr "Der Publikationszyklus des ausgew&auml;hlten Dokuments ist momentan mit dem Dokument verlinkt "
 
 msgid "In order to get the previous state you should select the linked file."
-msgstr ""
-"Um zum vorherigen Zustand zur&uuml;ckzukehren m&uuml;ssen Sie die verlinkte "
-"Datei ausw&auml;hlen."
+msgstr "Um zum vorherigen Zustand zur&uuml;ckzukehren m&uuml;ssen Sie die verlinkte Datei ausw&auml;hlen."
 
 #: /actions/workflow_backwads/template/Smarty/forms/mostrar_user.tpl
 #: /actions/workflow_forward/template/Smarty/index.tpl
@@ -3602,20 +3321,13 @@ msgstr "Kommentare hinzuf&uuml;gen"
 
 #: /actions/workflow_forward/Action_workflow_forward.class.php
 msgid "You have not privileges to move forward the node to next status."
-msgstr ""
-"Sie haben keine Berechtigung den Knoten in den n&auml;chsten Zustand zu "
-"versetzen:"
+msgstr "Sie haben keine Berechtigung den Knoten in den n&auml;chsten Zustand zu versetzen:"
 
-msgid ""
-"You have not assigned a role with privileges to modify workflow status on "
-"any of groups associated with the node or the section which contains it."
-msgstr ""
-"Mit keiner der zum Knoten oder zur Sektion zugeordneten Gruppen ist eine "
-"Rolle verbunden mit der Berechtigung den Workflowzustand zu ver&auml;ndern."
+msgid "You have not assigned a role with privileges to modify workflow status on any of groups associated with the node or the section which contains it."
+msgstr "Mit keiner der zum Knoten oder zur Sektion zugeordneten Gruppen ist eine Rolle verbunden mit der Berechtigung den Workflowzustand zu ver&auml;ndern."
 
 msgid "You do not belong to any group with publication privileges"
-msgstr ""
-"Sie geh&ouml;ren zu keiner Gruppe mit Ver&ouml;ffentlichungsberechtigungen"
+msgstr "Sie geh&ouml;ren zu keiner Gruppe mit Ver&ouml;ffentlichungsberechtigungen"
 
 #: /actions/workflow_forward/Action_workflow_forward.class.php
 #: /actions/workflow_forward/baseIO.php
@@ -3649,11 +3361,8 @@ msgstr " wurden erfolgreich ver&ouml;ffentlicht"
 msgid " were not published, due to some error along the process"
 msgstr " wurde nicht ver&ouml;ffentlicht, aufgrund eines Fehlers des Prozesses"
 
-msgid ""
-" were not published because they are already published in its latest version"
-msgstr ""
-" wurde nicht ver&ouml;ffentlicht weil diese bereits in der letzten Version "
-"ver&ouml;ffentlicht wurden"
+msgid " were not published because they are already published in its latest version"
+msgstr " wurde nicht ver&ouml;ffentlicht weil diese bereits in der letzten Version ver&ouml;ffentlicht wurden"
 
 msgid "The node could not be loaded"
 msgstr "Der Knoten konnte nicht geladen werden"
@@ -3661,54 +3370,32 @@ msgstr "Der Knoten konnte nicht geladen werden"
 msgid "The server could not be loaded"
 msgstr "Der Server konnte nicht geladen werden"
 
-msgid ""
-"The document belongs to a server which has not any configured physical "
-"server."
-msgstr ""
-"Das Dokument geh&ouml;rt zu einem Server der keine konfigurierten Server "
-"enth&auml;lt."
+msgid "The document belongs to a server which has not any configured physical server."
+msgstr "Das Dokument geh&ouml;rt zu einem Server der keine konfigurierten Server enth&auml;lt."
 
-msgid ""
-"The publication cycle of the selected document is currently linked to the "
-"document [%s]"
-msgstr ""
-"Der Ver&ouml;ffentlichungzyklus des ausgew&auml;hlten Dokuments ist bereits "
-"mit dem Dokument [%s] verlinkt"
+msgid "The publication cycle of the selected document is currently linked to the document [%s]"
+msgstr "Der Ver&ouml;ffentlichungzyklus des ausgew&auml;hlten Dokuments ist bereits mit dem Dokument [%s] verlinkt"
 
-msgid ""
-"The linked file should be selected in order to go forward the next state"
-msgstr ""
-"Die verlinkte Datei muss ausgew&auml;hlt werden um zum n&auml;chsten Zustand "
-"&uuml;berzugehen"
+msgid "The linked file should be selected in order to go forward the next state"
+msgstr "Die verlinkte Datei muss ausgew&auml;hlt werden um zum n&auml;chsten Zustand &uuml;berzugehen"
 
 msgid "No information about the selected group (%s) could be obtained"
-msgstr ""
-"Es konnte keine Information zur ausgew&auml;hlten Gruppe (%s) gefunden werden"
+msgstr "Es konnte keine Information zur ausgew&auml;hlten Gruppe (%s) gefunden werden"
 
 msgid "No information about the selected workflow state (%s) could be obtained"
-msgstr ""
-"Es konnte keine Information zum ausgew&auml;hlten Workflowzustand (%s) "
-"gefunden werden"
+msgstr "Es konnte keine Information zum ausgew&auml;hlten Workflowzustand (%s) gefunden werden"
 
 msgid "You have no privileges to modify the workflow state of this document."
-msgstr ""
-"Sie haben keine Berechtigung um die Workflowzustand dieses Dokuments zu "
-"ver&auml;ndern."
+msgstr "Sie haben keine Berechtigung um die Workflowzustand dieses Dokuments zu ver&auml;ndern."
 
 msgid "The groups with privileges to perform this action are the following"
-msgstr ""
-"Die Gruppen mit der Berechtigung diese Aktion durchzuf&uuml;hren sind die "
-"Folgenden"
+msgstr "Die Gruppen mit der Berechtigung diese Aktion durchzuf&uuml;hren sind die Folgenden"
 
 msgid "The group %s can move forward the document to the state %s"
 msgstr "Die Gruppe %s kann das Dokuments in den Zustand %s versetzen"
 
-msgid ""
-"Currently there is no groups which can move forward the document to any "
-"state, consult your administrator"
-msgstr ""
-"Momentan gibt es keine Gruppen die das Dokument in einen anderen Zustand "
-"versetzen k&ouml;nnen, wenden Sie sich an Ihren Administrator"
+msgid "Currently there is no groups which can move forward the document to any state, consult your administrator"
+msgstr "Momentan gibt es keine Gruppen die das Dokument in einen anderen Zustand versetzen k&ouml;nnen, wenden Sie sich an Ihren Administrator"
 
 #: /actions/workflow_forward/template/Smarty/index.tpl
 msgid "Publication period"
@@ -3728,16 +3415,10 @@ msgid "At this moment, there is not any available window."
 msgstr "Mometan ist kein Fenster vorhanden."
 
 msgid "Warning: The last publication window has not defined any end-date."
-msgstr ""
-"Warnung: Das letzte Ver&ouml;ffentlichungsfenster hat kein Enddatum "
-"definiert."
+msgstr "Warnung: Das letzte Ver&ouml;ffentlichungsfenster hat kein Enddatum definiert."
 
-msgid ""
-"Do you want to set the begin-date of the new window as the end-date of the "
-"previous window?"
-msgstr ""
-"M&ouml;chten Sie das Anfangsdatum des neuen Fensters als Enddatum des "
-"vorherigen Fensters festlegen?"
+msgid "Do you want to set the begin-date of the new window as the end-date of the previous window?"
+msgstr "M&ouml;chten Sie das Anfangsdatum des neuen Fensters als Enddatum des vorherigen Fensters festlegen?"
 
 msgid "Publish all the levels"
 msgstr "Alle Level ver&ouml;ffentlichen"
@@ -3746,9 +3427,7 @@ msgid "Publish until a certain depth level:"
 msgstr "Bis zu einem bestimmen Tiefenlevel ver&ouml;ffentlichen:"
 
 msgid "Publish just the document (without structure: css, images, scripts)"
-msgstr ""
-"Nur das Dokument ver&ouml;ffentlichen (ohne die Struktur: css, images, "
-"scripts)"
+msgstr "Nur das Dokument ver&ouml;ffentlichen (ohne die Struktur: css, images, scripts)"
 
 #: /actions/workflow_forward/template/Smarty/show_results.tpl
 #: xmd/templates/Smarty/publicationResults.tpl
@@ -3770,24 +3449,14 @@ msgstr "Kanal"
 msgid "The script %s has been successfully locked."
 msgstr "Das Skript %s wurde erfolgreich blockiert."
 
-msgid ""
-"Due to the script was running, it is necessary to finish task which was "
-"being executed before stopping effectively. Therefore, it may take some "
-"minutes."
-msgstr ""
-"Da das Skript gerade durchgef&uuml;hrt wurde, ist es notwendig die Aktion "
-"die Sie vor dem Beenden durchgef&uuml;hrt haben fertig zu stellen. Daher ist "
-"eine zeitliche Verz&ouml;gerung m&ouml;glich."
+msgid "Due to the script was running, it is necessary to finish task which was being executed before stopping effectively. Therefore, it may take some minutes."
+msgstr "Da das Skript gerade durchgef&uuml;hrt wurde, ist es notwendig die Aktion die Sie vor dem Beenden durchgef&uuml;hrt haben fertig zu stellen. Daher ist eine zeitliche Verz&ouml;gerung m&ouml;glich."
 
 msgid "The script %s could not been locked."
 msgstr "Das Skript %s konnte nicht blockiert werden."
 
-msgid ""
-"The next time the script will be executed it will not be automatically "
-"stopped."
-msgstr ""
-"Bei der n&auml;chsten Durchf&uuml;hrung des Skripts wird dieses nicht "
-"automatisch gestoppt."
+msgid "The next time the script will be executed it will not be automatically stopped."
+msgstr "Bei der n&auml;chsten Durchf&uuml;hrung des Skripts wird dieses nicht automatisch gestoppt."
 
 msgid "It has been applied an action on a non-existing script."
 msgstr "Eine Aktion wurde auf ein nicht existierendes Skript angewendet."
@@ -3824,19 +3493,13 @@ msgid "We recommend that you updated your system of RNG templates."
 msgstr "Wir empfehlen Ihnen Ihre Vorlagensystem auf RNG zu aktualisieren."
 
 msgid "You can also use browser Firefox 3.6 to see this editor."
-msgstr ""
-"Sie k&ouml;nnen auch den Firefox Browser 3.6 benutzen um diesen Editor zu "
-"nutzen."
+msgstr "Sie k&ouml;nnen auch den Firefox Browser 3.6 benutzen um diesen Editor zu nutzen."
 
 msgid "Selected node has not a valid template, it could be deleted"
-msgstr ""
-"Der ausgew&auml;hlte Knoten hat keine g&uuml;ltige Vorlage, diese k&ouml;"
-"nnte gel&ouml;scht worden sein"
+msgstr "Der ausgew&auml;hlte Knoten hat keine g&uuml;ltige Vorlage, diese k&ouml;nnte gel&ouml;scht worden sein"
 
 msgid "Check if template exists and if it does contact your administrator"
-msgstr ""
-"&Uuml;berpr&uuml;fen Sie ob die Vorlage exisitiert und kontaktieren Sie "
-"Ihren Administrator falls nicht"
+msgstr "&Uuml;berpr&uuml;fen Sie ob die Vorlage exisitiert und kontaktieren Sie Ihren Administrator falls nicht"
 
 #: /actions/xmleditor/edit_forms-origen.php /actions/xmleditor/edit_forms.php
 msgid "Form editor"
@@ -3913,9 +3576,7 @@ msgstr "Fehler"
 
 #: /actions/xmleditor/init.php
 msgid "While this box is been ticked, preview will be opened on new windows."
-msgstr ""
-"Solange diese Box markiert ist, wird die Vorschau in einem neuen Fenster "
-"ge&ouml;ffnet."
+msgstr "Solange diese Box markiert ist, wird die Vorschau in einem neuen Fenster ge&ouml;ffnet."
 
 msgid "Document could not be opened. Blocked by"
 msgstr "Dokument konnte nicht ge&ouml;ffnet werden. Blockiert durch"
@@ -3924,9 +3585,7 @@ msgid "Document is blocked by other user."
 msgstr "Dokument wird von anderem Benutzer blockiert."
 
 msgid "Document could not be opened. It is a symbolic link."
-msgstr ""
-"Dokument konnte nicht ge&ouml;ffnet werden. Es handelt sich um einen "
-"symbolischen Link."
+msgstr "Dokument konnte nicht ge&ouml;ffnet werden. Es handelt sich um einen symbolischen Link."
 
 msgid "Document is a symbolic link."
 msgstr "Dokument ist ein symbolischer Link."
@@ -4236,22 +3895,13 @@ msgid "A non-existing node content cannot be obtained: "
 msgstr "Ein nicht existierenden Knoten kann nicht aufgerufen werden: "
 
 msgid "The php5-enchant module should be installed to use the spell checker"
-msgstr ""
-"Das php5-enchant Modul muss installiert werden um den Rechtschreibpr&uuml;"
-"fer zu nutzen"
+msgstr "Das php5-enchant Modul muss installiert werden um den Rechtschreibpr&uuml;fer zu nutzen"
 
 msgid "EnricherKey configuration value has not been defined"
 msgstr "EnricherKey Konfigurationswert wurde nicht definiert"
 
-msgid ""
-"Xowl module has not been enabled.<br/><br/> If you want to realize the "
-"noticeable improvements you will obtain installing Xowl, a demonstrative "
-"video is shown below and in the following %s<br/><br/>"
-msgstr ""
-"Xowl Modul wurde nicht aktiviert.<br/><br/> Wenn Sie die sichtbaren "
-"Verbesserungen &uuml;berpr&uuml;fen m&ouml;chten, die Sie durch die "
-"Installation von Xowl erhalten, zeigen wir Ihnen im Folgenden Link ein "
-"Demonstrationsvideo: %s<br/><br/>"
+msgid "Xowl module has not been enabled.<br/><br/> If you want to realize the noticeable improvements you will obtain installing Xowl, a demonstrative video is shown below and in the following %s<br/><br/>"
+msgstr "Xowl Modul wurde nicht aktiviert.<br/><br/> Wenn Sie die sichtbaren Verbesserungen &uuml;berpr&uuml;fen m&ouml;chten, die Sie durch die Installation von Xowl erhalten, zeigen wir Ihnen im Folgenden Link ein Demonstrationsvideo: %s<br/><br/>"
 
 msgid "docxap cannot be found."
 msgstr "docxap kann nicht gefunden werden."
@@ -4266,12 +3916,8 @@ msgstr "Fehler beim Laden des xml Enrichers"
 msgid "Error while enriching the scheme, a RNG grammar label"
 msgstr "Fehler beim Anreichern des Schemas, ein RNG grammar Etikett"
 
-msgid ""
-"Error while enriching the scheme, a 'define' was not found in the "
-"configuration file"
-msgstr ""
-"Fehler beim Anreichern des Schemas, ein 'definieren' wurde nicht gefunden in "
-"der Konfigurationsdatei"
+msgid "Error while enriching the scheme, a 'define' was not found in the configuration file"
+msgstr "Fehler beim Anreichern des Schemas, ein 'definieren' wurde nicht gefunden in der Konfigurationsdatei"
 
 #: /actions/xmleditor2/model/XmlEditor_Abstract.class.php
 #: /actions/xmleditor2/model/XmlEditor_KUPU.class.php
@@ -4307,14 +3953,8 @@ msgstr "Ximlet-Tool initialisiert"
 msgid "ERROR while finding Ximlets."
 msgstr "FEHLER beim Finden von Ximlets."
 
-msgid ""
-"WARNING: You are going to edit a ximlet which is linked to a section.<br/"
-"><br/> This action will affect to all the section documents. Are you sure "
-"you want to continue?"
-msgstr ""
-"WARNUNG: Sie sind dabei ein ximlet zu ver&auml;ndern, dass mit einer Sektion "
-"verlinkt ist.<br/><br/> Diese Aktion hat Auswirkungen auf alle Dokumente "
-"dieser Sektion. Sind Sie sicher, dass Sie fortfahren m&ouml;chten?"
+msgid "WARNING: You are going to edit a ximlet which is linked to a section.<br/><br/> This action will affect to all the section documents. Are you sure you want to continue?"
+msgstr "WARNUNG: Sie sind dabei ein ximlet zu ver&auml;ndern, dass mit einer Sektion verlinkt ist.<br/><br/> Diese Aktion hat Auswirkungen auf alle Dokumente dieser Sektion. Sind Sie sicher, dass Sie fortfahren m&ouml;chten?"
 
 msgid "Do you want to edit the Ximlet in a new tab?"
 msgstr "M&ouml;chten Sie das Ximlet in eine neue Tabelle &auml;ndern?"
@@ -4370,9 +4010,7 @@ msgstr "Annotations-Rdfa tool initialisiert"
 
 #: /actions/xmleditor2/js/editor/Ximdextools.js
 msgid "ERROR: Trying to apply an element to more than one selected elements."
-msgstr ""
-"FEHLER: Versucht ein Element bei mehr als einem ausgew&auml;hlten Element "
-"anzuwenden."
+msgstr "FEHLER: Versucht ein Element bei mehr als einem ausgew&auml;hlten Element anzuwenden."
 
 #: /actions/xmleditor2/js/editor/Ximdextools.js
 #: /actions/xmleditor2/js/editor/AnnotationToolBox.class.js
@@ -4468,13 +4106,8 @@ msgstr "Fehler beim Wiederherstellen der tempor&auml;ren Datei"
 msgid "Temporal file removed"
 msgstr "Tempor&auml;re Datei gel&ouml;scht"
 
-msgid ""
-"It is available a temporal version of the document with saving date more "
-"recent than the last one you saved. Do you want to recover it?"
-msgstr ""
-"Es existiert eine tempor&auml;re Version des Dokuments mit Datum vom "
-"vorherigen erfolgreichen Speichervorgang. M&ouml;chten Sie dieses "
-"wiederherstellen?"
+msgid "It is available a temporal version of the document with saving date more recent than the last one you saved. Do you want to recover it?"
+msgstr "Es existiert eine tempor&auml;re Version des Dokuments mit Datum vom vorherigen erfolgreichen Speichervorgang. M&ouml;chten Sie dieses wiederherstellen?"
 
 msgid "No element found in the configuration"
 msgstr "Es wurde kein Element in der Konfiguration gefunden"
@@ -4482,20 +4115,14 @@ msgstr "Es wurde kein Element in der Konfiguration gefunden"
 msgid "XSL stylesheet cannot be imported. Changing to tree view."
 msgstr "XSL stylesheet kann nicht importiert werden. Wechseln zur Baumansicht."
 
-msgid ""
-"No valid XSLT templates or no docxap template detected. Changing back to "
-"tree view."
-msgstr ""
-"Keine g&uuml;ltige XSLT-Vorlage oder docxap-Vorlage gefunden. Zur&uuml;ck "
-"zur Baumansicht."
+msgid "No valid XSLT templates or no docxap template detected. Changing back to tree view."
+msgstr "Keine g&uuml;ltige XSLT-Vorlage oder docxap-Vorlage gefunden. Zur&uuml;ck zur Baumansicht."
 
 msgid "Exception while processing beforeTransform on %s: %s"
-msgstr ""
-"Ausnahme w&auml;hrend beforeTransform in %s: %s durchgef&uuml;hrt wurde"
+msgstr "Ausnahme w&auml;hrend beforeTransform in %s: %s durchgef&uuml;hrt wurde"
 
 msgid "Exception while processing afterTransform on %s: %s"
-msgstr ""
-"Ausnahme w&auml;hrennd afterTransform in %s: %s durchgef&uuml;hrt wurde"
+msgstr "Ausnahme w&auml;hrennd afterTransform in %s: %s durchgef&uuml;hrt wurde"
 
 msgid "Element <%s/> has no UID attribute!"
 msgstr "Element <%s/> hat kein UID Attribut!"
@@ -4512,18 +4139,11 @@ msgstr "PreviewInServer Modus ist deaktiviert"
 msgid "No preview servers for this channel"
 msgstr "Keine Vorschauserver f&uuml;r diesen Kanal"
 
-msgid ""
-"Error accessing remote server. Please, verify permissions and synchro base "
-"path"
-msgstr ""
-"Fehler beim Zugreifen auf den Remoteserver. Bitte, &uuml;berpr&uuml;fen Sie "
-"Berechtigungen und den Basispfad der Synchronisierung"
+msgid "Error accessing remote server. Please, verify permissions and synchro base path"
+msgstr "Fehler beim Zugreifen auf den Remoteserver. Bitte, &uuml;berpr&uuml;fen Sie Berechtigungen und den Basispfad der Synchronisierung"
 
-msgid ""
-"Error connecting remote server. Please, verify synchro data (IP, access keys)"
-msgstr ""
-"Fehler beim Verbinden mit dem Remoteserver. Bitte, &uuml;berpr&uuml;fen Sie "
-"die Synchronisationsdaten (IP, Zugangsschl&uuml;ssel)"
+msgid "Error connecting remote server. Please, verify synchro data (IP, access keys)"
+msgstr "Fehler beim Verbinden mit dem Remoteserver. Bitte, &uuml;berpr&uuml;fen Sie die Synchronisationsdaten (IP, Zugangsschl&uuml;ssel)"
 
 msgid "Unknown error"
 msgstr "Unbekannter Fehler"
@@ -4609,24 +4229,17 @@ msgid "under the currently selected element"
 msgstr "unter dem bereits ausgew&auml;hlten Element"
 
 #: /actions/xmleditor2/js/editor/kupustart_form.js
-msgid ""
-"You have applied to open the editor in a new window. Changes not saved will "
-"be lost. Do you want to continue?"
-msgstr ""
-"Sie haben gew&auml;hlt den Editor in einem neuen Fenster zu &ouml;ffnen. "
-"Nicht gespeicherte &Auml;nderungen gehen verloren. M&ouml;chten Sie "
-"fortfahren?"
+msgid "You have applied to open the editor in a new window. Changes not saved will be lost. Do you want to continue?"
+msgstr "Sie haben gew&auml;hlt den Editor in einem neuen Fenster zu &ouml;ffnen. Nicht gespeicherte &Auml;nderungen gehen verloren. M&ouml;chten Sie fortfahren?"
 
 msgid "The document has been saved and sent to be published."
 msgstr "Das Dokument wurde gespeichert und zum Ver&ouml;ffentlichen gesendet."
 
 msgid ""
-"An error occurred while saving and/or sending the document to publish.State: "
-"%s\n"
+"An error occurred while saving and/or sending the document to publish.State: %s\n"
 "Error: %s"
 msgstr ""
-"Fehler beim Speichern und/oder Senden des zu ver&ouml;ffentlichenden "
-"Dokuments.Status: %s\n"
+"Fehler beim Speichern und/oder Senden des zu ver&ouml;ffentlichenden Dokuments.Status: %s\n"
 "Error: %s"
 
 msgid "The document has been successfully saved."
@@ -4738,12 +4351,8 @@ msgstr "Kein annotation_related_info RngElement-Typ gefunden"
 msgid "No annotation_related_info_element RngElement type found"
 msgstr "Kein annotation_related_info_element RngElement-Typ gefunden"
 
-msgid ""
-"An article cannot be inserted in this document. Check for annotation_link "
-"element."
-msgstr ""
-"Es kann kein Artikel in dieses Dokument eingef&uuml;gt werden. &Uuml;"
-"berpr&uuml;fen Sie das annotation_link-Element."
+msgid "An article cannot be inserted in this document. Check for annotation_link element."
+msgstr "Es kann kein Artikel in dieses Dokument eingef&uuml;gt werden. &Uuml;berpr&uuml;fen Sie das annotation_link-Element."
 
 #: /actions/xmleditor2/js/editor/AnnotationRdfaToolBox.class.js
 #: /actions/addfoldernode/template/Smarty/toolboxes.tpl
@@ -4788,9 +4397,7 @@ msgid "with uid = "
 msgstr "mit uid = "
 
 msgid "Searching for edited nodes (uid set) and new nodes (uidtype) in html"
-msgstr ""
-"Ge&auml;nderte Knoten (verbundene uid) und neue Knoten (uidtype) werden in "
-"html gesucht."
+msgstr "Ge&auml;nderte Knoten (verbundene uid) und neue Knoten (uidtype) werden in html gesucht."
 
 msgid "exists. Editing content..."
 msgstr "existiert. Inhalt wird ge&auml;ndert..."
@@ -4811,8 +4418,7 @@ msgid "Parent Uid retrieved: "
 msgstr "Mutter-Uid wiederhergestellt: "
 
 msgid "Appending new child to parent node in XML document..."
-msgstr ""
-"Neuer Tochterknoten wird zum Mutterknoten im XML-Dokument hinzugef&uuml;gt..."
+msgstr "Neuer Tochterknoten wird zum Mutterknoten im XML-Dokument hinzugef&uuml;gt..."
 
 msgid "Setting uid %s to "
 msgstr "Stellt uid %s ein auf "
@@ -4834,80 +4440,26 @@ msgstr "Es wurde auf einen nichtexistenten Editor Bezug genommen."
 msgid "Xedit, the new Ximdex XML WYSIWYG editor"
 msgstr "Xedit, der neue Ximdex XML WYSIWYG Editor"
 
-msgid ""
-"Enjoy the new <strong>Ximdex</strong> XML visual editor and its countless "
-"advantages in content management."
-msgstr ""
-"Geniessen Sie den neuen <strong>Ximdex</strong> visuellen XML Editor und "
-"seine unz&auml;hligen Vorteile im Contentmanagement."
+msgid "Enjoy the new <strong>Ximdex</strong> XML visual editor and its countless advantages in content management."
+msgstr "Geniessen Sie den neuen <strong>Ximdex</strong> visuellen XML Editor und seine unz&auml;hligen Vorteile im Contentmanagement."
 
-msgid ""
-"Drag&amp;Drop</h3><strong>Drag</strong> easily the element that your "
-"document contains and <strong>check out</strong> your action result right "
-"away. You will be able to sort and move elements in a subtle, effective and "
-"intuitive way."
-msgstr ""
-"Drag&amp;Drop</h3><strong>Ziehen</strong> einfach die Elemente Ihres "
-"Dokuments und <strong>&uuml;berpr&uuml;fen</strong> sofort das Ergebnis "
-"Ihrer Aktion. Elemente k&ouml;nnen Sie subtil, effektiv und intuitiv ordnen "
-"und bewegen."
+msgid "Drag&amp;Drop</h3><strong>Drag</strong> easily the element that your document contains and <strong>check out</strong> your action result right away. You will be able to sort and move elements in a subtle, effective and intuitive way."
+msgstr "Drag&amp;Drop</h3><strong>Ziehen</strong> einfach die Elemente Ihres Dokuments und <strong>&uuml;berpr&uuml;fen</strong> sofort das Ergebnis Ihrer Aktion. Elemente k&ouml;nnen Sie subtil, effektiv und intuitiv ordnen und bewegen."
 
-msgid ""
-"Edit views</h3>Modify the document how you pleased, either using the "
-"<strong>Design view</strong>, where you will be able to see the modification "
-"result right away,  or using the <strong>Tree view</strong>, XML generated "
-"by the own editor, if you want to focus on content."
-msgstr ""
-"Ansicht Bearbeiten</h3>&Auml;ndern Sie das Dokument nach Ihren W&uuml;"
-"nschen, entweder mit <strong>Designansicht</strong>, womit Sie das Ergebnis "
-"der &Auml;nderung sofort sehen k&ouml;nnen, oder aber mit "
-"<strong>Baumansicht</strong>, einem XML das der eigene Editor erstellt, wenn "
-"Sie sich auf den Inhalt konzentrieren m&ouml;chten."
+msgid "Edit views</h3>Modify the document how you pleased, either using the <strong>Design view</strong>, where you will be able to see the modification result right away,  or using the <strong>Tree view</strong>, XML generated by the own editor, if you want to focus on content."
+msgstr "Ansicht Bearbeiten</h3>&Auml;ndern Sie das Dokument nach Ihren W&uuml;nschen, entweder mit <strong>Designansicht</strong>, womit Sie das Ergebnis der &Auml;nderung sofort sehen k&ouml;nnen, oder aber mit <strong>Baumansicht</strong>, einem XML das der eigene Editor erstellt, wenn Sie sich auf den Inhalt konzentrieren m&ouml;chten."
 
-msgid ""
-"Semantic enricher</h3><strong>Complete the contain</strong> created with "
-"third parties&#39; elements. Just with one click you will be able to obtain "
-"elements from the more extended webs (Wikipedia, Flickr, etc) and "
-"incorporate them to your documents just dragging them."
-msgstr ""
-"Semantischer Anreicherer</h3><strong>Vervollst&auml;ndige den Inhalt</"
-"strong> erstellt mit den Elementer Dritter. Mit nur einem Mausklick k&ouml;"
-"nnen Sie Elemente von erweiterten Homepages (Wikipedia, Flickr, etc) "
-"anzeigen lassen und diese durch simples Ziehen in Ihre Dokumente integrieren."
+msgid "Semantic enricher</h3><strong>Complete the contain</strong> created with third parties&#39; elements. Just with one click you will be able to obtain elements from the more extended webs (Wikipedia, Flickr, etc) and incorporate them to your documents just dragging them."
+msgstr "Semantischer Anreicherer</h3><strong>Vervollst&auml;ndige den Inhalt</strong> erstellt mit den Elementer Dritter. Mit nur einem Mausklick k&ouml;nnen Sie Elemente von erweiterten Homepages (Wikipedia, Flickr, etc) anzeigen lassen und diese durch simples Ziehen in Ihre Dokumente integrieren."
 
-msgid ""
-"Spell checker</h3>Review the text you have just written and check its spell "
-"just pressing a button. Using the <strong>spell checker</strong> the typping "
-"oversights are solved right away!"
-msgstr ""
-"Rechtschreibpr&uuml;fer</h3>&Uuml;berpr&uuml;fen Sie den eben verfassten "
-"Text und korrigieren Sie dessen Orthographie mit einem Klick. Durch "
-"Benutzung des <strong>Rechtschreibpr&uuml;fer</strong> sind Tippfehler "
-"schnell verbessert!"
+msgid "Spell checker</h3>Review the text you have just written and check its spell just pressing a button. Using the <strong>spell checker</strong> the typping oversights are solved right away!"
+msgstr "Rechtschreibpr&uuml;fer</h3>&Uuml;berpr&uuml;fen Sie den eben verfassten Text und korrigieren Sie dessen Orthographie mit einem Klick. Durch Benutzung des <strong>Rechtschreibpr&uuml;fer</strong> sind Tippfehler schnell verbessert!"
 
-msgid ""
-"RNG validator</h3>Check if the document you are creating matches with the "
-"template structure automatically. Press the button <strong>Validate schema</"
-"strong> and you will know instantly if the document matches with the "
-"corresponding template characteristics."
-msgstr ""
-"RNG Validierer</h3>&Uuml;berpr&uuml;fen Sie ob das Dokument das Sie "
-"erstellen automatisch mit der Vorlagenstruktur &uuml;bereinstimmt. Klicken "
-"Sie den Button <strong>Schema validieren</strong> und Sie erfahren sofort ob "
-"das Dokument mit den entsprechenden Vorlagencharakteristiken &uuml;"
-"bereinstimmt."
+msgid "RNG validator</h3>Check if the document you are creating matches with the template structure automatically. Press the button <strong>Validate schema</strong> and you will know instantly if the document matches with the corresponding template characteristics."
+msgstr "RNG Validierer</h3>&Uuml;berpr&uuml;fen Sie ob das Dokument das Sie erstellen automatisch mit der Vorlagenstruktur &uuml;bereinstimmt. Klicken Sie den Button <strong>Schema validieren</strong> und Sie erfahren sofort ob das Dokument mit den entsprechenden Vorlagencharakteristiken &uuml;bereinstimmt."
 
-msgid ""
-"Change history</h3>Do not worry for remembering the change secuence you "
-"apply in the document, the <strong>change history</strong> will show you "
-"linearly the steps you have been following to complete it, and you will be "
-"able to retrieve elements and set them to a prior states."
-msgstr ""
-"Historie &auml;ndern</h3>Machen Sie sich keine M&uuml;he sich die Sequenz "
-"der &Auml;nderungen zu merken die Sie im Dokument vornehmen, die "
-"<strong>&Auml;nderungshistorie</strong> zeigt Ihnen linear alle Schritte die "
-"Sie gegangen sind und das Dokument zu vollenden, und Sie k&ouml;nnen "
-"Elemente wiederherstellen und zum vorherigen Zustand zur&uuml;ckkehren."
+msgid "Change history</h3>Do not worry for remembering the change secuence you apply in the document, the <strong>change history</strong> will show you linearly the steps you have been following to complete it, and you will be able to retrieve elements and set them to a prior states."
+msgstr "Historie &auml;ndern</h3>Machen Sie sich keine M&uuml;he sich die Sequenz der &Auml;nderungen zu merken die Sie im Dokument vornehmen, die <strong>&Auml;nderungshistorie</strong> zeigt Ihnen linear alle Schritte die Sie gegangen sind und das Dokument zu vollenden, und Sie k&ouml;nnen Elemente wiederherstellen und zum vorherigen Zustand zur&uuml;ckkehren."
 
 #: /actions/xmlsetlink/Action_xmlsetlink.class.php
 #: /actions/manageversions/Action_manageversions.class.php
@@ -4918,12 +4470,8 @@ msgid "Node could not be found"
 msgstr "Knoten nicht gefunden"
 
 #: /actions/xmlsetlink/Action_xmlsetlink.class.php
-msgid ""
-"The document to link has a different view template. The link cannot be "
-"created"
-msgstr ""
-"Das zu verlinkende Dokument hat eine andere Vorlagenansicht. Der Link kann "
-"nicht erstellt werden"
+msgid "The document to link has a different view template. The link cannot be created"
+msgstr "Das zu verlinkende Dokument hat eine andere Vorlagenansicht. Der Link kann nicht erstellt werden"
 
 msgid "The link has been modified successfully"
 msgstr "Der Link wurde erfolgreich ge&auml;ndert"
@@ -4933,16 +4481,10 @@ msgstr "Der Link wurde erfolgreich gel&ouml;scht"
 
 #: actions/xmlsetlink/resources/js/setinfo.js
 msgid "You must select an option before you delete the link"
-msgstr ""
-"Sie m&uuml;ssen eine Option ausw&auml;hlen bevor Sie den Link l&ouml;schen"
+msgstr "Sie m&uuml;ssen eine Option ausw&auml;hlen bevor Sie den Link l&ouml;schen"
 
-msgid ""
-"Intervals are erased publication of this node from the moment of the "
-"sending, and will be published the same intervals that the master node."
-msgstr ""
-"Publikationsintervalle dieses Knotens werden sofort nach dem Senden gel&ouml;"
-"scht und er &uuml;bernimmt die selben Publikationsintervalle wie der "
-"Hauptknoten."
+msgid "Intervals are erased publication of this node from the moment of the sending, and will be published the same intervals that the master node."
+msgstr "Publikationsintervalle dieses Knotens werden sofort nach dem Senden gel&ouml;scht und er &uuml;bernimmt die selben Publikationsintervalle wie der Hauptknoten."
 
 #: /actions/xmlsetlink/template/Smarty/show_translation.tpl
 #: /actions/xmleditor2/HTML2XML.class.php
@@ -4981,8 +4523,7 @@ msgstr "Workflow des Hauptdokuments teilen?"
 msgid "Do you want to delete the document link?"
 msgstr "Dokumentenlink l&ouml;schen?"
 
-msgid ""
-"Do you want to copy the master document content when a link would be deleted?"
+msgid "Do you want to copy the master document content when a link would be deleted?"
 msgstr "Inhalt des Hauptdokuments kopieren bei L&ouml;schen des Links?"
 
 msgid "Do you want to suggest Google Translate traduction?"
@@ -4996,15 +4537,13 @@ msgstr "&Auml;nderungen speichern"
 
 #: /actions/xmlsetlink/template/Smarty/index.tpl
 msgid "Are you sure you want to performe the changes?"
-msgstr ""
-"Sind Sie sicher, dass Sie die &Auml;nderungen &uuml;bernehmen m&ouml;chten?"
+msgstr "Sind Sie sicher, dass Sie die &Auml;nderungen &uuml;bernehmen m&ouml;chten?"
 
 # ------ end of actions ------
 # ################################################ CONF ############################################
 #: /conf/notifications.php
 msgid "The document %doc is going to be sent to publication queue"
-msgstr ""
-"Das Dokument %doc wird an die Ver&ouml;ffentlichungswarteschlange gesendet"
+msgstr "Das Dokument %doc wird an die Ver&ouml;ffentlichungswarteschlange gesendet"
 
 # ################################################ INC ############################################
 #: /inc/mvc/ApplicationController.class.php
@@ -5016,9 +4555,7 @@ msgstr "Gew&uuml;nscht Aktion nicht gefunden."
 
 #: /inc/mvc/ActionAbstract.class.php
 msgid "The action %s cannot be executed on the selected node"
-msgstr ""
-"Die Aktion %s kann f&uuml;r den gew&auml;hlten Knoten nicht ausgef&uuml;hrt "
-"werden"
+msgstr "Die Aktion %s kann f&uuml;r den gew&auml;hlten Knoten nicht ausgef&uuml;hrt werden"
 
 #: /src/Models/user.php
 msgid "User does not exist"
@@ -5034,8 +4571,7 @@ msgstr "Fehlen von Argumenten"
 
 #: /src/Models/user.php
 msgid "Some of the connections with your groups could not be deleted"
-msgstr ""
-"Einige der Verbindungen mit Ihren Gruppen konnten nicht gel&ouml;scht werden"
+msgstr "Einige der Verbindungen mit Ihren Gruppen konnten nicht gel&ouml;scht werden"
 
 #: inc/sync/synchro.php /src/Models/user.php /src/Models/node.php
 #: /src/Models/action.php /src/Models/channel.php /src/Models/group.php
@@ -5063,16 +4599,11 @@ msgstr "Der Knotentyp %d ist mit keiner Erstellungsaktion verbunden"
 
 #: /inc/auth/Authenticator.class.php
 msgid "ERROR: %s/conf/auth.php not present or badformed configuration"
-msgstr ""
-"FEHLER: %s/conf/auth.php existiert nicht oder hat eine ung&uuml;ltige "
-"Konfiguration"
+msgstr "FEHLER: %s/conf/auth.php existiert nicht oder hat eine ung&uuml;ltige Konfiguration"
 
 #: inc/auth/mechs/Mechanism_LDAP.class.php
-msgid ""
-"ERROR: Selected LDAP as authenticator mechanism but not options provided."
-msgstr ""
-"FEHLER: LDAP wurde als Authentifizierungsmechanismus ausgew&auml;hlt aber es "
-"stehen keine Optionen zur Verf&uuml;gung."
+msgid "ERROR: Selected LDAP as authenticator mechanism but not options provided."
+msgstr "FEHLER: LDAP wurde als Authentifizierungsmechanismus ausgew&auml;hlt aber es stehen keine Optionen zur Verf&uuml;gung."
 
 msgid "ERROR: Unable to connect to LDAP server @ "
 msgstr "FEHLER: Verbindung zum LDAP-Server @ kann nicht hergestellt werden"
@@ -5121,44 +4652,25 @@ msgid "Not allowed value"
 msgstr "Nicht erlaubter Wert"
 
 #: /inc/db/DB_orm.class.php /inc/db/DB_zero.class.php
-msgid ""
-"Trying to obtain a value from a query that has not been selected [inc/db/"
-"DB_zero.class.php] script: %s file: %s line: %s value: %s"
-msgstr ""
-"Versucht den Wert einer Abfrage zu laden die nicht ausgew&auml;hlt wurde "
-"[inc/db/DB_zero.class.php] script: %s file: %s line: %s value: %s"
+msgid "Trying to obtain a value from a query that has not been selected [inc/db/DB_zero.class.php] script: %s file: %s line: %s value: %s"
+msgstr "Versucht den Wert einer Abfrage zu laden die nicht ausgew&auml;hlt wurde [inc/db/DB_zero.class.php] script: %s file: %s line: %s value: %s"
 
 #: /inc/db/DB_zero.class.php
 msgid "MySQL link could not been stablished."
 msgstr "MySQL-Link konnte nicht geladen werden."
 
 #: /inc/fsutils/FsUtils.class.php
-msgid ""
-"Warning from the server %s (instance %s): The free space in disk is %s MB"
-msgstr ""
-"Warnung des Servers %s (instance %s): Der freie Speicherplatz auf der CD "
-"betr&auml;gt %s MB"
+msgid "Warning from the server %s (instance %s): The free space in disk is %s MB"
+msgstr "Warnung des Servers %s (instance %s): Der freie Speicherplatz auf der CD betr&auml;gt %s MB"
 
-msgid ""
-"Error writing in file [inc/fsutils/FsUtils.class.php] script: %s file: %s "
-"line: %s file: %s"
-msgstr ""
-"Fehler beim Schreiben in der Datei [inc/fsutils/FsUtils.class.php] script: "
-"%s file: %s line: %s file: %s"
+msgid "Error writing in file [inc/fsutils/FsUtils.class.php] script: %s file: %s line: %s file: %s"
+msgstr "Fehler beim Schreiben in der Datei [inc/fsutils/FsUtils.class.php] script: %s file: %s line: %s file: %s"
 
-msgid ""
-"Trying to obtaing the content of a nonexistent file [inc/fsutils/FsUtils."
-"class.php] script: %s file: %s line: %s nonexistent_file: %s"
-msgstr ""
-"Versucht den Inhalt einer nicht existierenden Datei zu laden [inc/fsutils/"
-"FsUtils.class.php] script: %s file: %s line: %s nonexistent_file: %s"
+msgid "Trying to obtaing the content of a nonexistent file [inc/fsutils/FsUtils.class.php] script: %s file: %s line: %s nonexistent_file: %s"
+msgstr "Versucht den Inhalt einer nicht existierenden Datei zu laden [inc/fsutils/FsUtils.class.php] script: %s file: %s line: %s nonexistent_file: %s"
 
-msgid ""
-"It has been applied to delete recursively a folder [inc/fsutils/FsUtils."
-"class.php] script: %s file: %s line: %s folder: %s"
-msgstr ""
-"L&ouml;schen eines Ordners wurden angewiesen [inc/fsutils/FsUtils.class.php] "
-"script: %s file: %s line: %s folder: %s"
+msgid "It has been applied to delete recursively a folder [inc/fsutils/FsUtils.class.php] script: %s file: %s line: %s folder: %s"
+msgstr "L&ouml;schen eines Ordners wurden angewiesen [inc/fsutils/FsUtils.class.php] script: %s file: %s line: %s folder: %s"
 
 msgid "Error estimating folder %s"
 msgstr "Fehler beim Einsch&auml;tzen des Verzeichnisses %s"
@@ -5166,19 +4678,11 @@ msgstr "Fehler beim Einsch&auml;tzen des Verzeichnisses %s"
 msgid "It was not possible to open the folder %s %s, %s"
 msgstr "Der Ordner konnte nicht ge&ouml;ffnet werden %s %s, %s"
 
-msgid ""
-"It has been applied to delete a nonexistent file %s [inc/fsutils/FsUtils."
-"class.php] script: %s file: %s line: %s"
-msgstr ""
-"L&ouml;schen eines nicht vorhandenen Ordners wurde angewiesen %s [inc/"
-"fsutils/FsUtils.class.php] script: %s file: %s line: %s"
+msgid "It has been applied to delete a nonexistent file %s [inc/fsutils/FsUtils.class.php] script: %s file: %s line: %s"
+msgstr "L&ouml;schen eines nicht vorhandenen Ordners wurde angewiesen %s [inc/fsutils/FsUtils.class.php] script: %s file: %s line: %s"
 
-msgid ""
-"It has been applied to delete a file which could not been deleted %s [inc/"
-"fsutils/FsUtils.class.php] script: %s file: %s line: %s"
-msgstr ""
-"Das L&ouml;schen eines Ordners der nicht gel&ouml;scht werden konnte wurde "
-"angewiesen %s [inc/fsutils/FsUtils.class.php] script: %s file: %s line: %s"
+msgid "It has been applied to delete a file which could not been deleted %s [inc/fsutils/FsUtils.class.php] script: %s file: %s line: %s"
+msgstr "Das L&ouml;schen eines Ordners der nicht gel&ouml;scht werden konnte wurde angewiesen %s [inc/fsutils/FsUtils.class.php] script: %s file: %s line: %s"
 
 msgid "An error occurred while trying to copy from %s to %s"
 msgstr "Fehler beim Kopieren von %s to %s"
@@ -5188,15 +4692,10 @@ msgid "The compression option %s is not valid"
 msgstr "Die Kompressionsoption %s ist nicht g&uuml;ltig"
 
 msgid "The file type %s is not valid, a complete copy will be used by default."
-msgstr ""
-"Der Dateityp %s ist nicht g&uuml;ltig, eine komplette Kopie wird automatisch "
-"benutzt."
+msgstr "Der Dateityp %s ist nicht g&uuml;ltig, eine komplette Kopie wird automatisch benutzt."
 
-msgid ""
-"In incremental copies just folders are allowed, the element %s will be "
-"ignored"
-msgstr ""
-"In Differenzialkopien sind nur Ordner erlaubt, das Element %s wird ignoriert"
+msgid "In incremental copies just folders are allowed, the element %s will be ignored"
+msgstr "In Differenzialkopien sind nur Ordner erlaubt, das Element %s wird ignoriert"
 
 msgid "Temporal folder %s could not been created"
 msgstr "Zeitlicher Ordner %s konnte nicht erstellt werden"
@@ -5261,8 +4760,7 @@ msgid "Node name is not valid"
 msgstr "Knotenname ist nicht g&uuml;ltig"
 
 msgid "There is already a node with this name under this parent"
-msgstr ""
-"Es existiert bereits ein Knoten mit diesem Namen unter diesem Mutterknoten"
+msgstr "Es existiert bereits ein Knoten mit diesem Namen unter diesem Mutterknoten"
 
 msgid "This node is not allowed under this parent"
 msgstr "Dieser Knoten ist unter diesem Mutterknoten nicht erlaubt"
@@ -5322,14 +4820,10 @@ msgid "The last processed node was %s"
 msgstr "Der letzte bearbeitete Knoten war %s"
 
 msgid "Error checking if the node is allowed - parent does not exist [1]"
-msgstr ""
-"Fehler bei &Uuml;berpr&uuml;fung der G&uuml;ltigkeit des Knotens - "
-"Mutterknoten existiert nicht [1]"
+msgstr "Fehler bei &Uuml;berpr&uuml;fung der G&uuml;ltigkeit des Knotens - Mutterknoten existiert nicht [1]"
 
 msgid "Error checking if the node is allowed - parent does not exist [2]"
-msgstr ""
-"Fehler bei &Uuml;berpr&uuml;fung der G&uuml;ltigkeit des Knotens - "
-"Mutterknoten existiert nicht [2]"
+msgstr "Fehler bei &Uuml;berpr&uuml;fung der G&uuml;ltigkeit des Knotens - Mutterknoten existiert nicht [2]"
 
 msgid "The parent %s does not allow any nested node from him"
 msgstr "Der Mutterknoten %s erlaubt keinen von ihm ausgehenden Knoten"
@@ -5347,16 +4841,13 @@ msgid "The node is not allowed inside this parent"
 msgstr "Der Knoten ist in diesem Mutterknoten nicht erlaubt"
 
 msgid "No more nodes can be created in this folder type"
-msgstr ""
-"In diesem Ordner k&ouml;nnen keine weiteren Knoten dieses Typs erstellt "
-"werden"
+msgstr "In diesem Ordner k&ouml;nnen keine weiteren Knoten dieses Typs erstellt werden"
 
 msgid "Property %s not found"
 msgstr "Eigenschaft %s nicht gefunden"
 
 msgid "The node over which property want to be deleted does not exist "
-msgstr ""
-"Der Knoten dessen Eigenschaft Sie l&ouml;schen m&ouml;chten existiert nicht "
+msgstr "Der Knoten dessen Eigenschaft Sie l&ouml;schen m&ouml;chten existiert nicht "
 
 #: /src/Models/action.php
 msgid "Action does not exist"
@@ -5439,13 +4930,10 @@ msgid "Nodetype could not be infered"
 msgstr "Knotentyp konnte nicht gefolgert werden"
 
 msgid "Node could not be inserted due to lack of permits"
-msgstr ""
-"Knotentyp konnte wegen fehlender Berechtigungen nicht eingef&uuml;gt werden"
+msgstr "Knotentyp konnte wegen fehlender Berechtigungen nicht eingef&uuml;gt werden"
 
 msgid "Node could not be inserted due to it is not allowed in the folder"
-msgstr ""
-"Knotentyp konnte nicht eingef&uuml;gt werden weil dieser im Ordner nicht "
-"erlaubt ist"
+msgstr "Knotentyp konnte nicht eingef&uuml;gt werden weil dieser im Ordner nicht erlaubt ist"
 
 msgid "Parentid was not specified"
 msgstr "Parentid wurde nicht spezifiziert"
@@ -5465,8 +4953,7 @@ msgstr "Url wurde nicht spezifiert"
 msgid "An error occurred inserting the document"
 msgstr "Fehler beim Einf&uuml;gen des Dokuments"
 
-msgid ""
-"It is being tried to insert a XML document without its corresponding schema"
+msgid "It is being tried to insert a XML document without its corresponding schema"
 msgstr "Versucht einen XML Dokument ohne entsprechende Schema einzugeben"
 
 msgid "It was not specified a template for the node "
@@ -5485,8 +4972,7 @@ msgid "The class %s does not exist in BaseIO"
 msgstr "Die Klasse %s existiert nicht in BaseIO"
 
 msgid "The identifier to update could not be found"
-msgstr ""
-"Der Identifizierer der aktualisiert werden soll wurde nicht spezifiziert"
+msgstr "Der Identifizierer der aktualisiert werden soll wurde nicht spezifiziert"
 
 msgid "It is being tried to modify a nonexistent node"
 msgstr "Versucht einen nichtexistierenden Knoten zu &auml;ndern"
@@ -5494,12 +4980,8 @@ msgstr "Versucht einen nichtexistierenden Knoten zu &auml;ndern"
 msgid "Node %s could not be found"
 msgstr "Knoten %s konnte nicht gefunden werden"
 
-msgid ""
-"It has been specified a node of type xmldocument and the found node is of "
-"type "
-msgstr ""
-"Es wurde ein Knoten vom Typ xmldocument spezifiziert und der gefundene "
-"Knoten ist vom Typ "
+msgid "It has been specified a node of type xmldocument and the found node is of type "
+msgstr "Es wurde ein Knoten vom Typ xmldocument spezifiziert und der gefundene Knoten ist vom Typ "
 
 msgid "Error deleting the document channel"
 msgstr "Fehler beim L&ouml;schen des Dokumentenkanals"
@@ -5645,10 +5127,7 @@ msgid "Error, current password is not valid."
 msgstr "Fehler, aktuelles Passwort ist nicht g&uuml;ltig."
 
 #: xmd/js/browser_checker.js public_xmd/assets/js/browser_checker.js:53
-msgid ""
-"We have noticed some compatibility issues with your current browser. For "
-"now, some features just work fully fine in Firefox 4 or higher.<br/>Please, "
-"log in with Mozilla Firefox Browser."
+msgid "We have noticed some compatibility issues with your current browser. For now, some features just work fully fine in Firefox 4 or higher.<br/>Please, log in with Mozilla Firefox Browser."
 msgstr ""
 
 #: xmd/login.php
@@ -5656,9 +5135,7 @@ msgid "Folder %s could not be found"
 msgstr "Ordner %s konnte nicht gefunden werden"
 
 msgid "Temporary file created in %s could not be read or written"
-msgstr ""
-"Tempor&auml;re Datei erstellt in %s konnte nicht gelesen oder geschrieben "
-"werden"
+msgstr "Tempor&auml;re Datei erstellt in %s konnte nicht gelesen oder geschrieben werden"
 
 msgid "Your session has expired. Please, enter your data again."
 msgstr "Ihre Sitzung ist abgelaufen. Bitte geben Sie Ihre Daten erneut ein."
@@ -5674,16 +5151,11 @@ msgid "You should write a password."
 msgstr "Sie m&uuml;ssen ein Passwort schreiben."
 
 #: xmd/login.php
-msgid ""
-"Access blocked. At this moment maintenance tasks are being performed. Sorry "
-"for the inconveniences."
-msgstr ""
-"Zugang blockiert. Die Instandhaltungsprozesse werden gerade durchgef&uuml;"
-"hrt. Entschuldigen Sie die Unannehmlichkeiten."
+msgid "Access blocked. At this moment maintenance tasks are being performed. Sorry for the inconveniences."
+msgstr "Zugang blockiert. Die Instandhaltungsprozesse werden gerade durchgef&uuml;hrt. Entschuldigen Sie die Unannehmlichkeiten."
 
 msgid "Username or password are incorrect. Please, try again."
-msgstr ""
-"Benutzername oder Passwort nicht korrekt. Bitte versuchen Sie es erneut."
+msgstr "Benutzername oder Passwort nicht korrekt. Bitte versuchen Sie es erneut."
 
 #: xmd/login.php
 #: modules/modules_PRO/ximDEMOS/createaccount/templates/Smarty/index.tpl
@@ -5700,14 +5172,12 @@ msgstr "unsere Homepage"
 
 #: xmd/login.php
 msgid "to learn more about the advantages of managing your projects with"
-msgstr ""
-"um mehr zu erfahren &uuml;ber die Vorteile der Verwaltung Ihrer Projekte mit"
+msgstr "um mehr zu erfahren &uuml;ber die Vorteile der Verwaltung Ihrer Projekte mit"
 
 #: xmd/login.php
 #: modules/modules_PRO/ximDEMOS/createaccount/templates/Smarty/index.tpl
 msgid " and how powerful it is to manage your projects."
-msgstr ""
-" und &uuml;ber die Leistungsf&auml;higkeit bei der Verwaltung Ihrer Projekte."
+msgstr " und &uuml;ber die Leistungsf&auml;higkeit bei der Verwaltung Ihrer Projekte."
 
 #: xmd/login.php
 msgid "Recommended browsers"
@@ -5747,12 +5217,8 @@ msgstr "!!Crear cuenta"
 msgid "System in updating process."
 msgstr "System im Aktualisierungsprozess."
 
-msgid ""
-"Please, consult with your administrator the approximate time of resume "
-"service."
-msgstr ""
-"Setzen Sie sich bitte mit Ihrem Administrator in Verbindung um die "
-"ungef&auml;hre Dauer des Serviceneustarts zu erfahren."
+msgid "Please, consult with your administrator the approximate time of resume service."
+msgstr "Setzen Sie sich bitte mit Ihrem Administrator in Verbindung um die ungef&auml;hre Dauer des Serviceneustarts zu erfahren."
 
 #: xmd/template/Smarty/layouts/messages.tpl
 #: xmd/template/Smarty/layouts/default.tpl
@@ -5953,10 +5419,8 @@ msgid "'m-d-Y H:i:s'"
 msgstr "'T-M-J H:i:s'"
 
 #: /inc/widgets/jquery/calendar/js/ValidityCalendar.js
-msgid ""
-"The validity end date must be at least one minute after validity end start"
-msgstr ""
-"Das Ablaufdatum muss mindestens eine Minute nach das Austellungsdatum sein"
+msgid "The validity end date must be at least one minute after validity end start"
+msgstr "Das Ablaufdatum muss mindestens eine Minute nach das Austellungsdatum sein"
 
 msgid "The validity end date of "
 msgstr "Das Ablaufdatum von "
@@ -6007,11 +5471,8 @@ msgstr "Benutzer von System l&ouml;schen"
 msgid "Manage groups"
 msgstr "Gruppe verwalten"
 
-msgid ""
-"Enroll, disenroll, and change user role in groups where he/she belongs to"
-msgstr ""
-"Anmelden, abmelden und &auml;ndern der Benutzerrolle in den betroffenen "
-"Gruppen"
+msgid "Enroll, disenroll, and change user role in groups where he/she belongs to"
+msgstr "Anmelden, abmelden und &auml;ndern der Benutzerrolle in den betroffenen Gruppen"
 
 msgid "Modify role"
 msgstr "Rolle &auml;ndern"
@@ -6426,11 +5887,8 @@ msgstr "Rolle l&ouml;schen"
 msgid "Delete a selected role if it is not in use"
 msgstr "Ausgew&auml;hlte Rolle l&ouml;schen wenn diese nicht in Benutzung ist"
 
-msgid ""
-"Delete a state if it is not an initial or final one and it is not in use"
-msgstr ""
-"Status l&ouml;schen wenn dieser kein Anfangs- oder Endstatus ist und nicht "
-"in Benutzung ist"
+msgid "Delete a state if it is not an initial or final one and it is not in use"
+msgstr "Status l&ouml;schen wenn dieser kein Anfangs- oder Endstatus ist und nicht in Benutzung ist"
 
 msgid "Change template name"
 msgstr "Vorlagenname &auml;ndern"
@@ -6457,8 +5915,7 @@ msgid "Modify view template"
 msgstr "Ansichtvorlage &auml;ndern"
 
 msgid "Modify template for all documents of the directory"
-msgstr ""
-"Ansichtvorlage f&uuml;r alle Dokumente in der Adressenliste &auml;ndern"
+msgstr "Ansichtvorlage f&uuml;r alle Dokumente in der Adressenliste &auml;ndern"
 
 msgid "Modify sync data"
 msgstr "Synchronisationsdaten &auml;ndern"
@@ -7545,9 +7002,7 @@ msgstr "Klicken Sie hier"
 #: /modules/ximSYNC/actions/managebatchs/Action_managebatchs.class.php
 #: /modules/ximSYNC/actions/managebatchs/forms.php
 msgid "You do not have access to this report. Consult an administrator."
-msgstr ""
-"Sie haben keinen Zugang zu diesem Bericht. Wenden Sie sich an Ihren "
-"Administrator."
+msgstr "Sie haben keinen Zugang zu diesem Bericht. Wenden Sie sich an Ihren Administrator."
 
 msgid "Undefined"
 msgstr "Undefiniert"
@@ -7584,8 +7039,7 @@ msgid "[Generator %s]: Creating up batch with id %s"
 msgstr "[Generator %s]: Hochzuladender Stapel mit id %s wird erstellt"
 
 msgid "Node %s belongs to an unpublished nodetype"
-msgstr ""
-"Der Knoten %s geh&ouml;rt zu einem nicht zu ver&ouml;ffentlichenden Knotentyp"
+msgstr "Der Knoten %s geh&ouml;rt zu einem nicht zu ver&ouml;ffentlichenden Knotentyp"
 
 msgid "Node %s already exists in a NodeFrame"
 msgstr "Der Knoten %s existiert schon in einem NodeFrame"
@@ -7600,18 +7054,13 @@ msgid "A NodeFrame could not be obtained for node %s"
 msgstr "Eine NodeFrame f&uuml;r den Knoten %s konnte nicht gefunden werden"
 
 msgid "A ChannelFrame could not be obtained for node %s and channel %s"
-msgstr ""
-"Eine ChannelFrame f&uuml;r den Knoten %s und den Kanal %s konnte nicht "
-"gefunden werden"
+msgstr "Eine ChannelFrame f&uuml;r den Knoten %s und den Kanal %s konnte nicht gefunden werden"
 
 msgid "Deleting Nodeframe for node %s"
 msgstr "Die NodeFrame f&uuml;r den Knoten &s wird gelo&ouml;scht"
 
-msgid ""
-"Creation of ServerFrame could not be done: node %s, channel %s, batch %s"
-msgstr ""
-"ServerFrame konnte nicht erstellt werden: Knoten %s, Kanal %s, Server %s, "
-"Stapel %s"
+msgid "Creation of ServerFrame could not be done: node %s, channel %s, batch %s"
+msgstr "ServerFrame konnte nicht erstellt werden: Knoten %s, Kanal %s, Server %s, Stapel %s"
 
 msgid "Creation of ServerFrame could not be done: node %s, channel %s"
 msgstr "Kein ServerFrame konnte erstellt werden: Knoten %s, Kanal %s"
@@ -7653,8 +7102,7 @@ msgid "Ending %s  batch %d UP"
 msgstr "Hochzuladender %s  Stapel %d wird beendet"
 
 msgid "Batch %d type down without associated batch type up"
-msgstr ""
-"Herunterzuladender Stapel %d ohne zugeordneten herunterzuladenden Stapel"
+msgstr "Herunterzuladender Stapel %d ohne zugeordneten herunterzuladenden Stapel"
 
 msgid "Ending down batch with id "
 msgstr "Herunterzuladender Stapel wird mit id beendet "
@@ -7687,9 +7135,7 @@ msgid "Batch %d does not exist"
 msgstr "Stapel %d existiert nicht"
 
 msgid "Nodesframes to be added to the portal review do not exist"
-msgstr ""
-"Es existieren keine Nodesframes die der Portalansicht hinzugef&uuml;gt "
-"werden k&ouml;nnen"
+msgstr "Es existieren keine Nodesframes die der Portalansicht hinzugef&uuml;gt werden k&ouml;nnen"
 
 msgid "Ending %ss for batch DOWN %s"
 msgstr "Herunterzuladender Stapel %s wird beendet %s"
@@ -7745,9 +7191,7 @@ msgid "ERROR: batch %s is a non-existent type of batch %s"
 msgstr "FEHLER: Stapel %s ist ein nichtexistierender Stapeltyp %s"
 
 msgid "Do not delete ServerFrame %s - setting it to Due2Out to be unpublished"
-msgstr ""
-"L&ouml;schen Sie ServerFrame %s nicht - er wird eingestellt Due2Out um ihn "
-"ablaufen zu lassen"
+msgstr "L&ouml;schen Sie ServerFrame %s nicht - er wird eingestellt Due2Out um ihn ablaufen zu lassen"
 
 msgid "Do not delete serverFrame %s - state %s"
 msgstr "L&ouml;schen Sie nicht die ServerFrame %s - Status %s"
@@ -7795,9 +7239,7 @@ msgstr "Server wird deaktiviert"
 
 #: /modules/ximSYNC/inc/manager/ServerErrorManager.class.php
 msgid "Setting ServerFrames to Due2In/Out to retry pumping"
-msgstr ""
-"ServerFrames wird nach Due2In/Out eingestellt um das Pumpen nocheinmal zu "
-"versuchen"
+msgstr "ServerFrames wird nach Due2In/Out eingestellt um das Pumpen nocheinmal zu versuchen"
 
 #: /modules/ximSYNC/inc/manager/ServerFrameManager.class.php
 msgid "ERROR Params needed"
@@ -7909,9 +7351,7 @@ msgstr "* FEHLER: Abh&auml;ngigkeit '%s' nicht gefunden"
 #: /modules/ximSYNC/scripts/scheduler/scheduler.class.php
 #: /modules/ximSYNC/scripts/scheduler/schedulerMPM.php
 msgid "ximSYNC module is not active, you must run syncronizer module"
-msgstr ""
-"ximSYNC-Modul ist nicht aktiv, Sie m&uuml;ssen das Synchronisierungsmodul "
-"ausf&uuml;hren"
+msgstr "ximSYNC-Modul ist nicht aktiv, Sie m&uuml;ssen das Synchronisierungsmodul ausf&uuml;hren"
 
 msgid "Starting Scheduler"
 msgstr "Scheduler wird gestartet"
@@ -7930,9 +7370,7 @@ msgstr "HOCH: Entdeckte Datei"
 #: /modules/ximSYNC/scripts/scheduler/scheduler.class.php
 #: /modules/ximSYNC/scripts/scheduler/schedulerMPM.php
 msgid "You need to delete this file in order to restart Scheduler successfully"
-msgstr ""
-"Sie m&uuml;ssen diese Datei l&ouml;schen um den Scheduler erfolgreich "
-"neuzustarten"
+msgstr "Sie m&uuml;ssen diese Datei l&ouml;schen um den Scheduler erfolgreich neuzustarten"
 
 msgid "No active server"
 msgstr "Kein aktiver Server"
@@ -8009,15 +7447,10 @@ msgid "Unable to create the target document"
 msgstr "Das Zieldokument konnte nicht erstellt werden"
 
 msgid "Cant write the crc file for the remote file "
-msgstr ""
-"Die crc-Datei f&uuml;r die Remote-Datei konnte nicht geschrieben werden "
+msgstr "Die crc-Datei f&uuml;r die Remote-Datei konnte nicht geschrieben werden "
 
-msgid ""
-"It has not been possible to register the pumper %s, started at %d, due to it "
-"has state %s instead of %s"
-msgstr ""
-"Der Pumper konnte nicht registriert werden %s, angefangen bei %d, hat "
-"dadurch den Status %s anstatt von %s"
+msgid "It has not been possible to register the pumper %s, started at %d, due to it has state %s instead of %s"
+msgstr "Der Pumper konnte nicht registriert werden %s, angefangen bei %d, hat dadurch den Status %s anstatt von %s"
 
 msgid "Wrong credentials in login for: %s %s %s %s"
 msgstr "Falsche Autorisierung f&uuml;r den Login f&uuml;r: %s %s %s %s"
@@ -8033,12 +7466,8 @@ msgstr "Wird verarbeitet"
 msgid "Introduce the first node identifier:"
 msgstr "Geben Sie die erste Knoten-ID ein:"
 
-msgid ""
-"Introduce the exportation name, if you keep it empty, current timestamp will "
-"be used:"
-msgstr ""
-"Geben Sie den Exportnamen ein, wenn Sie diesen leer lassen, wird die "
-"aktuelle timestamp benutzt:"
+msgid "Introduce the exportation name, if you keep it empty, current timestamp will be used:"
+msgstr "Geben Sie den Exportnamen ein, wenn Sie diesen leer lassen, wird die aktuelle timestamp benutzt:"
 
 #: /modules/ximIO/actions/console_wrapper/template/Smarty/getImportValues.tpl
 msgid "User to export:"
@@ -8108,9 +7537,7 @@ msgid "Specified node is not correct"
 msgstr "Spezifizierter Knoten ist nicht korrekt"
 
 msgid "Specified name to export should meet the following pattern"
-msgstr ""
-"Der spezifizierte Name f&uuml;r den Export muss dem folgenden Muster "
-"entsprechen"
+msgstr "Der spezifizierte Name f&uuml;r den Export muss dem folgenden Muster entsprechen"
 
 msgid "It has been executed the command: "
 msgstr "Der Befehl wurde ausgef&uuml;hrt: "
@@ -8119,13 +7546,8 @@ msgstr "Der Befehl wurde ausgef&uuml;hrt: "
 msgid "Node where export is starting"
 msgstr "Knoten von dem aus der Export startet"
 
-msgid ""
-"If this param is not indicated, the recursivity level is infinite, if a "
-"recursivity value is specified, this will be the limit"
-msgstr ""
-"Wenn der Parameter nicht angegeben wird, ist das Rekursivit&auml;tsniveau "
-"unendlich, wenn ein Rekursivit&auml;tswert spezifiziert ist wird dieser als "
-"Grenze verwendet"
+msgid "If this param is not indicated, the recursivity level is infinite, if a recursivity value is specified, this will be the limit"
+msgstr "Wenn der Parameter nicht angegeben wird, ist das Rekursivit&auml;tsniveau unendlich, wenn ein Rekursivit&auml;tswert spezifiziert ist wird dieser als Grenze verwendet"
 
 msgid "Package name, if it is not specified, a timestamp will be used"
 msgstr "Wenn der Paketname nicht spezifiziert ist wird ein timestamp benutzt"
@@ -8164,12 +7586,8 @@ msgstr "Erstelltes Paket war %s"
 msgid "The name of the package to update should be introduced"
 msgstr "Der Name des zu aktualisierenden Pakets muss eingegeben werden"
 
-msgid ""
-"It indicates if the package will be auto-deleted or not once consolidation "
-"is finished, by default is 1"
-msgstr ""
-"Gibt an ob das Paket automatisch gel&ouml;scht wird oder nicht wenn die "
-"Konsolidierung beendet ist, wegen Default 1"
+msgid "It indicates if the package will be auto-deleted or not once consolidation is finished, by default is 1"
+msgstr "Gibt an ob das Paket automatisch gel&ouml;scht wird oder nicht wenn die Konsolidierung beendet ist, wegen Default 1"
 
 #: /modules/ximIO/actions/file_import/run.php
 msgid "It is going to proceed the content importation of nodes for package "
@@ -8200,39 +7618,17 @@ msgstr "Sofort Ausf&uuml;hren-Modus f&uuml;r das Interface"
 msgid "Maximun level of recurrence you would like to import"
 msgstr "Maximales Wiederholungsniveau das Sie importieren m&ouml;chten"
 
-msgid ""
-"Association of channels, languages and groups that are going to be made when "
-"importing (format: idSourceNode1=idDestinyNode1, "
-"idSourceNode2=idDestinyNode2, ...)"
-msgstr ""
-"Zuordnung von Kan&auml;len, Sprachen und Gruppen die beim Import ausgef&uuml;"
-"hrt werden (format: idQuellknoten1=idZielknoten1, "
-"idQuellknoten2=idZielknoten2, ...)"
+msgid "Association of channels, languages and groups that are going to be made when importing (format: idSourceNode1=idDestinyNode1, idSourceNode2=idDestinyNode2, ...)"
+msgstr "Zuordnung von Kan&auml;len, Sprachen und Gruppen die beim Import ausgef&uuml;hrt werden (format: idQuellknoten1=idZielknoten1, idQuellknoten2=idZielknoten2, ...)"
 
-msgid ""
-"Node of exportation package from which you would like to start the "
-"importation"
-msgstr ""
-"Knoten des Exportpakets von dem aus Sie den Import starten m&ouml;chten"
+msgid "Node of exportation package from which you would like to start the importation"
+msgstr "Knoten des Exportpakets von dem aus Sie den Import starten m&ouml;chten"
 
-msgid ""
-"If it is accompained of value 1 (--processFirstNode 1) it will be tried to "
-"insert the first node, otherwise, it will just checked if it is compatible "
-"with the first exportation node"
-msgstr ""
-"Wenn er begleitet wird von Wert 1 (--processFirstNode 1) wird versucht den "
-"ersten Knoten einzuf&uuml;gen, andernfalls, wird nur &uuml;berpr&uuml;ft ob "
-"er mit dem ersten Exportknoten kompatibel ist"
+msgid "If it is accompained of value 1 (--processFirstNode 1) it will be tried to insert the first node, otherwise, it will just checked if it is compatible with the first exportation node"
+msgstr "Wenn er begleitet wird von Wert 1 (--processFirstNode 1) wird versucht den ersten Knoten einzuf&uuml;gen, andernfalls, wird nur &uuml;berpr&uuml;ft ob er mit dem ersten Exportknoten kompatibel ist"
 
-msgid ""
-"(--copyMode 1) It indicates if available nodes in ximdex are going to be "
-"used when dependencies could not been resolved, in the case of not resolved "
-"links the node will be resolved with an -3 error"
-msgstr ""
-"(--copyMode 1) Gibt an ob die verf&uuml;gbaren Knoten im ximdex benutzt "
-"werden wenn die Abh&auml;ngigkeiten nicht gel&ouml;st werden k&ouml;nnen, "
-"f&uuml;r den Fall, dass ungel&ouml;ste Links bleiben wird der Link mit dem "
-"Fehler -3 gel&ouml;st"
+msgid "(--copyMode 1) It indicates if available nodes in ximdex are going to be used when dependencies could not been resolved, in the case of not resolved links the node will be resolved with an -3 error"
+msgstr "(--copyMode 1) Gibt an ob die verf&uuml;gbaren Knoten im ximdex benutzt werden wenn die Abh&auml;ngigkeiten nicht gel&ouml;st werden k&ouml;nnen, f&uuml;r den Fall, dass ungel&ouml;ste Links bleiben wird der Link mit dem Fehler -3 gel&ouml;st"
 
 #: /modules/ximIO/actions/import/run.php
 msgid "Incorrect login"
@@ -8256,12 +7652,8 @@ msgstr "%s Knoten wegen fehlender Information im xml"
 msgid "%s node/s because its parent has not been inserted"
 msgstr "%s Knoten weil sein Mutterknoten nicht eingef&uuml;gt wurde"
 
-msgid ""
-"%s node/s because have not been allowed (it is not scheduled in "
-"NodeAllowedContents)"
-msgstr ""
-"%s Knoten weil sie nicht erlaubt waren (waren nicht spezifiziert in "
-"NodeAllowedContents)"
+msgid "%s node/s because have not been allowed (it is not scheduled in NodeAllowedContents)"
+msgstr "%s Knoten weil sie nicht erlaubt waren (waren nicht spezifiziert in NodeAllowedContents)"
 
 msgid "The elapsed time by procedure has been %s seconds"
 msgstr "Die ben&ouml;tigte Zeit f&uuml;r den Vorgang waren %s Sekunden"
@@ -8277,14 +7669,8 @@ msgstr "Liste der verf&uuml;gbaren Pakete:"
 msgid "Name of package to delete"
 msgstr "Name des zu l&ouml;schenden Pakets"
 
-msgid ""
-"Element to delete, possible values are ONLY_FILES, which deletes the "
-"importation package only from the hard disk, ONLY_DB, which deletes just the "
-"importation associations from the database"
-msgstr ""
-"Zu l&ouml;schendes Dokument, m&ouml;gliche Werte sind ONLY_FILES, das das "
-"Importpaket von der Harddisk l&ouml;scht, ONLY_DB, das nur die "
-"Importzuordnung von der Datenbank l&ouml;scht"
+msgid "Element to delete, possible values are ONLY_FILES, which deletes the importation package only from the hard disk, ONLY_DB, which deletes just the importation associations from the database"
+msgstr "Zu l&ouml;schendes Dokument, m&ouml;gliche Werte sind ONLY_FILES, das das Importpaket von der Harddisk l&ouml;scht, ONLY_DB, das nur die Importzuordnung von der Datenbank l&ouml;scht"
 
 #: /modules/ximIO/actions/remove/run.php
 msgid "Analysing data:"
@@ -8305,14 +7691,11 @@ msgstr "&Uuml;berpr&uuml;ft das Paket in der Datenbank..."
 msgid "Importation information not found in database"
 msgstr "Importinformation wurde in der Datenbank nicht gefunden"
 
-msgid ""
-"Importation package %s is going to be deleted from ximIO association tables"
+msgid "Importation package %s is going to be deleted from ximIO association tables"
 msgstr "Importpaket %s wird gel&ouml;scht von ximIO der Zuordnungstabellen"
 
 msgid "Unexpected error occurred, several packages with same name were found"
-msgstr ""
-"Unerwarteter Fehler aufgetreten, mehrere Pakete mit dem selben Namen wurden "
-"gefunden"
+msgstr "Unerwarteter Fehler aufgetreten, mehrere Pakete mit dem selben Namen wurden gefunden"
 
 msgid "Errors:"
 msgstr "Fehler:"
@@ -8323,11 +7706,8 @@ msgstr "Warnungen:"
 msgid "Information:"
 msgstr "Information:"
 
-msgid ""
-"Errors and Warnings occurred, do you want to continue with the process? (Y/n)"
-msgstr ""
-"Fehler und/oder Warnungen sind aufgetreten, m&ouml;chten Sie den Prozess "
-"fortsetzen? (J/n)"
+msgid "Errors and Warnings occurred, do you want to continue with the process? (Y/n)"
+msgstr "Fehler und/oder Warnungen sind aufgetreten, m&ouml;chten Sie den Prozess fortsetzen? (J/n)"
 
 msgid "Aborting process due to user request."
 msgstr "Prozess wird auf Wunsch des Benutzers abgebrochen."
@@ -8351,36 +7731,20 @@ msgid "%s associations successfully deleted from XimIONodeTranslations"
 msgstr "%s Zuordnungen erfolgreich gel&ouml;scht von XimIONodeTranslations"
 
 msgid "Associations could not been deleted from XimIONodeTranslations"
-msgstr ""
-"Zuordnungen konnten nicht gel&ouml;scht werden von XimIONodeTranslations"
+msgstr "Zuordnungen konnten nicht gel&ouml;scht werden von XimIONodeTranslations"
 
 msgid "Importation information will not be deleted"
 msgstr "Importinformation wird nicht gel&ouml;scht"
 
 #: /modules/ximIO/actions/report/inc/ReportCli.class.php
 msgid "Name of the package from where to get information"
-msgstr ""
-"Sie m&uuml;ssen den Namen des Pakets eingeben zu dem Sie Informationen "
-"einholen m&ouml;chten"
+msgstr "Sie m&uuml;ssen den Namen des Pakets eingeben zu dem Sie Informationen einholen m&ouml;chten"
 
-msgid ""
-"Showing a list of package nodes with the format IdNode, State (usage --"
-"nodeList 1)"
-msgstr ""
-"Zeigt eine Liste der Knoten des Pakets mit dem Format IdNode, Status "
-"(Benutzung--nodeList 1)"
+msgid "Showing a list of package nodes with the format IdNode, State (usage --nodeList 1)"
+msgstr "Zeigt eine Liste der Knoten des Pakets mit dem Format IdNode, Status (Benutzung--nodeList 1)"
 
-msgid ""
-"This param should be used with the param --nodeList, and it shows just the "
-"nodes which are in a determined state (-1, -2, -3, -4). -1 Not inserted due "
-"to a lack of permits, -2 General error, -3 Father node not resolved, -4 Node "
-"destiny not allowed, 0 Node successfully inserted"
-msgstr ""
-"Dieser Parameter musst zusammen mit dem Parameter --nodeList benutzt werden, "
-"es werden nur die Knoten angezeigt die sich in einem bestimmten Status "
-"befinden (-1, -2, -3, -4). -1 Nicht eingef&uuml;gt wegen fehlender "
-"Berechtigungen, -2 Allgemeiner Fehler, -3 Mutterknoten nicht gel&ouml;st, -4 "
-"Zielknoten nicht erlaubt, 0 Knoten erfolgreich eingef&uuml;gt"
+msgid "This param should be used with the param --nodeList, and it shows just the nodes which are in a determined state (-1, -2, -3, -4). -1 Not inserted due to a lack of permits, -2 General error, -3 Father node not resolved, -4 Node destiny not allowed, 0 Node successfully inserted"
+msgstr "Dieser Parameter musst zusammen mit dem Parameter --nodeList benutzt werden, es werden nur die Knoten angezeigt die sich in einem bestimmten Status befinden (-1, -2, -3, -4). -1 Nicht eingef&uuml;gt wegen fehlender Berechtigungen, -2 Allgemeiner Fehler, -3 Mutterknoten nicht gel&ouml;st, -4 Zielknoten nicht erlaubt, 0 Knoten erfolgreich eingef&uuml;gt"
 
 #: /modules/ximIO/actions/report/run.php
 msgid "The package %s has not been imported with ximIO"
@@ -8390,39 +7754,23 @@ msgid "%d nodes has been successfully imported"
 msgstr "%d Knoten wurden korrekt importiert"
 
 msgid "%d nodes has not been successfully imported due to a lack of permits"
-msgstr ""
-"%d Knoten wurden nicht erfolgreich importiert wegen fehlender Berechtigungen"
+msgstr "%d Knoten wurden nicht erfolgreich importiert wegen fehlender Berechtigungen"
 
-msgid ""
-"%d nodes has not been successfully imported due to a lack of information in "
-"the XML"
-msgstr ""
-"%d Knoten wurden nicht erfolgreich importiert wegen fehlender Informationen "
-"im XML"
+msgid "%d nodes has not been successfully imported due to a lack of information in the XML"
+msgstr "%d Knoten wurden nicht erfolgreich importiert wegen fehlender Informationen im XML"
 
-msgid ""
-"%d nodes has not been successfully imported due to its father was not "
-"inserted"
-msgstr ""
-"%d Knoten wurden nicht korrekt importiert weil der Mutterknoten nicht "
-"einf&uuml;gt wurde"
+msgid "%d nodes has not been successfully imported due to its father was not inserted"
+msgstr "%d Knoten wurden nicht korrekt importiert weil der Mutterknoten nicht einf&uuml;gt wurde"
 
-msgid ""
-"%d nodes has not been successfully imported due to they were not allowed in "
-"its father (NodeAllowedContents restriction)"
-msgstr ""
-"%d Knoten wurden nicht korrekt importiert weil Sie im Mutterknoten nicht "
-"erlaubt sind (NodeAllowedContents restriction)"
+msgid "%d nodes has not been successfully imported due to they were not allowed in its father (NodeAllowedContents restriction)"
+msgstr "%d Knoten wurden nicht korrekt importiert weil Sie im Mutterknoten nicht erlaubt sind (NodeAllowedContents restriction)"
 
 msgid "Node, Status"
 msgstr "Knoten, Status"
 
 #: /modules/ximIO/actions/run.php
-msgid ""
-"Available command to execute, to see a list, type --mode without command"
-msgstr ""
-"Verf&uuml;gbarer Befehl zum Ausf&uuml;rehn, um eine Liste zu sehen --Modus "
-"ohne Befehl"
+msgid "Available command to execute, to see a list, type --mode without command"
+msgstr "Verf&uuml;gbarer Befehl zum Ausf&uuml;rehn, um eine Liste zu sehen --Modus ohne Befehl"
 
 msgid "The param --mode is obligatory"
 msgstr "Der Parameter --Modus ist obligatorisch"
@@ -8437,13 +7785,8 @@ msgstr "Der Knoten %s existiert nicht"
 msgid "The node %s does not exists or is not included inside of %s"
 msgstr "Der Knoten %s existiert nicht oder ist nicht enthalten in %s"
 
-msgid ""
-"Error creating the backup folder, check data folder permits and user&#39;s "
-"ones configured in Apache server are compatible."
-msgstr ""
-"Fehler beim Erstellen des Backup-Ordners, stellen Sie sicher, dass die "
-"Berechtigungen der Ordnerdaten und des f&uuml;r den Server Apache "
-"konfigurierten Benutzers kompatibel sind."
+msgid "Error creating the backup folder, check data folder permits and user&#39;s ones configured in Apache server are compatible."
+msgstr "Fehler beim Erstellen des Backup-Ordners, stellen Sie sicher, dass die Berechtigungen der Ordnerdaten und des f&uuml;r den Server Apache konfigurierten Benutzers kompatibel sind."
 
 msgid "The exportation that has as origin the node %s contains %d nodes"
 msgstr "Der Export mit dem Knoten %s als Quelle enth&auml;lt %d Knoten"
@@ -8455,34 +7798,21 @@ msgstr "Dekomprimierung der Daten des Pakets wird gestartet"
 msgid "Ignoring unexisting file"
 msgstr "Ignoriert nicht existierende Datei"
 
-msgid ""
-"The document %s with id %s could not been imported due to it could not been "
-"loaded"
-msgstr ""
-"Das Dokument %s mit der id %s konnte nicht importiert werden weil es nicht "
-"geladen werden konnte"
+msgid "The document %s with id %s could not been imported due to it could not been loaded"
+msgstr "Das Dokument %s mit der id %s konnte nicht importiert werden weil es nicht geladen werden konnte"
 
 msgid "Execution mode could not been estimated"
 msgstr "Ausf&uuml;hrungsmodus konnte nicht gesch&auml;tzt werden"
 
 msgid "Content of document %s with filepath %s could not been obtained"
-msgstr ""
-"Der neue Dokumentinhalt %s mit filepath %s konnte nicht abgerufen werden"
+msgstr "Der neue Dokumentinhalt %s mit filepath %s konnte nicht abgerufen werden"
 
 #: /modules/ximIO/inc/ImportXml.class.php
-msgid ""
-"The association %s=%s has been dismissed due to the node %s is not existing "
-"in the destiny ximdex"
-msgstr ""
-"Die Zuordnung %s=%s wurde verworfen weil der Knoten %s im Ziel-ximdex nicht "
-"existiert"
+msgid "The association %s=%s has been dismissed due to the node %s is not existing in the destiny ximdex"
+msgstr "Die Zuordnung %s=%s wurde verworfen weil der Knoten %s im Ziel-ximdex nicht existiert"
 
-msgid ""
-"The association %s=%s has been dismissed due to the source node %s is not of "
-"the same type than the destiny one or type could not been estimated"
-msgstr ""
-"Die Zuordnung%s=%s wurde verworfen weil der Ausgangsknoten %s nicht vom "
-"selben Typ ist wie das Ziel und der Typ nicht gesch&auml;tzt werden konnte"
+msgid "The association %s=%s has been dismissed due to the source node %s is not of the same type than the destiny one or type could not been estimated"
+msgstr "Die Zuordnung%s=%s wurde verworfen weil der Ausgangsknoten %s nicht vom selben Typ ist wie das Ziel und der Typ nicht gesch&auml;tzt werden konnte"
 
 msgid "XML error: %s at line %d"
 msgstr "XML Fehler: %s in der Sequenz %d"
@@ -8493,18 +7823,11 @@ msgstr "Exportationsidentifizierer konnte nicht abgerufen werden"
 msgid "%s_copy_%d%s"
 msgstr "%s_Kopie_%d%s"
 
-msgid ""
-"The init nodes of exportation and importation are not compatible, check if "
-"using the param --processFirstNode 1 is needed"
-msgstr ""
-"Die Anfangsknoten f&uuml;r den Export und Import sind nicht kompatibel, "
-"&uuml;berpr&uuml;fen Sie ob die Benutzung des Parameters --processFirstNode "
-"1 notwendig ist"
+msgid "The init nodes of exportation and importation are not compatible, check if using the param --processFirstNode 1 is needed"
+msgstr "Die Anfangsknoten f&uuml;r den Export und Import sind nicht kompatibel, &uuml;berpr&uuml;fen Sie ob die Benutzung des Parameters --processFirstNode 1 notwendig ist"
 
 msgid "Incomplete information about root node has been provided"
-msgstr ""
-"Es wurde eine unvollst&auml;ndige Information &uuml;ber den Stammknoten "
-"gestellt"
+msgstr "Es wurde eine unvollst&auml;ndige Information &uuml;ber den Stammknoten gestellt"
 
 msgid "No valid user to perform the importation found"
 msgstr "Kein g&uuml;ltiger Benutzer vorhanden f&uuml;r die Importierung"
@@ -8513,27 +7836,17 @@ msgid "Error inserting the node"
 msgstr "Fehler beim Einf&uuml;gen des Knotens"
 
 msgid "No schema could be successfully estimated for the node "
-msgstr ""
-"Es konnte kein Schema f&uuml;r den Knoten korrekt gesch&auml;tzt werden "
+msgstr "Es konnte kein Schema f&uuml;r den Knoten korrekt gesch&auml;tzt werden "
 
-msgid ""
-"An inconsistency was found in database, there are several UUID in "
-"NodeProperties table with same value"
-msgstr ""
-"Es wurde eine Unbest&auml;ndigkeit in der Datenbank gefunden, in der Tabelle "
-"NodeProperties gibt es mehrere gleiche UUIDs"
+msgid "An inconsistency was found in database, there are several UUID in NodeProperties table with same value"
+msgstr "Es wurde eine Unbest&auml;ndigkeit in der Datenbank gefunden, in der Tabelle NodeProperties gibt es mehrere gleiche UUIDs"
 
 # ######## modules_PRO ########
 # --------------------------------------------------------------
 # ######## ximDEMOS ########
 #: xmd/js/user_connect.js
-msgid ""
-"Your user session has been closed or changed to another user. Please proceed "
-"to log in again"
-msgstr ""
-"Die Sitzung f&uuml;r Ihren Benutzer wurde geschlossen oder ein anderer "
-"Benutzer hat sich eingeloggt. Bitte loggen Sie sich erneut ein um "
-"fortzufahren"
+msgid "Your user session has been closed or changed to another user. Please proceed to log in again"
+msgstr "Die Sitzung f&uuml;r Ihren Benutzer wurde geschlossen oder ein anderer Benutzer hat sich eingeloggt. Bitte loggen Sie sich erneut ein um fortzufahren"
 
 #: modules/modules_PRO/ximDEMOS/resources/js/tour.js
 msgid "First time here?"
@@ -8558,41 +7871,23 @@ msgstr "Eingegebene Emailadresse hat kein passendes Format."
 msgid "Introduced password is not correct."
 msgstr "Eingegebenes Passwort nicht richtig."
 
-msgid ""
-"Requested user was already created<br/>Contact your admin if you have lost "
-"your password."
-msgstr ""
-"Angefragter Benutzer wurde bereits erstellt<br/>Kontaktieren Sie Ihren "
-"Administrator wenn Sie Ihr Passwort verloren haben."
+msgid "Requested user was already created<br/>Contact your admin if you have lost your password."
+msgstr "Angefragter Benutzer wurde bereits erstellt<br/>Kontaktieren Sie Ihren Administrator wenn Sie Ihr Passwort verloren haben."
 
 msgid "There was an error while verifying your user. Contact your admin."
-msgstr ""
-"Bei der &Uuml;berpr&uuml;fung Ihres Benutzers ist ein Fehler aufgetreten. "
-"Kontaktieren Sie Ihren Administrator."
+msgstr "Bei der &Uuml;berpr&uuml;fung Ihres Benutzers ist ein Fehler aufgetreten. Kontaktieren Sie Ihren Administrator."
 
-msgid ""
-"Your user has been verified, you will receive the user/password in your e-"
-"mail account."
-msgstr ""
-"Ihr Benutzer wurde &uuml;berpr&uuml;ft, Sie werden den Benutzer/Passwort per "
-"Email erhalten."
+msgid "Your user has been verified, you will receive the user/password in your e-mail account."
+msgstr "Ihr Benutzer wurde &uuml;berpr&uuml;ft, Sie werden den Benutzer/Passwort per Email erhalten."
 
 msgid "Ximdex: User verification"
 msgstr "Ximdex: Benutzer&uuml;berpr&uuml;fung"
 
-msgid ""
-"You have registered successfully, you will receive an e-mail to complete the "
-"registration."
-msgstr ""
-"Sie haben sich erfolgreich registriert, Sie erhalten eine Email um Ihre "
-"Registrierung zu vervollst&auml;ndigen."
+msgid "You have registered successfully, you will receive an e-mail to complete the registration."
+msgstr "Sie haben sich erfolgreich registriert, Sie erhalten eine Email um Ihre Registrierung zu vervollst&auml;ndigen."
 
-msgid ""
-"You were already registered, the confirmation mail has been sent again to "
-"your e-mail account."
-msgstr ""
-"Sie waren bereits registriert, die Best&auml;tigungsmail wurde erneut an "
-"Ihre Emailadresse verschickt."
+msgid "You were already registered, the confirmation mail has been sent again to your e-mail account."
+msgstr "Sie waren bereits registriert, die Best&auml;tigungsmail wurde erneut an Ihre Emailadresse verschickt."
 
 msgid "Ximdex: Registration confirmation"
 msgstr "Ximdex: Best&auml;tigen Sie Ihre Registrierung"
@@ -8624,18 +7919,11 @@ msgstr "!!acceder"
 msgid "into Ximdex and play with some demo projects we made for you."
 msgstr "!!en Ximdex y probar algunos proyectos que hemos hecho para ti."
 
-msgid ""
-"All guided with a comfortable and effective helping tour. Enjoy managing "
-"your documents!"
-msgstr ""
-"!!Sigue el tour de ayuda para guiarte de una forma comoda y efecta. &iexcl;"
-"Disfruta gestionando tus documentos!"
+msgid "All guided with a comfortable and effective helping tour. Enjoy managing your documents!"
+msgstr "!!Sigue el tour de ayuda para guiarte de una forma comoda y efecta. &iexcl;Disfruta gestionando tus documentos!"
 
-msgid ""
-"to know more about Ximdex and how powerful it is to manage your projects."
-msgstr ""
-"!!para aprender m&aacute;s sobre Ximdex y su potencia en la gesti&oacute;n "
-"de tus proyectos."
+msgid "to know more about Ximdex and how powerful it is to manage your projects."
+msgstr "!!para aprender m&aacute;s sobre Ximdex y su potencia en la gesti&oacute;n de tus proyectos."
 
 msgid "Privacy Policy"
 msgstr "!!Pol&iacute;tica de privacidad"
@@ -8662,9 +7950,7 @@ msgstr ""
 
 #: modules/Xdms/actions/collaborative/resources/js/init.js:73
 #: public_xmd/actions/edittext/resources/js/init.js:77
-msgid ""
-"You are going to clear the current content. It won't be removed until you "
-"save the data. Are you sure?"
+msgid "You are going to clear the current content. It won't be removed until you save the data. Are you sure?"
 msgstr ""
 
 #: modules/Xdms/actions/configure/Action_configure.class.php:157
@@ -8866,8 +8152,7 @@ msgid "Unexpected error occured, several packages with same name were found"
 msgstr ""
 
 #: modules/ximIO/actions/remove/run.php:80
-msgid ""
-"Errors and Warnings occured, do you want to continue with the process? (Y/n)"
+msgid "Errors and Warnings occured, do you want to continue with the process? (Y/n)"
 msgstr ""
 
 #: modules/ximIO/actions/remove/run.php:107
@@ -8889,9 +8174,7 @@ msgid "Step"
 msgstr ""
 
 #: modules/ximTOUR/resources/js/tour.js:434
-msgid ""
-"We're going to show you in a few steps the basic features of Ximdex. Let's "
-"go!"
+msgid "We're going to show you in a few steps the basic features of Ximdex. Let's go!"
 msgstr ""
 
 #: modules/ximTOUR/resources/js/tour.js:436
@@ -8982,10 +8265,7 @@ msgid "Cannot load the node type for "
 msgstr ""
 
 #: public_xmd/actions/deletenode/Action_deletenode.class.php:105
-msgid ""
-"Selected document or folder is not empty. It also have external dependencies "
-"with other system documents and it cannot be deleted using your role. "
-"Please, undo dependencies or use a user with suitable permissions."
+msgid "Selected document or folder is not empty. It also have external dependencies with other system documents and it cannot be deleted using your role. Please, undo dependencies or use a user with suitable permissions."
 msgstr ""
 
 #: public_xmd/actions/edittext/Action_edittext.class.php:129
@@ -9081,9 +8361,7 @@ msgstr ""
 
 #: public_xmd/actions/fileupload/Action_fileupload.class.php:201
 #, php-format
-msgid ""
-"The Image file %s is going to be replaced with %s, but the name in the "
-"system will not change."
+msgid "The Image file %s is going to be replaced with %s, but the name in the system will not change."
 msgstr ""
 
 #: public_xmd/actions/fileupload_common_multiple/Action_fileupload_common_multiple.class.php:102
@@ -9120,9 +8398,7 @@ msgid "This section has been successfully configured."
 msgstr ""
 
 #: public_xmd/actions/managefolders/resources/js/index.js:34
-msgid ""
-"Attention! If you uncheck any folder, Ximdex CMS would delete all the "
-"contained files of that folder."
+msgid "Attention! If you uncheck any folder, Ximdex CMS would delete all the contained files of that folder."
 msgstr ""
 
 #: public_xmd/actions/manageproperties/Action_manageproperties.class.php:293
@@ -9336,9 +8612,7 @@ msgid "Edit file with Xedit"
 msgstr ""
 
 #: public_xmd/actions/welcome/resources/js/tour.js:188
-msgid ""
-"Welcome to Ximdex!<br/>In a few steps you will discover the basic features "
-"of Ximdex CMS."
+msgid "Welcome to Ximdex!<br/>In a few steps you will discover the basic features of Ximdex CMS."
 msgstr ""
 
 #: public_xmd/actions/welcome/resources/js/tour.js:189
@@ -9346,9 +8620,7 @@ msgid "Ximdex Demo Tour."
 msgstr ""
 
 #: public_xmd/actions/welcome/resources/js/tour.js:193
-msgid ""
-"In the left panel you will find the tree with all your documents, images, "
-"links and other files."
+msgid "In the left panel you will find the tree with all your documents, images, links and other files."
 msgstr ""
 
 #: public_xmd/actions/welcome/resources/js/tour.js:196
@@ -9360,15 +8632,11 @@ msgid "Click here to hide the left panel."
 msgstr ""
 
 #: public_xmd/actions/welcome/resources/js/tour.js:200
-msgid ""
-"This is the document area.<br/>It looks like a HTML document. Actually it's "
-"a XML file with a semantic layer."
+msgid "This is the document area.<br/>It looks like a HTML document. Actually it's a XML file with a semantic layer."
 msgstr ""
 
 #: public_xmd/actions/welcome/resources/js/tour.js:202
-msgid ""
-"Press the Tree View button to change to XML view for your structured "
-"document."
+msgid "Press the Tree View button to change to XML view for your structured document."
 msgstr ""
 
 #: public_xmd/actions/welcome/resources/js/tour.js:204
@@ -9376,23 +8644,15 @@ msgid "Press the Design View button in order to return to WYSIWYG view."
 msgstr ""
 
 #: public_xmd/actions/welcome/resources/js/tour.js:206
-msgid ""
-"We've been editing a XML file. <br/><br/>The preview button allows you to "
-"see it in the final format for your web portal (HTML5, php, jsp, RoR, ...) "
-"or for other platform (digital TV, smartphone apps, etc.)<br/><br/>It's "
-"really easy to extend it with templates for oncoming technologies."
+msgid "We've been editing a XML file. <br/><br/>The preview button allows you to see it in the final format for your web portal (HTML5, php, jsp, RoR, ...) or for other platform (digital TV, smartphone apps, etc.)<br/><br/>It's really easy to extend it with templates for oncoming technologies."
 msgstr ""
 
 #: public_xmd/actions/welcome/resources/js/tour.js:208
-msgid ""
-"With Xowl module you will get automagically links (to images, maps, videos, "
-"references, ...) and semantic tags from sources like DBpedia."
+msgid "With Xowl module you will get automagically links (to images, maps, videos, references, ...) and semantic tags from sources like DBpedia."
 msgstr ""
 
 #: public_xmd/actions/welcome/resources/js/tour.js:212
-msgid ""
-"You can easily add your own custom tags or use an ontology to select "
-"semantic tags..."
+msgid "You can easily add your own custom tags or use an ontology to select semantic tags..."
 msgstr ""
 
 #: public_xmd/actions/welcome/resources/js/tour.js:228
@@ -9400,21 +8660,15 @@ msgid "Edit metadata"
 msgstr ""
 
 #: public_xmd/actions/welcome/resources/js/tour.js:243
-msgid ""
-"Ximdex CMS can automatically suggest tags based on your written text.<br/"
-">Let's select a couple of tags from these suggestions."
+msgid "Ximdex CMS can automatically suggest tags based on your written text.<br/>Let's select a couple of tags from these suggestions."
 msgstr ""
 
 #: public_xmd/actions/welcome/resources/js/tour.js:261
-msgid ""
-"You can also create your own custom tags or browse tag sets to choose the "
-"best one for your content."
+msgid "You can also create your own custom tags or browse tag sets to choose the best one for your content."
 msgstr ""
 
 #: public_xmd/actions/welcome/resources/js/tour.js:274
-msgid ""
-"With the Ontology Browser you can navigate through vocabularies and "
-"ontologies as schema.org, etc."
+msgid "With the Ontology Browser you can navigate through vocabularies and ontologies as schema.org, etc."
 msgstr ""
 
 #: public_xmd/actions/welcome/resources/js/tour.js:286
@@ -9591,15 +8845,11 @@ msgid "ximlet"
 msgstr ""
 
 #: public_xmd/actions/xmleditor2/js/tools/XimdocSpellCheckerTool.class.js:117
-msgid ""
-"Maybe your text is too long and/or there are so much words to correct in "
-"your document."
+msgid "Maybe your text is too long and/or there are so much words to correct in your document."
 msgstr ""
 
 #: public_xmd/actions/xmleditor2/js/tools/XimdocSpellCheckerTool.class.js:117
-msgid ""
-"Be sure that your content and the base language of your document are the "
-"same."
+msgid "Be sure that your content and the base language of your document are the same."
 msgstr ""
 
 #: public_xmd/actions/xmleditor2/js/tools/ximletTool.class.js:70
@@ -9610,8 +8860,7 @@ msgstr ""
 msgid ""
 "WARNING: You are going to edit a ximlet which is linked to a section.\n"
 "\n"
-" This action will affect to all the section documents. Are you sure you want "
-"to continue?"
+" This action will affect to all the section documents. Are you sure you want to continue?"
 msgstr ""
 
 #: public_xmd/actions/xmleditor2/model/XmlEditor_KUPU.class.php:90
@@ -9632,17 +8881,11 @@ msgstr ""
 
 #: public_xmd/actions/xmleditor2/model/XmlEditor_KUPU.class.php:584
 #, php-format
-msgid ""
-"Xowl module has not been installed.<br/><br/> If you want to realize the "
-"noticeable improvements that you will obtain with Xowl, a demonstrative "
-"video is shown below (%s)<br/><br/>Also, you can test it at <a "
-"target='_blank' href='http://demo.ximdex.com'>demo.ximdex.com</a><br/><br/>"
+msgid "Xowl module has not been installed.<br/><br/> If you want to realize the noticeable improvements that you will obtain with Xowl, a demonstrative video is shown below (%s)<br/><br/>Also, you can test it at <a target='_blank' href='http://demo.ximdex.com'>demo.ximdex.com</a><br/><br/>"
 msgstr ""
 
 #: public_xmd/actions/xmleditor2/model/XmlEditor_KUPU.class.php:587
-msgid ""
-"Xowl module has not been installed. It is included in the advanced package "
-"WIX."
+msgid "Xowl module has not been installed. It is included in the advanced package WIX."
 msgstr ""
 
 #: public_xmd/actions/xmleditor2/model/XmlEditor_KUPU.class.php:632
@@ -9674,9 +8917,7 @@ msgid "Inactivity period reached"
 msgstr ""
 
 #: public_xmd/assets/js/sess.js:140
-msgid ""
-"You have reached the limit of inactivity period. Please, re-authenticate "
-"again in order to continue working."
+msgid "You have reached the limit of inactivity period. Please, re-authenticate again in order to continue working."
 msgstr ""
 
 #: public_xmd/src/Widgets/browserwindow/js/modules.js:84
@@ -9761,8 +9002,7 @@ msgid "The field %s has exceded the maximum size of %d with the value %s"
 msgstr ""
 
 #: src/IO/BaseIO.php:390
-msgid ""
-"It is being tried to insert a xmlcontainer without its corresponding schema"
+msgid "It is being tried to insert a xmlcontainer without its corresponding schema"
 msgstr ""
 
 #: src/IO/BaseIOInferer.php:218
@@ -9901,9 +9141,7 @@ msgid "Uncheckable"
 msgstr ""
 
 #: /public_xmd/actions/linkreport/template/Smarty/searchresult.tpl:68
-msgid ""
-"There aren't any links matching with the current search. Please, try again "
-"with another search string"
+msgid "There aren't any links matching with the current search. Please, try again with another search string"
 msgstr ""
 
 #: /public_xmd/actions/linkreport/template/Smarty/index.tpl:38
@@ -9919,15 +9157,11 @@ msgid "Use the asterisk '*' to obtain all the links of the current folder"
 msgstr ""
 
 #: /public_xmd/actions/linkreport/template/Smarty/index.tpl:72
-msgid ""
-"Find your links and check if they are currently alive by clicking on the "
-"icon on the right"
+msgid "Find your links and check if they are currently alive by clicking on the icon on the right"
 msgstr ""
 
 #: /public_xmd/actions/addximlet/template/Smarty/index.tpl:31
-msgid ""
-"The associated ximlets will appear in every single XML document of this "
-"section"
+msgid "The associated ximlets will appear in every single XML document of this section"
 msgstr ""
 
 #: /public_xmd/actions/addximlet/template/Smarty/index.tpl:36
@@ -9939,9 +9173,7 @@ msgid "Disassociate recursively"
 msgstr ""
 
 #: /public_xmd/actions/addximlet/template/Smarty/index.tpl:51
-msgid ""
-"If the current section/server has subfolders, the association will be "
-"deleted for them too"
+msgid "If the current section/server has subfolders, the association will be deleted for them too"
 msgstr ""
 
 #: /public_xmd/actions/addximlet/template/Smarty/index.tpl:65
@@ -9954,9 +9186,7 @@ msgid "Associate recursively"
 msgstr ""
 
 #: /public_xmd/actions/addximlet/template/Smarty/index.tpl:80
-msgid ""
-"If the current section/server has subfolders, the association will be "
-"created for them too"
+msgid "If the current section/server has subfolders, the association will be created for them too"
 msgstr ""
 
 #: /public_xmd/actions/addximlet/template/Smarty/index.tpl:88
@@ -10006,10 +9236,7 @@ msgid "There aren't any edited files yet"
 msgstr ""
 
 #: /public_xmd/actions/checkstatus/template/Smarty/index.tpl:35
-msgid ""
-"Below are listed all the relevant documents in your system, grouped by "
-"state. Only are shown the files that are modified in comparation with its "
-"last published version."
+msgid "Below are listed all the relevant documents in your system, grouped by state. Only are shown the files that are modified in comparation with its last published version."
 msgstr ""
 
 #: /public_xmd/actions/checkstatus/template/Smarty/index.tpl:39
@@ -10034,9 +9261,7 @@ msgid "Documents in publication queue"
 msgstr ""
 
 #: /public_xmd/actions/checkstatus/template/Smarty/index.tpl:117
-msgid ""
-"If you want to have a deeper look into the Ximdex CMS publication process, "
-"upgrade this status report with <strong>XPublishTools</strong> module"
+msgid "If you want to have a deeper look into the Ximdex CMS publication process, upgrade this status report with <strong>XPublishTools</strong> module"
 msgstr ""
 
 #: /public_xmd/actions/xedit/template/Smarty/linked_document.tpl:11
@@ -10044,9 +9269,7 @@ msgstr ""
 #: /public_xmd/actions/edittext/template/Smarty/linked_document.tpl:11
 #: /public_xmd/actions/workflow_forward/template/Smarty/linked_document.tpl:11
 #: /modules/Xdms/actions/collaborative/template/Smarty/linked_document.tpl:11
-msgid ""
-"The publication cycle of the selected document is currently linked to the "
-"document"
+msgid "The publication cycle of the selected document is currently linked to the document"
 msgstr ""
 
 #: /public_xmd/actions/xedit/template/Smarty/index.tpl:7
@@ -10210,14 +9433,11 @@ msgid "This document has a symbolic link"
 msgstr ""
 
 #: /public_xmd/actions/deletenode/template/Smarty/linked_document.tpl:11
-msgid ""
-"To delete this node you have to break the link with the following node(s)"
+msgid "To delete this node you have to break the link with the following node(s)"
 msgstr ""
 
 #: /public_xmd/actions/installer/template/Smarty/index.tpl:2
-msgid ""
-"Please, check your database configuration in the /conf/install_params.conf."
-"php file."
+msgid "Please, check your database configuration in the /conf/install_params.conf.php file."
 msgstr ""
 
 #: /public_xmd/actions/installer/template/Smarty/index.tpl:4
@@ -10358,23 +9578,17 @@ msgstr ""
 
 #: /public_xmd/actions/workflow_forward/template/Smarty/index.tpl:36
 #: /public_xmd/actions/publicatesection/template/Smarty/index.tpl:34
-msgid ""
-"<i>pcntl_fork</i> and <i>pcntl_waitpid</i> required functions are both "
-"disabled"
+msgid "<i>pcntl_fork</i> and <i>pcntl_waitpid</i> required functions are both disabled"
 msgstr ""
 
 #: /public_xmd/actions/workflow_forward/template/Smarty/index.tpl:37
 #: /public_xmd/actions/publicatesection/template/Smarty/index.tpl:35
-msgid ""
-"This could cause a slow and unstable publishing. Please, check the <i>php."
-"ini</i> configuration file or contact with your system administrator"
+msgid "This could cause a slow and unstable publishing. Please, check the <i>php.ini</i> configuration file or contact with your system administrator"
 msgstr ""
 
 #: /public_xmd/actions/workflow_forward/template/Smarty/index.tpl:44
 #: /public_xmd/actions/publicatesection/template/Smarty/index.tpl:42
-msgid ""
-"Force publication is enabled in global config. This could cause slow "
-"publication. Please check synchro.conf file"
+msgid "Force publication is enabled in global config. This could cause slow publication. Please check synchro.conf file"
 msgstr ""
 
 #: /public_xmd/actions/workflow_forward/template/Smarty/index.tpl:55
@@ -10490,9 +9704,7 @@ msgid "Info:"
 msgstr ""
 
 #: /public_xmd/actions/setextensions/template/Smarty/index.tpl:18
-msgid ""
-"the * value means any extension, empty value means none extension. You can't "
-"put ambiguous values."
+msgid "the * value means any extension, empty value means none extension. You can't put ambiguous values."
 msgstr ""
 
 #: /public_xmd/actions/newemptynode/template/Smarty/addNode.tpl:29
@@ -10617,10 +9829,7 @@ msgid "Rendering XSLT in"
 msgstr ""
 
 #: /public_xmd/actions/createchannel/template/Smarty/index.tpl:124
-msgid ""
-"Ximdex renderizes documents at the <i>Ximdex</i> local server by default. If "
-"your website it's going to be dynamic, then select the <i>Client</i> "
-"rederized mode"
+msgid "Ximdex renderizes documents at the <i>Ximdex</i> local server by default. If your website it's going to be dynamic, then select the <i>Client</i> rederized mode"
 msgstr ""
 
 #: /public_xmd/actions/expiresection/template/Smarty/index.tpl:32
@@ -10667,29 +9876,19 @@ msgid "nodes to publish"
 msgstr ""
 
 #: /public_xmd/actions/moduleslist/template/Smarty/modules/Xowl.tpl:3
-msgid ""
-"allow the user to find and retrieve external references to resources on the "
-"web and recognition of places, people and organizations based on his "
-"document's content"
+msgid "allow the user to find and retrieve external references to resources on the web and recognition of places, people and organizations based on his document's content"
 msgstr ""
 
 #: /public_xmd/actions/moduleslist/template/Smarty/modules/Xowl.tpl:5
-msgid ""
-"Ximdex CMS offers this module in a SaaS mode, so you need a proper key to "
-"enable it"
+msgid "Ximdex CMS offers this module in a SaaS mode, so you need a proper key to enable it"
 msgstr ""
 
 #: /public_xmd/actions/moduleslist/template/Smarty/modules/ximTOUR.tpl:3
-msgid ""
-"enables a small tour through Ximdex CMS interface every time that a user "
-"perform a login. This tour could be disable in any moment"
+msgid "enables a small tour through Ximdex CMS interface every time that a user perform a login. This tour could be disable in any moment"
 msgstr ""
 
 #: /public_xmd/actions/moduleslist/template/Smarty/modules/ximTOUR.tpl:5
-msgid ""
-"It's one of the suggested modules during the installation process and it's "
-"based on the Picasso Demo Project to make the tour, so it will install it by "
-"default"
+msgid "It's one of the suggested modules during the installation process and it's based on the Picasso Demo Project to make the tour, so it will install it by default"
 msgstr ""
 
 #: /public_xmd/actions/moduleslist/template/Smarty/modules/footer.tpl:4
@@ -10701,10 +9900,7 @@ msgid "Installed"
 msgstr ""
 
 #: /public_xmd/actions/moduleslist/template/Smarty/modules/ximTAGS.tpl:3
-msgid ""
-"allows the user to tag his documents on Ximdex CMS. It's fully integrated "
-"with our visual XML editor, Xedit. The tags could be semantic or external "
-"references to another resources on the Web"
+msgid "allows the user to tag his documents on Ximdex CMS. It's fully integrated with our visual XML editor, Xedit. The tags could be semantic or external references to another resources on the Web"
 msgstr ""
 
 #: /public_xmd/actions/moduleslist/template/Smarty/modules/ximTAGS.tpl:5
@@ -10713,21 +9909,15 @@ msgid "It's one of the suggested modules during the installation process"
 msgstr ""
 
 #: /public_xmd/actions/moduleslist/template/Smarty/modules/ximSYNC.tpl:3
-msgid ""
-"manages all the publication processes and file transfers of Ximdex CMS. It's "
-"based on a crontab file installed into your operative system"
+msgid "manages all the publication processes and file transfers of Ximdex CMS. It's based on a crontab file installed into your operative system"
 msgstr ""
 
 #: /public_xmd/actions/moduleslist/template/Smarty/modules/ximSYNC.tpl:5
-msgid ""
-"This module is now part of the Ximdex CMS's core. So you can't disable or "
-"uninstall it"
+msgid "This module is now part of the Ximdex CMS's core. So you can't disable or uninstall it"
 msgstr ""
 
 #: /public_xmd/actions/moduleslist/template/Smarty/modules/ximIO.tpl:3
-msgid ""
-"helps Ximdex CMS to export/import data serializing nodes into a single "
-"transaction"
+msgid "helps Ximdex CMS to export/import data serializing nodes into a single transaction"
 msgstr ""
 
 #: /public_xmd/actions/xmlsetlink/template/Smarty/index.tpl:34
@@ -10816,16 +10006,12 @@ msgstr ""
 msgid "Links found that point to the same url"
 msgstr ""
 
-#: /public_xmd/actions/modifylink/template/Smarty/show.tpl:38
-msgid "Name"
-msgstr ""
-
 #: /public_xmd/actions/modifylink/template/Smarty/index.tpl:31
 msgid "Modify link"
 msgstr ""
 
 #: /public_xmd/actions/commons/layouts/publicationResult.tpl:62
-msgid "Los The following nodes"
+msgid "The following nodes"
 msgstr ""
 
 #: /public_xmd/actions/commons/layouts/default.tpl:45
@@ -10920,8 +10106,7 @@ msgid "Create a new project from treeview or by clicking on the button above "
 msgstr ""
 
 #: /public_xmd/actions/welcome/template/Smarty/index.tpl:80
-msgid ""
-"Select the '<em>documents folder</em>' in the treeview on the left panel"
+msgid "Select the '<em>documents folder</em>' in the treeview on the left panel"
 msgstr ""
 
 #: /public_xmd/actions/welcome/template/Smarty/index.tpl:81
@@ -10982,14 +10167,11 @@ msgid "No schemes found"
 msgstr ""
 
 #: /public_xmd/actions/createxmlcontainer/template/Smarty/index.tpl:68
-msgid ""
-"You must create one in project <em>layout folder</em> or upload a new one"
+msgid "You must create one in project <em>layout folder</em> or upload a new one"
 msgstr ""
 
 #: /public_xmd/actions/createxmlcontainer/template/Smarty/index.tpl:71
-msgid ""
-"Maybe you need to set properly the type of your RNG schemes (performing the "
-"<em>Modify properties</em> action on them) or create/upload a new one"
+msgid "Maybe you need to set properly the type of your RNG schemes (performing the <em>Modify properties</em> action on them) or create/upload a new one"
 msgstr ""
 
 #: /public_xmd/actions/manageList/template/Smarty/index.tpl:32
@@ -11071,9 +10253,7 @@ msgid "Tag it"
 msgstr ""
 
 #: /modules/ximIO/actions/console_wrapper/template/Smarty/getImportValues.tpl:50
-msgid ""
-"If we copy a ximdoc folder, destination node should be a ximdoc folder, and "
-"in this case we should not indicate than first node was generated."
+msgid "If we copy a ximdoc folder, destination node should be a ximdoc folder, and in this case we should not indicate than first node was generated."
 msgstr ""
 
 #: /modules/Xdms/actions/configure/template/Smarty/index.tpl:34

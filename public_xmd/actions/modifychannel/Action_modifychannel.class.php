@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -39,9 +39,9 @@ class Action_modifychannel extends ActionAbstract
     {
         $idNode = $this->request->getParam('nodeid');
         $node = new Node($idNode);	
-		if (!$node->GetID()) {
+		if (! $node->GetID()) {
     			$this->messages->add(_('Node could not be found'), MSG_TYPE_ERROR);
-    			$this->render(array($this->messages), NULL, 'messages.tpl');
+    			$this->render(array($this->messages), null, 'messages.tpl');
     			die();
 		}
 		$renderCheck = array(
@@ -60,8 +60,8 @@ class Action_modifychannel extends ActionAbstract
         if ($channel->get('RenderType')) {
             $renderTypeCheck[$channel->get('RenderType')] = 'checked';
         }
-        $ext = $channel->get('DefaultExtension') == NULL ? '(empty)' : $channel->get('DefaultExtension');
-        $desc = $channel->get('Description') == NULL ? '(empty)' : $channel->get('Description');
+        $ext = $channel->get('DefaultExtension') == null ? '(empty)' : $channel->get('DefaultExtension');
+        $desc = $channel->get('Description') == null ? '(empty)' : $channel->get('Description');
         $progLanguage = new ProgrammingLanguage();
         $codeLanguages = $progLanguage->find();
         $this->addJs('/actions/modifychannel/resources/js/index.js');
@@ -120,31 +120,28 @@ class Action_modifychannel extends ActionAbstract
             return false;
         }
         $channel = new Channel($idNode);
-        $channel->SetDescription($this->request->getParam('Description'));
+        $channel->set('Description', $this->request->getParam('Description'));
         $channel->set('RenderMode', $this->request->getParam('renderMode'));
         $channel->set('OutputType', $outputType);
         $channel->setRenderType($renderType);
         $channel->setIdLanguage($codeLanguage);
+        $default = (int) $this->request->getParam('Default_Channel');
+        $channel->set('Default_Channel', $default);
         $result = $channel->update();
-		switch ($result) {
-			case 0:
-				$channel->messages->add(_('Not any change has been performed'), MSG_TYPE_WARNING);
-				break;
-			case 'NULL':
-				$channel->messages->add(_('An error occurred while modifying channel'), MSG_TYPE_ERROR);
-				break;
-			default:
-			    if (isset($_POST['Default_Channel']) and $_POST['Default_Channel'] == 1) {
-                    if ($channel->setDefaultChannelToZero($idNode)) {
-                        $channel->messages->add(_('Channel has been successfully modified'), MSG_TYPE_NOTICE);
-                    }
-                    else {
-                        $channel->messages->add(_('Error setting Default Channel property'), MSG_TYPE_NOTICE);
-                    }
-                }
-                else {
+		if ($result === null) {
+		    $channel->messages->add(_('Not any change has been performed'), MSG_TYPE_WARNING);
+		} elseif ($result === false) {
+            $channel->messages->add(_('An error occurred while modifying channel'), MSG_TYPE_ERROR);
+		} else {
+		    if ($default == 1) {
+                if ($channel->setDefaultChannelToZero($idNode)) {
                     $channel->messages->add(_('Channel has been successfully modified'), MSG_TYPE_NOTICE);
+                } else {
+                    $channel->messages->add(_('Error setting Default Channel property'), MSG_TYPE_ERROR);
                 }
+            } else {
+                $channel->messages->add(_('Channel has been successfully modified'), MSG_TYPE_NOTICE);
+            }
 		}
 		$values = array('messages' => $channel->messages->messages);
         $this->sendJSON($values);

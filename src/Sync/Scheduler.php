@@ -61,7 +61,8 @@ class Scheduler
         
         // Checking pcntl_fork function is not disabled
         if ($ximdexServerConfig->hasDisabledFunctions()) {
-            Logger::error('Closing scheduler. Disabled pcntl_fork and pcntl_waitpid functions are required. Please, check php.ini file.' . PHP_EOL);
+            Logger::error('Closing scheduler. Disabled pcntl_fork and pcntl_waitpid functions are required. Please, check php.ini file.' 
+                . PHP_EOL);
         }
         Logger::info('Starting Scheduler ' . $synchro_pid);
         $mutex = new Mutex(XIMDEX_ROOT_PATH . App::getValue('TempRoot') . '/scheduler.lck');

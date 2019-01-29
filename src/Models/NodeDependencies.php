@@ -71,11 +71,11 @@ class NodeDependencies
      * @param $idTarget
      * @return array
      */
-    public function getByTarget($idTarget)
+    public function getByTarget($idTarget) : array
     {
         $this->dbObj->Query("SELECT DISTINCT IdNode FROM NodeDependencies WHERE IdResource = $idTarget");
         $deps = array();
-        while (!$this->dbObj->EOF) {
+        while (! $this->dbObj->EOF) {
             $deps[] = $this->dbObj->GetValue("IdNode");
             $this->dbObj->Next();
         }

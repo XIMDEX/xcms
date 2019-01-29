@@ -43,7 +43,7 @@ class Action_checkstatus extends ActionAbstract
     {
         $idNode = $this->request->getParam('nodeid');
         $node = new Node($idNode);
-        if (!$node->get('IdNode') > 0) {
+        if (! $node->get('IdNode')) {
             $this->messages->add(_('Node could not be found'), MSG_TYPE_ERROR);
             $values = array('messages' => $node->messages->messages);
             $this->render($values, NULL, 'messages.tpl');
@@ -56,13 +56,13 @@ class Action_checkstatus extends ActionAbstract
         $project = new Node($server->getProject());
         $projectName = $project->GetNodeName();
         $dbObj = new \Ximdex\Runtime\Db();
-        $query = "SELECT n.IdState,n.IdNode,n.Path,n.Name,v1.Version, v1.SubVersion,v1.Date 
-                  FROM Versions v1 INNER JOIN Nodes n USING (IdNode) WHERE n.IdNodetype in (" 
-                . NodeTypeConstants::XML_DOCUMENT . "," . NodeTypeConstants::TEXT_FILE . "," . NodeTypeConstants::IMAGE_FILE
-                . "," . NodeTypeConstants::BINARY_FILE . "," . NodeTypeConstants::CSS_FILE . "," . NodeTypeConstants::JS_FILE 
-                . ") AND n.Path like '%" . $projectName . "%" . $serverName 
-                . "%' AND NOT v1.SubVersion=0 AND NOT EXISTS (select Idnode from Versions v2 where v2.IdNOde=v1.IdNOde 
-                and (v2.Version>v1.Version OR (v1.Version=v2.Version AND v2.SubVersion>v1.Subversion))) ORDER BY n.IdNode";
+        $query = 'SELECT n.IdState,n.IdNode,n.Path,n.Name,v1.Version, v1.SubVersion,v1.Date 
+                  FROM Versions v1 INNER JOIN Nodes n USING (IdNode) WHERE n.IdNodetype in (' 
+                . NodeTypeConstants::XML_DOCUMENT . ',' . NodeTypeConstants::TEXT_FILE . ',' . NodeTypeConstants::IMAGE_FILE
+                . ',' . NodeTypeConstants::BINARY_FILE . ',' . NodeTypeConstants::CSS_FILE . ',' . NodeTypeConstants::JS_FILE 
+                . ') AND n.Path like \'%' . $projectName . '%' . $serverName 
+                . '%\' AND NOT v1.SubVersion=0 AND NOT EXISTS (select Idnode from Versions v2 where v2.IdNOde=v1.IdNOde 
+                and (v2.Version>v1.Version OR (v1.Version=v2.Version AND v2.SubVersion>v1.Subversion))) ORDER BY n.IdNode';
 
         $dbObj->query($query);
         $data = array();

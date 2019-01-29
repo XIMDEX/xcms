@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -27,6 +27,7 @@
 
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Models\Node;
+use Ximdex\Models\User;
 use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
 use Ximdex\IO\BaseIO;
@@ -41,13 +42,12 @@ class Action_replacefile extends ActionAbstract
         parent::__construct($_render);
     }
     
-    public function index() : void
+    public function index()
     {
-        $idNode = (int) $this->request->getParam("nodeid");
-        // $actionID = (int) $this->request->getParam("actionid");
+        $idNode = (int) $this->request->getParam('nodeid');
         $type = $this->request->getParam('type');
         $node = new Node($idNode);
-        if (!$node->GetID()) {
+        if (! $node->GetID()) {
             $this->messages->add(_('Cannot load a node with ID ' . $idNode), MSG_TYPE_ERROR);
         }
         
@@ -56,8 +56,8 @@ class Action_replacefile extends ActionAbstract
         if (empty($userid)) {
             $this->messages->add(_('It is necessary to be an active user to upload files'), MSG_TYPE_ERROR);
         }
-        $user = new \Ximdex\Models\User($userid);
-        if (!$user->canWrite(array('node_id' => $idNode)) ) {
+        $user = new User($userid);
+        if (! $user->canWrite(array('node_id' => $idNode)) ) {
             $this->messages->add(_('Files cannot be added because of lack of permits'), MSG_TYPE_ERROR);
         }
         $this->addJs('/actions/replacefile/resources/js/index.js');
@@ -74,17 +74,17 @@ class Action_replacefile extends ActionAbstract
         $this->render($values, 'index', 'default-3.0.tpl');
     }
     
-    public function replace() : void
+    public function replace()
     {
         $idNode = $this->request->getParam('nodeid');
         $node = new Node($idNode);
-        if (!$node->GetID()) {
+        if (! $node->GetID()) {
             $this->messages->add(_('Cannot load a node with ID ' . $idNode), MSG_TYPE_ERROR);
             $this->sendResponse();
         }
         $fileName = isset($_FILES['upload']) && isset($_FILES['upload']['name']) ? $_FILES['upload']['name'] : null;
         $filePath = isset($_FILES['upload']) && isset($_FILES['upload']['tmp_name']) ? $_FILES['upload']['tmp_name'] : null;
-        if (!is_file($filePath) or !$fileName) {
+        if (! is_file($filePath) or ! $fileName) {
             $this->messages->add(_('File could not be uploaded, contact with your administrator'), MSG_TYPE_ERROR);
             $this->sendResponse();
         }
@@ -92,21 +92,21 @@ class Action_replacefile extends ActionAbstract
         // Check allowed extensions for the current nodetype
         $parent = new Node($node->GetParent());
         $allowedExtensions = $parent->nodeType->getAllowedExtensions(true);
-        if (!in_array('*', $allowedExtensions)) {
+        if (! in_array('*', $allowedExtensions)) {
             $info = pathInfo($fileName);
             $extension = strtolower($info['extension']);
-            if (!$extension) {
+            if (! $extension) {
                 $this->messages->add(_('Cannot replace a file without extension'), MSG_TYPE_ERROR);
                 $this->sendResponse();
             }
-            if (!in_array($extension, $allowedExtensions)) {
+            if (! in_array($extension, $allowedExtensions)) {
                 $this->messages->add(_('File to replace must be the same type') . ' (' . $node->nodeType->GetDescription() . ')'
                     , MSG_TYPE_WARNING);
                 $this->sendResponse();
             }
         }
         $tmpFile = FsUtils::getUniqueFile($this->tmpFolder);
-        if (!move_uploaded_file($filePath, $this->tmpFolder . $tmpFile)) {
+        if (! move_uploaded_file($filePath, $this->tmpFolder . $tmpFile)) {
             $this->messages->add('Cannot create the new file to replace', MSG_TYPE_ERROR);
             $this->sendResponse();
         }
@@ -138,7 +138,7 @@ class Action_replacefile extends ActionAbstract
 		return false;
     }
     
-    private function sendResponse() : void
+    private function sendResponse()
     {
         $values = array('messages' => $this->messages->messages);
         $this->sendJSON($values);

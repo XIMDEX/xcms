@@ -24,7 +24,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Ximdex 4.0\n"
 "POT-Creation-Date: 2019-01-18 10:43+0100\n"
-"PO-Revision-Date: 2019-01-22 14:56+0100\n"
+"PO-Revision-Date: 2019-01-24 13:25+0100\n"
 "Last-Translator: \n"
 "Language-Team: ajlucena@ximdex.com\n"
 "MIME-Version: 1.0\n"
@@ -669,9 +669,11 @@ msgid "Close tab"
 msgstr "Cerrar pestaña"
 
 #: /actions/composer/resources/js/driver.js
-msgid "Error. Session time expired.\n"
+msgid ""
+"Error. Session time expired.\n"
 " You will be redirected to the login page"
-msgstr "Error. Se ha agotado el tiempo de sesión.\n"
+msgstr ""
+"Error. Se ha agotado el tiempo de sesión.\n"
 "Se le redirigirá a la página de acceso."
 
 msgid "Replacing toolbar"
@@ -689,9 +691,11 @@ msgstr " ruta:/"
 msgid "XML document has been successfully downloaded and parsed!"
 msgstr "Documento XML descargado y parseado con éxito!"
 
-msgid "[EXECUTING ACTION]\n"
+msgid ""
+"[EXECUTING ACTION]\n"
 "\tactionID: "
-msgstr "[EJECUTANDO ACCION]\n"
+msgstr ""
+"[EJECUTANDO ACCION]\n"
 "\tactionID: "
 
 msgid "Are you sure you want to close session?"
@@ -2772,7 +2776,7 @@ msgid "Enabled"
 msgstr "Habilitado"
 
 msgid "Preview server"
-msgstr "Servidor de Previos"
+msgstr "Serv. de Previos"
 
 msgid "Absolute URLs"
 msgstr "URLs absolutas"
@@ -4469,17 +4473,21 @@ msgstr "Ha solicitado abrir el editor en una ventana nueva. Esto ocasionará la 
 msgid "The document has been saved and sent to be published."
 msgstr "El documento ha sido guardado y enviado a publicar."
 
-msgid "An error occurred while saving and/or sending the document to publish.State: %s\n"
+msgid ""
+"An error occurred while saving and/or sending the document to publish.State: %s\n"
 "Error: %s"
-msgstr "Se ha producido un error guardando y/o enviando a publicar el documento.Estado: %s\n"
+msgstr ""
+"Se ha producido un error guardando y/o enviando a publicar el documento.Estado: %s\n"
 "Error: %s"
 
 msgid "The document has been successfully saved."
 msgstr "El documento ha sido correctamente guardado."
 
-msgid "An error occurred while saving the document.State: %s\n"
+msgid ""
+"An error occurred while saving the document.State: %s\n"
 "Error: %s"
-msgstr "Se ha producido un error al guardar el documento.Estado: %s\n"
+msgstr ""
+"Se ha producido un error al guardar el documento.Estado: %s\n"
 "Error: %s"
 
 #: /actions/xmleditor2/js/editor/HighlightToolBox.class.js
@@ -7831,10 +7839,6 @@ msgstr "El archivo ha sido recuperado."
 msgid "The file has been successfully deleted."
 msgstr "El archivo ha sido borrado."
 
-#: public_xmd/actions/relsectionschema/Action_relsectionschema.class.php:60
-msgid "Associate schema to section"
-msgstr "Asociar esquema a la sección"
-
 #: public_xmd/actions/relsectionschema/Action_relsectionschema.class.php:61
 msgid "Template type"
 msgstr "Tipo de plantilla"
@@ -7930,19 +7934,22 @@ msgstr "¿Desea continuar?"
 
 #: public_xmd/actions/xmleditor2/js/editor/kupu_form.js:71
 #: public_xmd/actions/xmleditor2/js/editor/kupu_form.js:74
-msgid "An error occurred while saving and/or sending the document to publish.\n"
+msgid ""
+"An error occurred while saving and/or sending the document to publish.\n"
 "\n"
 "State: "
 msgstr "Error guardando o publicando el documento"
 
 #: public_xmd/actions/xmleditor2/js/editor/kupu_form.js:91
-msgid "An error occurred while saving the document.\n"
+msgid ""
+"An error occurred while saving the document.\n"
 "\n"
 "State: "
 msgstr "Error guardando el documento. Estado:"
 
 #: public_xmd/actions/xmleditor2/js/editor/kupu_form.js:94
-msgid "An error occurred while saving the document\n"
+msgid ""
+"An error occurred while saving the document\n"
 "\n"
 "State: "
 msgstr "Error guardando el documento. Estado:"
@@ -8032,10 +8039,12 @@ msgid "ERROR while finding Ximlets. "
 msgstr "ERROR localizando ximlets. "
 
 #: public_xmd/actions/xmleditor2/js/tools/ximletTool.class.js:252
-msgid "WARNING: You are going to edit a ximlet which is linked to a section.\n"
+msgid ""
+"WARNING: You are going to edit a ximlet which is linked to a section.\n"
 "\n"
 " This action will affect to all the section documents. Are you sure you want to continue?"
-msgstr "Aviso: Va a editar un ximlet de sección.\n"
+msgstr ""
+"Aviso: Va a editar un ximlet de sección.\n"
 "\n"
 " Esta acción afectará a todos los documentos de la sección. ¿Desea continuar?"
 
@@ -8484,9 +8493,11 @@ msgid "Ignore structure: css, images, scripts, pdf, ..."
 msgstr "Ignorar estructura: css, imagénes, scripts, pdf, ..."
 
 #: /public_xmd/actions/workflow_forward/template/Smarty/index.tpl:109
-msgid "Use drafts for linked documents instead of already published \n"
+msgid ""
+"Use drafts for linked documents instead of already published \n"
 "\t\t\t\t\t\t\t\t\t\t\t\tversions."
-msgstr "Utilizar borradores para documentos enlazados en lugar del la versión ya \n"
+msgstr ""
+"Utilizar borradores para documentos enlazados en lugar del la versión ya \n"
 "\t\t\t\t\t\t\t\t\t\t\t\\publicada."
 
 #: /public_xmd/actions/workflow_forward/template/Smarty/index.tpl:120
@@ -8640,12 +8651,6 @@ msgstr "Enlaces encontrados que apuntan a la misma url"
 #: /public_xmd/actions/modifylink/template/Smarty/index.tpl:31
 msgid "Modify link"
 msgstr "Modificar enlace"
-
-# Tiene algo en castellano
-#: /public_xmd/actions/commons/layouts/publicationResult.tpl:62
-#, fuzzy
-msgid "Los The following nodes"
-msgstr "Los siguientes nodos "
 
 #: /public_xmd/actions/commons/layouts/default.tpl:45
 #: /public_xmd/actions/commons/layouts/default_no_table.tpl:41
@@ -10275,4 +10280,3 @@ msgstr "El documento está a la espera de ser publicado"
 #: Users table
 msgid "Ximdex Administrator"
 msgstr "Administrador de ximdex"
-

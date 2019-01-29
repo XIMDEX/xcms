@@ -47,7 +47,8 @@ class LanguageNode extends Root
 	 * @param string description
 	 * @param int enabled
 	 */
-	function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $isoname = null, $description = null, $enabled = null)
+	function createNode(string $name = null, int $parentID = null, int $nodeTypeID = null, int $stateID = null, string $isoname = null
+	    , string $description = null, int $enabled = null)
 	{
 		$language = new Language();
 		$result = $language->find('IdLanguage', 'IsoName = %s', array($isoname));
@@ -64,37 +65,38 @@ class LanguageNode extends Root
 	/**
 	 *  Deletes the Language and its dependencies.
 	 */
-	function DeleteNode()
+	public function deleteNode() : bool
 	{
 		$language = new Language($this->parent->get('IdNode'));
 		$language->DeleteLanguage();
-
 		$nodeProperty = new NodeProperty();
 		$nodeProperty->cleanUpPropertyValue('language', $this->parent->get('IdNode'));
+		return true;
 	}
 
 	/**
-	 *  Calls to method for updating the Name on the database.
-	 * @param string name
+	 * {@inheritDoc}
+	 * @see \Ximdex\NodeTypes\Root::renameNode()
 	 */
-	function RenameNode($name = null)
+	public function renameNode(string $name) : bool
 	{
 		$lang = new Language($this->parent->get('IdNode'));
 		$lang->SetName($name);
-		$this->UpdatePath();
+		$this->updatePath();
+		return true;
 	}
 
 	/**
-	 *  Gets the documents which have been written in the language.
+	 * Gets the documents which have been written in the language
+	 *  
 	 * @return array
 	 */
-	function GetDependencies()
+	public function getDependencies() : array
 	{
 		$sql = "SELECT DISTINCT IdDoc FROM StructuredDocuments WHERE IdLanguage='" . $this->parent->get('IdNode') . "'";
 		$this->dbObj->Query($sql);
-
 		$deps = array();
-		while (!$this->dbObj->EOF) {
+		while (! $this->dbObj->EOF) {
 			$deps[] = $this->dbObj->row["IdDoc"];
 			$this->dbObj->Next();
 		}

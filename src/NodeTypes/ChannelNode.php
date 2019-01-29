@@ -36,16 +36,7 @@ use Ximdex\Models\NodeProperty;
  *  Channels are responsible of the document transformation to different output formats (html, text, ...).
  */
 class ChannelNode extends Root
-{   
-	/**
-	 *  Does nothing.
-	 * @return null
-	 */
-	function RenderizeNode()
-	{
-		return null;
-	}
-
+{
 	/**
 	 * Calls to method for creating a Channel
 	 * 
@@ -60,31 +51,34 @@ class ChannelNode extends Root
 	 * @param string filter
 	 * @param string renderMode
 	 */
-	function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $channelName = null, $extension = null
-	    , $format = null, $description = null, $filter = "", $renderMode = NULL, $outputType = NULL, $renderType = null, $language = null)
+	public function createNode(string $name = null, int $parentID = null, int $nodeTypeID = null, int $stateID = null, string $channelName = null
+	    , string $extension = null, string $format = null, string $description = null, string $filter = "", string $renderMode = null
+	    , string $outputType = null, string $renderType = null, string $language = null)
 	{
 		$channel = new Channel();
 		$channel->CreateNewChannel($channelName, $extension, $format, $description, $this->parent->get('IdNode'), $filter,
 			 $renderMode, $outputType, $renderType, $language);
-		$this->UpdatePath();
+		$this->updatePath();
+		return true;
 	}
 
 	/**
 	 *  Deletes the rows of the Channel from both tables Channels and NodeProperties.
 	 */
-	function DeleteNode()
+	public function deleteNode() : bool
 	{
 		$channel = new Channel($this->nodeID);
 		$channel->DeleteChannel();
 		$nodeProperty = new NodeProperty();
 		$nodeProperty->cleanUpPropertyValue('channel', $this->parent->get('IdNode'));
+		return true;
 	}
 
 	/**
 	 * Gets all documents that will be transformed by the Channel.
 	 * @return array
 	 */
-	public function GetDependencies()
+	public function getDependencies() : array
 	{
 	    return [];
 	}

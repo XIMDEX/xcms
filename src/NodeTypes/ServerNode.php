@@ -84,12 +84,13 @@ class ServerNode extends FolderNode
         return $enabledServers;
     }
 
-    function CreateNode($name = null, $parentID = null, $nodeTypeID = null)
+    public function createNode(string $name = null, int $parentID = null, int $nodeTypeID = null)
     {
         $this->updatePath();
+        return true;
     }
 
-    function DeleteNode()
+    public function deleteNode() : bool
     {
         $servers = $this->GetPhysicalServerList();
         if ($servers) {
@@ -97,6 +98,7 @@ class ServerNode extends FolderNode
                 $this->DeletePhysicalServer($serverID);
             }
         }
+        return true;
     }
 
     public function AddPhysicalServer($protocolID, $login, $password, $host, $port, $url, $initialDirectory, $overrideLocalPaths, $enabled
@@ -410,18 +412,13 @@ class ServerNode extends FolderNode
         return $list;
     }
 
-    function ToXml($depth, & $files, $recurrence)
-    {
-        return parent::ToXml($depth, $files, $recurrence);
-    }
-
     /**
      * Get the documents that must be publicated when the server is published
      * 
      * @param array $params
      * @return array
      */
-    public function getPublishabledDeps($params)
+    public function getPublishabledDeps(array $params = []) : ?array
     {
         $childList = $this->parent->GetChildren();
         $docsToPublish = array();

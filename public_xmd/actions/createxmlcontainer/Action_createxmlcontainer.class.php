@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -175,7 +175,7 @@ class Action_createxmlcontainer extends ActionAbstract
             $inferedNodeType = $baseIoInferer->infereType('FILE', $idContainer);
             $nodeType = new NodeType();
             $nodeType->SetByName($inferedNodeType['NODETYPENAME']);
-            if (! ($nodeType->get('IdNodeType') > 0)) {
+            if (! $nodeType->get('IdNodeType')) {
                 $this->messages->add(_('A nodetype could not be estimated to create the document,') 
                     . _(' operation will be aborted, contact with your administrator'), MSG_TYPE_ERROR);
                 
@@ -261,9 +261,9 @@ class Action_createxmlcontainer extends ActionAbstract
                     'ID' => $idSchema
                 )
             ),
-            "LANGUAGES" => $languages,
-            "ALIASES" => $selectedAlias,
-            "MASTER" => $master,
+            'LANGUAGES' => $languages,
+            'ALIASES' => $selectedAlias,
+            'MASTER' => $master,
             'NODETYPE' => $nodeType->getID()
         );
         $baseIO = new BaseIO();
@@ -305,9 +305,9 @@ class Action_createxmlcontainer extends ActionAbstract
                     'ID' => $idSchema
                 )
             ),
-            "LANGUAGES" => $languages,
-            "ALIASES" => $selectedAlias,
-            "MASTER" => $master,
+            'LANGUAGES' => $languages,
+            'ALIASES' => $selectedAlias,
+            'MASTER' => $master,
             'NODETYPE' => $node->nodeType->getID()
         );
         $baseIO = new BaseIO();
@@ -320,11 +320,12 @@ class Action_createxmlcontainer extends ActionAbstract
         return $res;
     }
     
-    private function _insertLanguage($idLanguage, $nodeTypeName, $name, $idContainer, $idTemplate, $aliases, $formChannels = null)
+    private function _insertLanguage(int $idLanguage, string $nodeTypeName, string $name, int $idContainer, int $idTemplate, array $aliases
+        , array $formChannels = null)
     {
         $language = new Language($idLanguage);
         if (! $language->get('IdLanguage')) {
-            $this->messages->add(sprintf(_("Language %s insertion has been aborted because it was not found"),  $idLanguage), MSG_TYPE_WARNING);
+            $this->messages->add(sprintf(_('Language %s insertion has been aborted because it was not found'),  $idLanguage), MSG_TYPE_WARNING);
             return NULL;
         }
         $data = array(
@@ -332,9 +333,9 @@ class Action_createxmlcontainer extends ActionAbstract
             'NAME' => $name,
             'PARENTID' => $idContainer,
             'ALIASNAME' => $aliases[$idLanguage],
-            "CHILDRENS" => array (
-                array ("NODETYPENAME" => "VISUALTEMPLATE", "ID" => $idTemplate),
-                array ("NODETYPENAME" => "LANGUAGE", "ID" => $idLanguage)
+            'CHILDRENS' => array (
+                array ('NODETYPENAME' => 'VISUALTEMPLATE', 'ID' => $idTemplate),
+                array ('NODETYPENAME' => 'LANGUAGE', 'ID' => $idLanguage)
             )
         );
         if(! empty($formChannels)) {

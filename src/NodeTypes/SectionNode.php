@@ -38,15 +38,21 @@ use Ximdex\Logger;
  */
 class SectionNode extends FolderNode
 {
-    function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $subfolders = array(), $idSectionType = null)
+    /**
+     * {@inheritDoc}
+     * @see \Ximdex\NodeTypes\FolderNode::createNode()
+     */
+    public function createNode(string $name = null, int $parentID = null, int $nodeTypeID = null, int $stateID = null, array $subfolders = array()
+        , int $idSectionType = null)
     {
         $section = new Section();
         $section->setIdNode($this->parent->get('IdNode'));
         $section->setIdSectionType($idSectionType);
-        if (!$section->add()) {
+        if (! $section->add()) {
             return false;
         }
         $this->updatePath();
+        return true;
     }
     
     /**
@@ -55,15 +61,9 @@ class SectionNode extends FolderNode
      * @param array params
      * @return array
      */
-    function getPublishabledDeps($params)
+    function getPublishabledDeps(array $params = []) : ?array
     {
         $childList = $this->parent->GetChildren();
-        /*
-        $node = new Node($this->parent->get('IdNode'));
-        $idNodeType = $node->get('IdNodeType');
-        $nodeType = new NodeType($idNodeType);
-        $sectionId = null;
-        */
         $docsToPublish = array();
         foreach ($childList as $childID) {
             $childNode = new Node($childID);
@@ -80,7 +80,7 @@ class SectionNode extends FolderNode
     /**
      * Deletes the Section and its dependencies
      */
-    function DeleteNode()
+    public function deleteNode() : bool
     {
         $section = new Section($this->parent->get('IdNode'));
         if ($section->delete() === false) {
@@ -91,5 +91,6 @@ class SectionNode extends FolderNode
         $depsMngr = new DepsManager();
         $depsMngr->deleteBySource(DepsManager::SECTION_XIMLET, $this->parent->get('IdNode'));
         Logger::info('Section dependencies deleted');
+        return true;
     }
 }

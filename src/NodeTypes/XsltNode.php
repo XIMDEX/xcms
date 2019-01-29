@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -36,60 +36,54 @@ use Ximdex\Models\FastTraverse;
 
 class XsltNode extends FileNode
 {
-    private $xsltOldName = ""; //String;
+    private $xsltOldName = "";
     public $messages;
 
-    public function __construct(&$node)
+    public function __construct(& $node)
     {
-        if (is_object($node))
-        {
+        if (is_object($node)) {
             $this->parent = $node;
-        }
-        else if (is_numeric($node) || $node == null)
-        {
+        } else if (is_numeric($node) || $node == null) {
             $this->parent = new Node($node, false);
         }
         $this->nodeID = $this->parent->get('IdNode');
         $this->dbObj = new \Ximdex\Runtime\Db();
-        $this->nodeType = &$this->parent->nodeType;
+        $this->nodeType = $this->parent->nodeType;
         $this->messages = new \Ximdex\Utils\Messages();
         $this->xsltOldName = $this->parent->get("Name");
     }
 
-    public function CreateNode($xsltName = null, $parentID = null, $nodeTypeID = null, $stateID = null, $ptdSourcePath = NULL)
+    public function createNode($xsltName = null, $parentID = null, $nodeTypeID = null, $stateID = null, $ptdSourcePath = NULL)
     {
-        $xslSourcePath = NULL;
-        if ($ptdSourcePath != null)
-        {
+        $xslSourcePath = null;
+        if ($ptdSourcePath != null) {
+
             // Saving xslt content
             $xslContent = FsUtils::file_get_contents($ptdSourcePath);
             $xslContent = $this->sanitizeContent($xslContent);
             $xslSourcePath = XIMDEX_ROOT_PATH . App::getValue('TempRoot') . '/' . $parentID . $xsltName;
-            if (!FsUtils::file_put_contents($xslSourcePath, $xslContent))
-            {
+            if (! FsUtils::file_put_contents($xslSourcePath, $xslContent)) {
                 Logger::error("Error saving xslt file");
                 $this->messages->add('Error saving xslt file: ' . $parentID . $xsltName, MSG_TYPE_ERROR);
                 return false;
             }
         }
-        if (parent::CreateNode($xsltName, $parentID, $nodeTypeID, $stateID, $xslSourcePath) === false)
-        {
+        if (parent::CreateNode($xsltName, $parentID, $nodeTypeID, $stateID, $xslSourcePath) === false) {
             return false;
         }
         
         // Creating include file with the template inside
         $parent = new Node($parentID);
-        if ($parent->GetNodeType() != NodeTypeConstants::TEMPLATES_ROOT_FOLDER)
-        {
+        if ($parent->GetNodeType() != NodeTypeConstants::TEMPLATES_ROOT_FOLDER) {
             $this->messages->add('The node ' . $parentID . ' is not a templates folder', MSG_TYPE_ERROR);
             return false;
         }
         $includeId = $parent->GetChildByName('templates_include.xsl');
-        if (!$includeId)
-        {
+        if (! $includeId) {
+            
             // There is not a templates_include.xsl file in this templates folder
             $includeId = $this->create_templates_include($parentID, $stateID);
-            if (!$includeId)
+            if (! $includeId)
                 return false;
         }
         return true;
@@ -112,26 +106,24 @@ class XsltNode extends FileNode
 				<xsl:dummy />
 				</dext:root>";
         $xslSourcePath = XIMDEX_ROOT_PATH . App::getValue('TempRoot') . '/templates_include.xsl';
-        if (!FsUtils::file_put_contents($xslSourcePath, $dummyXml))
-        {
+        if (! FsUtils::file_put_contents($xslSourcePath, $dummyXml)) {
             Logger::error("Error saving templates_include.xsl file");
             $this->messages->add('Error saving templates_include.xsl file', MSG_TYPE_ERROR);
             return false;
         }
         $incNode = new Node();
-        $id = $incNode->CreateNode('templates_include.xsl', $idTemplatesFolder, NodeTypeConstants::XSL_TEMPLATE, $stateID, $xslSourcePath);
-        if ($id > 0)
-        {
+        $id = $incNode->createNode('templates_include.xsl', $idTemplatesFolder, NodeTypeConstants::XSL_TEMPLATE, $stateID, $xslSourcePath);
+        if ($id > 0) {
             $incNode = new Node($id);
             $includeContent = '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
             $includeContent .= '<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">' . "\n";
-            if ($templateName)
-            {
+            if ($templateName) {
+                
                 // Generate the URL to the XSL template file
                 $projectId = $incNode->GetProject();
                 $templatesNode = new Node($idTemplatesFolder);
                 $templateURL = App::getValue('UrlHost') . App::getValue('UrlRoot') . App::getValue('NodeRoot') 
-                        . $templatesNode->GetRelativePath($projectId) . '/' . $templateName;
+                    . $templatesNode->GetRelativePath($projectId) . '/' . $templateName;
                 $includeContent .= "\t<xsl:include href=\"$templateURL\"/>\n";
             }
             $includeContent .= '</xsl:stylesheet>';
@@ -139,24 +131,20 @@ class XsltNode extends FileNode
             
             // Save the dependencies to the documents folders if exist (with the templates folder node)
             $project = new Node($incNode->getProject());
-            if (!$this->rel_include_templates_to_documents_folders($project))
-            {
+            if (! $this->rel_include_templates_to_documents_folders($project)) {
                 return false;
             }
-        }
-        else
-        {
+        } else {
             $this->messages->mergeMessages($incNode->messages);
             return false;
         }
         
         // It is not necesary to create a docxap file in a project based in a theme
-        if (!isset($GLOBALS['fromTheme']) or !$GLOBALS['fromTheme'])
-        {
+        if (! isset($GLOBALS['fromTheme']) or ! $GLOBALS['fromTheme']) {
+            
             // If there is not a docxap.xsl file in the project/templates folder, create a new one
             $res = $this->create_project_docxap_file();
-            if ($res === false)
-            {
+            if ($res === false) {
                 Logger::fatal('The project docxap XSL template could not been created');
                 return false;
             }
@@ -174,25 +162,22 @@ class XsltNode extends FileNode
      */
     public function rel_include_templates_to_documents_folders(Node $section, Node $node = null, DepsManager $depsMngr = null)
     {
-        if (!$depsMngr)
-        {
+        if (! $depsMngr) {
             Logger::info('Making a relation between documents section and templates with section ' . $section->GetID());
         }
         
         // Check if there is a local templates_includes
         $idTemplatesNode = $section->GetChildren(NodeTypeConstants::TEMPLATES_ROOT_FOLDER);
-        if ($idTemplatesNode)
-        {
+        if ($idTemplatesNode) {
+            
             // There is a templates folder, search for a template with the name templates_include.xsl
             $templatesNode = new Node($idTemplatesNode[0]);
             $idTemplatesIncludes = $templatesNode->GetChildByName('templates_include.xsl');
             
             // Get templates folder for the section
-            if ($idTemplatesIncludes)
-            {
+            if ($idTemplatesIncludes) {
                 $node = new Node($templatesNode->GetID());
-                if (!$node->GetID())
-                {
+                if (! $node->GetID()) {
                     $this->messages->add('There is not a templates folder for the section: ' . $section->GetID(), MSG_TYPE_ERROR);
                     return false;
                 }
@@ -201,14 +186,12 @@ class XsltNode extends FileNode
         
         // Get the documents folder node
         $documentsNode = $section->GetChildren(NodeTypeConstants::XML_ROOT_FOLDER);
-        if ($documentsNode)
-        {
+        if ($documentsNode) {
+            
             // There is a documents folder in this place
-            if ($node)
-            {
+            if ($node) {
                 $idDocFolder = $documentsNode[0];
-                if (!$depsMngr)
-                {
+                if (! $depsMngr) {
                     $depsMngr = new DepsManager();
                 }
                 
@@ -216,9 +199,9 @@ class XsltNode extends FileNode
                 $depsMngr->deleteBySource(DepsManager::DOCFOLDER_TEMPLATESINC, $idDocFolder);
                 
                 // Set the relation 
-                if ($depsMngr->set(DepsManager::DOCFOLDER_TEMPLATESINC, $idDocFolder, $node->GetID()) === false)
-                {
-                    $this->messages->add('Cannot link templates node ' . $node->GetID() . ' with documents folder ' . $idDocFolder, MSG_TYPE_ERROR);
+                if ($depsMngr->set(DepsManager::DOCFOLDER_TEMPLATESINC, $idDocFolder, $node->GetID()) === false) {
+                    $this->messages->add('Cannot link templates node ' . $node->GetID() . ' with documents folder ' 
+                        . $idDocFolder, MSG_TYPE_ERROR);
                     return false;
                 }
             }
@@ -226,14 +209,12 @@ class XsltNode extends FileNode
         
         // Get the ximlets folder node
         $ximletsNode = $section->GetChildren(NodeTypeConstants::XIMLET_ROOT_FOLDER);
-        if ($ximletsNode)
-        {
+        if ($ximletsNode) {
+            
             // There is a ximlets folder in this place
-            if ($node)
-            {
+            if ($node) {
                 $idXimletFolder = $ximletsNode[0];
-                if (!$depsMngr)
-                {
+                if (! $depsMngr) {
                     $depsMngr = new DepsManager();
                 }
                 
@@ -241,9 +222,9 @@ class XsltNode extends FileNode
                 $depsMngr->deleteBySource(DepsManager::DOCFOLDER_TEMPLATESINC, $idXimletFolder);
                 
                 // Set the relation
-                if ($depsMngr->set(DepsManager::DOCFOLDER_TEMPLATESINC, $idXimletFolder, $node->GetID()) === false)
-                {
-                    $this->messages->add('Cannot link templates node ' . $node->GetID() . ' with ximlets folder ' . $idXimletFolder, MSG_TYPE_ERROR);
+                if ($depsMngr->set(DepsManager::DOCFOLDER_TEMPLATESINC, $idXimletFolder, $node->GetID()) === false) {
+                    $this->messages->add('Cannot link templates node ' . $node->GetID() . ' with ximlets folder ' 
+                        . $idXimletFolder, MSG_TYPE_ERROR);
                     return false;
                 }
             }
@@ -251,27 +232,24 @@ class XsltNode extends FileNode
         
         // Get the children nodes of the current section
         $nodes = FastTraverse::getChildren($section->GetID(), ['node' => ['IdNodeType']], 1);
-        if ($nodes === false)
-        {
+        if ($nodes === false) {
             $this->messages->add('Cannot get children nodes from node: ' . $section->GetID() . ' in reload templates include files process'
-                    , MSG_TYPE_ERROR);
+                , MSG_TYPE_ERROR);
             return false;
         }
-        if (!$nodes)
-        {
+        if (! $nodes) {
             return true;
         }
         foreach ($nodes[1] as $idChildNode => $nodeData)
         {
             // Only project, servers and section/subsections can storage template folders
             $idNodeType = $nodeData['node']['IdNodeType'];
-            if ($idNodeType == NodeTypeConstants::SERVER or $idNodeType == NodeTypeConstants::SECTION)
-            {
+            if ($idNodeType == NodeTypeConstants::SERVER or $idNodeType == NodeTypeConstants::SECTION) {
+                
                 // Call in recursive mode with the templates folder, for whole project nodes tree
                 $childNode = new Node($idChildNode);
                 $res = $this->rel_include_templates_to_documents_folders($childNode, $node, $depsMngr);
-                if ($res === false)
-                {
+                if ($res === false) {
                     return false;
                 }
             }
@@ -280,20 +258,17 @@ class XsltNode extends FileNode
     }
 
     /**
-     * Rename a node
-     * @param string $newName
-     * @return boolean
+     * {@inheritDoc}
+     * @see \Ximdex\NodeTypes\FileNode::renameNode()
      */
-    public function RenameNode($newName = NULL)
+    public function renameNode(string $name) : bool
     {
-        if (null == $newName)
-        {
+        if (null == $name) {
             return false;
         }
         $oldName = explode(".", $this->xsltOldName);
-        $newName = explode(".", $newName);
-        if (count($newName) != 2)
-        {
+        $name = explode(".", $name);
+        if (count($name) != 2) {
             $this->messages->add('The file extension is necessary', MSG_TYPE_ERROR);
             return false;
         }
@@ -301,17 +276,16 @@ class XsltNode extends FileNode
         // Open the file and make the replacement inside
         $tpl = new Node($this->nodeID);
         $rpl1 = 'name="' . $oldName[0];
-        $rpl2 = 'name="' . $newName[0];
+        $rpl2 = 'name="' . $name[0];
         $new_content = str_replace($rpl1, $rpl2, $tpl->GetContent());
         $rpl1 = 'match="' . $oldName[0];
-        $rpl2 = 'match="' . $newName[0];
+        $rpl2 = 'match="' . $name[0];
         $new_content = str_replace($rpl1, $rpl2, $new_content);
         $tpl->SetContent($new_content);
         
         // Reload the templates include files for this new project
         $node = new Node($this->nodeID);
-        if ($this->reload_templates_include(new Node($node->getProject())) === false)
-        {
+        if ($this->reload_templates_include(new Node($node->getProject())) === false) {
             return false;
         }
         return true;
@@ -320,13 +294,13 @@ class XsltNode extends FileNode
     /**
      * Delete a node
      */
-    public function DeleteNode()
+    public function deleteNode() : bool
     {
         Logger::info('Xslt dependencies deleted');
         return true;
     }
 
-    public function SetContent($content, $commitNode = NULL, Node $node = null)
+    public function setContent(string $content, bool $commitNode = false, Node $node = null)
     {
         // Checking the valid XML of the given content
         $domDoc = new \DOMDocument();
@@ -335,26 +309,20 @@ class XsltNode extends FileNode
         $res = @$domDoc->loadXML($content);
         
         // Validating of the correct XSL document in the correct system path (only if node is given)
-        if ($node and $res)
-        {
+        if ($node and $res) {
             $xsltprocessor = new \XSLTProcessor();
             $dom = new \DOMDocument();
             @$dom->loadXML($content);
             $project = new Node($node->GetProject());
             $dom->documentURI = XIMDEX_ROOT_PATH . App::getValue('NodeRoot') . $node->GetRelativePath($project->GetID());
-            if (@$xsltprocessor->importStyleSheet($dom) === false)
-            {
+            if (@$xsltprocessor->importStyleSheet($dom) === false) {
                 $error = \Ximdex\Utils\Messages::error_message('XSLTProcessor::importStylesheet(): ');
                 
                 // Avoid the PATH_TO_LOCAL_TEMPLATE_INCLUDE token error
-                if ($error and strpos($error, '##PATH_TO_LOCAL_TEMPLATE_INCLUDE##') === false)
-                {
-                    if ($node and $node->GetDescription())
-                    {
+                if ($error and strpos($error, '##PATH_TO_LOCAL_TEMPLATE_INCLUDE##') === false) {
+                    if ($node and $node->GetDescription()) {
                         $error = 'Invalid XSL for node ' . $node->GetDescription() . ': ' . $error;
-                    }
-                    else
-                    {
+                    } else {
                         $error = 'Invalid XSL to set content operation: ' . $error;
                     }
                     $defaultLog = Logger::get_active_instance();
@@ -368,37 +336,31 @@ class XsltNode extends FileNode
                 }
             }
         }
-        if ($res)
-        {
+        if ($res) {
             $content = $domDoc->saveXML();
         }
         $content = $this->sanitizeContent($content);
-        if ($content === false)
-        {
+        if ($content === false) {
             return false;
         }
-        if (parent::SetContent($content, $commitNode, $node) === false)
-        {
+        if (parent::SetContent($content, $commitNode, $node) === false) {
             return false;
         }
-        if (isset($node))
-        {
-            if ($node->GetNodeName() != 'docxap.xsl')
-            {
+        if (isset($node)) {
+            if ($node->GetNodeName() != 'docxap.xsl') {
+                
                 // If the templates folder is the project one, and there is not a docxap file, send a alert to the user
                 $templates = new Node($node->getParent());
                 $section = new Node($templates->getParent());
-                if ($section->GetNodeType() == NodeTypeConstants::PROJECT)
-                {
+                if ($section->GetNodeType() == NodeTypeConstants::PROJECT) {
                     $docxapId = $templates->GetChildByName('docxap.xsl');
-                    if (!$docxapId)
-                    {
+                    if (! $docxapId) {
                         $this->messages->add('A docxap.xsl template file must be in the project templates folder', MSG_TYPE_WARNING);
                     }
                 }
             }
-            if ($node->GetNodeName() != 'templates_include.xsl' and !self::isIncludedInTemplates($node->GetNodeName(), $node))
-            {
+            if ($node->GetNodeName() != 'templates_include.xsl' and !self::isIncludedInTemplates($node->GetNodeName(), $node)) {
+                
                 // Check if the saved template is already included in templates_include sending an advise to the user
                 $this->messages->add('Note that this template isn\'t included in the templates_includes.xsl file', MSG_TYPE_WARNING);
             }
@@ -407,34 +369,29 @@ class XsltNode extends FileNode
 
     private function sanitizeContent($content)
     {
-        if (empty($content))
-        {
+        if (empty($content)) {
             Logger::info('It have been created or edited a document with empty content');
             return $content;
         }
         $xsldom = new \DOMDocument();
         $xsldom->formatOutput = true;
         $xsldom->preserveWhiteSpace = false;
-        if (@$xsldom->loadXML($content) === false)
-        {
+        if (@$xsldom->loadXML($content) === false) {
             return $content;
         }
         $xpath = new \DOMXPath($xsldom);
         $nodelist = $xpath->query('//xsl:text');
         $count = $nodelist->length;
-        for ($i = 0; $i < $count; $i++)
-        {
+        for ($i = 0; $i < $count; $i++) {
             $textnode = $nodelist->item($i);
             
             // Split CDATA sections if contains attributes references
             $nodes = $this->splitCData($textnode, $xsldom);
             
             // If splitCData returns only one node there is nothing to change, it's the same node
-            if (count($nodes) > 1)
-            {
+            if (count($nodes) > 1) {
                 $parent = $textnode->parentNode;
-                foreach ($nodes as $node)
-                {
+                foreach ($nodes as $node) {
                     $parent->insertBefore($node, $textnode);
                 }
                 $parent->removeChild($textnode);
@@ -451,12 +408,9 @@ class XsltNode extends FileNode
         // Split CDATA sections if contains attributes references
         $matches = [];
         $ret = preg_match_all('/"{@([^}]+)}"/', $nodevalue, $matches);
-        if (!$ret)
-        {
+        if (! $ret) {
             return array($node);
-        }
-        else
-        {
+        } else {
             $matches = array_unique($matches[1]);
             $attribute = $matches[0];
             $attrvalue = "@$attribute";
@@ -464,15 +418,13 @@ class XsltNode extends FileNode
             $tokens = explode($sep, $nodevalue);
             $arrCD = array();
             $count = count($tokens);
-            for ($i = 0; $i < $count; $i++)
-            {
+            for ($i = 0; $i < $count; $i++) {
                 $token = $tokens[$i];
                 $textnode = $xsldom->createElement('xsl:text');
                 $textnode->setAttribute('disable-output-escaping', 'yes');
                 $textnode->appendChild($xsldom->createCDATASection($token));
                 $arrCD = array_merge($arrCD, (array)$this->splitCData($textnode, $xsldom));
-                if ($i < ($count - 1))
-                {
+                if ($i < ($count - 1)) {
                     $valueof = $xsldom->createElement('xsl:value-of');
                     $valueof->setAttribute('select', $attrvalue);
                     $arrCD[] = $valueof;
@@ -488,7 +440,7 @@ class XsltNode extends FileNode
      * @param array $params
      * @return array
      */
-    public function getPublishabledDeps($params)
+    public function getPublishabledDeps(array $params = []) : ?array
     {
         $depsMngr = new DepsManager();
         return $depsMngr->getByTarget(DepsManager::STRDOC_TEMPLATE, $this->parent->get('IdNode'));
@@ -511,8 +463,7 @@ class XsltNode extends FileNode
         
         // Obtain the ID for an existant docaxp file yet
         $idDocxapProject = $ptdProject->GetChildByName('docxap.xsl');
-        if ($idDocxapProject)
-        {
+        if ($idDocxapProject) {
             return null;
         }
         
@@ -533,8 +484,7 @@ class XsltNode extends FileNode
 	</xsl:template>
 </xsl:stylesheet>
 DOCXAP;
-		if (!FsUtils::file_put_contents($xslSourcePath, $content))
-		{
+		if (! FsUtils::file_put_contents($xslSourcePath, $content)) {
 		    return false;
 		}
 		
@@ -544,8 +494,7 @@ DOCXAP;
 		// Create the node for the generated file
 		$node = new Node();
 		$idDocxapProject = $node->CreateNode('docxap.xsl', $idXimptdProject, $nodeTypeID, null, $xslSourcePath);	
-		if (!$idDocxapProject)
-		{
+		if (! $idDocxapProject) {
 		    Logger::error('Error creating the node for project docxap template');
 		    return false;
 		}
@@ -566,15 +515,13 @@ DOCXAP;
         // Locate the NodeID for the parent templates node
         $templatesId = $this->parent->GetParent();
         $templates = new Node ($templatesId);
-        if (!$templates->GetID())
-        {
+        if (! $templates->GetID()) {
             $this->messages->add('The node has not a parent node');
             return false;
         }
         
         // Reload the templates include files for this new project
-        if ($this->reload_templates_include(new Node($templates->getProject())) === false)
-        {
+        if ($this->reload_templates_include(new Node($templates->getProject())) === false) {
             return false;
         }
         return true;
@@ -589,24 +536,23 @@ DOCXAP;
      */
     private static function isIncludedInTemplates($templateName, Node $node)
     {
-        if ($templateName == 'templates_include.xsl' or $templateName == 'docxap.xsl')
-        {
+        if ($templateName == 'templates_include.xsl' or $templateName == 'docxap.xsl') {
             return true;
         }
         
         // Get parent templates folder
         $templates = new Node($node->getParent());
         $includeId = $templates->GetChildByName('templates_include.xsl');
-        if (!$includeId)
-        {
+        if (! $includeId) {
+            
             // There's not a templates_include.xsl file
             return false;
         }
         // Get includes template node and its content
         $includeNode = new Node($includeId);
         $includeContent = $includeNode->getContent();
-        if (stripos($includeContent, '/' . $templateName) !== false)
-        {
+        if (stripos($includeContent, '/' . $templateName) !== false) {
+            
             // Template exists
             return true;
         }
@@ -621,16 +567,15 @@ DOCXAP;
      */
     private static function isIncludedInDocxapFile(Node $node)
     {
-        if ($node->GetNodeName() != 'templates_include.xsl')
-        {
+        if ($node->GetNodeName() != 'templates_include.xsl') {
             return false;
         }
         
         // Get parent templates folder
         $templates = new Node($node->getParent());
         $docxapId = $templates->GetChildByName('docxap.xsl');
-        if (!$docxapId)
-        {
+        if (! $docxapId) {
+            
             // There's not a docxap.xsl file in the current templates folder
             return true;
         }
@@ -639,8 +584,7 @@ DOCXAP;
         $includeNode = new Node($docxapId);
         $includeContent = $includeNode->getContent();
         $dom = new \DOMDocument();
-        if (!@$dom->loadXML($includeContent))
-        {
+        if (! @$dom->loadXML($includeContent)) {
             Logger::error('Can\'t load XML content from docxap node with ID: ' . $includeNode->GetID());
             return false;
         }
@@ -650,8 +594,8 @@ DOCXAP;
         $projectId = $node->GetProject();
         $templateURL = App::getValue('UrlHost') . App::getValue('UrlRoot') . App::getValue('NodeRoot') . $node->GetRelativePath($projectId);
         $includeTag = $xPath->query("/xsl:stylesheet/xsl:include[@href='$templateURL']");
-        if ($includeTag->length)
-        {
+        if ($includeTag->length) {
+            
             // Template exists
             return true;
         }
@@ -670,32 +614,24 @@ DOCXAP;
      */
     public static function replace_path_to_local_templatesInclude(& $content, $idDocLocalNode, $idProject = null, & $urlTemplatesInclude = null)
     {
-        if ($idDocLocalNode)
-        {
+        if ($idDocLocalNode) {
             Logger::info('Replacing includes template with document node ' . $idDocLocalNode);
             $node = new Node($idDocLocalNode);
-            if (!$node->GetID())
-            {
+            if (! $node->GetID()) {
                 Logger::error('Cannot replace the local templates include: The node ' . $idDocLocalNode . ' does not exists');
                 return false;
             }
             
             // Get the documents folder ID of the document node ID given
-            if ($node->GetNodeType() == NodeTypeConstants::XML_DOCUMENT)
-            {
+            if ($node->GetNodeType() == NodeTypeConstants::XML_DOCUMENT) {
                 $documentsFolderId = $node->_getParentByType(NodeTypeConstants::XML_ROOT_FOLDER);
-            }
-            elseif ($node->GetNodeType() == NodeTypeConstants::XIMLET)
-            {
+            } elseif ($node->GetNodeType() == NodeTypeConstants::XIMLET) {
                 $documentsFolderId = $node->_getParentByType(NodeTypeConstants::XIMLET_ROOT_FOLDER);
-            }
-            else
-            {
+            } else {
                 Logger::error('Cannot replace the local templates include: Node is not of XML document, Ximlet or METADATA type');
                 return false;
             }
-            if (!$documentsFolderId)
-            {
+            if (! $documentsFolderId) {
                 Logger::error('Cannot replace the local templates include: Container for node ' . $idDocLocalNode . ' not found');
                 return false;
             }
@@ -703,35 +639,27 @@ DOCXAP;
             // Get the templates folder node that references the previous document
             $depsManager = new DepsManager();
             $idTemplatesFolder = $depsManager->getBySource(DepsManager::DOCFOLDER_TEMPLATESINC, $documentsFolderId);
-        }
-        elseif ($idProject)
-        {
+        } elseif ($idProject) {
+            
             // Get the templates folder of the project
             Logger::info('Replacing includes template with project node ' . $idProject);
             $node = new Node($idProject);
-            if (!$node->GetID())
-            {
+            if (! $node->GetID()) {
                 Logger::error('Cannot replace the local templates include: Project node ' . $idProject . ' does not exists');
                 return false;
             }
             $idTemplatesFolder = $node->GetChildren(NodeTypeConstants::TEMPLATES_ROOT_FOLDER);
-        }
-        else
-        {
+        } else {
             Logger::error('Cannot replace the local templates include: empty node parameters given');
             return false;
         }
-        if ($idTemplatesFolder)
-        {
+        if ($idTemplatesFolder) {
             $idTemplatesFolder = $idTemplatesFolder[0];
-        }
-        else
-        {
+        } else {
             $idTemplatesFolder = 0;
         }
         $templatesFolderNode = new Node($idTemplatesFolder);
-        if (!$templatesFolderNode->GetID())
-        {
+        if (! $templatesFolderNode->GetID()) {
             Logger::error('Cannot replace the local templates include: Templates folder not found for document node ' . $idDocLocalNode);
             return false;
         }
@@ -757,12 +685,11 @@ DOCXAP;
      */
     public function reload_templates_include(Node $node, array $priorTemplates = array(), int $projectId = null, bool $init = true)
     {
-        if ($init)
-        {
+        if ($init) {
+            
             // Only project, servers and section/subsections can storage template folders
-            if ($node->GetNodeType() !=NodeTypeConstants::PROJECTS and $node->GetNodeType() !=NodeTypeConstants::PROJECT 
-                    and $node->GetNodeType() !=NodeTypeConstants::SERVER and $node->GetNodeType() !=NodeTypeConstants::SECTION)
-            {
+            if ($node->GetNodeType() != NodeTypeConstants::PROJECTS and $node->GetNodeType() != NodeTypeConstants::PROJECT 
+                    and $node->GetNodeType() != NodeTypeConstants::SERVER and $node->GetNodeType() != NodeTypeConstants::SECTION) {
                 $this->messages->add('Cannot reload nodes with a node type diferent than project, server or section', MSG_TYPE_ERROR);
                 return false;
             }
@@ -770,16 +697,14 @@ DOCXAP;
         
         // Look for templates folder
         $templateFolderId = $node->GetChildren(NodeTypeConstants::TEMPLATES_ROOT_FOLDER);
-        if ($templateFolderId)
-        {
+        if ($templateFolderId) {
             $templateFolder = new Node($templateFolderId[0]);
             
             // Look for templates_include
             $templatesIncludeId = $templateFolder->GetChildByName('templates_include.xsl');
-            if ($templatesIncludeId)
-            {
-                if (!$projectId)
-                {
+            if ($templatesIncludeId) {
+                if (! $projectId) {
+                    
                     // Get the project node ID
                     $projectId = $node->getProject();
                 }
@@ -789,24 +714,23 @@ DOCXAP;
                 $content .= "\n" . '<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">';
                 
                 // Add the local templates
-                $templates = $templateFolder->GetChildren();
-                foreach ($templates as $idTemplate)
-                {
+                $templates = $templateFolder->getChildren();
+                foreach ($templates as $idTemplate) {
                     $template = new Node($idTemplate);
-                    if ($template->GetNodeName() == 'templates_include.xsl' or $template->GetNodeName() == 'docxap.xsl')
+                    if ($template->GetNodeName() == 'templates_include.xsl' or $template->GetNodeName() == 'docxap.xsl') {
                         continue;
-                        
+                    }
+                    
                     // Generate the template URL
                     $templateURL = App::getValue('UrlHost') . App::getValue('UrlRoot') . App::getValue('NodeRoot') 
-                            . $template->GetRelativePath($projectId);
+                        . $template->GetRelativePath($projectId);
                     
                     // Save the template and remove a possible ocurrence with the same name (local one is always priority)
                     $priorTemplates[$template->GetNodeName()] = $templateURL;
                 }
                 
                 // Include the prior templates
-                foreach ($priorTemplates as $templateURL)
-                {
+                foreach ($priorTemplates as $templateURL) {
                     $content .= "\n\t" . '<xsl:include href="' . $templateURL . '"/>';
                 }
                     
@@ -815,8 +739,7 @@ DOCXAP;
                 
                 // Save the XSL content into the templates_include.xsl node
                 $templatesInclude = new Node($templatesIncludeId);
-                if ($templatesInclude->SetContent($content) === false)
-                {
+                if ($templatesInclude->SetContent($content) === false) {
                     $this->messages->mergeMessages($templatesInclude->messages);
                     return false;
                 }
@@ -825,26 +748,24 @@ DOCXAP;
         
         // Get children of the node with its node types
         $nodes = FastTraverse::getChildren($node->GetID(), ['node' => ['IdNodeType']], 1);
-        if ($nodes === false)
-        {
+        if ($nodes === false) {
             $this->messages->add('Cannot get children nodes from node: ' . $node->GetID() . ' in reload templates include files process'
-                    , MSG_TYPE_ERROR);
+                , MSG_TYPE_ERROR);
             return false;
         }
-        if (!$nodes)
-        {
+        if (! $nodes) {
             return true;
         }
-        foreach ($nodes[1] as $idChildNode => $nodeData)
-        {
+        foreach ($nodes[1] as $idChildNode => $nodeData) {
+            
             // Only project, servers and section/subsections can storage template folders
             $idNodeType = $nodeData['node']['IdNodeType'];
-            if ($idNodeType ==NodeTypeConstants::PROJECT or $idNodeType == NodeTypeConstants::SERVER or $idNodeType == NodeTypeConstants::SECTION)
-            {
+            if ($idNodeType == NodeTypeConstants::PROJECT or $idNodeType == NodeTypeConstants::SERVER 
+                    or $idNodeType == NodeTypeConstants::SECTION) {
+
                 // Call in recursive mode with the child node
                 $childNode = new Node($idChildNode);
-                if (!$childNode->GetID())
-                {
+                if (! $childNode->GetID()) {
                     Logger::error('Cannot load a node with ID: ' . $childNode->GetID() . ' in reload templates includes process');
                     return false;
                 }

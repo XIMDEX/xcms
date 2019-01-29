@@ -1,6 +1,6 @@
 <?php
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -29,17 +29,20 @@ use Ximdex\Models\Role;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\App;
 
+/**
+ * @deprecated
+ */
 class Action_modifyrolesstate extends ActionAbstract
 {
     /**
      * Main method: shows initial form
      */
-    function index()
+    public function index()
     {
     	$idNode = $this->request->getParam('state');
-    	$query = sprintf("SELECT r.IdRole, r.Name"
-    			. " FROM Roles r"
-    			. " INNER JOIN RelRolesStates rrs ON r.IdRole = rrs.IdRole AND rrs.IdState = %d", $idNode);
+    	$query = sprintf('SELECT r.IdRole, r.Name'
+    			. ' FROM Roles r'
+    			. ' INNER JOIN RelRolesStates rrs ON r.IdRole = rrs.IdRole AND rrs.IdState = %d', $idNode);
     	$dbObj = new \Ximdex\Runtime\Db();
     	$dbObj->query($query);
     	$rolesStates = array();
@@ -48,7 +51,7 @@ class Action_modifyrolesstate extends ActionAbstract
         $action = $query->getPage();
         $actionAdd = $action . $query->buildWith(array('method' => 'addrolestate'));
         $actionDelete = $action . $query->buildWith(array('method' => 'deleterolestate'));
-    	while (!$dbObj->EOF) {
+    	while (! $dbObj->EOF) {
     		$rolesStates[] = array(	'Name' => $dbObj->getValue('Name'), 'IdRole' => $dbObj->getValue('IdRole'));
     		$asociatedRoles[] = $dbObj->getValue('IdRole');
     		$dbObj->next();
@@ -72,14 +75,14 @@ class Action_modifyrolesstate extends ActionAbstract
 	    $this->render($values, null, 'default-3.0.tpl');
     }
 
-    function addrolestate()
+    public function addrolestate()
     {
     	$idNode = $this->request->getParam('state');
     	$idRole = $this->request->getParam('id_role');
 		$role = new Role($idRole);
-		if (!$role->get('IdRole') > 0) {
+		if (! $role->get('IdRole')) {
 			$this->messages->add(_('Error: Role which you want to associate with workflow status could not be found'), MSG_TYPE_ERROR);
-			Logger::error("IdRole " . $idRole . " not found for action modifyrolestate"); 
+			Logger::error('IdRole ' . $idRole . ' not found for action modifyrolestate'); 
 			$this->render(array('messages' => $this->messages->messages), '', 'messages.tpl');
 		}
 		$role->AddState($idNode);
@@ -87,11 +90,11 @@ class Action_modifyrolesstate extends ActionAbstract
 		$this->render(array('messages' => $this->messages->messages), '', 'messages.tpl');
     }
 
-    function deleterolestate()
+    public function deleterolestate()
     {
     	$idNode = $this->request->getParam('state');
     	$rolesToDelete = $this->request->getParam('roles_to_delete');
-    	if (!(is_array($rolesToDelete) || !empty($rolesToDelete))) {
+    	if (! (is_array($rolesToDelete) || !empty($rolesToDelete))) {
     		$this->messages->add(_('Any role has been selected to be deleted'), MSG_TYPE_WARNING);
     		$this->render(array('messages' => $this->messages->messages), '', 'messages.tpl');
     		return ;

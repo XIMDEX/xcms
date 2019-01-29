@@ -114,7 +114,7 @@ class Db
          return true;
      }
 
-    public function Query(string $sql, bool $cache = false) : bool
+    public function query(string $sql, bool $cache = false) : bool
     {
         if (! $this->_getEncodings()) {
             Logger::error($this->desErr);

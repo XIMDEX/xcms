@@ -35,15 +35,6 @@ use Ximdex\Models\NodeType;
 class NodeTypeNode extends Root
 {
     /**
-     * Does nothing
-     * @return null
-     */
-    function RenderizeNode()
-    {
-        return null;
-    }
-
-    /**
      * Calls to method for adding a row to Actions table
      * @param string name
      * @param int parentID
@@ -57,21 +48,23 @@ class NodeTypeNode extends Root
      * @param string description
      * @param string class
      */
-    function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $icon = null, $isRenderizable = null
-            , $hasFSEntity = null, $canAttachGroups = null, $isContentNode = null, $description = null, $class = null)
+    public function createNode(string $name = null, int $parentID = null, int $nodeTypeID = null, int $stateID = null, string $icon = null
+        , bool $isRenderizable = null, bool $hasFSEntity = null, bool $canAttachGroups = null, bool $isContentNode = null
+        , string $description = null, string $class = null)
     {
         $nodeType = new NodeType();
         $nodeType->CreateNewNodeType($name, $icon, $isRenderizable, $hasFSEntity, $canAttachGroups, $isContentNode,
             $description, $class, $this->parent->get('IdNode'));
         $this->UpdatePath();
+        return true;
     }
 
     /**
-     * Calls to method for deleting.
+     * Calls to method for deleting
      */
-    function DeleteNode()
+    public function deleteNode() : bool
     {
         $ntype = new NodeType($this->nodeID);
-        $ntype->DeleteNodeType();
+        return (bool) $ntype->DeleteNodeType();
     }
 }

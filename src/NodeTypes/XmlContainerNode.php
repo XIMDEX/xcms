@@ -34,11 +34,6 @@ use Ximdex\Models\StructuredDocument;
 
 class XmlContainerNode extends FolderNode
 {
-    function RenderizeNode()
-    {
-        return null;
-    }
-
     /**
      * Get the schema for the current document.
      * Old method. It stay here because backward compatibility.
@@ -68,20 +63,13 @@ class XmlContainerNode extends FolderNode
     }
 
     /**
-     * Build a new document and all its language versions.
+     * Build a new document and all its language versions
      * 
-     * @param string $name Node name.
-     * @param int $parentID Parent node id.
-     * @param int $nodeTypeID NodeType id.
-     * @param int $stateID state id.
-     * @param int $idSchema Schema id.
-     * @param array $aliasLangList Array[idLang] = alias
-     * @param array $channelList Channel ids array.
-     * @param int $nodeMaster
-     * @param array $dataChildren Required data.
+     * {@inheritDoc}
+     * @see \Ximdex\NodeTypes\FolderNode::createNode()
      */
-    function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $idSchema = null, $aliasLangList = null
-        , $channelList = null, $idNodeMaster = null, $dataChildren = null)
+    public function createNode(string $name = null, int $parentID = null, int $nodeTypeID = null, int $stateID = null, int $idSchema = null
+        , array $aliasLangList = null, array $channelList = null, int $idNodeMaster = null, $dataChildren = null)
     {
         $result = false;
         $reltemplate = new \Ximdex\Models\RelTemplateContainer();
@@ -175,16 +163,22 @@ class XmlContainerNode extends FolderNode
         }
     }
 
-    public function DeleteNode()
+    public function deleteNode() : bool
     {
         $templatecontainer = new \Ximdex\Models\RelTemplateContainer();
         $templatecontainer->deleteRel($this->nodeID);
+        return true;
     }
 
-    public function RenameNode($name = null)
+    /**
+     * {@inheritDoc}
+     * @see \Ximdex\NodeTypes\FolderNode::renameNode()
+     */
+    public function renameNode(string $name) : bool
     {
-        if (! $name)
+        if (! $name) {
             return false;
+        }
         $listaDocs = $this->parent->GetChildren();
         if (sizeof($listaDocs) > 0) {
             foreach ($listaDocs as $docID) {
@@ -197,6 +191,7 @@ class XmlContainerNode extends FolderNode
             }
         }
         $this->updatePath();
+        return true;
     }
     
     public function GetLanguages()
@@ -240,15 +235,16 @@ class XmlContainerNode extends FolderNode
         return null;
     }
 
-    public function ToXml($depth, & $files, $recurrence)
+    public function toXml(int $depth, array & $files, bool $recurrence = false)
     {
         $xml = '';
         $query = sprintf("SELECT IdTemplate FROM `RelTemplateContainer` WHERE IdContainer = %d", $this->parent->nodeID);
         $this->dbObj->Query($query);
         while (! $this->dbObj->EOF) {
             $idTemplate = $this->dbObj->GetValue('IdTemplate');
-            if (! (int) $idTemplate > 0)
+            if (! $idTemplate) {
                 continue;
+            }
             $template = new Node($idTemplate);
             $xml .= $template->ToXml($depth, $files, $recurrence);
             $this->dbObj->Next();

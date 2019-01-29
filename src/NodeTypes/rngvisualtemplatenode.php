@@ -52,7 +52,7 @@ class rngvisualtemplatenode extends FileNode
 	 * @param int stateID
 	 * @param string sourcePath
 	 */
-	function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $sourcePath = null)
+	public function createNode(string $name = null, int $parentID = null, int $nodeTypeID = null, int $stateID = null, string $sourcePath = null)
 	{
 		if ($sourcePath) {
 			$content = FsUtils::file_get_contents($sourcePath);
@@ -69,7 +69,7 @@ class rngvisualtemplatenode extends FileNode
 	 * 
 	 * @return string
 	 */
-	function buildDefaultContent()
+	public function buildDefaultContent()
 	{
 		$rngParser = new ParsingRng();
 		$content = $rngParser->buildDefaultContent($this->nodeID);

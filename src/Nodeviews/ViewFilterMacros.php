@@ -478,8 +478,8 @@ class ViewFilterMacros extends AbstractView
             Logger::warning('Linking to 404 EmptyHrefCode');
             return App::getValue("EmptyHrefCode");
         }
-
-        // If preview server, we return the path to data/nodes
+        
+        // If preview server, we return the path to data / nodes
         if ($this->_isPreviewServer) {
             return App::getValue('UrlRoot') . App::getValue('NodeRoot') . '/' . $targetPath;
         } else {
@@ -610,7 +610,6 @@ class ViewFilterMacros extends AbstractView
             return App::getValue('UrlRoot') . '/src/Rest/Pull/index.php?idnode=' . $targetNode->get('IdNode') 
                 . '&idchannel=' . $idTargetChannel . '&idportal=' . $this->_serverNode->get('IdNode');
         }
-        
         if ($targetNode->nodeType->GetIsSection()) {
             $idTargetServer = $this->_server->get('IdServer');
         } else {

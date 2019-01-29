@@ -56,7 +56,7 @@ class ImportXml
      *
      * @var array
      */
-    public $templateTypes = array('VISUALTEMPLATE', 'RNGVISUALTEMPLATE');
+    public $templateTypes = array('VISUALTEMPLATE', 'RNGVISUALTEMPLATE', 'HTMLLAYOUT');
 
     /**
      * The elements of this array are going to be executed in startElement, that means that no son is going to be contained
@@ -585,7 +585,7 @@ class ImportXml
         if (in_array($name, $this->tagsForControl) && $this->controlMode) {
             return;
         }
-        if (!$this->_processIsParsing) {
+        if (! $this->_processIsParsing) {
             return;
         }
         if (is_array($this->tree[$this->depth])) {
@@ -619,7 +619,7 @@ class ImportXml
         } else {
             $localIndex = 0;
         }
-        $localElement = &$this->tree[$this->depth][$localIndex];
+        $localElement = & $this->tree[$this->depth][$localIndex];
         
         // Father element of the current one (just to simplify the rest of the function, it is not necessary)
         if ($this->depth > 0) {
@@ -693,7 +693,7 @@ class ImportXml
         */
         $baseIO = new Ximdex\IO\BaseIO();
         $idUser = Ximdex\Runtime\Session::get("userID");
-        if (!$idUser) {
+        if (! $idUser) {
             $this->abort = true;
             $this->messages[] = _('No valid user to perform the importation found');
         }
@@ -701,14 +701,13 @@ class ImportXml
             $idImportationNode = $baseIO->check($elementToInsert, $idUser);
         } else {
             $idImportationNode = $baseIO->build($elementToInsert, $idUser);
-            if ($idImportationNode < 0) {
-                Logger::error('Error inserting the node' . $elementToInsert['ID']);
-            }
-            foreach ($baseIO->messages->messages as $message) {
-                Logger::debug($message['message']);
-            }
         }
-        if ($idImportationNode > 0) {
+        if ($idImportationNode < 0) {
+            Logger::error('Error inserting the node: ' . $elementToInsert['ID']);
+            foreach ($baseIO->messages->messages as $message) {
+                Logger::error($message['message']);
+            }
+        } elseif ($idImportationNode > 0) {
             $status = 1;
         } else {
             $status = $idImportationNode;
@@ -716,7 +715,7 @@ class ImportXml
 
         // TODO $path is not in use (sure?)
         $this->_bindNode($elementToInsert['ID'], $idImportationNode, $elementToInsert['OLDPARENTID'], $status);
-        if (!($idImportationNode > 0)) {
+        if (! $idImportationNode) {
             $this->processedNodes['failed'][$idImportationNode]++;
             $path = isset($elementToInsert['CHILDRENS']) && is_array($elementToInsert['CHILDRENS'])
                 ? $this->_getPath($elementToInsert['CHILDRENS'])

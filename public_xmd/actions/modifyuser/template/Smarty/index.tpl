@@ -59,9 +59,10 @@
 					</div>
 			    </div>
 			    <div class="small-6 columns">
-				    <div class="input-select" style="margin-bottom:15px!important;">
+				    <div class="input-select" style="margin-bottom:15px !important;">
 					    <label for="generalrole" class="label_title label_general" for="generalrole">{t}Role in general group{/t}</label>
-					    <select {if !$canModifyUserGroup} disabled {/if} name="generalrole" id="generalrole" class="full_size" tabindex="5">
+					    <select {if ! $canModifyUserGroup} disabled="disabled" {/if} name="generalrole" id="generalrole" class="full_size" 
+					           tabindex="5">
 					       {foreach from=$roles item=role}
                                 <option value="{$role.IdRole}" {if ($role.IdRole == $general_role)} selected{/if} >{$role.Name}</option>
                             {/foreach}

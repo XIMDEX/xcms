@@ -32,28 +32,29 @@ use Ximdex\Logger;
 
 class UserNode extends Root
 {
-
-	function CreateNode($login = null, $parentID = null, $nodeTypeID = null, $stateID = null, $realName = null, $pass = null, $email = null, $locale = null, $generalRole = null)
+    /**
+     * {@inheritDoc}
+     * @see \Ximdex\NodeTypes\Root::createNode()
+     */
+	public function createNode(string $login = null, int $parentID = null, int $nodeTypeID = null, int $stateID = null, int $realName = null
+	    , string $pass = null, string $email = null, string $locale = null, string $generalRole = null)
 	{
-
 		$user = new User();
 		$idUser = $user->SetByLogin($login);
-
 		if ($idUser > 0) {
 			Logger::error("Another user with the same login $login");
 			return NULL;
 		}
-
 		$ret = $user->CreateNewUser($realName, $login, $pass, $email, $locale, $generalRole, $this->parent->get('IdNode'));
 		$this->UpdatePath();
-
 		return $ret;
 	}
 
-	function DeleteNode()
+	public function deleteNode() : bool
 	{
 		$user = new User($this->parent->get('IdNode'));
 		$user->DeleteUser();
+		return true;
 	}
 }
  

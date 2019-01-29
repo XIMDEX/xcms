@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -35,7 +35,7 @@ class Action_filedownload_multiple extends ActionAbstract
 {
     public function index()
     {
-        $idNod = $this->request->getParam("nodeid");
+        $idNod = $this->request->getParam('nodeid');
         $nod = new Node($idNod);
         $nodName = $nod->get('Name');
         $nodes = $this->request->getParam('nodes');
@@ -112,7 +112,7 @@ class Action_filedownload_multiple extends ActionAbstract
     {
         $ret = FsUtils::deltree($tmpFolder);
         if (! $ret) {
-            Logger::info("Can not delete recursively directory: " . $tmpFolder);
+            Logger::info('Can not delete recursively directory: ' . $tmpFolder);
         }
     }
 

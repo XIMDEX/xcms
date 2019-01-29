@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -53,45 +53,45 @@ class Action_edittext extends ActionAbstract
                 'path_master' => $masterNode->GetPath()
             );
             $this->render($values, 'linked_document', 'default-3.0.tpl');
-            return false;
+            return;
         }
         $node = new Node($idNode);
         $node_name = $node->GetNodeName();
         $idNodeType = $node->get('IdNodeType');
         $fileName = $node->get('Name');
         $infoFile = pathinfo($fileName);
-        if (array_key_exists("extension", $infoFile)) {
+        if (array_key_exists('extension', $infoFile)) {
             $ext = $infoFile['extension'];
         }
         elseif ($idNodeType == \Ximdex\NodeTypes\NodeTypeConstants::XML_DOCUMENT) {
             
             // For the documents
-            $ext = "xml";
+            $ext = 'xml';
         }
         elseif ($idNodeType == \Ximdex\NodeTypes\NodeTypeConstants::HTML_DOCUMENT) {
             
             // For the documents
-            $ext = "html";
+            $ext = 'html';
         } else {
-            $ext = "txt";
+            $ext = 'txt';
         }
         $content = $node->GetContent();
         $content = htmlspecialchars($content);
         switch ($ext) {
-            case "java":
+            case 'java':
                 $this->addJs('/vendors/codemirror/Codemirror/addon/edit/closebrackets.js');
                 $this->addJs('/vendors/codemirror/Codemirror/addon/fold/brace-fold.js');
                 break;
-            case "yml":
+            case 'yml':
                 $this->addJs('/vendors/codemirror/Codemirror/addon/fold/indent-fold.js');
                 $this->addJs('/vendors/codemirror/Codemirror/addon/fold/brace-fold.js');
                 break;
-            case "html":
+            case 'html':
                 $this->addJs('/vendors/codemirror/Codemirror/addon/edit/closetag.js');
                 $this->addJs('/vendors/codemirror/Codemirror/addon/fold/xml-fold.js');
                 $this->addJs('/vendors/codemirror/Codemirror/addon/edit/closebrackets.js');
                 break;
-            case "md":
+            case 'md':
                 $this->addJs('/vendors/codemirror/Codemirror/addon/fold/markdown-fold.js');
                 break;
         }
@@ -115,7 +115,6 @@ class Action_edittext extends ActionAbstract
             'id_editor' => $idNode . uniqid()
         );
         $this->render($values, null, 'default-3.0.tpl');
-        return true;
     }
     
     public function edittext()
@@ -128,21 +127,18 @@ class Action_edittext extends ActionAbstract
         if ($strDoc->GetSymLink()) {
             $this->messages->add(_('The document which is trying to be edited is a symbolic link'), MSG_TYPE_ERROR);
             $this->renderMessages();
-            return false;
         }
         
         // If content is empty, put a blank space in order to save a file with empty content
-        $content = empty($content) ? " " : $content;
+        $content = empty($content) ? ' ' : $content;
         $node = new Node($idNode);
         if (! $node->get('IdNode')) {
             $this->messages->add(_('The document which is trying to be edited does not exist'), MSG_TYPE_ERROR);
             $this->renderMessages();
-            return false;
         }
         if ($node->SetContent(Strings::stripslashes($content), true) === false) {
             $this->messages->mergeMessages($node->messages);
             $this->sendJSON(array('messages' => $this->messages->messages, 'type' => MSG_TYPE_WARNING));
-            return false;
         }
         if (! $this->messages->count() and $node->messages->count()) {
             $this->messages->messages[0] = $node->messages->messages[0];
@@ -150,14 +146,8 @@ class Action_edittext extends ActionAbstract
         if ($node->RenderizeNode() === false) {
             $this->messages->mergeMessages($node->messages);
             $this->sendJSON(array('messages' => $this->messages->messages, 'type' => MSG_TYPE_WARNING));
-            return false;
         }
         $this->messages->add('The document has been saved', MSG_TYPE_NOTICE);
-        $this->sendJSON(
-            array(
-                'messages' => $this->messages->messages
-            )
-        );
-        return true;
+        $this->sendJSON(array('messages' => $this->messages->messages));
     }
 }

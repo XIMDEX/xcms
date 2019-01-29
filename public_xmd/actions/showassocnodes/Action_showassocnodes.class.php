@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -42,7 +42,7 @@ class Action_showassocnodes extends ActionAbstract
 
 	public function index()
 	{
-      	$ximletId = (int) $this->request->getParam("nodeid");
+      	$ximletId = (int) $this->request->getParam('nodeid');
 		$this->addCss('/actions/showassocnodes/resources/css/index.css');
 		$sections = $this->getReferencedSections($ximletId);
 		$query = App::get('\Ximdex\Utils\QueryManager');
@@ -76,8 +76,8 @@ class Action_showassocnodes extends ActionAbstract
     	if (is_array($sections) && count($sections) > 0) {
     		foreach ($sections as $idsection) {
     			$section = new Node($idsection);
-    			if (!($section->get('IdNode') > 0)) {
-    				Logger::warning("Ximlet with identity ". $idsection . "has been deleted");
+    			if (! $section->get('IdNode')) {
+    				Logger::warning('Ximlet with identity '. $idsection . 'has been deleted');
     				continue;
     			}
     			$ret[$idsection]['path'] = str_replace('/', ' / ', $section->GetPath());
@@ -92,9 +92,9 @@ class Action_showassocnodes extends ActionAbstract
 	    global $actionID, $idNode;
 		$values = array(
 			'composer_index' =>  App::getUrl("/?actionid=$actionID&nodeid=$idNode"),
-			"debug" => $this->_checkDebug()
+			'debug' => $this->_checkDebug()
 		);
-		$this->render($values, "treecontainer", "only_template.tpl");
+		$this->render($values, 'treecontainer', 'only_template.tpl');
 	}
 
 	public function tree()
@@ -104,12 +104,12 @@ class Action_showassocnodes extends ActionAbstract
 		$rootID = $rootNode->GetRoot();
 		$rootNode->SetID($rootID);
 		$values = array(
-			'composer_index' =>  App::getUrl("/?actionid=$actionID&nodeid=$idNode" ),
+			'composer_index' =>  App::getUrl("/?actionid=$actionID&nodeid=$idNode"),
 			'nodeName' => $rootNode->GetNodeName(),
 			'nodeid' =>  $rootNode->GetID(),
 			'nodeicon' => $rootNode->nodeType->GetIcon(),
 		);
-		$this->render($values, "tree", "only_template.tpl");
+		$this->render($values, 'tree', 'only_template.tpl');
 	}
 
 	/**
@@ -117,12 +117,12 @@ class Action_showassocnodes extends ActionAbstract
 	 */
 	protected function getAllowedTargets($parentId)
 	{
-		$query = sprintf("select n.IdNode from FastTraverse ft inner join Nodes n on ft.idchild = n.idnode " 
-		    . "where ft.idnode = %s and n.idnodetype in (%s) order by depth", $parentId, self::SEARCHED_NODETYPE);
+		$query = sprintf('select n.IdNode from FastTraverse ft inner join Nodes n on ft.idchild = n.idnode ' 
+		    . 'where ft.idnode = %s and n.idnodetype in (%s) order by depth', $parentId, self::SEARCHED_NODETYPE);
 		$db = new \Ximdex\Runtime\Db();
 		$db->query($query);
 		$targets = array();
-		while (!$db->EOF) {
+		while (! $db->EOF) {
 			$targets[] = $db->getValue('IdNode');
 			$db->next();
 		}
@@ -135,7 +135,7 @@ class Action_showassocnodes extends ActionAbstract
 	public function treedata()
 	{
 		$this->response->set('Expires', 'Mon, 26 Jul 1997 05:00:00 GMT');
-		$this->response->set('Last-Modified', gmdate("D, d M Y H:i:s") . " GMT");
+		$this->response->set('Last-Modified', gmdate('D, d M Y H:i:s') . ' GMT');
 		$this->response->set('Cache-Control', array('no-store, no-cache, must-revalidate', 'post-check=0, pre-check=0'));
 		$this->response->set('Pragma', 'no-cache');
 		$this->response->set('Content-type', 'text/xml');
@@ -144,7 +144,7 @@ class Action_showassocnodes extends ActionAbstract
 		$selectedNodeID = $this->request->getParam('nodeid');
 		$ximletId = $this->request->getParam('ximletid');
 		$actionId = $this->request->getParam('actionid');
-		$allow_nodetypes = explode(",",self::SEARCHED_NODETYPE);
+		$allow_nodetypes = explode(',', self::SEARCHED_NODETYPE);
 		$selecteds = $this->getReferencedSections($ximletId);
 		$src = App::getUrl("?actionid=$actionId&amp;ximletid=$ximletId&amp;method=treedata");
 		$ximlet = new Node($ximletId);
@@ -203,7 +203,7 @@ class Action_showassocnodes extends ActionAbstract
 		$deps = new DepsManager();
 		foreach ($sections as $idSection) {
 			$section = new Node($idSection);
-			if (!($section->get('IdNode') > 0)) {
+			if (! $section->get('IdNode')) {
 			    continue;
 			}
 			$idnodetype = $section->get('IdNodeType');
@@ -220,10 +220,10 @@ class Action_showassocnodes extends ActionAbstract
 			$result = $deps->set($rel, $idSection, $idXimlet);
 			$sectionName = $section->get('Name');
 			if ($result) {
-				$this->messages->add(_("Ximlet") . $ximletName . _("has been associated with section") . $sectionName,
+				$this->messages->add(_('Ximlet') . $ximletName . _('has been associated with section') . $sectionName,
 					MSG_TYPE_NOTICE);
 			} else {
-				$this->messages->add(_("Ximlet") . $ximletName . _("has not been associated with section") . $sectionName,
+				$this->messages->add(_('Ximlet') . $ximletName . _('has not been associated with section') . $sectionName,
 					MSG_TYPE_NOTICE);
 			}
 		}
@@ -239,7 +239,7 @@ class Action_showassocnodes extends ActionAbstract
 	{
 		$idXimlet = $this->request->getParam('ximletid');
 		$sections = $this->request->getParam('sections');
-		if (!is_array($sections) || count($sections) == 0) {
+		if (! is_array($sections) || count($sections) == 0) {
 			$this->messages->add(_('No sections have been selected to be dissasociated.'), MSG_TYPE_NOTICE);
 			$values = array(
 				'messages' => $this->messages->messages,
@@ -253,7 +253,7 @@ class Action_showassocnodes extends ActionAbstract
 		$depsMngr = new DepsManager();
 		foreach ($sections as $idSection) {
 			$section = new Node($idSection);
-			if (!($section->get('IdNode') > 0)) {
+			if (! $section->get('IdNode')) {
 			    continue;
 			}
 			$idnodetype = $section->get('IdNodeType');
@@ -270,10 +270,10 @@ class Action_showassocnodes extends ActionAbstract
 			$result = $depsMngr->delete($rel, $idSection, $idXimlet);
 			$sectionName = $section->get('Name');
 			if ($result) {
-				$this->messages->add(_("Section ") . $sectionName . _("has been disassociated with ximLet") . $ximletName,
+				$this->messages->add(_('Section ') . $sectionName . _('has been disassociated with ximLet') . $ximletName,
 					MSG_TYPE_NOTICE);
 			} else {
-				$this->messages->add(_("Section ") . $sectionName . _("has not been disassociated with ximLet") . $ximletName,
+				$this->messages->add(_('Section ') . $sectionName . _('has not been disassociated with ximLet') . $ximletName,
 					MSG_TYPE_NOTICE);
 			}
 		}

@@ -1,9 +1,7 @@
 <?php
-use Ximdex\Models\Node;
-use Ximdex\MVC\ActionAbstract;
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -27,24 +25,24 @@ use Ximdex\MVC\ActionAbstract;
  *  @version $Revision$
  */
 
-class Action_deletetemplates extends ActionAbstract {
+use Ximdex\Models\Node;
+use Ximdex\MVC\ActionAbstract;
 
-    function index() {
-      
- 		$idNode	= (int) $this->request->getParam("nodeid");
+class Action_deletetemplates extends ActionAbstract
+{
+    public function index()
+    {
+ 		$idNode	= (int) $this->request->getParam('nodeid');
 		$folder = new Node($idNode);
 		$nodes_templates = $folder->GetChildren();
-
 		$templates = array();
-		if(!empty($nodes_templates) ) {
-			foreach($nodes_templates as $id => $_template) {
+		if(! empty($nodes_templates)) {
+			foreach ($nodes_templates as $id => $_template) {
 				$node_template = new Node($_template);
-				$templates[$id]["Id"] = $_template;
-				$templates[$id]["Name"] = $node_template->get("Name");
+				$templates[$id]['Id'] = $_template;
+				$templates[$id]['Name'] = $node_template->get('Name');
 			}
 		}
-
-
  		$values = array(
 			'id_node' => $idNode,
 			'templates' => $templates,
@@ -52,46 +50,40 @@ class Action_deletetemplates extends ActionAbstract {
  		    'node_Type' => $folder->nodeType->GetName(),
 			'go_method' => 'delete'
 		);
-
 		$this->addJs('/actions/deletetemplates/js/delete_templates.js');
 		$this->addCSS('/actions/deletetemplates/css/style.css');
-
-
 		$this->render($values, 'index', 'default-3.0.tpl');
     }
 
-	function delete() {
-		$templates = $this->request->getParam("templates");
- 		$idNode	= (int) $this->request->getParam("nodeid");
- 		
-
+	function delete()
+	{
+		$templates = $this->request->getParam('templates');
+ 		$idNode	= (int) $this->request->getParam('nodeid');
 		$new_templates = array();
-		if(!empty($templates) )  {
+		if (! empty($templates)) {
 			$i = 0;
 			foreach($templates as $_template) {
 				$node = new Node($_template);
-				$new_templates[$i]["Id"] = $_template;
-				$new_templates[$i]["Name"] = $node->get("Name");
-				$new_templates[$i]["Result"] = $node->delete();
+				$new_templates[$i]['Id'] = $_template;
+				$new_templates[$i]['Name'] = $node->get('Name');
+				$new_templates[$i]['Result'] = $node->delete();
 				$i++;
 			}
+			// Update the templates_include.xsl files
+			$node = new Node($idNode);
+			$xsltNode = new \Ximdex\NodeTypes\XsltNode($node);
+			if ($xsltNode->reload_templates_include(new Node($node->getProject())) === false) {
+			    $this->messages->mergeMessages($xsltNode->messages);
+			}
+			$this->messages->add(_('All nodes were successfully deleted'), MSG_TYPE_NOTICE);
+		} else {
+		    $this->messages->add(_('No templates selected'), MSG_TYPE_WARNING);
 		}
-
-		// update the templates_include.xsl files
-		$node = new Node($idNode);
-		$xsltNode = new \Ximdex\NodeTypes\XsltNode($node);
-		if ($xsltNode->reload_templates_include(new Node($node->getProject())) === false)
-		    $this->messages->mergeMessages($xsltNode->messages);
-		
-		$this->messages->add(_("All nodes were successfully deleted"), MSG_TYPE_NOTICE);
-
 		$values = array(
 			'messages' => $this->messages->messages,
 			'action_with_no_return' => true,
-			'parentID' => "$idNode"
+			'parentID' => $idNode
 		);
-
 		$this->sendJSON($values);
 	}
-
 }

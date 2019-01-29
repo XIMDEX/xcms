@@ -52,7 +52,7 @@ class Action_browser3 extends ActionAbstract
 
     public function index()
     {
-        if (!is_string(Session::get('activeTheme'))) {
+        if (! is_string(Session::get('activeTheme'))) {
             Session::set('activeTheme', 'ximdex_theme');
         }
         $params = $this->request->getParam('params');

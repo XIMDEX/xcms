@@ -374,16 +374,16 @@ class StructuredDocument extends StructuredDocumentsOrm
             return trim(FsUtils::file_get_contents($rngPath));
         }
         $idContainer = $node->getParent();
-        if (!$idContainer) {
+        if (! $idContainer) {
             return null;
         }
         $relTemplate = new RelTemplateContainer();
         $idTemplate = $relTemplate->getTemplate($idContainer);
-        if (!$idTemplate) {
+        if (! $idTemplate) {
             return null;
         }
         $templateNode = new Node($idTemplate);
-        if (!$templateNode->GetID()) {
+        if (! $templateNode->GetID()) {
             return null;
         }
         return $templateNode;
@@ -499,7 +499,7 @@ class StructuredDocument extends StructuredDocumentsOrm
      * @param $idChannel
      * @return boolean
      */
-    public function HasChannel($idChannel)
+    public function hasChannel($idChannel)
     {
         $values = $this->GetChannels();
         if ($values === false) {
@@ -516,7 +516,7 @@ class StructuredDocument extends StructuredDocumentsOrm
      *
      * @return array|bool
      */
-    public function GetChannels()
+    public function getChannels()
     {
         $channelProperty = new ChannelProperty($this->get('IdDoc'));
         $values = $channelProperty->getValues(true);

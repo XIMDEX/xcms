@@ -48,12 +48,12 @@ class FrontControllerHTTP extends FrontController
     {
         // Comprueba si la URL de acceso coincide con UrlRoot
         if ($this->_checkURI()) {
-            if (!array_key_exists('action', $_GET)) {
+            if (! array_key_exists('action', $_GET)) {
                 $_GET['action'] = null;
             }
 
             // View /ximdex/trunk/actions/browser3/inc/: 63
-            if (!array_key_exists('redirect_other_action', $_GET) && 'installer' != $_GET['action']) {
+            if (! array_key_exists('redirect_other_action', $_GET) && 'installer' != $_GET['action']) {
                 $this->parseFriendlyUrl();
             }
 

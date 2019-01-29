@@ -126,16 +126,17 @@ class ParsingRng
 
     /**
      * Build a minimal XML from a relax NG schema
-     *
-     * @return string | NULL
+     * 
+     * @param int $templateID
+     * @return NULL|string
      */
-    function buildDefaultContent($templateID)
+    public function buildDefaultContent(int $templateID)
     {
         $node = new Node($templateID);
-        if (!($node->get('IdNode') > 0)) {
-            return NULL;
+        if (! $node->get('IdNode')) {
+            return null;
         }
-        $content = $node->GetContent();
+        $content = $node->getContent();
         $domDoc = new DOMDocument();
         $domDoc->preserveWhiteSpace = false;
         $domDoc->validateOnParse = true;

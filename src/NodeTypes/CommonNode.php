@@ -35,16 +35,7 @@ use Ximdex\Models\Channel;
  * Class for NodeType common
  */
 class CommonNode extends FileNode
-{
-    /**
-     * Build a new common node file
-     * Use parent CreateNode method and generate a new metadata document for the new common node created
-     */
-    public function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = 7, $sourcePath = "")
-    {
-        parent::CreateNode($name, $parentID, $nodeTypeID, $stateID, $sourcePath);
-    }
-    
+{   
     /**
      * Return an array with all the channels ID for the current node
      * 

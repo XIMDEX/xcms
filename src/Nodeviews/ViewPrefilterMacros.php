@@ -75,7 +75,7 @@ class ViewPrefilterMacros extends AbstractView
 		return $retorno;
  	}
 
-	private function GetLocalPath(array $matches) : string
+	private function getLocalPath(array $matches) : string
 	{
 		$node = new Node($matches[2]);
 		if ($node->numErr) {

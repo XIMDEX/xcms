@@ -59,7 +59,7 @@
 
 {foreach from=$arrayOpciones key=opcion item=texto}
 	
-	<tr><td colspan='3' class=filaclara nowrap><strong>{t}Los The following nodes{/t} {$texto} </strong></td></tr>
+	<tr><td colspan='3' class=filaclara nowrap><strong>{t}The following nodes{/t} {$texto} </strong></td></tr>
 	<tr><td class=filaclara><strong>{t}Node{/t}</strong></td>
 	<td class=filaclara><strong>{t}Server{/t}</strong></td>
 	<td class=filaclara><strong>{t}Channel{/t}</strong></td></tr>

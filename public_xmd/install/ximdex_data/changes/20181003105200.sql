@@ -28,7 +28,7 @@ ALTER TABLE `Servers` ADD `CyclesToRetryPumping` INT(12) UNSIGNED NOT NULL DEFAU
 DROP TABLE `ServerErrorByPumper`;
 
 ALTER TABLE `Batchs` ADD `ServerId` INT(12) UNSIGNED NOT NULL AFTER `UserId`, ADD INDEX (`ServerId`);
-ALTER TABLE `Batchs` ADD CONSTRAINT `batchs_Servers` FOREIGN KEY (`ServerId`) 
+ALTER TABLE `Batchs` ADD CONSTRAINT `Batchs_Servers` FOREIGN KEY (`ServerId`) 
     REFERENCES `Servers`(`IdServer`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 ALTER TABLE `ServerFrames` DROP FOREIGN KEY `ServerFrames_PortalFrames`;

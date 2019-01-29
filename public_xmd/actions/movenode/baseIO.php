@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -32,20 +32,20 @@ function baseIO_MoveNode($nodeID, $targetParentNodeID)
 {
 	Logger::info("IO-movenode -> nodeID=$nodeID, nodeID_destino=$targetParentNodeID");
 	$node = new Node($nodeID);
-	if (!($node->get('IdNode') > 0)) {
-		return _("Source node does not exist") . $node->msgErr; // Operation error
+	if (! $node->get('IdNode')) {
+		return _('Source node does not exist') . $node->msgErr; // Operation error
 	}
 	$target = new Node($targetParentNodeID);
- 	if (!($target->get('IdNode') > 0)) {
-		return _("Source node does not exist") . $node->msgErr; // Operation error
+ 	if (! $target->get('IdNode')) {
+		return _('Source node does not exist') . $node->msgErr; // Operation error
 	}	  
 	$parent = $node->GetParent();
   	if ($parent == $targetParentNodeID) {
-		return _("This node is already associated with that parent ") . $node->msgErr; // Operation error
+		return _('This node is already associated with that parent ') . $node->msgErr; // Operation error
 	}
 	$node->MoveNode($target->get('IdNode'));
 	if ($node->numErr) {
-	    return _("The operation has failed") . $node->msgErr; // Operation error
+	    return _('The operation has failed') . $node->msgErr; // Operation error
 	}
 	return null;
 }

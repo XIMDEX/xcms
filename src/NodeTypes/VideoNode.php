@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -31,15 +31,4 @@ namespace Ximdex\NodeTypes;
  * Class for NodeType Video
  */
 class VideoNode extends FileNode
-{
-    /**
-     * Build a new video node file
-     * Use parent CreateNode method and generate a new metadata document for the new video node created
-     * 
-     * @return bool
-     */
-    public function createNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $sourcePath = null)
-    {
-        parent::createNode($name, $parentID, $nodeTypeID, $stateID, $sourcePath);
-    }
-}
+{}

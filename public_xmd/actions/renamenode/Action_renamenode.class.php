@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -42,7 +42,7 @@ class Action_renamenode extends ActionAbstract
         $idNode = $this->request->getParam('nodeid');
         $node = new Node($idNode);
         $isSection = $node->nodeType->get('IsSection');
-        $allLanguages = NULL;
+        $allLanguages = null;
         if ($isSection) {
             $language = new Language();
             $allLanguages = $language->find('IdLanguage, Name');
@@ -73,7 +73,7 @@ class Action_renamenode extends ActionAbstract
             'node_Type' => $node->nodeType->GetName(),
             'name' => $node->GetNodeName()
         );
-        $this->render($values, NULL, 'default-3.0.tpl');
+        $this->render($values, null, 'default-3.0.tpl');
     }
 
     public function update()
@@ -86,7 +86,7 @@ class Action_renamenode extends ActionAbstract
             $this->messages->add(_('Node could not be successfully loaded'), MSG_TYPE_ERROR);
             $result = false;
         } else {
-            $result = $node->RenameNode($name);
+            $result = $node->renameNode($name);
             if ($result) {
                 $node->deleteProperty('SchemaType');
                 $schemaType = $this->request->getParam('schema_type');
@@ -111,13 +111,12 @@ class Action_renamenode extends ActionAbstract
                 
                 // Update all the references in the templates includes of the old name of this node to the new one
                 if ($node->GetNodeType() == NodeTypeConstants::PROJECT or $node->GetNodeType() == NodeTypeConstants::SERVER 
-                    or $node->GetNodeType() == NodeTypeConstants::SECTION) {
+                        or $node->GetNodeType() == NodeTypeConstants::SECTION) {
                     $xsltNode = new XsltNode($node);
-                    if (!$xsltNode->reload_templates_include(new Node($node->GetProject())))
+                    if (! $xsltNode->reload_templates_include(new Node($node->GetProject())))
                         $this->messages->mergeMessages($xsltNode->messages);
                 }
-            }
-            else {
+            } else {
                 $this->messages->mergeMessages($node->messages);
             }
         }
@@ -127,6 +126,6 @@ class Action_renamenode extends ActionAbstract
 
     public function checkNodeDependencies()
     {
-        $this->render(array('messages' => $this->messages->messages), NULL, 'messages.tpl');
+        $this->render(array('messages' => $this->messages->messages), null, 'messages.tpl');
     }
 }

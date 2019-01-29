@@ -46,11 +46,11 @@ class Action_deletenode extends ActionAbstract
 		if (count($nodes) == 1) {
 			$idNode = $this->request->getParam('nodeid');
 		}
-		$node	= new Node($idNode);
+		$node = new Node($idNode);
 		$children = $node->GetChildren();
-		if ($node->GetNodeType() == \Ximdex\NodeTypes\NodeTypeConstants::XML_DOCUMENT) {
+		if ($node->GetNodeType() == NodeTypeConstants::XML_DOCUMENT or $node->GetNodeType() == NodeTypeConstants::HTML_DOCUMENT) {
             $dbObj = new \Ximdex\Runtime\Db();
-            $query = 'select IdDoc from StructuredDocuments where TargetLink=' . $idNode;
+            $query = 'select IdDoc from StructuredDocuments where TargetLink = ' . $idNode;
             $dbObj->Query($query);
             $symbolics = array();
             while(! $dbObj->EOF) {
@@ -118,7 +118,7 @@ class Action_deletenode extends ActionAbstract
 				$formType = 'no_permisos';
 			}
 
-			// If it has not permits to cascade deletion and node has not children and has not dependencies
+			// If it has not permits to cascade deletion and node has not children and has not dependencies.
 			// Here it is allowed atomic deletion
 			if (! sizeof($children) && ! sizeof($depList)) {
 				$formType = 'simple';
@@ -192,11 +192,13 @@ class Action_deletenode extends ActionAbstract
 		$depList = array();
 		$deleteDep = $this->request->getParam('unpublishnode');
 		$userID = \Ximdex\Runtime\Session::get('userID');
+		/*
 		$unpublishDoc = ($this->request->getParam('unpublishdoc') == 1) ? true : false;
-
+		
 		// Deleting publication tasks
 		$sync = new SynchroFacade();
 		$sync->deleteAllTasksByNode($idNode, $unpublishDoc);
+		*/
 		$parentID = $node->get('IdParent');
 		$user = new User($userID);
 		$canDeleteOnCascade = $user->hasPermission('delete on cascade');

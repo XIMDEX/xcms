@@ -1,5 +1,5 @@
 {**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -109,7 +109,6 @@
                             <li class="xim-tagsinput-taglist icon xim-tagsinput-type-#/namespaces[tag.IdNamespace].nemo/#" 
                                     ng-repeat="tag in cloudTags" ng-click="addTag(tag)" ng-hide="tag.selected">
                                 <span class="tag-text">#/tag.Name/#</span>
-                                <!-- <span class="amount right">#/tag.Total/#</span> -->
                             </li>
                         </ul>
                     </div>

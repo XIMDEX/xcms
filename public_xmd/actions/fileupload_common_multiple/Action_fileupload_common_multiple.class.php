@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -30,9 +30,11 @@ use Ximdex\Models\Channel;
 use Ximdex\Models\Language;
 use Ximdex\Models\Node;
 use Ximdex\Models\NodeType;
+use Ximdex\Models\User;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\NodeTypes\XsltNode;
 use Ximdex\Runtime\App;
+use Ximdex\IO\BaseIOInferer;
 
 require_once APP_ROOT_PATH . XIMDEX_VENDORS . '/flow/ConfigInterface.php';
 require_once APP_ROOT_PATH . XIMDEX_VENDORS . '/flow/Config.php';
@@ -57,31 +59,32 @@ class Action_fileupload_common_multiple extends ActionAbstract
     public function index()
     {
         $is_structured = false;
-        $idNode = (int) $this->request->getParam("nodeid");
-        $actionID = (int) $this->request->getParam("actionid");
+        $idNode = (int) $this->request->getParam('nodeid');
+        $actionID = (int) $this->request->getParam('actionid');
         $type = $this->request->getParam('type');
         $node = new Node($idNode);
 
-        /** ********* Find out folder nodetype **** */
-        $baseIoInferer = new \Ximdex\IO\BaseIOInferer();
+        // Find out folder nodetype
+        $baseIoInferer = new BaseIOInferer();
         $type_folder = $baseIoInferer->infereType('FOLDER', $idNode );
-        $type_node = $type_folder["NODETYPENAME"];
+        $type_node = $type_folder['NODETYPENAME'];
         
-        /** ********* Checking permits **************************** */
-        $userid = \Ximdex\Runtime\Session::get('userID');
+        // Checking permits
+        $userid = Ximdex\Runtime\Session::get('userID');
         if (empty($userid)) {
             $this->messages->add(_('It is necessary to be an active user to upload files'), MSG_TYPE_ERROR);
         }
         if (empty($type_node)) {
             $this->messages->add(_('NodeType is empty'), MSG_TYPE_ERROR);
         }
-        $user = new \Ximdex\Models\User($userid);
-        if (!$user->canWrite(array('node_id' => $idNode)) ) {
+        $user = new User($userid);
+        if (! $user->canWrite(array('node_id' => $idNode)) ) {
             $this->messages->add(_('Files cannot be added because of lack of permits'), MSG_TYPE_ERROR);
         }
 
-        /** ********* Preparing view ************ */
-        //Filter and button tag according to type of upload file
+        // Preparing view
+        
+        // Filter and button tag according to type of upload file
         switch ($type_node)  {
             case 'CssFolder':
                 $lbl_anadir = _(' Add style sheets');
@@ -104,13 +107,6 @@ class Action_fileupload_common_multiple extends ActionAbstract
                 $allowedExtensions = '.xml, .xsl';
                 $allowedMimes = 'text/xml';
                 break;
-            /*
-            case 'CommonFolder':
-                $lbl_anadir = _(' Add common files ');
-                $allowedExtensions = array( 'ht','htm','html','xhtml','plain','txt','zip');
-                $allowedMimes = array( 'ht','htm','html','xhtml','plain','txt','zip');
-                break;
-            */
             default:
                 $lbl_anadir = _(' Add files');
                 $allowedMimes = '';
@@ -120,8 +116,8 @@ class Action_fileupload_common_multiple extends ActionAbstract
         $this->addCss('/actions/fileupload_common_multiple/resources/css/loader.css');
         $this->addCss('/actions/fileupload_common_multiple/resources/css/uploader_html5.css');
         $uploaderOptions = array (
-            "nodeURL" => App::getUrl("/?actionid=$actionID&nodeid={$idNode}"),
-            "lbl_anadir" => $lbl_anadir,
+            'nodeURL' => App::getUrl("/?actionid=$actionID&nodeid={$idNode}"),
+            'lbl_anadir' => $lbl_anadir,
             'messages' => $this->messages->messages,
             'nodeid' => $idNode,
             'actionid' => $this->request->getParam('actionid'),
@@ -132,7 +128,7 @@ class Action_fileupload_common_multiple extends ActionAbstract
             'is_structured' => $is_structured,
             'name' => $node->get('Name')
         );
-        if ($type_node == "XmlContainer"){
+        if ($type_node == 'XmlContainer') {
             
             // Gets default schema for XML through propInheritance
             $schemas = null;
@@ -146,7 +142,7 @@ class Action_fileupload_common_multiple extends ActionAbstract
             }
             $schemas = $schemas === null ? $node->getSchemas() : $schemas;
             $schemaArray = array();
-            if (!is_null($schemas)) {
+            if (! is_null($schemas)) {
                 foreach ($schemas as $idSchema) {
                     $schemaNode = new Node($idSchema);
                     $schemaArray[] = array('id' => $idSchema, 'name' => $schemaNode->get('Name'));
@@ -160,17 +156,17 @@ class Action_fileupload_common_multiple extends ActionAbstract
             }
             $uploaderOptions['globalMetaOnly'] = true;
             $uploaderOptions['metaFields'] = array(
-                "schema" => array(
-                    "type" => "select",
-                    "options" => $schemaArray,
-                    "label" => _("Select a schema"),
-                    "required" => true
+                'schema' => array(
+                    'type' => 'select',
+                    'options' => $schemaArray,
+                    'label' => _('Select a schema'),
+                    'required' => true
                 ),
-                "language" => array(
-                    "type" => "select",
-                    "options" => $languageArray,
-                    "label" => _("Select a language"),
-                    "required" => true
+                'language' => array(
+                    'type' => 'select',
+                    'options' => $languageArray,
+                    'label' => _('Select a language'),
+                    'required' => true
                 )
             );
         }
@@ -192,7 +188,7 @@ class Action_fileupload_common_multiple extends ActionAbstract
 
     private function _saveFile($path)
     {
-        if (!file_exists($this->chunksFolder)) {
+        if (! file_exists($this->chunksFolder)) {
             mkdir($this->chunksFolder, 0777, true);
         }
         $config = new \Flow\Config(array(
@@ -201,11 +197,10 @@ class Action_fileupload_common_multiple extends ActionAbstract
         $file = new \Flow\File($config);
         if ($file->validateChunk()) {
             $file->saveChunk();
-        }
-        else {
+        } else {
             
             // Error, invalid chunk upload request, retry
-            header("HTTP/1.1 400 Bad Request");
+            header('HTTP/1.1 400 Bad Request');
             return false;
         }
         if ($file->validateFile() && $file->save($path)) {
@@ -216,7 +211,7 @@ class Action_fileupload_common_multiple extends ActionAbstract
 
     public function uploadFlowFile()
     {
-        if (!file_exists($this->uploadsFolder)) {
+        if (! file_exists($this->uploadsFolder)) {
             mkdir($this->uploadsFolder, 0777, true);
         }
         $path = $this->uploadsFolder . '/' . $_POST['flowIdentifier'];
@@ -227,7 +222,7 @@ class Action_fileupload_common_multiple extends ActionAbstract
             $overwrite = ($_POST['overwrite'] == 'true') ? true : false;
             $file = $_FILES['file'];
             $file['tmp_name'] = $path;
-            if (!empty($_POST['ximFilename'])) {
+            if (! empty($_POST['ximFilename'])) {
                 $file['name'] = $_POST['ximFilename'];
             }
             else if (isset($_POST['flowFilename'])) {
@@ -250,15 +245,13 @@ class Action_fileupload_common_multiple extends ActionAbstract
             }
             $this->sendJSON($result);
         }
-        else {
-            return false;
-        }
+        return false;
     }
 
     private function _setRest($msg, $status = 500)
     {
         $retval = array();
-        $retval["msg"] = $msg;
+        $retval['msg'] = $msg;
         $retval['status'] = $status;
         return $retval;
     }
@@ -268,20 +261,19 @@ class Action_fileupload_common_multiple extends ActionAbstract
      */
     private function _createNode($file, $idNode,  $type, $metadata, $overwrite)
     {
-        $normalizedName = \Ximdex\Utils\Strings::normalize($file["name"]);
+        $normalizedName = \Ximdex\Utils\Strings::normalize($file['name']);
         $baseIoInferer = new \Ximdex\IO\BaseIOInferer();
         
         // Finding out element nodetype
         if (empty($type) || $type == 'null') {
             $nodeTypeName = $baseIoInferer->infereFileType($file, $idNode);
-        }
-        else {
+        } else {
             $nodeTypeName = $baseIoInferer->infereFileType($file, $idNode, $type);
         }
         $result = 0;
         $node = new Node($idNode);
-        if (!$node) {
-            return  $this->_setRest(_(" Destination node has not been found "));
+        if (! $node) {
+            return  $this->_setRest(_(' Destination node has not been found '));
         }
         $estimatedNode = $node->GetChildByName($normalizedName);
         if ($estimatedNode > 0) {
@@ -290,23 +282,21 @@ class Action_fileupload_common_multiple extends ActionAbstract
                     'NODETYPENAME' => $nodeTypeName,
                     'ID' => $estimatedNode,
                     'CHILDRENS' => array (
-                        array ('NODETYPENAME' => 'PATH', 'SRC' => $file["tmp_name"])
+                        array ('NODETYPENAME' => 'PATH', 'SRC' => $file['tmp_name'])
                     )
                 );
                 $baseIO = new \Ximdex\IO\BaseIO();
                 $result = $baseIO->update($data);
-            }
-            else {
+            } else {
                 return $this->_setRest(_('A file already exists with same name.') );
             }
-        }
-        elseif ($node->nodeType->get('IsFolder')) {
+        } elseif ($node->nodeType->get('IsFolder')) {
             
             // To upload xml content
-            if ($node->nodeType->get("Name")=="XmlRootFolder"){
-                $newNodeName = str_replace(".xml","",$normalizedName);
+            if ($node->nodeType->get('Name') == 'XmlRootFolder'){
+                $newNodeName = str_replace('.xml', '', $normalizedName);
                 $data = array(
-                    'NODETYPENAME' => "XmlContainer",
+                    'NODETYPENAME' => 'XmlContainer',
                     'NAME' => $newNodeName,
                     'PARENTID' => $idNode,
                     'CHILDRENS' => array(
@@ -319,9 +309,9 @@ class Action_fileupload_common_multiple extends ActionAbstract
                 $baseIO = new \Ximdex\IO\BaseIO();
                 $result = $baseIO->build($data);
                 $documentNodeType = new NodeType();
-                $documentNodeType->SetByName("XMLDOCUMENT");
+                $documentNodeType->SetByName('XMLDOCUMENT');
                 $data = array(
-                    'NODETYPENAME' => $documentNodeType->get("Name"),
+                    'NODETYPENAME' => $documentNodeType->get('Name'),
                     'NAME' => $newNodeName,
                     'NODETYPE' => $documentNodeType->get('IdNodeType'),
                     'PARENTID' => $result,
@@ -332,7 +322,7 @@ class Action_fileupload_common_multiple extends ActionAbstract
                 );
                 $channels = new Channel();
                 $allChannels = $channels->GetAllChannels();
-                if (!empty($allChannels)) {
+                if (! empty($allChannels)) {
                     foreach ($allChannels as $channel) {
                         $data['CHILDRENS'][] = array('NODETYPENAME' => 'CHANNEL', 'ID' => $channel);;
                     }
@@ -340,36 +330,34 @@ class Action_fileupload_common_multiple extends ActionAbstract
                 $docId = $baseIO->build($data);
                 if ($docId > 0){
                     $newDocumentNode = new Node($docId);
-                    $content = file_get_contents($file["tmp_name"]);
+                    $content = file_get_contents($file['tmp_name']);
                     $content = preg_replace('/<\?xml.*\?>.*\n/','',$content);
                     $newDocumentNode->SetContent($content);
                 }
-            }
-            elseif ($nodeTypeName){
+            } elseif ($nodeTypeName){
                 $data = array(
                     'NODETYPENAME' => $nodeTypeName,
                     'NAME' => $normalizedName,
                     'PARENTID' => $idNode,
                     'CHILDRENS' => array (
-                        array ('NODETYPENAME' => 'PATH', 'SRC' => $file["tmp_name"] )
+                        array ('NODETYPENAME' => 'PATH', 'SRC' => $file['tmp_name'] )
                     )
                 );
                 $baseIO = new \Ximdex\IO\BaseIO();
                 $result = $baseIO->build($data);
-            }
-            else {
-                return $this->_setRest(_(" File is not of expected type "));
+            } else {
+                return $this->_setRest(_(' File is not of expected type '));
             }
 
             // If there is any problem with file name: spaces, uncommon characters, etc.
             if ($result > 0) {
                 if ($overwrite) {
-                    return $this->_setRest(_('File has been successfully overwritten.'), "ok" );
+                    return $this->_setRest(_('File has been successfully overwritten.'), 'ok');
                 }
-                return $this->_setRest(_('File has been successfully uploaded.'), "ok" );
+                return $this->_setRest(_('File has been successfully uploaded.'), 'ok');
             }
-            Logger::error("BaseIO has returned error code: ". $result);
-            return  $this->_setRest($baseIO->messages->messages[0]["message"]);
+            Logger::error('BaseIO has returned error code: ' . $result);
+            return  $this->_setRest($baseIO->messages->messages[0]['message']);
         }
         return $result;
     }

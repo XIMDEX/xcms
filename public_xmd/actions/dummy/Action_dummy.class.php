@@ -1,6 +1,7 @@
 <?php
+
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -26,13 +27,12 @@
 
 use Ximdex\MVC\ActionAbstract;
 
-class Action_dummy extends ActionAbstract {
-
-	public function index() {
-
+class Action_dummy extends ActionAbstract
+{
+	public function index()
+	{
 		$this->addJs('/actions/dummy/resources/js/dummy.js');
 		$this->addCss('/actions/dummy/resources/css/dummy.css');
-
 		$values = array();
 		$this->render($values, 'dummy', 'default-3.0.tpl');
 	}

@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -29,76 +29,59 @@ namespace Ximdex\NodeTypes;
 
 use Ximdex\Models\Group;
 
-
-
 /**
- * @brief Handles groups.
+ * @brief Handles groups
  *
- *  Its purpose is to share the permissions of operations with Nodes between different Users.
+ *  Its purpose is to share the permissions of operations with Nodes between different Users
  */
 class GroupNode extends Root
 {
-
 	/**
-	 *  Constructor.
-	 * @param object parentObj
-	 */
-
-	public function __construct($parentObj)
-	{
-
-		parent::__construct($parentObj);
-	}
-
-	/**
-	 *  Calls to method for adding a new Group in the database.
+	 * Calls to method for adding a new Group in the database
+	 * 
 	 * @param string name
 	 * @param int parentID
 	 * @param int nodeTypeID
 	 * @param int stateID
 	 */
-
-	function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null)
+	public function createNode(string $name = null, int $parentID = null, int $nodeTypeID = null, int $stateID = null)
 	{
-
 		$grupo = new Group($this->parent->get('IdNode'));
 		$grupo->CreateNewGroup($name, $this->parent->get('IdNode'));
 		$this->updatePath();
+		return true;
 	}
 
 	/**
-	 *  Calls to method for deleting.
+	 *  Calls to method for deleting
 	 */
-
-	function DeleteNode()
+	public function deleteNode() : bool
 	{
-
 		$grupo = new Group($this->parent->get('IdNode'));
-		$grupo->DeleteGroup();
+		return $grupo->deleteGroup();
 	}
 
 	/**
-	 *  Checks whether the Group belongs to GeneralGroup.
+	 * Checks whether the Group belongs to GeneralGroup
+	 * 
 	 * @return bool
 	 */
-
-	function CanDenyDeletion()
+	public function canDenyDeletion()
 	{
-
 		$group = new Group();
 		return ($this->parent->get('IdNode') == $group->GetGeneralGroup());
 	}
 
 	/**
-	 *  Calls to method for updating the Name on the database.
+	 * Calls to method for updating the Name on the database
+	 * 
 	 * @param string name
 	 */
-
-	function RenameNode($name = null)
+	public function renameNode(string $name) : bool
 	{
-
 		$grupo = new Group($this->parent->get('IdNode'));
 		$grupo->SetGroupName($name);
 		$this->updatePath();
+		return true;
 	}
 }

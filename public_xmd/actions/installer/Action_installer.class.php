@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -28,16 +28,18 @@
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\App;
 
-class Action_installer extends ActionAbstract {
-
-	function index() {
+/**
+ * @deprecated
+ */
+class Action_installer extends ActionAbstract
+{
+	public function index()
+	{
 		$install_params = file_exists(XIMDEX_ROOT_PATH . '/conf/install-params.conf.php');
 		$install_modules = file_exists(XIMDEX_ROOT_PATH .'/conf/install-modules.php');
-
 		$values = array();
 		$this->checkConfigFiles($install_params, $install_modules);
-
-		\Ximdex\I18n\I18N::setup();
+		Ximdex\I18n\I18N::setup();
 		$values["ximid"] = App::getValue( "ximid");
 		$values["versionname"] = App::getValue( "VersionName");
 		$values["install_params"] = (int) $install_params;
@@ -47,8 +49,8 @@ class Action_installer extends ActionAbstract {
 		die();
 	 }
 
-	function checkConfigFiles($install_params = 0, $install_modules = 0) {
-
+	public function checkConfigFiles($install_params = 0, $install_modules = 0)
+	{
 		if ($install_params && $install_modules && DB_CONNECTION ) {
 			header(sprintf("Location: %s/", App::getValue('UrlRoot')));
 			die();

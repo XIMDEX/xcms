@@ -209,13 +209,13 @@ class ViewXedit extends AbstractView
 		}
 		$tplFolder = App::getValue( "TemplatesDirName");
 		$section = new Node($this->node->GetSection());
-		$sectionPath = $section->class->GetNodePath();
+		$sectionPath = $section->class->getNodePath();
 		$docxap = $sectionPath . '/' . $tplFolder . '/docxap.xsl';
 		if (is_readable($docxap)) {
 		    return str_replace(XIMDEX_ROOT_PATH, App::getValue('UrlHost') . App::getValue('UrlRoot'),  $docxap);
 		}
 		$project = new Node($this->node->GetProject());
-		$nodeProjectPath = $project->class->GetNodePath();
+		$nodeProjectPath = $project->class->getNodePath();
 		$docxap = $nodeProjectPath . '/' . $tplFolder . '/docxap.xsl';
 		if (is_readable($docxap)) {
 		    return str_replace(XIMDEX_ROOT_PATH, App::getValue('UrlHost') . App::getValue('UrlRoot'),  $docxap);

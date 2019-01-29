@@ -34,25 +34,24 @@ Ximdex\Modules\Manager::file('/inc/ImportXml.class.php', 'ximIO');
 Ximdex\Modules\Manager::file('/inc/FileUpdater.class.php', 'ximIO');
 	
 function copyNode($source, $dest, $recurrence)
-{	
-	$messages = new \Ximdex\Utils\Messages();
+{
+	$messages = new Ximdex\Utils\Messages();
 	
 	// Checking if source is allowed on the destiny to save addicional operations
 	$sourceNode = new Node($source);
-	if (!($sourceNode->get('IdNode') > 0)) {
+	if (! $sourceNode->get('IdNode')) {
 		$messages->add(_('Source node does not exist'), MSG_TYPE_ERROR);
 		return $messages;
 	}else{
 	  $lastName = $sourceNode->get('Name');
 	}
 	$destNode = new Node($dest);
-	if (!($destNode->get('IdNode') > 0)) {
+	if (! $destNode->get('IdNode')) {
 		$messages->add(_('Destination node does not exist'), MSG_TYPE_ERROR);
 		return $messages;
 	}
 	
-	//Checking both nodes belong to same project
-	//or if the node we want to copy is the root of a complete project 
+	// Checking both nodes belong to same project or if the node we want to copy is the root of a complete project 
 	if (($sourceNode->getProject() != $sourceNode->getID()) && ($sourceNode->getProject() != $destNode->getProject())) {
 		$messages->add(_('You cannot make a copy of nodes between differents projects'), MSG_TYPE_ERROR);
 		return $messages;
@@ -104,15 +103,15 @@ function copyNode($source, $dest, $recurrence)
 
 	// 4.- Cleaning transform table to repeat the copy
 	$dbConn = new \Ximdex\Runtime\Db();
-	$query = sprintf("SELECT idXimIOExportation FROM XimIOExportations WHERE timeStamp = '%s'", Constants::REVISION_COPY);
+	$query = sprintf('SELECT idXimIOExportation FROM XimIOExportations WHERE timeStamp = \'%s\'', Constants::REVISION_COPY);
 	$dbConn->Query($query);
 	if ($dbConn->numRows == 1) {
 		$idXimIOExportation = $dbConn->GetValue('idXimIOExportation');
-		$statusQuery = sprintf("SELECT `status`, count(*) as total"
-						. " FROM XimIONodeTranslations"
-						. " WHERE IdExportationNode != IdImportationNode AND idXimIOExportation = %d"
-						. " GROUP BY `status`"
-						. " ORDER BY `status` DESC"
+		$statusQuery = sprintf('SELECT `status`, count(*) as total'
+						. ' FROM XimIONodeTranslations'
+						. ' WHERE IdExportationNode != IdImportationNode AND idXimIOExportation = %d'
+						. ' GROUP BY `status`'
+						. ' ORDER BY `status` DESC'
 						,$idXimIOExportation);
 		$dbConn->Query($statusQuery);
 		if ($dbConn->EOF) {
@@ -120,22 +119,22 @@ function copyNode($source, $dest, $recurrence)
 		} else {
 			while(!$dbConn->EOF) {
 				switch ($dbConn->GetValue('status')) {
-					case "1":
+					case '1':
 						$messages->add(sprintf(_('%d nodes have been successfully copied'), $dbConn->GetValue('total')), MSG_TYPE_NOTICE);
 						break;
-					case "-1":
+					case '-1':
 						$messages->add(sprintf(_('%d nodes have not been copied because of lack of permits')
 						  , $dbConn->GetValue('total')), MSG_TYPE_WARNING);
 						break;
-					case "-2":
+					case '-2':
 						$messages->add(sprintf(_('%d nodes have not been copied because of lack of XML info')
 						  , $dbConn->GetValue('total')), MSG_TYPE_WARNING);
 						break;
-					case "-3":
+					case '-3':
 						$messages->add(sprintf(_('%d nodes have not been copied because its parents have not been imported')
 						  , $dbConn->GetValue('total')), MSG_TYPE_WARNING);
 						break;
-					case "-4":
+					case '-4':
 						$messages->add(sprintf(_('%d nodes have not been copied because they are not allowed into the requested parent')
 						  , $dbConn->GetValue('total')), MSG_TYPE_WARNING);
 						break;
@@ -143,18 +142,18 @@ function copyNode($source, $dest, $recurrence)
 				$dbConn->Next();
 			}
 		}
-		$query = sprintf("DELETE FROM XimIONodeTranslations WHERE idXimIOExportation = %d", $idXimIOExportation);
+		$query = sprintf('DELETE FROM XimIONodeTranslations WHERE idXimIOExportation = %d', $idXimIOExportation);
 		$dbConn->Execute($query);
-		$query = sprintf("DELETE FROM XimIOExportations WHERE idXimIOExportation = %d", $idXimIOExportation);
+		$query = sprintf('DELETE FROM XimIOExportations WHERE idXimIOExportation = %d', $idXimIOExportation);
 		$dbConn->Execute($query);
 	}
 	$targetNode = new Node($importer->idfinal);
 	$newName = $targetNode->GetNodeName();
-	$nodeType = new NodeType($targetNode->nodeType->get('IdNodeType') );
-	if($lastName != $newName && null != $newName && ("XmlContainer" == $nodeType->GetName() || "XimletContainer" == $nodeType->getGetName())) {
+	$nodeType = new NodeType($targetNode->nodeType->get('IdNodeType'));
+	if ($lastName != $newName && null != $newName && ('XmlContainer' == $nodeType->GetName() || 'XimletContainer' == $nodeType->getGetName())) {
         $childrens =  $targetNode->GetChildren();
         $total = count($childrens);
-        for($i = 0; $i< $total; $i++) {
+        for($i = 0; $i < $total; $i++) {
             $children = $childrens[$i];
 			$node_child = new Node($children);
 			$name_child = $node_child->GetNodeName();
@@ -162,6 +161,5 @@ function copyNode($source, $dest, $recurrence)
 			$node_child->SetNodeName($name_child);
         }
     }
-    unset($importer);
     return $messages;
 }

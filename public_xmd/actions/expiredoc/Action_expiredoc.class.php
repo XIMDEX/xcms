@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -47,7 +47,7 @@ class Action_expiredoc extends ActionAbstract
 {
     public function index()
     {
-        // Get nodeid or first in nodes if nodeid doesn't exist.
+        // Get nodeid or first in nodes if nodeid doesn't exist
         $idNode = $this->request->getParam('nodeid');
         if (empty($idNode)) {
             $nodes = $this->request->getParam('nodes');
@@ -77,7 +77,7 @@ class Action_expiredoc extends ActionAbstract
             
         // Show the expiration form
         $values['go_method'] = 'expireNode';
-        $values['defaultMessage'] = $this->buildMessage($conf["defaultMessage"], 'Expire', $node->get('Name'));
+        $values['defaultMessage'] = $this->buildMessage($conf['defaultMessage'], 'Expire', $node->get('Name'));
         $values = array_merge($values, $this->buildExtraValues($idNode));
         
         // Loading resources for the action form
@@ -131,7 +131,7 @@ class Action_expiredoc extends ActionAbstract
         $nodename = $node->get('Name');
         
         // The expiration times are in milliseconds
-        $down = (! is_null($dateDown) && $dateDown != "") ? $dateDown / 1000 : time();
+        $down = (! is_null($dateDown) && $dateDown != '') ? $dateDown / 1000 : time();
         
         // If send notifications
         $sendNotifications = $this->request->getParam('sendNotifications');
@@ -252,8 +252,8 @@ class Action_expiredoc extends ActionAbstract
         if (count($gaps) > 0) {
             foreach ($gaps as $gap) {
                 $gapInfo[] = array(
-                    'BEGIN_DATE' => strftime("%d/%m/%Y %H:%M:%S", $gap['start']),
-                    'END_DATE' => isset($gap['end']) ? strftime("%d/%m/%Y %H:%M:%S", $gap['end']) : null
+                    'BEGIN_DATE' => strftime('%d/%m/%Y %H:%M:%S', $gap['start']),
+                    'END_DATE' => isset($gap['end']) ? strftime('%d/%m/%Y %H:%M:%S', $gap['end']) : null
                 );
             }
         }
@@ -268,7 +268,7 @@ class Action_expiredoc extends ActionAbstract
      */
     private function buildExtraValues($idNode)
     {
-        setlocale(LC_TIME, "es_ES");
+        setlocale(LC_TIME, 'es_ES');
         $idUser = \Ximdex\Runtime\Session::get('userID');
         $user = new User($idUser);
         $node = new Node($idNode);
@@ -294,7 +294,7 @@ class Action_expiredoc extends ActionAbstract
      * @param string $texttosend : Text to send in notification mail.    
      * @return boolean true if the notification is sended.
      */
-    private function sendNotification($idNode, $idState, $userList, $texttosend = "")
+    private function sendNotification($idNode, $idState, $userList, $texttosend = '')
     {
         $send = true;
         if (count($userList) == 0) {
@@ -308,7 +308,7 @@ class Action_expiredoc extends ActionAbstract
         if (! $send) {
             return false;
         }
-        $idUser = Ximdex\Runtime\Session::get("userID");
+        $idUser = Ximdex\Runtime\Session::get('userID');
         $node = new Node($idNode);
         $idActualState = $node->get('IdState');
         $actualWorkflowStatus = new Workflow($node->nodeType->getWorkflow(), $idActualState);
@@ -319,11 +319,11 @@ class Action_expiredoc extends ActionAbstract
         $nodePath = $node->GetPath();
         $nextStateName = $nextWorkflowStatus->getStatusName();
         $actualStateName = $actualWorkflowStatus->getStatusName();
-        $subject = _("Ximdex CMS: new state for document:") . " " . $nodeName;
-        $content = _("State forward notification.") . "\n" . "\n" . _("The user") . " " . $userName . " " . _("has changed the state of") 
-            . " " . $nodeName . "\n" . "\n" . _("Full Ximdex path") . " --> " . $nodePath . "\n" . "\n" . _("Initial state") . " --> " 
-            . $actualStateName . "\n" . _("Final state") . " --> " . $nextStateName . "\n" . "\n" . "\n" . _("Comment") . ":" . "\n" 
-            . $texttosend . "\n" . "\n";
+        $subject = _('Ximdex CMS: new state for document:') . ' ' . $nodeName;
+        $content = _('State forward notification.') . "\n\n" . _('The user') . ' ' . $userName . ' ' . _('has changed the state of') 
+            . ' ' . $nodeName . "\n\n" . _('Full Ximdex path') . ' --> ' . $nodePath . "\n\n" . _('Initial state') . ' --> ' 
+            . $actualStateName . "\n" . _('Final state') . ' --> ' . $nextStateName . "\n\n\n" . _('Comment') . ':' . "\n" 
+            . $texttosend . "\n\n";
         parent::sendNotifications($subject, $content, $userList);
         return true;
     }
@@ -352,8 +352,8 @@ class Action_expiredoc extends ActionAbstract
         // The publication times are in milliseconds
         $dateUp = $this->request->getParam('dateUp_timestamp');
         $dateDown = $this->request->getParam('dateDown_timestamp');
-        $up = (! is_null($dateUp) && $dateUp != "") ? $dateUp / 1000 : time();
-        $down = (! is_null($dateDown) && $dateDown != "") ? $dateDown / 1000 : null;
+        $up = (! is_null($dateUp) && $dateUp != '') ? $dateUp / 1000 : time();
+        $down = (! is_null($dateDown) && $dateDown != '') ? $dateDown / 1000 : null;
         $markEnd = $this->request->getParam('markend') ? true : false;
         $structure = $this->request->getParam('no_structure') ? false : true;
         $levels = $this->request->getParam('levels');
@@ -378,7 +378,7 @@ class Action_expiredoc extends ActionAbstract
         $idState = $this->request->getParam('stateid');
         $texttosend = $this->request->getParam('texttosend');
         $lastPublished = $this->request->getParam('latest') ? false : true;
-        Logger::debug("ADDSECTION publicateNode PRE");
+        Logger::debug('ADDSECTION publicateNode PRE');
         $this->sendToPublish($idNode, $up, $down, $markEnd, $force, $structure, $deepLevel, $sendNotifications, $notificableUsers, $idState
             , $texttosend, $lastPublished);
     }

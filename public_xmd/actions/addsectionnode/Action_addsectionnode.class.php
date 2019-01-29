@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -28,9 +28,11 @@
 use Ximdex\Models\Node;
 use Ximdex\Models\NodeType;
 use Ximdex\Models\SectionType;
+use Ximdex\Models\NodeDefaultContents;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Properties\InheritedPropertiesManager;
-use Ximdex\Models\NodeDefaultContents;
+use Ximdex\IO\BaseIO;
+use Ximdex\NodeTypes\XsltNode;
 
 class Action_addsectionnode extends ActionAbstract
 {
@@ -39,7 +41,7 @@ class Action_addsectionnode extends ActionAbstract
      */
     public function index()
     {
-        $nodeID = $this->request->getParam("nodeid");
+        $nodeID = $this->request->getParam('nodeid');
         $node = new Node($nodeID);
         $values = array(
             'name' => $node->GetNodeName(),
@@ -49,12 +51,12 @@ class Action_addsectionnode extends ActionAbstract
         $this->addCss('/actions/addsectionnode/resources/css/style.css');
         $this->addJs('/actions/addsectionnode/resources/js/init.js');
         $this->addJs('/actions/addsectionnode/resources/js/addSectionCtrl.js');
-        $this->render($values, "index", 'default-3.0.tpl');
+        $this->render($values, 'index', 'default-3.0.tpl');
     }
 
     public function getSectionInfo()
     {
-        $nodeID = $this->request->getParam("nodeid");
+        $nodeID = $this->request->getParam('nodeid');
         $sectionType = new SectionType();
         $sectionTypes = $sectionType->find(ALL);
         $ndc = new NodeDefaultContents();
@@ -93,8 +95,16 @@ class Action_addsectionnode extends ActionAbstract
         $nodeid = $this->request->getParam('nodeid');
         $name = $this->request->getParam('name');
         $langidlst = $this->request->getParam('langidlst');
+        if (! $langidlst) {
+            $this->messages->add(_('At least one language is required'), MSG_TYPE_WARNING);
+            $this->sendJSON(['messages' => $this->messages->messages]);
+        }
         $namelst = $this->request->getParam('namelst');
         $folderlst = $this->request->getParam('folderlst');
+        if (! $folderlst) {
+            $this->messages->add(_('At least one section subfolder is required'), MSG_TYPE_WARNING);
+            $this->sendJSON(['messages' => $this->messages->messages]);
+        }
         $nodetype = $this->request->getParam('nodetype');
         $sectionType = new SectionType($nodetype);
         if ($sectionType->get('idSectionType') > 0) {
@@ -110,7 +120,7 @@ class Action_addsectionnode extends ActionAbstract
             'FORCENEW' => true,
             'SECTIONTYPE' => $nodetype
         );
-        $baseio = new \Ximdex\IO\BaseIO();
+        $baseio = new BaseIO();
         $id = $baseio->build($data);
         if ($id > 0) {
             $section = new Node($id);
@@ -131,7 +141,7 @@ class Action_addsectionnode extends ActionAbstract
             $project = new Node($section->getProject());
             
             // Reload the templates include files for this new project
-            $xsltNode = new \Ximdex\NodeTypes\XsltNode($section);
+            $xsltNode = new XsltNode($section);
             if ($xsltNode->reload_templates_include($project) === false) {
                 $this->messages->mergeMessages($xsltNode->messages);
             }
@@ -171,7 +181,7 @@ class Action_addsectionnode extends ActionAbstract
     {
         $nt = new NodeType($nodetypeId);
         if (! $nt) {
-            return "";
+            return '';
         }
         return $nt->GetDescription();
     }

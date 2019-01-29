@@ -1,11 +1,7 @@
 <?php
-use Ximdex\Logger;
-use Ximdex\Models\Language;
-use Ximdex\Models\Node;
-use Ximdex\MVC\ActionAbstract;
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -29,64 +25,64 @@ use Ximdex\MVC\ActionAbstract;
  *  @version $Revision$
  */
 
+use Ximdex\Logger;
+use Ximdex\Models\Language;
+use Ximdex\Models\Node;
+use Ximdex\MVC\ActionAbstract;
 
-class Action_modifylanguage extends ActionAbstract {
-    // Main method: shows initial form
-    function index() {
+class Action_modifylanguage extends ActionAbstract
+{
+    /**
+     * Main method: shows initial form
+     */
+    public function index()
+    {
     	$idNode = $this->request->getParam('nodeid');
-
-		$language = new Language($idNode);
 		$node = new Node($idNode);
-		if (!(($language->get('IdLanguage') > 0) && ($node->get('IdNode') > 0))) {
+		$language = new Language($idNode);
+		if (! $language->get('IdLanguage') or ! $node->get('IdNode')) {
 			$this->messages->add(_('Language could not be successfully loaded, contact with your administrator'), MSG_TYPE_ERROR);
-			Logger::error("Language not loaded: id=" . $idNode);
-			$this->render(array('messages' => $this->messages->messages), NULL, 'messages.tpl');
-			return false;
+			Logger::error('Language not loaded: id=' . $idNode);
+			$this->render(array('messages' => $this->messages->messages), null, 'messages.tpl');
+			return;
 		}
-
 		$values = array(
-					'iso_name' => $language->get('IsoName'),
-					'name' => $language->get('Name'),
-					'enabled' => $language->get('Enabled'),
-					'description' => $node->get('Description'),
-		            'nodeTypeID' => $node->nodeType->getID(),
-		            'node_Type' => $node->nodeType->GetName(),
-					'go_method' => 'modifylanguage',
-				);
-
+			'iso_name' => $language->get('IsoName'),
+			'name' => $language->get('Name'),
+			'enabled' => $language->get('Enabled'),
+			'description' => $node->get('Description'),
+            'nodeTypeID' => $node->nodeType->getID(),
+            'node_Type' => $node->nodeType->GetName(),
+			'go_method' => 'modifylanguage'
+		);
 		$this->render($values, null, 'default-3.0.tpl');
     }
 
-    function modifylanguage() {
+    public function modifylanguage()
+    {
     	$idNode = $this->request->getParam('nodeid');
     	$language = new Language($idNode);
     	$node = new Node($idNode);
-
-        if($node->IsValidName($this->request->getParam('Name'), $node->get('IdNodeType'))){
+        if ($node->IsValidName($this->request->getParam('Name'), $node->get('IdNodeType'))) {
             $language->loadFromArray($_POST);
             $language->set('Enabled', $this->request->getParam('enabled') ? 1 : 0);
             $languageResult = $language->update();
-
             $node->set('Description', $this->request->getParam('Description'));
             $node->set('Name', $this->request->getParam('Name'));
             $nodeResult = $node->update();
         }
-
-    	if (($nodeResult > 0) || ($languageResult > 0)) {
-    		$this->messages->add(_('Language has been successfully updated'), MSG_TYPE_NOTICE);
+    	if ($nodeResult === false or $languageResult === false) {
+    	    $this->messages->add(_('An error occurred while updating language'), MSG_TYPE_ERROR);
     	} else {
-    		$this->messages->add(_('An error occurred while updating language'), MSG_TYPE_ERROR);
+    		$this->messages->add(_('Language has been successfully updated'), MSG_TYPE_NOTICE);
     	}
-
     	foreach ($language->messages->messages as $messageInfo) {
     		$this->messages->messages[] = $messageInfo;
     	}
-
     	foreach ($node->messages->messages as $messageInfo) {
     		$this->messages->messages[] = $messageInfo;
     	}
-    	
-		$values = array('goback' => true, 'messages' => $this->messages->messages,"parentID" => $node->get('IdParent'));
+		$values = array('goback' => true, 'messages' => $this->messages->messages, 'parentID' => $node->get('IdParent'));
         $this->sendJSON($values);
     }
 }

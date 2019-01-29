@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -87,7 +87,7 @@ class Action_modifyuser extends ActionAbstract
         if ($canModifyUserGroup) {
             $group->ChangeUserRole($idNode,$general_role);
         } elseif ($roleOnNode != $general_role) {
-            $this->messages->add(_("You don't have enough permissions to modify the user role"), MSG_TYPE_WARNING);
+            $this->messages->add(_('You don\'t have enough permissions to modify the user role'), MSG_TYPE_WARNING);
         }
     	$user = new User($idNode);
     	$user->set('Name', $name);

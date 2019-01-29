@@ -1,6 +1,7 @@
 <?php
+
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -24,184 +25,144 @@
  *  @version $Revision$
  */
 
-
 use Ximdex\Logger;
 use Ximdex\Models\Link;
 use Ximdex\Models\Node;
+use Ximdex\NodeTypes\NodeTypeConstants;
 
-
-class ximlinkResolver {
-
-	public function __construct() {
-
-	}
-
-	public function resolveximlinkUrl($idnode, $idchannel=null) {
-
+class ximlinkResolver
+{
+	public function resolveximlinkUrl($idnode, $idchannel = null)
+	{
 		$node = new Link($idnode);
-		if (!($node->get('IdLink') > 0)) {
-
+		if (! $node->get('IdLink')) {
 			$data = array('error' => _("ximlink with ID $idnode not found"));
 			return $data;
 		}
-
 		$name = $node->getName();
 		$url = $node->get('Url');
-
 		$it = $node->getDescriptions();
 		$descArray = array();
 		while ($desc = $it->next()) {
 			$descArray[] = $desc->get('Description');
 		}
-
 		$data = array(
 			'idnode' => $idnode,
 			'name' => $name,
 			'url' => $url,
 			'text' => $descArray
 		);
-
 		return $data;
 	}
 
 	/**
-	*Get the available ximlinks from a term or idnode
+	* Get the available ximlinks from a term or idnode
 	*/
-	public function getAvailableximlinks($docid, $term) {
-
+	public function getAvailableximlinks($docid, $term)
+	{
 		$node = new Node($docid);
-		if (!($node->get('IdNode') > 0)) {
-
+		if (! $node->get('IdNode')) {
 			$data = array('error' => _('Not found'));
 			return $data;
 		}
-
 		$idprj = $node->getProject();
-		if (!empty($term)){
-		$query = "select n.IdNode
-			from FastTraverse f inner join Nodes n on f.idchild = n.idnode
+		if (! empty($term)){
+            $query = "select n.IdNode from FastTraverse f inner join Nodes n on f.idchild = n.idnode
 				inner join Links l on n.idnode = l.idlink
-			where f.idnode = $idprj and
-				n.idnodetype = " . \Ximdex\NodeTypes\NodeTypeConstants::LINK . " and
-				(n.Name like '%{$term}%' or
-				n.Description like '%{$term}%' or
-				l.Url like '%{$term}%' or
-				n.idnode = '{$term}')
-				 order by n.Name asc limit 0,50 ";
+			    where f.idnode = $idprj and n.idnodetype = " . \Ximdex\NodeTypes\NodeTypeConstants::LINK . " and (n.Name like '%{$term}%' or
+				n.Description like '%{$term}%' or l.Url like '%{$term}%' or n.idnode = '{$term}')
+				order by n.Name asc limit 0,50 ";
+		} else {
+			$query = "select n.IdNode from FastTraverse f inner join Nodes n on f.idchild = n.idnode
+                inner join Links l on n.idnode = l.idlink
+                where f.idnode = $idprj and n.idnodetype = " . \Ximdex\NodeTypes\NodeTypeConstants::LINK . " 
+                order by n.Name asc limit 0,50 ";
 		}
-		else{
-			$query = "select n.IdNode
-                        from FastTraverse f inner join Nodes n on f.idchild = n.idnode
-                                inner join Links l on n.idnode = l.idlink
-                        where f.idnode = $idprj and
-                                n.idnodetype = " . \Ximdex\NodeTypes\NodeTypeConstants::LINK . "  order by n.Name asc limit 0,50 ";
-
-		}
-
-		//$query = sprintf($query, $idprj);
 		Logger::debug($query);
 		$data = array();
 		$db = new \Ximdex\Runtime\Db();
 		$db->query($query);
-
-		while (!$db->EOF) {
+		while (! $db->EOF) {
 			$data[] = $this->resolveximlinkUrl($db->getValue('IdNode'));
 			$db->next();
 		}
-
 		return $data;
 	}
 
-	public function saveximlink($iddoc, $idnode, $idchannel, $name, $url, $text) {
-
+	public function saveximlink($iddoc, $idnode, $idchannel, $name, $url, $text)
+	{
 		$idlink = $this->nodeExistsByName($iddoc, $name);
-
 		if ($idlink === false) {
-
 			$ret = $this->createNewximlink($iddoc, $name, $url, $text, $idchannel);
 			$idlink = $ret[0];
-
 			$link = new Link($idlink);
 			if ($link->get('IdLink') > 0) {
-
 				$link->addDescription($text);
 			}
-
 		} else {
-
 			$link = new Link($idlink);
 			if ($link->get('IdLink') > 0) {
-
 				$_url = $link->get('Url');
 				if ($url != $_url) {
 					$link->set('Url', $url);
 					$link->update();
 				}
-
 				$link->addDescription($text);
 			}
 		}
-
 		return array($idlink, $idchannel);
 	}
 
-	private function getProjectId($idnode) {
+	private function getProjectId($idnode)
+	{
 		$node = new Node($idnode);
-		if (!($node->get('IdNode') > 0)) {
+		if (! $node->get('IdNode')) {
 			return false;
 		}
 		$idprj = $node->getProject();
 		return $idprj;
 	}
 
-	private function nodeExistsByName($iddoc, $name) {
-
+	private function nodeExistsByName($iddoc, $name)
+	{
 		$idprj = $this->getProjectId($iddoc);
 		if ($idprj === false) {
 			return false;
 		}
-
 		$query = sprintf("select n.IdNode, n.IdParent, n.Name
 			from Nodes n join FastTraverse f on f.idchild = n.idnode
 			where n.name = '%s' and
 				f.idnode = %s and
 				f.depth > 0 and
-				n.idnodetype = " . \Ximdex\NodeTypes\NodeTypeConstants::LINK, $name, $idprj);
-
-		$db = new \Ximdex\Runtime\Db();
+				n.idnodetype = " . NodeTypeConstants::LINK, $name, $idprj);
+		$db = new Ximdex\Runtime\Db();
 		$db->query($query);
-
 		$idlink = $db->EOF ? false : $idlink = $db->getValue('IdNode');
 		return $idlink;
 	}
 
-	private function createNewximlink($iddoc, $name, $url, $text, $idchannel) {
-
+	private function createNewximlink($iddoc, $name, $url, $text, $idchannel)
+	{
 		$idprj = $this->getProjectId($iddoc);
 		$prj = new Node($idprj);
 		$ximlinkFolderId = $prj->GetChildByName('ximlink');
-
 		$data = array(
 			'NODETYPENAME' => 'LINK',
 			'NAME' => $name,
 			'PARENTID' => $ximlinkFolderId,
 			'CHILDRENS' => array(
-					array('URL' => $url),
-					array('DESCRIPTION' => $text)
-				)
-			);
-
+				array('URL' => $url),
+				array('DESCRIPTION' => $text)
+			)
+		);
 		$bio = new \Ximdex\IO\BaseIO();
 		$result = $bio->build($data);
-
 		if ($result < 1) {
 			Logger::error(_('A new ximlink could not be created: ') . $url);
 			foreach ($bio->messages->messages as $msg) {
 				Logger::error(_('ximlink: ') . $msg['message']);
 			}
 		}
-
 		return array($result, $idchannel);
 	}
-
 }

@@ -91,7 +91,7 @@ class Action_createchannel extends ActionAbstract
 
         // Control uniqueness of tupla, channel, format
         $node = new Node();
-        $result = $node->CreateNode(strtoupper($name), $idNode, $nodeType->get('IdNodeType'), NULL, $name, $extension, NULL, $description, ''
+        $result = $node->createNode(strtoupper($name), $idNode, $nodeType->get('IdNodeType'), NULL, $name, $extension, NULL, $description, ''
             , $renderMode, $outputType, $renderType, $codeLanguage);
         if ($result > 0) {
             $node->messages->add(_('Channel has been succesfully inserted'), MSG_TYPE_NOTICE);

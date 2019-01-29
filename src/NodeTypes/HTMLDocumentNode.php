@@ -129,7 +129,7 @@ class HTMLDocumentNode extends AbstractStructuredDocument
                                 'content' => '<div></div>'
                             ];
                             if ($doc->messages->messages[0]) {
-                                Logger::error($doc->messages->messages[0]['message']);
+                                Logger::warning($doc->messages->messages[0]['message']);
                             }
                         }
                     }

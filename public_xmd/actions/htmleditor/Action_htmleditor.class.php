@@ -1,9 +1,7 @@
 <?php
-use Ximdex\Models\Node;
-use Ximdex\MVC\ActionAbstract;
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -27,42 +25,46 @@ use Ximdex\MVC\ActionAbstract;
  *  @version $Revision$
  */
 
-class Action_htmleditor extends ActionAbstract {
-	// Main method: shows initial form
-	function index() {
+use Ximdex\Models\Node;
+use Ximdex\MVC\ActionAbstract;
+
+/**
+ * @deprecated
+ */
+class Action_htmleditor extends ActionAbstract
+{
+    /*
+     * Main method: shows initial form
+     */
+	public function index()
+	{
 		$idNode = $this->request->getParam('nodeid');
 		$node = new Node($idNode);
-		if (!($node->get('IdNode') > 0)) {
+		if (! $node->get('IdNode')) {
 			$this->messages->add(_('Requested document does not exist'), MSG_TYPE_ERROR);
 			$this->renderMessages();
 			return;
 		}
-
 		$this->addJs('/vendors/ckeditor/ckeditor.js');
 		$this->addJs('/actions/htmleditor/resources/js/htmleditor.js');
-
-
 		$values = array(
 			'html' => $node->GetContent(),
 			'go_method' => 'save',
 			'id_editor' => $idNode.uniqid()
 		);
-		$this->render($values, NULL, 'default-3.0.tpl');
+		$this->render($values, null, 'default-3.0.tpl');
 	}
 
-	function save() {
+	public function save()
+	{
 		$idNode = $this->request->getParam('nodeid');
 		$content = $this->request->getParam('htmleditor');
-
 		$node = new Node($idNode);
-		if (!($node->get('IdNode') > 0)) {
+		if (! $node->get('IdNode')) {
 			$values = array(array('message'=> _('Requested document does not exist'), 'type' => 0));
         	$this->sendJSON(array('messages' => $values));
-			return;
 		}
-
 		$node->SetContent($content, true);
-
 		$values = array(array('message'=> _('Document has been successfully updated'), 'type' => 2));
         $this->sendJSON(array('messages' => $values));
 	}

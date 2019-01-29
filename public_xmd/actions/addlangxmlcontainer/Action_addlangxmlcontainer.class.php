@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -32,18 +32,18 @@ use Ximdex\Models\NodeType;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\MVC\ActionAbstract;
 
-class Action_addlangxmlcontainer extends ActionAbstract {
-    
+class Action_addlangxmlcontainer extends ActionAbstract
+{    
     /**
      * Main Method: it shows the initial form
      */
     public function index()
     {        
-    	$idNode = $this->request->getParam("nodeid");
+    	$idNode = $this->request->getParam('nodeid');
     	$node = new Node($idNode);
     	$idNode = $node->get('IdNode');
 		if (empty($idNode)) {
-			die(_("Error with parameters"));
+			die(_('Error with parameters'));
 		}
 		$idTemplate = $this->getVisualTemplate($idNode);
 		$template = new Node($idTemplate);
@@ -93,9 +93,9 @@ class Action_addlangxmlcontainer extends ActionAbstract {
 		}
 		else {
 			$node = new Node($nodeid);
-			if (!($node->get('IdNode') > 0)) {
+			if (! $node->get('IdNode')) {
 			    
-				Logger::error("Selected Node " . $nodeid . " was not found");
+				Logger::error('Selected Node ' . $nodeid . ' was not found');
 				$msg = _('The selected node was not found:') . $nodeid;
 				$this->messages->add($msg, MSG_TYPE_ERROR);
 				$this->render(array('messages' => $this->messages->messages));
@@ -109,9 +109,10 @@ class Action_addlangxmlcontainer extends ActionAbstract {
 				Logger::error('More than one allowed nodetype found for this folder. Returning the first one');
 				$idNodeType = $allowedNodeTypes[0]['nodetype'];
 			}
-			if (!isset($idNodeType)) {
-				Logger::error("Nodeid: ". $nodeid . "has no NodeAllowedContent with able of storing a language list");
-				$msg = sprintf(_('The node with id %d has not any nodeAllowedContent with necessary features to store a language list'), $nodeid);
+			if (! isset($idNodeType)) {
+				Logger::error('Nodeid: ' . $nodeid . 'has no NodeAllowedContent with able of storing a language list');
+				$msg = sprintf(_('The node with id %d has not any nodeAllowedContent with necessary features to store a language list')
+				    , $nodeid);
 				$this->messages->add($msg, MSG_TYPE_ERROR);
 				$this->render(array('messages' => $this->messages->messages));
 				return false;
@@ -119,8 +120,8 @@ class Action_addlangxmlcontainer extends ActionAbstract {
 			$nodeType = new NodeType($idNodeType);
 			$language = new Language();
 			$allLanguages = $language->find('IdLanguage', NULL, NULL, MONO);
-			if (!$allLanguages) {
-				Logger::error("No language found");
+			if (! $allLanguages) {
+				Logger::error('No language found');
 				$msg = _('No language has been found');
 				$this->messages->add($msg, MSG_TYPE_ERROR);
 				$this->render(array('messages' => $this->messages->messages));
@@ -176,9 +177,9 @@ class Action_addlangxmlcontainer extends ActionAbstract {
 							'NAME' => $node->get('Name'),
 							'PARENTID' => $nodeid,
 							'ALIASNAME' => $aliases[$idLanguage],
-							"CHILDRENS" => array (
-								array ("NODETYPENAME" => "VISUALTEMPLATE", "ID" => $templateid),
-								array ("NODETYPENAME" => "LANGUAGE", "ID" => $idLanguage)
+							'CHILDRENS' => array (
+								array ('NODETYPENAME' => 'VISUALTEMPLATE', 'ID' => $templateid),
+								array ('NODETYPENAME' => 'LANGUAGE', 'ID' => $idLanguage)
 							)
 						);
 						if (isset($aliases[$idLanguage])) {
@@ -202,7 +203,7 @@ class Action_addlangxmlcontainer extends ActionAbstract {
 		if (isset($result) && $result > 0) {
 			$this->messages->add(_('Changes have been successfully done'), MSG_TYPE_NOTICE);
 		}
-        $values = array('messages' => $this->messages->messages, "parentID" => $nodeid);
+        $values = array('messages' => $this->messages->messages, 'parentID' => $nodeid);
         $this->sendJSON($values);
 	}
 

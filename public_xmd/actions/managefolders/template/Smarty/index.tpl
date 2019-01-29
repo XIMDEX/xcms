@@ -39,13 +39,13 @@
 			<div class="subfolders-available">
                 <div class="small-12 columns">
                     <label class="label_title label_general">{t}Subfolders availables{/t}</label>
-                    {foreach from=$subfolders key=nt item=foldername}
+                    {foreach from=$subfolders key=nt item=folder}
                         <div class="subfolder box-col1-1">
                             <input class="hidden-focus" id="{$nt}_{$nodeID}" name="folderlst[]" type="checkbox" 
-                                    value="{$nt}" {if $foldername[2]=='selected' } checked{/if} />
+                                    value="{$nt}" {if $folder['selected'] } checked{/if} />
                             <label style="border-radius: 5px; padding-left:0!important;" class="icon" for="{$nt}_{$nodeID}"><strong 
-                                    class="icon {$foldername[0]}">{$foldername[0]}</strong></label>
-                            <span class="info">{t}{$foldername[1]}{/t}</span>
+                                    class="icon {$folder['name']}">{$folder['name']}</strong></label>
+                            <span class="info">{t}{$folder['description']}{/t}</span>
 				        </div>
 			         {/foreach}
 			    </div>

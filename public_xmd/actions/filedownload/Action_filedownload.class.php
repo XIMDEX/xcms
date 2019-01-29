@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -32,7 +32,7 @@ class Action_filedownload extends ActionAbstract
 {
     public function index()
     {
-        $idNode = $this->request->getParam("nodeid");
+        $idNode = $this->request->getParam('nodeid');
         $node = new Node ($idNode);
         $values = array('node_name' => $node->get('Name'),
             'nodeTypeID' => $node->nodeType->getID(),
@@ -45,7 +45,7 @@ class Action_filedownload extends ActionAbstract
     public function downloadFile()
     {
         if ($this->request->getParam('nodeid')) {
-            $idNode = $this->request->getParam("nodeid");
+            $idNode = $this->request->getParam('nodeid');
             $this->echoNode($idNode);
         }
     }
@@ -54,18 +54,18 @@ class Action_filedownload extends ActionAbstract
     {
         $fileNode = new Node($idNode);
         $fileName = $fileNode->get('Name');
-        $gmDate =  gmdate("D, d M Y H:i:s");
+        $gmDate =  gmdate('D, d M Y H:i:s');
         $fileContent = $fileNode->GetContent();
 
         /// Expiration headers
         $this->response->set('Expires', 'Mon, 26 Jul 1997 05:00:00 GMT');
-        $this->response->set('Last-Modified', $gmDate . " GMT");
+        $this->response->set('Last-Modified', $gmDate . ' GMT');
         $this->response->set('Cache-Control',array('no-store, no-cache, must-revalidate', 'post-check=0, pre-check=0'));
         $this->response->set('Pragma', 'no-cache');
-        $this->response->set('ETag', md5($idNode.$gmDate));
+        $this->response->set('ETag', md5($idNode . $gmDate));
         $this->response->set('Content-transfer-encoding', 'binary');
         $this->response->set('Content-type', 'octet/stream');
-        $this->response->set('Content-Disposition', "attachment; filename=".$fileName);
+        $this->response->set('Content-Disposition', 'attachment; filename=' . $fileName);
         $this->response->set('Content-Length', strlen(strval($fileContent)));
         $this->response->sendHeaders();
         echo $fileContent;

@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -27,6 +27,8 @@
 
 use Ximdex\Models\Node;
 use Ximdex\Models\NodeAllowedContent;
+use Ximdex\NodeTypes\NodeTypeConstants;
+use Ximdex\NodeTypes\XsltNode;
 use Ximdex\Runtime\App;
 use Ximdex\Sync\SynchroFacade;
 
@@ -43,7 +45,7 @@ class Action_movenode extends Action_copy
     */
    public function index()
    {
-        $idNode = (int) $this->request->getParam("nodeid");
+        $idNode = (int) $this->request->getParam('nodeid');
         $node = new Node($idNode);
         $idNodeType = $node->get('IdNodeType');
         $nac = new NodeAllowedContent();
@@ -67,9 +69,11 @@ class Action_movenode extends Action_copy
         	}
         }
         $targetNodes = $this->getTargetNodes($node->GetID(), $node->GetNodeType());
+        /*
         $targetNodes = array_filter($targetNodes, function($nodes) use ($node) {
             return $nodes['idnode'] != $node->GetID();
         });
+        */
 		$this->addCss('/actions/copy/resources/css/style.css');
 		$values = array(
 			'id_node' => $node->get('IdNode'),
@@ -84,29 +88,28 @@ class Action_movenode extends Action_copy
 			'isPublished' => $isPublished,
 		    'nodeTypeID' => $node->nodeType->getID(),
 		    'node_Type' => $node->nodeType->GetName(),
-			"go_method" => "move_node"
+			'go_method' => 'move_node'
 		);
 		$this->render($values, NULL, 'default-3.0.tpl');
     }
 
 	public function move_node()
 	{
-      	$idNode = (int) $this->request->getParam("nodeid");
-		$targetParentID = $this->request->getParam("targetid");
-		$unpublishDoc = ($this->request->getParam("unpublishdoc") == 1) ? true : false;
+      	$idNode = (int) $this->request->getParam('nodeid');
+		$targetParentID = $this->request->getParam('targetid');
+		$unpublishDoc = ($this->request->getParam('unpublishdoc') == 1) ? true : false;
 		$node = new Node($idNode);
 		$checks = $node->checkTarget($targetParentID);
-		if (null == $checks || !$checks["insert"] ) {
-			$this->messages->add(_("Moving node to selected destination is not allowed"), MSG_TYPE_ERROR);
+		if (null == $checks || ! $checks['insert'] ) {
+			$this->messages->add(_('Moving node to selected destination is not allowed'), MSG_TYPE_ERROR);
 			$values = array('messages' => $this->messages->messages);
-		}
-		else {
-		    $this->_move($idNode, $targetParentID,  $unpublishDoc);
+		} else {
+		    $this->move($idNode, $targetParentID,  $unpublishDoc);
 		    $values = array(
     			'messages' => $this->messages->messages,
     			'id_node' => $idNode,
     			'params' => '',
-    			'nodeURL' => App::getUrl("/?action=movenode&nodeid={$idNode}"),
+    			'nodeURL' => App::getUrl('/?action=movenode&nodeid=' . $idNode),
     			'action_with_no_return' => true,
     			'parentID' => $targetParentID,
     			'oldParentID' => $node->GetParent()
@@ -117,51 +120,51 @@ class Action_movenode extends Action_copy
 
 	public function confirm_move()
 	{
-		$idNode = (int) $this->request->getParam("nodeid");
-		$targetParentID = $this->request->getParam("targetid");
+		$idNode = (int) $this->request->getParam('nodeid');
+		$targetParentID = $this->request->getParam('targetid');
 		$node = new Node($idNode);
 		$checks = $node->checkTarget($targetParentID);
 		$smarty = null;
 		$genericTemplate = null;
-		if (null == $checks || !$checks["insert"]) {
-			$this->messages->add(_("Moving node to selected destination is not allowed"), MSG_TYPE_ERROR);
-		}
-		else {
-		  $smarty = "confirm";
-		  $genericTemplate = "default-3.0.tpl";
+		if (null == $checks || !$checks['insert']) {
+			$this->messages->add(_('Moving node to selected destination is not allowed'), MSG_TYPE_ERROR);
+		} else {
+		  $smarty = 'confirm';
+		  $genericTemplate = 'default-3.0.tpl';
 		}
 		$targetNode = new Node($targetParentID);
 		$values = array(
 			'messages' => $this->messages->messages,
 			'nodeid' => $idNode,
-			"nodeName" => $node->GetNodeName(),
-			"nodePath" => $node->GetPath(),
-			"targetPath" => $targetNode->GetPath(),
-			"targetid" => $targetParentID,
+			'nodeName' => $node->GetNodeName(),
+			'nodePath' => $node->GetPath(),
+			'targetPath' => $targetNode->GetPath(),
+			'targetid' => $targetParentID,
 			'params' => '',
-			"nodeURL" => App::getUrl("/?action=movenode&nodeid={$idNode}"),
-			"go_method" => "move_node"
+			'nodeURL' => App::getUrl('/?action=movenode&nodeid=' . $idNode),
+			'go_method' => 'move_node'
 		);
-		$this->render($values,$smarty, $genericTemplate);
+		$this->render($values, $smarty, $genericTemplate);
 	}
 
-    private function _move($idNode, $targetParentID,  $unpublishDoc)
+    private function move($idNode, $targetParentID,  $unpublishDoc)
     {
 		$node = new Node($idNode);
 		$err = baseIO_MoveNode($idNode, $targetParentID);
-		if (!$err) {
-			$this->messages->add(sprintf(_("Node %s has been successfully moved"), $node->GetNodeName()), MSG_TYPE_NOTICE);
+		if (! $err) {
+			$this->messages->add(sprintf(_('Node %s has been successfully moved'), $node->GetNodeName()), MSG_TYPE_NOTICE);
+			/*
 			$sync = new SynchroFacade();
 			$sync->deleteAllTasksByNode($idNode, $unpublishDoc);
-		}
-		else {
+			*/
+		} else {
 			$this->messages->add(_($err), MSG_TYPE_ERROR);
 			return false;
 		}
 		
 		// Update templates_includes files if node type is a XSL template
-		if ($node->GetNodeType() == \Ximdex\NodeTypes\NodeTypeConstants::XSL_TEMPLATE) {
-            $xsltNode = new \Ximdex\NodeTypes\XsltNode($node);
+		if ($node->GetNodeType() == NodeTypeConstants::XSL_TEMPLATE) {
+            $xsltNode = new XsltNode($node);
             if ($xsltNode->move_node($targetParentID) === false) {
                 $this->messages->mergeMessages($xsltNode->messages);
                 return false;
@@ -175,11 +178,10 @@ class Action_movenode extends Action_copy
      * Check if the propousal node can be target for the current one.
      * Must be in the same project
      * 
-     * @param int $idCurrentNode
-     * @param int $idCandidateNode
-     * @result boolean True if everything is ok
+     * {@inheritDoc}
+     * @see Action_copy::checkTargetConditions()
      */
-    protected function checkTargetConditions($idCurrentNode, $idCandidateNode)
+    protected function checkTargetConditions(int $idCurrentNode, int $idCandidateNode) : bool
     {
         $node = new Node($idCurrentNode);
         $currentNodeName = $node->GetNodeName();
@@ -187,6 +189,6 @@ class Action_movenode extends Action_copy
         if ($node->getProject() != $candidateNode->getProject()) {
             return false;
         }
-        return !$candidateNode->GetChildByName($currentNodeName);
+        return ! $candidateNode->GetChildByName($currentNodeName);
     }
 }

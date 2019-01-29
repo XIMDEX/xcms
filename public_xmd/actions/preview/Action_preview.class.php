@@ -1,7 +1,7 @@
 <?php
 
 /**
- * \details &copy; 2011 Open Ximdex Evolution SL [http://www.ximdex.org]
+ * \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  * Ximdex a Semantic Content Management System (CMS)
  *
@@ -38,23 +38,22 @@ class Action_preview extends ActionAbstract
     /**
      * Main method: shows initial form
      */
-    function index()
+    public function index()
     {
-        $idNode = (int) $this->request->getParam("nodeid");
-        $params = $this->request->getParam("params");
+        $idNode = (int) $this->request->getParam('nodeid');
+        $params = $this->request->getParam('params');
         $node = new Node($idNode);
         $data = new DataFactory($idNode);
         $version = $data->GetLastVersion();
         $subVersion = $data->GetLastSubVersion($version);
-        setlocale(LC_TIME, "es_ES");
-        $date = strftime("%a, %d/%m/%G %R", $data->GetDate($version, $subVersion));
+        setlocale(LC_TIME, 'es_ES');
+        $date = strftime('%a, %d/%m/%G %R', $data->GetDate($version, $subVersion));
         $user = new User($data->GetUserID($version, $subVersion));
         $userName = $user->GetRealName();
-        if (($node->nodeType->GetName() != 'TextFile') && ($node->nodeType->GetName() != 'ImageFile') 
-                && ($node->nodeType->GetName() != 'BinaryFile') && ($node->nodeType->GetName() != 'NodeHt')) {
-            $channel_title = "channel";
-        }
-        else {
+        if ($node->nodeType->GetName() != 'TextFile' && $node->nodeType->GetName() != 'ImageFile' 
+                && $node->nodeType->GetName() != 'BinaryFile' && $node->nodeType->GetName() != 'NodeHt') {
+            $channel_title = 'channel';
+        } else {
             $channel_title = '';
         }
         $doc = new StructuredDocument($idNode);
@@ -64,8 +63,8 @@ class Action_preview extends ActionAbstract
             foreach ($channelList as $id) {
                 $channel = new Channel($id);
                 $_channels[] = array(
-                    "Id" => $id,
-                    "Name" => $channel->GetName()
+                    'Id' => $id,
+                    'Name' => $channel->GetName()
                 );
             }
         }
@@ -82,8 +81,8 @@ class Action_preview extends ActionAbstract
             'date' => $date,
             'user_name' => $userName,
             'channels' => $_channels,
-            "nodeURL" => $queryManager->getPage() . $queryManager->build(),
-            "go_method" => "preview",
+            'nodeURL' => $queryManager->getPage() . $queryManager->build(),
+            'go_method' => 'preview',
             'name' => $node->GetNodeName(),
             'token' => uniqid()
         );
@@ -93,33 +92,32 @@ class Action_preview extends ActionAbstract
     /**
      * Render the preview
      */
-    function preview()
+    public function preview()
     {
-        $idNode = (int) $this->request->getParam("nodeid");
-        $params = $this->request->getParam("params");
-        if (! is_null($this->request->getParam("version")) && ! is_null($this->request->getParam("subVersion")) 
-                && is_null($this->request->getParam("delete"))) {
+        $idNode = (int) $this->request->getParam('nodeid');
+        $params = $this->request->getParam('params');
+        if (! is_null($this->request->getParam('version')) && ! is_null($this->request->getParam('subVersion')) 
+                && is_null($this->request->getParam('delete'))) {
             
             // If it is a recovery of a version, first it recovers it and then shows the form
-            $version = $this->request->getParam("version");
-            $subVersion = $this->request->getParam("subVersion");
+            $version = $this->request->getParam('version');
+            $subVersion = $this->request->getParam('subVersion');
             $data = new DataFactory($idNode);
             $data->RecoverVersion($version, $subVersion);
-            $this->messages->add(_("The file has been successfully recovered."), MSG_TYPE_NOTICE);
-        }
-        elseif (! is_null($this->request->getParam("delete"))) {
-            $version = $this->request->getParam("version");
-            $subVersion = $this->request->getParam("subVersion");
+            $this->messages->add(_('The file has been successfully recovered.'), MSG_TYPE_NOTICE);
+        } elseif (! is_null($this->request->getParam('delete'))) {
+            $version = $this->request->getParam('version');
+            $subVersion = $this->request->getParam('subVersion');
             $data = new DataFactory($idNode);
             $data->deleteSubversion($version, $subVersion);
-            $this->messages->add(_("The file has been successfully deleted."), MSG_TYPE_NOTICE);
+            $this->messages->add(_('The file has been successfully deleted.'), MSG_TYPE_NOTICE);
         }
         $queryManager = App::get('\Ximdex\Utils\QueryManager');
         $values = array(
             'messages' => $this->messages->messages,
             'id_node' => $idNode,
             'params' => $params,
-            "nodeURL" => $queryManager->getPage() . $queryManager->build()
+            'nodeURL' => $queryManager->getPage() . $queryManager->build()
         );
         $this->render($values);
     }

@@ -43,7 +43,7 @@ class Action_publicatesection extends ActionAbstract
      */
     public function index()
     {
-        $idNode = (int) $this->request->getParam("nodeid");
+        $idNode = (int) $this->request->getParam('nodeid');
         $node = new Node($idNode);
         $nodeType = New NodeType();
         $publishabledNodeTypes = $nodeType->find('IdNodeType, Description', 'IsPublishable is true and IsFolder is false'
@@ -62,7 +62,7 @@ class Action_publicatesection extends ActionAbstract
         $nameServer = $nodeServer->get('Name');
         $physicalServers = $nodeServer->class->GetPhysicalServerList(true);
         if (! sizeof($physicalServers)) {
-            $this->messages->add(sprintf(_("There is not any defined physical server in: '%s'"), $nameServer), MSG_TYPE_ERROR);
+            $this->messages->add(sprintf(_('There is not any defined physical server in: \'%s\''), $nameServer), MSG_TYPE_ERROR);
             $values['messages'] = $this->messages->messages;
         }
         $serverConfig = new ServerConfig();
@@ -70,7 +70,7 @@ class Action_publicatesection extends ActionAbstract
         
         // Loading Notifications default values
         $conf = Ximdex\Modules\Manager::file('/conf/notifications.php', 'XIMDEX');
-        $defaultMessage = $this->buildMessage($conf["defaultSectionMessage"], $node->get('Name'));
+        $defaultMessage = $this->buildMessage($conf['defaultSectionMessage'], $node->get('Name'));
         $values = $values + array(
             'group_state_info' => Group::getSelectableGroupsInfo($idNode),
             'required' => $conf['required'] === true ? 1 : 0,
@@ -126,8 +126,8 @@ class Action_publicatesection extends ActionAbstract
         // The publication times are in milliseconds.
         $dateUp = $this->request->getParam('dateUp_timestamp');
         $dateDown = $this->request->getParam('dateDown_timestamp');
-        $up = (! is_null($dateUp) && $dateUp != "") ? $dateUp / 1000 : time();
-        $down = (! is_null($dateDown) && $dateDown != "") ? $dateDown / 1000 : null;
+        $up = (! is_null($dateUp) && $dateUp != '') ? $dateUp / 1000 : time();
+        $down = (! is_null($dateDown) && $dateDown != '') ? $dateDown / 1000 : null;
         if ($down and $down <= ($up + 58)) {
             $this->messages->add('Expiration date has to be later than beginning one', MSG_TYPE_ERROR);
             $values = array('messages' => $this->messages->messages);
@@ -169,7 +169,7 @@ class Action_publicatesection extends ActionAbstract
         );
         $syncFac = new SynchroFacade();
         $syncFac->pushDocInPublishingPool($idNode, $up, $down, $flagsPublication, $recurrence);
-        $this->messages->add(sprintf(_("%s %s has been successfully sent to publish"), ucfirst($folderType), $nodename), MSG_TYPE_NOTICE);
+        $this->messages->add(sprintf(_('%s %s has been successfully sent to publish'), ucfirst($folderType), $nodename), MSG_TYPE_NOTICE);
         $values = array('messages' => $this->messages->messages);
         $this->sendJSON($values);
     }
@@ -256,8 +256,8 @@ class Action_publicatesection extends ActionAbstract
         if (count($gaps) > 0) {
             foreach ($gaps as $gap) {
                 $gapInfo[] = array(
-                    'BEGIN_DATE' => strftime("%d/%m/%Y %H:%M:%S", $gap['start']),
-                    'END_DATE' => isset($gap['end']) ? strftime("%d/%m/%Y %H:%M:%S", $gap['end']) : null,
+                    'BEGIN_DATE' => strftime('%d/%m/%Y %H:%M:%S', $gap['start']),
+                    'END_DATE' => isset($gap['end']) ? strftime('%d/%m/%Y %H:%M:%S', $gap['end']) : null,
                     'NODES' => isset($gap['nodes']) ? $gap['nodes'] : null
                 );
             }
@@ -291,7 +291,7 @@ class Action_publicatesection extends ActionAbstract
      * @param string $texttosend : Text to send in notification mail.
      * @return boolean true if the notification is sended.
      */
-    private function sendNotification($idNode, $userList, $texttosend = "")
+    private function sendNotification($idNode, $userList, $texttosend = '')
     {
         $send = true;
         if (count($userList) == 0) {
@@ -305,27 +305,16 @@ class Action_publicatesection extends ActionAbstract
         if (! $send) {
             return false;
         }
-        $idUser = \Ximdex\Runtime\Session::get("userID");
+        $idUser = \Ximdex\Runtime\Session::get('userID');
         $node = new Node($idNode);
-        /*
-        if (count($userList) > 0) {
-            $userNameList = array();
-            foreach ($userList as $id) {
-                $user = new User($id);
-                $userNameList[] = $user->get('Login');
-            }
-            $userNameString = implode(', ', $userNameList);
-        }
-        */
         $user = new User($idUser);
-        // $from = $user->get('Login');
         $userName = $user->get('Name');
         $nodeName = $node->get('Name');
         $nodePath = $node->GetPath();
-        $subject = _("Ximdex CMS: Published section:") . " " . $nodeName;
-        $content = _("The user") . " " . $userName . " " . _("has published the section")
-            . " " . $nodeName . "\n" . "\n" . _("Full Ximdex path") . " --> " . $nodePath . "\n" . "\n" . _("Comment") . ":" 
-            . "\n". $texttosend . "\n" . "\n";
+        $subject = _('Ximdex CMS: Published section:') . ' ' . $nodeName;
+        $content = _('The user') . ' ' . $userName . ' ' . _('has published the section')
+            . ' ' . $nodeName . "\n\n" . _('Full Ximdex path') . ' --> ' . $nodePath . "\n\n" . _('Comment') . ':' 
+            . "\n". $texttosend . "\n\n";
         parent::sendNotifications($subject, $content, $userList);
         return true;
     }

@@ -1,6 +1,7 @@
 <?php
+
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -28,51 +29,48 @@ use Ximdex\Models\Node;
 use Ximdex\Models\User;
 use Ximdex\MVC\ActionAbstract;
 
-
-class Action_deleteuser extends ActionAbstract {
-   // Main method: it shows init form
-    function index() {
+class Action_deleteuser extends ActionAbstract
+{
+    /**
+     * Main method: it shows init form
+     */
+    public function index()
+    {
 		$idNode = $this->request->getParam('nodeid');
-
 		$user = new User($idNode);
-		if (!($user->get('IdUser') > 0)) {
+		if (! $user->get('IdUser')) {
 			$this->messages->add(_('User could not be found'), MSG_TYPE_ERROR);
 			$this->render(array('messages' => $this->messages->messages));
+			return;
 		}
-
+		$node = new Node($idNode);
 		$values = array(
 			'id_node' => $idNode,
 			'go_method' => 'deleteuser',
 			'login' => $user->get('Login'),
 			'realname' => $user->get('Name'),
 			'email' => $user->get('Email'),
-		    'nodeTypeID' => $user->nodeType->getID(),
-		    'node_Type' => $user->nodeType->GetName(),
+		    'nodeTypeID' => $node->nodeType->getID(),
+		    'node_Type' => $node->nodeType->GetName(),
 			'messages' => $this->messages->messages);
-
 		$this->render($values, null, 'default-3.0.tpl');
     }
 
-    function deleteuser() {
+    public function deleteuser()
+    {
 		$idParent = $idNode = $this->request->getParam('id_node');
-
 		$user = new Node($idNode);
-
-		if (!($user->get('IdNode') > 0)) {
+		if (! $user->get('IdNode')) {
 			$user->messages->add(_('User could not be found'), MSG_TYPE_ERROR);
 		} else {
 			$idParent = $user->get('IdParent');
 		   	$result = $user->delete();
-
-			if($result) {
+			if ($result) {
 				$user->messages->add(_('User has been successfully deleted'), MSG_TYPE_NOTICE);
 			}
 		}
-
 		//$this->reloadNode($idParent);
-
-		$values = array('messages' => $user->messages->messages, 'parentID' => $idParent,'action_with_no_return' => true);
-
+		$values = array('messages' => $user->messages->messages, 'parentID' => $idParent, 'action_with_no_return' => true);
 		$this->sendJSON($values);
     }
 }

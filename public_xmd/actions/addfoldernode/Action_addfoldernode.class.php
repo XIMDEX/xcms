@@ -50,34 +50,34 @@ class Action_addfoldernode extends ActionAbstract
      */
     public function index()
     {
-        //Getting node info from params.
-        $nodeID = $this->request->getParam("nodeid");
+        // Getting node info from params.
+        $nodeID = $this->request->getParam('nodeid');
         $node = new Node($nodeID);
 
         // First, checks if has nodetypeid param
-        if ($this->request->get("nodetypeid")) {
-            $nt = new NodeType($this->request->get("nodetypeid"));
+        if ($this->request->get('nodetypeid')) {
+            $nt = new NodeType($this->request->get('nodetypeid'));
             $nodeType = [];
-            $nodeType["name"] = $nt->get('Name');
-            $nodeType["friendlyName"] = $nt->get('Description');
+            $nodeType['name'] = $nt->get('Name');
+            $nodeType['friendlyName'] = $nt->get('Description');
         } else {
             $nodeType = $this->GetTypeOfNewNode($nodeID);
         }
-        $friendlyName = (!empty($nodeType["friendlyName"])) ? $nodeType["friendlyName"] : $nodeType["name"];
-        $go_method = ($nodeType["name"] == "Section") ? "addSectionNode" : "addNode";
+        $friendlyName = (!empty($nodeType['friendlyName'])) ? $nodeType['friendlyName'] : $nodeType['name'];
+        $go_method = ($nodeType['name'] == 'Section') ? 'addSectionNode' : 'addNode';
         
         // Show disclaimer if node canAttachGroups
         $CanAttachGroups = 0;
-        if ($this->request->get("nodetypeid")) {
-            $nt = new NodeType($this->request->get("nodetypeid"));
+        if ($this->request->get('nodetypeid')) {
+            $nt = new NodeType($this->request->get('nodetypeid'));
             $CanAttachGroups = $nt->get('CanAttachGroups');
         } else {
             $nodeType = $this->GetTypeOfNewNode($nodeID);
             $CanAttachGroups = (isset( $nodeType['CanAttachGroups'] )) ? $nodeType['CanAttachGroups'] : false;
         }
-        $this->request->setParam("go_method", $go_method);
-        $this->request->setParam("friendlyName", $friendlyName);
-        $this->request->setParam("CanAttachGroups", $CanAttachGroups);
+        $this->request->setParam('go_method', $go_method);
+        $this->request->setParam('friendlyName', $friendlyName);
+        $this->request->setParam('CanAttachGroups', $CanAttachGroups);
         $values = array(
             'go_method' => 'addNode',
             'nodeID' => $nodeID,
@@ -88,104 +88,104 @@ class Action_addfoldernode extends ActionAbstract
         if (isset($nodeType['name']) and $nodeType['name'] == 'Project'){
             $this->loadNewProjectForm($values);
         } else {
-            $this->render($values, "index", 'default-3.0.tpl');
+            $this->render($values, 'index', 'default-3.0.tpl');
         }
     }
 
-    function GetTypeOfNewNode($nodeID)
+    public function getTypeOfNewNode($nodeID)
     {
-        //TODO change this switch sentence for a query to the NodeAllowedContents table to check what subfolders can contain
+        // TODO change this switch sentence for a query to the NodeAllowedContents table to check what subfolders can contain
         $node = new Node($nodeID);
         if (!$node->get('IdNode') > 0) {
             return null;
         }
         $nodeTypeName = $node->nodeType->GetName();
         switch ($nodeTypeName) {
-            case "Projects":
-                $newNodeTypeName = "Project";
-                $friendlyName = "Project";
+            case 'Projects':
+                $newNodeTypeName = 'Project';
+                $friendlyName = 'Project';
                 break;
-            case "Project":
-                $newNodeTypeName = "Server";
-                $friendlyName = "Server";
+            case 'Project':
+                $newNodeTypeName = 'Server';
+                $friendlyName = 'Server';
                 break;
-            case "Server":
-                $newNodeTypeName = "Section";
-                $friendlyName = "Section";
+            case 'Server':
+                $newNodeTypeName = 'Section';
+                $friendlyName = 'Section';
                 break;
-            case "Section":
-                $newNodeTypeName = "Section";
-                $friendlyName = "Section";
+            case 'Section':
+                $newNodeTypeName = 'Section';
+                $friendlyName = 'Section';
                 break;
-            case "ImagesRootFolder":
-                $newNodeTypeName = "ImagesFolder";
-                $friendlyName = "Image folder";
+            case 'ImagesRootFolder':
+                $newNodeTypeName = 'ImagesFolder';
+                $friendlyName = 'Image folder';
                 break;
-            case "ImagesFolder":
-                $newNodeTypeName = "ImagesFolder";
-                $friendlyName = "Image folder";
+            case 'ImagesFolder':
+                $newNodeTypeName = 'ImagesFolder';
+                $friendlyName = 'Image folder';
                 break;
-            case "XmlRootFolder":
-                $newNodeTypeName = "XmlFolder";
-                $friendlyName = "XML Folder";
+            case 'XmlRootFolder':
+                $newNodeTypeName = 'XmlFolder';
+                $friendlyName = 'XML Folder';
                 break;
-            case "XmlFolder":
-                $newNodeTypeName = "XmlFolder";
-                $friendlyName = "XML Folder";
+            case 'XmlFolder':
+                $newNodeTypeName = 'XmlFolder';
+                $friendlyName = 'XML Folder';
                 break;
-            case "ImportRootFolder":
-                $newNodeTypeName = "ImportFolder";
-                $friendlyName = "Ximclude folder";
+            case 'ImportRootFolder':
+                $newNodeTypeName = 'ImportFolder';
+                $friendlyName = 'Ximclude folder';
                 break;
-            case "ImportFolder":
-                $newNodeTypeName = "ImportFolder";
-                $friendlyName = "Ximclude folder";
+            case 'ImportFolder':
+                $newNodeTypeName = 'ImportFolder';
+                $friendlyName = 'Ximclude folder';
                 break;
-            case "CommonRootFolder":
-                $newNodeTypeName = "CommonFolder";
-                $friendlyName = "Common folder";
+            case 'CommonRootFolder':
+                $newNodeTypeName = 'CommonFolder';
+                $friendlyName = 'Common folder';
                 break;
-            case "CommonFolder":
+            case 'CommonFolder':
             case 'XOTFFolder':
-                $newNodeTypeName = "CommonFolder";
-                $friendlyName = "Common folder";
+                $newNodeTypeName = 'CommonFolder';
+                $friendlyName = 'Common folder';
                 break;
-            case "CssRootFolder":
-                $newNodeTypeName = "CssFolder";
-                $friendlyName = "CSS folder";
+            case 'CssRootFolder':
+                $newNodeTypeName = 'CssFolder';
+                $friendlyName = 'CSS folder';
                 break;
-            case "CssFolder":
-                $newNodeTypeName = "CssFolder";
-                $friendlyName = "CSS folder";
+            case 'CssFolder':
+                $newNodeTypeName = 'CssFolder';
+                $friendlyName = 'CSS folder';
                 break;
-            case "TemplatesRootFolder":
-                $newNodeTypeName = "TemplatesRootFolder";
-                $friendlyName = "Template folder";
+            case 'TemplatesRootFolder':
+                $newNodeTypeName = 'TemplatesRootFolder';
+                $friendlyName = 'Template folder';
                 break;
-            case "TemplatesFolder":
-            case "TemplateViewFolder":
-                $newNodeTypeName = "TemplateViewFolder";
-                $friendlyName = "Template folder";
+            case 'TemplatesFolder':
+            case 'TemplateViewFolder':
+                $newNodeTypeName = 'TemplateViewFolder';
+                $friendlyName = 'Template folder';
                 break;
-            case "LinkManager":
-                $newNodeTypeName = "LinkFolder";
-                $friendlyName = "Link folder";
+            case 'LinkManager':
+                $newNodeTypeName = 'LinkFolder';
+                $friendlyName = 'Link folder';
                 break;
-            case "LinkFolder":
-                $newNodeTypeName = "LinkFolder";
-                $friendlyName = "Link folder";
+            case 'LinkFolder':
+                $newNodeTypeName = 'LinkFolder';
+                $friendlyName = 'Link folder';
                 break;
-            case "XimletRootFolder":
-                $newNodeTypeName = "XimletFolder";
-                $friendlyName = "Ximlet folder";
+            case 'XimletRootFolder':
+                $newNodeTypeName = 'XimletFolder';
+                $friendlyName = 'Ximlet folder';
                 break;
-            case "XimletFolder":
-                $newNodeTypeName = "XimletFolder";
-                $friendlyName = "Ximlet folder";
+            case 'XimletFolder':
+                $newNodeTypeName = 'XimletFolder';
+                $friendlyName = 'Ximlet folder';
                 break;
-            case "OpenDataSection":
-                $newNodeTypeName = "OpenDataDataset";
-                $friendlyName = "Dataset";
+            case 'OpenDataSection':
+                $newNodeTypeName = 'OpenDataDataset';
+                $friendlyName = 'Dataset';
                 break;
             case 'JsRootFolder':
                 $newNodeTypeName = 'JsFolder';
@@ -200,8 +200,8 @@ class Action_addfoldernode extends ActionAbstract
                 return null;
         }
         $type = [];
-        $type["name"] = $newNodeTypeName;
-        $type["friendlyName"] = $friendlyName;
+        $type['name'] = $newNodeTypeName;
+        $type['friendlyName'] = $friendlyName;
         return $type;
     }
 
@@ -236,26 +236,26 @@ class Action_addfoldernode extends ActionAbstract
         // Load projects
         $themes = ProjectTemplate::getAllProjectTemplates();
         $cssFolder = '/actions/addfoldernode/resources/css/';
-        $this->addCss($cssFolder . "style.css");
+        $this->addCss($cssFolder . 'style.css');
         $jsFolder = '/actions/addfoldernode/resources/js/';
-        $this->addJs($jsFolder . "init.js");
+        $this->addJs($jsFolder . 'init.js');
         $arrayTheme = array();
         foreach ($themes as $theme) {
             $themeDescription = [];
-            $themeDescription["name"] = $theme->__get("name");
-            $themeDescription["title"] = $theme->__get("title");
-            $themeDescription["description"] = $theme->__get("description");
-            $themeDescription["configurable"] = $theme->configurable == "1" ? true : false;
+            $themeDescription['name'] = $theme->__get('name');
+            $themeDescription['title'] = $theme->__get('title');
+            $themeDescription['description'] = $theme->__get('description');
+            $themeDescription['configurable'] = $theme->configurable == '1' ? true : false;
             $arrayTheme[] = $themeDescription;
         }
-        $values["themes"] = $arrayTheme;
-        $this->render($values, "addProject", 'default-3.0.tpl');
+        $values['themes'] = $arrayTheme;
+        $this->render($values, 'addProject', 'default-3.0.tpl');
     }
 
-    function addNode()
+    public function addNode()
     {
-        $nodeID = $this->request->getParam("nodeid");
-        $name = $this->request->getParam("name");
+        $nodeID = $this->request->getParam('nodeid');
+        $name = $this->request->getParam('name');
         $this->name = $name;
         $channels = $this->request->getParam('channels_listed');
         $languages = $this->request->getParam('languages_listed');
@@ -264,23 +264,23 @@ class Action_addfoldernode extends ActionAbstract
         /**
          * First, checks if has nodetypeid param
          */
-        if ($this->request->get("nodetypeid")) {
-            $nt = new NodeType($this->request->get("nodetypeid"));
-            $nodeType["name"] = $nt->get('Name');
-            $nodeType["friendlyName"] = $nt->get('Description');
+        if ($this->request->get('nodetypeid')) {
+            $nt = new NodeType($this->request->get('nodetypeid'));
+            $nodeType['name'] = $nt->get('Name');
+            $nodeType['friendlyName'] = $nt->get('Description');
         } else {
             $nodeType = $this->GetTypeOfNewNode($nodeID);
         }
-        $nodeTypeName = $nodeType["name"];
+        $nodeTypeName = $nodeType['name'];
         $nodeType = new NodeType();
         $nodeType->SetByName($nodeTypeName);
-        if ($this->request->getParam("theme"))
+        if ($this->request->getParam('theme'))
         {
             // We use this global variable to know that we are creating a project from a theme
             $GLOBALS['fromTheme'] = true;
         }
         $folder = new Node();
-        $idFolder = $folder->CreateNode($name, $nodeID, $nodeType->GetID(), null);
+        $idFolder = $folder->createNode($name, $nodeID, $nodeType->GetID(), null);
 
         // Adding channel and language properties (if project)
         if ($idFolder > 0 && $nodeTypeName == 'Project') {
@@ -335,7 +335,7 @@ class Action_addfoldernode extends ActionAbstract
 
     public function createProjectNodes($projectId)
     {
-        $theme = $this->request->getParam("theme");
+        $theme = $this->request->getParam('theme');
         if ($theme)
         {
             // we use this global variable to know that we are creating a project from a theme
@@ -345,10 +345,10 @@ class Action_addfoldernode extends ActionAbstract
             $schemas = $projectTemplate->getSchemes();
             $templates = $projectTemplate->getTemplates();
             foreach ($schemas as $schema) {
-                $this->schemas = $this->insertFiles($projectId, App::getValue("SchemasDirName"), array($schema));
+                $this->schemas = $this->insertFiles($projectId, App::getValue('SchemasDirName'), array($schema));
             }
             foreach ($templates as $template) {
-                $this->insertFiles($projectId, "templates", array($template));
+                $this->insertFiles($projectId, 'templates', array($template));
             }
             foreach ($servers as $server) {
                 $this->insertServer($projectId, $server);
@@ -393,9 +393,9 @@ class Action_addfoldernode extends ActionAbstract
             $this->specialCase($id, $file);
             if ($id > 0) {
                 $ret[$file->filename] = $id;
-                Logger::info("Importing " . $file->basename);
+                Logger::info('Importing ' . $file->basename);
             } else {
-                Logger::error("Error ($id) importing " . $file->basename);
+                Logger::error('Error (' . $id . ') importing ' . $file->basename);
                 Logger::error(print_r($io->messages->messages, true));
             }
         }
@@ -411,11 +411,11 @@ class Action_addfoldernode extends ActionAbstract
     private function specialCase($idNode, & $file)
     {
         $node = new Node($idNode);
-        if ($file->basename == "docxap.xsl") {
+        if ($file->basename == 'docxap.xsl') {
             $docxapContent = $node->GetContent();
             $urlPath = App::getValue('UrlHost') . App::getValue('UrlRoot');
-            $docxapContent = str_replace("{URL_PATH}", $urlPath, $docxapContent);
-            $docxapContent = str_replace("{PROJECT_NAME}", $this->name, $docxapContent);
+            $docxapContent = str_replace('{URL_PATH}', $urlPath, $docxapContent);
+            $docxapContent = str_replace('{PROJECT_NAME}', $this->name, $docxapContent);
             $node->SetContent($docxapContent);
         }
     }
@@ -498,12 +498,12 @@ class Action_addfoldernode extends ActionAbstract
     {
         $createdFolders = $this->createFolders($rootFolderId, array_keys($arrayXimFiles), $idFolderNodeType);
         foreach ($arrayXimFiles as $filePath => $ximFileObject) {
-            $lastSlash = strrpos($filePath, "/");
+            $lastSlash = strrpos($filePath, '/');
             $folderPath = substr($filePath, 0, $lastSlash + 1);
             if ($createdFolders[$folderPath]) {
                 $folderNode = new Node($createdFolders[$folderPath]);
                 $folderName = $folderNode->GetNodeName();
-                $idParent = $folderNode->get("IdParent");
+                $idParent = $folderNode->get('IdParent');
                 $this->insertFiles($idParent, $folderName, array($ximFileObject));
             } else {
                 
@@ -514,13 +514,13 @@ class Action_addfoldernode extends ActionAbstract
 
     private function createFolders($rootFolderId, $arrayNames, $idNodeType)
     {
-        $createdFolders = array("/" => $rootFolderId);
+        $createdFolders = array('/' => $rootFolderId);
         foreach ($arrayNames as $name) {
             $folderId = $rootFolderId;
-            $arrayNews = explode("/", $name);
-            $currentFolderName = "/";
+            $arrayNews = explode('/', $name);
+            $currentFolderName = '/';
             for ($i = 1; $i < count($arrayNews) - 1; $i++) {
-                $currentFolderName .= $arrayNews[$i] . "/";
+                $currentFolderName .= $arrayNews[$i] . '/';
                 if (!array_key_exists($currentFolderName, $createdFolders)) {
                     $folder = new Node();
                     $idFolder = $folder->CreateNode($arrayNews[$i], $folderId, $idNodeType, null);
@@ -532,16 +532,16 @@ class Action_addfoldernode extends ActionAbstract
         return $createdFolders;
     }
 
-    function insertDocs($parentId, $files, $isXimlet = false)
+    private function insertDocs($parentId, $files, $isXimlet = false)
     {
         if ($isXimlet) {
             $xFolderName = 'ximlet';
             $nodeTypeName = 'XIMLET';
-            $nodeTypeContainer = "XIMLETCONTAINER";
+            $nodeTypeContainer = 'XIMLETCONTAINER';
         } else {
             $xFolderName = 'documents';
             $nodeTypeName = 'XMLDOCUMENT';
-            $nodeTypeContainer = "XMLCONTAINER";
+            $nodeTypeContainer = 'XMLCONTAINER';
         }
         $ret = array();
         if (count($files) == 0) {
@@ -579,7 +579,7 @@ class Action_addfoldernode extends ActionAbstract
             );
             $containerId = $io->build($data);
             if (!($containerId > 0)) {
-                Module::log(Module::ERROR, "document " . $file->name . " couldn't be created ($containerId)");
+                Module::log(Module::ERROR, 'document ' . $file->name . ' couldn\'t be created (' . $containerId . ')');
                 continue;
             }
             $data = array(
@@ -604,7 +604,7 @@ class Action_addfoldernode extends ActionAbstract
             $dataTmp = $data;
             foreach ($file->language as $language) {
                 $data = $dataTmp;
-                $data["CHILDRENS"][] = array('NODETYPENAME' => 'LANGUAGE', 'ID' => $language);
+                $data['CHILDRENS'][] = array('NODETYPENAME' => 'LANGUAGE', 'ID' => $language);
                 $docId = $io->build($data);
                 $ret[] = $docId;
             }
@@ -615,7 +615,7 @@ class Action_addfoldernode extends ActionAbstract
         return $ret;
     }
 
-    function addSectionNode()
+    public function addSectionNode()
     {
         $nodeID = $this->request->getParam('nodeid');
         $name = $this->request->getParam('name');
@@ -638,11 +638,11 @@ class Action_addfoldernode extends ActionAbstract
             }
         }
         $this->reloadNode($nodeID);
-        $arrValores = array("nodeId" => $nodeID,
-            "friendlyName" => $friendlyName,
-            "ret" => $idFolder > 0 ? 'true' : 'false',
-            "name" => $name,
-            "msgError" => $folder->msgErr);
+        $arrValores = array('nodeId' => $nodeID,
+            'friendlyName' => $friendlyName,
+            'ret' => $idFolder > 0 ? 'true' : 'false',
+            'name' => $name,
+            'msgError' => $folder->msgErr);
         $this->render($arrValores);
     }
 }

@@ -36,19 +36,7 @@ namespace Ximdex\NodeTypes;
 class Projects extends FolderNode
 {
     private static $ROOTNODEID = 10000;
-
-	/**
-	 *  Does nothing.
-	 * @return null
-	 */
-
-	function RenderizeNode()
-	{
-		return null;
-	}
-
-
-
+    
     /**
      * <p>Checks if the given node id exists</p>
      * @param int $nodeId The node id to be checked

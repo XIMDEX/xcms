@@ -42,6 +42,7 @@ use Ximdex\Utils\FsUtils;
 use Ximdex\Runtime\Session;
 use Ximdex\XML\Base;
 use Ximdex\XML\XML;
+use Ximdex\NodeTypes\XsltNode;
 
 define('DETAIL_LEVEL_LOW', 0);
 define('DETAIL_LEVEL_MEDIUM', 1);
@@ -437,7 +438,7 @@ class Node extends NodesOrm
      * @param $order
      * @return array
      */
-    function GetChildren($idtype = null, $order = null)
+    public function getChildren(int $idtype = null, array $order = null)
     {
         if (! $this->get('IdNode')) {
             return array();
@@ -839,7 +840,7 @@ class Node extends NodesOrm
      *
      * @param null $recursive
      */
-    function RenderizeNode($recursive = null)
+    function renderizeNode($recursive = null)
     {
         $this->ClearError();
         if ($this->get('IdNode') > 0) {
@@ -1092,30 +1093,39 @@ class Node extends NodesOrm
      *
      * @return bool
      */
-    function IsRenderized()
+    public function isRenderized() : bool
     {
         $this->ClearError();
-        if ($this->get('IdNode') > 0) {
-            if (!$this->nodeType->get('IsRenderizable')) {
+        if ($this->get('IdNode')) {
+            if (! $this->nodeType->get('IsRenderizable')) {
                 return false;
             }
-            // $pathList = array();
+            if (! App::getValue('RenderizeAll') and ! in_array($this->GetNodeType(), [
+                NodeTypeConstants::XSL_TEMPLATE,
+                NodeTypeConstants::TEMPLATES_ROOT_FOLDER,
+                NodeTypeConstants::SECTION,
+                NodeTypeConstants::SERVER,
+                NodeTypeConstants::PROJECT
+            ])) {
+                return true;
+            }
+            
+            // Consigue el path hasta el directorio de nodos
+            $absPath = XIMDEX_ROOT_PATH . App::getValue('NodeRoot');
 
-            // / Consigue el path hasta el directorio de nodos
-            $absPath = XIMDEX_ROOT_PATH . App::getValue("NodeRoot");
-
-            // / consigue la lista de paths del nodo
+            // Consigue la lista de paths del nodo
             $pathList = $this->class->GetPathList();
             if (empty($pathList)) {
                 return false;
             }
-
             $path = $absPath . $pathList;
-            if (!file_exists($path)) { // / si falta alguna devuelve false
+            if (! file_exists($path)) {
+                
+                // Si falta alguna devuelve false
                 return false;
             }
 
-            // / en otro caso devuelve true
+            // en otro caso devuelve true
             return true;
         }
         $this->SetError(1);
@@ -1174,7 +1184,7 @@ class Node extends NodesOrm
      * @param array $subfolders
      * @return bool|string
      */
-    public function createNode($name, $parentID, $nodeTypeID, $stateID = null, $subfolders = array())
+    public function createNode(string $name, int $parentID, int $nodeTypeID, int $stateID = null, $subfolders = [])
     {
         $this->set('IdParent', (int) $parentID);
         $this->set('IdNodeType', (int) $nodeTypeID);
@@ -1297,7 +1307,7 @@ class Node extends NodesOrm
             $nearest = new Node($nearestId);
             $associated = $nearest->GetGroupList();
             if (count($associated) > 0) {
-                foreach ($associated as &$group) {
+                foreach ($associated as & $group) {
                     $this->AddGroupWithRole($group, $user->GetRoleOnGroup($group));
                 }
             }
@@ -1324,7 +1334,7 @@ class Node extends NodesOrm
 
         // Once created, its content by default is added
         $dbObj = new \Ximdex\Runtime\Db();
-        if (! empty($subfolders) and is_array($subfolders)) {
+        if (is_array($subfolders) and $subfolders) {
             $subfolders_str = implode(",", $subfolders);
             $query = sprintf("SELECT NodeType, Name, State, Params FROM NodeDefaultContents WHERE IdNodeType = %d AND NodeType in (%s)"
                 , $this->get('IdNodeType'), $subfolders_str);
@@ -1364,10 +1374,6 @@ class Node extends NodesOrm
         return $node->get('IdNode');
     }
 
-    /**
-     *
-     * @return bool|int|string
-     */
     function delete()
     {
         return $this->DeleteNode(true);
@@ -1379,22 +1385,19 @@ class Node extends NodesOrm
      * @param bool $firstNode
      * @return bool|int|string
      */
-    function DeleteNode($firstNode = true)
+    public function deleteNode(bool $firstNode = true)
     {
         if ($this->CanDenyDeletion() && $firstNode) {
             $this->messages->add(_('Node deletion was denied'), MSG_TYPE_WARNING);
             return false;
         }
-
         $this->ClearError();
-        if (!($this->get('IdNode') > 0)) {
+        if (! $this->get('IdNode')) {
             $this->SetError(1);
             return false;
         }
-
         $IdChildrens = $this->GetChildren();
-
-        if (!is_null($IdChildrens)) {
+        if (! is_null($IdChildrens)) {
             foreach ($IdChildrens as $IdChildren) {
                 $childrenNode = new Node($IdChildren);
                 if ($childrenNode->get('IdNode') > 0) {
@@ -1407,25 +1410,32 @@ class Node extends NodesOrm
 
         // Deleting from file system
         if ($this->nodeType->get('HasFSEntity')) {
-            $absPath = XIMDEX_ROOT_PATH . App::getValue("NodeRoot");
-            $deletablePath = $this->class->GetPathList();
-
-            $nodePath = $absPath . $deletablePath;
-
-            if (is_dir($nodePath)) {
-                FsUtils::deltree($nodePath);
-            } else {
-                FsUtils::delete($nodePath);
+            if (App::getValue('RenderizeAll') or in_array($this->GetNodeType(), [
+                NodeTypeConstants::XSL_TEMPLATE, 
+                NodeTypeConstants::TEMPLATES_ROOT_FOLDER,
+                NodeTypeConstants::SECTION,
+                NodeTypeConstants::SERVER,
+                NodeTypeConstants::PROJECT
+            ])) {
+                $absPath = XIMDEX_ROOT_PATH . App::getValue("NodeRoot");
+                $deletablePath = $this->class->GetPathList();
+                $nodePath = $absPath . $deletablePath;
+                if (is_dir($nodePath)) {
+                    FsUtils::deltree($nodePath);
+                } else {
+                    FsUtils::delete($nodePath);
+                }
             }
         }
 
         // Deleting properties it may has
-        $nodeProperty = new \Ximdex\Models\NodeProperty();
+        $nodeProperty = new NodeProperty();
         $nodeProperty->deleteByNode($this->get('IdNode'));
 
         // first invoking the particular Delete...
-        if ($this->GetNodeType() != NodeTypeConstants::XSL_TEMPLATE)
+        if ($this->GetNodeType() != NodeTypeConstants::XSL_TEMPLATE) {
             $this->class->DeleteNode();
+        }
 
         // and the the general one
         $data = new DataFactory($this->nodeID);
@@ -1434,6 +1444,7 @@ class Node extends NodesOrm
         $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->Execute(sprintf("DELETE FROM NodeNameTranslations WHERE IdNode = %d", $this->get('IdNode')));
         $dbObj->Execute(sprintf("DELETE FROM RelGroupsNodes WHERE IdNode = %d", $this->get('IdNode')));
+        
         // deleting potential entries on table NoActionsInNode
         $dbObj->Execute(sprintf("DELETE FROM NoActionsInNode WHERE IdNode = %d", $this->get('IdNode')));
 
@@ -1456,28 +1467,21 @@ class Node extends NodesOrm
                 return false;
             }
         }
-
         $nodeDependencies = new NodeDependencies();
         $nodeDependencies->deleteBySource($this->get('IdNode'));
         $nodeDependencies->deleteByTarget($this->get('IdNode'));
-
         $dbObj->Execute(sprintf("DELETE FROM FastTraverse WHERE IdNode = %d OR  IdChild = %d", $this->get('IdNode'), $this->get('IdNode')));
-
         $dependencies = new Dependencies();
         $dependencies->deleteDependentNode($this->get('IdNode'));
-
         $rtn = new RelSemanticTagsNodes();
         $rtn->deleteTags($this->nodeID);
-
         $res = parent::delete();
-
-        if ($this->GetNodeType() == NodeTypeConstants::XSL_TEMPLATE)
+        if ($this->GetNodeType() == NodeTypeConstants::XSL_TEMPLATE) {
             $this->class->DeleteNode(false);
-
+        }
         Logger::info("Node " . $this->nodeID . " deleted");
         $this->nodeID = null;
         $this->class = null;
-
         return $res;
     }
 
@@ -1496,7 +1500,7 @@ class Node extends NodesOrm
     /**
      * Returns the list of nodes which depend on the one in the object
      *
-     * @return null
+     * @return array|null
      */
     function GetDependencies()
     {
@@ -1545,75 +1549,74 @@ class Node extends NodesOrm
     /**
      * Changes the node name
      *
-     * @param
-     *            $name
+     * @param string $name
      * @return bool
      */
-    function RenameNode($name)
+    public function renameNode(string $name) : bool
     {
         $folderPath = null;
-
         $this->ClearError();
         if ($this->get('IdNode') > 0) {
             if ($this->get('Name') == $name) {
                 return true;
             }
-            // / Checking if node name is in correct format
+            
+            // Checking if node name is in correct format
             if (!$this->IsValidName($name)) {
                 $this->SetError(9);
                 return false;
             }
-            // / Checking if the parent has no other child with same name
+            
+            // Checking if the parent has no other child with same name
             $parent = new Node($this->get("IdParent"));
             $idChildren = $parent->GetChildByName($name);
             if ($idChildren && $idChildren != $this->get("IdNode")) {
                 $this->SetError(5);
                 return false;
             }
-
             $fsEntity = $this->nodeType->get('HasFSEntity');
             $isFile = ($fsEntity && ($this->nodeType->get('IsPlainFile') || $this->nodeType->get('IsStructuredDocument')));
             $isDir = ($fsEntity && ($this->nodeType->get('IsFolder') || $this->nodeType->get('IsVirtualFolder')));
-            // $isNone = (!$isFile && !$isDir);
 
-            // / If it is a directory or file, we cannot not allow the process to stop before finishing and leave it inconsistent
+            // If it is a directory or file, we cannot not allow the process to stop before finishing and leave it inconsistent
             if ($isDir || $isFile) {
                 ignore_user_abort(true);
             }
-
-            if ($isDir) {
-                // / Temporal backup of children nodes. In this case, it is passed the path and a flag to specify that it is a path
-                $folderPath = XIMDEX_ROOT_PATH . App::getValue("NodeRoot") . $this->class->GetChildrenPath();
-            }
-
             if ($isFile) {
-                $absPath = XIMDEX_ROOT_PATH . App::getValue("NodeRoot");
-                $deletablePath = $this->class->GetPathList();
-                FsUtils::delete($absPath . $deletablePath);
+                if (App::getValue('RenderizeAll')or $this->GetNodeType() == NodeTypeConstants::XSL_TEMPLATE) {
+                    $absPath = XIMDEX_ROOT_PATH . App::getValue("NodeRoot");
+                    $deletablePath = $this->class->GetPathList();
+                    FsUtils::delete($absPath . $deletablePath);
+                }
             }
 
-            // / Changing the name in the Nodes table
+            // Changing the name in the Nodes table
             $this->set('Name', $name);
-            /* $result = */
             $this->update();
-            // / If this node type has nothing else to change, the method rename node of its specific class is called
+            
+            // If this node type has nothing else to change, the method rename node of its specific class is called
             if ($this->class->RenameNode($name) === false) {
                 $this->messages->mergeMessages($this->class->messages);
                 return false;
             }
             if ($isFile) {
-                // / The node is renderized, its children are lost in the filesystem
+                
+                // The node is renderized, its children are lost in the filesystem
                 $node = new Node($this->get('IdNode'));
                 $node->RenderizeNode();
             }
-
             if ($isDir) {
-                // / Retrieving all children from the backup we kept, identified by $backupID
-                $parentNode = new Node($this->get('IdParent'));
-                $newPath = XIMDEX_ROOT_PATH . App::getValue("NodeRoot") . $parentNode->GetChildrenPath() . '/' . $name;
-                rename($folderPath, $newPath);
+                if (App::getValue('RenderizeAll') or $this->GetNodeType() == NodeTypeConstants::TEMPLATES_ROOT_FOLDER) {
+                    
+                    // Temporal backup of children nodes. In this case, it is passed the path and a flag to specify that it is a path
+                    $folderPath = XIMDEX_ROOT_PATH . App::getValue("NodeRoot") . $this->class->GetChildrenPath();
+                    
+                    // Retrieving all children from the backup we kept, identified by $backupID
+                    $parentNode = new Node($this->get('IdParent'));
+                    $newPath = XIMDEX_ROOT_PATH . App::getValue("NodeRoot") . $parentNode->GetChildrenPath() . '/' . $name;
+                    rename($folderPath, $newPath);
+                }
             }
-
             return true;
         }
         $this->SetError(1);
@@ -1622,57 +1625,60 @@ class Node extends NodesOrm
 
     /**
      * Moves the node
-     *
-     * @param
-     *            $targetNode
-     *
-     * @param
-     *            $targetNode
+     * 
+     * @param int $targetNode
      */
-    function MoveNode($targetNode)
+    public function MoveNode(int $targetNode)
     {
         $this->ClearError();
         if ($this->get('IdNode') > 0) {
             if ($targetNode > 0) {
                 $target = new Node($targetNode);
-                if (!$target->IsOnNode($this->get('IdNode'))) {
-                    // $fsEntity = $this->nodeType->get('HasFSEntity');
-                    $absPath = XIMDEX_ROOT_PATH . App::getValue("NodeRoot");
+                if (! $target->IsOnNode($this->get('IdNode'))) {
                     ignore_user_abort(true);
-
-                    // Temporal children backup. In this case it is passed the path and a flag to indicate that it is a path
-                    $folderPath = $absPath . $this->class->GetChildrenPath();
-
+                    $folderPath = XIMDEX_ROOT_PATH . App::getValue('NodeRoot') . $this->class->GetChildrenPath();
+                    
                     // FastTraverse is updated for current node
                     $this->SetParent($targetNode);
                     $this->updateFastTraverse();
-
-                    // Retrieving all children from stored backup, identified by $backupID
-                    $parentNode = new Node($this->get('IdParent'));
-                    $newPath = $absPath . $parentNode->GetChildrenPath() . '/' . $this->GetNodeName();
-                    @rename($folderPath, $newPath);
-                    // $this->TraverseTree(2);
-                    // A language document cannot be moved
+                    
                     // Node is renderized, so we lost its children in filesystem
-                    $this->RenderizeNode(1);
-
+                    $this->renderizeNode(false);
+                    
                     // Updating paths and FastTraverse of children (if existing)
-                    $this->UpdateChildren();
+                    $this->updateChildren();
 
-                    // If there is a new name, we change the node name.
+                    // If there is a new name, we change the node name
                     $name = FsUtils::get_name($this->GetNodeName());
                     $ext = FsUtils::get_extension($this->GetNodeName());
-                    if ($ext != null && $ext != "")
+                    if ($ext != null && $ext != "") {
                         $ext = "." . $ext;
+                    }
                     $newName = $name . $ext;
                     $index = 1;
                     while (($child = $target->GetChildByName($newName)) > 0 && $child != $this->get("IdNode")) {
                         $newName = sprintf("%s_copia_%d%s", $name, $index, $ext);
                         $index++;
                     }
+                    
                     // If there is no name change, we leave all as is.
                     if ($this->GetNodeName() != $newName) {
                         $this->SetNodeName($newName);
+                    }
+                    
+                    // Remove old folder or file in data / nodes file system
+                    if ($this->nodeType->IsRenderizable() and (App::getValue('RenderizeAll') or in_array($this->GetNodeType(), [
+                        NodeTypeConstants::XSL_TEMPLATE,
+                        NodeTypeConstants::SECTION, 
+                        NodeTypeConstants::SERVER
+                    ]))) {
+                        if ($this->GetNodeType() == NodeTypeConstants::XSL_TEMPLATE) {
+                            FsUtils::delete($folderPath);
+                        } else {
+                            $xsltNode = new XsltNode($this);
+                            $xsltNode->reload_templates_include($this);
+                            FsUtils::deltree($folderPath);
+                        }
                     }
                 } else {
                     $this->SetError(12);
@@ -1865,16 +1871,16 @@ class Node extends NodesOrm
     /**
      * It allows to change the role a user participates in a group with
      *
-     * @param $groupID
-     * @param $roleID
+     * @param int $groupID
+     * @param int $roleID
      */
-    function ChangeGroupRole($groupID, $roleID)
+    public function changeGroupRole(int $groupID, int $roleID = null)
     {
-        $this->ClearError();
+        $this->clearError();
         if ($this->get('IdNode') > 0) {
             if ($this->nodeType->get('CanAttachGroups')) {
-                $sql = sprintf("UPDATE RelGroupsNodes SET IdRole = %d WHERE IdNode = %d AND IdGroup = %d"
-                    , $roleID, $this->get('IdNode'), $groupID);
+                $sql = sprintf("UPDATE RelGroupsNodes SET IdRole = %s WHERE IdNode = %d AND IdGroup = %d"
+                    , $roleID ? $roleID : 'NULL', $this->get('IdNode'), $groupID);
                 $dbObj = new \Ximdex\Runtime\Db();
                 $dbObj->Execute($sql);
                 if ($dbObj->numErr) {
@@ -2632,11 +2638,11 @@ class Node extends NodesOrm
      * Returns this node xml interpretation and its descendents
      *
      * @param int $depth
-     * @param $files
-     * @param null $recurrence
-     * @return string
+     * @param array $files
+     * @param bool $recurrence
+     * @return string|bool
      */
-    function ToXml($depth = 0, & $files, $recurrence = NULL)
+    public function toXml(int $depth, array & $files, bool $recurrence = false)
     {
         global $STOP_COUNT;
         if (! $this->get('IdNode')) {
@@ -2649,10 +2655,10 @@ class Node extends NodesOrm
         $depth++;
         $indexTabs = str_repeat("\t", $depth);
         if ($this->get('IdState') > 0) {
-            $query = sprintf("SELECT s.Name as statusName" . " FROM States s" . " WHERE IdState = %d" . " LIMIT 1", $this->get('IdState'));
+            $query = sprintf("SELECT name FROM WorkflowStatus WHERE id = %d LIMIT 1", $this->get('IdState'));
             $dbObj = new \Ximdex\Runtime\Db();
             $dbObj->Query($query);
-            $statusName = $dbObj->GetValue('statusName');
+            $statusName = $dbObj->GetValue('name');
             unset($dbObj);
         }
         $idNode = $this->get('IdNode');
@@ -3138,15 +3144,15 @@ class Node extends NodesOrm
     /**
      * Update node childs FastTraverse info
      */
-    function UpdateChildren()
+    private function updateChildren()
     {
-        $arr_children = $this->GetChildren();
+        $arr_children = $this->getChildren();
         if (! empty($arr_children)) {
             foreach ($arr_children as $child) {
                 $node_child = new Node($child);
                 $node_child->updateFastTraverse();
-                $node_child->RenderizeNode();
-                $node_child->UpdateChildren();
+                $node_child->renderizeNode();
+                $node_child->updateChildren();
             }
         }
     }

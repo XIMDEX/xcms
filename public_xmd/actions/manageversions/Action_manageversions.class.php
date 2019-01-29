@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -35,28 +35,29 @@ class Action_manageversions extends ActionAbstract
     /**
      * Main method: shows initial form
      */
-    function index()
+    public function index()
     {
         $idNode = $this->request->getParam('nodeid');
+        $node = new Node($idNode);
+        if (! $node->get('IdNode')) {
+            $this->messages->add(_('Node could not be found'), MSG_TYPE_ERROR);
+            $values = array('messages' => $node->messages->messages);
+            $this->render($values, NULL, 'messages.tpl');
+            return;
+        }
         $values = $this->values($idNode);
         $this->render($values, null, 'default-3.0.tpl');
     }
 
-    function values($idNode, int $max = null)
+    public function values($idNode, int $max = null)
     {
         $node = new Node($idNode);
-        if (!$node->get('IdNode') > 0) {
-            $this->messages->add(_('Node could not be found'), MSG_TYPE_ERROR);
-            $values = array('messages' => $node->messages->messages);
-            $this->render($values, NULL, 'messages.tpl');
-            return false;
-        }
         $isStructuredDocument = (bool) $node->nodeType->get('IsStructuredDocument');
         $channels = array();
         if ($isStructuredDocument) {
             $structuredDocument = new StructuredDocument($idNode);
-            $channelList = $structuredDocument->GetChannels();
-            if (is_array($channelList) && !empty($channelList)) {
+            $channelList = $structuredDocument->getChannels();
+            if (is_array($channelList)) {
                 foreach ($channelList as $idChannel) {
                     $channel = new Node($idChannel);
                     $channels[$idChannel] = $channel->get('Name');
@@ -64,23 +65,23 @@ class Action_manageversions extends ActionAbstract
             }
         }
         $dbObj = new \Ximdex\Runtime\Db();
-        $query = sprintf("SELECT v.IdVersion, v.Version, v.SubVersion,"
-            . " v.Date, v.Comment, u.Name"
-            . " FROM Versions v INNER JOIN Users u USING (IdUser)"
-            . " WHERE IdNode = %s"
-            . " ORDER BY v.Version DESC, v.SubVersion DESC",
+        $query = sprintf('SELECT v.IdVersion, v.Version, v.SubVersion, v.Date, v.Comment, u.Name, u.Login'
+            . ' FROM Versions v INNER JOIN Users u USING (IdUser)'
+            . ' WHERE IdNode = %s'
+            . ' ORDER BY v.Version DESC, v.SubVersion DESC',
             $dbObj->sqlEscapeString($idNode));
         if ($max) {
             $query .= ' LIMIT ' . $max;
         }
         $dbObj->query($query);
         $versionList = array();
-        while (!$dbObj->EOF) {
+        while (! $dbObj->EOF) {
             $versionList[$dbObj->getValue('Version')][] = array(
                 'IdVersion' => $dbObj->getValue('IdVersion'),
                 'SubVersion' => $dbObj->getValue('SubVersion'),
                 'Date' => date('d/m/Y H:i', $dbObj->getValue('Date')),
                 'Name' => $dbObj->getValue('Name'),
+                'User' => $dbObj->getValue('Login'),
                 'Comment' => $dbObj->getValue('Comment'),
                 'isLastVersion' => 'false');
             $dbObj->Next();
@@ -107,12 +108,12 @@ class Action_manageversions extends ActionAbstract
         return $values;
     }
 
-    function recover()
+    public function recover()
     {
         $idNode = $this->request->getParam('nodeid');
         $version = $this->request->getParam('version');
         $subVersion = $this->request->getParam('subversion');
-        if (!is_null($version) && !is_null($subVersion)) {
+        if (! is_null($version) && ! is_null($subVersion)) {
             
             // If it is a recovery of a version, first we recover it and then we show the form
             $data = new DataFactory($idNode);
@@ -131,12 +132,12 @@ class Action_manageversions extends ActionAbstract
         $this->redirectTo('index');
     }
 
-    function delete()
+    public function delete()
     {
         $idNode = $this->request->getParam('nodeid');
         $version = $this->request->getParam('version');
         $subVersion = $this->request->getParam('subversion');
-        if (!is_null($version) && !is_null($subVersion)) {
+        if (! is_null($version) && ! is_null($subVersion)) {
             $data = new DataFactory($idNode);
             $ret = $data->deleteSubversion($version, $subVersion);
             if ($ret === false) {
