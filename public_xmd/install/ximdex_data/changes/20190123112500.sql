@@ -1,4 +1,4 @@
-ALTER TABLE `Batchs` DROP FOREIGN KEY `Batchs_PortalFrames`;
+ALTER TABLE `Batchs` DROP FOREIGN KEY `Batchs_PortalVersions`;
 
 ALTER TABLE `Batchs` ADD CONSTRAINT `Batchs_PortalFrames` FOREIGN KEY (`IdPortalFrame`) REFERENCES `PortalFrames`(`id`) 
 ON DELETE CASCADE ON UPDATE CASCADE;
