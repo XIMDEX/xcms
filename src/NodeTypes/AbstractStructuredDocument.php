@@ -62,7 +62,7 @@ abstract class AbstractStructuredDocument extends FileNode
      * {@inheritDoc}
      * @see \Ximdex\NodeTypes\FileNode::createNode()
      */
-    public function createNode(string $name = null, int $parentID = null, int $nodeTypeID = null, int $stateID = null, $templateID = null
+    public function createNode(string $name = null, int $parentID = null, int $nodeTypeID = null, int $stateID = null, string $templateID = null
         , int $IdLanguage = null, string $aliasName = '', array $channelList = null)
     {
         $loginID = Session::get("userID");
@@ -377,7 +377,7 @@ abstract class AbstractStructuredDocument extends FileNode
      * @param null $onlyDocXap
      * @return null|string
      */
-    function getRenderizedContent($channel = null, $content = null, $onlyDocXap = null)
+    public function getRenderizedContent(int $channel = null, string $content = null, $onlyDocXap = null)
     {
         $strDoc = new StructuredDocument($this->nodeID);
         if (!($strDoc->get('IdDoc') > 0)) {
