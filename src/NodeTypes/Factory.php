@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -28,6 +28,7 @@
 namespace Ximdex\NodeTypes;
 
 use Ximdex\Logger;
+use Ximdex\Models\Node;
 
 class Factory
 {
@@ -38,30 +39,29 @@ class Factory
         'filenode' => array('ClassName' => '\\Ximdex\\NodeTypes\\FileNode'),
         'foldernode' => array('ClassName' => '\\Ximdex\\NodeTypes\\FolderNode'),
         'groupnode' => array('ClassName' => '\\Ximdex\\NodeTypes\\GroupNode'),
-        'imagenode' => array('ClassName' => '\\Ximdex\\NodeTypes\\ImageNode') ,
-        'languagenode' => array('ClassName' => '\\Ximdex\\NodeTypes\\LanguageNode') ,
+        'imagenode' => array('ClassName' => '\\Ximdex\\NodeTypes\\ImageNode'),
+        'languagenode' => array('ClassName' => '\\Ximdex\\NodeTypes\\LanguageNode'),
         'linknode' => array('ClassName' => '\\Ximdex\\NodeTypes\\LinkNode'),
-        'nodetypenode'=> array('ClassName' => '\\Ximdex\\NodeTypes\\NodeTypeNode') ,
-        'projects'=> array('ClassName' => '\\Ximdex\\NodeTypes\\Projects') ,
+        'nodetypenode'=> array('ClassName' => '\\Ximdex\\NodeTypes\\NodeTypeNode'),
+        'projects'=> array('ClassName' => '\\Ximdex\\NodeTypes\\Projects'),
         'propertynode' => array('ClassName' => '\\Ximdex\\NodeTypes\\PropertyNode'),
         'relnode' => array('ClassName' => '\\Ximdex\\NodeTypes\\RelNode'),
-        'rngvisualtemplatenode' => array('ClassName' => '\\Ximdex\\NodeTypes\\rngvisualtemplatenode') ,
+        'rngvisualtemplatenode' => array('ClassName' => '\\Ximdex\\NodeTypes\\rngvisualtemplatenode'),
         'rolenode' => array('ClassName' => '\\Ximdex\\NodeTypes\\RoleNode'),
         'root' => array('ClassName' => '\\Ximdex\\NodeTypes\\Root'),
-        'sectionnode' => array('ClassName' => '\\Ximdex\\NodeTypes\\SectionNode') ,
-        'servernode' => array('ClassName' => '\\Ximdex\\NodeTypes\\ServerNode') ,
-        'statenode' => array('ClassName' => '\\Ximdex\\NodeTypes\\StateNode') ,
+        'sectionnode' => array('ClassName' => '\\Ximdex\\NodeTypes\\SectionNode'),
+        'servernode' => array('ClassName' => '\\Ximdex\\NodeTypes\\ServerNode'),
+        'statenode' => array('ClassName' => '\\Ximdex\\NodeTypes\\StateNode'),
         'usernode' => array('ClassName' => '\\Ximdex\\NodeTypes\\UserNode'),
         'workflow_process' => array('ClassName' => '\\Ximdex\\NodeTypes\\WorkflowProcess'),
         'XimletNode' => array('ClassName' => '\\Ximdex\\NodeTypes\\XimletNode'),
         'xmldocumentnode' => array('ClassName' => '\\Ximdex\\NodeTypes\\XmlDocumentNode'),
         'xmlcontainernode' => array('ClassName' => '\\Ximdex\\NodeTypes\\XmlContainerNode'),
-        'xsltnode' => array('ClassName' => '\\Ximdex\\NodeTypes\\XsltNode'),
+        'xsltnode' => array('ClassName' => '\\Ximdex\\NodeTypes\\XsltNode')
     );
 
-    public static function getNodeTypeByName(string $name, Object $node, ?string $module = '')
+    public static function getNodeTypeByName(string $name, Node $node, ?string $module = '')
     {
-        // TODO atovar
         $_name = strtolower($name);
         if (isset(self::$baseNodeTypes[$_name])) {
             $className = self::$baseNodeTypes[$_name]['ClassName'];
