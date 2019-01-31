@@ -30,6 +30,7 @@ use Ximdex\Models\Group;
 use Ximdex\Models\Node;
 use Ximdex\Models\User;
 use Ximdex\MVC\ActionAbstract;
+use Ximdex\Runtime\App;
 use Ximdex\Sync\SynchroFacade;
 use Ximdex\Utils\Serializer;
 use Ximdex\NodeTypes\NodeTypeConstants;
@@ -78,7 +79,8 @@ class Action_publicatesection extends ActionAbstract
             'idNode' => $idNode,
             'name' => $node->GetNodeName(),
             'nodeTypeID' => $node->nodeType->getID(),
-            'node_Type' => $node->nodeType->GetName()
+            'node_Type' => $node->nodeType->GetName(),
+            'disabledCache' => App::getValue('DisableCache')
         );
         $this->addJs('/actions/publicatesection/resources/js/index.js');
         $this->addCss('/actions/publicatesection/resources/css/style.css');

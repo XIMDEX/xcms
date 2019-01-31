@@ -209,7 +209,7 @@ abstract class ActionAbstract extends IController
             Logger::info('FINISH OK ' . $this->getDefaultLogMessage() . " $message");
         }
         else {
-            Logger::error('FINISH FAIL ' . $this->getDefaultLogMessage() . " $message");
+            Logger::warning('FINISH FAIL ' . $this->getDefaultLogMessage() . " $message");
         }
         Logger::setActiveLog($defaultLog);
         $this->endActionLogged = true;

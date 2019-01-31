@@ -319,7 +319,7 @@ class PortalFrames extends PortalFramesOrm
     {
         $sql = 'SELECT IdBatch, State, ServerId';
         $sql .= ' FROM Batchs';
-        $sql .= ' WHERE IdPortalFrame = ' . $this->id . ' AND ServerFramesTotal > 0';
+        $sql .= ' WHERE IdPortalFrame = ' . $this->id . ' AND ServerFramesTotal > 0 AND State != \'' . Batch::NOFRAMES . '\'';
         $sql .= ' ORDER BY IdBatch';
         $db = new Db();
         if ($db->Query($sql) === false) {

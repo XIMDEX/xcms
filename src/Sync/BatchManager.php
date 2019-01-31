@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -74,9 +74,9 @@ class BatchManager
      * Sets the value of any variable
      * 
      * @param string $key
-     * @param $value
+     * @param string $value
      */
-    public function setFlag($key, $value)
+    public function setFlag(string $key, string $value = null)
     {
         $this->$key = $value;
     }
@@ -90,15 +90,16 @@ class BatchManager
      * @param array $docsToPublish
      * @param array $docsToPublishVersion
      * @param array $docsToPublishSubVersion
-     * @param $up
-     * @param $down
-     * @param $physicalServers
-     * @param $force
-     * @param $userId
-     * @return array|bool
+     * @param int $up
+     * @param int $down
+     * @param array $physicalServers
+     * @param array $force
+     * @param int $userId
+     * @param array $noCache
+     * @return boolean|array
      */
-    public function publicate($idNode, $docsToPublish, $docsToPublishVersion, $docsToPublishSubVersion, $up, $down, $physicalServers
-        , array $force, $userId = null, array $noCache = [])
+    public function publicate(int $idNode, array $docsToPublish, array $docsToPublishVersion, array $docsToPublishSubVersion, int $up
+        , ?int $down, array $physicalServers, array $force, int $userId = null, array $noCache = [])
     {
         $timer = new Timer();
         $timer->start();
@@ -123,7 +124,6 @@ class BatchManager
                 $content = $docNode->GetContent();
                 $docNode->SetContent($content);
             }
-            
             if (! $this->isPublishable($idDoc, $up, $down, $force[$idDoc])) {
                 $docsToPublish = array_diff($docsToPublish, array($idDoc));
                 $unchangedDocs[$idDoc][0][0] = 0;
@@ -219,10 +219,10 @@ class BatchManager
         return true;
     }
 
-    private function _upVersion($docs, $generated)
+    private function _upVersion(array $docs, array $generated = null)
     {
         // Increment version for documents batch finding if there are any otf docs
-        if (!is_array($generated)) {
+        if (! is_array($generated)) {
             $generated = array();
         }
         Logger::info(sprintf('Incrementing version for %d documents', count($docs)));
@@ -247,9 +247,9 @@ class BatchManager
         return $versions;
     }
 
-    public function buildBatchs($nodeGenerator, $timeUp, $docsToPublish, $docsToUpVersion, $versions, $subversions, $server, $physicalServers
-        , $priority, $timeDown = null, $statStart = 0, $statTotal = 0, $idPortalFrame, int $idPortalFrameDown = null, $userId = null
-        , array $noCache = [])
+    public function buildBatchs(int $nodeGenerator, int $timeUp, array $docsToPublish, array $docsToUpVersion, array $versions
+        , array $subversions, int $server, array $physicalServers, float $priority, int $timeDown = null, int $statStart = 0
+        , int $statTotal = 0, $idPortalFrame, int $idPortalFrameDown = null, $userId = null, array $noCache = [])
     {
         /*
         If the server is publishing through a channell in which there is not existing documents
@@ -327,8 +327,9 @@ class BatchManager
         return $frames;
     }
 
-    private function buildFrames($up, $down, $docsToPublish, $docsToUpVersion, $versions, $subversions, $serverID, $relBatchsServers
-        , $relBatchsDown = [], $statStart = 0, $statTotal = 0, $nodeGenerator, int $idPortalFrame, array $noCache = [])
+    private function buildFrames(int $up, ?int $down, array $docsToPublish, array $docsToUpVersion, array $versions, array $subversions
+        , int $serverID, array $relBatchsServers, array $relBatchsDown = [], int $statStart = 0, int $statTotal = 0, int $nodeGenerator
+        , int $idPortalFrame, array $noCache = [])
     {
         $docsOk = array();
         $docsNotOk = array();
@@ -540,7 +541,7 @@ class BatchManager
      * 
      * @param string key
      */
-    public function getFlag($key)
+    public function getFlag(string $key)
     {
         return $this->$key;
     }
@@ -548,7 +549,8 @@ class BatchManager
     public function checkFramesIntegrity()
     {
         // Ensure that batchs have frames or getBatchToProcess will return the same batch over and over
-        $sql = 'update Batchs set `State` = \'' . Batch::NOFRAMES . '\'';
+        $sql = 'update Batchs set `State` = \'' . Batch::NOFRAMES . '\', ServerFramesTotal  = 0, ServerFramesPending = 0,';
+        $sql .= ' ServerFramesActive = 0, ServerFramesSuccess = 0, ServerFramesFatalError = 0, ServerFramesTemporalError = 0';
         $sql .= ' where IdBatch not in (select distinct IdBatchUp from ServerFrames where IdBatchUp is not null)';
         $sql .= ' and IdBatch not in (select distinct IdBatchDown from ServerFrames where IdBatchDown is not null)';
         $sql .= ' and `State` IN (\'' . Batch::INTIME . '\', \'' . Batch::CLOSING . '\')';
@@ -582,8 +584,7 @@ class BatchManager
      * @param int $idBatchToUpdate
      * @return bool|int
      */
-    public function setBatchsActiveOrEnded(int $testTime = null, array $servers = null, bool $updateCycles = true
-        , int $idBatchToUpdate = null)
+    public function setBatchsActiveOrEnded(int $testTime = null, array $servers = null, bool $updateCycles = true, int $idBatchToUpdate = null)
     {
         if (! $servers) {
             
@@ -856,7 +857,7 @@ class BatchManager
      * @param int serverFramesTotal
      * @return bool
      */
-    public function buildBatchsFromDeleteNode($idBatchUp, $nodeId, $serverFramesTotal, $userId = null)
+    public function buildBatchsFromDeleteNode(int $idBatchUp, int $nodeId, int $serverFramesTotal, int $userId = null)
     {
         $batch = new Batch();
         $batchDownArray = $batch->getDownBatch($idBatchUp);

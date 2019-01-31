@@ -37,6 +37,7 @@ use Ximdex\Models\Workflow;
 use Ximdex\Modules\Manager;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Utils\Serializer;
+use Ximdex\Runtime\App;
 use Ximdex\Sync\SynchroFacade;
 
 include_once XIMDEX_ROOT_PATH . '/src/Sync/conf/synchro_conf.php';
@@ -175,7 +176,8 @@ class Action_workflow_forward extends ActionAbstract
                 'hasDisabledFunctions' => $this->hasDisabledFunctions(),
                 'globalForcedEnabled' => FORCE_PUBLICATION,
                 'nodeTypeID' => $node->nodeType->getID(),
-                'node_Type' => $node->nodeType->GetName()
+                'node_Type' => $node->nodeType->GetName(),
+                'disabledCache' => App::getValue('DisableCache')
             ), $values);
             $values = array_merge($values, $this->buildExtraValues($idNode));
             $this->render($values, null, 'default-3.0.tpl');

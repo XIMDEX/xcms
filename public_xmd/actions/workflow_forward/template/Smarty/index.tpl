@@ -113,7 +113,7 @@
 									</div>
 									<div class="options_separator"></div>
 								</div>
-								{if (!isset($globalForcedEnabled))}
+								{if (! isset($globalForcedEnabled))}
 									<div class="publication_option disabled" disabled="disabled" id="force_option">
 										<div class="option_checkbox">
 											<input type="checkbox" name="force" id="force" value="1" />
@@ -124,15 +124,17 @@
 										<div class="options_separator"></div>
 									</div>
 								{/if}
-								<div class="publication_option" id="use_cache_option">
-                                    <div class="option_checkbox">
-                                        <input type="checkbox" name="use_cache" id="use_cache" value="1" checked="checked" />
-                                    </div>
-                                    <div class="option_info">
-                                        <label for="use_cache">{t}Use cache for structured documents{/t}.</label>
-                                    </div>
-                                    <div class="options_separator"></div>
-                                </div>
+								{if ! $disabledCache}
+									<div class="publication_option" id="use_cache_option">
+	                                    <div class="option_checkbox">
+	                                        <input type="checkbox" name="use_cache" id="use_cache" value="1" checked="checked" />
+	                                    </div>
+	                                    <div class="option_info">
+	                                        <label for="use_cache">{t}Use cache for structured documents{/t}.</label>
+	                                    </div>
+	                                    <div class="options_separator"></div>
+	                                </div>
+                                {/if}
 							{/if}
 						</div>
 					</div>
