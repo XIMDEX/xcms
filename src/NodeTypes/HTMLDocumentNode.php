@@ -490,20 +490,16 @@ class HTMLDocumentNode extends AbstractStructuredDocument
     private static function prepareMetadata(array $metadata)
     {
         $result = [];
-
         foreach ($metadata as $meta) {
             if (key_exists('groups', $meta) || key_exists('metadata', $meta)) {
                 $result = array_merge($result, static::prepareMetadata($meta['groups'] ?? $meta['metadata'] ?? []));
                 continue;
             }
-
-            if (!$meta['value']) {
+            if (! $meta['value']) {
                 continue;
             }
-
             $result[$meta['name']] = $meta['value'];
         }
-
         return $result;
     }
 

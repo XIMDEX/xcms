@@ -361,9 +361,9 @@ class Action_workflow_forward extends ActionAbstract
         }
         $force = $this->request->getParam('force') ? true : false;
         $sendNotifications = (bool) $this->request->getParam('sendNotifications');
-        $notificableUsers = $this->request->getParam('users');
+        $notificableUsers = $this->request->getParam('users') ?? [];
         $idState = (int) $this->request->getParam('stateid');
-        $texttosend = $this->request->getParam('texttosend');
+        $texttosend = $this->request->getParam('texttosend') ?? '';
         $lastPublished = $this->request->getParam('latest') ? false : true;
         $useCache = $this->request->getParam('use_cache') ? true : false;
         Logger::debug('ADDSECTION publicateNode PRE');
@@ -552,7 +552,7 @@ class Action_workflow_forward extends ActionAbstract
     }
 
     private function sendToPublish(int $idNode, int $up, ?int $down, bool $markEnd, bool $force, bool $structure, int $deepLevel
-        , bool $sendNotifications, array $notificableUsers = [], int $idState, string $texttosend, bool $lastPublished, bool $useCache = true)
+        , bool $sendNotifications, array $notificableUsers, int $idState, string $texttosend, bool $lastPublished, bool $useCache = true)
     {
         Logger::debug('ADDSECTION publicateNode sendToPublish parent');
         $this->addJs('/actions/workflow_forward/resources/js/workflow_forward.js');

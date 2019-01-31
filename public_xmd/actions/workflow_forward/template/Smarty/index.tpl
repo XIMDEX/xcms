@@ -34,7 +34,8 @@
 		<div class="message message-warning">
 			<p class="disable-functions-alert">
 				{t}<i>pcntl_fork</i> and <i>pcntl_waitpid</i> required functions are both disabled{/t}.
-				{t}This could cause a slow and unstable publishing. Please, check the <i>php.ini</i> configuration file or contact with your system administrator{/t}.
+				{t}This could cause a slow and unstable publishing. Please, check the 
+				<i>php.ini</i> configuration file or contact with your system administrator{/t}.
 			</p>
 		</div>
 	{/if *}
@@ -51,9 +52,10 @@
 		</p>
 		<fieldset class="publish_date">
 			<div class="xim_calendar_container">
-				<calendar timestamp="{$timestamp_from}" date_field_name="date" hour_field_name="hour" min_field_name="min" sec_field_name="sec" 
-				        format="d-m-Y H:i:s" cname="dateUp" type="interval" first_date_label="{t}from{/t}" last_date_label="{t}to{/t}"
-						first_date_function="" last_date_function="" first_date_name="dateUp" last_date_name="dateDown" />
+				<calendar timestamp="{$timestamp_from}" date_field_name="date" hour_field_name="hour" min_field_name="min" 
+				        sec_field_name="sec" format="d-m-Y H:i:s" cname="dateUp" type="interval" first_date_label="{t}from{/t}" 
+				        last_date_label="{t}to{/t}" first_date_function="" last_date_function="" first_date_name="dateUp" 
+				        last_date_name="dateDown" />
 				{if $show_rep_option and ($nodetypename eq 'XmlDocument' or $nodetypename eq 'HtmlDocument')}
 					<div class="row tarjeta propertyform">
 						<h2 class="h2_general">{t}Publication options{/t}</h2>
@@ -135,53 +137,55 @@
 						</div>
 					</div>
 				{/if}
-				<fieldset class="notifications">
-					<span class="">
-		    			<input type="checkbox" name="sendNotifications" id="sendNotifications_forward_{$idNode}" 
-		    					class="send-notifications hidden-focus" 
-		    					value="1" {if $required eq 1}checked="checked"{/if} />
-						<label for="sendNotifications_forward_{$idNode}" class="checkbox-label icon">{t}Send notifications{/t}</label>
-					</span>
-					<ol>
-						<li class="conditioned {if $required != 1}hidden{/if}">
-							<label for="groups" class="label_title label_general">{t}Group{/t}</label>
-							<div class="input-select">
-							<select id="groups" name="groups" class="cajaxg group_info">
-								{counter assign=index start=1}
-								{foreach from=$group_state_info key=index item=group}
-									<option value="{$group.IdGroup}|{$group.IdState}" {if $index == 0}selected="selected"{/if}>
-										{$group.groupName} ({$group.stateName})
-									</option>
-									{counter assign=index}
-								{/foreach}
-							</select></div>
-						</li>
-						<li class="conditioned {if $required != 1}hidden{/if}">
-							<label class="label_title label_general">{t}Users{/t}</label>
-							<div class="user-list-container">
-								<ol class="user-list">
-									{if (isset($notificableUsers))}
-										{counter assign=index start=1}
-										{foreach from=$notificableUsers item=notificable_user_info}
-											<li class="user-info">
-												<input type="checkbox" name="users[]" class="validable notificable check_group__notificable" 
-														id="user_{$notificable_user_info.idUser}" 
-														value="{$notificable_user_info.idUser}" {if $index == 1}checked="checked"{/if} />
-												<label for="user_{$notificable_user_info.idUser}">{$notificable_user_info.userName}</label>
-											</li>
-											{counter assign=index}
-										{/foreach}
-									{/if}
-								</ol>
-							</div>
-						</li>
-						<li class="conditioned {if $required != 1}hidden{/if}">
-							<label for="texttosend" class="label_title label_general">{t}Comments{/t}:</label>
-							<textarea style="border: 2px solid lightgray!important;" class="validable not_empty comments" name="texttosend" 
-									id="texttosend" rows="4" wrap="soft" tabindex="7">{$defaultMessage}</textarea>
-						</li>
-					</ol>
-				</fieldset>
+				{if isset($idNode)}
+					<fieldset class="notifications">
+						<span class="">
+			    			<input type="checkbox" name="sendNotifications" id="sendNotifications_forward_{$idNode}" 
+			    					class="send-notifications hidden-focus" 
+			    					value="1" {if $required eq 1}checked="checked"{/if} />
+							<label for="sendNotifications_forward_{$idNode}" class="checkbox-label icon">{t}Send notifications{/t}</label>
+						</span>
+						<ol>
+							<li class="conditioned {if $required != 1}hidden{/if}">
+								<label for="groups" class="label_title label_general">{t}Group{/t}</label>
+								<div class="input-select">
+								<select id="groups" name="groups" class="cajaxg group_info">
+									{counter assign=index start=1}
+									{foreach from=$group_state_info key=index item=group}
+										<option value="{$group.IdGroup}|{$group.IdState}" {if $index == 0}selected="selected"{/if}>
+											{$group.groupName} ({$group.stateName})
+										</option>
+										{counter assign=index}
+									{/foreach}
+								</select></div>
+							</li>
+							<li class="conditioned {if $required != 1}hidden{/if}">
+								<label class="label_title label_general">{t}Users{/t}</label>
+								<div class="user-list-container">
+									<ol class="user-list">
+										{if (isset($notificableUsers))}
+											{counter assign=index start=1}
+											{foreach from=$notificableUsers item=notificable_user_info}
+												<li class="user-info">
+													<input type="checkbox" name="users[]" class="validable notificable check_group__notificable" 
+															id="user_{$notificable_user_info.idUser}" 
+															value="{$notificable_user_info.idUser}" {if $index == 1}checked="checked"{/if} />
+													<label for="user_{$notificable_user_info.idUser}">{$notificable_user_info.userName}</label>
+												</li>
+												{counter assign=index}
+											{/foreach}
+										{/if}
+									</ol>
+								</div>
+							</li>
+							<li class="conditioned {if $required != 1}hidden{/if}">
+								<label for="texttosend" class="label_title label_general">{t}Comments{/t}:</label>
+								<textarea style="border: 2px solid lightgray!important;" class="validable not_empty comments" name="texttosend" 
+										id="texttosend" rows="4" wrap="soft" tabindex="7">{$defaultMessage}</textarea>
+							</li>
+						</ol>
+					</fieldset>
+		        {/if}
 			</div>
 			<div class="programed_publication row-item">
 				<h2 class="icon clock" style="color:white!important; margin-bottom:0!important;">{t}Scheduled publications{/t}</h2>
