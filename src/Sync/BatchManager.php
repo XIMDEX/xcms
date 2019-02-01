@@ -560,6 +560,13 @@ class BatchManager
         }
         if ($db->numRows > 0) {
             Logger::warning(sprintf('Found %s Batchs without Frames, were marked as NoFrames', $db->numRows));
+            
+            // Update portal frames stats
+            try {
+                PortalFrames::updatePortalFrames();
+            } catch (\Exception $e) {
+                Logger::error($e->getMessage());
+            }
         }
         
         // Remove portal frames without batchs and created time more than 10 minute
@@ -622,7 +629,7 @@ class BatchManager
         if ($dbObj->Query($sql) === false) {
         	return false;
         }
-        while (!$dbObj->EOF) {
+        while (! $dbObj->EOF) {
             $idBatch = $dbObj->GetValue('IdBatchUp');
             $fatalErrors = (int) $dbObj->GetValue('FatalErrors');
             $temporalErrors = (int) $dbObj->GetValue('TemporalErrors');

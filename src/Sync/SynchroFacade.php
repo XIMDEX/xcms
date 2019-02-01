@@ -36,6 +36,7 @@ use Ximdex\Models\Node;
 use Ximdex\Logger;
 use Ximdex\Runtime\Session;
 use Ximdex\Models\PortalFrames;
+use Ximdex\NodeTypes\ServerNode;
 
 class SynchroFacade
 {
@@ -285,7 +286,10 @@ class SynchroFacade
             return false;
         }
         
-        // Generate a list with server frames per server
+        // Load enabled servers
+        $enabledServers = ServerNode::getServersForPumping();
+        
+        // Generate a list with server frames per enabled server
         $nodeFrame = new NodeFrame();
         $servers = [];
         foreach ($nodes2expire as $id) {
@@ -302,7 +306,7 @@ class SynchroFacade
                 $nodeFrame->update();
                 
                 // Update server frames list with server organization
-                foreach ($nodeFrame->getFrames(null, Batch::TYPE_DOWN) as $idSync) {
+                foreach ($nodeFrame->getFrames(null, Batch::TYPE_DOWN, $enabledServers) as $idSync) {
                     $serverFrame = new ServerFrame($idSync);
                     if (in_array($serverFrame->get('State'), ServerFrame::PUBLISHING_STATUS)) {
                         $servers[$serverFrame->get('IdServer')][] = $idSync;
@@ -311,12 +315,10 @@ class SynchroFacade
             }
             
             // Obtain the frames to be cancelled
-            $nodeFrames = $nodeFrame->getFutureNodeFramesForDate($id, $down);
+            $nodeFrames = $nodeFrame->getFutureNodeFramesForDate($id, $down, $enabledServers);
             if ($nodeFrames === false) {
                 return false;
             }
-            
-            // Set the cancelled state in these frames
             foreach ($nodeFrames as $nodeFrameId) {
                 $nodeFrame = new NodeFrame($nodeFrameId);
                 $nodeFrame->cancel();

@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -41,10 +41,10 @@ class TransitionCache extends GenericData
     public $_idField = 'id';
     public $_table = 'TransitionsCache';
     public $_metaData = array(
-        'id' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
-        'versionId' => array('type' => "int(12)", 'not_null' => 'true'),
-        'transitionId' => array('type' => "int(12)", 'not_null' => 'true'),
-        'file' => array('type' => "varchar(255)", 'not_null' => 'true')
+        'id' => array('type' => 'int(12)', 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
+        'versionId' => array('type' => 'int(12)', 'not_null' => 'true'),
+        'transitionId' => array('type' => 'int(12)', 'not_null' => 'true'),
+        'file' => array('type' => 'varchar(255)', 'not_null' => 'true')
     );
     public $_uniqueConstraints = [];
     public $_indexes = ['id'];
@@ -62,7 +62,15 @@ class TransitionCache extends GenericData
         if (! $id) {
             return null;
         }
-        return (int) $id[0];
+        $id = (int) $id[0];
+        
+        // Check cache data file: no file, will remove the database info
+        $cache = new static($id);
+        if (! file_exists(XIMDEX_CACHE_PATH . '/' . $cache->get('file'))) {
+            $cache->delete();
+            return null;
+        }
+        return $id;
     }
     
     public function store(int $versionId, int $transitionId, string $contentFile)

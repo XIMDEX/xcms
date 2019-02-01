@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -42,11 +42,11 @@ class Transition extends GenericData
     public $_idField = 'id';
     public $_table = 'Transitions';
     public $_metaData = array(
-        'id' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
-        'cacheable' => array('type' => "tinyint(1)", 'not_null' => 'true'),
-        'name' => array('type' => "varchar(50)", 'not_null' => 'true'),
-        'viewClass' => array('type' => "varchar(50)", 'not_null' => 'false'),
-        'previousTransitionId' => array('type' => "int(12)", 'not_null' => 'false')
+        'id' => array('type' => 'int(12)', 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
+        'cacheable' => array('type' => 'tinyint(1)', 'not_null' => 'true'),
+        'name' => array('type' => 'varchar(50)', 'not_null' => 'true'),
+        'viewClass' => array('type' => 'varchar(50)', 'not_null' => 'false'),
+        'previousTransitionId' => array('type' => 'int(12)', 'not_null' => 'false')
     );
     public $_uniqueConstraints = ['name'];
     public $_indexes = ['id'];
@@ -95,14 +95,9 @@ class Transition extends GenericData
                 
                 // Cache content for this transition has been found, return the associated file
                 $cache = new TransitionCache($id);
-                if (! file_exists(XIMDEX_CACHE_PATH . '/' . $cache->get('file'))) {
-                    Logger::warning('Transition cache with non-existant file in system storage with code: ' . $cache->get('id') 
-                        . '. Ignoring it');
-                } else {
-                    Logger::info('Cache file ' . $cache->get('file') . ' was found for version ' . $versionId . ' in ' 
-                        . $transition . ' transition', false, 'magenta');
-                    return XIMDEX_CACHE_PATH . '/' . $cache->get('file');
-                }
+                Logger::info('Cache file ' . $cache->get('file') . ' was found for version ' . $versionId . ' in ' 
+                    . $transition . ' transition', false, 'magenta');
+                return XIMDEX_CACHE_PATH . '/' . $cache->get('file');
             }
         }
         

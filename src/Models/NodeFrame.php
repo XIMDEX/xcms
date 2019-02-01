@@ -71,21 +71,25 @@ class NodeFrame extends NodeFramesOrm
     }
 
 	/**
-    *   Gets all ServerFrames associated to a NodeFrame
-    *
-	*	@param int idNdFr
-	*   @param string operation
-	*	@return array
-	*/
-    public function getFrames(int $idNdFr = null, string $operation = null)
+	 * Gets all ServerFrames associated to a NodeFrame
+	 * 
+	 * @param int $idNdFr
+	 * @param string $operation
+	 * @param array $enabledServers
+	 * @return array
+	 */
+    public function getFrames(int $idNdFr = null, string $operation = null, array $enabledServers = []) : array
     {
         if (! $idNdFr) {
             $idNdFr = $this->IdNodeFrame;
         }
         $sql = 'SELECT IdSync FROM ServerFrames WHERE IdNodeFrame = ' . $idNdFr;
         if ($operation == Batch::TYPE_UP or $operation == Batch::TYPE_DOWN) {
-            $sql .= ' and State not in (\'' . ServerFrame::REMOVED . '\', \'' . ServerFrame::REPLACED . '\', \'' 
+            $sql .= ' AND State NOT IN (\'' . ServerFrame::REMOVED . '\', \'' . ServerFrame::REPLACED . '\', \'' 
                 . ServerFrame::CANCELLED . '\', \'' . ServerFrame::OUT . '\')';
+        }
+        if ($enabledServers) {
+            $sql .= ' AND IdServer IN (' . implode(', ', $enabledServers) . ')';
         }
 		$dbObj = new \Ximdex\Runtime\Db();
 		$dbObj->Query($sql);
@@ -225,9 +229,10 @@ class NodeFrame extends NodeFramesOrm
 	
 	/**
 	 * Get all node frames that will be activated after a given timestamp and specified node ID
-	 *
+	 * 
 	 * @param int $nodeId
 	 * @param int $time
+	 * @param array $enabledServers
 	 * @return array
 	 */
 	public function getFutureNodeFramesForDate(int $nodeId, int $time) : array
