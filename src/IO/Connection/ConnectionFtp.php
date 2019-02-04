@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -41,23 +41,19 @@ class ConnectionFtp extends Connector implements IConnector
     const TIMEOUT = 90;
 
     /**
-     * Connect to server
-     *
-     * @access public
-     * @param host string
-     * @param port int
-     * @return boolean
+     * {@inheritDoc}
+     * @see \Ximdex\IO\Connection\IConnector::connect()
      */
-    public function connect($host = null, $port = null)
+    public function connect(string $host = null, int $port = null) : bool
     {
         if (empty($port)) {
             $port = $this->defaultPort;
         }
         Logger::info("Connecting to FTP server {$host}:{$port}");
-        if (!empty($host)) {
+        if (! empty($host)) {
             $this->host = $host;
         }
-        if (!empty($port)) {
+        if (! empty($port)) {
             $this->port = $port;
         }
         try {
@@ -66,7 +62,7 @@ class ConnectionFtp extends Connector implements IConnector
             Logger::error($e->getMessage());
             return false;
         }
-        if (!$handler) {
+        if (! $handler) {
             $this->handler = false;
             Logger::error("Could't connect to server {$host}:{$port} using FTP protocol");
             return false;
@@ -79,13 +75,11 @@ class ConnectionFtp extends Connector implements IConnector
         return true;
     }
 
-    /**
-     * Disconnect from server
-     *
-     * @access public
-     * @return boolean
-     */
-    public function disconnect()
+   /**
+    * {@inheritDoc}
+    * @see \Ximdex\IO\Connection\IConnector::disconnect()
+    */
+    public function disconnect() : bool
     {
         try {
             $result = ftp_close($this->handler);
@@ -93,7 +87,7 @@ class ConnectionFtp extends Connector implements IConnector
             Logger::error($e->getMessage());
             return false;
         }
-        if (!$result) {
+        if (! $result) {
             Logger::error("Disconnect from FTP server {$this->host}:{$this->port} failed");
             return false;
         }
@@ -103,40 +97,36 @@ class ConnectionFtp extends Connector implements IConnector
     }
 
     /**
-     * Check the status of the connection
+     * {@inheritDoc}
+     * @see \Ximdex\IO\Connection\IConnector::isConnected()
      */
-    public function isConnected()
+    public function isConnected() : bool
     {
-        if (!$this->handler) {
+        if (! $this->handler) {
             return false;
         }
         return ($this->pwd() !== false);
     }
 
     /**
-     * Authenticate into server
-     *
-     * @access public
-     * @param login string
-     * @param password string
-     * @return boolean
+     * {@inheritDoc}
+     * @see \Ximdex\IO\Connection\IConnector::login()
      */
-    public function login($username = null, $password = null)
+    public function login(string $username = null, string $password = null) : bool
     {
         if ($this->handler === null) { // False in handler means connection error
-            if (!$this->connect()) {
+            if (! $this->connect()) {
                 return false;
             }
         }
-        if (!empty($username)) {
+        if (! empty($username)) {
             $this->username = $username;
         }
-        if (!empty($password)) {
+        if (! empty($password)) {
             $this->password = $password;
         }
         try {
-            if (!ftp_login($this->handler, $this->username, $this->password))
-            {
+            if (! ftp_login($this->handler, $this->username, $this->password)) {
                 Logger::error("Could't log into FTP server {$this->host}:{$this->port} with the given user and password");
                 $this->handler = null;
                 return false;
@@ -149,7 +139,7 @@ class ConnectionFtp extends Connector implements IConnector
         Logger::info('Login with user ' . $this->username . ' success');
 
         // Ftp in passive mode (always after a correct login into the FTP server
-        if (!ftp_pasv($this->handler, true))
+        if (! ftp_pasv($this->handler, true))
         {
             Logger::error("Could't set to passive mode in {$this->host}:{$this->port} using FTP protocol");
             $this->handler = null;
@@ -160,19 +150,16 @@ class ConnectionFtp extends Connector implements IConnector
     }
 
     /**
-     * Change directory in server
-     *
-     * @access public
-     * @param dir string
-     * @return boolean false if folder no exist
+     * {@inheritDoc}
+     * @see \Ximdex\IO\Connection\IConnector::cd()
      */
-    public function cd($dir)
+    public function cd(string $dir) : bool
     {
         if (empty($dir)) {
             $dir = '/';
         }
         try {
-            return ftp_chdir($this->handler, $dir);
+            return (bool) ftp_chdir($this->handler, $dir);
         } catch (Exception $e) {
             Logger::error($e->getMessage());
             return false;
@@ -181,11 +168,8 @@ class ConnectionFtp extends Connector implements IConnector
     }
 
     /**
-     * Get the server folder
-     *
-     * @access public
-     * @param dir string
-     * @return string
+     * {@inheritDoc}
+     * @see \Ximdex\IO\Connection\IConnector::pwd()
      */
     public function pwd()
     {
@@ -199,22 +183,17 @@ class ConnectionFtp extends Connector implements IConnector
     }
 
     /**
-     * Create a folder in the server (Absolute routes only for now)
-     *
-     * @access public
-     * @param dir string
-     * @param mode int
-     * @param recursive boolean
-     * @return boolean
+     * {@inheritDoc}
+     * @see \Ximdex\IO\Connection\IConnector::mkdir()
      */
-    public function mkdir($dir, $mode = 0755, $recursive = false)
+    public function mkdir(string $dir, int $mode = 0755, bool $recursive = false) : bool
     {
-        if (!$recursive) {
+        if (! $recursive) {
             return $this->_mkdir($dir, $mode);
         }
         $localPath = $this->pwd();
         $dirElements = explode('/', $dir);
-        if (!(count($dirElements) > 0)) {
+        if (! count($dirElements)) {
             Logger::error('Invalid Path for FTP::mkdir ' . $dir);
             return false;
         }
@@ -229,7 +208,7 @@ class ConnectionFtp extends Connector implements IConnector
                 continue;
             }
             $result = $this->_mkdir($localFolder, $mode);
-            if (!$result) {
+            if (! $result) {
                 break;
             }
         }
@@ -238,60 +217,28 @@ class ConnectionFtp extends Connector implements IConnector
     }
 
     /**
-     * Private mkdir function who supports the recursive mkdir
-     * this function only should create a folder if all the ancestors exists
-     *
-     * @access private
-     * @param dir string
-     * @param mode int
-     * @return boolean
+     * {@inheritDoc}
+     * @see \Ximdex\IO\Connection\IConnector::chmod()
      */
-    private function _mkdir($dir, $mode = 0755)
+    public function chmod(string $target, int $mode = 0755, bool $recursive = false) : bool
     {
-        try {
-            $result = (bool)ftp_mkdir($this->handler, $dir);
-        } catch (Exception $e) {
-            Logger::error($e->getMessage());
-            return false;
-        }
-        if ($result) {
-            // $result = $this->chmod($dir, $mode);
-        }
-        return $result;
-    }
-
-    /**
-     * Manage permissions on a file/folder
-     *
-     * @access public
-     * @param target string
-     * @param mode string
-     * @param recursive boolean
-     * @return boolean
-     */
-    public function chmod($target, $mode = 0755, $recursive = false)
-    {
-        if (!$recursive) {
+        if (! $recursive) {
             try {
-                ftp_site($this->handler, "CHMOD " . $mode . " " . $target);
+                return (bool) ftp_site($this->handler, 'CHMOD ' . $mode . ' ' . $target);
             } catch (Exception $e) {
                 Logger::error($e->getMessage());
                 return false;
             }
         }
-        Logger::fatal("Not implemented yet FTPConnection::chmod with recursive = true");
+        Logger::fatal('Not implemented yet FTPConnection::chmod with recursive = true');
         return false;
     }
 
     /**
-     * Rename a file in the server
-     *
-     * @access public
-     * @param renameFrom string
-     * @param renameTo string
-     * @return boolean
+     * {@inheritDoc}
+     * @see \Ximdex\IO\Connection\IConnector::rename()
      */
-    public function rename($renameFrom, $renameTo)
+    public function rename(string $renameFrom, string $renameTo) : bool
     {
         try {
             $renameFrom = str_replace('//', '/', $renameFrom);
@@ -299,69 +246,59 @@ class ConnectionFtp extends Connector implements IConnector
             if ($this->isFile($renameTo)){
                 ftp_delete($this->handler, $renameTo);
             }
-            return ftp_rename($this->handler, $renameFrom, $renameTo);
+            return (bool) ftp_rename($this->handler, $renameFrom, $renameTo);
         } catch (Exception $e) {
             Logger::error($e->getMessage());
+            return false;
         }
-        return false;
     }
 
     /**
-     * Get the size of a file
-     *
-     * @access public
-     * @param file string
-     * @return int
+     * {@inheritDoc}
+     * @see \Ximdex\IO\Connection\IConnector::size()
      */
-    public function size($file)
+    public function size(string $file)
     {
         try {
             return ftp_size($this->handler, $file);
         } catch (Exception $e) {
             Logger::error($e->getMessage());
+            return false;
         }
-        return false;
     }
 
     /**
-     * Get the folder contents
-     *
-     * @access public
-     * @param dir string
-     * @param mode int
-     * @return mixed
+     * {@inheritDoc}
+     * @see \Ximdex\IO\Connection\IConnector::ls()
      */
-    public function ls($dir, $mode = null)
+    public function ls(string $dir, int $mode = null) : array
     {
-        return ftp_nlist($this->handler, $dir);
+        return (bool) ftp_nlist($this->handler, $dir);
     }
 
     /**
      * {@inheritDoc}
      * @see \Ximdex\IO\Connection\IConnector::rm()
      */
-    public function rm($path, int $id = null)
+    public function rm(string $path, int $id = null) : bool
     {
         try {
             if ($this->isDir($path)) {
-                return ftp_rmdir($this->handler, $path);
+                return (bool) ftp_rmdir($this->handler, $path);
             } else {
-                return ftp_delete($this->handler, $path);
+                return (bool) ftp_delete($this->handler, $path);
             }
         } catch (Exception $e) {
             Logger::error($e->getMessage());
+            return false;
         }
-        return false;
     }
 
     /**
-     * Checks if the especified path is a folder
-     *
-     * @access private
-     * @param path string
-     * @return boolean
+     * {@inheritDoc}
+     * @see \Ximdex\IO\Connection\IConnector::isDir()
      */
-    public function isDir($path)
+    public function isDir(string $path) : bool
     {
         $isDir = false;
         $pwd = $this->pwd();
@@ -379,7 +316,7 @@ class ConnectionFtp extends Connector implements IConnector
      * {@inheritDoc}
      * @see \Ximdex\IO\Connection\IConnector::isFile()
      */
-    public function isFile($path)
+    public function isFile(string $path): bool
     {
         if ($this->isDir($path)) {
             return false;
@@ -402,7 +339,7 @@ class ConnectionFtp extends Connector implements IConnector
             $file = str_replace('//','/',$file);
             if ($this->pwd() == $folder || $this->pwd() . '/' == $folder) {
                 $fileList = ftp_nlist($this->handler, $folder);
-                $isFile = in_array($folder.$file, $fileList);
+                $isFile = in_array($folder . $file, $fileList);
             }
         }
         $this->cd($pwd);
@@ -410,43 +347,31 @@ class ConnectionFtp extends Connector implements IConnector
     }
 
     /**
-     * Copies a file from server to local
-     *
-     * @access public
-     * @param remoteFile string
-     * @param localFile string
-     * @param overwrite boolean
-     * @param mode
-     * @return boolean
+     * {@inheritDoc}
+     * @see \Ximdex\IO\Connection\IConnector::get()
      */
-    public function get($sourceFile, $targetFile, $mode = FTP_BINARY)
+    public function get(string $sourceFile, string $targetFile, int $mode = FTP_BINARY): bool
     {
         try {
-            return ftp_get($this->handler, $targetFile, $sourceFile, $mode);
+            return (bool) ftp_get($this->handler, $targetFile, $sourceFile, $mode);
         } catch (Exception $e) {
             Logger::error($e->getMessage());
+            return false;
         }
-        return false;
     }
 
     /**
-     * Copies a file from local to server
-     *
-     * @access public
-     * @param localFile string
-     * @param remoteFile string
-     * @param overwrite boolean
-     * @param mode
-     * @return boolean
+     * {@inheritDoc}
+     * @see \Ximdex\IO\Connection\IConnector::put()
      */
-    public function put($localFile, $targetFile, $mode = FTP_BINARY)
+    public function put(string $localFile, string $targetFile, int $mode = FTP_BINARY): bool
     {
         try {
-            return ftp_put($this->handler, $targetFile, $localFile, $mode);
+            return (bool) ftp_put($this->handler, $targetFile, $localFile, $mode);
         } catch (Exception $e) {
             Logger::error($e->getMessage());
+            return false;
         }
-        return false;
     }
     
     /**
@@ -455,11 +380,33 @@ class ConnectionFtp extends Connector implements IConnector
      */
     public function dirIsEmpty(string $path): bool
     {
-        $content = ftp_exec($this->handler, 'ls -a ' . $path . ' | head -n 1  | wc -l');
+        $content = (bool) ftp_exec($this->handler, 'ls -a ' . $path . ' | head -n 1  | wc -l');
         if ($content === false) {
             Logger::error('Cannot obtain the files count in order to know is a folder is empty: ' . $path);
             return false;
         }
         return ($content - 2) == 0;
+    }
+    
+    /**
+     * Private mkdir function who supports the recursive mkdir
+     * this function only should create a folder if all the ancestors exists
+     * 
+     * @param string $dir
+     * @param int $mode
+     * @return bool
+     */
+    private function _mkdir(string $dir, int $mode = 0755) : bool
+    {
+        try {
+            $result = (bool) ftp_mkdir($this->handler, $dir);
+        } catch (Exception $e) {
+            Logger::error($e->getMessage());
+            return false;
+        }
+        if ($result) {
+            // $result = $this->chmod($dir, $mode);
+        }
+        return $result;
     }
 }

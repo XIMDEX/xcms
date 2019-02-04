@@ -34,6 +34,7 @@ class Connector
     protected $isFile = false;
     protected $server;
     protected $error;
+    protected $code;
     protected $type;
     const TYPE_API = 'API';
     
@@ -44,8 +45,6 @@ class Connector
     public function __construct(Server $server = null)
     {
         $this->server = $server;
-        $this->error = null;
-        $this->type = null;
     }
     
     /**
@@ -59,7 +58,7 @@ class Connector
     /**
      * @param string $error
      */
-    public function setError(?string $error) : void
+    public function setError(string $error = null) : void
     {
         $this->error = $error;
     }
@@ -88,5 +87,10 @@ class Connector
     public function getServer() : ?Server
     {
         return $this->server;
+    }
+    
+    public function getCode() : ?int
+    {
+        return $this->code;
     }
 }

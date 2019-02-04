@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -34,33 +34,26 @@ use Ximdex\Utils\FsUtils;
 class ConnectionLocal extends Connector implements IConnector
 {	
 	/**
-	 * Connect to server
-	 * 
-	 * @access public
-	 * @param host string
-	 * @param port int
-	 * @return boolean
+	 * {@inheritDoc}
+	 * @see \Ximdex\IO\Connection\IConnector::connect()
 	 */
-	public function connect($host = null, $port = null)
-	{    
-		// Nothing to do here
+    public function connect(string $host = null, int $port = null) : bool
+	{ 
 		return true;
 	}
 	
 	/**
-	 * Disconnect from server
-	 * 
-	 * @access public
-	 * @return boolean
+	 * {@inheritDoc}
+	 * @see \Ximdex\IO\Connection\IConnector::disconnect()
 	 */
 	public function disconnect()
-	{    
-		// Nothing to do here
+	{
 		return true;
 	}
 	
 	/**
-	 * Check the status of the connection
+	 * {@inheritDoc}
+	 * @see \Ximdex\IO\Connection\IConnector::isConnected()
 	 */
 	public function isConnected()
 	{
@@ -68,29 +61,21 @@ class ConnectionLocal extends Connector implements IConnector
 	}
 	
 	/**
-	 * Authenticate into server
-	 * 
-	 * @access public
-	 * @param login string
-	 * @param password string
-	 * @return boolean
+	 * {@inheritDoc}
+	 * @see \Ximdex\IO\Connection\IConnector::login()
 	 */
-	public function login($username = 'anonymous', $password = 'john.doe@example.com')
+	public function login(string $username = null, string $password = null) : bool
 	{
-		// Nothing to do here
 		return true;
 	}
 	
 	/**
-	 * Change directory in server
-	 * 
-	 * @access public
-	 * @param dir string
-	 * @return boolean false if folder no exist
+	 * {@inheritDoc}
+	 * @see \Ximdex\IO\Connection\IConnector::cd()
 	 */
-	public function cd($dir)
+	public function cd(string $dir) : bool
 	{
-		if (!is_dir($dir)) {
+		if (! is_dir($dir)) {
 			return false;
 		}
 		try {
@@ -107,11 +92,8 @@ class ConnectionLocal extends Connector implements IConnector
 	}
 	
 	/**
-	 * Get the server folder
-	 * 
-	 * @access public
-	 * @param dir string
-	 * @return string
+	 * {@inheritDoc}
+	 * @see \Ximdex\IO\Connection\IConnector::pwd()
 	 */
 	public function pwd()
 	{
@@ -119,17 +101,12 @@ class ConnectionLocal extends Connector implements IConnector
 	}
 	
 	/**
-	 * Create a folder in the server
-	 * 
-	 * @access public
-	 * @param dir string
-	 * @param mode int
-	 * @param recursive boolean
-	 * @return boolean
+	 * {@inheritDoc}
+	 * @see \Ximdex\IO\Connection\IConnector::mkdir()
 	 */
-	public function mkdir($dir, $mode = 0755, $recursive = false)
+	public function mkdir(string $dir, int $mode = 0755, bool $recursive = false) : bool
 	{
-		if (!is_dir($dir)) {
+		if (! is_dir($dir)) {
 			try {
 				return mkdir($dir, $mode, $recursive);
 			} catch (Exception $e) {
@@ -141,17 +118,12 @@ class ConnectionLocal extends Connector implements IConnector
 	}
 	
 	/**
-	 * Manage permissions on a file/folder
-	 * 
-	 * @access public
-	 * @param target string
-	 * @param mode string
-	 * @param recursive boolean
-	 * @return boolean
+	 * {@inheritDoc}
+	 * @see \Ximdex\IO\Connection\IConnector::chmod()
 	 */
-	public function chmod($target, $mode = 0755, $recursive = false)
+	public function chmod(string $target, int $mode = 0755, bool $recursive = false) : bool
 	{
-		if (!$recursive) {
+		if (! $recursive) {
 			try {
 				return chmod($target, $mode);
 			} catch (Exception $e) {
@@ -159,61 +131,50 @@ class ConnectionLocal extends Connector implements IConnector
 				return false;
 			}
 		}
-		Logger::fatal("Not implemented yet LocalConnection::chmod with recursive = true");
+		Logger::fatal('Not implemented yet LocalConnection::chmod with recursive = true');
 		return false;
 	}
 	
 	/**
-	 * Rename a file in the server
-	 * 
-	 * @access public
-	 * @param renameFrom string
-	 * @param renameTo string
-	 * @return boolean
+	 * {@inheritDoc}
+	 * @see \Ximdex\IO\Connection\IConnector::rename()
 	 */
-	public function rename($renameFrom, $renameTo)
+	public function rename(string $renameFrom, string $renameTo) : bool
 	{
 		try {
 			return rename($renameFrom, $renameTo);
 		} catch (Exception $e) {
 			Logger::error($e->getMessage());
+			return false;
 		}
-		return false;
 	}
 	
 	/**
-	 * Get the size of a file
-	 * 
-	 * @access public
-	 * @param file string
-	 * @return int
+	 * {@inheritDoc}
+	 * @see \Ximdex\IO\Connection\IConnector::size()
 	 */
-	public function size($file)
+	public function size(string $file)
 	{
 		try {
 			return stat($file);
 		} catch (Exception $e) {
 			Logger::error($e->getMessage());
+			return false;
 		}
-		return false;
 	}
 	
 	/**
-	 * Get the folder contents 
-	 * 
-	 * @access public
-	 * @param dir string
-	 * @param mode int
-	 * @return mixed
+	 * {@inheritDoc}
+	 * @see \Ximdex\IO\Connection\IConnector::ls()
 	 */
-	public function ls($dir, $mode = null)
+	public function ls(string $dir, int $mode = null) : array
 	{
 		$blackList = array('.', '..');
 		$files = array();
 		if (is_dir($dir)) {
 		    if ($dh = opendir($dir)) {
 		        while (($file = readdir($dh)) !== false) {
-		        	if (!in_array($dir, $blackList)) {
+		        	if (! in_array($dir, $blackList)) {
 		            	$files[] = $file;
 		        	}
 		        }
@@ -227,7 +188,7 @@ class ConnectionLocal extends Connector implements IConnector
      * {@inheritDoc}
      * @see \Ximdex\IO\Connection\IConnector::rm()
      */
-    public function rm($path, int $id = null)
+	public function rm(string $path, int $id = null) : bool
 	{
 		try {
 			if (is_file($path)) {
@@ -235,64 +196,38 @@ class ConnectionLocal extends Connector implements IConnector
 			} elseif (is_dir($path)) {
 				return rmdir($path);
 			}
+			
 		} catch (Exception $e) {
 			Logger::error($e->getMessage());
+			return false;
 		}
+		Logger::error('Path ' . $path . ' is not a file or directory');
 		return false;
 	}
 	
 	/**
-	 * Copies a file from server to local
-	 * 
-	 * @access public
-	 * @param remoteFile string
-	 * @param localFile string
-	 * @param overwrite boolean
-	 * @param mode
-	 * @return boolean
+	 * {@inheritDoc}
+	 * @see \Ximdex\IO\Connection\IConnector::get()
 	 */
-	public function get($sourceFile, $targetFile, $mode = 0755)
+	public function get(string $sourceFile, string $targetFile, int $mode = 0755): bool
 	{
 		return $this->copy($sourceFile, $targetFile, $mode);
 	}
 	
 	/**
-	 * Copies a file from local to server
-	 * 
-	 * @access public
-	 * @param localFile string
-	 * @param remoteFile string
-	 * @param overwrite boolean
-	 * @param mode
-	 * @return boolean
+	 * {@inheritDoc}
+	 * @see \Ximdex\IO\Connection\IConnector::put()
 	 */
-	public function put($localFile, $targetFile, $mode = 0755)
+	public function put(string $localFile, string $targetFile, int $mode = 0755): bool
 	{
 		return $this->copy($localFile, $targetFile, $mode);
 	}
 	
-	private function copy($sourceFile, $targetFile, $mode)
-	{
-		$result = false;
-		if (is_dir($sourceFile)) {
-			Logger::error("COPY: El primer argumento no puede ser un directorio: $sourceFile");
-		} else {
-			$result = copy($sourceFile, $targetFile);
-		}
-		if ($result) {
-			$result = $this->chmod($targetFile, $mode);
-		}
-		return $result;
-	}
-	
 	/**
-	 * Checks if the especified path is a folder
-	 * 
-	 * @access public
-	 * @param path string
-	 * @return boolean
+	 * {@inheritDoc}
+	 * @see \Ximdex\IO\Connection\IConnector::isDir()
 	 */
-	public function isDir($path)
+	public function isDir(string $path) : bool
 	{
 		return is_dir($path);
 	}
@@ -301,7 +236,7 @@ class ConnectionLocal extends Connector implements IConnector
      * {@inheritDoc}
      * @see \Ximdex\IO\Connection\IConnector::isFile()
      */
-	public function isFile($path)
+	public function isFile(string $path): bool
 	{
 		return is_file($path);
 	}
@@ -313,5 +248,17 @@ class ConnectionLocal extends Connector implements IConnector
 	public function dirIsEmpty(string $path): bool
 	{
 	    return FsUtils::dir_is_empty($path);
+	}
+	
+	private function copy(string $sourceFile, string $targetFile, int $mode) : bool
+	{
+	    if (is_dir($sourceFile)) {
+	        Logger::error('COPY: The first argument can not be a directory: ' . $sourceFile);
+	        return false;
+	    }
+	    if ($result = copy($sourceFile, $targetFile)) {
+	        $result = $this->chmod($targetFile, $mode);
+	    }
+	    return $result;
 	}
 }

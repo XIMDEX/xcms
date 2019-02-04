@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -27,40 +27,39 @@
 
 namespace Ximdex\IO\Connection;
 
-use Ximdex\Logger;
 use Ximdex\Models\Server;
+use Ximdex\Utils\Factory;
 
 class ConnectionManager
 {
     // Static class emulation
 	private static $baseName = 'Connection';
-	private function ConnectionManager() {}
-	
-	static function getConnection($type, Server $server = null)
+
+	public static function getConnection(string $type, Server $server = null) : Connector
 	{
-		$baseFullPath = __DIR__.'/';
+		$baseFullPath = __DIR__ . '/';
 		$className = self::$baseName . self::normalizeName($type);
-		$connectionclass = $baseFullPath.$className.'.php';
+		$connectionclass = $baseFullPath  .$className . '.php';
 		$connection_routes = $baseFullPath . 'connection_routes.ini';
-		if (!is_file($connectionclass)) {
+		if (! is_file($connectionclass)) {
 			$fileRoutes = parse_ini_file($connection_routes);
 			if (array_key_exists(strtolower($type), $fileRoutes)) {
 				$tmpType = $type;
 				$type = $fileRoutes[$type];
-				if (!is_file($connectionclass)) {
-					Logger::fatal("Connection $type neither $tmpType not implemented yet");
+				if (! is_file($connectionclass)) {
+				    throw new \Exception("Connection $type neither $tmpType not implemented yet");
 				}
 			} else {
-			    Logger::fatal("Connection $type not implemented yet");
+			    throw new \Exception("Connection $type not implemented yet");
 			}
 		}
-		$factory = new \Ximdex\Utils\Factory($baseFullPath,self::$baseName);
+		$factory = new Factory($baseFullPath, self::$baseName);
 		$conn = $factory->instantiate(self::normalizeName($type), $server, '\Ximdex\IO\Connection');
 		$conn->setType($type);
 		return $conn;
 	}
 	
-	private static function normalizeName($name)
+	private static function normalizeName(string $name) : string
 	{
 		return ucfirst(strtolower($name));
 	}

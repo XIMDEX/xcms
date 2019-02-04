@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -32,6 +32,9 @@ use Ximdex\Models\ORM\NodesOrm as Nodes_ORM;
 use Ximdex\Models\RelSemanticTagsNodes;
 use Exception;
 
+/**
+ * @deprecated
+ */
 class ConnectionSolr extends Connector implements IConnector
 {
     private $connected = false;
@@ -39,15 +42,10 @@ class ConnectionSolr extends Connector implements IConnector
     private $config;
 
     /**
-     * Connect to server
-     * Send ping to servidor to ensure it is active.
-     *
-     * @access public
-     * @param host string
-     * @param port int
-     * @return boolean
+     * {@inheritDoc}
+     * @see \Ximdex\IO\Connection\IConnector::connect()
      */
-    public function connect($host = null, $port = null)
+    public function connect(string $host = null, int $port = null) : bool
     {
         Logger::debug("CONNECT $host $port");
         $this->config = array(
@@ -64,139 +62,101 @@ class ConnectionSolr extends Connector implements IConnector
     }
 
     /**
-     * Disconnect from server
-     *
-     * @access public
-     * @return boolean
+     * {@inheritDoc}
+     * @see \Ximdex\IO\Connection\IConnector::disconnect()
      */
-    public function disconnect()
+    public function disconnect() : bool
     {
         $this->connected = false;
         return true;
     }
 
     /**
-     * Check the status of the connection
+     * {@inheritDoc}
+     * @see \Ximdex\IO\Connection\IConnector::isConnected()
      */
-    public function isConnected()
+    public function isConnected() : bool
     {
         return $this->connected;
     }
 
     /**
-     * Authenticate into server.
-     * Useless in solr. Connection status is done in connect method.
-     *
-     * @access public
-     * @param login string
-     * @param password string
-     * @return boolean
+     * {@inheritDoc}
+     * @see \Ximdex\IO\Connection\IConnector::login()
      */
-    public function login($username = 'anonymous', $username = 'john.doe@example.com')
+    public function login(string $username = null, string $password = null) : bool
     {
         return true;
     }
 
     /**
-     * Change directory in server.
-     * CHECK scheduler: is called several times.
-     *
-     * @access public
-     * @param dir string
-     * @return boolean false if folder no exist
+     * {@inheritDoc}
+     * @see \Ximdex\IO\Connection\IConnector::cd()
      */
-    public function cd($dir)
+    public function cd(string $dir) : bool
     {
         return true;
     }
 
     /**
-     * Get the server folder. UNUSED.
-     *
-     * @access public
-     * @param dir string
-     * @return string
+     * {@inheritDoc}
+     * @see \Ximdex\IO\Connection\IConnector::pwd()
      */
     public function pwd()
     {
-        return "";
+        return '';
     }
 
     /**
-     * Create a folder in the server. UNUSED.
-     *
-     * @access public
-     * @param dir string
-     * @param mode int
-     * @param recursive boolean
-     * @return boolean
+     * {@inheritDoc}
+     * @see \Ximdex\IO\Connection\IConnector::mkdir()
      */
-    public function mkdir($dir, $mode = 0755, $recursive = false)
+    public function mkdir(string $dir, int $mode = 0755, bool $recursive = false) : bool
     {
         return true;
     }
 
     /**
-     * Manage permissions on a file/folder. UNUSED.
-     *
-     * @access public
-     * @param target string
-     * @param mode string
-     * @param recursive boolean
-     * @return boolean
+     * {@inheritDoc}
+     * @see \Ximdex\IO\Connection\IConnector::chmod()
      */
-    public function chmod($target, $mode = 0755, $recursive = false)
+    public function chmod(string $target, int $mode = 0755, bool $recursive = false) : bool
     {
         return false;
     }
 
     /**
-     * Rename a file in the server. UNUSED.
-     *
-     * @access public
-     * @param renameFrom string
-     * @param renameTo string
-     * @return boolean
+     * {@inheritDoc}
+     * @see \Ximdex\IO\Connection\IConnector::rename()
      */
-    public function rename($renameFrom, $renameTo)
+    public function rename(string $renameFrom, string $renameTo) : bool
     {
-        Logger::debug("RENAME $renameFrom -> $renameTo");
         return true;
     }
 
     /**
-     * Get the size of a file. UNUSED.
-     *
-     * @access public
-     * @param file string
-     * @return int
+     * {@inheritDoc}
+     * @see \Ximdex\IO\Connection\IConnector::size()
      */
-    public function size($file)
+    public function size(string $file)
     {
         return 0;
     }
 
     /**
-     * Get the folder contents. UNUSED.
-     *
-     * @access public
-     * @param dir string
-     * @param mode int
-     * @return mixed
+     * {@inheritDoc}
+     * @see \Ximdex\IO\Connection\IConnector::ls()
      */
-    public function ls($dir, $mode = null)
+    public function ls(string $dir, int $mode = null) : array
     {
         return array();
     }
 
     /**
-     * Checks if the especified path is a folder. UNUSED.
-     *
-     * @access public
-     * @param path string
-     * @return boolean
+     * {@inheritDoc}
+     * @see \Ximdex\IO\Connection\IConnector::isDir()
      */
-    public function isDir($path)
+    public function isDir(string $path) : bool
     {
         return false;
     }
@@ -205,24 +165,17 @@ class ConnectionSolr extends Connector implements IConnector
      * {@inheritDoc}
      * @see \Ximdex\IO\Connection\IConnector::isFile()
      */
-    public function isFile($path)
+    public function isFile(string $path): bool
     {
         return false;
     }
 
     /**
-     * Copies a file from server to local. UNUSED.
-     *
-     * @access public
-     * @param remoteFile string
-     * @param localFile string
-     * @param overwrite boolean
-     * @param mode
-     * @return boolean
+     * {@inheritDoc}
+     * @see \Ximdex\IO\Connection\IConnector::get()
      */
-    public function get($sourceFile, $targetFile, $mode = 0755)
+    public function get(string $sourceFile, string $targetFile, int $mode = 0755): bool
     {
-        Logger::debug("GET $sourceFile, $targetFile");
         return false;
     }
 
@@ -230,26 +183,25 @@ class ConnectionSolr extends Connector implements IConnector
      * {@inheritDoc}
      * @see \Ximdex\IO\Connection\IConnector::rm()
      */
-    public function rm($path, int $id = null)
+    public function rm(string $path, int $id = null) : bool
     {
-        Logger::debug("RM $path");
         $pathInfo = $this->splitPath($path);
-        $this->config['endpoint']['localhost']['core'] = $pathInfo["core"];
-        if ($this->getNameExtension($pathInfo["fullName"]) === "xml") {
-            $nodeNameNoIdiom = $this->extractNodeName($pathInfo["fullName"]);
-            $qPath = implode("/", array($pathInfo["subPath"], "documents", $nodeNameNoIdiom));
-            $qName = $this->extractNodeName($pathInfo["fullName"], true);
+        $this->config['endpoint']['localhost']['core'] = $pathInfo['core'];
+        if ($this->getNameExtension($pathInfo['fullName']) === 'xml') {
+            $nodeNameNoIdiom = $this->extractNodeName($pathInfo['fullName']);
+            $qPath = implode('/', array($pathInfo['subPath'], 'documents', $nodeNameNoIdiom));
+            $qName = $this->extractNodeName($pathInfo['fullName'], true);
         } else {
-            $qPath = $pathInfo["subPath"];
-            $qName = $pathInfo["fullName"];
+            $qPath = $pathInfo['subPath'];
+            $qName = $pathInfo['fullName'];
         }
         $node = new Nodes_ORM();
-        $result = $node->find('idnode', "Name = %s AND Path REGEXP %s", array($qName, $qPath), MONO);
-        if (!isset($result[0])) {
-            Logger::error("unexpected result, document may have not been deleted");
+        $result = $node->find('idnode', 'Name = %s AND Path REGEXP %s', array($qName, $qPath), MONO);
+        if (! isset($result[0])) {
+            Logger::error('unexpected result, document may have not been deleted');
             Logger::error(print_r(array(
-                "qName" => $qName,
-                "qPath" => $qPath), true));
+                'qName' => $qName,
+                'qPath' => $qPath), true));
             return false;
         }
 
@@ -268,43 +220,34 @@ class ConnectionSolr extends Connector implements IConnector
     }
 
     /**
-     * Copies a file from local to server.
-     *
-     * @access public
-     * @param localFile string
-     * @param remoteFile string
-     * @param overwrite boolean
-     * @param mode
-     * @return boolean
+     * {@inheritDoc}
+     * @see \Ximdex\IO\Connection\IConnector::put()
      */
-    public function put($localFile, $targetFile, $mode = 0755)
+    public function put(string $localFile, string $targetFile, int $mode = 0755): bool
     {
         Logger::debug("PUT $localFile TO $targetFile");
         $pathInfo = $this->splitPath($targetFile);
-        $this->config['endpoint']['localhost']['core'] = $pathInfo["core"];
+        $this->config['endpoint']['localhost']['core'] = $pathInfo['core'];
 
         // Get file extension
-        $targetFileParts = explode("/", $targetFile);
+        $targetFileParts = explode('/', $targetFile);
         $filename = array_pop($targetFileParts);
-        $fileParts = explode(".", $filename);
+        $fileParts = explode('.', $filename);
         $fileExtension = array_pop($fileParts);
-        if ($fileExtension === "xml") {
+        if ($fileExtension === 'xml') {
             return $this->putXmlFile($localFile, $pathInfo);
-        } else {
-            
-            //Don't publish binary files
-            return true;
-            return $this->putBinaryFile($localFile, $pathInfo);
         }
+        
+        // Don't publish binary files
+        return true;
+        // return $this->putBinaryFile($localFile, $pathInfo);
     }
 
-    public function putXmlFile($localFile, $pathInfo)
-    {
-        Logger::debug("putXmlFile");
-        
+    private function putXmlFile(string $localFile, string $pathInfo) : bool
+    {        
         // Load xml coming from transformation
         $xml = simplexml_load_file($localFile);
-        if (!$xml) {
+        if (! $xml) {
             Logger::error("invalid xml file: $localFile");
             return false;
         }
@@ -313,7 +256,7 @@ class ConnectionSolr extends Connector implements IConnector
         try {
             $client = new \Solarium\Client($this->config);
         } catch (Exception $e) {
-            Logger::error("fail to create a Solarium_Client instance");
+            Logger::error('fail to create a Solarium_Client instance');
             return false;
         }
 
@@ -322,13 +265,13 @@ class ConnectionSolr extends Connector implements IConnector
         $doc = $update->createDocument();
         foreach ($xml->children() as $field) {
             $attr = $field->attributes();
-            $key = (string) $attr["name"];
+            $key = (string) $attr['name'];
             $doc->addField($key, $field);
         }
 
         // Add additional fields according to conf file.
         // It may be used to change/delete fields.
-        $this->loadAdditionalFields($doc, $client, $pathInfo["core"]);
+        $this->loadAdditionalFields($doc, $client, $pathInfo['core']);
         $update->addDocument($doc);
         $update->addCommit();
         try {
@@ -345,16 +288,16 @@ class ConnectionSolr extends Connector implements IConnector
         return true;
     }
 
-    public function putBinaryFile($localFile, $pathInfo)
+    private function putBinaryFile(string $localFile, string $pathInfo) : bool
     {
-        Logger::debug("putBinaryFile - $localFile - " . $pathInfo["fullName"]);
-        $trueName = $this->extractNodeNameBinaryPut($pathInfo["fullName"]);
+        Logger::debug("putBinaryFile - $localFile - " . $pathInfo['fullName']);
+        $trueName = $this->extractNodeNameBinaryPut($pathInfo['fullName']);
         
         // Get node id
         $node = new Nodes_ORM();
-        $result = $node->find('idnode', "Name = %s AND Path REGEXP %s", array($trueName, $pathInfo["subPath"] . '$'), MONO);
-        if (!isset($result[0])) {
-            Logger::error(sprintf("NOT found: Name = %s AND Path REGEXP %s", $trueName, $pathInfo["subPath"] . '$'));
+        $result = $node->find('idnode', 'Name = %s AND Path REGEXP %s', array($trueName, $pathInfo['subPath'] . '$'), MONO);
+        if (! isset($result[0])) {
+            Logger::error(sprintf('NOT found: Name = %s AND Path REGEXP %s', $trueName, $pathInfo['subPath'] . '$'));
             return false;
         }
         
@@ -374,7 +317,7 @@ class ConnectionSolr extends Connector implements IConnector
         $tags = $relTag->getTags($result[0]);
         if (count($tags) > 0) {
             foreach ($tags as $tag) {
-                $doc->addField("tags", $tag["Name"]);
+                $doc->addField('tags', $tag['Name']);
             }
         }
         
@@ -391,33 +334,35 @@ class ConnectionSolr extends Connector implements IConnector
         return true;
     }
 
-    public function getNameExtension($name)
+    private function getNameExtension(string $name) : string
     {
-        $arr = explode(".", $name);
+        $arr = explode('.', $name);
         $ext = array_pop($arr);
         return $ext;
     }
 
-    public function splitPath($path)
+    private function splitPath(string $path) : array
     {
-        $arr = explode("/", $path);
+        $arr = explode('/', $path);
         $core = array_shift($arr);
         $fullName = array_pop($arr);
         $subPath = implode('/', $arr);
-        return array("core" => $core,
-            "subPath" => $subPath,
-            "fullName" => $fullName);
+        return array(
+            'core' => $core,
+            'subPath' => $subPath,
+            'fullName' => $fullName
+        );
     }
 
-    public function extractNodeName($fullName, $withIdiom = false)
+    private function extractNodeName(string $fullName, bool $withIdiom = false) : string
     {
-        $name = "";
-        $fullNameParts = explode("_", $fullName);
-        $nameNoServerFrame = implode("", array($fullNameParts[0], $fullNameParts[1]));
-        if ($this->getNameExtension($fullName) === "xml") {
-            $nameNoServerFrameParts = explode("-", $nameNoServerFrame);
+        $name = '';
+        $fullNameParts = explode('_', $fullName);
+        $nameNoServerFrame = implode('', array($fullNameParts[0], $fullNameParts[1]));
+        if ($this->getNameExtension($fullName) === 'xml') {
+            $nameNoServerFrameParts = explode('-', $nameNoServerFrame);
             if ($withIdiom) {
-                $name = implode("-", array($nameNoServerFrameParts[0], $nameNoServerFrameParts[1]));
+                $name = implode('-', array($nameNoServerFrameParts[0], $nameNoServerFrameParts[1]));
             } else {
                 $name = $nameNoServerFrameParts[0];
             }
@@ -427,7 +372,7 @@ class ConnectionSolr extends Connector implements IConnector
         return $name;
     }
 
-    public function loadAdditionalFields($doc, $client, $core)
+    private function loadAdditionalFields(array $doc, \Solarium\Client $client, string $core)
     {
         // Data folders are not commited, so must be configured per project
         $fieldsConf = include(XIMDEX_ROOT_PATH . "/data/solr-core/{$core}/solr_additional_fields.conf");
@@ -436,15 +381,19 @@ class ConnectionSolr extends Connector implements IConnector
         }
         $fieldnameArray = array_keys($fieldsConf);
         $selectQuery = $client->createSelect();
-        $selectQuery->setQuery("id:" . $doc["id"]);
+        $selectQuery->setQuery('id:' . $doc['id']);
         $selectQuery->setFields($fieldnameArray);
         $resultset = $client->select($selectQuery);
         foreach ($fieldnameArray as $fieldname) {
             $fieldCfg = $fieldsConf[$fieldname];
-            $fieldValue = "";
-            if ($fieldCfg["STORE"] === 'ALWAYS') {  // Calculate value
-                $fieldValue = $fieldCfg["FUNCTION"]();
-            } else {    // "IF_NEW"
+            $fieldValue = '';
+            if ($fieldCfg['STORE'] === 'ALWAYS') {
+                
+                // Calculate value
+                $fieldValue = $fieldCfg['FUNCTION']();
+            } else {
+                
+                // 'IF_NEW'
                 if ($resultset->getNumFound() !== 0) {
                     foreach ($resultset as $document) {
                         foreach ($document as $field => $value) {
@@ -456,19 +405,21 @@ class ConnectionSolr extends Connector implements IConnector
                         break;
                     }
                 }
-                if ($fieldValue === "") {   // Calculate value
-                    $fieldValue = $fieldCfg["FUNCTION"]();
+                if ($fieldValue === '') {
+                    
+                    // Calculate value
+                    $fieldValue = $fieldCfg['FUNCTION']();
                 }
             }
             $doc->addField($fieldname, $fieldValue);
         }
     }
 
-    public function extractNodeNameBinaryPut($fullName)
+    private function extractNodeNameBinaryPut(string $fullName) : string 
     {
-        $fullNameParts = explode("_", $fullName, 2);
+        $fullNameParts = explode('_', $fullName, 2);
         array_shift($fullNameParts);
-        $trueName = implode("", $fullNameParts);
+        $trueName = implode('', $fullNameParts);
         return $trueName;
     }
     

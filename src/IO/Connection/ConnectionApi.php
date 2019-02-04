@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -41,7 +41,7 @@ class ConnectionApi extends Connector implements IConnector
 	 * {@inheritDoc}
 	 * @see \Ximdex\IO\Connection\IConnector::connect()
 	 */
-	public function connect($host = null, $port = null)
+    public function connect(string $host = null, int $port = null) : bool
 	{
 	    $this->client = new Client();
 	    if ($this->server) {
@@ -50,8 +50,7 @@ class ConnectionApi extends Connector implements IConnector
 	            $host .= ':' . $this->server->get('Port');
 	        }
 	        $host .= '/' . trim($this->server->get('InitialDirectory'), '/');
-	    }
-	    else {
+	    } else {
 	        $host .= ':' . $port;
 	    }
 	    $this->host = $host;
@@ -76,7 +75,7 @@ class ConnectionApi extends Connector implements IConnector
      * {@inheritDoc}
      * @see \Ximdex\IO\Connection\IConnector::disconnect()
      */
-	public function disconnect()
+	public function disconnect() : bool
 	{
 	    $this->client = null;
 	    $this->server = null;
@@ -88,7 +87,7 @@ class ConnectionApi extends Connector implements IConnector
 	 * {@inheritDoc}
 	 * @see \Ximdex\IO\Connection\IConnector::isConnected()
 	 */
-	public function isConnected()
+	public function isConnected() : bool
 	{
 		return $this->connected;
 	}
@@ -97,7 +96,7 @@ class ConnectionApi extends Connector implements IConnector
 	 * {@inheritDoc}
 	 * @see \Ximdex\IO\Connection\IConnector::login()
 	 */
-	public function login($username = 'anonymous', $password = 'john.doe@example.com')
+	public function login(string $username = null, string $password = null) : bool
 	{
 		return true;
 	}
@@ -106,7 +105,7 @@ class ConnectionApi extends Connector implements IConnector
 	 * {@inheritDoc}
 	 * @see \Ximdex\IO\Connection\IConnector::cd()
 	 */
-	public function cd($dir)
+	public function cd(string $dir) : bool
 	{
 		return true;
 	}
@@ -124,7 +123,7 @@ class ConnectionApi extends Connector implements IConnector
 	 * {@inheritDoc}
 	 * @see \Ximdex\IO\Connection\IConnector::mkdir()
 	 */
-	public function mkdir($dir, $mode = 0755, $recursive = false)
+	public function mkdir(string $dir, int $mode = 0755, bool $recursive = false) : bool
 	{
 		return true;
 	}
@@ -133,7 +132,7 @@ class ConnectionApi extends Connector implements IConnector
 	 * {@inheritDoc}
 	 * @see \Ximdex\IO\Connection\IConnector::chmod()
 	 */
-	public function chmod($target, $mode = 0755, $recursive = false)
+	public function chmod(string $target, int $mode = 0755, bool $recursive = false) : bool
 	{
 		return true;
 	}
@@ -142,7 +141,7 @@ class ConnectionApi extends Connector implements IConnector
 	 * {@inheritDoc}
 	 * @see \Ximdex\IO\Connection\IConnector::rename()
 	 */
-	public function rename($renameFrom, $renameTo)
+	public function rename(string $renameFrom, string $renameTo) : bool
 	{
 		return true;
 	}
@@ -151,7 +150,7 @@ class ConnectionApi extends Connector implements IConnector
 	 * {@inheritDoc}
 	 * @see \Ximdex\IO\Connection\IConnector::size()
 	 */
-	public function size($file)
+	public function size(string $file)
 	{
 		return 1;
 	}
@@ -160,7 +159,7 @@ class ConnectionApi extends Connector implements IConnector
      * {@inheritDoc}
      * @see \Ximdex\IO\Connection\IConnector::ls()
      */
-	public function ls($dir, $mode = null)
+	public function ls(string $dir, int $mode = null) : array
 	{
 		return [];
 	}
@@ -169,7 +168,7 @@ class ConnectionApi extends Connector implements IConnector
 	 * {@inheritDoc}
 	 * @see \Ximdex\IO\Connection\IConnector::rm()
 	 */
-	public function rm($path, int $id = null)
+	public function rm(string $path, int $id = null) : bool
 	{
 	    try {
 	        $res = $this->client->request('DELETE', $this->host . '/' . App::getValue('ximid') . ':' . $id);
@@ -179,6 +178,7 @@ class ConnectionApi extends Connector implements IConnector
 	    }
 	    catch (\Exception $e) {
 	        $this->error = $e->getMessage();
+	        $this->code = $e->getCode();
 	        return false;
 	    }
 	    if ($res->getStatusCode() == 200) {
@@ -192,7 +192,7 @@ class ConnectionApi extends Connector implements IConnector
 	 * {@inheritDoc}
 	 * @see \Ximdex\IO\Connection\IConnector::get()
 	 */
-	public function get($sourceFile, $targetFile, $mode = 0755)
+	public function get(string $sourceFile, string $targetFile, int $mode = 0755): bool
 	{
 		return true;
 	}
@@ -201,7 +201,7 @@ class ConnectionApi extends Connector implements IConnector
 	 * {@inheritDoc}
 	 * @see \Ximdex\IO\Connection\IConnector::put()
 	 */
-	public function put($localFile, $targetFile, $mode = 0755)
+	public function put(string $localFile, string $targetFile, int $mode = 0755): bool
 	{
 	    $content = FsUtils::file_get_contents($localFile);
 	    if ($content === false) {
@@ -220,6 +220,7 @@ class ConnectionApi extends Connector implements IConnector
 	    }
 	    catch (\Exception $e) {
 	        $this->error = $e->getMessage();
+	        $this->code = $e->getCode();
 	        return false;
 	    }
 	    if ($res->getStatusCode() == 200) {
@@ -233,7 +234,7 @@ class ConnectionApi extends Connector implements IConnector
 	 * {@inheritDoc}
 	 * @see \Ximdex\IO\Connection\IConnector::isDir()
 	 */
-	public function isDir($path)
+	public function isDir(string $path) : bool
 	{
 		return true;
 	}
@@ -242,7 +243,7 @@ class ConnectionApi extends Connector implements IConnector
 	 * {@inheritDoc}
 	 * @see \Ximdex\IO\Connection\IConnector::isFile()
 	 */
-	public function isFile($path)
+	public function isFile(string $path): bool
 	{
 		return $this->isFile;
 	}

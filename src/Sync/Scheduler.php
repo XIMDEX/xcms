@@ -396,9 +396,7 @@ class Scheduler
         if ($portal->get('SFfatalError')) {
             $info .= ', ' . $portal->get('SFfatalError') . ' fatal error';
         }
-        if ($portal->get('SFfatalError')) {
-            Logger::error($info);
-        } elseif ($portal->get('SFsoftError')) {
+        if ($portal->get('SFfatalError') or $portal->get('SFsoftError')) {
             Logger::warning($info);
         } else {
             Logger::info(' ' . $info);

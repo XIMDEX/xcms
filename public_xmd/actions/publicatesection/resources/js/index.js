@@ -79,15 +79,17 @@ X.actionLoaded(function(event, fn, params) {
 		});
 	}
 	
-	function getNotificableUsers() {	
-		var val = $groupList.val().split('|');
-		var groupid = val[0];
-		var stateid = val[1];
-		fn('input[name=groupid]').val(groupid);
-		request({
-			cb: notificableUsers,
-			data: {method: 'notificableUsers', groupid: groupid, stateid: stateid}
-		});
+	function getNotificableUsers() {
+		if ($groupList) {
+			var val = $groupList.val().split('|');
+			var groupid = val[0];
+			var stateid = val[1];
+			fn('input[name=groupid]').val(groupid);
+			request({
+				cb: notificableUsers,
+				data: {method: 'notificableUsers', groupid: groupid, stateid: stateid}
+			});
+		}
 	}	
 	
 	function notificableUsers(data, textStatus) {
@@ -123,7 +125,9 @@ X.actionLoaded(function(event, fn, params) {
 		});
 	}
 	
-	$groupList.change(getNotificableUsers).change();
+	if ($groupList) {
+		$groupList.change(getNotificableUsers).change();
+	}
 	
 	$textarea.blur(function() {
 		if (Object.isEmpty($textarea.val())) {

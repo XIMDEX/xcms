@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -80,7 +80,6 @@ class Metadata extends GenericData
             array_push($returnArray[$idSection]['groups'], $group);
             $dbObj->Next();
         }
-        unset($dbObj);
         return $returnArray;
     }
 
@@ -89,23 +88,21 @@ class Metadata extends GenericData
     {
         $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->Query(sprintf("SELECT Metadata.name, Metadata.type, RelMetadataGroupMetadata.required,
-                        RelMetadataGroupMetadata.idRelMetadataGroupMetadata, 
-                        (
-                        	CASE
-                            	WHEN MetadataValue.value IS NULL THEN Metadata.defaultValue
-                                ELSE MetadataValue.value
-                            END
-                        ) AS value
-                        FROM RelMetadataGroupMetadata JOIN 
-                        Metadata ON RelMetadataGroupMetadata.idMetadata =
-                        Metadata.idMetadata 
-                        LEFT JOIN MetadataValue ON MetadataValue.idRelMetadataGroupMetadata = RelMetadataGroupMetadata.idRelMetadataGroupMetadata 
-                        and MetadataValue.idNode = %s
-                        WHERE idMetadataGroup = %s", $nodeId, $idGroup));
-
+            RelMetadataGroupMetadata.idRelMetadataGroupMetadata, 
+            (
+            	CASE
+                	WHEN MetadataValue.value IS NULL THEN Metadata.defaultValue
+                    ELSE MetadataValue.value
+                END
+            ) AS value
+            FROM RelMetadataGroupMetadata JOIN 
+            Metadata ON RelMetadataGroupMetadata.idMetadata =
+            Metadata.idMetadata 
+            LEFT JOIN MetadataValue ON MetadataValue.idRelMetadataGroupMetadata = RelMetadataGroupMetadata.idRelMetadataGroupMetadata 
+            and MetadataValue.idNode = %s
+            WHERE idMetadataGroup = %s", $nodeId, $idGroup));
         $returnArray = array();
-
-        while (!$dbObj->EOF) {
+        while (! $dbObj->EOF) {
             $value = static::getMetadataValue($nodeId, $dbObj->GetValue('value'), $dbObj->GetValue('type'));
             $returnArray[] = [
                 'name' => $dbObj->GetValue('name'),
@@ -114,65 +111,48 @@ class Metadata extends GenericData
                 'type' => $dbObj->GetValue('type'),
                 'required' => $dbObj->GetValue('required'),
             ];
-
             $dbObj->Next();
         }
-        unset($dbObj);
-
         return $returnArray;
     }
 
     public function insertMetadata(int $idGroup, array $metadata): array
     {
         $dbObj = new \Ximdex\Runtime\Db();
-
         $dbObj->Query(sprintf("SELECT Metadata.idMetadata, Metadata.name
-                        FROM RelMetadataGroupMetadata JOIN 
-                        Metadata ON RelMetadataGroupMetadata.idMetadata =
-                        Metadata.idMetadata
-                        WHERE idMetadataGroup = %s ", $idGroup));
-
+            FROM RelMetadataGroupMetadata JOIN 
+            Metadata ON RelMetadataGroupMetadata.idMetadata =
+            Metadata.idMetadata
+            WHERE idMetadataGroup = %s ", $idGroup));
         $returnArray = array();
-
         while (!$dbObj->EOF) {
             $returnArray[] = [
                 'id' => $dbObj->GetValue('idMetadata'),
                 'name' => $dbObj->GetValue('name')
             ];
-
             $dbObj->Next();
         }
-        unset($dbObj);
-
         return $returnArray;
     }
-
 
     public function deleteMetadataValuesByNodeIdAndGroupId(int $idNode, int $idGroup)
     {
         $dbObj = new \Ximdex\Runtime\Db();
-
         $query = sprintf("DELETE mv FROM MetadataValue mv JOIN RelMetadataGroupMetadata ON 
             mv.idRelMetadataGroupMetadata = RelMetadataGroupMetadata.idRelMetadataGroupMetadata 
             WHERE idNode=%s and idMetadataGroup=%s;", $idNode, $idGroup);
-
         $dbObj->Execute($query);
         $valid = $dbObj->EOF;
-
-        unset($dbObj);
-
         return $valid;
     }
 
     public function addMetadataValuesByNodeId(array $metadataArray, int $idNode)
     {
         $dbObj = new \Ximdex\Runtime\Db();
-
-
         foreach ($metadataArray as $key => $value) {
-            if (!empty($value)) {
-                $query = sprintf("INSERT INTO MetadataValue(idNode,idRelMetadataGroupMetadata, value)
-                         VALUES (%s, %s, \"%s\")", $idNode, $key, $value);
+            if (! empty($value)) {
+                $query = sprintf("INSERT INTO MetadataValue(idNode,idRelMetadataGroupMetadata, value) 
+                    VALUES (%s, %s, \"%s\")", $idNode, $key, $value);
                 $dbObj->Execute($query);
             }
         }
@@ -183,7 +163,6 @@ class Metadata extends GenericData
             $this->messages->add(_('The operation has failed'), MSG_TYPE_ERROR);
             return false;
         }
-        unset($dbObj);
     }
 
     /**
@@ -197,31 +176,25 @@ class Metadata extends GenericData
     public static function getByNodeAndGroup($idNode, $idGroup = null)
     {
         $metadata = [];
-
         $dbObj = new \Ximdex\Runtime\Db();
         $query = sprintf(
             "SELECT Metadata.name as name, MetadataValue.value as value, Metadata.defaultValue
-                        as defaultValue, Metadata.type as type  FROM RelMetadataGroupMetadata JOIN  Metadata ON 
-                        RelMetadataGroupMetadata.idMetadata = Metadata.idMetadata  LEFT JOIN MetadataValue ON 
-                        MetadataValue.idRelMetadataGroupMetadata = RelMetadataGroupMetadata.idRelMetadataGroupMetadata 
-                        WHERE (RelMetadataGroupMetadata.required = TRUE OR MetadataValue.value <> '') and idNode = %s",
+                as defaultValue, Metadata.type as type  FROM RelMetadataGroupMetadata JOIN  Metadata ON 
+                RelMetadataGroupMetadata.idMetadata = Metadata.idMetadata  LEFT JOIN MetadataValue ON 
+                MetadataValue.idRelMetadataGroupMetadata = RelMetadataGroupMetadata.idRelMetadataGroupMetadata 
+                WHERE (RelMetadataGroupMetadata.required = TRUE OR MetadataValue.value <> '') and idNode = %s",
             $idNode
         );
-
-        if (!is_null($idGroup)) {
+        if (! is_null($idGroup)) {
             $query .= sprintf(' and MetadataGroup.idMetadataGroup = %s ', $idGroup);
         }
-
         $dbObj->Query($query);
-        while (!$dbObj->EOF) {
+        while (! $dbObj->EOF) {
             $val = $dbObj->GetValue('value');
             $val = !empty($val) ? $val : $dbObj->GetValue('defaultValue');
             $metadata[$dbObj->GetValue('name')] = static::getMetadataValue($idNode, $val, $dbObj->GetValue('type'));
-
             $dbObj->Next();
         }
-        unset($dbObj);
-
         return $metadata;
     }
 
@@ -252,7 +225,6 @@ class Metadata extends GenericData
             preg_match('/[[:word:]]+\((.*)\)/m', $macro, $params);
             $macro = 'macro' . ucfirst(str_replace('(' . ($params[1] ?? '') . ')', '', $macro));
             $params = static::prepareMacroParams($idNode, $params[1] ?? null);
-
             if (method_exists(__CLASS__, $macro)) {
                 $result = static::$macro($params);
             }
@@ -265,16 +237,13 @@ class Metadata extends GenericData
         $result = null;
         if ($params) {
             $result = explode(',', $params);
-
             foreach ($result as &$param) {
                 $param = trim($param);
-
                 if (strtolower($param) === 'this') {
                     $param = $idNode;
                 }
             }
         }
-
         return $result;
     }
 
@@ -295,12 +264,10 @@ class Metadata extends GenericData
         if (is_null($token)) {
             $token = isset($_GET['token']) ? $_GET['token'] : null;
         }
-
         if (! is_null($token)) {
             $user = User::getByToken($token);
             $name = $user->get('Name');
         }
-
         return is_string($name) ? $name : null;
     }
 
@@ -309,7 +276,6 @@ class Metadata extends GenericData
         [$nodeId] = $params;
         $node = new Node($nodeId);
         $nodeName = $node->get('Name');
-
         if (App::getValue('PublishPathFormat') == App::PREFIX) {
             $parts = explode('-', $nodeName);
             if (count($parts) > 1) {
@@ -317,7 +283,6 @@ class Metadata extends GenericData
                 $nodeName = implode('-', $parts);
             }
         }
-
         return $nodeName;
     }
 }

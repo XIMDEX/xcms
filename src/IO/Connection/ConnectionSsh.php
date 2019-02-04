@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -40,22 +40,18 @@ class ConnectionSsh extends Connector implements IConnector
     private $netSFTP = null;
 
     /**
-     * Connect to server
-     *
-     * @access public
-     * @param host string
-     * @param port int
-     * @return boolean
+     * {@inheritDoc}
+     * @see \Ximdex\IO\Connection\IConnector::connect()
      */
-    public function connect($host = null, $port = null)
+    public function connect(string $host = null, int $port = null) : bool
     {
         if (empty($port)) {
             $port = 22;
         }
-        if (!empty($host)) {
+        if (! empty($host)) {
             $this->host = $host;
         }
-        if (!empty($port)) {
+        if (! empty($port)) {
             $this->port = $port;
         }
         if (empty($host) && empty($port)) {
@@ -66,74 +62,62 @@ class ConnectionSsh extends Connector implements IConnector
     }
 
     /**
-     * Disconnect from server
-     *
-     * @access public
-     * @return boolean
+     * {@inheritDoc}
+     * @see \Ximdex\IO\Connection\IConnector::disconnect()
      */
-    public function disconnect()
+    public function disconnect() : bool
     {
         return (bool) $this->netSFTP->disconnect();
     }
 
     /**
-     * Check the status of the connection
+     * {@inheritDoc}
+     * @see \Ximdex\IO\Connection\IConnector::isConnected()
      */
-    public function isConnected()
+    public function isConnected() : bool
     {
         if (empty($this->netSFTP)) {
             return false;
         }
         $pwd = $this->pwd();
-        return !empty($pwd);
+        return ! empty($pwd);
     }
 
     /**
-     * Get the server folder
-     *
-     * @access public
-     * @return string
+     * {@inheritDoc}
+     * @see \Ximdex\IO\Connection\IConnector::pwd()
      */
     public function pwd()
     {
         Logger::debug('Call to pwd');
         $res = $this->netSFTP->pwd();
         Logger::debug('Call to pwd returns: ' . $res);
-        return $res;
+        return (bool) $res;
     }
 
     /**
-     * Authenticate into server
-     *
-     * @access public
-     * @param login string
-     * @param password string
-     * @return boolean
+     * {@inheritDoc}
+     * @see \Ximdex\IO\Connection\IConnector::login()
      */
-    public function login($username = 'anonymous', $password = 'john.doe@example.com')
+    public function login(string $username = null, string $password = null) : bool
     {
-        if ($username != 'anonymous') {
+        if ($username) {
             $this->username = $username;
         }
-        if ($password != 'john.doe@example.com') {
+        if ($password) {
             $this->password = $password;
         }
-        if (!$this->netSFTP) {
+        if (! $this->netSFTP) {
             return false;
         }
-        return $this->netSFTP->login($username, $password);
+        return (bool) $this->netSFTP->login($username, $password);
     }
 
     /**
-     * Create a folder in the server
-     *
-     * @access public
-     * @param dir string
-     * @param mode int
-     * @param recursive boolean
-     * @return boolean
+     * {@inheritDoc}
+     * @see \Ximdex\IO\Connection\IConnector::mkdir()
      */
-    public function mkdir($dir, $mode = 0755, $recursive = false)
+    public function mkdir(string $dir, int $mode = 0755, bool $recursive = false) : bool
     {
         if ($this->folderExists($dir)) {
             return true;
@@ -144,8 +128,8 @@ class ConnectionSsh extends Connector implements IConnector
         }
         unset($folderComponents[count($folderComponents) - 1]);
         $parentFolder = implode('/', $folderComponents);
-        if (!$this->folderExists($parentFolder)) {
-            if (!$recursive) {
+        if (! $this->folderExists($parentFolder)) {
+            if (! $recursive) {
                 Logger::warning('Connection_Ssh::mkdir folder not found and recursive flag not set');
                 return false;
             }
@@ -159,144 +143,105 @@ class ConnectionSsh extends Connector implements IConnector
         return false;
     }
 
-    private function folderExists($dir)
-    {
-        $localPath = $this->pwd();
-        $result = $this->cd($dir);
-        $this->cd($localPath);
-        return $result;
-    }
-
     /**
-     * Change directory in server
-     *
-     * @access public
-     * @param dir string
-     * @return boolean false if folder no exist
+     * {@inheritDoc}
+     * @see \Ximdex\IO\Connection\IConnector::cd()
      */
-    public function cd($dir)
+    public function cd(string $dir) : bool
     {
         Logger::debug('Call to cd: ' . $dir);
         $res = $this->netSFTP->chdir($dir);
         Logger::debug('Call to cd returns: ' . $res);
-        return $res;
-    }
-
-    private function _mkdir($dir, $mode)
-    {
-        $result = $this->netSFTP->mkdir($dir);
-        if ($result) {
-            $result = $this->netSFTP->chmod($mode, $dir);
-        }
-        return $result;
+        return (bool) $res;
     }
 
     /**
-     * Manage permissions on a file/folder
-     *
-     * @access public
-     * @param target string
-     * @param mode string
-     * @param recursive boolean
-     * @return boolean
+     * {@inheritDoc}
+     * @see \Ximdex\IO\Connection\IConnector::chmod()
      */
-    public function chmod($target, $mode = 0755, $recursive = false)
+    public function chmod(string $target, int $mode = 0755, bool $recursive = false) : bool
     {
         if ($recursive) {
             Logger::fatal('Not implemented yet Connection_Ssh::chmod with recursive true');
         }
-        return $this->netSFTP->chmod($mode, $target);
+        return (bool) $this->netSFTP->chmod($mode, $target);
     }
 
     /**
-     * Rename a file in the server
-     *
-     * @access public
-     * @param renameFrom string
-     * @param renameTo string
-     * @return boolean
+     * {@inheritDoc}
+     * @see \Ximdex\IO\Connection\IConnector::rename()
      */
-    public function rename($renameFrom, $renameTo)
+    public function rename(string $renameFrom, string $renameTo) : bool
     {
         if ($this->netSFTP->stat($renameFrom)) {
-            if ( !( $result = $this->netSFTP->rename( $renameFrom, $renameTo ) ) ) {
-                if($this->netSFTP->stat( $renameFrom ) && $this->netSFTP->stat( $renameTo )) {
-                    $this->netSFTP->delete( $renameTo );
+            if (! $result = $this->netSFTP->rename($renameFrom, $renameTo)) {
+                if ($this->netSFTP->stat($renameFrom) && $this->netSFTP->stat($renameTo)) {
+                    $this->netSFTP->delete($renameTo);
                 }
-                return $this->netSFTP->rename( $renameFrom, $renameTo );
+                $result = $this->netSFTP->rename( $renameFrom, $renameTo );
             }
         } else {
             return true;
         }
-        return $result;
+        return (bool) $result;
     }
 
     /**
-     * Get the size of a file
-     *
-     * @access public
-     * @param file string
-     * @return int
+     * {@inheritDoc}
+     * @see \Ximdex\IO\Connection\IConnector::size()
      */
-    public function size($file)
+    public function size(string $file)
     {
-        Logger::fatal('Not implemented yet Connection_Ssh::size');
+        return $this->netSFTP->filesize($file);
     }
 
     /**
      * {@inheritDoc}
      * @see \Ximdex\IO\Connection\IConnector::rm()
      */
-    public function rm($path, int $id = null)
+    public function rm(string $path, int $id = null) : bool
     {
         $localPath = $this->pwd();
         if ($this->cd($path)) {
             $this->cd($localPath);
-            return $this->netSFTP->rmdir($path);
+            return (bool) $this->netSFTP->rmdir($path);
         }
-        return $this->netSFTP->delete($path);
+        return (bool) $this->netSFTP->delete($path);
     }
 
     /**
-     * Copies a file from server to local
-     *
-     * @access public
-     * @param remoteFile string
-     * @param localFile string
-     * @param overwrite boolean
-     * @param mode
-     * @return boolean
+     * {@inheritDoc}
+     * @see \Ximdex\IO\Connection\IConnector::get()
      */
-    public function get($sourceFile, $targetFile, $mode = 0755)
+    public function get(string $sourceFile, string $targetFile, int $mode = 0755): bool
     {
-        return $this->netSFTP->get($sourceFile, $targetFile);
+        return (bool) $this->netSFTP->get($sourceFile, $targetFile);
     }
 
     /**
-     * Copies a file from local to server
-     *
-     * @access public
-     * @param localFile string
-     * @param remoteFile string
-     * @param overwrite boolean
-     * @param mode
-     * @return boolean
+     * {@inheritDoc}
+     * @see \Ximdex\IO\Connection\IConnector::put()
      */
-    public function put($localFile, $targetFile, $mode = 0755)
+    public function put(string $localFile, string $targetFile, int $mode = 0755): bool
     {
-        $size = (int) filesize($localFile);
-        return $this->netSFTP->put($targetFile, $localFile, SFTP::SOURCE_LOCAL_FILE, -1, -1, function($sent) use ($targetFile, $size) {
-            $sent = round($sent * 100 / $size);
-            $size = round($size / 1024);
-            Logger::debug("Uploading file {$targetFile} progress: {$sent}% from {$size} Kbytes");
-        });
+        $size = filesize($localFile);
+        if ($size === false) {
+            return false;
+        }
+        return (bool) $this->netSFTP->put($targetFile, $localFile, SFTP::SOURCE_LOCAL_FILE, -1, -1, 
+            function($sent) use ($targetFile, $size) {
+                $sent = round($sent * 100 / $size);
+                $size = round($size / 1024);
+                Logger::debug("Uploading file {$targetFile} progress: {$sent}% from {$size} Kbytes");
+            }
+        );
     }
 
    /**
     * {@inheritDoc}
     * @see \Ximdex\IO\Connection\IConnector::isFile()
     */
-    public function isFile($path)
+    public function isFile(string $path): bool
     {
         if ($this->isDir($path)) {
             Logger::error('Resouce ' . $path . ' is a folder, not a file');
@@ -315,23 +260,20 @@ class ConnectionSsh extends Connector implements IConnector
         if (empty($folder)) $folder = '/';
         if ($this->cd($folder)) {
             if (rtrim($this->pwd(), '/') == rtrim($folder, '/')) {
-                $isFile = $this->netSFTP->file_exists($file);
+                $isFile = (bool) $this->netSFTP->file_exists($file);
             }
         }
-        Logger::debug($file . (!$isFile ? ' not' : '') . ' exists');
+        Logger::debug($file . (! $isFile ? ' not' : '') . ' exists');
         Logger::debug('Moving to ' . $this->pwd());
         $this->cd($this->pwd());
         return $isFile;
     }
 
     /**
-     * Checks if the especified path is a folder
-     *
-     * @access public
-     * @param path string
-     * @return boolean
+     * {@inheritDoc}
+     * @see \Ximdex\IO\Connection\IConnector::isDir()
      */
-    public function isDir($path)
+    public function isDir(string $path) : bool
     {
         $result = false;
         $localPath = $this->pwd();
@@ -343,14 +285,10 @@ class ConnectionSsh extends Connector implements IConnector
     }
 
     /**
-     * Get the folder contents
-     *
-     * @access public
-     * @param dir string
-     * @param mode int
-     * @return mixed
+     * {@inheritDoc}
+     * @see \Ximdex\IO\Connection\IConnector::ls()
      */
-    public function ls($dir, $mode = null)
+    public function ls(string $dir, int $mode = null) : array
     {
         Logger::debug('Call to ls: ' . $dir . ' (mode: ' . $mode . ')');
         $res = $this->netSFTP->nlist($dir);
@@ -370,5 +308,22 @@ class ConnectionSsh extends Connector implements IConnector
             return false;
         }
         return ($content - 2) == 0;
+    }
+    
+    private function _mkdir(string $dir, int $mode) : bool
+    {
+        $result = $this->netSFTP->mkdir($dir);
+        if ($result) {
+            $result = $this->netSFTP->chmod($mode, $dir);
+        }
+        return (bool) $result;
+    }
+    
+    private function folderExists(string $dir) : bool
+    {
+        $localPath = $this->pwd();
+        $result = $this->cd($dir);
+        $this->cd($localPath);
+        return $result;
     }
 }

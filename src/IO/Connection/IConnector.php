@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -32,155 +32,140 @@ interface IConnector
 	/**
 	 * Connect to server
 	 * 
-	 * @access public
-	 * @param host string
-	 * @param port int
-	 * @return boolean
+	 * @param string $host
+	 * @param int $port
+	 * @return bool
 	 */
-	public function connect($host = null, $port = null);
+	public function connect(string $host = null, int $port = null) : bool;
 	
 	/**
 	 * Disconnect from server
 	 * 
-	 * @access public
-	 * @return boolean
+	 * @return bool
 	 */
-	public function disconnect();
+	public function disconnect() : bool;
 	
 	/**
 	 * Check the status of the connection
+	 * 
+	 * @return bool
 	 */
-	public function isConnected();
+	public function isConnected() : bool;
 	
 	/**
 	 * Authenticate into server
 	 * 
-	 * @access public
-	 * @param login string
-	 * @param password string
-	 * @return boolean
+	 * @param string $username
+	 * @param string $password
+	 * @return bool
 	 */
-	public function login($username = 'anonymous', $password = 'john.doe@example.com');
+	public function login(string $username = null, string $password = null) : bool;
 	
 	/**
 	 * Change directory in server
 	 * 
-	 * @access public
-	 * @param dir string
-	 * @return boolean
+	 * @param string $dir
+	 * @return bool
 	 */
-	public function cd($dir);
+	public function cd(string $dir) : bool;
 	
 	/**
 	 * Get the server folder
 	 * 
-	 * @access public
-	 * @param dir string
-	 * @return string
+	 * @return string|bool
 	 */
 	public function pwd();
 	
 	/**
 	 * Create a folder in the server
 	 * 
-	 * @access public
-	 * @param dir string
-	 * @param mode int
-	 * @param recursive boolean
-	 * @return boolean
+	 * @param string $dir
+	 * @param int $mode
+	 * @param bool $recursive
+	 * @return bool
 	 */
-	public function mkdir($dir, $mode = 0755, $recursive = false);
+	public function mkdir(string $dir, int $mode = 0755, bool $recursive = false) : bool;
 	
 	/**
 	 * Manage permissions on a file/folder
 	 * 
-	 * @access public
-	 * @param target string
-	 * @param mode string
-	 * @param recursive boolean
-	 * @return boolean
+	 * @param string $target
+	 * @param int $mode
+	 * @param bool $recursive
+	 * @return bool
 	 */
-	public function chmod($target, $mode = 0755, $recursive = false);
+	public function chmod(string $target, int $mode = 0755, bool $recursive = false) : bool;
 	
 	/**
 	 * Rename a file in the server
 	 * 
-	 * @access public
-	 * @param renameFrom string
-	 * @param renameTo string
-	 * @return boolean
+	 * @param string $renameFrom
+	 * @param string $renameTo
+	 * @return bool
 	 */
-	public function rename($renameFrom, $renameTo);
+	public function rename(string $renameFrom, string $renameTo) : bool;
 	
 	/**
 	 * Get the size of a given file
 	 * 
-	 * @access public
-	 * @param file string
-	 * @return int
+	 * @param string $file
+	 * @return bool|int
 	 */
-	public function size($file);
+	public function size(string $file);
 	
 	/**
-	 * Get the given folder contents 
+	 * Get the given folder contents
 	 * 
-	 * @access public
-	 * @param dir string
-	 * @param mode int
-	 * @return mixed
+	 * @param string $dir
+	 * @param int $mode
+	 * @return array
 	 */
-	public function ls($dir, $mode = null);
+	public function ls(string $dir, int $mode = null) : array;
 	
 	/**
 	 * Removes a file from server
 	 * 
-	 * @access public
-	 * @param string path
-	 * @return boolean
+	 * @param string $path
+	 * @param int $id
+	 * @return bool
 	 */
-	public function rm($path, int $id = null);
+	public function rm(string $path, int $id = null) : bool;
 	
 	/**
 	 * Copies a given file from server to local
 	 * 
-	 * @access public
-	 * @param remoteFile string
-	 * @param localFile string
-	 * @param overwrite boolean
-	 * @param mode  TODO Not implemented yet
-	 * @return boolean
+	 * @param string $sourceFile
+	 * @param string $targetFile
+	 * @param int $mode
+	 * @return bool
 	 */
-	public function get($sourceFile, $targetFile, $mode = 0755);
+	public function get(string $sourceFile, string $targetFile, int $mode = 0755): bool;
 	
 	/**
 	 * Copies a given file from local to server
 	 * 
-	 * @access public
-	 * @param localFile string
-	 * @param remoteFile string
-	 * @param overwrite boolean
-	 * @param mode  TODO Not implemented yet
-	 * @return boolean
+	 * @param string $localFile
+	 * @param string $targetFile
+	 * @param int $mode
+	 * @return bool
 	 */
-	public function put($localFile, $targetFile, $mode = 0755);
+	public function put(string $localFile, string $targetFile, int $mode = 0755): bool;
 	
 	/**
 	 * Checks if the especified path is a folder
 	 * 
-	 * @access public
-	 * @param path string
-	 * @return boolean
+	 * @param string $path
+	 * @return bool
 	 */
-	public function isDir($path);
+	public function isDir(string $path) : bool;
 	
 	/**
 	 * Checks if the especified path is a file and is exists
 	 * 
-	 * @access public 
-	 * @param path string
-	 * @return boolean
+	 * @param string $path
+	 * @return bool
 	 */
-	public function isFile($path);
+	public function isFile(string $path): bool;
 	
 	/**
 	 * Check if the specified folder path is empty
