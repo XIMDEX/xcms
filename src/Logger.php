@@ -16,10 +16,10 @@ Class Logger
     private $logger = null;
     private static $color;
 
-    public function __construct($logger)
+    public function __construct(\Monolog\Logger $logger)
     {
         $this->logger = $logger;
-        if (!self::$color) {
+        if (! self::$color) {
             self::$color = new Color();
             self::$color->setForceStyle(true);
         }
@@ -27,6 +27,7 @@ Class Logger
     
     /**
      * Make a new instance of a file log handler with read and write permission for user and group (and for others in porder to test works)
+     * 
      * @param string $id
      * @param string $file
      * @param bool $default
@@ -43,10 +44,6 @@ Class Logger
         }
     }
 
-    /**
-     * @param \Monolog\Logger $logger
-     * @param string $loggerInstance
-     */
     public static function addLog(\Monolog\Logger $logger, string $loggerInstance = 'default')
     {
         self::$instances[$loggerInstance] = new Logger($logger);
@@ -55,7 +52,7 @@ Class Logger
         }
     }
 
-    public static function get()
+    public static function get() : Logger
     {
         $loggerInstance = self::$active;
         if (! isset(self::$instances[$loggerInstance]) || !self::$instances[$loggerInstance] instanceof self) {
@@ -69,7 +66,7 @@ Class Logger
      * @return Logger
      * @throws
      */
-    public static function setActiveLog(string $loggerInstance = 'default')
+    public static function setActiveLog(string $loggerInstance = 'default') : Logger
     {
         if (! isset(self::$instances[$loggerInstance])) {
             throw new Exception('Logger Instance not found');
@@ -78,11 +75,10 @@ Class Logger
         return self::$instances[$loggerInstance];
     }
 
-    public static function error(string $string, array $object = array())
+    public static function error(string $string, array $object = array()) : bool
     {
         try {
-            $res = self::get()->logger->addError(self::$color->__invoke($string)->red()->bold(), $object);
-            return $res;
+            return self::get()->logger->addError(self::$color->__invoke($string)->red()->bold(), $object);
         } catch (\Exception $e) {
             error_log($e->getMessage());
         }
@@ -93,7 +89,7 @@ Class Logger
         return self::get()->logger->addWarning(self::$color->__invoke($string)->yellow());
     }
 
-    public static function debug(string $string)
+    public static function debug(string $string) : bool
     {
         if (App::debug()) {
             try {
@@ -102,25 +98,25 @@ Class Logger
                 error_log($e->getMessage());
             }
         }
+        return true;
     }
 
-    public static function fatal(string $string)
+    public static function fatal(string $string) : bool
     {
         try {
-            $res = self::get()->logger->addCritical(self::$color->__invoke($string)->red()->bold());
-            return $res;
+            return self::get()->logger->addCritical(self::$color->__invoke($string)->red()->bold());
         }
         catch (Exception $e) {
             error_log($e->getMessage());
         }
     }
 
-    public static function info(string $string, bool $success = false, string $color = '')
+    public static function info(string $string, bool $success = false, string $color = '') : bool
     {
         try {
             if ($success) {
                 $string = self::$color->__invoke($string)->green()->bold();
-            }else if (!empty($color)) {
+            } else if (! empty($color)) {
                 $string = self::$color->__invoke($string)->$color()->bold();
             }
             return self::get()->logger->addInfo($string);
@@ -129,7 +125,7 @@ Class Logger
         }
     }
 
-    public static function logTrace(string $string)
+    public static function logTrace(string $string) : bool
     {
         $trace = debug_backtrace(false);
         $t1 = $trace[1];
@@ -143,7 +139,7 @@ Class Logger
         return self::get()->logger->addInfo( $result );
     }
     
-    public static function get_active_instance()
+    public static function get_active_instance() : string
     {
         if (self::$active) {
             return self::$active;

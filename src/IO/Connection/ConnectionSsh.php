@@ -92,7 +92,7 @@ class ConnectionSsh extends Connector implements IConnector
         Logger::debug('Call to pwd');
         $res = $this->netSFTP->pwd();
         Logger::debug('Call to pwd returns: ' . $res);
-        return (bool) $res;
+        return $res;
     }
 
     /**

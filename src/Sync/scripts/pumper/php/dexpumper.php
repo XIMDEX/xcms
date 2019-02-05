@@ -230,7 +230,7 @@ class DexPumper
         $this->info('ServerFrame ' . $IdSync . ' DUE2OUT: Delete file from server');
         $targetFolder = $initialDirectory . $remotePath;
         $targetFile = $targetFolder . '/' . $fileName;
-        if ($this->connection->getType() != Connector::TYPE_API and !$this->connection->isFile($targetFile)) {
+        if ($this->connection->getType() != Connector::TYPE_API and ! $this->connection->isFile($targetFile)) {
             
             // If the file has been deleted, does not nothing and return a soft ok
             $removing = true;
