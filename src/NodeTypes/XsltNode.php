@@ -31,12 +31,14 @@ use Ximdex\Deps\DepsManager;
 use Ximdex\Models\Node;
 use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
+use Ximdex\Utils\Messages;
 use Ximdex\Logger;
 use Ximdex\Models\FastTraverse;
 
 class XsltNode extends FileNode
 {
-    private $xsltOldName = "";
+    private $xsltOldName = '';
+    
     public $messages;
 
     public function __construct(& $node)
@@ -49,11 +51,16 @@ class XsltNode extends FileNode
         $this->nodeID = $this->parent->get('IdNode');
         $this->dbObj = new \Ximdex\Runtime\Db();
         $this->nodeType = $this->parent->nodeType;
-        $this->messages = new \Ximdex\Utils\Messages();
-        $this->xsltOldName = $this->parent->get("Name");
+        $this->messages = new Messages();
+        $this->xsltOldName = $this->parent->get('Name');
     }
 
-    public function createNode($xsltName = null, $parentID = null, $nodeTypeID = null, $stateID = null, $ptdSourcePath = NULL)
+    /**
+     * {@inheritDoc}
+     * @see \Ximdex\NodeTypes\FileNode::createNode()
+     */
+    public function createNode(string $xsltName = null, int $parentID = null, int $nodeTypeID = null, int $stateID = null
+        , string $ptdSourcePath = null)
     {
         $xslSourcePath = null;
         if ($ptdSourcePath != null) {
@@ -63,7 +70,7 @@ class XsltNode extends FileNode
             $xslContent = $this->sanitizeContent($xslContent);
             $xslSourcePath = XIMDEX_ROOT_PATH . App::getValue('TempRoot') . '/' . $parentID . $xsltName;
             if (! FsUtils::file_put_contents($xslSourcePath, $xslContent)) {
-                Logger::error("Error saving xslt file");
+                Logger::error('Error saving xslt file');
                 $this->messages->add('Error saving xslt file: ' . $parentID . $xsltName, MSG_TYPE_ERROR);
                 return false;
             }
@@ -92,22 +99,21 @@ class XsltNode extends FileNode
     /**
      * Generation of a new templates_include.xsl node in a templates folder
      * 
-     * @param integer $idTemplatesFolder
-     * @param integer $nodeTypeID
-     * @param integer $stateID
+     * @param int $idTemplatesFolder
+     * @param int $stateID
      * @param string $templateName
-     * @return boolean
+     * @return boolean|int
      */
-    public function create_templates_include($idTemplatesFolder, $stateID = null, $templateName = null)
+    public function create_templates_include(int $idTemplatesFolder, int $stateID = null, string $templateName = null)
     {
-        Logger::info("Creating unexisting templates include xslt file at folder $idTemplatesFolder");
-        $dummyXml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
-				<dext:root xmlns:dext=\"http://www.ximdex.com\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\">
+        Logger::info('Creating unexisting templates include xslt file at folder ' . $idTemplatesFolder);
+        $dummyXml = '<?xml version="1.0" encoding="UTF-8"?>
+				<dext:root xmlns:dext="http://www.ximdex.com" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 				<xsl:dummy />
-				</dext:root>";
+				</dext:root>';
         $xslSourcePath = XIMDEX_ROOT_PATH . App::getValue('TempRoot') . '/templates_include.xsl';
         if (! FsUtils::file_put_contents($xslSourcePath, $dummyXml)) {
-            Logger::error("Error saving templates_include.xsl file");
+            Logger::error('Error saving templates_include.xsl file');
             $this->messages->add('Error saving templates_include.xsl file', MSG_TYPE_ERROR);
             return false;
         }
@@ -160,7 +166,7 @@ class XsltNode extends FileNode
      * @param DepsManager $depsMngr
      * @return boolean
      */
-    public function rel_include_templates_to_documents_folders(Node $section, Node $node = null, DepsManager $depsMngr = null)
+    public function rel_include_templates_to_documents_folders(Node $section, Node $node = null, DepsManager $depsMngr = null) : bool
     {
         if (! $depsMngr) {
             Logger::info('Making a relation between documents section and templates with section ' . $section->GetID());
@@ -266,8 +272,8 @@ class XsltNode extends FileNode
         if (null == $name) {
             return false;
         }
-        $oldName = explode(".", $this->xsltOldName);
-        $name = explode(".", $name);
+        $oldName = explode('.', $this->xsltOldName);
+        $name = explode('.', $name);
         if (count($name) != 2) {
             $this->messages->add('The file extension is necessary', MSG_TYPE_ERROR);
             return false;
@@ -292,7 +298,8 @@ class XsltNode extends FileNode
     }
 
     /**
-     * Delete a node
+     * {@inheritDoc}
+     * @see \Ximdex\NodeTypes\FileNode::deleteNode()
      */
     public function deleteNode() : bool
     {
@@ -300,7 +307,11 @@ class XsltNode extends FileNode
         return true;
     }
 
-    public function setContent(string $content, bool $commitNode = false, Node $node = null)
+    /**
+     * {@inheritDoc}
+     * @see \Ximdex\NodeTypes\FileNode::setContent()
+     */
+    public function setContent(string $content, bool $commitNode = false, Node $node = null) : bool
     {
         // Checking the valid XML of the given content
         $domDoc = new \DOMDocument();
@@ -316,7 +327,7 @@ class XsltNode extends FileNode
             $project = new Node($node->GetProject());
             $dom->documentURI = XIMDEX_ROOT_PATH . App::getValue('NodeRoot') . $node->GetRelativePath($project->GetID());
             if (@$xsltprocessor->importStyleSheet($dom) === false) {
-                $error = \Ximdex\Utils\Messages::error_message('XSLTProcessor::importStylesheet(): ');
+                $error = Messages::error_message('XSLTProcessor::importStylesheet(): ');
                 
                 // Avoid the PATH_TO_LOCAL_TEMPLATE_INCLUDE token error
                 if ($error and strpos($error, '##PATH_TO_LOCAL_TEMPLATE_INCLUDE##') === false) {
@@ -365,6 +376,7 @@ class XsltNode extends FileNode
                 $this->messages->add('Note that this template isn\'t included in the templates_includes.xsl file', MSG_TYPE_WARNING);
             }
         }
+        return true;
     }
 
     private function sanitizeContent($content)

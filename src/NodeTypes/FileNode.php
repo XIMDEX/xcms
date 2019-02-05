@@ -122,12 +122,10 @@ class FileNode extends Root
     }
 
     /**
-     * Stores a content on the file located
-     * 
-     * @param string content
-     * @return string
+     * {@inheritDoc}
+     * @see \Ximdex\NodeTypes\Root::setContent()
      */
-    public function setContent(string $content, bool $commitNode = false, Node $node = null)
+    public function setContent(string $content, bool $commitNode = false, Node $node = null) : bool
     {
         $data = new DataFactory($this->nodeID);
         

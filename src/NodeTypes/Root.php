@@ -213,12 +213,12 @@ class Root
      * 
      * @return string
      */
-    function GetContent()
+    function getContent()
     {
         return '';
     }
 
-    public function setContent(string $content, bool $commitNode = false)
+    public function setContent(string $content, bool $commitNode = false) : bool
     {
         return true;
     }

@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -39,7 +39,7 @@ class Factory
      * @param $path string
      * @param $root_name string
      */
-    public function __construct($path, $root_name)
+    public function __construct(string $path, string $root_name)
     {
         $this->_path = rtrim($path, '/');
         $this->_root_name = $root_name;
@@ -49,15 +49,19 @@ class Factory
      * Return an instance of $type Class or null if:
      *  - the file is not found
      *  - the file don't contains the class $type
-     *
+     * 
      * @param string $type
      * @param array $args
+     * @param string $namespace
      * @return mixed
      */
-    public function instantiate($type = NULL, $args = null, $namespace = '\Ximdex\MVC\Render')
+    public function instantiate(string $type = null, array $args = null, string $namespace = '\Ximdex\MVC\Render')
     {
-        $classname = ltrim($this->_root_name,'\\');
-        $namespace = trim($namespace,'\\');
+        if (is_array($args) and count($args) == 1) {
+            $args = $args[0];
+        }
+        $classname = ltrim($this->_root_name, '\\');
+        $namespace = trim($namespace, '\\');
         if (! is_null($type)) {
             $classname .= $type;
         }
@@ -65,10 +69,10 @@ class Factory
         if (! empty($namespace)) {
             $nsClass =  '\\'.$namespace  . $class;
             if (class_exists($nsClass)) {
-                return new $nsClass($args) ;
+                return new $nsClass($args);
             }
         }
-        if (!class_exists($class)) {
+        if (! class_exists($class)) {
             $old_class_path = $this->_path . "/$classname.class.php";
             $class_path = $this->_path . "/$classname.php";
             if (file_exists($old_class_path) && is_readable($old_class_path)) {
@@ -97,7 +101,7 @@ class Factory
         return $obj;
     }
 
-    private function _setError($msg)
+    private function _setError(string $msg)
     {
         Logger::error($msg);
         $this->_error = $msg;
@@ -106,9 +110,9 @@ class Factory
     /**
      * Returns the last error message
      *
-     * @return string
+     * @return string|null
      */
-    public function getError()
+    public function getError() : ?string
     {
         return $this->_error;
     }

@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -38,34 +38,21 @@ class Connector
     protected $type;
     const TYPE_API = 'API';
     
-    /**
-     * @param string $type
-     * @param Server $server
-     */
     public function __construct(Server $server = null)
     {
         $this->server = $server;
     }
-    
-    /**
-     * @return string|NULL
-     */
+
     public function getError() : ?string
     {
         return $this->error;
     }
-    
-    /**
-     * @param string $error
-     */
+
     public function setError(string $error = null) : void
     {
         $this->error = $error;
     }
-    
-    /**
-     * @return string
-     */
+
     public function getType() : string
     {
         return $this->type;

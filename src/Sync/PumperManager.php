@@ -57,7 +57,7 @@ class PumperManager
         $pumpersWithError = 0;
         foreach ($pumpersWithTasks as $pumperId) {
             $pumper = new Pumper($pumperId);
-            if (!($pumper->get('PumperId') > 0)) {
+            if (! $pumper->get('PumperId')) {
                 Logger::error('Non-existing pumper ' . $pumperId);
                 continue;
             }
@@ -87,8 +87,7 @@ class PumperManager
                     $result = $pumper->startPumper($pumperId, $modo);
                     if ($result == false) {
                         $pumpersWithError++;
-                    }
-                    else {
+                    } else {
                         Logger::info('Pumper with ID: ' . $pumperId . ' has been started');
                     }
                     break;

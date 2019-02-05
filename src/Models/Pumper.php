@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -55,7 +55,7 @@ class Pumper extends PumpersOrm
      * @param string key
      * @param unknown value
      */
-    public function setFlag($key, $value)
+    public function setFlag(string $key, string $value)
     {
         $this->$key = $value;
     }
@@ -65,7 +65,7 @@ class Pumper extends PumpersOrm
      * 
      * @param string key
      */
-    public function getFlag($key)
+    public function getFlag(string $key)
     {
         return $this->$key;
     }
@@ -76,7 +76,7 @@ class Pumper extends PumpersOrm
      * @param int idServer
      * @return int|null
      */
-    public function create($idServer)
+    public function create(int $idServer) : ?int
     {
         $this->set('IdServer', $idServer);
         $this->set('State', Pumper::NEW);
@@ -95,15 +95,15 @@ class Pumper extends PumpersOrm
     /**
      * Gets the Pumpers whose state is different to Ended
      * 
-     * @return array|null
+     * @return array
      */
-    public function getPumpersInRegistry()
+    public function getPumpersInRegistry() : array
     {
         $sql = "SELECT PumperId FROM Pumpers WHERE State != '" . Pumper::ENDED . "'";
         $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->Query($sql);
         $pumpers = array();
-        while (!$dbObj->EOF) {
+        while (! $dbObj->EOF) {
             $pumpers[] = $dbObj->GetValue('PumperId');
             $dbObj->Next();
         }
@@ -117,7 +117,7 @@ class Pumper extends PumpersOrm
      * @param string modo
      * @return bool
      */
-    public function startPumper($pumperId, $modo = 'php')
+    public function startPumper(int $pumperId, string $modo = 'php') : bool
     {
         $pumper = new Pumper($pumperId);
         if ($pumper->get('ProcessId') and Pumper::isAlive($pumper)) {
@@ -125,8 +125,7 @@ class Pumper extends PumpersOrm
             // Terminate the previous pumper process
             if (Pumper::terminate($pumper)) {
                 Logger::warning('Pumper with ID: ' . $pumperId . ' has been terminated (Process with PID: ' . $pumper->get('ProcessId'));
-            }
-            else {
+            } else {
                 Logger::error('Cannot terminate the process with pid ' . $pumper->get('ProcessId') . ' for pumper ' . $pumperId);
             }
         }
@@ -136,7 +135,7 @@ class Pumper extends PumpersOrm
         $this->update();
         $startCommand = 'php ' . XIMDEX_ROOT_PATH . '/bootstrap.php ' . PUMPERPHP_PATH . '/dexpumper.' . $modo 
             . " --pumperid=$pumperId --sleeptime=" . $this->sleeptime . ' --maxvoidcycles=' . $this->maxvoidcycles 
-            . ' --localbasepath=' . SERVERFRAMES_SYNC_PATH . ' > /dev/null 2>&1 &';
+            . ' --localbasepath=' . SERVERFRAMES_SYNC_PATH . ' > ' . XIMDEX_ROOT_PATH . '/logs/pumpers.err &'; // . ' > /dev/null 2>&1 &';
         Logger::debug("Pumper call: $startCommand");
         $var = 0;
         system($startCommand, $var);
@@ -147,28 +146,29 @@ class Pumper extends PumpersOrm
         if ($var == 0) {
             Logger::info("Pumper $pumperId started successfully");
             return true;
-        } else if ($var == 200) {
+        }
+        if ($var == 200) {
             Logger::error("In server connection starting pumper $pumperId");
             return false;
-        } else if ($var == 400) {
+        }
+        if ($var == 400) {
             Logger::error("Registering pumper $pumperId");
             return false;
-        } else {
-            Logger::error("Code $var starting pumper $pumperId");
-            return false;
         }
+        Logger::error("Code $var starting pumper $pumperId");
+        return false;
     }
     
     public static function isAlive(Pumper $pumper) : bool
     {
-        if (!$pumper->get('PumperId')) {
+        if (! $pumper->get('PumperId')) {
             Logger::error('No ID was sent to checking pumper process status');
             return false;
         }
         if ($pumper->get('ProcessId') == 'xxxx') {
             return false;
         }
-        if (!$pumper->get('ProcessId')) {
+        if (! $pumper->get('ProcessId')) {
             Logger::error('Pumper with ID: ' . $pumper->get('PumperId') . ' has not a process ID');
             return false;
         }
@@ -181,11 +181,11 @@ class Pumper extends PumpersOrm
     
     public static function terminate(Pumper $pumper) : bool
     {
-        if (!$pumper->get('PumperId')) {
+        if (! $pumper->get('PumperId')) {
             Logger::error('No ID was sent to terminate pumper process');
             return false;
         }
-        if (!$pumper->get('ProcessId') or $pumper->get('ProcessId') == 'xxxx') {
+        if (! $pumper->get('ProcessId') or $pumper->get('ProcessId') == 'xxxx') {
             Logger::error('Pumper with ID: ' . $pumper->get('PumperId') . ' has not a process ID');
             return false;
         }

@@ -307,7 +307,7 @@ class StructuredDocument extends StructuredDocumentsOrm
         }
     }
 
-    public function SetContent(string $content, bool $commitNode = false, string $metadata = null)
+    public function setContent(string $content, bool $commitNode = false, string $metadata = null) : bool
     {
         // Refrescamos la fecha de Actualizacion del nodo
         $this->SetUpdateDate();

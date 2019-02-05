@@ -70,11 +70,11 @@ class DepsManager
      * @param null $id
      * @return mixed
      */
-    private function getModel($tableName, $id = NULL)
+    private function getModel($tableName, $id = null)
     {
         $factory = new Factory(XIMDEX_ROOT_PATH . "/src/Models/", $tableName);
-        $object = $factory->instantiate(NULL, $id, '\Ximdex\Models');
-        if (!is_object($object)) {
+        $object = $factory->instantiate(null, [$id], '\Ximdex\Models');
+        if (! is_object($object)) {
             Logger::error(sprintf("Can't instantiate a %s model", $tableName));
         }
         return $object;

@@ -65,15 +65,15 @@ function main(int $argc = 0, array $argv = null)
     }
 }
 
-function createBatchsForBlock($nodesToPublish)
+function createBatchsForBlock(array $nodesToPublish)
 {
     $idNodeGenerator = $nodesToPublish['idNodeGenerator'];
     
     // If the node which trigger publication do not exists anymore return null and cancel.
     $node = new Node($idNodeGenerator);
-    if (!($node->get('IdNode') > 0)) {
+    if (! $node->get('IdNode')) {
         Logger::error('Required node does not exist ' . $idNodeGenerator);
-        return NULL;
+        return;
     }
 
     // Get list of physicalServers related to generator node.
@@ -87,7 +87,7 @@ function createBatchsForBlock($nodesToPublish)
     }
     if (count($physicalServers) == 0) {
         Logger::error('Physical server does not exist for nodeId: ' . $idNodeGenerator . ' ... returning empty arrays.');
-        return null;
+        return;
     }
 
     // BatchManager 'publicate' method does all the creating batchs job
@@ -108,7 +108,7 @@ function createBatchsForBlock($nodesToPublish)
     // Clean up caches, tmp files, etc...
     if (is_null($docsPublicated)) {
         Logger::error('PUSHDOCINPOOL - docsPublicated null');
-        return null;
+        return;
     }
 
     // Back node to initial state

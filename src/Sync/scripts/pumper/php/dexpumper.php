@@ -25,6 +25,8 @@
  *  @version $Revision$
  */
 
+namespace Ximdex\Sync;
+
 use Ximdex\Logger;
 use Ximdex\IO\Connection\ConnectionManager;
 use Ximdex\IO\Connection\Connector;
@@ -36,7 +38,6 @@ use Ximdex\Models\ServerFrame;
 use Ximdex\Models\NodeFrame;
 use Ximdex\Runtime\App;
 use Ximdex\Cli\CliParser;
-use Ximdex\Sync\BatchManager;
 
 set_time_limit(0);
 set_error_handler(null, E_ALL);
@@ -122,7 +123,9 @@ class DexPumper
     public function __construct(array $params)
     {
         // Collect parameters
-        $this->tryserver = trim($params['--tryserver']);
+        if (isset($params['--tryserver'])) {
+            $this->tryserver = trim($params['--tryserver']);
+        }
         $this->idUser = trim($params['--iduser']);
         $this->verbose = trim($params['--verbose']);
         $this->maxVoidCycles = trim($params['--maxvoidcycles']);
@@ -334,7 +337,7 @@ class DexPumper
             $idProtocol = $this->server->get('IdProtocol');
             try {
                 $this->connection = ConnectionManager::getConnection($idProtocol, $this->server);
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 Logger::error($e->getMessage());
                 return false;
             }
@@ -584,7 +587,7 @@ class DexPumper
     
     private function info(string $_msg, string $color = '')
     {
-        $this->msg_log('INFO PUMPER: ' . $_msg);
+        // $this->msg_log('INFO PUMPER: ' . $_msg);
         Logger::info($_msg, false, $color);
     }
     
@@ -602,8 +605,10 @@ class DexPumper
     
     private function debug(string $_msg)
     {
-        $this->msg_log('DEBUG PUMPER: ' . $_msg);
-        Logger::debug($_msg);
+        if (App::debug()) {
+            // $this->msg_log('DEBUG PUMPER: ' . $_msg);
+            Logger::debug($_msg);
+        }
     }
     
     private function warning(string $_msg)

@@ -54,7 +54,7 @@ class ConnectionManager
 			}
 		}
 		$factory = new Factory($baseFullPath, self::$baseName);
-		$conn = $factory->instantiate(self::normalizeName($type), $server, '\Ximdex\IO\Connection');
+		$conn = $factory->instantiate(self::normalizeName($type), [$server], '\Ximdex\IO\Connection');
 		$conn->setType($type);
 		return $conn;
 	}

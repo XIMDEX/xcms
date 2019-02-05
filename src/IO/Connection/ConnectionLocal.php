@@ -46,7 +46,7 @@ class ConnectionLocal extends Connector implements IConnector
 	 * {@inheritDoc}
 	 * @see \Ximdex\IO\Connection\IConnector::disconnect()
 	 */
-	public function disconnect()
+	public function disconnect() : bool
 	{
 		return true;
 	}
@@ -55,7 +55,7 @@ class ConnectionLocal extends Connector implements IConnector
 	 * {@inheritDoc}
 	 * @see \Ximdex\IO\Connection\IConnector::isConnected()
 	 */
-	public function isConnected()
+	public function isConnected() : bool
 	{
 		return true;
 	}

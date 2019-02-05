@@ -39,6 +39,7 @@ use Ximdex\Models\Node;
 use Ximdex\Models\NodeDependencies;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\Utils\FsUtils;
+use Ximdex\Utils\Messages;
 use Ximdex\Logger;
 use Ximdex\Runtime\Session;
 use Ximdex\Properties\ChannelProperty;
@@ -166,16 +167,16 @@ abstract class AbstractStructuredDocument extends FileNode
     }
 
     /**
-     * @param $content
-     * @param null $commitNode
+     * {@inheritDoc}
+     * @see \Ximdex\NodeTypes\FileNode::setContent()
      */
-    public function setContent(string $content, bool $commitNode = false, Node $node = null)
+    public function setContent(string $content, bool $commitNode = false, Node $node = null) : bool
     {
         // Checking the valid XML of the given content, if it is necessary
         if ($node) {
             switch ($node->getNodeType()) {
-                case \Ximdex\NodeTypes\NodeTypeConstants::XML_DOCUMENT:
-                case \Ximdex\NodeTypes\NodeTypeConstants::XIMLET:
+                case NodeTypeConstants::XML_DOCUMENT:
+                case NodeTypeConstants::XIMLET:
                     
                     // In this case we will format the XML content with correct indentation
                     $domDoc = new \DOMDocument();
@@ -183,7 +184,6 @@ abstract class AbstractStructuredDocument extends FileNode
                     $domDoc->preserveWhiteSpaces = false;
                     $res = @$domDoc->loadXML($content);
                     $domDoc->encoding = 'UTF-8';
-                    // $domDoc->version = '1.0';
                     if ($res) {
                         $content = $domDoc->saveXML();
                         $content = str_replace('<?xml version="1.0" encoding="UTF-8"?>', '', $content);
@@ -195,7 +195,7 @@ abstract class AbstractStructuredDocument extends FileNode
             }
             if ($res === false) {
                 Logger::error('Invalid XML for idNode: ' . $node->getIdNode());
-                $error = \Ximdex\Utils\Messages::error_message('DOMDocument::loadXML(): ');
+                $error = Messages::error_message('DOMDocument::loadXML(): ');
                 if ($error) {
                     $this->messages->add($error, MSG_TYPE_WARNING);
                     Logger::error($error . ' (' . $node->GetNodeName() . ')');
@@ -267,11 +267,11 @@ abstract class AbstractStructuredDocument extends FileNode
         }
         $idNodeType = $node->get('IdNodeType');
         switch ($idNodeType) {
-            case \Ximdex\NodeTypes\NodeTypeConstants::XML_DOCUMENT:
-                $folderNodeType = \Ximdex\NodeTypes\NodeTypeConstants::XML_ROOT_FOLDER;
+            case NodeTypeConstants::XML_DOCUMENT:
+                $folderNodeType = NodeTypeConstants::XML_ROOT_FOLDER;
                 break;
-            case \Ximdex\NodeTypes\NodeTypeConstants::XIMLET:
-                $folderNodeType = \Ximdex\NodeTypes\NodeTypeConstants::XIMLET_FOLDER;
+            case NodeTypeConstants::XIMLET:
+                $folderNodeType = NodeTypeConstants::XIMLET_FOLDER;
                 break;
             case 8002: //pdf
                 $folderNodeType = 8000;
@@ -280,47 +280,19 @@ abstract class AbstractStructuredDocument extends FileNode
         do {
             $idNodeType = 0;
             $node = new Node($node->get('IdParent'));
-            if (!($node->get('IdNode') > 0)) {
-                return NULL;
+            if (! $node->get('IdNode')) {
+                return null;
             }
             $idNodeType = $node->get('IdNodeType');
         } while ($idNodeType == $folderNodeType);
 
         $groups = $node->GetGroupList();
-        if (!empty($groups)) {
+        if (! empty($groups)) {
             return implode(' ', $groups);
         }
-        return NULL;
+        return null;
     }
     
-    /*
-    function renderizeNode(int $channel = null, string $content = null) : bool
-    {
-        // Se obtiene el id del nodo padre (ya que parent contiene una instancia del node actual)
-        // y creamos un objeto nodo con ese id
-        $parentID = $this->parent->GetParent();
-        $parent = new Node($parentID);
-
-        // Renderizamos hacia arriba toda la jerarquía
-        if (! $parent->isRenderized()) {
-            if ($parent->renderizeNode() === false)
-                return false;
-        }
-
-        // Conseguimos el path del archivo de destino
-        $fileName = $this->getNodePath();
-        $fileContent = $this->getRenderizedContent($channel, $content);
-
-        // Lo guardamos en el sistema de archivos
-        if (! FsUtils::file_put_contents($fileName, $fileContent)) {
-            $this->parent->SetError(7);
-            $this->parent->messages->add(_('An error occured while trying to save the document'), MSG_TYPE_ERROR);
-            return false;
-        }
-        return true;
-    }
-    */
-
     /**
      * Builds the docxap header for a structured document
      *
@@ -340,7 +312,7 @@ abstract class AbstractStructuredDocument extends FileNode
         $node = new Node($this->nodeID);
         $nt = $node->nodeType->get('IdNodeType');
         $metadata = '';
-        if ($nt == \Ximdex\NodeTypes\NodeTypeConstants::XML_DOCUMENT) {
+        if ($nt == NodeTypeConstants::XML_DOCUMENT) {
             $metadata = 'metadata_id=""';
         }
         
@@ -348,7 +320,7 @@ abstract class AbstractStructuredDocument extends FileNode
         $xtags = '';
         $rtn = new RelSemanticTagsNodes();
         $nodeTags = $rtn->getTags($this->nodeID);
-        if (!empty($nodeTags)) {
+        if (! empty($nodeTags)) {
             foreach ($nodeTags as $tag) {
                 $ns = new SemanticNamespaces();
                 $idns = $ns->getNemo($tag['IdNamespace']);
@@ -366,7 +338,7 @@ abstract class AbstractStructuredDocument extends FileNode
             $this->_getDocXapPropertiesAttrib(true),
             $xtags,
             $metadata,
-            NULL
+            null
         );
         return $docxap;
     }

@@ -39,6 +39,7 @@ use Ximdex\Properties\InheritedPropertiesManager;
 use Ximdex\Runtime\App;
 use Ximdex\Runtime\DataFactory;
 use Ximdex\Utils\FsUtils;
+use Ximdex\Utils\Messages;
 use Ximdex\Runtime\Session;
 use Ximdex\XML\Base;
 use Ximdex\XML\XML;
@@ -890,7 +891,7 @@ class Node extends NodesOrm
      * @param bool $commitNode
      * @return bool
      */
-    function SetContent(string $content, bool $commitNode = false) : bool
+    public function setContent(string $content, bool $commitNode = false) : bool
     {
         $this->ClearError();
         if ($this->getID()) {
@@ -907,7 +908,7 @@ class Node extends NodesOrm
                     $res = @$domDoc->loadXML($content);
                     if ($res === false) {
                         Logger::warning('Invalid XML for IdNode: ' . $this->GetID() . ' (' . $this->GetDescription() . ')');
-                        $error = \Ximdex\Utils\Messages::error_message('DOMDocument::loadXML(): ');
+                        $error = Messages::error_message('DOMDocument::loadXML(): ');
                         if ($error) {
                             $error = 'Invalid XML content for node: ' . $this->GetID() . ' (' . $error . ')';
                             $this->messages->add($error, MSG_TYPE_WARNING);
@@ -938,7 +939,7 @@ class Node extends NodesOrm
                             if ($projectNode->GetNodeType() == NodeTypeConstants::PROJECT)
                                 $idServer = false;
                         }
-                        if (!isset($idServer)) {
+                        if (! isset($idServer)) {
                             $idServer = $this->getServer();
                         }
                         if ($idServer) {
@@ -971,7 +972,7 @@ class Node extends NodesOrm
                     $res = $rngValidator->validate($schema, $content);
                     if ($res === false) {
                         $errors = $rngValidator->getErrors();
-                        if (!$errors and \Ximdex\Utils\Messages::error_message()) {
+                        if (! $errors and \Ximdex\Utils\Messages::error_message()) {
                             $error = \Ximdex\Utils\Messages::error_message('DOMDocument::relaxNGValidateSource(): ');
                         } else {
 

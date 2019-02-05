@@ -57,7 +57,7 @@ class InheritedPropertiesManager
 		    if ($propertiesToUse and !in_array($prop, $propertiesToUse)) {
 		        continue;
 		    }
-		    $propManager = $factory->instantiate($prop . 'Property', $nodeId, '\Ximdex\Properties');
+		    $propManager = $factory->instantiate($prop . 'Property', [$nodeId], '\Ximdex\Properties');
 		    if (!is_object($propManager)) {
 				Logger::error("Can not instantiate inheritable property: " . $prop);
 				continue;
@@ -90,7 +90,7 @@ class InheritedPropertiesManager
 		        $properties[$prop] = array();
 		    }
 			$value = $properties[$prop];
-			$propManager = $factory->instantiate($prop . 'Property', $nodeId, 'Ximdex\Properties');
+			$propManager = $factory->instantiate($prop . 'Property', [$nodeId], 'Ximdex\Properties');
 			if (!is_object($propManager)) {
 				Logger::error("Can not instantiate inheritable property: " . $prop);
 				continue;
@@ -125,7 +125,7 @@ class InheritedPropertiesManager
 	{   
 	    $factory = new \Ximdex\Utils\Factory(dirname(__FILE__), '');
 	    $ret = array();
-	    $propertyClass = $factory->instantiate($property . 'Property', $nodeId, '\Ximdex\Properties');
+	    $propertyClass = $factory->instantiate($property . 'Property', [$nodeId], '\Ximdex\Properties');
 	    if (!is_object($propertyClass)) {     
             Logger::error("Inheritable property cannot be instantiate: " . $property);
 	        return $ret;

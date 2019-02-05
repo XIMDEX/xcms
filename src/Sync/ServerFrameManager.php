@@ -164,7 +164,7 @@ class ServerFrameManager
             $serverFrame->set('ErrorLevel', null);
         }
         $result = $serverFrame->update();
-        if (!isset($finalState)) {
+        if (! isset($finalState)) {
             $finalState = 'unknown final state';
         }
         if ($result === false) {

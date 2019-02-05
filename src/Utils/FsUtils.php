@@ -570,7 +570,7 @@ class FsUtils
      * @param string $dir
      * @return bool
      */
-    public function dir_is_empty(string $dir) : bool
+    public static function dir_is_empty(string $dir) : bool
     {
         $handle = opendir($dir);
         while (false !== ($entry = readdir($handle))) {
