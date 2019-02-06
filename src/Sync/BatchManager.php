@@ -184,6 +184,37 @@ class BatchManager
             // Update 'chunk' nodes state to 'processed' (state == 2)
             NodesToPublish::setProcessed($chunk, $up);
         }
+        
+        // Remove portal frames if there is not frames generated
+        $portal = new PortalFrames($idPortalFrame);
+        if (! $docsBatch) {
+            Logger::warning('Deleting portals frames without related batchs');
+            $portal->delete();
+            if ($idPortalFrameDown) {
+                $portal = new PortalFrames($idPortalFrameDown);
+                $portal->delete();
+            }
+        } else {
+            
+            // Update portals frames information
+            try {
+                PortalFrames::updatePortalFrames(null, null, $idPortalFrame);
+                if ($idPortalFrameDown) {
+                    PortalFrames::updatePortalFrames(null, null, $idPortalFrameDown);
+                }
+            } catch (\Exception $e) {
+                Logger::error($e->getMessage());
+            }
+            
+            // Play related portal frames
+            $portal->set('Playing', 1);
+            $portal->update();
+            if ($idPortalFrameDown) {
+                $portal = new PortalFrames($idPortalFrameDown);
+                $portal->set('Playing', 1);
+                $portal->update();
+            }
+        }
         $timer->stop();
         Logger::info('Publication ended; time for publication = ' . $timer->display('s') . ' seconds');
         return array($docsBatch, $unchangedDocs);
@@ -247,7 +278,7 @@ class BatchManager
         return $versions;
     }
 
-    public function buildBatchs(int $nodeGenerator, int $timeUp, array $docsToPublish, array $docsToUpVersion, array $versions
+    private function buildBatchs(int $nodeGenerator, int $timeUp, array $docsToPublish, array $docsToUpVersion, array $versions
         , array $subversions, int $server, array $physicalServers, float $priority, int $timeDown = null, int $statStart = 0
         , int $statTotal = 0, $idPortalFrame, int $idPortalFrameDown = null, $userId = null, array $noCache = [])
     {
@@ -291,37 +322,6 @@ class BatchManager
             if ($batch->get('IdBatch')) {
                 $batch->set('State', Batch::WAITING);
                 $batch->update();
-            }
-        }
-        
-        // Update portals frames information
-        try {
-            PortalFrames::updatePortalFrames(null, null, $idPortalFrame);
-            if ($idPortalFrameDown) {
-                PortalFrames::updatePortalFrames(null, null, $idPortalFrameDown);
-            }
-        } catch (\Exception $e) {
-            Logger::error($e->getMessage());
-        }
-        
-        // Remove poral frames if there is not frames generated
-        $portal = new PortalFrames($idPortalFrame);
-        if (! $frames) {
-            Logger::warning('Deleting portals frames without related batchs');
-            $portal->delete();
-            if ($idPortalFrameDown) {
-                $portal = new PortalFrames($idPortalFrameDown);
-                $portal->delete();
-            }
-        } else {
-            
-            // Play related portal frames
-            $portal->set('Playing', 1);
-            $portal->update();
-            if ($idPortalFrameDown) {
-                $portal = new PortalFrames($idPortalFrameDown);
-                $portal->set('Playing', 1);
-                $portal->update();
             }
         }
         return $frames;

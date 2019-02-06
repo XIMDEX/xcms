@@ -106,14 +106,12 @@ class Action_managebatchs extends ActionAbstract
             $this->sendJSON(['success' => false, 'error' => 'No portal frame ID given']);
         }
         $portal = new PortalFrames($id);
-        if (!$portal->get('id')) {
+        if (! $portal->get('id')) {
             $this->sendJSON(['success' => false, 'error' => 'Portal frame with ID ' . $id . ' does not exist']);
         }
-        if ($portal->get('Playing')) {
-            $portal->set('Playing', 0);
-            if ($portal->update() === false) {
-                $this->sendJSON(['success' => false, 'error' => 'Cannot pause the portal frame']);
-            }
+        $portal->set('Playing', 0);
+        if ($portal->update() === false) {
+            $this->sendJSON(['success' => false, 'error' => 'Cannot pause the portal frame']);
         }
         $this->sendJSON(['success' => true]);
     }
@@ -125,14 +123,12 @@ class Action_managebatchs extends ActionAbstract
             $this->sendJSON(['success' => false, 'error' => 'No portal frame ID given']);
         }
         $portal = new PortalFrames($id);
-        if (!$portal->get('id')) {
+        if (! $portal->get('id')) {
             $this->sendJSON(['success' => false, 'error' => 'Portal frame with ID ' . $id . ' does not exist']);
         }
-        if (! $portal->get('Playing')) {
-            $portal->set('Playing', 1);
-            if ($portal->update() === false) {
-                $this->sendJSON(['success' => false, 'error' => 'Cannot play the portal frame']);
-            }
+        $portal->set('Playing', 1);
+        if ($portal->update() === false) {
+            $this->sendJSON(['success' => false, 'error' => 'Cannot play the portal frame']);
         }
         $this->sendJSON(['success' => true]);
     }
@@ -177,7 +173,7 @@ class Action_managebatchs extends ActionAbstract
             $this->sendJSON(['success' => false, 'error' => 'No portal frame ID or boost value given']);
         }
         $portal = new PortalFrames($id);
-        if (!$portal->get('id')) {
+        if (! $portal->get('id')) {
             $this->sendJSON(['success' => false, 'error' => 'Portal frame with ID ' . $id . ' does not exist']);
         }
         $portal->set('Boost', $value);

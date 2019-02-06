@@ -155,7 +155,7 @@ class PortalFrames extends PortalFramesOrm
             
             // For each portal frame, update it stats and status
             $portalFrame = new static((int) $db->getValue('id'));
-            if (!$portalFrame->get('id')) {
+            if (! $portalFrame->get('id')) {
                 throw new \Exception('Cannot load a portal frame with ID: ' . $db->getValue('id'));
             }
             $sucessFrames = (int) $db2->getValue('success');
@@ -183,7 +183,7 @@ class PortalFrames extends PortalFramesOrm
             // Check new batch status
             if ($batch) {
                 if ($batch->get('State') == Batch::INTIME) {
-                    if (!$portalFrame->get('StartTime')) {
+                    if (! $portalFrame->get('StartTime')) {
                         $portalFrame->set('StartTime', time());
                         self::resetBoostCycles();
                     }
@@ -207,6 +207,9 @@ class PortalFrames extends PortalFramesOrm
             }
             
             // Update whole modified fields
+            $currentPortal = new PortalFrames($portalFrame->get('id'));
+            $portalFrame->set('Playing', $currentPortal->get('Playing'));
+            $portalFrame->set('Boost', $currentPortal->get('Boost'));
             if ($portalFrame->update() === false) {
                 throw new \Exception('Cannot update the portal frame with ID: ' . $portalFrame->get('id'));
             }
