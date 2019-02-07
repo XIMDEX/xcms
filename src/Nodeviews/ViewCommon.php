@@ -186,7 +186,7 @@ class ViewCommon extends AbstractView
      * @param bool $include
      * @return string
      */
-    private static function getAbsolutePath(Node $targetNode, Node $targetServer, int $idTargetChannel)
+    private static function getAbsolutePath(Node $targetNode, Server $targetServer, int $idTargetChannel)
     {
         return $targetServer->get('Url') . $targetNode->GetPublishedPath($idTargetChannel, true);
     }
