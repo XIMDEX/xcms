@@ -276,7 +276,8 @@ class Action_workflow_forward extends ActionAbstract
                 'globalForcedEnabled' => FORCE_PUBLICATION,
                 'name' => $node->GetNodeName(),
                 'nodeTypeID' => $node->nodeType->getID(),
-                'node_Type' => $node->nodeType->GetName()
+                'node_Type' => $node->nodeType->GetName(),
+                'disabledCache' => App::getValue('DisableCache')
             );
             $values = array_merge($values, $this->buildExtraValues($idNode));
             $this->render($values, 'index.tpl', 'default-3.0.tpl');

@@ -370,13 +370,13 @@ class FsUtils
         if (!empty($sourceFile) && !empty($destFile)) {     
             $result = copy($sourceFile, $destFile);
             if ($move) {
-                if (!@unlink($sourceFile))
+                if (! @unlink($sourceFile))
                     Logger::warning('Cannot delete the source file: ' . $sourceFile);
             }
         } else {
             $result = false;
         }
-        if (!$result) {
+        if (! $result) {
             Logger::error(sprintf('An error occurred while trying to copy from %s to %s', $sourceFile, $destFile));
         }
         return $result;

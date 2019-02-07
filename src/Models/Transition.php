@@ -30,9 +30,7 @@ namespace Ximdex\Models;
 use Ximdex\Logger;
 use Ximdex\Data\GenericData;
 use Ximdex\Runtime\App;
-use Ximdex\Runtime\DataFactory;
 use Ximdex\Utils\Factory;
-use Ximdex\Nodeviews\AbstractView;
 use Ximdex\Utils\FsUtils;
 
 class Transition extends GenericData
@@ -93,11 +91,15 @@ class Transition extends GenericData
             $id = $this->cache->load($versionId, $this->get('id'));
             if ($id) {
                 
-                // Cache content for this transition has been found, return the associated file
+                // Cache content for this transition has been found, return the associated file content
                 $cache = new TransitionCache($id);
-                Logger::info('Cache file ' . $cache->get('file') . ' was found for version ' . $versionId . ' in ' 
-                    . $transition . ' transition', false, 'magenta');
-                return XIMDEX_CACHE_PATH . '/' . $cache->get('file');
+                Logger::info('Cache file ' . $cache->get('file') . ' was found for version ' . $versionId . ' in ' . $transition 
+                    . ' transition', false, 'magenta');
+                $content = FsUtils::file_get_contents(XIMDEX_CACHE_PATH . '/' . $cache->get('file'));
+                if ($content === false) {
+                    throw new \Exception('Cannot load a transition cache file with name: ' . $cache->get('file'));
+                }
+                return $content;
             }
         }
         
@@ -110,16 +112,12 @@ class Transition extends GenericData
             if (! $previosTransition->get('id')) {
                 throw new \Exception('Cannot load a previous transition with code: ' . $previousTransitionId);
             }
-            $pointer = (new static())->process($previosTransition->get('name'), $args, $versionId);
+            $content = (new static())->process($previosTransition->get('name'), $args, $versionId);
         } else {
             
             // This is the original transition, get content from version file or given content in args
             if (isset($args['CONTENT'])) {
-                
-                // Generate the pointer file for the transition with the content given
-                if (! $pointer = AbstractView::storeTmpContent($args['CONTENT'])) {
-                    throw new \Exception('Cannot write a transition content to temporal file in transition: ' . $transition);
-                }
+                $content = $args['CONTENT'];
             } else {
                 
                 // Obtain the data file from the given version
@@ -127,61 +125,36 @@ class Transition extends GenericData
                 if (! $version->get('IdVersion')) {
                     throw new \Exception('Cannot load a version with code: ' . $versionId);
                 }
-                $pointer = XIMDEX_ROOT_PATH . App::getValue('FileRoot') . '/' . $version->get('File');
-                if (! $pointer) {
+                $content = FsUtils::file_get_contents(XIMDEX_ROOT_PATH . App::getValue('FileRoot') . '/' . $version->get('File'));
+                if ($content === false) {
                     throw new \Exception('There is not content file for version ' . $versionId . ' and transition ' . $transition);
                 }
             }
         }
-        return $this->callback($pointer, $args, $versionId);
+        $content = $this->callback($content, $args, $versionId);
+        
+        // Cache generation
+        if ($this->cacheable and (! isset($args['DISABLE_CACHE']) or $args['DISABLE_CACHE'] == 0)) {
+            $this->cache->store($versionId, $this->get('id'), $content);
+        }
+        return $content;
     }
     
-    private function callback(string $pointer, array $args, int $versionId = null, string $function = 'transform') : string
+    private function callback(string $content, array $args, int $versionId = null, string $function = 'transform') : string
     {
-        // If this version is a published one (with version > 0 and subversion = 0) the cache file will be the previous one
-        $version = new Version($versionId);
-        if ($version->get('Version') > 0 and $version->get('SubVersion') == 0) {
-            
-            // Get previous version
-            $dataFactory = new DataFactory($version->get('IdNode'));
-            if (! $id = $dataFactory->GetPreviousVersion($versionId)) {
-                throw new \Exception('Cannot load a previous version for ' . $version->get('Version') . '.0');
-            }
-            $previousVersion = new Version($id);
-            
-            // Get the previous cache if exists and use it instead doing a new tranformation
-            if ($id = (new TransitionCache())->load($previousVersion->get('IdVersion'), $this->id)) {
-                $cache = new TransitionCache($id);
-                if (! file_exists(XIMDEX_CACHE_PATH . '/' . $cache->get('file'))) {
-                    Logger::warning('Transition cache with non-existant file in system storage with code: ' . $cache->get('id') 
-                        . '. Ignoring it');
-                } else {
-                    return XIMDEX_CACHE_PATH . '/' . $cache->get('file');
-                }
-            }
-        }
-        
         // Do the transformation if method transform exists in the view class
         $factory = new Factory(self::CALLBACK_FOLDER, 'View');
         $viewClass = $factory->instantiate($this->get('viewClass'), null, 'Ximdex\Nodeviews');
         if (method_exists($viewClass, $function)) {
-            $transformedPointer = $viewClass->$function($versionId, $pointer, $args);
-            
-            // Remove possible temporal file
-            if (strpos($pointer, XIMDEX_ROOT_PATH . App::getValue('TempRoot')) === 0) {
-                FsUtils::delete($pointer);
-            }
-            if ($transformedPointer === false or $transformedPointer === null) {
-                throw new \Exception('Cannot make the transformation for class: ' . $this->get('viewClass') . ' with file: ' . $pointer);
-            }
-            
-            // Cache generation
-            if ($this->cacheable and (! isset($args['DISABLE_CACHE']) or $args['DISABLE_CACHE'] == 0)) {
-                $this->cache->store($versionId, $this->get('id'), $transformedPointer);
+            $content = $viewClass->$function($versionId, $content, $args);
+            if ($content === false) {
+                throw new \Exception('Cannot make the transformation for class: ' . $this->get('viewClass') . ' and version: ' 
+                    . $versionId);
             }
         } else {
-            $transformedPointer = $pointer;
+            throw new \Exception('There is not a transformation method called ' . $function . ' for class: ' 
+                . $this->get('viewClass'));
         }
-        return $transformedPointer;
+        return $content;
     }
 }

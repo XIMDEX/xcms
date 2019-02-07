@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -32,13 +32,13 @@ use Ximdex\Models\StructuredDocument;
 use Ximdex\Runtime\App;
 
 class ViewPrefilterMacros extends AbstractView
-{	
-    public function transform(int $idVersion = null, string $pointer = null, array $args = null)
+{
+    /**
+     * {@inheritDoc}
+     * @see \Ximdex\Nodeviews\AbstractView::transform()
+     */
+    public function transform(int $idVersion = null, string $content = null, array $args = null)
 	{
-	    $content = self::retrieveContent($pointer);
-		if ($content === false) {
-		    return false;
-		}
 		if (preg_match("/@@@GMximdex\.ximlet\(([0-9]+)\)@@@/", $content)) {
 			$content = preg_replace_callback("/@@@GMximdex\.ximlet\(([0-9]+)\)@@@/",  
 				array($this,'GetXimletContent'), $content);
@@ -51,7 +51,7 @@ class ViewPrefilterMacros extends AbstractView
 			$content = preg_replace_callback('/ a_import_enlaceid([A-Za-z0-9|\_]+)\s*=\s*\"([^\"]+)\"/i' ,  
 				array($this, 'GetLocalPath'), $content);
 		}
-		return self::storeTmpContent($content);
+		return $content;
 	}
 
 	private function GetXimletContent(array $matches) : string

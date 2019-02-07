@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -29,9 +29,12 @@ namespace Ximdex\Nodeviews;
 
 class ViewDependencies extends AbstractView
 {
-    public function transform(int $idVersion = null, string $pointer = null, array $args = null)
+    /**
+     * {@inheritDoc}
+     * @see \Ximdex\Nodeviews\AbstractView::transform()
+     */
+    public function transform(int $idVersion = null, string $content = null, array $args = null)
     {
-        $content = self::retrieveContent($pointer);
-        return self::storeTmpContent($content);
+        return $content;
     }
 }

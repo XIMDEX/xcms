@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -44,9 +44,18 @@ class XSLT
         $this->xsl = new \DOMDocument();
     }
 
-    public function setXML($xml_file)
+    public function setXML(string $xml_file) : bool
     {
         $res = @$this->xml->load($xml_file);
+        if ($res === false) {
+            return false;
+        }
+        return true;
+    }
+    
+    public function setXMLContent(string $content) : bool
+    {
+        $res = @$this->xml->loadXML($content);
         if ($res === false) {
             return false;
         }

@@ -9,7 +9,7 @@ class Action extends ActionsOrm
     /**
      * @param $actionID
      */
-    public function __construct($actionID = null)
+    public function __construct(int $actionID = null)
     {
         $this->flagErr = false;
         $this->autoCleanErr = true;

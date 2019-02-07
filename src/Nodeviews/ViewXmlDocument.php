@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -33,12 +33,15 @@ use Ximdex\Runtime\App;
 
 class ViewXmlDocument extends AbstractView
 {
-    public function transform(int $idVersion = null, string $pointer = null, array $args = null)
+    /**
+     * {@inheritDoc}
+     * @see \Ximdex\Nodeviews\AbstractView::transform()
+     */
+    public function transform(int $idVersion = null, string $content = null, array $args = null)
     {
-        if (parent::transform($idVersion, $pointer, $args) === null) {
+        if (parent::transform($idVersion, $content, $args) === false) {
             return false;
         }
-        $content = self::retrieveContent($pointer);
         $name = $this->node->get('Name');
         $nodeType = $this->node->getNodeType();
         if ($nodeType != NodeTypeConstants::XML_DOCUMENT && $name != 'docxap.xsl') {
@@ -61,10 +64,10 @@ class ViewXmlDocument extends AbstractView
                 $content = $this->removeStylesheet($content);
             }
         }
-        return self::storeTmpContent($content);
+        return $content;
     }
 
-    private function addDocxap(Node $node)
+    private function addDocxap(Node $node) : string
     {
         $content = $node->class->getRenderizedContent();
         $xslPath = $this->getXslPath($node);
@@ -82,7 +85,7 @@ class ViewXmlDocument extends AbstractView
         $doc->formatOutput = true;
         $doc->preserveWhiteSpace = false;
         $result = $doc->loadXML($content);
-        if (!$result) {
+        if (! $result) {
             return false;
         }
         $docxap = $doc->getElementsByTagName('docxap');
@@ -99,7 +102,7 @@ class ViewXmlDocument extends AbstractView
         return $xmlContent;
     }
 
-    private function getXslPath(Node $node)
+    private function getXslPath(Node $node) : ?string
     {
         $docxap = null;
         $xslPath = null;
@@ -110,7 +113,7 @@ class ViewXmlDocument extends AbstractView
                 $xslFolder = new Node($xslFolder);
                 $docxap = $xslFolder->class->getNodePath() . '/docxap.xsl';
                 unset($xslFolder);
-                if (!is_readable($docxap)) {
+                if (! is_readable($docxap)) {
                     $docxap = null;
                 }
             }
@@ -121,7 +124,7 @@ class ViewXmlDocument extends AbstractView
         return $xslPath;
     }
 
-    private function insertStylesheet(Node $node)
+    private function insertStylesheet(Node $node) : ?string
     {
         $css = $this->getStylesheets($node);
         $css = "<style id=\"docxap_stylesheet\" type=\"text/css\">\n" . $css . "\n</style>\n</head>\n";
@@ -130,14 +133,14 @@ class ViewXmlDocument extends AbstractView
         return $content;
     }
 
-    private function removeStylesheet(string $content)
+    private function removeStylesheet(string $content) : string
     {
         $regexp = '#(<style id="docxap_stylesheet"(?:.*)</style>)#is';
         $content = preg_replace($regexp, '', $content);
         return $content;
     }
 
-    private function getStylesheets(Node $node)
+    private function getStylesheets(Node $node) : string
     {
         $last = null;
         $content = '';

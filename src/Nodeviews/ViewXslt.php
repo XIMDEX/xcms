@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -42,20 +42,23 @@ class ViewXslt extends AbstractView
     private $_idChannel;
     private $_idProject;
     
-    public function transform(int $idVersion = null, string $pointer = null, array $args = null)
+    /**
+     * {@inheritDoc}
+     * @see \Ximdex\Nodeviews\AbstractView::transform()
+     */
+    public function transform(int $idVersion = null, string $content = null, array $args = null)
     {
-        $content = self::retrieveContent($pointer);
         if (! $this->_setNode($idVersion, $args)) {
-            return null;
+            return false;
         }
         if (! $this->_setIdChannel($args)) {
-            return null;
+            return false;
         }
         if (! $this->_setIdSection($args)) {
-            return null;
+            return false;
         }
         if (! $this->_setIdProject($args)) {
-            return null;
+            return false;
         }
         $ptdFolder = App::getValue('TemplatesDirName');
         
@@ -92,7 +95,7 @@ class ViewXslt extends AbstractView
             Logger::info('Processing XML document with ID: ' . $this->_node->GetID() . ' and name: ' . $this->_node->GetNodeName());
         }
         $xsltHandler = new \Ximdex\XML\XSLT();
-        if (! $xsltHandler->setXML($pointer)) {
+        if (! $xsltHandler->setXMLContent($content)) {
             $error = 'The XML document has syntax errors (' . \Ximdex\Utils\Messages::error_message('DOMDocument::load(): ') . ')';
             $GLOBALS['errorsInXslTransformation'][] = $error;
         }
@@ -100,10 +103,9 @@ class ViewXslt extends AbstractView
         
         // Load the docxap content
         $domDoc = new \DOMDocument();
-        if (@$domDoc->load($docxap) === false)
-        {
+        if (@$domDoc->load($docxap) === false) {
             $GLOBALS['errorsInXslTransformation'][] = 'Invalid docxap.xsl file (' 
-                    . \Ximdex\Utils\Messages::error_message('DOMDocument::load(): ') . ')';
+                . \Ximdex\Utils\Messages::error_message('DOMDocument::load(): ') . ')';
         }
         $docxapContent = $domDoc->saveXML();
         
@@ -128,25 +130,16 @@ class ViewXslt extends AbstractView
         $xsltHandler->setXSL(null, $docxapContent);
         $params = array('xmlcontent' => $content);
         if (App::debug()) {
-            
-            # DEBUG
             @file_put_contents(XIMDEX_ROOT_PATH . App::getValue('TempRoot') . '/docxap-pre.xsl', $docxap);
             @file_put_contents(XIMDEX_ROOT_PATH . App::getValue('TempRoot') . '/docxap-post.xsl', $docxapContent);
-            @file_put_contents(XIMDEX_ROOT_PATH . App::getValue('TempRoot') . '/pointer.xml', $pointer);
             @file_put_contents(XIMDEX_ROOT_PATH . App::getValue('TempRoot') . '/content-pre.xml', $content);
-            
-            # END DEBUG
         }
         foreach ($params as $param => $value) {
             $xsltHandler->setParameter(array($param => $value));
         }
         $content = $xsltHandler->process();
         if (App::debug()) {
-            
-            # DEBUG
             @file_put_contents(XIMDEX_ROOT_PATH . App::getValue('TempRoot') . '/content-post.xml', $content);
-            
-            # END DEBUG
         }
         if ($content === false or $content === null) {
             
@@ -190,9 +183,6 @@ class ViewXslt extends AbstractView
             // We save the error trace into the previous file
             $this->set_xslt_errors($GLOBALS['errorsInXslTransformation']);
             Logger::setActiveLog($defaultLog);
-            if (isset($GLOBALS['InBatchProcess'])) {
-                return null;
-            }
             return false;
         }
 
@@ -221,7 +211,7 @@ class ViewXslt extends AbstractView
             }
         } else {
             Logger::setActiveLog($defaultLog);
-            return self::storeTmpContent($content);
+            return $content;
         }
         $xpath = new \DOMXPath($domDoc);
         $nodeList = $xpath->query('/html/body//*[string(text())]');
@@ -249,19 +239,19 @@ class ViewXslt extends AbstractView
         $logMessage .= ' with channel: ' . $channel->GetName();
         Logger::info($logMessage);
         Logger::setActiveLog($defaultLog);
-        return self::storeTmpContent($content);
+        return $content;
     }
     
     /**
      * Generate a string with the XSLT errors, to will save in the post transformation information of the current structured document node
      * 
      * @param array $errors
-     * @return NULL|boolean
+     * @return boolean
      */
-    private function set_xslt_errors(array $errors)
+    private function set_xslt_errors(array $errors) : bool
     {
         if (! $this->_node or !$this->_node->GetID()) {
-            return null;
+            return false;
         }
         $content = '';
         foreach ($errors as $error) {
@@ -279,32 +269,31 @@ class ViewXslt extends AbstractView
     
     /**
      * Set to null the value XSLT Errors in the current sctructured document
-     * @return NULL|boolean
+     * 
+     * @return boolean
      */
-    private function reset_xslt_errors()
+    private function reset_xslt_errors() : bool
     {
         if (! $this->_node or !$this->_node->GetID()) {
-            return null;
+            return false;
         }
         $stDoc = new StructuredDocument($this->_node->GetID());
         if (! $stDoc->GetID()) {
             return false;
         }
-        if ($stDoc->GetXsltErrors()) {
-            if ($stDoc->SetXsltErrors(null) === false) {
-                return false;
-            }
+        if ($stDoc->GetXsltErrors() and $stDoc->SetXsltErrors(null) === false) {
+            return false;
         }
         return true;
     }
 
-    private function _setNode($idVersion = null, array $args = null)
+    private function _setNode(int $idVersion = null, array $args = null) : bool
     {
         if (! is_null($idVersion)) {
             $version = new Version($idVersion);
             if (! $version->get('IdVersion')) {
                 Logger::error('VIEW XSLT: Incorrect version has been loaded (' . $idVersion . ')');
-                return null;
+                return false;
             }
             $id = $version->get('IdNode');
         } elseif (isset($args['NODEID']) and $args['NODEID']) {
@@ -316,12 +305,12 @@ class ViewXslt extends AbstractView
         $this->_node = new Node($id);
         if (! $this->_node->GetID()) {
             Logger::error('VIEW XSLT: The node that it\'s trying to convert doesn\'t exists: ' . $id);
-            return null;
+            return false;
         }
         return true;
     }
 
-    private function _setIdChannel($args = array())
+    private function _setIdChannel(array $args = array()) : bool
     {
         if (array_key_exists('CHANNEL', $args)) {
             $this->_idChannel = $args['CHANNEL'];
@@ -333,12 +322,12 @@ class ViewXslt extends AbstractView
         // Check Params
         if (! $this->_idChannel) {
             Logger::error('VIEW XSLT: Node ' . $args['NODENAME'] . ' has not an associated channel');
-            return null;
+            return false;
         }
         return true;
     }
 
-    private function _setIdSection($args = array())
+    private function _setIdSection($args = array()) : bool
     {
         if ($this->_node) {
             $this->_idSection = $this->_node->GetSection();
@@ -350,13 +339,13 @@ class ViewXslt extends AbstractView
             // Check Params
             if (! $this->_idSection) {
                 Logger::error('VIEW XSLT: There is not associated section for the node ' . $args['NODENAME']);
-                return null;
+                return false;
             }
         }
         return true;
     }
 
-    private function _setIdProject($args = array())
+    private function _setIdProject(array $args = array()) : bool
     {
         if ($this->_node) {
             $this->_idProject = $this->_node->GetProject();
@@ -368,7 +357,7 @@ class ViewXslt extends AbstractView
             // Check Params
             if (! $this->_idProject) {
                 Logger::error('VIEW XSLT: There is not associated project for the node ' . $args['NODENAME']);
-                return NULL;
+                return false;
             }
         }
         return true;

@@ -240,17 +240,17 @@ class SyncManager
     function pushDocInPublishingPool(int $idNode, int $up, int $down = null)
     {
         if (! $idNode) {
-            Logger::error("Pushdocinpool - Empty IdNode");
+            Logger::error('Pushdocinpool - Empty IdNode');
             return NULL;
         }
         $node = new Node($idNode);
         if (! $node->GetID()) {
-            Logger::error(sprintf("Node %s does not exist", $idNode));
+            Logger::error(sprintf('Node %s does not exist', $idNode));
             return NULL;
         }
         $docsToPublish = $this->getPublishableDocs($node, $up, $down);
         $userID = \Ximdex\Runtime\Session::get('userID');
-        $force = $this->getFlag('globalForcePublication') ? true : $this->getFlag("force");
+        $force = $this->getFlag('globalForcePublication') ? true : $this->getFlag('force');
         $nodesToPublish = new NodesToPublish();
         foreach ($docsToPublish as $idDoc) {
             if (! array_key_exists($idDoc, $this->docsToPublishByLevel)) {
@@ -276,7 +276,7 @@ class SyncManager
         // Exec batchManagerDaemon in background
         $cmd = 'php ' . XIMDEX_ROOT_PATH . '/bootstrap.php  src/Sync/scripts/batch/batchManagerDaemon.php';
         // shell_exec(sprintf('%s > /dev/null & echo $!', $cmd));
-        shell_exec(sprintf('%s > ' . XIMDEX_ROOT_PATH . '/logs/batch_manager_daemon.err &', $cmd));
+        shell_exec(sprintf('%s > ' . sys_get_temp_dir() . '/batch_manager_daemon.err &', $cmd));
         return $docsToPublish;
     }
 
@@ -287,8 +287,8 @@ class SyncManager
      */
     public function hasDependences($nodeId, $params)
     {
-        $deepLevel = $params["deeplevel"];
-        if (!isset($this->docsToPublishByLevel["$nodeId"])) {
+        $deepLevel = $params['deeplevel'];
+        if (! isset($this->docsToPublishByLevel["$nodeId"])) {
             return false;
         }
         $currentDeepLevel = $this->docsToPublishByLevel["$nodeId"] + 1;
@@ -297,7 +297,7 @@ class SyncManager
         }
         $node = new Node($nodeId);
         $nodeDependences = $node->class->getPublishabledDeps($params);
-        if (!isset($nodeDependences) || empty($nodeDependences)) {
+        if (! isset($nodeDependences) || empty($nodeDependences)) {
             return false;
         }
         $pending = array_values(array_diff($nodeDependences, $this->pendingDocsToPublish, $this->computedDocsToPublish));
@@ -306,12 +306,11 @@ class SyncManager
         }
         else {
             $idDoc = $pending[0];
-            while($idDoc == $nodeId){
+            while ($idDoc == $nodeId) {
                 array_shift($pending);
-                if (!empty($pending)) {
+                if (! empty($pending)) {
                     $idDoc = $pending[0];
-                }
-                else {
+                } else {
                     return false;
                 }
             }
@@ -325,20 +324,20 @@ class SyncManager
     {
         $node = new node($nodeID);
         $name = $node->Get('Name');
-        $msg = sprintf(_("Node %s is going to be published"), $name);
-        if (!$down) {
+        $msg = sprintf(_('Node %s is going to be published'), $name);
+        if (! $down) {
             $downString = _('Undetermined');
         }
         else {
             $downString = date('d-m-Y H:i:s', $down);
         }
-        $msg .= "\n" . _("Publication date") . ": " . date('d-m-Y H:i:s', $up);
-        $msg .= "\n" . _("Expiration date") . ":" . " $downString";
+        $msg .= "\n" . _('Publication date') . ': ' . date('d-m-Y H:i:s', $up);
+        $msg .= "\n" . _('Expiration date') . ':' . " $downString";
         $user = new User(301);
         $email = $user->Get('Email');
         $mail = new \Ximdex\Utils\Mail();
         $mail->addAddress($email);
-        $mail->Subject = _("Publication of") . " $name";
+        $mail->Subject = _('Publication of') . " $name";
         $mail->Body = $msg;
         $mail->Send();
     }

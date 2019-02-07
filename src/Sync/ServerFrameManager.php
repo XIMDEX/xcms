@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -61,7 +61,7 @@ class ServerFrameManager
      * @param int delayed
      * @return bool
      */
-    public function changeState(int $serverFrameId, string $operation, int $nodeId, int $delayed = null)
+    public function changeState(int $serverFrameId, string $operation, int $nodeId, int $delayed = null) : bool
     {
         $serverFrame = new ServerFrame($serverFrameId);
         $initialState = $serverFrame->get('State');
@@ -186,7 +186,7 @@ class ServerFrameManager
      * @param int channel
      * @return int|null
      */
-    public function getDelayed($frameId, $server, $nodeId, $channel)
+    public function getDelayed(int $frameId, int $server, int $nodeId, int $channel = null) : ?int
     {
         $dbObj = new \Ximdex\Runtime\Db();
         $sql = 'SELECT ServerFrames.IdSync AS IdSync FROM NodeFrames, ServerFrames, ChannelFrames
@@ -196,14 +196,13 @@ class ServerFrameManager
 				AND NodeFrames.NodeId = ' . $nodeId;
         if ($channel) {
             $sql .= ' AND ChannelFrames.ChannelId = ' . $channel;
-        }
-        else {
+        } else {
             $sql .= ' AND ChannelFrames.ChannelId IS NULL';
         }
         $sql .= ' AND ServerFrames.IdSync != ' . $frameId . ' AND ServerFrames.State = \'' . ServerFrame::DELAYED . '\'';
         $dbObj->Query($sql);
         if ($dbObj->numRows) {
-            return $dbObj->GetValue('IdSync');
+            return (int) $dbObj->GetValue('IdSync');
         }
         return null;
     }
@@ -215,9 +214,9 @@ class ServerFrameManager
      * @param int server
      * @param int nodeId
      * @param int channel
-     * @return int|null
+     * @return array|null
      */
-    public function getOverlaped($frameId, $server, $nodeId, $channel)
+    public function getOverlaped(int $frameId, int $server, int $nodeId, int $channel = null) : ?array
     {
         if (is_null($channel)) {
             $channelCondition = ' IS NULL ';
@@ -226,17 +225,17 @@ class ServerFrameManager
         }
         $dbObj = new \Ximdex\Runtime\Db();
         $sql = 'SELECT ServerFrames.IdSync AS IdSync, ServerFrames.State AS State,
-				ServerFrames.RemotePath AS RemotePath, ServerFrames.FileName AS FileName
-				FROM NodeFrames, ServerFrames, ChannelFrames
-				WHERE ServerFrames.IdNodeFrame = NodeFrames.IdNodeFrame
-				AND ServerFrames.IdChannelFrame = ChannelFrames.idChannelFrame
-				AND ServerFrames.IdServer = ' . $server . ' 
-				AND NodeFrames.NodeId = ' . $nodeId . ' 
-				AND ChannelFrames.ChannelId ' . $channelCondition . ' 
-				AND ServerFrames.IdSync != ' . $frameId . ' 
-				AND (ServerFrames.State = \'' . ServerFrame::IN . '\' OR ServerFrames.State = \'' . ServerFrame::DUE2IN . '\' 
-		        OR ServerFrames.State = \'' . ServerFrame::DUE2IN_ . '\' OR ServerFrames.State = \'' . ServerFrame::CANCELLED . '\' 
-                OR ServerFrames.State = \'' . ServerFrame::PUMPED . '\' OR ServerFrames.State = \'' . ServerFrame::DUE2INWITHERROR . '\')';
+			ServerFrames.RemotePath AS RemotePath, ServerFrames.FileName AS FileName
+			FROM NodeFrames, ServerFrames, ChannelFrames
+			WHERE ServerFrames.IdNodeFrame = NodeFrames.IdNodeFrame
+			AND ServerFrames.IdChannelFrame = ChannelFrames.idChannelFrame
+			AND ServerFrames.IdServer = ' . $server . ' 
+			AND NodeFrames.NodeId = ' . $nodeId . ' 
+			AND ChannelFrames.ChannelId ' . $channelCondition . ' 
+			AND ServerFrames.IdSync != ' . $frameId . ' 
+			AND (ServerFrames.State = \'' . ServerFrame::IN . '\' OR ServerFrames.State = \'' . ServerFrame::DUE2IN . '\' 
+	        OR ServerFrames.State = \'' . ServerFrame::DUE2IN_ . '\' OR ServerFrames.State = \'' . ServerFrame::CANCELLED . '\' 
+            OR ServerFrames.State = \'' . ServerFrame::PUMPED . '\' OR ServerFrames.State = \'' . ServerFrame::DUE2INWITHERROR . '\')';
         $overlaped = array();
         $i = 0;
         $dbObj->Query($sql);
@@ -256,12 +255,12 @@ class ServerFrameManager
     /**
      * Sets a number of ServerFrames to states Due2In or Due2Out
      * 
-     * @param $pumpers
-     * @param $chunk
-     * @param $activeAndEnabledServers
+     * @param array $pumpers
+     * @param int $chunk
+     * @param array $activeAndEnabledServers
      * @return int
      */
-    public function setTasksForPumping($pumpers, $chunk, $activeAndEnabledServers) : int
+    public function setTasksForPumping(array $pumpers, int $chunk, array $activeAndEnabledServers) : int
     {
         $dbObj = new \Ximdex\Runtime\Db();
         $serverFrame = new ServerFrame();
@@ -338,12 +337,12 @@ class ServerFrameManager
      * @param int serverFrameId
      * @return int
      */
-    public function calcPumper($serverFrameId)
+    public function calcPumper(int $serverFrameId) : int
     {
         // At present, serverid is the criteria for pumperid
         $serverFrame = new ServerFrame($serverFrameId);
         if ($serverFrame->get('PumperId')) {
-            return $serverFrame->get('PumperId');
+            return (int) $serverFrame->get('PumperId');
         }
         $idServer = $serverFrame->get('IdServer');
         $dbObj = new \Ximdex\Runtime\Db();
@@ -362,7 +361,7 @@ class ServerFrameManager
             $pumperId = $dbObj->GetValue('PumperId');
         }
         if ($pumperId > 0) {
-            return $pumperId;
+            return (int) $pumperId;
         }
         Logger::info('Obtaining pumperId for task ' . $serverFrame->get('IdSync'));
     }
@@ -373,7 +372,7 @@ class ServerFrameManager
      * @param array activeAndEnabledServers
      * @return array|null
      */
-    public function getPumpersWithTasks($activeAndEnabledServers)
+    public function getPumpersWithTasks(array $activeAndEnabledServers) : ?array
     {
         $dbObj = new \Ximdex\Runtime\Db();
         $servers = implode(',', $activeAndEnabledServers);
@@ -395,12 +394,12 @@ class ServerFrameManager
     }
 
     /**
-     * Gets all ServerFrames associated to a NodeFrame.
+     * Gets all ServerFrames associated to a NodeFrame
      * 
-     * @param int nodeFrameId
-     * @return array
+     * @param int $nodeFrameId
+     * @return array|boolean
      */
-    public function getByNodeFrame($nodeFrameId)
+    public function getByNodeFrame(int $nodeFrameId)
     {
         $result = array();
         $serverFrame = new ServerFrame();

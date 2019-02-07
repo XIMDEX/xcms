@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -36,25 +36,27 @@ use Ximdex\Utils\TarArchiver;
 
 class ViewTARGZ extends AbstractView
 {
-    public function transform(int $idVersion = null, string $pointer = null, array $args = null)
+    /**
+     * {@inheritDoc}
+     * @see \Ximdex\Nodeviews\AbstractView::transform()
+     */
+    public function transform(int $idVersion = null, string $content = null, array $args = null)
     {
-        $content = self::retrieveContent($pointer);
-        
         // Validating data
         $version = new Version($idVersion);
         if (! $version->get('IdVersion')) {
             Logger::error("Se ha cargado una versión incorrecta ($idVersion)");
-            return null;
+            return false;
         }
         $node = new Node($version->get('IdNode'));
         $nodeId = $node->get('IdNode');
         if (! $nodeId) {
             Logger::error('El nodo que se está intentando convertir no existe: ' . $version->get('IdNode'));
-            return null;
+            return false;
         }
         if (! array_key_exists('PATH', $args) && ! array_key_exists('NODENAME', $args)) {
             Logger::error('Path and nodename arguments are mandatory');
-            return null;
+            return false;
         }
         $tarFile = $args['PATH'];
         $tmpFolder = XIMDEX_ROOT_PATH . App::getValue('TempRoot');
@@ -83,7 +85,7 @@ class ViewTARGZ extends AbstractView
 
         // Removing tar extension
         rename($tarFile . '.tar', $tarFile);
-        return self::storeTmpContent($arrayContent[0]);
+        return $arrayContent[0];
     }
 
     /**
@@ -95,7 +97,7 @@ class ViewTARGZ extends AbstractView
      * @param $params
      * @return String filename
      */
-    function getFile($tableName, $field, $condition, $params)
+    public function getFile(string $tableName, string $field, string $condition = null, array $params = []) : ?string
     {
         $factory = new \Ximdex\Utils\Factory(XIMDEX_ROOT_PATH . '/src/Models/', $tableName);
         $object = $factory->instantiate(null, null, '\Ximdex\Models');
@@ -113,13 +115,14 @@ class ViewTARGZ extends AbstractView
         return null;
     }
 
-    private function getLastVersion($idNode)
+    private function getLastVersion(int $idNode) : ?int
     {
         $sql = "select IdVersion from Versions where IdNode = $idNode order by Version desc limit 1;";
         $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->Query($sql);
+        $idVersion = null;
         while (! $dbObj->EOF) {
-            $idVersion = $dbObj->GetValue('IdVersion');
+            $idVersion = (int) $dbObj->GetValue('IdVersion');
             $dbObj->Next();
         }
         return $idVersion;

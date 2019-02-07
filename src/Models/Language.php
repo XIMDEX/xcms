@@ -41,15 +41,14 @@ class Language extends LanguagesOrm
 		3 => 'Arguments missing',
 		4 => 'Database connection error',
 	);
-
-	// Constructor
-	function __construct($_params = null)
+    
+	public function __construct(int $id = null)
 	{
 		$this->errorList[1] = _('Language does not exist');
 		$this->errorList[2] = _('A language with this name already exists');
 		$this->errorList[3] = _('Arguments missing');
 		$this->errorList[4] = _('Database connection error');
-		parent::__construct($_params);
+		parent::__construct($id);
 	}
 
 	// Returns langID (class attribute)

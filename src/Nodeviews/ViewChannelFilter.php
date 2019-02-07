@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -31,22 +31,19 @@ use Ximdex\Logger;
 
 class ViewChannelFilter extends AbstractView
 {
-    public function transform(int $idVersion = null, string $pointer = null, array $args = null)
+    /**
+     * {@inheritDoc}
+     * @see \Ximdex\Nodeviews\AbstractView::transform()
+     */
+    public function transform(int $idVersion = null, string $content = null, array $args = null) : bool
 	{
-	    if (! parent::transform($idVersion, $pointer, $args)) {
-	        return null;
+	    if (! parent::transform($idVersion, $content, $args)) {
+	        return false;
 	    }
-        /*
-		if (array_key_exists('CHANNEL', $args)) {
-			$channel = new Channel($args['CHANNEL']);
-			$this->_idChannel = $channel->get('IdChannel');
-		}
-		*/
 		if (! $this->channel) {   
 			Logger::error('VIEW CHANNELFILTER: Channel not specified for node');
-			return null;
+			return false;
 		}
-		$content = self::retrieveContent($pointer);
-		return self::storeTmpContent($content);
+		return $content;
 	}
 }

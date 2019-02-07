@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -71,15 +71,16 @@ class ViewFilterMacros extends AbstractView
     const MACRO_PATHTOABS = "/@@@RMximdex\.pathtoabs\(([,-_#%=\.\w\s]+)\)@@@/";
     const MACRO_BREADCRUMB = "/@@@RMximdex\.breadcrumb\(([,-_#%=\.\w\s]+)\)@@@/";
     const MACRO_INCLUDE = "/@@@RMximdex\.include\(([^\)]*)\)@@@/";
+    const MACRO_METADATA = "/@@@RMximdex\.metadata\(([^,\)]*),([\w\.\-\s]*)\)@@@/";
 
     /**
      * Constructor with mode preview choise parameter
      *
      * @param bool $preview
      */
-    public function __construct($preview = false)
+    public function __construct(bool $preview = null)
     {
-        $this->preview = $preview;
+        $this->preview = (bool) $preview;
         $this->messages = new Messages();
     }
 
@@ -93,7 +94,7 @@ class ViewFilterMacros extends AbstractView
      * @param array $args Params about the current node
      * @return string file name with the transformed content
      */
-    public function transform(int $idVersion = null, string $pointer = null, array $args = null)
+    public function transform(int $idVersion = null, string $content = null, array $args = null)
     {
         // Check the conditions
         if (! $this->initializeParams($args, $idVersion)) {
@@ -101,10 +102,7 @@ class ViewFilterMacros extends AbstractView
         }
 
         // Get the content
-        $content = $this->transformFromPointer($pointer);
-
-        // Return the pointer to the transformed content
-        return self::storeTmpContent($content);
+        return $this->transformFromContent($content);
     }
 
     /**
@@ -114,33 +112,33 @@ class ViewFilterMacros extends AbstractView
      * @param int $idVersion
      * @return boolean True if everything is allright
      */
-    private function initializeParams($args, $idVersion)
+    private function initializeParams(array $args, int $idVersion = null) : bool
     {
         if ($this->preview) {
             $this->mode = (isset($args['MODE']) && $args['MODE'] == 'dinamic') ? 'dinamic' : 'static';
-            if (!$this->_setIdSection($args)) {
-                return null;
+            if (! $this->_setIdSection($args)) {
+                return false;
             }
         }
-        if (!$this->_setNode($idVersion, $args)) {
+        if (! $this->_setNode($idVersion, $args)) {
             return false;
         }
-        if (!$this->_setIdChannel($args)) {
+        if (! $this->_setIdChannel($args)) {
             return false;
         }
-        if (!$this->_setServer($args)) {
+        if (! $this->_setServer($args)) {
             return false;
         }
-        if (!$this->_setServerNode($args)) {
+        if ( !$this->_setServerNode($args)) {
             return false;
         }
-        if (!$this->_setProjectNode($args)) {
+        if (! $this->_setProjectNode($args)) {
             return false;
         }
-        if (!$this->_setDepth($args)) {
+        if (! $this->_setDepth($args)) {
             return false;
         }
-        if (!$this->_setNodeName($args)) {
+        if (! $this->_setNodeName($args)) {
             return false;
         }
         return true;
@@ -153,22 +151,22 @@ class ViewFilterMacros extends AbstractView
      * @param array $args
      * @return boolean True if exists node for selected version or the current node
      */
-    private function _setNode($idVersion = null, $args = null)
+    private function _setNode(int $idVersion = null, array $args = null) : bool
     {
         if (isset($args['NODEID']) and $args['NODEID']) {
             $this->_node = new Node($args['NODEID']);
-            if (!$this->_node->GetID()) {
+            if (! $this->_node->GetID()) {
                 Logger::error('VIEW FILTERMACROS: The node you are trying to convert does not exist: ' . $args['NODEID']);
                 return false;
             }
-        } elseif (!is_null($idVersion)) {
+        } elseif (! is_null($idVersion)) {
             $version = new Version($idVersion);
             if (! $version->get('IdVersion')) {
                 Logger::error('VIEW FILTERMACROS: An incorrect version has been loaded (' . $idVersion . ')');
                 return false;
             }
             $this->_node = new Node($version->get('IdNode'));
-            if (!$this->_node->GetID()) {
+            if (! $this->_node->GetID()) {
                 Logger::error('VIEW FILTERMACROS: The node you are trying to convert does not exist: ' . $version->get('IdNode'));
                 return false;
             }
@@ -184,7 +182,7 @@ class ViewFilterMacros extends AbstractView
      * @param array $args
      * @return boolean true if exists channel
      */
-    private function _setIdChannel($args = array())
+    private function _setIdChannel(array $args = array()) : bool
     {
         if (array_key_exists('CHANNEL', $args)) {
             $this->_idChannel = $args['CHANNEL'];
@@ -211,11 +209,11 @@ class ViewFilterMacros extends AbstractView
      * @param array $args 
      * @return boolean true if exists the server in args
      */
-    private function _setServer($args = array())
+    private function _setServer(array $args = array()) : bool
     {
         if (array_key_exists('SERVER', $args)) {
             $this->_server = new Server($args['SERVER']);
-            if (!$this->_server->get('IdServer')) {
+            if (! $this->_server->get('IdServer')) {
                 Logger::error('VIEW FILTERMACROS: Server where you want to render the node not specified ');
                 return false;
             }
@@ -230,7 +228,7 @@ class ViewFilterMacros extends AbstractView
      * @param array $args Transformation args
      * @return boolean True if exists the server node
      */
-    private function _setServerNode($args = array())
+    private function _setServerNode(array $args = array()) : bool
     {
         if ($this->_node) {
             $this->_serverNode = new Node($this->_node->getServer());
@@ -239,7 +237,7 @@ class ViewFilterMacros extends AbstractView
         }
 
         // Check Params
-        if (!$this->_serverNode || !is_object($this->_serverNode)) {
+        if (! $this->_serverNode || !is_object($this->_serverNode)) {
             Logger::error('VIEW FILTERMACROS: There is no server linked to the node ' . $args['NODENAME'] . ' you want to render');
             return false;
         }
@@ -252,7 +250,7 @@ class ViewFilterMacros extends AbstractView
      * @param array $args Transformation args
      * @return boolean true if exists the project node
      */
-    private function _setProjectNode($args = array())
+    private function _setProjectNode(array $args = array()) : bool
     {
         if ($this->_node) {
             $this->_projectNode = $this->_node->getProject();
@@ -261,7 +259,7 @@ class ViewFilterMacros extends AbstractView
         }
 
         // Check Params
-        if (!isset($this->_projectNode) || !$this->_projectNode) {
+        if (! isset($this->_projectNode) || !$this->_projectNode) {
             Logger::error('VIEW FILTERMACROS: There is not associated project for the node ' . $args['NODENAME']);
             return false;
         }
@@ -274,7 +272,7 @@ class ViewFilterMacros extends AbstractView
      * @param array $args Transformation args
      * @return boolean true if exits depth form the current node
      */
-    private function _setDepth($args = array())
+    private function _setDepth(array $args = array()) : bool
     {
         if ($this->_node) {
             $this->_depth = $this->_node->GetPublishedDepth();
@@ -283,7 +281,7 @@ class ViewFilterMacros extends AbstractView
         }
 
         // Check Param
-        if (!isset($this->_depth) || !$this->_depth) {
+        if (! isset($this->_depth) || !$this->_depth) {
             Logger::error('VIEW FILTERMACROS: No depth has been specified for the node ' . $args['NODENAME'] . ' you want to render');
             return false;
         }
@@ -296,7 +294,7 @@ class ViewFilterMacros extends AbstractView
      * @param array $args Transformation args
      * @return boolean true if exists name for the current node
      */
-    private function _setNodeName($args = array())
+    private function _setNodeName(array $args = array()): bool
     {
         if ($this->_node) {
             $this->_nodeName = $this->_node->get('Name');
@@ -305,7 +303,7 @@ class ViewFilterMacros extends AbstractView
         }
 
         // Check Param
-        if (!isset($this->_nodeName) || !$this->_nodeName) {
+        if (! isset($this->_nodeName) || !$this->_nodeName) {
             Logger::error('VIEW FILTERMACROS: No se ha especificado el nombre del nodo que quiere renderizar');
             return false;
         }
@@ -318,29 +316,22 @@ class ViewFilterMacros extends AbstractView
      * @param array $args Transformation args
      * @return boolean True if exits the section
      */
-    private function _setIdSection($args = array())
+    private function _setIdSection(array $args = array()) : bool
     {
         if (array_key_exists('SECTION', $args)) {
             $this->_idSection = $args['SECTION'];
         }
         
         // Check Params
-        if (!isset($this->_idSection) || !$this->_idSection) {
+        if (! isset($this->_idSection) || !$this->_idSection) {
             Logger::error('VIEW FILTERMACROSPREVIEW: Node section not specified: ' . $args['NODENAME']);
             return false;
         }
         return true;
     }
 
-    /**
-     * @param $pointer
-     * @return mixed
-     */
-    private function transformFromPointer($pointer)
+    private function transformFromContent(string $content) : string
     {
-        // Get the content
-        $content = self::retrieveContent($pointer);
-
         /**
          * Available macros:
          * * servername
@@ -405,7 +396,7 @@ class ViewFilterMacros extends AbstractView
      * @param array $matches Array containing the matches of the regular expression
      * @return string String to be used to replace the matching of the regular expression
      */
-    private function removeUIDs($matches)
+    private function removeUIDs(array $matches) : string
     {
         return str_replace(" >", ">", $matches[1] . $matches[3]);
     }
@@ -414,12 +405,12 @@ class ViewFilterMacros extends AbstractView
      * Get the section node of the $idNode
      *
      * @param int $idNode descendant of the searched Section.
-     * @return Node The section node.
+     * @return Node The section node or false on error
      */
-    private function getSectionNode($idNode)
+    private function getSectionNode(int $idNode)
     {
         $node = new Node($idNode);
-        if (!($node->get('IdNode') > 0)) {
+        if (! $node->get('IdNode')) {
             return false;
         }
         $idSection = $node->GetSection();
@@ -436,13 +427,14 @@ class ViewFilterMacros extends AbstractView
      * Get section path for a selected idnode and channel in matches
      *
      * @param array $matches An idnode and an optional idchannel
+     * @param boolean $abs
      * @return string Link url
      */
-    private function getSectionPath($matches, $abs = false)
+    private function getSectionPath(array $matches, bool $abs = false) : string
     {
         $target = $matches[1];
         $section = $this->getSectionNode($target);
-        if (!$section) {
+        if (! $section) {
             Logger::warning('Linking to 404 EmptyHrefCode');
             return App::getValue('EmptyHrefCode');
         }
@@ -456,8 +448,7 @@ class ViewFilterMacros extends AbstractView
             $idTargetChannel = null;
             $idTargetServer = $sync->getServer($target, $idTargetChannel, $this->_server->get('IdServer'));
         }
-        if ($this->preview or (!$abs && !$this->_server->get('OverrideLocalPaths') 
-            && ($idTargetServer == $this->_serverNode->get('IdNode')))) {
+        if ($this->preview or (!$abs && !$this->_server->get('OverrideLocalPaths') && ($idTargetServer == $this->_serverNode->get('IdNode')))) {
             $dotdot = str_repeat('../', $this->_depth - 2);
             return $dotdot . $section->GetPublishedPath($idTargetChannel, true);
         }
@@ -465,16 +456,12 @@ class ViewFilterMacros extends AbstractView
         return $targetServer->get('Url') . $section->GetPublishedPath($idTargetChannel, true);
     }
 
-    /**
-     * @param $matches
-     * @return string
-     */
-    private function getdotdotpath($matches)
+    private function getdotdotpath(array $matches) : bool
     {
         $targetPath = $matches[1];
         if ($this->preview) {
             $targetPath .= '?token=' . uniqid();
-        } elseif (!($this->_serverNode->get('IdNode') > 0)) {
+        } elseif (! $this->_serverNode->get('IdNode')) {
             Logger::warning('Linking to 404 EmptyHrefCode');
             return App::getValue("EmptyHrefCode");
         }
@@ -495,8 +482,7 @@ class ViewFilterMacros extends AbstractView
                 if ($this->_server->get('OverrideLocalPaths')) {
                     return $this->_server->get('Url') . '/' . $targetPath;
                 }
-                if (App::getValue('PublishPathFormat') !== null && $this->_node->class 
-                    && method_exists($this->_node->class, 'getPathToDeep')) {
+                if (App::getValue('PublishPathFormat') !== null && $this->_node->class && method_exists($this->_node->class, 'getPathToDeep')) {
                     $deep = $this->_node->class->getPathToDeep();
                 }
                 $sectionPath = '';
@@ -506,19 +492,14 @@ class ViewFilterMacros extends AbstractView
         }
     }
 
-    /**
-     * @param $matches
-     * @param bool $forceAbsolute
-     * @return bool|string
-     */
-    private function getLinkPath($matches, $forceAbsolute = false)
+    private function getLinkPath(array $matches, bool $forceAbsolute = false)
     {
         // Get parentesis content
         $pathToParams = $matches[1];
 
         // Link target-node
         $parserPathTo = new ParsingPathTo();
-        if (!$parserPathTo->parsePathTo($pathToParams, $this->_node->GetID(), null, $this->_idChannel)) {
+        if (! $parserPathTo->parsePathTo($pathToParams, $this->_node->GetID(), null, $this->_idChannel)) {
             if ($parserPathTo->messages()->messages) {
                 foreach ($parserPathTo->messages()->messages as $error) {
                     Logger::warning($error['message']);
@@ -543,10 +524,10 @@ class ViewFilterMacros extends AbstractView
         $res["pathMethod"] = $parserPathTo->getPathMethod();
         $res["channel"] = $parserPathTo->getChannel();
         $idNode = $targetNode->GetID();
-        if (!$this->preview and $targetNode->GetNodeType() != NodeTypeConstants::LINK) {
+        if (! $this->preview and $targetNode->GetNodeType() != NodeTypeConstants::LINK) {
             $nodeFrameManager = new NodeFrameManager();
             $nodeFrame = $nodeFrameManager->getNodeFramesInTime($idNode, null, time());
-            if (!isset($nodeFrame)) {
+            if (! isset($nodeFrame)) {
                 return '';
             }
         }
@@ -563,7 +544,7 @@ class ViewFilterMacros extends AbstractView
             $idTargetChannel = null;
         }
         $isStructuredDocument = $targetNode->nodeType->GetIsStructuredDocument();
-        if (!$this->preview and $isStructuredDocument) {
+        if (! $this->preview and $isStructuredDocument) {
             $targetChannelNode = new Channel($idTargetChannel);
             $idTargetChannel = ($targetChannelNode->get('IdChannel') > 0) ? $targetChannelNode->get('IdChannel') : $this->_idChannel;
         }
@@ -618,7 +599,7 @@ class ViewFilterMacros extends AbstractView
             $sync = new SynchroFacade();
             $idTargetServer = $sync->getServer($targetNode->get('IdNode'), $idTargetChannel, $this->_server->get('IdServer'));
         }
-        $targetServer = new server($idTargetServer);
+        $targetServer = new Server($idTargetServer);
         if (! $targetServer->get('IdServer')) {
             Logger::warning('Linking to 404 EmptyHrefCode');
             return App::getValue('EmptyHrefCode');
@@ -640,11 +621,7 @@ class ViewFilterMacros extends AbstractView
         return $src;
     }
 
-    /**
-     * @param $matches
-     * @return string
-     */
-    private function getBreadCrumb($matches)
+    private function getBreadCrumb(array $matches) : string
     {
         $id = $matches[1];
         if ($id === 'THIS') {
@@ -667,28 +644,19 @@ class ViewFilterMacros extends AbstractView
         return $breadcrumb;
     }
     
-    /**
-     * @param $matches
-     * @return string
-     */
-    private function getLinkPathAbs($matches)
+    private function getLinkPathAbs(array $matches)
     {
         return $this->getLinkPath($matches, true);
     }
-    
-    /**
-     * @param $targetNode
-     * @param $idTargetChannel
-     * @return mixed
-     */
-    private function getRelativePathWithDotdot(Node $targetNode, $idTargetChannel)
+
+    private function getRelativePathWithDotdot(Node $targetNode, int $idTargetChannel) : string
     {
         $deep = 2;
-        if (!$this->preview and App::getValue("PublishPathFormat") == App::PREFIX) {
+        if (! $this->preview and App::getValue("PublishPathFormat") == App::PREFIX) {
             if ($this->_node->nodeType->GetIsStructuredDocument()) {
                 
                 // Language for the original document
-                if (!$this->originHasLangPath or $this->originNodeID != $this->_node->GetID()) {
+                if (! $this->originHasLangPath or $this->originNodeID != $this->_node->GetID()) {
                     $this->originHasLangPath = $this->_node->hasLangPath();
                     $this->originNodeID = $this->_node->GetID();
                 }
@@ -704,7 +672,7 @@ class ViewFilterMacros extends AbstractView
             }
             
             // If the origin and target document has language in their paths, or only the origin: deep is only a level
-            if (($this->originHasLangPath and $targetHasLangPath) or ($this->originHasLangPath and !$targetHasLangPath)) {
+            if (($this->originHasLangPath and $targetHasLangPath) or ($this->originHasLangPath and ! $targetHasLangPath)) {
                 $deep = 1;
             }
         }
@@ -736,21 +704,11 @@ class ViewFilterMacros extends AbstractView
         return $path . $targetNode->GetPublishedPath($idTargetChannel, true);
     }
 
-    /**
-     * @param $targetNode
-     * @param $targetServer
-     * @param $idTargetChannel
-     * @return string
-     */
-    private function getAbsolutePath($targetNode, $targetServer, $idTargetChannel)
+    private function getAbsolutePath(Node $targetNode, Server $targetServer, int $idTargetChannel = null) : string
     {
         return $targetServer->get('Url') . $targetNode->GetPublishedPath($idTargetChannel, true);
     }
-    
-    /**
-     * @param array $matches
-     * @return bool|string
-     */
+
     private function getInclude(array $matches)
     {
         // Get parentesis content
@@ -760,22 +718,22 @@ class ViewFilterMacros extends AbstractView
             return false;
         }
         $targetNode = new Node($nodeId);
-        if (!$targetNode->GetID()) {
+        if (! $targetNode->GetID()) {
             Logger::error('Could not load a node with ID ' . $nodeId);
             return false;
         }
         $targetServer = new server($this->_server->get('IdServer'));
-        if (!$targetServer->get('IdServer')) {
+        if (! $targetServer->get('IdServer')) {
             Logger::error('Cannot include the file in unknown server with node ID: ' . $nodeId);
             return false;
         }
         
         // Get the channel for the include link if it is not published in the origin document
         $idChannel = $this->_idChannel;
-        if (!$targetNode->nodeType->GetIsFolder()) {
+        if (! $targetNode->nodeType->GetIsFolder()) {
             $targetFrame = new ServerFrame();
             $frameID = $targetFrame->getCurrent($targetNode->GetID(), $idChannel, $targetServer->get('IdServer'));
-            if (!$frameID) {
+            if (! $frameID) {
                 
                 // Not published in the current channel
                 $frames = $targetFrame->getFramesOnDate($targetNode->GetID(), time(), $targetServer->get('IdServer'));

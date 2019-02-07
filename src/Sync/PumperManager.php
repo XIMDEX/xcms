@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -47,7 +47,7 @@ class PumperManager
      * @param string modo
      * @return bool
      */
-    public function checkAllPumpers($pumpersWithTasks, $modo = "pl")
+    public function checkAllPumpers(array $pumpersWithTasks = null, string $modo = 'pl') : bool
     {
         if (is_null($pumpersWithTasks) || count($pumpersWithTasks) == 0) {
             $pumper = new Pumper();

@@ -46,7 +46,7 @@ class User extends UsersOrm
     public $msgErr;    // Error message
     public $errorList; // Error list
 
-    function __construct($params = NULL)
+    public function __construct(int $id = null)
     {
         $this->errorList[1] = _('User does not exist');
         $this->errorList[2] = _('An user with this login already exists');
@@ -55,7 +55,7 @@ class User extends UsersOrm
         $this->errorList[5] = _('Database connection error');
         $this->errorList[6] = _('Error in associated object');
         $this->errorList[7] = _('Role for group missing');
-        parent::__construct($params);
+        parent::__construct($id);
     }
 
     // Class constructor function. If a param is received, $idUser is initialized.

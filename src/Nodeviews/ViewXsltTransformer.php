@@ -1,6 +1,7 @@
 <?php
+
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -30,8 +31,12 @@ use Ximdex\Logger;
 use Ximdex\Runtime\App;
 
 class ViewXsltTransformer extends AbstractView implements IView
-{	
-    public function transform(int $idVersion = null, string $pointer = null, array $args = null)
+{
+    /**
+     * {@inheritDoc}
+     * @see \Ximdex\Nodeviews\AbstractView::transform()
+     */
+    public function transform(int $idVersion = null, string $content = null, array $args = null)
     {
 		$xsltFile = '';	
 		if (array_key_exists('XSLT', $args)) {
@@ -39,17 +44,20 @@ class ViewXsltTransformer extends AbstractView implements IView
 		}
 		if (! is_file(XIMDEX_ROOT_PATH . $xsltFile)) {
 			Logger::error('No se ha encontrado la xslt solicitada ' . $xsltFile);
-			return $pointer;
+			return $content;
 		}
 		$xsltTransformer = new \Ximdex\XML\XSLT();
-		$xsltTransformer->setXML($pointer);
+		$xsltTransformer->setXMLContent($content);
 		$xsltTransformer->setXSL(XIMDEX_ROOT_PATH . $xsltFile);
 		$transformedContent = $xsltTransformer->process();
+		if ($transformedContent === false) {
+		    return false;
+		}
 		$transformedContent = $this->fixDocumentEncoding($transformedContent);
-		return self::storeTmpContent($transformedContent);
+		return $transformedContent;
 	}
 	
-	private function fixDocumentEncoding(string $content)
+	private function fixDocumentEncoding(string $content) : string
 	{	
 		$doc = new \DOMDocument();
 		$doc->formatOutput = true;

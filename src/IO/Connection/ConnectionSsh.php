@@ -307,7 +307,7 @@ class ConnectionSsh extends Connector implements IConnector
             Logger::error('Cannot obtain the files count in order to know is a folder is empty: ' . $path);
             return false;
         }
-        return ($content - 2) == 0;
+        return ((int) $content -  2) == 0;
     }
     
     private function _mkdir(string $dir, int $mode) : bool

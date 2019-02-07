@@ -35,11 +35,6 @@ use Ximdex\Models\ORM\NodeSetsOrm;
 
 class NodeSets extends NodeSetsOrm
 {
-    public function __construct($id = null)
-    {
-        parent::__construct($id);
-    }
-
     /**
      * Returns the set id
      */

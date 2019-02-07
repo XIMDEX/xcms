@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -35,7 +35,7 @@ class Mutex
 
 	public function __construct(string $file_name = null)
 	{
-		if (!is_null($file_name)) {
+		if (! is_null($file_name)) {
 		    $this->file_name = $file_name;
 		}
 	}
@@ -59,7 +59,7 @@ class Mutex
 		if (is_file($this->file_name)) {
 			$old_pid = file_get_contents($this->file_name);
 		}
-		if (!empty($old_pid) && posix_kill(trim($old_pid), 0)) {
+		if (! empty($old_pid) && posix_kill(trim($old_pid), 0)) {
 		    
 			// Old process is alive
 			$this->is_acquired = false;
@@ -82,7 +82,7 @@ class Mutex
 
 	public function release() : bool
 	{
-		if (!$this->is_acquired) {
+		if (! $this->is_acquired) {
 			return true;
 		}
 		if (($this->file_ptr = fopen($this->file_name, 'w+')) == false) {

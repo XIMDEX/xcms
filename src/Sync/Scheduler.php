@@ -45,7 +45,7 @@ include_once XIMDEX_ROOT_PATH . '/src/Sync/conf/synchro_conf.php';
 
 class Scheduler
 {
-    public static function start($global_execution = true)
+    public static function start(bool $global_execution = true)
     {
         global $argv;
         $synchro_pid = posix_getpid();

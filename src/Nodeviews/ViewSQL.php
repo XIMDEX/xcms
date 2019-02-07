@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -34,30 +34,33 @@ use Ximdex\Models\StructuredDocument;
 use Ximdex\Models\Version;
 
 class ViewSQL extends AbstractView
-{    
-    public function transform(int $idVersion = null, string $pointer = null, array $args = null)
+{
+    /**
+     * {@inheritDoc}
+     * @see \Ximdex\Nodeviews\AbstractView::transform()
+     */
+    public function transform(int $idVersion = null, string $content = null, array $args = null)
     {
-        $content = self::retrieveContent($pointer);
 		$version = new Version($idVersion);
 		if (! $version->get('IdVersion')) {
 			Logger::error("Se ha cargado una versión incorrecta ($idVersion)");
-			return null;
+			return false;
 		}
 		$node = new Node($version->get('IdNode'));
 		if (! $node->get('IdNode')) {
 			Logger::error("El nodo que se está intentando convertir no existe: " . $version->get('IdNode'));
-			return null;
+			return false;
 		}
 		$content = $content . '<sql_content>' . $this->getSQLContent($node->get('IdNode'), $args) . '</sql_content>';
-		return self::storeTmpContent($content);
+		return $content;
 	}
 
-	private function getSQLContent($nodeId, $args)
+	private function getSQLContent(int $nodeId, array $args = null) : string
 	{
 		$node = new Node($nodeId);
 		$nodeType = new NodeType($node->get('IdNodeType'));
 		$nodeTypeName = $nodeType->get('Name');
-		$sql='';
+		$sql = '';
 		switch($nodeTypeName) {
 			case 'XmlDocument':
 				$st = new StructuredDocument($nodeId);
@@ -67,17 +70,17 @@ class ViewSQL extends AbstractView
 				$s = "select n.IdNode,n.Name n.IdParent from FastTraverse as f inner join Nodes as n on f.IdNode = n.IdNode";
 				$s .= " where f.IdChild = $nodeId and n.IdNodeType = " . \Ximdex\NodeTypes\NodeTypeConstants::SECTION;
 				$result = $node->query($s);
-				if (!is_null($result)){
+				if (! is_null($result)){
 					$idSection = $result[0]['IdNode'];
 					$idParent  = $result[0]['IdParent'];
 					$name = $result[0]['Name'];
-
 					$sql = "insert into Sections values ($idSection, $idParent, $name);";
 					$sql .= "insert into XimDocs values ($nodeId, $idSection, '".$node->get('Name')."',$lang);";
 				}
 				break;
 			default:
-				//Do nothing 
+			    
+				// Do nothing 
 				break;
 		}
 		return $sql;
@@ -90,11 +93,11 @@ class ViewSQL extends AbstractView
 	 * @param int $idNode
 	 * @return boolean
 	 */
-	private function checkBooleanProperty($nodeProperty, $idNode)
+	private function checkBooleanProperty(string $nodeProperty, int $idNode) : bool
 	{
-		$n = new Node($idNode);
-		$isProperty = $n->getProperty($nodeProperty);
-		if (!((is_array($isProperty)) && ($isProperty[0]=="true"))) {
+		$node = new Node($idNode);
+		$isProperty = $node->getProperty($nodeProperty);
+		if (! (is_array($isProperty) && $isProperty[0] == "true")) {
 			$isProperty = false;
 		} else {
 			$isProperty = true;
@@ -102,14 +105,14 @@ class ViewSQL extends AbstractView
 		return $isProperty;
 	}
 
-	public function makeInsertQuery($tableName, $condition, $params)
+	public function makeInsertQuery(string $tableName, string $condition = null, array $params = []) : string
 	{
 		$insertQuery = '';
 		$factory = new \Ximdex\Utils\Factory(XIMDEX_ROOT_PATH . "/src/Models/", $tableName);
 		$object = $factory->instantiate(null, null, '\Ximdex\Models');
 		if (! is_object($object)) {
 			Logger::error("Error, la clase de orm especificada no existe");
-			return NULL;
+			return null;
 		}
 		$result = $object->find(ALL, $condition, $params, MULTI);
 		if ($result != null){
@@ -117,7 +120,7 @@ class ViewSQL extends AbstractView
 			foreach ($result as $data) {
 				$object->loadFromArray($data);
 				$query = $object->add();
-				$insertQuery .= $query.";";
+				$insertQuery .= $query . ";";
 			}
 		}
 		return $insertQuery;

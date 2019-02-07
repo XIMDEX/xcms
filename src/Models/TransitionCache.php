@@ -30,6 +30,7 @@ namespace Ximdex\Models;
 use Ximdex\Data\GenericData;
 use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
+use Ximdex\Runtime\DataFactory;
 
 // Path to store the cache files
 if (! defined('XIMDEX_CACHE_PATH')) {
@@ -60,6 +61,15 @@ class TransitionCache extends GenericData
             throw new \Exception('Cannot get a cache for transition: ' . $transitionId . ' and version: ' . $versionId);
         }
         if (! $id) {
+            
+            // If the version is a published one (ex. 5.0), will search the previous cache saved (PREV.MAX)
+            $version = new Version($versionId);
+            if ($version->get('SubVersion') == 0 and $version->get('Version') > 0) {
+                $data = new DataFactory($version->get('IdNode'));
+                if ($id = $data->getPreviousVersion($versionId)) {
+                    return $this->load($id, $transitionId);
+                }
+            }
             return null;
         }
         $id = (int) $id[0];
@@ -73,7 +83,7 @@ class TransitionCache extends GenericData
         return $id;
     }
     
-    public function store(int $versionId, int $transitionId, string $contentFile)
+    public function store(int $versionId, int $transitionId, string $content)
     {
         $transition = new Transition($transitionId);
         if (! $transition->get('id')) {
@@ -83,8 +93,8 @@ class TransitionCache extends GenericData
             throw new \Exception('No cache will be stored for not cacheable transition: ' . $transitionId);
         }
         $file = FsUtils::getUniqueFile(XIMDEX_CACHE_PATH);
-        if (! FsUtils::copy($contentFile, XIMDEX_CACHE_PATH . '/' . $file)) {
-            throw new \Exception('An error has ocurred while storing the cache file from ' . $contentFile);
+        if (! FsUtils::file_put_contents(XIMDEX_CACHE_PATH . '/' . $file, $content)) {
+            throw new \Exception('An error has ocurred while storing the cache file');
         }
         $this->versionId = $versionId;
         $this->transitionId = $transitionId;
@@ -112,7 +122,10 @@ class TransitionCache extends GenericData
         if (! $this->get('id')) {
             return false;
         }
-        FsUtils::delete(XIMDEX_CACHE_PATH . '/' . $this->get('file'));
+        $file = XIMDEX_CACHE_PATH . '/' . $this->get('file');
+        if (FsUtils::file_exists($file)) {
+            FsUtils::delete($file);
+        }
         return parent::delete();
     }
 }

@@ -342,12 +342,11 @@ class ParsingDependencies
                 // Transforming with the given content and no cache
                 $data['CHANNEL'] = $idChannel;
                 try {
-                    $file = $transition->process($process, $data, $idVersion);
+                    $postContent = $transition->process($process, $data, $idVersion);
                 } catch (\Exception $e) {
                     Logger::error($e->getMessage());
                     return false;
                 }
-                $postContent = FsUtils::file_get_contents($file);
 
                 // Post-transformation dependencies
                 $pathToByChannel[$idChannel] = self::getPathTo($postContent, $idNode);

@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -46,20 +46,24 @@ class ViewCommon extends AbstractView
     const DOCXIF = 'docxif';
     private $_filePath;
 
-    public function transform(int $idVersion = null, string $pointer = null, array $args = null)
+    /**
+     * {@inheritDoc}
+     * @see \Ximdex\Nodeviews\AbstractView::transform()
+     */
+    public function transform(int $idVersion = null, string $content = null, array $args = null)
     {
-        if (parent::transform($idVersion, $pointer, $args) === null) {
+        if (parent::transform($idVersion, $content, $args) === false) {
             return false;
         }
         if (! $this->_setFilePath($idVersion, $args)) {
-            return null;
+            return false;
         }
         if (! is_file($this->_filePath)) {
             Logger::error('VIEW COMMON: Se ha solicitado cargar un archivo inexistente. FilePath: ' . $this->_filePath);
-            return null;
+            return false;
         }
-        if (! (isset($args['CHANNEL']) and $args['CHANNEL'] && isset($args['NODEID'])) && !array_key_exists('REPLACEMACROS', $args)) {
-            return $pointer;
+        if (! (isset($args['CHANNEL']) and $args['CHANNEL'] && isset($args['NODEID'])) && ! array_key_exists('REPLACEMACROS', $args)) {
+            return $content;
         }
         $content = self::retrieveContent($this->_filePath);
         
@@ -83,10 +87,10 @@ class ViewCommon extends AbstractView
                 }
             }
         }
-        return self::storeTmpContent($content);
+        return $content;
     }
 
-    private function _setFilePath($idVersion = NULL, $args = array())
+    private function _setFilePath(int $idVersion = null, $args = array())
     {
         if (! is_null($idVersion)) {
             $version = new Version($idVersion);
@@ -103,7 +107,7 @@ class ViewCommon extends AbstractView
             if (! isset($this->_filePath) || $this->_filePath == "") {
                 Logger::error('VIEW COMMON: No se ha especificado la version ni el path del fichero correspondiente al nodo ' 
                     . $args['NODENAME'] . ' que quiere renderizar');
-                return null;
+                return false;
             }
         }
         return true;
@@ -169,7 +173,7 @@ class ViewCommon extends AbstractView
         return $info;
     }
 
-    private static function getTags($nodeId)
+    private static function getTags(int $nodeId)
     {
         $relSemanticTagsNodes = new RelSemanticTagsNodes();
         return $relSemanticTagsNodes->getTags($nodeId) ?? [];
@@ -182,7 +186,7 @@ class ViewCommon extends AbstractView
      * @param bool $include
      * @return string
      */
-    private static function getAbsolutePath($targetNode, $targetServer, $idTargetChannel)
+    private static function getAbsolutePath(Node $targetNode, Node $targetServer, int $idTargetChannel)
     {
         return $targetServer->get('Url') . $targetNode->GetPublishedPath($idTargetChannel, true);
     }

@@ -32,21 +32,6 @@ use Ximdex\Models\ORM\SemanticTagsOrm;
 
 class SemanticTags extends SemanticTagsOrm
 {
-	public function __construct($_tag = null)
-	{
-		parent::__construct();
-		if (null != $_tag) {
-			$tag = $this->getTag($_tag);
-			if (!empty($tag) ) {
-				$this->set('Name', $tag["Name"]);
-				$this->set('IdTag', $tag["IdTag"]);
-				$this->set('Total', $tag["Total"]);
-			} else {
-				$this->set('Name', $_tag);
-			}
-		}
-	}
-
 	/**
 	 * Return suggested Tags
 	 * Join to RelSemanticTagsDescriptions to return the "Link" field

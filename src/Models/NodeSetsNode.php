@@ -31,11 +31,6 @@ use Ximdex\Models\ORM\RelNodeSetsNodeOrm;
 
 class RelNodeSetsNode extends RelNodeSetsNodeOrm
 {
-    public function __construct($id = null)
-    {
-        parent::__construct($id);
-    }
-
     /**
      * Returns the rel id
      */

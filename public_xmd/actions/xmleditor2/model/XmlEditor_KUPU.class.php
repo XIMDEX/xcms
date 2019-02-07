@@ -499,13 +499,12 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
         $args['CALLER'] = 'xEDIT';
         $transition = new Transition();
         try {
-            $file = $transition->process('FromXeditToPreFilter', $args, $lastVersion);
+            $res = $transition->process('FromXeditToPreFilter', $args, $lastVersion);
         } catch (Exception $e) {
             Logger::error($e->getMessage());
             return false;
         }
-        $content = FsUtils::file_get_contents($file);
-        return $content;
+        return $res;
     }
 
     public function getSpellCheckingFile($idNode, $content)

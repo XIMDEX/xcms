@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -41,9 +41,9 @@ class ViewPrepareHTML extends AbstractView
      * {@inheritdoc}
      * @see \Ximdex\Nodeviews\AbstractView::transform()
      */
-    public function transform(int $idVersion = null, string $pointer = null, array $args = null)
+    public function transform(int $idVersion = null, string $content = null, array $args = null)
     {
-        if (parent::transform($idVersion, $pointer, $args) === null) {
+        if (parent::transform($idVersion, $content, $args) === false) {
             return false;
         }
         
@@ -57,11 +57,7 @@ class ViewPrepareHTML extends AbstractView
         } else {
             $mode = HTMLDocumentNode::MODE_STATIC;
         }
-
-        // Get the content
-        $content = self::retrieveContent($pointer);
-        $document = ($content !== false) ? HTMLDocumentNode::renderHTMLDocument($this->node->GetID(), $content
-            , $this->channel->GetID(), $mode) : false;
+        $document = HTMLDocumentNode::renderHTMLDocument($this->node->GetID(), $content, $this->channel->GetID(), $mode);
 
         // Process macros
         if ($document !== false) {
@@ -71,15 +67,9 @@ class ViewPrepareHTML extends AbstractView
             ), $document);
             $document = str_replace('<ximeol>', PHP_EOL, $document);
         }
-
-        // Return the pointer to the transformed content
-        return self::storeTmpContent($document);
+        return $document;
     }
 
-    /**
-     * @param array $matches
-     * @return string
-     */
     private function getCodeTranslation(array $matches): string
     {
         if (! $this->channel) {

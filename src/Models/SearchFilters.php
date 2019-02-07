@@ -32,11 +32,6 @@ use Ximdex\Models\ORM\SearchFiltersOrm;
 
 class SearchFilters extends SearchFiltersOrm
 {
-    public function __construct($id = null)
-    {
-        parent::__construct($id);
-    }
-
     /**
      * Returns the filter id
      */

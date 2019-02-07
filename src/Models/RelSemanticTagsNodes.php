@@ -79,14 +79,13 @@ class RelSemanticTagsNodes extends RelSemanticTagsNodesOrm
 	{
 		if (-1 != $_tag) {
 			$tag = new SemanticTags($_tag);
-			$_id_tag = (int)$tag->get('IdTag');
+			$_id_tag = (int) $tag->get('IdTag');
 			$idtag = sprintf(" AND Tag = '%s'", $_id_tag);
-		}
-		else {
+		} else {
 		    $idtag = '';
 		}
 		$rel = $this->find(ALL, "Node = '{$_idNode}' $idtag");
-		if (!empty($rel)) {
+		if (! empty($rel)) {
 			return $rel;
 		}
         return null;
@@ -180,7 +179,7 @@ class RelSemanticTagsNodes extends RelSemanticTagsNodesOrm
 		
 		// Remove tag or update the count field
 	    $semanticTag = new SemanticTags($_id_tag);
-		if (!$semanticTag->remove()) {
+		if (! $semanticTag->remove()) {
 		    Logger::error('Cannot remove the semantic tag with ID: ' . $_id_tag);
 		    return false;
 		}

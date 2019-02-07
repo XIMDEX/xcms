@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -45,32 +45,35 @@ class ViewNodeToRenderizedContent extends AbstractView
     private $_linkedXimlets = "";
     private $_content = "";
 
-    public function transform(int $idVersion = null, string $pointer = null, array $args = null)
+    /**
+     * {@inheritDoc}
+     * @see \Ximdex\Nodeviews\AbstractView::transform()
+     */
+    public function transform(int $idVersion = null, string $content = null, array $args = null)
     {
-        $content = self::retrieveContent($pointer);
         if (! $this->_setNode($idVersion)) {
-            return null;
+            return false;
         }
         if (! $this->_setStructuredDocument($idVersion)) {
-            return null;
+            return false;
         }
         if (! $this->_setIdChannel($args)) {
-            return null;
+            return false;
         }
         if (! $this->_setIdLanguage($args)) {
-            return null;
+            return false;
         }
         if (! $this->_setDocxapHeader($args)) {
-            return null;
+            return false;
         }
         if (! $this->_setIdSection($args)) {
-            return null;
+            return false;
         }
         if (! $this->_setLinkedXimlets($args)) {
-            return null;
+            return false;
         }
         if (! $this->_setContent($content)) {
-            return null;
+            return false;
         }
         $doctypeTag = App::getValue("DoctypeTag");
         $encodingTag = App::getValue("EncodingTag");
@@ -86,10 +89,10 @@ class ViewNodeToRenderizedContent extends AbstractView
         }
         $transformedContent .= $this->_content . "\n";
         $transformedContent .= "</docxap>\n";
-        return self::storeTmpContent($transformedContent);
+        return $transformedContent;
     }
 
-    private function _setNode($idVersion = null)
+    private function _setNode(int $idVersion = null) : bool
     {
         if (! is_null($idVersion)) {
             $version = new Version($idVersion);
@@ -106,7 +109,7 @@ class ViewNodeToRenderizedContent extends AbstractView
         return true;
     }
 
-    private function _setContent($content)
+    private function _setContent(string $content = null) : bool
     {
         if ($this->_structuredDocument && empty($content)) {
             
@@ -118,7 +121,7 @@ class ViewNodeToRenderizedContent extends AbstractView
         return true;
     }
 
-    private function _setLinkedXimlets($args = array())
+    private function _setLinkedXimlets(array $args = array()) : bool
     {
         if ($this->_node) {       
             if (array_key_exists('CALLER', $args) && $args['CALLER'] == 'xEDIT') {
@@ -135,9 +138,9 @@ class ViewNodeToRenderizedContent extends AbstractView
         return true;
     }
 
-    private function _setStructuredDocument($idVersion = null)
+    private function _setStructuredDocument(int $idVersion = null) : bool
     {
-        if (!is_null($idVersion)) {
+        if (! is_null($idVersion)) {
             $version = new Version($idVersion);
             if (! $version->get('IdVersion')) {
                 Logger::error('VIEW NODETORENDERIZEDCONTENT: Incorrect version has been loaded (' . $idVersion . ')');
@@ -153,7 +156,7 @@ class ViewNodeToRenderizedContent extends AbstractView
         return true;
     }
 
-    private function _setIdChannel($args = array())
+    private function _setIdChannel(array $args = array()) : bool
     {
         if (array_key_exists('CHANNEL', $args)) {
             $idChannel = $args['CHANNEL'];
@@ -169,7 +172,7 @@ class ViewNodeToRenderizedContent extends AbstractView
         return true;
     }
 
-    private function _setIdSection($args = array())
+    private function _setIdSection(array $args = array()) : bool
     {
         if (! $this->_node) {
             if (array_key_exists('SECTION', $args)) {
@@ -186,7 +189,7 @@ class ViewNodeToRenderizedContent extends AbstractView
         return true;
     }
 
-    private function _setIdLanguage($args = array())
+    private function _setIdLanguage(array $args = array()) : bool
     {
         if ($this->_node && $this->_structuredDocument) {
             $this->_idLanguage = $this->_structuredDocument->getLanguage();
@@ -203,7 +206,7 @@ class ViewNodeToRenderizedContent extends AbstractView
         return true;
     }
 
-    private function _setDocxapHeader($args = array())
+    private function _setDocxapHeader(array $args = array()) : bool
     {
         if ($this->_node && $this->_structuredDocument) {
             $documentType = $this->_structuredDocument->GetDocumentType();

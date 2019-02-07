@@ -134,13 +134,12 @@ class GenericData
     /**
      * @param int $id
      */
-    public function __construct($id = 0)
+    public function __construct(int $id = null)
     {
         $this->behaviors = new Collection($this);
         if (is_null($this->_fieldsToTraduce)) {
             $this->_fieldsToTraduce = array();
         }
-        $id = (int) $id;
         $dbObj = new \Ximdex\Runtime\Db();
         $this->messages = new Messages();
         if ($id > 0) {

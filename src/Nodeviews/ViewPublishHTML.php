@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -33,12 +33,8 @@ class ViewPublishHTML extends AbstractView
      * {@inheritDoc}
      * @see \Ximdex\Nodeviews\AbstractView::transform()
      */
-    public function transform(int $idVersion = null, string $pointer = null, array $args = null)
+    public function transform(int $idVersion = null, string $content = null, array $args = null)
     {
-        // Get the content
-        $content = self::retrieveContent($pointer);
-        
-        // Return the pointer to the transformed content
-        return self::storeTmpContent($content);
+        return $content;
     }
 }

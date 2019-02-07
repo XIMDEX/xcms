@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -33,22 +33,26 @@ use Ximdex\Models\Version;
 
 class ViewXimIO extends AbstractView
 {
-    var $files;
+    private $files;
 
-    public function transform(int $idVersion = null, string $pointer = null, array $args = null)
+    /**
+     * {@inheritDoc}
+     * @see \Ximdex\Nodeviews\AbstractView::transform()
+     */
+    public function transform(int $idVersion = null, string $content = null, array $args = null)
     {
         $version = new Version($idVersion);
         if (! $version->get('IdVersion')) {
             Logger::error("No se ha encontrado la versión ($idVersion) solicitada");
-            return NULL;
+            return false;
         }
         $idNode = $version->get('IdNode');
         $node = new Node($idNode);
         if (! $node->get('IdNode')) {
             Logger::error("No se ha podido cargar el nodo ($idNode) solicitado");
-            return NULL;
+            return false;
         }
         $this->files = array();
-        return self::storeTmpContent($node->ToXml(0, $this->files));
+        return $node->ToXml(0, $this->files);
     }
 }

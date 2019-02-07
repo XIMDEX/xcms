@@ -124,7 +124,7 @@
 										<div class="options_separator"></div>
 									</div>
 								{/if}
-								{if ! $disabledCache}
+								{if isset($disabledCache) and ! $disabledCache}
 									<div class="publication_option" id="use_cache_option">
 	                                    <div class="option_checkbox">
 	                                        <input type="checkbox" name="use_cache" id="use_cache" value="1" checked="checked" />

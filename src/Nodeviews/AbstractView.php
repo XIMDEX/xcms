@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -38,7 +38,7 @@ abstract class AbstractView implements IView
     protected $node;
     protected $channel;
     
-    public function transform(int $idVersion = null, string $pointer = null, array $args = null)
+    public function transform(int $idVersion = null, string $content = null, array $args = null)
     {
         Logger::info('Transforming with ' . class_basename($this));
      
@@ -65,7 +65,7 @@ abstract class AbstractView implements IView
         } else {
             $this->channel = null;
         }
-        return true;
+        return $content;
     }
     
     public static function storeTmpContent(string $content) : ?string

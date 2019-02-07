@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -34,10 +34,10 @@ use Ximdex\Models\ServerFrame;
 use Ximdex\Models\ChannelFrame;
 
 /**
-*	@brief Handles the activity of a NodeFrame.
+*	@brief Handles the activity of a NodeFrame
 *
-*	A NodeFrame is the representation of a node ready to published in a temporal interval.
-*	It have 2 posibles values for its activity 1 (published), 0 (not published).
+*	A NodeFrame is the representation of a node ready to published in a temporal interval
+*	It have 2 posibles values for its activity 1 (published), 0 (not published)
 */
 class NodeFrameManager
 {
@@ -145,17 +145,17 @@ class NodeFrameManager
     }
 
 	/**
-	 *  Sets the NodeFrame Activity and modifies the state of its associated ServerFrames.
-	 *	The replacedBy param  sets the nodeFrameId which replaces this NodeFrame when it become inactive.
+	 * Sets the NodeFrame Activity and modifies the state of its associated ServerFrames
+	 * The replacedBy param  sets the nodeFrameId which replaces this NodeFrame when it become inactive
 	 *
-	 *  @param int activity
-	 *  @param int nodeFrId
-	 *  @param int nodeId
-	 *  @param int up
-	 *  @param int replacedBy
-	 *  @return bool
+	 * @param int activity
+	 * @param int nodeFrId
+	 * @param int nodeId
+	 * @param int up
+	 * @param int replacedBy
+	 * @return bool
 	 */
-    private function setActivity(int $activity, int $nodeFrId, int $nodeId, int $up, int $replacedBy = null)
+    private function setActivity(int $activity, int $nodeFrId, int $nodeId, int $up, int $replacedBy = null) : bool
     {
         if (is_null($nodeFrId)) {
             Logger::error('Empty IdNodeFrame - setActivity');
@@ -200,16 +200,16 @@ class NodeFrameManager
     }
 
 	/**
-	 *  Gets all NodeFrames whose time interval is on the current time.
-	 *	If two NodeFrames are the same VersionId, is seted as active the newest.
-	 *	For solve the problem of consider the infinite as zero, TimeDown2 is introduced.
+	 * Gets all NodeFrames whose time interval is on the current time
+	 * If two NodeFrames are the same VersionId, is seted as active the newest
+	 * For solve the problem of consider the infinite as zero, TimeDown2 is introduce
 	 *
-	 *  @param int nodeId
-	 *  @param int up
-	 *	@param int now
-	 *  @return array|null
+	 * @param int $nodeId
+	 * @param int $up
+	 * @param int $now
+	 * @return array
 	 */
-    function getNodeFramesInTime($nodeId, $up, $now)
+    function getNodeFramesInTime(int $nodeId, ?int $up, int $now) : array
     {
 		$dbObj = new \Ximdex\Runtime\Db();
 		$sql = 'SELECT IdNodeFrame, Active, if(TimeDown IS NULL, 1988146800, TimeDown) as TimeDown2 FROM NodeFrames 
@@ -264,7 +264,7 @@ class NodeFrameManager
 		$dbObj->Query($sql);
 		$nodeFrames = array();
 		$i = 0;
-		while(!$dbObj->EOF) {
+		while(! $dbObj->EOF) {
 			$nodeFrames[$i]['nodeFrId'] = $dbObj->GetValue('IdNodeFrame');
 			$nodeFrames[$i]['nodeId'] = $dbObj->GetValue('NodeId');
 			$nodeFrames[$i]['version'] = $dbObj->GetValue('VersionId');
@@ -278,18 +278,18 @@ class NodeFrameManager
     }
 
 	/**
-	*  Gets the NodeFrames which matching the values of IsProcessUp = 0 and Active = 0
-	*  
-	*  @param int nodeID
-	*  @return array
-	*/
-	function getPendingNodeFrames($nodeID)
+	 * Gets the NodeFrames which matching the values of IsProcessUp = 0 and Active = 0
+	 * 
+	 * @param int $nodeID
+	 * @return NULL[]|string[]
+	 */
+	function getPendingNodeFrames(int $nodeID)
 	{
 		$dbObj = new \Ximdex\Runtime\Db();
 		$sql = 'SELECT IdNodeFrame FROM NodeFrames WHERE NodeId = ' . $nodeID . ' AND IsProcessUp = 0 AND Active = 0';
 		$dbObj->Query($sql);
 		$nodeFrames = array();
-		while(!$dbObj->EOF) {
+		while(! $dbObj->EOF) {
 			$nodeFrames[] = $dbObj->GetValue('IdNodeFrame');
 			$dbObj->Next();
 		}
@@ -297,12 +297,12 @@ class NodeFrameManager
 	}
 
 	/**
-	*   Gets all NodeFrames which matching the value of NodeId.
-	*   
-	*	@param int nodeId
-	*	@return array
-	*/
-    function getByNode($nodeId)
+	 * Gets all NodeFrames which matching the value of NodeId
+	 * 
+	 * @param int $nodeId
+	 * @return array|boolean
+	 */
+    function getByNode(int $nodeId)
     {
 		$nodeFrame = new NodeFrame();
 		$result = $nodeFrame->find('IdNodeFrame', 'NodeId = %s', array('NodeId' => $nodeId), MULTI);
@@ -310,13 +310,13 @@ class NodeFrameManager
     }
 
 	/**
-	*  Deletes a NodeFrame and its associated channelFrames and serverFrames.
-	*  If the flag unPublish is seted then the ServerFrames associated to NodeFrame are not deleted but its state is changed to Due2Out.
+	 * Deletes a NodeFrame and its associated channelFrames and serverFrames
+	*  If the flag unPublish is seted then the ServerFrames associated to NodeFrame are not deleted but its state is changed to Due2Out
 	*  
-	*  @param int idNodeFrame
-	*  @param bool unPublish
-	*/
-	function delete($idNodeFrame, $unPublish = false)
+	 * @param int $idNodeFrame
+	 * @param bool $unPublish
+	 */
+	function delete(int $idNodeFrame, bool $unPublish = false)
 	{
 		$nodeFrame = new NodeFrame($idNodeFrame);
 		$nodeId = $nodeFrame->get('NodeId');

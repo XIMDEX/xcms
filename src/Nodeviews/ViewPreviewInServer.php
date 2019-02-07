@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -36,31 +36,34 @@ use Ximdex\Utils\FsUtils;
 
 class ViewPreviewInServer extends AbstractView
 {
-    private $_node = null;
-    private $_serverNode = null;
+    private $_node;
+    private $_serverNode;
     private $_idChannel;
 
-    public function transform(int $idVersion = null, string $pointer = null, array $args = null)
+    /**
+     * {@inheritDoc}
+     * @see \Ximdex\Nodeviews\AbstractView::transform()
+     */
+    public function transform(int $idVersion = null, string $content = null, array $args = null)
     {
-        $content = self::retrieveContent($pointer);
         if (! $this->_setNode($idVersion)) {
-            return null;
+            return false;
         }
         if (! $this->_setIdChannel($args)) {
-            return null;
+            return false;
         }
         if (! $this->_setServerNode($args)) {
-            return null;
+            return false;
         }
         if (App::getValue('PreviewInServer') == 0) {
             Logger::error('PreviewInServer mode is disabled');
-            return NULL;
+            return false;
         }
         $content = htmlspecialchars_decode(\Ximdex\Utils\Strings::stripslashes($content));
         $previewServer = $this->_serverNode->class->GetPreviewServersForChannel($this->_idChannel);
         if (! $previewServer) {
             Logger::error('No Preview Servers for this channel');
-            return null;
+            return false;
         }
         $commandParams = array();
         $commandParams['publishedName'] = $this->_node->GetPublishedNodeName($this->_idChannel);
@@ -104,28 +107,27 @@ class ViewPreviewInServer extends AbstractView
                 $content = '';
                 break;
         }
-        return self::storeTmpContent($content);
+        return $content;
     }
 
-    private function _setNode($idVersion = null)
+    private function _setNode(int $idVersion = null) : bool
     {
         if (! is_null($idVersion)) {
             $version = new Version($idVersion);
             if (! $version->get('IdVersion')) {
                 Logger::error('VIEW FILTERMACROSPREVIEW: Se ha cargado una versión incorrecta (' . $idVersion . ')');
-                return null;
+                return false;
             }
             $this->_node = new Node($version->get('IdNode'));
             if (! $this->_node->get('IdNode')) {
-                Logger::error('VIEW FILTERMACROSPREVIEW: El nodo que se está intentando convertir no existe: ' 
-                    . $version->get('IdNode'));
-                return null;
+                Logger::error('VIEW FILTERMACROSPREVIEW: El nodo que se está intentando convertir no existe: ' . $version->get('IdNode'));
+                return false;
             }
         }
         return true;
     }
 
-    private function _setIdChannel($args = array())
+    private function _setIdChannel(array $args = array()) : bool
     {
         if (array_key_exists('CHANNEL', $args)) {
             $this->_idChannel = $args['CHANNEL'];
@@ -134,12 +136,12 @@ class ViewPreviewInServer extends AbstractView
         // Check Params
         if (! $this->_idChannel > 0) {
             Logger::error('VIEW FILTERMACROSPREVIEW: Channel not specified for node ' . $args['SERVERNODE']);
-            return null;
+            return false;
         }
         return true;
     }
 
-    private function _setServerNode($args = array())
+    private function _setServerNode(array $args = array()) : bool
     {
         if ($this->_node) {
             $this->_serverNode = new Node($this->_node->getServer());
@@ -150,7 +152,7 @@ class ViewPreviewInServer extends AbstractView
         // Check Params
         if (! $this->_serverNode || ! is_object($this->_serverNode)) {
             Logger::error('VIEW FILTERMACROSPREVIEW: There is no server linked to the node ' . $args['NODENAME']);
-            return null;
+            return false;
         }
         return true;
     }

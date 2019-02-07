@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -36,13 +36,17 @@ class ViewMergeTags extends AbstractView
 	protected $query2 = '';
 	protected $merge = '';	
 	
-	public function transform(int $idVersion = null, string $pointer = null, array $args = null)
+	/**
+	 * {@inheritDoc}
+	 * @see \Ximdex\Nodeviews\AbstractView::transform()
+	 */
+	public function transform(int $idVersion = null, string $content = null, array $args = null)
 	{
 		$domDocument = new \DOMDocument();
 		$domDocument->preserveWhiteSpace = false;
 		$domDocument->validateOnParse = true;
-		$domDocument->loadXML(FsUtils::file_get_contents($pointer));
-		if (!$domDocument) {
+		$domDocument->loadXML(FsUtils::file_get_contents($content));
+		if (! $domDocument) {
 			return false;
 		}
 		$xpathExp = new \DOMXPath($domDocument);
@@ -54,7 +58,7 @@ class ViewMergeTags extends AbstractView
 	 		$mergeLength = $mergeItem->length;
 	 		if ($mergeLength != 1) {
 	 			Logger::error('Wrong count of items detected, returning unmodified document');
-	 			return $pointer;
+	 			return $content;
 	 		}
  			$element = $mergeItem->item(0);
 			$childNodes = $element->childNodes;
@@ -68,7 +72,6 @@ class ViewMergeTags extends AbstractView
 			$textNode = $domDocument->createTextNode($mergeResult);
 			$element->appendChild($textNode);
 		}
-		$content = $domDocument->saveXML();
-		return self::storeTmpContent($content);
+		return $domDocument->saveXML();
 	}
 }

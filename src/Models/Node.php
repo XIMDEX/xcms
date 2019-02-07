@@ -111,7 +111,7 @@ class Node extends NodesOrm
      * @param int $nodeID
      * @param bool $fullLoad
      */
-    public function __construct($nodeID = null, $fullLoad = true)
+    public function __construct(int $nodeID = null, bool $fullLoad = true)
     {
         $this->errorList[1] = _('The node does not exist');
         $this->errorList[2] = _('The nodetype does not exist');
@@ -2650,7 +2650,7 @@ class Node extends NodesOrm
             Logger::warning(sprintf(_("It is being tried to load the unexistent node %s"), $this->get('IdNode')));
             return false;
         }
-        if (!is_array($files)) {
+        if (! is_array($files)) {
             $files = array();
         }
         $depth++;
@@ -3511,7 +3511,7 @@ class Node extends NodesOrm
 
             // Checks if node is a structured document
             $structuredDocument = new StructuredDocument($this->GetID());
-            if (!$structuredDocument->get('IdDoc')) {
+            if (! $structuredDocument->get('IdDoc')) {
                 $this->messages->add(_('It is not possible to show preview.') . _(' Provided node is not a structured document.')
                     , MSG_TYPE_NOTICE);
                 return false;
@@ -3526,7 +3526,7 @@ class Node extends NodesOrm
 
             // Get the available target channel
             $idChannel = $this->getTargetChannel($idChannel);
-            if (!$idChannel) {
+            if (! $idChannel) {
                 $this->messages->add(_('It is not possible to show preview. There is not any defined channel.'), MSG_TYPE_NOTICE);
                 return false;
             }
@@ -3578,7 +3578,7 @@ class Node extends NodesOrm
             }
             $transition = new Transition();
             try {
-                $file = $transition->process($process, $args);
+                $res = $transition->process($process, $args);
             } catch (\Exception $e) {
 
                 // The transformation process did not work !
@@ -3600,19 +3600,9 @@ class Node extends NodesOrm
 
             // Specific FilterMacros View for previsuals
             $viewFilterMacrosPreview = new ViewFilterMacros(true);
-            $filePrev = $viewFilterMacrosPreview->transform(NULL, $file, $args);
-            if (strpos($file, App::getValue('TempRoot')) and file_exists($file)) {
-                @unlink($file);
-            }
-            if ($filePrev === false) {
-                $this->messages->add('Cannot transform the document ' . $this->GetNodeName() . ' for a preview operation', MSG_TYPE_WARNING);
-                return false;
-            }
-            $content = FsUtils::file_get_contents($filePrev);
-            if (strpos($filePrev, App::getValue('TempRoot')) and file_exists($filePrev)) {
-                @unlink($filePrev);
-            }
+            $content = $viewFilterMacrosPreview->transform(null, $res, $args);
             if ($content === false) {
+                $this->messages->add('Cannot transform the document ' . $this->GetNodeName() . ' for a preview operation', MSG_TYPE_WARNING);
                 return false;
             }
         } else {

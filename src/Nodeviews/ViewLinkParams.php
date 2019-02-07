@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -34,19 +34,22 @@ use Ximdex\Models\Version;
 
 class ViewLinkParams extends AbstractView
 {
-    public function transform(int $idVersion = null, string $pointer = null, array $args = null)
+    /**
+     * {@inheritDoc}
+     * @see \Ximdex\Nodeviews\AbstractView::transform()
+     */
+    public function transform(int $idVersion = null, string $content = null, array $args = null)
 	{
-	    $content = self::retrieveContent($pointer);
 		$version = new Version($idVersion);
-		if (!($version->get('IdVersion') > 0)) {   
+		if (! $version->get('IdVersion')) {   
 			Logger::error("Incorrect version $idVersion");
-			return null;
+			return false;
 		}
 		$node = new Node($version->get('IdNode'));
 		$nodeId = $node->get('IdNode');
-		if (!($nodeId > 0)) {
+		if (! $nodeId) {
 			Logger::error('Unexisting node: ' . $version->get('IdNode'));
-			return null;
+			return false;
 		}
 		$domDoc = new \DOMDocument();
 		$domDoc->formatOutput = true;
@@ -67,7 +70,6 @@ class ViewLinkParams extends AbstractView
 				$domNode->nodeValue = $linksManager->url($domNode->nodeValue);
 			}
 		}
-		$content = $domDoc->saveXML();
-		return self::storeTmpContent($content);
+		return $domDoc->saveXML();
 	}
 }

@@ -34,11 +34,6 @@ class RelNodeSetsUsers extends RelNodeSetsUsersOrm
     const OWNER_YES = 1;
     const OWNER_NO = 0;
 
-    public function __construct($id = null)
-    {
-        parent::__construct($id);
-    }
-
     /**
      * Returns the rel id
      */

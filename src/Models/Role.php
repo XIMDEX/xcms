@@ -73,7 +73,7 @@ class Role extends RolesOrm
      * 
      * @param $roleID
      */
-    public function __construct($roleID = null)
+    public function __construct(int $roleID = null)
     {
         parent::__construct($roleID);
         $this->flagErr = false;

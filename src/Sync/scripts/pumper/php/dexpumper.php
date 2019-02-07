@@ -561,7 +561,7 @@ class DexPumper
     
     private function unRegisterPumper()
     {
-        if ($this->connection->isConnected() and $this->server) {
+        if ($this->connection and $this->connection->isConnected() and $this->server) {
             $this->connection->disconnect();
             Logger::info('Disconnected from server ' . $this->server->get('Host'), false, 'magenta');
         }

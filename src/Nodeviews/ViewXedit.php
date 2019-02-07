@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -47,38 +47,41 @@ class ViewXedit extends AbstractView
 	private $content = null;
 	private $domDocument = null;
 	
-	public function transform(int $idVersion = null, string $pointer = null, array $args = null)
-	{	
-	    $content = self::retrieveContent($pointer);
+	/**
+	 * {@inheritDoc}
+	 * @see \Ximdex\Nodeviews\AbstractView::transform()
+	 */
+	public function transform(int $idVersion = null, string $content = null, array $args = null)
+	{
 		if ($content == '') {
 			Logger::warning('VIEW XEDIT: empty content');
 			return self::storeTmpContent($content);
 		}	
 		if (! $this->setNode($idVersion)) {
-			return null;
+			return false;
 		}
 		if (! $this->setView($args)) {
-			return null;
+		    return false;
 		}
 		if (! $this->setContent($content)) {
-			return null;
+		    return false;
 		}
 		if (! $this->setUids()) {
-			return null;
+		    return false;
 		}
 		if (! $this->setXimletIds()) {
-			return null;
+		    return false;
 		}
 		if (! $this->parametrizeDocxapByNodeType()) {
-			return null;
+		    return false;
 		}
 		if (! $this->addXslReference()) {
-		    return null;
+		    return false;
 		}
-		return self::storeTmpContent($this->content);
+		return $this->content;
 	}
 	
-	private function setUids()
+	private function setUids() : bool
 	{
 		$xpath = new \DOMXPath($this->domDocument);
 		$nodeList = $xpath->query('//*');
@@ -89,7 +92,7 @@ class ViewXedit extends AbstractView
 		return $this->setContent($this->domDocument->saveXml());
 	}
 	
-	private function populateVoidNode()
+	private function populateVoidNode() : bool
 	{
 		$xpath = new \DOMXPath($this->domDocument);
 
@@ -104,13 +107,13 @@ class ViewXedit extends AbstractView
 		return $this->setContent($content);
 	}
 	
-	private function setContent($content)
+	private function setContent(string $content) : bool
 	{
 		$this->content = $content;
 		return $this->setDomDocument();
 	}
 	
-	private function setDomDocument()
+	private function setDomDocument() : bool
 	{
 		if (! $this->domDocument)
 		{
@@ -118,14 +121,14 @@ class ViewXedit extends AbstractView
 			$this->domDocument->formatOutput = true;
 			$this->domDocument->preserveWhiteSpace = false;
 		}
-		if (!$this->domDocument->loadXML($this->content)) {
+		if (! $this->domDocument->loadXML($this->content)) {
 			Logger::error('VIEW XEDIT: Invalid XML (' . $this->content . ')');
 			return false;
 		}
 		return true;
 	}
 	
-	private function setXimletIds()
+	private function setXimletIds() : bool
 	{
 		$idcontainer = $this->node->getParent();
 		$reltemplate = new \Ximdex\Models\RelTemplateContainer();
@@ -138,7 +141,7 @@ class ViewXedit extends AbstractView
 		$nodeList = $xpath->query('//*');
 		$matches = [];
 		foreach ($nodeList as $element) {
-			if(in_array($element->nodeName, $ximletTags) && preg_match("/@@@GMximdex\.ximlet\(([0-9]+)\)@@@/"
+			if (in_array($element->nodeName, $ximletTags) && preg_match("/@@@GMximdex\.ximlet\(([0-9]+)\)@@@/"
 			    , $element->textContent, $matches)) {
 			        $element->setAttributeNode(new \DOMAttr('ximlet_id', $matches[1]));
 			        if (in_array($matches[1], $linkedXimlets)) {
@@ -150,11 +153,11 @@ class ViewXedit extends AbstractView
 		return true;
 	}
 	
-	private function setNode ($idVersion = null)
+	private function setNode(int $idVersion = null) : bool
 	{
 		if (! is_null($idVersion)) {
 			$version = new Version($idVersion);
-			if (!($version->get('IdVersion') > 0)) {
+			if (! $version->get('IdVersion')) {
 				Logger::error('VIEW XEDIT: An incorrect version has been loaded (' . $idVersion . ')');
 				return false;
 			}
@@ -167,7 +170,7 @@ class ViewXedit extends AbstractView
 		return true;
 	}
 	
-	private function setView($args)
+	private function setView(array $args) : bool
 	{
 		if (! array_key_exists('XEDIT_VIEW', $args)) {
 			Logger::error('VIEW XEDIT: No se ha especificado la vista de XEDIT');
@@ -177,7 +180,7 @@ class ViewXedit extends AbstractView
 		return true;
 	}
 	
-	private function parametrizeDocxapByNodeType()
+	private function parametrizeDocxapByNodeType() : bool
 	{
 		$nodeTypeName = $this->node->nodeType->GetName();
 		if ($nodeTypeName == 'RngVisualTemplate') {
@@ -187,7 +190,7 @@ class ViewXedit extends AbstractView
 		return isset($content) ? $this->setContent($content) : true;
 	}
 	
-	private function addXslReference()
+	private function addXslReference() : bool
 	{
 	    if (! $xslFile = $this->getXslPath()) {
 			return false;
@@ -198,7 +201,7 @@ class ViewXedit extends AbstractView
 		return $this->setContent($content);
 	}
 	
-	private function getXslPath()
+	private function getXslPath() : ?string
 	{
 		if ($this->view == 'tree') {
 			return TREE_VIEW_DOCXAP_PATH;

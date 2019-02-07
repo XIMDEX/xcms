@@ -996,16 +996,13 @@ class DataFactory
         return $version;
     }
 
-    public function GetPreviousVersion(int $idVersion) : ?int
+    public function getPreviousVersion(int $idVersion) : ?int
     {
         if (! $this->nodeID) {
             return null;
         }
         $versions = new Version();
-        $result = $versions->find('Max(IdVersion)', 'IdNode = %s AND IdVersion < %s', array(
-            $this->nodeID,
-            $idVersion
-        ), MONO);
+        $result = $versions->find('Max(IdVersion)', 'IdNode = %s AND IdVersion < %s', array($this->nodeID, $idVersion), MONO);
         if (! $result) {
             return null;
         }

@@ -619,12 +619,11 @@ abstract class AbstractStructuredDocument extends FileNode
         }
         $transition = new Transition();
         try {
-            $file = $transition->process($process, $data, $version);
+            $content = $transition->process($process, $data, $version);
         } catch (\Exception $e) {
             Logger::error($e->getMessage());
             return false;
         }
-        $content = FsUtils::file_get_contents($file);
         return $content;
     }
 

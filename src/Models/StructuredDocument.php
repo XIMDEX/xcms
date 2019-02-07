@@ -51,7 +51,7 @@ class StructuredDocument extends StructuredDocumentsOrm
         4 => 'A document cannot be linked to itself'
     );
 
-    public function __construct($id = null)
+    public function __construct(int $id = null)
     {
         $this->ID = $id;
         $this->flagErr = false;
