@@ -55,7 +55,7 @@ class Pumper extends PumpersOrm
      * @param string key
      * @param unknown value
      */
-    public function setFlag(string $key, string $value)
+    public function setFlag(string $key, string $value = null)
     {
         $this->$key = $value;
     }

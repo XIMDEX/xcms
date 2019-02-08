@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -41,7 +41,7 @@ class CommonNode extends FileNode
      * 
      * @return array|null
      */
-    public function GetChannels() : ?array
+    public function getChannels() : ?array
     {
         // Only binary file will be published with channel frame
         if ($this->nodeType->GetID() != NodeTypeConstants::BINARY_FILE) {
@@ -73,7 +73,7 @@ class CommonNode extends FileNode
             if ($channel->getRenderType() == Channel::RENDERTYPE_INDEX) {
                 $channels[] = $channel->GetID();
             } else {
-                $channels[] = 'NULL';
+                $channels[] = null;
             }
         }
         return $channels;

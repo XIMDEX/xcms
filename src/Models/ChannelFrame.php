@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -41,22 +41,19 @@ include_once XIMDEX_ROOT_PATH . '/src/Sync/conf/synchro_conf.php';
 class ChannelFrame extends ChannelFramesOrm
 {
 	/**
-	* Adds a row to ChannelFrames table
-	* 
-	* @param string channel
-	* @param int idNode
-	* @return int|null
-	*/
-    public function create($channel, $idNode)
+	 * Adds a row to ChannelFrames table
+	 * 
+	 * @param int $channelId
+	 * @param int $idNode
+	 * @return int|NULL
+	 */
+    public function create(?int $channelId, int $idNode) : ?int
     {
-		if ($channel == 'NULL') {
-			$channel = null;
-		}
-		$this->set('ChannelId', $channel);
+		$this->set('ChannelId', $channelId);
 		$this->set('NodeId', $idNode);
 		parent::add();
-		$idChannelFrame = $this->get('IdChannelFrame');
-		if ($idChannelFrame > 0) {
+		$idChannelFrame = (int) $this->get('IdChannelFrame');
+		if ($idChannelFrame) {
 			return $idChannelFrame;
 		}
 		Logger::error('Cannot create the channel frame for node ID: ' . $idNode);
@@ -68,15 +65,15 @@ class ChannelFrame extends ChannelFramesOrm
 	* 
 	* @param int nodeID
 	* @param int channelID
-	* @return int|null
+	* @return mixed
 	*/
-	public function getLast($nodeID, $channelID = null)
+	public function getLast(int $nodeID, int $channelID = null)
 	{
 		if (is_null($channelID)) {
-			$params = array( 'NodeId' => $nodeID );
+			$params = array('NodeId' => $nodeID);
 			$condition = "NodeId = %s";
 		} else {
-			$params = array( 'ChannelId' => $channelID, 'NodeId' => $nodeID );
+			$params = array( 'ChannelId' => $channelID, 'NodeId' => $nodeID);
 			$condition = "ChannelId = %s AND NodeId = %s";
 		}
 		$result = $this->find('IdChannelFrame', $condition . ' ORDER BY IdChannelFrame DESC', $params, MONO);

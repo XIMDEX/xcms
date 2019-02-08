@@ -207,7 +207,7 @@ class PortalFrames extends PortalFramesOrm
             }
             
             // Update whole modified fields
-            $currentPortal = new PortalFrames($portalFrame->get('id'));
+            $currentPortal = new static($portalFrame->get('id'));
             $portalFrame->set('Playing', $currentPortal->get('Playing'));
             $portalFrame->set('Boost', $currentPortal->get('Boost'));
             if ($portalFrame->update() === false) {

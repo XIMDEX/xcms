@@ -149,7 +149,7 @@ class BatchManager
         // Get new portal version
         $portal = new PortalFrames();
         $idPortalFrame = $portal->upPortalFrameVersion($idNode, $up, $userId);
-        if (!$idPortalFrame) {
+        if (! $idPortalFrame) {
             Logger::error('Cannot generate a new portal frame version');
             return false;
         }
@@ -196,6 +196,15 @@ class BatchManager
             }
         } else {
             
+            // Play related portal frames
+            $portal->set('Playing', 1);
+            $portal->update();
+            if ($idPortalFrameDown) {
+                $portal = new PortalFrames($idPortalFrameDown);
+                $portal->set('Playing', 1);
+                $portal->update();
+            }
+            
             // Update portals frames information
             try {
                 PortalFrames::updatePortalFrames(null, null, $idPortalFrame);
@@ -204,15 +213,6 @@ class BatchManager
                 }
             } catch (\Exception $e) {
                 Logger::error($e->getMessage());
-            }
-            
-            // Play related portal frames
-            $portal->set('Playing', 1);
-            $portal->update();
-            if ($idPortalFrameDown) {
-                $portal = new PortalFrames($idPortalFrameDown);
-                $portal->set('Playing', 1);
-                $portal->update();
             }
         }
         $timer->stop();
@@ -388,12 +388,12 @@ class BatchManager
                 $arrayChannels = $node->class->GetChannels();
             }
             if (! $arrayChannels) {
-                $arrayChannels[] = 'NULL';
+                $arrayChannels[] = null;
             }
             $nodeFrameId = null;
             foreach ($arrayChannels as $channelId) {
                 $numFrames = 0;
-                if ($channelId != 'NULL' and ! isset($this->channels[$channelId])) {
+                if ($channelId !== null and ! isset($this->channels[$channelId])) {
                     $this->channels[$channelId] = new Channel($channelId);
                 }
                 $channelFrameId = null;
@@ -427,7 +427,7 @@ class BatchManager
                         }
                         
                         // If this document is common type (channelId = NULL) and server channel is type INDEX, avoid it
-                        if ($channelId == 'NULL') {
+                        if ($channelId === null) {
                             if (! isset($this->channels[$PropChannelId])) {
                                 $this->channels[$PropChannelId] = new Channel($PropChannelId);
                             }
@@ -445,7 +445,7 @@ class BatchManager
                         // This server does not support this channel, server frame will not be created
                         continue;
                     }
-                    if ($channelId == 'NULL' or $nodeServer->class->HasChannel($physicalServer, $channelId)) {
+                    if ($channelId === null or $nodeServer->class->hasChannel($physicalServer, $channelId)) {
                         
                         // Creating nodeFrame first time
                         if (! $nodeFrameId) {
@@ -468,12 +468,12 @@ class BatchManager
                         }
                         
                         // Creating server frame
-                        $name = $node->GetPublishedNodeName($channelId);
-                        $path = $node->GetPublishedPath($channelId);
+                        $name = $node->getPublishedNodeName($channelId);
+                        $path = $node->getPublishedPath($channelId);
                         $publishLinked = 1;
-                        $idFrame = $serverFrame->create($idNode, $physicalServer, $up, $path, $name, $publishLinked, $nodeFrameId
-                            , ($channelId === 'NULL') ? null : $channelId , $channelFrameId, $idBatch, $idPortalFrame, $down, 0
-                            , isset($noCache[$idNode]) ? false : true, $relBatchsDown[$idBatch] ?? null);
+                        $idFrame = $serverFrame->create($idNode, $physicalServer, $up, $path, $name, $publishLinked, $nodeFrameId, $channelId
+                            , $channelFrameId, $idBatch, $idPortalFrame, $down, 0, isset($noCache[$idNode]) ? false : true
+                            , $relBatchsDown[$idBatch] ?? null);
                         if (is_null($idFrame)) {
                             Logger::error(sprintf('Creation of ServerFrame could not be done: node %s (%s), channel %s, batch %s', $idNode
                                 , $nodeName, $channelId, $physicalServer, $idBatch));

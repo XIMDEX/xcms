@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -47,6 +47,7 @@ class SyncManager
     public $linked;
     public $type;
     public $mail;
+    
     private $lastPublished;
     private $publicateSection;
     private $level;
@@ -57,7 +58,7 @@ class SyncManager
     private $generatorNodes = [];
     private $useCache;
 
-    function __construct()
+    public function __construct()
     {
         // Default values for state flags
         $this->setFlag('workflow', true);
@@ -76,9 +77,9 @@ class SyncManager
      * Sets the value of any variable
      *  
      * @param string key
-     * @param unknown value
+     * @param string value
      */
-    function setFlag($key, $value)
+    public function setFlag(string $key, string $value = null)
     {
         $this->$key = $value;
     }
@@ -86,9 +87,10 @@ class SyncManager
     /**
      * Gets the value of any variable
      * 
-     * @param string key
+     * @param string $key
+     * @return string|NULL
      */
-    function getFlag($key)
+    public function getFlag(string $key) : ?string
     {
         if (isset($this->$key)) {
             return $this->$key;
@@ -121,7 +123,7 @@ class SyncManager
             $this->docsToPublishByLevel[(string) $slave] = 0;
         }
         $this->computedDocsToPublish = [];
-        while (!empty($this->pendingDocsToPublish)) {
+        while (! empty($this->pendingDocsToPublish)) {
             $nodeId = array_shift($this->pendingDocsToPublish);
             if ($this->hasDependences($nodeId, $params)) {
                 continue;
@@ -279,12 +281,7 @@ class SyncManager
         return $docsToPublish;
     }
 
-    /**
-     * @param $nodeId
-     * @param $params
-     * @return mixed
-     */
-    public function hasDependences($nodeId, $params)
+    public function hasDependences(int $nodeId, array $params = []) : bool
     {
         $deepLevel = $params['deeplevel'];
         if (! isset($this->docsToPublishByLevel["$nodeId"])) {
@@ -303,31 +300,28 @@ class SyncManager
         if (empty($pending)) {
             return false;
         }
-        else {
-            $idDoc = $pending[0];
-            while ($idDoc == $nodeId) {
-                array_shift($pending);
-                if (! empty($pending)) {
-                    $idDoc = $pending[0];
-                } else {
-                    return false;
-                }
+        $idDoc = $pending[0];
+        while ($idDoc == $nodeId) {
+            array_shift($pending);
+            if (! empty($pending)) {
+                $idDoc = $pending[0];
+            } else {
+                return false;
             }
-            $this->docsToPublishByLevel["$idDoc"] = $currentDeepLevel;
-            $this->pendingDocsToPublish = array_merge([$idDoc, $nodeId], $this->pendingDocsToPublish);
-            return true;
         }
+        $this->docsToPublishByLevel["$idDoc"] = $currentDeepLevel;
+        $this->pendingDocsToPublish = array_merge([$idDoc, $nodeId], $this->pendingDocsToPublish);
+        return true;
     }
 
-    private function sendMail($nodeID, $type, $up, $down)
+    private function sendMail(int $nodeID, string $type, int $up, int $down = null)
     {
         $node = new node($nodeID);
         $name = $node->Get('Name');
         $msg = sprintf(_('Node %s is going to be published'), $name);
         if (! $down) {
             $downString = _('Undetermined');
-        }
-        else {
+        } else {
             $downString = date('d-m-Y H:i:s', $down);
         }
         $msg .= "\n" . _('Publication date') . ': ' . date('d-m-Y H:i:s', $up);

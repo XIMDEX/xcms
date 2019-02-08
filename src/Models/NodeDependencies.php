@@ -64,7 +64,7 @@ class NodeDependencies
             return true;
         }
         return $this->dbObj->Execute('INSERT INTO NodeDependencies (IdNode, IdResource, IdChannel) VALUES (' . $idSource . ', ' 
-            . $idTarget . ', ' . (empty($idChannel)? 'NULL' : $idChannel) . ')');
+            . $idTarget . ', ' . (empty($idChannel) ? 'NULL' : $idChannel) . ')');
     }
 
     /**

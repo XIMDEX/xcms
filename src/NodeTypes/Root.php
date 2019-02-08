@@ -304,7 +304,7 @@ class Root
      * @param int channel
      * @return string
      */
-    public function GetPublishedNodeName(int $channel = null)
+    public function getPublishedNodeName(int $channel = null)
     {
         return $this->parent->get('Name');
     }

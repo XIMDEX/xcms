@@ -194,8 +194,8 @@ class Node extends NodesOrm
     /**
      * Returns the list of paths relative to project, of all the files and directories with belong to the node in the file system
      *
-     * @param null $channel
-     * @return null
+     * @param mixed $channel
+     * @return mixed
      */
     public function getPublishedNodeName(int $channel = null)
     {
@@ -204,7 +204,7 @@ class Node extends NodesOrm
             $this->SetError(1);
             return null;
         }
-        return $this->class->GetPublishedNodeName($channel);
+        return $this->class->getPublishedNodeName($channel);
     }
 
     /**
