@@ -436,7 +436,7 @@ class HTMLDocumentNode extends AbstractStructuredDocument
         $sectionType = new SectionType($section->getIdSectionType());
         $info = static::getInfo($node->getID());
         $hDoc = new static($node->GetID());
-        $docxif = $hDoc->getDocHeader($channel->GetID(), $info['language'], $info['type'], static::DOCXIF);
+        $docxif = $hDoc->getDocHeader($channel->GetID(), $info['languageId'], $info['type'], static::DOCXIF);
 
         // Create XML
         $xml = new SimpleXMLExtended("$docxif</" . static::DOCXIF . '>');
@@ -481,6 +481,7 @@ class HTMLDocumentNode extends AbstractStructuredDocument
         $info = [];
         $sd = new StructuredDocument($nodeId);
         $lang = new Language($sd->GetLanguage());
+        $info['languageId'] = $lang->GetID();
         $info['language'] = $lang->GetIsoName();
         $info['type'] = $sd->GetDocumentType();
         $info['metadata'] = static::prepareMetadata($sd->GetMetadata());

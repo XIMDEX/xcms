@@ -151,11 +151,14 @@ class StructuredDocument extends StructuredDocumentsOrm
         return false;
     }
 
-    // Devuelve el lenguaje del structure document actual.
-    // return int (IdLanguage)
-    public function GetLanguage()
+    /**
+     * Devuelve el lenguaje del structure document actual
+     * 
+     * @return int|NULL
+     */
+    public function GetLanguage() : ?int
     {
-        return $this->get("IdLanguage");
+        return (int) $this->get("IdLanguage");
     }
 
     // Cambia el lenguaje del structure document actual.
@@ -175,7 +178,7 @@ class StructuredDocument extends StructuredDocumentsOrm
 
     public function GetDocumentType()
     {
-        return $this->get("IdTemplate");
+        return (int) $this->get("IdTemplate");
     }
 
     public function SetDocumentType($templateID)

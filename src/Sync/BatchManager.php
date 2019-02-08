@@ -122,7 +122,7 @@ class BatchManager
             // Updating the content of afected by enriching
             if ($node->nodeType->get('IsEnriching') == '1') {
                 $content = $docNode->GetContent();
-                $docNode->SetContent($content);
+                $docNode->setContent($content);
             }
             if (! $this->isPublishable($idDoc, $up, $down, $force[$idDoc])) {
                 $docsToPublish = array_diff($docsToPublish, array($idDoc));

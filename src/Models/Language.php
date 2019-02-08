@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -31,30 +31,21 @@ use Ximdex\Models\ORM\LanguagesOrm;
 
 class Language extends LanguagesOrm
 {
-	var $langID;
-	var $dbObj;
-	var $numErr;                // Error coe.
-	var $msgErr;                // Error message.
-	var $errorList = array(    // Class error list.
+	public $langID;
+	public $dbObj;
+	public $numErr;
+	public $msgErr;
+	public $errorList = array(
 		1 => 'Language does not exist',
 		2 => 'A language with this name already exists',
 		3 => 'Arguments missing',
-		4 => 'Database connection error',
+		4 => 'Database connection error'
 	);
-    
-	public function __construct(int $id = null)
-	{
-		$this->errorList[1] = _('Language does not exist');
-		$this->errorList[2] = _('A language with this name already exists');
-		$this->errorList[3] = _('Arguments missing');
-		$this->errorList[4] = _('Database connection error');
-		parent::__construct($id);
-	}
 
 	// Returns langID (class attribute)
 	function GetID()
 	{
-		return $this->get('IdLanguage');
+		return (int) $this->get('IdLanguage');
 	}
 
 	// Allows to change the langID without destroying and re-creating the object
@@ -93,7 +84,6 @@ class Language extends LanguagesOrm
 		return $this->get('Name');
 	}
 
-
 	function GetAllLanguages($order = NULL)
 	{
 		return $this->GetList($order);
@@ -101,12 +91,11 @@ class Language extends LanguagesOrm
 
 	function getLanguagesForNode($idNode)
 	{
-
 		$node = new Node($idNode);
 		$languages = array();
 		$langs = $node->getProperty('language');
-
 		if (!is_array($langs)) {
+		    
 			// Inherits the system properties
 			$langs = array();
 			$systemLanguages = $this->find('IdLanguage', 'Enabled = 1', null);
@@ -116,7 +105,6 @@ class Language extends LanguagesOrm
 				}
 			}
 		}
-
 		if (count($langs) > 0) {
 			foreach ($langs as $langId) {
 				$lang = new Language($langId);
@@ -126,14 +114,13 @@ class Language extends LanguagesOrm
 				);
 			}
 		}
-
 		return count($languages) > 0 ? $languages : null;
 	}
 
 	// Allows us to change the language name
 	function SetName($name)
 	{
-		if (!($this->get('IdLanguage') > 0)) {
+		if (! $this->get('IdLanguage')) {
 			$this->SetError(2, 'Language does not exist');
 			return false;
 		}
@@ -154,11 +141,10 @@ class Language extends LanguagesOrm
 	// Allows us to change the language iso name
 	function SetIsoName($isoName)
 	{
-		if (!($this->get('IdLanguage') > 0)) {
+		if (! $this->get('IdLanguage')) {
 			$this->SetError(2, 'Language does not exist');
 			return false;
 		}
-
 		$result = $this->set('IsoName', $isoName);
 		if (!$result) {
 			return $this->update();
@@ -178,7 +164,6 @@ class Language extends LanguagesOrm
 		}
 	}
 
-
 	// Allows us to change the language description
 	function SetDescription($description)
 	{
@@ -186,10 +171,10 @@ class Language extends LanguagesOrm
 		if ($this->get('IdLanguage') > 0) {
 			$node = new Node($this->get('IdLanguage'));
 			return $node->SetDescription($description);
-		} else
+		} else {
 			$this->SetError(1);
+		}
 	}
-
 
 	// Searches a language by name
 	function SetByName($name)
@@ -221,11 +206,9 @@ class Language extends LanguagesOrm
 		}
 	}
 
-
 	// Creates a new language and loads its ID in the object
 	function CreateLanguage($name, $isoname, $description, $enabled, $nodeID = null)
 	{
-
 		if ($nodeID > 0) {
 			$this->set('IdLanguage', $nodeID);
 		}
@@ -238,7 +221,6 @@ class Language extends LanguagesOrm
 		} else {
 			$this->SetError(4);
 		}
-
 		return $nodeID;
 	}
 
@@ -248,12 +230,14 @@ class Language extends LanguagesOrm
 		$this->ClearError();
 		$dbObj = new \Ximdex\Runtime\Db();
 		if (!is_null($this->get('IdLanguage'))) {
+		    
 			// Deleting from database
 			$dbObj->Execute(sprintf("DELETE FROM Languages WHERE IdLanguage= %d", $this->get('IdLanguage')));
 			if ($dbObj->numErr)
 				$this->SetError(4);
-		} else
+		} else {
 			$this->SetError(1);
+		}
 	}
 
 	function CanDenyDeletion()
@@ -262,13 +246,13 @@ class Language extends LanguagesOrm
 		$sql = sprintf("select count(*) AS total from StructuredDocuments where IdLanguage = %d", $this->get('IdLanguage'));
 		$dbObj = new \Ximdex\Runtime\Db();
 		$dbObj->Query($sql);
-		if ($dbObj->numErr)
+		if ($dbObj->numErr) {
 			$this->SetError(4);
-
-		if ($dbObj->GetValue("total") == 0)
+		}
+		if ($dbObj->GetValue("total") == 0) {
 			return true;
-		else
-			return false;
+		}
+        return false;
 	}
 
 
@@ -276,7 +260,6 @@ class Language extends LanguagesOrm
 	{
 		$dbObj = new \Ximdex\Runtime\Db();
 		$query = sprintf("SELECT IdDoc FROM StructuredDocuments WHERE IdLanguage = %d", $idlang);
-
 		$dbObj->Query($query);
 		if ($dbObj->numErr != 0) {
 			$this->SetError(1);
@@ -287,14 +270,12 @@ class Language extends LanguagesOrm
 			$arrayDocs[] = $dbObj->GetValue('IdDoc');
 			$dbObj->Next();
 		}
-
 		return $arrayDocs;
 
 	}
 
 	function LanguageEnabled($idlang)
 	{
-
 		$dbObj = new \Ximdex\Runtime\Db();
 		$query = sprintf("SELECT Enabled FROM Languages WHERE IdLanguage = %d", $idlang);
 		$dbObj->Query($query);
@@ -302,20 +283,18 @@ class Language extends LanguagesOrm
 			$this->SetError(1);
 			return null;
 		}
-		if (isset($dbObj->row["Enabled"]))
+		if (isset($dbObj->row["Enabled"])) {
 		    return $dbObj->row["Enabled"];
+		}
 		return null;
 	}
 
-
 	function SetEnabled($enabled)
 	{
-
 		if (!($this->get('IdLanguage') > 0)) {
 			$this->SetError(2, 'Language does not exist');
 			return false;
 		}
-
 		$result = $this->set('Enabled', (int)$enabled);
 		if ($result) {
 			return $this->update();
@@ -323,15 +302,14 @@ class Language extends LanguagesOrm
 		return false;
 	}
 
-
-	/// Cleans class errors
+	// Cleans class errors
 	function ClearError()
 	{
 		$this->numErr = null;
 		$this->msgErr = null;
 	}
 
-	/// Loads a class error
+	// Loads a class error
 	function SetError($code)
 	{
 		$this->numErr = $code;

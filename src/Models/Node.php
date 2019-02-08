@@ -197,12 +197,12 @@ class Node extends NodesOrm
      * @param null $channel
      * @return null
      */
-    function GetPublishedNodeName($channel = null)
+    public function getPublishedNodeName(int $channel = null)
     {
         $this->ClearError();
         if (! $this->get('IdNode')) {
             $this->SetError(1);
-            return NULL;
+            return null;
         }
         return $this->class->GetPublishedNodeName($channel);
     }
@@ -687,12 +687,7 @@ class Node extends NodesOrm
         return NULL;
     }
 
-    /**
-     * @param $channelID
-     * @param $addNodeName
-     * @return mixed
-     */
-    public function GetPublishedPath($channelID = null, $addNodeName = null, bool $structure = false)
+    public function getPublishedPath(int $channelID = null, bool $addNodeName = false, bool $structure = false)
     {
         return $this->class->GetPublishedPath($channelID, $addNodeName);
     }

@@ -69,13 +69,6 @@ class FileNode extends Root
             $file = $this->getNodePath();
             $data = new DataFactory($this->nodeID);
             $content = $data->GetContent();
-            /*
-            // If exists, it would be deleted
-            if (file_exists($file)) {
-                FsUtils::delete($file);
-            }
-            */
-            // And created again
             if (! FsUtils::file_put_contents($file, $content)) {
                 return false;
             }

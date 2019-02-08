@@ -304,7 +304,7 @@ class Root
      * @param int channel
      * @return string
      */
-    function GetPublishedNodeName($channel = NULL)
+    public function GetPublishedNodeName(int $channel = null)
     {
         return $this->parent->get('Name');
     }
@@ -330,13 +330,7 @@ class Root
         return NULL;
     }
 
-    /**
-     * @param $channelID
-     * @param $addNodeName
-     * @param $structure
-     * @return string
-     */
-    public function GetPublishedPath($channelID = null, $addNodeName = null, bool $structure = false)
+    public function getPublishedPath(int $channelID = null, bool $addNodeName = false, bool $structure = false)
     {
         $db = new \Ximdex\Runtime\Db();
         $nodes = array();
@@ -347,7 +341,7 @@ class Root
             . " WHERE ft.`IdChild` = %s AND ft.`IdChild` != ft.`IdNode` order by ft.Depth DESC",
         $db->sqlEscapeString($this->parent->get('IdNode')));
         $db->query($query);
-        while (!$db->EOF) {
+        while (! $db->EOF) {
             $node = new Node($db->getValue('IdNode'));
             $nodes[] = $node->GetPublishedNodeName($channelID);
             $db->next();

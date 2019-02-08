@@ -355,7 +355,7 @@ class SynchroFacade
                     $createBatch = false;
                 }
                 $serverFrame = new ServerFrame($idSync);
-                if (!$serverFrame->get('IdSync')) {
+                if (! $serverFrame->get('IdSync')) {
                     Logger::error('Cannot load the server frame with ID: ' . $idSync);
                     continue;
                 }
