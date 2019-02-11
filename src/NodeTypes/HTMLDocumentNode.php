@@ -443,9 +443,12 @@ class HTMLDocumentNode extends AbstractStructuredDocument
         $xml->addChild('id', implode(':', [$ximID, $node->GetID()]));
         $xml->addChild('file_version', $version['Version'] ?? '');
         if (is_array($tags)) {
+            $tags_values = [];
             foreach ($tags as $tag) {
                 $xml->addChild('tag', $tag['Name']);
+                $tags_values[] = $tag['Name'];
             }
+            $xml->addChild('tags', implode(",", $tags_values));
         }
         $xml->addChild('id_ximdex', $ximID);
         $xml->addChild('name', $info['metadata']['title']);
