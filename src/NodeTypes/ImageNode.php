@@ -27,7 +27,7 @@
 
 namespace Ximdex\NodeTypes;
 
-/***
+/**
  * Class for NodeType Image
  */
 class ImageNode extends FileNode

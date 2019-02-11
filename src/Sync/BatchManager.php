@@ -183,6 +183,16 @@ class BatchManager
 
             // Update 'chunk' nodes state to 'processed' (state == 2)
             NodesToPublish::setProcessed($chunk, $up);
+            
+            // Update portals frames information
+            try {
+                PortalFrames::updatePortalFrames(null, null, $idPortalFrame);
+                if ($idPortalFrameDown) {
+                    PortalFrames::updatePortalFrames(null, null, $idPortalFrameDown);
+                }
+            } catch (\Exception $e) {
+                Logger::error($e->getMessage());
+            }
         }
         
         // Remove portal frames if there is not frames generated
@@ -203,16 +213,6 @@ class BatchManager
                 $portal = new PortalFrames($idPortalFrameDown);
                 $portal->set('Playing', 1);
                 $portal->update();
-            }
-            
-            // Update portals frames information
-            try {
-                PortalFrames::updatePortalFrames(null, null, $idPortalFrame);
-                if ($idPortalFrameDown) {
-                    PortalFrames::updatePortalFrames(null, null, $idPortalFrameDown);
-                }
-            } catch (\Exception $e) {
-                Logger::error($e->getMessage());
             }
         }
         $timer->stop();
@@ -612,10 +612,10 @@ class BatchManager
             SUM(IF (ServerFrames.ErrorLevel = ' . ServerFrame::ERROR_LEVEL_SOFT . ', 1, 0)) AS TemporalErrors,
 			SUM(IF (ServerFrames.State IN (\'' . implode('\', \'', ServerFrame::FINAL_STATUS_IN) . '\'), 1, 0)) AS Success, 
 			SUM(IF (ServerFrames.State IN (\'' . ServerFrame::PUMPED . '\'), 1, 0)) AS Pumpeds,
-			COUNT(ServerFrames.IdSync) AS Total,
             SUM(IF (ServerFrames.State NOT IN (\'' . ServerFrame::PENDING . '\', \'' . implode('\', \'', ServerFrame::FINAL_STATUS) 
                 . '\', \'' . ServerFrame::DUE2IN_ . '\') AND ServerFrames.ErrorLevel IS NULL, 1, 0)) AS Active, 
-            SUM(IF (ServerFrames.State IN (\'' . ServerFrame::PENDING . '\', \'' . ServerFrame::DUE2IN_ . '\'), 1, 0)) AS Pending 
+            SUM(IF (ServerFrames.State IN (\'' . ServerFrame::PENDING . '\', \'' . ServerFrame::DUE2IN_ . '\'), 1, 0)) AS Pending, 
+            COUNT(ServerFrames.IdSync) AS Total 
             FROM ServerFrames, Batchs WHERE Batchs.Type = \'' . Batch::TYPE_UP . '\' 
             AND Batchs.State IN (\'' . Batch::INTIME . '\', \'' . Batch::CLOSING . '\', \'' . Batch::WAITING . '\') 
             AND Batchs.IdBatch = ServerFrames.IdBatchUp
@@ -644,6 +644,7 @@ class BatchManager
             $batch->set('ServerFramesTemporalError', $temporalErrors);
             $batch->set('ServerFramesActive', $active);
             $batch->set('ServerFramesPending', $pending);
+            $batch->set('ServerFramesTotal', $totals);
             if ($totals and $totals == $fatalErrors + $success + $pumpeds) {
                 if ($pumpeds > 0) {
                     
@@ -683,11 +684,11 @@ class BatchManager
             $sql = 'SELECT SUM(IF(ServerFrames.ErrorLevel = ' . ServerFrame::ERROR_LEVEL_HARD . ', 1, 0)) AS FatalErrors, 
                 SUM(IF (ServerFrames.ErrorLevel = ' .ServerFrame::ERROR_LEVEL_SOFT . ', 1, 0)) AS TemporalErrors, 
       			SUM(IF (ServerFrames.State IN (\'' . implode('\', \'', ServerFrame::FINAL_STATUS_OUT) . '\'), 1, 0)) AS Success, 
-		    	COUNT(ServerFrames.IdSync) AS Total, 
                 SUM(IF (ServerFrames.State NOT IN (\'' . ServerFrame::PENDING . '\', \'' . ServerFrame::DUE2OUT_ . '\', \''
                     . implode('\', \'', ServerFrame::FINAL_STATUS) . '\') AND ErrorLevel IS NULL, 1, 0)) AS Active, 
                 SUM(IF (ServerFrames.State IN (\'' . ServerFrame::PENDING . '\', \'' . ServerFrame::DUE2OUT_ . '\', \'' 
-                    . ServerFrame::IN . '\'), 1, 0)) AS Pending';
+                    . ServerFrame::IN . '\'), 1, 0)) AS Pending, 
+                COUNT(ServerFrames.IdSync) AS Total';
             foreach ($batchsDown as $idBatch) {
                 
                 // Search the batch type Down without type Up
@@ -720,6 +721,7 @@ class BatchManager
                     $batch->set('ServerFramesSuccess', $success);
                     $batch->set('ServerFramesFatalError', $fatalErrors);
                     $batch->set('ServerFramesTemporalError', $temporalErrors);
+                    $batch->set('ServerFramesTotal', $totals);
                     if ($totals and $totals == $fatalErrors + $success) {
                         $batch->set('State', Batch::ENDED);
                         Logger::info('Ending batch type Down with ID ' . $idBatch);

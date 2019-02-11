@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -34,17 +34,18 @@ use Ximdex\Models\RelLinkDescriptions;
 use Ximdex\Logger;
 
 /**
- * @brief Handles links to external pages or web sites.
+ * @brief Handles links to external pages or web sites
  */
 class LinkNode extends Root
 {
-	var $link = NULL;
+	var $link = null;
 
 	/**
 	 * Constructor
+	 * 
 	 * @param object parent
 	 */
-	public function __construct($parent)
+	public function __construct($parent = null)
 	{
  		parent::__construct($parent);
 		$this->link = new Link($this->nodeID);
@@ -53,12 +54,8 @@ class LinkNode extends Root
 	/**
 	 * Adds a row to Versions table and creates the file
 	 * 
-	 * @param string name
-	 * @param int parentID
-	 * @param int nodeTypeID
-	 * @param int stateID
-	 * @param string url
-	 * @param string description
+	 * {@inheritDoc}
+	 * @see \Ximdex\NodeTypes\Root::createNode()
 	 */
 	public function createNode(string $name = null, int $parentID = null, int $nodeTypeID = null, int $stateID = null, string $url = null
 	    , string $description = null)
@@ -68,7 +65,7 @@ class LinkNode extends Root
 		$link->set('Url', $url);
 		$result = $this->parent->SetDescription($description);
 		$insertedId = $link->add();
-		if (!$insertedId || !$result) {
+		if (! $insertedId || ! $result) {
 			$this->messages->add(_('The link could not be inserted'), MSG_TYPE_ERROR);
 			$this->messages->mergeMessages($link->messages);
 		}
@@ -85,6 +82,9 @@ class LinkNode extends Root
 
 	/**
 	 * Deletes the information of link in the database
+	 * 
+	 * {@inheritDoc}
+	 * @see \Ximdex\NodeTypes\Root::deleteNode()
 	 */
 	public function deleteNode() : bool
 	{
@@ -111,8 +111,10 @@ class LinkNode extends Root
 
 	/**
 	 * Gets the url of the link
+	 * 
+	 * @return boolean|string
 	 */
-	function GetUrl()
+	public function getUrl()
 	{
 		return $this->link->get('Url');
 	}
@@ -124,18 +126,18 @@ class LinkNode extends Root
 	 * @param bool commit
 	 * @return bool
 	 */
-	function SetUrl($url, $commit = true)
+	public function setUrl(string $url, bool $commit = true)
 	{
 		$this->link->set('Url', $url);
 		if ($commit) {
 			$result = $this->link->update();
-			if (!$result) {
+			if (! $result) {
 				$this->parent->messages->add(_('Unable to remove link'), MSG_TYPE_ERROR);
 				foreach ($this->link->messages->messages as $message) {
 					$this->parent->messages[] = $message;
 				}
 			}
-			return $result;
+			return (bool) $result;
 		}
 		return true;
 	}
@@ -143,7 +145,8 @@ class LinkNode extends Root
 	/**
 	 * Gets the dependencies of the link
 	 * 
-	 * @return array
+	 * {@inheritDoc}
+	 * @see \Ximdex\NodeTypes\Root::getDependencies()
 	 */
 	public function getDependencies() : array
 	{
@@ -152,12 +155,8 @@ class LinkNode extends Root
 	}
 
 	/**
-	 * Builds a XML wich contains the properties of the language
-	 * 
-	 * @param int depth
-	 * @param array files
-	 * @param bool recurrence
-	 * @return string
+	 * {@inheritDoc}
+	 * @see \Ximdex\NodeTypes\Root::toXml()
 	 */
 	public function toXml(int $depth, array & $files, bool $recurrence = false)
 	{

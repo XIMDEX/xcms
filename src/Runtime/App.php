@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -32,14 +32,16 @@ use Doctrine\Common\Cache\ArrayCache;
 
 Class App
 {
-    private static $instance = null;
-    private static $DBInstance = array();
-    private static $debug = false;
-    protected $DIContainer = null;
-    protected $DIBuilder = null;
-    protected $config = null;
     const PREFIX = 'prefix';
     const SUFFIX = 'suffix';
+    
+    private static $instance;
+    private static $DBInstance = array();
+    private static $debug = false;
+    
+    protected $DIContainer;
+    protected $DIBuilder;
+    protected $config;
 
     public function __construct()
     {
@@ -59,7 +61,7 @@ Class App
 
     public static function getInstance()
     {
-        if (!self::$instance instanceof self) {
+        if (! self::$instance instanceof self) {
             self::$instance = new self();
         }
         return self::$instance;
@@ -75,22 +77,22 @@ Class App
         return self::getInstance()->getConfig();
     }
 
-    public function getContainerObject($class)
+    public function getContainerObject(string $class)
     {
         return $this->DIContainer->get($class);
     }
 
-    public static function getObject($class)
+    public static function getObject(string $class)
     {
         return self::getInstance()->getContainerObject($class);
     }
 
-    public static function getValue($key, $default = null)
+    public static function getValue(string $key, string $default = null)
     {
         return self::getInstance()->getRuntimeValue($key, $default);
     }
 
-    public function getRuntimeValue($key, $default = null)
+    public function getRuntimeValue(string $key, string $default = null)
     {
         if (isset($this->config[$key])) {
             return $this->config[$key];
@@ -98,19 +100,19 @@ Class App
         return $default;
     }
 
-    public static function setValue($key, $value, $persistent = false)
+    public static function setValue(string $key, $value, bool $persistent = false)
     {
         return self::getInstance()->setRuntimeValue($key, $value, $persistent);
     }
 
-    public function setRuntimeValue($key, $value, $persistent = false)
+    public function setRuntimeValue(string $key, $value, $persistent = false)
     {
         if ($persistent) {
-            $stm = self::db()->prepare('delete from Config  where ConfigKey = :key');
+            $stm = self::db()->prepare('DELETE FROM Config WHERE ConfigKey = :key');
             $stm->execute(array(
                 'key' => $key,
             ));
-            $stm = self::db()->prepare('insert into Config (ConfigValue, ConfigKey ) values ( :value ,:key )');
+            $stm = self::db()->prepare('INSERT INTO Config (ConfigValue, ConfigKey) VALUES (:value, :key)');
             $stm->execute(array(
                 'key' => $key,
                 'value' => is_string($value) ? trim($value) : $value
@@ -119,7 +121,7 @@ Class App
         $this->config[$key] = is_string($value) ? trim($value) : $value;
         return $this;
     }
-    public static function addDbConnection(\PDO $connection, $name = null)
+    public static function addDbConnection(\PDO $connection, string $name = null)
     {
         if (is_null($name)) {
             $name  = self::getInstance()->getValue('default.db', 'db');
@@ -132,12 +134,12 @@ Class App
      * @return \PDO|null
      * @throws \Exception
      */
-    public static function db($conf = null)
+    public static function db(string $conf = null)
     {
         if (is_null($conf)) {
             $conf = self::getInstance()->getValue('default.db', 'db');
         }
-        if (!isset(self::$DBInstance[$conf])) {
+        if (! isset(self::$DBInstance[$conf])) {
             throw new \Exception( '-1,Unknown DB Connection');
         }
         return self::$DBInstance[$conf];
@@ -146,17 +148,17 @@ Class App
     /**
      * Legacy: Compability
      * 
-     * @param $key
-     * @return mixed|null
+     * @param string $key
+     * @return Object
      */
-    public static function get($key)
+    public static function get(string $key)
     {
         $value = self::getInstance()->getRuntimeValue($key, null);
-        if (!is_null($value)) {
+        if (! is_null($value)) {
             return $value;
         }
         $objectData = self::getInstance()->getRuntimeValue('class::definition::' . $key, null);
-        if ( is_null($objectData)) {
+        if (is_null($objectData)) {
             return self::getObject($key);
         }
         require_once(XIMDEX_ROOT_PATH . $objectData);
@@ -165,15 +167,15 @@ Class App
 
     /**
      * getUrl forms an url to $suburl of APP using params if this exists
-     *
-     * @param $suburl
+     * 
+     * @param string $suburl
      * @param bool $includeUrlRoot
-     * @param array ...$params
+     * @param ...$params
      * @return string
      */
-    public static function getUrl($suburl, bool $includeUrlRoot = true, ...$params)
+    public static function getUrl(string $suburl, bool $includeUrlRoot = true, ...$params)
     {
-        if (!empty($params)) {
+        if (! empty($params)) {
             $suburl = @sprintf($suburl, ...$params);
         }
         $base = (($includeUrlRoot) ? App::GetValue('UrlRoot') : '') . App::getValue('UrlFrontController');
@@ -187,13 +189,13 @@ Class App
     /**
      * getUrl forms an url to $suburl of Ximdex using params if this exists
      *
-     * @param $suburl
+     * @param string $suburl
      * @param array ...$params
      * @return string
      */
-    public static function getXimdexUrl($suburl, ...$params)
+    public static function getXimdexUrl(string $suburl, ...$params)
     {
-        if (!empty($params)) {
+        if (! empty($params)) {
             $suburl = sprintf($suburl, ...$params);
         }
         $base = trim(App::getValue('UrlRoot'), '/');
@@ -207,13 +209,13 @@ Class App
     /**
      * getPath forms an path to $subpath  of APP  using params if this exists
      * 
-     * @param $subpath
+     * @param string $subpath
      * @param array ...$params
      * @return string
      */
-    public static function getPath($subpath, ...$params)
+    public static function getPath(string $subpath, ...$params)
     {
-        if (!empty($params)) {
+        if (! empty($params)) {
             $subpath = sprintf($subpath, ...$params);
         }
         return APP_ROOT_PATH. '/' . ltrim($subpath, '/');
@@ -221,6 +223,7 @@ Class App
 
     /**
      * Get the in application debug value
+     * 
      * @return boolean
      */
     public static function debug()

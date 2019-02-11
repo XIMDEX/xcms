@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -131,9 +131,6 @@ class GenericData
      */
     protected $updatedFields = array();
 
-    /**
-     * @param int $id
-     */
     public function __construct(int $id = null)
     {
         $this->behaviors = new Collection($this);
@@ -170,12 +167,8 @@ class GenericData
     {
         return $this->query;
     }
-    
-    /**
-     * @param $values
-     * @return bool
-     */
-    public function _unserialize($values)
+
+    public function _unserialize(array $values = null) : bool
     {
         $keys = array_keys($this->_metaData);
         foreach ($keys as $key) {
@@ -183,20 +176,14 @@ class GenericData
                 $this->$key = $values[$key];
             }
         }
-        return !empty($this->{$this->_idField}) ? true : false;
+        return ! empty($this->{$this->_idField}) ? true : false;
     }
 
-    /**
-     * @param $query
-     */
-    public function _logQuery($query)
+    public function _logQuery(string $query)
     {
         Logger::debug($query);
     }
 
-    /**
-     * @return bool
-     */
     public function _serialize()
     {
         $values = array();
@@ -210,7 +197,8 @@ class GenericData
     /**
      * Added support for given value in auto increment fields
      * 
-     * @return bool|null|string
+     * @param bool $useAutoIncrement
+     * @return string|boolean|NULL
      */
     public function add(bool $useAutoIncrement = true)
     {
@@ -250,10 +238,7 @@ class GenericData
                     $this->{$this->_idField} = $dbObj->newID;
                     $insertedId              = $this->{$this->_idField};
                 } else {
-                    $result = $this->find($this->_idField,
-                        sprintf('%s=%%s', $this->_idField),
-                        array($this->{$this->_idField}),
-                        MONO);
+                    $result = $this->find($this->_idField, sprintf('%s=%%s', $this->_idField), array($this->{$this->_idField}), MONO);
                     if (count($result) == 1) {
                         Logger::info('The table has not an auto-increment field, returning id field');
                         $insertedId = $result[0];
@@ -272,11 +257,7 @@ class GenericData
         return $insertedId ? $insertedId : false;
     }
 
-    /**
-     * @param $filter
-     * @return bool
-     */
-    private function _applyFilter($filter)
+    private function _applyFilter(string $filter) : bool
     {
         $result = true;
         $result = $result && $this->behaviors->$filter($this);
@@ -287,7 +268,7 @@ class GenericData
 
     private function _mergeMessagesFromBehaviors()
     {
-        if (!empty($this->behaviors)) {
+        if (! empty($this->behaviors)) {
             $this->messages->mergeMessages($this->behaviors->messages);
         }
     }
@@ -295,17 +276,17 @@ class GenericData
     /**
      * Validación/conversión por tipo de campo
      * 
-     * @param $fieldValue
-     * @param $fieldTypeMatches
+     * @param string $fieldValue
+     * @param array $fieldTypeMatches
      * @return string
      */
-    public function _convertToSql($fieldValue, $fieldTypeMatches)
+    private function _convertToSql(string $fieldValue = null, array $fieldTypeMatches = null) : string
     {
         unset($fieldTypeMatches);
         return Db::sqlEscapeString($fieldValue);
     }
 
-    public function _checkDataIntegrity()
+    public function _checkDataIntegrity() : bool
     {
         $dataTypeFloat  = array('float');
         $dataTypeDouble = array('double');
@@ -333,52 +314,52 @@ class GenericData
                 continue;
             }
             if (('true' == $descriptor['not_null']) && !isset($descriptor['auto_increment'])) {
-                if (empty($value) && !in_array($fieldType, $dataTypeInt) && !in_array($fieldType, $dataTypeFloat) 
-                    && !in_array($fieldType, $dataTypeDouble)) {
+                if (empty($value) && ! in_array($fieldType, $dataTypeInt) && ! in_array($fieldType, $dataTypeFloat) 
+                    && ! in_array($fieldType, $dataTypeDouble)) {
                     $this->messages->add(sprintf(_("You must set the field %s"), $key), MSG_TYPE_ERROR);
                 }
             }
             switch ($fieldType) {
                 case in_array($fieldType, $dataTypeFloat):
                 case in_array($fieldType, $dataTypeDouble):
-                    if (!is_numeric($value)) {
+                    if (! is_numeric($value)) {
                         $this->messages->add(sprintf(_("The field %s has an invalid format"), $key), MSG_TYPE_ERROR);
                     }
                     break;
                 case in_array($fieldType, $dataTypeText):
                     break;
                 case 'datetime':
-                    if (!preg_match(sprintf('/%s/', self::REGEXP_DATETIME), $value)) {
+                    if (! preg_match(sprintf('/%s/', self::REGEXP_DATETIME), $value)) {
                         $this->messages->add(sprintf(_('The field %s has not the correct format'), $key)
                             , MSG_TYPE_ERROR);
                     }
                     break;
                 case 'date':
-                    if (!preg_match(sprintf('/%s/', self::REGEXP_DATE), $value)) {
+                    if (! preg_match(sprintf('/%s/', self::REGEXP_DATE), $value)) {
                         $this->messages->add(sprintf(_('The field %s has not the correct format'), $key)
                             , MSG_TYPE_ERROR);
                     }
                     break;
                 case 'timestamp':
-                    if (!preg_match(sprintf('/%s/', self::REGEXP_TIMESTAMP), $value)) {
+                    if (! preg_match(sprintf('/%s/', self::REGEXP_TIMESTAMP), $value)) {
                         $this->messages->add(sprintf(_('The field %s has not the correct format'), $key)
                             , MSG_TYPE_ERROR);
                     }
                     break;
                 case 'time':
-                    if (!preg_match(sprintf('/%s/', self::REGEXP_TIME), $value)) {
+                    if (! preg_match(sprintf('/%s/', self::REGEXP_TIME), $value)) {
                         $this->messages->add(sprintf(_('The field %s has not the correct format'), $key)
                             , MSG_TYPE_ERROR);
                     }
                     break;
                 case 'year':
-                    if (!preg_match(sprintf('/%s/', self::REGEXP_YEAR), $value)) {
+                    if (! preg_match(sprintf('/%s/', self::REGEXP_YEAR), $value)) {
                         $this->messages->add(sprintf(_('The field %s has not the correct format'), $key)
                             , MSG_TYPE_ERROR);
                     }
                     break;
                 case in_array($fieldType, $dataTypeInt):
-                    if (!is_int((int) $value)) {
+                    if (! is_int((int) $value)) {
                         $this->messages->add(sprintf(_("The field %s has an invalid format"), $key), MSG_TYPE_ERROR);
                     }
                     switch ($fieldType) {
@@ -426,7 +407,7 @@ class GenericData
      * 
      * @param string $fields
      * @param string $condition
-     * @param null $params
+     * @param array $params
      * @param bool $returnType
      * @param bool $escape
      * @param string $index
@@ -434,8 +415,8 @@ class GenericData
      * @param string $groupBy
      * @return array|bool
      */
-    public function find($fields = ALL, $condition = '', $params = null, $returnType = MULTI, $escape = true, string $index = null
-        , string $order = null, string $groupBy = null)
+    public function find(string $fields = ALL, string $condition = null, array $params = null, bool $returnType = MULTI, bool $escape = true
+        , string $index = null, string $order = null, string $groupBy = null)
     {
         $condition = $this->_getCondition($condition, $params, $escape);
         $query = sprintf(
@@ -454,13 +435,7 @@ class GenericData
         return $this->query($query, $returnType, $index);
     }
 
-    /**
-     * @param $condition
-     * @param $params
-     * @param $escape
-     * @return mixed
-     */
-    public function _getCondition($condition, $params, $escape)
+    private function _getCondition(string $condition = null, array $params = null, bool $escape = false)
     {
         $dbObj = new \Ximdex\Runtime\Db();
         if (is_null($params)) {
@@ -475,7 +450,7 @@ class GenericData
                 }
             }
         }
-        if (!empty($condition) && !is_null($params)) {
+        if (! empty($condition) && ! is_null($params)) {
             $value = sprintf('$condition = sprintf("%s", "%s");', $condition, implode('", "', $params));
             eval($value);
         }
@@ -484,12 +459,12 @@ class GenericData
     
     /**
      * @param string $query
-     * @param string $returnType
+     * @param bool $returnType
      * @param string $indexField
      * @param bool $onlyAssoc
      * @return boolean|array
      */
-    public function query($query, $returnType = MULTI, string $indexField = null, bool $onlyAssoc = false)
+    public function query(string $query, bool $returnType = MULTI, string $indexField = null, bool $onlyAssoc = false)
     {
         $this->_applyFilter('beforeFind');
         $dbObj = new \Ximdex\Runtime\Db();
@@ -533,14 +508,9 @@ class GenericData
         return $result;
     }
 
-    /**
-     * @param $key
-     * @param $value
-     * @return bool|string
-     */
-    public function _getValueForFind($key, $value)
+    private function _getValueForFind(string $key, string $value = null)
     {
-        if (!array_key_exists($key, $this->_metaData)) {
+        if (! array_key_exists($key, $this->_metaData)) {
             return $value;
         }
         $tmpValue    = $this->$key;
@@ -616,10 +586,7 @@ class GenericData
     {
         return true;
     }
-
-    /**
-     * @return bool|int|null|string
-     */
+    
     public function update()
     {
         if (! $this->_applyFilter('beforeUpdate')) {
@@ -659,16 +626,13 @@ class GenericData
         return $updatedRows ? $updatedRows : null;
     }
 
-    /**
-     * @return bool|int
-     */
     public function delete()
     {
         if (! $this->_applyFilter('beforeDelete')) {
             return false;
         }
         $query = sprintf("DELETE FROM {$this->_table} WHERE {$this->_idField} = %d", $this->{$this->_idField});
-        if ((DEBUG_LEVEL == LOG_LEVEL_ALL) || (DEBUG_LEVEL == LOG_LEVEL_EXECUTE)) {
+        if (DEBUG_LEVEL == LOG_LEVEL_ALL || DEBUG_LEVEL == LOG_LEVEL_EXECUTE) {
             $this->_logQuery($query);
         }
         if ($this->returnQuery) {
@@ -686,38 +650,34 @@ class GenericData
      * Deletes a set of elements
      * 
      * @param string $condition
-     * @param null $params
+     * @param array $params
      * @param bool $escape
      * @return bool
      */
-    public function deleteAll($condition = '', $params = null, $escape = true)
+    public function deleteAll(string $condition = '', array $params = null, bool $escape = true)
     {
         $condition = $this->_getCondition($condition, $params, $escape);
         $query = sprintf("DELETE FROM %s WHERE %s", $this->_table, $condition);
         return $this->execute($query);
     }
 
-    /**
-     * @param $query
-     * @return bool
-     */
-    public function execute($query)
+    public function execute(string $query) : bool
     {
         if (preg_match('/update/i', $query) > 0) {
             $this->_applyFilter('beforeUpdate');
-        } else if (preg_match('/delete/i', $query) > 0) {
+        } elseif (preg_match('/delete/i', $query) > 0) {
             $this->_applyFilter('beforeDelete');
         } else {
             Logger::warning('No pre-filter applied for query: ' . $query);
         }
         $dbObj = new \Ximdex\Runtime\Db();
-        if ((DEBUG_LEVEL == LOG_LEVEL_ALL) || (DEBUG_LEVEL == LOG_LEVEL_EXECUTE)) {
+        if (DEBUG_LEVEL == LOG_LEVEL_ALL || DEBUG_LEVEL == LOG_LEVEL_EXECUTE) {
             $this->_logQuery($query);
         }
         $result = $dbObj->execute($query);
         if (preg_match('/update/i', $query) > 0) {
             $this->_applyFilter('afterUpdate');
-        } else if (preg_match('/delete/i', $query) > 0) {
+        } elseif (preg_match('/delete/i', $query) > 0) {
             $this->_applyFilter('afterDelete');
         } else {
             Logger::warning('No post-filter applied for query: ' . $query);
@@ -725,11 +685,6 @@ class GenericData
         return $result;
     }
 
-    /**
-     * @param string $attribute
-     * @param string $value
-     * @return bool
-     */
     public function set(string $attribute, string $value = null) : bool
     {
         if (empty($attribute)) {
@@ -757,31 +712,22 @@ class GenericData
      * Get all rows for the current table
      * This is a facade method and it just call find method without parameters
      * 
-     * @return array
+     * @return array|bool
      */
     public function findAll()
     {
         return $this->find();
     }
 
-    /**
-     * @param string $condition
-     * @param null $params
-     * @return bool|int
-     */
-    public function count($condition = '', $params = null)
+    public function count(string $condition = '', array $params = null)
     {
         $result = $this->find('count(1)', $condition, $params, MONO);
         return intval($result[0]) ?? false;
     }
 
-    /**
-     * @param $varsToLoad
-     * @return bool
-     */
-    public function loadFromArray($varsToLoad)
+    public function loadFromArray(array $varsToLoad)
     {
-        if (!is_array($varsToLoad)) {
+        if (! is_array($varsToLoad)) {
             return false;
         }
         foreach ($varsToLoad as $key => $value) {
@@ -790,12 +736,7 @@ class GenericData
         return true;
     }
 
-    /**
-     * @param $method
-     * @param $params
-     * @return mixed
-     */
-    public function call__($method, $params)
+    public function call__(string $method, array $params = [])
     {
         /**
          * Overloadable añade un nivel de array a los parámetros
@@ -810,9 +751,9 @@ class GenericData
      * IMPORTANT: The returned value will be FALSE in error, element ID if exists and NULL is not
      * 
      * @param string $idName
-     * @return boolean|mixed|NULL
+     * @return boolean|NULL
      */
-    public function exists($idName = 'id')
+    public function exists(string $idName = 'id')
     {
         $arrayFields = array();
         $arrayValues = array();
@@ -831,8 +772,7 @@ class GenericData
             }
             if ($arrayValues[$i] === null) {
                 $query .= ' and ' . $field . ' is null';
-            }
-            else {
+            } else {
                 $query .= ' and ' . $field . ' = ' . $arrayValues[$i];
             }
             $i++;
@@ -854,7 +794,7 @@ class GenericData
         return null;
     }
 
-    public function __call($method, $params = array())
+    public function __call(string $method, array $params = array())
     {
         if (! method_exists($this, 'call__')) {
             trigger_error(sprintf( __('Magic method handler call__ not defined in %s', true), get_class($this)), E_USER_ERROR);

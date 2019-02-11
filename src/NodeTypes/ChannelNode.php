@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -31,25 +31,17 @@ use Ximdex\Models\Channel;
 use Ximdex\Models\NodeProperty;
 
 /**
- * @brief Handles channels.
+ * @brief Handles channels
  *
- *  Channels are responsible of the document transformation to different output formats (html, text, ...).
+ * Channels are responsible of the document transformation to different output formats (html, text, ...)
  */
 class ChannelNode extends Root
 {
 	/**
 	 * Calls to method for creating a Channel
 	 * 
-	 * @param string name
-	 * @param int parentID
-	 * @param int nodeTypeID
-	 * @param int stateID
-	 * @param string channelName
-	 * @param string extension
-	 * @param string format
-	 * @param string description
-	 * @param string filter
-	 * @param string renderMode
+	 * {@inheritDoc}
+	 * @see \Ximdex\NodeTypes\Root::createNode()
 	 */
 	public function createNode(string $name = null, int $parentID = null, int $nodeTypeID = null, int $stateID = null, string $channelName = null
 	    , string $extension = null, string $format = null, string $description = null, string $filter = "", string $renderMode = null
@@ -63,7 +55,10 @@ class ChannelNode extends Root
 	}
 
 	/**
-	 *  Deletes the rows of the Channel from both tables Channels and NodeProperties.
+	 * Deletes the rows of the Channel from both tables Channels and NodeProperties
+	 * 
+	 * {@inheritDoc}
+	 * @see \Ximdex\NodeTypes\Root::deleteNode()
 	 */
 	public function deleteNode() : bool
 	{
@@ -72,14 +67,5 @@ class ChannelNode extends Root
 		$nodeProperty = new NodeProperty();
 		$nodeProperty->cleanUpPropertyValue('channel', $this->parent->get('IdNode'));
 		return true;
-	}
-
-	/**
-	 * Gets all documents that will be transformed by the Channel.
-	 * @return array
-	 */
-	public function getDependencies() : array
-	{
-	    return [];
 	}
 }

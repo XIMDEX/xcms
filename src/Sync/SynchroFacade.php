@@ -222,8 +222,7 @@ class SynchroFacade
      * @param boolean $recurrence
      * @return array|null
      */
-    function pushDocInPublishingPool(int $idNode, int $upDate, int $downDate = null, array $flagsArray = null, 
-        bool $recurrence = false) : ?array
+    function pushDocInPublishingPool(int $idNode, int $upDate, int $downDate = null, array $flagsArray = null, bool $recurrence = false) : ?array
     {
         $syncMngr = new SyncManager();
         
@@ -390,7 +389,7 @@ class SynchroFacade
             
             // Update portal frame information
             try {
-                PortalFrames::updatePortalFrames($batch);
+                PortalFrames::updatePortalFrames(null, null, $portal->get('id'));
             } catch (\Exception $e) {
                 Logger::error($e->getMessage());
             }
@@ -408,6 +407,14 @@ class SynchroFacade
         $batch->set('ServerFramesPending', $numFrames);
         $batch->set('State', Batch::WAITING);
         $numFrames = 0;
-        return $batch->update();
+        $res = $batch->update();
+        
+        // Update portal frame information for current batch
+        try {
+            PortalFrames::updatePortalFrames($batch);
+        } catch (\Exception $e) {
+            Logger::error($e->getMessage());
+        }
+        return $res;
     }
 }

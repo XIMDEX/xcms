@@ -57,6 +57,7 @@ class SyncManager
     private $pendingDocsToPublish = [];
     private $generatorNodes = [];
     private $useCache;
+    private $expireAll;
 
     public function __construct()
     {
@@ -70,7 +71,8 @@ class SyncManager
         $this->setFlag('mail', false);
         $this->setFlag('deeplevel', DEEP_LEVEL < 0 ? 1 : DEEP_LEVEL);
         $this->setFlag('globalForcePublication', FORCE_PUBLICATION);
-        $this->setFlag('usecache', true);
+        $this->setFlag('useCache', true);
+        $this->setFlag('expireAll', false);
     }
 
     /**
@@ -88,7 +90,7 @@ class SyncManager
      * Gets the value of any variable
      * 
      * @param string $key
-     * @return string|NULL
+     * @return string|null
      */
     public function getFlag(string $key) : ?string
     {
@@ -147,8 +149,7 @@ class SyncManager
         $nodeTypeFlags = ['IsPublishable' => true, 'IsFolder' => false];
         if ($nodeTypeID) {
             $filters = ['include' => ['node.IdNodeType' => [$nodeTypeID]]];
-        }
-        else {
+        } else {
             $filters = null;
         }
         if ($level !== null) {
@@ -206,8 +207,7 @@ class SyncManager
             if (! $this->buildPublishingSection($node, $docsToPublish, $this->getFlag('level'), $this->getFlag('nodeType'))) {
                 return null;
             }
-        }
-        else {
+        } else {
             
             // Flags for dependencies
             $params = [];
@@ -218,13 +218,11 @@ class SyncManager
         if ($node->nodeType->get('IsPublishable') == '1') {
             if (sizeof($docsToPublish) > 0) {
                 $docsToPublish = array_unique(array_merge(array($node->GetID()), $docsToPublish));
-            }
-            else {
+            } else {
                 $docsToPublish = array($node->GetID());
                 $this->docsToPublishByLevel = array($node->GetID());
             }
-        }
-        elseif ($node->GetNodeType() != NodeTypeConstants::XML_ROOT_FOLDER and $node->GetNodeType() != NodeTypeConstants::XML_CONTAINER 
+        } elseif ($node->GetNodeType() != NodeTypeConstants::XML_ROOT_FOLDER and $node->GetNodeType() != NodeTypeConstants::XML_CONTAINER 
             and $node->GetNodeType() != NodeTypeConstants::HTML_CONTAINER) {
             return array();
         }
@@ -243,12 +241,12 @@ class SyncManager
     {
         if (! $idNode) {
             Logger::error('Pushdocinpool - Empty IdNode');
-            return NULL;
+            return null;
         }
         $node = new Node($idNode);
         if (! $node->GetID()) {
             Logger::error(sprintf('Node %s does not exist', $idNode));
-            return NULL;
+            return null;
         }
         $docsToPublish = $this->getPublishableDocs($node, $up, $down);
         $userID = \Ximdex\Runtime\Session::get('userID');
@@ -258,14 +256,19 @@ class SyncManager
             if (! array_key_exists($idDoc, $this->docsToPublishByLevel)) {
                 continue;
             }
-            // if ($this->getFlag('publicateSection') or $idNode == $idDoc) {
             if (in_array($idDoc, $this->generatorNodes)) {
                 $expire = $down;
                 $idGeneratorNode = $idDoc;
             } else {
                 
-                // Dependencies won't be expired
-                $expire = null;
+                // If the publication is in section mode, all nodes will be expire 
+                if ($this->getFlag('expireAll')) {
+                    $expire = $down;
+                } else {
+                    
+                    // Dependencies won't be expired
+                    $expire = null;
+                }
                 $idGeneratorNode = $idNode;
             }
             $nodesToPublish->create($idDoc, $idGeneratorNode, $up, $expire, $userID, $force, $this->getFlag('lastPublished')

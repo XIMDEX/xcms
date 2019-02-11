@@ -85,7 +85,7 @@ class Action_publicatesection extends ActionAbstract
         $this->addJs('/actions/publicatesection/resources/js/index.js');
         $this->addCss('/actions/publicatesection/resources/css/style.css');
         $this->addCss('/assets/style/jquery/ximdex_theme/widgets/calendar/calendar.css');
-        $this->render($values, NULL, 'default-3.0.tpl');
+        $this->render($values, null, 'default-3.0.tpl');
     }
 
     public function publicate_section()
@@ -167,7 +167,8 @@ class Action_publicatesection extends ActionAbstract
             'level' => $level,
             'structure' => $structure,
             'nodeType' => $type,
-            'useCache' => $useCache
+            'useCache' => $useCache,
+            'expireAll' => true
         );
         $syncFac = new SynchroFacade();
         $syncFac->pushDocInPublishingPool($idNode, $up, $down, $flagsPublication, $recurrence);
@@ -239,7 +240,7 @@ class Action_publicatesection extends ActionAbstract
      * @param int $idNode
      * @return array With info about the available gaps
      */
-    private function getPublicationIntervals($idNode)
+    private function getPublicationIntervals(int $idNode)
     {
         $nodesToPublish = new NodesToPublish();
         $intervals = $nodesToPublish->getIntervals(null, $idNode);
@@ -249,10 +250,10 @@ class Action_publicatesection extends ActionAbstract
     /**
      * Format the date intevals array
      *
-     * @param $gaps
+     * @param array $gaps
      * @return array With info about the available gaps
      */
-    private function formatInterval($gaps)
+    private function formatInterval(array $gaps)
     {
         $gapInfo = array();
         if (count($gaps) > 0) {
@@ -293,7 +294,7 @@ class Action_publicatesection extends ActionAbstract
      * @param string $texttosend : Text to send in notification mail.
      * @return boolean true if the notification is sended.
      */
-    private function sendNotification($idNode, $userList, $texttosend = '')
+    private function sendNotification(int $idNode, array $userList, string $texttosend = '')
     {
         $send = true;
         if (count($userList) == 0) {

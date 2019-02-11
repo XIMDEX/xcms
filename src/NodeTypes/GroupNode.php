@@ -39,10 +39,8 @@ class GroupNode extends Root
 	/**
 	 * Calls to method for adding a new Group in the database
 	 * 
-	 * @param string name
-	 * @param int parentID
-	 * @param int nodeTypeID
-	 * @param int stateID
+	 * {@inheritDoc}
+	 * @see \Ximdex\NodeTypes\Root::createNode()
 	 */
 	public function createNode(string $name = null, int $parentID = null, int $nodeTypeID = null, int $stateID = null)
 	{
@@ -53,7 +51,8 @@ class GroupNode extends Root
 	}
 
 	/**
-	 *  Calls to method for deleting
+	 * {@inheritDoc}
+	 * @see \Ximdex\NodeTypes\Root::deleteNode()
 	 */
 	public function deleteNode() : bool
 	{
@@ -64,7 +63,8 @@ class GroupNode extends Root
 	/**
 	 * Checks whether the Group belongs to GeneralGroup
 	 * 
-	 * @return bool
+	 * {@inheritDoc}
+	 * @see \Ximdex\NodeTypes\Root::canDenyDeletion()
 	 */
 	public function canDenyDeletion()
 	{

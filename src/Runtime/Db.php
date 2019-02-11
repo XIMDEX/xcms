@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -32,49 +32,44 @@ use Ximdex\Logger;
 class Db
 {
     /**
-     * @var null|\PDO
+     * Sleeping time to reconnect to the database in seconds
+     *
+     * @var integer
      */
-    private $db = null;
-    private static $defaultConf = null;
+    const TIME_TO_RECONNECT = 10;
+    
+    public $EOF = true;
+    public $row = array();
+    public $numRows = 0;
+    public $numFields = 0;
+    public $numErr;
+    public $desErr;
+    public $newID;
+
+    /**
+     * @var \PDOStatement
+     */
+    private $stm;
+    
+    private $db;
+    private static $defaultConf;
     private $sql = '';
     private static $dbEncoding = '';
     private static $workingEncoding = '';
     private $rows = array();
     private $index = 0;
-    public $EOF = true;
-    public $row = array();
-    public $numRows = 0;
-    public $numFields = 0;
-    public $numErr = null;
-    public $desErr = null;
-    public $newID = null;
 
-    /**
-     * @var \PDOStatement
-     */
-    private $stm = null;
-    
-    /**
-     * Sleeping time to reconnect to the database in seconds
-     * @var integer
-     */
-    const TIME_TO_RECONNECT = 10;
-
-    /**
-     * @param string $conf
-     * @return Db
-     * @throws \Exception
-     */
-    static public function getInstance($conf = null)
+    static public function getInstance(string $conf = null)
     {
         return new \Ximdex\Runtime\Db();
     }
 
     /**
-     * Db constructor.
-     * @param string|null $conf
+     * Db constructor
+     * 
+     * @param string $conf
      */
-    public function __construct($conf = null)
+    public function __construct(string $conf = null)
     {
         if (is_null($conf)) {
         	if (is_null(self::$defaultConf)) {
@@ -87,12 +82,13 @@ class Db
 
    	/**
    	 * Reconnect the Database
+   	 * 
    	 * @return boolean
    	 */
-    public function reconectDataBase()
+    public function reconectDataBase() : bool
     {
          $dbConfig = App::getInstance()->getValue('db', 'db');
-         if (!empty($dbConfig)) {
+         if (! empty($dbConfig)) {
          	try {
          	    $dbConn = new \PDO("{$dbConfig['type']}:host={$dbConfig['host']};port={$dbConfig['port']};"
          	        . "dbname={$dbConfig['db']};charset=utf8", $dbConfig['user'], $dbConfig['password']);
@@ -167,11 +163,6 @@ class Db
 		return true;
     }
 
-
-    /**
-     * @param $sql
-     * @return bool
-     */
     function execute(string $sql) : bool
     {
         // Encode to dbConfig value in table config
@@ -223,10 +214,10 @@ class Db
     /**
      * Execute a sql script
      *
-     * @param $sql
+     * @param string $sql
      * @return bool
      */
-    function ExecuteScript($sql)
+    function executeScript(string $sql) : bool
     {
         $this->db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
         $result = true;
@@ -242,12 +233,9 @@ class Db
         return $result;
     }
 
-    /**
-     * @return bool
-     */
-    function Next()
+    public function next() : bool
     {
-        if (!$this->EOF) {
+        if (! $this->EOF) {
             $this->index++;
             if ($this->index >= count($this->rows)) {
                 $this->EOF = true;
@@ -258,7 +246,7 @@ class Db
         return $this->EOF;
     }
 
-    function Go($number)
+    public function go(int $number)
     {
         $this->index = $number;
         if ($this->index >= count($this->rows)) {
@@ -272,10 +260,12 @@ class Db
      * Read dbEncoding and dbEncoding from database, Config
      * Is not possible to do in other place, because if you put in getValue, for example, or in the constructor,
      * is will create an infinite circle
+     * 
+     * @return bool
      */
-    private function _getEncodings()
+    private function _getEncodings() : bool
     {
-        if ((self::$dbEncoding == '') && (self::$workingEncoding == '')) {
+        if (self::$dbEncoding == '' && self::$workingEncoding == '') {
             $sql = "select ConfigKey,ConfigValue from Config where ConfigKey='workingEncoding' or ConfigKey='dbEncoding'";
             $this->sql = $sql;
             try {
@@ -292,8 +282,7 @@ class Db
                     
                     // Trying the method call again if the reconnection process works right
                     if ($res) {
-            	       $res = $this->_getEncodings();
-            	       return $res;
+            	       return $this->_getEncodings();
                     }
             	}
             	$error = $this->error();
@@ -315,39 +304,35 @@ class Db
 
     /**
      * Functions which obtains the current row value for a determined field
-     * @param $col
-     * @return null|String
+     * 
+     * @param string $col
+     * @return boolean|string|NULL
      */
-    function GetValue($col)
+    function GetValue(string $col)
     {
         if (isset($col, $this->row[$col])) {
-            if (!$this->_getEncodings()) {
+            if (! $this->_getEncodings()) {
                 Logger::error($this->desErr);
                 return false;
             }
             $value = \Ximdex\XML\Base::recodeSrc($this->row[$col], self::$workingEncoding);
             return $value;
         }
-        return NULL;
+        return null;
     }
 
-    /**
-     * @TODO REMOVE USAGE
-     * @param $value
-     * @return string
-     */
-    public static function sqlEscapeString($value)
+    public static function sqlEscapeString(string $value = null)
     {
         if (is_null($value)) {
             return 'NULL';
         }
-        if (!(strlen($value) > 0)) {
+        if (! (strlen($value) > 0)) {
             return 'NULL';
         }
         return self::getInstance()->db->quote($value);
     }
 
-    public function error()
+    public function error() : array
     {
     	return $this->db->errorInfo();
     }
@@ -360,7 +345,7 @@ class Db
      */
     private function database_reconnection(Db $db = null) : bool
     {
-    	if (!$db) {
+    	if (! $db) {
     		$db = $this->db;
     	}
     	$error = $db->errorInfo();
@@ -374,7 +359,7 @@ class Db
     			$res = $this->reconectDataBase();
     			sleep(self::TIME_TO_RECONNECT);
     		}
-    		while (!$res);
+    		while (! $res);
     		Logger::info('Reconnecting to database has been executed successfully');
     		return true;
     	}

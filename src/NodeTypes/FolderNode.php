@@ -113,6 +113,10 @@ class FolderNode extends Root
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     * @see \Ximdex\NodeTypes\Root::createNode()
+     */
     public function createNode(string $name = null, int $parentID = null, int $nodeTypeID = null)
     {
         // By default, when a schemes folder is created, we insert the default RNGs for metadata
@@ -123,11 +127,10 @@ class FolderNode extends Root
         return true;
     }
 
-    public function cloneNode(string $target)
-    {
-        return;
-    }
-
+    /**
+     * {@inheritDoc}
+     * @see \Ximdex\NodeTypes\Root::updatePath()
+     */
     public function updatePath()
     {
         $node = new Node($this->nodeID);
@@ -155,6 +158,10 @@ class FolderNode extends Root
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     * @see \Ximdex\NodeTypes\Root::getDependencies()
+     */
     public function getDependencies() : array
     {
         $query = sprintf("SELECT DISTINCT IdNode FROM Nodes WHERE IdParent = %d", $this->nodeID);
@@ -165,16 +172,6 @@ class FolderNode extends Root
             $this->dbObj->Next();
         }
         return $deps;
-    }
-
-    /**
-     * Does nothing
-     * 
-     * @param string target
-     */
-    public function moveNode(string $target = null)
-    {
-        return;
     }
 
     /**
@@ -314,8 +311,7 @@ class FolderNode extends Root
         return $result[0];
     }
 
-    /**
-     * 
+    /** 
      * {@inheritDoc}
      * @see \Ximdex\NodeTypes\Root::canDenyDeletion()
      */

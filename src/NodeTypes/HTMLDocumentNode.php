@@ -1,7 +1,7 @@
 <?php
 
 /**
- * \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ * \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  * Ximdex a Semantic Content Management System (CMS)
  *
@@ -298,17 +298,17 @@ class HTMLDocumentNode extends AbstractStructuredDocument
      * ******************************************* AUX METHODS ********************************************
      */
 
-    /**
-     * @param $doc
-     * @param $schemas
-     * @param $sections
-     * @param $extraData array
-     * @return array
-     */
-    private static function getChildSchemasBySections($doc, $schemas, $sections, & $extraData)
+   /**
+    * @param StructuredDocument $doc
+    * @param array $schemas
+    * @param array $sections
+    * @param array $extraData
+    * @return array|NULL
+    */
+    private static function getChildSchemasBySections(StructuredDocument $doc, array $schemas, array $sections, array & $extraData)
     {
         foreach ($sections as $section => $data) {
-            if (!array_key_exists($section, $schemas)) {
+            if (! array_key_exists($section, $schemas)) {
                 $schemas = static::getChildSchemasBySection($doc, $section, $data, $schemas, $extraData);
             }
         }
@@ -316,14 +316,15 @@ class HTMLDocumentNode extends AbstractStructuredDocument
     }
 
     /**
-     * @param $doc StructuredDocument
-     * @param $section string
-     * @param $schemas array
-     * @param $data array
-     * @param $extraData array
+     * @param StructuredDocument $doc
+     * @param string $section
+     * @param array $data
+     * @param array $schemas
+     * @param array $extraData
      * @return array
      */
-    private static function getChildSchemasBySection($doc, $section, $data, $schemas, & $extraData): array
+    private static function getChildSchemasBySection(StructuredDocument $doc, string $section, array $data, array $schemas
+        , array & $extraData) : array
     {
         $schema = static::getSchemaFromComponent($doc, $section, $data, $extraData);
         if ($schema != null) {
@@ -336,12 +337,13 @@ class HTMLDocumentNode extends AbstractStructuredDocument
     }
 
     /**
-     * @param $doc StructuredDocument
-     * @param $compName string
-     * @param $data array
-     * @return array
+     * @param StructuredDocument $doc
+     * @param string $compName
+     * @param array $data
+     * @param array $extraData
+     * @return NULL|array
      */
-    private static function getSchemaFromComponent($doc, $compName, $data, & $extraData)
+    private static function getSchemaFromComponent(StructuredDocument $doc, string $compName, array $data, array & $extraData)
     {
         $schema = null;
         $comp = $doc->getComponent($compName);
@@ -363,13 +365,14 @@ class HTMLDocumentNode extends AbstractStructuredDocument
 
     /**
      * Create a basic html template with header and body passed by strings
-     *
-     * @param $css
-     * @param $js
-     * @param $body
+     * 
+     * @param array $info
+     * @param string $body
+     * @param array $css
+     * @param array $js
      * @return string
      */
-    private static function createBasicHTMLTemplate($info, $body, $css, $js)
+    private static function createBasicHTMLTemplate(array $info, string $body, array $css, array $js)
     {
         $header = '';
         foreach ($css as $file) {
@@ -404,7 +407,7 @@ class HTMLDocumentNode extends AbstractStructuredDocument
         return $html . '</body>' . PHP_EOL . '</html>';
     }
 
-    private static function createDynamic($info, $body, $css, $js)
+    private static function createDynamic(array $info, string $body, array $css = [], array $js = [])
     {
         $head = self::headTemplate($css, $js);
         $metadata = isset($info['metadata']) ? self::metadataTemplate($info['metadata']) : [];
@@ -507,7 +510,7 @@ class HTMLDocumentNode extends AbstractStructuredDocument
         return $result;
     }
 
-    private static function getCleanName($nodeName)
+    private static function getCleanName(string $nodeName)
     {
         if (App::getValue('PublishPathFormat') == App::PREFIX) {
             $parts = explode('-', $nodeName);
