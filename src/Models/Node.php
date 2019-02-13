@@ -842,7 +842,7 @@ class Node extends NodesOrm
         if ($this->get('IdNode') > 0) {
             if ($this->nodeType->get('IsRenderizable')) {
                 if ($this->nodeType->get('HasFSEntity')) {
-                    if ($this->class->RenderizeNode() === false) {
+                    if ($this->class->renderizeNode() === false) {
                         return false;
                     }
                 }
@@ -1325,7 +1325,7 @@ class Node extends NodesOrm
         }
 
         // Updating the hierarchy index for this node
-        $this->RenderizeNode();
+        $this->renderizeNode();
         Logger::debug("Model::Node::CreateNode: Creating node id(" . $this->nodeID . "), name(" . $name . "), parent(" . $parentID . ").");
 
         // Once created, its content by default is added
@@ -3708,5 +3708,17 @@ class Node extends NodesOrm
             return true;
         }
         return false;
+    }
+    
+    public function getSiblings()
+    {
+        $result = $this->find("IdNode", "idparent = %s", array($this->IdParent), MONO);
+        for ($i = 0; count($result); $i++) {
+            if ($result[$i] == $this->nodeID) {
+                unset($result[$i]);
+                break;
+            }
+        }
+        return array_values($result);
     }
 }

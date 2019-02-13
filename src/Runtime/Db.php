@@ -46,16 +46,16 @@ class Db
     public $desErr;
     public $newID;
 
+    private static $defaultConf;
+    private static $dbEncoding = '';
+    private static $workingEncoding = '';
+    
     /**
      * @var \PDOStatement
      */
     private $stm;
-    
     private $db;
-    private static $defaultConf;
     private $sql = '';
-    private static $dbEncoding = '';
-    private static $workingEncoding = '';
     private $rows = array();
     private $index = 0;
 

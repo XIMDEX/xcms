@@ -41,7 +41,7 @@ class Action_publicateximlet extends ActionAbstract
 		$serverID = $node->getServer();
 		$nodeServer = new Node($serverID);
 		$nameServer = $nodeServer->get('Name');
-		$physicalServers = $nodeServer->class->GetPhysicalServerList(true);
+		$physicalServers = $nodeServer->class->getPhysicalServerList(true);
 		if (!(sizeof($physicalServers) > 0)) {
 			$this->messages->add(sprintf(_("No physical server has been defined in '%s'"), $nameServer), MSG_TYPE_ERROR);
 			$this->render(array('messages' => $this->messages->messages));

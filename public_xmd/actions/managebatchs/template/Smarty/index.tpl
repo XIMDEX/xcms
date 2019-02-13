@@ -34,15 +34,15 @@
                                 title="Publishing type: #/ frames.type /#"></i>
                     </span>
                     <span title="Node ID: #/ frames.idNodeGenerator /# 
-                        &#013;Portal ID: #/ frames.idPortal /#
-                        &#013;User: #/ frames.userName /# 
-                        &#013;Created: #/ frames.creationTime /#
-                        &#013;Scheduled: #/ frames.scheduledTime /# 
-                        &#013;Started: #/ frames.startTime /# 
-                        &#013;Visited: #/ frames.statusTime /# 
-                        &#013;Ended: #/ frames.endTime /#
-                        &#013;Elapsed: #/ frames.elapsedTime /# seconds
-                        &#013;Files per time: #/ frames.total / frames.elapsedTime | number:2 /#"><strong>#/ frames.nodeName /#</strong>
+&#013;Portal ID: #/ frames.idPortal /#
+&#013;User: #/ frames.userName /# 
+&#013;Created: #/ frames.creationTime /#
+&#013;Scheduled: #/ frames.scheduledTime /# 
+&#013;Started: #/ frames.startTime /# 
+&#013;Visited: #/ frames.statusTime /# 
+&#013;Ended: #/ frames.endTime /#
+&#013;Elapsed: #/ frames.elapsedTime /# seconds
+&#013;Files per time: #/ frames.total / frames.elapsedTime | number:2 /#"><strong>#/ frames.nodeName /#</strong>
                     </span>
                     <small> (#/ frames.total /# documents)</small>
                     <small><span class="icon clock"></span> Scheduled: #/ frames.scheduledTime /#</small>

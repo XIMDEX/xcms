@@ -28,29 +28,4 @@
 namespace Ximdex\NodeTypes;
 
 class WorkflowProcess extends Root
-{
-    /**
-     * {@inheritDoc}
-     * @see \Ximdex\NodeTypes\Root::createNode()
-     */
-	public function createNode(string $name = null, int $parentID = null, int $nodeTypeID = null)
-	{
-		$this->updatePath();
-		return true;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * @see \Ximdex\NodeTypes\Root::renameNode()
-	 */
-	public function renameNode(string $name) : bool
-	{
-	    $this->updatePath();
-	    return true;
-	}
-
-	public function getDependencies() : array
-	{
-		return array();
-	}
-}
+{}

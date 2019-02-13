@@ -32,6 +32,7 @@ use Ximdex\Models\Node;
 use Ximdex\Runtime\App;
 use Ximdex\Runtime\Constants;
 use Ximdex\Runtime\Db;
+use Ximdex\Utils\Messages;
 
 if (! defined('ROOT_NODE')) {
     define('ROOT_NODE', 1);
@@ -98,11 +99,12 @@ class Root
         $this->nodeID = $this->parent->get('IdNode');
         $this->dbObj = new \Ximdex\Runtime\Db();
         $this->nodeType = $this->parent->nodeType;
-        $this->messages = new \Ximdex\Utils\Messages();
+        $this->messages = new Messages();
     }
 
     /**
-     * Gets the MetaType of a NodeType.
+     * Gets the MetaType of a NodeType
+     * 
      * @return string|null
      */
     public function getMetaType()
@@ -112,15 +114,15 @@ class Root
         if (isset($metaTypesArray[strtoupper($class)])) {
             return $metaTypesArray[strtoupper($class)];
         }
-        return NULL;
+        return null;
     }
 
     /**
-     * Gets the path relating to its Project of the Node in the filesystem.
+     * Gets the path relating to its Project of the Node in the filesystem
      * 
      * @return string
      */
-    public function GetPathList()
+    public function getPathList()
     {
         $idParentNode = $this->parent->get('IdParent');
         $parentNode = new Node($idParentNode);
@@ -150,7 +152,7 @@ class Root
      */
     public function getChildrenPath()
     {
-        return $this->GetPathList();
+        return $this->getPathList();
     }
 
     /**
@@ -164,6 +166,8 @@ class Root
 
     /**
      * Sets an error (code and message)
+     * 
+     * @param int $code
      */
     public function setError(int $code)
     {
@@ -305,7 +309,7 @@ class Root
     }
 
     /**
-     * Gets the name in which the Node will be published.
+     * Gets the name in which the Node will be published
      *  
      * @param int channel
      * @return string

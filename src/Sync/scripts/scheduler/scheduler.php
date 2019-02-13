@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -30,7 +30,7 @@ use Ximdex\Sync\Scheduler;
 
 // Check if the installation have been finished in order to run the process
 Ximdex\Modules\Manager::file('/install/InstallController.class.php');
-if (!InstallController::isInstalled()) {
+if (! InstallController::isInstalled()) {
     Logger::warning('Cannot run the scheduler process until Ximdex core have been installed');
     exit();
 }

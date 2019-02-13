@@ -448,9 +448,9 @@ class Action_addfoldernode extends ActionAbstract
         $server->url = preg_replace('/\{URL_ROOT\}/', App::getValue('UrlHost') . App::getValue('UrlRoot'), $server->url);
         $server->initialDirectory = preg_replace('/\{XIMDEX_ROOT_PATH\}/', XIMDEX_ROOT_PATH, $server->initialDirectory);
         $nodeServer = new Node($serverId);
-        $physicalServerId = $nodeServer->class->AddPhysicalServer(
-            $server->protocol, $server->login, $server->password, $server->host, $server->port, $server->url, $server->initialDirectory
-            , $server->overrideLocalPaths, $server->enabled, $server->previsual, $server->description
+        $physicalServerId = $nodeServer->class->addPhysicalServer($server->protocol, $server->login, $server->password, $server->host
+            , $server->port, $server->url, $server->initialDirectory, $server->overrideLocalPaths, $server->enabled, $server->previsual
+            , $server->description
         );
         foreach ($channels as $ch) {
             $nodeServer->class->AddChannel($physicalServerId, $ch);

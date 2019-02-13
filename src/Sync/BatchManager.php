@@ -560,13 +560,6 @@ class BatchManager
         }
         if ($db->numRows > 0) {
             Logger::warning(sprintf('Found %s Batchs without Frames, were marked as NoFrames', $db->numRows));
-            
-            // Update portal frames stats
-            try {
-                PortalFrames::updatePortalFrames();
-            } catch (\Exception $e) {
-                Logger::error($e->getMessage());
-            }
         }
         
         // Remove portal frames without batchs and created time more than 10 minute
@@ -578,6 +571,13 @@ class BatchManager
         foreach ($voidPortalFrames as $portalFrameId) {
             $portalFrame = new PortalFrames($portalFrameId);
             $portalFrame->delete();
+        }
+        
+        // Update portal frames stats
+        try {
+            PortalFrames::updatePortalFrames();
+        } catch (\Exception $e) {
+            Logger::error($e->getMessage());
         }
     }
 

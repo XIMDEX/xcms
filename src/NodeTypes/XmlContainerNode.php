@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -35,20 +35,21 @@ use Ximdex\Models\StructuredDocument;
 class XmlContainerNode extends FolderNode
 {
     /**
-     * Get the schema for the current document.
-     * Old method. It stay here because backward compatibility.
+     * Get the schema for the current document
+     * Old method. It stay here because backward compatibility
      * 
+     * @deprecated
      * @return int Schema Id.
      */
-    function getVisualTemplate()
+    public function getVisualTemplate()
     {
         return $this->getIdSchema();
     }
 
     /**
-     * Get the schema for the current document.
+     * Get the schema for the current document
      * 
-     * @return int Schema Id.
+     * @return int Schema Id
      */
     public function getIdSchema()
     {
@@ -100,7 +101,7 @@ class XmlContainerNode extends FolderNode
      * @param array $channelList Array within idchannels
      * @param array $data Required data to create the language version.
      */
-    public function addLanguageVersion($idLang, $alias = '', $channelList = null, $data = null)
+    public function addLanguageVersion(int $idLang, string $alias = '', array $channelList = null, array $data = null)
     {
         $xmldoc = new Node();
         $childrenNodeType = new NodeType();
@@ -123,19 +124,18 @@ class XmlContainerNode extends FolderNode
             default:
                 return false;
         }
-        if ($childrenNodeType->HasError()) {
+        if ($childrenNodeType->hasError()) {
             $this->parent->SetError(1);
             return false;
         }
         $lang = new Language($idLang);
-        if ($lang->HasError()) {
+        if ($lang->hasError()) {
             $this->parent->SetError(1);
             return false;
         }
         $idSchema = $this->getIdSchema();
         $nameDoc = $this->parent->getNodeName() . "-id" . $lang->GetIsoName();
-        $idDoc = $xmldoc->CreateNode($nameDoc, $this->nodeID, $childrenNodeType->GetID(), null, $idSchema, $idLang, $alias
-            , $channelList, $data);
+        $idDoc = $xmldoc->CreateNode($nameDoc, $this->nodeID, $childrenNodeType->GetID(), null, $idSchema, $idLang, $alias, $channelList, $data);
         if ($xmldoc->HasError()) {
             $this->parent->SetError(1);
             return false;
@@ -148,9 +148,9 @@ class XmlContainerNode extends FolderNode
      * 
      * @param int $idNodeMaster
      */
-    public function setNodeMaster($idNodeMaster)
+    public function setNodeMaster(int $idNodeMaster)
     {
-        $children = $this->parent->GetChildren();
+        $children = $this->parent->getChildren();
         foreach ($children as $idChild) {
             $child = new Node($idChild);
             $childLanguage = $child->class->GetLanguage();
@@ -163,6 +163,10 @@ class XmlContainerNode extends FolderNode
         }
     }
 
+    /**
+     * {@inheritDoc}
+     * @see \Ximdex\NodeTypes\Root::deleteNode()
+     */
     public function deleteNode() : bool
     {
         $templatecontainer = new \Ximdex\Models\RelTemplateContainer();
@@ -179,7 +183,7 @@ class XmlContainerNode extends FolderNode
         if (! $name) {
             return false;
         }
-        $listaDocs = $this->parent->GetChildren();
+        $listaDocs = $this->parent->getChildren();
         if (sizeof($listaDocs) > 0) {
             foreach ($listaDocs as $docID) {
                 $node = new Node($docID);
@@ -194,22 +198,22 @@ class XmlContainerNode extends FolderNode
         return true;
     }
     
-    public function GetLanguages()
+    public function getLanguages()
     {
         $node = new Node($this->nodeID);
-        $docList = $node->GetChildren();
-        if ($node->HasError()) {
+        $docList = $node->getChildren();
+        if ($node->hasError()) {
             $this->parent->SetError(1);
             return false;
         }
         $langList = [];
         foreach ($docList as $docID) {
             $strDoc = new StructuredDocument($docID);
-            if (!$strDoc->GetID()) {
+            if (! $strDoc->GetID()) {
                 return false;
             }
             $language = new Language($strDoc->get("IdLanguage"));
-            if (!$language->GetID()) {
+            if (! $language->GetID()) {
                 return false;
             }
             $langList[$language->GetID()] = ['iso' => $language->GetIsoName(), 'nodeID' => $docID];
@@ -217,11 +221,11 @@ class XmlContainerNode extends FolderNode
         return $langList;
     }
     
-    public function GetChildByLang($langID)
+    public function getChildByLang(int $langID)
     {
         $node = new Node($this->nodeID);
-        $docList = $node->GetChildren();
-        if ($node->HasError()) {
+        $docList = $node->getChildren();
+        if ($node->hasError()) {
             $this->parent->SetError(1);
             return false;
         }
@@ -235,6 +239,10 @@ class XmlContainerNode extends FolderNode
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     * @see \Ximdex\NodeTypes\FolderNode::toXml()
+     */
     public function toXml(int $depth, array & $files, bool $recurrence = false)
     {
         $xml = '';

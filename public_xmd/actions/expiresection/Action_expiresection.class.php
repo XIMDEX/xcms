@@ -60,7 +60,7 @@ class Action_expiresection extends ActionAbstract
         $serverID = $node->getServer();
         $nodeServer = new Node($serverID);
         $nameServer = $nodeServer->get('Name');
-        $physicalServers = $nodeServer->class->GetPhysicalServerList(true);
+        $physicalServers = $nodeServer->class->getPhysicalServerList(true);
         if (!(sizeof($physicalServers) > 0)) {
             $this->messages->add(sprintf(_("There is not any defined physical server in: '%s'"), $nameServer), MSG_TYPE_ERROR);
             $values['messages'] = $this->messages->messages;

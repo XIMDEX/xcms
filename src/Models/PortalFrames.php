@@ -163,7 +163,8 @@ class PortalFrames extends PortalFramesOrm
             $temporalErrorFrames = (int) $db2->getValue('temporalError');
             $stoppedFrames = (int) $db2->getValue('stopped');
             $delayedFrames = (int) $db2->getValue('sfdelayed');
-            $portalFrame->set('SFtotal', (int) $db2->getValue('total'));
+            $totalFrames = (int) $db2->getValue('total');
+            $portalFrame->set('SFtotal', $totalFrames);
             $portalFrame->set('SFpending', (int) $db2->getValue('pending'));
             $portalFrame->set('SFactive', (int) $db2->getValue('active'));
             $portalFrame->set('SFsuccess', $sucessFrames);
@@ -181,6 +182,7 @@ class PortalFrames extends PortalFramesOrm
             }
             
             // Check new batch status
+            $checkPortalClosing = false;
             if ($batch) {
                 if ($batch->get('State') == Batch::INTIME) {
                     if (! $portalFrame->get('StartTime')) {
@@ -193,17 +195,19 @@ class PortalFrames extends PortalFramesOrm
                     $portalFrame->set('Status', self::STATUS_ACTIVE);
                 }
                 elseif ($batch->get('State') == Batch::ENDED or $batch->get('State') == Batch::NOFRAMES) {
-                    
-                    /*
-                    If all batchs minus one (current batch state is not saved) for this portal frame are ended, the status 
-                    will change to Ended
-                    */
-                    if (self::num_batchs_in_pool($portalFrame->get('id')) == 0) {
-                        $portalFrame->set('Status', self::STATUS_ENDED);
-                        $portalFrame->set('EndTime', time());
-                    }
+                    $checkPortalClosing = true;
                 }
                 $portalFrame->set('StatusTime', time());
+            } elseif ($totalFrames and $totalFrames == $sucessFrames + $fatalErrorFrames) {
+                $checkPortalClosing = true;
+            }
+            if ($checkPortalClosing) {
+                
+                // If all batchs minus one (current batch state is not saved) for this portal frame are ended, the status will change to Ended
+                if (self::num_batchs_in_pool($portalFrame->get('id')) == 0) {
+                    $portalFrame->set('Status', self::STATUS_ENDED);
+                    $portalFrame->set('EndTime', time());
+                }
             }
             
             // Update whole modified fields
@@ -411,7 +415,7 @@ class PortalFrames extends PortalFramesOrm
     }
     
     /**
-     * Retrieve the total of batchs for a given portal frame without ended state
+     * Retrieve the total of batchs for a given portal frame without ended or no-frames state
      * 
      * @param int $idPortalFrame
      * @throws \Exception

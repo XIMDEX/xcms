@@ -81,9 +81,9 @@ function createBatchsForBlock(array $nodesToPublish)
     $nodeServer = new Node($idServer);
     if (App::getValue('PublishOnDisabledServers') == 1) {
         Logger::info('PublishOnDisabledServers is true');
-        $physicalServers = $nodeServer->class->GetPhysicalServerList(true);
+        $physicalServers = $nodeServer->class->getPhysicalServerList(true);
     } else {
-        $physicalServers = $nodeServer->class->GetPhysicalServerList(true, true);
+        $physicalServers = $nodeServer->class->getPhysicalServerList(true, true);
     }
     if (count($physicalServers) == 0) {
         Logger::error('Physical server does not exist for nodeId: ' . $idNodeGenerator . ' ... returning empty arrays.');

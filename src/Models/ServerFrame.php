@@ -428,9 +428,9 @@ class ServerFrame extends ServerFramesOrm
         } else {
             $nodeServer = new Node($serverID);
             if (App::getValue('PublishOnDisabledServers') == 1) {
-                $physicalServers = $nodeServer->class->GetPhysicalServerList(true);
+                $physicalServers = $nodeServer->class->getPhysicalServerList(true);
             } else {
-                $physicalServers = $nodeServer->class->GetPhysicalServerList(true, true);
+                $physicalServers = $nodeServer->class->getPhysicalServerList(true, true);
             }
             if (count($physicalServers) == 0) {
                 Logger::warning('[GETCURRENT]: No physical servers found. IdSync: none');

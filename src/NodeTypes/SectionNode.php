@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -34,7 +34,7 @@ use Ximdex\Models\Section;
 use Ximdex\Logger;
 
 /**
- * @brief Handles ximDEX sections.
+ * @brief Handles ximDEX sections
  */
 class SectionNode extends FolderNode
 {
@@ -58,8 +58,8 @@ class SectionNode extends FolderNode
     /**
      * Gets the documents that must be published together with the section
      * 
-     * @param array params
-     * @return array
+     * {@inheritDoc}
+     * @see \Ximdex\NodeTypes\FolderNode::getPublishabledDeps()
      */
     function getPublishabledDeps(array $params = []) : ?array
     {
@@ -79,6 +79,9 @@ class SectionNode extends FolderNode
 
     /**
      * Deletes the Section and its dependencies
+     * 
+     * {@inheritDoc}
+     * @see \Ximdex\NodeTypes\Root::deleteNode()
      */
     public function deleteNode() : bool
     {

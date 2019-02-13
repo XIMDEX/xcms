@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -27,59 +27,42 @@
 
 namespace Ximdex\NodeTypes;
 
-
 /**
- * @brief Handles the Projects Node.
+ * @brief Handles the Projects Node
  *
- *  The Projects Node is the container of all ximDEX projects.
+ * The Projects Node is the container of all ximDEX projects
  */
 class Projects extends FolderNode
 {
     private static $ROOTNODEID = 10000;
-    
-    /**
-     * <p>Checks if the given node id exists</p>
-     * @param int $nodeId The node id to be checked
-     */
-    public function existsProject($projectId)
-    {
-        $id = (int)$projectId;
-        $node = new \Ximdex\Models\Node($id);
-        return $node->get("IdNode") != null;
-    }
 
     /**
-     * <p>Gets the node with the given node id or null if the node does not exist</p>
+     * Gets the node with the given node id or null if the node does not exist
      *
-     * @param int $nodeId The node id to be get
-     * @return Node The requested node or null if the node does not exist
+     * @param int $nodeId : The node id to be get
+     * @return \Ximdex\Models\Node : The requested node or null if the node does not exist
      */
-    public function getProject($idProject = null)
+    public function getProject(int $idProject = null)
     {
-        if ($idProject)
+        if ($idProject) {
             return $this->existsNode($idProject) ? new \Ximdex\Models\Node($idProject) : null;
-        else
+        } else {
             return $this->parent;
+        }
     }
 
-
     /**
-     * <p>Gets the project info</p>
-     * <p>It will return the following properties of the project:
-     *  <ul>
-     *      <li>nodeid</li>
-     *      <li>name</li>
-     *      <li>creationDate (timestamp)</li>
-     *      <li>path</li>
-     *  </ul>
-     * </p>
+     * Gets the project info
+     * It will return the following properties of the project:
+     *  - nodeid
+     *  - name
+     *  - creationDate (timestamp)
+     *  - path
      *
-     * @param string $projectId the project id to get the information
-     * @return array containing the project information
+     * @return array : containing the project information
      */
     public function getProjectInfo()
     {
-
         if ($this->parent == null) {
             return array();
         } else {
@@ -95,14 +78,14 @@ class Projects extends FolderNode
     public static function getProjectsInfo()
     {
         $projectsInfo = array();
-        $projects = self::getAllProject();
+        $projects = self::getAllProjects();
         foreach ($projects as $project) {
             $projectsInfo[] = $project->getProjectInfo();
         }
         return $projectsInfo;
     }
 
-    public static function getAllProject()
+    private static function getAllProjects()
     {
         $res = array();
         $root = new \Ximdex\Models\Node(self::$ROOTNODEID);
@@ -116,46 +99,4 @@ class Projects extends FolderNode
         }
         return $res;
     }
-
-    /**
-     * <p>Returns the Ximdex root node (projects)</p>
-     *
-     * @return Node The root node called projects
-     */
-    public function getRootProject()
-    {
-        return $this->getNode(self::$ROOTNODEID);
-    }
-
-    /**
-     * <p>Deletes the given node</p>
-     *
-     * @param mixed $node The node id or the Node to be deleted
-     *
-     * @return boolean indicates whether the node has been deleted successfully or not
-     */
-    public function deleteProject($node )
-    {
-        $nid = $node instanceof Node ? $node->GetID() : $node;
-
-        $n = new \Ximdex\Models\Node($nid);
-        $res = $n->DeleteNode(true);
-
-        return $res > 0;
-
-    }
-
-    public function getSiblings()
-    {
-        $result = $this->parent->find("IdNode", "idparent=%s", array($this->parent->get("IdParent")), MONO);
-        for ($i = 0; count($result); $i++) {
-            if ($result[$i] == $this->parent->parentID) {
-                unset($result[$i]);
-                break;
-            }
-        }
-
-        return $this->returnNode(array_values($result));
-    }
-
 }

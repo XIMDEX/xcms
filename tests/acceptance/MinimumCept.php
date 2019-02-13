@@ -31,7 +31,7 @@ $I->fillField('root_user', 'ximdex');
 $I->fillField('root_pass', 'ximdex');
 $I->fillField('name', 'ximdex');
 $I->click('Create Database');
-$I->wait(45);
+$I->wait(50);
 
 $I->see('Set the password for this admin user');
 $I->fillField('pass', 'ximdex');

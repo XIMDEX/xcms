@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -35,36 +35,27 @@ use Ximdex\Models\NodeType;
 class NodeTypeNode extends Root
 {
     /**
-     * Calls to method for adding a row to Actions table
-     * @param string name
-     * @param int parentID
-     * @param int nodeTypeID
-     * @param int stateID
-     * @param string icon
-     * @param int isRenderizable
-     * @param int hasFSEntity
-     * @param int canAttachGroups
-     * @param int isContentNode
-     * @param string description
-     * @param string class
+     * {@inheritDoc}
+     * @see \Ximdex\NodeTypes\Root::createNode()
      */
     public function createNode(string $name = null, int $parentID = null, int $nodeTypeID = null, int $stateID = null, string $icon = null
         , bool $isRenderizable = null, bool $hasFSEntity = null, bool $canAttachGroups = null, bool $isContentNode = null
         , string $description = null, string $class = null)
     {
         $nodeType = new NodeType();
-        $nodeType->CreateNewNodeType($name, $icon, $isRenderizable, $hasFSEntity, $canAttachGroups, $isContentNode,
-            $description, $class, $this->parent->get('IdNode'));
-        $this->UpdatePath();
+        $nodeType->createNewNodeType($name, $icon, $isRenderizable, $hasFSEntity, $canAttachGroups, $isContentNode, $description, $class
+            , $this->parent->get('IdNode'));
+        $this->updatePath();
         return true;
     }
 
     /**
-     * Calls to method for deleting
+     * {@inheritDoc}
+     * @see \Ximdex\NodeTypes\Root::deleteNode()
      */
     public function deleteNode() : bool
     {
         $ntype = new NodeType($this->nodeID);
-        return (bool) $ntype->DeleteNodeType();
+        return (bool) $ntype->deleteNodeType();
     }
 }

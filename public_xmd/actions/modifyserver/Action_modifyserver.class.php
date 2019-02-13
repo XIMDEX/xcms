@@ -42,7 +42,7 @@ class Action_modifyserver extends ActionAbstract
 		}
 		$actionParam = $actionID == 0 ? 'action=' . $this->request->getParam('action') : 'actionid=' . $actionID;
 		$servers = new Node($idNode);
-		$list = $servers->class->GetPhysicalServerList();
+		$list = $servers->class->getPhysicalServerList();
 		$num_servers = count($list);
 		$_servers = array();
 		if ($num_servers > 0) {
@@ -145,7 +145,7 @@ class Action_modifyserver extends ActionAbstract
 		$encode	= $this->request->getParam('encode');
 		$token = $this->request->getParam('token');
 		$server = new Node($nodeID);
-		$list = $server->class->GetPhysicalServerList();
+		$list = $server->class->getPhysicalServerList();
 		if (is_array($list) && in_array($serverID, $list)) {
 		    $action = 'mod';
 		}
@@ -156,7 +156,7 @@ class Action_modifyserver extends ActionAbstract
 			$node = new Node($nodeID);
 			if ($this->request->getParam('borrar') == 1) {
 				$server = new Node($nodeID);
-				$server->class->DeletePhysicalServer($serverID);
+				$server->class->deletePhysicalServer($serverID);
 				$action = 'erase';
 				$this->messages->add(_('Server successfully removed'), MSG_TYPE_NOTICE);
 				$serverID = null;
@@ -166,47 +166,47 @@ class Action_modifyserver extends ActionAbstract
 				$dbObj->Query($sql);
 				if ($dbObj->numRows) {
 					if ($action == 'mod') {
-						$node->class->SetProtocol($serverID, $protocol);
-						$node->class->SetHost($serverID, $host);
-						$node->class->SetPort($serverID, $port);
-						$node->class->SetInitialDirectory($serverID, $initialDir);
-						$node->class->SetLogin($serverID, $login);
-						$node->class->SetURL($serverID, $url);
-						$node->class->SetDescription($serverID, $description);
-						$node->class->SetEnabled($serverID, !!$enabled);
-						$node->class->SetPreview($serverID, !!$preview);
-						$node->class->SetOverrideLocalPaths($serverID, !!$override);
-						$node->class->SetEncode($serverID, $encode);
-						$node->class->SetToken($serverID, $token);
+						$node->class->setProtocol($serverID, $protocol);
+						$node->class->setHost($serverID, $host);
+						$node->class->setPort($serverID, $port);
+						$node->class->setInitialDirectory($serverID, $initialDir);
+						$node->class->setLogin($serverID, $login);
+						$node->class->setURL($serverID, $url);
+						$node->class->setDescription($serverID, $description);
+						$node->class->setEnabled($serverID, !!$enabled);
+						$node->class->setPreview($serverID, !!$preview);
+						$node->class->setOverrideLocalPaths($serverID, !!$override);
+						$node->class->setEncode($serverID, $encode);
+						$node->class->setToken($serverID, $token);
 						if ($password){
-							$node->class->SetPassword($serverID, $password);
+							$node->class->setPassword($serverID, $password);
 						}
 						elseif ($serverID and $server) {
 						    
 							//If the password was specified before, we use the one stored
-							$password = $server->class->GetPassword($serverID);
+							$password = $server->class->getPassword($serverID);
 						}
 						$this->messages->add(_('Server successfully modified'), MSG_TYPE_NOTICE);
 					} else {
-						$serverID = $node->class->AddPhysicalServer($protocol, $login, $password, $host, $port, $url, $initialDir, !!$override
+						$serverID = $node->class->addPhysicalServer($protocol, $login, $password, $host, $port, $url, $initialDir, !!$override
 						      , !!$enabled, !!$preview, $description, $token);
 						if ($serverID) {
-                            $node->class->SetEncode($serverID,$encode);
+                            $node->class->setEncode($serverID,$encode);
 							$this->messages->add(_('Server successfully created'), MSG_TYPE_NOTICE);
 						} else {
 							$this->messages->add(_('Error while creating server'), MSG_TYPE_ERROR);
 						}
 					}
-					$node->class->DeleteAllChannels($serverID);
+					$node->class->deleteAllChannels($serverID);
 					if ($channels) {
 						foreach($channels as $chan) {
 							$node->class->AddChannel($serverID, $chan);
 						}
 					}
-					$node->class->DeleteAllStates($serverID);
+					$node->class->deleteAllStates($serverID);
 					if ($states) {
 						foreach($states as $stat) {
-							$node->class->AddState($serverID, $stat);
+							$node->class->addState($serverID, $stat);
 						}
 					}
 				} else {
@@ -267,7 +267,7 @@ class Action_modifyserver extends ActionAbstract
 		else
 		{
 		    $servers = new Node($idNode);
-		    $list = $servers->class->GetPhysicalServerList();
+		    $list = $servers->class->getPhysicalServerList();
 		    if (is_array($list) and count($list)) {
 		        foreach($list as $id) {
 		            

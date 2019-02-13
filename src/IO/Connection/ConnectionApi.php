@@ -33,7 +33,7 @@ use Ximdex\Utils\FsUtils;
 
 class ConnectionApi extends Connector implements IConnector
 {
-    const API_TRANSACTION_DELAY = 300;
+    const API_TRANSACTION_DELAY = 0;
     
     private $client;
     private $connected = false;

@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -31,25 +31,17 @@ use Ximdex\Logger;
 
 class FsUtils
 {
-    /**
-     * @param $file
-     * @return mixed|null
-     */
-    static public function get_mime_type($file)
+    static public function get_mime_type(string $file)
     {
         if (! is_file($file)) {
-            return NULL;
+            return null;
         }
         $command = 'file -b --mime-type ' . escapeshellarg($file);
         $result = exec($command);
         return str_replace('\012- ', '', $result);
     }
 
-    /**
-     * @param $file
-     * @return null
-     */
-    static public function getFolderFromFile($file)
+    static public function getFolderFromFile(string $file)
     {
         $matches = [];
         if (preg_match('/(.*)\/[^\/]+/', $file, $matches)) {
@@ -61,24 +53,17 @@ class FsUtils
     }
 
     /**
-     * Check for available free space on disk and send mail notifications if any limit is exceeded.
+     * Check for available free space on disk and send mail notifications if any limit is exceeded
      * 
-     * @return boolean TRUE if no limits are exceeded, FALSE otherwise.
-     * @param $file
+     * @param string $file
+     * @return boolean TRUE if no limits are exceeded, FALSE otherwise
      */
-    static public function notifyDiskspace($file)
+    static public function notifyDiskspace(string $file)
     {
         return true;
     }
 
-    /**
-     * @param $filename
-     * @param $data
-     * @param null $flags
-     * @param null $context
-     * @return bool
-     */
-    static public function file_put_contents($filename, $data, $flags = null, $context = null) : bool
+    static public function file_put_contents(string $filename, string $data, array $flags = null, $context = null) : bool
     {
         $result = false;
         $error = null;
@@ -122,13 +107,7 @@ class FsUtils
         return true;
     }
 
-    /**
-     * @param $path
-     * @param int $mode
-     * @param bool $recursive
-     * @return bool
-     */
-    static public function mkdir($path, $mode = 0755, $recursive = false)
+    static public function mkdir(string $path, int $mode = 0755, bool $recursive = false)
     {
         if (is_dir($path)) {
             return true;
@@ -144,18 +123,12 @@ class FsUtils
                 // We got the beginning, we go out
                 return true;
             }
-            return FsUtils::mkdir($matches[1], $mode, true) && mkdir($path, $mode);
+            return static::mkdir($matches[1], $mode, true) && mkdir($path, $mode);
         }
         return mkdir($path, $mode, $recursive);
     }
 
-    /**
-     * @param $filename
-     * @param bool $use_include_path
-     * @param null $context
-     * @return bool|string
-     */
-    static public function file_get_contents($filename, $use_include_path = false, $context = NULL)
+    static public function file_get_contents(string $filename, bool $use_include_path = false, $context = null)
     {
         if (! is_file($filename)) {            
             $backtrace = debug_backtrace();
@@ -170,11 +143,7 @@ class FsUtils
         return file_get_contents($filename, $use_include_path, $context);
     }
 
-    /**
-     * @param $file
-     * @return string
-     */
-    static public function get_name($file)
+    static public function get_name(string $file)
     {
         $ext = self::get_extension($file);
         $len_ext = strlen($ext) + 1;
@@ -185,30 +154,19 @@ class FsUtils
         return $file;
     }
 
-    /**
-     * @param $file
-     * @return bool
-     */
-    static public function get_extension($file)
+    static public function get_extension(string $file)
     {
         if (empty($file)) {
             return false;
         }
         $matches = [];
-        if (!(preg_match('/\.([^\.]*)$/', $file, $matches) > 0)) {
+        if (! (preg_match('/\.([^\.]*)$/', $file, $matches) > 0)) {
             return false;
         }
         return isset($matches[1]) ? $matches[1] : false;
     }
 
-    /**
-     * @param $path
-     * @param $callback
-     * @param null $args
-     * @param bool $recursive
-     * @return bool
-     */
-    static public function walk_dir($path, $callback, $args = NULL, $recursive = true)
+    static public function walk_dir(string $path, callable $callback, array $args = null, bool $recursive = true)
     {
         $dh = @opendir($path);
         if (false === $dh) {
@@ -220,25 +178,21 @@ class FsUtils
             }
             call_user_func($callback, "{$path}/{$file}", $args);
             if (false !== $recursive && is_dir("{$path}/{$file}")) {
-                FsUtils::walk_dir("{$path}/{$file}", $callback, $args, $recursive);
+                static::walk_dir("{$path}/{$file}", $callback, $args, $recursive);
             }
         }
         closedir($dh);
         return true;
     }
 
-    /**
-     * @param $path
-     * @param bool $recursive
-     * @param array $excluded
-     * @return array|null
-     */
-    static public function readFolder($path, $recursive = true, $excluded = array())
+    static public function readFolder(string $path, bool $recursive = true, array $excluded = array())
     {
-        if (!is_dir($path)) {
+        if (! is_dir($path)) {
             return null;
         }
-        if (!is_array($excluded)) $excluded = array($excluded);
+        if (! is_array($excluded)) {
+            $excluded = array($excluded);
+        }
         $excluded = array_merge(array('.', '..', '.svn'), $excluded);
         $files = scandir($path);
         $files = array_values(array_diff($files, $excluded));
@@ -261,7 +215,7 @@ class FsUtils
      * @param string $folder
      * @return boolean
      */
-    static public function deltree($folder)
+    static public function deltree(string $folder)
     {
         $backtrace = debug_backtrace();
         Logger::debug(sprintf('It has been asked to delete recursively a folder [inc/fsutils/FsUtils.class.php]'
@@ -284,11 +238,11 @@ class FsUtils
             }
             $pathToElement = sprintf('%s/%s', $folder, $file);
             if (is_dir($pathToElement)) {
-                if (!FsUtils::deltree($pathToElement)) {
+                if (! static::deltree($pathToElement)) {
                     return false;
                 }
             } else {
-                FsUtils::delete($pathToElement);
+                static::delete($pathToElement);
             }
         }
         closedir($handler);
@@ -298,10 +252,6 @@ class FsUtils
         return false;
     }
 
-    /**
-     * @param string $file
-     * @return bool
-     */
     static public function delete(string $file) : bool
     {
         if (! is_file($file)) {
@@ -316,7 +266,8 @@ class FsUtils
         }
         if (! @unlink($file)) {
             $backtrace = debug_backtrace();
-            Logger::error(sprintf('It has been asked to delete a file which could not be deleted %s [inc/fsutils/FsUtils.class.php] script: %s file: %s line: %s',
+            Logger::error(sprintf('It has been asked to delete a file which could not be deleted %s [inc/fsutils/FsUtils.class.php]' 
+                . ' script: %s file: %s line: %s',
                 $file,
                 $_SERVER['SCRIPT_FILENAME'],
                 $backtrace[0]['file'],
@@ -326,12 +277,6 @@ class FsUtils
         return true;
     }
 
-    /**
-     * @param $containerFolder
-     * @param string $sufix
-     * @param string $prefix
-     * @return string
-     */
     static public function getUniqueFile(string $containerFolder, string $sufix = '', string $prefix = '') : string
     {
         do {
@@ -342,13 +287,7 @@ class FsUtils
         return $fileName;
     }
 
-    /**
-     * @param $containerFolder
-     * @param string $sufix
-     * @param string $prefix
-     * @return string
-     */
-    static public function getUniqueFolder($containerFolder, $sufix = '', $prefix = '')
+    static public function getUniqueFolder(string $containerFolder, string $sufix = '', string $prefix = '')
     {
         do {
             $tmpFolder = sprintf('%s/%s%s%s/', $containerFolder, $prefix,  Strings::generateRandomChars(8), $sufix);
@@ -365,7 +304,7 @@ class FsUtils
      * @param bool $move
      * @return bool
      */
-    static public function copy($sourceFile, $destFile, bool $move = false) : bool
+    static public function copy(string $sourceFile, string $destFile, bool $move = false) : bool
     {
         if (!empty($sourceFile) && !empty($destFile)) {     
             $result = copy($sourceFile, $destFile);
@@ -390,7 +329,7 @@ class FsUtils
      * @param $recursive boolean Indicate if has to recursive read of path folder
      * @return array Found files.
      */
-    static public function getFolderFilesByExtension($path, $extensions = array(), $recursive = true)
+    static public function getFolderFilesByExtension(string $path, array $extensions = array(), bool $recursive = true)
     {
         if (!is_dir($path)) {
             return null;
@@ -420,6 +359,7 @@ class FsUtils
      * 
      * @param string $url
      * @param bool $includeHost
+     * @return boolean|string
      */
     public static function get_url_path(string $url, bool $includeHost = true)
     {
@@ -442,11 +382,11 @@ class FsUtils
     
     /**
      * Return the file name and the extension of an URL given (only for files with extension) or null otherwise
-     *  
+     * 
      * @param string $url
-     * @return boolean|string|null
+     * @return boolean|string
      */
-    public static function get_url_file($url)
+    public static function get_url_file(string $url)
     {
         $data = @parse_url($url);
         if ($data === false)
@@ -459,49 +399,35 @@ class FsUtils
     
     /**
      * Return true is the string given is a complete URL (http...) or false is not
+     * 
      * @param string $url
-     * @return boolean
+     * @return mixed
      */
-    public static function is_url($url)
+    public static function is_url(string $url)
     {
         return filter_var($url, FILTER_VALIDATE_URL);
     }
 
-    static private function computeFolder($folder)
+    static private function computeFolder(string $folder)
     {
         return is_null($folder) ? XIMDEX_ROOT_PATH : $folder;
     }
 
-    /**
-     * @param string $unit
-     * @param null $directory
-     * @return bool|float
-     */
-    static public function disk_total_space($unit = 'B', $directory = null)
+    static public function disk_total_space(string $unit = 'B', string $directory = null)
     {
         $directory = self::computeFolder($directory);
         $bytes = disk_total_space($directory);
         return self::transformUnits($bytes, $unit);
     }
 
-    /**
-     * @param string $unit
-     * @param null $directory
-     * @return bool|float
-     */
-    static public function disk_free_space($unit = 'B', $directory = null)
+    static public function disk_free_space(string $unit = 'B', string $directory = null)
     {
         $directory = self::computeFolder($directory);
         $bytes = disk_free_space($directory);
         return self::transformUnits($bytes, $unit);
     }
 
-    /**
-     * @param null $target
-     * @param string $unit
-     * @return bool|float|int
-     */
-    static public function transform($target = null, $unit = 'B')
+    static public function transform(string $target = null, string $unit = 'B')
     {
         if (empty($target)) {
             return 0;
@@ -511,12 +437,7 @@ class FsUtils
         return self::transformToUnits($out[1], $out[2], $unit);
     }
 
-    /**
-     * @param $bytes
-     * @param $unit
-     * @return bool|float
-     */
-    static public function transformUnits($bytes, $unit)
+    static public function transformUnits(float $bytes, string $unit)
     {
         $units = array('B', 'KB', 'MB', 'GB', 'TB');
         $count = array_search($unit, $units);
@@ -531,13 +452,7 @@ class FsUtils
         return $bytes;
     }
 
-    /**
-     * @param $target
-     * @param $unit_from
-     * @param $unit_to
-     * @return bool|float
-     */
-    static public function transformToUnits($target, $unit_from, $unit_to)
+    static public function transformToUnits(float $target, string $unit_from, string $unit_to)
     {
         $units = array('B', 'KB', 'MB', 'GB', 'TB');
         $ini = array_search($unit_from, $units);

@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -37,7 +37,7 @@ class XimletNode extends AbstractStructuredDocument
         $query = sprintf("SELECT Distinct(idNodeDependent) FROM Dependencies WHERE DepType ='XIMLET' AND idNodeMaster = %d", $this->nodeID);
         $this->dbObj->Query($query);
         $docsToPublish = array();
-        while (!$this->dbObj->EOF) {
+        while (! $this->dbObj->EOF) {
             $docsToPublish[] = $this->dbObj->GetValue("idNodeDependent");
             $this->dbObj->Next();
         }
@@ -78,12 +78,11 @@ class XimletNode extends AbstractStructuredDocument
         Logger::info('Ximlet dependencies deleted');
         return true;
     }
-
     /**
      * Get the documents that must be publicated when the ximlet is published
      * 
-     * @param array $params
-     * @return array
+     * {@inheritDoc}
+     * @see \Ximdex\NodeTypes\AbstractStructuredDocument::getPublishabledDeps()
      */
     public function getPublishabledDeps(array $params = []) : ?array
     {

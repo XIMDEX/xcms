@@ -37,11 +37,11 @@ use Ximdex\Models\FastTraverse;
 
 class XsltNode extends FileNode
 {
-    private $xsltOldName = '';
-    
     public $messages;
+    
+    private $xsltOldName = '';
 
-    public function __construct(& $node)
+    public function __construct(& $node = null)
     {
         if (is_object($node)) {
             $this->parent = $node;
@@ -67,16 +67,23 @@ class XsltNode extends FileNode
 
             // Saving xslt content
             $xslContent = FsUtils::file_get_contents($ptdSourcePath);
+            if ($xslContent === false) {
+                return false;
+            }
             $xslContent = $this->sanitizeContent($xslContent);
-            $xslSourcePath = XIMDEX_ROOT_PATH . App::getValue('TempRoot') . '/' . $parentID . $xsltName;
+            $xslSourcePath = XIMDEX_ROOT_PATH . App::getValue('TempRoot') . '/' . uniqid() . '_' . $parentID . $xsltName;
             if (! FsUtils::file_put_contents($xslSourcePath, $xslContent)) {
                 Logger::error('Error saving xslt file');
                 $this->messages->add('Error saving xslt file: ' . $parentID . $xsltName, MSG_TYPE_ERROR);
                 return false;
             }
         }
-        if (parent::CreateNode($xsltName, $parentID, $nodeTypeID, $stateID, $xslSourcePath) === false) {
+        $res = parent::createNode($xsltName, $parentID, $nodeTypeID, $stateID, $xslSourcePath);
+        if ($res === false) {
             return false;
+        }
+        if ($xslSourcePath) {
+            FsUtils::delete($xslSourcePath);
         }
         
         // Creating include file with the template inside
@@ -111,7 +118,7 @@ class XsltNode extends FileNode
 				<dext:root xmlns:dext="http://www.ximdex.com" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 				<xsl:dummy />
 				</dext:root>';
-        $xslSourcePath = XIMDEX_ROOT_PATH . App::getValue('TempRoot') . '/templates_include.xsl';
+        $xslSourcePath = XIMDEX_ROOT_PATH . App::getValue('TempRoot') . '/' . uniqid() . '_templates_include.xsl';
         if (! FsUtils::file_put_contents($xslSourcePath, $dummyXml)) {
             Logger::error('Error saving templates_include.xsl file');
             $this->messages->add('Error saving templates_include.xsl file', MSG_TYPE_ERROR);
@@ -119,6 +126,7 @@ class XsltNode extends FileNode
         }
         $incNode = new Node();
         $id = $incNode->createNode('templates_include.xsl', $idTemplatesFolder, NodeTypeConstants::XSL_TEMPLATE, $stateID, $xslSourcePath);
+        FsUtils::delete($xslSourcePath);
         if ($id > 0) {
             $incNode = new Node($id);
             $includeContent = '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
@@ -133,7 +141,7 @@ class XsltNode extends FileNode
                 $includeContent .= "\t<xsl:include href=\"$templateURL\"/>\n";
             }
             $includeContent .= '</xsl:stylesheet>';
-            $incNode->SetContent($includeContent);
+            $incNode->setContent($includeContent);
             
             // Save the dependencies to the documents folders if exist (with the templates folder node)
             $project = new Node($incNode->getProject());
@@ -379,7 +387,7 @@ class XsltNode extends FileNode
         return true;
     }
 
-    private function sanitizeContent($content)
+    private function sanitizeContent(string $content)
     {
         if (empty($content)) {
             Logger::info('It have been created or edited a document with empty content');
@@ -413,7 +421,7 @@ class XsltNode extends FileNode
         return $content;
     }
 
-    private function splitCData($node, &$xsldom)
+    private function splitCData(\DOMElement $node, \DOMDocument & $xsldom)
     {
         $nodevalue = $node->nodeValue;
 
@@ -435,7 +443,7 @@ class XsltNode extends FileNode
                 $textnode = $xsldom->createElement('xsl:text');
                 $textnode->setAttribute('disable-output-escaping', 'yes');
                 $textnode->appendChild($xsldom->createCDATASection($token));
-                $arrCD = array_merge($arrCD, (array)$this->splitCData($textnode, $xsldom));
+                $arrCD = array_merge($arrCD, (array) $this->splitCData($textnode, $xsldom));
                 if ($i < ($count - 1)) {
                     $valueof = $xsldom->createElement('xsl:value-of');
                     $valueof->setAttribute('select', $attrvalue);
@@ -449,8 +457,8 @@ class XsltNode extends FileNode
     /**
      * Get the documents that must be publish when the template is published
      * 
-     * @param array $params
-     * @return array
+     * {@inheritDoc}
+     * @see \Ximdex\NodeTypes\FileNode::getPublishabledDeps()
      */
     public function getPublishabledDeps(array $params = []) : ?array
     {
@@ -522,7 +530,7 @@ DOCXAP;
      * @param int $targetParentID
      * @return boolean
      */
-    public function move_node($targetParentID)
+    public function move_node(int $targetParentID)
     {
         // Locate the NodeID for the parent templates node
         $templatesId = $this->parent->GetParent();
@@ -546,7 +554,7 @@ DOCXAP;
      * @param Node $node
      * @return boolean
      */
-    private static function isIncludedInTemplates($templateName, Node $node)
+    private static function isIncludedInTemplates(string $templateName, Node $node)
     {
         if ($templateName == 'templates_include.xsl' or $templateName == 'docxap.xsl') {
             return true;
@@ -616,7 +624,8 @@ DOCXAP;
     
     /**
      * Include the correspondant includes_template.xsl for the current document; based in DOCFOLDER_TEMPLATESINC dependencie
-     * If the $idDocLocalNode parameter is null, the templates to use will be the associated to the project with node given by $idProject parameter
+     * If the $idDocLocalNode parameter is null, the templates to use will be the associated to the project with node 
+     * given by $idProject parameter
      * 
      * @param string $content
      * @param int $idDocLocalNode
@@ -624,7 +633,8 @@ DOCXAP;
      * @param string $urlTemplatesInclude
      * @return bool
      */
-    public static function replace_path_to_local_templatesInclude(& $content, $idDocLocalNode, $idProject = null, & $urlTemplatesInclude = null)
+    public static function replace_path_to_local_templatesInclude(string & $content, int $idDocLocalNode, int $idProject = null
+        , string & $urlTemplatesInclude = null)
     {
         if ($idDocLocalNode) {
             Logger::info('Replacing includes template with document node ' . $idDocLocalNode);

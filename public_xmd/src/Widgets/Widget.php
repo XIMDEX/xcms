@@ -53,7 +53,7 @@ class Widget
 	    if (is_array(self::$_widgets)) {
 	        return self::$_widgets;
 	    }
-		self::$_widgets = FsUtils::readFolder( APP_ROOT_PATH  . '/src/Widgets/' , false, 'common');
+		self::$_widgets = FsUtils::readFolder( APP_ROOT_PATH  . '/src/Widgets/' , false, ['common']);
 		return self::$_widgets;
 	}
 

@@ -27,7 +27,7 @@
 
 namespace Ximdex\NodeTypes;
 
-/***
+/**
  * Class for NodeType Video
  */
 class VideoNode extends FileNode

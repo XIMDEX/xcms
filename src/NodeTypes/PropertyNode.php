@@ -28,7 +28,7 @@
 namespace Ximdex\NodeTypes;
 
 /**
- * @brief Handles Properties as ximDEX Nodes.
+ * @brief Handles Properties as ximDEX Nodes
  */
 class PropertyNode extends Root
 {}

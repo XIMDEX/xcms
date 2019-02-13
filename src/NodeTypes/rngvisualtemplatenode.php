@@ -44,13 +44,8 @@ class rngvisualtemplatenode extends FileNode
 	public $renderCount = 0;
 
 	/**
-	 * Creates the file in data/files directory
-	 * 
-	 * @param string name
-	 * @param int parentID
-	 * @param int nodeTypeID
-	 * @param int stateID
-	 * @param string sourcePath
+	 * {@inheritDoc}
+	 * @see \Ximdex\NodeTypes\FileNode::createNode()
 	 */
 	public function createNode(string $name = null, int $parentID = null, int $nodeTypeID = null, int $stateID = null, string $sourcePath = null)
 	{
@@ -65,9 +60,8 @@ class rngvisualtemplatenode extends FileNode
 	}
 
 	/**
-	 * Gets the minimal content of a document created by a template
-	 * 
-	 * @return string
+	 * {@inheritDoc}
+	 * @see \Ximdex\NodeTypes\FileNode::buildDefaultContent()
 	 */
 	public function buildDefaultContent()
 	{

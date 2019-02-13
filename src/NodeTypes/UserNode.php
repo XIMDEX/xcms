@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -40,21 +40,24 @@ class UserNode extends Root
 	    , string $pass = null, string $email = null, string $locale = null, string $generalRole = null)
 	{
 		$user = new User();
-		$idUser = $user->SetByLogin($login);
+		$idUser = $user->setByLogin($login);
 		if ($idUser > 0) {
 			Logger::error("Another user with the same login $login");
 			return NULL;
 		}
-		$ret = $user->CreateNewUser($realName, $login, $pass, $email, $locale, $generalRole, $this->parent->get('IdNode'));
-		$this->UpdatePath();
+		$ret = $user->createNewUser($realName, $login, $pass, $email, $locale, $generalRole, $this->parent->get('IdNode'));
+		$this->updatePath();
 		return $ret;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * @see \Ximdex\NodeTypes\Root::deleteNode()
+	 */
 	public function deleteNode() : bool
 	{
 		$user = new User($this->parent->get('IdNode'));
-		$user->DeleteUser();
+		$user->deleteUser();
 		return true;
 	}
 }
- 

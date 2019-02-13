@@ -154,9 +154,9 @@ class Manager
      * @param $constModule
      * @param $modules
      */
-    public static function parseModules($constModule, &$modules)
+    public static function parseModules($constModule, & $modules)
     {
-        $paths = FsUtils::readFolder($constModule, false /*, $excluded = array()*/ );
+        $paths = FsUtils::readFolder($constModule, false);
         if ($paths) {
             foreach ($paths as $moduleName) {
                 $modulePath = $constModule . $moduleName;
@@ -165,7 +165,7 @@ class Manager
                         $i = count($modules);
                         $modules[$i]["name"] = $moduleName;
                         $modules[$i]["path"] = $modulePath;
-                        $modules[$i]["enable"] = (int)self::isEnabled($moduleName);
+                        $modules[$i]["enable"] = (int) self::isEnabled($moduleName);
                     }
                 }
             }

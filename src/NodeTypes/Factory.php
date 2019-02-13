@@ -53,7 +53,6 @@ class Factory
         'servernode' => array('ClassName' => '\\Ximdex\\NodeTypes\\ServerNode'),
         'statenode' => array('ClassName' => '\\Ximdex\\NodeTypes\\StateNode'),
         'usernode' => array('ClassName' => '\\Ximdex\\NodeTypes\\UserNode'),
-        'workflow_process' => array('ClassName' => '\\Ximdex\\NodeTypes\\WorkflowProcess'),
         'XimletNode' => array('ClassName' => '\\Ximdex\\NodeTypes\\XimletNode'),
         'xmldocumentnode' => array('ClassName' => '\\Ximdex\\NodeTypes\\XmlDocumentNode'),
         'xmlcontainernode' => array('ClassName' => '\\Ximdex\\NodeTypes\\XmlContainerNode'),
