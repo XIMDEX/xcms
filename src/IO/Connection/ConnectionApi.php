@@ -33,6 +33,8 @@ use Ximdex\Utils\FsUtils;
 
 class ConnectionApi extends Connector implements IConnector
 {
+    const API_TRANSACTION_DELAY = 300;
+    
     private $client;
     private $connected = false;
     private $host = false;
@@ -174,7 +176,9 @@ class ConnectionApi extends Connector implements IConnector
 	        $res = $this->client->request('DELETE', $this->host . '/' . App::getValue('ximid') . ':' . $id);
 	        
 	        // Delay time between delete call
-	        // usleep(300000);
+	        if (self::API_TRANSACTION_DELAY) {
+                usleep(self::API_TRANSACTION_DELAY * 1000);
+	        }
 	    }
 	    catch (\Exception $e) {
 	        $this->error = $e->getMessage();
@@ -215,8 +219,10 @@ class ConnectionApi extends Connector implements IConnector
 	    try {
 	       $res = $this->client->request('PUT', $this->host, ['body' => $content, 'headers' => ['Content-Type' => 'application/xml']]);
 	       
-	       // Delay time between put call
-	       // usleep(300000);
+	       // Delay time between delete call
+	       if (self::API_TRANSACTION_DELAY) {
+	           usleep(self::API_TRANSACTION_DELAY * 1000);
+	       }
 	    }
 	    catch (\Exception $e) {
 	        $this->error = $e->getMessage();
