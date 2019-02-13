@@ -245,7 +245,7 @@ class PortalFrames extends PortalFramesOrm
         if ($type) {
             $query .= ' AND PublishingType = \'' . $type . '\'';
         }
-        $query .= ' ORDER BY ScheduledTime, StartTime, id';
+        $query .= ' ORDER BY ScheduledTime DESC, StartTime, id';
         $db = new Db();
         if ($db->Query($query) === false) {
             throw new \Exception('Could not obtain a list of portal frames with ' . $state);
