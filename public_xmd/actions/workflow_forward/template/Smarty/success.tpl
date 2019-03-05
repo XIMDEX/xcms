@@ -1,5 +1,5 @@
 {**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -29,10 +29,14 @@
 </div>
 <div class="small-12 columns">
     <fieldset class="buttons-form">
-        {if ($goback) }
+        {if ($goback)}
             {button class="goback-button btn main_action" label="Go back"}
         {else}
             {button class="close-button btn main_action" label="Close"}
         {/if}
     </fieldset>
 </div>
+<script type="text/javascript">
+    $('[name=xim-node-reload]').val('{$parentID}');
+    $('.xim-treeview-btnreload').click();
+</script>

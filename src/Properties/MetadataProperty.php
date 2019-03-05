@@ -27,43 +27,43 @@
 
 namespace Ximdex\Properties;
 
-use Ximdex\Models\Language;
+use Ximdex\Models\MetadataScheme;
 
-class LanguageProperty extends InheritableProperty
+class MetadataProperty extends InheritableProperty
 {
-    private $language;
+    private $metadata;
     
+    /**
+     * {@inheritDoc}
+     * @see \Ximdex\Properties\InheritableProperty::getPropertyName()
+     */
 	public function getPropertyName()
-	{
-	    return strtolower(self::LANGUAGE);
+	{	    
+	    return strtolower(self::METADATA_SCHEME);
 	}
 	
 	/**
-	 * Obtain system properties for channels
-	 * 
 	 * {@inheritDoc}
 	 * @see \Ximdex\Properties\InheritableProperty::get_system_properties()
 	 */
     protected function get_system_properties()
     {
-        if (! $this->language) {
-            $this->language = New Language();
+        if (! $this->metadata) {
+            $this->metadata = new MetadataScheme();
         }
-        return $this->language->find('IdLanguage as Id, Name, IsoName', 'Enabled = 1', NULL);
+        return $this->metadata->find('idMetadataScheme as Id, name as Name');
     }
     
     /**
-     * Get the inherited languages
-     * 
      * {@inheritDoc}
      * @see \Ximdex\Properties\InheritableProperty::get_inherit_properties()
      */
     protected function get_inherit_properties(array $availableProperties)
     {
-        if (! $this->language) {
-            $this->language = New Language();
+        if (! $this->metadata) {
+            $this->metadata = new MetadataScheme();
         }
-        return $this->language->find('IdLanguage as Id, Name, IsoName', 'Enabled = 1 and IdLanguage in (%s)'
+        return $this->metadata->find('idMetadataScheme as Id, name as Name', 'idMetadataScheme in (%s)'
             , array(implode(', ', $availableProperties)), MULTI, false);
     }
     

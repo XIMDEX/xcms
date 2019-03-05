@@ -376,13 +376,17 @@ abstract class ActionAbstract extends IController
      * Recargamos el arbol sobre el nodo especificado
      * This method doesn't work when returning a JSON response
      * 
-     * @param int $idnode
+     * @param int $nodeId
      */
-    public function reloadNode($idnode)
+    public function reloadNode(int $nodeId)
     {
+        if (! $nodeId) {
+            return;
+        }
         $queryManager = new QueryManager(false);
-        $file = $queryManager->buildWith(array(
-                'xparams[reload_node_id]' => $idnode,
+        $file = $queryManager->buildWith(array
+            (
+                'xparams[reload_node_id]' => $nodeId,
                 'js_file' => 'reloadNode',
                 'method' => 'includeDinamicJs',
                 'void' => 'SpacesInIE7HerePlease'
@@ -391,12 +395,6 @@ abstract class ActionAbstract extends IController
         $this->addJs(urldecode($file));
     }
 
-    /**
-     * @param $_js
-     * @param string $_module
-     * @param $params
-     * @return array|string
-     */
     public function addJs($_js, $_module = 'APP', $params = null)
     {
         if ('APP' == $_module or 'XIMDEX' == $_module) {

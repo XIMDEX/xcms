@@ -228,9 +228,11 @@ class Workflow extends GenericData
                     continue;
                 }
                 $className = $info['filename'];
+                /*
                 if ($className == 'WorkflowAction') {
                     continue;
                 }
+                */
                 $class = self::WORKFLOW_ACTIONS_NAMESPACE . $className;
                 if (! class_exists($class)) {
                     continue;

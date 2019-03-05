@@ -32,74 +32,92 @@ use Ximdex\Models\ORM\LanguagesOrm;
 class Language extends LanguagesOrm
 {
 	public $langID;
+	
 	public $dbObj;
+	
 	public $numErr;
+	
 	public $msgErr;
-	public $errorList = array(
+	
+	public $errorList = array
+	(
 		1 => 'Language does not exist',
 		2 => 'A language with this name already exists',
 		3 => 'Arguments missing',
 		4 => 'Database connection error'
 	);
 
-	// Returns langID (class attribute)
-	function GetID()
+	/**
+	 * Returns langID (class attribute)
+	 * 
+	 * @return int
+	 */
+	public function getID()
 	{
 		return (int) $this->get('IdLanguage');
 	}
 
-	// Allows to change the langID without destroying and re-creating the object
-	function SetID($id)
+	/**
+	 * Allows to change the langID without destroying and re-creating the object
+	 * 
+	 * @param int $id
+	 * @return boolean|string
+	 */
+	public function setID(int $id)
 	{
 		parent::__construct($id);
 		return $this->get('IdLanguage');
 	}
 
-	// Returns a list of all the existing idLanguages
-	function GetList($order = NULL)
+	/**
+	 * Returns a list of all the existing idLanguages
+	 * 
+	 * @param array $order
+	 * @return NULL|array|boolean
+	 */
+	public function GetList(array $order = null)
 	{
 		$validDirs = array('ASC', 'DESC');
 		$this->ClearError();
 		$dbObj = new \Ximdex\Runtime\Db();
 		$sql = "SELECT IdLanguage FROM Languages";
-		if (!empty($order) && is_array($order) && isset($order['FIELD'])) {
-			$sql .= sprintf(" ORDER BY %s %s", $order['FIELD'],
-				isset($order['DIR']) && in_array($order['DIR'], $validDirs) ? $order['DIR'] : '');
+		if (! empty($order) && is_array($order) && isset($order['FIELD'])) {
+			$sql .= sprintf(" ORDER BY %s %s", $order['FIELD'], isset($order['DIR']) && in_array($order['DIR'], $validDirs) ? $order['DIR'] : '');
 		}
 		$dbObj->Query($sql);
-		if (!$dbObj->numErr) {
+		if (! $dbObj->numErr) {
 		    $salida = [];
 			while (!$dbObj->EOF) {
 				$salida[] = $dbObj->GetValue("IdLanguage");
 				$dbObj->Next();
 			}
-			return !empty($salida) ? $salida : NULL;
-		} else
-			$this->SetError(4);
+			return (! empty($salida)) ? $salida : null;
+		}
+        $this->setError(4);
+        return false;
 	}
 
-	// Returns the language name
-	function GetName()
+	/**
+	 * Returns the language name
+	 * 
+	 * @return boolean|string
+	 */
+	public function getName()
 	{
 		return $this->get('Name');
 	}
-
-	function GetAllLanguages($order = NULL)
-	{
-		return $this->GetList($order);
-	}
-
-	function getLanguagesForNode($idNode)
+	
+	public function getLanguagesForNode(int $idNode)
 	{
 		$node = new Node($idNode);
 		$languages = array();
 		$langs = $node->getProperty('language');
-		if (!is_array($langs)) {
+		if (! is_array($langs)) {
 		    
 			// Inherits the system properties
 			$langs = array();
 			$systemLanguages = $this->find('IdLanguage', 'Enabled = 1', null);
-			if (!empty($systemLanguages)) {
+			if (! empty($systemLanguages)) {
 				foreach ($systemLanguages as $lang) {
 					$langs[] = $lang['IdLanguage'];
 				}
@@ -108,17 +126,23 @@ class Language extends LanguagesOrm
 		if (count($langs) > 0) {
 			foreach ($langs as $langId) {
 				$lang = new Language($langId);
-				$languages[] = array(
+				$languages[] = array
+				(
 					'IdLanguage' => $langId,
 					'Name' => $lang->get('Name')
 				);
 			}
 		}
-		return count($languages) > 0 ? $languages : null;
+		return (count($languages) > 0) ? $languages : null;
 	}
 
-	// Allows us to change the language name
-	function SetName($name)
+	/**
+	 * Allows us to change the language name
+	 * 
+	 * @param string $name
+	 * @return boolean|string|NULL|number
+	 */
+	public function setName(string $name)
 	{
 		if (! $this->get('IdLanguage')) {
 			$this->SetError(2, 'Language does not exist');
@@ -131,156 +155,187 @@ class Language extends LanguagesOrm
 		return false;
 	}
 
-	// Returns the language iso name
-	function GetIsoName()
+	/**
+	 * Returns the language iso name
+	 * 
+	 * @return boolean|string
+	 */
+	public function getIsoName()
 	{
 		return $this->get('IsoName');
 	}
 
 
-	// Allows us to change the language iso name
-	function SetIsoName($isoName)
+	/**
+	 * Allows us to change the language iso name
+	 * 
+	 * @param string $isoName
+	 * @return boolean|string|NULL|number
+	 */
+	public function SetIsoName(string $isoName)
 	{
 		if (! $this->get('IdLanguage')) {
 			$this->SetError(2, 'Language does not exist');
 			return false;
 		}
 		$result = $this->set('IsoName', $isoName);
-		if (!$result) {
+		if (! $result) {
 			return $this->update();
 		}
 		return false;
 	}
 
-	// Returns the language description
-	function GetDescription()
+	/**
+	 * Returns the language description
+	 * 
+	 * @return boolean|string
+	 */
+	public function getDescription()
 	{
-		$this->ClearError();
-		if ($this->get('IdLanguage') > 0) {
+		$this->clearError();
+		if ($this->get('IdLanguage')) {
 			$node = new Node($this->get('IdLanguage'));
-			return $node->GetDescription();
-		} else {
-			$this->SetError(1);
+			return $node->getDescription();
 		}
+		$this->setError(1);
+		return false;
 	}
 
-	// Allows us to change the language description
-	function SetDescription($description)
+	/**
+	 * Allows us to change the language description
+	 * 
+	 * @param string $description
+	 * @return boolean|number|NULL|string
+	 */
+	public function setDescription(string $description)
 	{
-		$this->ClearError();
+		$this->clearError();
 		if ($this->get('IdLanguage') > 0) {
 			$node = new Node($this->get('IdLanguage'));
 			return $node->SetDescription($description);
-		} else {
-			$this->SetError(1);
 		}
+		$this->setError(1);
+		return false;
 	}
 
-	// Searches a language by name
-	function SetByName($name)
+	/**
+	 * Searches a language by name
+	 * 
+	 * @param string $name
+	 * @return boolean
+	 * @deprecated
+	 */
+	public function setByName(string $name)
 	{
-		$this->ClearError();
+		$this->clearError();
 		$dbObj = new \Ximdex\Runtime\Db();
 		$query = sprintf("SELECT IdLanguage FROM Languages WHERE Name = %s", $dbObj->sqlEscapeString($name));
-		$dbObj->Query($query);
-		if ($dbObj->numRows)
-			parent::__construct($dbObj->GetValue("IdLanguage"));
-		else
-			$this->SetError(4);
+		$dbObj->query($query);
+		if ($dbObj->numRows) {
+			parent::__construct($dbObj->getValue("IdLanguage"));
+			return true;
+		}
+		$this->SetError(4);
+		return false;
 	}
 
-	// Searches a language by iso name
-	function SetByIsoName($isoName)
+	/**
+	 * Searches a language by iso name
+	 * 
+	 * @param string $isoName
+	 * @return boolean|string|NULL
+	 * @deprecated
+	 */
+	public function setByIsoName(string $isoName)
 	{
 		$this->ClearError();
 		$dbObj = new \Ximdex\Runtime\Db();
 		$query = sprintf("SELECT IdLanguage FROM Languages WHERE IsoName = %s", $dbObj->sqlEscapeString($isoName));
-		$dbObj->Query($query);
+		$dbObj->query($query);
 		if ($dbObj->numRows) {
-			$idLanguage = $dbObj->GetValue("IdLanguage");
+			$idLanguage = $dbObj->getValue("IdLanguage");
 			parent::__construct($idLanguage);
 			return $idLanguage;
-		} else {
-			$this->SetError(4);
-			return false;
 		}
+		$this->SetError(4);
+		return false;
 	}
 
-	// Creates a new language and loads its ID in the object
-	function CreateLanguage($name, $isoname, $description, $enabled, $nodeID = null)
+	/**
+	 * Creates a new language and loads its ID in the object
+	 * 
+	 * @param string $name
+	 * @param string $isoname
+	 * @param string $description
+	 * @param bool $enabled
+	 * @param int $nodeID
+	 * @return int|boolean
+	 */
+	public function createLanguage(string $name, string $isoname, string $description, bool $enabled, int $nodeID = null)
 	{
-		if ($nodeID > 0) {
+		if ($nodeID) {
 			$this->set('IdLanguage', $nodeID);
 		}
 		$this->set('Name', $name);
 		$this->set('IsoName', $isoname);
-		$this->set('Enabled', (int)!empty($enabled));
+		$this->set('Enabled', (int) ! empty($enabled));
 		$this->add();
-		if ($this->get('IdLanguage') > 0) {
-			$this->SetDescription($description);
+		if ($this->get('IdLanguage')) {
+			$this->setDescription($description);
 		} else {
 			$this->SetError(4);
+			return false;
 		}
 		return $nodeID;
 	}
 
-	// Deletes the current language
-	function DeleteLanguage()
+	/**
+	 * Deletes the current language
+	 * 
+	 * @return boolean
+	 */
+	public function deleteLanguage()
 	{
-		$this->ClearError();
+		$this->clearError();
 		$dbObj = new \Ximdex\Runtime\Db();
-		if (!is_null($this->get('IdLanguage'))) {
+		if (! is_null($this->get('IdLanguage'))) {
 		    
 			// Deleting from database
 			$dbObj->Execute(sprintf("DELETE FROM Languages WHERE IdLanguage= %d", $this->get('IdLanguage')));
-			if ($dbObj->numErr)
+			if ($dbObj->numErr) {
 				$this->SetError(4);
+				return false;
+			}
 		} else {
 			$this->SetError(1);
+			return false;
 		}
+		return true;
 	}
 
-	function CanDenyDeletion()
+	public function canDenyDeletion()
 	{
-		$this->ClearError();
+		$this->clearError();
 		$sql = sprintf("select count(*) AS total from StructuredDocuments where IdLanguage = %d", $this->get('IdLanguage'));
 		$dbObj = new \Ximdex\Runtime\Db();
-		$dbObj->Query($sql);
+		$dbObj->query($sql);
 		if ($dbObj->numErr) {
-			$this->SetError(4);
+			$this->setError(4);
+			return false;
 		}
-		if ($dbObj->GetValue("total") == 0) {
+		if ($dbObj->getValue("total") == 0) {
 			return true;
 		}
         return false;
 	}
 
-
-	function DocumentsWithLanguage($idlang)
-	{
-		$dbObj = new \Ximdex\Runtime\Db();
-		$query = sprintf("SELECT IdDoc FROM StructuredDocuments WHERE IdLanguage = %d", $idlang);
-		$dbObj->Query($query);
-		if ($dbObj->numErr != 0) {
-			$this->SetError(1);
-			return null;
-		}
-		$arrayDocs = array();
-		while (!$dbObj->EOF) {
-			$arrayDocs[] = $dbObj->GetValue('IdDoc');
-			$dbObj->Next();
-		}
-		return $arrayDocs;
-
-	}
-
-	function LanguageEnabled($idlang)
+	public function languageEnabled(int $idlang)
 	{
 		$dbObj = new \Ximdex\Runtime\Db();
 		$query = sprintf("SELECT Enabled FROM Languages WHERE IdLanguage = %d", $idlang);
-		$dbObj->Query($query);
+		$dbObj->query($query);
 		if ($dbObj->numErr != 0) {
-			$this->SetError(1);
+			$this->setError(1);
 			return null;
 		}
 		if (isset($dbObj->row["Enabled"])) {
@@ -289,35 +344,45 @@ class Language extends LanguagesOrm
 		return null;
 	}
 
-	function SetEnabled($enabled)
+	public function setEnabled(bool $enabled)
 	{
-		if (!($this->get('IdLanguage') > 0)) {
-			$this->SetError(2, 'Language does not exist');
+		if (! $this->get('IdLanguage')) {
+			$this->setError(2, 'Language does not exist');
 			return false;
 		}
-		$result = $this->set('Enabled', (int)$enabled);
+		$result = $this->set('Enabled', (int) $enabled);
 		if ($result) {
 			return $this->update();
 		}
 		return false;
 	}
 
-	// Cleans class errors
-	function ClearError()
+	/**
+	 * Cleans class errors
+	 */
+	public function clearError()
 	{
 		$this->numErr = null;
 		$this->msgErr = null;
 	}
 
-	// Loads a class error
-	function SetError($code)
+	/**
+	 * Loads a class error
+	 * 
+	 * @param int $code
+	 */
+	public function setError(int $code)
 	{
 		$this->numErr = $code;
 		$this->msgErr = $this->errorList[$code];
 	}
 
-	// Returns true if the class had an error
-	function HasError()
+	/**
+	 * Returns true if the class had an error
+	 * 
+	 * @return boolean
+	 */
+	public function hasError()
 	{
 		return ($this->numErr != null);
 	}

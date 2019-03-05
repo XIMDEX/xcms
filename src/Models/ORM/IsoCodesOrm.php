@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -31,20 +31,28 @@ use Ximdex\Data\GenericData;
 
 class IsoCodesOrm extends GenericData
 {
-    var $_idField = 'IdIsoCode';
-    var $_table = 'IsoCodes';
-    var $_metaData = array(
+    public $_idField = 'IdIsoCode';
+    
+    public $_table = 'IsoCodes';
+    
+    public $_metaData = array(
         'IdIsoCode' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
         'Iso2' => array('type' => "char(2)", 'not_null' => 'false'),
         'Iso3' => array('type' => "char(3)", 'not_null' => 'false'),
         'Name' => array('type' => "varchar(255)", 'not_null' => 'false')
     );
-    var $_uniqueConstraints = array(
+    
+    public $_uniqueConstraints = array(
         'iso3' => array('Iso3'), 'iso2' => array('Iso2'), 'name' => array('Name')
     );
-    var $_indexes = array('IdIsoCode');
-    var $IdIsoCode;
-    var $Iso2;
-    var $Iso3;
-    var $Name;
+    
+    public $_indexes = array('IdIsoCode');
+    
+    public $IdIsoCode;
+    
+    public $Iso2;
+    
+    public $Iso3;
+    
+    public $Name;
 }

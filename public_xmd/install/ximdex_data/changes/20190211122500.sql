@@ -20,7 +20,7 @@ ALTER TABLE `ServerFrames` DROP FOREIGN KEY `ServerFrames_PortalFrames`;
 ALTER TABLE `ServerFrames` ADD CONSTRAINT `ServerFrames_PortalFrames` FOREIGN KEY (`IdPortalFrame`) REFERENCES `PortalFrames`(`id`) 
 ON DELETE RESTRICT ON UPDATE CASCADE;
 
-ALTER TABLE `ServerFrames` DROP FOREIGN KEY `ServerFrames_Batchs_Up`;
+ALTER TABLE `ServerFrames` DROP FOREIGN KEY `ServerFrames_Batchs_up`;
 
-ALTER TABLE `ServerFrames` ADD CONSTRAINT `ServerFrames_Batchs_Up` FOREIGN KEY (`IdBatchUp`) REFERENCES `Batchs`(`IdBatch`) 
+ALTER TABLE `ServerFrames` ADD CONSTRAINT `ServerFrames_Batchs_up` FOREIGN KEY (`IdBatchUp`) REFERENCES `Batchs`(`IdBatch`) 
 ON DELETE RESTRICT ON UPDATE CASCADE;

@@ -57,15 +57,6 @@
 				    <label for="metadata-scheme_{$id_node}" class="icon radio-label">{t}Metadata schema{/t}</label>
 				</div>
 			{/if}
-			{* if !empty($valid_pipelines)}
-                <label for="id_pipeline" class="aligned">{t}Associated workflow{/t}</label>
-			    <select name="id_pipeline" id="id_pipeline" class="cajag" disabled>
-				    <option value="">{t}Select a workflow{/t}</option>
-			        {foreach from=$valid_pipelines key=id_pipeline item=pipeline}
-				        <option value="{$id_pipeline}" {if $id_pipeline == $selected_pipeline} selected="selected"{/if}>{$pipeline}</option>
-			        {/foreach}
-			    </select>
-			{/if *}
 	        {if $is_section}
 	            <div class="small-12 columns">
 		            <label for="name" class="label_title label_general">{t}Language{/t} </label>

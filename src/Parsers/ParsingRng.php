@@ -42,15 +42,16 @@ class ParsingRng
      * @var DOMXPath
      */
     var $xpathObj;
-    var $elementsForRender = NULL;
+    
+    var $elementsForRender;
     var $renderCount = 0;
     var $nodesProcessed = array();
-    var $idTemplate = NULL;
-    var $node = NULL;
+    var $idTemplate;
+    var $node;
 
-    function __construct($idTemplate = NULL)
+    function __construct(int $idTemplate = null)
     {
-        if (!is_null($idTemplate)) {
+        if (! is_null($idTemplate)) {
             $this->node = new Node($idTemplate);
         }
     }
@@ -59,15 +60,15 @@ class ParsingRng
     * Gets the array needed for render a web form
     * 
     * @param int $templateID
-    * @return array | NULL
+    * @return array|NULL
     */
-    function getElementsForRender($templateID)
+    function getElementsForRender(int $templateID)
     {
         $this->buildDefaultContent($templateID);
         $elements = $this->elementsForRender;
         if (is_null($elements)) {
             Logger::error("Incorrect visual template $templateID for render a web form");
-            return NULL;
+            return null;
         }
         return $elements;
     }
@@ -78,9 +79,8 @@ class ParsingRng
      * @param int $templateID RNG identifier
      * @param string RNG element name from which parser starts building the form elements
      * @return array Associative array of form elements [ array of array('name' => 'Element name', 'type' => 'Element type') ]
-     *
      */
-    function buildFormElements($templateID, $start = '')
+    function buildFormElements(int $templateID, string $start = '')
     {
         $form_elements = array();
         $content = $this->buildDefaultContent($templateID);
@@ -107,7 +107,7 @@ class ParsingRng
      * @param string RNG element name from which parser starts building the form elements
      * @return array Associative array of form elements [ array of array('name' => 'Element name', 'type' => 'Element type') ]
      */
-    function buildFormElementsAssociative($templateID, $start = '')
+    function buildFormElementsAssociative(int $templateID, string $start = '')
     {
         $form_elements = array();
         $content = $this->buildDefaultContent($templateID);
@@ -164,7 +164,7 @@ class ParsingRng
      *
      * @param domNode $domNode
      */
-    private function processNode($domNode)
+    private function processNode(DOMNode $domNode)
     {
         $nodeName = $domNode->nodeName;
         switch ($nodeName) {
@@ -181,7 +181,7 @@ class ParsingRng
                 // FirstChild is a tag 'element' (always?)
                 if ($nodeList->length > 0 
                     && isset($nodeList->item(0)->firstChild->attributes->getNamedItem('name')->nodeValue)
-                    && !isset($this->nodesProcessed[$nodeList->item(0)->firstChild->attributes->getNamedItem('name')->nodeValue])) {
+                    && ! isset($this->nodesProcessed[$nodeList->item(0)->firstChild->attributes->getNamedItem('name')->nodeValue])) {
                     $this->processElement($nodeList->item(0)->firstChild);
                 }
                 break;
@@ -214,7 +214,7 @@ class ParsingRng
      *
      * @param domNode $domNode
      */
-    private function processElement($domNode)
+    private function processElement(DOMNode $domNode)
     {
         $name = $domNode->attributes->getNamedItem('name')->nodeValue;
         $this->nodesProcessed[$name] = true;
@@ -236,10 +236,11 @@ class ParsingRng
 
     /**
      * Searchs 'attribute' elements at a list of childs nodes and sets variables minimalXml and elementsForRender
-     *
-     * @param array $childNode
+     * 
+     * @param \DOMNodeList $childNodes
+     * @param string $parentName
      */
-    private function processAttributes($childNodes, $parentName)
+    private function processAttributes(\DOMNodeList $childNodes, string $parentName)
     {
         foreach ($childNodes as $domNode) {
             if ($domNode->nodeName == 'attribute') {
@@ -281,24 +282,24 @@ class ParsingRng
      *
      * @param domNode $domNode
      */
-    private function processAttributeElement($domNode, $parentName)
+    private function processAttributeElement(DOMNode $domNode, string $parentName)
     {
         $name = $domNode->attributes->getNamedItem('name')->nodeValue;
 
         // Is allways the first child?
 
         $renderElement = $domNode->childNodes->item(0)->attributes->getNamedItem('renderElement')->nodeValue;
-        if (!is_null($renderElement)) {
+        if (! is_null($renderElement)) {
             $renderLabel = $domNode->childNodes->item(0)->attributes->getNamedItem('renderLabel')->nodeValue;
             $this->elementsForRender[$parentName] = array('name' => $name, 'id' => $name, 'type' => $renderElement, 'label' => $renderLabel);
             $this->renderCount++;
         }
     }
 
-    public function getElementsByType($type)
+    public function getElementsByType(string $type)
     {
         $elementsNames = array();
-        if (!$this->setXpathObj()) {
+        if (! $this->setXpathObj()) {
             return $elementsNames;
         }
         
@@ -317,7 +318,7 @@ class ParsingRng
     public function getElements()
     {
         $elementsNames = array();
-        if (!$this->setXpathObj()) {
+        if (! $this->setXpathObj()) {
             return $elementsNames;
         }
         
@@ -335,7 +336,7 @@ class ParsingRng
 
     private function setXpathObj()
     {
-        if (!$this->node || $this->node->nodeType->get('Name') != 'RngVisualTemplate') {
+        if (! $this->node || $this->node->nodeType->get('Name') != 'RngVisualTemplate') {
             return false;
         }
         $content = $this->node->GetContent();

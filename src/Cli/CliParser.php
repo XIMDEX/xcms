@@ -226,7 +226,7 @@ abstract class CliParser
                     default :
                         $this->messages->add(
                             sprintf(_('Type of param %s has not been specified'), $argument['name']), MSG_TYPE_ERROR);
-                        continue;
+                        continue 2;
                 }
                 if (empty($value) && $argument['mandatory']) {
                     continue;

@@ -66,7 +66,7 @@
 		<searchpanel include="yes" />
 		<div id="header">
 		    <h1><img src="{url}/assets/images/header/logo_xim.png{/url}" border="0" alt="{t}Ximdex logotype{/t}"
-		             title="{t}Semantic content management with Ximdex{/t}" id="logo"/></h1>
+		             title="{t}Semantic content management with Ximdex{/t}" id="logo"/><span class="logo_text">{$logoText}</span></h1>
 		    <div class="session-info">
 		        <div class="language">
 		            <div class="menu-header">

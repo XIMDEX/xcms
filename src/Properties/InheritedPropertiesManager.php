@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -27,39 +27,41 @@
 
 namespace Ximdex\Properties;
 
+use Ximdex\Logger;
+use Ximdex\Utils\Factory;
+use Ximdex\Models\Node;
+use Ximdex\NodeTypes\NodeTypeConstants;
+
 /**
  * Manager class for Inherited properties
  */
-use Ximdex\Logger;
-
 class InheritedPropertiesManager
 {
 	/**
-	 * list of properties to manage
+	 * List of properties to manage by default
 	 * 
 	 * @var array
 	 */
-    static protected $properties = array(InheritableProperty::CHANNEL, InheritableProperty::LANGUAGE);
+    const defaultProperties = [InheritableProperty::CHANNEL, InheritableProperty::LANGUAGE];
 
 	/**
 	 * Returns the property values
 	 * 
 	 * @param int $nodeId
 	 * @param bool $onlyInherited
-	 * @param array $propertiesToUse
 	 * @return array
 	 */
-	static public function getValues(int $nodeId, bool $onlyInherited = false, array $propertiesToUse = null) : array
+	public static function getValues(int $nodeId, bool $onlyInherited = false, array $properties = null) : array
 	{
-		$factory = new \Ximdex\Utils\Factory(dirname(__FILE__), '');
+		$factory = new Factory(dirname(__FILE__), '');
 		$ret = array();
-		foreach (self::$properties as $prop) {
-		    if ($propertiesToUse and !in_array($prop, $propertiesToUse)) {
-		        continue;
-		    }
+		if (! $properties) {
+		    $properties = self::getProperties($nodeId);
+		}
+		foreach ($properties as $prop) {
 		    $propManager = $factory->instantiate($prop . 'Property', [$nodeId], '\Ximdex\Properties');
-		    if (!is_object($propManager)) {
-				Logger::error("Can not instantiate inheritable property: " . $prop);
+		    if (! is_object($propManager)) {
+				Logger::error('Can not instantiate inheritable property: ' . $prop);
 				continue;
 			}
 			$ret[$prop] = $propManager->getValues($onlyInherited);
@@ -78,21 +80,21 @@ class InheritedPropertiesManager
 	 *
 	 * @return array Associative array $ret["property_name"] = array_values
 	 */
-	static public function setValues($nodeId, $properties)
+	public static function setValues(int $nodeId, array $properties)
 	{
-		$factory = new \Ximdex\Utils\Factory(dirname(__FILE__), '');
-		if (!is_array($properties)) {
+		$factory = new Factory(dirname(__FILE__), '');
+		if (! is_array($properties)) {
 		    $properties = array();
 		}
 		$ret = array();
-		foreach (self::$properties as $prop) {
-		    if (!in_array($prop, array_keys($properties))) {
+		foreach (self::getProperties($nodeId) as $prop) {
+		    if (! in_array($prop, array_keys($properties))) {
 		        $properties[$prop] = array();
 		    }
 			$value = $properties[$prop];
 			$propManager = $factory->instantiate($prop . 'Property', [$nodeId], 'Ximdex\Properties');
-			if (!is_object($propManager)) {
-				Logger::error("Can not instantiate inheritable property: " . $prop);
+			if (! is_object($propManager)) {
+				Logger::error('Can not instantiate inheritable property: ' . $prop);
 				continue;
 			}
 			$ret[$prop] = $propManager->setValues($value);
@@ -103,34 +105,61 @@ class InheritedPropertiesManager
 	/**
 	 * Returns the affected nodes when deleting a property value
 	 * 
-	 * @param integer $nodeId
-	 * @param mixed $properties Values to be deleted
-	 *
-	 * @uses ChannelProperty::getAffectedNodes
-	 * @uses LanguageProperty::getAffectedNodes
+	 * @param int $nodeId
+	 * @param array $properties
+	 * @return array
 	 */
-	static public function getAffectedNodes($nodeId, $properties)
+	public static function getAffectedNodes(int $nodeId, array $properties)
 	{
-	    return true;
+	    return [];
 	}
 	
 	/**
 	 * Applies a property value recursively
 	 * 
 	 * @param string $property
-	 * @param integer $nodeId
-	 * @param mixed $values
+	 * @param int $nodeId
+	 * @param array $values
+	 * @return array
 	 */
-	static public function applyPropertyRecursively($property, $nodeId, $values)
-	{   
-	    $factory = new \Ximdex\Utils\Factory(dirname(__FILE__), '');
+	public static function applyPropertyRecursively(string $property, int $nodeId, array $values)
+	{
+	    $factory = new Factory(dirname(__FILE__), '');
 	    $ret = array();
 	    $propertyClass = $factory->instantiate($property . 'Property', [$nodeId], '\Ximdex\Properties');
-	    if (!is_object($propertyClass)) {     
-            Logger::error("Inheritable property cannot be instantiate: " . $property);
+	    if (! is_object($propertyClass)) {     
+            Logger::error('Inheritable property cannot be instantiate: ' . $property);
 	        return $ret;
 	    }
 	    $ret[$property] = $propertyClass->applyPropertyRecursively($values);
 	    return $ret;
+	}
+	
+	/**
+	 * Return a list of property names applicable to the given node (by its node type), or default instead
+	 * 
+	 * @param int $nodeId
+	 * @throws \Exception
+	 * @return array
+	 */
+	private static function getProperties(int $nodeId = null) : array
+	{
+	    if ($nodeId) {
+	        $node = new Node($nodeId);
+	        if (! $node->getId()) {
+	            throw new \Exception('Node with ID: ' . $nodeId . ' does not exists');
+	        }
+    	    if (in_array($node->getNodeType(), [NodeTypeConstants::COMMON_ROOT_FOLDER, NodeTypeConstants::COMMON_FOLDER])) {
+    	        
+    	        // Common folders only show channels properties
+    	        return [InheritableProperty::CHANNEL];
+    	    }
+    	    if ($node->nodeType->isSection()) {
+    	        
+    	        // Sections node include matadata scheme properties
+    	        return array_merge(self::defaultProperties, [InheritableProperty::METADATA_SCHEME]);
+    	    }
+	    }
+	    return self::defaultProperties;
 	}
 }

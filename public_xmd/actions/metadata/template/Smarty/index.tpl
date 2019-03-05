@@ -1,7 +1,5 @@
-
-
 {**
-*  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+*  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
 *
 *  Ximdex a Semantic Content Management System (CMS)
 *
@@ -25,44 +23,39 @@
 *  @version $Revision$
 *}
 
-
-<form method="post" id="m_form" name="m_form" class="validate_ajax"
-      action="{$action_url} ng-init=" status=[]">
+<form method="post" id="m_form" name="m_form" class="validate_ajax" action="{$action_url}" ng-init="status=[]">
     <input type="hidden" name='nodeid' value="{$nodeid}"/>
     {include file="actions/components/title_Description.tpl"}
-
     <div ng-cloak class="action_content">
-
         <fieldset>
-
-            <accordion close-others="false" ng-init="firstOpen=true; firstDisabled=false;">
+            <accordion close-others="true" ng-init="firstOpen=true; firstDisabled=false;">
+                {$count = 0}
                 {foreach from=$info item=metaSection}
-                    <accordion-group class="" heading="{t}{$metaSection['name']}{/t}"
-                                     ng-init="$parent.status.push(true)">
-
+                    <accordion-group class="" heading="{t}{$metaSection['name']}{/t}" 
+                            {if ! $count}
+                                ng-init="$parent.status.push(true)" is-disabled="firstDisabled"
+                            {else}
+                                ng-init="$parent.status.push(false)"
+                            {/if}
+                            is-open="$parent.status[{$count}]">
                         {foreach from=$metaSection['groups'] item=group}
                             <div class="clearfix">
-                                <h5 class="direction_header">{$group['name']}</h5>
-                                <hr/>
+                                <h5 class="direction_header">{t}{$group['name']}{/t}</h5>
+                                <hr />
                                 <div id="metadataLoad">
                                     {include file="./metadata.tpl"}
                                 </div>
                             </div>
                         {/foreach}
-
                     </accordion-group>
+                    {$count = $count + 1}
                 {/foreach}
-
             </accordion>
-
             <div class="small-12 columns">
                 <fieldset class="buttons-form">
-                    {button label="Save" class='validate btn main_action btn_margin'}
+                    {button label="Save metadata" class='validate btn main_action'}
                 </fieldset>
             </div>
-
         </fieldset>
-
     </div>
-
 </form>

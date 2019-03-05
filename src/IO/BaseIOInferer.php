@@ -213,7 +213,7 @@ class BaseIOInferer
 				$friendlyName = _('Section');
 				break;
 
-			case 'MetaDataSection':
+			case 'MetaDataScheme':
 			    $newNodeTypeName ='MetaDataContainer';
 			    $friendlyName = _('MetaDataContainer');
 			    break;

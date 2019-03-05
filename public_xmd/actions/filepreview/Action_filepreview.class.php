@@ -50,7 +50,7 @@ class Action_filepreview extends ActionAbstract
             $selectedVersion = $dataFactory->getVersionId($version, $subVersion);
         } else {
             $dataFactory = new DataFactory($idNode);
-            $selectedVersion = $dataFactory->GetLastVersionId();
+            $selectedVersion = $dataFactory->getLastVersionId();
         }
         if (! $selectedVersion) {
 
@@ -98,7 +98,7 @@ class Action_filepreview extends ActionAbstract
                     continue;
                 }
                 $dataFactory = new DataFactory($idNode);
-                $selectedVersion = $dataFactory->GetLastVersionId();
+                $selectedVersion = $dataFactory->getLastVersionId();
                 $version = new Version($selectedVersion);
                 $hash = $version->get('File');
                 $filepath = XIMDEX_ROOT_PATH . App::getValue('FileRoot') . DIRECTORY_SEPARATOR . $hash;

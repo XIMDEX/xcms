@@ -69,7 +69,7 @@ class Action_deleteuser extends ActionAbstract
 				$user->messages->add(_('User has been successfully deleted'), MSG_TYPE_NOTICE);
 			}
 		}
-		//$this->reloadNode($idParent);
+		// $this->reloadNode($idParent);
 		$values = array('messages' => $user->messages->messages, 'parentID' => $idParent, 'action_with_no_return' => true);
 		$this->sendJSON($values);
     }

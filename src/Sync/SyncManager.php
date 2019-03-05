@@ -73,6 +73,7 @@ class SyncManager
         $this->setFlag('globalForcePublication', FORCE_PUBLICATION);
         $this->setFlag('useCache', true);
         $this->setFlag('expireAll', false);
+        $this->setFlag('lastPublished', false);
     }
 
     /**

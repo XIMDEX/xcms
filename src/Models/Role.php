@@ -356,7 +356,7 @@ class Role extends RolesOrm
     public function getActionsOnNode(int $nodeID, bool $includeActionsWithNegativeSort = false)
     {
         $node = new Node($nodeID);
-        if ($node->get('IdNode') > 0) {
+        if ($node->get('IdNode')) {
             $nodeType = $node->get('IdNodeType');
             $stateID = $node->get('IdState');
             if ($nodeType) {

@@ -1,5 +1,30 @@
 <?php
 
+/**
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
+ */
+
 namespace Ximdex\Models;
 
 use Ximdex\Models\ORM\ActionsOrm;
@@ -7,77 +32,78 @@ use Ximdex\Models\ORM\ActionsOrm;
 class Action extends ActionsOrm
 {
     /**
-     * @param $actionID
+     * ID of the current action
      */
+    public $ID;
+    
+    /**
+     * DB object used in methods
+     */
+    public $dbObj;
+    
+    /**
+     * Shows if there was an error
+     */
+    public $flagErr = false;
+    
+    /**
+     * Error code
+     */
+    public $numErr;
+    
+    /**
+     * Error message
+     */
+    public $msgErr;
+    
+    /**
+     * Class error list
+     * 
+     * @var array
+     */
+    public $errorList = array(
+        1 => 'Database connection error',
+        2 => 'Action does not exist'
+    );
+    
+    public $_fieldsToTraduce = array('Name', 'Description');
+    
+    public $autoCleanErr = true;
+
     public function __construct(int $actionID = null)
     {
         $this->flagErr = false;
         $this->autoCleanErr = true;
         parent::__construct($actionID);
     }
-
-    /**
-     * ID of the current action
-     */
-    var $ID;
     
-    /**
-     * DB object used in methods
-     */
-    var $dbObj;
-    
-    /**
-     * Shows if there was an error
-     */
-    var $flagErr;
-    
-    /**
-     * Error code
-     */
-    var $numErr;
-    
-    /**
-     * Error message
-     */
-    var $msgErr;
-    
-    /**
-     * Class error list.
-     */
-    var $errorList = array(
-        1 => 'Database connection error',
-        2 => 'Action does not exist'
-    );
-    var $_fieldsToTraduce = array('Name', 'Description');
-    var $autoCleanErr = false;
-
     /**
      * Get an array with actions without permissions required
      * 
-     * @return array Array with actions name.
+     * @return array Array with actions name
      */
     public static function getAlwaysAllowedActions()
     {
-        return array("browser3", "composer", "welcome", "infonode", "changelang", 'rendernode');
+        return array('browser3', 'composer', 'welcome', 'infonode', 'changelang', 'rendernode');
     }
 
     /**
      * Returns an arry with the ids of all the system actions
      * 
-     * @return array of ActionID
+     * @return array|null of ActionID
      */
-    function GetAllActions()
+    public function getAllActions()
     {
-        $salida = array();
-        $sql = "SELECT IdAction FROM Actions";
+        $sql = 'SELECT IdAction FROM Actions';
         $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->Query($sql);
         if ($dbObj->numErr != 0) {
             $this->SetError(1);
             return null;
         }
-        while (!$dbObj->EOF) {
-            $salida[] = $dbObj->GetValue("IdAction");
+        $salida = array();
+        while (! $dbObj->EOF) {
+            $salida[] = $dbObj->getValue('IdAction');
             $dbObj->Next();
         }
         return $salida;
@@ -86,10 +112,10 @@ class Action extends ActionsOrm
     /**
      * Returns an array with the ids of all the action of a nodetype
      * 
-     * @param $code
-     * @param null $msg
+     * @param int $code
+     * @param string $msg
      */
-    function SetError($code, $msg = null)
+    public function setError(int $code, string $msg = null)
     {
         $this->flagErr = TRUE;
         $this->numErr = $code;
@@ -99,17 +125,17 @@ class Action extends ActionsOrm
     /**
      * Returns the nodetype id assocaited with the current action
      * 
-     * @param null $nodeType
+     * @param int $nodeType
      * @param bool $includeActionsWithNegativeSort
      * @return array|null
      */
-    function GetActionListOnNodeType($nodeType = NULL, $includeActionsWithNegativeSort = false)
+    public function GetActionListOnNodeType(int $nodeType = null, bool $includeActionsWithNegativeSort = false)
     {
         $dbObj = new \Ximdex\Runtime\Db();
-        if (!$includeActionsWithNegativeSort) {
-            $sql = sprintf("SELECT IdAction FROM Actions WHERE idNodeType = %d AND Sort > 0 ORDER BY Sort ASC", $nodeType);
+        if (! $includeActionsWithNegativeSort) {
+            $sql = sprintf('SELECT IdAction FROM Actions WHERE idNodeType = %d AND Sort > 0 ORDER BY Sort ASC', $nodeType);
         } else {
-            $sql = sprintf("SELECT IdAction FROM Actions WHERE idNodeType = %d ORDER BY Sort ASC", $nodeType);
+            $sql = sprintf('SELECT IdAction FROM Actions WHERE idNodeType = %d ORDER BY Sort ASC', $nodeType);
         }
         $dbObj->Query($sql);
         if ($dbObj->numErr != 0) {
@@ -117,8 +143,8 @@ class Action extends ActionsOrm
             return null;
         }
         $salida = null;
-        while (!$dbObj->EOF) {
-            $salida[] = $dbObj->GetValue("IdAction");
+        while (! $dbObj->EOF) {
+            $salida[] = $dbObj->getValue('IdAction');
             $dbObj->Next();
         }
         return $salida ? $salida : NULL;
@@ -129,9 +155,9 @@ class Action extends ActionsOrm
      * 
      * @return bool|string
      */
-    function GetNodeType()
+    public function getNodeType()
     {
-        return $this->get('IdNodeType');
+        return $this->IdNodeType;
     }
 
     /**
@@ -139,25 +165,25 @@ class Action extends ActionsOrm
      * 
      * @return bool|string
      */
-    function GetID()
+    public function getID()
     {
-        return $this->get('IdAction');
+        return $this->IdAction;
     }
 
     /**
      * Returns the current action name
      * 
-     * @param $actionID
+     * @param int $actionID
      * @return bool|null|string
      */
-    function SetID($actionID)
+    public function setID(int $actionID)
     {
         parent::__construct($actionID);
-        if (!($this->get('IdAction') > 0)) {
-            $this->SetError(2);
+        if (! $this->IdAction) {
+            $this->setError(2);
             return null;
         }
-        return $this->get('IdAction');
+        return $this->IdAction;
     }
 
     /**
@@ -166,9 +192,9 @@ class Action extends ActionsOrm
      * @param $name
      * @return bool|string
      */
-    function GetName()
+    public function getName()
     {
-        return $this->get('Name');
+        return $this->Name;
     }
 
     /**
@@ -177,9 +203,9 @@ class Action extends ActionsOrm
      * @param $name
      * @return bool|int|null|string
      */
-    function SetName($name)
+    public function setName(string $name)
     {
-        if (!($this->get('IdAction') > 0)) {
+        if (! $this->IdAction) {
             $this->SetError(2);
             return false;
         }
@@ -196,18 +222,14 @@ class Action extends ActionsOrm
      * @param $description
      * @return bool|string
      */
-    function GetDescription()
+    public function getDescription()
     {
-        return $this->get('Description');
+        return $this->Description;
     }
 
-    /**
-     * @param $description
-     * @return bool|int|null|string
-     */
-    function SetDescription($description)
+    public function setDescription(string $description = null)
     {
-        if (!($this->get('IdAction') > 0)) {
+        if (! $this->IdAction) {
             $this->SetError(2, _('Action does not exist'));
             return false;
         }
@@ -223,20 +245,20 @@ class Action extends ActionsOrm
      * 
      * @return string (command)
      */
-    function GetCommand()
+    public function getCommand()
     {
-        return $this->get('Command');
+        return $this->Command;
     }
 
     /**
      * Changes the current action command
      * 
-     * @param $command
+     * @param string $command
      * @return  bool|int (status)
      */
-    function SetCommand($command)
+    public function setCommand(string $command)
     {
-        if (!($this->get('IdAction') > 0)) {
+        if (! $this->IdAction) {
             $this->SetError(2, _('Action does not exist'));
             return false;
         }
@@ -252,20 +274,20 @@ class Action extends ActionsOrm
      * 
      * @return string (command)
      */
-    function GetSort()
+    public function getSort()
     {
-        return $this->get('Sort');
+        return $this->Sort;
     }
 
     /**
      * Changes the current action order
      * 
-     * @param $sort
+     * @param int $sort
      * @return int (status)
      */
-    function SetSort($sort)
+    public function setSort(int $sort)
     {
-        if (!($this->get('IdAction') > 0)) {
+        if (! $this->IdAction) {
             $this->SetError(2, _('Action does not exist'));
             return false;
         }
@@ -281,9 +303,9 @@ class Action extends ActionsOrm
      * 
      * @return string (icon)
      */
-    function GetIcon()
+    public function getIcon()
     {
-        return $this->get('Icon');
+        return $this->Icon;
     }
 
     /**
@@ -293,9 +315,9 @@ class Action extends ActionsOrm
      * @param $icon
      * @return bool|int (status)
      */
-    function SetIcon($icon)
+    public function setIcon(string $icon)
     {
-        if (!($this->get('IdAction') > 0)) {
+        if (! $this->IdAction) {
             $this->SetError(2, _('Action does not exist'));
             return false;
         }
@@ -305,13 +327,6 @@ class Action extends ActionsOrm
         }
         return false;
     }
-
-    /**
-     * @param $userID
-     * @param $nodeID
-     */
-    function CheckAccessPermissionOnNode($userID, $nodeID)
-    {}
 
     /**
      * Creates a new action and load its id in the class actionID
@@ -324,7 +339,7 @@ class Action extends ActionsOrm
      * @param $description
      * @return string ActionID - loaded as a attribute
      */
-    function CreateNewAction($actionID, $nodeType, $name, $command, $icon, $description)
+    public function createNewAction(int $actionID, int $nodeType, string $name, string $command, string $icon = null, string $description = null)
     {
         $this->set('IdAction', $actionID);
         $this->set('IdNodeType', $nodeType);
@@ -339,10 +354,10 @@ class Action extends ActionsOrm
     /**
      * Delete current action
      */
-    function DeleteAction()
+    public function deleteAction()
     {
         $dbObj = new \Ximdex\Runtime\Db();
-        $query = sprintf("DELETE FROM RelRolesActions WHERE IdAction= %d", $this->ID);
+        $query = sprintf('DELETE FROM RelRolesActions WHERE IdAction = %d', $this->ID);
         $dbObj->Execute($query);
         if ($dbObj->numErr != 0) {
             $this->SetError(1);
@@ -351,57 +366,43 @@ class Action extends ActionsOrm
         $this->ID = null;
     }
 
-    /**
-     * @return bool|string
-     */
-    function GetModule()
+    public function getModule()
     {
-        return $this->get('Module');
+        return $this->Module;
     }
 
-    function SetAutoCleanOn()
+    public function setAutoCleanOn()
     {
-        $this->autoCleanErr = TRUE;
+        $this->autoCleanErr = true;
     }
 
-    function SetAutoCleanOff()
+    public function setAutoCleanOff()
     {
-        $this->autoCleanErr = FALSE;
+        $this->autoCleanErr = false;
     }
-    
-    /**
-     * Loads an errorin the class.*
-     * 
-     * @param $code
-     * @return mixed
-     */
-    function HasError()
+
+    public function hasError()
     {
-        $aux = $this->flagErr;
-        if ($this->autoCleanErr)
-            $this->ClearError();
-        return $aux;
+        $error = $this->flagErr;
+        if ($this->autoCleanErr) {
+            $this->clearError();
+        }
+        return $error;
     }
 
     /**
      * Returns true if there was an error in the class
      */
-    function ClearError()
+    public function clearError()
     {
-        $this->flagErr = FALSE;
+        $this->flagErr = false;
     }
 
-    /**
-     * @param $name
-     * @param $idNode
-     * @param null $module
-     * @return bool|int|string
-     */
-    function setByCommandAndModule($name, $idNode, $module = null)
+    public function setByCommandAndModule(string $name, int $idNode, string $module = null)
     {
         $node = new Node($idNode);
-        $idNodeType = $node->GetNodeType();
-        if ($module == NULL) {
+        $idNodeType = $node->getNodeType();
+        if (! $module) {
             return $this->setByCommand($name, $idNodeType);
         } else {
             $result = $this->find('IdAction', 'Command = %s AND IdNodeType = %s AND Module = %s', array($name, $idNodeType, $module), MONO);
@@ -409,23 +410,17 @@ class Action extends ActionsOrm
                 return 0;
             }
             $this->__construct($result[0]);
-            return $this->get('IdAction');
+            return $this->IdAction;
         }
     }
 
-    /**
-     * @param $name
-     * @param $idNodeType
-     * @return bool|string
-     */
-    function setByCommand($name, $idNodeType)
+    public function setByCommand(string $name, int $idNodeType)
     {
-        $result = $this->find('IdAction', 'Command = %s AND IdNodeType = %s',
-            array($name, $idNodeType), MONO);
+        $result = $this->find('IdAction', 'Command = %s AND IdNodeType = %s', array($name, $idNodeType), MONO);
         if (count($result) != 1) {
             return false;
         }
         $this->__construct($result[0]);
-        return $this->get('IdAction');
+        return $this->IdAction;
     }
 }

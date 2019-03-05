@@ -60,10 +60,7 @@ ALTER TABLE `PipeProcess` ADD CONSTRAINT `PipeProcess_Pipelines` FOREIGN KEY (`I
 ALTER TABLE `PipeProcess` ADD CONSTRAINT `PipeProcess_PipeTransitions_From` FOREIGN KEY (`IdTransitionFrom`) REFERENCES `PipeTransitions`(`id`) 
     ON DELETE RESTRICT ON UPDATE RESTRICT;
 
--- INSERT INTO `PipeTransitions` (`id`, `IdStatusFrom`, `IdStatusTo`, `IdPipeProcess`, `Cacheable`, `Name`, `Callback`) 
---     VALUES ('6', '7', '8', '4', '0', 'EditionToPublication', NULL);
--- ALTER TABLE `PipeTransitions` ADD CONSTRAINT `PipeTransitions_PipeProcess` FOREIGN KEY (`IdPipeProcess`) REFERENCES `PipeProcess`(`id`) 
---     ON DELETE RESTRICT ON UPDATE RESTRICT;
+UPDATE `PipeProcess` SET `IdTransitionTo` = '8' WHERE `PipeProcess`.`id` = 4;
 
 ALTER TABLE `PipeProcess` ADD CONSTRAINT `PipeProcess_PipeTransitions_To` FOREIGN KEY (`IdTransitionTo`) REFERENCES `PipeTransitions`(`id`) 
     ON DELETE RESTRICT ON UPDATE RESTRICT;
@@ -74,10 +71,10 @@ ALTER TABLE `PipeProperties` ENGINE = InnoDB;
 ALTER TABLE `PipeProperties` ADD CONSTRAINT `PipeProperties_PipeTransitions` FOREIGN KEY (`IdPipeTransition`) REFERENCES `PipeTransitions`(`id`) 
     ON DELETE RESTRICT ON UPDATE RESTRICT;
 
-INSERT INTO `PipeProcess` (`id`, `IdTransitionFrom`, `IdTransitionTo`, `IdPipeline`, `Name`) VALUES ('8', '10', '6', '5', 'HTMLToSolar');
+INSERT INTO `PipeProcess` (`id`, `IdTransitionFrom`, `IdTransitionTo`, `IdPipeline`, `Name`) VALUES ('8', '10', '8', '5', 'HTMLToSolar');
 INSERT INTO `PipeTransitions` (`id`, `IdStatusFrom`, `IdStatusTo`, `IdPipeProcess`, `Cacheable`, `Name`, `Callback`) 
     VALUES ('12', NULL, '3', '8', '1', 'PrepareSolar', NULL);
 UPDATE `PipeProcess` SET `IdTransitionTo` = '12' WHERE `PipeProcess`.`id` = 8;
 INSERT INTO `PipeProcess` (`id`, `IdTransitionFrom`, `IdTransitionTo`, `IdPipeline`, `Name`) VALUES (9, 12, 11, 5, 'SolarToPublished');
 INSERT INTO `PipeTransitions` (`id`, `IdStatusFrom`, `IdStatusTo`, `IdPipeProcess`, `Cacheable`, `Name`, `Callback`) 
-    VALUES ('13', '3', '6', '9', '0', 'PublishSolar', 'FilterMacros');
+    VALUES ('13', '3', '8', '9', '0', 'PublishSolar', 'FilterMacros');

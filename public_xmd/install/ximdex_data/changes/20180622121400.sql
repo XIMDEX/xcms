@@ -14,5 +14,5 @@ ALTER TABLE `ServerFrames` CHANGE `IdBatchUp` `IdBatchUp` INT(12) UNSIGNED NULL 
 
 ALTER TABLE `ServerFrames` ADD CONSTRAINT `ServerFrames_NodeFrames` FOREIGN KEY (`IdNodeFrame`) 
     REFERENCES `NodeFrames`(`IdNodeFrame`) ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE `ServerFrames` ADD CONSTRAINT `ServerFrames_Pumpers` FOREIGN KEY (`IdServer`) 
+ALTER TABLE `ServerFrames` ADD CONSTRAINT `ServerFrames_Servers` FOREIGN KEY (`IdServer`) 
     REFERENCES `Servers`(`IdServer`) ON DELETE CASCADE ON UPDATE CASCADE;

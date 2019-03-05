@@ -113,8 +113,9 @@ class Action_renamenode extends ActionAbstract
                 if ($node->GetNodeType() == NodeTypeConstants::PROJECT or $node->GetNodeType() == NodeTypeConstants::SERVER 
                         or $node->GetNodeType() == NodeTypeConstants::SECTION) {
                     $xsltNode = new XsltNode($node);
-                    if (! $xsltNode->reload_templates_include(new Node($node->GetProject())))
+                    if (! $xsltNode->reload_templates_include(new Node($node->GetProject()))) {
                         $this->messages->mergeMessages($xsltNode->messages);
+                    }
                 }
             } else {
                 $this->messages->mergeMessages($node->messages);

@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -42,9 +42,27 @@ class User extends UsersOrm
     const XIMDEX_ID = 301;
     
     public $userID;
-    public $numErr;    // Error code
-    public $msgErr;    // Error message
-    public $errorList; // Error list
+    
+    /**
+     * Error code
+     * 
+     * @var int
+     */
+    public $numErr;
+    
+    /**
+     * Error message
+     * 
+     * @var string
+     */
+    public $msgErr;
+    
+    /**
+     * Error list
+     * 
+     * @var array
+     */
+    public $errorList = [];
 
     public function __construct(int $id = null)
     {
@@ -58,23 +76,31 @@ class User extends UsersOrm
         parent::__construct($id);
     }
 
-    // Class constructor function. If a param is received, $idUser is initialized.
-    function getAllUsers()
+    /**
+     * Class constructor function. If a param is received, $idUser is initialized.
+     * 
+     * @return array|boolean
+     */
+    public function getAllUsers()
     {
         return $this->find('IdUser', '1 ORDER BY Name', NULL, MONO);
     }
 
-    // This function returns all the groups belonging to an user
-    function getGroupList()
+    /**
+     * This function returns all the groups belonging to an user
+     * 
+     * @return array|NULL
+     */
+    public function getGroupList()
     {
         $this->ClearError();
         if ($this->get('IdUser') > 0) {
             $dbObj = new \Ximdex\Runtime\Db();
             $sql = sprintf('SELECT IdGroup FROM RelUsersGroups WHERE IdUser = %d', $this->get('IdUser'));
             $dbObj->Query($sql);
-            if (!$dbObj->numErr) {
+            if (! $dbObj->numErr) {
                 $salida = array();
-                while (!$dbObj->EOF) {
+                while (! $dbObj->EOF) {
                     $salida[] = $dbObj->GetValue('IdGroup');
                     $dbObj->Next();
                 }
@@ -87,62 +113,92 @@ class User extends UsersOrm
         return null;
     }
 
-    // Returns an obgect idUser
-    function getID()
+    /**
+     * Returns an obgect idUser
+     * 
+     * @return boolean|string
+     */
+    public function getID()
     {
-        $this->ClearError();
+        $this->clearError();
         return $this->get('IdUser');
     }
 
-    /*     * ** getters *** */
-
-    // Returns the user name associated to an idUser
-    function getRealName()
+    /**
+     * Returns the user name associated to an idUser
+     * 
+     * @return boolean|string
+     */
+    public function getRealName()
     {
         return $this->get('Name');
     }
 
-    // Returns the user login
-    function getLogin()
+    /**
+     * Returns the user login
+     * 
+     * @return boolean|string
+     */
+    public function getLogin()
     {
         return $this->get('Login');
     }
 
-    // Returns de user email
-    function getEmail()
+    /**
+     * Returns de user email
+     * 
+     * @return boolean|string
+     */
+    public function getEmail()
     {
         return $this->get('Email');
     }
 
-    // Returns user locale
-    function getLocale()
+    /**
+     * Returns user locale
+     * 
+     * @return boolean|string
+     */
+    public function getLocale()
     {
         return $this->get('Locale');
     }
 
-    // Returns user's number of access
-    function getNumAccess()
+    /**
+     * Returns user's number of access
+     * 
+     * @return boolean|string
+     */
+    public function getNumAccess()
     {
         return $this->get('NumAccess');
     }
 
-    /*     * ** setters *** */
-
-    // It allows to change an object idUser. It avoid to have to destroy and create again
-    function setID($id)
+    /**
+     * It allows to change an object idUser. It avoid to have to destroy and create again
+     * 
+     * @param int $id
+     * @return NULL|boolean|string
+     */
+    public function setID(int $id)
     {
         parent::__construct($id);
-        if (!($this->get('IdUser') > 0)) {
+        if (! $this->get('IdUser')) {
             $this->SetError(1);
             return null;
         }
         return $this->get('IdUser');
     }
 
-    // Updating database with the new user name
-    function setRealName($name)
+    /**
+     * Updating database with the new user name
+     * 
+     * @param string $name
+     * @return boolean|string|NULL|number
+     */
+    public function setRealName(string $name)
     {
-        if (!($this->get('IdUser') > 0)) {
+        if (! $this->get('IdUser')) {
             $this->SetError(1);
             return false;
         }
@@ -153,10 +209,15 @@ class User extends UsersOrm
         return false;
     }
 
-    // Modifies the user pass
-    function setPassword($pass)
+    /**
+     * Modifies the user pass
+     * 
+     * @param string $pass
+     * @return boolean|boolean|string|NULL|number
+     */
+    public function setPassword(string $pass)
     {
-        if (!($this->get('IdUser') > 0)) {
+        if (! $this->get('IdUser')) {
             $this->SetError(1);
             return false;
         }
@@ -167,10 +228,15 @@ class User extends UsersOrm
         return false;
     }
 
-    // Modifies the user email
-    function setEmail($email)
+    /**
+     * Modifies the user email
+     * 
+     * @param string $email
+     * @return boolean|string|NULL|number
+     */
+    public function setEmail(string $email)
     {
-        if (!($this->get('IdUser') > 0)) {
+        if (! $this->get('IdUser')) {
             $this->SetError(1);
             return false;
         }
@@ -181,9 +247,9 @@ class User extends UsersOrm
         return false;
     }
 
-    function setLocale($code)
+    public function setLocale(string $code = null)
     {
-        if (!($this->get('IdUser') > 0)) {
+        if (! $this->get('IdUser')) {
             $this->SetError(1);
             return false;
         }
@@ -194,8 +260,13 @@ class User extends UsersOrm
         return false;
     }
 
-    // looks for an user by login, and load the corresponding idUser
-    function setByLogin($login)
+    /**
+     * Looks for an user by login, and load the corresponding idUser
+     * 
+     * @param string $login
+     * @return NULL|string|boolean
+     */
+    public function setByLogin(string $login)
     {
         $this->ClearError();
         $dbObj = new \Ximdex\Runtime\Db();
@@ -208,8 +279,14 @@ class User extends UsersOrm
         return false;
     }
 
-    // Function which returns true if an user is in a node
-    function isOnNode($nodeID, $ignoreGeneralGroup = null)
+    /**
+     * Function which returns true if an user is in a node
+     * 
+     * @param int $nodeID
+     * @param bool $ignoreGeneralGroup
+     * @return boolean
+     */
+    public function isOnNode(int $nodeID, bool $ignoreGeneralGroup = false)
     {
         if (is_array($nodeID)) {
             $nodeID = $nodeID['id'];
@@ -231,13 +308,18 @@ class User extends UsersOrm
         }
     }
 
-    // Function which retrieve a list of roles of an user in a determined node
-    function getRolesOnNode($nodeID)
+    /**
+     * Function which retrieve a list of roles of an user in a determined node
+     * 
+     * @param int $nodeID
+     * @return array
+     */
+    public function getRolesOnNode(int $nodeID)
     {
         $this->ClearError();
         if ($this->get('IdUser') > 0) {
             $groupList = $this->GetGroupListOnNode($nodeID);
-            if (!empty($groupList)) {
+            if (! empty($groupList)) {
                 $roleList = [];
                 foreach ($groupList as $idGroup) {
                     $group = new Group($idGroup);
@@ -251,7 +333,7 @@ class User extends UsersOrm
                         }
                     }
                 }
-                if (!empty($roleList) && is_array($roleList)) {
+                if (! empty($roleList) && is_array($roleList)) {
                     $roleList = array_unique($roleList);
                 }
                 return $roleList;
@@ -261,7 +343,7 @@ class User extends UsersOrm
         }
     }
 
-    function hasPermissionOnNode($nodeID, $pName)
+    public function hasPermissionOnNode(int $nodeID, string $pName)
     {
         $roles = $this->GetRolesOnNode($nodeID);
         $permission = new Permission();
@@ -271,22 +353,24 @@ class User extends UsersOrm
             foreach ($roles as $idRol) {
                 $role = new Role($idRol);
                 $permissionList = $role->GetPermissionsList();
-                if ($permissionList)
-                    if (in_array($pID, $permissionList))
+                if ($permissionList) {
+                    if (in_array($pID, $permissionList)) {
                         return true;
+                    }
+                }
             }
         }
         return false;
     }
 
-    function hasPermissionOnGroup($groupID, $pName)
+    public function hasPermissionOnGroup(int $groupID, string $pName)
     {
         $permission = new Permission();
         $permission->SetByName($pName);
         $pID = $permission->GetID();
         $role = new Role($this->GetRoleOnGroup($groupID));
         $permissionList = $role->GetPermissionsList();
-        if (!empty($permissionList)) {
+        if (! empty($permissionList)) {
             if (in_array($pID, $permissionList)) {
                 return true;
             }
@@ -294,17 +378,23 @@ class User extends UsersOrm
         return false;
     }
 
-    function hasPermission($pName)
+    public function hasPermission(string $pName)
     {
         $groupID = App::getValue('GeneralGroup');
         return $this->hasPermissionOnGroup($groupID, $pName);
     }
 
-    // Check perms with name $pname in all user groups of $nodeID
-    function hasPermissionInNode($pName, $nodeID)
+    /**
+     * Check perms with name $pname in all user groups of $nodeID
+     * 
+     * @param string $pName
+     * @param int $nodeID
+     * @return boolean
+     */
+    public function hasPermissionInNode(string $pName, int $nodeID)
     {
         $groups = $this->GetGroupListOnNode($nodeID);
-        if (!empty($groups)) {
+        if (! empty($groups)) {
             foreach ($groups as $_group) {
                 if ($this->HasPermissionOnGroup($_group, $pName)) {
                     return true;
@@ -314,15 +404,20 @@ class User extends UsersOrm
         return false;
     }
 
-    // Function which returns true if an user is in a node
-    function isOnGroup($groupID)
+    /**
+     * Function which returns true if an user is in a node
+     * 
+     * @param int $groupID
+     * @return boolean
+     */
+    public function isOnGroup(int $groupID)
     {
         $this->ClearError();
         if ($this->get('IdUser') > 0) {
             $dbObj = new \Ximdex\Runtime\Db();
             $query = sprintf('SELECT IdUser FROM RelUsersGroups WHERE IdUser = %d AND IdGroup = %d', $this->get('IdUser'), $groupID);
             $dbObj->Query($query);
-            if (!$dbObj->numErr) {
+            if (! $dbObj->numErr) {
                 if ($dbObj->numRows) {
                     return true;
                 } else {
@@ -334,8 +429,13 @@ class User extends UsersOrm
         }
     }
 
-    // Function which returns the role of an user in a group
-    function getRoleOnGroup($groupid)
+    /**
+     * Function which returns the role of an user in a group
+     * 
+     * @param int $groupid
+     * @return boolean|string|NULL
+     */
+    public function getRoleOnGroup(int $groupid)
     {
         $this->ClearError();
         if (! is_null($groupid)) {
@@ -346,10 +446,10 @@ class User extends UsersOrm
                 return $dbObj->GetValue('IdRole');
             }
         }
-        return NULL;
+        return null;
     }
 
-    function getRoles()
+    public function getRoles()
     {
         $this->ClearError();
         $query = sprintf('SELECT DISTINCT IdRole FROM RelUsersGroups WHERE IdUser = %d group by IdRole', $this->get('IdUser'));
@@ -363,33 +463,41 @@ class User extends UsersOrm
         return $roles;
     }
 
-    // Function which returns true if the indicated pass is correct
-    function checkPassword($pass)
+    /**
+     * Function which returns true if the indicated pass is correct
+     * 
+     * @param string $pass
+     * @return boolean
+     */
+    public function checkPassword(string $pass)
     {
         $this->ClearError();
         if ($this->get('IdUser') > 0) {
             $dbObj = new \Ximdex\Runtime\Db();
             $query = sprintf('SELECT Pass FROM Users WHERE IdUser = %d', $this->get('IdUser'));
             $dbObj->Query($query);
-            if (!strcmp(md5($pass), $dbObj->GetValue('Pass'))) {
+            if (! strcmp(md5($pass), $dbObj->GetValue('Pass'))) {
                 return true;
-            } else {
-                return false;
             }
         } else {
             $this->SetError(1);
         }
+        return false;
     }
 
-    // Function which returns the list of groups subscribed by a node belonging to the user
-    function getGroupListOnNode($nodeID)
+    /**
+     * Function which returns the list of groups subscribed by a node belonging to the user
+     * 
+     * @param int $nodeID
+     * @return array
+     */
+    public function getGroupListOnNode(int $nodeID)
     {
         $this->ClearError();
         if ($this->get('IdUser') > 0) {
             $userGroups = $this->GetGroupList();
             $node = new Node($nodeID);
             $nodeGroups = $node->GetGroupList();
-
             if ($node->get('IdNode') > 0 && is_array($userGroups) && is_array($nodeGroups)) {
                 return array_intersect($userGroups, $nodeGroups);
             } else {
@@ -400,62 +508,86 @@ class User extends UsersOrm
         }
     }
 
-    // Function which retrieve a list of actions of an user for given node and group
-    function getToolbarOnNode($nodeID, $groupID)
+    /**
+     * Function which retrieve a list of actions of an user for given node and group
+     * 
+     * @param int $nodeID
+     * @param int $groupID
+     * @return array|boolean
+     */
+    public function getToolbarOnNode(int $nodeID, int $groupID)
     {
-        $this->ClearError();
+        $this->clearError();
         if ($this->get('IdUser') > 0) {
             $roleID = $this->GetRoleOnGroup($groupID);
-            if (!is_null($roleID)) {
+            if (! is_null($roleID)) {
                 $role = new Role($roleID);
-                $actions = $role->GetActionsOnNode($nodeID);
-                if (!$role->numErr)
+                $actions = $role->getActionsOnNode($nodeID);
+                if (! $role->numErr) {
                     return $actions;
-                else
-                    $this->SetError(6);
-            } else
+                }
+                $this->SetError(6);
+            } else {
                 $this->SetError(7);
-        } else
+            }
+        } else {
             $this->SetError(1);
+        }
+        return false;
     }
 
-    // Function which returns the list of actions of an user for given node and group
-    function getRoleOnNode($nodeID, $groupID)
+    /**
+     * Function which returns the list of actions of an user for given node and group
+     * 
+     * @param int $nodeID
+     * @param int $groupID
+     * @return NULL|string|boolean
+     */
+    public function getRoleOnNode(int $nodeID, int $groupID)
     {
         $this->ClearError();
         if ($this->get('IdUser') > 0) {
             $roleID = $this->GetRoleOnGroup($groupID);
-            if (!is_null($roleID)) {
+            if (! is_null($roleID)) {
                 $group = new Group($groupID);
                 $roleGroupID = $group->GetRoleOnNode($nodeID);
-                if ($roleGroupID)
+                if ($roleGroupID) {
                     return $roleGroupID;
-                else
-                    return $roleID;
-            } else
+                }
+                return $roleID;
+            } else {
                 $this->SetError(7);
-        } else
+            }
+        } else {
             $this->SetError(1);
+        }
+        return false;
     }
 
-    // Function which returns an array of tollbars for each subscribed group
-    function getToolbarsOnNode($nodeID)
+    /**
+     * Function which returns an array of tollbars for each subscribed group
+     * 
+     * @param int $nodeID
+     * @return array|boolean
+     */
+    public function getToolbarsOnNode(int $nodeID)
     {
-        $this->ClearError();
+        $this->clearError();
         if ($this->get('IdUser') > 0) {
             $groupIDs = $this->GetGroupListOnNode($nodeID);
             $salida = [];
-            if (!$this->numErr) {
+            if (! $this->numErr) {
                 foreach ($groupIDs as $groupID) {
                     $salida[] = $this->GetToolbarOnNode($nodeID, $groupID);
                 }
             }
-            if (!$this->numErr) {
+            if (! $this->numErr) {
                 return $salida;
             }
         } else {
             $this->SetError(1);
         }
+        return false;
     }
 
     /**
@@ -464,10 +596,14 @@ class User extends UsersOrm
      */
     public function add(bool $useAutoIncrement = true)
     {
-        $this->CreateNewUser($this->get('Name'), $this->get('Login'), $this->get('Pass'), $this->get('Name'), $this->get('Email')
+        return $this->createNewUser($this->get('Name'), $this->get('Login'), $this->get('Pass'), $this->get('Name'), $this->get('Email')
             , $this->get('Locale'));
     }
 
+    /**
+     * {@inheritDoc}
+     * @see \Ximdex\Data\GenericData::set()
+     */
     public function set(string $attrib, string $value = null) : bool
     {
         if ($attrib == 'Pass')
@@ -487,11 +623,12 @@ class User extends UsersOrm
      * @param $idUser
      * @return NULL|boolean|string
      */
-    function createNewUser($realname, $login, $pass, $email, $locale, $roleID, $idUser)
+    public function createNewUser(string $realname, string $login, string $pass, string $email, string $locale = null, int $roleID
+        , int $idUser = null)
     {
         if (is_null($idUser)) {
             Logger::error('The node must be previously created');
-            return NULL;
+            return false;
         }
         $this->set('IdUser', $idUser);
         $this->set('Login', $login);
@@ -499,47 +636,55 @@ class User extends UsersOrm
         $this->set('Name', $realname);
         $this->set('Email', $email);
         $this->set('Locale', $locale);
-        if (!parent::add()) {
+        if (! parent::add()) {
             Logger::error('Error in User persistence for ' . $idUser);
-            return NULL;
+            return null;
         }
         $group = new Group();
         $group->SetGeneralGroup();
-        $group->AddUserWithRole($idUser, $roleID);
+        $group->addUserWithRole($idUser, $roleID);
         return $this->get('IdUser');
     }
 
-    function delete()
+    public function delete()
     {
-        $this->DeleteUser();
+        $this->deleteUser();
     }
 
-    // Function which delete the current user
-    function deleteUser()
+    /**
+     * Function which delete the current user
+     */
+    public function deleteUser()
     {
-        $this->ClearError();
+        $this->clearError();
         if ($this->get('IdUser') > 0) {
             parent::delete();
         } else
             $this->SetError(1);
     }
 
-    // Cleaning class errors
-    function clearError()
+    /**
+     * Cleaning class errors
+     */
+    public function clearError()
     {
         $this->numErr = null;
         $this->msgErr = null;
     }
 
-    // Loading a class error
-    function setError($code)
+    /**
+     * Loading a class error
+     * 
+     * @param int $code
+     */
+    public function setError(int $code)
     {
         $this->numErr = $code;
         $this->msgErr = $this->errorList[$code];
     }
 
     // Returning true if the class has produced an error
-    function hasError()
+    public function hasError()
     {
         return ($this->numErr != null);
     }
@@ -563,22 +708,24 @@ class User extends UsersOrm
 
     /**
      * Get an array with allowed actions on a node
-     * @param int $idNode Node to check Actions
-     * @return array idActions array.
-     * @version Ximdex 3.6
+     * 
+     * @param int $idNode
+     * @param bool $includeActionsWithNegativeSort
+     * @return array
+     * @since Ximdex 3.6
      */
-    public function getActionsOnNode($idNode, $includeActionsWithNegativeSort = false)
+    public function getActionsOnNode(int $idNode, bool $includeActionsWithNegativeSort = false)
     {
         $result = array();
 
         // Getting no specific not allowed actions for $idNode
-        $noActionsInNode = new \Ximdex\Models\NoActionsInNode();
+        $noActionsInNode = new NoActionsInNode();
         $arrayForbiddenActions = $noActionsInNode->getForbiddenActions($idNode);
 
         /**
          * To get the actions the steps are:
          * 1. Get the Groups on node for the current User
-         * 2. For every group, the user roles.
+         * 2. For every group, the user roles
          * 3. For every role get the actions on idnode
          */
 
@@ -591,7 +738,7 @@ class User extends UsersOrm
             $arrayRoles = array();
             foreach ($arrayGroups as $idGroup) {
                 $aux = array();
-                $aux[] = $this->GetRoleOnGroup($idGroup);
+                $aux[] = $this->getRoleOnGroup($idGroup);
                 $arrayRoles = array_merge($arrayRoles, $aux);
             }
             if (! empty($arrayRoles)) {
@@ -599,7 +746,7 @@ class User extends UsersOrm
                 // Getting actions for every rol
                 foreach (array_unique($arrayRoles) as $idRol) {
                     $role = new Role($idRol);
-                    $arrayActions = array_merge($arrayActions, $role->GetActionsOnNode($idNode, $includeActionsWithNegativeSort));
+                    $arrayActions = array_merge($arrayActions, $role->getActionsOnNode($idNode, $includeActionsWithNegativeSort));
                 }
             }
         }
@@ -614,11 +761,11 @@ class User extends UsersOrm
      * Calculates the posible actions for a group of nodes
      * It depends on roles, states and nodetypes of nodes
      * 
-     * @param array $nodes IdNodes array.
+     * @param array $nodes IdNodes array
      * @return array IdActions array
      * @since Ximdex 3.6
      */
-    public function getActionsOnNodeList($nodes)
+    public function getActionsOnNodeList(array $nodes)
     {
         $result = array();
         $nodes = array_unique($nodes);
@@ -657,9 +804,9 @@ class User extends UsersOrm
      * @since Ximdex 3.6
      * @param int $idNode
      * @param int $idAction
-     * @return boolean True if the action is allowed. Otherwise false.
+     * @return boolean True if the action is allowed. Otherwise false
      */
-    public function isAllowedAction($idNode, $idAction)
+    public function isAllowedAction(int $idNode, int $idAction)
     {
         // The action cant be specifically forbidden
         $noActionsInNode = new NoActionsInNode();
@@ -670,12 +817,7 @@ class User extends UsersOrm
         return in_array($idAction, $arrayActions);
     }
 
-    /**
-     * @param $name
-     * @param $password
-     * @return boolean
-     */
-    public function login($name, $password)
+    public function login(string $name, string $password)
     {
         $this->setByLogin($name);
         if ($this->checkPassword($password)) {
@@ -718,14 +860,9 @@ class User extends UsersOrm
         Session::destroy();
     }
 
-    /**
-     * @param $userId
-     * @param $nodeId
-     * @return bool
-     */
-    public function hasAccess($nodeId)
+    public function hasAccess(int $nodeId)
     {
-        // TODO define as global constans nodeid=10000 && nodeid=2
+        // TODO define as global constans nodeid = 10000 && nodeid = 2
         if ($nodeId == 1 || $nodeId == 10000 || $nodeId == 2 || $this->getID() == self::XIMDEX_ID) {
             return true;
         }
@@ -743,12 +880,7 @@ class User extends UsersOrm
         return false;
     }
 
-    /**
-     * @param $userId
-     * @param $params
-     * @return boolean
-     */
-    public  function canRead($params)
+    public  function canRead(array $params)
     {
         $wfParams = $this->parseParams($params);
         $nodeId = $wfParams['node_id'];
@@ -764,11 +896,10 @@ class User extends UsersOrm
     /**
      * Comprueba si un usuario puede escribir un nodo
      *
-     * @param int $userId
      * @param array $params array asociativo que debe contener las claves node_id o node_type
      * @return bool (true, si puede escribir, false en caso contrario)
      */
-    public function canWrite($params) : bool
+    public function canWrite(array $params) : bool
     {
         $wfParams = $this->parseParams($params);
         $workFlowId = null;
@@ -822,16 +953,11 @@ class User extends UsersOrm
         return false;
     }
 
-    /**
-     * @param $userId
-     * @param $params
-     * @return boolean
-     */
-    public function canDelete($params)
+    public function canDelete(array $params)
     {
         // TODO extend relation table with delete actions/nodetypes mapping
         $wfParams = $this->parseParams($params);
-        if (!isset($wfParams['node_type'])) {
+        if (! isset($wfParams['node_type'])) {
             return false;
         }
         $nodeTypeId = (int)$wfParams['node_type'];
@@ -841,16 +967,11 @@ class User extends UsersOrm
         return $this->canWrite($params);
     }
 
-    /**
-     * @param $userId
-     * @param $params
-     * @return boolean
-     */
-    public function canModify($params)
+    public function canModify(array $params)
     {
         // TODO extend relation table with modify actions/nodetypes mapping
         $wfParams = $this->parseParams($params);
-        if (!isset($wfParams['node_type'])) {
+        if (! isset($wfParams['node_type'])) {
             return false;
         }
         $nodeTypeId = (int)$wfParams['node_type'];
@@ -860,11 +981,7 @@ class User extends UsersOrm
         return $this->canWrite($params);
     }
 
-    /**
-     * @param $params
-     * @return array
-     */
-    protected function parseParams($params)
+    protected function parseParams(array $params)
     {
         $formedParams = array();
         if (is_array($params)) {
@@ -893,7 +1010,7 @@ class User extends UsersOrm
         return null;
     }
 
-    protected function checkContext($idNodeType, $mode)
+    protected function checkContext(int $idNodeType, string $mode)
     {
         $nodeTypeMode = new NodetypeMode();
         $idAction = $nodeTypeMode->getActionForOperation($idNodeType, $mode);

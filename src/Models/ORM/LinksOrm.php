@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -31,22 +31,33 @@ use Ximdex\Data\GenericData;
 
 class LinksOrm extends GenericData
 {
-    var $_idField = 'IdLink';
-    var $_table = 'Links';
-    var $_metaData = array(
+    public $_idField = 'IdLink';
+    
+    public $_table = 'Links';
+    
+    public $_metaData = array
+    (
         'IdLink' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'false', 'primary_key' => true),
         'Url' => array('type' => "blob", 'not_null' => 'true'),
         'Error' => array('type' => "int(12)", 'not_null' => 'false'),
         'ErrorString' => array('type' => "varchar(255)", 'not_null' => 'false'),
         'CheckTime' => array('type' => "int(12)", 'not_null' => 'false')
     );
-    var $_uniqueConstraints = array(
+    
+    public $_uniqueConstraints = array
+    (
         'IdLink' => array('IdLink')
     );
-    var $_indexes = array('IdLink');
-    var $IdLink;
-    var $Url;
-    var $Error;
-    var $ErrorString;
-    var $CheckTime;
+    
+    public $_indexes = array('IdLink');
+    
+    public $IdLink;
+    
+    public $Url;
+    
+    public $Error;
+    
+    public $ErrorString;
+    
+    public $CheckTime;
 }

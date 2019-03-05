@@ -335,7 +335,7 @@ abstract class XmlEditor_Abstract
         $schemaNode = new Node($idSchema);
         $schemaName = $schemaNode->GetNodeName();
         $dataFactory = new DataFactory($idSchema);
-        $maxIdVersion = $dataFactory->GetLastVersionId();
+        $maxIdVersion = $dataFactory->getLastVersionId();
         $formXslFile = XIMDEX_ROOT_PATH.App::getValue( 'FileRoot')."/xslformview_{$schemaName}_{$maxIdVersion}.xsl";
         if (file_exists($formXslFile)) {
             return $formXslFile;

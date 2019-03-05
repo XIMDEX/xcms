@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -31,77 +31,55 @@ use Ximdex\Runtime\App;
 
 class QueryManager
 {
-    var $queryContent = NULL;
+    public $queryContent = null;
+    
     private $levels;
 
-    /**
-     * @param bool $preload
-     */
-    public function __construct($preload = true)
+    public function __construct(bool $preload = true)
     {
         $this->queryContent = array();
-        if ($preload === false ) {
-            return ;
+        if ($preload === false) {
+            return;
         }
-        $queryString = (isset( $_SERVER['QUERY_STRING'])) ? $_SERVER['QUERY_STRING'] : '' ;
+        $queryString = (isset($_SERVER['QUERY_STRING'])) ? $_SERVER['QUERY_STRING'] : '' ;
         parse_str($queryString, $this->queryContent);
     }
 
-    /**
-     * @param $key
-     * @param $value
-     */
-    function add($key, $value)
+    public function add(string $key, $value = null)
     {
         $this->queryContent[$key] = $value;
     }
 
-    /**
-     * @param $key
-     * @return mixed
-     */
-    function get($key)
+    public function get(string $key)
     {
         return isset($this->queryContent[$key]) ? $this->queryContent[$key] : NULL;
     }
 
-    /**
-     * @param $key
-     */
-    function delete($key)
+    public function delete(string $key)
     {
         if (isset($this->queryContent)) {
             unset($this->queryContent[$key]);
         }
     }
 
-    /**
-     * @return mixed
-     */
-    function build()
+    public function build()
     {
         return $this->_buildQuery($this->queryContent);
     }
 
-    /**
-     * @param $extraParams
-     * @return mixed
-     */
-    function buildWith($extraParams=null)
+    public function buildWith(array $extraParams = null)
     {
         $fullQuery = $this->queryContent;
-        if (!is_array($extraParams)) $extraParams = array();
+        if (! is_array($extraParams)) {
+            $extraParams = array();
+        }
         foreach ($extraParams as $key => $value) {
             $fullQuery[$key] = $value;
         }
         return $this->_buildQuery($fullQuery);
     }
 
-    /**
-     * @param $queryParams
-     * @return string
-     */
-    function _buildQuery($queryParams)
+    private function _buildQuery(array $queryParams = null)
     {
         if (is_array($queryParams)) {
             $queryPreImploded = array();
@@ -117,16 +95,12 @@ class QueryManager
                     $queryPreImploded[] = sprintf('%s=%s', urlencode($key), urlencode($value));
                 }
             }
-            return sprintf('?%s', implode('&', (array) $queryPreImploded));
+            return sprintf('?%s', implode('&', $queryPreImploded));
         }
         return '';
     }
 
-    /**
-     * @param $queryParams
-     * @return array
-     */
-    function _buildSubQuery($queryParams)
+    private function _buildSubQuery(array $queryParams = null)
     {
         $storedValues = array();
         if (is_array($queryParams)) {
@@ -147,22 +121,17 @@ class QueryManager
         return array();
     }
 
-    /**
-     * @param bool $host
-     * @return string
-     */
-    function getPage(bool $host = true)
+    public function getPage(bool $host = true)
     {
         if ($host) {
             
             // Changed getPage method to use UrlHost + UrlRoot value obtained from database table Config value
             $url = App::getValue('UrlHost');
-        }
-        else {
+        } else {
             $url = '';
         }
         
-        //NOTE: We add / diretory separator at the end
+        // NOTE: We add / diretory separator at the end
         $url .= App::getValue('UrlRoot') . '/';
         return $url;
     }

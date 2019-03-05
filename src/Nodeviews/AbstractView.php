@@ -99,4 +99,10 @@ abstract class AbstractView implements IView
     {
         return FsUtils::file_get_contents($pointer);
     }
+    
+    public static function get_class_constants()
+    {
+        $reflect = new \ReflectionClass(static::class);
+        return $reflect->getConstants();
+    }
 }

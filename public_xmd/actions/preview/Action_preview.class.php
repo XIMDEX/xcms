@@ -44,8 +44,8 @@ class Action_preview extends ActionAbstract
         $params = $this->request->getParam('params');
         $node = new Node($idNode);
         $data = new DataFactory($idNode);
-        $version = $data->GetLastVersion();
-        $subVersion = $data->GetLastSubVersion($version);
+        $version = $data->getLastVersion();
+        $subVersion = $data->getLastSubVersion($version);
         setlocale(LC_TIME, 'es_ES');
         $date = strftime('%a, %d/%m/%G %R', $data->GetDate($version, $subVersion));
         $user = new User($data->GetUserID($version, $subVersion));

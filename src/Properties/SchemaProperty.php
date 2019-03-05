@@ -1,6 +1,7 @@
 <?php
+
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -27,87 +28,96 @@
 namespace Ximdex\Properties;
 
 use Ximdex\Models\Node;
+use Ximdex\NodeTypes\NodeTypeConstants;
 
-class SchemaProperty extends InheritableProperty {
-
-	public function getPropertyName() {
+class SchemaProperty extends InheritableProperty
+{
+	public function getPropertyName()
+	{
 		return 'DefaultSchema';
 	}
 
-	public function getValues() {
-
+	public function getValues()
+	{
 		// All system schemas
 		$_availableSchemas = array(
 			array(
-			    'IdSchema' => \Ximdex\NodeTypes\NodeTypeConstants::VISUAL_TEMPLATE,
+			    'IdSchema' => NodeTypeConstants::VISUAL_TEMPLATE,
 				'Name' => 'PVD'
 			),
 			array(
-			    'IdSchema' => \Ximdex\NodeTypes\NodeTypeConstants::RNG_VISUAL_TEMPLATE,
+			    'IdSchema' => NodeTypeConstants::RNG_VISUAL_TEMPLATE,
 				'Name' => 'RNG'
 			)
 		);
 
 		// Selected schemas on the node
 		$nodeSchemas = $this->getProperty(false);
-		if (empty($nodeSchemas)) $nodeSchemas = array();
-
+		if (empty($nodeSchemas)) {
+		    $nodeSchemas = array();
+		}
 		$availableSchemas = array();
-
-
-		if ($this->nodeTypeId == \Ximdex\NodeTypes\NodeTypeConstants::PROJECT) {
+		if ($this->nodeTypeId == NodeTypeConstants::PROJECT) {
 
 			// The Project node shows all the system schemas
 			$availableSchemas = $_availableSchemas;
-
 		} else {
 
 			// Nodes below the Project shows only inherited schemas
 			$parentId = $this->node->getParent();
 			$parent = new Node($parentId);
 			$inheritedSchemas = $parent->getProperty($this->getPropertyName(), true);
-
 			if (empty($inheritedSchemas)) {
 
 				// Inherits all the system properties
 				$availableSchemas = $_availableSchemas;
 			} else {
-
 				foreach ($_availableSchemas as $schema) {
-
 					if (in_array($schema['IdSchema'], $inheritedSchemas)) {
 						$availableSchemas[] = $schema;
 					}
 				}
 			}
 		}
-
-		foreach ($availableSchemas as &$schema) {
-
+		foreach ($availableSchemas as & $schema) {
 			$schema['Checked'] = in_array($schema['IdSchema'], $nodeSchemas) ? true : false;
 		}
-
 		return $availableSchemas;
 	}
 
-	public function getAffectedNodes($values) {
-
-		return false;
-	}
-
-	protected function updateAffectedNodes($values) {
-
-		return false;
-	}
-
-	public function applyPropertyRecursively($values) {
-
-		return false;
+	/**
+	 * {@inheritDoc}
+	 * @see \Ximdex\Properties\InheritableProperty::applyPropertyRecursively()
+	 */
+	public function applyPropertyRecursively(array $values)
+	{
+		return true;
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 * @see \Ximdex\Properties\InheritableProperty::get_system_properties()
+	 */
 	protected function get_system_properties()
-    {}
+    {
+	    return [];
+	}
 
+	/**
+	 * {@inheritDoc}
+	 * @see \Ximdex\Properties\InheritableProperty::get_inherit_properties()
+	 */
     protected function get_inherit_properties(array $availableProperties)
-    {}
+    {
+        return [];
+    }
+    
+    /**
+     * {@inheritDoc}
+     * @see \Ximdex\Properties\InheritableProperty::updateAffectedNodes()
+     */
+    protected function updateAffectedNodes(array $values)
+    {
+        return true;
+    }
 }

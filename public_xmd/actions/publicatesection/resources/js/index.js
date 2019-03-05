@@ -1,3 +1,28 @@
+/**
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
+ */
+
 X.actionLoaded(function(event, fn, params) {
 	
 	$('form#publication_form').submit(function () {
@@ -5,13 +30,15 @@ X.actionLoaded(function(event, fn, params) {
 		$('#form_layer').toggle();
 	});
 
-	function start_reading() {
+	function start_reading()
+	{
 		var t = XimTimer.getInstance();
 		t.addObserver(read_log, 2000);
 		t.start();
 	}
 
-	function read_log() {
+	function read_log()
+	{
 		var url = window.url_root + '?actionid=' + window.actionId + '&nodeid=' + window.nodeId + '&method=publication_progress';
 		$.get(
 			url,
@@ -23,7 +50,6 @@ X.actionLoaded(function(event, fn, params) {
 	
 	// Create calendars
 	var cals = fn('.xim-calendar-layer-container');
-	
 	var $groupList = fn('fieldset.notifications select[name=groups]');
 	var $userList = fn('fieldset.notifications ol.user-list');
 	var $textarea = fn('fieldset.notifications textarea[name=texttosend]');
@@ -40,8 +66,7 @@ X.actionLoaded(function(event, fn, params) {
 				
 				// All levels or zero level
 				fn('[id="deeplevel"]').addClass("disabled").attr("disabled", true);
-			}
-			else {
+			} else {
 				
 				// N levels of deep
 				fn('[id="deeplevel"]').removeClass("disabled").attr("disabled", false);
@@ -56,15 +81,15 @@ X.actionLoaded(function(event, fn, params) {
 			var nodeTypes = $('select[name=types]');
 			if ($publishType.attr('checked')) {
 				nodeTypes.attr('disabled', false);
-			}
-			else {
+			} else {
 				nodeTypes.val(0);
 				nodeTypes.attr('disabled', true);
 			}
 		});
 	}
 	
-	function request(options) {
+	function request(options)
+	{
 		options.data = $.extend({
 			action: 'publicatesection',
 			nodeid: fn('input[name=nodeid]').val()
@@ -79,8 +104,9 @@ X.actionLoaded(function(event, fn, params) {
 		});
 	}
 	
-	function getNotificableUsers() {
-		if ($groupList) {
+	function getNotificableUsers()
+	{
+		if ($groupList && $groupList.val()) {
 			var val = $groupList.val().split('|');
 			var groupid = val[0];
 			var stateid = val[1];
@@ -92,8 +118,8 @@ X.actionLoaded(function(event, fn, params) {
 		}
 	}	
 	
-	function notificableUsers(data, textStatus) {
-		
+	function notificableUsers(data, textStatus)
+	{	
 		// Cleanup
 		$userList.unbind().empty();
 		if (textStatus != 'success') return;

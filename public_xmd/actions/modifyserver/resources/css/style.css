@@ -192,7 +192,7 @@ fieldset.mdfsv_errors {
 }
 
 .content_server>div {
-	margin: 0 0 1.5em 0;
+	margin: 0 0 1em 0;
 }
 
 .content_server>div:nth-child(1n+2) {

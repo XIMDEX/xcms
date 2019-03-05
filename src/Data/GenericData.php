@@ -415,8 +415,8 @@ class GenericData
      * @param string $groupBy
      * @return array|bool
      */
-    public function find(string $fields = ALL, string $condition = null, array $params = null, bool $returnType = MULTI, bool $escape = true
-        , string $index = null, string $order = null, string $groupBy = null)
+    public function find(string $fields = ALL, string $condition = null, array $params = null, bool $returnType = MULTI
+        , bool $escape = true, string $index = null, string $order = null, string $groupBy = null)
     {
         $condition = $this->_getCondition($condition, $params, $escape);
         $query = sprintf(
@@ -451,8 +451,11 @@ class GenericData
             }
         }
         if (! empty($condition) && ! is_null($params)) {
+            /*
             $value = sprintf('$condition = sprintf("%s", "%s");', $condition, implode('", "', $params));
             eval($value);
+            */
+            $condition = vsprintf($condition, $params);
         }
         return $condition;
     }

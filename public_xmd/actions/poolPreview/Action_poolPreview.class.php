@@ -156,7 +156,7 @@ class Action_poolPreview extends ActionAbstract
 				    
 					// If it has not version or subversion, i get it the last version for this idnode
 					$dataFactory = new DataFactory($idNode);
-					$versionid = $dataFactory->GetLastVersionId();
+					$versionid = $dataFactory->getLastVersionId();
 				} else {
 					$versionid = $dataFactory->getVersionId($idVersion, $idSubVersion);
 				}

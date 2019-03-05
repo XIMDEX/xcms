@@ -119,7 +119,7 @@ class Action_publicatesection extends ActionAbstract
         else {
             $type = null;
         }
-        $noUseDrafts = $this->request->getParam('latest') ? false : true;
+        $useDrafts = $this->request->getParam('latest') ? true : false;
         $useCache = $this->request->getParam('use_cache') ? true : false;
         $node = new Node($idNode);
         $nodename = $node->get('Name');
@@ -162,7 +162,7 @@ class Action_publicatesection extends ActionAbstract
             'childtype' => $type,
             'workflow' => false,
             'force' => $forcePublication,
-            'lastPublished' => $noUseDrafts,
+            'lastPublished' => $useDrafts,
             'publicateSection' => true,
             'level' => $level,
             'structure' => $structure,

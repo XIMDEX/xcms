@@ -359,7 +359,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
             return $response;
         }
         $dataFactory = new DataFactory($idNode);
-        $lastVersion = $dataFactory->GetLastVersionId();
+        $lastVersion = $dataFactory->getLastVersionId();
         if (is_null($response['doc_mod_date'] = $dataFactory->GetDate($lastVersion)) || 
                 $response['doc_mod_date'] >= $response['tmp_mod_date']) {
             $response['result'] = false;
@@ -484,7 +484,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
             return $content;
         }
         $dataFactory = new DataFactory($this->node->get('IdNode'));
-        $lastVersion = $dataFactory->GetLastVersionId();
+        $lastVersion = $dataFactory->getLastVersionId();
         $args = [];
         $args['CHANNEL'] = $this->getDefaultChannel();
         $args['XEDIT_VIEW'] = $view;
@@ -593,7 +593,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
     {
         $node = new Node($idNode);
         $dataFactory = new DataFactory($idNode);
-        $idVersion = $dataFactory->GetLastVersionId();
+        $idVersion = $dataFactory->getLastVersionId();
         $args = [];
         $args['CHANNEL'] = $idChannel;
         $args['SERVERNODE'] = $node->getServer();

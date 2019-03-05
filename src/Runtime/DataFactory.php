@@ -199,7 +199,7 @@ class DataFactory
      * @param int $version
      * @return boolean|NULL|int
      */
-    public function GetLastSubVersion(int $version)
+    public function getLastSubVersion(int $version)
     {
         $this->ClearError();
         if (! $this->nodeID) {
@@ -274,9 +274,9 @@ class DataFactory
 
         // Si no se nos especificaba la version, asumimos la ultima
         if (is_null($versionID) && is_null($subVersion)) {
-            $versionID = $this->GetLastVersion();
+            $versionID = $this->getLastVersion();
             if (! is_null($versionID)) {
-                $subVersion = $this->GetLastSubVersion($versionID);
+                $subVersion = $this->getLastSubVersion($versionID);
             }
         }
         if (is_null($versionID) || is_null($subVersion)) {
@@ -446,7 +446,7 @@ class DataFactory
                 Logger::warning('Unable to get the last version of the document');
                 return false;
             }
-            $curSubVersion = $this->GetLastSubVersion($curVersion);
+            $curSubVersion = $this->getLastSubVersion($curVersion);
             if ($jumpNewVersion) {
 
                 // Si queremos saltar de version x.y -> x+1.0
@@ -547,7 +547,7 @@ class DataFactory
 
         // Siempre va a tener versiones anteriores (no tiene sentido recuperar la actual), calculamos cual es la siguiente
         $newVersion = $this->GetLastVersion();
-        $curSubVersion = $this->GetLastSubVersion($newVersion);
+        $curSubVersion = $this->getLastSubVersion($newVersion);
         $purgePreviousSubVersions = App::getValue('PurgeSubversionsOnNewVersion');
         $newSubVersion = $curSubVersion + 1;
 
@@ -952,7 +952,7 @@ class DataFactory
      *
      * @return boolean|string
      */
-    public function GetPublishedIdVersion()
+    public function getPublishedIdVersion()
     {
         $dbObj = new \Ximdex\Runtime\Db();
         $this->ClearError();

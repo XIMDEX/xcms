@@ -81,8 +81,8 @@ abstract class AbstractStructuredDocument extends FileNode
             }
         }
         $doc = new StructuredDocument();
-        $doc->CreateNewStrDoc($this->nodeID, $name, $loginID, $IdLanguage, $templateID, $channelList, $content);
-        if ($doc->HasError()) {
+        $doc->createNewStrDoc($this->nodeID, $name, $loginID, $IdLanguage, $templateID, $channelList, $content);
+        if ($doc->hasError()) {
             $this->parent->SetError(5);
         }
         $nodeContainer = new Node($this->parent->GetParent());
@@ -200,14 +200,13 @@ abstract class AbstractStructuredDocument extends FileNode
             }
         }
         $strDoc = new StructuredDocument($this->nodeID);
-        $res = $strDoc->SetContent($content, $commitNode);
+        $res = $strDoc->setContent($content, $commitNode);
         $this->messages->mergeMessages($strDoc->messages);
         if ($res === false) {
             return false;
         }
         
         // Update workflow slaves for this node
-        // $wfSlaves = $this->parent->GetWorkflowSlaves();
         if (! $node) {
             $node = new Node($this->nodeID);
         }
@@ -645,7 +644,7 @@ abstract class AbstractStructuredDocument extends FileNode
      * {@inheritDoc}
      * @see \Ximdex\NodeTypes\Root::getPublishedPath()
      */
-    public function getPublishedPath(int $channelID = null, bool $addNodeName = false, bool $structure = false)
+    public function getPublishedPath(int $channelID = null, bool $addNodeName = false, bool $structure = false, bool $addLanguagePrefix = true)
     {
         if (! $this->parent->GetID()) {
             $error = 'Missing ID for structured document';
@@ -662,7 +661,7 @@ abstract class AbstractStructuredDocument extends FileNode
         }
         if (App::getValue('PublishPathFormat') == App::PREFIX or App::getValue('PublishPathFormat') == App::SUFFIX) {
             $language = new Language($structuredDocument->get("IdLanguage"));
-            if (!$language->GetID()) {
+            if (! $language->GetID()) {
                 $error = 'Language not found for ID: ' . $structuredDocument->get("IdLanguage");
                 $this->messages->add($error, MSG_TYPE_ERROR);
                 Logger::error($error);
@@ -676,6 +675,9 @@ abstract class AbstractStructuredDocument extends FileNode
         $path = '/' . implode('/', $nodes);
         switch (App::getValue('PublishPathFormat')) {
             case App::PREFIX:
+                if (! $addLanguagePrefix) {
+                    break;
+                }
                 
                 // If the language is different than the default server one, the path include its ISO name
                 $nodeProperty = new NodeProperty();
@@ -684,8 +686,7 @@ abstract class AbstractStructuredDocument extends FileNode
                     if ($language->GetID() != $property[0]) {
                         $path = '/'. $language->get("IsoName") . $path;
                     }
-                }
-                else {
+                } else {
                     
                     // No default language in prefix mode, always include the language in path
                     $path = '/'. $language->get("IsoName") . $path;

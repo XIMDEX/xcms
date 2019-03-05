@@ -105,7 +105,7 @@ while (fileExistAndIsNotEmpty('data/previos/en/picasso.html') && $count < 45) {
 $I->dontSeeFileFound('en','data/previos');
 
 // Load the XML editor
-$I->amOnPage('?action=xmleditor2&method=load&nodeid=10095');
+$I->amOnPage('?action=xmleditor2&method=load&nodeid=10098');
 $I->wait(3);
 
 $I->switchToIframe('kupu-editor');

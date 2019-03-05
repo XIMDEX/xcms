@@ -23,8 +23,7 @@
  *  @version $Revision$
  *}
 
-<form method="post" id="modify_role_form" class="modify_role_form" action="{$action_url}&amp;id_pipeline={$selected_pipeline}" 
-        ng-init="status = []">
+<form method="post" id="modify_role_form" class="modify_role_form" action="{$action_url}" ng-init="status = []">
 	{include file="actions/components/title_Description.tpl"}
 	<div ng-cloak class="action_content">
         <fieldset class="buttons-form-special">

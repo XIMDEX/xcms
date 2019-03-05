@@ -29,7 +29,10 @@ namespace Ximdex\Models;
 
 use DateTime;
 use Ximdex\Runtime\App;
+use Ximdex\Runtime\Session;
 use Ximdex\Data\GenericData;
+use Ximdex\Properties\InheritedPropertiesManager;
+use Ximdex\Properties\InheritableProperty;
 
 class Metadata extends GenericData
 {
@@ -42,35 +45,61 @@ class Metadata extends GenericData
     public $_idField = 'IdMetadata';
     public $_table = 'Metadata';
     public $_metaData = array(
-        'IdMetadata' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
-        'name' => array('type' => "varchar(255)", 'not_null' => 'true')
+        'idMetadata' => array('type' => 'int(12)', 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
+        'name' => array('type' => 'varchar(255)', 'not_null' => 'true'),
+        'defaultValue' => array('type' => 'text', 'not_null' => 'false'),
+        'type' => array('type' => 'varchar(255)', 'not_null' => 'true'),
+        'readonly' => array('type' => 'int(1)', 'not_null' => 'true')
     );
     public $_uniqueConstraints = array(
-        'Name' => array('name'),
+        'name' => array('name'),
     );
-    public $_indexes = array('IdMetadata');
-    public $IdMetadata;
-    public $Name = 0;
+    public $_indexes = array('idMetadata');
+    public $idMetadata;
+    public $name;
+    public $defaultValue;
+    public $type = 'text';
+    public $readonly;
 
-    public function getMetadataSectionAndGroupByNodeType(int $idNodeType, int $nodeId = null): array
+    public function getMetadataSchemeAndGroupByNodeType(int $idNodeType, int $nodeId = null): array
     {
+        if (! $idNodeType) {
+            throw new \Exception('No node type ID given to obtain metadata schemes');
+        }
         $dbObj = new \Ximdex\Runtime\Db();
-        $dbObj->Query(sprintf("SELECT MetadataGroup.idMetadataGroup, MetadataGroup.name as groupName,
-              MetadataSection.name as sectionName, MetadataSection.idMetadataSection FROM RelMetadataSectionNodeType 
-              JOIN MetadataSection ON MetadataSection.idMetadataSection = RelMetadataSectionNodeType.idMetadataSection 
-              JOIN MetadataGroup ON MetadataSection.idMetadataSection = MetadataGroup.idMetadataSection
-              WHERE idNodeType = %s", $idNodeType));
+        $query = sprintf('SELECT MetadataGroup.idMetadataGroup, MetadataGroup.name as groupName,
+              MetadataScheme.name as sectionName, MetadataScheme.idMetadataScheme FROM RelMetadataSchemeNodeType
+              JOIN MetadataScheme ON MetadataScheme.idMetadataScheme = RelMetadataSchemeNodeType.idMetadataScheme
+              JOIN MetadataGroup ON MetadataScheme.idMetadataScheme = MetadataGroup.idMetadataScheme
+              WHERE idNodeType = %s', $idNodeType);
+        if ($nodeId) {
+            
+            // Load inheritable properties for this node in order to obtain the applied metadata schemes in its section
+            $propMng = new InheritedPropertiesManager();
+            $values = $propMng->getValues($nodeId, true, [InheritableProperty::METADATA_SCHEME]);
+            if (! $values) {
+                return [];
+            }
+            $inheritedGroups = [];
+            foreach ($values[InheritableProperty::METADATA_SCHEME] as $group) {
+                $inheritedGroups[] = $group['Id'];
+            }
+            $query .= ' AND MetadataScheme.idMetadataScheme IN (' . implode(', ', $inheritedGroups) . ')';
+        }
+        if ($dbObj->query($query) === false) {
+            throw new \Exception('Query error in metadata scheme retrieve operation');
+        }
         $returnArray = array();
         while (! $dbObj->EOF) {
-            $idSection = $dbObj->GetValue('idMetadataSection');
+            $idSection = $dbObj->getValue('idMetadataScheme');
             $group = [
-                'id' => $dbObj->GetValue('idMetadataGroup'),
-                'name' => $dbObj->GetValue('groupName')
+                'id' => $dbObj->getValue('idMetadataGroup'),
+                'name' => $dbObj->getValue('groupName')
             ];
             if (! isset($returnArray[$idSection])) {
                 $returnArray[$idSection] = [
                     'groups' => [],
-                    'name' => $dbObj->GetValue('sectionName')
+                    'name' => $dbObj->getValue('sectionName')
                 ];
             }
             if (! is_null($nodeId)) {
@@ -78,59 +107,42 @@ class Metadata extends GenericData
                 $group['metadata'] = $metadata;
             }
             array_push($returnArray[$idSection]['groups'], $group);
-            $dbObj->Next();
+            $dbObj->next();
         }
         return $returnArray;
     }
 
-
     public function getMetadataByMetagroupAndNodeId(int $idGroup, int $nodeId): array
     {
-        $dbObj = new \Ximdex\Runtime\Db();
-        $dbObj->Query(sprintf("SELECT Metadata.name, Metadata.type, RelMetadataGroupMetadata.required,
-            RelMetadataGroupMetadata.idRelMetadataGroupMetadata, 
+        $query = sprintf('SELECT Metadata.name, Metadata.type, RelMetadataGroupMetadata.required,
+            RelMetadataGroupMetadata.idRelMetadataGroupMetadata,
             (
             	CASE
                 	WHEN MetadataValue.value IS NULL THEN Metadata.defaultValue
                     ELSE MetadataValue.value
                 END
             ) AS value
-            FROM RelMetadataGroupMetadata JOIN 
-            Metadata ON RelMetadataGroupMetadata.idMetadata =
-            Metadata.idMetadata 
-            LEFT JOIN MetadataValue ON MetadataValue.idRelMetadataGroupMetadata = RelMetadataGroupMetadata.idRelMetadataGroupMetadata 
-            and MetadataValue.idNode = %s
-            WHERE idMetadataGroup = %s", $nodeId, $idGroup));
-        $returnArray = array();
-        while (! $dbObj->EOF) {
-            $value = static::getMetadataValue($nodeId, $dbObj->GetValue('value'), $dbObj->GetValue('type'));
-            $returnArray[] = [
-                'name' => $dbObj->GetValue('name'),
-                'id' => $dbObj->GetValue('idRelMetadataGroupMetadata'),
-                'value' => $value,
-                'type' => $dbObj->GetValue('type'),
-                'required' => $dbObj->GetValue('required'),
-            ];
-            $dbObj->Next();
-        }
-        return $returnArray;
-    }
-
-    public function insertMetadata(int $idGroup, array $metadata): array
-    {
-        $dbObj = new \Ximdex\Runtime\Db();
-        $dbObj->Query(sprintf("SELECT Metadata.idMetadata, Metadata.name
-            FROM RelMetadataGroupMetadata JOIN 
+            , RelMetadataGroupMetadata.readonly
+            FROM RelMetadataGroupMetadata JOIN
             Metadata ON RelMetadataGroupMetadata.idMetadata =
             Metadata.idMetadata
-            WHERE idMetadataGroup = %s ", $idGroup));
+            LEFT JOIN MetadataValue ON MetadataValue.idRelMetadataGroupMetadata = RelMetadataGroupMetadata.idRelMetadataGroupMetadata
+            and MetadataValue.idNode = %s
+            WHERE idMetadataGroup = %s', $nodeId, $idGroup);
+        $dbObj = new \Ximdex\Runtime\Db();
+        $dbObj->query($query);
         $returnArray = array();
-        while (!$dbObj->EOF) {
+        while (! $dbObj->EOF) {
+            $value = static::getMetadataValue($nodeId, $dbObj->getValue('value'), $dbObj->getValue('type'));
             $returnArray[] = [
-                'id' => $dbObj->GetValue('idMetadata'),
-                'name' => $dbObj->GetValue('name')
+                'name' => $dbObj->getValue('name'),
+                'id' => $dbObj->getValue('idRelMetadataGroupMetadata'),
+                'value' => $value,
+                'type' => $dbObj->getValue('type'),
+                'required' => $dbObj->getValue('required'),
+                'readonly' => $dbObj->getValue('readonly')
             ];
-            $dbObj->Next();
+            $dbObj->next();
         }
         return $returnArray;
     }
@@ -138,67 +150,80 @@ class Metadata extends GenericData
     public function deleteMetadataValuesByNodeIdAndGroupId(int $idNode, int $idGroup)
     {
         $dbObj = new \Ximdex\Runtime\Db();
-        $query = sprintf("DELETE mv FROM MetadataValue mv JOIN RelMetadataGroupMetadata ON 
+        $query = sprintf('DELETE mv FROM MetadataValue mv JOIN RelMetadataGroupMetadata ON 
             mv.idRelMetadataGroupMetadata = RelMetadataGroupMetadata.idRelMetadataGroupMetadata 
-            WHERE idNode=%s and idMetadataGroup=%s;", $idNode, $idGroup);
-        $dbObj->Execute($query);
+            WHERE idNode = %s AND idMetadataGroup = %s AND readonly IS FALSE', $idNode, $idGroup);
+        $dbObj->execute($query);
         $valid = $dbObj->EOF;
         return $valid;
     }
 
     public function addMetadataValuesByNodeId(array $metadataArray, int $idNode)
     {
+        $fail = false;
         $dbObj = new \Ximdex\Runtime\Db();
         foreach ($metadataArray as $key => $value) {
             if (! empty($value)) {
-                $query = sprintf("INSERT INTO MetadataValue(idNode,idRelMetadataGroupMetadata, value) 
-                    VALUES (%s, %s, \"%s\")", $idNode, $key, $value);
-                $dbObj->Execute($query);
+                
+                // If the value is only for read continue to the next one without saving
+                try {
+                    if (self::getReadOnlyValueByRel($key)) {
+                        continue;
+                    }
+                } catch (\Exception $e) {
+                    $this->messages->add($e->getMessage(), MSG_TYPE_ERROR);
+                    $fail = true;
+                    break;
+                }
+                $query = sprintf('INSERT INTO MetadataValue (idNode, idRelMetadataGroupMetadata, value) VALUES (%s, %s, \'%s\')'
+                    , $idNode, $key, $value);
+                if ($dbObj->execute($query) === false) {
+                    $fail = true;
+                    break;
+                }
             }
         }
-        if ($dbObj->EOF) {
+        if (! $fail) {
             $this->messages->add(_('The metadata has been successfully added'), MSG_TYPE_NOTICE);
             return true;
-        } else {
-            $this->messages->add(_('The operation has failed'), MSG_TYPE_ERROR);
-            return false;
         }
+        $this->messages->add(_('The operation has failed'), MSG_TYPE_ERROR);
+        return false;
     }
 
     /**
-     * Get metadata from node and group. Caution: If group is null, metadata name can be override.
-     *
-     * @param $idNode
-     * @param $idGroup
-     *
+     * Get metadata from node and group. Caution: If group is null, metadata name can be override
+     *  
+     * @param int $idNode
+     * @param int $idGroup
      * @return array
      */
-    public static function getByNodeAndGroup($idNode, $idGroup = null)
+    public static function getByNodeAndGroup(int $idNode, int $idGroup = null)
     {
         $metadata = [];
         $dbObj = new \Ximdex\Runtime\Db();
         $query = sprintf(
-            "SELECT Metadata.name as name, MetadataValue.value as value, Metadata.defaultValue
+            'SELECT Metadata.name as name, MetadataValue.value as value, Metadata.defaultValue
                 as defaultValue, Metadata.type as type  FROM RelMetadataGroupMetadata JOIN  Metadata ON 
                 RelMetadataGroupMetadata.idMetadata = Metadata.idMetadata  LEFT JOIN MetadataValue ON 
                 MetadataValue.idRelMetadataGroupMetadata = RelMetadataGroupMetadata.idRelMetadataGroupMetadata 
-                WHERE (RelMetadataGroupMetadata.required = TRUE OR MetadataValue.value <> '') and idNode = %s",
+                WHERE (RelMetadataGroupMetadata.required = TRUE OR MetadataValue.value <> \'\') and idNode = %s',
             $idNode
         );
         if (! is_null($idGroup)) {
             $query .= sprintf(' and MetadataGroup.idMetadataGroup = %s ', $idGroup);
         }
-        $dbObj->Query($query);
+        $dbObj->query($query);
         while (! $dbObj->EOF) {
-            $val = $dbObj->GetValue('value');
-            $val = !empty($val) ? $val : $dbObj->GetValue('defaultValue');
-            $metadata[$dbObj->GetValue('name')] = static::getMetadataValue($idNode, $val, $dbObj->GetValue('type'));
+            $val = $dbObj->getValue('value');
+            $val = ! empty($val) ? $val : $dbObj->getValue('defaultValue');
+            $metadata[$dbObj->getValue('name')] = static::getMetadataValue($idNode, $val, $dbObj->getValue('type'));
             $dbObj->Next();
         }
         return $metadata;
     }
 
-    private static function getMetadataValue($idNode, ?string $val, ?string $type)
+    private static function getMetadataValue(int $idNode, string $val = null, string $type = null)
     {
         $result = $val;
         if (strcmp('date', $type) == 0) {
@@ -215,7 +240,7 @@ class Metadata extends GenericData
         return $result;
     }
 
-    private static function prepareMacro($idNode, ?string $value)
+    private static function prepareMacro(int $idNode, string $value = null)
     {
         $macro = preg_replace('/(@@@)/', '', $value);
         $params = null;
@@ -232,7 +257,7 @@ class Metadata extends GenericData
         return $result;
     }
 
-    private static function prepareMacroParams($idNode, ?string $params) : ?array
+    private static function prepareMacroParams(int $idNode, string $params = null) : ?array
     {
         $result = null;
         if ($params) {
@@ -267,6 +292,14 @@ class Metadata extends GenericData
         if (! is_null($token)) {
             $user = User::getByToken($token);
             $name = $user->get('Name');
+        } else {
+            $id = (int) Session::get('userID');
+            if ($id) {
+                $user = new User($id);
+                if ($user->getRealName()) {
+                    $name = $user->getRealName();
+                }
+            }
         }
         return is_string($name) ? $name : null;
     }
@@ -284,5 +317,16 @@ class Metadata extends GenericData
             }
         }
         return $nodeName;
+    }
+    
+    private static function getReadOnlyValueByRel(int $idRel) : bool
+    {
+        $dbObj = new \Ximdex\Runtime\Db();
+        $query = "SELECT readonly FROM RelMetadataGroupMetadata WHERE idRelMetadataGroupMetadata = $idRel";
+        $res = $dbObj->query($query);
+        if ($res === false or $dbObj->EOF) {
+            throw new \Exception(_("Cannot retrieve readonly data for relation") . ": $idRel");
+        }
+        return (bool) $dbObj->GetValue('readonly');
     }
 }

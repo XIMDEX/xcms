@@ -63,13 +63,15 @@ class Action_modifylanguage extends ActionAbstract
     	$idNode = $this->request->getParam('nodeid');
     	$language = new Language($idNode);
     	$node = new Node($idNode);
-        if ($node->IsValidName($this->request->getParam('Name'), $node->get('IdNodeType'))) {
+        if ($node->isValidName($this->request->getParam('Name'), $node->get('IdNodeType'))) {
             $language->loadFromArray($_POST);
             $language->set('Enabled', $this->request->getParam('enabled') ? 1 : 0);
             $languageResult = $language->update();
             $node->set('Description', $this->request->getParam('Description'));
             $node->set('Name', $this->request->getParam('Name'));
             $nodeResult = $node->update();
+        } else {
+            $nodeResult = false;
         }
     	if ($nodeResult === false or $languageResult === false) {
     	    $this->messages->add(_('An error occurred while updating language'), MSG_TYPE_ERROR);

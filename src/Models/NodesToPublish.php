@@ -40,11 +40,16 @@ class NodesToPublish extends NodesToPublishOrm
 	    , bool $lastPublishedVersion = false, int $deepLevel = 0, bool $useCache = true) : ?bool
 	{    
 		$dataFactory = new DataFactory($idNode);
-		$idVersion = $dataFactory->GetLastVersion();
-		if ($idNode != $idNodeGenerator && $lastPublishedVersion) {
+		$idVersion = $dataFactory->getLastVersion();
+		if ($idNode != $idNodeGenerator && ! $lastPublishedVersion) {
 			$idSubversion = 0;
 		} else {
-			$idSubversion = $dataFactory->GetLastSubVersion($idVersion);
+			$idSubversion = $dataFactory->getLastSubVersion($idVersion);
+			if ($idSubversion > 0 and $lastPublishedVersion) {
+			    
+			    // If the document is a draft version and the flag for publicate drafts is active, force its publication
+			    $force = true;
+			}
 		}
 		$versionZero = ! $idVersion && ! $idSubversion;
 		if ($versionZero && $idNode != $idNodeGenerator) {

@@ -124,7 +124,7 @@ class FileNode extends Root
         
         // Not neccesary up version here for template nodetypes (makes previously for insert correct idversion in xml wrapper)
         if ($this->parent->nodeType->GetID() == NodeTypeConstants::XSL_TEMPLATE) {
-            $lastVersionID = $data->GetLastVersionId();
+            $lastVersionID = $data->getLastVersionId();
             list($version, $subversion) = $data->GetVersionAndSubVersion($lastVersionID);
             $data->setContent($content, $version, $subversion, $commitNode);
         } else {
@@ -139,7 +139,10 @@ class FileNode extends Root
             $data->setContent($content, null, null, $commitNode);
         }
         if ($this->parent->nodeType->get('Name') == 'CssFile') {
-            ParsingDependencies::parseCssDependencies($this->nodeID, $content);
+            if (! $node) {
+                $node = new Node($this->nodeID);
+            }
+            ParsingDependencies::parseCssDependencies($node, $content);
         }
         return true;
     }
@@ -227,7 +230,7 @@ class FileNode extends Root
     public function getLastVersionFile()
     {
         $data = new DataFactory($this->nodeID);
-        $idVersion = $data->GetLastVersionId();
+        $idVersion = $data->getLastVersionId();
         $version = new Version($idVersion);
         return $version->get('File');
     }

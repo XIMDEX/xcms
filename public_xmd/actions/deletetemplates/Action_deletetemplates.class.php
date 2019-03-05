@@ -27,6 +27,7 @@
 
 use Ximdex\Models\Node;
 use Ximdex\MVC\ActionAbstract;
+use Ximdex\NodeTypes\XsltNode;
 
 class Action_deletetemplates extends ActionAbstract
 {
@@ -55,23 +56,24 @@ class Action_deletetemplates extends ActionAbstract
 		$this->render($values, 'index', 'default-3.0.tpl');
     }
 
-	function delete()
+	public function delete()
 	{
 		$templates = $this->request->getParam('templates');
  		$idNode	= (int) $this->request->getParam('nodeid');
+ 		$node = new Node($idNode);
 		$new_templates = array();
 		if (! empty($templates)) {
 			$i = 0;
 			foreach($templates as $_template) {
-				$node = new Node($_template);
+				$templateNode = new Node($_template);
 				$new_templates[$i]['Id'] = $_template;
-				$new_templates[$i]['Name'] = $node->get('Name');
-				$new_templates[$i]['Result'] = $node->delete();
+				$new_templates[$i]['Name'] = $templateNode->get('Name');
+				$new_templates[$i]['Result'] = $templateNode->delete();
 				$i++;
 			}
+			
 			// Update the templates_include.xsl files
-			$node = new Node($idNode);
-			$xsltNode = new \Ximdex\NodeTypes\XsltNode($node);
+			$xsltNode = new XsltNode($node);
 			if ($xsltNode->reload_templates_include(new Node($node->getProject())) === false) {
 			    $this->messages->mergeMessages($xsltNode->messages);
 			}
@@ -82,7 +84,7 @@ class Action_deletetemplates extends ActionAbstract
 		$values = array(
 			'messages' => $this->messages->messages,
 			'action_with_no_return' => true,
-			'parentID' => $idNode
+			'parentID' => $node->getID()
 		);
 		$this->sendJSON($values);
 	}

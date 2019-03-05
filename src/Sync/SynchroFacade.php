@@ -222,7 +222,8 @@ class SynchroFacade
      * @param boolean $recurrence
      * @return array|null
      */
-    function pushDocInPublishingPool(int $idNode, int $upDate, int $downDate = null, array $flagsArray = null, bool $recurrence = false) : ?array
+    function pushDocInPublishingPool(int $idNode, int $upDate, int $downDate = null, array $flagsArray = null
+        , bool $recurrence = false) : ?array
     {
         $syncMngr = new SyncManager();
         

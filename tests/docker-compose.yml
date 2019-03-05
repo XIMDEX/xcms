@@ -6,8 +6,11 @@ services:
     image: ximdex/nginx-php:php7-xdebug
     environment:
       WEB_DOCUMENT_ROOT: /var/www/html
+      PHP_DISPLAY_ERRORS: 1
+      php.html_errors:  0
+      php.error_reporting: E_ALL
     ports:
-      - 82:80
+      - 83:80
     volumes:
       - ../:/var/www/html
     links:

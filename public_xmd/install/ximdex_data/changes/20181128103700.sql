@@ -7,9 +7,13 @@ ALTER TABLE `StructuredDocuments` CHANGE `IdTemplate` `IdTemplate` INT(12) UNSIG
 ALTER TABLE StructuredDocuments ENGINE = InnoDB;
 ALTER TABLE `StructuredDocuments` ADD CONSTRAINT `StructuredDocuments_Users` FOREIGN KEY (`IdCreator`) 
     REFERENCES `Users`(`IdUser`) ON DELETE SET NULL ON UPDATE CASCADE;
+
 ALTER TABLE Languages ENGINE = InnoDB;
+
 ALTER TABLE `StructuredDocuments` CHANGE `IdLanguage` `IdLanguage` INT(12) UNSIGNED NULL DEFAULT NULL;
+
 ALTER TABLE `Languages` CHANGE `Enabled` `Enabled` TINYINT(1) UNSIGNED NOT NULL DEFAULT '1';
+
 ALTER TABLE `StructuredDocuments` ADD CONSTRAINT `StructuredDocuments_Languages` FOREIGN KEY (`IdLanguage`) 
     REFERENCES `Languages`(`IdLanguage`) ON DELETE RESTRICT ON UPDATE CASCADE;
 ALTER TABLE `StructuredDocuments` ADD CONSTRAINT `StructuredDocuments_Templates` FOREIGN KEY (`IdTemplate`) 
@@ -18,6 +22,9 @@ ALTER TABLE `StructuredDocuments` ADD CONSTRAINT `StructuredDocuments_Structured
     REFERENCES `StructuredDocuments`(`IdDoc`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 ALTER TABLE `PipeStatus` ENGINE = InnoDB;
+DELETE FROM `PipeStatus` WHERE `PipeStatus`.`id` = 11;
+DELETE FROM `PipeStatus` WHERE `PipeStatus`.`id` = 12;
+DELETE FROM `PipeStatus` WHERE `PipeStatus`.`id` = 13;
 ALTER TABLE `PipeStatus` ADD UNIQUE(`Name`);
 ALTER TABLE `PipeStatus` CHANGE `Description` `Description` VARCHAR(250) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;
 UPDATE `PipeStatus` set `Description` = NULL WHERE `Description` = '';

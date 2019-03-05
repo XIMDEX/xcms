@@ -1,6 +1,6 @@
 <?php
 
-namespace Ximdex\Workflow\Actions;
+namespace Ximdex\Workflow;
 
 use Ximdex\Models\Node;
 

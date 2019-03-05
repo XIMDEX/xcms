@@ -30,6 +30,7 @@ namespace Ximdex\NodeTypes;
 use Ximdex\Logger;
 use Ximdex\Runtime\App;
 use Ximdex\Models\Channel;
+use Ximdex\Models\Node;
 use Ximdex\Models\Section;
 use Ximdex\Models\Language;
 use Ximdex\Models\SectionType;
@@ -236,6 +237,8 @@ class HTMLDocumentNode extends AbstractStructuredDocument
             }
             if (strpos($name, '_') !== 0) {
                 $info = static::getInfo($docId);
+                $info['id'] = $docId;
+                $info['channel'] = $channel;
                 $render = static::createDynamic($info, $render, $css, $js);
             }
         } elseif (strcmp($mode, static::MODE_INCLUDE) == 0) {
@@ -273,7 +276,6 @@ class HTMLDocumentNode extends AbstractStructuredDocument
                     $body .= ! is_null($content) ? $content : $node['content'];
                     $body .= static::END_XIMDEX_BODY_CONTENT;
                     $name = $node['title'];
-
                 } else {
                     $body .= isset($node['content']) ? $node['content'] : '';
                 }
@@ -285,7 +287,7 @@ class HTMLDocumentNode extends AbstractStructuredDocument
                     return $tag['Name'];
                 }, static::getTags($docId)));
                 $info = static::getInfo($docId);
-                if (!empty($tags)) {
+                if (! empty($tags)) {
                     $info['metadata']['keywords'] = $tags;
                 }
                 $render = static::createBasicHTMLTemplate($info, $body, $css, $js);
@@ -413,6 +415,13 @@ class HTMLDocumentNode extends AbstractStructuredDocument
         $metadata = isset($info['metadata']) ? self::metadataTemplate($info['metadata']) : [];
         $html = self::generateMacroExec('var', 'xim_head', str_replace(PHP_EOL, '<ximeol>', $head));
         $html .= self::generateMacroExec('var', 'xim_lang', $info['language']);
+        
+        // Path to current node without language
+        $node = new Node($info['id']);
+        $path = trim($node->getPublishedPath($info['channel'], true, false, false), '/');
+        $html .= self::generateMacroExec('const', 'xim_path', $path);
+        
+        // Metadata
         $html .= self::generateMacroExec('var', 'xim_metadata', $metadata);
         $html .= self::generateMacroExec('var', 'xim_tpl', '<!DOCTYPE html><html lang="' . $info['language']
             . '"><head>%s</head><body>%s</body></html>');
@@ -446,12 +455,9 @@ class HTMLDocumentNode extends AbstractStructuredDocument
         $xml->addChild('id', implode(':', [$ximID, $node->GetID()]));
         $xml->addChild('file_version', $version['Version'] ?? '');
         if (is_array($tags)) {
-            $tags_values = [];
             foreach ($tags as $tag) {
-                $xml->addChild('tag', $tag['Name']);
-                $tags_values[] = $tag['Name'];
+                $xml->addChild('tags', $tag['Name']);
             }
-            $xml->addChild('tags', implode(",", $tags_values));
         }
         $xml->addChild('id_ximdex', $ximID);
         $xml->addChild('name', $info['metadata']['title']);
@@ -553,7 +559,7 @@ class HTMLDocumentNode extends AbstractStructuredDocument
     private static function generateMacroExec(string $command, ...$vars): string
     {
         $params = '';
-        $macro = '@@@GMximdex.exec(' . $command . '%s)@@@';
+        $macro = '@@@GMximdex.exec(' . $command . '%s)GMximdex@@@';
         if (is_array($vars) && count($vars) > 0) {
             $params = implode(', ximparam=', $vars);
             $params = ', ximparam=' . $params;

@@ -351,6 +351,7 @@ class PortalFrames extends PortalFramesOrm
      * Retrieve a list of node frames identificators related to this portal
      * 
      * @param string $operation
+     * @param bool $withLostActivity
      * @throws \Exception
      * @return array
      */

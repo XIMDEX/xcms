@@ -45,7 +45,7 @@ class Action_workflow_backward extends ActionAbstract
         $user = new User($idUser);
 
 		// Getting user roles on current node
-        $userRoles = $user->GetRolesOnNode($idNode);
+        $userRoles = $user->getRolesOnNode($idNode);
 		$node = new Node($idNode);
 		$workflow = new Workflow($node->nodeType->getWorkflow(), $node->GetState());
 

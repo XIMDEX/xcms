@@ -244,7 +244,7 @@ class BatchManager
         }
         $nodeFrame = new NodeFrame();
         if ($nodeFrame->existsNodeFrame($nodeId, $up, $down)) {
-            Logger::debug(sprintf('Node %s already exists in a NodeFrame', $nodeId));
+            Logger::info("Node $nodeId ({$node->GetNodeName()}) already exists in a NodeFrame");
             return false;
         }
         return true;

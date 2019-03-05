@@ -165,10 +165,7 @@ class Node extends NodesOrm
         return NULL;
     }
 
-    /**
-     * @return bool|string
-     */
-    function GetID()
+    public function getID()
     {
         return $this->get('IdNode');
     }
@@ -182,10 +179,7 @@ class Node extends NodesOrm
         self::__construct($nodeID);
     }
 
-    /**
-     * @return bool|string
-     */
-    function GetNodeName()
+    public function getNodeName()
     {
         $this->ClearError();
         return $this->get('Name');
@@ -224,7 +218,7 @@ class Node extends NodesOrm
      *
      * @return bool|string
      */
-    function GetNodeType()
+    public function getNodeType()
     {
         return $this->get('IdNodeType');
     }
@@ -302,7 +296,7 @@ class Node extends NodesOrm
      * @param int $stateID
      * @return boolean
      */
-    public function SetState(int $stateID): bool
+    public function setState(int $stateID): bool
     {
         if (! $this->GetID()) {
             $this->messages->add(_('The node ID is mandatory in order to change the state'), MSG_TYPE_ERROR);
@@ -400,10 +394,10 @@ class Node extends NodesOrm
      *
      * @return bool|string
      */
-    function GetParent()
+    function getParent()
     {
-        $this->ClearError();
-        return $this->get('IdParent');
+        $this->clearError();
+        return $this->IdParent;
     }
 
     /**
@@ -687,9 +681,9 @@ class Node extends NodesOrm
         return NULL;
     }
 
-    public function getPublishedPath(int $channelID = null, bool $addNodeName = false, bool $structure = false)
+    public function getPublishedPath(int $channelID = null, bool $addNodeName = false, bool $structure = false, bool $addLanguagePrefix = true)
     {
-        return $this->class->GetPublishedPath($channelID, $addNodeName);
+        return $this->class->getPublishedPath($channelID, $addNodeName, $structure, $addLanguagePrefix);
     }
 
     /**
@@ -699,7 +693,7 @@ class Node extends NodesOrm
      * @param Node $nodeReplace
      * @return string|NULL
      */
-    function GetRelativePath($nodeID, Node $nodeReplace = null)
+    public function getRelativePath(int $nodeID, Node $nodeReplace = null)
     {
         $this->ClearError();
         if ($this->get('IdNode')) {
@@ -867,16 +861,16 @@ class Node extends NodesOrm
 
     /**
      * Returns a node content
-     *
-     * @return null
+     * 
+     * @return string|null|boolean
      */
-    function GetContent()
+    public function getContent()
     {
-        $this->ClearError();
+        $this->clearError();
         if ($this->get('IdNode') > 0) {
-            return $this->class->GetContent();
+            return $this->class->getContent();
         }
-        return NULL;
+        return null;
     }
 
     /**
@@ -888,13 +882,13 @@ class Node extends NodesOrm
      */
     public function setContent(string $content, bool $commitNode = false) : bool
     {
-        $this->ClearError();
+        $this->clearError();
         if ($this->getID()) {
 
             // Validate HTML or XML valid contents (including XSL schemas)
-            if ($this->GetNodeType() and $content) {
+            if ($this->getNodeType() and $content) {
                 $res = true;
-                if ($this->GetNodeType() == NodeTypeConstants::XSL_TEMPLATE or $this->GetNodeType() == NodeTypeConstants::XML_DOCUMENT
+                if ($this->getNodeType() == NodeTypeConstants::XSL_TEMPLATE or $this->GetNodeType() == NodeTypeConstants::XML_DOCUMENT
                     or $this->getNodeType() == NodeTypeConstants::RNG_VISUAL_TEMPLATE) {
                     $GLOBALS['errorsInXslTransformation'] = array();
 
@@ -925,7 +919,7 @@ class Node extends NodesOrm
 
                 // Check dependencias for HTML and XML documents
                 if ($res and $this->getNodeType() == NodeTypeConstants::XML_DOCUMENT or $this->GetNodeType() == NodeTypeConstants::HTML_DOCUMENT) {
-                    if ($this->GetNodeName() != 'templates_include.xsl') {
+                    if ($this->getNodeName() != 'templates_include.xsl') {
 
                         // dotdot dependencies only can be checked in templates under a server node
                         $templatesNode = new Node($this->GetParent());
@@ -991,12 +985,12 @@ class Node extends NodesOrm
                     }
                 }
             }
-            if ($this->class->SetContent($content, $commitNode) === false) {
+            if ($this->class->setContent($content, $commitNode) === false) {
                 $this->messages->mergeMessages($this->class->messages);
                 return false;
             }
             $this->messages->mergeMessages($this->class->messages);
-            if ($this->RenderizeNode() === false)
+            if ($this->renderizeNode() === false)
                 return false;
         }
         return true;
@@ -2607,7 +2601,7 @@ class Node extends NodesOrm
         return $list;
     }
 
-    function ClearError()
+    public function clearError()
     {
         $this->numErr = null;
         $this->msgErr = null;
@@ -2797,7 +2791,7 @@ class Node extends NodesOrm
      * @param int $idNodeType
      * @return bool
      */
-    function IsValidName($name, $idNodeType = 0)
+    function isValidName($name, $idNodeType = 0)
     {
         if ($idNodeType === 0) {
             if (!$this->nodeType) {
@@ -2914,22 +2908,17 @@ class Node extends NodesOrm
         return $details;
     }
 
-    /**
-     * @param $property
-     * @param bool $withInheritance
-     * @return bool|null|array
-     */
-    function getProperty($property, $withInheritance = true)
+    public function getProperty(string $property, bool $withInheritance = true)
     {
-        if (!$this->get('IdNode')) {
+        if (! $this->get('IdNode')) {
             Logger::error('Cannot load the \'' . $property . '\' property without a node ID');
             return false;
         }
         if ($withInheritance) {
             $sql = "SELECT IdNode FROM FastTraverse WHERE IdChild = " . $this->get('IdNode') . " ORDER BY Depth ASC";
             $db = new \Ximdex\Runtime\Db();
-            $db->Query($sql);
-            while (!$db->EOF) {
+            $db->query($sql);
+            while (! $db->EOF) {
 
                 // Getting property
                 if ($db->getValue('IdNode') < 1) {
@@ -2937,16 +2926,16 @@ class Node extends NodesOrm
                 }
                 $nodeProperty = new NodeProperty();
                 $propertyValue = $nodeProperty->getProperty($db->getValue('IdNode'), $property);
-                if (!is_null($propertyValue)) {
+                if (! is_null($propertyValue)) {
                     return $propertyValue;
                 }
-                $db->Next();
+                $db->next();
             }
         } else {
             $nodeProperty = new NodeProperty();
             return $nodeProperty->getProperty($this->get('IdNode'), $property);
         }
-        Logger::warning(sprintf("Property %s not found for node %d", $property, $this->get('IdNode')));
+        Logger::debug(sprintf("Property %s not found for node %d", $property, $this->get('IdNode')));
         return null;
     }
 
@@ -3215,15 +3204,15 @@ class Node extends NodesOrm
 
                     // Load the node for the section, server or project ID given
                     $node = new Node($nodeID);
-                    if (!$node->GetID()) {
+                    if (! $node->GetID()) {
                         $this->messages->add('Cannot load a node with the ID: ' . $nodeID, MSG_TYPE_ERROR);
                         return false;
                     }
 
                     // Load the layouts root folder inside the previous node, if it exists
                     $layoutFolder = new Node($node->GetChildByType(NodeTypeConstants::HTML_LAYOUT_FOLDER));
-                    if (!$layoutFolder->getID()) {
-                        continue;
+                    if (! $layoutFolder->getID()) {
+                        continue 2;
                     }
 
                     // Load the JSON layout schemas

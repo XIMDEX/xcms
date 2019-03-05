@@ -1,5 +1,5 @@
 {**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -30,9 +30,9 @@
 		<div class="manageproperties">
 			{if ($inProject eq false)}
 				<div>
-					<input type="radio" name="inherited_channels" class="channels_inherited" value="inherited" id="channels_inherited"
-							{if $Channel_inherited == 'inherited'}checked="checked"{/if} />
-					<label for="channels_inherited">{t}Use inherited channels{/t}:</label>
+					<input type="radio" name="inherited_channels" class="channels_inherited" value="inherited" 
+                            id="channels_inherited_{$id_node}" {if $Channel_inherited == 'inherited'}checked="checked"{/if} />
+					<label for="channels_inherited_{$id_node}">{t}Use inherited channels{/t}:</label>
 					<ul class="inheritlist">
 						{foreach from=$channels item=channel}
 							{if $channel.Inherited}
@@ -42,29 +42,29 @@
 					</ul>
 				</div>
 				<div class="sep">
-					<input type="radio" name="inherited_channels" class="channels_overwritten" value="overwrite" id="channels_overwritten"
-							{if $Channel_inherited == 'overwrite'}checked="checked"{/if} />
-					<label for="channels_overwritten">{t}Overwrite inherited channels{/t}:</label>
+					<input type="radio" name="inherited_channels" class="channels_overwritten" value="overwrite" 
+                            id="channels_overwritten_{$id_node}" {if $Channel_inherited == 'overwrite'}checked="checked"{/if} />
+					<label for="channels_overwritten_{$id_node}">{t}Overwrite inherited channels{/t}:</label>
 				</div>
 			{else}
-				<input type="hidden" name="inherited_channels" value="overwrite" />
-				<label for="channels_inherited">{t}Available project channels{/t}:</label>
+				<input type="hidden" name="inherited_channels_{$id_node}" value="overwrite" />
+				<label>{t}Available project channels{/t}:</label>
 			{/if}
             {if ($channels)}
 				<div class="overwrited_properties">
 					{foreach from=$channels item=channel}
 						<span name="check_channels" class="slide-element channelsmp{if $Channel_inherited == 'inherited'} disabled{/if}">
 							<input type="checkbox" class="channels input-slide" name="Channel[]" value="{$channel.Id}" 
-									{if $channel.Checked == 1}checked="checked"{/if} id="{$channel.Name}_{$id_node}" />
-							<label for="{$channel.Name}_{$id_node}" class="label-slide">{$channel.Name}</label>
+									{if $channel.Checked == 1}checked="checked"{/if} id="channel_{$channel.Name}_{$id_node}" />
+							<label for="channel_{$channel.Name}_{$id_node}" class="label-slide">{$channel.Name}</label>
 						</span>
 					{/foreach}
 				</div>
 			{/if}
 			<hr />
 			<div>
-				<input type="checkbox" class="channels_recursive" name="Channel_recursive" id="Channel_recursive" value="1" />
-				<label for="Channel_recursive">{t}Associate channels recursively{/t}</label>
+				<input type="checkbox" class="channels_recursive" name="Channel_recursive" id="Channel_recursive_{$id_node}" value="1" />
+				<label for="Channel_recursive_{$id_node}">{t}Associate channels recursively{/t}</label>
 			</div>
 		</div>
 	</div>

@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -28,26 +28,31 @@
 use Ximdex\Models\Node;
 use Ximdex\Models\NodeType;
 use Ximdex\Modules\Module;
+use \Ximdex\NodeTypes\XsltNode;
 
-\Ximdex\Modules\Manager::file('/actions/addfoldernode/model/ProjectTemplate.class.php');
-\Ximdex\Modules\Manager::file('/actions/addfoldernode/conf/addfoldernode.conf.php');
-\Ximdex\Modules\Manager::file('/actions/addfoldernode/Action_addfoldernode.class.php');
+Ximdex\Modules\Manager::file('/actions/addfoldernode/model/ProjectTemplate.class.php');
+Ximdex\Modules\Manager::file('/actions/addfoldernode/conf/addfoldernode.conf.php');
+Ximdex\Modules\Manager::file('/actions/addfoldernode/Action_addfoldernode.class.php');
 
 class Module_ximTOUR extends Module
 {
     public function __construct()
     {
-        // Call Module constructor.
+        // Call Module constructor
         parent::__construct('ximTOUR', dirname(__FILE__));
     }
 
-    //Function which installs the module
+    /**
+     * Function which installs the module
+     * 
+     * {@inheritDoc}
+     * @see \Ximdex\Modules\Module::install()
+     */
     function install()
     {
         $projects = new Node(10000);
         $projectid = $projects->GetChildByName("Picasso");
-        if (!($projectid > 0))
-        {
+        if (! ($projectid > 0)) {
             $GLOBALS['fromTheme'] = true;
             $addFolderNode = new Action_addfoldernode();
             $nodeID = 10000;
@@ -65,17 +70,13 @@ class Module_ximTOUR extends Module
             $idFolder = $folder->CreateNode($name, $nodeID, $nodeTypeId, null);
             
             // Adding channel and language properties (if project)
-            if ($idFolder > 0 && $nodeTypeName == 'Project')
-            {
+            if ($idFolder > 0 && $nodeTypeName == 'Project') {
                 $node = new Node($idFolder);
-                if (!empty($channels) && is_array($channels))
-                {
+                if (! empty($channels) && is_array($channels)) {
                     $node->setProperty('channel', $channels);
                     $addFolderNode->channels = $channels;
                 }
-
-                if (!empty($languages) && is_array($languages))
-                {
+                if (! empty($languages) && is_array($languages)) {
                     $node->setProperty('language', $languages);
                     $addFolderNode->languages = $languages;
                 }
@@ -83,7 +84,7 @@ class Module_ximTOUR extends Module
                 
                 // generate the templates includes content
                 $project = new Node($projectid);
-                $xsltNode = new \Ximdex\NodeTypes\XsltNode($project);
+                $xsltNode = new XsltNode($project);
                 $xsltNode->reload_templates_include($project);
             }
             $GLOBALS['fromTheme'] = null;
@@ -92,13 +93,12 @@ class Module_ximTOUR extends Module
         return parent::install();
     }
 
-    function uninstall()
+    public function uninstall()
     {
         $this->removeStateFile();
         $node = new Node(10000);
         $idNode = $node->GetChildByName("Picasso");
-        if ($idNode)
-        {
+        if ($idNode) {
             $nodePicasso = new Node($idNode);
             $nodePicasso->delete();
         }

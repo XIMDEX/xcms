@@ -21,31 +21,24 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
-use Ximdex\Modules\Module;
+namespace Ximdex\Models;
 
-Ximdex\Modules\Manager::file('/src/SolrExporter.php', 'XSearch');
+use Ximdex\Data\GenericData;
 
-class Module_XSearch extends Module
+class MetadataScheme extends GenericData
 {
-    public function __construct()
-    {
-        // Call Module constructor
-        parent::__construct("XSearch", dirname(__FILE__));
-    }
-
-    public function install()
-    {
-        $this->loadConstructorSQL("XSearch.constructor.sql");
-        return parent::install();
-    }
-
-    public function uninstall()
-    {
-        $this->loadDestructorSQL("XSearch.destructor.sql");
-        parent::uninstall();
-    }
+    public $_idField = 'idMetadataScheme';
+    public $_table = 'MetadataScheme';
+    public $_metaData = array(
+        'idMetadataScheme' => array('type' => "int(12)", 'not_null' => 'true', 'primary_key' => true),
+        'name' => array('type' => "varchar(255)", 'not_null' => 'true')
+    );
+    public $_uniqueConstraints = array('name');
+    public $_indexes = array();
+    public $idMetadataScheme;
+    public $name;
 }

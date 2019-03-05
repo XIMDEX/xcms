@@ -42,6 +42,9 @@ use Ximdex\Models\ServerFrame;
 use Ximdex\Parsers\ParsingPathTo;
 use Ximdex\NodeTypes\NodeTypeConstants;
 use Ximdex\Utils\FsUtils;
+use Ximdex\Models\StructuredDocument;
+use Ximdex\Models\Language;
+use Ximdex\Models\IsoCode;
 
 class ViewFilterMacros extends AbstractView
 {
@@ -72,6 +75,7 @@ class ViewFilterMacros extends AbstractView
     const MACRO_BREADCRUMB = "/@@@RMximdex\.breadcrumb\(([,-_#%=\.\w\s]+)\)@@@/";
     const MACRO_INCLUDE = "/@@@RMximdex\.include\(([^\)]*)\)@@@/";
     const MACRO_METADATA = "/@@@RMximdex\.metadata\(([^,\)]*),([\w\.\-\s]*)\)@@@/";
+    const MACRO_NODE_LANG_NAME = "/@@@RMximdex\.langname\(([A-Z]+|)\)@@@/";
 
     /**
      * Constructor with mode preview choise parameter
@@ -381,7 +385,13 @@ class ViewFilterMacros extends AbstractView
         
         // Files include
         $content = preg_replace_callback(self::MACRO_INCLUDE, array($this, 'getInclude'), $content);
-
+        
+        // Language name
+        $content = preg_replace_callback(self::MACRO_NODE_LANG_NAME, array(
+            $this,
+            'getLangName'
+        ), $content);
+        
         // Once macros are resolver, remove uid attribute from tags
         $content = preg_replace_callback("/(<.*?)(uid=\".*?\")(.*?\/?>)/", array(
             $this,
@@ -747,5 +757,22 @@ class ViewFilterMacros extends AbstractView
         // Get the path
         $src = $targetServer->get('InitialDirectory') . $targetNode->GetPublishedPath($idChannel, true);
         return $src;
+    }
+    
+    private function getLangName(array $matches) : string
+    {
+        if ($matches[1]) {
+            $iso = strtolower($matches[1]);
+        } else {
+            $strDoc = new StructuredDocument($this->_node->getID());
+            $language = new Language($strDoc->getLanguage());
+            $iso = $language->GetIsoName();
+        }
+        $isoCode = new IsoCode();
+        $res = $isoCode->find('NativeName', "Iso2 = '$iso' OR Iso3 = '$iso'");
+        if (! $res) {
+            return '';
+        }
+        return $res[0]['NativeName'];
     }
 }

@@ -106,10 +106,9 @@ ALTER TABLE `RelRolesActions` CHANGE `IdRol` `IdRol` INT(12) UNSIGNED NOT NULL, 
 
 ALTER TABLE `RelRolesActions` DROP `IdPipeline`;
 
-DELETE FROM `RelRolesActions` WHERE `RelRolesActions`.`IdRel` = 8203;
-
-DELETE FROM `RelRolesActions` WHERE `RelRolesActions`.`IdRel` = 1351;
-DELETE FROM `RelRolesActions` WHERE `RelRolesActions`.`IdRel` = 1352;
+DELETE FROM `RelRolesActions` WHERE `IdRel` = 8203;
+DELETE FROM `RelRolesActions` WHERE `IdRel` = 1351;
+DELETE FROM `RelRolesActions` WHERE `IdRel` = 1352;
 
 ALTER TABLE `RelRolesActions` ADD UNIQUE (`IdRol`, `IdAction`, `IdState`);
 

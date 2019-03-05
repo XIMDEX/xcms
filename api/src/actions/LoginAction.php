@@ -61,10 +61,10 @@ class LoginAction extends Action
 
     public static function getMe(Request $r, Response $w)
     {
-        $userID = (int)Session::get('userID');
+        $userID = (int) Session::get('userID');
         $user = new User($userID);
         $locale = $user->get('Locale');
-        $locale = !is_null($locale) ? $locale : 'en_US';
+        $locale = ! is_null($locale) ? $locale : 'en_US';
         $response = [
             'id' => $userID,
             'username' => $user->get('Login'),

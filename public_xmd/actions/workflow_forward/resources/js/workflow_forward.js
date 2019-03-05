@@ -1,5 +1,5 @@
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -26,30 +26,27 @@
 X.actionLoaded(function(event, fn, params) {
 	
 	// Create calendars
-	var cals = fn('.xim-calendar-layer-container');	
-
+	var cals = fn('.xim-calendar-layer-container');
 	var $groupList = fn('fieldset.notifications select[name=groups]');
 	var $userList = fn('fieldset.notifications ol.user-list');
 	var $textarea = fn('fieldset.notifications textarea[name=texttosend]');
 	var $defaultMsg = fn('input[name=default_message]');
 	var $gapList = fn('fieldset.publish_date select.gap_info');
 	var $notifications = fn('fieldset.notifications input.send-notifications');
-	
 	var $levelsRadio = fn('[name="levels"]');
-	if ($levelsRadio)
-	{
-		$levelsRadio.change(function() {
-			
+	
+	if ($levelsRadio) {
+		$levelsRadio.change(function()
+		{
 			fn('[id="last_edited_option"]').removeClass("disabled").attr("disabled", false);
 			fn('[id="no_structure_option"]').removeClass("disabled").attr("disabled", false);
 			fn('[id="force_option"]').removeClass("disabled").attr("disabled", false);
 			var value = $('input[name=levels]:checked').val();
-			if (value != 'deep')
-			{
+			if (value != 'deep') {
+				
 				// All levels or zero level
 				fn('[id="deeplevel"]').addClass("disabled").attr("disabled", true);
-				if (value == 'zero')
-				{
+				if (value == 'zero') {
 					fn('[id="last_edited_option"]').addClass("disabled").attr("disabled", true);
 					fn('[id="last_edited"]').attr("checked", false);
 					fn('[id="no_structure_option"]').addClass("disabled").attr("disabled", true);
@@ -57,22 +54,20 @@ X.actionLoaded(function(event, fn, params) {
 					fn('[id="force_option"]').addClass("disabled").attr("disabled", true);
 					fn('[id="force"]').attr("checked", false);
 				}
-			}
-			else
-			{
+			} else {
+				
 				// N levels of deep
 				fn('[id="deeplevel"]').removeClass("disabled").attr("disabled", false);
 			}
 		});
 	}
 	
-	function request(options) {
-	
+	function request(options)
+	{
 		options.data = $.extend({
 			action: 'workflow_forward',
 			nodeid: fn('input[name=nodeid]').val()
-		}, options.data);
-		
+		}, options.data);	
 		$.ajax({
 			url: X.restUrl,
 			type: 'GET',
@@ -83,40 +78,36 @@ X.actionLoaded(function(event, fn, params) {
 		});
 	}
 	
-	function getNotificableUsers() {	
-		var val = $groupList.val().split('|');
-		
+	function getNotificableUsers()
+	{	
+		var val = $groupList.val().split('|');	
 		var groupid = val[0];
 		var stateid = val[1];
-		fn('input[name=groupid]').val(groupid);
 		
+		fn('input[name=groupid]').val(groupid);
 		request({
 			cb: notificableUsers,
 			data: {method: 'notificableUsers', groupid: groupid, stateid: stateid}
 		});
 	}	
 	
-	function notificableUsers(data, textStatus) {
-		
+	function notificableUsers(data, textStatus)
+	{	
 		// Cleanup
 		$userList.unbind().empty();
-		
-		if (textStatus != 'success') return;
-		
+		if (textStatus != 'success') return;	
 		if (data.messages) {
+			
 			// TODO: show messages
 			console.log(data.messages);
 			return;
 		}
-		
 		var checked = true;
-		
-		data.notificableUsers.each(function(index, user) {
-		
+		data.notificableUsers.each(function(index, user)
+		{
 			var li = $('<li></li>')
 				.addClass('user_info')
 				.appendTo($userList);
-
 			var input = $('<input type="checkbox" />')
 				.attr({
 					id: 'user_' + user.idUser,
@@ -125,7 +116,6 @@ X.actionLoaded(function(event, fn, params) {
 				.addClass('validable notificable check_group_notificable')
 				.val(user.idUser)
 				.appendTo(li);
-			
 			var label = $('<label></label>')
 				.attr({'for': 'user_' + user.idUser})
 				.html(user.userName)
@@ -135,24 +125,24 @@ X.actionLoaded(function(event, fn, params) {
 				input.attr({checked: 'checked'});
 				checked = !checked;
 			}
-			
 		});
 	}
 	
 	$groupList.change(getNotificableUsers).change();
 	
-	$textarea.blur(function() {
+	$textarea.blur(function()
+	{
 		if (Object.isEmpty($textarea.val())) {
 			$textarea.val($defaultMsg.val());
 		}
 	}).blur();
 	
-	$notifications.change(function() {
+	$notifications.change(function()
+	{
 		if (fn(this).attr('checked')) {
 			fn('fieldset.notifications li.conditioned').removeClass('hidden');
 		} else {
 			fn('fieldset.notifications li.conditioned').addClass('hidden');
 		}
-	}).change();
-	
+	}).change();	
 });

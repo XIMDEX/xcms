@@ -308,7 +308,7 @@ class Db
      * @param string $col
      * @return boolean|string|NULL
      */
-    function GetValue(string $col)
+    public function getValue(string $col)
     {
         if (isset($col, $this->row[$col])) {
             if (! $this->_getEncodings()) {

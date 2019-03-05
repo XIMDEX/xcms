@@ -31,6 +31,7 @@ use Ximdex\Models\Language;
 use Ximdex\Models\Node;
 use Ximdex\Models\NodeType;
 use Ximdex\Models\StructuredDocument;
+use Ximdex\Models\RelTemplateContainer;
 
 class XmlContainerNode extends FolderNode
 {
@@ -53,7 +54,7 @@ class XmlContainerNode extends FolderNode
      */
     public function getIdSchema()
     {
-        $relTemplateContainer = new \Ximdex\Models\RelTemplateContainer();
+        $relTemplateContainer = new RelTemplateContainer();
         $result = $relTemplateContainer->find("IdTemplate", "IdContainer = %s", array(
             $this->nodeID
         ), MONO);
@@ -73,7 +74,7 @@ class XmlContainerNode extends FolderNode
         , array $aliasLangList = null, array $channelList = null, int $idNodeMaster = null, $dataChildren = null)
     {
         $result = false;
-        $reltemplate = new \Ximdex\Models\RelTemplateContainer();
+        $reltemplate = new RelTemplateContainer();
         $reltemplate->createRel($idSchema, $this->nodeID);
         if (is_array($aliasLangList)) {
             foreach ($aliasLangList as $idLanguage => $alias) {
@@ -86,8 +87,7 @@ class XmlContainerNode extends FolderNode
         if ($idNodeMaster) {
             $this->setNodeMaster($idNodeMaster);
         }
-        if ($nodeTypeID == \Ximdex\NodeTypes\NodeTypeConstants::XML_CONTAINER 
-            or $nodeTypeID == \Ximdex\NodeTypes\NodeTypeConstants::HTML_CONTAINER) {
+        if ($nodeTypeID == NodeTypeConstants::XML_CONTAINER or $nodeTypeID == NodeTypeConstants::HTML_CONTAINER) {
             $this->UpdatePath();
         }
         return true;
@@ -135,7 +135,7 @@ class XmlContainerNode extends FolderNode
         }
         $idSchema = $this->getIdSchema();
         $nameDoc = $this->parent->getNodeName() . "-id" . $lang->GetIsoName();
-        $idDoc = $xmldoc->CreateNode($nameDoc, $this->nodeID, $childrenNodeType->GetID(), null, $idSchema, $idLang, $alias, $channelList, $data);
+        $idDoc = $xmldoc->createNode($nameDoc, $this->nodeID, $childrenNodeType->GetID(), null, $idSchema, $idLang, $alias, $channelList, $data);
         if ($xmldoc->HasError()) {
             $this->parent->SetError(1);
             return false;
@@ -169,7 +169,7 @@ class XmlContainerNode extends FolderNode
      */
     public function deleteNode() : bool
     {
-        $templatecontainer = new \Ximdex\Models\RelTemplateContainer();
+        $templatecontainer = new RelTemplateContainer();
         $templatecontainer->deleteRel($this->nodeID);
         return true;
     }

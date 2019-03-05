@@ -136,7 +136,7 @@ class Group extends GroupsOrm
 			$dbObj->Query($sql);
 			$salida = array();
 			if (! $dbObj->numErr) {
-				while (!$dbObj->EOF) {
+				while (! $dbObj->EOF) {
 					$salida[] = $dbObj->GetValue("IdUser");
 					$dbObj->Next();
 				}

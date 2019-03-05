@@ -52,7 +52,7 @@ class ImageFile
     		$selectedVersion = $dataFactory->getVersionId($_version, $_subversion);
     	} else {
 	    	$dataFactory = new DataFactory($_id_node);
-	    	$selectedVersion = $dataFactory->GetLastVersionId();
+	    	$selectedVersion = $dataFactory->getLastVersionId();
     	}
   		$version = new Version($selectedVersion);
     	$hash = $version->get('File');

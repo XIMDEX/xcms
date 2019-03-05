@@ -48,11 +48,8 @@ delete from NodeAllowedContents where IdNodeType in (
 ALTER TABLE `NodeAllowedContents` ADD CONSTRAINT `NodeAllowedContents_Nodetype_Container` FOREIGN KEY (`IdNodeType`) 
 REFERENCES `NodeTypes`(`IdNodeType`) ON DELETE CASCADE ON UPDATE CASCADE;
 
-delete from NodeAllowedContents where NodeType in (
-        select distinct nac.NodeType from NodeAllowedContents nac
-        left join NodeTypes nt on nac.NodeType = nt.IdNodeType
-        where nt.IdNodeType is null
-);
+-- TODO ajlucena
+delete from NodeAllowedContents where NodeType in (5047, 5062, 5303, 5313, 5307, 5320, 5310);
 
 ALTER TABLE `NodeAllowedContents` ADD CONSTRAINT `NodeAllowedContents_Nodetype_Content` FOREIGN KEY (`NodeType`) 
 REFERENCES `NodeTypes`(`IdNodeType`) ON DELETE CASCADE ON UPDATE CASCADE;
@@ -61,11 +58,8 @@ ALTER TABLE `RelNodeTypeMimeType` ENGINE = InnoDB;
 
 ALTER TABLE `RelNodeTypeMimeType` CHANGE `idNodeType` `idNodeType` INT(12) UNSIGNED NOT NULL; 
 
-delete from RelNodeTypeMimeType where idNodeType in (
-        select distinct rel.idNodeType from RelNodeTypeMimeType rel
-        left join NodeTypes nt on rel.idNodeType = nt.IdNodeType
-        where nt.IdNodeType is null
-);
+delete from RelNodeTypeMimeType where idNodeType in (5027, 5047, 5062, 5064, 5065, 5069, 5070, 5071, 5072, 5073, 5074, 5075,
+5302, 5303, 5305, 5307, 5310, 5320);
 
 ALTER TABLE `RelNodeTypeMimeType` ADD CONSTRAINT `RelNodeTypeMimeType_NodeTypes` FOREIGN KEY (`idNodeType`) 
 REFERENCES `NodeTypes`(`IdNodeType`) ON DELETE CASCADE ON UPDATE CASCADE;

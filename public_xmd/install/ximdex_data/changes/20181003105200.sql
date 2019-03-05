@@ -13,8 +13,8 @@ ALTER TABLE `Versions` ADD CONSTRAINT `Versions_Users` FOREIGN KEY (`IdUser`)
 ALTER TABLE `Versions` ADD CONSTRAINT `Versions_ServerFrames` FOREIGN KEY (`IdSync`) 
     REFERENCES `ServerFrames`(`IdSync`) ON DELETE SET NULL ON UPDATE CASCADE;
 
-UPDATE ServerFrames SET `ErrorLevel` = NULL WHERE `ErrorLevel` = 0;
 ALTER TABLE `ServerFrames` CHANGE `ErrorLevel` `ErrorLevel` VARCHAR(1) NULL DEFAULT NULL;
+UPDATE ServerFrames SET `ErrorLevel` = NULL WHERE `ErrorLevel` = 0;
 ALTER TABLE `ServerFrames` CHANGE `ErrorLevel` `ErrorLevel` ENUM('1','2') NULL DEFAULT NULL COMMENT 'Errors: 1 Soft, 2 Hard';
 ALTER TABLE `ServerFrames` DROP `Error`;
 
@@ -43,6 +43,7 @@ ALTER TABLE `Groups` ENGINE = InnoDB;
 ALTER TABLE `RelUsersGroups` ENGINE = InnoDB;
 ALTER TABLE `RelUsersGroups` ADD CONSTRAINT `RelUsersGroups_Groups` FOREIGN KEY (`IdGroup`) 
     REFERENCES `Groups`(`IdGroup`) ON DELETE CASCADE ON UPDATE CASCADE;
+DELETE FROM RelUsersGroups WHERE IdRole NOT IN (SELECT IdRole FROM Roles);
 ALTER TABLE `RelUsersGroups` ADD CONSTRAINT `RelUsersGroups_Roles` FOREIGN KEY (`IdRole`) 
     REFERENCES `Roles`(`IdRole`) ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE `RelUsersGroups` ADD CONSTRAINT `RelUsersGroups_User` FOREIGN KEY (`IdUser`) 
