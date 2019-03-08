@@ -751,15 +751,15 @@ class StructuredDocument extends StructuredDocumentsOrm
      */
     public function getInclude(string $include)
     {
-        if (! $this->GetID()) {
+        if (! $this->getID()) {
             $this->messages->add('The structured document has not been loaded', MSG_TYPE_ERROR);
             return false;
         }
 
         // Load parent nodes
-        $parents = FastTraverse::getParents($this->GetID(), 'IdNodeType', 'ft.IdNode');
+        $parents = FastTraverse::getParents($this->getID(), 'IdNodeType', 'ft.IdNode');
         if ($parents === false) {
-            Logger::error('An error ocurred getting the parent nodes for the document with node ID: ' . $this->GetID());
+            Logger::error('An error ocurred getting the parent nodes for the document with node ID: ' . $this->getID());
             return false;
         }
         foreach ($parents as $nodeID => $nodeTypeID) {
@@ -775,29 +775,43 @@ class StructuredDocument extends StructuredDocumentsOrm
                     }
 
                     // Load the documents root folder inside the previous node, if it exists
-                    $documentsFolder = new Node($node->GetChildByType(NodeTypeConstants::XML_ROOT_FOLDER));
+                    $documentsFolder = new Node($node->getChildByType(NodeTypeConstants::XML_ROOT_FOLDER));
                     if (! $documentsFolder->getID()) {
                         continue;
                     }
 
                     // Load the correspondant documents container folder for the include string given
-                    $documentFolder = new Node($documentsFolder->GetChildByName($include));
-                    if (! $documentFolder->GetID()) {
+                    $documentFolder = new Node($documentsFolder->getChildByName($include));
+                    if (! $documentFolder->getID()) {
                         continue;
                     }
 
                     // Create an instance of the XML container handler
-                    $xmlContainer = new XmlContainerNode($documentFolder->GetID());
+                    $xmlContainer = new XmlContainerNode($documentFolder->getID());
 
                     // Load the document for the required language
-                    $includeDocId = $xmlContainer->GetChildByLang($this->GetLanguage());
+                    $includeDocId = $xmlContainer->getChildByLang($this->getLanguage());
                     if (! $includeDocId) {
-                        $this->messages->add('Cannot load the document for include: ' . $include . ' and language: '
-                            . $this->GetLanguage(), MSG_TYPE_ERROR);
-                        return false;
+                        
+                        // Try to load the included node for default project language
+                        $language = $this->getLanguage();
+                        $nodeProperty = new NodeProperty();
+                        if ($property = $nodeProperty->getProperty($documentFolder->getServer(), NodeProperty::DEFAULTSERVERLANGUAGE)) {
+                            if ($language != $property[0]) {
+                                $language = $property[0];
+                                if ($includeDocId = $xmlContainer->getChildByLang($language)) {
+                                    $language = null;
+                                }
+                            }
+                        }
+                        if ($language) {
+                            $this->messages->add('Cannot load the document for include: ' . $include . ' and language: ' . $language
+                                , MSG_TYPE_ERROR);
+                            return false;
+                        }
                     }
                     $includeDoc = new StructuredDocument($includeDocId);
-                    if (! $includeDoc->GetID()) {
+                    if (! $includeDoc->getID()) {
                         $this->messages->add('Cannot load the include document for ID: ' . $includeDocId . ' (name: ' . $include . ')'
                             , MSG_TYPE_ERROR);
                         return false;
@@ -816,7 +830,7 @@ class StructuredDocument extends StructuredDocumentsOrm
      */
     public function getLayout()
     {
-        if (! $this->GetID()) {
+        if (! $this->getID()) {
             $this->messages->add('The structured document has not been loaded', MSG_TYPE_ERROR);
             return false;
         }
@@ -825,8 +839,8 @@ class StructuredDocument extends StructuredDocumentsOrm
             return false;
         }
         $layout = new Node($this->get('IdTemplate'));
-        if (! $layout->GetID()) {
-            $this->messages->add('The layout with ID: ' . $layout->GetID() . ' does not exist', MSG_TYPE_ERROR);
+        if (! $layout->getID()) {
+            $this->messages->add('The layout with ID: ' . $layout->getID() . ' does not exist', MSG_TYPE_ERROR);
             return false;
         }
         return $layout;
@@ -963,15 +977,15 @@ class StructuredDocument extends StructuredDocumentsOrm
         if (empty($property[0])) {
             throw new \Exception('There is not a default server language defined');
         }
-        $xmlContainer = new XmlContainerNode($node->GetParent());
-        $defaultLangDocId = $xmlContainer->GetChildByLang($property[0]);
+        $xmlContainer = new XmlContainerNode($node->getParent());
+        $defaultLangDocId = $xmlContainer->getChildByLang($property[0]);
         $targetNode = new Node($defaultLangDocId);
-        if (! $targetNode->GetID()) {
+        if (! $targetNode->getID()) {
             throw new \Exception('A document in default server language could not be found. Define it in server properties');
         }
         
         // Document in master language for its server cannot be linked
-        if ($property[0] == $this->GetLanguage()) {
+        if ($property[0] == $this->getLanguage()) {
             throw new \Exception('This document is the master language');
         }
         return $targetNode;
