@@ -264,7 +264,6 @@ class ServerFrameManager
     {
         $dbObj = new \Ximdex\Runtime\Db();
         $serverFrame = new ServerFrame();
-        // $batchManager = new BatchManager();
         $servers = implode(',', $activeAndEnabledServers);
         Logger::info('ACTIVE PUMPERS STATS', false, 'white');
         $totalTasks = 0;
@@ -380,15 +379,16 @@ class ServerFrameManager
             AND pf.Playing IS TRUE 
             WHERE sf.State IN (\'' . ServerFrame::DUE2IN . '\', \'' . 
             ServerFrame::DUE2OUT . '\', \'' . ServerFrame::DUE2IN_ . '\', \'' . ServerFrame::DUE2OUT_ . '\', \'' . 
-            ServerFrame::PUMPED . '\') AND sf.IdServer IN (' . $servers . ') AND NOT sf.PumperId IS NULL';
-        $dbObj->Query($query);
+            ServerFrame::PUMPED . '\') AND sf.IdServer IN (' . $servers . ') AND NOT sf.PumperId IS NULL 
+            ORDER BY sf.ErrorLevel, sf.Retry';
+        $dbObj->query($query);
         if ($dbObj->numErr) {
             return null;
         }
         $pumpers = array();
-        while (!$dbObj->EOF) {
-            $pumpers[] = $dbObj->GetValue('PumperId');
-            $dbObj->Next();
+        while (! $dbObj->EOF) {
+            $pumpers[] = $dbObj->getValue('PumperId');
+            $dbObj->next();
         }
         return $pumpers;
     }

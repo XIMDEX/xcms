@@ -394,7 +394,7 @@ class Node extends NodesOrm
      *
      * @return bool|string
      */
-    function getParent()
+    public function getParent()
     {
         $this->clearError();
         return $this->IdParent;
@@ -3673,6 +3673,9 @@ class Node extends NodesOrm
                 break;
             case NodeTypeConstants::PERMISSION:
                 $range = [1000, 1999];
+                break;
+            case NodeTypeConstants::METADATA:
+                $range = [2000, 2999];
                 break;
             case NodeTypeConstants::NODE_TYPE:
                 $range = [5000, 5999];

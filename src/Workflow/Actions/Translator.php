@@ -94,7 +94,8 @@ class Translator extends WorkflowAction
         
         // Generate a translations array with all the documents that will be updated / created
         elseif (in_array($docFolder->GetNodeType(), [NodeTypeConstants::HTML_CONTAINER, NodeTypeConstants::XML_CONTAINER])) {
-            $type = Plata::TYPE_HTML;
+            // $type = Plata::TYPE_HTML;
+            $type = Plata::TYPE_HTML_PLAIN;
         } else {
             $type = Plata::TYPE_TXT;
         }

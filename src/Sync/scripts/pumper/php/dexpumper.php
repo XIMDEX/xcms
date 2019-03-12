@@ -134,7 +134,7 @@ class DexPumper
         if (! $this->pumper->get('PumperId')) {
             $this->fatal('Pumper Id NOT found for id: ' . $params['--pumperid']);
         }
-        $this->debug('NEW PUMPER: ' . print_r($params,true));
+        $this->debug('NEW PUMPER: ' . $params['--pumperid']);
         $this->localBasePath = trim($params['--localbasepath']);
     }
     
@@ -470,7 +470,11 @@ class DexPumper
         } else {
             $id = null;
         }
-        return $this->connection->rm($remoteFile, $id);
+        $res = $this->connection->rm($remoteFile, $id);
+        if ($res === false) {
+            $this->error($this->connection->getError());
+        }
+        return $res;
     }
     
     private function taskRename(string $targetFile, string $targetFolder, string $newFile, int $idSync = null) : ?bool

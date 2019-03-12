@@ -74,6 +74,7 @@ class Action_modifygroupusers extends ActionAbstract
             }
         }
         $this->addJs('/actions/modifygroupusers/resources/js/helper.js');
+        $this->addCss('/actions/modifygroupusers/resources/css/styles.css');
         $values = array('name' => $node->get('Name'),
             'users_not_associated' => json_encode($users),
             'idnode' => $idNode,

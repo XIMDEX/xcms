@@ -89,7 +89,7 @@ class SolariumSolrService implements ISolrService
 
         $node = new Node($version->get('IdNode'));
         if (!($node->get('IdNode') > 0)) {
-            $this->Debug('Se ha solicitado indexar una versión de un nodo que no existe');
+            $this->debug('Se ha solicitado indexar una versión de un nodo que no existe');
             return false;
         }
 

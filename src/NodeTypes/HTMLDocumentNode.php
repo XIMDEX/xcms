@@ -119,7 +119,7 @@ class HTMLDocumentNode extends AbstractStructuredDocument
                 foreach ($layout['template'] as $templ) {
                     if (strcmp(key($templ), static::CONTENT_DOCUMENT) == 0) {
                         $data = static::getNodeData($doc, $templ[key($templ)], $layout, $isCurrentNode);
-                        $nodes['xe_' . $data['id']] = $data; // Todo JS order numbers key, change it by array
+                        $nodes['xe_' . $data['id']] = $data; // TODO JS order numbers key, change it by array
                     } else {
                         $include = $doc->getInclude($templ[key($templ)]);
                         if ($include && $include->GetID()) {

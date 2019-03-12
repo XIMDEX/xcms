@@ -24,17 +24,17 @@
  *}
 
 <form ng-controller="XModifyGroupUsersCtrl" 
-        ng-init='nodeid={$idnode}; name="{$name}"; users_not_associated={$users_not_associated}; roles={$roles};
-        users_associated={$users_associated}; init();' method="post" action="{$action_url}" class="form_group_user">
+        ng-init='nodeid = {$idnode}; name = "{$name}"; users_not_associated = {$users_not_associated}; roles = {$roles}; 
+        users_associated = {$users_associated}; init();' method="post" action="{$action_url}" class="form_group_user">
     {include file="actions/components/title_Description.tpl"}
     <div class="action_content">
         <div class="row tarjeta">
             <div class="small-12 columns title_tarjeta">
                 <h2 class="h2_general">{t}Available users{/t}</h2>
             </div>
-            <div ng-show="users_not_associated.length>0" class="">
+            <div ng-show="users_not_associated.length > 0" class="">
                 <div class="input-select icon small-12 columns">
-                    <label ng-init="newUser=users_not_associated[0]" class="label_title label_general label-select">{t}Name{/t}</label>
+                    <label ng-init="newUser = users_not_associated[0]" class="label_title label_general label-select">{t}Name{/t}</label>
                     <select  class='cajaxg' ng-model="newUser"
                              ng-options="user as user.name for user in users_not_associated">
                     </select>
@@ -45,8 +45,8 @@
                     </select>
                 </div></div>
             <div class="small-12 columns">
-                <div class="alert alert-info" ng-hide="users_not_associated.length>0">
-                    <strong>Info!</strong> {t}There are not{/t} <span ng-if="users_associated.length>0">{t}more{/t} </span>
+                <div class="alert alert-info" ng-hide="users_not_associated.length > 0">
+                    <strong>Info!</strong> {t}There are not{/t} <span ng-if="users_associated.length > 0">{t}more{/t} </span>
                     {t}available users to be associated with the group{/t} #/name/#.
                 </div></div>
             <div class="small-12 columns">
@@ -60,36 +60,36 @@
         <br>
         <div class="row tarjeta">
             <h2 class="h2_general">{t}The next users belongs to the group{/t} #/name/#</h2>
-            <div  class="change-group">
+            <div class="change-group">
                 <div ng-repeat="user in users_associated" class="row-item icon">
-                    <span class="col-1-3">
-                        <label ng-init="" class="label_title label_general label-select">#/user.UserName/#</label></span>
-                        <div class="input-select icon">
-                        <span class="col1-3">
-                            <select name='idRole' class='block'
-                                    ng-model="users_associated[$index].IdRole" ng-change="users_associated[$index].dirty=true"
-                                    ng-options="key as role for (key, role) in roles">
-                            </select>
-                        </span>
+                    <div class="userInfo">
+	                    <span>
+	                        <label ng-init="" class="label_title label_general label-select">#/user.UserName/#</label>
+	                    </span>
+		                <span>
+		                    <select name='idRole' id="idRole" class='block' ng-model="users_associated[$index].IdRole" 
+		                            ng-change="users_associated[$index].dirty = true" ng-options="key as role for (key, role) in roles">
+		                    </select>
+		                </span>
+		            </div>
+		            <div class="userOptions">
+	                    <span ng-show="users_associated[$index].dirty">
+	                        <button type="button" class="recover-btn icon btn-unlabel-rounded-recover modifyGroupUpdateButton" 
+	                               ng-click="update($index)">
+	                            <span>{t}Update{/t}</span>
+	                        </button>
+	                    </span>
+	                    <span ng-if="nodeid != '101'">
+	                        <button type="button" class="delete-btn icon btn-unlabel-rounded-delete modifyGroupDeleteButton" 
+	                               ng-click="openDeleteModal($index)">
+	                            <span>{t}Delete{/t}</span>
+	                        </button>
+	                    </span>
                     </div>
-                    <div style=" bottom: -70px;" class="buttons-form row-item-actions col1-3">
-                        <span ng-show="users_associated[$index].dirty">
-                            <button type="button" class="recover-btn icon btn-unlabel-rounded-recover" ng-click="update($index)">
-                                <span>{t}Update{/t}</span>
-                            </button>
-                        </span>
-                        <span ng-if="nodeid != '101'">
-                            <button type="button" class="delete-btn icon btn-unlabel-rounded-delete"
-                                    ng-click="openDeleteModal($index)">
-                                <span>{t}Delete{/t}</span>
-                            </button>
-                            <button ng-if="$middle" type="button" class="delete-btn icon btn-unlabel-rounded" 
-                                    ng-click="openDeleteModal($index)"></button>
-                        </span>
-                    </div>
+                    <div class="sep"></div>
                 </div>
                 <div class="small-12 columns">
-                    <div class="alert alert-info" ng-if="users_associated.length<=0">
+                    <div class="alert alert-info" ng-if="users_associated.length <= 0">
                         <strong>Info!</strong> {t}There are no users associated with this group yet{/t}.
                     </div>
                 </div>

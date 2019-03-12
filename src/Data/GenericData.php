@@ -416,7 +416,7 @@ class GenericData
      * @return array|bool
      */
     public function find(string $fields = ALL, string $condition = null, array $params = null, bool $returnType = MULTI
-        , bool $escape = true, string $index = null, string $order = null, string $groupBy = null)
+        , bool $escape = true, string $index = null, string $order = null, string $groupBy = null, bool $onlyAssoc = false)
     {
         $condition = $this->_getCondition($condition, $params, $escape);
         $query = sprintf(
@@ -432,7 +432,7 @@ class GenericData
             $query .= ' ORDER BY ' . $order;
         }
         $this->query = $query;
-        return $this->query($query, $returnType, $index);
+        return $this->query($query, $returnType, $index, $onlyAssoc);
     }
 
     private function _getCondition(string $condition = null, array $params = null, bool $escape = false)
@@ -489,21 +489,20 @@ class GenericData
                     }
                     $subResult[$key] = $this->_getValueForFind($key, $value);
                 }
-                $result[] = $subResult;
             } elseif (MONO == $returnType) {
                 $subResult = null;
                 foreach ($dbObj->row as $key => $value) {
                     $subResult = $this->_getValueForFind($key, $value);
                 }
-                if ($indexField) {
-                    if (! isset($dbObj->row[$indexField])) {
-                        Logger::error('Field ' . $indexField . ' does not exist in query: ' . $query);
-                        return false;
-                    }
-                    $result[$dbObj->row[$indexField]] = $subResult;
-                } else {
-                    $result[] = $subResult;
+            }
+            if ($indexField) {
+                if (! isset($dbObj->row[$indexField])) {
+                    Logger::error('Field ' . $indexField . ' does not exist in query: ' . $query);
+                    return false;
                 }
+                $result[$dbObj->row[$indexField]] = $subResult;
+            } else {
+                $result[] = $subResult;
             }
             $dbObj->next();
         }

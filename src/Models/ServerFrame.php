@@ -378,8 +378,8 @@ class ServerFrame extends ServerFramesOrm
             . "WHERE (ServerFrames.State = '" . ServerFrame::DUE2IN . "' OR ServerFrames.State = '" . ServerFrame::DUE2OUT . "') " 
             . "AND ServerFrames.PumperId = $pumperID AND ServerFrames.IdServer IN ($servers)";
         $dbObj = new Db();
-        $dbObj->Query($sql);
-        $n = (int) $dbObj->GetValue('total');
+        $dbObj->query($sql);
+        $n = (int) $dbObj->getValue('total');
         Logger::debug("Pumper $pumperID contain $n incomplete tasks");
         return $n;
     }
@@ -395,7 +395,7 @@ class ServerFrame extends ServerFramesOrm
 				WHERE State IN ('" . ServerFrame::DUE2INWITHERROR . "', '" . ServerFrame::DUE2OUTWITHERROR 
             . "') AND PumperId = $pumperId";
         $dbObj = new Db();
-        $dbObj->Execute($sql);
+        $dbObj->execute($sql);
     }
 
     /**
@@ -444,10 +444,10 @@ class ServerFrame extends ServerFramesOrm
             . "AND sf.IdServer IN (" . implode(', ', $physicalServers) . ") ORDER BY IdSync DESC LIMIT 1";
         Logger::debug("[GETCURRENT]: Getting current frame for node $nodeID");
         $dbObj = new Db();
-        $dbObj->Query($sql);
+        $dbObj->query($sql);
         $result = ($dbObj->EOF) ? 'IdSync: none' : "IdSync: {$dbObj->GetValue('IdSync')}";
         Logger::debug("[GETCURRENT]: Result: $result");
-        return ($dbObj->EOF) ? null : $dbObj->GetValue('IdSync');
+        return ($dbObj->EOF) ? null : $dbObj->getValue('IdSync');
     }
 
     /**
@@ -465,11 +465,11 @@ class ServerFrame extends ServerFramesOrm
             $sql .= " AND cf.channelid = $channelID";
         }
         $dbObj = new Db();
-        $dbObj->Query($sql);
+        $dbObj->query($sql);
         $list = array();
         while (! $dbObj->EOF) {
-            $list[] = $dbObj->GetValue('IdServer');
-            $dbObj->Next();
+            $list[] = $dbObj->getValue('IdServer');
+            $dbObj->next();
         }
         return $list;
     }

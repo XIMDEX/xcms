@@ -25,9 +25,7 @@
 
 <form method="post" name="ren_form" id="ren_form" action="{$action_url}">
 	<input type="hidden" name="id_node" value="{$id_node}" />
-	<div class="action_header">
-		{include file="actions/components/title_Description.tpl"}
-	</div>
+	{include file="actions/components/title_Description.tpl"}
 	<div class="action_content">
 		<div class="row tarjeta">
 			<div class="small-12 columns title_tarjeta">

@@ -41,25 +41,35 @@ class Metadata extends GenericData
         'file',
         'link'
     ];
+    
+    const META_TYPES = ['integer', 'float', 'text', 'boolean', 'date', 'array', 'image', 'link', 'file'];
 
-    public $_idField = 'IdMetadata';
+    public $_idField = 'idMetadata';
+    
     public $_table = 'Metadata';
-    public $_metaData = array(
+    
+    public $_metaData = array
+    (
         'idMetadata' => array('type' => 'int(12)', 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
         'name' => array('type' => 'varchar(255)', 'not_null' => 'true'),
         'defaultValue' => array('type' => 'text', 'not_null' => 'false'),
-        'type' => array('type' => 'varchar(255)', 'not_null' => 'true'),
-        'readonly' => array('type' => 'int(1)', 'not_null' => 'true')
+        'type' => array('type' => 'varchar(255)', 'not_null' => 'true')
     );
-    public $_uniqueConstraints = array(
+    
+    public $_uniqueConstraints = array
+    (
         'name' => array('name'),
     );
+    
     public $_indexes = array('idMetadata');
+    
     public $idMetadata;
+    
     public $name;
+    
     public $defaultValue;
+    
     public $type = 'text';
-    public $readonly;
 
     public function getMetadataSchemeAndGroupByNodeType(int $idNodeType, int $nodeId = null): array
     {

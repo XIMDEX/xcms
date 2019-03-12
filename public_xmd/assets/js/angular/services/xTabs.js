@@ -292,7 +292,10 @@ angular.module("ximdex.common.service").factory("xTabs", [
       }
       tabs[index].blink = true;
       return $timeout(function() {
-        return tabs[index].blink = false;
+    	if (tabs[index]) {
+    		return tabs[index].blink = false;
+    	}
+    	return false;
       }, 2000);
     };
     xtab.closeAllTabs = function() {

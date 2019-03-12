@@ -23,6 +23,31 @@
  *  @version $Revision$
  */
 
-X.actionLoaded(function(event, fn, params) {
-    // X.angularTools.initView(params.context, params.tabId);
-});
+.addMetadataFormField
+{
+	float: left;
+}
+
+.metadataInfo
+{
+	width: calc(100% - 30pt);
+	float: left;
+}
+
+.metadataOptions
+{
+	width: 30pt;
+    float: right;
+    text-align: right;
+    margin-top: 5pt;
+}
+
+.modifyMetadataDeleteButton
+{
+	left: calc(100% - 30pt) !important;
+}
+
+.sep
+{
+	clear: left;
+}
