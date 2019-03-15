@@ -23,41 +23,65 @@
  *  @version $Revision$
  */
 
-angular.module("ximdex.main.controller").controller('XModifyMetadata', ['$scope', '$http', 'xUrlHelper', '$window', '$filter', 'xDialog', 
+angular.module("ximdex.main.controller").controller("XModifyMetadataGroups", ["$scope", "$http", "xUrlHelper", "$window", "$filter"
+		, "xDialog", 
   	function($scope, $http, xUrlHelper, $window, $filter, xDialog)
   	{
 	    $scope.init = function()
 	    {
 	    	$scope.removed = [];
-	    	$scope.metadataList = $scope.metadataList.map(function(value) {
-	    		var result = value;
-	    		result['key'] = value.name;
-	    		return result;
-	    	});
+	    	$scope.enabled = true;
 	    };
+	    
+	    $scope.hasElements = function(source)
+	    {
+	    	var result = false;
+	    	if (Array.isArray(source)) {
+	    		result = source.length > 0;
+	    	} else if (typeof source === "object") {
+	    		result = Object.keys(source).length > 0;
+	    	}
+	    	return result;
+	    }
 	    
 	    $scope.create = function()
 	    {
-	    	var name = $scope.name;
-	    	var type = $scope.type;
-	    	if (! name || ! type) {
-	    		$scope.showError('Name and type are required');
+	    	var metadata = $scope.metadata;
+	    	var scheme = $scope.scheme;
+	    	var group = $scope.group;
+	    	if (! metadata || ! scheme || ! group) {
+	    		$scope.showError("Metadata, scheme and group are required");
 	    		return false;
 	    	}
-	    	var defaultValue = $scope.defaultValue;
+	    	var required = $scope.required;
+	    	var readonly = $scope.readonly;
+	    	var enabled = $scope.enabled;
 	    	var url = xUrlHelper.getAction({
-	    		action: "createmetadata",
+	    		action: "modifymetadatagroups",
 	    		method: "add"
 	    	});
-	    	var postData = {name: name, defaultValue: defaultValue, type: type};
+	    	var postData = {metadata: metadata, scheme: scheme, group: group, required: required, readonly: readonly, enabled: enabled};
 	    	return $http.post(url, postData)
 	    		.success(function(data, status, headers, config) {
 					if (data.result === "ok") {
-						postData['idMetadata'] = data["id"];
-						postData['key'] = name;
-						$scope.metadataList.push(postData);
-						$scope.name = $scope.defaultValue = $scope.type = '';
-						$scope.showMessages(['Metadata ' + name + ' has been created']);
+						postData.idRelMetadataGroupMetadata = data.id;
+						var metaList = $scope.schemes[scheme].groups[group].metadata;
+						if (Array.isArray(metaList)) {
+							metaList = {}
+						}
+						var name = $scope.metadataList[metadata].name;
+						metaList[data.id] = {
+							id: data.id,
+							name: name,
+							required: required,
+							readonly: readonly,
+							enabled: enabled
+						};
+						$scope.schemes[scheme].groups[group].metadata = metaList;
+						$scope.metadata = $scope.scheme = $scope.group = "";
+						$scope.required = $scope.readonly = false;
+						$scope.enabled = true;
+						$scope.showMessages(["Metadata " + name + " has been added to group"]);
 						return true;
 					}
 					if (data.error) {
@@ -68,41 +92,33 @@ angular.module("ximdex.main.controller").controller('XModifyMetadata', ['$scope'
 	    		.error(function(data, status, headers, config) {});
 	    };
 	    
-	    $scope.remove = function(id)
+	    $scope.remove = function(idRel, group, scheme)
 	    {
-	    	if (! id) {
+	    	if (! idRel || ! scheme || ! group) {
 	    		return;
 	    	}
-	    	if ($scope.removed.indexOf(id) >= 0) {
+	    	if ($scope.removed.indexOf(idRel) >= 0) {
 	    		return;
 	    	}
-	    	index = $scope.metadataList.findIndex(function(metadata) {
-	    		return (metadata.idMetadata == id)
-	    	});
-	    	if (index < 0) {
-	    		return;
+	    	if ($scope.schemes[scheme].groups[group].metadata[idRel]) {
+	    		delete $scope.schemes[scheme].groups[group].metadata[idRel];
+	    		$scope.removed.push(idRel);
 	    	}
-	    	$scope.removed.push(id);
-	    	$scope.metadataList.splice(index, 1);
 	    }
 	    
-	    $scope.save = function(res)
+	    $scope.save = function()
 	    {
-	    	if (! res) {
-	    		return;
-	    	}
 	    	var url = xUrlHelper.getAction({
-	    		action: "createmetadata",
+	    		action: "modifymetadatagroups",
 	    		method: "save"
 	    	});
-	    	var postData = {removed: $scope.removed, metadata: $scope.metadataList};
+	    	var postData = {schemes: $scope.schemes, removed: $scope.removed};
 	    	return $http.post(url, postData)
 	    		.success(function(data, status, headers, config) {
 					if (data.result === "ok") {
 						if (data.messages && data.messages.length > 0) {
 							$scope.showMessages(data.messages);
 						}
-						$scope.removed = [];
 						return true;
 					}
 					if (data.error) {
@@ -113,27 +129,18 @@ angular.module("ximdex.main.controller").controller('XModifyMetadata', ['$scope'
 	    		.error(function(data, status, headers, config) {});
 	    };
 	    
-	    $scope.openSaveModal = function()
-	    {
-	    	if ($scope.removed.length) {
-	    		return xDialog.openConfirmation($scope.save, "You are going delete " + $scope.removed.length 
-	    				+ " metadata, do you want to continue?");
-	    	}
-	    	return $scope.save(true);
-	    };
-	    
 	    $scope.showMessages = function(messages)
 	    {
-	    	var successMessage = $('#metadata_success_message');
-			successMessage.html('<p>' + messages.join('. ') + '</p>');
+	    	var successMessage = $("#metadatagroups_success_message");
+			successMessage.html("<p>" + messages.join(". ") + "</p>");
 			successMessage.show();
 			successMessage.delay(8000).hide(0);
 	    }
 	    
 	    $scope.showError = function(error)
 	    {
-	    	var successMessage = $('#metadata_error_message');
-			successMessage.html('<p>' + error + '</p>');
+	    	var successMessage = $("#metadatagroups_error_message");
+			successMessage.html("<p>" + error + "</p>");
 			successMessage.show();
 			successMessage.delay(8000).hide(0);
 	    }

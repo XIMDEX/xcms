@@ -60,3 +60,20 @@ angular.module('ximdex.common.filter')
             return normalizedString
         }
 }]);
+
+angular.module('ximdex.common.filter')
+	.filter('orderObjectBy', [function(){
+		 return function(input, attribute) {
+		    if (! angular.isObject(input)) return input;
+		    var array = [];
+		    for(var objectKey in input) {
+		        array.push(input[objectKey]);
+		    }
+		    array.sort(function(a, b){
+		        a = a[attribute].toUpperCase();
+		        b = b[attribute].toUpperCase();
+		        return (a < b) ? -1 : (a > b) ? 1 : 0;
+		    });
+		    return array;
+		 }
+}]);

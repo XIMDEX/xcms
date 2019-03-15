@@ -117,7 +117,7 @@ class Action_manageversions extends ActionAbstract
             
             // If it is a recovery of a version, first we recover it and then we show the form
             $data = new DataFactory($idNode);
-            $ret = $data->RecoverVersion($version, $subVersion);
+            $ret = $data->recoverVersion($version, $subVersion);
             if ($ret === false) {
                 $this->render(array(
                     'messages' => array(array(

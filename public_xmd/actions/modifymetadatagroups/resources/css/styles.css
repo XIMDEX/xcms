@@ -1,5 +1,5 @@
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -23,64 +23,64 @@
  *  @version $Revision$
  */
 
-div.manageproperties {
-	width: 95%;
-	margin: 0 auto;
+.sep
+{
+	clear: left;
 }
 
-div.manageproperties div.left-block {
-	float: left;
+#metadatagroups_success_message,
+#metadatagroups_error_message
+{
+    display: none;
 }
 
-div.manageproperties div.recursive, div.manageproperties div.apply {
-	float: left;
+.metadata_name_text
+{
+	width: 30% !important;
 }
 
-div.manageproperties .channelsmp {
-	margin-bottom: 5pt;
-	width: 130pt !important;
+.metadata_values_text
+{
+    width: 10% !important;
+    margin-left: 10pt;
 }
 
-div.manageproperties .metadatamp {
-    margin-bottom: 5pt;
-    width: 220pt !important;
+.metadata_info
+{
+	margin-top: 10pt;
 }
 
-div.manageproperties .languagesmp {
-	margin-bottom: 5pt;
-	width: 130pt !important;
+.metadata_options,
+.metadata_checkbox_option
+{
+	margin-left: 10pt !important;
 }
 
-ul.inheritlist {
-	margin-left: 65pt !important;
-	list-style: disc;
-	cursor: auto;
-}
-
-div.overwrited_properties {
-	margin-left: 60pt !important;
-	margin-top: 5pt !important;
-	margin-bottom: 5pt !important;
-}
-
-div.propertyform {
+.metadata_group
+{
 	margin-bottom: 10pt;
 }
 
-ul.inheritlist li {
-	float: left;
-	margin-right: 50pt;
+.no_metadata_in_group
+{
+	color: gray;
 }
 
-li.inherit_list_element {
-    width: 14%;
+.metadataInfo
+{
+    width: calc(100% - 25pt);
+    float: left;
 }
 
-.prop_default_server_language {
-	width: 20%;
-	float: left;
+.metadataOptions
+{
+    width: 25pt;
+    float: right;
+    text-align: right;
+    margin-top: 3pt;
 }
 
-.propertyform .sep {
-	clear: both;
+.metadataDeleteButton
+{
+    left: calc(100% - 30pt) !important;
 }

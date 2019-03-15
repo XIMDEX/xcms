@@ -35,7 +35,7 @@
             </div>
             <div>
                 <div class="input-text icon columns addMetadataFormField" style="width: 30%;">
-                    <label class="label_title label_general lable-text" for="metadataName">{t}Name{/t}</label>
+                    <label class="label_title label_general lable-text" for="metadataName">{t}Name{/t} *</label>
                     <input type="text" ng-model="name" class="input_general cajaxg validable not_empty" id="metadataName" maxlength="255" />
                 </div>
                 <div class="input-text icon columns addMetadataFormField" style="width: 40%;">
@@ -43,7 +43,7 @@
                     <input type="text" ng-model="defaultValue" class="input_general cajaxg validable not_empty" id="metadataDefaultValue" />
                 </div>
                 <div class="input-select icon columns addMetadataFormField" style="width: 30%;">
-                    <label class="label_title label_general label-select" for="metadataType">{t}Type{/t}</label>
+                    <label class="label_title label_general label-select" for="metadataType">{t}Type{/t} *</label>
                     <select ng-model="type" id="metadataType">
                         <option ng-repeat="type in types" value="#/type/#">#/type/#</option>
                     </select>
@@ -65,15 +65,20 @@
                 <div class="metadataInfo">
                     <div class="input-text icon columns addMetadataFormField" style="width: 30%;">
                         <input type="text" ng-model="metadata.name" class="input_general cajaxg validable not_empty" 
-                                ng-value="metadata.name" maxlength="255" />
+                                ng-value="metadata.name" maxlength="255" title="{t}Metadata name{/t}" />
                     </div>
                     <div class="input-text icon columns addMetadataFormField" style="width: 40%;">
                         <input type="text" ng-model="metadata.defaultValue" class="input_general cajaxg validable" 
-                                ng-value="metadata.defaultValue" />
+                                ng-value="metadata.defaultValue" title="{t}Metadata optional default value{/t}" />
                     </div>
-                    <div class="input-text icon columns addMetadataFormField" style="width: 30%;">
-	                    <input type="text" class="input_general cajaxg" ng-value="metadata.type" readonly="readonly" />
+                    <div class="input-text icon columns addMetadataFormField" style="width: 20%;">
+	                    <input type="text" class="input_general cajaxg" ng-value="metadata.type" disabled="disabled" 
+	                           title="{t}Metadata type{/t}" />
 	                </div>
+	                <div class="input-text icon columns addMetadataFormField" style="width: 10%;">
+                        <input type="text" class="input_general cajaxg" ng-value="metadata.values" disabled="disabled" 
+                                title="{t}Total of values related to metadata{/t}" />
+                    </div>
                 </div>
 	            <div class="metadataOptions">
                     <button type="button" class="delete-btn icon btn-unlabel-rounded-delete metadataDeleteButton" 
@@ -92,7 +97,7 @@
                 <fieldset class="buttons-form">
                     <button type="button" id="" ng-click="openSaveModal()" 
                             class="btn ui-state-default ui-corner-all button submit-button ladda-button main_action" data-style="slide-up" 
-                            data-size="xs"><span class="ladda-label">{t}Save{/t}</span></button>
+                            data-size="xs"><span class="ladda-label">{t}Save metadata{/t}</span></button>
                 </fieldset>
             </div>
         </div>

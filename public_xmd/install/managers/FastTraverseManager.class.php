@@ -47,7 +47,7 @@ class FastTraverseManager extends InstallManager
 			$node = new Node($idNode);
 			$node->updateFastTraverse(false);
 			$path = pathinfo($node->GetPath());
-			if (!isset($path['dirname'])) {
+			if (! isset($path['dirname'])) {
 				$path['dirname'] = '/' ;
 			}
 			$this->installMessages->printIteration($i);
@@ -66,6 +66,6 @@ class FastTraverseManager extends InstallManager
 	{
 		$sql = 'DELETE FROM FastTraverse';
 		$db = new \Ximdex\Runtime\Db();
-		$db->Execute($sql);
+		$db->execute($sql);
 	}
 }

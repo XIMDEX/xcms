@@ -48,7 +48,6 @@ delete from NodeAllowedContents where IdNodeType in (
 ALTER TABLE `NodeAllowedContents` ADD CONSTRAINT `NodeAllowedContents_Nodetype_Container` FOREIGN KEY (`IdNodeType`) 
 REFERENCES `NodeTypes`(`IdNodeType`) ON DELETE CASCADE ON UPDATE CASCADE;
 
--- TODO ajlucena
 delete from NodeAllowedContents where NodeType in (5047, 5062, 5303, 5313, 5307, 5320, 5310);
 
 ALTER TABLE `NodeAllowedContents` ADD CONSTRAINT `NodeAllowedContents_Nodetype_Content` FOREIGN KEY (`NodeType`) 

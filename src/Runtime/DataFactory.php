@@ -534,25 +534,25 @@ class DataFactory
      * @param int $subversion
      * @param string $comment
      */
-    public function RecoverVersion(?int $version, ?int $subversion, string $comment = null) : bool
+    public function recoverVersion(int $version = null, int $subversion = null, string $comment = null) : bool
     {
         $tmpVersion = $version;
-        $this->ClearError();
+        $this->clearError();
         $node = new Node($this->nodeID);
-        if (! $node->get('IdNode') || ! is_null($version) || ! is_null($subversion)) {
-            $this->SetError(1);
+        if (! $node->get('IdNode') || is_null($version) || is_null($subversion)) {
+            $this->setError(1);
             return false;
         }
         $purgeAll = false;
 
         // Siempre va a tener versiones anteriores (no tiene sentido recuperar la actual), calculamos cual es la siguiente
-        $newVersion = $this->GetLastVersion();
+        $newVersion = $this->getLastVersion();
         $curSubVersion = $this->getLastSubVersion($newVersion);
         $purgePreviousSubVersions = App::getValue('PurgeSubversionsOnNewVersion');
         $newSubVersion = $curSubVersion + 1;
 
         // Le ponemos el contenido de la version que queremos recuperar
-        $newContent = $this->GetContent($version, $subversion);
+        $newContent = $this->getContent($version, $subversion);
         $userID = \Ximdex\Runtime\Session::get('userID');
 
         // Ejecutamos la insercion en la BD
@@ -579,7 +579,7 @@ class DataFactory
         $version->update();
 
         // / Lo guardamos en el sistema de archivos
-        if ($nodetype->GetHasFSEntity() && ! FsUtils::file_put_contents($fileName, $fileContent)) {
+        if ($nodetype->getHasFSEntity() && ! FsUtils::file_put_contents($fileName, $fileContent)) {
             Logger::error('An error occurred while trying to save the document');
             $this->SetError(6);
             return false;
@@ -931,7 +931,7 @@ class DataFactory
      *
      * @param int $code
      */
-    public function SetError(int $code)
+    public function setError(int $code)
     {
         $this->numErr = $code;
         $this->msgErr = $this->errorList[$code];
@@ -942,7 +942,7 @@ class DataFactory
      *
      * @return NULL|int
      */
-    public function HasError() : ?int
+    public function hasError() : ?int
     {
         return $this->numErr;
     }

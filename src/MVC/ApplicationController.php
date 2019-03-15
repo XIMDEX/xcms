@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -41,7 +41,7 @@ class ApplicationController extends IController
 {
     private $timer = null;
 	
-    function compose()
+    public function compose()
     {
         $stats = array();
 
@@ -50,7 +50,7 @@ class ApplicationController extends IController
 
         // Si no existe la accion, mostramos error
         if (! $actionController) {
-            $actionController = $this->_error_no_action();
+            $actionController = $this->error_no_action();
         } else {
             $stats = $this->actionsStatsStart();
             $actionController->execute($this->request);
@@ -65,7 +65,7 @@ class ApplicationController extends IController
     /**
      * @return ActionAbstract
      */
-    function _error_no_action()
+    private function error_no_action()
     {
         $actionController = new Action();
         $actionController->messages->add(_('Required action not found.'), MSG_TYPE_ERROR);
@@ -77,7 +77,7 @@ class ApplicationController extends IController
     /**
      * @return array
      */
-    function actionsStatsStart()
+    private function actionsStatsStart()
     {
         $actionsStats = App::getValue('ActionsStats');
         $action = $this->request->getParam('action');
@@ -97,9 +97,9 @@ class ApplicationController extends IController
     /**
      * Inserts action stats
      * 
-     * @param $stats
+     * @param array $stats
      */
-    function actionsStatsEnd($stats)
+    private function actionsStatsEnd(array $stats)
     {
         $actionsStats = App::getValue('ActionsStats');
         $action = $this->request->getParam("action");
@@ -110,12 +110,7 @@ class ApplicationController extends IController
         }
     }
 
-    /**
-     * @param $stats
-     * @param $method
-     * @param $duration
-     */
-    private function send_stats($stats, $method, $duration)
+    private function send_stats(array $stats, string $method, int $duration)
     {
         $ctx = stream_context_create(array(
                 'http' => array(

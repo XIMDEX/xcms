@@ -117,5 +117,4 @@ class NodeTypeConstants
     const XOTF_FOLDER = 5110;
     const PERMISSION = 5038;
     const METADATA_MANAGER = 5019;
-    const METADATA = 5047;
 }

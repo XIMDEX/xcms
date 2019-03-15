@@ -28,7 +28,7 @@
     {include file="actions/components/title_Description.tpl"}
     <div ng-cloak class="action_content">
         <fieldset>
-            <accordion close-others="true" ng-init="firstOpen=true; firstDisabled=false;">
+            <accordion close-others="true" ng-init="firstOpen = true; firstDisabled = false;">
                 {$count = 0}
                 {foreach from=$info item=metaSection}
                     <accordion-group class="" heading="{t}{$metaSection['name']}{/t}" 

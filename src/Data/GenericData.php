@@ -226,7 +226,7 @@ class GenericData
         $insertedId = null;
         if ($this->_checkDataIntegrity()) {
             $dbObj = new \Ximdex\Runtime\Db();
-            $dbObj->Execute($query);
+            $dbObj->execute($query);
             if ($dbObj->numErr > 0) {
                 $this->messages->add($dbObj->desErr, MSG_TYPE_ERROR);
                 return false;

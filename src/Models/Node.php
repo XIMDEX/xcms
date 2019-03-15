@@ -638,14 +638,14 @@ class Node extends NodesOrm
     /**
      * Returns de node path (ximdex hierarchy!!! no file system one!!!)
      *
-     * @param $advanced bool If is true return key-value, else return string
+     * @param bool $advanced If is true return key-value, else return string
      * @return null|string
      */
-    function GetPath($advanced = false)
+    public function getPath(bool $advanced = false)
     {
-        $path = $this->_GetPath($advanced);
-        if (!$path) {
-            Logger::warning("Model::Node::getPath(): Path can not be deduced from NULL idNode");
+        $path = $this->_getPath($advanced);
+        if (! $path) {
+            Logger::warning('Model::Node::getPath(): Path can not be deduced from idNode: ' . $this->getID());
         }
         return $path;
     }
@@ -653,31 +653,31 @@ class Node extends NodesOrm
     /**
      * Returns de node path
      *
-     * @param $advanced bool If is true return key-value, else return string
+     * @param bool $advanced If is true return key-value, else return string
      * @return null|string|array
      */
-    function _GetPath($advanced = false)
+    private function _getPath(bool $advanced = false)
     {
-        $this->ClearError();
+        $this->clearError();
         $idNode = $this->get('IdNode');
         if ($idNode > 0) {
             $sql = "select Name, ft.idNode from FastTraverse ft inner join Nodes n on ft.idNode = n.idNode
 					where ft.IdChild = $idNode
 					order by depth desc";
             $db = new \Ximdex\Runtime\Db();
-            $db->Query($sql);
+            $db->query($sql);
             $path = $advanced ? [] : '';
-            while (!$db->EOF) {
+            while (! $db->EOF) {
                 if ($advanced) {
                     $path[$db->getValue('idNode')] = $db->getValue('Name');
                 } else {
                     $path .= '/' . $db->getValue('Name');
                 }
-                $db->Next();
+                $db->next();
             }
             return $path;
         }
-        $this->SetError(1);
+        $this->setError(1);
         return NULL;
     }
 
@@ -3673,9 +3673,6 @@ class Node extends NodesOrm
                 break;
             case NodeTypeConstants::PERMISSION:
                 $range = [1000, 1999];
-                break;
-            case NodeTypeConstants::METADATA:
-                $range = [2000, 2999];
                 break;
             case NodeTypeConstants::NODE_TYPE:
                 $range = [5000, 5999];

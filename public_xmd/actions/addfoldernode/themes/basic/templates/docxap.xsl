@@ -12,8 +12,8 @@
 		<html xmlns="http://www.w3.org/1999/xhtml">
 			<head>
 				<meta http-equiv="content-type" content="application/xhtml+xml; charset=utf-8" />
-				<link rel="stylesheet" type="text/css" href="@@@RMximdex.dotdot(css/main.css)@@@" />
-				<link rel="stylesheet" type="text/css" href="@@@RMximdex.dotdot(css/pure-min.css)@@@" />
+				<link rel="stylesheet" type="text/css" href="@@@RMximdex.pathto(css/main.css)@@@" />
+				<link rel="stylesheet" type="text/css" href="@@@RMximdex.pathto(css/pure-min.css)@@@" />
 				<title>Blog</title>
 			</head>
 			<body uid="{@uid}">

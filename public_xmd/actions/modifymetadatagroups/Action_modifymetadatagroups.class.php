@@ -29,23 +29,22 @@ use Ximdex\MVC\ActionAbstract;
 use Ximdex\Models\Node;
 use Ximdex\Models\Metadata;
 
-class Action_createmetadata extends ActionAbstract
+class Action_modifymetadatagroups extends ActionAbstract
 {
     public function index()
     {
         $nodeId = $this->request->getParam('nodeid');
         $node = new Node($nodeId);
-        $types = Metadata::META_TYPES;
         $metadata = new Metadata();
-        $metadataList = $metadata->find(ALL, null, null, MULTI, true, null, 'name', null, true);
-        foreach ($metadataList as & $meta) {
-            $meta['values'] = Metadata::countMetadataValues($meta['idMetadata']);
-        }
-        $this->addCss('/actions/createmetadata/resources/css/styles.css');
+        $metadataList = $metadata->find('idMetadata, name', null, null, MULTI, true, 'idMetadata', 'name', null, true);
+        $data = $metadata->getMetadataSchemesAndGroups(true);
+        $this->addJs('/actions/modifyrole/js/modifyrole.js');
+        $this->addCss('/actions/modifyrole/css/modifyrole.css');
+        $this->addCss('/actions/modifymetadatagroups/resources/css/styles.css');
         $values = array('name' => $node->get('Name'),
             'idnode' => $node->getID(),
             'metadata' => json_encode($metadataList),
-            'metadataTypes' => json_encode($types),
+            'data' => json_encode($data),
             'nodeTypeID' => $node->nodeType->getID(),
             'node_Type' => $node->nodeType->getName()
         );
@@ -55,29 +54,20 @@ class Action_createmetadata extends ActionAbstract
     public function add()
     {
         $data = json_decode(file_get_contents('php://input'), true);
-        $name = $data['name'] ?? null;
-        $type = $data['type'] ?? null;
-        if (! $type or ! $name) {
-            $values = array('result' => 'notok', 'error' => _('Name and type fields are necesary to create a new metadata'));
+        $metadata = $data['metadata'] ?? null;
+        $scheme = $data['scheme'] ?? null;
+        $group = $data['group'] ?? null;
+        if (! $metadata or ! $scheme or ! $group) {
+            $values = array('result' => 'notok', 'error' => _('Metadata, scheme and group are necesary'));
             $this->sendJSON($values);
         }
-        $metadata = new Metadata();
-        $res = $metadata->find(ALL, 'name = \'' . $name . '\'');
-        if ($res) {
-            $values = array('result' => 'notok', 'error' => sprintf(_('A metadata with the name %s already exists'), $name));
-            $this->sendJSON($values);
-        }
-        if (! in_array($type, Metadata::META_TYPES)) {
-            $values = array('result' => 'notok', 'error' => sprintf(_('Type %s is not a valid metadata type'), $type));
-            $this->sendJSON($values);
-        }
-        $defaultValue = $data['defaultValue'] ?? null;
-        $metadata->set('name', $name);
-        $metadata->set('type', $type);
-        $metadata->set('defaultValue', $defaultValue);
-        $id = $metadata->add();
-        if ($id === false) {
-            $values = array('result' => 'notok');
+        $required = (bool) ($data['required'] ?? false);
+        $readonly = (bool) ($data['readonly'] ?? false);
+        $enabled = (bool) ($data['enabled'] ?? false);
+        try {
+            $id = Metadata::relMetadataAndGroup($metadata, $group, $required, $readonly, $enabled);
+        } catch (Exception $e) {
+            $values = array('result' => 'notok', 'error' => $e->getMessage());
             $this->sendJSON($values);
         }
         $values = array('result' => 'ok', 'id' => $id);
@@ -91,11 +81,7 @@ class Action_createmetadata extends ActionAbstract
         if (isset($data['removed']) and $data['removed']) {
             $deleted = 0;
             foreach ($data['removed'] as $id) {
-                $meta = new Metadata($id);
-                if (! $meta->get('idMetadata')) {
-                    continue;
-                }
-                if ($meta->delete()) {
+                if (Metadata::deleteRelMetadataAndGroup($id)) {
                     $deleted++;
                 }
             }
@@ -103,22 +89,38 @@ class Action_createmetadata extends ActionAbstract
                 $messages[] = sprintf(_('%s metadata have been deleted'), $deleted);
             }
         }
-        if (isset($data['metadata']) and $data['metadata']) {
+        if (isset($data['schemes']) and $data['schemes']) {
             $updated = 0;
-            foreach ($data['metadata'] as $metadata) {
-                $meta = new Metadata($metadata['idMetadata']);
-                if (! $meta->get('idMetadata')) {
+            foreach ($data['schemes'] as $scheme) {
+                if (! isset($scheme['groups']) or ! $scheme['groups']) {
                     continue;
                 }
-                $meta->set('name', $metadata['name']);
-                $meta->set('defaultValue', $metadata['defaultValue']);
-                if ($meta->update()) {
-                    $updated++;
+                foreach ($scheme['groups'] as $group) {
+                    if (! isset($group['metadata']) or ! $group['metadata']) {
+                        continue;
+                    }
+                    foreach ($group['metadata'] as $metadata) {
+                        $id = (int) $metadata['id'];
+                        $required = (bool) $metadata['required'];
+                        $readonly = (bool) $metadata['readonly'];
+                        $enabled = (bool) $metadata['enabled'];
+                        try {
+                            if (Metadata::updateRelMetadataAndGroup($id, $required, $readonly, $enabled)) {
+                                $updated++;
+                            }
+                        } catch (Exception $e) {
+                            $values = array('result' => 'notok', 'error' => $e->getMessage());
+                            $this->sendJSON($values);
+                        }
+                    }
                 }
             }
             if ($updated) {
                 $messages[] = sprintf(_('%s metadata have been updated'), $updated);
             }
+        }
+        if (! $updated and ! $deleted) {
+            $messages[] = _('No changes in metadata have been made');
         }
         $values = array('result' => 'ok', 'messages' => $messages);
         $this->sendJSON($values);

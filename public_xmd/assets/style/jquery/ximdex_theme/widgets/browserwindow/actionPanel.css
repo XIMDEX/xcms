@@ -350,13 +350,18 @@ input[type="text"]:-ms-input-placeholder {
 input[readonly]{
     pointer-events: none;
     cursor: not-allowed;
-    border-left: 4px solid #43a1a2!important;
-    background-color: lightgrey!important;
+    border-left: 4px solid #43a1a2 !important;
+    background-color: lightgrey !important;
 }
 
 input[readonly]:hover,
 input[readonly]:focus{
     box-shadow: none !important;
+}
+
+input[disabled]{
+    border-left: 4px solid #43a1a2 !important;
+    background-color: #DDD !important;
 }
 
 .disabled {

@@ -466,7 +466,7 @@ class ViewFilterMacros extends AbstractView
         return $targetServer->get('Url') . $section->GetPublishedPath($idTargetChannel, true);
     }
 
-    private function getdotdotpath(array $matches) : bool
+    private function getdotdotpath(array $matches) : string
     {
         $targetPath = $matches[1];
         if ($this->preview) {
@@ -485,7 +485,7 @@ class ViewFilterMacros extends AbstractView
 
                 // Get section path
                 $section = new Node($this->_idSection);
-                $sectionPath = $section->class->GetNodeURL() . '/';
+                $sectionPath = $section->class->getNodeURL() . '/';
             } else {
 
                 // Getting relative or absolute path
@@ -594,7 +594,7 @@ class ViewFilterMacros extends AbstractView
                 }
                 return $src;
             } else {
-                return $targetNode->class->GetNodeURL();
+                return $targetNode->class->getNodeURL();
             }
         }
         if (App::getValue('PullMode') == 1) {

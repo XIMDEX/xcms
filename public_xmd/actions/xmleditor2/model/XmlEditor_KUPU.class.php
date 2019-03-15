@@ -42,11 +42,11 @@ use Ximdex\Logger;
 use Ximdex\Sync\SynchroFacade;
 use Ximdex\Nodeviews\ViewPreviewInServer;
 
-\Ximdex\Modules\Manager::file('/actions/xmleditor2/model/XmlEditor_Abstract.class.php');
-\Ximdex\Modules\Manager::file('/actions/xmleditor2/HTML2XML.class.php');
-\Ximdex\Modules\Manager::file('/actions/enricher/model/Enricher.class.php', 'Xowl');
-\Ximdex\Modules\Manager::file('/actions/enricher/model/TagSuggester.class.php', 'Xowl');
-\Ximdex\Modules\Manager::file('/actions/xmleditor2/model/XmlEditor_Enricher.class.php');
+Ximdex\Modules\Manager::file('/actions/xmleditor2/model/XmlEditor_Abstract.class.php');
+Ximdex\Modules\Manager::file('/actions/xmleditor2/HTML2XML.class.php');
+Ximdex\Modules\Manager::file('/actions/enricher/model/Enricher.class.php', 'Xowl');
+Ximdex\Modules\Manager::file('/actions/enricher/model/TagSuggester.class.php', 'Xowl');
+Ximdex\Modules\Manager::file('/actions/xmleditor2/model/XmlEditor_Enricher.class.php');
 
 class XmlEditor_KUPU extends XmlEditor_Abstract
 {
@@ -109,7 +109,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
             $depth = $node->GetPublishedDepth();
             $dotdot = str_repeat('../', $depth - 2);
             $section = new Node($node->GetSection());
-            $sectionPath = $section->class->GetNodeURL() . "/";
+            $sectionPath = $section->class->getNodeURL() . "/";
             $dotdotPath = $sectionPath . $dotdot;
         }
         $xmlFile = $this->_base_url . '&method=getXmlFile&view=' . $view;

@@ -32,9 +32,13 @@ use Ximdex\Logger;
 class XSLT
 {
     protected $xsltprocessor;
+    
     protected $xml;
+    
     protected $xsl;
+    
     protected $xsd;
+    
     private $errors = [];
 
     public function __construct()
@@ -68,7 +72,7 @@ class XSLT
      * @param string $content
      * @return boolean
      */
-    public function setXSL($xsl_file, $content = null)
+    public function setXSL(string $xsl_file = null, string $content = null)
     {
         // Warnings when $xsl_file doesn't exist
         if ($xsl_file) {
@@ -94,7 +98,6 @@ class XSLT
             return false;
         }
         if (@$this->xsltprocessor->importStyleSheet($this->xsl) === false) {
-            
             $error = \Ximdex\Utils\Messages::error_message('XSLTProcessor::importStylesheet(): ');
             $GLOBALS['errorsInXslTransformation'][] = 'Error importing XSL stylesheet (' . $error . ')';
             return false;
@@ -102,12 +105,12 @@ class XSLT
         return true;
     }
 
-    public function setXSD($xsd)
+    public function setXSD(string $xsd)
     {
         // TODO: implement.
     }
 
-    public function setParameter($options, $namespace = '')
+    public function setParameter(array $options, string $namespace = '')
     {
         return $this->xsltprocessor->setParameter($namespace, $options);
     }
@@ -118,8 +121,7 @@ class XSLT
     public function process(bool $showLog = true)
     {
         $res = @$this->xsltprocessor->transformToXML($this->xml);
-        if (($res === false or $res === null) and $showLog)
-        {
+        if (($res === false or $res === null) and $showLog) {
             $error = 'Cannot transform the XML document: ' . \Ximdex\Utils\Messages::error_message('XSLTProcessor::transformToXml(): ');
             $this->errors[] = $error;
         }

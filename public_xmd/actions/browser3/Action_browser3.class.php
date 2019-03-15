@@ -185,8 +185,9 @@ class Action_browser3 extends ActionAbstract
         $this->addJs('/assets/js/angular/controllers/XSetExtensions.js');
         $this->addJs('/assets/js/angular/controllers/ximPUBLISHtools.js');
         $this->addJs('/assets/js/angular/controllers/XUserMenuCtrl.js');
-        $this->addJs('/assets/js/angular/controllers/XModifyMetadata.js');
         $this->addJs('/assets/js/angular/directives/ximAssocNodes.js');
+        $this->addJs('/assets/js/angular/controllers/XModifyMetadata.js');
+        $this->addJs('/assets/js/angular/controllers/XModifyMetadataGroups.js');
         $this->addActionJs('XMainCtrl.js');
         $this->addActionJs('controller.js');
         
