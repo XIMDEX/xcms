@@ -36,7 +36,9 @@ class ConnectionApi extends Connector implements IConnector
     const API_TRANSACTION_DELAY = 0;
     
     private $client;
+    
     private $connected = false;
+    
     private $host = false;
     
 	/**

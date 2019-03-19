@@ -75,7 +75,8 @@ angular.module("ximdex.main.controller").controller("XModifyMetadataGroups", ["$
 							name: name,
 							required: required,
 							readonly: readonly,
-							enabled: enabled
+							enabled: enabled,
+							values: 0
 						};
 						$scope.schemes[scheme].groups[group].metadata = metaList;
 						$scope.metadata = $scope.scheme = $scope.group = "";

@@ -28,16 +28,20 @@
 namespace Ximdex\IO\Connection;
 
 use Ximdex\Logger;
+use Ximdex\Runtime\App;
 use phpseclib\Net\SFTP;
 
 class ConnectionSsh extends Connector implements IConnector
 {
-    // Connection location and credentials
     private $host;
+    
     private $port;
+    
     private $username;
+    
     private $password;
-    private $netSFTP = null;
+    
+    private $netSFTP;
 
     /**
      * {@inheritDoc}
@@ -57,6 +61,7 @@ class ConnectionSsh extends Connector implements IConnector
         if (empty($host) && empty($port)) {
             return false;
         }
+        // define('NET_SFTP_LOGGING', SFTP::LOG_COMPLEX);
         $this->netSFTP = new SFTP($host, $port);
         return true;
     }
@@ -228,13 +233,21 @@ class ConnectionSsh extends Connector implements IConnector
         if ($size === false) {
             return false;
         }
-        return (bool) $this->netSFTP->put($targetFile, $localFile, SFTP::SOURCE_LOCAL_FILE, -1, -1, 
-            function($sent) use ($targetFile, $size) {
+        if (App::debug()) {
+            $function = function($sent) use ($targetFile, $size) {
                 $sent = round($sent * 100 / $size);
                 $size = round($size / 1024);
                 Logger::debug("Uploading file {$targetFile} progress: {$sent}% from {$size} Kbytes");
-            }
-        );
+            };
+        } else {
+            $function = null;
+        }
+        $res = (bool) $this->netSFTP->put($targetFile, $localFile, SFTP::SOURCE_LOCAL_FILE, -1, -1, $function);
+        if ($res === false and $this->netSFTP->getErrors()) {
+            $this->error = implode(".\n", $this->netSFTP->getErrors());
+            // $this->error = $this->netSFTP->getSFTPLog();
+        }
+        return $res;
     }
 
    /**

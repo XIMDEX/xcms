@@ -335,7 +335,7 @@ abstract class AbstractStructuredDocument extends FileNode
             $this->parent->SetError(5);
             return false;
         }
-        $doc->DeleteStrDoc();
+        $doc->delete();
         if ($doc->HasError()) {
             $this->parent->SetError(5);
             return false;

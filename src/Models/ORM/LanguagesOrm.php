@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -31,20 +31,30 @@ use Ximdex\Data\GenericData;
 
 class LanguagesOrm extends GenericData
 {
-    var $_idField = 'IdLanguage';
-    var $_table = 'Languages';
-    var $_metaData = array(
+    public $_idField = 'IdLanguage';
+    
+    public $_table = 'Languages';
+    
+    public $_metaData = array
+    (
         'IdLanguage' => array('type' => "int(12)", 'not_null' => 'true', 'primary_key' => true),
         'Name' => array('type' => "varchar(255)", 'not_null' => 'true'),
         'IsoName' => array('type' => "varchar(255)", 'not_null' => 'false'),
         'Enabled' => array('type' => "tinyint(1)", 'not_null' => 'false')
     );
-    var $_uniqueConstraints = array(
+    
+    public $_uniqueConstraints = array
+    (
         'Name' => array('Name'), 'IdLanguage' => array('IdLanguage')
     );
-    var $_indexes = array('IdLanguage');
-    var $IdLanguage;
-    var $Name;
-    var $IsoName;
-    var $Enabled = 1;
+    
+    public $_indexes = array('IdLanguage');
+    
+    public $IdLanguage;
+    
+    public $Name;
+    
+    public $IsoName;
+    
+    public $Enabled = 1;
 }

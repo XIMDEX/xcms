@@ -30,6 +30,7 @@ namespace Ximdex\NodeTypes;
 use Ximdex\Logger;
 use Ximdex\Runtime\App;
 use Ximdex\Models\Channel;
+use Ximdex\Models\Metadata;
 use Ximdex\Models\Node;
 use Ximdex\Models\Section;
 use Ximdex\Models\Language;
@@ -492,10 +493,10 @@ class HTMLDocumentNode extends AbstractStructuredDocument
     {
         $info = [];
         $sd = new StructuredDocument($nodeId);
-        $lang = new Language($sd->GetLanguage());
-        $info['languageId'] = $lang->GetID();
-        $info['language'] = $lang->GetIsoName();
-        $info['type'] = $sd->GetDocumentType();
+        $lang = new Language($sd->getLanguage());
+        $info['languageId'] = $lang->getID();
+        $info['language'] = $lang->getIsoName();
+        $info['type'] = $sd->getDocumentType();
         $info['metadata'] = static::prepareMetadata($sd->GetMetadata());
         return $info;
     }
@@ -510,6 +511,9 @@ class HTMLDocumentNode extends AbstractStructuredDocument
             }
             if (! $meta['value']) {
                 continue;
+            }
+            if ($meta['type'] == Metadata::TYPE_DATE) {
+                $meta['value'] = "{$meta['value']}T00:00:00Z";
             }
             $result[$meta['name']] = $meta['value'];
         }

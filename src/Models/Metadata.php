@@ -43,6 +43,8 @@ class Metadata extends GenericData
     ];
     
     const META_TYPES = ['integer', 'float', 'text', 'boolean', 'date', 'array', 'image', 'link', 'file'];
+    
+    const TYPE_DATE = 'date';
 
     public $_idField = 'idMetadata';
     
@@ -270,15 +272,15 @@ class Metadata extends GenericData
         $query = "SELECT * FROM RelMetadataGroupMetadata WHERE idMetadataGroup = {$idGroup} AND idMetadata = {$idMetadata}";
         $dbObj = new \Ximdex\Runtime\Db();
         if ($dbObj->query($query) === false) {
-            throw new \Exception("Error making query for the relation of metadata {$idMetadata} and group {$idGroup}");
+            throw new \Exception(_("Error making query for the relation of metadata {$idMetadata} and group {$idGroup}"));
         }
         if ($dbObj->numRows) {
-            throw new \Exception("The relation of metadata and group is already defined");
+            throw new \Exception(_('The relation of metadata and group is already defined'));
         }
         $query = 'INSERT INTO RelMetadataGroupMetadata (idMetadataGroup, idMetadata, required, readonly, enabled)' 
             . ' VALUES (' . $idGroup . ', ' . $idMetadata . ', ' . (int) $required . ', ' . (int) $readonly . ', ' . (int) $enabled . ')';
         if ($dbObj->execute($query) === false) {
-            throw new \Exception('Could not create the relation between metadata and group');
+            throw new \Exception(_('Could not create the relation between metadata and group'));
         }
         return (int) $dbObj->newID;
     }
@@ -291,7 +293,7 @@ class Metadata extends GenericData
             . ' SET required = ' . (int) $required . ', readonly = ' . (int) $readonly . ', enabled = ' . (int) $enabled
             . " WHERE idRelMetadataGroupMetadata = {$idRel}";
         if ($dbObj->execute($query) === false) {
-            throw new \Exception('Could not update the relation between metadata and group');
+            throw new \Exception(_('Could not update the relation between metadata and group'));
         }
         return (int) $dbObj->numRows;
     }
@@ -352,6 +354,33 @@ class Metadata extends GenericData
             return (int) $dbObj->getValue('total');
         }
         return 0;
+    }
+    
+    public static function clearSchemeNodeTypes() : int
+    {
+        $query = 'DELETE FROM RelMetadataSchemeNodeType';
+        $dbObj = new \Ximdex\Runtime\Db();
+        if ($dbObj->execute($query) === false) {
+            throw new \Exception('Could not remove the relations between metadata schemes and node types');
+        }
+        return (int) $dbObj->newID;
+    }
+    
+    public static function relSchemeAndNodeType(int $schemeId, int $nodeTypeId) : int
+    {
+        $query = "SELECT * FROM RelMetadataSchemeNodeType WHERE idMetadataScheme = {$schemeId} AND idNodeType = {$nodeTypeId}";
+        $dbObj = new \Ximdex\Runtime\Db();
+        if ($dbObj->query($query) === false) {
+            throw new \Exception("Error making query for the relation of metadata scheme: {$schemeId} and node type: {$nodeTypeId}");
+        }
+        if ($dbObj->numRows) {
+            return 0;
+        }
+        $query = 'INSERT INTO RelMetadataSchemeNodeType (idMetadataScheme, idNodeType) VALUES (' . $schemeId . ', ' . $nodeTypeId . ')';
+        if ($dbObj->execute($query) === false) {
+            throw new \Exception("Could not create the relation between metadata scheme: {$schemeId} and node type: {$nodeTypeId}");
+        }
+        return (int) $dbObj->newID;
     }
 
     private static function getMetadataValue(int $idNode, string $val = null, string $type = null)

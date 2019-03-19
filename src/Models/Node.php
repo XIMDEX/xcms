@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -31,6 +31,7 @@ use DOMDocument;
 use Ximdex\Deps\DepsManager;
 use Ximdex\Logger;
 use Ximdex\Models\ORM\NodesOrm;
+use Ximdex\NodeTypes\Factory;
 use Ximdex\NodeTypes\NodeTypeConstants;
 use Ximdex\NodeTypes\XmlDocumentNode;
 use Ximdex\Nodeviews\ViewFilterMacros;
@@ -107,7 +108,7 @@ class Node extends NodesOrm
 
     /**
      * Node constructor
-     *
+     * 
      * @param int $nodeID
      * @param bool $fullLoad
      */
@@ -130,8 +131,8 @@ class Node extends NodesOrm
         $this->errorList[15] = _('A master node cannot link other');
         $this->errorList[16] = _('A node cannot link itself');
         $this->errorList[17] = _('This node is not allowed in this position');
-        $this->flagErr = FALSE;
-        $this->autoCleanErr = TRUE;
+        $this->flagErr = false;
+        $this->autoCleanErr = true;
         parent::__construct($nodeID);
 
         // In order to do not breack compatibility with previous version
@@ -143,7 +144,7 @@ class Node extends NodesOrm
             if ($this->nodeType->get('IdNodeType') > 0) {
                 $nodeTypeClass = $this->nodeType->get('Class');
                 $nodeTypeModule = $this->nodeType->get('Module');
-                $this->class = \Ximdex\NodeTypes\Factory::getNodeTypeByName($nodeTypeClass, $this, $nodeTypeModule);
+                $this->class = Factory::getNodeTypeByName($nodeTypeClass, $this, $nodeTypeModule);
                 if (! $fullLoad) {
                     return;
                 }
@@ -151,10 +152,7 @@ class Node extends NodesOrm
         }
     }
 
-    /**
-     * @return NULL|string
-     */
-    function GetRoot()
+    public function GetRoot()
     {
         $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->Query("SELECT IdNode FROM Nodes WHERE IdParent IS null");
@@ -207,10 +205,10 @@ class Node extends NodesOrm
      * @param $name
      * @return boolean
      */
-    function SetNodeName($name)
+    public function setNodeName(string $name)
     {
         // It is a renamenode alias
-        return $this->RenameNode($name);
+        return $this->renameNode($name);
     }
 
     /**
@@ -223,10 +221,7 @@ class Node extends NodesOrm
         return $this->get('IdNodeType');
     }
 
-    /**
-     * @return bool|string
-     */
-    function GetTypeName()
+    public function getTypeName()
     {
         return $this->nodeType->get('Name');
     }
@@ -237,7 +232,7 @@ class Node extends NodesOrm
      * @param $nodeTypeID
      * @return boolean|number|NULL|string
      */
-    function SetNodeType($nodeTypeID)
+    public function setNodeType(int $nodeTypeID)
     {
         if (! $this->get('IdNode')) {
             $this->SetError(2);
@@ -255,7 +250,7 @@ class Node extends NodesOrm
      *
      * @return bool|string
      */
-    function GetDescription()
+    public function getDescription()
     {
         return $this->get('Description');
     }
@@ -263,10 +258,10 @@ class Node extends NodesOrm
     /**
      * Changes the node description
      *
-     * @param $description
+     * @param string $description
      * @return boolean|boolean|number|NULL|string
      */
-    function SetDescription($description)
+    function setDescription(string $description = null)
     {
         if (! $this->get('IdNode')) {
             $this->SetError(2);
@@ -284,9 +279,9 @@ class Node extends NodesOrm
      *
      * @return bool|string
      */
-    function GetState()
+    public function getState()
     {
-        $this->ClearError();
+        $this->clearError();
         return $this->get('IdState');
     }
 
@@ -361,16 +356,16 @@ class Node extends NodesOrm
      *
      * @return bool|null|string
      */
-    function GetIcon()
+    public function getIcon()
     {
-        $this->ClearError();
+        $this->clearError();
         if (($this->get('IdNode') > 0)) {
             if (method_exists($this->class, 'GetIcon')) {
-                return $this->class->GetIcon();
+                return $this->class->getIcon();
             }
-            return $this->nodeType->GetIcon();
+            return $this->nodeType->getIcon();
         }
-        $this->SetError(1);
+        $this->setError(1);
         return NULL;
     }
 
@@ -379,13 +374,13 @@ class Node extends NodesOrm
      *
      * @return null
      */
-    function GetChannels()
+    public function getChannels()
     {
-        $this->ClearError();
+        $this->clearError();
         if ($this->get('IdNode') > 0) {
-            return $this->class->GetChannels($this->GetID());
+            return $this->class->getChannels($this->GetID());
         }
-        $this->SetError(1);
+        $this->setError(1);
         return NULL;
     }
 
@@ -403,16 +398,16 @@ class Node extends NodesOrm
     /**
      * Changes the node parent
      *
-     * @param $parentID
+     * @param int $parentID
      * @return boolean
      */
-    function SetParent($parentID)
+    public function setParent(int $parentID = null)
     {
-        $this->ClearError();
+        $this->clearError();
         if ($this->get('IdNode') > 0) {
-            $children = $this->GetChildByName($this->get('Name'));
+            $children = $this->getChildByName($this->get('Name'));
             if (! empty($children)) {
-                $this->SetError(8);
+                $this->setError(8);
                 return false;
             }
             $this->set('IdParent', $parentID);
@@ -460,11 +455,11 @@ class Node extends NodesOrm
     /**
      * Returns a node list with the info for treedata
      *
-     * @param null $idtype
-     * @param null $order
+     * @param int $idtype
+     * @param array $order
      * @return array
      */
-    function GetChildrenInfoForTree($idtype = null, $order = null)
+    public function getChildrenInfoForTree(int $idtype = null, array $order = null)
     {
         $validDirs = array(
             'ASC',
@@ -483,18 +478,18 @@ class Node extends NodesOrm
                     && in_array($order['DIR'], $validDirs) ? $order['DIR'] : '');
             }
             $dbObj = new \Ximdex\Runtime\Db();
-            $dbObj->Query($sql);
+            $dbObj->query($sql);
             $i = 0;
             while (! $dbObj->EOF) {
-                $childrenList[$i]['id'] = $dbObj->GetValue('IdNode');
-                $childrenList[$i]['name'] = $dbObj->GetValue('name');
-                $childrenList[$i]['system'] = $dbObj->GetValue('System');
+                $childrenList[$i]['id'] = $dbObj->getValue('IdNode');
+                $childrenList[$i]['name'] = $dbObj->getValue('name');
+                $childrenList[$i]['system'] = $dbObj->getValue('System');
                 $i++;
-                $dbObj->Next();
+                $dbObj->next();
             }
             return $childrenList;
         }
-        $this->SetError(1);
+        $this->setError(1);
         return array();
     }
 
@@ -504,21 +499,21 @@ class Node extends NodesOrm
      * @param $name : optional. If none is passed, considered name will be current node name
      * @return NULL|string|boolean
      */
-    function GetChildByName($name = NULL)
+    public function getChildByName(string $name = null)
     {
         if (empty($name)) {
             $name = $this->get('Name');
         }
-        $this->ClearError();
-        if (($this->get('IdParent') > 0) && !empty($name)) {
+        $this->clearError();
+        if ($this->get('IdParent') > 0 && ! empty($name)) {
             $dbObj = new \Ximdex\Runtime\Db();
-            $sql = sprintf("SELECT IdNode FROM Nodes WHERE IdParent = %d AND Name = %s", $this->get('IdNode'), $dbObj->sqlEscapeString($name));
+            $sql = sprintf("SELECT IdNode FROM Nodes WHERE IdParent = %d AND Name = %s", $this->get('IdNode')
+                , $dbObj->sqlEscapeString($name));
             $dbObj->Query($sql);
             if ($dbObj->numRows > 0) {
                 return $dbObj->GetValue('IdNode');
-            } else {
-                return false;
             }
+            return false;
         }
         return false;
     }
@@ -529,18 +524,18 @@ class Node extends NodesOrm
      * @param int $type
      * @return NULL|string|boolean
      */
-    function GetChildByType(int $type = null)
+    public function getChildByType(int $type = null)
     {
         if (empty($type)) {
-            $type = $this->GetNodeType();
+            $type = $this->getNodeType();
         }
-        $this->ClearError();
-        if ($this->GetParent() and !empty($type)) {
+        $this->clearError();
+        if ($this->getParent() and ! empty($type)) {
             $dbObj = new \Ximdex\Runtime\Db();
             $sql = sprintf("SELECT IdNode FROM Nodes WHERE IdParent = %d AND IdNodeType = %s", $this->GetID(), $type);
-            $dbObj->Query($sql);
+            $dbObj->query($sql);
             if ($dbObj->numRows) {
-                return $dbObj->GetValue('IdNode');
+                return $dbObj->getValue('IdNode');
             }
         }
         return false;
@@ -552,21 +547,21 @@ class Node extends NodesOrm
      * @param string $name name, optional. If none is passed, considered name will be current node name
      * @return array|bool
      */
-    function GetByName($name = NULL)
+    public function getByName(string $name = null)
     {
         if (empty($name)) {
             $name = $this->get('Name');
         }
-        $this->ClearError();
-        if (!empty($name)) {
+        $this->clearError();
+        if (! empty($name)) {
             $dbObj = new \Ximdex\Runtime\Db();
             $sql = sprintf("SELECT Nodes.IdNode, Nodes.Name, NodeTypes.Icon, Nodes.IdParent FROM Nodes, NodeTypes " . 
                 "WHERE Nodes.IdNodeType = NodeTypes.IdNodeType AND Nodes.Name like %s", $dbObj->sqlEscapeString("%" . $name . "%"));
             $dbObj->Query($sql);
             if ($dbObj->numRows > 0) {
                 $result = array();
-                while (!$dbObj->EOF) {
-                    $node_t = new Node($dbObj->GetValue('IdNode'));
+                while (! $dbObj->EOF) {
+                    $node_t = new Node($dbObj->getValue('IdNode'));
                     if ($node_t) {
                         $children = count($node_t->GetChildren());
                     } else {

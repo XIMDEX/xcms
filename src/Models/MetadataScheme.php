@@ -32,13 +32,40 @@ use Ximdex\Data\GenericData;
 class MetadataScheme extends GenericData
 {
     public $_idField = 'idMetadataScheme';
+    
     public $_table = 'MetadataScheme';
-    public $_metaData = array(
+    
+    public $_metaData = array
+    (
         'idMetadataScheme' => array('type' => "int(12)", 'not_null' => 'true', 'primary_key' => true),
         'name' => array('type' => "varchar(255)", 'not_null' => 'true')
     );
+    
     public $_uniqueConstraints = array('name');
+    
     public $_indexes = array();
+    
     public $idMetadataScheme;
+    
     public $name;
+    
+    public function getNodeTypes() : array
+    {
+        if (! $this->idMetadataScheme) {
+            throw new \Exception('No schema selected');
+        }
+        $query = 'SELECT nt.IdNodeType, nt.Name
+            FROM NodeTypes nt 
+            JOIN RelMetadataSchemeNodeType rel ON rel.idNodeType = nt.IdNodeType AND rel.idMetadataScheme = ' . $this->idMetadataScheme;
+        $dbObj = new \Ximdex\Runtime\Db();
+        if ($dbObj->query($query) === false) {
+            throw new \Exception('Query error in metadata scheme node types retrieve operation');
+        }
+        $nodeTypes = [];
+        while (! $dbObj->EOF) {
+            $nodeTypes[$dbObj->getValue('IdNodeType')] = $dbObj->getValue('Name');
+            $dbObj->next();
+        }
+        return $nodeTypes;
+    }
 }

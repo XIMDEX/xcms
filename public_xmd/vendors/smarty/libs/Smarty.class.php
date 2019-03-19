@@ -299,7 +299,7 @@ class Smarty extends Smarty_Internal_TemplateBase {
      * cache lifetime in seconds
      * @var integer
      */
-    public $cache_lifetime = 3600;
+    public $cache_lifetime = 1; // TODO ajlucena 3600;
     /**
      * force cache file creation
      * @var boolean

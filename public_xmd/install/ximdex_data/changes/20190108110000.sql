@@ -39,7 +39,7 @@ INSERT INTO `Nodes` (`IdNode`, `IdParent`, `IdNodeType`, `Name`, `IdState`, `Blo
 , `Description`, `SharedWorkflow`, `Path`) 
 VALUES ('404', '8', '5079', 'Workflow for common files', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '/Ximdex/Control center/Workflow manager');
 
-ALTER TABLE `Workflow` ADD  CONSTRAINT `Workflow_Nodes` FOREIGN KEY (`id`) REFERENCES `Nodes`(`IdNode`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `Workflow` ADD CONSTRAINT `Workflow_Nodes` FOREIGN KEY (`id`) REFERENCES `Nodes`(`IdNode`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 UPDATE `Nodes` SET `Name` = 'Workflow for structured documents' WHERE `Nodes`.`IdNode` = 403;
 

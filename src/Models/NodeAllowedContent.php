@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -36,13 +36,13 @@ use Ximdex\Models\ORM\NodeAllowedContentsOrm;
  */
 class NodeAllowedContent extends NodeAllowedContentsOrm
 {
-    function getAllowedChilds($idnodetype)
+    public function getAllowedChilds(int $idnodetype)
     {
         $result = $this->find('NodeType', 'IdNodeType = %s AND Nodetype <> %s', array($idnodetype, $idnodetype), MONO);
         return $result;
     }
 
-    function getAllowedParents($idNodetype)
+    public function getAllowedParents(int $idNodetype)
     {
         $result = $this->find("IdNodeType", "NodeType = %s", array($idNodetype), MONO);
         return $result ? array_values(array_unique($result)) : array();

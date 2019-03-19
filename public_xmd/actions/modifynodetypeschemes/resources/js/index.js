@@ -1,4 +1,3 @@
-<?php
 
 /**
  *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
@@ -25,30 +24,5 @@
  *  @version $Revision$
  */
 
-namespace Ximdex\Models;
-
-use Ximdex\Data\GenericData;
-
-class ListLabel extends GenericData
-{
-    public $_idField = 'id';
-    
-    public $_table = 'List_Label';
-    
-    public $_metaData = array
-    (
-        'id' => array('type' => "int(11)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
-        'Name' => array('type' => "varchar(250)", 'not_null' => 'true'),
-        'Description' => array('type' => "varchar(250)", 'not_null' => 'false')
-    );
-    
-    public $_uniqueConstraints = array();
-    
-    public $_indexes = array('id');
-    
-    public $id;
-    
-    public $Name;
-    
-    public $Description;
-}
+X.actionLoaded(function(event, fn, params)
+{});
