@@ -194,8 +194,16 @@ X.FormsManager = Object.xo_create({
      * message: The confirmation message. When NULL the value attribute of the button will be used.
      * file: ???
      */
-    sendForm: function(options) {
-
+    sendForm: function(options)
+    {
+    	// Call a pre_send_form function if it is defined
+    	try {
+	    	if (pre_send_form() === false) {
+	    		return false;
+	    	}
+    	} catch (e) {
+    		// console.log(e.message);
+		}	
         options = $.extend({
             button: null,
             confirm: true,

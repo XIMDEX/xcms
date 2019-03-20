@@ -1,3 +1,4 @@
+
 /**
  *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -25,11 +26,26 @@
 
 X.actionLoaded(function(event, fn, params)
 {
-	this.showError = function(error)
+	checkFields = function()
+	{
+		$(".not_empty").each(function() {
+			if ($(this).attr('value').trim() == '') {
+				showError(_('At least one of the obligatory fields is not filled'));
+				return false;
+			}
+		});
+	}
+	
+	pre_send_form = function()
+	{
+		checkFields();
+	}
+	
+	showError = function(error)
     {
     	var message = $("#metadatanode_error_message");
     	message.html("<p>" + error + "</p>");
     	message.show();
-    	message.delay(8000).hide(0);
+    	message.delay(5000).hide(0);
     }
 });

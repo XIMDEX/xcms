@@ -55,7 +55,7 @@
 	            </accordion>
 	            <div class="small-12 columns">
 	                <fieldset class="buttons-form">
-	                    {button label="Save metadata" class='validate btn main_action'}
+	                    {button label="Save metadata" class="validate btn main_action" id="save_metadata"}
 	                </fieldset>
 	            </div>
 	        </fieldset>
