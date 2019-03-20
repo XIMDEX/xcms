@@ -26,6 +26,7 @@
 <form method="post" id="m_form" name="m_form" class="validate_ajax" action="{$action_url}" ng-init="status=[]">
     <input type="hidden" name='nodeid' value="{$nodeid}"/>
     {include file = "actions/components/title_Description.tpl"}
+    <div class="message-error message" id="metadatanode_error_message" style="display: none;"></div>
     <div ng-cloak class="action_content">
         {if count($info) > 0}
 	        <fieldset>

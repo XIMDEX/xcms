@@ -53,6 +53,7 @@ class Action_metadata extends ActionAbstract
             );
             $this->sendJSON($values);
         }
+        $this->addJs('/actions/metadata/resources/js/index.js');
         $this->addJs('/actions/modifyrole/js/modifyrole.js');
         $this->addCss('/actions/modifyrole/css/modifyrole.css');
         $this->render($values, 'index.tpl', 'default-3.0.tpl');

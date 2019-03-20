@@ -4,7 +4,6 @@ rm ./conf/install-modules.php
 
 # rm ./logs/*.log
 
-# rm -rf ./data/cache/pipelines/*
 rm -rf ./data/cache/transitions/*
 rm -rf ./data/files/*
 rm -rf ./data/nodes/*

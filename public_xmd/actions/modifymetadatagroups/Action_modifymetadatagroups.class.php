@@ -41,7 +41,9 @@ class Action_modifymetadatagroups extends ActionAbstract
         $this->addJs('/actions/modifyrole/js/modifyrole.js');
         $this->addCss('/actions/modifyrole/css/modifyrole.css');
         $this->addCss('/actions/modifymetadatagroups/resources/css/styles.css');
-        $values = array('name' => $node->get('Name'),
+        $values = array
+        (
+            'name' => $node->get('Name'),
             'idnode' => $node->getID(),
             'metadata' => json_encode($metadataList),
             'data' => json_encode($data),
@@ -54,23 +56,52 @@ class Action_modifymetadatagroups extends ActionAbstract
     public function add()
     {
         $data = json_decode(file_get_contents('php://input'), true);
-        $metadata = $data['metadata'] ?? null;
-        $scheme = $data['scheme'] ?? null;
-        $group = $data['group'] ?? null;
-        if (! $metadata or ! $scheme or ! $group) {
-            $values = array('result' => 'notok', 'error' => _('Metadata, scheme and group are necesary'));
+        $metadataId = $data['metadata'] ?? null;
+        $schemeId = $data['scheme'] ?? null;
+        $groupId = $data['group'] ?? null;
+        if (! $metadataId or ! $schemeId or ! $groupId) {
+            $values = array
+            (
+                'result' => 'notok', 
+                'error' => _('Metadata, scheme and group are necesary')
+            );
+            $this->sendJSON($values);
+        }
+        $metadata = new Metadata($metadataId);
+        if (! $metadata->get('idMetadata')) {
+            $values = array
+            (
+                'result' => 'notok', 
+                'error' => _('Metadata selected does not exists')
+            );
             $this->sendJSON($values);
         }
         $required = (bool) ($data['required'] ?? false);
         $readonly = (bool) ($data['readonly'] ?? false);
         $enabled = (bool) ($data['enabled'] ?? false);
-        try {
-            $id = Metadata::relMetadataAndGroup($metadata, $group, $required, $readonly, $enabled);
-        } catch (Exception $e) {
-            $values = array('result' => 'notok', 'error' => $e->getMessage());
+        if (! $metadata->get('defaultValue') and $required and $readonly) {
+            $values = array
+            (
+                'result' => 'notok', 
+                'error' => _('A metadata without default value is not valid for required and read only properties')
+            );
             $this->sendJSON($values);
         }
-        $values = array('result' => 'ok', 'id' => $id);
+        try {
+            $id = Metadata::relMetadataAndGroup($metadataId, $groupId, $required, $readonly, $enabled);
+        } catch (Exception $e) {
+            $values = array
+            (
+                'result' => 'notok', 
+                'error' => $e->getMessage()
+            );
+            $this->sendJSON($values);
+        }
+        $values = array
+        (
+            'result' => 'ok', 
+            'id' => $id
+        );
         $this->sendJSON($values);
     }
 
@@ -109,7 +140,11 @@ class Action_modifymetadatagroups extends ActionAbstract
                                 $updated++;
                             }
                         } catch (Exception $e) {
-                            $values = array('result' => 'notok', 'error' => $e->getMessage());
+                            $values = array
+                            (
+                                'result' => 'notok', 
+                                'error' => $e->getMessage()
+                            );
                             $this->sendJSON($values);
                         }
                     }
@@ -122,7 +157,11 @@ class Action_modifymetadatagroups extends ActionAbstract
         if (! $updated and ! $deleted) {
             $messages[] = _('No changes in metadata have been made');
         }
-        $values = array('result' => 'ok', 'messages' => $messages);
+        $values = array
+        (
+            'result' => 'ok', 
+            'messages' => $messages
+        );
         $this->sendJSON($values);
     }
 }
