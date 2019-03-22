@@ -891,15 +891,15 @@ class Action_browser3 extends ActionAbstract
     {
         $idUser = \Ximdex\Runtime\Session::get('userID');
         $nodes = $nodes !== null ? $nodes : $this->request->getParam('nodes');
-        if (!is_array($nodes)) {
+        if (! is_array($nodes)) {
             $nodes = array($nodes);
         }
-        $actions=[6000];
+        $actions = [Action::NODE_INFORMATION];
         $actions = array_merge($actions, $this->getActionsOnNodeList($idUser, $nodes));
         
         // Users can modify their account
-        if (is_array($nodes) && count($nodes) == 1 && $nodes[0] == $idUser && !in_array(6002, $actions)) {
-            $actions[] = 6002;
+        if (is_array($nodes) && count($nodes) == 1 && $nodes[0] == $idUser && ! in_array(Action::MODIFY_USER, $actions)) {
+            $actions[] = Action::MODIFY_USER;
         }
         return $actions;
     }

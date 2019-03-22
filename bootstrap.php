@@ -124,7 +124,7 @@ foreach ($matches[1] as $key => $value) {
 
 // From MVC
 if (! defined('RENDERER_ROOT_PATH')) {
-    define('RENDERER_ROOT_PATH', XIMDEX_ROOT_PATH . '/inc/mvc/renderers');
+    define('RENDERER_ROOT_PATH', XIMDEX_ROOT_PATH . '/src/MVC/Render');
 }
 if (! defined('SMARTY_TMP_PATH')) {
     define('SMARTY_TMP_PATH', XIMDEX_ROOT_PATH . App::getValue('TempRoot'));
@@ -146,7 +146,6 @@ if (file_exists(XIMDEX_ROOT_PATH . $modulesFile)) {
 
 // special objects (pseudo-DI)
 class_alias('Ximdex\Utils\Messages', 'Messages');
-App::setValue('class::definition::DB', '/inc/db/DB.class.php');
 
 // Extensions setup
 include_once XIMDEX_ROOT_PATH . '/conf/extensions.conf.php';

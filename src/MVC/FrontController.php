@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -40,9 +40,9 @@ class FrontController extends IController
     /**
      * Realiza las tareas comunes a todas las acciones
      */
-    function dispatch()
+    public function dispatch()
     {
-        $frontController = $this->_selectFrontControllerType();
+        $frontController = $this->selectFrontControllerType();
         if (is_null($frontController)) {
             $this->_setError("Error: Tipo de entrada no reconocido", "FrontController");
         } else {
@@ -69,23 +69,22 @@ class FrontController extends IController
      * 
      * @return FrontControllerCLI|FrontControllerHTTP
      */
-    function _selectFrontControllerType()
+    private function selectFrontControllerType()
     {
         $sapi_type = php_sapi_name();
         if ($sapi_type == "cli") {
             $this->request->setParam("enviroment", "cli");
             return new FrontControllerCLI ();
-        } else {
-            $this->request->setParam("enviroment", "http");
-            return new FrontControllerHTTP();
         }
+        $this->request->setParam("enviroment", "http");
+        return new FrontControllerHTTP();
     }
 
     /**
      * Para no romper todas las acciones se establece el parametro nodeid
      * solo si el array nodes es de un elemento.
      */
-    function normalizeNodesParam()
+    public function normalizeNodesParam()
     {
         $nodes = $this->request->getParam('nodes');
         if (is_array($nodes) and count($nodes) == 1) {
@@ -101,16 +100,16 @@ class FrontController extends IController
      * @return boolean True if action is allowed
      * @since Ximdex 3.6
      */
-    protected function isAllowedAction($idNode, $idAction)
+    protected function isAllowedAction(int $idNode = null, int $idAction = null)
     {
-        if (!$idNode) {
+        if (! $idNode) {
             return true;
         }
         $idUser = \Ximdex\Runtime\Session::get("userID");
-        if (!$idUser) {
+        if (! $idUser) {
             return false;
         }
-        if ($idNode == $idUser && $idAction == 6002) {
+        if ($idNode == $idUser && $idAction == \Ximdex\Models\Action::MODIFY_USER) {
             return true;
         }
         $user = new User($idUser);

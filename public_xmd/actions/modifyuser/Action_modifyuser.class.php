@@ -32,6 +32,7 @@ use Ximdex\Models\User;
 use Ximdex\Models\XimLocale;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Models\Node;
+use Ximdex\Models\Action;
 
 class Action_modifyuser extends ActionAbstract
 {    
@@ -45,14 +46,15 @@ class Action_modifyuser extends ActionAbstract
 		$folder = new Node($idNode);
         $idRegisteredUser = \Ximdex\Runtime\Session::get('userID');
         $registeredUser = new User($idRegisteredUser);
-        $canModifyUserGroup = $registeredUser->isAllowedAction($idNode, 6004);
+        $canModifyUserGroup = $registeredUser->isAllowedAction(Group::ID_GENERAL, Action::MODIFY_GROUP_USERS);
 		$locale = new XimLocale();
 		$locales = $locale->GetEnabledLocales();
         $allRole = new Role();
         $roles = $allRole->find('IdRole,Name');
         $role = new RelUsersGroupsOrm();
-        $roleGeneral = $role->find('IdRole','IdUser=%s',array($idNode),MONO);
-		$values = array(
+        $roleGeneral = $role->find('IdRole','IdUser = %s', array($idNode), MONO);
+		$values = array
+		(
 			'go_method' => 'modifyuser',
 			'login' => $user->get('Login'),
 			'name' => $user->get('Name'),
@@ -63,9 +65,9 @@ class Action_modifyuser extends ActionAbstract
 			'locales' => $locales,
 			'messages' => $this->messages->messages,
 		    'nodeTypeID' => $folder->nodeType->getID(),
-		    'node_Type' => $folder->nodeType->GetName(),
+		    'node_Type' => $folder->nodeType->getName(),
             'canModifyUserGroup' => $canModifyUserGroup
-            );
+		);
 		$this->render($values, null, 'default-3.0.tpl');
     }
 
@@ -75,17 +77,26 @@ class Action_modifyuser extends ActionAbstract
     	$name = trim($this->request->getParam('name'));
     	$email = trim($this->request->getParam('email'));
     	$password = trim($this->request->getParam('password_'));
+    	$password_repeated = trim($this->request->getParam('password_repeated'));
+    	if ($password != $password_repeated) {
+    	    $this->messages->add(_('Password values are not equals'), MSG_TYPE_ERROR);
+    	    $this->sendJSON(['messages' => $this->messages->messages]);
+    	}
     	$locale = trim($this->request->getParam('locale'));
         $general_role = $this->request->getParam('generalrole');
+        if (! $general_role) {
+            $this->messages->add(_('User role in general group is necesary'), MSG_TYPE_ERROR);
+            $this->sendJSON(['messages' => $this->messages->messages]);
+        }
         $idRegisteredUser = \Ximdex\Runtime\Session::get('userID');
         $registeredUser = new User($idRegisteredUser);
-        $canModifyUserGroup = $registeredUser->isAllowedAction($idNode, 6004);
+        $canModifyUserGroup = $registeredUser->isAllowedAction(Group::ID_GENERAL, Action::MODIFY_GROUP_USERS);
         $group = new Group();
-        $group->SetID($group->GetGeneralGroup());
-        $group->GetUserList();
-        $roleOnNode = $group->GetRoleOnNode($idNode);
+        $group->setID($group->getGeneralGroup());
+        $group->getUserList();
+        $roleOnNode = $group->getRoleOnNode($idNode);
         if ($canModifyUserGroup) {
-            $group->ChangeUserRole($idNode,$general_role);
+            $group->changeUserRole($idNode, $general_role);
         } elseif ($roleOnNode != $general_role) {
             $this->messages->add(_('You don\'t have enough permissions to modify the user role'), MSG_TYPE_WARNING);
         }
@@ -93,7 +104,7 @@ class Action_modifyuser extends ActionAbstract
     	$user->set('Name', $name);
     	$user->set('Email', $email);
 		$user->set('Locale', $locale);
-    	if (!empty($password)) {
+    	if (! empty($password)) {
     		$user->set('Pass', $password);
     	}
     	if ($user->update() !== false) {

@@ -72,7 +72,7 @@ class Action_composer extends ActionAbstract
                 OR
                 (
                     select count(*) from RelUsersGroups rug inner join RelRolesPermissions rrp on rug.idrole = rrp.idrole
-                    where rug.iduser = %d and rug.IdGroup = 101 and rrp.IdPermission = 1001
+                    where rug.iduser = %d and rug.IdGroup = ' . Group::ID_GENERAL .  ' and rrp.IdPermission = 1001
                 ) > 0
                 OR N.IdNode in 
                 (
@@ -189,7 +189,7 @@ class Action_composer extends ActionAbstract
             NOT(NT.CanAttachGroups)
             or
             N.IdNode in (select rgn.idnode from RelUsersGroups rug inner join RelGroupsNodes rgn on
-            rgn.IdGroup = rug.IdGroup where rug.iduser = %d and rug.IdGroup != 101
+            rgn.IdGroup = rug.IdGroup where rug.iduser = %d and rug.IdGroup != ' . Group::ID_GENERAL . '
             and rug.idrole in (select idrole from RelRolesPermissions where IdPermission = 1001))
             ) ORDER BY NT.System DESC, N.Name ASC';
         $sql = sprintf($sql, $idNodetype, $idNode, $idNodetype, $userID);
@@ -354,7 +354,7 @@ class Action_composer extends ActionAbstract
             NOT(nt1.CanAttachGroups)
             or
             (select count(*) from RelUsersGroups rug inner join RelRolesPermissions rrp on rug.idrole = rrp.idrole
-            where rug.iduser = %d and rug.IdGroup = 101
+            where rug.iduser = %d and rug.IdGroup = ' . Group::ID_GENERAL . '
             and rrp.IdPermission = 1001) > 0
             or
             nodes.IdNode in (select rgn.idnode from RelUsersGroups rug inner join RelGroupsNodes rgn on

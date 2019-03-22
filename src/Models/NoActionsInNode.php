@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -29,18 +29,25 @@ namespace Ximdex\Models;
 
 use Ximdex\Data\GenericData;
 
-class NoActionsInNode extends GenericData {
-
+class NoActionsInNode extends GenericData
+{
     public $_idField = 'idNamespace';
+    
     public $_table = 'NoActionsInNode';
-    public $_metaData = array(
+    
+    public $_metaData = array
+    (
         'IdNode' => array('type' => "int(11)", 'not_null' => 'true'),
         'IdAction' => array('type' => "varchar(255)", 'not_null' => 'true')
     );
-    var $_uniqueConstraints = array(
+    
+    var $_uniqueConstraints = array
+    (
         'uniq' => array('IdNode', 'IdAction')
     );
+    
     public $IdNode;
+    
     public $IdAction;
 
     /**
@@ -51,15 +58,13 @@ class NoActionsInNode extends GenericData {
      * @return boolean true if exists row in NoActionsInNode table for the params values.
      * @since Ximdex 3.6
      */
-    public function isActionForbiddenForNode($idNode, $idAction)
+    public function isActionForbiddenForNode(int $idNode, int $idAction)
     {
         $noAllowedActions = $this->getForbiddenActions($idNode);    
-        if (!$noAllowedActions || !is_array($noAllowedActions))
-        {
+        if (! $noAllowedActions || ! is_array($noAllowedActions)) {
             return false;
         }
-        if (!in_array($idAction, $noAllowedActions))
-        {
+        if (! in_array($idAction, $noAllowedActions)) {
             return false;
         }
         return true;
@@ -72,9 +77,9 @@ class NoActionsInNode extends GenericData {
      * @return array idActions Array
      * @since Ximdex 3.6
      */
-    public function getForbiddenActions($idNode)
+    public function getForbiddenActions(int $idNode)
     {
-        $arrayForbiddenActions = $this->find("IdAction","IdNode=%s",array($idNode),MONO);
-        return $arrayForbiddenActions? $arrayForbiddenActions: array();
+        $arrayForbiddenActions = $this->find("IdAction", "IdNode = %s", array($idNode), MONO);
+        return $arrayForbiddenActions ? $arrayForbiddenActions: array();
     }
 }

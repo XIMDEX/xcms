@@ -36,7 +36,7 @@ class UserNode extends Root
      * {@inheritDoc}
      * @see \Ximdex\NodeTypes\Root::createNode()
      */
-	public function createNode(string $login = null, int $parentID = null, int $nodeTypeID = null, int $stateID = null, int $realName = null
+    public function createNode(string $login = null, int $parentID = null, int $nodeTypeID = null, int $stateID = null, string $realName = null
 	    , string $pass = null, string $email = null, string $locale = null, string $generalRole = null)
 	{
 		$user = new User();

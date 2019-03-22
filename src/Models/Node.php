@@ -62,6 +62,12 @@ if (! defined('COUNT')) {
  */
 class Node extends NodesOrm
 {
+    const ID_XIMDEX = 1;
+    
+    const ID_CONTROL_CENTER = 2;
+    
+    const ID_PROJECTS = 10000;
+    
     /**
      * current node ID
      * 
