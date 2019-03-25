@@ -42,6 +42,7 @@ class XeditAction extends Action
 {
     const PATTERN_PATHTO = "/[[:word:]]+=[\"']@@@RMximdex\.pathto\(([,-_#%=\.\w\s]+)\)@@@[\"']/";
     const PATTERN_XE_LINK = "/<([a-zA-Z]+)([^>]*?(?=xe_link))xe_link\=[\"']([^\"]*)[\"']([^>]*)>/";
+    const PATTERN_DATE = "/@@@EMXimdex\.date\(([^,\)]*),([^\)]*)\)@@@/";
     const PREFIX = 'xedit';
     const CONTENT_DOCUMENT = 'content';
     const ROUTE_GET = '\d+/get';
@@ -97,19 +98,20 @@ class XeditAction extends Action
         $name = '';
         $nodes = HTMLDocumentNode::getNodesHTMLDocument($nodeId);
         $metadata = [];
-        
+
         if ($nodes === false) {
             $w->setMessage('Document not found')->setStatus(1);
         } else {
             // Transform data to Xedit editor
+            $now = time();
             foreach ($nodes as $key => &$node) {
                 if (isset($node['id'])) {
                     $node['editable'] = strcmp($node['type'], HTMLDocumentNode::CONTENT_DOCUMENT) == 0 ? true : false;
                     $name = strcmp($node['type'], HTMLDocumentNode::CONTENT_DOCUMENT) == 0 ? $node['title'] : $name;
-                    $node['content'] = static::transformContentToXedit($node['content']);
+                    $node['content'] = static::transformContentToXedit($node['content'], $now);
                     $schemas = $node['schema'];
                     foreach ($schemas as $_key => $value) {
-                        $schemas[$_key]['view'] = static::transformContentToXedit($value['view']);
+                        $schemas[$_key]['view'] = static::transformContentToXedit($value['view'], $now);
                     }
                     if (strcmp($node['type'], HTMLDocumentNode::CONTENT_DOCUMENT) == 0) {
                         $metadata = static::getMetadata($nodeId);
@@ -274,7 +276,7 @@ class XeditAction extends Action
                 'IsHidden' => false]);
             $result = static::buildCompleteTree($children, $type);
             $count = count($result) - 1;
-            
+
             if ($level !== null && $count > $level) {
                 $result["l{$level}"]['resources_count'] = count(reset($children));
                 $result = array_intersect_key($result, array_flip(["l{$level}"]));
@@ -291,12 +293,19 @@ class XeditAction extends Action
      * @param $content
      * @return string
      */
-    public static function transformContentToXedit($content)
+    public static function transformContentToXedit($content, $now)
     {
         $content = preg_replace_callback(static::PATTERN_PATHTO, array(
             XeditAction::class,
             'transformPathtoToXeLink'
         ), $content);
+
+        $content = preg_replace_callback(static::PATTERN_DATE, array(
+            XeditAction::class,
+            'transformDate'
+        ), $content);
+
+
         return $content;
     }
 
@@ -312,6 +321,26 @@ class XeditAction extends Action
         ], $content);
         return $content;
     }
+
+    /**
+     * @param $matches
+     * @return string
+     */
+    private static function transformDate($matches)
+    {
+        $now = time();
+        if (ctype_digit($matches[1])) {
+            $now = $matches[1];
+        }
+        // Temporal fix
+        $loc = setlocale(LC_ALL, 0);
+        setlocale(LC_ALL, 'es_ES.UTF-8');
+        $date = strftime($matches[2], $now);
+        setlocale(LC_ALL, $loc);
+
+        return $date;
+    }
+
 
     /**
      * @param $matches
@@ -353,14 +382,14 @@ class XeditAction extends Action
      * @param int $nodeId
      * @return array
      */
-    public static function getMetadata(int $nodeId) : array
+    public static function getMetadata(int $nodeId): array
     {
         $node = new StructuredDocument($nodeId);
         $metadata = static::prepareMetadata($node->getMetadata());
         return $metadata;
     }
 
-    private static function prepareMetadata(array $metadata) : array
+    private static function prepareMetadata(array $metadata): array
     {
         foreach ($metadata as $key => $meta) {
             if (key_exists('groups', $meta) || key_exists('metadata', $meta)) {
@@ -372,13 +401,13 @@ class XeditAction extends Action
                 continue;
             }
             if (in_array($meta['type'], Metadata::META_FILES)) {
-                $value = trim(static::transformContentToXedit("src=\"{$meta['value']}\""));
+                $value = trim(static::transformContentToXedit("src=\"{$meta['value']}\"", time()));
                 $metadata[$key]['value'] = str_replace('"', '', preg_replace('/((xe_link|src)=)/m', '', $value));
             }
         }
         return $metadata;
     }
-    
+
     /**
      * Check if the nodes have associated actions
      *
@@ -427,7 +456,7 @@ class XeditAction extends Action
     private static function buildBranch($tree, $processedNodes, $nodeId, $level, $types)
     {
         $node = new Node($nodeId);
-        
+
         // Create node in tree
         $sheet = static::createSheet(
             $node->GetNodeName(),
@@ -451,7 +480,7 @@ class XeditAction extends Action
 
         $processedNodes[] = $nodeId;
         $idParent = $node->GetParent();
-        
+
         if ($level > 0 && $idParent && !in_array((int)$idParent, $processedNodes)) {
             list($tree, $processedNodes) = static::buildBranch($tree, $processedNodes, $idParent, $level - 1, $types);
         }
@@ -461,7 +490,7 @@ class XeditAction extends Action
 
     private static function createSheet($name, $idNodeType, $isFolder, $isVirtualFolder, $types)
     {
-        if (! $types || in_array($idNodeType, array_values($types)) || $isFolder || $isVirtualFolder) {
+        if (!$types || in_array($idNodeType, array_values($types)) || $isFolder || $isVirtualFolder) {
             $ele = ($isFolder || $isVirtualFolder) &&
             !in_array($idNodeType, [NodeTypeConstants::XML_CONTAINER, NodeTypeConstants::HTML_CONTAINER])
                 ? 'folder' : 'item';
