@@ -46,6 +46,8 @@ class Metadata extends GenericData
     
     const TYPE_DATE = 'date';
 
+    const TYPE_IMAGE = 'image';
+
     public $_idField = 'idMetadata';
     
     public $_table = 'Metadata';

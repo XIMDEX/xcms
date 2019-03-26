@@ -514,22 +514,12 @@ class HTMLDocumentNode extends AbstractStructuredDocument
             }
             if ($meta['type'] == Metadata::TYPE_DATE) {
                 $meta['value'] = "{$meta['value']}T00:00:00Z";
+            } elseif ($meta['type'] == Metadata::TYPE_IMAGE){
+                $meta['value'] = "@@@RMximdex.pathto({$meta['value']})@@@";
             }
             $result[$meta['name']] = $meta['value'];
         }
         return $result;
-    }
-
-    private static function getCleanName(string $nodeName)
-    {
-        if (App::getValue('PublishPathFormat') == App::PREFIX) {
-            $parts = explode('-', $nodeName);
-            if (count($parts) > 1) {
-                unset($parts[count($parts) - 1]);
-                $nodeName = implode('-', $parts);
-            }
-        }
-        return $nodeName;
     }
 
     private static function headTemplate(array $css = [], array $js = []): string
