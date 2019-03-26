@@ -61,20 +61,24 @@ class Action_rendernode extends ActionAbstract
             $expression = $this->request->getParam('expresion');
             Logger::info('Call to rendernode from expresion: ' . $expression);
             
+            // Some times a id from parent node will be necesary
+            $id = $this->request->getParam('id');
+            
             // Generate the node ID using pathTo parser
             $parserPathTo = new ParsingPathTo();
-            if (! $parserPathTo->parsePathTo($expression)) {
+            if (! $parserPathTo->parsePathTo($expression, $id)) {
                 $this->messages->mergeMessages($parserPathTo->messages());
             }
             if ($parserPathTo->getNode() === null) {
                 
                 // Change the logs output to default one
+                Logger::warning('cannot resolve the pathTo macro with expression: ' . $expression);
                 Logger::setActiveLog();
                 return true;
             }
             $node = $parserPathTo->getNode();
         }
-        if ($node->nodeType->GetIsStructuredDocument()) {
+        if ($node->nodeType->getIsStructuredDocument()) {
             
             // Receives request params for structured documents
             $idChannel = $this->request->getParam('channelid');

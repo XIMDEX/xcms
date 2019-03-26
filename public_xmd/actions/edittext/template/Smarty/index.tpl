@@ -1,5 +1,5 @@
 {**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -23,26 +23,20 @@
  *  @version $Revision$
  *}
 
-<form id="et_form" class="text-editor-form" enctype="multipart/form-data" method="post" action="{$action_url}">
-		{include file="actions/components/title_Description.tpl"}
-		<fieldset class="buttons-form">
-            {button label="Save" type="submit" class="validate btn main_action"}{*message="{t}Are you sure you want to save the changes?{/t}"*}
-		</fieldset>
-	
- <div class="action_content full text-editor">
-
- 	<fieldset class="editor" id="fieldset_{$id_editor}">
-
- 		<input type="hidden" name="nodeid" value="{$id_node}">
- 		<input type="hidden" id="publicar" name="publicar" value="0">
- 		<input type="hidden" name="node_name" value="{$node_name}">
- 		<input type="hidden" class="node_ext" name="node_ext" value="{$ext}">
-        <input type="hidden" class="codemirror_url" name="codemirror_url" value="{$codemirror_url}">
-
- 		<textarea class="normal editor_textarea"  name="editor" class="text_editor"  id="editor_{$id_editor}">{$content}</textarea>
- 	</fieldset>
- </div>
-
+<form id="et_form" class="text-editor-form" method="post" action="{$action_url}">
+	{include file="actions/components/title_Description.tpl"}
+	<fieldset class="buttons-form" style="height: 35pt;">
+        {button label="Save" type="submit" class="validate btn main_action"}
+        {* message="{t}Are you sure you want to save the changes?{/t}" *}
+	</fieldset>
+    <div class="action_content full text-editor">
+        <fieldset class="editor" id="fieldset_{$id_editor}">
+	 		<input type="hidden" name="nodeid" value="{$id_node}">
+	 		<input type="hidden" id="publicar" name="publicar" value="0">
+	 		<input type="hidden" name="node_name" value="{$node_name}">
+	 		<input type="hidden" class="node_ext" name="node_ext" value="{$ext}">
+	        <input type="hidden" class="codemirror_url" name="codemirror_url" value="{$codemirror_url}">
+	        <textarea class="normal editor_textarea"  name="editor" class="text_editor"  id="editor_{$id_editor}">{$content}</textarea>
+ 	    </fieldset>
+    </div>
 </form>
-
-

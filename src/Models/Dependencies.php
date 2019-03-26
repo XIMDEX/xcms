@@ -173,10 +173,10 @@ class Dependencies extends DependenciesOrm
     /**
      * Delete all dependencies for a master node and an given type
      * 
-     * @param $nodeID
-     * @param $type
+     * @param int $nodeID
+     * @param string $type
      */
-    public function deleteMasterNodeandType(int $nodeID, int $type)
+    public function deleteMasterNodeAndType(int $nodeID, string $type)
     {
         $type = $this->getDepTypeId($type);
 
@@ -203,7 +203,7 @@ class Dependencies extends DependenciesOrm
         $this->deleteAll("IdNodeMaster = %s and version= %s", array($nodeID, $version));
     }
 
-    public function deleteDependenciesByDependentAndType(int $nodeID, int $type)
+    public function deleteDependenciesByDependentAndType(int $nodeID, string $type)
     {
         $type = $this->getDepTypeId($type);
         $this->deleteAll("IdNodeDependent = %s and DepType= %s", array($nodeID, $type));

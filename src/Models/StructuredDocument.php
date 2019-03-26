@@ -73,15 +73,15 @@ class StructuredDocument extends StructuredDocumentsOrm
     {
         $sql = "SELECT idDoc FROM StructuredDocuments";
         $dbObj = new \Ximdex\Runtime\Db();
-        $dbObj->Query($sql);
+        $dbObj->query($sql);
         if ($dbObj->numErr != 0) {
-            $this->SetError(1);
+            $this->setError(1);
             return null;
         }
         $salida = [];
         while (! $dbObj->EOF) {
             $salida[] = $dbObj->row["idDoc"];
-            $dbObj->Next();
+            $dbObj->next();
         }
         return $salida;
     }
@@ -106,7 +106,7 @@ class StructuredDocument extends StructuredDocumentsOrm
     {
         self::__construct($docID);
         if (! $this->get('IdDoc')) {
-            $this->SetError(2);
+            $this->setError(2);
             return null;
         }
         return $this->get('IdDoc');
@@ -131,7 +131,7 @@ class StructuredDocument extends StructuredDocumentsOrm
     public function setName(string $name)
     {
         if (! $this->get('IdDoc')) {
-            $this->SetError(2);
+            $this->setError(2);
             return false;
         }
         $result = $this->set('Name', $name);
@@ -244,7 +244,7 @@ class StructuredDocument extends StructuredDocumentsOrm
     public function clearSymLink()
     {
         if (! $this->get('IdDoc')) {
-            $this->SetError(2);
+            $this->setError(2);
             return false;
         }
         $result = $this->set('TargetLink', null);
@@ -334,7 +334,7 @@ class StructuredDocument extends StructuredDocumentsOrm
         return $linkID;
     }
 
-    public function setContent(string $content, bool $commitNode = false, string $metadata = null) : bool
+    public function setContent(string $content, bool $commitNode = false, array $metadata = null) : bool
     {
         // Refrescamos la fecha de Actualizacion del nodo
         $this->setUpdateDate();
@@ -717,15 +717,15 @@ class StructuredDocument extends StructuredDocumentsOrm
         return $aux;
     }
 
-    public function GetXsltErrors()
+    public function getXsltErrors()
     {
         return $this->get('XsltErrors');
     }
 
-    public function SetXsltErrors(string $xsltErrors)
+    public function setXsltErrors(string $xsltErrors)
     {
         if (! $this->get('IdDoc')) {
-            $this->SetError(2);
+            $this->setError(2);
             return false;
         }
         $result = $this->set('XsltErrors', $xsltErrors);

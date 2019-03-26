@@ -326,8 +326,10 @@ class ServerFrame extends ServerFramesOrm
         } else {
             
             // Replaces macros
-            if ($node->nodeType->get('Name') == 'XslTemplate') {
+            if ($node->nodeType->getID() == NodeTypeConstants::XSL_TEMPLATE) {
                 $data['REPLACEMACROS'] = 'yes';
+            } elseif ($node->nodeType->getID() == NodeTypeConstants::CSS_FILE) {
+                $data['PROCESSMACROS'] = 'yes';
             }
             try {
                 $content = $transition->process('ToFinal', $data, $idVersion);

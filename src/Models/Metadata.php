@@ -107,7 +107,7 @@ class Metadata extends GenericData
     public function getMetadataSchemeAndGroupByNodeType(int $idNodeType, int $nodeId = null): array
     {
         if (! $idNodeType) {
-            throw new \Exception('No node type ID given to obtain metadata schemes');
+            throw new \Exception(_('No node type ID given to obtain metadata schemes'));
         }
         $dbObj = new \Ximdex\Runtime\Db();
         $query = sprintf('SELECT MetadataGroup.idMetadataGroup, MetadataGroup.name as groupName,
@@ -269,6 +269,13 @@ class Metadata extends GenericData
     public static function relMetadataAndGroup(int $idMetadata, int $idGroup, bool $required = false, bool $readonly = false
         , $enabled = true) : int
     {
+        $metadata = new Metadata($idMetadata);
+        if (! $metadata->get('idMetadata')) {
+                throw new \Exception(_('Metadata selected does not exists'));
+        }
+        if (! $metadata->get('defaultValue') and $required and $readonly) {
+            throw new \Exception(_('A metadata without default value is not valid for required and read only properties'));
+        }
         $query = "SELECT * FROM RelMetadataGroupMetadata WHERE idMetadataGroup = {$idGroup} AND idMetadata = {$idMetadata}";
         $dbObj = new \Ximdex\Runtime\Db();
         if ($dbObj->query($query) === false) {
@@ -285,10 +292,23 @@ class Metadata extends GenericData
         return (int) $dbObj->newID;
     }
     
-    public static function updateRelMetadataAndGroup(int $idRel, bool $required = false, bool $readonly = false
-        , $enabled = true) : int
+    public static function updateRelMetadataAndGroup(int $idRel, bool $required = false, bool $readonly = false, $enabled = true) : int
     {
+        $sql = "SELECT idMetadata AS id FROM RelMetadataGroupMetadata WHERE idRelMetadataGroupMetadata = {$idRel}";
         $dbObj = new \Ximdex\Runtime\Db();
+        if ($dbObj->query($sql) === false) {
+            throw new \Exception(_('Could not retrieve the relation between metadata and group'));
+        }
+        if (! $dbObj->getValue('id')) {
+            return 0;
+        }
+        $metadata = new Metadata((int) $dbObj->getValue('id'));
+        if (! $metadata->get('idMetadata')) {
+            throw new \Exception(_('Metadata selected does not exists'));
+        }
+        if (! $metadata->get('defaultValue') and $required and $readonly) {
+            throw new \Exception(_('A metadata without default value is not valid for required and read only properties'));
+        }
         $query = 'UPDATE RelMetadataGroupMetadata'
             . ' SET required = ' . (int) $required . ', readonly = ' . (int) $readonly . ', enabled = ' . (int) $enabled
             . " WHERE idRelMetadataGroupMetadata = {$idRel}";
@@ -303,7 +323,7 @@ class Metadata extends GenericData
         $dbObj = new \Ximdex\Runtime\Db();
         $query = "DELETE FROM RelMetadataGroupMetadata WHERE idRelMetadataGroupMetadata = {$idRel}";
         if ($dbObj->execute($query) === false) {
-            throw new \Exception('Could not delete the relation between metadata and group');
+            throw new \Exception(_('Could not delete the relation between metadata and group'));
         }
         return (int) $dbObj->numRows;
     }
@@ -361,7 +381,7 @@ class Metadata extends GenericData
         $query = 'DELETE FROM RelMetadataSchemeNodeType';
         $dbObj = new \Ximdex\Runtime\Db();
         if ($dbObj->execute($query) === false) {
-            throw new \Exception('Could not remove the relations between metadata schemes and node types');
+            throw new \Exception(_('Could not remove the relations between metadata schemes and node types'));
         }
         return (int) $dbObj->newID;
     }
@@ -371,14 +391,14 @@ class Metadata extends GenericData
         $query = "SELECT * FROM RelMetadataSchemeNodeType WHERE idMetadataScheme = {$schemeId} AND idNodeType = {$nodeTypeId}";
         $dbObj = new \Ximdex\Runtime\Db();
         if ($dbObj->query($query) === false) {
-            throw new \Exception("Error making query for the relation of metadata scheme: {$schemeId} and node type: {$nodeTypeId}");
+            throw new \Exception(_("Error making query for the relation of metadata scheme: {$schemeId} and node type: {$nodeTypeId}"));
         }
         if ($dbObj->numRows) {
             return 0;
         }
         $query = 'INSERT INTO RelMetadataSchemeNodeType (idMetadataScheme, idNodeType) VALUES (' . $schemeId . ', ' . $nodeTypeId . ')';
         if ($dbObj->execute($query) === false) {
-            throw new \Exception("Could not create the relation between metadata scheme: {$schemeId} and node type: {$nodeTypeId}");
+            throw new \Exception(_("Could not create the relation between metadata scheme: {$schemeId} and node type: {$nodeTypeId}"));
         }
         return (int) $dbObj->newID;
     }
@@ -485,7 +505,7 @@ class Metadata extends GenericData
         $query = "SELECT readonly FROM RelMetadataGroupMetadata WHERE idRelMetadataGroupMetadata = $idRel";
         $res = $dbObj->query($query);
         if ($res === false or $dbObj->EOF) {
-            throw new \Exception(_("Cannot retrieve readonly data for relation") . ": $idRel");
+            throw new \Exception(_("Cannot retrieve readonly data for relation: $idRel"));
         }
         return (bool) $dbObj->GetValue('readonly');
     }

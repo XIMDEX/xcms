@@ -32,32 +32,63 @@ use Ximdex\Utils\FsUtils;
 use Ximdex\Logger;
 use Ximdex\Models\Channel;
 use Ximdex\Models\Node;
+use Ximdex\Models\Server;
+use Ximdex\Models\Version;
+use Ximdex\Sync\NodeFrameManager;
+use Ximdex\Sync\SynchroFacade;
+use Ximdex\Parsers\ParsingPathTo;
+use Ximdex\NodeTypes\NodeTypeConstants;
 
 abstract class AbstractView implements IView
 {
+    const MACRO_PATHTO = "/@@@RMximdex\.pathto\(([,-_#%=\.\w\s]+)\)@@@/";
+    
+    const MACRO_PATHTOABS = "/@@@RMximdex\.pathtoabs\(([,-_#%=\.\w\s]+)\)@@@/";
+    
     protected $node;
+    
     protected $channel;
+    
+    protected $preview;
+    
+    protected $server;
+    
+    protected $isPreviewServer;
+    
+    protected $serverNode;
+    
+    protected $mode;
     
     public function transform(int $idVersion = null, string $content = null, array $args = null)
     {
         Logger::info('Transforming with ' . class_basename($this));
      
-        // Base node
-        if (! isset($args['NODEID']) || empty($args['NODEID'])) {
-            Logger::error('Argument nodeId not found in ViewPrepareHTML');
-            return false;
+        // Load base node
+        if (isset($args['NODEID']) and $args['NODEID']) {
+            $id = $args['NODEID'];
+        } elseif (! is_null($idVersion)) {
+            $version = new Version($idVersion);
+            if (! $version->get('IdVersion')) {
+                Logger::error('An incorrect version has been loaded (' . $idVersion . ')');
+                return false;
+            }
+            $id = $version->get('IdNode');
         }
-        $node = new Node($args['NODEID']);
-        if (! $node->GetID()) {
-            Logger::error('Node not found for ID: ' . $args['NODEID']);
-            return false;
+        if ($id) {
+            $node = new Node($id);
+            if (! $node->getID()) {
+                Logger::error('Node not found for ID: ' . $args['NODEID']);
+                return false;
+            }
+            $this->node = $node;
+        } else {
+            $this->node = null;
         }
-        $this->node = $node;
         
-        // Channel
+        // Load channel
         if (isset($args['CHANNEL']) and $args['CHANNEL']) {
             $channel = new Channel($args['CHANNEL']);
-            if (! $channel->GetID()) {
+            if (! $channel->getID()) {
                 Logger::error('Channel not found for ID: ' . $args['CHANNEL']);
                 return false;
             }
@@ -65,6 +96,35 @@ abstract class AbstractView implements IView
         } else {
             $this->channel = null;
         }
+        
+        // Load server
+        if (array_key_exists('SERVER', $args)) {
+            $this->server = new Server($args['SERVER']);
+            if (! $this->server->get('IdServer')) {
+                Logger::error('Server ' . $args['SERVER'] . ' where you want to render the node not specified');
+                return false;
+            }
+            $this->isPreviewServer = $this->server->get('Previsual');
+        }
+        if ($this->node) {
+            $this->serverNode = new Node($this->node->getServer());
+        } elseif (array_key_exists('SERVERNODE', $args)) {
+            $this->serverNode = new Node($args['SERVERNODE']);
+        }
+        
+        // Check Params
+        if (! $this->serverNode || ! is_object($this->serverNode)) {
+            Logger::error('There is no server linked to the node ' . $args['NODENAME'] . ' you want to render');
+            return false;
+        }
+        
+        if (isset($args['PREVIEW']) and $args['PREVIEW'] === true) {
+            $this->preview = true;
+        } else {
+            $this->preview = false;
+        }
+        
+        // Return given content
         return $content;
     }
     
@@ -88,13 +148,12 @@ abstract class AbstractView implements IView
         }
         if (isset($file)) {
             Logger::error('An error has happened trying to store the temporal file with content ' . $file);
-        }
-        else {
+        } else {
             Logger::error('An error has happened with content to save (previous error)');
         }
         return null;
     }
-
+    
     public static function retrieveContent(string $pointer)
     {
         return FsUtils::file_get_contents($pointer);
@@ -104,5 +163,165 @@ abstract class AbstractView implements IView
     {
         $reflect = new \ReflectionClass(static::class);
         return $reflect->getConstants();
+    }
+    
+    protected function getLinkPath(array $matches, bool $forceAbsolute = false)
+    {
+        // Get parentesis content
+        $pathToParams = $matches[1];
+        
+        // Channel
+        $channelId = ($this->channel and $this->channel->getId()) ? $this->channel->getId() : null;
+        
+        // Link target-node
+        $parserPathTo = new ParsingPathTo();
+        if (! $parserPathTo->parsePathTo($pathToParams, $this->node->getID(), null, $channelId)) {
+            if ($parserPathTo->messages()->messages) {
+                foreach ($parserPathTo->messages()->messages as $error) {
+                    Logger::warning($error['message']);
+                }
+            } else {
+                Logger::warning('Parse PathTo is not working for: ' . $pathToParams);
+            }
+            if ($this->preview) {
+                return false;
+            } else {
+                Logger::warning('Linking to 404 EmptyHrefCode');
+                return App::getValue('EmptyHrefCode');
+            }
+        }
+        if ($parserPathTo->getNode() === null) {
+            
+            // There is not a node from Ximdex (ex. an external URL)
+            return $pathToParams;
+        }
+        $targetNode = $parserPathTo->getNode();
+        $res = [];
+        $res["pathMethod"] = $parserPathTo->getPathMethod();
+        $res["channel"] = $parserPathTo->getChannel();
+        $idNode = $targetNode->GetID();
+        if (! $this->preview and $targetNode->GetNodeType() != NodeTypeConstants::LINK) {
+            $nodeFrameManager = new NodeFrameManager();
+            $nodeFrame = $nodeFrameManager->getNodeFramesInTime($idNode, null, time());
+            if (! isset($nodeFrame)) {
+                return '';
+            }
+        }
+        if ($this->node && ! $this->node->get('IdNode')) {
+            return '';
+        }
+        
+        // Target channel
+        if ($res["channel"] or $res["channel"] === null) {
+            $idTargetChannel = $res["channel"];
+        } elseif ($channelId) {
+            $idTargetChannel = $channelId;
+        } else {
+            $idTargetChannel = null;
+        }
+        $isStructuredDocument = $targetNode->nodeType->GetIsStructuredDocument();
+        if (! $this->preview and $isStructuredDocument) {
+            $targetChannelNode = new Channel($idTargetChannel);
+            $idTargetChannel = ($targetChannelNode->get('IdChannel') > 0) ? $targetChannelNode->get('IdChannel') : $channelId;
+        }
+        
+        // When external link, return the url
+        if ($targetNode->GetNodeType() == NodeTypeConstants::LINK) {
+            return $targetNode->class->GetUrl();
+        }
+        
+        // Generate the path
+        if ($this->preview) {
+            
+            // Generate URL for preview mode
+            if ($isStructuredDocument) {
+                if ($this->mode == 'dinamic') {
+                    return "javascript:parent.loadDivsPreview(" . $idNode . ")";
+                } else {
+                    $query = App::get('\Ximdex\Utils\QueryManager');
+                    $src = $query->getPage(false) . $query->buildWith(array('nodeid' => $idNode, 'token' => uniqid()));
+                    if ($parserPathTo->getAnchor()) {
+                        $src .= '#' . $parserPathTo->getAnchor();
+                    }
+                    return $src;
+                }
+            }
+            
+            // Generate the URL to the rendernode action
+            $url = App::getValue('UrlRoot') . '/?expresion=' . (($idNode) ? $idNode : $pathToParams)
+            . '&action=rendernode&token=' . uniqid();
+            return $url;
+        }
+        if ($this->isPreviewServer) {
+            if ($isStructuredDocument) {
+                $src = App::getValue('UrlRoot') . App::getValue('NodeRoot') . $targetNode->GetPublishedPath($idTargetChannel, true);
+                if ($parserPathTo->getAnchor()) {
+                    $src .= '#' . $parserPathTo->getAnchor();
+                }
+                return $src;
+            } else {
+                return $targetNode->class->getNodeURL();
+            }
+        }
+        if (App::getValue('PullMode') == 1) {
+            return App::getValue('UrlRoot') . '/src/Rest/Pull/index.php?idnode=' . $targetNode->get('IdNode')
+            . '&idchannel=' . $idTargetChannel . '&idportal=' . $this->serverNode->get('IdNode');
+        }
+        if ($targetNode->nodeType->GetIsSection()) {
+            $idTargetServer = $this->server->get('IdServer');
+        } else {
+            
+            // Get the server to publicate the node with the correspondant channel
+            $sync = new SynchroFacade();
+            $idTargetServer = $sync->getServer($targetNode->get('IdNode'), $idTargetChannel, $this->server->get('IdServer'));
+        }
+        $targetServer = new Server($idTargetServer);
+        if (! $targetServer->get('IdServer')) {
+            Logger::warning('Linking to 404 EmptyHrefCode');
+            return App::getValue('EmptyHrefCode');
+        }
+        
+        // Get the relative or absolute path
+        if ($forceAbsolute or ($targetServer->get('IdServer') != $this->server->get('IdServer'))
+            or $this->server->get('OverrideLocalPaths') or (isset($res['pathMethod']['absolute']) and $res['pathMethod']['absolute'])) {
+                $src = $this->getAbsolutePath($targetNode, $targetServer, $idTargetChannel);
+                if ($parserPathTo->getAnchor()) {
+                    $src .= '#' . $parserPathTo->getAnchor();
+                }
+                return $src;
+            }
+            $src = $this->getRelativePath($targetNode, $this->server, $idTargetChannel);
+            if ($parserPathTo->getAnchor()) {
+                $src .= '#' . $parserPathTo->getAnchor();
+            }
+        return $src;
+    }
+    
+    protected function getLinkPathAbs(array $matches)
+    {
+        return $this->getLinkPath($matches, true);
+    }
+    
+    /**
+     * Get relative path to target node
+     *
+     * @param Node $targetNode
+     * @param Server $targetSever
+     * @param int $idTargetChannel
+     * @return string
+     */
+    protected function getRelativePath(Node $targetNode, Server $targetServer = null, int $idTargetChannel = null) : string
+    {
+        if ($targetServer) {
+            $path = FsUtils::get_url_path($targetServer->get('Url'), false);
+        } else {
+            $path = '';
+        }
+        return $path . $targetNode->getPublishedPath($idTargetChannel, true);
+    }
+    
+    protected static function getAbsolutePath(Node $targetNode, Server $targetServer, int $idTargetChannel = null) : string
+    {
+        return $targetServer->get('Url') . $targetNode->getPublishedPath($idTargetChannel, true);
     }
 }

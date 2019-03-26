@@ -33,8 +33,6 @@ VALUES (NULL, '5040', 'Edit metadata', 'metadata', 'add_xml.png', 'Manage metada
 
 INSERT INTO `RelRolesActions` (IdRol, IdAction, IdState) VALUES ('201', LAST_INSERT_ID(), '7');
 
-INSERT INTO `RelRolesActions` (IdRol, IdAction, IdState) VALUES ('201', LAST_INSERT_ID(), '7');
-
 INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`, `IsBulk`) 
 VALUES (NULL, '5042', 'Edit metadata', 'metadata', 'add_xml.png', 'Manage metadata for video file', '82', NULL, '0', NULL, '0');
 
@@ -89,18 +87,21 @@ INSERT INTO `ProgrammingCommand` (`id`, `description`) VALUES ('pathToCurrent', 
 
 ALTER TABLE `ProgrammingCode` CHANGE `code` `code` TEXT CHARACTER SET utf8 COLLATE utf8_bin NOT NULL;
 
-INSERT INTO `ProgrammingCode` (`id`, `idLanguage`, `idCommand`, `code`) VALUES (NULL, 'html5', 'pathToCurrent', '@@@RMximdex.pathto(THIS,,%s)@@@');
+INSERT INTO `ProgrammingCode` (`id`, `idLanguage`, `idCommand`, `code`) VALUES (NULL, 'html5', 'pathToCurrent'
+, '@@@RMximdex.pathto(THIS,,%s)@@@');
 
 INSERT INTO `ProgrammingCode` (`id`, `idLanguage`, `idCommand`, `code`) 
-VALUES (NULL, 'php', 'pathToCurrent', '<?php\n$url = \'@@@RMximdex.pathto(THIS,,%s)@@@\';\n\necho str_replace(basename($url), \'\', $url) . xim_path;\n?>');
+VALUES (NULL, 'php', 'pathToCurrent'
+, '<?php\n$url = \'@@@RMximdex.pathto(THIS,,%s)@@@\';\necho str_replace(basename($url), \'\', $url) . xim_path;\n?>');
 
 ALTER TABLE `XimIOExportations` CHANGE `idXimIO` `idXimIO` VARCHAR(50) NOT NULL;
 
 INSERT INTO `ProgrammingCommand` (`id`, `description`) VALUES ('const', 'Constant definition');
 
 INSERT INTO `ProgrammingCode` (`id`, `idLanguage`, `idCommand`, `code`) 
-VALUES (NULL, 'php', 'const', '<?php\n$var = \'%s\';\nif (! defined($var)) {\n    define($var, \'%s\');\n?>');
+VALUES (NULL, 'php', 'const', '<?php\n$var = \'%s\';\nif (! defined($var)) { define($var, \'%s\'); }\n?>');
 
-INSERT INTO `ProgrammingCode` (`id`, `idLanguage`, `idCommand`, `code`) VALUES (NULL, 'xif', 'pathToCurrent', '@@@RMximdex.pathto(THIS,,%s)@@@');
+INSERT INTO `ProgrammingCode` (`id`, `idLanguage`, `idCommand`, `code`) 
+VALUES (NULL, 'xif', 'pathToCurrent', '@@@RMximdex.pathto(THIS,,%s)@@@');
 
 UPDATE `NodeTypes` SET `IsHidden` = '1' WHERE `NodeTypes`.`IdNodeType` = 5019;

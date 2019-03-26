@@ -50,8 +50,8 @@ class Action_managebatchs extends ActionAbstract
         // Initializing variables
         $userID = Session::get('userID');
         $user = new User();
-        $user->SetID($userID);
-        if (! $user->HasPermission('view_publication_resume')) {
+        $user->setID($userID);
+        if (! $user->hasPermission('view_publication_resume')) {
             $this->messages->add(_('You have not access to this report. Consult an administrator'), MSG_TYPE_WARNING);
             $this->render(array('messages' => $this->messages->messages), NULL, 'messages.tpl');
             return;
@@ -239,7 +239,7 @@ class Action_managebatchs extends ActionAbstract
         $node = new Node($portal->get('IdNodeGenerator'));
         
         // User name
-        if (!$portal->get('CreatedBy')) {
+        if (! $portal->get('CreatedBy')) {
             $userName = 'Unknown';
         } else {
             $user = new User($portal->get('CreatedBy'));

@@ -149,7 +149,7 @@ class ParsingPathTo
             // The macro has the node ID
             $id = $nodeValue;
             $node = new Node($id);
-            if (! $node->GetID()) {
+            if (! $node->getID()) {
                 $error = 'Cannot load the node: ' . $id . ' in order to parse pathto';
                 $this->messages->add($error, MSG_TYPE_WARNING);
                 return false;
@@ -377,7 +377,7 @@ class ParsingPathTo
         // Logger::warning('Memory usage: ' . number_format(memory_get_usage()));
         return true;
     }
-
+    
     /**
      * Return the given path without ../ and ./ and extra /
      * 

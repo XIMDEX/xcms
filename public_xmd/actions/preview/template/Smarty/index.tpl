@@ -22,7 +22,7 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  *}
-<div class="action_header">
+<div class="action_header" style="height: 45pt;">
 	<h2>{t}Document preview{/t} {$name}</h2>
 	<fieldset class="action-controls">
 		<input type="hidden" name="node_id" class="node_id" value="{$id_node}" />

@@ -1,6 +1,7 @@
 <?php
+
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -24,26 +25,22 @@
  *  @version $Revision$
  */
 
-
 use Ximdex\Logger;
 use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
 
-
-
-class XmlEditor_Enricher {
-
+class XmlEditor_Enricher
+{
 	public static $config =  "/actions/xmleditor2/conf/schemaEnricher.xml";
-
-
-	static function enrichSchema($content) {
+	
+	static function enrichSchema(string $content)
+	{
     	$enricher = App::getPath(self::$config );
-
-    	if (is_file($enricher) && !empty($content)) {
-    		//Loading the RNG piece which should be included everywhere,
-    		// we should obtain the name to include it in the RNG
+    	if (is_file($enricher) && ! empty($content)) {
+    	    
+    		// Loading the RNG piece which should be included everywhere, we should obtain the name to include it in the RNG
     		$schemaPart = self::readConfig();
-    		if ($schemaPart == NULL) {
+    		if ($schemaPart == null) {
     			Logger::error(_('Error while loading the xml enricher'));
     		}
 
@@ -55,14 +52,10 @@ class XmlEditor_Enricher {
     		$schemaDoc->formatOutput = true;
     		$schemaDoc->preserveWhiteSpace = false;
     		$schemaDoc->loadXML($content);
-
-
     		$xpath = new DOMXpath($schemaDoc);
     		$xpath->registerNamespace('xmlns', 'http://relaxng.org/ns/structure/1.0');
 			$elements = $xpath->query("//xmlns:element");
-
 			if ($elements->length > 0) {
-
 				for ($i = 0; $i < $elements->length; $i++) {
 				$rngInclusion = $schemaDoc->createElement('zeroOrMore');
 				$ref = $schemaDoc->createElement('ref');
@@ -72,61 +65,60 @@ class XmlEditor_Enricher {
 					$element->appendChild($rngInclusion);
 				}
 			}
-
-
 			$schemaPart = self::readConfig();
-    		//Importing the XML piece to the scheme as a 'define'
+			
+    		// Importing the XML piece to the scheme as a 'define'
     		$importedNode = $schemaDoc->importNode(self::readSchemaDefineElement(), true);
     		$inclusionList = $schemaDoc->getElementsByTagName('grammar');
     		if ($inclusionList->length != 1) {
     			Logger::error(_('Error while enriching the scheme, a RNG grammar label'));
     			return $content;
     		}
+    		
     		// We already have the label imported to the destiny RNG
     		$inclusionList->item(0)->appendChild($importedNode);
-
 			$content = $schemaDoc->saveXML();
     	}
-
     	return $content;
     }
 
-    public static function readConfig() {
-        $enricher = App::getPath(self::$config );
+    public static function readConfig()
+    {
+        $enricher = App::getPath(self::$config);
         if (is_file($enricher)) {
-    		//Loading the RNG piece that should be included everywhere
-    		// We should obtain its name to include it in the RNG
+            
+    		// Loading the RNG piece that should be included everywhere We should obtain its name to include it in the RNG
     		$content = FsUtils::file_get_contents($enricher);
     		$schemaPart = new DomDocument();
     		$schemaPart->loadXML($content);
-
     		return $schemaPart;
     	}
-    	return NULL;
+    	return null;
     }
 
-    public static function readSchemaDefine() {
-
+    public static function readSchemaDefine()
+    {
     	return self::readElement(self::readConfig(), 'define');
     }
 
-    public static function readSchemaDefineElement() {
-
+    public static function readSchemaDefineElement()
+    {
     	return self::readElement(self::readConfig(), 'define', true);
     }
 
-    public static function readSchemaElement() {
+    public static function readSchemaElement()
+    {
     	return self::readElement(self::readConfig(), 'element');
     }
 
-    protected static function readElement($schema, $element, $returnElement = false) {
-    	//Checking if a 'define' tag whome we need the name is contained
+    protected static function readElement(DOMDocument $schema, string $element, bool $returnElement = false)
+    {
+    	// Checking if a 'define' tag whome we need the name is contained
     	$nodeList = $schema->getElementsByTagName($element);
     	if ($nodeList->length != 1) {
     		Logger::error(_("Error while enriching the scheme, a 'define' was not found in the configuration file"));
     		return $schema;
     	}
-
     	$defineElement = $nodeList->item(0);
     	if ($returnElement) {
     		return $defineElement;
@@ -136,7 +128,5 @@ class XmlEditor_Enricher {
     	return $defineAttributeValue;
     }
 
-    protected static function readDefine($schema) {
-
-    }
+    protected static function readDefine(DOMDocument $schema) {}
 }

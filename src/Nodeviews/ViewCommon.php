@@ -44,7 +44,8 @@ use Ximdex\Utils\SimpleXMLExtended;
 class ViewCommon extends AbstractView
 {
     const DOCXIF = 'docxif';
-    private $_filePath;
+    
+    private $filePath;
 
     /**
      * {@inheritDoc}
@@ -52,35 +53,41 @@ class ViewCommon extends AbstractView
      */
     public function transform(int $idVersion = null, string $content = null, array $args = null)
     {
+        if (! $content) {
+            if (! $this->setFilePath($idVersion, $args)) {
+                return false;
+            }
+            if (! is_file($this->filePath)) {
+                Logger::error('VIEW COMMON: Se ha solicitado cargar un archivo inexistente. FilePath: ' . $this->filePath);
+                return false;
+            }
+            $content = self::retrieveContent($this->filePath);
+        }
         if (parent::transform($idVersion, $content, $args) === false) {
             return false;
         }
-        if (! $this->_setFilePath($idVersion, $args)) {
-            return false;
-        }
-        if (! is_file($this->_filePath)) {
-            Logger::error('VIEW COMMON: Se ha solicitado cargar un archivo inexistente. FilePath: ' . $this->_filePath);
-            return false;
-        }
-        if (! (isset($args['CHANNEL']) and $args['CHANNEL'] && isset($args['NODEID'])) && ! array_key_exists('REPLACEMACROS', $args)) {
-            return $content;
-        }
-        $content = self::retrieveContent($this->_filePath);
         
         // Replaces macros in content
-        $linksManager = new LinksManager();
-        $content = $linksManager->removeDotDot($content);
-        $content = $linksManager->removePathTo($content);
-
+        if (isset($args['REPLACEMACROS'])) {
+            $linksManager = new LinksManager();
+            $content = $linksManager->removeDotDot($content);
+            $content = $linksManager->removePathTo($content);
+        }
+        
+        // Process macros
+        if (isset($args['PROCESSMACROS'])) {
+            $content = preg_replace_callback(self::MACRO_PATHTO, [$this, 'getLinkPath'], $content);
+        }
+        
         // Channel
         if (isset($args['CHANNEL']) and $args['CHANNEL'] && isset($args['NODEID'])) {
             $server = new Server($args['SERVER']);
-            if (! $this->channel->GetID()) {
+            if (! $this->channel->getID()) {
                 Logger::error('Channel not found for ID: ' . $args['CHANNEL']);
                 return false;
             }
             if ($this->channel->getRenderType() && $this->channel->getRenderType() == Channel::RENDERTYPE_INDEX) {
-                if (strcmp(FsUtils::get_extension($this->node->GetNodeName()), 'pdf') == 0) {
+                if (strcmp(FsUtils::get_extension($this->node->getNodeName()), 'pdf') == 0) {
                     $content = $this->createXIF($this->node, $content, $this->channel, $server);
                 } else {
                     return false;
@@ -90,21 +97,21 @@ class ViewCommon extends AbstractView
         return $content;
     }
 
-    private function _setFilePath(int $idVersion = null, $args = array())
+    private function setFilePath(int $idVersion = null, array $args = array())
     {
         if (! is_null($idVersion)) {
             $version = new Version($idVersion);
             $file = $version->get('File');
-            $this->_filePath = XIMDEX_ROOT_PATH . App::getValue('FileRoot') . '/' . $file;
+            $this->filePath = XIMDEX_ROOT_PATH . App::getValue('FileRoot') . '/' . $file;
         } else {
             
             // Retrieves Params
             if (array_key_exists('FILEPATH', $args)) {
-                $this->_filePath = $args['FILEPATH'];
+                $this->filePath = $args['FILEPATH'];
             }
             
             // Check Params
-            if (! isset($this->_filePath) || $this->_filePath == "") {
+            if (! isset($this->filePath) || $this->filePath == "") {
                 Logger::error('VIEW COMMON: No se ha especificado la version ni el path del fichero correspondiente al nodo ' 
                     . $args['NODENAME'] . ' que quiere renderizar');
                 return false;
@@ -177,17 +184,5 @@ class ViewCommon extends AbstractView
     {
         $relSemanticTagsNodes = new RelSemanticTagsNodes();
         return $relSemanticTagsNodes->getTags($nodeId) ?? [];
-    }
-
-    /**
-     * @param $targetNode
-     * @param $targetServer
-     * @param $idTargetChannel
-     * @param bool $include
-     * @return string
-     */
-    private static function getAbsolutePath(Node $targetNode, Server $targetServer, int $idTargetChannel)
-    {
-        return $targetServer->get('Url') . $targetNode->GetPublishedPath($idTargetChannel, true);
     }
 }

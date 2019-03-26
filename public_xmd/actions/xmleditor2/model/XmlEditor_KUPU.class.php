@@ -38,9 +38,16 @@ use Ximdex\Parsers\ParsingXsl;
 use Ximdex\Runtime\App;
 use Ximdex\Runtime\DataFactory;
 use Ximdex\Utils\FsUtils;
+use Ximdex\Utils\Strings;
 use Ximdex\Logger;
 use Ximdex\Sync\SynchroFacade;
 use Ximdex\Nodeviews\ViewPreviewInServer;
+use Ximdex\XML\Base;
+use Ximdex\XML\XML;
+use Ximdex\XML\Validators\RNG;
+use Ximdex\Models\RelTemplateContainer;
+use Ximdex\Modules\Manager;
+use Ximdex\Rest\Services\Xowl\OntologyService;
 
 Ximdex\Modules\Manager::file('/actions/xmleditor2/model/XmlEditor_Abstract.class.php');
 Ximdex\Modules\Manager::file('/actions/xmleditor2/HTML2XML.class.php');
@@ -50,9 +57,11 @@ Ximdex\Modules\Manager::file('/actions/xmleditor2/model/XmlEditor_Enricher.class
 
 class XmlEditor_KUPU extends XmlEditor_Abstract
 {
-    private $domDoc = null;
-    private $node = null;
-    private $view = null;
+    private $domDoc;
+    
+    private $node;
+   
+    private $view;
 
     public function getEditorName()
     {
@@ -64,20 +73,20 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
         return $this->_base_url;
     }
 
-    public function setBaseURL($base_url)
+    public function setBaseURL(string $base_url)
     {
         $this->_base_url = $base_url;
     }
 
-    public function setEditorName($editorName)
+    public function setEditorName(string $editorName)
     {
         $this->_editorName = $editorName;
     }
 
-    public function openEditor($idnode, $view)
+    public function openEditor(int $idnode, string $view = null)
     {
         $node = new Node($idnode);
-        if (!($node->get('IdNode') > 0)) {
+        if (! $node->get('IdNode')) {
             Logger::error(_("A non-existing node cannot be obtained: ") . $node->get('IdNode'));
             return null;
         }
@@ -94,7 +103,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
             }
         }
         $availableViews = array('tree');
-        if (!$this->getXslFile($idnode, $view) || count($channelList) == 0) {
+        if (! $this->getXslFile($idnode, $view) || count($channelList) == 0) {
             $view = 'tree';
         } else {
             $availableViews[] = 'normal';
@@ -102,7 +111,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
         if ((boolean)App::getValue('PreviewInServer') && (boolean)count($channelList)) {
             $availableViews[] = 'pro';
         }
-        $nodeTypeName = $node->nodeType->GetName();
+        $nodeTypeName = $node->nodeType->getName();
         $rngEditorMode = ($nodeTypeName == 'RngVisualTemplate') ? true : false;
         $dotdotPath = null;
         if ($rngEditorMode === false) {
@@ -311,12 +320,12 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
         return $values;
     }
 
-    public function getConfig($idNode)
+    public function getConfig(int $idNode)
     {
-        if (!$this->setNode($idNode)) {
+        if (! $this->setNode($idNode)) {
             Logger::error(_("A non-existing node cannot be edited: ") . $idNode);
         }
-        $user = new \Ximdex\Models\User(\Ximdex\Runtime\Session::get('userID'));
+        $user = new User(Ximdex\Runtime\Session::get('userID'));
         $hasPermission = $user->hasPermission('expert_mode_allowed');
         $expert_mode_allowed = $hasPermission ? '1' : '0';
         $canPublicate = $this->canPublicate($idNode);
@@ -331,25 +340,25 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
         return $content;
     }
 
-    public function validateSchema($idnode, $xmldoc)
+    public function validateSchema(int $idnode, string $xmldoc)
     {
         $schema = $this->getSchemaFile($idnode);
         $xmldoc = "<?xml version='1.0' encoding='UTF-8'?>" . trim($xmldoc);
-        $rngvalidator = new \Ximdex\XML\Validators\RNG();
-        $valid = $rngvalidator->validate(\Ximdex\XML\Base::recodeSrc($schema, \Ximdex\XML\XML::UTF8), $xmldoc);
+        $rngvalidator = new RNG();
+        $valid = $rngvalidator->validate(Base::recodeSrc($schema, XML::UTF8), $xmldoc);
         $response = array('valid' => $valid, 'errors' => $rngvalidator->getErrors());
         return $response;
     }
 
-    protected function enrichSchema($schema)
+    protected function enrichSchema(string $schema)
     {
         return XmlEditor_Enricher::enrichSchema($schema);
     }
 
-    public function verifyTmpFile($idNode)
+    public function verifyTmpFile(int $idNode)
     {
         $response = array('method' => 'verifyTmpFile');
-        if (!$idUser = \Ximdex\Runtime\Session::get('userID')) {
+        if (!$idUser = Ximdex\Runtime\Session::get('userID')) {
             $response['result'] = false;
             return $response;
         }
@@ -369,15 +378,15 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
         return $response;
     }
 
-    public function removeTmpFile($idNode)
+    public function removeTmpFile(int $idNode)
     {
         $response = array('method' => 'removeTmpFile');
-        if (!$idUser = \Ximdex\Runtime\Session::get('userID')) {
+        if (!$idUser = Ximdex\Runtime\Session::get('userID')) {
             $response['result'] = false;
             return $response;
         }
         $tmpFilePath = XIMDEX_ROOT_PATH . App::getValue('TempRoot') . "/xedit_" . $idUser . "_" . $idNode;
-        if (file_exists($tmpFilePath) && !FsUtils::delete($tmpFilePath)) {
+        if (file_exists($tmpFilePath) && ! FsUtils::delete($tmpFilePath)) {
             $response['result'] = false;
         } else {
             $response['result'] = true;
@@ -385,19 +394,19 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
         return $response;
     }
 
-    public function recoverTmpFile($idNode)
+    public function recoverTmpFile(int $idNode)
     {
         $response = array('method' => 'recoverTmpFile');
-        if (!$idUser = \Ximdex\Runtime\Session::get('userID')) {
+        if (! $idUser = Ximdex\Runtime\Session::get('userID')) {
             $response['result'] = false;
             return $response;
         }
         $tmpFilePath = XIMDEX_ROOT_PATH . App::getValue('TempRoot') . "/xedit_" . $idUser . "_" . $idNode;
-        if (!$this->setNode($idNode)) {
+        if (! $this->setNode($idNode)) {
             Logger::error(_("A non-existing node cannot be saved: ") . $idNode);
             $response['result'] = false;
         } else {
-            if (!$content = FsUtils::file_get_contents($tmpFilePath)) {
+            if (! $content = FsUtils::file_get_contents($tmpFilePath)) {
                 $response['result'] = false;
             } else {
                 $this->node->SetContent($content, true);
@@ -408,13 +417,13 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
         return $response;
     }
 
-    public function saveXmlFile($idNode, $content, $autoSave = false)
+    public function saveXmlFile(int $idNode, string $content, bool $autoSave = false)
     {
         $response = array();
         $response['saved'] = false;
         $response['headers'] = array();
         $response['content'] = '';
-        if (!$this->setNode($idNode)) {
+        if (! $this->setNode($idNode)) {
             $msg = _("Document cannot be saved.");
             Logger::error(_("A non-existing node cannot be saved: ") . $idNode);
             $response['saved'] = false;
@@ -429,16 +438,16 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
 
             // NOTE: Delete docxap tags and UID attributes
             $xmlContent = $this->_normalizeXmlDocument($idNode, $content);
-            $xmlContent = \Ximdex\Utils\Strings::stripslashes($xmlContent);
+            $xmlContent = Strings::stripslashes($xmlContent);
 
             // Saving XML
             if ($autoSave === false) {
-                $this->node->SetContent(\Ximdex\Utils\Strings::stripslashes($xmlContent), true);
-                $this->node->RenderizeNode();
+                $this->node->setContent(Strings::stripslashes($xmlContent), true);
+                $this->node->renderizeNode();
             } else {
-                $idUser = \Ximdex\Runtime\Session::get('userID');
-                if (!$idUser || !FsUtils::file_put_contents(XIMDEX_ROOT_PATH . App::getValue('TempRoot') . "/xedit_" . $idUser 
-                        . "_" . $idNode, \Ximdex\Utils\Strings::stripslashes($xmlContent))) {
+                $idUser = Ximdex\Runtime\Session::get('userID');
+                if (! $idUser || !FsUtils::file_put_contents(XIMDEX_ROOT_PATH . App::getValue('TempRoot') . "/xedit_" . $idUser 
+                        . "_" . $idNode, Strings::stripslashes($xmlContent))) {
                     Logger::error(_("The content of " . $idNode . " could not be saved"));
                     return false;
                 }
@@ -450,7 +459,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
         return $response;
     }
 
-    public function publicateFile($idNode, $content)
+    public function publicateFile(int $idNode, string $content)
     {
         $response = array();
         $response['publicated'] = false;
@@ -468,9 +477,9 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
         return $response;
     }
 
-    public function getXmlFile($idNode, $view = null, $content = null)
+    public function getXmlFile(int $idNode, string $view = null, string $content = null)
     {
-        if (!$this->setNode($idNode)) {
+        if (! $this->setNode($idNode)) {
             Logger::error('A non-existing node content cannot be obtained: ' . $idNode);
             return false;
         }
@@ -489,9 +498,9 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
         $args['CHANNEL'] = $this->getDefaultChannel();
         $args['XEDIT_VIEW'] = $view;
         $args['DISABLE_CACHE'] = true;
-        if (!is_null($content)) {
+        if (! is_null($content)) {
             $content = $this->_normalizeXmlDocument($idNode, $content);
-            $content = \Ximdex\Utils\Strings::stripslashes($content);
+            $content = Strings::stripslashes($content);
         } else {
             $content = '';
         }
@@ -507,10 +516,10 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
         return $res;
     }
 
-    public function getSpellCheckingFile($idNode, $content)
+    public function getSpellCheckingFile(int $idNode, string $content)
     {
         $node = new Node($idNode);
-        if (!$langId = $node->class->getLanguage()) {
+        if (! $langId = $node->class->getLanguage()) {
             return false;
         }
         $lang = new Language($langId);
@@ -566,16 +575,16 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
         return $xml;
     }
 
-    public function getAnnotationFile($idNode, $content)
+    public function getAnnotationFile(int $idNode, string $content)
     {
-        if (\Ximdex\Modules\Manager::isEnabled('Xowl')) {
-            if (App::getValue('EnricherKey') === NULL || App::getValue('EnricherKey') == '') {
+        if (Manager::isEnabled('Xowl')) {
+            if (App::getValue('EnricherKey') === null || App::getValue('EnricherKey') == '') {
                 Logger::error(_("Xowl_token configuration value has not been defined"));
                 $resp = array(
                     "status" => "No  Xowl_token defined", 
                     "videourl" => "<center><iframe width='420' height='315' src='http://www.youtube.com/embed/xnhUzYKqJPw' frameborder='0' allowfullscreen></iframe></center>");
             } else {
-                $ontologyService = new \Ximdex\Rest\Services\Xowl\OntologyService();
+                $ontologyService = new OntologyService();
                 $resp = $ontologyService->suggest($content);
             }
         } else {
@@ -589,7 +598,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
         return $resp;
     }
 
-    public function getPreviewInServerFile($idNode, $content, $idChannel)
+    public function getPreviewInServerFile(int $idNode, string $content, int $idChannel = null)
     {
         $node = new Node($idNode);
         $dataFactory = new DataFactory($idNode);
@@ -602,15 +611,15 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
         return $content;
     }
 
-    public function getNoRenderizableElements($idNode)
+    public function getNoRenderizableElements(int $idNode)
     {
-        if (!$this->setNode($idNode)) {
+        if (! $this->setNode($idNode)) {
             return NULL;
         }
         
         // Obtaining idTemplate (RNG)
         $idcontainer = $this->node->getParent();
-        $reltemplate = new \Ximdex\Models\RelTemplateContainer();
+        $reltemplate = new RelTemplateContainer();
         $idTemplate = $reltemplate->getTemplate($idcontainer);
 
         // Obtaining RNG elements array
@@ -618,7 +627,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
         $rngElements = $parser->getElements();
 
         // Obtaining array with templates referenced from templates_include.xsl
-        $docxapId = NULL;
+        $docxapId = null;
         $depsMngr = new DepsManager();
         if ($templatesIds = $depsMngr->getBySource(DepsManager::STRDOC_TEMPLATE, $idNode)) {
             foreach ($templatesIds as $templateId) {
@@ -640,7 +649,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
             return false;
         }
         $templatesIncludePath = str_replace(App::getValue('UrlHost') . App::getValue('UrlRoot'), XIMDEX_ROOT_PATH, $templatesInclude[0]);
-        $xslParser = new ParsingXsl(NULL, $templatesIncludePath);
+        $xslParser = new ParsingXsl(null, $templatesIncludePath);
         $templatesElements = $xslParser->getIncludedElements(NULL, true, true);
             
         // Obtaining no renderizable elements
@@ -664,10 +673,10 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
         return $xml;
     }
 
-    private function setNode($idNode)
+    private function setNode(int $idNode)
     {
         $this->node = new Node($idNode);
-        if (!($this->node->get('IdNode') > 0)) {
+        if (! $this->node->get('IdNode')) {
             return false;
         }
         return true;
@@ -689,10 +698,10 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
         return $defaultChannel;
     }
 
-    private function canPublicate($idNode)
+    private function canPublicate(int $idNode)
     {
-        $user = new User(\Ximdex\Runtime\Session::get('userID'));
-        if (\Ximdex\Modules\Manager::isEnabled('wix')) {
+        $user = new User(Ximdex\Runtime\Session::get('userID'));
+        if (Manager::isEnabled('wix')) {
             return $user->HasPermissionInNode('Ximedit_publication_allowed', $idNode);
         } else {
             return false;
@@ -704,7 +713,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
         $result = array();
         
         // Load from Xowl Service
-        $namespacesArray = \Ximdex\Rest\Services\Xowl\OntologyService::getAllNamespaces();
+        $namespacesArray = OntologyService::getAllNamespaces();
         
         // For every namespace build an array. This will be a json object
         foreach ($namespacesArray as $namespace) {

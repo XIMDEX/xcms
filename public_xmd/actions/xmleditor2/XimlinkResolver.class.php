@@ -32,7 +32,7 @@ use Ximdex\NodeTypes\NodeTypeConstants;
 
 class ximlinkResolver
 {
-	public function resolveximlinkUrl($idnode, $idchannel = null)
+	public function resolveximlinkUrl(int $idnode, int $idchannel = null)
 	{
 		$node = new Link($idnode);
 		if (! $node->get('IdLink')) {
@@ -46,7 +46,8 @@ class ximlinkResolver
 		while ($desc = $it->next()) {
 			$descArray[] = $desc->get('Description');
 		}
-		$data = array(
+		$data = array
+		(
 			'idnode' => $idnode,
 			'name' => $name,
 			'url' => $url,
@@ -56,9 +57,13 @@ class ximlinkResolver
 	}
 
 	/**
-	* Get the available ximlinks from a term or idnode
-	*/
-	public function getAvailableximlinks($docid, $term)
+	 * Get the available ximlinks from a term or idnode
+	 * 
+	 * @param int $docid
+	 * @param string $term
+	 * @return array
+	 */
+	public function getAvailableximlinks(int $docid, string $term = null)
 	{
 		$node = new Node($docid);
 		if (! $node->get('IdNode')) {
@@ -89,7 +94,7 @@ class ximlinkResolver
 		return $data;
 	}
 
-	public function saveximlink($iddoc, $idnode, $idchannel, $name, $url, $text)
+	public function saveximlink(int $iddoc, int $idnode, int $idchannel, string $name, string $url, string $text)
 	{
 		$idlink = $this->nodeExistsByName($iddoc, $name);
 		if ($idlink === false) {
@@ -113,7 +118,7 @@ class ximlinkResolver
 		return array($idlink, $idchannel);
 	}
 
-	private function getProjectId($idnode)
+	private function getProjectId(int $idnode)
 	{
 		$node = new Node($idnode);
 		if (! $node->get('IdNode')) {
@@ -123,7 +128,7 @@ class ximlinkResolver
 		return $idprj;
 	}
 
-	private function nodeExistsByName($iddoc, $name)
+	private function nodeExistsByName(int $iddoc, string $name)
 	{
 		$idprj = $this->getProjectId($iddoc);
 		if ($idprj === false) {
@@ -141,7 +146,7 @@ class ximlinkResolver
 		return $idlink;
 	}
 
-	private function createNewximlink($iddoc, $name, $url, $text, $idchannel)
+	private function createNewximlink(int $iddoc, string $name, string $url, string $text, int $idchannel)
 	{
 		$idprj = $this->getProjectId($iddoc);
 		$prj = new Node($idprj);

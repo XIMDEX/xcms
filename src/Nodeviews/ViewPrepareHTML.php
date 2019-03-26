@@ -43,6 +43,10 @@ class ViewPrepareHTML extends AbstractView
      */
     public function transform(int $idVersion = null, string $content = null, array $args = null)
     {
+        if (! isset($args['NODEID']) || empty($args['NODEID'])) {
+            Logger::error('Argument nodeId not found in transform process');
+            return false;
+        }
         if (parent::transform($idVersion, $content, $args) === false) {
             return false;
         }

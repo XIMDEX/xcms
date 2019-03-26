@@ -67,26 +67,9 @@ class Action_modifymetadatagroups extends ActionAbstract
             );
             $this->sendJSON($values);
         }
-        $metadata = new Metadata($metadataId);
-        if (! $metadata->get('idMetadata')) {
-            $values = array
-            (
-                'result' => 'notok', 
-                'error' => _('Metadata selected does not exists')
-            );
-            $this->sendJSON($values);
-        }
         $required = (bool) ($data['required'] ?? false);
         $readonly = (bool) ($data['readonly'] ?? false);
         $enabled = (bool) ($data['enabled'] ?? false);
-        if (! $metadata->get('defaultValue') and $required and $readonly) {
-            $values = array
-            (
-                'result' => 'notok', 
-                'error' => _('A metadata without default value is not valid for required and read only properties')
-            );
-            $this->sendJSON($values);
-        }
         try {
             $id = Metadata::relMetadataAndGroup($metadataId, $groupId, $required, $readonly, $enabled);
         } catch (Exception $e) {

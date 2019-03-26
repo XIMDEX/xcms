@@ -636,12 +636,13 @@ class User extends UsersOrm
         $this->set('Name', $realname);
         $this->set('Email', $email);
         $this->set('Locale', $locale);
+        $this->set('NumAccess', 0);
         if (! parent::add()) {
             Logger::error('Error in User persistence for ' . $idUser);
             return null;
         }
         $group = new Group();
-        $group->SetGeneralGroup();
+        $group->setGeneralGroup();
         $group->addUserWithRole($idUser, $roleID);
         return $this->get('IdUser');
     }
@@ -931,13 +932,12 @@ class User extends UsersOrm
         }
 
         // Check groups&roles and defined actions...
-        $userRoles = $this->GetRoles();
+        $userRoles = $this->getRoles();
         if (! is_array($userRoles)) {
             return false;
         }
-        // $userRoles = array_unique($userRoles);
         $nodeType = new NodeType($nodeTypeId);
-        $actionId = $nodeType->GetConstructor();
+        $actionId = $nodeType->getConstructor();
         if (! $actionId) {
             Logger::warning(sprintf('The nodetype %d has no create action associated', $nodeTypeId));
             return false;

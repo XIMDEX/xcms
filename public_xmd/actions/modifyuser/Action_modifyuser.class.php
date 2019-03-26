@@ -93,7 +93,7 @@ class Action_modifyuser extends ActionAbstract
     	$user->set('Name', $name);
     	$user->set('Email', $email);
 		$user->set('Locale', $locale);
-    	if (!empty($password)) {
+    	if (! empty($password)) {
     		$user->set('Pass', $password);
     	}
     	if ($user->update() !== false) {

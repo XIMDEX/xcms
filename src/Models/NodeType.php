@@ -97,9 +97,9 @@ class NodeType extends NodeTypesOrm
     {
         $query = sprintf('SELECT IdAction FROM NodeConstructors WHERE IdNodeType = %d', $this->get('IdNodeType'));
         $dbObj = new \Ximdex\Runtime\Db();
-        $dbObj->Query($query);
+        $dbObj->query($query);
         if ($dbObj->numRows == 1) {
-            return $dbObj->GetValue('IdAction');
+            return $dbObj->getValue('IdAction');
         }
         return 0;
     }

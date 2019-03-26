@@ -204,7 +204,7 @@ class ParsingDependencies
         $nodeDependencies = new NodeDependencies();
         $nodeDependencies->deleteBySource($idNode);
         $dependencies = new Dependencies();
-        $dependencies->deleteMasterNodeandType($idNode, $type);
+        $dependencies->deleteMasterNodeAndType($idNode, $type);
         $depsMngr = new DepsManager();
         $depsMngr->deleteBySource(DepsManager::NODE2ASSET, $idNode);
 

@@ -113,10 +113,9 @@ class Channel extends ChannelsOrm
     {
         if ($this->get('IdChannel')) {
             return $this->get('IdChannel');
-        } else {
-            $this->SetError(2);
-            return false;
         }
+        $this->setError(2);
+        return false;
     }
 
     public function getName()

@@ -2258,19 +2258,19 @@ class Node extends NodesOrm
      * 
      * @return int|null
      */
-    public function GetPublishedDepth() : ?int
+    public function getPublishedDepth() : ?int
     {
-        if (!$this->GetID()) {
+        if (! $this->getID()) {
             return null;
         }
-        if ($this->nodeType->GetID() == NodeTypeConstants::SERVER) {
+        if ($this->nodeType->getID() == NodeTypeConstants::SERVER) {
             return 1;
         }
-        if (!$this->get('IdParent')) {
+        if (! $this->get('IdParent')) {
             return null;
         }
-        $parents = FastTraverse::getParents($this->GetID(), null, null, ['IsVirtualFolder' => false]);
-        if (!$parents) {
+        $parents = FastTraverse::getParents($this->getID(), null, null, ['IsVirtualFolder' => false]);
+        if (! $parents) {
             return null;
         }
         return count($parents) + 1;
@@ -3479,17 +3479,17 @@ class Node extends NodesOrm
         , string $version = null, string $subversion = null, string $mode = null)
     {
         // Checks node existence
-        if (! $this->GetID()) {
+        if (! $this->getID()) {
             $this->messages->add(_('It is not possible to show preview.') . _(' The node you are trying to preview does not exist.')
                 , MSG_TYPE_NOTICE);
             return false;
         }
 
         // If the node is a structured document, render the preview, else return the file content
-        if ($this->nodeType->GetIsStructuredDocument()) {
+        if ($this->nodeType->getIsStructuredDocument()) {
 
             // Checks if node is a structured document
-            $structuredDocument = new StructuredDocument($this->GetID());
+            $structuredDocument = new StructuredDocument($this->getID());
             if (! $structuredDocument->get('IdDoc')) {
                 $this->messages->add(_('It is not possible to show preview.') . _(' Provided node is not a structured document.')
                     , MSG_TYPE_NOTICE);
@@ -3498,7 +3498,7 @@ class Node extends NodesOrm
 
             // Checks content existence
             if ($content !== null) {
-                $content = $structuredDocument->GetContent($version, $subversion);
+                $content = $structuredDocument->getContent($version, $subversion);
             } elseif ($this->GetNodeType() == NodeTypeConstants::XML_DOCUMENT) {
                 $content = XmlDocumentNode::normalizeXmlDocument($content);
             }
@@ -3511,29 +3511,29 @@ class Node extends NodesOrm
             }
 
             // Populates variables and view args
-            $idSection = $this->GetSection();
-            $idProject = $this->GetProject();
+            $idSection = $this->getSection();
+            $idProject = $this->getProject();
             $idServerNode = $this->getServer();
             $documentType = $structuredDocument->getDocumentType();
             $idLanguage = $structuredDocument->getLanguage();
-            if ($this->GetNodeType() == NodeTypeConstants::XML_DOCUMENT and method_exists($this->class, 'getDocHeader')) {
+            if ($this->getNodeType() == NodeTypeConstants::XML_DOCUMENT and method_exists($this->class, 'getDocHeader')) {
                 $docXapHeader = $this->class->getDocHeader($idChannel, $idLanguage, $documentType);
             } else {
                 $docXapHeader = null;
             }
             $nodeName = $this->get('Name');
-            $depth = $this->GetPublishedDepth();
+            $depth = $this->getPublishedDepth();
 
             // Initializes variables
             $args = array();
-            $args['NODEID'] = $this->GetID();
+            $args['NODEID'] = $this->getID();
             $args['MODE'] = $mode == 'dinamic' ? 'dinamic' : 'static';
             $args['CHANNEL'] = $idChannel;
             $args['SECTION'] = $idSection;
             $args['PROJECT'] = $idProject;
             $args['SERVERNODE'] = $idServerNode;
             $args['LANGUAGE'] = $idLanguage;
-            if ($this->GetNodeType() == NodeTypeConstants::XML_DOCUMENT) {
+            if ($this->getNodeType() == NodeTypeConstants::XML_DOCUMENT) {
                 $args['DOCXAPHEADER'] = $docXapHeader;
             }
             $args['NODENAME'] = $nodeName;
@@ -3541,16 +3541,17 @@ class Node extends NodesOrm
             $args['DISABLE_CACHE'] = true;
             $args['CONTENT'] = $content;
             $args['NODETYPENAME'] = $this->nodeType->get('Name');
-            if ($this->GetID() < 10000) {
+            if ($this->getID() < 10000) {
                 $idNode = 10000;
                 $node = new Node($idNode);
                 $transformer = $node->getProperty('Transformer');
             } else {
-                $idNode = $this->GetID();
+                $idNode = $this->getID();
                 $transformer = $this->getProperty('Transformer');
             }
             $args['TRANSFORMER'] = $transformer[0];
-            if ($this->GetNodeType() == NodeTypeConstants::HTML_DOCUMENT) {
+            $args['PREVIEW'] = true;
+            if ($this->getNodeType() == NodeTypeConstants::HTML_DOCUMENT) {
                 $process = 'PrepareHTML';
             } else {
                 $process = 'FromPreFilterToDexT';
@@ -3561,11 +3562,11 @@ class Node extends NodesOrm
             } catch (\Exception $e) {
 
                 // The transformation process did not work !
-                if ($this->GetNodeType() == NodeTypeConstants::XML_DOCUMENT) {
+                if ($this->getNodeType() == NodeTypeConstants::XML_DOCUMENT) {
 
                     // If content is false, show the xslt errors instead the document preview
                     $stDoc = new StructuredDocument($idNode);
-                    $errors = $stDoc->GetXsltErrors();
+                    $errors = $stDoc->getXsltErrors();
                     if ($errors) {
                         $errors = str_replace("\n", "\n<br />\n", $errors);
                     }
@@ -3581,20 +3582,41 @@ class Node extends NodesOrm
             $viewFilterMacrosPreview = new ViewFilterMacros(true);
             $content = $viewFilterMacrosPreview->transform(null, $res, $args);
             if ($content === false) {
-                $this->messages->add('Cannot transform the document ' . $this->GetNodeName() . ' for a preview operation', MSG_TYPE_WARNING);
+                $this->messages->add('Cannot transform the document ' . $this->getNodeName() . ' for a preview operation', MSG_TYPE_WARNING);
                 return false;
             }
         } else {
 
-            // Node is not a structured document
-            $content = $this->GetContent();
+            // Node is not a structured document (common view)
+            $content = $this->getContent();
             if ($content === false) {
-                $this->messages->add('Cannot get the content from file ' . $this->GetNodeName() . ' for a preview operation', MSG_TYPE_WARNING);
+                $this->messages->add('Cannot get the content from file ' . $this->getNodeName() . ' for a preview operation', MSG_TYPE_WARNING);
+                return false;
+            }
+            
+            // Common transformation
+            $args = [];
+            $args['NODEID'] = $this->getID();
+            $args['DISABLE_CACHE'] = true;
+            $args['CONTENT'] = $content;
+            $args['NODENAME'] = $this->getNodeName();
+            $args['PREVIEW'] = true;
+            if ($this->nodeType->getID() == NodeTypeConstants::CSS_FILE) {
+                $args['PROCESSMACROS'] = 'yes';
+            }
+            $process = 'ToFinal';
+            $transition = new Transition();
+            try {
+                $content = $transition->process($process, $args);
+            } catch (\Exception $e) {
+                
+                // The transformation process did not work !
+                $this->messages->add($e->getMessage(), MSG_TYPE_WARNING);
                 return false;
             }
         }
         $headers = array();
-        if ($this->nodeType->GetIsStructuredDocument()) {
+        if ($this->nodeType->getIsStructuredDocument()) {
 
             // Get mime type for structured documents
             $mimeType = $this->getMimeType($content);
@@ -3602,7 +3624,7 @@ class Node extends NodesOrm
 
             // Response headers for non structured documents
             $mimeType = $this->getMimeType();
-            $headers['Content-Disposition'] = 'attachment; filename=' . $this->GetNodeName();
+            $headers['Content-Disposition'] = 'attachment; filename=' . $this->getNodeName();
             $headers['Content-Length'] = strlen(strval($content));
         }
 
