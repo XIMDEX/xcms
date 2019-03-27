@@ -41,13 +41,17 @@ include_once XIMDEX_ROOT_PATH . '/src/Sync/conf/synchro_conf.php';
  */
 class Pumper extends PumpersOrm
 {
-    private $maxvoidcycles = 10;
-    private $sleeptime = 2;
-    
     const NEW = 'New';
+    
     const STARTING = 'Starting';
+    
     const STARTED = 'Started';
+    
     const ENDED = 'Ended';
+    
+    private $maxvoidcycles = 10;
+    
+    private $sleeptime = 2;
 
     /**
      * Sets the value of any variable

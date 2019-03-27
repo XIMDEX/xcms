@@ -476,11 +476,12 @@ class Metadata extends GenericData
             $name = $user->get('Name');
         } else {
             $id = (int) Session::get('userID');
-            if ($id) {
-                $user = new User($id);
-                if ($user->getRealName()) {
-                    $name = $user->getRealName();
-                }
+            if (! $id) {
+                $id = User::XIMDEX_ID;
+            }
+            $user = new User($id);
+            if ($user->getRealName()) {
+                $name = $user->getRealName();
             }
         }
         return is_string($name) ? $name : null;
@@ -490,7 +491,7 @@ class Metadata extends GenericData
     {
         [$nodeId] = $params;
         $node = new Node($nodeId);
-        $nodeName = $node->get('Name');
+        $nodeName = $node->getNodeName();
         if (App::getValue('PublishPathFormat') == App::PREFIX) {
             $parts = explode('-', $nodeName);
             if (count($parts) > 1) {

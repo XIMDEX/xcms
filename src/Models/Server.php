@@ -58,7 +58,7 @@ class Server extends ServersOrm
         if (!$this->serverNode) {
             $this->setServerNode($this->get('IdServer'));
         }
-        return $this->serverNode->GetChannels($this->get('IdServer'));
+        return $this->serverNode->getChannels($this->get('IdServer'));
     }
     
     public function resetForPumping() : bool
@@ -138,33 +138,33 @@ class Server extends ServersOrm
         if (! $this->IdServer) {
             throw new \Exception('No server selected');
         }
-        $sql = 'SELECT SUM(ServerFramesTotal) AS total, SUM(IF (`State` != \'' . Batch::STOPPED . '\', ServerFramesPending, 0)) AS pending';
+        $sql = 'SELECT SUM(ServerFramesTotal) AS total';
+        $sql .= ', SUM(IF (`State` != \'' . Batch::STOPPED . '\', ServerFramesPending, 0)) AS pending';
         $sql .= ', SUM(IF (`State` != \'' . Batch::STOPPED . '\', ServerFramesActive, 0)) AS active';
-        $sql .= ', SUM(IF (`State` = \'' . Batch::STOPPED 
-            . '\', ServerFramesActive + ServerFramesPending + ServerFramesTemporalError, 0)) AS stopped';
+        $sql .= ', SUM(IF (`State` = \'' . Batch::STOPPED . '\', ServerFramesActive + ServerFramesPending, 0)) AS stopped';
         $sql .= ', SUM(ServerFramesSuccess) AS success, SUM(ServerFramesFatalError) AS fatal, SUM(ServerFramesTemporalError) AS soft';
         $sql .= ' FROM Batchs WHERE ServerId = ' . $this->IdServer;
         if ($portalId) {
             $sql .= ' AND IdPortalFrame = ' . $portalId;
         }
-        $sql .= ' GROUP BY ServerId';
+        // $sql .= ' GROUP BY ServerId';
         $db = new Db();
-        if ($db->Query($sql) === false) {
+        if ($db->query($sql) === false) {
             throw new \Exception('SQL error');
         }
         $stats = [];
         if (! $db->numRows) {
             throw new \Exception('There is not stats information for the server');
         }
-        $stats['total'] = (int) $db->GetValue('total');
-        $stats['pending'] = $this->get('ActiveForPumping') ? (int) $db->GetValue('pending') : 0;
-        $stats['active'] = $this->get('ActiveForPumping') ? (int) $db->GetValue('active') : 0;
-        $stats['success'] = (int) $db->GetValue('success');
-        $stats['fatal'] = (int) $db->GetValue('fatal');
-        $stats['soft'] = (int) $db->GetValue('soft');
-        $stats['stopped'] = (int) $db->GetValue('stopped');
-        $stats['delayed'] = !$this->get('ActiveForPumping') ? $db->GetValue('pending') + $db->GetValue('active') : 0;
-        $stats['cancelled'] = (int) $db->GetValue('cancelled');
+        $stats['total'] = (int) $db->getValue('total');
+        $stats['pending'] = $this->get('ActiveForPumping') ? (int) $db->getValue('pending') : 0;
+        $stats['active'] = $this->get('ActiveForPumping') ? (int) $db->getValue('active') : 0;
+        $stats['success'] = (int) $db->getValue('success');
+        $stats['fatal'] = (int) $db->getValue('fatal');
+        $stats['soft'] = (int) $db->getValue('soft');
+        $stats['stopped'] = (int) $db->getValue('stopped');
+        $stats['delayed'] = (! $this->get('ActiveForPumping')) ? $db->getValue('pending') + $db->getValue('active') : 0;
+        // $stats['cancelled'] = (int) $db->getValue('cancelled');
         return $stats;
     }
     
@@ -178,13 +178,13 @@ class Server extends ServersOrm
     {
         $sql = 'SELECT IdServer, Description FROM Servers WHERE ActiveForPumping = 0';
         $db = new Db();
-        if ($db->Query($sql) === false) {
+        if ($db->query($sql) === false) {
             throw new \Exception('SQL error in delayed servers retrieve');
         }
         $servers = [];
         while (! $db->EOF) {
-            $servers[$db->GetValue('IdServer')] = $db->GetValue('Description');
-            $db->Next();
+            $servers[$db->getValue('IdServer')] = $db->getValue('Description');
+            $db->next();
         }
         return $servers;
     }

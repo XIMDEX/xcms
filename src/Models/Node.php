@@ -3140,7 +3140,7 @@ class Node extends NodesOrm
     /**
      * @return array
      */
-    function GetLastVersion()
+    public function getLastVersion()
     {
         $sql = "SELECT V.IdVersion, V.Version, V.SubVersion, V.IdUser, V.Date, U.Name as UserName, V.File ";
         $sql .= " FROM Versions V INNER JOIN Users U on V.IdUser = U.IdUser ";

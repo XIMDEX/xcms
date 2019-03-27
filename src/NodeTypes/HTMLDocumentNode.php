@@ -497,7 +497,7 @@ class HTMLDocumentNode extends AbstractStructuredDocument
         $info['languageId'] = $lang->getID();
         $info['language'] = $lang->getIsoName();
         $info['type'] = $sd->getDocumentType();
-        $info['metadata'] = static::prepareMetadata($sd->GetMetadata());
+        $info['metadata'] = static::prepareMetadata($sd->getMetadata());
         return $info;
     }
 

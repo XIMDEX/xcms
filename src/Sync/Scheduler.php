@@ -156,7 +156,7 @@ class Scheduler
                     }
 
                     // Pumping
-                    if (!$pumperManager->callingPumpers()) {
+                    if (! $pumperManager->callingPumpers()) {
                         sleep(SCHEDULER_SLEEPING_TIME_IN_FULL_PUMPERS);
                     }
                     

@@ -30,13 +30,13 @@ namespace Ximdex\Nodeviews;
 use Ximdex\Logger;
 use Ximdex\Deps\LinksManager;
 use Ximdex\Models\Channel;
-use Ximdex\Models\Metadata;
 use Ximdex\Models\Node;
 use Ximdex\Models\RelSemanticTagsNodes;
 use Ximdex\Models\Section;
 use Ximdex\Models\SectionType;
 use Ximdex\Models\Server;
 use Ximdex\Models\Version;
+use Ximdex\NodeTypes\CommonNode;
 use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
 use Ximdex\Utils\SimpleXMLExtended;
@@ -131,9 +131,9 @@ class ViewCommon extends AbstractView
      */
     private static function createXIF(Node $node, string $content, Channel $channel, Server $server)
     {
-        $sectionId = $node->GetSection();
+        $sectionId = $node->getSection();
         $ximID = App::getValue('ximid');
-        $version = $node->GetLastVersion() ?? [];
+        $version = $node->getLastVersion() ?? [];
         $section = new Section($sectionId);
         $sectionNode = new Node($section->getIdNode());
         $sectionType = new SectionType($section->getIdSectionType());
@@ -142,11 +142,11 @@ class ViewCommon extends AbstractView
 
         // Create XML
         $xml = new SimpleXMLExtended('<' . static::DOCXIF . '></' . static::DOCXIF . '>');
-        $xml->addChild('id', implode(":", [$ximID, $node->GetID()]));
-        $xml->addChild('name', $node->GetNodeName());
+        $xml->addChild('id', implode(":", [$ximID, $node->getID()]));
+        $xml->addChild('name', $node->getNodeName());
         $xml->addChild('file_version', $version["Version"] ?? '');
         $xml->addChild('id_ximdex', $ximID);
-        $xml->addChild('filename', $node->GetNodeName());
+        $xml->addChild('filename', $node->getNodeName());
         $xml->addChild('slug', static::getAbsolutePath($node, $server, $channel->GetId()));
         $xml->addChild('creation_date', date('Y-m-d H:i:s', $node->get('CreationDate')));
         $xml->addChild('update_date', date('Y-m-d H:i:s', $node->get('ModificationDate')));
@@ -171,12 +171,12 @@ class ViewCommon extends AbstractView
         $info = [];
 
         // Get tags
-        $tags = static::getTags($node->GetID());
+        $tags = static::getTags($node->getID());
         $info['tags'] = $tags;
 
         // Get metadata
-        $metadata = Metadata::getByNodeAndGroup($node->GetID()) ?? []; //TODO Select group
-        $info['metadata'] = $metadata;
+        $metadata = CommonNode::getMetadata($node->getID());
+        $info['metadata'] = CommonNode::prepareMetadata($metadata);
         return $info;
     }
 

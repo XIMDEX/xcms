@@ -214,7 +214,7 @@ class ConnectionApi extends Connector implements IConnector
 	        return false;
 	    }
 	    $dom = new \DOMDocument();
-	    if ($dom->loadXML($content) === false) {
+	    if (@$dom->loadXML($content) === false) {
 	        $this->error = 'The content given in PUT request is not a valid XML document';
             return false;
 	    }

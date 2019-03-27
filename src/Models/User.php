@@ -39,6 +39,7 @@ use Ximdex\Models\ORM\RelRolesActionsOrm;
 class User extends UsersOrm
 {
     const ROLE_ADMINISTRATOR = 201;
+    
     const XIMDEX_ID = 301;
     
     public $userID;
