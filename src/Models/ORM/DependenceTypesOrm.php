@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -31,14 +31,21 @@ use Ximdex\Data\GenericData;
 
 class DependenceTypesOrm extends GenericData
 {
-    var $_idField = 'IdDepType';
-    var $_table = 'DependenceTypes';
-    var $_metaData = array(
-        'IdDepType' => array('type' => "int(6)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
-        'Type' => array('type' => "varchar(32)", 'not_null' => 'true')
+    public $_idField = 'IdDepType';
+    
+    public $_table = 'DependenceTypes';
+    
+    public $_metaData = array
+    (
+        'IdDepType' => array('type' => "int(6)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true), 
+        'Type' => array('type' => "varchar(30)", 'not_null' => 'true')
     );
-    var $_uniqueConstraints = array();
-    var $_indexes = array('IdDepType');
-    var $IdDepType;
-    var $Type = 0;
+    
+    public $_uniqueConstraints = array('Type');
+    
+    public $_indexes = array('IdDepType');
+    
+    public $IdDepType;
+    
+    public $Type;
 }

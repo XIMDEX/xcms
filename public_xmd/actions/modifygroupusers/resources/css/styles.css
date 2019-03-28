@@ -23,28 +23,28 @@
  *  @version $Revision$
  */
 
-.addMetadataFormField
+.userInfo
 {
+	width: calc(100% - 60pt);
 	float: left;
 }
 
-.metadataInfo
+.userOptions
 {
-	width: calc(100% - 30pt);
-	float: left;
-}
-
-.metadataOptions
-{
-	width: 30pt;
+	width: 60pt;
     float: right;
     text-align: right;
-    margin-top: 5pt;
+    margin-top: 20pt;
 }
 
-.modifyMetadataDeleteButton
+.modifyGroupDeleteButton
 {
 	left: calc(100% - 30pt) !important;
+}
+
+.modifyGroupUpdateButton
+{
+    left: calc(100% - 60pt) !important;
 }
 
 .sep

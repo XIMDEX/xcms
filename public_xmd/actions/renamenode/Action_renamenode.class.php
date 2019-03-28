@@ -39,20 +39,20 @@ class Action_renamenode extends ActionAbstract
      */
     public function index()
     {
-        $idNode = $this->request->getParam('nodeid');
+        $idNode = (int) $this->request->getParam('nodeid');
         $node = new Node($idNode);
-        $isSection = $node->nodeType->get('IsSection');
+        $isProject = $node->getNodeType() == NodeTypeConstants::PROJECT;
+        $isSection = $node->nodeType->get('IsSection') && $node->getNodeType() != NodeTypeConstants::SERVER;
         $allLanguages = null;
         if ($isSection) {
             $language = new Language();
             $allLanguages = $language->find('IdLanguage, Name');
             if (! empty($allLanguages)) {
                 foreach ($allLanguages as $key => $languageInfo) {
-                    $allLanguages[$key]['alias'] = $node->GetAliasForLang($languageInfo['IdLanguage']);
+                    $allLanguages[$key]['alias'] = $node->getAliasForLang($languageInfo['IdLanguage']);
                 }
             }
         }
-        $isProject = $node->GetNodeType() == NodeTypeConstants::PROJECT;
         $schemaType = $node->getProperty('SchemaType');
         if (is_array($schemaType) && count($schemaType) == 1) {
             $schemaType = $schemaType[0];
@@ -78,9 +78,9 @@ class Action_renamenode extends ActionAbstract
 
     public function update()
     {
-        $idNode = $this->request->getParam('id_node');
+        $idNode = (int) $this->request->getParam('id_node');
         $name = $this->request->getParam('name');
-        $languages = $this->request->getParam('language');
+        $languages = (array) $this->request->getParam('language');
         $node = new Node($idNode);
         if (! $node->get('IdNode') > 0) {
             $this->messages->add(_('Node could not be successfully loaded'), MSG_TYPE_ERROR);
@@ -99,7 +99,8 @@ class Action_renamenode extends ActionAbstract
                 } else {
                     $this->messages->add(_('Node name could not be updated'), MSG_TYPE_ERROR);
                 }
-                if ($node->nodeType->get('IsSection')) {
+                $isSection = $node->nodeType->get('IsSection') && $node->getNodeType() != NodeTypeConstants::SERVER;
+                if ($isSection) {
                     foreach ($languages as $idLanguage => $alias) {
                         if ($node->SetAliasForLang($idLanguage, $alias)) {
                             $language = new Language($idLanguage);

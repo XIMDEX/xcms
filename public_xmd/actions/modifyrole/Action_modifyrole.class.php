@@ -84,13 +84,6 @@ class Action_modifyrole extends ActionAbstract
             );
             $this->sendJSON($values);
         }
-        if (! $role->deleteAllRolesActions()) {
-            $this->messages->add(_('Cannot delete old role actions'), MSG_TYPE_ERROR);
-            $values = array(
-                'messages' => $this->messages->messages
-            );
-            $this->sendJSON($values);
-        }
         $permissions = $this->request->getParam('permissions');
         if ($permissions) {
             foreach (array_keys($permissions) as $idPermission) {
@@ -102,6 +95,13 @@ class Action_modifyrole extends ActionAbstract
                     $this->sendJSON($values);
                 }
             }
+        }
+        if (! $role->deleteAllRolesActions()) {
+            $this->messages->add(_('Cannot delete old role actions'), MSG_TYPE_ERROR);
+            $values = array(
+                'messages' => $this->messages->messages
+            );
+            $this->sendJSON($values);
         }
         $rolesActions = $this->request->getParam('action_workflow');
         if ($rolesActions) {

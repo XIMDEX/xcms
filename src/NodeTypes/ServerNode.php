@@ -109,9 +109,9 @@ class ServerNode extends FolderNode
         return true;
     }
     
-    public function addPhysicalServer(string $protocolID = null, string $login = null, string $password, string $host = null, int $port = null
-        , string $url = null, string $initialDirectory = null, bool $overrideLocalPaths = null, bool $enabled = null, bool $previsual = null
-        , string $description = null, string $token = null)
+    public function addPhysicalServer(string $protocolID = null, string $login = null, string $password = null, string $host = null
+        , int $port = null, string $url = null, string $initialDirectory = null, bool $overrideLocalPaths = null, bool $enabled = null
+        , bool $previsual = null, string $description = null, string $token = null)
     {
         $sql = 'INSERT INTO Servers ';
         $sql .= '(IdServer, IdNode, IdProtocol, Login, Password, Host,';

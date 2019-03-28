@@ -591,7 +591,6 @@ class DexPumper
     
     private function info(string $_msg, string $color = '')
     {
-        // $this->msg_log('INFO PUMPER: ' . $_msg);
         Logger::info($_msg, false, $color);
     }
     
@@ -610,7 +609,6 @@ class DexPumper
     private function debug(string $_msg)
     {
         if (App::debug()) {
-            // $this->msg_log('DEBUG PUMPER: ' . $_msg);
             Logger::debug($_msg);
         }
     }
