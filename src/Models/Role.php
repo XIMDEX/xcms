@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -31,6 +31,8 @@ use Ximdex\Models\ORM\RolesOrm;
 
 class Role extends RolesOrm
 {
+    const ADMINISTRATOR = 201;
+    
     /**
      * Current role id
      * 
@@ -66,7 +68,7 @@ class Role extends RolesOrm
      */
     public $errorList = array();
     
-    public $autoCleanErr = false;
+    public $autoCleanErr = true;
 
     /**
      * Role constructor
@@ -333,15 +335,15 @@ class Role extends RolesOrm
             $sql .= ' AND IdState IS NULL';
         }
         $dbObj = new \Ximdex\Runtime\Db();
-        $dbObj->Query($sql);
+        $dbObj->query($sql);
         if ($dbObj->numErr != 0) {
-            $this->SetError(1);
+            $this->setError(1);
             return null;
         }
         $salida = array();
         while (! $dbObj->EOF) {
-            $salida[] = $dbObj->GetValue('IdAction');
-            $dbObj->Next();
+            $salida[] = $dbObj->getValue('IdAction');
+            $dbObj->next();
         }
         return $salida;
     }
@@ -362,8 +364,8 @@ class Role extends RolesOrm
             if ($nodeType) {
                 $result = array();
                 $action = new Action();
-                $actions1 = $action->GetActionListOnNodeType($nodeType, $includeActionsWithNegativeSort);
-                $actions2 = $this->GetActionsList($stateID);
+                $actions1 = $action->getActionListOnNodeType($nodeType, $includeActionsWithNegativeSort);
+                $actions2 = $this->getActionsList($stateID);
                 if ($actions1 && $actions2) {
                     $result = array_intersect($actions1, $actions2);
                 }

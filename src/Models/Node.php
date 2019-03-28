@@ -63,6 +63,12 @@ if (! defined('COUNT')) {
  */
 class Node extends NodesOrm
 {
+    const ID_XIMDEX = 1;
+    
+    const ID_CONTROL_CENTER = 2;
+    
+    const ID_PROJECTS = 10000;
+    
     /**
      * current node ID
      * 
@@ -108,7 +114,7 @@ class Node extends NodesOrm
 
     /**
      * Node constructor
-     * 
+     *
      * @param int $nodeID
      * @param bool $fullLoad
      */
@@ -152,7 +158,7 @@ class Node extends NodesOrm
         }
     }
 
-    public function GetRoot()
+    public function getRoot()
     {
         $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->Query("SELECT IdNode FROM Nodes WHERE IdParent IS null");
@@ -173,13 +179,13 @@ class Node extends NodesOrm
      */
     function SetID($nodeID = null)
     {
-        $this->ClearError();
+        $this->clearError();
         self::__construct($nodeID);
     }
 
     public function getNodeName()
     {
-        $this->ClearError();
+        $this->clearError();
         return $this->get('Name');
     }
 
@@ -604,7 +610,7 @@ class Node extends NodesOrm
 				AND Nodes.Name like %s
 				AND Nodes.Path like %s", $dbObj->sqlEscapeString($name), $dbObj->sqlEscapeString($path));
             $dbObj->Query($sql);
-            while (!$dbObj->EOF) {
+            while (! $dbObj->EOF) {
                 $result[] = array(
                     'IdNode' => $dbObj->GetValue('IdNode')
                 );
@@ -2782,14 +2788,14 @@ class Node extends NodesOrm
      * Function which determines if the name $name is valid for the nodetype $nodeTypeID,
      * nodetype is optional, if it is not passed, it is loaded from current node
      *
-     * @param $name
+     * @param string $name
      * @param int $idNodeType
      * @return bool
      */
-    function isValidName($name, $idNodeType = 0)
+    public function isValidName(string $name, int $idNodeType = 0)
     {
         if ($idNodeType === 0) {
-            if (!$this->nodeType) {
+            if (! $this->nodeType) {
                 $this->messages->add('Cannot obtain the node type in order to validate the node name', MSG_TYPE_ERROR);
                 return false;
             }
@@ -2805,9 +2811,9 @@ class Node extends NodesOrm
         $pattern4 = Base::recodeSrc("/^[A-Za-z0-9\_\-\.\@]+$/", XML::UTF8);
         $name = Base::recodeSrc($name, XML::UTF8);
         unset($nodeType);
-        if (!strcasecmp($nodeTypeName, 'Action') || !strcasecmp($nodeTypeName, 'Group') || !strcasecmp($nodeTypeName, 'Language') 
-            || !strcasecmp($nodeTypeName, 'LinkFolder') || !strcasecmp($nodeTypeName, 'LinkManager') || !strcasecmp($nodeTypeName, 'Role') 
-            || !strcasecmp($nodeTypeName, 'WorkflowState')) {
+        if (! strcasecmp($nodeTypeName, 'Action') || ! strcasecmp($nodeTypeName, 'Group') || ! strcasecmp($nodeTypeName, 'Language') 
+            || ! strcasecmp($nodeTypeName, 'LinkFolder') || ! strcasecmp($nodeTypeName, 'LinkManager') || ! strcasecmp($nodeTypeName, 'Role') 
+            || ! strcasecmp($nodeTypeName, 'WorkflowState')) {
             return (preg_match($pattern1, $name) > 0);
         } elseif (!strcasecmp($nodeTypeName, 'Link')) {
             return (preg_match($pattern2, $name) > 0);

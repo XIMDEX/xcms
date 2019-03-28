@@ -1,7 +1,7 @@
 <?php
 
 /*******************************************************************************
- * PAREMETERS
+ * PARAMETERS
  *******************************************************************************/
 const STRICT_MODE = true; // Fail if any metadata found in files is not in METADATA const
 const ID_GROUP = 1;
@@ -22,7 +22,7 @@ $METADATA = [
 ];
 
 /*******************************************************************************
- * END PAREMETERS
+ * END PARAMETERS
  *******************************************************************************/
 class MetadataFileToDatabase
 {

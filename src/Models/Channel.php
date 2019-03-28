@@ -240,7 +240,7 @@ class Channel extends ChannelsOrm
      * @return boolean|string
      */
     public function createNewChannel(string $name, string $defaultExtension, string $format = null, string $description = null
-        , int $idChannel = null, string $filter = '', string $renderMode = '', string $outputType = '', string $renderType = null
+        , int $idChannel = null, string $filter = '', string $renderMode = null, string $outputType = '', string $renderType = null
         , string $language = null)
     {
         $this->set('IdChannel', (int) $idChannel);

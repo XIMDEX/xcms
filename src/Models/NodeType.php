@@ -186,7 +186,7 @@ class NodeType extends NodeTypesOrm
     {
         $dbObj = new \Ximdex\Runtime\Db();
         $query = sprintf('SELECT IdNodeType FROM NodeTypes WHERE Name LIKE %s', $dbObj->sqlEscapeString($name));
-        $dbObj->Query($query);
+        $dbObj->query($query);
         if (! $dbObj->numRows) {
             $backtrace = debug_backtrace();
             error_log(sprintf('Se ha intentado cargar obtener un tipo de nodo por el nombre %s'
@@ -197,8 +197,8 @@ class NodeType extends NodeTypesOrm
                 $backtrace[0]['line']));
             return false;
         }
-        if ($dbObj->GetValue('IdNodeType')) {
-            return $this->SetID($dbObj->GetValue('IdNodeType'));
+        if ($dbObj->getValue('IdNodeType')) {
+            return $this->setID($dbObj->getValue('IdNodeType'));
         }
         return false;
     }

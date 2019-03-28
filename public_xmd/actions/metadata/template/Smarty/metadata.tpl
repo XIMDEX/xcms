@@ -24,7 +24,12 @@
 *}
 
 {foreach from=$group['metadata'] key=i item=data}
+    {if ($data['type'] == 'image')}
+        {$type = 'text'}
+    {else}
+        {$type = $data['type']}
+    {/if}
     {include file="actions/components/form_input.tpl" divClass="small-4{if $i eq count($group['metadata']) - 1} end{/if}"
-        title=$data["name"] name="metadata[`$group['id']`][`$data['id']`]" id="metadata[`$group['id']`][`$data['id']`]" type=$data['type'] 
+        title=$data["name"] name="metadata[`$group['id']`][`$data['id']`]" id="metadata[`$group['id']`][`$data['id']`]" type=$type 
         id_node="" value="{$data['value']}" required=$data['required'] readonly=$data['readonly']}
 {/foreach}

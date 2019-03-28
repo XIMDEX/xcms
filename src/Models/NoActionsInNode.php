@@ -79,7 +79,7 @@ class NoActionsInNode extends GenericData
      */
     public function getForbiddenActions(int $idNode)
     {
-        $arrayForbiddenActions = $this->find("IdAction","IdNode=%s",array($idNode),MONO);
-        return $arrayForbiddenActions? $arrayForbiddenActions: array();
+        $arrayForbiddenActions = $this->find("IdAction", "IdNode = %s", array($idNode), MONO);
+        return $arrayForbiddenActions ? $arrayForbiddenActions: array();
     }
 }

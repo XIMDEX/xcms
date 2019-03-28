@@ -68,7 +68,7 @@ class Action_createuser extends ActionAbstract
         $email = $this->request->getParam('email');
         $generalrole = $this->request->getParam('generalrole');
         $locale = $this->request->getParam('locale');
-        if (null == $locale || ! @file_exists(XIMDEX_ROOT_PATH . '/inc/i18n/locale/' . $locale)) {
+        if (null == $locale || ! @file_exists(XIMDEX_ROOT_PATH . '/src/I18n/locale/' . $locale)) {
             $locale = DEFAULT_LOCALE;
         }
         $nodeType = new NodeType();

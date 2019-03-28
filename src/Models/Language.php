@@ -145,7 +145,7 @@ class Language extends LanguagesOrm
 	public function setName(string $name)
 	{
 		if (! $this->get('IdLanguage')) {
-			$this->SetError(2, 'Language does not exist');
+			$this->setError(2, 'Language does not exist');
 			return false;
 		}
 		$result = $this->set('Name', $name);
@@ -175,7 +175,7 @@ class Language extends LanguagesOrm
 	public function SetIsoName(string $isoName)
 	{
 		if (! $this->get('IdLanguage')) {
-			$this->SetError(2, 'Language does not exist');
+			$this->setError(2, 'Language does not exist');
 			return false;
 		}
 		$result = $this->set('IsoName', $isoName);
@@ -235,7 +235,7 @@ class Language extends LanguagesOrm
 			parent::__construct($dbObj->getValue("IdLanguage"));
 			return true;
 		}
-		$this->SetError(4);
+		$this->setError(4);
 		return false;
 	}
 
@@ -257,7 +257,7 @@ class Language extends LanguagesOrm
 			parent::__construct($idLanguage);
 			return $idLanguage;
 		}
-		$this->SetError(4);
+		$this->setError(4);
 		return false;
 	}
 
@@ -283,7 +283,7 @@ class Language extends LanguagesOrm
 		if ($this->get('IdLanguage')) {
 			$this->setDescription($description);
 		} else {
-			$this->SetError(4);
+			$this->setError(4);
 			return false;
 		}
 		return $nodeID;
@@ -303,11 +303,11 @@ class Language extends LanguagesOrm
 			// Deleting from database
 			$dbObj->Execute(sprintf("DELETE FROM Languages WHERE IdLanguage= %d", $this->get('IdLanguage')));
 			if ($dbObj->numErr) {
-				$this->SetError(4);
+				$this->setError(4);
 				return false;
 			}
 		} else {
-			$this->SetError(1);
+			$this->setError(1);
 			return false;
 		}
 		return true;

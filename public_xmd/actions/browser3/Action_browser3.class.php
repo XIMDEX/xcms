@@ -294,7 +294,7 @@ class Action_browser3 extends ActionAbstract
         $sql = 'select count(1) as total from Actions a left join Nodes n using(IdNodeType) where IdNode = %s and a.Sort > 0';
         $sql2 = $sql . " AND a.Command='fileupload_common_multiple' ";
         if (! empty($nodes)) {
-            foreach ($nodes as &$node) {
+            foreach ($nodes as & $node) {
                 $nodeid = $node['nodeid'];
                 $_sql = sprintf($sql, $nodeid);
                 $db->query($_sql);
@@ -894,15 +894,15 @@ class Action_browser3 extends ActionAbstract
     {
         $idUser = \Ximdex\Runtime\Session::get('userID');
         $nodes = $nodes !== null ? $nodes : $this->request->getParam('nodes');
-        if (!is_array($nodes)) {
+        if (! is_array($nodes)) {
             $nodes = array($nodes);
         }
-        $actions=[6000];
+        $actions = [Action::NODE_INFORMATION];
         $actions = array_merge($actions, $this->getActionsOnNodeList($idUser, $nodes));
         
         // Users can modify their account
-        if (is_array($nodes) && count($nodes) == 1 && $nodes[0] == $idUser && !in_array(6002, $actions)) {
-            $actions[] = 6002;
+        if (is_array($nodes) && count($nodes) == 1 && $nodes[0] == $idUser && ! in_array(Action::MODIFY_USER, $actions)) {
+            $actions[] = Action::MODIFY_USER;
         }
         return $actions;
     }
@@ -911,10 +911,10 @@ class Action_browser3 extends ActionAbstract
      * Calculates the posible actions for a group of nodes
      * It depends on roles, states and nodetypes of nodes
      * 
-     * @param int $idUser
-     * @param array $nodes
+     * @param int $idUser Current user
+     * @param array $nodes IdNodes array
      * @param bool $processActionName
-     * @return array
+     * @return array IdActions array
      */
     public function getActionsOnNodeList(int $idUser, array $nodes, bool $processActionName = true)
     {

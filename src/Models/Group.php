@@ -32,6 +32,8 @@ use Ximdex\Runtime\App;
 
 class Group extends GroupsOrm
 {
+    const ID_GENERAL = 101;
+    
 	public $groupID;
 	
 	/**

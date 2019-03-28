@@ -42,7 +42,7 @@ class Action_modifyrole extends ActionAbstract
      */
     public function index()
     {
-        $idNode = $this->request->getParam('nodeid');
+        $idNode = (int) $this->request->getParam('nodeid');
         $role = new Role($idNode);
         
         // Getting permisions for current role
@@ -73,7 +73,7 @@ class Action_modifyrole extends ActionAbstract
     public function modifyrole()
     {
         // ini_set('max_input_vars', 2000);
-        $idNode = $this->request->getParam('nodeid');
+        $idNode = (int) $this->request->getParam('nodeid');
         $role = new Role($idNode);
         $role->set('Description', $this->request->getParam('description'));
         $role->update();

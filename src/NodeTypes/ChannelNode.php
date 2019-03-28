@@ -48,7 +48,7 @@ class ChannelNode extends Root
 	    , string $outputType = null, string $renderType = null, string $language = null)
 	{
 		$channel = new Channel();
-		$channel->CreateNewChannel($channelName, $extension, $format, $description, $this->parent->get('IdNode'), $filter,
+		$channel->createNewChannel($channelName, $extension, $format, $description, $this->parent->get('IdNode'), $filter,
 			 $renderMode, $outputType, $renderType, $language);
 		$this->updatePath();
 		return true;

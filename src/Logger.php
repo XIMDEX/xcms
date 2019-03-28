@@ -81,6 +81,7 @@ Class Logger
             return self::get()->logger->addError(self::$color->__invoke($string)->red()->bold(), $object);
         } catch (\Exception $e) {
             error_log($e->getMessage());
+            return false;
         }
     }
 
@@ -96,6 +97,7 @@ Class Logger
                 return self::get()->logger->addDebug(self::$color->__invoke($string)->white());
             } catch (Exception $e) {
                 error_log($e->getMessage());
+                return false;
             }
         }
         return true;
@@ -107,6 +109,7 @@ Class Logger
             return self::get()->logger->addCritical(self::$color->__invoke($string)->red()->bold());
         } catch (Exception $e) {
             error_log($e->getMessage());
+            return false;
         }
     }
 
@@ -121,6 +124,7 @@ Class Logger
             return self::get()->logger->addInfo($string);
         } catch (Exception $e) {
             error_log($e->getMessage());
+            return false;
         }
     }
 

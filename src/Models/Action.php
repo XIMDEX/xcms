@@ -31,6 +31,12 @@ use Ximdex\Models\ORM\ActionsOrm;
 
 class Action extends ActionsOrm
 {
+    const MODIFY_GROUP_USERS = 6101;
+    
+    const NODE_INFORMATION = 6000;
+    
+    const MODIFY_USER = 6002;
+    
     /**
      * ID of the current action
      */
@@ -61,7 +67,8 @@ class Action extends ActionsOrm
      * 
      * @var array
      */
-    public $errorList = array(
+    public $errorList = array
+    (
         1 => 'Database connection error',
         2 => 'Action does not exist'
     );
@@ -96,7 +103,7 @@ class Action extends ActionsOrm
     {
         $sql = 'SELECT IdAction FROM Actions';
         $dbObj = new \Ximdex\Runtime\Db();
-        $dbObj->Query($sql);
+        $dbObj->query($sql);
         if ($dbObj->numErr != 0) {
             $this->SetError(1);
             return null;
@@ -129,7 +136,7 @@ class Action extends ActionsOrm
      * @param bool $includeActionsWithNegativeSort
      * @return array|null
      */
-    public function GetActionListOnNodeType(int $nodeType = null, bool $includeActionsWithNegativeSort = false)
+    public function getActionListOnNodeType(int $nodeType = null, bool $includeActionsWithNegativeSort = false)
     {
         $dbObj = new \Ximdex\Runtime\Db();
         if (! $includeActionsWithNegativeSort) {
@@ -137,15 +144,15 @@ class Action extends ActionsOrm
         } else {
             $sql = sprintf('SELECT IdAction FROM Actions WHERE idNodeType = %d ORDER BY Sort ASC', $nodeType);
         }
-        $dbObj->Query($sql);
+        $dbObj->query($sql);
         if ($dbObj->numErr != 0) {
-            $this->SetError(1);
+            $this->setError(1);
             return null;
         }
         $salida = null;
         while (! $dbObj->EOF) {
             $salida[] = $dbObj->getValue('IdAction');
-            $dbObj->Next();
+            $dbObj->next();
         }
         return $salida ? $salida : NULL;
     }
@@ -189,7 +196,6 @@ class Action extends ActionsOrm
     /**
      * Changes the current action name
      * 
-     * @param $name
      * @return bool|string
      */
     public function getName()
@@ -200,13 +206,13 @@ class Action extends ActionsOrm
     /**
      * Returns the current action description
      * 
-     * @param $name
+     * @param string $name
      * @return bool|int|null|string
      */
     public function setName(string $name)
     {
         if (! $this->IdAction) {
-            $this->SetError(2);
+            $this->setError(2);
             return false;
         }
         $result = $this->set('Name', $name);
@@ -230,7 +236,7 @@ class Action extends ActionsOrm
     public function setDescription(string $description = null)
     {
         if (! $this->IdAction) {
-            $this->SetError(2, _('Action does not exist'));
+            $this->setError(2, _('Action does not exist'));
             return false;
         }
         $result = $this->set('Description', $description);
@@ -259,7 +265,7 @@ class Action extends ActionsOrm
     public function setCommand(string $command)
     {
         if (! $this->IdAction) {
-            $this->SetError(2, _('Action does not exist'));
+            $this->setError(2, _('Action does not exist'));
             return false;
         }
         $result = $this->set('Command', $command);
@@ -288,7 +294,7 @@ class Action extends ActionsOrm
     public function setSort(int $sort)
     {
         if (! $this->IdAction) {
-            $this->SetError(2, _('Action does not exist'));
+            $this->setError(2, _('Action does not exist'));
             return false;
         }
         $result = $this->set('Sort', $sort);
@@ -312,13 +318,13 @@ class Action extends ActionsOrm
      * Returns if the given user can execute the action in a given node
      * Changes the current action icon
      * 
-     * @param $icon
+     * @param string $icon
      * @return bool|int (status)
      */
     public function setIcon(string $icon)
     {
         if (! $this->IdAction) {
-            $this->SetError(2, _('Action does not exist'));
+            $this->setError(2, _('Action does not exist'));
             return false;
         }
         $result = $this->set('Icon', $icon);
@@ -331,13 +337,13 @@ class Action extends ActionsOrm
     /**
      * Creates a new action and load its id in the class actionID
      * 
-     * @param $actionID
-     * @param $nodeType
-     * @param $name
-     * @param $command
-     * @param $icon
-     * @param $description
-     * @return string ActionID - loaded as a attribute
+     * @param int $actionID
+     * @param int $nodeType
+     * @param string $name
+     * @param string $command
+     * @param string $icon
+     * @param string $description
+     * @return NULL|string|boolean
      */
     public function createNewAction(int $actionID, int $nodeType, string $name, string $command, string $icon = null, string $description = null)
     {
@@ -358,9 +364,9 @@ class Action extends ActionsOrm
     {
         $dbObj = new \Ximdex\Runtime\Db();
         $query = sprintf('DELETE FROM RelRolesActions WHERE IdAction = %d', $this->ID);
-        $dbObj->Execute($query);
+        $dbObj->execute($query);
         if ($dbObj->numErr != 0) {
-            $this->SetError(1);
+            $this->setError(1);
         }
         $this->delete();
         $this->ID = null;
@@ -404,14 +410,13 @@ class Action extends ActionsOrm
         $idNodeType = $node->getNodeType();
         if (! $module) {
             return $this->setByCommand($name, $idNodeType);
-        } else {
-            $result = $this->find('IdAction', 'Command = %s AND IdNodeType = %s AND Module = %s', array($name, $idNodeType, $module), MONO);
-            if (count($result) != 1) {
-                return 0;
-            }
-            $this->__construct($result[0]);
-            return $this->IdAction;
         }
+        $result = $this->find('IdAction', 'Command = %s AND IdNodeType = %s AND Module = %s', array($name, $idNodeType, $module), MONO);
+        if (count($result) != 1) {
+            return 0;
+        }
+        $this->__construct($result[0]);
+        return $this->IdAction;
     }
 
     public function setByCommand(string $name, int $idNodeType)

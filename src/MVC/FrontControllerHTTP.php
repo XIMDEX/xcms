@@ -51,8 +51,6 @@ class FrontControllerHTTP extends FrontController
             if (! array_key_exists('action', $_GET)) {
                 $_GET['action'] = null;
             }
-
-            // View /ximdex/trunk/actions/browser3/inc/: 63
             if (! array_key_exists('redirect_other_action', $_GET) && 'installer' != $_GET['action']) {
                 $this->parseFriendlyUrl();
             }

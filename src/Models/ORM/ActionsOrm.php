@@ -32,8 +32,11 @@ use Ximdex\Data\GenericData;
 class ActionsOrm extends GenericData
 {
     public $_idField = 'IdAction';
+    
     public $_table = 'Actions';
-    public $_metaData = array(
+    
+    public $_metaData = array
+    (
         'IdAction' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
         'IdNodeType' => array('type' => "int(12)", 'not_null' => 'true'),
         'Name' => array('type' => "varchar(100)", 'not_null' => 'true'),
@@ -46,19 +49,33 @@ class ActionsOrm extends GenericData
         'Params' => array('type' => "varchar(255)", 'not_null' => 'false'),
         'IsBulk' => array('type' => "tinyint(1)", 'not_null' => 'true')
     );
-    public $_uniqueConstraints = array(
+    
+    public $_uniqueConstraints = array
+    (
         'IdAction' => array('IdAction')
     );
+    
     public $_indexes = array('IdAction');
+    
     public $IdAction;
+    
     public $IdNodeType = 0;
+    
     public $Name;
+    
     public $Command;
+    
     public $Icon;
+    
     public $Description;
+    
     public $Sort;
+    
     public $Module;
+    
     public $Multiple = 0;
+    
     public $Params;
+    
     public $IsBulk = 0;
 }
