@@ -658,9 +658,10 @@ class User extends UsersOrm
     {
         $this->clearError();
         if ($this->get('IdUser') > 0) {
-            parent::delete();
-        } else
-            $this->SetError(1);
+            return parent::delete();
+        }
+        $this->SetError(1);
+        return false;
     }
 
     /**

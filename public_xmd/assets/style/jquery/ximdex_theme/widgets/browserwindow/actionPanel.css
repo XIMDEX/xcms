@@ -415,7 +415,7 @@ fieldset {
 }
 .action_content {
     min-width: 350px;
-    height: 92%;
+    height: calc(100% - 40pt);  /* height: 92%; */
     overflow-y: auto;
     overflow-x: hidden;
     padding: 1em 4% 1em;

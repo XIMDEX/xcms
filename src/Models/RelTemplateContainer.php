@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -31,23 +31,31 @@ use Ximdex\Data\GenericData;
 
 class RelTemplateContainer extends GenericData
 {
-    var $_idField = 'IdRel';
-    var $_table = 'RelTemplateContainer';
-    var $_metaData = array(
+    public $_idField = 'IdRel';
+    
+    public $_table = 'RelTemplateContainer';
+    
+    public $_metaData = array
+    (
         'IdRel' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
         'IdTemplate' => array('type' => "int(12)", 'not_null' => 'true'),
         'IdContainer' => array('type' => "int(12)", 'not_null' => 'true')
     );
-    var $_uniqueConstraints = array();
-    var $_indexes = array('IdRel');
-    var $IdRel;
-    var $IdTemplate = 0;
-    var $IdContainer = 0;
+    
+    public $_uniqueConstraints = array();
+    
+    public $_indexes = array('IdRel');
+    
+    public $IdRel;
+    
+    public $IdTemplate = 0;
+    
+    public $IdContainer = 0;
 
-	function getTemplate($idContainer)
+	function getTemplate(int $idContainer)
 	{
 		$template = $this->find('IdTemplate', 'IdContainer = %s', array($idContainer), MULTI);
-		if (!empty($template)) {
+		if (! empty($template)) {
 			$last = end($template);
 			return $last['IdTemplate'];
 		} else {
@@ -55,42 +63,40 @@ class RelTemplateContainer extends GenericData
 		}
 	}
 
-	function createRel($idTemplate, $idNode)
+	public function createRel(int $idTemplate, int $idNode) : ?int
 	{
 		$this->set('IdRel', NULL);
 		$this->set('IdTemplate', $idTemplate);
 		$this->set('IdContainer', $idNode);
 		if (parent::add()) {
-			$idRel = $this->get('IdRel');
+			$idRel = (int) $this->get('IdRel');
 		} else {
-			return NULL;
+			return null;
 		}
-
-		// TODO: NEED TO REFACTOR THIS.
 		$container = new Node($idNode);
-		$arr_child = $container->GetChildren();
-		if (!is_null($arr_child)) {
+		$arr_child = $container->getChildren();
+		if (! is_null($arr_child)) {
 			foreach ($arr_child as $child) {
 				$doc = new StructuredDocument($child);
-				$version = $doc->GetLastVersion();
+				$version = $doc->getLastVersion();
 				$dependencies = new Dependencies();
-				$dependencies->insertDependence($idTemplate,$child,'PVD',$version);
+				$dependencies->insertDependence($idTemplate, $child, 'PVD', $version);
 			}
 		}
 		return $idRel;
 	}
 
-    function deleteRel($idContainer)
+    public function deleteRel(int $idContainer) : bool
     {
 		$db = new \Ximdex\Runtime\Db();
         $sql = "DELETE FROM RelTemplateContainer Where IdContainer = $idContainer";
-        $db->Execute($sql);
+        return $db->execute($sql);
     }
 
-	function deleteRelByTemplate($idTemplate)
+	public function deleteRelByTemplate(int $idTemplate) : bool
 	{
 		$db = new \Ximdex\Runtime\Db();
 		$sql = "DELETE FROM RelTemplateContainer WHERE IdTemplate = $idTemplate";
-        $db->Execute($sql);
+        return $db->execute($sql);
 	}
 }

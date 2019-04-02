@@ -128,7 +128,7 @@ class NodeProperty extends GenericData
 		return $result;
 	}
 	
-	public function cleanUpPropertyValue(string $property, string $value = null)
+	public function cleanUpPropertyValue(string $property, string $value = null) : bool
 	{    
 		$db = new \Ximdex\Runtime\Db();
 		$query = sprintf("DELETE FROM NodeProperties WHERE Property = %s AND Value = %s"

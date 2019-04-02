@@ -354,12 +354,12 @@ class Root
         $db->query($query);
         while (! $db->EOF) {
             $node = new Node($db->getValue('IdNode'));
-            $nodes[] = $node->GetPublishedNodeName($channelID);
+            $nodes[] = $node->getPublishedNodeName($channelID);
             $db->next();
         }
         if ($addNodeName && !$this->nodeType->get('IsVirtualFolder')) {
             $parent = new Node($this->parent->get('IdNode'));
-            $nodes[] = $parent->GetPublishedNodeName($channelID);
+            $nodes[] = $parent->getPublishedNodeName($channelID);
         }
         if ($structure) {
             return $nodes;

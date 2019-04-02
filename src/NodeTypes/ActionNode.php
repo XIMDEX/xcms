@@ -73,8 +73,7 @@ class ActionNode extends Root
     public function deleteNode() : bool
     {
         $action = new Action($this->nodeID);
-        $action->deleteAction();
-        return true;
+        return $action->deleteAction();
     }
 }
 

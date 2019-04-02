@@ -170,8 +170,7 @@ class XmlContainerNode extends FolderNode
     public function deleteNode() : bool
     {
         $templatecontainer = new RelTemplateContainer();
-        $templatecontainer->deleteRel($this->nodeID);
-        return true;
+        return $templatecontainer->deleteRel($this->nodeID);
     }
 
     /**

@@ -65,9 +65,13 @@ class LanguageNode extends Root
 	public function deleteNode() : bool
 	{
 		$language = new Language($this->parent->get('IdNode'));
-		$language->deleteLanguage();
+		if (! $language->deleteLanguage()) {
+		    return false;
+		}
 		$nodeProperty = new NodeProperty();
-		$nodeProperty->cleanUpPropertyValue('language', $this->parent->get('IdNode'));
+		if ($nodeProperty->cleanUpPropertyValue('language', $this->parent->get('IdNode')) === false) {
+		    return false;
+		}
 		return true;
 	}
 

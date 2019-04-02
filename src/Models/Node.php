@@ -1365,9 +1365,9 @@ class Node extends NodesOrm
         return $node->get('IdNode');
     }
 
-    function delete()
+    public function delete()
     {
-        return $this->DeleteNode(true);
+        return $this->deleteNode(true);
     }
 
     /**
@@ -1378,30 +1378,30 @@ class Node extends NodesOrm
      */
     public function deleteNode(bool $firstNode = true)
     {
-        if ($this->CanDenyDeletion() && $firstNode) {
+        if ($this->canDenyDeletion() && $firstNode) {
             $this->messages->add(_('Node deletion was denied'), MSG_TYPE_WARNING);
             return false;
         }
-        $this->ClearError();
+        $this->clearError();
         if (! $this->get('IdNode')) {
-            $this->SetError(1);
+            $this->setError(1);
             return false;
         }
-        $IdChildrens = $this->GetChildren();
+        $IdChildrens = $this->getChildren();
         if (! is_null($IdChildrens)) {
             foreach ($IdChildrens as $IdChildren) {
                 $childrenNode = new Node($IdChildren);
                 if ($childrenNode->get('IdNode') > 0) {
-                    $childrenNode->DeleteNode(false);
+                    $childrenNode->deleteNode(false);
                 } else {
-                    $this->SetError(4);
+                    $this->setError(4);
                 }
             }
         }
 
         // Deleting from file system
         if ($this->nodeType->get('HasFSEntity')) {
-            if (App::getValue('RenderizeAll') or in_array($this->GetNodeType(), [
+            if (App::getValue('RenderizeAll') or in_array($this->getNodeType(), [
                 NodeTypeConstants::XSL_TEMPLATE, 
                 NodeTypeConstants::TEMPLATES_ROOT_FOLDER,
                 NodeTypeConstants::SECTION,
@@ -1409,7 +1409,7 @@ class Node extends NodesOrm
                 NodeTypeConstants::PROJECT
             ])) {
                 $absPath = XIMDEX_ROOT_PATH . App::getValue("NodeRoot");
-                $deletablePath = $this->class->GetPathList();
+                $deletablePath = $this->class->getPathList();
                 $nodePath = $absPath . $deletablePath;
                 if (is_dir($nodePath)) {
                     FsUtils::deltree($nodePath);
@@ -1424,23 +1424,30 @@ class Node extends NodesOrm
         $nodeProperty->deleteByNode($this->get('IdNode'));
 
         // first invoking the particular Delete...
-        if ($this->GetNodeType() != NodeTypeConstants::XSL_TEMPLATE) {
-            $this->class->DeleteNode();
+        if ($this->getNodeType() != NodeTypeConstants::XSL_TEMPLATE) {
+            if ($this->class->deleteNode() === false) {
+                if ($this->class->messages) {
+                    $this->messages->mergeMessages($this->class->messages);
+                } else {
+                    $this->messages->add(_('Error in concrete deletion operation'), MSG_TYPE_ERROR);
+                }
+                return false;
+            }
         }
 
         // and the the general one
         $data = new DataFactory($this->nodeID);
-        $data->DeleteAllVersions();
+        $data->deleteAllVersions();
         unset($data);
         $dbObj = new \Ximdex\Runtime\Db();
-        $dbObj->Execute(sprintf("DELETE FROM NodeNameTranslations WHERE IdNode = %d", $this->get('IdNode')));
-        $dbObj->Execute(sprintf("DELETE FROM RelGroupsNodes WHERE IdNode = %d", $this->get('IdNode')));
+        $dbObj->execute(sprintf("DELETE FROM NodeNameTranslations WHERE IdNode = %d", $this->get('IdNode')));
+        $dbObj->execute(sprintf("DELETE FROM RelGroupsNodes WHERE IdNode = %d", $this->get('IdNode')));
         
         // deleting potential entries on table NoActionsInNode
-        $dbObj->Execute(sprintf("DELETE FROM NoActionsInNode WHERE IdNode = %d", $this->get('IdNode')));
+        $dbObj->execute(sprintf("DELETE FROM NoActionsInNode WHERE IdNode = %d", $this->get('IdNode')));
 
         // if the folder is of structured documents type, the relation with templates folder will be deleted
-        if ($this->nodeType->GetIsStructuredDocument()) {
+        if ($this->nodeType->getIsStructuredDocument()) {
             $depsMngr = new DepsManager();
             $depsMngr->deleteBySource(DepsManager::DOCFOLDER_TEMPLATESINC, $this->nodeID);
         }
@@ -1452,8 +1459,8 @@ class Node extends NodesOrm
 
             // reload the dependencies to the documents folders if exist (with the templates folder node)
             $project = new Node($this->getProject());
-            $xsltNode = new \Ximdex\NodeTypes\XsltNode($this);
-            if (!$xsltNode->rel_include_templates_to_documents_folders($project)) {
+            $xsltNode = new XsltNode($this);
+            if (! $xsltNode->rel_include_templates_to_documents_folders($project)) {
                 $this->messages->mergeMessages($xsltNode->messages);
                 return false;
             }
@@ -1461,16 +1468,19 @@ class Node extends NodesOrm
         $nodeDependencies = new NodeDependencies();
         $nodeDependencies->deleteBySource($this->get('IdNode'));
         $nodeDependencies->deleteByTarget($this->get('IdNode'));
-        $dbObj->Execute(sprintf("DELETE FROM FastTraverse WHERE IdNode = %d OR  IdChild = %d", $this->get('IdNode'), $this->get('IdNode')));
+        $dbObj->execute(sprintf("DELETE FROM FastTraverse WHERE IdNode = %d OR  IdChild = %d", $this->get('IdNode'), $this->get('IdNode')));
         $dependencies = new Dependencies();
         $dependencies->deleteDependentNode($this->get('IdNode'));
         $rtn = new RelSemanticTagsNodes();
         $rtn->deleteTags($this->nodeID);
         $res = parent::delete();
-        if ($this->GetNodeType() == NodeTypeConstants::XSL_TEMPLATE) {
-            $this->class->DeleteNode(false);
+        if ($this->getNodeType() == NodeTypeConstants::XSL_TEMPLATE) {
+            if ($this->class->deleteNode(false) === false) {
+                $this->messages->mergeMessages($this->class->messages);
+                return false;
+            }
         }
-        Logger::info("Node " . $this->nodeID . " deleted");
+        Logger::info("Node {$this->nodeID} deleted");
         $this->nodeID = null;
         $this->class = null;
         return $res;
@@ -2090,28 +2100,28 @@ class Node extends NodesOrm
     /**
      * Setting a alias to current node
      *
-     * @param $langID
-     * @param $name
+     * @param int $langID
+     * @param string $name
      * @return bool
      */
-    function SetAliasForLang($langID, $name)
+    public function setAliasForLang(int $langID, string $name)
     {
         if ($this->get('IdNode') > 0) {
             $dbObj = new \Ximdex\Runtime\Db();
             $query = sprintf("SELECT IdNode FROM NodeNameTranslations WHERE IdNode = %d AND IdLanguage = %d", $this->get('IdNode'), $langID);
-            $dbObj->Query($query);
+            $dbObj->query($query);
             if ($dbObj->numRows > 0) {
-                $sql = sprintf("UPDATE NodeNameTranslations SET Name = %s WHERE IdNode = %d AND IdLanguage = %d"
+                $sql = sprintf('UPDATE NodeNameTranslations SET Name = %s WHERE IdNode = %d AND IdLanguage = %d'
                     , $dbObj->sqlEscapeString($name), $this->get('IdNode'), $langID);
             } else {
-                $sql = sprintf("INSERT INTO NodeNameTranslations (IdNode, IdLanguage, Name) VALUES (%d, %d, %s)"
+                $sql = sprintf('INSERT INTO NodeNameTranslations (IdNode, IdLanguage, Name) VALUES (%d, %d, %s)'
                     , $this->get('IdNode'), $langID, $dbObj->sqlEscapeString($name));
             }
             $dbObj = new \Ximdex\Runtime\Db();
-            $dbObj->Execute($sql);
+            $dbObj->execute($sql);
             if ($dbObj->numErr) {
                 $this->messages->add(_('Alias could not be updated, incorrect operation'), MSG_TYPE_ERROR);
-                Logger::error(sprintf("Error in query %s or %s", $query, $sql));
+                Logger::error(sprintf('Error in query %s or %s', $query, $sql));
                 return false;
             }
             return true;
@@ -2362,16 +2372,16 @@ class Node extends NodesOrm
      * @param int $minIdNode
      * @return array
      */
-    function TraverseToRoot($minIdNode = 10000)
+    public function traverseToRoot(int $minIdNode = 10000)
     {
         $dbObj = new \Ximdex\Runtime\Db();
-        $sql = sprintf("SELECT IdNode FROM FastTraverse WHERE IdChild= %d AND IdNode >=%d ORDER BY Depth DESC"
+        $sql = sprintf("SELECT IdNode FROM FastTraverse WHERE IdChild = %d AND IdNode >= %d ORDER BY Depth DESC"
             , $this->get('IdNode'), $minIdNode);
-        $dbObj->Query($sql);
+        $dbObj->query($sql);
         $list = array();
-        while (!$dbObj->EOF) {
-            $list[] = $dbObj->GetValue('IdNode');
-            $dbObj->Next();
+        while (! $dbObj->EOF) {
+            $list[] = $dbObj->getValue('IdNode');
+            $dbObj->next();
         }
         return $list;
     }

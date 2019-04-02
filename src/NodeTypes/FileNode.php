@@ -203,12 +203,14 @@ class FileNode extends Root
     {
         // Deletes dependencies in rel tables
         $depsMngr = new DepsManager();
-        $result = $depsMngr->deleteByTarget(DepsManager::NODE2ASSET, $this->parent->get('IdNode'));
-        $result = $depsMngr->deleteBySource(DepsManager::NODE2ASSET, $this->parent->get('IdNode')) && $result;
-        if ($result) {
-            Logger::info('Filenode dependencies deleted');
+        if ($depsMngr->deleteByTarget(DepsManager::NODE2ASSET, $this->parent->get('IdNode')) === false) {
+            return false;
         }
-        return $result;
+        if ($depsMngr->deleteBySource(DepsManager::NODE2ASSET, $this->parent->get('IdNode')) === false) {
+            return false;
+        }
+        Logger::info('Filenode dependencies deleted');
+        return true;
     }
 
     /**

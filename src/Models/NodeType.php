@@ -697,41 +697,26 @@ class NodeType extends NodeTypesOrm
      * 
      * @return int (status) | null
      */
-    public function deleteNodeType()
+    public function deleteNodeType() : bool
     {
         $sql = sprintf('DELETE FROM NodeAllowedContents WHERE idNodeType = %d', $this->get('IdNodeType'));
         $dbObj = new \Ximdex\Runtime\Db();
-        $dbObj->Execute($sql);
-        $salida = $dbObj->numErr;
-        if ($dbObj->numErr != 0) {
-            $this->SetError(1);
-            return null;
-        }
-        if ($salida != 0) {
-            return $salida;
+        if ($dbObj->execute($sql) === false) {
+            $this->setError(1);
+            return false;
         }
         $sql = sprintf('DELETE FROM NodeDefaultContents WHERE idNodeType = %d', $this->get('IdNodeType'));
-        $dbObj->Execute($sql);
-        $salida = $dbObj->numErr;
-        if ($dbObj->numErr != 0) {
-            $this->SetError(1);
-            return null;
-        }
-        if ($salida != 0) {
-            return $salida;
+        if ($dbObj->execute($sql) === false) {
+            $this->setError(1);
+            return false;
         }
         $sql = sprintf('DELETE FROM NodeTypes WHERE idNodeType = %d', $this->get('IdNodeType'));
-        $dbObj->Execute($sql);
-        $salida = $dbObj->numErr;
-        if ($dbObj->numErr != 0) {
-            $this->SetError(1);
-            return null;
-        }
-        if ($salida != 0) {
-            return $salida;
+        if ($dbObj->execute($sql) === false) {
+            $this->setError(1);
+            return false;
         }
         $this->ID = null;
-        return $salida;
+        return true;
     }
 
     /**

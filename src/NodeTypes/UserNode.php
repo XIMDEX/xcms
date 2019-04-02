@@ -57,7 +57,9 @@ class UserNode extends Root
 	public function deleteNode() : bool
 	{
 		$user = new User($this->parent->get('IdNode'));
-		$user->deleteUser();
+		if ($user->deleteUser() === false) {
+		    return false;
+		}
 		return true;
 	}
 }

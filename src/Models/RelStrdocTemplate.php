@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -31,18 +31,25 @@ use Ximdex\Data\GenericData;
 
 class RelStrdocTemplate extends GenericData
 {
-    var $_idField = 'id';
-    var $_table = 'RelStrdocTemplate';
-    var $_metaData = array(
-        'id' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
-        'source' => array('type' => "int(12)", 'not_null' => 'true'),
-        'target' => array('type' => "int(12)", 'not_null' => 'true')
-    );
-    var $_uniqueConstraints = array(
-        'rel' => array('source', 'target')
-    );
-    var $_indexes = array('id');
-    var $id;
-    var $source = 0;
-    var $target = 0;
+    public $_idField = 'id';
+    
+    public $_table = 'RelStrdocTemplate';
+    
+    public $_metaData = [
+        'id' => ['type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true],
+        'source' => ['type' => "int(12)", 'not_null' => 'true'],
+        'target' => ['type' => "int(12)", 'not_null' => 'true']
+    ];
+    
+    public $_uniqueConstraints = [
+        'rel' => ['source', 'target']
+    ];
+    
+    public $_indexes = ['id'];
+    
+    public $id;
+    
+    public $source;
+    
+    public $target;
 }

@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -29,20 +29,29 @@ namespace Ximdex\Models;
 
 use Ximdex\Data\GenericData;
 
-class RelNode2Asset extends GenericData {
-
-    var $_idField = 'id';
-    var $_table = 'RelNode2Asset';
-    var $_metaData = array(
+class RelNode2Asset extends GenericData
+{
+    public $_idField = 'id';
+    
+    public $_table = 'RelNode2Asset';
+    
+    public $_metaData = array
+    (
         'id' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
         'source' => array('type' => "int(12)", 'not_null' => 'true'),
         'target' => array('type' => "int(12)", 'not_null' => 'true')
     );
-    var $_uniqueConstraints = array(
+    
+    public $_uniqueConstraints = array
+    (
         'rel' => array('source', 'target')
     );
-    var $_indexes = array('id');
-    var $id;
-    var $source = 0;
-    var $target = 0;
+    
+    public $_indexes = array('id');
+    
+    public $id;
+    
+    public $source;
+    
+    public $target;
 }

@@ -37,30 +37,30 @@
 		<div class="form_item">
 			<label for="db_server">Host</label>
 			<input ng-model="host" type="text" name="host" id="db_server" value="{{host}}" 
-					required ng-class="{success:hostCheck==true, error_element:hostCheck == 'host'}" />
+					required ng-class="{success:hostCheck == true, error_element:hostCheck == 'host'}" />
 		</div>
 		<div class="form_item">
 			<label for="db_port" >Port</label>
-			<input ng-model="port" ng-class="{success:hostCheck==true, error_element:hostCheck == 'host'}" type="text" 
+			<input ng-model="port" ng-class="{success:hostCheck == true, error_element:hostCheck == 'host'}" type="text" 
 					name="port" id="db_port" value="{{port}}" />
 		</div>
 		<div class="form_item">
 			<label for="db_admin">Database Admin User</label>
 			<input ng-model="root_user" type="text" name="root_user" id="db_admin" value="ximdex" required 
-					ng-class="{success:hostCheck==true, error_element:hostCheck == 'root_user'}" 
+					ng-class="{success:hostCheck == true, error_element:hostCheck == 'root_user'}" 
 					placeholder="Insert your database user here" />
 		</div>
 		<div class="form_item">
 			<label for="db_pass">Database Admin Password</label>
 			<input ng-model="root_pass" type="password" name="root_pass" id="db_pass" value="ximdex" 
 					placeholder="Insert your admin user password here" 
-					ng-class="{success:hostCheck==true, error_element:hostCheck == 'root_user'}" />
+					ng-class="{success:hostCheck == true, error_element:hostCheck == 'root_user'}" />
 			<p class="errors" ng-show="loginErrors">{{loginErrors}}</p>
 		</div>
 		<div class="form_item  form_item--dbname full-width">
 			<label for="name">Database name</label>
 			<input ng-model="name" required type="text" name="name" id="name" value="ximdex" 
-					ng-class="{success:hostCheck==true, error_element:hostCheck == 'exist_db'}"  ng-pattern="/^\w+$/" />
+					ng-class="{success:hostCheck == true, error_element:hostCheck == 'exist_db'}"  ng-pattern="/^\w+$/" />
 			<p class=" warning error--inline overwrite" ng-show="dbErrors">{{dbErrors}}</p>
 		</div>
 		<button ng-hide="dbErrors" class="launch_ximdex action_launcher ladda-button" ui-ladda="loading" data-style="slide-up" 
@@ -88,6 +88,6 @@
 		<button class="launch_ximdex action_launcher ladda-button"  ui-ladda="loadingAddUser" data-style="slide-up" 
 				xim-state="loadingAddUser" ng-click="sendForm()">Add user</button>
 		<button class="launch_ximdex action_launcher ladda-button" ui-ladda="loadingSkipUser" data-style="slide-up" 
-					xim-state="loadingSkipUser" ng-click="sendForm(true)">Skip</button>
+				xim-state="loadingSkipUser" ng-click="sendForm(true)">Skip</button>
 	</div>
 </form>

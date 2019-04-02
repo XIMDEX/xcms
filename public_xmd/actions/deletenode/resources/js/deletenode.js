@@ -33,6 +33,9 @@ X.actionLoaded(function(event, fn, params)
 	fn('.delete_button').bind("click", function(event) {
 		onDelete(event,fn,form,fm);
 	});
+	fn('#asegurado').bind("change", function(event) {
+		fn("#delete_node_buttons").attr("disabled", ! this.checked);
+	});
 });
 
 function onCancel(event, tab)

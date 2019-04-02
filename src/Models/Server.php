@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -36,6 +36,7 @@ use Ximdex\Runtime\Db;
 class Server extends ServersOrm
 {
     const MAX_CYCLES_TO_RETRY_PUMPING = 0;
+    
     const SECONDS_TO_WAIT_FOR_RETRY_PUMPING = 60;
     
     private $serverNode;
@@ -55,7 +56,7 @@ class Server extends ServersOrm
     
     public function getChannels() : array
     {
-        if (!$this->serverNode) {
+        if (! $this->serverNode) {
             $this->setServerNode($this->get('IdServer'));
         }
         return $this->serverNode->getChannels($this->get('IdServer'));
@@ -147,7 +148,6 @@ class Server extends ServersOrm
         if ($portalId) {
             $sql .= ' AND IdPortalFrame = ' . $portalId;
         }
-        // $sql .= ' GROUP BY ServerId';
         $db = new Db();
         if ($db->query($sql) === false) {
             throw new \Exception('SQL error');
@@ -164,7 +164,6 @@ class Server extends ServersOrm
         $stats['soft'] = (int) $db->getValue('soft');
         $stats['stopped'] = (int) $db->getValue('stopped');
         $stats['delayed'] = (! $this->get('ActiveForPumping')) ? $db->getValue('pending') + $db->getValue('active') : 0;
-        // $stats['cancelled'] = (int) $db->getValue('cancelled');
         return $stats;
     }
     

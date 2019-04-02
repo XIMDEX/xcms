@@ -37,7 +37,8 @@ class Channel extends ChannelsOrm
     
     public $msgErr;
     
-    public $errorList = array(
+    public $errorList = array
+    (
         1 => 'Database connection error',
         2 => 'Channel does not exist',
         3 => 'Database inconsistency'
@@ -268,7 +269,7 @@ class Channel extends ChannelsOrm
     public function deleteChannel()
     {
         if (! $this->get('IdChannel')) {
-            $this->SetError(2);
+            $this->setError(2);
             return false;
         }
         return $this->delete();
@@ -279,7 +280,7 @@ class Channel extends ChannelsOrm
         return $this->get('Filter');
     }
 
-    public function SetFilter(string $filter)
+    public function setFilter(string $filter)
     {
         if (! $this->get('IdChannel')) {
             $this->SetError(2);
@@ -297,7 +298,7 @@ class Channel extends ChannelsOrm
         $this->flagErr = false;
     }
 
-    public function SetError(int $code)
+    public function setError(int $code)
     {
         $this->flagErr = true;
         $this->numErr = $code;
@@ -320,7 +321,7 @@ class Channel extends ChannelsOrm
      * @param int $idchannel
      * @return boolean
      */
-    function setDefaultChannelToZero(int $idchannel)
+    public function setDefaultChannelToZero(int $idchannel)
     {
         $dbObj = new \Ximdex\Runtime\Db();
         return $dbObj->Execute(sprintf('UPDATE Channels SET Default_Channel = 0 WHERE IdChannel <> %s', $idchannel));
@@ -344,5 +345,18 @@ class Channel extends ChannelsOrm
     public function setIdLanguage(string $idLanguage) : void
     {
         $this->idLanguage = $idLanguage;
+    }
+    
+    public function hasServers() : bool
+    {
+        if (! $this->IdChannel) {
+            return false;
+        }
+        $relServers = new RelServersChannels();
+        $servers = $relServers->count('IdChannel = ' . $this->IdChannel);
+        if ($servers === false) {
+            return false;
+        }
+        return $servers > 0;
     }
 }

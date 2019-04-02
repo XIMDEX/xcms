@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -31,18 +31,27 @@ use Ximdex\Data\GenericData;
 
 class NodetypeModesOrm extends GenericData
 {
-    var $_idField = 'id';
-    var $_table = 'NodetypeModes';
-    var $_metaData = array(
-        'id' => array('type' => "int(11)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
-        'IdNodeType' => array('type' => "int(11)", 'not_null' => 'true'),
+    public $_idField = 'id';
+    
+    public $_table = 'NodetypeModes';
+    
+    public $_metaData = array
+    (
+        'id' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
+        'IdNodeType' => array('type' => "int(12)", 'not_null' => 'true'),
         'Mode' => array('type' => "enum('C', 'R', 'U', 'D')", 'not_null' => 'true'),
-        'IdAction' => array('type' => "int(11)", 'not_null' => 'false')
+        'IdAction' => array('type' => "int(12)", 'not_null' => 'false')
     );
-    var $_uniqueConstraints = array();
-    var $_indexes = array('id');
-    var $id;
-    var $IdNodeType;
-    var $Mode;
-    var $IdAction;
+    
+    public $_uniqueConstraints = array(['IdNodeType', 'Mode', 'IdAction']);
+    
+    public $_indexes = array('id');
+    
+    public $id;
+    
+    public $IdNodeType;
+    
+    public $Mode;
+    
+    public $IdAction;
 }

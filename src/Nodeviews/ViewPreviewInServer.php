@@ -66,7 +66,7 @@ class ViewPreviewInServer extends AbstractView
             return false;
         }
         $commandParams = array();
-        $commandParams['publishedName'] = $this->_node->GetPublishedNodeName($this->_idChannel);
+        $commandParams['publishedName'] = $this->_node->getPublishedNodeName($this->_idChannel);
         $commandParams['publishedPath'] = $this->_node->GetPublishedPath();
         $commandParams['publishedBaseURL'] = $this->_serverNode->class->GetURL($previewServer);
         $commandParams['publishedURL'] = $commandParams['publishedBaseURL'] . $commandParams['publishedPath']

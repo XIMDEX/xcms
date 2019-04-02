@@ -294,14 +294,14 @@ class Language extends LanguagesOrm
 	 * 
 	 * @return boolean
 	 */
-	public function deleteLanguage()
+	public function deleteLanguage() : bool
 	{
 		$this->clearError();
-		$dbObj = new \Ximdex\Runtime\Db();
 		if (! is_null($this->get('IdLanguage'))) {
 		    
 			// Deleting from database
-			$dbObj->Execute(sprintf("DELETE FROM Languages WHERE IdLanguage= %d", $this->get('IdLanguage')));
+		    $dbObj = new \Ximdex\Runtime\Db();
+			$dbObj->execute(sprintf("DELETE FROM Languages WHERE IdLanguage = %d", $this->get('IdLanguage')));
 			if ($dbObj->numErr) {
 				$this->setError(4);
 				return false;

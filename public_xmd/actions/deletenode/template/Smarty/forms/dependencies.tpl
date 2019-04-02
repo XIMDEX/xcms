@@ -29,42 +29,12 @@
     {include file="actions/components/title_Description.tpl"}
     <div class="message message-warning">
         <p class="icon">{t}This action cannot be undone{/t}.</p>
-        {* if ($isPublished || $pendingTasks)}
-            <p>{t}This action does not carry on expiration of nodes{/t}. </p>
-        {/if *}
     </div>
-    <div class="action_content">
+    <div class="action_content delete_node_content">
         <div class="row tarjeta">
             <div class="small-12 columns title_tarjeta">
                 <h2 class="h2_general">{t}Delete{/t}</h2>
             </div>
-            {if ($depList)}
-                <label class="label_title label_general">{t}The following nodes will be deleted on cascade{/t}. 
-                    {t}Deleting this node all its children will be deleted too{/t}.</label>
-                <div class="deletenodes">
-                    <ul>
-                        {foreach from=$depList key=id item=dep}
-                            <li class="box_short" data-tooltip="{{$dep.path|gettext}} ">
-                                <div class="name">{$dep.name|gettext}</div> 
-                                <span class="node_id">({$id})</span>
-                            </li>
-                        {foreachelse}
-                            <li>
-                                <span>{t}No dependencies were found{/t}</span>
-                            </li>
-                        {/foreach}
-                    </ul>
-                </div>
-                <div class="small-12 columns">
-                    <input type="checkbox" name="unpublishnode" id="asegurado" class="hidden-focus" />
-                    <label class="input-form checkbox-label" for="asegurado" style="color: red;">{t}Tick to delete all dependencies{/t}</label>
-                </div>
-            {else}
-                <div class="deletenodes">
-                    <label class="label_title label_general">{t}This node has not dependecies at the moment{/t}.</label>
-                    <input type="hidden" name="unpublishnode" id="asegurado" value="1" />
-                </div>
-            {/if}
             {if ($pendingTasks)}
                 <div class="small-12 columns">
                     <div class="alert alert-info">
@@ -93,9 +63,36 @@
                 <strong>Info!</strong> 
                 {t}If a long time is elapsed before action is executed, list of dependencies and children of node may change{/t}.
             </div>
-        </div>
+            {if ($depList)}
+                <label class="label_title label_general">{t}The following nodes will be deleted on cascade{/t}. 
+                    {t}Deleting this node all its children will be deleted too{/t}.</label>
+                <div class="deletenodes">
+                    <ul>
+                        {foreach from=$depList key=id item=dep}
+                            <li class="box_short" data-tooltip="{{$dep.path|gettext}} ">
+                                <div class="name">{$dep.name|gettext}</div> 
+                                <span class="node_id">({$id})</span>
+                            </li>
+                        {foreachelse}
+                            <li>
+                                <span>{t}No dependencies were found{/t}</span>
+                            </li>
+                        {/foreach}
+                    </ul>
+                </div>
+                <div class="small-12 columns">
+                    <input type="checkbox" name="unpublishnode" id="asegurado" class="hidden-focus" />
+                    <label class="input-form checkbox-label" for="asegurado" style="color: red;">{t}Tick to delete all dependencies{/t}</label>
+                </div>
+            {else}
+                <div class="deletenodes">
+                    <label class="label_title label_general">{t}This node has not dependecies at the moment{/t}.</label>
+                    <input type="hidden" name="unpublishnode" id="asegurado" value="1" />
+                </div>
+            {/if}
+            </div>
             <div class="small-12 columns">
-                <fieldset class="buttons-form">
+                <fieldset class="buttons-form" {if ($depList)} disabled="disabled" {/if} id="delete_node_buttons">
                     {button class="delete_button  btn main_action" label="Delete"}
                 </fieldset>
             </div>

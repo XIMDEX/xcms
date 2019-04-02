@@ -38,6 +38,7 @@ use Ximdex\Models\SectionType;
 use Ximdex\Utils\SimpleXMLExtended;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\Models\RelSemanticTagsNodes;
+use Ximdex\Runtime\Constants;
 
 class HTMLDocumentNode extends AbstractStructuredDocument
 {
@@ -389,8 +390,12 @@ class HTMLDocumentNode extends AbstractStructuredDocument
         $html .= '<meta charset="UTF-8">' . PHP_EOL;
         $html .= '<meta name="viewport" content="width=device-width, initial-scale=1.0">' . PHP_EOL;
         $html .= '<meta http-equiv="X-UA-Compatible" content="ie=edge">' . PHP_EOL;
-        $html .= '<meta name="generator" content = "Ximdex CMS, Semantic Headless CMS and DMS, http://www.ximdex.com" >' . PHP_EOL;
-        $html .= '<meta name="owner" content = "' . App::getValue("VersionName") . '">' . PHP_EOL;
+        if (Constants::HTML_GENERATOR_TAG) {
+            $html .= '<meta name="generator" content="' . Constants::HTML_GENERATOR_TAG . '">' . PHP_EOL;
+        }
+        if (App::getValue('Owner')) {
+            $html .= '<meta name="owner" content="' . App::getValue('Owner') . '">' . PHP_EOL;
+        }
         if (isset($info['metadata'])) {
             foreach ($info['metadata'] as $meta => $value) {
                 if (empty($value)) {
@@ -527,8 +532,12 @@ class HTMLDocumentNode extends AbstractStructuredDocument
         $tpl = '<meta charset="UTF-8">' . PHP_EOL;
         $tpl .= '<meta name="viewport" content="width=device-width, initial-scale=1.0">' . PHP_EOL;
         $tpl .= '<meta http-equiv="X-UA-Compatible" content="ie=edge">' . PHP_EOL;
-        $tpl .= '<meta name="generator" content="Ximdex CMS, Semantic Headless CMS and DMS, http://www.ximdex.com" >' . PHP_EOL;
-        $tpl .= '<meta name="owner" content = "' . App::getValue("VersionName") . '">' . PHP_EOL;
+        if (Constants::HTML_GENERATOR_TAG) {
+            $tpl .= '<meta name="generator" content="' . Constants::HTML_GENERATOR_TAG . '">' . PHP_EOL;
+        }
+        if (App::getValue('Owner')) {
+            $tpl .= '<meta name="owner" content = "' . App::getValue('Owner') . '">' . PHP_EOL;
+        }
         $tpl .= '%s' . PHP_EOL;
         foreach ($css as $file) {
             $tpl .= '<link rel="stylesheet" type="text/css" href="@@@RMximdex.pathto(' . $file . ')@@@" >' . PHP_EOL;

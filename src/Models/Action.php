@@ -360,16 +360,20 @@ class Action extends ActionsOrm
     /**
      * Delete current action
      */
-    public function deleteAction()
+    public function deleteAction() : bool
     {
         $dbObj = new \Ximdex\Runtime\Db();
         $query = sprintf('DELETE FROM RelRolesActions WHERE IdAction = %d', $this->ID);
         $dbObj->execute($query);
         if ($dbObj->numErr != 0) {
             $this->setError(1);
+            return false;
         }
-        $this->delete();
+        if ($this->delete() === false) {
+            return false;
+        }
         $this->ID = null;
+        return true;
     }
 
     public function getModule()

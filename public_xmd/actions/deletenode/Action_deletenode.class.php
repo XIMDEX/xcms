@@ -216,43 +216,56 @@ class Action_deletenode extends ActionAbstract
 					}
 				}
 			}
-
-			// Deleting recursively
-			$node = new Node($idNode);
-			$node->delete();
+			
+			// Deleting dependencies
+			$error = false;
 			$err = null;
-			if ($node->numErr) {
-				$err = _('An error occurred while deleting:');
-				$err .= '<br>' . $node->get('IdNode') . ' ' . $node->GetPath() . '<br>' . _('Error message: ') . $node->msgErr . '<br><br>';
-			}
 			if (is_array($depList)) {
 				foreach($depList as $depID) {
 					$depNode = new Node($depID);
-					$depNode->delete();
-					if ($depNode->numErr) {
-					    if (! $err) {
-						    $err = _('An error occurred while deleting dependencies: ');
-                            $err .= '<br>' . $depNode->get('IdNode'). ' ' . $depNode->GetPath() . '<br>' . _('Error message: ') 
-                                . $depNode->msgErr . '<br><br>';
-					    }
+					if ($depNode->delete() === false) {
+					    $this->messages->mergeMessages($depNode->messages);
+					    $error = true;
 					}
-				}
-				if (strlen($err)) {
-					$this->messages->add($err, MSG_TYPE_ERROR);
-				} else {
-					$this->messages->add(_('All nodes were successfully deleted'), MSG_TYPE_NOTICE);
+					if ($depNode->numErr) {
+					    $err = _('An error occurred while deleting dependencies: ');
+                        $err .= '<br>' . $depNode->get('IdNode'). ' ' . $depNode->getPath() . '<br>' . _('Error message: ') 
+                            . $depNode->msgErr . '<br><br>';
+                        $error = true;
+					}
 				}
 			}
 			
+			// Deleting recursively
+			if (! $error) {
+    			$node = new Node($idNode);
+    			if ($node->delete() === false) {
+    			    $this->messages->mergeMessages($node->messages);
+    			    $error = true;
+    			}
+    			if ($node->numErr) {
+    			    $err = _('An error occurred while deleting:');
+    			    $err .= '<br>' . $node->get('IdNode') . ' ' . $node->GetPath() . '<br>' . _('Error message: ') . $node->msgErr . '<br><br>';
+    			    $error = true;
+    			}
+    			if (strlen($err)) {
+    			    $this->messages->add($err, MSG_TYPE_ERROR);
+    			} elseif (! $error) {
+    			    $this->messages->add(_('All nodes were successfully deleted'), MSG_TYPE_NOTICE);
+    			}
+			}
+			
             // Reload the templates include files in the current project
-			if ($node->GetNodeType() == NodeTypeConstants::XSL_TEMPLATE or $node->GetNodeType() == NodeTypeConstants::TEMPLATES_ROOT_FOLDER 
-			    or $node->GetNodeType() == NodeTypeConstants::SERVER or $node->GetNodeType() == NodeTypeConstants::SECTION)
-			{
-			    // Do this when the deleted node make a deletion of templates (node types like projects, servers sections, templates)
-			    $xsltNode = new XsltNode($node);
-			    if ($xsltNode->reload_templates_include($project) === false) {
-			        $this->messages->mergeMessages($xsltNode->messages);
-			    }
+			if (! $error) {
+    			if ($node->getNodeType() == NodeTypeConstants::XSL_TEMPLATE or $node->getNodeType() == NodeTypeConstants::TEMPLATES_ROOT_FOLDER 
+    			    or $node->getNodeType() == NodeTypeConstants::SERVER or $node->getNodeType() == NodeTypeConstants::SECTION)
+    			{
+    			    // Do this when the deleted node make a deletion of templates (node types like projects, servers sections, templates)
+    			    $xsltNode = new XsltNode($node);
+    			    if ($xsltNode->reload_templates_include($project) === false) {
+    			        $this->messages->mergeMessages($xsltNode->messages);
+    			    }
+    			}
 			}
 		} else {
 		    
@@ -274,8 +287,11 @@ class Action_deletenode extends ActionAbstract
 			    
 			    // If it has not permit to cascade deletion and node has not children and has not dependencies
 			    // Here it is allowed atomic deletion
-				$node->delete();
-				$this->messages->add(_('Action successfully performed.'), MSG_TYPE_NOTICE);
+			    if ($node->delete() === false) {
+			        $this->messages->mergeMessages($node->messages);
+			    } else {
+				    $this->messages->add(_('Action successfully performed.'), MSG_TYPE_NOTICE);
+			    }
 			}
 		}
 		$values = array(

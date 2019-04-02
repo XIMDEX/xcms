@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -31,18 +31,27 @@ use Ximdex\Data\GenericData;
 
 class RelServersChannelsOrm extends GenericData
 {
-    var $_idField = 'IdRel';
-    var $_table = 'RelServersChannels';
-    var $_metaData = array(
+    public $_idField = 'IdRel';
+    
+    public $_table = 'RelServersChannels';
+    
+    public $_metaData = array
+    (
         'IdRel' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
         'IdServer' => array('type' => "int(12)", 'not_null' => 'false'),
         'IdChannel' => array('type' => "int(12)", 'not_null' => 'false')
     );
-    var $_uniqueConstraints = array(
+    
+    public $_uniqueConstraints = array
+    (
         'IdRel' => array('IdRel')
     );
-    var $_indexes = array('IdRel');
-    var $IdRel;
-    var $IdServer = 0;
-    var $IdChannel = 0;
+    
+    public $_indexes = array('IdRel');
+    
+    public $IdRel;
+    
+    public $IdServer;
+    
+    public $IdChannel;
 }

@@ -641,7 +641,7 @@ class GenericData
             return $query;
         }
         $dbObj = new \Ximdex\Runtime\Db();
-        if ($dbObj->Execute($query) === false) {
+        if ($dbObj->execute($query) === false) {
             return false;
         }
         $this->_applyFilter('afterDelete');
@@ -656,10 +656,10 @@ class GenericData
      * @param bool $escape
      * @return bool
      */
-    public function deleteAll(string $condition = '', array $params = null, bool $escape = true)
+    public function deleteAll(string $condition = '', array $params = null, bool $escape = true) : bool
     {
         $condition = $this->_getCondition($condition, $params, $escape);
-        $query = sprintf("DELETE FROM %s WHERE %s", $this->_table, $condition);
+        $query = sprintf('DELETE FROM %s WHERE %s', $this->_table, $condition);
         return $this->execute($query);
     }
 

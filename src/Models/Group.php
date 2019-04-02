@@ -251,24 +251,24 @@ class Group extends GroupsOrm
 	/**
 	 * Deleting a group, deleting first its subscriptions
 	 * 
-	 * @return void|boolean
+	 * @return boolean
 	 */
-	public function deleteGroup()
+	public function deleteGroup() : bool
 	{
 		$this->clearError();
-		if ($this->GetGeneralGroup() == $this->get('IdGroup')) {
-			$this->SetError(9);
+		if ($this->getGeneralGroup() == $this->get('IdGroup')) {
+			$this->setError(9);
 			return false;
 		}
 		if (! is_null($this->get('IdGroup'))) {
 		    
 			// Deleting subscription of all groups
-			$users = $this->GetUserList();
+			$users = $this->getUserList();
 			if (sizeof($users)) {
 				foreach ($users as $uid) {
-					$this->DeleteUser($uid);
+					$this->deleteUser($uid);
 					if ($this->numErr) {
-						$this->SetError(7);
+						$this->setError(7);
 						return false;
 					}
 				}
@@ -276,16 +276,18 @@ class Group extends GroupsOrm
 
 			// Deleting also group-node relation in DB
 			$dbObj = new \Ximdex\Runtime\Db();
-			$dbObj->Execute(sprintf("DELETE FROM RelGroupsNodes WHERE IdGroup = %d", $this->get('IdGroup')));
+			$dbObj->execute(sprintf("DELETE FROM RelGroupsNodes WHERE IdGroup = %d", $this->get('IdGroup')));
 			if ($dbObj->numErr) {
-				$this->SetError(5);
+				$this->setError(5);
 				return false;
 			}
 
 			// Deleting form DB
-			$this->delete();
+			if ($this->delete() === false) {
+			    return false;
+			}
 		} else {
-			$this->SetError(1);
+			$this->setError(1);
 			return false;
 		}
 		return true;

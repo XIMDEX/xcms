@@ -29,6 +29,7 @@ namespace Ximdex\NodeTypes;
 
 use Ximdex\Models\Channel;
 use Ximdex\Models\NodeProperty;
+use Ximdex\Models\ServerFrame;
 
 /**
  * @brief Handles channels
@@ -62,10 +63,43 @@ class ChannelNode extends Root
 	 */
 	public function deleteNode() : bool
 	{
-		$channel = new Channel($this->nodeID);
-		$channel->DeleteChannel();
-		$nodeProperty = new NodeProperty();
-		$nodeProperty->cleanUpPropertyValue('channel', $this->parent->get('IdNode'));
+	    if (! $this->nodeID) {
+	        return false;
+	    }
+	    $channel = new Channel($this->nodeID);
+	    if (! $channel->getID()) {
+	        return false;
+	    }
+	    if ($channel->hasServers()) {
+	        $this->messages->add('This channel is in use by any server. deletion denied', MSG_TYPE_ERROR);
+	        return false;
+	    }
+	    
+	    // Remove related server frames with sync files
+	    $serverFrame = new ServerFrame();
+	    $serverFrames = $serverFrame->find('IdSync', 'ChannelId = ' . $this->nodeID, null, MONO);
+	    if ($serverFrames === false) {
+	        return false;
+	    }
+	    foreach ($serverFrames as $id) {
+	        $serverFrame = new ServerFrame($id);
+	        if (! $serverFrame->get('IdSync')) {
+	            continue;
+	        }
+	        if ($serverFrame->deleteSyncFile() === false) {
+	            return false;
+	        }
+	        if ($serverFrame->delete() === false) {
+	            return false;
+	        }
+	    }
+	    $nodeProperty = new NodeProperty();
+	    if ($nodeProperty->cleanUpPropertyValue('channel', $this->parent->get('IdNode')) === false) {
+	        return false;
+	    }
+		if ($channel->deleteChannel() === false) {
+		    return false;
+		}
 		return true;
 	}
 }

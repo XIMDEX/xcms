@@ -311,7 +311,7 @@ class XsltNode extends FileNode
      */
     public function deleteNode() : bool
     {
-        Logger::info('Xslt dependencies deleted');
+        // Logger::info('Xslt dependencies deleted');
         return true;
     }
 

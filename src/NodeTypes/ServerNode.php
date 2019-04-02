@@ -103,7 +103,9 @@ class ServerNode extends FolderNode
         $servers = $this->getPhysicalServerList();
         if ($servers) {
             foreach ($servers as $serverID) {
-                $this->deletePhysicalServer($serverID);
+                if ($this->deletePhysicalServer($serverID) === false) {
+                    return false;
+                }
             }
         }
         return true;
@@ -126,10 +128,10 @@ class ServerNode extends FolderNode
         return $this->dbObj->newID;
     }
 
-    public function deletePhysicalServer(int $physicalID)
+    public function deletePhysicalServer(int $physicalID) : bool
     {
         $sql = 'DELETE FROM Servers WHERE IdServer = \'' . $physicalID . '\' AND IdNode = \'' . $this->nodeID . '\'';
-        $this->dbObj->Execute($sql);
+        return $this->dbObj->execute($sql);
     }
 
     public function setProtocol(int $physicalID, string $protocolID = null)
@@ -317,7 +319,7 @@ class ServerNode extends FolderNode
 
     public function hasChannel(int $physicalID, int $channelID)
     {
-        $list = $this->GetChannels($physicalID);
+        $list = $this->getChannels($physicalID);
         if (in_array($channelID, $list)) {
             return true;
         } else {
@@ -331,13 +333,13 @@ class ServerNode extends FolderNode
         $this->dbObj->Execute($sql);
     }
 
-    function DeleteChannel($physicalID, $channelID)
+    public function deleteChannel(int $physicalID, int $channelID)
     {
         $sql = 'DELETE FROM RelServersChannels WHERE IdServer = \'' . $physicalID . '\' AND IdChannel = \'' . $channelID . '\'';
         $this->dbObj->Execute($sql);
     }
 
-    function AddChannel($physicalID, $channelID)
+    public function addChannel(int $physicalID, int $channelID)
     {
         $sql = 'INSERT INTO RelServersChannels (IdRel, IdServer, IdChannel) VALUES (NULL, ' . DB::sqlEscapeString($physicalID) 
             . ', ' . DB::sqlEscapeString($channelID) . ')';
