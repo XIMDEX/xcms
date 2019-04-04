@@ -68,8 +68,7 @@ class GroupNode extends Root
 	 */
 	public function canDenyDeletion()
 	{
-		$group = new Group();
-		return ($this->parent->get('IdNode') == $group->GetGeneralGroup());
+		return ($this->parent->get('IdNode') == Group::getGeneralGroup());
 	}
 
 	/**
@@ -80,7 +79,7 @@ class GroupNode extends Root
 	public function renameNode(string $name) : bool
 	{
 		$grupo = new Group($this->parent->get('IdNode'));
-		$grupo->SetGroupName($name);
+		$grupo->setGroupName($name);
 		$this->updatePath();
 		return true;
 	}

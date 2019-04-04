@@ -26,15 +26,13 @@
 {* Shows form for users who have not general permit to cascade deletion *}
 {* It just can be deleted when it has not children and has not dependencies *}
 <form method="post" name="formulario" id="formulario" action="{$action_url}">
-    <div class="action_header">
-    	<h2>{t}Delete element{/t}</h2>
-	   <fieldset class="buttons-form">
-    		{button label="Cancel" class="cancel_button btn"}
-	   	    {button label="Delete" class="validate focus  btn main_action" 
-                message="You are going to delete system nodes. Would you like to continue?"}
-        </fieldset>
-    </div>
+    {include file="actions/components/title_Description.tpl"}
 	<div class="action_content">
+	    <fieldset class="buttons-form">
+            {button label="Cancel" class="cancel_button btn"}
+            {button label="Delete" class="validate focus  btn main_action" 
+                    message="You are going to delete system nodes. Would you like to continue?"}
+        </fieldset>
 		<fieldset>
 			<input type="hidden" name="nodeid" value="{$id_node}" />
 		    <legend><span>{t}Would you like to delete{/t} {$nameNode}?</span></legend>

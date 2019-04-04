@@ -367,11 +367,17 @@ class User extends UsersOrm
     {
         $permission = new Permission();
         $permission->setByName($pName);
-        $pID = $permission->getID();
-        $role = new Role($this->getRoleOnGroup($groupID));
+        if (! $permission->getID()) {
+            $this->messages->add(_('Permission') . " {$pName} " . ('does not exists'), MSG_TYPE_ERROR);
+            return false;
+        }
+        if (! $roleId = $this->getRoleOnGroup($groupID)) {
+            return false;
+        }
+        $role = new Role($roleId);
         $permissionList = $role->getPermissionsList();
         if (! empty($permissionList)) {
-            if (in_array($pID, $permissionList)) {
+            if (in_array($permission->getID(), $permissionList)) {
                 return true;
             }
         }
@@ -380,7 +386,7 @@ class User extends UsersOrm
 
     public function hasPermission(string $pName)
     {
-        $groupID = App::getValue('GeneralGroup');
+        $groupID = Group::getGeneralGroup();
         return $this->hasPermissionOnGroup($groupID, $pName);
     }
 
@@ -863,14 +869,12 @@ class User extends UsersOrm
 
     public function hasAccess(int $nodeId)
     {
-        // TODO define as global constans nodeid = 10000 && nodeid = 2
         if ($nodeId == Node::ID_XIMDEX || $nodeId == Node::ID_PROJECTS || $nodeId == Node::ID_CONTROL_CENTER 
                 || $this->getID() == self::XIMDEX_ID) {
             return true;
         }
         $user_groups = $this->getGroupList();
-        $group = new Group();
-        $generalGroup = array($group->getGeneralGroup());
+        $generalGroup = [Group::getGeneralGroup()];
         $user_groups = array_diff($user_groups, $generalGroup);
         $node = new Node($nodeId);
         $node_groups = $node->getGroupList();

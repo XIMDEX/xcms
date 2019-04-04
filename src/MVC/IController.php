@@ -47,6 +47,10 @@ class IController
     var $response;
     var $hasError;
     var $msgError;
+    
+    /**
+     * @var Messages
+     */
     var $messages;
 
     /**

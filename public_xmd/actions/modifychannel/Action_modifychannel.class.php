@@ -126,7 +126,7 @@ class Action_modifychannel extends ActionAbstract
         $channel->setRenderType($renderType);
         $channel->setIdLanguage($codeLanguage);
         $default = (bool) $this->request->getParam('Default_Channel');
-        $channel->set('Default_Channel', $default);
+        $channel->set('Default_Channel', (int) $default);
         $result = $channel->update();
 		if ($result === null) {
 		    $channel->messages->add(_('Not any change has been performed'), MSG_TYPE_WARNING);

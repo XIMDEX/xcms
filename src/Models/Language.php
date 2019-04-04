@@ -244,16 +244,15 @@ class Language extends LanguagesOrm
 	 * 
 	 * @param string $isoName
 	 * @return boolean|string|NULL
-	 * @deprecated
 	 */
 	public function setByIsoName(string $isoName)
 	{
-		$this->ClearError();
+		$this->clearError();
 		$dbObj = new \Ximdex\Runtime\Db();
-		$query = sprintf("SELECT IdLanguage FROM Languages WHERE IsoName = %s", $dbObj->sqlEscapeString($isoName));
+		$query = sprintf('SELECT IdLanguage FROM Languages WHERE IsoName = %s', $dbObj->sqlEscapeString($isoName));
 		$dbObj->query($query);
 		if ($dbObj->numRows) {
-			$idLanguage = $dbObj->getValue("IdLanguage");
+			$idLanguage = $dbObj->getValue('IdLanguage');
 			parent::__construct($idLanguage);
 			return $idLanguage;
 		}

@@ -322,14 +322,6 @@ abstract class AbstractStructuredDocument extends FileNode
 
     public function deleteNode() : bool
     {
-        $parent = new Node($this->parent->get('IdParent'));
-        $st = new StructuredDocument($this->parent->get('IdNode'));
-        $dbObj = new \Ximdex\Runtime\Db();
-        $query = sprintf('DELETE FROM NodeNameTranslations WHERE IdNode = %s AND IdLanguage = %s'
-            , $dbObj->sqlEscapeString($parent->get('IdNode')), $dbObj->sqlEscapeString($st->get('IdLanguage')));
-        if ($dbObj->execute($query) === false) {
-            return false;
-        }
         $doc = new StructuredDocument();
         $doc->setID($this->nodeID);
         if ($doc->hasError()) {
@@ -337,6 +329,7 @@ abstract class AbstractStructuredDocument extends FileNode
             return false;
         }
         
+        // TODO comprobar que ya no sea necesario al estar las relaciones de borrado cascada
         // Deletes dependencies in rel tables
         $depsMngr = new DepsManager();
         if ($depsMngr->deleteByTarget(DepsManager::XML2XML, $this->parent->get('IdNode')) === false) {

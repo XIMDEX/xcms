@@ -725,14 +725,14 @@ class Node extends NodesOrm
     /**
      * Returns if a node is contained in the node with id $nodeID
      *
-     * @param $nodeID
+     * @param int $nodeID
      * @return bool
      */
-    function IsOnNode($nodeID)
+    public function isOnNode(int $nodeID)
     {
-        $this->ClearError();
-        if ($this->GetID() > 0) {
-            $nodes = FastTraverse::getParents($this->GetID());
+        $this->clearError();
+        if ($this->getID() > 0) {
+            $nodes = FastTraverse::getParents($this->getID());
             if ($nodes === false) {
                 return false;
             }
@@ -743,7 +743,7 @@ class Node extends NodesOrm
             }
             return false;
         }
-        $this->SetError(1);
+        $this->setError(1);
         return false;
     }
 
@@ -1290,7 +1290,7 @@ class Node extends NodesOrm
         $id_usuario = Session::get('userID');
         $user = new User($id_usuario);
         $group = new Group();
-        $this->AddGroupWithRole($group->GetGeneralGroup());
+        $this->AddGroupWithRole(Group::getGeneralGroup());
 
         // Get associated groups from the parent/s
         if ($nodeType->get('CanAttachGroups')) {
@@ -1418,11 +1418,11 @@ class Node extends NodesOrm
                 }
             }
         }
-
+        /*
         // Deleting properties it may has
         $nodeProperty = new NodeProperty();
         $nodeProperty->deleteByNode($this->get('IdNode'));
-
+        */
         // first invoking the particular Delete...
         if ($this->getNodeType() != NodeTypeConstants::XSL_TEMPLATE) {
             if ($this->class->deleteNode() === false) {
@@ -1435,16 +1435,10 @@ class Node extends NodesOrm
             }
         }
 
-        // and the the general one
+        // And the general one
         $data = new DataFactory($this->nodeID);
         $data->deleteAllVersions();
         unset($data);
-        $dbObj = new \Ximdex\Runtime\Db();
-        $dbObj->execute(sprintf("DELETE FROM NodeNameTranslations WHERE IdNode = %d", $this->get('IdNode')));
-        $dbObj->execute(sprintf("DELETE FROM RelGroupsNodes WHERE IdNode = %d", $this->get('IdNode')));
-        
-        // deleting potential entries on table NoActionsInNode
-        $dbObj->execute(sprintf("DELETE FROM NoActionsInNode WHERE IdNode = %d", $this->get('IdNode')));
 
         // if the folder is of structured documents type, the relation with templates folder will be deleted
         if ($this->nodeType->getIsStructuredDocument()) {
@@ -1465,12 +1459,14 @@ class Node extends NodesOrm
                 return false;
             }
         }
+        /*
         $nodeDependencies = new NodeDependencies();
         $nodeDependencies->deleteBySource($this->get('IdNode'));
         $nodeDependencies->deleteByTarget($this->get('IdNode'));
         $dbObj->execute(sprintf("DELETE FROM FastTraverse WHERE IdNode = %d OR  IdChild = %d", $this->get('IdNode'), $this->get('IdNode')));
         $dependencies = new Dependencies();
         $dependencies->deleteDependentNode($this->get('IdNode'));
+        */
         $rtn = new RelSemanticTagsNodes();
         $rtn->deleteTags($this->nodeID);
         $res = parent::delete();
@@ -1486,10 +1482,6 @@ class Node extends NodesOrm
         return $res;
     }
 
-    /**
-     *
-     * @return bool
-     */
     function CanDenyDeletion()
     {
         if (is_object($this->class) && method_exists($this->class, 'CanDenyDeletion')) {
@@ -1781,7 +1773,7 @@ class Node extends NodesOrm
             // / Taking off the General Group if needed
             if ($ignoreGeneralGroup) {
                 $groupList = array_diff($groupList, array(
-                    $group->GetGeneralGroup()
+                    Group::getGeneralGroup()
                 ));
             }
 
@@ -1987,21 +1979,18 @@ class Node extends NodesOrm
         return $this->get('SharedWorkflow');
     }
 
-    /**
-     * @return array|bool
-     */
-    function GetAllAlias()
+    public function getAllAlias()
     {
-        $this->ClearError();
-        if ($this->get('IdNode') > 0) {
+        $this->clearError();
+        if ($this->getID() > 0) {
             $dbObj = new \Ximdex\Runtime\Db();
-            $query = sprintf("SELECT IdLanguage, Name FROM NodeNameTranslations WHERE" . " IdNode= %d");
-            $dbObj->Query($query);
+            $query = sprintf("SELECT IdLanguage, Name FROM NodeNameTranslations WHERE IdNode = %d", $this->getID());
+            $dbObj->query($query);
             if ($dbObj->numRows) {
                 $result = array();
-                while (!$dbObj->EOF) {
-                    $result[$dbObj->GetValue('IdLanguage')] = $dbObj->GetValue('Name');
-                    $dbObj->Next();
+                while (! $dbObj->EOF) {
+                    $result[(string) $dbObj->getValue('IdLanguage')] = $dbObj->getValue('Name');
+                    $dbObj->next();
                 }
                 return $result;
             }
@@ -2012,89 +2001,73 @@ class Node extends NodesOrm
     /**
      * Obtains the current node alias
      *
-     * @param $langID
+     * @param int $langID
      * @return null|String
      */
-    function GetAliasForLang($langID)
+    public function getAliasForLang(int $langID)
     {
-        $this->ClearError();
+        $this->clearError();
         if ($this->get('IdNode') > 0) {
-            $sql = sprintf("SELECT Name FROM NodeNameTranslations WHERE" . " IdNode= %d" . " AND IdLanguage = %d"
-                , $this->get('IdNode'), $langID);
+            $sql = sprintf('SELECT Name FROM NodeNameTranslations WHERE IdNode = %d AND IdLanguage = %d', $this->get('IdNode'), $langID);
             $dbObj = new \Ximdex\Runtime\Db();
-            $dbObj->Query($sql);
+            $dbObj->query($sql);
             if ($dbObj->numErr) {
                 $this->SetError(5);
             } else {
                 if ($dbObj->numRows) {
-                    return $dbObj->GetValue("Name");
+                    return $dbObj->getValue('Name');
                 }
             }
         } else {
-            $this->SetError(1);
+            $this->setError(1);
         }
-        return NULL;
+        return null;
     }
 
     /**
      * Controls if the current node has alias
      *
-     * @param $langID
+     * @param int $langID
      * @return null|String
      */
-    function HasAliasForLang($langID)
+    public function hasAliasForLang(int $langID)
     {
-        $this->ClearError();
+        $this->clearError();
         if ($this->get('IdNode') > 0) {
-            $sql = sprintf("SELECT IdNode FROM NodeNameTranslations WHERE" . " IdNode =  %d" . " AND IdLanguage = %d"
-                , $this->get('IdNode'), $langID);
+            $sql = sprintf('SELECT Name FROM NodeNameTranslations WHERE IdNode =  %d AND IdLanguage = %d', $this->get('IdNode'), $langID);
             $dbObj = new \Ximdex\Runtime\Db();
-            $dbObj->Query($sql);
+            $dbObj->query($sql);
             if ($dbObj->numErr) {
-                $this->SetError(1);
+                $this->setError(1);
             }
-            return $dbObj->GetValue("IdNode");
+            return $dbObj->getValue('Name');
         }
-        $this->SetError(1);
-        return NULL;
+        $this->setError(1);
+        return null;
     }
 
-    /**
-     * @param $langID
-     * @return bool|null|String
-     */
-    function GetAliasForLangWithDefault($langID)
+    public function getAliasForLangWithDefault(int $langID)
     {
-        $this->ClearError();
+        $this->clearError();
         if ($this->get('IdNode') > 0) {
-            $this->ClearError();
-            $sql = sprintf("SELECT Name FROM NodeNameTranslations WHERE" . " IdNode = %d" . " AND IdLanguage = %d"
-                , $this->get('IdNode'), $langID);
-            $dbObj = new \Ximdex\Runtime\Db();
-            $dbObj->Query($sql);
-            if ($dbObj->numRows > 0) {
-                
-                // Si encuentra el traducido lo devuelve
-                return $dbObj->GetValue("Name");
+            if ($alias = $this->hasAliasForLang($langID)) {
+                return $alias;
             }
-            $langDefault = App::getValue("DefaultLanguage");
+            $langDefault = App::getValue('DefaultLanguage');
             if (strlen($langDefault) != 0) {
                 $lang = new Language();
-                $lang->SetByIsoName($langDefault);
-                $sql = sprintf("SELECT Name FROM NodeNameTranslations WHERE" . " IdNode = %d" . " AND IdLanguage = %d"
-                    , $this->get('IdNode'), $lang->get('IdLanguage'));
-                $dbObj = new \Ximdex\Runtime\Db();
-                $dbObj->Query($sql);
-                if ($dbObj->numRows > 0) {
+                $lang->setByIsoName($langDefault);
+                $alias = $this->hasAliasForLang($lang->get('IdLanguage'));
+                if ($alias) {
                     
                     // Returns the default language
-                    return $dbObj->GetValue("Name");
+                    return $alias;
                 }
             }
-            return $this->GetNodeName();
+            return $this->getNodeName();
         }
-        $this->SetError(1);
-        return NULL;
+        $this->setError(1);
+        return null;
     }
 
     /**
@@ -2104,74 +2077,39 @@ class Node extends NodesOrm
      * @param string $name
      * @return bool
      */
-    public function setAliasForLang(int $langID, string $name)
+    public function setAliasForLang(int $langID, string $name = null)
     {
         if ($this->get('IdNode') > 0) {
-            $dbObj = new \Ximdex\Runtime\Db();
-            $query = sprintf("SELECT IdNode FROM NodeNameTranslations WHERE IdNode = %d AND IdLanguage = %d", $this->get('IdNode'), $langID);
-            $dbObj->query($query);
-            if ($dbObj->numRows > 0) {
-                $sql = sprintf('UPDATE NodeNameTranslations SET Name = %s WHERE IdNode = %d AND IdLanguage = %d'
-                    , $dbObj->sqlEscapeString($name), $this->get('IdNode'), $langID);
-            } else {
+            if ($this->hasAliasForLang($langID)) {
+                if ($name) {
+                    
+                    // Update alias
+                    $sql = sprintf('UPDATE NodeNameTranslations SET Name = %s WHERE IdNode = %d AND IdLanguage = %d'
+                        , $dbObj->sqlEscapeString($name), $this->get('IdNode'), $langID);
+                } else {
+                    
+                    // Delete old name
+                    $sql = sprintf('DELETE FROM NodeNameTranslations WHERE IdNode = %d AND IdLanguage = %d', $dbObj->sqlEscapeString($name)
+                        , $this->get('IdNode'), $langID);
+                }
+            } elseif ($name) {
+                
+                // New name
                 $sql = sprintf('INSERT INTO NodeNameTranslations (IdNode, IdLanguage, Name) VALUES (%d, %d, %s)'
                     , $this->get('IdNode'), $langID, $dbObj->sqlEscapeString($name));
             }
-            $dbObj = new \Ximdex\Runtime\Db();
-            $dbObj->execute($sql);
-            if ($dbObj->numErr) {
-                $this->messages->add(_('Alias could not be updated, incorrect operation'), MSG_TYPE_ERROR);
-                Logger::error(sprintf('Error in query %s or %s', $query, $sql));
-                return false;
+            if (isset($sql)) {
+                $dbObj = new \Ximdex\Runtime\Db();
+                if ($dbObj->execute($sql) === false or $dbObj->numErr) {
+                    $this->messages->add(_('Alias could not be updated, incorrect operation'), MSG_TYPE_ERROR);
+                    return false;
+                }
             }
             return true;
         }
         $this->messages->add(_('The node you want to operate with does not exist'), MSG_TYPE_WARNING);
-        Logger::warning("Error: node" . "{$this->IdNode}" . " does not exist");
+        Logger::warning("Error: node {$this->IdNode} does not exist");
         return false;
-    }
-
-    /**
-     * Deletes a current node alias
-     *
-     * @param $langID
-     * @return bool
-     */
-    function DeleteAliasForLang($langID)
-    {
-        $this->ClearError();
-        if ($this->get('IdNode') > 0) {
-            $sql = sprintf("DELETE FROM NodeNameTranslations " . " WHERE IdNode = %d" . " AND IdLanguage = %d", $this->get('IdNode'), $langID);
-            $dbObj = new \Ximdex\Runtime\Db();
-            $dbObj->Execute($sql);
-            if ($dbObj->numErr) {
-                $this->messages->add(_('Alias could not be deleted, incorrect operation'), MSG_TYPE_ERROR);
-                Logger::error(sprintf("Error in query %s", $sql));
-                return false;
-            }
-            return true;
-        }
-        $this->messages->add(_('The node you want to operate with does not exist'), MSG_TYPE_WARNING);
-        Logger::warning("Error: node" . "{$this->IdNode}" . " does not exist");
-        return false;
-    }
-
-    /**
-     * Deletes all current node aliases
-     */
-    function DeleteAlias()
-    {
-        $this->ClearError();
-        if ($this->get('IdNode') > 0) {
-            $sql = sprintf("DELETE FROM NodeNameTranslations " . " WHERE IdNode = %d", $this->get('IdNode'));
-            $dbObj = new \Ximdex\Runtime\Db();
-            $dbObj->Execute($sql);
-            if ($dbObj->numErr) {
-                $this->SetError(5);
-            }
-        } else {
-            $this->SetError(1);
-        }
     }
 
     /**
@@ -2181,29 +2119,26 @@ class Node extends NodesOrm
      * @param $langID
      * @return array
      */
-    function GetAliasForLangPath($nodeID, $langID)
+    public function getAliasForLangPath(int $nodeID, int $langID)
     {
-        $this->ClearError();
+        $this->clearError();
         if ($this->get('IdNode') > 0) {
-            if ($this->IsOnNode($nodeID)) {
-                if ((!$this->get('IdParent')) || ($this->get('IdNode') == $nodeID)) {
+            if ($this->isOnNode($nodeID)) {
+                if (! $this->get('IdParent') || $this->get('IdNode') == $nodeID) {
                     return array(
-                        $this->GetAliasForLangWithDefault($langID)
+                        $this->getAliasForLangWithDefault($langID)
                     );
-                } else {
-                    $parent = new Node($this->get('IdParent'));
-                    return array_merge($parent->GetAliasForLangPath($nodeID, $langID), array(
-                        $this->GetAliasForLangWithDefault($langID)
-                    ));
                 }
-            } else {
-                $this->SetError(14);
-                return array();
+                $parent = new Node($this->get('IdParent'));
+                return array_merge($parent->getAliasForLangPath($nodeID, $langID), array(
+                    $this->getAliasForLangWithDefault($langID)
+                ));
             }
-        } else {
-            $this->SetError(1);
+            $this->setError(14);
             return array();
         }
+        $this->setError(1);
+        return array();
     }
 
     /**
@@ -2211,14 +2146,14 @@ class Node extends NodesOrm
      * 
      * @return int|NULL
      */
-    public function GetSection() : ?int
+    public function getSection() : ?int
     {
-        if (!$this->GetID()) {
+        if (! $this->getID()) {
             Logger::error('Call to obtain the section of a node without ID');
             return null;
         }
-        $section = FastTraverse::getParents($this->GetID(), null, null, ['IsSection' => 1], 1);
-        if (!$section) {
+        $section = FastTraverse::getParents($this->getID(), null, null, ['IsSection' => 1], 1);
+        if (! $section) {
             return null;
         }
         return current($section);
@@ -3108,7 +3043,7 @@ class Node extends NodesOrm
      * @param int $idGroup
      * @return int status
      */
-    function GetNextAllowedState($idUser, $idGroup)
+    public function getNextAllowedState(int $idUser, int $idGroup)
     {
         if (! $this->get('IdNode')) {
             return null;
@@ -3117,9 +3052,9 @@ class Node extends NodesOrm
             return null;
         }
         $user = new User($idUser);
-        $idRole = $user->GetRoleOnNode($this->get('IdNode'), $idGroup);
+        $idRole = $user->getRoleOnNode($this->get('IdNode'), $idGroup);
         $role = new Role($idRole);
-        $allowedStates = $role->GetAllowedStates();
+        $allowedStates = $role->getAllowedStates();
         $idNextState = $this->get('IdState');
         if (is_array($allowedStates) && ! empty($allowedStates)) {
             $workflow = new Workflow($this->nodeType->getWorkflow(), $idNextState);

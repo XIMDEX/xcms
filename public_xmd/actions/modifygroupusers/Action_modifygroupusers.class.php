@@ -43,7 +43,7 @@ class Action_modifygroupusers extends ActionAbstract
         $user = new User();
         $userList = $user->GetAllUsers();
         $group = new Group($idNode);
-        $groupUsers = $group->GetUserList();
+        $groupUsers = $group->getUserList();
         $role = new Role();
         $roles = $role->find('IdRole, Name', '1 ORDER BY Name', NULL);
         $rolesToSend = array();

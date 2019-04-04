@@ -37,7 +37,7 @@ class Action_modifylanguage extends ActionAbstract
      */
     public function index()
     {
-    	$idNode = $this->request->getParam('nodeid');
+    	$idNode = (int) $this->request->getParam('nodeid');
 		$node = new Node($idNode);
 		$language = new Language($idNode);
 		if (! $language->get('IdLanguage') or ! $node->get('IdNode')) {
@@ -52,7 +52,7 @@ class Action_modifylanguage extends ActionAbstract
 			'enabled' => $language->get('Enabled'),
 			'description' => $node->get('Description'),
             'nodeTypeID' => $node->nodeType->getID(),
-            'node_Type' => $node->nodeType->GetName(),
+            'node_Type' => $node->nodeType->getName(),
 			'go_method' => 'modifylanguage'
 		);
 		$this->render($values, null, 'default-3.0.tpl');
@@ -60,30 +60,33 @@ class Action_modifylanguage extends ActionAbstract
 
     public function modifylanguage()
     {
-    	$idNode = $this->request->getParam('nodeid');
-    	$language = new Language($idNode);
-    	$node = new Node($idNode);
+    	$id = (int) $this->request->getParam('nodeid');
+    	$success = false;
+    	$node = new Node($id);
         if ($node->isValidName($this->request->getParam('Name'), $node->get('IdNodeType'))) {
-            $language->loadFromArray($_POST);
+            $language = new Language($id);
             $language->set('Enabled', $this->request->getParam('enabled') ? 1 : 0);
-            $languageResult = $language->update();
-            $node->set('Description', $this->request->getParam('Description'));
-            $node->set('Name', $this->request->getParam('Name'));
-            $nodeResult = $node->update();
+            $success = $language->update();
+            if ($success === false) {
+                $this->messages->mergeMessages($language->messages);
+            } else {
+                $node->set('Description', $this->request->getParam('Description'));
+                $node->set('Name', $this->request->getParam('Name'));
+                $success = $node->update();
+                if ($success === false) {
+                    $this->messages->mergeMessages($node->messages);
+                }
+            }
+            if ($success) {
+                $this->messages->add(_('Language has been successfully updated'), MSG_TYPE_NOTICE);
+            } else {
+                if (! $this->messages->count()) {
+                    $this->messages->add(_('An error occurred while updating language'), MSG_TYPE_ERROR);
+                }
+            }
         } else {
-            $nodeResult = false;
+            $this->messages->add(_('Language name is not valid'), MSG_TYPE_WARNING);
         }
-    	if ($nodeResult === false or $languageResult === false) {
-    	    $this->messages->add(_('An error occurred while updating language'), MSG_TYPE_ERROR);
-    	} else {
-    		$this->messages->add(_('Language has been successfully updated'), MSG_TYPE_NOTICE);
-    	}
-    	foreach ($language->messages->messages as $messageInfo) {
-    		$this->messages->messages[] = $messageInfo;
-    	}
-    	foreach ($node->messages->messages as $messageInfo) {
-    		$this->messages->messages[] = $messageInfo;
-    	}
 		$values = array('goback' => true, 'messages' => $this->messages->messages, 'parentID' => $node->get('IdParent'));
         $this->sendJSON($values);
     }

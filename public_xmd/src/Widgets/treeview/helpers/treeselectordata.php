@@ -401,7 +401,7 @@ function getNodelist($userID, $nodeID) {
     if (!\Ximdex\Runtime\Session::get("nodelist") or $nodeID==1)
     {
         $groupList= $user->GetGroupList();
-        $groupList = array_diff($groupList,array($group->GetGeneralGroup()));
+        $groupList = array_diff($groupList,array(Group::getGeneralGroup()));
 
         $nodeList = null;
         if ($groupList) {

@@ -70,7 +70,7 @@ class Action_managebatchs extends ActionAbstract
         (
             'js_files' => $jsFiles,
             'nodeTypeID' => $node->nodeType->getID(),
-            'node_Type' => $node->nodeType->GetName(),
+            'node_Type' => $node->nodeType->getName(),
             'css_files' => $cssFiles
         );
         $this->render($arrValores, null, 'default-3.0.tpl');

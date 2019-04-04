@@ -611,7 +611,7 @@ class GenericData
         $updatedRows = null;
         if ($this->_checkDataIntegrity()) {
             $dbObj = new \Ximdex\Runtime\Db();
-            $res = $dbObj->Execute($query);
+            $res = $dbObj->execute($query);
             if ($res === false) {
                 return false;
             }
@@ -727,6 +727,11 @@ class GenericData
         return intval($result[0]) ?? false;
     }
 
+    /**
+     * @deprecated
+     * @param array $varsToLoad
+     * @return boolean
+     */
     public function loadFromArray(array $varsToLoad)
     {
         if (! is_array($varsToLoad)) {

@@ -25,6 +25,11 @@
 
 {include file="actions/components/title_Description.tpl"}
 <div class="action_content ximPUBLISHtools" ng-controller="ximPUBLISHtools">
+    <div ng-show="json.length == 0">
+        {t}There is not recent or current publications{/t}.
+        <br />
+        {t}For further information consult the status report in this server{/t}.
+    </div>
     <ul class="media-list">
         <li class="media" ng-repeat="frames in json | orderBy: 'order' as filtered_json track by frames.idPortal">
             <div class="media-body">

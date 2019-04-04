@@ -138,9 +138,9 @@ class DataFactory
      * @param string $order
      * @return boolean|array
      */
-    public function GetVersionList(string $order = 'asc')
+    public function getVersionList(string $order = 'asc')
     {
-        $this->ClearError();
+        $this->clearError();
         if (! $this->nodeID) {
             $this->SetError(1);
             return false;
@@ -387,15 +387,15 @@ class DataFactory
             $dataEncoding = App::getValue('dataEncoding');
             $content = \Ximdex\XML\Base::recodeSrc($content, $dataEncoding);
         }
-        $this->ClearError();
+        $this->clearError();
         if (! $this->nodeID) {
-            $this->SetError(1);
+            $this->setError(1);
             return false;
         }
 
         // (1) No se pasa version determinada, se incrementa la version con el contenido nuevo
         if (is_null($versionID) && is_null($subVersion)) {
-            $idVersion = $this->AddVersion(NULL, NULL, $content, $commitNode);
+            $idVersion = $this->addVersion(NULL, NULL, $content, $commitNode);
             $this->generateCaches($idVersion);
             return $idVersion;
         }
@@ -431,17 +431,17 @@ class DataFactory
      * @param bool $commitNode
      * @return boolean|NULL|string
      */
-    public function AddVersion(bool $jumpNewVersion = null, string $comment = null, string $content = null, bool $commitNode = null)
+    public function addVersion(bool $jumpNewVersion = null, string $comment = null, string $content = null, bool $commitNode = null)
     {
-        $this->ClearError();
+        $this->clearError();
         if (! $this->nodeID) {
-            $this->SetError(1);
+            $this->setError(1);
             return false;
         }
 
         // Si tiene versiones anteriores, calculamos cual es la siguiente
-        if ($this->HasPreviousVersions()) {
-            $curVersion = $this->GetLastVersion();
+        if ($this->hasPreviousVersions()) {
+            $curVersion = $this->getLastVersion();
             if (is_null($curVersion)) {
                 Logger::warning('Unable to get the last version of the document');
                 return false;
@@ -594,18 +594,18 @@ class DataFactory
     }
 
     /**
-     * Elimina todas las Versiones del Nodo
+     * delete all node versions
      *
      * @return bool
      */
-    function DeleteAllVersions()
+    public function deleteAllVersions() : bool
     {
-        $this->ClearError();
+        $this->clearError();
         if (! $this->nodeID) {
-            $this->SetError(1);
+            $this->setError(1);
             return false;
         }
-        $versions = $this->GetVersionList();
+        $versions = $this->getVersionList();
         if (! is_array($versions)) {
             return false;
         }
@@ -623,12 +623,12 @@ class DataFactory
      */
     public function deleteVersion(int $version): bool
     {
-        $this->ClearError();
+        $this->clearError();
         if (! $this->nodeID) {
-            $this->SetError(1);
+            $this->setError(1);
             return false;
         }
-        $subVersions = $this->GetSubVersionList($version);
+        $subVersions = $this->getSubVersionList($version);
         if (! is_array($subVersions)) {
             return false;
         }
@@ -920,7 +920,7 @@ class DataFactory
     /**
      * Resetea el flag de ocurrencia de error
      */
-    public function ClearError()
+    public function clearError()
     {
         $this->numErr = null;
         $this->msgErr = null;

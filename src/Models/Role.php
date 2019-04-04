@@ -268,6 +268,17 @@ class Role extends RolesOrm
      */
     public function delete()
     {
+        $generalGroup = new Group(Group::getGeneralGroup());
+        if (! $generalGroup->getID()) {
+            return false;
+        }
+        $roles = $generalGroup->getRoles();
+        if (in_array($this->IdRole, $roles)) {
+            
+            // If this role is in use in the general group, deletion is denied
+            $this->messages->add(_('Cannot delete a role already in use by an user in the general group'), MSG_TYPE_ERROR);
+            return false;
+        }
         if (parent::delete() === false) {
             return false;
         }

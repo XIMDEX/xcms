@@ -29,7 +29,6 @@ use Ximdex\Models\Group;
 use Ximdex\Models\Node;
 use Ximdex\Models\Role;
 use Ximdex\MVC\ActionAbstract;
-use Ximdex\Runtime\App;
 
 class Action_modifygroupsnode extends ActionAbstract
 {
@@ -61,7 +60,7 @@ class Action_modifygroupsnode extends ActionAbstract
         $groupList = $node->GetGroupList();
         $strGroupList = implode(', ', $groupList);
         $group = new Group();
-        $allGroups = $group->find('IdGroup, Name', 'IdGroup in (%s) AND IdGroup <> %s', array($strGroupList, App::getValue('GeneralGroup'))
+        $allGroups = $group->find('IdGroup, Name', 'IdGroup in (%s) AND IdGroup <> %s', array($strGroupList, Group::getGeneralGroup())
             , MULTI, false);
         if (is_array($allGroups)) {
             foreach ($allGroups as $key => $groupInfo) {
