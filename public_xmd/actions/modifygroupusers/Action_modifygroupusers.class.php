@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -38,10 +38,10 @@ class Action_modifygroupusers extends ActionAbstract
      */
     public function index()
     {
-        $idNode = $this->request->getParam('nodeid');
+        $idNode = (int) $this->request->getParam('nodeid');
         $node = new Node($idNode);
         $user = new User();
-        $userList = $user->GetAllUsers();
+        $userList = $user->getAllUsers();
         $group = new Group($idNode);
         $groupUsers = $group->getUserList();
         $role = new Role();
@@ -67,15 +67,16 @@ class Action_modifygroupusers extends ActionAbstract
         foreach ($userList as $idUser) {
             if (! in_array($idUser, $groupUsers)) {
                 $user = new User($idUser);
-                $u = [];
-                $u['id'] = $idUser;
-                $u['name'] = $user->get('Login');
-                $users[] = $u;
+                $users[] = [
+                    'id' => $idUser,
+                    'name' => $user->get('Login')
+                ];
             }
         }
         $this->addJs('/actions/modifygroupusers/resources/js/helper.js');
         $this->addCss('/actions/modifygroupusers/resources/css/styles.css');
-        $values = array('name' => $node->get('Name'),
+        $values = array(
+            'name' => $node->get('Name'),
             'users_not_associated' => json_encode($users),
             'idnode' => $idNode,
             'roles' => json_encode($rolesToSend),
@@ -88,9 +89,9 @@ class Action_modifygroupusers extends ActionAbstract
 
     public function addGroupUser()
     {
-        $idNode = $this->request->getParam('nodeid');
-        $idUser = $this->request->getParam('id_user');
-        $idRole = $this->request->getParam('id_role');
+        $idNode = (int) $this->request->getParam('nodeid');
+        $idUser = (int) $this->request->getParam('id_user');
+        $idRole = (int) $this->request->getParam('id_role');
         $group = new Group($idNode);
         if (! $group->getID()) {
             $values = array('result' => 'notok');
@@ -106,9 +107,9 @@ class Action_modifygroupusers extends ActionAbstract
 
     public function editGroupUser()
     {
-        $idNode = $this->request->getParam('nodeid');
-        $user = $this->request->getParam('user');
-        $role = $this->request->getParam('role');
+        $idNode = (int) $this->request->getParam('nodeid');
+        $user = (int) $this->request->getParam('user');
+        $role = (int) $this->request->getParam('role');
         $group = new Group($idNode);
         if (! $group->getID()) {
             $values = array('result' => 'notok');
@@ -124,8 +125,8 @@ class Action_modifygroupusers extends ActionAbstract
 
     public function deleteGroupUser()
     {
-        $idNode = $this->request->getParam('nodeid');
-        $user = $this->request->getParam('user');
+        $idNode = (int) $this->request->getParam('nodeid');
+        $user = (int) $this->request->getParam('user');
         $group = new Group($idNode);
         if (! $group->getID()) {
             $values = array('result' => 'notok');

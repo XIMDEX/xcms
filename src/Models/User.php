@@ -41,8 +41,6 @@ class User extends UsersOrm
 {
     const XIMDEX_ID = 301;
     
-    public $userID;
-    
     /**
      * Error code
      * 
@@ -95,14 +93,14 @@ class User extends UsersOrm
     {
         $this->ClearError();
         if ($this->get('IdUser') > 0) {
-            $dbObj = new \Ximdex\Runtime\Db();
             $sql = sprintf('SELECT IdGroup FROM RelUsersGroups WHERE IdUser = %d', $this->get('IdUser'));
-            $dbObj->Query($sql);
+            $dbObj = new \Ximdex\Runtime\Db();
+            $dbObj->query($sql);
             if (! $dbObj->numErr) {
                 $salida = array();
                 while (! $dbObj->EOF) {
-                    $salida[] = $dbObj->GetValue('IdGroup');
-                    $dbObj->Next();
+                    $salida[] = $dbObj->getValue('IdGroup');
+                    $dbObj->next();
                 }
                 return $salida;
             }
@@ -666,7 +664,7 @@ class User extends UsersOrm
         if ($this->get('IdUser') > 0) {
             return parent::delete();
         }
-        $this->SetError(1);
+        $this->setError(1);
         return false;
     }
 
@@ -745,13 +743,15 @@ class User extends UsersOrm
             $arrayRoles = array();
             foreach ($arrayGroups as $idGroup) {
                 if ($role = $this->getRoleOnGroup($idGroup)) {
-                    $arrayRoles[] = $role;
+                    if (! in_array($role, $arrayRoles)) {
+                        $arrayRoles[] = $role;
+                    }
                 }
             }
             if (! empty($arrayRoles)) {
                 
                 // Getting actions for every rol
-                foreach (array_unique($arrayRoles) as $idRol) {
+                foreach ($arrayRoles as $idRol) {
                     $role = new Role($idRol);
                     $arrayActions = array_merge($arrayActions, $role->getActionsOnNode($idNode, $includeActionsWithNegativeSort));
                 }

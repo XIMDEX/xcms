@@ -307,8 +307,7 @@ class Group extends GroupsOrm
 		$this->clearError();
 		if ($this->get('IdGroup')) {
 			$dbObj = new \Ximdex\Runtime\Db();
-			$query = sprintf('SELECT IdRel FROM RelUsersGroups WHERE IdUser = %d AND IdGroup = %d AND IdRole = %d',
-				$userID, $this->get('IdGroup'), $roleID);
+			$query = sprintf('SELECT IdRel FROM RelUsersGroups WHERE IdUser = %d AND IdGroup = %d', $userID, $this->get('IdGroup'));
 			$dbObj->query($query);
 			if ($dbObj->numRows > 0) {
 				$this->setError(8);
@@ -342,7 +341,7 @@ class Group extends GroupsOrm
 			if (! $this->addUserWithRole($userID, $roleID)) {
 			    
 			    // Role already exists, update data
-			    $query = sprintf("UPDATE RelUsersGroups SET IdRole = %d WHERE IdGroup = %d AND IdUser = %d", $roleID, $this->get('IdGroup')
+			    $query = sprintf('UPDATE RelUsersGroups SET IdRole = %d WHERE IdGroup = %d AND IdUser = %d', $roleID, $this->get('IdGroup')
 			    , $userID);
 			    $dbObj = new \Ximdex\Runtime\Db();
 			    $dbObj->execute($query);

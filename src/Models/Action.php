@@ -105,13 +105,13 @@ class Action extends ActionsOrm
         $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->query($sql);
         if ($dbObj->numErr != 0) {
-            $this->SetError(1);
+            $this->setError(1);
             return null;
         }
         $salida = array();
         while (! $dbObj->EOF) {
             $salida[] = $dbObj->getValue('IdAction');
-            $dbObj->Next();
+            $dbObj->next();
         }
         return $salida;
     }

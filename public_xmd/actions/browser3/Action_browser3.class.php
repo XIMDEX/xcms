@@ -982,22 +982,27 @@ class Action_browser3 extends ActionAbstract
         foreach ($actions as $idAction) {
             $actionsParamsAux = array();
             $action = new Action($idAction);
-            $name = $action->get("Name");
+            $name = $action->get('Name');
 
             // Changing name when node sets
             if (count($nodes) > 1) {
-                $auxName = explode(" ", $name);
-                $name = $auxName[0] . " " . _("selection");
+                $auxName = explode(' ', $name);
+                $name = $auxName[0] . ' ' . _('selection');
             }
-            $actionsParamsAux["id"] = $action->get("IdAction") ? $action->get("IdAction") : "";
-            $actionsParamsAux["name"] = $name;
-            $actionsParamsAux["module"] = $action->get("Module") ? $action->get("Module") : "";
-            $actionsParamsAux["params"] = $action->get("Params") ? $action->get("Params") : "";
-            $actionsParamsAux["command"] = $action->get("Command");
-            $actionsParamsAux["icon"] = $action->get("Icon");
-            $actionsParamsAux["callback"] = "callAction";
-            $actionsParamsAux["bulk"] = $action->get("IsBulk");
+            $actionsParamsAux['id'] = $action->get('IdAction') ? $action->get('IdAction') : '';
+            $actionsParamsAux['name'] = $name;
+            $actionsParamsAux['module'] = $action->get('Module') ? $action->get('Module') : '';
+            $actionsParamsAux['params'] = $action->get('Params') ? $action->get('Params') : '';
+            $actionsParamsAux['command'] = $action->get('Command');
+            $actionsParamsAux['icon'] = $action->get('Icon');
+            $actionsParamsAux['callback'] = 'callAction';
+            $actionsParamsAux['bulk'] = $action->get('IsBulk');
+            $actionsParamsAux['sort'] = $action->get('Sort');
             $arrayActionsParams[] = $actionsParamsAux;
+        }
+        if ($arrayActionsParams) {
+            $sort = array_column($arrayActionsParams, 'sort');
+            array_multisort($sort, SORT_ASC, $arrayActionsParams);
         }
         $options = array_merge($sets, $arrayActionsParams);
         $this->sendJSON($options);
