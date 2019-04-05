@@ -36,7 +36,7 @@ class Db
      *
      * @var integer
      */
-    const TIME_TO_RECONNECT = 10;
+    const TIME_TO_RECONNECT = 30;
     
     public $EOF = true;
     public $row = array();
@@ -360,7 +360,7 @@ class Db
     			sleep(self::TIME_TO_RECONNECT);
     		}
     		while (! $res);
-    		Logger::info('Reconnecting to database has been executed successfully');
+    		Logger::info('Reconnecting to database has been executed successfully', true);
     		return true;
     	}
     	return false;

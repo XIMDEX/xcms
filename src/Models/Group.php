@@ -444,9 +444,8 @@ class Group extends GroupsOrm
 	public function getUserRoleInfo()
 	{
 		$dbObj = new \Ximdex\Runtime\Db();
-		$query = sprintf('SELECT IdRel, IdUser, IdRole FROM RelUsersGroups WHERE IdGroup = %s'
-		    , $dbObj->sqlEscapeString($this->IdGroup));
-		$dbObj->Query($query);
+		$query = sprintf('SELECT IdRel, IdUser, IdRole FROM RelUsersGroups WHERE IdGroup = %s', $dbObj->sqlEscapeString($this->IdGroup));
+		$dbObj->query($query);
 		if (! $dbObj->numRows) {
 			return null;
 		}

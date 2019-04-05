@@ -51,7 +51,7 @@
                 </div></div>
             <div class="small-12 columns">
                 <fieldset class="buttons-form">
-                    <button type="button" id="" ng-click="addGroup()" 
+                    <button type="button" id="" ng-click="addGroup()" ng-disabled="users_not_associated.length == 0" 
                             class="btn ui-state-default ui-corner-all button submit-button ladda-button main_action" data-style="slide-up" 
                             data-size="xs" tabindex=""><span class="ladda-label">{t}Add{/t}</span></button>
                 </fieldset>

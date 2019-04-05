@@ -81,7 +81,7 @@ class User extends UsersOrm
      */
     public function getAllUsers()
     {
-        return $this->find('IdUser', '1 ORDER BY Name', NULL, MONO);
+        return $this->find('IdUser', null, null, MONO, true, null, 'Name');
     }
 
     /**

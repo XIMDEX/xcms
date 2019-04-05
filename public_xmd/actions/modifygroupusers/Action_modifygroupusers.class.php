@@ -53,13 +53,13 @@ class Action_modifygroupusers extends ActionAbstract
         $userRoleInfo = $group->getUserRoleInfo();
         $userRI = array();
         if (is_array($userRoleInfo)) {
-            foreach ($userRoleInfo as $key => $info) {
-                $user = new User($info['IdUser']);
-                $userRoleInfo[$key]['UserName'] = $user->get('Login');
-                $userRoleInfo[$key]['dirty'] = false;
-                $userRI[] = $userRoleInfo[$key];
-                if ($k = array_search($info['IdUser'], $userList)) {
-                    array_splice($userList, $k, 1);
+            foreach ($userRoleInfo as & $userInfo) {
+                $user = new User($userInfo['IdUser']);
+                $userInfo['UserName'] = $user->get('Login');
+                $userInfo['dirty'] = false;
+                $userRI[] = $userInfo;
+                if (($index = array_search($userInfo['IdUser'], $userList)) !== false) {
+                    array_splice($userList, $index, 1);
                 }
             }
         }
@@ -81,7 +81,7 @@ class Action_modifygroupusers extends ActionAbstract
             'idnode' => $idNode,
             'roles' => json_encode($rolesToSend),
             'nodeTypeID' => $node->nodeType->getID(),
-            'node_Type' => $node->nodeType->GetName(),
+            'node_Type' => $node->nodeType->getName(),
             'users_associated' => json_encode($userRI)
         );
         $this->render($values, null, 'default-3.0.tpl');
