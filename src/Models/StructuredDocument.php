@@ -268,7 +268,7 @@ class StructuredDocument extends StructuredDocumentsOrm
      */
     public function getContent(int $version = null, int $subversion = null)
     {
-        $targetLink = $this->GetSymLink();
+        $targetLink = $this->getSymLink();
         if ($targetLink) {
             $target = new StructuredDocument($targetLink);
             $targetContent = $target->getContent();
