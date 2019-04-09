@@ -203,7 +203,7 @@ class InstallDataBaseManager extends InstallManager
         return $result;
     }
 
-    public function loadData(string $host, int $port, string $user, string $name, string $pass = null)
+    public function loadData()
     {
         $sqlFiles = array(self::SCHEMA_SCRIPT_FILE, self::DATA_SCRIPT_FILE);
         $files = scandir(APP_ROOT_PATH . self::DATA_PATH . self::CHANGES_PATH, SCANDIR_SORT_ASCENDING);
