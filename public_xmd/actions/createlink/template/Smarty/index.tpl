@@ -1,5 +1,5 @@
 {**
-*  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+*  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
 *
 *  Ximdex a Semantic Content Management System (CMS)
 *
@@ -43,7 +43,7 @@
             </div>
             <div class="small-4 columns">
                 <div class="input-select icon">
-                    <label for="link_type" class="label_title label_general">{t}Type{/t}</label>
+                    <label for="link_type" class="label_title label_general">{t}Type{/t} *</label>
                     <select name="link_type" id="link_type" class="cajaxg document-type">
                         <option value="url" selected>URL (http:// or https://)</option>
                         <option value="email">E-mail (mailto:)</option>
@@ -67,11 +67,5 @@
                 </fieldset>
             </div>
         </div>
-        <!-- <div class="input-select icon icon-positioned link">
-            <select name="link_type" id="link_type" class="cajaxg document-type">
-                <option value="url" selected>URL (http:// or https://)</option>
-                <option value="email">E-mail (mailto:)</option>
-            </select>
-        </div> -->
     </div>
 </form>

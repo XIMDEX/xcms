@@ -29,6 +29,7 @@ use Ximdex\Logger;
 use Ximdex\Models\Link;
 use Ximdex\Models\Node;
 use Ximdex\NodeTypes\NodeTypeConstants;
+use Ximdex\IO\BaseIO;
 
 class ximlinkResolver
 {
@@ -101,7 +102,7 @@ class ximlinkResolver
 			$ret = $this->createNewximlink($iddoc, $name, $url, $text, $idchannel);
 			$idlink = $ret[0];
 			$link = new Link($idlink);
-			if ($link->get('IdLink') > 0) {
+			if ($link->get('IdLink') > 0 and $text) {
 				$link->addDescription($text);
 			}
 		} else {
@@ -112,7 +113,9 @@ class ximlinkResolver
 					$link->set('Url', $url);
 					$link->update();
 				}
-				$link->addDescription($text);
+				if ($text) {
+				    $link->addDescription($text);
+				}
 			}
 		}
 		return array($idlink, $idchannel);
@@ -160,7 +163,7 @@ class ximlinkResolver
 				array('DESCRIPTION' => $text)
 			)
 		);
-		$bio = new \Ximdex\IO\BaseIO();
+		$bio = new BaseIO();
 		$result = $bio->build($data);
 		if ($result < 1) {
 			Logger::error(_('A new ximlink could not be created: ') . $url);

@@ -38,7 +38,7 @@ use Ximdex\Logger;
  */
 class LinkNode extends Root
 {
-	var $link = null;
+	var $link;
 
 	/**
 	 * Constructor
@@ -63,20 +63,20 @@ class LinkNode extends Root
 		$link = new Link();
 		$link->set('IdLink', $this->nodeID);
 		$link->set('Url', $url);
-		$result = $this->parent->SetDescription($description);
+		$result = $this->parent->setDescription($description);
 		$insertedId = $link->add();
 		if (! $insertedId || ! $result) {
 			$this->messages->add(_('The link could not be inserted'), MSG_TYPE_ERROR);
 			$this->messages->mergeMessages($link->messages);
 		}
 		$this->link = new Link($link->get('IdLink'));
-		$relDescription = !empty($description) ? $description : $this->link->get('Name');
+		$relDescription = ! empty($description) ? $description : $this->link->getName();
 		$rel = RelLinkDescriptions::create($this->nodeID, $relDescription);
 		if ($rel->getIdRel() < 0) {
 			Logger::warning(sprintf('No se ha podido crear la descripcion para el enlace %s en su tabla relacionada.', $link->get('IdLink')));
 		}
 		$ret = $this->link->get('IdLink');
-		$this->UpdatePath();
+		$this->updatePath();
 		return $ret;
 	}
 

@@ -46,11 +46,13 @@ class Action_deletenode extends ActionAbstract
 		$userID = Session::get('userID');
 		$texto = '';
 		if (count($nodes) == 1) {
-			$idNode = $this->request->getParam('nodeid');
+			$idNode = (int) $this->request->getParam('nodeid');
+		} else {
+		    return;
 		}
 		$node = new Node($idNode);
-		$children = $node->GetChildren();
-		if ($node->GetNodeType() == NodeTypeConstants::XML_DOCUMENT or $node->GetNodeType() == NodeTypeConstants::HTML_DOCUMENT) {
+		$children = $node->getChildren();
+		if ($node->getNodeType() == NodeTypeConstants::XML_DOCUMENT or $node->GetNodeType() == NodeTypeConstants::HTML_DOCUMENT) {
             $dbObj = new \Ximdex\Runtime\Db();
             $query = 'select IdDoc from StructuredDocuments where TargetLink = ' . $idNode;
             $dbObj->Query($query);
@@ -177,14 +179,14 @@ class Action_deletenode extends ActionAbstract
 
 	public function delete_node()
 	{
-		$idNode	= $this->request->getParam('nodeid');
+		$idNode	= (int) $this->request->getParam('nodeid');
 		$node = new Node($idNode);
 		
 		// Get the project node
 		$project = new Node($node->getProject());
 		
 		// docxap.xls node from project templates folder cannot be removed
-		if ($node->GetNodeName() == 'docxap.xsl' and $node->GetNodeType() == NodeTypeConstants::XSL_TEMPLATE)
+		if ($node->getNodeName() == 'docxap.xsl' and $node->getNodeType() == NodeTypeConstants::XSL_TEMPLATE)
 		{
 	        $this->messages->add('Cannot delete the project docxap.xsl node', MSG_TYPE_ERROR);
 	        $values = array('action_with_no_return' => true, 'messages' => $this->messages->messages);
@@ -197,16 +199,16 @@ class Action_deletenode extends ActionAbstract
 		$parentID = $node->get('IdParent');
 		$user = new User($userID);
 		$canDeleteOnCascade = $user->hasPermission('delete on cascade');
-        $children = $node->GetChildren();
+        $children = $node->getChildren();
 		if ($canDeleteOnCascade && $deleteDep) {
 			if ($node->nodeType->get('Name') != 'Channel') {
-				$depList = $node->GetDependencies();
+				$depList = $node->getDependencies();
 			}
-			$undeletableChildren = $node->TraverseTree(5);
+			$undeletableChildren = $node->traverseTree(5);
 			if ($node->nodeType->get('Name') == 'XmlContainer') {
 				foreach($children as $child) {
 					$childNode = new Node($child);
-					$depList = array_merge($depList, $childNode->GetDependencies());
+					$depList = array_merge($depList, $childNode->getDependencies());
 				}
 			} else {
  				if (is_array($depList)) {

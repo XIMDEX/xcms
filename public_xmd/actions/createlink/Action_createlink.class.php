@@ -28,6 +28,7 @@
 use Ximdex\Models\Link;
 use Ximdex\Models\Node;
 use Ximdex\MVC\ActionAbstract;
+use Ximdex\IO\BaseIO;
 
 class Action_createlink extends ActionAbstract
 {
@@ -36,44 +37,48 @@ class Action_createlink extends ActionAbstract
      */
     public function index()
     {
-        $idNode = $this->request->getParam('nodeid');
+        $idNode = (int) $this->request->getParam('nodeid');
         $node = new Node($idNode);
         $this->addJs('/actions/createlink/resources/js/index.js');
-        $values = array('go_method' => 'createlink',
+        $values = [
+            'go_method' => 'createlink',
             'nodeTypeID' => $node->nodeType->getID(),
-            'node_Type' => $node->nodeType->GetName(),
-            'name' => $node->GetNodeName());
+            'node_Type' => $node->nodeType->getName(),
+            'name' => $node->getNodeName()
+        ];
         $this->render($values, null, 'default-3.0.tpl');
     }
 
     public function createlink()
     {
         $name = $this->request->getParam('name');
-        $idParent = $this->request->getParam('id_node');
+        $idParent = (int) $this->request->getParam('id_node');
         $url = $this->request->getParam('url');
         $description = $this->request->getParam('description');
         $this->createNodeLink($name, $url, $description, $idParent);
-        $values = [];
-        $values['messages'] = $this->messages->messages;
-        $values['parentID'] = $idParent;
+        $values = [
+            'messages' => $this->messages->messages, 
+            'parentID' => $idParent
+        ];
         $this->sendJSON($values);
     }
 
-    public function createNodeLink(string $name, string $url, string $description, int $idParent)
+    public function createNodeLink(string $name, string $url, string $description = null, int $idParent = null)
     {
         if (empty($description)) {
-            $description = ' ';
+            $description = '';
         }
-        $data = array('NODETYPENAME' => 'LINK',
+        $data = [
+            'NODETYPENAME' => 'LINK',
             'NAME' => $name,
             'PARENTID' => $idParent,
             'IDSTATE' => 0,
-            'CHILDRENS' => array(
-                array('URL' => $url),
-                array('DESCRIPTION' => $description)
-            )
-        );
-        $bio = new \Ximdex\IO\BaseIO();
+            'CHILDRENS' => [
+                ['URL' => $url],
+                ['DESCRIPTION' => $description]
+            ]
+        ];
+        $bio = new BaseIO();
         $result = $bio->build($data);
         if ($result > 0) {
             $link = new Link($result);

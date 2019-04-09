@@ -32,14 +32,26 @@ use Ximdex\Models\StructuredDocument;
 use Ximdex\Models\Language;
 use Ximdex\Properties\InheritedPropertiesManager;
 use Ximdex\Workflow\WorkflowAction;
+use Ximdex\NodeTypes\NodeTypeConstants;
 use Ximdex\NodeTypes\XmlContainerNode;
 use Plata\Plata;
-use Ximdex\NodeTypes\NodeTypeConstants;
 use Ximdex\Nodeviews\ViewFilterMacros;
 
 class Translator extends WorkflowAction
 {
+    /**
+     * Default language, used as source for new translations
+     * 
+     * @var string
+     */
     const DEFAULT_ISO_LANG = 'es';
+    
+    /**
+     * Maximun time limit for in seconds to translate and generate documents
+     * 
+     * @var integer
+     */
+    const TIME_LIMIT = 300;
     
     public function sendTranslation() : bool
     {
@@ -55,11 +67,11 @@ class Translator extends WorkflowAction
             return false;
         }
         $language = new Language($structuredDocument->get('IdLanguage'));
-        if (! $language->GetID()) {
+        if (! $language->getID()) {
             $this->error = 'Language not found for ID: ' . $structuredDocument->get('IdLanguage');
             return false;
         }
-        if ($language->GetIsoName() != self::DEFAULT_ISO_LANG) {
+        if ($language->getIsoName() != self::DEFAULT_ISO_LANG) {
             return true;
         }
         
@@ -68,14 +80,14 @@ class Translator extends WorkflowAction
             $this->error = 'There is not a parent document folder for the document';
             return false;
         }
-        $docFolder = new Node($this->node->GetParent());
+        $docFolder = new Node($this->node->getParent());
         if (! $docFolder->GetId()) {
-            $this->error = 'Cannot load the document folder with ID: ' . $this->node->GetParent();
+            $this->error = 'Cannot load the document folder with ID: ' . $this->node->getParent();
             return false;
         }
         
         // Obtain the inherited language properties
-        $properties = InheritedPropertiesManager::getValues($docFolder->GetID(), true);
+        $properties = InheritedPropertiesManager::getValues($docFolder->getID(), true);
         if (! isset($properties['Language']) or ! $properties['Language']) {
             $this->error = 'Cannot load the language properties for the folder with node ID: ' . $docFolder->GetID();
             return false;
@@ -88,19 +100,20 @@ class Translator extends WorkflowAction
         $xmlContainerNode = new XmlContainerNode($docFolder);
         $langs = $xmlContainerNode->getLanguages();
         if ($langs === false) {
-            $this->error = 'Cannot load the document language versions for the folder with node ID: ' . $docFolder->GetID();
+            $this->error = 'Cannot load the document language versions for the folder with node ID: ' . $docFolder->getID();
             return false;
         }
         
         // Generate a translations array with all the documents that will be updated / created
-        elseif (in_array($docFolder->GetNodeType(), [NodeTypeConstants::HTML_CONTAINER, NodeTypeConstants::XML_CONTAINER])) {
-            // $type = Plata::TYPE_HTML;
-            $type = Plata::TYPE_HTML_PLAIN;
+        elseif (in_array($docFolder->getNodeType(), [NodeTypeConstants::HTML_CONTAINER, NodeTypeConstants::XML_CONTAINER])) {
+            $type = Plata::TYPE_HTML;
         } else {
             $type = Plata::TYPE_TXT;
         }
         $documents = array();
-        $plata = new Plata($this->node->getContent(), '', $language->GetIsoName(), $type);
+        define('PLATA_CONFIG_FILE', XIMDEX_ROOT_PATH . '/.plata-config');
+        $plata = new Plata($this->node->getContent(), '', $language->getIsoName(), $type);
+        set_time_limit(self::TIME_LIMIT);
         foreach ($properties['Language'] as $languageProp) {
             if ($languageProp['IsoName'] == self::DEFAULT_ISO_LANG) {
                 continue;

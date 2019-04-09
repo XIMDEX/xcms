@@ -82,7 +82,7 @@
 								<span id="div_deeplevel">
 									&nbsp;
 									<input id="deeplevel" min="1" max="99999" type="number" name="deeplevel" value="1" 
-											class="disabled" disabled="disabled" style="width: 60pt;" />
+											class="disabled" disabled="disabled" style="width: 40pt;" />
 								</span>
 							</div>
 							<div class="options_separator"></div>

@@ -244,6 +244,9 @@ class Action_publicatesection extends ActionAbstract
     {
         $nodesToPublish = new NodesToPublish();
         $intervals = $nodesToPublish->getIntervals(null, $idNode);
+        if (! is_array($intervals)) {
+            $intervals = [];
+        }
         return $this->formatInterval($intervals);
     }
     

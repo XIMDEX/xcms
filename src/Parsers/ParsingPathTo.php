@@ -40,10 +40,24 @@ use Ximdex\Models\Language;
 
 class ParsingPathTo
 {
+    /**
+     * @var \Ximdex\Models\Node
+     */
     private $node;
-    private $pathMethod;
+    
+    /**
+     * @var int
+     */
     private $channel;
+    
+    /**
+     * @var \Ximdex\Utils\Messages
+     */
     private $messages;
+    
+    /**
+     * @var string
+     */
     private $anchor = '';
     
     public function __construct()
@@ -56,12 +70,7 @@ class ParsingPathTo
         return $this->node;
     }
 
-    public function getPathMethod()
-    {
-        return $this->pathMethod;
-    }
-
-    public function getChannel()
+    public function getChannel() : ?int
     {
         return $this->channel;
     }
@@ -85,7 +94,7 @@ class ParsingPathTo
      * @param int $channel : Parent language ID
      * @return bool
      */
-    public function parsePathTo(string $pathToParams, int $nodeId = null, int $language = null, $channel = null) : bool
+    public function parsePathTo(string $pathToParams, int $nodeId = null, int $language = null, int $channel = null) : bool
     {
         $this->node = null;
         
@@ -135,7 +144,7 @@ class ParsingPathTo
                 $this->messages->add($error, MSG_TYPE_WARNING);
                 return false;
             }
-            $this->channel = $channel[0]['IdChannel'];
+            $this->channel = (int) $channel[0]['IdChannel'];
         }
         else {
             // Specified channel has not been given in function parameters
@@ -165,7 +174,7 @@ class ParsingPathTo
             
             // The node of the parsed document is given, load it
             $nodeDoc = new Node($nodeId);
-            if (! $nodeDoc->GetID()) {
+            if (! $nodeDoc->getID()) {
                 $error = 'Cannot load the param node: ' . $id . ' in order to parse pathto';
                 $this->messages->add($error, MSG_TYPE_ERROR);
                 return false;
@@ -187,7 +196,7 @@ class ParsingPathTo
                 // Get the server node
                 $idServer = $nodeDoc->getServer();
                 $nodeServer = new Node($idServer);
-                if (! $nodeServer->GetID()) {
+                if (! $nodeServer->getID()) {
                     $error = 'Cannot load the server node for ID: ' . $idServer;
                     $this->messages->add($error, MSG_TYPE_ERROR);
                     return false;
@@ -201,12 +210,12 @@ class ParsingPathTo
                 }
                 
                 // Get the target node with the resource name and path obtained from server + pathTo param
-                $id = $nodeServer->getByNameAndPath($resource, $nodeServer->GetPath() . '/' . $path);
+                $id = $nodeServer->getByNameAndPath($resource, $nodeServer->getPath() . '/' . $path);
             } else {
                 
                 // Relative to the previewed document
                 $nodeSection = new Node($nodeDoc->getSection());
-                if (! $nodeSection->GetID()) {
+                if (! $nodeSection->getID()) {
                     Logger::error('Cannot sanitize the path: ' . $idServer . ' when parsing pathto');
                     return false;
                 }
@@ -218,13 +227,13 @@ class ParsingPathTo
                 if (current($pathData) == '..') {
                     
                     // Get the parent nodes of the section with node types, without the current one
-                    $sectionParents = FastTraverse::getParents($nodeSection->GetID(), 'IdNodeType', 'ft.IdNode');
+                    $sectionParents = FastTraverse::getParents($nodeSection->getID(), 'IdNodeType', 'ft.IdNode');
                     if (! $sectionParents) {
-                        Logger::error('Cannot load parents node for node: ' . $nodeSection->GetID() . ' (' . $nodeSection->GetNodeName() .  ')');
+                        Logger::error('Cannot load parents node for node: ' . $nodeSection->getID() . ' (' . $nodeSection->getNodeName() .  ')');
                         return false;
                     }
                     if (next($sectionParents) === false) {
-                        Logger('Cannot load previous parent for node: ' . $nodeSection->GetID() . ' (' . $nodeSection->GetNodeName() .  ')');
+                        Logger('Cannot load previous parent for node: ' . $nodeSection->getID() . ' (' . $nodeSection->getNodeName() .  ')');
                         return false;
                     }
                     
@@ -252,7 +261,7 @@ class ParsingPathTo
                         return false;
                     }
                     $nodeSection = new Node($parentNode['key']);
-                    if (! $nodeSection->GetID()) {
+                    if (! $nodeSection->getID()) {
                         Logger::error('Cannot load the node section or server with ID: ' . $parentNode['key']);
                         return false;
                     }
@@ -266,10 +275,10 @@ class ParsingPathTo
                 }
                 
                 // Merge section path with cleaned path given in pathTo resource path param
-                $path = $nodeSection->GetPath() . '/' . $path;
+                $path = $nodeSection->getPath() . '/' . $path;
                 
                 // Load de node ID for the path and resource obtained
-                $id = $nodeDoc->GetByNameAndPath($resource, $path);
+                $id = $nodeDoc->getByNameAndPath($resource, $path);
             }
             if (! $id) {
                 Logger::warning('Cannot obtain the node for resource: ' . $nodeValue);
@@ -277,14 +286,14 @@ class ParsingPathTo
             }
             $id = $id[0]['IdNode'];
             $node = new Node($id);
-            if (! $node->GetID()) {
+            if (! $node->getID()) {
                 Logger::error('Cannot load the node with ID:' . $id);
                 return false;
             }
         }
         
         // Check the language parameter if node is structured document
-        if (isset($params[2]) and $params[2] and $node->nodeType->IsStructuredDocument()) {
+        if (isset($params[2]) and $params[2] and $node->nodeType->getIsStructuredDocument()) {
             
             // The third one is value is the language name or ID (optional)
             $languageParam = $params[2];
@@ -299,15 +308,15 @@ class ParsingPathTo
                 $this->messages->add($error, MSG_TYPE_WARNING);
                 return false;
             }
-            $language = $language[0]['IdLanguage'];
+            $language = (int) $language[0]['IdLanguage'];
             
             // Load the documents folder
-            $node = new Node($node->GetParent());
-            if (! $node->GetID()) {
-                Logger::error('Cannot load the parent document with node ID: ' . $node->GetParent());
+            $node = new Node($node->getParent());
+            if (! $node->getID()) {
+                Logger::error('Cannot load the parent document with node ID: ' . $node->getParent());
                 return false;
             }
-            $id = $node->GetID();
+            $id = $node->getID();
         }
         
         // If the target node if a documents container 
@@ -316,20 +325,20 @@ class ParsingPathTo
             // Load the document language version
             if (! $language) {
                 $strDoc = new StructuredDocument($nodeId);
-                if (! $strDoc->GetID()) {
+                if (! $strDoc->getID()) {
                     Logger::error('Cannot load the structured document with ID: ' . $nodeId);
                     return false;
                 }
-                if (! $strDoc->GetLanguage()) {
+                if (! $strDoc->getLanguage()) {
                     Logger::error('The structured document with ID: ' . $nodeId . ' has not any language value');
                     return false;
                 }
-                $language = $strDoc->GetLanguage();
+                $language = $strDoc->getLanguage();
             }
             $docContainer = new XmlContainerNode($id);
-            $id = $docContainer->GetChildByLang($language);
+            $id = $docContainer->getChildByLang($language);
             if (! $id) {
-                Logger::info('Cannot load the document for container: ' . $nodeId . ' and language: ' . $language
+                Logger::info('Cannot load the document for container: ' . $nodeId . ' and language: ' . $language 
                     . '. Using default server one instead');
                 
                 // Load the default server language instead
@@ -343,22 +352,22 @@ class ParsingPathTo
                     Logger::error('The default server language is not defined');
                     return false;
                 }
-                $id = $docContainer->GetChildByLang($property[0]);
+                $id = $docContainer->getChildByLang($property[0]);
                 if (! $id) {
                     Logger::error('Cannot load the language version for container: ' . $nodeId . ' and language: ' . $property[0]);
                     return false;
                 }
             }
             $node = new Node($id);
-            if (! $node->GetID()) {
+            if (! $node->getID()) {
                 Logger::error('Cannot load the node with ID:' . $id);
                 return false;
             }
         }
-        Logger::debug('ParsingPathTo: Obtained node with ID: ' . $id . ' and name: ' . $node->GetNodeName());
+        Logger::debug('ParsingPathTo: Obtained node with ID: ' . $id . ' and name: ' . $node->getNodeName());
         
         // Target channel
-        if ($node->nodeType->GetIsStructuredDocument()) {
+        if ($node->nodeType->getIsStructuredDocument()) {
             
             // The channel has not been passed in the pathTo expression
             $channel = $node->getTargetChannel($this->channel);
@@ -372,7 +381,6 @@ class ParsingPathTo
         } else {
             $this->channel = null;
         }
-        $this->pathMethod = array('absolute' => false);
         $this->node = $node;
         // Logger::warning('Memory usage: ' . number_format(memory_get_usage()));
         return true;

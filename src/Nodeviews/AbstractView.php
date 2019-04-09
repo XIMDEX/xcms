@@ -185,10 +185,8 @@ abstract class AbstractView implements IView
             }
             if ($this->preview) {
                 return false;
-            } else {
-                Logger::warning('Linking to 404 EmptyHrefCode');
-                return App::getValue('EmptyHrefCode');
             }
+            return $this->getLinkTo404($forceAbsolute);
         }
         if ($parserPathTo->getNode() === null) {
             
@@ -197,10 +195,9 @@ abstract class AbstractView implements IView
         }
         $targetNode = $parserPathTo->getNode();
         $res = [];
-        $res["pathMethod"] = $parserPathTo->getPathMethod();
-        $res["channel"] = $parserPathTo->getChannel();
-        $idNode = $targetNode->GetID();
-        if (! $this->preview and $targetNode->GetNodeType() != NodeTypeConstants::LINK) {
+        $res['channel'] = $parserPathTo->getChannel();
+        $idNode = $targetNode->getID();
+        if (! $this->preview and $targetNode->getNodeType() != NodeTypeConstants::LINK) {
             $nodeFrameManager = new NodeFrameManager();
             $nodeFrame = $nodeFrameManager->getNodeFramesInTime($idNode, null, time());
             if (! isset($nodeFrame)) {
@@ -212,8 +209,8 @@ abstract class AbstractView implements IView
         }
         
         // Target channel
-        if ($res["channel"] or $res["channel"] === null) {
-            $idTargetChannel = $res["channel"];
+        if ($res['channel'] or $res['channel'] === null) {
+            $idTargetChannel = $res['channel'];
         } elseif ($channelId) {
             $idTargetChannel = $channelId;
         } else {
@@ -226,7 +223,7 @@ abstract class AbstractView implements IView
         }
         
         // When external link, return the url
-        if ($targetNode->GetNodeType() == NodeTypeConstants::LINK) {
+        if ($targetNode->getNodeType() == NodeTypeConstants::LINK) {
             return $targetNode->class->GetUrl();
         }
         
@@ -249,12 +246,12 @@ abstract class AbstractView implements IView
             
             // Generate the URL to the rendernode action
             $url = App::getValue('UrlRoot') . '/?expresion=' . (($idNode) ? $idNode : $pathToParams)
-            . '&action=rendernode&token=' . uniqid();
+                . '&action=rendernode&token=' . uniqid();
             return $url;
         }
         if ($this->isPreviewServer) {
             if ($isStructuredDocument) {
-                $src = App::getValue('UrlRoot') . App::getValue('NodeRoot') . $targetNode->GetPublishedPath($idTargetChannel, true);
+                $src = App::getValue('UrlRoot') . App::getValue('NodeRoot') . $targetNode->getPublishedPath($idTargetChannel, true);
                 if ($parserPathTo->getAnchor()) {
                     $src .= '#' . $parserPathTo->getAnchor();
                 }
@@ -267,7 +264,7 @@ abstract class AbstractView implements IView
             return App::getValue('UrlRoot') . '/src/Rest/Pull/index.php?idnode=' . $targetNode->get('IdNode')
             . '&idchannel=' . $idTargetChannel . '&idportal=' . $this->serverNode->get('IdNode');
         }
-        if ($targetNode->nodeType->GetIsSection()) {
+        if ($targetNode->nodeType->getIsSection()) {
             $idTargetServer = $this->server->get('IdServer');
         } else {
             
@@ -277,23 +274,21 @@ abstract class AbstractView implements IView
         }
         $targetServer = new Server($idTargetServer);
         if (! $targetServer->get('IdServer')) {
-            Logger::warning('Linking to 404 EmptyHrefCode');
-            return App::getValue('EmptyHrefCode');
+            return $this->getLinkTo404($forceAbsolute);
         }
         
         // Get the relative or absolute path
-        if ($forceAbsolute or ($targetServer->get('IdServer') != $this->server->get('IdServer'))
-            or $this->server->get('OverrideLocalPaths') or (isset($res['pathMethod']['absolute']) and $res['pathMethod']['absolute'])) {
-                $src = $this->getAbsolutePath($targetNode, $targetServer, $idTargetChannel);
-                if ($parserPathTo->getAnchor()) {
-                    $src .= '#' . $parserPathTo->getAnchor();
-                }
-                return $src;
-            }
-            $src = $this->getRelativePath($targetNode, $this->server, $idTargetChannel);
+        if ($forceAbsolute or $targetServer->get('IdServer') != $this->server->get('IdServer') or $this->server->get('OverrideLocalPaths')) {
+            $src = $this->getAbsolutePath($targetNode, $targetServer, $idTargetChannel);
             if ($parserPathTo->getAnchor()) {
                 $src .= '#' . $parserPathTo->getAnchor();
             }
+            return $src;
+        }
+        $src = $this->getRelativePath($targetNode, $this->server, $idTargetChannel);
+        if ($parserPathTo->getAnchor()) {
+            $src .= '#' . $parserPathTo->getAnchor();
+        }
         return $src;
     }
     
@@ -323,5 +318,27 @@ abstract class AbstractView implements IView
     protected static function getAbsolutePath(Node $targetNode, Server $targetServer, int $idTargetChannel = null) : string
     {
         return $targetServer->get('Url') . $targetNode->getPublishedPath($idTargetChannel, true);
+    }
+    
+    /**
+     * Always the 404 document must be in server root folder
+     * 
+     * @param bool $absolute
+     * @return string
+     */
+    protected function getLinkTo404(bool $absolute = false) : string
+    {
+        $channelId = ($this->channel and $this->channel->getId()) ? $this->channel->getId() : null;
+        $parserPathTo = new ParsingPathTo();
+        if ($parserPathTo->parsePathTo('/documents/404', $this->node->getID(), null, $channelId)) {
+            $src = $parserPathTo->getNode()->getPublishedPath($channelId, true);
+        } else { 
+            $src = App::getValue('EmptyHrefCode');
+        }
+        if ($this->server and ($absolute or $this->server->get('OverrideLocalPaths'))) {
+            $src = $this->server->get('Url') . $src;
+        }
+        Logger::warning("Linking to 404 EmptyHrefCode ({$src})");
+        return $src;
     }
 }

@@ -31,13 +31,13 @@ X.actionLoaded(function(event, fn, params) {
 
     fn('select#link_type option').each(function(){
                                         if(prefix[0]=="http" && $(this).val()=="url"){
-                                            fn("label[for='url']").html("Web URL");
+                                            fn("label[for='url']").html("Web URL *");
                                             $(this).attr("selected",true);
                                             $inputUrl.addClass("is_url");
                                             $inputUrl.removeClass("is_email");
                                         }
                                         else if (prefix[0]=="mailto" && $(this).val()=="email"){
-                                            fn("label[for='url']").html("E-mail address");
+                                            fn("label[for='url']").html("E-mail address *");
                                             $(this).attr("selected",true);
                                             fn("input#url").addClass("is_email");
                                             fn("input#url").removeClass("is_url");
@@ -49,7 +49,7 @@ X.actionLoaded(function(event, fn, params) {
         var linkType= fn('#link_type option:selected').val();
 		
         if(linkType=="url"){
-            fn("label[for='url']").html("Web URL");
+            fn("label[for='url']").html("Web URL *");
             $inputUrl.addClass("is_url");
             $inputUrl.removeClass("is_email");
 			$inputUrl.val($inputUrl.val().replace(/^mailto:/,''));
@@ -63,7 +63,7 @@ X.actionLoaded(function(event, fn, params) {
 				$inputUrl.val("http://"+$inputUrl.val());
         }   
         else{
-            fn("label[for='url']").html("E-mail address");
+            fn("label[for='url']").html("E-mail address *");
             fn("input#url").addClass("is_email");
             fn("input#url").removeClass("is_url");
             // remove url rule and add email rule to validation

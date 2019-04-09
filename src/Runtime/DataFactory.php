@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -66,7 +66,6 @@ use Ximdex\NodeTypes\NodeTypeConstants;
  * unicamente guardara la primera subversion, y las N ultimas, donde N viene
  * definido por este parametro.
  */
-
 class DataFactory
 {
     /**
@@ -103,7 +102,9 @@ class DataFactory
         5 => 'Error al establecer el contenido del documento',
         6 => 'Ha ocurrido un error al intentar guardar el documento'
     );
+    
     public $conector;
+    
     public $nodeID;
 
     /**
@@ -113,7 +114,7 @@ class DataFactory
      */
     public function __construct(int $nodeID = null)
     {
-        $this->ClearError();
+        $this->clearError();
         $this->nodeID = $nodeID;
     }
 
@@ -124,11 +125,11 @@ class DataFactory
      */
     public function GetID()
     {
-        $this->ClearError();
+        $this->clearError();
         if ($this->nodeID) {
             return $this->nodeID;
         }
-        $this->SetError(1);
+        $this->setError(1);
         return false;
     }
 
@@ -157,11 +158,11 @@ class DataFactory
      * @param int $version
      * @return boolean|array
      */
-    public function GetSubVersionList(int $version)
+    public function getSubVersionList(int $version)
     {
-        $this->ClearError();
+        $this->clearError();
         if (! $this->nodeID) {
-            $this->SetError(1);
+            $this->setError(1);
             return false;
         }
         $versions = new Version();
@@ -176,11 +177,11 @@ class DataFactory
      *
      * @return NULL|int
      */
-    public function GetLastVersion()
+    public function getLastVersion()
     {
-        $this->ClearError();
+        $this->clearError();
         if (! $this->nodeID) {
-            $this->SetError(1);
+            $this->setError(1);
             return false;
         }
         $versions = new Version();
@@ -199,11 +200,11 @@ class DataFactory
      * @param int $version
      * @return boolean|NULL|int
      */
-    public function getLastSubVersion(int $version)
+    public function getLastSubVersion(int $version = null)
     {
-        $this->ClearError();
+        $this->clearError();
         if (! $this->nodeID) {
-            $this->SetError(1);
+            $this->setError(1);
             return false;
         }
         $versions = new Version();
@@ -220,7 +221,7 @@ class DataFactory
     public function getVersionId(int $version, int $subversion)
     {
         if (! $this->nodeID) {
-            $this->SetError(1);
+            $this->setError(1);
             return false;
         }
         $versions = new Version();
@@ -240,11 +241,11 @@ class DataFactory
      *
      * @return bool|NULL|int
      */
-    function HasPreviousVersions()
+    public function hasPreviousVersions()
     {
-        $this->ClearError();
+        $this->clearError();
         if (! $this->nodeID) {
-            $this->SetError(1);
+            $this->setError(1);
             return false;
         }
         $versions = new Version();
@@ -260,15 +261,15 @@ class DataFactory
     /**
      * Devuelve el contenido de una version
      *
-     * @param int $versionID :  Si se omite este parametro y el siguiente, se tomara la ultima version del nodo en el objeto
+     * @param int $versionID : Si se omite este parametro y el siguiente, se tomara la ultima version del nodo en el objeto
      * @param int $subVersion : Si se omite este parametro, el anterior es el identificador unico de version, en otro caso, es el numero de Version
      * @return string|bool
      */
-    public function GetContent(int $versionID = null, int $subVersion = null)
+    public function getContent(int $versionID = null, int $subVersion = null)
     {
-        $this->ClearError();
+        $this->clearError();
         if (! $this->nodeID) {
-            $this->SetError(1);
+            $this->setError(1);
             return false;
         }
 
@@ -320,7 +321,7 @@ class DataFactory
         if (! $node->get('IdNode')) {
             return false;
         }
-        if (! $node->nodeType->GetIsStructuredDocument()) {
+        if (! $node->nodeType->getIsStructuredDocument()) {
             return true;
         }
 
@@ -337,14 +338,14 @@ class DataFactory
         $data['DISABLE_CACHE'] = App::getValue('DisableCache');
         $transformer = $node->getProperty('Transformer');
         $data['TRANSFORMER'] = $transformer[0];
-        $channels = $node->GetChannels();
+        $channels = $node->getChannels();
         if ($channels) {
             foreach ($channels as $idChannel) {
                 Logger::info('Generation cache for version ' . $idVersion . ' and the channel ' . $idChannel);
                 $data['CHANNEL'] = $idChannel;
-                if ($node->GetNodeType() == NodeTypeConstants::XML_DOCUMENT) {
+                if ($node->getNodeType() == NodeTypeConstants::XML_DOCUMENT) {
                     $process = 'FromPreFilterToDexT';
-                } elseif ($node->GetNodeType() == NodeTypeConstants::HTML_DOCUMENT) {
+                } elseif ($node->getNodeType() == NodeTypeConstants::HTML_DOCUMENT) {
                     $channel = new Channel($idChannel);
                     if ($channel->getRenderType() == HTMLDocumentNode::MODE_INDEX) {
                         $process = 'PrepareXIF';
@@ -370,8 +371,8 @@ class DataFactory
      * Cambia el contenido de una version
      *
      * @param string $content
-     * @param int $versionID    : Si se omite este parametro y el siguiente, se tomara la ultima version del nodo en el objeto
-     * @param int $subVersion   : Si se omite este parametro, el anterior es el identificador unico de version, en otro caso, es el numero de Version
+     * @param int $versionID : Si se omite este parametro y el siguiente, se tomara la ultima version del nodo en el objeto
+     * @param int $subVersion : Si se omite este parametro, el anterior es el identificador unico de version, en otro caso, es el numero de Version
      * @param boolean $commitNode
      * @return boolean|NULL|string
      */
@@ -402,7 +403,7 @@ class DataFactory
 
         // (2) Se pasa version determinada y se machaca el contenido de esa version
         if (! is_null($versionID) && ! is_null($subVersion)) {
-            $uniqueName = $this->GetTmpFile($versionID, $subVersion);
+            $uniqueName = $this->getTmpFile($versionID, $subVersion);
             if (! $uniqueName) {
                 Logger::error('Error making a setContent for Node (Unable to get the file):' . $this->nodeID . ', Version: ' . $versionID . '.' 
                     . $subVersion . ', File: .' . $uniqueName . ', Chars: ' . strlen($content));
@@ -770,7 +771,7 @@ class DataFactory
      * @param int $subVersion
      * @return boolean|NULL|string
      */
-    private function GetTmpFile(int $versionID, int $subVersion = null)
+    private function getTmpFile(int $versionID, int $subVersion = null)
     {
         $this->ClearError();
         if (! $this->nodeID) {

@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -46,7 +46,7 @@ class FastTraverseManager extends InstallManager
 		foreach ($results as $i => $idNode) {
 			$node = new Node($idNode);
 			$node->updateFastTraverse(false);
-			$path = pathinfo($node->GetPath());
+			$path = pathinfo($node->getPath());
 			if (! isset($path['dirname'])) {
 				$path['dirname'] = '/' ;
 			}

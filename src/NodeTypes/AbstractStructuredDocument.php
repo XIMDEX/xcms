@@ -329,7 +329,6 @@ abstract class AbstractStructuredDocument extends FileNode
             return false;
         }
         
-        // TODO comprobar que ya no sea necesario al estar las relaciones de borrado cascada
         // Deletes dependencies in rel tables
         $depsMngr = new DepsManager();
         if ($depsMngr->deleteByTarget(DepsManager::XML2XML, $this->parent->get('IdNode')) === false) {
@@ -662,9 +661,9 @@ abstract class AbstractStructuredDocument extends FileNode
             return false;
         }
         if (App::getValue('PublishPathFormat') == App::PREFIX or App::getValue('PublishPathFormat') == App::SUFFIX) {
-            $language = new Language($structuredDocument->get("IdLanguage"));
+            $language = new Language($structuredDocument->get('IdLanguage'));
             if (! $language->getID()) {
-                $error = 'Language not found for ID: ' . $structuredDocument->get("IdLanguage");
+                $error = 'Language not found for ID: ' . $structuredDocument->get('IdLanguage');
                 $this->messages->add($error, MSG_TYPE_ERROR);
                 Logger::error($error);
                 return false;
@@ -673,7 +672,7 @@ abstract class AbstractStructuredDocument extends FileNode
         if (App::getValue('PublishPathFormat') == App::SUFFIX) {
             $addNodeName = false;
         }
-        $nodes = parent::GetPublishedPath($channelID, $addNodeName, true);
+        $nodes = parent::getPublishedPath($channelID, $addNodeName, true);
         $path = '/' . implode('/', $nodes);
         switch (App::getValue('PublishPathFormat')) {
             case App::PREFIX:

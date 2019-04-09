@@ -33,8 +33,6 @@ use Ximdex\Models\ORM\LinksOrm;
 
 class Link extends LinksOrm
 {
-    public $actsAs = array('\Ximdex\Behaviours\Search' => array('field' => 'IdLink'));
-
     const LINK_FAIL = "fail";
     
     const LINK_OK = "ok";
@@ -42,6 +40,8 @@ class Link extends LinksOrm
     const LINK_WAITING = "waiting";
     
     const LINK_NOT_CHECKED = "not checked";
+    
+    public $actsAs = ['\Ximdex\Behaviours\Search' => ['field' => 'IdLink']];
 
     public function checkUrl(string $url, string $name = null)
     {

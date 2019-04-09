@@ -87,7 +87,7 @@
 									<span id="div_deeplevel">
 										&nbsp;
 										<input id="deeplevel" min="1" max="99999" type="number" name="deeplevel" value="1" 
-												class="disabled" disabled="disabled" style="width: 60pt;" />
+												class="disabled" disabled="disabled" style="width: 40pt;" />
 									</span>
 								</div>
 								<div class="options_separator"></div>
@@ -108,8 +108,7 @@
 										<input type="checkbox" name="latest" id="last_edited" value="1" />
 									</div>
 									<div class="option_info">
-										<label for="last_edited">{t}Use drafts for linked documents instead of already published 
-												versions.{/t}</label>
+										<label for="last_edited">{t}Use drafts for linked documents instead of already published versions{/t}.</label>
 									</div>
 									<div class="options_separator"></div>
 								</div>

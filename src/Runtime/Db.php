@@ -120,7 +120,7 @@ class Db
         $this->rows = array();
         $this->numRows = 0;
         try {
-            $this->stm = $this->db->query($this->sql, \PDO::FETCH_ASSOC);
+            $this->stm = @$this->db->query($this->sql, \PDO::FETCH_ASSOC);
         } catch (\PDOException $e) {
             if (isset($GLOBALS['InBatchProcess']) and $GLOBALS['InBatchProcess']) {
                 echo $e->getMessage() . PHP_EOL;

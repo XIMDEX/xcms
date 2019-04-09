@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -31,16 +31,25 @@ use Ximdex\Data\GenericData;
 
 class RelLinkDescriptionsOrm extends GenericData
 {
-    var $_idField = 'IdRel';
-    var $_table = 'RelLinkDescriptions';
-    var $_metaData = array(
-        'IdRel' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
-        'IdLink' => array('type' => "int(12)", 'not_null' => 'true'),
-        'Description' => array('type' => "varchar(255)", 'not_null' => 'false')
-    );
-    var $_uniqueConstraints = array();
-    var $_indexes = array('IdRel');
-    var $IdRel;
-    var $IdLink = 0;
-    var $Description = 0;
+    public $_idField = 'IdRel';
+    
+    public $_table = 'RelLinkDescriptions';
+    
+    public $_metaData = [
+        'IdRel' => ['type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true],
+        'IdLink' => ['type' => "int(12)", 'not_null' => 'true'],
+        'Description' => ['type' => "varchar(255)", 'not_null' => 'false']
+    ];
+    
+    public $_uniqueConstraints = [
+        ['IdLink', 'Description']
+    ];
+    
+    public $_indexes = ['IdRel'];
+    
+    public $IdRel;
+    
+    public $IdLink;
+    
+    public $Description;
 }

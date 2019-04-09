@@ -583,6 +583,9 @@
               } else {
                 path = $scope.initialNodeList.path;
               }
+              if (! path) {
+            	  return;
+              }
               if (path.slice(-1) === "/") {
                 path = path.substring(0, path.length - 1);
               }

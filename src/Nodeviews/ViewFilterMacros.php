@@ -310,12 +310,12 @@ class ViewFilterMacros extends AbstractView
         if (! $node->get('IdNode')) {
             return false;
         }
-        $idSection = $node->GetSection();
+        $idSection = $node->getSection();
         $section = new Node($idSection);
         return $section;
     }
 
-    private function getSectionPathAbs($matches)
+    private function getSectionPathAbs(array $matches)
     {
         return $this->getSectionPath($matches, true);
     }
@@ -332,8 +332,7 @@ class ViewFilterMacros extends AbstractView
         $target = $matches[1];
         $section = $this->getSectionNode($target);
         if (! $section) {
-            Logger::warning('Linking to 404 EmptyHrefCode');
-            return App::getValue('EmptyHrefCode');
+            return $this->getLinkTo404($abs);
         }
         if ($this->isPreviewServer) {
             return App::getValue('UrlRoot') . App::getValue('NodeRoot') . '/' . $section->GetPublishedPath(null, true);
@@ -345,12 +344,12 @@ class ViewFilterMacros extends AbstractView
             $idTargetChannel = null;
             $idTargetServer = $sync->getServer($target, $idTargetChannel, $this->server->get('IdServer'));
         }
-        if ($this->preview or (!$abs && !$this->server->get('OverrideLocalPaths') && ($idTargetServer == $this->serverNode->get('IdNode')))) {
+        if ($this->preview or (! $abs && ! $this->server->get('OverrideLocalPaths') && ($idTargetServer == $this->serverNode->get('IdNode')))) {
             $dotdot = str_repeat('../', $this->_depth - 2);
-            return $dotdot . $section->GetPublishedPath($idTargetChannel, true);
+            return $dotdot . $section->getPublishedPath($idTargetChannel, true);
         }
         $targetServer = new Server($idTargetServer);
-        return $targetServer->get('Url') . $section->GetPublishedPath($idTargetChannel, true);
+        return $targetServer->get('Url') . $section->getPublishedPath($idTargetChannel, true);
     }
 
     /**
@@ -364,8 +363,7 @@ class ViewFilterMacros extends AbstractView
         if ($this->preview) {
             $targetPath .= '?token=' . uniqid();
         } elseif (! $this->serverNode->get('IdNode')) {
-            Logger::warning('Linking to 404 EmptyHrefCode');
-            return App::getValue("EmptyHrefCode");
+            return $this->getLinkTo404();
         }
         
         // If preview server, we return the path to data / nodes
@@ -469,7 +467,7 @@ class ViewFilterMacros extends AbstractView
             return false;
         }
         $targetNode = new Node($nodeId);
-        if (! $targetNode->GetID()) {
+        if (! $targetNode->getID()) {
             Logger::error('Could not load a node with ID ' . $nodeId);
             return false;
         }
@@ -481,13 +479,13 @@ class ViewFilterMacros extends AbstractView
         
         // Get the channel for the include link if it is not published in the origin document
         $idChannel = $this->channel->getID();
-        if (! $targetNode->nodeType->GetIsFolder()) {
+        if (! $targetNode->nodeType->getIsFolder()) {
             $targetFrame = new ServerFrame();
-            $frameID = $targetFrame->getCurrent($targetNode->GetID(), $idChannel, $targetServer->get('IdServer'));
+            $frameID = $targetFrame->getCurrent($targetNode->getID(), $idChannel, $targetServer->get('IdServer'));
             if (! $frameID) {
                 
                 // Not published in the current channel
-                $frames = $targetFrame->getFramesOnDate($targetNode->GetID(), time(), $targetServer->get('IdServer'));
+                $frames = $targetFrame->getFramesOnDate($targetNode->getID(), time(), $targetServer->get('IdServer'));
                 if ($frames) {
                     $sync = new SynchroFacade();
                     $idChannel = $sync->getFrameChannel($frames[0]['IdSync']);
@@ -496,7 +494,7 @@ class ViewFilterMacros extends AbstractView
         }
         
         // Get the path
-        $src = $targetServer->get('InitialDirectory') . $targetNode->GetPublishedPath($idChannel, true);
+        $src = $targetServer->get('InitialDirectory') . $targetNode->getPublishedPath($idChannel, true);
         return $src;
     }
     

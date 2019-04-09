@@ -91,7 +91,7 @@ class User extends UsersOrm
      */
     public function getGroupList()
     {
-        $this->ClearError();
+        $this->clearError();
         if ($this->get('IdUser') > 0) {
             $sql = sprintf('SELECT IdGroup FROM RelUsersGroups WHERE IdUser = %d', $this->get('IdUser'));
             $dbObj = new \Ximdex\Runtime\Db();
@@ -104,9 +104,9 @@ class User extends UsersOrm
                 }
                 return $salida;
             }
-            setError(5);
+            $this->setError(5);
         } else {
-            $this->SetError(1);
+            $this->setError(1);
         }
         return null;
     }
@@ -176,7 +176,7 @@ class User extends UsersOrm
      * It allows to change an object idUser. It avoid to have to destroy and create again
      * 
      * @param int $id
-     * @return NULL|boolean|string
+     * @return NULL|int
      */
     public function setID(int $id)
     {
@@ -185,14 +185,14 @@ class User extends UsersOrm
             $this->setError(1);
             return null;
         }
-        return $this->get('IdUser');
+        return (int) $this->get('IdUser');
     }
 
     /**
      * Updating database with the new user name
      * 
      * @param string $name
-     * @return boolean|string|NULL|number
+     * @return boolean
      */
     public function setRealName(string $name)
     {
@@ -211,7 +211,7 @@ class User extends UsersOrm
      * Modifies the user pass
      * 
      * @param string $pass
-     * @return boolean|boolean|string|NULL|number
+     * @return boolean
      */
     public function setPassword(string $pass)
     {
@@ -230,7 +230,7 @@ class User extends UsersOrm
      * Modifies the user email
      * 
      * @param string $email
-     * @return boolean|string|NULL|number
+     * @return boolean
      */
     public function setEmail(string $email)
     {
@@ -240,7 +240,7 @@ class User extends UsersOrm
         }
         $result = $this->set('Email', $email);
         if ($result) {
-            return $this->update();
+            return (bool) $this->update();
         }
         return false;
     }
@@ -253,7 +253,7 @@ class User extends UsersOrm
         }
         $result = $this->set('Locale', $code);
         if ($result) {
-            return $this->update();
+            return (bool) $this->update();
         }
         return false;
     }
@@ -262,7 +262,7 @@ class User extends UsersOrm
      * Looks for an user by login, and load the corresponding idUser
      * 
      * @param string $login
-     * @return NULL|string|boolean
+     * @return NULL|number|boolean
      */
     public function setByLogin(string $login)
     {

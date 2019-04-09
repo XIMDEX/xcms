@@ -245,7 +245,7 @@ class SyncManager
             return null;
         }
         $node = new Node($idNode);
-        if (! $node->GetID()) {
+        if (! $node->getID()) {
             Logger::error(sprintf('Node %s does not exist', $idNode));
             return null;
         }
@@ -282,7 +282,8 @@ class SyncManager
         // Exec batchManagerDaemon in background
         $cmd = 'php ' . XIMDEX_ROOT_PATH . '/bootstrap.php  src/Sync/scripts/batch/batchManagerDaemon.php';
         $cmd = sprintf('%s > ' . sys_get_temp_dir() . '/batch_manager_daemon.err &', $cmd);
-        system($cmd);
+        $var = 0;
+        system($cmd, $var);
         return $docsToPublish;
     }
 
