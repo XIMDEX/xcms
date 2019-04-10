@@ -325,7 +325,7 @@ class Role extends RolesOrm
             , $this->get('IdRole'), $actionID, ($stateID) ? $stateID : 'NULL');
         $dbObj->execute($sql);
         if ($dbObj->numErr != 0) {
-            $this->SetError(1);
+            $this->setError(1);
             return false;
         }
         return true;

@@ -1,5 +1,5 @@
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -23,11 +23,7 @@
  *  @version $Revision$
  */
 
-
 X.actionLoaded(function(event, fn, params) {
-
-    //Start angular compile and binding
-    //X.angularTools.initView(params.context, params.tabId);
 	
 	fn('select[name=id_workflow]').change(function(event) {
 		var id_pipeline = $(this).val();
@@ -47,5 +43,4 @@ X.actionLoaded(function(event, fn, params) {
 	fn('.button-deselect-all').click(function(event) {
 		fn('input:checkbox').attr('checked', false);
 	});
-	
 });

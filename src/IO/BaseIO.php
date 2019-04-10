@@ -43,9 +43,9 @@ use Ximdex\Runtime\Session;
 class BaseIO
 {
     /**
-     * @var Messages
+     * @var \Ximdex\Utils\Messages
      */
-    var $messages = null;
+    public $messages;
 
     public function __construct()
     {
@@ -358,7 +358,7 @@ class BaseIO
                         , isset($data['DESCRIPTION']) ? $data['DESCRIPTION'] : null);
                 $this->_dumpMessages($link->messages);
                 if (! $idNode) {
-                    $this->messages->add(_('An error occurred inserting the document'), MSG_TYPE_ERROR);
+                    $this->messages->add(_('An error occurred creating the link'), MSG_TYPE_ERROR);
                     return Constants::ERROR_INCORRECT_DATA;
                 }
                 return $idNode;

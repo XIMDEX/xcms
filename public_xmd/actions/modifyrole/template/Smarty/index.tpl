@@ -1,5 +1,5 @@
 {**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -82,34 +82,47 @@
                                     {/if}
                                 </tr>
                                 {foreach name="medium_actions" from=$nodetype.actions key=action_key item=action}
-                                    <tr>
-                                        {if $displayed_nodetype == 1}
-                                            {assign var=displayed_nodetype value=0}
-                                        {/if}
-                                        <td class="{if $index is not even}evenrow{else}oddrow{/if}">
-                                            {$action.Name}
-                                        </td>
+                                    {if $action.Sort lt 0}
+                                        <!-- {$action.Name} -->
                                         {if isset($workflow_states[$nodetype.workflowId])}
-	                                        {foreach from=$workflow_states[$nodetype.workflowId] item=workflow_state}
-	                                            <td class="{if $index is not even}evenrow{else}oddrow{/if}">
-	                                                {* if (array_key_exists('states', $action)) *}
-	                                                {if (isset($action.states[$workflow_state.id]))}
-	                                                    <input type="checkbox" 
-                                                                name="action_workflow[{$action.IdAction}][{$workflow_state.id}]" 
-	                                                            {if $action.states[$workflow_state.id]} checked="checked" {/if} 
-	                                                            title="{$workflow_state.name} state" />
-	                                                {/if}
-	                                            </td>
-	                                        {/foreach}
+                                            {foreach from=$workflow_states[$nodetype.workflowId] item=workflow_state}
+	                                            <input type="hidden" 
+	                                                    name="action_workflow[{$action.IdAction}][{$workflow_state.id}]" 
+	                                                    value="{if $action.states[$workflow_state.id]}1{else}0{/if}" />
+                                            {/foreach}
                                         {else}
-	                                        <td class="{if $index is not even}evenrow{else}oddrow{/if}" align="center">
-	                                            {if (array_key_exists('state', $action))}
-	                                                <input type="checkbox" name="action_workflow[{$action.IdAction}][NO_STATE]" 
-	                                                        {if $action.state} checked="checked"{/if} title="Without state">
-	                                            {/if}
-	                                        </td>
+	                                        <input type="hidden" name="action_workflow[{$action.IdAction}][NO_STATE]" 
+	                                               value="{if $action.state}1{else}0{/if}" />
                                         {/if}
-                                    </tr>
+                                    {else}
+	                                    <tr>
+	                                        {if $displayed_nodetype == 1}
+	                                            {assign var=displayed_nodetype value=0}
+	                                        {/if}
+	                                        <td class="{if $index is not even}evenrow{else}oddrow{/if}">
+	                                            {$action.Name}
+	                                        </td>
+	                                        {if isset($workflow_states[$nodetype.workflowId])}
+		                                        {foreach from=$workflow_states[$nodetype.workflowId] item=workflow_state}
+		                                            <td class="{if $index is not even}evenrow{else}oddrow{/if}">
+		                                                {if (isset($action.states[$workflow_state.id]))}
+		                                                    <input type="checkbox" 
+	                                                                name="action_workflow[{$action.IdAction}][{$workflow_state.id}]" 
+		                                                            {if $action.states[$workflow_state.id]} checked="checked" {/if} 
+		                                                            title="{$workflow_state.name} state" />
+		                                                {/if}
+		                                            </td>
+		                                        {/foreach}
+	                                        {else}
+		                                        <td class="{if $index is not even}evenrow{else}oddrow{/if}" align="center">
+		                                            {if (array_key_exists('state', $action))}
+		                                                <input type="checkbox" name="action_workflow[{$action.IdAction}][NO_STATE]" 
+		                                                        {if $action.state} checked="checked"{/if} title="Without state">
+		                                            {/if}
+		                                        </td>
+	                                        {/if}
+	                                    </tr>
+                                    {/if}
                                 {/foreach}
                             </table>
                         </accordion-group>

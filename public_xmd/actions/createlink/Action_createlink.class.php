@@ -86,6 +86,8 @@ class Action_createlink extends ActionAbstract
             $link->set('CheckTime', time());
             $link->update();
             $this->messages->add(_('Link has been successfully added'), MSG_TYPE_NOTICE);
+        } else {
+            $this->messages->mergeMessages($bio->messages);
         }
         return $result;
     }

@@ -1128,10 +1128,10 @@ class Node extends NodesOrm
     }
 
     /**
-     *
-     * @return bool|int|null|string
+     * {@inheritDoc}
+     * @see \Ximdex\Data\GenericData::update()
      */
-    function update()
+    public function update()
     {
         $this->set('ModificationDate', time());
         return parent::update();

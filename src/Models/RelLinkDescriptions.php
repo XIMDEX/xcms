@@ -46,13 +46,13 @@ class RelLinkDescriptions extends RelLinkDescriptionsOrm
         return $this->Description;
     }
 
-    public static function create(int $idLink, string $description)
+    public static function create(int $idLink, string $description) : RelLinkDescriptions
     {
         $rel = new RelLinkDescriptions();
         $node = new Node($idLink);
         $idNode = $node->get('IdNode');
         if ($idNode <= 0) {
-            $rel->messages->add("Can't append a description to the link, the node id $idNode doesn't exists.", MSG_TYPE_ERROR);
+            $rel->messages->add(_("Can't append a description to the link, the node id $idNode doesn't exists"), MSG_TYPE_ERROR);
         } else {
             $rel->set('IdLink', $idLink);
             $rel->set('Description', $description);

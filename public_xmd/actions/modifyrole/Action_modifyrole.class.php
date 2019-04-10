@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -44,6 +44,11 @@ class Action_modifyrole extends ActionAbstract
     {
         $idNode = (int) $this->request->getParam('nodeid');
         $role = new Role($idNode);
+        if (! $role->getID()) {
+            $this->messages->add(_('The role does not exists'), MSG_TYPE_WARNING);
+            $this->sendJSON(['messages' => $this->messages->messages]);
+            return;
+        }
         
         // Getting permisions for current role
         $permission = new Permission();
@@ -55,15 +60,16 @@ class Action_modifyrole extends ActionAbstract
         $allStates = [];
         $this->addJs('/actions/modifyrole/js/modifyrole.js');
         $this->addCss('/actions/modifyrole/css/modifyrole.css');
-        $values = array('name' => $role->get('Name'),
+        $values = [
+            'name' => $role->get('Name'),
             'description' => $role->get('Description'),
             'permissions' => $allPermissionData,
             'nodetypes' => $this->getAllNodeTypes($role, $allStates),
             'workflow_states' => $allStates,
             'nodeTypeID' => $node->nodeType->getID(),
-            'node_Type' => $node->nodeType->GetName(),
+            'node_Type' => $node->nodeType->getName(),
             'go_method' => 'modifyrole'
-        );
+        ];
         $this->render($values, null, 'default-3.0.tpl');
     }
 
@@ -75,6 +81,10 @@ class Action_modifyrole extends ActionAbstract
         // ini_set('max_input_vars', 2000);
         $idNode = (int) $this->request->getParam('nodeid');
         $role = new Role($idNode);
+        if (! $role->getID()) {
+            $this->messages->add(_('The role does not exists'), MSG_TYPE_WARNING);
+            $this->sendJSON(['messages' => $this->messages->messages]);
+        }
         $role->set('Description', $this->request->getParam('description'));
         $role->update();
         if (! $role->deleteAllPermissions()) {
@@ -106,7 +116,10 @@ class Action_modifyrole extends ActionAbstract
         $rolesActions = $this->request->getParam('action_workflow');
         if ($rolesActions) {
             foreach ($rolesActions as $idAction => $workFlowStatus) {
-                foreach (array_keys($workFlowStatus) as $workflowStatusId) {
+                foreach ($workFlowStatus as $workflowStatusId => $actived) {
+                    if (! $actived) {
+                        continue;
+                    }
                     if ($role->addAction($idAction, ($workflowStatusId == 'NO_STATE') ? null : $workflowStatusId) === false) {
                         $this->messages->add(_('Cannot create a role action'), MSG_TYPE_ERROR);
                         $values = array(
@@ -140,8 +153,8 @@ class Action_modifyrole extends ActionAbstract
             }
             
             // Getting actions for current node type
-            $nodeType['actions'] = $action->find('IdAction, Name, Module, Command', 'IdNodeType = %s AND Sort >= 0'
-                , array($nodeType['IdNodeType']), MULTI, true, null, 'Sort');
+            $nodeType['actions'] = $action->find('IdAction, Name, Module, Command, Sort', 'IdNodeType = %s', [$nodeType['IdNodeType']], MULTI
+                , true, null, 'Sort');
             if ($nodeType['actions'] === false) {
                 throw new Exception('Error loading node type actions');
             }

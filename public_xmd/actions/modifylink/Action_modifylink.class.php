@@ -52,7 +52,7 @@ class Action_modifylink extends ActionAbstract
     		'url' => $link->get('Url'),
     		'description' => $node->get('Description'),
             'nodeTypeID' => $node->nodeType->getID(),
-            'node_Type' => $node->nodeType->GetName(),
+            'node_Type' => $node->nodeType->getName(),
     		'go_method' => 'modifylink'
 		];
 		$this->render($values, null, 'default-3.0.tpl');
@@ -61,7 +61,7 @@ class Action_modifylink extends ActionAbstract
 	public function modifylink()
     {
     	$idNode = (int) $this->request->getParam('nodeid');
-    	$validated = $this->request->getParam('validated');	
+    	$validated = (int) $this->request->getParam('validated');	
     	if (! $validated) {
 	    	$link = new Link();
 	    	$links = $link->search([
@@ -78,18 +78,19 @@ class Action_modifylink extends ActionAbstract
 	    	}
     	}
     	$link = new Link($idNode);
-    	$node = new Node($idNode);
     	$link->set('Url', $this->request->getParam('Url'));
     	$linkResult = $link->update();
-    	$node->set('Description', $this->request->getParam('Description'));
+    	$description = $this->request->getParam('Description');
+    	$node = new Node($idNode);
+    	$node->set('Description', $description);
     	$node->set('Name', $this->request->getParam('Name'));
     	$nodeResult = $node->update();
-    	if ($nodeResult > 0 || $linkResult > 0) {
-    		$this->messages->add(_('Link has been successfully updated'), MSG_TYPE_NOTICE);
+    	if ($nodeResult === false or $linkResult === false) {
+    	    $this->messages->add(_('An error occurred while upadting link'), MSG_TYPE_ERROR);
+    	    $this->messages->mergeMessages($link->messages);
+    	    $this->messages->mergeMessages($node->messages);
     	} else {
-    		$this->messages->add(_('An error occurred while upadting link'), MSG_TYPE_ERROR);
-    		$this->messages->messages($link->messages);
-    		$this->messages->mergeMessages($node->messages);
+    		$this->messages->add(_('Link has been successfully updated'), MSG_TYPE_NOTICE);
     	}
 		$values = [
 		    'messages' => $this->messages->messages, 

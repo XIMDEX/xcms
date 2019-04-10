@@ -37,7 +37,7 @@
                     <p class="icon icon-positioned link">
                         <input type="text" name="name" id="name" 
                                 class=" input_general_icon cajaxg validable not_empty js_val_unique_name js_val_alphanumeric" 
-                                data-idnode="{$id_node}" placeholder= "{t}Link name{/t}" />
+                                data-idnode="{$id_node}" placeholder="{t}Link name{/t}" />
                     </p>
                 </div>
             </div>
@@ -60,7 +60,7 @@
             <div class="small-12 columns">
                 <div class="input">
                     <label for="description" class="label_title label_general"><span>{t}Description{/t}</span></label>
-                    <input type="text" name="description" id="description" class="input_general cajaxg" />
+                    <input type="text" name="description" id="description" class="input_general cajaxg" placeholder="{t}Link description{/t}" />
                 </div>
                 <fieldset class="buttons-form ">
                     {button label="Create" class='validate btn main_action'} {*message="Would you like to create a new link?"*}
