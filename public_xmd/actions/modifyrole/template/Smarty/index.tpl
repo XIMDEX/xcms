@@ -55,10 +55,10 @@
                 <accordion-group heading="{t}Generic permits{/t}" ng-init="$parent.status.push(false)" is-open="$parent.status[1]">
                     {foreach from=$permissions key=index item=permissionData}
                         <div class="checkbox">
-                            <label for="p_{$permissionData.IdPermission}">
+                            <label for="p_{$permissionData.IdPermission}_{$nodeid}">
                                 <input type="checkbox" name="permissions[{$permissionData.IdPermission}]" 
-                                        id="p_{$permissionData.IdPermission}"{if $permissionData.HasPermission} 
-                                        checked="checked"{/if}>&nbsp;{$permissionData.Description}
+                                        id="p_{$permissionData.IdPermission}_{$nodeid}" 
+                                        {if $permissionData.HasPermission} checked="checked" {/if}> {$permissionData.Description}
                             </label>
                         </div>
                     {/foreach}
