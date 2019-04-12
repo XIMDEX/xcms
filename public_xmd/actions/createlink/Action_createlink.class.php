@@ -27,8 +27,11 @@
 
 use Ximdex\Models\Link;
 use Ximdex\Models\Node;
+use Ximdex\Modules\Manager;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\IO\BaseIO;
+
+Manager::file('/actions/browser3/inc/FormValidation.class.php');
 
 class Action_createlink extends ActionAbstract
 {
@@ -55,10 +58,22 @@ class Action_createlink extends ActionAbstract
         $idParent = (int) $this->request->getParam('id_node');
         $url = $this->request->getParam('url');
         $description = $this->request->getParam('description');
+        $params = [
+            'nodeid' => $idParent,
+            'inputName' => 'url',
+            'url' => $url
+        ];
+        if (! FormValidation::isUniqueUrl($params)) {
+            $this->messages->add(_('The URL link is already in use'), MSG_TYPE_ERROR);
+            $values = [
+                'messages' => $this->messages->messages
+            ];
+            $this->sendJSON($values);
+        }
         $this->createNodeLink($name, $url, $description, $idParent);
         $values = [
             'messages' => $this->messages->messages, 
-            'parentID' => $idParent
+            'parentID' => (string) $idParent
         ];
         $this->sendJSON($values);
     }

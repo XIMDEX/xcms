@@ -636,7 +636,7 @@ class ImportXml
         }
         $localElement = $this->_resolveNode($localElement);
         $this->_executeNode($localElement, $parentElement);
-        unset ($this->tree[$this->depth][$localIndex]);
+        unset($this->tree[$this->depth][$localIndex]);
         $this->depth--;
     }
 
@@ -733,13 +733,13 @@ class ImportXml
                 $this->idXimio,
                 $dbObj->sqlEscapeString($this->timeStamp),
                 $elementToInsert['OLDPARENTID']);
-            $dbObj->Query($query);
-            while (!$dbObj->EOF) {
-                $timeStamp = $dbObj->GetValue('timeStamp');
+            $dbObj->query($query);
+            while (! $dbObj->EOF) {
+                $timeStamp = $dbObj->getValue('timeStamp');
                 if (!in_array($timeStamp, $this->sugestedPackages)) {
                     $this->sugestedPackages[] = $timeStamp;
                 }
-                $dbObj->Next();
+                $dbObj->next();
             }
 
             // Counting as successfully inserted node

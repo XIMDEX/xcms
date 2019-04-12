@@ -1200,7 +1200,7 @@ class Node extends NodesOrm
 
         // check name, parentID and nodeTypeID
         if (! $name or ! $parentID or ! $nodeTypeID) {
-            $this->SetError(3);
+            $this->setError(3);
             $this->messages->add(_('The name, parent or nodetype is missing'), MSG_TYPE_ERROR);
             return false;
         }
@@ -1208,35 +1208,35 @@ class Node extends NodesOrm
         // If nodetype is not existing, we are done
         if (! $nodeType->get('IdNodeType')) {
             $this->messages->add(_('The specified nodetype does not exist'), MSG_TYPE_ERROR);
-            $this->SetError(11);
+            $this->setError(11);
             return false;
         }
 
         // Checking for correct name format
-        if (! $this->IsValidName($this->get('Name'), $this->get('IdNodeType'))) {
+        if (! $this->isValidName($this->get('Name'), $this->get('IdNodeType'))) {
             $this->messages->add(_('Node name is not valid'), MSG_TYPE_ERROR);
-            $this->SetError(9);
+            $this->setError(9);
             return false;
         }
 
         // If parent does not exist, we are done
         if (! $parentNode->get('IdNode')) {
             $this->messages->add(_('Parent node does not exist'), MSG_TYPE_ERROR);
-            $this->SetError(10);
+            $this->setError(10);
             return false;
         }
 
         // Check if already exist a node with the same name under the current parent
         if (! $parentNode->getChildByName($this->get('Name')) === false) {
             $this->messages->add(_('There is already a node with this name under this parent'), MSG_TYPE_ERROR);
-            $this->SetError(8);
+            $this->setError(8);
             return false;
         }
 
         // Node is not allowed to live there
         if (! $this->checkAllowedContent($nodeTypeID, $parentID)) {
             $this->messages->add(_('This node is not allowed under this parent'), MSG_TYPE_ERROR);
-            $this->SetError(17);
+            $this->setError(17);
             return false;
         }
 
@@ -1249,7 +1249,7 @@ class Node extends NodesOrm
         } catch (\Exception $e) {
             Logger::error($e->getMessage());
             $this->messages->add(_('Error generating the node ID'), MSG_TYPE_ERROR);
-            $this->SetError(5);
+            $this->setError(5);
             return false;
         }
         
@@ -1259,20 +1259,22 @@ class Node extends NodesOrm
         }
         if (! $this->get('IdNode')) {
             $this->messages->add(_('Error creating the node'), MSG_TYPE_ERROR);
-            $this->SetError(5);
+            $this->setError(5);
             return false;
         }
-        $this->SetID($this->get('IdNode'));
+        $this->setID($this->get('IdNode'));
 
         // Updating fastTraverse before the setcontent, because in the node cache this information is needed
-        $this->updateFastTraverse();
+        if (! $this->updateFastTraverse()) {
+            return false;
+        }
 
-        // All the args from this function call are passed to this nodetype create method.
+        // All the args from this function call are passed to this nodetype create method
         if (is_object($this->class)) {
             $argv = func_get_args();
             call_user_func_array(array(
                 & $this->class,
-                'CreateNode'
+                'createNode'
             ), $argv);
             if (is_object($this->class)) {
                 $this->messages->mergeMessages($this->class->messages);
@@ -1331,17 +1333,17 @@ class Node extends NodesOrm
         } else {
             $query = sprintf("SELECT NodeType, Name, State, Params FROM NodeDefaultContents WHERE IdNodeType = %d", $this->get('IdNodeType'));
         }
-        $dbObj->Query($query);
+        $dbObj->query($query);
         while (! $dbObj->EOF) {
             $childNode = new Node();
             Logger::debug("Model::Node::CreateNode: Creating child name(" . $this->get('Name') . "), type(" . $this->get('IdNodeType') . ").");
-            $res = $childNode->CreateNode($dbObj->getValue('Name'), $this->get('IdNode'), $dbObj->getValue('NodeType')
-                , $dbObj->getVAlue('State'));
+            $res = $childNode->createNode($dbObj->getValue('Name'), $this->get('IdNode'), $dbObj->getValue('NodeType')
+                , $dbObj->getValue('State'));
             if ($res === false) {
                 $this->messages->mergeMessages($childNode->messages);
                 return false;
             }
-            $dbObj->Next();
+            $dbObj->next();
         }
         $node = new Node($this->get('IdNode'));
         if ($nodeTypeID == NodeTypeConstants::TEMPLATES_ROOT_FOLDER) {
@@ -1547,15 +1549,15 @@ class Node extends NodesOrm
     public function renameNode(string $name) : bool
     {
         $folderPath = null;
-        $this->ClearError();
+        $this->clearError();
         if ($this->get('IdNode') > 0) {
             if ($this->get('Name') == $name) {
                 return true;
             }
             
             // Checking if node name is in correct format
-            if (!$this->IsValidName($name)) {
-                $this->SetError(9);
+            if (! $this->isValidName($name)) {
+                $this->setError(9);
                 return false;
             }
             
@@ -1563,7 +1565,7 @@ class Node extends NodesOrm
             $parent = new Node($this->get("IdParent"));
             $idChildren = $parent->getChildByName($name);
             if ($idChildren && $idChildren != $this->get("IdNode")) {
-                $this->SetError(5);
+                $this->setError(8);
                 return false;
             }
             $fsEntity = $this->nodeType->get('HasFSEntity');
@@ -1587,7 +1589,7 @@ class Node extends NodesOrm
             $this->update();
             
             // If this node type has nothing else to change, the method rename node of its specific class is called
-            if ($this->class->RenameNode($name) === false) {
+            if ($this->class->renameNode($name) === false) {
                 $this->messages->mergeMessages($this->class->messages);
                 return false;
             }
@@ -1595,7 +1597,7 @@ class Node extends NodesOrm
                 
                 // The node is renderized, its children are lost in the filesystem
                 $node = new Node($this->get('IdNode'));
-                $node->RenderizeNode();
+                $node->renderizeNode();
             }
             if ($isDir) {
                 if (App::getValue('RenderizeAll') or $this->getNodeType() == NodeTypeConstants::TEMPLATES_ROOT_FOLDER) {
@@ -1611,7 +1613,7 @@ class Node extends NodesOrm
             }
             return true;
         }
-        $this->SetError(1);
+        $this->setError(1);
         return false;
     }
 

@@ -40,11 +40,6 @@ class LinkNode extends Root
 {
 	public $link;
 
-	/**
-	 * Constructor
-	 * 
-	 * @param object parent
-	 */
 	public function __construct($parent = null)
 	{
  		parent::__construct($parent);
@@ -68,12 +63,16 @@ class LinkNode extends Root
 		if (! $insertedId || ! $result) {
 			$this->messages->add(_('The link could not be inserted'), MSG_TYPE_ERROR);
 			$this->messages->mergeMessages($link->messages);
+			return false;
 		}
 		$this->link = new Link($link->get('IdLink'));
 		$relDescription = ! empty($description) ? $description : $this->link->getName();
 		$rel = RelLinkDescriptions::create($this->nodeID, $relDescription);
 		if (! $rel->getIdRel()) {
-			Logger::warning(sprintf('No se ha podido crear la descripcion para el enlace %s en su tabla relacionada.', $link->get('IdLink')));
+		    $this->messages->add(sprintf(_('Unable to create the description for link %s in its related table'), $link->get('IdLink'))
+		        , MSG_TYPE_ERROR);
+			$this->messages->mergeMessages($rel->messages);
+			return false;
 		}
 		$this->updatePath();
 		return $this->link->get('IdLink');

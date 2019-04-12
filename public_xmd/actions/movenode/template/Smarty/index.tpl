@@ -1,5 +1,5 @@
 {**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -30,7 +30,7 @@
 	<input type="hidden" name="targetid" id="targetid" />
 	<input type="hidden" id="editor" />
 	{include file="actions/components/title_Description.tpl"}
-	{if {!count($targetNodes)}}
+	{if {! count($targetNodes)}}
 		<div class="message-warning message">
 			<p>{t}There aren't any available destination{/t}.</p>
 		</div>
@@ -54,7 +54,8 @@
 						<fieldset>
 							<legend><span><strong>{t}Warning about publication{/t}</strong></span></legend>
 							<p>
-								{t}This node, or one or more of its children, are published{/t}!. {t}If you do not want to keep your nodes published on current location{/t}:
+								{t}This node, or one or more of its children, are published{/t}!. 
+								{t}If you do not want to keep your nodes published on current location{/t}:
 							</p>
 							<ul>
 								<li nowrap>- {t}Edit publication life of your nodes previously of node movement.{/t}</li>
@@ -65,7 +66,8 @@
 				{/if}
 				<div class="small-12 columns">
 					<fieldset class="buttons-form">
-	            		{button label="Move node" class="validate btn main_action" }{*message="Are you sure you want to move this node to selected destination?"*}
+	            		{button label="Move node" class="validate btn main_action" }
+	            		{* message="Are you sure you want to move this node to selected destination?" *}
 					</fieldset>
 				</div>
             </div>

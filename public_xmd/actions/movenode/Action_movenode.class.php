@@ -26,6 +26,7 @@
  */
 
 use Ximdex\Logger;
+use Ximdex\Models\FastTraverse;
 use Ximdex\Models\Node;
 use Ximdex\Models\NodeAllowedContent;
 use Ximdex\Modules\Manager;
@@ -155,12 +156,25 @@ class Action_movenode extends Action_copy
     protected function checkTargetConditions(int $idCurrentNode, int $idCandidateNode) : bool
     {
         $node = new Node($idCurrentNode);
-        $currentNodeName = $node->getNodeName();
         $candidateNode = new Node($idCandidateNode);
+        
+        // If a different project
         if ($node->getProject() != $candidateNode->getProject()) {
             return false;
         }
-        return ! $candidateNode->getChildByName($currentNodeName);
+        
+        // Has a child with same name
+        if ($candidateNode->getChildByName($node->getNodeName())) {
+            return false;
+        }
+        
+        // Candidate node is inside the current node to move
+        foreach (FastTraverse::getParents($idCandidateNode) as $parentId) {
+            if ($parentId == $idCurrentNode) {
+                return false;
+            }
+        }
+        return true;
     }
     
     private function move(int $idNode, int $targetParentID, bool $unpublishDoc)
@@ -169,10 +183,6 @@ class Action_movenode extends Action_copy
         $err = $this->baseIO_MoveNode($idNode, $targetParentID);
         if (! $err) {
             $this->messages->add(sprintf(_('Node %s has been successfully moved'), $node->getNodeName()), MSG_TYPE_NOTICE);
-            /*
-             $sync = new SynchroFacade();
-             $sync->deleteAllTasksByNode($idNode, $unpublishDoc);
-             */
         } else {
             $this->messages->add(_($err), MSG_TYPE_ERROR);
             return false;

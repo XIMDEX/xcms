@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -26,6 +26,7 @@
  */
 
 use Ximdex\MVC\FrontController;
+use Ximdex\Modules\Manager;
 use Ximdex\Runtime\App;
 
 include_once dirname(__DIR__) . '/bootstrap.php';
@@ -33,7 +34,7 @@ include_once dirname(__DIR__) . '/bootstrap.php';
 include_once __DIR__ . '/src/autoload.php';
 
 // General class
-Ximdex\Modules\Manager::file('/install/InstallController.class.php');
+Manager::file('/install/InstallController.class.php');
 
 // FROM MVC
 if (! defined('RENDERER_ROOT_PATH')) {
@@ -45,18 +46,26 @@ if (! defined('SMARTY_TMP_PATH')) {
 
 // Main thread
 if (! InstallController::isInstalled()) {
-    if (strpos($_SERVER['REQUEST_URI'], trim(APP_ROOT_PATH, '/')) !== false) {
+    if (strpos($_SERVER['REQUEST_URI'], 'public_xmd') !== false) {
         
         // The folder public_xmd is not a good place to run the installer
-        require_once APP_ROOT_PATH . '/install/steps/generic/GenericInstallStep.class.php';
-        header('Location:' . rtrim(str_replace(APP_ROOT_PATH, '/', $_SERVER['REQUEST_URI']), '/'));
+        header('Location:../');
     } else {
         $installController = new InstallController();
         $installController->dispatch();
     }
 } else {
-    $locale = \Ximdex\Runtime\Session::get('locale');
-    Ximdex\I18n\I18N::setup($locale); // Check coherence with HTTP_ACCEPT_LANGUAGE
-    $frontController = new FrontController();
-    $frontController->dispatch();
+    /*
+    if (strpos($_SERVER['REQUEST_URI'], App::getValue('UrlFrontController')) === false) {
+        
+        // Got to public_xmd folder
+        header('Location:' . App::getValue('UrlRoot') . App::getValue('UrlFrontController') . '?' . $_SERVER['QUERY_STRING']);
+    } else {
+    */
+        // Check coherence with HTTP_ACCEPT_LANGUAGE
+        $locale = \Ximdex\Runtime\Session::get('locale');
+        Ximdex\I18n\I18N::setup($locale);
+        $frontController = new FrontController();
+        $frontController->dispatch();
+    // }
 }

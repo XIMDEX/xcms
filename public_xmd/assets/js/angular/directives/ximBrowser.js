@@ -446,7 +446,6 @@
             $scope.reloadNode = function(nodeId, callback)
             {
               var action, n;
-              
               if ($('[name=xim-node-reload]').val()) {
             	  nodeId = $('[name=xim-node-reload]').val();
             	  $('[name=xim-node-reload]').val('');

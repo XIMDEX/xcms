@@ -108,7 +108,7 @@ class BaseIO
         if (! empty($data['PARENTID']) && ! empty($data['NODETYPENAME'])) {
             $node = new Node();
             $nodeType = new NodeType();
-            $nodeType->SetByName($data['NODETYPENAME']);
+            $nodeType->setByName($data['NODETYPENAME']);
             if (! $node->checkAllowedContent($nodeType->GetID(), $data['PARENTID'], false))
             {
                 Logger::error('Node not allowed in this folder. Stopping insertion');
@@ -334,11 +334,11 @@ class BaseIO
 
             // link nodes
             case 'LINKNODE':
-                if (!isset($data['CHILDRENS'])) {
+                if (! isset($data['CHILDRENS'])) {
                     $this->messages->add(_('Url was not stablished'), MSG_TYPE_ERROR);
                     return Constants::ERROR_INCORRECT_DATA;
                 }
-                if (!($this->_searchNodeInChildrens($data['CHILDRENS'], 'URL', Constants::MODE_NODEATTRIB))) {
+                if (! $this->_searchNodeInChildrens($data['CHILDRENS'], 'URL', Constants::MODE_NODEATTRIB)) {
                     $this->messages->add(_('Url was not stablished'), MSG_TYPE_ERROR);
                     return Constants::ERROR_INCORRECT_DATA;
                 }
@@ -358,7 +358,9 @@ class BaseIO
                         , isset($data['DESCRIPTION']) ? $data['DESCRIPTION'] : null);
                 $this->_dumpMessages($link->messages);
                 if (! $idNode) {
-                    $this->messages->add(_('An error occurred creating the link'), MSG_TYPE_ERROR);
+                    if (! $this->messages->count()) {
+                        $this->messages->add(_('An error occurred creating the link'), MSG_TYPE_ERROR);
+                    }
                     return Constants::ERROR_INCORRECT_DATA;
                 }
                 return $idNode;

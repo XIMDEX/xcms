@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -37,10 +37,11 @@ use Ximdex\Models\XimLocale;
 use Ximdex\Utils\Serializer;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Models\SearchFilters;
+use Ximdex\Modules\Manager;
 
-Ximdex\Modules\Manager::file('/actions/browser3/inc/search/QueryProcessor.class.php');
-Ximdex\Modules\Manager::file('/actions/browser3/inc/GenericDatasource.class.php');
-Ximdex\Modules\Manager::file('/actions/browser3/inc/FormValidation.class.php');
+Manager::file('/actions/browser3/inc/search/QueryProcessor.class.php');
+Manager::file('/actions/browser3/inc/GenericDatasource.class.php');
+Manager::file('/actions/browser3/inc/FormValidation.class.php');
 
 class Action_browser3 extends ActionAbstract
 {
@@ -59,8 +60,8 @@ class Action_browser3 extends ActionAbstract
         $loginName = Session::get('user_name');
         $userID = (int) Session::get('userID');
         $locale = new XimLocale();
-        $user_locale = $locale->GetLocaleByCode(Session::get('locale'));
-        $locales = $locale->GetEnabledLocales();
+        $user_locale = $locale->getLocaleByCode(Session::get('locale'));
+        $locales = $locale->getEnabledLocales();
         $values = array(
             'params' => $params,
             'userID' => $userID,
@@ -220,12 +221,12 @@ class Action_browser3 extends ActionAbstract
         $this->render($values, 'index', 'only_template.tpl');
     }
 
-    public function addActionCss($css)
+    public function addActionCss(string $css)
     {
         parent::addCss(sprintf('%s/%s', Action_browser3::CSS_PATH, $css));
     }
 
-    public function addActionJs($js)
+    public function addActionJs(string $js)
     {
         parent::addJs(sprintf('%s/%s', Action_browser3::JS_PATH, $js));
     }
@@ -389,7 +390,7 @@ class Action_browser3 extends ActionAbstract
         $data = array();
         foreach ($results as $item) {
             $node = new Node($item['nodeid']);
-            if (!($node->get('IdNode') > 0)) {
+            if (! $node->get('IdNode')) {
                 continue;
             }
             $ancestors = $node->getAncestors();
@@ -547,7 +548,7 @@ class Action_browser3 extends ActionAbstract
             $idSet = $this->request->getParam('setid');
             $nodes = $this->request->getParam('nodes');
         }
-        if (!is_array($nodes)) {
+        if (! is_array($nodes)) {
             $nodes = array($nodes);
         }
         $nodes = GenericDatasource::normalizeEntities($nodes);
@@ -591,14 +592,14 @@ class Action_browser3 extends ActionAbstract
             $idSet = $this->request->getParam('setid');
             $users = $this->request->getParam('users');
         }
-        if (!is_array($users)) {
+        if (! is_array($users)) {
             $users = array($users);
         }
         $addedUsers = 0;
         $errors = array();
         $set = new NodeSets($idSet);
         foreach ($users as $idUser) {
-            if (!empty($idUser) && $idUser > 0) {
+            if (! empty($idUser) && $idUser > 0) {
                 $rel = $set->addUser($idUser, $owner);
                 if ($rel->getId() > 0) {
                     $addedUsers++;
@@ -657,7 +658,7 @@ class Action_browser3 extends ActionAbstract
     {
         $setid = $this->request->getParam('setid');
         $nodes = $this->request->getParam('nodes');
-        if (!is_array($nodes)) {
+        if (! is_array($nodes)) {
             $nodes = array($nodes);
         }
         $nodes = GenericDatasource::normalizeEntities($nodes);
@@ -687,7 +688,7 @@ class Action_browser3 extends ActionAbstract
         $sessionUser = \Ximdex\Runtime\Session::get('userID');
         $setid = $this->request->getParam('setid');
         $users = $this->request->getParam('users');
-        if (!is_array($users)) {
+        if (! is_array($users)) {
             $users = array($users);
         }
         $sessionUser = RelNodeSetsUsers::getByUserId($setid, $sessionUser);
@@ -701,7 +702,7 @@ class Action_browser3 extends ActionAbstract
                 $user = RelNodeSetsUsers::getByUserId($setid, $idUser);
                 
                 // Don't allow a not owner to delete the owner subscription
-                if (!($sessionUser->getOwner() == RelNodeSetsUsers::OWNER_NO && $user->getOwner() == RelNodeSetsUsers::OWNER_YES)) {
+                if (! ($sessionUser->getOwner() == RelNodeSetsUsers::OWNER_NO && $user->getOwner() == RelNodeSetsUsers::OWNER_YES)) {
                     $rel = $set->deleteUser($idUser);
                     if (count($rel->messages->messages) == 0) {
                         $deletedUsers++;
@@ -753,7 +754,7 @@ class Action_browser3 extends ActionAbstract
                 $aux[$idUser] = &$ret[count($ret) - 1];
             }
         }
-        if (!empty($idSet)) {
+        if (! empty($idSet)) {
             $users = new RelNodeSetsUsers();
             $users = $users->find(ALL, 'IdSet = %s', array($idSet));
             if ($users) {
@@ -825,7 +826,7 @@ class Action_browser3 extends ActionAbstract
             return;
         }
         $filter = $this->request->getParam('filter');
-        if ($filter === false || !is_array($filter) || count($filter) == 0) {
+        if ($filter === false || ! is_array($filter) || count($filter) == 0) {
             $this->sendJSON(
                 array(array('type' => MSG_TYPE_ERROR, 'message' => _('The filter cannot be empty.')))
             );

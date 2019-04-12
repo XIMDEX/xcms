@@ -70,8 +70,8 @@ class Action_renamenode extends ActionAbstract
             'id_node' => $idNode,
             'id_nodetype' => $node->nodeType->get('IdNodeType'),
             'nodeTypeID' => $node->nodeType->getID(),
-            'node_Type' => $node->nodeType->GetName(),
-            'name' => $node->GetNodeName()
+            'node_Type' => $node->nodeType->getName(),
+            'name' => $node->getNodeName()
         );
         $this->render($values, null, 'default-3.0.tpl');
     }
@@ -102,7 +102,7 @@ class Action_renamenode extends ActionAbstract
                 $isSection = $node->nodeType->get('IsSection') && $node->getNodeType() != NodeTypeConstants::SERVER;
                 if ($isSection) {
                     foreach ($languages as $idLanguage => $alias) {
-                        if ($node->SetAliasForLang($idLanguage, $alias)) {
+                        if ($node->setAliasForLang($idLanguage, $alias)) {
                             $language = new Language($idLanguage);
                             $this->messages->add(sprintf(_('Alias for language %s has been successfully updated'), $language->get('Name'))
                                 , MSG_TYPE_NOTICE);
@@ -111,8 +111,8 @@ class Action_renamenode extends ActionAbstract
                 }
                 
                 // Update all the references in the templates includes of the old name of this node to the new one
-                if ($node->GetNodeType() == NodeTypeConstants::PROJECT or $node->GetNodeType() == NodeTypeConstants::SERVER 
-                        or $node->GetNodeType() == NodeTypeConstants::SECTION) {
+                if ($node->getNodeType() == NodeTypeConstants::PROJECT or $node->getNodeType() == NodeTypeConstants::SERVER 
+                        or $node->getNodeType() == NodeTypeConstants::SECTION) {
                     $xsltNode = new XsltNode($node);
                     if (! $xsltNode->reload_templates_include(new Node($node->GetProject()))) {
                         $this->messages->mergeMessages($xsltNode->messages);
@@ -120,6 +120,9 @@ class Action_renamenode extends ActionAbstract
                 }
             } else {
                 $this->messages->mergeMessages($node->messages);
+                if ($node->getError()) {
+                    $this->messages->add($node->getError(), MSG_TYPE_ERROR);
+                }
             }
         }
         $values = array('messages' => $this->messages->messages, 'parentID' => $node->get('IdParent'));

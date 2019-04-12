@@ -119,7 +119,7 @@ class FastTraverse extends FastTraverseOrm
         if (! self::$db) {
             self::$db = new Db();
         }
-        if (self::$db->Query($sql) === false) {
+        if (self::$db->query($sql) === false) {
             return false;
         }
         $children = array();
@@ -129,17 +129,17 @@ class FastTraverse extends FastTraverseOrm
             while (! self::$db->EOF) {
                 foreach ($fields as $source => $sourceFields) {
                     foreach ($sourceFields as $field) {
-                        $children[self::$db->GetValue('Depth')][self::$db->GetValue('IdChild')][$source][$field] = self::$db->GetValue($field);
+                        $children[self::$db->getValue('Depth')][self::$db->getValue('IdChild')][$source][$field] = self::$db->getValue($field);
                     }
                 }
-                self::$db->Next();
+                self::$db->next();
             }
         } else {
             
             // The returned array will have the Depth as key with the node ID as the value
             while (! self::$db->EOF) {
-                $children[self::$db->GetValue('Depth')][] = self::$db->GetValue('IdChild');
-                self::$db->Next();
+                $children[self::$db->getValue('Depth')][] = self::$db->getValue('IdChild');
+                self::$db->next();
             }
         }
         return $children;
@@ -198,14 +198,14 @@ class FastTraverse extends FastTraverseOrm
         if (! self::$db) {
             self::$db = new Db();
         }
-        if (self::$db->Query($sql) === false) {
+        if (self::$db->query($sql) === false) {
             Logger::error('Getting parents in FastTraverse with node: ' . $idNode . ' (' . self::$db->desErr . ')');
             return false;
         }
         $parents = array();
         while (! self::$db->EOF) {
-            $parents[self::$db->GetValue('_index')] = self::$db->GetValue('_value');
-            self::$db->Next();
+            $parents[self::$db->getValue('_index')] = self::$db->getValue('_value');
+            self::$db->next();
         }
         return $parents;
     }

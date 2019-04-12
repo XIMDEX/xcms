@@ -35,8 +35,7 @@
                 <div class="input">
                     <label for="name" class="label_title label_general">{t}Name{/t} *</label>
                     <p class="icon icon-positioned link">
-                        <input type="text" name="name" id="name" 
-                                class=" input_general_icon cajaxg validable not_empty js_val_unique_name js_val_alphanumeric" 
+                        <input type="text" name="name" id="name" class=" input_general_icon cajaxg validable not_empty js_val_alphanumeric" 
                                 data-idnode="{$id_node}" placeholder="{t}Link name{/t}" />
                     </p>
                 </div>
@@ -53,8 +52,8 @@
             <div class="small-12 columns">
                 <div class="input">
                     <label for="url" class="label_title label_general">{t}URL{/t} *</label>
-                    <input type="text" name="url" id="url" class="input_general cajaxg validable not_empty js_val_unique_url" 
-                            data-idnode="{$id_node}" value="http://" />
+                    <input type="text" name="url" id="url" class="input_general cajaxg validable not_empty" data-idnode="{$id_node}" 
+                            value="http://" />
                 </div>
             </div>
             <div class="small-12 columns">
@@ -63,7 +62,7 @@
                     <input type="text" name="description" id="description" class="input_general cajaxg" placeholder="{t}Link description{/t}" />
                 </div>
                 <fieldset class="buttons-form ">
-                    {button label="Create" class='validate btn main_action'} {*message="Would you like to create a new link?"*}
+                    {button label="Create" class='validate btn main_action'}
                 </fieldset>
             </div>
         </div>

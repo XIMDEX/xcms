@@ -28,7 +28,10 @@
 use Ximdex\Logger;
 use Ximdex\Models\Link;
 use Ximdex\Models\Node;
+use Ximdex\Modules\Manager;
 use Ximdex\MVC\ActionAbstract;
+
+Manager::file('/actions/browser3/inc/FormValidation.class.php');
 
 class Action_modifylink extends ActionAbstract
 {
@@ -61,37 +64,39 @@ class Action_modifylink extends ActionAbstract
 	public function modifylink()
     {
     	$idNode = (int) $this->request->getParam('nodeid');
-    	$validated = (int) $this->request->getParam('validated');	
-    	if (! $validated) {
-	    	$link = new Link();
-	    	$links = $link->search([
-	    	    'conditions' => [
-	    	        'Url' => $this->request->getParam('Url')
-	    	    ]
-	    	]);
-	    	if (is_array($links)) {
-		    	$links = array_diff($links, array($idNode));
-	    		if (count($links) > 0) {
-		    		$this->show($links);
-		    		return;
-	    		}
-	    	}
+    	$url = $this->request->getParam('Url');
+    	$params = [
+    	    'nodeid' => $idNode,
+    	    'inputName' => 'url',
+    	    'url' => $url
+    	];
+    	if (! FormValidation::isUniqueUrl($params)) {
+    	    $this->messages->add(_('The URL link is already in use'), MSG_TYPE_ERROR);
+    	    $values = [
+    	        'messages' => $this->messages->messages
+    	    ];
+    	    $this->sendJSON($values);
     	}
     	$link = new Link($idNode);
-    	$link->set('Url', $this->request->getParam('Url'));
-    	$linkResult = $link->update();
+    	$link->set('Url', $url);
+    	if ($link->update() === false) {
+    	    $this->messages->add(_('An error occurred while upadting link'), MSG_TYPE_ERROR);
+    	    $this->messages->mergeMessages($link->messages);
+    	    $values = [
+    	        'messages' => $this->messages->messages
+    	    ];
+    	    $this->sendJSON($values);
+    	}
     	$description = $this->request->getParam('Description');
     	$node = new Node($idNode);
     	$node->set('Description', $description);
     	$node->set('Name', $this->request->getParam('Name'));
-    	$nodeResult = $node->update();
-    	if ($nodeResult === false or $linkResult === false) {
+    	if ($node->update() === false) {
     	    $this->messages->add(_('An error occurred while upadting link'), MSG_TYPE_ERROR);
-    	    $this->messages->mergeMessages($link->messages);
     	    $this->messages->mergeMessages($node->messages);
-    	} else {
-    		$this->messages->add(_('Link has been successfully updated'), MSG_TYPE_NOTICE);
+    	    $this->sendJSON($values);
     	}
+        $this->messages->add(_('Link has been successfully updated'), MSG_TYPE_NOTICE);
 		$values = [
 		    'messages' => $this->messages->messages, 
 		    'parentID' => $node->get('IdParent')
