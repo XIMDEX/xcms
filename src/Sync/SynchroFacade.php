@@ -219,16 +219,13 @@ class SynchroFacade
      *            --> if true --> publish the document although it is in the last version
      *            --> if false --> only publish the document if there is a new mayor version no publish
      *            forceDependencies: --> if true --> publish the dependencies although they are in the last version
-     * @param boolean $recurrence
      * @return array|null
      */
-    function pushDocInPublishingPool(int $idNode, int $upDate, int $downDate = null, array $flagsArray = null
-        , bool $recurrence = false) : ?array
+    function pushDocInPublishingPool(int $idNode, int $upDate, int $downDate = null, array $flagsArray = null) : ?array
     {
         $syncMngr = new SyncManager();
         
         // Default values
-        $syncMngr->setFlag('recurrence', false);
         if (! isset($flagsArray['force'])) {
             $syncMngr->setFlag('force', false);
         } else {
@@ -236,8 +233,9 @@ class SynchroFacade
         }
         if ($flagsArray) {
             foreach ($flagsArray as $key => $value) {
-                if ($key == 'force')
+                if ($key == 'force') {
                     continue;
+                }
                 $syncMngr->setFlag($key, $value);
             }
         }

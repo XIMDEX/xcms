@@ -2591,10 +2591,10 @@ class Node extends NodesOrm
      *
      * @param int $depth
      * @param array $files
-     * @param bool $recurrence
+     * @param bool $recursive
      * @return string|bool
      */
-    public function toXml(int $depth, array & $files, bool $recurrence = false)
+    public function toXml(int $depth, array & $files, bool $recursive = false)
     {
         global $STOP_COUNT;
         if (! $this->get('IdNode')) {
@@ -2643,7 +2643,7 @@ class Node extends NodesOrm
         } else {
             $STOP_COUNT = NO_COUNT_NO_RETURN;
         }
-        $xmlBody = $this->class->ToXml($depth, $files, $recurrence);
+        $xmlBody = $this->class->ToXml($depth, $files, $recursive);
         if ($STOP_COUNT == NO_COUNT) {
             $STOP_COUNT = COUNT;
         } else {
@@ -2678,7 +2678,7 @@ class Node extends NodesOrm
                         } else {
                             $STOP_COUNT = NO_COUNT_NO_RETURN;
                         }
-                        $xmlBody .= $node->ToXml($depth, $files, $recurrence);
+                        $xmlBody .= $node->ToXml($depth, $files, $recursive);
                         if ($STOP_COUNT == NO_COUNT) {
                             $STOP_COUNT = COUNT;
                         } else {
@@ -2700,10 +2700,10 @@ class Node extends NodesOrm
                 } else {
                     $STOP_COUNT = NO_COUNT_NO_RETURN;
                 }
-                $xmlBody .= $node->toXml($depth, $files, $recurrence);
+                $xmlBody .= $node->toXml($depth, $files, $recursive);
                 $idTemplate = $structuredDocument->getDocumentType();
                 $node = new Node($idTemplate);
-                $xmlBody .= $node->ToXml($depth, $files, $recurrence);
+                $xmlBody .= $node->ToXml($depth, $files, $recursive);
                 if ($STOP_COUNT == NO_COUNT) {
                     $STOP_COUNT = COUNT;
                 } else {
@@ -2726,18 +2726,18 @@ class Node extends NodesOrm
         }
         unset($nodeTypeName, $idNode, $nodeName, $nodeTypeClass, $statusName, $sharedWorkflow, $tail);
 
-        // If a recursive importation was applied, here is where recurrence is performed
-        if (is_null($recurrence) || (!is_null($recurrence) && $depth <= $recurrence)) {
+        // If a recursive importation was applied, here is where recursive is performed
+        if (is_null($recursive) || (! is_null($recursive) && $depth <= $recursive)) {
             $childrens = $this->getChildren();
             if ($childrens) {
                 foreach ($childrens as $idChildren) {
                     $childrenNode = new Node($idChildren);
-                    if (!($childrenNode->get('IdNode') > 0)) {
+                    if (! $childrenNode->get('IdNode')) {
                         Logger::warning(sprintf(_("It is being tried to load the node %s from the unexistent node %s")
                             , $childrenNode->get('IdNode'), $this->get('IdNode')));
                         continue;
                     }
-                    $xmlBody .= $childrenNode->toXml($depth, $files, $recurrence);
+                    $xmlBody .= $childrenNode->toXml($depth, $files, $recursive);
                     unset($childrenNode);
                 }
             }

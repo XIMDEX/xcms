@@ -242,7 +242,7 @@ class XmlContainerNode extends FolderNode
      * {@inheritDoc}
      * @see \Ximdex\NodeTypes\FolderNode::toXml()
      */
-    public function toXml(int $depth, array & $files, bool $recurrence = false)
+    public function toXml(int $depth, array & $files, bool $recursive = false)
     {
         $xml = '';
         $query = sprintf("SELECT IdTemplate FROM `RelTemplateContainer` WHERE IdContainer = %d", $this->parent->nodeID);
@@ -253,7 +253,7 @@ class XmlContainerNode extends FolderNode
                 continue;
             }
             $template = new Node($idTemplate);
-            $xml .= $template->ToXml($depth, $files, $recurrence);
+            $xml .= $template->ToXml($depth, $files, $recursive);
             $this->dbObj->Next();
         }
         return $xml;

@@ -57,7 +57,8 @@
             <div class="small-12 columns">
                 <div class="input">
                     <label for="description" class="label_title label_general"><span>{t}Description{/t}</span></label>
-                    <input type="text" name="Description" value="{$description}" id="description" class="input_general cajaxg" />
+                    <input type="text" name="Description" value="{$description}" id="description" class="input_general cajaxg" 
+                            placeholder="{t}Link description{/t}" />
                 </div>
                 <fieldset class="buttons-form ">
                     {button label="Modify" class='validate  btn main_action'}

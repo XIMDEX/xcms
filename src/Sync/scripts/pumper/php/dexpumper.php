@@ -473,6 +473,9 @@ class DexPumper
         $res = $this->connection->rm($remoteFile, $id);
         if ($res === false) {
             $this->error($this->connection->getError());
+            if ($this->connection->getType() == Connector::TYPE_API and $this->connection->getCode() == 400) {
+                return null;
+            }
         }
         return $res;
     }
@@ -510,7 +513,6 @@ class DexPumper
         $this->info('Processing ' . $this->serverFrame->get('IdSync'));
         if (! $result) {
             $retries = $serverFrame->get('Retry');
-            // $serverFrame->set('Retry', $retries);
             if ($result === null) {
                 
                 // The error is alocated in the local server, no more retries

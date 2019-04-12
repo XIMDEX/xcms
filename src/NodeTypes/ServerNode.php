@@ -431,13 +431,13 @@ class ServerNode extends FolderNode
             }
             
             /*
-             * recurrence IsSection Resultado
+             * recursive IsSection Resultado
              * 0 0 1
              * 0 1 0
              * 1 0 1
              * 1 1 1 => 1x = 1
              */
-            if (! (! isset($params['recurrence']) && $childNodeType->get('IsSection'))) {
+            if (! (! isset($params['recursive']) && $childNodeType->get('IsSection'))) {
                 $condition = (empty($params['childtype'])) ? null : " AND n.IdNodeType = '{$params['childtype']}'";
                 $docsToPublish = array_merge($docsToPublish, $childNode->TraverseTree(6, true, $condition));
                 continue;

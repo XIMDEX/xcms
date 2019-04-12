@@ -33,7 +33,7 @@ Ximdex\Modules\Manager::file('/inc/ExportXml.class.php', 'ximIO');
 Ximdex\Modules\Manager::file('/inc/ImportXml.class.php', 'ximIO');
 Ximdex\Modules\Manager::file('/inc/FileUpdater.class.php', 'ximIO');
 	
-function copyNode($source, $dest, $recurrence)
+function copyNode($source, $dest, $recursive)
 {
 	$messages = new Ximdex\Utils\Messages();
 	
@@ -64,7 +64,7 @@ function copyNode($source, $dest, $recurrence)
 		return $xmlExporter->messages;
 	}
 	$files = null;
-	$xml = $xmlExporter->getXml($recurrence, $files);
+	$xml = $xmlExporter->getXml($recursive, $files);
 	unset($xmlExporter);
 
 	// Checking if processFirstNode should be called as true or false
@@ -88,7 +88,7 @@ function copyNode($source, $dest, $recurrence)
 	}
 
 	// 2.- Importing the corresponding database part 
-	$importer = new ImportXml($dest, NULL, $nodeAssociations,  Constants::RUN_IMPORT_MODE, $recurrence, NULL, $processFirstNode);
+	$importer = new ImportXml($dest, NULL, $nodeAssociations,  Constants::RUN_IMPORT_MODE, $recursive, NULL, $processFirstNode);
 	$importer->mode = COPY_MODE;
 	$importer->copy($xml);
 	foreach ($importer->messages as $message) {

@@ -58,6 +58,7 @@ class SyncManager
     private $generatorNodes = [];
     private $useCache;
     private $expireAll;
+    private $recursive;
 
     public function __construct()
     {
@@ -66,7 +67,7 @@ class SyncManager
         $this->setFlag('deleteOld', false);
         $this->setFlag('markEnd', false);
         $this->setFlag('linked', false);
-        $this->setFlag('recurrence', false);
+        $this->setFlag('recursive', false);
         $this->setFlag('type', 'core');
         $this->setFlag('mail', false);
         $this->setFlag('deeplevel', DEEP_LEVEL < 0 ? 1 : DEEP_LEVEL);
@@ -156,7 +157,7 @@ class SyncManager
         if ($level !== null) {
             
             // Publication of the section until a given level
-            if ($node->GetNodeType() == NodeTypeConstants::SERVER or $node->GetNodeType() == NodeTypeConstants::SECTION) {
+            if ($node->getNodeType() == NodeTypeConstants::SERVER or $node->getNodeType() == NodeTypeConstants::SECTION) {
                 
                 // Server and sections nodes must increment one level more
                 $level++;
@@ -186,7 +187,7 @@ class SyncManager
         if ($level) {
             $level++;
         }
-        $documentsChildren = FastTraverse::getChildren($node->GetID(), null, $level, $filters, $nodeTypeFlagsAux);
+        $documentsChildren = FastTraverse::getChildren($node->getID(), null, $level, $filters, $nodeTypeFlagsAux);
         if ($documentsChildren === false) {
             return false;
         }

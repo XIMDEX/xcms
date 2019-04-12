@@ -158,7 +158,7 @@ class Action_expiredoc extends ActionAbstract
             'deeplevel' => $deepLevel,
             'structure' => $structure,
             'force' => true,
-            'recurrence' => false
+            'recursive' => false
         );
         
         // Processing the expiration of related ones
@@ -391,7 +391,7 @@ class Action_expiredoc extends ActionAbstract
             'structure' => $structure,
             'deeplevel' => $deepLevel,
             'force' => $force,
-            'recurrence' => false,
+            'recursive' => false,
             'workflow' => true,
             'lastPublished' => $lastPublished
         );

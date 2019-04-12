@@ -178,7 +178,7 @@ class FolderNode extends Root
      * {@inheritDoc}
      * @see \Ximdex\NodeTypes\Root::ToXml()
      */
-    public function toXml(int $depth, array & $files, bool $recurrence = false)
+    public function toXml(int $depth, array & $files, bool $recursive = false)
     {
         $query = sprintf("SELECT IdGroup, IdRole FROM RelGroupsNodes WHERE IdNode = %d", $this->nodeID);
         $this->dbObj->Query($query);

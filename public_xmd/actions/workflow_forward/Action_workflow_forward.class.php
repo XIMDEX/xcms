@@ -654,7 +654,7 @@ class Action_workflow_forward extends ActionAbstract
             'structure' => $structure,
             'deeplevel' => $deepLevel,
             'force' => $force,
-            'recurrence' => false,
+            'recursive' => false,
             'workflow' => true,
             'lastPublished' => $lastPublished,
             'useCache' => $useCache

@@ -176,7 +176,7 @@ class FileNode extends Root
      * {@inheritDoc}
      * @see \Ximdex\NodeTypes\Root::ToXml()
      */
-    public function toXml(int $depth, array & $files, bool $recurrence = false)
+    public function toXml(int $depth, array & $files, bool $recursive = false)
     {
         $query = sprintf("SELECT File FROM `Versions` WHERE idNode = %d ORDER BY Version DESC, SubVersion DESC LIMIT 1",
         $this->parent->get('IdNode'));

@@ -188,12 +188,12 @@ class Root
     /**
      * Builds a XML wich contains the properties of the Node
      * 
-     * @param int - depth
-     * @param array - files
-     * @param bool - recurrence
+     * @param int $depth
+     * @param array $files
+     * @param bool $recursive
      * @return string
      */
-    public function toXml(int $depth, array & $files, bool $recurrence = false)
+    public function toXml(int $depth, array & $files, bool $recursive = false)
     {
         return '';
     }

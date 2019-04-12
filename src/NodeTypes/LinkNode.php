@@ -156,7 +156,7 @@ class LinkNode extends Root
 	 * {@inheritDoc}
 	 * @see \Ximdex\NodeTypes\Root::toXml()
 	 */
-	public function toXml(int $depth, array & $files, bool $recurrence = false)
+	public function toXml(int $depth, array & $files, bool $recursive = false)
 	{
 		$indexTabs = str_repeat("\t", $depth + 1);
 		return sprintf("%s<LinkInfo Url=\"%s\">\n"

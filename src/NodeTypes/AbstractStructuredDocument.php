@@ -404,14 +404,14 @@ abstract class AbstractStructuredDocument extends FileNode
      * {@inheritDoc}
      * @see \Ximdex\NodeTypes\FileNode::ToXml()
      */
-    public function toXml(int $depth, array & $files, bool $recurrence = false)
+    public function toXml(int $depth, array & $files, bool $recursive = false)
     {
-        $xmlBody = parent::ToXML($depth, $files, $recurrence);
+        $xmlBody = parent::ToXML($depth, $files, $recursive);
         $channelList = $this->GetChannels();
         if (is_array($channelList)) {
             foreach ($channelList as $idChannel) {
                 $node = new Node($idChannel);
-                $xmlBody .= $node->ToXml($depth, $files, $recurrence);
+                $xmlBody .= $node->ToXml($depth, $files, $recursive);
                 unset($node);
             }
         }

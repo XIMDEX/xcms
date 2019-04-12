@@ -34,10 +34,11 @@ class FormValidation
      * Check if exists a node with a specific name like child of the selected one
      * 
      * @param array $params
+     * @param bool $returnText
      * @throws Exception
-     * @return boolean
+     * @return bool
      */
-    public static function isUniqueName(array $params) : bool
+    public static function isUniqueName(array $params, bool $returnText = true) : bool
     {       
         if (! isset($params['nodeid']) or ! $params['nodeid']) {
             throw new Exception('Node Id is needed for unique name operation');
@@ -54,18 +55,22 @@ class FormValidation
         } else {
             $parentId = $node->getID();
         }
-        $names = $node->find('Name', 'IdParent = %s AND Name LIKE \'%s\' AND IdNode <> %s',  [$parentId, $name, $idnode], MONO);
-        return (bool) $names;
+        $names = $node->find('Name', 'IdParent = %s AND Name LIKE %s AND IdNode <> %s',  [$parentId, $name, $idnode], MONO);
+        if ($returnText) {
+            die($names ? 'false' : 'true');
+        }
+        return ! $names;
     }
     
     /**
      * Check if exists a link with a specific url
      * 
      * @param array $params
+     * @param bool $returnText
      * @throws Exception
      * @return bool
      */
-    public static function isUniqueUrl(array $params) : bool
+    public static function isUniqueUrl(array $params, bool $returnText = true) : bool
     {
         if (! isset($params['nodeid']) or ! $params['nodeid']) {
             throw new Exception('Node ID is needed for unique URL operation');
@@ -76,9 +81,16 @@ class FormValidation
         $link = new Link();
         $links = $link->find('IdLink', 'url = %s AND IdLink <> %s', array($url, $idNode), MONO);
         if (! $links) {
+            if ($returnText) {
+                die('true');
+            }
             return true;
         }
-        return ! self::inSameProject($idNode, $links);
+        $res = ! self::inSameProject($idNode, $links);
+        if ($returnText) {
+            die($res ? 'false' : 'true');
+        }
+        return ! $res;
     }
     
     /**

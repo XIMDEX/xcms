@@ -70,7 +70,7 @@ class SectionNode extends FolderNode
             $childNodeTypeID = $childNode->get('IdNodeType');
             $childNodeType = new NodeType($childNodeTypeID);
             $childNodeTypeName = $childNodeType->get('Name');
-            if (isset($params['recurrence']) || ($childNodeTypeName != "Section" && !isset($params['recurrence']))) {
+            if (isset($params['recursive']) || ($childNodeTypeName != "Section" && !isset($params['recursive']))) {
                 $docsToPublish = array_merge($docsToPublish, $childNode->TraverseTree(6));
             }
         }
